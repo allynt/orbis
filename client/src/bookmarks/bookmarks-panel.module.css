@@ -1,0 +1,19 @@
+.panel {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  padding: 1rem;
+  background-color: var(--background-color);
+  min-width: 20rem;
+}
+
+.icon {
+  width: 1rem;
+}
+
+.bookmark {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 0.3rem;
+}
