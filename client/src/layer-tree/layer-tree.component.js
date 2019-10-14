@@ -40,20 +40,17 @@ const LayerTree = ({ map }) => {
   );
 
   const toggleLayerVisibility = layer => {
-    console.log('TOGGLING: ', layer);
     const visibility = map.getLayoutProperty(layer, 'visibility');
     const node = nodes.find(node => node.label === layer);
-    console.log('LAYER: ', layer, ' visibility: ', visibility);
-    if (visibility === undefined || visibility === 'none') {
-      map.setLayoutProperty(layer, 'visibility', 'visible');
-      node.visible = true;
-    } else {
+    if (visibility === undefined || visibility === 'visible') {
       map.setLayoutProperty(layer, 'visibility', 'none');
       node.visible = false;
+    } else {
+      map.setLayoutProperty(layer, 'visibility', 'visible');
+      node.visible = true;
     }
 
-    setNodes([...nodes, node]);
-    console.log('LAYERS: ', map.getStyle().layers);
+    setNodes([...nodes]);
   };
 
   return (
