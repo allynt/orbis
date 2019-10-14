@@ -40,9 +40,9 @@ jobs:
       db:
         image: kartoza/postgis:11.0-2.5
         env:
-          POSTGRES_DBNAME: orbis_db
-          POSTGRES_USER: orbis_user
-          POSTGRES_PASS: orbis_password
+          POSTGRES_DBNAME: orbis
+          POSTGRES_USER: orbis
+          POSTGRES_PASS: orbis
           ALLOW_IP_RANGE: 0.0.0.0/0
         ports:
           - "5666:5432"
@@ -72,6 +72,8 @@ jobs:
       #     tags: master,${{ env.GITHUB_SHA }}
       - name: Build Docker Image
         run: |
+          export GIT_REF=${GITHUB_REF##*/}
+          echo $GIT_REF
           docker build . -t ${AWS_REGISTRY}/${AWS_REPOSITORY}:${GITHUB_REF} -t ${AWS_REGISTRY}/${AWS_REPOSITORY}:${GITHUB_SHA} --build-arg COMMIT_HASH=${GITHUB_REF} --build-arg GIT_BRANCH=${GITHUB_SHA}
 
       - name: Install AWS CLI
