@@ -37,6 +37,7 @@ services:
     image: node:10.16.3
     environment:
       NODE_ENV: "development"
+      GITHUB_REGISTRY_TOKEN: "${GITHUB_REGISTRY_TOKEN}"
     working_dir: /opt/orbis/client
     volumes:
       - ./client:/opt/orbis/client
