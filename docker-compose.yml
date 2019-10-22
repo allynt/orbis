@@ -20,34 +20,27 @@ services:
     environment:
       - DJANGO_SETTINGS_MODULE=core.settings
       - PIPENV_NOSPIN=1
-    command: >
-      -c "cd /opt/orbis/ && pipenv install --dev --system"
-      -c "until echo > /dev/tcp/db/5432; do sleep 1; done"
-      -m "migrate --noinput"
-      -m "runserver 0.0.0.0:8000"
-    volumes:
-      - .:/opt/orbis/
-      - ./client:/opt/orbis/client/
+      - GITHUB_REGISTRY_TOKEN: "${GITHUB_REGISTRY_TOKEN}"
     ports:
-      - "8000:8000"
+      - "8000:80"
     networks:
       - orbis
 
-  client:
-    image: node:10.16.3
-    environment:
-      NODE_ENV: "development"
-      GITHUB_REGISTRY_TOKEN: "${GITHUB_REGISTRY_TOKEN}"
-    working_dir: /opt/orbis/client
-    volumes:
-      - ./client:/opt/orbis/client
-    command: bash -c "yarn install && yarn build && yarn start"
-    tty: true
-    ports:
-      - "3000:3000"
-      - "35729:35729"
-    networks:
-      - orbis
+  # client:
+  #   image: node:10.16.3
+  #   environment:
+  #     NODE_ENV: "development"
+  #     GITHUB_REGISTRY_TOKEN: "${GITHUB_REGISTRY_TOKEN}"
+  #   working_dir: /opt/orbis/client
+  #   volumes:
+  #     - ./client:/opt/orbis/client
+  #   command: bash -c "yarn install && yarn build && yarn start"
+  #   tty: true
+  #   ports:
+  #     - "3000:3000"
+  #     - "35729:35729"
+  #   networks:
+  #     - orbis
 
 networks:
   orbis:
