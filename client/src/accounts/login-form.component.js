@@ -5,8 +5,9 @@ import { Link, Redirect } from 'react-router-dom';
 import useForm from '../hooks/useForm';
 import validate from './login-form.validator';
 
-import Button from '../ui/button.component';
-// import Button from 'astrosat-ui';
+// import Button from '../ui/button.component';
+import PasswordField from './password-field.component';
+import { Button, PasswordStrengthMeter, Textfield } from '@astrosat/astrosat-ui';
 
 import styles from './login-form.module.css';
 
@@ -25,44 +26,54 @@ const LoginForm = ({ login, user, from }) => {
   return (
     <div className={styles['login-form-container']}>
       <form className={styles['login-form']} onSubmit={handleSubmit}>
-        <h3>Log In</h3>
+        <h3>Sign In</h3>
 
         <p>
           If you have not account, you can <Link to={'/register'}>register here</Link>
         </p>
 
-        <div className={styles['form-row']}>
-          <label className={styles.label}>
-            Username:
-            <input
-              className={`${styles.input} ${errors.username ? styles.error : ''}`}
-              type="text"
-              name="username"
-              onChange={handleChange}
-              value={values.username || ''}
-              required
-              autoFocus
-            />
-          </label>
-          <em className={styles.required}>(Required)</em>
-        </div>
-        {errors.username && <p className={styles['error-message']}>{errors.username}</p>}
+        <div className={styles.fields}>
+          <div className={styles['form-row']}>
+            <label className={styles.label}>
+              Username:
+              <Textfield
+                name="username"
+                value={values.username || ''}
+                placeholder="UseHellrname"
+                onChange={handleChange}
+              />
+              {/* <input
+                className={`${styles.input} ${errors.username ? styles.error : ''}`}
+                type="text"
+                name="username"
+                onChange={handleChange}
+                value={values.username || ''}
+                required
+                autoFocus
+              /> */}
+            </label>
+            <em className={styles.required}>(Required)</em>
+          </div>
+          {errors.username && <p className={styles['error-message']}>{errors.username}</p>}
 
-        <div className={styles['form-row']}>
-          <label className={styles.label}>
-            Password:
-            <input
+          <div className={styles['form-row']}>
+            <label className={styles.label}>
+              Password:
+              <PasswordField />
+              {/* <input
               className={`${styles.input} ${errors.password ? styles.error : ''}`}
               type="password"
               name="password"
               onChange={handleChange}
               value={values.password || ''}
               required
-            />
-          </label>
-          <em className={styles.required}>(Required)</em>
+            /> */}
+            </label>
+            <em className={styles.required}>(Required)</em>
+          </div>
+          {errors.password && <p className={styles['error-message']}>{errors.password}</p>}
+          <PasswordStrengthMeter password={values.password1} />
         </div>
-        {errors.password && <p className={styles['error-message']}>{errors.password}</p>}
 
         <p>
           Forgotten your <Link to="/password/reset">password?</Link>
