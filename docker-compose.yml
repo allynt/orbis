@@ -16,11 +16,14 @@ services:
   server:
     build:
       context: .
+      args:
+        TOKEN: "${GITHUB_REGISTRY_TOKEN}"
     tty: true
     environment:
-      - DJANGO_SETTINGS_MODULE=core.settings
-      - PIPENV_NOSPIN=1
-      - GITHUB_REGISTRY_TOKEN: "${GITHUB_REGISTRY_TOKEN}"
+      DJANGO_SETTINGS_MODULE: core.settings
+      PIPENV_NOSPIN: 1
+      GITHUB_REGISTRY_TOKEN: "${GITHUB_REGISTRY_TOKEN}"
+      # - GITHUB_REGISTRY_TOKEN=${GITHUB_REGISTRY_TOKEN}
     ports:
       - "8000:80"
     networks:

@@ -1,7 +1,7 @@
 #!/bin/bash
 set -euo pipefail
 
-cd $APP_HOME
+cd $APP_HOME/server
 
 setuser app pipenv run ./manage.py migrate
 setuser app pipenv run ./manage.py collectstatic --no-input --link
