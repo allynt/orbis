@@ -25,7 +25,7 @@ const LoginForm = ({ login, user, from }) => {
   return (
     <div className={styles['login-form-container']}>
       <form className={styles['login-form']} onSubmit={handleSubmit}>
-        <h3>Log In</h3>
+        <h3>Sign In</h3>
 
         <p>
           If you have not account, you can <Link to={'/register'}>register here</Link>

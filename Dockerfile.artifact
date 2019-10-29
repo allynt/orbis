@@ -13,21 +13,21 @@ ENV GITHUB_REGISTRY_TOKEN=$TOKEN
 
 WORKDIR $APP_HOME
 
+COPY --chown=root:root nginx.conf /etc/nginx/nginx.conf
+
 COPY --chown=app:app . $APP_HOME
 
-# Install client deps
-RUN cd $APP_HOME/client && yarn install
+# Install client deps and build
+RUN cd $APP_HOME/client && yarn install && yarn build
 
 # Install backend deps
 RUN cd $APP_HOME/server && pipenv install --dev
 
-# Start client and backend dev servers
-COPY --chown=root:root run-client.sh /etc/service/client/run
-COPY --chown=root:root run-server.sh /etc/service/server/run
+# Install server code
+COPY --chown=root:root run-uwsgi.sh /etc/service/uwsgi/run
 
-# necessary to have permission to remove nginx support
-USER root
-RUN rm -rf /etc/service/nginx
+HEALTHCHECK --start-period=120s CMD curl -sf http://127.0.0.1/healthcheck/?format=json
+EXPOSE 80
 
 # The baseimage requires ultimately running as root
 USER root
