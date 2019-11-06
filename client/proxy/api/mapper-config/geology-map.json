@@ -1,0 +1,657 @@
+{
+    "projection": {"code": "EPSG:27700", "displayName": "British National Grid" },
+    "bounds": [ -800000, -500000, 1500000, 1800000 ],
+    "layers": [{
+      "mapproxyProduct": "geologymapper",
+      "visibility": true,
+      "bounds": [ -800000, -550000, 1500000, 1750000 ],
+      "resolutions": [ 1975.556, 440.972, 220.486, 132.292, 88.194, 52.917 ],
+      "cachedLayers": [ "geology-os-backdrop-ext1" ],
+      "metadata": {
+          "nonproduct": true
+      }
+  }, {
+      "mapproxyProduct": "geologymapper",
+      "visibility": true,
+      "bounds": [ 0,0,700000,1300000 ],
+      "resolutions": [ 35.278,26.458,17.639, 8.819, 3.528, 1.764 ],
+      "cachedLayers": [ "geology-os-backdrop" ],
+      "metadata": {
+          "nonproduct": true
+      }
+  }, {
+    "mapproxyProduct": "geology625k_runit_GB",
+    "featureinfo": "geology625k_runit_GB",
+    "visibility": false,
+    "resolutions": [ 1975.556 ],
+    "bounds": [ -800000, -550000, 1500000, 1750000 ],
+    "cachedLayers": [ "Geology" ],
+    "metadata": {
+      "productId": "geology625k_runit_gb",
+      "themeDisplayName": "(1:625 000) Rock Unit",
+      "mapInfoDisplayName": ["DiGMapGB-625 Rock Units", "DigRock250 Offshore Geology", "DigSBS Sea Bed Sediments"],
+      "logName": "bgs625k-unit",
+      "legendName": "geology625k_runit",
+      "featureInfoQueryLayer": "Geology625k_runit",
+      "compoundProduct": "625_runit",
+      "opacitySlider": true,
+      "date": "",
+      "copyright": "Geological Map Data ©NERC {currentYear}. <p class='copyright-faint'>© Crown Copyright and Database Right {currentYear}. Ordnance Survey (Digimap Licence).</p>",
+      "help": ["/webhelp/geology/geologydigimaphelp.htm#data_information/bgs_products_available/625k.htm", "/webhelp/geology/geologydigimaphelp.htm#data_information/bgs_products_available/250k_offshore.htm", "/webhelp/geology/geologydigimaphelp.htm#data_information/bgs_products_available/250k_offshore.htm"],
+      "print" : {
+        "cliveProduct": "geology625k_runit_GB",
+        "layers": "geology",
+        "swd": "Geology625k_runit_GB_print",
+        "scaleRange": { "min": 2500000 , "max": 10000000 }
+       }
+    }
+  }, {
+    "mapproxyProduct": "geology625k_rtype_GB",
+    "featureinfo": "geology625k_rtype_GB",
+    "visibility": false,
+    "resolutions": [ 1975.556 ],
+    "bounds": [ -800000, -550000, 1500000, 1750000 ],
+    "cachedLayers": [ "Geology" ],
+    "metadata": {
+      "productId": "geology625k_rtype_gb",
+      "themeDisplayName": "(1:625 000) Rock Type",
+      "mapInfoDisplayName": ["DiGMapGB-625 Rock Types", "DigRock250 Offshore Geology", "DigSBS Sea Bed Sediments"],
+      "logName": "bgs625k-type",
+      "legendName": "geology625k_rtype",
+      "featureInfoQueryLayer": "Geology625k_rtype",
+      "compoundProduct": "625_rtype",
+      "opacitySlider": true,
+      "date": "",
+      "copyright": "Geological Map Data ©NERC {currentYear}. <p class='copyright-faint'>© Crown Copyright and Database Right {currentYear}. Ordnance Survey (Digimap Licence).</p>",
+      "help": ["/webhelp/geology/geologydigimaphelp.htm#data_information/bgs_products_available/625k.htm", "/webhelp/geology/geologydigimaphelp.htm#data_information/bgs_products_available/250k_koffshore.htm", "/webhelp/geology/geologydigimaphelp.htm#data_information/bgs_products_available/250k_koffshore.htm"],
+      "print" : {
+        "cliveProduct": "geology625k_rtype_GB",
+        "layers": "geology",
+        "swd": "Geology625k_rtype_GB_print",
+        "scaleRange": { "min": 2500000 , "max": 10000000 }
+       }
+    }
+  }, {
+    "mapproxyProduct": "geology625k_runit",
+    "featureinfo": "geology625k_runit",
+    "visibility": false,
+    "resolutions": [ 440.972,220.486 ],
+    "bounds": [ -800000, -550000, 1500000, 1750000 ],
+    "cachedLayers": [ "Geology" ],
+    "metadata": {
+      "productId": "geology625k_runit",
+      "themeDisplayName": "(1:625 000) Rock Unit",
+      "mapInfoDisplayName": ["DiGMapGB-625 Rock Units", "DigRock250 Offshore Geology", "DigSBS Sea Bed Sediments"],
+      "logName": "bgs625k-unit",
+      "legendName": "geology625k_runit",
+      "featureInfoQueryLayer": "Geology625k_runit",
+      "compoundProduct": "625_runit",
+      "opacitySlider": true,
+      "date": "",
+      "copyright": "Geological Map Data ©NERC {currentYear}. <p class='copyright-faint'>© Crown Copyright and Database Right {currentYear}. Ordnance Survey (Digimap Licence).</p>",
+      "help": ["/webhelp/geology/geologydigimaphelp.htm#data_information/bgs_products_available/625k.htm", "/webhelp/geology/geologydigimaphelp.htm#data_information/bgs_products_available/250k_offshore.htm", "/webhelp/geology/geologydigimaphelp.htm#data_information/bgs_products_available/250k_offshore.htm"],
+      "print" : {
+        "cliveProduct": "geology625k_runit",
+        "layers": "geology",
+        "swd": "Geology625k_runit_print",
+        "scaleRange": { "min": 400000 , "max": 2500000 }
+       }
+    }
+  }, {
+    "mapproxyProduct": "geology625k_rtype",
+    "featureinfo": "geology625k_rtype",
+    "visibility": false,
+    "resolutions": [ 440.972,220.486 ],
+    "bounds": [ -800000, -550000, 1500000, 1750000 ],
+    "cachedLayers": [ "Geology" ],
+    "metadata": {
+      "productId": "geology625k_rtype",
+      "themeDisplayName": "(1:625 000) Rock Type",
+      "mapInfoDisplayName": ["DiGMapGB-625 Rock Types", "DigRock250 Offshore Geology", "DigSBS Sea Bed Sediments"],
+      "logName": "bgs625k-type",
+      "legendName": "geology625k_rtype",
+      "featureInfoQueryLayer": "Geology625k_rtype",
+      "compoundProduct": "625_rtype",
+      "opacitySlider": true,
+      "date": "",
+      "copyright": "Geological Map Data ©NERC {currentYear}. <p class='copyright-faint'>© Crown Copyright and Database Right {currentYear}. Ordnance Survey (Digimap Licence).</p>",
+      "help": ["/webhelp/geology/geologydigimaphelp.htm#data_information/bgs_products_available/625k.htm", "/webhelp/geology/geologydigimaphelp.htm#data_information/bgs_products_available/250k_offshore.htm", "/webhelp/geology/geologydigimaphelp.htm#data_information/bgs_products_available/250k_offshore.htm"],
+      "print" : {
+        "cliveProduct": "geology625k_rtype",
+        "layers": "geology",
+        "swd": "Geology625k_rtype_print",
+        "scaleRange": { "min": 400000 , "max": 2500000 }
+       }
+    }
+  }, {
+    "mapproxyProduct": "geology250k_runit",
+    "featureinfo": "geology250k_runit",
+    "visibility": false,
+    "resolutions": [ 132.292,88.194,52.917 ],
+    "bounds": [ -800000, -550000, 1500000, 1750000 ],
+    "cachedLayers": [ "Geology" ],
+    "metadata": {
+      "productId": "geology250k_runit",
+      "themeDisplayName": "(1:250 000) Rock Unit",
+      "mapInfoDisplayName": ["DiGMapGB-250 Rock Units", "DigRock250 Offshore Geology", "DigSBS Sea Bed Sediments"],
+      "logName": "bgs250k-unit",
+      "legendName": "geology250k_runit",
+      "featureInfoQueryLayer": "Geology250k_runit",
+      "opacitySlider": true,
+      "date": "",
+      "copyright": "Geological Map Data ©NERC {currentYear}. <p class='copyright-faint'>© Crown Copyright and Database Right {currentYear}. Ordnance Survey (Digimap Licence).</p>",
+      "help": ["/webhelp/geology/geologydigimaphelp.htm#data_information/bgs_products_available/250k.htm", "/webhelp/geology/geologydigimaphelp.htm#data_information/bgs_products_available/250k_offshore.htm", "/webhelp/geology/geologydigimaphelp.htm#data_information/bgs_products_available/250k_offshore.htm"],
+      "print" : {
+        "cliveProduct": "geology250k_runit",
+        "layers": "geology",
+        "swd": "Geology250k_runit_print",
+        "scaleRange": { "min": 100000 , "max": 500000 }
+       }
+    }
+  }, {
+    "mapproxyProduct": "geology250k_rtype",
+    "featureinfo": "geology250k_rtype",
+    "visibility": false,
+    "resolutions": [ 132.292,88.194,52.917 ],
+    "bounds": [ -800000, -550000, 1500000, 1750000 ],
+    "cachedLayers": [ "Geology" ],
+    "metadata": {
+      "productId": "geology250k_rtype",
+      "themeDisplayName": "(1:250 000) Rock Type",
+      "mapInfoDisplayName": ["DiGMapGB-250 Rock Types", "DigRock250 Offshore Geology", "DigSBS Sea Bed Sediments"],
+      "logName": "bgs250k-type",
+      "legendName": "geology250k_rtype",
+      "featureInfoQueryLayer": "Geology250k_rtype",
+      "opacitySlider": true,
+      "date": "",
+      "copyright": "Geological Map Data ©NERC {currentYear}. <p class='copyright-faint'>© Crown Copyright and Database Right {currentYear}. Ordnance Survey (Digimap Licence).</p>",
+      "help": ["/webhelp/geology/geologydigimaphelp.htm#data_information/bgs_products_available/250k.htm", "/webhelp/geology/geologydigimaphelp.htm#data_information/bgs_products_available/250k_offshore.htm", "/webhelp/geology/geologydigimaphelp.htm#data_information/bgs_products_available/250k_offshore.htm"],
+      "print" : {
+        "cliveProduct": "geology250k_rtype",
+        "layers": "geology",
+        "swd": "Geology250k_rtype_print",
+        "scaleRange": { "min": 100000 , "max": 500000 }
+       }
+    }
+  }, {
+    "mapproxyProduct": "geology50k_runit",
+    "featureinfo": "geology50k_runit",
+    "visibility": false,
+      "resolutions": [ 35.278,26.458,17.639,8.819,3.528 ],
+    "bounds": [ 0,0,700000,1300000 ],
+    "cachedLayers": [ "G50_all" ],
+    "metadata": {
+      "productId": "geology50k_runit",
+      "themeDisplayName": "(1:50 000) Rock Unit",
+      "mapInfoDisplayName": ["DiGMapGB-50 Rock Unit"],
+      "logName": "bgs50k-unit",
+      "legendName": "geology50k_runit",
+      "featureInfoQueryLayer": "Geology50k_runit",
+      "opacitySlider": true,
+      "date": "",
+      "copyright": "Geological Map Data ©NERC {currentYear}. <p class='copyright-faint'>© Crown Copyright and Database Right {currentYear}. Ordnance Survey (Digimap Licence).</p>",
+      "help": ["/webhelp/geology/geologydigimaphelp.htm#data_information/bgs_products_available/50k.htm"],
+      "print" : {
+        "cliveProduct": "geology50k_runit",
+        "layers": "G50_all",
+        "swd": "Geology50k_runit_print",
+        "scaleRange": { "min": 10000 , "max": 150000 }
+       }
+    }
+  }, {
+    "mapproxyProduct": "geology50k_rtype",
+    "featureinfo": "geology50k_rtype",
+    "visibility": false,
+    "resolutions": [ 35.278,26.458,17.639,8.819,3.528 ],
+    "bounds": [ 0,0,700000,1300000 ],
+    "cachedLayers": [ "G50_all" ],
+    "metadata": {
+      "productId": "geology50k_rtype",
+      "themeDisplayName": "(1:50 000) Rock Type",
+      "mapInfoDisplayName": ["DiGMapGB-50 Rock Type"],
+      "logName": "bgs50k-type",
+      "legendName": "geology50k_rtype",
+      "featureInfoQueryLayer": "Geology50k_rtype",
+      "opacitySlider": true,
+      "date": "",
+      "copyright": "Geological Map Data ©NERC {currentYear}. <p class='copyright-faint'>© Crown Copyright and Database Right {currentYear}. Ordnance Survey (Digimap Licence).</p>",
+      "help": ["/webhelp/geology/geologydigimaphelp.htm#data_information/bgs_products_available/50k.htm"],
+      "print" : {
+        "cliveProduct": "geology50k_rtype",
+        "layers": "G50_all",
+        "swd": "Geology50k_rtype_print",
+        "scaleRange": { "min": 10000 , "max": 150000 }
+       }
+    }
+  }, {
+    "mapproxyProduct": "geology10k_runit",
+    "featureinfo": "geology10k_runit",
+    "visibility": false,
+    "resolutions": [ 8.819, 3.528, 1.764 ],
+    "bounds": [ 0,0,700000,1300000 ],
+    "cachedLayers": [ "Geology" ],
+    "metadata": {
+      "productId": "geology10k_runit",
+      "themeDisplayName": "(1:10 000) Rock Unit",
+      "mapInfoDisplayName": ["DiGMapGB-25 Rock Unit", "DiGMapGB-10 Rock Unit"],
+      "logName": "bgs10k-unit",
+      "legendName": "geology10k_runit",
+      "featureInfoQueryLayer": "Geology10k_runit",
+      "opacitySlider": true,
+      "date": "",
+      "copyright": "Geological Map Data ©NERC {currentYear}. <p class='copyright-faint'>© Crown Copyright and Database Right {currentYear}. Ordnance Survey (Digimap Licence).</p>",
+      "help": ["/webhelp/geology/geologydigimaphelp.htm#data_information/bgs_products_available/25k.htm", "/webhelp/geology/geologydigimaphelp.htm#data_information/bgs_products_available/10k.htm"],
+      "print" : {
+        "cliveProduct": "geology10k_runit",
+        "layers": "G10_all",
+        "swd": "Geology10k_runit_print",
+        "scaleRange": { "min": 5000 , "max": 50000 }
+       }
+    }
+  }, {
+    "mapproxyProduct": "geology10k_rtype",
+    "featureinfo": "geology10k_rtype",
+    "visibility": false,
+    "resolutions": [ 8.819, 3.528, 1.764 ],
+    "bounds": [ 0,0,700000,1300000 ],
+    "cachedLayers": [ "Geology" ],
+    "metadata": {
+      "productId": "geology10k_rtype",
+      "themeDisplayName": "(1:10 000) Rock Type",
+      "mapInfoDisplayName": ["DiGMapGB-25 Rock Type", "DiGMapGB-10 Rock Type"],
+      "logName": "bgs10k-type",
+      "legendName": "geology10k_rtype",
+      "featureInfoQueryLayer": "Geology10k_rtype",
+      "opacitySlider": true,
+      "date": "",
+      "copyright": "Geological Map Data ©NERC {currentYear}. <p class='copyright-faint'>© Crown Copyright and Database Right {currentYear}. Ordnance Survey (Digimap Licence).</p>",
+      "help": ["/webhelp/geology/geologydigimaphelp.htm#data_information/bgs_products_available/25k.htm", "/webhelp/geology/geologydigimaphelp.htm#data_information/bgs_products_available/10k.htm"],
+      "print" : {
+        "cliveProduct": "geology10k_rtype",
+        "layers": "G10_all",
+        "swd": "Geology10k_rtype_print",
+        "scaleRange": { "min": 5000 , "max": 50000 }
+       }
+    }
+  }, {
+    "mapproxyProduct": "geology_spm_caco3_extent1",
+    "featureinfo": "geology_spm_caco3",
+    "visibility": false,
+    "resolutions": [ 132.292, 88.194, 52.917 ],
+    "bounds": [ -800000, -550000, 1500000, 1750000 ],
+    "cachedLayers": [ "GSPM" ],
+    "metadata": {
+      "productId": "geology_spm_caco3_gb",
+      "themeDisplayName": "Soil Calcium Carbonate",
+      "mapInfoDisplayName": ["Soil Parent Material Model: Calcium Carbonate Content"],
+      "logName": "soil-parent-cac",
+      "legendName": "geology_spm_caco3",
+      "featureInfoQueryLayer": "Geology_spm_caco3",
+      "compoundProduct": "caco",
+      "opacitySlider": true,
+      "date": "",
+      "copyright": "Geological Map Data ©NERC {currentYear}. <p class='copyright-faint'>© Crown Copyright and Database Right {currentYear}. Ordnance Survey (Digimap Licence).</p>",
+      "help": ["/webhelp/geology/geologydigimaphelp.htm#data_information/bgs_products_available/soil_parent_material.htm"],
+      "print" : {
+        "cliveProduct": "geology_spm_caco3",
+        "layers": "GSPM",
+        "swd": "Geology_spm_caco3_print",
+        "scaleRange": { "min": 10000 , "max": 500000 }
+       }
+    }
+  }, {
+    "mapproxyProduct": "geology_spm_caco3",
+    "featureinfo": "geology_spm_caco3",
+    "visibility": false,
+    "resolutions": [ 35.278, 26.458, 17.639, 8.819, 3.528 ],
+    "bounds": [ 0,0,700000,1300000 ],
+    "cachedLayers": [ "GSPM" ],
+    "metadata": {
+      "productId": "geology_spm_caco3",
+      "themeDisplayName": "Soil Calcium Carbonate",
+      "mapInfoDisplayName": ["Soil Parent Material Model: Calcium Carbonate Content"],
+      "logName": "soil-parent-cac",
+      "legendName": "geology_spm_caco3",
+      "featureInfoQueryLayer": "Geology_spm_caco3",
+      "compoundProduct": "caco",
+      "opacitySlider": true,
+      "date": "",
+      "copyright": "Geological Map Data ©NERC {currentYear}. <p class='copyright-faint'>© Crown Copyright and Database Right {currentYear}. Ordnance Survey (Digimap Licence).</p>",
+      "help": ["/webhelp/geology/geologydigimaphelp.htm#data_information/bgs_products_available/soil_parent_material.htm"],
+      "print" : {
+        "cliveProduct": "geology_spm_caco3",
+        "layers": "GSPM",
+        "swd": "Geology_spm_caco3_print",
+        "scaleRange": { "min": 10000 , "max": 500000 }
+       }
+    }
+
+  }, {
+    "mapproxyProduct": "geology_spm_strength_extent1",
+    "featureinfo": "geology_spm_strength",
+    "visibility": false,
+    "resolutions": [ 132.292, 88.194, 52.917 ],
+    "bounds": [ -800000, -550000, 1500000, 1750000 ],
+    "cachedLayers": [ "GSPM" ],
+    "metadata": {
+      "productId": "geology_spm_strength_gb",
+      "themeDisplayName": "Soil Strength",
+      "mapInfoDisplayName": ["Soil Parent Material Model: Soil Strength"],
+      "logName": "soil-parent-str",
+      "legendName": "geology_spm_strength",
+      "featureInfoQueryLayer": "Geology_spm_strength",
+      "compoundProduct": "strength",
+      "opacitySlider": true,
+      "date": "",
+      "copyright": "Geological Map Data ©NERC {currentYear}. <p class='copyright-faint'>© Crown Copyright and Database Right {currentYear}. Ordnance Survey (Digimap Licence).</p>",
+      "help": ["/webhelp/geology/geologydigimaphelp.htm#data_information/bgs_products_available/soil_parent_material.htm"],
+      "print" : {
+        "cliveProduct": "geology_spm_strength",
+        "layers": "GSPM",
+        "swd": "Geology_spm_strength_print",
+        "scaleRange": { "min": 10000 , "max": 500000 }
+       }
+    }
+  }, {
+    "mapproxyProduct": "geology_spm_strength",
+    "featureinfo": "geology_spm_strength",
+    "visibility": false,
+    "resolutions": [ 35.278, 26.458, 17.639, 8.819, 3.528 ],
+    "bounds": [ 0,0,700000,1300000 ],
+    "cachedLayers": [ "GSPM" ],
+    "metadata": {
+      "productId": "geology_spm_strength",
+      "themeDisplayName": "Soil Strength",
+      "mapInfoDisplayName": ["Soil Parent Material Model: Soil Strength"],
+      "logName": "soil-parent-str",
+      "legendName": "geology_spm_strength",
+      "featureInfoQueryLayer": "Geology_spm_strength",
+      "compoundProduct": "strength",
+      "opacitySlider": true,
+      "date": "",
+      "copyright": "Geological Map Data ©NERC {currentYear}. <p class='copyright-faint'>© Crown Copyright and Database Right {currentYear}. Ordnance Survey (Digimap Licence).</p>",
+      "help": ["/webhelp/geology/geologydigimaphelp.htm#data_information/bgs_products_available/soil_parent_material.htm"],
+      "print" : {
+        "cliveProduct": "geology_spm_strength",
+        "layers": "GSPM",
+        "swd": "Geology_spm_strength_print",
+        "scaleRange": { "min": 10000 , "max": 500000 }
+       }
+    }
+  }, {
+    "mapproxyProduct": "geology_spm_texture_extent1",
+    "featureinfo": "geology_spm_texture",
+    "visibility": false,
+    "resolutions": [ 132.292, 88.194, 52.917 ],
+    "bounds": [ -800000, -550000, 1500000, 1750000 ],
+    "cachedLayers": [ "GSPM" ],
+    "metadata": {
+      "productId": "geology_spm_texture_gb",
+      "themeDisplayName": "Soil Texture",
+      "mapInfoDisplayName": ["Soil Parent Material Model: Soil Texture"],
+      "logName": "soil-parent-tex",
+      "legendName": "geology_spm_texture",
+      "featureInfoQueryLayer": "Geology_spm_texture",
+      "compoundProduct": "texture",
+      "opacitySlider": true,
+      "date": "",
+      "copyright": "Geological Map Data ©NERC {currentYear}. <p class='copyright-faint'>© Crown Copyright and Database Right {currentYear}. Ordnance Survey (Digimap Licence).</p>",
+      "help": ["/webhelp/geology/geologydigimaphelp.htm#data_information/bgs_products_available/soil_parent_material.htm"],
+      "print" : {
+        "cliveProduct": "geology_spm_texture",
+        "layers": "GSPM",
+        "swd": "Geology_spm_texture_print",
+        "scaleRange": { "min": 10000 , "max": 500000 }
+       }
+    }
+  }, {
+    "mapproxyProduct": "geology_spm_texture",
+    "featureinfo": "geology_spm_texture",
+    "visibility": false,
+    "resolutions": [ 35.278, 26.458, 17.639, 8.819, 3.528 ],
+    "bounds": [ 0,0,700000,1300000 ],
+    "cachedLayers": [ "GSPM" ],
+    "metadata": {
+      "productId": "geology_spm_texture",
+      "themeDisplayName": "Soil Texture",
+      "mapInfoDisplayName": ["Soil Parent Material Model: Soil Texture"],
+      "logName": "soil-parent-tex",
+      "legendName": "geology_spm_texture",
+      "featureInfoQueryLayer": "Geology_spm_texture",
+      "compoundProduct": "texture",
+      "opacitySlider": true,
+      "date": "",
+      "copyright": "Geological Map Data ©NERC {currentYear}. <p class='copyright-faint'>© Crown Copyright and Database Right {currentYear}. Ordnance Survey (Digimap Licence).</p>",
+      "help": ["/webhelp/geology/geologydigimaphelp.htm#data_information/bgs_products_available/soil_parent_material.htm"],
+      "print" : {
+        "cliveProduct": "geology_spm_texture",
+        "layers": "GSPM",
+        "swd": "Geology_spm_texture_print",
+        "scaleRange": { "min": 10000 , "max": 500000 }
+       }
+    }
+  }, {
+    "mapproxyProduct": "geology_hyd",
+    "featureinfo": "geology",
+    "visibility": false,
+    "resolutions": [ 440.972,220.486 ],
+    "bounds": [ -800000, -550000, 1500000, 1750000 ],
+    "cachedLayers": [ "GHYD_all" ],
+    "metadata": {
+      "productId": "geology_hyd",
+      "themeDisplayName": "Hydrogeology",
+      "mapInfoDisplayName": ["1:625 000 Scale Digital Hydrogeological Data"],
+      "logName": "hydrogeology",
+      "legendName": "geology_hyd",
+      "featureInfoQueryLayer": "Geology_hydrogeology",
+      "opacitySlider": true,
+      "date": "",
+      "copyright": "Geological Map Data ©NERC {currentYear}. <p class='copyright-faint'>© Crown Copyright and Database Right {currentYear}. Ordnance Survey (Digimap Licence).</p>",
+      "help": ["/webhelp/geology/geologydigimaphelp.htm#data_information/bgs_products_available/625k_hydrogeology.htm"],
+      "print" : {
+        "cliveProduct": "geology",
+        "layers": "GHYD_all",
+        "swd": "Geology_hydrogeology_print",
+        "scaleRange": { "min": 400000 , "max": 2500000 }
+       }
+    }
+  }, {
+    "mapproxyProduct": "geology_gif_extent1",
+    "featureinfo": "geology",
+    "visibility": false,
+    "resolutions": [ 132.292, 88.194, 52.917 ],
+    "bounds": [ -800000, -550000, 1500000, 1750000 ],
+    "cachedLayers": [ "GGIF_all" ],
+    "metadata": {
+      "productId": "geology_gif_gb",
+      "themeDisplayName": "Indicators of Flooding",
+      "mapInfoDisplayName": ["Geological Indicators of Flooding"],
+      "logName": "gi-flooding",
+      "legendName": "geology_gif",
+      "featureInfoQueryLayer": "Geology_gif",
+      "compoundProduct": "gif",
+      "opacitySlider": true,
+      "date": "",
+      "copyright": "Geological Map Data ©NERC {currentYear}. <p class='copyright-faint'>© Crown Copyright and Database Right {currentYear}. Ordnance Survey (Digimap Licence).</p>",
+      "help": ["/webhelp/geology/geologydigimaphelp.htm#data_information/bgs_products_available/geological_indicators_of_flooding.htm"],
+      "print" : {
+        "cliveProduct": "geology",
+        "layers": "GGIF_all",
+        "swd": "Geology_gif_print",
+        "scaleRange": { "min": 10000 , "max": 500000 }
+       }
+    }
+  }, {
+    "mapproxyProduct": "geology_gif",
+    "featureinfo": "geology",
+    "visibility": false,
+    "resolutions": [ 35.278, 26.458, 17.639, 8.819, 3.528 ],
+    "bounds": [ 0,0,700000,1300000 ],
+    "cachedLayers": [ "GGIF_all" ],
+    "metadata": {
+      "productId": "geology_gif",
+      "themeDisplayName": "Indicators of Flooding",
+      "mapInfoDisplayName": ["Geological Indicators of Flooding"],
+      "logName": "gi-flooding",
+      "legendName": "geology_gif",
+      "featureInfoQueryLayer": "Geology_gif",
+      "compoundProduct": "gif",
+      "opacitySlider": true,
+      "date": "",
+      "copyright": "Geological Map Data ©NERC {currentYear}. <p class='copyright-faint'>© Crown Copyright and Database Right {currentYear}. Ordnance Survey (Digimap Licence).</p>",
+      "help": ["/webhelp/geology/geologydigimaphelp.htm#data_information/bgs_products_available/geological_indicators_of_flooding.htm"],
+      "print" : {
+        "cliveProduct": "geology",
+        "layers": "GGIF_all",
+        "swd": "Geology_gif_print",
+        "scaleRange": { "min": 10000 , "max": 500000 }
+       }
+    }
+  }, {
+    "mapproxyProduct": "geology_perm_max_extent1",
+    "featureinfo": "geology_perm_max",
+    "visibility": false,
+    "resolutions": [ 132.292, 88.194, 52.917 ],
+    "bounds": [ -800000, -550000, 1500000, 1750000 ],
+    "cachedLayers": [ "GPI_all" ],
+    "metadata": {
+      "productId": "geology_perm_max_gb",
+      "themeDisplayName": "Maximum Permeability",
+      "mapInfoDisplayName": ["Permeability: Maximum Permeability"],
+      "logName": "perm-max",
+      "legendName": "geology_perm_max",
+      "featureInfoQueryLayer": "Geology_perm_max",
+      "compoundProduct": "perm_max",
+      "opacitySlider": true,
+      "date": "",
+      "copyright": "Geological Map Data ©NERC {currentYear}. <p class='copyright-faint'>© Crown Copyright and Database Right {currentYear}. Ordnance Survey (Digimap Licence).</p>",
+      "help": ["/webhelp/geology/geologydigimaphelp.htm#data_information/bgs_products_available/permeability.htm"],
+      "print" : {
+        "cliveProduct": "geology_perm_max",
+        "layers": "GPI_all",
+        "swd": "Geology_perm_max_print",
+        "scaleRange": { "min": 10000 , "max": 500000 }
+       }
+    }
+  }, {
+    "mapproxyProduct": "geology_perm_max",
+    "featureinfo": "geology_perm_max",
+    "visibility": false,
+    "resolutions": [ 35.278, 26.458, 17.639, 8.819, 3.528 ],
+    "bounds": [ 0,0,700000,1300000 ],
+    "cachedLayers": [ "GPI_all" ],
+    "metadata": {
+      "productId": "geology_perm_max",
+      "themeDisplayName": "Maximum Permeability",
+      "mapInfoDisplayName": ["Permeability: Maximum Permeability"],
+      "logName": "perm-max",
+      "legendName": "geology_perm_max",
+      "featureInfoQueryLayer": "Geology_perm_max",
+      "compoundProduct": "perm_max",
+      "opacitySlider": true,
+      "date": "",
+      "copyright": "Geological Map Data ©NERC {currentYear}. <p class='copyright-faint'>© Crown Copyright and Database Right {currentYear}. Ordnance Survey (Digimap Licence).</p>",
+      "help": ["/webhelp/geology/geologydigimaphelp.htm#data_information/bgs_products_available/permeability.htm"],
+      "print" : {
+        "cliveProduct": "geology_perm_max",
+        "layers": "GPI_all",
+        "swd": "Geology_perm_max_print",
+        "scaleRange": { "min": 10000 , "max": 500000 }
+       }
+    }
+  }, {
+    "mapproxyProduct": "geology_perm_min_extent1",
+    "featureinfo": "geology_perm_min",
+    "visibility": false,
+    "resolutions": [ 132.292, 88.194, 52.917 ],
+    "bounds": [ -800000, -550000, 1500000, 1750000 ],
+    "cachedLayers": [ "GPI_all" ],
+    "metadata": {
+      "productId": "geology_perm_min_gb",
+      "themeDisplayName": "Minimum Permeability",
+      "mapInfoDisplayName": ["Permeability: Minimum Permeability"],
+      "logName": "perm-min",
+      "legendName": "geology_perm_min",
+      "featureInfoQueryLayer": "Geology_perm_min",
+      "compoundProduct": "perm_min",
+      "opacitySlider": true,
+      "date": "",
+      "copyright": "Geological Map Data ©NERC {currentYear}. <p class='copyright-faint'>© Crown Copyright and Database Right {currentYear}. Ordnance Survey (Digimap Licence).</p>",
+      "help": ["/webhelp/geology/geologydigimaphelp.htm#data_information/bgs_products_available/permeability.htm"],
+      "print" : {
+        "cliveProduct": "geology_perm_min",
+        "layers": "GPI_all",
+        "swd": "Geology_perm_min_print",
+        "scaleRange": { "min": 10000 , "max": 500000 }
+       }
+    }
+  }, {
+    "mapproxyProduct": "geology_perm_min",
+    "featureinfo": "geology_perm_min",
+    "visibility": false,
+    "resolutions": [ 35.278, 26.458, 17.639, 8.819, 3.528 ],
+    "bounds": [ 0,0,700000,1300000 ],
+    "cachedLayers": [ "GPI_all" ],
+    "metadata": {
+      "productId": "geology_perm_min",
+      "themeDisplayName": "Minimum Permeability",
+      "mapInfoDisplayName": ["Permeability: Minimum Permeability"],
+      "logName": "perm-min",
+      "legendName": "geology_perm_min",
+      "featureInfoQueryLayer": "Geology_perm_min",
+      "compoundProduct": "perm_min",
+      "opacitySlider": true,
+      "date": "",
+      "copyright": "Geological Map Data ©NERC {currentYear}. <p class='copyright-faint'>© Crown Copyright and Database Right {currentYear}. Ordnance Survey (Digimap Licence).</p>",
+      "help": ["/webhelp/geology/geologydigimaphelp.htm#data_information/bgs_products_available/permeability.htm"],
+      "print" : {
+        "cliveProduct": "geology_perm_min",
+        "layers": "GPI_all",
+        "swd": "Geology_perm_min_print",
+        "scaleRange": { "min": 10000 , "max": 500000 }
+       }
+    }
+  }, {
+    "mapproxyProduct": "bgs-hillshading",
+    "visibility": false,
+    "resolutions": [440.972, 220.486, 132.292, 88.194, 52.917, 35.278, 26.458, 17.639, 8.819, 3.528],
+    "bounds": [0, 0, 700000, 1300000],
+    "cachedLayers": "hillshade",
+    "metadata": {
+      "nonproduct": true,
+      "title": "Hill Shading",
+      "hillshadingLayer": true
+    }
+  }],
+  "metadata": {},
+  "zoomLevelNamesDescending": ["View: British Isles", "View: Mainland", "View: National", "View: Range", "View: County", "View: District",
+    "View: Sector", "View: Division", "View: Local", "View: Plot", "View: Detailed", "View: Plan"],
+  "printing": {
+    "printScales": [5600000, 1250000, 625000, 375000, 250000, 150000, 100000, 75000, 50000, 25000, 10000, 5000],
+    "paperSizes": ["A4", "A3", "A2", "A1", "A0"],
+    "printFormats": ["PDF", "PNG", "JPG"],
+    "printTemplatePrefix": "EDINA_"
+  },
+    "searchResultResolutions": {
+        "PLACENAME": 5.0,
+        "ROAD": 3.528,
+        "POSTCODE": 3.528,
+        "PARTIAL_POSTCODE": 17.639,
+        "GRIDREF_AB0": 220.486,
+        "GRIDREF_AB2": 26.458,
+        "GRIDREF_AB4": 8.819,
+        "GRIDREF_AB6": 3.528,
+        "GRIDREF_AB8": 1.764,
+        "GRIDREF_AB10": 1.764,
+        "WGS_84": 1.764,
+        "EPSG_27700": 1.764
+    },
+  "overview": {
+    "mapproxyProduct": "bgs-overview",
+    "visibility": false,
+    "bounds": [0, 0, 700000, 1300000],
+    "resolutions": [3000, 400, 100, 50, 25, 10, 5, 2.5],
+    "copyright": "© Crown copyright {currentYear}",
+    "cachedLayers": ["roam-overview"]
+  }
+}

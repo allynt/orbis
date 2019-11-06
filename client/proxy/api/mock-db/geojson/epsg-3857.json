@@ -1,0 +1,95 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -3.2158584860630697,
+          55.88513534090808
+        ]
+      },
+      "type": "Feature",
+      "properties": {
+        "fields": [
+          {
+            "id": "fieldcontain-radio-1",
+            "val": "Yes",
+            "label": "Disabled access"
+          },
+          {
+            "id": "fieldcontain-image-1",
+            "val": "2dee476f-adf2-d958-fa96-49dc32edd24e.jpg",
+            "label": "Photograph"
+          },
+          {
+            "id": "fieldcontain-range-1",
+            "val": "5",
+            "label": "Fun factor"
+          },
+          {
+            "id": "fieldcontain-textarea-1",
+            "val": "",
+            "label": "Other Information"
+          },
+          {
+            "id": "fieldcontain-audio-1",
+            "val": "1751ca58-71bf-0b9e-5bdd-337314b50c62.wav",
+            "label": "Speak"
+          }
+        ],
+        "editor": "Greenwich attractions.edtr",
+        "timestamp": "2015-06-25T08:49:17.416Z"
+      },
+      "name": "Test record with audio"
+    },
+    {
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -3.1518658061258087,
+          55.93972341195675
+        ]
+      },
+      "type": "Feature",
+      "properties": {
+        "fields": [
+          {
+            "id": "fieldcontain-radio-1",
+            "val": "Yes",
+            "label": "Disabled access"
+          },
+          {
+            "id": "fieldcontain-image-1",
+            "val": "9a9e42f3-0b23-aecc-ae81-da490b2defa1.jpg",
+            "label": "Photograph"
+          },
+          {
+            "id": "fieldcontain-range-1",
+            "val": "10",
+            "label": "Fun factor"
+          },
+          {
+            "id": "fieldcontain-textarea-1",
+            "val": "",
+            "label": "Other Information"
+          },
+          {
+            "id": "fieldcontain-audio-1",
+            "val": "96ed50be-aa1c-77fe-d713-f0d9f84ad874.wav",
+            "label": "Speak"
+          }
+        ],
+        "editor": "Greenwich attractions.edtr",
+        "timestamp": "2015-06-25T08:50:38.951Z"
+      },
+      "name": "Test record 2 with audio"
+    }
+  ],
+  "crs": {
+    "type": "name",
+    "properties": {
+      "name": "EPSG:3857"
+    }
+  }
+}

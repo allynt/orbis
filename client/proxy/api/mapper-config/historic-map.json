@@ -1,0 +1,400 @@
+{
+    "projection": {"code": "EPSG:27700", "displayName": "British National Grid" },
+    "bounds": [ -800000, -550000, 1500000, 1750000 ],
+    "layers": [{
+      "mapproxyProduct": "historicmapper",
+      "visibility": true,
+      "bounds": [ -800000, -550000, 1500000, 1750000 ],
+      "resolutions": [ 2000 ],
+      "cachedLayers": [ "historic-os-gb-backdrop" ],
+      "metadata": {
+        "productId": "historicmapper_GB",
+        "themeDisplayName": "Contemporary",
+        "mapInfoDisplayName": "GB",
+        "date": "",
+        "copyright": "© Crown Copyright and Database Right {currentYear}. Ordnance Survey (Digimap Licence). FOR EDUCATIONAL USE ONLY."
+      }
+    }, {
+      "mapproxyProduct": "historicmapper",
+      "visibility": true,
+      "bounds": [ 0, 0, 700000, 1300000 ],
+      "resolutions": [ 300, 100, 25, 10 ],
+      "cachedLayers": [ "historic-os-backdrop" ],
+      "metadata": {
+        "productId": "historicmapper_OS",
+        "themeDisplayName": "Contemporary",
+        "mapInfoDisplayName": "OS",
+        "date": "",
+        "copyright": "© Crown Copyright and Database Right {currentYear}. Ordnance Survey (Digimap Licence). FOR EDUCATIONAL USE ONLY."
+      }
+    }, {
+      "mapproxyProduct": "historicmapper",
+      "featureinfo": "historic",
+      "visibility": false,
+      "bounds": [ 0, 0, 700000, 1300000 ],
+      "resolutions": [ 7.056, 5.3, 3.5, 2.65, 1.76, 0.88, 0.635, 0.441, 0.352, 0.265, 0.176, 0.088 ],
+      "cachedLayers": ["historic-contemporary"],
+      "metadata": {
+          "productId": "contemporary",
+          "themeDisplayName": "Contemporary",
+          "mapInfoDisplayName": "Contemporary",
+          "logName": "contemporary",
+          "historic": "contemporary",
+          "date": "",
+          "copyright": " Contains OS data © Crown copyright and database right {currentYear}",
+          "print" : {
+              "cliveProduct": "Historic",
+              "swd" : "Historic_contemporary"
+           }
+      }
+    },  {
+      "mapproxyProduct": "historicmapper",
+      "featureinfo": "historic",
+      "visibility": true,
+      "bounds": [ 0, 0, 700000, 1300000 ],
+      "resolutions": [ 7.056, 5.3, 3.5, 2.65, 1.76, 0.88, 0.635, 0.441, 0.352, 0.265, 0.176, 0.088 ],
+      "cachedLayers": ["historic-1840"],
+      "metadata": {
+          "productId": "1840",
+          "themeDisplayName": "1840",
+          "mapInfoDisplayName": "1840",
+          "logName": "1840",
+          "historic": 1840,
+          "date": "",
+          "copyright": "© Landmark Information Group Ltd and Crown copyright {currentYear}. FOR EDUCATIONAL USE ONLY.",
+          "print" : {
+              "cliveProduct": "Historic"
+           }
+      }
+    }, {
+      "mapproxyProduct": "historicmapper",
+      "featureinfo": "historic",
+      "visibility": false,
+      "bounds": [ 0, 0, 700000, 1300000 ],
+      "resolutions": [ 7.056, 5.3, 3.5, 2.65, 1.76, 0.88, 0.635, 0.441, 0.352, 0.265, 0.176, 0.088 ],
+      "cachedLayers": ["historic-1850"],
+      "metadata": {
+          "productId": "1850",
+          "themeDisplayName": "1850",
+          "mapInfoDisplayName": "1850",
+          "logName": "1850",
+          "historic": 1850,
+          "date": "",
+          "copyright": "© Landmark Information Group Ltd and Crown copyright {currentYear}. FOR EDUCATIONAL USE ONLY.",
+          "print" : {
+              "cliveProduct": "Historic"
+           }
+      }
+    }, {
+      "mapproxyProduct": "historicmapper",
+      "featureinfo": "historic",
+      "visibility": false,
+      "bounds": [ 0, 0, 700000, 1300000 ],
+      "resolutions": [ 7.056, 5.3, 3.5, 2.65, 1.76, 0.88, 0.635, 0.441, 0.352, 0.265, 0.176, 0.088 ],
+      "cachedLayers": ["historic-1860"],
+      "metadata": {
+          "productId": "1860",
+          "themeDisplayName": "1860",
+          "mapInfoDisplayName": "1860",
+          "logName": "1860",
+          "historic": 1860,
+          "date": "",
+          "copyright": "© Landmark Information Group Ltd and Crown copyright {currentYear}. FOR EDUCATIONAL USE ONLY.",
+          "print" : {
+              "cliveProduct": "Historic"
+           }
+      }
+    }, {
+      "mapproxyProduct": "historicmapper",
+      "featureinfo": "historic",
+      "visibility": false,
+      "bounds": [ 0, 0, 700000, 1300000 ],
+      "resolutions": [ 7.056, 5.3, 3.5, 2.65, 1.76, 0.88, 0.635, 0.441, 0.352, 0.265, 0.176, 0.088 ],
+      "cachedLayers": ["historic-1870"],
+      "metadata": {
+          "productId": "1870",
+          "themeDisplayName": "1870",
+          "mapInfoDisplayName": "1870",
+          "logName": "1870",
+          "historic": 1870,
+          "date": "",
+          "copyright": "© Landmark Information Group Ltd and Crown copyright {currentYear}. FOR EDUCATIONAL USE ONLY.",
+          "print" : {
+              "cliveProduct": "Historic"
+           }
+      }
+    }, {
+      "mapproxyProduct": "historicmapper",
+      "featureinfo": "historic",
+      "visibility": false,
+      "bounds": [ 0, 0, 700000, 1300000 ],
+      "resolutions": [ 7.056, 5.3, 3.5, 2.65, 1.76, 0.88, 0.635, 0.441, 0.352, 0.265, 0.176, 0.088 ],
+      "cachedLayers": ["historic-1880"],
+      "metadata": {
+          "productId": "1880",
+          "themeDisplayName": "1880",
+          "mapInfoDisplayName": "1880",
+          "logName": "1880",
+          "historic": 1880,
+          "date": "",
+          "copyright": "© Landmark Information Group Ltd and Crown copyright {currentYear}. FOR EDUCATIONAL USE ONLY.",
+          "print" : {
+              "cliveProduct": "Historic"
+           }
+      }
+    }, {
+      "mapproxyProduct": "historicmapper",
+      "featureinfo": "historic",
+      "visibility": false,
+      "bounds": [ 0, 0, 700000, 1300000 ],
+      "resolutions": [ 7.056, 5.3, 3.5, 2.65, 1.76, 0.88, 0.635, 0.441, 0.352, 0.265, 0.176, 0.088 ],
+      "cachedLayers": ["historic-1890"],
+      "metadata": {
+          "productId": "1890",
+          "themeDisplayName": "1890",
+          "mapInfoDisplayName": "1890",
+          "logName": "1890",
+          "historic": 1890,
+          "date": "",
+          "copyright": "© Landmark Information Group Ltd and Crown copyright {currentYear}. FOR EDUCATIONAL USE ONLY.",
+          "print" : {
+              "cliveProduct": "Historic"
+           }
+      }
+    }, {
+      "mapproxyProduct": "historicmapper",
+      "featureinfo": "historic",
+      "visibility": false,
+      "bounds": [ 0, 0, 700000, 1300000 ],
+      "resolutions": [ 7.056, 5.3, 3.5, 2.65, 1.76, 0.88, 0.635, 0.441, 0.352, 0.265, 0.176, 0.088 ],
+      "cachedLayers": ["historic-1900"],
+      "metadata": {
+          "productId": "1900",
+          "themeDisplayName": "1900",
+          "mapInfoDisplayName": "1900",
+          "logName": "1900",
+          "historic": 1900,
+          "date": "",
+          "copyright": "© Landmark Information Group Ltd and Crown copyright {currentYear}. FOR EDUCATIONAL USE ONLY.",
+          "print" : {
+              "cliveProduct": "Historic"
+           }
+      }
+    }, {
+      "mapproxyProduct": "historicmapper",
+      "featureinfo": "historic",
+      "visibility": false,
+      "bounds": [ 0, 0, 700000, 1300000 ],
+      "resolutions": [ 7.056, 5.3, 3.5, 2.65, 1.76, 0.88, 0.635, 0.441, 0.352, 0.265, 0.176, 0.088 ],
+      "cachedLayers": ["historic-1910"],
+      "metadata": {
+          "productId": "1910",
+          "themeDisplayName": "1910",
+          "mapInfoDisplayName": "1910",
+          "logName": "1910",
+          "historic": 1910,
+          "date": "",
+          "copyright": "© Landmark Information Group Ltd and Crown copyright {currentYear}. FOR EDUCATIONAL USE ONLY.",
+          "print" : {
+              "cliveProduct": "Historic"
+           }
+      }
+    }, {
+      "mapproxyProduct": "historicmapper",
+      "featureinfo": "historic",
+      "visibility": false,
+      "bounds": [ 0, 0, 700000, 1300000 ],
+      "resolutions": [ 7.056, 5.3, 3.5, 2.65, 1.76, 0.88, 0.635, 0.441, 0.352, 0.265, 0.176, 0.088 ],
+      "cachedLayers": ["historic-1920"],
+      "metadata": {
+          "productId": "1920",
+          "themeDisplayName": "1920",
+          "mapInfoDisplayName": "1920",
+          "logName": "1920",
+          "historic": 1920,
+          "date": "",
+          "copyright": "© Landmark Information Group Ltd and Crown copyright {currentYear}. FOR EDUCATIONAL USE ONLY.",
+          "print" : {
+              "cliveProduct": "Historic"
+           }
+      }
+    }, {
+      "mapproxyProduct": "historicmapper",
+      "featureinfo": "historic",
+      "visibility": false,
+      "bounds": [ 0, 0, 700000, 1300000 ],
+      "resolutions": [ 7.056, 5.3, 3.5, 2.65, 1.76, 0.88, 0.635, 0.441, 0.352, 0.265, 0.176, 0.088 ],
+      "cachedLayers": ["historic-1930"],
+      "metadata": {
+          "productId": "1930",
+          "themeDisplayName": "1930",
+          "mapInfoDisplayName": "1930",
+          "logName": "1930",
+          "historic": 1930,
+          "date": "",
+          "copyright": "© Landmark Information Group Ltd and Crown copyright {currentYear}. FOR EDUCATIONAL USE ONLY.",
+          "print" : {
+              "cliveProduct": "Historic"
+           }
+      }
+    }, {
+      "mapproxyProduct": "historicmapper",
+      "featureinfo": "historic",
+      "visibility": false,
+      "bounds": [ 0, 0, 700000, 1300000 ],
+      "resolutions": [ 7.056, 5.3, 3.5, 2.65, 1.76, 0.88, 0.635, 0.441, 0.352, 0.265, 0.176, 0.088 ],
+      "cachedLayers": ["historic-1940"],
+      "metadata": {
+          "productId": "1940",
+          "themeDisplayName": "1940",
+          "mapInfoDisplayName": "1940",
+          "logName": "1940",
+          "historic": 1940,
+          "date": "",
+          "copyright": "© Landmark Information Group Ltd and Crown copyright {currentYear}. FOR EDUCATIONAL USE ONLY.",
+          "print" : {
+              "cliveProduct": "Historic"
+           }
+      }
+    }, {
+      "mapproxyProduct": "historicmapper",
+      "featureinfo": "historic",
+      "visibility": false,
+      "bounds": [ 0, 0, 700000, 1300000 ],
+      "resolutions": [ 7.056, 5.3, 3.5, 2.65, 1.76, 0.88, 0.635, 0.441, 0.352, 0.265, 0.176, 0.088 ],
+      "cachedLayers": ["historic-1950"],
+      "metadata": {
+          "productId": "1950",
+          "themeDisplayName": "1950",
+          "mapInfoDisplayName": "1950",
+          "logName": "1950",
+          "historic": 1950,
+          "date": "",
+          "copyright": "© Landmark Information Group Ltd and Crown copyright {currentYear}. FOR EDUCATIONAL USE ONLY.",
+          "print" : {
+              "cliveProduct": "Historic"
+           }
+      }
+    }, {
+      "mapproxyProduct": "historicmapper",
+      "featureinfo": "historic",
+      "visibility": false,
+      "bounds": [ 0, 0, 700000, 1300000 ],
+      "resolutions": [ 7.056, 5.3, 3.5, 2.65, 1.76, 0.88, 0.635, 0.441, 0.352, 0.265, 0.176, 0.088 ],
+      "cachedLayers": ["historic-1960"],
+      "metadata": {
+          "productId": "1960",
+          "themeDisplayName": "1960",
+          "mapInfoDisplayName": "1960",
+          "logName": "1960",
+          "historic": 1960,
+          "date": "",
+          "copyright": "© Landmark Information Group Ltd and Crown copyright {currentYear}. FOR EDUCATIONAL USE ONLY.",
+          "print" : {
+              "cliveProduct": "Historic"
+           }
+      }
+    }, {
+      "mapproxyProduct": "historicmapper",
+      "featureinfo": "historic",
+      "visibility": false,
+      "bounds": [ 0, 0, 700000, 1300000 ],
+      "resolutions": [ 7.056, 5.3, 3.5, 2.65, 1.76, 0.88, 0.635, 0.441, 0.352, 0.265, 0.176, 0.088 ],
+      "cachedLayers": ["historic-1970"],
+      "metadata": {
+          "productId": "1970",
+          "themeDisplayName": "1970",
+          "mapInfoDisplayName": "1970",
+          "logName": "1970",
+          "historic": 1970,
+          "date": "",
+          "copyright": "© Landmark Information Group Ltd and Crown copyright {currentYear}. FOR EDUCATIONAL USE ONLY.",
+          "print" : {
+              "cliveProduct": "Historic"
+           }
+      }
+    }, {
+      "mapproxyProduct": "historicmapper",
+      "featureinfo": "historic",
+      "visibility": false,
+      "bounds": [ 0, 0, 700000, 1300000 ],
+      "resolutions": [ 7.056, 5.3, 3.5, 2.65, 1.76, 0.88, 0.635, 0.441, 0.352, 0.265, 0.176, 0.088 ],
+      "cachedLayers": ["historic-1980"],
+      "metadata": {
+          "productId": "1980",
+          "themeDisplayName": "1980",
+          "mapInfoDisplayName": "1980",
+          "logName": "1980",
+          "historic": 1980,
+          "date": "",
+          "copyright": "© Landmark Information Group Ltd and Crown copyright {currentYear}. FOR EDUCATIONAL USE ONLY.",
+          "print" : {
+              "cliveProduct": "Historic"
+           }
+      }
+    }, {
+      "mapproxyProduct": "historicmapper",
+      "featureinfo": "historic",
+      "visibility": false,
+      "bounds": [ 0, 0, 700000, 1300000 ],
+      "resolutions": [ 7.056, 5.3, 3.5, 2.65, 1.76, 0.88, 0.635, 0.441, 0.352, 0.265, 0.176, 0.088 ],
+      "cachedLayers": ["historic-1990"],
+      "metadata": {
+          "productId": "1990",
+          "themeDisplayName": "1990",
+          "mapInfoDisplayName": "1990",
+          "logName": "1990",
+          "historic": 1990,
+          "date": "",
+          "copyright": "© Landmark Information Group Ltd and Crown copyright {currentYear}. FOR EDUCATIONAL USE ONLY.",
+          "print" : {
+              "cliveProduct": "Historic"
+           }
+      }
+    }],
+    "zoomLevelNamesDescending": ["View: GB", "View: Regional", "View: Metropolitan", "View: District", "View: County",
+      "View: Shire 1", "View: Shire 2", "View: Shire 3", "View: Shire 4", "View: Parish 1", "View: Parish 2", "View: Street 1",
+      "View: Street 2", "View: Plan 1", "View: Plan 2", "View: Plan 3", "View: Plan 4"],
+    "metadata": {
+      "mapsNumber": 2
+    },
+    "printing": {
+        "printScales": [-1, -1, -1, -1, -1,20000,15000,10000,7500,5000,2500,1800,1250,1000,750,500,250],
+        "paperSizes": ["A4", "A3", "A2", "A1", "A0"],
+        "printFormats": ["PDF", "PNG", "JPG"],
+        "printTemplatePrefix": "EDINA_"
+    },
+    "overview": {
+        "mapproxyProduct": "historicmapper",
+        "copyright": "© Crown copyright {currentYear}",
+        "visibility": true,
+        "bounds": [0, 0, 700000, 1300000],
+        "resolutions": [3000, 400, 100, 50, 25, 10, 5, 2.5],
+        "cachedLayers": ["roam-overview"]
+    },
+    "searchResultResolutions": {
+        "PLACENAME": 5.0,
+        "ROAD": 0.88,
+        "POSTCODE": 1.25,
+        "PARTIAL_POSTCODE": 25,
+        "GRIDREF_AB0": 100,
+        "GRIDREF_AB2": 25,
+        "GRIDREF_AB4": 5.3,
+        "GRIDREF_AB6": 1.76,
+        "GRIDREF_AB8": 0.635,
+        "GRIDREF_AB10": 0.352,
+        "WGS_84": 1.764,
+        "EPSG_27700": 1.764
+    },
+    "overlapping": {
+        "mapproxyProduct": "historicmapper",
+        "visibility": true,
+        "bounds": [0, 0, 700000, 1300000],
+        "resolutions": [1000, 800, 600, 400, 200],
+        "copyright": "© Crown copyright {currentYear}",
+        "cachedLayers": ["historic-overlap-backdrop"],
+        "metadata": {
+          "nonproduct": true
+        }
+    }
+}

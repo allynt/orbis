@@ -25,7 +25,7 @@ services:
       GITHUB_REGISTRY_TOKEN: "${GITHUB_REGISTRY_TOKEN}"
     volumes:
       - ./client:/home/app/client/
-      - ~/.config/yarn/link:/home/app/.config/yarn/link/
+      - "${HOME}/.config/yarn/link:/home/app/.config/yarn/link/"
     ports:
       - "8000:8000"
       - "3000:3000"

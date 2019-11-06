@@ -72,8 +72,10 @@ const Map = (
   },
   ref
 ) => {
-  const accessToken = useSelector(state => state.app.config.mapbox_token);
-  mapboxgl.accessToken = accessToken;
+  const accessToken = useSelector(state => (state.app.config ? state.app.config.mapbox_token : null));
+  if (accessToken) {
+    mapboxgl.accessToken = accessToken;
+  }
 
   const labelButtonSelected = useSelector(state => state.annotations.textLabelSelected);
 

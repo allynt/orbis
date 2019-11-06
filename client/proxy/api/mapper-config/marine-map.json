@@ -1,0 +1,152 @@
+{
+    "projection": {"code": "EPSG:27700", "displayName": "British National Grid" },
+    "bounds": [-200000, -150000, 900000, 1450000],
+    "layers": [{
+        "mapproxyProduct": "marine1",
+        "featureinfo": "Marine",
+        "visibility": true,
+        "bounds": [-200000, -150000, 900000, 1450000],
+        "resolutions": [1763.889, 881.944, 352.778],
+        "cachedLayers": ["HS_BE", "HS_lc"],
+        "metadata": {
+            "productId": "marine1",
+            "themeDisplayName": "HydroSpatial",
+            "mapInfoDisplayName": ["HydroSpatial One"],
+            "logName": "HydroSpatial",
+            "legendName": "marine",
+            "featureInfoQueryLayer": "gfi",
+            "date": "August 2015",
+            "copyright": "© Crown Copyright/SeaZone Solutions. All Rights Reserved. 052006.001 31st July 2011 Not to be Used for Navigation.",
+            "help": ["/webhelp/marine/marinedigimaphelp.htm#data_information/products_available/hydrospatial_data.htm"],
+            "print" : {
+              "cliveProduct": "Marine",
+              "swd": "Marine",
+              "scaleRange": { "min": 750001, "max": 10000000 }
+             }
+          }
+    }, {
+        "mapproxyProduct": "marine2",
+        "featureinfo": "Marine",
+        "visibility": true,
+        "bounds": [-200000, -150000, 900000, 1450000],
+        "resolutions": [176.389, 123.472, 70.556],
+        "cachedLayers": ["HS_BE", "HS_lc", "HS_water_turb", "HS_in_water", "HS_dock", "HS_prod_area"],
+        "metadata": {
+            "productId": "Marine2",
+            "themeDisplayName": "HydroSpatial",
+            "mapInfoDisplayName": ["HydroSpatial One"],
+            "logName": "HydroSpatial",
+            "legendName": "marine",
+            "featureInfoQueryLayer": "gfi",
+            "date": "August 2015",
+            "copyright": "© Crown Copyright/SeaZone Solutions. All Rights Reserved. 052006.001 31st July 2011 Not to be Used for Navigation.",
+            "help": ["/webhelp/marine/marinedigimaphelp.htm#data_information/products_available/hydrospatial_data.htm"],
+            "print" : {
+              "cliveProduct": "Marine",
+              "swd": "Marine",
+              "scaleRange": { "min": 150001, "max": 750000 }
+             }
+          }
+    }, {
+        "mapproxyProduct": "marine3",
+        "featureinfo": "Marine",
+        "visibility": true,
+        "bounds": [-200000, -150000, 900000, 1450000],
+        "resolutions": [35.278, 17.639],
+        "cachedLayers": ["HS_BE","HS_aquacltr","HS_beac","HS_buoy","HS_buoy_inst","HS_cguard_stn","HS_dock","HS_harb_fac","HS_in_water","HS_lc","HS_lt","HS_lt_vess","HS_obstns","HS_off_inst","HS_prod_area","HS_radar","HS_res_stn_ft","HS_shore_constns","HS_small_craft_fac","HS_sub_lnd_pipe_ft","HS_uwater_rock","HS_water_turb","HS_wreck"],
+        "metadata": {
+            "productId": "Marine3",
+            "themeDisplayName": "HydroSpatial",
+            "mapInfoDisplayName": ["HydroSpatial One"],
+            "logName": "HydroSpatial",
+            "legendName": "marine",
+            "featureInfoQueryLayer": "gfi",
+            "date": "August 2015",
+            "copyright": "© Crown Copyright/SeaZone Solutions. All Rights Reserved. 052006.001 31st July 2011 Not to be Used for Navigation.",
+            "help": ["/webhelp/marine/marinedigimaphelp.htm#data_information/products_available/hydrospatial_data.htm"],
+            "print" : {
+              "cliveProduct": "Marine",
+              "swd": "Marine",
+              "scaleRange": { "min": 40001, "max": 150000 }
+             }
+          }
+    }, {
+        "mapproxyProduct": "marine4",
+        "featureinfo": "Marine",
+        "visibility": true,
+        "bounds": [-200000, -150000, 900000, 1450000],
+        "resolutions": [8.819, 5.292],
+        "cachedLayers": ["HS_depth_area","HS_depth_cont","HS_drdg_area_ft","HS_elev","HS_lc","HS_sea_area_txt","HS_water_turb","HS_uwater_rock","HS_in_water","HS_flora_fauna","HS_cguard_stn","HS_res_stn_ft","HS_dock","HS_small_craft_fac","HS_harb_fac","HS_prod_area","HS_admin_txt","HS_wreck_ft","HS_beac_ft","HS_buoy_ft","HS_lt_ft","HS_lt_flt_ft","HS_lt_vess_ft","HS_radar","HS_aquacltr","HS_buoy_moor_ft","HS_off_inst_ft","HS_flt_dock_ft","HS_sub_lnd_pipe_ft","HS_shore_constns","HS_obstn","HS_pont","HS_pile","HS_hulk","HS_log_pnd_ft"],
+         "metadata": {
+            "productId": "Marine4",
+            "themeDisplayName": "HydroSpatial",
+            "mapInfoDisplayName": ["HydroSpatial One"],
+            "logName": "HydroSpatial",
+            "legendName": "marine",
+            "featureInfoQueryLayer": "gfi",
+            "date": "August 2015",
+            "copyright": "© Crown Copyright/SeaZone Solutions. All Rights Reserved. 052006.001 31st July 2011 Not to be Used for Navigation.",
+            "help": ["/webhelp/marine/marinedigimaphelp.htm#data_information/products_available/hydrospatial_data.htm"],
+            "print" : {
+              "cliveProduct": "Marine",
+              "swd": "Marine",
+              "scaleRange": { "min": 14001, "max": 40000 }
+             }
+          }
+    }, {
+        "mapproxyProduct": "marine5",
+        "featureinfo": "Marine",
+        "visibility": true,
+        "bounds": [-200000, -150000, 900000, 1450000],
+        "resolutions": [3.528,1.764,0.882],
+        "cachedLayers": ["HS_depth_area","HS_depth_cont","HS_drdg_area_ft","HS_elev","HS_lc","HS_sea_area_txt","HS_water_turb","HS_uwater_rock","HS_in_water","HS_flora_fauna","HS_cguard_stn","HS_res_stn_ft","HS_dock","HS_small_craft_fac","HS_harb_fac","HS_prod_area","HS_admin_txt","HS_wreck_ft","HS_beac_ft","HS_buoy_ft","HS_lt_ft","HS_lt_flt_ft","HS_lt_vess_ft","HS_radar","HS_aquacltr","HS_buoy_moor_ft","HS_off_inst_ft","HS_flt_dock_ft","HS_sub_lnd_pipe_ft","HS_shore_constns","HS_obstn","HS_pont","HS_pile","HS_hulk","HS_log_pnd_ft"],
+        "metadata": {
+            "productId": "Marine5",
+            "themeDisplayName": "HydroSpatial",
+            "mapInfoDisplayName": ["HydroSpatial One"],
+            "logName": "HydroSpatial",
+            "legendName": "marine",
+            "featureInfoQueryLayer": "gfi",
+            "date": "August 2015",
+            "copyright": "© Crown Copyright/SeaZone Solutions. All Rights Reserved. 052006.001 31st July 2011 Not to be Used for Navigation.",
+            "help": ["/webhelp/marine/marinedigimaphelp.htm#data_information/products_available/hydrospatial_data.htm"],
+            "print" : {
+              "cliveProduct": "Marine",
+              "swd": "Marine",
+              "scaleRange": { "min": 1000, "max": 14000 }
+             }
+          }
+    }],
+    "metadata": {},
+    "zoomLevelNamesDescending": ["View: Ocean", "View: Sea", "View: Firth", "View: Channel", "View: Loch",
+                                "View: Gulf", "View: Sound", "View: Bay", "View: Haven", "View: Beach",
+                                "View: Wharf", "View: Anchorage", "View: Berth"],
+    "printing": {
+        "printScales": [5000000,2500000,1000000,500000,350000,200000,100000,50000,25000,15000,10000,5000,2500],
+        "paperSizes": ["A4", "A3", "A2", "A1", "A0"],
+        "printFormats": ["PDF", "PNG", "JPG"],
+        "printTemplatePrefix": "EDINA_"
+    },
+    "searchResultResolutions": {
+        "PLACENAME": 5.0,
+        "ROAD": 1.764,
+        "POSTCODE": 1.25,
+        "PARTIAL_POSTCODE": 17.639,
+        "GRIDREF_AB0": 176.389,
+        "GRIDREF_AB2": 35.278,
+        "GRIDREF_AB4": 5.292,
+        "GRIDREF_AB6": 1.764,
+        "GRIDREF_AB8": 0.882,
+        "GRIDREF_AB10": 0.882,
+        "WGS_84": 1.764,
+        "EPSG_27700": 1.764
+    },
+    "overview": {
+        "mapproxyProduct": "marinemapper",
+        "visibility": true,
+        "bounds": [-200000, -150000, 900000, 1450000],
+        "resolutions": [5000, 2500, 400, 100, 50, 25],
+        "copyright": "© Crown copyright {currentYear}",
+        "cachedLayers": ["marine-roam-overview"]
+    }
+}

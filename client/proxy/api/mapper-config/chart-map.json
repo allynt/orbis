@@ -1,0 +1,213 @@
+{
+    "projection": {"code": "EPSG:3857", "displayName": "WGS84 Web Mercator" },
+    "bounds": [-1400000, 6100000, 550000, 8744250],
+    "layers": [{
+        "mapproxyProduct": "marine-backdrop",
+        "visibility": true,
+        "bounds": [-1400000, 6100000, 550000, 8744250],
+        "resolutions": [1764.0, 529.20, 176.40, 70.560, 35.280, 26.460, 17.640, 8.820, 5.292, 3.528, 1.764],
+        "cachedLayers": ["marine-backdrop"],
+        "metadata": {
+            "nonproduct": true
+        }
+    }, {
+      "mapproxyProduct": "marine-charts-0",
+      "featureinfo": "marine-charts",
+      "visibility": true,
+      "bounds": [-1400000, 6100000, 550000, 8744250],
+      "resolutions": [1764.0, 529.20],
+      "cachedLayers": ["marine-charts-0"],
+      "metadata": {
+          "productId": "marine-charts-0",
+          "themeDisplayName": "HydroView Charts",
+          "mapInfoDisplayName": ["HydroView Charts"],
+          "logName": "HydroView",
+          "legendName": "charts",
+          "compoundProduct": "charts",
+          "featureInfoQueryLayer": "HV_gfi",
+          "date": "April 2015",
+          "copyright": "© Crown Copyright/SeaZone Solutions. All Rights Reserved. 052006.001 31st July 2011 Not to be Used for Navigation.",
+          "help": ["/webhelp/marine/marinedigimaphelp.htm#data_information/products_available/charted_raster.htm"],
+          "print" : {
+            "cliveProduct": "RasterPrinting",
+            "swd": "Marine_Chart_print_0",
+            "scaleRange": { "min": 1000001 , "max": 10000000 }
+           }
+      }
+    }, {
+        "mapproxyProduct": "marine-charts-1",
+        "featureinfo": "marine-charts",
+        "visibility": true,
+        "bounds": [-1400000, 6100000, 550000, 8744250],
+        "resolutions": [176.40],
+        "cachedLayers": ["marine-charts-1"],
+        "metadata": {
+            "productId": "marine-charts-1",
+            "themeDisplayName": "HydroView Charts",
+            "mapInfoDisplayName": ["HydroView Charts"],
+            "logName": "HydroView",
+            "legendName": "charts",
+            "compoundProduct": "charts",
+            "featureInfoQueryLayer": "HV_gfi",
+            "date": "April 2015",
+            "copyright": "© Crown Copyright/SeaZone Solutions. All Rights Reserved. 052006.001 31st July 2011 Not to be Used for Navigation.",
+            "help": ["/webhelp/marine/marinedigimaphelp.htm#data_information/products_available/charted_raster.htm"],
+            "print" : {
+            "cliveProduct": "RasterPrinting",
+            "swd": "Marine_Chart_print_1",
+              "scaleRange": { "min": 400001 , "max": 1000000 }
+             }
+        }
+    }, {
+        "mapproxyProduct": "marine-charts-2",
+        "featureinfo": "marine-charts",
+        "visibility": true,
+        "bounds": [-1400000, 6100000, 550000, 8744250],
+        "resolutions": [70.560],
+        "cachedLayers": ["marine-charts-2"],
+        "metadata": {
+            "productId": "marine-charts-2",
+            "themeDisplayName": "HydroView Charts",
+            "mapInfoDisplayName": ["HydroView Charts"],
+            "logName": "HydroView",
+            "legendName": "charts",
+            "compoundProduct": "charts",
+            "featureInfoQueryLayer": "HV_gfi",
+            "date": "April 2015",
+            "copyright": "© Crown Copyright/SeaZone Solutions. All Rights Reserved. 052006.001 31st July 2011 Not to be Used for Navigation.",
+            "help": ["/webhelp/marine/marinedigimaphelp.htm#data_information/products_available/charted_raster.htm"],
+            "print" : {
+            "cliveProduct": "RasterPrinting",
+            "swd": "Marine_Chart_print_2",
+              "scaleRange": { "min": 150001 , "max": 400000 }
+             }
+        }
+    }, {
+        "mapproxyProduct": "marine-charts-3",
+        "featureinfo": "marine-charts",
+        "visibility": true,
+        "bounds": [-1400000, 6100000, 550000, 8744250],
+        "resolutions": [35.280, 26.460],
+        "cachedLayers": ["marine-charts-3"],
+        "metadata": {
+            "productId": "marine-charts-3",
+            "themeDisplayName": "HydroView Charts",
+            "mapInfoDisplayName": ["HydroView Charts"],
+            "logName": "HydroView",
+            "legendName": "charts",
+            "compoundProduct": "charts",
+            "featureInfoQueryLayer": "HV_gfi",
+            "date": "April 2015",
+            "copyright": "© Crown Copyright/SeaZone Solutions. All Rights Reserved. 052006.001 31st July 2011 Not to be Used for Navigation.",
+            "help": ["/webhelp/marine/marinedigimaphelp.htm#data_information/products_available/charted_raster.htm"],
+            "print" : {
+              "cliveProduct": "RasterPrinting",
+              "swd": "Marine_Chart_print_3",
+              "scaleRange": { "min": 60001 , "max": 150000 }
+            }
+        }
+    }, {
+        "mapproxyProduct": "marine-charts-4",
+        "featureinfo": "marine-charts",
+        "visibility": true,
+        "bounds": [-1400000, 6100000, 550000, 8744250],
+        "resolutions": [17.640],
+        "cachedLayers": ["marine-charts-4"],
+        "metadata": {
+            "productId": "marine-charts-4",
+            "themeDisplayName": "HydroView Charts",
+            "mapInfoDisplayName": ["HydroView Charts"],
+            "logName": "HydroView",
+            "legendName": "charts",
+            "compoundProduct": "charts",
+            "help": ["/webhelp/marine/marinedigimaphelp.htm#data_information/products_available/charted_raster.htm"],
+            "featureInfoQueryLayer": "HV_gfi",
+            "date": "April 2015",
+            "copyright": "© Crown Copyright/SeaZone Solutions. All Rights Reserved. 052006.001 31st July 2011 Not to be Used for Navigation.",
+            "print" : {
+              "cliveProduct": "RasterPrinting",
+              "swd": "Marine_Chart_print_4",
+              "scaleRange": { "min": 25001 , "max": 60000 }
+            }
+        }
+    }, {
+        "mapproxyProduct": "marine-charts-5",
+        "featureinfo": "marine-charts",
+        "visibility": true,
+        "bounds": [-1400000, 6100000, 550000, 8744250],
+        "resolutions": [8.820, 5.292],
+        "cachedLayers": ["marine-charts-5"],
+        "metadata": {
+            "productId": "marine-charts-5",
+            "themeDisplayName": "HydroView Charts",
+            "mapInfoDisplayName": ["HydroView Charts"],
+            "logName": "HydroView",
+            "legendName": "charts",
+            "compoundProduct": "charts",
+            "featureInfoQueryLayer": "HV_gfi",
+            "date": "April 2015",
+            "copyright": "© Crown Copyright/SeaZone Solutions. All Rights Reserved. 052006.001 31st July 2011 Not to be Used for Navigation.",
+            "help": ["/webhelp/marine/marinedigimaphelp.htm#data_information/products_available/charted_raster.htm"],
+            "print" : {
+              "cliveProduct": "RasterPrinting",
+              "swd": "Marine_Chart_print_5",
+              "scaleRange": { "min": 14001 , "max": 25000 }
+             }
+        }
+    }, {
+        "mapproxyProduct": "marine-charts-6",
+        "featureinfo": "marine-charts",
+        "visibility": true,
+        "bounds": [-1400000, 6100000, 550000, 8744250],
+        "resolutions": [3.528, 1.764],
+        "cachedLayers": ["marine-charts-6"],
+        "metadata": {
+            "productId": "marine-charts-6",
+            "themeDisplayName": "HydroView Charts",
+            "mapInfoDisplayName": ["HydroView Charts"],
+            "logName": "HydroView",
+            "legendName": "charts",
+            "compoundProduct": "charts",
+            "featureInfoQueryLayer": "HV_gfi",
+            "date": "April 2015",
+            "copyright": "© Crown Copyright/SeaZone Solutions. All Rights Reserved. 052006.001 31st July 2011 Not to be Used for Navigation.",
+            "help": ["/webhelp/marine/marinedigimaphelp.htm#data_information/products_available/charted_raster.htm"],
+            "print" : {
+              "cliveProduct": "RasterPrinting",
+              "swd": "Marine_Chart_print_6",
+              "scaleRange": { "min": 2001 , "max": 14000 }
+             }
+        }
+    }],
+    "metadata": {},
+    "zoomLevelNamesDescending": ["View: Ocean", "View: Sea", "View: Firth", "View: Channel", "View: Loch",
+        "View: Gulf", "View: Sound", "View: Bay", "View: Haven", "View: Beach", "View: Wharf"],
+    "printing": {
+        "printScales": [5000000,2000000,500000,200000,100000,75000,50000,25000,15000,10000,5000],
+        "paperSizes": ["A4", "A3", "A2", "A1", "A0"],
+        "printFormats": ["PDF", "PNG", "JPG"],
+        "printTemplatePrefix": "EDINA_"
+    },
+    "searchResultResolutions": {
+        "PLACENAME": 5.0,
+        "ROAD": 1.764,
+        "POSTCODE": 1.25,
+        "PARTIAL_POSTCODE": 17.639,
+        "GRIDREF_AB0": 176.389,
+        "GRIDREF_AB2": 35.278,
+        "GRIDREF_AB4": 5.292,
+        "GRIDREF_AB6": 1.764,
+        "GRIDREF_AB8": 0.882,
+        "GRIDREF_AB10": 0.882,
+        "WGS_84": 1.764,
+        "EPSG_27700": 1.764
+    },
+    "overview": {
+        "mapproxyProduct": "marine-charts-overview",
+        "visibility": true,
+        "bounds": [-4000000, 4040000, 4000000, 11000000],
+        "resolutions": [8820, 2116.8, 529.20, 176.40, 70.56, 35.280],
+        "copyright": "©Crown Copyright/SeaZone Solutions",
+        "cachedLayers": ["marine-charts-overview"]
+    }
+}

@@ -9,31 +9,33 @@ const useMapbox = style => {
   const viewport = useRef(viewportConfig);
 
   useEffect(() => {
-    const map = new mapboxgl.Map({
-      container: mapContainer.current,
-      style: style,
-      ...viewport.current,
-      attributionControl: false,
-      preserveDrawingBuffer: true
-    });
-
-    map.on('load', () => {
-      setMapInstance(map);
-      // used for cypress tests
-      mapContainer.current.map = map;
-    });
-
-    return () => {
-      viewport.current = {
-        zoom: map.getZoom(),
-        center: map.getCenter()
-      };
-      setMapInstance(null);
-      window.requestIdleCallback(() => {
-        map.remove();
+    if (mapboxgl.accessToken) {
+      const map = new mapboxgl.Map({
+        container: mapContainer.current,
+        style: style,
+        ...viewport.current,
+        attributionControl: false,
+        preserveDrawingBuffer: true
       });
-    };
-  }, [style]);
+
+      map.on('load', () => {
+        setMapInstance(map);
+        // used for cypress tests
+        mapContainer.current.map = map;
+      });
+
+      return () => {
+        viewport.current = {
+          zoom: map.getZoom(),
+          center: map.getCenter()
+        };
+        setMapInstance(null);
+        window.requestIdleCallback(() => {
+          map.remove();
+        });
+      };
+    }
+  }, [style, mapboxgl.accessToken]);
   return { mapContainer, mapInstance };
 };
 
