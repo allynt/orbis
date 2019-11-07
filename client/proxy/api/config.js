@@ -35,6 +35,8 @@ const users = [
   }
 ];
 
+let currentUser = users[1];
+
 const getAppConfig = (req, res) => {
   console.log('Returning App Config');
   res.status(200);
@@ -50,17 +52,19 @@ const getUsers = (req, res) => {
 const getCurrentUser = (req, res) => {
   console.log('Returning Current User');
   res.status(200);
-  res.json(users[1]);
+  res.json(currentUser);
 };
 
 const login = (req, res) => {
   console.log('User Login');
+  currentUser = users[1];
   res.status(200);
   res.json(userKey);
 };
 
 const logout = (req, res) => {
   console.log('User Logout');
+  currentUser = null;
   res.status(200);
   res.json(userKey);
 };

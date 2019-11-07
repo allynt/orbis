@@ -53,6 +53,7 @@ const useForm = (callback, validate) => {
 
   const handleChange = event => {
     event.persist();
+    console.log('EVENT: ', event.target, event);
 
     const newValues = {
       ...state.values,

@@ -78,7 +78,7 @@ const App = () => {
   return (
     <div className={`${styles.app} ${styles[selectedTheme.value]}`}>
       <ReactTooltip />
-      <header>
+      {/* <header>
         <nav>
           <ul className={styles.nav}>
             <li>
@@ -129,7 +129,7 @@ const App = () => {
             )}
           </ul>
         </nav>
-      </header>
+      </header> */}
 
       <main>
         <Switch>
@@ -152,11 +152,11 @@ const App = () => {
         </Switch>
       </main>
 
-      <footer>
+      {/* <footer>
         <a href="http://www.astrosat.space" target="_blank" rel="noopener noreferrer">
           Brought to you by Astrosat
         </a>
-      </footer>
+      </footer> */}
     </div>
   );
 };

@@ -1,13 +1,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Link, Redirect } from 'react-router-dom';
 
 import useForm from '../hooks/useForm';
 import validate from './password-reset-form.validator';
 
-import Button from '../ui/button.component';
-// import Button from 'astrosat-ui';
+import { Button, Textfield, Checkbox } from '@astrosat/astrosat-ui';
 
-import styles from './password-reset-form.module.css';
+import { ReactComponent as OrbisLogo } from '../orbis.svg';
+
+import formStyles from './forms.module.css';
+import passwordStyles from './password-reset-form.module.css';
 
 const PasswordResetForm = ({ resetPassword }) => {
   const { handleChange, handleSubmit, reset, values, errors } = useForm(onSubmit, validate);
@@ -17,40 +20,41 @@ const PasswordResetForm = ({ resetPassword }) => {
   }
 
   return (
-    <div className={styles['password-reset-form-container']}>
-      <form className={styles['password-reset-form']} onSubmit={handleSubmit}>
-        <h3>Reset Your Password</h3>
+    <div className={formStyles.container}>
+      <form className={formStyles.form} onSubmit={handleSubmit}>
+        <OrbisLogo className={formStyles.logo} />
 
-        <div className={styles['form-row']}>
-          <label className={styles.label}>
-            Email Address:
-            <input
-              className={`${styles.input} ${errors.email ? styles.error : ''}`}
-              type="email"
+        <div className={formStyles.fields}>
+          <div className={formStyles.row}>
+            <Textfield
               name="email"
-              onChange={handleChange}
               value={values.email || ''}
+              placeholder="Email"
+              onChange={handleChange}
               required
               autoFocus
             />
-          </label>
-          <em className={styles.required}>(Required)</em>
+          </div>
+          {errors.email && <p className={formStyles.errorMessage}>{errors.email}</p>}
         </div>
-        {errors.email && <p className={styles['error-message']}>{errors.email}</p>}
 
-        <div className={styles.buttons}>
-          <Button type="reset" className={styles.button} onClick={reset} disabled={Object.keys(values).length === 0}>
+        <div className={formStyles.buttons}>
+          {/* <Button type="reset" className={formStyles.button} onClick={reset} disabled={Object.keys(values).length === 0}>
             Reset
-          </Button>
+          </Button> */}
 
           <Button
             type="submit"
-            className={styles.button}
+            className={formStyles.button}
             disabled={Object.keys(errors).length > 0 || Object.keys(values).length === 0}
           >
             Reset Password
           </Button>
         </div>
+
+        <p className={passwordStyles.footer}>
+          Do you have an account?&nbsp;<Link to={'/login'}>Login</Link>
+        </p>
       </form>
     </div>
   );
