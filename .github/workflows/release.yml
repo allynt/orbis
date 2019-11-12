@@ -7,17 +7,14 @@ jobs:
     name: Build Releasable Artifact
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@master
+      - uses: actions/checkout@master
       - name: Cache Node Modules
         uses: actions/cache@v1
         with:
-          path: node_modules
-          key: ${{ runner.OS }}-build-${{ hashFiles('**/yarn.lock') }}
+          path: client/node_modules
+          key: frontend-build-${{ hashFiles('**/client/yarn.lock') }}
           restore-keys: |
-          ${{ runner.OS }}-build-${{ env.cache-name }}-
-          ${{ runner.OS }}-build-
-          ${{ runner.OS }}-
+            frontend-build-
       - name: Build Release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

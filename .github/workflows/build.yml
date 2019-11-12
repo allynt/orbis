@@ -11,24 +11,22 @@ jobs:
     name: Client-side Tests
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@master
-      - name: Cache Node Modules
-        uses: actions/cache@v1
-        with:
-          path: node_modules
-          key: ${{ runner.OS }}-build-${{ hashFiles('**/yarn.lock') }}
-          restore-keys: |
-          ${{ runner.OS }}-build-${{ env.cache-name }}-
-          ${{ runner.OS }}-build-
-          ${{ runner.OS }}-
+      - uses: actions/checkout@master
       - name: Use Node.js 10.x
         uses: actions/setup-node@v1
         with:
           node-version: 10.x
+      - name: Cache Node Modules
+        uses: actions/cache@v1
+        with:
+          path: node_modules
+          key: frontend-build-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            frontend-build-
       - name: yarn install, and test
         env:
           CI: "true"
+          GITHUB_REGISTRY_TOKEN: ${{ secrets.GITHUB_REGISTRY_TOKEN }}
         working-directory: client
         run: |
           yarn install
@@ -38,10 +36,7 @@ jobs:
     name: Server-side Tests
     runs-on: ubuntu-latest
     container:
-      image: python:3.7.3
-      volumes:
-        - .:/opt/orbis
-        - ./client:/opt/orbis/client/
+      image: python:3.6.8
       ports:
         - "8000:8000"
       env:
@@ -58,37 +53,25 @@ jobs:
           - "5666:5432"
     steps:
       - uses: actions/checkout@master
-      - name: Cache Python Modules
-        uses: actions/cache@v1
-        with:
-          path: node_modules
-          key: ${{ runner.OS }}-build-${{ hashFiles('**/Pipfile.lock') }}
-          restore-keys: |
-          ${{ runner.OS }}-build-${{ env.cache-name }}-
-          ${{ runner.OS }}-build-
-          ${{ runner.OS }}-
       - name: Setup container
         run: |
           apt-get update && apt-get install -y postgresql-client python3-gdal
           pip3 install --upgrade pip
           pip3 install --upgrade pipenv
-          pipenv install --dev --system
-          server/manage.py migrate --noinput
-      - name: Run tests
+
+      - name: Install Dependencies and Run Tests
         working-directory: server
-        run: pytest ./
+        run: |
+          pipenv install --dev
+          pipenv run ./manage.py migrate --noinput
+          pipenv run pytest ./
 
   docker:
+    needs: [client, server]
     name: Build and tag Docker Image
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@master
-      - name: Build Docker Image
-        run: |
-          export GIT_REF=${GITHUB_REF##*/}
-          export GIT_SHA=${GITHUB_SHA:0:7}
-          docker build . -t ${AWS_REGISTRY}/${AWS_REPOSITORY}:${GIT_REF} -t ${AWS_REGISTRY}/${AWS_REPOSITORY}:${GIT_SHA} --build-arg COMMIT_HASH=${GIT_REF} --build-arg GIT_BRANCH=${GIT_SHA}
-
       - name: Install AWS CLI
         run: |
           sudo apt install python3-setuptools
@@ -103,6 +86,12 @@ jobs:
       - name: Login to AWS
         run: |
           eval $(aws ecr get-login --no-include-email --region eu-west-1)
+
+      - name: Build Docker Image
+        run: |
+          export GIT_REF=${GITHUB_REF##*/}
+          export GIT_SHA=${GITHUB_SHA:0:7}
+          docker build . -t ${AWS_REGISTRY}/${AWS_REPOSITORY}:${GIT_REF} -t ${AWS_REGISTRY}/${AWS_REPOSITORY}:${GIT_SHA} --build-arg COMMIT_HASH=${GIT_REF} --build-arg GIT_BRANCH=${GIT_SHA} --build-arg TOKEN=${{ secrets.GITHUB_REGISTRY_TOKEN }}
 
       - name: Push image to AWS Docker Registry
         run: |
