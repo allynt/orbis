@@ -13,10 +13,19 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@master
+      - name: Cache Node Modules
+        uses: actions/cache@v1
+        with:
+          path: node_modules
+          key: ${{ runner.OS }}-build-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+          ${{ runner.OS }}-build-${{ env.cache-name }}-
+          ${{ runner.OS }}-build-
+          ${{ runner.OS }}-
       - name: Use Node.js 10.x
         uses: actions/setup-node@v1
         with:
-          version: 10.x
+          node-version: 10.x
       - name: yarn install, and test
         env:
           CI: "true"
@@ -49,6 +58,15 @@ jobs:
           - "5666:5432"
     steps:
       - uses: actions/checkout@master
+      - name: Cache Python Modules
+        uses: actions/cache@v1
+        with:
+          path: node_modules
+          key: ${{ runner.OS }}-build-${{ hashFiles('**/Pipfile.lock') }}
+          restore-keys: |
+          ${{ runner.OS }}-build-${{ env.cache-name }}-
+          ${{ runner.OS }}-build-
+          ${{ runner.OS }}-
       - name: Setup container
         run: |
           apt-get update && apt-get install -y postgresql-client python3-gdal
