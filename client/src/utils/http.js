@@ -6,7 +6,6 @@ const cookiesToArray = () => {
 
     return { name: cookie[0], value: cookie[1] };
   });
-  console.log('COOKIE: ', cookiesArray, cookies);
 
   return cookies;
 };

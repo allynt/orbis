@@ -2,7 +2,6 @@ import { trimForm } from '../utils/form';
 
 const validate = form => {
   let errors = {};
-  console.log('VALIDATING: ', form);
 
   const trimmed = trimForm(form);
 
