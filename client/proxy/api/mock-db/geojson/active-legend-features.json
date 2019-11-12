@@ -1,0 +1,1734 @@
+[
+  {
+    "internalId": "Geology 1:250 000 Offshore",
+    "fcode": null,
+    "layerName": null,
+    "text": "Geology 1:250 000 Offshore",
+    "icon": "",
+    "age": null,
+    "ageName": null,
+    "leaf": false,
+    "children": [
+      {
+        "internalId": "Bedrock",
+        "fcode": null,
+        "layerName": null,
+        "text": "Bedrock",
+        "icon": "",
+        "age": null,
+        "ageName": null,
+        "leaf": false,
+        "children": [
+          {
+            "internalId": "FCODE_43128",
+            "fcode": 43128,
+            "layerName": "Bedrock",
+            "text": "Eocene To Pliocene Rocks (Undifferentiated) - Rock, Siliciclastic, Argillaceous And Sandstone (Undifferentiated)(EOPC-ARSD)",
+            "icon": "\/legend_icons\/bgs250koffs\/poly_bedro_43128.png",
+            "age": "1130200.00000_EOPC-ARSD",
+            "ageName": "Eocene - Pliocene",
+            "leaf": true,
+            "children": [
+
+            ]
+          },
+          {
+            "internalId": "FCODE_43192",
+            "fcode": 43192,
+            "layerName": "Bedrock",
+            "text": "Palaeocene Rocks (Undifferentiated) - Mudstone And Sandstone (Undifferentiated) And Lignite(PLCU-MDSDLI)",
+            "icon": "\/legend_icons\/bgs250koffs\/poly_bedro_43192.png",
+            "age": "1130300.00000_PLCU-MDSDLI",
+            "ageName": "Paleocene",
+            "leaf": true,
+            "children": [
+
+            ]
+          },
+          {
+            "internalId": "FCODE_43258",
+            "fcode": 43258,
+            "layerName": "Bedrock",
+            "text": "Chalk Group - Chalk(CK-CHLK)",
+            "icon": "\/legend_icons\/bgs250koffs\/poly_bedro_43258.png",
+            "age": "1210160.00000_CK-CHLK",
+            "ageName": "Cenomanian - Maastrichtian",
+            "leaf": true,
+            "children": [
+
+            ]
+          },
+          {
+            "internalId": "FCODE_43145",
+            "fcode": 43145,
+            "layerName": "Bedrock",
+            "text": "Cromer Knoll Group - Rock, Siliciclastic, Argillaceous(CRKN-ARGL)",
+            "icon": "\/legend_icons\/bgs250koffs\/poly_bedro_43145.png",
+            "age": "1210260.00000_CRKN-ARGL",
+            "ageName": "Ryazanian - Albian",
+            "leaf": true,
+            "children": [
+
+            ]
+          },
+          {
+            "internalId": "FCODE_43264",
+            "fcode": 43264,
+            "layerName": "Bedrock",
+            "text": "Triassic Rocks (Undifferentiated) - Rock, Siliciclastic, Argillaceous And Sandstone (Undifferentiated)(TRIA-ARSD)",
+            "icon": "\/legend_icons\/bgs250koffs\/poly_bedro_43264.png",
+            "age": "1230000.00000_TRIA-ARSD",
+            "ageName": "Triassic",
+            "leaf": true,
+            "children": [
+
+            ]
+          },
+          {
+            "internalId": "FCODE_43080",
+            "fcode": 43080,
+            "layerName": "Bedrock",
+            "text": "Triassic Rocks (Undifferentiated) - Mudstone And Sandstone (Undifferentiated)(TRIA-MDSA)",
+            "icon": "\/legend_icons\/bgs250koffs\/poly_bedro_43080.png",
+            "age": "1230000.00000_TRIA-MDSA",
+            "ageName": "Triassic",
+            "leaf": true,
+            "children": [
+
+            ]
+          },
+          {
+            "internalId": "FCODE_43046",
+            "fcode": 43046,
+            "layerName": "Bedrock",
+            "text": "Permian Rocks And Triassic Rocks (Undifferentiated) - Conglomerate And Sandstone (Undifferentiated) And Siltstone (Undifferentiated) And Mudstone With Evaporites(PRMT-CSSM)",
+            "icon": "\/legend_icons\/bgs250koffs\/poly_bedro_43046.png",
+            "age": "1310000.00000_PRMT-CSSM",
+            "ageName": "Permian - Triassic",
+            "leaf": true,
+            "children": [
+
+            ]
+          },
+          {
+            "internalId": "FCODE_43016",
+            "fcode": 43016,
+            "layerName": "Bedrock",
+            "text": "Permian Rocks (Undifferentiated) - Mudstone And Gypsum-Stone(PUND-MDGYAN)",
+            "icon": "\/legend_icons\/bgs250koffs\/poly_bedro_43016.png",
+            "age": "1310000.00000_PUND-MDGYAN",
+            "ageName": "Permian",
+            "leaf": true,
+            "children": [
+
+            ]
+          },
+          {
+            "internalId": "FCODE_43175",
+            "fcode": 43175,
+            "layerName": "Bedrock",
+            "text": "Carboniferous Rocks (Undifferentiated) - Sandstone (Undifferentiated) And Conglomerate And Siltstone (Undifferentiated) And Mudstone(CARB-SCSM)",
+            "icon": "\/legend_icons\/bgs250koffs\/poly_bedro_43175.png",
+            "age": "1320000.00000_CARB-SCSM",
+            "ageName": "Carboniferous",
+            "leaf": true,
+            "children": [
+
+            ]
+          },
+          {
+            "internalId": "FCODE_43221",
+            "fcode": 43221,
+            "layerName": "Bedrock",
+            "text": "Unnamed Igneous Intrusion, Carboniferous To Permian - Microgabbroic-Rock(UIICP-MAFI)",
+            "icon": "\/legend_icons\/bgs250koffs\/poly_bedro_43221.png",
+            "age": "1320000.00000_UIICP-MAFI",
+            "ageName": "Carboniferous - Permian",
+            "leaf": true,
+            "children": [
+
+            ]
+          },
+          {
+            "internalId": "FCODE_43079",
+            "fcode": 43079,
+            "layerName": "Bedrock",
+            "text": "Coal Measures Group [Obsolete Except In Northern Ireland: Use Pcm, Swcm, Cmsc] - Rock, Siliciclastic, Argillaceous And Sandstone (Undifferentiated)(CM-ARSD)",
+            "icon": "\/legend_icons\/bgs250koffs\/poly_bedro_43079.png",
+            "age": "1321200.00000_CM-ARSD",
+            "ageName": "Westphalian",
+            "leaf": true,
+            "children": [
+
+            ]
+          },
+          {
+            "internalId": "FCODE_43118",
+            "fcode": 43118,
+            "layerName": "Bedrock",
+            "text": "Scottish Coal Measures Group - Sandstone (Undifferentiated) And Rock, Siliciclastic, Argillaceous(CMSC-SDAR)",
+            "icon": "\/legend_icons\/bgs250koffs\/poly_bedro_43118.png",
+            "age": "1321240.00000_CMSC-SDAR",
+            "ageName": "Langsettian (Westphalian A) - Bolsovian (Westphalian C)",
+            "leaf": true,
+            "children": [
+
+            ]
+          },
+          {
+            "internalId": "FCODE_43225",
+            "fcode": 43225,
+            "layerName": "Bedrock",
+            "text": "Stainmore Formation - Mudstone And Sandstone (Undifferentiated) And Limestone(SMGP-MDSL)",
+            "icon": "\/legend_icons\/bgs250koffs\/poly_bedro_43225.png",
+            "age": "1321300.00000_SMGP-MDSL",
+            "ageName": "Namurian",
+            "leaf": true,
+            "children": [
+
+            ]
+          },
+          {
+            "internalId": "FCODE_43181",
+            "fcode": 43181,
+            "layerName": "Bedrock",
+            "text": "Dinantian Rocks (Undifferentiated) - Rock, Siliciclastic, Argillaceous With Sandstone (Undifferentiated) With Limestone(DINA-ARSL)",
+            "icon": "\/legend_icons\/bgs250koffs\/poly_bedro_43181.png",
+            "age": "1322000.00000_DINA-ARSL",
+            "ageName": "Dinantian",
+            "leaf": true,
+            "children": [
+
+            ]
+          },
+          {
+            "internalId": "FCODE_43235",
+            "fcode": 43235,
+            "layerName": "Bedrock",
+            "text": "Dinantian Rocks (Undifferentiated) - Basalt, Lava And Sandstone (Undifferentiated)(DINA-BLSD)",
+            "icon": "\/legend_icons\/bgs250koffs\/poly_bedro_43235.png",
+            "age": "1322000.00000_DINA-BLSD",
+            "ageName": "Dinantian",
+            "leaf": true,
+            "children": [
+
+            ]
+          },
+          {
+            "internalId": "FCODE_43213",
+            "fcode": 43213,
+            "layerName": "Bedrock",
+            "text": "Clackmannan Group - Rock, Siliciclastic, Argillaceous And Limestone(CKN-AROCLS)",
+            "icon": "\/legend_icons\/bgs250koffs\/poly_bedro_43213.png",
+            "age": "1322110.00000_CKN-AROCLS",
+            "ageName": "Brigantian - Langsettian (Westphalian A)",
+            "leaf": true,
+            "children": [
+
+            ]
+          },
+          {
+            "internalId": "FCODE_43103",
+            "fcode": 43103,
+            "layerName": "Bedrock",
+            "text": "Devonian And Carboniferous Rocks (Undifferentiated) - Sandstone (Undifferentiated) And Limestone, Nodular (Cornstone)(DEVC-SCOR)",
+            "icon": "\/legend_icons\/bgs250koffs\/poly_bedro_43103.png",
+            "age": "1330000.00000_DEVC-SCOR",
+            "ageName": "Devonian - Carboniferous",
+            "leaf": true,
+            "children": [
+
+            ]
+          },
+          {
+            "internalId": "FCODE_43028",
+            "fcode": 43028,
+            "layerName": "Bedrock",
+            "text": "Devonian And Carboniferous Rocks (Undifferentiated) - Sandstone (Undifferentiated) And Conglomerate And Siltstone (Undifferentiated) And Mudstone(DEVC-SCSM)",
+            "icon": "\/legend_icons\/bgs250koffs\/poly_bedro_43028.png",
+            "age": "1330000.00000_DEVC-SCSM",
+            "ageName": "Devonian - Carboniferous",
+            "leaf": true,
+            "children": [
+
+            ]
+          },
+          {
+            "internalId": "FCODE_43233",
+            "fcode": 43233,
+            "layerName": "Bedrock",
+            "text": "Devonian Rocks (Undifferentiated) - Sandstone (Undifferentiated) And Conglomerate And Siltstone (Undifferentiated) And Mudstone(DEV-SCSM)",
+            "icon": "\/legend_icons\/bgs250koffs\/poly_bedro_43233.png",
+            "age": "1330000.00000_DEV-SCSM",
+            "ageName": "Devonian",
+            "leaf": true,
+            "children": [
+
+            ]
+          },
+          {
+            "internalId": "FCODE_43167",
+            "fcode": 43167,
+            "layerName": "Bedrock",
+            "text": "Unnamed Extrusive Rocks, Devonian - Agglomerate And Tuffite(UEXD-AGTT)",
+            "icon": "\/legend_icons\/bgs250koffs\/poly_bedro_43167.png",
+            "age": "1330000.00000_UEXD-AGTT",
+            "ageName": "Devonian",
+            "leaf": true,
+            "children": [
+
+            ]
+          },
+          {
+            "internalId": "FCODE_43036",
+            "fcode": 43036,
+            "layerName": "Bedrock",
+            "text": "Stratheden Group - Sandstone (Undifferentiated) And Rock, Siliciclastic, Argillaceous(SAG-SDAR)",
+            "icon": "\/legend_icons\/bgs250koffs\/poly_bedro_43036.png",
+            "age": "1330100.00000_SAG-SDAR",
+            "ageName": "Late Devonian",
+            "leaf": true,
+            "children": [
+
+            ]
+          },
+          {
+            "internalId": "FCODE_43105",
+            "fcode": 43105,
+            "layerName": "Bedrock",
+            "text": "Upper Devonian Rocks (Undifferentiated) - Sandstone (Undifferentiated) And Conglomerate And Siltstone (Undifferentiated) And Mudstone(UDEV-SCSM)",
+            "icon": "\/legend_icons\/bgs250koffs\/poly_bedro_43105.png",
+            "age": "1330100.00000_UDEV-SCSM",
+            "ageName": "Late Devonian",
+            "leaf": true,
+            "children": [
+
+            ]
+          },
+          {
+            "internalId": "FCODE_43242",
+            "fcode": 43242,
+            "layerName": "Bedrock",
+            "text": "Lower Devonian Rocks (Undifferentiated) - Basalt, Lava And Andesite, Lava(LDEV-BCLACL)",
+            "icon": "\/legend_icons\/bgs250koffs\/poly_bedro_43242.png",
+            "age": "1330300.00000_LDEV-BCLACL",
+            "ageName": "Early Devonian",
+            "leaf": true,
+            "children": [
+
+            ]
+          },
+          {
+            "internalId": "FCODE_43161",
+            "fcode": 43161,
+            "layerName": "Bedrock",
+            "text": "Lower Devonian Rocks (Undifferentiated) - Sandstone (Undifferentiated) And Conglomerate(LDEV-SCON)",
+            "icon": "\/legend_icons\/bgs250koffs\/poly_bedro_43161.png",
+            "age": "1330300.00000_LDEV-SCON",
+            "ageName": "Early Devonian",
+            "leaf": true,
+            "children": [
+
+            ]
+          },
+          {
+            "internalId": "FCODE_43089",
+            "fcode": 43089,
+            "layerName": "Bedrock",
+            "text": "Lower Devonian Rocks (Undifferentiated) - Sandstone (Undifferentiated) And Conglomerate And Lava (Undifferentiated)(LDEV-SDCOLA)",
+            "icon": "\/legend_icons\/bgs250koffs\/poly_bedro_43089.png",
+            "age": "1330300.00000_LDEV-SDCOLA",
+            "ageName": "Early Devonian",
+            "leaf": true,
+            "children": [
+
+            ]
+          },
+          {
+            "internalId": "FCODE_43188",
+            "fcode": 43188,
+            "layerName": "Bedrock",
+            "text": "Llandovery Rocks (Undifferentiated) - Wacke And Mudstone(LDVY-GWMD)",
+            "icon": "\/legend_icons\/bgs250koffs\/poly_bedro_43188.png",
+            "age": "1340400.00000_LDVY-GWMD",
+            "ageName": "Llandovery",
+            "leaf": true,
+            "children": [
+
+            ]
+          },
+          {
+            "internalId": "FCODE_43160",
+            "fcode": 43160,
+            "layerName": "Bedrock",
+            "text": "Ordovician Rocks And Silurian Rocks (Undifferentiated) - Sandstone (Undifferentiated) And Rock, Siliciclastic, Argillaceous(OASR-SDAR)",
+            "icon": "\/legend_icons\/bgs250koffs\/poly_bedro_43160.png",
+            "age": "1350000.00000_OASR-SDAR",
+            "ageName": "Ordovician - Silurian",
+            "leaf": true,
+            "children": [
+
+            ]
+          },
+          {
+            "internalId": "FCODE_43108",
+            "fcode": 43108,
+            "layerName": "Bedrock",
+            "text": "Unnamed Dyke, Late Caledonian - Dolerite (Synonymous With Microgabbro)(UDLC-MCGB)",
+            "icon": "\/legend_icons\/bgs250koffs\/poly_bedro_43108.png",
+            "age": "1350000.00000_UDLC-MCGB",
+            "ageName": "Ordovician - Silurian",
+            "leaf": true,
+            "children": [
+
+            ]
+          },
+          {
+            "internalId": "FCODE_43259",
+            "fcode": 43259,
+            "layerName": "Bedrock",
+            "text": "Argyll Group - Metasedimentary Rock(ARGY-MSDR)",
+            "icon": "\/legend_icons\/bgs250koffs\/poly_bedro_43259.png",
+            "age": "2100000.00000_ARGY-MSDR",
+            "ageName": "Neoproterozoic",
+            "leaf": true,
+            "children": [
+
+            ]
+          },
+          {
+            "internalId": "FCODE_43260",
+            "fcode": 43260,
+            "layerName": "Bedrock",
+            "text": "Southern Highland Group - Metasedimentary Rock(SOHI-MSDR)",
+            "icon": "\/legend_icons\/bgs250koffs\/poly_bedro_43260.png",
+            "age": "2100000.00000_SOHI-MSDR",
+            "ageName": "Neoproterozoic - Mid Cambrian",
+            "leaf": true,
+            "children": [
+
+            ]
+          },
+          {
+            "internalId": "FCODE_43020",
+            "fcode": 43020,
+            "layerName": "Bedrock",
+            "text": "Unnamed Igneous Intrusion Of Unknown Age - Microgabbroic-Rock(UIIN-MAFI)",
+            "icon": "\/legend_icons\/bgs250koffs\/poly_bedro_43020.png",
+            "age": "3000000.00000_UIIN-MAFI",
+            "ageName": "Not Available",
+            "leaf": true,
+            "children": [
+
+            ]
+          }
+        ]
+      },
+      {
+        "internalId": "Linear Features",
+        "fcode": null,
+        "layerName": null,
+        "text": "Linear Features",
+        "icon": "",
+        "age": null,
+        "ageName": null,
+        "leaf": false,
+        "children": [
+          {
+            "internalId": "FCODE_43301",
+            "fcode": 43301,
+            "layerName": "Linear Features",
+            "text": "Axial plane trace of major anticline",
+            "icon": "\/legend_icons\/bgs250koffs\/line_fold_43301.png",
+            "age": "",
+            "ageName": "",
+            "leaf": true,
+            "children": [
+
+            ]
+          },
+          {
+            "internalId": "FCODE_43302",
+            "fcode": 43302,
+            "layerName": "Linear Features",
+            "text": "Axial plane trace of major syncline",
+            "icon": "\/legend_icons\/bgs250koffs\/line_fold_43302.png",
+            "age": "",
+            "ageName": "",
+            "leaf": true,
+            "children": [
+
+            ]
+          },
+          {
+            "internalId": "FCODE_43299",
+            "fcode": 43299,
+            "layerName": "Linear Features",
+            "text": "Fault at rockhead",
+            "icon": "\/legend_icons\/bgs250koffs\/line_fault_43299.png",
+            "age": "",
+            "ageName": "",
+            "leaf": true,
+            "children": [
+
+            ]
+          },
+          {
+            "internalId": "FCODE_43298",
+            "fcode": 43298,
+            "layerName": "Linear Features",
+            "text": "Thrust Fault; barbs on hanging wall side",
+            "icon": "\/legend_icons\/bgs250koffs\/line_fault_43298.png",
+            "age": "",
+            "ageName": "",
+            "leaf": true,
+            "children": [
+
+            ]
+          }
+        ]
+      },
+      {
+        "internalId": "Hard Substrate",
+        "fcode": null,
+        "layerName": null,
+        "text": "Hard Substrate",
+        "icon": "",
+        "age": null,
+        "ageName": null,
+        "leaf": false,
+        "children": [
+          {
+            "internalId": "FCODE_43292",
+            "fcode": 43292,
+            "layerName": "Hard Substrate",
+            "text": "Rock and Hard Substrate",
+            "icon": "\/legend_icons\/bgs250koffs\/poly_hard_43292.png",
+            "age": "",
+            "ageName": "",
+            "leaf": true,
+            "children": [
+
+            ]
+          }
+        ]
+      },
+      {
+        "internalId": "Sea Bed Sediments",
+        "fcode": null,
+        "layerName": null,
+        "text": "Sea Bed Sediments",
+        "icon": "",
+        "age": null,
+        "ageName": null,
+        "leaf": false,
+        "children": [
+          {
+            "internalId": "FCODE_43282",
+            "fcode": 43282,
+            "layerName": "Sea Bed Sediments",
+            "text": "Marine Sediments, Holocene (Undifferentiated) - Gravel (Sea Bed Sediment, Based On Folk)(MSQH-GV)",
+            "icon": "\/legend_icons\/bgs250koffs\/poly_sea_b_43282.png",
+            "age": "1110199_MSQH-GV",
+            "ageName": "Holocene",
+            "leaf": true,
+            "children": [
+
+            ]
+          },
+          {
+            "internalId": "FCODE_43281",
+            "fcode": 43281,
+            "layerName": "Sea Bed Sediments",
+            "text": "Marine Sediments, Holocene (Undifferentiated) - Gravelly Mud (Sea Bed Sediment, Based On Folk)(MSQH-GVMUD)",
+            "icon": "\/legend_icons\/bgs250koffs\/poly_sea_b_43281.png",
+            "age": "1110199_MSQH-GVMUD",
+            "ageName": "Holocene",
+            "leaf": true,
+            "children": [
+
+            ]
+          },
+          {
+            "internalId": "FCODE_43286",
+            "fcode": 43286,
+            "layerName": "Sea Bed Sediments",
+            "text": "Marine Sediments, Holocene (Undifferentiated) - Gravelly Sand (Sea Bed Sediment, Based On Folk)(MSQH-GVSND)",
+            "icon": "\/legend_icons\/bgs250koffs\/poly_sea_b_43286.png",
+            "age": "1110199_MSQH-GVSND",
+            "ageName": "Holocene",
+            "leaf": true,
+            "children": [
+
+            ]
+          },
+          {
+            "internalId": "FCODE_43284",
+            "fcode": 43284,
+            "layerName": "Sea Bed Sediments",
+            "text": "Marine Sediments, Holocene (Undifferentiated) - Muddy Gravel (Sea Bed Sediment, Based On Folk)(MSQH-MUDGV)",
+            "icon": "\/legend_icons\/bgs250koffs\/poly_sea_b_43284.png",
+            "age": "1110199_MSQH-MUDGV",
+            "ageName": "Holocene",
+            "leaf": true,
+            "children": [
+
+            ]
+          },
+          {
+            "internalId": "FCODE_43275",
+            "fcode": 43275,
+            "layerName": "Sea Bed Sediments",
+            "text": "Marine Sediments, Holocene (Undifferentiated) - Mud (Sea Bed Sediment, Based On Folk)(MSQH-MUDM)",
+            "icon": "\/legend_icons\/bgs250koffs\/poly_sea_b_43275.png",
+            "age": "1110199_MSQH-MUDM",
+            "ageName": "Holocene",
+            "leaf": true,
+            "children": [
+
+            ]
+          },
+          {
+            "internalId": "FCODE_43288",
+            "fcode": 43288,
+            "layerName": "Sea Bed Sediments",
+            "text": "Marine Sediments, Holocene (Undifferentiated) - Muddy Sandy Gravel (Sea Bed Sediment, Based On Folk)(MSQH-MUDSGV)",
+            "icon": "\/legend_icons\/bgs250koffs\/poly_sea_b_43288.png",
+            "age": "1110199_MSQH-MUDSGV",
+            "ageName": "Holocene",
+            "leaf": true,
+            "children": [
+
+            ]
+          },
+          {
+            "internalId": "FCODE_43276",
+            "fcode": 43276,
+            "layerName": "Sea Bed Sediments",
+            "text": "Marine Sediments, Holocene (Undifferentiated) - Muddy Sand (Sea Bed Sediment, Based On Folk)(MSQH-MUDSND)",
+            "icon": "\/legend_icons\/bgs250koffs\/poly_sea_b_43276.png",
+            "age": "1110199_MSQH-MUDSND",
+            "ageName": "Holocene",
+            "leaf": true,
+            "children": [
+
+            ]
+          },
+          {
+            "internalId": "FCODE_43287",
+            "fcode": 43287,
+            "layerName": "Sea Bed Sediments",
+            "text": "Marine Sediments, Holocene (Undifferentiated) - Slightly Gravelly Muddy Sand (Sea Bed Sediment, Based On Folk)(MSQH-SLGVMS)",
+            "icon": "\/legend_icons\/bgs250koffs\/poly_sea_b_43287.png",
+            "age": "1110199_MSQH-SLGVMS",
+            "ageName": "Holocene",
+            "leaf": true,
+            "children": [
+
+            ]
+          },
+          {
+            "internalId": "FCODE_43283",
+            "fcode": 43283,
+            "layerName": "Sea Bed Sediments",
+            "text": "Marine Sediments, Holocene (Undifferentiated) - Slightly Gravelly Sand (Sea Bed Sediment, Based On Folk)(MSQH-SLGVSD)",
+            "icon": "\/legend_icons\/bgs250koffs\/poly_sea_b_43283.png",
+            "age": "1110199_MSQH-SLGVSD",
+            "ageName": "Holocene",
+            "leaf": true,
+            "children": [
+
+            ]
+          },
+          {
+            "internalId": "FCODE_43274",
+            "fcode": 43274,
+            "layerName": "Sea Bed Sediments",
+            "text": "Marine Sediments, Holocene (Undifferentiated) - Slightly Gravelly Sandy Mud (Sea Bed Sediment, Based On Folk)(MSQH-SLGVSM)",
+            "icon": "\/legend_icons\/bgs250koffs\/poly_sea_b_43274.png",
+            "age": "1110199_MSQH-SLGVSM",
+            "ageName": "Holocene",
+            "leaf": true,
+            "children": [
+
+            ]
+          },
+          {
+            "internalId": "FCODE_43270",
+            "fcode": 43270,
+            "layerName": "Sea Bed Sediments",
+            "text": "Marine Sediments, Holocene (Undifferentiated) - Sand (Sea Bed Sediment, Based On Folk)(MSQH-SND)",
+            "icon": "\/legend_icons\/bgs250koffs\/poly_sea_b_43270.png",
+            "age": "1110199_MSQH-SND",
+            "ageName": "Holocene",
+            "leaf": true,
+            "children": [
+
+            ]
+          },
+          {
+            "internalId": "FCODE_43285",
+            "fcode": 43285,
+            "layerName": "Sea Bed Sediments",
+            "text": "Marine Sediments, Holocene (Undifferentiated) - Gravelly Muddy Sand (Sea Bed Sediment, Based On Folk)(MSQH-SNDGM)",
+            "icon": "\/legend_icons\/bgs250koffs\/poly_sea_b_43285.png",
+            "age": "1110199_MSQH-SNDGM",
+            "ageName": "Holocene",
+            "leaf": true,
+            "children": [
+
+            ]
+          },
+          {
+            "internalId": "FCODE_43277",
+            "fcode": 43277,
+            "layerName": "Sea Bed Sediments",
+            "text": "Marine Sediments, Holocene (Undifferentiated) - Sandy Gravel (Sea Bed Sediment, Based On Folk)(MSQH-SNDGV)",
+            "icon": "\/legend_icons\/bgs250koffs\/poly_sea_b_43277.png",
+            "age": "1110199_MSQH-SNDGV",
+            "ageName": "Holocene",
+            "leaf": true,
+            "children": [
+
+            ]
+          },
+          {
+            "internalId": "FCODE_43280",
+            "fcode": 43280,
+            "layerName": "Sea Bed Sediments",
+            "text": "Marine Sediments, Holocene (Undifferentiated) - Sandy Mud (Sea Bed Sediment, Based On Folk)(MSQH-SNDMUD)",
+            "icon": "\/legend_icons\/bgs250koffs\/poly_sea_b_43280.png",
+            "age": "1110199_MSQH-SNDMUD",
+            "ageName": "Holocene",
+            "leaf": true,
+            "children": [
+
+            ]
+          },
+          {
+            "internalId": "FCODE_43291",
+            "fcode": 43291,
+            "layerName": "Sea Bed Sediments",
+            "text": "Marine Sediments, Holocene (Undifferentiated) - Gravel, Sand And Silt(MSQH-XVSZ)",
+            "icon": "\/legend_icons\/bgs250koffs\/poly_sea_b_43291.png",
+            "age": "1110199_MSQH-XVSZ",
+            "ageName": "Holocene",
+            "leaf": true,
+            "children": [
+
+            ]
+          },
+          {
+            "internalId": "FCODE_43271",
+            "fcode": 43271,
+            "layerName": "Sea Bed Sediments",
+            "text": "Pre-Quaternary Rocks (Undifferentiated) - Rock(PQU-ROCK)",
+            "icon": "\/legend_icons\/bgs250koffs\/poly_sea_b_43271.png",
+            "age": "1110299_PQU-ROCK",
+            "ageName": "Archaean - Neogene",
+            "leaf": true,
+            "children": [
+
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "internalId": "Geology 1:625 000",
+    "fcode": null,
+    "layerName": null,
+    "text": "Geology 1:625 000",
+    "icon": "",
+    "age": null,
+    "ageName": null,
+    "leaf": false,
+    "children": [
+      {
+        "internalId": "Bedrock",
+        "fcode": null,
+        "layerName": null,
+        "text": "Bedrock",
+        "icon": "",
+        "age": null,
+        "ageName": null,
+        "leaf": false,
+        "children": [
+          {
+            "internalId": "FCODE_42741",
+            "fcode": 42741,
+            "layerName": "Bedrock",
+            "text": "Unnamed Extrusive Rocks, Palaeogene - Mafic Lava And Mafic Tuff(UEXG-LATM)",
+            "icon": "\/legend_icons\/bgs625k\/poly_bedro_42741.png",
+            "age": "1139999_UEXG-LATM",
+            "ageName": "Palaeogene period",
+            "leaf": true,
+            "children": [
+
+            ]
+          },
+          {
+            "internalId": "FCODE_42646",
+            "fcode": 42646,
+            "layerName": "Bedrock",
+            "text": "Unnamed Igneous Intrusion, Palaeogene - Felsic-Rock(UIG-FELSR)",
+            "icon": "\/legend_icons\/bgs625k\/poly_bedro_42646.png",
+            "age": "1139999_UIG-FELSR",
+            "ageName": "Palaeogene period",
+            "leaf": true,
+            "children": [
+
+            ]
+          },
+          {
+            "internalId": "FCODE_42631",
+            "fcode": 42631,
+            "layerName": "Bedrock",
+            "text": "Unnamed Igneous Intrusion, Palaeogene - Mafic Igneous-Rock(UIG-MFIR)",
+            "icon": "\/legend_icons\/bgs625k\/poly_bedro_42631.png",
+            "age": "1139999_UIG-MFIR",
+            "ageName": "Palaeogene period",
+            "leaf": true,
+            "children": [
+
+            ]
+          },
+          {
+            "internalId": "FCODE_42504",
+            "fcode": 42504,
+            "layerName": "Bedrock",
+            "text": "Mercia Mudstone Group - Mudstone, Sandstone And Limestone(MMG-MDSL)",
+            "icon": "\/legend_icons\/bgs625k\/poly_bedro_42504.png",
+            "age": "1230399_MMG-MDSL",
+            "ageName": "Mid Triassic - Late Triassic epoch",
+            "leaf": true,
+            "children": [
+
+            ]
+          },
+          {
+            "internalId": "FCODE_42507",
+            "fcode": 42507,
+            "layerName": "Bedrock",
+            "text": "Stewartry Group - Sandstone, Breccia And Conglomerate(STEW-SDBC)",
+            "icon": "\/legend_icons\/bgs625k\/poly_bedro_42507.png",
+            "age": "1310299_STEW-SDBC",
+            "ageName": "Early Permian epoch",
+            "leaf": true,
+            "children": [
+
+            ]
+          },
+          {
+            "internalId": "FCODE_42521",
+            "fcode": 42521,
+            "layerName": "Bedrock",
+            "text": "Unnamed Extrusive Rocks, Permian - Mafic Lava And Mafic Tuff(UEXP-LATM)",
+            "icon": "\/legend_icons\/bgs625k\/poly_bedro_42521.png",
+            "age": "1319999_UEXP-LATM",
+            "ageName": "Permian period",
+            "leaf": true,
+            "children": [
+
+            ]
+          },
+          {
+            "internalId": "FCODE_42540",
+            "fcode": 42540,
+            "layerName": "Bedrock",
+            "text": "Pennine Middle Coal Measures Formation And South Wales Middle Coal Measures Formation (Undifferentia(PSMCM-MSCI)",
+            "icon": "\/legend_icons\/bgs625k\/poly_bedro_42540.png",
+            "age": "1321239_PSMCM-MSCI",
+            "ageName": "Westphalian epoch",
+            "leaf": true,
+            "children": [
+
+            ]
+          },
+          {
+            "internalId": "FCODE_42583",
+            "fcode": 42583,
+            "layerName": "Bedrock",
+            "text": "Scottish Coal Measures Group - Mudstone, Siltstone, Sandstone, Coal, Ironstone And Ferricrete(CMSC-MSCI)",
+            "icon": "\/legend_icons\/bgs625k\/poly_bedro_42583.png",
+            "age": "1321249_CMSC-MSCI",
+            "ageName": "Westphalian epoch",
+            "leaf": true,
+            "children": [
+
+            ]
+          },
+          {
+            "internalId": "FCODE_42601",
+            "fcode": 42601,
+            "layerName": "Bedrock",
+            "text": "Pennine Lower Coal Measures Formation And South Wales Lower Coal Measures Formation (Undifferentiate(PSLCM-MSCI)",
+            "icon": "\/legend_icons\/bgs625k\/poly_bedro_42601.png",
+            "age": "1321249_PSLCM-MSCI",
+            "ageName": "Westphalian epoch",
+            "leaf": true,
+            "children": [
+
+            ]
+          },
+          {
+            "internalId": "FCODE_42735",
+            "fcode": 42735,
+            "layerName": "Bedrock",
+            "text": "Unnamed Extrusive Rocks, Silesian - Mafic Lava And Mafic Tuff(UEXCU-LATM)",
+            "icon": "\/legend_icons\/bgs625k\/poly_bedro_42735.png",
+            "age": "1321999_UEXCU-LATM",
+            "ageName": "Silesian subperiod",
+            "leaf": true,
+            "children": [
+
+            ]
+          },
+          {
+            "internalId": "FCODE_42573",
+            "fcode": 42573,
+            "layerName": "Bedrock",
+            "text": "Clackmannan Group - Sedimentary Rock Cycles, Clackmannan Group Type(CKN-CYCC)",
+            "icon": "\/legend_icons\/bgs625k\/poly_bedro_42573.png",
+            "age": "1322119_CKN-CYCC",
+            "ageName": "Visean - Westphalian epoch",
+            "leaf": true,
+            "children": [
+
+            ]
+          },
+          {
+            "internalId": "FCODE_42673",
+            "fcode": 42673,
+            "layerName": "Bedrock",
+            "text": "Yoredale Group - Limestone, Argillaceous Rocks And Subordinate Sandstone, Interbedded(YORE-LMAS)",
+            "icon": "\/legend_icons\/bgs625k\/poly_bedro_42673.png",
+            "age": "1322129_YORE-LMAS",
+            "ageName": "Visean - Namurian epoch",
+            "leaf": true,
+            "children": [
+
+            ]
+          },
+          {
+            "internalId": "FCODE_42614",
+            "fcode": 42614,
+            "layerName": "Bedrock",
+            "text": "Yoredale Group - Limestone With Subordinate Sandstone And Argillaceous Rocks(YORE-LSSA)",
+            "icon": "\/legend_icons\/bgs625k\/poly_bedro_42614.png",
+            "age": "1322129_YORE-LSSA",
+            "ageName": "Visean - Namurian epoch",
+            "leaf": true,
+            "children": [
+
+            ]
+          },
+          {
+            "internalId": "FCODE_42734",
+            "fcode": 42734,
+            "layerName": "Bedrock",
+            "text": "Yoredale Group - Limestone, Sandstone, Siltstone And Mudstone(YORE-LSSM)",
+            "icon": "\/legend_icons\/bgs625k\/poly_bedro_42734.png",
+            "age": "1322129_YORE-LSSM",
+            "ageName": "Visean - Namurian epoch",
+            "leaf": true,
+            "children": [
+
+            ]
+          },
+          {
+            "internalId": "FCODE_42597",
+            "fcode": 42597,
+            "layerName": "Bedrock",
+            "text": "Border Group - Sandstone With Subordinate Argillaceous Rocks And Limestone(BDR-SARL)",
+            "icon": "\/legend_icons\/bgs625k\/poly_bedro_42597.png",
+            "age": "1322159_BDR-SARL",
+            "ageName": "Visean epoch",
+            "leaf": true,
+            "children": [
+
+            ]
+          },
+          {
+            "internalId": "FCODE_42534",
+            "fcode": 42534,
+            "layerName": "Bedrock",
+            "text": "Strathclyde Group - Sedimentary Rock Cycles, Strathclyde Group Type(SYG-CYCS)",
+            "icon": "\/legend_icons\/bgs625k\/poly_bedro_42534.png",
+            "age": "1322159_SYG-CYCS",
+            "ageName": "Visean epoch",
+            "leaf": true,
+            "children": [
+
+            ]
+          },
+          {
+            "internalId": "FCODE_42516",
+            "fcode": 42516,
+            "layerName": "Bedrock",
+            "text": "Inverclyde Group - Sandstone, Siltstone And Mudstone(INV-SDSM)",
+            "icon": "\/legend_icons\/bgs625k\/poly_bedro_42516.png",
+            "age": "1322219_INV-SDSM",
+            "ageName": "Tournaisian - Visean epoch",
+            "leaf": true,
+            "children": [
+
+            ]
+          },
+          {
+            "internalId": "FCODE_42563",
+            "fcode": 42563,
+            "layerName": "Bedrock",
+            "text": "Unnamed Extrusive Rocks, Dinantian - Felsic Lava And Felsic Tuff(UEXCL-LATF)",
+            "icon": "\/legend_icons\/bgs625k\/poly_bedro_42563.png",
+            "age": "1322999_UEXCL-LATF",
+            "ageName": "Dinantian subperiod",
+            "leaf": true,
+            "children": [
+
+            ]
+          },
+          {
+            "internalId": "FCODE_42579",
+            "fcode": 42579,
+            "layerName": "Bedrock",
+            "text": "Unnamed Extrusive Rocks, Dinantian - Mafic Lava And Mafic Tuff(UEXCL-LATM)",
+            "icon": "\/legend_icons\/bgs625k\/poly_bedro_42579.png",
+            "age": "1322999_UEXCL-LATM",
+            "ageName": "Dinantian subperiod",
+            "leaf": true,
+            "children": [
+
+            ]
+          },
+          {
+            "internalId": "FCODE_42603",
+            "fcode": 42603,
+            "layerName": "Bedrock",
+            "text": "Unnamed Igneous Intrusion, Carboniferous To Permian - Dolerite And Tholeiitic Basalt(UIICP-DBAT)",
+            "icon": "\/legend_icons\/bgs625k\/poly_bedro_42603.png",
+            "age": "1329999_UIICP-DBAT",
+            "ageName": "Carboniferous - Permian period",
+            "leaf": true,
+            "children": [
+
+            ]
+          },
+          {
+            "internalId": "FCODE_42727",
+            "fcode": 42727,
+            "layerName": "Bedrock",
+            "text": "Unnamed Igneous Intrusion, Carboniferous To Permian - Felsic-Rock(UIICP-FELSR)",
+            "icon": "\/legend_icons\/bgs625k\/poly_bedro_42727.png",
+            "age": "1329999_UIICP-FELSR",
+            "ageName": "Carboniferous - Permian period",
+            "leaf": true,
+            "children": [
+
+            ]
+          },
+          {
+            "internalId": "FCODE_42687",
+            "fcode": 42687,
+            "layerName": "Bedrock",
+            "text": "Unnamed Igneous Intrusion, Carboniferous To Permian - Mafic Igneous-Rock(UIICP-MFIR)",
+            "icon": "\/legend_icons\/bgs625k\/poly_bedro_42687.png",
+            "age": "1329999_UIICP-MFIR",
+            "ageName": "Carboniferous - Permian period",
+            "leaf": true,
+            "children": [
+
+            ]
+          },
+          {
+            "internalId": "FCODE_42585",
+            "fcode": 42585,
+            "layerName": "Bedrock",
+            "text": "Unnamed Igneous Intrusion, Carboniferous To Permian - Pyroclastic-Rock(UIICP-PYRR)",
+            "icon": "\/legend_icons\/bgs625k\/poly_bedro_42585.png",
+            "age": "1329999_UIICP-PYRR",
+            "ageName": "Carboniferous - Permian period",
+            "leaf": true,
+            "children": [
+
+            ]
+          },
+          {
+            "internalId": "FCODE_42511",
+            "fcode": 42511,
+            "layerName": "Bedrock",
+            "text": "Stratheden Group - Sandstone And Conglomerate, Interbedded(SAG-SCON)",
+            "icon": "\/legend_icons\/bgs625k\/poly_bedro_42511.png",
+            "age": "1330199_SAG-SCON",
+            "ageName": "Late Devonian epoch",
+            "leaf": true,
+            "children": [
+
+            ]
+          },
+          {
+            "internalId": "FCODE_42568",
+            "fcode": 42568,
+            "layerName": "Bedrock",
+            "text": "Strathmore Group - Sandstone With Subordinate Conglomerate, Siltstone And Mudstone(SEG-SCSM)",
+            "icon": "\/legend_icons\/bgs625k\/poly_bedro_42568.png",
+            "age": "1330319_SEG-SCSM",
+            "ageName": "Early Devonian epoch",
+            "leaf": true,
+            "children": [
+
+            ]
+          },
+          {
+            "internalId": "FCODE_42738",
+            "fcode": 42738,
+            "layerName": "Bedrock",
+            "text": "Arbuthnott-Garvock Group - Sandstone With Subordinate Conglomerate, Siltstone And Mudstone(ATGK-SCSM)",
+            "icon": "\/legend_icons\/bgs625k\/poly_bedro_42738.png",
+            "age": "1330339_ATGK-SCSM",
+            "ageName": "Early Devonian epoch",
+            "leaf": true,
+            "children": [
+
+            ]
+          },
+          {
+            "internalId": "FCODE_42558",
+            "fcode": 42558,
+            "layerName": "Bedrock",
+            "text": "Reston Group - Conglomerate And [Subequal\/Subordinate] Sandstone, Interbedded(REST-COSD)",
+            "icon": "\/legend_icons\/bgs625k\/poly_bedro_42558.png",
+            "age": "1340299_REST-COSD",
+            "ageName": "Ludlow - Early Devonian epoch",
+            "leaf": true,
+            "children": [
+
+            ]
+          },
+          {
+            "internalId": "FCODE_42634",
+            "fcode": 42634,
+            "layerName": "Bedrock",
+            "text": "Unnamed Igneous Intrusion, Late Silurian To Early Devonian - Felsic-Rock(UISD-FELSR)",
+            "icon": "\/legend_icons\/bgs625k\/poly_bedro_42634.png",
+            "age": "1340299_UISD-FELSR",
+            "ageName": "Ludlow - Early Devonian epoch",
+            "leaf": true,
+            "children": [
+
+            ]
+          },
+          {
+            "internalId": "FCODE_42671",
+            "fcode": 42671,
+            "layerName": "Bedrock",
+            "text": "Unnamed Igneous Intrusion, Late Silurian To Early Devonian - Mafic Igneous-Rock(UISD-MFIR)",
+            "icon": "\/legend_icons\/bgs625k\/poly_bedro_42671.png",
+            "age": "1340299_UISD-MFIR",
+            "ageName": "Ludlow - Early Devonian epoch",
+            "leaf": true,
+            "children": [
+
+            ]
+          },
+          {
+            "internalId": "FCODE_42710",
+            "fcode": 42710,
+            "layerName": "Bedrock",
+            "text": "Unnamed Igneous Intrusion, Late Silurian To Early Devonian - Pyroclastic-Rock(UISD-PYRR)",
+            "icon": "\/legend_icons\/bgs625k\/poly_bedro_42710.png",
+            "age": "1340299_UISD-PYRR",
+            "ageName": "Ludlow - Early Devonian epoch",
+            "leaf": true,
+            "children": [
+
+            ]
+          },
+          {
+            "internalId": "FCODE_42660",
+            "fcode": 42660,
+            "layerName": "Bedrock",
+            "text": "Riccarton Group - Wacke(RCN-WACKE)",
+            "icon": "\/legend_icons\/bgs625k\/poly_bedro_42660.png",
+            "age": "1340399_RCN-WACKE",
+            "ageName": "Wenlock epoch",
+            "leaf": true,
+            "children": [
+
+            ]
+          },
+          {
+            "internalId": "FCODE_42717",
+            "fcode": 42717,
+            "layerName": "Bedrock",
+            "text": "Gala Group - Wacke(GALA-WACKE)",
+            "icon": "\/legend_icons\/bgs625k\/poly_bedro_42717.png",
+            "age": "1340439_GALA-WACKE",
+            "ageName": "Llandovery epoch",
+            "leaf": true,
+            "children": [
+
+            ]
+          },
+          {
+            "internalId": "FCODE_42590",
+            "fcode": 42590,
+            "layerName": "Bedrock",
+            "text": "Hawick Group - Wacke(HWK-WACKE)",
+            "icon": "\/legend_icons\/bgs625k\/poly_bedro_42590.png",
+            "age": "1340499_HWK-WACKE",
+            "ageName": "Llandovery - Wenlock epoch",
+            "leaf": true,
+            "children": [
+
+            ]
+          },
+          {
+            "internalId": "FCODE_42616",
+            "fcode": 42616,
+            "layerName": "Bedrock",
+            "text": "Lanark Group - Sandstone And Conglomerate, Interbedded(LNK-SCON)",
+            "icon": "\/legend_icons\/bgs625k\/poly_bedro_42616.png",
+            "age": "1349999_LNK-SCON",
+            "ageName": "Silurian - Devonian period",
+            "leaf": true,
+            "children": [
+
+            ]
+          },
+          {
+            "internalId": "FCODE_42658",
+            "fcode": 42658,
+            "layerName": "Bedrock",
+            "text": "Silurian Rocks (Undifferentiated) - Mudstone, Siltstone And Sandstone(SILU-MDSS)",
+            "icon": "\/legend_icons\/bgs625k\/poly_bedro_42658.png",
+            "age": "1349999_SILU-MDSS",
+            "ageName": "Silurian period",
+            "leaf": true,
+            "children": [
+
+            ]
+          },
+          {
+            "internalId": "FCODE_42721",
+            "fcode": 42721,
+            "layerName": "Bedrock",
+            "text": "Unnamed Extrusive Rocks, Silurian To Devonian - Felsic Lava And Felsic Tuff(UEXSD-LATF)",
+            "icon": "\/legend_icons\/bgs625k\/poly_bedro_42721.png",
+            "age": "1349999_UEXSD-LATF",
+            "ageName": "Silurian - Devonian period",
+            "leaf": true,
+            "children": [
+
+            ]
+          },
+          {
+            "internalId": "FCODE_42722",
+            "fcode": 42722,
+            "layerName": "Bedrock",
+            "text": "Unnamed Extrusive Rocks, Silurian To Devonian - Mafic Lava And Mafic Tuff(UEXSD-LATM)",
+            "icon": "\/legend_icons\/bgs625k\/poly_bedro_42722.png",
+            "age": "1349999_UEXSD-LATM",
+            "ageName": "Silurian - Devonian period",
+            "leaf": true,
+            "children": [
+
+            ]
+          },
+          {
+            "internalId": "FCODE_42532",
+            "fcode": 42532,
+            "layerName": "Bedrock",
+            "text": "Blackcraig Formation And Galdenoch Formation (Undifferentiated) - Wacke(BKGA-WACKE)",
+            "icon": "\/legend_icons\/bgs625k\/poly_bedro_42532.png",
+            "age": "1350299_BKGA-WACKE",
+            "ageName": "Caradoc epoch",
+            "leaf": true,
+            "children": [
+
+            ]
+          },
+          {
+            "internalId": "FCODE_42611",
+            "fcode": 42611,
+            "layerName": "Bedrock",
+            "text": "Kirkcolm Formation - Wacke(KKF-WACKE)",
+            "icon": "\/legend_icons\/bgs625k\/poly_bedro_42611.png",
+            "age": "1350299_KKF-WACKE",
+            "ageName": "Caradoc epoch",
+            "leaf": true,
+            "children": [
+
+            ]
+          },
+          {
+            "internalId": "FCODE_42657",
+            "fcode": 42657,
+            "layerName": "Bedrock",
+            "text": "Portpatrick Formation And Glenwhargen Formation (Undifferentiated) - Wacke(PPGW-WACKE)",
+            "icon": "\/legend_icons\/bgs625k\/poly_bedro_42657.png",
+            "age": "1350299_PPGW-WACKE",
+            "ageName": "Caradoc epoch",
+            "leaf": true,
+            "children": [
+
+            ]
+          },
+          {
+            "internalId": "FCODE_42567",
+            "fcode": 42567,
+            "layerName": "Bedrock",
+            "text": "Shinnel Formation And Glenlee Formation (Undifferentiated) - Wacke(SHGN-WACKE)",
+            "icon": "\/legend_icons\/bgs625k\/poly_bedro_42567.png",
+            "age": "1350299_SHGN-WACKE",
+            "ageName": "Caradoc - Ashgill epoch",
+            "leaf": true,
+            "children": [
+
+            ]
+          },
+          {
+            "internalId": "FCODE_42501",
+            "fcode": 42501,
+            "layerName": "Bedrock",
+            "text": "Tappins Group - Wacke(TAP-WACKE)",
+            "icon": "\/legend_icons\/bgs625k\/poly_bedro_42501.png",
+            "age": "1350329_TAP-WACKE",
+            "ageName": "Llanvirn - Caradoc epoch",
+            "leaf": true,
+            "children": [
+
+            ]
+          },
+          {
+            "internalId": "FCODE_42589",
+            "fcode": 42589,
+            "layerName": "Bedrock",
+            "text": "Crawford Group And Moffat Shale Group (Undifferentiated) - Mudstone, Chert And Smectite-Claystone(CRMF-MDCB)",
+            "icon": "\/legend_icons\/bgs625k\/poly_bedro_42589.png",
+            "age": "1350499_CRMF-MDCB",
+            "ageName": "Arenig - Llandovery epoch",
+            "leaf": true,
+            "children": [
+
+            ]
+          },
+          {
+            "internalId": "FCODE_42714",
+            "fcode": 42714,
+            "layerName": "Bedrock",
+            "text": "Unnamed Igneous Intrusion, Ordovician To Silurian - Ultramafitite(UIIOS-UMFT)",
+            "icon": "\/legend_icons\/bgs625k\/poly_bedro_42714.png",
+            "age": "1359999_UIIOS-UMFT",
+            "ageName": "Ordovician - Silurian period",
+            "leaf": true,
+            "children": [
+
+            ]
+          },
+          {
+            "internalId": "FCODE_42553",
+            "fcode": 42553,
+            "layerName": "Bedrock",
+            "text": "Cambrian And Ordovician Rocks (Undifferentiated) - Mafic Lava And Mafic Tuff(CAOR-LATM)",
+            "icon": "\/legend_icons\/bgs625k\/poly_bedro_42553.png",
+            "age": "1369999_CAOR-LATM",
+            "ageName": "Cambrian - Ordovician period",
+            "leaf": true,
+            "children": [
+
+            ]
+          },
+          {
+            "internalId": "FCODE_42552",
+            "fcode": 42552,
+            "layerName": "Bedrock",
+            "text": "Highland Border Complex [Under Review; Possibly Obsolete] - Serpentinite, Metabasalt, Metalimestone(HBX-SMLP)",
+            "icon": "\/legend_icons\/bgs625k\/poly_bedro_42552.png",
+            "age": "1369999_HBX-SMLP",
+            "ageName": "Cambrian - Ordovician period",
+            "leaf": true,
+            "children": [
+
+            ]
+          },
+          {
+            "internalId": "FCODE_42613",
+            "fcode": 42613,
+            "layerName": "Bedrock",
+            "text": "Argyll Group - Metalimestone(ARGY-MLMST)",
+            "icon": "\/legend_icons\/bgs625k\/poly_bedro_42613.png",
+            "age": "2199999_ARGY-MLMST",
+            "ageName": "Neoproterozoic era",
+            "leaf": true,
+            "children": [
+
+            ]
+          },
+          {
+            "internalId": "FCODE_42557",
+            "fcode": 42557,
+            "layerName": "Bedrock",
+            "text": "Argyll Group - Psammite, Semipelite And Pelite(ARGY-PSP)",
+            "icon": "\/legend_icons\/bgs625k\/poly_bedro_42557.png",
+            "age": "2199999_ARGY-PSP",
+            "ageName": "Neoproterozoic era",
+            "leaf": true,
+            "children": [
+
+            ]
+          },
+          {
+            "internalId": "FCODE_42624",
+            "fcode": 42624,
+            "layerName": "Bedrock",
+            "text": "Southern Highland Group - Lava, Tuff, Volcaniclastic Rock And Sedimentary Rock(SOHI-LTVS)",
+            "icon": "\/legend_icons\/bgs625k\/poly_bedro_42624.png",
+            "age": "2199999_SOHI-LTVS",
+            "ageName": "Neoproterozoic - Palaeozoic era",
+            "leaf": true,
+            "children": [
+
+            ]
+          },
+          {
+            "internalId": "FCODE_42515",
+            "fcode": 42515,
+            "layerName": "Bedrock",
+            "text": "Southern Highland Group - Pelite(SOHI-PEL)",
+            "icon": "\/legend_icons\/bgs625k\/poly_bedro_42515.png",
+            "age": "2199999_SOHI-PEL",
+            "ageName": "Neoproterozoic - Palaeozoic era",
+            "leaf": true,
+            "children": [
+
+            ]
+          },
+          {
+            "internalId": "FCODE_42668",
+            "fcode": 42668,
+            "layerName": "Bedrock",
+            "text": "Southern Highland Group - Psammite And Pelite(SOHI-PSPE)",
+            "icon": "\/legend_icons\/bgs625k\/poly_bedro_42668.png",
+            "age": "2199999_SOHI-PSPE",
+            "ageName": "Neoproterozoic - Palaeozoic era",
+            "leaf": true,
+            "children": [
+
+            ]
+          },
+          {
+            "internalId": "FCODE_42536",
+            "fcode": 42536,
+            "layerName": "Bedrock",
+            "text": "Unnamed Extrusive Rocks, Neoproterozoic - Mafic Lava And Mafic Tuff(UEXAZ-LATM)",
+            "icon": "\/legend_icons\/bgs625k\/poly_bedro_42536.png",
+            "age": "2199999_UEXAZ-LATM",
+            "ageName": "Neoproterozoic era",
+            "leaf": true,
+            "children": [
+
+            ]
+          },
+          {
+            "internalId": "FCODE_42541",
+            "fcode": 42541,
+            "layerName": "Bedrock",
+            "text": "Unnamed Igneous Intrusion, Neoproterozoic - Mafite(UIAZ-MAFI)",
+            "icon": "\/legend_icons\/bgs625k\/poly_bedro_42541.png",
+            "age": "2199999_UIAZ-MAFI",
+            "ageName": "Neoproterozoic era",
+            "leaf": true,
+            "children": [
+
+            ]
+          },
+          {
+            "internalId": "FCODE_42638",
+            "fcode": 42638,
+            "layerName": "Bedrock",
+            "text": "Unnamed Igneous Intrusion, Neoproterozoic - Mafic Igneous-Rock(UIAZ-MFIR)",
+            "icon": "\/legend_icons\/bgs625k\/poly_bedro_42638.png",
+            "age": "2199999_UIAZ-MFIR",
+            "ageName": "Neoproterozoic era",
+            "leaf": true,
+            "children": [
+
+            ]
+          },
+          {
+            "internalId": "FCODE_42598",
+            "fcode": 42598,
+            "layerName": "Bedrock",
+            "text": "Unnamed Igneous Intrusion, Neoproterozoic - Ultramafitite(UIAZ-UMFT)",
+            "icon": "\/legend_icons\/bgs625k\/poly_bedro_42598.png",
+            "age": "2199999_UIAZ-UMFT",
+            "ageName": "Neoproterozoic era",
+            "leaf": true,
+            "children": [
+
+            ]
+          }
+        ]
+      },
+      {
+        "internalId": "Dykes",
+        "fcode": null,
+        "layerName": null,
+        "text": "Dykes",
+        "icon": "",
+        "age": null,
+        "ageName": null,
+        "leaf": false,
+        "children": [
+          {
+            "internalId": "FCODE_42769",
+            "fcode": 42769,
+            "layerName": "Dykes",
+            "text": "Unnamed Igneous Intrusion, Palaeogene - Felsic-Rock(UIG-FELSR)",
+            "icon": "\/legend_icons\/bgs625k\/poly_dykes_42769.png",
+            "age": "1139999_UIG-FELSR",
+            "ageName": "Palaeogene period",
+            "leaf": true,
+            "children": [
+
+            ]
+          },
+          {
+            "internalId": "FCODE_42762",
+            "fcode": 42762,
+            "layerName": "Dykes",
+            "text": "Unnamed Igneous Intrusion, Palaeogene - Mafic Igneous-Rock(UIG-MFIR)",
+            "icon": "\/legend_icons\/bgs625k\/poly_dykes_42762.png",
+            "age": "1139999_UIG-MFIR",
+            "ageName": "Palaeogene period",
+            "leaf": true,
+            "children": [
+
+            ]
+          },
+          {
+            "internalId": "FCODE_42770",
+            "fcode": 42770,
+            "layerName": "Dykes",
+            "text": "Unnamed Igneous Intrusion, Carboniferous To Permian - Dolerite And Tholeiitic Basalt(UIICP-DBAT)",
+            "icon": "\/legend_icons\/bgs625k\/poly_dykes_42770.png",
+            "age": "1329999_UIICP-DBAT",
+            "ageName": "Carboniferous - Permian period",
+            "leaf": true,
+            "children": [
+
+            ]
+          },
+          {
+            "internalId": "FCODE_42759",
+            "fcode": 42759,
+            "layerName": "Dykes",
+            "text": "Unnamed Igneous Intrusion, Carboniferous To Permian - Mafic Igneous-Rock(UIICP-MFIR)",
+            "icon": "\/legend_icons\/bgs625k\/poly_dykes_42759.png",
+            "age": "1329999_UIICP-MFIR",
+            "ageName": "Carboniferous - Permian period",
+            "leaf": true,
+            "children": [
+
+            ]
+          },
+          {
+            "internalId": "FCODE_42764",
+            "fcode": 42764,
+            "layerName": "Dykes",
+            "text": "Unnamed Igneous Intrusion, Late Silurian To Early Devonian - Felsic-Rock(UISD-FELSR)",
+            "icon": "\/legend_icons\/bgs625k\/poly_dykes_42764.png",
+            "age": "1340299_UISD-FELSR",
+            "ageName": "Ludlow - Early Devonian epoch",
+            "leaf": true,
+            "children": [
+
+            ]
+          },
+          {
+            "internalId": "FCODE_42774",
+            "fcode": 42774,
+            "layerName": "Dykes",
+            "text": "Unnamed Igneous Intrusion, Late Silurian To Early Devonian - Mafic Igneous-Rock(UISD-MFIR)",
+            "icon": "\/legend_icons\/bgs625k\/poly_dykes_42774.png",
+            "age": "1340299_UISD-MFIR",
+            "ageName": "Ludlow - Early Devonian epoch",
+            "leaf": true,
+            "children": [
+
+            ]
+          },
+          {
+            "internalId": "FCODE_42766",
+            "fcode": 42766,
+            "layerName": "Dykes",
+            "text": "Unnamed Igneous Intrusion, Cambrian To Ordovician - Mafic Igneous-Rock(UIIEO-MFIR)",
+            "icon": "\/legend_icons\/bgs625k\/poly_dykes_42766.png",
+            "age": "1369999_UIIEO-MFIR",
+            "ageName": "Cambrian - Ordovician period",
+            "leaf": true,
+            "children": [
+
+            ]
+          },
+          {
+            "internalId": "FCODE_42765",
+            "fcode": 42765,
+            "layerName": "Dykes",
+            "text": "Unnamed Igneous Intrusion, Neoproterozoic - Mafic Igneous-Rock(UIAZ-MFIR)",
+            "icon": "\/legend_icons\/bgs625k\/poly_dykes_42765.png",
+            "age": "2199999_UIAZ-MFIR",
+            "ageName": "Neoproterozoic era",
+            "leaf": true,
+            "children": [
+
+            ]
+          }
+        ]
+      },
+      {
+        "internalId": "Superficial Deposits",
+        "fcode": null,
+        "layerName": null,
+        "text": "Superficial Deposits",
+        "icon": "",
+        "age": null,
+        "ageName": null,
+        "leaf": false,
+        "children": [
+          {
+            "internalId": "FCODE_42749",
+            "fcode": 42749,
+            "layerName": "Superficial Deposits",
+            "text": "(ALV-CLAY + SILT + SANDU)",
+            "icon": "\/legend_icons\/bgs625k\/poly_super_42749.png",
+            "age": "",
+            "ageName": "Quaternary period",
+            "leaf": true,
+            "children": [
+
+            ]
+          },
+          {
+            "internalId": "FCODE_42752",
+            "fcode": 42752,
+            "layerName": "Superficial Deposits",
+            "text": "Blown Sand - Sand(Undifferentiated)(BSA-SANDU)",
+            "icon": "\/legend_icons\/bgs625k\/poly_super_42752.png",
+            "age": "",
+            "ageName": "Quaternary period",
+            "leaf": true,
+            "children": [
+
+            ]
+          },
+          {
+            "internalId": "FCODE_42745",
+            "fcode": 42745,
+            "layerName": "Superficial Deposits",
+            "text": "Glacial Sand And Gravel - Sand And Gravel(GSG-SAGR)",
+            "icon": "\/legend_icons\/bgs625k\/poly_super_42745.png",
+            "age": "",
+            "ageName": "Quaternary period",
+            "leaf": true,
+            "children": [
+
+            ]
+          },
+          {
+            "internalId": "FCODE_42744",
+            "fcode": 42744,
+            "layerName": "Superficial Deposits",
+            "text": "Landslip - Rock (Undifferentiated)(SLIP-ROCK)",
+            "icon": "\/legend_icons\/bgs625k\/poly_super_42744.png",
+            "age": "",
+            "ageName": "Quaternary period",
+            "leaf": true,
+            "children": [
+
+            ]
+          },
+          {
+            "internalId": "FCODE_42750",
+            "fcode": 42750,
+            "layerName": "Superficial Deposits",
+            "text": "Peat - Peat(PEAT-PEAT)",
+            "icon": "\/legend_icons\/bgs625k\/poly_super_42750.png",
+            "age": "",
+            "ageName": "Quaternary period",
+            "leaf": true,
+            "children": [
+
+            ]
+          },
+          {
+            "internalId": "FCODE_42754",
+            "fcode": 42754,
+            "layerName": "Superficial Deposits",
+            "text": "Raised Marine Deposits (Undifferentiated) - Sand And Gravel(RMD-SAGR)",
+            "icon": "\/legend_icons\/bgs625k\/poly_super_42754.png",
+            "age": "",
+            "ageName": "Quaternary period",
+            "leaf": true,
+            "children": [
+
+            ]
+          },
+          {
+            "internalId": "FCODE_42747",
+            "fcode": 42747,
+            "layerName": "Superficial Deposits",
+            "text": "River Terrace Deposits (Undifferentiated) - Sand And Gravel(RTDU-SAGR)",
+            "icon": "\/legend_icons\/bgs625k\/poly_super_42747.png",
+            "age": "",
+            "ageName": "Quaternary period",
+            "leaf": true,
+            "children": [
+
+            ]
+          },
+          {
+            "internalId": "FCODE_42755",
+            "fcode": 42755,
+            "layerName": "Superficial Deposits",
+            "text": "Till - Diamicton(TILL-DMTN)",
+            "icon": "\/legend_icons\/bgs625k\/poly_super_42755.png",
+            "age": "",
+            "ageName": "Quaternary period",
+            "leaf": true,
+            "children": [
+
+            ]
+          }
+        ]
+      },
+      {
+        "internalId": "Linear Features",
+        "fcode": null,
+        "layerName": null,
+        "text": "Linear Features",
+        "icon": "",
+        "age": null,
+        "ageName": null,
+        "leaf": false,
+        "children": [
+          {
+            "internalId": "FCODE_42757",
+            "fcode": 42757,
+            "layerName": "Linear Features",
+            "text": "Fault At Rockhead",
+            "icon": "\/legend_icons\/bgs625k\/line_fault_42757.png",
+            "age": "",
+            "ageName": null,
+            "leaf": true,
+            "children": [
+
+            ]
+          }
+        ]
+      }
+    ]
+  }
+]

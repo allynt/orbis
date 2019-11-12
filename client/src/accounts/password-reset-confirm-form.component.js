@@ -1,13 +1,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 
 import useForm from '../hooks/useForm';
 import validate from './password-reset-confirm-form.validator';
 
-import Button from '../ui/button.component';
-// import Button from 'astrosat-ui';
+import { Button, PasswordField, PasswordStrengthMeter, Textfield, Checkbox } from '@astrosat/astrosat-ui';
 
-import styles from './password-reset-confirm-form.module.css';
+import { ReactComponent as OrbisLogo } from '../orbis.svg';
+
+import formStyles from './forms.module.css';
+import passwordStyles from './password-reset-confirm-form.module.css';
 
 const PasswordResetConfirmForm = ({ confirmChangePassword, routerProps }) => {
   const { handleChange, handleSubmit, reset, values, errors } = useForm(onSubmit, validate);
@@ -17,55 +20,63 @@ const PasswordResetConfirmForm = ({ confirmChangePassword, routerProps }) => {
   }
 
   return (
-    <div className={styles['password-reset-confirm-form-container']}>
-      <form className={styles['password-reset-confirm-form']} onSubmit={handleSubmit}>
-        <h3>Create New Password</h3>
+    <div className={formStyles.container}>
+      <form className={formStyles.form} onSubmit={handleSubmit}>
+        <OrbisLogo className={formStyles.logo} />
 
-        <div className={styles['form-row']}>
-          <label className={styles.label}>
-            New Password:
-            <input
-              className={`${styles.input} ${errors.new_password1 ? styles.error : ''}`}
-              type="password"
-              name="new_password1"
-              onChange={handleChange}
-              value={values.new_password1 || ''}
-              required
+        <div className={formStyles.fields}>
+          <div className={formStyles.row}>
+            <PasswordField name="new_password1" value={values.new_password1 || ''} onChange={handleChange} placeholder="New Password" required autoFocus />
+          </div>
+          {errors.new_password1 && <p className={formStyles.errorMessage}>{errors.new_password1}</p>}
+
+          <div className={formStyles.row}>
+            <PasswordField name="new_password1" value={values.new_password1 || ''} onChange={handleChange} placeholder="New Password" required autoFocus />
+          </div>
+          {errors.new_password2 && <p className={formStyles.errorMessage}>{errors.new_password2}</p>}
+
+          <PasswordStrengthMeter password={values.password1} />
+
+          <div className={`${formStyles.row} ${passwordStyles.incidentals}`}>
+            <ul>
+              <li>No weak passwords</li>
+              <li>At least 8 characters long</li>
+              <li>Contains uppercase letters</li>
+            </ul>
+            <ul>
+              <li>Contains numbers</li>
+              <li>Not similar with email</li>
+            </ul>
+          </div>
+
+          <div className={formStyles.row}>
+            <Checkbox
+              name="loggedIn"
+              value="true"
+              label="I agree with"
+              onChange={() => console.log('Keep me logged in')}
             />
-          </label>
-          <em className={styles.required}>(Required)</em>
+            &nbsp;<a href="">Terms &amp; Conditions</a>
+          </div>
         </div>
-        {errors.new_password1 && <p className={styles['error-message']}>{errors.new_password1}</p>}
 
-        <div className={styles['form-row']}>
-          <label className={styles.label}>
-            Password (Confirm):
-            <input
-              className={`${styles.input} ${errors.new_password2 ? styles.error : ''}`}
-              type="password"
-              name="new_password2"
-              onChange={handleChange}
-              value={values.new_password2 || ''}
-              required
-            />
-          </label>
-          <em className={styles.required}>(Required)</em>
-        </div>
-        {errors.new_password2 && <p className={styles['error-message']}>{errors.new_password2}</p>}
-
-        <div className={styles.buttons}>
-          <Button type="reset" className={styles.button} onClick={reset} disabled={Object.keys(values).length === 0}>
+        <div className={formStyles.buttons}>
+          {/* <Button type="reset" className={formStyles.button} onClick={reset} disabled={Object.keys(values).length === 0}>
             Reset
-          </Button>
+          </Button> */}
 
           <Button
             type="submit"
-            className={styles.button}
+            className={formStyles.button}
             disabled={Object.keys(errors).length > 0 || Object.keys(values).length === 0}
           >
-            Create Password
+            Reset Password
           </Button>
         </div>
+
+        <p className={passwordStyles.footer}>
+          Do you have an account?&nbsp;<Link to={'/login'}>Login</Link>
+        </p>
       </form>
     </div>
   );

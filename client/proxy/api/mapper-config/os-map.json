@@ -1,0 +1,623 @@
+{
+    "projection": {"code": "EPSG:27700", "displayName": "British National Grid" },
+    "bounds": [-800000, -500000, 1500000, 1800000],
+    "layers": [{
+        "mapproxyProduct": "gb",
+        "visibility": false,
+        "resolutions": [2000],
+        "bounds": [-800000, -550000, 1500000, 1750000],
+        "cachedLayers": ["os-gb"],
+        "metadata": {
+            "productId": "gb",
+            "legendName": "gb",
+            "themeDisplayName": "GB",
+            "mapInfoDisplayName": ["GB Overview"],
+            "logName": "GB",
+            "date": "December 2014",
+            "licence": "<a href=\"http://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/\" target=\"_blank\">OS OpenData</a>",
+            "copyright": "Contains OS data © Crown copyright and database right {currentYear}. FOR EDUCATIONAL USE ONLY",
+            "help": ["/webhelp/os/osdigimaphelp.htm#data_information/os_products/gb_overview_maps.htm"],
+            "print" : {
+              "cliveProduct": "RasterPrinting",
+              "swd": "gb",
+              "scaleRange": { "min": 2000000 , "max": 10000000 }
+             }
+        }
+    }, {
+        "mapproxyProduct": "gb_relief",
+        "visibility": false,
+        "resolutions": [2000],
+        "bounds": [-800000, -550000, 1500000, 1750000],
+        "cachedLayers": ["os-gb-relief"],
+        "metadata": {
+            "productId": "gb_relief",
+            "legendName": "gb_relief",
+            "themeDisplayName": "GB Relief",
+            "mapInfoDisplayName": ["OS Strategi", "Land-Form PANORAMA"],
+            "logName": "GB_Relief",
+            "date": "2009",
+            "licence": "<a href=\"http://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/\" target=\"_blank\">OS OpenData</a>",
+            "copyright": "Contains OS data © Crown copyright and database right {currentYear}. FOR EDUCATIONAL USE ONLY",
+            "help": ["/webhelp/os/osdigimaphelp.htm#data_information/os_products/strategi.htm","/webhelp/os/osdigimaphelp.htm#data_information/os_products/land-form_panorama.htm"],
+            "print" : {
+              "cliveProduct": "RasterPrinting",
+              "swd": "GB_Relief",
+              "scaleRange": { "min": 2000000 , "max": 10000000 }
+             }
+        }
+    }, {
+      "mapproxyProduct": "MiniscaleStandard",
+      "visibility": false,
+      "resolutions": [400, 200, 100],
+      "bounds": [0, 0, 700000, 1300000],
+      "cachedLayers": ["os-miniscale-standard"],
+      "metadata": {
+          "productId": "MiniscaleStandard",
+          "legendName": "MiniscaleStandard",
+          "themeDisplayName": "Standard",
+          "mapInfoDisplayName": ["MiniScale&reg;"],
+          "logName": "MiniscaleStandard",
+          "date": "January 2017",
+          "licence": "<a href=\"http://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/\" target=\"_blank\">OS OpenData</a>",
+          "copyright": "Contains OS data © Crown copyright and database right {currentYear}. FOR EDUCATIONAL USE ONLY",
+          "help": ["/webhelp/os/osdigimaphelp.htm#data_information/os_products/miniscale.htm"],
+          "print" : {
+            "cliveProduct": "RasterPrinting",
+            "swd": "Miniscale_Standard",
+            "scaleRange": { "min": 400000 , "max": 2500000 }
+           }
+      }
+    }, {
+        "mapproxyProduct": "MiniscaleRelief",
+        "visibility": false,
+        "resolutions": [400, 200, 100],
+        "bounds": [0, 0, 700000, 1300000],
+        "cachedLayers": ["os-miniscale-relief"],
+        "metadata": {
+            "productId": "MiniscaleRelief",
+            "legendName": "MiniscaleRelief",
+            "themeDisplayName": "Relief",
+            "mapInfoDisplayName": ["MiniScale&reg;"],
+            "logName": "MiniscaleRelief",
+            "date": "January 2017",
+            "licence": "<a href=\"http://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/\" target=\"_blank\">OS OpenData</a>",
+            "copyright": "Contains OS data © Crown copyright and database right {currentYear}. FOR EDUCATIONAL USE ONLY",
+            "help": ["/webhelp/os/osdigimaphelp.htm#data_information/os_products/miniscale.htm"],
+            "print" : {
+              "cliveProduct": "RasterPrinting",
+              "swd": "Miniscale_Relief",
+              "scaleRange": { "min": 400000 , "max": 2500000 }
+             }
+        }
+    }, {
+      "mapproxyProduct": "MiniscaleBackground",
+      "visibility": false,
+      "resolutions": [400, 200, 100],
+      "bounds": [0, 0, 700000, 1300000],
+      "cachedLayers": ["os-miniscale-background"],
+      "metadata": {
+          "productId": "MiniscaleBackground",
+          "legendName": "MiniscaleBackground",
+          "themeDisplayName": "Background",
+          "mapInfoDisplayName": ["MiniScale&reg;"],
+          "logName": "MiniscaleBackground",
+          "date": "January 2017",
+          "licence": "<a href=\"http://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/\" target=\"_blank\">OS OpenData</a>",
+          "copyright": "Contains OS data © Crown copyright and database right {currentYear}. FOR EDUCATIONAL USE ONLY",
+          "help": ["/webhelp/os/osdigimaphelp.htm#data_information/os_products/miniscale.htm"],
+          "print" : {
+            "cliveProduct": "RasterPrinting",
+            "swd": "Miniscale_Background",
+            "scaleRange": { "min": 400000 , "max": 2500000 }
+           }
+      }
+    }, {
+      "mapproxyProduct": "Strategi",
+      "visibility": false,
+      "resolutions": [50, 25],
+      "bounds": [0, 0, 700000, 1300000],
+      "cachedLayers": ["ST_all"],
+      "metadata": {
+          "productId": "Strategi",
+          "legendName": "Strategi",
+          "themeDisplayName": "Strategi",
+          "family": "strategi",
+          "mapInfoDisplayName": ["Strategi&reg;"],
+          "logName": "Strategi",
+          "date": "January 2016",
+          "licence": "<a href=\"http://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/\" target=\"_blank\">OS OpenData</a>",
+          "copyright": "Contains OS data © Crown copyright and database right {currentYear}. FOR EDUCATIONAL USE ONLY",
+          "help": ["/webhelp/os/osdigimaphelp.htm#data_information/os_products/strategi.htm"],
+          "print" : {
+            "cliveProduct": "Strategi",
+            "layers": "ST_all",
+            "swd": "Strategi",
+            "scaleRange": { "min": 30000 , "max": 400000 }
+           }
+      }
+    }, {
+      "mapproxyProduct": "StrategiVM",
+      "visibility": false,
+      "resolutions": [50, 25],
+      "bounds": [0, 0, 700000, 1300000],
+      "cachedLayers": ["ST_all"],
+      "metadata": {
+          "productId": "StrategiVM",
+          "legendName": "StrategiVM",
+          "themeDisplayName": "Background",
+          "family": "strategi",
+          "mapInfoDisplayName": ["Strategi&reg;"],
+          "logName": "StrategiVM",
+          "date": "January 2016",
+          "licence": "<a href=\"http://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/\" target=\"_blank\">OS OpenData</a>",
+          "copyright": "Contains OS data © Crown copyright and database right {currentYear}. FOR EDUCATIONAL USE ONLY",
+          "help": ["/webhelp/os/osdigimaphelp.htm#data_information/os_products/strategi.htm"],
+          "print" : {
+            "cliveProduct": "StrategiVM",
+            "layers": "ST_all",
+            "swd": "StrategiVM",
+            "scaleRange": { "min": 30000 , "max": 400000 }
+           }
+      }
+    }, {
+      "mapproxyProduct": "Raster250k",
+      "visibility": false,
+      "resolutions": [50, 25],
+      "bounds": [0, 0, 700000, 1300000],
+      "cachedLayers": ["os-raster250k"],
+      "metadata": {
+          "productId": "Raster250k",
+          "legendName": "Raster250k",
+          "themeDisplayName": "Raster 250k",
+          "mapInfoDisplayName": ["1:250 000 Scale Colour Raster"],
+          "logName": "Raster250k",
+          "date": "March 2017",
+          "licence": "<a href=\"http://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/\" target=\"_blank\">OS OpenData</a>",
+          "copyright": "Contains OS data © Crown copyright and database right {currentYear}. FOR EDUCATIONAL USE ONLY",
+          "help": ["/webhelp/os/osdigimaphelp.htm#data_information/os_products/250k_colour_raster.htm"],
+          "print" : {
+            "cliveProduct": "OMLGreyscale",
+            "swd": "DD_OML_Greyscale",
+            "scaleRange": { "min": 30000 , "max": 400000 }
+           }
+      }
+    }, {
+      "mapproxyProduct": "Raster50k",
+      "visibility": false,
+      "resolutions": [10, 5],
+      "bounds": [0, 0, 700000, 1300000],
+      "cachedLayers": ["os-raster50k"],
+      "metadata": {
+          "productId": "Raster50k",
+          "legendName": "Raster50k",
+          "themeDisplayName": "Raster 50k",
+          "mapInfoDisplayName": ["1:50 000 Scale Colour Raster"],
+          "logName": "Raster50k",
+          "date": "December 2016",
+          "licence": "<a href=\"/webhelp/os/osdigimaphelp.htm#copyright/licence_agreement.htm\" target=\"_blank\">OS Digimap Licence</a>",
+          "copyright": "© Crown copyright and database rights {currentYear} Ordnance Survey (Digimap Licence). FOR EDUCATIONAL USE ONLY.",
+          "help": ["/webhelp/os/osdigimaphelp.htm#data_information/os_products/50k_colour_raster.htm"],
+          "print" : {
+            "cliveProduct": "RasterPrinting",
+            "swd": "Raster50k",
+            "scaleRange": { "min": 15000 , "max": 60000 }
+           }
+      }
+    }, {
+        "mapproxyProduct":"Raster50kGS",
+        "visibility":false,
+        "resolutions":[10, 5],
+        "bounds":[0,0,700000,1300000],
+        "cachedLayers":["os-raster50k-gs"],
+        "metadata":{
+            "productId":"Raster50kGS",
+            "legendName":"Raster50kGS",
+            "themeDisplayName":"Raster 50k Greyscale",
+            "mapInfoDisplayName":["1:50 000 Scale Colour Raster"],
+            "logName":"Raster50kGS",
+            "date":"December 2016",
+            "licence":"<a href=\"/webhelp/os/osdigimaphelp.htm#copyright/licence_agreement.htm\" target=\"_blank\">OS Digimap Licence</a>",
+            "copyright":"© Crown copyright and database rights {currentYear} Ordnance Survey (Digimap Licence). FOR EDUCATIONAL USE ONLY.",
+            "help":["/webhelp/os/osdigimaphelp.htm#data_information/os_products/50k_colour_raster.htm"],
+            "print":{
+                "cliveProduct":"RasterPrinting",
+                "swd":"Raster50kGS",
+                "scaleRange":{  "min":15000, "max":60000 }
+            }
+        }
+    }, {
+        "mapproxyProduct": "Raster25k",
+        "visibility": false,
+        "resolutions": [2.5],
+        "bounds": [0, 0, 700000, 1300000],
+        "cachedLayers": ["os-raster25k"],
+        "metadata": {
+            "productId": "Raster25k",
+            "legendName": "Raster25k",
+            "themeDisplayName": "Raster 25k",
+            "mapInfoDisplayName": ["1:25 000 Scale Colour Raster"],
+            "logName": "Raster25k",
+            "date": "December 2016",
+            "licence": "<a href=\"/webhelp/os/osdigimaphelp.htm#copyright/licence_agreement.htm\" target=\"_blank\">OS Digimap Licence</a>",
+            "copyright": "© Crown copyright and database rights {currentYear} Ordnance Survey (Digimap Licence). FOR EDUCATIONAL USE ONLY.",
+            "help": ["/webhelp/os/osdigimaphelp.htm#data_information/os_products/25k_colour_raster.htm"],
+            "print" : {
+              "cliveProduct": "RasterPrinting",
+              "swd": "Raster25k",
+              "scaleRange": { "min": 7500 , "max": 30000 }
+             }
+        }
+    }, {
+        "mapproxyProduct":"Raster25kGS",
+        "visibility":false,
+        "resolutions":[2.5],
+        "bounds":[0,0,700000,1300000],
+        "cachedLayers":["os-raster-25k-gs"],
+        "metadata":{
+            "productId":"Raster25kGS",
+            "legendName":"Raster25kGS",
+            "themeDisplayName":"Raster 25k Greyscale",
+            "mapInfoDisplayName":["1:25 000 Scale Colour Raster"],
+            "logName":"Raster25kGS",
+            "date":"September 2016",
+            "licence":"<a href=\"/webhelp/os/osdigimaphelp.htm#copyright/licence_agreement.htm\" target=\"_blank\">OS Digimap Licence</a>",
+            "copyright":"© Crown copyright and database rights {currentYear} Ordnance Survey (Digimap Licence). FOR EDUCATIONAL USE ONLY.",
+            "help":["/webhelp/os/osdigimaphelp.htm#data_information/os_products/25k_colour_raster.htm"],
+            "print":{
+              "cliveProduct": "RasterPrinting",
+              "swd": "Raster25kGS",
+                "scaleRange":{"min":7500,"max":30000 }
+            }
+        }
+    }, {
+        "mapproxyProduct": "vmlclr",
+        "visibility": false,
+        "resolutions": [1.25],
+        "bounds": [0, 0, 700000, 1300000],
+        "cachedLayers": ["os-vml-clr"],
+        "metadata": {
+            "productId": "VMLCLR",
+            "legendName": "VMLCLR",
+            "themeDisplayName": "VML Raster",
+            "mapInfoDisplayName": ["OS VectorMap&reg; Local Raster"],
+            "logName": "VMLCLR",
+            "date": "April 2017",
+            "licence": "<a href=\"/webhelp/os/osdigimaphelp.htm#copyright/licence_agreement.htm\" target=\"_blank\">OS Digimap Licence</a>",
+            "copyright": "© Crown copyright and database rights {currentYear} Ordnance Survey (Digimap Licence). FOR EDUCATIONAL USE ONLY.",
+            "help": ["/webhelp/os/osdigimaphelp.htm#data_information/os_products/os_vectormap_local_raster.htm"],
+            "print" : {
+              "cliveProduct": "RasterPrinting",
+              "swd": "VMLCLR",
+              "scaleRange": { "min": 1000 , "max": 12000 }
+             }
+        }
+    }, {
+        "mapproxyProduct": "MasterMap",
+        "visibility": false,
+        "resolutions": [0.625, 0.3125, 0.15625],
+        "bounds": [0, 0, 700000, 1300000],
+        "cachedLayers": ["MM_all"],
+        "metadata": {
+            "productId": "MasterMap",
+            "legendName": "MasterMap",
+            "themeDisplayName": "Full Colour",
+            "family": "mastermap",
+            "mapInfoDisplayName": ["OS MasterMap&reg;"],
+            "logName": "MasterMap",
+            "date": "December 2016",
+            "licence": "<a href=\"/webhelp/os/osdigimaphelp.htm#copyright/licence_agreement.htm\" target=\"_blank\">OS Digimap Licence</a>",
+            "copyright": "© Crown copyright and database rights {currentYear} Ordnance Survey (Digimap Licence). FOR EDUCATIONAL USE ONLY.",
+            "help": ["/webhelp/os/osdigimaphelp.htm#data_information/os_products/mastermap_topo.htm"],
+            "print" : {
+              "cliveProduct": "MasterMap",
+              "layers": "MM_all",
+              "swd": "MasterMap",
+              "scaleRange": { "min": 90 , "max": 12000 }
+             }
+        }
+    }, {
+        "mapproxyProduct": "MasterMapPlan",
+        "visibility": false,
+        "resolutions": [0.625, 0.3125, 0.15625],
+        "bounds": [0, 0, 700000, 1300000],
+        "cachedLayers": ["MM_all"],
+        "metadata": {
+            "productId": "MasterMapPlan",
+            "legendName": "MasterMapPlan",
+            "themeDisplayName": "Line Drawing",
+            "family": "mastermap",
+            "mapInfoDisplayName": ["OS MasterMap&reg;"],
+            "logName": "MasterMapPlan",
+            "date": "December 2016",
+            "licence": "<a href=\"/webhelp/os/osdigimaphelp.htm#copyright/licence_agreement.htm\" target=\"_blank\">OS Digimap Licence</a>",
+            "copyright": "© Crown copyright and database rights {currentYear} Ordnance Survey (Digimap Licence). FOR EDUCATIONAL USE ONLY.",
+            "help": ["/webhelp/os/osdigimaphelp.htm#data_information/os_products/mastermap_topo.htm"],
+            "print" : {
+              "cliveProduct": "MasterMapPlan",
+              "layers": "MM_all",
+              "swd": "MasterMapPlan",
+              "scaleRange": { "min": 90 , "max": 12000 }
+             }
+        }
+    }, {
+        "mapproxyProduct": "MasterMapOrig",
+        "visibility": false,
+        "resolutions": [0.625, 0.3125, 0.15625],
+        "bounds": [0, 0, 700000, 1300000],
+        "cachedLayers": ["MM_all"],
+        "metadata": {
+            "productId": "MasterMapOrig",
+            "legendName": "MasterMapOrig",
+            "themeDisplayName": "Full Colour Orig",
+            "family": "mastermap",
+            "mapInfoDisplayName": ["OS MasterMap&reg;"],
+            "logName": "MasterMapOrig",
+            "date": "December 2016",
+            "licence": "<a href=\"/webhelp/os/osdigimaphelp.htm#copyright/licence_agreement.htm\" target=\"_blank\">OS Digimap Licence</a>",
+            "copyright": "© Crown copyright and database rights {currentYear} Ordnance Survey (Digimap Licence). FOR EDUCATIONAL USE ONLY.",
+            "help": ["/webhelp/os/osdigimaphelp.htm#data_information/os_products/mastermap_topo.htm"],
+            "print" : {
+              "cliveProduct": "mastermap_orig",
+              "layers": "MM_all",
+              "swd": "MasterMapOrig",
+              "scaleRange": { "min": 90 , "max": 12000 }
+             }
+        }
+    }, {
+        "mapproxyProduct": "VML",
+        "visibility": false,
+        "resolutions": [2.5, 1.25],
+        "bounds": [0, 0, 700000, 1300000],
+        "cachedLayers": ["VML_all"],
+        "metadata": {
+            "productId": "VML",
+            "legendName": "VML",
+            "themeDisplayName": "Vector Map Local",
+            "family": "vml",
+            "mapInfoDisplayName": ["OS VectorMap&reg; Local"],
+            "logName": "VML",
+            "date": "April 2017",
+            "licence": "<a href=\"/webhelp/os/osdigimaphelp.htm#copyright/licence_agreement.htm\" target=\"_blank\">OS Digimap Licence</a>",
+            "copyright": "© Crown copyright and database rights {currentYear} Ordnance Survey (Digimap Licence). FOR EDUCATIONAL USE ONLY.",
+            "help": ["/webhelp/os/osdigimaphelp.htm#data_information/os_products/vectormap_local.htm"],
+            "print" : {
+              "cliveProduct": "VML",
+              "layers": "VML_all",
+              "swd": "VML",
+              "scaleRange": { "min": 1000 , "max": 20000 }
+             }
+        }
+    }, {
+        "mapproxyProduct": "VMLStreet",
+        "visibility": false,
+        "resolutions": [2.5, 1.25],
+        "bounds": [0, 0, 700000, 1300000],
+        "cachedLayers": ["VML_all"],
+        "metadata": {
+            "productId": "VMLStreet",
+            "legendName": "VMLStreet",
+            "themeDisplayName": "VML Streetview",
+            "family": "vml",
+            "mapInfoDisplayName": ["OS VectorMap&reg; Local"],
+            "logName": "VMLStreet",
+            "date": "April 2017",
+            "licence": "<a href=\"/webhelp/os/osdigimaphelp.htm#copyright/licence_agreement.htm\" target=\"_blank\">OS Digimap Licence</a>",
+            "copyright": "© Crown copyright and database rights {currentYear} Ordnance Survey (Digimap Licence). FOR EDUCATIONAL USE ONLY.",
+            "help": ["/webhelp/os/osdigimaphelp.htm#data_information/os_products/vectormap_local.htm"],
+            "print" : {
+              "cliveProduct": "VMLStreet",
+              "layers": "VML_all",
+              "swd": "VMLStreet",
+              "scaleRange": { "min": 1000 , "max": 20000 }
+             }
+        }
+    }, {
+        "mapproxyProduct": "VMLRaster10k",
+        "visibility": false,
+        "resolutions": [2.5, 1.25],
+        "bounds": [0, 0, 700000, 1300000],
+        "cachedLayers": ["VML_all"],
+        "metadata": {
+            "productId": "VMLRaster10k",
+            "legendName": "VMLRaster10k",
+            "themeDisplayName": "VML Raster10k",
+            "family": "vml",
+            "mapInfoDisplayName": ["OS VectorMap&reg; Local"],
+            "logName": "VMLRaster10k",
+            "date": "April 2017",
+            "licence": "<a href=\"/webhelp/os/osdigimaphelp.htm#copyright/licence_agreement.htm\" target=\"_blank\">OS Digimap Licence</a>",
+            "copyright": "© Crown copyright and database rights {currentYear} Ordnance Survey (Digimap Licence). FOR EDUCATIONAL USE ONLY.",
+            "help": ["/webhelp/os/osdigimaphelp.htm#data_information/os_products/vectormap_local.htm"],
+            "print" : {
+              "cliveProduct": "VMLRaster10k",
+              "layers": "VML_all",
+              "swd": "VMLRaster10k",
+              "scaleRange": { "min": 1000 , "max": 20000 }
+             }
+        }
+    }, {
+        "mapproxyProduct": "VMLPlan",
+        "visibility": false,
+        "resolutions": [2.5, 1.25],
+        "bounds": [0, 0, 700000, 1300000],
+        "cachedLayers": ["VML_all"],
+        "metadata": {
+            "productId": "VMLPlan",
+            "legendName": "VMLPlan",
+            "themeDisplayName": "VML Plan",
+            "family": "vml",
+            "mapInfoDisplayName": ["OS VectorMap&reg; Local"],
+            "logName": "VMLPlan",
+            "date": "April 2017",
+            "licence": "<a href=\"/webhelp/os/osdigimaphelp.htm#copyright/licence_agreement.htm\" target=\"_blank\">OS Digimap Licence</a>",
+            "copyright": "© Crown copyright and database rights {currentYear} Ordnance Survey (Digimap Licence). FOR EDUCATIONAL USE ONLY.",
+            "help": ["/webhelp/os/osdigimaphelp.htm#data_information/os_products/vectormap_local.htm"],
+            "print" : {
+              "cliveProduct": "VMLPlan",
+              "layers": "VML_all",
+              "swd": "VMLPlan",
+              "scaleRange": { "min": 1000 , "max": 20000 }
+             }
+        }
+      }, {
+        "mapproxyProduct": "oml",
+        "visibility": false,
+        "resolutions": [2.5,1.25,0.625],
+        "bounds": [0, 0, 700000, 1300000],
+        "cachedLayers": ["OML_all"],
+        "metadata": {
+            "productId": "OML",
+            "legendName": "OML",
+            "themeDisplayName": "Open Map - Local",
+            "family": "oml",
+            "mapInfoDisplayName": ["OS Open Map - Local", "OS Terrain&reg; 50"],
+            "logName": "oml",
+            "date": "October 2016",
+            "licence": "<a href=\"http://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/\" target=\"_blank\">OS OpenData</a>",
+            "copyright": "Contains OS data © Crown copyright and database right {currentYear}. FOR EDUCATIONAL USE ONLY",
+            "help": ["/webhelp/os/osdigimaphelp.htm#data_information/os_products/os_open_map_local.htm", "/webhelp/os/osdigimaphelp.htm#data_information/os_products/os_terrain50_vector.htm"],
+            "print" : {
+              "cliveProduct": "OML",
+              "layers": "OML_all",
+              "swd": "oml",
+              "scaleRange": {"min": 1000, "max": 12000}
+            }
+        }
+      }, {
+        "mapproxyProduct": "vmd",
+        "visibility": false,
+        "resolutions": [5, 2.5],
+        "bounds": [0, 0, 700000, 1300000],
+        "cachedLayers": ["VMD_all"],
+        "metadata": {
+            "productId": "VMD",
+            "legendName": "VMD",
+            "themeDisplayName": "Vector Map District",
+            "mapInfoDisplayName": ["OS VectorMap&#8482; District", "OS Terrain&reg; 50"],
+            "logName": "VMD",
+            "date": "March 2017",
+            "licence": "<a href=\"http://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/\" target=\"_blank\">OS OpenData</a>",
+            "copyright": "Contains OS data © Crown copyright and database right {currentYear}. FOR EDUCATIONAL USE ONLY",
+            "help": ["/webhelp/os/osdigimaphelp.htm#data_information/os_products/os_vectormap_district.htm", "/webhelp/os/osdigimaphelp.htm#data_information/os_products/os_terrain50_vector.htm"],
+            "print" : {
+              "cliveProduct": "VMD",
+              "swd": "VMD",
+              "layers": "vmd_all",
+              "scaleRange": { "min": 6000 , "max": 35000 }
+             }
+          }
+        }, {
+      "mapproxyProduct": "VMDFaded",
+      "visibility": false,
+      "resolutions": [10, 5],
+      "bounds": [0, 0, 700000, 1300000],
+      "cachedLayers": ["os-vmd-clb"],
+      "metadata": {
+          "productId": "VMDFaded",
+          "legendName": "VMDFaded",
+          "themeDisplayName": "VMD Backdrop",
+          "mapInfoDisplayName": ["VectorMap District Raster"],
+          "logName": "VMDFaded",
+          "date": "March 2017",
+          "licence": "<a href=\"http://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/\" target=\"_blank\">OS OpenData</a>",
+          "copyright": "Contains OS data © Crown copyright and database right {currentYear}. FOR EDUCATIONAL USE ONLY",
+          "help": ["/webhelp/os/osdigimaphelp.htm#data_information/os_products/os_vectormap_district_raster.htm"],
+          "print" : {
+            "cliveProduct": "RasterPrinting",
+            "swd": "VMDRasterFaded",
+            "scaleRange": { "min": 15000 , "max": 600000 }
+           }
+      }
+    }, {
+      "mapproxyProduct": "Midscale",
+      "visibility": false,
+      "resolutions": [10],
+      "bounds": [0, 0, 700000, 1300000],
+      "cachedLayers": ["MS_all"],
+      "metadata": {
+          "productId": "Midscale",
+          "legendName": "Midscale",
+          "themeDisplayName": "Mid-scale vector",
+          "family": "midscale",
+          "mapInfoDisplayName": ["Meridian&#8482; 2", "OS Terrain&reg; 50"],
+          "logName": "Midscale",
+          "date": "January 2016",
+          "licence": "<a href=\"http://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/\" target=\"_blank\">OS OpenData</a>",
+          "copyright": "Contains OS data © Crown copyright and database right {currentYear}. FOR EDUCATIONAL USE ONLY",
+          "help": ["/webhelp/os/osdigimaphelp.htm#data_information/os_products/meridian_2.htm", "/webhelp/os/osdigimaphelp.htm#data_information/os_products/os_terrain50_vector.htm"],
+          "print" : {
+            "cliveProduct": "Midscale",
+            "layers": "MS_all",
+            "swd": "Midscale",
+            "scaleRange": { "min": 25000 , "max": 75000 }
+           }
+      }
+    }, {
+      "mapproxyProduct": "MidscaleVM",
+      "visibility": false,
+      "resolutions": [10],
+      "bounds": [0, 0, 700000, 1300000],
+      "cachedLayers": ["MS_all"],
+      "metadata": {
+          "productId": "MidscaleVM",
+          "legendName": "MidscaleVM",
+          "themeDisplayName": "Mid-scale backdrop",
+          "family": "midscale",
+          "mapInfoDisplayName": ["Meridian&#8482; 2", "OS Terrain&reg; 50"],
+          "logName": "MidscaleVM",
+          "date": "January 2016",
+          "licence": "<a href=\"http://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/\" target=\"_blank\">OS OpenData</a>",
+          "copyright": "Contains OS data © Crown copyright and database right {currentYear}. FOR EDUCATIONAL USE ONLY",
+          "help": ["/webhelp/os/osdigimaphelp.htm#data_information/os_products/meridian_2.htm", "/webhelp/os/osdigimaphelp.htm#data_information/os_products/os_terrain50_vector.htm"],
+          "print" : {
+            "cliveProduct": "MidscaleVM",
+            "layers": "MS_all",
+            "swd": "MidscaleVM",
+            "scaleRange": { "min": 25000 , "max": 75000 }
+           }
+      }
+    }, {
+        "mapproxyProduct": "hillshading",
+        "visibility": false,
+        "resolutions": [400, 200, 100, 50, 25, 10, 5],
+        "bounds": [0, 0, 700000, 1300000],
+        "cachedLayers": "hillshade-os",
+        "metadata": {
+            "title": "Hill Shading",
+            "hillshadingLayer": true,
+            "nonproduct": true
+        }
+    }],
+    "metadata": {},
+    "zoomLevelNamesDescending": ["View: GB", "View: National", "View: Regional", "View: County", "View: Metropolitan",
+        "View: City", "View: District", "View: Local", "View: Neighbourhood", "View: Street",
+        "View: Detailed", "View: Plan", "View: Building"],
+    "printing": {
+        "printScales": [8000000, 1600000, 800000, 400000, 200000, 100000, 40000, 20000, 10000, 5000, 2500, 1250, 500],
+        "paperSizes": ["A4", "A3", "A2", "A1", "A0"],
+        "printFormats": ["PDF", "PNG", "JPG"],
+        "printTemplatePrefix": "EDINA_os_"
+    },
+    "searchResultResolutions": {
+        "PLACENAME": 5.0,
+        "ROAD": 1.25,
+        "POSTCODE": 1.25,
+        "PARTIAL_POSTCODE": 10,
+        "GRIDREF_AB0": 200,
+        "GRIDREF_AB2": 25,
+        "GRIDREF_AB4": 5,
+        "GRIDREF_AB6": 1.25,
+        "GRIDREF_AB8": 0.62,
+        "GRIDREF_AB10": 0.31,
+        "WGS_84": 1.764,
+        "EPSG_27700": 1.764
+    },
+    "overview": {
+        "mapproxyProduct": "osmapper",
+        "visibility": true,
+        "bounds": [0, 0, 700000, 1300000],
+        "resolutions": [3000, 400, 100, 50, 25, 10, 5, 2.5],
+        "copyright": "© Crown copyright {currentYear}",
+        "cachedLayers": ["roam-overview"]
+    }
+}

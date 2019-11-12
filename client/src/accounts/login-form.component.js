@@ -5,11 +5,12 @@ import { Link, Redirect } from 'react-router-dom';
 import useForm from '../hooks/useForm';
 import validate from './login-form.validator';
 
-import Button from '../ui/button.component';
-import PasswordField from './password-field.component';
-// import Button from 'astrosat-ui';
+import { Button, PasswordField, Textfield, Checkbox } from '@astrosat/astrosat-ui';
 
-import styles from './login-form.module.css';
+import { ReactComponent as OrbisLogo } from '../orbis.svg';
+
+import formStyles from './forms.module.css';
+import loginStyles from './login-form.module.css';
 
 const LoginForm = ({ login, user, from }) => {
   const { handleChange, handleSubmit, reset, values, errors } = useForm(onSubmit, validate);
@@ -24,65 +25,57 @@ const LoginForm = ({ login, user, from }) => {
   }
 
   return (
-    <div className={styles['login-form-container']}>
-      <form className={styles['login-form']} onSubmit={handleSubmit}>
-        <h3>Log In</h3>
+    <div className={formStyles.container}>
+      <form className={formStyles.form} onSubmit={handleSubmit}>
+        <OrbisLogo className={formStyles.logo} />
 
-        <p>
-          If you have not account, you can <Link to={'/register'}>register here</Link>
-        </p>
-
-        <div className={styles['form-row']}>
-          <label className={styles.label}>
-            Username:
-            <input
-              className={`${styles.input} ${errors.username ? styles.error : ''}`}
-              type="text"
+        <div className={formStyles.fields}>
+          <div className={formStyles.row}>
+            <Textfield
               name="username"
-              onChange={handleChange}
               value={values.username || ''}
-              required
-              autoFocus
-            />
-          </label>
-          <em className={styles.required}>(Required)</em>
-        </div>
-        {errors.username && <p className={styles['error-message']}>{errors.username}</p>}
-
-        <div className={styles['form-row']}>
-          <label className={styles.label}>
-            Password:
-            <PasswordField />
-            {/* <input
-              className={`${styles.input} ${errors.password ? styles.error : ''}`}
-              type="password"
-              name="password"
+              placeholder="Email"
               onChange={handleChange}
-              value={values.password || ''}
-              required
-            /> */}
-          </label>
-          <em className={styles.required}>(Required)</em>
+            />
+          </div>
+          {errors.username && <p className={formStyles.errorMessage}>{errors.username}</p>}
+
+          <div className={formStyles.row}>
+            <PasswordField name="password" value={values.password || ''} onChange={handleChange} required />
+          </div>
+          {errors.password && <p className={formStyles.errorMessage}>{errors.password}</p>}
+
+          <div className={`${formStyles.row} ${loginStyles.incidentals}`}>
+            <Checkbox
+              name="loggedIn"
+              value="true"
+              label="Keep me logged in"
+              onChange={() => console.log('Keep me logged in')}
+            />
+            <p>
+              Forgotten your <Link to="/password/reset">password?</Link>
+            </p>
+          </div>
         </div>
-        {errors.password && <p className={styles['error-message']}>{errors.password}</p>}
 
-        <p>
-          Forgotten your <Link to="/password/reset">password?</Link>
-        </p>
-
-        <div className={styles.buttons}>
-          <Button type="reset" className={styles.button} onClick={reset} disabled={Object.keys(values).length === 0}>
+        <div className={formStyles.buttons}>
+          {/* <Button type="reset" className={styles.button} onClick={reset} disabled={Object.keys(values).length === 0}>
             Reset
-          </Button>
+          </Button> */}
 
           <Button
             type="submit"
-            className={styles.button}
+            theme="primary"
+            className={formStyles.button}
             disabled={Object.keys(errors).length > 0 || Object.keys(values).length === 0}
           >
             Login
           </Button>
         </div>
+
+        <p className={loginStyles.footer}>
+          Don't have an account?&nbsp;<Link to={'/register'}>Sign Up</Link>
+        </p>
       </form>
     </div>
   );

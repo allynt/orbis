@@ -1,0 +1,111 @@
+{
+    "projection": {"code": "EPSG:27700", "displayName": "British National Grid" },
+    "bounds": [ 0,0,700000,1300000 ],
+    "layers": [{
+      "mapproxyProduct": "aerial_backdrop",
+      "visibility": true,
+      "bounds": [ 0,0,700000,1300000 ],
+      "resolutions": [ 50,25,10,5,2.5,1,0.5,0.25,0.125 ],
+      "cachedLayers": [ "aerial-os-gs-backdrop" ],
+      "metadata": {
+          "nonproduct": true
+      }
+    }, {
+      "mapproxyProduct": "aerial_gb",
+      "visibility": true,
+      "bounds": [ -800000,-550000,1500000,1750000 ],
+      "resolutions": [ 2000 ],
+      "cachedLayers": [ "aerial-os-gb-gs" ],
+      "metadata": {
+        "productId": "aerial_gb",
+        "themeDisplayName": "OS OpenData",
+        "mapInfoDisplayName": ["GB Overview"],
+        "date": "",
+        "licence": "<a href=\"http://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/\" target=\"_blank\">OS OpenData</a>",
+        "copyright": "© Getmapping Plc <p class='copyright-faint'>Contains OS data © Crown copyright and database right {currentYear}</p>",
+        "help": ["/webhelp/os/osdigimaphelp.htm#data_information/os_products/gb_overview_maps.htm"]
+      }
+    }, {
+      "mapproxyProduct": "aerial_miniscale",
+      "visibility": true,
+      "bounds": [ 0,0,700000,1300000 ],
+      "resolutions": [ 400,100 ],
+      "cachedLayers": [ "aerial-os-gs-miniscale" ],
+      "metadata": {
+        "productId": "aerial_miniscale",
+        "themeDisplayName": "OS OpenData",
+        "mapInfoDisplayName": ["MiniScale&reg;"],
+        "date": "",
+        "copyright": "© Getmapping Plc <p class='copyright-faint'>Contains OS data © Crown copyright and database right {currentYear}</p>",
+        "help": ["/webhelp/os/osdigimaphelp.htm#data_information/os_products/miniscale.htm"]
+      }
+    }, {
+    "mapproxyProduct": "aerial_rgb25cm",
+    "featureinfo": "aerial-getmapping-rgb25cm",
+    "visibility": true,
+    "resolutions": [ 50,25,10,5,2.5,1,0.5,0.25,0.125 ],
+    "bounds": [ 0,0,700000,1300000 ],
+    "cachedLayers": [ "aerial-rgb25cm" ],
+    "metadata": {
+      "productId": "aerial_rgb25cm",
+      "themeDisplayName": "Aerial imagery (25cm resolution)",
+      "mapInfoDisplayName": ["Aerial Imagery (25cm resolution)"],
+      "logName": "aerial_rgb25cm",
+      "legendName": "aerial_rgb25cm",
+      "featureInfoQueryLayer": "RGB25cm_GFI",
+      "opacitySlider": true,
+      "date": "",
+      "licence": "<a href=\"/webhelp/aerial/aerialdigimaphelp.htm#copyright/licence_agreement.htm\" target=\"_blank\">Aerial Digimap</a>",
+      "copyright": "© Getmapping Plc <p class='copyright-faint'>Contains OS data © Crown copyright and database right {currentYear}</p>",
+      "help": ["/webhelp/aerial/aerialdigimaphelp.htm#data_information/products/25cm_aerial_imagery.htm"],
+      "print" : {
+        "cliveProduct": "Aerial",
+        "swd": "Aerial_print",
+        "scaleRange": { "min": 250 , "max": 175000 }
+       }
+    }
+  }, {
+    "mapproxyProduct": "aerial-hybrid",
+    "visibility": false,
+    "resolutions": [50,25,10,5,2.5,1,0.5,0.25,0.125],
+    "bounds": [0, 0, 700000, 1300000],
+    "cachedLayers": "aerial-hybrid",
+    "metadata": {
+      "nonproduct": true,
+      "title": "Road/Place Names",
+      "hybridLayer": true
+    }
+  }],
+  "metadata": {},
+  "zoomLevelNamesDescending": ["View: GB", "View: National", "View: Regional", "View: County",
+    "View: Metropolitan", "View: City","View: District", "View: Local", "View: Neighbourhood",
+    "View: Street", "View: Detailed", "View: Building"],
+  "printing": {
+    "printScales": [150000, 150000, 150000, 150000, 75000, 40000, 20000, 10000, 4000, 2000, 1000, 500],
+    "paperSizes": ["A4", "A3"],
+    "printFormats": ["PDF", "PNG", "JPG"],
+    "printTemplatePrefix": "EDINA_aerial_"
+  },
+    "searchResultResolutions": {
+        "PLACENAME": 5.0,
+        "ROAD": 1.0,
+        "POSTCODE": 1.0,
+        "PARTIAL_POSTCODE": 10,
+        "GRIDREF_AB0": 100.0,
+        "GRIDREF_AB2": 25.0,
+        "GRIDREF_AB4": 5.0,
+        "GRIDREF_AB6": 1.0,
+        "GRIDREF_AB8": 0.5,
+        "GRIDREF_AB10": 0.25,
+        "WGS_84": 2.5,
+        "EPSG_27700": 2.5
+    },
+  "overview": {
+    "mapproxyProduct": "aerial-overview",
+    "visibility": false,
+    "bounds": [0, 0, 700000, 1300000],
+    "resolutions": [3000,400,100,50,25,10,5,2.5],
+    "copyright": "Contains OS data © Crown copyright and database right {currentYear}",
+    "cachedLayers": ["aerial-overview"]
+  }
+}

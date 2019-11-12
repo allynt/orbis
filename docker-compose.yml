@@ -23,8 +23,6 @@ services:
       DJANGO_SETTINGS_MODULE: core.settings
       PIPENV_NOSPIN: 1
       GITHUB_REGISTRY_TOKEN: "${GITHUB_REGISTRY_TOKEN}"
-    volumes:
-      - ./client:/home/app/client
     ports:
       - "8000:8000"
       - "3000:3000"
