@@ -10,16 +10,23 @@ USER app
 # building the container.
 ARG TOKEN
 ENV GITHUB_REGISTRY_TOKEN=$TOKEN
-
+# ENV APP_HOME=/home/app
 WORKDIR $APP_HOME
+
+# Copy and install dependencies separately, so the
+# layer can be cached in future runs.
+COPY --chown=app:app ./client/package.json ./client/yarn.lock ./client/.npmrc ./client/.yarnrc $APP_HOME/client/
+RUN cd client && yarn install
+COPY --chown=app:app ./server/Pipfile ./server/Pipfile.lock $APP_HOME/server/
+RUN cd server && pipenv install --dev
 
 COPY --chown=app:app . $APP_HOME
 
 # Install client deps
-RUN cd $APP_HOME/client && yarn install
+# RUN cd $APP_HOME/client && yarn install
 
 # Install backend deps
-RUN cd $APP_HOME/server && pipenv install --dev
+# RUN cd $APP_HOME/server && pipenv install --dev
 
 # Start client and backend dev servers
 COPY --chown=root:root run-client.sh /etc/service/client/run

@@ -1,7 +1,7 @@
 import React, { useReducer, useRef } from 'react';
-import ReactDOM from 'react-dom';
+// import ReactDOM from 'react-dom';
 
-import { useDispatch, useSelector } from 'react-redux';
+// import { useDispatch } from 'react-redux';
 
 import mapboxgl from 'mapbox-gl';
 import useMap from '../map/use-map.hook';
@@ -11,15 +11,16 @@ import { useMapEvent } from '../map/use-map-event.hook';
 import Slider from 'rc-slider/lib/Slider';
 import 'rc-slider/assets/index.css';
 
-import Button from '../ui/button.component';
+import { Button } from '@astrosat/astrosat-ui';
+
 import ColorPicker from './color-picker.component';
 import DropDownButton from './drop-down-button.component';
 import ReactTooltip from 'react-tooltip';
-import TextDialog from './text-dialog.component';
-import LabelForm from './label-form.component';
+// import TextDialog from './text-dialog.component';
+// import LabelForm from './label-form.component';
 import ImageForm from './image-form.component';
 
-import { setTextLabelSelected } from './annotations.actions';
+// import { setTextLabelSelected } from './annotations.actions';
 
 import { ReactComponent as LineStringIcon } from './linestring.svg';
 import { ReactComponent as PolygonIcon } from './polygon.svg';
@@ -159,7 +160,7 @@ const reducer = (state, action) => {
 };
 
 const AnnotationsPanel = ({ map }) => {
-  const globalDispatch = useDispatch();
+  // const globalDispatch = useDispatch();
 
   const [state, dispatch] = useReducer(reducer, initialState);
   const {

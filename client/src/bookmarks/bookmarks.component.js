@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 
-import Button from '../ui/button.component';
+import { Button } from '@astrosat/astrosat-ui';
+
 import { ReactComponent as BookmarksIcon } from './bookmarks.svg';
 
 import BookmarksPanel from './bookmarks-panel.component';

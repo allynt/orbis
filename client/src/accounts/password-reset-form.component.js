@@ -1,11 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Link, Redirect } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 import useForm from '../hooks/useForm';
 import validate from './password-reset-form.validator';
 
-import { Button, Textfield, Checkbox } from '@astrosat/astrosat-ui';
+import { Button, Textfield } from '@astrosat/astrosat-ui';
 
 import { ReactComponent as OrbisLogo } from '../orbis.svg';
 
@@ -13,7 +13,7 @@ import formStyles from './forms.module.css';
 import passwordStyles from './password-reset-form.module.css';
 
 const PasswordResetForm = ({ resetPassword }) => {
-  const { handleChange, handleSubmit, reset, values, errors } = useForm(onSubmit, validate);
+  const { handleChange, handleSubmit, values, errors } = useForm(onSubmit, validate);
 
   function onSubmit() {
     resetPassword(values);
@@ -39,10 +39,6 @@ const PasswordResetForm = ({ resetPassword }) => {
         </div>
 
         <div className={formStyles.buttons}>
-          {/* <Button type="reset" className={formStyles.button} onClick={reset} disabled={Object.keys(values).length === 0}>
-            Reset
-          </Button> */}
-
           <Button
             type="submit"
             className={formStyles.button}

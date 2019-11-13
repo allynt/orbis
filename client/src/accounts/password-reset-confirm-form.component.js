@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import useForm from '../hooks/useForm';
 import validate from './password-reset-confirm-form.validator';
 
-import { Button, PasswordField, PasswordStrengthMeter, Textfield, Checkbox } from '@astrosat/astrosat-ui';
+import { Button, PasswordField, PasswordStrengthMeter, Checkbox } from '@astrosat/astrosat-ui';
 
 import { ReactComponent as OrbisLogo } from '../orbis.svg';
 
@@ -13,7 +13,7 @@ import formStyles from './forms.module.css';
 import passwordStyles from './password-reset-confirm-form.module.css';
 
 const PasswordResetConfirmForm = ({ confirmChangePassword, routerProps }) => {
-  const { handleChange, handleSubmit, reset, values, errors } = useForm(onSubmit, validate);
+  const { handleChange, handleSubmit, values, errors } = useForm(onSubmit, validate);
 
   function onSubmit() {
     confirmChangePassword(values, routerProps.match.params);
@@ -26,12 +26,26 @@ const PasswordResetConfirmForm = ({ confirmChangePassword, routerProps }) => {
 
         <div className={formStyles.fields}>
           <div className={formStyles.row}>
-            <PasswordField name="new_password1" value={values.new_password1 || ''} onChange={handleChange} placeholder="New Password" required autoFocus />
+            <PasswordField
+              name="new_password1"
+              value={values.new_password1 || ''}
+              onChange={handleChange}
+              placeholder="New Password"
+              required
+              autoFocus
+            />
           </div>
           {errors.new_password1 && <p className={formStyles.errorMessage}>{errors.new_password1}</p>}
 
           <div className={formStyles.row}>
-            <PasswordField name="new_password1" value={values.new_password1 || ''} onChange={handleChange} placeholder="New Password" required autoFocus />
+            <PasswordField
+              name="new_password1"
+              value={values.new_password1 || ''}
+              onChange={handleChange}
+              placeholder="New Password"
+              required
+              autoFocus
+            />
           </div>
           {errors.new_password2 && <p className={formStyles.errorMessage}>{errors.new_password2}</p>}
 
@@ -61,10 +75,6 @@ const PasswordResetConfirmForm = ({ confirmChangePassword, routerProps }) => {
         </div>
 
         <div className={formStyles.buttons}>
-          {/* <Button type="reset" className={formStyles.button} onClick={reset} disabled={Object.keys(values).length === 0}>
-            Reset
-          </Button> */}
-
           <Button
             type="submit"
             className={formStyles.button}

@@ -149,11 +149,11 @@ export const logout = history => async dispatch => {
 };
 
 export const changePassword = form => async (dispatch, getState) => {
-  const {
-    accounts: {
-      userKey: { key }
-    }
-  } = getState();
+  // const {
+  //   accounts: {
+  //     userKey: { key }
+  //   }
+  // } = getState();
 
   const headers = {
     ...JSON_HEADERS //,

@@ -5,8 +5,7 @@ import { Redirect } from 'react-router-dom';
 import useForm from '../hooks/useForm';
 import validate from './account-activation-form.validator';
 
-import Button from '../ui/button.component';
-// import Button from 'astrosat-ui';
+import { Button } from '@astrosat/astrosat-ui';
 
 import styles from './account-activation-form.module.css';
 

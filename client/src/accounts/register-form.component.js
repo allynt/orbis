@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { Link, Redirect } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 import useForm from '../hooks/useForm';
 import validate from './register-form.validator';
@@ -13,12 +13,12 @@ import formStyles from './forms.module.css';
 import registerStyles from './register-form.module.css';
 
 const RegisterForm = ({ register }) => {
-  const { handleChange, handleSubmit, reset, values, errors } = useForm(onSubmit, validate);
-  const [redirectToLogin, setRedirectToLogin] = useState(false);
+  const { handleChange, handleSubmit, values, errors } = useForm(onSubmit, validate);
+  // const [redirectToLogin, setRedirectToLogin] = useState(false);
 
   function onSubmit() {
     register(values);
-    setRedirectToLogin(true);
+    // setRedirectToLogin(true);
   }
 
   // Re-direct to login.
@@ -35,26 +35,34 @@ const RegisterForm = ({ register }) => {
 
         <div className={formStyles.fields}>
           <div className={formStyles.row}>
-            <Textfield
-              name="username"
-              value={values.username || ''}
-              placeholder="Email"
-              onChange={handleChange}
-            />
+            <Textfield name="username" value={values.username || ''} placeholder="Email" onChange={handleChange} />
           </div>
           {errors.email && <p className={formStyles.errorMessage}>{errors.email}</p>}
 
           <div className={formStyles.row}>
-            <PasswordField name="password1" value={values.password1 || ''} onChange={handleChange} placeholder="Password" required />
+            <PasswordField
+              name="password1"
+              value={values.password1 || ''}
+              onChange={handleChange}
+              placeholder="Password"
+              required
+            />
           </div>
           {errors.password1 && <p className={formStyles.errorMessage}> {errors.password1}</p>}
 
           <div className={formStyles.row}>
-            <PasswordField name="password" value={values.password2 || ''} onChange={handleChange} placeholder="Password Confirmation" required />
+            <PasswordField
+              name="password"
+              value={values.password2 || ''}
+              onChange={handleChange}
+              placeholder="Password Confirmation"
+              required
+            />
           </div>
           {errors.password2 && <p className={formStyles.errorMessage}>{errors.password2}</p>}
 
           <PasswordStrengthMeter password={values.password1} />
+          <p>hello</p>
 
           <div className={`${formStyles.row} ${registerStyles.incidentals}`}>
             <ul>
@@ -75,15 +83,11 @@ const RegisterForm = ({ register }) => {
               label="I agree with"
               onChange={() => console.log('Keep me logged in')}
             />
-            &nbsp;<a href="">Terms &amp; Conditions</a>
+            &nbsp;<a href="http://google.co.uk">Terms &amp; Conditions</a>
           </div>
         </div>
 
         <div className={formStyles.buttons}>
-          {/* <Button type="reset" className={formStyles.button} onClick={reset} disabled={Object.keys(values).length === 0}>
-            Reset
-          </Button> */}
-
           <Button
             type="submit"
             className={formStyles.button}

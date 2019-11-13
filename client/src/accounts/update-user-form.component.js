@@ -4,8 +4,7 @@ import PropTypes from 'prop-types';
 import useForm from '../hooks/useForm';
 import validate from './update-user-form.validator';
 
-import Button from '../ui/button.component';
-// import Button from 'astrosat-ui';
+import { Button } from '@astrosat/astrosat-ui';
 
 import styles from './update-user-form.module.css';
 

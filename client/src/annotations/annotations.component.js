@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 // import MapboxDraw from '@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw';
 
-import Button from '../ui/button.component';
+import { Button } from '@astrosat/astrosat-ui';
 import { ReactComponent as AnnotationsIcon } from './annotations.svg';
 
 // import useMapControl from '../map/use-map-control.hook';

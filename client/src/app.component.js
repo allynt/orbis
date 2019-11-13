@@ -78,7 +78,7 @@ const App = () => {
   return (
     <div className={`${styles.app} ${styles[selectedTheme.value]}`}>
       <ReactTooltip />
-      {/* <header>
+      <header>
         <nav>
           <ul className={styles.nav}>
             <li>
@@ -129,7 +129,7 @@ const App = () => {
             )}
           </ul>
         </nav>
-      </header> */}
+      </header>
 
       <main>
         <Switch>

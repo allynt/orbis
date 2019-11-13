@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Link, Redirect } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 import useForm from '../hooks/useForm';
 import validate from './password-change-form.validator';
@@ -13,7 +13,7 @@ import formStyles from './forms.module.css';
 import passwordStyles from './password-change-form.module.css';
 
 const PasswordChangeForm = ({ changePassword }) => {
-  const { handleChange, handleSubmit, reset, values, errors } = useForm(onSubmit, validate);
+  const { handleChange, handleSubmit, values, errors } = useForm(onSubmit, validate);
 
   function onSubmit() {
     changePassword(values);
@@ -26,17 +26,36 @@ const PasswordChangeForm = ({ changePassword }) => {
 
         <div className={formStyles.fields}>
           <div className={formStyles.row}>
-            <PasswordField name="old_password" value={values.old_password || ''} onChange={handleChange} placeholder="Old Password" required autoFocus />
+            <PasswordField
+              name="old_password"
+              value={values.old_password || ''}
+              onChange={handleChange}
+              placeholder="Old Password"
+              required
+              autoFocus
+            />
           </div>
           {errors.old_password && <p className={formStyles.errorMessage}>{errors.old_password}</p>}
 
           <div className={formStyles.row}>
-            <PasswordField name="new_password1" value={values.new_password1 || ''} onChange={handleChange} placeholder="New Password" required />
+            <PasswordField
+              name="new_password1"
+              value={values.new_password1 || ''}
+              onChange={handleChange}
+              placeholder="New Password"
+              required
+            />
           </div>
           {errors.new_password1 && <p className={formStyles.errorMessage}>{errors.new_password1}</p>}
 
           <div className={formStyles.row}>
-            <PasswordField name="new_password2" value={values.new_password2 || ''} onChange={handleChange} placeholder="New Password Confirmation" required />
+            <PasswordField
+              name="new_password2"
+              value={values.new_password2 || ''}
+              onChange={handleChange}
+              placeholder="New Password Confirmation"
+              required
+            />
           </div>
           {errors.new_password2 && <p className={formStyles.errorMessage}>{errors.new_password2}</p>}
 
@@ -66,10 +85,6 @@ const PasswordChangeForm = ({ changePassword }) => {
         </div>
 
         <div className={formStyles.buttons}>
-          {/* <Button type="reset" className={styles.button} onClick={reset} disabled={Object.keys(values).length === 0}>
-            Reset
-          </Button> */}
-
           <Button
             type="submit"
             className={formStyles.button}

@@ -13,7 +13,7 @@ import formStyles from './forms.module.css';
 import loginStyles from './login-form.module.css';
 
 const LoginForm = ({ login, user, from }) => {
-  const { handleChange, handleSubmit, reset, values, errors } = useForm(onSubmit, validate);
+  const { handleChange, handleSubmit, values, errors } = useForm(onSubmit, validate);
 
   function onSubmit() {
     login(values);
@@ -31,12 +31,7 @@ const LoginForm = ({ login, user, from }) => {
 
         <div className={formStyles.fields}>
           <div className={formStyles.row}>
-            <Textfield
-              name="username"
-              value={values.username || ''}
-              placeholder="Email"
-              onChange={handleChange}
-            />
+            <Textfield name="username" value={values.username || ''} placeholder="Email" onChange={handleChange} />
           </div>
           {errors.username && <p className={formStyles.errorMessage}>{errors.username}</p>}
 
@@ -59,10 +54,6 @@ const LoginForm = ({ login, user, from }) => {
         </div>
 
         <div className={formStyles.buttons}>
-          {/* <Button type="reset" className={styles.button} onClick={reset} disabled={Object.keys(values).length === 0}>
-            Reset
-          </Button> */}
-
           <Button
             type="submit"
             theme="primary"

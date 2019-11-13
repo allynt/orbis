@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import ReactTooltip from 'react-tooltip';
 
-import Button from '../ui/button.component';
+import { Button } from '@astrosat/astrosat-ui';
 
 import styles from './drop-down-button.module.css';
 

@@ -3,7 +3,8 @@ import PropTypes from 'prop-types';
 
 import { useDispatch } from 'react-redux';
 
-import Button from '../ui/button.component';
+import { Button } from '@astrosat/astrosat-ui';
+
 import { ReactComponent as BookmarksIcon } from './delete.svg';
 
 import { deleteBookmark } from './bookmarks.actions';

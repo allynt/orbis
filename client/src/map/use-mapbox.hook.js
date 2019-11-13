@@ -35,7 +35,7 @@ const useMapbox = style => {
         });
       };
     }
-  }, [style, mapboxgl.accessToken]);
+  }, [style]);
   return { mapContainer, mapInstance };
 };
 

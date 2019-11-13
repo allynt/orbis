@@ -31,7 +31,7 @@ const BookmarksPanel = ({ map }) => {
     if (!bookmarks) {
       dispatch(fetchBookmarks());
     }
-  }, [bookmarks]);
+  }, [bookmarks, dispatch]);
 
   return (
     <div className={styles.panel}>
