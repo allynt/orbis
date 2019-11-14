@@ -93,3 +93,4 @@ client/cypress/videos
 client/reports/
 node_modules/
 /src/
+spec_generated/

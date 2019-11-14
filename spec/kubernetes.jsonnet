@@ -1,9 +1,11 @@
-local appName = "whoami";
+local appName = "orbis";
 local branchName = std.extVar('branch');
 local envName = "testing-" + branchName;
+local registry = "339570402237.dkr.ecr.eu-west-1.amazonaws.com";
+local repository = "company/orbis/django:master";
 
 local podLabels = {
-  app: "whoami",
+  app: "orbis",
   environment: envName,
   branch: branchName
 };
@@ -29,7 +31,7 @@ local serviceLabels = podLabels;
         spec: {
           containers: [{
             name: appName + "-" + envName,
-            image: "jwilder/whoami",
+            image: registry + "/" + repository,
             ports: [{ "containerPort": 8000 }],
           }]
         }
@@ -52,6 +54,23 @@ local serviceLabels = podLabels;
        targetPort: 8000
      }],
      selector: podLabels
+    }
+  }),
+
+  'privatepods.json': std.manifestJson({
+    apiVersion: "v1",
+    kind: "Pod",
+    metadata: {
+      name: appName + "ecr-key",
+    },
+    spec: {
+      containers: [{
+        name: appName + "-" + envName + "ecr",
+        image: registry + "/" + repository,
+      }],
+      imagePullSecrets: [{
+        name: "regcred"
+      },],
     }
   })
 }
