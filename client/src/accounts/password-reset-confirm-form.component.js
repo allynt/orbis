@@ -39,10 +39,10 @@ const PasswordResetConfirmForm = ({ confirmChangePassword, routerProps }) => {
 
           <div className={formStyles.row}>
             <PasswordField
-              name="new_password1"
-              value={values.new_password1 || ''}
+              name="new_password2"
+              value={values.new_password2 || ''}
               onChange={handleChange}
-              placeholder="New Password"
+              placeholder="New Password Confirmation"
               required
               autoFocus
             />

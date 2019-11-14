@@ -26,8 +26,6 @@ const RegisterForm = ({ register }) => {
   //   return <Redirect to="/login" />;
   // }
 
-  console.log('VALUSE: ', values);
-
   return (
     <div className={formStyles.container}>
       <form className={formStyles.form} onSubmit={handleSubmit}>
@@ -35,7 +33,7 @@ const RegisterForm = ({ register }) => {
 
         <div className={formStyles.fields}>
           <div className={formStyles.row}>
-            <Textfield name="username" value={values.username || ''} placeholder="Email" onChange={handleChange} />
+            <Textfield name="email" value={values.username || ''} placeholder="Email" onChange={handleChange} />
           </div>
           {errors.email && <p className={formStyles.errorMessage}>{errors.email}</p>}
 
@@ -52,7 +50,7 @@ const RegisterForm = ({ register }) => {
 
           <div className={formStyles.row}>
             <PasswordField
-              name="password"
+              name="password2"
               value={values.password2 || ''}
               onChange={handleChange}
               placeholder="Password Confirmation"

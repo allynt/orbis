@@ -4,61 +4,26 @@ describe('Register Form Validator', () => {
   describe('Failure values', () => {
     const testFields = [
       {
-        // Error, missing `username`
-        email: 'testuser@test.com',
-        password1: 'password',
-        password2: 'password'
-      },
-      {
-        username: '', // Error, missing value
-        email: 'testuser@test.com',
-        password1: 'password',
-        password2: 'password'
-      },
-      {
-        username: ' ', // Error, missing value
-        email: 'testuser@test.com',
-        password1: 'password',
-        password2: 'password'
-      },
-      {
-        username: 'su', // Error, value to short
-        email: 'testuser@test.com',
-        password1: 'password',
-        password2: 'password'
-      },
-      {
-        username: 'testusertestuser', // Error, value to long
-        email: 'testuser@test.com',
-        password1: 'password',
-        password2: 'password'
-      },
-      {
         // Error, missing `email`
-        username: 'testuser',
         password1: 'password',
         password2: 'password'
       },
       {
-        username: 'testuser',
         email: '', // Error, missing value
         password1: 'password',
         password2: 'password'
       },
       {
-        username: 'testuser',
         email: ' ', // Error, missing value
         password1: 'password',
         password2: 'password'
       },
       {
-        username: 'testuser',
         email: 'testuser:test.com', // Error, malformed email
         password1: 'password',
         password2: 'password'
       },
       {
-        username: 'testuser',
         email: 'testuser@testcom', // Error, malformed email
         password1: 'password',
         password2: 'password'
@@ -74,7 +39,6 @@ describe('Register Form Validator', () => {
   describe('Success values', () => {
     const testFields = [
       {
-        username: 'testuser',
         email: 'testuser@test.com',
         password1: 'password',
         password2: 'password'

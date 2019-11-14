@@ -2,7 +2,7 @@ import React from 'react';
 
 import { render, cleanup, fireEvent } from '@testing-library/react';
 
-import { BrowserRouter } from 'react-router-dom';
+import { MemoryRouter } from 'react-router-dom';
 
 import RegisterForm from './register-form.component';
 
@@ -16,76 +16,75 @@ describe('Register Form Component', () => {
   afterEach(cleanup);
 
   it('should render a form', () => {
-    const { container, getByText, getByLabelText } = render(
-      <BrowserRouter>
+    const { container, getByText, getAllByText, getByPlaceholderText } = render(
+      <MemoryRouter>
         <RegisterForm register={register} />
-      </BrowserRouter>
+      </MemoryRouter>
     );
 
     expect(container.querySelector('form')).toBeInTheDocument();
-    // expect(container.querySelector('h3')).toHaveTextContent('Register New User');
-    // expect(getByLabelText('Username:')).toBeInTheDocument();
-    // expect(getByLabelText('Email Address:')).toBeInTheDocument();
-    // expect(getByLabelText('Password:')).toBeInTheDocument();
-    // expect(getByLabelText('Password (Confirm):')).toBeInTheDocument();
-    // expect(getByText('Reset')).toBeInTheDocument();
-    // expect(getByText('Register')).toBeInTheDocument();
+    expect(getByPlaceholderText('EmailWTF')).toBeInTheDocument();
+    expect(getByPlaceholderText('Password')).toBeInTheDocument();
+    expect(getByPlaceholderText('Password Confirmation')).toBeInTheDocument();
+    // Check we use password component with hide/show buttons in the Hide state
+    expect(getAllByText('Hide')).toHaveLength(2);
+    // Check password strength component exists
+    expect(getByText('Password Strength:')).toBeInTheDocument();
+    // Check form submit button
+    expect(getByText('Sign Up')).toBeInTheDocument();
+    // Check link to login view
+    expect(getByText('Login')).toBeInTheDocument();
+    expect(getByText('Sign Up')).toHaveAttribute('disabled');
   });
 
-  // it('should enable `Reset` button when form is dirty', async () => {
-  //   const { getByText, getByLabelText } = render(
-  //     <BrowserRouter>
-  //       <RegisterForm register={register} />
-  //     </BrowserRouter>
-  //   );
+  it('should enable `Sign Up` button when form is valid', async () => {
+    const { getByText, getByPlaceholderText } = render(
+      <MemoryRouter>
+        <RegisterForm register={register} />
+      </MemoryRouter>
+    );
 
-  //   const username = getByLabelText('Username:');
-  //   expect(username.value).toEqual('');
-  //   expect(getByText('Reset')).toHaveAttribute('disabled');
-  //   fireEvent.change(username, { target: { value: 'testusername' } });
-  //   expect(username.value).toEqual('testusername');
-  //   expect(getByText('Reset')).not.toHaveAttribute('disabled');
-  // });
+    fireEvent.change(getByPlaceholderText('EmailWTF'), { target: { value: 'test@test.com' } });
+    fireEvent.change(getByPlaceholderText('Password'), { target: { value: 'pandasconcreterealty' } });
+    fireEvent.change(getByPlaceholderText('Password Confirmation'), { target: { value: 'pandasconcreterealty' } });
+    expect(getByText('Sign Up')).not.toHaveAttribute('disabled');
+  });
 
-  // it('should enable `Register` button when form is valid', () => {
-  //   const { getByText, getByLabelText } = render(
-  //     <BrowserRouter>
-  //       <RegisterForm register={register} />
-  //     </BrowserRouter>
-  //   );
+  it('should keep `Sign Up` button disabled when form is invalid', () => {
+    const { getByText, getByPlaceholderText } = render(
+      <MemoryRouter>
+        <RegisterForm register={register} />
+      </MemoryRouter>
+    );
 
-  //   fireEvent.change(getByLabelText('Username:'), { target: { value: 'testusername' } });
-  //   fireEvent.change(getByLabelText('Email Address:'), { target: { value: 'testusername@test.com' } });
-  //   fireEvent.change(getByLabelText('Password:'), { target: { value: 'password' } });
-  //   fireEvent.change(getByLabelText('Password (Confirm):'), { target: { value: 'password' } });
+    fireEvent.change(getByPlaceholderText('EmailWTF'), { target: { value: 'test@test.com' } });
 
-  //   expect(getByText('Register')).not.toHaveAttribute('disabled');
-  // });
+    expect(getByText('Sign Up')).toHaveAttribute('disabled');
+  });
 
-  // it('should not call register function when form is invalid and `Register` button clicked', () => {
-  //   const { getByText } = render(
-  //     <BrowserRouter>
-  //       <RegisterForm register={register} />
-  //     </BrowserRouter>
-  //   );
+  it('should not call register function when form is invalid and `Sign Up` button clicked', () => {
+    const { getByText } = render(
+      <MemoryRouter>
+        <RegisterForm register={register} />
+      </MemoryRouter>
+    );
 
-  //   fireEvent.click(getByText('Register'));
-  //   expect(register).not.toHaveBeenCalled();
-  // });
+    fireEvent.click(getByText('Sign Up'));
+    expect(register).not.toHaveBeenCalled();
+  });
 
-  // it('should call register function when form is valid and `Register` button clicked', () => {
-  //   const { getByText, getByLabelText } = render(
-  //     <BrowserRouter>
-  //       <RegisterForm register={register} />
-  //     </BrowserRouter>
-  //   );
+  it('should call register function when form is valid and `Sign Up` button clicked', () => {
+    const { getByText, getByPlaceholderText } = render(
+      <MemoryRouter>
+        <RegisterForm register={register} />
+      </MemoryRouter>
+    );
 
-  //   fireEvent.change(getByLabelText('Username:'), { target: { value: 'testusername' } });
-  //   fireEvent.change(getByLabelText('Email Address:'), { target: { value: 'testusername@test.com' } });
-  //   fireEvent.change(getByLabelText('Password:'), { target: { value: 'password' } });
-  //   fireEvent.change(getByLabelText('Password (Confirm):'), { target: { value: 'password' } });
+    fireEvent.change(getByPlaceholderText('EmailWTF'), { target: { value: 'test@test.com' } });
+    fireEvent.change(getByPlaceholderText('Password'), { target: { value: 'pandasconcreterealty' } });
+    fireEvent.change(getByPlaceholderText('Password Confirmation'), { target: { value: 'pandasconcreterealty' } });
 
-  //   fireEvent.click(getByText('Register'));
-  //   expect(register).toHaveBeenCalled();
-  // });
+    fireEvent.click(getByText('Sign Up'));
+    expect(register).toHaveBeenCalled();
+  });
 });

@@ -15,6 +15,8 @@ const times = (n, fn) => {
   return result;
 };
 
+jest.mock('../layer-tree/layer-tree.component', () => () => <div />);
+
 const MapLayout = () => {
   const multi = useSelector(state => state.map.isMultiMapMode);
   const map1Ref = useRef(null);

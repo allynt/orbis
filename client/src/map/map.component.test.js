@@ -1,74 +1,72 @@
 import React from 'react';
 import { cleanup, render } from '@testing-library/react';
 
-// import { Provider } from 'react-redux';
-// import configureMockStore from 'redux-mock-store';
-// import thunk from 'redux-thunk';
+import { Provider } from 'react-redux';
+import configureMockStore from 'redux-mock-store';
+import thunk from 'redux-thunk';
 // import { Provider as CrossFilterProvider } from '../crossfilter';
 // import { setupCrossFilterStore } from '../crossfilter/test-helpers';
-// import Map from './map.component';
-// import mapboxgl, { fireMapEvent } from 'mapbox-gl';
+import Map from './map.component';
+import mapboxgl, { fireMapEvent } from 'mapbox-gl';
 
-// const mockStore = configureMockStore([thunk]);
+const mockStore = configureMockStore([thunk]);
 
-// const defaultProps = {
-//   style: 'mapbox://styles/thermcert/cjxzywxui08131cry0du0zn4v',
-//   colorScheme: ['red', 'green'],
-//   attribution: true,
-//   geocoder: true,
-//   navigation: true,
-//   scale: true,
-//   layoutInvalidation: 1,
-//   position: 1
-// };
+const defaultProps = {
+  style: 'mapbox://styles/thermcert/cjxzywxui08131cry0du0zn4v',
+  attribution: true,
+  geocoder: true,
+  navigation: true,
+  scale: true,
+  layoutInvalidation: 1,
+  position: 1
+};
 
-// const renderMap = async ({
-//   selectedProperty,
-//   is3DMode = false,
-//   allProperties = selectedProperty ? [selectedProperty] : []
-// }) => {
-//   const store = mockStore({
-//     map: {
-//       mapStyles: ['light'],
-//       selectedMapStyle: {},
-//       infrastructureLayers: [],
-//       customLayers: [],
-//       is3DMode
-//     },
-//     factsheet: {
-//       selectedFeatures: [],
-//       data: {}
-//     }
-//   });
-//   const index = await setupCrossFilterStore(allProperties);
-//   const result = render(
-//     <Map {...defaultProps} selectedProperty={selectedProperty} />,
-//     {
-//       wrapper: ({ children }) => (
-//         <Provider store={store}>
-//           <CrossFilterProvider index={index}>{children}</CrossFilterProvider>
-//         </Provider>
-//       )
-//     }
-//   );
+const renderMap = async ({ is3DMode = false }) => {
+  const store = mockStore({
+    app: {
+      config: {
+        mapbox_token: 'token'
+      }
+    },
+    map: {
+      mapStyles: ['light'],
+      selectedMapStyle: {},
+      is3DMode
+    },
+    annotations: {
+      textLabelSelected: false
+    },
+    bookmarks: {
+      selectedBookmarks: []
+    }
+  });
 
-//   fireMapEvent('load');
+  const result = render(<Map {...defaultProps} />, {
+    wrapper: ({ children }) => <Provider store={store}>{children}</Provider>
+  });
 
-//   return { ...result, map: mapboxgl.Map.mock.results[0].value };
-// };
+  fireMapEvent('load');
+
+  return { ...result, map: mapboxgl.Map.mock.results[0].value };
+};
+
+jest.mock('@mapbox/mapbox-gl-draw', () => ({
+  deleteAll: jest.fn(),
+  modes: {},
+  draw_line_string: { deleteAll: jest.fn() }
+  // }
+}));
 
 describe('Map Component', () => {
   afterEach(() => {
     cleanup();
-    // mapboxgl.Map.mockClear();
+    mapboxgl.Map.mockClear();
   });
 
   it('should render a map based on the props', async () => {
-    // const { container } = await renderMap({ selectedProperty: null });
-    // expect(container.querySelector('.map')).toBeInTheDocument();
-    // expect(
-    //   container.querySelector('[data-testid="map-1"]')
-    // ).toBeInTheDocument();
+    const { container } = await renderMap({});
+    expect(container.querySelector('.map')).toBeInTheDocument();
+    expect(container.querySelector('[data-testid="map-1"]')).toBeInTheDocument();
   });
 
   // xit('should filter layer based on store filters', async () => {

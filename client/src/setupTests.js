@@ -10,4 +10,5 @@ jest.mock('react-ga', () => ({
 }));
 
 global.fetch = fetchMock;
+global.URL.createObjectURL = jest.fn();
 global.requestIdleCallback = jest.fn().mockImplementation(args => setTimeout(args, 0));

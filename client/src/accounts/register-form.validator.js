@@ -5,13 +5,13 @@ const validate = form => {
 
   const trimmed = trimForm(form);
 
-  if (!trimmed.username) {
-    errors.username = 'username is required';
-  } else if (trimmed.username.length < 3) {
-    errors.username = `username ${trimmed.username} is too short`;
-  } else if (trimmed.username.length > 15) {
-    errors.username = `username ${trimmed.username} is too long`;
-  }
+  // if (!trimmed.username) {
+  //   errors.username = 'username is required';
+  // } else if (trimmed.username.length < 3) {
+  //   errors.username = `username ${trimmed.username} is too short`;
+  // } else if (trimmed.username.length > 15) {
+  //   errors.username = `username ${trimmed.username} is too long`;
+  // }
 
   if (!trimmed.email) {
     errors.email = 'Email address is required';
