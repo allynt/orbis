@@ -91,7 +91,7 @@ jobs:
         run: |
           export GIT_REF=${GITHUB_REF##*/}
           export GIT_SHA=${GITHUB_SHA:0:7}
-          docker build . -t ${AWS_REGISTRY}/${AWS_REPOSITORY}:${GIT_REF} -t ${AWS_REGISTRY}/${AWS_REPOSITORY}:${GIT_SHA} --build-arg COMMIT_HASH=${GIT_REF} --build-arg GIT_BRANCH=${GIT_SHA} --build-arg TOKEN=${{ secrets.GITHUB_REGISTRY_TOKEN }} -f ./Docker.artifact
+          docker build . -t ${AWS_REGISTRY}/${AWS_REPOSITORY}:${GIT_REF} -t ${AWS_REGISTRY}/${AWS_REPOSITORY}:${GIT_SHA} --build-arg COMMIT_HASH=${GIT_REF} --build-arg GIT_BRANCH=${GIT_SHA} --build-arg TOKEN=${{ secrets.GITHUB_REGISTRY_TOKEN }} -f ./Dockerfile.artifact
 
       - name: Push image to AWS Docker Registry
         run: |
