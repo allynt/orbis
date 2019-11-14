@@ -2,7 +2,7 @@ local appName = "orbis";
 local branchName = std.extVar('branch');
 local envName = "testing-" + branchName;
 local registry = "339570402237.dkr.ecr.eu-west-1.amazonaws.com";
-local repository = "company/orbis/django:master";
+local repository = "company/orbis/django:f033ea7";
 
 local podLabels = {
   app: "orbis",
