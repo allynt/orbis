@@ -33,6 +33,53 @@ local serviceLabels = podLabels;
             name: appName + "-" + envName,
             image: registry + "/" + repository,
             ports: [{ "containerPort": 8000 }],
+            env: [
+              {
+                name: DB_HOST,
+                valueFrom: {
+                  secretKeyRef: {
+                    name: orbis-secrets,
+                    key: db_host
+                  }
+                }
+              },
+              {
+                name: DB_PORT,
+                valueFrom: {
+                  secretKeyRef: {
+                    name: orbis-secrets,
+                    key: db_port
+                  }
+                }
+              },
+              {
+                name: DB_NAME,
+                valueFrom: {
+                  secretKeyRef: {
+                    name: orbis-secrets,
+                    key: db_name
+                  }
+                }
+              },
+              {
+                name: DB_USER,
+                valueFrom: {
+                  secretKeyRef: {
+                    name: orbis-secrets,
+                    key: db_user
+                  }
+                }
+              },
+              {
+                name: DB_PASSWORD,
+                valueFrom: {
+                  secretKeyRef: {
+                    name: orbis-secrets,
+                    key: db_password
+                  }
+                }
+              }
+            ]
           }]
         }
       }
@@ -56,4 +103,5 @@ local serviceLabels = podLabels;
      selector: podLabels
     }
   })
+
 }
