@@ -129,9 +129,12 @@ jobs:
         run: |
           aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws configure set role_arn ${{ secrets.ROLE }}
+          aws configure set --profile testing role_arn arn:aws:iam::464205154305:role/OrbisTestingAccountAccess
+          aws configure set --profile testing source_profile default
 
       - name: Update kubeconfig
-        run: aws eks --region eu-west-1 update-kubeconfig --name orbis-platform-testing
+        run: aws eks --region eu-west-1 --profile testing update-kubeconfig --name orbis-platform-testing
 
       - name: Test kubectl config
         run: kubectl version
@@ -141,7 +144,7 @@ jobs:
 
       - name: Run jsonnet
         run: |
-          mkdir -p spec_generated/testing && jsonnet spec/testing.jsonnet --ext-str "tag=${GITHUB_REF##*/}" --string --multi spec_generated/testing
+          mkdir -p spec_generated/testing && jsonnet ./spec/kubernetes.jsonnet --ext-str "tag=${GITHUB_REF##*/}" --string --multi spec_generated/testing
 
       - name: Deploy the App
         run: kubectl apply -f spec_generated/testing
