@@ -131,7 +131,7 @@ jobs:
           aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
       - name: Update kubeconfig
-        run: aws eks --region eu-west-1 update-kubeconfig --name orbis-testing
+        run: aws eks --region eu-west-1 update-kubeconfig --name orbis-platform-testing
 
       - name: Test kubectl config
         run: kubectl version
