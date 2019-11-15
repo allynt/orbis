@@ -35,7 +35,7 @@ local serviceLabels = podLabels;
             ports: [{ "containerPort": 8000 }],
             env: [
               {
-                name: DB_HOST,
+                name: DJANGO_DB_HOST,
                 valueFrom: {
                   secretKeyRef: {
                     name: orbis-secrets,
@@ -44,7 +44,7 @@ local serviceLabels = podLabels;
                 }
               },
               {
-                name: DB_PORT,
+                name: DJANGO_DB_PORT,
                 valueFrom: {
                   secretKeyRef: {
                     name: orbis-secrets,
@@ -53,7 +53,7 @@ local serviceLabels = podLabels;
                 }
               },
               {
-                name: DB_NAME,
+                name: DJANGO_DB_NAME,
                 valueFrom: {
                   secretKeyRef: {
                     name: orbis-secrets,
@@ -62,7 +62,7 @@ local serviceLabels = podLabels;
                 }
               },
               {
-                name: DB_USER,
+                name: DJANGO_DB_USER,
                 valueFrom: {
                   secretKeyRef: {
                     name: orbis-secrets,
@@ -71,7 +71,7 @@ local serviceLabels = podLabels;
                 }
               },
               {
-                name: DB_PASSWORD,
+                name: DJANGO_DB_PASSWORD,
                 valueFrom: {
                   secretKeyRef: {
                     name: orbis-secrets,
