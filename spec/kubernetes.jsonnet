@@ -3,6 +3,7 @@ local tag = std.extVar('tag');
 local envName = "testing-" + tag;
 local registry = "339570402237.dkr.ecr.eu-west-1.amazonaws.com";
 local repository = "company/orbis/django:" + tag;
+local secretKeyName = "orbis-secrets";
 
 local podLabels = {
   app: "orbis",
@@ -35,47 +36,47 @@ local serviceLabels = podLabels;
             ports: [{ "containerPort": 8000 }],
             env: [
               {
-                name: DJANGO_DB_HOST,
+                name: "DJANGO_DB_HOST",
                 valueFrom: {
                   secretKeyRef: {
-                    name: orbis-secrets,
-                    key: db_host
+                    name: secretKeyName,
+                    key: "db_host"
                   }
                 }
               },
               {
-                name: DJANGO_DB_PORT,
+                name: "DJANGO_DB_PORT",
                 valueFrom: {
                   secretKeyRef: {
-                    name: orbis-secrets,
-                    key: db_port
+                    name: secretKeyName,
+                    key: "db_port"
                   }
                 }
               },
               {
-                name: DJANGO_DB_NAME,
+                name: "DJANGO_DB_NAME",
                 valueFrom: {
                   secretKeyRef: {
-                    name: orbis-secrets,
-                    key: db_name
+                    name: secretKeyName,
+                    key: "db_name"
                   }
                 }
               },
               {
-                name: DJANGO_DB_USER,
+                name: "DJANGO_DB_USER",
                 valueFrom: {
                   secretKeyRef: {
-                    name: orbis-secrets,
-                    key: db_user
+                    name: secretKeyName,
+                    key: "db_user"
                   }
                 }
               },
               {
-                name: DJANGO_DB_PASSWORD,
+                name: "DJANGO_DB_PASSWORD",
                 valueFrom: {
                   secretKeyRef: {
-                    name: orbis-secrets,
-                    key: db_password
+                    name: secretKeyName,
+                    key: "db_password"
                   }
                 }
               }
