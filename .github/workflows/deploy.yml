@@ -2,51 +2,50 @@ name: DEPLOY
 
 on:
   push:
-    tags:
-      - "v*
+    branches:
+      - "master"
+# jobs:
+#   deploy:
+#     name: Deploy
+#     runs-on: ubuntu-latest
+#     steps:
+#       - name: Install jsonnet
+#         run: |
+#           curl -sSL "https://github.com/google/jsonnet/releases/download/v0.14.0/jsonnet-bin-v0.14.0-linux.tar.gz" > ./jsonnet-bin-linux.tar.gz
+#           tar -xzf ./jsonnet-bin-linux.tar.gz
+#           sudo install ./jsonnet ./jsonnetfmt /usr/local/bin/
+#           jsonnet --version
 
-jobs:
-  deploy:
-    name: Deploy
-    runs-on: ubuntu-latest
-    steps:
-      - name: Install jsonnet
-        run: |
-          curl -sSL "https://github.com/google/jsonnet/releases/download/v0.14.0/jsonnet-bin-v0.14.0-linux.tar.gz" > ./jsonnet-bin-linux.tar.gz
-          tar -xzf ./jsonnet-bin-linux.tar.gz
-          sudo install ./jsonnet ./jsonnetfmt /usr/local/bin/
-          jsonnet --version
+#       - name: Install aws cli
+#         run: |
+#           sudo apt install python3-setuptools
+#           pip3 install awscli --upgrade --user
+#           aws --version
 
-      - name: Install aws cli
-        run: |
-          sudo apt install python3-setuptools
-          pip3 install awscli --upgrade --user
-          aws --version
+#       - name: Install kubectl
+#         run: |
+#           curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
+#           echo "deb https://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee -a /etc/apt/sources.list.d/kubernetes.list
+#           sudo apt-get update
+#           sudo apt-get install -y kubectl
 
-      - name: Install kubectl
-        run: |
-          curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
-          echo "deb https://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee -a /etc/apt/sources.list.d/kubernetes.list
-          sudo apt-get update
-          sudo apt-get install -y kubectl
+#       - name: Setup AWS creds
+#         run: |
+#           aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }}
+#           aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
-      - name: Setup AWS creds
-        run: |
-          aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+#       - name: Update kubeconfig
+#         run: aws eks --region eu-west-1 update-kubeconfig --name test
 
-      - name: Update kubeconfig
-        run: aws eks --region eu-west-1 update-kubeconfig --name test
+#       - name: Test kubectl config
+#         run: kubectl version
 
-      - name: Test kubectl config
-        run: kubectl version
+#       - name: Checkout
+#         uses: actions/checkout@v1
 
-      - name: Checkout
-        uses: actions/checkout@v1
+#       - name: Run jsonnet
+#         run: |
+#           mkdir -p spec_generated/testing && jsonnet spec/testing.jsonnet --ext-str "tag=${GITHUB_REF}" --string --multi spec_generated/testing
 
-      - name: Run jsonnet
-        run: |
-          mkdir -p spec_generated/testing && jsonnet spec/testing.jsonnet --ext-str "branch=${GITHUB_REF}" --string --multi spec_generated/testing
-
-      - name: Deploy the App
-        run: kubectl apply -f spec_generated/testing
+#       - name: Deploy the App
+#         run: kubectl apply -f spec_generated/testing

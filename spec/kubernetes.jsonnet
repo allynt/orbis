@@ -1,13 +1,13 @@
 local appName = "orbis";
-local branchName = std.extVar('branch');
-local envName = "testing-" + branchName;
+local tag = std.extVar('tag');
+local envName = "testing-" + tag;
 local registry = "339570402237.dkr.ecr.eu-west-1.amazonaws.com";
-local repository = "company/orbis/django:f033ea7";
+local repository = "company/orbis/django:" + tag;
 
 local podLabels = {
   app: "orbis",
   environment: envName,
-  branch: branchName
+  tag: tag
 };
 
 local serviceLabels = podLabels;
@@ -47,30 +47,13 @@ local serviceLabels = podLabels;
       labels: serviceLabels,
    },
    spec: {
-     type: "NodePort",
+     type: "ClusterIP",
      ports: [{
        name: "http",
        port: 80,
        targetPort: 8000
      }],
      selector: podLabels
-    }
-  }),
-
-  'privatepods.json': std.manifestJson({
-    apiVersion: "v1",
-    kind: "Pod",
-    metadata: {
-      name: appName + "ecr-key",
-    },
-    spec: {
-      containers: [{
-        name: appName + "-" + envName + "ecr",
-        image: registry + "/" + repository,
-      }],
-      imagePullSecrets: [{
-        name: "regcred"
-      },],
     }
   })
 }

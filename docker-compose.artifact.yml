@@ -24,8 +24,14 @@ services:
       DJANGO_SETTINGS_MODULE: core.settings
       PIPENV_NOSPIN: 1
       GITHUB_REGISTRY_TOKEN: "${GITHUB_REGISTRY_TOKEN}"
+      DJANGO_DB_USER: orbis
+      DJANGO_DB_PASSWORD: orbis
+      DJANGO_DB_NAME: orbis
+      DJANGO_DB_HOST: db
+      DJANGO_DB_PORT: 5432
+
     ports:
-      - "80:80"
+      - "8000:80"
     networks:
       - orbis
 
