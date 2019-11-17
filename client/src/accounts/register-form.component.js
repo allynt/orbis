@@ -33,7 +33,7 @@ const RegisterForm = ({ register }) => {
 
         <div className={formStyles.fields}>
           <div className={formStyles.row}>
-            <Textfield name="email" value={values.username || ''} placeholder="Email" onChange={handleChange} />
+            <Textfield name="email" value={values.email || ''} placeholder="Email" onChange={handleChange} />
           </div>
           {errors.email && <p className={formStyles.errorMessage}>{errors.email}</p>}
 

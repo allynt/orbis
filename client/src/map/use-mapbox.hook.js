@@ -5,11 +5,13 @@ import { useSelector } from 'react-redux';
 const useMapbox = style => {
   const mapContainer = useRef(null);
   const [mapInstance, setMapInstance] = useState(null);
+  const accessToken = useSelector(state => state.app.mapbox_token);
   const viewportConfig = useSelector(state => state.map.viewport);
   const viewport = useRef(viewportConfig);
 
   useEffect(() => {
-    if (mapboxgl.accessToken) {
+    if (accessToken) {
+      mapboxgl.accessToken = accessToken;
       const map = new mapboxgl.Map({
         container: mapContainer.current,
         style: style,
@@ -35,7 +37,7 @@ const useMapbox = style => {
         });
       };
     }
-  }, [style]);
+  }, [style, accessToken]);
   return { mapContainer, mapInstance };
 };
 

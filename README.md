@@ -1,6 +1,6 @@
 # orbis
 
-- [orbis](#projectname)
+- [orbis](#orbis)
   - [Overview](#overview)
   - [Features](#features)
   - [How to install](#how-to-install)
@@ -67,6 +67,8 @@ Starting the project starts 3 separate **Docker containers** (in order):
 1. Server api
 
 ```bash
+$ cd client && yarn install
+$ cd ..
 $ docker-compose up --build
 $ docker-compose exec server createsuperuser
 ```

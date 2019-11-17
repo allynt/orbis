@@ -36,6 +36,28 @@
   --menu-item-active: #4984dc;
 
   --search: url('/search-light.svg');
+
+  --primary-background-color: #333f48;
+  --primary-foreground-color: #f6be00;
+
+  --button-background-disabled-color: #e4e4e4;
+  --button-foreground-disabled-color: #9e9e9e;
+
+  --primary-button-background-color: var(--primary-background-color);
+  --primary-button-foreground-color: var(--primary-foreground-color);
+  --primary-button-background-active-color: red;
+  --primary-button-background-hover-color: rgba(246, 190, 0, 0.6);
+
+  --secondary-button-background-color: var(--primary-foreground-color);
+  --secondary-button-foreground-color: #fff;
+  --secondary-button-background-active-color: green;
+  --secondary-button-background-hover-color: var(--primary-background-color);
+
+  --tertiary-button-background-color: #fff;
+  --tertiary-button-foreground-color: var(--primary-foreground-color);
+  --tertiary-button-background-active-color: blue;
+  --tertiary-button-background-hover-color: var(--primary-foreground-color);
+  --tertiary-border-color: var(--primary-background-color);
 }
 
 .dark {
@@ -76,6 +98,28 @@
   --menu-item-active: #e9b650;
 
   --search: url('/search-dark.svg');
+
+  --primary-background-color: #f6be00;
+  --primary-foreground-color: #333f48;
+
+  --button-background-disabled-color: #e4e4e4;
+  --button-foreground-disabled-color: #9e9e9e;
+
+  --primary-button-background-color: var(--primary-background-color);
+  --primary-button-foreground-color: var(--primary-foreground-color);
+  --primary-button-background-active-color: red;
+  --primary-button-background-hover-color: rgba(246, 190, 0, 0.6);
+
+  --secondary-button-background-color: var(--primary-foreground-color);
+  --secondary-button-foreground-color: #fff;
+  --secondary-button-background-active-color: green;
+  --secondary-button-background-hover-color: var(--primary-background-color);
+
+  --tertiary-button-background-color: #fff;
+  --tertiary-button-foreground-color: var(--primary-foreground-color);
+  --tertiary-button-background-active-color: blue;
+  --tertiary-button-background-hover-color: var(--primary-foreground-color);
+  --tertiary-border-color: var(--primary-background-color);
 }
 
 .app {

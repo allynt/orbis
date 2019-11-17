@@ -36,7 +36,12 @@ const API = {
  * @param {*} form
  */
 export const register = form => async dispatch => {
-  const response = await sendData(API.register, form, JSON_HEADERS);
+  const data = {
+    ...form,
+    username: form.email
+  };
+
+  const response = await sendData(API.register, data, JSON_HEADERS);
 
   if (!response.ok) {
     const errorResponse = await response.json();
