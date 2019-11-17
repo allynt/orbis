@@ -24,7 +24,7 @@ services:
       PIPENV_NOSPIN: 1
       GITHUB_REGISTRY_TOKEN: "${GITHUB_REGISTRY_TOKEN}"
     volumes:
-      - ./client:/home/app/client
+      - .:/home/app
     ports:
       - "8000:8000"
       - "3000:3000"
