@@ -231,7 +231,7 @@ const AnnotationsPanel = ({ map }) => {
     'click',
     event => {
       event.preventDefault();
-      const { features, lngLat } = event;
+      const { lngLat } = event;
       // console.log('FEATURES');
 
       // When user clicks map open Label Editor.
@@ -254,9 +254,9 @@ const AnnotationsPanel = ({ map }) => {
     [textLabelSelected]
   );
 
-  const addLabel = label => {
-    console.log('Add Label: ', label);
-  };
+  // const addLabel = label => {
+  //   console.log('Add Label: ', label);
+  // };
 
   return (
     <div className={styles.panel}>

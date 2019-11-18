@@ -1,11 +1,12 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useRef } from 'react';
 import Map from './map.component';
-import syncMove from './mapbox-gl-sync-move';
+// import syncMove from './mapbox-gl-sync-move';
 // import { useCrossFilterStore } from '../crossfilter';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+
 // import { colorSchemes } from '../colors';
+
 import styles from './map-layout.module.css';
-// import ToolbarContainer from '../toolbar/toolbar.container';
 
 const times = (n, fn) => {
   const result = [];
@@ -16,7 +17,7 @@ const times = (n, fn) => {
 };
 
 const MapLayout = () => {
-  const multi = useSelector(state => state.map.isMultiMapMode);
+  // const multi = useSelector(state => state.map.isMultiMapMode);
   const map1Ref = useRef(null);
   const map2Ref = useRef(null);
   const map3Ref = useRef(null);
@@ -70,9 +71,6 @@ const MapLayout = () => {
           />
         ))}
       </div>
-      {/* <header className={styles.header}>
-        <ToolbarContainer />
-      </header> */}
     </div>
   );
 };

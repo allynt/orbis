@@ -1,4 +1,4 @@
-import React, { useImperativeHandle, useState, useRef } from 'react';
+import React, { useImperativeHandle } from 'react';
 // import ReactDOM from 'react-dom';
 
 import mapboxgl, { AttributionControl, NavigationControl, ScaleControl } from 'mapbox-gl';
@@ -15,7 +15,7 @@ import '@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css';
 // import MapboxDraw from '@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw';
 import '@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css';
 // import { setClickedFeature, MULTI_SELECT } from '../factsheet/factsheet.action';
-import { useMapEvent, useMapLayerEvent } from './use-map-event.hook';
+import { useMapEvent } from './use-map-event.hook';
 import SaveMapControl from '../save-map/save-map-control';
 import LayerTreeControl from '../layer-tree/layer-tree.control';
 import AccountMenuButton from '../accounts/account-menu-button.component';
@@ -25,7 +25,7 @@ import { setViewport } from './map.actions';
 import Annotations from '../annotations/annotations.component';
 import Bookmarks from '../bookmarks/bookmarks.component';
 
-import { history } from '../store';
+// import { history } from '../store';
 
 // import LabelForm from '../annotations/label-form.component';
 // import { formatKey } from '../utils/utils';
@@ -79,14 +79,14 @@ const Map = (
 ) => {
   const accessToken = useSelector(state => (state.app.config ? state.app.config.mapbox_token : null));
 
-  const labelButtonSelected = useSelector(state => state.annotations.textLabelSelected);
+  // const labelButtonSelected = useSelector(state => state.annotations.textLabelSelected);
 
   const selectedBookmark = useSelector(state => state.bookmarks.selectedBookmark);
 
   // const { properties, filters, currentFilters, visible, setBounds } = useMapCrossFilter(selectedProperty);
   // const selectedPropertyMetadata = properties.find(property => property.field === selectedProperty);
   const { mapContainer, mapInstance } = useMapbox(style, accessToken);
-  const user = useSelector(state => state.accounts.user);
+  // const user = useSelector(state => state.accounts.user);
 
   // const [hoveredFeature, setHoveredFeature] = useState(null);
 

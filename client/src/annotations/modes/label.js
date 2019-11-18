@@ -1,8 +1,8 @@
 import MapboxDraw from '@mapbox/mapbox-gl-draw';
 import Constants from '@mapbox/mapbox-gl-draw/src/constants';
-import doubleClickZoom from '@mapbox/mapbox-gl-draw/src/lib/double_click_zoom';
-import length from '@turf/length';
-import circleFn from '@turf/circle';
+// import doubleClickZoom from '@mapbox/mapbox-gl-draw/src/lib/double_click_zoom';
+// import length from '@turf/length';
+// import circleFn from '@turf/circle';
 
 // import LabelForm from './text-dialog.component';
 

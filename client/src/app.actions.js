@@ -1,7 +1,5 @@
 import { NotificationManager } from 'react-notifications';
 
-import ReactGA from 'react-ga';
-
 export const FETCH_APP_CONFIG = 'FETCH_APP_CONFIG';
 
 export const fetchAppConfig = () => async dispatch => {

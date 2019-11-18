@@ -16,7 +16,7 @@ const BookmarkForm = ({ submit }) => {
     submit(values);
   }
 
-  const { handleChange, handleSubmit, reset, values, errors } = useForm(onSubmit, validate);
+  const { handleChange, handleSubmit, values, errors } = useForm(onSubmit, validate);
 
   return (
     <form className={styles.form} onSubmit={handleSubmit}>
