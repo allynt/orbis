@@ -87,6 +87,8 @@ local_settings.py
 
 ### local environment files
 .env.local
+
+### generated files
 client/cypress/integration/examples/*
 client/cypress/screenshots
 client/cypress/videos

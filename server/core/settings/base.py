@@ -27,7 +27,8 @@ ROOT_DIR = environ.Path(__file__) - 4
 SERVER_DIR = ROOT_DIR.path("server")
 CLIENT_DIR = ROOT_DIR.path("client")
 
-DEBUG = False  # "development.py" & "testing.py" set DEBUG to True
+# DEBUG is overwritten in deployment.py, development.py, or ci.py as appropriate
+DEBUG = False
 
 WSGI_APPLICATION = "wsgi.application"
 
@@ -248,8 +249,8 @@ EMAIL_TIMEOUT = 60
 # email backend is set in environment-specific settings...
 
 # development: "django.core.mail.backends.console.EmailBackend"
-# ci: django.core.mail.backends.locmem.EmailBackend"
 # deployment: "django.core.mail.backends.smtp.EmailBackend"
+# ci: django.core.mail.backends.locmem.EmailBackend"
 
 ##########################
 # Authentication & Users #

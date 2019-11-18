@@ -41,6 +41,24 @@ local serviceLabels = podLabels;
                 value: deploymentType,
               },
               {
+                name: "DJANGO_SECRET_KEY",
+                valueFrom: {
+                  secretKeyRef: {
+                    name: secretKeyName,
+                    key: "secret_key"
+                  }
+                }
+              },
+              {
+                name: "DJANGO_DEBUG",
+                valueFrom: {
+                  secretKeyRef: {
+                    name: secretKeyName,
+                    key: "debug"
+                  }
+                }
+              },
+              {
                 name: "DJANGO_DB_HOST",
                 valueFrom: {
                   secretKeyRef: {
@@ -82,6 +100,42 @@ local serviceLabels = podLabels;
                   secretKeyRef: {
                     name: secretKeyName,
                     key: "db_password"
+                  }
+                }
+              },
+              {
+                name: "DJANGO_EMAIL_HOST",
+                valueFrom: {
+                  secretKeyRef: {
+                    name: secretKeyName,
+                    key: "email_host"
+                  }
+                }
+              },
+              {
+                name: "DJANGO_EMAIL_PORT",
+                valueFrom: {
+                  secretKeyRef: {
+                    name: secretKeyName,
+                    key: "email_port"
+                  }
+                }
+              },
+              {
+                name: "DJANGO_EMAIL_USER",
+                valueFrom: {
+                  secretKeyRef: {
+                    name: secretKeyName,
+                    key: "email_user"
+                  }
+                }
+              },
+              {
+                name: "DJANGO_EMAIL_PASSWORD",
+                valueFrom: {
+                  secretKeyRef: {
+                    name: secretKeyName,
+                    key: "email_password"
                   }
                 }
               }
