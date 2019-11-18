@@ -84,20 +84,22 @@ local serviceLabels = podLabels;
       }
    },
    spec: {
-    rules: {
-      host: "app.testing.or3is.com",
-      http: {
-        paths: [
-          {
-            path: "/",
-            backend: {
-              serviceName: appName,
-              servicePort: "http"
+    rules: [
+      {
+        host: "app.testing.or3is.com",
+        http: {
+          paths: [
+            {
+              path: "/",
+              backend: {
+                serviceName: appName,
+                servicePort: "http"
+              }
             }
-          }
-        ]
+          ]
+        }
       }
-    }
+    ]
    }
   })
 
