@@ -1,5 +1,6 @@
 local appName = "orbis";
 local tag = std.extVar('tag');
+local deploymentType = "deployment";  // "[deployment|development]"
 local envName = "testing-" + tag;
 local registry = "339570402237.dkr.ecr.eu-west-1.amazonaws.com";
 local repository = "company/orbis/django:" + tag;
@@ -35,6 +36,10 @@ local serviceLabels = podLabels;
             image: registry + "/" + repository,
             ports: [{ "containerPort": 8000 }],
             env: [
+              {
+                name: "SYS_ENV",
+                value: deploymentType,
+              },
               {
                 name: "DJANGO_DB_HOST",
                 valueFrom: {
