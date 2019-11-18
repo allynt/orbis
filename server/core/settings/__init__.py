@@ -17,7 +17,7 @@ env = environ.Env()
 
 if ENVIRONMENT == "development":
     # environment variables for development are stored in files
-    for env_file in glob.glob(ROOT_DIR(".env*")):
+    for env_file in glob.glob(ROOT_DIR("server/.env*")):
         try:
             env.read_env(env_file)
         except Exception as e:
