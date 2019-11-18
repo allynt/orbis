@@ -4,6 +4,11 @@ import Map from './map.component';
 // import { useCrossFilterStore } from '../crossfilter';
 import { useDispatch, useSelector } from 'react-redux';
 
+import { ReactComponent as BookmarksLogo } from '../toolbar/menu.svg';
+import { ReactComponent as AnnotationsLogo } from '../toolbar/satellite-acquisitions.svg';
+
+import Toolbar from '../toolbar/toolbar.component';
+import { toggleMenu } from '../side-menu/side-menu.actions';
 // import { colorSchemes } from '../colors';
 
 import styles from './map-layout.module.css';
@@ -17,6 +22,7 @@ const times = (n, fn) => {
 };
 
 const MapLayout = () => {
+  const dispatch = useDispatch();
   // const multi = useSelector(state => state.map.isMultiMapMode);
   const map1Ref = useRef(null);
   const map2Ref = useRef(null);
@@ -41,6 +47,21 @@ const MapLayout = () => {
   //     };
   //   }
   // }, [mapRefCount]);
+
+  const toolbarItems = [
+    {
+      label: 'Bookmarks',
+      icon: <BookmarksLogo />,
+      action: () => dispatch(toggleMenu()),
+      tooltip: 'Bookmarks'
+    },
+    {
+      label: 'Annotations',
+      icon: <AnnotationsLogo />,
+      action: () => console.log('Show Annotations'),
+      tooltip: 'Annotations'
+    }
+  ];
 
   return (
     <div className={styles['map-column']}>
@@ -71,6 +92,8 @@ const MapLayout = () => {
           />
         ))}
       </div>
+
+      <Toolbar items={toolbarItems} />
     </div>
   );
 };

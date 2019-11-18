@@ -17,13 +17,16 @@ import '@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css';
 // import { setClickedFeature, MULTI_SELECT } from '../factsheet/factsheet.action';
 import { useMapEvent } from './use-map-event.hook';
 import SaveMapControl from '../save-map/save-map-control';
-import LayerTreeControl from '../layer-tree/layer-tree.control';
-import AccountMenuButton from '../accounts/account-menu-button.component';
-import { logout } from '../accounts/accounts.actions';
+// import LayerTreeControl from '../layer-tree/layer-tree.control';
+// import AccountMenuButton from '../accounts/account-menu-button.component';
+// import { logout } from '../accounts/accounts.actions';
 
+import SideMenuContainer from '../side-menu/side-menu.container';
+import AnnotationsPanel from '../annotations/annotations-panel.component';
+import BookmarksPanel from '../bookmarks/bookmarks-panel.component';
 import { setViewport } from './map.actions';
-import Annotations from '../annotations/annotations.component';
-import Bookmarks from '../bookmarks/bookmarks.component';
+// import Annotations from '../annotations/annotations.component';
+// import Bookmarks from '../bookmarks/bookmarks.component';
 
 // import { history } from '../store';
 
@@ -44,7 +47,7 @@ import ImageMode from '../annotations/modes/image';
 
 import drawStyles from '../annotations/styles';
 import layoutStyles from './map-layout.module.css';
-import LayerTree from '../layer-tree/layer-tree.component';
+// import LayerTree from '../layer-tree/layer-tree.component';
 
 // const interpolate = interpolation => (property, filter, values) => [
 //   interpolation,
@@ -754,10 +757,19 @@ const Map = (
   // console.log('POPUP: ', popupRef);
   return (
     <div ref={mapContainer} className={layoutStyles.map} data-testid={`map-${position}`}>
-      <AccountMenuButton user={user} logout={() => dispatch(logout(history))} />
-      <Annotations map={mapInstance} />
+      {/* <AccountMenuButton user={user} logout={() => dispatch(logout(history))} /> */}
+      {/* <Toolbar items={toolbarItems} /> */}
+      <SideMenuContainer>
+        <div className={layoutStyles.sidebar}>
+          <AnnotationsPanel map={mapInstance} />
+          <BookmarksPanel map={mapInstance} />
+        </div>
+      </SideMenuContainer>
+
+      {/* <Annotations map={mapInstance} />
       <Bookmarks map={mapInstance} />
-      <LayerTree map={mapInstance} />
+      <LayerTree map={mapInstance} /> */}
+
       {/* {popupRef.current &&
         ReactDOM.createPortal(
           <div className={layoutStyles.popup}>

@@ -1,0 +1,38 @@
+.toolbar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  width: 3rem;
+  height: 100vh;
+  background-color: var(--background-color);
+}
+
+.toolbarBtn {
+  width: 2rem;
+  height: 2rem;
+  border: none;
+  background-color: #fff;
+  padding: 0.3rem;
+  margin: 0.5rem;
+  border-radius: 0.2rem;
+}
+
+.toolbarBtn:hover {
+  background-color: #fdfaf7;
+}
+
+.active {
+  background-color: #a9a9a9;
+}
+
+.settings {
+  margin-top: auto;
+}
+
+.icon {
+  height: 1rem;
+  fill: var(--button-color);
+}
