@@ -1,7 +1,7 @@
 local appName = "orbis";
 local tag = std.extVar('tag');
 local deploymentType = "deployment";  // "[deployment|development]"
-local envName = "testing-" + tag;
+local envName = "testing";
 local registry = "339570402237.dkr.ecr.eu-west-1.amazonaws.com";
 local repository = "company/orbis/django:" + tag;
 local secretKeyName = "orbis-secrets";
@@ -162,6 +162,30 @@ local serviceLabels = podLabels;
      }],
      selector: podLabels
     }
+  }),
+
+  'ingres.json': std.manifestJson({
+    apiVersion: "extensions/v1beta1",
+    kind: "Ingress",
+    metadata: {
+      name: appName,
+   },
+   spec: {
+    rules: {
+      host: "app.testing.or3is.com",
+      http: {
+        paths: [
+          {
+            path: "/",
+            backend: {
+              serviceName: appName,
+              servicePort: "http"
+            }
+          }
+        ]
+      }
+    }
+   }
   })
 
 }
