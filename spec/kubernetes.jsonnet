@@ -8,8 +8,7 @@ local secretKeyName = "orbis-secrets";
 
 local podLabels = {
   app: "orbis",
-  environment: envName,
-  tag: tag
+  environment: envName
 };
 
 local serviceLabels = podLabels;
