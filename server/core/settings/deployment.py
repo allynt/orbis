@@ -40,18 +40,12 @@ LOGGING = {
         "null": {"class": "logging.NullHandler"},
         "default": {
             "level": "DEBUG",
-            "class": "logging.handlers.RotatingFileHandler",
-            "filename": "/var/log/{}/django.log".format(PROJECT_SLUG),
-            "maxBytes": 1024 * 1024 * 5,  # 5 MB
-            "backupCount": 5,
+            "class": "logging.StreamHandler",
             "formatter": "standard",
         },
         "request_handler": {
             "level": "DEBUG",
-            "class": "logging.handlers.RotatingFileHandler",
-            "filename": "/var/log/{}/django_request.log".format(PROJECT_SLUG),
-            "maxBytes": 1024 * 1024 * 5,  # 5 MB
-            "backupCount": 5,
+            "class": "logging.StreamHandler",
             "formatter": "standard",
         },
         "mail_admins_handler": {
