@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
 
 import useForm from '../hooks/useForm';
 import validate from './password-change-form.validator';
@@ -80,7 +79,10 @@ const PasswordChangeForm = ({ changePassword }) => {
               label="I agree with"
               onChange={() => console.log('Keep me logged in')}
             />
-            &nbsp;<a href="">Terms &amp; Conditions</a>
+            &nbsp;
+            <Button theme="link" href="http://google.co.uk">
+              Terms &amp; Conditions
+            </Button>
           </div>
         </div>
 
@@ -95,7 +97,10 @@ const PasswordChangeForm = ({ changePassword }) => {
         </div>
 
         <p className={passwordStyles.footer}>
-          Do you have an account?&nbsp;<Link to={'/login'}>Login</Link>
+          Do you have an account?&nbsp;
+          <Button theme="link" href="/login">
+            Login
+          </Button>
         </p>
       </form>
     </div>

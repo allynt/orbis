@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
 
 import useForm from '../hooks/useForm';
 import validate from './password-reset-form.validator';
@@ -49,7 +48,10 @@ const PasswordResetForm = ({ resetPassword }) => {
         </div>
 
         <p className={passwordStyles.footer}>
-          Do you have an account?&nbsp;<Link to={'/login'}>Login</Link>
+          Do you have an account?&nbsp;
+          <Button theme="link" href="/login">
+            Login
+          </Button>
         </p>
       </form>
     </div>

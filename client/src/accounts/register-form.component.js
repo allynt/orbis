@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
+
+import { Redirect } from 'react-router-dom';
 
 import useForm from '../hooks/useForm';
 import validate from './register-form.validator';
@@ -14,17 +15,17 @@ import registerStyles from './register-form.module.css';
 
 const RegisterForm = ({ register }) => {
   const { handleChange, handleSubmit, values, errors } = useForm(onSubmit, validate);
-  // const [redirectToLogin, setRedirectToLogin] = useState(false);
+  const [redirectToLogin, setRedirectToLogin] = useState(false);
 
   function onSubmit() {
     register(values);
-    // setRedirectToLogin(true);
+    setRedirectToLogin(true);
   }
 
   // Re-direct to login.
-  // if (redirectToLogin) {
-  //   return <Redirect to="/login" />;
-  // }
+  if (redirectToLogin) {
+    return <Redirect to="/login" />;
+  }
 
   return (
     <div className={formStyles.container}>
@@ -81,7 +82,10 @@ const RegisterForm = ({ register }) => {
               label="I agree with"
               onChange={() => console.log('Keep me logged in')}
             />
-            &nbsp;<a href="http://google.co.uk">Terms &amp; Conditions</a>
+            &nbsp;
+            <Button theme="link" href="http://google.co.uk">
+              Terms &amp; Conditions
+            </Button>
           </div>
         </div>
 
@@ -96,7 +100,10 @@ const RegisterForm = ({ register }) => {
         </div>
 
         <p className={registerStyles.footer}>
-          Do you have an account?&nbsp;<Link to={'/login'}>Login</Link>
+          Do you have an account?&nbsp;
+          <Button theme="link" href="/login">
+            Login
+          </Button>
         </p>
       </form>
     </div>

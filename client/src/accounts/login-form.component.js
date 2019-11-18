@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Link, Redirect } from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 
 import useForm from '../hooks/useForm';
 import validate from './login-form.validator';
@@ -47,8 +47,11 @@ const LoginForm = ({ login, user, from }) => {
               label="Keep me logged in"
               onChange={() => console.log('Keep me logged in')}
             />
-            <p>
-              Forgotten your <Link to="/password/reset">password?</Link>
+            <p className={formStyles.row}>
+              Forgotten your&nbsp;
+              <Button theme="link" href="/password/reset">
+                password?
+              </Button>
             </p>
           </div>
         </div>
@@ -65,7 +68,10 @@ const LoginForm = ({ login, user, from }) => {
         </div>
 
         <p className={loginStyles.footer}>
-          Don't have an account?&nbsp;<Link to={'/register'}>Sign Up</Link>
+          Don't have an account?&nbsp;
+          <Button theme="link" href="/register">
+            Sign Up
+          </Button>
         </p>
       </form>
     </div>
