@@ -21,7 +21,6 @@ COPY --chown=app:app . $APP_HOME
 RUN cd $APP_HOME/client && yarn install && yarn build
 
 # Install backend deps
-RUN mkdir -p /var/log/orbis && touch /var/log/orbis/django.log
 RUN cd $APP_HOME/server && pipenv install --dev
 
 # Install server code
