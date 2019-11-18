@@ -2,10 +2,9 @@ import mapboxgl from 'mapbox-gl';
 import { useRef, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 
-const useMapbox = style => {
+const useMapbox = (style, accessToken) => {
   const mapContainer = useRef(null);
   const [mapInstance, setMapInstance] = useState(null);
-  const accessToken = useSelector(state => state.app.mapbox_token);
   const viewportConfig = useSelector(state => state.map.viewport);
   const viewport = useRef(viewportConfig);
 

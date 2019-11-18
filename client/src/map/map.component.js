@@ -18,9 +18,14 @@ import '@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css';
 import { useMapEvent, useMapLayerEvent } from './use-map-event.hook';
 import SaveMapControl from '../save-map/save-map-control';
 import LayerTreeControl from '../layer-tree/layer-tree.control';
+import AccountMenuButton from '../accounts/account-menu-button.component';
+import { logout } from '../accounts/accounts.actions';
+
 import { setViewport } from './map.actions';
 import Annotations from '../annotations/annotations.component';
 import Bookmarks from '../bookmarks/bookmarks.component';
+
+import { history } from '../store';
 
 // import LabelForm from '../annotations/label-form.component';
 // import { formatKey } from '../utils/utils';
@@ -73,9 +78,6 @@ const Map = (
   ref
 ) => {
   const accessToken = useSelector(state => (state.app.config ? state.app.config.mapbox_token : null));
-  if (accessToken) {
-    mapboxgl.accessToken = accessToken;
-  }
 
   const labelButtonSelected = useSelector(state => state.annotations.textLabelSelected);
 
@@ -83,7 +85,9 @@ const Map = (
 
   // const { properties, filters, currentFilters, visible, setBounds } = useMapCrossFilter(selectedProperty);
   // const selectedPropertyMetadata = properties.find(property => property.field === selectedProperty);
-  const { mapContainer, mapInstance } = useMapbox(style);
+  const { mapContainer, mapInstance } = useMapbox(style, accessToken);
+  const user = useSelector(state => state.accounts.user);
+
   // const [hoveredFeature, setHoveredFeature] = useState(null);
 
   // const selectedLsoaFeatureIds = useSelector(selectedFeatureIds);
@@ -750,6 +754,7 @@ const Map = (
   // console.log('POPUP: ', popupRef);
   return (
     <div ref={mapContainer} className={layoutStyles.map} data-testid={`map-${position}`}>
+      <AccountMenuButton user={user} logout={() => dispatch(logout(history))} />
       <Annotations map={mapInstance} />
       <Bookmarks map={mapInstance} />
       <LayerTree map={mapInstance} />
