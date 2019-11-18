@@ -89,15 +89,12 @@ jobs:
 
       - name: Build Docker Image
         run: |
-          export GIT_REF=${GITHUB_REF##*/}
           export GIT_SHA=${GITHUB_SHA:0:7}
-          docker build . -t ${AWS_REGISTRY}/${AWS_REPOSITORY}:${GIT_REF} -t ${AWS_REGISTRY}/${AWS_REPOSITORY}:${GIT_SHA} --build-arg COMMIT_HASH=${GIT_REF} --build-arg GIT_BRANCH=${GIT_SHA} --build-arg TOKEN=${{ secrets.GITHUB_REGISTRY_TOKEN }} -f ./Dockerfile.artifact
+          docker build . -t ${AWS_REGISTRY}/${AWS_REPOSITORY}:${GIT_SHA} --build-arg TOKEN=${{ secrets.GITHUB_REGISTRY_TOKEN }} -f ./Dockerfile.artifact
 
       - name: Push image to AWS Docker Registry
         run: |
-          export GIT_REF=${GITHUB_REF##*/}
           export GIT_SHA=${GITHUB_SHA:0:7}
-          docker push ${AWS_REGISTRY}/${AWS_REPOSITORY}:${GIT_REF}
           docker push ${AWS_REGISTRY}/${AWS_REPOSITORY}:${GIT_SHA}
 
   deploy-to-testing:
@@ -144,7 +141,7 @@ jobs:
 
       - name: Run jsonnet
         run: |
-          mkdir -p spec_generated/testing && jsonnet ./spec/kubernetes.jsonnet --ext-str "tag=${GITHUB_REF##*/}" --string --multi spec_generated/testing
+          mkdir -p spec_generated/testing && jsonnet ./spec/kubernetes.jsonnet --ext-str "tag=${GITHUB_SHA:0:7}" --string --multi spec_generated/testing
 
       - name: Deploy the App
         run: kubectl apply -f spec_generated/testing
