@@ -14,7 +14,24 @@ local podLabels = {
 
 local serviceLabels = podLabels;
 
+local secretsMapping = {
+  // maps the secret name to the environment variable name
+  debug: "DJANGO_DEBUG",
+  secret_key: "DJANGO_SECRET_KEY",
+  db_host: "DJANGO_DB_HOST",
+  db_port: "DJANGO_DB_PORT",
+  db_name: "DJANGO_DB_NAME",
+  db_user: "DJANGO_DB_USER",
+  db_password: "DJANGO_DB_PASSWORD",
+  email_host: "DJANGO_EMAIL_HOST",
+  email_port: "DJANGO_EMAIL_PORT",
+  email_user: "DJANGO_EMAIL_USER",
+  email_password: "DJANGO_EMAIL_PASSWORD"
+};
+
+
 {
+
   'deployment.json': std.manifestJson({
     apiVersion: "apps/v1",
     kind: "Deployment",
@@ -35,111 +52,11 @@ local serviceLabels = podLabels;
             name: appName + "-" + envName,
             image: registry + "/" + repository,
             ports: [{ "containerPort": 8000 }],
-            env: [
-              {
-                name: "SYS_ENV",
-                value: deploymentType,
-              },
-              {
-                name: "DJANGO_SECRET_KEY",
-                valueFrom: {
-                  secretKeyRef: {
-                    name: secretKeyName,
-                    key: "secret_key"
-                  }
-                }
-              },
-              {
-                name: "DJANGO_DEBUG",
-                valueFrom: {
-                  secretKeyRef: {
-                    name: secretKeyName,
-                    key: "debug"
-                  }
-                }
-              },
-              {
-                name: "DJANGO_DB_HOST",
-                valueFrom: {
-                  secretKeyRef: {
-                    name: secretKeyName,
-                    key: "db_host"
-                  }
-                }
-              },
-              {
-                name: "DJANGO_DB_PORT",
-                valueFrom: {
-                  secretKeyRef: {
-                    name: secretKeyName,
-                    key: "db_port"
-                  }
-                }
-              },
-              {
-                name: "DJANGO_DB_NAME",
-                valueFrom: {
-                  secretKeyRef: {
-                    name: secretKeyName,
-                    key: "db_name"
-                  }
-                }
-              },
-              {
-                name: "DJANGO_DB_USER",
-                valueFrom: {
-                  secretKeyRef: {
-                    name: secretKeyName,
-                    key: "db_user"
-                  }
-                }
-              },
-              {
-                name: "DJANGO_DB_PASSWORD",
-                valueFrom: {
-                  secretKeyRef: {
-                    name: secretKeyName,
-                    key: "db_password"
-                  }
-                }
-              },
-              {
-                name: "DJANGO_EMAIL_HOST",
-                valueFrom: {
-                  secretKeyRef: {
-                    name: secretKeyName,
-                    key: "email_host"
-                  }
-                }
-              },
-              {
-                name: "DJANGO_EMAIL_PORT",
-                valueFrom: {
-                  secretKeyRef: {
-                    name: secretKeyName,
-                    key: "email_port"
-                  }
-                }
-              },
-              {
-                name: "DJANGO_EMAIL_USER",
-                valueFrom: {
-                  secretKeyRef: {
-                    name: secretKeyName,
-                    key: "email_user"
-                  }
-                }
-              },
-              {
-                name: "DJANGO_EMAIL_PASSWORD",
-                valueFrom: {
-                  secretKeyRef: {
-                    name: secretKeyName,
-                    key: "email_password"
-                  }
-                }
-              }
-            ]
+            env: [{ name: "SYS_ENV", value: deploymentType}] +
+              [
+                {name: secretsMapping[secret], valueFrom: { secretKeyRef: secretKeyName, key: secret}}
+                for secret in std.objectFields(secretsMapping)
+              ]
           }]
         }
       }
@@ -169,6 +86,9 @@ local serviceLabels = podLabels;
     kind: "Ingress",
     metadata: {
       name: appName,
+      labels: {
+        traefik: "external"
+      }
    },
    spec: {
     rules: {
