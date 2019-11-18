@@ -96,3 +96,4 @@ client/reports/
 node_modules/
 /src/
 spec_generated/
+server/static

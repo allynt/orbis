@@ -24,9 +24,24 @@ services:
       PIPENV_NOSPIN: 1
       GITHUB_REGISTRY_TOKEN: "${GITHUB_REGISTRY_TOKEN}"
     volumes:
-      - .:/home/app
+      - ./server:/home/app/server
+      - ./client:/home/app/client
     ports:
       - "8000:8000"
+    networks:
+      - orbis
+
+  client:
+    image: node:10.16.3
+    tty: true
+    environment:
+      NODE_ENV: "development"
+      GITHUB_REGISTRY_TOKEN: "${GITHUB_REGISTRY_TOKEN}"
+    working_dir: /home/app/client
+    volumes:
+      - ./client:/home/app/client
+    command: bash -c "yarn install && yarn build && yarn start"
+    ports:
       - "3000:3000"
       - "35729:35729"
     networks:
