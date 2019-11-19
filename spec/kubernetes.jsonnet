@@ -67,7 +67,7 @@ local serviceLabels = podLabels;
      ports: [{
        name: "http",
        port: 80,
-       targetPort: 8000
+       targetPort: 80
      }],
      selector: podLabels
     }
