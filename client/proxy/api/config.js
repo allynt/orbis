@@ -9,20 +9,10 @@ const userKey = { key: '57bd67287664bb1497cb29fe89d2d5087195a3ae' };
 
 const users = [
   {
-    id: 2,
-    username: 'msmall',
-    email: 'mark.small@astrosat.space',
-    name: null,
-    description: '',
-    is_verified: true,
-    is_approved: false,
-    profiles: {},
-    roles: [{ id: 2, name: 'IsUser', description: '', permissions: [] }]
-  },
-  {
     id: 1,
-    username: 'admin',
-    email: '',
+    username: 'test@test.com',
+    email: 'test@test.com',
+    password: 'pandaconcretespoon',
     name: null,
     description: '',
     is_verified: true,
@@ -32,10 +22,51 @@ const users = [
       { id: 1, name: 'IsManager', description: '', permissions: [] },
       { id: 2, name: 'IsUser', description: '', permissions: [] }
     ]
+  },
+  {
+    id: 2,
+    username: 'verified@test.com',
+    email: 'verified@test.com',
+    password: 'pandaconcretespoon',
+    name: null,
+    description: '',
+    is_verified: true,
+    is_approved: false,
+    profiles: {},
+    roles: [{ id: 2, name: 'IsUser', description: '', permissions: [] }]
+  },
+  {
+    id: 3,
+    username: 'approved@test.com',
+    email: 'approved@test.com',
+    password: 'pandaconcretespoon',
+    name: null,
+    description: '',
+    is_verified: true,
+    is_approved: true,
+    profiles: {},
+    roles: [{ id: 2, name: 'IsUser', description: '', permissions: [] }]
   }
 ];
 
-let currentUser = users[1];
+const bookmarks = [
+  {
+    title: 'bookmark 1',
+    feature_collection: [],
+    center: [0, 0],
+    zoom: 5,
+    owner: users[2].id
+  },
+  {
+    title: 'bookmark 2',
+    feature_collection: [],
+    center: [55.961667, -3.165556],
+    zoom: 6,
+    owner: users[2].id
+  }
+];
+
+let currentUser = null;
 
 const getAppConfig = (req, res) => {
   console.log('Returning App Config');
@@ -55,24 +86,94 @@ const getCurrentUser = (req, res) => {
   res.json(currentUser);
 };
 
+const register = (req, res) => {
+  const details = req.body;
+  console.log('Registering User: ', details);
+
+  const existingUser = users.find(user => user.username === details.username);
+
+  if (existingUser) {
+    res.status(400);
+    res.json({ message: `Sorry, ${details.username} already exists` });
+  } else {
+    let oldId = users.length;
+    const user = {
+      id: ++oldId,
+      username: details.username,
+      email: details.email,
+      name: null,
+      description: '',
+      is_verified: false,
+      is_approved: false,
+      profiles: {},
+      roles: []
+    };
+
+    users.push(user);
+
+    res.status(200);
+    res.json(userKey);
+  }
+};
+
 const login = (req, res) => {
-  console.log('User Login');
-  currentUser = users[1];
-  res.status(200);
-  res.json(userKey);
+  const user = req.body;
+  console.log('Logging User: ', user);
+
+  currentUser = users.find(usr => usr.username === user.username);
+
+  if (currentUser) {
+    if (user.password === currentUser.password) {
+      res.status(200);
+      res.json(userKey);
+    } else {
+      res.status(400);
+      res.json({
+        message:
+          '<p>Sorry, email and password did not match.</p><p><strong>Warning:</strong> After 7 consecutive unsuccessful login attempts, your account will be locked out for 60 minutes.</p>'
+      });
+    }
+  } else {
+    res.status(400);
+    res.json({ message: `Sorry, ${user.username} could not be found` });
+  }
 };
 
 const logout = (req, res) => {
   console.log('User Logout');
   currentUser = null;
+
   res.status(200);
   res.json(userKey);
+};
+
+const getBookmarks = (req, res) => {
+  console.log('Returning Bookmarks');
+  const userBookmarks = bookmarks.filter(bookmark => bookmark.owner === currentUser.id);
+
+  res.status(200);
+  res.json(userBookmarks);
+};
+
+const addBookmark = (req, res) => {
+  console.log('Adding Bookmark');
+  const bookmark = {
+    ...req.body
+  };
+
+  bookmarks.push(bookmark);
+
+  res.status(200);
+  res.json(bookmark);
 };
 
 module.exports = {
   getAppConfig,
   getUsers,
   getCurrentUser,
+  register,
   login,
-  logout
+  logout,
+  getBookmarks,
+  addBookmark
 };

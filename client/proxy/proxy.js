@@ -28,16 +28,16 @@ router.get('/', function(req, res) {
 });
 
 router.get('/app/config', (req, res) => config.getAppConfig(req, res));
-router.get('/users/', (req, res) => config.getUsers(req, res));
-router.get('/users/current', (req, res) => config.getCurrentUser(req, res));
-// router.get('/config/map/:id', () => config.getMapConfig);
 
+router.get('/users/', (req, res) => config.getUsers(req, res));
+router.get('/users/:username/', (req, res) => config.getCurrentUser(req, res));
+
+router.route('/rest-auth/registration/').post((req, res) => config.register(req, res));
 router.route('/rest-auth/login/').post((req, res) => config.login(req, res));
 router.route('/rest-auth/logout/').post((req, res) => config.logout(req, res));
 
-// router.post('/annotations/upload', upload.single('file'), annotations.uploadAnnotations);
-// router.route('/my-maps/:id').put(myMaps.updateMyMap);
-// router.route('/my-maps/:id').delete(myMaps.deleteMyMap);
+router.get('/bookmarks/', (req, res) => config.getBookmarks(req, res));
+router.route('/bookmarks/').post((req, res) => config.addBookmark(req, res));
 
 // REGISTER OUR ROUTES -------------------------------
 app.use('/api', router);
