@@ -1,4 +1,7 @@
 import { NotificationManager } from 'react-notifications';
+
+import { history } from '../store';
+
 import { sendData, JSON_HEADERS } from '../utils/http';
 
 export const LOGIN_REQUESTED_SUCCESS = 'LOGIN_REQUESTED_SUCCESS';
@@ -44,14 +47,13 @@ export const register = form => async dispatch => {
   const response = await sendData(API.register, data, JSON_HEADERS);
 
   if (!response.ok) {
-    const errorResponse = await response.json();
-    const error = new Error(errorResponseToString(errorResponse));
+    const error = await response.json();
 
     NotificationManager.error(error.message, `"Registration Error - ${response.statusText}`, 50000, () => {});
 
     return dispatch({
       type: REGISTER_REQUESTED_FAILURE,
-      error
+      error: error
     });
   }
 
@@ -61,7 +63,8 @@ export const register = form => async dispatch => {
     5000,
     () => {}
   );
-  return dispatch({ type: REGISTER_REQUESTED_SUCCESS });
+  dispatch({ type: REGISTER_REQUESTED_SUCCESS });
+  history.push('/login');
 };
 
 export const activateAccount = form => async () => {
@@ -135,7 +138,7 @@ export const login = form => async dispatch => {
  *
  * @param {*} history
  */
-export const logout = history => async dispatch => {
+export const logout = () => async dispatch => {
   const response = await sendData(API.logout, {}, JSON_HEADERS);
 
   if (!response.ok) {

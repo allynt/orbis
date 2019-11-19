@@ -6,9 +6,10 @@ import PropTypes from 'prop-types';
 import useForm from '../hooks/useForm';
 import validate from './bookmark-form.validator';
 
-import { Button } from '@astrosat/astrosat-ui';
+import { Button, Textfield } from '@astrosat/astrosat-ui';
 
-import styles from './bookmark-form.module.css';
+import formStyles from '../accounts/forms.module.css';
+// import bookmarkStyles from './bookmark-form.module.css';
 
 const BookmarkForm = ({ submit }) => {
   function onSubmit() {
@@ -19,30 +20,33 @@ const BookmarkForm = ({ submit }) => {
   const { handleChange, handleSubmit, values, errors } = useForm(onSubmit, validate);
 
   return (
-    <form className={styles.form} onSubmit={handleSubmit}>
-      <h3>Save Bookmark</h3>
+    <div className={formStyles.container}>
+      <form className={formStyles.form} onSubmit={handleSubmit}>
+        <div className={formStyles.fields}>
+          <div className={formStyles.row}>
+            <Textfield
+              name="title"
+              value={values.title || ''}
+              placeholder="Email"
+              onChange={handleChange}
+              required
+              autoFocus
+            />
+          </div>
+          {errors.title && <p className={formStyles.errorMessage}>{errors.title}</p>}
+        </div>
 
-      <input
-        className={`${styles.input} ${errors.title ? styles.error : ''}`}
-        type="text"
-        name="title"
-        onChange={handleChange}
-        value={values.title || ''}
-        required
-        autoFocus
-      />
-      {errors.title && <p className={styles.errorMessage}>{errors.title}</p>}
-
-      <div className={styles.buttons}>
-        <Button
-          type="submit"
-          className={styles.button}
-          // disabled={Object.keys(errors).length > 0 || Object.keys(values).length === 0}
-        >
-          Save Bookmark
-        </Button>
-      </div>
-    </form>
+        <div className={formStyles.buttons}>
+          <Button
+            type="submit"
+            className={formStyles.button}
+            disabled={Object.keys(errors).length > 0 || Object.keys(values).length === 0}
+          >
+            Save Bookmark
+          </Button>
+        </div>
+      </form>
+    </div>
   );
 };
 

@@ -1,30 +1,21 @@
-import React, { useState } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
-
-import { Redirect } from 'react-router-dom';
 
 import useForm from '../hooks/useForm';
 import validate from './register-form.validator';
 
-import { Button, PasswordField, PasswordStrengthMeter, Textfield, Checkbox } from '@astrosat/astrosat-ui';
+import { Button, PasswordField, PasswordStrengthMeter, Textfield, Checkbox, Well } from '@astrosat/astrosat-ui';
 
 import { ReactComponent as OrbisLogo } from '../orbis.svg';
 
 import formStyles from './forms.module.css';
 import registerStyles from './register-form.module.css';
 
-const RegisterForm = ({ register }) => {
+const RegisterForm = ({ error, register }) => {
   const { handleChange, handleSubmit, values, errors } = useForm(onSubmit, validate);
-  const [redirectToLogin, setRedirectToLogin] = useState(false);
 
   function onSubmit() {
     register(values);
-    setRedirectToLogin(true);
-  }
-
-  // Re-direct to login.
-  if (redirectToLogin) {
-    return <Redirect to="/login" />;
   }
 
   return (
@@ -32,9 +23,22 @@ const RegisterForm = ({ register }) => {
       <form className={formStyles.form} onSubmit={handleSubmit}>
         <OrbisLogo className={formStyles.logo} />
 
+        {error && (
+          <Well type="error">
+            <div>{error.message}</div>
+          </Well>
+        )}
+
         <div className={formStyles.fields}>
           <div className={formStyles.row}>
-            <Textfield name="email" value={values.email || ''} placeholder="Email" onChange={handleChange} />
+            <Textfield
+              name="email"
+              value={values.email || ''}
+              placeholder="Email"
+              onChange={handleChange}
+              required
+              autoFocus
+            />
           </div>
           {errors.email && <p className={formStyles.errorMessage}>{errors.email}</p>}
 
@@ -61,7 +65,6 @@ const RegisterForm = ({ register }) => {
           {errors.password2 && <p className={formStyles.errorMessage}>{errors.password2}</p>}
 
           <PasswordStrengthMeter password={values.password1} />
-          <p>hello</p>
 
           <div className={`${formStyles.row} ${registerStyles.incidentals}`}>
             <ul>
@@ -111,6 +114,7 @@ const RegisterForm = ({ register }) => {
 };
 
 RegisterForm.propTypes = {
+  error: PropTypes.object,
   register: PropTypes.func.isRequired
 };
 

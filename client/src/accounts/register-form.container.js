@@ -5,7 +5,7 @@ import { register } from './accounts.actions';
 
 import RegisterForm from './register-form.component';
 
-const mapStateToProps = state => ({});
+const mapStateToProps = state => ({ error: state.accounts.error });
 
 const mapDispatchToProps = dispatch =>
   bindActionCreators(
@@ -15,7 +15,4 @@ const mapDispatchToProps = dispatch =>
     dispatch
   );
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(RegisterForm);
+export default connect(mapStateToProps, mapDispatchToProps)(RegisterForm);

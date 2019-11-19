@@ -1,18 +1,18 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom';
 
 import useForm from '../hooks/useForm';
 import validate from './login-form.validator';
 
-import { Button, PasswordField, Textfield, Checkbox } from '@astrosat/astrosat-ui';
+import { Button, PasswordField, Textfield, Checkbox, Well } from '@astrosat/astrosat-ui';
 
 import { ReactComponent as OrbisLogo } from '../orbis.svg';
 
 import formStyles from './forms.module.css';
 import loginStyles from './login-form.module.css';
 
-const LoginForm = ({ login, user, from }) => {
+const LoginForm = ({ error, login, user, from }) => {
   const { handleChange, handleSubmit, values, errors } = useForm(onSubmit, validate);
 
   function onSubmit() {
@@ -29,9 +29,22 @@ const LoginForm = ({ login, user, from }) => {
       <form className={formStyles.form} onSubmit={handleSubmit}>
         <OrbisLogo className={formStyles.logo} />
 
+        {error && (
+          <Well type="error">
+            <div>{error.message}</div>
+          </Well>
+        )}
+
         <div className={formStyles.fields}>
           <div className={formStyles.row}>
-            <Textfield name="username" value={values.username || ''} placeholder="Email" onChange={handleChange} />
+            <Textfield
+              name="username"
+              value={values.username || ''}
+              placeholder="Email"
+              onChange={handleChange}
+              required
+              autoFocus
+            />
           </div>
           {errors.username && <p className={formStyles.errorMessage}>{errors.username}</p>}
 
@@ -79,6 +92,7 @@ const LoginForm = ({ login, user, from }) => {
 };
 
 LoginForm.propTypes = {
+  error: PropTypes.object,
   login: PropTypes.func.isRequired,
   user: PropTypes.object
 };

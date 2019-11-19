@@ -43,7 +43,6 @@ const PasswordResetConfirmForm = ({ confirmChangePassword, routerProps }) => {
               onChange={handleChange}
               placeholder="New Password Confirmation"
               required
-              autoFocus
             />
           </div>
           {errors.new_password2 && <p className={formStyles.errorMessage}>{errors.new_password2}</p>}

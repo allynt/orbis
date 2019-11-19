@@ -7,6 +7,7 @@ import { getUser } from './accounts.selector';
 import LoginForm from './login-form.component';
 
 const mapStateToProps = (state, props) => ({
+  error: state.accounts.error,
   user: getUser(state),
   from: props.location.state ? props.location.state.from || { pathname: '/' } : { pathname: '/' }
 });
@@ -19,7 +20,4 @@ const mapDispatchToProps = dispatch =>
     dispatch
   );
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(LoginForm);
+export default connect(mapStateToProps, mapDispatchToProps)(LoginForm);
