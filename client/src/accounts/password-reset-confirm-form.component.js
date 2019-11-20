@@ -19,7 +19,7 @@ const PasswordResetConfirmForm = ({ confirmChangePassword, routerProps }) => {
   }
 
   return (
-    <div className={formStyles.container}>
+    <div className={`${formStyles.container} ${formStyles.accountsBackground}`}>
       <form className={formStyles.form} onSubmit={handleSubmit}>
         <OrbisLogo className={formStyles.logo} />
 

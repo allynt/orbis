@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom';
 
@@ -25,7 +25,7 @@ const LoginForm = ({ error, login, user, from }) => {
   }
 
   return (
-    <div className={formStyles.container}>
+    <div className={`${formStyles.container} ${formStyles.accountsBackground}`}>
       <form className={formStyles.form} onSubmit={handleSubmit}>
         <OrbisLogo className={formStyles.logo} />
 
