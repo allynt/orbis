@@ -23,20 +23,14 @@ const UpdateUserForm = ({ user, updateUser }) => {
       <form className={formStyles.form} onSubmit={handleSubmit}>
         <div className={formStyles.fields}>
           <div className={formStyles.row}>
-            <Textfield
-              name="email"
-              value={user.email || values.email || ''}
-              placeholder="Email"
-              onChange={handleChange}
-              readOnly
-            />
+            <Textfield name="email" value={user.email || ''} placeholder="Email" onChange={handleChange} readOnly />
           </div>
           {errors.email && <p className={formStyles.errorMessage}>{errors.email}</p>}
 
           <div className={formStyles.row}>
             <Textfield
               name="name"
-              value={values.name || user.name || ''}
+              value={user.name || values.name || ''}
               placeholder="Full Name"
               onChange={handleChange}
             />
@@ -46,7 +40,7 @@ const UpdateUserForm = ({ user, updateUser }) => {
           <div className={formStyles.row}>
             <Textfield
               name="first_name"
-              value={values.first_name || user.first_name || ''}
+              value={user.first_name || values.first_name || ''}
               placeholder="First Name"
               onChange={handleChange}
               autoFocus
@@ -57,7 +51,7 @@ const UpdateUserForm = ({ user, updateUser }) => {
           <div className={formStyles.row}>
             <Textfield
               name="last_name"
-              value={values.last_name || user.last_name || ''}
+              value={user.last_name || values.last_name || ''}
               placeholder="Last Name"
               onChange={handleChange}
             />
@@ -67,7 +61,7 @@ const UpdateUserForm = ({ user, updateUser }) => {
           <div className={formStyles.row}>
             <TextArea
               name="description"
-              value={user.description || values.description || ''}
+              value={values.description || user.description || ''}
               rows="10"
               placeholder="Description"
               onChange={handleChange}
