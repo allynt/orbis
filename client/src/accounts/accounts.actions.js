@@ -216,10 +216,11 @@ export const updateUser = form => async (dispatch, getState) => {
   } = getState();
   const data = {
     ...user,
-    ...form
+    ...form,
+    name: `${form.first_name} ${form.last_name}`
   };
 
-  const response = await sendData(API.user, data, JSON_HEADERS, 'PUT');
+  const response = await sendData(`${API.user}${user.email}/`, data, JSON_HEADERS, 'PUT');
 
   if (!response.ok) {
     const error = new Error();
