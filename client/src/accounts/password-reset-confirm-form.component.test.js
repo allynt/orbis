@@ -32,7 +32,7 @@ describe('Password Reset Form Component', () => {
     expect(getByPlaceholderText('New Password')).toBeInTheDocument();
     expect(getByPlaceholderText('New Password Confirmation')).toBeInTheDocument();
     // Check we use password component with hide/show buttons in the Hide state
-    expect(getAllByText('Hide')).toHaveLength(2);
+    expect(getAllByText('Show')).toHaveLength(2);
     // Check password strength component exists
     expect(getByText('Password Strength:')).toBeInTheDocument();
     // Check form submit button

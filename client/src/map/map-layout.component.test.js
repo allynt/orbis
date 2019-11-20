@@ -12,9 +12,15 @@ jest.mock('mapbox-gl');
 const mockStore = configureMockStore([thunk]);
 
 describe('Map Layout Component', () => {
+  beforeEach(() => {
+    fetch.resetMocks();
+  });
+
   afterEach(cleanup);
 
   it('should render a single map', () => {
+    fetch.mockResponse(JSON.stringify([], { status: 200 }));
+
     const store = mockStore({
       app: {
         config: {
@@ -30,6 +36,17 @@ describe('Map Layout Component', () => {
       },
       bookmarks: {
         selectedBookmarks: []
+      },
+      accounts: {
+        userKey: '123',
+        user: {
+          id: 1
+        },
+        error: null
+      },
+      sidebar: {
+        isMenuVisible: false,
+        visibleMenuItem: ''
       }
     });
 

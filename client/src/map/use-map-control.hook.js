@@ -7,10 +7,7 @@ const useMapControl = (map, cond, control, position, ...args) => {
       if (cond) {
         const ctrl = new control(...args);
         position ? map.addControl(ctrl, position) : map.addControl(ctrl);
-        return () => {
-          console.log('REMOVING CONTROL: ', ctrl);
-          map.removeControl(ctrl);
-        };
+        return () => map.removeControl(ctrl);
       }
     },
     [cond]

@@ -10,38 +10,36 @@ describe('Update User Form Component', () => {
   it('should render a form', () => {
     const user = {};
     const updateUser = jest.fn();
-    const { container, getByText, getByLabelText } = render(<UpdateUserForm user={user} updateUser={updateUser} />);
+    const { container, getByText, getByPlaceholderText } = render(
+      <UpdateUserForm user={user} updateUser={updateUser} />
+    );
 
     expect(container.querySelector('form')).toBeInTheDocument();
-    expect(container.querySelector('h3')).toHaveTextContent('Update User Details');
-    expect(getByLabelText('Username:')).toBeInTheDocument();
-    expect(getByLabelText('Email Address:')).toBeInTheDocument();
-    expect(getByLabelText('First Name:')).toBeInTheDocument();
-    expect(getByLabelText('Last Name:')).toBeInTheDocument();
-    expect(getByText('Reset')).toBeInTheDocument();
+    expect(getByPlaceholderText('Email')).toBeInTheDocument();
+    expect(getByPlaceholderText('Full Name')).toBeInTheDocument();
+    expect(getByPlaceholderText('First Name')).toBeInTheDocument();
+    expect(getByPlaceholderText('Last Name')).toBeInTheDocument();
     expect(getByText('Update User')).toBeInTheDocument();
   });
 
   it('should enable `Reset` button when form is dirty', async () => {
     const user = {};
     const updateUser = jest.fn();
-    const { getByText, getByLabelText } = render(<UpdateUserForm user={user} updateUser={updateUser} />);
+    const { getByPlaceholderText } = render(<UpdateUserForm user={user} updateUser={updateUser} />);
 
-    const firstName = getByLabelText('First Name:');
+    const firstName = getByPlaceholderText('First Name');
     expect(firstName.value).toEqual('');
-    expect(getByText('Reset')).toHaveAttribute('disabled');
     fireEvent.change(firstName, { target: { value: 'John' } });
     expect(firstName.value).toEqual('John');
-    expect(getByText('Reset')).not.toHaveAttribute('disabled');
   });
 
   it('should enable `Update User` button when form is valid', () => {
     const user = {};
     const updateUser = jest.fn();
-    const { getByText, getByLabelText } = render(<UpdateUserForm user={user} updateUser={updateUser} />);
+    const { getByText, getByPlaceholderText } = render(<UpdateUserForm user={user} updateUser={updateUser} />);
 
-    fireEvent.change(getByLabelText('First Name:'), { target: { value: 'John' } });
-    fireEvent.change(getByLabelText('Last Name:'), { target: { value: 'John' } });
+    fireEvent.change(getByPlaceholderText('First Name'), { target: { value: 'John' } });
+    fireEvent.change(getByPlaceholderText('Last Name'), { target: { value: 'John' } });
 
     expect(getByText('Update User')).not.toHaveAttribute('disabled');
   });
@@ -58,10 +56,10 @@ describe('Update User Form Component', () => {
   it('should call updateUser function when form is valid and `Update User` button clicked', () => {
     const user = {};
     const updateUser = jest.fn();
-    const { getByText, getByLabelText } = render(<UpdateUserForm user={user} updateUser={updateUser} />);
+    const { getByText, getByPlaceholderText } = render(<UpdateUserForm user={user} updateUser={updateUser} />);
 
-    fireEvent.change(getByLabelText('First Name:'), { target: { value: 'John' } });
-    fireEvent.change(getByLabelText('Last Name:'), { target: { value: 'John' } });
+    fireEvent.change(getByPlaceholderText('First Name'), { target: { value: 'John' } });
+    fireEvent.change(getByPlaceholderText('Last Name'), { target: { value: 'John' } });
     fireEvent.click(getByText('Update User'));
     expect(updateUser).toHaveBeenCalled();
   });

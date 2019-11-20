@@ -23,11 +23,11 @@ describe('Register Form Component', () => {
     );
 
     expect(container.querySelector('form')).toBeInTheDocument();
-    expect(getByPlaceholderText('EmailWTF')).toBeInTheDocument();
+    expect(getByPlaceholderText('Email')).toBeInTheDocument();
     expect(getByPlaceholderText('Password')).toBeInTheDocument();
     expect(getByPlaceholderText('Password Confirmation')).toBeInTheDocument();
     // Check we use password component with hide/show buttons in the Hide state
-    expect(getAllByText('Hide')).toHaveLength(2);
+    expect(getAllByText('Show')).toHaveLength(2);
     // Check password strength component exists
     expect(getByText('Password Strength:')).toBeInTheDocument();
     // Check form submit button
@@ -44,7 +44,7 @@ describe('Register Form Component', () => {
       </MemoryRouter>
     );
 
-    fireEvent.change(getByPlaceholderText('EmailWTF'), { target: { value: 'test@test.com' } });
+    fireEvent.change(getByPlaceholderText('Email'), { target: { value: 'test@test.com' } });
     fireEvent.change(getByPlaceholderText('Password'), { target: { value: 'pandasconcreterealty' } });
     fireEvent.change(getByPlaceholderText('Password Confirmation'), { target: { value: 'pandasconcreterealty' } });
     expect(getByText('Sign Up')).not.toHaveAttribute('disabled');
@@ -57,7 +57,7 @@ describe('Register Form Component', () => {
       </MemoryRouter>
     );
 
-    fireEvent.change(getByPlaceholderText('EmailWTF'), { target: { value: 'test@test.com' } });
+    fireEvent.change(getByPlaceholderText('Email'), { target: { value: 'test@test.com' } });
 
     expect(getByText('Sign Up')).toHaveAttribute('disabled');
   });
@@ -80,7 +80,7 @@ describe('Register Form Component', () => {
       </MemoryRouter>
     );
 
-    fireEvent.change(getByPlaceholderText('EmailWTF'), { target: { value: 'test@test.com' } });
+    fireEvent.change(getByPlaceholderText('Email'), { target: { value: 'test@test.com' } });
     fireEvent.change(getByPlaceholderText('Password'), { target: { value: 'pandasconcreterealty' } });
     fireEvent.change(getByPlaceholderText('Password Confirmation'), { target: { value: 'pandasconcreterealty' } });
 
