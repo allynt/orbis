@@ -2,10 +2,10 @@
 # yarn lockfile v1
 
 
-"@astrosat/astrosat-ui@1.2.1":
-  version "1.2.1"
-  resolved "https://npm.pkg.github.com/download/@astrosat/astrosat-ui/1.2.1/6e94a4886de5d1151ad340e3d81201e4ff4980bf1c5e8c59999fecc1301da901#8607a9b4caf778641ed33b24234ff53e30b9902c"
-  integrity sha512-m9GdY2jn6ipK2xlnvcpIXGP+y+3mbWwL4dwWSgqNhMu0HB8u1WABJtOtVvSk5HUVGNaV3J3Fa34oHNveohNqAA==
+"@astrosat/astrosat-ui@^1.4.1":
+  version "1.4.1"
+  resolved "https://npm.pkg.github.com/download/@astrosat/astrosat-ui/1.4.1/800a836405d4d5fb84c60e258025bf19aecdf781fd1bb2750fc95c2209d268a4#9568be428e0b68f824955dfadf446a0d14bd9169"
+  integrity sha512-/wQGkEa99lzY2YvU1dbBVMV2OEw57OlhvNTy2gq+Hzaffa8/oItGa+r9aaJJOz3iZcQsg0m84L4OzvSWrU0awA==
   dependencies:
     react-svg-loader "^3.0.3"
 
