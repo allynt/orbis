@@ -19,12 +19,23 @@ import UpdateUserContainer from './accounts/update-user-form.container';
 import PasswordResetDone from './accounts/password-reset-done.component';
 import PasswordResetConfirmContainer from './accounts/password-reset-confirm-form.container';
 
+import { Button } from '@astrosat/astrosat-ui';
+
 import MapLayout from './map';
 
 import styles from './app.module.css';
 
 const UserList = lazy(() => import('./accounts/admin/user-list.container'));
 const Admin = lazy(() => import('./accounts/admin/admin.container'));
+
+const LandingView = () => (
+  <div>
+    Landing Page, go to the{' '}
+    <Button theme="link" href="/map">
+      map
+    </Button>
+  </div>
+);
 
 const App = () => {
   const dispatch = useDispatch();
@@ -60,6 +71,7 @@ const App = () => {
 
       <main>
         <Switch>
+          <Route exact path="/" component={LandingView} />
           <Route exact path="/register" component={RegisterFormContainer} />
           <Route exact path="/login" component={LoginFormContainer} />
           <Route exact path="/password/reset" user={user} component={PasswordResetContainer} />
