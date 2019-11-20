@@ -4,6 +4,7 @@
   left: 2rem;
   z-index: 5;
   background-color: var(--background-color);
+  color: #fff;
   padding: 1rem;
   max-height: 23rem;
   overflow-y: auto;

@@ -74,7 +74,7 @@
 }
 
 .dark {
-  --foreground-color: #fff;
+  --foreground-color: #333f48;
   --background-color: var(--primary-foreground-color);
   --background-color-alternate: #424357;
   --background-active-color: #e8c786;

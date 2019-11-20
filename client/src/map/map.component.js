@@ -48,6 +48,7 @@ import LabelMode from '../annotations/modes/label';
 import ImageMode from '../annotations/modes/image';
 
 import LayerTree from '../layer-tree/layer-tree.component';
+import UpdateUserFormContainer from '../accounts/update-user-form.container';
 
 import drawStyles from '../annotations/styles';
 import layoutStyles from './map-layout.module.css';
@@ -773,6 +774,9 @@ const Map = (
           </Detail>
           <Detail title="Layers" isOpen={openFeature === 'Layers'}>
             <LayerTree map={mapInstance} />
+          </Detail>
+          <Detail title="Profile" isOpen={openFeature === 'Profile'}>
+            <UpdateUserFormContainer />
           </Detail>
         </div>
       </SideMenuContainer>

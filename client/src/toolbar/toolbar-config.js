@@ -42,6 +42,15 @@ export const getToolbarItems = dispatch => {
       tooltip: 'Layers'
     },
     {
+      label: 'Profile',
+      icon: <BookmarksLogo />,
+      action: () => {
+        dispatch(toggleMenu());
+        dispatch(toggleMenuItem('Profile'));
+      },
+      tooltip: 'Profile'
+    },
+    {
       label: 'Logout',
       icon: <AnnotationsLogo />,
       action: () => dispatch(logout()),

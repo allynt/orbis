@@ -4,6 +4,7 @@
   justify-content: space-evenly;
   padding: 1rem;
   background-color: var(--background-color);
+  color: #fff;
   min-width: 20rem;
 }
 
