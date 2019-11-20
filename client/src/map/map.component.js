@@ -36,6 +36,8 @@ import { setViewport } from './map.actions';
 // import { selectedFeatureIds } from '../factsheet/factsheet.selector';
 // import { CUSTOM_DATA_THRESHOLD } from '../constants';
 
+import { Detail } from '@astrosat/astrosat-ui';
+
 import RotateMode from 'mapbox-gl-draw-rotate-mode';
 import RadiusMode from '../annotations/modes/radius';
 import LineMode from '../annotations/modes/line';
@@ -45,9 +47,10 @@ import CircleMode from '../annotations/modes/circle';
 import LabelMode from '../annotations/modes/label';
 import ImageMode from '../annotations/modes/image';
 
+import LayerTree from '../layer-tree/layer-tree.component';
+
 import drawStyles from '../annotations/styles';
 import layoutStyles from './map-layout.module.css';
-// import LayerTree from '../layer-tree/layer-tree.component';
 
 // const interpolate = interpolation => (property, filter, values) => [
 //   interpolation,
@@ -83,6 +86,8 @@ const Map = (
   const accessToken = useSelector(state => (state.app.config ? state.app.config.mapbox_token : null));
 
   // const labelButtonSelected = useSelector(state => state.annotations.textLabelSelected);
+
+  const openFeature = useSelector(state => state.sidebar.visibleMenuItem);
 
   const selectedBookmark = useSelector(state => state.bookmarks.selectedBookmark);
 
@@ -758,11 +763,17 @@ const Map = (
   return (
     <div ref={mapContainer} className={layoutStyles.map} data-testid={`map-${position}`}>
       {/* <AccountMenuButton user={user} logout={() => dispatch(logout(history))} /> */}
-      {/* <Toolbar items={toolbarItems} /> */}
       <SideMenuContainer>
         <div className={layoutStyles.sidebar}>
-          <AnnotationsPanel map={mapInstance} />
-          <BookmarksPanel map={mapInstance} />
+          <Detail title="Annotations" isOpen={openFeature === 'Annotations'}>
+            <AnnotationsPanel map={mapInstance} />
+          </Detail>
+          <Detail title="Bookmarks" isOpen={openFeature === 'Bookmarks'}>
+            <BookmarksPanel map={mapInstance} />
+          </Detail>
+          <Detail title="Layers" isOpen={openFeature === 'Layers'}>
+            <LayerTree map={mapInstance} />
+          </Detail>
         </div>
       </SideMenuContainer>
 
