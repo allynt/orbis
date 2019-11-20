@@ -4,11 +4,9 @@ import Map from './map.component';
 // import { useCrossFilterStore } from '../crossfilter';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { ReactComponent as BookmarksLogo } from '../toolbar/menu.svg';
-import { ReactComponent as AnnotationsLogo } from '../toolbar/satellite-acquisitions.svg';
+import { getToolbarItems } from '../toolbar/toolbar-config';
 
 import Toolbar from '../toolbar/toolbar.component';
-import { toggleMenu } from '../side-menu/side-menu.actions';
 // import { colorSchemes } from '../colors';
 
 import styles from './map-layout.module.css';
@@ -48,20 +46,7 @@ const MapLayout = () => {
   //   }
   // }, [mapRefCount]);
 
-  const toolbarItems = [
-    {
-      label: 'Bookmarks',
-      icon: <BookmarksLogo />,
-      action: () => dispatch(toggleMenu()),
-      tooltip: 'Bookmarks'
-    },
-    {
-      label: 'Annotations',
-      icon: <AnnotationsLogo />,
-      action: () => console.log('Show Annotations'),
-      tooltip: 'Annotations'
-    }
-  ];
+  const toolbarItems = getToolbarItems(dispatch);
 
   return (
     <div className={styles['map-column']}>
