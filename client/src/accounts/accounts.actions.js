@@ -93,12 +93,12 @@ export const fetchUser = (username = 'current') => async dispatch => {
     error.message = response.statusText;
 
     return dispatch({
-      type: FETCH_USER_REQUESTED_FAILURE,
-      error
+      type: FETCH_USER_REQUESTED_FAILURE
     });
   }
 
   const user = await response.json();
+
   return dispatch({ type: FETCH_USER_REQUESTED_SUCCESS, user });
 };
 
@@ -128,7 +128,7 @@ export const login = form => async dispatch => {
   NotificationManager.success('Successfully logged in', 'Successful Login', 5000, () => {});
 
   // Now that we are logged in, retrieve the user's
-  dispatch(fetchUser(form.username));
+  dispatch(fetchUser());
 
   return dispatch({ type: LOGIN_REQUESTED_SUCCESS, userKey });
 };
@@ -136,7 +136,6 @@ export const login = form => async dispatch => {
 /**
  *
  *
- * @param {*} history
  */
 export const logout = () => async dispatch => {
   const response = await sendData(API.logout, {}, JSON_HEADERS);
@@ -153,7 +152,6 @@ export const logout = () => async dispatch => {
   }
 
   dispatch({ type: LOGOUT_REQUESTED_SUCCESS });
-  history.push('/logout');
 };
 
 export const changePassword = form => async (dispatch, getState) => {

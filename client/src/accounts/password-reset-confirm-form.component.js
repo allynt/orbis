@@ -47,7 +47,7 @@ const PasswordResetConfirmForm = ({ confirmChangePassword, routerProps }) => {
           </div>
           {errors.new_password2 && <p className={formStyles.errorMessage}>{errors.new_password2}</p>}
 
-          <PasswordStrengthMeter password={values.password1} />
+          <PasswordStrengthMeter password={values.new_password1} />
 
           <div className={`${formStyles.row} ${passwordStyles.incidentals}`}>
             <ul>

@@ -43,7 +43,7 @@ const reducer = (state = initialState, action) => {
         error: null
       };
     case FETCH_USER_REQUESTED_FAILURE:
-      return { ...state, error: action.error };
+      return { ...state };
 
     case UPDATE_USER_REQUESTED_SUCCESS:
       return {
