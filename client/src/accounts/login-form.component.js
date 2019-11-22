@@ -49,7 +49,13 @@ const LoginForm = ({ error, login, user, from }) => {
           {errors.email && <p className={formStyles.errorMessage}>{errors.email}</p>}
 
           <div className={formStyles.row}>
-            <PasswordField name="password" value={values.password || ''} onChange={handleChange} required />
+            <PasswordField
+              name="password"
+              value={values.password || ''}
+              placeholder="Password"
+              onChange={handleChange}
+              required
+            />
           </div>
           {errors.password && <p className={formStyles.errorMessage}>{errors.password}</p>}
 

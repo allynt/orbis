@@ -53,6 +53,8 @@ const RegisterForm = ({ error, register }) => {
           </div>
           {errors.password1 && <p className={formStyles.errorMessage}> {errors.password1}</p>}
 
+          <PasswordStrengthMeter password={values.password1} />
+
           <div className={formStyles.row}>
             <PasswordField
               name="password2"
@@ -63,8 +65,6 @@ const RegisterForm = ({ error, register }) => {
             />
           </div>
           {errors.password2 && <p className={formStyles.errorMessage}>{errors.password2}</p>}
-
-          <PasswordStrengthMeter password={values.password1} />
 
           <div className={`${formStyles.row} ${registerStyles.incidentals}`}>
             <ul>
