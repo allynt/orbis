@@ -50,6 +50,8 @@ import ImageMode from '../annotations/modes/image';
 import LayerTree from '../layer-tree/layer-tree.component';
 import UpdateUserFormContainer from '../accounts/update-user-form.container';
 
+import MiniMapControl from '../mini-map/mini-map.control';
+
 import drawStyles from '../annotations/styles';
 import layoutStyles from './map-layout.module.css';
 
@@ -115,6 +117,7 @@ const Map = (
 
   useMapControl(mapInstance, attribution, AttributionControl);
   useMapControl(mapInstance, navigation, NavigationControl, 'bottom-right');
+  useMapControl(mapInstance, true, MiniMapControl, 'bottom-right');
   useMapControl(mapInstance, scale, ScaleControl);
   useMapControl(mapInstance, geocoder, MapboxGeocoder, 'top-left', {
     accessToken: accessToken,
