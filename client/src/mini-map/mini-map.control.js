@@ -1,6 +1,7 @@
 import mapboxgl from 'mapbox-gl';
 
 import syncMove from '../map/mapbox-gl-sync-move';
+import draggable from './draggable';
 
 import './mini-map.control.css';
 
@@ -28,8 +29,17 @@ class MiniMapControl {
       container: this.container,
       style: this.mainMap.getStyle(),
       center: this.mainMap.getCenter(),
-      zoom: this.mainMap.getZoom() - 5
+      zoom: this.mainMap.getZoom()
     });
+
+    // Resize the map canvas, before this it was larger, but
+    // most of it was hidden, making it look like the map was
+    // off-center.
+    miniMap.on('load', event => {
+      event.target.resize();
+    });
+
+    draggable(this.container, handle);
 
     syncMove(this.mainMap, miniMap);
 

@@ -7,6 +7,10 @@ function moveToMapPosition(master, clones) {
   var bearing = master.getBearing();
   var pitch = master.getPitch();
 
+  master.getContainer().className.includes('mini-map-control')
+    ? (zoom = master.getZoom() + 4)
+    : (zoom = master.getZoom() - 4);
+
   clones.forEach(function(clone) {
     clone.jumpTo({
       center: center,
