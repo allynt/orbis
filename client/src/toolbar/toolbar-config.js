@@ -52,6 +52,15 @@ export const getToolbarItems = dispatch => {
       tooltip: 'Profile'
     },
     {
+      label: 'Change Password',
+      icon: <BookmarksLogo />,
+      action: () => {
+        dispatch(toggleMenu());
+        dispatch(toggleMenuItem('Change Password'));
+      },
+      tooltip: 'Change Password'
+    },
+    {
       label: 'Toggle Mini-Map',
       icon: <BookmarksLogo />,
       action: () => dispatch(toggleMiniMap()),

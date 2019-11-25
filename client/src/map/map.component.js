@@ -49,6 +49,7 @@ import ImageMode from '../annotations/modes/image';
 
 import LayerTree from '../layer-tree/layer-tree.component';
 import UpdateUserFormContainer from '../accounts/update-user-form.container';
+import PasswordChangeContainer from '../accounts/password-change-form.container';
 
 import MiniMapControl from '../mini-map/mini-map.control';
 
@@ -796,6 +797,9 @@ const Map = (
           </Detail>
           <Detail title="Profile" isOpen={openFeature === 'Profile'}>
             <UpdateUserFormContainer />
+          </Detail>
+          <Detail title="Profile" isOpen={openFeature === 'Change Password'}>
+            <PasswordChangeContainer />
           </Detail>
         </div>
       </SideMenuContainer>

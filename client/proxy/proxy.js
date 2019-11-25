@@ -36,6 +36,8 @@ router.route('/rest-auth/registration/').post((req, res) => config.register(req,
 router.route('/rest-auth/login/').post((req, res) => config.login(req, res));
 router.route('/rest-auth/logout/').post((req, res) => config.logout(req, res));
 
+router.route('/rest-auth/password/change/').post((req, res) => config.changePassword(req, res));
+
 router.get('/bookmarks/', (req, res) => config.getBookmarks(req, res));
 router.route('/bookmarks/').post((req, res) => config.addBookmark(req, res));
 

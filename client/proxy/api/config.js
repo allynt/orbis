@@ -1,4 +1,4 @@
-'use strict';
+('use strict');
 
 const appConfig = {
   trackingId: 'UA-143753043-1',
@@ -167,6 +167,27 @@ const addBookmark = (req, res) => {
   res.json(bookmark);
 };
 
+const changePassword = (req, res) => {
+  console.log(`Changing User Password`);
+  const oldPassword = req.body.old_password;
+  const newPassword = req.body.old_password;
+  console.log(`Changing User Password from ${oldPassword} to ${newPassword}`);
+  const user = users.find(user => user.username === currentUser.username);
+
+  if (currentUser.password === oldPassword) {
+    if (req.body.new_password1 === 'razorpelicanturf') {
+      res.status(400);
+      res.json({ message: 'Some Error' });
+    } else {
+      user.password = newPassword;
+      currentUser.password = newPassword;
+
+      res.status(200);
+      res.json(user);
+    }
+  }
+};
+
 module.exports = {
   getAppConfig,
   getUsers,
@@ -175,5 +196,6 @@ module.exports = {
   login,
   logout,
   getBookmarks,
-  addBookmark
+  addBookmark,
+  changePassword
 };
