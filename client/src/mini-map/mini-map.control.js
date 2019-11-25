@@ -1,11 +1,15 @@
 import mapboxgl from 'mapbox-gl';
 
 import syncMove from '../map/mapbox-gl-sync-move';
-import draggable from './draggable';
 
 import './mini-map.control.css';
 
 class MiniMapControl {
+  constructor(options = { isVisible: 'visible' }) {
+    this.options = options;
+    this.toggleMiniMap = this.toggleMiniMap.bind(this);
+  }
+
   /**
    * When adding control to a map, set the default value and set
    * the content to update when the mouse moves.
@@ -20,13 +24,20 @@ class MiniMapControl {
     this.mainMap = map;
 
     this.container = document.createElement('div');
-    const handle = document.createElement('div');
-    handle.className = 'mapboxgl-ctrl mini-map-handle';
-    handle.innerHTML = '<strong>Drag Me</strong>';
     this.container.className = 'mapboxgl-ctrl mini-map-control';
 
-    const miniMap = new mapboxgl.Map({
-      container: this.container,
+    this.mapContainer = document.createElement('div');
+    this.mapContainer.id = 'miniMapContainer';
+    this.mapContainer.className = 'mapboxgl-ctrl mini-map-container';
+    this.mapContainer.style.visibility = this.options.visibility;
+
+    const toggleButton = document.createElement('div');
+    toggleButton.className = 'mapboxgl-ctrl toggle-mini-map';
+    toggleButton.innerText = 'X';
+    toggleButton.onclick = this.toggleMiniMap;
+
+    this.miniMap = new mapboxgl.Map({
+      container: this.mapContainer,
       style: this.mainMap.getStyle(),
       center: this.mainMap.getCenter(),
       zoom: this.mainMap.getZoom()
@@ -35,17 +46,23 @@ class MiniMapControl {
     // Resize the map canvas, before this it was larger, but
     // most of it was hidden, making it look like the map was
     // off-center.
-    miniMap.on('load', event => {
+    this.miniMap.on('load', event => {
       event.target.resize();
     });
 
-    draggable(this.container, handle);
+    syncMove(this.mainMap, this.miniMap);
 
-    syncMove(this.mainMap, miniMap);
+    this.container.appendChild(toggleButton);
 
-    this.container.appendChild(handle);
+    this.container.appendChild(this.mapContainer);
 
     return this.container;
+  }
+
+  toggleMiniMap(event) {
+    this.mapContainer.style.visibility === 'visible'
+      ? (this.mapContainer.style.visibility = 'hidden')
+      : (this.mapContainer.style.visibility = 'visible');
   }
 
   /**
@@ -55,6 +72,7 @@ class MiniMapControl {
    */
   onRemove() {
     this.container.parentNode.removeChild(this.container);
+    this.miniMap = undefined;
     this.mainMap = undefined;
   }
 }

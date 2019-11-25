@@ -5,6 +5,7 @@ import { ReactComponent as AnnotationsLogo } from './satellite-acquisitions.svg'
 
 import { toggleMenu, toggleMenuItem } from '../side-menu/side-menu.actions';
 import { logout } from '../accounts/accounts.actions';
+import { toggleMiniMap } from '../map/map.actions';
 
 export const getToolbarItems = dispatch => {
   return [
@@ -49,6 +50,12 @@ export const getToolbarItems = dispatch => {
         dispatch(toggleMenuItem('Profile'));
       },
       tooltip: 'Profile'
+    },
+    {
+      label: 'Toggle Mini-Map',
+      icon: <BookmarksLogo />,
+      action: () => dispatch(toggleMiniMap()),
+      tooltip: 'Toggle Mini-Map'
     },
     {
       label: 'Logout',

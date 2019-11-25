@@ -71,6 +71,7 @@ const MapLayout = () => {
             scale={bottomLeft(i, mapCount)}
             geocoder={i === 0}
             navigation={bottomRight(i, mapCount)}
+            overview={bottomRight(i, mapCount)}
             layoutInvalidation={mapCount}
             style={mapStyle.uri}
             position={i}

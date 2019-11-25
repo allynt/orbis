@@ -77,6 +77,7 @@ const Map = (
     attribution = true,
     geocoder = true,
     navigation = true,
+    overview = true,
     scale = true,
     draw = true,
     save = true,
@@ -115,9 +116,15 @@ const Map = (
 
   const dispatch = useDispatch();
 
+  // const toggleMiniMap = () => console.log('TOGGLING MINI MAP');
+  const isMiniMapVisible = useSelector(state => state.map.isMiniMapVisible);
+  // console.log('IS MINI MAP VISIBLE: ', isMiniMapVisible);
+
   useMapControl(mapInstance, attribution, AttributionControl);
   useMapControl(mapInstance, navigation, NavigationControl, 'bottom-right');
-  useMapControl(mapInstance, true, MiniMapControl, 'bottom-right');
+  useMapControl(mapInstance, overview, MiniMapControl, 'bottom-right', {
+    visibility: isMiniMapVisible ? 'visible' : 'hidden'
+  });
   useMapControl(mapInstance, scale, ScaleControl);
   useMapControl(mapInstance, geocoder, MapboxGeocoder, 'top-left', {
     accessToken: accessToken,
@@ -125,7 +132,7 @@ const Map = (
     mapboxgl
   });
   useMapControl(mapInstance, save, SaveMapControl, 'top-right');
-  useMapControl(mapInstance, true, MapboxDraw, 'top-left', {
+  useMapControl(mapInstance, draw, MapboxDraw, 'top-left', {
     displayControlsDefault: false,
     userProperties: true,
     styles: drawStyles,
@@ -179,6 +186,15 @@ const Map = (
       }
     },
     [selectedBookmark]
+  );
+
+  useMap(
+    mapInstance,
+    map => {
+      const miniMap = mapInstance._controls.find(ctrl => ctrl instanceof MiniMapControl);
+      miniMap.toggleMiniMap();
+    },
+    [isMiniMapVisible]
   );
 
   // useMapEvent(

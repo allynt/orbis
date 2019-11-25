@@ -8,6 +8,7 @@ export const MAP_STYLE_SELECTED = 'MAP_STYLE_SELECTED';
 
 export const TOGGLE_MULTI_MODE = 'map.TOGGLE_MULTI_MODE';
 export const TOGGLE_3D_MODE = 'map.TOGGLE_3D_MODE';
+export const TOGGLE_MINI_MAP = 'map.TOGGLE_MINI_MAP';
 
 export const TOGGLE_INFRASTRUCTURE_LAYER_VISIBILITY =
   'map.TOGGLE_INFRASTRUCTURE_LAYER_VISIBILITY';
@@ -31,6 +32,7 @@ export const toggleMultiMode = () => async (dispatch, getState) => {
 
   return dispatch({ type: TOGGLE_MULTI_MODE });
 };
+
 export const toggle3DMode = () => async (dispatch, getState) => {
   ReactGA.event({
     category: 'Toolbar',
@@ -94,3 +96,5 @@ export const fetchCustomData = () => async dispatch => {
 };
 
 export const setViewport = viewport => ({ type: SET_VIEWPORT, viewport });
+
+export const toggleMiniMap = () => dispatch => dispatch({ type: TOGGLE_MINI_MAP });

@@ -1,6 +1,7 @@
 import {
   TOGGLE_3D_MODE,
   TOGGLE_MULTI_MODE,
+  TOGGLE_MINI_MAP,
   MAP_STYLE_SELECTED,
   TOGGLE_INFRASTRUCTURE_LAYER_VISIBILITY,
   TOGGLE_CUSTOM_LAYER_VISIBILITY,
@@ -41,7 +42,8 @@ const initialState = {
   isMultiMapMode: false,
   is3DMode: false,
   infrastructureLayers: [],
-  customLayers: []
+  customLayers: [],
+  isMiniMapVisible: false
 };
 
 const reducer = (state = initialState, action) => {
@@ -57,6 +59,9 @@ const reducer = (state = initialState, action) => {
 
     case TOGGLE_3D_MODE:
       return { ...state, is3DMode: !state.is3DMode };
+
+    case TOGGLE_MINI_MAP:
+      return { ...state, isMiniMapVisible: !state.isMiniMapVisible };
 
     case TOGGLE_INFRASTRUCTURE_LAYER_VISIBILITY:
       // Toggle whether layer is visible or not.
