@@ -5,6 +5,8 @@
   height: 10rem;
   width: 20rem;
   border: 2px solid #fff;
+  /* clip-path: circle();
+  -webkit-clip-path: circle(); */
 }
 
 .mini-map-handle {

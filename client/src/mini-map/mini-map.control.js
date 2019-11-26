@@ -1,6 +1,7 @@
 import mapboxgl from 'mapbox-gl';
 
-import syncMove from '../map/mapbox-gl-sync-move';
+import syncMaps from '../map/mapbox-gl-sync-move';
+import draggable from './draggable';
 
 import './mini-map.control.css';
 
@@ -23,6 +24,7 @@ class MiniMapControl {
   onAdd(map) {
     this.mainMap = map;
 
+    console.log('OPTIONS: ', this.options);
     this.container = document.createElement('div');
     this.container.className = 'mapboxgl-ctrl mini-map-control';
 
@@ -31,10 +33,14 @@ class MiniMapControl {
     this.mapContainer.className = 'mapboxgl-ctrl mini-map-container';
     this.mapContainer.style.visibility = this.options.visibility;
 
-    const toggleButton = document.createElement('div');
-    toggleButton.className = 'mapboxgl-ctrl toggle-mini-map';
-    toggleButton.innerText = 'X';
-    toggleButton.onclick = this.toggleMiniMap;
+    // const toggleButton = document.createElement('div');
+    // toggleButton.className = 'mapboxgl-ctrl toggle-mini-map';
+    // toggleButton.innerText = 'X';
+    // toggleButton.onclick = this.toggleMiniMap;
+
+    const handle = document.createElement('div');
+    handle.className = 'mapboxgl-ctrl mini-map-handle';
+    handle.innerHTML = '<strong>Drag Me</strong>';
 
     this.miniMap = new mapboxgl.Map({
       container: this.mapContainer,
@@ -50,9 +56,13 @@ class MiniMapControl {
       event.target.resize();
     });
 
-    syncMove(this.mainMap, this.miniMap);
+    draggable(this.mapContainer, handle);
 
-    this.container.appendChild(toggleButton);
+    syncMaps(this.mainMap, this.miniMap);
+
+    this.mapContainer.appendChild(handle);
+
+    // this.container.appendChild(toggleButton);
 
     this.container.appendChild(this.mapContainer);
 
