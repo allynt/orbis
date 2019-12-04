@@ -12,7 +12,7 @@ jobs:
     name: Client-side Tests
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@master
+      - uses: actions/checkout@v1
       - name: Use Node.js 10.x
         uses: actions/setup-node@v1
         with:
@@ -53,7 +53,7 @@ jobs:
         ports:
           - "5666:5432"
     steps:
-      - uses: actions/checkout@master
+      - uses: actions/checkout@v1
       - name: Setup container
         run: |
           apt-get update && apt-get install -y postgresql-client python3-gdal
