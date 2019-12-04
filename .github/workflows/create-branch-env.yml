@@ -1,0 +1,55 @@
+name: create-branch-environment
+
+on: [create]
+
+jobs:
+  branch-db:
+    name: Create the branch environment
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v1
+
+      - name: Setup dependencies
+        run: ./scripts/ci-setup-deps.sh
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_ROLE: ${{ secrets.ROLE }}
+
+      - name: Run the job to create the db
+        run: |
+          BRANCH="${GITHUB_REF##*/}"
+          BRANCH_SLUG="$(echo "${BRANCH}" | sed -e 's/[^[:alnum:]]/-/g' | tr A-Z a-z)"
+
+          echo "BRANCH=$BRANCH"
+          echo "BRANCH_SLUG=$BRANCH_SLUG"
+
+          # Generate the job file
+          mkdir -p spec_generated/branch-db
+
+          jsonnet ./spec/ci-branch-db-job.jsonnet \
+            --ext-str "branch=${BRANCH_SLUG}" \
+            --ext-str "action=create" \
+            --string \
+            --multi spec_generated/branch-db
+
+          # Clean up if job was previously created
+          kubectl delete -f spec_generated/branch-db/job.json || true
+
+          # Run the job, and wait for it to finish
+          kubectl apply -f spec_generated/branch-db/job.json
+
+          if kubectl wait --for=condition=complete --timeout=120s -f spec_generated/branch-db/job.json; then
+            JOB_STATUS="0"
+          else
+            JOB_STATUS="-1"
+          fi
+
+          echo "Job Logs:"
+          kubectl logs -f "job/$(cat spec_generated/branch-db/job.json | jq '.metadata.name' -r)"
+
+          # Clean up the job
+          kubectl delete -f spec_generated/branch-db/job.json
+
+          exit ${JOB_STATUS}

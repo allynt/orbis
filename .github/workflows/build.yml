@@ -71,21 +71,15 @@ jobs:
     name: Build and tag Docker Image
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@master
-      - name: Install AWS CLI
-        run: |
-          sudo apt install python3-setuptools
-          pip3 install awscli --upgrade --user
-          aws --version
+      - name: Checkout
+        uses: actions/checkout@v1
 
-      - name: Setup AWS Credentials
-        run: |
-          aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-
-      - name: Login to AWS
-        run: |
-          eval $(aws ecr get-login --no-include-email --region eu-west-1)
+      - name: Setup dependencies
+        run: ./scripts/ci-setup-deps.sh
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_ROLE: ${{ secrets.ROLE }}
 
       - name: Build Docker Image
         run: |
@@ -102,49 +96,37 @@ jobs:
     name: Docker Image to AWS Kubernetes
     runs-on: ubuntu-latest
     steps:
-      - name: Install jsonnet
-        run: |
-          curl -sSL "https://github.com/google/jsonnet/releases/download/v0.14.0/jsonnet-bin-v0.14.0-linux.tar.gz" > ./jsonnet-bin-linux.tar.gz
-          tar -xzf ./jsonnet-bin-linux.tar.gz
-          sudo install ./jsonnet ./jsonnetfmt /usr/local/bin/
-          jsonnet --version
-
-      - name: Install aws cli
-        run: |
-          sudo apt install python3-setuptools
-          pip3 install awscli --upgrade --user
-          aws --version
-
-      - name: Install kubectl
-        run: |
-          curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
-          echo "deb https://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee -a /etc/apt/sources.list.d/kubernetes.list
-          sudo apt-get update
-          sudo apt-get install -y kubectl
-
-      - name: Setup AWS creds
-        run: |
-          aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws configure set role_arn ${{ secrets.ROLE }}
-          aws configure set --profile testing role_arn arn:aws:iam::464205154305:role/OrbisTestingAccountAccess
-          aws configure set --profile testing source_profile default
-
-      - name: Update kubeconfig
-        run: aws eks --region eu-west-1 --profile testing update-kubeconfig --name orbis-platform-testing
-
-      - name: Test kubectl config
-        run: kubectl version
-
       - name: Checkout
         uses: actions/checkout@v1
 
+      - name: Setup dependencies
+        run: ./scripts/ci-setup-deps.sh
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_ROLE: ${{ secrets.ROLE }}
+
       - name: Run jsonnet
         run: |
-          mkdir -p spec_generated/testing && jsonnet ./spec/kubernetes.jsonnet --ext-str "tag=${GITHUB_SHA:0:7}" --string --multi spec_generated/testing
+          TAG="${GITHUB_SHA:0:7}"
+          BRANCH="${GITHUB_REF##*/}"
+          BRANCH_SLUG="$(echo "${BRANCH}" | sed -e 's/[^[:alnum:]]/-/g' | tr A-Z a-z)"
+
+          echo "TAG=$TAG"
+          echo "BRANCH=$BRANCH"
+          echo "BRANCH_SLUG=$BRANCH_SLUG"
+
+          mkdir -p spec_generated/testing
+
+          jsonnet ./spec/ci-testing-deployment.jsonnet \
+            --ext-str "tag=${TAG}" \
+            --ext-str "branch=${BRANCH_SLUG}" \
+            --string \
+            --multi spec_generated/testing
 
       - name: Deploy the App
-        run: kubectl apply -f spec_generated/testing
+        run: |
+          kubectl apply -f spec_generated/testing
   # e2e:
   #   name: Browser Tests
   #   runs-on: ubuntu-latest
