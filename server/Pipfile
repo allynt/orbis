@@ -5,7 +5,7 @@ name = "pypi"
 
 [packages]
 # django... duh
-django = ">=2.2.0"
+django = "==2.2"
 # docker health-checking
 django-health-check = ">=3.10.2"
 # wsgi... duh
@@ -16,18 +16,22 @@ psycopg2-binary = ">=2.8.3"
 django-cors-headers = ">=3.0.2"
 # access environment variables
 django-environ = ">=0.4.5"
+# strong passwords
+zxcvbn = ">=4.4.28"
 # strong password hashing
-argon2-cffi = ">=19.1.0"
+argon2-cffi = ">=19.2.0"
+# secure tokens
+django-rest-knox = ">=4.1.0"
 # S3 Bucket access
 boto3 = ">=1.9.220"
 # MapBox SDK
 mapbox = ">=0.18.0"
 # API... duh
-djangorestframework = "==3.9.4"
+djangorestframework = ">=3.9.4"
 # API for GIS
 djangorestframework-gis = ">=0.14.0"
 # API documentation
-django-rest-swagger = ">=2.2.0"
+drf-yasg = ">=1.17.0"
 # dynamic API
 drf-flex-fields = ">=0.5.0"
 # extended API filters
@@ -45,18 +49,18 @@ django-astrosat-core = {editable = true,git = "https://github.com/astrosat/djang
 django-astrosat-users = {editable = true,git = "https://github.com/astrosat/django-astrosat-users.git",ref = "master"}
 
 [dev-packages]
-# coverage reports for GitHub, GitLab, etc.
-codecov = ">=2.0.15"
-# live debug info
-django-debug-toolbar = ">=2.0"
-# test fixtures replacement
-factory-boy = ">=2.12"
 # test library
 pytest = ">=5.1.2"
 # pytest django plugin
 pytest-django = ">=3.5"
 # pytest look-and-feel plugin
 pytest-sugar = ">=0.9"
+# test fixtures replacement
+factory-boy = ">=2.12"
+# live debug info
+django-debug-toolbar = ">=2.0"
+# coverage reports for GitHub, GitLab, etc.
+codecov = ">=2.0.15"
 
 [requires]
 python_version = "3.6"

@@ -3,9 +3,9 @@ set -euo pipefail
 
 until echo > /dev/tcp/db/5432; do sleep 1; done
 
-cd $APP_HOME/server
+cd $APP_HOME
 
-setuser app pipenv run ./manage.py migrate
+setuser app pipenv run ./server/manage.py migrate
 
 # This check is here as the client runs in a separate container.
 # For Django to serve the frontent, it must first be built
@@ -17,4 +17,4 @@ setuser app pipenv run ./manage.py migrate
   # setuser app pipenv run ./manage.py collectstatic --no-input --link
 # fi
 
-exec /sbin/setuser app pipenv run ./manage.py runserver 0.0.0.0:8000
+exec /sbin/setuser app pipenv run ./server/manage.py runserver 0.0.0.0:8000
