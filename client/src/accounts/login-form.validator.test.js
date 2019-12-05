@@ -4,15 +4,15 @@ describe('Login Form Validator', () => {
   describe('Failure values', () => {
     const testFields = [
       {
-        username: 'user',
+        email: 'user@domain.com',
         password: '' // Error, missing
       },
       {
-        username: 'su', // Error, too short
+        email: 'us', // Error, too short
         password: 'password'
       },
       {
-        username: 'user',
+        email: 'user@domain.com',
         password: 'pass' // Error, too short
       }
     ];
@@ -26,11 +26,11 @@ describe('Login Form Validator', () => {
   describe('Success values', () => {
     const testFields = [
       {
-        username: 'user',
+        email: 'user@domain.com',
         password: 'password'
       },
       {
-        username: 'user',
+        email: 'user@domain.com',
         password: 'paswd'
       }
     ];

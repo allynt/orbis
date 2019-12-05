@@ -122,65 +122,65 @@ describe('Users reducer', () => {
     });
   });
 
-  describe('Update Users', () => {
-    let beforeState;
+  // describe('Update Users', () => {
+  //   let beforeState;
 
-    beforeEach(() => {
-      beforeState = {
-        users: null,
-        isLoading: false,
-        error: null
-      };
-    });
+  //   beforeEach(() => {
+  //     beforeState = {
+  //       users: null,
+  //       isLoading: false,
+  //       error: null
+  //     };
+  //   });
 
-    it('should set the Loading state', () => {
-      const actualState = reducer(beforeState, {
-        type: UPDATE_USER_REQUESTED
-      });
+  //   it('should set the Loading state', () => {
+  //     const actualState = reducer(beforeState, {
+  //       type: UPDATE_USER_REQUESTED
+  //     });
 
-      expect(actualState.isLoading).toEqual(true);
-    });
+  //     expect(actualState.isLoading).toEqual(true);
+  //   });
 
-    it('should update the specified user', () => {
-      const users = [
-        {
-          id: 1
-        },
-        {
-          id: 2
-        }
-      ];
-      const expectedUsers = [
-        {
-          id: 1
-        },
-        {
-          id: 2
-        }
-      ];
-      beforeState.users = users;
-      const user = {
-        ...users[0],
-        id: 10
-      };
-      const actualState = reducer(beforeState, {
-        type: UPDATE_USER_REQUESTED_SUCCESS,
-        user
-      });
+  //   it('should update the specified user', () => {
+  //     const users = [
+  //       {
+  //         id: 1
+  //       },
+  //       {
+  //         id: 2
+  //       }
+  //     ];
+  //     const expectedUsers = [
+  //       {
+  //         id: 1
+  //       },
+  //       {
+  //         id: 2
+  //       }
+  //     ];
+  //     beforeState.users = users;
+  //     const user = {
+  //       ...users[0],
+  //       id: 10
+  //     };
+  //     const actualState = reducer(beforeState, {
+  //       type: UPDATE_USER_REQUESTED_SUCCESS,
+  //       user
+  //     });
 
-      expect(actualState.users).toEqual(expectedUsers);
-    });
+  //     expect(actualState.users).toEqual(expectedUsers);
+  //   });
 
-    it('should set the error state, when failed to retrieve users', () => {
-      const error = 'ERROR';
-      const actualState = reducer(beforeState, {
-        type: UPDATE_USER_REQUESTED_FAILURE,
-        error
-      });
+  //   it('should set the error state, when failed to retrieve users', () => {
+  //     const error = 'ERROR';
+  //     const actualState = reducer(beforeState, {
+  //       type: UPDATE_USER_REQUESTED_FAILURE,
+  //       error
+  //     });
 
-      expect(actualState.error).toEqual(error);
-    });
-  });
+  //     expect(actualState.error).toEqual(error);
+  //   });
+  // });
 
   describe('Create Users', () => {
     let beforeState;
