@@ -1,16 +1,12 @@
 """
 Django settings for orbis project.
-
-For more information on this file, see
-https://docs.djangoproject.com/en/2.2/topics/settings/
-
-For the full list of settings and their values, see
-https://docs.djangoproject.com/en/2.2/ref/settings/
 """
+
 import environ
 import importlib
 import os
 
+from django.utils.html import escape
 from django.utils.text import slugify
 from django.utils.translation import ugettext_lazy as _
 
@@ -27,12 +23,17 @@ ROOT_DIR = environ.Path(__file__) - 4
 SERVER_DIR = ROOT_DIR.path("server")
 CLIENT_DIR = ROOT_DIR.path("client")
 
-# DEBUG is overwritten in deployment.py, development.py, or ci.py as appropriate
+# DEBUG and SECRET_KEY is overwritten in deployment.py, development.py, or ci.py as appropriate
 DEBUG = False
+SECRET_KEY = "shhh..."
 
 WSGI_APPLICATION = "wsgi.application"
 
 SITE_ID = 1
+
+ROOT_URLCONF = "core.urls"
+
+APPEND_SLASH = True
 
 ############
 # Database #
@@ -60,8 +61,8 @@ DJANGO_APPS = [
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
-    "django.contrib.sites",
     "django.contrib.messages",
+    "django.contrib.sites",
     # statics...
     "whitenoise.runserver_nostatic",
     "django.contrib.staticfiles",
@@ -75,17 +76,18 @@ DJANGO_APPS = [
 
 THIRD_PARTY_APPS = [
     # apis...
-    "django_filters",
     "rest_framework",
     "rest_framework_gis",
-    "rest_framework_swagger",
+    "drf_yasg",
+    "django_filters",
     # users...,
     "allauth",
     "allauth.account",
     "allauth.socialaccount",
     "rest_auth",
     "rest_auth.registration",
-    "rest_framework.authtoken",
+    # "rest_framework.authtoken",
+    "knox",
     # healthchecks...
     "health_check",
     "health_check.db",
@@ -95,7 +97,7 @@ LOCAL_APPS = [
     "astrosat",  # (dependencies)
     "astrosat_users",  # (users)
     "core",  # (shared stuff)
-    "orbis",
+    "orbis",  # (this app)
 ]
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
@@ -116,46 +118,6 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
-
-########################
-# Internationalisation #
-########################
-
-TIME_ZONE = "UTC"
-LANGUAGE_CODE = "en"
-USE_I18N = True
-USE_L10N = True
-USE_TZ = True
-
-LANGUAGES = [("en-us", _("American English")), ("en-gb", _("British English"))]
-
-LOCALE_PATHS = [str(SERVER_DIR("core/locale"))]
-
-ROOT_URLCONF = "core.urls"
-APPEND_SLASH = True
-
-#######
-# API #
-#######
-
-REST_FRAMEWORK = {
-    "DEFAULT_VERSIONING_CLASS": "rest_framework.versioning.NamespaceVersioning",
-    # "DEFAULT_AUTHENTICATION_CLASSES": [
-    #     "rest_framework.authentication.SessionAuthentication",
-    #     "rest_framework.authentication.TokenAuthentication",
-    # ],
-    # 'DEFAULT_PERMISSION_CLASSES': (
-    #     'rest_framework.permissions.IsAuthenticated',
-    # ),
-    "DEFAULT_RENDERER_CLASSES": (
-        "rest_framework.renderers.JSONRenderer",
-        "rest_framework.renderers.BrowsableAPIRenderer",
-    ),
-    "COERCE_DECIMAL_TO_STRING": False,
-    # "DEFAULT_FILTER_BACKENDS": (
-    #     "django_filters.rest_framework.DjangoFilterBackend",
-    # ),
-}
 
 #############
 # Templates #
@@ -186,11 +148,12 @@ TEMPLATES = [
                 "django.template.context_processors.debug",
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
+                # TODO: CAN I GET RID OF SOME OF THESE...
+                "django.contrib.messages.context_processors.messages",
                 "django.template.context_processors.i18n",
                 "django.template.context_processors.media",
                 "django.template.context_processors.static",
                 "django.template.context_processors.tz",
-                "django.contrib.messages.context_processors.messages",
             ],
         },
     }
@@ -205,8 +168,8 @@ STATICFILES_FINDERS = [
     "django.contrib.staticfiles.finders.AppDirectoriesFinder",
 ]
 
-STATIC_ROOT = str(SERVER_DIR("static"))
 STATIC_URL = "/static/"
+STATIC_ROOT = str(SERVER_DIR("static"))
 
 STATICFILES_DIRS = [
     # STATIC_ROOT,  # no need to explicitly specify STATIC_ROOT again
@@ -216,13 +179,26 @@ STATICFILES_DIRS = [
 WHITENOISE_ROOT = str(CLIENT_DIR("build"))
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
-
 ###############
 # Media files #
 ###############
 
-MEDIA_ROOT = str(SERVER_DIR("media"))
 MEDIA_URL = "/media/"
+MEDIA_ROOT = str(SERVER_DIR("media"))
+
+########################
+# Internationalisation #
+########################
+
+TIME_ZONE = "UTC"
+LANGUAGE_CODE = "en-gb"
+USE_I18N = True
+USE_L10N = True
+USE_TZ = True
+
+LANGUAGES = [("en-us", _("American English")), ("en-gb", _("British English"))]
+
+LOCALE_PATHS = [str(SERVER_DIR("core/locale"))]
 
 #########
 # Admin #
@@ -237,14 +213,9 @@ ADMIN_SITE_HEADER = f"{PROJECT_NAME} administration console"
 ADMIN_SITE_TITLE = f"{PROJECT_NAME} administration console"
 ADMIN_INDEX_TITLE = f"Welcome to the {PROJECT_NAME} administration console"
 
-
 #########
 # Email #
 #########
-
-SERVER_EMAIL = PROJECT_EMAIL.format(role=f"{PROJECT_NAME}-admin")
-DEFAULT_FROM_EMAIL = f"{PROJECT_NAME} <{PROJECT_EMAIL.format(role='automated')}>"
-EMAIL_TIMEOUT = 60
 
 # email backend is set in environment-specific settings...
 
@@ -252,20 +223,104 @@ EMAIL_TIMEOUT = 60
 # deployment: "django.core.mail.backends.smtp.EmailBackend"
 # ci: django.core.mail.backends.locmem.EmailBackend"
 
+DEFAULT_FROM_EMAIL = f"{PROJECT_NAME} <{PROJECT_EMAIL.format(role='automated')}>"
+SERVER_EMAIL = PROJECT_EMAIL.format(role=f"{PROJECT_NAME}-admin")
+EMAIL_TIMEOUT = 60
+
+#######
+# API #
+#######
+
+REST_FRAMEWORK = {
+    "DEFAULT_VERSIONING_CLASS": "rest_framework.versioning.NamespaceVersioning",
+    "DEFAULT_AUTHENTICATION_CLASSES": [
+        # "rest_framework.authentication.BasicAuthentication",  # insecure
+        # "rest_framework.authentication.SessionAuthentication",  # CSRF
+        # "rest_framework.authentication.TokenAuthentication",  # tokens
+        "knox.auth.TokenAuthentication",  # better tokens
+    ],
+    "DEFAULT_RENDERER_CLASSES": (
+        "rest_framework.renderers.JSONRenderer",
+        "rest_framework.renderers.BrowsableAPIRenderer",
+    ),
+    "COERCE_DECIMAL_TO_STRING": False,
+    # "DEFAULT_FILTER_BACKENDS": (
+    #     "django_filters.rest_framework.DjangoFilterBackend",
+    # ),
+}
+
+SWAGGER_SETTINGS = {
+    "SECURITY_DEFINITIONS": {
+        "Token Authentication": {
+            "type": "apiKey",
+            "name": "Authorization",
+            "in": "header",
+            "description": escape("Enter 'Token <key>'"),
+        }
+    },
+    "DOC_EXPANSION": "none",
+    "OPERATIONS_SORTER": None,
+    "TAGS_SORTER": "alpha",
+    "DEFAULT_MODEL_RENDERING": "example",
+}
+
 ##########################
 # Authentication & Users #
 ##########################
+
+LOGIN_URL = "account_login"
+LOGOUT_URL = "account_logout"
+LOGIN_REDIRECT_URL = "/"
+LOGOUT_REDIRECT_URL = "/"
+
+AUTH_USER_MODEL = "astrosat_users.User"
 
 AUTHENTICATION_BACKENDS = [
     "django.contrib.auth.backends.ModelBackend",
     "allauth.account.auth_backends.AuthenticationBackend",
 ]
 
-LOGIN_URL = "account_login"
-LOGIN_REDIRECT_URL = "/"
-LOGOUT_REDIRECT_URL = "/"
+ACCOUNT_ADAPTER = "astrosat_users.adapters.AccountAdapter"
+SOCIALACCOUNT_ADAPTER = "astrosat_users.adapters.SocialAccountAdapter"
+
+ACCOUNT_AUTHENTICATION_METHOD = "email"
+ACCOUNT_USERNAME_REQUIRED = False
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_LOGIN_ATTEMPTS_LIMIT = 5
+ACCOUNT_LOGOUT_ON_GET = False
+ACCOUNT_USERNAME_BLACKLIST = ["admin", "sentinel"]
+
+REST_AUTH_TOKEN_MODEL = "knox.models.AuthToken"
+REST_AUTH_TOKEN_CREATOR = "astrosat_users.utils.create_knox_token"
+
+ACCOUNT_FORMS = {
+    # customize forms for astrosat_users
+    "login": "astrosat_users.forms.LoginForm",
+    "reset_password": "astrosat_users.forms.PasswordResetForm",
+}
+
+REST_AUTH_SERIALIZERS = {
+    # customize serializers for astrosat_users
+    "TOKEN_SERIALIZER": "astrosat_users.serializers.KnoxTokenSerializer",
+    "LOGIN_SERIALIZER": "astrosat_users.serializers.LoginSerializer",
+    "PASSWORD_CHANGE_SERIALIZER": "astrosat_users.serializers.PasswordChangeSerializer",
+    "PASSWORD_RESET_SERIALIZER": "astrosat_users.serializers.PasswordResetSerializer",
+    "PASSWORD_RESET_CONFIRM_SERIALIZER": "astrosat_users.serializers.PasswordResetConfirmSerializer",
+}
+REST_AUTH_REGISTER_SERIALIZERS = {
+    # customize serializers for astrosat_users
+    "REGISTER_SERIALIZER": "astrosat_users.serializers.RegisterSerializer"
+}
+
+ACCOUNT_CONFIRM_EMAIL_CLIENT_URL = "/account/confirm-email/{key}"
+ACCOUNT_CONFIRM_PASSWORD_CLIENT_URL = "/password/reset/{key}/{uid}"
+
+#############
+# passwords #
+#############
 
 PASSWORD_HASHERS = [
+    # the 1st item in this list is the default hasher
     "django.contrib.auth.hashers.Argon2PasswordHasher",
     "django.contrib.auth.hashers.PBKDF2PasswordHasher",
     "django.contrib.auth.hashers.PBKDF2SHA1PasswordHasher",
@@ -273,50 +328,26 @@ PASSWORD_HASHERS = [
     "django.contrib.auth.hashers.BCryptPasswordHasher",
 ]
 
+PASSWORD_MIN_LENGTH = 8
+PASSWORD_MAX_LENGTH = 255
+PASSWORD_STRENGTH = 2
+
 AUTH_PASSWORD_VALIDATORS = [
     {
         "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator"
     },
     {
-        "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",
-        "OPTIONS": {"min_length": 5},
+        "NAME": "astrosat_users.utils.LengthPasswordValidator",
+        "OPTIONS": {
+            "min_length": PASSWORD_MIN_LENGTH,
+            "max_length": PASSWORD_MAX_LENGTH,
+        },
     },
-    {"NAME": "django.contrib.auth.password_validation.CommonPasswordValidator"},
-    {"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator"},
+    {
+        "NAME": "astrosat_users.utils.StrengthPasswordValidator",
+        "OPTIONS": {"strength": PASSWORD_STRENGTH,},
+    },
 ]
-
-AUTH_USER_MODEL = "astrosat_users.User"
-
-
-ACCOUNT_ADAPTER = "astrosat_users.adapters.AccountAdapter"
-SOCIALACCOUNT_ADAPTER = "astrosat_users.adapters.SocialAccountAdapter"
-
-ACCOUNT_FORMS = {
-    # "add_email": "allauth.account.forms.AddEmailForm",
-    # "change_password": "allauth.account.forms.ChangePasswordForm",
-    # "disconnect": "allauth.socialaccount.forms.DisconnectForm",
-    # "login": "allauth.account.forms.LoginForm",
-    "reset_password": "astrosat_users.forms.PasswordResetForm",
-    # "reset_password_from_key": "allauth.account.forms.ResetPasswordKeyForm",
-    # "set_password": "allauth.account.forms.SetPasswordForm",
-    # "signup": "allauth.account.forms.SignupForm",
-    # "signup": "allauth.socialaccount.forms.SignupForm",
-}
-
-REST_AUTH_SERIALIZERS = {
-    # "LOGIN_SERIALIZER":
-    "USER_DETAILS_SERIALIZER": "astrosat_users.serializers.UserSerializer",
-    "PASSWORD_RESET_SERIALIZER": "astrosat_users.serializers.PasswordResetSerializer",
-    "PASSWORD_RESET_CONFIRM_SERIALIZER": "astrosat_users.serializers.PasswordResetConfirmSerializer",
-    "PASSWORD_CHANGE_SERIALIZER": "astrosat_users.serializers.PasswordChangeSerializer",
-    # "REGISTER_SERIALIZER":
-}
-
-ACCOUNT_USERNAME_MIN_LENGTH = 3
-ACCOUNT_LOGIN_ATTEMPTS_LIMIT = 5
-ACCOUNT_AUTHENTICATION_METHOD = "username"
-ACCOUNT_EMAIL_REQUIRED = True
-ACCOUNT_LOGOUT_ON_GET = False
 
 ############
 # Security #
@@ -327,5 +358,21 @@ ACCOUNT_LOGOUT_ON_GET = False
 # SECURE_BROWSER_XSS_FILTER = True
 # X_FRAME_OPTIONS = 'DENY'
 
+####################
+# 3rd party access #
+####################
+
 MAPBOX_TOKEN = env("DJANGO_MAPBOX_TOKEN", default="")
 TRACKING_ID = env("DJANGO_TRACKING_ID", default="")
+
+###########
+# logging #
+###########
+
+# logging is configured in development.py & deployment.py
+
+#############
+# profiling #
+#############
+
+# profiling is added in development.py

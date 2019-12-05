@@ -25,7 +25,7 @@ class Migration(migrations.Migration):
                 ('zoom', models.FloatField(help_text='The zoom level of the bookmark on the map.')),
                 ('center', django.contrib.gis.db.models.fields.PointField(help_text='The center point of this bookmark on the map', srid=4326)),
                 ('feature_collection', django.contrib.postgres.fields.jsonb.JSONField(help_text='a GeoJSON description of the data being bookmarked.', validators=[core.models.validate_feature_collection])),
-                ('owner', models.ForeignKey(on_delete=models.SET(astrosat_users.models.get_deleted_user), related_name='bookmarks', to=settings.AUTH_USER_MODEL)),
+                ('owner', models.ForeignKey(on_delete=models.SET(astrosat_users.models.get_sentinel_user), related_name='bookmarks', to=settings.AUTH_USER_MODEL)),
             ],
             options={
                 'unique_together': {('owner', 'title')},

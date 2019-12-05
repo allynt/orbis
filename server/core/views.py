@@ -1,7 +1,6 @@
 from django.conf import settings
-from django.shortcuts import render
+from django.views.generic import TemplateView
 
-from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
@@ -10,17 +9,12 @@ from rest_framework.views import APIView
 # the one-and-only index_view #
 ###############################
 
-
-def index_view(request):
-
-    # this 'index.html' comes from CLIENT_DIR
-    template_name = "index.html"
-
-    return render(request, template_name)
+# this 'index.html' comes from CLIENT_DIR
+index_view = TemplateView.as_view(template_name="index.html")
 
 
 ###############
-# other views #
+# config view #
 ###############
 
 
@@ -45,7 +39,7 @@ class AppConfigView(APIView):
 app_config_view = AppConfigView.as_view()
 
 
-#TODO: all code below here should probably be moved to django-astrosat-core
+# TODO: all code below here should probably be moved to django-astrosat-core
 
 
 from django_filters import rest_framework as filters
