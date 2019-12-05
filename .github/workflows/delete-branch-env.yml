@@ -26,9 +26,9 @@ jobs:
           echo "BRANCH_SLUG=$BRANCH_SLUG"
 
           # Delete the deploy
-          kubectl delete "ingress/orbis-testing-${BRANCH_SLUG}"
-          kubectl delete "service/orbis-testing-${BRANCH_SLUG}"
-          kubectl delete "deployment/orbis-testing-${BRANCH_SLUG}"
+          kubectl delete "ingress/orbis-testing-${BRANCH_SLUG}" || true
+          kubectl delete "service/orbis-testing-${BRANCH_SLUG}" || true
+          kubectl delete "deployment/orbis-testing-${BRANCH_SLUG}" || true
 
           # Generate the delete db job file
           mkdir -p spec_generated/branch-db
