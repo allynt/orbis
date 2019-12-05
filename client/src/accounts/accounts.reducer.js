@@ -58,6 +58,7 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         user: null,
+        userKey: null,
         error: null
       };
     case LOGOUT_REQUESTED_FAILURE:

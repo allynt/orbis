@@ -76,7 +76,7 @@ const App = () => {
           <Route exact path="/login" component={LoginFormContainer} />
           <Route exact path="/password/reset" user={user} component={PasswordResetContainer} />
           <Route path="/reset_password_done" component={PasswordResetDone} />
-          <Route path="/password/reset/:token/" component={PasswordResetConfirmContainer} />
+          <Route path="/password/reset/:token/:uid/" component={PasswordResetConfirmContainer} />
           <Route exact path="/account/confirm-email/:key" user={user} component={AccountActivationContainer} />
           <PrivateRoute exact path="/password/change" user={user} component={PasswordChangeContainer} />
           <PrivateRoute exact path="/user/update" user={user} component={UpdateUserContainer} />

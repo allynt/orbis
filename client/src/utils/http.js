@@ -20,48 +20,50 @@ export const FORM_HEADERS = {
   'Content-Type': 'multipart/form-data; boundary=----WebKitFormBoundary2QT6fGjSCgRZuMif'
 };
 
+export const getData = (url, headers = {}, method = 'GET') => {
+  return fetch(url, {
+    credentials: 'include',
+    method,
+    headers: headers
+  })
+    .then(response => response)
+    .catch(error => error);
+};
+
 export const sendData = (url, data = '', headers = {}, method = 'POST') => {
-  const csrfCookie = cookiesToArray().find(cookie => cookie.name === 'csrftoken');
+  let submission = { ...data };
 
-  if (csrfCookie && csrfCookie.value) {
-    // Merge headers, appending commonly needed ones.
-    const heads = headers ? { ...headers, 'X-CSRFToken': csrfCookie.value } : { 'X-CSRFToken': csrfCookie.value };
-
-    let submission = { ...data };
-    if (Object.prototype.toString.call(data) !== '[object FormData]') {
-      submission = JSON.stringify(submission);
-    } else {
-      submission = data;
-    }
-
-    if (method === 'DELETE') {
-      return fetch(`${url}${data}/`, {
-        credentials: 'include',
-        method,
-        headers: heads
-      })
-        .then(response => response)
-        .catch(error => error);
-    } else if (method === 'PUT') {
-      return fetch(url, {
-        credentials: 'include',
-        method,
-        headers: heads,
-        body: submission
-      })
-        .then(response => response)
-        .catch(error => error);
-    } else {
-      return fetch(url, {
-        credentials: 'include',
-        method,
-        headers: heads,
-        body: submission
-      })
-        .then(response => response)
-        .catch(error => error);
-    }
+  if (Object.prototype.toString.call(data) !== '[object FormData]') {
+    submission = JSON.stringify(submission);
   } else {
-    throw Error('csrfCookie is not set or has no value');
+    submission = data;
+  }
+
+  if (method === 'DELETE') {
+    return fetch(`${url}${data}/`, {
+      credentials: 'include',
+      method,
+      headers: headers
+    })
+      .then(response => response)
+      .catch(error => error);
+  } else if (method === 'PUT') {
+    return fetch(url, {
+      credentials: 'include',
+      method,
+      headers: headers,
+      body: submission
+    })
+      .then(response => response)
+      .catch(error => error);
+  } else {
+    return fetch(url, {
+      credentials: 'include',
+      method,
+      headers: headers,
+      body: submission
+    })
+      .then(response => response)
+      .catch(error => error);
   }
 };
