@@ -6,6 +6,7 @@ until echo > /dev/tcp/db/5432; do sleep 1; done
 cd $APP_HOME
 
 setuser app pipenv run ./server/manage.py migrate
+setuser app pipenv run ./server/manage.py update_site --domain localhost:8000
 
 # This check is here as the client runs in a separate container.
 # For Django to serve the frontent, it must first be built

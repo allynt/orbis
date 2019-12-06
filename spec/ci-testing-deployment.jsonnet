@@ -54,6 +54,7 @@ local deployment = {
           ports: [{ "containerPort": 8000 }],
           env: [
             { name: "SYS_ENV", value: deploymentType},
+            { name: "DJANGO_SITE_DOMAIN", value: subdomain + baseDomain},
             { name: "DJANGO_DEBUG", valueFrom: {secretKeyRef: { name: secretKeyName, key: "debug"}}},
             { name: "DJANGO_SECRET_KEY", valueFrom: {secretKeyRef: { name: secretKeyName, key: "secret_key"}}},
             { name: "DJANGO_DB_HOST", valueFrom: {secretKeyRef: { name: secretKeyName, key: "db_host"}}},
