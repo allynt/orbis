@@ -86,7 +86,6 @@ THIRD_PARTY_APPS = [
     "allauth.socialaccount",
     "rest_auth",
     "rest_auth.registration",
-    # "rest_framework.authtoken",
     "knox",
     # healthchecks...
     "health_check",

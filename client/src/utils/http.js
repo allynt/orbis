@@ -1,15 +1,3 @@
-const cookiesToArray = () => {
-  // Map cookies to an array of object key/value pairs.
-  const cookiesArray = document.cookie.split('; ');
-  let cookies = cookiesArray.map(cookieString => {
-    const cookie = cookieString.split('=');
-
-    return { name: cookie[0], value: cookie[1] };
-  });
-
-  return cookies;
-};
-
 export const JSON_HEADERS = {
   Accept: 'application/json',
   'Content-Type': 'application/json'
@@ -20,10 +8,10 @@ export const FORM_HEADERS = {
   'Content-Type': 'multipart/form-data; boundary=----WebKitFormBoundary2QT6fGjSCgRZuMif'
 };
 
-export const getData = (url, headers = {}, method = 'GET') => {
+export const getData = (url, headers = {}) => {
   return fetch(url, {
     credentials: 'include',
-    method,
+    method: 'GET',
     headers: headers
   })
     .then(response => response)

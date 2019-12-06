@@ -14,23 +14,19 @@ const USER_STATE = {
 
 describe('Http', () => {
   let beforeState;
+  let store;
 
   beforeEach(() => {
-    Object.defineProperty(document, 'cookie', {
-      value: 'csrftoken=test',
-      configurable: true
-    });
-
     beforeState = {
       accounts: USER_STATE
     };
+    store = mockStore(beforeState);
 
     fetch.resetMocks();
   });
 
   it('should post successfully even though no data or headers', async () => {
     fetch.mockResponse('');
-    const store = mockStore(beforeState);
 
     const url = '/api/test';
 
@@ -47,7 +43,6 @@ describe('Http', () => {
   it('should post successfully with no data set, but with custom headers', async () => {
     fetch.mockResponse('');
 
-    const store = mockStore(beforeState);
     const {
       accounts: { userKey }
     } = store.getState();
@@ -85,7 +80,6 @@ describe('Http', () => {
     const data = { key: 'value' };
     fetch.mockResponse(JSON.stringify(data));
 
-    const store = mockStore(beforeState);
     const {
       accounts: { userKey }
     } = store.getState();
@@ -106,7 +100,6 @@ describe('Http', () => {
   it('should post data unsuccessfully', async () => {
     fetch.mockReject({ message: 'Error posting data' });
 
-    const store = mockStore(beforeState);
     const {
       accounts: { userKey }
     } = store.getState();
@@ -124,17 +117,4 @@ describe('Http', () => {
     expect(fetch.mock.calls[0][1].headers).toEqual(headers);
     expect(JSON.parse(fetch.mock.calls[0][1].body)).toEqual(data);
   });
-
-  // it('should catch error if cookie not set or due to missing cookie value', async () => {
-  //   Object.defineProperty(document, 'cookie', { value: 'csrftoken=' });
-
-  //   const url = '/api/test';
-  //   const data = { key: 'value' };
-
-  //   try {
-  //     await sendData(url, data, JSON_HEADERS);
-  //   } catch (error) {
-  //     expect(error.message).toEqual('csrfCookie is not set or has no value');
-  //   }
-  // });
 });

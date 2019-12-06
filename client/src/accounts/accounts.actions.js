@@ -26,7 +26,7 @@ const API = {
   login: API_PREFIX + 'login/',
   changePassword: API_PREFIX + 'password/change/',
   resetPassword: API_PREFIX + 'password/reset/',
-  confirmResetPassword: API_PREFIX + 'password/reset/verify-reset/',
+  verifyResetPassword: API_PREFIX + 'password/reset/verify-reset/',
   logout: API_PREFIX + 'logout/',
   user: '/api/users/'
 };
@@ -133,8 +133,7 @@ export const login = form => async dispatch => {
     });
   }
 
-  const userDetails = await response.json();
-  const userKey = userDetails.token;
+  const userKey = await response.json().token;
 
   NotificationManager.success('Successfully logged in', 'Successful Login', 5000, () => {});
 
@@ -218,7 +217,7 @@ export const confirmChangePassword = (form, params) => async () => {
     uid
   };
 
-  const response = await sendData(API.confirmResetPassword, data, JSON_HEADERS);
+  const response = await sendData(API.verifyResetPassword, data, JSON_HEADERS);
 
   if (!response.ok) {
     const error = new Error();
