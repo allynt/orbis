@@ -5,10 +5,10 @@ const validate = form => {
 
   const trimmed = trimForm(form);
 
-  if (!trimmed.username) {
-    errors.username = 'Username is required';
-  } else if (trimmed.username.length < 3) {
-    errors.username = `Username ${trimmed.email} is too short`;
+  if (!trimmed.email) {
+    errors.email = 'Email is required';
+  } else if (trimmed.email.length < 3) {
+    errors.email = `Email ${trimmed.email} is too short`;
   }
 
   if (!trimmed.password) {

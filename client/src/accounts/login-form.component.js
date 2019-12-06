@@ -38,15 +38,15 @@ const LoginForm = ({ error, login, user, from }) => {
         <div className={formStyles.fields}>
           <div className={formStyles.row}>
             <Textfield
-              name="username"
-              value={values.username || ''}
+              name="email"
+              value={values.email || ''}
               placeholder="Email"
               onChange={handleChange}
               required
               autoFocus
             />
           </div>
-          {errors.username && <p className={formStyles.errorMessage}>{errors.username}</p>}
+          {errors.email && <p className={formStyles.errorMessage}>{errors.email}</p>}
 
           <div className={formStyles.row}>
             <PasswordField name="password" value={values.password || ''} onChange={handleChange} required />

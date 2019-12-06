@@ -51,21 +51,21 @@ const reducer = (state = initialState, action) => {
     case DELETE_USER_REQUESTED_FAILURE:
       return { ...state, isLoading: false, error: action.error };
 
-    case UPDATE_USER_REQUESTED:
-      return { ...state, isLoading: true };
+    // case UPDATE_USER_REQUESTED:
+    //   return { ...state, isLoading: true };
 
-    case UPDATE_USER_REQUESTED_SUCCESS:
-      const updatedUsers = state.users.map(user => (user.id === action.user.id ? action.user : user));
+    // case UPDATE_USER_REQUESTED_SUCCESS:
+    //   const updatedUsers = state.users.map(user => (user.id === action.user.id ? action.user : user));
 
-      return {
-        ...state,
-        users: updatedUsers,
-        isLoading: false,
-        error: null
-      };
+    //   return {
+    //     ...state,
+    //     users: updatedUsers,
+    //     isLoading: false,
+    //     error: null
+    //   };
 
-    case UPDATE_USER_REQUESTED_FAILURE:
-      return { ...state, isLoading: false, error: action.error };
+    // case UPDATE_USER_REQUESTED_FAILURE:
+    //   return { ...state, isLoading: false, error: action.error };
 
     case CREATE_USER_REQUESTED:
       return { ...state, isLoading: true };

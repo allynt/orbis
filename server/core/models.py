@@ -5,7 +5,7 @@ from django.db import models
 from django.utils.translation import gettext as _
 
 from astrosat.utils import validate_schema
-from astrosat_users.models import get_deleted_user
+from astrosat_users.models import get_sentinel_user
 
 
 FEATURE_COLLECTION_SCHEMA = {
@@ -45,7 +45,7 @@ class Bookmark(gis_models.Model):
         settings.AUTH_USER_MODEL,
         blank=False,
         null=False,
-        on_delete=models.SET(get_deleted_user),
+        on_delete=models.SET(get_sentinel_user),
         related_name="bookmarks",
     )
 

@@ -4,7 +4,8 @@ from django.contrib import admin
 from django.urls import include, path, re_path
 
 from rest_framework.routers import SimpleRouter
-from rest_framework_swagger.views import get_swagger_view
+
+from astrosat.views import api_schema_views
 
 from astrosat.urls import (
     urlpatterns as astrosat_urlpatterns,
@@ -25,9 +26,6 @@ from .views import index_view, app_config_view
 from .views import BookmarkViewSet  # TODO: this class should probably be moved to django-astrosat-core
 
 
-app_name = "core"
-
-
 admin.site.site_header = settings.ADMIN_SITE_HEADER
 admin.site.site_title = settings.ADMIN_SITE_TITLE
 admin.site.index_title = settings.ADMIN_INDEX_TITLE
@@ -43,16 +41,12 @@ handler500 = "astrosat.views.handler500"
 # api routes #
 ##############
 
-
 api_router = SimpleRouter()
 api_router.register(r"bookmarks", BookmarkViewSet, basename="bookmark")
 api_urlpatterns = [
     path("", include(api_router.urls)),
+    path("", include(api_schema_views)),
     path("app/config", app_config_view, name="appconfig"),
-    path("swagger/", get_swagger_view(title="orbis API"), name="swagger"),
-    # path("bookmarks", fetch_bookmarks, name="bookmarks"),
-    # path("bookmarks", fetch_bookmarks, name="bookmarks"),
-    # path("bookmarks/", add_bookmark, name="bookmark"),
 ]
 api_urlpatterns += astrosat_api_urlpatterns
 api_urlpatterns += astrosat_users_api_urlpatterns
@@ -63,14 +57,7 @@ api_urlpatterns += orbis_api_urlpatterns
 # normal routes #
 #################
 
-
 urlpatterns = [
-
-    # re_path(r"^favicon\.ico$", RedirectView.as_view(
-    #     url=staticfiles_storage.url("core/img/favicon.ico"),
-    #     permanent=False,
-    # ), name="favicon"),
-
     # docker healthchecks...
     path("healthcheck/", include("health_check.urls")),
 
@@ -80,14 +67,12 @@ urlpatterns = [
     # API...
     path("api/", include(api_urlpatterns)),
 
-    # all project app urls go here:
-    # astrosat... NA
-    # astrosat users...
+    # app-specific patterns...
+    path("astrosat/", include(astrosat_urlpatterns)),
     path("users/", include(astrosat_users_urlpatterns)),
-    # tasks... NA
+    path("orbis/", include(orbis_urlpatterns)),
 
     # note: index_view is added at the very end of this module!
-
 ]
 
 
@@ -125,7 +110,7 @@ if settings.DEBUG:
 
 
 urlpatterns += [
-    # catch nothing-and-anything in IndexView...
+    # catch nothing-and-anything in index_view...
     path("", index_view, name="index"),
     re_path(r"^.*/$", index_view, name="index"),
 ]

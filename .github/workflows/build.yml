@@ -85,7 +85,7 @@ jobs:
       - name: Build Docker Image
         run: |
           export GIT_SHA=${GITHUB_SHA:0:7}
-          docker build . -t ${AWS_REGISTRY}/${AWS_REPOSITORY}:${GIT_SHA} --build-arg TOKEN=${{ secrets.GITHUB_REGISTRY_TOKEN }} -f ./Dockerfile.artifact
+          docker build . -t ${AWS_REGISTRY}/${AWS_REPOSITORY}:${GIT_SHA} --build-arg TOKEN=${{ secrets.GITHUB_REGISTRY_TOKEN }} -f ./Dockerfile.deployment
 
       - name: Push image to AWS Docker Registry
         run: |

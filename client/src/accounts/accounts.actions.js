@@ -2,7 +2,7 @@ import { NotificationManager } from 'react-notifications';
 
 import { history } from '../store';
 
-import { sendData, JSON_HEADERS } from '../utils/http';
+import { sendData, getData, JSON_HEADERS } from '../utils/http';
 
 export const LOGIN_REQUESTED_SUCCESS = 'LOGIN_REQUESTED_SUCCESS';
 export const LOGIN_REQUESTED_FAILURE = 'LOGIN_REQUESTED_FAILURE';
@@ -19,14 +19,14 @@ export const FETCH_USER_REQUESTED_FAILURE = 'FETCH_USER_REQUESTED_FAILURE';
 export const UPDATE_USER_REQUESTED_SUCCESS = 'UPDATE_USER_REQUESTED_SUCCESS';
 export const UPDATE_USER_REQUESTED_FAILURE = 'UPDATE_USER_REQUESTED_FAILURE';
 
-const API_PREFIX = '/api/rest-auth/';
+const API_PREFIX = '/api/authentication/';
 const API = {
   register: API_PREFIX + 'registration/',
   activate: API_PREFIX + 'registration/verify-email/',
   login: API_PREFIX + 'login/',
   changePassword: API_PREFIX + 'password/change/',
   resetPassword: API_PREFIX + 'password/reset/',
-  confirmResetPassword: API_PREFIX + 'password/reset/confirm/',
+  verifyResetPassword: API_PREFIX + 'password/reset/verify-reset/',
   logout: API_PREFIX + 'logout/',
   user: '/api/users/'
 };
@@ -85,8 +85,18 @@ export const activateAccount = form => async () => {
   }
 };
 
-export const fetchUser = (username = 'current') => async dispatch => {
-  const response = await fetch(`${API.user}${username}/`, { credentials: 'include' });
+export const fetchUser = (email = 'current') => async (dispatch, getState) => {
+  const {
+    accounts: { userKey }
+  } = getState();
+
+  const url = `${API.user}${email}`;
+  const headers = {
+    ...JSON_HEADERS,
+    Authorization: 'Token ' + userKey
+  };
+
+  const response = await getData(url, headers);
 
   if (!response.ok) {
     const error = new Error();
@@ -123,22 +133,33 @@ export const login = form => async dispatch => {
     });
   }
 
-  const userKey = await response.json();
+  const userKey = await response.json().token;
 
   NotificationManager.success('Successfully logged in', 'Successful Login', 5000, () => {});
 
-  // Now that we are logged in, retrieve the user's
-  dispatch(fetchUser());
+  // Record the authentication key in state
+  dispatch({ type: LOGIN_REQUESTED_SUCCESS, userKey });
 
-  return dispatch({ type: LOGIN_REQUESTED_SUCCESS, userKey });
+  // Now that we have an authentication key, we can proceed to get user details
+  return dispatch(fetchUser());
 };
 
 /**
  *
  *
  */
-export const logout = () => async dispatch => {
-  const response = await sendData(API.logout, {}, JSON_HEADERS);
+export const logout = () => async (dispatch, getState) => {
+  const {
+    accounts: { userKey }
+  } = getState();
+
+  const url = API.logout;
+  const headers = {
+    ...JSON_HEADERS,
+    Authorization: 'Token ' + userKey
+  };
+
+  const response = await sendData(url, {}, headers);
 
   if (!response.ok) {
     const error = new Error();
@@ -155,18 +176,17 @@ export const logout = () => async dispatch => {
 };
 
 export const changePassword = form => async (dispatch, getState) => {
-  // const {
-  //   accounts: {
-  //     userKey: { key }
-  //   }
-  // } = getState();
+  const {
+    accounts: { userKey }
+  } = getState();
 
+  const url = API.changePassword;
   const headers = {
-    ...JSON_HEADERS //,
-    // authorization: "Token " + key
+    ...JSON_HEADERS,
+    Authorization: 'Token ' + userKey
   };
 
-  const response = await sendData(API.changePassword, form, headers);
+  const response = await sendData(url, form, headers);
 
   if (!response.ok) {
     const error = new Error();
@@ -197,7 +217,7 @@ export const confirmChangePassword = (form, params) => async () => {
     uid
   };
 
-  const response = await sendData(API.confirmResetPassword, data, JSON_HEADERS);
+  const response = await sendData(API.verifyResetPassword, data, JSON_HEADERS);
 
   if (!response.ok) {
     const error = new Error();
@@ -210,15 +230,21 @@ export const confirmChangePassword = (form, params) => async () => {
 
 export const updateUser = form => async (dispatch, getState) => {
   const {
-    accounts: { user }
+    accounts: { user, userKey }
   } = getState();
+
+  const url = `${API.user}${user.email}/`;
+  const headers = {
+    ...JSON_HEADERS,
+    Authorization: 'Token ' + userKey
+  };
   const data = {
     ...user,
     ...form,
     name: `${form.first_name} ${form.last_name}`
   };
 
-  const response = await sendData(`${API.user}${user.email}/`, data, JSON_HEADERS, 'PUT');
+  const response = await sendData(url, data, headers, 'PUT');
 
   if (!response.ok) {
     const error = new Error();

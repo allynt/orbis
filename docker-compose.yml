@@ -20,8 +20,9 @@ services:
         TOKEN: "${GITHUB_REGISTRY_TOKEN}"
     tty: true
     environment:
-      DJANGO_SETTINGS_MODULE: core.settings
       PIPENV_NOSPIN: 1
+      PIPENV_DONT_LOAD_ENV: 1
+      DJANGO_SETTINGS_MODULE: core.settings
       GITHUB_REGISTRY_TOKEN: "${GITHUB_REGISTRY_TOKEN}"
     volumes:
       - ./server:/home/app/server

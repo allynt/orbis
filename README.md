@@ -70,5 +70,8 @@ Starting the project starts 3 separate **Docker containers** (in order):
 $ cd client && yarn install
 $ cd ..
 $ docker-compose up --build
-$ docker-compose exec server createsuperuser
+$ docker-compose exec server pipenv run server/manage.py createsuperuser
+$ docker-compose exec server pipenv run server/manage.py force_verification --username <superuser>
 ```
+
+To view all API endpoints, navigate to "localhost:8000/api/swagger"
