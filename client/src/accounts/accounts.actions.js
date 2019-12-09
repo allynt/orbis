@@ -133,7 +133,7 @@ export const login = form => async dispatch => {
     });
   }
 
-  const userKey = await response.json().token;
+  const userKey = (await response.json()).token;
 
   NotificationManager.success('Successfully logged in', 'Successful Login', 5000, () => {});
 
