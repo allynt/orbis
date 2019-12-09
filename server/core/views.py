@@ -4,6 +4,8 @@ from django.views.generic import TemplateView
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
+from astrosat_users.conf import app_settings as astrosat_users_settings
+
 
 ###############################
 # the one-and-only index_view #
@@ -19,18 +21,17 @@ index_view = TemplateView.as_view(template_name="index.html")
 
 
 class AppConfigView(APIView):
-
-    config_map = {
-        # settings to track
-        "TRACKING_ID": "trackingId",
-        "MAPBOX_TOKEN": "mapbox_token",  # TODO: SHOUDN'T THIS BE "mapboxToken" FOR CONSISTENCY ?
-    }
-
     def get(self, request, format=None):
 
         config = {
-            client_key: getattr(settings, server_key)
-            for server_key, client_key in self.config_map.items()
+            "trackingId": settings.TRACKING_ID,
+            "mapbox_token": settings.MAPBOX_TOKEN,  # TODO: SHOUDN'T THIS BE "mapboxToken" FOR CONSISTENCY ?
+            "passwordMinLength": astrosat_users_settings.PASSWORD_MIN_LENGTH,
+            "passwordMaxLength": astrosat_users_settings.PASSWORD_MAX_LENGTH,
+            "passwordStrength": astrosat_users_settings.PASSWORD_STRENGTH,
+            "isRegistrationOpen": astrosat_users_settings.ASTROSAT_USERS_ALLOW_REGISTRATION,
+            "isVerificationRequired": astrosat_users_settings.ASTROSAT_USERS_REQUIRE_VERIFICATION,
+            "isApprovalRequired": astrosat_users_settings.ASTROSAT_USERS_REQUIRE_APPROVAL,
         }
 
         return Response(config)
