@@ -32,11 +32,11 @@ router.get('/app/config', (req, res) => config.getAppConfig(req, res));
 router.get('/users/', (req, res) => config.getUsers(req, res));
 router.get('/users/:username/', (req, res) => config.getCurrentUser(req, res));
 
-router.route('/rest-auth/registration/').post((req, res) => config.register(req, res));
-router.route('/rest-auth/login/').post((req, res) => config.login(req, res));
-router.route('/rest-auth/logout/').post((req, res) => config.logout(req, res));
+router.route('/authentication/registration/').post((req, res) => config.register(req, res));
+router.route('/authentication/login/').post((req, res) => config.login(req, res));
+router.route('/authentication/logout/').post((req, res) => config.logout(req, res));
 
-router.route('/rest-auth/password/change/').post((req, res) => config.changePassword(req, res));
+router.route('/authentication/password/change/').post((req, res) => config.changePassword(req, res));
 
 router.get('/bookmarks/', (req, res) => config.getBookmarks(req, res));
 router.route('/bookmarks/').post((req, res) => config.addBookmark(req, res));
