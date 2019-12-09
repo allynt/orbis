@@ -11,6 +11,7 @@ import Toolbar from '../toolbar/toolbar.component';
 // import { colorSchemes } from '../colors';
 
 import OverviewMap from '../mini-map/overview-map.component';
+import SpyglassMap from '../spyglass/spyglass-map.component';
 
 import styles from './map-layout.module.css';
 
@@ -31,8 +32,10 @@ const MapLayout = ({ count }) => {
   const map4Ref = useRef(null);
 
   const overviewMapRef = useRef(null);
+  const spyglassMapRef = useRef(null);
   const [maps, setMaps] = useState(null);
   const isOverviewMapVisible = useSelector(state => state.map.isMiniMapVisible);
+  const isSpyglassMapVisible = useSelector(state => state.map.isSpyglassMapVisible);
   const overviewMapStyle = { uri: 'mapbox://styles/mapbox/streets-v11' };
 
   // Since we have no data I have started passing in the
@@ -46,6 +49,7 @@ const MapLayout = ({ count }) => {
   const mapRefCount = mapRefs.filter(ref => ref.current).length;
 
   const overviewMapRefCount = [overviewMapRef].filter(ref => ref.current).length;
+  const spyglassMapRefCount = [spyglassMapRef].filter(ref => ref.current).length;
 
   const mapStyle = useSelector(state => state.map.selectedMapStyle);
 
@@ -61,6 +65,8 @@ const MapLayout = ({ count }) => {
       return () => {
         removeSyncMove.then(cb => cb());
       };
+    } else {
+      Promise.all([map1Ref.current].filter(ref => ref)).then(maps => setMaps(maps));
     }
   }, [mapRefCount]);
 
@@ -75,6 +81,18 @@ const MapLayout = ({ count }) => {
       };
     }
   }, [overviewMapRefCount, isOverviewMapVisible]);
+
+  useEffect(() => {
+    if (isSpyglassMapVisible) {
+      const removeSyncMove = Promise.all([spyglassMapRef.current].filter(ref => ref)).then(spyglassMap =>
+        syncMaps([maps[0], ...spyglassMap])
+      );
+
+      return () => {
+        removeSyncMove.then(cb => cb());
+      };
+    }
+  }, [spyglassMapRefCount, isSpyglassMapVisible]);
 
   const toolbarItems = getToolbarItems(dispatch);
 
@@ -109,6 +127,7 @@ const MapLayout = ({ count }) => {
           />
         ))}
         {isOverviewMapVisible && <OverviewMap ref={overviewMapRef} style={overviewMapStyle.uri} />}
+        {isSpyglassMapVisible && <SpyglassMap ref={spyglassMapRef} style={mapStyle.uri} />}
       </div>
 
       <Toolbar items={toolbarItems} />

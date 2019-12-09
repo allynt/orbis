@@ -20,7 +20,7 @@ const LoginForm = ({ error, login, user, from }) => {
   }
 
   // Re-direct to originally clicked URL on successful login.
-  if (user && user.is_verified && user.is_approved) {
+  if (user) {
     return <Redirect to={from} />;
   }
 

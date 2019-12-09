@@ -13,7 +13,7 @@ import { fetchUser } from './accounts/accounts.actions';
 import RegisterFormContainer from './accounts/register-form.container';
 import AccountActivationContainer from './accounts/account-activation-form.container';
 import LoginFormContainer from './accounts/login-form.container';
-import PasswordResetContainer from './accounts/password-reset-form.container';
+// import PasswordResetContainer from './accounts/password-reset-form.container';
 import PasswordChangeContainer from './accounts/password-change-form.container';
 import UpdateUserContainer from './accounts/update-user-form.container';
 import PasswordResetDone from './accounts/password-reset-done.component';
@@ -25,15 +25,32 @@ import MapLayout from './map';
 
 import styles from './app.module.css';
 
+const PasswordResetContainer = lazy(() => import('./accounts/password-reset-form.container'));
 const UserList = lazy(() => import('./accounts/admin/user-list.container'));
 const Admin = lazy(() => import('./accounts/admin/admin.container'));
 
 const LandingView = () => (
   <div className={styles.landing}>
-    Landing Page, go to the{' '}
-    <Button theme="primary" href="/map">
-      map
-    </Button>
+    <div className={styles.header}>ORBIS LOGO</div>
+    <div className={styles.content}>
+      <div className={styles.journey}>
+        <h1>OR3IS JOURNEY</h1>
+
+        <p>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
+          magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+          consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
+          pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id
+          est laborum.
+        </p>
+
+        <Button theme="primary" onClick={() => console.log('LOAD JOURNEY DIALOG')}>
+          Create New
+        </Button>
+      </div>
+
+      <div className={styles.journeyImage}>JOURNEY IMAGE</div>
+    </div>
   </div>
 );
 
@@ -71,16 +88,20 @@ const App = () => {
 
       <main>
         <Switch>
+          <PrivateRoute path="/map" user={user} count={1} component={MapLayout} />
+          <PrivateRoute exact path="/password/change" user={user} component={PasswordChangeContainer} />
+          <PrivateRoute exact path="/user/update" user={user} component={UpdateUserContainer} />
+
           <PrivateRoute exact path="/" user={user} component={LandingView} />
+
           <Route exact path="/register" component={RegisterFormContainer} />
           <Route exact path="/login" component={LoginFormContainer} />
-          <Route exact path="/password/reset" user={user} component={PasswordResetContainer} />
+          <Suspense fallback={<h3>Password Rest Loading...</h3>}>
+            <Route exact path="/password/reset" user={user} component={PasswordResetContainer} />
+          </Suspense>
           <Route path="/reset_password_done" component={PasswordResetDone} />
           <Route path="/password/reset/:token/:uid/" component={PasswordResetConfirmContainer} />
           <Route exact path="/account/confirm-email/:key" user={user} component={AccountActivationContainer} />
-          <PrivateRoute exact path="/password/change" user={user} component={PasswordChangeContainer} />
-          <PrivateRoute exact path="/user/update" user={user} component={UpdateUserContainer} />
-          <PrivateRoute path="/map" user={user} count={2} component={MapLayout} />
           <Suspense fallback={<h3>Admin Loading...</h3>}>
             <PrivateRoute exact path="/admin" user={user} component={Admin} />
             <PrivateRoute exact path="/users" user={user} component={UserList} />
