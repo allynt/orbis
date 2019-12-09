@@ -25,7 +25,7 @@ if ENVIRONMENT == "development":
             raise ImproperlyConfigured(msg)
 
 else:
-    # otherwise, they are dynamically created by Ansible on the server
+    # otherwise, they are dynamically created on the server
     pass
 
 
@@ -35,10 +35,6 @@ else:
 
 # Import base settings
 from .base import *  # noqa
-
-# Import default deployment settings
-if ENVIRONMENT not in ["development", "ci"]:
-    from .deployment import *
 
 # Import environment specific settings
 exec(u"from {} import *".format(environment_settings_module)) in globals()

@@ -147,7 +147,6 @@ TEMPLATES = [
                 "django.template.context_processors.debug",
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
-                # TODO: CAN I GET RID OF SOME OF THESE...
                 "django.contrib.messages.context_processors.messages",
                 "django.template.context_processors.i18n",
                 "django.template.context_processors.media",
@@ -222,8 +221,8 @@ ADMIN_INDEX_TITLE = f"Welcome to the {PROJECT_NAME} administration console"
 # deployment: "django.core.mail.backends.smtp.EmailBackend"
 # ci: django.core.mail.backends.locmem.EmailBackend"
 
-DEFAULT_FROM_EMAIL = f"{PROJECT_NAME} <{PROJECT_EMAIL.format(role='automated')}>"
-SERVER_EMAIL = PROJECT_EMAIL.format(role=f"{PROJECT_NAME}-admin")
+DEFAULT_FROM_EMAIL = f"{PROJECT_NAME} <{PROJECT_EMAIL.format(role='noreply')}>"
+SERVER_EMAIL = PROJECT_EMAIL.format(role='noreply')
 EMAIL_TIMEOUT = 60
 
 #######

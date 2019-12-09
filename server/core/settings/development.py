@@ -65,7 +65,7 @@ INTERNAL_IPS += [ip[:-1] + '1' for ip in ips]
 ###########
 
 # minimal logging in development, just so things work
-# file logging is setup in deployment
+# proper logging should be setup in deployment
 
 LOGGING = {
     "version": 1,
