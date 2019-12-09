@@ -9,19 +9,16 @@ export const MAP_STYLE_SELECTED = 'MAP_STYLE_SELECTED';
 export const TOGGLE_MULTI_MODE = 'map.TOGGLE_MULTI_MODE';
 export const TOGGLE_3D_MODE = 'map.TOGGLE_3D_MODE';
 export const TOGGLE_MINI_MAP = 'map.TOGGLE_MINI_MAP';
+export const TOGGLE_SPYGLASS = 'map.TOGGLE_SPYGLASS';
 
-export const TOGGLE_INFRASTRUCTURE_LAYER_VISIBILITY =
-  'map.TOGGLE_INFRASTRUCTURE_LAYER_VISIBILITY';
-export const TOGGLE_CUSTOM_LAYER_VISIBILITY =
-  'map.TOGGLE_CUSTOM_LAYER_VISIBILITY';
+export const TOGGLE_INFRASTRUCTURE_LAYER_VISIBILITY = 'map.TOGGLE_INFRASTRUCTURE_LAYER_VISIBILITY';
+export const TOGGLE_CUSTOM_LAYER_VISIBILITY = 'map.TOGGLE_CUSTOM_LAYER_VISIBILITY';
 
 export const CUSTOM_DATA_REQUESTED_SUCCESS = 'CUSTOM_DATA_REQUESTED_SUCCESS';
 export const CUSTOM_DATA_REQUESTED_FAILURE = 'CUSTOM_DATA_REQUESTED_FAILURE';
 
-export const INFRASTRUCTURE_DATA_REQUESTED_SUCCESS =
-  'INFRASTRUCTURE_DATA_REQUESTED_SUCCESS';
-export const INFRASTRUCTURE_DATA_REQUESTED_FAILURE =
-  'INFRASTRUCTURE_DATA_REQUESTED_FAILURE';
+export const INFRASTRUCTURE_DATA_REQUESTED_SUCCESS = 'INFRASTRUCTURE_DATA_REQUESTED_SUCCESS';
+export const INFRASTRUCTURE_DATA_REQUESTED_FAILURE = 'INFRASTRUCTURE_DATA_REQUESTED_FAILURE';
 
 export const toggleMultiMode = () => async (dispatch, getState) => {
   ReactGA.event({
@@ -45,12 +42,9 @@ export const toggle3DMode = () => async (dispatch, getState) => {
 
 export const fetchInfrastructureData = () => async dispatch => {
   // POST request model form to API.
-  const response = await fetch(
-    '/api/layers?key=data/processed/infrastructure',
-    {
-      credentials: 'include'
-    }
-  );
+  const response = await fetch('/api/layers?key=data/processed/infrastructure', {
+    credentials: 'include'
+  });
   const infrastructureData = await response.json();
 
   if (response.ok) {
@@ -60,12 +54,7 @@ export const fetchInfrastructureData = () => async dispatch => {
     });
   } else {
     const message = `${response.status} ${response.statusText} - ${infrastructureData.message}`;
-    NotificationManager.error(
-      message,
-      'Fetching Infrastructure Data',
-      50000,
-      () => {}
-    );
+    NotificationManager.error(message, 'Fetching Infrastructure Data', 50000, () => {});
     return dispatch({
       type: INFRASTRUCTURE_DATA_REQUESTED_FAILURE,
       error: infrastructureData
@@ -98,3 +87,5 @@ export const fetchCustomData = () => async dispatch => {
 export const setViewport = viewport => ({ type: SET_VIEWPORT, viewport });
 
 export const toggleMiniMap = () => dispatch => dispatch({ type: TOGGLE_MINI_MAP });
+
+export const toggleSpyglassMap = () => dispatch => dispatch({ type: TOGGLE_SPYGLASS });
