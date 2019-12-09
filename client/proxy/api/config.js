@@ -10,8 +10,20 @@ const userKey = { key: '57bd67287664bb1497cb29fe89d2d5087195a3ae' };
 const users = [
   {
     id: 1,
-    username: 'test@test.com',
-    email: 'test@test.com',
+    username: 'user@test.com',
+    email: 'user@test.com',
+    password: 'pandaconcretespoon',
+    name: null,
+    description: '',
+    is_verified: true,
+    is_approved: true,
+    profiles: {},
+    roles: [{ id: 2, name: 'IsUser', description: '', permissions: [] }]
+  },
+  {
+    id: 2,
+    username: 'admin@test.com',
+    email: 'admin@test.com',
     password: 'pandaconcretespoon',
     name: null,
     description: '',
@@ -42,7 +54,7 @@ const users = [
     password: 'pandaconcretespoon',
     name: null,
     description: '',
-    is_verified: true,
+    is_verified: false,
     is_approved: true,
     profiles: {},
     roles: [{ id: 2, name: 'IsUser', description: '', permissions: [] }]
@@ -120,9 +132,20 @@ const login = (req, res) => {
   const user = req.body;
   console.log('Logging User: ', user);
 
-  currentUser = users.find(usr => usr.username === user.username);
+  currentUser = users.find(usr => usr.email === user.email);
+  console.log('USER Matched: ', currentUser);
 
   if (currentUser) {
+    if (!currentUser.is_approved) {
+      res.status(400);
+      res.json({ message: `Sorry, Registration not approved, please ask your manager to approve this account` });
+    }
+
+    if (!currentUser.is_verified) {
+      res.status(400);
+      res.json({ message: `Sorry, Registration not verified, please ask your manager to approve this account` });
+    }
+
     if (user.password === currentUser.password) {
       res.status(200);
       res.json(userKey);
