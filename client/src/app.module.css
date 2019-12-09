@@ -203,3 +203,7 @@ header {
 .navItem:hover {
   background-color: var(--button-background-hover);
 }
+
+.landing {
+  background-color: #fff;
+}

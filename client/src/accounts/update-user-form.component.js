@@ -16,8 +16,6 @@ const UpdateUserForm = ({ user, updateUser }) => {
     updateUser(values);
   }
 
-  console.log('VALUES: ', values, user);
-
   return (
     <div className={formStyles.container}>
       <form className={formStyles.form} onSubmit={handleSubmit}>

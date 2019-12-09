@@ -29,9 +29,9 @@ const UserList = lazy(() => import('./accounts/admin/user-list.container'));
 const Admin = lazy(() => import('./accounts/admin/admin.container'));
 
 const LandingView = () => (
-  <div>
+  <div className={styles.landing}>
     Landing Page, go to the{' '}
-    <Button theme="link" href="/map">
+    <Button theme="primary" href="/map">
       map
     </Button>
   </div>
@@ -71,7 +71,7 @@ const App = () => {
 
       <main>
         <Switch>
-          {/* <Route exact path="/" component={LandingView} /> */}
+          <PrivateRoute exact path="/" user={user} component={LandingView} />
           <Route exact path="/register" component={RegisterFormContainer} />
           <Route exact path="/login" component={LoginFormContainer} />
           <Route exact path="/password/reset" user={user} component={PasswordResetContainer} />
@@ -80,12 +80,12 @@ const App = () => {
           <Route exact path="/account/confirm-email/:key" user={user} component={AccountActivationContainer} />
           <PrivateRoute exact path="/password/change" user={user} component={PasswordChangeContainer} />
           <PrivateRoute exact path="/user/update" user={user} component={UpdateUserContainer} />
-          <PrivateRoute path="/map" user={user} component={MapLayout} />
-          {/* <Suspense fallback={<h3>Admin Loading...</h3>}>
+          <PrivateRoute path="/map" user={user} count={2} component={MapLayout} />
+          <Suspense fallback={<h3>Admin Loading...</h3>}>
             <PrivateRoute exact path="/admin" user={user} component={Admin} />
             <PrivateRoute exact path="/users" user={user} component={UserList} />
             <PrivateRoute exact path="/others" user={user} component={UserList} />
-          </Suspense> */}
+          </Suspense>
         </Switch>
       </main>
     </div>
