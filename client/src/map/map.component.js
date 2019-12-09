@@ -51,7 +51,7 @@ import LayerTree from '../layer-tree/layer-tree.component';
 import UpdateUserFormContainer from '../accounts/update-user-form.container';
 import PasswordChangeContainer from '../accounts/password-change-form.container';
 
-import MiniMapControl from '../mini-map/mini-map.control';
+// import SpyglassControl from '../spyglass/spyglass.control';
 
 import drawStyles from '../annotations/styles';
 import layoutStyles from './map-layout.module.css';
@@ -78,7 +78,7 @@ const Map = (
     attribution = true,
     geocoder = true,
     navigation = true,
-    overview = true,
+    spyglass = false,
     scale = true,
     draw = true,
     save = true,
@@ -98,7 +98,8 @@ const Map = (
 
   // const { properties, filters, currentFilters, visible, setBounds } = useMapCrossFilter(selectedProperty);
   // const selectedPropertyMetadata = properties.find(property => property.field === selectedProperty);
-  const { mapContainer, mapInstance } = useMapbox(style, accessToken);
+  const { mapContainer, mapInstance, mapPromise } = useMapbox(style, accessToken);
+
   // const user = useSelector(state => state.accounts.user);
 
   // const [hoveredFeature, setHoveredFeature] = useState(null);
@@ -117,15 +118,14 @@ const Map = (
 
   const dispatch = useDispatch();
 
-  // const toggleMiniMap = () => console.log('TOGGLING MINI MAP');
-  const isMiniMapVisible = useSelector(state => state.map.isMiniMapVisible);
+  // const isSpyglassVisible = useSelector(state => state.map.isSpyglassVisible);
   // console.log('IS MINI MAP VISIBLE: ', isMiniMapVisible);
 
   useMapControl(mapInstance, attribution, AttributionControl);
   useMapControl(mapInstance, navigation, NavigationControl, 'bottom-right');
-  useMapControl(mapInstance, overview, MiniMapControl, 'bottom-right', {
-    visibility: isMiniMapVisible ? 'visible' : 'hidden'
-  });
+  // useMapControl(mapInstance, spyglass, SpyglassControl, 'bottom-right', {
+  //   visibility: isSpyglassVisible ? 'visible' : 'hidden'
+  // });
   useMapControl(mapInstance, scale, ScaleControl);
   useMapControl(mapInstance, geocoder, MapboxGeocoder, 'top-left', {
     accessToken: accessToken,
@@ -189,14 +189,15 @@ const Map = (
     [selectedBookmark]
   );
 
-  useMap(
-    mapInstance,
-    map => {
-      const miniMap = mapInstance._controls.find(ctrl => ctrl instanceof MiniMapControl);
-      miniMap.toggleMiniMap();
-    },
-    [isMiniMapVisible]
-  );
+  // useMap(
+  //   mapInstance,
+  //   map => {
+  //     const spyglassMap = mapInstance._controls.find(ctrl => ctrl instanceof SpyglassControl);
+  //     console.log('TOGGLE SPYGLASS: ', isSpyglassVisible);
+  //     spyglassMap.toggleSpyglass();
+  //   },
+  //   [isSpyglassVisible]
+  // );
 
   // useMapEvent(
   //   mapInstance,
@@ -778,9 +779,8 @@ const Map = (
   //   [dispatch]
   // );
 
-  useImperativeHandle(ref, () => mapInstance);
+  useImperativeHandle(ref, () => mapPromise);
 
-  // console.log('POPUP: ', popupRef);
   return (
     <div ref={mapContainer} className={layoutStyles.map} data-testid={`map-${position}`}>
       {/* <AccountMenuButton user={user} logout={() => dispatch(logout(history))} /> */}

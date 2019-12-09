@@ -7,6 +7,11 @@ const useMapbox = (style, accessToken) => {
   const [mapInstance, setMapInstance] = useState(null);
   const viewportConfig = useSelector(state => state.map.viewport);
   const viewport = useRef(viewportConfig);
+  let resolveCb;
+
+  const mapPromise = new Promise((resolve, reject) => {
+    resolveCb = resolve;
+  });
 
   useEffect(() => {
     if (accessToken) {
@@ -21,6 +26,7 @@ const useMapbox = (style, accessToken) => {
 
       map.on('load', () => {
         setMapInstance(map);
+        resolveCb(map);
         // used for cypress tests
         mapContainer.current.map = map;
       });
@@ -37,7 +43,7 @@ const useMapbox = (style, accessToken) => {
       };
     }
   }, [style, accessToken]);
-  return { mapContainer, mapInstance };
+  return { mapContainer, mapInstance, mapPromise };
 };
 
 export default useMapbox;

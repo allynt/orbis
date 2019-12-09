@@ -1,11 +1,17 @@
 // This is a fork of the mapbox plugin that avoids a race condition in mapbox-gl-sync-move
 // see https://github.com/mapbox/mapbox-gl-sync-move/pull/7
+// It simply increments/decrements the zoom, based on whether the
+// master has the `overviewMap` CSS selector.
 
 function moveToMapPosition(master, clones) {
   var center = master.getCenter();
   var zoom = master.getZoom();
   var bearing = master.getBearing();
   var pitch = master.getPitch();
+
+  master.getContainer().className.includes('overviewMap')
+    ? (zoom = master.getZoom() + 4)
+    : (zoom = master.getZoom() - 4);
 
   clones.forEach(function(clone) {
     clone.jumpTo({
@@ -26,7 +32,7 @@ function moveToMapPosition(master, clones) {
 // - could cause an infinite loop
 // - prematurely halts prolonged movements like
 //   double-click zooming, box-zooming, and flying
-function syncMaps() {
+function syncOverviewMap() {
   var maps;
   var argLen = arguments.length;
   if (argLen === 1) {
@@ -79,4 +85,4 @@ function syncMaps() {
   };
 }
 
-export default syncMaps;
+export default syncOverviewMap;
