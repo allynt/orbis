@@ -2,12 +2,14 @@
 # yarn lockfile v1
 
 
-"@astrosat/astrosat-ui@^1.4.3":
-  version "1.4.3"
-  resolved "https://npm.pkg.github.com/download/@astrosat/astrosat-ui/1.4.3/5935d93448f3b05b4b69c9a213ab8845447e826fc07ed5e24760a6baa65240e0#b413572db53621860c8117e4913f79523b1bd6f8"
-  integrity sha512-ByCqBnYdo1saBqtwWlSLSMYnBmVkUdIKhCX2PFj4yj9xdj2+dQK4xYKt9eq1mpcgRYzoG4Zi+nSsp38wAhzLDA==
+"@astrosat/astrosat-ui@^1.5.0":
+  version "1.5.0"
+  resolved "https://npm.pkg.github.com/download/@astrosat/astrosat-ui/1.5.0/58ab0b0f89ed17f58b7c7faf5edd5d146b5b312752799cc33127808a849a639a#ab7d641581679920ba65b1305673b4a7dc331b66"
+  integrity sha512-1IQzF0oaOsxPQIO4CdQanU+GoAxXKFAHWyXhrU8LIkQRqEqr+00g/0jFD40krKqg1bnusc8OJhJwRbMeIHzD9g==
   dependencies:
+    prop-types "^15.7.2"
     react-svg-loader "^3.0.3"
+    zxcvbn "^4.4.2"
 
 "@babel/code-frame@7.5.5", "@babel/code-frame@^7.0.0", "@babel/code-frame@^7.5.5":
   version "7.5.5"
@@ -6739,10 +6741,10 @@ escodegen@^1.11.0, escodegen@^1.9.1:
   optionalDependencies:
     source-map "~0.6.1"
 
-eslint-config-prettier@^6.1.0:
-  version "6.5.0"
-  resolved "https://registry.yarnpkg.com/eslint-config-prettier/-/eslint-config-prettier-6.5.0.tgz#aaf9a495e2a816865e541bfdbb73a65cc162b3eb"
-  integrity sha512-cjXp8SbO9VFGW/Z7mbTydqS9to8Z58E5aYhj3e1+Hx7lS9s6gL5ILKNpCqZAFOVYRcSkWPFYljHrEh8QFEK5EQ==
+eslint-config-prettier@^6.7.0:
+  version "6.7.0"
+  resolved "https://registry.yarnpkg.com/eslint-config-prettier/-/eslint-config-prettier-6.7.0.tgz#9a876952e12df2b284adbd3440994bf1f39dfbb9"
+  integrity sha512-FamQVKM3jjUVwhG4hEMnbtsq7xOIDm+SY5iBPfR8gKsJoAB2IQnNF+bk1+8Fy44Nq7PPJaLvkRxILYdJWoguKQ==
   dependencies:
     get-stdin "^6.0.0"
 
