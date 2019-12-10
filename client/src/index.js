@@ -2,10 +2,12 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { ConnectedRouter } from 'connected-react-router';
-import store, { history } from './store';
+import store, { history, persistor } from './store';
 import App from './app.component';
 import ReactGA from 'react-ga';
 // import ReactTooltip from 'react-tooltip';
+
+import { PersistGate } from 'redux-persist/lib/integration/react';
 
 import './polyfills/flat-map';
 import './polyfills/object-fromEntries';
@@ -45,7 +47,9 @@ ReactDOM.render(
   <Provider store={store}>
     <ConnectedRouter history={history}>
       <NotificationContainer />
-      <App />
+      <PersistGate loading={<div>Loading...</div>} persistor={persistor}>
+        <App />
+      </PersistGate>
     </ConnectedRouter>
   </Provider>,
   document.getElementById('root')
