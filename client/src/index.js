@@ -2,18 +2,20 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { ConnectedRouter } from 'connected-react-router';
-import store, { history } from './store';
-import App from './app.component';
 import ReactGA from 'react-ga';
 // import ReactTooltip from 'react-tooltip';
 
-import './polyfills/flat-map';
-import './polyfills/object-fromEntries';
-
+import { PersistGate } from 'redux-persist/lib/integration/react';
 import { NotificationContainer } from 'react-notifications';
 import 'react-notifications/lib/notifications.css';
 
 // import registerServiceWorker from './registerServiceWorker';
+
+import App from './app.component';
+import store, { history, persistor } from './store';
+
+import './polyfills/flat-map';
+import './polyfills/object-fromEntries';
 
 import './normalize.css';
 import './reset.css';
@@ -45,7 +47,9 @@ ReactDOM.render(
   <Provider store={store}>
     <ConnectedRouter history={history}>
       <NotificationContainer />
-      <App />
+      <PersistGate loading={<div>Loading...</div>} persistor={persistor}>
+        <App />
+      </PersistGate>
     </ConnectedRouter>
   </Provider>,
   document.getElementById('root')

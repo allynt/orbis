@@ -4,6 +4,7 @@ import { combineReducers } from 'redux';
 
 import { connectRouter, routerMiddleware } from 'connected-react-router';
 import { createBrowserHistory } from 'history';
+import { persistStore } from 'redux-persist';
 
 import ReduxQuerySync from 'redux-query-sync';
 
@@ -61,3 +62,4 @@ ReduxQuerySync({
 });
 
 export default store;
+export const persistor = persistStore(store);

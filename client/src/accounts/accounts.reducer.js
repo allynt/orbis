@@ -1,3 +1,6 @@
+import { persistStore, persistReducer } from 'redux-persist';
+import storage from 'redux-persist/lib/storage'; // defaults to localStorage for web
+
 import {
   REGISTER_REQUESTED_SUCCESS,
   REGISTER_REQUESTED_FAILURE,
@@ -69,4 +72,10 @@ const reducer = (state = initialState, action) => {
   }
 };
 
-export default reducer;
+const persistConf = {
+  key: 'accounts',
+  whitelist: ['userKey'],
+  storage
+};
+
+export default persistReducer(persistConf, reducer);
