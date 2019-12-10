@@ -1,0 +1,81 @@
+from django.db import models
+from django.utils.translation import ugettext_lazy as _
+
+from astrosat_users.models import UserProfileField
+
+
+class OrbisUserProfile(models.Model):
+    """
+    A custom user profile for Orbis Users.
+    I still use the standard Astrosat User model
+    But this class adds project-specific fields.
+    """
+
+    class Meta:
+        app_label = "orbis"
+        verbose_name = "Orbis User Profile"
+        verbose_name_plural = "Orbis User Profiles"
+
+    user = UserProfileField(related_name="orbis_profile")
+
+    IMPERIAL = "Imperial"
+    METRIC = "Metric"
+
+    UnitChoices = [
+        (IMPERIAL, IMPERIAL),
+        (METRIC, METRIC),
+    ]
+
+    EUROPE = "Europe"
+    AFRICA = "Africa"
+    CENTRAL_ASIA = "Central Asia"
+    EAST_ASIA = "East Asia"
+    WEST_ASIA = "Western Asia"
+    SOUTH_ASIA = "Southern Asia"
+    SOUTH_EAST_ASIA = "South East Asia"
+    OCEANIA = "Oceania"
+    NORTH_AMERICA = "North America"
+    CENTRAL_AMERICA_CARIBBEAN = "Central America & Caribbean"
+    SOUTH_AMERICA = "South America"
+    ARCTIC = "Arctic"
+    ANTARCTICA = "Antartica"
+    OCEANS_SEAS = "Oceans & seas"
+
+    RegionChoices = [
+        (EUROPE, EUROPE),
+        (AFRICA, AFRICA),
+        (CENTRAL_ASIA, CENTRAL_ASIA),
+        (EAST_ASIA, EAST_ASIA),
+        (WEST_ASIA, WEST_ASIA),
+        (SOUTH_ASIA, SOUTH_ASIA),
+        (SOUTH_EAST_ASIA, SOUTH_EAST_ASIA),
+        (OCEANIA, OCEANIA),
+        (NORTH_AMERICA, NORTH_AMERICA),
+        (CENTRAL_AMERICA_CARIBBEAN, CENTRAL_AMERICA_CARIBBEAN),
+        (SOUTH_AMERICA, SOUTH_AMERICA),
+        (ARCTIC, ARCTIC),
+        (ANTARCTICA, ANTARCTICA),
+        (OCEANS_SEAS, OCEANS_SEAS),
+    ]
+
+    onboarded = models.BooleanField(
+        default=False, help_text=_("Has this user been onboarded")
+    )
+    units = models.CharField(
+        max_length=256,
+        choices=UnitChoices,
+        default=IMPERIAL,
+        blank=False,
+        null=False,
+        help_text=_("The default units for this user"),
+    )
+    region = models.CharField(
+        max_length=256,
+        choices=RegionChoices,
+        blank=True,
+        null=True,
+        help_text=_("The default region for this user"),
+    )
+
+    def __str__(self):
+        return str(self.user)
