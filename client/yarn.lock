@@ -2,12 +2,14 @@
 # yarn lockfile v1
 
 
-"@astrosat/astrosat-ui@^1.5.0":
-  version "1.5.0"
-  resolved "https://npm.pkg.github.com/download/@astrosat/astrosat-ui/1.5.0/58ab0b0f89ed17f58b7c7faf5edd5d146b5b312752799cc33127808a849a639a#ab7d641581679920ba65b1305673b4a7dc331b66"
-  integrity sha512-1IQzF0oaOsxPQIO4CdQanU+GoAxXKFAHWyXhrU8LIkQRqEqr+00g/0jFD40krKqg1bnusc8OJhJwRbMeIHzD9g==
+"@astrosat/astrosat-ui@^1.6.3":
+  version "1.6.3"
+  resolved "https://npm.pkg.github.com/download/@astrosat/astrosat-ui/1.6.3/15c8c00e78f341dcc1c5e16a70b177d5edeedc673a24f09c17c425df89ca8506#1b1315fd9cce3945b1cdc0ebe38f4dca4a10e986"
+  integrity sha512-CPkMQ/I+RdJgSL5NFA06QdbCmKbippqeRJcMGY72SAeCQXH5skDr4A56vavLIKkV/jyh79DDluptyGe1XlRjCw==
   dependencies:
+    d3-scale "^3.2.1"
     prop-types "^15.7.2"
+    react-range "^1.4.3"
     react-svg-loader "^3.0.3"
     zxcvbn "^4.4.2"
 
@@ -5997,12 +5999,57 @@ d3-array@1:
   resolved "https://registry.yarnpkg.com/d3-array/-/d3-array-1.2.4.tgz#635ce4d5eea759f6f605863dbcfc30edc737f71f"
   integrity sha512-KHW6M86R+FUPYGb3R5XiYjXPq7VzwxZ22buHhAEVG5ztoEcZZMLov530mmccaqA1GghZArjQV46fuc8kUqhhHw==
 
+"d3-array@1.2.0 - 2":
+  version "2.4.0"
+  resolved "https://registry.yarnpkg.com/d3-array/-/d3-array-2.4.0.tgz#87f8b9ad11088769c82b5ea846bcb1cc9393f242"
+  integrity sha512-KQ41bAF2BMakf/HdKT865ALd4cgND6VcIztVQZUTt0+BH3RWy6ZYnHghVXf6NFjt2ritLr8H1T8LreAAlfiNcw==
+
+d3-color@1:
+  version "1.4.0"
+  resolved "https://registry.yarnpkg.com/d3-color/-/d3-color-1.4.0.tgz#89c45a995ed773b13314f06460df26d60ba0ecaf"
+  integrity sha512-TzNPeJy2+iEepfiL92LAAB7fvnp/dV2YwANPVHdDWmYMm23qIJBYww3qT8I8C1wXrmrg4UWs7BKc2tKIgyjzHg==
+
+d3-format@1:
+  version "1.4.2"
+  resolved "https://registry.yarnpkg.com/d3-format/-/d3-format-1.4.2.tgz#2a8c0ebf500f315981c2110eaaf70b82f472cb2b"
+  integrity sha512-gco1Ih54PgMsyIXgttLxEhNy/mXxq8+rLnCb5shQk+P5TsiySrwWU5gpB4zen626J4LIwBxHvDChyA8qDm57ww==
+
 d3-geo@1.7.1:
   version "1.7.1"
   resolved "https://registry.yarnpkg.com/d3-geo/-/d3-geo-1.7.1.tgz#44bbc7a218b1fd859f3d8fd7c443ca836569ce99"
   integrity sha512-O4AempWAr+P5qbk2bC2FuN/sDW4z+dN2wDf9QV3bxQt4M5HfOEeXLgJ/UKQW0+o1Dj8BE+L5kiDbdWUMjsmQpw==
   dependencies:
     d3-array "1"
+
+d3-interpolate@^1.2.0:
+  version "1.4.0"
+  resolved "https://registry.yarnpkg.com/d3-interpolate/-/d3-interpolate-1.4.0.tgz#526e79e2d80daa383f9e0c1c1c7dcc0f0583e987"
+  integrity sha512-V9znK0zc3jOPV4VD2zZn0sDhZU3WAE2bmlxdIwwQPPzPjvyLkd8B3JUVdS1IDUFDkWZ72c9qnv1GK2ZagTZ8EA==
+  dependencies:
+    d3-color "1"
+
+d3-scale@^3.2.1:
+  version "3.2.1"
+  resolved "https://registry.yarnpkg.com/d3-scale/-/d3-scale-3.2.1.tgz#da1684adce7261b4bc7a76fe193d887f0e909e69"
+  integrity sha512-huz5byJO/6MPpz6Q8d4lg7GgSpTjIZW/l+1MQkzKfu2u8P6hjaXaStOpmyrD6ymKoW87d2QVFCKvSjLwjzx/rA==
+  dependencies:
+    d3-array "1.2.0 - 2"
+    d3-format "1"
+    d3-interpolate "^1.2.0"
+    d3-time "1"
+    d3-time-format "2"
+
+d3-time-format@2:
+  version "2.2.2"
+  resolved "https://registry.yarnpkg.com/d3-time-format/-/d3-time-format-2.2.2.tgz#187597ffc6a0f37cb36bb7a1d7167cdc887ecda0"
+  integrity sha512-pweL2Ri2wqMY+wlW/wpkl8T3CUzKAha8S9nmiQlMABab8r5MJN0PD1V4YyRNVaKQfeh4Z0+VO70TLw6ESVOYzw==
+  dependencies:
+    d3-time "1"
+
+d3-time@1:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/d3-time/-/d3-time-1.1.0.tgz#b1e19d307dae9c900b7e5b25ffc5dcc249a8a0f1"
+  integrity sha512-Xh0isrZ5rPYYdqhAVk8VLnMEidhz5aP7htAADH6MfzgmmicPkTo8LhkLxci61/lCB7n7UmE3bN0leRt+qvkLxA==
 
 d3-voronoi@1.1.2:
   version "1.1.2"
@@ -13467,6 +13514,11 @@ react-notifications@1.4.3:
     classnames "^2.1.1"
     prop-types "^15.5.10"
     react-transition-group "^1.2.0"
+
+react-range@^1.4.3:
+  version "1.4.6"
+  resolved "https://registry.yarnpkg.com/react-range/-/react-range-1.4.6.tgz#e0329f133e877e517fb60bd2e29f5b7ffe1b9503"
+  integrity sha512-QuB/bh9luxV3sYV7w1ev16MpoAl92nh+pHbZKXtmihuDUSvq221zjG3eUGeW4VtBZz6qzMZ9hhYhhNZNDH3PbQ==
 
 react-redux@^7.1.1:
   version "7.1.3"
