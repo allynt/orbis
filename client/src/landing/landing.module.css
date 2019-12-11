@@ -1,0 +1,43 @@
+.landing {
+  display: flex;
+  flex-direction: column;
+  background-color: #fff;
+  height: 100vh;
+}
+
+.landing .logo {
+  width: 10rem;
+  color: #787c82;
+}
+
+.landing .header {
+  padding-left: 10rem;
+}
+
+.landing .content {
+  display: flex;
+  align-items: center;
+  color: var(--foreground-color);
+}
+
+.landing .journey {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 50%;
+  min-width: 25rem;
+}
+
+.journey h1 {
+  font-size: 2rem;
+  padding: 2rem 0;
+}
+
+.journeyText {
+  max-width: 40rem;
+  padding: 0 2rem 5rem 0;
+}
+
+.journeyButton {
+  width: 15rem;
+}

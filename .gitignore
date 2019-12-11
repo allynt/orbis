@@ -98,7 +98,7 @@ client/cypress/screenshots
 client/cypress/videos
 client/reports/
 node_modules/
-src/
+/src
 spec_generated/
 server/static
 .local/

@@ -19,6 +19,8 @@ import UpdateUserContainer from './accounts/update-user-form.container';
 import PasswordResetDone from './accounts/password-reset-done.component';
 import PasswordResetConfirmContainer from './accounts/password-reset-confirm-form.container';
 
+import LandingView from './landing/landing.component';
+
 import { Button } from '@astrosat/astrosat-ui';
 
 import MapLayout from './map';
@@ -29,30 +31,30 @@ const PasswordResetContainer = lazy(() => import('./accounts/password-reset-form
 const UserList = lazy(() => import('./accounts/admin/user-list.container'));
 const Admin = lazy(() => import('./accounts/admin/admin.container'));
 
-const LandingView = () => (
-  <div className={styles.landing}>
-    <div className={styles.header}>ORBIS LOGO</div>
-    <div className={styles.content}>
-      <div className={styles.journey}>
-        <h1>OR3IS JOURNEY</h1>
+// const LandingView = () => (
+//   <div className={styles.landing}>
+//     <div className={styles.header}>ORBIS LOGO</div>
+//     <div className={styles.content}>
+//       <div className={styles.journey}>
+//         <h1>OR3IS JOURNEY</h1>
 
-        <p>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
-          magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-          consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-          pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id
-          est laborum.
-        </p>
+//         <p>
+//           Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
+//           magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+//           consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
+//           pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id
+//           est laborum.
+//         </p>
 
-        <Button theme="primary" onClick={() => console.log('LOAD JOURNEY DIALOG')}>
-          Create New
-        </Button>
-      </div>
+//         <Button theme="primary" onClick={() => console.log('LOAD JOURNEY DIALOG')}>
+//           Create New
+//         </Button>
+//       </div>
 
-      <div className={styles.journeyImage}>JOURNEY IMAGE</div>
-    </div>
-  </div>
-);
+//       <div className={styles.journeyImage}>JOURNEY IMAGE</div>
+//     </div>
+//   </div>
+// );
 
 const App = () => {
   const dispatch = useDispatch();
