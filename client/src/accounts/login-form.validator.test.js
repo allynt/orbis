@@ -49,7 +49,6 @@ describe('Login Form Validator', () => {
 
     it.each(testFields)('Valid Value %o', form => {
       const errors = validate(form);
-      console.log(errors);
       expect(Object.keys(errors).length).not.toBeGreaterThan(0);
     });
   });
