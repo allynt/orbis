@@ -5,10 +5,19 @@ import syncOverviewMap from './mapbox-gl-sync-move-overview';
 // import { useCrossFilterStore } from '../crossfilter';
 import { useDispatch, useSelector } from 'react-redux';
 
+import { Detail } from '@astrosat/astrosat-ui';
+
 import { getToolbarItems } from '../toolbar/toolbar-config';
 
 import Toolbar from '../toolbar/toolbar.component';
 // import { colorSchemes } from '../colors';
+
+import SideMenuContainer from '../side-menu/side-menu.container';
+import AnnotationsPanel from '../annotations/annotations-panel.component';
+import BookmarksPanel from '../bookmarks/bookmarks-panel.component';
+import LayerTree from '../layer-tree/layer-tree.component';
+import UpdateUserFormContainer from '../accounts/update-user-form.container';
+import PasswordChangeContainer from '../accounts/password-change-form.container';
 
 import OverviewMap from '../mini-map/overview-map.component';
 import SpyglassMap from '../spyglass/spyglass-map.component';
@@ -37,6 +46,8 @@ const MapLayout = ({ count }) => {
   const isOverviewMapVisible = useSelector(state => state.map.isMiniMapVisible);
   const isSpyglassMapVisible = useSelector(state => state.map.isSpyglassMapVisible);
   const overviewMapStyle = { uri: 'mapbox://styles/mapbox/streets-v11' };
+
+  const openFeature = useSelector(state => state.sidebar.visibleMenuItem);
 
   const mapCount = count;
   const mapRefs = [map1Ref, map2Ref, map3Ref, map4Ref];
@@ -118,6 +129,7 @@ const MapLayout = ({ count }) => {
             layoutInvalidation={mapCount}
             style={mapStyle.uri}
             position={i}
+            sidebar={i === 0}
           />
         ))}
         {isOverviewMapVisible && <OverviewMap ref={overviewMapRef} style={overviewMapStyle.uri} />}

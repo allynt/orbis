@@ -21,8 +21,6 @@ import PasswordResetConfirmContainer from './accounts/password-reset-confirm-for
 
 import LandingView from './landing/landing.component';
 
-import { Button } from '@astrosat/astrosat-ui';
-
 import MapLayout from './map';
 
 import styles from './app.module.css';
@@ -30,31 +28,6 @@ import styles from './app.module.css';
 const PasswordResetContainer = lazy(() => import('./accounts/password-reset-form.container'));
 const UserList = lazy(() => import('./accounts/admin/user-list.container'));
 const Admin = lazy(() => import('./accounts/admin/admin.container'));
-
-// const LandingView = () => (
-//   <div className={styles.landing}>
-//     <div className={styles.header}>ORBIS LOGO</div>
-//     <div className={styles.content}>
-//       <div className={styles.journey}>
-//         <h1>OR3IS JOURNEY</h1>
-
-//         <p>
-//           Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
-//           magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-//           consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-//           pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id
-//           est laborum.
-//         </p>
-
-//         <Button theme="primary" onClick={() => console.log('LOAD JOURNEY DIALOG')}>
-//           Create New
-//         </Button>
-//       </div>
-
-//       <div className={styles.journeyImage}>JOURNEY IMAGE</div>
-//     </div>
-//   </div>
-// );
 
 const App = () => {
   const dispatch = useDispatch();
@@ -90,7 +63,7 @@ const App = () => {
 
       <main>
         <Switch>
-          <PrivateRoute path="/map" user={user} count={1} component={MapLayout} />
+          <PrivateRoute path="/map" user={user} count={2} component={MapLayout} />
           <PrivateRoute exact path="/password/change" user={user} component={PasswordChangeContainer} />
           <PrivateRoute exact path="/user/update" user={user} component={UpdateUserContainer} />
 

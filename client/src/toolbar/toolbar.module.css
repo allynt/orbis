@@ -10,11 +10,16 @@
   background-color: var(--background-color);
 }
 
+.buttonWrapper {
+  display: flex;
+  background-color: red;
+}
+
 .toolbarBtn {
   width: 2rem;
   height: 2rem;
   border: none;
-  background-color: #fff;
+  background-color: var(--primary-button-background-color);
   padding: 0.3rem;
   margin: 0.5rem;
   border-radius: 0.2rem;

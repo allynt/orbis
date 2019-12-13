@@ -84,7 +84,8 @@ const Map = (
     save = true,
     layerTree = true,
     layoutInvalidation,
-    position
+    position,
+    sidebar = false
   },
   ref
 ) => {
@@ -784,25 +785,27 @@ const Map = (
   return (
     <div ref={mapContainer} className={layoutStyles.map} data-testid={`map-${position}`}>
       {/* <AccountMenuButton user={user} logout={() => dispatch(logout(history))} /> */}
-      <SideMenuContainer>
-        <div className={layoutStyles.sidebar}>
-          <Detail title="Annotations" isOpen={openFeature === 'Annotations'}>
-            <AnnotationsPanel map={mapInstance} />
-          </Detail>
-          <Detail title="Bookmarks" isOpen={openFeature === 'Bookmarks'}>
-            <BookmarksPanel map={mapInstance} />
-          </Detail>
-          <Detail title="Layers" isOpen={openFeature === 'Layers'}>
-            <LayerTree map={mapInstance} />
-          </Detail>
-          <Detail title="Profile" isOpen={openFeature === 'Profile'}>
-            <UpdateUserFormContainer />
-          </Detail>
-          <Detail title="Profile" isOpen={openFeature === 'Change Password'}>
-            <PasswordChangeContainer />
-          </Detail>
-        </div>
-      </SideMenuContainer>
+      {sidebar && (
+        <SideMenuContainer>
+          <div className={layoutStyles.sidebar}>
+            <Detail title="Annotations" isOpen={openFeature === 'Annotations'}>
+              <AnnotationsPanel map={mapInstance} />
+            </Detail>
+            <Detail title="Bookmarks" isOpen={openFeature === 'Bookmarks'}>
+              <BookmarksPanel map={mapInstance} />
+            </Detail>
+            <Detail title="Layers" isOpen={openFeature === 'Layers'}>
+              <LayerTree map={mapInstance} />
+            </Detail>
+            <Detail title="Profile" isOpen={openFeature === 'Profile'}>
+              <UpdateUserFormContainer />
+            </Detail>
+            <Detail title="Profile" isOpen={openFeature === 'Change Password'}>
+              <PasswordChangeContainer />
+            </Detail>
+          </div>
+        </SideMenuContainer>
+      )}
 
       {/* <Annotations map={mapInstance} />
       <Bookmarks map={mapInstance} />
