@@ -52,7 +52,7 @@ describe('Map Layout Component', () => {
 
     const { container } = render(
       <Provider store={store}>
-        <MapLayout />
+        <MapLayout count={1} />
       </Provider>
     );
 

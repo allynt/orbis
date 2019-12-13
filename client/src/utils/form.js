@@ -6,3 +6,5 @@ export const trimForm = form => {
     return acc;
   }, {});
 };
+
+export const EMAIL_REGEX = /\S+@\S+\.\S+/;
