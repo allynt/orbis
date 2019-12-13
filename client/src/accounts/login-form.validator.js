@@ -1,13 +1,13 @@
+import { EMAIL_REGEX } from '../utils/form.js';
+
 const validate = form => {
   let errors = {};
-
-  const email_regex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
   if (!form.email) {
     errors.email = 'Email is required';
   } else if (form.email.length < 3) {
     errors.email = `Email ${form.email} is too short`;
-  } else if (!email_regex.test(form.email)) {
+  } else if (!EMAIL_REGEX.test(form.email)) {
     errors.email = `Email '${form.email}' is not well-formed`;
   }
 
