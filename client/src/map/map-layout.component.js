@@ -35,6 +35,12 @@ const MapLayout = ({ count }) => {
   const isOverviewMapVisible = useSelector(state => state.map.isMiniMapVisible);
   const overviewMapStyle = { uri: 'mapbox://styles/mapbox/streets-v11' };
 
+  // Since we have no data I have started passing in the
+  // number of maps to create as a prop. This is likely to
+  // change in the future, once we have some data. I have
+  // also heard we don't want multi-maps, but I'm not sure
+  // that has been agreed yet. For now, we will hard-code
+  // the number of maps to be one.
   const mapCount = count;
   const mapRefs = [map1Ref, map2Ref, map3Ref, map4Ref];
   const mapRefCount = mapRefs.filter(ref => ref.current).length;
@@ -74,10 +80,7 @@ const MapLayout = ({ count }) => {
 
   return (
     <div className={styles['map-column']}>
-      <div
-        className={`${styles.layout} ${styles[`layout-${mapCount}`]}`}
-        data-testid="map-container"
-      >
+      <div className={`${styles.layout} ${styles[`layout-${mapCount}`]}`} data-testid="map-container">
         {times(mapCount, i => (
           <Map
             key={i}
@@ -105,9 +108,7 @@ const MapLayout = ({ count }) => {
             position={i}
           />
         ))}
-        {isOverviewMapVisible && (
-          <OverviewMap ref={overviewMapRef} style={overviewMapStyle.uri} />
-        )}
+        {isOverviewMapVisible && <OverviewMap ref={overviewMapRef} style={overviewMapStyle.uri} />}
       </div>
 
       <Toolbar items={toolbarItems} />
