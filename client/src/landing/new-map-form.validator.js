@@ -1,16 +1,16 @@
 const validate = form => {
   let errors = {};
 
-  if (!form.email) {
-    errors.email = 'Email is required';
-  } else if (form.email.length < 3) {
-    errors.email = `Email ${form.email} is too short`;
+  if (!form.name) {
+    errors.name = 'Name is required';
+  } else if (form.name.length < 3) {
+    errors.name = `Name ${form.name} is too short`;
   }
 
-  if (!form.password) {
-    errors.password = 'Password is required';
-  } else if (form.password.length < 5) {
-    errors.password = `Password ${form.password} is too short`;
+  if (!form.description) {
+    errors.description = 'Description is required';
+  } else if (form.description.length < 5) {
+    errors.description = `Description ${form.description} is too short`;
   }
 
   return errors;

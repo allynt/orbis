@@ -1,20 +1,23 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import PropTypes from 'prop-types';
 
 import Button from '@astrosat/astrosat-ui/dist/buttons/button';
 import Dialog from '@astrosat/astrosat-ui/dist/containers/dialog';
 import useModal from '@astrosat/astrosat-ui/dist/containers/use-modal';
 
+import NewMapForm from './new-map-form.component';
+
 import { ReactComponent as OrbisLogo } from '../orbis.svg';
-import background from './background.png';
+import { ReactComponent as LandingImage } from './landing.svg';
 
 import styles from './landing.module.css';
 
 const Landing = () => {
   const { isVisible, toggle } = useModal(false);
+  const ref = useRef(null);
 
   return (
-    <div className={styles.landing}>
+    <div className={styles.landing} ref={ref}>
       <div className={styles.header}>
         <OrbisLogo className={styles.logo} />
       </div>
@@ -36,19 +39,11 @@ const Landing = () => {
         </div>
 
         <div className={styles.journeyImage}>
-          <img src={background} alt="background" />
+          <LandingImage className={styles.image} />
         </div>
 
-        <Dialog isVisible={isVisible} close={toggle}>
-          <div className={styles.detail}>
-            This is some content for the Dialog element:
-            <ul>
-              <li>lorem ipsum</li>
-              <li>lorem ipsum</li>
-              <li>lorem ipsum</li>
-            </ul>
-            <p>some footer content</p>
-          </div>
+        <Dialog isVisible={isVisible} title="Create New Map" close={toggle} ref={ref}>
+          <NewMapForm />
         </Dialog>
       </div>
     </div>
