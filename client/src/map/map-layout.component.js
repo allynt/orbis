@@ -1,4 +1,7 @@
 import React, { useRef, useEffect, useState } from 'react';
+
+import Measure from 'react-measure';
+
 import Map from './map.component';
 import syncMaps from './mapbox-gl-sync-move';
 import syncOverviewMap from './mapbox-gl-sync-move-overview';
@@ -19,6 +22,7 @@ import LayerTree from '../layer-tree/layer-tree.component';
 import UpdateUserFormContainer from '../accounts/update-user-form.container';
 import PasswordChangeContainer from '../accounts/password-change-form.container';
 
+import ComparisonMap from './compare-maps.component';
 import OverviewMap from '../mini-map/overview-map.component';
 import SpyglassMap from '../spyglass/spyglass-map.component';
 
@@ -45,6 +49,7 @@ const MapLayout = ({ count }) => {
   const [maps, setMaps] = useState(null);
   const isOverviewMapVisible = useSelector(state => state.map.isMiniMapVisible);
   const isSpyglassMapVisible = useSelector(state => state.map.isSpyglassMapVisible);
+  const isCompareMode = useSelector(state => state.map.isCompareMode);
   const overviewMapStyle = { uri: 'mapbox://styles/mapbox/streets-v11' };
 
   const openFeature = useSelector(state => state.sidebar.visibleMenuItem);
@@ -99,12 +104,69 @@ const MapLayout = ({ count }) => {
     }
   }, [spyglassMapRefCount, isSpyglassMapVisible]);
 
+  useEffect(() => {
+    if (isCompareMode) {
+      // const removeSyncMove = Promise.all([spyglassMapRef.current].filter(ref => ref)).then(spyglassMap =>
+      //   syncMaps([maps[0], ...spyglassMap])
+      // );
+      // return () => {
+      //   removeSyncMove.then(cb => cb());
+      // };
+    }
+  }, [isCompareMode]);
+
   const toolbarItems = getToolbarItems(dispatch);
+  const compareRatio = 0.5;
+  const dimensions = { width: 1305, height: 803 };
 
   return (
     <div className={styles['map-column']}>
-      <div className={`${styles.layout} ${styles[`layout-${mapCount}`]}`} data-testid="map-container">
-        {times(mapCount, i => (
+      <Measure
+        bounds
+        onResize={contentRect => {
+          const { width, height } = contentRect.bounds;
+          console.log('UPDATE DIMENSIONS: ', width, height);
+          // layerActions.updateDimensions(width, height);
+        }}
+      >
+        {({ measureRef }) => (
+          <div
+            ref={measureRef}
+            className={`${styles.layout} ${styles[`layout-${mapCount}`]}`}
+            data-testid="map-container"
+          >
+            {times(mapCount, i => (
+              <Map
+                key={i}
+                ref={mapRefs[i]}
+                // selectedProperty={multi ? properties[i].field : selectedProperty}
+                // colorScheme={
+                //   colorSchemes[
+                //     multi
+                //       ? i
+                //       : properties.indexOf(
+                //           properties.find(
+                //             property => property.field === selectedProperty
+                //           )
+                //         )
+                //   ]
+                // }
+                attribution={bottomRight(i, mapCount)}
+                scale={bottomLeft(i, mapCount)}
+                geocoder={i === 0}
+                navigation={bottomRight(i, mapCount)}
+                miniMap={bottomRight(i, mapCount)}
+                spyglass={bottomRight(i, mapCount)}
+                layoutInvalidation={mapCount}
+                style={mapStyle.uri}
+                position={i}
+                sidebar={i === 0}
+                compare={isCompareMode}
+                compareRatio={compareRatio}
+                dimensions={dimensions}
+              />
+            ))}
+            {/* {isCompareMode ? <ComparisonMap style={mapStyle.uri} /> : times(mapCount, i => (
           <Map
             key={i}
             ref={mapRefs[i]}
@@ -131,10 +193,12 @@ const MapLayout = ({ count }) => {
             position={i}
             sidebar={i === 0}
           />
-        ))}
-        {isOverviewMapVisible && <OverviewMap ref={overviewMapRef} style={overviewMapStyle.uri} />}
-        {isSpyglassMapVisible && <SpyglassMap ref={spyglassMapRef} style={mapStyle.uri} />}
-      </div>
+        ))} */}
+            {isOverviewMapVisible && <OverviewMap ref={overviewMapRef} style={overviewMapStyle.uri} />}
+            {isSpyglassMapVisible && <SpyglassMap ref={spyglassMapRef} style={mapStyle.uri} />}
+          </div>
+        )}
+      </Measure>
 
       <Toolbar items={toolbarItems} />
     </div>

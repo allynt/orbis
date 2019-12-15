@@ -3,6 +3,7 @@ import {
   TOGGLE_MULTI_MODE,
   TOGGLE_MINI_MAP,
   TOGGLE_SPYGLASS,
+  TOGGLE_COMPARE,
   MAP_STYLE_SELECTED,
   TOGGLE_INFRASTRUCTURE_LAYER_VISIBILITY,
   TOGGLE_CUSTOM_LAYER_VISIBILITY,
@@ -45,7 +46,8 @@ const initialState = {
   infrastructureLayers: [],
   customLayers: [],
   isMiniMapVisible: false,
-  isSpyglassMapVisible: false
+  isSpyglassMapVisible: false,
+  isCompareMode: false
 };
 
 const reducer = (state = initialState, action) => {
@@ -67,6 +69,9 @@ const reducer = (state = initialState, action) => {
 
     case TOGGLE_SPYGLASS:
       return { ...state, isSpyglassMapVisible: !state.isSpyglassMapVisible };
+
+    case TOGGLE_COMPARE:
+      return { ...state, isCompareMode: !state.isCompareMode };
 
     case TOGGLE_INFRASTRUCTURE_LAYER_VISIBILITY:
       // Toggle whether layer is visible or not.

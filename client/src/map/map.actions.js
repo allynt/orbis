@@ -10,6 +10,7 @@ export const TOGGLE_MULTI_MODE = 'map.TOGGLE_MULTI_MODE';
 export const TOGGLE_3D_MODE = 'map.TOGGLE_3D_MODE';
 export const TOGGLE_MINI_MAP = 'map.TOGGLE_MINI_MAP';
 export const TOGGLE_SPYGLASS = 'map.TOGGLE_SPYGLASS';
+export const TOGGLE_COMPARE = 'map.TOGGLE_COMPARE';
 
 export const TOGGLE_INFRASTRUCTURE_LAYER_VISIBILITY = 'map.TOGGLE_INFRASTRUCTURE_LAYER_VISIBILITY';
 export const TOGGLE_CUSTOM_LAYER_VISIBILITY = 'map.TOGGLE_CUSTOM_LAYER_VISIBILITY';
@@ -89,3 +90,5 @@ export const setViewport = viewport => ({ type: SET_VIEWPORT, viewport });
 export const toggleMiniMap = () => dispatch => dispatch({ type: TOGGLE_MINI_MAP });
 
 export const toggleSpyglassMap = () => dispatch => dispatch({ type: TOGGLE_SPYGLASS });
+
+export const toggleCompareMaps = () => dispatch => dispatch({ type: TOGGLE_COMPARE });
