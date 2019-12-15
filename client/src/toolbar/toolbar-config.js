@@ -1,82 +1,112 @@
 import React from 'react';
 
+import { ANNOTATIONS, BOOKMARKS, DATA_LAYERS, SATELLITE_LAYERS, PROFILE, CHANGE_PASSWORD } from './constants';
+
 import { ReactComponent as BookmarksLogo } from './menu.svg';
-import { ReactComponent as AnnotationsLogo } from './satellite-acquisitions.svg';
+import { ReactComponent as DataIcon } from './data.svg';
+import { ReactComponent as FaqIcon } from './faq.svg';
+import { ReactComponent as ImageIcon } from './image.svg';
+import { ReactComponent as ProfileIcon } from './profile.svg';
+import { ReactComponent as SatelliteIcon } from './satellite.svg';
+import { ReactComponent as ShareIcon } from './share.svg';
+import { ReactComponent as StoryIcon } from './story.svg';
+import { ReactComponent as AnnotationsIcon } from './annotations.svg';
 
 import { toggleMenu, toggleMenuItem } from '../side-menu/side-menu.actions';
 import { logout } from '../accounts/accounts.actions';
-import { toggleMiniMap, toggleSpyglassMap } from '../map/map.actions';
+import { toggleMiniMap, toggleSpyglassMap, toggleCompareMaps } from '../map/map.actions';
 
 export const getToolbarItems = dispatch => {
   return [
+    // {
+    //   label: 'Open Sidebar',
+    //   icon: <BookmarksLogo />,
+    //   action: () => dispatch(toggleMenu()),
+    //   tooltip: 'Open Sidebar'
+    // },
     {
-      label: 'Open Sidebar',
-      icon: <BookmarksLogo />,
-      action: () => dispatch(toggleMenu()),
-      tooltip: 'Open Sidebar'
-    },
-    {
-      label: 'Annotations',
-      icon: <BookmarksLogo />,
+      label: DATA_LAYERS,
+      icon: <DataIcon />,
       action: () => {
         dispatch(toggleMenu());
-        dispatch(toggleMenuItem('Annotations'));
+        dispatch(toggleMenuItem(DATA_LAYERS));
       },
-      tooltip: 'Annotations'
+      tooltip: DATA_LAYERS
     },
     {
-      label: 'Bookmarks',
-      icon: <BookmarksLogo />,
+      label: SATELLITE_LAYERS,
+      icon: <SatelliteIcon />,
       action: () => {
         dispatch(toggleMenu());
-        dispatch(toggleMenuItem('Bookmarks'));
+        dispatch(toggleMenuItem(SATELLITE_LAYERS));
       },
-      tooltip: 'Bookmarks'
+      tooltip: SATELLITE_LAYERS
     },
     {
-      label: 'Layers',
-      icon: <BookmarksLogo />,
+      label: ANNOTATIONS,
+      icon: <AnnotationsIcon />,
       action: () => {
         dispatch(toggleMenu());
-        dispatch(toggleMenuItem('Layers'));
+        dispatch(toggleMenuItem(ANNOTATIONS));
       },
-      tooltip: 'Layers'
+      tooltip: ANNOTATIONS
     },
     {
-      label: 'Profile',
-      icon: <BookmarksLogo />,
+      label: BOOKMARKS,
+      icon: <ImageIcon />,
       action: () => {
         dispatch(toggleMenu());
-        dispatch(toggleMenuItem('Profile'));
+        dispatch(toggleMenuItem(BOOKMARKS));
       },
-      tooltip: 'Profile'
+      tooltip: BOOKMARKS
     },
-    {
-      label: 'Change Password',
-      icon: <BookmarksLogo />,
-      action: () => {
-        dispatch(toggleMenu());
-        dispatch(toggleMenuItem('Change Password'));
-      },
-      tooltip: 'Change Password'
-    },
+    // {
+    //   label: 'Layers',
+    //   icon: <BookmarksLogo />,
+    //   action: () => {
+    //     dispatch(toggleMenu());
+    //     dispatch(toggleMenuItem('Layers'));
+    //   },
+    //   tooltip: 'Layers'
+    // },
+    // {
+    //   label: 'Change Password',
+    //   icon: <BookmarksLogo />,
+    //   action: () => {
+    //     dispatch(toggleMenu());
+    //     dispatch(toggleMenuItem('Change Password'));
+    //   },
+    //   tooltip: 'Change Password'
+    // },
     {
       label: 'Toggle Mini-Map',
-      icon: <BookmarksLogo />,
+      icon: <ShareIcon />,
       action: () => dispatch(toggleMiniMap()),
       tooltip: 'Toggle Mini-Map'
     },
     {
       label: 'Toggle Spyglass',
-      icon: <BookmarksLogo />,
-      action: () => dispatch(toggleSpyglassMap()),
+      icon: <StoryIcon />,
+      // action: () => dispatch(toggleSpyglassMap()),
+      action: () => dispatch(toggleCompareMaps()),
       tooltip: 'Toggle Spyglass'
     },
     {
-      label: 'Logout',
-      icon: <AnnotationsLogo />,
+      label: 'FAQ',
+      icon: <FaqIcon />,
       action: () => dispatch(logout()),
-      tooltip: 'Logout'
+      tooltip: 'FAQ',
+      footer: true
+    },
+    {
+      label: PROFILE,
+      icon: <ProfileIcon />,
+      action: () => {
+        dispatch(toggleMenu());
+        dispatch(toggleMenuItem(PROFILE));
+      },
+      tooltip: PROFILE,
+      footer: true
     }
   ];
 };

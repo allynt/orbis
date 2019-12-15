@@ -79,7 +79,7 @@
 }
 
 .map :global(.mapboxgl-ctrl-bottom-left) {
-  left: 3rem;
+  left: 5rem;
 }
 
 .map :global(.mapboxgl-ctrl-zoom-in):before {
@@ -128,7 +128,7 @@
 .map :global(.mapboxgl-ctrl-geocoder) {
   z-index: 6;
   position: absolute;
-  left: 3rem;
+  left: 5rem;
   background-color: var(--background-color);
 }
 
