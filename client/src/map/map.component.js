@@ -106,7 +106,8 @@ const Map = (
 
   // const { properties, filters, currentFilters, visible, setBounds } = useMapCrossFilter(selectedProperty);
   // const selectedPropertyMetadata = properties.find(property => property.field === selectedProperty);
-  const [ mapContainer, mapInstance, mapPromise ] = useMapbox(style, accessToken);
+  const authToken = 'MYAUTHTOKEN';
+  const [mapContainer, mapInstance, mapPromise] = useMapbox(style, accessToken, authToken);
 
   // const user = useSelector(state => state.accounts.user);
 
