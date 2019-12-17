@@ -1,20 +1,18 @@
-import { trimForm } from '../utils/form';
+import { EMAIL_REGEX } from '../utils/form';
 
 const validate = form => {
   let errors = {};
 
-  const trimmed = trimForm(form);
-
-  if (!trimmed.email) {
+  if (!form.email) {
     errors.email = 'Email is required';
-  } else if (trimmed.email.length < 3) {
-    errors.email = `Email ${trimmed.email} is too short`;
+  } else if (!EMAIL_REGEX.test(form.email)) {
+    errors.email = `Email ${form.email} is invalid`;
   }
 
-  if (!trimmed.password) {
+  if (!form.password) {
     errors.password = 'Password is required';
-  } else if (trimmed.password.length < 5) {
-    errors.password = `Password ${trimmed.password} is too short`;
+  } else if (form.password.length < 5) {
+    errors.password = `Password ${form.password} is too short`;
   }
 
   return errors;

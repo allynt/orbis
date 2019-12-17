@@ -1,14 +1,12 @@
-import { trimForm } from '../utils/form';
+import { EMAIL_REGEX } from '../utils/form';
 
 const validate = form => {
   let errors = {};
 
-  const trimmed = trimForm(form);
-
-  if (!trimmed.email) {
+  if (!form.email) {
     errors.email = 'Email address is required';
-  } else if (!/\S+@\S+\.\S+/.test(trimmed.email)) {
-    errors.email = `Email address ${trimmed.email} is invalid`;
+  } else if (!EMAIL_REGEX.test(form.email)) {
+    errors.email = `Email address ${form.email} is invalid`;
   }
 
   return errors;

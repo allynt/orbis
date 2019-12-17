@@ -4,27 +4,27 @@ describe('Login Form Validator', () => {
   describe('Failure values', () => {
     const testFields = [
       {
-        username: 'test@test.com',
+        email: 'test@test.com',
         password: '' // Error, missing
       },
       {
-        username: 'testtest.com', // Error, missing `@`
+        email: 'testtest.com', // Error, missing `@`
         password: 'password'
       },
       {
-        username: '@test.com', // Error, missing username part
+        email: '@test.com', // Error, missing email part
         password: 'password'
       },
       {
-        username: 'test@testcom', // Error, missing `.` part
+        email: 'test@testcom', // Error, missing `.` part
         password: 'password'
       },
       {
-        username: 'test@test.', // Error, missing `.` part
+        email: 'test@test.', // Error, missing `.` part
         password: 'password'
       },
       {
-        username: 'user',
+        email: 'user',
         password: 'pass' // Error, too short
       }
     ];
@@ -38,11 +38,11 @@ describe('Login Form Validator', () => {
   describe('Success values', () => {
     const testFields = [
       {
-        username: 'test@test.com',
+        email: 'test@test.com',
         password: 'password'
       },
       {
-        username: 'test@test.com',
+        email: 'test@test.com',
         password: 'paswd'
       }
     ];
