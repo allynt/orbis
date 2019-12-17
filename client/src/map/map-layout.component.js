@@ -47,6 +47,10 @@ const MapLayout = ({ count }) => {
   const overviewMapRef = useRef(null);
   const spyglassMapRef = useRef(null);
   const [maps, setMaps] = useState(null);
+
+  const divRef = useRef(null);
+  // const [bounds, setBounds] = useState(null);
+
   const isOverviewMapVisible = useSelector(state => state.map.isMiniMapVisible);
   const isSpyglassMapVisible = useSelector(state => state.map.isSpyglassMapVisible);
   const isCompareMode = useSelector(state => state.map.isCompareMode);
@@ -73,7 +77,10 @@ const MapLayout = ({ count }) => {
       });
 
       return () => {
-        removeSyncMove.then(cb => cb());
+        removeSyncMove.then(cb => {
+          console.log('CALLBACK: ', cb);
+          return cb();
+        });
       };
     } else {
       Promise.all([map1Ref.current].filter(ref => ref)).then(maps => setMaps(maps));
@@ -115,18 +122,71 @@ const MapLayout = ({ count }) => {
     }
   }, [isCompareMode]);
 
+  useEffect(() => {
+    if (divRef.current) {
+      console.log('SETTING BOUNDS');
+      setBounds(divRef.current.getBoundingClientRect());
+    }
+  }, []);
+
   const toolbarItems = getToolbarItems(dispatch);
-  const compareRatio = 0.5;
-  const dimensions = { width: 1305, height: 803 };
+
+  // const compareRatio = 0.5;
+  // const dimensions = { width: 1305, height: 803 };
+
+  const [bounds, setBounds] = useState(null);
+  const [compareRatio, setCompareRatio] = useState(0.5);
+  const [dimensions, setDimensions] = useState({ width: 1305, height: 803 });
+
+  const compareMove = event => {
+    console.log('COMPARE MOVE: ', event);
+    event = event.touches ? event.touches[0] : event;
+    let x = event.clientX - bounds.left;
+    if (x < 0) x = 0;
+    if (x > bounds.width) x = bounds.width;
+    const ratio = x / bounds.width;
+    // props.layerActions.moveCompare(ratio);
+    setCompareRatio(ratio);
+  };
+  const compareTouchEnd = () => {
+    document.removeEventListener('touchmove', compareMove);
+    document.removeEventListener('touchend', compareTouchEnd);
+  };
+  const compareMouseEnd = () => {
+    document.removeEventListener('mousemove', compareMove);
+    document.removeEventListener('mouseup', compareMouseEnd);
+  };
+  const compareDown = event => {
+    console.log('MOUSE DOWN');
+    if (event.touches) {
+      document.addEventListener('touchmove', compareMove);
+      document.addEventListener('touchend', compareTouchEnd);
+    } else {
+      document.addEventListener('mousemove', compareMove);
+      document.addEventListener('mouseup', compareMouseEnd);
+    }
+  };
+
+  useEffect(() => {
+    if (divRef.current) {
+      setBounds(divRef.current.getBoundingClientRect());
+    }
+    // return () => {
+    //   cleanup
+    // };
+  }, [setBounds]);
+  console.log('BOUNDS: ', bounds);
+  console.log('DIMENSIONS: ', dimensions);
 
   return (
-    <div className={styles['map-column']}>
+    <div ref={divRef} className={styles['map-column']}>
       <Measure
         bounds
         onResize={contentRect => {
           const { width, height } = contentRect.bounds;
           console.log('UPDATE DIMENSIONS: ', width, height);
           // layerActions.updateDimensions(width, height);
+          setDimensions({ width, height });
         }}
       >
         {({ measureRef }) => (
@@ -134,37 +194,56 @@ const MapLayout = ({ count }) => {
             ref={measureRef}
             className={`${styles.layout} ${styles[`layout-${mapCount}`]}`}
             data-testid="map-container"
+            style={{
+              position: 'absolute',
+              width: '100%',
+              top: 0,
+              bottom: 0,
+              clip: `rect(0px, 999em, ${dimensions.height}px, ${compareRatio * dimensions.width}px)`
+            }}
           >
             {times(mapCount, i => (
-              <Map
-                key={i}
-                ref={mapRefs[i]}
-                // selectedProperty={multi ? properties[i].field : selectedProperty}
-                // colorScheme={
-                //   colorSchemes[
-                //     multi
-                //       ? i
-                //       : properties.indexOf(
-                //           properties.find(
-                //             property => property.field === selectedProperty
-                //           )
-                //         )
-                //   ]
-                // }
-                attribution={bottomRight(i, mapCount)}
-                scale={bottomLeft(i, mapCount)}
-                geocoder={i === 0}
-                navigation={bottomRight(i, mapCount)}
-                miniMap={bottomRight(i, mapCount)}
-                spyglass={bottomRight(i, mapCount)}
-                layoutInvalidation={mapCount}
-                style={mapStyle.uri}
-                position={i}
-                sidebar={i === 0}
-                compare={isCompareMode}
-                compareRatio={compareRatio}
-                dimensions={dimensions}
-              />
+              <React.Fragment key={i}>
+                <Map
+                  // key={i}
+                  ref={mapRefs[i]}
+                  // selectedProperty={multi ? properties[i].field : selectedProperty}
+                  // colorScheme={
+                  //   colorSchemes[
+                  //     multi
+                  //       ? i
+                  //       : properties.indexOf(
+                  //           properties.find(
+                  //             property => property.field === selectedProperty
+                  //           )
+                  //         )
+                  //   ]
+                  // }
+                  attribution={bottomRight(i, mapCount)}
+                  scale={bottomLeft(i, mapCount)}
+                  geocoder={i === 0}
+                  navigation={bottomRight(i, mapCount)}
+                  miniMap={bottomRight(i, mapCount)}
+                  spyglass={bottomRight(i, mapCount)}
+                  layoutInvalidation={mapCount}
+                  style={mapStyle.uri}
+                  position={i}
+                  sidebar={i === 0}
+                  compare={isCompareMode}
+                  compareRatio={compareRatio}
+                  dimensions={dimensions}
+                />
+                {i === 0 && isCompareMode && (
+                  <div
+                    className={styles.compare}
+                    style={{ transform: `translate(${compareRatio * dimensions.width}px, 0px` }}
+                    onMouseDown={compareDown}
+                    onTouchStart={compareDown}
+                  >
+                    <div className={styles.swiper} />
+                  </div>
+                )}
+              </React.Fragment>
             ))}
             {/* {isCompareMode ? <ComparisonMap style={mapStyle.uri} /> : times(mapCount, i => (
           <Map

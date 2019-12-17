@@ -207,7 +207,7 @@
 
 .compare {
   position: absolute;
-  z-index:10;
+  z-index: 10;
   top: 0;
   width: 2px;
   height: 100%;
@@ -215,9 +215,9 @@
 }
 
 .swiper {
-  position: absolute;
+  position: fixed;
   top: 50%;
-  left: -30px;
+  left: 48.4%;
   display: inline-block;
 
   width: 60px;

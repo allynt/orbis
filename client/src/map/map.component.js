@@ -198,33 +198,33 @@ const Map = (
     [selectedBookmark]
   );
 
-  const [bounds, setBounds] = useState(null);
+  // const [bounds, setBounds] = useState(null);
 
-  const compareMove = event => {
-    event = event.touches ? event.touches[0] : event;
-    let x = event.clientX - bounds.left;
-    if (x < 0) x = 0;
-    if (x > bounds.width) x = bounds.width;
-    const ratio = x / bounds.width;
-    // props.layerActions.moveCompare(ratio);
-  };
-  const compareTouchEnd = () => {
-    document.removeEventListener('touchmove', compareMove);
-    document.removeEventListener('touchend', compareTouchEnd);
-  };
-  const compareMouseEnd = () => {
-    document.removeEventListener('mousemove', compareMove);
-    document.removeEventListener('mouseup', compareMouseEnd);
-  };
-  const compareDown = event => {
-    if (event.touches) {
-      document.addEventListener('touchmove', compareMove);
-      document.addEventListener('touchend', compareTouchEnd);
-    } else {
-      document.addEventListener('mousemove', compareMove);
-      document.addEventListener('mouseup', compareMouseEnd);
-    }
-  };
+  // const compareMove = event => {
+  //   event = event.touches ? event.touches[0] : event;
+  //   let x = event.clientX - bounds.left;
+  //   if (x < 0) x = 0;
+  //   if (x > bounds.width) x = bounds.width;
+  //   const ratio = x / bounds.width;
+  //   // props.layerActions.moveCompare(ratio);
+  // };
+  // const compareTouchEnd = () => {
+  //   document.removeEventListener('touchmove', compareMove);
+  //   document.removeEventListener('touchend', compareTouchEnd);
+  // };
+  // const compareMouseEnd = () => {
+  //   document.removeEventListener('mousemove', compareMove);
+  //   document.removeEventListener('mouseup', compareMouseEnd);
+  // };
+  // const compareDown = event => {
+  //   if (event.touches) {
+  //     document.addEventListener('touchmove', compareMove);
+  //     document.addEventListener('touchend', compareTouchEnd);
+  //   } else {
+  //     document.addEventListener('mousemove', compareMove);
+  //     document.addEventListener('mouseup', compareMouseEnd);
+  //   }
+  // };
 
   // const compareMove = e => {
   //   e = e.touches ? e.touches[0] : e;
@@ -877,17 +877,17 @@ const Map = (
         </SideMenuContainer>
       )}
 
-      {position === 1 && compare && (
+      {/* {position === 1 && compare && (
         <div
           className={layoutStyles.compare}
-          style={{ transform: `translate(${compareRatio * dimensions.get('width')}px, 0px` }}
+          // style={{ transform: `translate(${compareRatio * dimensions.get('width')}px, 0px` }}
           onMouseDown={compareDown}
           onTouchStart={compareDown}
         >
           <div className={layoutStyles.swiper} />
         </div>
       )}
-
+ */}
       {/* <Annotations map={mapInstance} />
       <Bookmarks map={mapInstance} />
       <LayerTree map={mapInstance} /> */}
