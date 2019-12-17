@@ -8,7 +8,8 @@ import syncOverviewMap from './mapbox-gl-sync-move-overview';
 // import { useCrossFilterStore } from '../crossfilter';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { Detail } from '@astrosat/astrosat-ui';
+// import Detail from '@astrosat/astrosat-ui/dist/containers/detail';
+// import { Detail } from '@astrosat/astrosat-ui';
 
 import { getToolbarItems } from '../toolbar/toolbar-config';
 

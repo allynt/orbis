@@ -6,7 +6,7 @@ import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 // import { Provider as CrossFilterProvider } from '../crossfilter';
 // import { setupCrossFilterStore } from '../crossfilter/test-helpers';
-import Map from './map.component';
+// import Map from './map.component';
 import mapboxgl, { fireMapEvent } from 'mapbox-gl';
 
 const mockStore = configureMockStore([thunk]);

@@ -38,7 +38,8 @@ import { setViewport } from './map.actions';
 // import { selectedFeatureIds } from '../factsheet/factsheet.selector';
 // import { CUSTOM_DATA_THRESHOLD } from '../constants';
 
-import { Detail } from '@astrosat/astrosat-ui';
+import Detail from '@astrosat/astrosat-ui/dist/containers/detail';
+// import { Detail } from '@astrosat/astrosat-ui';
 
 import RotateMode from 'mapbox-gl-draw-rotate-mode';
 import RadiusMode from '../annotations/modes/radius';

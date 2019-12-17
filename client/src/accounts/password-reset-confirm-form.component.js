@@ -1,10 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import useForm from '../hooks/useForm';
+// import useForm from '../hooks/useForm';
 import validate from './password-reset-confirm-form.validator';
 
-import { Button, PasswordField, PasswordStrengthMeter, Checkbox } from '@astrosat/astrosat-ui';
+import Button from '@astrosat/astrosat-ui/dist/buttons/button';
+import PasswordField from '@astrosat/astrosat-ui/dist/forms/password-field';
+import PasswordStrengthMeter from '@astrosat/astrosat-ui/dist/forms/password-strength-meter';
+import Checkbox from '@astrosat/astrosat-ui/dist/forms/checkbox';
+import useForm from '@astrosat/astrosat-ui/dist/forms/use-form';
+// import { Button, PasswordField, PasswordStrengthMeter, Checkbox } from '@astrosat/astrosat-ui';
 
 import { ReactComponent as OrbisLogo } from '../orbis.svg';
 

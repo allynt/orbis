@@ -3,10 +3,13 @@ import PropTypes from 'prop-types';
 
 // import ReactTooltip from 'react-tooltip';
 
-import useForm from '../hooks/useForm';
+// import useForm from '../hooks/useForm';
 import validate from './bookmark-form.validator';
 
-import { Button, Textfield } from '@astrosat/astrosat-ui';
+import Button from '@astrosat/astrosat-ui/dist/buttons/button';
+import Textfield from '@astrosat/astrosat-ui/dist/forms/text-field';
+import useForm from '@astrosat/astrosat-ui/dist/forms/use-form';
+// import { Button, Textfield } from '@astrosat/astrosat-ui';
 
 import formStyles from '../accounts/forms.module.css';
 // import bookmarkStyles from './bookmark-form.module.css';

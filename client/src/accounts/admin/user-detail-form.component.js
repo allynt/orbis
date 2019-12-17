@@ -1,9 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import useForm from '../../hooks/useForm';
+// import useForm from '../../hooks/useForm';
 
-import { Button } from '@astrosat/astrosat-ui';
+import Button from '@astrosat/astrosat-ui/dist/buttons/button';
+import useForm from '@astrosat/astrosat-ui/dist/forms/use-form';
+// import { Button } from '@astrosat/astrosat-ui';
 
 import validate from './user-detail-form.validator';
 

@@ -37,7 +37,7 @@ import { setViewport } from './map.actions';
 // import { selectedFeatureIds } from '../factsheet/factsheet.selector';
 // import { CUSTOM_DATA_THRESHOLD } from '../constants';
 
-import { Detail } from '@astrosat/astrosat-ui';
+// import { Detail } from '@astrosat/astrosat-ui';
 
 import RotateMode from 'mapbox-gl-draw-rotate-mode';
 import RadiusMode from '../annotations/modes/radius';
@@ -94,9 +94,9 @@ const ComparisonMap = (
 ) => {
   const accessToken = useSelector(state => (state.app.config ? state.app.config.mapbox_token : null));
 
-  const [ mapContainerBefore, mapInstanceBefore, mapPromiseBefore ] = useMapbox(style, accessToken);
-  const [ mapContainerAfter, mapInstanceAfter, mapPromiseAfter ] = useMapbox(style, accessToken);
-  const comparisonMap = new Compare(mapInstanceBefore, mapInstanceAfter, { })
+  const [mapContainerBefore, mapInstanceBefore, mapPromiseBefore] = useMapbox(style, accessToken);
+  const [mapContainerAfter, mapInstanceAfter, mapPromiseAfter] = useMapbox(style, accessToken);
+  const comparisonMap = new Compare(mapInstanceBefore, mapInstanceAfter, {});
 
   const dispatch = useDispatch();
 
@@ -153,10 +153,7 @@ const ComparisonMap = (
 
   useImperativeHandle(ref, () => comparisonMap);
 
-  return (
-    <div ref={mapContainerBefore} className={layoutStyles.map} data-testid={`map-${position}`}>
-    </div>
-  );
+  return <div ref={mapContainerBefore} className={layoutStyles.map} data-testid={`map-${position}`}></div>;
 };
 
 export default React.memo(React.forwardRef(ComparisonMap));
