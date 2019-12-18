@@ -2,34 +2,33 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom';
 
+import { useDispatch, useSelector } from 'react-redux';
+
+import validate from './login-form.validator';
+
 import Button from '@astrosat/astrosat-ui/dist/buttons/button';
 import PasswordField from '@astrosat/astrosat-ui/dist/forms/password-field';
 import Textfield from '@astrosat/astrosat-ui/dist/forms/text-field';
 import Checkbox from '@astrosat/astrosat-ui/dist/forms/checkbox';
 import useForm from '@astrosat/astrosat-ui/dist/forms/use-form';
 import Well from '@astrosat/astrosat-ui/dist/containers/well';
-// import { Button, PasswordField, Textfield, Checkbox, useForm, Well } from '@astrosat/astrosat-ui';
-// import Button from '@astrosat/astrosat-ui/dist/buttons/button';
-// import PasswordField from '@astrosat/astrosat-ui/dist/forms/password-field';
-// import Textfield from '@astrosat/astrosat-ui/dist/forms/text-field';
-// import Checkbox from '@astrosat/astrosat-ui/dist/forms/checkbox';
-// import useForm from '@astrosat/astrosat-ui/dist/forms/use-form';
-// import Well from '@astrosat/astrosat-ui/dist/containers/well';
-// import useForm from '../hooks/useForm';
-import validate from './login-form.validator';
 
-// import { Button, PasswordField, Textfield, Checkbox, Well } from '@astrosat/astrosat-ui';
+import { login } from './accounts.actions';
 
 import { ReactComponent as OrbisLogo } from '../orbis.svg';
 
 import formStyles from './forms.module.css';
 import loginStyles from './login-form.module.css';
 
-const LoginForm = ({ error, login, user, from }) => {
+const LoginForm = ({ location }) => {
   const { handleChange, handleSubmit, values, errors } = useForm(onSubmit, validate);
+  const dispatch = useDispatch();
+  const error = useSelector(state => state.accounts.error);
+  const user = useSelector(state => state.accounts.user);
+  const from = location.state ? location.state.from || { pathname: '/' } : { pathname: '/' };
 
   function onSubmit() {
-    login(values);
+    dispatch(login(values));
   }
 
   // Re-direct to originally clicked URL on successful login.
@@ -111,9 +110,7 @@ const LoginForm = ({ error, login, user, from }) => {
 };
 
 LoginForm.propTypes = {
-  error: PropTypes.object,
-  login: PropTypes.func.isRequired,
-  user: PropTypes.object
+  location: PropTypes.object
 };
 
 export default LoginForm;

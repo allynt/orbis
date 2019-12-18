@@ -1,30 +1,30 @@
 import React, { useImperativeHandle } from 'react';
 // import ReactDOM from 'react-dom';
 
-import mapboxgl, { AttributionControl, NavigationControl, ScaleControl } from 'mapbox-gl';
+// import mapboxgl, { AttributionControl, NavigationControl, ScaleControl } from 'mapbox-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import Compare from 'mapbox-gl-compare';
-import MapboxDraw from '@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw';
+// import MapboxDraw from '@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw';
 
 import { useDispatch, useSelector } from 'react-redux';
 // import { useMapCrossFilter } from '../crossfilter';
 import useMapbox from './use-mapbox.hook';
 import useMap from './use-map.hook';
-import useMapControl from './use-map-control.hook';
-import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder';
-import '@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css';
+// import useMapControl from './use-map-control.hook';
+// import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder';
+// import '@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css';
 // import MapboxDraw from '@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw';
-import '@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css';
+// import '@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css';
 // import { setClickedFeature, MULTI_SELECT } from '../factsheet/factsheet.action';
 import { useMapEvent } from './use-map-event.hook';
-import SaveMapControl from '../save-map/save-map-control';
+// import SaveMapControl from '../save-map/save-map-control';
 // import LayerTreeControl from '../layer-tree/layer-tree.control';
 // import AccountMenuButton from '../accounts/account-menu-button.component';
 // import { logout } from '../accounts/accounts.actions';
 
-import SideMenuContainer from '../side-menu/side-menu.container';
-import AnnotationsPanel from '../annotations/annotations-panel.component';
-import BookmarksPanel from '../bookmarks/bookmarks-panel.component';
+// import SideMenuContainer from '../side-menu/side-menu.container';
+// import AnnotationsPanel from '../annotations/annotations-panel.component';
+// import BookmarksPanel from '../bookmarks/bookmarks-panel.component';
 import { setViewport } from './map.actions';
 // import Annotations from '../annotations/annotations.component';
 // import Bookmarks from '../bookmarks/bookmarks.component';
@@ -39,24 +39,24 @@ import { setViewport } from './map.actions';
 
 // import { Detail } from '@astrosat/astrosat-ui';
 
-import RotateMode from 'mapbox-gl-draw-rotate-mode';
-import RadiusMode from '../annotations/modes/radius';
-import LineMode from '../annotations/modes/line';
-import PolygonMode from '../annotations/modes/polygon';
-import FreehandPolygonMode from '../annotations/modes/freehand-polygon';
-import CircleMode from '../annotations/modes/circle';
-import LabelMode from '../annotations/modes/label';
-import ImageMode from '../annotations/modes/image';
+// import RotateMode from 'mapbox-gl-draw-rotate-mode';
+// import RadiusMode from '../annotations/modes/radius';
+// import LineMode from '../annotations/modes/line';
+// import PolygonMode from '../annotations/modes/polygon';
+// import FreehandPolygonMode from '../annotations/modes/freehand-polygon';
+// import CircleMode from '../annotations/modes/circle';
+// import LabelMode from '../annotations/modes/label';
+// import ImageMode from '../annotations/modes/image';
 
-import LayerTree from '../layer-tree/layer-tree.component';
-import UpdateUserFormContainer from '../accounts/update-user-form.container';
-import PasswordChangeContainer from '../accounts/password-change-form.container';
+// import LayerTree from '../layer-tree/layer-tree.component';
+// import UpdateUserFormContainer from '../accounts/update-user-form.container';
+// import PasswordChangeContainer from '../accounts/password-change-form.container';
 
-import { ANNOTATIONS, BOOKMARKS, DATA_LAYERS, PROFILE, CHANGE_PASSWORD } from '../toolbar/constants';
+// import { ANNOTATIONS, BOOKMARKS, DATA_LAYERS, PROFILE, CHANGE_PASSWORD } from '../toolbar/constants';
 
-// import SpyglassControl from '../spyglass/spyglass.control';
+// // import SpyglassControl from '../spyglass/spyglass.control';
 
-import drawStyles from '../annotations/styles';
+// import drawStyles from '../annotations/styles';
 import layoutStyles from './map-layout.module.css';
 
 // const interpolate = interpolation => (property, filter, values) => [

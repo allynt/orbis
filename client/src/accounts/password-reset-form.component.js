@@ -1,24 +1,26 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 
-// import useForm from '../hooks/useForm';
+import { useDispatch } from 'react-redux';
+
 import validate from './password-reset-form.validator';
 
 import Button from '@astrosat/astrosat-ui/dist/buttons/button';
 import Textfield from '@astrosat/astrosat-ui/dist/forms/text-field';
 import useForm from '@astrosat/astrosat-ui/dist/forms/use-form';
-// import { Button, Textfield } from '@astrosat/astrosat-ui';
+
+import { resetPassword } from './accounts.actions';
 
 import { ReactComponent as OrbisLogo } from '../orbis.svg';
 
 import formStyles from './forms.module.css';
 import passwordStyles from './password-reset-form.module.css';
 
-const PasswordResetForm = ({ resetPassword }) => {
+const PasswordResetForm = () => {
   const { handleChange, handleSubmit, values, errors } = useForm(onSubmit, validate);
+  const dispatch = useDispatch();
 
   function onSubmit() {
-    resetPassword(values);
+    dispatch(resetPassword(values));
   }
 
   return (
@@ -59,10 +61,6 @@ const PasswordResetForm = ({ resetPassword }) => {
       </form>
     </div>
   );
-};
-
-PasswordResetForm.propTypes = {
-  resetPassword: PropTypes.func.isRequired
 };
 
 export default PasswordResetForm;

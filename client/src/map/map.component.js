@@ -52,7 +52,7 @@ import ImageMode from '../annotations/modes/image';
 
 import LayerTree from '../layer-tree/layer-tree.component';
 import UpdateUserFormContainer from '../accounts/update-user-form.container';
-import PasswordChangeContainer from '../accounts/password-change-form.container';
+import PasswordChangeForm from '../accounts/password-change-form.component';
 
 import { ANNOTATIONS, BOOKMARKS, DATA_LAYERS, PROFILE, CHANGE_PASSWORD } from '../toolbar/constants';
 
@@ -872,7 +872,7 @@ const Map = (
               <UpdateUserFormContainer />
             </Detail>
             <Detail title={CHANGE_PASSWORD} isOpen={openFeature === CHANGE_PASSWORD}>
-              <PasswordChangeContainer />
+              <PasswordChangeForm />
             </Detail>
           </div>
         </SideMenuContainer>

@@ -2,23 +2,35 @@ import React from 'react';
 
 import { render, cleanup, fireEvent } from '@testing-library/react';
 
+import { Provider } from 'react-redux';
+import configureMockStore from 'redux-mock-store';
+import thunk from 'redux-thunk';
+
 import { MemoryRouter } from 'react-router-dom';
 
 import RegisterForm from './register-form.component';
 
-describe('Register Form Component', () => {
-  let register = null;
+const mockStore = configureMockStore([thunk]);
 
+describe('Register Form Component', () => {
   beforeEach(() => {
-    register = jest.fn();
+    fetch.resetMocks();
   });
 
   afterEach(cleanup);
 
   it('should render a form', () => {
+    const store = mockStore({
+      accounts: {
+        error: 'Test Error'
+      }
+    });
+
     const { container, getByText, getAllByText, getByPlaceholderText } = render(
       <MemoryRouter>
-        <RegisterForm register={register} />
+        <Provider store={store}>
+          <RegisterForm />
+        </Provider>
       </MemoryRouter>
     );
 
@@ -38,9 +50,17 @@ describe('Register Form Component', () => {
   });
 
   it('should enable `Sign Up` button when form is valid', async () => {
+    const store = mockStore({
+      accounts: {
+        error: 'Test Error'
+      }
+    });
+
     const { getByText, getByPlaceholderText } = render(
       <MemoryRouter>
-        <RegisterForm register={register} />
+        <Provider store={store}>
+          <RegisterForm />
+        </Provider>
       </MemoryRouter>
     );
 
@@ -51,9 +71,17 @@ describe('Register Form Component', () => {
   });
 
   it('should keep `Sign Up` button disabled when form is invalid', () => {
+    const store = mockStore({
+      accounts: {
+        error: 'Test Error'
+      }
+    });
+
     const { getByText, getByPlaceholderText } = render(
       <MemoryRouter>
-        <RegisterForm register={register} />
+        <Provider store={store}>
+          <RegisterForm />
+        </Provider>
       </MemoryRouter>
     );
 
@@ -63,20 +91,38 @@ describe('Register Form Component', () => {
   });
 
   it('should not call register function when form is invalid and `Sign Up` button clicked', () => {
+    fetch.mockResponse(JSON.stringify({}, { status: 200 }));
+    const store = mockStore({
+      accounts: {
+        error: 'Test Error'
+      }
+    });
+
     const { getByText } = render(
       <MemoryRouter>
-        <RegisterForm register={register} />
+        <Provider store={store}>
+          <RegisterForm />
+        </Provider>
       </MemoryRouter>
     );
 
     fireEvent.click(getByText('Sign Up'));
-    expect(register).not.toHaveBeenCalled();
+    expect(fetch.mock.calls.length).toBe(0);
   });
 
   it('should call register function when form is valid and `Sign Up` button clicked', () => {
+    fetch.mockResponse(JSON.stringify({}, { status: 200 }));
+    const store = mockStore({
+      accounts: {
+        error: 'Test Error'
+      }
+    });
+
     const { getByText, getByPlaceholderText } = render(
       <MemoryRouter>
-        <RegisterForm register={register} />
+        <Provider store={store}>
+          <RegisterForm />
+        </Provider>
       </MemoryRouter>
     );
 
@@ -85,6 +131,6 @@ describe('Register Form Component', () => {
     fireEvent.change(getByPlaceholderText('Password Confirmation'), { target: { value: 'pandasconcreterealty' } });
 
     fireEvent.click(getByText('Sign Up'));
-    expect(register).toHaveBeenCalled();
+    expect(fetch.mock.calls[0][0]).toEqual('/api/authentication/registration/');
   });
 });

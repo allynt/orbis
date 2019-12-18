@@ -1,7 +1,7 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 
-import useForm from '../hooks/useForm';
+import { useDispatch, useSelector } from 'react-redux';
+
 import validate from './register-form.validator';
 
 import Button from '@astrosat/astrosat-ui/dist/buttons/button';
@@ -9,19 +9,23 @@ import PasswordField from '@astrosat/astrosat-ui/dist/forms/password-field';
 import PasswordStrengthMeter from '@astrosat/astrosat-ui/dist/forms/password-strength-meter';
 import Textfield from '@astrosat/astrosat-ui/dist/forms/text-field';
 import Checkbox from '@astrosat/astrosat-ui/dist/forms/checkbox';
+import useForm from '@astrosat/astrosat-ui/dist/forms/use-form';
 import Well from '@astrosat/astrosat-ui/dist/containers/well';
-// import { Button, PasswordField, PasswordStrengthMeter, Textfield, Checkbox, Well } from '@astrosat/astrosat-ui';
+
+import { register } from './accounts.actions';
 
 import { ReactComponent as OrbisLogo } from '../orbis.svg';
 
 import formStyles from './forms.module.css';
 import registerStyles from './register-form.module.css';
 
-const RegisterForm = ({ error, register }) => {
+const RegisterForm = () => {
   const { handleChange, handleSubmit, values, errors } = useForm(onSubmit, validate);
+  const dispatch = useDispatch();
+  const error = useSelector(state => state.accounts.error);
 
   function onSubmit() {
-    register(values);
+    dispatch(register(values));
   }
 
   return (
@@ -117,11 +121,6 @@ const RegisterForm = ({ error, register }) => {
       </form>
     </div>
   );
-};
-
-RegisterForm.propTypes = {
-  error: PropTypes.object,
-  register: PropTypes.func.isRequired
 };
 
 export default RegisterForm;

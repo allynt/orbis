@@ -2,9 +2,9 @@ import React from 'react';
 
 import { cleanup, render } from '@testing-library/react';
 
-import AccountActivationForm from './account-activation-form.component';
+import AccountActivation from './account-activation.component';
 
-describe('Account Activation Form', () => {
+describe('Account Activation', () => {
   afterEach(cleanup);
 
   it('should display a single Activate Account button', () => {

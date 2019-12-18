@@ -26,7 +26,7 @@ const API = {
   login: API_PREFIX + 'login/',
   changePassword: API_PREFIX + 'password/change/',
   resetPassword: API_PREFIX + 'password/reset/',
-  verifyResetPassword: API_PREFIX + 'password/reset/verify-reset/',
+  verifyResetPassword: API_PREFIX + 'password/verify-reset/',
   logout: API_PREFIX + 'logout/',
   user: '/api/users/'
 };

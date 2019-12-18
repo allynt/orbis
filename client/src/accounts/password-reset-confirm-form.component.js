@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { useDispatch } from 'react-redux';
 
-// import useForm from '../hooks/useForm';
 import validate from './password-reset-confirm-form.validator';
 
 import Button from '@astrosat/astrosat-ui/dist/buttons/button';
@@ -9,18 +9,20 @@ import PasswordField from '@astrosat/astrosat-ui/dist/forms/password-field';
 import PasswordStrengthMeter from '@astrosat/astrosat-ui/dist/forms/password-strength-meter';
 import Checkbox from '@astrosat/astrosat-ui/dist/forms/checkbox';
 import useForm from '@astrosat/astrosat-ui/dist/forms/use-form';
-// import { Button, PasswordField, PasswordStrengthMeter, Checkbox } from '@astrosat/astrosat-ui';
+
+import { confirmChangePassword } from './accounts.actions';
 
 import { ReactComponent as OrbisLogo } from '../orbis.svg';
 
 import formStyles from './forms.module.css';
 import passwordStyles from './password-reset-confirm-form.module.css';
 
-const PasswordResetConfirmForm = ({ confirmChangePassword, routerProps }) => {
+const PasswordResetConfirmForm = ({ match }) => {
   const { handleChange, handleSubmit, values, errors } = useForm(onSubmit, validate);
+  const dispatch = useDispatch();
 
   function onSubmit() {
-    confirmChangePassword(values, routerProps.match.params);
+    dispatch(confirmChangePassword(values, match.params));
   }
 
   return (
@@ -102,7 +104,7 @@ const PasswordResetConfirmForm = ({ confirmChangePassword, routerProps }) => {
 };
 
 PasswordResetConfirmForm.propTypes = {
-  confirmChangePassword: PropTypes.func.isRequired
+  match: PropTypes.object.isRequired
 };
 
 export default PasswordResetConfirmForm;

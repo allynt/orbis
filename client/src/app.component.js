@@ -10,24 +10,21 @@ import { fetchAppConfig } from './app.actions';
 
 import { fetchUser } from './accounts/accounts.actions';
 
-import RegisterFormContainer from './accounts/register-form.container';
-import AccountActivationContainer from './accounts/account-activation-form.container';
-import LoginFormContainer from './accounts/login-form.container';
-// import PasswordResetContainer from './accounts/password-reset-form.container';
-import PasswordChangeContainer from './accounts/password-change-form.container';
+import RegisterForm from './accounts/register-form.component';
+import AccountActivation from './accounts/account-activation.component';
+import LoginForm from './accounts/login-form.component';
+import PasswordChange from './accounts/password-change-form.component';
 import UpdateUserContainer from './accounts/update-user-form.container';
 import PasswordResetDone from './accounts/password-reset-done.component';
-import PasswordResetConfirmContainer from './accounts/password-reset-confirm-form.container';
+import PasswordResetConfirm from './accounts/password-reset-confirm-form.component';
 
 import LandingView from './landing/landing.component';
-
-import { Button } from '@astrosat/astrosat-ui';
 
 import MapLayout from './map';
 
 import styles from './app.module.css';
 
-const PasswordResetContainer = lazy(() => import('./accounts/password-reset-form.container'));
+const PasswordResetForm = lazy(() => import('./accounts/password-reset-form.component'));
 const UserList = lazy(() => import('./accounts/admin/user-list.container'));
 const Admin = lazy(() => import('./accounts/admin/admin.container'));
 
@@ -66,18 +63,18 @@ const App = () => {
       <main>
         <Switch>
           <PrivateRoute path="/map" user={user} count={1} component={MapLayout} />
-          <PrivateRoute exact path="/password/change" user={user} component={PasswordChangeContainer} />
+          <PrivateRoute exact path="/password/change" user={user} component={PasswordChange} />
           <PrivateRoute exact path="/user/update" user={user} component={UpdateUserContainer} />
 
           <PrivateRoute exact path="/" user={user} component={LandingView} />
 
-          <Route exact path="/register" component={RegisterFormContainer} />
-          <Route exact path="/login" component={LoginFormContainer} />
-          <Route exact path="/account/confirm-email/:key" user={user} component={AccountActivationContainer} />
+          <Route exact path="/register" component={RegisterForm} />
+          <Route exact path="/login" component={LoginForm} />
+          <Route exact path="/account/confirm-email/:key" user={user} component={AccountActivation} />
           <Route path="/reset_password_done" component={PasswordResetDone} />
-          <Route path="/password/reset/:token/:uid/" component={PasswordResetConfirmContainer} />
+          <Route path="/password/reset/:token/:uid/" component={PasswordResetConfirm} />
           <Suspense fallback={<h3>Password Rest Loading...</h3>}>
-            <Route exact path="/password/reset" user={user} component={PasswordResetContainer} />
+            <Route exact path="/password/reset" user={user} component={PasswordResetForm} />
           </Suspense>
           <Suspense fallback={<h3>Admin Loading...</h3>}>
             <PrivateRoute exact path="/admin" user={user} component={Admin} />

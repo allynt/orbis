@@ -2,23 +2,31 @@ import React from 'react';
 
 import { render, cleanup, fireEvent } from '@testing-library/react';
 
+import { Provider } from 'react-redux';
+import configureMockStore from 'redux-mock-store';
+import thunk from 'redux-thunk';
+
 import { MemoryRouter } from 'react-router-dom';
 
 import PasswordChangeForm from './password-change-form.component';
 
-describe('Password Reset Form Component', () => {
-  let changePassword = null;
+const mockStore = configureMockStore([thunk]);
 
+describe('Password Reset Form Component', () => {
   beforeEach(() => {
-    changePassword = jest.fn();
+    fetch.resetMocks();
   });
 
   afterEach(cleanup);
 
   it('should render a form', () => {
+    const store = mockStore({});
+
     const { container, getByPlaceholderText, getByText, getAllByText } = render(
       <MemoryRouter>
-        <PasswordChangeForm changePassword={changePassword} />
+        <Provider store={store}>
+          <PasswordChangeForm />
+        </Provider>
       </MemoryRouter>
     );
 
@@ -38,9 +46,13 @@ describe('Password Reset Form Component', () => {
   });
 
   it('should enable `Change Password` button when form is valid', async () => {
+    const store = mockStore({});
+
     const { getByText, getByPlaceholderText } = render(
       <MemoryRouter>
-        (<PasswordChangeForm changePassword={changePassword} />
+        <Provider store={store}>
+          <PasswordChangeForm />
+        </Provider>
       </MemoryRouter>
     );
 
@@ -61,9 +73,13 @@ describe('Password Reset Form Component', () => {
   });
 
   it('should keep `Change Password` button disabled when form is invalid', () => {
+    const store = mockStore({});
+
     const { getByText, getByPlaceholderText } = render(
       <MemoryRouter>
-        (<PasswordChangeForm changePassword={changePassword} />
+        <Provider store={store}>
+          <PasswordChangeForm />
+        </Provider>
       </MemoryRouter>
     );
 
@@ -75,20 +91,34 @@ describe('Password Reset Form Component', () => {
   });
 
   it('should not call `changePassword` function when form is invalid and `Change Password` button clicked', () => {
+    fetch.mockResponse(JSON.stringify({}, { status: 200 }));
+    const store = mockStore({});
+
     const { getByText } = render(
       <MemoryRouter>
-        (<PasswordChangeForm changePassword={changePassword} />
+        <Provider store={store}>
+          <PasswordChangeForm />
+        </Provider>
       </MemoryRouter>
     );
 
     fireEvent.click(getByText('Change Password'));
-    expect(changePassword).not.toHaveBeenCalled();
+    expect(fetch.mock.calls.length).toBe(0);
   });
 
   it('should call `changePassword` function when form is valid and `Change Password` button clicked', () => {
+    fetch.mockResponse(JSON.stringify({}, { status: 200 }));
+    const store = mockStore({
+      accounts: {
+        userKey: 'KEY'
+      }
+    });
+
     const { getByText, getByPlaceholderText } = render(
       <MemoryRouter>
-        (<PasswordChangeForm changePassword={changePassword} />
+        <Provider store={store}>
+          <PasswordChangeForm />
+        </Provider>
       </MemoryRouter>
     );
 
@@ -97,6 +127,6 @@ describe('Password Reset Form Component', () => {
     fireEvent.change(getByPlaceholderText('New Password Confirmation'), { target: { value: 'newpassword' } });
 
     fireEvent.click(getByText('Change Password'));
-    expect(changePassword).toHaveBeenCalled();
+    expect(fetch.mock.calls[0][0]).toEqual('/api/authentication/password/change/');
   });
 });

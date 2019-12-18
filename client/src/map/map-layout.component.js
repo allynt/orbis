@@ -21,7 +21,7 @@ import AnnotationsPanel from '../annotations/annotations-panel.component';
 import BookmarksPanel from '../bookmarks/bookmarks-panel.component';
 import LayerTree from '../layer-tree/layer-tree.component';
 import UpdateUserFormContainer from '../accounts/update-user-form.container';
-import PasswordChangeContainer from '../accounts/password-change-form.container';
+// import PasswordChangeContainer from '../accounts/password-change-form.container';
 
 import ComparisonMap from './compare-maps.component';
 import OverviewMap from '../mini-map/overview-map.component';
