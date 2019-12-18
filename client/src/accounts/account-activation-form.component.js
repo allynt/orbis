@@ -30,6 +30,7 @@ const AccountActivationForm = ({ activateAccount, props }) => {
 
         <div className={styles.buttons}>
           <Button
+            theme="primary"
             type="submit"
             className={styles.button}
             // disabled={Object.keys(errors).length > 0 || Object.keys(values).length === 0}

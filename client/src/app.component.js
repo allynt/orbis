@@ -73,12 +73,12 @@ const App = () => {
 
           <Route exact path="/register" component={RegisterFormContainer} />
           <Route exact path="/login" component={LoginFormContainer} />
+          <Route exact path="/account/confirm-email/:key" user={user} component={AccountActivationContainer} />
+          <Route path="/reset_password_done" component={PasswordResetDone} />
+          <Route path="/password/reset/:token/:uid/" component={PasswordResetConfirmContainer} />
           <Suspense fallback={<h3>Password Rest Loading...</h3>}>
             <Route exact path="/password/reset" user={user} component={PasswordResetContainer} />
           </Suspense>
-          <Route path="/reset_password_done" component={PasswordResetDone} />
-          <Route path="/password/reset/:token/:uid/" component={PasswordResetConfirmContainer} />
-          <Route exact path="/account/confirm-email/:key" user={user} component={AccountActivationContainer} />
           <Suspense fallback={<h3>Admin Loading...</h3>}>
             <PrivateRoute exact path="/admin" user={user} component={Admin} />
             <PrivateRoute exact path="/users" user={user} component={UserList} />
