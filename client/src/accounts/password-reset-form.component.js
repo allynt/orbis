@@ -1,10 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import useForm from '../hooks/useForm';
+// import useForm from '../hooks/useForm';
 import validate from './password-reset-form.validator';
 
-import { Button, Textfield } from '@astrosat/astrosat-ui';
+import Button from '@astrosat/astrosat-ui/dist/buttons/button';
+import Textfield from '@astrosat/astrosat-ui/dist/forms/text-field';
+import useForm from '@astrosat/astrosat-ui/dist/forms/use-form';
+// import { Button, Textfield } from '@astrosat/astrosat-ui';
 
 import { ReactComponent as OrbisLogo } from '../orbis.svg';
 

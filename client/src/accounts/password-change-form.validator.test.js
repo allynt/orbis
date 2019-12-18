@@ -61,7 +61,7 @@ describe('Change Password Form Validator', () => {
       {
         old_password: 'password',
         new_password1: 'password',
-        new_password2: 'pass' // Error, doesn't match `new_password1`
+        new_password2: 'passwor' // Error, doesn't match `new_password1`
       },
       {
         old_password: 'password',

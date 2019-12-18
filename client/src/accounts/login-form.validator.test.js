@@ -12,7 +12,7 @@ describe('Login Form Validator', () => {
         password: 'password'
       },
       {
-        email: '@test.com', // Error, missing username part
+        email: '@test.com', // Error, missing email part
         password: 'password'
       },
       {
@@ -24,7 +24,7 @@ describe('Login Form Validator', () => {
         password: 'password'
       },
       {
-        email: 'test@test.com',
+        email: 'user',
         password: 'pass' // Error, too short
       }
     ];

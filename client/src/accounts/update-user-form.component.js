@@ -1,10 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import useForm from '../hooks/useForm';
+// import useForm from '../hooks/useForm';
 import validate from './update-user-form.validator';
 
-import { Button, Textfield, TextArea } from '@astrosat/astrosat-ui';
+import Button from '@astrosat/astrosat-ui/dist/buttons/button';
+import Textfield from '@astrosat/astrosat-ui/dist/forms/text-field';
+import TextArea from '@astrosat/astrosat-ui/dist/forms/text-area';
+import useForm from '@astrosat/astrosat-ui/dist/forms/use-form';
+import Well from '@astrosat/astrosat-ui/dist/containers/well';
+// import { Button, Textfield, TextArea } from '@astrosat/astrosat-ui';
 
 import formStyles from './forms.module.css';
 // import userStyles from './update-user-form.module.css';

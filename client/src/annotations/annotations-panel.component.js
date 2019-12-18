@@ -11,7 +11,8 @@ import { useMapEvent } from '../map/use-map-event.hook';
 import Slider from 'rc-slider/lib/Slider';
 import 'rc-slider/assets/index.css';
 
-import { Button } from '@astrosat/astrosat-ui';
+import Button from '@astrosat/astrosat-ui/dist/buttons/button';
+// import { Button } from '@astrosat/astrosat-ui';
 
 import ColorPicker from './color-picker.component';
 import DropDownButton from './drop-down-button.component';

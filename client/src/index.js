@@ -20,7 +20,7 @@ import './polyfills/object-fromEntries';
 import './normalize.css';
 import './reset.css';
 import './typography.css';
-// import './index.css';
+import './index.css';
 
 window.onerror = (msg, url, line, col, error) => {
   // Note that col & error are new to the HTML 5 spec and may not be

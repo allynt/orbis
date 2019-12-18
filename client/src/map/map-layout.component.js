@@ -1,15 +1,29 @@
 import React, { useRef, useEffect, useState } from 'react';
+
+import Measure from 'react-measure';
+
 import Map from './map.component';
 import syncMaps from './mapbox-gl-sync-move';
 import syncOverviewMap from './mapbox-gl-sync-move-overview';
 // import { useCrossFilterStore } from '../crossfilter';
 import { useDispatch, useSelector } from 'react-redux';
 
+// import Detail from '@astrosat/astrosat-ui/dist/containers/detail';
+// import { Detail } from '@astrosat/astrosat-ui';
+
 import { getToolbarItems } from '../toolbar/toolbar-config';
 
 import Toolbar from '../toolbar/toolbar.component';
 // import { colorSchemes } from '../colors';
 
+import SideMenuContainer from '../side-menu/side-menu.container';
+import AnnotationsPanel from '../annotations/annotations-panel.component';
+import BookmarksPanel from '../bookmarks/bookmarks-panel.component';
+import LayerTree from '../layer-tree/layer-tree.component';
+import UpdateUserFormContainer from '../accounts/update-user-form.container';
+import PasswordChangeContainer from '../accounts/password-change-form.container';
+
+import ComparisonMap from './compare-maps.component';
 import OverviewMap from '../mini-map/overview-map.component';
 import SpyglassMap from '../spyglass/spyglass-map.component';
 
@@ -34,9 +48,16 @@ const MapLayout = ({ count }) => {
   const overviewMapRef = useRef(null);
   const spyglassMapRef = useRef(null);
   const [maps, setMaps] = useState(null);
+
+  const divRef = useRef(null);
+  // const [bounds, setBounds] = useState(null);
+
   const isOverviewMapVisible = useSelector(state => state.map.isMiniMapVisible);
   const isSpyglassMapVisible = useSelector(state => state.map.isSpyglassMapVisible);
+  const isCompareMode = useSelector(state => state.map.isCompareMode);
   const overviewMapStyle = { uri: 'mapbox://styles/mapbox/streets-v11' };
+
+  const openFeature = useSelector(state => state.sidebar.visibleMenuItem);
 
   // Since we have no data I have started passing in the
   // number of maps to create as a prop. This is likely to
@@ -63,7 +84,10 @@ const MapLayout = ({ count }) => {
       });
 
       return () => {
-        removeSyncMove.then(cb => cb());
+        removeSyncMove.then(cb => {
+          console.log('CALLBACK: ', cb);
+          return cb();
+        });
       };
     } else {
       Promise.all([map1Ref.current].filter(ref => ref)).then(maps => setMaps(maps));
@@ -94,12 +118,141 @@ const MapLayout = ({ count }) => {
     }
   }, [spyglassMapRefCount, isSpyglassMapVisible]);
 
+  useEffect(() => {
+    if (isCompareMode) {
+      // const removeSyncMove = Promise.all([spyglassMapRef.current].filter(ref => ref)).then(spyglassMap =>
+      //   syncMaps([maps[0], ...spyglassMap])
+      // );
+      // return () => {
+      //   removeSyncMove.then(cb => cb());
+      // };
+    }
+  }, [isCompareMode]);
+
+  useEffect(() => {
+    if (divRef.current) {
+      console.log('SETTING BOUNDS');
+      setBounds(divRef.current.getBoundingClientRect());
+    }
+  }, []);
+
   const toolbarItems = getToolbarItems(dispatch);
 
+  // const compareRatio = 0.5;
+  // const dimensions = { width: 1305, height: 803 };
+
+  const [bounds, setBounds] = useState(null);
+  const [compareRatio, setCompareRatio] = useState(0.5);
+  const [dimensions, setDimensions] = useState({ width: 1305, height: 803 });
+
+  const compareMove = event => {
+    console.log('COMPARE MOVE: ', event);
+    event = event.touches ? event.touches[0] : event;
+    let x = event.clientX - bounds.left;
+    if (x < 0) x = 0;
+    if (x > bounds.width) x = bounds.width;
+    const ratio = x / bounds.width;
+    // props.layerActions.moveCompare(ratio);
+    setCompareRatio(ratio);
+  };
+  const compareTouchEnd = () => {
+    document.removeEventListener('touchmove', compareMove);
+    document.removeEventListener('touchend', compareTouchEnd);
+  };
+  const compareMouseEnd = () => {
+    document.removeEventListener('mousemove', compareMove);
+    document.removeEventListener('mouseup', compareMouseEnd);
+  };
+  const compareDown = event => {
+    console.log('MOUSE DOWN');
+    if (event.touches) {
+      document.addEventListener('touchmove', compareMove);
+      document.addEventListener('touchend', compareTouchEnd);
+    } else {
+      document.addEventListener('mousemove', compareMove);
+      document.addEventListener('mouseup', compareMouseEnd);
+    }
+  };
+
+  useEffect(() => {
+    if (divRef.current) {
+      setBounds(divRef.current.getBoundingClientRect());
+    }
+    // return () => {
+    //   cleanup
+    // };
+  }, [setBounds]);
+  console.log('BOUNDS: ', bounds);
+  console.log('DIMENSIONS: ', dimensions);
+
   return (
-    <div className={styles['map-column']}>
-      <div className={`${styles.layout} ${styles[`layout-${mapCount}`]}`} data-testid="map-container">
-        {times(mapCount, i => (
+    <div ref={divRef} className={styles['map-column']}>
+      <Measure
+        bounds
+        onResize={contentRect => {
+          const { width, height } = contentRect.bounds;
+          console.log('UPDATE DIMENSIONS: ', width, height);
+          // layerActions.updateDimensions(width, height);
+          setDimensions({ width, height });
+        }}
+      >
+        {({ measureRef }) => (
+          <div
+            ref={measureRef}
+            className={`${styles.layout} ${styles[`layout-${mapCount}`]}`}
+            data-testid="map-container"
+            style={{
+              position: 'absolute',
+              width: '100%',
+              top: 0,
+              bottom: 0,
+              clip: `rect(0px, 999em, ${dimensions.height}px, ${compareRatio * dimensions.width}px)`
+            }}
+          >
+            {times(mapCount, i => (
+              <React.Fragment key={i}>
+                <Map
+                  // key={i}
+                  ref={mapRefs[i]}
+                  // selectedProperty={multi ? properties[i].field : selectedProperty}
+                  // colorScheme={
+                  //   colorSchemes[
+                  //     multi
+                  //       ? i
+                  //       : properties.indexOf(
+                  //           properties.find(
+                  //             property => property.field === selectedProperty
+                  //           )
+                  //         )
+                  //   ]
+                  // }
+                  attribution={bottomRight(i, mapCount)}
+                  scale={bottomLeft(i, mapCount)}
+                  geocoder={i === 0}
+                  navigation={bottomRight(i, mapCount)}
+                  miniMap={bottomRight(i, mapCount)}
+                  spyglass={bottomRight(i, mapCount)}
+                  layoutInvalidation={mapCount}
+                  style={mapStyle.uri}
+                  position={i}
+                  sidebar={i === 0}
+                  compare={isCompareMode}
+                  compareRatio={compareRatio}
+                  dimensions={dimensions}
+                />
+                {i === 0 && isCompareMode && (
+                  <div
+                    className={styles.compare}
+                    style={{ transform: `translate(${compareRatio * dimensions.width}px, 0px` }}
+                    onMouseDown={compareDown}
+                    onTouchStart={compareDown}
+                  >
+                    <div className={styles.swiper} />
+                  </div>
+                )}
+              </React.Fragment>
+            ))}
+            {/* {isCompareMode ? <ComparisonMap style={mapStyle.uri} /> : times(mapCount, i => (
           <Map
             key={i}
             ref={mapRefs[i]}
@@ -124,11 +277,14 @@ const MapLayout = ({ count }) => {
             layoutInvalidation={mapCount}
             style={mapStyle.uri}
             position={i}
+            sidebar={i === 0}
           />
-        ))}
-        {isOverviewMapVisible && <OverviewMap ref={overviewMapRef} style={overviewMapStyle.uri} />}
-        {isSpyglassMapVisible && <SpyglassMap ref={spyglassMapRef} style={mapStyle.uri} />}
-      </div>
+        ))} */}
+            {isOverviewMapVisible && <OverviewMap ref={overviewMapRef} style={overviewMapStyle.uri} />}
+            {isSpyglassMapVisible && <SpyglassMap ref={spyglassMapRef} style={mapStyle.uri} />}
+          </div>
+        )}
+      </Measure>
 
       <Toolbar items={toolbarItems} />
     </div>

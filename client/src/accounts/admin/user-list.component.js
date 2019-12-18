@@ -3,7 +3,9 @@ import PropTypes from 'prop-types';
 
 import UserTable from './user-table.component';
 import UserDetailFormContainer from './user-detail-form.container';
-import { Button } from '@astrosat/astrosat-ui';
+
+import Button from '@astrosat/astrosat-ui/dist/buttons/button';
+// import { Button } from '@astrosat/astrosat-ui';
 
 import styles from './user-list.module.css';
 

@@ -1,5 +1,7 @@
-import React, { useImperativeHandle } from 'react';
+import React, { useImperativeHandle, useState } from 'react';
 // import ReactDOM from 'react-dom';
+
+// import Measure from 'react-measure';
 
 import mapboxgl, { AttributionControl, NavigationControl, ScaleControl } from 'mapbox-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
@@ -36,7 +38,8 @@ import { setViewport } from './map.actions';
 // import { selectedFeatureIds } from '../factsheet/factsheet.selector';
 // import { CUSTOM_DATA_THRESHOLD } from '../constants';
 
-import { Detail } from '@astrosat/astrosat-ui';
+import Detail from '@astrosat/astrosat-ui/dist/containers/detail';
+// import { Detail } from '@astrosat/astrosat-ui';
 
 import RotateMode from 'mapbox-gl-draw-rotate-mode';
 import RadiusMode from '../annotations/modes/radius';
@@ -50,6 +53,8 @@ import ImageMode from '../annotations/modes/image';
 import LayerTree from '../layer-tree/layer-tree.component';
 import UpdateUserFormContainer from '../accounts/update-user-form.container';
 import PasswordChangeContainer from '../accounts/password-change-form.container';
+
+import { ANNOTATIONS, BOOKMARKS, DATA_LAYERS, PROFILE, CHANGE_PASSWORD } from '../toolbar/constants';
 
 // import SpyglassControl from '../spyglass/spyglass.control';
 
@@ -84,7 +89,11 @@ const Map = (
     save = true,
     layerTree = true,
     layoutInvalidation,
-    position
+    position,
+    sidebar = false,
+    compare = false,
+    compareRatio,
+    dimensions
   },
   ref
 ) => {
@@ -98,7 +107,8 @@ const Map = (
 
   // const { properties, filters, currentFilters, visible, setBounds } = useMapCrossFilter(selectedProperty);
   // const selectedPropertyMetadata = properties.find(property => property.field === selectedProperty);
-  const { mapContainer, mapInstance, mapPromise } = useMapbox(style, accessToken);
+  const authToken = 'MYAUTHTOKEN';
+  const [mapContainer, mapInstance, mapPromise] = useMapbox(style, accessToken, authToken);
 
   // const user = useSelector(state => state.accounts.user);
 
@@ -188,6 +198,60 @@ const Map = (
     },
     [selectedBookmark]
   );
+
+  // const [bounds, setBounds] = useState(null);
+
+  // const compareMove = event => {
+  //   event = event.touches ? event.touches[0] : event;
+  //   let x = event.clientX - bounds.left;
+  //   if (x < 0) x = 0;
+  //   if (x > bounds.width) x = bounds.width;
+  //   const ratio = x / bounds.width;
+  //   // props.layerActions.moveCompare(ratio);
+  // };
+  // const compareTouchEnd = () => {
+  //   document.removeEventListener('touchmove', compareMove);
+  //   document.removeEventListener('touchend', compareTouchEnd);
+  // };
+  // const compareMouseEnd = () => {
+  //   document.removeEventListener('mousemove', compareMove);
+  //   document.removeEventListener('mouseup', compareMouseEnd);
+  // };
+  // const compareDown = event => {
+  //   if (event.touches) {
+  //     document.addEventListener('touchmove', compareMove);
+  //     document.addEventListener('touchend', compareTouchEnd);
+  //   } else {
+  //     document.addEventListener('mousemove', compareMove);
+  //     document.addEventListener('mouseup', compareMouseEnd);
+  //   }
+  // };
+
+  // const compareMove = e => {
+  //   e = e.touches ? e.touches[0] : e;
+  //   let x = e.clientX - this.bounds.left;
+  //   if (x < 0) x = 0;
+  //   if (x > this.bounds.width) x = this.bounds.width;
+  //   const ratio = x / this.bounds.width;
+  //   this.props.layerActions.moveCompare(ratio);
+  // };
+  // const compareTouchEnd = () => {
+  //   document.removeEventListener("touchmove", compareMove);
+  //   document.removeEventListener("touchend", compareTouchEnd);
+  // };
+  // const compareMouseEnd = () => {
+  //   document.removeEventListener("mousemove", compareMove);
+  //   document.removeEventListener("mouseup", compareMouseEnd);
+  // };
+  // const compareDown = e => {
+  //   if (e.touches) {
+  //     document.addEventListener("touchmove", compareMove);
+  //     document.addEventListener("touchend", compareTouchEnd);
+  //   } else {
+  //     document.addEventListener("mousemove", compareMove);
+  //     document.addEventListener("mouseup", compareMouseEnd);
+  //   }
+  // };
 
   // useMap(
   //   mapInstance,
@@ -782,28 +846,49 @@ const Map = (
   useImperativeHandle(ref, () => mapPromise);
 
   return (
+    // <Measure
+    //   bounds
+    //   onResize={contentRect => {
+    //     const { width, height } = contentRect.bounds;
+    //     console.log('UPDATE DIMENSIONS: ', width, height);
+    //     // layerActions.updateDimensions(width, height);
+    //   }}
+    // >
     <div ref={mapContainer} className={layoutStyles.map} data-testid={`map-${position}`}>
       {/* <AccountMenuButton user={user} logout={() => dispatch(logout(history))} /> */}
-      <SideMenuContainer>
-        <div className={layoutStyles.sidebar}>
-          <Detail title="Annotations" isOpen={openFeature === 'Annotations'}>
-            <AnnotationsPanel map={mapInstance} />
-          </Detail>
-          <Detail title="Bookmarks" isOpen={openFeature === 'Bookmarks'}>
-            <BookmarksPanel map={mapInstance} />
-          </Detail>
-          <Detail title="Layers" isOpen={openFeature === 'Layers'}>
-            <LayerTree map={mapInstance} />
-          </Detail>
-          <Detail title="Profile" isOpen={openFeature === 'Profile'}>
-            <UpdateUserFormContainer />
-          </Detail>
-          <Detail title="Profile" isOpen={openFeature === 'Change Password'}>
-            <PasswordChangeContainer />
-          </Detail>
-        </div>
-      </SideMenuContainer>
+      {sidebar && (
+        <SideMenuContainer>
+          <div className={layoutStyles.sidebar}>
+            <Detail title={ANNOTATIONS} isOpen={openFeature === ANNOTATIONS}>
+              <AnnotationsPanel map={mapInstance} />
+            </Detail>
+            <Detail title={BOOKMARKS} isOpen={openFeature === BOOKMARKS}>
+              <BookmarksPanel map={mapInstance} />
+            </Detail>
+            <Detail title={DATA_LAYERS} isOpen={openFeature === DATA_LAYERS}>
+              <LayerTree map={mapInstance} />
+            </Detail>
+            <Detail title={PROFILE} isOpen={openFeature === PROFILE}>
+              <UpdateUserFormContainer />
+            </Detail>
+            <Detail title={CHANGE_PASSWORD} isOpen={openFeature === CHANGE_PASSWORD}>
+              <PasswordChangeContainer />
+            </Detail>
+          </div>
+        </SideMenuContainer>
+      )}
 
+      {/* {position === 1 && compare && (
+        <div
+          className={layoutStyles.compare}
+          // style={{ transform: `translate(${compareRatio * dimensions.get('width')}px, 0px` }}
+          onMouseDown={compareDown}
+          onTouchStart={compareDown}
+        >
+          <div className={layoutStyles.swiper} />
+        </div>
+      )}
+ */}
       {/* <Annotations map={mapInstance} />
       <Bookmarks map={mapInstance} />
       <LayerTree map={mapInstance} /> */}
@@ -831,6 +916,7 @@ const Map = (
           popupRef.current
         )} */}
     </div>
+    // </Measure>
   );
 };
 

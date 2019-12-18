@@ -7,7 +7,7 @@ import AccountActivationForm from './account-activation-form.component';
 describe('Account Activation Form', () => {
   afterEach(cleanup);
 
-  xit('should display a single Activate Account button', () => {
+  it('should display a single Activate Account button', () => {
     // const { container, getByText } = render(<AccountActivationForm activateAccount={} props={} />);
     // expect(getByText('Activate Account')).toBeInTheDocument();
   });
