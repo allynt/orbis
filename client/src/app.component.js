@@ -13,7 +13,7 @@ import { fetchUser } from './accounts/accounts.actions';
 import RegisterFormContainer from './accounts/register-form.container';
 import AccountActivationContainer from './accounts/account-activation-form.container';
 import LoginFormContainer from './accounts/login-form.container';
-import PasswordResetContainer from './accounts/password-reset-form.container';
+// import PasswordResetContainer from './accounts/password-reset-form.container';
 import PasswordChangeContainer from './accounts/password-change-form.container';
 import UpdateUserContainer from './accounts/update-user-form.container';
 import PasswordResetDone from './accounts/password-reset-done.component';
