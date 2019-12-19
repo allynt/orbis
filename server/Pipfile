@@ -41,6 +41,8 @@ mapbox = ">=0.18.0"
 pandas = ">=0.25.0"
 # postgresql support
 psycopg2-binary = ">=2.8.3"
+# data tokens
+pyjwt = ">=1.7.1"
 # wsgi... duh
 uwsgi = ">=2.0.18"
 # static file management (gzipping, etc.)
