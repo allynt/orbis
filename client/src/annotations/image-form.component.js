@@ -10,7 +10,7 @@ import Button from '@astrosat/astrosat-ui/dist/buttons/button';
 import useForm from '@astrosat/astrosat-ui/dist/forms/use-form';
 // import { Button } from '@astrosat/astrosat-ui';
 
-import styles from './form.module.css';
+import styles from './label-form.module.css';
 
 const ImageForm = ({ submit }) => {
   function onSubmit() {

@@ -8,7 +8,7 @@ import validate from './label-form.validator';
 
 import Button from '../ui/button.component';
 
-import styles from './form.module.css';
+import styles from './label-form.module.css';
 
 const LabelForm = ({ submit }) => {
   function onSubmit() {

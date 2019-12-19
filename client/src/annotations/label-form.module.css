@@ -1,11 +1,11 @@
-.login-form {
+.form {
   padding: 3rem;
   border: 1px solid #000;
   border-radius: 0.4rem;
   list-style-type: none;
 }
 
-.form-row {
+.formRow {
   display: flex;
   justify-content: flex-end;
   align-items: center;
@@ -45,4 +45,8 @@
 .button {
   margin: 1rem;
   padding: 0.5rem;
+}
+
+.logo {
+  color: var(--primary-foreground-color);
 }
