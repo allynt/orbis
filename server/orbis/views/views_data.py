@@ -66,6 +66,7 @@ class DataView(APIView):
         # response = requests.get(settings.DATA_SOURCES_DIRECTORY_URL, headers=headers)
         # if not status.is_success(response.status_code):
         #     raise APIException("Error retrieving data sources")
+        # sources = response.json()
 
         sources = []
         for source_id, source_label in [
