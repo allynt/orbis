@@ -15,15 +15,6 @@ from orbis.models import DataScope, generate_data_token, validate_data_token
 from .factories import *
 
 
-# @pytest.fixture
-# def data_sources():
-#     def _data_sources(*args, **kwargs):
-
-#         return []
-
-#     return _data_sources
-
-
 @pytest.mark.django_db
 class TestTokens:
     """
