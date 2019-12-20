@@ -1,25 +1,66 @@
 from django.contrib import admin
+from django.forms import CheckboxSelectMultiple, IntegerField, ModelForm
 
 from astrosat.admin import get_clickable_m2m_list_display
 from astrosat_users.models import User, UserRole
 
-from orbis.models import DataScope, DataScopeRoleAccess, DataScopeOwnerAccess
+from orbis.models import DataScope, RoleAccess, OwnerAccess, Access
 
 
-class DataScopeRoleAccessAdminInline(admin.TabularInline):
-    model = DataScopeRoleAccess
-    extra = 1
+class AccessFormField(IntegerField):
+    def __init__(self, *args, **kwargs):
+        choices = kwargs.pop("choices", ())
+        kwargs["widget"] = CheckboxSelectMultiple(choices=choices)
+        super().__init__(*args, **kwargs)
+
+    def prepare_value(self, value):
+        # takes an integer and returns a list
+        int_value = super().prepare_value(value) or 0
+        list_value = [
+            2 ** i
+            for i, b in enumerate(map(int, reversed(bin(int_value)[2:])))
+            if b
+        ]
+        return list_value
+
+    def clean(self, value):
+        # takes a list and retuns an integer
+        int_value = sum(map(int, value))
+        return super().clean(int_value)
 
 
-class DataScopeOwnerAccessAdminInline(admin.TabularInline):
-    model = DataScopeOwnerAccess
-    extra = 1
+class RoleAccessAdminForm(ModelForm):
+    class Meta:
+        model = RoleAccess
+        fields = ["data_scope", "role", "access"]
+
+    access = AccessFormField(choices=Access.choices())
+
+
+class OwnerAccessAdminForm(ModelForm):
+    class Meta:
+        model = OwnerAccess
+        fields = ["data_scope", "owner", "access"]
+
+    access = AccessFormField(choices=Access.choices())
+
+
+class RoleAccessAdminInline(admin.TabularInline):
+    model = RoleAccess
+    form = RoleAccessAdminForm
+    extra = 0
+
+
+class OwnerAccessAdminInline(admin.TabularInline):
+    model = OwnerAccess
+    form = OwnerAccessAdminForm
+    extra = 0
 
 
 @admin.register(DataScope)
 class DataScopeAdmin(admin.ModelAdmin):
 
-    inlines = [DataScopeRoleAccessAdminInline, DataScopeOwnerAccessAdminInline]
+    inlines = [RoleAccessAdminInline, OwnerAccessAdminInline]
     list_display = (
         "source_id",
         "get_roles_for_list_display",
