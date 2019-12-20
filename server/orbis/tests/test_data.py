@@ -71,7 +71,7 @@ class TestTokens:
     def test_generate_token_correct_data_access(self, user):
 
         data_scope = DataScopeFactory()
-        data_scope.owners.add(user, through_defaults={"read": False})
+        data_scope.owners.add(user, through_defaults={"access": 0})
         data_scope_access = data_scope.get_access(user=user)
 
         data_scope_id = data_scope.source_id
@@ -83,7 +83,7 @@ class TestTokens:
         assert data_scope_id not in data_scopes["create"]
         assert data_scope_id not in data_scopes["delete"]
 
-        data_scope_access.read = True
+        data_scope_access.read_access = True
         data_scope_access.save()
 
         payload = validate_data_token(generate_data_token(user))
@@ -93,7 +93,7 @@ class TestTokens:
         assert data_scope_id not in data_scopes["create"]
         assert data_scope_id not in data_scopes["delete"]
 
-        data_scope_access.create = True
+        data_scope_access.create_access = True
         data_scope_access.save()
 
         payload = validate_data_token(generate_data_token(user))
@@ -103,7 +103,7 @@ class TestTokens:
         assert data_scope_id in data_scopes["create"]
         assert data_scope_id not in data_scopes["delete"]
 
-        data_scope_access.delete = True
+        data_scope_access.delete_access = True
         data_scope_access.save()
 
         payload = validate_data_token(generate_data_token(user))
@@ -144,10 +144,10 @@ class TestDataScopes:
             if data_scope and role:
                 data_scope.roles.add(role)
 
-        assert DataScope.objects.roles(roles[0:1]).count() == 3
-        assert DataScope.objects.roles(roles[1:2]).count() == 3
-        assert DataScope.objects.roles(roles[0:2]).count() == 4
-        assert DataScope.objects.roles([]).count() == 2
+        assert DataScope.objects.roles(roles[0:1]).count() == 1
+        assert DataScope.objects.roles(roles[1:2]).count() == 1
+        assert DataScope.objects.roles(roles[0:2]).count() == 2
+        assert DataScope.objects.roles([]).count() == 0
 
     def test_data_sources_manager_owners(self):
 
@@ -160,16 +160,16 @@ class TestDataScopes:
             if data_scope and user:
                 data_scope.owners.add(user)
 
-        assert DataScope.objects.owners(users[0:1]).count() == 3
-        assert DataScope.objects.owners(users[1:2]).count() == 3
-        assert DataScope.objects.owners(users[0:2]).count() == 4
-        assert DataScope.objects.owners([]).count() == 2
+        assert DataScope.objects.owners(users[0:1]).count() == 1
+        assert DataScope.objects.owners(users[1:2]).count() == 1
+        assert DataScope.objects.owners(users[0:2]).count() == 2
+        assert DataScope.objects.owners([]).count() == 0
 
     def test_data_sources_manager_access(self):
 
         roles = [UserRoleFactory() for _ in range(2)]
         users = [UserFactory() for _ in range(5)]
-        data_scopes = [DataScopeFactory() for _ in range(6)]
+        data_scopes = [DataScopeFactory() for _ in range(5)]
 
         # each user has the corresponding role
         # (except where they don't b/c there are an uneven number of models)
@@ -193,30 +193,27 @@ class TestDataScopes:
         data_scopes[4].roles.add(roles[0])
         data_scopes[4].owners.add(users[2])
 
-        # data_scope 5 has no roles/owners
-        # data_scopes[5]
-
         user_0_scopes = set(
             DataScope.objects.can_access(users[0]).values_list("id", flat=True)
         )
-        assert user_0_scopes == set([data_scopes[0].pk, data_scopes[5].pk])
+        assert user_0_scopes == set([data_scopes[0].pk, data_scopes[4].pk])
 
         user_1_scopes = set(
             DataScope.objects.can_access(users[1]).values_list("id", flat=True)
         )
-        assert user_1_scopes == set([data_scopes[1].pk, data_scopes[5].pk])
+        assert user_1_scopes == set([data_scopes[1].pk])
 
         user_2_scopes = set(
             DataScope.objects.can_access(users[2]).values_list("id", flat=True)
         )
-        assert user_2_scopes == set([data_scopes[2].pk, data_scopes[5].pk])
+        assert user_2_scopes == set([data_scopes[2].pk, data_scopes[4].pk])
 
         user_3_scopes = set(
             DataScope.objects.can_access(users[3]).values_list("id", flat=True)
         )
-        assert user_3_scopes == set([data_scopes[3].pk, data_scopes[5].pk])
+        assert user_3_scopes == set([data_scopes[3].pk])
 
         user_4_scopes = set(
             DataScope.objects.can_access(users[4]).values_list("id", flat=True)
         )
-        assert user_4_scopes == set([data_scopes[5].pk])
+        assert user_4_scopes == set([])
