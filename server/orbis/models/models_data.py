@@ -1,6 +1,9 @@
 import jwt
+from collections import defaultdict
 from datetime import datetime, timedelta
 from enum import IntFlag
+from itertools import chain
+
 
 from django.conf import settings
 from django.contrib.sites.models import Site
@@ -12,6 +15,7 @@ from django.db.models import Q, F
 from astrosat_users.conf import app_settings as astrosat_users_app_settings
 from astrosat_users.models import User, UserRole
 
+from orbis.constants import DEFAULT_DATA_SCOPES
 
 #############
 # token fns #
@@ -20,23 +24,28 @@ from astrosat_users.models import User, UserRole
 
 def generate_data_token(user):
 
-    # each scope is comprised of "<authority>/<namespace>/<name>/<version>"
+    user_data_scopes = {
+        "read": [f"orbis-user-{user.id}/*/*/*"],
+        "create": [f"orbis-user-{user.id}/*/*/*"],
+        "delete": [f"orbis-user-{user.id}/*/*/*"],
+    }
 
-    default_read_scopes = [
-        f"orbis-user-{user.id}/*/*/*",
-        "astrosat/core/*/*",
-    ]
-    default_create_scopes = [
-        f"orbis-user-{user.id}/*/*/*",
-    ]
-    default_delete_scopes = [
-        f"orbis-user-{user.id}/*/*/*",
-    ]
+    restricted_data_scopes = {
+        "read": [str(scope) for scope in DataScope.objects.can_read(user)],
+        "create": [str(scope) for scope in DataScope.objects.can_create(user)],
+        "delete": [str(scope) for scope in DataScope.objects.can_delete(user)],
+    }
 
-    user_scopes = DataScope.objects.can_access(user)
-    user_read_scopes = [str(scope) for scope in user_scopes.can_read(user)]
-    user_create_scopes = [str(scope) for scope in user_scopes.can_create(user)]
-    user_delete_scopes = [str(scope) for scope in user_scopes.can_delete(user)]
+    # clever way of combining DEFAULT_DATA_SCOPES, user_data_scopes, & restricted_data_scopes
+    # regardless of which access-flags and/or scopes each dictionary defines
+    data_scopes = defaultdict(list)
+    for access, scopes in chain.from_iterable(
+        map(
+            lambda x: x.items(),
+            (DEFAULT_DATA_SCOPES, user_data_scopes, restricted_data_scopes),
+        )
+    ):
+        data_scopes[access].extend(scopes)
 
     payload = {
         "iss": Site.objects.get_current().domain,  # token issuer
@@ -44,13 +53,7 @@ def generate_data_token(user):
         "name": f"{settings.PROJECT_SLUG} token",  # token name
         "iat": datetime.utcnow(),  # token "issued at" time
         "exp": datetime.utcnow() + timedelta(hours=1),  # token expiration time
-        "scopes": {
-            "data": {
-                "read": default_read_scopes + user_read_scopes,
-                "create": default_create_scopes + user_create_scopes,
-                "delete": default_delete_scopes + user_delete_scopes,
-            }
-        },
+        "scopes": {"data": data_scopes,},
     }
 
     token = jwt.encode(
