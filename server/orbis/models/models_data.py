@@ -9,6 +9,7 @@ from django.core.validators import MaxValueValidator
 from django.db import models
 from django.db.models import Q, F
 
+from astrosat_users.conf import app_settings as astrosat_users_app_settings
 from astrosat_users.models import User, UserRole
 
 
@@ -72,6 +73,10 @@ def validate_data_token(token):
         username = payload["sub"]
         user = User.objects.get(username=username)
         assert user.is_active, f"{user} is not active."
+        if astrosat_users_app_settings.ASTROSAT_USERS_REQUIRE_VERIFICATION:
+            assert user.is_verified, f"{user} is not verified."
+        if astrosat_users_app_settings.ASTROSAT_USERS_REQUIRE_APPROVAL:
+            assert user.is_approved, f"{user} is not approved."
 
         # has token expired...
         expiration_time = datetime.fromtimestamp(payload["exp"])

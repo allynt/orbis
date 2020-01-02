@@ -44,6 +44,8 @@ class TokenView(APIView):
         token = request.data.get("token")
 
         try:
+            # as implied by IsAuthenticatedOrAdmin, only the admin can validate a data token;
+            # this is only used for testing/development, as the _real_ validation will be done via the data server
             payload = validate_data_token(token)
             return Response(payload)
         except Exception as e:

@@ -59,6 +59,3 @@ class DataScopeFactory(factory.DjangoModelFactory):
     namespace = FactoryFaker("word")
     name = FactoryFaker("word")
     version = FactoryFaker("date", pattern="%Y-%m-%d")
-
-    # roles = models.ManyToManyField(UserRole, related_name="data_access")
-    # owners = models.ManyToManyField(User, related_name="data_access")

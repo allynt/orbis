@@ -22,5 +22,4 @@ def admin():
 @pytest.fixture
 def user():
     user = UserFactory()
-    # user.verify()
     return user
