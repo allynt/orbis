@@ -19,6 +19,8 @@ import '@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css';
 // import { setClickedFeature, MULTI_SELECT } from '../factsheet/factsheet.action';
 import { useMapEvent } from './use-map-event.hook';
 import SaveMapControl from '../save-map/save-map-control';
+import MapStyleSwitcher from '../mapstyle/mapstyle-switcher.component';
+import { MAP_STYLE_SELECTED } from './map.actions';
 // import LayerTreeControl from '../layer-tree/layer-tree.control';
 // import AccountMenuButton from '../accounts/account-menu-button.component';
 // import { logout } from '../accounts/accounts.actions';
@@ -39,6 +41,7 @@ import { setViewport } from './map.actions';
 // import { CUSTOM_DATA_THRESHOLD } from '../constants';
 
 import Detail from '@astrosat/astrosat-ui/dist/containers/detail';
+import Button from '@astrosat/astrosat-ui/dist/buttons/button';
 // import { Detail } from '@astrosat/astrosat-ui';
 
 import RotateMode from 'mapbox-gl-draw-rotate-mode';
@@ -57,6 +60,15 @@ import PasswordChangeForm from '../accounts/password-change-form.component';
 import { ANNOTATIONS, BOOKMARKS, DATA_LAYERS, PROFILE, CHANGE_PASSWORD } from '../toolbar/constants';
 
 // import SpyglassControl from '../spyglass/spyglass.control';
+
+import dark from '../mapstyle/dark.png';
+import darkWebP from '../mapstyle/dark.webp';
+import light from '../mapstyle/light.png';
+import lightWebP from '../mapstyle/light.webp';
+import streets from '../mapstyle/streets.png';
+import streetsWebP from '../mapstyle/streets.webp';
+import satellite from '../mapstyle/satellite.png';
+import satelliteWebP from '../mapstyle/satellite.webp';
 
 import drawStyles from '../annotations/styles';
 import layoutStyles from './map-layout.module.css';
@@ -98,6 +110,26 @@ const Map = (
   ref
 ) => {
   const accessToken = useSelector(state => (state.app.config ? state.app.config.mapbox_token : null));
+
+  const [isMapStyleSwitcherVisible, setIsMapStyleSwitcherVisible] = useState(false);
+  const mapStyles = useSelector(state => state.map.mapStyles);
+  const selectedMapStyle = useSelector(state => state.map.selectedMapStyle);
+  let selectedMapStyleIcon = null;
+  let selectedMapStyleIconWebP = null;
+  if (selectedMapStyle.id === 'dark') {
+    selectedMapStyleIcon = dark;
+    selectedMapStyleIconWebP = darkWebP;
+  } else if (selectedMapStyle.id === 'light') {
+    selectedMapStyleIcon = light;
+    selectedMapStyleIconWebP = lightWebP;
+  } else if (selectedMapStyle.id === 'streets') {
+    selectedMapStyleIcon = streets;
+    selectedMapStyleIconWebP = streetsWebP;
+  } else if (selectedMapStyle.id === 'satellite') {
+    selectedMapStyleIcon = satellite;
+    selectedMapStyleIconWebP = satelliteWebP;
+  }
+  const selectMapStyle = mapStyle => dispatch({ type: MAP_STYLE_SELECTED, mapStyle });
 
   // const labelButtonSelected = useSelector(state => state.annotations.textLabelSelected);
 
@@ -876,6 +908,25 @@ const Map = (
             </Detail>
           </div>
         </SideMenuContainer>
+      )}
+
+      <Button
+        theme="secondary"
+        onClick={() => setIsMapStyleSwitcherVisible(!isMapStyleSwitcherVisible)}
+        classNames={[layoutStyles.mapStyleButton]}
+      >
+        <picture>
+          <source srcSet={selectedMapStyleIconWebP} type="image/webp" />
+          <img src={selectedMapStyleIcon} alt="Preview" />
+          <div>{selectedMapStyle.title}</div>
+        </picture>
+      </Button>
+      {isMapStyleSwitcherVisible && (
+        <MapStyleSwitcher
+          mapStyles={mapStyles || []}
+          selectedMapStyle={selectedMapStyle}
+          selectMapStyle={selectMapStyle}
+        />
       )}
 
       {/* {position === 1 && compare && (

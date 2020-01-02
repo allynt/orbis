@@ -182,8 +182,6 @@ const MapLayout = ({ count }) => {
     //   cleanup
     // };
   }, [setBounds]);
-  console.log('BOUNDS: ', bounds);
-  console.log('DIMENSIONS: ', dimensions);
 
   return (
     <div ref={divRef} className={styles['map-column']}>
@@ -191,41 +189,23 @@ const MapLayout = ({ count }) => {
         bounds
         onResize={contentRect => {
           const { width, height } = contentRect.bounds;
-          console.log('UPDATE DIMENSIONS: ', width, height);
-          // layerActions.updateDimensions(width, height);
           setDimensions({ width, height });
         }}
       >
         {({ measureRef }) => (
           <div
             ref={measureRef}
-            className={`${styles.layout} ${styles[`layout-${mapCount}`]}`}
+            className={`${styles.layout} ${isCompareMode ? styles.compareMode : styles[`layout-${mapCount}`]}`}
             data-testid="map-container"
-            style={{
-              position: 'absolute',
-              width: '100%',
-              top: 0,
-              bottom: 0,
-              clip: `rect(0px, 999em, ${dimensions.height}px, ${compareRatio * dimensions.width}px)`
-            }}
           >
             {times(mapCount, i => (
-              <React.Fragment key={i}>
+                <div key={i} style={i === 0 ? { position: 'absolute', width: '100%', height: '100%', top: 0, left: 0 } : { position: 'absolute',
+              width: '100%',
+              height: '100%',
+              top: 0,
+              left: 0,
+              clip: `rect(0px, 999em, ${dimensions.height}px, ${compareRatio * dimensions.width}px)` }}>
                 <Map
-                  // key={i}
-                  ref={mapRefs[i]}
-                  // selectedProperty={multi ? properties[i].field : selectedProperty}
-                  // colorScheme={
-                  //   colorSchemes[
-                  //     multi
-                  //       ? i
-                  //       : properties.indexOf(
-                  //           properties.find(
-                  //             property => property.field === selectedProperty
-                  //           )
-                  //         )
-                  //   ]
-                  // }
                   attribution={bottomRight(i, mapCount)}
                   scale={bottomLeft(i, mapCount)}
                   geocoder={i === 0}
@@ -250,36 +230,8 @@ const MapLayout = ({ count }) => {
                     <div className={styles.swiper} />
                   </div>
                 )}
-              </React.Fragment>
+              </div>
             ))}
-            {/* {isCompareMode ? <ComparisonMap style={mapStyle.uri} /> : times(mapCount, i => (
-          <Map
-            key={i}
-            ref={mapRefs[i]}
-            // selectedProperty={multi ? properties[i].field : selectedProperty}
-            // colorScheme={
-            //   colorSchemes[
-            //     multi
-            //       ? i
-            //       : properties.indexOf(
-            //           properties.find(
-            //             property => property.field === selectedProperty
-            //           )
-            //         )
-            //   ]
-            // }
-            attribution={bottomRight(i, mapCount)}
-            scale={bottomLeft(i, mapCount)}
-            geocoder={i === 0}
-            navigation={bottomRight(i, mapCount)}
-            miniMap={bottomRight(i, mapCount)}
-            spyglass={bottomRight(i, mapCount)}
-            layoutInvalidation={mapCount}
-            style={mapStyle.uri}
-            position={i}
-            sidebar={i === 0}
-          />
-        ))} */}
             {isOverviewMapVisible && <OverviewMap ref={overviewMapRef} style={overviewMapStyle.uri} />}
             {isSpyglassMapVisible && <SpyglassMap ref={spyglassMapRef} style={mapStyle.uri} />}
           </div>
