@@ -15,7 +15,6 @@ from django.db.models import Q, F
 from astrosat_users.conf import app_settings as astrosat_users_app_settings
 from astrosat_users.models import User, UserRole
 
-from orbis.constants import DEFAULT_DATA_SCOPES
 
 #############
 # token fns #
@@ -24,7 +23,7 @@ from orbis.constants import DEFAULT_DATA_SCOPES
 
 def generate_data_token(user):
 
-    user_data_scopes = {
+    default_data_scopes = {
         "read": [f"orbis-user-{user.id}/*/*/*"],
         "create": [f"orbis-user-{user.id}/*/*/*"],
         "delete": [f"orbis-user-{user.id}/*/*/*"],
@@ -36,14 +35,11 @@ def generate_data_token(user):
         "delete": [str(scope) for scope in DataScope.objects.can_delete(user)],
     }
 
-    # clever way of combining DEFAULT_DATA_SCOPES, user_data_scopes, & restricted_data_scopes
+    # clever way of combining default_data_scopes & restricted_data_scopes
     # regardless of which access-flags and/or scopes each dictionary defines
     data_scopes = defaultdict(list)
     for access, scopes in chain.from_iterable(
-        map(
-            lambda x: x.items(),
-            (DEFAULT_DATA_SCOPES, user_data_scopes, restricted_data_scopes),
-        )
+        map(lambda x: x.items(), (default_data_scopes, restricted_data_scopes))
     ):
         data_scopes[access].extend(scopes)
 
@@ -53,7 +49,7 @@ def generate_data_token(user):
         "name": f"{settings.PROJECT_SLUG} token",  # token name
         "iat": datetime.utcnow(),  # token "issued at" time
         "exp": datetime.utcnow() + timedelta(hours=1),  # token expiration time
-        "scopes": {"data": data_scopes,},
+        "scopes": {"data": data_scopes},
     }
 
     token = jwt.encode(
