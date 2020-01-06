@@ -2,7 +2,7 @@
 # yarn lockfile v1
 
 
-"@astrosat/astrosat-ui@^1.8.0":
+"@astrosat/astrosat-ui@^1.8.4":
   version "1.8.4"
   resolved "https://npm.pkg.github.com/download/@astrosat/astrosat-ui/1.8.4/71ed25b7b052f3980a8c0f45a214b2d0e5412258ec2c52f36b3eef67d827171d#ee431e83aa10200c1db7131e338958f9e21d42e2"
   integrity sha512-N+V35uC7XQftJP8DczkpwCWW2tyWNWqGHyPYhA58/ByvdXY8n8GUyjtxCQRVjNZZBaxRjNoCVECOkJ18V3HyXQ==

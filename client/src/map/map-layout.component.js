@@ -78,16 +78,10 @@ const MapLayout = ({ count }) => {
     if (mapRefCount > 1) {
       const removeSyncMove = Promise.all(
         [map1Ref.current, map2Ref.current, map3Ref.current, map4Ref.current].filter(ref => ref)
-      ).then(maps => {
-        setMaps(maps);
-        syncMaps(maps);
-      });
+      ).then(maps => syncMaps(maps));
 
       return () => {
-        removeSyncMove.then(cb => {
-          console.log('CALLBACK: ', cb);
-          return cb();
-        });
+        removeSyncMove.then(cb => cb());
       };
     } else {
       Promise.all([map1Ref.current].filter(ref => ref)).then(maps => setMaps(maps));
@@ -119,17 +113,6 @@ const MapLayout = ({ count }) => {
   }, [spyglassMapRefCount, isSpyglassMapVisible]);
 
   useEffect(() => {
-    if (isCompareMode) {
-      // const removeSyncMove = Promise.all([spyglassMapRef.current].filter(ref => ref)).then(spyglassMap =>
-      //   syncMaps([maps[0], ...spyglassMap])
-      // );
-      // return () => {
-      //   removeSyncMove.then(cb => cb());
-      // };
-    }
-  }, [isCompareMode]);
-
-  useEffect(() => {
     if (divRef.current) {
       console.log('SETTING BOUNDS');
       setBounds(divRef.current.getBoundingClientRect());
@@ -146,7 +129,7 @@ const MapLayout = ({ count }) => {
   const [dimensions, setDimensions] = useState({ width: 1305, height: 803 });
 
   const compareMove = event => {
-    console.log('COMPARE MOVE: ', event);
+    // console.log('COMPARE MOVE: ', event);
     event = event.touches ? event.touches[0] : event;
     let x = event.clientX - bounds.left;
     if (x < 0) x = 0;
@@ -164,7 +147,7 @@ const MapLayout = ({ count }) => {
     document.removeEventListener('mouseup', compareMouseEnd);
   };
   const compareDown = event => {
-    console.log('MOUSE DOWN');
+    // console.log('MOUSE DOWN');
     if (event.touches) {
       document.addEventListener('touchmove', compareMove);
       document.addEventListener('touchend', compareTouchEnd);
@@ -174,22 +157,14 @@ const MapLayout = ({ count }) => {
     }
   };
 
-  useEffect(() => {
-    if (divRef.current) {
-      setBounds(divRef.current.getBoundingClientRect());
-    }
-    // return () => {
-    //   cleanup
-    // };
-  }, [setBounds]);
-
   return (
     <div ref={divRef} className={styles['map-column']}>
       <Measure
         bounds
         onResize={contentRect => {
           const { width, height } = contentRect.bounds;
-          setDimensions({ width, height });
+          console.log('SETTING DIMENSIONS: ', { width, height });
+          // setDimensions({ width, height });
         }}
       >
         {({ measureRef }) => (
@@ -199,13 +174,23 @@ const MapLayout = ({ count }) => {
             data-testid="map-container"
           >
             {times(mapCount, i => (
-                <div key={i} style={i === 0 ? { position: 'absolute', width: '100%', height: '100%', top: 0, left: 0 } : { position: 'absolute',
-              width: '100%',
-              height: '100%',
-              top: 0,
-              left: 0,
-              clip: `rect(0px, 999em, ${dimensions.height}px, ${compareRatio * dimensions.width}px)` }}>
+              <div
+                key={i}
+                style={
+                  i === 0
+                    ? { position: 'absolute', width: '100%', height: '100%', top: 0, left: 0 }
+                    : {
+                        position: 'absolute',
+                        width: '100%',
+                        height: '100%',
+                        top: 0,
+                        left: 0,
+                        clip: `rect(0px, 999em, ${dimensions.height}px, ${compareRatio * dimensions.width}px)`
+                      }
+                }
+              >
                 <Map
+                  ref={mapRefs[i]}
                   attribution={bottomRight(i, mapCount)}
                   scale={bottomLeft(i, mapCount)}
                   geocoder={i === 0}
@@ -218,7 +203,7 @@ const MapLayout = ({ count }) => {
                   sidebar={i === 0}
                   compare={isCompareMode}
                   compareRatio={compareRatio}
-                  dimensions={dimensions}
+                  // dimensions={dimensions}
                 />
                 {i === 0 && isCompareMode && (
                   <div

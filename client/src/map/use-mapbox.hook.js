@@ -54,7 +54,7 @@ const useMapbox = (style, accessToken, authToken) => {
       };
     }
   }, [style, accessToken, authToken]);
-  return [mapContainer, mapInstance, mapPromise];
+  return { mapContainer, mapInstance, mapPromise };
 };
 
 export default useMapbox;
