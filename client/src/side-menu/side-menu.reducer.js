@@ -8,7 +8,11 @@ export const INITIAL_STATE = {
 export default (state = INITIAL_STATE, action) => {
   switch (action.type) {
     case TOGGLE_MENU:
-      return { ...state, isMenuVisible: !state.isMenuVisible };
+      if (!state.isMenuVisible) {
+        return { ...state, isMenuVisible: true };
+      } else if (state.isMenuVisible && state.visibleMenuItem === action.label) {
+        return { ...state, isMenuVisible: false };
+      }
 
     case TOGGLE_MENU_ITEM:
       return { ...state, visibleMenuItem: action.label };

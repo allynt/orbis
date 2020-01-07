@@ -28,7 +28,7 @@ export const getToolbarItems = dispatch => {
       label: DATA_LAYERS,
       icon: <DataIcon />,
       action: () => {
-        dispatch(toggleMenu());
+        dispatch(toggleMenu(DATA_LAYERS));
         dispatch(toggleMenuItem(DATA_LAYERS));
       },
       tooltip: DATA_LAYERS
@@ -37,7 +37,7 @@ export const getToolbarItems = dispatch => {
       label: SATELLITE_LAYERS,
       icon: <SatelliteIcon />,
       action: () => {
-        dispatch(toggleMenu());
+        dispatch(toggleMenu(SATELLITE_LAYERS));
         dispatch(toggleMenuItem(SATELLITE_LAYERS));
       },
       tooltip: SATELLITE_LAYERS
@@ -46,7 +46,7 @@ export const getToolbarItems = dispatch => {
       label: ANNOTATIONS,
       icon: <AnnotationsIcon />,
       action: () => {
-        dispatch(toggleMenu());
+        dispatch(toggleMenu(ANNOTATIONS));
         dispatch(toggleMenuItem(ANNOTATIONS));
       },
       tooltip: ANNOTATIONS
@@ -55,7 +55,7 @@ export const getToolbarItems = dispatch => {
       label: BOOKMARKS,
       icon: <ImageIcon />,
       action: () => {
-        dispatch(toggleMenu());
+        dispatch(toggleMenu(BOOKMARKS));
         dispatch(toggleMenuItem(BOOKMARKS));
       },
       tooltip: BOOKMARKS
@@ -102,7 +102,7 @@ export const getToolbarItems = dispatch => {
       label: PROFILE,
       icon: <ProfileIcon />,
       action: () => {
-        dispatch(toggleMenu());
+        dispatch(toggleMenu(PROFILE));
         dispatch(toggleMenuItem(PROFILE));
       },
       tooltip: PROFILE,

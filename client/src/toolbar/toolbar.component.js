@@ -31,7 +31,6 @@ const Toolbar = ({ items }) => {
   const [selected, setSelected] = useState(null);
 
   const select = item => {
-    console.log('SELECTING: ', item);
     setSelected(item);
     item.action();
   };
