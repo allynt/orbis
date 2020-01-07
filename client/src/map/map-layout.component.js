@@ -65,7 +65,8 @@ const MapLayout = ({ count }) => {
   // also heard we don't want multi-maps, but I'm not sure
   // that has been agreed yet. For now, we will hard-code
   // the number of maps to be one.
-  const mapCount = count;
+  // const mapCount = count;
+  const mapCount = isCompareMode ? 2 : 1;
   const mapRefs = [map1Ref, map2Ref, map3Ref, map4Ref];
   const mapRefCount = mapRefs.filter(ref => ref.current).length;
 
