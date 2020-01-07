@@ -62,7 +62,7 @@ const App = () => {
 
       <main>
         <Switch>
-          <PrivateRoute path="/map" user={user} count={1} component={MapLayout} />
+          <PrivateRoute path="/map" user={user} count={2} component={MapLayout} />
           <PrivateRoute exact path="/password/change" user={user} component={PasswordChange} />
           <PrivateRoute exact path="/user/update" user={user} component={UpdateUserContainer} />
 

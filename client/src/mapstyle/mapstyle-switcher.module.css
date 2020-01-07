@@ -1,0 +1,46 @@
+.mapstyle-switcher-container {
+  position: absolute;
+  bottom: 0;
+  right: 13rem;
+  z-index: 10;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding: 0;
+  list-style-type: none;
+  background-color: var(--primary-foreground-color);
+}
+
+.mapstyle-switcher-container li {
+  padding: 0.2rem 0;
+}
+.mapstyle-switcher-container label {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: #f9f9f9;
+  padding: 0 1rem;
+  cursor: pointer;
+}
+
+.mapstyle-switcher-container label:hover {
+  background: var(--list-item-background-hover);
+}
+
+.mapstyle-switcher-container input {
+  opacity: 0;
+}
+
+.mapstyle-switcher-container img {
+  max-width: 60px;
+}
+
+.mapstyle-switcher-container span {
+  /* padding-left: 1rem; */
+}
+
+.mapstyle-switcher-container .checked,
+.mapstyle-switcher-container .checked:hover {
+  background: var(--list-item-background);
+}
