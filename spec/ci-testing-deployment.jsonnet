@@ -65,10 +65,9 @@ local deployment = {
             { name: "DJANGO_EMAIL_HOST", valueFrom: {secretKeyRef: { name: secretKeyName, key: "email_host"}}},
             { name: "DJANGO_EMAIL_PORT", valueFrom: {secretKeyRef: { name: secretKeyName, key: "email_port"}}},
             { name: "DJANGO_EMAIL_USER", valueFrom: {secretKeyRef: { name: secretKeyName, key: "email_user"}}},
-            { name: "DJANGO_EMAIL_PASSWORD", valueFrom: {secretKeyRef: { name: secretKeyName, key: "email_password"}}}
-            { name: "DJANGO_MAPBOX_TOKEN", valueFrom: {secretKeyRef: { name: secretKeyName, key: "mapbox_token"}}}
+            { name: "DJANGO_EMAIL_PASSWORD", valueFrom: {secretKeyRef: { name: secretKeyName, key: "email_password"}}},
+            { name: "DJANGO_MAPBOX_TOKEN", valueFrom: {secretKeyRef: { name: secretKeyName, key: "mapbox_token"}}},
             { name: "DJANGO_TRACKING_ID", valueFrom: {secretKeyRef: { name: secretKeyName, key: "tracking_id"}}}
-
           ]
         }]
       }
