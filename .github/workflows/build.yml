@@ -107,6 +107,10 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_ROLE: ${{ secrets.ROLE }}
 
+      - name: Synchronise secrets
+        run: |
+          ./scripts/sync-secrets.sh testing/orbis/secrets orbis-secrets
+
       - name: Run jsonnet
         run: |
           TAG="${GITHUB_SHA:0:7}"
