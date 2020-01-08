@@ -4,13 +4,7 @@ import PropTypes from 'prop-types';
 import style from './side-menu.module.css';
 
 const SideMenu = ({ isMenuVisible, children }) => (
-  <div
-    className={`${style['side-menu-container']} ${
-      isMenuVisible ? style.show : ''
-    }`}
-  >
-    {children}
-  </div>
+  <div className={`${style['side-menu-container']} ${isMenuVisible ? style.show : ''}`}>{children}</div>
 );
 
 SideMenu.propTypes = {

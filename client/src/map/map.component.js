@@ -42,6 +42,7 @@ import { setViewport } from './map.actions';
 
 import Detail from '@astrosat/astrosat-ui/dist/containers/detail';
 import Button from '@astrosat/astrosat-ui/dist/buttons/button';
+import CloseButton from '@astrosat/astrosat-ui/dist/buttons/close-button';
 // import { Detail } from '@astrosat/astrosat-ui';
 
 import RotateMode from 'mapbox-gl-draw-rotate-mode';
@@ -72,6 +73,7 @@ import satelliteWebP from '../mapstyle/satellite.webp';
 
 import drawStyles from '../annotations/styles';
 import layoutStyles from './map-layout.module.css';
+import { styles } from '@astrosat/astrosat-ui/dist/text-field.module-3ed65b3d';
 
 // const interpolate = interpolation => (property, filter, values) => [
 //   interpolation,
@@ -877,6 +879,9 @@ const Map = (
 
   useImperativeHandle(ref, () => mapPromise);
 
+  const heading = 'Heading Title';
+  const strapline = 'Strapline text';
+
   return (
     // <Measure
     //   bounds
@@ -890,6 +895,12 @@ const Map = (
       {/* <AccountMenuButton user={user} logout={() => dispatch(logout(history))} /> */}
       {sidebar && (
         <SideMenuContainer>
+          <div className={styles.heading}>
+            <h3>{heading}HEADING</h3>
+            <p className={styles.strapline}>{strapline}</p>
+            <CloseButton onClick={() => console.log('closing sidebar')} />
+          </div>
+
           <div className={layoutStyles.sidebar}>
             <Detail title={ANNOTATIONS} isOpen={openFeature === ANNOTATIONS}>
               <AnnotationsPanel map={mapInstance} />
