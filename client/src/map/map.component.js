@@ -20,7 +20,8 @@ import '@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css';
 import { useMapEvent } from './use-map-event.hook';
 import SaveMapControl from '../save-map/save-map-control';
 import MapStyleSwitcher from '../mapstyle/mapstyle-switcher.component';
-import { MAP_STYLE_SELECTED } from './map.actions';
+import { MAP_STYLE_SELECTED, setViewport } from './map.actions';
+import { closeMenu } from '../side-menu/side-menu.actions';
 // import LayerTreeControl from '../layer-tree/layer-tree.control';
 // import AccountMenuButton from '../accounts/account-menu-button.component';
 // import { logout } from '../accounts/accounts.actions';
@@ -28,7 +29,7 @@ import { MAP_STYLE_SELECTED } from './map.actions';
 import SideMenuContainer from '../side-menu/side-menu.container';
 import AnnotationsPanel from '../annotations/annotations-panel.component';
 import BookmarksPanel from '../bookmarks/bookmarks-panel.component';
-import { setViewport } from './map.actions';
+// import { setViewport } from './map.actions';
 // import Annotations from '../annotations/annotations.component';
 // import Bookmarks from '../bookmarks/bookmarks.component';
 
@@ -40,7 +41,7 @@ import { setViewport } from './map.actions';
 // import { selectedFeatureIds } from '../factsheet/factsheet.selector';
 // import { CUSTOM_DATA_THRESHOLD } from '../constants';
 
-import Detail from '@astrosat/astrosat-ui/dist/containers/detail';
+// import Detail from '@astrosat/astrosat-ui/dist/containers/detail';
 import Button from '@astrosat/astrosat-ui/dist/buttons/button';
 import CloseButton from '@astrosat/astrosat-ui/dist/buttons/close-button';
 // import { Detail } from '@astrosat/astrosat-ui';
@@ -73,7 +74,6 @@ import satelliteWebP from '../mapstyle/satellite.webp';
 
 import drawStyles from '../annotations/styles';
 import layoutStyles from './map-layout.module.css';
-import { styles } from '@astrosat/astrosat-ui/dist/text-field.module-3ed65b3d';
 
 // const interpolate = interpolation => (property, filter, values) => [
 //   interpolation,
@@ -879,8 +879,9 @@ const Map = (
 
   useImperativeHandle(ref, () => mapPromise);
 
-  const heading = 'Heading Title';
-  const strapline = 'Strapline text';
+  const heading = useSelector(state => state.sidebar.heading);
+  const strapline = useSelector(state => state.sidebar.strapline);
+  const visibleMenuItem = useSelector(state => state.sidebar.visibleMenuItem);
 
   return (
     // <Measure
@@ -895,14 +896,22 @@ const Map = (
       {/* <AccountMenuButton user={user} logout={() => dispatch(logout(history))} /> */}
       {sidebar && (
         <SideMenuContainer>
-          <div className={styles.heading}>
-            <h3>{heading}HEADING</h3>
-            <p className={styles.strapline}>{strapline}</p>
-            <CloseButton onClick={() => console.log('closing sidebar')} />
+          <div className={layoutStyles.heading}>
+            <div className={layoutStyles.headings}>
+              <h3>{heading}</h3>
+              <p className={layoutStyles.strapline}>{strapline}</p>
+            </div>
+            <CloseButton onClick={() => dispatch(closeMenu())} />
           </div>
 
           <div className={layoutStyles.sidebar}>
-            <Detail title={ANNOTATIONS} isOpen={openFeature === ANNOTATIONS}>
+            {visibleMenuItem === ANNOTATIONS && <AnnotationsPanel map={mapInstance} />}
+            {visibleMenuItem === BOOKMARKS && <BookmarksPanel map={mapInstance} />}
+            {visibleMenuItem === DATA_LAYERS && <LayerTree map={mapInstance} />}
+            {visibleMenuItem === PROFILE && <UpdateUserFormContainer />}
+            {visibleMenuItem === CHANGE_PASSWORD && <PasswordChangeForm />}
+
+            {/* <Detail title={ANNOTATIONS} isOpen={openFeature === ANNOTATIONS}>
               <AnnotationsPanel map={mapInstance} />
             </Detail>
             <Detail title={BOOKMARKS} isOpen={openFeature === BOOKMARKS}>
@@ -916,7 +925,7 @@ const Map = (
             </Detail>
             <Detail title={CHANGE_PASSWORD} isOpen={openFeature === CHANGE_PASSWORD}>
               <PasswordChangeForm />
-            </Detail>
+            </Detail> */}
           </div>
         </SideMenuContainer>
       )}

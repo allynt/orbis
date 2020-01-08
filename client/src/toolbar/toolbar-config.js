@@ -12,7 +12,7 @@ import { ReactComponent as ShareIcon } from './share.svg';
 import { ReactComponent as StoryIcon } from './story.svg';
 import { ReactComponent as AnnotationsIcon } from './annotations.svg';
 
-import { toggleMenu, toggleMenuItem } from '../side-menu/side-menu.actions';
+import { toggleMenu, toggleMenuItem, setMenuHeadings } from '../side-menu/side-menu.actions';
 import { logout } from '../accounts/accounts.actions';
 import { toggleMiniMap, toggleSpyglassMap, toggleCompareMaps } from '../map/map.actions';
 
@@ -30,6 +30,7 @@ export const getToolbarItems = dispatch => {
       action: () => {
         dispatch(toggleMenu(DATA_LAYERS));
         dispatch(toggleMenuItem(DATA_LAYERS));
+        dispatch(setMenuHeadings('Data Layers', 'Data Layers Strapline'));
       },
       tooltip: DATA_LAYERS
     },
@@ -39,6 +40,7 @@ export const getToolbarItems = dispatch => {
       action: () => {
         dispatch(toggleMenu(SATELLITE_LAYERS));
         dispatch(toggleMenuItem(SATELLITE_LAYERS));
+        dispatch(setMenuHeadings('Satellite Layers', 'Satellite Layers Strapline'));
       },
       tooltip: SATELLITE_LAYERS
     },
@@ -48,6 +50,7 @@ export const getToolbarItems = dispatch => {
       action: () => {
         dispatch(toggleMenu(ANNOTATIONS));
         dispatch(toggleMenuItem(ANNOTATIONS));
+        dispatch(setMenuHeadings('Annotate Map', 'Annotate Map Strapline'));
       },
       tooltip: ANNOTATIONS
     },
@@ -57,6 +60,7 @@ export const getToolbarItems = dispatch => {
       action: () => {
         dispatch(toggleMenu(BOOKMARKS));
         dispatch(toggleMenuItem(BOOKMARKS));
+        dispatch(setMenuHeadings('Bookmark Map', 'Bookmark Map Strapline'));
       },
       tooltip: BOOKMARKS
     },
@@ -104,6 +108,7 @@ export const getToolbarItems = dispatch => {
       action: () => {
         dispatch(toggleMenu(PROFILE));
         dispatch(toggleMenuItem(PROFILE));
+        dispatch(setMenuHeadings('User Profile', 'User Profile Strapline'));
       },
       tooltip: PROFILE,
       footer: true
