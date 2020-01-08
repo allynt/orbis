@@ -144,7 +144,7 @@
 
 .map :global(.mapboxgl-ctrl-geocoder) input[type='text'],
 .map :global(.mapboxgl-ctrl-geocoder) input[type='text']::placeholder {
-  color: var(--foreground-color);
+  color: #fff;
 }
 
 .map :global(.mapboxgl-control-container) :global(.mapboxgl-ctrl-bottom-right) {
