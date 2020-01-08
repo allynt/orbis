@@ -207,6 +207,13 @@
   padding-right: 0.3rem;
 }
 
+.sidebar {
+  height: 100%;
+  width: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
 .compare {
   display: unset;
   position: absolute;
@@ -250,11 +257,6 @@
   top: 0;
   left: 0;
   bottom: 0;
-  width: 100%;
-  height: 100%;
-}
-
-.sidebar {
   width: 100%;
   height: 100%;
 }

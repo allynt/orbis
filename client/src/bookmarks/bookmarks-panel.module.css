@@ -43,8 +43,9 @@
 }
 
 .bookmarkButton {
-  padding: 0.5rem 2rem;
+  padding: 0.5rem 2rem !important;
   width: 45%;
+  height: 2rem;
 }
 
 .icon {
