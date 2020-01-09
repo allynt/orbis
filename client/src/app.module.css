@@ -116,6 +116,7 @@
   /* --primary-foreground-color: rgba(0, 0, 0, 0.8); */
 
   --primary-foreground-color: #333f48;
+  --primary-text-color: #a2aaad;
 
   --button-background-disabled-color: #e4e4e4;
   --button-foreground-disabled-color: #9e9e9e;
@@ -168,7 +169,7 @@ main {
   align-items: center;
   width: 100%;
   height: 100%;
-
+  color: var(--primary-text-color);
   background-color: var(--background-color);
 }
 

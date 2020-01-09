@@ -1,19 +1,109 @@
 .panel {
   display: flex;
-  justify-content: space-evenly;
-  padding: 1rem;
+  flex-direction: column;
+  justify-content: space-between;
   background-color: var(--background-color);
   min-width: 20rem;
 }
 
-.annotation {
-  margin: 0.3rem;
+.topDiv,
+.bottomDiv {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 1rem;
+}
+
+.topDiv {
+  border-bottom: 1px solid #a2aaad;
+}
+
+.bottomDiv {
+  height: 100%;
+}
+
+.header {
+  margin-bottom: 1rem;
+}
+
+.lineButtonsContainer,
+.deleteButtonsContainer {
+  display: flex;
+  flex-direction: column;
+}
+
+.lineButtons,
+.drawingToolsButtons {
+  padding: 0.5rem 0.5rem;
+}
+
+.textButtonsRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 50%;
+  margin: 0.5rem 0;
+}
+
+.textButtons {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 0.25rem 0.5rem;
+  height: 2rem;
+  width: 2rem;
+}
+
+.buttonLabels {
+  font-size: 0.6rem;
+  font-weight: 100;
 }
 
 .icon {
   width: 1rem;
+  height: 1rem;
 }
 
-.fieldset {
-  border: solid 1px #fff;
+.colorPickerPosition {
+  position: relative;
+}
+
+.colorPicker {
+  position: absolute;
+  top: 2rem;
+  left: 0;
+  z-index: 1;
+}
+
+.lineButtonsContainer {
+  width: 50%;
+}
+
+.lineButtons {
+  width: 100%;
+  margin: 0.5rem 0;
+}
+
+.sliderContainer {
+  width: 85%;
+}
+
+.drawingToolsContainer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  width: 85%;
+}
+
+.drawingToolsButtons {
+}
+
+.deleteButtonsContainer {
+  align-items: center;
+}
+
+.deleteButton {
+  width: 60%;
+  margin: 0.5rem 0;
+  padding: 0.5rem 2rem;
 }
