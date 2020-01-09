@@ -88,8 +88,8 @@ const NewMapForm = () => {
         </div>
 
         <div className={formStyles.row}>
-          <Select name="domain" value={values.domain || ''} options={domains} onChange={handleChange} />
           <Select name="region" value={values.region || ''} options={regions} onChange={handleChange} />
+          <Select name="domain" value={values.domain || ''} options={domains} onChange={handleChange} disabled={values.region ? false : true} />
         </div>
 
         <div className={formStyles.buttons}>

@@ -19,7 +19,7 @@ const BookmarksPanel = ({ map }) => {
     const { lng, lat } = map.getCenter();
 
     dispatch(
-      addBookmark({ ...form, feature_collection: featureCollection, center: [lat, lng], zoom: map.getZoom(), owner })
+      addBookmark({ ...form, feature_collection: featureCollection, center: [lng, lat], zoom: map.getZoom(), owner })
     );
   };
 

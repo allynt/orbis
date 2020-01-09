@@ -17,4 +17,10 @@ body {
   --border: 1px solid #808080;
   --success-color: #006a4e;
   --button-color: #729cc3;
+
+  --toggle-button-background: #e3e3e3;
+  --toggle-button-background-active: #6cc24a;
+  --toggle-button-border: rgba(51, 63, 72, 0.9);
+  --toggle-button-slider: #fff;
+  --toggle-button-slider-active: #fff;
 }

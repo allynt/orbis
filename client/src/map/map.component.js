@@ -29,6 +29,7 @@ import { closeMenu } from '../side-menu/side-menu.actions';
 import SideMenuContainer from '../side-menu/side-menu.container';
 import AnnotationsPanel from '../annotations/annotations-panel.component';
 import BookmarksPanel from '../bookmarks/bookmarks-panel.component';
+import DataLayers from '../data-layers/data-layers.component';
 // import { setViewport } from './map.actions';
 // import Annotations from '../annotations/annotations.component';
 // import Bookmarks from '../bookmarks/bookmarks.component';
@@ -223,11 +224,13 @@ const Map = (
     mapInstance,
     map => {
       const drawCtrl = mapInstance._controls.find(ctrl => ctrl.changeMode);
+      drawCtrl.deleteAll();
+
       if (selectedBookmark) {
-        drawCtrl.deleteAll();
+        console.log('SELECTED BOOKMARK: ', selectedBookmark);
+        map.setCenter(selectedBookmark.center);
+        map.setZoom(selectedBookmark.zoom);
         drawCtrl.add(selectedBookmark.feature_collection);
-      } else {
-        drawCtrl.deleteAll();
       }
     },
     [selectedBookmark]
@@ -905,9 +908,10 @@ const Map = (
           </div>
 
           <div className={layoutStyles.sidebar}>
+            {visibleMenuItem === DATA_LAYERS && <DataLayers />}
+            {/* {visibleMenuItem === DATA_LAYERS && <LayerTree map={mapInstance} />} */}
             {visibleMenuItem === ANNOTATIONS && <AnnotationsPanel map={mapInstance} />}
             {visibleMenuItem === BOOKMARKS && <BookmarksPanel map={mapInstance} />}
-            {visibleMenuItem === DATA_LAYERS && <LayerTree map={mapInstance} />}
             {visibleMenuItem === PROFILE && <UpdateUserFormContainer />}
             {visibleMenuItem === CHANGE_PASSWORD && <PasswordChangeForm />}
 

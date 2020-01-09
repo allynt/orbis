@@ -1,0 +1,56 @@
+.modal {
+  position: fixed;
+  top: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 100;
+}
+
+.modal .dialog {
+  display: flex;
+  flex-direction: column;
+  background: white;
+  border-radius: 1rem;
+}
+
+.dialog .header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--primary-background-color);
+  border-bottom: 1px solid #000;
+  height: 1.5rem;
+}
+
+.dialog .content {
+  display: flex;
+  /* padding: 2rem; */
+}
+
+.dialog .categories {
+  padding: 1rem;
+  border-top-left-radius: 1rem;
+  border-bottom-left-radius: 1rem;
+  background-color: rgba(246, 190, 0, 0.8);
+}
+
+.dialog .subcategories {
+  padding: 1rem;
+  border-top-right-radius: 1rem;
+  border-bottom-right-radius: 1rem;
+  background-color: #fff;
+}
+
+.dialog .row {
+  display: flex;
+}
+
+.dialog .buttons {
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+}
