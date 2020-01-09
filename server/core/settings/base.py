@@ -363,6 +363,11 @@ AUTH_PASSWORD_VALIDATORS = [
 MAPBOX_TOKEN = env("DJANGO_MAPBOX_TOKEN", default="")
 TRACKING_ID = env("DJANGO_TRACKING_ID", default="")
 
+DATA_TOKEN_SECRET_KEY = env("DJANGO_DATA_TOKEN_SECRET_KEY", default="itsasecret")
+DATA_TOKEN_ALGORITHM = env("DJANGO_DATA_TOKEN_ALGORITHM", default="HS256")
+DATA_SOURCES_DIRECTORY_URL = env("DJANGO_DATA_SOURCES_DIRECTORY_URL", default="www.domain.com")
+DATA_URL = env("DJANGO_DATA_URL", default="www.domain.com")
+
 ###########
 # logging #
 ###########

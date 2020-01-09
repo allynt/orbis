@@ -1,9 +1,8 @@
 import pytest
 
 
-def test_get_current_user():
+def test():
     """
-    Tests that using the reserved username "current"
-    will return the current user.
+    dummy test to ensure CI works in the absence of any real tests
     """
-    assert True == True
+    assert True
