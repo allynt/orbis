@@ -16,16 +16,31 @@ const BookmarkList = ({ bookmarks, selectBookmark }) => {
   const dispatch = useDispatch();
 
   return (
-    <div className={styles.panel}>
+    <div>
       {bookmarks && bookmarks.length > 0 ? (
-        <ul>
+        <ul className={styles.bookmarkList}>
           {bookmarks.map(bookmark => {
             return (
               <li key={bookmark.title} className={styles.bookmark}>
-                <span onClick={() => selectBookmark(bookmark)}>{bookmark.title}</span>
-                <Button onClick={() => dispatch(deleteBookmark(bookmark))}>
-                  <BookmarksIcon className={styles.icon} />
-                </Button>
+                <div className={styles.bookmarkThumbnail}>Thumb</div>
+                <div className={styles.bookmarkContent}>
+                  <h3 className={styles.bookmarkTitle}>TITLE</h3>
+                  <p className={styles.bookmarkDescription}>
+                    Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+                  </p>
+                  <div className={styles.bookmarkButtons}>
+                    <Button classNames={[styles.bookmarkButton]} onClick={() => selectBookmark(bookmark)}>
+                      Load
+                    </Button>
+                    <Button
+                      theme="tertiary"
+                      classNames={[styles.bookmarkButton]}
+                      onClick={() => dispatch(deleteBookmark(bookmark))}
+                    >
+                      Delete
+                    </Button>
+                  </div>
+                </div>
               </li>
             );
           })}

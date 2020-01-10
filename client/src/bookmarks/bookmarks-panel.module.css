@@ -1,20 +1,52 @@
 .panel {
+  padding: 1rem 0;
+}
+
+.bookmarkList {
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
-  padding: 1rem;
   background-color: var(--background-color);
   color: #fff;
-  min-width: 20rem;
-}
-
-.icon {
-  width: 1rem;
+  height: 100%;
+  width: 100%;
 }
 
 .bookmark {
   display: flex;
-  justify-content: space-between;
+  justify-content: space-evenly;
   align-items: center;
-  padding-bottom: 0.3rem;
+  margin: 1rem;
+}
+
+.bookmarkThumbnail {
+  margin: 1rem;
+  padding: 2rem;
+  border: 1px solid #fff;
+  border-radius: 0.4rem;
+}
+
+.bookmarkContent {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 100%;
+}
+.bookmarkContent > * {
+  margin: 0.5rem 0;
+}
+
+.bookmarkButtons {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+}
+
+.bookmarkButton {
+  padding: 0.5rem 2rem;
+  width: 45%;
+}
+
+.icon {
+  width: 1rem;
 }
