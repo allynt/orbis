@@ -8,8 +8,8 @@ import useMap from '../map/use-map.hook';
 import { useMapEvent } from '../map/use-map-event.hook';
 
 // import Slider from 'rc-slider'
-import Slider from 'rc-slider/lib/Slider';
-import 'rc-slider/assets/index.css';
+import Slider from '@astrosat/astrosat-ui/dist/forms/slider';
+import { scaleUtc, scalePow } from 'd3-scale';
 
 import Button from '@astrosat/astrosat-ui/dist/buttons/button';
 // import { Button } from '@astrosat/astrosat-ui';
@@ -25,7 +25,6 @@ import ImageForm from './image-form.component';
 
 import { ReactComponent as LineStringIcon } from './linestring.svg';
 import { ReactComponent as PolygonIcon } from './polygon.svg';
-import { ReactComponent as DeleteIcon } from './delete.svg';
 import { ReactComponent as FontIcon } from './font.svg';
 import { ReactComponent as RotateIcon } from './rotate.svg';
 import { ReactComponent as FreehandIcon } from './freehand.svg';
@@ -261,242 +260,237 @@ const AnnotationsPanel = ({ map }) => {
 
   return (
     <div className={styles.panel}>
-      <fieldset className={styles.fieldset}>
-        <legend>Draw Shapes</legend>
-        <Button
-          className={styles.annotation}
-          shape="round"
-          onClick={() => dispatch({ type: SET_DRAW_MODE, mode: 'LineMode' })}
-          dataFor="drawLineString"
-        >
-          <LineStringIcon className={styles.icon} />
-        </Button>
-        <ReactTooltip id="drawLineString">
-          <span>Draw LineString</span>
-        </ReactTooltip>
+      <div className={styles.topDiv}>
+        <span>
+          {/* purpose of span is to keep the paragraph and textButtonsRow
+          inside the same element for flex purposes */}
+          <h4 className={styles.header}>Annotations Style</h4>
+          <div className={styles.textButtonsRow}>
+            <Button
+              classNames={[styles.textButtons]}
+              // onClick={() => dispatch({ type: SET_TEXT_LABEL_SELECTED })}
+              // onClick={() => globalDispatch(setTextLabelSelected())}
+              onClick={() => dispatch({ type: SET_DRAW_MODE, mode: 'LabelMode' })}
+              dataFor="textLabel"
+            >
+              <LabelIcon className={styles.icon} />
+              <span className={styles.buttonLabels}>Text</span>
+            </Button>
+            <ReactTooltip id="textLabel">
+              <span>Text Label</span>
+            </ReactTooltip>
 
-        <Button
-          className={styles.annotation}
-          shape="round"
-          onClick={() => dispatch({ type: SET_DRAW_MODE, mode: 'PolygonMode' })}
-          dataFor="drawPolygon"
-        >
-          <PolygonIcon className={styles.icon} />
-        </Button>
-        <ReactTooltip id="drawPolygon">
-          <span>Draw Polygon</span>
-        </ReactTooltip>
+            <div className={styles.colorPickerPosition}>
+              <Button
+                classNames={[styles.textButtons]}
+                onClick={() => dispatch({ type: SET_FILL_COLOUR_SELECTED })}
+                dataFor="fillColour"
+              >
+                <span style={{ width: '1rem', height: '1rem', backgroundColor: fillColour.hex }}></span>
+                <span className={styles.buttonLabels}>Fill</span>
+              </Button>
+              <ReactTooltip id="fillColour">
+                <span>Set Fill Colour</span>
+              </ReactTooltip>
 
-        <Button
-          className={styles.annotation}
-          shape="round"
-          onClick={() => dispatch({ type: SET_DRAW_MODE, mode: 'FreehandPolygonMode' })}
-          dataFor="drawFreehandPolygon"
-        >
-          <FreehandIcon className={styles.icon} />
-        </Button>
-        <ReactTooltip id="drawFreehandPolygon">
-          <span>Draw Freehand Polygon</span>
-        </ReactTooltip>
+              {fillColourSelected && (
+                <div className={styles.colorPicker}>
+                  <ColorPicker colour={fillColour} setColour={colour => dispatch({ type: SET_FILL_COLOUR, colour })} />
+                </div>
+              )}
+            </div>
 
-        <Button
-          className={styles.annotation}
-          shape="round"
-          onClick={() => dispatch({ type: SET_DRAW_MODE, mode: 'RotateMode' })}
-          dataFor="rotate"
-        >
-          <RotateIcon className={styles.icon} />
-        </Button>
-        <ReactTooltip id="rotate">
-          <span>Rotate Shape</span>
-        </ReactTooltip>
+            <div className={styles.colorPickerPosition}>
+              <Button
+                classNames={[styles.textButtons]}
+                onClick={() => dispatch({ type: SET_LINE_COLOUR_SELECTED })}
+                dataFor="lineColour"
+              >
+                <span style={{ width: '1rem', height: '1rem', backgroundColor: lineColour.hex }}></span>
+                <span className={styles.buttonLabels}>Line</span>
+              </Button>
+              <ReactTooltip id="lineColour">
+                <span>Set Line Colour</span>
+              </ReactTooltip>
 
-        <Button
-          className={styles.annotation}
-          shape="round"
-          onClick={() => dispatch({ type: SET_DRAW_MODE, mode: 'CircleMode' })}
-          dataFor="drawCircle"
-        >
-          <PolygonIcon className={styles.icon} />
-        </Button>
-        <ReactTooltip id="drawCircle">
-          <span>Draw Circle</span>
-        </ReactTooltip>
+              {lineColourSelected && (
+                <div className={styles.colorPicker}>
+                  <ColorPicker colour={lineColour} setColour={colour => dispatch({ type: SET_LINE_COLOUR, colour })} />
+                </div>
+              )}
+            </div>
 
-        <Button
-          className={styles.annotation}
-          shape="round"
-          onClick={() => dispatch({ type: SET_DRAW_MODE, mode: 'RadiusMode' })}
-          dataFor="radius"
-        >
-          <RadiusIcon className={styles.icon} />
-        </Button>
-        <ReactTooltip id="radius">
-          <span>Radius Shape</span>
-        </ReactTooltip>
+            {/* Font-select button - may be re-added later.
 
-        <Button
-          className={styles.annotation}
-          shape="round"
-          // onClick={() => dispatch({ type: SET_TEXT_LABEL_SELECTED })}
-          // onClick={() => globalDispatch(setTextLabelSelected())}
-          onClick={() => dispatch({ type: SET_DRAW_MODE, mode: 'LabelMode' })}
-          dataFor="textLabel"
-        >
-          <LabelIcon className={styles.icon} />
-        </Button>
-        <ReactTooltip id="textLabel">
-          <span>Text Label</span>
-        </ReactTooltip>
-
-        <Button
-          className={styles.annotation}
-          shape="round"
-          onClick={() => dispatch({ type: ADD_IMAGE_SELECTED })}
-          dataFor="image"
-        >
-          <ImageIcon className={styles.icon} />
-        </Button>
-        <ReactTooltip id="image">
-          <span>Add Image</span>
-        </ReactTooltip>
-      </fieldset>
-
-      {addImageSelected && (
-        <ImageForm
-          submit={imageUrl => {
-            dispatch({ type: ADD_IMAGE, imageUrl });
-            dispatch({ type: SET_DRAW_MODE, mode: 'ImageMode' });
-          }}
-        />
-      )}
-
-      <fieldset className={styles.fieldset}>
-        <legend>Delete Shapes</legend>
-        <Button
-          className={styles.annotation}
-          shape="round"
-          onClick={() => dispatch({ type: SET_DRAW_MODE, mode: 'trash' })}
-          dataFor="deleteAnnotations"
-        >
-          <DeleteIcon className={styles.icon} />
-        </Button>
-        <ReactTooltip id="deleteAnnotations">
-          <span>Delete Annotation</span>
-        </ReactTooltip>
-
-        <Button
-          className={styles.annotation}
-          shape="round"
-          onClick={() => dispatch({ type: SET_DRAW_MODE, mode: 'deleteAll' })}
-          dataFor="deleteAllAnnotations"
-        >
-          <DeleteIcon className={styles.icon} />
-        </Button>
-        <ReactTooltip id="deleteAllAnnotations">
-          <span>Delete All Annotations</span>
-        </ReactTooltip>
-      </fieldset>
-
-      <fieldset className={styles.fieldset}>
-        <legend>Configure Shapes</legend>
-        <Button className={styles.annotation} shape="round" onClick={() => console.log('Change Font')} dataFor="font">
-          <FontIcon className={styles.icon} />
-        </Button>
-        <ReactTooltip id="font">
-          <span>Change Font</span>
-        </ReactTooltip>
-
-        <div>
+            <Button classNames={[styles.textButtons]} onClick={() => console.log('Change Font')} dataFor="font">
+              <FontIcon className={styles.icon} />
+            </Button>
+            <ReactTooltip id="font">
+              <span>Change Font</span>
+            </ReactTooltip> */}
+          </div>
+        </span>
+        <div className={styles.lineButtonsContainer}>
           <Button
-            className={styles.annotation}
-            shape="round"
-            onClick={() => dispatch({ type: SET_FILL_COLOUR_SELECTED })}
-            dataFor="fillColour"
+            classNames={[styles.lineButtons]}
+            onClick={() => dispatch({ type: SET_LINE_TYPE_SELECTED })}
+            dataFor="lineType"
           >
-            <span style={{ width: 20, height: 20, backgroundColor: fillColour.hex }}></span>
+            <img className={styles.icon} src={lineTypeOption.icon} alt={lineTypeOption.tooltip} />
           </Button>
-          <ReactTooltip id="fillColour">
-            <span>Set Fill Colour</span>
+          <ReactTooltip id="lineType">
+            <span>Set Line Type</span>
           </ReactTooltip>
 
-          {fillColourSelected && (
-            <ColorPicker colour={fillColour} setColour={colour => dispatch({ type: SET_FILL_COLOUR, colour })} />
+          {lineTypeSelected && (
+            <DropDownButton options={lineTypeOptions} select={option => dispatch({ type: SET_LINE_TYPE, option })} />
+          )}
+
+          <Button
+            classNames={[styles.lineButtons]}
+            onClick={() => dispatch({ type: SET_LINE_WIDTH_SELECTED })}
+            dataFor="lineWidth"
+          >
+            <img className={styles.icon} src={lineWidthOption.icon} alt={lineWidthOption.tooltip} />
+          </Button>
+          <ReactTooltip id="lineWidth">
+            <span>Set Line Width</span>
+          </ReactTooltip>
+
+          {lineWidthSelected && (
+            <DropDownButton options={lineWidthOptions} select={option => dispatch({ type: SET_LINE_WIDTH, option })} />
           )}
         </div>
 
-        <Button
-          className={styles.annotation}
-          shape="round"
-          onClick={() => dispatch({ type: SET_LINE_COLOUR_SELECTED })}
-          dataFor="lineColour"
-        >
-          <span style={{ width: 20, height: 20, backgroundColor: lineColour.hex }}></span>
-        </Button>
-        <ReactTooltip id="lineColour">
-          <span>Set Line Colour</span>
-        </ReactTooltip>
+        <div className={styles.sliderContainer}>
+          <h4 className={styles.header}>Opacity %:</h4>
+          <Slider
+            scale={scalePow().domain([0, 100])}
+            values={[0]}
+            onChange={opacity => dispatch({ type: SET_FILL_OPACITY, opacity })}
+          />
+        </div>
+      </div>
 
-        {lineColourSelected && (
-          <ColorPicker colour={lineColour} setColour={colour => dispatch({ type: SET_LINE_COLOUR, colour })} />
+      <div className={styles.bottomDiv}>
+        <span>
+          {/* purpose of span is to keep the paragraph and drawingToolsContainer
+          inside the same element for flex purposes */}
+          <h4 className={styles.header}>Select Drawing Tool</h4>
+          <div className={styles.drawingToolsContainer}>
+            <Button
+              classNames={[styles.drawingToolsButtons]}
+              onClick={() => dispatch({ type: SET_DRAW_MODE, mode: 'LineMode' })}
+              dataFor="drawLineString"
+            >
+              <LineStringIcon className={styles.icon} />
+            </Button>
+            <ReactTooltip id="drawLineString">
+              <span>Draw LineString</span>
+            </ReactTooltip>
+
+            <Button
+              classNames={[styles.drawingToolsButtons]}
+              onClick={() => dispatch({ type: SET_DRAW_MODE, mode: 'PolygonMode' })}
+              dataFor="drawPolygon"
+            >
+              <PolygonIcon className={styles.icon} />
+            </Button>
+            <ReactTooltip id="drawPolygon">
+              <span>Draw Polygon</span>
+            </ReactTooltip>
+
+            <Button
+              classNames={[styles.drawingToolsButtons]}
+              onClick={() => dispatch({ type: SET_DRAW_MODE, mode: 'FreehandPolygonMode' })}
+              dataFor="drawFreehandPolygon"
+            >
+              <FreehandIcon className={styles.icon} />
+            </Button>
+            <ReactTooltip id="drawFreehandPolygon">
+              <span>Draw Freehand Polygon</span>
+            </ReactTooltip>
+
+            <Button
+              classNames={[styles.drawingToolsButtons]}
+              onClick={() => dispatch({ type: SET_DRAW_MODE, mode: 'RotateMode' })}
+              dataFor="rotate"
+            >
+              <RotateIcon className={styles.icon} />
+            </Button>
+            <ReactTooltip id="rotate">
+              <span>Rotate Shape</span>
+            </ReactTooltip>
+
+            <Button
+              classNames={[styles.drawingToolsButtons]}
+              onClick={() => dispatch({ type: SET_DRAW_MODE, mode: 'CircleMode' })}
+              dataFor="drawCircle"
+            >
+              <PolygonIcon className={styles.icon} />
+            </Button>
+            <ReactTooltip id="drawCircle">
+              <span>Draw Circle</span>
+            </ReactTooltip>
+
+            <Button
+              classNames={[styles.drawingToolsButtons]}
+              onClick={() => dispatch({ type: SET_DRAW_MODE, mode: 'RadiusMode' })}
+              dataFor="radius"
+            >
+              <RadiusIcon className={styles.icon} />
+            </Button>
+            <ReactTooltip id="radius">
+              <span>Radius Shape</span>
+            </ReactTooltip>
+
+            <Button
+              classNames={[styles.drawingToolsButtons]}
+              onClick={() => dispatch({ type: ADD_IMAGE_SELECTED })}
+              dataFor="image"
+            >
+              <ImageIcon className={styles.icon} />
+            </Button>
+            <ReactTooltip id="image">
+              <span>Add Image</span>
+            </ReactTooltip>
+          </div>
+        </span>
+
+        {addImageSelected && (
+          <ImageForm
+            submit={imageUrl => {
+              dispatch({ type: ADD_IMAGE, imageUrl });
+              dispatch({ type: SET_DRAW_MODE, mode: 'ImageMode' });
+            }}
+          />
         )}
 
-        <Button
-          className={styles.annotation}
-          shape="round"
-          onClick={() => dispatch({ type: SET_LINE_TYPE_SELECTED })}
-          dataFor="lineType"
-        >
-          <img className={styles.icon} src={lineTypeOption.icon} alt={lineTypeOption.tooltip} />
-        </Button>
-        <ReactTooltip id="lineType">
-          <span>Set Line Type</span>
-        </ReactTooltip>
+        <div className={styles.deleteButtonsContainer}>
+          <Button
+            classNames={[styles.deleteButton]}
+            onClick={() => dispatch({ type: SET_DRAW_MODE, mode: 'trash' })}
+            dataFor="deleteAnnotations"
+          >
+            Delete
+          </Button>
+          <ReactTooltip id="deleteAnnotations">
+            <span>Delete Annotation</span>
+          </ReactTooltip>
 
-        {lineTypeSelected && (
-          <DropDownButton options={lineTypeOptions} select={option => dispatch({ type: SET_LINE_TYPE, option })} />
-        )}
-
-        <Button
-          className={styles.annotation}
-          shape="round"
-          onClick={() => dispatch({ type: SET_LINE_WIDTH_SELECTED })}
-          dataFor="lineWidth"
-        >
-          <img className={styles.icon} src={lineWidthOption.icon} alt={lineWidthOption.tooltip} />
-        </Button>
-        <ReactTooltip id="lineWidth">
-          <span>Set Line Width</span>
-        </ReactTooltip>
-
-        {lineWidthSelected && (
-          <DropDownButton options={lineWidthOptions} select={option => dispatch({ type: SET_LINE_WIDTH, option })} />
-        )}
-
-        <Slider
-          dots
-          step={0.1}
-          min={0}
-          max={1}
-          defaultValue={0.5}
-          // handle={handle}
-          trackStyle={{ backgroundColor: primaryColor }}
-          railStyle={{ backgroundColor: secondaryColor }}
-          handleStyle={{
-            backgroundColor: secondaryColor,
-            borderColor: primaryColor
-          }}
-          dotStyle={{
-            backgroundColor: secondaryColor,
-            borderColor: secondaryColor
-          }}
-          activeDotStyle={{
-            backgroundColor: primaryColor,
-            borderColor: primaryColor
-          }}
-          onChange={opacity => dispatch({ type: SET_FILL_OPACITY, opacity })}
-        />
-      </fieldset>
+          <Button
+            classNames={[styles.deleteButton]}
+            theme="tertiary"
+            onClick={() => dispatch({ type: SET_DRAW_MODE, mode: 'deleteAll' })}
+            dataFor="deleteAllAnnotations"
+          >
+            Delete All
+          </Button>
+          <ReactTooltip id="deleteAllAnnotations">
+            <span>Delete All Annotations</span>
+          </ReactTooltip>
+        </div>
+      </div>
 
       {/* {textLabelSelected &&
         popupRef.current &&
