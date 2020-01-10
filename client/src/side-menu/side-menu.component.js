@@ -8,8 +8,8 @@ const SideMenu = ({ isMenuVisible, children }) => (
 );
 
 SideMenu.propTypes = {
-  isMenuVisible: PropTypes.bool.isRequired,
-  children: PropTypes.object.isRequired
+  isMenuVisible: PropTypes.bool.isRequired
+  // children: PropTypes.object.isRequired
 };
 
 export default SideMenu;
