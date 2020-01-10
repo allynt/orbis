@@ -12,7 +12,7 @@ import Well from '@astrosat/astrosat-ui/dist/containers/well';
 // import { Button, Textfield, TextArea } from '@astrosat/astrosat-ui';
 
 import formStyles from './forms.module.css';
-// import userStyles from './update-user-form.module.css';
+import userStyles from './update-user-form.module.css';
 
 const UpdateUserForm = ({ user, updateUser }) => {
   const { handleChange, handleSubmit, values, errors } = useForm(onSubmit, validate);
@@ -23,7 +23,7 @@ const UpdateUserForm = ({ user, updateUser }) => {
 
   return (
     <div className={formStyles.container}>
-      <form className={formStyles.form} onSubmit={handleSubmit}>
+      <form className={`${formStyles.form} ${userStyles.form}`} onSubmit={handleSubmit}>
         <div className={formStyles.fields}>
           <div className={formStyles.row}>
             <Textfield name="email" value={user.email || ''} placeholder="Email" onChange={handleChange} readOnly />

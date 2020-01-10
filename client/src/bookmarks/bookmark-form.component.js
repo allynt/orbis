@@ -13,7 +13,7 @@ import useForm from '@astrosat/astrosat-ui/dist/forms/use-form';
 // import { Button, Textfield } from '@astrosat/astrosat-ui';
 
 import formStyles from '../accounts/forms.module.css';
-// import bookmarkStyles from './bookmark-form.module.css';
+import bookmarkStyles from './bookmark-form.module.css';
 
 const BookmarkForm = ({ submit }) => {
   function onSubmit() {
@@ -25,7 +25,7 @@ const BookmarkForm = ({ submit }) => {
 
   return (
     <div className={formStyles.container}>
-      <form className={formStyles.form} onSubmit={handleSubmit}>
+      <form className={`${formStyles.form} ${bookmarkStyles.form}`} onSubmit={handleSubmit}>
         <div className={formStyles.fields}>
           <div className={formStyles.row}>
             <Textfield
