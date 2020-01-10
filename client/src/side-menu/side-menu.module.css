@@ -22,17 +22,13 @@
   transition: visibility 250ms, width 500ms ease-in-out;
 }
 
-.side-menu-container ul {
+/* .side-menu-container ul {
   width: 100%;
   list-style: none;
   margin: 0 0 0 0;
   padding: 0 0 0 0;
 }
 
-.side-menu-container ul li {
-  border-bottom: solid 1px #000;
-}
-
 .side-menu-container ul li:last-child {
   border-bottom: unset;
-}
+} */

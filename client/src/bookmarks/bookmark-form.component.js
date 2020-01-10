@@ -8,6 +8,7 @@ import validate from './bookmark-form.validator';
 
 import Button from '@astrosat/astrosat-ui/dist/buttons/button';
 import Textfield from '@astrosat/astrosat-ui/dist/forms/text-field';
+import Textarea from '@astrosat/astrosat-ui/dist/forms/text-area';
 import useForm from '@astrosat/astrosat-ui/dist/forms/use-form';
 // import { Button, Textfield } from '@astrosat/astrosat-ui';
 
@@ -28,17 +29,28 @@ const BookmarkForm = ({ submit }) => {
         <div className={formStyles.fields}>
           <div className={formStyles.row}>
             <Textfield
+              classNames={[formStyles.textfield]}
               name="title"
               value={values.title || ''}
-              placeholder="Email"
+              placeholder="Title"
               onChange={handleChange}
               required
               autoFocus
             />
           </div>
           {errors.title && <p className={formStyles.errorMessage}>{errors.title}</p>}
+          <div className={formStyles.row}>
+            <Textfield
+              classNames={[formStyles.textfield]}
+              name="description"
+              value={values.description || ''}
+              placeholder="Description"
+              onChange={handleChange}
+              required
+            />
+          </div>
+          {errors.title && <p className={formStyles.errorMessage}>{errors.title}</p>}
         </div>
-
         <div className={formStyles.buttons}>
           <Button
             type="submit"
