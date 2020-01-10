@@ -260,34 +260,32 @@ const AnnotationsPanel = ({ map }) => {
 
   return (
     <div className={styles.panel}>
-      <div className={styles.topDiv}>
-        <span>
-          {/* purpose of span is to keep the paragraph and textButtonsRow
-          inside the same element for flex purposes */}
+      <div className={styles.drawingOptions}>
+        <div>
           <h4 className={styles.header}>Annotations Style</h4>
-          <div className={styles.textButtonsRow}>
+          <div className={styles.annotationButtonsRow}>
             <Button
-              classNames={[styles.textButtons]}
+              classNames={[styles.annotationButtons]}
               // onClick={() => dispatch({ type: SET_TEXT_LABEL_SELECTED })}
               // onClick={() => globalDispatch(setTextLabelSelected())}
               onClick={() => dispatch({ type: SET_DRAW_MODE, mode: 'LabelMode' })}
               dataFor="textLabel"
             >
               <LabelIcon className={styles.icon} />
-              <span className={styles.buttonLabels}>Text</span>
+              <span className={styles.buttonLabel}>Text</span>
             </Button>
             <ReactTooltip id="textLabel">
               <span>Text Label</span>
             </ReactTooltip>
 
-            <div className={styles.colorPickerPosition}>
+            <div className={styles.colorPickerContainer}>
               <Button
-                classNames={[styles.textButtons]}
+                classNames={[styles.annotationButtons]}
                 onClick={() => dispatch({ type: SET_FILL_COLOUR_SELECTED })}
                 dataFor="fillColour"
               >
                 <span style={{ width: '1rem', height: '1rem', backgroundColor: fillColour.hex }}></span>
-                <span className={styles.buttonLabels}>Fill</span>
+                <span className={styles.buttonLabel}>Fill</span>
               </Button>
               <ReactTooltip id="fillColour">
                 <span>Set Fill Colour</span>
@@ -300,14 +298,14 @@ const AnnotationsPanel = ({ map }) => {
               )}
             </div>
 
-            <div className={styles.colorPickerPosition}>
+            <div className={styles.colorPickerContainer}>
               <Button
-                classNames={[styles.textButtons]}
+                classNames={[styles.annotationButtons]}
                 onClick={() => dispatch({ type: SET_LINE_COLOUR_SELECTED })}
                 dataFor="lineColour"
               >
                 <span style={{ width: '1rem', height: '1rem', backgroundColor: lineColour.hex }}></span>
-                <span className={styles.buttonLabels}>Line</span>
+                <span className={styles.buttonLabel}>Line</span>
               </Button>
               <ReactTooltip id="lineColour">
                 <span>Set Line Colour</span>
@@ -322,17 +320,17 @@ const AnnotationsPanel = ({ map }) => {
 
             {/* Font-select button - may be re-added later.
 
-            <Button classNames={[styles.textButtons]} onClick={() => console.log('Change Font')} dataFor="font">
+            <Button classNames={[styles.annotationButtons]} onClick={() => console.log('Change Font')} dataFor="font">
               <FontIcon className={styles.icon} />
             </Button>
             <ReactTooltip id="font">
               <span>Change Font</span>
             </ReactTooltip> */}
           </div>
-        </span>
-        <div className={styles.lineButtonsContainer}>
+        </div>
+        <div className={styles.lineButtons}>
           <Button
-            classNames={[styles.lineButtons]}
+            classNames={[styles.lineButton]}
             onClick={() => dispatch({ type: SET_LINE_TYPE_SELECTED })}
             dataFor="lineType"
           >
@@ -347,7 +345,7 @@ const AnnotationsPanel = ({ map }) => {
           )}
 
           <Button
-            classNames={[styles.lineButtons]}
+            classNames={[styles.lineButton]}
             onClick={() => dispatch({ type: SET_LINE_WIDTH_SELECTED })}
             dataFor="lineWidth"
           >
@@ -362,7 +360,7 @@ const AnnotationsPanel = ({ map }) => {
           )}
         </div>
 
-        <div className={styles.sliderContainer}>
+        <div className={styles.slider}>
           <h4 className={styles.header}>Opacity %:</h4>
           <Slider
             scale={scalePow().domain([0, 100])}
@@ -372,14 +370,12 @@ const AnnotationsPanel = ({ map }) => {
         </div>
       </div>
 
-      <div className={styles.bottomDiv}>
-        <span>
-          {/* purpose of span is to keep the paragraph and drawingToolsContainer
-          inside the same element for flex purposes */}
+      <div className={styles.drawingToolsDiv}>
+        <div>
           <h4 className={styles.header}>Select Drawing Tool</h4>
-          <div className={styles.drawingToolsContainer}>
+          <div className={styles.drawingTools}>
             <Button
-              classNames={[styles.drawingToolsButtons]}
+              classNames={[styles.drawingToolsButton]}
               onClick={() => dispatch({ type: SET_DRAW_MODE, mode: 'LineMode' })}
               dataFor="drawLineString"
             >
@@ -390,7 +386,7 @@ const AnnotationsPanel = ({ map }) => {
             </ReactTooltip>
 
             <Button
-              classNames={[styles.drawingToolsButtons]}
+              classNames={[styles.drawingToolsButton]}
               onClick={() => dispatch({ type: SET_DRAW_MODE, mode: 'PolygonMode' })}
               dataFor="drawPolygon"
             >
@@ -401,7 +397,7 @@ const AnnotationsPanel = ({ map }) => {
             </ReactTooltip>
 
             <Button
-              classNames={[styles.drawingToolsButtons]}
+              classNames={[styles.drawingToolsButton]}
               onClick={() => dispatch({ type: SET_DRAW_MODE, mode: 'FreehandPolygonMode' })}
               dataFor="drawFreehandPolygon"
             >
@@ -412,7 +408,7 @@ const AnnotationsPanel = ({ map }) => {
             </ReactTooltip>
 
             <Button
-              classNames={[styles.drawingToolsButtons]}
+              classNames={[styles.drawingToolsButton]}
               onClick={() => dispatch({ type: SET_DRAW_MODE, mode: 'RotateMode' })}
               dataFor="rotate"
             >
@@ -423,7 +419,7 @@ const AnnotationsPanel = ({ map }) => {
             </ReactTooltip>
 
             <Button
-              classNames={[styles.drawingToolsButtons]}
+              classNames={[styles.drawingToolsButton]}
               onClick={() => dispatch({ type: SET_DRAW_MODE, mode: 'CircleMode' })}
               dataFor="drawCircle"
             >
@@ -434,7 +430,7 @@ const AnnotationsPanel = ({ map }) => {
             </ReactTooltip>
 
             <Button
-              classNames={[styles.drawingToolsButtons]}
+              classNames={[styles.drawingToolsButton]}
               onClick={() => dispatch({ type: SET_DRAW_MODE, mode: 'RadiusMode' })}
               dataFor="radius"
             >
@@ -445,7 +441,7 @@ const AnnotationsPanel = ({ map }) => {
             </ReactTooltip>
 
             <Button
-              classNames={[styles.drawingToolsButtons]}
+              classNames={[styles.drawingToolsButton]}
               onClick={() => dispatch({ type: ADD_IMAGE_SELECTED })}
               dataFor="image"
             >
@@ -455,7 +451,7 @@ const AnnotationsPanel = ({ map }) => {
               <span>Add Image</span>
             </ReactTooltip>
           </div>
-        </span>
+        </div>
 
         {addImageSelected && (
           <ImageForm
@@ -466,7 +462,7 @@ const AnnotationsPanel = ({ map }) => {
           />
         )}
 
-        <div className={styles.deleteButtonsContainer}>
+        <div className={styles.deleteButtons}>
           <Button
             classNames={[styles.deleteButton]}
             onClick={() => dispatch({ type: SET_DRAW_MODE, mode: 'trash' })}
