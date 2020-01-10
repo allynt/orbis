@@ -17,8 +17,10 @@
   align-items: center;
   list-style-type: none;
   min-height: 9rem;
-  width: 100%;
   margin: 1rem;
+  background-color: #fff;
+  border-radius: 0.5rem;
+  width: 40rem;
 }
 
 .textfield {
@@ -27,8 +29,7 @@
 
 .logo {
   width: 15rem;
-  margin: 3rem;
-  color: var(--primary-foreground-color);
+  color: #787c82;
 }
 
 .fields {
