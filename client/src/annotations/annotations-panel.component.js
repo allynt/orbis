@@ -254,20 +254,14 @@ const AnnotationsPanel = ({ map }) => {
     [textLabelSelected]
   );
 
-  // const addLabel = label => {
-  //   console.log('Add Label: ', label);
-  // };
-
   return (
     <div className={styles.panel}>
       <div className={styles.drawingOptions}>
-        <div>
+        <div className={styles.options}>
           <h4 className={styles.header}>Annotations Style</h4>
           <div className={styles.annotationButtonsRow}>
             <Button
               classNames={[styles.annotationButtons]}
-              // onClick={() => dispatch({ type: SET_TEXT_LABEL_SELECTED })}
-              // onClick={() => globalDispatch(setTextLabelSelected())}
               onClick={() => dispatch({ type: SET_DRAW_MODE, mode: 'LabelMode' })}
               dataFor="textLabel"
             >
@@ -370,7 +364,7 @@ const AnnotationsPanel = ({ map }) => {
         </div>
       </div>
 
-      <div className={styles.drawingToolsDiv}>
+      <div className={styles.drawingToolsContainer}>
         <div>
           <h4 className={styles.header}>Select Drawing Tool</h4>
           <div className={styles.drawingTools}>
