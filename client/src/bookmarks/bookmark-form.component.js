@@ -3,21 +3,17 @@ import PropTypes from 'prop-types';
 
 // import ReactTooltip from 'react-tooltip';
 
-// import useForm from '../hooks/useForm';
 import validate from './bookmark-form.validator';
 
 import Button from '@astrosat/astrosat-ui/dist/buttons/button';
 import Textfield from '@astrosat/astrosat-ui/dist/forms/text-field';
-import Textarea from '@astrosat/astrosat-ui/dist/forms/text-area';
 import useForm from '@astrosat/astrosat-ui/dist/forms/use-form';
-// import { Button, Textfield } from '@astrosat/astrosat-ui';
 
 import formStyles from '../accounts/forms.module.css';
 import bookmarkStyles from './bookmark-form.module.css';
 
 const BookmarkForm = ({ submit }) => {
   function onSubmit() {
-    console.log('Submitting Form');
     submit(values);
   }
 
@@ -29,7 +25,7 @@ const BookmarkForm = ({ submit }) => {
         <div className={formStyles.fields}>
           <div className={formStyles.row}>
             <Textfield
-              classNames={[formStyles.textfield]}
+              classNames={[bookmarkStyles.textfield]}
               name="title"
               value={values.title || ''}
               placeholder="Title"
@@ -41,7 +37,7 @@ const BookmarkForm = ({ submit }) => {
           {errors.title && <p className={formStyles.errorMessage}>{errors.title}</p>}
           <div className={formStyles.row}>
             <Textfield
-              classNames={[formStyles.textfield]}
+              classNames={[bookmarkStyles.textfield]}
               name="description"
               value={values.description || ''}
               placeholder="Description"

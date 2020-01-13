@@ -1,3 +1,8 @@
 .form {
   background-color: transparent;
 }
+
+.textfield {
+  background-color: #333f48;
+  color: #fff;
+}

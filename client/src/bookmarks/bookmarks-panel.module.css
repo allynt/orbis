@@ -48,6 +48,10 @@
   height: 2rem;
 }
 
+.noBookmarks {
+  text-align: center;
+}
+
 .icon {
   width: 1rem;
 }

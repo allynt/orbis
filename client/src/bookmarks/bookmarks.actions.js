@@ -66,27 +66,23 @@ export const addBookmark = bookmark => async dispatch => {
 export const selectBookmark = bookmark => ({ type: SELECT_BOOKMARK, bookmark });
 
 export const deleteBookmark = bookmark => async dispatch => {
-  console.log('DELETING BOOKMARK: ', bookmark);
-  const response = await sendData(API.delete, bookmark.id, null, 'DELETE');
-
-  if (!response.ok) {
-    const errorResponse = await response.json();
-    const error = new Error(errorResponseToString(errorResponse));
-
-    NotificationManager.error(error.message, `Deleting Bookmark Error - ${response.statusText}`, 50000, () => {});
-
-    return dispatch({
-      type: DELETE_BOOKMARK_FAILURE,
-      error
-    });
-  } else {
-    NotificationManager.success('Successfully deleted bookmark', 'Successful bookmark deletion', 5000, () => {});
-
-    return dispatch({
-      type: DELETE_BOOKMARK_SUCCESS,
-      bookmark
-    });
-  }
+  // console.log('DELETING BOOKMARK: ', bookmark.id);
+  // const response = await sendData(API.delete, bookmark.id, null, 'DELETE');
+  // if (!response.ok) {
+  //   const errorResponse = await response.json();
+  //   const error = new Error(errorResponseToString(errorResponse));
+  //   NotificationManager.error(error.message, `Deleting Bookmark Error - ${response.statusText}`, 50000, () => {});
+  //   return dispatch({
+  //     type: DELETE_BOOKMARK_FAILURE,
+  //     error
+  //   });
+  // } else {
+  //   NotificationManager.success('Successfully deleted bookmark', 'Successful bookmark deletion', 5000, () => {});
+  //   return dispatch({
+  //     type: DELETE_BOOKMARK_SUCCESS,
+  //     bookmark
+  //   });
+  // }
 };
 
 const errorResponseToString = response => {
