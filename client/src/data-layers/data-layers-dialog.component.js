@@ -1,16 +1,26 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState, useReducer } from 'react';
 import ReactDOM from 'react-dom';
+
+import { useDispatch, useSelector } from 'react-redux';
 
 import CloseButton from '@astrosat/astrosat-ui/dist/buttons/close-button';
 import InfoButton from '@astrosat/astrosat-ui/dist/buttons/info-button';
 import Button from '@astrosat/astrosat-ui/dist/buttons/button';
 import Switch from '@astrosat/astrosat-ui/dist/buttons/switch';
 
+import { data as DOMAINS } from './data-layers-dialog-config';
+
+import { addLayers } from './data-layers-dialog.actions';
+
 import styles from './data-layers-dialog.module.css';
 
 const DataLayersDialog = ({ isVisible, close, title }, ref) => {
   const overlayRef = useRef(null);
-  console.log('is VISIBLE: ', isVisible, ref.current);
+
+  const dispatch = useDispatch();
+
+  const [selectedDomain, setSelectedDomain] = useState(null);
+  const [selectedLayers, setSelectedLayers] = useState([]);
 
   return isVisible && ref.current
     ? ReactDOM.createPortal(
@@ -32,10 +42,11 @@ const DataLayersDialog = ({ isVisible, close, title }, ref) => {
 
                 <div className={styles.content}>
                   <ul>
-                    <li>TropoSphere</li>
-                    <li>TropoSphere</li>
-                    <li>TropoSphere</li>
-                    <li>TropoSphere</li>
+                    {DOMAINS.map(domain => (
+                      <li key={domain.label} onClick={() => setSelectedDomain(domain)}>
+                        {domain.label}
+                      </li>
+                    ))}
                   </ul>
                 </div>
               </div>
@@ -47,60 +58,57 @@ const DataLayersDialog = ({ isVisible, close, title }, ref) => {
                 </div>
 
                 <div className={`${styles.content} ${styles.subcategoryOptions}`}>
-                  <ul>
-                    <li className={styles.row}>
-                      <Switch
-                        name="layer1"
-                        value="layer1"
-                        label="Layer One"
-                        onClick={() => console.log('Layer One Selected')}
-                        ariaLabel="Layer One"
-                      />
+                  {selectedDomain && (
+                    <div>
+                      <ul>
+                        {selectedDomain &&
+                          selectedDomain.layers.map(layer => {
+                            return (
+                              <li key={layer.label}>
+                                <div className={styles.row}>
+                                  <Switch
+                                    name={layer.id}
+                                    value={layer.sourceId}
+                                    label={layer.label}
+                                    onClick={() => {
+                                      // Remove if already selected, otherwise add to list of selected layers.
+                                      const selectedLayer = selectedLayers.find(
+                                        selected => selected.label === layer.label
+                                      );
 
-                      <InfoButton onClick={() => console.log('Info Clicked')} />
-                    </li>
-                    <li className={styles.row}>
-                      <Switch
-                        name="layer2"
-                        value="layer2"
-                        label="Layer Two"
-                        onClick={() => console.log('Layer Two Selected')}
-                        ariaLabel="Layer Two"
-                      />
+                                      selectedLayer
+                                        ? setSelectedLayers(
+                                            selectedLayers.filter(lyr => lyr.label !== selectedLayer.label)
+                                          )
+                                        : setSelectedLayers([...selectedLayers, layer]);
+                                    }}
+                                    ariaLabel={layer.label}
+                                  />
 
-                      <InfoButton onClick={() => console.log('Info Clicked')} />
-                    </li>
-                    <li className={styles.row}>
-                      <Switch
-                        name="layer3"
-                        value="layer3"
-                        label="Layer Three"
-                        onClick={() => console.log('Layer Three Selected')}
-                        ariaLabel="Layer Three"
-                      />
+                                  <InfoButton onClick={() => console.log('Info Clicked: ', layer.description)} />
+                                </div>
+                                {selectedLayers.find(selected => selected.label === layer.label) && layer.range && (
+                                  <div>START/END DATE</div>
+                                )}
+                              </li>
+                            );
+                          })}
+                      </ul>
 
-                      <InfoButton onClick={() => console.log('Info Clicked')} />
-                    </li>
-                    <li className={styles.row}>
-                      <Switch
-                        name="layer4"
-                        value="layer4"
-                        label="Layer Four"
-                        onClick={() => console.log('Layer Four Selected')}
-                        ariaLabel="Layer Four"
-                      />
-
-                      <InfoButton onClick={() => console.log('Info Clicked')} />
-                    </li>
-                  </ul>
+                      <div className={styles.buttons}>
+                        <Button
+                          onClick={() => dispatch(addLayers(selectedLayers))}
+                          theme="primary"
+                          disabled={selectedLayers.length === 0}
+                        >
+                          Add
+                        </Button>
+                      </div>
+                    </div>
+                  )}
+                  {!selectedDomain && <div>No Domain selected</div>}
                 </div>
               </div>
-            </div>
-
-            <div className={styles.buttons}>
-              <Button theme="primary" onClick={() => console.log('Add Category')}>
-                Add
-              </Button>
             </div>
           </div>
         </div>,

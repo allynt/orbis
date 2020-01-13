@@ -2,6 +2,8 @@ import { NotificationManager } from 'react-notifications';
 
 import ReactGA from 'react-ga';
 
+import { getData, JSON_HEADERS } from '../utils/http';
+
 export const SET_VIEWPORT = 'SET_VIEWPORT';
 
 export const MAP_STYLE_SELECTED = 'MAP_STYLE_SELECTED';
@@ -17,6 +19,9 @@ export const TOGGLE_CUSTOM_LAYER_VISIBILITY = 'map.TOGGLE_CUSTOM_LAYER_VISIBILIT
 
 export const CUSTOM_DATA_REQUESTED_SUCCESS = 'CUSTOM_DATA_REQUESTED_SUCCESS';
 export const CUSTOM_DATA_REQUESTED_FAILURE = 'CUSTOM_DATA_REQUESTED_FAILURE';
+
+export const SOURCE_DATA_AND_TOKEN_REQUESTED_SUCCESS = 'SOURCE_DATA_AND_TOKEN_REQUESTED_SUCCESS';
+export const SOURCE_DATA_AND_TOKEN_REQUESTED_FAILURE = 'SOURCE_DATA_AND_TOKEN_REQUESTED_FAILURE';
 
 export const INFRASTRUCTURE_DATA_REQUESTED_SUCCESS = 'INFRASTRUCTURE_DATA_REQUESTED_SUCCESS';
 export const INFRASTRUCTURE_DATA_REQUESTED_FAILURE = 'INFRASTRUCTURE_DATA_REQUESTED_FAILURE';
@@ -92,3 +97,31 @@ export const toggleMiniMap = () => dispatch => dispatch({ type: TOGGLE_MINI_MAP 
 export const toggleSpyglassMap = () => dispatch => dispatch({ type: TOGGLE_SPYGLASS });
 
 export const toggleCompareMaps = () => dispatch => dispatch({ type: TOGGLE_COMPARE });
+
+export const fetchSourcesAndDataToken = () => async (dispatch, getState) => {
+  const {
+    accounts: { userKey }
+  } = getState();
+  const headers = {
+    ...JSON_HEADERS,
+    Authorization: 'Token ' + userKey
+  };
+
+  const response = await getData('/api/data/sources/', headers);
+
+  const data = await response.json();
+
+  if (response.ok) {
+    return dispatch({
+      type: SOURCE_DATA_AND_TOKEN_REQUESTED_SUCCESS,
+      sourcesAndToken: data
+    });
+  } else {
+    const message = `${response.status} ${response.statusText} - ${data.message}`;
+    NotificationManager.error(message, 'Fetching Source Data', 50000, () => {});
+    return dispatch({
+      type: SOURCE_DATA_AND_TOKEN_REQUESTED_FAILURE,
+      error: message
+    });
+  }
+};

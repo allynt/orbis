@@ -13,6 +13,8 @@ import {
   INFRASTRUCTURE_DATA_REQUESTED_FAILURE,
   CUSTOM_DATA_REQUESTED_SUCCESS,
   CUSTOM_DATA_REQUESTED_FAILURE,
+  SOURCE_DATA_AND_TOKEN_REQUESTED_SUCCESS,
+  SOURCE_DATA_AND_TOKEN_REQUESTED_FAILURE,
   SET_VIEWPORT
 } from './map.actions';
 
@@ -28,7 +30,11 @@ const initialState = {
   isSpyglassMapVisible: false,
   isCompareMode: false,
   domains,
-  regions
+  regions,
+  dataUrl: 'https://staticdata.testing.or3is.com',
+  pollingPeriod: 30000,
+  dataToken: null,
+  dataSources: null
 };
 
 const reducer = (state = initialState, action) => {
@@ -96,6 +102,20 @@ const reducer = (state = initialState, action) => {
     case CUSTOM_DATA_REQUESTED_SUCCESS:
       return { ...state, customLayers: action.layers };
     case CUSTOM_DATA_REQUESTED_FAILURE:
+      return { ...state, error: action.error };
+
+    case SOURCE_DATA_AND_TOKEN_REQUESTED_SUCCESS:
+      // Convert from minutes to millliseconds and then half the value.
+      // This will ensure we update the token before it expires.
+      const timeoutInMilliseconds = (action.sourcesAndToken.timeout * 60 * 1000) / 2;
+
+      return {
+        ...state,
+        dataToken: action.sourcesAndToken.token,
+        dataSources: action.sourcesAndToken.sources,
+        pollingPeriod: timeoutInMilliseconds
+      };
+    case SOURCE_DATA_AND_TOKEN_REQUESTED_FAILURE:
       return { ...state, error: action.error };
 
     default:

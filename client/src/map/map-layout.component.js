@@ -115,7 +115,7 @@ const MapLayout = ({ count }) => {
 
   useEffect(() => {
     if (divRef.current) {
-      console.log('SETTING BOUNDS');
+      // console.log('SETTING BOUNDS');
       setBounds(divRef.current.getBoundingClientRect());
     }
   }, []);
@@ -164,7 +164,7 @@ const MapLayout = ({ count }) => {
         bounds
         onResize={contentRect => {
           const { width, height } = contentRect.bounds;
-          console.log('SETTING DIMENSIONS: ', { width, height });
+          // console.log('SETTING DIMENSIONS: ', { width, height });
           // setDimensions({ width, height });
         }}
       >

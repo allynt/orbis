@@ -7,8 +7,8 @@ import ReactTooltip from 'react-tooltip';
 import PrivateRoute from './utils/private-route.component';
 
 import { fetchAppConfig } from './app.actions';
-
 import { fetchUser } from './accounts/accounts.actions';
+import { fetchSourcesAndDataToken } from './map/map.actions';
 
 import RegisterForm from './accounts/register-form.component';
 import AccountActivation from './accounts/account-activation.component';
@@ -36,6 +36,7 @@ const App = () => {
   const selectedTheme = useSelector(state => state.theming.selectedTheme);
 
   const user = useSelector(state => state.accounts.user);
+  const pollingPeriod = useSelector(state => state.map.pollingPeriod);
 
   // If page refreshed, ensure we try to retrieve the logged in user.
   useEffect(() => {
@@ -55,6 +56,22 @@ const App = () => {
       ReactGA.pageview('/', null, 'APPLICATION NAME App');
     }
   }, [dispatch, trackingId]);
+
+  useEffect(() => {
+    // Poll API to get new Data token (expires every X seconds/mins etc)
+    // this also fetches the list of data sources the user has access to.
+    // console.log('Initial Request for sources');
+    dispatch(fetchSourcesAndDataToken());
+
+    const interval = setInterval(() => {
+      // console.log('FETCH SOURCES EVERY: ', pollingPeriod);
+      dispatch(fetchSourcesAndDataToken());
+    }, pollingPeriod);
+
+    return () => {
+      clearInterval(interval);
+    };
+  }, [pollingPeriod]);
 
   return (
     <div className={`${styles.app} ${styles[selectedTheme.value]}`}>

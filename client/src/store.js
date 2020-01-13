@@ -10,6 +10,7 @@ import ReduxQuerySync from 'redux-query-sync';
 
 import map from './map/map.reducer';
 import app from './app.reducer';
+import dataLayers from './data-layers/data-layers-dialog.reducer';
 import accounts from './accounts/accounts.reducer';
 import theming from './theming/theming.reducer';
 import admin from './accounts/admin/users.reducer';
@@ -22,6 +23,7 @@ export const history = createBrowserHistory();
 const createRootReducer = history =>
   combineReducers({
     map,
+    dataLayers,
     app,
     accounts,
     theming,

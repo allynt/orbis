@@ -1,3 +1,7 @@
+export const VECTOR = 'vector';
+export const RASTER = 'raster';
+export const GEOJSON = 'geojson';
+
 export const regions = [
   {
     name: 'Europe',

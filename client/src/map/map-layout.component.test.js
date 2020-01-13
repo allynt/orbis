@@ -29,7 +29,11 @@ describe('Map Layout Component', () => {
       },
       map: {
         selectedMapStyle: {},
-        isMultiMapMode: false
+        isMultiMapMode: false,
+        dataSources: []
+      },
+      dataLayers: {
+        layers: []
       },
       annotations: {
         textLabelSelected: false

@@ -71,27 +71,80 @@ class DataView(APIView):
         #     raise APIException("Error retrieving data sources")
         # sources = response.json()
 
-        sources = []
-        for source_id, source_label in [
-            ("astrosat/core/hospitals-uk/2019-12-17", "Hospitals in the UK"),
-            ("astrosat/core/hospitals-vn/2019-12-17", "Hospitals in Vietname"),
-        ]:
-            authority, namespace, name, version = source_id.split("/")
-            sources.append(
-                {
-                    "source_id": source_id,
-                    "authority": authority,
-                    "namespace": namespace,
-                    "name": name,
-                    "version": version,
-                    "kind": "vector",  # vector|raster
-                    "status": "published",  # draft|published|deprecated
-                    "metadata": {
-                        "label": source_label,
-                        "url": f"{settings.DATA_URL}/{source_id}",
+        sources = [
+            {
+                "label": "TropoSphere",
+                "layers": [
+                    {
+                        "source_id": "astrosat/core/hospitals-uk/2019-12-17",
+                        "authority": "astrosat",
+                        "namespace": "core",
+                        "name": "hospitals-uk",
+                        "version": "2019-12-17",
+                        "type": "geojson",  # vector|raster|geojson
+                        "status": "published",  # draft|published|deprecated
+                        "metadata": {
+                            "label": "UK Hospitals",
+                            "domain": "TropoSphere",
+                            "range": True,
+                            "description": 'TropoSphere has name hospitals-uk with a label UK Hospitals Some paragraph describing stuff. TropoSphere has name hospitals-uk with a label UK Hospitals Some paragraph describing stuff.',
+                            "url": f"{settings.DATA_URL}/astrosat/core/hospitals-uk/2019-12-17/hospitals_uk.geojson"
+                        }
                     },
-                }
-            )
+                    {
+                        "source_id": "astrosat/test/sentinel_2_rgb/S2A_20191223T034141_T47NPG_RGB",
+                        "authority": "astrosat",
+                        "namespace": "test",
+                        "name": "sentinel-2-rgb",
+                        "version": "S2A_20191223T034141_T47NPG_RGB",
+                        "type": "raster",  # vector|raster
+                        "status": "published",  # draft|published|deprecated
+                        "metadata": {
+                            "label": "Sentinel 2 RGB",
+                            "domain": "TropoSphere",
+                            "range": True,
+                            "description": 'TropoSphere has name sentinel-2-rgb with a label Sentinel 2 RGB Some paragraph describing stuff.',
+                            "url": f"{settings.DATA_URL}/astrosat/test/sentinel_2_rgb/S2A_20191223T034141_T47NPG_RGB/{{z}}/{{x}}/{{y}}.png"
+                        }
+                    },
+                ]
+            },
+            {
+                "label": "Rice Paddies",
+                "layers": [
+                    {
+                        "source_id": "astrosat/test/stoke-on-trent/v1",
+                        "authority": "astrosat",
+                        "namespace": "test",
+                        "name": "stoke-on-trent",
+                        "version": "v1",
+                        "type": "vector",  # vector|raster
+                        "status": "published",  # draft|published|deprecated
+                        "metadata": {
+                            "label": "Stoke-On-Trent",
+                            "domain": "Rice Paddies",
+                            "description": 'Rice Paddies has name stoke-on-trent with a label Stoke-On-Trent Some paragraph describing stuff.',
+                            "url": f"{settings.DATA_URL}/astrosat/test/stoke-on-trent/v1/{{z}}/{{x}}/{{y}}.pbf"
+                        }
+                    },
+                    {
+                        "source_id": "astrosat/test/super-sen2-japan-band5/dec-2019",
+                        "authority": "astrosat",
+                        "namespace": "test",
+                        "name": "super-sen2-japan-band5",
+                        "version": "dec-2019",
+                        "type": "raster",  # vector|raster
+                        "status": "published",  # draft|published|deprecated
+                        "metadata": {
+                            "label": "Japan Band5",
+                            "domain": "Rice Paddies",
+                            "description": 'Rice Paddies has name super-sen2-japan-band5 with a label Japan Band5 Some paragraph describing stuff.',
+                            "url": f"{settings.DATA_URL}/astrosat/test/super-sen2-japan-band5/dec-2019/{{z}}/{{x}}/{{y}}.png"
+                        }
+                    },
+                ]
+            }
+        ]
 
         return Response({
             "token": data_token,
