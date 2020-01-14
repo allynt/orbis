@@ -222,7 +222,7 @@ ADMIN_INDEX_TITLE = f"Welcome to the {PROJECT_NAME} administration console"
 # ci: django.core.mail.backends.locmem.EmailBackend"
 
 DEFAULT_FROM_EMAIL = f"{PROJECT_NAME} <{PROJECT_EMAIL.format(role='noreply')}>"
-SERVER_EMAIL = PROJECT_EMAIL.format(role='noreply')
+SERVER_EMAIL = PROJECT_EMAIL.format(role="noreply")
 EMAIL_TIMEOUT = 60
 
 #######
@@ -367,6 +367,11 @@ DATA_TOKEN_SECRET_KEY = env("DJANGO_DATA_TOKEN_SECRET_KEY", default="itsasecret"
 DATA_TOKEN_ALGORITHM = env("DJANGO_DATA_TOKEN_ALGORITHM", default="HS256")
 DATA_SOURCES_DIRECTORY_URL = env("DJANGO_DATA_SOURCES_DIRECTORY_URL", default="www.domain.com")
 DATA_URL = env("DJANGO_DATA_URL", default="www.domain.com")
+
+# the time in minutes that a data_token is valid for
+DATA_TOKEN_TIMEOUT = DynamicSetting(
+    "orbis.OrbisSettings.data_token_timeout", 60
+)
 
 ###########
 # logging #

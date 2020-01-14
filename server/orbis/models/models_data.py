@@ -48,7 +48,7 @@ def generate_data_token(user):
         "sub": user.username,  # token subject
         "name": f"{settings.PROJECT_SLUG} token",  # token name
         "iat": datetime.utcnow(),  # token "issued at" time
-        "exp": datetime.utcnow() + timedelta(hours=1),  # token expiration time
+        "exp": datetime.utcnow() + timedelta(minutes=settings.DATA_TOKEN_TIMEOUT),  # token expiration time
         "scopes": {"data": data_scopes},
     }
 
