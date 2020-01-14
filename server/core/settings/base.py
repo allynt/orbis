@@ -368,6 +368,7 @@ DATA_TOKEN_ALGORITHM = env("DJANGO_DATA_TOKEN_ALGORITHM", default="HS256")
 DATA_SOURCES_DIRECTORY_URL = env("DJANGO_DATA_SOURCES_DIRECTORY_URL", default="www.domain.com")
 DATA_URL = env("DJANGO_DATA_URL", default="www.domain.com")
 
+# the time in minutes that a data_token is valid for
 DATA_TOKEN_TIMEOUT = DynamicSetting(
     "orbis.OrbisSettings.data_token_timeout", 60
 )
