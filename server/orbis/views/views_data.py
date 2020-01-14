@@ -59,7 +59,8 @@ class DataView(APIView):
     def get(self, request, format=None):
 
         user = request.user
-        token = generate_data_token(user)
+        data_token = generate_data_token(user)
+        data_token_timeout = settings.DATA_TOKEN_TIMEOUT
 
         # # TODO: for now I am hard-coding things,
         # # TODO: once it's ready, I should proxy the request to the data-sources-directory service
@@ -92,4 +93,8 @@ class DataView(APIView):
                 }
             )
 
-        return Response({"token": token, "sources": sources})
+        return Response({
+            "token": data_token,
+            "timeout": data_token_timeout,
+            "sources": sources
+        })
