@@ -11,7 +11,6 @@ import styles from './bookmarks-panel.module.css';
 const BookmarksPanel = ({ map }) => {
   const dispatch = useDispatch();
   const owner = useSelector(state => state.accounts.user.id);
-  const reader = new FileReader();
 
   const submit = form => {
     const drawCtrl = map._controls.find(ctrl => ctrl.changeMode);
@@ -19,14 +18,7 @@ const BookmarksPanel = ({ map }) => {
 
     const { lng, lat } = map.getCenter();
 
-    // Some explanation about the 2 functions below:
-    // FileReader comes with am in-built function that converts blobs into Base64 strings (line 43)
-    // This is given to us in the render.onload function as the 'result' property.
-    // However, we only get it when it isfinished loading, hwence why the dispatch function is inside the onload.
-    // I have tried everything I can think of to post this Base64 string, but it appears it is too large a payload to send.
-
-    reader.onload = () => {
-      console.log(reader.result);
+    map.getCanvas().toBlob(blob => {
       dispatch(
         addBookmark({
           ...form,
@@ -34,13 +26,9 @@ const BookmarksPanel = ({ map }) => {
           center: [lng, lat],
           zoom: map.getZoom(),
           owner,
-          image: reader.result
+          thumbnailBlob: blob,
         })
       );
-    };
-
-    map.getCanvas().toBlob(blob => {
-      reader.readAsDataURL(blob);
     });
   };
 

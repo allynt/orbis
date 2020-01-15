@@ -1,5 +1,5 @@
 import { NotificationManager } from 'react-notifications';
-import { sendData, JSON_HEADERS } from '../utils/http';
+import { sendData, FORM_HEADERS } from '../utils/http';
 
 export const FETCH_BOOKMARKS_SUCCESS = 'FETCH_BOOKMARKS_SUCCESS';
 export const FETCH_BOOKMARKS_FAILURE = 'FETCH_BOOKMARKS_FAILURE';
@@ -40,7 +40,16 @@ export const fetchBookmarks = () => async dispatch => {
 };
 
 export const addBookmark = bookmark => async dispatch => {
-  const response = await sendData(API.add, bookmark, JSON_HEADERS);
+  const formData = new FormData();
+  formData.append('title', bookmark.title);
+  formData.append('description', bookmark.description);
+  formData.append('feature collection', bookmark.feature_collection);
+  formData.append('center', bookmark.center);
+  formData.append('zoom', bookmark.zoom);
+  formData.append('owner', bookmark.owner);
+  formData.append('thumbnail blob', bookmark.thumbnailBlob);
+
+  const response = await sendData(API.add, formData, FORM_HEADERS);
 
   if (!response.ok) {
     const errorResponse = await response.json();
