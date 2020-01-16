@@ -10,7 +10,7 @@ import Textfield from '@astrosat/astrosat-ui/dist/forms/text-field';
 import useForm from '@astrosat/astrosat-ui/dist/forms/use-form';
 
 import formStyles from '../accounts/forms.module.css';
-import bookmarkStyles from './bookmark-form.module.css';
+import bookmarkStyles from '../side-menu/side-menu.module.css';
 
 const BookmarkForm = ({ submit }) => {
   function onSubmit() {
@@ -23,39 +23,35 @@ const BookmarkForm = ({ submit }) => {
     <div className={formStyles.container}>
       <form className={`${formStyles.form} ${bookmarkStyles.form}`} onSubmit={handleSubmit}>
         <div className={`${formStyles.fields} ${bookmarkStyles.fields}`}>
-
-            <Textfield
-              classNames={[bookmarkStyles.textfield]}
-              name="title"
-              value={values.title || ''}
-              placeholder="Title"
-              onChange={handleChange}
-              required
-              autoFocus
-            />
-
+          <Textfield
+            classNames={[bookmarkStyles.textfield]}
+            name="title"
+            value={values.title || ''}
+            placeholder="Title"
+            onChange={handleChange}
+            required
+            autoFocus
+          />
           {errors.title && <p className={formStyles.errorMessage}>{errors.title}</p>}
 
-            <Textfield
-              classNames={[bookmarkStyles.textfield]}
-              name="description"
-              value={values.description || ''}
-              placeholder="Description"
-              onChange={handleChange}
-              required
-            />
-
+          <Textfield
+            classNames={[bookmarkStyles.textfield]}
+            name="description"
+            value={values.description || ''}
+            placeholder="Description"
+            onChange={handleChange}
+            required
+          />
           {errors.title && <p className={formStyles.errorMessage}>{errors.title}</p>}
         </div>
-        <div className={formStyles.buttons}>
-          <Button
-            type="submit"
-            className={formStyles.button}
-            disabled={Object.keys(errors).length > 0 || Object.keys(values).length === 0}
-          >
-            Save Bookmark
-          </Button>
-        </div>
+
+        <Button
+          type="submit"
+          classNames={[bookmarkStyles.button]}
+          disabled={Object.keys(errors).length > 0 || Object.keys(values).length === 0}
+        >
+          Save Bookmark
+        </Button>
       </form>
     </div>
   );

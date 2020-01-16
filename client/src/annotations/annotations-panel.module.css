@@ -98,16 +98,12 @@
   margin: 0.75rem 0;
 }
 
-.selectDrawingTool {
-  padding: 0 1.5rem;
-}
-
 .drawingTools {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
   width: 100%;
-  margin: 1rem 0;
+  padding: 0.5rem 1.5rem;
 }
 
 .drawingToolsButton {

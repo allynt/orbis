@@ -160,8 +160,6 @@ const reducer = (state, action) => {
 };
 
 const AnnotationsPanel = ({ map }) => {
-  // const globalDispatch = useDispatch();
-
   const [state, dispatch] = useReducer(reducer, initialState);
   const {
     lineColourSelected,
@@ -257,7 +255,6 @@ const AnnotationsPanel = ({ map }) => {
   return (
     <div className={styles.panel}>
       <div className={styles.drawingOptions}>
-
         <div className={styles.options}>
           <h4 className={styles.header}>Annotations Style</h4>
           <div className={styles.annotationButtonsRow}>
@@ -366,7 +363,7 @@ const AnnotationsPanel = ({ map }) => {
       </div>
 
       <div className={styles.drawingToolsContainer}>
-        <div className={styles.selectDrawingTool}>
+        <div>
           <h4 className={styles.header}>Select Drawing Tool</h4>
           <div className={styles.drawingTools}>
             <Button

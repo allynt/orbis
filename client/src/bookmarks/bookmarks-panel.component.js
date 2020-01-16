@@ -6,7 +6,7 @@ import BookmarkList from './bookmarks-list.component';
 
 import { fetchBookmarks, addBookmark, selectBookmark } from './bookmarks.actions';
 
-import styles from './bookmarks-panel.module.css';
+import styles from '../side-menu/side-menu.module.css';
 
 const BookmarksPanel = ({ map }) => {
   const dispatch = useDispatch();
@@ -43,7 +43,7 @@ const BookmarksPanel = ({ map }) => {
   }, [bookmarks, dispatch]);
 
   return (
-    <div className={styles.panel}>
+    <div className={styles.container}>
       <BookmarkForm submit={submit} />
       <BookmarkList bookmarks={bookmarks} selectBookmark={chooseBookmark} />
     </div>
