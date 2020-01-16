@@ -2,6 +2,10 @@
   background-color: transparent;
 }
 
+.fields {
+  width: 100% !important;
+}
+
 .textfield {
   background-color: #333f48;
   color: #fff;

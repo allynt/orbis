@@ -15,6 +15,13 @@
   padding: 1rem;
 }
 
+.annotationsStyle {
+  display: flex;
+  flex-direction: column;
+  align-self: center;
+  width: 70%;
+}
+
 .drawingOptions {
   border-bottom: 1px solid #a2aaad;
 }
@@ -29,7 +36,7 @@
 }
 
 .header {
-  margin-bottom: 1rem;
+  margin-bottom: 0.5rem;
 }
 
 .lineButtons,
@@ -46,7 +53,7 @@
 .annotationButtonsRow {
   display: flex;
   align-items: center;
-  justify-content: space-evenly;
+  justify-content: space-between;
   margin: 0.5rem 0;
 }
 
@@ -80,22 +87,21 @@
   z-index: 1;
 }
 
-.lineButtons {
-}
-
 .lineButton {
   height: 2rem;
   margin: 0.75rem 0;
 }
 
-.slider {
+.selectDrawingTool {
+  padding: 0 1.5rem;
 }
 
 .drawingTools {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
-  width: 85%;
+  width: 100%;
+  margin: 1rem 0;
 }
 
 .drawingToolsButton {

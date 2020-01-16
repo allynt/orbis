@@ -11,12 +11,12 @@ import styles from './bookmarks-panel.module.css';
 
 const BookmarkList = ({ bookmarks, selectBookmark }) => {
   const dispatch = useDispatch();
+
   return (
     <div>
       {bookmarks && bookmarks.length > 0 ? (
         <ul className={styles.bookmarkList}>
           {bookmarks.map(bookmark => {
-            console.log('Bookmark: ', bookmark)
             return (
               <li key={bookmark.title} className={styles.bookmark}>
                 <div className={styles.bookmarkThumbnail}>Thumb</div>
@@ -30,10 +30,7 @@ const BookmarkList = ({ bookmarks, selectBookmark }) => {
                     <Button
                       theme="tertiary"
                       classNames={[styles.bookmarkButton]}
-                      onClick={() => {
-                        dispatch(deleteBookmark(bookmark));
-                      }}
-                    >
+                      onClick={() => dispatch(deleteBookmark(bookmark))}>
                       Delete
                     </Button>
                   </div>

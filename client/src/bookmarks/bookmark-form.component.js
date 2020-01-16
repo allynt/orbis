@@ -22,7 +22,7 @@ const BookmarkForm = ({ submit }) => {
   return (
     <div className={formStyles.container}>
       <form className={`${formStyles.form} ${bookmarkStyles.form}`} onSubmit={handleSubmit}>
-        <div className={formStyles.fields}>
+        <div className={`${formStyles.fields} ${bookmarkStyles.fields}`}>
           <div className={formStyles.row}>
             <Textfield
               classNames={[bookmarkStyles.textfield]}

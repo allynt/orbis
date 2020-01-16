@@ -26,7 +26,7 @@ const BookmarksPanel = ({ map }) => {
           center: [lng, lat],
           zoom: map.getZoom(),
           owner,
-          thumbnailBlob: blob,
+          thumbnail: blob,
         })
       );
     });
