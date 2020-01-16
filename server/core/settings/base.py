@@ -96,6 +96,7 @@ LOCAL_APPS = [
     "astrosat",  # (dependencies)
     "astrosat_users",  # (users)
     "core",  # (shared stuff)
+    "maps",  # (mapping tools)
     "orbis",  # (this app)
 ]
 

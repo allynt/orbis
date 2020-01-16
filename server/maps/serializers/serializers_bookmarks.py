@@ -1,7 +1,7 @@
 from django.contrib.gis.geos import Point
 from rest_framework.serializers import ModelSerializer, Field, ValidationError
 
-from .models import Bookmark
+from maps.models import Bookmark
 
 
 class SimplifiedGeometryField(Field):
@@ -25,10 +25,10 @@ class SimplifiedGeometryField(Field):
             raise ValidationError(str(e))
 
 
-class BookmarkGeoSerializer(ModelSerializer):
+class BookmarkSerializer(ModelSerializer):
     # _not_ using GeoFeatureModelSerializer b/c I do not want to convert the whole queryset to GeoJSON
     class Meta:
         model = Bookmark
-        fields = ("id", "owner", "title", "zoom", "center", "feature_collection")
+        fields = ("id", "owner", "title", "description", "zoom", "center", "feature_collection")
 
     center = SimplifiedGeometryField(geometry_class=Point, precision=Bookmark.PRECISION)
