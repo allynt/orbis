@@ -23,7 +23,7 @@ const BookmarkForm = ({ submit }) => {
     <div className={formStyles.container}>
       <form className={`${formStyles.form} ${bookmarkStyles.form}`} onSubmit={handleSubmit}>
         <div className={`${formStyles.fields} ${bookmarkStyles.fields}`}>
-          <div className={formStyles.row}>
+
             <Textfield
               classNames={[bookmarkStyles.textfield]}
               name="title"
@@ -33,9 +33,9 @@ const BookmarkForm = ({ submit }) => {
               required
               autoFocus
             />
-          </div>
+
           {errors.title && <p className={formStyles.errorMessage}>{errors.title}</p>}
-          <div className={formStyles.row}>
+
             <Textfield
               classNames={[bookmarkStyles.textfield]}
               name="description"
@@ -44,7 +44,7 @@ const BookmarkForm = ({ submit }) => {
               onChange={handleChange}
               required
             />
-          </div>
+
           {errors.title && <p className={formStyles.errorMessage}>{errors.title}</p>}
         </div>
         <div className={formStyles.buttons}>

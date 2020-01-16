@@ -45,6 +45,12 @@
   flex-direction: column;
 }
 
+.lineButtons,
+.annotationButtonsRow {
+  width: 75%;
+  align-self: center;
+}
+
 .lineButton,
 .drawingToolsButton {
   padding: 0.5rem 0.5rem;

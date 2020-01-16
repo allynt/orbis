@@ -13,7 +13,6 @@ import Well from '@astrosat/astrosat-ui/dist/containers/well';
 
 import formStyles from './forms.module.css';
 import userStyles from './update-user-form.module.css';
-import { styles } from '@astrosat/astrosat-ui/dist/text-field.module-3ed65b3d';
 
 const UpdateUserForm = ({ user, updateUser }) => {
   const { handleChange, handleSubmit, values, errors } = useForm(onSubmit, validate);
@@ -23,16 +22,16 @@ const UpdateUserForm = ({ user, updateUser }) => {
   }
 
   return (
-    <div className={userStyles.container}>
+    <div className={`${formStyles.container} ${userStyles.container}`}>
       <form className={`${formStyles.form} ${userStyles.form}`} onSubmit={handleSubmit}>
         <div className={`${formStyles.fields} ${userStyles.fields}`}>
           <p className={userStyles.infoHeader}>Personal Details</p>
-          <div className={formStyles.row}>
+
             <Textfield classNames={[userStyles.textfield]} name="email" value={user.email || ''} placeholder="Email" onChange={handleChange} readOnly />
-          </div>
+
           {errors.email && <p className={formStyles.errorMessage}>{errors.email}</p>}
 
-          <div className={formStyles.row}>
+
             <Textfield
             classNames={[userStyles.textfield]}
               name="name"
@@ -41,10 +40,10 @@ const UpdateUserForm = ({ user, updateUser }) => {
               onChange={handleChange}
               autoFocus
             />
-          </div>
+
           {errors.first_name && <p className={formStyles.errorMessage}>{errors.first_name}</p>}
 
-          <div className={formStyles.row}>
+
             <Textfield
             classNames={[userStyles.textfield]}
               name="first_name"
@@ -52,10 +51,10 @@ const UpdateUserForm = ({ user, updateUser }) => {
               placeholder="First Name"
               onChange={handleChange}
             />
-          </div>
+
           {errors.first_name && <p className={formStyles.errorMessage}>{errors.first_name}</p>}
 
-          <div className={formStyles.row}>
+
             <Textfield
             classNames={[userStyles.textfield]}
               name="last_name"
@@ -63,13 +62,13 @@ const UpdateUserForm = ({ user, updateUser }) => {
               placeholder="Last Name"
               onChange={handleChange}
             />
-          </div>
+
           {errors.last_name && <p className={formStyles.errorMessage}>{errors.last_name}</p>}
 
           <p className={userStyles.regionHeader}>Preferences</p>
-          <div className={formStyles.row}>
+
             <Select classNames={[userStyles.select]} />
-          </div>
+
         </div>
 
         <div className={formStyles.buttons}>

@@ -1,12 +1,10 @@
 .container {
-  height: 100%;
   padding: 1rem;
 }
 
 .form {
   margin: 0;
   height: 100%;
-  width: 100%;
   background-color: transparent;
 }
 
@@ -15,19 +13,15 @@
   font-size: 0.9rem;
 }
 
-.regionHeader {
-  margin: 1.5rem 0 1rem 0;
-}
-
 .fields {
-  margin: 1rem;
   width: 100%;
 }
 
-.textfield,
-.select {
+.textfield {
   font-size: 1rem;
   background-color: transparent;
   color: #fff;
-  padding: 1rem 0;
+  padding: 0.5rem 0;
+  margin: 0.5rem 0;
+  width: 100%;
 }

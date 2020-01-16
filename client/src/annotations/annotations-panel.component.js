@@ -257,7 +257,7 @@ const AnnotationsPanel = ({ map }) => {
   return (
     <div className={styles.panel}>
       <div className={styles.drawingOptions}>
-        <div className={styles.annotationsStyle}>
+
         <div className={styles.options}>
           <h4 className={styles.header}>Annotations Style</h4>
           <div className={styles.annotationButtonsRow}>
@@ -353,7 +353,6 @@ const AnnotationsPanel = ({ map }) => {
           {lineWidthSelected && (
             <DropDownButton options={lineWidthOptions} select={option => dispatch({ type: SET_LINE_WIDTH, option })} />
           )}
-        </div>
         </div>
 
         <div className={styles.slider}>

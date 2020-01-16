@@ -75,12 +75,14 @@ export const deleteBookmark = bookmark => async dispatch => {
     const errorResponse = await response.json();
     const error = new Error(errorResponseToString(errorResponse));
     NotificationManager.error(error.message, `Deleting Bookmark Error - ${response.statusText}`, 50000, () => {});
+
     return dispatch({
       type: DELETE_BOOKMARK_FAILURE,
       error
     });
   } else {
     NotificationManager.success('Successfully deleted bookmark', 'Successful bookmark deletion', 5000, () => {});
+
     return dispatch({
       type: DELETE_BOOKMARK_SUCCESS,
       bookmark

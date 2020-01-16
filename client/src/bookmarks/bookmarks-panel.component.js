@@ -27,7 +27,7 @@ const BookmarksPanel = ({ map }) => {
           zoom: map.getZoom(),
           owner,
           thumbnail: blob,
-        })
+        }, 'image/png')
       );
     });
   };
