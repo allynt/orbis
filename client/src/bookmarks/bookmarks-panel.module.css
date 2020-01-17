@@ -1,7 +1,3 @@
-.panel {
-  padding: 1rem 0;
-}
-
 .bookmarkList {
   display: flex;
   flex-direction: column;
@@ -46,6 +42,13 @@
   padding: 0.5rem 2rem !important;
   width: 45%;
   height: 2rem;
+}
+
+.noBookmarks {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 2rem;
 }
 
 .icon {

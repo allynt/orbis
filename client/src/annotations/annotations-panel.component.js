@@ -160,8 +160,6 @@ const reducer = (state, action) => {
 };
 
 const AnnotationsPanel = ({ map }) => {
-  // const globalDispatch = useDispatch();
-
   const [state, dispatch] = useReducer(reducer, initialState);
   const {
     lineColourSelected,

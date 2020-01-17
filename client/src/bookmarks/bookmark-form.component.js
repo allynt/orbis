@@ -3,21 +3,17 @@ import PropTypes from 'prop-types';
 
 // import ReactTooltip from 'react-tooltip';
 
-// import useForm from '../hooks/useForm';
 import validate from './bookmark-form.validator';
 
 import Button from '@astrosat/astrosat-ui/dist/buttons/button';
 import Textfield from '@astrosat/astrosat-ui/dist/forms/text-field';
-import Textarea from '@astrosat/astrosat-ui/dist/forms/text-area';
 import useForm from '@astrosat/astrosat-ui/dist/forms/use-form';
-// import { Button, Textfield } from '@astrosat/astrosat-ui';
 
 import formStyles from '../accounts/forms.module.css';
-import bookmarkStyles from './bookmark-form.module.css';
+import bookmarkStyles from '../side-menu/side-menu.module.css';
 
 const BookmarkForm = ({ submit }) => {
   function onSubmit() {
-    console.log('Submitting Form');
     submit(values);
   }
 
@@ -26,40 +22,34 @@ const BookmarkForm = ({ submit }) => {
   return (
     <div className={formStyles.container}>
       <form className={`${formStyles.form} ${bookmarkStyles.form}`} onSubmit={handleSubmit}>
-        <div className={formStyles.fields}>
-          <div className={formStyles.row}>
-            <Textfield
-              classNames={[formStyles.textfield]}
-              name="title"
-              value={values.title || ''}
-              placeholder="Title"
-              onChange={handleChange}
-              required
-              autoFocus
-            />
-          </div>
+        <div className={`${formStyles.fields} ${bookmarkStyles.fields}`}>
+          <Textfield
+            name="title"
+            value={values.title || ''}
+            placeholder="Title"
+            onChange={handleChange}
+            required
+            autoFocus
+          />
           {errors.title && <p className={formStyles.errorMessage}>{errors.title}</p>}
-          <div className={formStyles.row}>
-            <Textfield
-              classNames={[formStyles.textfield]}
-              name="description"
-              value={values.description || ''}
-              placeholder="Description"
-              onChange={handleChange}
-              required
-            />
-          </div>
+
+          <Textfield
+            name="description"
+            value={values.description || ''}
+            placeholder="Description"
+            onChange={handleChange}
+            required
+          />
           {errors.title && <p className={formStyles.errorMessage}>{errors.title}</p>}
         </div>
-        <div className={formStyles.buttons}>
-          <Button
-            type="submit"
-            className={formStyles.button}
-            disabled={Object.keys(errors).length > 0 || Object.keys(values).length === 0}
-          >
-            Save Bookmark
-          </Button>
-        </div>
+
+        <Button
+          type="submit"
+          classNames={[bookmarkStyles.button]}
+          disabled={Object.keys(errors).length > 0 || Object.keys(values).length === 0}
+        >
+          Save Bookmark
+        </Button>
       </form>
     </div>
   );

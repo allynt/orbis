@@ -32,3 +32,32 @@
 .side-menu-container ul li:last-child {
   border-bottom: unset;
 } */
+
+.container {
+  padding: 1rem;
+}
+
+.form {
+  background-color: transparent;
+  margin: 0;
+  height: 100%;
+}
+
+.button {
+  width: 60%;
+  height: 2rem;
+  margin: 0.5rem 0;
+  padding: 0.5rem 2rem !important;
+}
+
+.row {
+  width: 100%;
+}
+
+.fields {
+  width: 100% !important;
+}
+
+.Header {
+  font-size: 0.9rem;
+}

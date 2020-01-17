@@ -6,7 +6,7 @@ import BookmarkList from './bookmarks-list.component';
 
 import { fetchBookmarks, addBookmark, selectBookmark } from './bookmarks.actions';
 
-import styles from './bookmarks-panel.module.css';
+import styles from '../side-menu/side-menu.module.css';
 
 const BookmarksPanel = ({ map }) => {
   const dispatch = useDispatch();
@@ -18,9 +18,18 @@ const BookmarksPanel = ({ map }) => {
 
     const { lng, lat } = map.getCenter();
 
-    dispatch(
-      addBookmark({ ...form, feature_collection: featureCollection, center: [lng, lat], zoom: map.getZoom(), owner })
-    );
+    map.getCanvas().toBlob(blob => {
+      dispatch(
+        addBookmark({
+          ...form,
+          feature_collection: featureCollection,
+          center: [lng, lat],
+          zoom: map.getZoom(),
+          owner,
+          thumbnail: blob,
+        }, 'image/png')
+      );
+    });
   };
 
   const chooseBookmark = bookmark => dispatch(selectBookmark(bookmark));
@@ -34,7 +43,7 @@ const BookmarksPanel = ({ map }) => {
   }, [bookmarks, dispatch]);
 
   return (
-    <div className={styles.panel}>
+    <div className={styles.container}>
       <BookmarkForm submit={submit} />
       <BookmarkList bookmarks={bookmarks} selectBookmark={chooseBookmark} />
     </div>

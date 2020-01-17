@@ -1,5 +1,5 @@
 import { NotificationManager } from 'react-notifications';
-import { sendData, JSON_HEADERS } from '../utils/http';
+import { sendData, JSON_HEADERS, FORM_HEADERS } from '../utils/http';
 
 export const FETCH_BOOKMARKS_SUCCESS = 'FETCH_BOOKMARKS_SUCCESS';
 export const FETCH_BOOKMARKS_FAILURE = 'FETCH_BOOKMARKS_FAILURE';
@@ -40,7 +40,10 @@ export const fetchBookmarks = () => async dispatch => {
 };
 
 export const addBookmark = bookmark => async dispatch => {
-  const response = await sendData(API.add, bookmark, JSON_HEADERS);
+  const formData = new FormData();
+  Object.keys(bookmark).forEach(key => formData.append(key, bookmark[key]));
+
+  const response = await sendData(API.add, formData, FORM_HEADERS);
 
   if (!response.ok) {
     const errorResponse = await response.json();
@@ -66,13 +69,11 @@ export const addBookmark = bookmark => async dispatch => {
 export const selectBookmark = bookmark => ({ type: SELECT_BOOKMARK, bookmark });
 
 export const deleteBookmark = bookmark => async dispatch => {
-  console.log('DELETING BOOKMARK: ', bookmark);
+  console.log('DELETING BOOKMARK: ', bookmark.id);
   const response = await sendData(API.delete, bookmark.id, null, 'DELETE');
-
   if (!response.ok) {
     const errorResponse = await response.json();
     const error = new Error(errorResponseToString(errorResponse));
-
     NotificationManager.error(error.message, `Deleting Bookmark Error - ${response.statusText}`, 50000, () => {});
 
     return dispatch({

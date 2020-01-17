@@ -4,9 +4,6 @@ import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
 
 import Button from '@astrosat/astrosat-ui/dist/buttons/button';
-// import { Button } from '@astrosat/astrosat-ui';
-
-import { ReactComponent as BookmarksIcon } from './delete.svg';
 
 import { deleteBookmark } from './bookmarks.actions';
 
@@ -24,10 +21,8 @@ const BookmarkList = ({ bookmarks, selectBookmark }) => {
               <li key={bookmark.title} className={styles.bookmark}>
                 <div className={styles.bookmarkThumbnail}>Thumb</div>
                 <div className={styles.bookmarkContent}>
-                  <h3 className={styles.bookmarkTitle}>TITLE</h3>
-                  <p className={styles.bookmarkDescription}>
-                    Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-                  </p>
+                  <h3 className={styles.bookmarkTitle}>{bookmark.title}</h3>
+                  <p className={styles.bookmarkDescription}>{bookmark.description}</p>
                   <div className={styles.bookmarkButtons}>
                     <Button classNames={[styles.bookmarkButton]} onClick={() => selectBookmark(bookmark)}>
                       Load
@@ -35,8 +30,7 @@ const BookmarkList = ({ bookmarks, selectBookmark }) => {
                     <Button
                       theme="tertiary"
                       classNames={[styles.bookmarkButton]}
-                      onClick={() => dispatch(deleteBookmark(bookmark))}
-                    >
+                      onClick={() => dispatch(deleteBookmark(bookmark))}>
                       Delete
                     </Button>
                   </div>
@@ -46,7 +40,7 @@ const BookmarkList = ({ bookmarks, selectBookmark }) => {
           })}
         </ul>
       ) : (
-        <p>No Bookmarks</p>
+        <p className={styles.noBookmarks}>No Bookmarks</p>
       )}
     </div>
   );
