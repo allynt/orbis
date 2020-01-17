@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import { regions } from '../map/map.constants';
+
 // import useForm from '../hooks/useForm';
 import validate from './update-user-form.validator';
 
@@ -25,19 +27,11 @@ const UpdateUserForm = ({ user, updateUser }) => {
     <div className={`${formStyles.container} ${userStyles.container}`}>
       <form className={`${formStyles.form} ${userStyles.form}`} onSubmit={handleSubmit}>
         <div className={`${formStyles.fields} ${userStyles.fields}`}>
-          <p className={userStyles.infoHeader}>Personal Details</p>
-          <Textfield
-            classNames={[userStyles.textfield]}
-            name="email"
-            value={user.email || ''}
-            placeholder="Email"
-            onChange={handleChange}
-            readOnly
-          />
+          <p className={userStyles.header}>Personal Details</p>
+          <Textfield name="email" value={user.email || ''} placeholder="Email" onChange={handleChange} readOnly />
           {errors.email && <p className={formStyles.errorMessage}>{errors.email}</p>}
 
           <Textfield
-            classNames={[userStyles.textfield]}
             name="name"
             value={user.name || values.name || ''}
             placeholder="Full Name"
@@ -47,7 +41,6 @@ const UpdateUserForm = ({ user, updateUser }) => {
           {errors.first_name && <p className={formStyles.errorMessage}>{errors.first_name}</p>}
 
           <Textfield
-            classNames={[userStyles.textfield]}
             name="first_name"
             value={user.first_name || values.first_name || ''}
             placeholder="First Name"
@@ -56,7 +49,6 @@ const UpdateUserForm = ({ user, updateUser }) => {
           {errors.first_name && <p className={formStyles.errorMessage}>{errors.first_name}</p>}
 
           <Textfield
-            classNames={[userStyles.textfield]}
             name="last_name"
             value={user.last_name || values.last_name || ''}
             placeholder="Last Name"
@@ -64,8 +56,8 @@ const UpdateUserForm = ({ user, updateUser }) => {
           />
           {errors.last_name && <p className={formStyles.errorMessage}>{errors.last_name}</p>}
 
-          <p className={userStyles.regionHeader}>Preferences</p>
-          <Select classNames={[userStyles.select]} />
+          <p className={userStyles.header}>Preferences</p>
+          <Select classNames={[userStyles.select]} options={regions} onChange={handleChange} />
         </div>
         <Button
           type="submit"

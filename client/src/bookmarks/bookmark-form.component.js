@@ -24,7 +24,6 @@ const BookmarkForm = ({ submit }) => {
       <form className={`${formStyles.form} ${bookmarkStyles.form}`} onSubmit={handleSubmit}>
         <div className={`${formStyles.fields} ${bookmarkStyles.fields}`}>
           <Textfield
-            classNames={[bookmarkStyles.textfield]}
             name="title"
             value={values.title || ''}
             placeholder="Title"
@@ -35,7 +34,6 @@ const BookmarkForm = ({ submit }) => {
           {errors.title && <p className={formStyles.errorMessage}>{errors.title}</p>}
 
           <Textfield
-            classNames={[bookmarkStyles.textfield]}
             name="description"
             value={values.description || ''}
             placeholder="Description"
