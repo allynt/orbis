@@ -8,19 +8,23 @@ import InfoButton from '@astrosat/astrosat-ui/dist/buttons/info-button';
 import Button from '@astrosat/astrosat-ui/dist/buttons/button';
 import Switch from '@astrosat/astrosat-ui/dist/buttons/switch';
 
-import { data as DOMAINS } from './data-layers-dialog-config';
-
 import { addLayers } from './data-layers-dialog.actions';
 
 import styles from './data-layers-dialog.module.css';
+
+const InfoBox = ({ info }) => <div className={styles.infoBox}>{info}</div>;
 
 const DataLayersDialog = ({ isVisible, close, title }, ref) => {
   const overlayRef = useRef(null);
 
   const dispatch = useDispatch();
+  const domains = useSelector(state => state.map.dataSources);
 
   const [selectedDomain, setSelectedDomain] = useState(null);
   const [selectedLayers, setSelectedLayers] = useState([]);
+
+  const [isInfoVisible, setIsInfoVisible] = useState(false);
+  const [info, setInfo] = useState(null);
 
   return isVisible && ref.current
     ? ReactDOM.createPortal(
@@ -42,7 +46,7 @@ const DataLayersDialog = ({ isVisible, close, title }, ref) => {
 
                 <div className={styles.content}>
                   <ul>
-                    {DOMAINS.map(domain => (
+                    {domains.map(domain => (
                       <li key={domain.label} onClick={() => setSelectedDomain(domain)}>
                         {domain.label}
                       </li>
@@ -57,39 +61,50 @@ const DataLayersDialog = ({ isVisible, close, title }, ref) => {
                   <CloseButton onClick={close} ariaLabel="Close" />
                 </div>
 
-                <div className={`${styles.content} ${styles.subcategoryOptions}`}>
+                <div className={styles.content}>
                   {selectedDomain && (
-                    <div>
+                    <div className={styles.subCategoryOptions}>
                       <ul>
                         {selectedDomain &&
                           selectedDomain.layers.map(layer => {
                             return (
-                              <li key={layer.label}>
+                              <li key={layer.metadata.label}>
                                 <div className={styles.row}>
                                   <Switch
-                                    name={layer.id}
-                                    value={layer.sourceId}
-                                    label={layer.label}
+                                    name={layer.name}
+                                    value={layer.name}
+                                    label={layer.metadata.label}
                                     onClick={() => {
                                       // Remove if already selected, otherwise add to list of selected layers.
                                       const selectedLayer = selectedLayers.find(
-                                        selected => selected.label === layer.label
+                                        selected => selected.metadata.label === layer.metadata.label
                                       );
 
                                       selectedLayer
                                         ? setSelectedLayers(
-                                            selectedLayers.filter(lyr => lyr.label !== selectedLayer.label)
+                                            selectedLayers.filter(
+                                              lyr => lyr.metadata.label !== selectedLayer.metadata.label
+                                            )
                                           )
                                         : setSelectedLayers([...selectedLayers, layer]);
                                     }}
-                                    ariaLabel={layer.label}
+                                    ariaLabel={layer.metadata.label}
                                   />
 
-                                  <InfoButton onClick={() => console.log('Info Clicked: ', layer.description)} />
+                                  {isInfoVisible && info.name === layer.name && (
+                                    <InfoBox info={layer.metadata.description} />
+                                  )}
+
+                                  <InfoButton
+                                    classNames={[styles.info]}
+                                    onClick={() => {
+                                      setIsInfoVisible(!isInfoVisible);
+                                      setInfo(layer);
+                                    }}
+                                  />
                                 </div>
-                                {selectedLayers.find(selected => selected.label === layer.label) && layer.range && (
-                                  <div>START/END DATE</div>
-                                )}
+                                {selectedLayers.find(selected => selected.metadata.label === layer.metadata.label) &&
+                                  layer.metadata.range && <div>START/END DATE</div>}
                               </li>
                             );
                           })}
