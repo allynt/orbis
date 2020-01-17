@@ -1,7 +1,28 @@
 .selectData {
   display: flex;
+  flex-direction: column;
+}
+
+.buttons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.button {
+  background-color: transparent !important;
+  /* color: var(--primary-foreground-color) !important; */
 }
 
 .categoryButton {
+  color: #fff;
+}
+
+.icon {
+  height: 1.5rem;
+  fill: var(--primary-background-color);
+}
+
+.domain {
   color: #fff;
 }
