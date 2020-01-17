@@ -132,9 +132,9 @@
 }
 
 .map :global(.mapboxgl-ctrl-geocoder) {
-  z-index: 6;
+  /* z-index: 6;
   position: absolute;
-  left: 5rem;
+  left: 5rem;*/
   background-color: var(--background-color);
 }
 
@@ -147,9 +147,9 @@
   color: #fff;
 }
 
-.map :global(.mapboxgl-control-container) :global(.mapboxgl-ctrl-bottom-right) {
+/* .map :global(.mapboxgl-control-container) :global(.mapboxgl-ctrl-bottom-right) {
   bottom: 5rem;
-}
+} */
 
 .map :global(.mapboxgl-popup-tip),
 .map :global(.mapboxgl-popup-anchor-top) :global(.mapboxgl-popup-tip),
@@ -245,9 +245,9 @@
 
 .mapStyleButton {
   position: absolute;
-  width: auto;
-  bottom: 0;
-  right: 0;
+  padding: 0.5rem !important;
+  bottom: 7.5rem;
+  right: 0.6rem;
   z-index: 10;
 }
 
@@ -287,4 +287,9 @@
 
 .headings .strapline {
   color: lightgray;
+}
+
+.icon {
+  width: 1rem;
+  color: var(--primary-button-background-color);
 }
