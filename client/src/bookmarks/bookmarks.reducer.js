@@ -40,7 +40,7 @@ const reducer = (state = initialState, action) => {
 
     case DELETE_BOOKMARK_SUCCESS:
       const filteredBookmarks = state.bookmarks.filter(bookmark => bookmark.id !== action.bookmark.id);
-      const isSelectedBookmark = state.selectedBookmark.id === action.bookmark.id;
+      const isSelectedBookmark = state.selectedBookmark && state.selectedBookmark.id === action.bookmark.id;
       const selectedBookmark = isSelectedBookmark ? null : state.selectedBookmark;
       return {
         ...state,

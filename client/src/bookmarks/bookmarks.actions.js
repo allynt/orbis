@@ -43,7 +43,11 @@ export const addBookmark = bookmark => async dispatch => {
   const formData = new FormData();
   Object.keys(bookmark).forEach(key => formData.append(key, bookmark[key]));
 
-  const response = await sendData(API.add, formData, FORM_HEADERS);
+  const response = await sendData(API.add, bookmark, JSON_HEADERS);
+  // FIXME: comment out the above line and uncomment out the one below,
+  // after the backend has been updated to accept a FormData object rather
+  // that plain JSON object.
+  // const response = await sendData(API.add, formData, FORM_HEADERS);
 
   if (!response.ok) {
     const errorResponse = await response.json();
@@ -68,9 +72,16 @@ export const addBookmark = bookmark => async dispatch => {
 
 export const selectBookmark = bookmark => ({ type: SELECT_BOOKMARK, bookmark });
 
-export const deleteBookmark = bookmark => async dispatch => {
-  console.log('DELETING BOOKMARK: ', bookmark.id);
-  const response = await sendData(API.delete, bookmark.id, null, 'DELETE');
+export const deleteBookmark = bookmark => async (dispatch, getState) => {
+  const {
+    accounts: { userKey }
+  } = getState();
+  const headers = {
+    Authorization: `Token ${userKey}`
+  };
+
+  const response = await sendData(API.delete, bookmark.id, headers, 'DELETE');
+
   if (!response.ok) {
     const errorResponse = await response.json();
     const error = new Error(errorResponseToString(errorResponse));
