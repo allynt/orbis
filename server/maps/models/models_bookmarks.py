@@ -2,10 +2,13 @@ from django.conf import settings
 from django.contrib.gis.db import models as gis_models
 from django.contrib.postgres.fields import JSONField
 from django.db import models
+from django.utils.text import slugify
 from django.utils.translation import gettext as _
 
 from astrosat.utils import validate_schema
 from astrosat_users.models import get_sentinel_user
+
+from maps.storage import S3Storage, LocalStorage
 
 
 FEATURE_COLLECTION_SCHEMA = {
@@ -34,6 +37,11 @@ def validate_feature_collection(value):
     return validate_schema(value, FEATURE_COLLECTION_SCHEMA)
 
 
+def bookmark_thumbnail_path(instance, filename):
+    filename = slugify(instance.title)
+    return f"bookmarks/{instance.owner.username}/{filename}.png"
+
+
 class Bookmark(gis_models.Model):
     class Meta:
 
@@ -45,18 +53,18 @@ class Bookmark(gis_models.Model):
         max_length=128,
         blank=False,
         null=False,
-        help_text=_("A pretty display name for the bookmark"),
+        help_text=_("A pretty display name for the bookmark."),
     )
 
     description = models.TextField(
         blank=True,
         null=True,
-        help_text=_("A description of the bookmark"),
+        help_text=_("A description of the bookmark."),
     )
 
     feature_collection = JSONField(
-        blank=False,
-        null=False,
+        blank=True,
+        null=True,
         validators=[validate_feature_collection],
         help_text=_("a GeoJSON description of the data being bookmarked."),
     )
@@ -64,7 +72,7 @@ class Bookmark(gis_models.Model):
     center = gis_models.PointField(
         blank=False,
         null=False,
-        help_text=_("The center point of this bookmark on the map"),
+        help_text=_("The center point of this bookmark on the map."),
     )
 
     zoom = models.FloatField(
@@ -79,10 +87,17 @@ class Bookmark(gis_models.Model):
         null=False,
         on_delete=models.SET(get_sentinel_user),
         related_name="bookmarks",
+        help_text=_("The owner of this bookmark."),
     )
 
-    # TODO: thumbnail
-
+    thumbnail = models.FileField(
+        storage=S3Storage(),
+        # storage=LocalStorage(),
+        upload_to=bookmark_thumbnail_path,
+        blank=True,
+        null=True,
+        help_text=_("A thumbnail image representing this bookmark."),
+    )
 
     def __str__(self):
         return self.title

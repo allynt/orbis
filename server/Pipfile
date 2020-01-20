@@ -25,6 +25,8 @@ django-filter = ">=2.1.0"
 django-health-check = ">=3.10.2"
 # secure tokens
 django-rest-knox = ">=4.1.0"
+# external file storage
+django-storages = ">=1.8"
 # API... duh
 djangorestframework = ">=3.9.4"
 # API for GIS

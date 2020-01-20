@@ -1,7 +1,10 @@
-import itertools
+import json
+import os
 import pytest
 import urllib
 
+from django.test.client import encode_multipart
+from django.core.files.uploadedfile import SimpleUploadedFile
 from django.urls import resolve, reverse
 
 from rest_framework import status
@@ -14,6 +17,9 @@ from maps.serializers import BookmarkSerializer
 
 from .factories import *
 
+TEST_DATA_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data")
+
+TEST_FORM_BOUNDARY = "----WebKitFormBoundary2QT6fGjSCgRZuMif"
 
 @pytest.mark.django_db
 class TestBookmarkViews:
@@ -74,15 +80,20 @@ class TestBookmarkViews:
         user = UserFactory()
         _, key = create_auth_token(user)
 
-        bookmark_data = BookmarkSerializer(
-            BookmarkFactory.build(owner=user)
-        ).data
+        bookmark = BookmarkFactory.build(owner=user)
+        bookmark_data = {
+            "title": bookmark.title,
+            "description": bookmark.description or "",
+            "zoom": bookmark.zoom,
+            "center": json.dumps(bookmark.center.coords),
+            "feature_collection": json.dumps(bookmark.feature_collection),
+        }
 
         client = APIClient()
         client.credentials(HTTP_AUTHORIZATION=f"Token {key}")
 
         url = reverse("bookmark-list")
-        response = client.post(url, bookmark_data, format="json")
+        response = client.post(url, bookmark_data, format="multipart")
 
         assert status.is_success(response.status_code)
 
@@ -93,8 +104,15 @@ class TestBookmarkViews:
         user = UserFactory()
         _, key = create_auth_token(user)
 
-        bookmark = BookmarkFactory(owner=user)
-        bookmark_data = BookmarkSerializer(bookmark).data
+        bookmark = BookmarkFactory.create(owner=user)
+        bookmark_data = {
+            "title": bookmark.title,
+            "description": bookmark.description or "",
+            "zoom": bookmark.zoom,
+            "center": json.dumps(bookmark.center.coords),
+            "feature_collection": json.dumps(bookmark.feature_collection),
+        }
+        # bookmark_data = BookmarkSerializer(bookmark).data
         old_title = bookmark_data["title"]
         new_title = shuffle_string(old_title).strip()
         bookmark_data["title"] = new_title
@@ -103,7 +121,7 @@ class TestBookmarkViews:
         client.credentials(HTTP_AUTHORIZATION=f"Token {key}")
 
         url = reverse("bookmark-detail", kwargs={"pk": bookmark.pk})
-        response = client.put(url, bookmark_data, format="json")
+        response = client.put(url, bookmark_data, format="multipart")
 
         assert status.is_success(response.status_code)
 
@@ -132,3 +150,24 @@ class TestBookmarkViews:
         assert all(d["owner"] == users[0].pk for d in data)
         assert len(data) == 5
         assert Bookmark.objects.count() == 10
+
+
+# TODO: MOCK THE SAVE OPERATION
+# @pytest.mark.django_db
+# class TestBookmarkThumbnails:
+
+#     def test_save_thumbnail(self):
+
+#         bookmark = BookmarkFactory()
+
+#         import pdb; pdb.set_trace()
+
+#         thumbnail = SimpleUploadedFile(
+#             name="test_thumbnail.png",
+#             content=open(os.path.join(TEST_DATA_DIR, "test_thumbnail.png"), 'rb').read(),
+#             content_type='image/png'
+#         )
+#         bookmark.thumbnail = thumbnail
+#         bookmark.save()
+
+#         pass

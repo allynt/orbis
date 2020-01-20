@@ -2,6 +2,7 @@ from django_filters import rest_framework as filters
 
 from rest_framework import viewsets
 from rest_framework.decorators import action
+from rest_framework.parsers import JSONParser, FormParser, MultiPartParser, FileUploadParser
 from rest_framework.permissions import BasePermission, SAFE_METHODS
 
 from maps.models import Bookmark
@@ -35,8 +36,13 @@ class BookmarkFilterSet(filters.FilterSet):
 
 
 class BookmarkViewSet(viewsets.ModelViewSet):
-    queryset = Bookmark.objects.all()
-    serializer_class = BookmarkSerializer
+
     permission_classes = [IsAdminOrOwner]
+    # the client sends data as multipart/form data
+    parser_classes = [MultiPartParser, FormParser]
+
     filter_backends = (filters.DjangoFilterBackend,)
     filterset_class = BookmarkFilterSet
+
+    queryset = Bookmark.objects.all()
+    serializer_class = BookmarkSerializer
