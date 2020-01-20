@@ -1,28 +1,33 @@
 import React from 'react';
 
 import {
-  ANNOTATIONS,
-  BOOKMARKS,
   DATA_LAYERS,
   SATELLITE_LAYERS,
+  PAGES,
+  BOOKMARKS,
+  STORIES,
+  ANNOTATIONS,
+  SAVE_MAP,
+  SHARE,
+  FAQ,
   PROFILE,
-  CHANGE_PASSWORD,
-  FAQ
+  CHANGE_PASSWORD
 } from './toolbar-constants';
 
-import { ReactComponent as BookmarksLogo } from './menu.svg';
 import { ReactComponent as DataIcon } from './data.svg';
-import { ReactComponent as FaqIcon } from './faq.svg';
-import { ReactComponent as ImageIcon } from './image.svg';
-import { ReactComponent as ProfileIcon } from './profile.svg';
 import { ReactComponent as SatelliteIcon } from './satellite.svg';
-import { ReactComponent as ShareIcon } from './share.svg';
+import { ReactComponent as PagesIcon } from './pages.svg';
+import { ReactComponent as BookmarksIcon } from './map.svg';
 import { ReactComponent as StoryIcon } from './story.svg';
 import { ReactComponent as AnnotationsIcon } from './annotations.svg';
+import { ReactComponent as ImageIcon } from './image.svg';
+import { ReactComponent as ShareIcon } from './share.svg';
+import { ReactComponent as FaqIcon } from './faq.svg';
+import { ReactComponent as ProfileIcon } from './profile.svg';
 
 import { toggleMenu, toggleMenuItem, setMenuHeadings } from '../side-menu/side-menu.actions';
-import { logout } from '../accounts/accounts.actions';
-import { toggleMiniMap, toggleSpyglassMap, toggleCompareMaps } from '../map/map.actions';
+// import { logout } from '../accounts/accounts.actions';
+import { saveMap } from '../map/map.actions';
 
 import { notYetImplemented } from '../app.actions';
 
@@ -49,6 +54,28 @@ export const getToolbarItems = dispatch => {
       tooltip: SATELLITE_LAYERS
     },
     {
+      label: PAGES,
+      icon: <PagesIcon />,
+      action: () => dispatch(notYetImplemented('No Pages designed yet')),
+      tooltip: PAGES
+    },
+    {
+      label: BOOKMARKS,
+      icon: <BookmarksIcon />,
+      action: () => {
+        dispatch(toggleMenu(BOOKMARKS));
+        dispatch(toggleMenuItem(BOOKMARKS));
+        dispatch(setMenuHeadings('Bookmark Map', 'Bookmark Map Strapline'));
+      },
+      tooltip: BOOKMARKS
+    },
+    {
+      label: STORIES,
+      icon: <StoryIcon />,
+      action: () => dispatch(notYetImplemented('No Pages designed yet')),
+      tooltip: STORIES
+    },
+    {
       label: ANNOTATIONS,
       icon: <AnnotationsIcon />,
       action: () => {
@@ -59,14 +86,16 @@ export const getToolbarItems = dispatch => {
       tooltip: ANNOTATIONS
     },
     {
-      label: BOOKMARKS,
+      label: SAVE_MAP,
       icon: <ImageIcon />,
-      action: () => {
-        dispatch(toggleMenu(BOOKMARKS));
-        dispatch(toggleMenuItem(BOOKMARKS));
-        dispatch(setMenuHeadings('Bookmark Map', 'Bookmark Map Strapline'));
-      },
-      tooltip: BOOKMARKS
+      action: () => dispatch(saveMap()),
+      tooltip: SAVE_MAP
+    },
+    {
+      label: SHARE,
+      icon: <ShareIcon />,
+      action: () => dispatch(notYetImplemented('No Share designed yet')),
+      tooltip: SHARE
     },
     // {
     //   label: 'Layers',
@@ -86,20 +115,20 @@ export const getToolbarItems = dispatch => {
     //   },
     //   tooltip: 'Change Password'
     // },
-    {
-      label: 'Toggle Mini-Map',
-      icon: <ShareIcon />,
-      action: () => dispatch(toggleMiniMap()),
-      tooltip: 'Toggle Mini-Map'
-    },
-    {
-      label: 'Toggle Spyglass',
-      icon: <StoryIcon />,
-      // action: () => dispatch(toggleSpyglassMap()),
-      action: () => dispatch(notYetImplemented('No Stories designed yet')),
-      // action: () => dispatch(toggleCompareMaps()),
-      tooltip: 'Toggle Spyglass'
-    },
+    // {
+    //   label: 'Toggle Mini-Map',
+    //   icon: <ShareIcon />,
+    //   action: () => dispatch(toggleMiniMap()),
+    //   tooltip: 'Toggle Mini-Map'
+    // },
+    // {
+    //   label: 'Toggle Spyglass',
+    //   icon: <StoryIcon />,
+    //   // action: () => dispatch(toggleSpyglassMap()),
+    //   action: () => dispatch(notYetImplemented('No Stories designed yet')),
+    //   // action: () => dispatch(toggleCompareMaps()),
+    //   tooltip: 'Toggle Spyglass'
+    // },
     {
       label: 'FAQ',
       icon: <FaqIcon />,

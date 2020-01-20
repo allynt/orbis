@@ -43,7 +43,8 @@
 
 .item.active {
   background-color: var(--primary-button-background-color);
-  color: #fff;
+  color: var(--primary-foreground-color);
+  /* color: #fff; */
 }
 
 .bottomPanel {
