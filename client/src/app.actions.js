@@ -1,6 +1,7 @@
 import { NotificationManager } from 'react-notifications';
 
 export const FETCH_APP_CONFIG = 'FETCH_APP_CONFIG';
+export const NOT_YET_IMPLEMENTED = 'NOT_YET_IMPLEMENTED';
 
 export const fetchAppConfig = () => async dispatch => {
   const response = await fetch('/api/app/config', { credentials: 'include' });
@@ -14,3 +15,5 @@ export const fetchAppConfig = () => async dispatch => {
     NotificationManager.error(message, 'Fetching App Config', 50000, () => {});
   }
 };
+
+export const notYetImplemented = text => ({ type: NOT_YET_IMPLEMENTED, text });

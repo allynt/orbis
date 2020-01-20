@@ -1,6 +1,14 @@
 import React from 'react';
 
-import { ANNOTATIONS, BOOKMARKS, DATA_LAYERS, SATELLITE_LAYERS, PROFILE, CHANGE_PASSWORD } from './constants';
+import {
+  ANNOTATIONS,
+  BOOKMARKS,
+  DATA_LAYERS,
+  SATELLITE_LAYERS,
+  PROFILE,
+  CHANGE_PASSWORD,
+  FAQ
+} from './toolbar-constants';
 
 import { ReactComponent as BookmarksLogo } from './menu.svg';
 import { ReactComponent as DataIcon } from './data.svg';
@@ -16,14 +24,10 @@ import { toggleMenu, toggleMenuItem, setMenuHeadings } from '../side-menu/side-m
 import { logout } from '../accounts/accounts.actions';
 import { toggleMiniMap, toggleSpyglassMap, toggleCompareMaps } from '../map/map.actions';
 
+import { notYetImplemented } from '../app.actions';
+
 export const getToolbarItems = dispatch => {
   return [
-    // {
-    //   label: 'Open Sidebar',
-    //   icon: <BookmarksLogo />,
-    //   action: () => dispatch(toggleMenu()),
-    //   tooltip: 'Open Sidebar'
-    // },
     {
       label: DATA_LAYERS,
       icon: <DataIcon />,
@@ -92,13 +96,14 @@ export const getToolbarItems = dispatch => {
       label: 'Toggle Spyglass',
       icon: <StoryIcon />,
       // action: () => dispatch(toggleSpyglassMap()),
-      action: () => dispatch(toggleCompareMaps()),
+      action: () => dispatch(notYetImplemented('No Stories designed yet')),
+      // action: () => dispatch(toggleCompareMaps()),
       tooltip: 'Toggle Spyglass'
     },
     {
       label: 'FAQ',
       icon: <FaqIcon />,
-      action: () => console.log('DISPLAY FAQs'),
+      action: () => dispatch(notYetImplemented(FAQ)),
       tooltip: 'FAQ',
       footer: true
     },
@@ -107,8 +112,6 @@ export const getToolbarItems = dispatch => {
       icon: <ProfileIcon />,
       action: () => {
         dispatch(toggleMenu(PROFILE));
-        dispatch(toggleMenuItem(PROFILE));
-        dispatch(setMenuHeadings('User Profile', 'User Profile Strapline'));
       },
       tooltip: PROFILE,
       footer: true

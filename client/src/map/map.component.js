@@ -62,7 +62,7 @@ import ImageMode from '../annotations/modes/image';
 
 import LayerTree from '../layer-tree/layer-tree.component';
 
-import { ANNOTATIONS, BOOKMARKS, DATA_LAYERS, PROFILE, CHANGE_PASSWORD } from '../toolbar/constants';
+import { ANNOTATIONS, BOOKMARKS, DATA_LAYERS, PROFILE, CHANGE_PASSWORD } from '../toolbar/toolbar-constants';
 
 import { GEOJSON, RASTER, VECTOR } from './map.constants';
 
@@ -150,12 +150,14 @@ const Map = (
   const dataAuthHost = useSelector(state => state.map.dataUrl);
   const dataSources = useSelector(state => state.map.dataSources);
 
-  const allLayers = dataSources.reduce((acc, value) => {
-    acc = Array.from(new Set([...acc, ...value.layers]));
-    return acc;
-  }, []);
+  const allLayers =
+    dataSources &&
+    dataSources.reduce((acc, value) => {
+      acc = Array.from(new Set([...acc, ...value.layers]));
+      return acc;
+    }, []);
   const selectedLayers = useSelector(state => state.dataLayers.layers);
-  const nonSelectedLayers = allLayers.filter(layer => !selectedLayers.includes(layer));
+  const nonSelectedLayers = allLayers && allLayers.filter(layer => !selectedLayers.includes(layer));
   const { mapContainer, mapInstance, mapPromise } = useMapbox(style, accessToken, dataAuthToken, dataAuthHost);
 
   // const user = useSelector(state => state.accounts.user);

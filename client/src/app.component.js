@@ -1,12 +1,15 @@
-import React, { useEffect, lazy, Suspense } from 'react';
+import React, { useEffect, useRef, lazy, Suspense } from 'react';
 import ReactGA from 'react-ga';
 import { useDispatch, useSelector } from 'react-redux';
 import { Route, Switch } from 'react-router-dom';
 import ReactTooltip from 'react-tooltip';
 
+import Dialog from '@astrosat/astrosat-ui/dist/containers/dialog';
+import useModal from '@astrosat/astrosat-ui/dist/containers/use-modal';
+
 import PrivateRoute from './utils/private-route.component';
 
-import { fetchAppConfig } from './app.actions';
+import { fetchAppConfig, notYetImplemented } from './app.actions';
 import { fetchUser } from './accounts/accounts.actions';
 import { fetchSourcesAndDataToken } from './map/map.actions';
 
@@ -38,6 +41,15 @@ const App = () => {
   const user = useSelector(state => state.accounts.user);
   const pollingPeriod = useSelector(state => state.map.pollingPeriod);
 
+  const notYetImplementedDescription = useSelector(state => state.app.notYetImplementedDescription);
+  const ref = useRef(null);
+  const { isVisible, toggle } = useModal(notYetImplementedDescription !== null ? true : false);
+  useEffect(() => {
+    if (notYetImplementedDescription !== null) {
+      toggle();
+    }
+  }, [notYetImplementedDescription]);
+
   // If page refreshed, ensure we try to retrieve the logged in user.
   useEffect(() => {
     if (!user) {
@@ -64,7 +76,6 @@ const App = () => {
     dispatch(fetchSourcesAndDataToken());
 
     const interval = setInterval(() => {
-      // console.log('FETCH SOURCES EVERY: ', pollingPeriod);
       dispatch(fetchSourcesAndDataToken());
     }, pollingPeriod);
 
@@ -74,10 +85,14 @@ const App = () => {
   }, [pollingPeriod]);
 
   return (
-    <div className={`${styles.app} ${styles[selectedTheme.value]}`}>
+    <div className={`${styles.app} ${styles[selectedTheme.value]}`} ref={ref}>
       <ReactTooltip />
 
       <main>
+        <Dialog isVisible={isVisible} title="Not Yet Implemented" close={toggle} ref={ref}>
+          <p>{notYetImplementedDescription}</p>
+        </Dialog>
+
         <Switch>
           <PrivateRoute path="/map" user={user} component={MapLayout} />
           <PrivateRoute exact path="/password/change" user={user} component={PasswordChange} />

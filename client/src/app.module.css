@@ -159,7 +159,6 @@
 
   /* color: var(--foreground-color); */
   background-color: var(--background-color);
-  font-family: OpenSans;
   color: var(--foreground-color);
 }
 
