@@ -30,6 +30,9 @@ import SideMenuContainer from '../side-menu/side-menu.container';
 import AnnotationsPanel from '../annotations/annotations-panel.component';
 import BookmarksPanel from '../bookmarks/bookmarks-panel.component';
 import DataLayers from '../data-layers/data-layers.component';
+import Profile from '../accounts/profile.component';
+import UpdateUserFormContainer from '../accounts/update-user-form.container';
+import PasswordChangeForm from '../accounts/password-change-form.component';
 // import { setViewport } from './map.actions';
 // import Annotations from '../annotations/annotations.component';
 // import Bookmarks from '../bookmarks/bookmarks.component';
@@ -58,8 +61,6 @@ import LabelMode from '../annotations/modes/label';
 import ImageMode from '../annotations/modes/image';
 
 import LayerTree from '../layer-tree/layer-tree.component';
-import UpdateUserFormContainer from '../accounts/update-user-form.container';
-import PasswordChangeForm from '../accounts/password-change-form.component';
 
 import { ANNOTATIONS, BOOKMARKS, DATA_LAYERS, PROFILE, CHANGE_PASSWORD } from '../toolbar/constants';
 
@@ -465,7 +466,7 @@ const Map = (
             {/* {visibleMenuItem === DATA_LAYERS && <LayerTree map={mapInstance} />} */}
             {visibleMenuItem === ANNOTATIONS && <AnnotationsPanel map={mapInstance} />}
             {visibleMenuItem === BOOKMARKS && <BookmarksPanel map={mapInstance} />}
-            {visibleMenuItem === PROFILE && <UpdateUserFormContainer />}
+            {visibleMenuItem === PROFILE && <Profile />}
             {visibleMenuItem === CHANGE_PASSWORD && <PasswordChangeForm />}
 
             {/* <Detail title={ANNOTATIONS} isOpen={openFeature === ANNOTATIONS}>

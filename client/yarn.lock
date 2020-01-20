@@ -2,14 +2,14 @@
 # yarn lockfile v1
 
 
-"@astrosat/astrosat-ui@^1.10.0":
-  version "1.10.0"
-  resolved "https://npm.pkg.github.com/download/@astrosat/astrosat-ui/1.10.0/f7d8c566b710ff916a1c36ae69b8ef16e7558f86a31c68f682eb6d31aee12264#677a50a8466eedb23025079b150110e27505066c"
-  integrity sha512-DyFHSqS8nMA4FE8Wk9Y6bljhgpv+5pr6+guIlsy+vwneynXsm93w85adYTUvVF/3AG0098zfpUjQNbpZ3XMVbg==
+"@astrosat/astrosat-ui@^1.10.1":
+  version "1.10.1"
+  resolved "https://npm.pkg.github.com/download/@astrosat/astrosat-ui/1.10.1/6c92d8384516af849cd5bc943e4412b5be7ae951aa4f52e896a2f9df981a4231#2a3df89d7d354d4481113eb8994865578b94d58c"
+  integrity sha512-uSSdIimatklr+JxFzMFzeHwILCQcTFhe8diuKLe2GpDpNLzQZqybiD7WIg1jEHccOMISB+kUd0qwtOis5V62IA==
   dependencies:
     d3-scale "^3.2.1"
     prop-types "^15.7.2"
-    react-range "^1.4.3"
+    react-range "^1.4.8"
     react-svg-loader "^3.0.3"
     zxcvbn "^4.4.2"
 
@@ -13599,10 +13599,10 @@ react-notifications@1.4.3:
     prop-types "^15.5.10"
     react-transition-group "^1.2.0"
 
-react-range@^1.4.3:
-  version "1.4.6"
-  resolved "https://registry.yarnpkg.com/react-range/-/react-range-1.4.6.tgz#e0329f133e877e517fb60bd2e29f5b7ffe1b9503"
-  integrity sha512-QuB/bh9luxV3sYV7w1ev16MpoAl92nh+pHbZKXtmihuDUSvq221zjG3eUGeW4VtBZz6qzMZ9hhYhhNZNDH3PbQ==
+react-range@^1.4.8:
+  version "1.4.9"
+  resolved "https://registry.yarnpkg.com/react-range/-/react-range-1.4.9.tgz#f2730e65c0dfa8fe7323edf103eed79581c9ab8b"
+  integrity sha512-8RJAKqTb9yVvFXbgJ1u+b0ZqAhd1xatdGks6SnFPJda+OBGT4Gg3Bh2qhKkXeV+dlZnvJqGIEFrrx2xMv1B+FA==
 
 react-redux@^7.1.1:
   version "7.1.3"

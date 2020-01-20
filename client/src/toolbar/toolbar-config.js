@@ -98,7 +98,7 @@ export const getToolbarItems = dispatch => {
     {
       label: 'FAQ',
       icon: <FaqIcon />,
-      action: () => dispatch(logout()),
+      action: () => console.log('DISPLAY FAQs'),
       tooltip: 'FAQ',
       footer: true
     },
