@@ -141,6 +141,8 @@ export const getToolbarItems = dispatch => {
       icon: <ProfileIcon />,
       action: () => {
         dispatch(toggleMenu(PROFILE));
+        dispatch(toggleMenuItem(PROFILE));
+        dispatch(setMenuHeadings('Profile', 'Profile Strapline'));
       },
       tooltip: PROFILE,
       footer: true
