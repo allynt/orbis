@@ -14,7 +14,7 @@ import RegisterForm from './accounts/register-form.component';
 import AccountActivation from './accounts/account-activation.component';
 import LoginForm from './accounts/login-form.component';
 import PasswordChange from './accounts/password-change-form.component';
-import UpdateUserContainer from './accounts/update-user-form.container';
+import UpdateUserForm from './accounts/update-user-form.component';
 import PasswordResetDone from './accounts/password-reset-done.component';
 import PasswordResetConfirm from './accounts/password-reset-confirm-form.component';
 
@@ -25,8 +25,8 @@ import MapLayout from './map';
 import styles from './app.module.css';
 
 const PasswordResetForm = lazy(() => import('./accounts/password-reset-form.component'));
-const UserList = lazy(() => import('./accounts/admin/user-list.container'));
-const Admin = lazy(() => import('./accounts/admin/admin.container'));
+const UserList = lazy(() => import('./accounts/admin/user-list.component'));
+const Admin = lazy(() => import('./accounts/admin/admin.component'));
 
 const App = () => {
   const dispatch = useDispatch();
@@ -81,7 +81,7 @@ const App = () => {
         <Switch>
           <PrivateRoute path="/map" user={user} component={MapLayout} />
           <PrivateRoute exact path="/password/change" user={user} component={PasswordChange} />
-          <PrivateRoute exact path="/user/update" user={user} component={UpdateUserContainer} />
+          <PrivateRoute exact path="/user/update" user={user} component={UpdateUserForm} />
 
           <PrivateRoute exact path="/" user={user} component={LandingView} />
 

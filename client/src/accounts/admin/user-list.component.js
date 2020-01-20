@@ -1,15 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 
-import UserTable from './user-table.component';
-import UserDetailFormContainer from './user-detail-form.container';
+import { useSelector } from 'react-redux';
 
 import Button from '@astrosat/astrosat-ui/dist/buttons/button';
-// import { Button } from '@astrosat/astrosat-ui';
 
+import UserTable from './user-table.component';
+import UserDetailForm from './user-detail-form.component';
+
+import { fetchUsers, createUser, deleteUser, updateUser, copyUser } from './users.actions';
 import styles from './user-list.module.css';
 
-const UserList = ({ users, fetchUsers, deleteUser, updateUser, copyUser }) => {
+const UserList = () => {
+  const users = useSelector(state => state.accounts.users);
+
   useEffect(() => {
     if (!users) {
       fetchUsers();
@@ -30,7 +34,7 @@ const UserList = ({ users, fetchUsers, deleteUser, updateUser, copyUser }) => {
 
       <Button onClick={() => setIsNewUserMode(!isNewUserMode)}>New User</Button>
 
-      {isNewUserMode && <UserDetailFormContainer />}
+      {isNewUserMode && <UserDetailForm createUser={createUser} />}
     </div>
   );
 };

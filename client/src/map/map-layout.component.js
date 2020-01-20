@@ -16,14 +16,13 @@ import { getToolbarItems } from '../toolbar/toolbar-config';
 import Toolbar from '../toolbar/toolbar.component';
 // import { colorSchemes } from '../colors';
 
-import SideMenuContainer from '../side-menu/side-menu.container';
-import AnnotationsPanel from '../annotations/annotations-panel.component';
-import BookmarksPanel from '../bookmarks/bookmarks-panel.component';
-import LayerTree from '../layer-tree/layer-tree.component';
-import UpdateUserFormContainer from '../accounts/update-user-form.container';
+// import SideMenuContainer from '../side-menu/side-menu.container';
+// import AnnotationsPanel from '../annotations/annotations-panel.component';
+// import BookmarksPanel from '../bookmarks/bookmarks-panel.component';
+// import LayerTree from '../layer-tree/layer-tree.component';
 // import PasswordChangeContainer from '../accounts/password-change-form.container';
 
-import ComparisonMap from './compare-maps.component';
+// import ComparisonMap from './compare-maps.component';
 import OverviewMap from '../mini-map/overview-map.component';
 import SpyglassMap from '../spyglass/spyglass-map.component';
 

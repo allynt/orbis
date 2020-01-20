@@ -26,12 +26,12 @@ import { closeMenu } from '../side-menu/side-menu.actions';
 // import AccountMenuButton from '../accounts/account-menu-button.component';
 // import { logout } from '../accounts/accounts.actions';
 
-import SideMenuContainer from '../side-menu/side-menu.container';
+// import SideMenuContainer from '../side-menu/side-menu.container';
+import SideMenu from '../side-menu/side-menu.component';
 import AnnotationsPanel from '../annotations/annotations-panel.component';
 import BookmarksPanel from '../bookmarks/bookmarks-panel.component';
 import DataLayers from '../data-layers/data-layers.component';
 import Profile from '../accounts/profile.component';
-import UpdateUserFormContainer from '../accounts/update-user-form.container';
 import PasswordChangeForm from '../accounts/password-change-form.component';
 // import { setViewport } from './map.actions';
 // import Annotations from '../annotations/annotations.component';
@@ -452,7 +452,7 @@ const Map = (
     <div ref={mapContainer} className={layoutStyles.map} data-testid={`map-${position}`}>
       {/* <AccountMenuButton user={user} logout={() => dispatch(logout(history))} /> */}
       {sidebar && (
-        <SideMenuContainer>
+        <SideMenu>
           <div className={layoutStyles.heading}>
             <div className={layoutStyles.headings}>
               <h3>{heading}</h3>
@@ -485,7 +485,7 @@ const Map = (
               <PasswordChangeForm />
             </Detail> */}
           </div>
-        </SideMenuContainer>
+        </SideMenu>
       )}
 
       <Button
