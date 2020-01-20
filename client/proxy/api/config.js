@@ -78,6 +78,92 @@ const bookmarks = [
   }
 ];
 
+const sources = {
+  token: 'sdfasdfasf',
+  timeout: 60,
+  sources: [
+    {
+      label: 'TropoSphere',
+      layers: [
+        {
+          source_id: 'astrosat/core/hospitals-uk/2019-12-17',
+          authority: 'astrosat',
+          namespace: 'core',
+          name: 'hospitals-uk',
+          version: '2019-12-17',
+          type: 'geojson', // vector|raster|geojson
+          status: 'published', // draft|published|deprecated
+          metadata: {
+            label: 'UK Hospitals',
+            domain: 'TropoSphere',
+            range: true,
+            description:
+              'TropoSphere has name hospitals-uk with a label UK Hospitals Some paragraph describing stuff. TropoSphere has name hospitals-uk with a label UK Hospitals Some paragraph describing stuff.',
+            url: 'https://staticdata.testing.or3is.com/astrosat/core/hospitals-uk/2019-12-17/hospitals_uk.geojson'
+          }
+        },
+        {
+          source_id: 'astrosat/test/sentinel_2_rgb/S2A_20191223T034141_T47NPG_RGB',
+          authority: 'astrosat',
+          namespace: 'test',
+          name: 'sentinel-2-rgb',
+          version: 'S2A_20191223T034141_T47NPG_RGB',
+          type: 'raster', // vector|raster|geojson
+          status: 'published', // draft|published|deprecated
+          metadata: {
+            label: 'Sentinel 2 RGB',
+            domain: 'TropoSphere',
+            range: true,
+            description:
+              'TropoSphere has name sentinel-2-rgb with a label Sentinel 2 RGB Some paragraph describing stuff.',
+            url:
+              'https://staticdata.testing.or3is.com/astrosat/test/sentinel_2_rgb/S2A_20191223T034141_T47NPG_RGB/{z}/{x}/{y}.png'
+          }
+        }
+      ]
+    },
+    {
+      label: 'Rice Paddies',
+      layers: [
+        {
+          source_id: 'astrosat/test/stoke-on-trent/v1',
+          authority: 'astrosat',
+          namespace: 'test',
+          name: 'stoke-on-trent',
+          version: 'v1',
+          type: 'vector', // vector|raster|geojson
+          status: 'published', // draft|published|deprecated
+          metadata: {
+            label: 'Stoke-On-Trent',
+            domain: 'Rice Paddies',
+            range: true,
+            description:
+              'Rice Paddies has name stoke-on-trent with a label Stoke-On-Trent Some paragraph describing stuff',
+            url: 'https://staticdata.testing.or3is.com/astrosat/test/stoke-on-trent/v1/{z}/{x}/{y}.pbf'
+          }
+        },
+        {
+          source_id: 'astrosat/test/super-sen2-japan-band5/dec-2019',
+          authority: 'astrosat',
+          namespace: 'test',
+          name: 'super-sen2-japan-band',
+          version: 'dec-2019',
+          type: 'raster', // vector|raster|geojson
+          status: 'published', // draft|published|deprecated
+          metadata: {
+            label: 'Japan Band5',
+            domain: 'Rice Paddies',
+            range: true,
+            description:
+              'Rice Paddies has name super-sen2-japan-band5 with a label Japan Band5 Some paragraph describing stuff.',
+            url: 'https://staticdata.testing.or3is.com/astrosat/test/super-sen2-japan-band5/dec-2019/{z}/{x}/{y}.png'
+          }
+        }
+      ]
+    }
+  ]
+};
+
 let currentUser = null;
 
 const getAppConfig = (req, res) => {
@@ -211,6 +297,11 @@ const changePassword = (req, res) => {
   }
 };
 
+const getSources = (req, res) => {
+  res.status(200);
+  res.json(sources);
+};
+
 module.exports = {
   getAppConfig,
   getUsers,
@@ -220,5 +311,6 @@ module.exports = {
   logout,
   getBookmarks,
   addBookmark,
-  changePassword
+  changePassword,
+  getSources
 };
