@@ -15,7 +15,8 @@ import {
   CUSTOM_DATA_REQUESTED_FAILURE,
   SOURCE_DATA_AND_TOKEN_REQUESTED_SUCCESS,
   SOURCE_DATA_AND_TOKEN_REQUESTED_FAILURE,
-  SET_VIEWPORT
+  SET_VIEWPORT,
+  SAVE_MAP
 } from './map.actions';
 
 const initialState = {
@@ -34,7 +35,8 @@ const initialState = {
   dataUrl: 'https://staticdata.testing.or3is.com',
   pollingPeriod: 30000,
   dataToken: null,
-  dataSources: null
+  dataSources: null,
+  saveMap: false
 };
 
 const reducer = (state = initialState, action) => {
@@ -117,6 +119,9 @@ const reducer = (state = initialState, action) => {
       };
     case SOURCE_DATA_AND_TOKEN_REQUESTED_FAILURE:
       return { ...state, error: action.error };
+
+    case SAVE_MAP:
+      return { ...state, saveMap: !state.saveMap };
 
     default:
       return state;

@@ -8,6 +8,9 @@ import 'mapbox-gl/dist/mapbox-gl.css';
 import MapboxDraw from '@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw';
 
 import { useDispatch, useSelector } from 'react-redux';
+
+import * as FileSaver from 'file-saver';
+
 // import { useMapCrossFilter } from '../crossfilter';
 import useMapbox from './use-mapbox.hook';
 import useMap from './use-map.hook';
@@ -18,9 +21,8 @@ import '@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css';
 import '@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css';
 // import { setClickedFeature, MULTI_SELECT } from '../factsheet/factsheet.action';
 import { useMapEvent } from './use-map-event.hook';
-import SaveMapControl from '../save-map/save-map-control';
 import MapStyleSwitcher from '../mapstyle/mapstyle-switcher.component';
-import { MAP_STYLE_SELECTED, setViewport } from './map.actions';
+import { MAP_STYLE_SELECTED, setViewport, saveMap } from './map.actions';
 import { closeMenu } from '../side-menu/side-menu.actions';
 // import LayerTreeControl from '../layer-tree/layer-tree.control';
 // import AccountMenuButton from '../accounts/account-menu-button.component';
@@ -49,7 +51,7 @@ import PasswordChangeForm from '../accounts/password-change-form.component';
 import Button from '@astrosat/astrosat-ui/dist/buttons/button';
 import CloseButton from '@astrosat/astrosat-ui/dist/buttons/close-button';
 // import { Detail } from '@astrosat/astrosat-ui';
-import { ReactComponent as DataIcon } from '../toolbar/data.svg';
+import { ReactComponent as DataIcon } from '../mapstyle/layers.svg';
 
 import RotateMode from 'mapbox-gl-draw-rotate-mode';
 import RadiusMode from '../annotations/modes/radius';
@@ -142,6 +144,8 @@ const Map = (
 
   const openFeature = useSelector(state => state.sidebar.visibleMenuItem);
 
+  const isSaveMap = useSelector(state => state.map.saveMap);
+
   const selectedBookmark = useSelector(state => state.bookmarks.selectedBookmark);
 
   // const { properties, filters, currentFilters, visible, setBounds } = useMapCrossFilter(selectedProperty);
@@ -192,7 +196,6 @@ const Map = (
     reverseGeocode: true,
     mapboxgl
   });
-  useMapControl(mapInstance, save, SaveMapControl, 'top-right');
   useMapControl(mapInstance, draw, MapboxDraw, 'top-left', {
     displayControlsDefault: false,
     userProperties: true,
@@ -248,6 +251,29 @@ const Map = (
       }
     },
     [selectedBookmark]
+  );
+
+  useMap(
+    mapInstance,
+    map => {
+      if (isSaveMap) {
+        map.getCanvas().toBlob(blob => {
+          FileSaver.saveAs(blob, 'snapshot.png');
+
+        dispatch(saveMap());
+        });
+      }
+
+      // const drawCtrl = mapInstance._controls.find(ctrl => ctrl.changeMode);
+      // drawCtrl.deleteAll();
+
+      // if (selectedBookmark) {
+      //   map.setCenter(selectedBookmark.center);
+      //   map.setZoom(selectedBookmark.zoom);
+      //   drawCtrl.add(selectedBookmark.feature_collection);
+      // }
+    },
+    [isSaveMap, saveMap]
   );
 
   // const [bounds, setBounds] = useState(null);

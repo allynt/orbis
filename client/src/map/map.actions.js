@@ -6,6 +6,8 @@ import { getData, JSON_HEADERS } from '../utils/http';
 
 export const SET_VIEWPORT = 'SET_VIEWPORT';
 
+export const SAVE_MAP = 'SAVE_MAP';
+
 export const MAP_STYLE_SELECTED = 'MAP_STYLE_SELECTED';
 
 export const TOGGLE_MULTI_MODE = 'map.TOGGLE_MULTI_MODE';
@@ -89,6 +91,8 @@ export const fetchCustomData = () => async dispatch => {
     });
   }
 };
+
+export const saveMap = () => ({ type: SAVE_MAP });
 
 export const setViewport = viewport => ({ type: SET_VIEWPORT, viewport });
 
