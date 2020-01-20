@@ -1,7 +1,6 @@
 import json
 import os
 import pytest
-import urllib
 
 from django.test.client import encode_multipart
 from django.core.files.uploadedfile import SimpleUploadedFile
@@ -30,7 +29,7 @@ class TestBookmarkViews:
         _, key = create_auth_token(user)
 
         bookmarks = [
-            BookmarkFactory()
+            BookmarkFactory(owner=user)
             for _ in range(10)
         ]
 
@@ -141,11 +140,11 @@ class TestBookmarkViews:
         client = APIClient()
         client.credentials(HTTP_AUTHORIZATION=f"Token {key}")
 
-        url_params = urllib.parse.urlencode({"owner": users[0].pk})
-        url = f"{reverse('bookmark-list')}?{url_params}"
 
+        url = reverse('bookmark-list')
         response = client.get(url)
         data = response.json()
+
         assert status.is_success(response.status_code)
         assert all(d["owner"] == users[0].pk for d in data)
         assert len(data) == 5

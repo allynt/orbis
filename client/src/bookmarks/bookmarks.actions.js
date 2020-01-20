@@ -1,5 +1,5 @@
 import { NotificationManager } from 'react-notifications';
-import { sendData, JSON_HEADERS, FORM_HEADERS } from '../utils/http';
+import { getData, sendData, FORM_HEADERS, JSON_HEADERS } from '../utils/http';
 
 export const FETCH_BOOKMARKS_SUCCESS = 'FETCH_BOOKMARKS_SUCCESS';
 export const FETCH_BOOKMARKS_FAILURE = 'FETCH_BOOKMARKS_FAILURE';
@@ -18,8 +18,16 @@ const API = {
   delete: '/api/bookmarks/'
 };
 
-export const fetchBookmarks = () => async dispatch => {
-  const response = await fetch(API.fetch, { credentials: 'include' });
+export const fetchBookmarks = () => async (dispatch, getState) => {
+  const {
+    accounts: { userKey }
+  } = getState();
+  const headers = {
+    ...JSON_HEADERS,
+    Authorization: `Token ${userKey}`
+  };
+
+  const response = await getData(API.fetch, headers);
 
   if (!response.ok) {
     const error = new Error();
@@ -39,14 +47,22 @@ export const fetchBookmarks = () => async dispatch => {
   return dispatch({ type: FETCH_BOOKMARKS_SUCCESS, bookmarks });
 };
 
-export const addBookmark = bookmark => async dispatch => {
+export const addBookmark = bookmark => async (dispatch, getState) => {
   const formData = new FormData();
   Object.keys(bookmark).forEach(key => formData.append(key, bookmark[key]));
   // nested JSON should be stringified prior to passing to backend
   formData.set('center', JSON.stringify(bookmark['center']));
   formData.set('feature_collection', JSON.stringify(bookmark['feature_collection']));
 
-  const response = await sendData(API.add, formData, FORM_HEADERS);
+  const {
+    accounts: { userKey }
+  } = getState();
+  const headers = {
+    ...FORM_HEADERS,
+    Authorization: `Token ${userKey}`
+  };
+
+  const response = await sendData(API.add, formData, headers);
 
   if (!response.ok) {
     const errorResponse = await response.json();
