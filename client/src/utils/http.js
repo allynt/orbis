@@ -5,7 +5,6 @@ export const JSON_HEADERS = {
 
 export const FORM_HEADERS = {
   Accept: 'application/json, application/xml, text/plain, text/html, *.*'
-  // 'Content-Type': 'multipart/form-data; boundary=----WebKitFormBoundary1234 // cannot hard-code form boundary
 };
 
 export const getData = (url, headers = {}) => {
