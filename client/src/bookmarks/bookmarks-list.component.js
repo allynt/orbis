@@ -19,7 +19,12 @@ const BookmarkList = ({ bookmarks, selectBookmark }) => {
           {bookmarks.map(bookmark => {
             return (
               <li key={bookmark.title} className={styles.bookmark}>
-                <div className={styles.bookmarkThumbnail}>Thumb</div>
+                <div className={styles.bookmarkThumbnail}>
+                  <picture>
+                    <source srcSet={bookmark.thumbnail} />
+                    <img src={bookmark.thumbnail} alt={bookmark.title} />
+                  </picture>
+                </div>
                 <div className={styles.bookmarkContent}>
                   <h3 className={styles.bookmarkTitle}>{bookmark.title}</h3>
                   <p className={styles.bookmarkDescription}>{bookmark.description}</p>
@@ -30,7 +35,8 @@ const BookmarkList = ({ bookmarks, selectBookmark }) => {
                     <Button
                       theme="tertiary"
                       classNames={[styles.bookmarkButton]}
-                      onClick={() => dispatch(deleteBookmark(bookmark))}>
+                      onClick={() => dispatch(deleteBookmark(bookmark))}
+                    >
                       Delete
                     </Button>
                   </div>

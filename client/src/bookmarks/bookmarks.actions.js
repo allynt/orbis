@@ -42,12 +42,11 @@ export const fetchBookmarks = () => async dispatch => {
 export const addBookmark = bookmark => async dispatch => {
   const formData = new FormData();
   Object.keys(bookmark).forEach(key => formData.append(key, bookmark[key]));
+  // nested JSON should be stringified prior to passing to backend
+  formData.set('center', JSON.stringify(bookmark['center']));
+  formData.set('feature_collection', JSON.stringify(bookmark['feature_collection']));
 
-  const response = await sendData(API.add, bookmark, JSON_HEADERS);
-  // FIXME: comment out the above line and uncomment out the one below,
-  // after the backend has been updated to accept a FormData object rather
-  // that plain JSON object.
-  // const response = await sendData(API.add, formData, FORM_HEADERS);
+  const response = await sendData(API.add, formData, FORM_HEADERS);
 
   if (!response.ok) {
     const errorResponse = await response.json();

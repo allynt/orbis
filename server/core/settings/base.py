@@ -96,10 +96,32 @@ LOCAL_APPS = [
     "astrosat",  # (dependencies)
     "astrosat_users",  # (users)
     "core",  # (shared stuff)
+    "maps",  # (mapping tools)
     "orbis",  # (this app)
 ]
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
+
+####################
+# 3rd party access #
+####################
+
+AWS_ACCESS_KEY_ID = env("DJANGO_AWS_ACCESS_KEY_ID", default="")
+AWS_SECRET_ACCESS_KEY = env("DJANGO_AWS_SECRET_ACCESS_KEY", default="")
+AWS_DEFAULT_ACL = None
+
+MAPBOX_TOKEN = env("DJANGO_MAPBOX_TOKEN", default="")
+TRACKING_ID = env("DJANGO_TRACKING_ID", default="")
+
+DATA_TOKEN_SECRET_KEY = env("DJANGO_DATA_TOKEN_SECRET_KEY", default="itsasecret")
+DATA_TOKEN_ALGORITHM = env("DJANGO_DATA_TOKEN_ALGORITHM", default="HS256")
+DATA_SOURCES_DIRECTORY_URL = env("DJANGO_DATA_SOURCES_DIRECTORY_URL", default="www.domain.com")
+DATA_URL = env("DJANGO_DATA_URL", default="www.domain.com")
+
+# the time in minutes that a data_token is valid for
+DATA_TOKEN_TIMEOUT = DynamicSetting(
+    "orbis.OrbisSettings.data_token_timeout", 60
+)
 
 ##############
 # Middleware #
@@ -181,8 +203,15 @@ STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 # Media files #
 ###############
 
-MEDIA_URL = "/media/"
-MEDIA_ROOT = str(SERVER_DIR("media"))
+# MEDIA_URL = "/media/"
+# MEDIA_ROOT = str(SERVER_DIR("media"))
+# DEFAULT_FILE_STORAGE = 'maps.storage.LocalStorage'
+
+MEDIA_STORAGE_BUCKET = env("DJANGO_MEDIA_BUCKET", default="")
+
+DEFAULT_FILE_STORAGE = 'maps.storage.S3Storage'
+MEDIA_URL = f"https://{MEDIA_STORAGE_BUCKET}/"
+
 
 ########################
 # Internationalisation #
@@ -355,23 +384,6 @@ AUTH_PASSWORD_VALIDATORS = [
 # CSRF_COOKIE_HTTPONLY = True
 # SECURE_BROWSER_XSS_FILTER = True
 # X_FRAME_OPTIONS = 'DENY'
-
-####################
-# 3rd party access #
-####################
-
-MAPBOX_TOKEN = env("DJANGO_MAPBOX_TOKEN", default="")
-TRACKING_ID = env("DJANGO_TRACKING_ID", default="")
-
-DATA_TOKEN_SECRET_KEY = env("DJANGO_DATA_TOKEN_SECRET_KEY", default="itsasecret")
-DATA_TOKEN_ALGORITHM = env("DJANGO_DATA_TOKEN_ALGORITHM", default="HS256")
-DATA_SOURCES_DIRECTORY_URL = env("DJANGO_DATA_SOURCES_DIRECTORY_URL", default="www.domain.com")
-DATA_URL = env("DJANGO_DATA_URL", default="www.domain.com")
-
-# the time in minutes that a data_token is valid for
-DATA_TOKEN_TIMEOUT = DynamicSetting(
-    "orbis.OrbisSettings.data_token_timeout", 60
-)
 
 ###########
 # logging #

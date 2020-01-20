@@ -17,13 +17,17 @@ from astrosat_users.urls import (
     api_urlpatterns as astrosat_users_api_urlpatterns,
 )
 
+from maps.urls import (
+    urlpatterns as maps_urlpatterns,
+    api_urlpatterns as maps_api_urlpatterns
+)
+
 from orbis.urls import (
     urlpatterns as orbis_urlpatterns,
     api_urlpatterns as orbis_api_urlpatterns
 )
 
 from .views import index_view, app_config_view
-from .views import BookmarkViewSet  # TODO: this class should probably be moved to django-astrosat-core
 
 
 admin.site.site_header = settings.ADMIN_SITE_HEADER
@@ -42,7 +46,6 @@ handler500 = "astrosat.views.handler500"
 ##############
 
 api_router = SimpleRouter()
-api_router.register(r"bookmarks", BookmarkViewSet, basename="bookmark")
 api_urlpatterns = [
     path("", include(api_router.urls)),
     path("", include(api_schema_views)),
@@ -50,6 +53,7 @@ api_urlpatterns = [
 ]
 api_urlpatterns += astrosat_api_urlpatterns
 api_urlpatterns += astrosat_users_api_urlpatterns
+api_urlpatterns += maps_api_urlpatterns
 api_urlpatterns += orbis_api_urlpatterns
 
 
@@ -70,6 +74,7 @@ urlpatterns = [
     # app-specific patterns...
     path("astrosat/", include(astrosat_urlpatterns)),
     path("users/", include(astrosat_users_urlpatterns)),
+    path("maps/", include(maps_urlpatterns)),
     path("orbis/", include(orbis_urlpatterns)),
 
     # note: index_view is added at the very end of this module!
