@@ -49,9 +49,11 @@ const useMapbox = (style, accessToken, authToken, authUrl) => {
           center: map.getCenter()
         };
         setMapInstance(null);
-        window.requestIdleCallback(() => {
-          map.remove();
-        });
+        if (window.requestIdleCallback) {
+          window.requestIdleCallback(() => {
+            map.remove();
+          });
+        }
       };
     }
   }, [style, accessToken, authToken]);
