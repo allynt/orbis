@@ -30,10 +30,10 @@ export const fetchBookmarks = () => async (dispatch, getState) => {
   const response = await getData(API.fetch, headers);
 
   if (!response.ok) {
-    const error = new Error();
-    error.message = response.statusText;
+    const errorResponse = await response.json();
+    const error = new Error(errorResponseToString(errorResponse));
 
-    NotificationManager.error(error.message, `Fetching Bookmarks Error - ${response.statusText}`, 50000, () => {});
+    NotificationManager.error(error.message, `Fetching Bookmark Error - ${response.statusText}`, 50000, () => {});
 
     return dispatch({
       type: FETCH_BOOKMARKS_FAILURE,

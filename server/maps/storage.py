@@ -13,7 +13,3 @@ class S3Storage(S3Boto3Storage):
     secret_key = settings.AWS_SECRET_ACCESS_KEY
     bucket_name = settings.MEDIA_STORAGE_BUCKET
     location = ""
-
-    def _save(self, name, content):
-        # import pdb; pdb.set_trace()
-        return super()._save(name, content)
