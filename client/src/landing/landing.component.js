@@ -1,5 +1,10 @@
-import React, { useRef } from 'react';
+import React, { useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
+
+import { fetchBookmarks, addBookmark, selectBookmark } from '../bookmarks/bookmarks.actions';
+import { useDispatch, useSelector } from 'react-redux';
+
+import LandingBookmarks from './landing-bookmarks.component';
 
 import Button from '@astrosat/astrosat-ui/dist/buttons/button';
 import Dialog from '@astrosat/astrosat-ui/dist/containers/dialog';
@@ -8,44 +13,86 @@ import useModal from '@astrosat/astrosat-ui/dist/containers/use-modal';
 import NewMapForm from './new-map-form.component';
 
 import { ReactComponent as OrbisLogo } from '../orbis.svg';
+import { ReactComponent as ProfileIcon } from '../toolbar/profile.svg';
 import { ReactComponent as LandingImage } from './landing.svg';
 
 import styles from './landing.module.css';
 
 const Landing = () => {
+  const dispatch = useDispatch();
+  const bookmarks = useSelector(state => state.bookmarks.bookmarks);
+  const chooseBookmark = bookmark => dispatch(selectBookmark(bookmark));
+
   const { isVisible, toggle } = useModal(false);
   const ref = useRef(null);
 
+  useEffect(() => {
+    if (!bookmarks) {
+      dispatch(fetchBookmarks());
+    }
+  }, [bookmarks, dispatch]);
+
   return (
-    <div className={styles.landing} ref={ref}>
-      <div className={styles.header}>
-        <OrbisLogo className={styles.logo} />
-      </div>
-      <div className={styles.content}>
-        <div className={styles.journey}>
-          <h1>OR3IS JOURNEY</h1>
+    <div style={{ height: '100%' }}>
+      {bookmarks ? (
+        <div className={styles.landing}>
+          <div className={styles.banner}>
+            <OrbisLogo className={styles.logo} />
+            <ProfileIcon className={styles.profileIcon} />
+          </div>
 
-          <p className={styles.journeyText}>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
-            dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex
-            ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat
-            nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit
-            anim id est laborum.
-          </p>
+          <div className={styles.maps}>
+            <div className={styles.header}>
+              <h1>Your Maps</h1>
+              <p onClick={() => alert('VIEW ALL!')}>view all</p>
+            </div>
+            <LandingBookmarks bookmarks={bookmarks} selectBookmark={chooseBookmark} />
+          </div>
 
-          <Button theme="primary" classNames={[styles.journeyButton]} onClick={toggle}>
-            Create New
+          <div className={styles.stories}>
+            <div className={styles.header}>
+              <h1>Your Stories</h1>
+              <p>view all</p>
+            </div>
+            <LandingBookmarks bookmarks={bookmarks} selectBookmark={chooseBookmark} />
+          </div>
+
+          <Button theme="tertiary" classNames={[styles.button]}>
+            Browse Map
           </Button>
         </div>
+      ) : (
+        <div className={styles.splash}>
+          <div className={styles.header}>
+            <OrbisLogo className={styles.logo} />
+          </div>
+          <div className={styles.content}>
+            <div className={styles.journey}>
+              <h1>OR3IS JOURNEY</h1>
 
-        <div className={styles.journeyImage}>
-          <LandingImage className={styles.image} />
+              <p className={styles.journeyText}>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
+                dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
+                ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
+                fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia
+                deserunt mollit anim id est laborum.
+              </p>
+
+              <Button theme="primary" classNames={[styles.journeyButton]} onClick={toggle}>
+                Create New
+              </Button>
+            </div>
+
+            <div className={styles.journeyImage}>
+              <LandingImage className={styles.image} />
+            </div>
+
+            <Dialog isVisible={isVisible} title="Create New Map" close={toggle} ref={ref}>
+              <NewMapForm />
+            </Dialog>
+          </div>
         </div>
-
-        <Dialog isVisible={isVisible} title="Create New Map" close={toggle} ref={ref}>
-          <NewMapForm />
-        </Dialog>
-      </div>
+      )}
     </div>
   );
 };

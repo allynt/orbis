@@ -1,26 +1,143 @@
 .landing {
   display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+  padding: 0 20rem;
+  background-color: #fff;
+  color: #000;
+}
+
+.banner,
+.header,
+.items {
+  display: flex;
+  justify-content: space-between;
+}
+
+.logo {
+  width: 7rem;
+  color: #787c82;
+  margin-bottom: -3rem;
+}
+
+.profileIcon {
+  height: 4rem;
+  width: auto;
+  align-self: center;
+}
+
+.header {
+  margin: 1rem 0;
+}
+
+.header h1 {
+  font-size: 2.5rem;
+}
+
+.header p {
+  align-self: center;
+  cursor: pointer;
+}
+
+.imageContainer {
+  width: 15rem;
+  height: 12rem;
+  align-self: center;
+  box-shadow: 0 2.5px 5px rgba(0, 0, 0, 0.19), 0 3px 3px rgba(0, 0, 0, 0.23);
+  border-radius: 1rem;
+  overflow: hidden;
+}
+
+.imageContainer:hover {
+  border: 1px solid lightcoral;
+}
+
+.imageContainer img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.infoContainer {
+  display: flex;
+  justify-content: space-between;
+  min-height: 1.5rem;
+}
+
+.infoContainer,
+.title,
+.creationDate,
+.new {
+  padding: 0.3rem 0;
+}
+
+.creationDate {
+  font-size: 0.75rem;
+  opacity: 0.5;
+}
+
+.ellipsis {
+  align-self: center;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.createNew {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 7.5rem;
+  height: 12rem;
+  border: 2px dashed #000;
+  border-radius: 1rem;
+  font-size: 2.5rem;
+  cursor: pointer;
+}
+
+.createNew:hover {
+  background-color: #ccc;
+}
+
+.new {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 2.5rem;
+}
+
+.button {
+  width: 15rem;
+  align-self: center;
+  margin-bottom: 4rem;
+}
+
+/* OLD STYLES */
+
+.splash {
+  display: flex;
   flex-direction: column;
   background-color: #fff;
   height: 100vh;
 }
 
-.landing .logo {
+.splash .logo {
   width: 10rem;
   color: #787c82;
 }
 
-.landing .header {
+.splash .header {
   padding-left: 10rem;
 }
 
-.landing .content {
+.splash .content {
   display: flex;
   align-items: center;
   color: var(--foreground-color);
 }
 
-.landing .journey {
+.splash .journey {
   display: flex;
   flex-direction: column;
   align-items: center;
