@@ -90,7 +90,7 @@ export const fetchUser = (email = 'current') => async (dispatch, getState) => {
     accounts: { userKey }
   } = getState();
 
-  const url = `${API.user}${email}`;
+  const url = `${API.user}${email}/`;
   const headers = {
     ...JSON_HEADERS,
     Authorization: 'Token ' + userKey
