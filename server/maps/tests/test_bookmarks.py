@@ -157,9 +157,7 @@ class TestBookmarkViews:
 
 #     def test_save_thumbnail(self):
 
-#         bookmark = BookmarkFactory()
-
-#         import pdb; pdb.set_trace()
+#         bookmark = BookmarkFactory(title="test_bookmark")
 
 #         thumbnail = SimpleUploadedFile(
 #             name="test_thumbnail.png",
@@ -168,5 +166,7 @@ class TestBookmarkViews:
 #         )
 #         bookmark.thumbnail = thumbnail
 #         bookmark.save()
+
+#         bookmark.delete()
 
 #         pass

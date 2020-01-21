@@ -42,10 +42,22 @@ def bookmark_thumbnail_path(instance, filename):
     return f"bookmarks/{instance.owner.username}/{filename}.png"
 
 
+class BookmarkManager(models.Manager):
+
+    def delete(self):
+        """
+        Ensures that Deleting bookmarks via a QuerySet calls the custom delete method.
+        """
+        for obj in self.get_queryset():
+            obj.delete()
+
+
 class Bookmark(gis_models.Model):
     class Meta:
 
         unique_together = ["owner", "title"]
+
+    objects = BookmarkManager()
 
     PRECISION = 6
 
@@ -101,3 +113,18 @@ class Bookmark(gis_models.Model):
 
     def __str__(self):
         return self.title
+
+    def delete(self, *args, **kwargs):
+        """
+        When a bookmark is deleted, delete the corresponding thumbnail
+        from storage.  Doing it in a method instead of a signal to handle
+        the case where objects are deleted in bulk (see BookmarkManager).
+        """
+
+        if self.thumbnail:
+            thumbnail_name = self.thumbnail.name
+            thumbnail_storage = self.thumbnail.storage
+            if thumbnail_storage.exists(thumbnail_name):
+                thumbnail_storage.delete(thumbnail_name)
+
+        return super().delete(*args, **kwargs)
