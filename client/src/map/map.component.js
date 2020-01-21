@@ -260,7 +260,7 @@ const Map = (
         map.getCanvas().toBlob(blob => {
           FileSaver.saveAs(blob, 'snapshot.png');
 
-        dispatch(saveMap());
+          dispatch(saveMap());
         });
       }
 
@@ -371,23 +371,25 @@ const Map = (
   useMap(
     mapInstance,
     map => {
-      nonSelectedLayers.forEach(layer => {
-        const sourceId = `${layer.name}-source`;
-        const layers = map.getStyle().layers;
-        let layersToRemove = [];
-        nonSelectedLayers.forEach(nonSelectedLayer => {
-          layers.forEach(layer => {
-            if (layer.id.startsWith(nonSelectedLayer.name)) {
-              layersToRemove = [...layersToRemove, layer];
-            }
+      if (nonSelectedLayers) {
+        nonSelectedLayers.forEach(layer => {
+          const sourceId = `${layer.name}-source`;
+          const layers = map.getStyle().layers;
+          let layersToRemove = [];
+          nonSelectedLayers.forEach(nonSelectedLayer => {
+            layers.forEach(layer => {
+              if (layer.id.startsWith(nonSelectedLayer.name)) {
+                layersToRemove = [...layersToRemove, layer];
+              }
+            });
           });
-        });
 
-        if (map.getSource(sourceId)) {
-          layersToRemove.forEach(layer => map.removeLayer(layer.id));
-          map.removeSource(sourceId);
-        }
-      });
+          if (map.getSource(sourceId)) {
+            layersToRemove.forEach(layer => map.removeLayer(layer.id));
+            map.removeSource(sourceId);
+          }
+        });
+      }
     },
     [nonSelectedLayers]
   );
