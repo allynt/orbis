@@ -90,6 +90,11 @@
   font-weight: 700;
 }
 
+.itemSelect {
+  width: 2rem;
+  border: 1px solid red;
+}
+
 .createNew {
   display: flex;
   justify-content: center;

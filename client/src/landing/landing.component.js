@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 
 import { fetchBookmarks, addBookmark, selectBookmark } from '../bookmarks/bookmarks.actions';
@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import Button from '@astrosat/astrosat-ui/dist/buttons/button';
 import Dialog from '@astrosat/astrosat-ui/dist/containers/dialog';
+import Select from '@astrosat/astrosat-ui/dist/forms/select';
 import useModal from '@astrosat/astrosat-ui/dist/containers/use-modal';
 
 import NewMapForm from './new-map-form.component';
@@ -16,13 +17,22 @@ import { ReactComponent as LandingImage } from './landing.svg';
 
 import styles from './landing.module.css';
 
-const Items = ({ items }) => {
+const ItemMenu = () => {
+  const options = [<option>Edit</option>, <option>Delete</option>, <option>Duplicate</option>];
+
+  return <Select classNames={[styles.itemSelect]} options={options} onChange={console.log('hello')} />;
+};
+
+const Items = ({ items, chooseItem }) => {
+  const [selectedItem, setSelectedItem] = useState(null);
+  const [newItem, setNewItem] = useState(false);
   const dummyDate = 'Created 27 Nov 2019';
+
   return (
     <div className={styles.items}>
       {items.map(item => {
         return (
-          <div className={styles.item} key={item.title}>
+          <div className={styles.item} key={item.title} onClick={chooseItem}>
             <div className={styles.image}>
               <picture>
                 <img src={item.thumbnail} alt={item.title}></img>
@@ -30,24 +40,39 @@ const Items = ({ items }) => {
             </div>
 
             <div className={styles.info}>
-              <div>
-                <h3 className={styles.title}>{item.title}</h3>
-                <p className={styles.creationDate}>{dummyDate}</p>
+              {selectedItem === item ? (
+                <ItemMenu />
+              ) : (
+                <div>
+                  <h3 className={styles.title}>{item.title}</h3>
+                  <p className={styles.creationDate}>{dummyDate}</p>
+                </div>
+              )}
+              <div
+                className={styles.ellipsis}
+                onClick={() => {
+                  setSelectedItem(selectedItem === item ? null : item);
+                }}
+              >
+                ...
               </div>
-              <div className={styles.ellipsis}>...</div>
             </div>
           </div>
-        )
+        );
       })}
-      <div>
+      <div
+        onClick={() => {
+          setNewItem(!newItem);
+        }}
+      >
         <div className={styles.createNew}>+</div>
         <div className={styles.new}>
           <h3>New</h3>
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
 const Landing = () => {
   const dispatch = useDispatch();
@@ -64,6 +89,8 @@ const Landing = () => {
 
   const chooseBookmark = bookmark => dispatch(selectBookmark(bookmark));
 
+  const [viewAllItems, setViewAllItems] = useState(false);
+
   return (
     <div style={{ height: '100%' }}>
       {bookmarks ? (
@@ -76,9 +103,9 @@ const Landing = () => {
           <div className={styles.maps}>
             <div className={styles.header}>
               <h1>Your Maps</h1>
-              <p onClick={() => alert('VIEW ALL')}>view all</p>
+              <p onClick={() => setViewAllItems(!viewAllItems)}>view all</p>
             </div>
-            <Items items={bookmarks} />
+            <Items items={bookmarks} chooseItem={chooseBookmark} />
           </div>
 
           <div className={styles.stories}>
@@ -86,7 +113,7 @@ const Landing = () => {
               <h1>Your Stories</h1>
               <p>view all</p>
             </div>
-            <Items items={bookmarks} />
+            <Items items={bookmarks} chooseItem={chooseBookmark} />
           </div>
 
           <div className={styles.buttonContainer}>
