@@ -4,8 +4,6 @@ import PropTypes from 'prop-types';
 import { fetchBookmarks, addBookmark, selectBookmark } from '../bookmarks/bookmarks.actions';
 import { useDispatch, useSelector } from 'react-redux';
 
-import LandingBookmarks from './landing-bookmarks.component';
-
 import Button from '@astrosat/astrosat-ui/dist/buttons/button';
 import Dialog from '@astrosat/astrosat-ui/dist/containers/dialog';
 import useModal from '@astrosat/astrosat-ui/dist/containers/use-modal';
@@ -18,10 +16,42 @@ import { ReactComponent as LandingImage } from './landing.svg';
 
 import styles from './landing.module.css';
 
+const Items = ({ items }) => {
+  const dummyDate = 'Created 27 Nov 2019';
+  return (
+    <div className={styles.items}>
+      {items.map(item => {
+        return (
+          <div className={styles.item} key={item.title}>
+            <div className={styles.image}>
+              <picture>
+                <img src={item.thumbnail} alt={item.title}></img>
+              </picture>
+            </div>
+
+            <div className={styles.info}>
+              <div>
+                <h3 className={styles.title}>{item.title}</h3>
+                <p className={styles.creationDate}>{dummyDate}</p>
+              </div>
+              <div className={styles.ellipsis}>...</div>
+            </div>
+          </div>
+        )
+      })}
+      <div>
+        <div className={styles.createNew}>+</div>
+        <div className={styles.new}>
+          <h3>New</h3>
+        </div>
+      </div>
+    </div>
+  )
+}
+
 const Landing = () => {
   const dispatch = useDispatch();
   const bookmarks = useSelector(state => state.bookmarks.bookmarks);
-  const chooseBookmark = bookmark => dispatch(selectBookmark(bookmark));
 
   const { isVisible, toggle } = useModal(false);
   const ref = useRef(null);
@@ -31,6 +61,8 @@ const Landing = () => {
       dispatch(fetchBookmarks());
     }
   }, [bookmarks, dispatch]);
+
+  const chooseBookmark = bookmark => dispatch(selectBookmark(bookmark));
 
   return (
     <div style={{ height: '100%' }}>
@@ -44,9 +76,9 @@ const Landing = () => {
           <div className={styles.maps}>
             <div className={styles.header}>
               <h1>Your Maps</h1>
-              <p onClick={() => alert('VIEW ALL!')}>view all</p>
+              <p onClick={() => alert('VIEW ALL')}>view all</p>
             </div>
-            <LandingBookmarks bookmarks={bookmarks} selectBookmark={chooseBookmark} />
+            <Items items={bookmarks} />
           </div>
 
           <div className={styles.stories}>
@@ -54,12 +86,14 @@ const Landing = () => {
               <h1>Your Stories</h1>
               <p>view all</p>
             </div>
-            <LandingBookmarks bookmarks={bookmarks} selectBookmark={chooseBookmark} />
+            <Items items={bookmarks} />
           </div>
 
-          <Button theme="tertiary" classNames={[styles.button]}>
-            Browse Map
-          </Button>
+          <div className={styles.buttonContainer}>
+            <Button theme="tertiary" classNames={[styles.button]}>
+              Browse Map
+            </Button>
+          </div>
         </div>
       ) : (
         <div className={styles.splash}>
@@ -84,7 +118,7 @@ const Landing = () => {
             </div>
 
             <div className={styles.journeyImage}>
-              <LandingImage className={styles.image} />
+              <LandingImage className={styles.landingImage} />
             </div>
 
             <Dialog isVisible={isVisible} title="Create New Map" close={toggle} ref={ref}>

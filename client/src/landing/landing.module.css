@@ -1,6 +1,5 @@
 .landing {
   display: flex;
-  flex-wrap: wrap;
   flex-direction: column;
   justify-content: space-between;
   height: 100%;
@@ -16,10 +15,19 @@
   justify-content: space-between;
 }
 
+.logo,
+.profileIcon,
+.header p,
+.item,
+.ellipsis,
+.createNew,
+.new {
+  cursor: pointer;
+}
+
 .logo {
-  width: 7rem;
+  height: 7rem;
   color: #787c82;
-  margin-bottom: -3rem;
 }
 
 .profileIcon {
@@ -38,11 +46,10 @@
 
 .header p {
   align-self: center;
-  cursor: pointer;
 }
 
-.imageContainer {
-  width: 15rem;
+.image {
+  width: 17rem;
   height: 12rem;
   align-self: center;
   box-shadow: 0 2.5px 5px rgba(0, 0, 0, 0.19), 0 3px 3px rgba(0, 0, 0, 0.23);
@@ -50,23 +57,23 @@
   overflow: hidden;
 }
 
-.imageContainer:hover {
+.image:hover {
   border: 1px solid lightcoral;
 }
 
-.imageContainer img {
+.image img {
   width: 100%;
   height: 100%;
   object-fit: cover;
 }
 
-.infoContainer {
+.info {
   display: flex;
   justify-content: space-between;
   min-height: 1.5rem;
 }
 
-.infoContainer,
+.info,
 .title,
 .creationDate,
 .new {
@@ -81,7 +88,6 @@
 .ellipsis {
   align-self: center;
   font-weight: 700;
-  cursor: pointer;
 }
 
 .createNew {
@@ -92,8 +98,8 @@
   height: 12rem;
   border: 2px dashed #000;
   border-radius: 1rem;
+  background-color: #ececec;
   font-size: 2.5rem;
-  cursor: pointer;
 }
 
 .createNew:hover {
@@ -107,10 +113,15 @@
   min-height: 2.5rem;
 }
 
+.buttonContainer {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  height: 7rem;
+}
+
 .button {
   width: 15rem;
-  align-self: center;
-  margin-bottom: 4rem;
 }
 
 /* OLD STYLES */
@@ -159,6 +170,6 @@
   width: 15rem;
 }
 
-.image {
+.landingImage {
   width: 55rem;
 }
