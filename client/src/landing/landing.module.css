@@ -178,3 +178,24 @@
 .landingImage {
   width: 55rem;
 }
+
+.newItemForm {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+
+.newItemForm h1 {
+  margin: 0.5rem;
+}
+
+.newItemForm button {
+  border: 1px solid white;
+  border-radius: 0.3rem;
+  background-color: white;
+  color: black;
+  margin: 0.5rem;
+  padding: 0.5rem;
+}
