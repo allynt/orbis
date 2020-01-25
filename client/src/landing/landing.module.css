@@ -58,7 +58,7 @@
 }
 
 .image:hover {
-  border: 1px solid lightcoral;
+  border: 1.5px solid var(--primary-button-background-active-color);
 }
 
 .image img {
@@ -179,6 +179,8 @@
   width: 55rem;
 }
 
+/* Additional */
+
 .newItemForm {
   display: flex;
   flex-direction: column;
@@ -198,4 +200,8 @@
   color: black;
   margin: 0.5rem;
   padding: 0.5rem;
+}
+
+.viewAllItems {
+  flex-wrap: wrap;
 }

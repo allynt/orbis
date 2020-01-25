@@ -18,6 +18,7 @@ import { ReactComponent as ProfileIcon } from '../toolbar/profile.svg';
 import { ReactComponent as LandingImage } from './landing.svg';
 
 import styles from './landing.module.css';
+import '../bookmarks/bookmarks-panel.module.css';
 
 const ItemMenu = () => {
   const options = [<option>Edit</option>, <option>Delete</option>, <option>Duplicate</option>];
@@ -27,20 +28,63 @@ const ItemMenu = () => {
 const NewItemForm = ({ newItem, setNewItem }) => {
   return (
     <div className={styles.newItemForm}>
-      <h1>NEW ITEM FORM GOES HERE</h1>
-      <button onClick={()=>{setNewItem(!newItem)}}>Go back</button>
+      <NewMapForm />
+      <button onClick={()=>{setNewItem(!newItem)}}>Cancel</button>
     </div>
   )
 };
 
-const Items = ({ items, chooseItem, newItem, setNewItem }) => {
-  const [selectedItem, setSelectedItem] = useState(null);
+const ViewAllItems = ( {title, items, setItem, selectedItem, setSelectedItem, setViewAllItems} ) => {
+  const dummyDate = 'Created 27 Nov 2019';
+  return (
+    <div>
+      <div className={styles.header}>
+        <h1>{title}</h1>
+        <button onClick={() => { setViewAllItems(false) }}>Go back</button>
+      </div>
+      <div className={`${styles.items} ${styles.viewAllItems}`}>
+        {items.map(item => {
+          return (
+            <div className={styles.item} key={item.title} onClick={() => setItem(item)}>
+              <div className={styles.image}>
+                <picture>
+                  <img src={item.thumbnail} alt={item.title}></img>
+                </picture>
+              </div>
+
+              <div className={styles.info}>
+                {selectedItem === item ? (
+                  <ItemMenu />
+                ) : (
+                  <div>
+                    <h3 className={styles.title}>{item.title}</h3>
+                    <p className={styles.creationDate}>{dummyDate}</p>
+                  </div>
+                  )}
+                  <div
+                    className={styles.ellipsis}
+                    onClick={() => {
+                      setSelectedItem(selectedItem === item ? null : item);
+                    }}
+                  >
+                    ...
+                </div>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  )
+}
+
+const Items = ({ items, chooseItem, newItem, setNewItem, selectedItem, setSelectedItem }) => {
+
   const [item, setItem] = useState(null);
   const dummyDate = 'Created 27 Nov 2019';
 
   if (item) {
     chooseItem(item);
-    console.log(item)
     const viewport = {center: item.center, zoom: item.zoom};
     let queryString = encodeURIComponent(JSON.stringify(viewport));
     return (
@@ -62,29 +106,32 @@ const Items = ({ items, chooseItem, newItem, setNewItem }) => {
                 {selectedItem === item ? (
                   <ItemMenu />
                 ) : (
-                    <div>
-                      <h3 className={styles.title}>{item.title}</h3>
-                      <p className={styles.creationDate}>{dummyDate}</p>
-                    </div>
+                  <div>
+                    <h3 className={styles.title}>{item.title}</h3>
+                    <p className={styles.creationDate}>{dummyDate}</p>
+                  </div>
                   )}
-                <div
-                  className={styles.ellipsis}
-                  onClick={() => {
-                    setSelectedItem(selectedItem === item ? null : item);
-                  }}
-                >
-                  ...
-              </div>
+                  <div
+                    className={styles.ellipsis}
+                    onClick={() => {
+                      setSelectedItem(selectedItem === item ? null : item);
+                    }}
+                  >
+                    ...
+                </div>
               </div>
             </div>
           );
         })}
+
         <div
           onClick={() => {
             setNewItem(!newItem);
           }}
         >
-          <div className={styles.createNew}>+</div>
+          <div className={styles.createNew}>
+            +
+          </div>
           <div className={styles.new}>
             <h3>New</h3>
           </div>
@@ -114,7 +161,7 @@ const NewUserLanding = ({ toggle, isVisible, ref }) => {
 
           <Button theme="primary" classNames={[styles.journeyButton]} onClick={toggle}>
             Create New
-              </Button>
+          </Button>
         </div>
 
         <div className={styles.journeyImage}>
@@ -129,7 +176,10 @@ const NewUserLanding = ({ toggle, isVisible, ref }) => {
   )
 }
 
-const ExistingUserLanding = ({ bookmarks, chooseBookmark, viewAllItems, setViewAllItems, setNewItem }) => {
+const ExistingUserLanding = ({ bookmarks, chooseBookmark, viewAllItems, setViewAllItems, setNewItem, selectedItem, setSelectedItem }) => {
+
+  const mostRecentItems = bookmarks.slice(0, 4);
+  const [title, setTitle] = useState('');
 
   return (
     <div className={styles.landing}>
@@ -138,21 +188,31 @@ const ExistingUserLanding = ({ bookmarks, chooseBookmark, viewAllItems, setViewA
         <ProfileIcon className={styles.profileIcon} />
       </div>
 
-      <div className={styles.maps}>
-        <div className={styles.header}>
-          <h1>Your Maps</h1>
-          <p onClick={() => setViewAllItems(!viewAllItems)}>view all</p>
-        </div>
-        <Items items={bookmarks} chooseItem={chooseBookmark} setNewItem={setNewItem} />
-      </div>
+      {viewAllItems ? (
+        <ViewAllItems title={title} items={bookmarks} viewAllItems={viewAllItems} setViewAllItems={setViewAllItems}/>
+      ) : (
+        <div className={styles.itemRows}>
+          <div className={styles.header}>
+            <h1>Your Maps</h1>
+            <p id="Your Maps" onClick={(evt) => {
+              setTitle(evt.target.id)
+              setViewAllItems(true)
+              }
+            }>view all</p>
+          </div>
+          <Items items={mostRecentItems} chooseItem={chooseBookmark} setNewItem={setNewItem} selectedItem={selectedItem} setSelectedItem={setSelectedItem} />
 
-      <div className={styles.stories}>
-        <div className={styles.header}>
-          <h1>Your Stories</h1>
-          <p>view all</p>
+          <div className={styles.header}>
+            <h1>Your Stories</h1>
+            <p id="Your Stories" onClick={(evt) => {
+              setTitle(evt.target.id)
+              setViewAllItems(true)
+              }
+            }>view all</p>
+          </div>
+          <Items items={mostRecentItems} chooseItem={chooseBookmark} setNewItem={setNewItem} selectedItem={selectedItem} setSelectedItem={setSelectedItem} />
         </div>
-        <Items items={bookmarks} chooseItem={chooseBookmark} setNewItem={setNewItem} />
-      </div>
+      )}
 
       <div className={styles.buttonContainer}>
         <Button theme="tertiary" classNames={[styles.button]}>
@@ -173,6 +233,7 @@ const Landing = () => {
     dispatch(selectBookmark(bookmark))
   };
 
+  const [selectedItem, setSelectedItem] = useState(null);
   const [viewAllItems, setViewAllItems] = useState(false);
   const [newItem, setNewItem] = useState(false);
 
@@ -195,14 +256,16 @@ const Landing = () => {
             setViewAllItems={setViewAllItems}
             newItem={newItem}
             setNewItem={setNewItem}
+            selectedItem={selectedItem}
+            setSelectedItem={setSelectedItem}
           />
         ) : (
-            <NewUserLanding
-              toggle={toggle}
-              isVisible={isVisible}
-              ref={ref}
-            />
-          )}
+          <NewUserLanding
+            toggle={toggle}
+            isVisible={isVisible}
+            ref={ref}
+          />
+        )}
       </div>
     );
   }

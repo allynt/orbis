@@ -533,7 +533,7 @@ const Map = (
     // >
     <div ref={mapContainer} className={layoutStyles.map} data-testid={`map-${position}`}>
 
-      {!viewport && <div className={layoutStyles.loadMask}><h1>Loading...</h1></div>}
+      {!viewport && <div className={layoutStyles.loadMask}><h1>Loading data...</h1></div>}
 
       {/* <AccountMenuButton user={user} logout={() => dispatch(logout(history))} /> */}
       {sidebar && (
