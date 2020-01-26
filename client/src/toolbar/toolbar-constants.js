@@ -1,4 +1,4 @@
-export const DATA_LAYERS = 'Data Layers';
+export const DATA_LAYERS = 'Data';
 export const SATELLITE_LAYERS = 'Satellite';
 export const PAGES = 'Pages';
 export const BOOKMARKS = 'Maps';
