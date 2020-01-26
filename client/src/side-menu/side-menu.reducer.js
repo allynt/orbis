@@ -11,10 +11,10 @@ export default (state = INITIAL_STATE, action) => {
   switch (action.type) {
     case TOGGLE_MENU:
       if (!state.isMenuVisible) {
-        // console.log('OPENING MENU');
         return { ...state, isMenuVisible: true };
       } else if (state.isMenuVisible && state.visibleMenuItem === action.label) {
-        // console.log('CLISING MENU');
+        return { ...state, visibleMenuItem: '', isMenuVisible: false };
+      } else if (action.label === 'screenshot') {
         return { ...state, visibleMenuItem: '', isMenuVisible: false };
       }
 

@@ -5,7 +5,7 @@ export const BOOKMARKS = 'Bookmarks';
 export const STORIES = 'Stories';
 
 export const ANNOTATIONS = 'Drawing Tools';
-export const SAVE_MAP = 'Save Map';
+export const SAVE_MAP = 'Screenshot';
 export const SHARE = 'Share';
 
 export const FAQ = 'FAQ';

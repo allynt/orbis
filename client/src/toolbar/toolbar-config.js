@@ -88,7 +88,10 @@ export const getToolbarItems = dispatch => {
     {
       label: SAVE_MAP,
       icon: <ImageIcon />,
-      action: () => dispatch(saveMap()),
+      action: () => {
+        dispatch(toggleMenu('screenshot'));
+        dispatch(saveMap());
+      },
       tooltip: SAVE_MAP
     },
     {
