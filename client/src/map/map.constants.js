@@ -36,22 +36,22 @@ export const regions = [
 export const MAP_STYLE_DATA = [
   {
     id: 'streets',
-    uri: 'mapbox://styles/thermcert/cjyx8fn3u2ojo1cmzfl8spj05',
+    uri: 'mapbox://styles/mapbox/streets-v11',
     title: 'Streets'
   },
   {
     id: 'light',
-    uri: 'mapbox://styles/thermcert/cjyx8apt22o611cl5ih9kdrrh',
+    uri: 'mapbox://styles/mapbox/light-v10',
     title: 'Light'
   },
   {
     id: 'dark',
-    uri: 'mapbox://styles/thermcert/cjyx8dj0m2om41cohblkd42my',
+    uri: 'mapbox://styles/mapbox/dark-v10',
     title: 'Dark'
   },
   {
     id: 'satellite',
-    uri: 'mapbox://styles/thermcert/cjyx826k90y3g1cmwp64ropem',
+    uri: 'mapbox://styles/mapbox/satellite-v9',
     title: 'Satellite'
   }
 ];
