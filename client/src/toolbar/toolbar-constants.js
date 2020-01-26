@@ -1,7 +1,7 @@
 export const DATA_LAYERS = 'Data Layers';
 export const SATELLITE_LAYERS = 'Satellite';
 export const PAGES = 'Pages';
-export const BOOKMARKS = 'Bookmarks';
+export const BOOKMARKS = 'Maps';
 export const STORIES = 'Stories';
 
 export const ANNOTATIONS = 'Drawing Tools';

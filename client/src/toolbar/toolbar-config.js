@@ -65,7 +65,7 @@ export const getToolbarItems = dispatch => {
       action: () => {
         dispatch(toggleMenu(BOOKMARKS));
         dispatch(toggleMenuItem(BOOKMARKS));
-        dispatch(setMenuHeadings('Bookmark Map', 'Bookmark Map Strapline'));
+        dispatch(setMenuHeadings('Maps', 'Bookmark Map Strapline'));
       },
       tooltip: BOOKMARKS
     },
