@@ -207,3 +207,7 @@ header {
 .landing {
   background-color: #fff;
 }
+
+.paragraph {
+  max-width: 30rem;
+}

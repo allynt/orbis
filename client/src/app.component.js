@@ -89,8 +89,11 @@ const App = () => {
       <ReactTooltip />
 
       <main>
-        <Dialog isVisible={isVisible} title="Not Yet Implemented" close={toggle} ref={ref}>
-          <p>{notYetImplementedDescription}</p>
+        <Dialog isVisible={isVisible} title="Sorry Not Ready Yet!" close={toggle} ref={ref}>
+          <p className={styles.paragraph}>
+            Sorry for the inconvenience but this feature is not available yet! Do not worry, we will let you know when
+            it will be ready
+          </p>
         </Dialog>
 
         <Switch>
