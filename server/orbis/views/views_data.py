@@ -124,7 +124,7 @@ class DataView(APIView):
                             "label": "Stoke-On-Trent",
                             "domain": "Rice Paddies",
                             "description": 'Rice Paddies has name stoke-on-trent with a label Stoke-On-Trent Some paragraph describing stuff.',
-                            "url": f"{settings.DATA_URL}/astrosat/test/stoke-on-trent/v1/{{z}}/{{x}}/{{y}}.pbf"
+                            "url": f"{settings.DATA_URL}/astrosat/test/stoke-on-trent/v1/metadata.json"
                         }
                     },
                     {
