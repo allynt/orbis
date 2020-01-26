@@ -1,0 +1,142 @@
+import React, { useState } from 'react';
+import PropTypes from 'prop-types';
+
+import { useDispatch, useSelector } from 'react-redux';
+
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
+
+import { searchSatellites } from './satellites.actions';
+
+import Button from '@astrosat/astrosat-ui/dist/buttons/button';
+import InfoButton from '@astrosat/astrosat-ui/dist/buttons/info-button';
+import Checkbox from '@astrosat/astrosat-ui/dist/forms/checkbox';
+
+import { RESULTS } from './satellites-panel.component';
+
+import { ReactComponent as InfoIcon } from './info.svg';
+
+import styles from './search.module.css';
+
+const DATE_FORMAT = 'yyy-MM-dd';
+
+const InfoBox = ({ info }) => <div className={styles.infoBox}>{info}</div>;
+
+const Search = ({ satellites, setVisiblePanel }) => {
+  const dispatch = useDispatch();
+  const [selectedSatellites, setSelectedSatellites] = useState([]);
+  const [startDate, setStartDate] = useState(new Date());
+  const [endDate, setEndDate] = useState(new Date());
+  const [isInfoVisible, setIsInfoVisible] = useState(false);
+  const [info, setInfo] = useState(null);
+
+  // const CustomInput = ({ value, onClick }) => (
+  //   <input className={styles.dateEntry} onClick={onClick}>
+  //     {value}
+  //   </input>
+  // );
+  // const ExampleCustomInput = ({ value, onClick }) => (
+  //   <button className="example-custom-input" onClick={onClick}>
+  //     {value}
+  //   </button>
+  // );
+
+  return (
+    <div className={styles.search}>
+      <div>
+        <h3>SEARCH</h3>
+
+        <ul className={styles.satellites}>
+          {satellites.map(satellite => (
+            <li key={satellite.label} className={styles.satellite}>
+              <Checkbox
+                name="satellite"
+                value="true"
+                checked={satellite.label === 'Sentinel-2' ? true : false}
+                label={satellite.label}
+                onChange={() => {
+                  const result = selectedSatellites.find(sat => sat.label === satellite.label);
+
+                  if (result) {
+                    // Remove from selected list
+                    setSelectedSatellites(selectedSatellites.filter(sat => sat.label !== satellite.label));
+                  } else {
+                    // Add to selected list
+                    setSelectedSatellites([...selectedSatellites, satellite]);
+                  }
+                }}
+              />
+
+              {isInfoVisible && info.label === satellite.label && <InfoBox info={satellite.description} />}
+              <button
+                onClick={() => {
+                  setIsInfoVisible(!isInfoVisible);
+                  setInfo(satellite);
+                }}
+              >
+                <InfoIcon className={styles.icon} />
+              </button>
+              {/* <InfoButton
+                classNames={[styles.infoButton]}
+                onClick={() => {
+                  console.log('Info Clicked');
+                  setIsInfoVisible(!isInfoVisible);
+                  setInfo(satellite);
+                }}
+              /> */}
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <div>
+        <h3>TIME RANGE</h3>
+
+        <div className={styles.options}>
+          <DatePicker
+            dateFormat={DATE_FORMAT}
+            selected={startDate}
+            onChange={date => setStartDate(date)}
+            selectsStart
+            startDate={startDate}
+            endDate={endDate}
+          />
+          <span> to </span>
+          <DatePicker
+            dateFormat={DATE_FORMAT}
+            selected={endDate}
+            onChange={date => setEndDate(date)}
+            selectsEnd
+            startDate={startDate}
+            endDate={endDate}
+            minDate={startDate}
+          />
+        </div>
+      </div>
+
+      <div className={styles.buttons}>
+        <Button
+          theme="primary"
+          classNames={[styles.button]}
+          onClick={() => {
+            dispatch(searchSatellites(selectedSatellites, startDate, endDate));
+            setVisiblePanel(RESULTS);
+          }}
+        >
+          Search
+        </Button>
+        <Button
+          classNames={[styles.button]}
+          theme="tertiary"
+          onClick={() => console.log('Task Satellite Button Clicked')}
+        >
+          Task Satellite
+        </Button>
+      </div>
+    </div>
+  );
+};
+
+Search.propTypes = {};
+
+export default Search;

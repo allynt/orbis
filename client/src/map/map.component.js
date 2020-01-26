@@ -33,6 +33,7 @@ import SideMenu from '../side-menu/side-menu.component';
 import AnnotationsPanel from '../annotations/annotations-panel.component';
 import BookmarksPanel from '../bookmarks/bookmarks-panel.component';
 import DataLayers from '../data-layers/data-layers.component';
+import SatellitesPanel from '../satellites/satellites-panel.component';
 import Profile from '../accounts/profile.component';
 import PasswordChangeForm from '../accounts/password-change-form.component';
 // import { setViewport } from './map.actions';
@@ -64,7 +65,14 @@ import ImageMode from '../annotations/modes/image';
 
 import LayerTree from '../layer-tree/layer-tree.component';
 
-import { ANNOTATIONS, BOOKMARKS, DATA_LAYERS, PROFILE, CHANGE_PASSWORD } from '../toolbar/toolbar-constants';
+import {
+  ANNOTATIONS,
+  BOOKMARKS,
+  DATA_LAYERS,
+  SATELLITE_LAYERS,
+  PROFILE,
+  CHANGE_PASSWORD
+} from '../toolbar/toolbar-constants';
 
 import { GEOJSON, RASTER, VECTOR } from './map.constants';
 
@@ -163,6 +171,8 @@ const Map = (
   const selectedLayers = useSelector(state => state.dataLayers.layers);
   const nonSelectedLayers = allLayers && allLayers.filter(layer => !selectedLayers.includes(layer));
   const { mapContainer, mapInstance, mapPromise } = useMapbox(style, accessToken, dataAuthToken, dataAuthHost);
+
+  const selectedScene = useSelector(state => state.satellites.selectedScene);
 
   // const user = useSelector(state => state.accounts.user);
 
@@ -374,19 +384,22 @@ const Map = (
       if (nonSelectedLayers) {
         nonSelectedLayers.forEach(layer => {
           const sourceId = `${layer.name}-source`;
-          const layers = map.getStyle().layers;
-          let layersToRemove = [];
-          nonSelectedLayers.forEach(nonSelectedLayer => {
-            layers.forEach(layer => {
-              if (layer.id.startsWith(nonSelectedLayer.name)) {
-                layersToRemove = [...layersToRemove, layer];
-              }
+          const mapStyle = map.getStyle();
+          if (mapStyle) {
+            const layers = map.getStyle().layers;
+            let layersToRemove = [];
+            nonSelectedLayers.forEach(nonSelectedLayer => {
+              layers.forEach(layer => {
+                if (layer.id.startsWith(nonSelectedLayer.name)) {
+                  layersToRemove = [...layersToRemove, layer];
+                }
+              });
             });
-          });
 
-          if (map.getSource(sourceId)) {
-            layersToRemove.forEach(layer => map.removeLayer(layer.id));
-            map.removeSource(sourceId);
+            if (map.getSource(sourceId)) {
+              layersToRemove.forEach(layer => map.removeLayer(layer.id));
+              map.removeSource(sourceId);
+            }
           }
         });
       }
@@ -451,6 +464,7 @@ const Map = (
 
         return () => {
           console.log('REMOVE LAYERS: ', selectedLayers);
+          // const sourceId = `${layer.name}-source`;
           // const property = properties
           //   .filter(property => property.type === 'raster')
           //   .find(property => property.field === selectedProperty);
@@ -462,6 +476,30 @@ const Map = (
       });
     },
     [selectedLayers, dataAuthHost]
+  );
+
+  useMap(
+    mapInstance,
+    map => {
+      if (selectedScene) {
+        const sourceId = `${selectedScene.properties.label}-source`;
+        if (!map.getSource(sourceId)) {
+          map.addSource(sourceId, {
+            type: 'raster',
+            tiles: [selectedScene.url]
+          });
+
+          map.addLayer({
+            id: `${selectedScene.properties.label}-layer`,
+            type: 'raster',
+            source: sourceId,
+            layout: {},
+            paint: {}
+          });
+        }
+      }
+    },
+    [selectedScene, dataAuthHost]
   );
 
   useImperativeHandle(ref, () => mapPromise);
@@ -493,6 +531,7 @@ const Map = (
 
           <div className={layoutStyles.sidebar}>
             {visibleMenuItem === DATA_LAYERS && <DataLayers />}
+            {visibleMenuItem === SATELLITE_LAYERS && <SatellitesPanel />}
             {/* {visibleMenuItem === DATA_LAYERS && <LayerTree map={mapInstance} />} */}
             {visibleMenuItem === ANNOTATIONS && <AnnotationsPanel map={mapInstance} />}
             {visibleMenuItem === BOOKMARKS && <BookmarksPanel map={mapInstance} />}
