@@ -1,5 +1,4 @@
 import React, { useRef, useEffect, useState } from 'react';
-import PropTypes from 'prop-types';
 
 import { Redirect } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
@@ -13,8 +12,9 @@ import useModal from '@astrosat/astrosat-ui/dist/containers/use-modal';
 
 import NewMapForm from './new-map-form.component';
 
-import { ReactComponent as OrbisLogo } from '../orbis.svg';
+import { ReactComponent as OrbisLogo } from '../orbis-cropped.svg';
 import { ReactComponent as ProfileIcon } from '../toolbar/profile.svg';
+import { ReactComponent as OptionsIcon } from '../options-icon.svg';
 import { ReactComponent as LandingImage } from './landing.svg';
 
 import styles from './landing.module.css';
@@ -25,78 +25,63 @@ const ItemMenu = () => {
   return <Select classNames={[styles.itemSelect]} options={options} onChange={console.log('hello')} />;
 };
 
-const NewItemForm = ({ newItem, setNewItem }) => {
-  return (
-    <div className={styles.newItemForm}>
-      <NewMapForm />
-      <button onClick={()=>{setNewItem(!newItem)}}>Cancel</button>
-    </div>
-  )
-};
+const NewItemForm = ({ newItem, setNewItem }) => (
+  <div className={styles.newItemForm} onBlue={() => { setNewItem(false) }}>
+    <NewMapForm />
+    <button
+      onClick={() => {
+        setNewItem(!newItem);
+      }}
+    >
+      Cancel
+    </button>
+  </div>
+);
 
-const ViewAllItems = ( {title, items, setItem, selectedItem, setSelectedItem, setViewAllItems} ) => {
+const ViewAllItems = ({ title, items, chooseBookmark, selectedItem, setSelectedItem, setNewItem, setViewAllItems }) => {
   const dummyDate = 'Created 27 Nov 2019';
   return (
     <div>
       <div className={styles.header}>
         <h1>{title}</h1>
-        <button onClick={() => { setViewAllItems(false) }}>Go back</button>
+        <Button  
+          theme='link' 
+          classNames={[styles.headerButton]}
+          onClick={() => {
+            setViewAllItems(false);
+          }}
+        >
+          Back to menu
+        </ Button>
       </div>
-      <div className={`${styles.items} ${styles.viewAllItems}`}>
-        {items.map(item => {
-          return (
-            <div className={styles.item} key={item.title} onClick={() => setItem(item)}>
-              <div className={styles.image}>
-                <picture>
-                  <img src={item.thumbnail} alt={item.title}></img>
-                </picture>
-              </div>
-
-              <div className={styles.info}>
-                {selectedItem === item ? (
-                  <ItemMenu />
-                ) : (
-                  <div>
-                    <h3 className={styles.title}>{item.title}</h3>
-                    <p className={styles.creationDate}>{dummyDate}</p>
-                  </div>
-                  )}
-                  <div
-                    className={styles.ellipsis}
-                    onClick={() => {
-                      setSelectedItem(selectedItem === item ? null : item);
-                    }}
-                  >
-                    ...
-                </div>
-              </div>
-            </div>
-          );
-        })}
-      </div>
+      <Items
+        classname='viewAllItems'
+        items={items}
+        chooseItem={chooseBookmark}
+        setNewItem={setNewItem}
+        selectedItem={selectedItem}
+        setSelectedItem={setSelectedItem}
+      />
     </div>
-  )
-}
+  );
+};
 
-const Items = ({ items, chooseItem, newItem, setNewItem, selectedItem, setSelectedItem }) => {
-
+const Items = ({ classname, items, chooseItem, setNewItem, selectedItem, setSelectedItem }) => {
   const [item, setItem] = useState(null);
   const dummyDate = 'Created 27 Nov 2019';
 
   if (item) {
     chooseItem(item);
-    const viewport = {center: item.center, zoom: item.zoom};
+    const viewport = { center: item.center, zoom: item.zoom };
     let queryString = encodeURIComponent(JSON.stringify(viewport));
-    return (
-      <Redirect to={`/map/${queryString}`} />
-    )
+    return <Redirect to={`/map/${queryString}`} />;
   } else {
     return (
-      <div className={styles.items}>
+      <div className={styles[classname]}>
         {items.map(item => {
           return (
-            <div className={styles.item} key={item.title} onClick={() => setItem(item)}>
-              <div className={styles.image}>
+            <div className={styles.item} key={item.title}>
+              <div className={styles.image} onClick={() => setItem(item)}>
                 <picture>
                   <img src={item.thumbnail} alt={item.title}></img>
                 </picture>
@@ -110,14 +95,14 @@ const Items = ({ items, chooseItem, newItem, setNewItem, selectedItem, setSelect
                     <h3 className={styles.title}>{item.title}</h3>
                     <p className={styles.creationDate}>{dummyDate}</p>
                   </div>
-                  )}
-                  <div
-                    className={styles.ellipsis}
-                    onClick={() => {
-                      setSelectedItem(selectedItem === item ? null : item);
-                    }}
-                  >
-                    ...
+                )}
+                <div
+                  className={styles.optionsIcon}
+                  onClick={() => {
+                    setSelectedItem(selectedItem === item ? null : item);
+                  }}
+                >
+                  <OptionsIcon />
                 </div>
               </div>
             </div>
@@ -126,15 +111,10 @@ const Items = ({ items, chooseItem, newItem, setNewItem, selectedItem, setSelect
 
         <div
           onClick={() => {
-            setNewItem(!newItem);
+            setNewItem(true);
           }}
         >
-          <div className={styles.createNew}>
-            +
-          </div>
-          <div className={styles.new}>
-            <h3>New</h3>
-          </div>
+        <div className={styles.createNew}>+</div>
         </div>
       </div>
     );
@@ -153,11 +133,11 @@ const NewUserLanding = ({ toggle, isVisible, ref }) => {
 
           <p className={styles.journeyText}>
             Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
-            dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-            ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-            fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia
-            deserunt mollit anim id est laborum.
-              </p>
+            dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex
+            ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat
+            nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit
+            anim id est laborum.
+          </p>
 
           <Button theme="primary" classNames={[styles.journeyButton]} onClick={toggle}>
             Create New
@@ -173,69 +153,106 @@ const NewUserLanding = ({ toggle, isVisible, ref }) => {
         </Dialog>
       </div>
     </div>
-  )
-}
+  );
+};
 
-const ExistingUserLanding = ({ bookmarks, chooseBookmark, viewAllItems, setViewAllItems, setNewItem, selectedItem, setSelectedItem }) => {
+const ExistingUserLanding = ({ bookmarks, chooseBookmark }) => {
 
   const mostRecentItems = bookmarks.slice(0, 4);
+  const [viewAllItems, setViewAllItems] = useState(false);
+  const [selectedItem, setSelectedItem] = useState(null);
+  const [newItem, setNewItem] = useState(false);
   const [title, setTitle] = useState('');
 
   return (
     <div className={styles.landing}>
+
+      {newItem && <NewItemForm newItem={newItem} setNewItem={setNewItem} />}
+
       <div className={styles.banner}>
         <OrbisLogo className={styles.logo} />
         <ProfileIcon className={styles.profileIcon} />
       </div>
 
       {viewAllItems ? (
-        <ViewAllItems title={title} items={bookmarks} viewAllItems={viewAllItems} setViewAllItems={setViewAllItems}/>
+        <ViewAllItems 
+          title={title} 
+          items={bookmarks} 
+          chooseBookmark={chooseBookmark} 
+          setNewItem={setNewItem} 
+          selectedItem={selectedItem} 
+          setSelectedItem={setSelectedItem} 
+          setViewAllItems={setViewAllItems} 
+        />
       ) : (
         <div className={styles.itemRows}>
           <div className={styles.header}>
             <h1>Your Maps</h1>
-            <p id="Your Maps" onClick={(evt) => {
-              setTitle(evt.target.id)
-              setViewAllItems(true)
-              }
-            }>view all</p>
+            <Button 
+              id="Your Maps" 
+              theme='link' 
+              classNames={[styles.headerButton]}
+              onClick={evt => {
+                setTitle(evt.target.id);
+                setViewAllItems(true);
+              }}
+            >
+              View all
+            </ Button>
           </div>
-          <Items items={mostRecentItems} chooseItem={chooseBookmark} setNewItem={setNewItem} selectedItem={selectedItem} setSelectedItem={setSelectedItem} />
+          <Items
+            classname='items'
+            items={mostRecentItems}
+            chooseItem={chooseBookmark}
+            setNewItem={setNewItem}
+            selectedItem={selectedItem}
+            setSelectedItem={setSelectedItem}
+          />
 
           <div className={styles.header}>
             <h1>Your Stories</h1>
-            <p id="Your Stories" onClick={(evt) => {
-              setTitle(evt.target.id)
-              setViewAllItems(true)
-              }
-            }>view all</p>
+            <Button 
+              id="Your Stories" 
+              theme='link' 
+              classNames={[styles.headerButton]}
+              onClick={evt => {
+                setTitle(evt.target.id);
+                setViewAllItems(true);
+              }}
+            >
+              View all
+            </ Button>
           </div>
-          <Items items={mostRecentItems} chooseItem={chooseBookmark} setNewItem={setNewItem} selectedItem={selectedItem} setSelectedItem={setSelectedItem} />
+          <Items
+            classname='items'
+            items={mostRecentItems}
+            chooseItem={chooseBookmark}
+            setNewItem={setNewItem}
+            selectedItem={selectedItem}
+            setSelectedItem={setSelectedItem}
+          />
         </div>
       )}
 
       <div className={styles.buttonContainer}>
-        <Button theme="tertiary" classNames={[styles.button]}>
+        <Button theme="tertiary" classNames={[styles.button]} onClick={() => {return <Redirect to='/map'/>}}>
           Browse Map
         </Button>
       </div>
     </div>
-  )
-}
+  );
+};
 
 const Landing = () => {
   const dispatch = useDispatch();
   const bookmarks = useSelector(state => state.bookmarks.bookmarks);
+  // const bookmarks = null; <<< uncomment this and comment out the above line ^^^ to see other landing page.
   const { isVisible, toggle } = useModal(false);
   const ref = useRef(null);
 
-  const chooseBookmark = (bookmark) => {
-    dispatch(selectBookmark(bookmark))
+  const chooseBookmark = bookmark => {
+    dispatch(selectBookmark(bookmark));
   };
-
-  const [selectedItem, setSelectedItem] = useState(null);
-  const [viewAllItems, setViewAllItems] = useState(false);
-  const [newItem, setNewItem] = useState(false);
 
   useEffect(() => {
     if (!bookmarks) {
@@ -243,32 +260,18 @@ const Landing = () => {
     }
   }, [bookmarks, dispatch]);
 
-  if (newItem) {
-    return <NewItemForm newItem={newItem} setNewItem={setNewItem} />
-  } else {
-    return (
-      <div style={{ height: '100%' }}>
-        {bookmarks ? (
-          <ExistingUserLanding
-            bookmarks={bookmarks}
-            chooseBookmark={chooseBookmark}
-            viewAllItems={viewAllItems}
-            setViewAllItems={setViewAllItems}
-            newItem={newItem}
-            setNewItem={setNewItem}
-            selectedItem={selectedItem}
-            setSelectedItem={setSelectedItem}
-          />
-        ) : (
-          <NewUserLanding
-            toggle={toggle}
-            isVisible={isVisible}
-            ref={ref}
-          />
-        )}
-      </div>
-    );
-  }
+  return (
+    <div style={{ height: '100%' }}>
+      {bookmarks ? (
+        <ExistingUserLanding
+          bookmarks={bookmarks}
+          chooseBookmark={chooseBookmark}
+        />
+      ) : (
+        <NewUserLanding toggle={toggle} isVisible={isVisible} ref={ref} />
+      )}
+    </div>
+  );
 };
 
 Landing.propTypes = {};
