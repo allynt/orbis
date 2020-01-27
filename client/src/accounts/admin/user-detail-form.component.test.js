@@ -103,7 +103,7 @@ describe('User Detail Form Component', () => {
         <UserDetailForm createUser={createUser} />
       </Provider>
     );
-    debug();
+    // debug();
 
     fireEvent.change(getByLabelText('Username:'), { target: { value: 'testusername' } });
     fireEvent.change(getByLabelText('Email Address:'), { target: { value: 'testusername@test.com' } });

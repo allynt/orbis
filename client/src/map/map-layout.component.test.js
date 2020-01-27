@@ -35,6 +35,9 @@ describe('Map Layout Component', () => {
       dataLayers: {
         layers: []
       },
+      satellites: {
+        selectedScene: null
+      },
       annotations: {
         textLabelSelected: false
       },
