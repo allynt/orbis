@@ -416,7 +416,8 @@ const Map = (
           if (layer.type.toLowerCase() === RASTER) {
             map.addSource(sourceId, {
               type: layer.type,
-              tiles: [layer.metadata.url]
+              tiles: [layer.metadata.url],
+              scheme: 'tms'
             });
 
             map.addLayer({ id: `${layer.name}-layer`, type: layer.type, source: sourceId, layout: {}, paint: {} });
@@ -486,7 +487,8 @@ const Map = (
         if (!map.getSource(sourceId)) {
           map.addSource(sourceId, {
             type: 'raster',
-            tiles: [selectedScene.url]
+            tiles: [selectedScene.url],
+            scheme: 'tms'
           });
 
           map.addLayer({
