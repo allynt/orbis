@@ -1,9 +1,18 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import { useDispatch } from 'react-redux';
+
+import Button from '@astrosat/astrosat-ui/dist/buttons/button';
+
+import { SEARCH } from './satellites-panel.component';
+
+import { removeScenes } from './satellites.actions';
+
 import styles from './visualisation.module.css';
 
-const Visualisation = ({ visualisations }) => {
+const Visualisation = ({ visualisations, setVisiblePanel }) => {
+  const dispatch = useDispatch();
   return (
     visualisations && (
       <div>
@@ -26,6 +35,18 @@ const Visualisation = ({ visualisations }) => {
             );
           })}
         </ul>
+
+        <div className={styles.buttons}>
+          <Button
+            theme="primary"
+            onClick={() => {
+              setVisiblePanel(SEARCH);
+              dispatch(removeScenes());
+            }}
+          >
+            Return to Search
+          </Button>
+        </div>
       </div>
     )
   );

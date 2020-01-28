@@ -4,6 +4,7 @@ import {
   FETCH_SATELLITE_SCENES_SUCCESS,
   FETCH_SATELLITE_SCENES_FAILURE,
   SELECT_SCENE,
+  REMOVE_SCENES,
   FETCH_VISUALISATIONS_SUCCESS,
   FETCH_VISUALISATIONS_FAILURE
 } from './satellites.actions';
@@ -40,6 +41,12 @@ const reducer = (state = initialState, action) => {
 
     case SELECT_SCENE:
       return { ...state, selectedScene: action.scene };
+
+    case REMOVE_SCENES:
+      return {
+        ...state,
+        selectedScene: null
+      };
 
     case FETCH_VISUALISATIONS_SUCCESS:
       return {

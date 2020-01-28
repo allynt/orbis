@@ -172,6 +172,7 @@ const Map = (
   const nonSelectedLayers = allLayers && allLayers.filter(layer => !selectedLayers.includes(layer));
   const { mapContainer, mapInstance, mapPromise } = useMapbox(style, accessToken, dataAuthToken, dataAuthHost);
 
+  const scenes = useSelector(state => state.satellites.scenes);
   const selectedScene = useSelector(state => state.satellites.selectedScene);
 
   // const user = useSelector(state => state.accounts.user);
@@ -499,9 +500,19 @@ const Map = (
             paint: {}
           });
         }
+      } else {
+        if (scenes) {
+          scenes.forEach(scene => {
+            const sourceId = `${scene.properties.label}-source`;
+            if (map.getSource(sourceId)) {
+              map.removeLayer(`${scene.properties.label}-layer`);
+              map.removeSource(sourceId);
+            }
+          });
+        }
       }
     },
-    [selectedScene, dataAuthHost]
+    [selectedScene, scenes, dataAuthHost]
   );
 
   useImperativeHandle(ref, () => mapPromise);

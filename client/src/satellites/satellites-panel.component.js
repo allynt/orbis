@@ -17,7 +17,7 @@ import { ReactComponent as VisualisationIcon } from './visualisation.svg';
 
 import styles from './satellites-panel.module.css';
 
-const SEARCH = 'Search';
+export const SEARCH = 'Search';
 export const RESULTS = 'Results';
 export const VISUALISATION = 'Visualisation';
 

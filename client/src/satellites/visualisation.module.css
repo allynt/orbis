@@ -23,3 +23,9 @@
 .disabled {
   opacity: 50%;
 }
+
+.buttons {
+  display: flex;
+  justify-content: center;
+  align-content: center;
+}

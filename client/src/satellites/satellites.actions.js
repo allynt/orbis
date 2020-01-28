@@ -8,6 +8,7 @@ export const FETCH_SATELLITE_SCENES_SUCCESS = 'FETCH_SATELLITE_SCENES_SUCCESS';
 export const FETCH_SATELLITE_SCENES_FAILURE = 'FETCH_SATELLITE_SCENES_FAILURE';
 
 export const SELECT_SCENE = 'SELECT_SCENE';
+export const REMOVE_SCENES = 'REMOVE_SCENES';
 
 export const FETCH_VISUALISATIONS_SUCCESS = 'FETCH_VISUALISATIONS_SUCCESS';
 export const FETCH_VISUALISATIONS_FAILURE = 'FETCH_VISUALISATIONS_FAILURE';
@@ -263,6 +264,8 @@ export const searchSatellites = (selectedSatellites, startDate, endDate) => asyn
   dispatch(fetchSatelliteScenes());
 
 export const selectScene = scene => ({ type: SELECT_SCENE, scene });
+
+export const removeScenes = () => ({ type: REMOVE_SCENES });
 
 export const fetchVisualisations = () => async (dispatch, getState) => {
   const {
