@@ -17,8 +17,6 @@ ALLOWED_HOSTS = [
     "*",
 ]
 
-INSTALLED_APPS += ["core.tests"]
-
 #############
 # profiling #
 #############

@@ -17,25 +17,12 @@ ALLOWED_HOSTS = [
     "127.0.0.1",
 ]
 
-INSTALLED_APPS += [
-    "core.tests"
-]
-
 ############
 # Database #
 ############
 
-DATABASES = {
-    'default': {
-        'ATOMIC_REQUESTS': True,
-        'ENGINE': 'django.contrib.gis.db.backends.postgis',
-        'NAME': "orbis",
-        'USER': "orbis",
-        'PASSWORD': "orbis",
-        'HOST': env("DJANGO_SETTING_DATABASE_HOST"),
-    }
-}
-
+# database values are hard-coded in the appropriate section of build.yml;
+# a transient db is created at 127.0.0.1:5666
 
 #########
 # Email #

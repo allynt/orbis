@@ -41,7 +41,9 @@ jobs:
       ports:
         - "8000:8000"
       env:
+        SYS_ENV: ci
         DJANGO_SETTINGS_MODULE: core.settings
+        DJANGO_DB_HOST: 127.0.0.1:5666
     services:
       db:
         image: kartoza/postgis:11.0-2.5
