@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
@@ -19,27 +19,23 @@ import { ReactComponent as InfoIcon } from './info.svg';
 import styles from './search.module.css';
 
 const DATE_FORMAT = 'yyy-MM-dd';
+const dateFormat = 'd MMM yyy';
 
 const InfoBox = ({ info }) => <div className={styles.infoBox}>{info}</div>;
+
+const CustomInput = React.forwardRef(({ value, onClick }, ref) => (
+  <button className={styles.picker} onClick={onClick}>
+    {value}
+  </button>
+));
 
 const Search = ({ satellites, setVisiblePanel }) => {
   const dispatch = useDispatch();
   const [selectedSatellites, setSelectedSatellites] = useState([]);
-  const [startDate, setStartDate] = useState(new Date());
-  const [endDate, setEndDate] = useState(new Date());
+  const [startDate, setStartDate] = useState(new Date('2019-12-22'));
+  const [endDate, setEndDate] = useState(new Date('2019-12-23'));
   const [isInfoVisible, setIsInfoVisible] = useState(false);
   const [info, setInfo] = useState(null);
-
-  // const CustomInput = ({ value, onClick }) => (
-  //   <input className={styles.dateEntry} onClick={onClick}>
-  //     {value}
-  //   </input>
-  // );
-  // const ExampleCustomInput = ({ value, onClick }) => (
-  //   <button className="example-custom-input" onClick={onClick}>
-  //     {value}
-  //   </button>
-  // );
 
   return (
     <div className={styles.search}>
@@ -76,14 +72,6 @@ const Search = ({ satellites, setVisiblePanel }) => {
               >
                 <InfoIcon className={styles.icon} />
               </button>
-              {/* <InfoButton
-                classNames={[styles.infoButton]}
-                onClick={() => {
-                  console.log('Info Clicked');
-                  setIsInfoVisible(!isInfoVisible);
-                  setInfo(satellite);
-                }}
-              /> */}
             </li>
           ))}
         </ul>
@@ -97,6 +85,8 @@ const Search = ({ satellites, setVisiblePanel }) => {
             dateFormat={DATE_FORMAT}
             selected={startDate}
             onChange={date => setStartDate(date)}
+            dateFormat={dateFormat}
+            customInput={<CustomInput />}
             selectsStart
             startDate={startDate}
             endDate={endDate}
@@ -106,6 +96,8 @@ const Search = ({ satellites, setVisiblePanel }) => {
             dateFormat={DATE_FORMAT}
             selected={endDate}
             onChange={date => setEndDate(date)}
+            dateFormat={dateFormat}
+            customInput={<CustomInput />}
             selectsEnd
             startDate={startDate}
             endDate={endDate}
