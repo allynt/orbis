@@ -39,7 +39,7 @@ export const getToolbarItems = dispatch => {
       action: () => {
         dispatch(toggleMenu(DATA_LAYERS));
         dispatch(toggleMenuItem(DATA_LAYERS));
-        dispatch(setMenuHeadings('Data Layers', 'Data Layers Strapline'));
+        dispatch(setMenuHeadings('ADD DOMAIN', 'Select Domain Type to Add Layers'));
       },
       tooltip: DATA_LAYERS
     },
@@ -49,7 +49,7 @@ export const getToolbarItems = dispatch => {
       action: () => {
         dispatch(toggleMenu(SATELLITE_LAYERS));
         dispatch(toggleMenuItem(SATELLITE_LAYERS));
-        dispatch(setMenuHeadings('Satellite Layers', 'Satellite Layers Strapline'));
+        dispatch(setMenuHeadings('SATELLITE IMAGES', 'Select Type of imagery For The Layers'));
       },
       tooltip: SATELLITE_LAYERS
     },
@@ -65,7 +65,7 @@ export const getToolbarItems = dispatch => {
       action: () => {
         dispatch(toggleMenu(BOOKMARKS));
         dispatch(toggleMenuItem(BOOKMARKS));
-        dispatch(setMenuHeadings('Maps', 'Bookmark Map Strapline'));
+        dispatch(setMenuHeadings('MAPS', 'Select an Existing Map or Add New'));
       },
       tooltip: BOOKMARKS
     },
@@ -81,7 +81,7 @@ export const getToolbarItems = dispatch => {
       action: () => {
         dispatch(toggleMenu(ANNOTATIONS));
         dispatch(toggleMenuItem(ANNOTATIONS));
-        dispatch(setMenuHeadings('Annotate Map', 'Annotate Map Strapline'));
+        dispatch(setMenuHeadings('ANNOTATIONS', 'Select Your Drawing Tool Or Saved Areas'));
       },
       tooltip: ANNOTATIONS
     },
