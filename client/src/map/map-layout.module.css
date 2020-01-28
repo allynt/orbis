@@ -303,12 +303,16 @@
 }
 
 .headings h3 {
-  font-size: large;
   font-weight: bold;
 }
 
 .headings .strapline {
   color: lightgray;
+  font-size: smaller;
+}
+
+.closeButton {
+  align-self: flex-start;
 }
 
 .icon {

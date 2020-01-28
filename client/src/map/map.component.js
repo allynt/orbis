@@ -528,7 +528,7 @@ const Map = (
               <h3>{heading}</h3>
               <p className={layoutStyles.strapline}>{strapline}</p>
             </div>
-            <CloseButton onClick={() => dispatch(closeMenu())} />
+            <CloseButton className={layoutStyles.closeButton} onClick={() => dispatch(closeMenu())} />
           </div>
 
           <div className={layoutStyles.sidebar}>
