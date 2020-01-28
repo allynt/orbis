@@ -324,27 +324,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #000;
+  background-color: #fff;
   width: 100vw;
   height: 100vh;
-}
-
-.loadMask h1 {
-  font-size: 2rem;
-  color: #fff;
-  animation-name: color;
-  animation-duration: 2s;
-  animation-iteration-count: infinite;
-}
-
-@keyframes color {
-  0% {
-    color: #fff;
-  }
-  50% {
-    color: #555;
-  }
-  100% {
-    color: #fff;
-  }
 }

@@ -50,6 +50,7 @@ import PasswordChangeForm from '../accounts/password-change-form.component';
 
 // import Detail from '@astrosat/astrosat-ui/dist/containers/detail';
 import Button from '@astrosat/astrosat-ui/dist/buttons/button';
+import LoadMask from '@astrosat/astrosat-ui/dist/load-mask/load-mask';
 import CloseButton from '@astrosat/astrosat-ui/dist/buttons/close-button';
 // import { Detail } from '@astrosat/astrosat-ui';
 import { ReactComponent as DataIcon } from '../mapstyle/layers.svg';
@@ -533,7 +534,7 @@ const Map = (
     // >
     <div ref={mapContainer} className={layoutStyles.map} data-testid={`map-${position}`}>
 
-      {!viewport && <div className={layoutStyles.loadMask}><h1>Loading data...</h1></div>}
+      {!viewport && <div className={layoutStyles.loadMask}><LoadMask /></div>}
 
       {/* <AccountMenuButton user={user} logout={() => dispatch(logout(history))} /> */}
       {sidebar && (

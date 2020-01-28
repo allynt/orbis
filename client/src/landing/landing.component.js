@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useRef, useEffect, useState, forwardRef } from 'react';
 
 import { Redirect } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
@@ -25,27 +25,13 @@ const ItemMenu = () => {
   return <Select classNames={[styles.itemSelect]} options={options} onChange={console.log('hello')} />;
 };
 
-const NewItemForm = ({ newItem, setNewItem }) => (
-  <div className={styles.newItemForm} onBlue={() => { setNewItem(false) }}>
-    <NewMapForm />
-    <button
-      onClick={() => {
-        setNewItem(!newItem);
-      }}
-    >
-      Cancel
-    </button>
-  </div>
-);
-
-const ViewAllItems = ({ title, items, chooseBookmark, selectedItem, setSelectedItem, setNewItem, setViewAllItems }) => {
-  const dummyDate = 'Created 27 Nov 2019';
+const ViewAllItems = ({ title, items, chooseBookmark, toggle, selectedItem, setSelectedItem, setViewAllItems }) => {
   return (
     <div>
       <div className={styles.header}>
         <h1>{title}</h1>
-        <Button  
-          theme='link' 
+        <Button
+          theme='link'
           classNames={[styles.headerButton]}
           onClick={() => {
             setViewAllItems(false);
@@ -58,7 +44,7 @@ const ViewAllItems = ({ title, items, chooseBookmark, selectedItem, setSelectedI
         classname='viewAllItems'
         items={items}
         chooseItem={chooseBookmark}
-        setNewItem={setNewItem}
+        toggle={toggle}
         selectedItem={selectedItem}
         setSelectedItem={setSelectedItem}
       />
@@ -66,7 +52,7 @@ const ViewAllItems = ({ title, items, chooseBookmark, selectedItem, setSelectedI
   );
 };
 
-const Items = ({ classname, items, chooseItem, setNewItem, selectedItem, setSelectedItem }) => {
+const Items = ({ classname, items, chooseItem, toggle, setNewItem, selectedItem, setSelectedItem }) => {
   const [item, setItem] = useState(null);
   const dummyDate = 'Created 27 Nov 2019';
 
@@ -110,9 +96,7 @@ const Items = ({ classname, items, chooseItem, setNewItem, selectedItem, setSele
         })}
 
         <div
-          onClick={() => {
-            setNewItem(true);
-          }}
+          onClick={toggle}
         >
         <div className={styles.createNew}>+</div>
         </div>
@@ -121,9 +105,9 @@ const Items = ({ classname, items, chooseItem, setNewItem, selectedItem, setSele
   }
 };
 
-const NewUserLanding = ({ toggle, isVisible, ref }) => {
+const NewUserLanding = forwardRef(({ toggle, isVisible }, ref) => {
   return (
-    <div className={styles.splash}>
+    <div className={styles.splash} ref={ref}>
       <div className={styles.header}>
         <OrbisLogo className={styles.logo} />
       </div>
@@ -154,20 +138,17 @@ const NewUserLanding = ({ toggle, isVisible, ref }) => {
       </div>
     </div>
   );
-};
+});
 
-const ExistingUserLanding = ({ bookmarks, chooseBookmark }) => {
+const ExistingUserLanding = forwardRef(({ bookmarks, chooseBookmark, isVisible, toggle }, ref) => {
 
   const mostRecentItems = bookmarks.slice(0, 4);
   const [viewAllItems, setViewAllItems] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
-  const [newItem, setNewItem] = useState(false);
   const [title, setTitle] = useState('');
 
   return (
-    <div className={styles.landing}>
-
-      {newItem && <NewItemForm newItem={newItem} setNewItem={setNewItem} />}
+    <div className={styles.landing} ref={ref}>
 
       <div className={styles.banner}>
         <OrbisLogo className={styles.logo} />
@@ -175,22 +156,22 @@ const ExistingUserLanding = ({ bookmarks, chooseBookmark }) => {
       </div>
 
       {viewAllItems ? (
-        <ViewAllItems 
-          title={title} 
-          items={bookmarks} 
-          chooseBookmark={chooseBookmark} 
-          setNewItem={setNewItem} 
-          selectedItem={selectedItem} 
-          setSelectedItem={setSelectedItem} 
-          setViewAllItems={setViewAllItems} 
+        <ViewAllItems
+          title={title}
+          items={bookmarks}
+          chooseBookmark={chooseBookmark}
+          toggle={toggle}
+          selectedItem={selectedItem}
+          setSelectedItem={setSelectedItem}
+          setViewAllItems={setViewAllItems}
         />
       ) : (
         <div className={styles.itemRows}>
           <div className={styles.header}>
             <h1>Your Maps</h1>
-            <Button 
-              id="Your Maps" 
-              theme='link' 
+            <Button
+              id="Your Maps"
+              theme='link'
               classNames={[styles.headerButton]}
               onClick={evt => {
                 setTitle(evt.target.id);
@@ -204,16 +185,16 @@ const ExistingUserLanding = ({ bookmarks, chooseBookmark }) => {
             classname='items'
             items={mostRecentItems}
             chooseItem={chooseBookmark}
-            setNewItem={setNewItem}
+            toggle={toggle}
             selectedItem={selectedItem}
             setSelectedItem={setSelectedItem}
           />
 
           <div className={styles.header}>
             <h1>Your Stories</h1>
-            <Button 
-              id="Your Stories" 
-              theme='link' 
+            <Button
+              id="Your Stories"
+              theme='link'
               classNames={[styles.headerButton]}
               onClick={evt => {
                 setTitle(evt.target.id);
@@ -227,7 +208,7 @@ const ExistingUserLanding = ({ bookmarks, chooseBookmark }) => {
             classname='items'
             items={mostRecentItems}
             chooseItem={chooseBookmark}
-            setNewItem={setNewItem}
+            toggle={toggle}
             selectedItem={selectedItem}
             setSelectedItem={setSelectedItem}
           />
@@ -239,14 +220,19 @@ const ExistingUserLanding = ({ bookmarks, chooseBookmark }) => {
           Browse Map
         </Button>
       </div>
+
+      <Dialog isVisible={isVisible} title="Create New Map" close={toggle} ref={ref}>
+        <NewMapForm />
+      </Dialog>
     </div>
   );
-};
+});
 
 const Landing = () => {
   const dispatch = useDispatch();
+  // Comment out 'bookmarks = useSelector' and uncomment 'const bookmarks = null' to switch between landing pages.
   const bookmarks = useSelector(state => state.bookmarks.bookmarks);
-  // const bookmarks = null; <<< uncomment this and comment out the above line ^^^ to see other landing page.
+  // const bookmarks = null;
   const { isVisible, toggle } = useModal(false);
   const ref = useRef(null);
 
@@ -266,9 +252,16 @@ const Landing = () => {
         <ExistingUserLanding
           bookmarks={bookmarks}
           chooseBookmark={chooseBookmark}
+          toggle={toggle}
+          isVisible={isVisible}
+          ref={ref}
         />
       ) : (
-        <NewUserLanding toggle={toggle} isVisible={isVisible} ref={ref} />
+        <NewUserLanding
+          toggle={toggle}
+          isVisible={isVisible}
+          ref={ref}
+        />
       )}
     </div>
   );
