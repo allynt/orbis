@@ -52,57 +52,55 @@ const ViewAllItems = ({ title, items, chooseBookmark, toggle, selectedItem, setS
   );
 };
 
-const Items = ({ classname, items, chooseItem, toggle, setNewItem, selectedItem, setSelectedItem }) => {
+const Items = ({ classname, items, chooseItem, toggle, selectedItem, setSelectedItem }) => {
   const [item, setItem] = useState(null);
   const dummyDate = 'Created 27 Nov 2019';
 
   if (item) {
     chooseItem(item);
-    const viewport = { center: item.center, zoom: item.zoom };
-    let queryString = encodeURIComponent(JSON.stringify(viewport));
-    return <Redirect to={`/map/${queryString}`} />;
-  } else {
-    return (
-      <div className={styles[classname]}>
-        {items.map(item => {
-          return (
-            <div className={styles.item} key={item.title}>
-              <div className={styles.image} onClick={() => setItem(item)}>
-                <picture>
-                  <img src={item.thumbnail} alt={item.title}></img>
-                </picture>
-              </div>
 
-              <div className={styles.info}>
-                {selectedItem === item ? (
-                  <ItemMenu />
-                ) : (
-                  <div>
-                    <h3 className={styles.title}>{item.title}</h3>
-                    <p className={styles.creationDate}>{dummyDate}</p>
-                  </div>
-                )}
-                <div
-                  className={styles.optionsIcon}
-                  onClick={() => {
-                    setSelectedItem(selectedItem === item ? null : item);
-                  }}
-                >
-                  <OptionsIcon />
+    const viewport = { center: item.center, zoom: item.zoom };
+    const queryString = encodeURI(JSON.stringify(viewport));
+    return <Redirect to={`/map/${queryString}`} />;
+  }
+  return (
+    <div className={styles[classname]}>
+      {items.map(item => {
+        return (
+          <div className={styles.item} key={item.title}>
+            <div className={styles.image} onClick={() => setItem(item)}>
+              <picture>
+                <img src={item.thumbnail} alt={item.title}></img>
+              </picture>
+            </div>
+
+            <div className={styles.info}>
+              {selectedItem === item ? (
+                <ItemMenu />
+              ) : (
+                <div>
+                  <h3 className={styles.title}>{item.title}</h3>
+                  <p className={styles.creationDate}>{dummyDate}</p>
                 </div>
+                )}
+              <div
+                className={styles.optionsIcon}
+                onClick={() => {
+                  setSelectedItem(selectedItem === item ? null : item);
+                }}
+              >
+                <OptionsIcon />
               </div>
             </div>
-          );
-        })}
+          </div>
+        );
+      })}
 
-        <div
-          onClick={toggle}
-        >
+      <div onClick={toggle}>
         <div className={styles.createNew}>+</div>
-        </div>
       </div>
-    );
-  }
+    </div>
+  );
 };
 
 const NewUserLanding = forwardRef(({ toggle, isVisible }, ref) => {
@@ -146,6 +144,7 @@ const ExistingUserLanding = forwardRef(({ bookmarks, chooseBookmark, isVisible, 
   const [viewAllItems, setViewAllItems] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
   const [title, setTitle] = useState('');
+  const [redirect, setRedirect] = useState('');
 
   return (
     <div className={styles.landing} ref={ref}>
@@ -215,8 +214,10 @@ const ExistingUserLanding = forwardRef(({ bookmarks, chooseBookmark, isVisible, 
         </div>
       )}
 
+      {redirect && <Redirect to={redirect}/>}
+
       <div className={styles.buttonContainer}>
-        <Button theme="tertiary" classNames={[styles.button]} onClick={() => {return <Redirect to='/map'/>}}>
+        <Button theme="tertiary" classNames={[styles.button]} onClick={()=>setRedirect('/map')}>
           Browse Map
         </Button>
       </div>
@@ -230,7 +231,6 @@ const ExistingUserLanding = forwardRef(({ bookmarks, chooseBookmark, isVisible, 
 
 const Landing = () => {
   const dispatch = useDispatch();
-  // Comment out 'bookmarks = useSelector' and uncomment 'const bookmarks = null' to switch between landing pages.
   const bookmarks = useSelector(state => state.bookmarks.bookmarks);
   // const bookmarks = null;
   const { isVisible, toggle } = useModal(false);
