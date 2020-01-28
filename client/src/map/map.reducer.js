@@ -42,7 +42,7 @@ const initialState = {
 const reducer = (state = initialState, action) => {
   switch (action.type) {
     case SET_VIEWPORT:
-      return { ...state, viewport: action.viewport };
+      return action.viewport ? { ...state, viewport: action.viewport } : state;
 
     case MAP_STYLE_SELECTED:
       return { ...state, selectedMapStyle: action.mapStyle };
