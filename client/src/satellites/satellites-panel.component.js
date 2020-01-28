@@ -47,10 +47,7 @@ const SatellitesPanel = () => {
         <Button
           theme="primary"
           classNames={visiblePanel === SEARCH ? [styles.button, styles.active] : [styles.button]}
-          onClick={() => {
-            console.log('Search button clicked');
-            setVisiblePanel(SEARCH);
-          }}
+          onClick={() => setVisiblePanel(SEARCH)}
         >
           <SearchIcon className={styles.icon} />
           Search
@@ -58,10 +55,7 @@ const SatellitesPanel = () => {
         <Button
           theme="primary"
           classNames={visiblePanel === RESULTS ? [styles.button, styles.active] : [styles.button]}
-          onClick={() => {
-            console.log('Results button clicked');
-            setVisiblePanel(RESULTS);
-          }}
+          onClick={() => setVisiblePanel(RESULTS)}
         >
           <ResultsIcon className={styles.icon} />
           Results
@@ -69,10 +63,7 @@ const SatellitesPanel = () => {
         <Button
           theme="primary"
           classNames={visiblePanel === VISUALISATION ? [styles.button, styles.active] : [styles.button]}
-          onClick={() => {
-            console.log('Visualisation button clicked');
-            setVisiblePanel(VISUALISATION);
-          }}
+          onClick={() => setVisiblePanel(VISUALISATION)}
         >
           <VisualisationIcon className={styles.icon} />
           Visualisation
@@ -84,7 +75,9 @@ const SatellitesPanel = () => {
         {visiblePanel === RESULTS && (
           <Results setVisiblePanel={setVisiblePanel} scenes={scenes} selectScene={selectScene} />
         )}
-        {visiblePanel === VISUALISATION && <Visualisation visualisations={visualisations} />}
+        {visiblePanel === VISUALISATION && (
+          <Visualisation visualisations={visualisations} setVisiblePanel={setVisiblePanel} />
+        )}
       </div>
     </div>
   );
