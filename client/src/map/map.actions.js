@@ -62,7 +62,7 @@ export const fetchInfrastructureData = () => async dispatch => {
     });
   } else {
     const message = `${response.status} ${response.statusText} - ${infrastructureData.message}`;
-    NotificationManager.error(message, 'Fetching Infrastructure Data', 50000, () => {});
+    // NotificationManager.error(message, 'Fetching Infrastructure Data', 50000, () => {});
     return dispatch({
       type: INFRASTRUCTURE_DATA_REQUESTED_FAILURE,
       error: infrastructureData
@@ -84,7 +84,7 @@ export const fetchCustomData = () => async dispatch => {
     });
   } else {
     const message = `${response.status} ${response.statusText} - ${customData.message}`;
-    NotificationManager.error(message, 'Fetching Custom Data', 50000, () => {});
+    // NotificationManager.error(message, 'Fetching Custom Data', 50000, () => {});
     return dispatch({
       type: CUSTOM_DATA_REQUESTED_FAILURE,
       error: message
@@ -122,7 +122,7 @@ export const fetchSourcesAndDataToken = () => async (dispatch, getState) => {
     });
   } else {
     const message = `${response.status} ${response.statusText} - ${data.message}`;
-    NotificationManager.error(message, 'Fetching Source Data', 50000, () => {});
+    // NotificationManager.error(message, 'Fetching Source Data', 50000, () => {});
     return dispatch({
       type: SOURCE_DATA_AND_TOKEN_REQUESTED_FAILURE,
       error: message

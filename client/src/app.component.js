@@ -73,16 +73,17 @@ const App = () => {
     // Poll API to get new Data token (expires every X seconds/mins etc)
     // this also fetches the list of data sources the user has access to.
     // console.log('Initial Request for sources');
-    dispatch(fetchSourcesAndDataToken());
-
-    const interval = setInterval(() => {
+    if (user) {
       dispatch(fetchSourcesAndDataToken());
-    }, pollingPeriod);
 
-    return () => {
-      clearInterval(interval);
-    };
-  }, [pollingPeriod]);
+      const interval = setInterval(() => {
+        dispatch(fetchSourcesAndDataToken());
+      }, pollingPeriod);
+      return () => {
+        clearInterval(interval);
+      };
+    }
+  }, [user, pollingPeriod]);
 
   return (
     <div className={`${styles.app} ${styles[selectedTheme.value]}`} ref={ref}>
