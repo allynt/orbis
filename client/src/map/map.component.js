@@ -488,7 +488,7 @@ const Map = (
         if (!map.getSource(sourceId)) {
           map.addSource(sourceId, {
             type: 'raster',
-            tiles: [selectedScene.url],
+            tiles: selectedScene.urls,
             scheme: 'tms'
           });
 

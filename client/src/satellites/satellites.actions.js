@@ -67,8 +67,10 @@ const SATELLITE_SCENES = [
     },
     thumbnail:
       'https://landsat-pds.s3.amazonaws.com/c1/L8/027/033/LC08_L1TP_027033_20200107_20200114_01_T1/LC08_L1TP_027033_20200107_20200114_01_T1_thumb_small.jpg',
-    url:
-      'https://staticdata.testing.or3is.com/astrosat/test/sentinel_2_rgb/S2A_20191223T034141_T47NPG_RGB/{z}/{x}/{y}.png'
+    urls: [
+      'https://staticdata.testing.or3is.com/astrosat/test/sentinel_2_rgb/S2A_20191223T034141_T47NPG_RGB/{z}/{x}/{y}.png',
+      'https://staticdata.testing.or3is.com/astrosat/test/sentinel_2_rgb/S2A_20191223T034141_T47NPH_RGB/{z}/{x}/{y}.png'
+    ]
   },
   {
     id: '38UVD',
@@ -80,8 +82,10 @@ const SATELLITE_SCENES = [
     },
     thumbnail:
       'https://landsat-pds.s3.amazonaws.com/c1/L8/027/033/LC08_L1TP_027033_20191222_20200110_01_T1/LC08_L1TP_027033_20191222_20200110_01_T1_thumb_small.jpg',
-    url:
-      'https://staticdata.testing.or3is.com/astrosat/test/sentinel_2_rgb/S2A_20191223T034141_T47NPG_RGB/{z}/{x}/{y}.png'
+    urls: [
+      'https://staticdata.testing.or3is.com/astrosat/test/sentinel_2_rgb/S2A_20191223T034141_T47NPG_RGB/{z}/{x}/{y}.png',
+      'https://staticdata.testing.or3is.com/astrosat/test/sentinel_2_rgb/S2A_20191223T034141_T47NPH_RGB/{z}/{x}/{y}.png'
+    ]
   },
   {
     id: '37UVD',
@@ -93,8 +97,10 @@ const SATELLITE_SCENES = [
     },
     thumbnail:
       'https://landsat-pds.s3.amazonaws.com/c1/L8/027/033/LC08_L1TP_027033_20191120_20191203_01_T1/LC08_L1TP_027033_20191120_20191203_01_T1_thumb_small.jpg',
-    url:
-      'https://staticdata.testing.or3is.com/astrosat/test/sentinel_2_rgb/S2A_20191223T034141_T47NPG_RGB/{z}/{x}/{y}.png'
+    urls: [
+      'https://staticdata.testing.or3is.com/astrosat/test/sentinel_2_rgb/S2A_20191223T034141_T47NPG_RGB/{z}/{x}/{y}.png',
+      'https://staticdata.testing.or3is.com/astrosat/test/sentinel_2_rgb/S2A_20191223T034141_T47NPH_RGB/{z}/{x}/{y}.png'
+    ]
   },
   {
     id: '36UVD',
@@ -106,8 +112,10 @@ const SATELLITE_SCENES = [
     },
     thumbnail:
       'https://landsat-pds.s3.amazonaws.com/c1/L8/027/033/LC08_L1TP_027033_20191104_20191115_01_T1/LC08_L1TP_027033_20191104_20191115_01_T1_thumb_small.jpg',
-    url:
-      'https://staticdata.testing.or3is.com/astrosat/test/sentinel_2_rgb/S2A_20191223T034141_T47NPG_RGB/{z}/{x}/{y}.png'
+    urls: [
+      'https://staticdata.testing.or3is.com/astrosat/test/sentinel_2_rgb/S2A_20191223T034141_T47NPG_RGB/{z}/{x}/{y}.png',
+      'https://staticdata.testing.or3is.com/astrosat/test/sentinel_2_rgb/S2A_20191223T034141_T47NPH_RGB/{z}/{x}/{y}.png'
+    ]
   },
   {
     id: '35UVD',
@@ -119,8 +127,10 @@ const SATELLITE_SCENES = [
     },
     thumbnail:
       'https://landsat-pds.s3.amazonaws.com/c1/L8/027/033/LC08_L1GT_027033_20191003_20191003_01_RT/LC08_L1GT_027033_20191003_20191003_01_RT_thumb_small.jpg',
-    url:
-      'https://staticdata.testing.or3is.com/astrosat/test/sentinel_2_rgb/S2A_20191223T034141_T47NPG_RGB/{z}/{x}/{y}.png'
+    urls: [
+      'https://staticdata.testing.or3is.com/astrosat/test/sentinel_2_rgb/S2A_20191223T034141_T47NPG_RGB/{z}/{x}/{y}.png',
+      'https://staticdata.testing.or3is.com/astrosat/test/sentinel_2_rgb/S2A_20191223T034141_T47NPH_RGB/{z}/{x}/{y}.png'
+    ]
   },
   {
     id: '34UVD',
@@ -132,8 +142,10 @@ const SATELLITE_SCENES = [
     },
     thumbnail:
       'https://landsat-pds.s3.amazonaws.com/c1/L8/027/033/LC08_L1GT_027033_20190901_20190901_01_RT/LC08_L1GT_027033_20190901_20190901_01_RT_thumb_small.jpg',
-    url:
-      'https://staticdata.testing.or3is.com/astrosat/test/sentinel_2_rgb/S2A_20191223T034141_T47NPG_RGB/{z}/{x}/{y}.png'
+    urls: [
+      'https://staticdata.testing.or3is.com/astrosat/test/sentinel_2_rgb/S2A_20191223T034141_T47NPG_RGB/{z}/{x}/{y}.png',
+      'https://staticdata.testing.or3is.com/astrosat/test/sentinel_2_rgb/S2A_20191223T034141_T47NPH_RGB/{z}/{x}/{y}.png'
+    ]
   },
   {
     id: '33UVD',
@@ -145,8 +157,10 @@ const SATELLITE_SCENES = [
     },
     thumbnail:
       'https://landsat-pds.s3.amazonaws.com/c1/L8/027/033/LC08_L1TP_027033_20190816_20190902_01_T1/LC08_L1TP_027033_20190816_20190902_01_T1_thumb_small.jpg',
-    url:
-      'https://staticdata.testing.or3is.com/astrosat/test/sentinel_2_rgb/S2A_20191223T034141_T47NPG_RGB/{z}/{x}/{y}.png'
+    urls: [
+      'https://staticdata.testing.or3is.com/astrosat/test/sentinel_2_rgb/S2A_20191223T034141_T47NPG_RGB/{z}/{x}/{y}.png',
+      'https://staticdata.testing.or3is.com/astrosat/test/sentinel_2_rgb/S2A_20191223T034141_T47NPH_RGB/{z}/{x}/{y}.png'
+    ]
   },
   {
     id: '32UVD',
@@ -158,8 +172,10 @@ const SATELLITE_SCENES = [
     },
     thumbnail:
       'https://landsat-pds.s3.amazonaws.com/c1/L8/027/033/LC08_L1TP_027033_20190613_20190619_01_T1/LC08_L1TP_027033_20190613_20190619_01_T1_thumb_small.jpg',
-    url:
-      'https://staticdata.testing.or3is.com/astrosat/test/sentinel_2_rgb/S2A_20191223T034141_T47NPG_RGB/{z}/{x}/{y}.png'
+    urls: [
+      'https://staticdata.testing.or3is.com/astrosat/test/sentinel_2_rgb/S2A_20191223T034141_T47NPG_RGB/{z}/{x}/{y}.png',
+      'https://staticdata.testing.or3is.com/astrosat/test/sentinel_2_rgb/S2A_20191223T034141_T47NPH_RGB/{z}/{x}/{y}.png'
+    ]
   }
 ];
 
