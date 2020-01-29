@@ -19,6 +19,10 @@
 .footer {
   margin-top: auto;
 }
+.item, 
+.logo {
+  cursor: pointer;
+}
 
 .item {
   width: 4rem;
