@@ -36,7 +36,6 @@ class BookmarkViewSet(viewsets.ModelViewSet):
     # the client sends data as multipart/form data
     parser_classes = [MultiPartParser, FormParser]
 
-    queryset = Bookmark.objects.all()
     serializer_class = BookmarkSerializer
 
     def get_queryset(self):

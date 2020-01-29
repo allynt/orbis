@@ -61,6 +61,9 @@ class Bookmark(gis_models.Model):
 
     PRECISION = 6
 
+    created = models.DateTimeField(auto_now_add=True, help_text=_("When the bookmark was first created."))
+    modified = models.DateTimeField(auto_now=True, help_text=_("When the bookmark was last modified."))
+
     title = models.CharField(
         max_length=128,
         blank=False,
