@@ -222,7 +222,6 @@ const ExistingUserLanding = forwardRef(({ bookmarks, chooseBookmark, isVisible, 
 const Landing = () => {
   const dispatch = useDispatch();
   const bookmarks = useSelector(state => state.bookmarks.bookmarks);
-  // const bookmarks = [];
   const { isVisible, toggle } = useModal(false);
   const ref = useRef(null);
 
