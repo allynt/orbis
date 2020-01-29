@@ -486,30 +486,31 @@ const Map = (
     mapInstance,
     map => {
       if (selectedScene) {
-        const sourceId = `${selectedScene.properties.label}-source`;
-        if (!map.getSource(sourceId)) {
+        selectedScene.urls.forEach((url, i) => {
+          const sourceId = `${selectedScene.properties.label}-${i}-source`;
           map.addSource(sourceId, {
             type: 'raster',
-            tiles: selectedScene.urls,
-            scheme: 'tms'
+            tiles: [url],
+            scheme: 'tms',
+            tileSize: 256
           });
 
           map.addLayer({
-            id: `${selectedScene.properties.label}-layer`,
+            id: `${selectedScene.properties.label}-${i}-layer`,
             type: 'raster',
-            source: sourceId,
-            layout: {},
-            paint: {}
+            source: sourceId
           });
-        }
+        });
       } else {
         if (scenes) {
           scenes.forEach(scene => {
-            const sourceId = `${scene.properties.label}-source`;
-            if (map.getSource(sourceId)) {
-              map.removeLayer(`${scene.properties.label}-layer`);
-              map.removeSource(sourceId);
-            }
+            scene.urls.forEach((url, i) => {
+              const sourceId = `${scene.properties.label}-${i}-source`;
+              if (map.getSource(sourceId)) {
+                map.removeLayer(`${scene.properties.label}-${i}-layer`);
+                map.removeSource(sourceId);
+              }
+            });
           });
         }
       }
@@ -533,8 +534,11 @@ const Map = (
     //   }}
     // >
     <div ref={mapContainer} className={layoutStyles.map} data-testid={`map-${position}`}>
-
-      {!viewport && <div className={layoutStyles.loadMask}><LoadMask /></div>}
+      {!viewport && (
+        <div className={layoutStyles.loadMask}>
+          <LoadMask />
+        </div>
+      )}
 
       {/* <AccountMenuButton user={user} logout={() => dispatch(logout(history))} /> */}
       {sidebar && (
