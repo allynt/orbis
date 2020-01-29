@@ -222,7 +222,7 @@ const ExistingUserLanding = forwardRef(({ bookmarks, chooseBookmark, isVisible, 
 const Landing = () => {
   const dispatch = useDispatch();
   const bookmarks = useSelector(state => state.bookmarks.bookmarks);
-  // const bookmarks = null;
+  // const bookmarks = [];
   const { isVisible, toggle } = useModal(false);
   const ref = useRef(null);
 
@@ -238,7 +238,7 @@ const Landing = () => {
 
   return (
     <div style={{ height: '100%' }}>
-      {bookmarks ? (
+      {bookmarks && bookmarks.length > 0 ? (
         <ExistingUserLanding
           bookmarks={bookmarks}
           chooseBookmark={chooseBookmark}
