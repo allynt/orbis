@@ -17,7 +17,7 @@
 }
 
 .logo,
-.profileIcon,
+.icon,
 .header p,
 .image,
 .ellipsis,
@@ -28,10 +28,10 @@
 .logo {
   /* HEIGHT MUST BE SAME AS BUTTON CONTAINER */
   height: 5rem;
-  color: #787c82;
+  color: var(--primary-foreground-color);
 }
 
-.profileIcon {
+.icon {
   height: 4rem;
   width: auto;
   align-self: center;
@@ -107,7 +107,7 @@
   align-items: center;
   width: 7.5rem;
   height: 12rem;
-  border: 2px dashed #434343;
+  border: 2px dashed var(--primary-foreground-color);
   border-radius: 1rem;
   background-color: #f6f4f4;
   font-size: 2.5rem;
@@ -115,7 +115,7 @@
 }
 
 .createNew:hover {
-  border: 2.5px solid #434343;
+  border: 2.5px solid var(--primary-foreground-color);
   background-color: #fff;
   color: var(--primary-button-background-active-color);
   opacity: 0.9;
@@ -131,33 +131,6 @@
 
 .button {
   width: 15rem;
-}
-
-.newItemForm {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  position: absolute;
-  top: 0;
-  left: 0;
-  z-index: 1;
-  background-color: rgba(0, 0, 0, 0.7);
-  height: 100%;
-  width: 100%;
-}
-
-.newItemForm h1 {
-  margin: 0.5rem;
-}
-
-.newItemForm button {
-  border: 1px solid white;
-  border-radius: 0.3rem;
-  background-color: white;
-  color: black;
-  margin: 0.5rem;
-  padding: 0.5rem;
 }
 
 .viewAllItems {

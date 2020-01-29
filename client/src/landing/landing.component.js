@@ -7,35 +7,26 @@ import { fetchBookmarks, selectBookmark } from '../bookmarks/bookmarks.actions';
 
 import Button from '@astrosat/astrosat-ui/dist/buttons/button';
 import Dialog from '@astrosat/astrosat-ui/dist/containers/dialog';
-import Select from '@astrosat/astrosat-ui/dist/forms/select';
 import useModal from '@astrosat/astrosat-ui/dist/containers/use-modal';
 
 import NewMapForm from './new-map-form.component';
 
 import { ReactComponent as OrbisLogo } from '../orbis-cropped.svg';
 import { ReactComponent as ProfileIcon } from '../toolbar/profile.svg';
-import { ReactComponent as OptionsIcon } from '../options-icon.svg';
+import { ReactComponent as OptionsIcon } from '../options.svg';
 import { ReactComponent as LandingImage } from './landing.svg';
 
 import styles from './landing.module.css';
-import '../bookmarks/bookmarks-panel.module.css';
-
-const ItemMenu = () => {
-  const options = [<option>Edit</option>, <option>Delete</option>, <option>Duplicate</option>];
-  return <Select classNames={[styles.itemSelect]} options={options} onChange={console.log('hello')} />;
-};
 
 const ViewAllItems = ({ title, items, chooseBookmark, toggle, selectedItem, setSelectedItem, setViewAllItems }) => {
   return (
-    <div>
+    <div className={styles.content}>
       <div className={styles.header}>
         <h1>{title}</h1>
         <Button
           theme='link'
           classNames={[styles.headerButton]}
-          onClick={() => {
-            setViewAllItems(false);
-          }}
+          onClick={() => setViewAllItems(false)}
         >
           Back to menu
         </ Button>
@@ -76,7 +67,7 @@ const Items = ({ classname, items, chooseItem, toggle, selectedItem, setSelected
 
             <div className={styles.info}>
               {selectedItem === item ? (
-                <ItemMenu />
+                <h3 style={{'align-self': 'center'}}>Not yet implemented...</h3>
               ) : (
                 <div>
                   <h3 className={styles.title}>{item.title}</h3>
@@ -85,9 +76,7 @@ const Items = ({ classname, items, chooseItem, toggle, selectedItem, setSelected
                 )}
               <div
                 className={styles.optionsIcon}
-                onClick={() => {
-                  setSelectedItem(selectedItem === item ? null : item);
-                }}
+                onClick={() => setSelectedItem(selectedItem === item ? null : item)}
               >
                 <OptionsIcon />
               </div>
@@ -140,18 +129,21 @@ const NewUserLanding = forwardRef(({ toggle, isVisible }, ref) => {
 
 const ExistingUserLanding = forwardRef(({ bookmarks, chooseBookmark, isVisible, toggle }, ref) => {
 
-  const mostRecentItems = bookmarks.slice(0, 4);
+  const recentItems = bookmarks.slice(0, 4);
   const [viewAllItems, setViewAllItems] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
-  const [title, setTitle] = useState('');
-  const [redirect, setRedirect] = useState('');
+  const [title, setTitle] = useState(null);
+  const [redirect, setRedirect] = useState(null);
 
+  if (redirect) {
+    return <Redirect to={redirect}/>;
+  }
   return (
     <div className={styles.landing} ref={ref}>
 
       <div className={styles.banner}>
         <OrbisLogo className={styles.logo} />
-        <ProfileIcon className={styles.profileIcon} />
+        <ProfileIcon className={styles.icon} />
       </div>
 
       {viewAllItems ? (
@@ -165,15 +157,15 @@ const ExistingUserLanding = forwardRef(({ bookmarks, chooseBookmark, isVisible, 
           setViewAllItems={setViewAllItems}
         />
       ) : (
-        <div className={styles.itemRows}>
+        <div className={styles.content}>
           <div className={styles.header}>
             <h1>Your Maps</h1>
             <Button
               id="Your Maps"
               theme='link'
               classNames={[styles.headerButton]}
-              onClick={evt => {
-                setTitle(evt.target.id);
+              onClick={event => {
+                setTitle(event.target.id);
                 setViewAllItems(true);
               }}
             >
@@ -182,7 +174,7 @@ const ExistingUserLanding = forwardRef(({ bookmarks, chooseBookmark, isVisible, 
           </div>
           <Items
             classname='items'
-            items={mostRecentItems}
+            items={recentItems}
             chooseItem={chooseBookmark}
             toggle={toggle}
             selectedItem={selectedItem}
@@ -195,8 +187,8 @@ const ExistingUserLanding = forwardRef(({ bookmarks, chooseBookmark, isVisible, 
               id="Your Stories"
               theme='link'
               classNames={[styles.headerButton]}
-              onClick={evt => {
-                setTitle(evt.target.id);
+              onClick={event => {
+                setTitle(event.target.id);
                 setViewAllItems(true);
               }}
             >
@@ -205,7 +197,7 @@ const ExistingUserLanding = forwardRef(({ bookmarks, chooseBookmark, isVisible, 
           </div>
           <Items
             classname='items'
-            items={mostRecentItems}
+            items={recentItems}
             chooseItem={chooseBookmark}
             toggle={toggle}
             selectedItem={selectedItem}
@@ -213,8 +205,6 @@ const ExistingUserLanding = forwardRef(({ bookmarks, chooseBookmark, isVisible, 
           />
         </div>
       )}
-
-      {redirect && <Redirect to={redirect}/>}
 
       <div className={styles.buttonContainer}>
         <Button theme="tertiary" classNames={[styles.button]} onClick={()=>setRedirect('/map')}>
