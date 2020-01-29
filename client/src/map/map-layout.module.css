@@ -319,3 +319,12 @@
   width: 1rem;
   color: var(--primary-button-background-color);
 }
+
+.loadMask {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #fff;
+  width: 100vw;
+  height: 100vh;
+}
