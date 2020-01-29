@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
+import { Redirect } from 'react-router-dom';
+
 import ReactTooltip from 'react-tooltip';
 
 import Button from '@astrosat/astrosat-ui/dist/buttons/button';
@@ -29,14 +31,19 @@ const ToolbarItem = ({ item, onClick, selected }) => {
 
 const Toolbar = ({ items }) => {
   const [selected, setSelected] = useState(null);
+  const [redirect, setRedirect] = useState(null);
 
   const select = item => {
     setSelected(item);
     item.action();
   };
+
+  if (redirect) {
+    return <Redirect to={redirect} />
+  }
   return (
     <div className={styles.toolbar}>
-      <OrbisLogo className={styles.logo} />
+      <OrbisLogo className={styles.logo} onClick={()=>setRedirect('/')}/>
       <div className={styles.topPanel}>
         {items
           .filter(item => !item.footer)
