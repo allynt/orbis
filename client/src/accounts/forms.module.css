@@ -28,8 +28,9 @@
 }
 
 .logo {
-  width: 15rem;
+  width: 10rem;
   color: #787c82;
+  margin: 0.5rem;
 }
 
 .fields {

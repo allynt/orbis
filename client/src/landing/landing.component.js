@@ -11,7 +11,7 @@ import useModal from '@astrosat/astrosat-ui/dist/containers/use-modal';
 
 import NewMapForm from './new-map-form.component';
 
-import { ReactComponent as OrbisLogo } from '../orbis-cropped.svg';
+import { ReactComponent as OrbisLogo } from '../orbis.svg';
 import { ReactComponent as ProfileIcon } from '../toolbar/profile.svg';
 import { ReactComponent as OptionsIcon } from '../options.svg';
 import { ReactComponent as LandingImage } from './landing.svg';

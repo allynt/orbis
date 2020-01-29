@@ -52,9 +52,9 @@
 }
 
 .logo {
-  /* height: 3rem; */
   fill: var(--button-color);
   color: #fff;
+  margin: 0.25rem;
 }
 
 .icon {

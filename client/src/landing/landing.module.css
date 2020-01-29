@@ -27,13 +27,12 @@
 
 .logo {
   /* HEIGHT MUST BE SAME AS BUTTON CONTAINER */
-  height: 5rem;
+  width: 10rem;
   color: var(--primary-foreground-color);
 }
 
 .icon {
   height: 4rem;
-  width: auto;
   align-self: center;
 }
 
