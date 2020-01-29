@@ -8,4 +8,5 @@ from maps.models import Bookmark
 class BookmarkAdmin(GeoModelAdmin):
     search_fields = ("title",)
     list_display = ("title", "owner",)
-    list_filter = ("owner",)
+    list_filter = ("owner", "created", "modified",)
+    readonly_fields = ("created", "modified",)
