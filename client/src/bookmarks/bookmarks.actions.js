@@ -12,6 +12,8 @@ export const DELETE_BOOKMARK_FAILURE = 'DELETE_BOOKMARK_FAILURE';
 
 export const SELECT_BOOKMARK = 'SELECT_BOOKMARK';
 
+export const IS_LOADED = 'IS_LOADED';
+
 const API = {
   fetch: '/api/bookmarks/',
   add: '/api/bookmarks/',
@@ -86,6 +88,8 @@ export const addBookmark = bookmark => async (dispatch, getState) => {
 };
 
 export const selectBookmark = bookmark => ({ type: SELECT_BOOKMARK, bookmark });
+
+export const isLoaded = () => ({ type: IS_LOADED })
 
 export const deleteBookmark = bookmark => async (dispatch, getState) => {
   const {

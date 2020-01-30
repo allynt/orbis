@@ -1,17 +1,19 @@
 import {
-  FETCH_BOOKMARKS_SUCCESS,
-  FETCH_BOOKMARKS_FAILURE,
-  ADD_BOOKMARK_SUCCESS,
-  ADD_BOOKMARK_FAILURE,
-  DELETE_BOOKMARK_SUCCESS,
-  DELETE_BOOKMARK_FAILURE,
-  SELECT_BOOKMARK
+    FETCH_BOOKMARKS_SUCCESS,
+    FETCH_BOOKMARKS_FAILURE,
+    ADD_BOOKMARK_SUCCESS,
+    ADD_BOOKMARK_FAILURE,
+    DELETE_BOOKMARK_SUCCESS,
+    DELETE_BOOKMARK_FAILURE,
+    SELECT_BOOKMARK,
+    IS_LOADED
 } from './bookmarks.actions';
 
 const initialState = {
   bookmarks: null,
   selectedBookmark: null,
-  error: null
+  error: null,
+  isLoading: false
 };
 
 const reducer = (state = initialState, action) => {
@@ -53,7 +55,11 @@ const reducer = (state = initialState, action) => {
       return { ...state, error: action.error };
 
     case SELECT_BOOKMARK:
-      return { ...state, selectedBookmark: action.bookmark };
+      if (action.bookmark !== state.selectedBookmark) {
+        return { ...state, selectedBookmark: action.bookmark, isLoading: true };
+      }
+    case IS_LOADED:
+      return { ...state, isLoading: false };
 
     default:
       return state;
