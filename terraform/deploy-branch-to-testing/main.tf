@@ -123,6 +123,10 @@ resource "kubernetes_secret" "app_secret" {
 }
 
 resource "kubernetes_deployment" "app_deployment" {
+  depends_on = [
+    kubernetes_secret.app_secret
+  ]
+
   metadata {
     name   = local.app_name
     labels = local.app_labels
