@@ -47,7 +47,8 @@ export const register = form => async dispatch => {
   const response = await sendData(API.register, data, JSON_HEADERS);
 
   if (!response.ok) {
-    const error = await response.json();
+    const errorResponse = await response.json();
+    const error = new Error(errorResponseToString(errorResponse));
 
     NotificationManager.error(error.message, `"Registration Error - ${response.statusText}`, 50000, () => {});
 
