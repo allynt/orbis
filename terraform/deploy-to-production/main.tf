@@ -104,6 +104,11 @@ resource "kubernetes_deployment" "app_deployment" {
     kubernetes_secret.app_secret
   ]
 
+  timeouts {
+    create = "60m"
+    delete = "60m"
+  }
+
   metadata {
     name   = local.app_name
     labels = local.app_labels
