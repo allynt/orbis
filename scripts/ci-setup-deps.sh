@@ -26,6 +26,9 @@ fi
 set -euo pipefail
 set -x
 
+mkdir -p /tmp/deps-install
+cd /tmp/deps-install
+
 # Install jsonnet
 curl -sSL "https://github.com/google/jsonnet/releases/download/v0.14.0/jsonnet-bin-v0.14.0-linux.tar.gz" > ./jsonnet-bin-linux.tar.gz
 tar -xzf ./jsonnet-bin-linux.tar.gz
@@ -43,6 +46,11 @@ echo "deb https://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee -a /etc/
 sudo apt-get update
 sudo apt-get install -y kubectl jq
 
+# Install terraform
+curl -sSL "https://releases.hashicorp.com/terraform/0.12.19/terraform_0.12.19_linux_amd64.zip" > terraform.zip
+unzip terraform.zip
+sudo install ./terraform /usr/local/bin/
+
 # Setup AWS creds
 aws configure set aws_access_key_id "${AWS_ACCESS_KEY_ID}"
 aws configure set aws_secret_access_key "${AWS_SECRET_ACCESS_KEY}"
@@ -57,3 +65,6 @@ aws eks --region eu-west-1 --profile testing update-kubeconfig --name orbis-plat
 
 # Test kubectl config
 kubectl version
+
+# Test terraform version
+terraform version

@@ -1,15 +1,21 @@
-name: Destroy Branch Environment
+name: Deploy
 
 on:
-  delete: {}
+  deployment: {}
 
 
 jobs:
-  destroy-env:
-    name: Destroy Testing Environment 
+  deploy-to-testing:
+    name: Deploy to Testing
     runs-on: [self-hosted, testing-deployer]
-    if: (github.event.delete.ref_type == 'branch') && (github.event.delete.ref != 'master')
+    if: startsWith(github.event.deployment.environment, 'testing')
     steps:
+      - name: Set the Deployment Status to Pending
+        uses: 'deliverybot/deployment-status@v1'
+        with:
+          state: 'pending'
+          token: '${{ github.token }}'
+
       - name: Checkout
         uses: actions/checkout@v1
 
@@ -20,9 +26,9 @@ jobs:
           aws configure set --profile testing role_arn "${{ secrets.ROLE }}"
           aws configure set --profile testing source_profile default
 
-      - name: Terraform Destroy
+      - name: Deploy the app
         run: |
-          ENVIRONMENT="testing-${{ github.event.delete.ref }}"
+          ENVIRONMENT="${{ github.event.deployment.environment }}"
           TAG="${GITHUB_SHA:0:7}"
           BRANCH="${GITHUB_REF##*/}"
           BRANCH_SLUG="$(echo "${BRANCH}" | sed -e 's/[^[:alnum:]]/-/g' | tr A-Z a-z)"
@@ -38,12 +44,20 @@ jobs:
           terraform init
           terraform workspace new "$TERRAFORM_WORKSPACE" || true
           terraform workspace select "$TERRAFORM_WORKSPACE"
-          terraform plan -destroy -out=destroy.plan
-          terraform apply -auto-approve ./destroy.plan
+          terraform plan -var "app_environment=$ENVIRONMENT" -var "tag=$TAG" -var "aws_cli_profile=testing" -out=deploy.plan
+          terraform apply -auto-approve ./deploy.plan
 
       - name: Set the Deployment Status on Success
         if: success()
         uses: 'deliverybot/deployment-status@v1'
         with:
-          state: 'inactive'
+          state: 'success'
+          token: '${{ github.token }}'
+          environment-url: 'https://app-${{github.event.deployment.environment}}.testing.or3is.com/'
+
+      - name: Set the Deployment Status on Failure
+        if: failure()
+        uses: 'deliverybot/deployment-status@v1'
+        with:
+          state: 'failure'
           token: '${{ github.token }}'

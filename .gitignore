@@ -102,3 +102,4 @@ spec_generated/
 server/static
 .local/
 .venv/
+.terraform/

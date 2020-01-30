@@ -96,7 +96,7 @@ jobs:
 
   deploy-to-testing:
     needs: [docker]
-    name: Docker Image to AWS Kubernetes
+    name: Deploy to Testing
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -109,58 +109,12 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_ROLE: ${{ secrets.ROLE }}
 
-      - name: Synchronise secrets
-        run: |
-          ./scripts/sync-secrets.sh testing/orbis/secrets orbis-secrets
-
-      - name: Run jsonnet
+      - name: Create Deployment
         run: |
           TAG="${GITHUB_SHA:0:7}"
           BRANCH="${GITHUB_REF##*/}"
           BRANCH_SLUG="$(echo "${BRANCH}" | sed -e 's/[^[:alnum:]]/-/g' | tr A-Z a-z)"
-
           echo "TAG=$TAG"
           echo "BRANCH=$BRANCH"
           echo "BRANCH_SLUG=$BRANCH_SLUG"
-
-          mkdir -p spec_generated/testing
-
-          jsonnet ./spec/ci-testing-deployment.jsonnet \
-            --ext-str "tag=${TAG}" \
-            --ext-str "branch=${BRANCH_SLUG}" \
-            --string \
-            --multi spec_generated/testing
-
-      - name: Deploy the App
-        run: |
-          kubectl apply -f spec_generated/testing
-  # e2e:
-  #   name: Browser Tests
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #   - uses: actions/checkout@master
-  #   - name: Use Node.js 10.x
-  #     uses: actions/setup-node@v1
-  #     with:
-  #       version: 10.x
-  #   - name: Build front-end
-  #     env:
-  #       CI: "true"
-  #     working-directory: client
-  #     run: |
-  #       yarn install
-  #       yarn run build
-  #   - name: Authenticate with AWS
-  #     uses: actions/aws/cli@master
-  #     env:
-  #       AWS_ACCESS_KEY_ID: ${{secrets.AWS_ACCESS_KEY_ID}}
-  #       AWS_SECRET_ACCESS_KEY: ${{secrets.AWS_SECRET_ACCESS_KEY}}
-  #     with:
-  #       args: ecr get-login --no-include-email --region eu-west-1 | sh && docker pull 339570402237.dkr.ecr.eu-west-1.amazonaws.com/company/orbis/dashboard/cypress-runner:latest
-  #   - name: Run tests
-  #     env:
-  #       AWS_ACCESS_KEY_ID: ${{secrets.AWS_ACCESS_KEY_ID}}
-  #       AWS_SECRET_ACCESS_KEY: ${{secrets.AWS_SECRET_ACCESS_KEY}}
-  #     run: |
-  #       echo -e "DJANGO_AWS_ACCESS_KEY_ID=${{secrets.AWS_ACCESS_KEY_ID}}\nDJANGO_AWS_SECRET_ACCESS_KEY=${{secrets.AWS_SECRET_ACCESS_KEY}}" > .env.local
-  #       ./scripts/run-cypress-tests.sh
+          aws lambda invoke --profile testing --region eu-west-1 --function-name testing-create-github-deployment --payload "{\"owner\":\"astrosat\", \"repo\":\"orbis\", \"ref\":\"${BRANCH}\", \"environment\":\"testing-${BRANCH_SLUG}\" }" -
