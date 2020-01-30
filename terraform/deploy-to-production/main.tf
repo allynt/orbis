@@ -130,17 +130,26 @@ resource "kubernetes_deployment" "app_deployment" {
             container_port = 8000
           }
 
-          # TODO: Re-enable for seamless deploys, once startup takes less time
-          #liveness_probe {
-          #  initial_delay_seconds = 600
-          #  period_seconds        = 60
-          #  failure_threshold     = 10
-          #
-          #  http_get {
-          #    path = "/healthcheck/"
-          #    port = 80
-          #  }
-          #}
+          readiness_probe {
+            initial_delay_seconds = 10
+            period_seconds        = 10
+
+            http_get {
+              path = "/healthcheck/"
+              port = 80
+            }
+          }
+
+          liveness_probe {
+            initial_delay_seconds = 900
+            period_seconds        = 60
+            failure_threshold     = 15
+
+            http_get {
+              path = "/healthcheck/"
+              port = 80
+            }
+          }
 
           env {
             name  = "SYS_ENV"
