@@ -1,10 +1,17 @@
 .landing {
   display: flex;
+  justify-content: center;
+  height: 100%;
+  background-color: #fff;
+}
+
+.landingContent {
+  display: flex;
   flex-direction: column;
   justify-content: space-around;
+  align-items: center;
   position: relative;
   min-height: 100%;
-  padding: 0 20rem;
   background-color: #fff;
   color: #101010;
 }
@@ -14,6 +21,7 @@
 .items {
   display: flex;
   justify-content: space-between;
+  width: 100%;
 }
 
 .logo,
@@ -51,6 +59,7 @@
 
 .item {
   width: 17rem;
+  margin-right: 1rem;
 }
 
 .image {

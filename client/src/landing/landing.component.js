@@ -139,7 +139,7 @@ const ExistingUserLanding = forwardRef(({ bookmarks, chooseBookmark, isVisible, 
     return <Redirect to={redirect}/>;
   }
   return (
-    <div className={styles.landing} ref={ref}>
+    <div className={styles.landingContent} ref={ref}>
 
       <div className={styles.banner}>
         <OrbisLogo className={styles.logo} />
@@ -236,7 +236,7 @@ const Landing = () => {
   }, [bookmarks, dispatch]);
 
   return (
-    <div style={{ height: '100%' }}>
+    <div className={styles.landing}>
       {bookmarks && bookmarks.length > 0 ? (
         <ExistingUserLanding
           bookmarks={bookmarks}
