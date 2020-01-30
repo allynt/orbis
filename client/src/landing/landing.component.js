@@ -92,7 +92,7 @@ const Items = ({ classname, items, chooseItem, toggle, selectedItem, setSelected
   );
 };
 
-const NewUserLanding = forwardRef(({ toggle, isVisible }, ref) => {
+const NewUserLanding = forwardRef(({ setRedirect, toggle, isVisible }, ref) => {
   return (
     <div className={styles.splash} ref={ref}>
       <div className={styles.header}>
@@ -110,8 +110,11 @@ const NewUserLanding = forwardRef(({ toggle, isVisible }, ref) => {
             anim id est laborum.
           </p>
 
-          <Button theme="primary" classNames={[styles.journeyButton]} onClick={toggle}>
+          <Button theme="primary" classNames={[styles.button]} onClick={toggle}>
             Create New
+          </Button>
+          <Button theme="tertiary" classNames={[styles.button]} onClick={() => setRedirect('/map')}>
+            Browse Map
           </Button>
         </div>
 
@@ -127,17 +130,13 @@ const NewUserLanding = forwardRef(({ toggle, isVisible }, ref) => {
   );
 });
 
-const ExistingUserLanding = forwardRef(({ bookmarks, chooseBookmark, isVisible, toggle }, ref) => {
+const ExistingUserLanding = forwardRef(({ bookmarks, chooseBookmark, setRedirect, isVisible, toggle }, ref) => {
 
   const recentItems = bookmarks.slice(0, 4);
   const [viewAllItems, setViewAllItems] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
   const [title, setTitle] = useState(null);
-  const [redirect, setRedirect] = useState(null);
 
-  if (redirect) {
-    return <Redirect to={redirect}/>;
-  }
   return (
     <div className={styles.landing} ref={ref}>
 
@@ -221,8 +220,10 @@ const ExistingUserLanding = forwardRef(({ bookmarks, chooseBookmark, isVisible, 
 
 const Landing = () => {
   const dispatch = useDispatch();
-  const bookmarks = useSelector(state => state.bookmarks.bookmarks);
+  // const bookmarks = useSelector(state => state.bookmarks.bookmarks);
+  const bookmarks = null;
   const { isVisible, toggle } = useModal(false);
+  const [redirect, setRedirect] = useState(null);
   const ref = useRef(null);
 
   const chooseBookmark = bookmark => {
@@ -235,18 +236,23 @@ const Landing = () => {
     }
   }, [bookmarks, dispatch]);
 
+  if (redirect) {
+    return <Redirect to={redirect} />;
+  }
   return (
     <div style={{ height: '100%' }}>
       {bookmarks && bookmarks.length > 0 ? (
         <ExistingUserLanding
           bookmarks={bookmarks}
           chooseBookmark={chooseBookmark}
+          setRedirect={setRedirect}
           toggle={toggle}
           isVisible={isVisible}
           ref={ref}
         />
       ) : (
         <NewUserLanding
+          setRedirect={setRedirect}
           toggle={toggle}
           isVisible={isVisible}
           ref={ref}
