@@ -114,7 +114,7 @@ resource "kubernetes_deployment" "app_deployment" {
       match_labels = local.app_labels
     }
 
-    replicas = 1
+    replicas = 2
 
     template {
       metadata {
