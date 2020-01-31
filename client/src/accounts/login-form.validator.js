@@ -14,7 +14,7 @@ const validate = form => {
   if (!form.password) {
     errors.password = 'Password is required';
   } else if (form.password.length < 5) {
-    errors.password = `Password ${form.password} is too short`;
+    errors.password = 'Password is too short';
   }
 
   return errors;
