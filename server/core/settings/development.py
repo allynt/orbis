@@ -17,9 +17,9 @@ ALLOWED_HOSTS = [
     "*",
 ]
 
-#########
-# Media #
-#########
+###############
+# Media files #
+###############
 
 DEFAULT_FILE_STORAGE = 'maps.storage.LocalStorage'
 MEDIA_URL = "/media/"

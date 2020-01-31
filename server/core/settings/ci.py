@@ -17,6 +17,14 @@ ALLOWED_HOSTS = [
     "127.0.0.1",
 ]
 
+
+###############
+# Media files #
+###############
+
+MEDIA_URL = "/media/"
+MEDIA_ROOT = str(SERVER_DIR("media"))
+
 ############
 # Database #
 ############
