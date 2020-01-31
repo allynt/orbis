@@ -17,6 +17,14 @@ ALLOWED_HOSTS = [
     "*",
 ]
 
+#########
+# Media #
+#########
+
+DEFAULT_FILE_STORAGE = 'maps.storage.LocalStorage'
+MEDIA_URL = "/media/"
+MEDIA_ROOT = str(SERVER_DIR("media"))
+
 #############
 # profiling #
 #############

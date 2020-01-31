@@ -8,8 +8,6 @@ from django.utils.translation import gettext as _
 from astrosat.utils import validate_schema
 from astrosat_users.models import get_sentinel_user
 
-from maps.storage import S3Storage, LocalStorage
-
 
 FEATURE_COLLECTION_SCHEMA = {
     # defines the schema of the feature_collection JSONField below
@@ -106,8 +104,6 @@ class Bookmark(gis_models.Model):
     )
 
     thumbnail = models.FileField(
-        storage=S3Storage(),
-        # storage=LocalStorage(),
         upload_to=bookmark_thumbnail_path,
         blank=True,
         null=True,

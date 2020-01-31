@@ -203,15 +203,9 @@ STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 # Media files #
 ###############
 
-# MEDIA_URL = "/media/"
-# MEDIA_ROOT = str(SERVER_DIR("media"))
-# DEFAULT_FILE_STORAGE = 'maps.storage.LocalStorage'
-
 MEDIA_STORAGE_BUCKET = env("DJANGO_MEDIA_BUCKET", default="")
 
-DEFAULT_FILE_STORAGE = 'maps.storage.S3Storage'
-MEDIA_URL = f"https://{MEDIA_STORAGE_BUCKET}/"
-
+# further configuration is done in development.py & deployment.py
 
 ########################
 # Internationalisation #
