@@ -139,6 +139,7 @@
 
 .button {
   width: 15rem;
+  margin-bottom: 1rem;
 }
 
 .viewAllItems {
@@ -187,10 +188,6 @@
 .journeyText {
   max-width: 40rem;
   padding: 0 2rem 5rem 0;
-}
-
-.journeyButton {
-  width: 15rem;
 }
 
 .landingImage {
