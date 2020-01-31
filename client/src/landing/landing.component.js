@@ -3,6 +3,8 @@ import React, { useRef, useEffect, useState, forwardRef } from 'react';
 import { Redirect } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
+import { format } from 'date-fns';
+
 import { fetchBookmarks, selectBookmark } from '../bookmarks/bookmarks.actions';
 
 import Button from '@astrosat/astrosat-ui/dist/buttons/button';
@@ -45,7 +47,6 @@ const ViewAllItems = ({ title, items, chooseBookmark, toggle, selectedItem, setS
 
 const Items = ({ classname, items, chooseItem, toggle, selectedItem, setSelectedItem }) => {
   const [item, setItem] = useState(null);
-  const dummyDate = 'Created 27 Nov 2019';
 
   if (item) {
     chooseItem(item);
@@ -57,6 +58,10 @@ const Items = ({ classname, items, chooseItem, toggle, selectedItem, setSelected
   return (
     <div className={styles[classname]}>
       {items.map(item => {
+
+        const date = format(new Date(item.created), ['MMMM do Y']);
+        const dateString = `Created ${date}`;
+
         return (
           <div className={styles.item} key={item.title}>
             <div className={styles.image} onClick={() => setItem(item)}>
@@ -71,7 +76,7 @@ const Items = ({ classname, items, chooseItem, toggle, selectedItem, setSelected
               ) : (
                 <div>
                   <h3 className={styles.title}>{item.title}</h3>
-                  <p className={styles.creationDate}>{dummyDate}</p>
+              <p className={styles.creationDate}>{dateString}</p>
                 </div>
                 )}
               <div
