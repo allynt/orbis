@@ -48,6 +48,7 @@ class BookmarkSerializer(ModelSerializer):
             "owner",
             "title",
             "description",
+            "created",
             "zoom",
             "center",
             "feature_collection",
