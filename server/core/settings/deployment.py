@@ -14,6 +14,13 @@ DEBUG = env("DJANGO_DEBUG", default="false").lower() == "true"
 # note that we can use a wildcard, b/c Nginx is handling host vulnerabilities
 ALLOWED_HOSTS = ["*"]
 
+###############
+# Media files #
+###############
+
+DEFAULT_FILE_STORAGE = 'maps.storage.S3Storage'
+MEDIA_URL = f"https://{MEDIA_STORAGE_BUCKET}/"
+
 #########
 # Email #
 #########
