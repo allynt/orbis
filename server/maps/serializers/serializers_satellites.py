@@ -22,6 +22,7 @@ class SatelliteSceneSerializer(serializers.ModelSerializer):
         fields = (
             "id",
             "properties",
+            "urls",
             "thumbnail",
             "satellite",
 
