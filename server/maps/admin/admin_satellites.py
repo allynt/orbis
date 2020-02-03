@@ -18,6 +18,8 @@ class SatelliteSceneAdmin(admin.ModelAdmin):
 
 class SatelliteSceneAdminInline(admin.StackedInline):
     model = SatelliteScene
+    fields = ("scene_id",)
+    readonly_fields = ("scene_id",)
     show_change_link = True
     extra = 0
 
