@@ -24,6 +24,8 @@ import { useMapEvent } from './use-map-event.hook';
 import MapStyleSwitcher from '../mapstyle/mapstyle-switcher.component';
 import { MAP_STYLE_SELECTED, setViewport, saveMap } from './map.actions';
 import { closeMenu } from '../side-menu/side-menu.actions';
+import { isLoaded } from '../bookmarks/bookmarks.actions';
+
 // import LayerTreeControl from '../layer-tree/layer-tree.control';
 // import AccountMenuButton from '../accounts/account-menu-button.component';
 // import { logout } from '../accounts/accounts.actions';
@@ -156,13 +158,13 @@ const Map = (
   const isSaveMap = useSelector(state => state.map.saveMap);
 
   const selectedBookmark = useSelector(state => state.bookmarks.selectedBookmark);
+  const isLoading = useSelector(state => state.bookmarks.isLoading);
 
   // const { properties, filters, currentFilters, visible, setBounds } = useMapCrossFilter(selectedProperty);
   // const selectedPropertyMetadata = properties.find(property => property.field === selectedProperty);
   const dataAuthToken = useSelector(state => state.map.dataToken);
   const dataAuthHost = useSelector(state => state.map.dataUrl);
   const dataSources = useSelector(state => state.map.dataSources);
-  const viewport = useSelector(state => state.map.viewport);
 
   const allLayers =
     dataSources &&
@@ -261,6 +263,7 @@ const Map = (
         map.setCenter(selectedBookmark.center);
         map.setZoom(selectedBookmark.zoom);
         drawCtrl.add(selectedBookmark.feature_collection);
+        dispatch(isLoaded());
       }
     },
     [selectedBookmark]
@@ -534,11 +537,8 @@ const Map = (
     //   }}
     // >
     <div ref={mapContainer} className={layoutStyles.map} data-testid={`map-${position}`}>
-      {!viewport && (
-        <div className={layoutStyles.loadMask}>
-          <LoadMask />
-        </div>
-      )}
+
+      {isLoading && <div className={layoutStyles.loadMask}><LoadMask /></div>}
 
       {/* <AccountMenuButton user={user} logout={() => dispatch(logout(history))} /> */}
       {sidebar && (
