@@ -1,14 +1,12 @@
 import { EMAIL_REGEX } from '../utils/form.js';
 
-const minLength = 5;
-
 const validate = form => {
   let errors = {};
 
   if (!form.email) {
-    errors.email = 'Email is required';
+    errors.email = 'Email address is required';
   } else if (!EMAIL_REGEX.test(form.email)) {
-    errors.email = 'Email is invalid';
+    errors.email = 'Email address is invalid';
   }
 
   if (!form.password) {

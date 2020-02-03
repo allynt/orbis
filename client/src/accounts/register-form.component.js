@@ -63,7 +63,9 @@ const RegisterForm = () => {
           </div>
           {errors.password1 && <p className={formStyles.errorMessage}> {errors.password1}</p>}
 
-          <PasswordStrengthMeter password={values.password1} />
+          <div className={formStyles.passwordStrengthMeter}>
+            <PasswordStrengthMeter password={values.password1} />
+          </div>
 
           <div className={formStyles.row}>
             <PasswordField

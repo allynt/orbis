@@ -1,8 +1,11 @@
+import store from '../store';
+
 import { EMAIL_REGEX } from '../utils/form';
 
-const minLength = 5;
-
 const validate = form => {
+  const state = store.getState();
+  const minLength = state.app.config.passwordMinLength;
+
   let errors = {};
 
   if (!form.email) {
