@@ -1,1 +1,2 @@
 from .serializers_bookmarks import BookmarkSerializer
+from .serializers_satellites import SatelliteSerializer, SatelliteSceneSerializer, SatelliteVisualisationSerializer
