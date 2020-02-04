@@ -40,6 +40,7 @@ class AppConfigView(APIView):
             ("isRegistrationOpen", openapi.Schema(type=openapi.TYPE_BOOLEAN)),
             ("isVerificationRequired", openapi.Schema(type=openapi.TYPE_BOOLEAN)),
             ("isApprovalRequired", openapi.Schema(type=openapi.TYPE_BOOLEAN)),
+            ("dataUrl", openapi.Schema(type=openapi.TYPE_STRING, example="staticdata.testing.or3is.com")),
         ))
     )
 
@@ -58,6 +59,7 @@ class AppConfigView(APIView):
             "isRegistrationOpen": astrosat_users_settings.ASTROSAT_USERS_ALLOW_REGISTRATION,
             "isVerificationRequired": astrosat_users_settings.ASTROSAT_USERS_REQUIRE_VERIFICATION,
             "isApprovalRequired": astrosat_users_settings.ASTROSAT_USERS_REQUIRE_APPROVAL,
+            "dataUrl": settings.DATA_URL,
         }
 
         return Response(config)

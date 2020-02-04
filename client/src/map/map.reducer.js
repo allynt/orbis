@@ -32,7 +32,6 @@ const initialState = {
   isCompareMode: false,
   domains,
   regions,
-  dataUrl: 'https://staticdata.testing.or3is.com',
   pollingPeriod: 30000,
   dataToken: null,
   dataSources: null,

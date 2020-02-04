@@ -163,7 +163,7 @@ const Map = (
   // const { properties, filters, currentFilters, visible, setBounds } = useMapCrossFilter(selectedProperty);
   // const selectedPropertyMetadata = properties.find(property => property.field === selectedProperty);
   const dataAuthToken = useSelector(state => state.map.dataToken);
-  const dataAuthHost = useSelector(state => state.map.dataUrl);
+  const dataAuthHost = useSelector(state => (state.app.config ? state.app.config.dataUrl : ''));
   const dataSources = useSelector(state => state.map.dataSources);
 
   const allLayers =
@@ -537,8 +537,11 @@ const Map = (
     //   }}
     // >
     <div ref={mapContainer} className={layoutStyles.map} data-testid={`map-${position}`}>
-
-      {isLoading && <div className={layoutStyles.loadMask}><LoadMask /></div>}
+      {isLoading && (
+        <div className={layoutStyles.loadMask}>
+          <LoadMask />
+        </div>
+      )}
 
       {/* <AccountMenuButton user={user} logout={() => dispatch(logout(history))} /> */}
       {sidebar && (
