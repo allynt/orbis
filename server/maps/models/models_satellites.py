@@ -101,6 +101,9 @@ class SatelliteScene(models.Model):
 
 class SatelliteVisualisation(models.Model):
 
+    class Meta:
+        ordering = ["order"]
+
     visualisation_id = models.SlugField(
         blank=False,
         null=False,
@@ -118,6 +121,13 @@ class SatelliteVisualisation(models.Model):
         blank=True,
         null=True,
         help_text=_("A description of the visualisation."),
+    )
+
+    order = models.IntegerField(
+        blank=False,
+        null=False,
+        default=1,
+        help_text=("The order to render the visualisation.")
     )
 
     thumbnail = models.FileField(
