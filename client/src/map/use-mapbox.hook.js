@@ -27,6 +27,14 @@ const useMapbox = (style, accessToken, authToken, authUrl) => {
           // FIXME: This only works for a single URL, it is likely we want to
           // do this for more than one.
           const parsedUrl = new URL(url);
+          console.log('');
+          console.log('url=', url);
+          console.log('authUrl=', authUrl);
+          if (authUrl && parsedUrl.hostname === authUrl) {
+            console.log('url hostname matches authUrl');
+          } else {
+            console.log('url hostname DOES NOT match authUrl');
+          }
           if (authUrl && parsedUrl.hostname === authUrl) {
             const request = {
               url,
