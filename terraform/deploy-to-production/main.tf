@@ -2,7 +2,7 @@
 // Variables
 //
 
-variable "app_environment" {
+variable "environment" {
   description = "The name of the app environment to deploy to"
   type        = string
 }
@@ -12,28 +12,19 @@ variable "tag" {
   type        = string
 }
 
-variable "aws_cli_profile" {
-  description = "The name of the aws cli profile to use to generate eks auth tokens."
-  type        = string
-}
-
 locals {
   app              = "orbis"
-  environment      = "testing"
 
-  eks_cluster_name = "orbis-platform-${local.environment}"
-  aws_cli_profile  = var.aws_cli_profile
-  aws_role_arn     = "arn:aws:iam::464205154305:role/OrbisTestingAccountAccess"
+  eks_cluster_name = "orbis-platform-${var.environment}"
 
-  app_name   = "${local.app}-${var.app_environment}"
-  app_domain = "app-${var.app_environment}.testing.or3is.com"
+  app_name   = "${local.app}-${var.environment}"
+  app_domain = "app.${var.environment}.or3is.com"
   app_image  = "339570402237.dkr.ecr.eu-west-1.amazonaws.com/company/orbis/django:${var.tag}"
-  app_secret     = "${local.app}-${var.app_environment}-secret"
-  app_aws_secret = "${local.app}-${local.environment}-aws-secret"
+  app_secret     = "${local.app}-${var.environment}-secret"
+  app_aws_secret = "${local.app}-${var.environment}-aws-secret"
   app_labels = {
     app         = local.app
-    environment = local.environment
-    app_environment = var.app_environment
+    environment = var.environment
   }
 
   app_env_secrets = [
@@ -53,7 +44,10 @@ locals {
       var = "DJANGO_DB_PORT"
       key = "db_port"
     },
-    // DJANGO_DB_NAME is per-branch and defined in the deployment resource
+    {
+      var = "DJANGO_DB_NAME"
+      key = "db_name"
+    },
     {
       var = "DJANGO_DB_USER"
       key = "db_user"
@@ -97,23 +91,6 @@ locals {
 // Resources
 //
 
-resource "postgresql_database" "branch_db" {
-  count = (var.app_environment == "testing-master") ? 0 : 1
-
-  lifecycle {
-    ignore_changes = [
-      lc_collate,
-      lc_ctype
-    ]
-  }
-
-  name       = local.app_branch_db_name
-  owner      = local.app_secrets["db_user"]
-  template   = local.app_secrets["db_name"]
-  lc_ctype   = "DEFAULT"
-  lc_collate = "DEFAULT"
-}
-
 resource "kubernetes_secret" "app_secret" {
   metadata {
     name = local.app_secret
@@ -142,7 +119,7 @@ resource "kubernetes_deployment" "app_deployment" {
       match_labels = local.app_labels
     }
 
-    replicas = 1
+    replicas = 2
 
     template {
       metadata {
@@ -187,11 +164,6 @@ resource "kubernetes_deployment" "app_deployment" {
           env {
             name  = "DJANGO_SITE_DOMAIN"
             value = local.app_domain
-          }
-
-          env {
-            name  = "DJANGO_DB_NAME"
-            value = (var.app_environment == "testing-master") ? local.app_secrets["db_name"] : local.app_branch_db_name
           }
 
           env {
