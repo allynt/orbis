@@ -16,7 +16,7 @@ import Well from '@astrosat/astrosat-ui/dist/containers/well';
 import formStyles from './forms.module.css';
 import userStyles from '../side-menu/side-menu.module.css';
 
-const UpdateUserForm = ({ user, updateUser }) => {
+const UpdateUserForm = ({ user, updateUser, logOut }) => {
   const { handleChange, handleSubmit, values, errors } = useForm(onSubmit, validate);
 
   function onSubmit() {
@@ -59,13 +59,18 @@ const UpdateUserForm = ({ user, updateUser }) => {
           <p className={userStyles.header}>Preferences</p>
           <Select classNames={[userStyles.select]} options={regions} onChange={handleChange} />
         </div>
-        <Button
-          type="submit"
-          classNames={[userStyles.button]}
-          disabled={Object.keys(errors).length > 0 || Object.keys(values).length === 0}
-        >
-          Update User
-        </Button>
+        <div className={userStyles.buttons}>
+          <Button
+            type="submit"
+            classNames={[userStyles.button]}
+            disabled={Object.keys(errors).length > 0 || Object.keys(values).length === 0}
+          >
+            Update User
+          </Button>
+          <Button classNames={[userStyles.button]} theme="tertiary"  onClick={logOut}>
+            Logout
+          </Button>
+        </div>
       </form>
     </div>
   );

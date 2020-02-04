@@ -162,14 +162,11 @@
   color: #787c82;
 }
 
-.splash .header {
-  padding-left: 10rem;
-}
-
 .splash .content {
   display: flex;
   align-items: center;
   color: var(--foreground-color);
+  height: 100%;
 }
 
 .splash .journey {
@@ -181,13 +178,13 @@
 }
 
 .journey h1 {
-  font-size: 2rem;
+  font-size: 3rem;
   padding: 2rem 0;
 }
 
 .journeyText {
   max-width: 40rem;
-  padding: 0 2rem 5rem 0;
+  margin-bottom: 5rem;
 }
 
 .landingImage {

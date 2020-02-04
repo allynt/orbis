@@ -14,13 +14,11 @@ const Profile = () => {
   const dispatch = useDispatch();
   const user = useSelector(state => state.accounts.user);
 
+  const logOut = () => dispatch(logout());
+
   return (
     <div className={styles.profile}>
-      <UpdateUserForm user={user} updateUser={updateUser} />
-
-      <Button theme="tertiary" classNames={[styles.logoutButton]} onClick={() => dispatch(logout())}>
-        Logout
-      </Button>
+      <UpdateUserForm user={user} updateUser={updateUser} logOut={logOut}/>
     </div>
   );
 };

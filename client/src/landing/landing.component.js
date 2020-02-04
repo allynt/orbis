@@ -115,12 +115,14 @@ const NewUserLanding = forwardRef(({ setRedirect, toggle, isVisible }, ref) => {
             anim id est laborum.
           </p>
 
-          <Button theme="primary" classNames={[styles.button]} onClick={toggle}>
-            Create New
-          </Button>
-          <Button theme="tertiary" classNames={[styles.button]} onClick={() => setRedirect('/map')}>
-            Browse Map
-          </Button>
+          <div>
+            <Button theme="primary" classNames={[styles.button]} onClick={toggle}>
+              Create New
+            </Button>
+            <Button theme="tertiary" classNames={[styles.button]} onClick={() => setRedirect('/map')}>
+              Browse Map
+            </Button>
+          </div>
         </div>
 
         <div className={styles.journeyImage}>

@@ -119,14 +119,3 @@
   height: 2rem !important;
   width: 2rem !important;
 }
-
-.deleteButtons {
-  align-items: center;
-}
-
-.deleteButton {
-  width: 60%;
-  height: 2rem;
-  margin: 0.5rem 0;
-  padding: 0.5rem 2rem !important;
-}
