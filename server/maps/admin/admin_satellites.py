@@ -6,6 +6,8 @@ from maps.models import Satellite, SatelliteScene, SatelliteVisualisation
 @admin.register(SatelliteVisualisation)
 class SatelliteVisualisationAdmin(admin.ModelAdmin):
     search_fields = ("title",)
+    list_display = ("visualisation_id", "order",)
+    list_editable = ("order",)
 
 
 @admin.register(SatelliteScene)
