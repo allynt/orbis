@@ -143,9 +143,11 @@
 }
 
 .viewAllItems {
-  display: grid;
-  grid-template-columns: auto auto auto auto;
-  grid-gap: 1rem;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  align-content: space-between;
+  justify-content: space-evenly;
 }
 
 /* ORIGINAL STYLES */

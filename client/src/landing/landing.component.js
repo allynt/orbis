@@ -25,16 +25,12 @@ const ViewAllItems = ({ title, items, chooseBookmark, toggle, selectedItem, setS
     <div className={styles.content}>
       <div className={styles.header}>
         <h1>{title}</h1>
-        <Button
-          theme='link'
-          classNames={[styles.headerButton]}
-          onClick={() => setViewAllItems(false)}
-        >
+        <Button theme="link" classNames={[styles.headerButton]} onClick={() => setViewAllItems(false)}>
           Back to menu
-        </ Button>
+        </Button>
       </div>
       <Items
-        classname='viewAllItems'
+        classname="viewAllItems"
         items={items}
         chooseItem={chooseBookmark}
         toggle={toggle}
@@ -58,7 +54,6 @@ const Items = ({ classname, items, chooseItem, toggle, selectedItem, setSelected
   return (
     <div className={styles[classname]}>
       {items.map(item => {
-
         const date = format(new Date(item.created), ['MMMM do Y']);
         const dateString = `Created ${date}`;
 
@@ -72,17 +67,14 @@ const Items = ({ classname, items, chooseItem, toggle, selectedItem, setSelected
 
             <div className={styles.info}>
               {selectedItem === item ? (
-                <h3 style={{'align-self': 'center'}}>Not yet implemented...</h3>
+                <h3 style={{ 'align-self': 'center' }}>Not yet implemented...</h3>
               ) : (
                 <div>
                   <h3 className={styles.title}>{item.title}</h3>
-              <p className={styles.creationDate}>{dateString}</p>
+                  <p className={styles.creationDate}>{dateString}</p>
                 </div>
-                )}
-              <div
-                className={styles.optionsIcon}
-                onClick={() => setSelectedItem(selectedItem === item ? null : item)}
-              >
+              )}
+              <div className={styles.optionsIcon} onClick={() => setSelectedItem(selectedItem === item ? null : item)}>
                 <OptionsIcon />
               </div>
             </div>
@@ -138,7 +130,6 @@ const NewUserLanding = forwardRef(({ setRedirect, toggle, isVisible }, ref) => {
 });
 
 const ExistingUserLanding = forwardRef(({ bookmarks, chooseBookmark, setRedirect, isVisible, toggle }, ref) => {
-
   const recentItems = bookmarks.slice(0, 4);
   const [viewAllItems, setViewAllItems] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
@@ -146,7 +137,6 @@ const ExistingUserLanding = forwardRef(({ bookmarks, chooseBookmark, setRedirect
 
   return (
     <div className={styles.landingContent} ref={ref}>
-
       <div className={styles.banner}>
         <OrbisLogo className={styles.logo} />
         <ProfileIcon className={styles.icon} />
@@ -168,7 +158,7 @@ const ExistingUserLanding = forwardRef(({ bookmarks, chooseBookmark, setRedirect
             <h1>Your Maps</h1>
             <Button
               id="Your Maps"
-              theme='link'
+              theme="link"
               classNames={[styles.headerButton]}
               onClick={event => {
                 setTitle(event.target.id);
@@ -176,10 +166,10 @@ const ExistingUserLanding = forwardRef(({ bookmarks, chooseBookmark, setRedirect
               }}
             >
               View all
-            </ Button>
+            </Button>
           </div>
           <Items
-            classname='items'
+            classname="items"
             items={recentItems}
             chooseItem={chooseBookmark}
             toggle={toggle}
@@ -191,7 +181,7 @@ const ExistingUserLanding = forwardRef(({ bookmarks, chooseBookmark, setRedirect
             <h1>Your Stories</h1>
             <Button
               id="Your Stories"
-              theme='link'
+              theme="link"
               classNames={[styles.headerButton]}
               onClick={event => {
                 setTitle(event.target.id);
@@ -199,10 +189,10 @@ const ExistingUserLanding = forwardRef(({ bookmarks, chooseBookmark, setRedirect
               }}
             >
               View all
-            </ Button>
+            </Button>
           </div>
           <Items
-            classname='items'
+            classname="items"
             items={recentItems}
             chooseItem={chooseBookmark}
             toggle={toggle}
@@ -213,7 +203,7 @@ const ExistingUserLanding = forwardRef(({ bookmarks, chooseBookmark, setRedirect
       )}
 
       <div className={styles.buttonContainer}>
-        <Button theme="tertiary" classNames={[styles.button]} onClick={()=>setRedirect('/map')}>
+        <Button theme="tertiary" classNames={[styles.button]} onClick={() => setRedirect('/map')}>
           Browse Map
         </Button>
       </div>
@@ -258,12 +248,7 @@ const Landing = () => {
           ref={ref}
         />
       ) : (
-        <NewUserLanding
-          setRedirect={setRedirect}
-          toggle={toggle}
-          isVisible={isVisible}
-          ref={ref}
-        />
+        <NewUserLanding setRedirect={setRedirect} toggle={toggle} isVisible={isVisible} ref={ref} />
       )}
     </div>
   );

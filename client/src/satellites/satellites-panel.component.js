@@ -43,7 +43,7 @@ const SatellitesPanel = () => {
 
   return (
     <div className={styles.panel}>
-      <div className={styles.buttons}>
+      <div className={styles.topPanel}>
         <Button
           theme="primary"
           classNames={visiblePanel === SEARCH ? [styles.button, styles.active] : [styles.button]}
@@ -70,7 +70,7 @@ const SatellitesPanel = () => {
         </Button>
       </div>
 
-      <div className={styles.panel}>
+      <div className={styles.bottomPanel}>
         {satellites && visiblePanel === SEARCH && <Search satellites={satellites} setVisiblePanel={setVisiblePanel} />}
         {visiblePanel === RESULTS && (
           <Results setVisiblePanel={setVisiblePanel} scenes={scenes} selectScene={selectScene} />

@@ -8,11 +8,11 @@
   width: 0rem;
   height: 99.8vh;
   background-color: var(--primary-foreground-color);
+  border-left: 2px solid var(--primary-background-color);
   color: #fff;
   visibility: hidden;
   transition: visibility 250ms, width 500ms ease-in-out;
   z-index: 5;
-  border-left: 2px solid var(--primary-background-color);
   border-radius: 0 0.3rem 0.3rem 0;
 }
 

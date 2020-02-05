@@ -5,18 +5,22 @@
   background-color: var(--background-color);
   width: 100%;
   height: 100%;
+  padding: 1rem;
 }
 
-.buttons {
+.topPanel {
   display: flex;
-  justify-content: space-evenly;
+  justify-content: space-between;
   align-items: center;
-  padding: 1rem;
+  margin: 0 1rem 1rem 1rem;
+}
+
+.bottomPanel {
+  height: 100%;
 }
 
 .panel h3 {
   font-weight: bolder;
-  padding: 1rem;
 }
 
 .button {
