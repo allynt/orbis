@@ -20,17 +20,16 @@ import { ReactComponent as LandingImage } from './landing.svg';
 
 import styles from './landing.module.css';
 
-const ViewAllItems = ({ title, items, chooseBookmark, toggle, selectedItem, setSelectedItem, setViewAllItems }) => {
+const ViewAllItems = ({ items, chooseBookmark, toggle, selectedItem, setSelectedItem, setViewAllItems }) => {
   return (
     <div className={styles.content}>
       <div className={styles.header}>
-        <h1>{title}</h1>
+        <h1>View All</h1>
         <Button theme="link" classNames={[styles.headerButton]} onClick={() => setViewAllItems(false)}>
           Back to menu
         </Button>
       </div>
       <Items
-        classname="viewAllItems"
         items={items}
         chooseItem={chooseBookmark}
         toggle={toggle}
@@ -41,7 +40,7 @@ const ViewAllItems = ({ title, items, chooseBookmark, toggle, selectedItem, setS
   );
 };
 
-const Items = ({ classname, items, chooseItem, toggle, selectedItem, setSelectedItem }) => {
+const Items = ({ items, chooseItem, toggle, selectedItem, setSelectedItem }) => {
   const [item, setItem] = useState(null);
 
   if (item) {
@@ -52,7 +51,7 @@ const Items = ({ classname, items, chooseItem, toggle, selectedItem, setSelected
     return <Redirect to={`/map/${queryString}`} />;
   }
   return (
-    <div className={styles[classname]}>
+    <div className={styles.items}>
       {items.map(item => {
         const date = format(new Date(item.created), ['MMMM do Y']);
         const dateString = `Created ${date}`;
@@ -133,7 +132,6 @@ const ExistingUserLanding = forwardRef(({ bookmarks, chooseBookmark, setRedirect
   const recentItems = bookmarks.slice(0, 4);
   const [viewAllItems, setViewAllItems] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
-  const [title, setTitle] = useState(null);
 
   return (
     <div className={styles.landingContent} ref={ref}>
@@ -144,7 +142,6 @@ const ExistingUserLanding = forwardRef(({ bookmarks, chooseBookmark, setRedirect
 
       {viewAllItems ? (
         <ViewAllItems
-          title={title}
           items={bookmarks}
           chooseBookmark={chooseBookmark}
           toggle={toggle}
@@ -157,19 +154,14 @@ const ExistingUserLanding = forwardRef(({ bookmarks, chooseBookmark, setRedirect
           <div className={styles.header}>
             <h1>Your Maps</h1>
             <Button
-              id="Your Maps"
               theme="link"
               classNames={[styles.headerButton]}
-              onClick={event => {
-                setTitle(event.target.id);
-                setViewAllItems(true);
-              }}
+              onClick={()=>setViewAllItems(true)}
             >
               View all
             </Button>
           </div>
           <Items
-            classname="items"
             items={recentItems}
             chooseItem={chooseBookmark}
             toggle={toggle}
@@ -180,19 +172,14 @@ const ExistingUserLanding = forwardRef(({ bookmarks, chooseBookmark, setRedirect
           <div className={styles.header}>
             <h1>Your Stories</h1>
             <Button
-              id="Your Stories"
               theme="link"
               classNames={[styles.headerButton]}
-              onClick={event => {
-                setTitle(event.target.id);
-                setViewAllItems(true);
-              }}
+              onClick={()=>setViewAllItems(true)}
             >
               View all
             </Button>
           </div>
           <Items
-            classname="items"
             items={recentItems}
             chooseItem={chooseBookmark}
             toggle={toggle}
