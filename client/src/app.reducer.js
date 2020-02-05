@@ -1,7 +1,7 @@
 import { FETCH_APP_CONFIG, NOT_YET_IMPLEMENTED } from './app.actions';
 
 const initialState = {
-  config: null,
+  config: {},
   notYetImplementedDescription: null
 };
 

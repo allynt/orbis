@@ -23,6 +23,7 @@ const RegisterForm = () => {
   const { handleChange, handleSubmit, values, errors } = useForm(onSubmit, validate);
   const dispatch = useDispatch();
   const error = useSelector(state => state.accounts.error);
+  const config = useSelector(state => state.app.config);
 
   function onSubmit() {
     dispatch(register(values));
@@ -63,7 +64,9 @@ const RegisterForm = () => {
           </div>
           {errors.password1 && <p className={formStyles.errorMessage}> {errors.password1}</p>}
 
-          <PasswordStrengthMeter password={values.password1} />
+          <div className={formStyles.passwordStrengthMeter}>
+            <PasswordStrengthMeter password={values.password1} />
+          </div>
 
           <div className={formStyles.row}>
             <PasswordField
@@ -78,8 +81,8 @@ const RegisterForm = () => {
 
           <div className={`${formStyles.row} ${registerStyles.incidentals}`}>
             <ul>
-              <li>No weak passwords</li>
-              <li>At least 8 characters long</li>
+              {config && config.passwordStrength >= 2 && <li>No weak passwords</li>}
+              {config && <li>At least {config.passwordMinLength} characters long</li>}
               <li>Contains uppercase letters</li>
             </ul>
             <ul>
