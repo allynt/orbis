@@ -55,7 +55,7 @@ class SatelliteFactory(factory.DjangoModelFactory):
     class Meta:
         model = Satellite
 
-    satellite_id = factory.LazyAttribute(lambda o: slugify(o.title))
+    satellite_id = factory.LazyAttributeSequence(lambda o, n: f"{slugify(o.title)}-{n}")
     title = FactoryFaker("pretty_sentence", nb_words=3)
     description = optional_declaration(FactoryFaker("text"), chance=50)
 
@@ -65,7 +65,7 @@ class SatelliteSceneFactory(factory.DjangoModelFactory):
     class Meta:
         model = SatelliteScene
 
-    scene_id = FactoryFaker("word")
+    scene_id = factory.Sequence(lambda n: f"scene-{n}")
     satellite = factory.SubFactory(SatelliteFactory)
     # thumbnail
 
@@ -80,7 +80,7 @@ class SatelliteVisualisationFactory(factory.DjangoModelFactory):
     class Meta:
         model = SatelliteVisualisation
 
-    visualisation_id = factory.LazyAttribute(lambda o: slugify(o.title))
+    visualisation_id = factory.LazyAttributeSequence(lambda o, n: f"{slugify(o.title)}-{n}")
     title = FactoryFaker("pretty_sentence", nb_words=3)
     description = optional_declaration(FactoryFaker("text"), chance=50)
     # thumbnail
