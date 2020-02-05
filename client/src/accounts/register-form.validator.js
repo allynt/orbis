@@ -3,8 +3,11 @@ import store from '../store';
 import { EMAIL_REGEX } from '../utils/form';
 
 const validate = form => {
-  const state = store.getState();
-  const minLength = state.app.config.passwordMinLength;
+  const {
+    app: {
+      config: { passwordMinLength }
+    }
+  } = store.getState();
 
   let errors = {};
 
@@ -18,8 +21,8 @@ const validate = form => {
     errors.password1 = 'Password is required';
   } else if (!form.password2) {
     errors.password2 = 'Password confirmation is required';
-  } else if (form.password1.length < minLength) {
-    errors.password1 = `Password is too short (minimum ${minLength} characters)`;
+  } else if (passwordMinLength && form.password1.length < passwordMinLength) {
+    errors.password1 = `Password is too short (minimum ${passwordMinLength} characters)`;
   } else if (form.password2 !== form.password1) {
     errors.password2 = 'Passwords do not match';
   }

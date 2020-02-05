@@ -12,20 +12,29 @@ import RegisterForm from './register-form.component';
 
 const mockStore = configureMockStore([thunk]);
 
+const testAppConfig = {
+  passwordMinLength: 8,
+  passwordMaxLength: 255,
+  passwordStrength: 2,
+  isRegistrationOpen: true,
+  isVerificationRequired: true,
+  isApprovalRequired: false
+};
+
 describe('Register Form Component', () => {
+  let store;
+
   beforeEach(() => {
     fetch.resetMocks();
+    store = mockStore({
+      accounts: { error: 'Test Erro' },
+      app: { config: testAppConfig }
+    });
   });
 
   afterEach(cleanup);
 
   it('should render a form', () => {
-    const store = mockStore({
-      accounts: {
-        error: 'Test Error'
-      }
-    });
-
     const { container, getByText, getAllByText, getByPlaceholderText } = render(
       <MemoryRouter>
         <Provider store={store}>
@@ -50,12 +59,6 @@ describe('Register Form Component', () => {
   });
 
   it('should enable `Sign Up` button when form is valid', async () => {
-    const store = mockStore({
-      accounts: {
-        error: 'Test Error'
-      }
-    });
-
     const { getByText, getByPlaceholderText } = render(
       <MemoryRouter>
         <Provider store={store}>
@@ -71,12 +74,6 @@ describe('Register Form Component', () => {
   });
 
   it('should keep `Sign Up` button disabled when form is invalid', () => {
-    const store = mockStore({
-      accounts: {
-        error: 'Test Error'
-      }
-    });
-
     const { getByText, getByPlaceholderText } = render(
       <MemoryRouter>
         <Provider store={store}>
@@ -92,11 +89,6 @@ describe('Register Form Component', () => {
 
   it('should not call register function when form is invalid and `Sign Up` button clicked', () => {
     fetch.mockResponse(JSON.stringify({}, { status: 200 }));
-    const store = mockStore({
-      accounts: {
-        error: 'Test Error'
-      }
-    });
 
     const { getByText } = render(
       <MemoryRouter>
@@ -112,11 +104,6 @@ describe('Register Form Component', () => {
 
   it('should call register function when form is valid and `Sign Up` button clicked', () => {
     fetch.mockResponse(JSON.stringify({}, { status: 200 }));
-    const store = mockStore({
-      accounts: {
-        error: 'Test Error'
-      }
-    });
 
     const { getByText, getByPlaceholderText } = render(
       <MemoryRouter>

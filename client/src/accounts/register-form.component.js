@@ -23,6 +23,7 @@ const RegisterForm = () => {
   const { handleChange, handleSubmit, values, errors } = useForm(onSubmit, validate);
   const dispatch = useDispatch();
   const error = useSelector(state => state.accounts.error);
+  const config = useSelector(state => state.app.config);
 
   function onSubmit() {
     dispatch(register(values));
@@ -80,8 +81,8 @@ const RegisterForm = () => {
 
           <div className={`${formStyles.row} ${registerStyles.incidentals}`}>
             <ul>
-              <li>No weak passwords</li>
-              <li>At least 8 characters long</li>
+              {config && config.passwordStrength >= 2 && <li>No weak passwords</li>}
+              {config && <li>At least {config.passwordMinLength} characters long</li>}
               <li>Contains uppercase letters</li>
             </ul>
             <ul>

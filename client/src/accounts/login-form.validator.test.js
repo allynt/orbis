@@ -43,7 +43,7 @@ describe('Login Form Validator', () => {
       },
       {
         email: 'test@test.com',
-        password: 'paswd'
+        password: 'pasword'
       }
     ];
 
