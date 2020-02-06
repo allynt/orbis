@@ -102,9 +102,12 @@ LOCAL_APPS = [
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 
-####################
-# 3rd party access #
-####################
+###################
+# external access #
+###################
+
+# some of these are defined in terraform as "app_secret" (defined per deployment)
+# while others are defined in terraform as "app_aws_secret" (defined per environment)
 
 AWS_ACCESS_KEY_ID = env("DJANGO_AWS_ACCESS_KEY_ID", default="")
 AWS_SECRET_ACCESS_KEY = env("DJANGO_AWS_SECRET_ACCESS_KEY", default="")
@@ -113,7 +116,7 @@ AWS_DEFAULT_ACL = None
 MAPBOX_TOKEN = env("DJANGO_MAPBOX_TOKEN", default="")
 TRACKING_ID = env("DJANGO_TRACKING_ID", default="")
 
-DATA_TOKEN_SECRET_KEY = env("DJANGO_DATA_TOKEN_SECRET_KEY", default="itsasecret")
+DATA_TOKEN_SECRET = env("DJANGO_DATA_TOKEN_SECRET", default="itsasecret")
 DATA_TOKEN_ALGORITHM = env("DJANGO_DATA_TOKEN_ALGORITHM", default="HS256")
 DATA_SOURCES_DIRECTORY_URL = env("DJANGO_DATA_SOURCES_DIRECTORY_URL", default="www.domain.com")
 DATA_URL = env("DJANGO_DATA_URL", default="www.domain.com")

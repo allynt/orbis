@@ -53,7 +53,7 @@ def generate_data_token(user):
     }
 
     token = jwt.encode(
-        payload, settings.DATA_TOKEN_SECRET_KEY, algorithm=settings.DATA_TOKEN_ALGORITHM
+        payload, settings.DATA_TOKEN_SECRET, algorithm=settings.DATA_TOKEN_ALGORITHM
     )
     return token
 
@@ -64,7 +64,7 @@ def validate_data_token(token):
         # can token be read...
         payload = jwt.decode(
             token.rstrip(),
-            settings.DATA_TOKEN_SECRET_KEY,
+            settings.DATA_TOKEN_SECRET,
             algorithms=settings.DATA_TOKEN_ALGORITHM,
         )
 
@@ -147,6 +147,19 @@ class DataScopeQuerySet(models.QuerySet):
             )
         )
 
+class DataScopeManager(models.Manager):
+    """
+    Wrap all of the above DataScopeQuerySet methods
+    w/ this DataScopeManager so that I can deserialize using natural_keys
+    (this allows me to use fixtures w/out having to hard-code pks)
+    """
+    def get_by_natural_key(self, source_id):
+        kwargs = {
+            key: value
+            for key, value in zip(["authority", "namespace", "name", "version"], source_id.split("/"))
+        }
+        instance = self.get(**kwargs)
+        return instance
 
 #############
 # the model #
@@ -165,7 +178,7 @@ class DataScope(models.Model):
             )
         ]
 
-    objects = DataScopeQuerySet.as_manager()
+    objects = DataScopeManager.from_queryset(DataScopeQuerySet)()
 
     is_active = models.BooleanField(default=True)
 
@@ -206,6 +219,10 @@ class DataScope(models.Model):
             access_instance = access_model.objects.get(data_scope=self, owner=user)
 
         return access_instance
+
+    def natural_key(self):
+        # see above comment in DataScopeManager
+        return (self.source_id,)
 
 
 ######################
@@ -269,6 +286,12 @@ class RoleAccess(AccessModel):
     class Meta:
         app_label = "orbis"
         verbose_name = "Role Access"
+        # constraints = [
+        #     models.UniqueConstraint(
+        #         fields=["data_scope", "role"],
+        #         name="unique_role_relationship",
+        #     )
+        # ]
 
     data_scope = models.ForeignKey(DataScope, on_delete=models.CASCADE)
     role = models.ForeignKey(UserRole, on_delete=models.CASCADE)
@@ -278,6 +301,12 @@ class OwnerAccess(AccessModel):
     class Meta:
         app_label = "orbis"
         verbose_name = "Owner Access"
+        # constraints = [
+        #     models.UniqueConstraint(
+        #         fields=["data_scope", "owner"],
+        #         name="unique_owner_relationship",
+        #     )
+        # ]
 
     data_scope = models.ForeignKey(DataScope, on_delete=models.CASCADE)
     owner = models.ForeignKey(User, on_delete=models.CASCADE)

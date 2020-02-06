@@ -26,7 +26,8 @@ const useMapbox = (style, accessToken, authToken, authUrl) => {
         transformRequest: (url, resourceType) => {
           // FIXME: This only works for a single URL, it is likely we want to
           // do this for more than one.
-          if (authUrl && url.startsWith(authUrl)) {
+          const parsedUrl = new URL(url);
+          if (authUrl && parsedUrl.hostname === authUrl) {
             const request = {
               url,
               headers: { Authorization: `Bearer ${authToken}` }
