@@ -224,6 +224,16 @@ resource "kubernetes_deployment" "app_deployment" {
             }
           }
 
+          env {
+            name = "DJANGO_DATA_TOKEN_SECRET"
+            value_from {
+              secret_key_ref {
+                name = local.app_aws_secret
+                key  = "data_token_secret"
+              }
+            }
+          }
+
           // Loop over the env var secrets
           dynamic "env" {
             for_each = local.app_env_secrets
