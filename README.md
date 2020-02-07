@@ -75,3 +75,4 @@ $ docker-compose exec server pipenv run server/manage.py force_verification --us
 ```
 
 To view all API endpoints, navigate to "localhost:8000/api/swagger"
+
