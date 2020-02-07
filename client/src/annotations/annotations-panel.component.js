@@ -25,11 +25,13 @@ import ImageForm from './image-form.component';
 
 import { ReactComponent as LineStringIcon } from './linestring.svg';
 import { ReactComponent as PolygonIcon } from './polygon.svg';
+import { ReactComponent as DropPinIcon } from './drawing-tool-drop-pin.svg';
 import { ReactComponent as FontIcon } from './font.svg';
 import { ReactComponent as RotateIcon } from './rotate.svg';
 import { ReactComponent as FreehandIcon } from './freehand.svg';
 import { ReactComponent as RadiusIcon } from './radius.svg';
 import { ReactComponent as LabelIcon } from './label.svg';
+import { ReactComponent as CircleIcon } from './circle.svg';
 import { ReactComponent as ImageIcon } from './image.svg';
 
 import lineWidth1PixelIcon from './1px-line-width.svg';
@@ -263,7 +265,7 @@ const AnnotationsPanel = ({ map }) => {
               onClick={() => dispatch({ type: SET_DRAW_MODE, mode: 'LabelMode' })}
               dataFor="textLabel"
             >
-              <LabelIcon className={styles.icon} />
+              <span className={styles.text}>T</span>
               <span className={styles.buttonLabel}>Text</span>
             </Button>
             <ReactTooltip id="textLabel">
@@ -388,6 +390,44 @@ const AnnotationsPanel = ({ map }) => {
               <span>Draw Polygon</span>
             </ReactTooltip>
 
+            {/*
+            THIS AND THE IMAGE UPLOAD TOOL (BOTTOM ONE) WERE REMOVED
+            BECAUSE THEY DON'T FEATURE IN THE DESIGNS AND MAY NOT BE INCLUDED IN THE APP.
+            COMMENTED OUT BECAUSE THEY MAY BE USED LATER.
+            */}
+            {/* <Button
+              classNames={[styles.drawingToolsButton]}
+              onClick={() => dispatch({ type: SET_DRAW_MODE, mode: 'RotateMode' })}
+              dataFor="rotate"
+            >
+              <RotateIcon className={styles.icon} />
+            </Button>
+            <ReactTooltip id="rotate">
+              <span>Rotate Shape</span>
+            </ReactTooltip> */}
+
+            <Button
+              classNames={[styles.drawingToolsButton]}
+              onClick={() => dispatch({ type: SET_DRAW_MODE, mode: 'draw_point' })}
+              dataFor="drawPoint"
+            >
+              <DropPinIcon className={styles.icon} />
+            </Button>
+            <ReactTooltip id="drawPoint">
+              <span>Place Point</span>
+            </ReactTooltip>
+
+            <Button
+              classNames={[styles.drawingToolsButton]}
+              onClick={() => dispatch({ type: SET_DRAW_MODE, mode: 'CircleMode' })}
+              dataFor="drawCircle"
+            >
+              <CircleIcon className={styles.icon} />
+            </Button>
+            <ReactTooltip id="drawCircle">
+              <span>Draw Circle</span>
+            </ReactTooltip>
+
             <Button
               classNames={[styles.drawingToolsButton]}
               onClick={() => dispatch({ type: SET_DRAW_MODE, mode: 'FreehandPolygonMode' })}
@@ -401,28 +441,6 @@ const AnnotationsPanel = ({ map }) => {
 
             <Button
               classNames={[styles.drawingToolsButton]}
-              onClick={() => dispatch({ type: SET_DRAW_MODE, mode: 'RotateMode' })}
-              dataFor="rotate"
-            >
-              <RotateIcon className={styles.icon} />
-            </Button>
-            <ReactTooltip id="rotate">
-              <span>Rotate Shape</span>
-            </ReactTooltip>
-
-            <Button
-              classNames={[styles.drawingToolsButton]}
-              onClick={() => dispatch({ type: SET_DRAW_MODE, mode: 'CircleMode' })}
-              dataFor="drawCircle"
-            >
-              <PolygonIcon className={styles.icon} />
-            </Button>
-            <ReactTooltip id="drawCircle">
-              <span>Draw Circle</span>
-            </ReactTooltip>
-
-            <Button
-              classNames={[styles.drawingToolsButton]}
               onClick={() => dispatch({ type: SET_DRAW_MODE, mode: 'RadiusMode' })}
               dataFor="radius"
             >
@@ -432,7 +450,7 @@ const AnnotationsPanel = ({ map }) => {
               <span>Radius Shape</span>
             </ReactTooltip>
 
-            <Button
+            {/* <Button
               classNames={[styles.drawingToolsButton]}
               onClick={() => dispatch({ type: ADD_IMAGE_SELECTED })}
               dataFor="image"
@@ -441,7 +459,7 @@ const AnnotationsPanel = ({ map }) => {
             </Button>
             <ReactTooltip id="image">
               <span>Add Image</span>
-            </ReactTooltip>
+            </ReactTooltip> */}
           </div>
         </div>
 

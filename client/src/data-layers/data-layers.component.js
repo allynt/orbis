@@ -13,6 +13,7 @@ import DataLayersDialog from './data-layers-dialog.component';
 import { ReactComponent as RemoveIcon } from './remove.svg';
 import { ReactComponent as ShowIcon } from './layer-visible.svg';
 import { ReactComponent as HideIcon } from './layer-invisible.svg';
+import { ReactComponent as AddNewCategoryIcon } from './add-more-categories.svg';
 
 import { removeLayer } from './data-layers-dialog.actions';
 
@@ -63,9 +64,7 @@ const DataLayers = () => {
       </div>
 
       <div className={styles.buttons}>
-        <Button shape="round" onClick={toggle}>
-          +
-        </Button>
+        <AddNewCategoryIcon className={styles.addNewCategoryIcon} onClick={toggle} />
         <Button theme="link" classNames={[styles.categoryButton]} onClick={toggle}>
           Add New Category
         </Button>
