@@ -336,7 +336,10 @@ const AnnotationsPanel = ({ map }) => {
           </ReactTooltip>
 
           {lineTypeSelected && (
-            <DropDownButton options={lineTypeOptions} select={option => dispatch({ type: SET_LINE_TYPE, option })} />
+            <div>
+              <h3>Select line type: </h3>
+              <DropDownButton options={lineTypeOptions} select={option => dispatch({ type: SET_LINE_TYPE, option })} />
+            </div>
           )}
 
           <Button
@@ -351,7 +354,13 @@ const AnnotationsPanel = ({ map }) => {
           </ReactTooltip>
 
           {lineWidthSelected && (
-            <DropDownButton options={lineWidthOptions} select={option => dispatch({ type: SET_LINE_WIDTH, option })} />
+            <div>
+              <h3>Select line width: </h3>
+              <DropDownButton
+                options={lineWidthOptions}
+                select={option => dispatch({ type: SET_LINE_WIDTH, option })}
+              />
+            </div>
           )}
         </div>
 

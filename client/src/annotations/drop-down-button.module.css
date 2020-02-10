@@ -1,10 +1,10 @@
 .lineWidthContainer {
   display: flex;
   flex-direction: column;
-  justify-content: space-evenly;
-  height: 5rem;
-  border: 1px solid #000;
+  justify-content: space-between;
+  min-height: 12rem;
   padding: 0.5rem;
+  margin-bottom: 1rem;
 }
 
 .lineWidth {
