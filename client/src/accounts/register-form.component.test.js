@@ -27,7 +27,7 @@ describe('Register Form Component', () => {
   beforeEach(() => {
     fetch.resetMocks();
     store = mockStore({
-      accounts: { error: 'Test Erro' },
+      accounts: { error: 'Test Error' },
       app: { config: testAppConfig }
     });
   });
@@ -83,6 +83,26 @@ describe('Register Form Component', () => {
     );
 
     fireEvent.change(getByPlaceholderText('Email'), { target: { value: 'test@test.com' } });
+    expect(getByText('Sign Up')).toHaveAttribute('disabled');
+  });
+
+  it('should keep `Sign Up` button disabled when registration is disabled', () => {
+    store = mockStore({
+      accounts: { error: 'Test Error' },
+      app: { config: { ...testAppConfig, isRegistrationOpen: false } }
+    });
+
+    const { getByText, getByPlaceholderText } = render(
+      <MemoryRouter>
+        <Provider store={store}>
+          <RegisterForm />
+        </Provider>
+      </MemoryRouter>
+    );
+
+    fireEvent.change(getByPlaceholderText('Email'), { target: { value: 'test@test.com' } });
+    fireEvent.change(getByPlaceholderText('Password'), { target: { value: 'pandasconcreterealty' } });
+    fireEvent.change(getByPlaceholderText('Password Confirmation'), { target: { value: 'pandasconcreterealty' } });
 
     expect(getByText('Sign Up')).toHaveAttribute('disabled');
   });
