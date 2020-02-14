@@ -153,11 +153,7 @@ const ExistingUserLanding = forwardRef(({ bookmarks, chooseBookmark, setRedirect
         <div className={styles.content}>
           <div className={styles.header}>
             <h1>Your Maps</h1>
-            <Button
-              theme="link"
-              classNames={[styles.headerButton]}
-              onClick={()=>setViewAllItems(true)}
-            >
+            <Button theme="link" classNames={[styles.headerButton]} onClick={() => setViewAllItems(true)}>
               View all
             </Button>
           </div>
@@ -171,11 +167,7 @@ const ExistingUserLanding = forwardRef(({ bookmarks, chooseBookmark, setRedirect
 
           <div className={styles.header}>
             <h1>Your Stories</h1>
-            <Button
-              theme="link"
-              classNames={[styles.headerButton]}
-              onClick={()=>setViewAllItems(true)}
-            >
+            <Button theme="link" classNames={[styles.headerButton]} onClick={() => setViewAllItems(true)}>
               View all
             </Button>
           </div>

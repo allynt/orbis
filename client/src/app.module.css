@@ -210,4 +210,5 @@ header {
 
 .paragraph {
   max-width: 30rem;
+  text-align: center;
 }
