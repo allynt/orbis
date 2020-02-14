@@ -34,6 +34,12 @@ const RegisterForm = () => {
       <form className={formStyles.form} onSubmit={handleSubmit}>
         <OrbisLogo className={formStyles.logo} />
 
+        {config && !config.isRegistrationOpen && (
+          <Well type="error">
+            <div>We are sorry, but the signup is currently closed.</div>
+          </Well>
+        )}
+
         {error && (
           <Well type="error">
             <div>{error.message}</div>
@@ -109,7 +115,11 @@ const RegisterForm = () => {
           <Button
             type="submit"
             className={formStyles.button}
-            disabled={Object.keys(errors).length > 0 || Object.keys(values).length === 0}
+            disabled={
+              (config && !config.isRegistrationOpen) ||
+              Object.keys(errors).length > 0 ||
+              Object.keys(values).length === 0
+            }
           >
             Sign Up
           </Button>
