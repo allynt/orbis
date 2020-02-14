@@ -164,6 +164,56 @@ const sources = {
   ]
 };
 
+const satellites = [
+  { id: 'sentinel-1', label: 'Sentinel-1', description: 'Some text describing the Sentinel-1 satellite' },
+  {
+    id: 'sentinel-2',
+    label: 'Sentinel-2',
+    description: 'Some text describing the Sentinel-2 satellite. the Sentinel-2 satellite'
+  },
+  {
+    id: 'sentinel-3',
+    label: 'Sentinel-3',
+    description: 'Some text describing the Sentinel-3 satellite. Some text describing the Sentinel-3 satellite'
+  },
+  { id: 'landsat', label: 'Landsat', description: 'Some text describing the Landsat satellite' },
+  { id: 'envisat-meris', label: 'Envisat Meris', description: 'Some text describing the Envisat Meris satellite' },
+  { id: 'modis', label: 'MODIS', description: 'Some text describing the MODIS satellite' },
+  { id: 'proba-v', label: 'Proba-V', description: 'Some text describing the Proba-V satellite' },
+  { id: 'gibs', label: 'GIBS', description: 'Some text describing the GIBS satellite' }
+];
+
+const visualisations = [
+  {
+    id: 'ndvi',
+    label: 'NDVI',
+    description: 'Based on conbination bands (B8A-B4)/(B8A + B11)',
+    thumbnail:
+      'https://orbis-staging-media.s3.amazonaws.com/satellites/visualisations/ndvi.png?AWSAccessKeyId=AKIAUN42N47CAW2234WL&Signature=j7faX%2FgmpXJlWbqouauC%2FDw4ap0%3D&Expires=1581679229'
+  },
+  {
+    id: 'false-color-urban',
+    label: 'False Color (urban)',
+    description: 'Based on bands 4,3,2',
+    thumbnail:
+      'https://orbis-staging-media.s3.amazonaws.com/satellites/visualisations/false-color-urban.png?AWSAccessKeyId=AKIAUN42N47CAW2234WL&Signature=2W%2BXERXV9IQbSy5Dgt4dGwAxtno%3D&Expires=1581679229'
+  },
+  {
+    id: 'false-color',
+    label: 'False Color',
+    description: 'Based on bands 4,3,2',
+    thumbnail:
+      'https://orbis-staging-media.s3.amazonaws.com/satellites/visualisations/false-color.png?AWSAccessKeyId=AKIAUN42N47CAW2234WL&Signature=iUGdLbZRC2rO5gR5RA06RH11bcQ%3D&Expires=1581679229'
+  },
+  {
+    id: 'true-color',
+    label: 'True Color',
+    description: 'Based on bands 4,3,2',
+    thumbnail:
+      'https://orbis-staging-media.s3.amazonaws.com/satellites/visualisations/true-color.png?AWSAccessKeyId=AKIAUN42N47CAW2234WL&Signature=%2B56SsFeDLPGnlAynA8QCiex46eE%3D&Expires=1581679229'
+  }
+];
+
 let currentUser = null;
 
 const getAppConfig = (req, res) => {
@@ -182,6 +232,18 @@ const getCurrentUser = (req, res) => {
   console.log('Returning Current User');
   res.status(200);
   res.json(currentUser);
+};
+
+const getSatellites = (req, res) => {
+  console.log('Returning Satellites');
+  res.status(200);
+  res.json(satellites);
+};
+
+const getVisualisations = (req, res) => {
+  console.log('Returning vizualizations');
+  res.status(200);
+  res.json(visualisations);
 };
 
 const register = (req, res) => {
@@ -306,6 +368,8 @@ module.exports = {
   getAppConfig,
   getUsers,
   getCurrentUser,
+  getSatellites,
+  getVisualisations,
   register,
   login,
   logout,
