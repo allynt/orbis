@@ -17,7 +17,7 @@ import { RESULTS } from './satellites-panel.component';
 import { ReactComponent as InfoIcon } from './info.svg';
 
 import styles from './search.module.css';
-import userStyles from '../side-menu/side-menu.module.css';
+import sideMenuStyles from '../side-menu/side-menu.module.css';
 
 const DATE_FORMAT = 'yyy-MM-dd';
 const dateFormat = 'd MMM yyy';
@@ -109,10 +109,10 @@ const Search = ({ satellites, setVisiblePanel }) => {
         </div>
       </div>
 
-      <div className={userStyles.buttons}>
+      <div className={sideMenuStyles.buttons}>
         <Button
           theme="primary"
-          classNames={[userStyles.button]}
+          classNames={[sideMenuStyles.button]}
           onClick={() => {
             dispatch(searchSatellites(selectedSatellites, startDate, endDate));
             setVisiblePanel(RESULTS);
@@ -121,7 +121,7 @@ const Search = ({ satellites, setVisiblePanel }) => {
           Search
         </Button>
         <Button
-          classNames={[userStyles.button]}
+          classNames={[sideMenuStyles.button]}
           theme="tertiary"
           onClick={() => console.log('Task Satellite Button Clicked')}
         >

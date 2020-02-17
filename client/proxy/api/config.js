@@ -99,7 +99,8 @@ const sources = {
             range: true,
             description:
               'TropoSphere has name hospitals-uk with a label UK Hospitals Some paragraph describing stuff. TropoSphere has name hospitals-uk with a label UK Hospitals Some paragraph describing stuff.',
-            url: 'https://staticdata.testing.or3is.com/astrosat/core/hospitals-uk/2019-12-17/hospitals_uk.geojson'
+            url:
+              'https://cnet4.cbsistatic.com/img/-JKG69A9xmdlvxVwYtpIztVHxHI=/940x0/2018/08/21/09803db6-578f-41f7-9c7a-0b9efc5d6751/starshot-satellite-launch.jpg'
           }
         },
         {
@@ -117,7 +118,7 @@ const sources = {
             description:
               'TropoSphere has name sentinel-2-rgb with a label Sentinel 2 RGB Some paragraph describing stuff.',
             url:
-              'https://staticdata.testing.or3is.com/astrosat/test/sentinel_2_rgb/S2A_20191223T034141_T47NPG_RGB/{z}/{x}/{y}.png'
+              'https://cnet4.cbsistatic.com/img/-JKG69A9xmdlvxVwYtpIztVHxHI=/940x0/2018/08/21/09803db6-578f-41f7-9c7a-0b9efc5d6751/starshot-satellite-launch.jpg'
           }
         }
       ]
@@ -139,7 +140,8 @@ const sources = {
             range: true,
             description:
               'Rice Paddies has name stoke-on-trent with a label Stoke-On-Trent Some paragraph describing stuff',
-            url: 'https://staticdata.testing.or3is.com/astrosat/test/stoke-on-trent/v1/{z}/{x}/{y}.pbf'
+            url:
+              'https://cnet4.cbsistatic.com/img/-JKG69A9xmdlvxVwYtpIztVHxHI=/940x0/2018/08/21/09803db6-578f-41f7-9c7a-0b9efc5d6751/starshot-satellite-launch.jpg'
           }
         },
         {
@@ -156,7 +158,8 @@ const sources = {
             range: true,
             description:
               'Rice Paddies has name super-sen2-japan-band5 with a label Japan Band5 Some paragraph describing stuff.',
-            url: 'https://staticdata.testing.or3is.com/astrosat/test/super-sen2-japan-band5/dec-2019/{z}/{x}/{y}.png'
+            url:
+              'https://cnet4.cbsistatic.com/img/-JKG69A9xmdlvxVwYtpIztVHxHI=/940x0/2018/08/21/09803db6-578f-41f7-9c7a-0b9efc5d6751/starshot-satellite-launch.jpg'
           }
         }
       ]
@@ -189,28 +192,28 @@ const visualisations = [
     label: 'NDVI',
     description: 'Based on conbination bands (B8A-B4)/(B8A + B11)',
     thumbnail:
-      'https://orbis-staging-media.s3.amazonaws.com/satellites/visualisations/ndvi.png?AWSAccessKeyId=AKIAUN42N47CAW2234WL&Signature=j7faX%2FgmpXJlWbqouauC%2FDw4ap0%3D&Expires=1581679229'
+      'https://cnet4.cbsistatic.com/img/-JKG69A9xmdlvxVwYtpIztVHxHI=/940x0/2018/08/21/09803db6-578f-41f7-9c7a-0b9efc5d6751/starshot-satellite-launch.jpg'
   },
   {
     id: 'false-color-urban',
     label: 'False Color (urban)',
     description: 'Based on bands 4,3,2',
     thumbnail:
-      'https://orbis-staging-media.s3.amazonaws.com/satellites/visualisations/false-color-urban.png?AWSAccessKeyId=AKIAUN42N47CAW2234WL&Signature=2W%2BXERXV9IQbSy5Dgt4dGwAxtno%3D&Expires=1581679229'
+      'https://cnet4.cbsistatic.com/img/-JKG69A9xmdlvxVwYtpIztVHxHI=/940x0/2018/08/21/09803db6-578f-41f7-9c7a-0b9efc5d6751/starshot-satellite-launch.jpg'
   },
   {
     id: 'false-color',
     label: 'False Color',
     description: 'Based on bands 4,3,2',
     thumbnail:
-      'https://orbis-staging-media.s3.amazonaws.com/satellites/visualisations/false-color.png?AWSAccessKeyId=AKIAUN42N47CAW2234WL&Signature=iUGdLbZRC2rO5gR5RA06RH11bcQ%3D&Expires=1581679229'
+      'https://cnet4.cbsistatic.com/img/-JKG69A9xmdlvxVwYtpIztVHxHI=/940x0/2018/08/21/09803db6-578f-41f7-9c7a-0b9efc5d6751/starshot-satellite-launch.jpg'
   },
   {
     id: 'true-color',
     label: 'True Color',
     description: 'Based on bands 4,3,2',
     thumbnail:
-      'https://orbis-staging-media.s3.amazonaws.com/satellites/visualisations/true-color.png?AWSAccessKeyId=AKIAUN42N47CAW2234WL&Signature=%2B56SsFeDLPGnlAynA8QCiex46eE%3D&Expires=1581679229'
+      'https://cnet4.cbsistatic.com/img/-JKG69A9xmdlvxVwYtpIztVHxHI=/940x0/2018/08/21/09803db6-578f-41f7-9c7a-0b9efc5d6751/starshot-satellite-launch.jpg'
   }
 ];
 

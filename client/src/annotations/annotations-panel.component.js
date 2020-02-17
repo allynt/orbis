@@ -43,7 +43,7 @@ import lineTypeDashedIcon from './line-type-dashed.svg';
 import lineTypeDottedIcon from './line-type-dotted.svg';
 
 import styles from './annotations-panel.module.css';
-import userStyles from '../side-menu/side-menu.module.css';
+import sideMenuStyles from '../side-menu/side-menu.module.css';
 
 const primaryColor = '#5796e2';
 const secondaryColor = '#e2e2e2';
@@ -482,9 +482,9 @@ const AnnotationsPanel = ({ map }) => {
           />
         )}
 
-        <div className={userStyles.buttons}>
+        <div className={sideMenuStyles.buttons}>
           <Button
-            classNames={[userStyles.button]}
+            classNames={[sideMenuStyles.button]}
             onClick={() => dispatch({ type: SET_DRAW_MODE, mode: 'trash' })}
             dataFor="deleteAnnotations"
           >
@@ -495,7 +495,7 @@ const AnnotationsPanel = ({ map }) => {
           </ReactTooltip>
 
           <Button
-            classNames={[userStyles.button]}
+            classNames={[sideMenuStyles.button]}
             theme="tertiary"
             onClick={() => dispatch({ type: SET_DRAW_MODE, mode: 'deleteAll' })}
             dataFor="deleteAllAnnotations"

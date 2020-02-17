@@ -18,7 +18,7 @@ const Profile = () => {
 
   return (
     <div className={styles.profile}>
-      <UpdateUserForm user={user} updateUser={updateUser} logOut={logOut}/>
+      <UpdateUserForm user={user} updateUser={updateUser} logout={logOut} />
     </div>
   );
 };
