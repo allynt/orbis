@@ -110,6 +110,10 @@
   width: 2rem;
 }
 
+.notYetImplemented {
+  align-self: center;
+}
+
 .createNew {
   display: flex;
   justify-content: center;

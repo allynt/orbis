@@ -66,7 +66,7 @@ const Items = ({ items, chooseItem, toggle, selectedItem, setSelectedItem }) => 
 
             <div className={styles.info}>
               {selectedItem === item ? (
-                <h3 style={{ 'align-self': 'center' }}>Not yet implemented...</h3>
+                <h3 className={styles.notYetImplemented}>Not yet implemented...</h3>
               ) : (
                 <div>
                   <h3 className={styles.title}>{item.title}</h3>
