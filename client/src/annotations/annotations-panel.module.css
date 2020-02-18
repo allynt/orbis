@@ -36,7 +36,7 @@
 }
 
 .header {
-  margin-bottom: 0.5rem;
+  margin-bottom: 1rem;
 }
 
 .lineButtons,
@@ -48,7 +48,7 @@
 .lineButtons,
 .annotationButtonsRow {
   width: 75%;
-  align-self: center;
+  margin-bottom: 1rem;
 }
 
 .lineButton,
@@ -60,16 +60,16 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin: 0.5rem 0;
+  margin-bottom: 0.5rem;
 }
 
 .annotationButtons {
   display: flex !important;
   flex-direction: column !important;
   justify-content: space-between !important;
-  padding: 0.25rem 0.5rem !important;
-  height: 2rem !important;
-  width: 2rem !important;
+  padding: 0.5rem 1rem;
+  height: 3rem !important;
+  width: 4rem !important;
 }
 
 .text {
@@ -94,14 +94,13 @@
 
 .colorPicker {
   position: absolute;
-  top: 2rem;
+  top: 3rem;
   left: 0;
   z-index: 1;
 }
 
 .lineButton {
-  height: 2rem;
-  margin: 0.75rem 0;
+  margin-bottom: 0.5rem;
 }
 
 .drawingTools {
@@ -109,24 +108,11 @@
   flex-wrap: wrap;
   justify-content: space-between;
   width: 100%;
-  padding: 0.5rem 1.5rem;
 }
 
 .drawingToolsButton {
   display: flex !important;
   flex-direction: column !important;
-  padding: 0.5rem !important;
-  height: 2rem !important;
-  width: 2rem !important;
-}
-
-.deleteButtons {
-  align-items: center;
-}
-
-.deleteButton {
-  width: 60%;
-  height: 2rem;
-  margin: 0.5rem 0;
-  padding: 0.5rem 2rem !important;
+  height: 2.5rem !important;
+  width: 2.5rem !important;
 }

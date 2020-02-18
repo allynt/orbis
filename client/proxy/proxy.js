@@ -32,6 +32,9 @@ router.get('/app/config', (req, res) => config.getAppConfig(req, res));
 router.get('/users/', (req, res) => config.getUsers(req, res));
 router.get('/users/:username/', (req, res) => config.getCurrentUser(req, res));
 
+router.get('/satellites/', (req, res) => config.getSatellites(req, res));
+router.get('/satellites/visualisations/', (req, res) => config.getVisualisations(req, res));
+
 router.route('/authentication/registration/').post((req, res) => config.register(req, res));
 router.route('/authentication/login/').post((req, res) => config.login(req, res));
 router.route('/authentication/logout/').post((req, res) => config.logout(req, res));

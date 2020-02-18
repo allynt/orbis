@@ -12,19 +12,22 @@
   display: flex;
   justify-content: space-evenly;
   align-items: center;
-  margin: 1rem;
+  margin: 1rem 0;
 }
 
 .bookmarkTitle {
   font-weight: bold;
 }
 
+.bookmarkDescription {
+  margin: 1rem 0;
+}
+
 .bookmarkThumbnail {
   margin: 1rem;
-  border: 1px solid #fff;
   border-radius: 0.4rem;
   overflow: hidden;
-  height: 5rem;
+  height: 6rem;
 }
 
 .bookmarkThumbnail img {
@@ -39,20 +42,16 @@
   justify-content: space-between;
   width: 100%;
 }
-.bookmarkContent > * {
-  margin: 0.5rem 0;
-}
 
 .bookmarkButtons {
   display: flex;
   flex-direction: row;
-  justify-content: space-evenly;
+  justify-content: space-between;
 }
 
 .bookmarkButton {
   padding: 0.5rem 2rem !important;
-  width: 45%;
-  height: 2rem;
+  width: 47.5%;
 }
 
 .noBookmarks {

@@ -17,6 +17,7 @@ import { RESULTS } from './satellites-panel.component';
 import { ReactComponent as InfoIcon } from './info.svg';
 
 import styles from './search.module.css';
+import sideMenuStyles from '../side-menu/side-menu.module.css';
 
 const DATE_FORMAT = 'yyy-MM-dd';
 const dateFormat = 'd MMM yyy';
@@ -39,77 +40,79 @@ const Search = ({ satellites, setVisiblePanel }) => {
 
   return (
     <div className={styles.search}>
-      <div>
-        <h3>SEARCH</h3>
+      <div className={styles.filters}>
+        <div>
+          <h3>SEARCH</h3>
 
-        <ul className={styles.satellites}>
-          {satellites.map(satellite => (
-            <li key={satellite.label} className={styles.satellite}>
-              <Checkbox
-                name="satellite"
-                value="true"
-                checked={satellite.label === 'Sentinel-2' ? true : false}
-                label={satellite.label}
-                onChange={() => {
-                  const result = selectedSatellites.find(sat => sat.label === satellite.label);
+          <ul className={styles.satellites}>
+            {satellites.map(satellite => (
+              <li key={satellite.label} className={styles.satellite}>
+                <Checkbox
+                  name="satellite"
+                  value="true"
+                  checked={satellite.label === 'Sentinel-2' ? true : false}
+                  label={satellite.label}
+                  onChange={() => {
+                    const result = selectedSatellites.find(sat => sat.label === satellite.label);
 
-                  if (result) {
-                    // Remove from selected list
-                    setSelectedSatellites(selectedSatellites.filter(sat => sat.label !== satellite.label));
-                  } else {
-                    // Add to selected list
-                    setSelectedSatellites([...selectedSatellites, satellite]);
-                  }
-                }}
-              />
+                    if (result) {
+                      // Remove from selected list
+                      setSelectedSatellites(selectedSatellites.filter(sat => sat.label !== satellite.label));
+                    } else {
+                      // Add to selected list
+                      setSelectedSatellites([...selectedSatellites, satellite]);
+                    }
+                  }}
+                />
 
-              {isInfoVisible && info.label === satellite.label && <InfoBox info={satellite.description} />}
-              <button
-                onClick={() => {
-                  setIsInfoVisible(!isInfoVisible);
-                  setInfo(satellite);
-                }}
-              >
-                <InfoIcon className={styles.icon} />
-              </button>
-            </li>
-          ))}
-        </ul>
-      </div>
+                {isInfoVisible && info.label === satellite.label && <InfoBox info={satellite.description} />}
+                <button
+                  onClick={() => {
+                    setIsInfoVisible(!isInfoVisible);
+                    setInfo(satellite);
+                  }}
+                >
+                  <InfoIcon className={styles.icon} />
+                </button>
+              </li>
+            ))}
+          </ul>
+        </div>
 
-      <div>
-        <h3>TIME RANGE</h3>
+        <div>
+          <h3>TIME RANGE</h3>
 
-        <div className={styles.options}>
-          <DatePicker
-            dateFormat={DATE_FORMAT}
-            selected={startDate}
-            onChange={date => setStartDate(date)}
-            dateFormat={dateFormat}
-            customInput={<CustomInput />}
-            selectsStart
-            startDate={startDate}
-            endDate={endDate}
-          />
-          <span> to </span>
-          <DatePicker
-            dateFormat={DATE_FORMAT}
-            selected={endDate}
-            onChange={date => setEndDate(date)}
-            dateFormat={dateFormat}
-            customInput={<CustomInput />}
-            selectsEnd
-            startDate={startDate}
-            endDate={endDate}
-            minDate={startDate}
-          />
+          <div className={styles.options}>
+            <DatePicker
+              dateFormat={DATE_FORMAT}
+              selected={startDate}
+              onChange={date => setStartDate(date)}
+              dateFormat={dateFormat}
+              customInput={<CustomInput />}
+              selectsStart
+              startDate={startDate}
+              endDate={endDate}
+            />
+            <span> to </span>
+            <DatePicker
+              dateFormat={DATE_FORMAT}
+              selected={endDate}
+              onChange={date => setEndDate(date)}
+              dateFormat={dateFormat}
+              customInput={<CustomInput />}
+              selectsEnd
+              startDate={startDate}
+              endDate={endDate}
+              minDate={startDate}
+            />
+          </div>
         </div>
       </div>
 
-      <div className={styles.buttons}>
+      <div className={sideMenuStyles.buttons}>
         <Button
           theme="primary"
-          classNames={[styles.button]}
+          classNames={[sideMenuStyles.button]}
           onClick={() => {
             dispatch(searchSatellites(selectedSatellites, startDate, endDate));
             setVisiblePanel(RESULTS);
@@ -118,7 +121,7 @@ const Search = ({ satellites, setVisiblePanel }) => {
           Search
         </Button>
         <Button
-          classNames={[styles.button]}
+          classNames={[sideMenuStyles.button]}
           theme="tertiary"
           onClick={() => console.log('Task Satellite Button Clicked')}
         >

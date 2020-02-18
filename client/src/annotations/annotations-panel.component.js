@@ -43,6 +43,7 @@ import lineTypeDashedIcon from './line-type-dashed.svg';
 import lineTypeDottedIcon from './line-type-dotted.svg';
 
 import styles from './annotations-panel.module.css';
+import sideMenuStyles from '../side-menu/side-menu.module.css';
 
 const primaryColor = '#5796e2';
 const secondaryColor = '#e2e2e2';
@@ -335,7 +336,10 @@ const AnnotationsPanel = ({ map }) => {
           </ReactTooltip>
 
           {lineTypeSelected && (
-            <DropDownButton options={lineTypeOptions} select={option => dispatch({ type: SET_LINE_TYPE, option })} />
+            <div>
+              <h3>Select line type: </h3>
+              <DropDownButton options={lineTypeOptions} select={option => dispatch({ type: SET_LINE_TYPE, option })} />
+            </div>
           )}
 
           <Button
@@ -350,7 +354,13 @@ const AnnotationsPanel = ({ map }) => {
           </ReactTooltip>
 
           {lineWidthSelected && (
-            <DropDownButton options={lineWidthOptions} select={option => dispatch({ type: SET_LINE_WIDTH, option })} />
+            <div>
+              <h3>Select line width: </h3>
+              <DropDownButton
+                options={lineWidthOptions}
+                select={option => dispatch({ type: SET_LINE_WIDTH, option })}
+              />
+            </div>
           )}
         </div>
 
@@ -472,9 +482,9 @@ const AnnotationsPanel = ({ map }) => {
           />
         )}
 
-        <div className={styles.deleteButtons}>
+        <div className={sideMenuStyles.buttons}>
           <Button
-            classNames={[styles.deleteButton]}
+            classNames={[sideMenuStyles.button]}
             onClick={() => dispatch({ type: SET_DRAW_MODE, mode: 'trash' })}
             dataFor="deleteAnnotations"
           >
@@ -485,7 +495,7 @@ const AnnotationsPanel = ({ map }) => {
           </ReactTooltip>
 
           <Button
-            classNames={[styles.deleteButton]}
+            classNames={[sideMenuStyles.button]}
             theme="tertiary"
             onClick={() => dispatch({ type: SET_DRAW_MODE, mode: 'deleteAll' })}
             dataFor="deleteAllAnnotations"

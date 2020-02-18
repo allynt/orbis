@@ -164,6 +164,56 @@ const sources = {
   ]
 };
 
+const satellites = [
+  { id: 'sentinel-1', label: 'Sentinel-1', description: 'Some text describing the Sentinel-1 satellite' },
+  {
+    id: 'sentinel-2',
+    label: 'Sentinel-2',
+    description: 'Some text describing the Sentinel-2 satellite. the Sentinel-2 satellite'
+  },
+  {
+    id: 'sentinel-3',
+    label: 'Sentinel-3',
+    description: 'Some text describing the Sentinel-3 satellite. Some text describing the Sentinel-3 satellite'
+  },
+  { id: 'landsat', label: 'Landsat', description: 'Some text describing the Landsat satellite' },
+  { id: 'envisat-meris', label: 'Envisat Meris', description: 'Some text describing the Envisat Meris satellite' },
+  { id: 'modis', label: 'MODIS', description: 'Some text describing the MODIS satellite' },
+  { id: 'proba-v', label: 'Proba-V', description: 'Some text describing the Proba-V satellite' },
+  { id: 'gibs', label: 'GIBS', description: 'Some text describing the GIBS satellite' }
+];
+
+const visualisations = [
+  {
+    id: 'ndvi',
+    label: 'NDVI',
+    description: 'Based on conbination bands (B8A-B4)/(B8A + B11)',
+    thumbnail:
+      'https://cnet4.cbsistatic.com/img/-JKG69A9xmdlvxVwYtpIztVHxHI=/940x0/2018/08/21/09803db6-578f-41f7-9c7a-0b9efc5d6751/starshot-satellite-launch.jpg'
+  },
+  {
+    id: 'false-color-urban',
+    label: 'False Color (urban)',
+    description: 'Based on bands 4,3,2',
+    thumbnail:
+      'https://cnet4.cbsistatic.com/img/-JKG69A9xmdlvxVwYtpIztVHxHI=/940x0/2018/08/21/09803db6-578f-41f7-9c7a-0b9efc5d6751/starshot-satellite-launch.jpg'
+  },
+  {
+    id: 'false-color',
+    label: 'False Color',
+    description: 'Based on bands 4,3,2',
+    thumbnail:
+      'https://cnet4.cbsistatic.com/img/-JKG69A9xmdlvxVwYtpIztVHxHI=/940x0/2018/08/21/09803db6-578f-41f7-9c7a-0b9efc5d6751/starshot-satellite-launch.jpg'
+  },
+  {
+    id: 'true-color',
+    label: 'True Color',
+    description: 'Based on bands 4,3,2',
+    thumbnail:
+      'https://cnet4.cbsistatic.com/img/-JKG69A9xmdlvxVwYtpIztVHxHI=/940x0/2018/08/21/09803db6-578f-41f7-9c7a-0b9efc5d6751/starshot-satellite-launch.jpg'
+  }
+];
+
 let currentUser = null;
 
 const getAppConfig = (req, res) => {
@@ -182,6 +232,18 @@ const getCurrentUser = (req, res) => {
   console.log('Returning Current User');
   res.status(200);
   res.json(currentUser);
+};
+
+const getSatellites = (req, res) => {
+  console.log('Returning Satellites');
+  res.status(200);
+  res.json(satellites);
+};
+
+const getVisualisations = (req, res) => {
+  console.log('Returning vizualizations');
+  res.status(200);
+  res.json(visualisations);
 };
 
 const register = (req, res) => {
@@ -306,6 +368,8 @@ module.exports = {
   getAppConfig,
   getUsers,
   getCurrentUser,
+  getSatellites,
+  getVisualisations,
   register,
   login,
   logout,

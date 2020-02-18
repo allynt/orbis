@@ -18,7 +18,8 @@
 
 .banner,
 .header,
-.items {
+.items,
+.buttonContainer {
   display: flex;
   justify-content: space-between;
   width: 100%;
@@ -35,7 +36,7 @@
 
 .logo {
   /* HEIGHT MUST BE SAME AS BUTTON CONTAINER */
-  width: 10rem;
+  height: 5rem;
   color: var(--primary-foreground-color);
 }
 
@@ -109,6 +110,10 @@
   width: 2rem;
 }
 
+.notYetImplemented {
+  align-self: center;
+}
+
 .createNew {
   display: flex;
   justify-content: center;
@@ -132,7 +137,7 @@
 .buttonContainer {
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start;
   /* HEIGHT MUST BE SAME AS LOGO */
   height: 5rem;
 }
@@ -143,9 +148,11 @@
 }
 
 .viewAllItems {
-  display: grid;
-  grid-template-columns: auto auto auto auto;
-  grid-gap: 1rem;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  align-content: space-between;
+  justify-content: space-evenly;
 }
 
 /* ORIGINAL STYLES */
@@ -162,14 +169,11 @@
   color: #787c82;
 }
 
-.splash .header {
-  padding-left: 10rem;
-}
-
 .splash .content {
   display: flex;
   align-items: center;
   color: var(--foreground-color);
+  height: 100%;
 }
 
 .splash .journey {
@@ -181,13 +185,13 @@
 }
 
 .journey h1 {
-  font-size: 2rem;
+  font-size: 3rem;
   padding: 2rem 0;
 }
 
 .journeyText {
   max-width: 40rem;
-  padding: 0 2rem 5rem 0;
+  margin-bottom: 5rem;
 }
 
 .landingImage {

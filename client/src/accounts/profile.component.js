@@ -3,8 +3,6 @@ import PropTypes from 'prop-types';
 
 import { useDispatch, useSelector } from 'react-redux';
 
-import Button from '@astrosat/astrosat-ui/dist/buttons/button';
-
 import UpdateUserForm from './update-user-form.component';
 import { updateUser, logout } from './accounts.actions';
 
@@ -16,11 +14,7 @@ const Profile = () => {
 
   return (
     <div className={styles.profile}>
-      <UpdateUserForm user={user} updateUser={updateUser} />
-
-      <Button theme="tertiary" classNames={[styles.logoutButton]} onClick={() => dispatch(logout())}>
-        Logout
-      </Button>
+      <UpdateUserForm user={user} updateUser={updateUser} logout={() => dispatch(logout())} />
     </div>
   );
 };

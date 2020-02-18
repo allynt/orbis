@@ -14,9 +14,9 @@ import Well from '@astrosat/astrosat-ui/dist/containers/well';
 // import { Button, Textfield, TextArea } from '@astrosat/astrosat-ui';
 
 import formStyles from './forms.module.css';
-import userStyles from '../side-menu/side-menu.module.css';
+import sideMenuStyles from '../side-menu/side-menu.module.css';
 
-const UpdateUserForm = ({ user, updateUser }) => {
+const UpdateUserForm = ({ user, updateUser, logout }) => {
   const { handleChange, handleSubmit, values, errors } = useForm(onSubmit, validate);
 
   function onSubmit() {
@@ -24,10 +24,10 @@ const UpdateUserForm = ({ user, updateUser }) => {
   }
 
   return (
-    <div className={`${formStyles.container} ${userStyles.container}`}>
-      <form className={`${formStyles.form} ${userStyles.form}`} onSubmit={handleSubmit}>
-        <div className={`${formStyles.fields} ${userStyles.fields}`}>
-          <p className={userStyles.header}>Personal Details</p>
+    <div className={`${formStyles.container} ${sideMenuStyles.container}`}>
+      <form className={`${formStyles.form} ${sideMenuStyles.form}`} onSubmit={handleSubmit}>
+        <div className={`${formStyles.fields} ${sideMenuStyles.fields}`}>
+          <p className={sideMenuStyles.header}>Personal Details</p>
           <Textfield name="email" value={user.email || ''} placeholder="Email" onChange={handleChange} readOnly />
           {errors.email && <p className={formStyles.errorMessage}>{errors.email}</p>}
 
@@ -56,16 +56,21 @@ const UpdateUserForm = ({ user, updateUser }) => {
           />
           {errors.last_name && <p className={formStyles.errorMessage}>{errors.last_name}</p>}
 
-          <p className={userStyles.header}>Preferences</p>
-          <Select classNames={[userStyles.select]} options={regions} onChange={handleChange} />
+          <p className={sideMenuStyles.header}>Preferences</p>
+          <Select classNames={[sideMenuStyles.select]} options={regions} onChange={handleChange} />
         </div>
-        <Button
-          type="submit"
-          classNames={[userStyles.button]}
-          disabled={Object.keys(errors).length > 0 || Object.keys(values).length === 0}
-        >
-          Update User
-        </Button>
+        <div className={sideMenuStyles.buttons}>
+          <Button
+            type="submit"
+            classNames={[sideMenuStyles.button]}
+            disabled={Object.keys(errors).length > 0 || Object.keys(values).length === 0}
+          >
+            Update User
+          </Button>
+          <Button classNames={[sideMenuStyles.button]} theme="tertiary" onClick={logout}>
+            Logout
+          </Button>
+        </div>
       </form>
     </div>
   );

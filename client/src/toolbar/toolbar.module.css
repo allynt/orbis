@@ -9,7 +9,7 @@
   width: 5rem;
   height: 100vh;
   background-color: var(--background-color);
-  border-right: 1px solid var(--primary-background-color);
+  border-right: 2px solid var(--primary-background-color);
 }
 
 /* .buttonWrapper {
@@ -19,14 +19,13 @@
 .footer {
   margin-top: auto;
 }
-.item, 
+.item,
 .logo {
   cursor: pointer;
 }
 
 .item {
-  width: 4rem;
-  height: 2.5rem;
+  height: 3rem;
   border: none;
   padding: 0.3rem;
   margin: 0 0 0.5rem 0;
@@ -58,7 +57,7 @@
 .logo {
   fill: var(--button-color);
   color: #fff;
-  margin: 0.25rem;
+  margin: 1rem 0.25rem;
 }
 
 .icon {

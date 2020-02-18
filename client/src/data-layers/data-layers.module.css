@@ -1,12 +1,16 @@
 .selectData {
-  display: flex;
-  flex-direction: column;
+  width: 100%;
+  padding: 1rem;
 }
 
 .buttons {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.buttons > * {
+  margin: 0 0.5rem;
 }
 
 .button {
