@@ -33,7 +33,7 @@ const LoginForm = ({ location }) => {
 
   // Re-direct to originally clicked URL on successful login.
   if (user) {
-    return <Redirect to={from} />;
+    return <Redirect to="/" />;
   }
 
   return (
