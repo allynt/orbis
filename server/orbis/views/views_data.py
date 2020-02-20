@@ -47,7 +47,7 @@ _encoded_token_schema = openapi.Schema(
 _decoded_token_schema = openapi.Schema(
     type=openapi.TYPE_OBJECT,
     properties=OrderedDict((
-        ("iss", openapi.Schema(type=openapi.TYPE_STRING, example=get_current_site(None).domain)),
+        ("iss", openapi.Schema(type=openapi.TYPE_STRING, example="domain.com")),
         ("sub", openapi.Schema(type=openapi.TYPE_STRING, example="user")),
         ("name", openapi.Schema(type=openapi.TYPE_STRING, example="orbis token")),
         ("iat", openapi.Schema(type=openapi.TYPE_STRING, format=openapi.FORMAT_DATETIME)),
