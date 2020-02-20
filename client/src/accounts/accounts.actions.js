@@ -1,6 +1,6 @@
 import { NotificationManager } from 'react-notifications';
 
-import { history } from '../store';
+import { history } from '../root.reducer';
 
 import { sendData, getData, JSON_HEADERS } from '../utils/http';
 

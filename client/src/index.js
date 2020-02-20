@@ -11,8 +11,8 @@ import 'react-notifications/lib/notifications.css';
 
 // import registerServiceWorker from './registerServiceWorker';
 
-import App from './app.component';
-import store, { history, persistor } from './store';
+import store, { persistor } from './store';
+import { history } from './root.reducer';
 
 import './polyfills/flat-map';
 import './polyfills/object-fromEntries';
@@ -43,15 +43,26 @@ window.onerror = (msg, url, line, col, error) => {
   return suppressErrorAlert;
 };
 
-ReactDOM.render(
-  <Provider store={store}>
-    <ConnectedRouter history={history}>
-      <NotificationContainer />
-      <PersistGate loading={<div>Loading...</div>} persistor={persistor}>
-        <App />
-      </PersistGate>
-    </ConnectedRouter>
-  </Provider>,
-  document.getElementById('root')
-);
+const render = () => {
+  const App = require('./app.component').default;
+
+  ReactDOM.render(
+    <Provider store={store}>
+      <ConnectedRouter history={history}>
+        <NotificationContainer />
+        <PersistGate loading={<div>Loading...</div>} persistor={persistor}>
+          <App />
+        </PersistGate>
+      </ConnectedRouter>
+    </Provider>,
+    document.getElementById('root')
+  );
+};
+
+render();
+
+if (process.env.NODE_ENV === 'development' && module.hot) {
+  module.hot.accept('./app.component', render);
+}
+
 // registerServiceWorker();

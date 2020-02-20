@@ -1,40 +1,12 @@
 import thunk from 'redux-thunk';
 import { applyMiddleware, compose, createStore } from 'redux';
-import { combineReducers } from 'redux';
 
-import { connectRouter, routerMiddleware } from 'connected-react-router';
-import { createBrowserHistory } from 'history';
+import { routerMiddleware } from 'connected-react-router';
 import { persistStore } from 'redux-persist';
 
 import ReduxQuerySync from 'redux-query-sync';
 
-import map from './map/map.reducer';
-import app from './app.reducer';
-import dataLayers from './data-layers/data-layers-dialog.reducer';
-import satellites from './satellites/satellites.reducer';
-import accounts from './accounts/accounts.reducer';
-import theming from './theming/theming.reducer';
-import admin from './accounts/admin/users.reducer';
-import annotations from './annotations/annotations.reducer';
-import bookmarks from './bookmarks/bookmarks.reducer';
-import sidebar from './side-menu/side-menu.reducer';
-
-export const history = createBrowserHistory();
-
-const createRootReducer = history =>
-  combineReducers({
-    map,
-    dataLayers,
-    satellites,
-    app,
-    accounts,
-    theming,
-    admin,
-    annotations,
-    bookmarks,
-    sidebar,
-    router: connectRouter(history)
-  });
+import rootReducer, { history } from './root.reducer';
 
 // 1. Setup store to use middleware (thunk) to create API calls.
 // 2. Add redux-logger to middleware.
@@ -46,10 +18,10 @@ if (process.env.NODE_ENV === 'development') {
   // 1. Add redux dev tools (development mode only).
   // 2. Create store composed of reducers and middleware.
   const composeEnhancer = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
-  store = createStore(createRootReducer(history), composeEnhancer(applyMiddleware(...middleware)));
+  store = createStore(rootReducer, composeEnhancer(applyMiddleware(...middleware)));
 } else {
   // 1. Create store composed of reducers and middleware.
-  store = createStore(createRootReducer(history), applyMiddleware(...middleware));
+  store = createStore(rootReducer, applyMiddleware(...middleware));
 }
 
 ReduxQuerySync({
@@ -65,5 +37,11 @@ ReduxQuerySync({
   initialTruth: 'location'
 });
 
+if (process.env.NODE_ENV === 'development' && module.hot) {
+  module.hot.accept('./root.reducer', () => {
+    const newRootReducer = require('./root.reducer').default;
+    store.replaceReducer(newRootReducer);
+  });
+}
 export default store;
 export const persistor = persistStore(store);
