@@ -111,7 +111,7 @@ class TestBookmarkViews:
             "center": json.dumps(bookmark.center.coords),
             "feature_collection": json.dumps(bookmark.feature_collection),
         }
-        # bookmark_data = BookmarkSerializer(bookmark).data
+
         old_title = bookmark_data["title"]
         new_title = shuffle_string(old_title).strip()
         bookmark_data["title"] = new_title
