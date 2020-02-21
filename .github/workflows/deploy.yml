@@ -3,7 +3,6 @@ name: Deploy
 on:
   deployment: {}
 
-
 jobs:
   deploy-to-testing:
     name: Deploy to Testing
@@ -11,10 +10,10 @@ jobs:
     if: startsWith(github.event.deployment.environment, 'testing')
     steps:
       - name: Set the Deployment Status to Pending
-        uses: 'deliverybot/deployment-status@v1'
+        uses: "deliverybot/deployment-status@v1"
         with:
-          state: 'pending'
-          token: '${{ github.token }}'
+          state: "pending"
+          token: "${{ github.token }}"
 
       - name: Checkout
         uses: actions/checkout@v1
@@ -27,40 +26,25 @@ jobs:
           aws configure set --profile testing source_profile default
 
       - name: Deploy the app
-        run: |
-          ENVIRONMENT="${{ github.event.deployment.environment }}"
-          TAG="${GITHUB_SHA:0:7}"
-          BRANCH="${GITHUB_REF##*/}"
-          BRANCH_SLUG="$(echo "${BRANCH}" | sed -e 's/[^[:alnum:]]/-/g' | tr A-Z a-z)"
-          TERRAFORM_WORKSPACE="environment-${ENVIRONMENT}"
-
-          echo "ENVIRONMENT=$ENVIRONMENT"
-          echo "TAG=$TAG"
-          echo "BRANCH=$BRANCH"
-          echo "BRANCH_SLUG=$BRANCH_SLUG"
-
-          cd terraform/deploy-branch-to-testing
-
-          terraform init
-          terraform workspace new "$TERRAFORM_WORKSPACE" || true
-          terraform workspace select "$TERRAFORM_WORKSPACE"
-          terraform plan -var "app_environment=$ENVIRONMENT" -var "tag=$TAG" -var "aws_cli_profile=testing" -out=deploy.plan
-          terraform apply -auto-approve ./deploy.plan
+        run: ./scripts/deploy.sh ${ENVIRONMENT} ${TAG}
+        env:
+          ENVIRONMENT: "${{ github.event.deployment.environment }}"
+          TAG: "${GITHUB_SHA:0:7}"
 
       - name: Set the Deployment Status on Success
         if: success()
-        uses: 'deliverybot/deployment-status@v1'
+        uses: "deliverybot/deployment-status@v1"
         with:
-          state: 'success'
-          token: '${{ github.token }}'
-          environment-url: 'https://app-${{github.event.deployment.environment}}.testing.or3is.com/'
+          state: "success"
+          token: "${{ github.token }}"
+          environment-url: "https://app-${{github.event.deployment.environment}}.testing.or3is.com/"
 
       - name: Set the Deployment Status on Failure
         if: failure()
-        uses: 'deliverybot/deployment-status@v1'
+        uses: "deliverybot/deployment-status@v1"
         with:
-          state: 'failure'
-          token: '${{ github.token }}'
+          state: "failure"
+          token: "${{ github.token }}"
 
   deploy-to-staging:
     name: Deploy to Staging
@@ -68,10 +52,10 @@ jobs:
     if: github.event.deployment.environment == 'staging'
     steps:
       - name: Set the Deployment Status to Pending
-        uses: 'deliverybot/deployment-status@v1'
+        uses: "deliverybot/deployment-status@v1"
         with:
-          state: 'pending'
-          token: '${{ github.token }}'
+          state: "pending"
+          token: "${{ github.token }}"
 
       - name: Checkout
         uses: actions/checkout@v1
@@ -82,37 +66,22 @@ jobs:
           aws configure set aws_secret_access_key "${{ secrets.AWS_SECRET_ACCESS_KEY }}"
 
       - name: Deploy the app
-        run: |
-          ENVIRONMENT="${{ github.event.deployment.environment }}"
-          TAG="${GITHUB_SHA:0:7}"
-          BRANCH="${GITHUB_REF##*/}"
-          BRANCH_SLUG="$(echo "${BRANCH}" | sed -e 's/[^[:alnum:]]/-/g' | tr A-Z a-z)"
-          TERRAFORM_WORKSPACE="environment-${ENVIRONMENT}"
-
-          echo "ENVIRONMENT=$ENVIRONMENT"
-          echo "TAG=$TAG"
-          echo "BRANCH=$BRANCH"
-          echo "BRANCH_SLUG=$BRANCH_SLUG"
-
-          cd terraform/deploy-to-production
-
-          terraform init
-          terraform workspace new "$TERRAFORM_WORKSPACE" || true
-          terraform workspace select "$TERRAFORM_WORKSPACE"
-          terraform plan -var "environment=$ENVIRONMENT" -var "tag=$TAG" -out=deploy.plan
-          terraform apply -auto-approve ./deploy.plan
+        run: ./scripts/deploy.sh ${ENVIRONMENT} ${TAG}
+        env:
+          ENVIRONMENT: "${{ github.event.deployment.environment }}"
+          TAG: "${GITHUB_SHA:0:7}"
 
       - name: Set the Deployment Status on Success
         if: success()
-        uses: 'deliverybot/deployment-status@v1'
+        uses: "deliverybot/deployment-status@v1"
         with:
-          state: 'success'
-          token: '${{ github.token }}'
-          environment-url: 'https://app.${{github.event.deployment.environment}}.or3is.com/'
+          state: "success"
+          token: "${{ github.token }}"
+          environment-url: "https://app.${{github.event.deployment.environment}}.or3is.com/"
 
       - name: Set the Deployment Status on Failure
         if: failure()
-        uses: 'deliverybot/deployment-status@v1'
+        uses: "deliverybot/deployment-status@v1"
         with:
-          state: 'failure'
-          token: '${{ github.token }}'
+          state: "failure"
+          token: "${{ github.token }}"
