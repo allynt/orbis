@@ -18,6 +18,7 @@ def check_storage_access(view_fn):
     """
     Gracefully fails if anything storage-related fails in the ViewSet below
     """
+
     @functools.wraps(view_fn)
     def check_storage_access_wrapper(request, *args, **kwargs):
         try:
@@ -39,6 +40,11 @@ class BookmarkViewSet(viewsets.ModelViewSet):
     serializer_class = BookmarkSerializer
 
     def get_queryset(self):
+        if getattr(self, "swagger_fake_view", False):
+            # queryset just for schema generation metadata
+            # as per https://github.com/axnsan12/drf-yasg/issues/333#issuecomment-474883875
+            return Bookmark.objects.none()
+
         # restrict the queryset to those bookmarks owned by the current user
         user = self.request.user
         return user.bookmarks.all()

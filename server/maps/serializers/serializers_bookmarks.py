@@ -4,13 +4,14 @@ from django.contrib.auth import get_user_model
 from django.contrib.gis.geos import Point
 
 from rest_framework.serializers import (
-    CurrentUserDefault,
     Field,
     ModelSerializer,
     PrimaryKeyRelatedField,
     SerializerMethodField,
     ValidationError,
 )
+
+from astrosat.views import SwaggerCurrentUserDefault
 
 from maps.models import Bookmark
 
@@ -56,9 +57,8 @@ class BookmarkSerializer(ModelSerializer):
         )
 
     owner = PrimaryKeyRelatedField(
-        # if you don't pass an explicit owner, infer it from the request
-        # (as per https://www.django-rest-framework.org/api-guide/validators/#currentuserdefault)
-        queryset=get_user_model().objects.all(), default=CurrentUserDefault()
+         # (using a wrapper around CurrentUserDefault so that yasg doesn't complain)
+        queryset=get_user_model().objects.all(), default=SwaggerCurrentUserDefault()
     )
 
     center = SimplifiedGeometryField(geometry_class=Point, precision=Bookmark.PRECISION)
