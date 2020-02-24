@@ -26,10 +26,10 @@ jobs:
           aws configure set --profile testing source_profile default
 
       - name: Deploy the app
-        run: ./scripts/deploy.sh ${ENVIRONMENT} ${TAG}
-        env:
-          ENVIRONMENT: "${{ github.event.deployment.environment }}"
-          TAG: "${GITHUB_SHA:0:7}"
+        run: |
+          ENVIRONMENT="${{ github.event.deployment.environment }}"
+          TAG="${GITHUB_SHA:0:7}"
+          ./scripts/deploy.sh "${ENVIRONMENT}" "${TAG}""
 
       - name: Set the Deployment Status on Success
         if: success()
@@ -67,8 +67,8 @@ jobs:
 
       - name: Deploy the app
         run: |
-          ENVIRONMENT: "${{ github.event.deployment.environment }}"
-          TAG: "${GITHUB_SHA:0:7}"
+          ENVIRONMENT="${{ github.event.deployment.environment }}"
+          TAG="${GITHUB_SHA:0:7}"
           ./scripts/deploy.sh "${ENVIRONMENT}" "${TAG}"
 
       - name: Set the Deployment Status on Success
