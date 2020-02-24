@@ -103,3 +103,4 @@ server/static
 .local/
 .venv/
 .terraform/
+terraform/**/deploy.plan
