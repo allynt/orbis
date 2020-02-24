@@ -66,10 +66,10 @@ jobs:
           aws configure set aws_secret_access_key "${{ secrets.AWS_SECRET_ACCESS_KEY }}"
 
       - name: Deploy the app
-        run: ./scripts/deploy.sh ${ENVIRONMENT} ${TAG}
-        env:
+        run: |
           ENVIRONMENT: "${{ github.event.deployment.environment }}"
           TAG: "${GITHUB_SHA:0:7}"
+          ./scripts/deploy.sh "${ENVIRONMENT}" "${TAG}"
 
       - name: Set the Deployment Status on Success
         if: success()
