@@ -35,14 +35,14 @@ TERRAFORM_WORKSPACE="environment-${ENVIRONMENT}"
 
 if [[ "${ENVIRONMENT_TYPE}" == "testing" ]]; then
   cd ./terraform/deploy-branch-to-testing
-  PLAN_ARGS="-var app_environment=${ENVIRONMENT} -var tag=${TAG} -var aws_cli_profile=${ENVIRONMENT_TYPE} -out=deploy.plan"
+  ENVIRONMENT_ARGS="-var app_environment=${ENVIRONMENT} -var aws_cli_profile=${ENVIRONMENT_TYPE}"
 else
   cd ./terraform/deploy-to-production
-  PLAN_ARGS="-var environment=${ENVIRONMENT} -var tag=${TAG} -out=deploy.plan"
+  ENVIRONMENT_ARGS="-var environment=${ENVIRONMENT}"
 fi
 
 terraform init
 terraform workspace new "${TERRAFORM_WORKSPACE}" || true
 terraform workspace select "${TERRAFORM_WORKSPACE}"
-terraform plan ${PLAN_ARGS}
+terraform plan ${ENVIRONMENT_ARGS} -var tag=${TAG} -out=deploy.plan
 terraform apply -auto-approve ./deploy.plan
