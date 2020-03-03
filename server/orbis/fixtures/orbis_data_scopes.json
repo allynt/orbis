@@ -1,0 +1,20 @@
+[
+  {
+    "model": "orbis.datascope",
+    "fields": {
+      "is_active": true,
+      "authority": "astrosat",
+      "namespace": "test",
+      "name": "*",
+      "version": "*"
+    }
+  },
+  {
+    "model": "orbis.roleaccess",
+    "fields": {
+      "access": 7,
+      "data_scope": ["astrosat/test/*/*"],
+      "role": ["OrbisRole"]
+    }
+  }
+]

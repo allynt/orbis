@@ -77,5 +77,17 @@ class OrbisUserProfile(models.Model):
         help_text=_("The default region for this user"),
     )
 
+    max_searches = models.PositiveIntegerField(
+        blank=False,
+        default=10,
+        help_text=_("The maximum number of saved searches allowed for this user."),
+    )
+
+    max_results = models.PositiveIntegerField(
+        blank=False,
+        default=10,
+        help_text=_("The maximum number of saved search results allowed for this user."),
+    )
+
     def __str__(self):
         return str(self.user)

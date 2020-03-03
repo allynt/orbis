@@ -18,21 +18,21 @@ variable "aws_cli_profile" {
 }
 
 locals {
-  app              = "orbis"
-  environment      = "testing"
+  app         = "orbis"
+  environment = "testing"
 
   eks_cluster_name = "orbis-platform-${local.environment}"
   aws_cli_profile  = var.aws_cli_profile
   aws_role_arn     = "arn:aws:iam::464205154305:role/OrbisTestingAccountAccess"
 
-  app_name   = "${local.app}-${var.app_environment}"
-  app_domain = "app-${var.app_environment}.testing.or3is.com"
-  app_image  = "339570402237.dkr.ecr.eu-west-1.amazonaws.com/company/orbis/django:${var.tag}"
+  app_name       = "${local.app}-${var.app_environment}"
+  app_domain     = "app-${var.app_environment}.testing.or3is.com"
+  app_image      = "339570402237.dkr.ecr.eu-west-1.amazonaws.com/company/orbis/django:${var.tag}"
   app_secret     = "${local.app}-${var.app_environment}-secret"
   app_aws_secret = "${local.app}-${local.environment}-aws-secret"
   app_labels = {
-    app         = local.app
-    environment = local.environment
+    app             = local.app
+    environment     = local.environment
     app_environment = var.app_environment
   }
 
@@ -89,6 +89,18 @@ locals {
     {
       var = "DJANGO_DATA_URL"
       key = "static_data_url"
+    },
+    {
+      var = "DJANGO_COPERNICUS_USERNAME"
+      key = "copernicus_username"
+    },
+    {
+      var = "DJANGO_COPERNICUS_PASSWORD"
+      key = "copernicus_password"
+    },
+    {
+      var = "DJANGO_OLSP_URL"
+      key = "olsp_url"
     }
   ]
 }
@@ -151,7 +163,7 @@ resource "kubernetes_deployment" "app_deployment" {
 
       spec {
         container {
-          name =  local.app_name
+          name  = local.app_name
           image = local.app_image
 
           port {
@@ -277,7 +289,7 @@ resource "kubernetes_service" "app_service" {
 
 resource "kubernetes_ingress" "app_ingress" {
   metadata {
-    name   = local.app_name
+    name = local.app_name
     labels = {
       traefik = "external"
     }

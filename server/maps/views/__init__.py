@@ -1,2 +1,1 @@
 from .views_bookmarks import BookmarkViewSet
-from .views_satellites import SatelliteViewSet, SatelliteSceneViewSet, SatelliteVisualisationViewSet
