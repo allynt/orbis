@@ -52,6 +52,11 @@ class SimplifiedGeometryField(serializers.Field):
             raise ValidationError(str(e))
 
 
+#####################
+# satellite results #
+#####################
+
+
 class SatelliteResultSerializer(serializers.ModelSerializer):
     class Meta:
         model = SatelliteResult
@@ -92,6 +97,12 @@ class SatelliteResultSerializer(serializers.ModelSerializer):
             )
 
         return data
+
+
+######################
+# satellite searches #
+######################
+
 
 class SatelliteSearchSerializer(serializers.ModelSerializer):
     class Meta:
@@ -147,6 +158,11 @@ class SatelliteSearchSerializer(serializers.ModelSerializer):
             )
 
         return data
+
+
+##############
+# satellites #
+##############
 
 
 class SatelliteVisualisationSerializer(serializers.ModelSerializer):

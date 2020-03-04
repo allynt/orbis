@@ -12,6 +12,11 @@ from orbis.models import (
 )
 
 
+##############
+# satellites #
+##############
+
+
 @admin.register(Satellite)
 class SatelliteAdmin(admin.ModelAdmin):
     search_fields = ("title",)
@@ -37,6 +42,7 @@ class SatelliteResolutionAdmin(admin.ModelAdmin):
 
     get_satellites_for_list_display.short_description = "satellites"
 
+
 @admin.register(SatelliteVisualisation)
 class SatelliteVisualisationAdmin(admin.ModelAdmin):
     search_fields = ("title",)
@@ -56,6 +62,11 @@ class SatelliteVisualisationAdmin(admin.ModelAdmin):
     get_satellites_for_list_display.short_description = "satellites"
 
 
+######################
+# satellite searches #
+######################
+
+
 @admin.register(SatelliteSearch)
 class SatelliteSearchAdmin(GeoModelAdmin):
     search_fields = ("name",)
@@ -68,7 +79,14 @@ class SatelliteSearchAdmin(GeoModelAdmin):
         "get_satellites_for_list_display",
         "get_resolutions_for_list_display",
     )
-    list_filter = ("owner", "created", "start_date", "end_date", "satellites", "resolutions")
+    list_filter = (
+        "owner",
+        "created",
+        "start_date",
+        "end_date",
+        "satellites",
+        "resolutions",
+    )
     readonly_fields = ("created",)
 
     def get_queryset(self, request):
@@ -87,14 +105,15 @@ class SatelliteSearchAdmin(GeoModelAdmin):
 
     get_resolutions_for_list_display.short_description = "resolutions"
 
+
+#####################
+# satellite results #
+#####################
+
+
 @admin.register(SatelliteResult)
 class SatelliteResultAdmin(GeoModelAdmin):
     search_fields = ("scene_id",)
-    list_display = (
-        "scene_id",
-        "owner",
-        "satellite",
-        "cloud_cover"
-    )
+    list_display = ("scene_id", "owner", "satellite", "cloud_cover")
     list_filter = ("satellite", "owner", "cloud_cover")
     readonly_fields = ("url",)
