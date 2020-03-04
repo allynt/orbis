@@ -1,4 +1,5 @@
 import datetime
+import json
 import pytest
 import urllib
 
@@ -52,8 +53,14 @@ class TestSatellites:
         assert status.is_success(response.status_code)
         assert len(satellites) == N_SATELLITES
 
-        assert (sum(map(lambda x: len(x["resolutions"]), satellites)) == N_RESOLUTIONS * N_SATELLITES)
-        assert ( sum(map(lambda x: len(x["visualisations"]), satellites)) == N_VISUALISATIONS * N_SATELLITES)
+        assert (
+            sum(map(lambda x: len(x["resolutions"]), satellites))
+            == N_RESOLUTIONS * N_SATELLITES
+        )
+        assert (
+            sum(map(lambda x: len(x["visualisations"]), satellites))
+            == N_VISUALISATIONS * N_SATELLITES
+        )
 
 
 @pytest.mark.django_db
@@ -139,7 +146,9 @@ class TestSatelliteResults:
         assert all(map(lambda x: x["satellite"] in satellite_ids[:2], results))
 
         # filter on an invalid satellite...
-        url_params = urllib.parse.urlencode({"satellites": f"{shuffle_string(satellite_ids[0])}"})
+        url_params = urllib.parse.urlencode(
+            {"satellites": f"{shuffle_string(satellite_ids[0])}"}
+        )
         url = f"{reverse('satellite-result-list')}?{url_params}"
         response = client.get(url)
         assert status.is_success(response.status_code)
@@ -153,24 +162,28 @@ class TestSatelliteResults:
         result = SatelliteResultFactory(owner=user)
         (xmin, ymin, xmax, ymax) = valid_bbox = result.footprint.extent
         invalid_bbox = Polygon.from_bbox(
-            # (create a polygon that defintiely does not intersect the footprint)
+            # (create a polygon that definitely does not intersect the footprint)
             [
-                xmin + (xmax - xmin),
-                ymin + (ymax - ymin),
-                xmax + (xmax - xmin),
-                ymax + (ymax - ymin),
+                xmin + (xmax - xmin) + 1,
+                ymin + (ymax - ymin) + 1,
+                xmax + (xmax - xmin) + 1,
+                ymax + (ymax - ymin) + 1,
             ]
         ).extent
 
         # test a valid bbox...
-        url_params = urllib.parse.urlencode({"footprint__bbox": ",".join(map(str, valid_bbox))})
+        url_params = urllib.parse.urlencode(
+            {"footprint__bbox": ",".join(map(str, valid_bbox))}
+        )
         url = f"{reverse('satellite-result-list')}?{url_params}"
         response = client.get(url)
         assert status.is_success(response.status_code)
         assert len(response.json()) == 1
 
         # test a non-matching bbox...
-        url_params = urllib.parse.urlencode({"footprint__bbox": ",".join(map(str, invalid_bbox))})
+        url_params = urllib.parse.urlencode(
+            {"footprint__bbox": ",".join(map(str, invalid_bbox))}
+        )
         url = f"{reverse('satellite-result-list')}?{url_params}"
         response = client.get(url)
         assert status.is_success(response.status_code)
