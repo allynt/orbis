@@ -67,7 +67,7 @@ class SatelliteResultSerializer(serializers.ModelSerializer):
         )
 
     id = serializers.SlugField(source="scene_id")
-    satellite = serializers.SlugRelatedField(read_only=True, slug_field="satellite_id")
+    satellite = serializers.SlugRelatedField(slug_field="satellite_id", queryset=Satellite.objects.all())
 
     footprint = SimplifiedGeometryField(
         geometry_class=Polygon, precision=SatelliteSearch.PRECISION
