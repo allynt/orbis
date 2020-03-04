@@ -374,5 +374,5 @@ class SatelliteResult(gis_models.Model):
         The URL to retrieve a tile from the OLSP (On-Line Scene Processor) is generated based upon
         the OLSP_URL (set as an environment variable), the scene_id, and the visualisation_id (added by the client)
         """
-        url_template = "http://{0}/{1}/{{visualisation_id}}/{{z}}/{{x}}/{{y}}.png"
-        return url_template.format(settings.OLSP_URL, self.scene_id)
+        url_template = "http://{0}/{1}/{2}/{{visualisation_id}}/{{z}}/{{x}}/{{y}}.png"
+        return url_template.format(settings.OLSP_URL, self.satellite.satellite_id, self.scene_id)

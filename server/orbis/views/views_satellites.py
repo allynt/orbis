@@ -97,7 +97,7 @@ class SatelliteSearchViewSet(
 
 class CharInFilter(filters.BaseInFilter, filters.CharFilter):
     """
-    Allows me to filter based on characters being in a list
+    Allows me to filter based on CharFields being in a list
     """
 
     pass
