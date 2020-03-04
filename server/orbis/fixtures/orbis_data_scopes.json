@@ -1,20 +1,56 @@
 [
-  {
-    "model": "orbis.datascope",
-    "fields": {
-      "is_active": true,
-      "authority": "astrosat",
-      "namespace": "test",
-      "name": "*",
-      "version": "*"
-    }
-  },
-  {
-    "model": "orbis.roleaccess",
-    "fields": {
-      "access": 7,
-      "data_scope": ["astrosat/test/*/*"],
-      "role": ["OrbisRole"]
-    }
+{
+  "model": "astrosat_users.userrole",
+  "fields": {
+    "name": "OrbisRole",
+    "description": "Default role that all users of ORBIS are members of.",
+    "permissions": []
   }
+},
+{
+  "model": "orbis.datascope",
+  "fields": {
+    "is_active": true,
+    "authority": "astrosat",
+    "namespace": "core",
+    "name": "*",
+    "version": "*"
+  }
+},
+{
+  "model": "orbis.datascope",
+  "fields": {
+    "is_active": true,
+    "authority": "astrosat",
+    "namespace": "sentinel-2",
+    "name": "*",
+    "version": "*"
+  }
+},
+{
+  "model": "orbis.roleaccess",
+  "pk": 1,
+  "fields": {
+    "access": 1,
+    "data_scope": [
+      "astrosat/core/*/*"
+    ],
+    "role": [
+      "OrbisRole"
+    ]
+  }
+},
+{
+  "model": "orbis.roleaccess",
+  "pk": 2,
+  "fields": {
+    "access": 7,
+    "data_scope": [
+      "astrosat/sentinel-2/*/*"
+    ],
+    "role": [
+      "OrbisRole"
+    ]
+  }
+}
 ]
