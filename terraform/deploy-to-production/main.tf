@@ -13,13 +13,13 @@ variable "tag" {
 }
 
 locals {
-  app              = "orbis"
+  app = "orbis"
 
   eks_cluster_name = "orbis-platform-${var.environment}"
 
-  app_name   = "${local.app}-${var.environment}"
-  app_domain = "app.${var.environment}.or3is.com"
-  app_image  = "339570402237.dkr.ecr.eu-west-1.amazonaws.com/company/orbis/django:${var.tag}"
+  app_name       = "${local.app}-${var.environment}"
+  app_domain     = "app.${var.environment}.or3is.com"
+  app_image      = "339570402237.dkr.ecr.eu-west-1.amazonaws.com/company/orbis/django:${var.tag}"
   app_secret     = "${local.app}-${var.environment}-secret"
   app_aws_secret = "${local.app}-${var.environment}-aws-secret"
   app_labels = {
@@ -83,6 +83,18 @@ locals {
     {
       var = "DJANGO_DATA_URL"
       key = "static_data_url"
+    },
+    {
+      var = "DJANGO_COPERNICUS_USERNAME"
+      key = "copernicus_username"
+    },
+    {
+      var = "DJANGO_COPERNICUS_PASSWORD"
+      key = "copernicus_password"
+    },
+    {
+      var = "DJANGO_OLSP_URL"
+      key = "olsp_url"
     }
   ]
 }
@@ -128,7 +140,7 @@ resource "kubernetes_deployment" "app_deployment" {
 
       spec {
         container {
-          name =  local.app_name
+          name  = local.app_name
           image = local.app_image
 
           port {
@@ -249,7 +261,7 @@ resource "kubernetes_service" "app_service" {
 
 resource "kubernetes_ingress" "app_ingress" {
   metadata {
-    name   = local.app_name
+    name = local.app_name
     labels = {
       traefik = "external"
     }

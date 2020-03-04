@@ -1,0 +1,157 @@
+[
+  {
+    "model": "orbis.satellitevisualisation",
+    "fields": {
+      "visualisation_id": "true-color",
+      "title": "True Color",
+      "description": "Based on bands 4,3,2",
+      "order": 1,
+      "thumbnail": "satellites/visualisations/true-color.png"
+    }
+  },
+  {
+    "model": "orbis.satellitevisualisation",
+    "fields": {
+      "visualisation_id": "false-color",
+      "title": "False Color",
+      "description": "Based on bands 4,3,2",
+      "order": 2,
+      "thumbnail": "satellites/visualisations/false-color.png"
+    }
+  },
+  {
+    "model": "orbis.satellitevisualisation",
+    "fields": {
+      "visualisation_id": "false-color-urban",
+      "title": "False Color (urban)",
+      "description": "Based on bands 4,3,2",
+      "order": 3,
+      "thumbnail": "satellites/visualisations/false-color-urban.png"
+    }
+  },
+  {
+    "model": "orbis.satellitevisualisation",
+    "fields": {
+      "visualisation_id": "ndvi",
+      "title": "NDVI",
+      "description": "Based on conbination bands (B8A-B4)/(B8A + B11)",
+      "order": 4,
+      "thumbnail": "satellites/visualisations/ndvi.png"
+    }
+  },
+  {
+    "model": "orbis.satelliteresolution",
+    "fields": {
+      "name": "free",
+      "title": "Free Images",
+      "description": "Free scenes.",
+      "order": 1
+    }
+  },
+  {
+    "model": "orbis.satelliteresolution",
+    "fields": {
+      "name": "mid",
+      "title": "Mid Resolution",
+      "description": "Mid resolution scenes.",
+      "order": 2
+    }
+  },
+  {
+    "model": "orbis.satelliteresolution",
+    "fields": {
+      "name": "high",
+      "title": "High Resolution",
+      "description": "High resolution scenes.",
+      "order": 3
+    }
+  },
+  {
+    "model": "orbis.satellite",
+    "fields": {
+      "satellite_id": "sentinel-1",
+      "title": "Sentinel-1",
+      "description": "Some text describing the Sentinel-1 satellite.",
+      "order": 1,
+      "resolutions": [],
+      "visualisations": []
+    }
+  },
+  {
+    "model": "orbis.satellite",
+    "fields": {
+      "satellite_id": "sentinel-2",
+      "title": "Sentinel 2",
+      "description": "Some text describing the Sentinel-2 satellite.",
+      "order": 2,
+      "resolutions": [["free"], ["mid"], ["high"]],
+      "visualisations": [["true-color"], ["false-color"], ["false-color-urban"], ["ndvi"]]
+    }
+  },
+  {
+    "model": "orbis.satellite",
+    "fields": {
+      "satellite_id": "sentinel-3",
+      "title": "Sentinel 3",
+      "description": "Some text describing the Sentinel-3 satellite.",
+      "order": 3,
+      "resolutions": [],
+      "visualisations": []
+    }
+  },
+  {
+    "model": "orbis.satellite",
+    "fields": {
+      "satellite_id": "landsat",
+      "title": "Landsat",
+      "description": "Some text describing the Landsat satellite.",
+      "order": 4,
+      "resolutions": [],
+      "visualisations": []
+    }
+  },
+  {
+    "model": "orbis.satellite",
+    "fields": {
+      "satellite_id": "envisat-meris",
+      "title": "Envisat Meris",
+      "description": "Some text describing the Envisat Meris satellite.",
+      "order": 5,
+      "resolutions": [],
+      "visualisations": []
+    }
+  },
+  {
+    "model": "orbis.satellite",
+    "fields": {
+      "satellite_id": "modis",
+      "title": "MODIS",
+      "description": "Some text describing the MODIS satellite",
+      "order": 6,
+      "resolutions": [],
+      "visualisations": []
+    }
+  },
+  {
+    "model": "orbis.satellite",
+    "fields": {
+      "satellite_id": "proba-v",
+      "title": "Proba-V",
+      "description": "Some text describing the Proba-V satellite",
+      "order": 7,
+      "resolutions": [],
+      "visualisations": []
+    }
+  },
+  {
+    "model": "orbis.satellite",
+    "fields": {
+      "satellite_id": "gibs",
+      "title": "GIBS",
+      "description": "Some text describing the GIBS satellite",
+      "order": 8,
+      "resolutions": [],
+      "visualisations": []
+    }
+  }
+]

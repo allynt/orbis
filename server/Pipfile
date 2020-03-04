@@ -45,6 +45,8 @@ pandas = ">=0.25.0"
 psycopg2-binary = ">=2.8.3"
 # data tokens
 pyjwt = ">=1.7.1"
+# sentinel data
+sentinelsat = ">=0.13"
 # wsgi... duh
 uwsgi = ">=2.0.18"
 # static file management (gzipping, etc.)
