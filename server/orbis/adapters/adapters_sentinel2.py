@@ -55,6 +55,10 @@ class Sentinel2Adapter(BaseSatelliteAdapter):
 
         return results
 
+# sample web request:
+# https://scihub.copernicus.eu/dhus/api/stub/products?filter=
+# (%20footprint:%22Intersects(POLYGON((3.05430080885967%2051.89149650402203,7.344251234505927%2051.89149650402203,7.344251234505927%2052.23886675306355,3.05430080885967%2052.23886675306355,3.05430080885967%2051.89149650402203)))%22%20)%20AND%20(%20%20(platformname:Sentinel-2))&offset=0&limit=25&sortedby=ingestiondate&order=desc
+
 # sample output:
 # {
 #   'ef5befd0-0418-4725-9c30-75d28dce673a': {
