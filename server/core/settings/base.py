@@ -4,6 +4,7 @@ Django settings for orbis project.
 
 import environ
 import importlib
+import json
 import os
 
 from django.utils.html import escape
@@ -116,6 +117,9 @@ AWS_SECRET_ACCESS_KEY = env("DJANGO_AWS_SECRET_ACCESS_KEY", default="")
 AWS_DEFAULT_ACL = None
 
 MAPBOX_TOKEN = env("DJANGO_MAPBOX_TOKEN", default="")
+
+# (note that DJANGO_MAPBOX_STYLES is stringified JSON)
+MAPBOX_STYLES = json.loads(env("DJANGO_MAPBOX_STYLES", default='[]'))
 
 COPERNICUS_USERNAME = env("DJANGO_COPERNICUS_USERNAME", default="")
 COPERNICUS_PASSWORD = env("DJANGO_COPERNICUS_PASSWORD", default="")

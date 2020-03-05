@@ -83,6 +83,10 @@ locals {
       key = "mapbox_token"
     },
     {
+      var = "DJANGO_MAPBOX_STYLES"
+      key = "mapbox_styles"
+    },
+    {
       var = "DJANGO_TRACKING_ID"
       key = "tracking_id"
     },
