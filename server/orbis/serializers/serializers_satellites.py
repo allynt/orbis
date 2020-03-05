@@ -63,8 +63,9 @@ class SatelliteResultSerializer(serializers.ModelSerializer):
         fields = (
             "id",
             "properties",
-            "url",
-            "thumbnail",
+            "thumbnail_url",
+            "tile_url",
+            "download_url",
             "cloud_cover",
             "footprint",
             "satellite",

@@ -44,7 +44,6 @@ class Sentinel2Adapter(BaseSatelliteAdapter):
                 owner=self.query_params["owner"],
                 # set some attrs explicitly from the query result...
                 scene_id=product.pop("identifier"),
-                thumbnail=product.pop("link_icon"),
                 footprint=product.pop("footprint"),
                 cloud_cover=product.pop("cloudcoverpercentage"),
                 # store everything else as the "properties" attr...
