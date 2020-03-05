@@ -103,6 +103,8 @@ LOGGING = {
         "django.db.backends": {"level": "WARNING"},
         "django.utils.autoreload": {"level": "INFO"},
         "environ.environ": {"level": "INFO"},
+        "faker": {"level": "INFO"},
+        "factory": {"level": "INFO"},
     },
 }
 
