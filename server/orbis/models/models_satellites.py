@@ -256,9 +256,7 @@ class SatelliteSearch(gis_models.Model):
         verbose_name_plural = "Saved Satellites Searches"
         ordering = ["-created"]
         constraints = [
-            models.UniqueConstraint(
-                fields=["owner", "name"], name="unique_owner_name"
-            )
+            models.UniqueConstraint(fields=["owner", "name"], name="unique_owner_name")
         ]
 
     PRECISION = 6
@@ -298,13 +296,17 @@ class SatelliteSearch(gis_models.Model):
 
         # make sure data is valid
         if self.start_date > self.end_date:
-            raise ValidationError("end_date must be greater than or equal to start_date")
+            raise ValidationError(
+                "end_date must be greater than or equal to start_date"
+            )
 
         # make sure owner is allowed to save this search
         user = self.owner
         max_searches = user.orbis_profile.max_searches
         if not self.id and user.satellite_searches.count() >= max_searches:
-            raise ValidationError(f"Only {max_searches} instances of SatelliteSearches are allowed for '{user}'.")
+            raise ValidationError(
+                f"Only {max_searches} instances of SatelliteSearches are allowed for '{user}'."
+            )
 
 
 class SatelliteResult(gis_models.Model):
@@ -329,15 +331,11 @@ class SatelliteResult(gis_models.Model):
         Satellite, related_name="scenes", on_delete=models.CASCADE
     )
 
-    thumbnail = models.URLField(
+    cloud_cover = models.FloatField(
         blank=True,
         null=True,
-        help_text=_(
-            "The location of this scene's thumbnail; This is an external URL so it is not managed by the app."
-        ),
+        validators=[MinValueValidator(0.0), MaxValueValidator(100.0)],
     )
-
-    cloud_cover = models.FloatField(blank=True, null=True, validators=[MinValueValidator(0.0), MaxValueValidator(100.0)])
 
     footprint = gis_models.PolygonField(blank=False)
 
@@ -366,13 +364,41 @@ class SatelliteResult(gis_models.Model):
         user = self.owner
         max_results = user.orbis_profile.max_results
         if not self.id and user.satellite_results.count() >= max_results:
-            raise ValidationError(f"Only {max_results} instances of SatelliteResult are allowed for '{user}'.")
+            raise ValidationError(
+                f"Only {max_results} instances of SatelliteResult are allowed for '{user}'."
+            )
 
     @property
-    def url(self):
+    def download_url(self):
         """
-        The URL to retrieve a tile from the OLSP (On-Line Scene Processor) is generated based upon
-        the OLSP_URL (set as an environment variable), the scene_id, and the visualisation_id (added by the client)
+        The URL to retrieve a downloadable image from the OLSP (On-Line Scene Processor);
+        templated bits are filled in by the client
         """
-        url_template = "http://{0}/{1}/{2}/{{visualisation_id}}/{{z}}/{{x}}/{{y}}.png"
-        return url_template.format(settings.OLSP_URL, self.satellite.satellite_id, self.scene_id)
+        url_template = "http://{0}/{1}/{2}/{{visualisation_id}}/download/{3}.png"
+        return url_template.format(
+            settings.OLSP_URL, self.satellite.satellite_id, self.scene_id, self.scene_id
+        )
+
+    @property
+    def thumbnail_url(self):
+        """
+        The URL to retrieve a thumbnail image from the OLSP (On-Line Scene Processor);
+        templated bits are filled in by the client
+        """
+        url_template = "http://{0}/{1}/{2}/{{visualisation_id}}/thumbnail/image.png"
+        return url_template.format(
+            settings.OLSP_URL, self.satellite.satellite_id, self.scene_id
+        )
+
+    @property
+    def tile_url(self):
+        """
+        The URL to retrieve a tile from the OLSP (On-Line Scene Processor);
+        templated bits are filled in by the client
+        """
+        url_template = (
+            "http://{0}/{1}/{2}/{{visualisation_id}}/tile/{{z}}/{{x}}/{{y}}.png"
+        )
+        return url_template.format(
+            settings.OLSP_URL, self.satellite.satellite_id, self.scene_id
+        )

@@ -190,11 +190,8 @@ class SatelliteResultFactory(factory.DjangoModelFactory):
 
     scene_id = factory.Sequence(lambda n: f"scene-{n}")
     satellite = factory.SubFactory(SatelliteFactory)
-    thumbnail = FactoryFaker("uri")
     cloud_cover = FactoryFaker("pyfloat", min_value=0, max_value=100)
     footprint = FactoryFaker("polygon")
-    # urls
-
 
     @factory.lazy_attribute
     def properties(self):
