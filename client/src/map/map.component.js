@@ -133,8 +133,9 @@ const Map = (
   const accessToken = useSelector(state => (state.app.config ? state.app.config.mapbox_token : null));
 
   const [isMapStyleSwitcherVisible, setIsMapStyleSwitcherVisible] = useState(false);
-  const mapStyles = useSelector(state => state.map.mapStyles);
-  const selectedMapStyle = useSelector(state => state.map.selectedMapStyle);
+  const mapStyles = useSelector(state => state.app.config.map.mapStyles);
+  const selectedMapStyle = useSelector(state => state.app.config.map.selectedMapStyle);
+
   let selectedMapStyleIcon = null;
   let selectedMapStyleIconWebP = null;
   if (selectedMapStyle.id === 'dark') {

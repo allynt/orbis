@@ -11,6 +11,14 @@ jest.mock('mapbox-gl');
 
 const mockStore = configureMockStore([thunk]);
 
+const MAPSTYLES = [
+  {
+    id: 'satellite',
+    uri: 'mapbox://styles/mapbox/satellite-v9',
+    title: 'Satellite'
+  }
+];
+
 describe('Map Layout Component', () => {
   beforeEach(() => {
     fetch.resetMocks();
@@ -24,11 +32,14 @@ describe('Map Layout Component', () => {
     const store = mockStore({
       app: {
         config: {
-          mapbox_token: 'token'
+          mapbox_token: 'token',
+          map: {
+            mapStyles: MAPSTYLES,
+            selectedMapStyle: MAPSTYLES[0]
+          }
         }
       },
       map: {
-        selectedMapStyle: {},
         isMultiMapMode: false,
         dataSources: []
       },

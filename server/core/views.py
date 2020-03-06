@@ -60,7 +60,10 @@ class AppConfigView(APIView):
             "isVerificationRequired": astrosat_users_settings.ASTROSAT_USERS_REQUIRE_VERIFICATION,
             "isApprovalRequired": astrosat_users_settings.ASTROSAT_USERS_REQUIRE_APPROVAL,
             "dataUrl": settings.DATA_URL,
-            "mapboxStyles": settings.MAPBOX_STYLES,
+            "map": {
+                "mapStyles": settings.MAPBOX_STYLES,
+                "selectedMapStyle": settings.MAPBOX_STYLES[-1],
+            }
         }
 
         return Response(config)

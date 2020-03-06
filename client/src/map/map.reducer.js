@@ -1,4 +1,4 @@
-import { regions, domains, MAP_STYLE_DATA } from './map.constants';
+import { regions, domains } from './map.constants';
 
 import {
   TOGGLE_3D_MODE,
@@ -21,8 +21,8 @@ import {
 
 const initialState = {
   viewport: { zoom: 6, center: [-4.84, 54.71] },
-  mapStyles: MAP_STYLE_DATA,
-  selectedMapStyle: MAP_STYLE_DATA[3],
+  mapStyles: [],
+  selectedMapStyle: {},
   isMultiMapMode: false,
   is3DMode: false,
   infrastructureLayers: [],
