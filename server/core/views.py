@@ -62,7 +62,7 @@ class AppConfigView(APIView):
             "dataUrl": settings.DATA_URL,
             "map": {
                 "mapStyles": settings.MAPBOX_STYLES,
-                "selectedMapStyle": settings.MAPBOX_STYLES[-1],
+                "selectedMapStyle": settings.MAPBOX_STYLES[-1] if len(settings.MAPBOX_STYLES) else {}
             }
         }
 
