@@ -1,7 +1,7 @@
 import React, { useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import parseISO from 'date-fns/parseISO';
 import format from 'date-fns/format';
@@ -26,6 +26,7 @@ import sideMenuStyles from '../side-menu/side-menu.module.css';
 
 const Results = ({ scenes, setVisiblePanel, selectScene }) => {
   const dispatch = useDispatch();
+  const currentSearchQuery = useSelector(state => state.satellites.currentSearchQuery);
 
   const [cloudCoverPercentage, setCloudCoverPercentage] = useState([10]);
 
@@ -113,7 +114,7 @@ const Results = ({ scenes, setVisiblePanel, selectScene }) => {
         </div>
 
         <Dialog isVisible={isVisible} title="Name Search" close={toggle} ref={ref}>
-          <SaveSearchForm />
+          <SaveSearchForm query={currentSearchQuery} />
         </Dialog>
       </div>
     )

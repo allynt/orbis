@@ -17,7 +17,7 @@ import { RESULTS } from './satellites-panel.component';
 import SavedSearchList from './saved-search-list.component';
 
 import useMap from '../map/use-map.hook';
-import { fetchSavedSatellites } from './satellites.actions';
+import { fetchSavedSatellites, setCurrentSearchQuery } from './satellites.actions';
 
 import { ReactComponent as InfoIcon } from './info.svg';
 import { ReactComponent as DrawAoiIcon } from './draw-aoi.svg';
@@ -209,7 +209,7 @@ const Search = ({ satellites, setVisiblePanel, map }) => {
                   }}
                 />
 
-                {isInfoVisible && info.label === satellite.label && <InfoBox info={satellite.description} />}
+                {/* {isInfoVisible && info.label === satellite.label && <InfoBox info={satellite.description} />} */}
                 <button
                   onClick={() => {
                     setIsInfoVisible(!isInfoVisible);
@@ -324,6 +324,15 @@ const Search = ({ satellites, setVisiblePanel, map }) => {
             console.log('SELECTED RESOLUTIONS: ', selectedResolutions);
             console.log('SELECTED GEOMETRY: ', geometry);
 
+            globalDispatch(
+              setCurrentSearchQuery({
+                satellites: selectedSatellites,
+                startDate,
+                endDate,
+                resolutions: selectedResolutions,
+                geometry
+              })
+            );
             globalDispatch(searchSatellites(selectedSatellites, startDate, endDate));
             setVisiblePanel(RESULTS);
           }}

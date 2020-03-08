@@ -21,6 +21,7 @@ export const SAVE_SATELLITE_SEARCH_REQUESTED_FAILURE = 'SAVE_SATELLITE_SEARCH_RE
 export const DELETE_SATELLITE_SEARCH_SUCCESS = 'DELETE_SATELLITE_SEARCH_SUCCESS';
 export const DELETE_SATELLITE_SEARCH_FAILURE = 'DELETE_SATELLITE_SEARCH_FAILURE';
 export const SELECT_SATELLITE_SEARCH_QUERY = 'SELECT_SATELLITE_SEARCH_QUERY';
+export const SET_CURRENT_SATELLITE_SEARCH_QUERY = 'SET_CURRENT_SATELLITE_SEARCH_QUERY';
 
 const API = {
   sources: '/api/satellites/',
@@ -246,3 +247,7 @@ export const pinScene = scene => async (dispatch, getState) => {
     scene
   });
 };
+export const setCurrentSearchQuery = query => ({
+  type: SET_CURRENT_SATELLITE_SEARCH_QUERY,
+  query
+});
