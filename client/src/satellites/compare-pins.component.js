@@ -15,6 +15,8 @@ import useModal from '@astrosat/astrosat-ui/dist/containers/use-modal';
 import { fetchPinnedScenes, deletePinnedScene } from './satellites.actions';
 import { toggleCompareMaps } from '../map/map.actions';
 
+import { DATE_FORMAT, TIME_FORMAT } from './satellite.constants';
+
 import { ReactComponent as InfoIcon } from './info.svg';
 import { ReactComponent as PinIcon } from './pin.svg';
 
@@ -71,13 +73,13 @@ const ComparePins = () => {
                   }}
                 >
                   <img className={resultsStyles.thumbnail} src={scene.thumbnail} alt="Thumbnail" />
-                  {/* <ul className={resultsStyles.metadata}>
-                    <li>{format(parseISO(scene.properties.created), 'dd-MM-yyyy')}</li>
-                    <li>{format(parseISO(scene.properties.created), 'kk:mm:ss')} UTC</li>
+                  <ul className={resultsStyles.metadata}>
+                    <li>{format(parseISO(scene.properties.created), DATE_FORMAT)}</li>
+                    <li>{format(parseISO(scene.properties.created), TIME_FORMAT)} UTC</li>
                     <li>{scene.properties.cloudCoverAsPercentage} %</li>
                     <li>{scene.properties.crs}</li>
                     <li>{scene.properties.label}</li>
-                  </ul> */}
+                  </ul>
                 </div>
 
                 <div className={resultsStyles.sceneOptions}>
