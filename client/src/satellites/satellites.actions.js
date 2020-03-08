@@ -13,6 +13,8 @@ export const FETCH_PINNED_SCENES_SUCCESS = 'FETCH_PINNED_SCENES_SUCCESS';
 export const FETCH_PINNED_SCENES_FAILURE = 'FETCH_PINNED_SCENES_FAILURE';
 export const PIN_SCENE_SUCCESS = 'PIN_SCENE_SUCCESS';
 export const PIN_SCENE_FAILURE = 'PIN_SCENE_FAILURE';
+export const SELECT_PINNED_SCENE = 'SELECT_PINNED_SCENE';
+export const CLEAR_SELECTED_PINNED_SCENES = 'CLEAR_SELECTED_PINNED_SCENES';
 export const DELETE_PINNED_SCENE_SUCCESS = 'DELETE_PINNED_SCENE_SUCCESS';
 export const DELETE_PINNED_SCENE_FAILURE = 'DELETE_PINNED_SCENE_FAILURE';
 
@@ -249,6 +251,15 @@ export const pinScene = form => async (dispatch, getState) => {
     scene
   });
 };
+
+export const selectPinnedScene = scene => ({
+  type: SELECT_PINNED_SCENE,
+  scene
+});
+
+export const clearSelectedPinnedScenes = () => ({
+  type: CLEAR_SELECTED_PINNED_SCENES
+});
 
 export const deletePinnedScene = id => async (dispatch, getState) => {
   const {

@@ -12,7 +12,12 @@ import Checkbox from '@astrosat/astrosat-ui/dist/forms/checkbox';
 import Dialog from '@astrosat/astrosat-ui/dist/containers/dialog';
 import useModal from '@astrosat/astrosat-ui/dist/containers/use-modal';
 
-import { fetchPinnedScenes, deletePinnedScene } from './satellites.actions';
+import {
+  fetchPinnedScenes,
+  selectPinnedScene,
+  clearSelectedPinnedScenes,
+  deletePinnedScene
+} from './satellites.actions';
 import { toggleCompareMaps } from '../map/map.actions';
 
 import { DATE_FORMAT, TIME_FORMAT } from './satellite.constants';
@@ -30,7 +35,8 @@ const ComparePins = () => {
 
   const pinnedScenes = useSelector(state => state.satellites.pinnedScenes);
   const isCompareMode = useSelector(state => state.map.isCompareMode);
-  const [selectedScenes, setSelectedScenes] = useState([]);
+  const selectedPinnedScenes = useSelector(state => state.satellites.selectedPinnedScenes);
+  console.log('SELECTED PINNED SCENES: ', selectedPinnedScenes);
 
   const ref = useRef(null);
   const [isSceneMoreInfoDialogVisible, toggleSceneMoreInfoDialog] = useModal(false);
@@ -52,7 +58,7 @@ const ComparePins = () => {
           onClick={() => dispatch(toggleCompareMaps())}
           ariaLabel="Compare"
         />
-        <Button theme="tertiary" onClick={() => setSelectedScenes([])}>
+        <Button theme="tertiary" onClick={() => dispatch(clearSelectedPinnedScenes([]))}>
           Clear Pins
         </Button>
       </div>
@@ -64,9 +70,10 @@ const ComparePins = () => {
                 <Checkbox
                   name={scene.id}
                   label={scene.label}
+                  checked={selectedPinnedScenes.find(selectedScene => selectedScene.id === scene.id)}
                   onChange={() => {
-                    if (selectedScenes.length !== MAX_SELECTED) {
-                      setSelectedScenes([...selectedScenes, scene]);
+                    if (selectedPinnedScenes.length !== MAX_SELECTED) {
+                      dispatch(selectPinnedScene(scene));
                     }
                   }}
                 />
