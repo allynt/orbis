@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 
 import { useDispatch, useSelector } from 'react-redux';
@@ -8,6 +8,9 @@ import format from 'date-fns/format';
 
 import Button from '@astrosat/astrosat-ui/dist/buttons/button';
 import Switch from '@astrosat/astrosat-ui/dist/buttons/switch';
+import Checkbox from '@astrosat/astrosat-ui/dist/forms/checkbox';
+import Dialog from '@astrosat/astrosat-ui/dist/containers/dialog';
+import useModal from '@astrosat/astrosat-ui/dist/containers/use-modal';
 
 import { fetchPinnedScenes } from './satellites.actions';
 import { toggleCompareMaps } from '../map/map.actions';
@@ -21,13 +24,12 @@ import resultsStyles from './results.module.css';
 const ComparePins = () => {
   const dispatch = useDispatch();
 
-  // const [isInfoVisible, setIsInfoVisible] = useState(false);
-  // const [info, setInfo] = useState(null);
-
   const pinnedScenes = useSelector(state => state.satellites.pinnedScenes);
-  // console.log('PINNED SCENES: ', pinnedScenes);
   const isCompareMode = useSelector(state => state.map.isCompareMode);
-  console.log('COMPARE MODE: ', isCompareMode);
+
+  const ref = useRef(null);
+  const [isSceneMoreInfoDialogVisible, toggleSceneMoreInfoDialog] = useModal(false);
+  const [selectedSceneMoreInfo, setSelectedSceneMoreInfo] = useState(null);
 
   useEffect(() => {
     if (!pinnedScenes) {
@@ -36,11 +38,8 @@ const ComparePins = () => {
   }, [pinnedScenes]);
 
   return (
-    <div>
+    <div ref={ref}>
       <div className={styles.buttons}>
-        {/* <Button theme="primary" onClick={event => console.log('COMPARE: ', event)}>
-          Compare
-        </Button> */}
         <Switch
           name="compare"
           label="Compare"
@@ -85,7 +84,8 @@ const ComparePins = () => {
                   <div
                     className={resultsStyles.moreInfo}
                     onClick={() => {
-                      // console.log('SET SCENE INFO: ', scene);
+                      setSelectedSceneMoreInfo({ id: 1, description: 'Some text' });
+                      toggleSceneMoreInfoDialog();
                     }}
                   >
                     <InfoIcon className={styles.moreInfoIcon} />
@@ -103,6 +103,37 @@ const ComparePins = () => {
             );
           })}
       </ul>
+
+      <Dialog
+        isVisible={isSceneMoreInfoDialogVisible}
+        title="Resolution Info"
+        close={toggleSceneMoreInfoDialog}
+        ref={ref}
+      >
+        <div>
+          <h3>Resolution More Info</h3>
+          <table className={styles.moreInfoContent}>
+            <thead>
+              <tr>
+                <th scope="col">Label</th>
+                <th scope="col">Value</th>
+              </tr>
+            </thead>
+
+            <thead>
+              {selectedSceneMoreInfo &&
+                Object.keys(selectedSceneMoreInfo).map(key => {
+                  return (
+                    <tr key={key}>
+                      <td>{key}:</td>
+                      <td>{selectedSceneMoreInfo[key]}</td>
+                    </tr>
+                  );
+                })}
+            </thead>
+          </table>
+        </div>
+      </Dialog>
     </div>
   );
 };
