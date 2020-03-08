@@ -65,6 +65,7 @@ import FreehandPolygonMode from '../annotations/modes/freehand-polygon';
 import CircleMode from '../annotations/modes/circle';
 import LabelMode from '../annotations/modes/label';
 import ImageMode from '../annotations/modes/image';
+import RectangleMode from '../annotations/modes/rectangle';
 
 import LayerTree from '../layer-tree/layer-tree.component';
 
@@ -224,7 +225,8 @@ const Map = (
       FreehandPolygonMode,
       CircleMode,
       LabelMode,
-      ImageMode
+      ImageMode,
+      RectangleMode
     }
   });
   // useMapControl(mapInstance, layerTree, LayerTreeControl, 'top-right');
@@ -489,6 +491,7 @@ const Map = (
     mapInstance,
     map => {
       if (selectedScene) {
+        console.log('SELECTED SCERNE: ', selectedScene);
         selectedScene.urls.forEach((url, i) => {
           const sourceId = `${selectedScene.properties.label}-${i}-source`;
           map.addSource(sourceId, {
@@ -556,7 +559,7 @@ const Map = (
 
           <div className={layoutStyles.sidebar}>
             {visibleMenuItem === DATA_LAYERS && <DataLayers />}
-            {visibleMenuItem === SATELLITE_LAYERS && <SatellitesPanel />}
+            {visibleMenuItem === SATELLITE_LAYERS && <SatellitesPanel map={mapInstance} />}
             {/* {visibleMenuItem === DATA_LAYERS && <LayerTree map={mapInstance} />} */}
             {visibleMenuItem === ANNOTATIONS && <AnnotationsPanel map={mapInstance} />}
             {visibleMenuItem === BOOKMARKS && <BookmarksPanel map={mapInstance} />}
