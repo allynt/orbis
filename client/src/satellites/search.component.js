@@ -111,7 +111,7 @@ const Search = ({ satellites, setVisiblePanel, map }) => {
 
   const [isAoiMode, setIsAoiMode] = useState(false);
   const [geometry, setGeometry] = useState(null);
-  // console.log('GEOMETRY STATE: ', isAoiMode, geometry);
+  console.log('GEOMETRY STATE: ', isAoiMode, geometry);
   useMap(
     map,
     mapInstance => {
@@ -134,6 +134,22 @@ const Search = ({ satellites, setVisiblePanel, map }) => {
   useEffect(() => {
     let drawCtrl = null;
     if (map) {
+      // Get the map's bbox from the bounds.
+      const bounds = map.getBounds();
+      const northWestCoord = bounds.getNorthWest();
+      const northEastCoord = bounds.getNorthEast();
+      const southEastCoord = bounds.getSouthEast();
+      const southWestCoord = bounds.getSouthWest();
+      const geometry = [
+        [northWestCoord.lng, northWestCoord.lat],
+        [northEastCoord.lng, northEastCoord.lat],
+        [southEastCoord.lng, southEastCoord.lat],
+        [southWestCoord.lng, southWestCoord.lat],
+        [northWestCoord.lng, northWestCoord.lat]
+      ];
+
+      setGeometry(geometry);
+
       drawCtrl = map._controls.find(ctrl => ctrl.changeMode);
     }
 
