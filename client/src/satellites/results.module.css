@@ -130,6 +130,10 @@
   fill: #fff;
 }
 
+.moreInfoContent {
+  color: #000;
+}
+
 .pinIcon {
   position: absolute;
   top: 1rem;

@@ -240,3 +240,7 @@
 .saveSearchButtons > * {
   width: 47.5%;
 }
+
+.moreInfoContent {
+  color: #000;
+}

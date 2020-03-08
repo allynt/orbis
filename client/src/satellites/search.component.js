@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useReducer } from 'react';
+import React, { useState, useEffect, useRef, useReducer } from 'react';
 import PropTypes from 'prop-types';
 
 import { useDispatch, useSelector } from 'react-redux';
@@ -12,6 +12,8 @@ import Detail from '@astrosat/astrosat-ui/dist/containers/detail';
 import Button from '@astrosat/astrosat-ui/dist/buttons/button';
 import InfoButton from '@astrosat/astrosat-ui/dist/buttons/info-button';
 import Checkbox from '@astrosat/astrosat-ui/dist/forms/checkbox';
+import Dialog from '@astrosat/astrosat-ui/dist/containers/dialog';
+import useModal from '@astrosat/astrosat-ui/dist/containers/use-modal';
 
 import { RESULTS } from './satellites-panel.component';
 import SavedSearchList from './saved-search-list.component';
@@ -48,11 +50,6 @@ const resolutions = [
     description: 'Some text describing the HIGH-RES images'
   }
 ];
-
-export const InfoBox = ({ info }) => {
-  // console.log('INFO: ', info);
-  return <div className={styles.infoBox}>{info}</div>;
-};
 
 const CustomInput = React.forwardRef(({ value, onClick }, ref) => (
   <button className={styles.picker} onClick={onClick}>
@@ -104,8 +101,11 @@ const Search = ({ satellites, setVisiblePanel, map }) => {
   const [info, setInfo] = useState(null);
   const savedSearches = useSelector(state => state.satellites.satelliteSearches);
   const [selectedResolutions, setSelectedResolutions] = useState([]);
-  const selectedSearchQuery = useSelector(state => state.satellites.selectedSatelliteSearch);
-  // console.log('SELECTED SEARCH QUERY: ', selectedSearchQuery);
+  const [isSatelliteMoreInfoDialogVisible, toggleSatelliteMoreInfoDialog] = useModal(false);
+  const [isResolutionMoreInfoDialogVisible, toggleResolutionMoreInfoDialog] = useModal(false);
+  const ref = useRef(null);
+  const [selectedSatelliteMoreInfo, setSelectedSatelliteMoreInfo] = useState(null);
+  const [selectedResolutionMoreInfo, setSelectedResolutionMoreInfo] = useState(null);
 
   // const [state, dispatch] = useReducer(reducer, initialState);
 
@@ -177,7 +177,7 @@ const Search = ({ satellites, setVisiblePanel, map }) => {
   }, [savedSearches]);
 
   return (
-    <div className={styles.search}>
+    <div className={styles.search} ref={ref}>
       <div>
         <Detail title="Saved Searches">
           <SavedSearchList searches={savedSearches} />
@@ -209,11 +209,11 @@ const Search = ({ satellites, setVisiblePanel, map }) => {
                   }}
                 />
 
-                {/* {isInfoVisible && info.label === satellite.label && <InfoBox info={satellite.description} />} */}
                 <button
                   onClick={() => {
-                    setIsInfoVisible(!isInfoVisible);
-                    setInfo(satellite);
+                    console.log('Selected SATELLITE: ', satellite);
+                    setSelectedSatelliteMoreInfo({ id: 1, description: 'desc' });
+                    toggleSatelliteMoreInfoDialog();
                   }}
                 >
                   <InfoIcon className={styles.icon} />
@@ -257,7 +257,6 @@ const Search = ({ satellites, setVisiblePanel, map }) => {
 
           <ul className={styles.resolutions}>
             {resolutions.map(resolution => {
-              // console.log('RESOLUITION: ', resolution);
               return (
                 <li className={styles.resolution} key={resolution.id}>
                   <Checkbox
@@ -280,14 +279,11 @@ const Search = ({ satellites, setVisiblePanel, map }) => {
                     }}
                   />
 
-                  {isInfoVisible && info.label === resolution.label && <InfoBox info={resolution.description} />}
-
                   <button
                     // onBlur={() => dispatch({ type: SET_IS_INFO_VISIBLE, payload: false })}
                     onClick={() => {
-                      // console.log('SET RESOLUTION INFO: ', resolution);
-                      setIsInfoVisible(!isInfoVisible);
-                      setInfo(resolution);
+                      setSelectedResolutionMoreInfo({ id: 1, description: 'desc' });
+                      toggleResolutionMoreInfoDialog();
                       // dispatch({ type: SET_INFO, payload: resolution });
                       // dispatch({ type: SET_IS_INFO_VISIBLE, payload: !state.isInfoVisible });
                     }}
@@ -318,12 +314,6 @@ const Search = ({ satellites, setVisiblePanel, map }) => {
           theme="primary"
           classNames={[sideMenuStyles.button]}
           onClick={() => {
-            console.log('SELECTED SATELLITES: ', selectedSatellites);
-            console.log('START DATE: ', startDate);
-            console.log('END DATE: ', endDate);
-            console.log('SELECTED RESOLUTIONS: ', selectedResolutions);
-            console.log('SELECTED GEOMETRY: ', geometry);
-
             globalDispatch(
               setCurrentSearchQuery({
                 satellites: selectedSatellites,
@@ -347,6 +337,67 @@ const Search = ({ satellites, setVisiblePanel, map }) => {
           Task Satellite
         </Button>
       </div>
+      <Dialog
+        isVisible={isSatelliteMoreInfoDialogVisible}
+        title="Satellite Info"
+        close={toggleSatelliteMoreInfoDialog}
+        ref={ref}
+      >
+        <div>
+          <h3>Satellite More Info</h3>
+          <table className={styles.moreInfoContent}>
+            <thead>
+              <tr>
+                <th scope="col">Label</th>
+                <th scope="col">Value</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              {selectedSatelliteMoreInfo &&
+                Object.keys(selectedSatelliteMoreInfo).map(key => {
+                  return (
+                    <tr key={key}>
+                      <td>{key}:</td>
+                      <td>{selectedSatelliteMoreInfo[key]}</td>
+                    </tr>
+                  );
+                })}
+            </tbody>
+          </table>
+        </div>
+      </Dialog>
+
+      <Dialog
+        isVisible={isResolutionMoreInfoDialogVisible}
+        title="Resolution Info"
+        close={toggleResolutionMoreInfoDialog}
+        ref={ref}
+      >
+        <div>
+          <h3>Resolution More Info</h3>
+          <table className={styles.moreInfoContent}>
+            <thead>
+              <tr>
+                <th scope="col">Label</th>
+                <th scope="col">Value</th>
+              </tr>
+            </thead>
+
+            <thead>
+              {selectedResolutionMoreInfo &&
+                Object.keys(selectedResolutionMoreInfo).map(key => {
+                  return (
+                    <tr key={key}>
+                      <td>{key}:</td>
+                      <td>{selectedResolutionMoreInfo[key]}</td>
+                    </tr>
+                  );
+                })}
+            </thead>
+          </table>
+        </div>
+      </Dialog>
     </div>
   );
 };

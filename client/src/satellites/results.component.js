@@ -29,8 +29,11 @@ const Results = ({ scenes, setVisiblePanel, selectScene }) => {
   const currentSearchQuery = useSelector(state => state.satellites.currentSearchQuery);
 
   const [cloudCoverPercentage, setCloudCoverPercentage] = useState([10]);
+  const [selectedMoreInfo, setSelectedMoreInfo] = useState(null);
+  console.log('SELECTED MORE INFO: ', selectedMoreInfo);
 
-  const { isVisible, toggle } = useModal(false);
+  const [isSaveDialogVisible, toggleSaveDialog] = useModal(false);
+  const [isMoreInfoDialogVisible, toggleMoreInfoDialog] = useModal(false);
   const ref = useRef(null);
 
   return (
@@ -85,9 +88,8 @@ const Results = ({ scenes, setVisiblePanel, selectScene }) => {
                         className={styles.moreInfo}
                         onClick={() => {
                           console.log('SEE MORE INFO: ', scene);
-                          // setIsInfoVisible(!isInfoVisible);
-                          // setInfo({ id: scene.id, description: scene.properties.moreInfo.key });
-                          // setSelectedSceneI(scene);
+                          toggleMoreInfoDialog();
+                          setSelectedMoreInfo({ id: scene.id, description: scene.properties.moreInfo.key });
                         }}
                       >
                         <InfoIcon className={styles.moreInfoIcon} />
@@ -107,14 +109,40 @@ const Results = ({ scenes, setVisiblePanel, selectScene }) => {
           </ul>
 
           <div className={sideMenuStyles.buttons}>
-            <Button classNames={[sideMenuStyles.button]} theme="primary" onClick={() => toggle()}>
+            <Button classNames={[sideMenuStyles.button]} theme="primary" onClick={() => toggleSaveDialog()}>
               Save Search
             </Button>
           </div>
         </div>
 
-        <Dialog isVisible={isVisible} title="Name Search" close={toggle} ref={ref}>
+        <Dialog isVisible={isSaveDialogVisible} title="Name Search" close={toggleSaveDialog} ref={ref}>
           <SaveSearchForm query={currentSearchQuery} />
+        </Dialog>
+
+        <Dialog isVisible={isMoreInfoDialogVisible} title="More Info" close={toggleMoreInfoDialog} ref={ref}>
+          <div>
+            <h3>More Info</h3>
+            <table className={styles.moreInfoContent}>
+              <thead>
+                <tr>
+                  <th scope="col">Label</th>
+                  <th scope="col">Value</th>
+                </tr>
+              </thead>
+
+              <tbody>
+                {selectedMoreInfo &&
+                  Object.keys(selectedMoreInfo).map(key => {
+                    return (
+                      <tr key={key}>
+                        <td>{key}:</td>
+                        <td>{selectedMoreInfo[key]}</td>
+                      </tr>
+                    );
+                  })}
+              </tbody>
+            </table>
+          </div>
         </Dialog>
       </div>
     )
