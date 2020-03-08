@@ -1,2 +1,11 @@
 .pinnedScenes {
 }
+
+.pinIcon {
+  width: 1.25rem;
+  cursor: pointer;
+}
+
+.moreInfoContent {
+  color: #000;
+}

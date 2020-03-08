@@ -23,11 +23,14 @@ import { ReactComponent as PinIcon } from './pin.svg';
 import styles from './compare-pins.module.css';
 import resultsStyles from './results.module.css';
 
+const MAX_SELECTED = 2;
+
 const ComparePins = () => {
   const dispatch = useDispatch();
 
   const pinnedScenes = useSelector(state => state.satellites.pinnedScenes);
   const isCompareMode = useSelector(state => state.map.isCompareMode);
+  const [selectedScenes, setSelectedScenes] = useState([]);
 
   const ref = useRef(null);
   const [isSceneMoreInfoDialogVisible, toggleSceneMoreInfoDialog] = useModal(false);
@@ -49,7 +52,7 @@ const ComparePins = () => {
           onClick={() => dispatch(toggleCompareMaps())}
           ariaLabel="Compare"
         />
-        <Button theme="tertiary" onClick={event => console.log('CLEAR PINS: ', event)}>
+        <Button theme="tertiary" onClick={() => setSelectedScenes([])}>
           Clear Pins
         </Button>
       </div>
@@ -58,20 +61,24 @@ const ComparePins = () => {
           pinnedScenes.map((scene, index) => {
             return (
               <li key={`${scene.id}-${index}`} className={styles.scene}>
-                <PinIcon
-                  className={resultsStyles.pinIcon}
-                  onClick={() => {
-                    console.log('Delete Scene: ', scene);
-                    // dispatch(pinScene(scene));
+                <Checkbox
+                  name={scene.id}
+                  label={scene.label}
+                  onChange={() => {
+                    if (selectedScenes.length !== MAX_SELECTED) {
+                      setSelectedScenes([...selectedScenes, scene]);
+                    }
                   }}
                 />
 
-                <div
-                  className={styles.scene}
+                <PinIcon
+                  className={styles.pinIcon}
                   onClick={() => {
                     dispatch(deletePinnedScene(scene.id));
                   }}
-                >
+                />
+
+                <div className={styles.scene}>
                   <img className={resultsStyles.thumbnail} src={scene.thumbnail} alt="Thumbnail" />
                   <ul className={resultsStyles.metadata}>
                     <li>{format(parseISO(scene.properties.created), DATE_FORMAT)}</li>
@@ -94,12 +101,9 @@ const ComparePins = () => {
                     <span>More info</span>
                   </div>
 
-                  {/* <div>
+                  <div>
                     {scene.properties.tier === 'free' && <span className={styles.freeProduct}>Free Product</span>}
-                  </div> */}
-                  <Button theme="tertiary" onClick={() => console.log('Download SCENE: ', scene)}>
-                    Download
-                  </Button>
+                  </div>
                 </div>
               </li>
             );
