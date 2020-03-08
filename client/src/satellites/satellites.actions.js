@@ -218,7 +218,7 @@ export const fetchPinnedScenes = () => async (dispatch, getState) => {
   });
 };
 
-export const pinScene = scene => async (dispatch, getState) => {
+export const pinScene = form => async (dispatch, getState) => {
   const {
     accounts: { userKey }
   } = getState();
@@ -227,7 +227,7 @@ export const pinScene = scene => async (dispatch, getState) => {
     Authorization: `Token ${userKey}`
   };
 
-  const response = await sendData(API.pinScene, scene, headers);
+  const response = await sendData(API.pinScene, form, headers);
 
   if (!response.ok) {
     const message = `${response.status} ${response.statusText}`;
@@ -247,6 +247,7 @@ export const pinScene = scene => async (dispatch, getState) => {
     scene
   });
 };
+
 export const setCurrentSearchQuery = query => ({
   type: SET_CURRENT_SATELLITE_SEARCH_QUERY,
   query

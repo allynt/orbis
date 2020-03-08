@@ -111,7 +111,7 @@ const Search = ({ satellites, setVisiblePanel, map }) => {
 
   const [isAoiMode, setIsAoiMode] = useState(false);
   const [geometry, setGeometry] = useState(null);
-  console.log('GEOMETRY STATE: ', isAoiMode, geometry);
+
   useMap(
     map,
     mapInstance => {
