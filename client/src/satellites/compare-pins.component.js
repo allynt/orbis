@@ -12,7 +12,7 @@ import Checkbox from '@astrosat/astrosat-ui/dist/forms/checkbox';
 import Dialog from '@astrosat/astrosat-ui/dist/containers/dialog';
 import useModal from '@astrosat/astrosat-ui/dist/containers/use-modal';
 
-import { fetchPinnedScenes } from './satellites.actions';
+import { fetchPinnedScenes, deletePinnedScene } from './satellites.actions';
 import { toggleCompareMaps } from '../map/map.actions';
 
 import { ReactComponent as InfoIcon } from './info.svg';
@@ -67,7 +67,7 @@ const ComparePins = () => {
                 <div
                   className={styles.scene}
                   onClick={() => {
-                    console.log('CLICKED SCENE: ', scene);
+                    dispatch(deletePinnedScene(scene.id));
                   }}
                 >
                   <img className={resultsStyles.thumbnail} src={scene.thumbnail} alt="Thumbnail" />

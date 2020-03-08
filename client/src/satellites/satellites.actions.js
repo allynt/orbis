@@ -13,6 +13,8 @@ export const FETCH_PINNED_SCENES_SUCCESS = 'FETCH_PINNED_SCENES_SUCCESS';
 export const FETCH_PINNED_SCENES_FAILURE = 'FETCH_PINNED_SCENES_FAILURE';
 export const PIN_SCENE_SUCCESS = 'PIN_SCENE_SUCCESS';
 export const PIN_SCENE_FAILURE = 'PIN_SCENE_FAILURE';
+export const DELETE_PINNED_SCENE_SUCCESS = 'DELETE_PINNED_SCENE_SUCCESS';
+export const DELETE_PINNED_SCENE_FAILURE = 'DELETE_PINNED_SCENE_FAILURE';
 
 export const FETCH_SATELLITE_SEARCHES_SUCCESS = 'FETCH_SATELLITE_SEARCHES_SUCCESS';
 export const FETCH_SATELLITE_SEARCHES_FAILURE = 'FETCH_SATELLITE_SEARCHES_FAILURE';
@@ -246,6 +248,25 @@ export const pinScene = form => async (dispatch, getState) => {
     type: PIN_SCENE_SUCCESS,
     scene
   });
+};
+
+export const deletePinnedScene = id => async (dispatch, getState) => {
+  const {
+    accounts: { userKey }
+  } = getState();
+  const headers = {
+    ...JSON_HEADERS,
+    Authorization: `Token ${userKey}`
+  };
+
+  const response = await sendData(API.pinScene, id, headers, 'DELETE');
+
+  if (!response.ok) {
+    NotificationManager.error(response.statusText, 'Deleting Pinned Scene Error', 5000, () => {});
+    dispatch({ type: DELETE_PINNED_SCENE_FAILURE, error: response });
+  } else {
+    return dispatch({ type: DELETE_PINNED_SCENE_SUCCESS, id });
+  }
 };
 
 export const setCurrentSearchQuery = query => ({

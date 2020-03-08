@@ -993,6 +993,12 @@ const pinScene = (req, res) => {
   res.json(pinnedScenes);
 };
 
+const deletePinnedScene = (req, res) => {
+  pinnedScenes = pinnedScenes.filter(scene => scene.id !== req.params.id);
+  res.status(200);
+  res.json(pinnedScenes);
+};
+
 module.exports = {
   getAppConfig,
   getUsers,
@@ -1010,5 +1016,6 @@ module.exports = {
   saveSatelliteSearch,
   deleteSatelliteSearch,
   getPinnedScenes,
-  pinScene
+  pinScene,
+  deletePinnedScene
 };

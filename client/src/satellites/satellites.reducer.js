@@ -16,7 +16,9 @@ import {
   FETCH_PINNED_SCENES_SUCCESS,
   FETCH_PINNED_SCENES_FAILURE,
   PIN_SCENE_SUCCESS,
-  PIN_SCENE_FAILURE
+  PIN_SCENE_FAILURE,
+  DELETE_PINNED_SCENE_SUCCESS,
+  DELETE_PINNED_SCENE_FAILURE
 } from './satellites.actions';
 
 const initialState = {
@@ -116,6 +118,16 @@ const reducer = (state = initialState, action) => {
       };
 
     case PIN_SCENE_FAILURE:
+      return { ...state, error: action.error };
+
+    case DELETE_PINNED_SCENE_SUCCESS:
+      return {
+        ...state,
+        pinnedScenes: action.scenes,
+        error: null
+      };
+
+    case DELETE_PINNED_SCENE_FAILURE:
       return { ...state, error: action.error };
 
     case SET_CURRENT_SATELLITE_SEARCH_QUERY:

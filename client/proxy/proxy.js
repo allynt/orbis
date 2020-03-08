@@ -36,6 +36,7 @@ router.get('/satellites/', (req, res) => config.getSatellites(req, res));
 router.get('/satellites/scenes/', (req, res) => config.getSatelliteScenes(req, res));
 router.get('/satellites/scenes/pinned/', (req, res) => config.getPinnedScenes(req, res));
 router.route('/satellites/scenes/pinned/').post((req, res) => config.pinScene(req, res));
+router.delete('/satellites/scenes/pinned/:id', (req, res) => config.deletePinnedScene(req, res));
 router.get('/satellites/searches/', (req, res) => config.getSatelliteSearches(req, res));
 router.route('/satellites/searches/').post((req, res) => config.saveSatelliteSearch(req, res));
 router.delete('/satellites/searches/:id', (req, res) => config.deleteSatelliteSearch(req, res));
