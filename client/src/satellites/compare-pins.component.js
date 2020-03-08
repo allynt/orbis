@@ -7,8 +7,10 @@ import parseISO from 'date-fns/parseISO';
 import format from 'date-fns/format';
 
 import Button from '@astrosat/astrosat-ui/dist/buttons/button';
+import Switch from '@astrosat/astrosat-ui/dist/buttons/switch';
 
 import { fetchPinnedScenes } from './satellites.actions';
+import { toggleCompareMaps } from '../map/map.actions';
 
 import { ReactComponent as InfoIcon } from './info.svg';
 import { ReactComponent as PinIcon } from './pin.svg';
@@ -19,11 +21,13 @@ import resultsStyles from './results.module.css';
 const ComparePins = () => {
   const dispatch = useDispatch();
 
-  const [isInfoVisible, setIsInfoVisible] = useState(false);
-  const [info, setInfo] = useState(null);
+  // const [isInfoVisible, setIsInfoVisible] = useState(false);
+  // const [info, setInfo] = useState(null);
 
   const pinnedScenes = useSelector(state => state.satellites.pinnedScenes);
-  console.log('PINNED SCENES: ', pinnedScenes);
+  // console.log('PINNED SCENES: ', pinnedScenes);
+  const isCompareMode = useSelector(state => state.map.isCompareMode);
+  console.log('COMPARE MODE: ', isCompareMode);
 
   useEffect(() => {
     if (!pinnedScenes) {
@@ -34,18 +38,25 @@ const ComparePins = () => {
   return (
     <div>
       <div className={styles.buttons}>
-        <Button theme="primary" onClick={event => console.log('COMPARE: ', event)}>
+        {/* <Button theme="primary" onClick={event => console.log('COMPARE: ', event)}>
           Compare
-        </Button>
+        </Button> */}
+        <Switch
+          name="compare"
+          label="Compare"
+          clicked={isCompareMode}
+          onClick={() => dispatch(toggleCompareMaps())}
+          ariaLabel="Compare"
+        />
         <Button theme="tertiary" onClick={event => console.log('CLEAR PINS: ', event)}>
           Clear Pins
         </Button>
       </div>
       <ul className={styles.pinnedScenes}>
         {pinnedScenes &&
-          pinnedScenes.map(scene => {
+          pinnedScenes.map((scene, index) => {
             return (
-              <li key={scene.id} className={styles.scene}>
+              <li key={`${scene.id}-${index}`} className={styles.scene}>
                 <PinIcon
                   className={resultsStyles.pinIcon}
                   onClick={() => {
@@ -61,13 +72,13 @@ const ComparePins = () => {
                   }}
                 >
                   <img className={resultsStyles.thumbnail} src={scene.thumbnail} alt="Thumbnail" />
-                  <ul className={resultsStyles.metadata}>
+                  {/* <ul className={resultsStyles.metadata}>
                     <li>{format(parseISO(scene.properties.created), 'dd-MM-yyyy')}</li>
                     <li>{format(parseISO(scene.properties.created), 'kk:mm:ss')} UTC</li>
                     <li>{scene.properties.cloudCoverAsPercentage} %</li>
                     <li>{scene.properties.crs}</li>
                     <li>{scene.properties.label}</li>
-                  </ul>
+                  </ul> */}
                 </div>
 
                 <div className={resultsStyles.sceneOptions}>
@@ -81,9 +92,9 @@ const ComparePins = () => {
                     <span>More info</span>
                   </div>
 
-                  <div>
+                  {/* <div>
                     {scene.properties.tier === 'free' && <span className={styles.freeProduct}>Free Product</span>}
-                  </div>
+                  </div> */}
                   <Button theme="tertiary" onClick={() => console.log('Download SCENE: ', scene)}>
                     Download
                   </Button>
