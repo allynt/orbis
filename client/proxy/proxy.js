@@ -33,7 +33,12 @@ router.get('/users/', (req, res) => config.getUsers(req, res));
 router.get('/users/:username/', (req, res) => config.getCurrentUser(req, res));
 
 router.get('/satellites/', (req, res) => config.getSatellites(req, res));
-router.get('/satellites/visualisations/', (req, res) => config.getVisualisations(req, res));
+router.get('/satellites/scenes/', (req, res) => config.getSatelliteScenes(req, res));
+router.get('/satellites/scenes/pinned/', (req, res) => config.getPinnedScenes(req, res));
+router.route('/satellites/scenes/pinned/').post((req, res) => config.pinScene(req, res));
+router.get('/satellites/searches/', (req, res) => config.getSatelliteSearches(req, res));
+router.route('/satellites/searches/').post((req, res) => config.saveSatelliteSearch(req, res));
+router.delete('/satellites/searches/:id', (req, res) => config.deleteSatelliteSearch(req, res));
 
 router.route('/authentication/registration/').post((req, res) => config.register(req, res));
 router.route('/authentication/login/').post((req, res) => config.login(req, res));

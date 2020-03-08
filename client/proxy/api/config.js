@@ -165,52 +165,652 @@ const sources = {
 };
 
 const satellites = [
-  { id: 'sentinel-1', label: 'Sentinel-1', description: 'Some text describing the Sentinel-1 satellite' },
+  {
+    id: 'sentinel-1',
+    label: 'Sentinel-1',
+    description: 'Some text describing the Sentinel-1 satellite',
+    resolutions: [
+      {
+        id: 'free',
+        label: 'Free Images',
+        description: 'Free scenes.'
+      },
+      {
+        id: 'mid',
+        label: 'Mid Resolution',
+        description: 'Mid resolution scenes.'
+      },
+      {
+        id: 'high',
+        label: 'High Resolution',
+        description: 'High resolution scenes.'
+      }
+    ],
+    visualisations: [
+      {
+        id: 'true-color',
+        label: 'True Color',
+        description: 'Based on bands 4,3,2',
+        thumbnail:
+          'https://cnet4.cbsistatic.com/img/-JKG69A9xmdlvxVwYtpIztVHxHI=/940x0/2018/08/21/09803db6-578f-41f7-9c7a-0b9efc5d6751/starshot-satellite-launch.jpg'
+      },
+      {
+        id: 'false-color',
+        label: 'False Color',
+        description: 'Based on bands 4,3,2',
+        thumbnail:
+          'https://cnet4.cbsistatic.com/img/-JKG69A9xmdlvxVwYtpIztVHxHI=/940x0/2018/08/21/09803db6-578f-41f7-9c7a-0b9efc5d6751/starshot-satellite-launch.jpg'
+      },
+      {
+        id: 'false-color-urban',
+        label: 'False Color (urban)',
+        description: 'Based on bands 4,3,2',
+        thumbnail:
+          'https://cnet4.cbsistatic.com/img/-JKG69A9xmdlvxVwYtpIztVHxHI=/940x0/2018/08/21/09803db6-578f-41f7-9c7a-0b9efc5d6751/starshot-satellite-launch.jpg'
+      },
+      {
+        id: 'ndvi',
+        label: 'NDVI',
+        description: 'Based on conbination bands (B8A-B4)/(B8A + B11)',
+        thumbnail:
+          'https://cnet4.cbsistatic.com/img/-JKG69A9xmdlvxVwYtpIztVHxHI=/940x0/2018/08/21/09803db6-578f-41f7-9c7a-0b9efc5d6751/starshot-satellite-launch.jpg'
+      }
+    ]
+  },
   {
     id: 'sentinel-2',
     label: 'Sentinel-2',
-    description: 'Some text describing the Sentinel-2 satellite. the Sentinel-2 satellite'
+    description: 'Some text describing the Sentinel-2 satellite.',
+    resolutions: [
+      {
+        id: 'free',
+        label: 'Free Images',
+        description: 'Free scenes.'
+      },
+      {
+        id: 'mid',
+        label: 'Mid Resolution',
+        description: 'Mid resolution scenes.'
+      },
+      {
+        id: 'high',
+        label: 'High Resolution',
+        description: 'High resolution scenes.'
+      }
+    ],
+    visualisations: [
+      {
+        id: 'true-color',
+        label: 'True Color',
+        description: 'Based on bands 4,3,2',
+        thumbnail:
+          'https://cnet4.cbsistatic.com/img/-JKG69A9xmdlvxVwYtpIztVHxHI=/940x0/2018/08/21/09803db6-578f-41f7-9c7a-0b9efc5d6751/starshot-satellite-launch.jpg'
+      },
+      {
+        id: 'false-color',
+        label: 'False Color',
+        description: 'Based on bands 4,3,2',
+        thumbnail:
+          'https://cnet4.cbsistatic.com/img/-JKG69A9xmdlvxVwYtpIztVHxHI=/940x0/2018/08/21/09803db6-578f-41f7-9c7a-0b9efc5d6751/starshot-satellite-launch.jpg'
+      },
+      {
+        id: 'false-color-urban',
+        label: 'False Color (urban)',
+        description: 'Based on bands 4,3,2',
+        thumbnail:
+          'https://cnet4.cbsistatic.com/img/-JKG69A9xmdlvxVwYtpIztVHxHI=/940x0/2018/08/21/09803db6-578f-41f7-9c7a-0b9efc5d6751/starshot-satellite-launch.jpg'
+      },
+      {
+        id: 'ndvi',
+        label: 'NDVI',
+        description: 'Based on conbination bands (B8A-B4)/(B8A + B11)',
+        thumbnail:
+          'https://cnet4.cbsistatic.com/img/-JKG69A9xmdlvxVwYtpIztVHxHI=/940x0/2018/08/21/09803db6-578f-41f7-9c7a-0b9efc5d6751/starshot-satellite-launch.jpg'
+      }
+    ]
   },
   {
     id: 'sentinel-3',
     label: 'Sentinel-3',
-    description: 'Some text describing the Sentinel-3 satellite. Some text describing the Sentinel-3 satellite'
+    description: 'Some text describing the Sentinel-3 satellite.',
+    resolutions: [
+      {
+        id: 'free',
+        label: 'Free Images',
+        description: 'Free scenes.'
+      },
+      {
+        id: 'mid',
+        label: 'Mid Resolution',
+        description: 'Mid resolution scenes.'
+      },
+      {
+        id: 'high',
+        label: 'High Resolution',
+        description: 'High resolution scenes.'
+      }
+    ],
+    visualisations: [
+      {
+        id: 'true-color',
+        label: 'True Color',
+        description: 'Based on bands 4,3,2',
+        thumbnail:
+          'https://cnet4.cbsistatic.com/img/-JKG69A9xmdlvxVwYtpIztVHxHI=/940x0/2018/08/21/09803db6-578f-41f7-9c7a-0b9efc5d6751/starshot-satellite-launch.jpg'
+      },
+      {
+        id: 'false-color',
+        label: 'False Color',
+        description: 'Based on bands 4,3,2',
+        thumbnail:
+          'https://cnet4.cbsistatic.com/img/-JKG69A9xmdlvxVwYtpIztVHxHI=/940x0/2018/08/21/09803db6-578f-41f7-9c7a-0b9efc5d6751/starshot-satellite-launch.jpg'
+      },
+      {
+        id: 'false-color-urban',
+        label: 'False Color (urban)',
+        description: 'Based on bands 4,3,2',
+        thumbnail:
+          'https://cnet4.cbsistatic.com/img/-JKG69A9xmdlvxVwYtpIztVHxHI=/940x0/2018/08/21/09803db6-578f-41f7-9c7a-0b9efc5d6751/starshot-satellite-launch.jpg'
+      },
+      {
+        id: 'ndvi',
+        label: 'NDVI',
+        description: 'Based on conbination bands (B8A-B4)/(B8A + B11)',
+        thumbnail:
+          'https://cnet4.cbsistatic.com/img/-JKG69A9xmdlvxVwYtpIztVHxHI=/940x0/2018/08/21/09803db6-578f-41f7-9c7a-0b9efc5d6751/starshot-satellite-launch.jpg'
+      }
+    ]
   },
-  { id: 'landsat', label: 'Landsat', description: 'Some text describing the Landsat satellite' },
-  { id: 'envisat-meris', label: 'Envisat Meris', description: 'Some text describing the Envisat Meris satellite' },
-  { id: 'modis', label: 'MODIS', description: 'Some text describing the MODIS satellite' },
-  { id: 'proba-v', label: 'Proba-V', description: 'Some text describing the Proba-V satellite' },
-  { id: 'gibs', label: 'GIBS', description: 'Some text describing the GIBS satellite' }
+  {
+    id: 'landsat',
+    label: 'Landsat',
+    description: 'Some text describing the Landsat satellite',
+    resolutions: [
+      {
+        id: 'free',
+        label: 'Free Images',
+        description: 'Free scenes.'
+      },
+      {
+        id: 'mid',
+        label: 'Mid Resolution',
+        description: 'Mid resolution scenes.'
+      },
+      {
+        id: 'high',
+        label: 'High Resolution',
+        description: 'High resolution scenes.'
+      }
+    ],
+    visualisations: [
+      {
+        id: 'ndvi',
+        label: 'NDVI',
+        description: 'Based on conbination bands (B8A-B4)/(B8A + B11)',
+        thumbnail:
+          'https://cnet4.cbsistatic.com/img/-JKG69A9xmdlvxVwYtpIztVHxHI=/940x0/2018/08/21/09803db6-578f-41f7-9c7a-0b9efc5d6751/starshot-satellite-launch.jpg'
+      },
+      {
+        id: 'false-color-urban',
+        label: 'False Color (urban)',
+        description: 'Based on bands 4,3,2',
+        thumbnail:
+          'https://cnet4.cbsistatic.com/img/-JKG69A9xmdlvxVwYtpIztVHxHI=/940x0/2018/08/21/09803db6-578f-41f7-9c7a-0b9efc5d6751/starshot-satellite-launch.jpg'
+      },
+      {
+        id: 'false-color',
+        label: 'False Color',
+        description: 'Based on bands 4,3,2',
+        thumbnail:
+          'https://cnet4.cbsistatic.com/img/-JKG69A9xmdlvxVwYtpIztVHxHI=/940x0/2018/08/21/09803db6-578f-41f7-9c7a-0b9efc5d6751/starshot-satellite-launch.jpg'
+      },
+      {
+        id: 'true-color',
+        label: 'True Color',
+        description: 'Based on bands 4,3,2',
+        thumbnail:
+          'https://cnet4.cbsistatic.com/img/-JKG69A9xmdlvxVwYtpIztVHxHI=/940x0/2018/08/21/09803db6-578f-41f7-9c7a-0b9efc5d6751/starshot-satellite-launch.jpg'
+      }
+    ]
+  },
+  {
+    id: 'envisat-meris',
+    label: 'Envisat Meris',
+    description: 'Some text describing the Envisat Meris satellite',
+    resolutions: [
+      {
+        id: 'free',
+        label: 'Free Images',
+        description: 'Free scenes.'
+      },
+      {
+        id: 'mid',
+        label: 'Mid Resolution',
+        description: 'Mid resolution scenes.'
+      },
+      {
+        id: 'high',
+        label: 'High Resolution',
+        description: 'High resolution scenes.'
+      }
+    ],
+    visualisations: [
+      {
+        id: 'ndvi',
+        label: 'NDVI',
+        description: 'Based on conbination bands (B8A-B4)/(B8A + B11)',
+        thumbnail:
+          'https://cnet4.cbsistatic.com/img/-JKG69A9xmdlvxVwYtpIztVHxHI=/940x0/2018/08/21/09803db6-578f-41f7-9c7a-0b9efc5d6751/starshot-satellite-launch.jpg'
+      },
+      {
+        id: 'false-color-urban',
+        label: 'False Color (urban)',
+        description: 'Based on bands 4,3,2',
+        thumbnail:
+          'https://cnet4.cbsistatic.com/img/-JKG69A9xmdlvxVwYtpIztVHxHI=/940x0/2018/08/21/09803db6-578f-41f7-9c7a-0b9efc5d6751/starshot-satellite-launch.jpg'
+      },
+      {
+        id: 'false-color',
+        label: 'False Color',
+        description: 'Based on bands 4,3,2',
+        thumbnail:
+          'https://cnet4.cbsistatic.com/img/-JKG69A9xmdlvxVwYtpIztVHxHI=/940x0/2018/08/21/09803db6-578f-41f7-9c7a-0b9efc5d6751/starshot-satellite-launch.jpg'
+      },
+      {
+        id: 'true-color',
+        label: 'True Color',
+        description: 'Based on bands 4,3,2',
+        thumbnail:
+          'https://cnet4.cbsistatic.com/img/-JKG69A9xmdlvxVwYtpIztVHxHI=/940x0/2018/08/21/09803db6-578f-41f7-9c7a-0b9efc5d6751/starshot-satellite-launch.jpg'
+      }
+    ]
+  },
+  {
+    id: 'modis',
+    label: 'MODIS',
+    description: 'Some text describing the MODIS satellite',
+    resolutions: [
+      {
+        id: 'free',
+        label: 'Free Images',
+        description: 'Free scenes.'
+      },
+      {
+        id: 'mid',
+        label: 'Mid Resolution',
+        description: 'Mid resolution scenes.'
+      },
+      {
+        id: 'high',
+        label: 'High Resolution',
+        description: 'High resolution scenes.'
+      }
+    ],
+    visualisations: [
+      {
+        id: 'ndvi',
+        label: 'ndvi',
+        description: 'This is a description of this visualization',
+        thumbnail:
+          'https://landsat-pds.s3.amazonaws.com/c1/L8/027/033/LC08_L1TP_027033_20200107_20200114_01_T1/LC08_L1TP_027033_20200107_20200114_01_T1_thumb_small.jpg'
+      }
+    ]
+  },
+  {
+    id: 'proba-v',
+    label: 'Proba-V',
+    description: 'Some text describing the Proba-V satellite',
+    resolutions: [
+      {
+        id: 'free',
+        label: 'Free Images',
+        description: 'Free scenes.'
+      },
+      {
+        id: 'mid',
+        label: 'Mid Resolution',
+        description: 'Mid resolution scenes.'
+      },
+      {
+        id: 'high',
+        label: 'High Resolution',
+        description: 'High resolution scenes.'
+      }
+    ],
+    visualisations: [
+      {
+        id: 'ndvi',
+        label: 'NDVI',
+        description: 'Based on conbination bands (B8A-B4)/(B8A + B11)',
+        thumbnail:
+          'https://cnet4.cbsistatic.com/img/-JKG69A9xmdlvxVwYtpIztVHxHI=/940x0/2018/08/21/09803db6-578f-41f7-9c7a-0b9efc5d6751/starshot-satellite-launch.jpg'
+      },
+      {
+        id: 'false-color-urban',
+        label: 'False Color (urban)',
+        description: 'Based on bands 4,3,2',
+        thumbnail:
+          'https://cnet4.cbsistatic.com/img/-JKG69A9xmdlvxVwYtpIztVHxHI=/940x0/2018/08/21/09803db6-578f-41f7-9c7a-0b9efc5d6751/starshot-satellite-launch.jpg'
+      },
+      {
+        id: 'false-color',
+        label: 'False Color',
+        description: 'Based on bands 4,3,2',
+        thumbnail:
+          'https://cnet4.cbsistatic.com/img/-JKG69A9xmdlvxVwYtpIztVHxHI=/940x0/2018/08/21/09803db6-578f-41f7-9c7a-0b9efc5d6751/starshot-satellite-launch.jpg'
+      },
+      {
+        id: 'true-color',
+        label: 'True Color',
+        description: 'Based on bands 4,3,2',
+        thumbnail:
+          'https://cnet4.cbsistatic.com/img/-JKG69A9xmdlvxVwYtpIztVHxHI=/940x0/2018/08/21/09803db6-578f-41f7-9c7a-0b9efc5d6751/starshot-satellite-launch.jpg'
+      }
+    ]
+  },
+  {
+    id: 'gibs',
+    label: 'GIBS',
+    description: 'Some text describing the GIBS satellite',
+    resolutions: [
+      {
+        id: 'free',
+        label: 'Free Images',
+        description: 'Free scenes.'
+      },
+      {
+        id: 'mid',
+        label: 'Mid Resolution',
+        description: 'Mid resolution scenes.'
+      },
+      {
+        id: 'high',
+        label: 'High Resolution',
+        description: 'High resolution scenes.'
+      }
+    ],
+    visualisations: [
+      {
+        id: 'ndvi',
+        label: 'NDVI',
+        description: 'Based on conbination bands (B8A-B4)/(B8A + B11)',
+        thumbnail:
+          'https://landsat-pds.s3.amazonaws.com/c1/L8/027/033/LC08_L1TP_027033_20200107_20200114_01_T1/LC08_L1TP_027033_20200107_20200114_01_T1_thumb_small.jpg'
+      },
+      {
+        id: 'false-color-urban',
+        label: 'False Color (urban)',
+        description: 'Based on bands 4,3,2',
+        thumbnail:
+          'https://landsat-pds.s3.amazonaws.com/c1/L8/027/033/LC08_L1TP_027033_20200107_20200114_01_T1/LC08_L1TP_027033_20200107_20200114_01_T1_thumb_small.jpg'
+      },
+      {
+        id: 'false-color',
+        label: 'False Color',
+        description: 'Based on bands 4,3,2',
+        thumbnail:
+          'https://landsat-pds.s3.amazonaws.com/c1/L8/027/033/LC08_L1TP_027033_20200107_20200114_01_T1/LC08_L1TP_027033_20200107_20200114_01_T1_thumb_small.jpg'
+      },
+      {
+        id: 'true-color',
+        label: 'True Color',
+        description: 'Based on bands 4,3,2',
+        thumbnail:
+          'https://landsat-pds.s3.amazonaws.com/c1/L8/027/033/LC08_L1TP_027033_20200107_20200114_01_T1/LC08_L1TP_027033_20200107_20200114_01_T1_thumb_small.jpg'
+      }
+    ]
+  }
 ];
 
-const visualisations = [
+let savedSatelliteSearches = [
   {
-    id: 'ndvi',
-    label: 'NDVI',
-    description: 'Based on conbination bands (B8A-B4)/(B8A + B11)',
-    thumbnail:
-      'https://cnet4.cbsistatic.com/img/-JKG69A9xmdlvxVwYtpIztVHxHI=/940x0/2018/08/21/09803db6-578f-41f7-9c7a-0b9efc5d6751/starshot-satellite-launch.jpg'
+    id: 1,
+    name: 'NASA Landsat',
+    satellites: ['Landsat'],
+    resolutions: ['free'],
+    start_date: '09-22-2018',
+    end_date: '11-14-2018',
+    aoi: [
+      [-4.570311, 12.757874],
+      [7.119142, 13.197327],
+      [5.888673, 9.066467],
+      [-0.263671, 9.242249],
+      [-0.263671, 9.242249],
+      [-4.570311, 12.757874]
+    ],
+    owner: 1,
+    created: '2020-03-02T10:00:18.622754Z'
   },
   {
-    id: 'false-color-urban',
-    label: 'False Color (urban)',
-    description: 'Based on bands 4,3,2',
-    thumbnail:
-      'https://cnet4.cbsistatic.com/img/-JKG69A9xmdlvxVwYtpIztVHxHI=/940x0/2018/08/21/09803db6-578f-41f7-9c7a-0b9efc5d6751/starshot-satellite-launch.jpg'
+    id: 2,
+    name: 'Sentinel-2',
+    satellites: ['Sentinel-2'],
+    resolutions: ['mid'],
+    start_date: '06-15-2016',
+    end_date: '02-12-2016',
+    aoi: [
+      [-4.570311, 12.757874],
+      [7.119142, 13.197327],
+      [5.888673, 9.066467],
+      [-0.263671, 9.242249],
+      [-0.263671, 9.242249],
+      [-4.570311, 12.757874]
+    ],
+    owner: 1,
+    created: '2020-03-02T10:00:18.622754Z'
   },
   {
-    id: 'false-color',
-    label: 'False Color',
-    description: 'Based on bands 4,3,2',
+    id: 1,
+    name: 'MODIS',
+    satellites: ['MODIS'],
+    resolutions: ['high'],
+    start_date: '05-19-2017',
+    end_date: '12-30-2017',
+    aoi: [
+      [-4.570311, 12.757874],
+      [7.119142, 13.197327],
+      [5.888673, 9.066467],
+      [-0.263671, 9.242249],
+      [-0.263671, 9.242249],
+      [-4.570311, 12.757874]
+    ],
+    owner: 1,
+    created: '2020-03-02T10:00:18.622754Z'
+  }
+];
+
+const satelliteScenes = [
+  {
+    id: '32UVD',
+    properties: {
+      crs: 'EPSG: 4326',
+      label: '32UVD',
+      created: '2019-12-29T08:00:00Z',
+      cloudCoverAsPercentage: '4.23',
+      downloadLink:
+        'https://landsat-pds.s3.amazonaws.com/c1/L8/027/033/LC08_L1TP_027033_20200107_20200114_01_T1/LC08_L1TP_027033_20200107_20200114_01_T1_thumb_small.jpg',
+      tier: 'free',
+      swath: 'Geometry object to be added',
+      moreInfo: { key: 'To be decided' }
+    },
+    urls: [
+      'https://landsat-pds.s3.amazonaws.com/c1/L8/027/033/LC08_L1TP_027033_20190613_20190619_01_T1/LC08_L1TP_027033_20190613_20190619_01_T1_thumb_small.jpg',
+      'https://landsat-pds.s3.amazonaws.com/c1/L8/027/033/LC08_L1TP_027033_20190613_20190619_01_T1/LC08_L1TP_027033_20190613_20190619_01_T1_thumb_small.jpg'
+    ],
     thumbnail:
-      'https://cnet4.cbsistatic.com/img/-JKG69A9xmdlvxVwYtpIztVHxHI=/940x0/2018/08/21/09803db6-578f-41f7-9c7a-0b9efc5d6751/starshot-satellite-launch.jpg'
+      'https://landsat-pds.s3.amazonaws.com/c1/L8/027/033/LC08_L1TP_027033_20190613_20190619_01_T1/LC08_L1TP_027033_20190613_20190619_01_T1_thumb_small.jpg',
+    satellite: 'sentinel-2'
   },
   {
-    id: 'true-color',
-    label: 'True Color',
-    description: 'Based on bands 4,3,2',
+    id: '323UVD',
+    properties: {
+      crs: 'EPSG: 4326',
+      label: '33UVD',
+      created: '2019-12-29T08:00:00Z',
+      cloudCoverAsPercentage: '6.23',
+      downloadLink:
+        'https://landsat-pds.s3.amazonaws.com/c1/L8/027/033/LC08_L1TP_027033_20200107_20200114_01_T1/LC08_L1TP_027033_20200107_20200114_01_T1_thumb_small.jpg',
+      tier: 'mid-res',
+      swath: 'Geometry object to be added',
+      moreInfo: { key: 'To be decided' }
+    },
+    urls: [
+      'https://landsat-pds.s3.amazonaws.com/c1/L8/027/033/LC08_L1TP_027033_20190613_20190619_01_T1/LC08_L1TP_027033_20190613_20190619_01_T1_thumb_small.jpg',
+      'https://landsat-pds.s3.amazonaws.com/c1/L8/027/033/LC08_L1TP_027033_20190613_20190619_01_T1/LC08_L1TP_027033_20190613_20190619_01_T1_thumb_small.jpg'
+    ],
     thumbnail:
-      'https://cnet4.cbsistatic.com/img/-JKG69A9xmdlvxVwYtpIztVHxHI=/940x0/2018/08/21/09803db6-578f-41f7-9c7a-0b9efc5d6751/starshot-satellite-launch.jpg'
+      'https://landsat-pds.s3.amazonaws.com/c1/L8/027/033/LC08_L1TP_027033_20190613_20190619_01_T1/LC08_L1TP_027033_20190613_20190619_01_T1_thumb_small.jpg',
+    satellite: 'sentinel-2'
+  },
+  {
+    id: '34UVD',
+    properties: {
+      crs: 'EPSG: 4326',
+      label: '34UVD',
+      created: '2019-12-29T08:00:00Z',
+      cloudCoverAsPercentage: '8.23',
+      downloadLink:
+        'https://landsat-pds.s3.amazonaws.com/c1/L8/027/033/LC08_L1TP_027033_20200107_20200114_01_T1/LC08_L1TP_027033_20200107_20200114_01_T1_thumb_small.jpg',
+      tier: 'high-res',
+      swath: 'Geometry object to be added',
+      moreInfo: { key: 'To be decided' }
+    },
+    urls: [
+      'https://landsat-pds.s3.amazonaws.com/c1/L8/027/033/LC08_L1TP_027033_20190613_20190619_01_T1/LC08_L1TP_027033_20190613_20190619_01_T1_thumb_small.jpg',
+      'https://landsat-pds.s3.amazonaws.com/c1/L8/027/033/LC08_L1TP_027033_20190613_20190619_01_T1/LC08_L1TP_027033_20190613_20190619_01_T1_thumb_small.jpg'
+    ],
+    thumbnail:
+      'https://landsat-pds.s3.amazonaws.com/c1/L8/027/033/LC08_L1TP_027033_20190613_20190619_01_T1/LC08_L1TP_027033_20190613_20190619_01_T1_thumb_small.jpg',
+    satellite: 'sentinel-2'
+  },
+  {
+    id: '35UVD',
+    properties: {
+      crs: 'EPSG: 4326',
+      label: '35UVD',
+      created: '2019-12-29T08:00:00Z',
+      cloudCoverAsPercentage: '10.23',
+      downloadLink:
+        'https://landsat-pds.s3.amazonaws.com/c1/L8/027/033/LC08_L1TP_027033_20200107_20200114_01_T1/LC08_L1TP_027033_20200107_20200114_01_T1_thumb_small.jpg',
+      tier: 'free',
+      swath: 'Geometry object to be added',
+      moreInfo: { key: 'To be decided' }
+    },
+    urls: [
+      'https://landsat-pds.s3.amazonaws.com/c1/L8/027/033/LC08_L1TP_027033_20190613_20190619_01_T1/LC08_L1TP_027033_20190613_20190619_01_T1_thumb_small.jpg',
+      'https://landsat-pds.s3.amazonaws.com/c1/L8/027/033/LC08_L1TP_027033_20190613_20190619_01_T1/LC08_L1TP_027033_20190613_20190619_01_T1_thumb_small.jpg'
+    ],
+    thumbnail:
+      'https://landsat-pds.s3.amazonaws.com/c1/L8/027/033/LC08_L1TP_027033_20190613_20190619_01_T1/LC08_L1TP_027033_20190613_20190619_01_T1_thumb_small.jpg',
+    satellite: 'sentinel-2'
+  },
+  {
+    id: '36UVD',
+    properties: {
+      crs: 'EPSG: 4326',
+      label: '36UVD',
+      created: '2019-12-29T08:00:00Z',
+      cloudCoverAsPercentage: '15.23',
+      downloadLink:
+        'https://landsat-pds.s3.amazonaws.com/c1/L8/027/033/LC08_L1TP_027033_20200107_20200114_01_T1/LC08_L1TP_027033_20200107_20200114_01_T1_thumb_small.jpg',
+      tier: 'mid-res',
+      swath: 'Geometry object to be added',
+      moreInfo: { key: 'To be decided' }
+    },
+    urls: [
+      'https://landsat-pds.s3.amazonaws.com/c1/L8/027/033/LC08_L1TP_027033_20190613_20190619_01_T1/LC08_L1TP_027033_20190613_20190619_01_T1_thumb_small.jpg',
+      'https://landsat-pds.s3.amazonaws.com/c1/L8/027/033/LC08_L1TP_027033_20190613_20190619_01_T1/LC08_L1TP_027033_20190613_20190619_01_T1_thumb_small.jpg'
+    ],
+    thumbnail:
+      'https://landsat-pds.s3.amazonaws.com/c1/L8/027/033/LC08_L1TP_027033_20190613_20190619_01_T1/LC08_L1TP_027033_20190613_20190619_01_T1_thumb_small.jpg',
+    satellite: 'sentinel-2'
+  },
+  {
+    id: '37UVD',
+    properties: {
+      crs: 'EPSG: 4326',
+      label: '37UVD',
+      created: '2019-12-29T08:00:00Z',
+      cloudCoverAsPercentage: '20.23',
+      downloadLink:
+        'https://landsat-pds.s3.amazonaws.com/c1/L8/027/033/LC08_L1TP_027033_20200107_20200114_01_T1/LC08_L1TP_027033_20200107_20200114_01_T1_thumb_small.jpg',
+      tier: 'high-res',
+      swath: 'Geometry object to be added',
+      moreInfo: { key: 'To be decided' }
+    },
+    urls: [
+      'https://landsat-pds.s3.amazonaws.com/c1/L8/027/033/LC08_L1TP_027033_20190613_20190619_01_T1/LC08_L1TP_027033_20190613_20190619_01_T1_thumb_small.jpg',
+      'https://landsat-pds.s3.amazonaws.com/c1/L8/027/033/LC08_L1TP_027033_20190613_20190619_01_T1/LC08_L1TP_027033_20190613_20190619_01_T1_thumb_small.jpg'
+    ],
+    thumbnail:
+      'https://landsat-pds.s3.amazonaws.com/c1/L8/027/033/LC08_L1TP_027033_20190613_20190619_01_T1/LC08_L1TP_027033_20190613_20190619_01_T1_thumb_small.jpg',
+    satellite: 'sentinel-2'
+  }
+];
+
+let pinnedScenes = [
+  {
+    id: '32UVD',
+    properties: {
+      crs: 'EPSG: 4326',
+      label: '32UVD',
+      created: '2019-12-29T08:00:00Z',
+      cloudCoverAsPercentage: '4.23',
+      downloadLink:
+        'https://landsat-pds.s3.amazonaws.com/c1/L8/027/033/LC08_L1TP_027033_20200107_20200114_01_T1/LC08_L1TP_027033_20200107_20200114_01_T1_thumb_small.jpg',
+      tier: 'free',
+      swath: 'Geometry object to be added',
+      moreInfo: { key: 'To be decided' }
+    },
+    urls: [
+      'https://landsat-pds.s3.amazonaws.com/c1/L8/027/033/LC08_L1TP_027033_20190613_20190619_01_T1/LC08_L1TP_027033_20190613_20190619_01_T1_thumb_small.jpg',
+      'https://landsat-pds.s3.amazonaws.com/c1/L8/027/033/LC08_L1TP_027033_20190613_20190619_01_T1/LC08_L1TP_027033_20190613_20190619_01_T1_thumb_small.jpg'
+    ],
+    thumbnail:
+      'https://landsat-pds.s3.amazonaws.com/c1/L8/027/033/LC08_L1TP_027033_20190613_20190619_01_T1/LC08_L1TP_027033_20190613_20190619_01_T1_thumb_small.jpg',
+    satellite: 'sentinel-2'
+  },
+  {
+    id: '35UVD',
+    properties: {
+      crs: 'EPSG: 4326',
+      label: '35UVD',
+      created: '2019-12-29T08:00:00Z',
+      cloudCoverAsPercentage: '10.23',
+      downloadLink:
+        'https://landsat-pds.s3.amazonaws.com/c1/L8/027/033/LC08_L1TP_027033_20200107_20200114_01_T1/LC08_L1TP_027033_20200107_20200114_01_T1_thumb_small.jpg',
+      tier: 'free',
+      swath: 'Geometry object to be added',
+      moreInfo: { key: 'To be decided' }
+    },
+    urls: [
+      'https://landsat-pds.s3.amazonaws.com/c1/L8/027/033/LC08_L1TP_027033_20190613_20190619_01_T1/LC08_L1TP_027033_20190613_20190619_01_T1_thumb_small.jpg',
+      'https://landsat-pds.s3.amazonaws.com/c1/L8/027/033/LC08_L1TP_027033_20190613_20190619_01_T1/LC08_L1TP_027033_20190613_20190619_01_T1_thumb_small.jpg'
+    ],
+    thumbnail:
+      'https://landsat-pds.s3.amazonaws.com/c1/L8/027/033/LC08_L1TP_027033_20190613_20190619_01_T1/LC08_L1TP_027033_20190613_20190619_01_T1_thumb_small.jpg',
+    satellite: 'sentinel-2'
+  },
+  {
+    id: '37UVD',
+    properties: {
+      crs: 'EPSG: 4326',
+      label: '37UVD',
+      created: '2019-12-29T08:00:00Z',
+      cloudCoverAsPercentage: '20.23',
+      downloadLink:
+        'https://landsat-pds.s3.amazonaws.com/c1/L8/027/033/LC08_L1TP_027033_20200107_20200114_01_T1/LC08_L1TP_027033_20200107_20200114_01_T1_thumb_small.jpg',
+      tier: 'high-res',
+      swath: 'Geometry object to be added',
+      moreInfo: { key: 'To be decided' }
+    },
+    urls: [
+      'https://landsat-pds.s3.amazonaws.com/c1/L8/027/033/LC08_L1TP_027033_20190613_20190619_01_T1/LC08_L1TP_027033_20190613_20190619_01_T1_thumb_small.jpg',
+      'https://landsat-pds.s3.amazonaws.com/c1/L8/027/033/LC08_L1TP_027033_20190613_20190619_01_T1/LC08_L1TP_027033_20190613_20190619_01_T1_thumb_small.jpg'
+    ],
+    thumbnail:
+      'https://landsat-pds.s3.amazonaws.com/c1/L8/027/033/LC08_L1TP_027033_20190613_20190619_01_T1/LC08_L1TP_027033_20190613_20190619_01_T1_thumb_small.jpg',
+    satellite: 'sentinel-2'
   }
 ];
 
@@ -238,12 +838,6 @@ const getSatellites = (req, res) => {
   console.log('Returning Satellites');
   res.status(200);
   res.json(satellites);
-};
-
-const getVisualisations = (req, res) => {
-  console.log('Returning vizualizations');
-  res.status(200);
-  res.json(visualisations);
 };
 
 const register = (req, res) => {
@@ -364,17 +958,57 @@ const getSources = (req, res) => {
   res.json(sources);
 };
 
+const getSatelliteSearches = (req, res) => {
+  res.status(200);
+  res.json(savedSatelliteSearches);
+};
+
+const saveSatelliteSearch = (req, res) => {
+  const searches = [...savedSatelliteSearches, req.body];
+  res.status(200);
+  res.json(searches);
+};
+
+const deleteSatelliteSearch = (req, res) => {
+  savedSatelliteSearches = savedSatelliteSearches.filter(sat => sat.id !== parseInt(req.params.id, 10));
+  res.status(200);
+  res.json(savedSatelliteSearches);
+};
+
+const getSatelliteScenes = (req, res) => {
+  console.log('Returning search results');
+  res.status(200);
+  res.json(satelliteScenes);
+};
+
+const getPinnedScenes = (req, res) => {
+  console.log('Returning Pinned Scenes');
+  res.status(200);
+  res.json(pinnedScenes);
+};
+
+const pinScene = (req, res) => {
+  pinnedScenes = [...pinnedScenes, req.body];
+  res.status(200);
+  res.json(pinnedScenes);
+};
+
 module.exports = {
   getAppConfig,
   getUsers,
   getCurrentUser,
   getSatellites,
-  getVisualisations,
+  getSatelliteScenes,
   register,
   login,
   logout,
   getBookmarks,
   addBookmark,
   changePassword,
-  getSources
+  getSources,
+  getSatelliteSearches,
+  saveSatelliteSearch,
+  deleteSatelliteSearch,
+  getPinnedScenes,
+  pinScene
 };
