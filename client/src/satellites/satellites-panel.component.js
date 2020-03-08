@@ -10,24 +10,24 @@ import { fetchSatellites, selectScene, fetchVisualisations } from './satellites.
 import Search from './search.component';
 import Results from './results.component';
 import Visualisation from './visualisation.component';
-
-import { ReactComponent as SearchIcon } from './search.svg';
-import { ReactComponent as ResultsIcon } from './results.svg';
-import { ReactComponent as VisualisationIcon } from './visualisation.svg';
+import PinnedScenes from './compare-pins.component';
 
 import styles from './satellites-panel.module.css';
 
 export const SEARCH = 'Search';
 export const RESULTS = 'Results';
 export const VISUALISATION = 'Visualisation';
+export const PINS = 'Pins';
 
-const SatellitesPanel = () => {
+const SatellitesPanel = ({ map }) => {
   const dispatch = useDispatch();
 
   const [visiblePanel, setVisiblePanel] = useState(SEARCH);
+  const [visualisations, setVisualisations] = useState(null);
+
   const satellites = useSelector(state => state.satellites.satellites);
   const scenes = useSelector(state => state.satellites.scenes);
-  const visualisations = useSelector(state => state.satellites.visualisations);
+  const selectedScene = useSelector(state => state.satellites.selectedScene);
 
   useEffect(() => {
     if (!satellites) {
@@ -36,20 +36,20 @@ const SatellitesPanel = () => {
   }, [satellites]);
 
   useEffect(() => {
-    if (!visualisations) {
-      dispatch(fetchVisualisations());
+    if (selectedScene) {
+      const satellite = satellites.find(sat => sat.id === selectedScene.satellite);
+      setVisualisations(satellite.visualisations);
     }
-  }, [visualisations]);
+  }, [satellites, selectedScene]);
 
   return (
     <div className={styles.panel}>
-      <div className={styles.topPanel}>
+      <div className={styles.navigationPanel}>
         <Button
           theme="primary"
           classNames={visiblePanel === SEARCH ? [styles.button, styles.active] : [styles.button]}
           onClick={() => setVisiblePanel(SEARCH)}
         >
-          <SearchIcon className={styles.icon} />
           Search
         </Button>
         <Button
@@ -57,7 +57,6 @@ const SatellitesPanel = () => {
           classNames={visiblePanel === RESULTS ? [styles.button, styles.active] : [styles.button]}
           onClick={() => setVisiblePanel(RESULTS)}
         >
-          <ResultsIcon className={styles.icon} />
           Results
         </Button>
         <Button
@@ -65,19 +64,28 @@ const SatellitesPanel = () => {
           classNames={visiblePanel === VISUALISATION ? [styles.button, styles.active] : [styles.button]}
           onClick={() => setVisiblePanel(VISUALISATION)}
         >
-          <VisualisationIcon className={styles.icon} />
           Visualisation
+        </Button>
+        <Button
+          theme="primary"
+          classNames={visiblePanel === PINS ? [styles.button, styles.active] : [styles.button]}
+          onClick={() => setVisiblePanel(PINS)}
+        >
+          My Pins
         </Button>
       </div>
 
-      <div className={styles.bottomPanel}>
-        {satellites && visiblePanel === SEARCH && <Search satellites={satellites} setVisiblePanel={setVisiblePanel} />}
+      <div className={styles.content}>
+        {satellites && visiblePanel === SEARCH && (
+          <Search satellites={satellites} setVisiblePanel={setVisiblePanel} map={map} />
+        )}
         {visiblePanel === RESULTS && (
           <Results setVisiblePanel={setVisiblePanel} scenes={scenes} selectScene={selectScene} />
         )}
         {visiblePanel === VISUALISATION && (
           <Visualisation visualisations={visualisations} setVisiblePanel={setVisiblePanel} />
         )}
+        {visiblePanel === PINS && <PinnedScenes />}
       </div>
     </div>
   );

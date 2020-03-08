@@ -8,14 +8,14 @@
   padding: 1rem;
 }
 
-.topPanel {
+.navigationPanel {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 1rem;
 }
 
-.bottomPanel {
+.content {
   height: 100%;
 }
 

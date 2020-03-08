@@ -5,8 +5,17 @@ import {
   FETCH_SATELLITE_SCENES_FAILURE,
   SELECT_SCENE,
   REMOVE_SCENES,
-  FETCH_VISUALISATIONS_SUCCESS,
-  FETCH_VISUALISATIONS_FAILURE
+  FETCH_SATELLITE_SEARCHES_SUCCESS,
+  FETCH_SATELLITE_SEARCHES_FAILURE,
+  SAVE_SATELLITE_SEARCH_REQUESTED_SUCCESS,
+  SAVE_SATELLITE_SEARCH_REQUESTED_FAILURE,
+  DELETE_SATELLITE_SEARCH_SUCCESS,
+  DELETE_SATELLITE_SEARCH_FAILURE,
+  SELECT_SATELLITE_SEARCH_QUERY,
+  FETCH_PINNED_SCENES_SUCCESS,
+  FETCH_PINNED_SCENES_FAILURE,
+  PIN_SCENE_SUCCESS,
+  PIN_SCENE_FAILURE
 } from './satellites.actions';
 
 const initialState = {
@@ -14,7 +23,9 @@ const initialState = {
   scenes: null,
   selectedScene: null,
   error: null,
-  visualisations: null
+  satelliteSearches: null,
+  selectedSatelliteSearch: null,
+  pinnedScenes: null
 };
 
 const reducer = (state = initialState, action) => {
@@ -48,14 +59,61 @@ const reducer = (state = initialState, action) => {
         selectedScene: null
       };
 
-    case FETCH_VISUALISATIONS_SUCCESS:
+    case FETCH_SATELLITE_SEARCHES_SUCCESS:
       return {
         ...state,
-        visualisations: action.visualisations,
+        satelliteSearches: action.searches,
         error: null
       };
 
-    case FETCH_VISUALISATIONS_FAILURE:
+    case FETCH_SATELLITE_SEARCHES_FAILURE:
+      return { ...state, error: action.error };
+
+    case SAVE_SATELLITE_SEARCH_REQUESTED_SUCCESS:
+      return {
+        ...state,
+        satelliteSearches: [...state.satelliteSearches, action.savedSearch],
+        error: null
+      };
+
+    case SAVE_SATELLITE_SEARCH_REQUESTED_FAILURE:
+      return { ...state, error: action.error };
+
+    case DELETE_SATELLITE_SEARCH_SUCCESS:
+      return {
+        ...state,
+        satelliteSearches: action.searches,
+        error: null
+      };
+
+    case DELETE_SATELLITE_SEARCH_FAILURE:
+      return { ...state, error: action.error };
+
+    case SELECT_SATELLITE_SEARCH_QUERY:
+      console.log('SELECT SEARCH QUERY: ', action.search);
+      return {
+        ...state,
+        selectedSatelliteSearch: action.search
+      };
+
+    case FETCH_PINNED_SCENES_SUCCESS:
+      return {
+        ...state,
+        pinnedScenes: action.scenes,
+        error: null
+      };
+
+    case FETCH_PINNED_SCENES_FAILURE:
+      return { ...state, error: action.error };
+
+    case PIN_SCENE_SUCCESS:
+      return {
+        ...state,
+        pinnedScenes: action.scenes,
+        error: null
+      };
+
+    case PIN_SCENE_FAILURE:
       return { ...state, error: action.error };
 
     default:
