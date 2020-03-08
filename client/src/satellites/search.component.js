@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 
 import { useDispatch, useSelector } from 'react-redux';
 
+import { subDays } from 'date-fns';
+
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 
@@ -32,6 +34,7 @@ const dateFormat = 'd MMM yyy';
 
 const AOI_DRAW_MODE = 'RectangleMode';
 const BBOX_NO_OF_POINTS = 5;
+const DAYS_IN_PAST = 7;
 
 const resolutions = [
   {
@@ -95,11 +98,12 @@ const CustomInput = React.forwardRef(({ value, onClick }, ref) => (
 const Search = ({ satellites, setVisiblePanel, map }) => {
   const globalDispatch = useDispatch();
   const [selectedSatellites, setSelectedSatellites] = useState([]);
-  const [startDate, setStartDate] = useState(new Date('2019-12-22'));
-  const [endDate, setEndDate] = useState(new Date('2019-12-23'));
   const [isInfoVisible, setIsInfoVisible] = useState(false);
-  const [info, setInfo] = useState(null);
+  const [startDate, setStartDate] = useState(subDays(new Date(), DAYS_IN_PAST));
+  const [endDate, setEndDate] = useState(new Date());
+
   const savedSearches = useSelector(state => state.satellites.satelliteSearches);
+
   const [selectedResolutions, setSelectedResolutions] = useState([]);
   const [isSatelliteMoreInfoDialogVisible, toggleSatelliteMoreInfoDialog] = useModal(false);
   const [isResolutionMoreInfoDialogVisible, toggleResolutionMoreInfoDialog] = useModal(false);
