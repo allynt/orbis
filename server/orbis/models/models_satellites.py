@@ -271,8 +271,8 @@ class SatelliteSearch(gis_models.Model):
         "SatelliteTier", related_name="searches", blank=False,
     )
 
-    start_date = models.DateField()
-    end_date = models.DateField()
+    start_date = models.DateTimeField()
+    end_date = models.DateTimeField()
 
     aoi = gis_models.PolygonField(blank=False)
 
