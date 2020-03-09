@@ -975,7 +975,7 @@ const deleteSatelliteSearch = (req, res) => {
   res.json(savedSatelliteSearches);
 };
 
-const getSatelliteScenes = (req, res) => {
+const searchSatelliteScenes = (req, res) => {
   console.log('Returning search results');
   res.status(200);
   res.json(satelliteScenes);
@@ -1004,7 +1004,7 @@ module.exports = {
   getUsers,
   getCurrentUser,
   getSatellites,
-  getSatelliteScenes,
+  searchSatelliteScenes,
   register,
   login,
   logout,

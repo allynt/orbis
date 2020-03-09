@@ -29,9 +29,9 @@ export const SET_CURRENT_SATELLITE_SEARCH_QUERY = 'SET_CURRENT_SATELLITE_SEARCH_
 
 const API = {
   sources: '/api/satellites/',
-  scenes: '/api/satellites/scenes/',
+  scenes: '/api/satellites/run_query/',
   savedSearches: '/api/satellites/searches/',
-  pinScene: '/api/satellites/scenes/pinned/'
+  pinScene: '/api/satellites/results/'
 };
 
 export const fetchSatellites = () => async (dispatch, getState) => {
@@ -64,7 +64,7 @@ export const fetchSatellites = () => async (dispatch, getState) => {
   });
 };
 
-export const fetchSatelliteScenes = () => async (dispatch, getState) => {
+export const fetchSatelliteScenes = query => async (dispatch, getState) => {
   const {
     accounts: { userKey }
   } = getState();
@@ -74,8 +74,8 @@ export const fetchSatelliteScenes = () => async (dispatch, getState) => {
   };
 
   // satellite selection is hard-coded for now
-  const url = `${API.scenes}?satellites=sentinel-2`;
-  const response = await getData(url, headers);
+  const url = `${API.scenes}`;
+  const response = await sendData(url, query, headers);
 
   if (!response.ok) {
     const message = `${response.status} ${response.statusText}`;
@@ -96,8 +96,7 @@ export const fetchSatelliteScenes = () => async (dispatch, getState) => {
   });
 };
 
-export const searchSatellites = (selectedSatellites, startDate, endDate) => async dispatch =>
-  dispatch(fetchSatelliteScenes(selectedSatellites, startDate, endDate));
+export const searchSatellites = query => async dispatch => dispatch(fetchSatelliteScenes(query));
 
 export const selectScene = scene => ({ type: SELECT_SCENE, scene });
 
