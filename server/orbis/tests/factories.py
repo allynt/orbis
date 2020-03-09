@@ -152,7 +152,7 @@ class SatelliteSearchFactory(factory.DjangoModelFactory):
     start_date = factory.LazyAttribute(
         lambda o: o.end_date - datetime.timedelta(days=7)
     )
-    end_date = datetime.date.today()
+    end_date = datetime.datetime.today()
     aoi = FactoryFaker("polygon")
     owner = factory.SubFactory(UserFactory)
 
