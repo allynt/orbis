@@ -42,6 +42,7 @@ class Sentinel2Adapter(BaseSatelliteAdapter):
                 # set some attrs based on the adapter...
                 satellite=self.query_params["satellite"],
                 owner=self.query_params["owner"],
+                tier=self.query_params["tier"],
                 # set some attrs explicitly from the query result...
                 scene_id=product.pop("identifier"),
                 footprint=product.pop("footprint"),

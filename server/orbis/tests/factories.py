@@ -22,7 +22,7 @@ from orbis.models import (
     OrbisUserProfile,
     DataScope,
     Satellite,
-    SatelliteResolution,
+    SatelliteTier,
     SatelliteVisualisation,
     SatelliteSearch,
     SatelliteResult,
@@ -105,15 +105,6 @@ class SatelliteFactory(factory.DjangoModelFactory):
         return Satellite.objects.count() + 1
 
     @factory.post_generation
-    def resolutions(self, create, extracted, **kwargs):
-        if not create:
-            return
-
-        if extracted:
-            for resolution in extracted:
-                self.resolutions.add(resolution)
-
-    @factory.post_generation
     def visualisations(self, create, extracted, **kwargs):
         if not create:
             return
@@ -123,17 +114,17 @@ class SatelliteFactory(factory.DjangoModelFactory):
                 self.visualisations.add(visualisation)
 
 
-class SatelliteResolutionFactory(factory.DjangoModelFactory):
+class SatelliteTierFactory(factory.DjangoModelFactory):
     class Meta:
-        model = SatelliteResolution
+        model = SatelliteTier
 
-    name = factory.LazyAttributeSequence(lambda o, n: f"resolution-{n}")
+    name = factory.LazyAttributeSequence(lambda o, n: f"tier-{n}")
     title = FactoryFaker("pretty_sentence", nb_words=3)
     description = optional_declaration(FactoryFaker("text"), chance=50)
 
     @factory.lazy_attribute
     def order(self):
-        return Satellite.objects.count() + 1
+        return SatelliteTier.objects.count() + 1
 
 
 class SatelliteVisualisationFactory(factory.DjangoModelFactory):
@@ -175,13 +166,13 @@ class SatelliteSearchFactory(factory.DjangoModelFactory):
                 self.satellites.add(satellite)
 
     @factory.post_generation
-    def resolutions(self, create, extracted, **kwargs):
+    def tiers(self, create, extracted, **kwargs):
         if not create:
             return
 
         if extracted:
-            for resolution in extracted:
-                self.resolutions.add(resolution)
+            for tier in extracted:
+                self.tiers.add(tier)
 
 
 class SatelliteResultFactory(factory.DjangoModelFactory):
@@ -190,6 +181,7 @@ class SatelliteResultFactory(factory.DjangoModelFactory):
 
     scene_id = factory.Sequence(lambda n: f"scene-{n}")
     satellite = factory.SubFactory(SatelliteFactory)
+    tier = factory.SubFactory(SatelliteTierFactory)
     cloud_cover = FactoryFaker("pyfloat", min_value=0, max_value=100)
     footprint = FactoryFaker("polygon")
 

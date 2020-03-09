@@ -1,11 +1,10 @@
+- orbis_data_scopes.json: set of DEFAULT data scopes for OrbisRole, loaded by "./server/orbis/migrations/0006_auto_20200103_1016.py"
 
-* orbis_data_scopes.json: set of DEFAULT data scopes for OrbisRole, loaded by "./server/orbis/migrations/0006_auto_20200103_1016.py"
+  To generate data scope fixture: `docker-compose exec server pipenv run ./server/manage.py dumpdata --indent 2 --natural-primary --natural-foreign astrosat_users.userrole orbis.datascope orbis.roleaccess orbis.owneraccess > server/orbis/fixtures/orbis_data_scopes.json`
 
-  To generate data scope fixture: `docker-compose exec  server pipenv run ./server/manage.py dumpdata --indent 2 --natural-primary --natural-foreign astrosat_users.userrole orbis.datascope orbis.roleaccess orbis.owneraccess > server/orbis/fixtures/orbis_data_scopes.json`
+- orbis_satellites.json: set of DEFAULT satellites for ORBIS
 
-* orbis_satellites.json: set of DEFAULT satellites for ORBIS
-
-  To generate satellites fixture: `docker-compose exec server pipenv run ./server/manage.py dumpdata --indent 2 --natural-primary --natural-foreign orbis.satellite orbis.satelliteresolution orbis.satellitevisualisation > server/orbis/fixtures/orbis_satellites.json`
+  To generate satellites fixture: `docker-compose exec server pipenv run ./server/manage.py dumpdata --indent 2 --natural-primary --natural-foreign orbis.satellite orbis.satellitetier orbis.satellitevisualisation > server/orbis/fixtures/orbis_satellites.json`
 
   Note that this uses natural keys for the satellite->visualisations relationship.
 

@@ -10,8 +10,8 @@ from astrosat.views import SwaggerCurrentUserDefault
 
 from orbis.models import (
     Satellite,
-    SatelliteResolution,
     SatelliteVisualisation,
+    SatelliteTier,
     SatelliteSearch,
     SatelliteResult,
 )
@@ -52,6 +52,53 @@ class SimplifiedGeometryField(serializers.Field):
             raise ValidationError(str(e))
 
 
+##############
+# satellites #
+##############
+
+
+class SatelliteTierSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = SatelliteTier
+        fields = (
+            "id",
+            "label",
+            "description",
+        )
+
+    id = serializers.SlugField(source="name")
+    label = serializers.CharField(source="title")
+
+
+class SatelliteVisualisationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = SatelliteVisualisation
+        fields = (
+            "id",
+            "label",
+            "description",
+            "thumbnail",
+        )
+
+    id = serializers.SlugField(source="visualisation_id")
+    label = serializers.CharField(source="title")
+
+
+class SatelliteSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Satellite
+        fields = (
+            "id",
+            "label",
+            "description",
+            "visualisations",
+        )
+
+    id = serializers.SlugField(source="satellite_id")
+    label = serializers.CharField(source="title")
+    visualisations = SatelliteVisualisationSerializer(many=True)
+
+
 #####################
 # satellite results #
 #####################
@@ -69,11 +116,13 @@ class SatelliteResultSerializer(serializers.ModelSerializer):
             "cloud_cover",
             "footprint",
             "satellite",
+            "tier",
             "owner",
         )
 
     id = serializers.SlugField(source="scene_id")
     satellite = serializers.SlugRelatedField(slug_field="satellite_id", queryset=Satellite.objects.all())
+    tier = SatelliteTierSerializer()
 
     footprint = SimplifiedGeometryField(
         geometry_class=Polygon, precision=SatelliteSearch.PRECISION
@@ -114,7 +163,7 @@ class SatelliteSearchSerializer(serializers.ModelSerializer):
             "id",
             "name",
             "satellites",
-            "resolutions",
+            "tiers",
             "start_date",
             "end_date",
             "aoi",
@@ -126,8 +175,8 @@ class SatelliteSearchSerializer(serializers.ModelSerializer):
         slug_field="satellite_id", many=True, queryset=Satellite.objects.all()
     )
 
-    resolutions = serializers.SlugRelatedField(
-        slug_field="name", many=True, queryset=SatelliteResolution.objects.all()
+    tiers = serializers.SlugRelatedField(
+        slug_field="name", many=True, queryset=SatelliteTier.objects.all()
     )
 
     aoi = SimplifiedGeometryField(
@@ -159,52 +208,3 @@ class SatelliteSearchSerializer(serializers.ModelSerializer):
             )
 
         return data
-
-
-##############
-# satellites #
-##############
-
-
-class SatelliteVisualisationSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = SatelliteVisualisation
-        fields = (
-            "id",
-            "label",
-            "description",
-            "thumbnail",
-        )
-
-    id = serializers.SlugField(source="visualisation_id")
-    label = serializers.CharField(source="title")
-
-
-class SatelliteResolutionSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = SatelliteResolution
-        fields = (
-            "id",
-            "label",
-            "description",
-        )
-
-    id = serializers.SlugField(source="name")
-    label = serializers.CharField(source="title")
-
-
-class SatelliteSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Satellite
-        fields = (
-            "id",
-            "label",
-            "description",
-            "resolutions",
-            "visualisations",
-        )
-
-    id = serializers.SlugField(source="satellite_id")
-    label = serializers.CharField(source="title")
-    resolutions = SatelliteResolutionSerializer(many=True)
-    visualisations = SatelliteVisualisationSerializer(many=True)

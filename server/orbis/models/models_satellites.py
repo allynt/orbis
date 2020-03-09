@@ -56,7 +56,7 @@ class SatelliteManager(models.Manager):
         return self.get(satellite_id=satellite_id)
 
 
-class SatelliteResolutionManager(models.Manager):
+class SatelliteTierManager(models.Manager):
     def get_by_natural_key(self, name):
         return self.get(name=name)
 
@@ -111,10 +111,6 @@ class Satellite(models.Model):
         blank=True, null=True, help_text=_("A description of the satellite.")
     )
 
-    resolutions = models.ManyToManyField(
-        "SatelliteResolution", related_name="satellites", blank=True
-    )
-
     visualisations = models.ManyToManyField(
         "SatelliteVisualisation", related_name="satellites", blank=True
     )
@@ -132,51 +128,6 @@ class Satellite(models.Model):
     def natural_key(self):
         # see above comment in SatelliteManager
         return (self.satellite_id,)
-
-
-class SatelliteResolution(models.Model):
-    """
-    The resolutions that are available for a given satellite.
-    """
-
-    class Meta:
-        verbose_name_plural = "Satellite Resolutions"
-        verbose_name_plural = "Satellite Resolutions"
-        ordering = ["order"]
-
-    objects = SatelliteResolutionManager()
-
-    name = models.SlugField(
-        unique=True,
-        blank=False,
-        null=False,
-        help_text=_("A unique name for the resolution."),
-    )
-
-    title = models.CharField(
-        max_length=128,
-        blank=False,
-        null=False,
-        help_text=_("A pretty display name for the resolution."),
-    )
-
-    description = models.TextField(
-        blank=True, null=True, help_text=_("A description of the resolution.")
-    )
-
-    order = models.IntegerField(
-        blank=False,
-        null=False,
-        default=1,
-        help_text=("The order to render the satellite."),
-    )
-
-    def __str__(self):
-        return self.name
-
-    def natural_key(self):
-        # see above comment in SatelliteResolutionManager
-        return (self.name,)
 
 
 class SatelliteVisualisation(models.Model):
@@ -246,6 +197,51 @@ class SatelliteVisualisation(models.Model):
         return super().delete(*args, **kwargs)
 
 
+class SatelliteTier(models.Model):
+    """
+    The tiers that are available for satellite searches.
+    """
+
+    class Meta:
+        verbose_name = "Satellite Tier"
+        verbose_name_plural = "Satellite Tiers"
+        ordering = ["order"]
+
+    objects = SatelliteTierManager()
+
+    name = models.SlugField(
+        unique=True,
+        blank=False,
+        null=False,
+        help_text=_("A unique name for the tier."),
+    )
+
+    title = models.CharField(
+        max_length=128,
+        blank=False,
+        null=False,
+        help_text=_("A pretty display name for the tier."),
+    )
+
+    description = models.TextField(
+        blank=True, null=True, help_text=_("A description of the tier.")
+    )
+
+    order = models.IntegerField(
+        blank=False,
+        null=False,
+        default=1,
+        help_text=("The order to render this tier."),
+    )
+
+    def __str__(self):
+        return self.name
+
+    def natural_key(self):
+        # see above comment in SatelliteTierManager
+        return (self.name,)
+
+
 class SatelliteSearch(gis_models.Model):
     """
     A saved search query.
@@ -271,8 +267,8 @@ class SatelliteSearch(gis_models.Model):
         "Satellite", related_name="searches", blank=False,
     )
 
-    resolutions = models.ManyToManyField(
-        "SatelliteResolution", related_name="searches", blank=True,
+    tiers = models.ManyToManyField(
+        "SatelliteTier", related_name="searches", blank=False,
     )
 
     start_date = models.DateField()
@@ -329,6 +325,10 @@ class SatelliteResult(gis_models.Model):
 
     satellite = models.ForeignKey(
         Satellite, related_name="scenes", on_delete=models.CASCADE
+    )
+
+    tier = models.ForeignKey(
+        SatelliteTier, related_name="scenes", on_delete=models.CASCADE,
     )
 
     cloud_cover = models.FloatField(
