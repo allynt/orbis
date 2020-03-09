@@ -46,7 +46,7 @@ const resolutions = [
 ];
 
 const CustomInput = React.forwardRef(({ value, onClick }, ref) => (
-  <button className={styles.picker} onClick={onClick}>
+  <button type="button" className={styles.picker} onClick={onClick}>
     {value}
   </button>
 ));
