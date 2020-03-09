@@ -369,17 +369,6 @@ class SatelliteResult(gis_models.Model):
             )
 
     @property
-    def download_url(self):
-        """
-        The URL to retrieve a downloadable image from the OLSP (On-Line Scene Processor);
-        templated bits are filled in by the client
-        """
-        url_template = "http://{0}/{1}/{2}/{{visualisation_id}}/download/{3}.png"
-        return url_template.format(
-            settings.OLSP_URL, self.satellite.satellite_id, self.scene_id, self.scene_id
-        )
-
-    @property
     def thumbnail_url(self):
         """
         The URL to retrieve a thumbnail image from the OLSP (On-Line Scene Processor);

@@ -112,7 +112,6 @@ class SatelliteResultSerializer(serializers.ModelSerializer):
             "properties",
             "thumbnail_url",
             "tile_url",
-            "download_url",
             "cloud_cover",
             "footprint",
             "satellite",

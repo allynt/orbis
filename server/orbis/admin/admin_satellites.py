@@ -104,4 +104,4 @@ class SatelliteResultAdmin(GeoModelAdmin):
     search_fields = ("scene_id",)
     list_display = ("scene_id", "owner", "satellite", "tier", "cloud_cover")
     list_filter = ("satellite", "tier", "owner", "cloud_cover")
-    readonly_fields = ("thumbnail_url", "tile_url", "download_url")
+    readonly_fields = ("thumbnail_url", "tile_url")
