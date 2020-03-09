@@ -30,17 +30,14 @@ TEST_END_DATE = datetime.date(2016, 12, 10)
 class TestSatellites:
     def test_get_satellites(self, user, api_client):
 
-        N_RESOLUTIONS = 3
         N_VISUALISATIONS = 4
         N_SATELLITES = 10
 
         client = api_client(user)
 
-        [SatelliteResolutionFactory() for _ in range(N_RESOLUTIONS)]
         [SatelliteVisualisationFactory() for _ in range(N_VISUALISATIONS)]
         [
             SatelliteFactory(
-                resolutions=SatelliteResolution.objects.all(),
                 visualisations=SatelliteVisualisation.objects.all(),
             )
             for _ in range(N_SATELLITES)
@@ -53,10 +50,6 @@ class TestSatellites:
         assert status.is_success(response.status_code)
         assert len(satellites) == N_SATELLITES
 
-        assert (
-            sum(map(lambda x: len(x["resolutions"]), satellites))
-            == N_RESOLUTIONS * N_SATELLITES
-        )
         assert (
             sum(map(lambda x: len(x["visualisations"]), satellites))
             == N_VISUALISATIONS * N_SATELLITES
@@ -113,7 +106,7 @@ class TestSatelliteResults:
         assert status.is_success(response.status_code)
         assert len(response.json()) == 2
 
-    def test_filter_results_by_satelite(self, user, api_client):
+    def test_filter_results_by_satellite(self, user, api_client):
 
         N_SATELLITES = 3
         N_RESULTS_PER_SATELLITE = 2
@@ -148,6 +141,48 @@ class TestSatelliteResults:
         # filter on an invalid satellite...
         url_params = urllib.parse.urlencode(
             {"satellites": f"{shuffle_string(satellite_ids[0])}"}
+        )
+        url = f"{reverse('satellite-result-list')}?{url_params}"
+        response = client.get(url)
+        assert status.is_success(response.status_code)
+        results = response.json()
+        assert len(results) == 0
+
+    def test_filter_results_by_tier(self, user, api_client):
+
+        N_TIERS = 3
+        N_RESULTS_PER_TIER = 2
+
+        client = api_client(user)
+
+        tiers = [SatelliteTierFactory() for _ in range(N_TIERS)]
+        tier_names = [tier.name for tier in tiers]
+        for tier in tiers:
+            SatelliteResultFactory.create_batch(
+                N_RESULTS_PER_TIER, owner=user, tier=tier
+            )
+
+        # filter on a single tier
+        url_params = urllib.parse.urlencode({"tiers": ",".join(tier_names[:1])})
+        url = f"{reverse('satellite-result-list')}?{url_params}"
+        response = client.get(url)
+        assert status.is_success(response.status_code)
+        results = response.json()
+        assert len(results) == N_RESULTS_PER_TIER
+        assert all(map(lambda x: x["tier"]["id"] in tier_names[:1], results))
+
+        # filter on multiple tiers...
+        url_params = urllib.parse.urlencode({"tiers": ",".join(tier_names[:2])})
+        url = f"{reverse('satellite-result-list')}?{url_params}"
+        response = client.get(url)
+        assert status.is_success(response.status_code)
+        results = response.json()
+        assert len(results) == N_RESULTS_PER_TIER * 2
+        assert all(map(lambda x: x["tier"]["id"] in tier_names[:2], results))
+
+        # filter on an invalid tier...
+        url_params = urllib.parse.urlencode(
+            {"tiers": f"{shuffle_string(tier_names[0])}"}
         )
         url = f"{reverse('satellite-result-list')}?{url_params}"
         response = client.get(url)

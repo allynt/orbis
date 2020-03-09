@@ -104,9 +104,10 @@ class CharInFilter(filters.BaseInFilter, filters.CharFilter):
 
 class SatelliteResultFilterSet(filters.FilterSet):
     """
-    Allows me to filter results by satellite, cloud_cover, or bounding_box
+    Allows me to filter results by satellite, tier, cloud_cover, or bounding_box
     usage is:
       <domain>/api/satellites/results/?satellites=a,b,c
+      <domain>/api/satellites/results/?tiers=a,b,c
       <domain>/api/satellites/results/?cloudcover=n
       <domain>/api/satellites/results/?cloudcover__gte=n
       <domain>/api/satellites/results/?cloudcover__lte=n
@@ -124,6 +125,7 @@ class SatelliteResultFilterSet(filters.FilterSet):
         }
 
     satellites = CharInFilter(field_name="satellite__satellite_id")
+    tiers = CharInFilter(field_name="tier__name")
     footprint__bbox = filters.Filter(method="filter_footprint_bbox")
 
     def filter_footprint_bbox(self, queryset, name, value):
@@ -172,7 +174,7 @@ class SatelliteResultViewSet(
 _satellite_query_params = [
     # (this re-uses some useful test values)
     openapi.Parameter("satellites", openapi.IN_QUERY, type=openapi.TYPE_STRING, default="sentinel-2"),
-    openapi.Parameter("resolutions", openapi.IN_QUERY, type=openapi.TYPE_STRING, default="free"),
+    openapi.Parameter("tiers", openapi.IN_QUERY, type=openapi.TYPE_STRING, default="free"),
     openapi.Parameter("start_date", openapi.IN_QUERY, type=openapi.TYPE_STRING, format=openapi.FORMAT_DATETIME, default=str(TEST_START_DATE)),
     openapi.Parameter("end_date", openapi.IN_QUERY, type=openapi.TYPE_STRING, format=openapi.FORMAT_DATETIME, default=str(TEST_END_DATE)),
     openapi.Parameter("aoi", openapi.IN_QUERY, type=openapi.TYPE_STRING, default=str(TEST_AOI_QUERY_PARAM)),
@@ -198,7 +200,7 @@ def run_satellite_query(request):
             "name": "current-query",
             "owner": request.user.pk,
             "satellites": query_params["satellites"].split(","),
-            "resolutions": query_params["resolutions"].split(","),
+            "tiers": query_params["tiers"].split(","),
         }
     )
     search_serializer = SatelliteSearchSerializer(data=query_params)
