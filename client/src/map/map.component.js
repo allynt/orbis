@@ -292,60 +292,6 @@ const Map = (
     [isSaveMap, saveMap]
   );
 
-  // const [bounds, setBounds] = useState(null);
-
-  // const compareMove = event => {
-  //   event = event.touches ? event.touches[0] : event;
-  //   let x = event.clientX - bounds.left;
-  //   if (x < 0) x = 0;
-  //   if (x > bounds.width) x = bounds.width;
-  //   const ratio = x / bounds.width;
-  //   // props.layerActions.moveCompare(ratio);
-  // };
-  // const compareTouchEnd = () => {
-  //   document.removeEventListener('touchmove', compareMove);
-  //   document.removeEventListener('touchend', compareTouchEnd);
-  // };
-  // const compareMouseEnd = () => {
-  //   document.removeEventListener('mousemove', compareMove);
-  //   document.removeEventListener('mouseup', compareMouseEnd);
-  // };
-  // const compareDown = event => {
-  //   if (event.touches) {
-  //     document.addEventListener('touchmove', compareMove);
-  //     document.addEventListener('touchend', compareTouchEnd);
-  //   } else {
-  //     document.addEventListener('mousemove', compareMove);
-  //     document.addEventListener('mouseup', compareMouseEnd);
-  //   }
-  // };
-
-  // const compareMove = e => {
-  //   e = e.touches ? e.touches[0] : e;
-  //   let x = e.clientX - this.bounds.left;
-  //   if (x < 0) x = 0;
-  //   if (x > this.bounds.width) x = this.bounds.width;
-  //   const ratio = x / this.bounds.width;
-  //   this.props.layerActions.moveCompare(ratio);
-  // };
-  // const compareTouchEnd = () => {
-  //   document.removeEventListener("touchmove", compareMove);
-  //   document.removeEventListener("touchend", compareTouchEnd);
-  // };
-  // const compareMouseEnd = () => {
-  //   document.removeEventListener("mousemove", compareMove);
-  //   document.removeEventListener("mouseup", compareMouseEnd);
-  // };
-  // const compareDown = e => {
-  //   if (e.touches) {
-  //     document.addEventListener("touchmove", compareMove);
-  //     document.addEventListener("touchend", compareTouchEnd);
-  //   } else {
-  //     document.addEventListener("mousemove", compareMove);
-  //     document.addEventListener("mouseup", compareMouseEnd);
-  //   }
-  // };
-
   // useMap(
   //   mapInstance,
   //   map => {
