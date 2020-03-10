@@ -198,7 +198,7 @@ const Landing = () => {
   const dispatch = useDispatch();
   const bookmarks = useSelector(state => state.bookmarks.bookmarks);
   // const bookmarks = null;
-  const { isVisible, toggle } = useModal(false);
+  const [isVisible, toggle] = useModal(false);
   const [redirect, setRedirect] = useState(null);
   const ref = useRef(null);
 
