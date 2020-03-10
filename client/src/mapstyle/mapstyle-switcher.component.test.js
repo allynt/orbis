@@ -1,9 +1,18 @@
 import React from 'react';
+import { Provider } from 'react-redux';
+import configureMockStore from 'redux-mock-store';
+import thunk from 'redux-thunk';
+
 import { render, cleanup, fireEvent } from '@testing-library/react';
+
 import MapStyleSwitcher from './mapstyle-switcher.component';
+// import { selectMapStyle } from '../map/map.actions';
+
+const mockStore = configureMockStore([thunk]);
 
 describe('MapStyle Switcher Component', () => {
-  afterEach(cleanup);
+  const store = mockStore({});
+
   let testee = null;
   let selectMapStyle = null;
   let selectedMapStyle = null;
@@ -33,15 +42,21 @@ describe('MapStyle Switcher Component', () => {
 
   beforeEach(() => {
     selectMapStyle = jest.fn();
+
     selectedMapStyle = MAP_STYLE_DATA[1];
+
     testee = render(
-      <MapStyleSwitcher
-        mapStyles={MAP_STYLE_DATA}
-        selectedMapStyle={selectedMapStyle}
-        selectMapStyle={selectMapStyle}
-      />
+      <Provider store={store}>
+        <MapStyleSwitcher
+          mapStyles={MAP_STYLE_DATA}
+          selectedMapStyle={selectedMapStyle}
+          selectMapStyle={selectMapStyle}
+        />
+      </Provider>
     );
   });
+
+  afterEach(cleanup);
 
   test.each(MAP_STYLE_DATA)('should render style %#', style => {
     expect(testee.getByLabelText(style.title)).toBeInTheDocument();

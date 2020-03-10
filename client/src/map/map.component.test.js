@@ -34,13 +34,11 @@ const renderMap = async ({ is3DMode = false }) => {
     app: {
       config: {
         mapbox_token: 'token',
-        map: {
-          mapStyles: MAPSTYLES,
-          selectedMapStyle: MAPSTYLES[0]
-        }
+        mapStyles: MAPSTYLES
       }
     },
     map: {
+      selectedMapStyle: {},
       is3DMode
     },
     annotations: {

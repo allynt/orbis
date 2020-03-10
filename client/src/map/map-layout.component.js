@@ -72,7 +72,7 @@ const MapLayout = ({ count }) => {
   const overviewMapRefCount = [overviewMapRef].filter(ref => ref.current).length;
   const spyglassMapRefCount = [spyglassMapRef].filter(ref => ref.current).length;
 
-  const mapStyle = useSelector(state => state.app.config.map.selectedMapStyle);
+  const mapStyle = useSelector(state => state.map.selectedMapStyle);
 
   useEffect(() => {
     if (mapRefCount > 1) {

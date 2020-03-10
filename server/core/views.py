@@ -41,6 +41,7 @@ class AppConfigView(APIView):
             ("isVerificationRequired", openapi.Schema(type=openapi.TYPE_BOOLEAN)),
             ("isApprovalRequired", openapi.Schema(type=openapi.TYPE_BOOLEAN)),
             ("dataUrl", openapi.Schema(type=openapi.TYPE_STRING, example="staticdata.testing.or3is.com")),
+            ("mapStyles", openapi.Schema(type=openapi.TYPE_STRING, example="[{'id': 'streets', 'uri': 'mapbox://styles/mapbox/streets-v11', 'title': 'Streets'}]")),
         ))
     )
 
@@ -60,10 +61,7 @@ class AppConfigView(APIView):
             "isVerificationRequired": astrosat_users_settings.ASTROSAT_USERS_REQUIRE_VERIFICATION,
             "isApprovalRequired": astrosat_users_settings.ASTROSAT_USERS_REQUIRE_APPROVAL,
             "dataUrl": settings.DATA_URL,
-            "map": {
-                "mapStyles": settings.MAPBOX_STYLES,
-                "selectedMapStyle": settings.MAPBOX_STYLES[-1] if len(settings.MAPBOX_STYLES) else {}
-            }
+            "mapStyles": settings.MAPBOX_STYLES,
         }
 
         return Response(config)

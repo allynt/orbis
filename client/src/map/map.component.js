@@ -22,7 +22,7 @@ import '@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css';
 // import { setClickedFeature, MULTI_SELECT } from '../factsheet/factsheet.action';
 import { useMapEvent } from './use-map-event.hook';
 import MapStyleSwitcher from '../mapstyle/mapstyle-switcher.component';
-import { MAP_STYLE_SELECTED, setViewport, saveMap } from './map.actions';
+import { selectMapStyle, setViewport, saveMap } from './map.actions';
 import { closeMenu } from '../side-menu/side-menu.actions';
 import { isLoaded } from '../bookmarks/bookmarks.actions';
 
@@ -111,7 +111,7 @@ import layoutStyles from './map-layout.module.css';
 const Map = (
   {
     selectedProperty,
-    style = 'mapbox://styles/thermcert/cjxzywxui08131cry0du0zn4v',
+    style = 'mapbox://styles/mapbox/satellite-v9',
     colorScheme,
     attribution = true,
     geocoder = true,
@@ -133,8 +133,8 @@ const Map = (
   const accessToken = useSelector(state => (state.app.config ? state.app.config.mapbox_token : null));
 
   const [isMapStyleSwitcherVisible, setIsMapStyleSwitcherVisible] = useState(false);
-  const mapStyles = useSelector(state => state.app.config.map.mapStyles);
-  const selectedMapStyle = useSelector(state => state.app.config.map.selectedMapStyle);
+  const mapStyles = useSelector(state => state.app.config.mapStyles);
+  const selectedMapStyle = useSelector(state => state.map.selectedMapStyle);
 
   let selectedMapStyleIcon = null;
   let selectedMapStyleIconWebP = null;
@@ -151,7 +151,6 @@ const Map = (
     selectedMapStyleIcon = satellite;
     selectedMapStyleIconWebP = satelliteWebP;
   }
-  const selectMapStyle = mapStyle => dispatch({ type: MAP_STYLE_SELECTED, mapStyle });
 
   // const labelButtonSelected = useSelector(state => state.annotations.textLabelSelected);
 
