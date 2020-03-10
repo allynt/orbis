@@ -9,7 +9,7 @@ import useModal from '@astrosat/astrosat-ui/dist/containers/use-modal';
 
 import PrivateRoute from './utils/private-route.component';
 
-import { fetchAppConfig, notYetImplemented } from './app.actions';
+import { fetchAppConfig } from './app.actions';
 import { fetchUser } from './accounts/accounts.actions';
 import { fetchSourcesAndDataToken } from './map/map.actions';
 
@@ -43,7 +43,7 @@ const App = () => {
 
   const notYetImplementedDescription = useSelector(state => state.app.notYetImplementedDescription);
   const ref = useRef(null);
-  const { isVisible, toggle } = useModal(notYetImplementedDescription !== null ? true : false);
+  const [isVisible, toggle] = useModal(notYetImplementedDescription !== null ? true : false);
   useEffect(() => {
     if (notYetImplementedDescription !== null) {
       toggle();

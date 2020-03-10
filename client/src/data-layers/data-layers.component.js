@@ -20,7 +20,7 @@ import { removeLayer } from './data-layers-dialog.actions';
 import styles from './data-layers.module.css';
 
 const DataLayers = () => {
-  const { isVisible, toggle } = useModal(false);
+  const [isVisible, toggle] = useModal(false);
   const ref = useRef(null);
   // console.log('IS VISIBLE: ', isVisible);
   const dispatch = useDispatch();
