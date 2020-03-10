@@ -27,7 +27,7 @@ const DATE_FORMAT = 'yyy-MM-dd';
 const DAYS_IN_PAST = 7;
 const dateFormat = 'd MMM yyy';
 
-const resolutions = [
+const tiers = [
   {
     id: 'free',
     label: 'Free images',
@@ -64,8 +64,8 @@ const SatelliteSearchForm = ({
   setVisiblePanel,
   setSelectedSatelliteMoreInfo,
   toggleSatelliteMoreInfoDialog,
-  setSelectedResolutionMoreInfo,
-  toggleResolutionMoreInfoDialog
+  setSelectedTierMoreInfo,
+  toggleTierMoreInfoDialog
 }) => {
   const dispatch = useDispatch();
 
@@ -86,9 +86,9 @@ const SatelliteSearchForm = ({
     }, []);
 
     // Collect all selected tiers into one array of tier ids.
-    const selectedTiers = resolutions.reduce((acc, resolution) => {
+    const selectedTiers = tiers.reduce((acc, tier) => {
       // Check if tier id exists in values object.
-      const key = Object.keys(values).find(key => key === resolution.id);
+      const key = Object.keys(values).find(key => key === tier.id);
       if (key && values[key]) {
         acc = [...acc, key];
       }
@@ -99,7 +99,7 @@ const SatelliteSearchForm = ({
       satellites: selectedSatellites,
       startDate: formatISO(startDate),
       endDate: formatISO(endDate),
-      resolutions: selectedTiers,
+      tiers: selectedTiers,
       geometry
     };
 
@@ -172,26 +172,26 @@ const SatelliteSearchForm = ({
         </div>
 
         <div>
-          <h3>Resolution</h3>
+          <h3>RESOLUTIONS</h3>
 
-          <ul className={styles.resolutions}>
-            {resolutions.map(resolution => {
+          <ul className={styles.tiers}>
+            {tiers.map(tier => {
               return (
-                <li className={styles.resolution} key={resolution.id}>
+                <li className={styles.tier} key={tier.id}>
                   <Checkbox
-                    name={resolution.id}
-                    label={resolution.label}
+                    name={tier.id}
+                    label={tier.label}
                     onChange={handleChange}
-                    checked={values[resolution.id]}
-                    disabled={resolution.id !== 'free'}
+                    checked={values[tier.id]}
+                    disabled={tier.id !== 'free'}
                   />
 
                   <button
                     // onBlur={() => dispatch({ type: SET_IS_INFO_VISIBLE, payload: false })}
                     type="button"
                     onClick={() => {
-                      setSelectedResolutionMoreInfo({ id: 1, description: 'desc' });
-                      toggleResolutionMoreInfoDialog();
+                      setSelectedTierMoreInfo({ id: 1, description: 'desc' });
+                      toggleTierMoreInfoDialog();
                     }}
                   >
                     <InfoIcon className={styles.icon} />
