@@ -25,8 +25,11 @@ import Toolbar from '../toolbar/toolbar.component';
 // import ComparisonMap from './compare-maps.component';
 import OverviewMap from '../mini-map/overview-map.component';
 import SpyglassMap from '../spyglass/spyglass-map.component';
+import { moveCompare } from './map.actions';
 
 import styles from './map-layout.module.css';
+
+const mapstyles = ['mapbox://styles/mapbox/streets-v11', 'mapbox://styles/mapbox/satellite-v9'];
 
 const times = (n, fn) => {
   const result = [];
@@ -124,19 +127,27 @@ const MapLayout = ({ count }) => {
   // const compareRatio = 0.5;
   // const dimensions = { width: 1305, height: 803 };
 
-  const [bounds, setBounds] = useState(null);
-  const [compareRatio, setCompareRatio] = useState(0.5);
-  const [dimensions, setDimensions] = useState({ width: 1305, height: 803 });
+  // const [bounds, setBounds] = useState(null);
+  // const [compareRatio, setCompareRatio] = useState(0.5);
+  // const [dimensions, setDimensions] = useState({ width: 1305, height: 803 });
+  const compareRatio = useSelector(state => state.map.compareRatio);
+  console.log('COMPARE RATIO: ', compareRatio);
+  const [bounds, setBounds] = useState({ top: 0, right: 0, bottom: 0, left: 0, width: 0, height: 0 });
 
   const compareMove = event => {
-    // console.log('COMPARE MOVE: ', event);
     event = event.touches ? event.touches[0] : event;
+    console.log('EVENT: ', event);
     let x = event.clientX - bounds.left;
+    console.log('X: ', x);
     if (x < 0) x = 0;
+    console.log('X2: ', x);
     if (x > bounds.width) x = bounds.width;
+    console.log('X3: ', x);
     const ratio = x / bounds.width;
+    console.log('RATIO: ', ratio);
+    dispatch(moveCompare(ratio));
     // props.layerActions.moveCompare(ratio);
-    setCompareRatio(ratio);
+    // setCompareRatio(ratio);
   };
   const compareTouchEnd = () => {
     document.removeEventListener('touchmove', compareMove);
@@ -163,6 +174,7 @@ const MapLayout = ({ count }) => {
         bounds
         onResize={contentRect => {
           const { width, height } = contentRect.bounds;
+          setBounds(contentRect.bounds);
           // console.log('SETTING DIMENSIONS: ', { width, height });
           // setDimensions({ width, height });
         }}
@@ -185,7 +197,7 @@ const MapLayout = ({ count }) => {
                         height: '100%',
                         top: 0,
                         left: 0,
-                        clip: `rect(0px, 999em, ${dimensions.height}px, ${compareRatio * dimensions.width}px)`
+                        clip: `rect(0px, 999em, 100vh, ${compareRatio * bounds.width}px)`
                       }
                 }
               >
@@ -198,7 +210,8 @@ const MapLayout = ({ count }) => {
                   miniMap={bottomRight(i, mapCount)}
                   spyglass={bottomRight(i, mapCount)}
                   layoutInvalidation={mapCount}
-                  style={mapStyle.uri}
+                  style={mapstyles[i]}
+                  // style={mapStyle.uri} // FIXME:Add me back in, only for dev purposes
                   position={i}
                   sidebar={i === 0}
                   compare={isCompareMode}
@@ -208,7 +221,7 @@ const MapLayout = ({ count }) => {
                 {i === 0 && isCompareMode && (
                   <div
                     className={styles.compare}
-                    style={{ transform: `translate(${compareRatio * dimensions.width}px, 0px` }}
+                    style={{ transform: `translate(${compareRatio * bounds.width}px, 0px` }}
                     onMouseDown={compareDown}
                     onTouchStart={compareDown}
                   >
