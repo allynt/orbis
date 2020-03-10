@@ -126,7 +126,7 @@
 }
 
 .search .satellites,
-.search .resolutions {
+.search .tiers {
   width: 40%;
   margin: 1rem;
 }
@@ -137,7 +137,7 @@
 
 .search .savedSearches,
 .search .satellite,
-.search .resolution {
+.search .tier {
   position: relative;
   display: flex;
   justify-content: space-between;

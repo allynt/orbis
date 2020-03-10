@@ -169,7 +169,7 @@ const satellites = [
     id: 'sentinel-1',
     label: 'Sentinel-1',
     description: 'Some text describing the Sentinel-1 satellite',
-    resolutions: [
+    tiers: [
       {
         id: 'free',
         label: 'Free Images',
@@ -221,7 +221,7 @@ const satellites = [
     id: 'sentinel-2',
     label: 'Sentinel-2',
     description: 'Some text describing the Sentinel-2 satellite.',
-    resolutions: [
+    tiers: [
       {
         id: 'free',
         label: 'Free Images',
@@ -273,7 +273,7 @@ const satellites = [
     id: 'sentinel-3',
     label: 'Sentinel-3',
     description: 'Some text describing the Sentinel-3 satellite.',
-    resolutions: [
+    tiers: [
       {
         id: 'free',
         label: 'Free Images',
@@ -325,7 +325,7 @@ const satellites = [
     id: 'landsat',
     label: 'Landsat',
     description: 'Some text describing the Landsat satellite',
-    resolutions: [
+    tiers: [
       {
         id: 'free',
         label: 'Free Images',
@@ -377,7 +377,7 @@ const satellites = [
     id: 'envisat-meris',
     label: 'Envisat Meris',
     description: 'Some text describing the Envisat Meris satellite',
-    resolutions: [
+    tiers: [
       {
         id: 'free',
         label: 'Free Images',
@@ -429,7 +429,7 @@ const satellites = [
     id: 'modis',
     label: 'MODIS',
     description: 'Some text describing the MODIS satellite',
-    resolutions: [
+    tiers: [
       {
         id: 'free',
         label: 'Free Images',
@@ -460,7 +460,7 @@ const satellites = [
     id: 'proba-v',
     label: 'Proba-V',
     description: 'Some text describing the Proba-V satellite',
-    resolutions: [
+    tiers: [
       {
         id: 'free',
         label: 'Free Images',
@@ -512,7 +512,7 @@ const satellites = [
     id: 'gibs',
     label: 'GIBS',
     description: 'Some text describing the GIBS satellite',
-    resolutions: [
+    tiers: [
       {
         id: 'free',
         label: 'Free Images',
@@ -567,7 +567,7 @@ let savedSatelliteSearches = [
     id: 1,
     name: 'NASA Landsat',
     satellites: ['Landsat'],
-    resolutions: ['free'],
+    tiers: ['free'],
     start_date: '09-22-2018',
     end_date: '11-14-2018',
     aoi: [
@@ -585,7 +585,7 @@ let savedSatelliteSearches = [
     id: 2,
     name: 'Sentinel-2',
     satellites: ['Sentinel-2'],
-    resolutions: ['mid'],
+    tiers: ['mid'],
     start_date: '06-15-2016',
     end_date: '02-12-2016',
     aoi: [
@@ -603,7 +603,7 @@ let savedSatelliteSearches = [
     id: 1,
     name: 'MODIS',
     satellites: ['MODIS'],
-    resolutions: ['high'],
+    tiers: ['high'],
     start_date: '05-19-2017',
     end_date: '12-30-2017',
     aoi: [

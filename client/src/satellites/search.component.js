@@ -32,9 +32,9 @@ const Search = ({ satellites, setVisiblePanel, map }) => {
 
   const ref = useRef(null);
   const [isSatelliteMoreInfoDialogVisible, toggleSatelliteMoreInfoDialog] = useModal(false);
-  const [isResolutionMoreInfoDialogVisible, toggleResolutionMoreInfoDialog] = useModal(false);
+  const [isTierMoreInfoDialogVisible, toggleTierMoreInfoDialog] = useModal(false);
   const [selectedSatelliteMoreInfo, setSelectedSatelliteMoreInfo] = useState(null);
-  const [selectedResolutionMoreInfo, setSelectedResolutionMoreInfo] = useState(null);
+  const [selectedTierMoreInfo, setSelectedTierMoreInfo] = useState(null);
 
   const [isAoiMode, setIsAoiMode] = useState(false);
 
@@ -130,8 +130,8 @@ const Search = ({ satellites, setVisiblePanel, map }) => {
         setVisiblePanel={setVisiblePanel}
         setSelectedSatelliteMoreInfo={setSelectedSatelliteMoreInfo}
         toggleSatelliteMoreInfoDialog={toggleSatelliteMoreInfoDialog}
-        setSelectedResolutionMoreInfo={setSelectedResolutionMoreInfo}
-        toggleResolutionMoreInfoDialog={toggleResolutionMoreInfoDialog}
+        setSelectedTierMoreInfo={setSelectedTierMoreInfo}
+        toggleTierMoreInfoDialog={toggleTierMoreInfoDialog}
       />
       <Button
         classNames={[sideMenuStyles.button]}
@@ -173,9 +173,9 @@ const Search = ({ satellites, setVisiblePanel, map }) => {
       </Dialog>
 
       <Dialog
-        isVisible={isResolutionMoreInfoDialogVisible}
+        isVisible={isTierMoreInfoDialogVisible}
         title="Resolution Info"
-        close={toggleResolutionMoreInfoDialog}
+        close={toggleTierMoreInfoDialog}
         ref={ref}
       >
         <div>
@@ -189,12 +189,12 @@ const Search = ({ satellites, setVisiblePanel, map }) => {
             </thead>
 
             <thead>
-              {selectedResolutionMoreInfo &&
-                Object.keys(selectedResolutionMoreInfo).map(key => {
+              {selectedTierMoreInfo &&
+                Object.keys(selectedTierMoreInfo).map(key => {
                   return (
                     <tr key={key}>
                       <td>{key}:</td>
-                      <td>{selectedResolutionMoreInfo[key]}</td>
+                      <td>{selectedTierMoreInfo[key]}</td>
                     </tr>
                   );
                 })}
