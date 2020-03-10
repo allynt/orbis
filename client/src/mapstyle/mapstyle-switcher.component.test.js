@@ -6,7 +6,6 @@ import thunk from 'redux-thunk';
 import { render, cleanup, fireEvent } from '@testing-library/react';
 
 import MapStyleSwitcher from './mapstyle-switcher.component';
-// import { selectMapStyle } from '../map/map.actions';
 
 const mockStore = configureMockStore([thunk]);
 
@@ -67,13 +66,9 @@ describe('MapStyle Switcher Component', () => {
   });
 
   it('should call the selectMapStyle with the `Dark` Map Style is selected', () => {
-    fireEvent(
-      testee.getByLabelText('Dark'),
-      new MouseEvent('click', {
-        bubbles: true,
-        cancelable: true
-      })
-    );
+    expect(testee.getByLabelText('Dark').checked).toEqual(false);
+
+    fireEvent.click(testee.getByLabelText('Dark'));
 
     expect(selectMapStyle).toHaveBeenCalledWith(MAP_STYLE_DATA[2]);
     expect(selectMapStyle).not.toHaveBeenCalledWith(MAP_STYLE_DATA[1]);

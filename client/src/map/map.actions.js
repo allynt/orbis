@@ -28,7 +28,7 @@ export const SOURCE_DATA_AND_TOKEN_REQUESTED_FAILURE = 'SOURCE_DATA_AND_TOKEN_RE
 export const INFRASTRUCTURE_DATA_REQUESTED_SUCCESS = 'INFRASTRUCTURE_DATA_REQUESTED_SUCCESS';
 export const INFRASTRUCTURE_DATA_REQUESTED_FAILURE = 'INFRASTRUCTURE_DATA_REQUESTED_FAILURE';
 
-export const selectMapStyle = mapStyle => dispatch => dispatch({ type: MAP_STYLE_SELECTED, mapStyle });
+export const selectMapStyle = mapStyle => ({ type: MAP_STYLE_SELECTED, mapStyle });
 
 export const toggleMultiMode = () => async (dispatch, getState) => {
   ReactGA.event({

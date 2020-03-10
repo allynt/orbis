@@ -136,6 +136,8 @@ const Map = (
   const mapStyles = useSelector(state => state.app.config.mapStyles);
   const selectedMapStyle = useSelector(state => state.map.selectedMapStyle);
 
+  const chooseMapStyle = mapStyle => dispatch(selectMapStyle(mapStyle));
+
   let selectedMapStyleIcon = null;
   let selectedMapStyleIconWebP = null;
   if (selectedMapStyle.id === 'dark') {
@@ -598,11 +600,7 @@ const Map = (
         </picture> */}
       </Button>
       {isMapStyleSwitcherVisible && (
-        <MapStyleSwitcher
-          mapStyles={mapStyles || []}
-          selectedMapStyle={selectedMapStyle}
-          selectMapStyle={selectMapStyle}
-        />
+        <MapStyleSwitcher mapStyles={mapStyles} selectedMapStyle={selectedMapStyle} selectMapStyle={chooseMapStyle} />
       )}
 
       {/* {position === 1 && compare && (
