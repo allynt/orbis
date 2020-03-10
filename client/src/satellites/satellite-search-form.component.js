@@ -1,31 +1,19 @@
-import React, { useState } from 'react';
-import PropTypes from 'prop-types';
-
-import { useDispatch } from 'react-redux';
-
-import { subDays, formatISO } from 'date-fns';
-
-import DatePicker from 'react-datepicker';
-import 'react-datepicker/dist/react-datepicker.css';
-
 import Button from '@astrosat/astrosat-ui/dist/buttons/button';
 import Checkbox from '@astrosat/astrosat-ui/dist/forms/checkbox';
 import useForm from '@astrosat/astrosat-ui/dist/forms/use-form';
-
-import validate from './satellite-search-form.validator';
-
-import { setCurrentSearchQuery, searchSatellites } from './satellites.actions';
-
-import { RESULTS } from './satellites-panel.component';
-
+import { formatISO, subDays } from 'date-fns';
+import React, { useState } from 'react';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
+import { useDispatch } from 'react-redux';
 import { ReactComponent as InfoIcon } from './info.svg';
-
-import styles from './search.module.css';
-import sideMenuStyles from '../side-menu/side-menu.module.css';
+import validate from './satellite-search-form.validator';
+import { RESULTS } from './satellites-panel.component';
+import { searchSatellites, setCurrentSearchQuery } from './satellites.actions';
+import styles from './satellite-search-form.module.css';
 
 const DATE_FORMAT = 'yyy-MM-dd';
 const DAYS_IN_PAST = 7;
-const dateFormat = 'd MMM yyy';
 
 const tiers = [
   {
@@ -46,7 +34,7 @@ const tiers = [
 ];
 
 const CustomInput = React.forwardRef(({ value, onClick }, ref) => (
-  <button type="button" className={styles.picker} onClick={onClick}>
+  <button type="button" className={styles.datePicker} onClick={onClick}>
     {value}
   </button>
 ));
@@ -57,6 +45,13 @@ const defaults = {
     free: true
   }
 };
+
+const FormSection = ({ title, children }) => (
+  <div className={styles.formSection}>
+    <h3>{title}</h3>
+    {children}
+  </div>
+);
 
 const SatelliteSearchForm = ({
   satellites,
@@ -110,13 +105,11 @@ const SatelliteSearchForm = ({
 
   return (
     <form onSubmit={handleSubmit}>
-      <div className={styles.filters}>
-        <div>
-          <h3>SEARCH</h3>
-
-          <ul className={styles.satellites}>
+      <div>
+        <FormSection title="Data Source">
+          <ul className={styles.checkboxList}>
             {satellites.map(satellite => (
-              <li key={satellite.label} className={styles.satellite}>
+              <li key={satellite.label} className={styles.checkboxListItem}>
                 <Checkbox
                   name={satellite.id}
                   label={satellite.label}
@@ -133,51 +126,41 @@ const SatelliteSearchForm = ({
                     toggleSatelliteMoreInfoDialog();
                   }}
                 >
-                  <InfoIcon className={styles.icon} />
+                  <InfoIcon />
                 </button>
               </li>
             ))}
           </ul>
-        </div>
-
-        <div>
-          <h3>TIME RANGE</h3>
-
-          <div className={styles.options}>
-            <DatePicker
-              name="startDate"
-              dateFormat={DATE_FORMAT}
-              selected={startDate}
-              onChange={date => setStartDate(date)}
-              dateFormat={dateFormat}
-              customInput={<CustomInput />}
-              selectsStart
-              startDate={startDate}
-              endDate={endDate}
-            />
-            <span> to </span>
-            <DatePicker
-              name="endDate"
-              dateFormat={DATE_FORMAT}
-              selected={endDate}
-              onChange={date => setEndDate(date)}
-              dateFormat={dateFormat}
-              customInput={<CustomInput />}
-              selectsEnd
-              startDate={startDate}
-              endDate={endDate}
-              minDate={startDate}
-            />
-          </div>
-        </div>
-
-        <div>
-          <h3>RESOLUTIONS</h3>
-
-          <ul className={styles.tiers}>
+        </FormSection>
+        <FormSection title="Date">
+          <DatePicker
+            name="startDate"
+            dateFormat={DATE_FORMAT}
+            selected={startDate}
+            onChange={date => setStartDate(date)}
+            customInput={<CustomInput />}
+            selectsStart
+            startDate={startDate}
+            endDate={endDate}
+          />
+          <span> to </span>
+          <DatePicker
+            name="endDate"
+            dateFormat={DATE_FORMAT}
+            selected={endDate}
+            onChange={date => setEndDate(date)}
+            customInput={<CustomInput />}
+            selectsEnd
+            startDate={startDate}
+            endDate={endDate}
+            minDate={startDate}
+          />
+        </FormSection>
+        <FormSection title="Resolutions">
+          <ul className={styles.checkboxList}>
             {tiers.map(tier => {
               return (
-                <li className={styles.tier} key={tier.id}>
+                <li key={tier.id} className={styles.checkboxListItem}>
                   <Checkbox
                     name={tier.id}
                     label={tier.label}
@@ -187,24 +170,23 @@ const SatelliteSearchForm = ({
                   />
 
                   <button
-                    // onBlur={() => dispatch({ type: SET_IS_INFO_VISIBLE, payload: false })}
                     type="button"
                     onClick={() => {
                       setSelectedTierMoreInfo({ id: 1, description: 'desc' });
                       toggleTierMoreInfoDialog();
                     }}
                   >
-                    <InfoIcon className={styles.icon} />
+                    <InfoIcon />
                   </button>
                 </li>
               );
             })}
           </ul>
-        </div>
+        </FormSection>
       </div>
 
-      <div className={sideMenuStyles.buttons}>
-        <Button type="submit" theme="primary" classNames={[sideMenuStyles.button]}>
+      <div>
+        <Button type="submit" theme="primary">
           Search
         </Button>
       </div>

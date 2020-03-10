@@ -192,11 +192,6 @@
   fill: #fff;
 }
 
-.picker {
-  border-bottom: 1px solid var(--primary-background-color);
-  margin: 0 0.25rem;
-}
-
 .options span {
   margin: 0 0.25rem;
 }
