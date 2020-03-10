@@ -22,8 +22,8 @@ TEST_AOI_GEOMETRY = GEOSGeometry(TEST_AOI_WKT)
 TEST_AOI_QUERY_PARAM = SimplifiedGeometryField(
     geometry_class=TEST_AOI_GEOMETRY.__class__
 ).to_representation(TEST_AOI_GEOMETRY)
-TEST_START_DATE = datetime.date(2016, 12, 7)
-TEST_END_DATE = datetime.date(2016, 12, 10)
+TEST_START_DATE = datetime.datetime(2016, 12, 7)
+TEST_END_DATE = datetime.datetime(2016, 12, 10)
 
 
 @pytest.mark.django_db
@@ -226,28 +226,22 @@ class TestSatelliteResults:
 
 
 # @pytest.mark.django_db
-# def test_run_query(self, user, api_client):
+# def test_run_query(user, api_client):
+
+#     tiers = [SatelliteTierFactory(name=tier) for tier in ["free"]]
+#     satellites = [SatelliteFactory(satellite_id=satellite) for satellite in ["sentinel-2"]]
+
+#     search_data = {
+#         "satellites": ["sentinel-2"],
+#         "tiers": ["free"],
+#         "start_date": TEST_START_DATE.isoformat(),
+#         "end_date": TEST_END_DATE.isoformat(),
+#         "aoi": TEST_AOI_QUERY_PARAM,
+#     }
 
 #     client = api_client(user)
 
-#     resolution = SatelliteResolutionFactory(name="free")
-#     for satellite_id in ["sentinel-2"]:
-#         SatelliteFactory(satellite_id=satellite_id, resolutions=[resolution])
-
-#     query_params = urllib.parse.urlencode(
-#         {
-#             "satellites": ",".join(
-#                 Satellite.objects.values_list("satellite_id", flat=True)
-#             ),
-#             "resolutions": ",".join(
-#                 SatelliteResolution.objects.values_list("name", flat=True)
-#             ),
-#             "start_date": TEST_START_DATE,
-#             "end_date": TEST_END_DATE,
-#             "aoi": TEST_AOI_QUERY_PARAM,
-#         }
-#     )
-#     url = f"{reverse('satellite-run-query')}?{query_params}"
-#     response = client.get(url)
+#     url = reverse("satellite-run-query")
+#     response = client.post(url, search_data, content_type="application/json")
 
 #     assert status.is_success(response.status_code)
