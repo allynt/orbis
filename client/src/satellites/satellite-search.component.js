@@ -98,7 +98,7 @@ const SatelliteSearch = ({ satellites, setVisiblePanel, map }) => {
       {savedSearches ? (
         <div>
           <Detail title="Saved Searches">
-            <SavedSearchList searches={savedSearches} />
+            <SavedSearchList savedSearches={savedSearches} />
           </Detail>
         </div>
       ) : (
