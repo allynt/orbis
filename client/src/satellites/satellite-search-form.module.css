@@ -1,5 +1,22 @@
+@value dashed-border: 1px dashed #42474b;
+
+.form {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.formSections {
+  flex-grow: 1;
+}
+
 .formSection {
-  padding: 1.25rem;
+  padding: 1.25rem 0;
+  border-top: dashed-border;
+}
+
+.formSection:last-child {
+  border-bottom: dashed-border;
 }
 
 .formSection h3 {
@@ -14,14 +31,67 @@
 }
 
 .checkboxList {
+  margin-bottom: 0;
 }
 
-.checkboxListItem {
+.checkboxList .checkboxListItem {
   margin: 0;
   height: 1.25rem;
+  display: flex;
+  font-family: 'Open Sans';
+  font-size: 16px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.25;
+  letter-spacing: normal;
+  color: #9ea7ac;
 }
 
-.datePicker {
-  border-bottom: 1px solid var(--primary-background-color);
+.checkboxList .checkboxListItem:not(:last-child) {
+  margin-bottom: 1rem;
+}
+
+.checkboxListItem .infoButton {
+  margin-left: 1.25rem;
+}
+
+.infoButton .infoIcon {
+  width: 0.75rem;
+  fill: #fff;
+}
+
+.datePickers {
+  display: flex;
+  align-items: center;
+}
+
+.datePickers .datePicker {
+  border-bottom: 1px solid #fff;
   margin: 0 0.25rem;
+  font-family: 'Open Sans';
+  font-size: 16px;
+  font-weight: 600;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: normal;
+}
+
+.datePickers .datePickerDivider {
+  height: 1px;
+  width: 1rem;
+  border: 1px solid white;
+  margin: 0 1.25rem;
+}
+
+.searchButtonContainer {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-top: 1.25rem;
+}
+
+.searchButtonContainer .searchButton {
+  width: 70%;
 }

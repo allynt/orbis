@@ -11,6 +11,7 @@ import validate from './satellite-search-form.validator';
 import { RESULTS } from './satellites-panel.component';
 import { searchSatellites, setCurrentSearchQuery } from './satellites.actions';
 import styles from './satellite-search-form.module.css';
+import sideMenuStyles from '../side-menu/side-menu.module.css';
 
 const DATE_FORMAT = 'yyy-MM-dd';
 const DAYS_IN_PAST = 7;
@@ -33,7 +34,7 @@ const tiers = [
   }
 ];
 
-const CustomInput = React.forwardRef(({ value, onClick }, ref) => (
+const CustomDatePicker = React.forwardRef(({ value, onClick }, ref) => (
   <button type="button" className={styles.datePicker} onClick={onClick}>
     {value}
   </button>
@@ -67,7 +68,7 @@ const SatelliteSearchForm = ({
   const [startDate, setStartDate] = useState(subDays(new Date(), DAYS_IN_PAST));
   const [endDate, setEndDate] = useState(new Date());
 
-  const { handleChange, handleSubmit, values, errors } = useForm(onSubmit, validate, defaults);
+  const { handleChange, handleSubmit, values } = useForm(onSubmit, validate, defaults);
 
   function onSubmit() {
     // Collect all selected satellites into one array of satellite ids.
@@ -104,8 +105,8 @@ const SatelliteSearchForm = ({
   }
 
   return (
-    <form onSubmit={handleSubmit}>
-      <div>
+    <form className={styles.form} onSubmit={handleSubmit}>
+      <div className={styles.formSections}>
         <FormSection title="Data Source">
           <ul className={styles.checkboxList}>
             {satellites.map(satellite => (
@@ -119,6 +120,7 @@ const SatelliteSearchForm = ({
                 />
 
                 <button
+                  className={styles.infoButton}
                   type="button"
                   onClick={() => {
                     console.log('Selected SATELLITE: ', satellite);
@@ -126,37 +128,39 @@ const SatelliteSearchForm = ({
                     toggleSatelliteMoreInfoDialog();
                   }}
                 >
-                  <InfoIcon />
+                  <InfoIcon className={styles.infoIcon} />
                 </button>
               </li>
             ))}
           </ul>
         </FormSection>
         <FormSection title="Date">
-          <DatePicker
-            name="startDate"
-            dateFormat={DATE_FORMAT}
-            selected={startDate}
-            onChange={date => setStartDate(date)}
-            customInput={<CustomInput />}
-            selectsStart
-            startDate={startDate}
-            endDate={endDate}
-          />
-          <span> to </span>
-          <DatePicker
-            name="endDate"
-            dateFormat={DATE_FORMAT}
-            selected={endDate}
-            onChange={date => setEndDate(date)}
-            customInput={<CustomInput />}
-            selectsEnd
-            startDate={startDate}
-            endDate={endDate}
-            minDate={startDate}
-          />
+          <div className={styles.datePickers}>
+            <DatePicker
+              name="startDate"
+              dateFormat={DATE_FORMAT}
+              selected={startDate}
+              onChange={date => setStartDate(date)}
+              customInput={<CustomDatePicker />}
+              selectsStart
+              startDate={startDate}
+              endDate={endDate}
+            />
+            <div className={styles.datePickerDivider} />
+            <DatePicker
+              name="endDate"
+              dateFormat={DATE_FORMAT}
+              selected={endDate}
+              onChange={date => setEndDate(date)}
+              customInput={<CustomDatePicker />}
+              selectsEnd
+              startDate={startDate}
+              endDate={endDate}
+              minDate={startDate}
+            />
+          </div>
         </FormSection>
-        <FormSection title="Resolutions">
+        <FormSection title="Resolution">
           <ul className={styles.checkboxList}>
             {tiers.map(tier => {
               return (
@@ -168,15 +172,15 @@ const SatelliteSearchForm = ({
                     checked={values[tier.id]}
                     disabled={tier.id !== 'free'}
                   />
-
                   <button
+                    className={styles.infoButton}
                     type="button"
                     onClick={() => {
                       setSelectedTierMoreInfo({ id: 1, description: 'desc' });
                       toggleTierMoreInfoDialog();
                     }}
                   >
-                    <InfoIcon />
+                    <InfoIcon className={styles.infoIcon} />
                   </button>
                 </li>
               );
@@ -184,9 +188,8 @@ const SatelliteSearchForm = ({
           </ul>
         </FormSection>
       </div>
-
-      <div>
-        <Button type="submit" theme="primary">
+      <div className={sideMenuStyles.buttons}>
+        <Button classNames={[sideMenuStyles.button]} type="submit" theme="primary">
           Search
         </Button>
       </div>

@@ -133,14 +133,15 @@ const Search = ({ satellites, setVisiblePanel, map }) => {
         setSelectedTierMoreInfo={setSelectedTierMoreInfo}
         toggleTierMoreInfoDialog={toggleTierMoreInfoDialog}
       />
-      <Button
-        classNames={[sideMenuStyles.button]}
-        theme="tertiary"
-        onClick={() => console.log('Task Satellite Button Clicked')}
-      >
-        Task Satellite
-      </Button>
-
+      <div className={sideMenuStyles.buttons}>
+        <Button
+          classNames={[sideMenuStyles.button]}
+          theme="tertiary"
+          onClick={() => console.log('Task Satellite Button Clicked')}
+        >
+          Task Satellite
+        </Button>
+      </div>
       <Dialog
         isVisible={isSatelliteMoreInfoDialogVisible}
         title="Satellite Info"
