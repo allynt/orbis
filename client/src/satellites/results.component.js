@@ -37,8 +37,8 @@ const Results = ({ scenes, setVisiblePanel, selectScene }) => {
 
   return (
     scenes && (
-      <div ref={ref}>
-        <div className={styles.options}>
+      <div className={styles.options} ref={ref}>
+        <div>
           <h3>CLOUD COVER %:</h3>
 
           <Slider min={0} max={100} values={cloudCoverPercentage} onChange={value => setCloudCoverPercentage(value)} />
@@ -66,13 +66,15 @@ const Results = ({ scenes, setVisiblePanel, selectScene }) => {
                     />
 
                     <div
-                      className={styles.scene}
+                      className={styles.sceneContent}
                       onClick={() => {
                         dispatch(selectScene(scene));
                         setVisiblePanel(VISUALISATION);
                       }}
                     >
-                      <img className={styles.thumbnail} src={scene.thumbnail} alt="Thumbnail" />
+                      <div className={styles.thumbContainer}>
+                        <img className={styles.thumbnail} src={scene.thumbnail} alt="Thumbnail" />
+                      </div>
                       <ul className={styles.metadata}>
                         <li>{format(parseISO(scene.properties.created), 'dd-MM-yyyy')}</li>
                         <li>{format(parseISO(scene.properties.created), 'kk:mm:ss')} UTC</li>
@@ -95,23 +97,22 @@ const Results = ({ scenes, setVisiblePanel, selectScene }) => {
                         <span>More info</span>
                       </div>
 
-                      <div>
+                      <div className={styles.freeProductContainer}>
                         {scene.properties.tier === 'free' && <span className={styles.freeProduct}>Free Product</span>}
                       </div>
-                      <Button theme="tertiary" onClick={() => console.log('Download SCENE: ', scene)}>
-                        Download
-                      </Button>
                     </div>
+                    <Button theme="tertiary" onClick={() => console.log('Download SCENE: ', scene)}>
+                      Download
+                    </Button>
                   </li>
                 );
               })}
           </ul>
-
-          <div className={sideMenuStyles.buttons}>
-            <Button classNames={[sideMenuStyles.button]} theme="primary" onClick={() => toggleSaveDialog()}>
-              Save Search
-            </Button>
-          </div>
+        </div>
+        <div className={sideMenuStyles.buttons}>
+          <Button classNames={[sideMenuStyles.button]} theme="primary" onClick={() => toggleSaveDialog()}>
+            Save Search
+          </Button>
         </div>
 
         <Dialog isVisible={isSaveDialogVisible} title="Name Search" close={toggleSaveDialog} ref={ref}>
