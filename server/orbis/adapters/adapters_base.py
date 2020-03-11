@@ -82,7 +82,7 @@ class BaseSatelliteAdapter(object, metaclass=SatelliteAdapterMetaClass):
     def setup(self, *args, **kwargs):
         self.query_params = kwargs
 
-    def run_satellite_query(self, **kwargs):
+    def run_query(self, **kwargs):
         raise NotImplementedError(
-            f"{self.__class__} must implement the 'run_satellite_query' method."
+            f"{self.__class__} must implement the 'run_query' method."
         )

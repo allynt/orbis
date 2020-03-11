@@ -18,7 +18,10 @@ https://scihub.copernicus.eu/twiki/do/view/SciHubUserGuide/FullTextSearch?redire
 class Sentinel2Adapter(BaseSatelliteAdapter):
 
     satellite_id = "sentinel-2"
-    tier_names = ["free"]
+    tiers_fns = {
+        # a map of supported tier names to query fns
+        "free": "run_free_query",
+    }
     query_params = {}
     api = None
 
@@ -28,38 +31,49 @@ class Sentinel2Adapter(BaseSatelliteAdapter):
             settings.COPERNICUS_PASSWORD,
         )
 
-    def run_satellite_query(self):
+    def run_free_query(self, tier):
+
+        assert tier.name == "free"
+
+        products = self.api.query(
+            area=self.query_params["aoi"].wkt,
+            area_relation="Intersects",
+            platformname="Sentinel-2",
+            order_by="ingestiondate",
+            offset=0,
+            date=(self.query_params["start_date"], self.query_params["end_date"]),
+        )
+
+        results = [
+            SatelliteResult(
+                # set some attrs based on the adapter...
+                satellite=self.query_params["satellite"],
+                owner=self.query_params["owner"],
+                tier=tier,
+                # set some attrs explicitly from the query result...
+                scene_id=product.pop("identifier"),
+                footprint=product.pop("footprint"),
+                cloud_cover=product.pop("cloudcoverpercentage"),
+                # store everything else as the "properties" attr...
+                properties=product,
+            )
+            for _, product in products.items()
+        ]
+
+        return results
+
+    def run_query(self):
 
         results = []
 
         for tier in self.query_params["tiers"]:
-            if tier.name in self.tier_names:
 
-                products = self.api.query(
-                    area=self.query_params["aoi"].wkt,
-                    area_relation="Intersects",
-                    platformname="Sentinel-2",
-                    order_by="ingestiondate",
-                    offset=0,
-                    date=(self.query_params["start_date"], self.query_params["end_date"]),
-                )
+            query_fn = self.tiers_fns.get(tier.name, None)
+            if query_fn is not None:
+                results += getattr(self, query_fn)(tier)
 
-                results += [
-                    SatelliteResult(
-                        # set some attrs based on the adapter...
-                        satellite=self.query_params["satellite"],
-                        owner=self.query_params["owner"],
-                        tier=tier,
-                        # set some attrs explicitly from the query result...
-                        scene_id=product.pop("identifier"),
-                        footprint=product.pop("footprint"),
-                        cloud_cover=product.pop("cloudcoverpercentage"),
-                        # store everything else as the "properties" attr...
-                        properties=product,
-                    )
-                    for _, product in products.items()
-                ]
         return results
+
 
 # sample web request:
 # https://scihub.copernicus.eu/dhus/api/stub/products?filter=
