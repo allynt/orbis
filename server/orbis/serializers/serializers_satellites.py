@@ -49,7 +49,7 @@ class SimplifiedGeometryField(serializers.Field):
         try:
             return self.geometry_class(data)
         except TypeError as e:
-            raise ValidationError(str(e))
+            raise serializers.ValidationError(str(e))
 
 
 ##############

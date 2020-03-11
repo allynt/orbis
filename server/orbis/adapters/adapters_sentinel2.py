@@ -18,6 +18,10 @@ https://scihub.copernicus.eu/twiki/do/view/SciHubUserGuide/FullTextSearch?redire
 class Sentinel2Adapter(BaseSatelliteAdapter):
 
     satellite_id = "sentinel-2"
+    tiers_fns = {
+        # a map of supported tier names to query fns
+        "free": "run_free_satellite_query",
+    }
     query_params = {}
     api = None
 
@@ -27,7 +31,10 @@ class Sentinel2Adapter(BaseSatelliteAdapter):
             settings.COPERNICUS_PASSWORD,
         )
 
-    def run_satellite_query(self):
+    def run_free_satellite_query(self, tier):
+
+        assert tier.name == "free"
+
         products = self.api.query(
             area=self.query_params["aoi"].wkt,
             area_relation="Intersects",
@@ -42,7 +49,7 @@ class Sentinel2Adapter(BaseSatelliteAdapter):
                 # set some attrs based on the adapter...
                 satellite=self.query_params["satellite"],
                 owner=self.query_params["owner"],
-                tier=self.query_params["tier"],
+                tier=tier,
                 # set some attrs explicitly from the query result...
                 scene_id=product.pop("identifier"),
                 footprint=product.pop("footprint"),
@@ -54,6 +61,19 @@ class Sentinel2Adapter(BaseSatelliteAdapter):
         ]
 
         return results
+
+    def run_satellite_query(self):
+
+        results = []
+
+        for tier in self.query_params["tiers"]:
+
+            query_fn = self.tiers_fns.get(tier.name, None)
+            if query_fn is not None:
+                results += getattr(self, query_fn)(tier)
+
+        return results
+
 
 # sample web request:
 # https://scihub.copernicus.eu/dhus/api/stub/products?filter=

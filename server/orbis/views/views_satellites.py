@@ -1,3 +1,4 @@
+from collections import OrderedDict
 import functools
 
 from botocore.exceptions import BotoCoreError
@@ -171,39 +172,37 @@ class SatelliteResultViewSet(
 #####################
 
 
-_satellite_query_params = [
-    # (this re-uses some useful test values)
-    openapi.Parameter("satellites", openapi.IN_QUERY, type=openapi.TYPE_STRING, default="sentinel-2"),
-    openapi.Parameter("tiers", openapi.IN_QUERY, type=openapi.TYPE_STRING, default="free"),
-    openapi.Parameter("start_date", openapi.IN_QUERY, type=openapi.TYPE_STRING, format=openapi.FORMAT_DATETIME, default=str(TEST_START_DATE)),
-    openapi.Parameter("end_date", openapi.IN_QUERY, type=openapi.TYPE_STRING, format=openapi.FORMAT_DATETIME, default=str(TEST_END_DATE)),
-    openapi.Parameter("aoi", openapi.IN_QUERY, type=openapi.TYPE_STRING, default=str(TEST_AOI_QUERY_PARAM)),
-]
-
+_satellite_query_schema = openapi.Schema(
+    type=openapi.TYPE_OBJECT,
+    properties=OrderedDict((
+        # (this re-uses some useful test values)
+        ("satellites", openapi.Schema(type=openapi.TYPE_ARRAY, items=openapi.Schema(type=openapi.TYPE_STRING, example="sentinel-2"))),
+        ("tiers", openapi.Schema(type=openapi.TYPE_ARRAY, items=openapi.Schema(type=openapi.TYPE_STRING, example="free"))),
+        ("start_date", openapi.Schema(type=openapi.TYPE_STRING, format=openapi.FORMAT_DATETIME, example=TEST_START_DATE.isoformat())),
+        ("end_date", openapi.Schema(type=openapi.TYPE_STRING, format=openapi.FORMAT_DATETIME, example=TEST_END_DATE.isoformat())),
+        ("aoi", openapi.Schema(type=openapi.TYPE_ARRAY, items=openapi.Schema(type=openapi.TYPE_ARRAY, items=openapi.Schema(type=openapi.TYPE_NUMBER)), example=TEST_AOI_QUERY_PARAM)),
+    ))
+)
 
 @swagger_auto_schema(
-    method="get",
-    manual_parameters=_satellite_query_params,
+    method="post",
+    request_body=_satellite_query_schema,
     responses={status.HTTP_200_OK: SatelliteResultSerializer(many=True)},
 )
 @permission_classes([IsAuthenticated])
-@api_view(["GET"])
+@api_view(["POST"])
 def run_satellite_query(request):
 
     search_results = []
 
-    # build a search out of the query_params
+    # build a search out of the request data object
     # (and a bit of inference)...
-    query_params = request.query_params.dict()
-    query_params.update(
-        {
-            "name": "current-query",
-            "owner": request.user.pk,
-            "satellites": query_params["satellites"].split(","),
-            "tiers": query_params["tiers"].split(","),
-        }
-    )
-    search_serializer = SatelliteSearchSerializer(data=query_params)
+    search_data = dict(request.data)
+    search_data.update({
+        "name": "current-query",
+        "owner": request.user.pk,
+    })
+    search_serializer = SatelliteSearchSerializer(data=search_data)
     if not search_serializer.is_valid():
         raise APIException(search_serializer.errors)
     # (NOTE: django doesn't let you instanciate an unsaved model w/ m2m fields)
