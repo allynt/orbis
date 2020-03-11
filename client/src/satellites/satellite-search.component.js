@@ -15,7 +15,7 @@ import SavedSearchList from './saved-search-list.component';
 const AOI_DRAW_MODE = 'RectangleMode';
 const BBOX_NO_OF_POINTS = 5;
 
-const Search = ({ satellites, setVisiblePanel, map }) => {
+const SatelliteSearch = ({ satellites, setVisiblePanel, map }) => {
   const dispatch = useDispatch();
 
   const [geometry, setGeometry] = useState(null);
@@ -95,25 +95,20 @@ const Search = ({ satellites, setVisiblePanel, map }) => {
 
   return (
     <div className={styles.search} ref={ref}>
-      <div>
-        {savedSearches ? (
-          <div>
-            <Detail title="Saved Searches">
-              <SavedSearchList searches={savedSearches} />
-            </Detail>
-          </div>
-        ) : (
-          <p>There are no saved AOI yet</p>
-        )}
-
-        <div className={styles.noSavedSearches}>
-          <div className={styles.drawAOI} onClick={() => setIsAoiMode(true)}>
-            <DrawAoiIcon className={styles.drawAOIIcon} />
-            <Button theme="link" classNames={[styles.AOIButton]}>
-              Draw AOI
-            </Button>
-          </div>
+      {savedSearches ? (
+        <div>
+          <Detail title="Saved Searches">
+            <SavedSearchList searches={savedSearches} />
+          </Detail>
         </div>
+      ) : (
+        <p>There are no saved AOI yet</p>
+      )}
+      <div className={styles.drawAOI} onClick={() => setIsAoiMode(true)}>
+        <DrawAoiIcon className={styles.icon} />
+        <Button theme="link" classNames={[styles.button]}>
+          Draw AOI
+        </Button>
       </div>
 
       <SatelliteSearchForm
@@ -199,6 +194,6 @@ const Search = ({ satellites, setVisiblePanel, map }) => {
   );
 };
 
-Search.propTypes = {};
+SatelliteSearch.propTypes = {};
 
-export default Search;
+export default SatelliteSearch;
