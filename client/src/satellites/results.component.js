@@ -5,16 +5,17 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import parseISO from 'date-fns/parseISO';
 import format from 'date-fns/format';
+import { DATE_FORMAT, TIME_FORMAT } from './satellite.constants';
 
 import Slider from '@astrosat/astrosat-ui/dist/forms/slider';
 import Button from '@astrosat/astrosat-ui/dist/buttons/button';
 import Dialog from '@astrosat/astrosat-ui/dist/containers/dialog';
 import useModal from '@astrosat/astrosat-ui/dist/containers/use-modal';
+import InfoIcon from '@astrosat/astrosat-ui/dist/icons/info-icon';
 
 import { saveSatelliteSearch, pinScene } from './satellites.actions';
 
 // FIXME: We already have an info icon in the library, why not use it?
-import { ReactComponent as InfoIcon } from './info.svg';
 import { ReactComponent as PinIcon } from './pin.svg';
 
 import { VISUALISATION } from './satellites-panel.component';
@@ -76,8 +77,8 @@ const Results = ({ scenes, setVisiblePanel, selectScene }) => {
                         <img className={styles.thumbnail} src={scene.thumbnail} alt="Thumbnail" />
                       </div>
                       <ul className={styles.metadata}>
-                        <li>{format(parseISO(scene.properties.created), 'dd-MM-yyyy')}</li>
-                        <li>{format(parseISO(scene.properties.created), 'kk:mm:ss')} UTC</li>
+                        <li>{format(parseISO(scene.properties.created), DATE_FORMAT)}</li>
+                        <li>{format(parseISO(scene.properties.created), TIME_FORMAT)} UTC</li>
                         <li>{scene.properties.cloudCoverAsPercentage} %</li>
                         <li>{scene.properties.crs}</li>
                         <li>{scene.properties.label}</li>
@@ -93,7 +94,7 @@ const Results = ({ scenes, setVisiblePanel, selectScene }) => {
                           setSelectedMoreInfo({ id: scene.id, description: scene.properties.moreInfo.key });
                         }}
                       >
-                        <InfoIcon className={styles.moreInfoIcon} />
+                        <InfoIcon classes={[styles.moreInfoIcon]} />
                         <span>More info</span>
                       </div>
 
