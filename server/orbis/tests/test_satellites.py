@@ -225,6 +225,8 @@ class TestSatelliteResults:
         assert len(response.json()) == 0
 
 
+# NOTE: THIS TEST IS COMMENTED OUT SO THAT I DON'T INTERACT W/ ANY REMOTE SATELLITE APIS
+# IN THEORY I SHOULD MOCK THOSE APIS DURING TESTING
 # @pytest.mark.django_db
 # def test_run_query(user, api_client):
 

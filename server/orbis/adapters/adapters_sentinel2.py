@@ -20,7 +20,7 @@ class Sentinel2Adapter(BaseSatelliteAdapter):
     satellite_id = "sentinel-2"
     tiers_fns = {
         # a map of supported tier names to query fns
-        "free": "run_free_query",
+        "free": "run_free_satellite_query",
     }
     query_params = {}
     api = None
@@ -31,7 +31,7 @@ class Sentinel2Adapter(BaseSatelliteAdapter):
             settings.COPERNICUS_PASSWORD,
         )
 
-    def run_free_query(self, tier):
+    def run_free_satellite_query(self, tier):
 
         assert tier.name == "free"
 
@@ -62,7 +62,7 @@ class Sentinel2Adapter(BaseSatelliteAdapter):
 
         return results
 
-    def run_query(self):
+    def run_satellite_query(self):
 
         results = []
 

@@ -212,7 +212,7 @@ def run_satellite_query(request):
     for satellite in search_serializer.validated_data["satellites"]:
         adapter = SATELLITE_ADAPTER_REGISTRY[satellite]
         adapter.setup(**search_serializer.validated_data, satellite=satellite)
-        search_results += adapter.run_query()
+        search_results += adapter.run_satellite_query()
 
     # return a list of results...
     results_serializer = SatelliteResultSerializer(search_results, many=True)
