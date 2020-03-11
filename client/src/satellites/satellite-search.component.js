@@ -1,24 +1,16 @@
-import React, { useState, useEffect, useRef, useReducer } from 'react';
-import PropTypes from 'prop-types';
-
-import { useDispatch, useSelector } from 'react-redux';
-
-import Detail from '@astrosat/astrosat-ui/dist/containers/detail';
 import Button from '@astrosat/astrosat-ui/dist/buttons/button';
+import Detail from '@astrosat/astrosat-ui/dist/containers/detail';
 import Dialog from '@astrosat/astrosat-ui/dist/containers/dialog';
 import useModal from '@astrosat/astrosat-ui/dist/containers/use-modal';
-
-import SavedSearchList from './saved-search-list.component';
-
-import SatelliteSearchForm from './satellite-search-form.component';
-
+import React, { useEffect, useRef, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import useMap from '../map/use-map.hook';
-import { fetchSavedSatellites } from './satellites.actions';
-
-import { ReactComponent as DrawAoiIcon } from './draw-aoi.svg';
-
-import styles from './search.module.css';
 import sideMenuStyles from '../side-menu/side-menu.module.css';
+import { ReactComponent as DrawAoiIcon } from './draw-aoi.svg';
+import SatelliteSearchForm from './satellite-search-form.component';
+import styles from './satellite-search.module.css';
+import { fetchSavedSatellites } from './satellites.actions';
+import SavedSearchList from './saved-search-list.component';
 
 const AOI_DRAW_MODE = 'RectangleMode';
 const BBOX_NO_OF_POINTS = 5;

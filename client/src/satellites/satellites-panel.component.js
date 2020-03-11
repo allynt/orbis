@@ -7,7 +7,7 @@ import Button from '@astrosat/astrosat-ui/dist/buttons/button';
 
 import { fetchSatellites, selectScene, fetchVisualisations } from './satellites.actions';
 
-import Search from './search.component';
+import Search from './satellite-search.component';
 import Results from './results.component';
 import Visualisation from './visualisation.component';
 import PinnedScenes from './compare-pins.component';
