@@ -21,15 +21,23 @@ const defaultProps = {
   position: 1
 };
 
+const MAPSTYLES = [
+  {
+    id: 'satellite',
+    uri: 'mapbox://styles/mapbox/satellite-v9',
+    title: 'Satellite'
+  }
+];
+
 const renderMap = async ({ is3DMode = false }) => {
   const store = mockStore({
     app: {
       config: {
-        mapbox_token: 'token'
+        mapbox_token: 'token',
+        mapStyles: MAPSTYLES
       }
     },
     map: {
-      mapStyles: ['light'],
       selectedMapStyle: {},
       is3DMode
     },

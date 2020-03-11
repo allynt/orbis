@@ -11,6 +11,19 @@ jest.mock('mapbox-gl');
 
 const mockStore = configureMockStore([thunk]);
 
+const MAPSTYLES = [
+  {
+    id: 'light',
+    uri: 'mapbox://styles/mapbox/light-v10',
+    title: 'Light'
+  },
+  {
+    id: 'dark',
+    uri: 'mapbox://styles/mapbox/dark-v10',
+    title: 'Dark'
+  }
+];
+
 describe('Map Layout Component', () => {
   beforeEach(() => {
     fetch.resetMocks();
@@ -24,12 +37,13 @@ describe('Map Layout Component', () => {
     const store = mockStore({
       app: {
         config: {
-          mapbox_token: 'token'
+          mapbox_token: 'token',
+          mapStyles: MAPSTYLES
         }
       },
       map: {
-        selectedMapStyle: {},
         isMultiMapMode: false,
+        selectedMapStyle: MAPSTYLES[0],
         dataSources: []
       },
       dataLayers: {

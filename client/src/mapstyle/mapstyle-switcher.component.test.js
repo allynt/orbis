@@ -1,9 +1,17 @@
 import React from 'react';
+import { Provider } from 'react-redux';
+import configureMockStore from 'redux-mock-store';
+import thunk from 'redux-thunk';
+
 import { render, cleanup, fireEvent } from '@testing-library/react';
+
 import MapStyleSwitcher from './mapstyle-switcher.component';
 
+const mockStore = configureMockStore([thunk]);
+
 describe('MapStyle Switcher Component', () => {
-  afterEach(cleanup);
+  const store = mockStore({});
+
   let testee = null;
   let selectMapStyle = null;
   let selectedMapStyle = null;
@@ -33,15 +41,21 @@ describe('MapStyle Switcher Component', () => {
 
   beforeEach(() => {
     selectMapStyle = jest.fn();
+
     selectedMapStyle = MAP_STYLE_DATA[1];
+
     testee = render(
-      <MapStyleSwitcher
-        mapStyles={MAP_STYLE_DATA}
-        selectedMapStyle={selectedMapStyle}
-        selectMapStyle={selectMapStyle}
-      />
+      <Provider store={store}>
+        <MapStyleSwitcher
+          mapStyles={MAP_STYLE_DATA}
+          selectedMapStyle={selectedMapStyle}
+          selectMapStyle={selectMapStyle}
+        />
+      </Provider>
     );
   });
+
+  afterEach(cleanup);
 
   test.each(MAP_STYLE_DATA)('should render style %#', style => {
     expect(testee.getByLabelText(style.title)).toBeInTheDocument();
@@ -52,13 +66,9 @@ describe('MapStyle Switcher Component', () => {
   });
 
   it('should call the selectMapStyle with the `Dark` Map Style is selected', () => {
-    fireEvent(
-      testee.getByLabelText('Dark'),
-      new MouseEvent('click', {
-        bubbles: true,
-        cancelable: true
-      })
-    );
+    expect(testee.getByLabelText('Dark').checked).toEqual(false);
+
+    fireEvent.click(testee.getByLabelText('Dark'));
 
     expect(selectMapStyle).toHaveBeenCalledWith(MAP_STYLE_DATA[2]);
     expect(selectMapStyle).not.toHaveBeenCalledWith(MAP_STYLE_DATA[1]);

@@ -33,29 +33,6 @@ export const regions = [
   }
 ];
 
-export const MAP_STYLE_DATA = [
-  {
-    id: 'streets',
-    uri: 'mapbox://styles/mapbox/streets-v11',
-    title: 'Streets'
-  },
-  {
-    id: 'light',
-    uri: 'mapbox://styles/mapbox/light-v10',
-    title: 'Light'
-  },
-  {
-    id: 'dark',
-    uri: 'mapbox://styles/mapbox/dark-v10',
-    title: 'Dark'
-  },
-  {
-    id: 'satellite',
-    uri: 'mapbox://styles/mapbox/satellite-v9',
-    title: 'Satellite'
-  }
-];
-
 export const domains = [
   {
     name: 'TropoSense',
