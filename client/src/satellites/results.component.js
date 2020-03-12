@@ -22,7 +22,6 @@ import SaveSearchForm from './save-search-form.component';
 
 import styles from './results.module.css';
 import sideMenuStyles from '../side-menu/side-menu.module.css';
-// import infoStyles from './search.module.css';
 
 const Results = ({ scenes, setVisiblePanel, selectScene }) => {
   const dispatch = useDispatch();
