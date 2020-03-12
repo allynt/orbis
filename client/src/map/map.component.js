@@ -541,7 +541,8 @@ const Map = (
     //     // layerActions.updateDimensions(width, height);
     //   }}
     // >
-    <div ref={mapContainer} className={layoutStyles.map} data-testid={`map-${position}`}>
+    <>
+      <div ref={mapContainer} className={layoutStyles.map} data-testid={`map-${position}`} />
       {isLoading && (
         <div className={layoutStyles.loadMask}>
           <LoadMask />
@@ -640,7 +641,7 @@ const Map = (
           </div>,
           popupRef.current
         )} */}
-    </div>
+    </>
     // </Measure>
   );
 };

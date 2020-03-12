@@ -7,7 +7,7 @@ import Button from '@astrosat/astrosat-ui/dist/buttons/button';
 
 import { fetchSatellites, selectScene, fetchVisualisations } from './satellites.actions';
 
-import Search from './search.component';
+import SatelliteSearch from './satellite-search.component';
 import Results from './results.component';
 import Visualisation from './visualisation.component';
 import PinnedScenes from './compare-pins.component';
@@ -77,7 +77,7 @@ const SatellitesPanel = ({ map }) => {
 
       <div className={styles.content}>
         {satellites && visiblePanel === SEARCH && (
-          <Search satellites={satellites} setVisiblePanel={setVisiblePanel} map={map} />
+          <SatelliteSearch satellites={satellites} setVisiblePanel={setVisiblePanel} map={map} />
         )}
         {visiblePanel === RESULTS && (
           <Results setVisiblePanel={setVisiblePanel} scenes={scenes} selectScene={selectScene} />

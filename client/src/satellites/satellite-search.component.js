@@ -1,29 +1,26 @@
-import React, { useState, useEffect, useRef, useReducer } from 'react';
-import PropTypes from 'prop-types';
+import React, { useEffect, useRef, useState } from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
 
-import Detail from '@astrosat/astrosat-ui/dist/containers/detail';
 import Button from '@astrosat/astrosat-ui/dist/buttons/button';
+import Detail from '@astrosat/astrosat-ui/dist/containers/detail';
 import Dialog from '@astrosat/astrosat-ui/dist/containers/dialog';
 import useModal from '@astrosat/astrosat-ui/dist/containers/use-modal';
-
-import SavedSearchList from './saved-search-list.component';
-
-import SatelliteSearchForm from './satellite-search-form.component';
 
 import useMap from '../map/use-map.hook';
 import { fetchSavedSatellites } from './satellites.actions';
 
 import { ReactComponent as DrawAoiIcon } from './draw-aoi.svg';
+import SatelliteSearchForm from './satellite-search-form.component';
+import SavedSearchList from './saved-search-list.component';
 
-import styles from './search.module.css';
+import styles from './satellite-search.module.css';
 import sideMenuStyles from '../side-menu/side-menu.module.css';
 
 const AOI_DRAW_MODE = 'RectangleMode';
 const BBOX_NO_OF_POINTS = 5;
 
-const Search = ({ satellites, setVisiblePanel, map }) => {
+const SatelliteSearch = ({ satellites, setVisiblePanel, map }) => {
   const dispatch = useDispatch();
 
   const [geometry, setGeometry] = useState(null);
@@ -104,25 +101,20 @@ const Search = ({ satellites, setVisiblePanel, map }) => {
 
   return (
     <div className={styles.search} ref={ref}>
-      <div>
-        {savedSearches ? (
-          <div>
-            <Detail title="Saved Searches">
-              <SavedSearchList searches={savedSearches} />
-            </Detail>
-          </div>
-        ) : (
-          <p>There are no saved AOI yet</p>
-        )}
-
-        <div className={styles.noSavedSearches}>
-          <div className={styles.drawAOI} onClick={() => setIsAoiMode(true)}>
-            <DrawAoiIcon className={styles.drawAOIIcon} />
-            <Button theme="link" classNames={[styles.AOIButton]}>
-              Draw AOI
-            </Button>
-          </div>
+      {savedSearches ? (
+        <div>
+          <Detail title="Saved Searches">
+            <SavedSearchList savedSearches={savedSearches} />
+          </Detail>
         </div>
+      ) : (
+        <p>There are no saved AOI yet</p>
+      )}
+      <div className={styles.drawAOI} onClick={() => setIsAoiMode(true)}>
+        <DrawAoiIcon className={styles.icon} />
+        <Button theme="link" classNames={[styles.button]}>
+          Draw AOI
+        </Button>
       </div>
 
       <SatelliteSearchForm
@@ -135,14 +127,15 @@ const Search = ({ satellites, setVisiblePanel, map }) => {
         setSelectedTierMoreInfo={setSelectedTierMoreInfo}
         toggleTierMoreInfoDialog={toggleTierMoreInfoDialog}
       />
-      <Button
-        classNames={[sideMenuStyles.button]}
-        theme="tertiary"
-        onClick={() => console.log('Task Satellite Button Clicked')}
-      >
-        Task Satellite
-      </Button>
-
+      <div className={sideMenuStyles.buttons}>
+        <Button
+          classNames={[sideMenuStyles.button]}
+          theme="tertiary"
+          onClick={() => console.log('Task Satellite Button Clicked')}
+        >
+          Task Satellite
+        </Button>
+      </div>
       <Dialog
         isVisible={isSatelliteMoreInfoDialogVisible}
         title="Satellite Info"
@@ -208,6 +201,6 @@ const Search = ({ satellites, setVisiblePanel, map }) => {
   );
 };
 
-Search.propTypes = {};
+SatelliteSearch.propTypes = {};
 
-export default Search;
+export default SatelliteSearch;
