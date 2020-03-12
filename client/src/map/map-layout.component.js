@@ -15,6 +15,8 @@ import { moveCompare } from './map.actions';
 
 import styles from './map-layout.module.css';
 
+const mapstyles = ['mapbox://styles/mapbox/streets-v11', 'mapbox://styles/mapbox/satellite-v9'];
+
 const times = (n, fn) => {
   const result = [];
   for (let i = 0; i < n; i++) {
@@ -31,6 +33,7 @@ const MapLayout = () => {
   const mapStyle = useSelector(state => state.map.selectedMapStyle);
 
   const compareRatio = useSelector(state => state.map.compareRatio);
+  console.log('COMPARE RATIO: ', compareRatio);
   const [bounds, setBounds] = useState({ top: 0, right: 0, bottom: 0, left: 0, width: 0, height: 0 });
 
   const compareMove = event => {
@@ -115,7 +118,8 @@ const MapLayout = () => {
                   miniMap={bottomRight(i, mapCount)}
                   spyglass={bottomRight(i, mapCount)}
                   layoutInvalidation={mapCount}
-                  style={mapStyle.uri}
+                  style={mapstyles[i]}
+                  // style={mapStyle.uri} // FIXME:Add me back in, only for dev purposes
                   position={i}
                   sidebar={i === 0}
                   compare={isCompareMode}
