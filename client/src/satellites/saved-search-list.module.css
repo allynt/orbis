@@ -3,16 +3,12 @@
 }
 
 .savedSearchDetail p {
-  font-family: 'Open Sans';
   display: flex;
-  font-size: 12px;
+  font-size: 0.75rem;
 }
 
 .savedSearchDetail h5 {
-  font-size: 14px;
-  font-weight: normal;
-  font-stretch: normal;
-  font-style: normal;
+  font-size: 0.875rem;
   line-height: 1.57;
   border-bottom: 1px solid #4d4c4c;
   margin-bottom: 0.375rem;
@@ -39,7 +35,7 @@
 }
 
 .buttons .button {
-  font-size: 14px;
+  font-size: 0.875rem;
   font-weight: 600;
   padding: 0.2rem 1.5rem;
 }
