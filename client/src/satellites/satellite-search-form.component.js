@@ -75,6 +75,13 @@ const FormSection = ({ title, children }) => (
   </div>
 );
 
+const defaults = {
+  values: {
+    'sentinel-2': true,
+    free: true
+  }
+};
+
 const SatelliteSearchForm = ({
   satellites,
   geometry,
@@ -89,27 +96,19 @@ const SatelliteSearchForm = ({
 
   const [startDate, setStartDate] = useState(subDays(new Date(), DAYS_IN_PAST));
   const [endDate, setEndDate] = useState(new Date());
-  const defaults = useRef({
-    values: {
-      'sentinel-2': true,
-      free: true
-    }
-  });
+
+  const { handleChange, handleSubmit, values, setValues } = useForm(onSubmit, validate, defaults);
 
   useEffect(() => {
     if (selectedSatelliteSearch) {
-      selectedSatelliteSearch?.start_date && setStartDate(new Date(selectedSatelliteSearch.start_date));
-      selectedSatelliteSearch?.end_date && setEndDate(new Date(selectedSatelliteSearch.end_date));
+      selectedSatelliteSearch.start_date && setStartDate(new Date(selectedSatelliteSearch.start_date));
+      selectedSatelliteSearch.end_date && setEndDate(new Date(selectedSatelliteSearch.end_date));
       const convertedSearch = savedSearchToFormValues(selectedSatelliteSearch);
-      defaults.current = { values: convertedSearch };
+      setValues(convertedSearch);
     }
   }, [selectedSatelliteSearch]);
 
-  const { handleChange, handleSubmit, values, errors } = useForm(onSubmit, validate, defaults.current);
-
   function onSubmit() {
-    console.log(values);
-
     // Collect all selected satellites into one array of satellite ids.
     const selectedSatellites = collectIds(values, satellites);
     // Collect all selected tiers into one array of tier ids.
@@ -122,7 +121,6 @@ const SatelliteSearchForm = ({
       tiers: selectedTiers,
       geometry
     };
-
     dispatch(setCurrentSearchQuery(query));
     dispatch(searchSatellites(query));
     setVisiblePanel(RESULTS);
@@ -139,7 +137,7 @@ const SatelliteSearchForm = ({
                   name={satellite.id}
                   label={satellite.label}
                   onChange={handleChange}
-                  checked={values[satellite.id]}
+                  checked={values[satellite.id] === true}
                 />
 
                 <button
@@ -192,8 +190,7 @@ const SatelliteSearchForm = ({
                     name={tier.id}
                     label={tier.label}
                     onChange={handleChange}
-                    checked={values[tier.id]}
-                    disabled={tier.id !== 'free'}
+                    checked={values[tier.id] === true}
                   />
                   <button
                     className={styles.infoButton}
