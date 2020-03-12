@@ -1,15 +1,20 @@
-import Button from '@astrosat/astrosat-ui/dist/buttons/button';
-import Checkbox from '@astrosat/astrosat-ui/dist/forms/checkbox';
-import useForm from '@astrosat/astrosat-ui/dist/forms/use-form';
-import { formatISO, subDays } from 'date-fns';
 import React, { useState } from 'react';
+
+import { formatISO, subDays } from 'date-fns';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { useDispatch } from 'react-redux';
-import { ReactComponent as InfoIcon } from './info.svg';
-import validate from './satellite-search-form.validator';
-import { RESULTS } from './satellites-panel.component';
+
+import Button from '@astrosat/astrosat-ui/dist/buttons/button';
+import Checkbox from '@astrosat/astrosat-ui/dist/forms/checkbox';
+import useForm from '@astrosat/astrosat-ui/dist/forms/use-form';
+
 import { searchSatellites, setCurrentSearchQuery } from './satellites.actions';
+import validate from './satellite-search-form.validator';
+
+import { ReactComponent as InfoIcon } from './info.svg';
+import { RESULTS } from './satellites-panel.component';
+
 import styles from './satellite-search-form.module.css';
 import sideMenuStyles from '../side-menu/side-menu.module.css';
 
