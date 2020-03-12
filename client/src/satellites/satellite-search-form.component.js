@@ -1,21 +1,26 @@
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 
-import { formatISO, subDays } from 'date-fns';
+import { useDispatch } from 'react-redux';
+
+import { subDays, formatISO } from 'date-fns';
+
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-import { useDispatch } from 'react-redux';
 
 import Button from '@astrosat/astrosat-ui/dist/buttons/button';
 import Checkbox from '@astrosat/astrosat-ui/dist/forms/checkbox';
 import useForm from '@astrosat/astrosat-ui/dist/forms/use-form';
+import InfoIcon from '@astrosat/astrosat-ui/dist/icons/info-icon';
 
-import { searchSatellites, setCurrentSearchQuery } from './satellites.actions';
 import validate from './satellite-search-form.validator';
 
-import { ReactComponent as InfoIcon } from './info.svg';
+import { setCurrentSearchQuery, searchSatellites } from './satellites.actions';
+
 import { RESULTS } from './satellites-panel.component';
 
-import styles from './satellite-search-form.module.css';
+
+import styles from './search.module.css';
 import sideMenuStyles from '../side-menu/side-menu.module.css';
 
 const DATE_FORMAT = 'yyy-MM-dd';
@@ -177,6 +182,7 @@ const SatelliteSearchForm = ({
                     checked={values[tier.id]}
                     disabled={tier.id !== 'free'}
                   />
+
                   <button
                     className={styles.infoButton}
                     type="button"
@@ -193,8 +199,9 @@ const SatelliteSearchForm = ({
           </ul>
         </FormSection>
       </div>
+
       <div className={sideMenuStyles.buttons}>
-        <Button classNames={[sideMenuStyles.button]} type="submit" theme="primary">
+        <Button type="submit" theme="primary" classNames={[sideMenuStyles.button]}>
           Search
         </Button>
       </div>
