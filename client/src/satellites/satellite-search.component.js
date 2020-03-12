@@ -55,6 +55,22 @@ const SatelliteSearch = ({ satellites, setVisiblePanel, map }) => {
     [isAoiMode]
   );
 
+  useMap(
+    map,
+    mapInstance => {
+      if (selectedSatelliteSearch?.aoi) {
+        const { aoi } = selectedSatelliteSearch;
+        const { length } = aoi;
+        const centerLon = aoi.reduce((acc, cur) => acc + cur[0], 0) / length;
+        const centerLat = aoi.reduce((acc, cur) => acc + cur[1], 0) / length;
+        mapInstance.flyTo({
+          center: [centerLon, centerLat]
+        });
+      }
+    },
+    [selectedSatelliteSearch]
+  );
+
   useEffect(() => {
     let drawCtrl = null;
     if (map) {
