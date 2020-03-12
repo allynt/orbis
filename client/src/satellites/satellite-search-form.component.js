@@ -1,5 +1,4 @@
-import React, { useState } from 'react';
-import PropTypes from 'prop-types';
+import React, { useState, useEffect, useRef } from 'react';
 
 import { useDispatch } from 'react-redux';
 
@@ -25,7 +24,6 @@ import sideMenuStyles from '../side-menu/side-menu.module.css';
 
 const DATE_FORMAT = 'yyy-MM-dd';
 const DAYS_IN_PAST = 7;
-const dateFormat = 'd MMM yyy';
 
 const tiers = [
   {
@@ -51,16 +49,33 @@ const CustomInput = React.forwardRef(({ value, onClick }, ref) => (
   </button>
 ));
 
-const defaults = {
-  values: {
-    'sentinel-2': true,
-    free: true
+const collectIds = (formValues, array) =>
+  array.reduce((acc, item) => {
+    // Check if satellite id exists in values object.
+    const key = Object.keys(formValues).find(key => key === item.id);
+    if (key && formValues[key]) {
+      acc = [...acc, key];
+    }
+    return acc;
+  }, []);
+
+export const savedSearchToFormValues = savedSearch => {
+  let formValues = {};
+  const properties = ['satellites', 'tiers'];
+  for (let property of properties) {
+    if (savedSearch[property]) {
+      for (let item of savedSearch[property]) {
+        formValues[item] = true;
+      }
+    }
   }
+  return formValues;
 };
 
 const SatelliteSearchForm = ({
   satellites,
   geometry,
+  selectedSatelliteSearch,
   setVisiblePanel,
   setSelectedSatelliteMoreInfo,
   toggleSatelliteMoreInfoDialog,
@@ -71,34 +86,36 @@ const SatelliteSearchForm = ({
 
   const [startDate, setStartDate] = useState(subDays(new Date(), DAYS_IN_PAST));
   const [endDate, setEndDate] = useState(new Date());
+  const defaults = useRef({
+    values: {
+      'sentinel-2': true,
+      free: true
+    }
+  });
 
-  const { handleChange, handleSubmit, values, errors } = useForm(onSubmit, validate, defaults);
+  useEffect(() => {
+    if (selectedSatelliteSearch) {
+      selectedSatelliteSearch?.start_date && setStartDate(new Date(selectedSatelliteSearch.start_date));
+      selectedSatelliteSearch?.end_date && setEndDate(new Date(selectedSatelliteSearch.end_date));
+      const convertedSearch = savedSearchToFormValues(selectedSatelliteSearch);
+      defaults.current = { values: convertedSearch };
+    }
+  }, [selectedSatelliteSearch]);
+
+  const { handleChange, handleSubmit, values, errors } = useForm(onSubmit, validate, defaults.current);
 
   function onSubmit() {
-    // Collect all selected satellites into one array of satellite ids.
-    const selectedSatellites = satellites.reduce((acc, satellite) => {
-      // Check if satellite id exists in values object.
-      const key = Object.keys(values).find(key => key === satellite.id);
-      if (key && values[key]) {
-        acc = [...acc, key];
-      }
-      return acc;
-    }, []);
+    console.log(values);
 
+    // Collect all selected satellites into one array of satellite ids.
+    const selectedSatellites = collectIds(values, satellites);
     // Collect all selected tiers into one array of tier ids.
-    const selectedTiers = tiers.reduce((acc, tier) => {
-      // Check if tier id exists in values object.
-      const key = Object.keys(values).find(key => key === tier.id);
-      if (key && values[key]) {
-        acc = [...acc, key];
-      }
-      return acc;
-    }, []);
+    const selectedTiers = collectIds(values, tiers);
 
     const query = {
       satellites: selectedSatellites,
-      startDate: formatISO(startDate),
-      endDate: formatISO(endDate),
+      start_date: formatISO(startDate),
+      end_date: formatISO(endDate),
       tiers: selectedTiers,
       geometry
     };
@@ -122,7 +139,6 @@ const SatelliteSearchForm = ({
                   label={satellite.label}
                   onChange={handleChange}
                   checked={values[satellite.id]}
-                  disabled={satellite.id !== 'sentinel-2'}
                 />
 
                 <button
@@ -149,7 +165,6 @@ const SatelliteSearchForm = ({
               dateFormat={DATE_FORMAT}
               selected={startDate}
               onChange={date => setStartDate(date)}
-              dateFormat={dateFormat}
               customInput={<CustomInput />}
               selectsStart
               startDate={startDate}
@@ -161,7 +176,6 @@ const SatelliteSearchForm = ({
               dateFormat={DATE_FORMAT}
               selected={endDate}
               onChange={date => setEndDate(date)}
-              dateFormat={dateFormat}
               customInput={<CustomInput />}
               selectsEnd
               startDate={startDate}
@@ -178,16 +192,8 @@ const SatelliteSearchForm = ({
             {tiers.map(tier => {
               return (
                 <li className={styles.tier} key={tier.id}>
-                  <Checkbox
-                    name={tier.id}
-                    label={tier.label}
-                    onChange={handleChange}
-                    checked={values[tier.id]}
-                    disabled={tier.id !== 'free'}
-                  />
-
+                  <Checkbox name={tier.id} label={tier.label} onChange={handleChange} checked={values[tier.id]} />
                   <button
-                    // onBlur={() => dispatch({ type: SET_IS_INFO_VISIBLE, payload: false })}
                     type="button"
                     onClick={() => {
                       setSelectedTierMoreInfo({ id: 1, description: 'desc' });

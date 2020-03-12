@@ -29,6 +29,7 @@ const Search = ({ satellites, setVisiblePanel, map }) => {
   const [geometry, setGeometry] = useState(null);
 
   const savedSearches = useSelector(state => state.satellites.satelliteSearches);
+  const selectedSatelliteSearch = useSelector(state => state.satellites.selectedSatelliteSearch);
 
   const ref = useRef(null);
   const [isSatelliteMoreInfoDialogVisible, toggleSatelliteMoreInfoDialog] = useModal(false);
@@ -127,6 +128,7 @@ const Search = ({ satellites, setVisiblePanel, map }) => {
       <SatelliteSearchForm
         satellites={satellites}
         geometry={geometry}
+        selectedSatelliteSearch={selectedSatelliteSearch}
         setVisiblePanel={setVisiblePanel}
         setSelectedSatelliteMoreInfo={setSelectedSatelliteMoreInfo}
         toggleSatelliteMoreInfoDialog={toggleSatelliteMoreInfoDialog}
