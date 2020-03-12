@@ -572,7 +572,7 @@ let savedSatelliteSearches = [
   {
     id: 1,
     name: 'NASA Landsat',
-    satellites: ['Landsat'],
+    satellites: ['landsat'],
     tiers: ['free'],
     start_date: '09-22-2018',
     end_date: '11-14-2018',
@@ -590,7 +590,7 @@ let savedSatelliteSearches = [
   {
     id: 2,
     name: 'Sentinel-2',
-    satellites: ['Sentinel-2'],
+    satellites: ['sentinel-2'],
     tiers: ['mid'],
     start_date: '06-15-2016',
     end_date: '02-12-2016',
@@ -608,7 +608,7 @@ let savedSatelliteSearches = [
   {
     id: 1,
     name: 'MODIS',
-    satellites: ['MODIS'],
+    satellites: ['modis'],
     tiers: ['high'],
     start_date: '05-19-2017',
     end_date: '12-30-2017',
