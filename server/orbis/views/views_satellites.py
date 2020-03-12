@@ -125,8 +125,8 @@ class SatelliteResultFilterSet(filters.FilterSet):
             # but declarative filters for "satellites" & "footprint" below
         }
 
-    satellites = CharInFilter(field_name="satellite__satellite_id")
-    tiers = CharInFilter(field_name="tier__name")
+    satellites = CharInFilter(field_name="satellite__satellite_id", distinct=True)
+    tiers = CharInFilter(field_name="tier__name", distinct=True)
     footprint__bbox = filters.Filter(method="filter_footprint_bbox")
 
     def filter_footprint_bbox(self, queryset, name, value):
