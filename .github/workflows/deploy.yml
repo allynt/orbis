@@ -6,7 +6,7 @@ on:
 jobs:
   deploy-to-testing:
     name: Deploy to Testing
-    runs-on: [self-hosted]
+    runs-on: [testing-deployer]
     ## Temporary change while github fixes label support
     #runs-on: [self-hosted, testing-deployer]
     if: startsWith(github.event.deployment.environment, 'testing')
