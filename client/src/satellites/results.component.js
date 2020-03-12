@@ -67,7 +67,7 @@ const Results = ({ scenes, setVisiblePanel, selectScene }) => {
                     />
 
                     <div
-                      className={styles.sceneContent}
+                      className={styles.sceneSection}
                       onClick={() => {
                         dispatch(selectScene(scene));
                         setVisiblePanel(VISUALISATION);
@@ -85,7 +85,7 @@ const Results = ({ scenes, setVisiblePanel, selectScene }) => {
                       </ul>
                     </div>
 
-                    <div className={styles.sceneOptions}>
+                    <div className={`${styles.sceneSection} ${styles.sceneOptions}`}>
                       <div
                         className={styles.moreInfo}
                         onClick={() => {
@@ -102,9 +102,6 @@ const Results = ({ scenes, setVisiblePanel, selectScene }) => {
                         {scene.properties.tier === 'free' && <span className={styles.freeProduct}>Free Product</span>}
                       </div>
                     </div>
-                    <Button theme="tertiary" onClick={() => console.log('Download SCENE: ', scene)}>
-                      Download
-                    </Button>
                   </li>
                 );
               })}

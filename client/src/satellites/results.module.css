@@ -59,8 +59,7 @@
   background-color: rgba(162, 170, 173, 0.15);
 }
 
-.sceneContent,
-.sceneOptions {
+.sceneSection {
   display: flex;
   justify-content: space-between;
   align-items: center;
