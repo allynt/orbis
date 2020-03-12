@@ -526,14 +526,15 @@ const Map = (
   const visibleMenuItem = useSelector(state => state.sidebar.visibleMenuItem);
 
   return (
-    <div ref={mapContainer} className={layoutStyles.map} data-testid={`map-${position}`}>
+    <>
+      <div ref={mapContainer} className={layoutStyles.map} data-testid={`map-${position}`} />
+
       {isLoading && (
         <div className={layoutStyles.loadMask}>
           <LoadMask />
         </div>
       )}
 
-      {/* <AccountMenuButton user={user} logout={() => dispatch(logout(history))} /> */}
       {sidebar && (
         <SideMenu>
           <div className={layoutStyles.heading}>
@@ -618,7 +619,7 @@ const Map = (
           </div>,
           popupRef.current
         )} */}
-    </div>
+    </>
   );
 };
 
