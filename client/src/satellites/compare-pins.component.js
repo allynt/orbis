@@ -2,15 +2,14 @@ import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 
 import { useDispatch, useSelector } from 'react-redux';
-
-import parseISO from 'date-fns/parseISO';
-import format from 'date-fns/format';
+import useModal from '@astrosat/astrosat-ui/dist/containers/use-modal';
 
 import Button from '@astrosat/astrosat-ui/dist/buttons/button';
 import Switch from '@astrosat/astrosat-ui/dist/buttons/switch';
 import Checkbox from '@astrosat/astrosat-ui/dist/forms/checkbox';
 import Dialog from '@astrosat/astrosat-ui/dist/containers/dialog';
-import useModal from '@astrosat/astrosat-ui/dist/containers/use-modal';
+
+import SceneListItem from './scene-list-item.component';
 
 import {
   fetchPinnedScenes,
@@ -20,13 +19,7 @@ import {
 } from './satellites.actions';
 import { toggleCompareMaps } from '../map/map.actions';
 
-import { DATE_FORMAT, TIME_FORMAT } from './satellite.constants';
-
-import { ReactComponent as InfoIcon } from './info.svg';
-import { ReactComponent as PinIcon } from './pin.svg';
-
 import styles from './compare-pins.module.css';
-import resultsStyles from './results.module.css';
 
 const MAX_SELECTED = 2;
 
@@ -62,11 +55,14 @@ const ComparePins = () => {
           Clear Pins
         </Button>
       </div>
+      <p className={styles.selectMessage}>
+        Select <span>2</span> scenes to compare
+      </p>
       <ul className={styles.pinnedScenes}>
         {pinnedScenes &&
           pinnedScenes.map((scene, index) => {
             return (
-              <li key={`${scene.id}-${index}`} className={styles.scene}>
+              <div className={styles.compareItem}>
                 <Checkbox
                   name={scene.id}
                   label={scene.label}
@@ -77,42 +73,16 @@ const ComparePins = () => {
                     }
                   }}
                 />
-
-                <PinIcon
-                  className={styles.pinIcon}
-                  onClick={() => {
-                    dispatch(deletePinnedScene(scene.id));
-                  }}
+                <SceneListItem
+                  index={index}
+                  scene={scene}
+                  icon="delete"
+                  setSelectedSceneMoreInfo={setSelectedSceneMoreInfo}
+                  toggleSceneMoreInfoDialog={toggleSceneMoreInfoDialog}
+                  selectPinnedScene={selectPinnedScene}
+                  deletePinnedScene={deletePinnedScene}
                 />
-
-                <div className={styles.scene}>
-                  <img className={resultsStyles.thumbnail} src={scene.thumbnail} alt="Thumbnail" />
-                  <ul className={resultsStyles.metadata}>
-                    <li>{format(parseISO(scene.properties.created), DATE_FORMAT)}</li>
-                    <li>{format(parseISO(scene.properties.created), TIME_FORMAT)} UTC</li>
-                    <li>{scene.properties.cloudCoverAsPercentage} %</li>
-                    <li>{scene.properties.crs}</li>
-                    <li>{scene.properties.label}</li>
-                  </ul>
-                </div>
-
-                <div className={resultsStyles.sceneOptions}>
-                  <div
-                    className={resultsStyles.moreInfo}
-                    onClick={() => {
-                      setSelectedSceneMoreInfo({ id: 1, description: 'Some text' });
-                      toggleSceneMoreInfoDialog();
-                    }}
-                  >
-                    <InfoIcon className={styles.moreInfoIcon} />
-                    <span>More info</span>
-                  </div>
-
-                  <div>
-                    {scene.properties.tier === 'free' && <span className={styles.freeProduct}>Free Product</span>}
-                  </div>
-                </div>
-              </li>
+              </div>
             );
           })}
       </ul>

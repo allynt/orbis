@@ -1,11 +1,21 @@
+.compareItem {
+  display: flex;
+  width: 100%;
+}
+
+.buttons {
+  display: flex;
+  justify-content: space-between;
+}
+
+.selectMessage {
+  font-weight: bold;
+  color: var(--primary-background-color);
+}
+
+.selectMessage span {
+  font-size: 1rem;
+}
+
 .pinnedScenes {
-}
-
-.pinIcon {
-  width: 1.25rem;
-  cursor: pointer;
-}
-
-.moreInfoContent {
-  color: #000;
 }
