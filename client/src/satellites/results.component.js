@@ -38,13 +38,12 @@ const Results = ({ scenes, setVisiblePanel, selectScene }) => {
           <h3>RESULTS</h3>
 
           <div className={styles.resultCount}>
-            Showing {scenes.filter(scene => scene.properties.cloudCoverAsPercentage <= cloudCoverPercentage[0]).length}{' '}
-            Results
+            Showing {scenes.filter(scene => scene.cloudCover <= cloudCoverPercentage[0]).length} Results
           </div>
 
           <ul className={styles.scenes}>
             {scenes
-              .filter(scene => scene.properties.cloudCoverAsPercentage <= cloudCoverPercentage[0])
+              .filter(scene => scene.cloudCover <= cloudCoverPercentage[0])
               .map(scene => {
                 return (
                   <SceneListItem

@@ -494,31 +494,28 @@ const Map = (
     map => {
       if (selectedScene) {
         console.log('SELECTED SCERNE: ', selectedScene);
-        selectedScene.urls.forEach((url, i) => {
-          const sourceId = `${selectedScene.properties.label}-${i}-source`;
-          map.addSource(sourceId, {
-            type: 'raster',
-            tiles: [url],
-            scheme: 'tms',
-            tileSize: 256
-          });
-
-          map.addLayer({
-            id: `${selectedScene.properties.label}-${i}-layer`,
-            type: 'raster',
-            source: sourceId
-          });
+        const sourceId = `${selectedScene.id}-source`;
+        const layerId = `${selectedScene.id}-layer`;
+        map.addSource(sourceId, {
+          type: 'raster',
+          tiles: [selectedScene.tile_url],
+          scheme: 'tms',
+          tileSize: 256
+        });
+        map.addLayer({
+          id: layerId,
+          type: 'raster',
+          source: sourceId
         });
       } else {
         if (scenes) {
           scenes.forEach(scene => {
-            scene.urls.forEach((url, i) => {
-              const sourceId = `${scene.properties.label}-${i}-source`;
-              if (map.getSource(sourceId)) {
-                map.removeLayer(`${scene.properties.label}-${i}-layer`);
-                map.removeSource(sourceId);
-              }
-            });
+            const sourceId = `${scene.id}-source`;
+            const layerId = `${scene.id}-layer`;
+            if (map.getSource(sourceId)) {
+              map.removeLayer(layerId);
+              map.remove(sourceId);
+            }
           });
         }
       }

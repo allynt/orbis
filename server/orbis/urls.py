@@ -21,7 +21,7 @@ api_router.register(r"satellites/searches", SatelliteSearchViewSet, basename="sa
 api_router.register(r"satellites/results", SatelliteResultViewSet, basename="satellite-result")
 api_router.register(r"satellites", SatelliteViewSet, basename="satellite")
 api_urlpatterns = [
-    path("satellites/run_query", run_satellite_query, name="satellite-run-query"),
+    path("satellites/run_query/", run_satellite_query, name="satellite-run-query"),
     path("data/sources/", DataView.as_view(), name="data"),
     path("data/token/", TokenView.as_view(), name="token"),
     path("", include(api_router.urls)),

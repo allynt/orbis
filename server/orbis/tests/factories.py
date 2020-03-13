@@ -186,7 +186,7 @@ class SatelliteResultFactory(factory.DjangoModelFactory):
     footprint = FactoryFaker("polygon")
 
     @factory.lazy_attribute
-    def properties(self):
+    def metadata(self):
         # generates a random dictionary and encodes it as JSON
         properties_dict = FactoryFaker("pydict").generate()
         return json_encoder.encode(properties_dict)

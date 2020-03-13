@@ -65,11 +65,10 @@ const SceneListItem = ({
           </picture>
         </div>
         <ul className={resultsStyles.metadata}>
-          <li>{format(parseISO(scene.properties.created), DATE_FORMAT)}</li>
-          <li>{format(parseISO(scene.properties.created), TIME_FORMAT)} UTC</li>
-          <li>{scene.properties.cloudCoverAsPercentage} %</li>
-          <li>{scene.properties.crs}</li>
-          <li>{scene.properties.label}</li>
+          <li>{format(parseISO(scene.created), DATE_FORMAT)}</li>
+          <li>{format(parseISO(scene.created), TIME_FORMAT)} UTC</li>
+          <li>{scene.cloudCover} %</li>
+          <li>{scene.id}</li>
         </ul>
       </div>
 
@@ -86,7 +85,7 @@ const SceneListItem = ({
         </div>
 
         <div className={resultsStyles.freeProductContainer}>
-          {scene.properties.tier === 'free' && <span className={resultsStyles.freeProduct}>Free Product</span>}
+          {scene.tier === 'free' && <span className={resultsStyles.freeProduct}>Free Product</span>}
         </div>
       </div>
     </li>

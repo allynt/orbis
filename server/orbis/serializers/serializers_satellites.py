@@ -1,7 +1,7 @@
 import json
 
 from django.contrib.auth import get_user_model
-from django.contrib.gis.geos import Polygon
+from django.contrib.gis.geos import Polygon, MultiPolygon, GEOSGeometry
 
 from rest_framework import serializers
 from rest_framework_gis.serializers import GeometryField
@@ -109,22 +109,32 @@ class SatelliteResultSerializer(serializers.ModelSerializer):
         model = SatelliteResult
         fields = (
             "id",
-            "properties",
-            "thumbnail_url",
-            "tile_url",
-            "cloud_cover",
-            "footprint",
             "satellite",
             "tier",
+            "cloudCover",
+            "created",
+            "footprint",
+            "metadata",
+            # "raw_data",  # don't bother serializing raw_data
             "owner",
+            "thumbnail_url",
+            "tile_url",
         )
 
     id = serializers.SlugField(source="scene_id")
-    satellite = serializers.SlugRelatedField(slug_field="satellite_id", queryset=Satellite.objects.all())
-    tier = SatelliteTierSerializer()
+
+    satellite = serializers.SlugRelatedField(
+        slug_field="satellite_id", queryset=Satellite.objects.all()
+    )
+
+    tier = serializers.SlugRelatedField(
+        slug_field="name", queryset=SatelliteTier.objects.all()
+    )
+
+    cloudCover = serializers.FloatField(source="cloud_cover")
 
     footprint = SimplifiedGeometryField(
-        geometry_class=Polygon, precision=SatelliteSearch.PRECISION
+        geometry_class=GEOSGeometry, precision=SatelliteResult.PRECISION
     )
 
     owner = serializers.PrimaryKeyRelatedField(
