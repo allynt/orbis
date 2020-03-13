@@ -62,7 +62,7 @@ const ComparePins = () => {
         {pinnedScenes &&
           pinnedScenes.map((scene, index) => {
             return (
-              <div className={styles.compareItem}>
+              <div key={scene.id} className={styles.compareItem}>
                 <Checkbox
                   name={scene.id}
                   label={scene.label}

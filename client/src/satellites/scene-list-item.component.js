@@ -5,6 +5,9 @@ import parseISO from 'date-fns/parseISO';
 import format from 'date-fns/format';
 
 import { DATE_FORMAT, TIME_FORMAT } from './satellite.constants';
+
+import { VISUALISATION } from './satellites-panel.component';
+
 import { ReactComponent as InfoIcon } from './info.svg';
 import { ReactComponent as DeleteIcon } from './delete.svg';
 import { ReactComponent as PinIcon } from './pin.svg';
@@ -17,6 +20,8 @@ const SceneListItem = ({
   scene,
   icon,
   pinScene,
+  selectScene,
+  setVisiblePanel,
   setSelectedSceneMoreInfo,
   toggleSceneMoreInfoDialog,
   deletePinnedScene
@@ -46,7 +51,15 @@ const SceneListItem = ({
       )}
 
       <div className={resultsStyles.sceneSection}>
-        <div className={resultsStyles.thumbContainer}>
+        <div
+          className={resultsStyles.thumbContainer}
+          onClick={() => {
+            if (selectScene) {
+              dispatch(selectScene(scene));
+              setVisiblePanel(VISUALISATION);
+            }
+          }}
+        >
           <picture>
             <img className={resultsStyles.thumbnail} src={scene.thumbnail} alt="Thumbnail" />
           </picture>
