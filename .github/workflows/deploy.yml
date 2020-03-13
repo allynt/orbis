@@ -6,8 +6,11 @@ on:
 jobs:
   deploy-to-testing:
     name: Deploy to Testing
-    runs-on: [self-hosted, testing-deployer]
-    if: startsWith(github.event.deployment.environment, 'testing')
+    ## Temporary change while github fixes self hosted runner support
+    runs-on: ubuntu-18.04
+    if: github.event.deployment.environment == 'testing-master'
+    #runs-on: [self-hosted, testing-deployer]
+    #if: startsWith(github.event.deployment.environment, 'testing')
     steps:
       - name: Set the Deployment Status to Pending
         uses: "deliverybot/deployment-status@v1"
@@ -48,7 +51,9 @@ jobs:
 
   deploy-to-staging:
     name: Deploy to Staging
-    runs-on: [self-hosted, staging-deployer]
+    ## Temporary change while github fixes self hosted runner support
+    runs-on: ubuntu-18.04
+    #runs-on: [self-hosted, staging-deployer]
     if: github.event.deployment.environment == 'staging'
     steps:
       - name: Set the Deployment Status to Pending
