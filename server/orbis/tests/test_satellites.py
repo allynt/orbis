@@ -169,7 +169,7 @@ class TestSatelliteResults:
         assert status.is_success(response.status_code)
         results = response.json()
         assert len(results) == N_RESULTS_PER_TIER
-        assert all(map(lambda x: x["tier"]["id"] in tier_names[:1], results))
+        assert all(map(lambda x: x["tier"] in tier_names[:1], results))
 
         # filter on multiple tiers...
         url_params = urllib.parse.urlencode({"tiers": ",".join(tier_names[:2])})
@@ -178,7 +178,7 @@ class TestSatelliteResults:
         assert status.is_success(response.status_code)
         results = response.json()
         assert len(results) == N_RESULTS_PER_TIER * 2
-        assert all(map(lambda x: x["tier"]["id"] in tier_names[:2], results))
+        assert all(map(lambda x: x["tier"] in tier_names[:2], results))
 
         # filter on an invalid tier...
         url_params = urllib.parse.urlencode(

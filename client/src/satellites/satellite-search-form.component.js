@@ -120,7 +120,7 @@ const SatelliteSearchForm = ({
       start_date: formatISO(startDate),
       end_date: formatISO(endDate),
       tiers: selectedTiersIds,
-      geometry
+      aoi: geometry
     };
     dispatch(setCurrentSearchQuery(query));
     dispatch(searchSatellites(query));
@@ -150,7 +150,7 @@ const SatelliteSearchForm = ({
                     toggleSatelliteMoreInfoDialog();
                   }}
                 >
-                  <InfoIcon className={styles.infoIcon} />
+                  <InfoIcon classes={styles.infoIcon} />
                 </button>
               </li>
             ))}
@@ -159,7 +159,7 @@ const SatelliteSearchForm = ({
         <FormSection title="Date">
           <div className={styles.datePickers}>
             <DatePicker
-              name="startDate"
+              name="start_date"
               dateFormat={DATE_FORMAT}
               selected={startDate}
               onChange={date => setStartDate(date)}
@@ -170,7 +170,7 @@ const SatelliteSearchForm = ({
             />
             <div className={styles.datePickerDivider} />
             <DatePicker
-              name="endDate"
+              name="end_date"
               dateFormat={DATE_FORMAT}
               selected={endDate}
               onChange={date => setEndDate(date)}
@@ -202,7 +202,7 @@ const SatelliteSearchForm = ({
                       toggleTierMoreInfoDialog();
                     }}
                   >
-                    <InfoIcon className={styles.infoIcon} />
+                    <InfoIcon classes={styles.infoIcon} />
                   </button>
                 </li>
               );

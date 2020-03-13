@@ -27,8 +27,7 @@ class Sentinel2Adapter(BaseSatelliteAdapter):
 
     def __init__(self, *args, **kwargs):
         self.api = SentinelAPI(
-            settings.COPERNICUS_USERNAME,
-            settings.COPERNICUS_PASSWORD,
+            settings.COPERNICUS_USERNAME, settings.COPERNICUS_PASSWORD,
         )
 
     def run_free_satellite_query(self, tier):
@@ -51,11 +50,21 @@ class Sentinel2Adapter(BaseSatelliteAdapter):
                 owner=self.query_params["owner"],
                 tier=tier,
                 # set some attrs explicitly from the query result...
-                scene_id=product.pop("identifier"),
-                footprint=product.pop("footprint"),
-                cloud_cover=product.pop("cloudcoverpercentage"),
-                # store everything else as the "properties" attr...
-                properties=product,
+                scene_id=product["identifier"],
+                created=product["endposition"],
+                footprint=product["footprint"],
+                cloud_cover=product["cloudcoverpercentage"],
+                # set as much metatdata as I can from the query result...
+                metadata={
+                    "Summary": product.get("summary"),
+                    "Name of the instrument": product.get("instrumentname"),
+                    "Operational mode of the sensor": product.get("sensoroperationalmode"),
+                    "Orbit direction": product.get("direction"),
+                    "Product type": product.get("producttype"),
+                    "Cloud coverage [%]": product.get("cloudcoverpercentage"),
+                },
+                # store everything else as the "raw_data" attr...
+                raw_data=product,
             )
             for _, product in products.items()
         ]

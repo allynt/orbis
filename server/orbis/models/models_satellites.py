@@ -308,6 +308,16 @@ class SatelliteSearch(gis_models.Model):
 class SatelliteResult(gis_models.Model):
     """
     A saved result.
+    There are three types of information associated w/ a result:
+    1) top-level information: this is information that all satellites must have
+       they are stored as primary fields in this model and are accessed by the
+       client on the results panel
+    2) metadata: this is the information that can be extracted from properties;
+       it is stored as nicely-formatted JSON in this model, w/ "pretty" keys
+       it is created by the adapter and can vary w/ each satellite
+       it is passed on to the client for use in the "more info" dialog box
+    3) raw_data: this is the "raw" information returned by the specific satellite adapter
+       it is not necessarily passed on to the client
     """
 
     class Meta:
@@ -318,6 +328,8 @@ class SatelliteResult(gis_models.Model):
                 fields=["scene_id", "satellite"], name="unique_satellite_scene"
             )
         ]
+
+    PRECISION = 6
 
     scene_id = models.SlugField(
         blank=False, null=False, help_text=_("A unique id for the scene.")
@@ -337,13 +349,22 @@ class SatelliteResult(gis_models.Model):
         validators=[MinValueValidator(0.0), MaxValueValidator(100.0)],
     )
 
-    footprint = gis_models.PolygonField(blank=False)
+    created = models.DateTimeField(blank=True, null=True)
 
-    properties = JSONField(
+    footprint = gis_models.GeometryField(blank=False)
+
+    metadata = JSONField(
         blank=True,
         null=True,
         validators=[validate_properties],
         help_text=_("Some more information to associate with the scene."),
+    )
+
+    raw_data = JSONField(
+        blank=True,
+        null=True,
+        validators=[validate_properties],
+        help_text=_("The original 'raw' data returned by the search."),
     )
 
     owner = models.ForeignKey(

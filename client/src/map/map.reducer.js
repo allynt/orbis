@@ -5,7 +5,8 @@ import {
   TOGGLE_MULTI_MODE,
   TOGGLE_MINI_MAP,
   TOGGLE_SPYGLASS,
-  TOGGLE_COMPARE,
+  TOGGLE_COMPARE_MODE,
+  MOVE_COMPARE,
   MAP_STYLE_SELECTED,
   TOGGLE_INFRASTRUCTURE_LAYER_VISIBILITY,
   TOGGLE_CUSTOM_LAYER_VISIBILITY,
@@ -35,7 +36,19 @@ const initialState = {
   pollingPeriod: 30000,
   dataToken: null,
   dataSources: null,
-  saveMap: false
+  saveMap: false,
+  // compareMode: true,
+  compareRatio: 0.5,
+  dimensions: {
+    width: -1,
+    height: -1
+  },
+  bounds: {
+    x1: -180,
+    y1: -90,
+    x2: 180,
+    y2: 90
+  }
 };
 
 const reducer = (state = initialState, action) => {
@@ -58,8 +71,11 @@ const reducer = (state = initialState, action) => {
     case TOGGLE_SPYGLASS:
       return { ...state, isSpyglassMapVisible: !state.isSpyglassMapVisible };
 
-    case TOGGLE_COMPARE:
+    case TOGGLE_COMPARE_MODE:
       return { ...state, isCompareMode: !state.isCompareMode };
+
+    case MOVE_COMPARE:
+      return { ...state, compareRatio: action.ratio };
 
     case TOGGLE_INFRASTRUCTURE_LAYER_VISIBILITY:
       // Toggle whether layer is visible or not.
