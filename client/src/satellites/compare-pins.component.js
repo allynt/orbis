@@ -2,12 +2,12 @@ import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 
 import { useDispatch, useSelector } from 'react-redux';
-import useModal from '@astrosat/astrosat-ui/dist/containers/use-modal';
 
 import Button from '@astrosat/astrosat-ui/dist/buttons/button';
 import Switch from '@astrosat/astrosat-ui/dist/buttons/switch';
 import Checkbox from '@astrosat/astrosat-ui/dist/forms/checkbox';
 import Dialog from '@astrosat/astrosat-ui/dist/containers/dialog';
+import useModal from '@astrosat/astrosat-ui/dist/containers/use-modal';
 
 import SceneListItem from './scene-list-item.component';
 

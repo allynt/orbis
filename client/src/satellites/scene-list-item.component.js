@@ -50,18 +50,18 @@ const SceneListItem = ({
         />
       )}
 
-      <div className={resultsStyles.sceneSection}>
-        <div
-          className={resultsStyles.thumbContainer}
-          onClick={() => {
-            if (selectScene) {
-              dispatch(selectScene(scene));
-              setVisiblePanel(VISUALISATION);
-            }
-          }}
-        >
+      <div
+        className={resultsStyles.sceneSection}
+        onClick={() => {
+          if (selectScene) {
+            dispatch(selectScene(scene));
+            setVisiblePanel(VISUALISATION);
+          }
+        }}
+      >
+        <div className={resultsStyles.thumbContainer}>
           <picture>
-            <img className={resultsStyles.thumbnail} src={scene.thumbnail} alt="Thumbnail" />
+            <img className={resultsStyles.thumbnail} src={scene.thumbnail} alt="Thumbnail of a satellite scene" />
           </picture>
         </div>
         <ul className={resultsStyles.metadata}>
