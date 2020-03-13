@@ -109,7 +109,7 @@ import layoutStyles from './map-layout.module.css';
 const Map = (
   {
     selectedProperty,
-    style = 'mapbox://styles/thermcert/cjxzywxui08131cry0du0zn4v',
+    style = 'mapbox://styles/mapbox/satellite-v9',
     colorScheme,
     attribution = true,
     geocoder = true,
