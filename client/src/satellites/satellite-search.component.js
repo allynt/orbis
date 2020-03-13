@@ -107,6 +107,7 @@ const SatelliteSearch = ({ satellites, setVisiblePanel, map }) => {
         const { aoi } = selectedSatelliteSearch;
         mapInstance.fitBounds(getBoundsOfGeometry(aoi), { padding: 275, offset: [100, 0] });
         const drawCtrl = mapInstance._controls.find(ctrl => ctrl.changeMode);
+        drawCtrl.deleteAll();
         const feature = {
           type: 'Feature',
           drawType: 'AOI',
