@@ -61,7 +61,7 @@ const SceneListItem = ({
       >
         <div className={resultsStyles.thumbContainer}>
           <picture>
-            <img className={resultsStyles.thumbnail} src={scene.thumbnail} alt="Thumbnail of a satellite scene" />
+            <img className={resultsStyles.thumbnail} src={scene.thumbnail_url} alt="Thumbnail of a satellite scene" />
           </picture>
         </div>
         <ul className={resultsStyles.metadata}>
