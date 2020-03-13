@@ -628,127 +628,92 @@ let savedSatelliteSearches = [
 const satelliteScenes = [
   {
     id: '32UVD',
-    properties: {
-      crs: 'EPSG: 4326',
-      label: '32UVD',
-      created: '2019-12-29T08:00:00Z',
-      cloudCoverAsPercentage: '4.23',
-      downloadLink:
-        'https://landsat-pds.s3.amazonaws.com/c1/L8/027/033/LC08_L1TP_027033_20200107_20200114_01_T1/LC08_L1TP_027033_20200107_20200114_01_T1_thumb_small.jpg',
-      tier: 'free',
-      swath: 'Geometry object to be added',
-      moreInfo: { key: 'To be decided' }
-    },
-    urls: [
+    created: '2019-12-29T08:00:00Z',
+    cloudCover: '4.23',
+    download_url:
+      'https://landsat-pds.s3.amazonaws.com/c1/L8/027/033/LC08_L1TP_027033_20200107_20200114_01_T1/LC08_L1TP_027033_20200107_20200114_01_T1_thumb_small.jpg',
+    tier: 'free',
+    metadata: { key: 'To be decided' },
+    tile_url:
       'https://landsat-pds.s3.amazonaws.com/c1/L8/027/033/LC08_L1TP_027033_20190613_20190619_01_T1/LC08_L1TP_027033_20190613_20190619_01_T1_thumb_small.jpg',
-      'https://landsat-pds.s3.amazonaws.com/c1/L8/027/033/LC08_L1TP_027033_20190613_20190619_01_T1/LC08_L1TP_027033_20190613_20190619_01_T1_thumb_small.jpg'
-    ],
-    thumbnail:
+
+    thumbnail_url:
       'https://landsat-pds.s3.amazonaws.com/c1/L8/027/033/LC08_L1TP_027033_20190613_20190619_01_T1/LC08_L1TP_027033_20190613_20190619_01_T1_thumb_small.jpg',
     satellite: 'sentinel-2'
   },
   {
     id: '323UVD',
-    properties: {
-      crs: 'EPSG: 4326',
-      label: '33UVD',
-      created: '2019-12-29T08:00:00Z',
-      cloudCoverAsPercentage: '6.23',
-      downloadLink:
-        'https://landsat-pds.s3.amazonaws.com/c1/L8/027/033/LC08_L1TP_027033_20200107_20200114_01_T1/LC08_L1TP_027033_20200107_20200114_01_T1_thumb_small.jpg',
-      tier: 'mid-res',
-      swath: 'Geometry object to be added',
-      moreInfo: { key: 'To be decided' }
-    },
-    urls: [
+    created: '2019-12-29T08:00:00Z',
+    cloudCover: '6.23',
+    download_url:
+      'https://landsat-pds.s3.amazonaws.com/c1/L8/027/033/LC08_L1TP_027033_20200107_20200114_01_T1/LC08_L1TP_027033_20200107_20200114_01_T1_thumb_small.jpg',
+    tier: 'mid-res',
+    swath: 'Geometry object to be added',
+    metadata: { key: 'To be decided' },
+    tile_url:
       'https://landsat-pds.s3.amazonaws.com/c1/L8/027/033/LC08_L1TP_027033_20190613_20190619_01_T1/LC08_L1TP_027033_20190613_20190619_01_T1_thumb_small.jpg',
-      'https://landsat-pds.s3.amazonaws.com/c1/L8/027/033/LC08_L1TP_027033_20190613_20190619_01_T1/LC08_L1TP_027033_20190613_20190619_01_T1_thumb_small.jpg'
-    ],
-    thumbnail:
+
+    thumbnail_url:
       'https://landsat-pds.s3.amazonaws.com/c1/L8/027/033/LC08_L1TP_027033_20190613_20190619_01_T1/LC08_L1TP_027033_20190613_20190619_01_T1_thumb_small.jpg',
     satellite: 'sentinel-2'
   },
   {
     id: '34UVD',
-    properties: {
-      crs: 'EPSG: 4326',
-      label: '34UVD',
-      created: '2019-12-29T08:00:00Z',
-      cloudCoverAsPercentage: '8.23',
-      downloadLink:
-        'https://landsat-pds.s3.amazonaws.com/c1/L8/027/033/LC08_L1TP_027033_20200107_20200114_01_T1/LC08_L1TP_027033_20200107_20200114_01_T1_thumb_small.jpg',
-      tier: 'high-res',
-      swath: 'Geometry object to be added',
-      moreInfo: { key: 'To be decided' }
-    },
-    urls: [
+    created: '2019-12-29T08:00:00Z',
+    cloudCover: '8.23',
+    download_url:
+      'https://landsat-pds.s3.amazonaws.com/c1/L8/027/033/LC08_L1TP_027033_20200107_20200114_01_T1/LC08_L1TP_027033_20200107_20200114_01_T1_thumb_small.jpg',
+    tier: 'high-res',
+    swath: 'Geometry object to be added',
+    metadata: { key: 'To be decided' },
+    tile_url:
       'https://landsat-pds.s3.amazonaws.com/c1/L8/027/033/LC08_L1TP_027033_20190613_20190619_01_T1/LC08_L1TP_027033_20190613_20190619_01_T1_thumb_small.jpg',
-      'https://landsat-pds.s3.amazonaws.com/c1/L8/027/033/LC08_L1TP_027033_20190613_20190619_01_T1/LC08_L1TP_027033_20190613_20190619_01_T1_thumb_small.jpg'
-    ],
-    thumbnail:
+    thumbnail_url:
       'https://landsat-pds.s3.amazonaws.com/c1/L8/027/033/LC08_L1TP_027033_20190613_20190619_01_T1/LC08_L1TP_027033_20190613_20190619_01_T1_thumb_small.jpg',
     satellite: 'sentinel-2'
   },
   {
     id: '35UVD',
-    properties: {
-      crs: 'EPSG: 4326',
-      label: '35UVD',
-      created: '2019-12-29T08:00:00Z',
-      cloudCoverAsPercentage: '10.23',
-      downloadLink:
-        'https://landsat-pds.s3.amazonaws.com/c1/L8/027/033/LC08_L1TP_027033_20200107_20200114_01_T1/LC08_L1TP_027033_20200107_20200114_01_T1_thumb_small.jpg',
-      tier: 'free',
-      swath: 'Geometry object to be added',
-      moreInfo: { key: 'To be decided' }
-    },
-    urls: [
+    created: '2019-12-29T08:00:00Z',
+    cloudCover: '10.23',
+    download_url:
+      'https://landsat-pds.s3.amazonaws.com/c1/L8/027/033/LC08_L1TP_027033_20200107_20200114_01_T1/LC08_L1TP_027033_20200107_20200114_01_T1_thumb_small.jpg',
+    tier: 'free',
+    swath: 'Geometry object to be added',
+    metadata: { key: 'To be decided' },
+    tile_url:
       'https://landsat-pds.s3.amazonaws.com/c1/L8/027/033/LC08_L1TP_027033_20190613_20190619_01_T1/LC08_L1TP_027033_20190613_20190619_01_T1_thumb_small.jpg',
-      'https://landsat-pds.s3.amazonaws.com/c1/L8/027/033/LC08_L1TP_027033_20190613_20190619_01_T1/LC08_L1TP_027033_20190613_20190619_01_T1_thumb_small.jpg'
-    ],
-    thumbnail:
+    thumbnail_url:
       'https://landsat-pds.s3.amazonaws.com/c1/L8/027/033/LC08_L1TP_027033_20190613_20190619_01_T1/LC08_L1TP_027033_20190613_20190619_01_T1_thumb_small.jpg',
     satellite: 'sentinel-2'
   },
   {
     id: '36UVD',
-    properties: {
-      crs: 'EPSG: 4326',
-      label: '36UVD',
-      created: '2019-12-29T08:00:00Z',
-      cloudCoverAsPercentage: '15.23',
-      downloadLink:
-        'https://landsat-pds.s3.amazonaws.com/c1/L8/027/033/LC08_L1TP_027033_20200107_20200114_01_T1/LC08_L1TP_027033_20200107_20200114_01_T1_thumb_small.jpg',
-      tier: 'mid-res',
-      swath: 'Geometry object to be added',
-      moreInfo: { key: 'To be decided' }
-    },
-    urls: [
+    created: '2019-12-29T08:00:00Z',
+    cloudCover: '15.23',
+    download_url:
+      'https://landsat-pds.s3.amazonaws.com/c1/L8/027/033/LC08_L1TP_027033_20200107_20200114_01_T1/LC08_L1TP_027033_20200107_20200114_01_T1_thumb_small.jpg',
+    tier: 'mid-res',
+    swath: 'Geometry object to be added',
+    metadata: { key: 'To be decided' },
+    tile_url:
       'https://landsat-pds.s3.amazonaws.com/c1/L8/027/033/LC08_L1TP_027033_20190613_20190619_01_T1/LC08_L1TP_027033_20190613_20190619_01_T1_thumb_small.jpg',
-      'https://landsat-pds.s3.amazonaws.com/c1/L8/027/033/LC08_L1TP_027033_20190613_20190619_01_T1/LC08_L1TP_027033_20190613_20190619_01_T1_thumb_small.jpg'
-    ],
-    thumbnail:
+    thumbnail_url:
       'https://landsat-pds.s3.amazonaws.com/c1/L8/027/033/LC08_L1TP_027033_20190613_20190619_01_T1/LC08_L1TP_027033_20190613_20190619_01_T1_thumb_small.jpg',
     satellite: 'sentinel-2'
   },
   {
     id: '37UVD',
-    properties: {
-      crs: 'EPSG: 4326',
-      label: '37UVD',
-      created: '2019-12-29T08:00:00Z',
-      cloudCoverAsPercentage: '20.23',
-      downloadLink:
-        'https://landsat-pds.s3.amazonaws.com/c1/L8/027/033/LC08_L1TP_027033_20200107_20200114_01_T1/LC08_L1TP_027033_20200107_20200114_01_T1_thumb_small.jpg',
-      tier: 'high-res',
-      swath: 'Geometry object to be added',
-      moreInfo: { key: 'To be decided' }
-    },
-    urls: [
+    created: '2019-12-29T08:00:00Z',
+    cloudCover: '20.23',
+    download_url:
+      'https://landsat-pds.s3.amazonaws.com/c1/L8/027/033/LC08_L1TP_027033_20200107_20200114_01_T1/LC08_L1TP_027033_20200107_20200114_01_T1_thumb_small.jpg',
+    tier: 'high-res',
+    swath: 'Geometry object to be added',
+    metadata: { key: 'To be decided' },
+    tile_url:
       'https://landsat-pds.s3.amazonaws.com/c1/L8/027/033/LC08_L1TP_027033_20190613_20190619_01_T1/LC08_L1TP_027033_20190613_20190619_01_T1_thumb_small.jpg',
-      'https://landsat-pds.s3.amazonaws.com/c1/L8/027/033/LC08_L1TP_027033_20190613_20190619_01_T1/LC08_L1TP_027033_20190613_20190619_01_T1_thumb_small.jpg'
-    ],
-    thumbnail:
+    thumbnail_url:
       'https://landsat-pds.s3.amazonaws.com/c1/L8/027/033/LC08_L1TP_027033_20190613_20190619_01_T1/LC08_L1TP_027033_20190613_20190619_01_T1_thumb_small.jpg',
     satellite: 'sentinel-2'
   }
@@ -757,64 +722,46 @@ const satelliteScenes = [
 let pinnedScenes = [
   {
     id: '32UVD',
-    properties: {
-      crs: 'EPSG: 4326',
-      label: '32UVD',
-      created: '2019-12-29T08:00:00Z',
-      cloudCoverAsPercentage: '4.23',
-      downloadLink:
-        'https://landsat-pds.s3.amazonaws.com/c1/L8/027/033/LC08_L1TP_027033_20200107_20200114_01_T1/LC08_L1TP_027033_20200107_20200114_01_T1_thumb_small.jpg',
-      tier: 'free',
-      swath: 'Geometry object to be added',
-      moreInfo: { key: 'To be decided' }
-    },
-    urls: [
+    created: '2019-12-29T08:00:00Z',
+    cloudCover: '4.23',
+    download_url:
+      'https://landsat-pds.s3.amazonaws.com/c1/L8/027/033/LC08_L1TP_027033_20200107_20200114_01_T1/LC08_L1TP_027033_20200107_20200114_01_T1_thumb_small.jpg',
+    tier: 'free',
+    metadata: { key: 'To be decided' },
+    tile_url:
       'https://landsat-pds.s3.amazonaws.com/c1/L8/027/033/LC08_L1TP_027033_20190613_20190619_01_T1/LC08_L1TP_027033_20190613_20190619_01_T1_thumb_small.jpg',
-      'https://landsat-pds.s3.amazonaws.com/c1/L8/027/033/LC08_L1TP_027033_20190613_20190619_01_T1/LC08_L1TP_027033_20190613_20190619_01_T1_thumb_small.jpg'
-    ],
-    thumbnail:
+
+    thumbnail_url:
       'https://landsat-pds.s3.amazonaws.com/c1/L8/027/033/LC08_L1TP_027033_20190613_20190619_01_T1/LC08_L1TP_027033_20190613_20190619_01_T1_thumb_small.jpg',
     satellite: 'sentinel-2'
   },
   {
     id: '35UVD',
-    properties: {
-      crs: 'EPSG: 4326',
-      label: '35UVD',
-      created: '2019-12-29T08:00:00Z',
-      cloudCoverAsPercentage: '10.23',
-      downloadLink:
-        'https://landsat-pds.s3.amazonaws.com/c1/L8/027/033/LC08_L1TP_027033_20200107_20200114_01_T1/LC08_L1TP_027033_20200107_20200114_01_T1_thumb_small.jpg',
-      tier: 'free',
-      swath: 'Geometry object to be added',
-      moreInfo: { key: 'To be decided' }
-    },
-    urls: [
+    created: '2019-12-29T08:00:00Z',
+    cloudCover: '10.23',
+    download_url:
+      'https://landsat-pds.s3.amazonaws.com/c1/L8/027/033/LC08_L1TP_027033_20200107_20200114_01_T1/LC08_L1TP_027033_20200107_20200114_01_T1_thumb_small.jpg',
+    tier: 'free',
+    swath: 'Geometry object to be added',
+    metadata: { key: 'To be decided' },
+    tile_url:
       'https://landsat-pds.s3.amazonaws.com/c1/L8/027/033/LC08_L1TP_027033_20190613_20190619_01_T1/LC08_L1TP_027033_20190613_20190619_01_T1_thumb_small.jpg',
-      'https://landsat-pds.s3.amazonaws.com/c1/L8/027/033/LC08_L1TP_027033_20190613_20190619_01_T1/LC08_L1TP_027033_20190613_20190619_01_T1_thumb_small.jpg'
-    ],
-    thumbnail:
+    thumbnail_url:
       'https://landsat-pds.s3.amazonaws.com/c1/L8/027/033/LC08_L1TP_027033_20190613_20190619_01_T1/LC08_L1TP_027033_20190613_20190619_01_T1_thumb_small.jpg',
     satellite: 'sentinel-2'
   },
   {
     id: '37UVD',
-    properties: {
-      crs: 'EPSG: 4326',
-      label: '37UVD',
-      created: '2019-12-29T08:00:00Z',
-      cloudCoverAsPercentage: '20.23',
-      downloadLink:
-        'https://landsat-pds.s3.amazonaws.com/c1/L8/027/033/LC08_L1TP_027033_20200107_20200114_01_T1/LC08_L1TP_027033_20200107_20200114_01_T1_thumb_small.jpg',
-      tier: 'high-res',
-      swath: 'Geometry object to be added',
-      moreInfo: { key: 'To be decided' }
-    },
-    urls: [
+    created: '2019-12-29T08:00:00Z',
+    cloudCover: '20.23',
+    download_url:
+      'https://landsat-pds.s3.amazonaws.com/c1/L8/027/033/LC08_L1TP_027033_20200107_20200114_01_T1/LC08_L1TP_027033_20200107_20200114_01_T1_thumb_small.jpg',
+    tier: 'high-res',
+    swath: 'Geometry object to be added',
+    metadata: { key: 'To be decided' },
+    tile_url:
       'https://landsat-pds.s3.amazonaws.com/c1/L8/027/033/LC08_L1TP_027033_20190613_20190619_01_T1/LC08_L1TP_027033_20190613_20190619_01_T1_thumb_small.jpg',
-      'https://landsat-pds.s3.amazonaws.com/c1/L8/027/033/LC08_L1TP_027033_20190613_20190619_01_T1/LC08_L1TP_027033_20190613_20190619_01_T1_thumb_small.jpg'
-    ],
-    thumbnail:
+    thumbnail_url:
       'https://landsat-pds.s3.amazonaws.com/c1/L8/027/033/LC08_L1TP_027033_20190613_20190619_01_T1/LC08_L1TP_027033_20190613_20190619_01_T1_thumb_small.jpg',
     satellite: 'sentinel-2'
   }
