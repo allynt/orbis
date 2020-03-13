@@ -105,8 +105,23 @@ const SatelliteSearch = ({ satellites, setVisiblePanel, map }) => {
     mapInstance => {
       if (selectedSatelliteSearch?.aoi) {
         const { aoi } = selectedSatelliteSearch;
-        setGeometry(aoi);
-        mapInstance.fitBounds(getBoundsOfGeometry(aoi));
+        mapInstance.fitBounds(getBoundsOfGeometry(aoi), { padding: 275, offset: [100, 0] });
+        const drawCtrl = mapInstance._controls.find(ctrl => ctrl.changeMode);
+        const feature = {
+          type: 'Feature',
+          drawType: 'AOI',
+          properties: {
+            drawType: 'AOI',
+            fillOpacity: 0.5,
+            fillColor: 'green'
+          },
+          geometry: {
+            type: 'Polygon',
+            coordinates: [aoi]
+          }
+        };
+        drawCtrl.add(feature);
+        return () => drawCtrl.deleteAll();
       }
     },
     [selectedSatelliteSearch]
