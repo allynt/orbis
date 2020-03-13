@@ -97,7 +97,6 @@ const reducer = (state = initialState, action) => {
       return { ...state, error: action.error };
 
     case SELECT_SATELLITE_SEARCH_QUERY:
-      console.log('SELECT SEARCH QUERY: ', action.search);
       return {
         ...state,
         selectedSatelliteSearch: action.search

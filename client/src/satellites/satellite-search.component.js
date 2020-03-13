@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 
+import { bbox, lineString } from '@turf/turf';
 import { useDispatch, useSelector } from 'react-redux';
 
 import Button from '@astrosat/astrosat-ui/dist/buttons/button';
@@ -7,8 +8,8 @@ import Detail from '@astrosat/astrosat-ui/dist/containers/detail';
 import Dialog from '@astrosat/astrosat-ui/dist/containers/dialog';
 import useModal from '@astrosat/astrosat-ui/dist/containers/use-modal';
 
-import useMap from '../map/use-map.hook';
 import { fetchSavedSatellites } from './satellites.actions';
+import useMap from '../map/use-map.hook';
 
 import { ReactComponent as DrawAoiIcon } from './draw-aoi.svg';
 import SatelliteSearchForm from './satellite-search-form.component';
@@ -26,6 +27,7 @@ const SatelliteSearch = ({ satellites, setVisiblePanel, map }) => {
   const [geometry, setGeometry] = useState(null);
 
   const savedSearches = useSelector(state => state.satellites.satelliteSearches);
+  const selectedSatelliteSearch = useSelector(state => state.satellites.selectedSatelliteSearch);
 
   const ref = useRef(null);
   const [isSatelliteMoreInfoDialogVisible, toggleSatelliteMoreInfoDialog] = useModal(false);
@@ -98,6 +100,35 @@ const SatelliteSearch = ({ satellites, setVisiblePanel, map }) => {
     }
   }, [savedSearches]);
 
+  useMap(
+    map,
+    mapInstance => {
+      if (selectedSatelliteSearch?.aoi) {
+        const { aoi } = selectedSatelliteSearch;
+        const line = lineString(aoi);
+        mapInstance.fitBounds(bbox(line), { padding: 275, offset: [100, 0] });
+        const drawCtrl = mapInstance._controls.find(ctrl => ctrl.changeMode);
+        drawCtrl.deleteAll();
+        const feature = {
+          type: 'Feature',
+          drawType: 'AOI',
+          properties: {
+            drawType: 'AOI',
+            fillOpacity: 0.5,
+            fillColor: 'green'
+          },
+          geometry: {
+            type: 'Polygon',
+            coordinates: [aoi]
+          }
+        };
+        drawCtrl.add(feature);
+        return () => drawCtrl.deleteAll();
+      }
+    },
+    [selectedSatelliteSearch]
+  );
+
   return (
     <div className={styles.search} ref={ref}>
       {savedSearches ? (
@@ -119,6 +150,7 @@ const SatelliteSearch = ({ satellites, setVisiblePanel, map }) => {
       <SatelliteSearchForm
         satellites={satellites}
         geometry={geometry}
+        selectedSatelliteSearch={selectedSatelliteSearch}
         setVisiblePanel={setVisiblePanel}
         setSelectedSatelliteMoreInfo={setSelectedSatelliteMoreInfo}
         toggleSatelliteMoreInfoDialog={toggleSatelliteMoreInfoDialog}

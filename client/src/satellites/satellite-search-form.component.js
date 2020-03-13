@@ -1,10 +1,7 @@
-import React, { useState } from 'react';
-import PropTypes from 'prop-types';
+import React, { useState, useEffect } from 'react';
 
 import { useDispatch } from 'react-redux';
-
-import { subDays, formatISO } from 'date-fns';
-
+import { formatISO, subDays } from 'date-fns';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 
@@ -49,11 +46,27 @@ const CustomDatePicker = React.forwardRef(({ value, onClick }, ref) => (
   </button>
 ));
 
-const defaults = {
-  values: {
-    'sentinel-2': true,
-    free: true
+const collectIds = (formValues, array) =>
+  array.reduce((acc, item) => {
+    // Check if satellite id exists in values object.
+    const key = Object.keys(formValues).find(key => key === item.id);
+    if (key && formValues[key]) {
+      acc = [...acc, key];
+    }
+    return acc;
+  }, []);
+
+export const savedSearchToFormValues = savedSearch => {
+  let formValues = {};
+  const properties = ['satellites', 'tiers'];
+  for (let property of properties) {
+    if (savedSearch[property]) {
+      for (let item of savedSearch[property]) {
+        formValues[item] = true;
+      }
+    }
   }
+  return formValues;
 };
 
 const FormSection = ({ title, children }) => (
@@ -63,9 +76,17 @@ const FormSection = ({ title, children }) => (
   </div>
 );
 
+const defaults = {
+  values: {
+    'sentinel-2': true,
+    free: true
+  }
+};
+
 const SatelliteSearchForm = ({
   satellites,
   geometry,
+  selectedSatelliteSearch,
   setVisiblePanel,
   setSelectedSatelliteMoreInfo,
   toggleSatelliteMoreInfoDialog,
@@ -77,37 +98,30 @@ const SatelliteSearchForm = ({
   const [startDate, setStartDate] = useState(subDays(new Date(), DAYS_IN_PAST));
   const [endDate, setEndDate] = useState(new Date());
 
-  const { handleChange, handleSubmit, values } = useForm(onSubmit, validate, defaults);
+  const { handleChange, handleSubmit, values, setValues } = useForm(onSubmit, validate, defaults);
+
+  useEffect(() => {
+    if (selectedSatelliteSearch) {
+      selectedSatelliteSearch.start_date && setStartDate(new Date(selectedSatelliteSearch.start_date));
+      selectedSatelliteSearch.end_date && setEndDate(new Date(selectedSatelliteSearch.end_date));
+      const convertedSearch = savedSearchToFormValues(selectedSatelliteSearch);
+      setValues(convertedSearch);
+    }
+  }, [selectedSatelliteSearch]);
 
   function onSubmit() {
     // Collect all selected satellites into one array of satellite ids.
-    const selectedSatellites = satellites.reduce((acc, satellite) => {
-      // Check if satellite id exists in values object.
-      const key = Object.keys(values).find(key => key === satellite.id);
-      if (key && values[key]) {
-        acc = [...acc, key];
-      }
-      return acc;
-    }, []);
-
+    const selectedSatellitesIds = collectIds(values, satellites);
     // Collect all selected tiers into one array of tier ids.
-    const selectedTiers = tiers.reduce((acc, tier) => {
-      // Check if tier id exists in values object.
-      const key = Object.keys(values).find(key => key === tier.id);
-      if (key && values[key]) {
-        acc = [...acc, key];
-      }
-      return acc;
-    }, []);
+    const selectedTiersIds = collectIds(values, tiers);
 
     const query = {
-      satellites: selectedSatellites,
+      satellites: selectedSatellitesIds,
       start_date: formatISO(startDate),
       end_date: formatISO(endDate),
-      tiers: selectedTiers,
+      tiers: selectedTiersIds,
       aoi: geometry
     };
-
     dispatch(setCurrentSearchQuery(query));
     dispatch(searchSatellites(query));
     setVisiblePanel(RESULTS);
@@ -124,8 +138,7 @@ const SatelliteSearchForm = ({
                   name={satellite.id}
                   label={satellite.label}
                   onChange={handleChange}
-                  checked={values[satellite.id]}
-                  disabled={satellite.id !== 'sentinel-2'}
+                  checked={values[satellite.id] === true}
                 />
 
                 <button
@@ -178,8 +191,7 @@ const SatelliteSearchForm = ({
                     name={tier.id}
                     label={tier.label}
                     onChange={handleChange}
-                    checked={values[tier.id]}
-                    disabled={tier.id !== 'free'}
+                    checked={values[tier.id] === true}
                   />
 
                   <button
