@@ -7,8 +7,9 @@ import Detail from '@astrosat/astrosat-ui/dist/containers/detail';
 import Dialog from '@astrosat/astrosat-ui/dist/containers/dialog';
 import useModal from '@astrosat/astrosat-ui/dist/containers/use-modal';
 
-import useMap from '../map/use-map.hook';
 import { fetchSavedSatellites } from './satellites.actions';
+import useMap from '../map/use-map.hook';
+import { getBoundsOfGeometry } from '../utils/geometry';
 
 import { ReactComponent as DrawAoiIcon } from './draw-aoi.svg';
 import SatelliteSearchForm from './satellite-search-form.component';
@@ -60,12 +61,7 @@ const SatelliteSearch = ({ satellites, setVisiblePanel, map }) => {
     mapInstance => {
       if (selectedSatelliteSearch?.aoi) {
         const { aoi } = selectedSatelliteSearch;
-        const { length } = aoi;
-        const centerLon = aoi.reduce((acc, cur) => acc + cur[0], 0) / length;
-        const centerLat = aoi.reduce((acc, cur) => acc + cur[1], 0) / length;
-        mapInstance.flyTo({
-          center: [centerLon, centerLat]
-        });
+        mapInstance.fitBounds(getBoundsOfGeometry(aoi));
       }
     },
     [selectedSatelliteSearch]
