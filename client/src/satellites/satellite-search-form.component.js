@@ -137,7 +137,7 @@ const SatelliteSearchForm = ({
                     toggleSatelliteMoreInfoDialog();
                   }}
                 >
-                  <InfoIcon className={styles.infoIcon} />
+                  <InfoIcon classes={styles.infoIcon} />
                 </button>
               </li>
             ))}
@@ -190,7 +190,7 @@ const SatelliteSearchForm = ({
                       toggleTierMoreInfoDialog();
                     }}
                   >
-                    <InfoIcon className={styles.infoIcon} />
+                    <InfoIcon classes={styles.infoIcon} />
                   </button>
                 </li>
               );
