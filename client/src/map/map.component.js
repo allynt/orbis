@@ -1,8 +1,6 @@
 import React, { useImperativeHandle, useState } from 'react';
 // import ReactDOM from 'react-dom';
 
-// import Measure from 'react-measure';
-
 import mapboxgl, { AttributionControl, NavigationControl, ScaleControl } from 'mapbox-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import MapboxDraw from '@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw';
@@ -22,7 +20,7 @@ import '@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css';
 // import { setClickedFeature, MULTI_SELECT } from '../factsheet/factsheet.action';
 import { useMapEvent } from './use-map-event.hook';
 import MapStyleSwitcher from '../mapstyle/mapstyle-switcher.component';
-import { selectMapStyle, setViewport, saveMap } from './map.actions';
+import { MAP_STYLE_SELECTED, setViewport, saveMap } from './map.actions';
 import { closeMenu } from '../side-menu/side-menu.actions';
 import { isLoaded } from '../bookmarks/bookmarks.actions';
 
@@ -133,11 +131,8 @@ const Map = (
   const accessToken = useSelector(state => (state.app.config ? state.app.config.mapbox_token : null));
 
   const [isMapStyleSwitcherVisible, setIsMapStyleSwitcherVisible] = useState(false);
-  const mapStyles = useSelector(state => state.app.config.mapStyles);
+  const mapStyles = useSelector(state => state.map.mapStyles);
   const selectedMapStyle = useSelector(state => state.map.selectedMapStyle);
-
-  const chooseMapStyle = mapStyle => dispatch(selectMapStyle(mapStyle));
-
   let selectedMapStyleIcon = null;
   let selectedMapStyleIconWebP = null;
   if (selectedMapStyle.id === 'dark') {
@@ -153,6 +148,7 @@ const Map = (
     selectedMapStyleIcon = satellite;
     selectedMapStyleIconWebP = satelliteWebP;
   }
+  const selectMapStyle = mapStyle => dispatch({ type: MAP_STYLE_SELECTED, mapStyle });
 
   // const labelButtonSelected = useSelector(state => state.annotations.textLabelSelected);
 
@@ -530,23 +526,15 @@ const Map = (
   const visibleMenuItem = useSelector(state => state.sidebar.visibleMenuItem);
 
   return (
-    // <Measure
-    //   bounds
-    //   onResize={contentRect => {
-    //     const { width, height } = contentRect.bounds;
-    //     console.log('UPDATE DIMENSIONS: ', width, height);
-    //     // layerActions.updateDimensions(width, height);
-    //   }}
-    // >
     <>
       <div ref={mapContainer} className={layoutStyles.map} data-testid={`map-${position}`} />
+
       {isLoading && (
         <div className={layoutStyles.loadMask}>
           <LoadMask />
         </div>
       )}
 
-      {/* <AccountMenuButton user={user} logout={() => dispatch(logout(history))} /> */}
       {sidebar && (
         <SideMenu>
           <div className={layoutStyles.heading}>
@@ -598,20 +586,13 @@ const Map = (
         </picture> */}
       </Button>
       {isMapStyleSwitcherVisible && (
-        <MapStyleSwitcher mapStyles={mapStyles} selectedMapStyle={selectedMapStyle} selectMapStyle={chooseMapStyle} />
+        <MapStyleSwitcher
+          mapStyles={mapStyles || []}
+          selectedMapStyle={selectedMapStyle}
+          selectMapStyle={selectMapStyle}
+        />
       )}
 
-      {/* {position === 1 && compare && (
-        <div
-          className={layoutStyles.compare}
-          // style={{ transform: `translate(${compareRatio * dimensions.get('width')}px, 0px` }}
-          onMouseDown={compareDown}
-          onTouchStart={compareDown}
-        >
-          <div className={layoutStyles.swiper} />
-        </div>
-      )}
- */}
       {/* <Annotations map={mapInstance} />
       <Bookmarks map={mapInstance} />
       <LayerTree map={mapInstance} /> */}
@@ -639,7 +620,6 @@ const Map = (
           popupRef.current
         )} */}
     </>
-    // </Measure>
   );
 };
 

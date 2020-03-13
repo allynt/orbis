@@ -10,6 +10,7 @@ const useMapbox = (style, accessToken, authToken, authUrl) => {
   let resolveCb;
 
   const mapPromise = new Promise((resolve, reject) => {
+    // console.log('SET RESOLVE CALLBACK: ', resolve);
     resolveCb = resolve;
   });
 
@@ -17,6 +18,7 @@ const useMapbox = (style, accessToken, authToken, authUrl) => {
     if (accessToken) {
       mapboxgl.accessToken = accessToken;
 
+      console.log('CREATING NEW MAP: ', style);
       const map = new mapboxgl.Map({
         container: mapContainer.current,
         style: style,
@@ -39,6 +41,7 @@ const useMapbox = (style, accessToken, authToken, authUrl) => {
 
       map.on('load', () => {
         setMapInstance(map);
+        // console.log('RESOLVE MAP REFERNCE: ', map);
         resolveCb(map);
         // used for cypress tests
         mapContainer.current.map = map;

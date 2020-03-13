@@ -249,7 +249,7 @@
 .swiper {
   position: fixed;
   top: 50%;
-  left: 48.4%;
+  left: -30px;
   display: inline-block;
 
   width: 60px;
