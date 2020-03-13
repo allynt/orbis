@@ -10,7 +10,7 @@
     "eject": "react-scripts eject",
     "release": "semantic-release --dry-run=true",
     "e2e": "cypress open --config defaultCommandTimeout=10000",
-    "e2e:develop": "cypress open --config baseUrl=http://localhost:3000",
+    "e2e:develop": "cypress open --config baseUrl=http://server:3000",
     "e2e:install": "cypress install",
     "e2e:verify": "cypress verify",
     "e2e:run": "cypress run"
@@ -73,7 +73,7 @@
     "redux-mock-store": "^1.5.4",
     "semantic-release": "^16.0.4"
   },
-  "proxy": "http://localhost:8000",
+  "proxy": "http://server:8000",
   "browserslist": [
     ">0.2%",
     "not dead",
