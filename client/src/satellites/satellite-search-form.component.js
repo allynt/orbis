@@ -111,15 +111,15 @@ const SatelliteSearchForm = ({
 
   function onSubmit() {
     // Collect all selected satellites into one array of satellite ids.
-    const selectedSatellites = collectIds(values, satellites);
+    const selectedSatellitesIds = collectIds(values, satellites);
     // Collect all selected tiers into one array of tier ids.
-    const selectedTiers = collectIds(values, tiers);
+    const selectedTiersIds = collectIds(values, tiers);
 
     const query = {
-      satellites: selectedSatellites,
+      satellites: selectedSatellitesIds,
       start_date: formatISO(startDate),
       end_date: formatISO(endDate),
-      tiers: selectedTiers,
+      tiers: selectedTiersIds,
       geometry
     };
     dispatch(setCurrentSearchQuery(query));
