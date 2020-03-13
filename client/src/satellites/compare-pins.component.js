@@ -51,7 +51,7 @@ const ComparePins = () => {
           onClick={() => dispatch(toggleCompareMaps())}
           ariaLabel="Compare"
         />
-        <Button theme="tertiary" onClick={() => dispatch(clearSelectedPinnedScenes([]))}>
+        <Button theme="link" classNames={[styles.button]} onClick={() => dispatch(clearSelectedPinnedScenes([]))}>
           Clear Pins
         </Button>
       </div>
