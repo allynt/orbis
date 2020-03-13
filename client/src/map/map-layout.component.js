@@ -5,31 +5,15 @@ import Measure from 'react-measure';
 import Map from './map.component';
 import syncMaps from './mapbox-gl-sync-move';
 import syncOverviewMap from './mapbox-gl-sync-move-overview';
-// import { useCrossFilterStore } from '../crossfilter';
 import { useDispatch, useSelector } from 'react-redux';
-
-// import Detail from '@astrosat/astrosat-ui/dist/containers/detail';
-// import { Detail } from '@astrosat/astrosat-ui';
 
 import { getToolbarItems } from '../toolbar/toolbar-config';
 
 import Toolbar from '../toolbar/toolbar.component';
-// import { colorSchemes } from '../colors';
 
-// import SideMenuContainer from '../side-menu/side-menu.container';
-// import AnnotationsPanel from '../annotations/annotations-panel.component';
-// import BookmarksPanel from '../bookmarks/bookmarks-panel.component';
-// import LayerTree from '../layer-tree/layer-tree.component';
-// import PasswordChangeContainer from '../accounts/password-change-form.container';
-
-// import ComparisonMap from './compare-maps.component';
-import OverviewMap from '../mini-map/overview-map.component';
-import SpyglassMap from '../spyglass/spyglass-map.component';
 import { moveCompare } from './map.actions';
 
 import styles from './map-layout.module.css';
-
-const mapstyles = ['mapbox://styles/mapbox/streets-v11', 'mapbox://styles/mapbox/satellite-v9'];
 
 const times = (n, fn) => {
   const result = [];
@@ -39,7 +23,7 @@ const times = (n, fn) => {
   return result;
 };
 
-const MapLayout = ({ count }) => {
+const MapLayout = () => {
   const dispatch = useDispatch();
 
   const toolbarItems = getToolbarItems(dispatch);
@@ -131,7 +115,6 @@ const MapLayout = ({ count }) => {
                   miniMap={bottomRight(i, mapCount)}
                   spyglass={bottomRight(i, mapCount)}
                   layoutInvalidation={mapCount}
-                  // style={mapstyles[i]}
                   style={mapStyle.uri}
                   position={i}
                   sidebar={i === 0}
