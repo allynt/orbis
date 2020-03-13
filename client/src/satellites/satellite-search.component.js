@@ -56,17 +56,6 @@ const SatelliteSearch = ({ satellites, setVisiblePanel, map }) => {
     [isAoiMode]
   );
 
-  useMap(
-    map,
-    mapInstance => {
-      if (selectedSatelliteSearch?.aoi) {
-        const { aoi } = selectedSatelliteSearch;
-        mapInstance.fitBounds(getBoundsOfGeometry(aoi));
-      }
-    },
-    [selectedSatelliteSearch]
-  );
-
   useEffect(() => {
     let drawCtrl = null;
     if (map) {
@@ -110,6 +99,18 @@ const SatelliteSearch = ({ satellites, setVisiblePanel, map }) => {
       dispatch(fetchSavedSatellites());
     }
   }, [savedSearches]);
+
+  useMap(
+    map,
+    mapInstance => {
+      if (selectedSatelliteSearch?.aoi) {
+        const { aoi } = selectedSatelliteSearch;
+        setGeometry(aoi);
+        mapInstance.fitBounds(getBoundsOfGeometry(aoi));
+      }
+    },
+    [selectedSatelliteSearch]
+  );
 
   return (
     <div className={styles.search} ref={ref}>
