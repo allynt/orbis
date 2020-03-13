@@ -32,7 +32,7 @@ jobs:
         run: |
           ENVIRONMENT="${{ github.event.deployment.environment }}"
           TAG="${GITHUB_SHA:0:7}"
-          ./scripts/deploy.sh "${ENVIRONMENT}" "${TAG}""
+          ./scripts/deploy.sh "${ENVIRONMENT}" "${TAG}"
 
       - name: Set the Deployment Status on Success
         if: success()
