@@ -19,8 +19,7 @@ import { setCurrentSearchQuery, searchSatellites } from './satellites.actions';
 
 import { RESULTS } from './satellites-panel.component';
 
-
-import styles from './search.module.css';
+import styles from './satellite-search-form.module.css';
 import sideMenuStyles from '../side-menu/side-menu.module.css';
 
 const DATE_FORMAT = 'yyy-MM-dd';
