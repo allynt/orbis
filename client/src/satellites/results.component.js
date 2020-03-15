@@ -1,7 +1,7 @@
 import React, { useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import Slider from '@astrosat/astrosat-ui/dist/forms/slider';
 import Button from '@astrosat/astrosat-ui/dist/buttons/button';
@@ -13,10 +13,13 @@ import { pinScene } from './satellites.actions';
 import SaveSearchForm from './save-search-form.component';
 import SceneListItem from './scene-list-item.component';
 
+import { ReactComponent as PinIcon } from './pin.svg';
+
 import styles from './results.module.css';
 import sideMenuStyles from '../side-menu/side-menu.module.css';
 
 const Results = ({ scenes, setVisiblePanel, selectScene }) => {
+  const dispatch = useDispatch();
   const currentSearchQuery = useSelector(state => state.satellites.currentSearchQuery);
 
   const [cloudCoverPercentage, setCloudCoverPercentage] = useState([10]);
@@ -49,7 +52,14 @@ const Results = ({ scenes, setVisiblePanel, selectScene }) => {
                   <SceneListItem
                     key={scene.id}
                     scene={scene}
-                    pinScene={pinScene}
+                    renderIcon={() => (
+                      <PinIcon
+                        className={styles.pinIcon}
+                        onClick={() => {
+                          dispatch(pinScene(scene));
+                        }}
+                      />
+                    )}
                     selectScene={selectScene}
                     setVisiblePanel={setVisiblePanel}
                     toggleSceneMoreInfoDialog={toggleSceneMoreInfoDialog}

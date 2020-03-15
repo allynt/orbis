@@ -11,6 +11,8 @@ import useModal from '@astrosat/astrosat-ui/dist/containers/use-modal';
 
 import SceneListItem from './scene-list-item.component';
 
+import { ReactComponent as DeleteIcon } from './delete.svg';
+
 import {
   fetchPinnedScenes,
   selectPinnedScene,
@@ -76,11 +78,17 @@ const ComparePins = () => {
                 <SceneListItem
                   index={index}
                   scene={scene}
-                  icon="delete"
+                  renderIcon={() => (
+                    <DeleteIcon
+                      className={styles.deleteIcon}
+                      onClick={() => {
+                        dispatch(deletePinnedScene(scene.id));
+                      }}
+                    />
+                  )}
                   setSelectedSceneMoreInfo={setSelectedSceneMoreInfo}
                   toggleSceneMoreInfoDialog={toggleSceneMoreInfoDialog}
                   selectPinnedScene={selectPinnedScene}
-                  deletePinnedScene={deletePinnedScene}
                 />
               </div>
             );

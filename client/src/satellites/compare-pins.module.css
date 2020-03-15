@@ -24,3 +24,11 @@
 .moreInfoContent {
   color: #000;
 }
+
+.deleteIcon {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  width: 1.25rem;
+  cursor: pointer;
+}
