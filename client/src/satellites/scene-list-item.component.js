@@ -19,8 +19,9 @@ const SceneListItem = ({
   icon,
   selectScene,
   setVisiblePanel,
-  setSelectedSceneMoreInfo,
-  toggleSceneMoreInfoDialog
+  setSelectedMoreInfo,
+  toggleMoreInfoDialog,
+  deletePinnedScene
 }) => {
   const dispatch = useDispatch();
   return (
@@ -53,8 +54,11 @@ const SceneListItem = ({
         <div
           className={resultsStyles.moreInfo}
           onClick={() => {
-            setSelectedSceneMoreInfo({ id: 1, description: 'Some text' });
-            toggleSceneMoreInfoDialog();
+            setSelectedMoreInfo({
+              id: 1,
+              description: 'Scenes Description'
+            });
+            toggleMoreInfoDialog();
           }}
         >
           <InfoIcon className={resultsStyles.moreInfoIcon} />

@@ -1,9 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 
 import { useDispatch, useSelector } from 'react-redux';
 
 import Button from '@astrosat/astrosat-ui/dist/buttons/button';
+import Dialog from '@astrosat/astrosat-ui/dist/containers/dialog';
+import useModal from '@astrosat/astrosat-ui/dist/containers/use-modal';
 
 import { fetchSatellites, selectScene, fetchVisualisations } from './satellites.actions';
 
@@ -21,9 +23,13 @@ export const PINS = 'Pins';
 
 const SatellitesPanel = ({ map }) => {
   const dispatch = useDispatch();
+  const ref = useRef(null);
 
   const [visiblePanel, setVisiblePanel] = useState(SEARCH);
   const [visualisations, setVisualisations] = useState(null);
+  const [selectedMoreInfo, setSelectedMoreInfo] = useState(null);
+
+  const [isMoreInfoDialogVisible, toggleMoreInfoDialog] = useModal(false);
 
   const satellites = useSelector(state => state.satellites.satellites);
   const scenes = useSelector(state => state.satellites.scenes);
@@ -77,16 +83,61 @@ const SatellitesPanel = ({ map }) => {
 
       <div className={styles.content}>
         {satellites && visiblePanel === SEARCH && (
-          <SatelliteSearch satellites={satellites} setVisiblePanel={setVisiblePanel} map={map} />
+          <SatelliteSearch
+            map={map}
+            satellites={satellites}
+            setVisiblePanel={setVisiblePanel}
+            setSelectedMoreInfo={setSelectedMoreInfo}
+            toggleMoreInfoDialog={toggleMoreInfoDialog}
+            ref={ref}
+          />
         )}
         {visiblePanel === RESULTS && (
-          <Results setVisiblePanel={setVisiblePanel} scenes={scenes} selectScene={selectScene} />
+          <Results
+            setVisiblePanel={setVisiblePanel}
+            scenes={scenes}
+            selectScene={selectScene}
+            setSelectedMoreInfo={setSelectedMoreInfo}
+            toggleMoreInfoDialog={toggleMoreInfoDialog}
+            ref={ref}
+          />
         )}
         {visiblePanel === VISUALISATION && (
           <Visualisation visualisations={visualisations} setVisiblePanel={setVisiblePanel} />
         )}
-        {visiblePanel === PINS && <PinnedScenes />}
+        {visiblePanel === PINS && (
+          <PinnedScenes
+            setSelectedMoreInfo={setSelectedMoreInfo}
+            toggleMoreInfoDialog={toggleMoreInfoDialog}
+            ref={ref}
+          />
+        )}
       </div>
+      <Dialog isVisible={isMoreInfoDialogVisible} title="More Info" close={toggleMoreInfoDialog} ref={ref}>
+        <div className={styles.moreInfoContent}>
+          <h3>More Info</h3>
+          <table>
+            <thead>
+              <tr>
+                <th scope="col">Label</th>
+                <th scope="col">Value</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              {selectedMoreInfo &&
+                Object.keys(selectedMoreInfo).map(key => {
+                  return (
+                    <tr key={key}>
+                      <td>{key}:</td>
+                      <td>{selectedMoreInfo[key]}</td>
+                    </tr>
+                  );
+                })}
+            </tbody>
+          </table>
+        </div>
+      </Dialog>
     </div>
   );
 };

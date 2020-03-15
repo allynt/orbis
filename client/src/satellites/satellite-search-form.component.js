@@ -88,10 +88,8 @@ const SatelliteSearchForm = ({
   geometry,
   selectedSatelliteSearch,
   setVisiblePanel,
-  setSelectedSatelliteMoreInfo,
-  toggleSatelliteMoreInfoDialog,
-  setSelectedTierMoreInfo,
-  toggleTierMoreInfoDialog
+  setSelectedMoreInfo,
+  toggleMoreInfoDialog
 }) => {
   const dispatch = useDispatch();
 
@@ -146,8 +144,8 @@ const SatelliteSearchForm = ({
                   type="button"
                   onClick={() => {
                     console.log('Selected SATELLITE: ', satellite);
-                    setSelectedSatelliteMoreInfo({ id: 1, description: 'desc' });
-                    toggleSatelliteMoreInfoDialog();
+                    setSelectedMoreInfo({ id: 1, description: 'Satellite Description' });
+                    toggleMoreInfoDialog();
                   }}
                 >
                   <InfoIcon classes={styles.infoIcon} />
@@ -198,8 +196,8 @@ const SatelliteSearchForm = ({
                     className={styles.infoButton}
                     type="button"
                     onClick={() => {
-                      setSelectedTierMoreInfo({ id: 1, description: 'desc' });
-                      toggleTierMoreInfoDialog();
+                      setSelectedMoreInfo({ id: 1, description: 'Tier Description' });
+                      toggleMoreInfoDialog();
                     }}
                   >
                     <InfoIcon classes={styles.infoIcon} />
