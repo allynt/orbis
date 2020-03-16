@@ -9,46 +9,23 @@ import { DATE_FORMAT, TIME_FORMAT } from './satellite.constants';
 import { VISUALISATION } from './satellites-panel.component';
 
 import { ReactComponent as InfoIcon } from './info.svg';
-import { ReactComponent as DeleteIcon } from './delete.svg';
-import { ReactComponent as PinIcon } from './pin.svg';
 
-import styles from './compare-pins.module.css';
+import styles from './scene-list-item.module.css';
 import resultsStyles from './results.module.css';
 
 const SceneListItem = ({
   index,
   scene,
   icon,
-  pinScene,
   selectScene,
   setVisiblePanel,
   setSelectedSceneMoreInfo,
-  toggleSceneMoreInfoDialog,
-  deletePinnedScene
+  toggleSceneMoreInfoDialog
 }) => {
   const dispatch = useDispatch();
   return (
     <li key={`${scene.id}-${index}`} className={resultsStyles.scene}>
-      {icon === 'pin' && (
-        <PinIcon
-          className={styles.pinIcon}
-          onClick={() => {
-            console.log('Pin Scene: ', scene);
-            if (pinScene) {
-              dispatch(pinScene(scene));
-            }
-          }}
-        />
-      )}
-
-      {icon === 'delete' && (
-        <DeleteIcon
-          className={resultsStyles.pinIcon}
-          onClick={() => {
-            dispatch(deletePinnedScene(scene.id));
-          }}
-        />
-      )}
+      <div className={styles.icon}>{icon}</div>
 
       <div
         className={resultsStyles.sceneSection}

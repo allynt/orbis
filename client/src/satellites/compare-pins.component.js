@@ -11,6 +11,8 @@ import useModal from '@astrosat/astrosat-ui/dist/containers/use-modal';
 
 import SceneListItem from './scene-list-item.component';
 
+import { ReactComponent as DeleteIcon } from './delete.svg';
+
 import {
   fetchPinnedScenes,
   selectPinnedScene,
@@ -61,6 +63,13 @@ const ComparePins = () => {
       <ul className={styles.pinnedScenes}>
         {pinnedScenes &&
           pinnedScenes.map((scene, index) => {
+            const Icon = (
+              <DeleteIcon
+                onClick={() => {
+                  dispatch(deletePinnedScene(scene.id));
+                }}
+              />
+            );
             return (
               <div key={scene.id} className={styles.compareItem}>
                 <Checkbox
@@ -76,11 +85,10 @@ const ComparePins = () => {
                 <SceneListItem
                   index={index}
                   scene={scene}
-                  icon="delete"
+                  icon={Icon}
                   setSelectedSceneMoreInfo={setSelectedSceneMoreInfo}
                   toggleSceneMoreInfoDialog={toggleSceneMoreInfoDialog}
                   selectPinnedScene={selectPinnedScene}
-                  deletePinnedScene={deletePinnedScene}
                 />
               </div>
             );
