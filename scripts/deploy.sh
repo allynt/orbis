@@ -44,5 +44,6 @@ fi
 terraform init
 terraform workspace new "${TERRAFORM_WORKSPACE}" || true
 terraform workspace select "${TERRAFORM_WORKSPACE}"
+terraform init
 terraform plan ${ENVIRONMENT_ARGS} -var tag=${TAG} -out=deploy.plan
 terraform apply -auto-approve ./deploy.plan
