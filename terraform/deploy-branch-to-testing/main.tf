@@ -112,23 +112,23 @@ locals {
 //
 // Resources
 //
-
-resource "postgresql_database" "branch_db" {
-  count = (var.app_environment == "testing-master") ? 0 : 1
-
-  lifecycle {
-    ignore_changes = [
-      lc_collate,
-      lc_ctype
-    ]
-  }
-
-  name       = local.app_branch_db_name
-  owner      = local.app_secrets["db_user"]
-  template   = local.app_secrets["db_name"]
-  lc_ctype   = "DEFAULT"
-  lc_collate = "DEFAULT"
-}
+## Temporary change to fix lack of working self-hosted runners
+#resource "postgresql_database" "branch_db" {
+#  count = (var.app_environment == "testing-master") ? 0 : 1
+#
+#  lifecycle {
+#    ignore_changes = [
+#      lc_collate,
+#      lc_ctype
+#    ]
+#  }
+#
+#  name       = local.app_branch_db_name
+#  owner      = local.app_secrets["db_user"]
+#  template   = local.app_secrets["db_name"]
+#  lc_ctype   = "DEFAULT"
+#  lc_collate = "DEFAULT"
+#}
 
 resource "kubernetes_secret" "app_secret" {
   metadata {

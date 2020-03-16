@@ -58,10 +58,11 @@ locals {
   app_branch_db_name = "${local.app_secrets["db_name"]}_${var.app_environment}"
 }
 
-provider "postgresql" {
-  host     = local.app_secrets["db_host"]
-  port     = local.app_secrets["db_port"]
-  database = local.app_secrets["db_name"]
-  username = local.app_secrets["db_user"]
-  password = local.app_secrets["db_password"]
-}
+## Temporary change to fix lack of working self-hosted runners
+#provider "postgresql" {
+#  host     = local.app_secrets["db_host"]
+#  port     = local.app_secrets["db_port"]
+#  database = local.app_secrets["db_name"]
+#  username = local.app_secrets["db_user"]
+#  password = local.app_secrets["db_password"]
+#}
