@@ -76,7 +76,7 @@ const SatelliteSearch = ({ map, satellites, setVisiblePanel, setSelectedMoreInfo
         if (feature && feature.properties.drawType === 'AOI') {
           const coordinates = feature.geometry.coordinates;
           if (coordinates[0].length === BBOX_NO_OF_POINTS) {
-            setGeometry(coordinates);
+            setGeometry(coordinates[0]);
           }
         }
       });
@@ -110,7 +110,7 @@ const SatelliteSearch = ({ map, satellites, setVisiblePanel, setSelectedMoreInfo
           },
           geometry: {
             type: 'Polygon',
-            coordinates: [aoi]
+            coordinates: aoi
           }
         };
         drawCtrl.add(feature);
