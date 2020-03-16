@@ -1,8 +1,8 @@
 const validate = form => {
   let errors = {};
 
-  if (!form.title) {
-    errors.title = 'Title is required';
+  if (!form.name) {
+    errors.name = 'Name is required';
   }
 
   return errors;
