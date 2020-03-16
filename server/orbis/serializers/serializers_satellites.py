@@ -1,5 +1,6 @@
 import json
 
+from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.contrib.gis.geos import Polygon, MultiPolygon, GEOSGeometry
 
@@ -202,11 +203,15 @@ class SatelliteSearchSerializer(serializers.ModelSerializer):
         # NOTE THAT THIS CODE IS MOSTLY DUPLICATED IN `SatelliteSearch.clean()`
         # THIS IS BY DESIGN B/C OF https://github.com/encode/django-rest-framework/issues/3144
 
-        # make sure data is valid
+        # make sure data (dates & aoi) is valid
         if data["start_date"] > data["end_date"]:
             raise serializers.ValidationError(
-                "end_date must be greater than or equal to start_date"
+                "end_date must be greater than or equal to start_date."
             )
+        if data["aoi"].area > settings.MAXIMUM_AOI_AREA:
+            raise serializers.ValidationError(
+                f"The area of the aoi must be less than or equal to {settings.MAXIMUM_AOI_AREA}."
+        )
 
         # make sure owner is allowed to save this search
         user = data["owner"]
