@@ -137,6 +137,11 @@ DATA_TOKEN_TIMEOUT = DynamicSetting(
     "orbis.OrbisSettings.data_token_timeout", 60
 )
 
+# the maximum aoi area that can be passed to a query
+MAXIMUM_AOI_AREA = DynamicSetting(
+    "orbis.OrbisSettings.maximum_aoi_area", 500
+)
+
 ##############
 # Middleware #
 ##############
