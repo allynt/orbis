@@ -63,6 +63,13 @@ const ComparePins = () => {
       <ul className={styles.pinnedScenes}>
         {pinnedScenes &&
           pinnedScenes.map((scene, index) => {
+            const Icon = (
+              <DeleteIcon
+                onClick={() => {
+                  dispatch(deletePinnedScene(scene.id));
+                }}
+              />
+            );
             return (
               <div key={scene.id} className={styles.compareItem}>
                 <Checkbox
@@ -78,14 +85,7 @@ const ComparePins = () => {
                 <SceneListItem
                   index={index}
                   scene={scene}
-                  renderIcon={() => (
-                    <DeleteIcon
-                      className={styles.deleteIcon}
-                      onClick={() => {
-                        dispatch(deletePinnedScene(scene.id));
-                      }}
-                    />
-                  )}
+                  icon={Icon}
                   setSelectedSceneMoreInfo={setSelectedSceneMoreInfo}
                   toggleSceneMoreInfoDialog={toggleSceneMoreInfoDialog}
                   selectPinnedScene={selectPinnedScene}

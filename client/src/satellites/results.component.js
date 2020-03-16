@@ -48,18 +48,18 @@ const Results = ({ scenes, setVisiblePanel, selectScene }) => {
             {scenes
               .filter(scene => scene.cloudCover <= cloudCoverPercentage[0])
               .map(scene => {
+                const Icon = (
+                  <PinIcon
+                    onClick={() => {
+                      dispatch(pinScene(scene));
+                    }}
+                  />
+                );
                 return (
                   <SceneListItem
                     key={scene.id}
                     scene={scene}
-                    renderIcon={() => (
-                      <PinIcon
-                        className={styles.pinIcon}
-                        onClick={() => {
-                          dispatch(pinScene(scene));
-                        }}
-                      />
-                    )}
+                    icon={Icon}
                     selectScene={selectScene}
                     setVisiblePanel={setVisiblePanel}
                     toggleSceneMoreInfoDialog={toggleSceneMoreInfoDialog}

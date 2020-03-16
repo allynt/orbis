@@ -10,12 +10,13 @@ import { VISUALISATION } from './satellites-panel.component';
 
 import { ReactComponent as InfoIcon } from './info.svg';
 
+import styles from './scene-list-item.module.css';
 import resultsStyles from './results.module.css';
 
 const SceneListItem = ({
   index,
   scene,
-  renderIcon,
+  icon,
   selectScene,
   setVisiblePanel,
   setSelectedSceneMoreInfo,
@@ -24,7 +25,7 @@ const SceneListItem = ({
   const dispatch = useDispatch();
   return (
     <li key={`${scene.id}-${index}`} className={resultsStyles.scene}>
-      {renderIcon()}
+      <div className={styles.icon}>{icon}</div>
 
       <div
         className={resultsStyles.sceneSection}
