@@ -29,7 +29,6 @@ const ComparePins = () => {
   const pinnedScenes = useSelector(state => state.satellites.pinnedScenes);
   const isCompareMode = useSelector(state => state.map.isCompareMode);
   const selectedPinnedScenes = useSelector(state => state.satellites.selectedPinnedScenes);
-  console.log('SELECTED PINNED SCENES: ', selectedPinnedScenes);
 
   const ref = useRef(null);
   const [isSceneMoreInfoDialogVisible, toggleSceneMoreInfoDialog] = useModal(false);

@@ -37,17 +37,9 @@ const initialState = {
   dataToken: null,
   dataSources: null,
   saveMap: false,
-  // compareMode: true,
-  compareRatio: 0.5,
   dimensions: {
     width: -1,
     height: -1
-  },
-  bounds: {
-    x1: -180,
-    y1: -90,
-    x2: 180,
-    y2: 90
   }
 };
 
@@ -73,9 +65,6 @@ const reducer = (state = initialState, action) => {
 
     case TOGGLE_COMPARE_MODE:
       return { ...state, isCompareMode: !state.isCompareMode };
-
-    case MOVE_COMPARE:
-      return { ...state, compareRatio: action.ratio };
 
     case TOGGLE_INFRASTRUCTURE_LAYER_VISIBILITY:
       // Toggle whether layer is visible or not.

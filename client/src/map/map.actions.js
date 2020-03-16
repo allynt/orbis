@@ -105,11 +105,6 @@ export const toggleSpyglassMap = () => dispatch => dispatch({ type: TOGGLE_SPYGL
 
 export const toggleCompareMaps = () => dispatch => dispatch({ type: TOGGLE_COMPARE_MODE });
 
-export const moveCompare = ratio => ({
-  type: MOVE_COMPARE,
-  ratio
-});
-
 export const fetchSourcesAndDataToken = () => async (dispatch, getState) => {
   const {
     accounts: { userKey }

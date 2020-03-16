@@ -1,34 +1,22 @@
-import React, { useImperativeHandle, useState } from 'react';
-// import ReactDOM from 'react-dom';
+import React, { useState } from 'react';
 
+import * as FileSaver from 'file-saver';
 import mapboxgl, { AttributionControl, NavigationControl, ScaleControl } from 'mapbox-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import MapboxDraw from '@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw';
-
 import { useDispatch, useSelector } from 'react-redux';
 
-import * as FileSaver from 'file-saver';
-
-// import { useMapCrossFilter } from '../crossfilter';
 import useMapbox from './use-mapbox.hook';
 import useMap from './use-map.hook';
 import useMapControl from './use-map-control.hook';
 import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder';
 import '@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css';
-// import MapboxDraw from '@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw';
 import '@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css';
-// import { setClickedFeature, MULTI_SELECT } from '../factsheet/factsheet.action';
 import { useMapEvent } from './use-map-event.hook';
 import MapStyleSwitcher from '../mapstyle/mapstyle-switcher.component';
 import { MAP_STYLE_SELECTED, setViewport, saveMap } from './map.actions';
 import { closeMenu } from '../side-menu/side-menu.actions';
 import { isLoaded } from '../bookmarks/bookmarks.actions';
-
-// import LayerTreeControl from '../layer-tree/layer-tree.control';
-// import AccountMenuButton from '../accounts/account-menu-button.component';
-// import { logout } from '../accounts/accounts.actions';
-
-// import SideMenuContainer from '../side-menu/side-menu.container';
 import SideMenu from '../side-menu/side-menu.component';
 import AnnotationsPanel from '../annotations/annotations-panel.component';
 import BookmarksPanel from '../bookmarks/bookmarks-panel.component';
@@ -36,23 +24,9 @@ import DataLayers from '../data-layers/data-layers.component';
 import SatellitesPanel from '../satellites/satellites-panel.component';
 import Profile from '../accounts/profile.component';
 import PasswordChangeForm from '../accounts/password-change-form.component';
-// import { setViewport } from './map.actions';
-// import Annotations from '../annotations/annotations.component';
-// import Bookmarks from '../bookmarks/bookmarks.component';
-
-// import { history } from '../store';
-
-// import LabelForm from '../annotations/label-form.component';
-// import { formatKey } from '../utils/utils';
-// import InfrastructureDetail from './infrastructure-details.component';
-// import { selectedFeatureIds } from '../factsheet/factsheet.selector';
-// import { CUSTOM_DATA_THRESHOLD } from '../constants';
-
-// import Detail from '@astrosat/astrosat-ui/dist/containers/detail';
 import Button from '@astrosat/astrosat-ui/dist/buttons/button';
 import LoadMask from '@astrosat/astrosat-ui/dist/load-mask/load-mask';
 import CloseButton from '@astrosat/astrosat-ui/dist/buttons/close-button';
-// import { Detail } from '@astrosat/astrosat-ui';
 import { ReactComponent as DataIcon } from '../mapstyle/layers.svg';
 
 import RotateMode from 'mapbox-gl-draw-rotate-mode';
@@ -64,9 +38,6 @@ import CircleMode from '../annotations/modes/circle';
 import LabelMode from '../annotations/modes/label';
 import ImageMode from '../annotations/modes/image';
 import RectangleMode from '../annotations/modes/rectangle';
-
-import LayerTree from '../layer-tree/layer-tree.component';
-
 import {
   ANNOTATIONS,
   BOOKMARKS,
@@ -75,11 +46,7 @@ import {
   PROFILE,
   CHANGE_PASSWORD
 } from '../toolbar/toolbar-constants';
-
 import { GEOJSON, RASTER, VECTOR } from './map.constants';
-
-// import SpyglassControl from '../spyglass/spyglass.control';
-
 import dark from '../mapstyle/dark.png';
 import darkWebP from '../mapstyle/dark.webp';
 import light from '../mapstyle/light.png';
@@ -92,43 +59,24 @@ import satelliteWebP from '../mapstyle/satellite.webp';
 import drawStyles from '../annotations/styles';
 import layoutStyles from './map-layout.module.css';
 
-// const interpolate = interpolation => (property, filter, values) => [
-//   interpolation,
-//   ['linear'],
-//   ['get', property],
-//   filter[0],
-//   values[0],
-//   filter[1],
-//   values[1]
-// ];
-
-// const interpolateLinear = interpolate('interpolate');
-// const interpolateHcl = interpolate('interpolate-hcl');
-// const interpolateZoom = (min, max) => ['interpolate', ['linear'], ['zoom'], 6, min, 22, max];
-
-const Map = (
-  {
-    selectedProperty,
-    style = 'mapbox://styles/mapbox/satellite-v9',
-    colorScheme,
-    attribution = true,
-    geocoder = true,
-    navigation = true,
-    spyglass = false,
-    scale = true,
-    draw = true,
-    save = true,
-    layerTree = true,
-    layoutInvalidation,
-    position,
-    sidebar = false,
-    compare = false,
-    compareRatio,
-    dimensions
-  },
-  ref
-) => {
+const Map = ({
+  style = 'mapbox://styles/mapbox/satellite-v9',
+  attribution = true,
+  geocoder = true,
+  navigation = true,
+  scale = true,
+  draw = true,
+  layoutInvalidation,
+  position,
+  sidebar = false,
+  setMap
+}) => {
   const accessToken = useSelector(state => (state.app.config ? state.app.config.mapbox_token : null));
+  const dataAuthToken = useSelector(state => state.map.dataToken);
+  const dataAuthHost = useSelector(state => (state.app.config ? state.app.config.dataUrl : ''));
+  const { mapContainer, mapInstance, mapPromise } = useMapbox(style, accessToken, dataAuthToken, dataAuthHost);
+
+  if (setMap) setMap(mapInstance);
 
   const [isMapStyleSwitcherVisible, setIsMapStyleSwitcherVisible] = useState(false);
   const mapStyles = useSelector(state => state.map.mapStyles);
@@ -150,19 +98,11 @@ const Map = (
   }
   const selectMapStyle = mapStyle => dispatch({ type: MAP_STYLE_SELECTED, mapStyle });
 
-  // const labelButtonSelected = useSelector(state => state.annotations.textLabelSelected);
-
-  const openFeature = useSelector(state => state.sidebar.visibleMenuItem);
-
   const isSaveMap = useSelector(state => state.map.saveMap);
 
   const selectedBookmark = useSelector(state => state.bookmarks.selectedBookmark);
   const isLoading = useSelector(state => state.bookmarks.isLoading);
 
-  // const { properties, filters, currentFilters, visible, setBounds } = useMapCrossFilter(selectedProperty);
-  // const selectedPropertyMetadata = properties.find(property => property.field === selectedProperty);
-  const dataAuthToken = useSelector(state => state.map.dataToken);
-  const dataAuthHost = useSelector(state => (state.app.config ? state.app.config.dataUrl : ''));
   const dataSources = useSelector(state => state.map.dataSources);
 
   const allLayers =
@@ -173,37 +113,13 @@ const Map = (
     }, []);
   const selectedLayers = useSelector(state => state.dataLayers.layers);
   const nonSelectedLayers = allLayers && allLayers.filter(layer => !selectedLayers.includes(layer));
-  const { mapContainer, mapInstance, mapPromise } = useMapbox(style, accessToken, dataAuthToken, dataAuthHost);
-
   const scenes = useSelector(state => state.satellites.scenes);
   const selectedScene = useSelector(state => state.satellites.selectedScene);
 
-  // const user = useSelector(state => state.accounts.user);
-
-  // const [hoveredFeature, setHoveredFeature] = useState(null);
-
-  // const selectedLsoaFeatureIds = useSelector(selectedFeatureIds);
-  // const infrastructureLayers = useSelector(state => state.map.infrastructureLayers);
-
-  // const customLayers = useSelector(state => state.map.customLayers);
-
-  // const [selectedInfrastructureFeature, setSelectedInfrastructureFeature] = useState(null);
-  // const [selectedCustomFeature, setSelectedCustomFeature] = useState(null);
-
-  // const is3DMode = useSelector(state => state.map.is3DMode);
-
-  // const popupRef = useRef(null);
-
   const dispatch = useDispatch();
-
-  // const isSpyglassVisible = useSelector(state => state.map.isSpyglassVisible);
-  // console.log('IS MINI MAP VISIBLE: ', isMiniMapVisible);
 
   useMapControl(mapInstance, attribution, AttributionControl);
   useMapControl(mapInstance, navigation, NavigationControl, 'bottom-right');
-  // useMapControl(mapInstance, spyglass, SpyglassControl, 'bottom-right', {
-  //   visibility: isSpyglassVisible ? 'visible' : 'hidden'
-  // });
   useMapControl(mapInstance, scale, ScaleControl);
   useMapControl(mapInstance, geocoder, MapboxGeocoder, 'top-right', {
     accessToken: accessToken,
@@ -227,7 +143,6 @@ const Map = (
       RectangleMode
     }
   });
-  // useMapControl(mapInstance, layerTree, LayerTreeControl, 'top-right');
 
   useMap(
     mapInstance,
@@ -279,56 +194,9 @@ const Map = (
           dispatch(saveMap());
         });
       }
-
-      // const drawCtrl = mapInstance._controls.find(ctrl => ctrl.changeMode);
-      // drawCtrl.deleteAll();
-
-      // if (selectedBookmark) {
-      //   map.setCenter(selectedBookmark.center);
-      //   map.setZoom(selectedBookmark.zoom);
-      //   drawCtrl.add(selectedBookmark.feature_collection);
-      // }
     },
     [isSaveMap, saveMap]
   );
-
-  // useMap(
-  //   mapInstance,
-  //   map => {
-  //     const spyglassMap = mapInstance._controls.find(ctrl => ctrl instanceof SpyglassControl);
-  //     console.log('TOGGLE SPYGLASS: ', isSpyglassVisible);
-  //     spyglassMap.toggleSpyglass();
-  //   },
-  //   [isSpyglassVisible]
-  // );
-
-  // useMapEvent(
-  //   mapInstance,
-  //   'click',
-  //   event => {
-  //     event.preventDefault();
-  //     const { features, lngLat } = event;
-  //     // console.log('FEATURES');
-
-  //     // When user clicks map open Label Editor.
-  //     if (!popupRef.current) {
-  //       popupRef.current = document.createElement('div');
-  //     }
-
-  //     // Only take the first feature, which should be the top most
-  //     // feature and the one you meant.
-  //     if (labelButtonSelected) {
-  //       console.log('POPUP CONTENT: ', popupRef);
-  //       new mapboxgl.Popup()
-  //         // .setLngLat(features[0].geometry.coordinates.slice())
-  //         .setLngLat(lngLat)
-  //         .setDOMContent(popupRef.current)
-  //         .on('close', () => console.log('Closing Popup'))
-  //         .addTo(mapInstance);
-  //     }
-  //   },
-  //   [popupRef, labelButtonSelected]
-  // );
 
   useMap(
     mapInstance,
@@ -405,7 +273,6 @@ const Map = (
               source: sourceId,
               paint: {
                 'circle-color': 'green',
-                // 'circle-color': ['case', ['has', 'point_count'], 'red', 'green'],
                 'circle-opacity': 0.6,
                 'circle-radius': 30
               },
@@ -417,14 +284,6 @@ const Map = (
 
         return () => {
           console.log('REMOVE LAYERS: ', selectedLayers);
-          // const sourceId = `${layer.name}-source`;
-          // const property = properties
-          //   .filter(property => property.type === 'raster')
-          //   .find(property => property.field === selectedProperty);
-          // if (property) {
-          //   map.removeLayer(property.field);
-          //   map.removeSource(`${property.field}-source`);
-          // }
         };
       });
     },
@@ -465,8 +324,6 @@ const Map = (
     [selectedScene, scenes, dataAuthHost]
   );
 
-  useImperativeHandle(ref, () => mapPromise);
-
   const heading = useSelector(state => state.sidebar.heading);
   const strapline = useSelector(state => state.sidebar.strapline);
   const visibleMenuItem = useSelector(state => state.sidebar.visibleMenuItem);
@@ -494,27 +351,10 @@ const Map = (
           <div className={layoutStyles.sidebar}>
             {visibleMenuItem === DATA_LAYERS && <DataLayers />}
             {visibleMenuItem === SATELLITE_LAYERS && <SatellitesPanel map={mapInstance} />}
-            {/* {visibleMenuItem === DATA_LAYERS && <LayerTree map={mapInstance} />} */}
             {visibleMenuItem === ANNOTATIONS && <AnnotationsPanel map={mapInstance} />}
             {visibleMenuItem === BOOKMARKS && <BookmarksPanel map={mapInstance} />}
             {visibleMenuItem === PROFILE && <Profile />}
             {visibleMenuItem === CHANGE_PASSWORD && <PasswordChangeForm />}
-
-            {/* <Detail title={ANNOTATIONS} isOpen={openFeature === ANNOTATIONS}>
-              <AnnotationsPanel map={mapInstance} />
-            </Detail>
-            <Detail title={BOOKMARKS} isOpen={openFeature === BOOKMARKS}>
-              <BookmarksPanel map={mapInstance} />
-            </Detail>
-            <Detail title={DATA_LAYERS} isOpen={openFeature === DATA_LAYERS}>
-              <LayerTree map={mapInstance} />
-            </Detail>
-            <Detail title={PROFILE} isOpen={openFeature === PROFILE}>
-              <UpdateUserFormContainer />
-            </Detail>
-            <Detail title={CHANGE_PASSWORD} isOpen={openFeature === CHANGE_PASSWORD}>
-              <PasswordChangeForm />
-            </Detail> */}
           </div>
         </SideMenu>
       )}
@@ -525,11 +365,6 @@ const Map = (
         classNames={[layoutStyles.mapStyleButton]}
       >
         <DataIcon className={layoutStyles.icon} />
-        {/* <picture>
-          <source srcSet={selectedMapStyleIconWebP} type="image/webp" />
-          <img src={selectedMapStyleIcon} alt="Preview" />
-          <div>{selectedMapStyle.title}</div>
-        </picture> */}
       </Button>
       {isMapStyleSwitcherVisible && (
         <MapStyleSwitcher
@@ -538,35 +373,8 @@ const Map = (
           selectMapStyle={selectMapStyle}
         />
       )}
-
-      {/* <Annotations map={mapInstance} />
-      <Bookmarks map={mapInstance} />
-      <LayerTree map={mapInstance} /> */}
-
-      {/* {popupRef.current &&
-        ReactDOM.createPortal(
-          <div className={layoutStyles.popup}>
-            <p>I just want some text</p>
-            <LabelForm />
-          </div>,
-          popupRef.current
-        )} */}
-      {/* {selectedCustomFeature &&
-        ReactDOM.createPortal(
-          <div className={layoutStyles.popup}>
-            <ul className={layoutStyles.list}>
-              {Object.keys(selectedCustomFeature.properties).map(key => (
-                <li key={key}>
-                  <span className={layoutStyles.label}>{formatKey(key)}:</span>
-                  {selectedCustomFeature.properties[key]}
-                </li>
-              ))}
-            </ul>
-          </div>,
-          popupRef.current
-        )} */}
     </>
   );
 };
 
-export default React.memo(React.forwardRef(Map));
+export default React.memo(Map);
