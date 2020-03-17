@@ -8,10 +8,9 @@ import { DATE_FORMAT, TIME_FORMAT } from './satellite.constants';
 
 import { VISUALISATION } from './satellites-panel.component';
 
-import { ReactComponent as InfoIcon } from './info.svg';
+import InfoIcon from '@astrosat/astrosat-ui/dist/icons/info-icon';
 
 import styles from './scene-list-item.module.css';
-import resultsStyles from './results.module.css';
 
 const SceneListItem = ({
   index,
@@ -19,16 +18,17 @@ const SceneListItem = ({
   icon,
   selectScene,
   setVisiblePanel,
-  setSelectedSceneMoreInfo,
-  toggleSceneMoreInfoDialog
+  setSelectedMoreInfo,
+  toggleMoreInfoDialog
 }) => {
+  console.log('Scene: ', scene);
   const dispatch = useDispatch();
   return (
-    <li key={`${scene.id}-${index}`} className={resultsStyles.scene}>
+    <li key={`${scene.id}-${index}`} className={styles.scene}>
       <div className={styles.icon}>{icon}</div>
 
       <div
-        className={resultsStyles.sceneSection}
+        className={styles.sceneSection}
         onClick={() => {
           if (selectScene) {
             dispatch(selectScene(scene));
@@ -36,12 +36,12 @@ const SceneListItem = ({
           }
         }}
       >
-        <div className={resultsStyles.thumbContainer}>
+        <div className={styles.thumbContainer}>
           <picture>
-            <img className={resultsStyles.thumbnail} src={scene.thumbnail_url} alt="Thumbnail of a satellite scene" />
+            <img className={styles.thumbnail} src={scene.thumbnail_url} alt="Thumbnail of a satellite scene" />
           </picture>
         </div>
-        <ul className={resultsStyles.metadata}>
+        <ul className={styles.metadata}>
           <li>{format(parseISO(scene.created), DATE_FORMAT)}</li>
           <li>{format(parseISO(scene.created), TIME_FORMAT)} UTC</li>
           <li>{scene.cloudCover} %</li>
@@ -49,20 +49,20 @@ const SceneListItem = ({
         </ul>
       </div>
 
-      <div className={`${resultsStyles.sceneSection} ${resultsStyles.sceneOptions}`}>
+      <div className={`${styles.sceneSection} ${styles.sceneOptions}`}>
         <div
-          className={resultsStyles.moreInfo}
+          className={styles.moreInfo}
           onClick={() => {
-            setSelectedSceneMoreInfo({ id: 1, description: 'Some text' });
-            toggleSceneMoreInfoDialog();
+            setSelectedMoreInfo(scene);
+            toggleMoreInfoDialog();
           }}
         >
-          <InfoIcon className={resultsStyles.moreInfoIcon} />
+          <InfoIcon classes={styles.moreInfoIcon} />
           <span>More info</span>
         </div>
 
-        <div className={resultsStyles.freeProductContainer}>
-          {scene.tier === 'free' && <span className={resultsStyles.freeProduct}>Free Product</span>}
+        <div className={styles.freeProductContainer}>
+          {scene.tier === 'free' && <span className={styles.freeProduct}>Free Product</span>}
         </div>
       </div>
     </li>
