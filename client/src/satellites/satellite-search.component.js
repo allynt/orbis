@@ -110,7 +110,7 @@ const SatelliteSearch = ({ map, satellites, setVisiblePanel, setSelectedMoreInfo
           },
           geometry: {
             type: 'Polygon',
-            coordinates: aoi
+            coordinates: [aoi]
           }
         };
         drawCtrl.add(feature);
