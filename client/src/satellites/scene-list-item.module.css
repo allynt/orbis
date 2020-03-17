@@ -109,11 +109,17 @@
   width: 70%;
 }
 
+.icon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .icon > * {
   position: absolute;
   top: 0.5rem;
   right: 0.5rem;
-  width: 1.25rem;
+  width: 2rem;
   cursor: pointer;
   fill: var(--primary-button-background-color);
 }

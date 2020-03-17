@@ -143,8 +143,7 @@ const SatelliteSearchForm = ({
                   className={styles.infoButton}
                   type="button"
                   onClick={() => {
-                    console.log('Selected SATELLITE: ', satellite);
-                    setSelectedMoreInfo({ id: 1, description: 'Satellite Description' });
+                    setSelectedMoreInfo(satellite);
                     toggleMoreInfoDialog();
                   }}
                 >
@@ -196,7 +195,7 @@ const SatelliteSearchForm = ({
                     className={styles.infoButton}
                     type="button"
                     onClick={() => {
-                      setSelectedMoreInfo({ id: 1, description: 'Tier Description' });
+                      setSelectedMoreInfo(tier);
                       toggleMoreInfoDialog();
                     }}
                   >

@@ -21,6 +21,7 @@ const SceneListItem = ({
   setSelectedMoreInfo,
   toggleMoreInfoDialog
 }) => {
+  console.log('Scene: ', scene);
   const dispatch = useDispatch();
   return (
     <li key={`${scene.id}-${index}`} className={styles.scene}>
@@ -52,10 +53,7 @@ const SceneListItem = ({
         <div
           className={styles.moreInfo}
           onClick={() => {
-            setSelectedMoreInfo({
-              id: 1,
-              description: 'Scenes Description'
-            });
+            setSelectedMoreInfo(scene);
             toggleMoreInfoDialog();
           }}
         >

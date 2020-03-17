@@ -11,7 +11,6 @@ import validate from './save-search-form.validator';
 
 import { saveSatelliteSearch } from './satellites.actions';
 
-import styles from './save-search-from.module.css';
 import formStyles from '../accounts/forms.module.css';
 
 const SaveSearchForm = ({ query }) => {
@@ -27,12 +26,13 @@ const SaveSearchForm = ({ query }) => {
   return (
     <div>
       <form className={formStyles.form} onSubmit={handleSubmit}>
+        <p>Please name your search. Find your saved searches alongside your saved AOIs under "Saved Searches"</p>
         <div className={formStyles.fields}>
           <div className={formStyles.row}>
             <Textfield
               name="title"
               value={values.title || ''}
-              placeholder="Title"
+              placeholder="Add Name"
               onChange={handleChange}
               required
               autoFocus

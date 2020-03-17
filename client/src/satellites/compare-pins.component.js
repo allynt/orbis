@@ -1,4 +1,4 @@
-import React, { useEffect, forwardRef } from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 
 import { useDispatch, useSelector } from 'react-redux';
@@ -23,7 +23,7 @@ import styles from './compare-pins.module.css';
 
 const MAX_SELECTED = 2;
 
-const ComparePins = forwardRef(({ setSelectedMoreInfo, toggleMoreInfoDialog }, ref) => {
+const ComparePins = ({ setSelectedMoreInfo, toggleMoreInfoDialog }, ref) => {
   const dispatch = useDispatch();
 
   const pinnedScenes = useSelector(state => state.satellites.pinnedScenes);
@@ -90,8 +90,8 @@ const ComparePins = forwardRef(({ setSelectedMoreInfo, toggleMoreInfoDialog }, r
       </ul>
     </div>
   );
-});
+};
 
 ComparePins.propTypes = {};
 
-export default ComparePins;
+export default React.memo(React.forwardRef(ComparePins));

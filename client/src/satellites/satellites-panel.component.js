@@ -23,7 +23,7 @@ export const PINS = 'Pins';
 
 const SatellitesPanel = ({ map }) => {
   const dispatch = useDispatch();
-  const ref = useRef(null);
+  const dialogRef = useRef(null);
 
   const [visiblePanel, setVisiblePanel] = useState(SEARCH);
   const [visualisations, setVisualisations] = useState(null);
@@ -89,7 +89,7 @@ const SatellitesPanel = ({ map }) => {
             setVisiblePanel={setVisiblePanel}
             setSelectedMoreInfo={setSelectedMoreInfo}
             toggleMoreInfoDialog={toggleMoreInfoDialog}
-            ref={ref}
+            ref={dialogRef}
           />
         )}
         {visiblePanel === RESULTS && (
@@ -99,7 +99,7 @@ const SatellitesPanel = ({ map }) => {
             selectScene={selectScene}
             setSelectedMoreInfo={setSelectedMoreInfo}
             toggleMoreInfoDialog={toggleMoreInfoDialog}
-            ref={ref}
+            ref={dialogRef}
           />
         )}
         {visiblePanel === VISUALISATION && (
@@ -109,24 +109,25 @@ const SatellitesPanel = ({ map }) => {
           <PinnedScenes
             setSelectedMoreInfo={setSelectedMoreInfo}
             toggleMoreInfoDialog={toggleMoreInfoDialog}
-            ref={ref}
+            ref={dialogRef}
           />
         )}
       </div>
-      <Dialog isVisible={isMoreInfoDialogVisible} title="More Info" close={toggleMoreInfoDialog} ref={ref}>
+      <Dialog isVisible={isMoreInfoDialogVisible} title="More Info" close={toggleMoreInfoDialog} ref={dialogRef}>
         <div className={styles.moreInfoContent}>
-          <h3>More Info</h3>
           <table>
-            <thead>
-              <tr>
-                <th scope="col">Label</th>
-                <th scope="col">Value</th>
-              </tr>
-            </thead>
-
             <tbody>
               {selectedMoreInfo &&
                 Object.keys(selectedMoreInfo).map(key => {
+                  if (typeof selectedMoreInfo[key] === 'object') {
+                    console.log('OBJ: ', selectedMoreInfo[key]);
+                    return (
+                      <tr key={key}>
+                        <td>{key}:</td>
+                        <td>This field is an object or array</td>
+                      </tr>
+                    );
+                  }
                   return (
                     <tr key={key}>
                       <td>{key}:</td>
