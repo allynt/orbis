@@ -11,7 +11,7 @@ import useModal from '@astrosat/astrosat-ui/dist/containers/use-modal';
 import { pinScene } from './satellites.actions';
 
 import SaveSearchForm from './save-search-form.component';
-import SceneListItem from './scene-list-item.component';
+import SceneListItem, { SceneListItemSkeleton } from './scene-list-item.component';
 
 import { ReactComponent as PinIcon } from './pin.svg';
 
@@ -49,7 +49,7 @@ const Results = ({ scenes, setVisiblePanel, selectScene }) => {
         <h3>RESULTS</h3>
         <div className={styles.resultCount}>{resultCountText}</div>
         <ul className={styles.scenes}>
-          {scenes &&
+          {scenes ? (
             scenes
               .filter(scene => scene.cloudCover <= cloudCoverPercentage[0])
               .map(scene => {
@@ -71,7 +71,16 @@ const Results = ({ scenes, setVisiblePanel, selectScene }) => {
                     setSelectedSceneMoreInfo={setSelectedSceneMoreInfo}
                   />
                 );
-              })}
+              })
+          ) : (
+            <>
+              {Array(5)
+                .fill(0)
+                .map(() => (
+                  <SceneListItemSkeleton />
+                ))}
+            </>
+          )}
         </ul>
       </div>
       <div className={sideMenuStyles.buttons}>

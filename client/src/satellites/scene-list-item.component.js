@@ -12,6 +12,7 @@ import { ReactComponent as InfoIcon } from './info.svg';
 
 import styles from './scene-list-item.module.css';
 import resultsStyles from './results.module.css';
+import { Skeleton } from '../skeleton.component';
 
 const SceneListItem = ({
   index,
@@ -68,5 +69,30 @@ const SceneListItem = ({
     </li>
   );
 };
+
+export const SceneListItemSkeleton = () => (
+  <li className={styles.sceneSkeleton}>
+    <div className={resultsStyles.sceneSection}>
+      <div className={resultsStyles.thumbContainer}>
+        <Skeleton width="6.5rem" height="6.5rem" />
+      </div>
+      <ul className={styles.metadataSkeleton}>
+        {Array(4)
+          .fill(0)
+          .map(() => (
+            <li className={styles.item}>
+              <Skeleton />
+            </li>
+          ))}
+      </ul>
+    </div>
+
+    <div className={`${resultsStyles.sceneSection} ${resultsStyles.sceneOptions}`}>
+      <div className={resultsStyles.moreInfo}>
+        <Skeleton />
+      </div>
+    </div>
+  </li>
+);
 
 export default SceneListItem;
