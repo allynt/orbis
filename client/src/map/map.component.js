@@ -1,62 +1,55 @@
 import React, { useState } from 'react';
 
-import * as FileSaver from 'file-saver';
-import mapboxgl, { AttributionControl, NavigationControl, ScaleControl } from 'mapbox-gl';
-import 'mapbox-gl/dist/mapbox-gl.css';
 import MapboxDraw from '@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw';
-import { useDispatch, useSelector } from 'react-redux';
-
-import useMapbox from './use-mapbox.hook';
-import useMap from './use-map.hook';
-import useMapControl from './use-map-control.hook';
+import '@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css';
 import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder';
 import '@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css';
-import '@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css';
-import { useMapEvent } from './use-map-event.hook';
-import MapStyleSwitcher from '../mapstyle/mapstyle-switcher.component';
-import { MAP_STYLE_SELECTED, setViewport, saveMap } from './map.actions';
-import { closeMenu } from '../side-menu/side-menu.actions';
-import { isLoaded } from '../bookmarks/bookmarks.actions';
-import SideMenu from '../side-menu/side-menu.component';
-import AnnotationsPanel from '../annotations/annotations-panel.component';
-import BookmarksPanel from '../bookmarks/bookmarks-panel.component';
-import DataLayers from '../data-layers/data-layers.component';
-import SatellitesPanel from '../satellites/satellites-panel.component';
-import Profile from '../accounts/profile.component';
-import PasswordChangeForm from '../accounts/password-change-form.component';
-import Button from '@astrosat/astrosat-ui/dist/buttons/button';
-import LoadMask from '@astrosat/astrosat-ui/dist/load-mask/load-mask';
-import CloseButton from '@astrosat/astrosat-ui/dist/buttons/close-button';
-import { ReactComponent as DataIcon } from '../mapstyle/layers.svg';
-
+import * as FileSaver from 'file-saver';
+import mapboxgl, { AttributionControl, NavigationControl, ScaleControl } from 'mapbox-gl';
 import RotateMode from 'mapbox-gl-draw-rotate-mode';
-import RadiusMode from '../annotations/modes/radius';
+import 'mapbox-gl/dist/mapbox-gl.css';
+import { useDispatch, useSelector } from 'react-redux';
+
+import Button from '@astrosat/astrosat-ui/dist/buttons/button';
+import CloseButton from '@astrosat/astrosat-ui/dist/buttons/close-button';
+import LoadMask from '@astrosat/astrosat-ui/dist/load-mask/load-mask';
+
+import { MAP_STYLE_SELECTED, saveMap, setViewport } from './map.actions';
+import { isLoaded } from '../bookmarks/bookmarks.actions';
+import { closeMenu } from '../side-menu/side-menu.actions';
+
+import PasswordChangeForm from '../accounts/password-change-form.component';
+import Profile from '../accounts/profile.component';
+import AnnotationsPanel from '../annotations/annotations-panel.component';
+import CircleMode from '../annotations/modes/circle';
+import FreehandPolygonMode from '../annotations/modes/freehand-polygon';
+import ImageMode from '../annotations/modes/image';
+import LabelMode from '../annotations/modes/label';
 import LineMode from '../annotations/modes/line';
 import PolygonMode from '../annotations/modes/polygon';
-import FreehandPolygonMode from '../annotations/modes/freehand-polygon';
-import CircleMode from '../annotations/modes/circle';
-import LabelMode from '../annotations/modes/label';
-import ImageMode from '../annotations/modes/image';
+import RadiusMode from '../annotations/modes/radius';
 import RectangleMode from '../annotations/modes/rectangle';
+import drawStyles from '../annotations/styles';
+import BookmarksPanel from '../bookmarks/bookmarks-panel.component';
+import DataLayers from '../data-layers/data-layers.component';
+import { ReactComponent as DataIcon } from '../mapstyle/layers.svg';
+import MapStyleSwitcher from '../mapstyle/mapstyle-switcher.component';
+import SatellitesPanel from '../satellites/satellites-panel.component';
+import SideMenu from '../side-menu/side-menu.component';
 import {
   ANNOTATIONS,
   BOOKMARKS,
+  CHANGE_PASSWORD,
   DATA_LAYERS,
-  SATELLITE_LAYERS,
   PROFILE,
-  CHANGE_PASSWORD
+  SATELLITE_LAYERS
 } from '../toolbar/toolbar-constants';
 import { GEOJSON, RASTER, VECTOR } from './map.constants';
-import dark from '../mapstyle/dark.png';
-import darkWebP from '../mapstyle/dark.webp';
-import light from '../mapstyle/light.png';
-import lightWebP from '../mapstyle/light.webp';
-import streets from '../mapstyle/streets.png';
-import streetsWebP from '../mapstyle/streets.webp';
-import satellite from '../mapstyle/satellite.png';
-import satelliteWebP from '../mapstyle/satellite.webp';
+import useMapControl from './use-map-control.hook';
+import { useMapEvent } from './use-map-event.hook';
+import useMap from './use-map.hook';
+import useMapbox from './use-mapbox.hook';
 
-import drawStyles from '../annotations/styles';
 import layoutStyles from './map-layout.module.css';
 
 const Map = ({
@@ -74,28 +67,13 @@ const Map = ({
   const accessToken = useSelector(state => (state.app.config ? state.app.config.mapbox_token : null));
   const dataAuthToken = useSelector(state => state.map.dataToken);
   const dataAuthHost = useSelector(state => (state.app.config ? state.app.config.dataUrl : ''));
-  const { mapContainer, mapInstance, mapPromise } = useMapbox(style, accessToken, dataAuthToken, dataAuthHost);
+  const { mapContainer, mapInstance } = useMapbox(style, accessToken, dataAuthToken, dataAuthHost);
 
   if (setMap) setMap(mapInstance);
 
   const [isMapStyleSwitcherVisible, setIsMapStyleSwitcherVisible] = useState(false);
   const mapStyles = useSelector(state => state.map.mapStyles);
   const selectedMapStyle = useSelector(state => state.map.selectedMapStyle);
-  let selectedMapStyleIcon = null;
-  let selectedMapStyleIconWebP = null;
-  if (selectedMapStyle.id === 'dark') {
-    selectedMapStyleIcon = dark;
-    selectedMapStyleIconWebP = darkWebP;
-  } else if (selectedMapStyle.id === 'light') {
-    selectedMapStyleIcon = light;
-    selectedMapStyleIconWebP = lightWebP;
-  } else if (selectedMapStyle.id === 'streets') {
-    selectedMapStyleIcon = streets;
-    selectedMapStyleIconWebP = streetsWebP;
-  } else if (selectedMapStyle.id === 'satellite') {
-    selectedMapStyleIcon = satellite;
-    selectedMapStyleIconWebP = satelliteWebP;
-  }
   const selectMapStyle = mapStyle => dispatch({ type: MAP_STYLE_SELECTED, mapStyle });
 
   const isSaveMap = useSelector(state => state.map.saveMap);
