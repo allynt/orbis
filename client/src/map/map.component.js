@@ -293,7 +293,7 @@ const Map = ({
             const layerId = `${scene.id}-layer`;
             if (map.getSource(sourceId)) {
               map.removeLayer(layerId);
-              map.remove(sourceId);
+              map.removeSource(sourceId);
             }
           });
         }
