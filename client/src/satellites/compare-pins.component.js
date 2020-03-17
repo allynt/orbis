@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 
 import { useDispatch, useSelector } from 'react-redux';
@@ -6,8 +6,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import Button from '@astrosat/astrosat-ui/dist/buttons/button';
 import Switch from '@astrosat/astrosat-ui/dist/buttons/switch';
 import Checkbox from '@astrosat/astrosat-ui/dist/forms/checkbox';
-import Dialog from '@astrosat/astrosat-ui/dist/containers/dialog';
-import useModal from '@astrosat/astrosat-ui/dist/containers/use-modal';
 
 import SceneListItem from './scene-list-item.component';
 
@@ -25,17 +23,12 @@ import styles from './compare-pins.module.css';
 
 const MAX_SELECTED = 2;
 
-const ComparePins = () => {
+const ComparePins = ({ setSelectedMoreInfo, toggleMoreInfoDialog }, ref) => {
   const dispatch = useDispatch();
 
   const pinnedScenes = useSelector(state => state.satellites.pinnedScenes);
   const isCompareMode = useSelector(state => state.map.isCompareMode);
   const selectedPinnedScenes = useSelector(state => state.satellites.selectedPinnedScenes);
-  console.log('SELECTED PINNED SCENES: ', selectedPinnedScenes);
-
-  const ref = useRef(null);
-  const [isSceneMoreInfoDialogVisible, toggleSceneMoreInfoDialog] = useModal(false);
-  const [selectedSceneMoreInfo, setSelectedSceneMoreInfo] = useState(null);
 
   useEffect(() => {
     if (!pinnedScenes) {
@@ -86,49 +79,18 @@ const ComparePins = () => {
                   index={index}
                   scene={scene}
                   icon={Icon}
-                  setSelectedSceneMoreInfo={setSelectedSceneMoreInfo}
-                  toggleSceneMoreInfoDialog={toggleSceneMoreInfoDialog}
+                  setSelectedMoreInfo={setSelectedMoreInfo}
+                  toggleMoreInfoDialog={toggleMoreInfoDialog}
                   selectPinnedScene={selectPinnedScene}
                 />
               </div>
             );
           })}
       </ul>
-
-      <Dialog
-        isVisible={isSceneMoreInfoDialogVisible}
-        title="Resolution Info"
-        close={toggleSceneMoreInfoDialog}
-        ref={ref}
-      >
-        <div>
-          <h3>Resolution More Info</h3>
-          <table className={styles.moreInfoContent}>
-            <thead>
-              <tr>
-                <th scope="col">Label</th>
-                <th scope="col">Value</th>
-              </tr>
-            </thead>
-
-            <thead>
-              {selectedSceneMoreInfo &&
-                Object.keys(selectedSceneMoreInfo).map(key => {
-                  return (
-                    <tr key={key}>
-                      <td>{key}:</td>
-                      <td>{selectedSceneMoreInfo[key]}</td>
-                    </tr>
-                  );
-                })}
-            </thead>
-          </table>
-        </div>
-      </Dialog>
     </div>
   );
 };
 
 ComparePins.propTypes = {};
 
-export default ComparePins;
+export default React.memo(React.forwardRef(ComparePins));

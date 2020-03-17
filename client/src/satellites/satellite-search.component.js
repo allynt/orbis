@@ -1,12 +1,10 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { bbox, lineString } from '@turf/turf';
 import { useDispatch, useSelector } from 'react-redux';
 
 import Button from '@astrosat/astrosat-ui/dist/buttons/button';
 import Detail from '@astrosat/astrosat-ui/dist/containers/detail';
-import Dialog from '@astrosat/astrosat-ui/dist/containers/dialog';
-import useModal from '@astrosat/astrosat-ui/dist/containers/use-modal';
 
 import { fetchSavedSatellites } from './satellites.actions';
 import useMap from '../map/use-map.hook';
@@ -21,19 +19,13 @@ import sideMenuStyles from '../side-menu/side-menu.module.css';
 const AOI_DRAW_MODE = 'RectangleMode';
 const BBOX_NO_OF_POINTS = 5;
 
-const SatelliteSearch = ({ satellites, setVisiblePanel, map }) => {
+const SatelliteSearch = ({ map, satellites, setVisiblePanel, setSelectedMoreInfo, toggleMoreInfoDialog }, ref) => {
   const dispatch = useDispatch();
 
   const [geometry, setGeometry] = useState(null);
 
   const savedSearches = useSelector(state => state.satellites.satelliteSearches);
   const selectedSatelliteSearch = useSelector(state => state.satellites.selectedSatelliteSearch);
-
-  const ref = useRef(null);
-  const [isSatelliteMoreInfoDialogVisible, toggleSatelliteMoreInfoDialog] = useModal(false);
-  const [isTierMoreInfoDialogVisible, toggleTierMoreInfoDialog] = useModal(false);
-  const [selectedSatelliteMoreInfo, setSelectedSatelliteMoreInfo] = useState(null);
-  const [selectedTierMoreInfo, setSelectedTierMoreInfo] = useState(null);
 
   const [isAoiMode, setIsAoiMode] = useState(false);
 
@@ -42,7 +34,6 @@ const SatelliteSearch = ({ satellites, setVisiblePanel, map }) => {
     mapInstance => {
       const drawCtrl = mapInstance._controls.find(ctrl => ctrl.changeMode);
       if (drawCtrl && isAoiMode) {
-        // console.log('Enable Draw Mode');
         // Delete any existing AOI polygon.
         drawCtrl.deleteAll();
         // Enable draw mode
@@ -152,10 +143,8 @@ const SatelliteSearch = ({ satellites, setVisiblePanel, map }) => {
         geometry={geometry}
         selectedSatelliteSearch={selectedSatelliteSearch}
         setVisiblePanel={setVisiblePanel}
-        setSelectedSatelliteMoreInfo={setSelectedSatelliteMoreInfo}
-        toggleSatelliteMoreInfoDialog={toggleSatelliteMoreInfoDialog}
-        setSelectedTierMoreInfo={setSelectedTierMoreInfo}
-        toggleTierMoreInfoDialog={toggleTierMoreInfoDialog}
+        setSelectedMoreInfo={setSelectedMoreInfo}
+        toggleMoreInfoDialog={toggleMoreInfoDialog}
       />
       <div className={sideMenuStyles.buttons}>
         <Button
@@ -166,71 +155,10 @@ const SatelliteSearch = ({ satellites, setVisiblePanel, map }) => {
           Task Satellite
         </Button>
       </div>
-      <Dialog
-        isVisible={isSatelliteMoreInfoDialogVisible}
-        title="Satellite Info"
-        close={toggleSatelliteMoreInfoDialog}
-        ref={ref}
-      >
-        <div>
-          <h3>Satellite More Info</h3>
-          <table className={styles.moreInfoContent}>
-            <thead>
-              <tr>
-                <th scope="col">Label</th>
-                <th scope="col">Value</th>
-              </tr>
-            </thead>
-
-            <tbody>
-              {selectedSatelliteMoreInfo &&
-                Object.keys(selectedSatelliteMoreInfo).map(key => {
-                  return (
-                    <tr key={key}>
-                      <td>{key}:</td>
-                      <td>{selectedSatelliteMoreInfo[key]}</td>
-                    </tr>
-                  );
-                })}
-            </tbody>
-          </table>
-        </div>
-      </Dialog>
-
-      <Dialog
-        isVisible={isTierMoreInfoDialogVisible}
-        title="Resolution Info"
-        close={toggleTierMoreInfoDialog}
-        ref={ref}
-      >
-        <div>
-          <h3>Resolution More Info</h3>
-          <table className={styles.moreInfoContent}>
-            <thead>
-              <tr>
-                <th scope="col">Label</th>
-                <th scope="col">Value</th>
-              </tr>
-            </thead>
-
-            <thead>
-              {selectedTierMoreInfo &&
-                Object.keys(selectedTierMoreInfo).map(key => {
-                  return (
-                    <tr key={key}>
-                      <td>{key}:</td>
-                      <td>{selectedTierMoreInfo[key]}</td>
-                    </tr>
-                  );
-                })}
-            </thead>
-          </table>
-        </div>
-      </Dialog>
     </div>
   );
 };
 
 SatelliteSearch.propTypes = {};
 
-export default SatelliteSearch;
+export default React.memo(React.forwardRef(SatelliteSearch));

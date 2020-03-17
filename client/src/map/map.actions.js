@@ -1,5 +1,3 @@
-import { NotificationManager } from 'react-notifications';
-
 import ReactGA from 'react-ga';
 
 import { getData, JSON_HEADERS } from '../utils/http';
@@ -15,7 +13,6 @@ export const TOGGLE_3D_MODE = 'map.TOGGLE_3D_MODE';
 export const TOGGLE_MINI_MAP = 'map.TOGGLE_MINI_MAP';
 export const TOGGLE_SPYGLASS = 'map.TOGGLE_SPYGLASS';
 export const TOGGLE_COMPARE_MODE = 'map.TOGGLE_COMPARE_MODE';
-export const MOVE_COMPARE = 'map.TOGGLE_COMPARE';
 
 export const TOGGLE_INFRASTRUCTURE_LAYER_VISIBILITY = 'map.TOGGLE_INFRASTRUCTURE_LAYER_VISIBILITY';
 export const TOGGLE_CUSTOM_LAYER_VISIBILITY = 'map.TOGGLE_CUSTOM_LAYER_VISIBILITY';
@@ -104,11 +101,6 @@ export const toggleMiniMap = () => dispatch => dispatch({ type: TOGGLE_MINI_MAP 
 export const toggleSpyglassMap = () => dispatch => dispatch({ type: TOGGLE_SPYGLASS });
 
 export const toggleCompareMaps = () => dispatch => dispatch({ type: TOGGLE_COMPARE_MODE });
-
-export const moveCompare = ratio => ({
-  type: MOVE_COMPARE,
-  ratio
-});
 
 export const fetchSourcesAndDataToken = () => async (dispatch, getState) => {
   const {

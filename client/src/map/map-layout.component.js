@@ -1,17 +1,14 @@
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import Measure from 'react-measure';
 
 import Map from './map.component';
 import syncMaps from './mapbox-gl-sync-move';
-import syncOverviewMap from './mapbox-gl-sync-move-overview';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { getToolbarItems } from '../toolbar/toolbar-config';
 
 import Toolbar from '../toolbar/toolbar.component';
-
-import { moveCompare } from './map.actions';
 
 import styles from './map-layout.module.css';
 
@@ -25,12 +22,14 @@ const times = (n, fn) => {
 
 const MapLayout = () => {
   const dispatch = useDispatch();
+  const isCompareMode = useSelector(state => state.map.isCompareMode);
+  const mapCount = isCompareMode ? 2 : 1;
 
   const toolbarItems = getToolbarItems(dispatch);
 
   const mapStyle = useSelector(state => state.map.selectedMapStyle);
 
-  const compareRatio = useSelector(state => state.map.compareRatio);
+  const [compareRatio, setCompareRatio] = useState(0.5);
   const [bounds, setBounds] = useState({ top: 0, right: 0, bottom: 0, left: 0, width: 0, height: 0 });
 
   const compareMove = event => {
@@ -39,16 +38,19 @@ const MapLayout = () => {
     if (x < 0) x = 0;
     if (x > bounds.width) x = bounds.width;
     const ratio = x / bounds.width;
-    dispatch(moveCompare(ratio));
+    setCompareRatio(ratio);
   };
+
   const compareTouchEnd = () => {
     document.removeEventListener('touchmove', compareMove);
     document.removeEventListener('touchend', compareTouchEnd);
   };
+
   const compareMouseEnd = () => {
     document.removeEventListener('mousemove', compareMove);
     document.removeEventListener('mouseup', compareMouseEnd);
   };
+
   const compareDown = event => {
     if (event.touches) {
       document.addEventListener('touchmove', compareMove);
@@ -59,27 +61,17 @@ const MapLayout = () => {
     }
   };
 
-  const map1Ref = useRef(null);
-  const map2Ref = useRef(null);
-  const isCompareMode = useSelector(state => state.map.isCompareMode);
-  const mapCount = isCompareMode ? 2 : 1;
-  const mapRefs = [map1Ref, map2Ref];
-  const mapRefCount = [map1Ref, map2Ref].filter(ref => ref.current).length;
+  const [map1, setMap1] = useState(null);
+  const [map2, setMap2] = useState(null);
 
   useEffect(() => {
-    if (mapCount > 1) {
-      const removeSyncMove = Promise.all([map1Ref.current, map2Ref.current])
-        .then(maps => {
-          syncMaps(maps);
-        })
-        .catch(error => console.log('ERROR: ', error))
-        .finally(() => console.log('FINISHED'));
-
+    if (map1 && map2) {
+      const removeSyncMove = syncMaps([map1, map2]);
       return () => {
-        removeSyncMove.then(cb => cb());
+        removeSyncMove();
       };
     }
-  }, [mapCount]);
+  }, [map1, map2]);
 
   return (
     <div className={styles['map-column']}>
@@ -107,7 +99,7 @@ const MapLayout = () => {
                 }
               >
                 <Map
-                  ref={mapRefs[i]}
+                  setMap={i === 0 ? setMap1 : setMap2}
                   attribution={bottomRight(i, mapCount)}
                   scale={bottomLeft(i, mapCount)}
                   geocoder={i === 0}
@@ -121,22 +113,21 @@ const MapLayout = () => {
                   compare={isCompareMode}
                   compareRatio={compareRatio}
                 />
-                {i === 0 && isCompareMode && (
-                  <div
-                    className={styles.compare}
-                    style={{ transform: `translate(${compareRatio * bounds.width}px, 0px` }}
-                    onMouseDown={compareDown}
-                    onTouchStart={compareDown}
-                  >
-                    <div className={styles.swiper} />
-                  </div>
-                )}
               </div>
             ))}
+            {isCompareMode && (
+              <div
+                className={styles.compare}
+                style={{ transform: `translate(${compareRatio * bounds.width}px, 0px` }}
+                onMouseDown={compareDown}
+                onTouchStart={compareDown}
+              >
+                <div className={styles.swiper} />
+              </div>
+            )}
           </div>
         )}
       </Measure>
-
       <Toolbar items={toolbarItems} />
     </div>
   );
