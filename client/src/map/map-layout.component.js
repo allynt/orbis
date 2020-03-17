@@ -40,14 +40,17 @@ const MapLayout = () => {
     const ratio = x / bounds.width;
     setCompareRatio(ratio);
   };
+
   const compareTouchEnd = () => {
     document.removeEventListener('touchmove', compareMove);
     document.removeEventListener('touchend', compareTouchEnd);
   };
+
   const compareMouseEnd = () => {
     document.removeEventListener('mousemove', compareMove);
     document.removeEventListener('mouseup', compareMouseEnd);
   };
+
   const compareDown = event => {
     if (event.touches) {
       document.addEventListener('touchmove', compareMove);
