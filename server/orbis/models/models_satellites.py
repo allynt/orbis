@@ -290,11 +290,16 @@ class SatelliteSearch(gis_models.Model):
 
     def clean(self):
 
-        # make sure data is valid
+        # make sure data (dates & aoi) is valid
         if self.start_date > self.end_date:
             raise ValidationError(
                 "end_date must be greater than or equal to start_date"
             )
+
+        if self.aoi.area > settings.MAXIMUM_AOI_AREA:
+            raise ValidationError(
+                f"The area of the aoi must be less than or equal to {settings.MAXIMUM_AOI_AREA}."
+        )
 
         # make sure owner is allowed to save this search
         user = self.owner

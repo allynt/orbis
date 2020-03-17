@@ -30,15 +30,15 @@ const SaveSearchForm = ({ query }) => {
         <div className={formStyles.fields}>
           <div className={formStyles.row}>
             <Textfield
-              name="title"
-              value={values.title || ''}
-              placeholder="Add Name"
+              name="name"
+              value={values.name || ''}
+              placeholder="Name"
               onChange={handleChange}
               required
               autoFocus
             />
           </div>
-          {errors.title && <p className={formStyles.errorMessage}>{errors.title}</p>}
+          {errors.name && <p className={formStyles.errorMessage}>{errors.name}</p>}
         </div>
 
         <div className={formStyles.buttons}>
