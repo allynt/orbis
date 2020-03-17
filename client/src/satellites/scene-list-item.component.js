@@ -7,6 +7,7 @@ import format from 'date-fns/format';
 import { DATE_FORMAT, TIME_FORMAT } from './satellite.constants';
 
 import { VISUALISATION } from './satellites-panel.component';
+import { Skeleton } from '../skeleton.component';
 
 import InfoIcon from '@astrosat/astrosat-ui/dist/icons/info-icon';
 
@@ -68,5 +69,30 @@ const SceneListItem = ({
     </li>
   );
 };
+
+export const SceneListItemSkeleton = () => (
+  <li className={styles.sceneSkeleton}>
+    <div className={styles.sceneSection}>
+      <div className={styles.thumbContainer}>
+        <Skeleton width="6.5rem" height="6.5rem" />
+      </div>
+      <ul className={styles.metadataSkeleton}>
+        {Array(4)
+          .fill(0)
+          .map(() => (
+            <li className={styles.item}>
+              <Skeleton />
+            </li>
+          ))}
+      </ul>
+    </div>
+
+    <div className={`${styles.sceneSection} ${styles.sceneOptions}`}>
+      <div className={styles.moreInfo}>
+        <Skeleton />
+      </div>
+    </div>
+  </li>
+);
 
 export default SceneListItem;

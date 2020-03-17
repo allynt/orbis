@@ -1,0 +1,17 @@
+@keyframes pulse {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.4;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.skeleton {
+  background-color: rgba(162, 170, 173, 0.15);
+  border-radius: 0.3rem;
+  animation: pulse 1.5s ease-in-out 0.5s infinite;
+}

@@ -123,3 +123,21 @@
   cursor: pointer;
   fill: var(--primary-button-background-color);
 }
+
+.sceneSkeleton {
+  display: flex;
+  position: relative;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  padding: 1rem 0;
+  margin: 0.5rem 0;
+}
+
+.metadataSkeleton {
+  width: 45%;
+}
+
+.metadataSkeleton .item:not(:last-child) {
+  margin-bottom: 0.375rem;
+}
