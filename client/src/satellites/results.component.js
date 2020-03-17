@@ -29,23 +29,28 @@ const Results = ({ scenes, setVisiblePanel, selectScene }) => {
   const [isMoreInfoDialogVisible, toggleSceneMoreInfoDialog] = useModal(false);
   const ref = useRef(null);
 
+  const resultCountText = scenes
+    ? `Showing ${scenes.filter(scene => scene.cloudCover <= cloudCoverPercentage[0]).length} Results`
+    : 'Loading Results...';
+
   return (
-    scenes && (
-      <div className={styles.options} ref={ref}>
-        <div>
-          <h3>CLOUD COVER %:</h3>
-
-          <Slider min={0} max={100} values={cloudCoverPercentage} onChange={value => setCloudCoverPercentage(value)} />
-        </div>
-        <div className={styles.results}>
-          <h3>RESULTS</h3>
-
-          <div className={styles.resultCount}>
-            Showing {scenes.filter(scene => scene.cloudCover <= cloudCoverPercentage[0]).length} Results
-          </div>
-
-          <ul className={styles.scenes}>
-            {scenes
+    <div className={styles.options} ref={ref}>
+      <div>
+        <h3>CLOUD COVER %:</h3>
+        <Slider
+          min={0}
+          max={100}
+          values={cloudCoverPercentage}
+          onChange={value => setCloudCoverPercentage(value)}
+          disabled={!scenes}
+        />
+      </div>
+      <div className={styles.results}>
+        <h3>RESULTS</h3>
+        <div className={styles.resultCount}>{resultCountText}</div>
+        <ul className={styles.scenes}>
+          {scenes &&
+            scenes
               .filter(scene => scene.cloudCover <= cloudCoverPercentage[0])
               .map(scene => {
                 const Icon = (
@@ -67,45 +72,44 @@ const Results = ({ scenes, setVisiblePanel, selectScene }) => {
                   />
                 );
               })}
-          </ul>
-        </div>
-        <div className={sideMenuStyles.buttons}>
-          <Button classNames={[sideMenuStyles.button]} theme="primary" onClick={() => toggleSaveDialog()}>
-            Save Search
-          </Button>
-        </div>
-
-        <Dialog isVisible={isSaveDialogVisible} title="Name Search" close={toggleSaveDialog} ref={ref}>
-          <SaveSearchForm query={currentSearchQuery} />
-        </Dialog>
-
-        <Dialog isVisible={isMoreInfoDialogVisible} title="More Info" close={toggleSceneMoreInfoDialog} ref={ref}>
-          <div>
-            <h3>More Info</h3>
-            <table className={styles.moreInfoContent}>
-              <thead>
-                <tr>
-                  <th scope="col">Label</th>
-                  <th scope="col">Value</th>
-                </tr>
-              </thead>
-
-              <tbody>
-                {selectedSceneMoreInfo &&
-                  Object.keys(selectedSceneMoreInfo).map(key => {
-                    return (
-                      <tr key={key}>
-                        <td>{key}:</td>
-                        <td>{selectedSceneMoreInfo[key]}</td>
-                      </tr>
-                    );
-                  })}
-              </tbody>
-            </table>
-          </div>
-        </Dialog>
+        </ul>
       </div>
-    )
+      <div className={sideMenuStyles.buttons}>
+        <Button classNames={[sideMenuStyles.button]} theme="primary" onClick={() => toggleSaveDialog()}>
+          Save Search
+        </Button>
+      </div>
+
+      <Dialog isVisible={isSaveDialogVisible} title="Name Search" close={toggleSaveDialog} ref={ref}>
+        <SaveSearchForm query={currentSearchQuery} />
+      </Dialog>
+
+      <Dialog isVisible={isMoreInfoDialogVisible} title="More Info" close={toggleSceneMoreInfoDialog} ref={ref}>
+        <div>
+          <h3>More Info</h3>
+          <table className={styles.moreInfoContent}>
+            <thead>
+              <tr>
+                <th scope="col">Label</th>
+                <th scope="col">Value</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              {selectedSceneMoreInfo &&
+                Object.keys(selectedSceneMoreInfo).map(key => {
+                  return (
+                    <tr key={key}>
+                      <td>{key}:</td>
+                      <td>{selectedSceneMoreInfo[key]}</td>
+                    </tr>
+                  );
+                })}
+            </tbody>
+          </table>
+        </div>
+      </Dialog>
+    </div>
   );
 };
 
