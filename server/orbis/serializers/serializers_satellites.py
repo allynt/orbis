@@ -134,9 +134,7 @@ class SatelliteResultSerializer(serializers.ModelSerializer):
 
     cloudCover = serializers.FloatField(source="cloud_cover")
 
-    footprint = SimplifiedGeometryField(
-        geometry_class=GEOSGeometry, precision=SatelliteResult.PRECISION
-    )
+    footprint = GeometryField(precision=SatelliteResult.PRECISION, remove_duplicates=True)
 
     owner = serializers.PrimaryKeyRelatedField(
         # (using a wrapper around CurrentUserDefault so that yasg doesn't complain)
