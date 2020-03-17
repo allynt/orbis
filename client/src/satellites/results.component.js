@@ -49,38 +49,32 @@ const Results = ({ scenes, setVisiblePanel, selectScene }) => {
         <h3>RESULTS</h3>
         <div className={styles.resultCount}>{resultCountText}</div>
         <ul className={styles.scenes}>
-          {scenes ? (
-            scenes
-              .filter(scene => scene.cloudCover <= cloudCoverPercentage[0])
-              .map(scene => {
-                const Icon = (
-                  <PinIcon
-                    onClick={() => {
-                      dispatch(pinScene(scene));
-                    }}
-                  />
-                );
-                return (
-                  <SceneListItem
-                    key={scene.id}
-                    scene={scene}
-                    icon={Icon}
-                    selectScene={selectScene}
-                    setVisiblePanel={setVisiblePanel}
-                    toggleSceneMoreInfoDialog={toggleSceneMoreInfoDialog}
-                    setSelectedSceneMoreInfo={setSelectedSceneMoreInfo}
-                  />
-                );
-              })
-          ) : (
-            <>
-              {Array(5)
+          {scenes
+            ? scenes
+                .filter(scene => scene.cloudCover <= cloudCoverPercentage[0])
+                .map(scene => {
+                  const Icon = (
+                    <PinIcon
+                      onClick={() => {
+                        dispatch(pinScene(scene));
+                      }}
+                    />
+                  );
+                  return (
+                    <SceneListItem
+                      key={scene.id}
+                      scene={scene}
+                      icon={Icon}
+                      selectScene={selectScene}
+                      setVisiblePanel={setVisiblePanel}
+                      toggleSceneMoreInfoDialog={toggleSceneMoreInfoDialog}
+                      setSelectedSceneMoreInfo={setSelectedSceneMoreInfo}
+                    />
+                  );
+                })
+            : Array(5)
                 .fill(0)
-                .map(() => (
-                  <SceneListItemSkeleton />
-                ))}
-            </>
-          )}
+                .map(() => <SceneListItemSkeleton />)}
         </ul>
       </div>
       <div className={sideMenuStyles.buttons}>
