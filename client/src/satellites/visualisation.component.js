@@ -27,8 +27,9 @@ const Visualisation = ({ visualisations, setVisiblePanel }) => {
                 onClick={() => console.log('Clicked Visualisation: ', visualisation)}
               >
                 <img className={styles.thumbnail} src={visualisation.thumbnail} alt="Thumbnail" />
+
                 <ul className={styles.metadata}>
-                  <li>{visualisation.label}</li>
+                  <li className={styles.metaHeader}>{visualisation.label}</li>
                   <li>{visualisation.description}</li>
                 </ul>
               </li>

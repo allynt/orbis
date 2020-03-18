@@ -1,23 +1,46 @@
 .visualisations {
   display: flex;
   flex-direction: column;
-  padding: 1rem;
+}
+
+.visualisatinContent {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
 }
 
 .visualisation {
   display: flex;
+  position: relative;
   align-items: center;
-  padding: 0.5rem;
+  width: 100%;
+  padding: 1rem 0;
+  margin: 0.5rem 0;
+  border-radius: 0.5rem;
+}
+
+.visualisation:hover {
+  background-color: rgba(162, 170, 173, 0.15);
 }
 
 .thumbnail {
-  width: 5rem;
-  height: 5rem;
+  display: flex;
+  width: 6rem;
+  height: 6rem;
+  margin: 0 1rem;
   border: 1px solid #fff;
-  margin: 0.5rem;
+  object-fit: cover;
+  cursor: pointer;
 }
 
 .metadata {
+  font-size: 1rem;
+  width: 100%;
+}
+
+.metaHeader {
+  font-weight: bold;
 }
 
 .disabled {
