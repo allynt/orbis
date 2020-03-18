@@ -69,18 +69,52 @@ const users = [
 
 const bookmarks = [
   {
-    title: 'bookmark 1',
-    feature_collection: [],
-    center: [0, 0],
-    zoom: 5,
-    owner: users[2].id
+    id: 8,
+    owner: 1,
+    title: 'Scotland',
+    description: 'This is a description paragraph that describes the contents of this bookmark.',
+    created: '2020-01-31T12:01:22.640053Z',
+    zoom: 6.61084694352591,
+    center: [-5.205274, 57.178733],
+    feature_collection: { type: 'FeatureCollection', features: [] },
+    thumbnail:
+      'https://orbis-staging-media.s3.amazonaws.com/bookmarks/demo.user%40astrosat.net/scotland.png?AWSAccessKeyId=AKIAUN42N47CAW2234WL&Signature=btoT%2BJ3nOF8oQHJq27Lf0JK2jSo%3D&Expires=1584559142'
   },
   {
-    title: 'bookmark 2',
-    feature_collection: [],
-    center: [55.961667, -3.165556],
-    zoom: 6,
-    owner: users[2].id
+    id: 7,
+    owner: 1,
+    title: 'Guatemala',
+    description: 'This is a description paragraph that describes the contents of this bookmark.',
+    created: '2020-01-31T11:52:09.571808Z',
+    zoom: 5.23484291387757,
+    center: [-86.87191, 17.438782],
+    feature_collection: { type: 'FeatureCollection', features: [] },
+    thumbnail:
+      'https://orbis-staging-media.s3.amazonaws.com/bookmarks/demo.user%40astrosat.net/guatemala.png?AWSAccessKeyId=AKIAUN42N47CAW2234WL&Signature=zcGEBDtFlJk68WIHMJh%2FHeZAHY0%3D&Expires=1584559142'
+  },
+  {
+    id: 6,
+    owner: 1,
+    title: 'Vietnam',
+    description: 'This is a description paragraph that describes the contents of this bookmark.',
+    created: '2020-01-31T11:46:12.618090Z',
+    zoom: 7.1319501464789,
+    center: [108.312151, 20.053918],
+    feature_collection: { type: 'FeatureCollection', features: [] },
+    thumbnail:
+      'https://orbis-staging-media.s3.amazonaws.com/bookmarks/demo.user%40astrosat.net/vietnam.png?AWSAccessKeyId=AKIAUN42N47CAW2234WL&Signature=QNZDUz6IRg9%2FgADVtWBGW6aJ1QQ%3D&Expires=1584559142'
+  },
+  {
+    id: 5,
+    owner: 1,
+    title: 'Malaysia',
+    description: 'This is a description paragraph that describes the contents of this bookmark.',
+    created: '2020-01-31T11:44:25.398622Z',
+    zoom: 9.32646036279396,
+    center: [100.616221, 5.804306],
+    feature_collection: { type: 'FeatureCollection', features: [] },
+    thumbnail:
+      'https://orbis-staging-media.s3.amazonaws.com/bookmarks/demo.user%40astrosat.net/malaysia.png?AWSAccessKeyId=AKIAUN42N47CAW2234WL&Signature=ctg7nFys87Q2u%2F4hsxfRbmf9hZs%3D&Expires=1584559142'
   }
 ];
 
