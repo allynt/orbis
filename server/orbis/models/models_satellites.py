@@ -337,7 +337,7 @@ class SatelliteResult(gis_models.Model):
     PRECISION = 6
 
     scene_id = models.SlugField(
-        blank=False, null=False, help_text=_("A unique id for the scene.")
+        max_length=256, blank=False, null=False, help_text=_("A unique id for the scene.")
     )
 
     satellite = models.ForeignKey(
