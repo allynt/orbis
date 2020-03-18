@@ -1,48 +1,45 @@
 [[source]]
+name = "pypi"
 url = "https://pypi.python.org/simple"
 verify_ssl = true
-name = "pypi"
 
 [packages]
 # strong password hashing
 argon2-cffi = ">=19.2.0"
 # S3 Bucket access
-boto3 = ">=1.9.220"
+boto3 = ">=1.12.23"
 # plain-text content zipping (files & responses)
 brotli = ">=1.0.7"
 # django... duh
-django = "==2.2"
-# astrosat-specific code
-django-astrosat-core = {editable = true,git = "https://github.com/astrosat/django-astrosat-core.git",ref = "master"}
-django-astrosat-users = {editable = true,git = "https://github.com/astrosat/django-astrosat-users.git",ref = "master"}
+django = "~=3.0"
 # cross-origin resource sharing
-django-cors-headers = ">=3.0.2"
+django-cors-headers = ">=3.2.1"
 # access environment variables
 django-environ = ">=0.4.5"
 # extended API filters
-django-filter = ">=2.1.0"
+django-filter = ">=2.2.0"
 # docker health-checking
-django-health-check = ">=3.10.2"
+django-health-check = ">=3.12.1"
 # secure tokens
 django-rest-knox = ">=4.1.0"
 # external file storage
-django-storages = ">=1.8"
+django-storages = ">=1.9.1"
 # API... duh
-djangorestframework = ">=3.9.4"
+djangorestframework = "~=3.0"
 # API for GIS
-djangorestframework-gis = ">=0.14.0"
+djangorestframework-gis = ">=0.15.0"
 # dynamic API
-drf-flex-fields = ">=0.5.0"
+drf-flex-fields = ">=0.7.5"
 # API documentation
-drf-yasg = ">=1.17.0"
+drf-yasg = ">=1.17.1"
 # GIS data processing
-geopandas = ">=0.5.1"
+geopandas = ">=0.7.0"
 # MapBox SDK
 mapbox = ">=0.18.0"
 # data processing
-pandas = ">=0.25.0"
+pandas = ">=1.0.2"
 # postgresql support
-psycopg2-binary = ">=2.8.3"
+psycopg2-binary = ">=2.8.4"
 # data tokens
 pyjwt = ">=1.7.1"
 # sentinel data
@@ -50,21 +47,22 @@ sentinelsat = ">=0.13"
 # wsgi... duh
 uwsgi = ">=2.0.18"
 # static file management (gzipping, etc.)
-whitenoise = ">=4.1.2"
-# strong passwords
-zxcvbn = ">=4.4.28"
+whitenoise = ">=5.0.1"
+# astrosat-specific code
+django-astrosat-core = {editable = true,git = "https://github.com/astrosat/django-astrosat-core.git",ref = "master"}
+django-astrosat-users = {editable = true,git = "https://github.com/astrosat/django-astrosat-users.git",ref = "master"}
 
 [dev-packages]
 # coverage reports for GitHub, GitLab, etc.
-codecov = ">=2.0.15"
+codecov = ">=2.0"
 # live debug info
-django-debug-toolbar = ">=2.0"
+django-debug-toolbar = ">=2.2"
 # test fixtures replacement
 factory-boy = ">=2.12"
 # test library
-pytest = ">=5.1.2"
+pytest = "==5.3.5"
 # pytest django plugin
-pytest-django = ">=3.5"
+pytest-django = ">=3.8"
 # pytest look-and-feel plugin
 pytest-sugar = ">=0.9"
 
