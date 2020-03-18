@@ -169,7 +169,7 @@ main {
   width: 100%;
   height: 100%;
   color: var(--primary-text-color);
-  background-color: var(--background-color);
+  background-color: #fff;
 }
 
 header {

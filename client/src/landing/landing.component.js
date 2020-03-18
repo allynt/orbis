@@ -20,7 +20,7 @@ import { ReactComponent as LandingImage } from './landing.svg';
 
 import styles from './landing.module.css';
 
-const ViewAllItems = ({ items, chooseBookmark, toggle, selectedItem, setSelectedItem, setViewAllItems }) => {
+const ViewAllItems = ({ items, chooseBookmark, toggle, itemOptions, setItemOptions, setViewAllItems }) => {
   return (
     <div className={styles.content}>
       <div className={styles.header}>
@@ -33,14 +33,14 @@ const ViewAllItems = ({ items, chooseBookmark, toggle, selectedItem, setSelected
         items={items}
         chooseItem={chooseBookmark}
         toggle={toggle}
-        selectedItem={selectedItem}
-        setSelectedItem={setSelectedItem}
+        itemOptions={itemOptions}
+        setItemOptions={setItemOptions}
       />
     </div>
   );
 };
 
-const Items = ({ items, chooseItem, toggle, selectedItem, setSelectedItem }) => {
+const Items = ({ items, chooseItem, toggle, itemOptions, setItemOptions }) => {
   const [item, setItem] = useState(null);
 
   if (item) {
@@ -65,7 +65,7 @@ const Items = ({ items, chooseItem, toggle, selectedItem, setSelectedItem }) => 
             </div>
 
             <div className={styles.info}>
-              {selectedItem === item ? (
+              {itemOptions === item ? (
                 <h3 className={styles.notYetImplemented}>Not yet implemented...</h3>
               ) : (
                 <div>
@@ -73,7 +73,7 @@ const Items = ({ items, chooseItem, toggle, selectedItem, setSelectedItem }) => 
                   <p className={styles.creationDate}>{dateString}</p>
                 </div>
               )}
-              <div className={styles.optionsIcon} onClick={() => setSelectedItem(selectedItem === item ? null : item)}>
+              <div className={styles.optionsIcon} onClick={() => setItemOptions(itemOptions === item ? null : item)}>
                 <OptionsIcon />
               </div>
             </div>
@@ -131,7 +131,7 @@ const NewUserLanding = forwardRef(({ setRedirect, toggle, isVisible }, ref) => {
 const ExistingUserLanding = forwardRef(({ bookmarks, chooseBookmark, setRedirect, isVisible, toggle }, ref) => {
   const recentItems = bookmarks.slice(0, 4);
   const [viewAllItems, setViewAllItems] = useState(false);
-  const [selectedItem, setSelectedItem] = useState(null);
+  const [itemOptions, setItemOptions] = useState(null);
 
   return (
     <div className={styles.landingContent} ref={ref}>
@@ -145,8 +145,8 @@ const ExistingUserLanding = forwardRef(({ bookmarks, chooseBookmark, setRedirect
           items={bookmarks}
           chooseBookmark={chooseBookmark}
           toggle={toggle}
-          selectedItem={selectedItem}
-          setSelectedItem={setSelectedItem}
+          itemOptions={itemOptions}
+          setItemOptions={setItemOptions}
           setViewAllItems={setViewAllItems}
         />
       ) : (
@@ -161,8 +161,8 @@ const ExistingUserLanding = forwardRef(({ bookmarks, chooseBookmark, setRedirect
             items={recentItems}
             chooseItem={chooseBookmark}
             toggle={toggle}
-            selectedItem={selectedItem}
-            setSelectedItem={setSelectedItem}
+            itemOptions={itemOptions}
+            setItemOptions={setItemOptions}
           />
 
           <div className={styles.header}>
@@ -175,8 +175,8 @@ const ExistingUserLanding = forwardRef(({ bookmarks, chooseBookmark, setRedirect
             items={recentItems}
             chooseItem={chooseBookmark}
             toggle={toggle}
-            selectedItem={selectedItem}
-            setSelectedItem={setSelectedItem}
+            itemOptions={itemOptions}
+            setItemOptions={setItemOptions}
           />
         </div>
       )}
