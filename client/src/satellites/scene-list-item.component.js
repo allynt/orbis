@@ -22,7 +22,6 @@ const SceneListItem = ({
   setSelectedMoreInfo,
   toggleMoreInfoDialog
 }) => {
-  console.log('Scene: ', scene);
   const dispatch = useDispatch();
   return (
     <li key={`${scene.id}-${index}`} className={styles.scene}>
@@ -79,8 +78,8 @@ export const SceneListItemSkeleton = () => (
       <ul className={styles.metadataSkeleton}>
         {Array(4)
           .fill(0)
-          .map(() => (
-            <li className={styles.item}>
+          .map((num, i) => (
+            <li key={i} className={styles.item}>
               <Skeleton />
             </li>
           ))}

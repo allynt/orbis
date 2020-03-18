@@ -72,7 +72,7 @@ const Results = ({ scenes, setVisiblePanel, selectScene, setSelectedMoreInfo, to
                 })
             : Array(5)
                 .fill(0)
-                .map(() => <SceneListItemSkeleton />)}
+                .map((num, i) => <SceneListItemSkeleton key={i} />)}
         </ul>
       </div>
       <div className={sideMenuStyles.buttons}>
