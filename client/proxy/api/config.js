@@ -8,7 +8,8 @@ const appConfig = {
     { id: 'light', uri: 'mapbox://styles/mapbox/light-v10', title: 'Light My Fire' },
     { id: 'dark', uri: 'mapbox://styles/mapbox/dark-v10', title: 'Dark Was The Night' },
     { id: 'satellite', uri: 'mapbox://styles/mapbox/satellite-v9', title: 'Satellite Of Love' }
-  ]
+  ],
+  maximumAoiArea: 500
 };
 
 const userKey = { key: '57bd67287664bb1497cb29fe89d2d5087195a3ae' };
