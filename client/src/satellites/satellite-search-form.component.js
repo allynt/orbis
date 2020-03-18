@@ -212,13 +212,6 @@ const SatelliteSearchForm = ({
         <Button type="submit" theme="primary" classNames={[sideMenuStyles.button]}>
           Search
         </Button>
-        <Button
-          classNames={[sideMenuStyles.button]}
-          theme="tertiary"
-          onClick={() => console.log('Task Satellite Button Clicked')}
-        >
-          Task Satellite
-        </Button>
       </div>
     </form>
   );
