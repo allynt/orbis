@@ -25,7 +25,7 @@ const SatelliteSearch = ({ map, satellites, setVisiblePanel, setSelectedMoreInfo
   const [geometry, setGeometry] = useState(null);
 
   const savedSearches = useSelector(state => state.satellites.satelliteSearches);
-  const selectedSatelliteSearch = useSelector(state => state.satellites.selectedSatelliteSearch);
+  const currentSearchQuery = useSelector(state => state.satellites.currentSearchQuery);
 
   const [isAoiMode, setIsAoiMode] = useState(false);
 
@@ -50,22 +50,23 @@ const SatelliteSearch = ({ map, satellites, setVisiblePanel, setSelectedMoreInfo
   useEffect(() => {
     let drawCtrl = null;
     if (map) {
-      // Get the map's bbox from the bounds.
-      const bounds = map.getBounds();
-      const northWestCoord = bounds.getNorthWest();
-      const northEastCoord = bounds.getNorthEast();
-      const southEastCoord = bounds.getSouthEast();
-      const southWestCoord = bounds.getSouthWest();
-      const geometry = [
-        [northWestCoord.lng, northWestCoord.lat],
-        [northEastCoord.lng, northEastCoord.lat],
-        [southEastCoord.lng, southEastCoord.lat],
-        [southWestCoord.lng, southWestCoord.lat],
-        [northWestCoord.lng, northWestCoord.lat]
-      ];
+      if (!geometry) {
+        // Get the map's bbox from the bounds.
+        const bounds = map.getBounds();
+        const northWestCoord = bounds.getNorthWest();
+        const northEastCoord = bounds.getNorthEast();
+        const southEastCoord = bounds.getSouthEast();
+        const southWestCoord = bounds.getSouthWest();
+        const geometry = [
+          [northWestCoord.lng, northWestCoord.lat],
+          [northEastCoord.lng, northEastCoord.lat],
+          [southEastCoord.lng, southEastCoord.lat],
+          [southWestCoord.lng, southWestCoord.lat],
+          [northWestCoord.lng, northWestCoord.lat]
+        ];
 
-      setGeometry(geometry);
-
+        setGeometry(geometry);
+      }
       drawCtrl = map._controls.find(ctrl => ctrl.changeMode);
     }
 
@@ -94,8 +95,9 @@ const SatelliteSearch = ({ map, satellites, setVisiblePanel, setSelectedMoreInfo
   useMap(
     map,
     mapInstance => {
-      if (selectedSatelliteSearch?.aoi) {
-        const { aoi } = selectedSatelliteSearch;
+      if (currentSearchQuery?.aoi) {
+        const { aoi } = currentSearchQuery;
+        setGeometry(aoi);
         const line = lineString(aoi);
         mapInstance.fitBounds(bbox(line), { padding: 275, offset: [100, 0] });
         const drawCtrl = mapInstance._controls.find(ctrl => ctrl.changeMode);
@@ -117,7 +119,7 @@ const SatelliteSearch = ({ map, satellites, setVisiblePanel, setSelectedMoreInfo
         return () => drawCtrl.deleteAll();
       }
     },
-    [selectedSatelliteSearch]
+    [currentSearchQuery]
   );
 
   return (
@@ -141,7 +143,6 @@ const SatelliteSearch = ({ map, satellites, setVisiblePanel, setSelectedMoreInfo
       <SatelliteSearchForm
         satellites={satellites}
         geometry={geometry}
-        selectedSatelliteSearch={selectedSatelliteSearch}
         setVisiblePanel={setVisiblePanel}
         setSelectedMoreInfo={setSelectedMoreInfo}
         toggleMoreInfoDialog={toggleMoreInfoDialog}

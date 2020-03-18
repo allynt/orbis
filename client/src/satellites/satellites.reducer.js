@@ -11,7 +11,6 @@ import {
   SAVE_SATELLITE_SEARCH_REQUESTED_FAILURE,
   DELETE_SATELLITE_SEARCH_SUCCESS,
   DELETE_SATELLITE_SEARCH_FAILURE,
-  SELECT_SATELLITE_SEARCH_QUERY,
   SET_CURRENT_SATELLITE_SEARCH_QUERY,
   FETCH_PINNED_SCENES_SUCCESS,
   FETCH_PINNED_SCENES_FAILURE,
@@ -95,12 +94,6 @@ const reducer = (state = initialState, action) => {
 
     case DELETE_SATELLITE_SEARCH_FAILURE:
       return { ...state, error: action.error };
-
-    case SELECT_SATELLITE_SEARCH_QUERY:
-      return {
-        ...state,
-        selectedSatelliteSearch: action.search
-      };
 
     case FETCH_PINNED_SCENES_SUCCESS:
       return {
