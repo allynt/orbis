@@ -15,6 +15,7 @@ import SavedSearchList from './saved-search-list.component';
 
 import styles from './satellite-search.module.css';
 import sideMenuStyles from '../side-menu/side-menu.module.css';
+import { useMapEvent } from 'map/use-map-event.hook';
 
 const AOI_DRAW_MODE = 'RectangleMode';
 const BBOX_NO_OF_POINTS = 5;
@@ -22,11 +23,10 @@ const BBOX_NO_OF_POINTS = 5;
 const SatelliteSearch = ({ map, satellites, setVisiblePanel, setSelectedMoreInfo, toggleMoreInfoDialog }, ref) => {
   const dispatch = useDispatch();
 
-  const [geometry, setGeometry] = useState(null);
-
   const savedSearches = useSelector(state => state.satellites.satelliteSearches);
   const currentSearchQuery = useSelector(state => state.satellites.currentSearchQuery);
 
+  const [geometry, setGeometry] = useState(null);
   const [isAoiMode, setIsAoiMode] = useState(false);
 
   useMap(
@@ -47,25 +47,47 @@ const SatelliteSearch = ({ map, satellites, setVisiblePanel, setSelectedMoreInfo
     [isAoiMode]
   );
 
+  const setGeometryToMapBounds = () => {
+    // Get the map's bbox from the bounds.
+    const bounds = map.getBounds();
+    const northWestCoord = bounds.getNorthWest();
+    const northEastCoord = bounds.getNorthEast();
+    const southEastCoord = bounds.getSouthEast();
+    const southWestCoord = bounds.getSouthWest();
+    const newGeometry = [
+      [northWestCoord.lng, northWestCoord.lat],
+      [northEastCoord.lng, northEastCoord.lat],
+      [southEastCoord.lng, southEastCoord.lat],
+      [southWestCoord.lng, southWestCoord.lat],
+      [northWestCoord.lng, northWestCoord.lat]
+    ];
+
+    setGeometry(newGeometry);
+  };
+
+  useMapEvent(
+    map,
+    'move',
+    () => {
+      const drawControl = map._controls.find(ctrl => ctrl.changeMode);
+      if (drawControl) {
+        const feature = drawControl.getAll().features[0];
+        if (feature) {
+          console.log(`there's something drawn`, feature);
+        } else {
+          setGeometryToMapBounds();
+        }
+      }
+      return () => drawControl.deleteAll();
+    },
+    []
+  );
+
   useEffect(() => {
     let drawCtrl = null;
     if (map) {
       if (!geometry) {
-        // Get the map's bbox from the bounds.
-        const bounds = map.getBounds();
-        const northWestCoord = bounds.getNorthWest();
-        const northEastCoord = bounds.getNorthEast();
-        const southEastCoord = bounds.getSouthEast();
-        const southWestCoord = bounds.getSouthWest();
-        const geometry = [
-          [northWestCoord.lng, northWestCoord.lat],
-          [northEastCoord.lng, northEastCoord.lat],
-          [southEastCoord.lng, southEastCoord.lat],
-          [southWestCoord.lng, southWestCoord.lat],
-          [northWestCoord.lng, northWestCoord.lat]
-        ];
-
-        setGeometry(geometry);
+        setGeometryToMapBounds();
       }
       drawCtrl = map._controls.find(ctrl => ctrl.changeMode);
     }
