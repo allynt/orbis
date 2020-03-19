@@ -2,10 +2,10 @@
 # yarn lockfile v1
 
 
-"@astrosat/astrosat-ui@^1.12.0":
-  version "1.12.0"
-  resolved "https://npm.pkg.github.com/download/@astrosat/astrosat-ui/1.12.0/d4b207ea01002c9d09c90bd3182186dcdaa300734bba9222b384d1074d4a805f#cebcf4feb712ed2f42be713fcdc0b476b8e14c65"
-  integrity sha512-zvHhEwSa59KeIVRBVWnUvTaSTBBeLUZv0fVAyRJF/WEkeiF/c6V+h2zmUtZvF50BZQx1VSC+AG8wZK07ffOORg==
+"@astrosat/astrosat-ui@^1.12.1":
+  version "1.12.1"
+  resolved "https://npm.pkg.github.com/download/@astrosat/astrosat-ui/1.12.1/8754f7576e48cadb3f6a80b9c93d0d6a57d656170583abb8773f8a454af50aa5#84ee0c6c8333849f1c68a3a7429b72d0087403dd"
+  integrity sha512-32/W8J6TmHZgZ3FQBLWyll9Z3bY5IYvuDFpBB9/YzfG0ffvWZxudqrcUr7gTW1ujKhZ6adTBMqwFw0gu7g6hLw==
   dependencies:
     d3-scale "^3.2.1"
     prop-types "^15.7.2"
@@ -9936,10 +9936,10 @@ lodash.memoize@^4.1.2:
   resolved "https://registry.yarnpkg.com/lodash.memoize/-/lodash.memoize-4.1.2.tgz#bcc6c49a42a2840ed997f323eada5ecd182e0bfe"
   integrity sha1-vMbEmkKihA7Zl/Mj6tpezRguC/4=
 
-lodash.restparam@*:
-  version "3.6.1"
-  resolved "https://registry.yarnpkg.com/lodash.restparam/-/lodash.restparam-3.6.1.tgz#936a4e309ef330a7645ed4145986c85ae5b20805"
-  integrity sha1-k2pOMJ7zMKdkXtQUWYbIWuWyCAU=
+lodash.set@^4.3.2:
+  version "4.3.2"
+  resolved "https://registry.yarnpkg.com/lodash.set/-/lodash.set-4.3.2.tgz#d8757b1da807dde24816b0d6a84bea1a76230b23"
+  integrity sha1-2HV7HagH3eJIFrDWqEvqGnYjCyM=
 
 lodash.sortby@^4.7.0:
   version "4.7.0"
