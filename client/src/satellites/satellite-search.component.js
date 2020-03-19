@@ -12,6 +12,8 @@ import useMap from '../map/use-map.hook';
 import { ReactComponent as DrawAoiIcon } from './draw-aoi.svg';
 import SatelliteSearchForm from './satellite-search-form.component';
 import SavedSearchList from './saved-search-list.component';
+import { useMapEvent } from 'map/use-map-event.hook';
+import { getGeometryAreaKmSquared } from 'utils/geometry';
 
 import styles from './satellite-search.module.css';
 import sideMenuStyles from '../side-menu/side-menu.module.css';
@@ -22,53 +24,82 @@ const BBOX_NO_OF_POINTS = 5;
 const SatelliteSearch = ({ map, satellites, setVisiblePanel, setSelectedMoreInfo, toggleMoreInfoDialog }, ref) => {
   const dispatch = useDispatch();
 
-  const [geometry, setGeometry] = useState(null);
-
   const savedSearches = useSelector(state => state.satellites.satelliteSearches);
   const currentSearchQuery = useSelector(state => state.satellites.currentSearchQuery);
+  const maximumAoiArea = useSelector(state => state.app.config.maximumAoiArea);
 
+  const [geometry, setGeometry] = useState(null);
   const [isAoiMode, setIsAoiMode] = useState(false);
 
-  useMap(
-    map,
-    mapInstance => {
-      const drawCtrl = mapInstance._controls.find(ctrl => ctrl.changeMode);
-      if (drawCtrl && isAoiMode) {
-        // Delete any existing AOI polygon.
-        drawCtrl.deleteAll();
-        // Enable draw mode
-        drawCtrl.changeMode(AOI_DRAW_MODE, {});
+  const getDraw = () => {
+    const control = map?._controls.find(ctrl => ctrl.changeMode);
+    const feature = control?.getAll().features[0];
+    return [control, feature];
+  };
+
+  useEffect(() => {
+    const [drawCtrl] = getDraw();
+    if (drawCtrl && isAoiMode) {
+      // Delete any existing AOI polygon.
+      drawCtrl.deleteAll();
+      // Enable draw mode
+      drawCtrl.changeMode(AOI_DRAW_MODE, {});
+    }
+    return () => {
+      // Reset local state variable.
+      setIsAoiMode(false);
+    };
+  }, [isAoiMode]);
+
+  useEffect(() => {
+    const [drawControl, feature] = getDraw();
+    if (feature) {
+      const featureArea = getGeometryAreaKmSquared(feature.geometry.coordinates[0]);
+      const isTooLarge = featureArea > maximumAoiArea;
+      if (isTooLarge) {
+        drawControl.setFeatureProperty(feature.id, 'error', 'true');
       }
-      return () => {
-        // Reset local state variable.
-        setIsAoiMode(false);
-      };
+    }
+  }, [geometry]);
+
+  const setGeometryToMapBounds = () => {
+    // Get the map's bbox from the bounds.
+    const bounds = map.getBounds();
+    const northWestCoord = bounds.getNorthWest();
+    const northEastCoord = bounds.getNorthEast();
+    const southEastCoord = bounds.getSouthEast();
+    const southWestCoord = bounds.getSouthWest();
+    const newGeometry = [
+      [northWestCoord.lng, northWestCoord.lat],
+      [northEastCoord.lng, northEastCoord.lat],
+      [southEastCoord.lng, southEastCoord.lat],
+      [southWestCoord.lng, southWestCoord.lat],
+      [northWestCoord.lng, northWestCoord.lat]
+    ];
+
+    setGeometry(newGeometry);
+  };
+
+  // Set geometry to the viewbox as long as there's no drawn feature
+  useMapEvent(
+    map,
+    'move',
+    () => {
+      const [drawControl, feature] = getDraw();
+      if (!feature) setGeometryToMapBounds();
+      return () => drawControl.deleteAll();
     },
-    [isAoiMode]
+    []
   );
 
   useEffect(() => {
-    let drawCtrl = null;
     if (map) {
       if (!geometry) {
-        // Get the map's bbox from the bounds.
-        const bounds = map.getBounds();
-        const northWestCoord = bounds.getNorthWest();
-        const northEastCoord = bounds.getNorthEast();
-        const southEastCoord = bounds.getSouthEast();
-        const southWestCoord = bounds.getSouthWest();
-        const geometry = [
-          [northWestCoord.lng, northWestCoord.lat],
-          [northEastCoord.lng, northEastCoord.lat],
-          [southEastCoord.lng, southEastCoord.lat],
-          [southWestCoord.lng, southWestCoord.lat],
-          [northWestCoord.lng, northWestCoord.lat]
-        ];
-
-        setGeometry(geometry);
+        setGeometryToMapBounds();
       }
-      drawCtrl = map._controls.find(ctrl => ctrl.changeMode);
     }
+
+    const [drawCtrl] = getDraw();
 
     if (drawCtrl) {
       map.on('draw.create', () => {
@@ -92,6 +123,7 @@ const SatelliteSearch = ({ map, satellites, setVisiblePanel, setSelectedMoreInfo
     }
   }, [savedSearches]);
 
+  // If the current search query changes, redraw the AOI on map
   useMap(
     map,
     mapInstance => {
@@ -100,7 +132,7 @@ const SatelliteSearch = ({ map, satellites, setVisiblePanel, setSelectedMoreInfo
         setGeometry(aoi);
         const line = lineString(aoi);
         mapInstance.fitBounds(bbox(line), { padding: 275, offset: [100, 0] });
-        const drawCtrl = mapInstance._controls.find(ctrl => ctrl.changeMode);
+        const [drawCtrl] = getDraw();
         drawCtrl.deleteAll();
         const feature = {
           type: 'Feature',

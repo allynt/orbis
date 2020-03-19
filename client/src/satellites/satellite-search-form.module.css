@@ -83,3 +83,27 @@
 .searchButtonContainer .searchButton {
   width: 70%;
 }
+
+.errorContainerBackground {
+  background-color: white;
+}
+
+.errorContainer {
+  padding: 0.375rem 1rem;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  background-color: rgba(207, 102, 121, 0.2);
+  border: solid 1px #cf6679;
+}
+
+.errorContainer .errorMessage {
+  color: var(--primary-foreground-color);
+  padding: 0;
+}
+
+.errorContainer .errorIcon {
+  width: 1rem;
+  color: #cf6679;
+  margin-right: 0.375rem;
+}

@@ -9,12 +9,14 @@ import Button from '@astrosat/astrosat-ui/dist/buttons/button';
 import Checkbox from '@astrosat/astrosat-ui/dist/forms/checkbox';
 import useForm from '@astrosat/astrosat-ui/dist/forms/use-form';
 import InfoIcon from '@astrosat/astrosat-ui/dist/icons/info-icon';
+import ErrorIcon from '@astrosat/astrosat-ui/dist/icons/error-icon';
 
 import validate from './satellite-search-form.validator';
 
 import { setCurrentSearchQuery, searchSatellites } from './satellites.actions';
 
 import { RESULTS } from './satellites-panel.component';
+import { getGeometryAreaKmSquared } from 'utils/geometry';
 
 import styles from './satellite-search-form.module.css';
 import sideMenuStyles from '../side-menu/side-menu.module.css';
@@ -89,6 +91,8 @@ const SatelliteSearchForm = ({ satellites, geometry, setVisiblePanel, setSelecte
   const [startDate, setStartDate] = useState(subDays(new Date(), DAYS_IN_PAST));
   const [endDate, setEndDate] = useState(new Date());
   const currentSearchQuery = useSelector(state => state.satellites.currentSearchQuery);
+  const maximumAoiArea = useSelector(state => state.app.config.maximumAoiArea);
+  const geometryTooLarge = geometry && getGeometryAreaKmSquared(geometry) > maximumAoiArea;
 
   const { handleChange, handleSubmit, values, setValues } = useForm(onSubmit, validate, defaults);
 
@@ -201,9 +205,16 @@ const SatelliteSearchForm = ({ satellites, geometry, setVisiblePanel, setSelecte
           </ul>
         </FormSection>
       </div>
-
       <div className={sideMenuStyles.buttons}>
-        <Button type="submit" theme="primary" classNames={[sideMenuStyles.button]}>
+        {geometryTooLarge && (
+          <div className={styles.errorContainerBackground}>
+            <div className={styles.errorContainer}>
+              <ErrorIcon classes={styles.errorIcon} />
+              <p className={styles.errorMessage}>AOI is too large, redraw or zoom in</p>
+            </div>
+          </div>
+        )}
+        <Button type="submit" theme="primary" disabled={geometryTooLarge} classNames={[sideMenuStyles.button]}>
           Search
         </Button>
       </div>
