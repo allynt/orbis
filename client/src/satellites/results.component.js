@@ -81,7 +81,7 @@ const Results = ({ scenes, setVisiblePanel, selectScene, setSelectedMoreInfo, to
         </Button>
       </div>
       <Dialog isVisible={isSaveDialogVisible} title="Name Search" close={toggleSaveDialog} ref={ref}>
-        <SaveSearchForm query={currentSearchQuery} />
+        <SaveSearchForm query={currentSearchQuery} close={toggleSaveDialog} />
       </Dialog>
     </div>
   );
