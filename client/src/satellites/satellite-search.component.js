@@ -29,7 +29,6 @@ const SatelliteSearch = ({ map, satellites, setVisiblePanel, setSelectedMoreInfo
   const maximumAoiArea = useSelector(state => state.app.config.maximumAoiArea);
 
   const [geometry, setGeometry] = useState(null);
-  const [geometryIsTooLarge, setGeometryIsTooLarge] = useState(true);
   const [isAoiMode, setIsAoiMode] = useState(false);
 
   const getDraw = () => {
@@ -57,7 +56,6 @@ const SatelliteSearch = ({ map, satellites, setVisiblePanel, setSelectedMoreInfo
     if (feature) {
       const featureArea = getGeometryAreaKmSquared(feature.geometry.coordinates[0]);
       const isTooLarge = featureArea > maximumAoiArea;
-      setGeometryIsTooLarge(isTooLarge);
       if (isTooLarge) {
         drawControl.setFeatureProperty(feature.id, 'error', 'true');
       }
