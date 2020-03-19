@@ -156,7 +156,7 @@ const SatelliteSearch = ({ map, satellites, setVisiblePanel, setSelectedMoreInfo
 
   return (
     <div className={styles.search} ref={ref}>
-      {savedSearches ? (
+      {savedSearches && savedSearches.length > 0 ? (
         <div>
           <Detail title="Saved Searches">
             <SavedSearchList savedSearches={savedSearches} />
