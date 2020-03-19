@@ -16,7 +16,7 @@
     "e2e:run": "cypress run"
   },
   "dependencies": {
-    "@astrosat/astrosat-ui": "^1.12.0",
+    "@astrosat/astrosat-ui": "^1.12.1",
     "@mapbox/mapbox-gl-draw": "^1.1.2",
     "@mapbox/mapbox-gl-geocoder": "^4.5.1",
     "@mapbox/mapbox-gl-sync-move": "^0.3.0",
@@ -73,7 +73,7 @@
     "redux-mock-store": "^1.5.4",
     "semantic-release": "^16.0.4"
   },
-  "proxy": "http://server:8000",
+  "proxy": "http://localhost:8000",
   "browserslist": [
     ">0.2%",
     "not dead",
