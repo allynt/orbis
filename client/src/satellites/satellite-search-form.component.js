@@ -15,9 +15,8 @@ import validate from './satellite-search-form.validator';
 
 import { setCurrentSearchQuery, searchSatellites } from './satellites.actions';
 
-import { RESULTS } from './satellites-panel.component';
+import { RESULTS, SATELLITE, TIER } from './satellites-panel.component';
 import { getGeometryAreaKmSquared } from 'utils/geometry';
-import { SatelliteInfoTable, TierInfoTable } from './satellites-info-tables.component';
 
 import styles from './satellite-search-form.module.css';
 import sideMenuStyles from '../side-menu/side-menu.module.css';
@@ -141,7 +140,7 @@ const SatelliteSearchForm = ({ satellites, geometry, setVisiblePanel, setSelecte
                   className={styles.infoButton}
                   type="button"
                   onClick={() => {
-                    setSelectedMoreInfo(<SatelliteInfoTable satellite={satellite} />);
+                    setSelectedMoreInfo({ type: SATELLITE, data: satellite });
                     toggleMoreInfoDialog();
                   }}
                 >
@@ -192,7 +191,7 @@ const SatelliteSearchForm = ({ satellites, geometry, setVisiblePanel, setSelecte
                   className={styles.infoButton}
                   type="button"
                   onClick={() => {
-                    setSelectedMoreInfo(<TierInfoTable tier={tier} />);
+                    setSelectedMoreInfo({ type: TIER, data: tier });
                     toggleMoreInfoDialog();
                   }}
                 >

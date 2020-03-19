@@ -6,9 +6,8 @@ import format from 'date-fns/format';
 
 import { DATE_FORMAT, TIME_FORMAT } from './satellite.constants';
 
-import { VISUALISATION } from './satellites-panel.component';
+import { VISUALISATION, SCENE } from './satellites-panel.component';
 import { Skeleton } from '../skeleton.component';
-import { SceneInfoTable } from './satellites-info-tables.component';
 
 import InfoIcon from '@astrosat/astrosat-ui/dist/icons/info-icon';
 
@@ -55,7 +54,7 @@ const SceneListItem = ({
         <div
           className={styles.moreInfo}
           onClick={() => {
-            setSelectedMoreInfo(<SceneInfoTable scene={scene} />);
+            setSelectedMoreInfo({ type: SCENE, data: scene });
             toggleMoreInfoDialog();
           }}
         >

@@ -13,6 +13,7 @@ import SatelliteSearch from './satellite-search.component';
 import Results from './results.component';
 import Visualisation from './visualisation.component';
 import PinnedScenes from './compare-pins.component';
+import { SatelliteInfoTable, TierInfoTable, SceneInfoTable } from './satellites-info-tables.component';
 
 import styles from './satellites-panel.module.css';
 
@@ -21,13 +22,17 @@ export const RESULTS = 'Results';
 export const VISUALISATION = 'Visualisation';
 export const PINS = 'Pins';
 
+export const SATELLITE = 'Satellite';
+export const SCENE = 'Scene';
+export const TIER = 'Tier';
+
 const SatellitesPanel = ({ map }) => {
   const dispatch = useDispatch();
   const dialogRef = useRef(null);
 
   const [visiblePanel, setVisiblePanel] = useState(SEARCH);
   const [visualisations, setVisualisations] = useState(null);
-  const [selectedMoreInfo, setSelectedMoreInfo] = useState(null);
+  const [selectedMoreInfo, setSelectedMoreInfo] = useState({ type: null, data: null });
 
   const [isMoreInfoDialogVisible, toggleMoreInfoDialog] = useModal(false);
 
@@ -114,7 +119,13 @@ const SatellitesPanel = ({ map }) => {
         )}
       </div>
       <Dialog isVisible={isMoreInfoDialogVisible} title="More Information" close={toggleMoreInfoDialog} ref={dialogRef}>
-        {selectedMoreInfo || <p className={styles.noInfoAvailable}>No information currently available</p>}
+        {!selectedMoreInfo && <p className={styles.noInfoAvailable}>No information currently available</p>}
+
+        {selectedMoreInfo && selectedMoreInfo.type === SATELLITE && (
+          <SatelliteInfoTable satellite={selectedMoreInfo.data} />
+        )}
+        {selectedMoreInfo && selectedMoreInfo.type === SCENE && <SceneInfoTable scene={selectedMoreInfo.data} />}
+        {selectedMoreInfo && selectedMoreInfo.type === TIER && <TierInfoTable tier={selectedMoreInfo.data} />}
       </Dialog>
     </div>
   );
