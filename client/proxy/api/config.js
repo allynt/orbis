@@ -77,8 +77,7 @@ const bookmarks = [
     zoom: 6.61084694352591,
     center: [-5.205274, 57.178733],
     feature_collection: { type: 'FeatureCollection', features: [] },
-    thumbnail:
-      'https://orbis-staging-media.s3.amazonaws.com/bookmarks/demo.user%40astrosat.net/scotland.png?AWSAccessKeyId=AKIAUN42N47CAW2234WL&Signature=btoT%2BJ3nOF8oQHJq27Lf0JK2jSo%3D&Expires=1584559142'
+    thumbnail: 'https://www.undiscoveredscotland.co.uk/usscotfax/geography/images/geography-450.jpg'
   },
   {
     id: 7,
@@ -89,8 +88,7 @@ const bookmarks = [
     zoom: 5.23484291387757,
     center: [-86.87191, 17.438782],
     feature_collection: { type: 'FeatureCollection', features: [] },
-    thumbnail:
-      'https://orbis-staging-media.s3.amazonaws.com/bookmarks/demo.user%40astrosat.net/guatemala.png?AWSAccessKeyId=AKIAUN42N47CAW2234WL&Signature=zcGEBDtFlJk68WIHMJh%2FHeZAHY0%3D&Expires=1584559142'
+    thumbnail: 'https://cdn.mos.cms.futurecdn.net/PuMd7Vw3wsZafT27T2xWtF.jpg'
   },
   {
     id: 6,
@@ -101,8 +99,7 @@ const bookmarks = [
     zoom: 7.1319501464789,
     center: [108.312151, 20.053918],
     feature_collection: { type: 'FeatureCollection', features: [] },
-    thumbnail:
-      'https://orbis-staging-media.s3.amazonaws.com/bookmarks/demo.user%40astrosat.net/vietnam.png?AWSAccessKeyId=AKIAUN42N47CAW2234WL&Signature=QNZDUz6IRg9%2FgADVtWBGW6aJ1QQ%3D&Expires=1584559142'
+    thumbnail: 'https://spacewatch.global/wp-content/uploads/2019/10/Vietnam.A2002092.0330.500m.jpg'
   },
   {
     id: 5,
@@ -114,7 +111,7 @@ const bookmarks = [
     center: [100.616221, 5.804306],
     feature_collection: { type: 'FeatureCollection', features: [] },
     thumbnail:
-      'https://orbis-staging-media.s3.amazonaws.com/bookmarks/demo.user%40astrosat.net/malaysia.png?AWSAccessKeyId=AKIAUN42N47CAW2234WL&Signature=ctg7nFys87Q2u%2F4hsxfRbmf9hZs%3D&Expires=1584559142'
+      'https://s3.amazonaws.com/images.spaceref.com/news/2018/esa_earth_from_space_shanghai_china_071318_945.jpg'
   }
 ];
 
