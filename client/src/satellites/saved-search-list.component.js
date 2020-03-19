@@ -5,7 +5,7 @@ import { useDispatch } from 'react-redux';
 
 import Button from '@astrosat/astrosat-ui/dist/buttons/button';
 
-import { deleteSavedSatelliteSearch, selectSearchQuery } from './satellites.actions';
+import { deleteSavedSatelliteSearch, setCurrentSearchQuery } from './satellites.actions';
 
 import styles from './saved-search-list.module.css';
 
@@ -27,7 +27,7 @@ const SavedSearchList = ({ savedSearches }) => {
                 <p>{search.tiers.join(', ')}</p>
               </div>
               <div className={styles.buttons}>
-                <Button classNames={[styles.button]} onClick={() => dispatch(selectSearchQuery(search))}>
+                <Button classNames={[styles.button]} onClick={() => dispatch(setCurrentSearchQuery(search))}>
                   Reload
                 </Button>
                 <Button

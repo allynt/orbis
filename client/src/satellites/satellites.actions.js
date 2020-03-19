@@ -24,7 +24,6 @@ export const SAVE_SATELLITE_SEARCH_REQUESTED_SUCCESS = 'SAVE_SATELLITE_SEARCH_RE
 export const SAVE_SATELLITE_SEARCH_REQUESTED_FAILURE = 'SAVE_SATELLITE_SEARCH_REQUESTED_FAILURE';
 export const DELETE_SATELLITE_SEARCH_SUCCESS = 'DELETE_SATELLITE_SEARCH_SUCCESS';
 export const DELETE_SATELLITE_SEARCH_FAILURE = 'DELETE_SATELLITE_SEARCH_FAILURE';
-export const SELECT_SATELLITE_SEARCH_QUERY = 'SELECT_SATELLITE_SEARCH_QUERY';
 export const SET_CURRENT_SATELLITE_SEARCH_QUERY = 'SET_CURRENT_SATELLITE_SEARCH_QUERY';
 
 const API = {
@@ -184,11 +183,6 @@ export const saveSatelliteSearch = form => async (dispatch, getState) => {
   NotificationManager.success('Successfully Saved Satellite Search Query Terms', 'Successful Saving', 5000, () => {});
   dispatch({ type: SAVE_SATELLITE_SEARCH_REQUESTED_SUCCESS, savedSearch });
 };
-
-export const selectSearchQuery = search => ({
-  type: SELECT_SATELLITE_SEARCH_QUERY,
-  search
-});
 
 export const fetchPinnedScenes = () => async (dispatch, getState) => {
   const {

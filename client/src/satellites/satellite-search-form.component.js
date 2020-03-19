@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { formatISO, subDays } from 'date-fns';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
@@ -83,29 +83,23 @@ const defaults = {
   }
 };
 
-const SatelliteSearchForm = ({
-  satellites,
-  geometry,
-  selectedSatelliteSearch,
-  setVisiblePanel,
-  setSelectedMoreInfo,
-  toggleMoreInfoDialog
-}) => {
+const SatelliteSearchForm = ({ satellites, geometry, setVisiblePanel, setSelectedMoreInfo, toggleMoreInfoDialog }) => {
   const dispatch = useDispatch();
 
   const [startDate, setStartDate] = useState(subDays(new Date(), DAYS_IN_PAST));
   const [endDate, setEndDate] = useState(new Date());
+  const currentSearchQuery = useSelector(state => state.satellites.currentSearchQuery);
 
   const { handleChange, handleSubmit, values, setValues } = useForm(onSubmit, validate, defaults);
 
   useEffect(() => {
-    if (selectedSatelliteSearch) {
-      selectedSatelliteSearch.start_date && setStartDate(new Date(selectedSatelliteSearch.start_date));
-      selectedSatelliteSearch.end_date && setEndDate(new Date(selectedSatelliteSearch.end_date));
-      const convertedSearch = savedSearchToFormValues(selectedSatelliteSearch);
+    if (currentSearchQuery) {
+      currentSearchQuery.start_date && setStartDate(new Date(currentSearchQuery.start_date));
+      currentSearchQuery.end_date && setEndDate(new Date(currentSearchQuery.end_date));
+      const convertedSearch = savedSearchToFormValues(currentSearchQuery);
       setValues(convertedSearch);
     }
-  }, [selectedSatelliteSearch]);
+  }, [currentSearchQuery]);
 
   function onSubmit() {
     // Collect all selected satellites into one array of satellite ids.

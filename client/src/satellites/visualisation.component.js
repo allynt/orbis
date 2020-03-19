@@ -10,15 +10,15 @@ import { SEARCH } from './satellites-panel.component';
 import { removeScenes } from './satellites.actions';
 
 import styles from './visualisation.module.css';
+import sideMenuStyles from '../side-menu/side-menu.module.css';
 
 const Visualisation = ({ visualisations, setVisiblePanel }) => {
   const dispatch = useDispatch();
   return (
     visualisations && (
-      <div>
-        <h3>VISUALISATION</h3>
-
+      <div className={styles.content}>
         <ul className={styles.visualisations}>
+          <h3>VISUALISATION</h3>
           {visualisations.map(visualisation => {
             return (
               <li
@@ -27,8 +27,9 @@ const Visualisation = ({ visualisations, setVisiblePanel }) => {
                 onClick={() => console.log('Clicked Visualisation: ', visualisation)}
               >
                 <img className={styles.thumbnail} src={visualisation.thumbnail} alt="Thumbnail" />
+
                 <ul className={styles.metadata}>
-                  <li>{visualisation.label}</li>
+                  <li className={styles.metaHeader}>{visualisation.label}</li>
                   <li>{visualisation.description}</li>
                 </ul>
               </li>
@@ -36,9 +37,10 @@ const Visualisation = ({ visualisations, setVisiblePanel }) => {
           })}
         </ul>
 
-        <div className={styles.buttons}>
+        <div className={sideMenuStyles.buttons}>
           <Button
             theme="primary"
+            classNames={[sideMenuStyles.button]}
             onClick={() => {
               setVisiblePanel(SEARCH);
               dispatch(removeScenes());
