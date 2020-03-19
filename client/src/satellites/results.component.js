@@ -46,7 +46,7 @@ const Results = ({ scenes, setVisiblePanel, selectScene, setSelectedMoreInfo, to
       <div className={styles.results}>
         <h3>RESULTS</h3>
         <div className={styles.resultCount}>{resultCountText}</div>
-        <ul className={styles.scenes}>
+        <ul className={sceneStyles.scenes}>
           {scenes
             ? scenes
                 .filter(scene => scene.cloudCover <= cloudCoverPercentage[0])
