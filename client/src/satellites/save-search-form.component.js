@@ -13,7 +13,7 @@ import { saveSatelliteSearch } from './satellites.actions';
 
 import formStyles from '../accounts/forms.module.css';
 
-const SaveSearchForm = ({ query }) => {
+const SaveSearchForm = ({ query, close }) => {
   const dispatch = useDispatch();
 
   const { handleChange, handleSubmit, values, errors } = useForm(onSubmit, validate);
@@ -21,6 +21,7 @@ const SaveSearchForm = ({ query }) => {
   function onSubmit() {
     console.log('Submitting: ', values, query);
     dispatch(saveSatelliteSearch({ ...values, ...query }));
+    close();
   }
 
   return (
