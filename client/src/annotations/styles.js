@@ -1,5 +1,22 @@
 export default [
   {
+    id: 'gl-draw-aoi-fill-inactive-error',
+    type: 'fill',
+    filter: [
+      'all',
+      ['==', 'active', 'false'],
+      ['==', '$type', 'Polygon'],
+      ['!=', 'mode', 'static'],
+      ['==', 'user_drawType', 'AOI'],
+      ['==', 'user_error', 'true']
+    ],
+    paint: {
+      'fill-color': 'red',
+      'fill-outline-color': 'red',
+      'fill-opacity': 0.5
+    }
+  },
+  {
     id: 'gl-draw-aoi-fill-inactive',
     type: 'fill',
     filter: [
@@ -7,7 +24,8 @@ export default [
       ['==', 'active', 'false'],
       ['==', '$type', 'Polygon'],
       ['!=', 'mode', 'static'],
-      ['==', 'user_drawType', 'AOI']
+      ['==', 'user_drawType', 'AOI'],
+      ['!=', 'user_error', 'true']
     ],
     paint: {
       'fill-color': '#3bb2d0',

@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 
-import { area, polygon } from '@turf/turf';
 import { useDispatch, useSelector } from 'react-redux';
 import { formatISO, subDays } from 'date-fns';
 import DatePicker from 'react-datepicker';
@@ -17,6 +16,7 @@ import validate from './satellite-search-form.validator';
 import { setCurrentSearchQuery, searchSatellites } from './satellites.actions';
 
 import { RESULTS } from './satellites-panel.component';
+import { getGeometryAreaKmSquared } from 'utils/geometry';
 
 import styles from './satellite-search-form.module.css';
 import sideMenuStyles from '../side-menu/side-menu.module.css';
@@ -83,11 +83,6 @@ const defaults = {
     'sentinel-2': true,
     free: true
   }
-};
-
-const getGeometryAreaKmSquared = geometry => {
-  const feat = polygon([geometry]);
-  return area(feat) / 1000000;
 };
 
 const SatelliteSearchForm = ({ satellites, geometry, setVisiblePanel, setSelectedMoreInfo, toggleMoreInfoDialog }) => {

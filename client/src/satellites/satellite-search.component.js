@@ -12,10 +12,11 @@ import useMap from '../map/use-map.hook';
 import { ReactComponent as DrawAoiIcon } from './draw-aoi.svg';
 import SatelliteSearchForm from './satellite-search-form.component';
 import SavedSearchList from './saved-search-list.component';
+import { useMapEvent } from 'map/use-map-event.hook';
+import { getGeometryAreaKmSquared } from 'utils/geometry';
 
 import styles from './satellite-search.module.css';
 import sideMenuStyles from '../side-menu/side-menu.module.css';
-import { useMapEvent } from 'map/use-map-event.hook';
 
 const AOI_DRAW_MODE = 'RectangleMode';
 const BBOX_NO_OF_POINTS = 5;
@@ -25,27 +26,43 @@ const SatelliteSearch = ({ map, satellites, setVisiblePanel, setSelectedMoreInfo
 
   const savedSearches = useSelector(state => state.satellites.satelliteSearches);
   const currentSearchQuery = useSelector(state => state.satellites.currentSearchQuery);
+  const maximumAoiArea = useSelector(state => state.app.config.maximumAoiArea);
 
   const [geometry, setGeometry] = useState(null);
+  const [geometryIsTooLarge, setGeometryIsTooLarge] = useState(true);
   const [isAoiMode, setIsAoiMode] = useState(false);
 
-  useMap(
-    map,
-    mapInstance => {
-      const drawCtrl = mapInstance._controls.find(ctrl => ctrl.changeMode);
-      if (drawCtrl && isAoiMode) {
-        // Delete any existing AOI polygon.
-        drawCtrl.deleteAll();
-        // Enable draw mode
-        drawCtrl.changeMode(AOI_DRAW_MODE, {});
+  const getDraw = () => {
+    const control = map?._controls.find(ctrl => ctrl.changeMode);
+    const feature = control?.getAll().features[0];
+    return [control, feature];
+  };
+
+  useEffect(() => {
+    const [drawCtrl] = getDraw();
+    if (drawCtrl && isAoiMode) {
+      // Delete any existing AOI polygon.
+      drawCtrl.deleteAll();
+      // Enable draw mode
+      drawCtrl.changeMode(AOI_DRAW_MODE, {});
+    }
+    return () => {
+      // Reset local state variable.
+      setIsAoiMode(false);
+    };
+  }, [isAoiMode]);
+
+  useEffect(() => {
+    const [drawControl, feature] = getDraw();
+    if (feature) {
+      const featureArea = getGeometryAreaKmSquared(feature.geometry.coordinates[0]);
+      const isTooLarge = featureArea > maximumAoiArea;
+      setGeometryIsTooLarge(isTooLarge);
+      if (isTooLarge) {
+        drawControl.setFeatureProperty(feature.id, 'error', 'true');
       }
-      return () => {
-        // Reset local state variable.
-        setIsAoiMode(false);
-      };
-    },
-    [isAoiMode]
-  );
+    }
+  }, [geometry]);
 
   const setGeometryToMapBounds = () => {
     // Get the map's bbox from the bounds.
@@ -65,32 +82,26 @@ const SatelliteSearch = ({ map, satellites, setVisiblePanel, setSelectedMoreInfo
     setGeometry(newGeometry);
   };
 
+  // Set geometry to the viewbox as long as there's no drawn feature
   useMapEvent(
     map,
     'move',
     () => {
-      const drawControl = map._controls.find(ctrl => ctrl.changeMode);
-      if (drawControl) {
-        const feature = drawControl.getAll().features[0];
-        if (feature) {
-          console.log(`there's something drawn`, feature);
-        } else {
-          setGeometryToMapBounds();
-        }
-      }
+      const [drawControl, feature] = getDraw();
+      if (!feature) setGeometryToMapBounds();
       return () => drawControl.deleteAll();
     },
     []
   );
 
   useEffect(() => {
-    let drawCtrl = null;
     if (map) {
       if (!geometry) {
         setGeometryToMapBounds();
       }
-      drawCtrl = map._controls.find(ctrl => ctrl.changeMode);
     }
+
+    const [drawCtrl] = getDraw();
 
     if (drawCtrl) {
       map.on('draw.create', () => {
@@ -114,6 +125,7 @@ const SatelliteSearch = ({ map, satellites, setVisiblePanel, setSelectedMoreInfo
     }
   }, [savedSearches]);
 
+  // If the current search query changes, redraw the AOI on map
   useMap(
     map,
     mapInstance => {
@@ -122,7 +134,7 @@ const SatelliteSearch = ({ map, satellites, setVisiblePanel, setSelectedMoreInfo
         setGeometry(aoi);
         const line = lineString(aoi);
         mapInstance.fitBounds(bbox(line), { padding: 275, offset: [100, 0] });
-        const drawCtrl = mapInstance._controls.find(ctrl => ctrl.changeMode);
+        const [drawCtrl] = getDraw();
         drawCtrl.deleteAll();
         const feature = {
           type: 'Feature',
