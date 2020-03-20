@@ -52,6 +52,7 @@ const MapLayout = () => {
   };
 
   const compareDown = event => {
+    event && event.preventDefault();
     if (event.touches) {
       document.addEventListener('touchmove', compareMove);
       document.addEventListener('touchend', compareTouchEnd);
