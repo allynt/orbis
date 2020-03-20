@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 
 import { useDispatch, useSelector } from 'react-redux';
@@ -8,7 +8,7 @@ import Button from '@astrosat/astrosat-ui/dist/buttons/button';
 import useModal from '@astrosat/astrosat-ui/dist/containers/use-modal';
 import Dialog from '@astrosat/astrosat-ui/dist/containers/dialog';
 
-import { pinScene } from './satellites.actions';
+import { pinScene, fetchPinnedScenes } from './satellites.actions';
 
 import SaveSearchForm from './save-search-form.component';
 import SceneListItem, { SceneListItemSkeleton } from './scene-list-item.component';
@@ -22,6 +22,14 @@ import sideMenuStyles from '../side-menu/side-menu.module.css';
 const Results = ({ scenes, setVisiblePanel, selectScene, setSelectedMoreInfo, toggleMoreInfoDialog }, ref) => {
   const dispatch = useDispatch();
   const currentSearchQuery = useSelector(state => state.satellites.currentSearchQuery);
+  const pinnedScenes = useSelector(state => state.satellites.pinnedScenes);
+
+  useEffect(() => {
+    if (!pinnedScenes) {
+      dispatch(fetchPinnedScenes());
+    }
+  }, [pinnedScenes]);
+  console.log(pinnedScenes);
 
   const [cloudCoverPercentage, setCloudCoverPercentage] = useState([10]);
 
@@ -51,8 +59,10 @@ const Results = ({ scenes, setVisiblePanel, selectScene, setSelectedMoreInfo, to
             ? scenes
                 .filter(scene => scene.cloudCover <= cloudCoverPercentage[0])
                 .map(scene => {
+                  const isPinned = pinnedScenes?.some(pin => scene.id === pin.id);
                   const Icon = (
                     <PinIcon
+                      className={`${styles.pinIcon} ${isPinned && styles.pinned}`}
                       onClick={() => {
                         dispatch(pinScene(scene));
                       }}
