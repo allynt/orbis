@@ -60,6 +60,7 @@ const SatellitesPanel = ({ map }) => {
         </Button>
         <Button
           theme="primary"
+          disabled={!scenes}
           classNames={visiblePanel === RESULTS ? [styles.button, styles.active] : [styles.button]}
           onClick={() => setVisiblePanel(RESULTS)}
         >
@@ -67,6 +68,7 @@ const SatellitesPanel = ({ map }) => {
         </Button>
         <Button
           theme="primary"
+          disabled={!visualisations}
           classNames={visiblePanel === VISUALISATION ? [styles.button, styles.active] : [styles.button]}
           onClick={() => setVisiblePanel(VISUALISATION)}
         >

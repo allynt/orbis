@@ -28,7 +28,6 @@ const initialState = {
   selectedScene: null,
   error: null,
   satelliteSearches: null,
-  selectedSatelliteSearch: null,
   pinnedScenes: null,
   selectedPinnedScenes: [],
   currentSearchQuery: null
