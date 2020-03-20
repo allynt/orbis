@@ -37,6 +37,7 @@ services:
     tty: true
     environment:
       NODE_ENV: "development"
+      REACT_APP_DOCKER: "true"
       GITHUB_REGISTRY_TOKEN: "${GITHUB_REGISTRY_TOKEN}"
     working_dir: /home/app/client
     volumes:
