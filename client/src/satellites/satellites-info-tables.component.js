@@ -110,7 +110,7 @@ export const SceneInfoTable = ({ scene }) => {
           <td>{scene.metadata.product_type || 'not currently available'}</td>
         </tr>
         <tr className={styles.row}>
-          <td className={styles.title}>Orbit direction: </td>
+          <td className={styles.title}>Cloud coverage: </td>
           <td>{scene.metadata.cloud_coverage || 'not currently available'}</td>
         </tr>
       </tbody>
