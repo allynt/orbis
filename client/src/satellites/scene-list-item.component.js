@@ -1,5 +1,4 @@
 import React from 'react';
-import { useDispatch } from 'react-redux';
 
 import parseISO from 'date-fns/parseISO';
 import format from 'date-fns/format';
@@ -22,8 +21,6 @@ const SceneListItem = ({
   setSelectedMoreInfo,
   toggleMoreInfoDialog
 }) => {
-  const dispatch = useDispatch();
-
   return (
     <li key={`${scene.id}-${index}`} className={styles.scene}>
       <div className={styles.icon}>{icon}</div>
@@ -32,7 +29,7 @@ const SceneListItem = ({
         className={styles.sceneSection}
         onClick={() => {
           if (selectScene) {
-            dispatch(selectScene(scene));
+            selectScene(scene);
             setVisiblePanel(VISUALISATION);
           }
         }}

@@ -10,7 +10,8 @@ import useModal from '@astrosat/astrosat-ui/dist/containers/use-modal';
 import PrivateRoute from './utils/private-route.component';
 
 import { fetchAppConfig } from './app.actions';
-import { fetchUser } from './accounts/accounts.actions';
+import { fetchUser, login } from './accounts/accounts.actions';
+import { fetchUsers, createUser, deleteUser, updateUser, copyUser } from './accounts/admin/users.actions';
 import { fetchSourcesAndDataToken } from './map/map.actions';
 
 import RegisterForm from './accounts/register-form.component';
@@ -38,7 +39,9 @@ const App = () => {
   );
   const selectedTheme = useSelector(state => state.theming.selectedTheme);
 
+  const users = useSelector(state => state.accounts.users);
   const user = useSelector(state => state.accounts.user);
+  const error = useSelector(state => state.accounts.error);
   const pollingPeriod = useSelector(state => state.map.pollingPeriod);
 
   const notYetImplementedDescription = useSelector(state => state.app.notYetImplementedDescription);
@@ -105,18 +108,36 @@ const App = () => {
           <PrivateRoute exact path="/" user={user} component={LandingView} />
 
           <Route exact path="/register" component={RegisterForm} />
-          <Route exact path="/login" component={LoginForm} />
+          <Route
+            exact
+            path="/login"
+            render={() => <LoginForm login={values => dispatch(login(values))} user={user} error={error} />}
+          />
           <Route exact path="/account/confirm-email/:key" user={user} component={AccountActivation} />
           <Route path="/reset_password_done" component={PasswordResetDone} />
           <Route path="/password/reset/:token/:uid/" component={PasswordResetConfirm} />
           <Suspense fallback={<h3>Password Rest Loading...</h3>}>
             <Route exact path="/password/reset" user={user} component={PasswordResetForm} />
           </Suspense>
-          <Suspense fallback={<h3>Admin Loading...</h3>}>
-            <PrivateRoute exact path="/admin" user={user} component={Admin} />
-            <PrivateRoute exact path="/users" user={user} component={UserList} />
+          {/* <Suspense fallback={<h3>Admin Loading...</h3>}>
+            <PrivateRoute path="/admin" user={user} component={Admin} />
+            <PrivateRoute
+              exact
+              path="/users"
+              user={user}
+              render={() => (
+                <UserList
+                  users={users}
+                  fetchUsers={fetchUsers}
+                  createUser={createUser}
+                  deleteUser={deleteUser}
+                  updateUser={updateUser}
+                  copyUser={copyUser}
+                />
+              )}
+            />
             <PrivateRoute exact path="/others" user={user} component={UserList} />
-          </Suspense>
+          </Suspense> */}
         </Switch>
       </main>
     </div>

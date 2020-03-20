@@ -1,12 +1,11 @@
 import React from 'react';
 
 import { render, cleanup } from '@testing-library/react';
+import selectEvent from 'react-select-event';
 
 import ThemeSelector from './theme-selector.component';
 
 describe('Theme Selector Component', () => {
-  beforeEach(cleanup);
-
   const THEMES = [
     {
       value: 'light',
@@ -18,10 +17,17 @@ describe('Theme Selector Component', () => {
     }
   ];
 
+  let selectTheme = null;
+
+  afterEach(cleanup);
+
+  beforeEach(() => {
+    selectTheme = jest.fn();
+  });
+
   it('should render with the `Light` Theme selected', () => {
-    const handler = jest.fn();
     const { container, getByText } = render(
-      <ThemeSelector themes={THEMES} selectedTheme={THEMES[0]} selectTheme={handler} />
+      <ThemeSelector themes={THEMES} selectedTheme={THEMES[0]} selectTheme={selectTheme} />
     );
 
     expect(getByText('Theme:')).toBeInTheDocument();
@@ -30,9 +36,8 @@ describe('Theme Selector Component', () => {
   });
 
   it('should render with the `Dark` Theme selected', () => {
-    const handler = jest.fn();
     const { container, getByText } = render(
-      <ThemeSelector themes={THEMES} selectedTheme={THEMES[1]} selectTheme={handler} />
+      <ThemeSelector themes={THEMES} selectedTheme={THEMES[1]} selectTheme={selectTheme} />
     );
 
     expect(getByText('Theme:')).toBeInTheDocument();
@@ -40,12 +45,14 @@ describe('Theme Selector Component', () => {
     expect(getByText('Dark')).toBeInTheDocument();
   });
 
-  xit('should switch from the `Light` to `Dark` Theme', () => {
-    const handler = jest.fn();
-    const { container, getByText, asFragment, debug } = render(
-      <ThemeSelector themes={THEMES} selectedTheme={THEMES[0]} selectTheme={handler} />
+  xit('should switch from the `Light` to `Dark` Theme', async () => {
+    const { container, getByTestId, getByText, asFragment, debug, getByLabelText } = render(
+      <ThemeSelector themes={THEMES} selectedTheme={THEMES[0]} selectTheme={selectTheme} />
     );
     debug();
+    await selectEvent.select(getByLabelText('Theme:'), 'Dark');
+    expect(selectTheme).toHaveBeenCalled();
+    // debug();
     // expect(container.querySelector('StateManager')).toBeInTheDocument();
     // asFragment().debug();
     // console.log('FRAGMENT: ', asFragment());

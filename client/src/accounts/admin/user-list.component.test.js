@@ -1,14 +1,20 @@
 import React from 'react';
-import Provider from 'react-redux';
 
-import { render, cleanup, fireEvent, waitForElement } from '@testing-library/react';
+import { Provider } from 'react-redux';
+import configureMockStore from 'redux-mock-store';
+import thunk from 'redux-thunk';
 
-// import UserList from './user-list.component';
-import { createStore } from 'redux';
+import { render, cleanup, fireEvent, within } from '@testing-library/react';
+
+import UserList from './user-list.component';
+
+const mockStore = configureMockStore([thunk]);
 
 describe('User List Component', () => {
-  let users = [];
+  let store = null;
+  let users = null;
   let fetchUsers = null;
+  let createUser = null;
   let deleteUser = null;
   let updateUser = null;
   let copyUser = null;
@@ -16,29 +22,38 @@ describe('User List Component', () => {
   beforeEach(() => {
     users = [];
     fetchUsers = jest.fn();
+    createUser = jest.fn();
     deleteUser = jest.fn();
     updateUser = jest.fn();
     copyUser = jest.fn();
+
+    fetch.resetMocks();
   });
 
   afterEach(cleanup);
 
   it('should render an empty list of users', () => {
-    // const { getByText } = render(
-    //   <UserList
-    //     users={users}
-    //     fetchUsers={fetchUsers}
-    //     deleteUser={deleteUser}
-    //     updateUser={updateUser}
-    //     copyUser={copyUser}
-    //   />
-    // );
-    // expect(getByText('Maintain Users')).toBeInTheDocument();
-    // // expect(getByText('Admin Others')).not.toBeInTheDocument();
-    // expect(getByText('No Data Available')).toBeInTheDocument();
+    const { getByText } = render(
+      <UserList
+        users={users}
+        fetchUsers={fetchUsers}
+        createUser={createUser}
+        deleteUser={deleteUser}
+        updateUser={updateUser}
+        copyUser={copyUser}
+      />
+    );
+
+    expect(getByText('Maintain Users')).toBeInTheDocument();
+    expect(getByText('Actions')).toBeInTheDocument();
+    expect(getByText('Key')).toBeInTheDocument();
+    expect(getByText('Username')).toBeInTheDocument();
+    expect(getByText('Email')).toBeInTheDocument();
+    expect(getByText('First Name')).toBeInTheDocument();
+    expect(getByText('Last Name')).toBeInTheDocument();
   });
 
-  xit('should render a populated list of users', () => {
+  it('should render a populated list of users', () => {
     users = [
       {
         pk: 1,
@@ -55,10 +70,12 @@ describe('User List Component', () => {
         last_name: 'Doe'
       }
     ];
+
     const { getByText } = render(
       <UserList
         users={users}
         fetchUsers={fetchUsers}
+        createUser={createUser}
         deleteUser={deleteUser}
         updateUser={updateUser}
         copyUser={copyUser}
@@ -70,13 +87,14 @@ describe('User List Component', () => {
     expect(getByText('user2@test.com')).toBeInTheDocument();
   });
 
-  xit('should render the `New User` form when `New User` button clicked', async () => {
-    const store = createStore(() => ({}), {});
-    const { getByText, debug, rerender } = render(
+  it('should render the `New User` form when `New User` button clicked', () => {
+    store = mockStore({});
+    const { container, getByText } = render(
       <Provider store={store}>
         <UserList
           users={users}
           fetchUsers={fetchUsers}
+          createUser={createUser}
           deleteUser={deleteUser}
           updateUser={updateUser}
           copyUser={copyUser}
@@ -84,8 +102,15 @@ describe('User List Component', () => {
       </Provider>
     );
 
-    // await waitForElement(() => getByText('New User'));
-    // fireEvent.click(getByText('New User'));
-    debug();
+    fireEvent.click(getByText('New User'));
+    const userDetailForm = container.querySelector('.user-detail-form-container');
+
+    expect(within(userDetailForm).getByText('Create New User')).toBeInTheDocument();
+    expect(within(userDetailForm).getByText('Username:')).toBeInTheDocument();
+    expect(within(userDetailForm).getByText('Email Address:')).toBeInTheDocument();
+    expect(within(userDetailForm).getByText('Password:')).toBeInTheDocument();
+    expect(within(userDetailForm).getByText('Password (Confirm):')).toBeInTheDocument();
+    expect(within(userDetailForm).getByText('Reset')).toBeInTheDocument();
+    expect(within(userDetailForm).getByText('Create User')).toBeInTheDocument();
   });
 });

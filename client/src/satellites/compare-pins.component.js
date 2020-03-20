@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react';
-import PropTypes from 'prop-types';
 
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -31,6 +30,8 @@ const ComparePins = ({ setSelectedMoreInfo, toggleMoreInfoDialog }, ref) => {
   const isCompareMode = useSelector(state => state.map.isCompareMode);
   const selectedPinnedScenes = useSelector(state => state.satellites.selectedPinnedScenes);
 
+  const choosePinnedScene = scene => dispatch(selectPinnedScene(scene));
+
   useEffect(() => {
     if (!pinnedScenes) {
       dispatch(fetchPinnedScenes());
@@ -42,7 +43,7 @@ const ComparePins = ({ setSelectedMoreInfo, toggleMoreInfoDialog }, ref) => {
       dispatch(deselectPinnedScene(scene));
     } else {
       if (selectedPinnedScenes.length !== MAX_SELECTED) {
-        dispatch(selectPinnedScene(scene));
+        choosePinnedScene(scene);
       }
     }
   };
@@ -81,9 +82,12 @@ const ComparePins = ({ setSelectedMoreInfo, toggleMoreInfoDialog }, ref) => {
                 <Checkbox
                   name={scene.id}
                   label={scene.label}
-                  checked={isSelected}
-                  disabled={isDisabled}
-                  onChange={() => handleChange(isSelected, scene)}
+                  checked={selectedPinnedScenes.find(selectedScene => selectedScene.id === scene.id)}
+                  onChange={() => {
+                    if (selectedPinnedScenes.length !== MAX_SELECTED) {
+                      dispatch(selectPinnedScene(scene));
+                    }
+                  }}
                 />
                 <SceneListItem
                   index={index}
@@ -91,7 +95,7 @@ const ComparePins = ({ setSelectedMoreInfo, toggleMoreInfoDialog }, ref) => {
                   icon={Icon}
                   setSelectedMoreInfo={setSelectedMoreInfo}
                   toggleMoreInfoDialog={toggleMoreInfoDialog}
-                  selectPinnedScene={selectPinnedScene}
+                  selectScene={choosePinnedScene}
                 />
               </div>
             );

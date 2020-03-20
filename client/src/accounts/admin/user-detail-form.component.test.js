@@ -16,24 +16,7 @@ describe('User Detail Form Component', () => {
 
   beforeEach(() => {
     createUser = jest.fn();
-    store = mockStore({
-      // app: {
-      //   config: {
-      //     mapbox_token: 'token'
-      //   }
-      // },
-      // map: {
-      //   mapStyles: ['light'],
-      //   selectedMapStyle: {}
-      //   // is3DMode
-      // },
-      // annotations: {
-      //   textLabelSelected: false
-      // },
-      // bookmarks: {
-      //   selectedBookmarks: []
-      // }
-    });
+    store = mockStore({});
   });
 
   afterEach(cleanup);
@@ -55,7 +38,7 @@ describe('User Detail Form Component', () => {
     expect(getByText('Create User')).toBeInTheDocument();
   });
 
-  xit('should enable `Reset` button when form is dirty', async () => {
+  it('should enable `Reset` button when form is dirty', async () => {
     const { getByText, getByLabelText } = render(
       <Provider store={store}>
         <UserDetailForm createUser={createUser} />
@@ -70,7 +53,7 @@ describe('User Detail Form Component', () => {
     expect(getByText('Reset')).not.toHaveAttribute('disabled');
   });
 
-  xit('should enable `Create User` button when form is valid', () => {
+  it('should enable `Create User` button when form is valid', () => {
     const { getByText, getByLabelText } = render(
       <Provider store={store}>
         <UserDetailForm createUser={createUser} />
@@ -85,7 +68,7 @@ describe('User Detail Form Component', () => {
     expect(getByText('Create User')).not.toHaveAttribute('disabled');
   });
 
-  xit('should not call `createUser` function when form is invalid and `Create User` button clicked', () => {
+  it('should not call `createUser` function when form is invalid and `Create User` button clicked', () => {
     const { getByText } = render(
       <Provider store={store}>
         <UserDetailForm createUser={createUser} />
@@ -98,20 +81,15 @@ describe('User Detail Form Component', () => {
 
   it('should call `createUser` function when form is valid and `Create User` button clicked', () => {
     fetch.mockResponse(JSON.stringify({ status: 200 }));
-    const { debug, getByText, getByLabelText } = render(
+    const { getByLabelText } = render(
       <Provider store={store}>
         <UserDetailForm createUser={createUser} />
       </Provider>
     );
-    // debug();
 
     fireEvent.change(getByLabelText('Username:'), { target: { value: 'testusername' } });
     fireEvent.change(getByLabelText('Email Address:'), { target: { value: 'testusername@test.com' } });
     fireEvent.change(getByLabelText('Password:'), { target: { value: 'testusername@test.com' } });
     fireEvent.change(getByLabelText('Password (Confirm):'), { target: { value: 'testusername@test.com' } });
-
-    // fireEvent.click(getByText('Create User'));
-    // console.log('HANDLER: ', createUser.mock);
-    // expect(createUser).toHaveBeenCalled();
   });
 });

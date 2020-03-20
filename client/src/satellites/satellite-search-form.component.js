@@ -219,6 +219,4 @@ const SatelliteSearchForm = ({ satellites, geometry, setVisiblePanel, setSelecte
   );
 };
 
-SatelliteSearchForm.propTypes = {};
-
 export default SatelliteSearchForm;

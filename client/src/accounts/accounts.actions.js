@@ -47,14 +47,13 @@ export const register = form => async dispatch => {
   const response = await sendData(API.register, data, JSON_HEADERS);
 
   if (!response.ok) {
-    const errorResponse = await response.json();
-    const error = new Error(errorResponseToString(errorResponse));
+    const message = `${response.status} ${response.statusText}`;
 
-    NotificationManager.error(error.message, `"Registration Error - ${response.statusText}`, 50000, () => {});
+    NotificationManager.error(message, `"Registration Error - ${response.statusText}`, 50000, () => {});
 
     return dispatch({
       type: REGISTER_REQUESTED_FAILURE,
-      error: error
+      error: { message }
     });
   }
 
@@ -72,15 +71,9 @@ export const activateAccount = form => async () => {
   const response = await sendData(API.activate, form, JSON_HEADERS);
 
   if (!response.ok) {
-    const errorResponse = await response.json();
-    const error = new Error(errorResponseToString(errorResponse));
+    const message = `${response.status} ${response.statusText}`;
 
-    NotificationManager.error(
-      error.message,
-      `Registration Verification Error - ${response.statusText}`,
-      50000,
-      () => {}
-    );
+    NotificationManager.error(message, `Registration Verification Error - ${response.statusText}`, 50000, () => {});
   } else {
     NotificationManager.success('Successfully verified registration', 'Successful account activation', 5000, () => {});
   }
@@ -100,11 +93,13 @@ export const fetchUser = (email = 'current') => async (dispatch, getState) => {
   const response = await getData(url, headers);
 
   if (!response.ok) {
-    const error = new Error();
-    error.message = response.statusText;
+    const message = `${response.status} ${response.statusText}`;
+
+    NotificationManager.error(message, `Fetch User Error - ${response.statusText}`, 50000, () => {});
 
     return dispatch({
-      type: FETCH_USER_REQUESTED_FAILURE
+      type: FETCH_USER_REQUESTED_FAILURE,
+      error: { message }
     });
   }
 
@@ -124,13 +119,13 @@ export const login = form => async dispatch => {
   const response = await sendData(API.login, form, JSON_HEADERS);
 
   if (!response.ok) {
-    const errorResponse = await response.json();
-    const error = new Error(errorResponseToString(errorResponse));
+    const message = `${response.status} ${response.statusText}`;
 
-    NotificationManager.error(error.message, `Login Error - ${response.statusText}`, 50000, () => {});
+    NotificationManager.error(message, `Login Error - ${response.statusText}`, 50000, () => {});
+
     return dispatch({
       type: LOGIN_REQUESTED_FAILURE,
-      error
+      error: { message }
     });
   }
 
@@ -163,13 +158,13 @@ export const logout = () => async (dispatch, getState) => {
   const response = await sendData(url, {}, headers);
 
   if (!response.ok) {
-    const error = new Error();
-    error.message = response.statusText;
-    alert('Error logging out');
+    const message = `${response.status} ${response.statusText}`;
+
+    NotificationManager.error(message, `Login Error - ${response.statusText}`, 50000, () => {});
 
     return dispatch({
       type: LOGOUT_REQUESTED_FAILURE,
-      error
+      error: { message }
     });
   }
 
@@ -190,9 +185,9 @@ export const changePassword = form => async (dispatch, getState) => {
   const response = await sendData(url, form, headers);
 
   if (!response.ok) {
-    const error = new Error();
-    error.message = response.statusText;
-    NotificationManager.error(error.message, 'Change Password Error', 50000, () => {});
+    const message = `${response.status} ${response.statusText}`;
+
+    NotificationManager.error(message, 'Change Password Error', 50000, () => {});
   } else {
     NotificationManager.success('Successfully changed password', 'Successful Password Change', 5000, () => {});
   }
@@ -202,9 +197,9 @@ export const resetPassword = form => async () => {
   const response = await sendData(API.resetPassword, form, JSON_HEADERS);
 
   if (!response.ok) {
-    const error = new Error();
-    error.message = response.statusText;
-    NotificationManager.error(error.message, 'Password Reset Error', 50000, () => {});
+    const message = `${response.status} ${response.statusText}`;
+
+    NotificationManager.error(message, 'Password Reset Error', 50000, () => {});
   } else {
     NotificationManager.success('Successfully Reset password', 'Successful Password Reset', 5000, () => {});
   }
@@ -221,9 +216,9 @@ export const confirmChangePassword = (form, params) => async () => {
   const response = await sendData(API.verifyResetPassword, data, JSON_HEADERS);
 
   if (!response.ok) {
-    const error = new Error();
-    error.message = response.statusText;
-    NotificationManager.error(error.message, 'Password Reset Error', 50000, () => {});
+    const message = `${response.status} ${response.statusText}`;
+
+    NotificationManager.error(message, 'Password Reset Error', 50000, () => {});
   } else {
     NotificationManager.success('Successfully Reset password', 'Successful Password Reset', 5000, () => {});
   }
@@ -248,38 +243,17 @@ export const updateUser = form => async (dispatch, getState) => {
   const response = await sendData(url, data, headers, 'PUT');
 
   if (!response.ok) {
-    const error = new Error();
-    error.message = response.statusText;
-    NotificationManager.error(error.message, 'Update User Error', 50000, () => {});
+    const message = `${response.status} ${response.statusText}`;
+
+    NotificationManager.error(message, 'Update User Error', 50000, () => {});
 
     return dispatch({
       type: UPDATE_USER_REQUESTED_FAILURE,
-      error
+      error: { message }
     });
   }
 
   const userObj = await response.json();
   NotificationManager.success('Successfully updated user', 'Successful User Update', 5000, () => {});
   return dispatch({ type: UPDATE_USER_REQUESTED_SUCCESS, user: userObj });
-};
-
-const errorResponseToString = response => {
-  // Reduce all field errors to a single string representation.
-  const errorStr = Object.keys(response).reduce((acc, key) => {
-    const fieldErrors = response[key];
-
-    if (Array.isArray(fieldErrors)) {
-      // Reduce array of field errors to a single string representation.
-      const errors = fieldErrors.reduce((acc, error) => {
-        return (acc += error + ' ');
-      }, '');
-      acc += `${key} - ${errors}\n`;
-    } else if (typeof fieldErrors === 'string' || fieldErrors instanceof String) {
-      acc += fieldErrors;
-    }
-
-    return acc;
-  }, '');
-
-  return errorStr;
 };
