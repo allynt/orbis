@@ -2,6 +2,8 @@ import React from 'react';
 
 import { format } from 'date-fns';
 
+import { DATE_FORMAT, TIME_FORMAT } from './satellite.constants';
+
 import styles from './satellites-info-tables.module.css';
 
 export const TierInfoTable = ({ tier }) => (
@@ -55,8 +57,8 @@ export const SatelliteInfoTable = ({ satellite }) => (
 );
 
 export const SceneInfoTable = ({ scene }) => {
-  const date = format(new Date(scene.metadata.summary.date), 'dd MMM yyyy');
-  const time = format(new Date(scene.metadata.summary.date), 'HH:mm');
+  const date = format(new Date(scene.metadata.summary.date), DATE_FORMAT);
+  const time = format(new Date(scene.metadata.summary.date), TIME_FORMAT);
   return (
     <table className={styles.table}>
       <tbody>
