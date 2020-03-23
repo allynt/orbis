@@ -6,15 +6,19 @@ import Select from 'react-select';
 import styles from './theme-selector.module.css';
 
 const ThemeSelector = React.memo(({ themes, selectedTheme, selectTheme }) => (
-  <label className={styles.label}>
-    <strong>Theme:</strong>
+  <>
+    <label htmlFor="themeSelector" className={styles.label}>
+      <strong>Theme:</strong>
+    </label>
     <Select
+      name="themeSelector"
+      inputId="themeSelector"
       defaultValue={selectedTheme}
       className={styles.select}
       onChange={event => selectTheme(event.value)}
       options={themes}
     />
-  </label>
+  </>
 ));
 
 ThemeSelector.propTypes = {

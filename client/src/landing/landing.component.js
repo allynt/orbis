@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { format } from 'date-fns';
 
+import { setViewport } from '../map/map.actions';
 import { fetchBookmarks, selectBookmark } from '../bookmarks/bookmarks.actions';
 
 import Button from '@astrosat/astrosat-ui/dist/buttons/button';
@@ -20,25 +21,23 @@ import { ReactComponent as LandingImage } from './landing.svg';
 
 import styles from './landing.module.css';
 
-const ViewAllItems = ({ items, chooseBookmark, toggle, itemOptions, setItemOptions, setViewAllItems }) => {
-  return (
-    <div className={styles.content}>
-      <div className={styles.header}>
-        <h1>View All</h1>
-        <Button theme="link" classNames={[styles.headerButton]} onClick={() => setViewAllItems(false)}>
-          Back to menu
-        </Button>
-      </div>
-      <Items
-        items={items}
-        chooseItem={chooseBookmark}
-        toggle={toggle}
-        itemOptions={itemOptions}
-        setItemOptions={setItemOptions}
-      />
+const ViewAllItems = ({ items, chooseBookmark, toggle, itemOptions, setItemOptions, setViewAllItems }) => (
+  <div className={styles.content}>
+    <div className={styles.header}>
+      <h1>View All</h1>
+      <Button theme="link" classNames={[styles.headerButton]} onClick={() => setViewAllItems(false)}>
+        Back to menu
+      </Button>
     </div>
-  );
-};
+    <Items
+      items={items}
+      chooseItem={chooseBookmark}
+      toggle={toggle}
+      itemOptions={itemOptions}
+      setItemOptions={setItemOptions}
+    />
+  </div>
+);
 
 const Items = ({ items, chooseItem, toggle, itemOptions, setItemOptions }) => {
   const [item, setItem] = useState(null);
@@ -88,123 +87,123 @@ const Items = ({ items, chooseItem, toggle, itemOptions, setItemOptions }) => {
   );
 };
 
-const NewUserLanding = forwardRef(({ setRedirect, toggle, isVisible }, ref) => {
-  return (
-    <div className={styles.splash} ref={ref}>
-      <div className={styles.header}>
-        <OrbisLogo className={styles.logo} />
-      </div>
-      <div className={styles.content}>
-        <div className={styles.journey}>
-          <h1>OR3IS JOURNEY</h1>
-
-          <p className={styles.journeyText}>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
-            dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex
-            ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat
-            nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit
-            anim id est laborum.
-          </p>
-
-          <div>
-            <Button theme="primary" classNames={[styles.button]} onClick={toggle}>
-              Create New
-            </Button>
-            <Button theme="tertiary" classNames={[styles.button]} onClick={() => setRedirect('/map')}>
-              Browse Map
-            </Button>
-          </div>
-        </div>
-
-        <div className={styles.journeyImage}>
-          <LandingImage className={styles.landingImage} />
-        </div>
-
-        <Dialog isVisible={isVisible} title="Create New Map" close={toggle} ref={ref}>
-          <NewMapForm />
-        </Dialog>
-      </div>
+const NewUserLanding = forwardRef(({ setRedirect, toggle, isVisible, regions, domains, setViewport }, ref) => (
+  <div className={styles.splash} ref={ref}>
+    <div className={styles.header}>
+      <OrbisLogo className={styles.logo} />
     </div>
-  );
-});
+    <div className={styles.content}>
+      <div className={styles.journey}>
+        <h1>OR3IS JOURNEY</h1>
 
-const ExistingUserLanding = forwardRef(({ bookmarks, chooseBookmark, setRedirect, isVisible, toggle }, ref) => {
-  const recentItems = bookmarks.slice(0, 4);
-  const [viewAllItems, setViewAllItems] = useState(false);
-  const [itemOptions, setItemOptions] = useState(null);
+        <p className={styles.journeyText}>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
+          magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+          consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
+          pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id
+          est laborum.
+        </p>
 
-  return (
-    <div className={styles.landingContent} ref={ref}>
-      <div className={styles.banner}>
-        <OrbisLogo className={styles.logo} />
-        <ProfileIcon className={styles.icon} />
+        <div>
+          <Button theme="primary" classNames={[styles.button]} onClick={toggle}>
+            Create New
+          </Button>
+          <Button theme="tertiary" classNames={[styles.button]} onClick={() => setRedirect('/map')}>
+            Browse Map
+          </Button>
+        </div>
       </div>
 
-      {viewAllItems ? (
-        <ViewAllItems
-          items={bookmarks}
-          chooseBookmark={chooseBookmark}
-          toggle={toggle}
-          itemOptions={itemOptions}
-          setItemOptions={setItemOptions}
-          setViewAllItems={setViewAllItems}
-        />
-      ) : (
-        <div className={styles.content}>
-          <div className={styles.header}>
-            <h1>Your Maps</h1>
-            <Button theme="link" classNames={[styles.headerButton]} onClick={() => setViewAllItems(true)}>
-              View all
-            </Button>
-          </div>
-          <Items
-            items={recentItems}
-            chooseItem={chooseBookmark}
-            toggle={toggle}
-            itemOptions={itemOptions}
-            setItemOptions={setItemOptions}
-          />
-
-          <div className={styles.header}>
-            <h1>Your Stories</h1>
-            <Button theme="link" classNames={[styles.headerButton]} onClick={() => setViewAllItems(true)}>
-              View all
-            </Button>
-          </div>
-          <Items
-            items={recentItems}
-            chooseItem={chooseBookmark}
-            toggle={toggle}
-            itemOptions={itemOptions}
-            setItemOptions={setItemOptions}
-          />
-        </div>
-      )}
-
-      <div className={styles.buttonContainer}>
-        <Button theme="tertiary" classNames={[styles.button]} onClick={() => setRedirect('/map')}>
-          Browse Map
-        </Button>
+      <div className={styles.journeyImage}>
+        <LandingImage className={styles.landingImage} />
       </div>
 
       <Dialog isVisible={isVisible} title="Create New Map" close={toggle} ref={ref}>
-        <NewMapForm />
+        <NewMapForm regions={regions} domains={domains} setViewport={setViewport} />
       </Dialog>
     </div>
-  );
-});
+  </div>
+));
+
+const ExistingUserLanding = forwardRef(
+  ({ bookmarks, chooseBookmark, setRedirect, isVisible, toggle, regions, domains, setViewport }, ref) => {
+    const recentItems = bookmarks.slice(0, 4);
+    const [viewAllItems, setViewAllItems] = useState(false);
+    const [itemOptions, setItemOptions] = useState(null);
+
+    return (
+      <div className={styles.landingContent} ref={ref}>
+        <div className={styles.banner}>
+          <OrbisLogo className={styles.logo} />
+          <ProfileIcon className={styles.icon} />
+        </div>
+
+        {viewAllItems ? (
+          <ViewAllItems
+            items={bookmarks}
+            chooseBookmark={chooseBookmark}
+            toggle={toggle}
+            itemOptions={itemOptions}
+            setItemOptions={setItemOptions}
+            setViewAllItems={setViewAllItems}
+          />
+        ) : (
+          <div className={styles.content}>
+            <div className={styles.header}>
+              <h1>Your Maps</h1>
+              <Button theme="link" classNames={[styles.headerButton]} onClick={() => setViewAllItems(true)}>
+                View all
+              </Button>
+            </div>
+            <Items
+              items={recentItems}
+              chooseItem={chooseBookmark}
+              toggle={toggle}
+              itemOptions={itemOptions}
+              setItemOptions={setItemOptions}
+            />
+
+            <div className={styles.header}>
+              <h1>Your Stories</h1>
+              <Button theme="link" classNames={[styles.headerButton]} onClick={() => setViewAllItems(true)}>
+                View all
+              </Button>
+            </div>
+            <Items
+              items={recentItems}
+              chooseItem={chooseBookmark}
+              toggle={toggle}
+              itemOptions={itemOptions}
+              setItemOptions={setItemOptions}
+            />
+          </div>
+        )}
+
+        <div className={styles.buttonContainer}>
+          <Button theme="tertiary" classNames={[styles.button]} onClick={() => setRedirect('/map')}>
+            Browse Map
+          </Button>
+        </div>
+
+        <Dialog isVisible={isVisible} title="Create New Map" close={toggle} ref={ref}>
+          <NewMapForm regions={regions} domains={domains} setViewport={setViewport} />
+        </Dialog>
+      </div>
+    );
+  }
+);
 
 const Landing = () => {
   const dispatch = useDispatch();
   const bookmarks = useSelector(state => state.bookmarks.bookmarks);
-  // const bookmarks = null;
   const [isVisible, toggle] = useModal(false);
   const [redirect, setRedirect] = useState(null);
   const ref = useRef(null);
 
-  const chooseBookmark = bookmark => {
-    dispatch(selectBookmark(bookmark));
-  };
+  const chooseBookmark = bookmark => dispatch(selectBookmark(bookmark));
+  const regions = useSelector(state => state.map.regions);
+  const domains = useSelector(state => state.map.domains);
+  const updateViewport = region => dispatch(setViewport(region));
 
   useEffect(() => {
     if (!bookmarks) {
@@ -224,10 +223,21 @@ const Landing = () => {
           setRedirect={setRedirect}
           toggle={toggle}
           isVisible={isVisible}
+          regions={regions}
+          domains={domains}
+          setViewport={updateViewport}
           ref={ref}
         />
       ) : (
-        <NewUserLanding setRedirect={setRedirect} toggle={toggle} isVisible={isVisible} ref={ref} />
+        <NewUserLanding
+          setRedirect={setRedirect}
+          toggle={toggle}
+          isVisible={isVisible}
+          regions={regions}
+          domains={domains}
+          setViewport={updateViewport}
+          ref={ref}
+        />
       )}
     </div>
   );

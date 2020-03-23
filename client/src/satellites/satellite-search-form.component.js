@@ -15,7 +15,7 @@ import validate from './satellite-search-form.validator';
 
 import { setCurrentSearchQuery, searchSatellites } from './satellites.actions';
 
-import { RESULTS } from './satellites-panel.component';
+import { RESULTS, SATELLITE, TIER } from './satellites-panel.component';
 import { getGeometryAreaKmSquared } from 'utils/geometry';
 
 import styles from './satellite-search-form.module.css';
@@ -122,7 +122,6 @@ const SatelliteSearchForm = ({ satellites, geometry, setVisiblePanel, setSelecte
     dispatch(searchSatellites(query));
     setVisiblePanel(RESULTS);
   }
-
   return (
     <form className={styles.form} onSubmit={handleSubmit}>
       <div className={styles.formSections}>
@@ -141,7 +140,7 @@ const SatelliteSearchForm = ({ satellites, geometry, setVisiblePanel, setSelecte
                   className={styles.infoButton}
                   type="button"
                   onClick={() => {
-                    setSelectedMoreInfo(satellite);
+                    setSelectedMoreInfo({ type: SATELLITE, data: satellite });
                     toggleMoreInfoDialog();
                   }}
                 >
@@ -179,29 +178,27 @@ const SatelliteSearchForm = ({ satellites, geometry, setVisiblePanel, setSelecte
         </FormSection>
         <FormSection title="Resolution">
           <ul className={styles.checkboxList}>
-            {tiers.map(tier => {
-              return (
-                <li key={tier.id} className={styles.checkboxListItem}>
-                  <Checkbox
-                    name={tier.id}
-                    label={tier.label}
-                    onChange={handleChange}
-                    checked={values[tier.id] === true}
-                  />
+            {tiers.map(tier => (
+              <li key={tier.id} className={styles.checkboxListItem}>
+                <Checkbox
+                  name={tier.id}
+                  label={tier.label}
+                  onChange={handleChange}
+                  checked={values[tier.id] === true}
+                />
 
-                  <button
-                    className={styles.infoButton}
-                    type="button"
-                    onClick={() => {
-                      setSelectedMoreInfo(tier);
-                      toggleMoreInfoDialog();
-                    }}
-                  >
-                    <InfoIcon classes={styles.infoIcon} />
-                  </button>
-                </li>
-              );
-            })}
+                <button
+                  className={styles.infoButton}
+                  type="button"
+                  onClick={() => {
+                    setSelectedMoreInfo({ type: TIER, data: tier });
+                    toggleMoreInfoDialog();
+                  }}
+                >
+                  <InfoIcon classes={styles.infoIcon} />
+                </button>
+              </li>
+            ))}
           </ul>
         </FormSection>
       </div>
@@ -221,7 +218,5 @@ const SatelliteSearchForm = ({ satellites, geometry, setVisiblePanel, setSelecte
     </form>
   );
 };
-
-SatelliteSearchForm.propTypes = {};
 
 export default SatelliteSearchForm;

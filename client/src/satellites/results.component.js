@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import PropTypes from 'prop-types';
 
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -8,7 +7,7 @@ import Button from '@astrosat/astrosat-ui/dist/buttons/button';
 import useModal from '@astrosat/astrosat-ui/dist/containers/use-modal';
 import Dialog from '@astrosat/astrosat-ui/dist/containers/dialog';
 
-import { pinScene, fetchPinnedScenes } from './satellites.actions';
+import { fetchPinnedScenes, pinScene, saveSatelliteSearch } from './satellites.actions';
 
 import SaveSearchForm from './save-search-form.component';
 import SceneListItem, { SceneListItemSkeleton } from './scene-list-item.component';
@@ -38,6 +37,9 @@ const Results = ({ scenes, setVisiblePanel, selectScene, setSelectedMoreInfo, to
   const resultCountText = scenes
     ? `Showing ${scenes.filter(scene => scene.cloudCover <= cloudCoverPercentage[0]).length} Results`
     : 'Loading Results...';
+
+  const saveSearch = query => dispatch(saveSatelliteSearch(query));
+  const chooseSearch = scene => dispatch(selectScene(scene));
 
   return (
     <div className={styles.options} ref={ref}>
@@ -69,15 +71,16 @@ const Results = ({ scenes, setVisiblePanel, selectScene, setSelectedMoreInfo, to
                     />
                   );
                   return (
-                    <SceneListItem
-                      key={scene.id}
-                      scene={scene}
-                      icon={Icon}
-                      selectScene={selectScene}
-                      setVisiblePanel={setVisiblePanel}
-                      toggleMoreInfoDialog={toggleMoreInfoDialog}
-                      setSelectedMoreInfo={setSelectedMoreInfo}
-                    />
+                    <li key={scene.id}>
+                      <SceneListItem
+                        scene={scene}
+                        icon={Icon}
+                        selectScene={chooseSearch}
+                        setVisiblePanel={setVisiblePanel}
+                        toggleMoreInfoDialog={toggleMoreInfoDialog}
+                        setSelectedMoreInfo={setSelectedMoreInfo}
+                      />
+                    </li>
                   );
                 })
             : Array(5)
@@ -91,12 +94,10 @@ const Results = ({ scenes, setVisiblePanel, selectScene, setSelectedMoreInfo, to
         </Button>
       </div>
       <Dialog isVisible={isSaveDialogVisible} title="Name Search" close={toggleSaveDialog} ref={ref}>
-        <SaveSearchForm query={currentSearchQuery} close={toggleSaveDialog} />
+        <SaveSearchForm query={currentSearchQuery} close={toggleSaveDialog} saveSearch={saveSearch} />
       </Dialog>
     </div>
   );
 };
-
-Results.propTypes = {};
 
 export default React.memo(React.forwardRef(Results));

@@ -14,6 +14,7 @@ export const FETCH_PINNED_SCENES_FAILURE = 'FETCH_PINNED_SCENES_FAILURE';
 export const PIN_SCENE_SUCCESS = 'PIN_SCENE_SUCCESS';
 export const PIN_SCENE_FAILURE = 'PIN_SCENE_FAILURE';
 export const SELECT_PINNED_SCENE = 'SELECT_PINNED_SCENE';
+export const DESELECT_PINNED_SCENE = 'DESELECT_PINNED_SCENE';
 export const CLEAR_SELECTED_PINNED_SCENES = 'CLEAR_SELECTED_PINNED_SCENES';
 export const DELETE_PINNED_SCENE_SUCCESS = 'DELETE_PINNED_SCENE_SUCCESS';
 export const DELETE_PINNED_SCENE_FAILURE = 'DELETE_PINNED_SCENE_FAILURE';
@@ -101,7 +102,7 @@ export const selectScene = scene => ({ type: SELECT_SCENE, scene });
 
 export const removeScenes = () => ({ type: REMOVE_SCENES });
 
-export const fetchSavedSatellites = () => async (dispatch, getState) => {
+export const fetchSavedSatelliteSearches = () => async (dispatch, getState) => {
   const {
     accounts: { userKey }
   } = getState();
@@ -144,8 +145,10 @@ export const deleteSavedSatelliteSearch = id => async (dispatch, getState) => {
   const response = await sendData(API.savedSearches, id, headers, 'DELETE');
 
   if (!response.ok) {
-    NotificationManager.error(response.statusText, 'Deleting Satellite Search Error', 5000, () => {});
-    dispatch({ type: DELETE_SATELLITE_SEARCH_FAILURE, error: response });
+    const message = `${response.status} ${response.statusText}`;
+
+    NotificationManager.error(message, `Deleting Satellite Search Error - ${response.statusText}`, 5000, () => {});
+    dispatch({ type: DELETE_SATELLITE_SEARCH_FAILURE, error: { message } });
   } else {
     return dispatch({ type: DELETE_SATELLITE_SEARCH_SUCCESS, id });
   }
@@ -166,15 +169,13 @@ export const saveSatelliteSearch = form => async (dispatch, getState) => {
   const response = await sendData(API.savedSearches, form, headers);
 
   if (!response.ok) {
-    const errorResponse = await response.json();
     const message = `${response.status} ${response.statusText}`;
-    // const error = new Error(errorResponseToString(errorResponse));
 
     NotificationManager.error(message, `"Saving Satellite Search Error - ${response.statusText}`, 50000, () => {});
 
     return dispatch({
       type: SAVE_SATELLITE_SEARCH_REQUESTED_FAILURE,
-      error: message
+      error: { message }
     });
   }
 
@@ -250,6 +251,11 @@ export const selectPinnedScene = scene => ({
   scene
 });
 
+export const deselectPinnedScene = scene => ({
+  type: DESELECT_PINNED_SCENE,
+  scene
+});
+
 export const clearSelectedPinnedScenes = () => ({
   type: CLEAR_SELECTED_PINNED_SCENES
 });
@@ -266,8 +272,10 @@ export const deletePinnedScene = id => async (dispatch, getState) => {
   const response = await sendData(API.pinScene, id, headers, 'DELETE');
 
   if (!response.ok) {
-    NotificationManager.error(response.statusText, 'Deleting Pinned Scene Error', 5000, () => {});
-    dispatch({ type: DELETE_PINNED_SCENE_FAILURE, error: response });
+    const message = `${response.status} ${response.statusText}`;
+
+    NotificationManager.error(message, 'Deleting Pinned Scene Error', 5000, () => {});
+    dispatch({ type: DELETE_PINNED_SCENE_FAILURE, error: { message } });
   } else {
     return dispatch({ type: DELETE_PINNED_SCENE_SUCCESS, id });
   }

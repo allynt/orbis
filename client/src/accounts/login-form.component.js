@@ -13,22 +13,18 @@ import Checkbox from '@astrosat/astrosat-ui/dist/forms/checkbox';
 import useForm from '@astrosat/astrosat-ui/dist/forms/use-form';
 import Well from '@astrosat/astrosat-ui/dist/containers/well';
 
-import { login } from './accounts.actions';
-
 import { ReactComponent as OrbisLogo } from '../orbis.svg';
 
 import formStyles from './forms.module.css';
 import loginStyles from './login-form.module.css';
 
-const LoginForm = ({ location }) => {
+const LoginForm = ({ login, user, error }) => {
   const { handleChange, handleSubmit, values, errors } = useForm(onSubmit, validate);
-  const dispatch = useDispatch();
-  const error = useSelector(state => state.accounts.error);
-  const user = useSelector(state => state.accounts.user);
-  const from = location.state ? location.state.from || { pathname: '/' } : { pathname: '/' };
+  // const error = useSelector(state => state.accounts.error);
+  // const user = useSelector(state => state.accounts.user);
 
   function onSubmit() {
-    dispatch(login(values));
+    login(values);
   }
 
   // Re-direct to originally clicked URL on successful login.

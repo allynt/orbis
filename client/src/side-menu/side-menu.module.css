@@ -1,37 +1,25 @@
 .side-menu-container {
   position: absolute;
   top: 0;
-  left: 4.9rem;
+  left: calc(-25rem + 4.9rem);
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 0rem;
+  width: 25rem;
   height: 99.8vh;
   background-color: var(--primary-foreground-color);
   border-left: 2px solid var(--primary-background-color);
   color: #fff;
   visibility: hidden;
-  transition: visibility 250ms, width 500ms ease-in-out;
-  z-index: 5;
+  transition: visibility 500ms, left 500ms ease-in-out;
+  z-index: 3;
   border-radius: 0 0.3rem 0.3rem 0;
 }
 
 .show {
-  width: 25rem;
+  left: 4.9rem;
   visibility: visible;
-  transition: visibility 250ms, width 500ms ease-in-out;
 }
-
-/* .side-menu-container ul {
-  width: 100%;
-  list-style: none;
-  margin: 0 0 0 0;
-  padding: 0 0 0 0;
-}
-
-.side-menu-container ul li:last-child {
-  border-bottom: unset;
-} */
 
 .container {
   padding: 1rem;

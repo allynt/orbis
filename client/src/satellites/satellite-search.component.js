@@ -6,7 +6,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import Button from '@astrosat/astrosat-ui/dist/buttons/button';
 import Detail from '@astrosat/astrosat-ui/dist/containers/detail';
 
-import { fetchSavedSatellites } from './satellites.actions';
+import { fetchSavedSatelliteSearches, deleteSavedSatelliteSearch, setCurrentSearchQuery } from './satellites.actions';
+
 import useMap from '../map/use-map.hook';
 
 import { ReactComponent as DrawAoiIcon } from './draw-aoi.svg';
@@ -36,6 +37,9 @@ const SatelliteSearch = ({ map, satellites, setVisiblePanel, setSelectedMoreInfo
     const feature = control?.getAll().features[0];
     return [control, feature];
   };
+
+  const chooseSearchQuery = search => dispatch(setCurrentSearchQuery(search));
+  const deleteSavedSearchQuery = id => dispatch(deleteSavedSatelliteSearch(id));
 
   useEffect(() => {
     const [drawCtrl] = getDraw();
@@ -119,7 +123,7 @@ const SatelliteSearch = ({ map, satellites, setVisiblePanel, setSelectedMoreInfo
 
   useEffect(() => {
     if (!savedSearches) {
-      dispatch(fetchSavedSatellites());
+      dispatch(fetchSavedSatelliteSearches());
     }
   }, [savedSearches]);
 
@@ -159,7 +163,11 @@ const SatelliteSearch = ({ map, satellites, setVisiblePanel, setSelectedMoreInfo
       {savedSearches && savedSearches.length > 0 ? (
         <div>
           <Detail title="Saved Searches">
-            <SavedSearchList savedSearches={savedSearches} />
+            <SavedSearchList
+              savedSearches={savedSearches}
+              setCurrentSearchQuery={chooseSearchQuery}
+              deleteSavedSatelliteSearch={deleteSavedSearchQuery}
+            />
           </Detail>
         </div>
       ) : (
@@ -191,7 +199,5 @@ const SatelliteSearch = ({ map, satellites, setVisiblePanel, setSelectedMoreInfo
     </div>
   );
 };
-
-SatelliteSearch.propTypes = {};
 
 export default React.memo(React.forwardRef(SatelliteSearch));

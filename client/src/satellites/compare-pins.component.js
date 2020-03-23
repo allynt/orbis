@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react';
-import PropTypes from 'prop-types';
 
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -14,6 +13,7 @@ import { ReactComponent as DeleteIcon } from './delete.svg';
 import {
   fetchPinnedScenes,
   selectPinnedScene,
+  deselectPinnedScene,
   clearSelectedPinnedScenes,
   deletePinnedScene
 } from './satellites.actions';
@@ -30,11 +30,23 @@ const ComparePins = ({ setSelectedMoreInfo, toggleMoreInfoDialog }, ref) => {
   const isCompareMode = useSelector(state => state.map.isCompareMode);
   const selectedPinnedScenes = useSelector(state => state.satellites.selectedPinnedScenes);
 
+  const choosePinnedScene = scene => dispatch(selectPinnedScene(scene));
+
   useEffect(() => {
     if (!pinnedScenes) {
       dispatch(fetchPinnedScenes());
     }
   }, [pinnedScenes]);
+
+  const handleChange = (isSelected, scene) => {
+    if (isSelected) {
+      dispatch(deselectPinnedScene(scene));
+    } else {
+      if (selectedPinnedScenes.length !== MAX_SELECTED) {
+        choosePinnedScene(scene);
+      }
+    }
+  };
 
   return (
     <div ref={ref}>
@@ -42,7 +54,7 @@ const ComparePins = ({ setSelectedMoreInfo, toggleMoreInfoDialog }, ref) => {
         <Switch
           name="compare"
           label="Compare"
-          clicked={isCompareMode}
+          checked={isCompareMode}
           onClick={() => dispatch(toggleCompareMaps())}
           ariaLabel="Compare"
         />
@@ -56,6 +68,8 @@ const ComparePins = ({ setSelectedMoreInfo, toggleMoreInfoDialog }, ref) => {
       <ul className={styles.pinnedScenes}>
         {pinnedScenes &&
           pinnedScenes.map((scene, index) => {
+            const isSelected = selectedPinnedScenes.includes(scene);
+            const isDisabled = !selectedPinnedScenes.includes(scene) && selectedPinnedScenes.length === MAX_SELECTED;
             const Icon = (
               <DeleteIcon
                 onClick={() => {
@@ -81,7 +95,7 @@ const ComparePins = ({ setSelectedMoreInfo, toggleMoreInfoDialog }, ref) => {
                   icon={Icon}
                   setSelectedMoreInfo={setSelectedMoreInfo}
                   toggleMoreInfoDialog={toggleMoreInfoDialog}
-                  selectPinnedScene={selectPinnedScene}
+                  selectScene={choosePinnedScene}
                 />
               </div>
             );

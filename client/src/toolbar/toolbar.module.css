@@ -10,6 +10,7 @@
   height: 100vh;
   background-color: var(--background-color);
   border-right: 2px solid var(--primary-background-color);
+  z-index: 4;
 }
 
 /* .buttonWrapper {

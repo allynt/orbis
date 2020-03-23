@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import BookmarkForm from './bookmark-form.component';
 import BookmarkList from './bookmarks-list.component';
 
-import { fetchBookmarks, addBookmark, selectBookmark } from './bookmarks.actions';
+import { fetchBookmarks, addBookmark, selectBookmark, deleteBookmark } from './bookmarks.actions';
 
 import styles from '../side-menu/side-menu.module.css';
 
@@ -20,19 +20,23 @@ const BookmarksPanel = ({ map }) => {
 
     map.getCanvas().toBlob(blob => {
       dispatch(
-        addBookmark({
-          ...form,
-          feature_collection: featureCollection,
-          center: [lng, lat],
-          zoom: map.getZoom(),
-          owner,
-          thumbnail: blob,
-        }, 'image/png')
+        addBookmark(
+          {
+            ...form,
+            feature_collection: featureCollection,
+            center: [lng, lat],
+            zoom: map.getZoom(),
+            owner,
+            thumbnail: blob
+          },
+          'image/png'
+        )
       );
     });
   };
 
   const chooseBookmark = bookmark => dispatch(selectBookmark(bookmark));
+  const deleteBookmarkItem = bookmark => dispatch(selectBookmark(bookmark));
 
   const bookmarks = useSelector(state => state.bookmarks.bookmarks);
 
@@ -45,7 +49,7 @@ const BookmarksPanel = ({ map }) => {
   return (
     <div className={styles.container}>
       <BookmarkForm submit={submit} />
-      <BookmarkList bookmarks={bookmarks} selectBookmark={chooseBookmark} />
+      <BookmarkList bookmarks={bookmarks} selectBookmark={chooseBookmark} deleteBookmark={deleteBookmarkItem} />
     </div>
   );
 };
