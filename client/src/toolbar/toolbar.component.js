@@ -19,6 +19,7 @@ const ToolbarItem = ({ item, onClick, selected }) => {
         onClick={onClick}
         data-tip
         data-for={item.label}
+        data-testid={`toolbar-item-${item.label}`}
       >
         {item.icon}
       </div>
@@ -39,11 +40,11 @@ const Toolbar = ({ items }) => {
   };
 
   if (redirect) {
-    return <Redirect to={redirect} />
+    return <Redirect to={redirect} />;
   }
   return (
     <div className={styles.toolbar}>
-      <OrbisLogo className={styles.logo} onClick={()=>setRedirect('/')}/>
+      <OrbisLogo className={styles.logo} onClick={() => setRedirect('/')} />
       <div className={styles.topPanel}>
         {items
           .filter(item => !item.footer)
