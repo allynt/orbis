@@ -12,6 +12,7 @@ const mockStore = configureMockStore([thunk]);
 
 describe('Satellite Results Component', () => {
   const store = mockStore({
+    accounts: { userKey: { key: '123' } },
     satellites: {
       currentSearchQuery: null
     }
@@ -46,6 +47,10 @@ describe('Satellite Results Component', () => {
   });
 
   it('should display a list of Scene results', () => {
+    const userKey = { key: 'testkey' };
+    const user = { username: 'testusername', email: 'testusername@test.com' };
+
+    fetch.once(JSON.stringify(userKey)).once(JSON.stringify(user));
     const { getByPlaceholderText, getByText } = render(
       <Provider store={store}>
         <Results
