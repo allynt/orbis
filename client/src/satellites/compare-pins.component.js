@@ -43,8 +43,6 @@ const ComparePins = ({ setSelectedMoreInfo, toggleMoreInfoDialog }, ref) => {
     } else {
       if (selectedPinnedScenes.length !== MAX_SELECTED) {
         dispatch(selectPinnedScene(scene));
-      } else {
-        console.log('Cannot select more than 2 scenes to compare.');
       }
     }
   };
@@ -70,6 +68,7 @@ const ComparePins = ({ setSelectedMoreInfo, toggleMoreInfoDialog }, ref) => {
         {pinnedScenes &&
           pinnedScenes.map((scene, index) => {
             const isSelected = selectedPinnedScenes.includes(scene);
+            const isDisabled = !selectedPinnedScenes.includes(scene) && selectedPinnedScenes.length === MAX_SELECTED;
             const Icon = (
               <DeleteIcon
                 onClick={() => {
@@ -83,6 +82,7 @@ const ComparePins = ({ setSelectedMoreInfo, toggleMoreInfoDialog }, ref) => {
                   name={scene.id}
                   label={scene.label}
                   checked={isSelected}
+                  disabled={isDisabled}
                   onChange={() => handleChange(isSelected, scene)}
                 />
                 <SceneListItem
