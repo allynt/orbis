@@ -19,6 +19,7 @@
 
 .selectMessage span {
   font-size: 1rem;
+  border-bottom: 1px;
 }
 
 .moreInfoContent {
