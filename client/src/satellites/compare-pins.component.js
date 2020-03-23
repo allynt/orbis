@@ -42,7 +42,7 @@ const ComparePins = ({ setSelectedMoreInfo, toggleMoreInfoDialog }, ref) => {
         <Switch
           name="compare"
           label="Compare"
-          clicked={isCompareMode}
+          checked={isCompareMode}
           onClick={() => dispatch(toggleCompareMaps())}
           ariaLabel="Compare"
         />
