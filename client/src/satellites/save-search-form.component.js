@@ -1,26 +1,19 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { useDispatch } from 'react-redux';
-
 import Button from '@astrosat/astrosat-ui/dist/buttons/button';
 import Textfield from '@astrosat/astrosat-ui/dist/forms/text-field';
 import useForm from '@astrosat/astrosat-ui/dist/forms/use-form';
 
 import validate from './save-search-form.validator';
 
-import { saveSatelliteSearch } from './satellites.actions';
-
 import formStyles from '../accounts/forms.module.css';
 
-const SaveSearchForm = ({ query, close }) => {
-  const dispatch = useDispatch();
-
+const SaveSearchForm = ({ query, close, saveSearch }) => {
   const { handleChange, handleSubmit, values, errors } = useForm(onSubmit, validate);
 
   function onSubmit() {
-    console.log('Submitting: ', values, query);
-    dispatch(saveSatelliteSearch({ ...values, ...query }));
+    saveSearch({ ...values, ...query });
     close();
   }
 

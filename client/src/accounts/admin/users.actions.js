@@ -32,16 +32,18 @@ export const createUser = fields => async dispatch => {
   const response = await sendData(API, fields, JSON_HEADERS);
 
   if (!response.ok) {
-    NotificationManager.error(response.statusText, 'Creating User', 5000, () => {});
-    dispatch({ type: CREATE_USER_REQUESTED_FAILURE, error: response });
-  } else {
-    const user = await response.json();
+    const message = `${response.status} ${response.statusText}`;
 
-    return dispatch({
-      type: CREATE_USER_REQUESTED_SUCCESS,
-      user
-    });
+    NotificationManager.error(message, `Creating User Error - ${response.statusText}`, 5000, () => {});
+    return dispatch({ type: CREATE_USER_REQUESTED_FAILURE, error: { message } });
   }
+
+  const user = await response.json();
+
+  return dispatch({
+    type: CREATE_USER_REQUESTED_SUCCESS,
+    user
+  });
 };
 
 export const fetchUsers = () => async dispatch => {
@@ -52,8 +54,10 @@ export const fetchUsers = () => async dispatch => {
   });
 
   if (!response.ok) {
-    NotificationManager.error(response.statusText, 'Fetching Users', 5000, () => {});
-    dispatch({ type: USERS_REQUESTED_FAILURE, error: response });
+    const message = `${response.status} ${response.statusText}`;
+
+    NotificationManager.error(message, 'Fetching Users', 5000, () => {});
+    dispatch({ type: USERS_REQUESTED_FAILURE, error: { message } });
   } else {
     const users = await response.json();
 
@@ -67,8 +71,10 @@ export const updateUser = user => async dispatch => {
   const response = await sendData(`${API}${user.pk}/`, user, JSON_HEADERS, 'PUT');
 
   if (!response.ok) {
-    NotificationManager.error(response.statusText, 'Updating User', 5000, () => {});
-    return dispatch({ type: UPDATE_USER_REQUESTED_FAILURE, error: response });
+    const message = `${response.status} ${response.statusText}`;
+
+    NotificationManager.error(message, 'Updating User', 5000, () => {});
+    return dispatch({ type: UPDATE_USER_REQUESTED_FAILURE, error: { message } });
   } else {
     const user = await response.json();
 
@@ -82,8 +88,10 @@ export const deleteUser = id => async dispatch => {
   const response = await sendData(API, id, null, 'DELETE');
 
   if (!response.ok) {
-    NotificationManager.error(response.statusText, 'Deleting User', 5000, () => {});
-    return dispatch({ type: DELETE_USER_REQUESTED_FAILURE, error: response });
+    const message = `${response.status} ${response.statusText}`;
+
+    NotificationManager.error(message, 'Deleting User', 5000, () => {});
+    return dispatch({ type: DELETE_USER_REQUESTED_FAILURE, error: { message } });
   } else {
     return dispatch({ type: DELETE_USER_REQUESTED_SUCCESS, id });
   }

@@ -25,7 +25,7 @@ const mockStore = configureMockStore(middlewares);
 
 describe('Users Actions', () => {
   describe('Create User', () => {
-    let beforeState;
+    let initialState;
 
     beforeEach(() => {
       fetch.resetMocks();
@@ -33,18 +33,36 @@ describe('Users Actions', () => {
         value: 'csrftoken=test'
       });
 
-      beforeState = {
+      initialState = {
         users: null,
         isLoading: false,
         error: null
       };
     });
 
-    it('should dispatch the CREATE_USER_REQUESTED_FAILURE action if API not available', async () => {
-      const error = new Error({ message: 'Error - Cannot find endpoint', status: 404, statusText: 'API Unavailable' });
-      fetch.mockReject(error);
-      const expectedActions = [{ type: CREATE_USER_REQUESTED }, { type: CREATE_USER_REQUESTED_FAILURE, error }];
-      const store = mockStore(beforeState);
+    it('should dispatch the CREATE_USER_REQUESTED_FAILURE action', async () => {
+      fetch.mockResponse(
+        JSON.stringify({
+          message: 'Test error message'
+        }),
+        {
+          ok: false,
+          status: 401,
+          statusText: 'Test Error'
+        }
+      );
+
+      const expectedActions = [
+        { type: CREATE_USER_REQUESTED },
+        { type: CREATE_USER_REQUESTED_FAILURE, error: { message: '401 Test Error' } }
+      ];
+
+      const store = mockStore({
+        accounts: {
+          userKey: '1234'
+        }
+      });
+
       const form = {
         username: 'testusername',
         email: 'testusername@test.com',
@@ -52,33 +70,9 @@ describe('Users Actions', () => {
         password2: 'password2'
       };
       await store.dispatch(createUser(form));
+
       expect(store.getActions()).toEqual(expectedActions);
     });
-
-    // FIXME: Not sure how to test specific error types, customizing the error
-    //        message isn't really proving anything. Leaving them while I
-    //        discuss with others first.
-    xit('should dispatch the CREATE_USER_REQUESTED_FAILURE action when missing username', async () => {
-      const error = new Error({ message: 'Error - missing username', status: 400, statusText: 'Custom error' });
-      fetch.mockReject(error);
-      const expectedActions = [{ type: CREATE_USER_REQUESTED }, { type: CREATE_USER_REQUESTED_FAILURE, error }];
-      const store = mockStore(beforeState);
-      const form = {
-        email: 'testusername@test.com',
-        password1: 'password1',
-        password2: 'password2'
-      };
-      await store.dispatch(createUser(form));
-      expect(store.getActions()).toEqual(expectedActions);
-    });
-
-    xit('should dispatch the CREATE_USER_REQUESTED_FAILURE action when missing email', async () => {});
-
-    xit('should dispatch the CREATE_USER_REQUESTED_FAILURE action when missing password1', async () => {});
-
-    xit('should dispatch the CREATE_USER_REQUESTED_FAILURE action when missing password2', async () => {});
-
-    xit("should dispatch the CREATE_USER_REQUESTED_FAILURE action when passwords don't match", async () => {});
 
     it('should dispatch the CREATE_USER_REQUESTED_SUCCESS action', async () => {
       const user = {};
@@ -86,7 +80,7 @@ describe('Users Actions', () => {
 
       const expectedActions = [{ type: CREATE_USER_REQUESTED }, { type: CREATE_USER_REQUESTED_SUCCESS, user }];
 
-      const store = mockStore(beforeState);
+      const store = mockStore(initialState);
       const form = {
         username: 'testusername',
         email: 'testusername@test.com',
@@ -100,7 +94,7 @@ describe('Users Actions', () => {
   });
 
   describe('Retrieve User', () => {
-    let beforeState;
+    let initialState;
 
     beforeEach(() => {
       fetch.resetMocks();
@@ -108,22 +102,38 @@ describe('Users Actions', () => {
         value: 'csrftoken=test'
       });
 
-      beforeState = {
+      initialState = {
         users: null,
         isLoading: false,
         error: null
       };
     });
 
-    xit('should dispatch the USERS_REQUESTED_FAILURE action if API not available', async () => {
-      const error = new Error({ message: 'Error - Some error', status: 503, statusText: 'Custom error' });
-      fetch.mockReject(error);
+    it('should dispatch the USERS_REQUESTED_FAILURE action', async () => {
+      fetch.mockResponse(
+        JSON.stringify({
+          message: 'Test error message'
+        }),
+        {
+          ok: false,
+          status: 401,
+          statusText: 'Test Error'
+        }
+      );
 
-      const expectedActions = [{ type: USERS_REQUESTED }, { type: USERS_REQUESTED_FAILURE, error }];
+      const expectedActions = [
+        { type: USERS_REQUESTED },
+        { type: USERS_REQUESTED_FAILURE, error: { message: '401 Test Error' } }
+      ];
 
-      const store = mockStore(beforeState);
+      const store = mockStore({
+        accounts: {
+          userKey: '1234'
+        }
+      });
 
       await store.dispatch(fetchUsers());
+
       expect(store.getActions()).toEqual(expectedActions);
     });
 
@@ -133,7 +143,7 @@ describe('Users Actions', () => {
 
       const expectedActions = [{ type: USERS_REQUESTED }, { type: USERS_REQUESTED_SUCCESS, users }];
 
-      const store = mockStore(beforeState);
+      const store = mockStore(initialState);
 
       await store.dispatch(fetchUsers());
       expect(store.getActions()).toEqual(expectedActions);
@@ -141,7 +151,7 @@ describe('Users Actions', () => {
   });
 
   describe('Update User', () => {
-    let beforeState;
+    let initialState;
 
     beforeEach(() => {
       fetch.resetMocks();
@@ -149,23 +159,39 @@ describe('Users Actions', () => {
         value: 'csrftoken=test'
       });
 
-      beforeState = {
+      initialState = {
         users: null,
         isLoading: false,
         error: null
       };
     });
 
-    it('should dispatch the UPDATE_USER_REQUESTED_FAILURE action if API not available', async () => {
-      const error = new Error({ message: 'Error - Some error', status: 503, statusText: 'Custom error' });
-      fetch.mockReject(error);
+    it('should dispatch the UPDATE_USER_REQUESTED_FAILURE action', async () => {
+      fetch.mockResponse(
+        JSON.stringify({
+          message: 'Test error message'
+        }),
+        {
+          ok: false,
+          status: 401,
+          statusText: 'Test Error'
+        }
+      );
 
-      const expectedActions = [{ type: UPDATE_USER_REQUESTED }, { type: UPDATE_USER_REQUESTED_FAILURE, error }];
+      const expectedActions = [
+        { type: UPDATE_USER_REQUESTED },
+        { type: UPDATE_USER_REQUESTED_FAILURE, error: { message: '401 Test Error' } }
+      ];
 
-      const store = mockStore(beforeState);
+      const store = mockStore({
+        accounts: {
+          userKey: '1234'
+        }
+      });
 
       const user = { id: 10 };
       await store.dispatch(updateUser(user));
+
       expect(store.getActions()).toEqual(expectedActions);
     });
 
@@ -175,7 +201,7 @@ describe('Users Actions', () => {
 
       const expectedActions = [{ type: UPDATE_USER_REQUESTED }, { type: UPDATE_USER_REQUESTED_SUCCESS, user }];
 
-      const store = mockStore(beforeState);
+      const store = mockStore(initialState);
 
       await store.dispatch(updateUser(user));
       expect(store.getActions()).toEqual(expectedActions);
@@ -183,7 +209,7 @@ describe('Users Actions', () => {
   });
 
   describe('Delete User', () => {
-    let beforeState;
+    let initialState;
 
     beforeEach(() => {
       fetch.resetMocks();
@@ -191,7 +217,7 @@ describe('Users Actions', () => {
         value: 'csrftoken=test'
       });
 
-      beforeState = {
+      initialState = {
         users: null,
         isLoading: false,
         error: null
@@ -199,15 +225,31 @@ describe('Users Actions', () => {
     });
 
     it('should dispatch the DELETE_USER_REQUESTED_FAILURE action if API not available', async () => {
-      const error = new Error({ message: 'Error - Some error', status: 503, statusText: 'Custom error' });
-      fetch.mockReject(error);
+      fetch.mockResponse(
+        JSON.stringify({
+          message: 'Test error message'
+        }),
+        {
+          ok: false,
+          status: 401,
+          statusText: 'Test Error'
+        }
+      );
 
-      const expectedActions = [{ type: DELETE_USER_REQUESTED }, { type: DELETE_USER_REQUESTED_FAILURE, error }];
+      const expectedActions = [
+        { type: DELETE_USER_REQUESTED },
+        { type: DELETE_USER_REQUESTED_FAILURE, error: { message: '401 Test Error' } }
+      ];
 
-      const store = mockStore(beforeState);
+      const store = mockStore({
+        accounts: {
+          userKey: '1234'
+        }
+      });
 
       const user = { id: 10 };
       await store.dispatch(deleteUser(user));
+
       expect(store.getActions()).toEqual(expectedActions);
     });
 
@@ -217,7 +259,7 @@ describe('Users Actions', () => {
 
       const expectedActions = [{ type: DELETE_USER_REQUESTED }, { type: DELETE_USER_REQUESTED_SUCCESS, id }];
 
-      const store = mockStore(beforeState);
+      const store = mockStore(initialState);
 
       await store.dispatch(deleteUser(id));
       expect(store.getActions()).toEqual(expectedActions);

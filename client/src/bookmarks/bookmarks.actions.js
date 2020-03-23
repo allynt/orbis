@@ -32,19 +32,17 @@ export const fetchBookmarks = () => async (dispatch, getState) => {
   const response = await getData(API.fetch, headers);
 
   if (!response.ok) {
-    const errorResponse = await response.json();
-    const error = new Error(errorResponseToString(errorResponse));
+    const message = `${response.status} ${response.statusText}`;
 
-    NotificationManager.error(error.message, `Fetching Bookmark Error - ${response.statusText}`, 50000, () => {});
+    NotificationManager.error(message, `Fetching Bookmark Error - ${response.statusText}`, 50000, () => {});
 
     return dispatch({
       type: FETCH_BOOKMARKS_FAILURE,
-      error
+      error: { message }
     });
   }
 
   const bookmarks = await response.json();
-  // const bookmarks = [DATA, DATA1];
 
   return dispatch({ type: FETCH_BOOKMARKS_SUCCESS, bookmarks });
 };
@@ -67,29 +65,28 @@ export const addBookmark = bookmark => async (dispatch, getState) => {
   const response = await sendData(API.add, formData, headers);
 
   if (!response.ok) {
-    const errorResponse = await response.json();
-    const error = new Error(errorResponseToString(errorResponse));
+    const message = `${response.status} ${response.statusText}`;
 
-    NotificationManager.error(error.message, `Adding Bookmark Error - ${response.statusText}`, 50000, () => {});
+    NotificationManager.error(message, `Adding Bookmark Error - ${response.statusText}`, 50000, () => {});
 
     return dispatch({
       type: ADD_BOOKMARK_FAILURE,
-      error
-    });
-  } else {
-    const newBookmark = await response.json();
-    NotificationManager.success('Successfully bookmarked map', 'Successful map bookmarking', 5000, () => {});
-
-    return dispatch({
-      type: ADD_BOOKMARK_SUCCESS,
-      bookmark: newBookmark
+      error: { message }
     });
   }
+
+  const newBookmark = await response.json();
+  NotificationManager.success('Successfully bookmarked map', 'Successful map bookmarking', 5000, () => {});
+
+  return dispatch({
+    type: ADD_BOOKMARK_SUCCESS,
+    bookmark: newBookmark
+  });
 };
 
 export const selectBookmark = bookmark => ({ type: SELECT_BOOKMARK, bookmark });
 
-export const isLoaded = () => ({ type: IS_LOADED })
+export const isLoaded = () => ({ type: IS_LOADED });
 
 export const deleteBookmark = bookmark => async (dispatch, getState) => {
   const {
@@ -102,41 +99,20 @@ export const deleteBookmark = bookmark => async (dispatch, getState) => {
   const response = await sendData(API.delete, bookmark.id, headers, 'DELETE');
 
   if (!response.ok) {
-    const errorResponse = await response.json();
-    const error = new Error(errorResponseToString(errorResponse));
-    NotificationManager.error(error.message, `Deleting Bookmark Error - ${response.statusText}`, 50000, () => {});
+    const message = `${response.status} ${response.statusText}`;
+
+    NotificationManager.error(message, `Deleting Bookmark Error - ${response.statusText}`, 50000, () => {});
 
     return dispatch({
       type: DELETE_BOOKMARK_FAILURE,
-      error
-    });
-  } else {
-    NotificationManager.success('Successfully deleted bookmark', 'Successful bookmark deletion', 5000, () => {});
-
-    return dispatch({
-      type: DELETE_BOOKMARK_SUCCESS,
-      bookmark
+      error: { message }
     });
   }
-};
 
-const errorResponseToString = response => {
-  // Reduce all field errors to a single string representation.
-  const errorStr = Object.keys(response).reduce((acc, key) => {
-    const fieldErrors = response[key];
+  NotificationManager.success('Successfully deleted bookmark', 'Successful bookmark deletion', 5000, () => {});
 
-    if (Array.isArray(fieldErrors)) {
-      // Reduce array of field errors to a single string representation.
-      const errors = fieldErrors.reduce((acc, error) => {
-        return (acc += error + ' ');
-      }, '');
-      acc += `${key} - ${errors}\n`;
-    } else if (typeof fieldErrors === 'string' || fieldErrors instanceof String) {
-      acc += fieldErrors;
-    }
-
-    return acc;
-  }, '');
-
-  return errorStr;
+  return dispatch({
+    type: DELETE_BOOKMARK_SUCCESS,
+    bookmark
+  });
 };

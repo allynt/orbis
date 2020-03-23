@@ -2,10 +2,12 @@ import { act } from '@testing-library/react';
 
 let events = {};
 let layerEvents = {};
+let _controls = [];
 
 export default {
   Map: jest.fn().mockImplementation(() => {
     return {
+      _controls,
       on: jest.fn((event, layer, fn) => {
         if (fn) {
           layerEvents[event] = events[event] || {};
@@ -19,7 +21,7 @@ export default {
       off: jest.fn(),
       setPaintProperty: jest.fn(),
       setLayoutProperty: jest.fn(),
-      addControl: jest.fn(),
+      addControl: jest.fn(ctrl => (_controls = [..._controls, ctrl])),
       remove: jest.fn(),
       removeControl: jest.fn(),
       resize: jest.fn(),
@@ -31,10 +33,15 @@ export default {
       removeLayer: jest.fn(),
       getZoom: jest.fn(),
       getCenter: jest.fn(),
+      getBounds: jest.fn(() => ({
+        getNorthWest: jest.fn(() => ({ lng: 0, lat: 0 })),
+        getNorthEast: jest.fn(() => ({ lng: 0, lat: 0 })),
+        getSouthEast: jest.fn(() => ({ lng: 0, lat: 0 })),
+        getSouthWest: jest.fn(() => ({ lng: 0, lat: 0 }))
+      })),
       getStyle: jest.fn(() => ({
         layers: []
-      })),
-      _controls: []
+      }))
     };
   })
 };
@@ -43,6 +50,7 @@ export const AttributionControl = jest.fn();
 export const NavigationControl = jest.fn();
 export const fireMapEvent = (event, layer, data) => {
   act(() => {
+    console.log('EVENTS: ', events);
     if (data) {
       events[event][layer].forEach(cb => cb(data));
       events[event][layer] = [];

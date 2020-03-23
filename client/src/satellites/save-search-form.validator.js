@@ -5,6 +5,10 @@ const validate = form => {
     errors.name = 'Name is required';
   }
 
+  if (form.name.length <= 3) {
+    errors.name = 'Name field must exceed 3 characters';
+  }
+
   return errors;
 };
 
