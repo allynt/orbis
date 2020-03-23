@@ -17,7 +17,7 @@ import {
   PIN_SCENE_SUCCESS,
   PIN_SCENE_FAILURE,
   SELECT_PINNED_SCENE,
-  UNSELECT_PINNED_SCENE,
+  DESELECT_PINNED_SCENE,
   CLEAR_SELECTED_PINNED_SCENES,
   DELETE_PINNED_SCENE_SUCCESS,
   DELETE_PINNED_SCENE_FAILURE
@@ -132,7 +132,7 @@ const reducer = (state = initialState, action) => {
         selectedPinnedScenes: [...state.selectedPinnedScenes, action.scene]
       };
 
-    case UNSELECT_PINNED_SCENE:
+    case DESELECT_PINNED_SCENE:
       const filteredScenes = state.selectedPinnedScenes.filter(scene => scene.id !== action.scene.id);
       return {
         ...state,

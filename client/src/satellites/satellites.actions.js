@@ -14,7 +14,7 @@ export const FETCH_PINNED_SCENES_FAILURE = 'FETCH_PINNED_SCENES_FAILURE';
 export const PIN_SCENE_SUCCESS = 'PIN_SCENE_SUCCESS';
 export const PIN_SCENE_FAILURE = 'PIN_SCENE_FAILURE';
 export const SELECT_PINNED_SCENE = 'SELECT_PINNED_SCENE';
-export const UNSELECT_PINNED_SCENE = 'UNSELECT_PINNED_SCENE';
+export const DESELECT_PINNED_SCENE = 'DESELECT_PINNED_SCENE';
 export const CLEAR_SELECTED_PINNED_SCENES = 'CLEAR_SELECTED_PINNED_SCENES';
 export const DELETE_PINNED_SCENE_SUCCESS = 'DELETE_PINNED_SCENE_SUCCESS';
 export const DELETE_PINNED_SCENE_FAILURE = 'DELETE_PINNED_SCENE_FAILURE';
@@ -251,8 +251,8 @@ export const selectPinnedScene = scene => ({
   scene
 });
 
-export const unselectPinnedScene = scene => ({
-  type: UNSELECT_PINNED_SCENE,
+export const deselectPinnedScene = scene => ({
+  type: DESELECT_PINNED_SCENE,
   scene
 });
 

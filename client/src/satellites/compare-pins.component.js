@@ -14,7 +14,7 @@ import { ReactComponent as DeleteIcon } from './delete.svg';
 import {
   fetchPinnedScenes,
   selectPinnedScene,
-  unselectPinnedScene,
+  deselectPinnedScene,
   clearSelectedPinnedScenes,
   deletePinnedScene
 } from './satellites.actions';
@@ -39,7 +39,7 @@ const ComparePins = ({ setSelectedMoreInfo, toggleMoreInfoDialog }, ref) => {
 
   const handleChange = (isSelected, scene) => {
     if (isSelected) {
-      dispatch(unselectPinnedScene(scene));
+      dispatch(deselectPinnedScene(scene));
     } else {
       if (selectedPinnedScenes.length !== MAX_SELECTED) {
         dispatch(selectPinnedScene(scene));
