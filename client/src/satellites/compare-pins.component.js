@@ -14,6 +14,7 @@ import { ReactComponent as DeleteIcon } from './delete.svg';
 import {
   fetchPinnedScenes,
   selectPinnedScene,
+  deselectPinnedScene,
   clearSelectedPinnedScenes,
   deletePinnedScene
 } from './satellites.actions';
@@ -36,6 +37,16 @@ const ComparePins = ({ setSelectedMoreInfo, toggleMoreInfoDialog }, ref) => {
     }
   }, [pinnedScenes]);
 
+  const handleChange = (isSelected, scene) => {
+    if (isSelected) {
+      dispatch(deselectPinnedScene(scene));
+    } else {
+      if (selectedPinnedScenes.length !== MAX_SELECTED) {
+        dispatch(selectPinnedScene(scene));
+      }
+    }
+  };
+
   return (
     <div ref={ref}>
       <div className={styles.buttons}>
@@ -56,6 +67,8 @@ const ComparePins = ({ setSelectedMoreInfo, toggleMoreInfoDialog }, ref) => {
       <ul className={styles.pinnedScenes}>
         {pinnedScenes &&
           pinnedScenes.map((scene, index) => {
+            const isSelected = selectedPinnedScenes.includes(scene);
+            const isDisabled = !selectedPinnedScenes.includes(scene) && selectedPinnedScenes.length === MAX_SELECTED;
             const Icon = (
               <DeleteIcon
                 onClick={() => {
@@ -68,12 +81,9 @@ const ComparePins = ({ setSelectedMoreInfo, toggleMoreInfoDialog }, ref) => {
                 <Checkbox
                   name={scene.id}
                   label={scene.label}
-                  checked={selectedPinnedScenes.find(selectedScene => selectedScene.id === scene.id)}
-                  onChange={() => {
-                    if (selectedPinnedScenes.length !== MAX_SELECTED) {
-                      dispatch(selectPinnedScene(scene));
-                    }
-                  }}
+                  checked={isSelected}
+                  disabled={isDisabled}
+                  onChange={() => handleChange(isSelected, scene)}
                 />
                 <SceneListItem
                   index={index}
