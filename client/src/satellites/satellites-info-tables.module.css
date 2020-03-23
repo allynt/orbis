@@ -1,0 +1,22 @@
+.table {
+  width: 100%;
+  padding: 0 5rem;
+  color: var(--button-text);
+}
+
+.table td {
+  width: 50%;
+}
+
+.row {
+  height: 5rem;
+}
+
+.title,
+table span {
+  font-weight: bold;
+}
+
+.title {
+  font-size: 1rem;
+}

@@ -662,7 +662,20 @@ const satelliteScenes = [
     download_url:
       'https://landsat-pds.s3.amazonaws.com/c1/L8/027/033/LC08_L1TP_027033_20200107_20200114_01_T1/LC08_L1TP_027033_20200107_20200114_01_T1_thumb_small.jpg',
     tier: 'free',
-    metadata: { key: 'To be decided' },
+    metadata: {
+      summary: {
+        date: '2016-12-07T10:54:32.026Z',
+        instrument: 'MSI',
+        mode: 'INS-NOBS',
+        satellite: 'Sentinel-2',
+        size: '736.49 MB'
+      },
+      name_of_instrument: 'Multi-Spectral Instrument',
+      operational_mode_of_sensor: 'INS-NOBS',
+      orbit_direction: 'DESCENDING',
+      product_type: 'S2MSI1C',
+      cloud_coverage: 97.5818
+    },
     tile_url:
       'https://landsat-pds.s3.amazonaws.com/c1/L8/027/033/LC08_L1TP_027033_20190613_20190619_01_T1/LC08_L1TP_027033_20190613_20190619_01_T1_thumb_small.jpg',
 
@@ -678,7 +691,20 @@ const satelliteScenes = [
       'https://landsat-pds.s3.amazonaws.com/c1/L8/027/033/LC08_L1TP_027033_20200107_20200114_01_T1/LC08_L1TP_027033_20200107_20200114_01_T1_thumb_small.jpg',
     tier: 'mid-res',
     swath: 'Geometry object to be added',
-    metadata: { key: 'To be decided' },
+    metadata: {
+      summary: {
+        date: '2016-12-07T10:54:32.026Z',
+        instrument: 'MSI',
+        mode: 'INS-NOBS',
+        satellite: 'Sentinel-2',
+        size: '736.49 MB'
+      },
+      name_of_instrument: 'Multi-Spectral Instrument',
+      operational_mode_of_sensor: 'INS-NOBS',
+      orbit_direction: 'DESCENDING',
+      product_type: 'S2MSI1C',
+      cloud_coverage: 97.5818
+    },
     tile_url:
       'https://landsat-pds.s3.amazonaws.com/c1/L8/027/033/LC08_L1TP_027033_20190613_20190619_01_T1/LC08_L1TP_027033_20190613_20190619_01_T1_thumb_small.jpg',
 
@@ -694,7 +720,20 @@ const satelliteScenes = [
       'https://landsat-pds.s3.amazonaws.com/c1/L8/027/033/LC08_L1TP_027033_20200107_20200114_01_T1/LC08_L1TP_027033_20200107_20200114_01_T1_thumb_small.jpg',
     tier: 'high-res',
     swath: 'Geometry object to be added',
-    metadata: { key: 'To be decided' },
+    metadata: {
+      summary: {
+        date: '2016-12-07T10:54:32.026Z',
+        instrument: 'MSI',
+        mode: 'INS-NOBS',
+        satellite: 'Sentinel-2',
+        size: '736.49 MB'
+      },
+      name_of_instrument: 'Multi-Spectral Instrument',
+      operational_mode_of_sensor: 'INS-NOBS',
+      orbit_direction: 'DESCENDING',
+      product_type: 'S2MSI1C',
+      cloud_coverage: 97.5818
+    },
     tile_url:
       'https://landsat-pds.s3.amazonaws.com/c1/L8/027/033/LC08_L1TP_027033_20190613_20190619_01_T1/LC08_L1TP_027033_20190613_20190619_01_T1_thumb_small.jpg',
     thumbnail_url:
@@ -709,7 +748,20 @@ const satelliteScenes = [
       'https://landsat-pds.s3.amazonaws.com/c1/L8/027/033/LC08_L1TP_027033_20200107_20200114_01_T1/LC08_L1TP_027033_20200107_20200114_01_T1_thumb_small.jpg',
     tier: 'free',
     swath: 'Geometry object to be added',
-    metadata: { key: 'To be decided' },
+    metadata: {
+      summary: {
+        date: '2016-12-07T10:54:32.026Z',
+        instrument: 'MSI',
+        mode: 'INS-NOBS',
+        satellite: 'Sentinel-2',
+        size: '736.49 MB'
+      },
+      name_of_instrument: 'Multi-Spectral Instrument',
+      operational_mode_of_sensor: 'INS-NOBS',
+      orbit_direction: 'DESCENDING',
+      product_type: 'S2MSI1C',
+      cloud_coverage: 97.5818
+    },
     tile_url:
       'https://landsat-pds.s3.amazonaws.com/c1/L8/027/033/LC08_L1TP_027033_20190613_20190619_01_T1/LC08_L1TP_027033_20190613_20190619_01_T1_thumb_small.jpg',
     thumbnail_url:
@@ -724,7 +776,20 @@ const satelliteScenes = [
       'https://landsat-pds.s3.amazonaws.com/c1/L8/027/033/LC08_L1TP_027033_20200107_20200114_01_T1/LC08_L1TP_027033_20200107_20200114_01_T1_thumb_small.jpg',
     tier: 'mid-res',
     swath: 'Geometry object to be added',
-    metadata: { key: 'To be decided' },
+    metadata: {
+      summary: {
+        date: '2016-12-07T10:54:32.026Z',
+        instrument: 'MSI',
+        mode: 'INS-NOBS',
+        satellite: 'Sentinel-2',
+        size: '736.49 MB'
+      },
+      name_of_instrument: 'Multi-Spectral Instrument',
+      operational_mode_of_sensor: 'INS-NOBS',
+      orbit_direction: 'DESCENDING',
+      product_type: 'S2MSI1C',
+      cloud_coverage: 97.5818
+    },
     tile_url:
       'https://landsat-pds.s3.amazonaws.com/c1/L8/027/033/LC08_L1TP_027033_20190613_20190619_01_T1/LC08_L1TP_027033_20190613_20190619_01_T1_thumb_small.jpg',
     thumbnail_url:
@@ -739,7 +804,20 @@ const satelliteScenes = [
       'https://landsat-pds.s3.amazonaws.com/c1/L8/027/033/LC08_L1TP_027033_20200107_20200114_01_T1/LC08_L1TP_027033_20200107_20200114_01_T1_thumb_small.jpg',
     tier: 'high-res',
     swath: 'Geometry object to be added',
-    metadata: { key: 'To be decided' },
+    metadata: {
+      summary: {
+        date: '2016-12-07T10:54:32.026Z',
+        instrument: 'MSI',
+        mode: 'INS-NOBS',
+        satellite: 'Sentinel-2',
+        size: '736.49 MB'
+      },
+      name_of_instrument: 'Multi-Spectral Instrument',
+      operational_mode_of_sensor: 'INS-NOBS',
+      orbit_direction: 'DESCENDING',
+      product_type: 'S2MSI1C',
+      cloud_coverage: 97.5818
+    },
     tile_url:
       'https://landsat-pds.s3.amazonaws.com/c1/L8/027/033/LC08_L1TP_027033_20190613_20190619_01_T1/LC08_L1TP_027033_20190613_20190619_01_T1_thumb_small.jpg',
     thumbnail_url:
@@ -756,7 +834,20 @@ let pinnedScenes = [
     download_url:
       'https://landsat-pds.s3.amazonaws.com/c1/L8/027/033/LC08_L1TP_027033_20200107_20200114_01_T1/LC08_L1TP_027033_20200107_20200114_01_T1_thumb_small.jpg',
     tier: 'free',
-    metadata: { key: 'To be decided' },
+    metadata: {
+      summary: {
+        date: '2016-12-07T10:54:32.026Z',
+        instrument: 'MSI',
+        mode: 'INS-NOBS',
+        satellite: 'Sentinel-2',
+        size: '736.49 MB'
+      },
+      name_of_instrument: 'Multi-Spectral Instrument',
+      operational_mode_of_sensor: 'INS-NOBS',
+      orbit_direction: 'DESCENDING',
+      product_type: 'S2MSI1C',
+      cloud_coverage: 97.5818
+    },
     tile_url:
       'https://landsat-pds.s3.amazonaws.com/c1/L8/027/033/LC08_L1TP_027033_20190613_20190619_01_T1/LC08_L1TP_027033_20190613_20190619_01_T1_thumb_small.jpg',
 
@@ -772,7 +863,20 @@ let pinnedScenes = [
       'https://landsat-pds.s3.amazonaws.com/c1/L8/027/033/LC08_L1TP_027033_20200107_20200114_01_T1/LC08_L1TP_027033_20200107_20200114_01_T1_thumb_small.jpg',
     tier: 'free',
     swath: 'Geometry object to be added',
-    metadata: { key: 'To be decided' },
+    metadata: {
+      summary: {
+        date: '2016-12-07T10:54:32.026Z',
+        instrument: 'MSI',
+        mode: 'INS-NOBS',
+        satellite: 'Sentinel-2',
+        size: '736.49 MB'
+      },
+      name_of_instrument: 'Multi-Spectral Instrument',
+      operational_mode_of_sensor: 'INS-NOBS',
+      orbit_direction: 'DESCENDING',
+      product_type: 'S2MSI1C',
+      cloud_coverage: 97.5818
+    },
     tile_url:
       'https://landsat-pds.s3.amazonaws.com/c1/L8/027/033/LC08_L1TP_027033_20190613_20190619_01_T1/LC08_L1TP_027033_20190613_20190619_01_T1_thumb_small.jpg',
     thumbnail_url:
@@ -787,7 +891,20 @@ let pinnedScenes = [
       'https://landsat-pds.s3.amazonaws.com/c1/L8/027/033/LC08_L1TP_027033_20200107_20200114_01_T1/LC08_L1TP_027033_20200107_20200114_01_T1_thumb_small.jpg',
     tier: 'high-res',
     swath: 'Geometry object to be added',
-    metadata: { key: 'To be decided' },
+    metadata: {
+      summary: {
+        date: '2016-12-07T10:54:32.026Z',
+        instrument: 'MSI',
+        mode: 'INS-NOBS',
+        satellite: 'Sentinel-2',
+        size: '736.49 MB'
+      },
+      name_of_instrument: 'Multi-Spectral Instrument',
+      operational_mode_of_sensor: 'INS-NOBS',
+      orbit_direction: 'DESCENDING',
+      product_type: 'S2MSI1C',
+      cloud_coverage: 97.5818
+    },
     tile_url:
       'https://landsat-pds.s3.amazonaws.com/c1/L8/027/033/LC08_L1TP_027033_20190613_20190619_01_T1/LC08_L1TP_027033_20190613_20190619_01_T1_thumb_small.jpg',
     thumbnail_url:
