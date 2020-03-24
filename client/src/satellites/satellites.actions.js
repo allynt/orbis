@@ -65,6 +65,7 @@ export const fetchSatellites = () => async (dispatch, getState) => {
 };
 
 export const fetchSatelliteScenes = query => async (dispatch, getState) => {
+  dispatch({ type: REMOVE_SCENES });
   const {
     accounts: { userKey }
   } = getState();
