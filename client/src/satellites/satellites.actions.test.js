@@ -110,7 +110,7 @@ describe('Satellites Actions', () => {
       }
     );
 
-    const expectedActions = [{ type: FETCH_SATELLITE_SCENES_FAILURE, error: { message: '401 Test Error' } }];
+    const expectedAction = { type: FETCH_SATELLITE_SCENES_FAILURE, error: { message: '401 Test Error' } };
 
     const store = mockStore({
       accounts: {
@@ -121,7 +121,7 @@ describe('Satellites Actions', () => {
     const query = {};
     await store.dispatch(fetchSatelliteScenes(query));
 
-    expect(store.getActions()).toEqual(expectedActions);
+    expect(store.getActions()).toContainEqual(expectedAction);
   });
 
   it('should dispatch fetch satellites scenes success action.', async () => {
@@ -137,7 +137,7 @@ describe('Satellites Actions', () => {
     ];
     fetch.mockResponse(JSON.stringify(scenes));
 
-    const expectedActions = [{ type: FETCH_SATELLITE_SCENES_SUCCESS, scenes }];
+    const expectedAction = { type: FETCH_SATELLITE_SCENES_SUCCESS, scenes };
 
     const store = mockStore({
       accounts: {
@@ -151,7 +151,7 @@ describe('Satellites Actions', () => {
     const query = {};
     await store.dispatch(fetchSatelliteScenes(query));
 
-    expect(store.getActions()).toEqual(expectedActions);
+    expect(store.getActions()).toContainEqual(expectedAction);
   });
 
   it('should call selectScene action creator.', () => {
