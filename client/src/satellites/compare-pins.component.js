@@ -55,6 +55,7 @@ const ComparePins = ({ setSelectedMoreInfo, toggleMoreInfoDialog }, ref) => {
           name="compare"
           label="Compare"
           checked={isCompareMode}
+          disabled={selectedPinnedScenes.length !== MAX_SELECTED}
           onClick={() => dispatch(toggleCompareMaps())}
           ariaLabel="Compare"
         />
@@ -82,12 +83,9 @@ const ComparePins = ({ setSelectedMoreInfo, toggleMoreInfoDialog }, ref) => {
                 <Checkbox
                   name={scene.id}
                   label={scene.label}
-                  checked={selectedPinnedScenes.find(selectedScene => selectedScene.id === scene.id)}
-                  onChange={() => {
-                    if (selectedPinnedScenes.length !== MAX_SELECTED) {
-                      dispatch(selectPinnedScene(scene));
-                    }
-                  }}
+                  checked={isSelected}
+                  disabled={isDisabled}
+                  onChange={() => handleChange(isSelected, scene)}
                 />
                 <SceneListItem
                   index={index}
