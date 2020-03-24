@@ -30,3 +30,12 @@
   margin-top: 0.5rem;
   width: 70%;
 }
+
+.pinIcon {
+  width: 1.25rem;
+  height: auto;
+}
+
+.pinned {
+  transform: rotate(-45deg);
+}
