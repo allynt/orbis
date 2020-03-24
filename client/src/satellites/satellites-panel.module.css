@@ -10,37 +10,43 @@
 
 .navigationPanel {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
   margin-bottom: 1rem;
 }
 
-.content {
-  height: 100%;
-}
-
 .button {
   flex-direction: column;
-  width: 5rem;
-  height: auto;
   font-size: small !important;
-  background-color: transparent;
+  background-color: #171819;
   color: #a2aaad;
+  padding: 0.875rem 1.1rem;
 }
 
-.button:active {
-  background-color: var(--primary-button-background-color);
-  color: #333f48;
+.button:first-child {
+  border-radius: 0.3rem 0 0 0.3rem;
+}
+
+.button:last-child {
+  border-radius: 0 0.3rem 0.3rem 0;
+}
+
+.button:not(:first-child):not(:last-child) {
+  border-radius: 0;
 }
 
 .button:hover {
-  background-color: transparent;
-  color: #a2aaad;
+  background-color: var(--primary-button-background-color);
+  color: var(--primary-foreground-color);
 }
 
 .active {
-  background-color: var(--primary-button-background-color);
-  color: #333f48;
+  background-color: #414d55;
+  color: #fff;
+}
+
+.content {
+  height: 100%;
 }
 
 .icon {

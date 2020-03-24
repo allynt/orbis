@@ -33,7 +33,6 @@ describe('Satellites reducer', () => {
       selectedScene: null,
       error: null,
       satelliteSearches: null,
-      selectedSatelliteSearch: null,
       pinnedScenes: null,
       selectedPinnedScenes: [],
       currentSearchQuery: null
