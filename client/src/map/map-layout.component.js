@@ -28,6 +28,7 @@ const MapLayout = () => {
   const toolbarItems = getToolbarItems(dispatch);
 
   const mapStyle = useSelector(state => state.map.selectedMapStyle);
+  const selectedPinnedScenes = useSelector(state => state.satellites.selectedPinnedScenes);
 
   const [compareRatio, setCompareRatio] = useState(0.5);
   const [bounds, setBounds] = useState({ top: 0, right: 0, bottom: 0, left: 0, width: 0, height: 0 });
@@ -113,6 +114,7 @@ const MapLayout = () => {
                   sidebar={i === 0}
                   compare={isCompareMode}
                   compareRatio={compareRatio}
+                  comparisonScene={isCompareMode && selectedPinnedScenes[i]}
                 />
               </div>
             ))}

@@ -84,7 +84,7 @@ const ComparePins = ({ setSelectedMoreInfo, toggleMoreInfoDialog }, ref) => {
                   name={scene.id}
                   label={scene.label}
                   checked={isSelected}
-                  disabled={isDisabled}
+                  disabled={isCompareMode || isDisabled}
                   onChange={() => handleChange(isSelected, scene)}
                 />
                 <SceneListItem

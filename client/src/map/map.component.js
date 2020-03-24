@@ -62,7 +62,9 @@ const Map = ({
   layoutInvalidation,
   position,
   sidebar = false,
-  setMap
+  setMap,
+  compare,
+  comparisonScene
 }) => {
   const accessToken = useSelector(state => (state.app.config ? state.app.config.mapbox_token : null));
   const dataAuthToken = useSelector(state => state.map.dataToken);
@@ -75,6 +77,7 @@ const Map = ({
   const mapStyles = useSelector(state => state.map.mapStyles);
   const selectedMapStyle = useSelector(state => state.map.selectedMapStyle);
   const selectMapStyle = mapStyle => dispatch({ type: MAP_STYLE_SELECTED, mapStyle });
+  const selectedPinnedScenes = useSelector(state => state.satellites.selectedPinnedScenes);
 
   const isSaveMap = useSelector(state => state.map.saveMap);
 
@@ -284,7 +287,6 @@ const Map = ({
     mapInstance,
     map => {
       if (selectedScene) {
-        console.log('SELECTED SCERNE: ', selectedScene);
         const sourceId = `${selectedScene.id}-source`;
         const layerId = `${selectedScene.id}-layer`;
         map.addSource(sourceId, {
@@ -316,6 +318,39 @@ const Map = ({
       }
     },
     [selectedScene, scenes, dataAuthHost]
+  );
+
+  useMap(
+    mapInstance,
+    map => {
+      if (compare && comparisonScene) {
+        const sourceId = `${comparisonScene.id}-source`;
+        const layerId = `${comparisonScene.id}-layer`;
+        map.addSource(sourceId, {
+          type: 'raster',
+          tiles: [comparisonScene.tile_url],
+          scheme: 'tms',
+          tileSize: 256
+        });
+        map.addLayer({
+          id: layerId,
+          type: 'raster',
+          source: sourceId
+        });
+      } else {
+        if (selectedPinnedScenes) {
+          selectedPinnedScenes.forEach(scene => {
+            const sourceId = `${scene.id}-source`;
+            const layerId = `${scene.id}-layer`;
+            if (map.getSource(sourceId)) {
+              map.removeLayer(layerId);
+              map.removeSource(sourceId);
+            }
+          });
+        }
+      }
+    },
+    [compare]
   );
 
   const heading = useSelector(state => state.sidebar.heading);
