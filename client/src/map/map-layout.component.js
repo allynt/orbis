@@ -22,6 +22,7 @@ const times = (n, fn) => {
 
 const MapLayout = () => {
   const dispatch = useDispatch();
+  const user = useSelector(state => state.accounts.user);
   const isCompareMode = useSelector(state => state.map.isCompareMode);
   const mapCount = isCompareMode ? 2 : 1;
 
@@ -132,7 +133,7 @@ const MapLayout = () => {
           </div>
         )}
       </Measure>
-      <Toolbar items={toolbarItems} />
+      {user && <Toolbar user={user} items={toolbarItems} />}
     </div>
   );
 };
