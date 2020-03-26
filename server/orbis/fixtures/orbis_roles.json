@@ -1,0 +1,120 @@
+[
+{
+  "model": "astrosat_users.userpermission",
+  "fields": {
+    "name": "can_access_data_layers_toolbar_item",
+    "description": null
+  }
+},
+{
+  "model": "astrosat_users.userpermission",
+  "fields": {
+    "name": "can_access_satellite_toolbar_item",
+    "description": null
+  }
+},
+{
+  "model": "astrosat_users.userpermission",
+  "fields": {
+    "name": "can_access_pages_toolbar_item",
+    "description": null
+  }
+},
+{
+  "model": "astrosat_users.userpermission",
+  "fields": {
+    "name": "can_access_maps_toolbar_item",
+    "description": null
+  }
+},
+{
+  "model": "astrosat_users.userpermission",
+  "fields": {
+    "name": "can_access_stories_toolbar_item",
+    "description": null
+  }
+},
+{
+  "model": "astrosat_users.userpermission",
+  "fields": {
+    "name": "can_access_covid19_toolbar_item",
+    "description": null
+  }
+},
+{
+  "model": "astrosat_users.userpermission",
+  "fields": {
+    "name": "can_share_stories_with_group",
+    "description": null
+  }
+},
+{
+  "model": "astrosat_users.userpermission",
+  "fields": {
+    "name": "can_share_stories_with_individual",
+    "description": null
+  }
+},
+{
+  "model": "astrosat_users.userpermission",
+  "fields": {
+    "name": "can_share_maps_with_group",
+    "description": null
+  }
+},
+{
+  "model": "astrosat_users.userpermission",
+  "fields": {
+    "name": "can_share_maps_with_individual",
+    "description": null
+  }
+},
+{
+  "model": "astrosat_users.userrole",
+  "fields": {
+    "name": "OrbisRole",
+    "description": "Default role that all users of ORBIS are members of.",
+    "permissions": [
+      [
+        "can_access_data_layers_toolbar_item"
+      ],
+      [
+        "can_access_satellite_toolbar_item"
+      ],
+      [
+        "can_access_pages_toolbar_item"
+      ],
+      [
+        "can_access_maps_toolbar_item"
+      ],
+      [
+        "can_access_stories_toolbar_item"
+      ],
+      [
+        "can_share_stories_with_group"
+      ],
+      [
+        "can_share_stories_with_individual"
+      ],
+      [
+        "can_share_maps_with_group"
+      ],
+      [
+        "can_share_maps_with_individual"
+      ]
+    ]
+  }
+},
+{
+  "model": "astrosat_users.userrole",
+  "fields": {
+    "name": "OrkneyRole",
+    "description": "",
+    "permissions": [
+      [
+        "can_access_covid19_toolbar_item"
+      ]
+    ]
+  }
+}
+]
