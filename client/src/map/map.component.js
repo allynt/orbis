@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
+import ReactDOM from 'react-dom';
 
 import MapboxDraw from '@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw';
 import '@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css';
@@ -46,9 +47,11 @@ import {
 } from '../toolbar/toolbar-constants';
 import { GEOJSON, RASTER, VECTOR } from './map.constants';
 import useMapControl from './use-map-control.hook';
-import { useMapEvent } from './use-map-event.hook';
+import { useMapEvent, useMapLayerEvent } from './use-map-event.hook';
 import useMap from './use-map.hook';
 import useMapbox from './use-mapbox.hook';
+
+import InfrastructureDetail from './infrastructure-details.component';
 
 import layoutStyles from './map-layout.module.css';
 
@@ -96,6 +99,9 @@ const Map = ({
   const nonSelectedLayers = allLayers && allLayers.filter(layer => !selectedLayers.includes(layer));
   const scenes = useSelector(state => state.satellites.scenes);
   const selectedScene = useSelector(state => state.satellites.selectedScene);
+
+  const popupRef = useRef(null);
+  const [selectedInfoFeature, setSelectedInfoFeature] = useState(null);
 
   const dispatch = useDispatch();
 
@@ -261,32 +267,87 @@ const Map = ({
               type: 'circle',
               source: sourceId,
               paint: {
-                'circle-color': 'green',
+                'circle-color': ['case', ['has', 'point_count'], 'red', 'green'],
                 'circle-opacity': 0.6,
                 'circle-radius': 30
               },
               minzoom: 10,
               maxzoom: 19
             });
-            return () => {
-              map.removeLayer(`${layer.name}-circle`);
-              map.removeSource(sourceId);
-            };
+            map.addLayer({
+              id: `${layer.name}-label`,
+              source: sourceId,
+              type: 'symbol',
+              layout: {
+                'icon-image': 'hospital-15',
+                // 'icon-image': layer.icon,
+                'icon-size': 0.5,
+                'icon-allow-overlap': true,
+                'text-field': '{point_count}',
+                'text-offset': [0, 1.3]
+              },
+              minzoom: 10,
+              maxzoom: 19
+            });
           }
         }
 
         return () => {
-          console.log('REMOVE LAYERS: ', selectedLayers);
+          selectedLayers
+            .filter(layer => layer.visible)
+            .forEach(layer => {
+              map.removeLayer(`${layer.name}-circle`);
+              map.removeLayer(`${layer.name}-label`);
+              map.removeSource(sourceId);
+            });
         };
       });
     },
     [selectedLayers, dataAuthHost]
   );
 
+  const visibleLayers = selectedLayers.map(layer => `${layer.name}-circle`);
+
+  useMapLayerEvent(
+    mapInstance,
+    'click',
+    visibleLayers,
+    event => {
+      event.preventDefault();
+
+      const { features, lngLat } = event;
+
+      if (features && features.length > 0) {
+        if (features[0].properties.point_count) {
+          mapInstance.flyTo({
+            center: [lngLat.lng, lngLat.lat],
+            zoom: mapInstance.getZoom() + 1
+          });
+        } else {
+          if (!popupRef.current) {
+            const div = document.createElement('div');
+            popupRef.current = div;
+          }
+          // Only take the first feature, which should be the top most
+          // feature and the one you meant.
+          new mapboxgl.Popup()
+            .setLngLat(features[0].geometry.coordinates.slice())
+            .setDOMContent(popupRef.current)
+            .on('close', () => setSelectedInfoFeature(null))
+            .addTo(mapInstance);
+
+          setSelectedInfoFeature(features[0]);
+        }
+      }
+    },
+    [visibleLayers, setSelectedInfoFeature]
+  );
+
   useMap(
     mapInstance,
     map => {
       if (selectedScene) {
+        console.log('SELECTED SCERNE: ', selectedScene);
         const sourceId = `${selectedScene.id}-source`;
         const layerId = `${selectedScene.id}-layer`;
         map.addSource(sourceId, {
@@ -402,6 +463,14 @@ const Map = ({
           selectMapStyle={selectMapStyle}
         />
       )}
+
+      {selectedInfoFeature &&
+        ReactDOM.createPortal(
+          <div className={layoutStyles.popup}>
+            <InfrastructureDetail feature={selectedInfoFeature} />
+          </div>,
+          popupRef.current
+        )}
     </>
   );
 };

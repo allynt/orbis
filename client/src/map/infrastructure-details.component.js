@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import parseISO from 'date-fns/parseISO';
-import formatDate from '../utils/formatDate';
+import formatDate from '../utils/dates';
 
 import styles from './infrastructure-detail.module.css';
 
@@ -49,8 +49,7 @@ const InfrastructureDetail = ({ feature }) => (
     <li>
       <span className={styles.label}>Close Date:</span>
       <span>
-        {feature.properties.close_date &&
-        feature.properties.close_date !== 'null' // weird check here as it looks like mapbox converts null properties to string "null".
+        {feature.properties.close_date && feature.properties.close_date !== 'null' // weird check here as it looks like mapbox converts null properties to string "null".
           ? formatDate(parseISO(feature.properties.close_date))
           : 'N/A'}
       </span>
