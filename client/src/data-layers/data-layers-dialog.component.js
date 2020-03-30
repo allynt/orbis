@@ -33,7 +33,7 @@ const DataLayersDialog = ({ isVisible, close, title }, ref) => {
           <div className={styles.dialog} tabIndex={-1} role="dialog" aria-label="Data Layer dialog">
             <CloseButton className={styles.closeButton} onClick={close} ariaLabel="Close" />
             <div className={styles.content}>
-              <OrbSelect domains={domains} onDomainClick={setSelectedDomain} />
+              <OrbSelect domains={domains} onDomainClick={setSelectedDomain} selectedDomain={selectedDomain} />
               <LayerSelect
                 domain={selectedDomain}
                 onAddLayers={selectedLayers => dispatch(addLayers(selectedLayers))}

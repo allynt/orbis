@@ -39,12 +39,6 @@
   height: inherit;
 }
 
-.dialog .categories {
-  border-top-left-radius: 1rem;
-  border-bottom-left-radius: 1rem;
-  background-color: #f6be00;
-}
-
 .dialog .subcategories {
   /* padding: 1rem; */
   border-top-right-radius: 1rem;
