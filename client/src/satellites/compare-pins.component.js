@@ -36,10 +36,13 @@ const ComparePins = ({ setSelectedMoreInfo, toggleMoreInfoDialog }, ref) => {
     if (!pinnedScenes) {
       dispatch(fetchPinnedScenes());
     }
+
     return () => {
-      dispatch(toggleCompareMaps());
+      if (isCompareMode) {
+        dispatch(toggleCompareMaps());
+      }
     };
-  }, [pinnedScenes]);
+  }, [pinnedScenes, isCompareMode]);
 
   const handleChange = (isSelected, scene) => {
     if (isSelected) {
