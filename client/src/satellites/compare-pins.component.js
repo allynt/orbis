@@ -59,7 +59,12 @@ const ComparePins = ({ setSelectedMoreInfo, toggleMoreInfoDialog }, ref) => {
           onClick={() => dispatch(toggleCompareMaps())}
           ariaLabel="Compare"
         />
-        <Button theme="link" classNames={[styles.button]} onClick={() => dispatch(clearSelectedPinnedScenes([]))}>
+        <Button
+          theme="link"
+          classNames={[styles.button]}
+          onClick={() => dispatch(clearSelectedPinnedScenes([]))}
+          disabled={isCompareMode}
+        >
           Clear Pins
         </Button>
       </div>
@@ -74,7 +79,7 @@ const ComparePins = ({ setSelectedMoreInfo, toggleMoreInfoDialog }, ref) => {
             const Icon = (
               <DeleteIcon
                 onClick={() => {
-                  dispatch(deletePinnedScene(scene.id));
+                  !isCompareMode && dispatch(deletePinnedScene(scene.id));
                 }}
               />
             );

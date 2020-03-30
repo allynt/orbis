@@ -112,8 +112,9 @@ const MapLayout = () => {
                   style={mapStyle.uri}
                   position={i}
                   sidebar={i === 0}
-                  compare={isCompareMode}
                   compareRatio={compareRatio}
+                  compare={isCompareMode}
+                  selectedPinnedScenes={selectedPinnedScenes}
                   comparisonScene={isCompareMode && selectedPinnedScenes[i]}
                 />
               </div>

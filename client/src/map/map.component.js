@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import MapboxDraw from '@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw';
 import '@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css';
@@ -64,6 +64,7 @@ const Map = ({
   sidebar = false,
   setMap,
   compare,
+  selectedPinnedScenes,
   comparisonScene
 }) => {
   const accessToken = useSelector(state => (state.app.config ? state.app.config.mapbox_token : null));
@@ -77,7 +78,6 @@ const Map = ({
   const mapStyles = useSelector(state => state.map.mapStyles);
   const selectedMapStyle = useSelector(state => state.map.selectedMapStyle);
   const selectMapStyle = mapStyle => dispatch({ type: MAP_STYLE_SELECTED, mapStyle });
-  const selectedPinnedScenes = useSelector(state => state.satellites.selectedPinnedScenes);
 
   const isSaveMap = useSelector(state => state.map.saveMap);
 
