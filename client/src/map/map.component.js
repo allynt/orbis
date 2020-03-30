@@ -52,8 +52,12 @@ import useMap from './use-map.hook';
 import useMapbox from './use-mapbox.hook';
 
 import InfrastructureDetail from './infrastructure-details.component';
+import UserInfoDetail from './user-info-details.component';
 
 import layoutStyles from './map-layout.module.css';
+
+const USER_INFO_TYPE = 'USER_INFO_TYPE';
+const INFRASTRUCTURE_INFO_TYPE = 'INFRASTRUCTURE_INFO_TYPE';
 
 const Map = ({
   style = 'mapbox://styles/mapbox/satellite-v9',
@@ -95,6 +99,9 @@ const Map = ({
       acc = Array.from(new Set([...acc, ...value.layers]));
       return acc;
     }, []);
+
+  const [selectedInfoFeatures, setSelectedInfoFeatures] = useState(null);
+  const [clickableLayers, setClickableLayers] = useState([]);
   const selectedLayers = useSelector(state => state.dataLayers.layers);
   const nonSelectedLayers = allLayers && allLayers.filter(layer => !selectedLayers.includes(layer));
   const scenes = useSelector(state => state.satellites.scenes);
@@ -227,7 +234,14 @@ const Map = ({
               scheme: 'tms'
             });
 
-            map.addLayer({ id: `${layer.name}-layer`, type: layer.type, source: sourceId, layout: {}, paint: {} });
+            map.addLayer({
+              id: `${layer.name}-layer`,
+              type: layer.type,
+              source: sourceId,
+              layout: {},
+              paint: {}
+            });
+
             return () => {
               map.removeLayer(`${layer.name}-layer`);
               map.removeSource(sourceId);
@@ -252,9 +266,15 @@ const Map = ({
             };
           } else if (layer.type.toLowerCase() === GEOJSON) {
             const sourceId = `${layer.name}-source`;
+            let data = null;
+            if (layer.data) {
+              data = layer.data;
+            } else if (layer.metadata.url) {
+              data = layer.metadata.url;
+            }
             map.addSource(sourceId, {
               type: 'geojson',
-              data: layer.metadata.url,
+              data,
               cluster: true,
               clusterMaxZoom: 14,
               clusterRadius: 50
@@ -262,33 +282,77 @@ const Map = ({
 
             // circle and symbol layers for rendering clustered and
             // non-clustered features.
+            let clusterlayerName = `${layer.name}-main`;
             map.addLayer({
-              id: `${layer.name}-circle`,
+              id: clusterlayerName,
               type: 'circle',
               source: sourceId,
+              filter: ['any', ['has', 'point_count'], ['!', ['has', 'person_type']]],
               paint: {
-                'circle-color': ['case', ['has', 'point_count'], 'red', 'green'],
-                'circle-opacity': 0.6,
-                'circle-radius': 30
-              },
-              minzoom: 10,
-              maxzoom: 19
+                'circle-color': '#f6be00',
+                'circle-opacity': 1,
+                'circle-radius': [
+                  'case',
+                  ['has', 'point_count'],
+                  ['*', 5, ['to-number', ['get', 'point_count'], 0]],
+                  30
+                ]
+              } //,
+              // minzoom: 10,
+              // maxzoom: 19
             });
+
+            // Clustered layer
             map.addLayer({
-              id: `${layer.name}-label`,
+              id: `${layer.name}-label-clustered`,
               source: sourceId,
               type: 'symbol',
+              filter: ['has', 'point_count'],
               layout: {
-                'icon-image': 'hospital-15',
-                // 'icon-image': layer.icon,
-                'icon-size': 0.5,
-                'icon-allow-overlap': true,
-                'text-field': '{point_count}',
-                'text-offset': [0, 1.3]
-              },
-              minzoom: 10,
-              maxzoom: 19
+                'text-field': '{point_count}'
+              } //,
+              // minzoom: 10,
+              // maxzoom: 19
             });
+
+            // Non-Clustered infrastructure layer
+            map.addLayer({
+              id: `${layer.name}-infrastructure-label`,
+              source: sourceId,
+              type: 'symbol',
+              filter: ['all', ['!', ['has', 'point_count']], ['!', ['has', 'person_type']]],
+              layout: {
+                'icon-image': '{type}',
+                'icon-size': 0.5,
+                'icon-allow-overlap': true
+              } //,
+              // minzoom: 10,
+              // maxzoom: 19
+            });
+
+            const populationLayerName = `${layer.name}-population-label`;
+            map.addLayer({
+              id: populationLayerName,
+              source: sourceId,
+              type: 'circle',
+              filter: ['all', ['!', ['has', 'point_count']], ['has', 'person_type']],
+              paint: {
+                'circle-color': [
+                  'case',
+                  ['==', ['get', 'person_type'], 'HELPER'],
+                  'green',
+                  ['==', ['get', 'person_type'], 'HELPEE'],
+                  'red',
+                  'black'
+                ],
+                'circle-opacity': 1,
+                'circle-radius': 10
+              } //,
+              // minzoom: 10,
+              // maxzoom: 19
+            });
+
+            setClickableLayers([...clickableLayers, clusterlayerName, populationLayerName]);
           }
         }
 
@@ -297,7 +361,10 @@ const Map = ({
             .filter(layer => layer.visible)
             .forEach(layer => {
               map.removeLayer(`${layer.name}-circle`);
-              map.removeLayer(`${layer.name}-label`);
+              map.removeLayer(`${layer.name}-infrastructure-label`);
+              map.removeLayer(`${layer.name}-population-label`);
+              map.removeLayer(`${layer.name}-label-clustered`);
+              map.removeLayer(`${layer.name}-main`);
               map.removeSource(sourceId);
             });
         };
@@ -306,12 +373,10 @@ const Map = ({
     [selectedLayers, dataAuthHost]
   );
 
-  const visibleLayers = selectedLayers.map(layer => `${layer.name}-circle`);
-
   useMapLayerEvent(
     mapInstance,
     'click',
-    visibleLayers,
+    clickableLayers,
     event => {
       event.preventDefault();
 
@@ -333,21 +398,24 @@ const Map = ({
           new mapboxgl.Popup()
             .setLngLat(features[0].geometry.coordinates.slice())
             .setDOMContent(popupRef.current)
-            .on('close', () => setSelectedInfoFeature(null))
+            .on('close', () => setSelectedInfoFeatures(null))
             .addTo(mapInstance);
 
-          setSelectedInfoFeature(features[0]);
+          if (features[0].properties.person_type) {
+            setSelectedInfoFeatures({ type: USER_INFO_TYPE, data: features });
+          } else {
+            setSelectedInfoFeatures({ type: INFRASTRUCTURE_INFO_TYPE, data: features });
+          }
         }
       }
     },
-    [visibleLayers, setSelectedInfoFeature]
+    [clickableLayers, setSelectedInfoFeatures]
   );
 
   useMap(
     mapInstance,
     map => {
       if (selectedScene) {
-        console.log('SELECTED SCERNE: ', selectedScene);
         const sourceId = `${selectedScene.id}-source`;
         const layerId = `${selectedScene.id}-layer`;
         map.addSource(sourceId, {
@@ -464,10 +532,15 @@ const Map = ({
         />
       )}
 
-      {selectedInfoFeature &&
+      {selectedInfoFeatures &&
         ReactDOM.createPortal(
           <div className={layoutStyles.popup}>
-            <InfrastructureDetail feature={selectedInfoFeature} />
+            {selectedInfoFeatures && selectedInfoFeatures.type === USER_INFO_TYPE && (
+              <UserInfoDetail features={selectedInfoFeatures.data} />
+            )}
+            {selectedInfoFeatures && selectedInfoFeatures.type === INFRASTRUCTURE_INFO_TYPE && (
+              <InfrastructureDetail feature={selectedInfoFeatures.data[0]} />
+            )}
           </div>,
           popupRef.current
         )}

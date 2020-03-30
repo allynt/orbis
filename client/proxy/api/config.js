@@ -4,10 +4,12 @@ const appConfig = {
   trackingId: 'UA-143753043-1',
   mapbox_token: 'pk.eyJ1IjoidGhlcm1jZXJ0IiwiYSI6ImNqbmN5N2F6NzBnODYza3A2anVqYWExOW8ifQ.10y0sH8cDQp9AfZNg1-M3Q',
   mapStyles: [
-    { id: 'streets', uri: 'mapbox://styles/mapbox/streets-v11', title: 'Taking It To The Streets' },
+    // { id: 'streets', uri: 'mapbox://styles/mapbox/streets-v11', title: 'Taking It To The Streets' },
+    { id: 'streets', uri: 'mapbox://styles/astrosat/ck8em6n9k08gk1inv9qcc7c59', title: 'Taking It To The Streets' },
     { id: 'light', uri: 'mapbox://styles/mapbox/light-v10', title: 'Light My Fire' },
     { id: 'dark', uri: 'mapbox://styles/mapbox/dark-v10', title: 'Dark Was The Night' },
-    { id: 'satellite', uri: 'mapbox://styles/mapbox/satellite-v9', title: 'Satellite Of Love' }
+    // { id: 'satellite', uri: 'mapbox://styles/mapbox/satellite-v9', title: 'Satellite Of Love' }
+    { id: 'satellite', uri: 'mapbox://styles/astrosat/ck8em8hzn2cdv1hnvj8e179b8', title: 'Satellite Of Love' }
   ],
   maximumAoiArea: 500
 };
@@ -200,73 +202,233 @@ const sources = {
       ]
     },
     {
-      label: 'Virus Action',
+      label: 'Action for Health and Help',
       layers: [
         {
-          name: 'helpers',
+          name: 'population-information',
           metadata: {
-            label: 'helpers',
-            domain: 'Virus Action',
-            range: true,
-            description: 'Description of helper layer.'
+            label: 'Population information',
+            domain: 'Action for Health and Help',
+            range: false,
+            description: 'Description of Population information layer.'
           },
           type: 'geojson',
           data: {
-            type: 'feature-collection',
+            type: 'FeatureCollection',
             features: [
               {
+                id: 1,
                 type: 'Feature',
-                geometry: { type: 'Point', coordinates: [-3.249843, 59.096756] },
+                geometry: { type: 'Point', coordinates: [-3.165556, 55.911667] },
                 properties: {
-                  postcode: 'EH7 5JA',
-                  firstName: 'Freddie',
-                  surname: 'Mercury',
-                  type: 'HELPER'
+                  pk: 1,
+                  created: '2020-03-30T12:41:38.618452Z',
+                  person_type: 'HELPER',
+                  name: 'MR Zdenek Zlamal',
+                  age: 25,
+                  phone_number: '+447561866337',
+                  email_address: 'a@b.com',
+                  description: 'Hello world.',
+                  postcode: 'EH15 1AS'
                 }
               },
               {
+                id: 2,
                 type: 'Feature',
-                geometry: { type: 'Point', coordinates: [-3.130348, 59.041629] },
+                geometry: { type: 'Point', coordinates: [-3.165556, 55.912667] },
                 properties: {
-                  postcode: 'EH7 5JA',
-                  firstName: 'John',
-                  surname: 'McClane',
-                  type: 'HELPER'
+                  pk: 2,
+                  created: '2020-03-30T12:42:31.761525Z',
+                  person_type: 'HELPEE',
+                  name: 'MR Colin Doyle',
+                  age: 25,
+                  phone_number: '+447561866337',
+                  email_address: 'a@b.com',
+                  description: 'Hello world.',
+                  postcode: 'EH15 1AS'
+                }
+              },
+              {
+                id: 3,
+                type: 'Feature',
+                geometry: { type: 'Point', coordinates: [-3.165456, 55.912067] },
+                properties: {
+                  pk: 3,
+                  created: '2020-03-30T12:43:07.309154Z',
+                  person_type: 'HELPER',
+                  name: 'MR Joel Pereira',
+                  age: 25,
+                  phone_number: '+447561866337',
+                  email_address: 'a@b.com',
+                  description: 'Hello world.',
+                  postcode: 'EH15 1AS'
+                }
+              },
+              {
+                id: 4,
+                type: 'Feature',
+                geometry: { type: 'Point', coordinates: [-3.165656, 55.912067] },
+                properties: {
+                  pk: 4,
+                  created: '2020-03-30T12:44:06.601159Z',
+                  person_type: 'HELPEE',
+                  name: 'MR Michael Smith',
+                  age: 25,
+                  phone_number: '+447561866337',
+                  email_address: 'a@b.com',
+                  description: 'Hello world.',
+                  postcode: 'EH15 1AS'
+                }
+              },
+              {
+                id: 5,
+                type: 'Feature',
+                geometry: { type: 'Point', coordinates: [-3.165656, 55.912067] },
+                properties: {
+                  pk: 5,
+                  created: '2020-03-30T12:44:06.601159Z',
+                  person_type: 'HELPEE',
+                  name: 'MR Michael Smith II',
+                  age: 25,
+                  phone_number: '+447561866337',
+                  email_address: 'a@b.com',
+                  description: 'Hello world.',
+                  postcode: 'EH15 1AS'
+                }
+              },
+              {
+                id: 6,
+                type: 'Feature',
+                geometry: { type: 'Point', coordinates: [-3.165656, 55.812067] },
+                properties: {
+                  pk: 6,
+                  created: '2020-03-30T12:44:06.601159Z',
+                  person_type: 'HELPEE',
+                  name: 'Ms Jane Doe',
+                  age: 25,
+                  phone_number: '+447561866337',
+                  email_address: 'a@b.com',
+                  description: 'Hello world.',
+                  postcode: 'EH15 1AS'
+                }
+              },
+              {
+                id: 7,
+                type: 'Feature',
+                geometry: { type: 'Point', coordinates: [-3.165656, 55.814067] },
+                properties: {
+                  pk: 7,
+                  created: '2020-03-30T12:44:06.601159Z',
+                  person_type: 'HELPEE',
+                  name: 'Ms Jane Doe-Smith',
+                  age: 25,
+                  phone_number: '+447561866337',
+                  email_address: 'a@b.com',
+                  description: 'Hello world.',
+                  postcode: 'EH15 1AS'
+                }
+              },
+              {
+                id: 8,
+                type: 'Feature',
+                geometry: { type: 'Point', coordinates: [-3.165656, 55.814067] },
+                properties: {
+                  pk: 8,
+                  created: '2020-03-30T12:44:06.601159Z',
+                  person_type: 'HELPER',
+                  name: 'MR Jack Frost',
+                  age: 25,
+                  phone_number: '+447561866337',
+                  email_address: 'a@b.com',
+                  description: 'Hello world.',
+                  postcode: 'EH15 1AS'
+                }
+              },
+              {
+                id: 9,
+                type: 'Feature',
+                geometry: { type: 'Point', coordinates: [-3.165656, 55.814067] },
+                properties: {
+                  pk: 9,
+                  created: '2020-03-30T12:44:06.601159Z',
+                  person_type: 'HELPEE',
+                  name: 'MR John Hancock',
+                  age: 25,
+                  phone_number: '+447561866337',
+                  email_address: 'a@b.com',
+                  description: 'Hello world.',
+                  postcode: 'EH15 1AS'
                 }
               }
             ]
           }
         },
         {
-          name: 'helpees',
+          name: 'health-infrastructure',
           metadata: {
-            label: 'helpees',
-            domain: 'Virus Action',
-            range: true,
-            description: 'Description of helpee layer.'
+            label: 'Health infrastructure',
+            domain: 'Action for Health and Help',
+            range: false,
+            description: 'Description of Health infrastructure layer.'
           },
           type: 'geojson',
           data: {
-            type: 'feature-collection',
+            type: 'FeatureCollection',
             features: [
               {
+                id: 1,
                 type: 'Feature',
-                geometry: { type: 'Point', coordinates: [-3.142321, 59.114905] },
+                geometry: { type: 'Point', coordinates: [-3.16856, 55.911667] },
                 properties: {
-                  postcode: 'EH7 5JA',
-                  firstName: 'Homer',
-                  surname: 'Simpson',
-                  type: 'HELPEE'
+                  pk: 1,
+                  type: 'hospitals',
+                  name: 'Hospital One',
+                  phone_number: '+447561866337',
+                  address1: '1 Street Name',
+                  address2: 'Edinburgh',
+                  postcode: 'EH15 1AS'
                 }
               },
               {
+                id: 2,
                 type: 'Feature',
-                geometry: { type: 'Point', coordinates: [-3.025658, 59.057894] },
+                geometry: { type: 'Point', coordinates: [-3.165856, 55.911567] },
                 properties: {
-                  postcode: 'EH7 5JA',
-                  firstName: 'Humphrey',
-                  surname: 'Bogart',
-                  type: 'HELPEE'
+                  pk: 2,
+                  type: 'gp-surgeries',
+                  name: 'GP One',
+                  phone_number: '+447561866337',
+                  address1: '1 Street Name',
+                  address2: 'Edinburgh',
+                  postcode: 'EH15 1AS'
+                }
+              },
+              {
+                id: 3,
+                type: 'Feature',
+                geometry: { type: 'Point', coordinates: [-3.165856, 55.911467] },
+                properties: {
+                  pk: 3,
+                  type: 'nhs',
+                  name: 'NHS Trust One',
+                  phone_number: '+447561866337',
+                  address1: '1 Street Name',
+                  address2: 'Edinburgh',
+                  postcode: 'EH15 1AS'
+                }
+              },
+              {
+                id: 4,
+                type: 'Feature',
+                geometry: { type: 'Point', coordinates: [-3.165856, 55.912067] },
+                properties: {
+                  pk: 4,
+                  type: 'pharmacies',
+                  name: 'Pharmacy One',
+                  phone_number: '+447561866337',
+                  address1: '1 Street Name',
+                  address2: 'Edinburgh',
+                  postcode: 'EH15 1AS'
                 }
               }
             ]
