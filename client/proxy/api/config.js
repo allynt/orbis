@@ -198,6 +198,81 @@ const sources = {
           }
         }
       ]
+    },
+    {
+      label: 'Virus Action',
+      layers: [
+        {
+          name: 'helpers',
+          metadata: {
+            label: 'helpers',
+            domain: 'Virus Action',
+            range: true,
+            description: 'Description of helper layer.'
+          },
+          type: 'geojson',
+          data: {
+            type: 'feature-collection',
+            features: [
+              {
+                type: 'Feature',
+                geometry: { type: 'Point', coordinates: [-3.249843, 59.096756] },
+                properties: {
+                  postcode: 'EH7 5JA',
+                  firstName: 'Freddie',
+                  surname: 'Mercury',
+                  type: 'HELPER'
+                }
+              },
+              {
+                type: 'Feature',
+                geometry: { type: 'Point', coordinates: [-3.130348, 59.041629] },
+                properties: {
+                  postcode: 'EH7 5JA',
+                  firstName: 'John',
+                  surname: 'McClane',
+                  type: 'HELPER'
+                }
+              }
+            ]
+          }
+        },
+        {
+          name: 'helpees',
+          metadata: {
+            label: 'helpees',
+            domain: 'Virus Action',
+            range: true,
+            description: 'Description of helpee layer.'
+          },
+          type: 'geojson',
+          data: {
+            type: 'feature-collection',
+            features: [
+              {
+                type: 'Feature',
+                geometry: { type: 'Point', coordinates: [-3.142321, 59.114905] },
+                properties: {
+                  postcode: 'EH7 5JA',
+                  firstName: 'Homer',
+                  surname: 'Simpson',
+                  type: 'HELPEE'
+                }
+              },
+              {
+                type: 'Feature',
+                geometry: { type: 'Point', coordinates: [-3.025658, 59.057894] },
+                properties: {
+                  postcode: 'EH7 5JA',
+                  firstName: 'Humphrey',
+                  surname: 'Bogart',
+                  type: 'HELPEE'
+                }
+              }
+            ]
+          }
+        }
+      ]
     }
   ]
 };
