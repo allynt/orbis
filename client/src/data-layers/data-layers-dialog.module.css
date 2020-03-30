@@ -20,7 +20,7 @@
   flex-direction: column;
   background: white;
   border-radius: 1rem;
-  height: 15rem;
+  height: auto;
 }
 
 .dialog .header {
@@ -39,49 +39,8 @@
   height: inherit;
 }
 
-.dialog .subcategories {
-  /* padding: 1rem; */
-  border-top-right-radius: 1rem;
-  border-bottom-right-radius: 1rem;
-  background-color: #fff;
-}
-
-.dialog .subCategoryOptions {
-  width: 100%;
-}
-
-.dialog .row {
-  position: relative;
-  display: flex;
-  justify-content: space-between;
-  width: 100%;
-}
-
-.dialog .row .info {
-  justify-self: flex-end;
-}
-
 .dialog .buttons {
   display: flex;
   justify-content: flex-end;
   width: 100%;
-}
-
-.infoBox {
-  position: absolute;
-  display: block;
-  bottom: 40px;
-  /* margin-top: -80px; */
-  right: -5px;
-  background-color: rgba(246, 190, 0, 0.8);
-}
-
-.infoBox:before {
-  content: '';
-  position: absolute;
-  right: 11px;
-  bottom: -10px;
-  border-style: solid;
-  border-width: 10px 10px 0 10px;
-  border-color: rgba(246, 190, 0, 0.8) transparent transparent transparent;
 }

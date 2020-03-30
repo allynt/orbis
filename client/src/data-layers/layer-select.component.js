@@ -4,7 +4,8 @@ import InfoButton from '@astrosat/astrosat-ui/dist/buttons/info-button';
 import Button from '@astrosat/astrosat-ui/dist/buttons/button';
 import Switch from '@astrosat/astrosat-ui/dist/buttons/switch';
 
-import styles from './data-layers-dialog.module.css';
+import dialogStyles from './data-layers-dialog.module.css';
+import styles from './layer-select.module.css';
 
 const InfoBox = ({ info }) => <div className={styles.infoBox}>{info}</div>;
 
@@ -13,63 +14,67 @@ export const LayerSelect = ({ domain, onAddLayers }) => {
   const [isInfoVisible, setIsInfoVisible] = useState(false);
   const [info, setInfo] = useState(null);
 
+  const addButtonDisabled = selectedLayers.length <= 0;
+
+  const handleSwitchClick = layer => () => {
+    // Remove if already selected, otherwise add to list of selected layers.
+    const selectedLayer = selectedLayers.find(selected => selected.metadata.label === layer.metadata.label);
+
+    selectedLayer
+      ? setSelectedLayers(selectedLayers.filter(lyr => lyr.metadata.label !== selectedLayer.metadata.label))
+      : setSelectedLayers([...selectedLayers, layer]);
+  };
+
+  const handleInfoClick = layer => () => {
+    setIsInfoVisible(old => !old);
+    setInfo(layer);
+  };
+
+  const handleAddClick = () => {
+    onAddLayers(selectedLayers);
+  };
+
   return (
     <div className={styles.subcategories}>
-      <div className={styles.header}>
+      <div className={dialogStyles.header}>
         <h3>Select Your Layers</h3>
       </div>
-      {domain && (
-        <div className={styles.subCategoryOptions}>
-          <ul>
-            {domain &&
-              domain.layers.map(layer => {
-                return (
-                  <li key={layer.metadata.label}>
-                    <div className={styles.row}>
+      <div className={styles.layerList}>
+        {domain ? (
+          <>
+            <ul>
+              {domain &&
+                domain.layers.map(layer => {
+                  return (
+                    <li key={layer.metadata.label} className={styles.row}>
                       <Switch
                         name={layer.name}
                         value={layer.name}
                         label={layer.metadata.label}
-                        onClick={() => {
-                          // Remove if already selected, otherwise add to list of selected layers.
-                          const selectedLayer = selectedLayers.find(
-                            selected => selected.metadata.label === layer.metadata.label
-                          );
-
-                          selectedLayer
-                            ? setSelectedLayers(
-                                selectedLayers.filter(lyr => lyr.metadata.label !== selectedLayer.metadata.label)
-                              )
-                            : setSelectedLayers([...selectedLayers, layer]);
-                        }}
+                        onClick={handleSwitchClick(layer)}
                         ariaLabel={layer.metadata.label}
                       />
-
                       {isInfoVisible && info.name === layer.name && <InfoBox info={layer.metadata.description} />}
+                      <InfoButton classNames={[styles.info]} onClick={handleInfoClick(layer)} />
+                    </li>
+                  );
+                })}
+            </ul>
 
-                      <InfoButton
-                        classNames={[styles.info]}
-                        onClick={() => {
-                          setIsInfoVisible(!isInfoVisible);
-                          setInfo(layer);
-                        }}
-                      />
-                    </div>
-                    {selectedLayers.find(selected => selected.metadata.label === layer.metadata.label) &&
-                      layer.metadata.range && <div>START/END DATE</div>}
-                  </li>
-                );
-              })}
-          </ul>
-
-          <div className={styles.buttons}>
-            <Button onClick={() => onAddLayers(selectedLayers)} theme="primary" disabled={selectedLayers.length === 0}>
-              Add
-            </Button>
-          </div>
-        </div>
-      )}
-      {!domain && <div>No Domain selected</div>}
+            <div className={dialogStyles.buttons}>
+              <Button
+                classNames={[styles.addButton, addButtonDisabled && styles.disabled]}
+                onClick={handleAddClick}
+                disabled={addButtonDisabled}
+              >
+                Add
+              </Button>
+            </div>
+          </>
+        ) : (
+          <div>No Domain selected</div>
+        )}
+      </div>
     </div>
   );
 };
