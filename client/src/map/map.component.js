@@ -219,6 +219,10 @@ const Map = ({
             });
 
             map.addLayer({ id: `${layer.name}-layer`, type: layer.type, source: sourceId, layout: {}, paint: {} });
+            return () => {
+              map.removeLayer(`${layer.name}-layer`);
+              map.removeSource(sourceId);
+            };
           } else if (layer.type.toLowerCase() === VECTOR) {
             map.addSource(sourceId, {
               type: layer.type,
@@ -233,6 +237,10 @@ const Map = ({
               layout: {},
               paint: { 'fill-outline-color': '#484496', 'fill-color': 'green' }
             });
+            return () => {
+              map.removeLayer(`${layer.name}-layer`);
+              map.removeSource(sourceId);
+            };
           } else if (layer.type.toLowerCase() === GEOJSON) {
             const sourceId = `${layer.name}-source`;
             map.addSource(sourceId, {
@@ -257,6 +265,10 @@ const Map = ({
               minzoom: 10,
               maxzoom: 19
             });
+            return () => {
+              map.removeLayer(`${layer.name}-circle`);
+              map.removeSource(sourceId);
+            };
           }
         }
 
@@ -286,6 +298,10 @@ const Map = ({
           type: 'raster',
           source: sourceId
         });
+        return () => {
+          map.removeLayer(layerId);
+          map.removeSource(sourceId);
+        };
       } else {
         if (scenes) {
           scenes.forEach(scene => {
