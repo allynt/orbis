@@ -25,7 +25,6 @@ const DataLayers = () => {
   // console.log('IS VISIBLE: ', isVisible);
   const dispatch = useDispatch();
   const selectedLayers = useSelector(state => state.dataLayers.layers);
-  console.log('SELECTED LAYERS: ', selectedLayers);
 
   return (
     <div className={styles.selectData} ref={ref}>
@@ -70,7 +69,13 @@ const DataLayers = () => {
         </Button>
       </div>
 
-      <DataLayersDialog isVisible={isVisible} title="Create New Map" close={toggle} ref={ref}></DataLayersDialog>
+      <DataLayersDialog
+        selectedLayers={selectedLayers}
+        isVisible={isVisible}
+        title="Create New Map"
+        close={toggle}
+        ref={ref}
+      ></DataLayersDialog>
     </div>
   );
 };

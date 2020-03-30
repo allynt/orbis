@@ -9,8 +9,8 @@ import styles from './layer-select.module.css';
 
 const InfoBox = ({ info }) => <div className={styles.infoBox}>{info}</div>;
 
-export const LayerSelect = ({ domain, onAddLayers }) => {
-  const [selectedLayers, setSelectedLayers] = useState([]);
+export const LayerSelect = ({ domain, initialSelectedLayers, onAddLayers }) => {
+  const [selectedLayers, setSelectedLayers] = useState(initialSelectedLayers);
   const [isInfoVisible, setIsInfoVisible] = useState(false);
   const [info, setInfo] = useState(null);
 
@@ -45,6 +45,7 @@ export const LayerSelect = ({ domain, onAddLayers }) => {
             <ul>
               {domain &&
                 domain.layers.map(layer => {
+                  const isSelected = !!selectedLayers.find(selected => layer.name === selected.name);
                   return (
                     <li key={layer.metadata.label} className={styles.row}>
                       <Switch
@@ -53,6 +54,7 @@ export const LayerSelect = ({ domain, onAddLayers }) => {
                         label={layer.metadata.label}
                         onClick={handleSwitchClick(layer)}
                         ariaLabel={layer.metadata.label}
+                        checked={isSelected}
                       />
                       {isInfoVisible && info.name === layer.name && <InfoBox info={layer.metadata.description} />}
                       <InfoButton classNames={[styles.info]} onClick={handleInfoClick(layer)} />

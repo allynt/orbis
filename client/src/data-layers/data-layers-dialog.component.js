@@ -11,12 +11,10 @@ import styles from './data-layers-dialog.module.css';
 import { OrbSelect } from './orb-select.component';
 import { LayerSelect } from './layer-select.component';
 
-const DataLayersDialog = ({ isVisible, close, title }, ref) => {
+const DataLayersDialog = ({ isVisible, close, title, selectedLayers }, ref) => {
   const overlayRef = useRef(null);
-
   const dispatch = useDispatch();
   const domains = useSelector(state => state.map.dataSources);
-
   const [selectedDomain, setSelectedDomain] = useState(null);
 
   return isVisible && ref.current
@@ -36,6 +34,7 @@ const DataLayersDialog = ({ isVisible, close, title }, ref) => {
               <OrbSelect domains={domains} onDomainClick={setSelectedDomain} selectedDomain={selectedDomain} />
               <LayerSelect
                 domain={selectedDomain}
+                initialSelectedLayers={selectedLayers}
                 onAddLayers={selectedLayers => dispatch(addLayers(selectedLayers))}
               />
             </div>
