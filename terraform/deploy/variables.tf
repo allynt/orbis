@@ -18,7 +18,7 @@ locals {
   app_labels = {
     app         = local.app
     environment = var.environment
-    deployment  = "singleton"
+    deployment  = var.environment
   }
 
   # Deployment secrets are created by the deployment (this module)
@@ -32,5 +32,6 @@ locals {
 
   healthcheck_path = "/healthcheck/"
 
+  # Other Services
   staticdata_url = "https://staticdata.${var.environment}.astrosat.net/"
 }

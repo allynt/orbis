@@ -19,11 +19,14 @@ if [[ $# -ne 2 ]]; then
   echo $USAGE; exit 1
 fi
 
+if [ "$ENVIRONMENT" != "experimentation" ] && [ "$ENVIRONMENT" != "testing" ] && [ "$ENVIRONMENT" != "staging" ] && [ "$ENVIRONMENT" != "production" ]; then
+    echo "Error: ENVIRONMENT must be one of experimentation, testing, staging or production."
+    exit 1
+fi
+
 if [[ ${#TAG} -ne 7 ]]; then
   echo $USAGE; exit 1
 fi
-
-# TODO: SHOULD WE CHECK THE ENVIRONMENT AGAINST A KNOWN LIST?
 
 ############
 # do stuff #

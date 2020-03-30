@@ -1,3 +1,7 @@
+//
+// Deployment
+//
+
 resource "kubernetes_deployment" "app_deployment" {
   depends_on = [
     kubernetes_secret.deployment_secret
@@ -245,6 +249,59 @@ resource "kubernetes_deployment" "app_deployment" {
             }
           }
 
+        }
+      }
+    }
+  }
+}
+
+//
+// Service
+//
+
+resource "kubernetes_service" "app_service" {
+  metadata {
+    name   = local.app_name
+    labels = local.app_labels
+  }
+
+  spec {
+    type = "ClusterIP"
+
+    selector = local.app_labels
+
+    port {
+      name        = "http"
+      port        = 80
+      target_port = 80
+    }
+  }
+}
+
+//
+// Ingress
+//
+
+resource "kubernetes_ingress" "app_ingress" {
+  metadata {
+    name   = local.app_name
+    labels = {
+      traefik = (var.environment == "staging" || var.environment == "production") ? "external" : "internal"
+    }
+  }
+
+  spec {
+    rule {
+      host = local.app_domain
+
+      http {
+        path {
+          path = "/"
+
+          backend {
+            service_name = local.app_name
+            service_port = "http"
+          }
         }
       }
     }
