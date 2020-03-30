@@ -36,6 +36,9 @@ const ComparePins = ({ setSelectedMoreInfo, toggleMoreInfoDialog }, ref) => {
     if (!pinnedScenes) {
       dispatch(fetchPinnedScenes());
     }
+    return () => {
+      dispatch(toggleCompareMaps());
+    };
   }, [pinnedScenes]);
 
   const handleChange = (isSelected, scene) => {
