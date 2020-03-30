@@ -36,6 +36,9 @@ const ComparePins = ({ setSelectedMoreInfo, toggleMoreInfoDialog }, ref) => {
     if (!pinnedScenes) {
       dispatch(fetchPinnedScenes());
     }
+    return () => {
+      dispatch(toggleCompareMaps());
+    };
   }, [pinnedScenes]);
 
   const handleChange = (isSelected, scene) => {
@@ -55,10 +58,16 @@ const ComparePins = ({ setSelectedMoreInfo, toggleMoreInfoDialog }, ref) => {
           name="compare"
           label="Compare"
           checked={isCompareMode}
+          disabled={selectedPinnedScenes.length !== MAX_SELECTED}
           onClick={() => dispatch(toggleCompareMaps())}
           ariaLabel="Compare"
         />
-        <Button theme="link" classNames={[styles.button]} onClick={() => dispatch(clearSelectedPinnedScenes([]))}>
+        <Button
+          theme="link"
+          classNames={[styles.button]}
+          onClick={() => dispatch(clearSelectedPinnedScenes([]))}
+          disabled={isCompareMode}
+        >
           Clear Pins
         </Button>
       </div>
@@ -73,7 +82,7 @@ const ComparePins = ({ setSelectedMoreInfo, toggleMoreInfoDialog }, ref) => {
             const Icon = (
               <DeleteIcon
                 onClick={() => {
-                  dispatch(deletePinnedScene(scene.id));
+                  !isCompareMode && dispatch(deletePinnedScene(scene.id));
                 }}
               />
             );
@@ -82,12 +91,9 @@ const ComparePins = ({ setSelectedMoreInfo, toggleMoreInfoDialog }, ref) => {
                 <Checkbox
                   name={scene.id}
                   label={scene.label}
-                  checked={selectedPinnedScenes.find(selectedScene => selectedScene.id === scene.id)}
-                  onChange={() => {
-                    if (selectedPinnedScenes.length !== MAX_SELECTED) {
-                      dispatch(selectPinnedScene(scene));
-                    }
-                  }}
+                  checked={isSelected}
+                  disabled={isCompareMode || isDisabled}
+                  onChange={() => handleChange(isSelected, scene)}
                 />
                 <SceneListItem
                   index={index}
