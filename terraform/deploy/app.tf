@@ -18,7 +18,7 @@ resource "kubernetes_deployment" "app_deployment" {
   }
 
   spec {
-    progress_deadline_seconds = 60*10 // 10 minutes
+    progress_deadline_seconds = 60 * 10 // 10 minutes
 
     selector {
       match_labels = local.app_labels
@@ -33,7 +33,7 @@ resource "kubernetes_deployment" "app_deployment" {
 
       spec {
         container {
-          name =  local.app_name
+          name  = local.app_name
           image = local.app_image
 
           port {
@@ -249,6 +249,16 @@ resource "kubernetes_deployment" "app_deployment" {
             }
           }
 
+          env {
+            name = "DJANGO_MAPBOX_STYLES"
+            value_from {
+              secret_key_ref {
+                name = local.app_environment_secret_name
+                key  = "mapbox_styles"
+              }
+            }
+          }
+
         }
       }
     }
@@ -284,7 +294,7 @@ resource "kubernetes_service" "app_service" {
 
 resource "kubernetes_ingress" "app_ingress" {
   metadata {
-    name   = local.app_name
+    name = local.app_name
     labels = {
       traefik = (var.environment == "staging" || var.environment == "production") ? "external" : "internal"
     }
