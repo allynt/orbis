@@ -9,7 +9,7 @@ import styles from './layer-select.module.css';
 
 const InfoBox = ({ info }) => <div className={styles.infoBox}>{info}</div>;
 
-export const LayerSelect = ({ domain, initialSelectedLayers, onAddLayers }) => {
+export const LayerSelect = ({ domain, initialSelectedLayers, onAddLayers, onRemoveLayer }) => {
   const [selectedLayers, setSelectedLayers] = useState(initialSelectedLayers ?? []);
   const [isInfoVisible, setIsInfoVisible] = useState(false);
   const [info, setInfo] = useState(null);
@@ -20,9 +20,12 @@ export const LayerSelect = ({ domain, initialSelectedLayers, onAddLayers }) => {
     // Remove if already selected, otherwise add to list of selected layers.
     const selectedLayer = selectedLayers.find(selected => selected.metadata.label === layer.metadata.label);
 
-    selectedLayer
-      ? setSelectedLayers(selectedLayers.filter(lyr => lyr.metadata.label !== selectedLayer.metadata.label))
-      : setSelectedLayers([...selectedLayers, layer]);
+    if (selectedLayer) {
+      setSelectedLayers(selectedLayers.filter(lyr => lyr.metadata.label !== selectedLayer.metadata.label));
+      onRemoveLayer(selectedLayer);
+    } else {
+      setSelectedLayers([...selectedLayers, layer]);
+    }
   };
 
   const handleInfoClick = layer => () => {

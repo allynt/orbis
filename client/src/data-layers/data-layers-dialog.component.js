@@ -1,20 +1,14 @@
 import React, { useRef, useState } from 'react';
 import ReactDOM from 'react-dom';
 
-import { useDispatch, useSelector } from 'react-redux';
-
 import CloseButton from '@astrosat/astrosat-ui/dist/buttons/close-button';
-
-import { addLayers } from './data-layers-dialog.actions';
 
 import styles from './data-layers-dialog.module.css';
 import { OrbSelect } from './orb-select.component';
 import { LayerSelect } from './layer-select.component';
 
-const DataLayersDialog = ({ isVisible, close, selectedLayers }, ref) => {
+const DataLayersDialog = ({ domains, isVisible, close, selectedLayers, onAddLayers, onRemoveLayer }, ref) => {
   const overlayRef = useRef(null);
-  const dispatch = useDispatch();
-  const domains = useSelector(state => state.map.dataSources);
   const [selectedDomain, setSelectedDomain] = useState(null);
 
   return isVisible && ref.current
@@ -35,7 +29,8 @@ const DataLayersDialog = ({ isVisible, close, selectedLayers }, ref) => {
               <LayerSelect
                 domain={selectedDomain}
                 initialSelectedLayers={selectedLayers}
-                onAddLayers={selectedLayers => dispatch(addLayers(selectedLayers))}
+                onAddLayers={onAddLayers}
+                onRemoveLayer={onRemoveLayer}
               />
             </div>
           </div>
