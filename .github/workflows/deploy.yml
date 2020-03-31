@@ -4,13 +4,9 @@ on:
   deployment: {}
 
 jobs:
-  deploy-to-testing:
-    name: Deploy to Testing
-    ## Temporary change while github fixes self hosted runner support
+  deploy:
+    name: Deploy
     runs-on: ubuntu-18.04
-    if: github.event.deployment.environment == 'testing-master'
-    #runs-on: [self-hosted, testing-deployer]
-    #if: startsWith(github.event.deployment.environment, 'testing')
     steps:
       - name: Set the Deployment Status to Pending
         uses: "deliverybot/deployment-status@v1"
@@ -21,12 +17,11 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v1
 
-      - name: Setup AWS config
-        run: |
-          aws configure set aws_access_key_id "${{ secrets.AWS_ACCESS_KEY_ID }}"
-          aws configure set aws_secret_access_key "${{ secrets.AWS_SECRET_ACCESS_KEY }}"
-          aws configure set --profile testing role_arn "${{ secrets.ROLE }}"
-          aws configure set --profile testing source_profile default
+      - name: Setup dependencies
+        run: ./scripts/ci-setup-deps.sh
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
       - name: Deploy the app
         run: |
@@ -41,48 +36,6 @@ jobs:
           state: "success"
           token: "${{ github.token }}"
           environment-url: "https://app-${{github.event.deployment.environment}}.testing.or3is.com/"
-
-      - name: Set the Deployment Status on Failure
-        if: failure()
-        uses: "deliverybot/deployment-status@v1"
-        with:
-          state: "failure"
-          token: "${{ github.token }}"
-
-  deploy-to-staging:
-    name: Deploy to Staging
-    ## Temporary change while github fixes self hosted runner support
-    runs-on: ubuntu-18.04
-    #runs-on: [self-hosted, staging-deployer]
-    if: github.event.deployment.environment == 'staging'
-    steps:
-      - name: Set the Deployment Status to Pending
-        uses: "deliverybot/deployment-status@v1"
-        with:
-          state: "pending"
-          token: "${{ github.token }}"
-
-      - name: Checkout
-        uses: actions/checkout@v1
-
-      - name: Setup AWS config
-        run: |
-          aws configure set aws_access_key_id "${{ secrets.AWS_ACCESS_KEY_ID }}"
-          aws configure set aws_secret_access_key "${{ secrets.AWS_SECRET_ACCESS_KEY }}"
-
-      - name: Deploy the app
-        run: |
-          ENVIRONMENT="${{ github.event.deployment.environment }}"
-          TAG="${GITHUB_SHA:0:7}"
-          ./scripts/deploy.sh "${ENVIRONMENT}" "${TAG}"
-
-      - name: Set the Deployment Status on Success
-        if: success()
-        uses: "deliverybot/deployment-status@v1"
-        with:
-          state: "success"
-          token: "${{ github.token }}"
-          environment-url: "https://app.${{github.event.deployment.environment}}.or3is.com/"
 
       - name: Set the Deployment Status on Failure
         if: failure()

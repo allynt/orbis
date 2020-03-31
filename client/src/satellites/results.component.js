@@ -7,7 +7,7 @@ import Button from '@astrosat/astrosat-ui/dist/buttons/button';
 import useModal from '@astrosat/astrosat-ui/dist/containers/use-modal';
 import Dialog from '@astrosat/astrosat-ui/dist/containers/dialog';
 
-import { fetchPinnedScenes, pinScene, saveSatelliteSearch } from './satellites.actions';
+import { fetchPinnedScenes, pinScene, deletePinnedScene, saveSatelliteSearch } from './satellites.actions';
 
 import SaveSearchForm from './save-search-form.component';
 import SceneListItem, { SceneListItemSkeleton } from './scene-list-item.component';
@@ -28,7 +28,6 @@ const Results = ({ scenes, setVisiblePanel, selectScene, setSelectedMoreInfo, to
       dispatch(fetchPinnedScenes());
     }
   }, [pinnedScenes]);
-  console.log(pinnedScenes);
 
   const [cloudCoverPercentage, setCloudCoverPercentage] = useState([10]);
 
@@ -64,9 +63,10 @@ const Results = ({ scenes, setVisiblePanel, selectScene, setSelectedMoreInfo, to
                   const isPinned = pinnedScenes?.some(pin => scene.id === pin.id);
                   const Icon = (
                     <PinIcon
+                      key={`${scene.id}-icon`}
                       className={`${styles.pinIcon} ${isPinned && styles.pinned}`}
                       onClick={() => {
-                        dispatch(pinScene(scene));
+                        isPinned ? dispatch(deletePinnedScene(scene.id)) : dispatch(pinScene(scene));
                       }}
                     />
                   );

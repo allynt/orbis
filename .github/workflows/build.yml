@@ -82,7 +82,6 @@ jobs:
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          AWS_ROLE: ${{ secrets.ROLE }}
 
       - name: Build Docker Image
         run: |
@@ -98,6 +97,7 @@ jobs:
     needs: [docker]
     name: Deploy to Testing
     runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/master'
     steps:
       - name: Checkout
         uses: actions/checkout@v1
@@ -107,14 +107,11 @@ jobs:
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          AWS_ROLE: ${{ secrets.ROLE }}
 
       - name: Create Deployment
         run: |
           TAG="${GITHUB_SHA:0:7}"
           BRANCH="${GITHUB_REF##*/}"
-          BRANCH_SLUG="$(echo "${BRANCH}" | sed -e 's/[^[:alnum:]]/-/g' | tr A-Z a-z)"
           echo "TAG=$TAG"
           echo "BRANCH=$BRANCH"
-          echo "BRANCH_SLUG=$BRANCH_SLUG"
-          aws lambda invoke --profile testing --region eu-west-1 --function-name testing-create-github-deployment --payload "{\"owner\":\"astrosat\", \"repo\":\"orbis\", \"ref\":\"${BRANCH}\", \"environment\":\"testing-${BRANCH_SLUG}\" }" -
+          aws lambda invoke --profile staging --region eu-west-1 --function-name staging-create-github-deployment --payload "{\"owner\":\"astrosat\", \"repo\":\"orbis\", \"ref\":\"${BRANCH}\", \"environment\":\"testing\" }" -
