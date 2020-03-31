@@ -51,3 +51,14 @@ export const domains = [
     value: 'forestryandlandslides'
   }
 ];
+
+export const personTypes = [
+  {
+    name: 'HELPER',
+    color: 'green'
+  },
+  {
+    name: 'HELPEE',
+    color: 'red'
+  }
+];

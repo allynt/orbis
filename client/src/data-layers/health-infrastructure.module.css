@@ -1,0 +1,25 @@
+.listItem {
+  display: flex;
+  align-items: center;
+  font-size: 0.875rem;
+}
+
+.listItem:not(:first-child) {
+  margin-top: 0.5rem;
+}
+
+.icon {
+  background-color: #f6be00;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: 1rem;
+}
+
+.icon svg {
+  width: 1.5rem;
+  height: 1.5rem;
+}
