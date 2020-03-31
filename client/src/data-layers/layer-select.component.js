@@ -26,8 +26,12 @@ export const LayerSelect = ({ domain, initialSelectedLayers, onAddLayers }) => {
   };
 
   const handleInfoClick = layer => () => {
-    setIsInfoVisible(old => !old);
-    setInfo(layer);
+    if (layer === info) {
+      setIsInfoVisible(old => !old);
+    } else {
+      setInfo(layer);
+      setIsInfoVisible(true);
+    }
   };
 
   const handleAddClick = () => {
