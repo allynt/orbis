@@ -78,7 +78,7 @@ export const LayerSelect = ({ domain, initialSelectedLayers, onAddLayers }) => {
             </div>
           </>
         ) : (
-          <div>No Domain selected</div>
+          <div>No Orb selected</div>
         )}
       </div>
     </div>
