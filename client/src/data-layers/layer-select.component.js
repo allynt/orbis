@@ -10,7 +10,7 @@ import styles from './layer-select.module.css';
 const InfoBox = ({ info }) => <div className={styles.infoBox}>{info}</div>;
 
 export const LayerSelect = ({ domain, initialSelectedLayers, onAddLayers }) => {
-  const [selectedLayers, setSelectedLayers] = useState(initialSelectedLayers);
+  const [selectedLayers, setSelectedLayers] = useState(initialSelectedLayers ?? []);
   const [isInfoVisible, setIsInfoVisible] = useState(false);
   const [info, setInfo] = useState(null);
 
@@ -51,7 +51,7 @@ export const LayerSelect = ({ domain, initialSelectedLayers, onAddLayers }) => {
                 domain.layers.map(layer => {
                   const isSelected = !!selectedLayers.find(selected => layer.name === selected.name);
                   return (
-                    <li key={layer.metadata.label} className={styles.row}>
+                    <li key={layer.metadata.label} className={styles.row} data-testid={`layer-list-item-${layer.name}`}>
                       <Switch
                         name={layer.name}
                         value={layer.name}
@@ -78,7 +78,7 @@ export const LayerSelect = ({ domain, initialSelectedLayers, onAddLayers }) => {
             </div>
           </>
         ) : (
-          <div>No Orb selected</div>
+          <div data-testid="layer-select-no-domain-message">No Orb selected</div>
         )}
       </div>
     </div>
