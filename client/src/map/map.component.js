@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
+import ReactDOM from 'react-dom';
 
 import MapboxDraw from '@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw';
 import '@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css';
@@ -46,11 +47,17 @@ import {
 } from '../toolbar/toolbar-constants';
 import { GEOJSON, RASTER, VECTOR } from './map.constants';
 import useMapControl from './use-map-control.hook';
-import { useMapEvent } from './use-map-event.hook';
+import { useMapEvent, useMapLayerEvent } from './use-map-event.hook';
 import useMap from './use-map.hook';
 import useMapbox from './use-mapbox.hook';
 
+import InfrastructureDetail from './infrastructure-details.component';
+import UserInfoDetail from './user-info-details.component';
+
 import layoutStyles from './map-layout.module.css';
+
+const USER_INFO_TYPE = 'USER_INFO_TYPE';
+const INFRASTRUCTURE_INFO_TYPE = 'INFRASTRUCTURE_INFO_TYPE';
 
 const Map = ({
   style = 'mapbox://styles/mapbox/satellite-v9',
@@ -92,10 +99,16 @@ const Map = ({
       acc = Array.from(new Set([...acc, ...value.layers]));
       return acc;
     }, []);
+
+  const [selectedInfoFeatures, setSelectedInfoFeatures] = useState(null);
+  const [clickableLayers, setClickableLayers] = useState([]);
   const selectedLayers = useSelector(state => state.dataLayers.layers);
   const nonSelectedLayers = allLayers && allLayers.filter(layer => !selectedLayers.includes(layer));
   const scenes = useSelector(state => state.satellites.scenes);
   const selectedScene = useSelector(state => state.satellites.selectedScene);
+
+  const popupRef = useRef(null);
+  const [selectedInfoFeature, setSelectedInfoFeature] = useState(null);
 
   const dispatch = useDispatch();
 
@@ -221,7 +234,14 @@ const Map = ({
               scheme: 'tms'
             });
 
-            map.addLayer({ id: `${layer.name}-layer`, type: layer.type, source: sourceId, layout: {}, paint: {} });
+            map.addLayer({
+              id: `${layer.name}-layer`,
+              type: layer.type,
+              source: sourceId,
+              layout: {},
+              paint: {}
+            });
+
             return () => {
               map.removeLayer(`${layer.name}-layer`);
               map.removeSource(sourceId);
@@ -246,9 +266,15 @@ const Map = ({
             };
           } else if (layer.type.toLowerCase() === GEOJSON) {
             const sourceId = `${layer.name}-source`;
+            let data = null;
+            if (layer.data) {
+              data = layer.data;
+            } else if (layer.metadata.url) {
+              data = layer.metadata.url;
+            }
             map.addSource(sourceId, {
               type: 'geojson',
-              data: layer.metadata.url,
+              data,
               cluster: true,
               clusterMaxZoom: 14,
               clusterRadius: 50
@@ -256,31 +282,134 @@ const Map = ({
 
             // circle and symbol layers for rendering clustered and
             // non-clustered features.
+            let clusterlayerName = `${layer.name}-main`;
             map.addLayer({
-              id: `${layer.name}-circle`,
+              id: clusterlayerName,
               type: 'circle',
               source: sourceId,
+              filter: ['any', ['has', 'point_count'], ['!', ['has', 'person_type']]],
               paint: {
-                'circle-color': 'green',
-                'circle-opacity': 0.6,
-                'circle-radius': 30
-              },
-              minzoom: 10,
-              maxzoom: 19
+                'circle-color': '#f6be00',
+                'circle-opacity': 1,
+                'circle-radius': [
+                  'case',
+                  ['has', 'point_count'],
+                  ['*', 5, ['to-number', ['get', 'point_count'], 0]],
+                  30
+                ]
+              } //,
+              // minzoom: 10,
+              // maxzoom: 19
             });
-            return () => {
-              map.removeLayer(`${layer.name}-circle`);
-              map.removeSource(sourceId);
-            };
+
+            // Clustered layer
+            map.addLayer({
+              id: `${layer.name}-label-clustered`,
+              source: sourceId,
+              type: 'symbol',
+              filter: ['has', 'point_count'],
+              layout: {
+                'text-field': '{point_count}'
+              } //,
+              // minzoom: 10,
+              // maxzoom: 19
+            });
+
+            // Non-Clustered infrastructure layer
+            map.addLayer({
+              id: `${layer.name}-infrastructure-label`,
+              source: sourceId,
+              type: 'symbol',
+              filter: ['all', ['!', ['has', 'point_count']], ['!', ['has', 'person_type']]],
+              layout: {
+                'icon-image': '{type}',
+                'icon-size': 0.5,
+                'icon-allow-overlap': true
+              } //,
+              // minzoom: 10,
+              // maxzoom: 19
+            });
+
+            const populationLayerName = `${layer.name}-population-label`;
+            map.addLayer({
+              id: populationLayerName,
+              source: sourceId,
+              type: 'circle',
+              filter: ['all', ['!', ['has', 'point_count']], ['has', 'person_type']],
+              paint: {
+                'circle-color': [
+                  'case',
+                  ['==', ['get', 'person_type'], 'HELPER'],
+                  'green',
+                  ['==', ['get', 'person_type'], 'HELPEE'],
+                  'red',
+                  'black'
+                ],
+                'circle-opacity': 1,
+                'circle-radius': 10
+              } //,
+              // minzoom: 10,
+              // maxzoom: 19
+            });
+
+            setClickableLayers([...clickableLayers, clusterlayerName, populationLayerName]);
           }
         }
 
         return () => {
-          console.log('REMOVE LAYERS: ', selectedLayers);
+          selectedLayers
+            .filter(layer => layer.visible)
+            .forEach(layer => {
+              map.removeLayer(`${layer.name}-circle`);
+              map.removeLayer(`${layer.name}-infrastructure-label`);
+              map.removeLayer(`${layer.name}-population-label`);
+              map.removeLayer(`${layer.name}-label-clustered`);
+              map.removeLayer(`${layer.name}-main`);
+              map.removeSource(sourceId);
+            });
         };
       });
     },
     [selectedLayers, dataAuthHost]
+  );
+
+  useMapLayerEvent(
+    mapInstance,
+    'click',
+    clickableLayers,
+    event => {
+      event.preventDefault();
+
+      const { features, lngLat } = event;
+
+      if (features && features.length > 0) {
+        if (features[0].properties.point_count) {
+          mapInstance.flyTo({
+            center: [lngLat.lng, lngLat.lat],
+            zoom: mapInstance.getZoom() + 1
+          });
+        } else {
+          if (!popupRef.current) {
+            const div = document.createElement('div');
+            popupRef.current = div;
+          }
+          // Only take the first feature, which should be the top most
+          // feature and the one you meant.
+          new mapboxgl.Popup()
+            .setLngLat(features[0].geometry.coordinates.slice())
+            .setDOMContent(popupRef.current)
+            .on('close', () => setSelectedInfoFeatures(null))
+            .addTo(mapInstance);
+
+          if (features[0].properties.person_type) {
+            setSelectedInfoFeatures({ type: USER_INFO_TYPE, data: features });
+          } else {
+            setSelectedInfoFeatures({ type: INFRASTRUCTURE_INFO_TYPE, data: features });
+          }
+        }
+      }
+    },
+    [clickableLayers, setSelectedInfoFeatures]
   );
 
   useMap(
@@ -402,6 +531,19 @@ const Map = ({
           selectMapStyle={selectMapStyle}
         />
       )}
+
+      {selectedInfoFeatures &&
+        ReactDOM.createPortal(
+          <div className={layoutStyles.popup}>
+            {selectedInfoFeatures && selectedInfoFeatures.type === USER_INFO_TYPE && (
+              <UserInfoDetail features={selectedInfoFeatures.data} />
+            )}
+            {selectedInfoFeatures && selectedInfoFeatures.type === INFRASTRUCTURE_INFO_TYPE && (
+              <InfrastructureDetail feature={selectedInfoFeatures.data[0]} />
+            )}
+          </div>,
+          popupRef.current
+        )}
     </>
   );
 };

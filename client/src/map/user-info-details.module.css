@@ -1,9 +1,15 @@
 .list {
   list-style-type: none;
   padding-left: unset;
+  border-top: 1px solid #f6be00;
   margin: 0.5rem 0 0 0;
 }
 
 .list > li {
   padding: 0.2rem 0;
+}
+
+.label {
+  font-weight: bolder;
+  padding-right: 0.3rem;
 }
