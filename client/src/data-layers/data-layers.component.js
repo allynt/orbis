@@ -65,11 +65,16 @@ const DataLayers = () => {
       <div className={styles.buttons}>
         <AddNewCategoryIcon className={styles.addNewCategoryIcon} onClick={toggle} />
         <Button theme="link" classNames={[styles.categoryButton]} onClick={toggle}>
-          Add New Category
+          Add New Orb
         </Button>
       </div>
 
-      <DataLayersDialog isVisible={isVisible} title="Create New Map" close={toggle} ref={ref}></DataLayersDialog>
+      <DataLayersDialog
+        selectedLayers={selectedLayers}
+        isVisible={isVisible}
+        close={toggle}
+        ref={ref}
+      ></DataLayersDialog>
     </div>
   );
 };
