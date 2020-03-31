@@ -13,8 +13,14 @@ const setup = initialSelectedLayers => {
     ]
   };
   const handleAddLayers = jest.fn();
+  const handleRemoveLayer = jest.fn();
   const utils = render(
-    <LayerSelect domain={domain} onAddLayers={handleAddLayers} initialSelectedLayers={initialSelectedLayers} />
+    <LayerSelect
+      domain={domain}
+      onAddLayers={handleAddLayers}
+      onRemoveLayer={handleRemoveLayer}
+      initialSelectedLayers={initialSelectedLayers}
+    />
   );
   return { ...utils, handleAddLayers, layers: domain.layers };
 };
