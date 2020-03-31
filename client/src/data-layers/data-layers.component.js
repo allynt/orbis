@@ -72,7 +72,6 @@ const DataLayers = () => {
       <DataLayersDialog
         selectedLayers={selectedLayers}
         isVisible={isVisible}
-        title="Create New Map"
         close={toggle}
         ref={ref}
       ></DataLayersDialog>
