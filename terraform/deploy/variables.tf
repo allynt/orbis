@@ -33,5 +33,5 @@ locals {
   healthcheck_path = "/healthcheck/"
 
   # Other Services
-  staticdata_url = "https://staticdata.${var.environment}.astrosat.net/"
+  staticdata_url = (var.environment == "production") ? "https://staticdata.astrosat.net/" : "https://staticdata.${var.environment}.astrosat.net/"
 }
