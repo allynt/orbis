@@ -1,5 +1,4 @@
 import React, { useRef } from 'react';
-import PropTypes from 'prop-types';
 
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -11,11 +10,10 @@ import useModal from '@astrosat/astrosat-ui/dist/containers/use-modal';
 import DataLayersDialog from './data-layers-dialog.component';
 
 import { ReactComponent as RemoveIcon } from './remove.svg';
-import { ReactComponent as ShowIcon } from './layer-visible.svg';
 import { ReactComponent as HideIcon } from './layer-invisible.svg';
 import { ReactComponent as AddNewCategoryIcon } from './add-more-categories.svg';
 
-import { removeLayer } from './data-layers-dialog.actions';
+import { removeLayer, addLayers } from './data-layers-dialog.actions';
 
 import styles from './data-layers.module.css';
 
@@ -24,6 +22,7 @@ const DataLayers = () => {
   const ref = useRef(null);
   // console.log('IS VISIBLE: ', isVisible);
   const dispatch = useDispatch();
+  const domains = useSelector(state => state.map.dataSources);
   const selectedLayers = useSelector(state => state.dataLayers.layers);
 
   return (
@@ -46,7 +45,6 @@ const DataLayers = () => {
                     onClick={() => console.log('Toggle Show/Hide Layer')}
                   >
                     <HideIcon className={styles.icon} />
-                    {/* <ShowIcon className={styles.icon} /> */}
                   </Button>
                   <Button
                     theme="primary"
@@ -70,7 +68,10 @@ const DataLayers = () => {
       </div>
 
       <DataLayersDialog
+        domains={domains}
         selectedLayers={selectedLayers}
+        onAddLayers={selectedLayers => dispatch(addLayers(selectedLayers))}
+        onRemoveLayer={layer => dispatch(removeLayer(layer))}
         isVisible={isVisible}
         close={toggle}
         ref={ref}
