@@ -22,7 +22,6 @@ const DataLayersDialog = ({ isVisible, close, title }, ref) => {
 
   const [selectedDomain, setSelectedDomain] = useState(null);
   const [selectedLayers, setSelectedLayers] = useState([]);
-  const globalSelectedLayers = useSelector(state => state.dataLayers.layers);
 
   const [isInfoVisible, setIsInfoVisible] = useState(false);
   const [info, setInfo] = useState(null);
@@ -74,7 +73,6 @@ const DataLayersDialog = ({ isVisible, close, title }, ref) => {
                                   <Switch
                                     name={layer.name}
                                     value={layer.name}
-                                    checked={globalSelectedLayers.find(lyr => layer.name === lyr.name)}
                                     label={layer.metadata.label}
                                     onClick={() => {
                                       // Remove if already selected, otherwise add to list of selected layers.
