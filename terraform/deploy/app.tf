@@ -253,7 +253,7 @@ resource "kubernetes_deployment" "app_deployment" {
             name = "DJANGO_MAPBOX_STYLES"
             value_from {
               secret_key_ref {
-                name = local.app_environment_secret_name
+                name = local.app_deployment_secret_name
                 key  = "mapbox_styles"
               }
             }
