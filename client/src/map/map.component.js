@@ -76,8 +76,7 @@ const Map = ({
 }) => {
   const accessToken = useSelector(state => (state.app.config ? state.app.config.mapbox_token : null));
   const dataAuthToken = useSelector(state => state.map.dataToken);
-  const dataAuthHost = useSelector(state => (state.app.config ? state.app.config.dataUrl : ''));
-  const { mapContainer, mapInstance } = useMapbox(style, accessToken, dataAuthToken, dataAuthHost);
+  const { mapContainer, mapInstance } = useMapbox(style, accessToken, dataAuthToken);
 
   if (setMap) setMap(mapInstance);
 
@@ -361,7 +360,7 @@ const Map = ({
         };
       });
     },
-    [selectedLayers, dataAuthHost]
+    [selectedLayers]
   );
 
   useMapLayerEvent(
@@ -437,7 +436,7 @@ const Map = ({
         }
       }
     },
-    [selectedScene, scenes, dataAuthHost]
+    [selectedScene, scenes]
   );
 
   useMap(
