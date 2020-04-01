@@ -223,13 +223,14 @@ const sources = {
                 properties: {
                   pk: 1,
                   created: '2020-03-30T12:41:38.618452Z',
-                  person_type: 'HELPER',
-                  name: 'MR Zdenek Zlamal',
-                  age: 25,
-                  phone_number: '+447561866337',
-                  email_address: 'a@b.com',
-                  description: 'Hello world.',
-                  postcode: 'EH15 1AS'
+                  Type: 'SELF-ISOLATED',
+                  Name: 'MR Zdenek Zlamal',
+                  Age: 25,
+                  Phone: '+447561866337',
+                  Email: 'a@b.com',
+                  'Extra Info':
+                    'This is a larger description for each user, so that you can see what it looks like with more text added in.',
+                  Postcode: 'EH15 1AS'
                 }
               },
               {
@@ -239,13 +240,14 @@ const sources = {
                 properties: {
                   pk: 2,
                   created: '2020-03-30T12:42:31.761525Z',
-                  person_type: 'HELPEE',
-                  name: 'MR Colin Doyle',
-                  age: 25,
-                  phone_number: '+447561866337',
-                  email_address: 'a@b.com',
-                  description: 'Hello world.',
-                  postcode: 'EH15 1AS'
+                  Type: 'QUARANTINED',
+                  Name: 'MR Colin Doyle',
+                  Age: 25,
+                  Phone: '+447561866337',
+                  Email: 'a@b.com',
+                  'Extra Info':
+                    'This is a larger description for each user, so that you can see what it looks like with more text added in.',
+                  Postcode: 'EH15 1AS'
                 }
               },
               {
@@ -255,13 +257,14 @@ const sources = {
                 properties: {
                   pk: 3,
                   created: '2020-03-30T12:43:07.309154Z',
-                  person_type: 'HELPER',
-                  name: 'MR Joel Pereira',
-                  age: 25,
-                  phone_number: '+447561866337',
-                  email_address: 'a@b.com',
-                  description: 'Hello world.',
-                  postcode: 'EH15 1AS'
+                  Type: 'VOLUNTEER',
+                  Name: 'MR Joel Pereira',
+                  Age: 25,
+                  Phone: '+447561866337',
+                  Email: 'a@b.com',
+                  'Extra Info':
+                    'This is a larger description for each user, so that you can see what it looks like with more text added in.',
+                  Postcode: 'EH15 1AS'
                 }
               },
               {
@@ -271,13 +274,14 @@ const sources = {
                 properties: {
                   pk: 4,
                   created: '2020-03-30T12:44:06.601159Z',
-                  person_type: 'HELPEE',
-                  name: 'MR Michael Smith',
-                  age: 25,
-                  phone_number: '+447561866337',
-                  email_address: 'a@b.com',
-                  description: 'Hello world.',
-                  postcode: 'EH15 1AS'
+                  Type: 'SELF-ISOLATED',
+                  Name: 'MR Michael Smith',
+                  Age: 25,
+                  Phone: '+447561866337',
+                  Email: 'a@b.com',
+                  'Extra Info':
+                    'This is a larger description for each user, so that you can see what it looks like with more text added in.',
+                  Postcode: 'EH15 1AS'
                 }
               },
               {
@@ -287,13 +291,14 @@ const sources = {
                 properties: {
                   pk: 5,
                   created: '2020-03-30T12:44:06.601159Z',
-                  person_type: 'HELPEE',
-                  name: 'MR Michael Smith II',
-                  age: 25,
-                  phone_number: '+447561866337',
-                  email_address: 'a@b.com',
-                  description: 'Hello world.',
-                  postcode: 'EH15 1AS'
+                  Type: 'SELF-ISOLATED',
+                  Name: 'MR Michael Smith II',
+                  Age: 25,
+                  Phone: '+447561866337',
+                  Email: 'a@b.com',
+                  'Extra Info':
+                    'This is a larger description for each user, so that you can see what it looks like with more text added in.',
+                  Postcode: 'EH15 1AS'
                 }
               },
               {
@@ -303,13 +308,14 @@ const sources = {
                 properties: {
                   pk: 6,
                   created: '2020-03-30T12:44:06.601159Z',
-                  person_type: 'HELPEE',
-                  name: 'Ms Jane Doe',
-                  age: 25,
-                  phone_number: '+447561866337',
-                  email_address: 'a@b.com',
-                  description: 'Hello world.',
-                  postcode: 'EH15 1AS'
+                  Type: 'QUARANTINED',
+                  Name: 'Ms Jane Doe',
+                  Age: 25,
+                  Phone: '+447561866337',
+                  Email: 'a@b.com',
+                  'Extra Info':
+                    'This is a larger description for each user, so that you can see what it looks like with more text added in.',
+                  Postcode: 'EH15 1AS'
                 }
               },
               {
@@ -319,13 +325,14 @@ const sources = {
                 properties: {
                   pk: 7,
                   created: '2020-03-30T12:44:06.601159Z',
-                  person_type: 'HELPEE',
-                  name: 'Ms Jane Doe-Smith',
-                  age: 25,
-                  phone_number: '+447561866337',
-                  email_address: 'a@b.com',
-                  description: 'Hello world.',
-                  postcode: 'EH15 1AS'
+                  Type: 'QUARANTINED',
+                  Name: 'Ms Jane Doe-Smith',
+                  Age: 25,
+                  Phone: '+447561866337',
+                  Email: 'a@b.com',
+                  'Extra Info':
+                    'This is a larger description for each user, so that you can see what it looks like with more text added in.',
+                  Postcode: 'EH15 1AS'
                 }
               },
               {
@@ -335,13 +342,14 @@ const sources = {
                 properties: {
                   pk: 8,
                   created: '2020-03-30T12:44:06.601159Z',
-                  person_type: 'HELPER',
-                  name: 'MR Jack Frost',
-                  age: 25,
-                  phone_number: '+447561866337',
-                  email_address: 'a@b.com',
-                  description: 'Hello world.',
-                  postcode: 'EH15 1AS'
+                  Type: 'VOLUNTEER',
+                  Name: 'MR Jack Frost',
+                  Age: 25,
+                  Phone: '+447561866337',
+                  Email: 'a@b.com',
+                  'Extra Info':
+                    'This is a larger description for each user, so that you can see what it looks like with more text added in.',
+                  Postcode: 'EH15 1AS'
                 }
               },
               {
@@ -351,13 +359,14 @@ const sources = {
                 properties: {
                   pk: 9,
                   created: '2020-03-30T12:44:06.601159Z',
-                  person_type: 'HELPEE',
-                  name: 'MR John Hancock',
-                  age: 25,
-                  phone_number: '+447561866337',
-                  email_address: 'a@b.com',
-                  description: 'Hello world.',
-                  postcode: 'EH15 1AS'
+                  Type: 'QUARANTINED',
+                  Name: 'MR John Hancock',
+                  Age: 25,
+                  Phone: '+447561866337',
+                  Email: 'a@b.com',
+                  'Extra Info':
+                    'This is a larger description for each user, so that you can see what it looks like with more text added in.',
+                  Postcode: 'EH15 1AS'
                 }
               }
             ]

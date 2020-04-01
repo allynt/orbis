@@ -160,7 +160,7 @@
   border-radius: 1rem;
 }
 
-.map :global(.mapboxgl-popup-close-button) {
+/* .map :global(.mapboxgl-popup-close-button) {
   border-radius: 50%;
   cursor: pointer;
   display: flex;
@@ -170,6 +170,20 @@
   height: 2rem;
   background-color: var(--close-button-text);
   color: var(--button-text);
+  font-size: x-large;
+} */
+
+/* PREVIOUS STYLING ^^^  */
+
+.map :global(.mapboxgl-popup-close-button) {
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 2rem;
+  height: 2rem;
+  color: #fff;
   font-size: x-large;
 }
 

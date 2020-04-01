@@ -1,8 +1,17 @@
 .list {
   list-style-type: none;
-  padding-left: unset;
-  border-top: 1px solid #f6be00;
-  margin: 0.5rem 0 0 0;
+  padding: 0 0.5rem;
+  color: #fff;
+  margin-top: 10px;
+}
+
+.header {
+  font-weight: bold;
+  font-size: 1rem;
+  text-align: center;
+  padding: 0.5rem;
+  color: #fff;
+  border-bottom: 1px solid #f6be00;
 }
 
 .list > li {
