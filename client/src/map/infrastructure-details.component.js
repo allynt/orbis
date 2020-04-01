@@ -8,7 +8,6 @@ import styles from './infrastructure-detail.module.css';
 
 const InfrastructureDetail = ({ feature }) => {
   const properties = feature.properties;
-  console.log('Properties: ', properties);
   return (
     <ul className={styles.list}>
       <li className={styles.name}>{properties.name}</li>
