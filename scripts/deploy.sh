@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 # This script uses terraform to create the deployment
 
 ####################
@@ -31,6 +33,8 @@ fi
 ############
 # do stuff #
 ############
+
+set -x
 
 TERRAFORM_WORKSPACE="environment-${ENVIRONMENT}"
 
