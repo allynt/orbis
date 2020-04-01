@@ -19,6 +19,10 @@
   margin-right: 1rem;
 }
 
+.noIcon {
+  background-color: transparent;
+}
+
 .icon svg {
   width: 1.5rem;
   height: 1.5rem;

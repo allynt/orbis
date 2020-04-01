@@ -55,10 +55,7 @@ const DataLayers = () => {
         {selectedLayers.map(selectedLayer => {
           const Component = detailComponentMap[selectedLayer.name] ?? detailComponentMap['default'];
           return (
-            <Detail
-              key={selectedLayer.name}
-              title={<span style={{ color: 'white' }}>{selectedLayer.metadata.label}</span>}
-            >
+            <Detail key={selectedLayer.name} title={selectedLayer.metadata.label}>
               <div className={styles.detailContent}>
                 <Component selectedLayer={selectedLayer} dispatch={dispatch} />
               </div>

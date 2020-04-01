@@ -12,7 +12,7 @@ const types = [
   { name: 'GP Surgery', icon: GpIcon },
   { name: 'NHS', icon: NhsIcon },
   { name: 'Pharmacy', icon: PharmacyIcon },
-  { name: 'Care Home', icon: GpIcon }
+  { name: 'Care Home' }
 ];
 
 export const HealthInfrastructure = () => (
@@ -21,9 +21,7 @@ export const HealthInfrastructure = () => (
       const Icon = type.icon;
       return (
         <li key={type.name} className={styles.listItem}>
-          <div className={styles.icon}>
-            <Icon />
-          </div>
+          <div className={`${styles.icon} ${!Icon && styles.noIcon}`}>{type.icon && <Icon />}</div>
           {type.name}
         </li>
       );
