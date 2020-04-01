@@ -14,7 +14,7 @@ const UserInfoDetail = ({ features }) => {
         {features.map(feature => {
           const properties = feature.properties;
           return (
-            <>
+            <div key={feature.id}>
               <ul className={styles.list}>
                 {Object.keys(properties)
                   .filter(key => key !== PK && key !== CREATED)
@@ -27,7 +27,7 @@ const UserInfoDetail = ({ features }) => {
                     );
                   })}
               </ul>
-            </>
+            </div>
           );
         })}
       </div>

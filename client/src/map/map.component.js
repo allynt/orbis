@@ -286,7 +286,7 @@ const Map = ({
               id: clusterlayerName,
               type: 'circle',
               source: sourceId,
-              filter: ['any', ['has', 'point_count'], ['!', ['has', 'Type']]],
+              filter: ['any', ['has', 'point_count'], ['!', ['has', 'person_type']]],
               paint: {
                 'circle-color': '#f6be00',
                 'circle-opacity': 1,
@@ -319,10 +319,10 @@ const Map = ({
               id: `${layer.name}-infrastructure-label`,
               source: sourceId,
               type: 'symbol',
-              filter: ['all', ['!', ['has', 'point_count']], ['!', ['has', 'Type']]],
+              filter: ['all', ['!', ['has', 'point_count']], ['!', ['has', 'person_type']]],
               layout: {
                 'icon-image': '{type}',
-                'icon-size': 1,
+                'icon-size': 0.5,
                 'icon-allow-overlap': true
               } //,
               // minzoom: 10,
@@ -335,7 +335,7 @@ const Map = ({
               id: populationLayerName,
               source: sourceId,
               type: 'circle',
-              filter: ['all', ['!', ['has', 'point_count']], ['has', 'Type']],
+              filter: ['all', ['!', ['has', 'point_count']], ['has', 'person_type']],
               paint: {
                 'circle-color': [
                   'case',
@@ -400,7 +400,7 @@ const Map = ({
             .on('close', () => setSelectedInfoFeatures(null))
             .addTo(mapInstance);
 
-          if (features[0].properties.Type) {
+          if (features[0].properties.person_type) {
             setSelectedInfoFeatures({ type: USER_INFO_TYPE, data: features });
           } else {
             setSelectedInfoFeatures({ type: INFRASTRUCTURE_INFO_TYPE, data: features });
