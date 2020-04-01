@@ -108,8 +108,10 @@ class DataView(APIView):
         data_token = generate_data_token(user)
         data_token_timeout = settings.DATA_TOKEN_TIMEOUT
 
-        url = urljoin(settings.DATA_SOURCES_DIRECTORY_URL, "/api/data-sources/v1")
-        headers = f"Authentication: Bearer {data_token}"
+        url = urljoin(settings.DATA_SOURCES_DIRECTORY_URL, "/api/data-sources/v1/")
+        headers = {
+            "Authentication": f"Bearer {data_token}"
+        }
 
         try:
             response = requests.get(url, headers=headers)
