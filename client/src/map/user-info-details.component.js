@@ -3,38 +3,37 @@ import PropTypes from 'prop-types';
 
 import styles from './user-info-details.module.css';
 
-const UserInfoDetail = ({ features }) => (
-  <>
-    {features.map(feature => (
-      <ul key={feature.properties.name} className={styles.list}>
-        <li>
-          <span className={styles.label}>Name:</span>
-          <span>{feature.properties.name}</span>
-        </li>
-        <li>
-          <span className={styles.label}>Status:</span>
-          <span>{feature.properties.person_type}</span>
-        </li>
-        <li>
-          <span className={styles.label}>Age:</span>
-          <span>{feature.properties.age}</span>
-        </li>
-        <li>
-          <span className={styles.label}>Postcode:</span>
-          <span>{feature.properties.postcode}</span>
-        </li>
-        <li>
-          <span className={styles.label}>Phone:</span>
-          <span>{feature.properties.phone_number}</span>
-        </li>
-        <li>
-          <span className={styles.label}>Email:</span>
-          <span>{feature.properties.email_address}</span>
-        </li>
-      </ul>
-    ))}
-  </>
-);
+const PK = 'pk';
+const CREATED = 'created';
+
+const UserInfoDetail = ({ features }) => {
+  return (
+    <>
+      <h1 className={styles.header}>User Details</h1>
+      <div className={styles.modal}>
+        {features.map(feature => {
+          const properties = feature.properties;
+          return (
+            <div key={feature.id}>
+              <ul className={styles.list}>
+                {Object.keys(properties)
+                  .filter(key => key !== PK && key !== CREATED)
+                  .map(key => {
+                    return (
+                      <li key={key}>
+                        <span className={styles.label}>{key}: </span>
+                        <span>{properties[key]}</span>
+                      </li>
+                    );
+                  })}
+              </ul>
+            </div>
+          );
+        })}
+      </div>
+    </>
+  );
+};
 
 UserInfoDetail.propTypes = {
   features: PropTypes.array.isRequired

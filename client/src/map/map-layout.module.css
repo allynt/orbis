@@ -158,9 +158,11 @@
 .map :global(.mapboxgl-popup) :global(.mapboxgl-popup-content) {
   background: var(--background-color);
   border-radius: 1rem;
+  min-width: 25rem;
+  /* MIN_WIDTH ^^^ WAS ADDED FOR COVID_APP. COMMENT FOR IF/WHEN IT IS CHANGED BACK */
 }
 
-.map :global(.mapboxgl-popup-close-button) {
+/* .map :global(.mapboxgl-popup-close-button) {
   border-radius: 50%;
   cursor: pointer;
   display: flex;
@@ -170,6 +172,20 @@
   height: 2rem;
   background-color: var(--close-button-text);
   color: var(--button-text);
+  font-size: x-large;
+} */
+
+/* PREVIOUS STYLING FROM BEFORE COVID-APP ^^^ KEEPING THIS FOR IF/WHEN IT GETS CHANGED BACK */
+
+.map :global(.mapboxgl-popup-close-button) {
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 2rem;
+  height: 2rem;
+  color: #fff;
   font-size: x-large;
 }
 

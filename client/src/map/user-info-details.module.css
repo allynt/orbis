@@ -1,8 +1,39 @@
+.modal {
+  max-height: 20rem;
+  overflow-y: auto;
+  padding-right: 1rem;
+}
+
+.modal::-webkit-scrollbar-track {
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  border-radius: 1rem;
+  background-color: #fff;
+}
+
+.modal::-webkit-scrollbar {
+  width: 0.5rem;
+}
+
+.modal::-webkit-scrollbar-thumb {
+  border-radius: 1rem;
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  background-color: var(--primary-foreground-color);
+}
+
 .list {
   list-style-type: none;
-  padding-left: unset;
+  padding: 0 0.5rem;
+  color: #fff;
+  margin-top: 10px;
   border-top: 1px solid #f6be00;
-  margin: 0.5rem 0 0 0;
+}
+
+.header {
+  font-weight: bold;
+  font-size: 1rem;
+  text-align: center;
+  padding: 0.5rem;
+  color: #fff;
 }
 
 .list > li {

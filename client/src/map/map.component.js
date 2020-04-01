@@ -108,7 +108,6 @@ const Map = ({
   const selectedScene = useSelector(state => state.satellites.selectedScene);
 
   const popupRef = useRef(null);
-  const [selectedInfoFeature, setSelectedInfoFeature] = useState(null);
 
   const dispatch = useDispatch();
 
