@@ -2,6 +2,7 @@ import jwt
 import requests
 from collections import OrderedDict
 from datetime import datetime, timedelta
+from urllib.parse import urljoin
 
 from django.conf import settings
 from django.contrib.sites.shortcuts import get_current_site
@@ -107,15 +108,16 @@ class DataView(APIView):
         data_token = generate_data_token(user)
         data_token_timeout = settings.DATA_TOKEN_TIMEOUT
 
-        url = settings.DATA_SOURCES_DIRECTORY_URL
+        url = urljoin(settings.DATA_SOURCES_DIRECTORY_URL, "/api/data-sources/v1")
         headers = f"Authentication: Bearer {data_token}"
 
         try:
-            response = requests.get(parsed_url.geturl(), headers=headers)
+            response = requests.get(url, headers=headers)
             if not status.is_success(response.status_code):
                 raise APIException("Error retrieving data sources")
-        except Exception:
-            raise APIException(f"Unable to retrieve data sources at '{url}'")
+        except Exception as e:
+            # TODO: REMOVE THIS TRY/CATCH BLOCK ONCE I'M SURE THINGS ARE WORKING
+            raise APIException(f"Unable to retrieve data sources at '{url}': {str(e)}")
         sources = response.json()
 
         return Response({
