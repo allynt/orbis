@@ -62,7 +62,6 @@ class AppConfigView(APIView):
             "isRegistrationOpen": astrosat_users_settings.ASTROSAT_USERS_ALLOW_REGISTRATION,
             "isVerificationRequired": astrosat_users_settings.ASTROSAT_USERS_REQUIRE_VERIFICATION,
             "isApprovalRequired": astrosat_users_settings.ASTROSAT_USERS_REQUIRE_APPROVAL,
-            "dataUrl": settings.DATA_URL,
             "mapStyles": settings.MAPBOX_STYLES,
             "maximumAoiArea": settings.MAXIMUM_AOI_AREA,
         }

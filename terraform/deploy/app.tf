@@ -235,11 +235,6 @@ resource "kubernetes_deployment" "app_deployment" {
           }
 
           env {
-            name  = "DJANGO_DATA_URL"
-            value = local.staticdata_url
-          }
-
-          env {
             name  = "DJANGO_DATA_SOURCES_DIRECTORY_URL"
             value = local.data_sources_directory_url
           }
