@@ -95,8 +95,6 @@ export const fetchUser = (email = 'current') => async (dispatch, getState) => {
   if (!response.ok) {
     const message = `${response.status} ${response.statusText}`;
 
-    NotificationManager.error(message, `Fetch User Error - ${response.statusText}`, 50000, () => {});
-
     return dispatch({
       type: FETCH_USER_REQUESTED_FAILURE,
       error: { message }
