@@ -46,7 +46,18 @@ const DataLayers = () => {
   const [isVisible, toggle] = useModal(false);
   const ref = useRef(null);
   const dispatch = useDispatch();
-  const domains = useSelector(state => state.map.dataSources);
+  const dataSources = useSelector(state => state.map.dataSources);
+
+  // Create an array of sources, grouped by their domain.
+  const domains = dataSources.reduce((acc, value) => {
+    const domain = acc.find(dom => dom.label === value.metadata.domain);
+
+    domain
+      ? (domain.layers = [...domain.layers, value])
+      : (acc = [...acc, { label: value.metadata.domain, layers: [value] }]);
+
+    return acc;
+  }, []);
   const selectedLayers = useSelector(state => state.dataLayers.layers);
 
   return (

@@ -93,17 +93,10 @@ const Map = ({
 
   const dataSources = useSelector(state => state.map.dataSources);
 
-  const allLayers =
-    dataSources &&
-    dataSources.reduce((acc, value) => {
-      acc = Array.from(new Set([...acc, ...value.layers]));
-      return acc;
-    }, []);
-
   const [selectedInfoFeatures, setSelectedInfoFeatures] = useState(null);
   const [clickableLayers, setClickableLayers] = useState([]);
   const selectedLayers = useSelector(state => state.dataLayers.layers);
-  const nonSelectedLayers = allLayers && allLayers.filter(layer => !selectedLayers.includes(layer));
+  const nonSelectedLayers = dataSources && dataSources.filter(layer => !selectedLayers.includes(layer));
   const scenes = useSelector(state => state.satellites.scenes);
   const selectedScene = useSelector(state => state.satellites.selectedScene);
 
