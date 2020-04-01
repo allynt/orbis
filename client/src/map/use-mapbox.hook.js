@@ -19,14 +19,14 @@ const useMapbox = (style, accessToken, authToken) => {
         attributionControl: false,
         preserveDrawingBuffer: true,
         transformRequest: (url, resourceType) => {
-          // FIXME: This only works for a single URL, it is likely we want to
-          // do this for more than one.
-          const request = {
-            url,
-            headers: { Authorization: `Bearer ${authToken}` }
-          };
+          if (!url.startsWith('https://api.mapbox.com')) {
+            const request = {
+              url,
+              headers: { Authorization: `Bearer ${authToken}` }
+            };
 
-          return request;
+            return request;
+          }
         }
       });
 
