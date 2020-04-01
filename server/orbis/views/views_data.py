@@ -107,89 +107,16 @@ class DataView(APIView):
         data_token = generate_data_token(user)
         data_token_timeout = settings.DATA_TOKEN_TIMEOUT
 
-        # # TODO: for now I am hard-coding things,
-        # # TODO: once it's ready, I should proxy the request to the data-sources-directory service
-        # # TODO: and get the sources from that response instead of creating them below
-        # headers = f"Authentication: Bearer {token}"
-        # response = requests.get(settings.DATA_SOURCES_DIRECTORY_URL, headers=headers)
-        # if not status.is_success(response.status_code):
-        #     raise APIException("Error retrieving data sources")
-        # sources = response.json()
+        url = settings.DATA_SOURCES_DIRECTORY_URL
+        headers = f"Authentication: Bearer {data_token}"
 
-        sources = [
-            {
-                "label": "TropoSphere",
-                "layers": [
-                    {
-                        "source_id": "astrosat/core/hospitals-uk/2019-12-17",
-                        "authority": "astrosat",
-                        "namespace": "core",
-                        "name": "hospitals-uk",
-                        "version": "2019-12-17",
-                        "type": "geojson",  # vector|raster|geojson
-                        "status": "published",  # draft|published|deprecated
-                        "metadata": {
-                            "label": "UK Hospitals",
-                            "domain": "TropoSphere",
-                            "range": True,
-                            "description": "TropoSphere has name hospitals-uk with a label UK Hospitals Some paragraph describing stuff. TropoSphere has name hospitals-uk with a label UK Hospitals Some paragraph describing stuff.",
-                            "url": f"{settings.DATA_URL}/astrosat/core/hospitals-uk/2019-12-17/hospitals_uk.geojson",
-                        },
-                    },
-                    {
-                        "source_id": "astrosat/test/sentinel_2_rgb/S2A_20191223T034141_T47NPG_RGB",
-                        "authority": "astrosat",
-                        "namespace": "test",
-                        "name": "sentinel-2-rgb",
-                        "version": "S2A_20191223T034141_T47NPG_RGB",
-                        "type": "raster",  # vector|raster
-                        "status": "published",  # draft|published|deprecated
-                        "metadata": {
-                            "label": "Sentinel 2 RGB",
-                            "domain": "TropoSphere",
-                            "range": True,
-                            "description": "TropoSphere has name sentinel-2-rgb with a label Sentinel 2 RGB Some paragraph describing stuff.",
-                            "url": f"{settings.DATA_URL}/astrosat/test/sentinel_2_rgb/S2A_20191223T034141_T47NPG_RGB/{{z}}/{{x}}/{{y}}.png",
-                        },
-                    },
-                ],
-            },
-            {
-                "label": "Rice Paddies",
-                "layers": [
-                    {
-                        "source_id": "astrosat/test/stoke-on-trent/v1",
-                        "authority": "astrosat",
-                        "namespace": "test",
-                        "name": "stoke-on-trent",
-                        "version": "v1",
-                        "type": "vector",  # vector|raster
-                        "status": "published",  # draft|published|deprecated
-                        "metadata": {
-                            "label": "Stoke-On-Trent",
-                            "domain": "Rice Paddies",
-                            "description": "Rice Paddies has name stoke-on-trent with a label Stoke-On-Trent Some paragraph describing stuff.",
-                            "url": f"{settings.DATA_URL}/astrosat/test/stoke-on-trent/v1/metadata.json",
-                        },
-                    },
-                    {
-                        "source_id": "astrosat/test/super-sen2-japan-band5/dec-2019",
-                        "authority": "astrosat",
-                        "namespace": "test",
-                        "name": "super-sen2-japan-band5",
-                        "version": "dec-2019",
-                        "type": "raster",  # vector|raster
-                        "status": "published",  # draft|published|deprecated
-                        "metadata": {
-                            "label": "Japan Band5",
-                            "domain": "Rice Paddies",
-                            "description": "Rice Paddies has name super-sen2-japan-band5 with a label Japan Band5 Some paragraph describing stuff.",
-                            "url": f"{settings.DATA_URL}/astrosat/test/super-sen2-japan-band5/dec-2019/{{z}}/{{x}}/{{y}}.png",
-                        },
-                    },
-                ],
-            },
-        ]
+        try:
+            response = requests.get(parsed_url.geturl(), headers=headers)
+            if not status.is_success(response.status_code):
+                raise APIException("Error retrieving data sources")
+        except Exception:
+            raise APIException(f"Unable to retrieve data sources at '{url}'")
+        sources = response.json()
 
         return Response({
             "token": data_token,

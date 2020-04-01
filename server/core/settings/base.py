@@ -126,7 +126,7 @@ COPERNICUS_PASSWORD = env("DJANGO_COPERNICUS_PASSWORD", default="")
 
 DATA_TOKEN_SECRET = env("DJANGO_DATA_TOKEN_SECRET", default="itsasecret")
 DATA_TOKEN_ALGORITHM = env("DJANGO_DATA_TOKEN_ALGORITHM", default="HS256")
-DATA_SOURCES_DIRECTORY_URL = env("DJANGO_DATA_SOURCES_DIRECTORY_URL", default="www.domain.com")
+DATA_SOURCES_DIRECTORY_URL = env("DJANGO_DATA_SOURCES_DIRECTORY_URL", default="data-sources-directory.testing.astrosat.net")
 DATA_URL = env("DJANGO_DATA_URL", default="www.domain.com")
 
 # On-Line Scene Processor for satellite imagery
