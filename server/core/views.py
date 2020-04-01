@@ -40,7 +40,6 @@ class AppConfigView(APIView):
             ("isRegistrationOpen", openapi.Schema(type=openapi.TYPE_BOOLEAN)),
             ("isVerificationRequired", openapi.Schema(type=openapi.TYPE_BOOLEAN)),
             ("isApprovalRequired", openapi.Schema(type=openapi.TYPE_BOOLEAN)),
-            ("dataUrl", openapi.Schema(type=openapi.TYPE_STRING, example="staticdata.testing.or3is.com")),
             ("mapStyles", openapi.Schema(type=openapi.TYPE_STRING, example="[{'id': 'streets', 'uri': 'mapbox://styles/mapbox/streets-v11', 'title': 'Streets'}]")),
             ("maximumAoiArea", openapi.Schema(type=openapi.TYPE_INTEGER, example=500)),
 
