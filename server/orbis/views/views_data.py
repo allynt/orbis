@@ -118,7 +118,7 @@ class DataView(APIView):
         except Exception as e:
             # TODO: REMOVE THIS TRY/CATCH BLOCK ONCE I'M SURE THINGS ARE WORKING
             raise APIException(f"Unable to retrieve data sources at '{url}': {str(e)}")
-        sources = response.json()
+        sources = response.json()["results"]
 
         return Response({
             "token": data_token,
