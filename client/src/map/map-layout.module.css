@@ -158,6 +158,7 @@
 .map :global(.mapboxgl-popup) :global(.mapboxgl-popup-content) {
   background: var(--background-color);
   border-radius: 1rem;
+  min-width: 25rem;
 }
 
 /* .map :global(.mapboxgl-popup-close-button) {
