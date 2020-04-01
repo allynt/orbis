@@ -279,7 +279,7 @@ const Map = ({
               id: clusterlayerName,
               type: 'circle',
               source: sourceId,
-              filter: ['any', ['has', 'point_count'], ['!', ['has', 'person_type']]],
+              filter: ['any', ['has', 'point_count'], ['!', ['has', 'Type']]],
               paint: {
                 'circle-color': '#f6be00',
                 'circle-opacity': 1,
@@ -312,7 +312,7 @@ const Map = ({
               id: `${layer.name}-infrastructure-label`,
               source: sourceId,
               type: 'symbol',
-              filter: ['all', ['!', ['has', 'point_count']], ['!', ['has', 'person_type']]],
+              filter: ['all', ['!', ['has', 'point_count']], ['!', ['has', 'Type']]],
               layout: {
                 'icon-image': '{type}',
                 'icon-size': 0.5,
@@ -323,17 +323,16 @@ const Map = ({
             });
 
             const populationLayerName = `${layer.name}-population-label`;
-            console.log();
             map.addLayer({
               id: populationLayerName,
               source: sourceId,
               type: 'circle',
-              filter: ['all', ['!', ['has', 'point_count']], ['has', 'person_type']],
+              filter: ['all', ['!', ['has', 'point_count']], ['has', 'Type']],
               paint: {
                 'circle-color': [
                   'case',
                   ...personTypes.reduce((acc, personType) => {
-                    return [...acc, ['==', ['get', 'person_type'], personType.name], personType.color];
+                    return [...acc, ['==', ['get', 'Type'], personType.name], personType.color];
                   }, []),
                   'black'
                 ],
@@ -393,7 +392,7 @@ const Map = ({
             .on('close', () => setSelectedInfoFeatures(null))
             .addTo(mapInstance);
 
-          if (features[0].properties.person_type) {
+          if (features[0].properties.Type) {
             setSelectedInfoFeatures({ type: USER_INFO_TYPE, data: features });
           } else {
             setSelectedInfoFeatures({ type: INFRASTRUCTURE_INFO_TYPE, data: features });
