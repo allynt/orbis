@@ -110,7 +110,7 @@ class DataView(APIView):
 
         url = urljoin(settings.DATA_SOURCES_DIRECTORY_URL, "/api/data-sources/v1/")
         headers = {
-            "Authentication": f"Bearer {data_token}"
+            "Authorization": f"Bearer {data_token.decode('utf-8')}"
         }
 
         try:
