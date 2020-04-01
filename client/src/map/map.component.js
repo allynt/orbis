@@ -45,7 +45,7 @@ import {
   PROFILE,
   SATELLITE_LAYERS
 } from '../toolbar/toolbar-constants';
-import { GEOJSON, RASTER, VECTOR } from './map.constants';
+import { GEOJSON, RASTER, VECTOR, personTypes } from './map.constants';
 import useMapControl from './use-map-control.hook';
 import { useMapEvent, useMapLayerEvent } from './use-map-event.hook';
 import useMap from './use-map.hook';
@@ -331,6 +331,7 @@ const Map = ({
             });
 
             const populationLayerName = `${layer.name}-population-label`;
+            console.log();
             map.addLayer({
               id: populationLayerName,
               source: sourceId,
@@ -339,10 +340,9 @@ const Map = ({
               paint: {
                 'circle-color': [
                   'case',
-                  ['==', ['get', 'person_type'], 'HELPER'],
-                  'green',
-                  ['==', ['get', 'person_type'], 'HELPEE'],
-                  'red',
+                  ...personTypes.reduce((acc, personType) => {
+                    return [...acc, ['==', ['get', 'person_type'], personType.name], personType.color];
+                  }, []),
                   'black'
                 ],
                 'circle-opacity': 1,
