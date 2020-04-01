@@ -22,7 +22,7 @@ locals {
   }
 
   # Deployment secrets are created by the deployment (this module)
-  app_deployment_secret_name  = "${local.app}-${var.environment}-deployment-secrets"
+  app_deployment_secret_name = "${local.app}-${var.environment}-deployment-secrets"
 
   # Environment secrets are created by the infrastructure module, and used by this module
   app_environment_secret_name = "${local.app}-${var.environment}-environment-secrets"
@@ -33,5 +33,6 @@ locals {
   healthcheck_path = "/healthcheck/"
 
   # Other Services
-  staticdata_url = (var.environment == "production") ? "https://staticdata.astrosat.net/" : "https://staticdata.${var.environment}.astrosat.net/"
+  staticdata_url             = (var.environment == "production") ? "https://staticdata.astrosat.net/" : "https://staticdata.${var.environment}.astrosat.net/"
+  data_sources_directory_url = (var.environment == "production") ? "https://data-sources-directory.astrosat.net/" : "https://data-sources-directory.${var.environment}.astrosat.net/"
 }

@@ -240,6 +240,11 @@ resource "kubernetes_deployment" "app_deployment" {
           }
 
           env {
+            name  = "DJANGO_DATA_SOURCES_DIRECTORY_URL"
+            value = local.data_sources_directory_url
+          }
+
+          env {
             name = "DJANGO_DATA_TOKEN_SECRET"
             value_from {
               secret_key_ref {
