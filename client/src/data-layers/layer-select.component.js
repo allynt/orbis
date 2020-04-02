@@ -47,7 +47,7 @@ export const LayerSelect = ({ domain, initialSelectedLayers, onAddLayers, onRemo
         <h3>Select Your Layers</h3>
       </div>
       <div className={styles.layerList}>
-        {/* {domain ? (
+        {domain ? (
           <>
             <ul>
               {domain &&
@@ -82,7 +82,7 @@ export const LayerSelect = ({ domain, initialSelectedLayers, onAddLayers, onRemo
           </>
         ) : (
           <div data-testid="layer-select-no-domain-message">No Orb selected</div>
-        )} */}
+        )}
         <div className={dialogStyles.noOrbSelected} data-testid="layer-select-no-domain-message">
           <p>Select Your Orb in order to find layers</p>
         </div>
