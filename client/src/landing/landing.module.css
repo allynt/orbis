@@ -50,7 +50,7 @@
 }
 
 .header h1 {
-  font-size: 2.5rem;
+  font-size: 1.5rem;
 }
 
 .headerButton {
@@ -185,8 +185,17 @@
 }
 
 .journey h1 {
-  font-size: 3rem;
+  font-size: 2rem;
   padding: 2rem 0;
+}
+
+.journey h1 span {
+  display: block;
+}
+
+.journey p {
+  width: 100%;
+  font-size: 1.25rem;
 }
 
 .journeyText {
