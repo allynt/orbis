@@ -39,6 +39,15 @@
   height: inherit;
 }
 
+.noOrbSelected {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 30rem;
+  font-size: 1rem;
+  font-weight: bold;
+}
+
 .dialog .buttons {
   display: flex;
   justify-content: flex-end;

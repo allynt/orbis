@@ -10,7 +10,7 @@ export const OrbSelect = ({ domains, selectedDomain, onDomainClick }) => (
     </div>
     <div className={dialogStyles.content}>
       <ul className={styles.orbList}>
-        {domains.map(domain => (
+        {/* {domains.map(domain => (
           <li
             className={`${(!selectedDomain || domain.label === selectedDomain?.label) && styles.selected}`}
             key={domain.label}
@@ -19,7 +19,7 @@ export const OrbSelect = ({ domains, selectedDomain, onDomainClick }) => (
           >
             {domain.label}
           </li>
-        ))}
+        ))} */}
       </ul>
     </div>
   </div>

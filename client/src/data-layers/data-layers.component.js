@@ -50,15 +50,16 @@ const DataLayers = () => {
   const selectedLayers = useSelector(state => state.dataLayers.layers);
 
   // Create an array of sources, grouped by their domain.
-  const domains = dataSources.reduce((acc, value) => {
-    const domain = acc.find(dom => dom.label === value.metadata.domain);
+  // const domains = dataSources.reduce((acc, value) => {
+  //   const domain = acc.find(dom => dom.label === value.metadata.domain);
 
-    domain
-      ? (domain.layers = [...domain.layers, value])
-      : (acc = [...acc, { label: value.metadata.domain, layers: [value] }]);
+  //   domain
+  //     ? (domain.layers = [...domain.layers, value])
+  //     : (acc = [...acc, { label: value.metadata.domain, layers: [value] }]);
 
-    return acc;
-  }, []);
+  //   return acc;
+  // }, []);
+  const selectedLayers = useSelector(state => state.dataLayers.layers);
 
   return (
     <div className={styles.selectData} ref={ref}>
@@ -83,7 +84,7 @@ const DataLayers = () => {
       </div>
 
       <DataLayersDialog
-        domains={domains}
+        // domains={domains}
         selectedLayers={selectedLayers}
         onAddLayers={selectedLayers => dispatch(addLayers(selectedLayers))}
         onRemoveLayer={layer => dispatch(removeLayer(layer))}
