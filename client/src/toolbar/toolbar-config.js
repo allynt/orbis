@@ -39,7 +39,7 @@ export const getToolbarItems = dispatch => {
       action: () => {
         dispatch(toggleMenu(DATA_LAYERS));
         dispatch(toggleMenuItem(DATA_LAYERS));
-        dispatch(setMenuHeadings('ADD DOMAIN', 'Select Domain Type to Add Layers'));
+        dispatch(setMenuHeadings('ADD ORB', 'Select ORB Type to Add Layers'));
       },
       tooltip: DATA_LAYERS
     },
