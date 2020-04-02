@@ -27,6 +27,13 @@
 
 .categoryButton {
   color: #fff;
+  padding: 0.5rem 0;
+  border-radius: 0;
+}
+
+.categoryButton:hover {
+  border-bottom: 2px solid transparent;
+  background-color: transparent;
 }
 
 .icon {
