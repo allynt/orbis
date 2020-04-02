@@ -341,8 +341,7 @@ const Map = ({
               // minzoom: 10,
               // maxzoom: 19
             });
-
-            setClickableLayers([...clickableLayers, clusterlayerName, populationLayerName]);
+            setClickableLayers(currentLayers => [...currentLayers, clusterlayerName, populationLayerName]);
           }
         }
 
