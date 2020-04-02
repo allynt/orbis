@@ -48,7 +48,7 @@ export const LayerSelect = ({ domain, initialSelectedLayers, onAddLayers, onRemo
       </div>
       <div className={styles.layerList}>
         {domain ? (
-          <>
+          <div className={styles.switchContainer}>
             <ul>
               {domain &&
                 domain.layers.map(layer => {
@@ -79,13 +79,12 @@ export const LayerSelect = ({ domain, initialSelectedLayers, onAddLayers, onRemo
                 Add
               </Button>
             </div>
-          </>
+          </div>
         ) : (
-          <div data-testid="layer-select-no-domain-message">No Orb selected</div>
+          <div className={dialogStyles.noOrbSelected} data-testid="layer-select-no-domain-message">
+            <p>Select Your Orb in order to find layers</p>
+          </div>
         )}
-        <div className={dialogStyles.noOrbSelected} data-testid="layer-select-no-domain-message">
-          <p>Select Your Orb in order to find layers</p>
-        </div>
       </div>
     </div>
   );

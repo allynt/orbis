@@ -10,6 +10,13 @@
   min-height: 30rem;
 }
 
+.switchContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 30rem;
+}
+
 .switch {
   margin-right: 0.3125rem;
 }

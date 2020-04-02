@@ -49,7 +49,7 @@ const DataLayers = () => {
   const dataSources = useSelector(state => state.map.dataSources);
   const selectedLayers = useSelector(state => state.dataLayers.layers);
 
-  Create an array of sources, grouped by their domain.
+  // Create an array of sources, grouped by their domain.
   const domains = dataSources.reduce((acc, value) => {
     const domain = acc.find(dom => dom.label === value.metadata.domain);
 
@@ -59,7 +59,6 @@ const DataLayers = () => {
 
     return acc;
   }, []);
-  const selectedLayers = useSelector(state => state.dataLayers.layers);
 
   return (
     <div className={styles.selectData} ref={ref}>
