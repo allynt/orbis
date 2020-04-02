@@ -9,10 +9,11 @@ import { render, cleanup, fireEvent } from '@testing-library/react';
 import { Router } from 'react-router-dom';
 import { createMemoryHistory } from 'history';
 
-import { regions, domains } from '../map/map.constants';
+import { regions } from '../map/map.constants';
 
 import NewMapForm from './new-map-form.component';
 
+const domains = ['Troposphere', 'Action for help and something'];
 const mockStore = configureMockStore([thunk]);
 
 describe('New Map Form Component', () => {

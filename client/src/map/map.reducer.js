@@ -1,4 +1,4 @@
-import { regions, domains } from './map.constants';
+import { regions } from './map.constants';
 
 import {
   TOGGLE_3D_MODE,
@@ -30,7 +30,7 @@ const initialState = {
   isMiniMapVisible: false,
   isSpyglassMapVisible: false,
   isCompareMode: false,
-  domains,
+  domains: [],
   regions,
   pollingPeriod: 30000,
   dataToken: null,
@@ -113,12 +113,13 @@ const reducer = (state = initialState, action) => {
       // Convert from minutes to millliseconds and then half the value.
       // This will ensure we update the token before it expires.
       const timeoutInMilliseconds = (action.sourcesAndToken.timeout * 60 * 1000) / 2;
-
+      const { domains, sourcesAndToken } = action;
       return {
         ...state,
-        dataToken: action.sourcesAndToken.token,
-        dataSources: action.sourcesAndToken.sources,
-        pollingPeriod: timeoutInMilliseconds
+        dataToken: sourcesAndToken.token,
+        dataSources: sourcesAndToken.sources,
+        pollingPeriod: timeoutInMilliseconds,
+        domains
       };
     case SOURCE_DATA_AND_TOKEN_REQUESTED_FAILURE:
       return { ...state, error: action.error };

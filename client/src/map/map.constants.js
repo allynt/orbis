@@ -33,25 +33,6 @@ export const regions = [
   }
 ];
 
-export const domains = [
-  {
-    name: 'TropoSense',
-    value: 'troposense'
-  },
-  {
-    name: 'Rice Paddies',
-    value: 'ricepaddies'
-  },
-  {
-    name: 'Marine Pollution',
-    value: 'marinepolution'
-  },
-  {
-    name: 'Forestry & Landslides',
-    value: 'forestryandlandslides'
-  }
-];
-
 export const personTypes = [
   {
     name: 'HELPER',

@@ -112,13 +112,13 @@ export const fetchSourcesAndDataToken = () => async (dispatch, getState) => {
   };
 
   const response = await getData('/api/data/sources/', headers);
-
   const data = await response.json();
-
+  const domains = Array.from(new Set(data.sources.map(source => source.metadata.domain)));
   if (response.ok) {
     return dispatch({
       type: SOURCE_DATA_AND_TOKEN_REQUESTED_SUCCESS,
-      sourcesAndToken: data
+      sourcesAndToken: data,
+      domains
     });
   } else {
     const message = `${response.status} ${response.statusText} - ${data.message}`;
