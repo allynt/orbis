@@ -48,17 +48,17 @@
 }
 
 .addButton {
-  margin: 0 1.875rem 1.625rem 0;
-  background-color: #f6be00;
+  margin: 0 1.875rem 1.625rem 0 !important;
+  background-color: #f6be00 !important;
 }
 
 .addButton:hover {
-  background-color: rgba(246, 190, 0, 0.8);
+  background-color: rgba(246, 190, 0, 0.8) !important;
 }
 
 .disabled,
 .disabled:hover {
-  background-color: #e4e4e4;
+  background-color: #e4e4e4 !important;
 }
 
 .infoBox {

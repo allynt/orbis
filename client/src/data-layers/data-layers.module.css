@@ -26,14 +26,14 @@
 }
 
 .categoryButton {
-  color: #fff;
-  padding: 0.5rem 0;
-  border-radius: 0;
+  color: #fff !important;
+  padding: 0.5rem 0 !important;
+  border-radius: 0 !important;
 }
 
 .categoryButton:hover {
-  border-bottom: 2px solid transparent;
-  background-color: transparent;
+  border-bottom: 2px solid transparent !important;
+  background-color: transparent !important;
 }
 
 .icon {
