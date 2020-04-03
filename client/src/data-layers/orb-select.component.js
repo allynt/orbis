@@ -12,7 +12,7 @@ export const OrbSelect = ({ domains, selectedDomain, onDomainClick }) => (
       <ul className={styles.orbList}>
         {domains.map(domain => (
           <li
-            className={`${(!selectedDomain || domain.label === selectedDomain?.label) && styles.selected}`}
+            className={`${domain.label === selectedDomain?.label && styles.selected}`}
             key={domain.label}
             onClick={() => onDomainClick(domain)}
             data-testid={`orb-select-${domain.label}`}
