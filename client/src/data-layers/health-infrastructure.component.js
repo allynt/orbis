@@ -2,6 +2,7 @@ import React from 'react';
 
 import styles from './health-infrastructure.module.css';
 
+import { ReactComponent as CareHomeIcon } from './care-home.svg';
 import { ReactComponent as GpIcon } from './gp-surgeries.svg';
 import { ReactComponent as HospitalIcon } from './hospitals.svg';
 import { ReactComponent as NhsIcon } from './nhs.svg';
@@ -12,7 +13,7 @@ const types = [
   { name: 'GP Surgery', icon: GpIcon },
   { name: 'NHS', icon: NhsIcon },
   { name: 'Pharmacy', icon: PharmacyIcon },
-  { name: 'Care Home' }
+  { name: 'Care Home', icon: CareHomeIcon }
 ];
 
 export const HealthInfrastructure = () => (
