@@ -69,22 +69,21 @@ export const LayerSelect = ({ domain, initialSelectedLayers, onAddLayers, onRemo
                   );
                 })}
             </ul>
-
-            <div className={dialogStyles.buttons}>
-              <Button
-                classNames={[styles.addButton, addButtonDisabled && styles.disabled]}
-                onClick={handleAddClick}
-                disabled={addButtonDisabled}
-              >
-                Add
-              </Button>
-            </div>
           </div>
         ) : (
           <div className={dialogStyles.noOrbSelected} data-testid="layer-select-no-domain-message">
             <p>Select Your Orb in order to find layers</p>
           </div>
         )}
+      </div>
+      <div className={dialogStyles.buttons}>
+        <Button
+          classNames={[styles.addButton, addButtonDisabled && styles.disabled]}
+          onClick={handleAddClick}
+          disabled={addButtonDisabled}
+        >
+          Add
+        </Button>
       </div>
     </div>
   );

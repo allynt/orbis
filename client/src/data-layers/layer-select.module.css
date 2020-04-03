@@ -48,7 +48,7 @@
 }
 
 .addButton {
-  margin-top: 1.875rem;
+  margin: 0 1.875rem 1.875rem 0;
   background-color: #f6be00;
 }
 
