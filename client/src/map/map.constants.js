@@ -33,6 +33,8 @@ export const regions = [
   }
 ];
 
+// FIX-ME make it so the color values and types are
+// gotten from fetched data rather than a constant
 export const personTypes = [
   {
     name: 'HELPER',
