@@ -314,7 +314,7 @@ const Map = ({
               filter: ['all', ['!', ['has', 'point_count']], ['!', ['has', 'Type']]],
               layout: {
                 'icon-image': '{type}',
-                'icon-size': 0.5,
+                'icon-size': 0.75,
                 'icon-allow-overlap': true
               } //,
               // minzoom: 10,
