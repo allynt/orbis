@@ -10,6 +10,8 @@
   height: 100vh;
   background-color: var(--background-color);
   border-right: 2px solid var(--primary-background-color);
+  overflow-y: auto;
+  overflow-x: hidden;
   z-index: 4;
 }
 
@@ -28,11 +30,21 @@
 .item {
   height: 3rem;
   border: none;
-  padding: 0.3rem;
+  padding: 0.3rem var(--scrollbar-width);
   margin: 0 0 0.5rem 0;
   border-radius: 0.3rem 0 0 0.3rem;
   color: #a2aaad;
   cursor: pointer;
+}
+
+@media screen and (max-height: 600px) {
+  .toolbar {
+    overflow-y: scroll;
+  }
+
+  .item {
+    padding-right: 0;
+  }
 }
 
 .item svg {
