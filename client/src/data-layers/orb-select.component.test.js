@@ -24,14 +24,6 @@ describe('OrbSelect', () => {
     }
   });
 
-  it('should provide all items with the selected class if no orb is selected', () => {
-    const { getAllByRole } = setup();
-    const listItems = getAllByRole('listitem');
-    for (let item of listItems) {
-      expect(item).toHaveClass('selected');
-    }
-  });
-
   it('should only give on item the selected class when an orb is selected', () => {
     const { getAllByRole } = setup({ label: 'domain-one' });
     const selectedListItems = getAllByRole('listitem').filter(item => item.classList.contains('selected'));
