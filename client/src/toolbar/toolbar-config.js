@@ -43,63 +43,63 @@ export const getToolbarItems = dispatch => {
       },
       tooltip: DATA_LAYERS
     },
-    {
-      label: SATELLITE_LAYERS,
-      icon: <SatelliteIcon />,
-      action: () => {
-        dispatch(toggleMenu(SATELLITE_LAYERS));
-        dispatch(toggleMenuItem(SATELLITE_LAYERS));
-        dispatch(setMenuHeadings('SATELLITE IMAGES', 'Select Type of imagery For The Layers'));
-      },
-      tooltip: SATELLITE_LAYERS
-    },
-    {
-      label: PAGES,
-      icon: <PagesIcon />,
-      action: () => dispatch(notYetImplemented('No Pages designed yet')),
-      tooltip: PAGES
-    },
-    {
-      label: BOOKMARKS,
-      icon: <BookmarksIcon />,
-      action: () => {
-        dispatch(toggleMenu(BOOKMARKS));
-        dispatch(toggleMenuItem(BOOKMARKS));
-        dispatch(setMenuHeadings('MAPS', 'Select an Existing Map or Add New'));
-      },
-      tooltip: BOOKMARKS
-    },
-    {
-      label: STORIES,
-      icon: <StoryIcon />,
-      action: () => dispatch(notYetImplemented('No Pages designed yet')),
-      tooltip: STORIES
-    },
-    {
-      label: ANNOTATIONS,
-      icon: <AnnotationsIcon />,
-      action: () => {
-        dispatch(toggleMenu(ANNOTATIONS));
-        dispatch(toggleMenuItem(ANNOTATIONS));
-        dispatch(setMenuHeadings('ANNOTATIONS', 'Select Your Drawing Tool Or Saved Areas'));
-      },
-      tooltip: ANNOTATIONS
-    },
-    {
-      label: SAVE_MAP,
-      icon: <ImageIcon />,
-      action: () => {
-        dispatch(toggleMenu('screenshot'));
-        dispatch(saveMap());
-      },
-      tooltip: SAVE_MAP
-    },
-    {
-      label: SHARE,
-      icon: <ShareIcon />,
-      action: () => dispatch(notYetImplemented('No Share designed yet')),
-      tooltip: SHARE
-    },
+    // {
+    //   label: SATELLITE_LAYERS,
+    //   icon: <SatelliteIcon />,
+    //   action: () => {
+    //     dispatch(toggleMenu(SATELLITE_LAYERS));
+    //     dispatch(toggleMenuItem(SATELLITE_LAYERS));
+    //     dispatch(setMenuHeadings('SATELLITE IMAGES', 'Select Type of imagery For The Layers'));
+    //   },
+    //   tooltip: SATELLITE_LAYERS
+    // },
+    // {
+    //   label: PAGES,
+    //   icon: <PagesIcon />,
+    //   action: () => dispatch(notYetImplemented('No Pages designed yet')),
+    //   tooltip: PAGES
+    // },
+    // {
+    //   label: BOOKMARKS,
+    //   icon: <BookmarksIcon />,
+    //   action: () => {
+    //     dispatch(toggleMenu(BOOKMARKS));
+    //     dispatch(toggleMenuItem(BOOKMARKS));
+    //     dispatch(setMenuHeadings('MAPS', 'Select an Existing Map or Add New'));
+    //   },
+    //   tooltip: BOOKMARKS
+    // },
+    // {
+    //   label: STORIES,
+    //   icon: <StoryIcon />,
+    //   action: () => dispatch(notYetImplemented('No Pages designed yet')),
+    //   tooltip: STORIES
+    // },
+    // {
+    //   label: ANNOTATIONS,
+    //   icon: <AnnotationsIcon />,
+    //   action: () => {
+    //     dispatch(toggleMenu(ANNOTATIONS));
+    //     dispatch(toggleMenuItem(ANNOTATIONS));
+    //     dispatch(setMenuHeadings('ANNOTATIONS', 'Select Your Drawing Tool Or Saved Areas'));
+    //   },
+    //   tooltip: ANNOTATIONS
+    // },
+    // {
+    //   label: SAVE_MAP,
+    //   icon: <ImageIcon />,
+    //   action: () => {
+    //     dispatch(toggleMenu('screenshot'));
+    //     dispatch(saveMap());
+    //   },
+    //   tooltip: SAVE_MAP
+    // },
+    // {
+    //   label: SHARE,
+    //   icon: <ShareIcon />,
+    //   action: () => dispatch(notYetImplemented('No Share designed yet')),
+    //   tooltip: SHARE
+    // },
     // {
     //   label: 'Layers',
     //   icon: <BookmarksLogo />,
@@ -132,13 +132,13 @@ export const getToolbarItems = dispatch => {
     //   // action: () => dispatch(toggleCompareMaps()),
     //   tooltip: 'Toggle Spyglass'
     // },
-    {
-      label: 'FAQ',
-      icon: <FaqIcon />,
-      action: () => dispatch(notYetImplemented(FAQ)),
-      tooltip: 'FAQ',
-      footer: true
-    },
+    // {
+    //   label: 'FAQ',
+    //   icon: <FaqIcon />,
+    //   action: () => dispatch(notYetImplemented(FAQ)),
+    //   tooltip: 'FAQ',
+    //   footer: true
+    // },
     {
       label: PROFILE,
       icon: <ProfileIcon />,
