@@ -95,7 +95,7 @@ const NewUserLanding = forwardRef(({ setRedirect, toggle, isVisible, regions, do
     <div className={styles.content}>
       <div className={styles.journey}>
         <h1>
-          <span>Hi,</span> your earth exploration journey starts here{' '}
+          <span>Hi,</span> your Earth exploration journey starts here{' '}
         </h1>
 
         <p className={styles.journeyText}>Click Browse Map below to start</p>
