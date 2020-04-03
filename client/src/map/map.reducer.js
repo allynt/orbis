@@ -112,12 +112,12 @@ const reducer = (state = initialState, action) => {
     case SOURCE_DATA_AND_TOKEN_REQUESTED_SUCCESS:
       // Convert from minutes to millliseconds and then half the value.
       // This will ensure we update the token before it expires.
-      const timeoutInMilliseconds = (action.sourcesAndToken.timeout * 60 * 1000) / 2;
-      const { domains, sourcesAndToken } = action;
+      const { domains, sources, token, timeout } = action.payload;
+      const timeoutInMilliseconds = (timeout * 60 * 1000) / 2;
       return {
         ...state,
-        dataToken: sourcesAndToken.token,
-        dataSources: sourcesAndToken.sources,
+        dataToken: token,
+        dataSources: sources,
         pollingPeriod: timeoutInMilliseconds,
         domains
       };
