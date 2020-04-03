@@ -76,8 +76,7 @@ describe('Landing Component', () => {
       </Provider>
     );
 
-    expect(getByText('OR3IS JOURNEY')).toBeInTheDocument();
-    expect(getByText('Create New')).toBeInTheDocument();
+    expect(getByText('your earth exploration journey starts here')).toBeInTheDocument();
     expect(getByText('Browse Map')).toBeInTheDocument();
 
     expect(queryByText(bookmarkText)).not.toBeInTheDocument();
@@ -95,8 +94,7 @@ describe('Landing Component', () => {
     expect(getByText(storiesText)).toBeInTheDocument();
     expect(getByText('Browse Map')).toBeInTheDocument();
 
-    expect(queryByText('OR3IS JOURNEY')).not.toBeInTheDocument();
-    expect(queryByText('Create New')).not.toBeInTheDocument();
+    expect(queryByText('your earth exploration journey starts here')).not.toBeInTheDocument();
   });
 
   it('should show all bookmarked maps when Bookmarks View all button clicked', () => {

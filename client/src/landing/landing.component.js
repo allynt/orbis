@@ -94,20 +94,13 @@ const NewUserLanding = forwardRef(({ setRedirect, toggle, isVisible, regions, do
     </div>
     <div className={styles.content}>
       <div className={styles.journey}>
-        <h1>OR3IS JOURNEY</h1>
+        <h1>
+          <span>Hi,</span> your earth exploration journey starts here{' '}
+        </h1>
 
-        <p className={styles.journeyText}>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
-          magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-          consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-          pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id
-          est laborum.
-        </p>
+        <p className={styles.journeyText}>Click Browse Map below to start</p>
 
         <div>
-          <Button theme="primary" classNames={[styles.button]} onClick={toggle}>
-            Create New
-          </Button>
           <Button theme="tertiary" classNames={[styles.button]} onClick={() => setRedirect('/map')}>
             Browse Map
           </Button>
