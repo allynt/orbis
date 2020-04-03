@@ -54,7 +54,7 @@ const NewMapForm = ({ regions, domains, setViewport }) => {
           <Select
             name="domain"
             value={values.domain || ''}
-            options={domains}
+            options={domains.map(domain => ({ name: domain, value: domain }))}
             onChange={handleChange}
             disabled={values.region ? false : true}
           />

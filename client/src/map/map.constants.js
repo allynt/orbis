@@ -33,25 +33,8 @@ export const regions = [
   }
 ];
 
-export const domains = [
-  {
-    name: 'TropoSense',
-    value: 'troposense'
-  },
-  {
-    name: 'Rice Paddies',
-    value: 'ricepaddies'
-  },
-  {
-    name: 'Marine Pollution',
-    value: 'marinepolution'
-  },
-  {
-    name: 'Forestry & Landslides',
-    value: 'forestryandlandslides'
-  }
-];
-
+// FIX-ME make it so the color values and types are
+// gotten from fetched data rather than a constant
 export const personTypes = [
   {
     name: 'HELPER',
