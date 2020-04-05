@@ -26,10 +26,10 @@ import { ReactComponent as FaqIcon } from './faq.svg';
 import { ReactComponent as ProfileIcon } from './profile.svg';
 
 import { toggleMenu, toggleMenuItem, setMenuHeadings } from '../side-menu/side-menu.actions';
-// import { logout } from '../accounts/accounts.actions';
+
 import { saveMap } from '../map/map.actions';
 
-import { notYetImplemented } from '../app.actions';
+import { notYetImplemented } from '../app.slice';
 
 export const getToolbarItems = dispatch => {
   return [

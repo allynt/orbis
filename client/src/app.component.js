@@ -9,7 +9,7 @@ import useModal from '@astrosat/astrosat-ui/dist/containers/use-modal';
 
 import PrivateRoute from './utils/private-route.component';
 
-import { fetchAppConfig } from './app.actions';
+import { fetchAppConfig } from './app.slice';
 import { fetchUser, login } from './accounts/accounts.actions';
 import { fetchUsers, createUser, deleteUser, updateUser, copyUser } from './accounts/admin/users.actions';
 import { fetchSourcesAndDataToken } from './map/map.actions';
