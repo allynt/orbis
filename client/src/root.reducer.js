@@ -6,7 +6,7 @@ import { connectRouter } from 'connected-react-router';
 
 import app from './app.slice';
 import map from './map/map.reducer';
-import dataLayers from './data-layers/data-layers-dialog.reducer';
+import dataLayers from './data-layers/data-layers.slice';
 import satellites from './satellites/satellites.reducer';
 import accounts from './accounts/accounts.reducer';
 import theming from './theming/theming.slice';
