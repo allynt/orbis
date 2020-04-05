@@ -25,7 +25,7 @@ import { ReactComponent as ShareIcon } from './share.svg';
 import { ReactComponent as FaqIcon } from './faq.svg';
 import { ReactComponent as ProfileIcon } from './profile.svg';
 
-import { toggleMenu, toggleMenuItem, setMenuHeadings } from '../side-menu/side-menu.actions';
+import { toggleMenu, toggleMenuItem, setMenuHeadings } from '../side-menu/side-menu.slice';
 
 import { saveMap } from '../map/map.actions';
 

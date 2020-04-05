@@ -13,7 +13,7 @@ import theming from './theming/theming.reducer';
 import admin from './accounts/admin/users.reducer';
 import annotations from './annotations/annotations.reducer';
 import bookmarks from './bookmarks/bookmarks.reducer';
-import sidebar from './side-menu/side-menu.reducer';
+import sidebar from './side-menu/side-menu.slice';
 
 export const history = createBrowserHistory();
 

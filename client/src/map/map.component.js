@@ -17,7 +17,7 @@ import LoadMask from '@astrosat/astrosat-ui/dist/load-mask/load-mask';
 
 import { MAP_STYLE_SELECTED, saveMap, setViewport } from './map.actions';
 import { isLoaded } from '../bookmarks/bookmarks.actions';
-import { closeMenu } from '../side-menu/side-menu.actions';
+import { closeMenu } from '../side-menu/side-menu.slice';
 
 import PasswordChangeForm from '../accounts/password-change-form.component';
 import Profile from '../accounts/profile.component';
