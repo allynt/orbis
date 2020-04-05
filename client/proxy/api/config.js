@@ -71,7 +71,7 @@ const users = [
   }
 ];
 
-const bookmarks = [
+let bookmarks = [
   {
     id: 8,
     owner: 1,
@@ -1252,6 +1252,12 @@ const addBookmark = (req, res) => {
   res.json(bookmark);
 };
 
+const deleteBookmark = (req, res) => {
+  bookmarks = bookmarks.filter(bookmark => bookmark.id !== parseInt(req.params.id, 10));
+  res.status(200);
+  res.json(bookmarks);
+};
+
 const changePassword = (req, res) => {
   console.log(`Changing User Password`);
   const oldPassword = req.body.old_password;
@@ -1330,6 +1336,7 @@ module.exports = {
   logout,
   getBookmarks,
   addBookmark,
+  deleteBookmark,
   changePassword,
   getSources,
   getSatelliteSearches,

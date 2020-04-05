@@ -49,6 +49,7 @@ router.route('/authentication/password/change/').post((req, res) => config.chang
 
 router.get('/bookmarks/', (req, res) => config.getBookmarks(req, res));
 router.route('/bookmarks/').post((req, res) => config.addBookmark(req, res));
+router.delete('/bookmarks/:id', (req, res) => config.deleteBookmark(req, res));
 
 router.get('/data/sources/', (req, res) => config.getSources(req, res));
 
