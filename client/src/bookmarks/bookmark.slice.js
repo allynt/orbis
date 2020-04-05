@@ -1,24 +1,75 @@
 import { NotificationManager } from 'react-notifications';
+
+import { createSlice } from '@reduxjs/toolkit';
+
 import { getData, sendData, FORM_HEADERS, JSON_HEADERS } from '../utils/http';
-
-export const FETCH_BOOKMARKS_SUCCESS = 'FETCH_BOOKMARKS_SUCCESS';
-export const FETCH_BOOKMARKS_FAILURE = 'FETCH_BOOKMARKS_FAILURE';
-
-export const ADD_BOOKMARK_SUCCESS = 'ADD_BOOKMARK_SUCCESS';
-export const ADD_BOOKMARK_FAILURE = 'ADD_BOOKMARK_FAILURE';
-
-export const DELETE_BOOKMARK_SUCCESS = 'DELETE_BOOKMARK_SUCCESS';
-export const DELETE_BOOKMARK_FAILURE = 'DELETE_BOOKMARK_FAILURE';
-
-export const SELECT_BOOKMARK = 'SELECT_BOOKMARK';
-
-export const IS_LOADED = 'IS_LOADED';
 
 const API = {
   fetch: '/api/bookmarks/',
   add: '/api/bookmarks/',
   delete: '/api/bookmarks/'
 };
+
+const initialState = {
+  bookmarks: null,
+  selectedBookmark: null,
+  error: null,
+  isLoading: false
+};
+
+const bookmarkSlice = createSlice({
+  name: 'bookmarks',
+  initialState,
+  reducers: {
+    fetchBookmarksSuccess: (state, { payload }) => {
+      state.bookmarks = payload;
+      state.error = null;
+    },
+    fetchBookmarksFailure: (state, { payload }) => {
+      state.error = payload;
+    },
+    addBookmarkSuccess: (state, { payload }) => {
+      state.bookmarks = state.bookmarks ? [...state.bookmarks, payload] : [payload];
+      state.selectedBookmark = payload;
+      state.error = null;
+    },
+    addBookmarkFailure: (state, { payload }) => {
+      state.error = payload;
+    },
+    deleteBookmarkSuccess: (state, { payload }) => {
+      const filteredBookmarks = state.bookmarks.filter(bookmark => bookmark.id !== payload.id);
+      const isSelectedBookmark = state.selectedBookmark && state.selectedBookmark.id === payload.id;
+      const selectedBookmark = isSelectedBookmark ? null : state.selectedBookmark;
+
+      state.bookmarks = filteredBookmarks;
+      state.selectedBookmark = selectedBookmark;
+      state.error = null;
+    },
+    deleteBookmarkFailure: (state, { payload }) => {
+      state.error = payload;
+    },
+    selectBookmark: (state, { payload }) => {
+      if (payload !== state.selectedBookmark) {
+        state.selectedBookmark = payload;
+        state.isLoading = true;
+      }
+    },
+    isLoaded: state => {
+      state.isLoading = false;
+    }
+  }
+});
+
+export const {
+  fetchBookmarksSuccess,
+  fetchBookmarksFailure,
+  addBookmarkSuccess,
+  addBookmarkFailure,
+  deleteBookmarkSuccess,
+  deleteBookmarkFailure,
+  selectBookmark,
+  isLoaded
+} = bookmarkSlice.actions;
 
 export const fetchBookmarks = () => async (dispatch, getState) => {
   const {
@@ -36,15 +87,12 @@ export const fetchBookmarks = () => async (dispatch, getState) => {
 
     NotificationManager.error(message, `Fetching Bookmark Error - ${response.statusText}`, 50000, () => {});
 
-    return dispatch({
-      type: FETCH_BOOKMARKS_FAILURE,
-      error: { message }
-    });
+    return dispatch(fetchBookmarksFailure({ message }));
   }
 
   const bookmarks = await response.json();
 
-  return dispatch({ type: FETCH_BOOKMARKS_SUCCESS, bookmarks });
+  return dispatch(fetchBookmarksSuccess(bookmarks));
 };
 
 export const addBookmark = bookmark => async (dispatch, getState) => {
@@ -69,24 +117,14 @@ export const addBookmark = bookmark => async (dispatch, getState) => {
 
     NotificationManager.error(message, `Adding Bookmark Error - ${response.statusText}`, 50000, () => {});
 
-    return dispatch({
-      type: ADD_BOOKMARK_FAILURE,
-      error: { message }
-    });
+    return dispatch(addBookmarkFailure({ message }));
   }
 
   const newBookmark = await response.json();
   NotificationManager.success('Successfully bookmarked map', 'Successful map bookmarking', 5000, () => {});
 
-  return dispatch({
-    type: ADD_BOOKMARK_SUCCESS,
-    bookmark: newBookmark
-  });
+  return dispatch(addBookmarkSuccess(newBookmark));
 };
-
-export const selectBookmark = bookmark => ({ type: SELECT_BOOKMARK, bookmark });
-
-export const isLoaded = () => ({ type: IS_LOADED });
 
 export const deleteBookmark = bookmark => async (dispatch, getState) => {
   const {
@@ -103,16 +141,12 @@ export const deleteBookmark = bookmark => async (dispatch, getState) => {
 
     NotificationManager.error(message, `Deleting Bookmark Error - ${response.statusText}`, 50000, () => {});
 
-    return dispatch({
-      type: DELETE_BOOKMARK_FAILURE,
-      error: { message }
-    });
+    return dispatch(deleteBookmarkFailure({ message }));
   }
 
   NotificationManager.success('Successfully deleted bookmark', 'Successful bookmark deletion', 5000, () => {});
 
-  return dispatch({
-    type: DELETE_BOOKMARK_SUCCESS,
-    bookmark
-  });
+  return dispatch(deleteBookmarkSuccess(bookmark));
 };
+
+export default bookmarkSlice.reducer;

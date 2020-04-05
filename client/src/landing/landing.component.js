@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { format } from 'date-fns';
 
 import { setViewport } from '../map/map.actions';
-import { fetchBookmarks, selectBookmark } from '../bookmarks/bookmarks.actions';
+import { fetchBookmarks, selectBookmark } from '../bookmarks/bookmark.slice';
 
 import Button from '@astrosat/astrosat-ui/dist/buttons/button';
 import Dialog from '@astrosat/astrosat-ui/dist/containers/dialog';

@@ -16,7 +16,7 @@ import CloseButton from '@astrosat/astrosat-ui/dist/buttons/close-button';
 import LoadMask from '@astrosat/astrosat-ui/dist/load-mask/load-mask';
 
 import { MAP_STYLE_SELECTED, saveMap, setViewport } from './map.actions';
-import { isLoaded } from '../bookmarks/bookmarks.actions';
+import { isLoaded } from '../bookmarks/bookmark.slice';
 import { closeMenu } from '../side-menu/side-menu.slice';
 
 import PasswordChangeForm from '../accounts/password-change-form.component';
