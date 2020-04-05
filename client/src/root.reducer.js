@@ -9,7 +9,7 @@ import map from './map/map.reducer';
 import dataLayers from './data-layers/data-layers-dialog.reducer';
 import satellites from './satellites/satellites.reducer';
 import accounts from './accounts/accounts.reducer';
-import theming from './theming/theming.reducer';
+import theming from './theming/theming.slice';
 import admin from './accounts/admin/users.reducer';
 import bookmarks from './bookmarks/bookmark.slice';
 import sidebar from './side-menu/side-menu.slice';
