@@ -11,7 +11,6 @@ import satellites from './satellites/satellites.reducer';
 import accounts from './accounts/accounts.reducer';
 import theming from './theming/theming.reducer';
 import admin from './accounts/admin/users.reducer';
-import annotations from './annotations/annotations.reducer';
 import bookmarks from './bookmarks/bookmark.slice';
 import sidebar from './side-menu/side-menu.slice';
 
@@ -27,7 +26,6 @@ const createRootReducer = history =>
     accounts,
     theming,
     admin,
-    annotations,
     bookmarks,
     router: connectRouter(history)
   });
