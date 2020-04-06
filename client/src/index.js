@@ -5,7 +5,7 @@ import { ConnectedRouter } from 'connected-react-router';
 import ReactGA from 'react-ga';
 // import ReactTooltip from 'react-tooltip';
 
-import { PersistGate } from 'redux-persist/lib/integration/react';
+import { PersistGate } from 'redux-persist/integration/react';
 import { NotificationContainer } from 'react-notifications';
 import 'react-notifications/lib/notifications.css';
 
