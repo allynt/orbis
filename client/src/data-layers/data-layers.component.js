@@ -77,7 +77,7 @@ const DataLayers = () => {
 
       <div className={styles.buttons}>
         <AddNewCategoryIcon className={styles.addNewCategoryIcon} onClick={toggle} />
-        <Button theme="link" classNames={[styles.categoryButton]} onClick={toggle}>
+        <Button theme="link" className={styles.addOrbButton} onClick={toggle}>
           Add New Orb
         </Button>
       </div>

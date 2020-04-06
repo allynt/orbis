@@ -15,25 +15,13 @@
   margin: 0 0.5rem;
 }
 
-.button {
-  background-color: transparent !important;
-  /* color: var(--primary-foreground-color) !important; */
-}
-
 .addNewCategoryIcon {
   width: 2rem;
   cursor: pointer;
 }
 
-.categoryButton {
-  color: #fff !important;
-  padding: 0.5rem 0 !important;
-  border-radius: 0 !important;
-}
-
-.categoryButton:hover {
-  border-bottom: 2px solid transparent !important;
-  background-color: transparent !important;
+.addOrbButton {
+  color: #fff;
 }
 
 .icon {
