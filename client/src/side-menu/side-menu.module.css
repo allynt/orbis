@@ -1,7 +1,7 @@
 .side-menu-container {
   position: absolute;
   top: 0;
-  left: calc(-25rem + 4.9rem);
+  left: calc(-25rem + var(--toolbar-width));
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -17,7 +17,7 @@
 }
 
 .show {
-  left: 4.9rem;
+  left: calc(var(--toolbar-width) - 0.1rem);
   visibility: visible;
   border-top-right-radius: 1rem;
   border-bottom-right-radius: 1rem;
