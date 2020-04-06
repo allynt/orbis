@@ -10,7 +10,7 @@ import PasswordStrengthMeter from '@astrosat/astrosat-ui/dist/forms/password-str
 import Checkbox from '@astrosat/astrosat-ui/dist/forms/checkbox';
 import useForm from '@astrosat/astrosat-ui/dist/forms/use-form';
 
-import { confirmChangePassword } from './accounts.actions';
+import { confirmChangePassword } from './accounts.slice';
 
 import { ReactComponent as OrbisLogo } from '../orbis.svg';
 

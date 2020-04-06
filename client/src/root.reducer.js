@@ -8,7 +8,7 @@ import app from './app.slice';
 import map from './map/map.slice';
 import dataLayers from './data-layers/data-layers.slice';
 import satellites from './satellites/satellites.slice';
-import accounts from './accounts/accounts.reducer';
+import accounts from './accounts/accounts.slice';
 import theming from './theming/theming.slice';
 import admin from './accounts/admin/users.slice';
 import bookmarks from './bookmarks/bookmark.slice';
