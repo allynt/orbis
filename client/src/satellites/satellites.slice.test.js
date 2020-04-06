@@ -512,14 +512,17 @@ describe('Satellites Slice', () => {
     });
 
     it('should update the saved satellite searches in state, when successfully deleted a search', () => {
-      const satelliteSearches = [{ id: 1 }, { id: 2 }, { id: 3 }, { id: 4 }];
+      beforeState.satelliteSearches = [{ id: 1 }, { id: 2 }, { id: 3 }, { id: 4 }];
+      const searchToDelete = beforeState.satelliteSearches[1];
 
       const actualState = reducer(beforeState, {
         type: deleteSatelliteSearchSuccess.type,
-        payload: satelliteSearches
+        payload: searchToDelete.id
       });
 
-      expect(actualState.satelliteSearches).toEqual(satelliteSearches);
+      expect(actualState.satelliteSearches).toEqual(
+        beforeState.satelliteSearches.filter(search => search.id !== searchToDelete.id)
+      );
     });
 
     it('should update the error state, when failed to delete a satellites search', () => {

@@ -17,7 +17,7 @@ import {
   clearSelectedPinnedScenes,
   deletePinnedScene
 } from './satellites.slice';
-import { toggleCompareMaps } from '../map/map.actions';
+import { toggleCompareMode } from '../map/map.slice';
 
 import styles from './compare-pins.module.css';
 
@@ -39,7 +39,7 @@ const ComparePins = ({ setSelectedMoreInfo, toggleMoreInfoDialog }, ref) => {
 
     return () => {
       if (isCompareMode) {
-        dispatch(toggleCompareMaps());
+        dispatch(toggleCompareMode());
       }
     };
   }, [pinnedScenes, isCompareMode]);
@@ -62,7 +62,7 @@ const ComparePins = ({ setSelectedMoreInfo, toggleMoreInfoDialog }, ref) => {
           label="Compare"
           checked={isCompareMode}
           disabled={selectedPinnedScenes.length !== MAX_SELECTED}
-          onClick={() => dispatch(toggleCompareMaps())}
+          onClick={() => dispatch(toggleCompareMode())}
           ariaLabel="Compare"
         />
         <Button

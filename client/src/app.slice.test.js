@@ -1,7 +1,7 @@
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 
-import { MAP_STYLE_SELECTED } from './map/map.actions';
+import { selectMapStyle } from './map/map.slice';
 
 import reducer, {
   fetchAppConfig,
@@ -57,11 +57,12 @@ describe('App Slice', () => {
           }
         ]
       };
+
       fetch.mockResponse(JSON.stringify(config));
 
       const expectedActions = [
         { type: appConfigSuccess.type, payload: config },
-        { type: MAP_STYLE_SELECTED, mapStyle: config.mapStyles[DEFAULT_MAP_STYLE] }
+        { type: selectMapStyle.type, payload: config.mapStyles[DEFAULT_MAP_STYLE] }
       ];
 
       const store = mockStore({});

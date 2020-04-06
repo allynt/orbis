@@ -5,7 +5,7 @@ import { createBrowserHistory } from 'history';
 import { connectRouter } from 'connected-react-router';
 
 import app from './app.slice';
-import map from './map/map.reducer';
+import map from './map/map.slice';
 import dataLayers from './data-layers/data-layers.slice';
 import satellites from './satellites/satellites.slice';
 import accounts from './accounts/accounts.reducer';

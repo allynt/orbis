@@ -27,7 +27,7 @@ import { ReactComponent as ProfileIcon } from './profile.svg';
 
 import { toggleMenu, toggleMenuItem, setMenuHeadings } from '../side-menu/side-menu.slice';
 
-import { saveMap } from '../map/map.actions';
+import { saveMap } from '../map/map.slice';
 
 import { notYetImplemented } from '../app.slice';
 

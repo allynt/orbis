@@ -2,7 +2,7 @@ import { NotificationManager } from 'react-notifications';
 
 import { createSlice } from '@reduxjs/toolkit';
 
-import { selectMapStyle } from 'map/map.actions';
+import { selectMapStyle } from 'map/map.slice';
 
 export const DEFAULT_MAP_STYLE = 3;
 
