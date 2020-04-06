@@ -7,7 +7,7 @@ import Button from '@astrosat/astrosat-ui/dist/buttons/button';
 
 import { SEARCH } from './satellites-panel.component';
 
-import { removeScenes } from './satellites.actions';
+import { removeScenes } from './satellites.slice';
 
 import styles from './visualisation.module.css';
 import sideMenuStyles from '../side-menu/side-menu.module.css';

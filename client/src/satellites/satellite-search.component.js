@@ -6,7 +6,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import Button from '@astrosat/astrosat-ui/dist/buttons/button';
 import Detail from '@astrosat/astrosat-ui/dist/containers/detail';
 
-import { fetchSavedSatelliteSearches, deleteSavedSatelliteSearch, setCurrentSearchQuery } from './satellites.actions';
+import {
+  fetchSavedSatelliteSearches,
+  deleteSavedSatelliteSearch,
+  setCurrentSatelliteSearchQuery
+} from './satellites.slice';
 
 import useMap from '../map/use-map.hook';
 
@@ -38,7 +42,7 @@ const SatelliteSearch = ({ map, satellites, setVisiblePanel, setSelectedMoreInfo
     return [control, feature];
   };
 
-  const chooseSearchQuery = search => dispatch(setCurrentSearchQuery(search));
+  const chooseSearchQuery = search => dispatch(setCurrentSatelliteSearchQuery(search));
   const deleteSavedSearchQuery = id => dispatch(deleteSavedSatelliteSearch(id));
 
   useEffect(() => {

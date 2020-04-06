@@ -16,7 +16,7 @@ import {
   deselectPinnedScene,
   clearSelectedPinnedScenes,
   deletePinnedScene
-} from './satellites.actions';
+} from './satellites.slice';
 import { toggleCompareMaps } from '../map/map.actions';
 
 import styles from './compare-pins.module.css';

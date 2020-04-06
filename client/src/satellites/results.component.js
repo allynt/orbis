@@ -7,7 +7,7 @@ import Button from '@astrosat/astrosat-ui/dist/buttons/button';
 import useModal from '@astrosat/astrosat-ui/dist/containers/use-modal';
 import Dialog from '@astrosat/astrosat-ui/dist/containers/dialog';
 
-import { fetchPinnedScenes, pinScene, deletePinnedScene, saveSatelliteSearch } from './satellites.actions';
+import { fetchPinnedScenes, pinScene, deletePinnedScene, saveSatelliteSearch } from './satellites.slice';
 
 import SaveSearchForm from './save-search-form.component';
 import SceneListItem, { SceneListItemSkeleton } from './scene-list-item.component';

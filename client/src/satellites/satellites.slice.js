@@ -1,31 +1,8 @@
 import { NotificationManager } from 'react-notifications';
-import { getData, JSON_HEADERS, sendData } from '../utils/http';
 
-export const FETCH_SATELLITES_SUCCESS = 'FETCH_SATELLITES_SUCCESS';
-export const FETCH_SATELLITES_FAILURE = 'FETCH_SATELLITES_FAILURE';
+import { createSlice } from '@reduxjs/toolkit';
 
-export const FETCH_SATELLITE_SCENES_SUCCESS = 'FETCH_SATELLITE_SCENES_SUCCESS';
-export const FETCH_SATELLITE_SCENES_FAILURE = 'FETCH_SATELLITE_SCENES_FAILURE';
-
-export const SELECT_SCENE = 'SELECT_SCENE';
-export const REMOVE_SCENES = 'REMOVE_SCENES';
-export const FETCH_PINNED_SCENES_SUCCESS = 'FETCH_PINNED_SCENES_SUCCESS';
-export const FETCH_PINNED_SCENES_FAILURE = 'FETCH_PINNED_SCENES_FAILURE';
-export const PIN_SCENE_SUCCESS = 'PIN_SCENE_SUCCESS';
-export const PIN_SCENE_FAILURE = 'PIN_SCENE_FAILURE';
-export const SELECT_PINNED_SCENE = 'SELECT_PINNED_SCENE';
-export const DESELECT_PINNED_SCENE = 'DESELECT_PINNED_SCENE';
-export const CLEAR_SELECTED_PINNED_SCENES = 'CLEAR_SELECTED_PINNED_SCENES';
-export const DELETE_PINNED_SCENE_SUCCESS = 'DELETE_PINNED_SCENE_SUCCESS';
-export const DELETE_PINNED_SCENE_FAILURE = 'DELETE_PINNED_SCENE_FAILURE';
-
-export const FETCH_SATELLITE_SEARCHES_SUCCESS = 'FETCH_SATELLITE_SEARCHES_SUCCESS';
-export const FETCH_SATELLITE_SEARCHES_FAILURE = 'FETCH_SATELLITE_SEARCHES_FAILURE';
-export const SAVE_SATELLITE_SEARCH_REQUESTED_SUCCESS = 'SAVE_SATELLITE_SEARCH_REQUESTED_SUCCESS';
-export const SAVE_SATELLITE_SEARCH_REQUESTED_FAILURE = 'SAVE_SATELLITE_SEARCH_REQUESTED_FAILURE';
-export const DELETE_SATELLITE_SEARCH_SUCCESS = 'DELETE_SATELLITE_SEARCH_SUCCESS';
-export const DELETE_SATELLITE_SEARCH_FAILURE = 'DELETE_SATELLITE_SEARCH_FAILURE';
-export const SET_CURRENT_SATELLITE_SEARCH_QUERY = 'SET_CURRENT_SATELLITE_SEARCH_QUERY';
+import { getData, sendData, JSON_HEADERS } from '../utils/http';
 
 const API = {
   sources: '/api/satellites/',
@@ -33,6 +10,122 @@ const API = {
   savedSearches: '/api/satellites/searches/',
   pinScene: '/api/satellites/results/'
 };
+
+const initialState = {
+  satellites: null,
+  scenes: null,
+  selectedScene: null,
+  error: null,
+  satelliteSearches: null,
+  pinnedScenes: null,
+  selectedPinnedScenes: [],
+  currentSearchQuery: null
+};
+
+const satellitesSlice = createSlice({
+  name: 'satellites',
+  initialState,
+  reducers: {
+    fetchSatellitesSuccess: (state, { payload }) => {
+      state.satellites = payload;
+      state.error = null;
+    },
+    fetchSatellitesFailure: (state, { payload }) => {
+      state.error = payload;
+    },
+    fetchSatelliteScenesSuccess: (state, { payload }) => {
+      state.scenes = payload;
+      state.error = null;
+    },
+    fetchSatelliteScenesFailure: (state, { payload }) => {
+      state.error = payload;
+    },
+    selectScene: (state, { payload }) => {
+      state.selectedScene = payload;
+    },
+    removeScenes: state => {
+      state.selectedScene = null;
+    },
+    fetchSatellitesSearchesSuccess: (state, { payload }) => {
+      state.satelliteSearches = payload;
+      state.error = null;
+    },
+    fetchSatellitesSearchesFailure: (state, { payload }) => {
+      state.error = payload;
+    },
+    saveSatelliteSearchSuccess: (state, { payload }) => {
+      state.satelliteSearches = [...state.satelliteSearches, payload];
+      state.error = null;
+    },
+    saveSatelliteSearchFailure: (state, { payload }) => {
+      state.error = payload;
+    },
+    deleteSatelliteSearchSuccess: (state, { payload }) => {
+      state.satelliteSearches = state.satelliteSearches.filter(search => search.id !== payload);
+      state.error = null;
+    },
+    deleteSatelliteSearchFailure: (state, { payload }) => {
+      state.error = payload;
+    },
+    fetchPinnedScenesSuccess: (state, { payload }) => {
+      state.pinnedScenes = payload;
+      state.error = null;
+    },
+    fetchPinnedScenesFailure: (state, { payload }) => {
+      state.error = payload;
+    },
+    pinSceneSuccess: (state, { payload }) => {
+      state.pinnedScenes = payload;
+    },
+    pinSceneFailure: (state, { payload }) => {
+      state.error = payload;
+    },
+    deletePinnedSceneSuccess: (state, { payload }) => {
+      state.pinnedScenes = payload;
+    },
+    deletePinnedSceneFailure: (state, { payload }) => {
+      state.error = payload;
+    },
+    selectPinnedScene: (state, { payload }) => {
+      state.selectedPinnedScenes = [...state.selectedPinnedScenes, payload];
+    },
+    deselectPinnedScene: (state, { payload }) => {
+      const filteredScenes = state.selectedPinnedScenes.filter(scene => scene.id !== payload.id);
+      state.selectedPinnedScenes = filteredScenes;
+    },
+    clearSelectedPinnedScenes: state => {
+      state.selectedPinnedScenes = [];
+    },
+    setCurrentSatelliteSearchQuery: (state, { payload }) => {
+      state.currentSearchQuery = payload;
+    }
+  }
+});
+
+export const {
+  fetchSatellitesSuccess,
+  fetchSatellitesFailure,
+  fetchSatelliteScenesSuccess,
+  fetchSatelliteScenesFailure,
+  selectScene,
+  removeScenes,
+  fetchSatellitesSearchesSuccess,
+  fetchSatellitesSearchesFailure,
+  saveSatelliteSearchSuccess,
+  saveSatelliteSearchFailure,
+  deleteSatelliteSearchSuccess,
+  deleteSatelliteSearchFailure,
+  fetchPinnedScenesSuccess,
+  fetchPinnedScenesFailure,
+  pinSceneSuccess,
+  pinSceneFailure,
+  deletePinnedSceneSuccess,
+  deletePinnedSceneFailure,
+  selectPinnedScene,
+  deselectPinnedScene,
+  clearSelectedPinnedScenes,
+  setCurrentSatelliteSearchQuery
+} = satellitesSlice.actions;
 
 export const fetchSatellites = () => async (dispatch, getState) => {
   const {
@@ -50,22 +143,17 @@ export const fetchSatellites = () => async (dispatch, getState) => {
 
     NotificationManager.error(message, `Fetching Satellites Error - ${response.statusText}`, 50000, () => {});
 
-    return dispatch({
-      type: FETCH_SATELLITES_FAILURE,
-      error: { message }
-    });
+    return dispatch(fetchSatellitesFailure({ message }));
   }
 
   const satellites = await response.json();
 
-  return dispatch({
-    type: FETCH_SATELLITES_SUCCESS,
-    satellites
-  });
+  return dispatch(fetchSatellitesSuccess(satellites));
 };
 
 export const fetchSatelliteScenes = query => async (dispatch, getState) => {
-  dispatch({ type: REMOVE_SCENES });
+  dispatch(removeScenes());
+
   const {
     accounts: { userKey }
   } = getState();
@@ -83,25 +171,13 @@ export const fetchSatelliteScenes = query => async (dispatch, getState) => {
 
     NotificationManager.error(message, `Fetching Satellite Scenes Error - ${response.statusText}`, 50000, () => {});
 
-    return dispatch({
-      type: FETCH_SATELLITE_SCENES_FAILURE,
-      error: { message }
-    });
+    return dispatch(fetchSatelliteScenesFailure({ message }));
   }
 
   const scenes = await response.json();
 
-  return dispatch({
-    type: FETCH_SATELLITE_SCENES_SUCCESS,
-    scenes
-  });
+  return dispatch(fetchSatelliteScenesSuccess(scenes));
 };
-
-export const searchSatellites = query => async dispatch => dispatch(fetchSatelliteScenes(query));
-
-export const selectScene = scene => ({ type: SELECT_SCENE, scene });
-
-export const removeScenes = () => ({ type: REMOVE_SCENES });
 
 export const fetchSavedSatelliteSearches = () => async (dispatch, getState) => {
   const {
@@ -120,18 +196,12 @@ export const fetchSavedSatelliteSearches = () => async (dispatch, getState) => {
 
     NotificationManager.error(message, `Fetching Satellite Searches Error - ${response.statusText}`, 50000, () => {});
 
-    return dispatch({
-      type: FETCH_SATELLITE_SEARCHES_FAILURE,
-      error: { message }
-    });
+    return dispatch(fetchSatellitesSearchesFailure({ message }));
   }
 
   const searches = await response.json();
 
-  return dispatch({
-    type: FETCH_SATELLITE_SEARCHES_SUCCESS,
-    searches
-  });
+  return dispatch(fetchSatellitesSearchesSuccess(searches));
 };
 
 export const deleteSavedSatelliteSearch = id => async (dispatch, getState) => {
@@ -149,13 +219,11 @@ export const deleteSavedSatelliteSearch = id => async (dispatch, getState) => {
     const message = `${response.status} ${response.statusText}`;
 
     NotificationManager.error(message, `Deleting Satellite Search Error - ${response.statusText}`, 5000, () => {});
-    dispatch({ type: DELETE_SATELLITE_SEARCH_FAILURE, error: { message } });
-  } else {
-    return dispatch({ type: DELETE_SATELLITE_SEARCH_SUCCESS, id });
+
+    return dispatch(deleteSatelliteSearchFailure({ message }));
   }
-  // } catch (error) {
-  //   return dispatch({ type: DELETE_SATELLITE_SEARCH_FAILURE, error });
-  // }
+
+  return dispatch(deleteSatelliteSearchSuccess(id));
 };
 
 export const saveSatelliteSearch = form => async (dispatch, getState) => {
@@ -174,16 +242,14 @@ export const saveSatelliteSearch = form => async (dispatch, getState) => {
 
     NotificationManager.error(message, `"Saving Satellite Search Error - ${response.statusText}`, 50000, () => {});
 
-    return dispatch({
-      type: SAVE_SATELLITE_SEARCH_REQUESTED_FAILURE,
-      error: { message }
-    });
+    return dispatch(saveSatelliteSearchFailure({ message }));
   }
 
   const savedSearch = await response.json();
 
   NotificationManager.success('Successfully Saved Satellite Search Query Terms', 'Successful Saving', 5000, () => {});
-  dispatch({ type: SAVE_SATELLITE_SEARCH_REQUESTED_SUCCESS, savedSearch });
+
+  return dispatch(saveSatelliteSearchSuccess(savedSearch));
 };
 
 export const fetchPinnedScenes = () => async (dispatch, getState) => {
@@ -203,18 +269,12 @@ export const fetchPinnedScenes = () => async (dispatch, getState) => {
 
     NotificationManager.error(message, `Fetching Pinned Scenes Error - ${response.statusText}`, 50000, () => {});
 
-    return dispatch({
-      type: FETCH_PINNED_SCENES_FAILURE,
-      error: { message }
-    });
+    return dispatch(fetchPinnedScenesFailure({ message }));
   }
 
   const scenes = await response.json();
 
-  return dispatch({
-    type: FETCH_PINNED_SCENES_SUCCESS,
-    scenes
-  });
+  return dispatch(fetchPinnedScenesSuccess(scenes));
 };
 
 export const pinScene = form => async (dispatch, getState) => {
@@ -233,33 +293,13 @@ export const pinScene = form => async (dispatch, getState) => {
 
     NotificationManager.error(message, `Pinning Scene Error - ${response.statusText}`, 50000, () => {});
 
-    return dispatch({
-      type: PIN_SCENE_FAILURE,
-      error: { message }
-    });
+    return dispatch(pinSceneFailure({ message }));
   }
 
   const scene = await response.json();
 
-  return dispatch({
-    type: PIN_SCENE_SUCCESS,
-    scene
-  });
+  return dispatch(pinSceneSuccess(scene));
 };
-
-export const selectPinnedScene = scene => ({
-  type: SELECT_PINNED_SCENE,
-  scene
-});
-
-export const deselectPinnedScene = scene => ({
-  type: DESELECT_PINNED_SCENE,
-  scene
-});
-
-export const clearSelectedPinnedScenes = () => ({
-  type: CLEAR_SELECTED_PINNED_SCENES
-});
 
 export const deletePinnedScene = id => async (dispatch, getState) => {
   const {
@@ -276,13 +316,10 @@ export const deletePinnedScene = id => async (dispatch, getState) => {
     const message = `${response.status} ${response.statusText}`;
 
     NotificationManager.error(message, 'Deleting Pinned Scene Error', 5000, () => {});
-    dispatch({ type: DELETE_PINNED_SCENE_FAILURE, error: { message } });
-  } else {
-    return dispatch({ type: DELETE_PINNED_SCENE_SUCCESS, id });
+    return dispatch(deletePinnedSceneFailure({ message }));
   }
+
+  return dispatch(deletePinnedSceneSuccess(id));
 };
 
-export const setCurrentSearchQuery = query => ({
-  type: SET_CURRENT_SATELLITE_SEARCH_QUERY,
-  query
-});
+export default satellitesSlice.reducer;
