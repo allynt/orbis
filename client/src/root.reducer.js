@@ -10,7 +10,7 @@ import dataLayers from './data-layers/data-layers.slice';
 import satellites from './satellites/satellites.slice';
 import accounts from './accounts/accounts.reducer';
 import theming from './theming/theming.slice';
-import admin from './accounts/admin/users.reducer';
+import admin from './accounts/admin/users.slice';
 import bookmarks from './bookmarks/bookmark.slice';
 import sidebar from './side-menu/side-menu.slice';
 
