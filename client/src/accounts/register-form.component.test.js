@@ -51,6 +51,7 @@ describe('Register Form Component', () => {
     expect(getAllByText('Show')).toHaveLength(2);
     // Check password strength component exists
     expect(getByText('Password Strength:')).toBeInTheDocument();
+    expect(getByText('Terms and Conditions')).toBeInTheDocument();
     // Check form submit button
     expect(getByText('Sign Up')).toBeInTheDocument();
     // Check link to login view
@@ -70,6 +71,7 @@ describe('Register Form Component', () => {
     fireEvent.change(getByPlaceholderText('Email'), { target: { value: 'test@test.com' } });
     fireEvent.change(getByPlaceholderText('Password'), { target: { value: 'pandasconcreterealty' } });
     fireEvent.change(getByPlaceholderText('Password Confirmation'), { target: { value: 'pandasconcreterealty' } });
+    fireEvent.click(getByText('Terms and Conditions'));
     expect(getByText('Sign Up')).not.toHaveAttribute('disabled');
   });
 
@@ -136,6 +138,7 @@ describe('Register Form Component', () => {
     fireEvent.change(getByPlaceholderText('Email'), { target: { value: 'test@test.com' } });
     fireEvent.change(getByPlaceholderText('Password'), { target: { value: 'pandasconcreterealty' } });
     fireEvent.change(getByPlaceholderText('Password Confirmation'), { target: { value: 'pandasconcreterealty' } });
+    fireEvent.click(getByText('Terms and Conditions'));
 
     fireEvent.click(getByText('Sign Up'));
     expect(fetch.mock.calls[0][0]).toEqual('/api/authentication/registration/');
