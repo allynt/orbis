@@ -155,20 +155,6 @@ const ExistingUserLanding = forwardRef(
               itemOptions={itemOptions}
               setItemOptions={setItemOptions}
             />
-
-            <div className={styles.header}>
-              <h1>Your Stories</h1>
-              <Button theme="link" classNames={[styles.headerButton]} onClick={() => setViewAllItems(true)}>
-                View all
-              </Button>
-            </div>
-            <Items
-              items={recentItems}
-              chooseItem={chooseBookmark}
-              toggle={toggle}
-              itemOptions={itemOptions}
-              setItemOptions={setItemOptions}
-            />
           </div>
         )}
 
