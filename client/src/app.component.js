@@ -15,6 +15,7 @@ import { fetchUsers, createUser, deleteUser, updateUser, copyUser } from './acco
 import { fetchSourcesAndDataToken } from './map/map.actions';
 
 import RegisterForm from './accounts/register-form.component';
+import TermsAndConditions from './accounts/terms-and-conditions.component';
 import AccountActivation from './accounts/account-activation.component';
 import LoginForm from './accounts/login-form.component';
 import PasswordChange from './accounts/password-change-form.component';
@@ -108,6 +109,7 @@ const App = () => {
           <PrivateRoute exact path="/" user={user} component={LandingView} />
 
           <Route exact path="/register" component={RegisterForm} />
+          <Route exact path="/terms" component={TermsAndConditions} />
           <Route
             exact
             path="/login"
