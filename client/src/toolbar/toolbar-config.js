@@ -145,7 +145,7 @@ export const getToolbarItems = dispatch => {
       action: () => {
         dispatch(toggleMenu(PROFILE));
         dispatch(toggleMenuItem(PROFILE));
-        dispatch(setMenuHeadings('Profile', 'Profile Strapline'));
+        dispatch(setMenuHeadings('My Account', 'Edit your details below'));
       },
       tooltip: PROFILE,
       footer: true
