@@ -11,7 +11,8 @@ const appConfig = {
     // { id: 'satellite', uri: 'mapbox://styles/mapbox/satellite-v9', title: 'Satellite Of Love' }
     { id: 'satellite', uri: 'mapbox://styles/astrosat/ck8em8hzn2cdv1hnvj8e179b8', title: 'Satellite Of Love' }
   ],
-  maximumAoiArea: 500
+  maximumAoiArea: 500,
+  isRegistrationOpen: true
 };
 
 const userKey = { key: '57bd67287664bb1497cb29fe89d2d5087195a3ae' };
