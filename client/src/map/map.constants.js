@@ -37,11 +37,15 @@ export const regions = [
 // gotten from fetched data rather than a constant
 export const personTypes = [
   {
-    name: 'HELPER',
+    name: 'VOLUNTEER',
     color: 'green'
   },
   {
-    name: 'HELPEE',
+    name: 'RECIPIENT',
     color: 'red'
+  },
+  {
+    name: 'REPORTER',
+    color: 'yellow'
   }
 ];
