@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -24,6 +24,8 @@ const RegisterForm = () => {
   const dispatch = useDispatch();
   const error = useSelector(state => state.accounts.error);
   const config = useSelector(state => state.app.config);
+
+  const [termsAgreed, setTermsAgreed] = useState(false);
 
   function onSubmit() {
     dispatch(register(values));
@@ -100,9 +102,9 @@ const RegisterForm = () => {
           <div className={formStyles.row}>
             <Checkbox
               name="loggedIn"
+              label="Terms and Conditions"
               value="true"
-              label="I agree with"
-              onChange={() => console.log('Keep me logged in')}
+              onChange={() => setTermsAgreed(!termsAgreed)}
             />
             &nbsp;
             <Button theme="link" href="http://google.co.uk">
@@ -116,6 +118,7 @@ const RegisterForm = () => {
             type="submit"
             className={formStyles.button}
             disabled={
+              !termsAgreed ||
               (config && !config.isRegistrationOpen) ||
               Object.keys(errors).length > 0 ||
               Object.keys(values).length === 0
