@@ -81,7 +81,7 @@ const satellitesSlice = createSlice({
       state.error = payload;
     },
     deletePinnedSceneSuccess: (state, { payload }) => {
-      state.pinnedScenes = payload;
+      state.pinnedScenes = state.pinnedScenes.filter(scene => scene.id !== payload);
     },
     deletePinnedSceneFailure: (state, { payload }) => {
       state.error = payload;
@@ -296,9 +296,9 @@ export const pinScene = form => async (dispatch, getState) => {
     return dispatch(pinSceneFailure({ message }));
   }
 
-  const scene = await response.json();
+  const scenes = await response.json();
 
-  return dispatch(pinSceneSuccess(scene));
+  return dispatch(pinSceneSuccess(scenes));
 };
 
 export const deletePinnedScene = id => async (dispatch, getState) => {

@@ -2,15 +2,12 @@ import { createSlice } from '@reduxjs/toolkit';
 
 import { getData, JSON_HEADERS } from '../utils/http';
 
-import { regions } from './map.constants';
-
 const initialState = {
   viewport: { zoom: 6, center: [-4.84, 54.71] },
   mapStyles: [],
   selectedMapStyle: {},
   isCompareMode: false,
   domains: [],
-  regions,
   pollingPeriod: 30000,
   dataToken: null,
   dataSources: null,

@@ -2,6 +2,9 @@ import { NotificationManager } from 'react-notifications';
 
 import { createSlice } from '@reduxjs/toolkit';
 
+import { persistReducer } from 'redux-persist';
+import storage from 'redux-persist/lib/storage'; // defaults to localStorage for web
+
 import { history } from '../root.reducer';
 
 import { sendData, getData, JSON_HEADERS } from '../utils/http';
@@ -274,4 +277,10 @@ export const updateUser = form => async (dispatch, getState) => {
   return dispatch(updateUserSuccess(userObj));
 };
 
-export default accountsSlice.reducer;
+const persistConfig = {
+  key: 'accounts',
+  whitelist: ['userKey'],
+  storage
+};
+
+export default persistReducer(persistConfig, accountsSlice.reducer);

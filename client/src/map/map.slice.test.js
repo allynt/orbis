@@ -1,8 +1,6 @@
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 
-import { regions } from './map.constants';
-
 import reducer, {
   setViewport,
   selectMapStyle,
@@ -87,7 +85,6 @@ describe('Map Slice', () => {
         selectedMapStyle: {},
         isCompareMode: false,
         domains: [],
-        regions,
         pollingPeriod: 30000,
         dataToken: null,
         dataSources: null,
@@ -105,7 +102,7 @@ describe('Map Slice', () => {
       expect(actualState).toEqual(beforeState);
     });
 
-    it("'should not update the viewport in state, when value doesn't exist", () => {
+    it("should not update the viewport in state, when value doesn't exist", () => {
       const viewport = {
         center: [-4.84, 54.71],
         zoom: 6

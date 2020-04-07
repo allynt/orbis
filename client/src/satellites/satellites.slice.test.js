@@ -581,14 +581,17 @@ describe('Satellites Slice', () => {
     });
 
     it('should update the pinned satellite scenes in state, when successfully deleted a pinned scene', () => {
-      const pinnedScenes = [{ id: 1 }, { id: 2 }, { id: 3 }, { id: 4 }];
+      beforeState.pinnedScenes = [{ id: 1 }, { id: 2 }, { id: 3 }, { id: 4 }];
+      const pinnedSceneToDelete = beforeState.pinnedScenes[1];
 
       const actualState = reducer(beforeState, {
         type: deletePinnedSceneSuccess.type,
-        payload: pinnedScenes
+        payload: pinnedSceneToDelete.id
       });
 
-      expect(actualState.pinnedScenes).toEqual(pinnedScenes);
+      expect(actualState.pinnedScenes).toEqual(
+        beforeState.pinnedScenes.filter(scene => scene.id !== pinnedSceneToDelete.id)
+      );
     });
 
     it('should update the error state, when failed to delete a pinned scene', () => {
