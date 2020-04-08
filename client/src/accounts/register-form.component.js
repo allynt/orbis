@@ -2,8 +2,6 @@ import React, { useState } from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
 
-import { Redirect } from 'react-router-dom';
-
 import validate from './register-form.validator';
 
 import Button from '@astrosat/astrosat-ui/dist/buttons/button';
@@ -28,15 +26,11 @@ const RegisterForm = () => {
   const config = useSelector(state => state.app.config);
 
   const [termsAgreed, setTermsAgreed] = useState(false);
-  const [redirectToTerms, setRedirectToTerms] = useState(false);
 
   function onSubmit() {
     dispatch(register(values));
   }
 
-  if (redirectToTerms) {
-    return <Redirect to="/terms" />;
-  }
   return (
     <div className={`${formStyles.container} ${formStyles.accountsBackground}`}>
       <form className={formStyles.form} onSubmit={handleSubmit}>
@@ -113,7 +107,7 @@ const RegisterForm = () => {
               onChange={() => setTermsAgreed(!termsAgreed)}
             />
             &nbsp;
-            <Button theme="link" onClick={() => setRedirectToTerms(true)}>
+            <Button theme="link" target="_blank" href="/terms">
               Terms &amp; Conditions
             </Button>
           </div>
