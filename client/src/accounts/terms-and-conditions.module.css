@@ -1,0 +1,77 @@
+.content {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  color: var(--foreground-color);
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 7.5rem;
+  color: #fff;
+  background-color: var(--foreground-color);
+}
+
+.logo {
+  width: 10rem;
+  margin: 2rem;
+}
+
+.body {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  height: 100%;
+}
+
+.buttons,
+.infoContainer {
+  margin: 2.5rem 2.5rem;
+}
+
+.buttons {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  height: 100%;
+  min-width: 27rem;
+}
+
+.button {
+  margin: 1rem;
+  justify-content: start;
+  padding: 1rem 0;
+  font-size: 1.75rem !important;
+}
+
+.unselected {
+  border: 0;
+}
+
+.infoContainer {
+  width: 100%;
+}
+
+.textHeader {
+  margin: 2rem 0 1rem 0;
+}
+
+.textSectionHeader,
+.description {
+  margin: 1rem 0 1rem 0;
+}
+
+.text {
+  height: 100%;
+}
+
+.textHeader {
+  font-size: 1.75rem;
+}
+
+.textSectionHeader {
+  font-size: 1.5rem;
+}

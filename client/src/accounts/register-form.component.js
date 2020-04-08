@@ -100,12 +100,7 @@ const RegisterForm = () => {
           </div>
 
           <div className={formStyles.row}>
-            <Checkbox
-              name="loggedIn"
-              label="Terms and Conditions"
-              value="true"
-              onChange={() => setTermsAgreed(!termsAgreed)}
-            />
+            <Checkbox name="loggedIn" label="I agree with" value="true" onChange={() => setTermsAgreed(!termsAgreed)} />
             &nbsp;
             <Button theme="link" target="_blank" href="/terms" rel="noopener noreferrer">
               Terms &amp; Conditions

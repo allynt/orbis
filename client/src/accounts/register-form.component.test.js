@@ -51,9 +51,9 @@ describe('Register Form Component', () => {
     expect(getAllByText('Show')).toHaveLength(2);
     // Check password strength component exists
     expect(getByText('Password Strength:')).toBeInTheDocument();
-    expect(getByText('Terms and Conditions')).toBeInTheDocument();
+    expect(getByText('I agree with')).toBeInTheDocument();
 
-    //Check the Terms and Conditions button is in the document and has the correct href
+    //Check the I agree with button is in the document and has the correct href
     expect(getByText('Terms & Conditions')).toBeInTheDocument();
     expect(getByText('Terms & Conditions').href).toContain('/terms');
     // Check form submit button
@@ -75,7 +75,7 @@ describe('Register Form Component', () => {
     fireEvent.change(getByPlaceholderText('Email'), { target: { value: 'test@test.com' } });
     fireEvent.change(getByPlaceholderText('Password'), { target: { value: 'pandasconcreterealty' } });
     fireEvent.change(getByPlaceholderText('Password Confirmation'), { target: { value: 'pandasconcreterealty' } });
-    fireEvent.click(getByText('Terms and Conditions'));
+    fireEvent.click(getByText('I agree with'));
     expect(getByText('Sign Up')).not.toHaveAttribute('disabled');
   });
 
@@ -142,7 +142,7 @@ describe('Register Form Component', () => {
     fireEvent.change(getByPlaceholderText('Email'), { target: { value: 'test@test.com' } });
     fireEvent.change(getByPlaceholderText('Password'), { target: { value: 'pandasconcreterealty' } });
     fireEvent.change(getByPlaceholderText('Password Confirmation'), { target: { value: 'pandasconcreterealty' } });
-    fireEvent.click(getByText('Terms and Conditions'));
+    fireEvent.click(getByText('I agree with'));
 
     fireEvent.click(getByText('Sign Up'));
     expect(fetch.mock.calls[0][0]).toEqual('/api/authentication/registration/');
