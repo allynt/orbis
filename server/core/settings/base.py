@@ -339,6 +339,7 @@ ACCOUNT_FORMS = {
     # customize forms for astrosat_users
     "login": "astrosat_users.forms.LoginForm",
     "reset_password": "astrosat_users.forms.PasswordResetForm",
+    "signup": "astrosat_users.forms.RegistrationForm",
 }
 
 REST_AUTH_SERIALIZERS = {
