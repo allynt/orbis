@@ -7,7 +7,7 @@ import storage from 'redux-persist/lib/storage'; // defaults to localStorage for
 
 import { history } from '../root.reducer';
 
-import { sendData, getData, JSON_HEADERS } from '../utils/http';
+import { sendData, getData, JSON_HEADERS, getJsonAuthHeaders } from '../utils/http';
 
 const API_PREFIX = '/api/authentication/';
 const API = {
@@ -123,17 +123,9 @@ export const activateAccount = form => async () => {
 };
 
 export const fetchUser = (email = 'current') => async (dispatch, getState) => {
-  const {
-    accounts: { userKey }
-  } = getState();
+  const headers = getJsonAuthHeaders(getState());
 
-  const url = `${API.user}${email}/`;
-  const headers = {
-    ...JSON_HEADERS,
-    Authorization: 'Token ' + userKey
-  };
-
-  const response = await getData(url, headers);
+  const response = await getData(`${API.user}${email}/`, headers);
 
   if (!response.ok) {
     const message = `${response.status} ${response.statusText}`;
@@ -169,17 +161,9 @@ export const login = form => async dispatch => {
 };
 
 export const logout = () => async (dispatch, getState) => {
-  const {
-    accounts: { userKey }
-  } = getState();
+  const headers = getJsonAuthHeaders(getState());
 
-  const url = API.logout;
-  const headers = {
-    ...JSON_HEADERS,
-    Authorization: 'Token ' + userKey
-  };
-
-  const response = await sendData(url, {}, headers);
+  const response = await sendData(API.logout, {}, headers);
 
   if (!response.ok) {
     const message = `${response.status} ${response.statusText}`;
@@ -193,17 +177,9 @@ export const logout = () => async (dispatch, getState) => {
 };
 
 export const changePassword = form => async (dispatch, getState) => {
-  const {
-    accounts: { userKey }
-  } = getState();
+  const headers = getJsonAuthHeaders(getState());
 
-  const url = API.changePassword;
-  const headers = {
-    ...JSON_HEADERS,
-    Authorization: 'Token ' + userKey
-  };
-
-  const response = await sendData(url, form, headers);
+  const response = await sendData(API.changePassword, form, headers);
 
   if (!response.ok) {
     const message = `${response.status} ${response.statusText}`;
@@ -247,21 +223,17 @@ export const confirmChangePassword = (form, params) => async () => {
 
 export const updateUser = form => async (dispatch, getState) => {
   const {
-    accounts: { user, userKey }
+    accounts: { user }
   } = getState();
+  const headers = getJsonAuthHeaders(getState());
 
-  const url = `${API.user}${user.email}/`;
-  const headers = {
-    ...JSON_HEADERS,
-    Authorization: 'Token ' + userKey
-  };
   const data = {
     ...user,
     ...form,
     name: `${form.first_name} ${form.last_name}`
   };
 
-  const response = await sendData(url, data, headers, 'PUT');
+  const response = await sendData(`${API.user}${user.email}/`, data, headers, 'PUT');
 
   if (!response.ok) {
     const message = `${response.status} ${response.statusText}`;

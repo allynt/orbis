@@ -2,7 +2,7 @@ import { NotificationManager } from 'react-notifications';
 
 import { createSlice } from '@reduxjs/toolkit';
 
-import { getData, sendData, FORM_HEADERS, JSON_HEADERS } from '../utils/http';
+import { getData, sendData, getJsonAuthHeaders, getFormAuthHeaders } from '../utils/http';
 
 const API = {
   fetch: '/api/bookmarks/',
@@ -72,13 +72,7 @@ export const {
 } = bookmarkSlice.actions;
 
 export const fetchBookmarks = () => async (dispatch, getState) => {
-  const {
-    accounts: { userKey }
-  } = getState();
-  const headers = {
-    ...JSON_HEADERS,
-    Authorization: `Token ${userKey}`
-  };
+  const headers = getJsonAuthHeaders(getState());
 
   const response = await getData(API.fetch, headers);
 
@@ -102,13 +96,7 @@ export const addBookmark = bookmark => async (dispatch, getState) => {
   formData.set('center', JSON.stringify(bookmark['center']));
   formData.set('feature_collection', JSON.stringify(bookmark['feature_collection']));
 
-  const {
-    accounts: { userKey }
-  } = getState();
-  const headers = {
-    ...FORM_HEADERS,
-    Authorization: `Token ${userKey}`
-  };
+  const headers = getFormAuthHeaders(getState());
 
   const response = await sendData(API.add, formData, headers);
 
@@ -127,12 +115,7 @@ export const addBookmark = bookmark => async (dispatch, getState) => {
 };
 
 export const deleteBookmark = bookmark => async (dispatch, getState) => {
-  const {
-    accounts: { userKey }
-  } = getState();
-  const headers = {
-    Authorization: `Token ${userKey}`
-  };
+  const headers = getJsonAuthHeaders(getState());
 
   const response = await sendData(API.delete, bookmark.id, headers, 'DELETE');
 

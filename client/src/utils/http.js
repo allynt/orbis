@@ -7,6 +7,28 @@ export const FORM_HEADERS = {
   Accept: 'application/json, application/xml, text/plain, text/html, *.*'
 };
 
+export const getJsonAuthHeaders = state => {
+  const {
+    accounts: { userKey }
+  } = state;
+
+  return {
+    ...JSON_HEADERS,
+    Authorization: `Token ${userKey}`
+  };
+};
+
+export const getFormAuthHeaders = state => {
+  const {
+    accounts: { userKey }
+  } = state;
+
+  return {
+    ...FORM_HEADERS,
+    Authorization: `Token ${userKey}`
+  };
+};
+
 export const getData = (url, headers = {}) => {
   return fetch(url, {
     credentials: 'include',

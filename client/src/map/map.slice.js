@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-import { getData, JSON_HEADERS } from '../utils/http';
+import { getData, getJsonAuthHeaders } from '../utils/http';
 
 const initialState = {
   viewport: { zoom: 6, center: [-4.84, 54.71] },
@@ -62,13 +62,7 @@ export const {
 } = mapSlice.actions;
 
 export const fetchSources = () => async (dispatch, getState) => {
-  const {
-    accounts: { userKey }
-  } = getState();
-  const headers = {
-    ...JSON_HEADERS,
-    Authorization: 'Token ' + userKey
-  };
+  const headers = getJsonAuthHeaders(getState());
 
   const response = await getData('/api/data/sources/', headers);
   const data = await response.json();

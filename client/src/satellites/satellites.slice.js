@@ -2,7 +2,7 @@ import { NotificationManager } from 'react-notifications';
 
 import { createSlice } from '@reduxjs/toolkit';
 
-import { getData, sendData, JSON_HEADERS } from '../utils/http';
+import { getData, sendData, getJsonAuthHeaders } from '../utils/http';
 
 const API = {
   sources: '/api/satellites/',
@@ -128,13 +128,7 @@ export const {
 } = satellitesSlice.actions;
 
 export const fetchSatellites = () => async (dispatch, getState) => {
-  const {
-    accounts: { userKey }
-  } = getState();
-  const headers = {
-    ...JSON_HEADERS,
-    Authorization: `Token ${userKey}`
-  };
+  const headers = getJsonAuthHeaders(getState());
 
   const response = await getData(API.sources, headers);
 
@@ -154,13 +148,7 @@ export const fetchSatellites = () => async (dispatch, getState) => {
 export const fetchSatelliteScenes = query => async (dispatch, getState) => {
   dispatch(removeScenes());
 
-  const {
-    accounts: { userKey }
-  } = getState();
-  const headers = {
-    ...JSON_HEADERS,
-    Authorization: `Token ${userKey}`
-  };
+  const headers = getJsonAuthHeaders(getState());
 
   // satellite selection is hard-coded for now
   const url = `${API.scenes}`;
@@ -180,13 +168,7 @@ export const fetchSatelliteScenes = query => async (dispatch, getState) => {
 };
 
 export const fetchSavedSatelliteSearches = () => async (dispatch, getState) => {
-  const {
-    accounts: { userKey }
-  } = getState();
-  const headers = {
-    ...JSON_HEADERS,
-    Authorization: `Token ${userKey}`
-  };
+  const headers = getJsonAuthHeaders(getState());
 
   // satellite selection is hard-coded for now
   const response = await getData(API.savedSearches, headers);
@@ -205,13 +187,7 @@ export const fetchSavedSatelliteSearches = () => async (dispatch, getState) => {
 };
 
 export const deleteSavedSatelliteSearch = id => async (dispatch, getState) => {
-  const {
-    accounts: { userKey }
-  } = getState();
-  const headers = {
-    ...JSON_HEADERS,
-    Authorization: `Token ${userKey}`
-  };
+  const headers = getJsonAuthHeaders(getState());
 
   const response = await sendData(API.savedSearches, id, headers, 'DELETE');
 
@@ -227,13 +203,7 @@ export const deleteSavedSatelliteSearch = id => async (dispatch, getState) => {
 };
 
 export const saveSatelliteSearch = form => async (dispatch, getState) => {
-  const {
-    accounts: { userKey }
-  } = getState();
-  const headers = {
-    ...JSON_HEADERS,
-    Authorization: `Token ${userKey}`
-  };
+  const headers = getJsonAuthHeaders(getState());
 
   const response = await sendData(API.savedSearches, form, headers);
 
@@ -253,13 +223,7 @@ export const saveSatelliteSearch = form => async (dispatch, getState) => {
 };
 
 export const fetchPinnedScenes = () => async (dispatch, getState) => {
-  const {
-    accounts: { userKey }
-  } = getState();
-  const headers = {
-    ...JSON_HEADERS,
-    Authorization: `Token ${userKey}`
-  };
+  const headers = getJsonAuthHeaders(getState());
 
   // satellite selection is hard-coded for now
   const response = await getData(API.pinScene, headers);
@@ -278,13 +242,7 @@ export const fetchPinnedScenes = () => async (dispatch, getState) => {
 };
 
 export const pinScene = form => async (dispatch, getState) => {
-  const {
-    accounts: { userKey }
-  } = getState();
-  const headers = {
-    ...JSON_HEADERS,
-    Authorization: `Token ${userKey}`
-  };
+  const headers = getJsonAuthHeaders(getState());
 
   const response = await sendData(API.pinScene, form, headers);
 
@@ -302,13 +260,7 @@ export const pinScene = form => async (dispatch, getState) => {
 };
 
 export const deletePinnedScene = id => async (dispatch, getState) => {
-  const {
-    accounts: { userKey }
-  } = getState();
-  const headers = {
-    ...JSON_HEADERS,
-    Authorization: `Token ${userKey}`
-  };
+  const headers = getJsonAuthHeaders(getState());
 
   const response = await sendData(API.pinScene, id, headers, 'DELETE');
 
