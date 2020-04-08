@@ -1316,7 +1316,7 @@ const getPinnedScenes = (req, res) => {
 const pinScene = (req, res) => {
   pinnedScenes = [...pinnedScenes, req.body];
   res.status(200);
-  res.json(pinnedScenes);
+  res.json(pinnedScenes[pinnedScenes.length - 1]);
 };
 
 const deletePinnedScene = (req, res) => {

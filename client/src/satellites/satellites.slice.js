@@ -75,7 +75,7 @@ const satellitesSlice = createSlice({
       state.error = payload;
     },
     pinSceneSuccess: (state, { payload }) => {
-      state.pinnedScenes = payload;
+      state.pinnedScenes = [...state.pinnedScenes, payload];
     },
     pinSceneFailure: (state, { payload }) => {
       state.error = payload;
@@ -296,9 +296,9 @@ export const pinScene = form => async (dispatch, getState) => {
     return dispatch(pinSceneFailure({ message }));
   }
 
-  const scenes = await response.json();
+  const scene = await response.json();
 
-  return dispatch(pinSceneSuccess(scenes));
+  return dispatch(pinSceneSuccess(scene));
 };
 
 export const deletePinnedScene = id => async (dispatch, getState) => {

@@ -559,14 +559,15 @@ describe('Satellites Slice', () => {
     });
 
     it('should update the pinned satellite scenes in state, when successfully pinned scene', () => {
-      const pinnedScenes = [{ id: 1 }, { id: 2 }, { id: 3 }, { id: 4 }];
+      beforeState.pinnedScenes = [{ id: 1 }, { id: 2 }, { id: 3 }, { id: 4 }];
+      const sceneToPin = { id: 5 };
 
       const actualState = reducer(beforeState, {
         type: pinSceneSuccess.type,
-        payload: pinnedScenes
+        payload: sceneToPin
       });
 
-      expect(actualState.pinnedScenes).toEqual(pinnedScenes);
+      expect(actualState.pinnedScenes).toEqual([...beforeState.pinnedScenes, sceneToPin]);
     });
 
     it('should update the error state, when failed to pin a new scene', () => {
