@@ -52,6 +52,10 @@ describe('Register Form Component', () => {
     // Check password strength component exists
     expect(getByText('Password Strength:')).toBeInTheDocument();
     expect(getByText('Terms and Conditions')).toBeInTheDocument();
+
+    //Check the Terms and Conditions button is in the document and has the correct href
+    expect(getByText('Terms & Conditions')).toBeInTheDocument();
+    expect(getByText('Terms & Conditions').href).toContain('/terms');
     // Check form submit button
     expect(getByText('Sign Up')).toBeInTheDocument();
     // Check link to login view

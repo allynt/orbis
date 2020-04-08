@@ -107,7 +107,7 @@ const RegisterForm = () => {
               onChange={() => setTermsAgreed(!termsAgreed)}
             />
             &nbsp;
-            <Button theme="link" target="_blank" href="/terms">
+            <Button theme="link" target="_blank" href="/terms" rel="noopener noreferrer">
               Terms &amp; Conditions
             </Button>
           </div>
