@@ -9,16 +9,12 @@ import { render, cleanup, fireEvent, within } from '@testing-library/react';
 import { Router } from 'react-router-dom';
 import { createMemoryHistory } from 'history';
 
-// import { parseISO, format } from 'date-fns';
-
-// import { DATE_FORMAT, TIME_FORMAT } from './satellite.constants';
-
 import { regions, domains } from '../map/map.constants';
 
 import Landing from './landing.component';
 
 const bookmarkText = 'Your Maps';
-const storiesText = 'Your Stories';
+// const storiesText = 'Your Stories';
 
 const mockStore = configureMockStore([thunk]);
 
@@ -80,7 +76,7 @@ describe('Landing Component', () => {
     expect(getByText('Browse Map')).toBeInTheDocument();
 
     expect(queryByText(bookmarkText)).not.toBeInTheDocument();
-    expect(queryByText(storiesText)).not.toBeInTheDocument();
+    // expect(queryByText(storiesText)).not.toBeInTheDocument();
   });
 
   it('should render the Existing Landing view', () => {
@@ -91,7 +87,7 @@ describe('Landing Component', () => {
     );
 
     expect(getByText(bookmarkText)).toBeInTheDocument();
-    expect(getByText(storiesText)).toBeInTheDocument();
+    // expect(getByText(storiesText)).toBeInTheDocument();
     expect(getByText('Browse Map')).toBeInTheDocument();
 
     expect(queryByText('your Earth exploration journey starts here')).not.toBeInTheDocument();
@@ -151,57 +147,57 @@ describe('Landing Component', () => {
     expect(history.location.pathname).toBe('/map/{}');
   });
 
-  it('should show all stories when Stories View all button clicked', () => {
-    const { getByText, queryByText } = render(
-      <Provider store={store}>
-        <Landing />
-      </Provider>
-    );
-    const yourStoriesHeader = getByText(storiesText).parentElement;
-    fireEvent.click(within(yourStoriesHeader).getByText('View all'));
+  // it('should show all stories when Stories View all button clicked', () => {
+  //   const { getByText, queryByText } = render(
+  //     <Provider store={store}>
+  //       <Landing />
+  //     </Provider>
+  //   );
+  //   const yourStoriesHeader = getByText(storiesText).parentElement;
+  //   fireEvent.click(within(yourStoriesHeader).getByText('View all'));
 
-    expect(getByText('Back to menu')).toBeInTheDocument();
-    expect(getByText('Browse Map')).toBeInTheDocument();
-    expect(getByText('View All')).toBeInTheDocument();
+  //   expect(getByText('Back to menu')).toBeInTheDocument();
+  //   expect(getByText('Browse Map')).toBeInTheDocument();
+  //   expect(getByText('View All')).toBeInTheDocument();
 
-    expect(queryByText(storiesText)).not.toBeInTheDocument();
-  });
+  //   expect(queryByText(storiesText)).not.toBeInTheDocument();
+  // });
 
-  it('should return to menu View when `Back to menu` button clicked', () => {
-    const { getByText, queryByText } = render(
-      <Provider store={store}>
-        <Landing />
-      </Provider>
-    );
+  // it('should return to menu View when `Back to menu` button clicked', () => {
+  //   const { getByText, queryByText } = render(
+  //     <Provider store={store}>
+  //       <Landing />
+  //     </Provider>
+  //   );
 
-    const yourStoriesHeader = getByText(storiesText).parentElement;
-    fireEvent.click(within(yourStoriesHeader).getByText('View all'));
+  //   const yourStoriesHeader = getByText(storiesText).parentElement;
+  //   fireEvent.click(within(yourStoriesHeader).getByText('View all'));
 
-    expect(getByText('Back to menu')).toBeInTheDocument();
-    expect(getByText('Browse Map')).toBeInTheDocument();
-    expect(getByText('View All')).toBeInTheDocument();
+  //   expect(getByText('Back to menu')).toBeInTheDocument();
+  //   expect(getByText('Browse Map')).toBeInTheDocument();
+  //   expect(getByText('View All')).toBeInTheDocument();
 
-    expect(queryByText(storiesText)).not.toBeInTheDocument();
+  //   expect(queryByText(storiesText)).not.toBeInTheDocument();
 
-    fireEvent.click(getByText('Back to menu'));
+  //   fireEvent.click(getByText('Back to menu'));
 
-    expect(getByText(storiesText)).toBeInTheDocument();
-    expect(queryByText('View All')).not.toBeInTheDocument();
-  });
+  //   expect(getByText(storiesText)).toBeInTheDocument();
+  //   expect(queryByText('View All')).not.toBeInTheDocument();
+  // });
 
-  it('should transition to map when story clicked', () => {
-    const { container } = render(
-      <Router history={history}>
-        <Provider store={store}>
-          <Landing />
-        </Provider>
-      </Router>
-    );
+  // it('should transition to map when story clicked', () => {
+  //   const { container } = render(
+  //     <Router history={history}>
+  //       <Provider store={store}>
+  //         <Landing />
+  //       </Provider>
+  //     </Router>
+  //   );
 
-    const stories = container.querySelectorAll('.items')[1];
+  //   const stories = container.querySelectorAll('.items')[1];
 
-    fireEvent.click(within(stories).getByAltText('Bookmark Title 2'));
+  //   fireEvent.click(within(stories).getByAltText('Bookmark Title 2'));
 
-    expect(history.location.pathname).toBe('/map/{}');
-  });
+  //   expect(history.location.pathname).toBe('/map/{}');
+  // });
 });

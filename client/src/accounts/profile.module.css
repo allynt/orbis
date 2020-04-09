@@ -5,3 +5,24 @@
   align-items: center;
   height: 100%;
 }
+
+.profileButtons {
+  padding: 0 1rem 1rem 1rem;
+  color: #fff;
+}
+
+.linkContainer {
+  padding: 0 0 2rem 0;
+}
+
+.links {
+  display: flex;
+  justify-content: center;
+  align-items: baseline;
+  font-size: smaller;
+}
+
+.link {
+  color: #fff;
+  padding-left: 0.5rem;
+}

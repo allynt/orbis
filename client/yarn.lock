@@ -2,11 +2,12 @@
 # yarn lockfile v1
 
 
-"@astrosat/astrosat-ui@^1.12.1":
-  version "1.12.1"
-  resolved "https://npm.pkg.github.com/download/@astrosat/astrosat-ui/1.12.1/8754f7576e48cadb3f6a80b9c93d0d6a57d656170583abb8773f8a454af50aa5#84ee0c6c8333849f1c68a3a7429b72d0087403dd"
-  integrity sha512-32/W8J6TmHZgZ3FQBLWyll9Z3bY5IYvuDFpBB9/YzfG0ffvWZxudqrcUr7gTW1ujKhZ6adTBMqwFw0gu7g6hLw==
+"@astrosat/astrosat-ui@^1.12.2":
+  version "1.12.2"
+  resolved "https://npm.pkg.github.com/download/@astrosat/astrosat-ui/1.12.2/47fe0e9215eec79bef07ba2c5169649402d1b05eb27d1496621d2a36acc3fc0d#3c842b8c42184917aeeee2b6ade9c01f56e27c75"
+  integrity sha512-qky4qwk5UxIC7gjE2yguNbg8BIgNzm4G0RF3eel3dfjUcnmUWD8/2+7P/izOceySlT0pPcUbvD2BhUSG+cqHng==
   dependencies:
+    clsx "^1.1.0"
     d3-scale "^3.2.1"
     prop-types "^15.7.2"
     react-range "^1.4.9"
@@ -4943,6 +4944,11 @@ clone@^1.0.2:
   version "1.0.4"
   resolved "https://registry.yarnpkg.com/clone/-/clone-1.0.4.tgz#da309cc263df15994c688ca902179ca3c7cd7c7e"
   integrity sha1-2jCcwmPfFZlMaIypAheco8fNfH4=
+
+clsx@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/clsx/-/clsx-1.1.0.tgz#62937c6adfea771247c34b54d320fb99624f5702"
+  integrity sha512-3avwM37fSK5oP6M5rQ9CNe99lwxhXDOeSWVPAOYF6OazUTgZCMb0yWlJpmdD74REy1gkEaFiub2ULv4fq9GUhA==
 
 cmd-shim@^3.0.0, cmd-shim@^3.0.3:
   version "3.0.3"

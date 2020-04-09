@@ -59,16 +59,16 @@ export const getToolbarItems = dispatch => {
     //   action: () => dispatch(notYetImplemented('No Pages designed yet')),
     //   tooltip: PAGES
     // },
-    // {
-    //   label: BOOKMARKS,
-    //   icon: <BookmarksIcon />,
-    //   action: () => {
-    //     dispatch(toggleMenu(BOOKMARKS));
-    //     dispatch(toggleMenuItem(BOOKMARKS));
-    //     dispatch(setMenuHeadings('MAPS', 'Select an Existing Map or Add New'));
-    //   },
-    //   tooltip: BOOKMARKS
-    // },
+    {
+      label: BOOKMARKS,
+      icon: <BookmarksIcon />,
+      action: () => {
+        dispatch(toggleMenu(BOOKMARKS));
+        dispatch(toggleMenuItem(BOOKMARKS));
+        dispatch(setMenuHeadings('MAPS', 'Select an Existing Map or Add New'));
+      },
+      tooltip: BOOKMARKS
+    },
     // {
     //   label: STORIES,
     //   icon: <StoryIcon />,
@@ -145,7 +145,7 @@ export const getToolbarItems = dispatch => {
       action: () => {
         dispatch(toggleMenu(PROFILE));
         dispatch(toggleMenuItem(PROFILE));
-        dispatch(setMenuHeadings('Profile', 'Profile Strapline'));
+        dispatch(setMenuHeadings('My Account', 'Edit your details below'));
       },
       tooltip: PROFILE,
       footer: true
