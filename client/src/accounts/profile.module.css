@@ -23,6 +23,6 @@
 }
 
 .link {
-  color: #fff;
-  padding-left: 0.5rem;
+  color: #fff !important;
+  margin-left: 0.5rem !important;
 }
