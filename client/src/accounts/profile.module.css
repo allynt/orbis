@@ -12,7 +12,7 @@
 }
 
 .profileButton {
-  padding: none !important;
+  padding: unset !important;
 }
 
 .linkContainer {
