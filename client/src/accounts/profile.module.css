@@ -11,6 +11,10 @@
   color: #fff;
 }
 
+.profileButton {
+  padding: none !important;
+}
+
 .linkContainer {
   padding: 0 0 2rem 0;
 }

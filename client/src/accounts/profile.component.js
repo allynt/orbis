@@ -35,7 +35,11 @@ const Profile = () => {
       <UpdateUserForm user={user} updateUser={updateUserProfile} />
 
       <div className={`${sideMenuStyles.buttons} ${styles.profileButtons}`}>
-        <Button classNames={[sideMenuStyles.button]} theme="tertiary" onClick={() => dispatch(logout())}>
+        <Button
+          classNames={[sideMenuStyles.button, styles.profileButton]}
+          theme="tertiary"
+          onClick={() => dispatch(logout())}
+        >
           Logout
         </Button>
       </div>

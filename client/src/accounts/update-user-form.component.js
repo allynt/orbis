@@ -10,6 +10,7 @@ import useForm from '@astrosat/astrosat-ui/dist/forms/use-form';
 
 import formStyles from './forms.module.css';
 import sideMenuStyles from '../side-menu/side-menu.module.css';
+import profileStyles from './profile.module.css';
 
 const UpdateUserForm = ({ user, updateUser }) => {
   const { handleChange, handleSubmit, values, errors } = useForm(onSubmit, validate);
@@ -45,7 +46,7 @@ const UpdateUserForm = ({ user, updateUser }) => {
         <div className={sideMenuStyles.buttons}>
           <Button
             type="submit"
-            classNames={[sideMenuStyles.button]}
+            classNames={[sideMenuStyles.button, profileStyles.profileButton]}
             disabled={Object.keys(errors).length > 0 || Object.keys(values).length === 0}
           >
             Update Account
