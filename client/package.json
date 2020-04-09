@@ -16,7 +16,7 @@
     "e2e:run": "cypress run"
   },
   "dependencies": {
-    "@astrosat/astrosat-ui": "^1.12.2",
+    "@astrosat/astrosat-ui": "^1.12.3",
     "@mapbox/mapbox-gl-draw": "^1.1.2",
     "@mapbox/mapbox-gl-geocoder": "^4.5.1",
     "@mapbox/mapbox-gl-sync-move": "^0.3.0",
