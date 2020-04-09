@@ -14,7 +14,7 @@ import sideMenuStyles from '../side-menu/side-menu.module.css';
 const LINKS = [
   {
     prefix: 'Need help? Contact us',
-    url: 'https://astrosat.on.spiceworks.com/portal/tickets',
+    url: 'https://share.hsforms.com/1U1g8jQnFQ2ej1lyaDcncfA4cctf',
     text: 'here'
   },
   {
