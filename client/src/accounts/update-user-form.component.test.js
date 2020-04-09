@@ -16,21 +16,9 @@ describe('Update User Form Component', () => {
 
     expect(container.querySelector('form')).toBeInTheDocument();
     expect(getByPlaceholderText('Email')).toBeInTheDocument();
-    expect(getByPlaceholderText('Full Name')).toBeInTheDocument();
     expect(getByPlaceholderText('First Name')).toBeInTheDocument();
     expect(getByPlaceholderText('Last Name')).toBeInTheDocument();
-    expect(getByText('Update User')).toBeInTheDocument();
-  });
-
-  it('should enable `Reset` button when form is dirty', async () => {
-    const user = {};
-    const updateUser = jest.fn();
-    const { getByPlaceholderText } = render(<UpdateUserForm user={user} updateUser={updateUser} />);
-
-    const firstName = getByPlaceholderText('First Name');
-    expect(firstName.value).toEqual('');
-    fireEvent.change(firstName, { target: { value: 'John' } });
-    expect(firstName.value).toEqual('John');
+    expect(getByText('Update Account')).toBeInTheDocument();
   });
 
   it('should enable `Update User` button when form is valid', () => {
@@ -41,7 +29,7 @@ describe('Update User Form Component', () => {
     fireEvent.change(getByPlaceholderText('First Name'), { target: { value: 'John' } });
     fireEvent.change(getByPlaceholderText('Last Name'), { target: { value: 'John' } });
 
-    expect(getByText('Update User')).not.toHaveAttribute('disabled');
+    expect(getByText('Update Account')).not.toHaveAttribute('disabled');
   });
 
   it('should not call updateUser function when form is invalid and `Update User` button clicked', () => {
@@ -49,7 +37,7 @@ describe('Update User Form Component', () => {
     const updateUser = jest.fn();
     const { getByText } = render(<UpdateUserForm user={user} updateUser={updateUser} />);
 
-    fireEvent.click(getByText('Update User'));
+    fireEvent.click(getByText('Update Account'));
     expect(updateUser).not.toHaveBeenCalled();
   });
 
@@ -60,7 +48,7 @@ describe('Update User Form Component', () => {
 
     fireEvent.change(getByPlaceholderText('First Name'), { target: { value: 'John' } });
     fireEvent.change(getByPlaceholderText('Last Name'), { target: { value: 'John' } });
-    fireEvent.click(getByText('Update User'));
+    fireEvent.click(getByText('Update Account'));
     expect(updateUser).toHaveBeenCalled();
   });
 });
