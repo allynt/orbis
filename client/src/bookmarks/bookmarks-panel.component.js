@@ -36,7 +36,7 @@ const BookmarksPanel = ({ map }) => {
   };
 
   const chooseBookmark = bookmark => dispatch(selectBookmark(bookmark));
-  const deleteBookmarkItem = bookmark => dispatch(selectBookmark(bookmark));
+  const deleteBookmarkItem = bookmark => dispatch(deleteBookmark(bookmark));
 
   const bookmarks = useSelector(state => state.bookmarks.bookmarks);
 
