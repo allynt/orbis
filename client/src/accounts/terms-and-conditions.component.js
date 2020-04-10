@@ -83,14 +83,14 @@ const EndUserLicenseAgreement = () => {
       <p className={styles.description}>
         This agreement is between <span className={styles.emphasis}>STEVENSON ASTROSAT LIMITED</span> a company
         incorporated in Scotland (Number SC423073) and whose Registered Office is at Copernicus Kirk, 200 High Street,
-        Musselburgh EH21 7DX trading as OR3ISTM (<span className={styles.emphasis}>“OR3IS”</span>) and you (
+        Musselburgh EH21 7DX trading as OR3IS&trade; &#153; (<span className={styles.emphasis}>“OR3IS”</span>) and you (
         <span className={styles.emphasis}>“the User”</span>). This is a Click to Agree Contract from within the Software
         if the User wishes to be bound by these Terms and Conditions. If the User does not agree to be bound by these
         Terms and Conditions, the User cannot USE the Software.
       </p>
       <p className={styles.description}>
         The contract (“Agreement”) between the User and OR3IS will comprise:{' '}
-        <ul className={styles.indentedList}>
+        <ul className={styles.list}>
           <li>
             <span>1.</span>
             <p>these Terms and Conditions; and</p>
@@ -109,7 +109,7 @@ const EndUserLicenseAgreement = () => {
         <p className={styles.description}>
           OR3IS grants to the User a non-exclusive, royalty based, non-sublicensable licence to Use the Software for the
           User’s personal business use for the duration of this Agreement, subject to the following conditions: -
-          <ul className={styles.indentedList}>
+          <ul className={styles.list}>
             <li>
               <span>1.1.</span>
               <p>
@@ -127,7 +127,7 @@ const EndUserLicenseAgreement = () => {
           The rights to use the Software provided to the User are non-exclusive, non-transferable and are for the User’s
           personal business use only. The User’s right to use the Software is subject to the following conditions:- the
           User shall not:
-          <ul className={styles.indentedList}>
+          <ul className={styles.list}>
             <li>
               <span>2.1.</span>
               <p> Transfer to any other person any of its rights to use the Software;</p>
@@ -176,7 +176,7 @@ const EndUserLicenseAgreement = () => {
       <div className={styles.section}>
         <h2 className={styles.textSectionHeader}>3: User Content/Security</h2>
         <p className={styles.description}>
-          <ul className={styles.indentedList}>
+          <ul className={styles.list}>
             <li>
               <span>3.1.</span>
               <p>
@@ -201,7 +201,7 @@ const EndUserLicenseAgreement = () => {
               <p>
                 Subject to the terms of Clause 4, OR3IS shall only be entitled to use User Content strictly as necessary
                 to carry out its obligations under this Agreement, and for no other purpose. However, OR3IS:
-                <ul className={styles.indentedList}>
+                <ul className={styles.list}>
                   <li>
                     <span>3.4.1.</span>
                     <p>
@@ -258,13 +258,13 @@ const EndUserLicenseAgreement = () => {
       <div className={styles.section}>
         <h2 className={styles.textSectionHeader}>4: Acceptable Usage Policy</h2>
         <p className={styles.description}>
-          <ul className={styles.indentedList}>
+          <ul className={styles.list}>
             <li>
               <span>4.1.</span>
               <p>
                 Without prejudice to the generality of Clause 2.7, when using the Software; Users should do so in
                 accordance with the following rules:
-                <ul className={styles.indentedList}>
+                <ul className={styles.list}>
                   <li>
                     <span>4.1.1.</span>
                     <p>Users must not use obscene or vulgar language;</p>
@@ -355,7 +355,7 @@ const EndUserLicenseAgreement = () => {
       <div className={styles.section}>
         <h2 className={styles.textSectionHeader}>5: Intellectual Property</h2>
         <p className={styles.description}>
-          <ul className={styles.indentedList}>
+          <ul className={styles.list}>
             <li>
               <span>5.1.</span>
               <p>
@@ -396,7 +396,7 @@ const EndUserLicenseAgreement = () => {
       <div className={styles.section}>
         <h2 className={styles.textSectionHeader}>6: User Site Intellectual Property</h2>
         <p className={styles.description}>
-          <ul className={styles.indentedList}>
+          <ul className={styles.list}>
             <li>
               <span>6.1.</span>
               <p>
@@ -431,7 +431,7 @@ const EndUserLicenseAgreement = () => {
       <div className={styles.section}>
         <h2 className={styles.textSectionHeader}>7: Third Party Intellectual Property</h2>
         <p className={styles.description}>
-          <ul className={styles.indentedList}>
+          <ul className={styles.list}>
             <li>
               <span>7.1.</span>
               <p>
@@ -454,7 +454,7 @@ const EndUserLicenseAgreement = () => {
       <div className={styles.section}>
         <h2 className={styles.textSectionHeader}>8: Warranty Disclaimer</h2>
         <p className={styles.description}>
-          <ul className={styles.indentedList}>
+          <ul className={styles.list}>
             <li>
               <span>8.1.</span>
               <p>
@@ -470,7 +470,7 @@ const EndUserLicenseAgreement = () => {
       <div className={styles.section}>
         <h2 className={styles.textSectionHeader}>9: Limitation of Liability</h2>
         <p className={styles.description}>
-          <ul className={styles.indentedList}>
+          <ul className={styles.list}>
             <li>
               <span>9.1.</span>
               <p>
@@ -500,7 +500,7 @@ const EndUserLicenseAgreement = () => {
       <div className={styles.section}>
         <h2 className={styles.textSectionHeader}>10: Confidentiality</h2>
         <p className={styles.description}>
-          <ul className={styles.indentedList}>
+          <ul className={styles.list}>
             <li>
               <span>10.1.</span>
               <p>
@@ -563,7 +563,7 @@ const EndUserLicenseAgreement = () => {
       <div className={styles.section}>
         <h2 className={styles.textSectionHeader}>11: Indenification by the User</h2>
         <p className={styles.description}>
-          <ul className={styles.indentedList}>
+          <ul className={styles.list}>
             <li>
               <span>11.1.</span>
               <p>
@@ -597,7 +597,7 @@ const EndUserLicenseAgreement = () => {
       <div className={styles.section}>
         <h2 className={styles.textSectionHeader}>12: Law</h2>
         <p className={styles.description}>
-          <ul className={styles.indentedList}>
+          <ul className={styles.list}>
             <li>
               <span>12.1.</span>
               <p>
@@ -611,14 +611,14 @@ const EndUserLicenseAgreement = () => {
       <div className={styles.section}>
         <h2 className={styles.textSectionHeader}>13: Feedback and Modifications</h2>
         <p className={styles.description}>
-          <ul className={styles.indentedList}>
+          <ul className={styles.list}>
             <li>
               <span>13.1.</span>
               <p>
                 The User hereby acknowledges that upon submitting Feedback to OR3IS, the User automatically grants to
                 OR3IS a worldwide, perpetual, irrevocable, royalty free licence to use that Feedback in any way OR3IS
                 deems appropriate including, but not limited to:
-                <ul className={styles.indentedList}>
+                <ul className={styles.list}>
                   <li>
                     <span>13.1.1.</span>
                     <p>
@@ -656,7 +656,7 @@ const EndUserLicenseAgreement = () => {
       <div className={styles.section}>
         <h2 className={styles.textSectionHeader}>14: Glossary</h2>
         <p className={styles.description}>
-          <ul className={styles.indentedList}>
+          <ul className={styles.list}>
             <li>
               <span>14.1.</span>
               <p>
@@ -806,7 +806,7 @@ const EndUserLicenseAgreement = () => {
       <div className={styles.section}>
         <h2 className={styles.textSectionHeader}>1: Processing by OR3IS</h2>
         <p className={styles.description}>
-          <ul className={styles.indentedList}>
+          <ul className={styles.list}>
             <li>
               <span>1.1</span>
               <p>
@@ -850,7 +850,7 @@ const EndUserLicenseAgreement = () => {
       <div className={styles.section}>
         <h2 className={styles.textSectionHeader}>2: Rights and Obligations of Data Controller</h2>
         <p className={styles.description}>
-          <ul className={styles.indentedList}>
+          <ul className={styles.list}>
             <li>
               <span>2.1</span>
               <p>The rights and obligations of the Data Controller set out in this Agreement and the GDPR and DPA.</p>
