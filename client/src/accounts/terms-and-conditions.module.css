@@ -55,23 +55,64 @@
   width: 100%;
 }
 
+.title {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  padding: 2rem;
+}
+
+.title h1 {
+  font-size: 1.5rem;
+}
+
 .textHeader {
+  font-size: 1.75rem;
   margin: 2rem 0 1rem 0;
 }
 
 .textSectionHeader,
 .description {
-  margin: 1rem 0 1rem 0;
+  margin: 1rem 0;
+  line-height: 2;
 }
 
 .text {
   height: 100%;
 }
 
-.textHeader {
+.textSectionHeader {
+  font-size: 1.25rem;
+}
+
+.emphasis {
+  font-weight: bold;
+}
+
+.list {
+  display: block;
+  margin-left: 2rem;
+}
+
+li {
+  display: flex;
+  margin: 1rem 0;
+}
+
+li span {
+  font-weight: bold;
+  margin-right: 0.5rem;
+}
+
+.schedule1 {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2rem;
   font-size: 1.75rem;
 }
 
-.textSectionHeader {
-  font-size: 1.5rem;
+.schedule1 h1 {
+  margin-bottom: 1rem;
 }
