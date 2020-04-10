@@ -28,7 +28,11 @@ const RegisterForm = () => {
   const [termsAgreed, setTermsAgreed] = useState(false);
 
   function onSubmit() {
-    dispatch(register(values));
+    const data = {
+      ...values,
+      accepted_terms: termsAgreed
+    };
+    dispatch(register(data));
   }
 
   return (
