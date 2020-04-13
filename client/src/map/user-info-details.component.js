@@ -2,23 +2,24 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import styles from './user-info-details.module.css';
+import infoStyles from './info-details.module.css';
 
 const PK = 'pk';
 const CREATED = 'created';
 
 const UserInfoDetail = ({ features }) => (
   <>
-    <h1 className={styles.header}>User Details</h1>
-    <div className={styles.modal}>
+    <h1 className={infoStyles.header}>User Details</h1>
+    <div className={infoStyles.modal}>
       {features.map(feature => (
         <div key={feature.id}>
-          <ul className={styles.list}>
+          <ul className={infoStyles.list}>
             {Object.keys(feature.properties)
               .filter(key => key !== PK && key !== CREATED)
               .map(key => (
                 <li key={key}>
-                  <span className={styles.label}>{key}: </span>
-                  <span className={styles.content}>{feature.properties[key]}</span>
+                  <span className={infoStyles.label}>{key}: </span>
+                  <span className={infoStyles.content}>{feature.properties[key]}</span>
                 </li>
               ))}
           </ul>

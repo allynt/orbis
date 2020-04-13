@@ -528,7 +528,7 @@ const Map = ({
               <UserInfoDetail features={selectedInfoFeatures.data} />
             )}
             {selectedInfoFeatures && selectedInfoFeatures.type === INFRASTRUCTURE_INFO_TYPE && (
-              <InfrastructureDetail feature={selectedInfoFeatures.data[0]} />
+              <InfrastructureDetail features={selectedInfoFeatures.data} />
             )}
           </div>,
           popupRef.current
