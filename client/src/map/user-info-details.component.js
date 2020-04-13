@@ -18,7 +18,7 @@ const UserInfoDetail = ({ features }) => (
               .map(key => (
                 <li key={key}>
                   <span className={styles.label}>{key}: </span>
-                  <span>{feature.properties[key]}</span>
+                  <span className={styles.content}>{feature.properties[key]}</span>
                 </li>
               ))}
           </ul>
