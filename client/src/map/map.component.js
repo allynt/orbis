@@ -81,7 +81,7 @@ const Map = ({
   if (setMap) setMap(mapInstance);
 
   const [isMapStyleSwitcherVisible, setIsMapStyleSwitcherVisible] = useState(false);
-  const mapStyles = useSelector(state => state.map.mapStyles);
+  const mapStyles = useSelector(state => state.app.config.mapStyles);
   const selectedMapStyle = useSelector(state => state.map.selectedMapStyle);
   const selectMapStyle = mapStyle => dispatch({ type: MAP_STYLE_SELECTED, mapStyle });
 
