@@ -2,10 +2,12 @@
   max-height: 20rem;
   overflow-y: auto;
   padding-right: 1rem;
+  --scrollbar-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
 }
 
 .modal::-webkit-scrollbar-track {
-  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  -webkit-box-shadow: var(--scrollbar-box-shadow);
+  box-shadow: var(--scrollbar-box-shadow);
   border-radius: 1rem;
   background-color: #fff;
 }
@@ -16,15 +18,16 @@
 
 .modal::-webkit-scrollbar-thumb {
   border-radius: 1rem;
-  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  -webkit-box-shadow: var(--scrollbar-box-shadow);
+  box-shadow: var(--scrollbar-box-shadow);
   background-color: var(--primary-foreground-color);
 }
 
 .list {
   list-style-type: none;
-  padding: 0 0.5rem;
+  padding: 0 0 0 1.875em;
   color: #fff;
-  margin-top: 10px;
+  margin-top: 0.625rem;
   border-top: 1px solid #f6be00;
 }
 
@@ -37,10 +40,15 @@
 }
 
 .list > li {
-  padding: 0.2rem 0;
+  font-size: 0.875rem;
+  margin: 0.3125rem 0;
 }
 
-.label {
+.list .label {
   font-weight: bolder;
   padding-right: 0.3rem;
+}
+
+.list .content {
+  font-weight: normal;
 }
