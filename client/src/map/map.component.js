@@ -271,9 +271,16 @@ const Map = ({
               clusterRadius: 50
             });
 
-            // circle and symbol layers for rendering clustered and
-            // non-clustered features.
-            let clusterlayerName = `${layer.name}-main`;
+            // Calculate the radius for each zoom level between 0-5 as that is
+            // where the styling starts to break.
+            let radi = [];
+            for (let i = 0; i < 20; i++) {
+              radi = [...radi, i, ['*', ['sqrt', ['to-number', ['get', 'point_count'], 0]], i]];
+            }
+
+            let clusterlayerName = `${layer.name}-cluster`;
+
+            // Clustered features.
             map.addLayer({
               id: clusterlayerName,
               type: 'circle',
@@ -282,18 +289,13 @@ const Map = ({
               paint: {
                 'circle-color': '#f6be00',
                 'circle-opacity': 1,
-                'circle-radius': [
-                  'case',
-                  ['has', 'point_count'],
-                  ['*', 5, ['to-number', ['get', 'point_count'], 0]],
-                  30
-                ]
+                'circle-radius': ['interpolate', ['linear'], ['zoom'], ...radi]
               } //,
               // minzoom: 10,
               // maxzoom: 19
             });
 
-            // Clustered layer
+            // Clustered label
             map.addLayer({
               id: `${layer.name}-label-clustered`,
               source: sourceId,
@@ -306,7 +308,23 @@ const Map = ({
               // maxzoom: 19
             });
 
-            // Non-Clustered infrastructure layer
+            // Non-Clustered infrastructure background
+            const nonClusteredInfrastructureName = `${layer.name}-infrastructure-circle`;
+            map.addLayer({
+              id: nonClusteredInfrastructureName,
+              source: sourceId,
+              type: 'circle',
+              filter: ['all', ['!', ['has', 'point_count']], ['!', ['has', 'Type']]],
+              paint: {
+                'circle-color': '#f6be00',
+                'circle-opacity': 1,
+                'circle-radius': 30
+              } //,
+              // minzoom: 10,
+              // maxzoom: 19
+            });
+
+            // Non-Clustered infrastructure label
             map.addLayer({
               id: `${layer.name}-infrastructure-label`,
               source: sourceId,
@@ -341,7 +359,12 @@ const Map = ({
               // minzoom: 10,
               // maxzoom: 19
             });
-            setClickableLayers(currentLayers => [...currentLayers, clusterlayerName, populationLayerName]);
+            setClickableLayers(currentLayers => [
+              ...currentLayers,
+              clusterlayerName,
+              nonClusteredInfrastructureName,
+              populationLayerName
+            ]);
           }
         }
 
@@ -351,9 +374,10 @@ const Map = ({
             .forEach(layer => {
               map.removeLayer(`${layer.name}-circle`);
               map.removeLayer(`${layer.name}-infrastructure-label`);
+              map.removeLayer(`${layer.name}-infrastructure-circle`);
               map.removeLayer(`${layer.name}-population-label`);
               map.removeLayer(`${layer.name}-label-clustered`);
-              map.removeLayer(`${layer.name}-main`);
+              map.removeLayer(`${layer.name}-cluster`);
               map.removeSource(sourceId);
             });
         };
