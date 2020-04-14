@@ -82,7 +82,7 @@ export const LayerSelect = ({ domain, initialSelectedLayers, onAddLayers, onRemo
           onClick={handleAddClick}
           disabled={addButtonDisabled}
         >
-          Add
+          Accept
         </Button>
       </div>
     </div>

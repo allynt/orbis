@@ -39,27 +39,27 @@ describe('LayerSelect', () => {
 
   it('should have the button disabled if no layers are selected', () => {
     const { getByText } = setup();
-    expect(getByText('Add')).toHaveProperty('disabled', true);
+    expect(getByText('Accept')).toHaveProperty('disabled', true);
   });
 
-  it('should enable the add button when at least one layer is selected', () => {
+  it('should enable the Accept button when at least one layer is selected', () => {
     const { getByText, layers } = setup();
     fireEvent.click(getByText(layers[0].metadata.label));
-    expect(getByText('Add')).toHaveProperty('disabled', false);
+    expect(getByText('Accept')).toHaveProperty('disabled', false);
   });
 
   it('should disabled the button when all layers are deselected', () => {
     const { getByText, layers } = setup();
     fireEvent.click(getByText(layers[0].metadata.label));
-    expect(getByText('Add')).toHaveProperty('disabled', false);
+    expect(getByText('Accept')).toHaveProperty('disabled', false);
     fireEvent.click(getByText(layers[0].metadata.label));
-    expect(getByText('Add')).toHaveProperty('disabled', true);
+    expect(getByText('Accept')).toHaveProperty('disabled', true);
   });
 
   it('should call onAddLayers with the selected layers when the button is clicked', () => {
     const { getByText, layers, handleAddLayers } = setup();
     fireEvent.click(getByText(layers[0].metadata.label));
-    fireEvent.click(getByText('Add'));
+    fireEvent.click(getByText('Accept'));
     expect(handleAddLayers).toHaveBeenCalled();
     expect(handleAddLayers).toHaveBeenCalledWith([layers[0]]);
   });
