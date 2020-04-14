@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import { useDispatch } from 'react-redux';
 
@@ -18,6 +18,8 @@ import formStyles from './forms.module.css';
 import passwordStyles from './password-change-form.module.css';
 
 const PasswordChangeForm = () => {
+  const [termsAgreed, setTermsAgreed] = useState(false);
+
   const { handleChange, handleSubmit, values, errors } = useForm(onSubmit, validate);
   const dispatch = useDispatch();
 
@@ -80,14 +82,9 @@ const PasswordChangeForm = () => {
           </div>
 
           <div className={formStyles.row}>
-            <Checkbox
-              name="loggedIn"
-              value="true"
-              label="I agree with"
-              onChange={() => console.log('Keep me logged in')}
-            />
+            <Checkbox name="loggedIn" value="true" label="I agree with" onChange={() => setTermsAgreed(!termsAgreed)} />
             &nbsp;
-            <Button theme="link" href="http://google.co.uk">
+            <Button theme="link" href="/terms">
               Terms &amp; Conditions
             </Button>
           </div>
@@ -97,7 +94,7 @@ const PasswordChangeForm = () => {
           <Button
             type="submit"
             className={formStyles.button}
-            disabled={Object.keys(errors).length > 0 || Object.keys(values).length === 0}
+            disabled={!termsAgreed || Object.keys(errors).length > 0 || Object.keys(values).length === 0}
           >
             Change Password
           </Button>
