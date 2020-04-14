@@ -84,7 +84,7 @@ const PasswordChangeForm = () => {
           <div className={formStyles.row}>
             <Checkbox name="loggedIn" value="true" label="I agree with" onChange={() => setTermsAgreed(!termsAgreed)} />
             &nbsp;
-            <Button theme="link" href="/terms">
+            <Button theme="link" target="_blank" href="/terms">
               Terms &amp; Conditions
             </Button>
           </div>
