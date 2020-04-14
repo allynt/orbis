@@ -1,9 +1,5 @@
 import React, { useState } from 'react';
 
-import { useDispatch } from 'react-redux';
-
-import { changePassword } from './accounts.actions';
-
 import validate from './password-change-form.validator';
 
 import Button from '@astrosat/astrosat-ui/dist/buttons/button';
@@ -19,18 +15,13 @@ import { LOGIN_URL, TERMS_URL } from './accounts.constants';
 import formStyles from './forms.module.css';
 import passwordStyles from './password-change-form.module.css';
 
-const PasswordChangeForm = () => {
+const PasswordChangeForm = ({ changePassword }) => {
   const [termsAgreed, setTermsAgreed] = useState(false);
 
   const { handleChange, handleSubmit, values, errors } = useForm(onSubmit, validate);
-  const dispatch = useDispatch();
 
   function onSubmit() {
-    const data = {
-      ...values,
-      termsAgreed
-    };
-    dispatch(changePassword(data));
+    changePassword(values);
   }
 
   return (
@@ -90,7 +81,7 @@ const PasswordChangeForm = () => {
           <div className={formStyles.row}>
             <Checkbox name="loggedIn" value="true" label="I agree with" onChange={() => setTermsAgreed(!termsAgreed)} />
             &nbsp;
-            <Button theme="link" target="_blank" href={TERMS_URL}>
+            <Button theme="link" target="_blank" rel="noopener noreferrer" href={TERMS_URL}>
               Terms &amp; Conditions
             </Button>
           </div>
