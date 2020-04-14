@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Route, Redirect } from 'react-router-dom';
 
-import { LOGIN_URL } from './accounts.constants';
+import { LOGIN_URL } from '../accounts/accounts.constants';
 
 const PrivateRoute = ({ component: Component, user, ...rest }) => (
   <Route

@@ -6,6 +6,8 @@ import { useDispatch } from 'react-redux';
 
 import { activateAccount } from './accounts.actions';
 
+import { LOGIN_URL } from './accounts.constants';
+
 const AccountActivation = ({ match }) => {
   const [redirectToLogin, setRedirectToLogin] = useState(false);
   const dispatch = useDispatch();
@@ -17,7 +19,7 @@ const AccountActivation = ({ match }) => {
 
   // Re-direct to login.
   if (redirectToLogin) {
-    return <Redirect to="/login" />;
+    return <Redirect to={LOGIN_URL} />;
   }
 
   return <div></div>;

@@ -21,7 +21,7 @@ const LINKS = [
   },
   {
     prefix: 'Read our',
-    url: { TERMS_URL },
+    url: TERMS_URL,
     text: 'Terms & Conditions'
   }
 ];
