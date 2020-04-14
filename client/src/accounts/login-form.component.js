@@ -15,6 +15,8 @@ import Well from '@astrosat/astrosat-ui/dist/containers/well';
 
 import { ReactComponent as OrbisLogo } from '../orbis.svg';
 
+import { REGISTER_URL, PASSWORD_RESET_URL } from './accounts.constants';
+
 import formStyles from './forms.module.css';
 import loginStyles from './login-form.module.css';
 
@@ -76,7 +78,7 @@ const LoginForm = ({ login, user, error }) => {
             />
             <p className={formStyles.row}>
               Forgotten your&nbsp;
-              <Button theme="link" href="/password/reset">
+              <Button theme="link" href={PASSWORD_RESET_URL}>
                 password?
               </Button>
             </p>
@@ -96,7 +98,7 @@ const LoginForm = ({ login, user, error }) => {
 
         <p className={loginStyles.footer}>
           Don't have an account?&nbsp;
-          <Button theme="link" href="/register">
+          <Button theme="link" href={REGISTER_URL}>
             Sign Up
           </Button>
         </p>

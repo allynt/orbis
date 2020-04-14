@@ -14,6 +14,8 @@ import { confirmChangePassword } from './accounts.actions';
 
 import { ReactComponent as OrbisLogo } from '../orbis.svg';
 
+import { LOGIN_URL, TERMS_URL } from './accounts.constants';
+
 import formStyles from './forms.module.css';
 import passwordStyles from './password-reset-confirm-form.module.css';
 
@@ -77,7 +79,7 @@ const PasswordResetConfirmForm = ({ match }) => {
           <div className={formStyles.row}>
             <Checkbox name="loggedIn" value="true" label="I agree with" onChange={() => setTermsAgreed(!termsAgreed)} />
             &nbsp;
-            <Button theme="link" target="_blank" href="/terms">
+            <Button theme="link" target="_blank" href={TERMS_URL}>
               Terms &amp; Conditions
             </Button>
           </div>
@@ -95,7 +97,7 @@ const PasswordResetConfirmForm = ({ match }) => {
 
         <p className={passwordStyles.footer}>
           Do you have an account?&nbsp;
-          <Button theme="link" href="/login">
+          <Button theme="link" href={LOGIN_URL}>
             Login
           </Button>
         </p>
