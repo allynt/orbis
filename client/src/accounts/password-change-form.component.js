@@ -21,7 +21,11 @@ const PasswordChangeForm = ({ changePassword }) => {
   const { handleChange, handleSubmit, values, errors } = useForm(onSubmit, validate);
 
   function onSubmit() {
-    changePassword(values);
+    const data = {
+      ...values,
+      accepted_terms: termsAgreed
+    };
+    changePassword(data);
   }
 
   return (
