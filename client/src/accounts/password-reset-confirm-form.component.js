@@ -24,7 +24,11 @@ const PasswordResetConfirmForm = ({ match }) => {
   const dispatch = useDispatch();
 
   function onSubmit() {
-    dispatch(confirmChangePassword(values, match.params));
+    const data = {
+      ...values,
+      termsAgreed
+    };
+    dispatch(confirmChangePassword(data, match.params));
   }
 
   return (

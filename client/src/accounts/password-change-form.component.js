@@ -24,7 +24,11 @@ const PasswordChangeForm = () => {
   const dispatch = useDispatch();
 
   function onSubmit() {
-    dispatch(changePassword(values));
+    const data = {
+      ...values,
+      termsAgreed
+    };
+    dispatch(changePassword(data));
   }
 
   return (
