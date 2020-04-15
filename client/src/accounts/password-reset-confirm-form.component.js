@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
 
@@ -14,15 +14,23 @@ import { confirmChangePassword } from './accounts.actions';
 
 import { ReactComponent as OrbisLogo } from '../orbis.svg';
 
+import { LOGIN_URL, TERMS_URL } from './accounts.constants';
+
 import formStyles from './forms.module.css';
 import passwordStyles from './password-reset-confirm-form.module.css';
 
 const PasswordResetConfirmForm = ({ match }) => {
+  const [termsAgreed, setTermsAgreed] = useState(false);
+
   const { handleChange, handleSubmit, values, errors } = useForm(onSubmit, validate);
   const dispatch = useDispatch();
 
   function onSubmit() {
-    dispatch(confirmChangePassword(values, match.params));
+    const data = {
+      ...values,
+      termsAgreed
+    };
+    dispatch(confirmChangePassword(data, match.params));
   }
 
   return (
@@ -69,14 +77,9 @@ const PasswordResetConfirmForm = ({ match }) => {
           </div>
 
           <div className={formStyles.row}>
-            <Checkbox
-              name="loggedIn"
-              value="true"
-              label="I agree with"
-              onChange={() => console.log('Keep me logged in')}
-            />
+            <Checkbox name="loggedIn" value="true" label="I agree with" onChange={() => setTermsAgreed(!termsAgreed)} />
             &nbsp;
-            <Button theme="link" href="http://google.co.uk">
+            <Button theme="link" target="_blank" href={TERMS_URL}>
               Terms &amp; Conditions
             </Button>
           </div>
@@ -86,7 +89,7 @@ const PasswordResetConfirmForm = ({ match }) => {
           <Button
             type="submit"
             className={formStyles.button}
-            disabled={Object.keys(errors).length > 0 || Object.keys(values).length === 0}
+            disabled={!termsAgreed || Object.keys(errors).length > 0 || Object.keys(values).length === 0}
           >
             Reset Password
           </Button>
@@ -94,7 +97,7 @@ const PasswordResetConfirmForm = ({ match }) => {
 
         <p className={passwordStyles.footer}>
           Do you have an account?&nbsp;
-          <Button theme="link" href="/login">
+          <Button theme="link" href={LOGIN_URL}>
             Login
           </Button>
         </p>

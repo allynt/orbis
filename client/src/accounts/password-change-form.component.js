@@ -1,8 +1,4 @@
-import React from 'react';
-
-import { useDispatch } from 'react-redux';
-
-import { changePassword } from './accounts.actions';
+import React, { useState } from 'react';
 
 import validate from './password-change-form.validator';
 
@@ -14,15 +10,22 @@ import useForm from '@astrosat/astrosat-ui/dist/forms/use-form';
 
 import { ReactComponent as OrbisLogo } from '../orbis.svg';
 
+import { LOGIN_URL, TERMS_URL } from './accounts.constants';
+
 import formStyles from './forms.module.css';
 import passwordStyles from './password-change-form.module.css';
 
-const PasswordChangeForm = () => {
+const PasswordChangeForm = ({ changePassword }) => {
+  const [termsAgreed, setTermsAgreed] = useState(false);
+
   const { handleChange, handleSubmit, values, errors } = useForm(onSubmit, validate);
-  const dispatch = useDispatch();
 
   function onSubmit() {
-    dispatch(changePassword(values));
+    const data = {
+      ...values,
+      accepted_terms: termsAgreed
+    };
+    changePassword(data);
   }
 
   return (
@@ -80,14 +83,9 @@ const PasswordChangeForm = () => {
           </div>
 
           <div className={formStyles.row}>
-            <Checkbox
-              name="loggedIn"
-              value="true"
-              label="I agree with"
-              onChange={() => console.log('Keep me logged in')}
-            />
+            <Checkbox name="loggedIn" value="true" label="I agree with" onChange={() => setTermsAgreed(!termsAgreed)} />
             &nbsp;
-            <Button theme="link" href="http://google.co.uk">
+            <Button theme="link" target="_blank" rel="noopener noreferrer" href={TERMS_URL}>
               Terms &amp; Conditions
             </Button>
           </div>
@@ -97,7 +95,7 @@ const PasswordChangeForm = () => {
           <Button
             type="submit"
             className={formStyles.button}
-            disabled={Object.keys(errors).length > 0 || Object.keys(values).length === 0}
+            disabled={!termsAgreed || Object.keys(errors).length > 0 || Object.keys(values).length === 0}
           >
             Change Password
           </Button>
@@ -105,7 +103,7 @@ const PasswordChangeForm = () => {
 
         <p className={passwordStyles.footer}>
           Do you have an account?&nbsp;
-          <Button theme="link" href="/login">
+          <Button theme="link" href={LOGIN_URL}>
             Login
           </Button>
         </p>

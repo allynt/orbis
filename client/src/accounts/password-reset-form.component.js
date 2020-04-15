@@ -12,6 +12,8 @@ import { resetPassword } from './accounts.actions';
 
 import { ReactComponent as OrbisLogo } from '../orbis.svg';
 
+import { LOGIN_URL } from './accounts.constants';
+
 import formStyles from './forms.module.css';
 import passwordStyles from './password-reset-form.module.css';
 
@@ -54,7 +56,7 @@ const PasswordResetForm = () => {
 
         <p className={passwordStyles.footer}>
           Do you have an account?&nbsp;
-          <Button theme="link" href="/login">
+          <Button theme="link" href={LOGIN_URL}>
             Login
           </Button>
         </p>

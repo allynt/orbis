@@ -13,12 +13,12 @@ import { fetchAppConfig } from './app.actions';
 import { fetchUser, login } from './accounts/accounts.actions';
 import { fetchUsers, createUser, deleteUser, updateUser, copyUser } from './accounts/admin/users.actions';
 import { fetchSourcesAndDataToken } from './map/map.actions';
-
+import { changePassword } from './accounts/accounts.actions';
 import RegisterForm from './accounts/register-form.component';
 import TermsAndConditions from './accounts/terms-and-conditions.component';
 import AccountActivation from './accounts/account-activation.component';
 import LoginForm from './accounts/login-form.component';
-import PasswordChange from './accounts/password-change-form.component';
+import PasswordChangeForm from './accounts/password-change-form.component';
 import UpdateUserForm from './accounts/update-user-form.component';
 import PasswordResetDone from './accounts/password-reset-done.component';
 import PasswordResetConfirm from './accounts/password-reset-confirm-form.component';
@@ -103,7 +103,12 @@ const App = () => {
 
         <Switch>
           <PrivateRoute path="/map" user={user} component={MapLayout} />
-          <PrivateRoute exact path="/password/change" user={user} component={PasswordChange} />
+          <PrivateRoute
+            exact
+            path="/password/change"
+            user={user}
+            render={() => <PasswordChangeForm changePassword={form => dispatch(changePassword(form))} />}
+          />
           <PrivateRoute exact path="/user/update" user={user} component={UpdateUserForm} />
 
           <PrivateRoute exact path="/" user={user} component={LandingView} />

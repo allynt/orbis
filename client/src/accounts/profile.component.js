@@ -8,6 +8,8 @@ import Button from '@astrosat/astrosat-ui/dist/buttons/button';
 import UpdateUserForm from './update-user-form.component';
 import { updateUser, logout } from './accounts.actions';
 
+import { TERMS_URL } from './accounts.constants';
+
 import styles from './profile.module.css';
 import sideMenuStyles from '../side-menu/side-menu.module.css';
 
@@ -19,7 +21,7 @@ const LINKS = [
   },
   {
     prefix: 'Read our',
-    url: '/terms',
+    url: TERMS_URL,
     text: 'Terms & Conditions'
   }
 ];

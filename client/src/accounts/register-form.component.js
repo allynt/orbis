@@ -16,6 +16,8 @@ import { register } from './accounts.actions';
 
 import { ReactComponent as OrbisLogo } from '../orbis.svg';
 
+import { LOGIN_URL, TERMS_URL } from './accounts.constants';
+
 import formStyles from './forms.module.css';
 import registerStyles from './register-form.module.css';
 
@@ -106,7 +108,7 @@ const RegisterForm = () => {
           <div className={formStyles.row}>
             <Checkbox name="loggedIn" label="I agree with" value="true" onChange={() => setTermsAgreed(!termsAgreed)} />
             &nbsp;
-            <Button theme="link" target="_blank" href="/terms" rel="noopener noreferrer">
+            <Button theme="link" target="_blank" href={TERMS_URL} rel="noopener noreferrer">
               Terms &amp; Conditions
             </Button>
           </div>
@@ -129,7 +131,7 @@ const RegisterForm = () => {
 
         <p className={registerStyles.footer}>
           Do you have an account?&nbsp;
-          <Button theme="link" href="/login">
+          <Button theme="link" href={LOGIN_URL}>
             Login
           </Button>
         </p>

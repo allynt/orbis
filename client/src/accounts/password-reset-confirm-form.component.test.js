@@ -43,6 +43,8 @@ describe('Password Reset Form Component', () => {
     expect(getByText('Password Strength:')).toBeInTheDocument();
     // Check form submit button
     expect(getByText('Reset Password')).toBeInTheDocument();
+    // Check Terms and Conditions checkbox
+    expect(getByText('I agree with')).toBeInTheDocument();
     // Check link to login view
     expect(getByText('Login')).toBeInTheDocument();
     expect(getByText('Reset Password')).toHaveAttribute('disabled');
@@ -92,6 +94,7 @@ describe('Password Reset Form Component', () => {
     password = getByPlaceholderText('New Password Confirmation');
     fireEvent.change(password, { target: { value: 'newpassword' } });
     expect(password.value).toEqual('newpassword');
+    fireEvent.click(getByText('I agree with'));
 
     expect(getByText('Reset Password')).not.toHaveAttribute('disabled');
   });
@@ -134,6 +137,7 @@ describe('Password Reset Form Component', () => {
 
     fireEvent.change(getByPlaceholderText('New Password'), { target: { value: 'newpassword' } });
     fireEvent.change(getByPlaceholderText('New Password Confirmation'), { target: { value: 'newpassword' } });
+    fireEvent.click(getByText('I agree with'));
 
     fireEvent.click(getByText('Reset Password'));
     expect(fetch.mock.calls[0][0]).toEqual('/api/authentication/password/verify-reset/');

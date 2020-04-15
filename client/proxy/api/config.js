@@ -1255,7 +1255,7 @@ const addBookmark = (req, res) => {
 const changePassword = (req, res) => {
   console.log(`Changing User Password`);
   const oldPassword = req.body.old_password;
-  const newPassword = req.body.old_password;
+  const newPassword = req.body.new_password1;
   console.log(`Changing User Password from ${oldPassword} to ${newPassword}`);
   const user = users.find(user => user.username === currentUser.username);
 

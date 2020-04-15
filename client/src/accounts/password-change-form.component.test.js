@@ -13,7 +13,10 @@ import PasswordChangeForm from './password-change-form.component';
 const mockStore = configureMockStore([thunk]);
 
 describe('Password Reset Form Component', () => {
+  let changePassword = null;
+
   beforeEach(() => {
+    changePassword = jest.fn();
     fetch.resetMocks();
   });
 
@@ -38,6 +41,8 @@ describe('Password Reset Form Component', () => {
     expect(getAllByText('Show')).toHaveLength(3);
     // Check password strength component exists
     expect(getByText('Password Strength:')).toBeInTheDocument();
+    //Check Terms and Conditions checkbox
+    expect(getByText('I agree with')).toBeInTheDocument();
     // Check form submit button
     expect(getByText('Change Password')).toBeInTheDocument();
     // Check link to login view
@@ -68,6 +73,8 @@ describe('Password Reset Form Component', () => {
     password = getByPlaceholderText('New Password Confirmation');
     fireEvent.change(password, { target: { value: 'newpassword' } });
     expect(password.value).toEqual('newpassword');
+
+    fireEvent.click(getByText('I agree with'));
 
     expect(getByText('Change Password')).not.toHaveAttribute('disabled');
   });
@@ -114,10 +121,17 @@ describe('Password Reset Form Component', () => {
       }
     });
 
+    const expectedResults = {
+      old_password: 'oldpassword',
+      new_password1: 'newpassword',
+      new_password2: 'newpassword',
+      accepted_terms: true
+    };
+
     const { getByText, getByPlaceholderText } = render(
       <MemoryRouter>
         <Provider store={store}>
-          <PasswordChangeForm />
+          <PasswordChangeForm changePassword={changePassword} />
         </Provider>
       </MemoryRouter>
     );
@@ -125,8 +139,9 @@ describe('Password Reset Form Component', () => {
     fireEvent.change(getByPlaceholderText('Old Password'), { target: { value: 'oldpassword' } });
     fireEvent.change(getByPlaceholderText('New Password'), { target: { value: 'newpassword' } });
     fireEvent.change(getByPlaceholderText('New Password Confirmation'), { target: { value: 'newpassword' } });
+    fireEvent.click(getByText('I agree with'));
 
     fireEvent.click(getByText('Change Password'));
-    expect(fetch.mock.calls[0][0]).toEqual('/api/authentication/password/change/');
+    expect(changePassword).toHaveBeenCalledWith(expectedResults);
   });
 });
