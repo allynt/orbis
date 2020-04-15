@@ -10,10 +10,9 @@ import useModal from '@astrosat/astrosat-ui/dist/containers/use-modal';
 import PrivateRoute from './utils/private-route.component';
 
 import { fetchAppConfig } from './app.slice';
-import { fetchUser, login } from './accounts/accounts.slice';
+import { fetchUser, login, changePassword } from './accounts/accounts.slice';
 // import { fetchUsers, createUser, deleteUser, updateUser, copyUser } from './accounts/admin/users.slice';
 import { fetchSources } from './map/map.slice';
-import { changePassword } from './accounts/accounts.actions';
 
 import RegisterForm from './accounts/register-form.component';
 import TermsAndConditions from './accounts/terms-and-conditions.component';
