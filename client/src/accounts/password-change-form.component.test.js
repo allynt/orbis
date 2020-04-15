@@ -9,12 +9,14 @@ import thunk from 'redux-thunk';
 import { MemoryRouter } from 'react-router-dom';
 
 import PasswordChangeForm from './password-change-form.component';
-import { changePassword } from '../../proxy/api/config';
 
 const mockStore = configureMockStore([thunk]);
 
 describe('Password Reset Form Component', () => {
+  let changePassword = null;
+
   beforeEach(() => {
+    changePassword = jest.fn();
     fetch.resetMocks();
   });
 
@@ -119,7 +121,12 @@ describe('Password Reset Form Component', () => {
       }
     });
 
-    const changePassword = jest.fn();
+    const expectedResults = {
+      old_password: 'oldpassword',
+      new_password1: 'newpassword',
+      new_password2: 'newpassword',
+      accepted_terms: true
+    };
 
     const { getByText, getByPlaceholderText } = render(
       <MemoryRouter>
@@ -135,6 +142,6 @@ describe('Password Reset Form Component', () => {
     fireEvent.click(getByText('I agree with'));
 
     fireEvent.click(getByText('Change Password'));
-    expect(changePassword).toHaveBeenCalled();
+    expect(changePassword).toHaveBeenCalledWith(expectedResults);
   });
 });
