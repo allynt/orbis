@@ -39,7 +39,7 @@ export const getToolbarItems = dispatch => {
       action: () => {
         dispatch(toggleMenu(DATA_LAYERS));
         dispatch(toggleMenuItem(DATA_LAYERS));
-        dispatch(setMenuHeadings({ heading: 'SELECT ORB', strapline: 'Choose your ORB and then add data layers' }));
+        dispatch(setMenuHeadings('SELECT ORB', 'Choose your ORB and then add data layers'));
       },
       tooltip: DATA_LAYERS
     },
@@ -49,7 +49,7 @@ export const getToolbarItems = dispatch => {
     //   action: () => {
     //     dispatch(toggleMenu(SATELLITE_LAYERS));
     //     dispatch(toggleMenuItem(SATELLITE_LAYERS));
-    //     dispatch(setMenuHeadings({ heading: 'SATELLITE IMAGES', strapline: 'Select Type of imagery For The Layers' }));
+    //     dispatch(setMenuHeadings('SATELLITE IMAGES', 'Select Type of imagery For The Layers'));
     //   },
     //   tooltip: SATELLITE_LAYERS
     // },
@@ -59,16 +59,16 @@ export const getToolbarItems = dispatch => {
     //   action: () => dispatch(notYetImplemented('No Pages designed yet')),
     //   tooltip: PAGES
     // },
-    // {
-    //   label: BOOKMARKS,
-    //   icon: <BookmarksIcon />,
-    //   action: () => {
-    //     dispatch(toggleMenu(BOOKMARKS));
-    //     dispatch(toggleMenuItem(BOOKMARKS));
-    //     dispatch(setMenuHeadings({ heading: 'MAPS', strapline: 'Select an Existing Map or Add New' }));
-    //   },
-    //   tooltip: BOOKMARKS
-    // },
+    {
+      label: BOOKMARKS,
+      icon: <BookmarksIcon />,
+      action: () => {
+        dispatch(toggleMenu(BOOKMARKS));
+        dispatch(toggleMenuItem(BOOKMARKS));
+        dispatch(setMenuHeadings('MAPS', 'Select an Existing Map or Add New'));
+      },
+      tooltip: BOOKMARKS
+    },
     // {
     //   label: STORIES,
     //   icon: <StoryIcon />,
@@ -81,7 +81,7 @@ export const getToolbarItems = dispatch => {
     //   action: () => {
     //     dispatch(toggleMenu(ANNOTATIONS));
     //     dispatch(toggleMenuItem(ANNOTATIONS));
-    //     dispatch(setMenuHeadings({ heading: 'ANNOTATIONS', strapline: 'Select Your Drawing Tool Or Saved Areas' }));
+    //     dispatch(setMenuHeadings('ANNOTATIONS', 'Select Your Drawing Tool Or Saved Areas'));
     //   },
     //   tooltip: ANNOTATIONS
     // },
@@ -145,7 +145,7 @@ export const getToolbarItems = dispatch => {
       action: () => {
         dispatch(toggleMenu(PROFILE));
         dispatch(toggleMenuItem(PROFILE));
-        dispatch(setMenuHeadings({ heading: 'My Account', strapline: 'Edit your details below' }));
+        dispatch(setMenuHeadings('My Account', 'Edit your details below'));
       },
       tooltip: PROFILE,
       footer: true
