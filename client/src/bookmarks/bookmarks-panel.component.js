@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import BookmarkForm from './bookmark-form.component';
 import BookmarkList from './bookmarks-list.component';
 
-import { fetchBookmarks, addBookmark, selectBookmark, deleteBookmark } from './bookmarks.actions';
+import { fetchBookmarks, addBookmark, selectBookmark, deleteBookmark } from './bookmark.slice';
 
 import styles from '../side-menu/side-menu.module.css';
 

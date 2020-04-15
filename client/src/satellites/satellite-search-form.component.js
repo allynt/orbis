@@ -13,7 +13,7 @@ import ErrorIcon from '@astrosat/astrosat-ui/dist/icons/error-icon';
 
 import validate from './satellite-search-form.validator';
 
-import { setCurrentSearchQuery, searchSatellites } from './satellites.actions';
+import { setCurrentSatelliteSearchQuery, fetchSatelliteScenes } from './satellites.slice';
 
 import { RESULTS, SATELLITE, TIER } from './satellites-panel.component';
 import { getGeometryAreaKmSquared } from 'utils/geometry';
@@ -118,8 +118,8 @@ const SatelliteSearchForm = ({ satellites, geometry, setVisiblePanel, setSelecte
       tiers: selectedTiersIds,
       aoi: geometry
     };
-    dispatch(setCurrentSearchQuery(query));
-    dispatch(searchSatellites(query));
+    dispatch(setCurrentSatelliteSearchQuery(query));
+    dispatch(fetchSatelliteScenes(query));
     setVisiblePanel(RESULTS);
   }
   return (

@@ -7,7 +7,7 @@ import Button from '@astrosat/astrosat-ui/dist/buttons/button';
 import Dialog from '@astrosat/astrosat-ui/dist/containers/dialog';
 import useModal from '@astrosat/astrosat-ui/dist/containers/use-modal';
 
-import { fetchSatellites, selectScene, fetchVisualisations } from './satellites.actions';
+import { fetchSatellites, selectScene } from './satellites.slice';
 
 import SatelliteSearch from './satellite-search.component';
 import Results from './results.component';

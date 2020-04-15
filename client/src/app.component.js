@@ -9,11 +9,11 @@ import useModal from '@astrosat/astrosat-ui/dist/containers/use-modal';
 
 import PrivateRoute from './utils/private-route.component';
 
-import { fetchAppConfig } from './app.actions';
-import { fetchUser, login } from './accounts/accounts.actions';
-import { fetchUsers, createUser, deleteUser, updateUser, copyUser } from './accounts/admin/users.actions';
-import { fetchSourcesAndDataToken } from './map/map.actions';
-import { changePassword } from './accounts/accounts.actions';
+import { fetchAppConfig } from './app.slice';
+import { fetchUser, login, changePassword } from './accounts/accounts.slice';
+// import { fetchUsers, createUser, deleteUser, updateUser, copyUser } from './accounts/admin/users.slice';
+import { fetchSources } from './map/map.slice';
+
 import RegisterForm from './accounts/register-form.component';
 import TermsAndConditions from './accounts/terms-and-conditions.component';
 import AccountActivation from './accounts/account-activation.component';
@@ -78,10 +78,10 @@ const App = () => {
     // this also fetches the list of data sources the user has access to.
     // console.log('Initial Request for sources');
     if (user) {
-      dispatch(fetchSourcesAndDataToken());
+      dispatch(fetchSources());
 
       const interval = setInterval(() => {
-        dispatch(fetchSourcesAndDataToken());
+        dispatch(fetchSources());
       }, pollingPeriod);
       return () => {
         clearInterval(interval);

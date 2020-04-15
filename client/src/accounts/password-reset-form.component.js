@@ -8,7 +8,7 @@ import Button from '@astrosat/astrosat-ui/dist/buttons/button';
 import Textfield from '@astrosat/astrosat-ui/dist/forms/text-field';
 import useForm from '@astrosat/astrosat-ui/dist/forms/use-form';
 
-import { resetPassword } from './accounts.actions';
+import { resetPassword } from './accounts.slice';
 
 import { ReactComponent as OrbisLogo } from '../orbis.svg';
 

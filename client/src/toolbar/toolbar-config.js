@@ -25,11 +25,11 @@ import { ReactComponent as ShareIcon } from './share.svg';
 import { ReactComponent as FaqIcon } from './faq.svg';
 import { ReactComponent as ProfileIcon } from './profile.svg';
 
-import { toggleMenu, toggleMenuItem, setMenuHeadings } from '../side-menu/side-menu.actions';
-// import { logout } from '../accounts/accounts.actions';
-import { saveMap } from '../map/map.actions';
+import { toggleMenu, toggleMenuItem, setMenuHeadings } from '../side-menu/side-menu.slice';
 
-import { notYetImplemented } from '../app.actions';
+import { saveMap } from '../map/map.slice';
+
+import { notYetImplemented } from '../app.slice';
 
 export const getToolbarItems = dispatch => {
   return [
@@ -39,7 +39,7 @@ export const getToolbarItems = dispatch => {
       action: () => {
         dispatch(toggleMenu(DATA_LAYERS));
         dispatch(toggleMenuItem(DATA_LAYERS));
-        dispatch(setMenuHeadings('SELECT ORB', 'Choose your ORB and then add data layers'));
+        dispatch(setMenuHeadings({ heading: 'SELECT ORB', strapline: 'Choose your ORB and then add data layers' }));
       },
       tooltip: DATA_LAYERS
     },
@@ -49,7 +49,7 @@ export const getToolbarItems = dispatch => {
     //   action: () => {
     //     dispatch(toggleMenu(SATELLITE_LAYERS));
     //     dispatch(toggleMenuItem(SATELLITE_LAYERS));
-    //     dispatch(setMenuHeadings('SATELLITE IMAGES', 'Select Type of imagery For The Layers'));
+    //     dispatch(setMenuHeadings({ heading: 'SATELLITE IMAGES', strapline: 'Select Type of imagery For The Layers' }));
     //   },
     //   tooltip: SATELLITE_LAYERS
     // },
@@ -59,16 +59,16 @@ export const getToolbarItems = dispatch => {
     //   action: () => dispatch(notYetImplemented('No Pages designed yet')),
     //   tooltip: PAGES
     // },
-    {
-      label: BOOKMARKS,
-      icon: <BookmarksIcon />,
-      action: () => {
-        dispatch(toggleMenu(BOOKMARKS));
-        dispatch(toggleMenuItem(BOOKMARKS));
-        dispatch(setMenuHeadings('MAPS', 'Select an Existing Map or Add New'));
-      },
-      tooltip: BOOKMARKS
-    },
+    // {
+    //   label: BOOKMARKS,
+    //   icon: <BookmarksIcon />,
+    //   action: () => {
+    //     dispatch(toggleMenu(BOOKMARKS));
+    //     dispatch(toggleMenuItem(BOOKMARKS));
+    //     dispatch(setMenuHeadings({ heading: 'MAPS', strapline: 'Select an Existing Map or Add New' }));
+    //   },
+    //   tooltip: BOOKMARKS
+    // },
     // {
     //   label: STORIES,
     //   icon: <StoryIcon />,
@@ -81,7 +81,7 @@ export const getToolbarItems = dispatch => {
     //   action: () => {
     //     dispatch(toggleMenu(ANNOTATIONS));
     //     dispatch(toggleMenuItem(ANNOTATIONS));
-    //     dispatch(setMenuHeadings('ANNOTATIONS', 'Select Your Drawing Tool Or Saved Areas'));
+    //     dispatch(setMenuHeadings({ heading: 'ANNOTATIONS', strapline: 'Select Your Drawing Tool Or Saved Areas' }));
     //   },
     //   tooltip: ANNOTATIONS
     // },
@@ -145,7 +145,7 @@ export const getToolbarItems = dispatch => {
       action: () => {
         dispatch(toggleMenu(PROFILE));
         dispatch(toggleMenuItem(PROFILE));
-        dispatch(setMenuHeadings('My Account', 'Edit your details below'));
+        dispatch(setMenuHeadings({ heading: 'My Account', strapline: 'Edit your details below' }));
       },
       tooltip: PROFILE,
       footer: true

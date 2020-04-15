@@ -4,31 +4,29 @@ import { createBrowserHistory } from 'history';
 
 import { connectRouter } from 'connected-react-router';
 
-import map from './map/map.reducer';
-import app from './app.reducer';
-import dataLayers from './data-layers/data-layers-dialog.reducer';
-import satellites from './satellites/satellites.reducer';
-import accounts from './accounts/accounts.reducer';
-import theming from './theming/theming.reducer';
-import admin from './accounts/admin/users.reducer';
-import annotations from './annotations/annotations.reducer';
-import bookmarks from './bookmarks/bookmarks.reducer';
-import sidebar from './side-menu/side-menu.reducer';
+import app from './app.slice';
+import map from './map/map.slice';
+import dataLayers from './data-layers/data-layers.slice';
+import satellites from './satellites/satellites.slice';
+import accounts from './accounts/accounts.slice';
+import theming from './theming/theming.slice';
+import admin from './accounts/admin/users.slice';
+import bookmarks from './bookmarks/bookmark.slice';
+import sidebar from './side-menu/side-menu.slice';
 
 export const history = createBrowserHistory();
 
 const createRootReducer = history =>
   combineReducers({
     map,
+    sidebar,
     dataLayers,
     satellites,
     app,
     accounts,
     theming,
     admin,
-    annotations,
     bookmarks,
-    sidebar,
     router: connectRouter(history)
   });
 

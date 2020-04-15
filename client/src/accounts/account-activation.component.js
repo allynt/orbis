@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 
-import { activateAccount } from './accounts.actions';
+import { activateAccount } from './accounts.slice';
 
 import { LOGIN_URL } from './accounts.constants';
 

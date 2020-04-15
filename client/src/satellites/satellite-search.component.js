@@ -6,7 +6,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import Button from '@astrosat/astrosat-ui/dist/buttons/button';
 import Detail from '@astrosat/astrosat-ui/dist/containers/detail';
 
-import { fetchSavedSatelliteSearches, deleteSavedSatelliteSearch, setCurrentSearchQuery } from './satellites.actions';
+import {
+  fetchSavedSatelliteSearches,
+  deleteSavedSatelliteSearch,
+  setCurrentSatelliteSearchQuery
+} from './satellites.slice';
 
 import useMap from '../map/use-map.hook';
 
@@ -38,7 +42,7 @@ const SatelliteSearch = ({ map, satellites, setVisiblePanel, setSelectedMoreInfo
     return [control, feature];
   };
 
-  const chooseSearchQuery = search => dispatch(setCurrentSearchQuery(search));
+  const chooseSearchQuery = search => dispatch(setCurrentSatelliteSearchQuery(search));
   const deleteSavedSearchQuery = id => dispatch(deleteSavedSatelliteSearch(id));
 
   useEffect(() => {
@@ -60,7 +64,7 @@ const SatelliteSearch = ({ map, satellites, setVisiblePanel, setSelectedMoreInfo
     if (feature) {
       const featureArea = getGeometryAreaKmSquared(feature.geometry.coordinates[0]);
       const isTooLarge = featureArea > maximumAoiArea;
-      if (isTooLarge) {
+      if (drawControl && isTooLarge) {
         drawControl.setFeatureProperty(feature.id, 'error', 'true');
       }
     }
@@ -137,22 +141,29 @@ const SatelliteSearch = ({ map, satellites, setVisiblePanel, setSelectedMoreInfo
         const line = lineString(aoi);
         mapInstance.fitBounds(bbox(line), { padding: 275, offset: [100, 0] });
         const [drawCtrl] = getDraw();
-        drawCtrl.deleteAll();
-        const feature = {
-          type: 'Feature',
-          drawType: 'AOI',
-          properties: {
+        if (drawCtrl) {
+          drawCtrl.deleteAll();
+          const feature = {
+            type: 'Feature',
             drawType: 'AOI',
-            fillOpacity: 0.5,
-            fillColor: 'green'
-          },
-          geometry: {
-            type: 'Polygon',
-            coordinates: [aoi]
+            properties: {
+              drawType: 'AOI',
+              fillOpacity: 0.5,
+              fillColor: 'green'
+            },
+            geometry: {
+              type: 'Polygon',
+              coordinates: [aoi]
+            }
+          };
+          drawCtrl.add(feature);
+        }
+
+        return () => {
+          if (drawCtrl) {
+            drawCtrl.deleteAll();
           }
         };
-        drawCtrl.add(feature);
-        return () => drawCtrl.deleteAll();
       }
     },
     [currentSearchQuery]

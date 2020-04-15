@@ -1,23 +1,13 @@
 import { NotificationManager } from 'react-notifications';
 
+import { createSlice } from '@reduxjs/toolkit';
+
+import { persistReducer } from 'redux-persist';
+import storage from 'redux-persist/lib/storage'; // defaults to localStorage for web
+
 import { history } from '../root.reducer';
 
-import { sendData, getData, JSON_HEADERS } from '../utils/http';
-
-export const LOGIN_REQUESTED_SUCCESS = 'LOGIN_REQUESTED_SUCCESS';
-export const LOGIN_REQUESTED_FAILURE = 'LOGIN_REQUESTED_FAILURE';
-
-export const REGISTER_REQUESTED_SUCCESS = 'REGISTER_REQUESTED_SUCCESS';
-export const REGISTER_REQUESTED_FAILURE = 'REGISTER_REQUESTED_FAILURE';
-
-export const LOGOUT_REQUESTED_SUCCESS = 'LOGOUT_REQUESTED_SUCCESS';
-export const LOGOUT_REQUESTED_FAILURE = 'LOGOUT_REQUESTED_FAILURE';
-
-export const FETCH_USER_REQUESTED_SUCCESS = 'FETCH_USER_REQUESTED_SUCCESS';
-export const FETCH_USER_REQUESTED_FAILURE = 'FETCH_USER_REQUESTED_FAILURE';
-
-export const UPDATE_USER_REQUESTED_SUCCESS = 'UPDATE_USER_REQUESTED_SUCCESS';
-export const UPDATE_USER_REQUESTED_FAILURE = 'UPDATE_USER_REQUESTED_FAILURE';
+import { sendData, getData, JSON_HEADERS, getJsonAuthHeaders } from '../utils/http';
 
 const API_PREFIX = '/api/authentication/';
 const API = {
@@ -31,13 +21,67 @@ const API = {
   user: '/api/users/'
 };
 
-/**
- * Call API with user details. If there is an problem with the
- * request, then dispatch an error action, otherwise, dispatch
- * a success action.
- *
- * @param {*} form
- */
+const initialState = {
+  userKey: null,
+  user: null,
+  error: null
+};
+
+const accountsSlice = createSlice({
+  name: 'accounts',
+  initialState,
+  reducers: {
+    registerUserSuccess: state => {
+      state.error = null;
+    },
+    registerUserFailure: (state, { payload }) => {
+      state.error = payload;
+    },
+    loginUserSuccess: (state, { payload }) => {
+      state.userKey = payload;
+      state.error = null;
+    },
+    loginUserFailure: (state, { payload }) => {
+      state.error = payload;
+    },
+    fetchUserSuccess: (state, { payload }) => {
+      state.user = payload;
+      state.error = null;
+    },
+    fetchUserFailure: (state, { payload }) => {
+      state.error = payload;
+    },
+    updateUserSuccess: (state, { payload }) => {
+      state.user = payload;
+      state.error = null;
+    },
+    updateUserFailure: (state, { payload }) => {
+      state.error = payload;
+    },
+    logoutUserSuccess: (state, { payload }) => {
+      state.userKey = null;
+      state.user = null;
+      state.error = null;
+    },
+    logoutUserFailure: (state, { payload }) => {
+      state.error = payload;
+    }
+  }
+});
+
+export const {
+  registerUserSuccess,
+  registerUserFailure,
+  loginUserSuccess,
+  loginUserFailure,
+  fetchUserSuccess,
+  fetchUserFailure,
+  updateUserSuccess,
+  updateUserFailure,
+  logoutUserSuccess,
+  logoutUserFailure
+} = accountsSlice.actions;
+
 export const register = form => async dispatch => {
   const data = {
     ...form,
@@ -51,10 +95,7 @@ export const register = form => async dispatch => {
 
     NotificationManager.error(message, `"Registration Error - ${response.statusText}`, 50000, () => {});
 
-    return dispatch({
-      type: REGISTER_REQUESTED_FAILURE,
-      error: { message }
-    });
+    return dispatch(registerUserFailure({ message }));
   }
 
   NotificationManager.success(
@@ -63,8 +104,10 @@ export const register = form => async dispatch => {
     5000,
     () => {}
   );
-  dispatch({ type: REGISTER_REQUESTED_SUCCESS });
+
   history.push('/login');
+
+  return dispatch(registerUserSuccess());
 };
 
 export const activateAccount = form => async () => {
@@ -80,39 +123,21 @@ export const activateAccount = form => async () => {
 };
 
 export const fetchUser = (email = 'current') => async (dispatch, getState) => {
-  const {
-    accounts: { userKey }
-  } = getState();
+  const headers = getJsonAuthHeaders(getState());
 
-  const url = `${API.user}${email}/`;
-  const headers = {
-    ...JSON_HEADERS,
-    Authorization: 'Token ' + userKey
-  };
-
-  const response = await getData(url, headers);
+  const response = await getData(`${API.user}${email}/`, headers);
 
   if (!response.ok) {
     const message = `${response.status} ${response.statusText}`;
 
-    return dispatch({
-      type: FETCH_USER_REQUESTED_FAILURE,
-      error: { message }
-    });
+    return dispatch(fetchUserFailure({ message }));
   }
 
   const user = await response.json();
 
-  return dispatch({ type: FETCH_USER_REQUESTED_SUCCESS, user });
+  return dispatch(fetchUserSuccess(user));
 };
 
-/**
- * Call API with user credentials and receive a user object in response.
- * If there is an problem with the request, then dispatch an error action,
- * otherwise, dispatch a success action.
- *
- * @param {*} form
- */
 export const login = form => async dispatch => {
   const response = await sendData(API.login, form, JSON_HEADERS);
 
@@ -121,10 +146,7 @@ export const login = form => async dispatch => {
 
     NotificationManager.error(message, `Login Error - ${response.statusText}`, 50000, () => {});
 
-    return dispatch({
-      type: LOGIN_REQUESTED_FAILURE,
-      error: { message }
-    });
+    return dispatch(loginUserFailure({ message }));
   }
 
   const userKey = (await response.json()).token;
@@ -132,55 +154,32 @@ export const login = form => async dispatch => {
   NotificationManager.success('Successfully logged in', 'Successful Login', 5000, () => {});
 
   // Record the authentication key in state
-  dispatch({ type: LOGIN_REQUESTED_SUCCESS, userKey });
+  dispatch(loginUserSuccess(userKey));
 
   // Now that we have an authentication key, we can proceed to get user details
   return dispatch(fetchUser());
 };
 
-/**
- *
- *
- */
 export const logout = () => async (dispatch, getState) => {
-  const {
-    accounts: { userKey }
-  } = getState();
+  const headers = getJsonAuthHeaders(getState());
 
-  const url = API.logout;
-  const headers = {
-    ...JSON_HEADERS,
-    Authorization: 'Token ' + userKey
-  };
-
-  const response = await sendData(url, {}, headers);
+  const response = await sendData(API.logout, {}, headers);
 
   if (!response.ok) {
     const message = `${response.status} ${response.statusText}`;
 
-    NotificationManager.error(message, `Login Error - ${response.statusText}`, 50000, () => {});
+    NotificationManager.error(message, `Logout Error - ${response.statusText}`, 50000, () => {});
 
-    return dispatch({
-      type: LOGOUT_REQUESTED_FAILURE,
-      error: { message }
-    });
+    return dispatch(logoutUserFailure({ message }));
   }
 
-  dispatch({ type: LOGOUT_REQUESTED_SUCCESS });
+  return dispatch(logoutUserSuccess());
 };
 
 export const changePassword = form => async (dispatch, getState) => {
-  const {
-    accounts: { userKey }
-  } = getState();
+  const headers = getJsonAuthHeaders(getState());
 
-  const url = API.changePassword;
-  const headers = {
-    ...JSON_HEADERS,
-    Authorization: 'Token ' + userKey
-  };
-
-  const response = await sendData(url, form, headers);
+  const response = await sendData(API.changePassword, form, headers);
 
   if (!response.ok) {
     const message = `${response.status} ${response.statusText}`;
@@ -224,34 +223,36 @@ export const confirmChangePassword = (form, params) => async () => {
 
 export const updateUser = form => async (dispatch, getState) => {
   const {
-    accounts: { user, userKey }
+    accounts: { user }
   } = getState();
+  const headers = getJsonAuthHeaders(getState());
 
-  const url = `${API.user}${user.email}/`;
-  const headers = {
-    ...JSON_HEADERS,
-    Authorization: 'Token ' + userKey
-  };
   const data = {
     ...user,
     ...form,
     name: `${form.first_name} ${form.last_name}`
   };
 
-  const response = await sendData(url, data, headers, 'PUT');
+  const response = await sendData(`${API.user}${user.email}/`, data, headers, 'PUT');
 
   if (!response.ok) {
     const message = `${response.status} ${response.statusText}`;
 
     NotificationManager.error(message, 'Update User Error', 50000, () => {});
 
-    return dispatch({
-      type: UPDATE_USER_REQUESTED_FAILURE,
-      error: { message }
-    });
+    return dispatch(updateUserFailure({ message }));
   }
 
   const userObj = await response.json();
   NotificationManager.success('Successfully updated user', 'Successful User Update', 5000, () => {});
-  return dispatch({ type: UPDATE_USER_REQUESTED_SUCCESS, user: userObj });
+
+  return dispatch(updateUserSuccess(userObj));
 };
+
+const persistConfig = {
+  key: 'accounts',
+  whitelist: ['userKey'],
+  storage
+};
+
+export default persistReducer(persistConfig, accountsSlice.reducer);
