@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { StrictMode } from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { ConnectedRouter } from 'connected-react-router';
@@ -53,7 +53,9 @@ const render = () => {
       <ConnectedRouter history={history}>
         <NotificationContainer />
         <PersistGate loading={<div>Loading...</div>} persistor={persistor}>
-          <App />
+          <StrictMode>
+            <App />
+          </StrictMode>
         </PersistGate>
       </ConnectedRouter>
     </Provider>,
