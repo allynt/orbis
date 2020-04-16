@@ -69,12 +69,16 @@ export const getToolbarItems = dispatch => {
       },
       tooltip: BOOKMARKS
     },
-    // {
-    //   label: STORIES,
-    //   icon: <StoryIcon />,
-    //   action: () => dispatch(notYetImplemented('No Pages designed yet')),
-    //   tooltip: STORIES
-    // },
+    {
+      label: STORIES,
+      icon: <StoryIcon />,
+      action: () => {
+        dispatch(toggleMenu(STORIES));
+        dispatch(toggleMenuItem(STORIES));
+        dispatch(setMenuHeadings('STORIES', 'Select an Existing Story or Add New'));
+      },
+      tooltip: STORIES
+    },
     // {
     //   label: ANNOTATIONS,
     //   icon: <AnnotationsIcon />,
