@@ -22,6 +22,8 @@ import './reset.css';
 import './typography.css';
 import './index.css';
 
+import installDevTools from './dev-tools/load';
+
 window.onerror = (msg, url, line, col, error) => {
   // Note that col & error are new to the HTML 5 spec and may not be
   // supported in every browser.  It worked for me in Chrome.
@@ -59,7 +61,9 @@ const render = () => {
   );
 };
 
-render();
+installDevTools(() => {
+  render();
+});
 
 if (process.env.NODE_ENV === 'development' && module.hot) {
   module.hot.accept('./app.component', render);
