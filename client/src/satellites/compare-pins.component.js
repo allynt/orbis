@@ -67,7 +67,7 @@ const ComparePins = ({ setSelectedMoreInfo, toggleMoreInfoDialog }, ref) => {
         />
         <Button
           theme="link"
-          classNames={[styles.button]}
+          className={styles.button}
           onClick={() => dispatch(clearSelectedPinnedScenes([]))}
           disabled={isCompareMode}
         >
