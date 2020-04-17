@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { StrictMode } from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { ConnectedRouter } from 'connected-react-router';
@@ -21,6 +21,8 @@ import './normalize.css';
 import './reset.css';
 import './typography.css';
 import './index.css';
+
+import installDevTools from './dev-tools/load';
 
 window.onerror = (msg, url, line, col, error) => {
   // Note that col & error are new to the HTML 5 spec and may not be
@@ -51,7 +53,9 @@ const render = () => {
       <ConnectedRouter history={history}>
         <NotificationContainer />
         <PersistGate loading={<div>Loading...</div>} persistor={persistor}>
-          <App />
+          <StrictMode>
+            <App />
+          </StrictMode>
         </PersistGate>
       </ConnectedRouter>
     </Provider>,
@@ -59,7 +63,9 @@ const render = () => {
   );
 };
 
-render();
+installDevTools(() => {
+  render();
+});
 
 if (process.env.NODE_ENV === 'development' && module.hot) {
   module.hot.accept('./app.component', render);

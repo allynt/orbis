@@ -51,6 +51,10 @@ router.get('/bookmarks/', (req, res) => config.getBookmarks(req, res));
 router.route('/bookmarks/').post((req, res) => config.addBookmark(req, res));
 router.delete('/bookmarks/:id', (req, res) => config.deleteBookmark(req, res));
 
+router.get('/stories/', (req, res) => config.getStories(req, res));
+router.route('/stories/').post((req, res) => config.addStory(req, res));
+router.delete('/stories/:id', (req, res) => config.deleteStory(req, res));
+
 router.get('/data/sources/', (req, res) => config.getSources(req, res));
 
 // REGISTER OUR ROUTES -------------------------------
