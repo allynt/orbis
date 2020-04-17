@@ -46,7 +46,7 @@ const UpdateUserForm = ({ user, updateUser }) => {
         <div className={sideMenuStyles.buttons}>
           <Button
             type="submit"
-            classNames={[sideMenuStyles.button, profileStyles.profileButton]}
+            classNames={[sideMenuStyles.button, profileStyles.updateAccountButton]}
             disabled={Object.keys(errors).length > 0 || Object.keys(values).length === 0}
           >
             Update Account
