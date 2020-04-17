@@ -45,20 +45,14 @@ const PasswordResetForm = () => {
         </div>
 
         <div className={formStyles.buttons}>
-          <Button
-            type="submit"
-            className={formStyles.button}
-            disabled={Object.keys(errors).length > 0 || Object.keys(values).length === 0}
-          >
+          <Button type="submit" disabled={Object.keys(errors).length > 0 || Object.keys(values).length === 0}>
             Reset Password
           </Button>
         </div>
 
         <p className={passwordStyles.footer}>
           Do you have an account?&nbsp;
-          <Button theme="link" href={LOGIN_URL}>
-            Login
-          </Button>
+          <Button href={LOGIN_URL}>Login</Button>
         </p>
       </form>
     </div>
