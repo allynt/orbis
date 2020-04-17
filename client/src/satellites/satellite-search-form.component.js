@@ -211,7 +211,7 @@ const SatelliteSearchForm = ({ satellites, geometry, setVisiblePanel, setSelecte
             </div>
           </div>
         )}
-        <Button type="submit" theme="primary" disabled={geometryTooLarge} classNames={[sideMenuStyles.button]}>
+        <Button type="submit" disabled={geometryTooLarge} className={sideMenuStyles.button}>
           Search
         </Button>
       </div>
