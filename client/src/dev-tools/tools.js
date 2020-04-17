@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import TacosTool from './features/tacos.component';
+import StoriesTool from './features/stories.component';
 
 import styles from './tools.module.css';
 
@@ -26,7 +26,7 @@ const install = () => {
         <div>🛠 Dev Tools</div>
         <div className={styles.tools}>
           <LocalDevTools />
-          <TacosTool />
+          <StoriesTool />
         </div>
       </div>
     );

@@ -30,9 +30,10 @@ import { toggleMenu, toggleMenuItem, setMenuHeadings } from '../side-menu/side-m
 import { saveMap } from '../map/map.slice';
 
 import { notYetImplemented } from '../app.slice';
+import featureToggles from '../feature-toggles';
 
 export const getToolbarItems = dispatch => {
-  return [
+  const items = [
     {
       label: DATA_LAYERS,
       icon: <DataIcon />,
@@ -68,16 +69,6 @@ export const getToolbarItems = dispatch => {
         dispatch(setMenuHeadings('MAPS', 'Select an Existing Map or Add New'));
       },
       tooltip: BOOKMARKS
-    },
-    {
-      label: STORIES,
-      icon: <StoryIcon />,
-      action: () => {
-        dispatch(toggleMenu(STORIES));
-        dispatch(toggleMenuItem(STORIES));
-        dispatch(setMenuHeadings('STORIES', 'Select an Existing Story or Add New'));
-      },
-      tooltip: STORIES
     },
     // {
     //   label: ANNOTATIONS,
@@ -155,4 +146,18 @@ export const getToolbarItems = dispatch => {
       footer: true
     }
   ];
+
+  if (featureToggles.stories) {
+    items.splice(2, 0, {
+      label: STORIES,
+      icon: <StoryIcon />,
+      action: () => {
+        dispatch(toggleMenu(STORIES));
+        dispatch(toggleMenuItem(STORIES));
+        dispatch(setMenuHeadings('STORIES', 'Select an Existing Story or Add New'));
+      },
+      tooltip: STORIES
+    });
+  }
+  return items;
 };
