@@ -40,7 +40,7 @@ export const getToolbarItems = dispatch => {
       action: () => {
         dispatch(toggleMenu(DATA_LAYERS));
         dispatch(toggleMenuItem(DATA_LAYERS));
-        dispatch(setMenuHeadings('SELECT ORB', 'Choose your ORB and then add data layers'));
+        dispatch(setMenuHeadings({ heading: 'SELECT ORB', strapline: 'Choose your ORB and then add data layers' }));
       },
       tooltip: DATA_LAYERS
     },
@@ -50,7 +50,7 @@ export const getToolbarItems = dispatch => {
     //   action: () => {
     //     dispatch(toggleMenu(SATELLITE_LAYERS));
     //     dispatch(toggleMenuItem(SATELLITE_LAYERS));
-    //     dispatch(setMenuHeadings('SATELLITE IMAGES', 'Select Type of imagery For The Layers'));
+    //     dispatch(setMenuHeadings({ heading: 'SATELLITE IMAGES', strapline: 'Select Type of imagery For The Layers' }));
     //   },
     //   tooltip: SATELLITE_LAYERS
     // },
@@ -66,7 +66,7 @@ export const getToolbarItems = dispatch => {
       action: () => {
         dispatch(toggleMenu(BOOKMARKS));
         dispatch(toggleMenuItem(BOOKMARKS));
-        dispatch(setMenuHeadings('MAPS', 'Select an Existing Map or Add New'));
+        dispatch(setMenuHeadings({ heading: 'MAPS', strapline: 'Select an Existing Map or Add New' }));
       },
       tooltip: BOOKMARKS
     },
@@ -76,7 +76,7 @@ export const getToolbarItems = dispatch => {
     //   action: () => {
     //     dispatch(toggleMenu(ANNOTATIONS));
     //     dispatch(toggleMenuItem(ANNOTATIONS));
-    //     dispatch(setMenuHeadings('ANNOTATIONS', 'Select Your Drawing Tool Or Saved Areas'));
+    //     dispatch(setMenuHeadings({ heading: 'ANNOTATIONS', strapline: 'Select Your Drawing Tool Or Saved Areas' }));
     //   },
     //   tooltip: ANNOTATIONS
     // },
@@ -140,7 +140,7 @@ export const getToolbarItems = dispatch => {
       action: () => {
         dispatch(toggleMenu(PROFILE));
         dispatch(toggleMenuItem(PROFILE));
-        dispatch(setMenuHeadings('My Account', 'Edit your details below'));
+        dispatch(setMenuHeadings({ heading: 'My Account', strapline: 'Edit your details below' }));
       },
       tooltip: PROFILE,
       footer: true
@@ -154,7 +154,7 @@ export const getToolbarItems = dispatch => {
       action: () => {
         dispatch(toggleMenu(STORIES));
         dispatch(toggleMenuItem(STORIES));
-        dispatch(setMenuHeadings('STORIES', 'Select an Existing Story or Add New'));
+        dispatch(setMenuHeadings({ heading: 'STORIES', strapline: 'Select an Existing Story or Add New' }));
       },
       tooltip: STORIES
     });
