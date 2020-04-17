@@ -108,7 +108,7 @@ const RegisterForm = () => {
           <div className={formStyles.row}>
             <Checkbox name="loggedIn" label="I agree with" value="true" onChange={() => setTermsAgreed(!termsAgreed)} />
             &nbsp;
-            <Button theme="link" target="_blank" href={TERMS_URL} rel="noopener noreferrer">
+            <Button target="_blank" href={TERMS_URL} rel="noopener noreferrer">
               Terms &amp; Conditions
             </Button>
           </div>
@@ -117,7 +117,6 @@ const RegisterForm = () => {
         <div className={formStyles.buttons}>
           <Button
             type="submit"
-            className={formStyles.button}
             disabled={
               !termsAgreed ||
               (config && !config.isRegistrationOpen) ||
@@ -131,9 +130,7 @@ const RegisterForm = () => {
 
         <p className={registerStyles.footer}>
           Do you have an account?&nbsp;
-          <Button theme="link" href={LOGIN_URL}>
-            Login
-          </Button>
+          <Button href={LOGIN_URL}>Login</Button>
         </p>
       </form>
     </div>
