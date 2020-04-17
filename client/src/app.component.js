@@ -10,7 +10,7 @@ import useModal from '@astrosat/astrosat-ui/dist/containers/use-modal';
 import PrivateRoute from './utils/private-route.component';
 
 import { fetchAppConfig } from './app.slice';
-import { fetchUser, login, changePassword } from './accounts/accounts.slice';
+import { fetchUser, login, changePassword, activateAccount } from './accounts/accounts.slice';
 // import { fetchUsers, createUser, deleteUser, updateUser, copyUser } from './accounts/admin/users.slice';
 import { fetchSources } from './map/map.slice';
 
@@ -48,6 +48,9 @@ const App = () => {
   const notYetImplementedDescription = useSelector(state => state.app.notYetImplementedDescription);
   const ref = useRef(null);
   const [isVisible, toggle] = useModal(notYetImplementedDescription !== null ? true : false);
+
+  const activateAccountFn = form => dispatch(activateAccount(form));
+
   useEffect(() => {
     if (notYetImplementedDescription !== null) {
       toggle();
@@ -120,7 +123,12 @@ const App = () => {
             path="/login"
             render={() => <LoginForm login={values => dispatch(login(values))} user={user} error={error} />}
           />
-          <Route exact path="/account/confirm-email/:key" user={user} component={AccountActivation} />
+          <Route
+            exact
+            path="/account/confirm-email/:key"
+            user={user}
+            render={props => <AccountActivation match={props.match} activateAccount={activateAccountFn} />}
+          />
           <Route path="/reset_password_done" component={PasswordResetDone} />
           <Route path="/password/reset/:token/:uid/" component={PasswordResetConfirm} />
           <Suspense fallback={<h3>Password Rest Loading...</h3>}>
