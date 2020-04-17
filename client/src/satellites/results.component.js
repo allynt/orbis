@@ -1,16 +1,14 @@
-import React, { useState, useEffect } from 'react';
-
-import { useDispatch, useSelector } from 'react-redux';
+import React, { useState } from 'react';
 
 import Slider from '@astrosat/astrosat-ui/dist/forms/slider';
 import Button from '@astrosat/astrosat-ui/dist/buttons/button';
 import useModal from '@astrosat/astrosat-ui/dist/containers/use-modal';
 import Dialog from '@astrosat/astrosat-ui/dist/containers/dialog';
 
-import { fetchPinnedScenes, pinScene, deletePinnedScene, saveSatelliteSearch } from './satellites.slice';
-
 import SaveSearchForm from './save-search-form.component';
 import SceneListItem, { SceneListItemSkeleton } from './scene-list-item.component';
+
+import { DEFAULT_CLOUD_COVER } from './satellite.constants';
 
 import { ReactComponent as PinIcon } from './pin.svg';
 
@@ -18,27 +16,28 @@ import styles from './results.module.css';
 import sceneStyles from './scene-list-item.module.css';
 import sideMenuStyles from '../side-menu/side-menu.module.css';
 
-const Results = ({ scenes, setVisiblePanel, selectScene, setSelectedMoreInfo, toggleMoreInfoDialog }, ref) => {
-  const dispatch = useDispatch();
-  const currentSearchQuery = useSelector(state => state.satellites.currentSearchQuery);
-  const pinnedScenes = useSelector(state => state.satellites.pinnedScenes);
-
-  useEffect(() => {
-    if (!pinnedScenes) {
-      dispatch(fetchPinnedScenes());
-    }
-  }, [pinnedScenes]);
-
-  const [cloudCoverPercentage, setCloudCoverPercentage] = useState([10]);
+const Results = (
+  {
+    scenes,
+    setVisiblePanel,
+    selectScene,
+    setSelectedMoreInfo,
+    toggleMoreInfoDialog,
+    pinnedScenes,
+    pinScene,
+    deletePinnedScene,
+    saveSatelliteSearch,
+    currentSearchQuery
+  },
+  ref
+) => {
+  const [cloudCoverPercentage, setCloudCoverPercentage] = useState([DEFAULT_CLOUD_COVER]);
 
   const [isSaveDialogVisible, toggleSaveDialog] = useModal(false);
 
   const resultCountText = scenes
     ? `Showing ${scenes.filter(scene => scene.cloudCover <= cloudCoverPercentage[0]).length} Results`
     : 'Loading Results...';
-
-  const saveSearch = query => dispatch(saveSatelliteSearch(query));
-  const chooseSearch = scene => dispatch(selectScene(scene));
 
   return (
     <div className={styles.options} ref={ref}>
@@ -66,7 +65,7 @@ const Results = ({ scenes, setVisiblePanel, selectScene, setSelectedMoreInfo, to
                       key={`${scene.id}-icon`}
                       className={`${styles.pinIcon} ${isPinned && styles.pinned}`}
                       onClick={() => {
-                        isPinned ? dispatch(deletePinnedScene(scene.id)) : dispatch(pinScene(scene));
+                        isPinned ? deletePinnedScene(scene.id) : pinScene(scene);
                       }}
                     />
                   );
@@ -75,7 +74,7 @@ const Results = ({ scenes, setVisiblePanel, selectScene, setSelectedMoreInfo, to
                       <SceneListItem
                         scene={scene}
                         icon={Icon}
-                        selectScene={chooseSearch}
+                        selectScene={selectScene}
                         setVisiblePanel={setVisiblePanel}
                         toggleMoreInfoDialog={toggleMoreInfoDialog}
                         setSelectedMoreInfo={setSelectedMoreInfo}
@@ -94,7 +93,7 @@ const Results = ({ scenes, setVisiblePanel, selectScene, setSelectedMoreInfo, to
         </Button>
       </div>
       <Dialog isVisible={isSaveDialogVisible} title="Name Search" close={toggleSaveDialog} ref={ref}>
-        <SaveSearchForm query={currentSearchQuery} close={toggleSaveDialog} saveSearch={saveSearch} />
+        <SaveSearchForm query={currentSearchQuery} close={toggleSaveDialog} saveSearch={saveSatelliteSearch} />
       </Dialog>
     </div>
   );

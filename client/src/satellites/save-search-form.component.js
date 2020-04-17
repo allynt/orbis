@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 
 import Button from '@astrosat/astrosat-ui/dist/buttons/button';
 import Textfield from '@astrosat/astrosat-ui/dist/forms/text-field';
@@ -48,7 +47,5 @@ const SaveSearchForm = ({ query, close, saveSearch }) => {
     </div>
   );
 };
-
-SaveSearchForm.propTypes = {};
 
 export default SaveSearchForm;

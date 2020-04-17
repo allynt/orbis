@@ -1,9 +1,5 @@
 import React from 'react';
 
-import { format } from 'date-fns';
-
-import { DATE_FORMAT, TIME_FORMAT } from './satellite.constants';
-
 import styles from './satellites-info-tables.module.css';
 
 export const TierInfoTable = ({ tier }) => (
@@ -33,16 +29,6 @@ export const SatelliteInfoTable = ({ satellite }) => (
         <td>{satellite.description || 'not currently available'}</td>
       </tr>
       <tr className={styles.row}>
-        <td className={styles.title}>Available tiers: </td>
-        <td>
-          <ul>
-            {satellite.tiers.map(tier => (
-              <li key={tier.id}>{tier.label || 'not currently available'}</li>
-            ))}
-          </ul>
-        </td>
-      </tr>
-      <tr className={styles.row}>
         <td className={styles.title}>Available visualisations: </td>
         <td>
           <ul>
@@ -56,66 +42,15 @@ export const SatelliteInfoTable = ({ satellite }) => (
   </table>
 );
 
-export const SceneInfoTable = ({ scene }) => {
-  const date = format(new Date(scene.metadata.summary.date), DATE_FORMAT);
-  const time = format(new Date(scene.metadata.summary.date), TIME_FORMAT);
-  return (
-    <table className={styles.table}>
-      <tbody>
+export const SceneInfoTable = ({ scene }) => (
+  <table className={styles.table}>
+    <tbody>
+      {Object.keys(scene.metadata).map(key => (
         <tr className={styles.row}>
-          <td className={styles.title}>Summary: </td>
-          <td>
-            <table>
-              <tbody>
-                <tr>
-                  <td className={styles.title}>Date: </td>
-                  <td>{date || 'not currently available'}</td>
-                </tr>
-                <tr>
-                  <td className={styles.title}>Time: </td>
-                  <td>{time || 'not currently available'}</td>
-                </tr>
-                <tr>
-                  <td className={styles.title}>Instrument: </td>
-                  <td>{scene.metadata.summary.instrument || 'not currently available'}</td>
-                </tr>
-                <tr>
-                  <td className={styles.title}>Mode: </td>
-                  <td>{scene.metadata.summary.mode || 'not currently available'}</td>
-                </tr>
-                <tr>
-                  <td className={styles.title}>Satellite: </td>
-                  <td>{scene.metadata.summary.satellite || 'not currently available'}</td>
-                </tr>
-                <tr>
-                  <td className={styles.title}>Size: </td>
-                  <td>{scene.metadata.summary.size || 'not currently available'}</td>
-                </tr>
-              </tbody>
-            </table>
-          </td>
+          <td className={styles.title}>{key}</td>
+          <td>{scene.metadata[key] || 'not currently available'}</td>
         </tr>
-        <tr className={styles.row}>
-          <td className={styles.title}>Name of the instrument: </td>
-          <td>{scene.metadata.name_of_instrument || 'not currently available'}</td>
-        </tr>
-        <tr className={styles.row}>
-          <td className={styles.title}>Operational mode of the sensor: </td>
-          <td>{scene.metadata.operational_mode_of_sensor || 'not currently available'}</td>
-        </tr>
-        <tr className={styles.row}>
-          <td className={styles.title}>Orbit direction: </td>
-          <td>{scene.metadata.orbit_direction || 'not currently available'}</td>
-        </tr>
-        <tr className={styles.row}>
-          <td className={styles.title}>Product type: </td>
-          <td>{scene.metadata.product_type || 'not currently available'}</td>
-        </tr>
-        <tr className={styles.row}>
-          <td className={styles.title}>Cloud coverage: </td>
-          <td>{scene.metadata.cloud_coverage || 'not currently available'}</td>
-        </tr>
-      </tbody>
-    </table>
-  );
-};
+      ))}
+    </tbody>
+  </table>
+);
