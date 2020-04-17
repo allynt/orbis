@@ -303,7 +303,7 @@
 
 .icon {
   width: 1rem;
-  color: var(--primary-button-background-color);
+  color: var(--color-primary);
 }
 
 .loadMask {
