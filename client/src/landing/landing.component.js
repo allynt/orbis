@@ -25,7 +25,7 @@ const ViewAllItems = ({ items, chooseBookmark, toggle, itemOptions, setItemOptio
   <div className={styles.content}>
     <div className={styles.header}>
       <h1>View All</h1>
-      <Button theme="link" classNames={[styles.headerButton]} onClick={() => setViewAllItems(false)}>
+      <Button theme="link" onClick={() => setViewAllItems(false)}>
         Back to menu
       </Button>
     </div>
@@ -101,7 +101,7 @@ const NewUserLanding = forwardRef(({ setRedirect, toggle, isVisible, regions, do
         <p className={styles.journeyText}>Click Browse Map below to start</p>
 
         <div>
-          <Button theme="tertiary" classNames={[styles.button]} onClick={() => setRedirect('/map')}>
+          <Button theme="tertiary" onClick={() => setRedirect('/map')}>
             Browse Map
           </Button>
         </div>
@@ -144,7 +144,7 @@ const ExistingUserLanding = forwardRef(
           <div className={styles.content}>
             <div className={styles.header}>
               <h1>Your Maps</h1>
-              <Button theme="link" classNames={[styles.headerButton]} onClick={() => setViewAllItems(true)}>
+              <Button theme="link" onClick={() => setViewAllItems(true)}>
                 View all
               </Button>
             </div>
@@ -159,7 +159,7 @@ const ExistingUserLanding = forwardRef(
         )}
 
         <div className={styles.buttonContainer}>
-          <Button theme="tertiary" classNames={[styles.button]} onClick={() => setRedirect('/map')}>
+          <Button theme="tertiary" onClick={() => setRedirect('/map')}>
             Browse Map
           </Button>
         </div>
