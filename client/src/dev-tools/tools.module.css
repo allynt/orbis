@@ -1,0 +1,25 @@
+.devTools {
+  position: absolute;
+  left: 46.5%;
+  bottom: 0;
+  background: black;
+  opacity: 0.4;
+  color: white;
+  padding: 20px;
+  transition: all 0.3s;
+  z-index: 10000;
+}
+
+.devTools:hover {
+  height: 300px;
+  width: 100%;
+  opacity: 0.9;
+}
+
+.devTools .tools {
+  display: none;
+}
+
+.devTools:hover .tools {
+  display: block;
+}

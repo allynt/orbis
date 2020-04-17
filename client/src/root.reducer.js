@@ -13,6 +13,7 @@ import theming from './theming/theming.slice';
 import admin from './accounts/admin/users.slice';
 import bookmarks from './bookmarks/bookmark.slice';
 import sidebar from './side-menu/side-menu.slice';
+import stories from './stories/stories.slice';
 
 export const history = createBrowserHistory();
 
@@ -27,6 +28,7 @@ const createRootReducer = history =>
     theming,
     admin,
     bookmarks,
+    stories,
     router: connectRouter(history)
   });
 

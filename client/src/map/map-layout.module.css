@@ -314,3 +314,14 @@
   width: 100vw;
   height: 100vh;
 }
+
+.story {
+  position: absolute;
+  top: 1rem;
+  right: 5rem;
+  background-color: #fff;
+}
+
+.story .buttons {
+  display: flex;
+}

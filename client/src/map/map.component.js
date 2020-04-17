@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import ReactDOM from 'react-dom';
 
 import MapboxDraw from '@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw';
@@ -32,6 +32,7 @@ import RadiusMode from '../annotations/modes/radius';
 import RectangleMode from '../annotations/modes/rectangle';
 import drawStyles from '../annotations/styles';
 import BookmarksPanel from '../bookmarks/bookmarks-panel.component';
+import StoriesPanel from '../stories/stories-panel.component';
 import DataLayers from '../data-layers/data-layers.component';
 import { ReactComponent as DataIcon } from '../mapstyle/layers.svg';
 import MapStyleSwitcher from '../mapstyle/mapstyle-switcher.component';
@@ -41,6 +42,7 @@ import {
   ANNOTATIONS,
   BOOKMARKS,
   CHANGE_PASSWORD,
+  STORIES,
   DATA_LAYERS,
   PROFILE,
   SATELLITE_LAYERS
@@ -88,6 +90,10 @@ const Map = ({
   const isSaveMap = useSelector(state => state.map.saveMap);
 
   const selectedBookmark = useSelector(state => state.bookmarks.selectedBookmark);
+
+  const selectedStory = useSelector(state => state.stories.selectedStory);
+  const [selectedChapter, setSelectedChapter] = useState(null);
+
   const isLoading = useSelector(state => state.bookmarks.isLoading);
 
   const dataSources = useSelector(state => state.map.dataSources);
@@ -102,6 +108,26 @@ const Map = ({
   const popupRef = useRef(null);
 
   const dispatch = useDispatch();
+
+  // let scroller = null;
+  // useEffect(() => {
+  //   console.log('Setting up scroller');
+  //   scroller = scrollama();
+  //   scroller
+  //     .setup({
+  //       step: '.step',
+  //       offset: 0.5,
+  //       progress: true
+  //     })
+  //     .onStepEnter(response => {
+  //       console.log('onStepEnter: ', response);
+  //     })
+  //     .onStepExit(response => {
+  //       console.log('onStepExit: ', response);
+  //     });
+
+  //   window.addEventListener('resize', scroller.resize);
+  // }, [mapInstance]);
 
   useMapControl(mapInstance, attribution, AttributionControl);
   useMapControl(mapInstance, navigation, NavigationControl, 'bottom-right');
@@ -499,6 +525,76 @@ const Map = ({
   const strapline = useSelector(state => state.sidebar.strapline);
   const visibleMenuItem = useSelector(state => state.sidebar.visibleMenuItem);
 
+  useMap(
+    mapInstance,
+    map => {
+      if (selectedStory) {
+        console.log('Display Story: ', selectedStory);
+        if (!selectedChapter) {
+          setSelectedChapter(selectedStory.chapters[0]);
+        } else {
+          console.log('Display Chapter: ', selectedChapter);
+          console.log('MAP STYLE BEFORE: ', map.getStyle());
+
+          map.flyTo(selectedChapter.location);
+        }
+
+        if (selectedChapter && selectedChapter.onEnter && selectedChapter.onEnter.length > 0) {
+          console.log('DO MAP LAYER STUFF');
+          selectedChapter.onEnter.forEach(layer => {
+            const sourceId = `${layer.id}-source`;
+            if (!map.getSource(sourceId)) {
+              if (layer.type.toLowerCase() === VECTOR) {
+                console.log('Add VECTOR SOURCE/LAYER: ', layer);
+                map.addSource(sourceId, {
+                  type: layer.type,
+                  tiles: [layer.url]
+                });
+
+                map.addLayer({
+                  id: `${layer.id}-layer`,
+                  type: 'fill',
+                  source: sourceId,
+                  'source-layer': layer.id,
+                  layout: {},
+                  paint: { 'fill-outline-color': '#484496', 'fill-color': 'green' }
+                });
+              } else if (layer.type.toLowerCase() === GEOJSON) {
+                console.log('Add GEOJSON SOURCE/LAYER: ', layer);
+                map.addSource(sourceId, {
+                  type: 'geojson',
+                  data: layer.url,
+                  cluster: true,
+                  clusterMaxZoom: 14,
+                  clusterRadius: 50
+                });
+
+                // circle and symbol layers for rendering clustered and
+                // non-clustered features.
+                map.addLayer({
+                  id: `${layer.id}-circle`,
+                  type: 'circle',
+                  source: sourceId,
+                  paint: {
+                    'circle-color': 'green',
+                    // 'circle-color': ['case', ['has', 'point_count'], 'red', 'green'],
+                    'circle-opacity': 0.6,
+                    'circle-radius': 30
+                  },
+                  minzoom: 10,
+                  maxzoom: 19
+                });
+              }
+            }
+          });
+
+          console.log('MAP STYLE AFTER: ', map.getStyle());
+        }
+      }
+    },
+    [selectedStory, selectedChapter, setSelectedChapter]
+  );
+
   return (
     <>
       <div ref={mapContainer} className={layoutStyles.map} data-testid={`map-${position}`} />
@@ -524,6 +620,7 @@ const Map = ({
             {visibleMenuItem === SATELLITE_LAYERS && <SatellitesPanel map={mapInstance} />}
             {visibleMenuItem === ANNOTATIONS && <AnnotationsPanel map={mapInstance} />}
             {visibleMenuItem === BOOKMARKS && <BookmarksPanel map={mapInstance} />}
+            {visibleMenuItem === STORIES && <StoriesPanel map={mapInstance} />}
             {visibleMenuItem === PROFILE && <Profile />}
             {visibleMenuItem === CHANGE_PASSWORD && <PasswordChangeForm />}
           </div>
@@ -557,6 +654,58 @@ const Map = ({
           </div>,
           popupRef.current
         )}
+
+      {selectedStory && (
+        <div className={`${layoutStyles.story} step`}>
+          {selectedStory && (
+            <div>
+              <h1>{selectedStory.title}</h1>
+              <h3>{selectedStory.subtitle}</h3>
+
+              {selectedChapter && (
+                <div className={layoutStyles.chapter}>
+                  <picture>
+                    <img src={selectedChapter.image} />
+                  </picture>
+
+                  <section>{selectedChapter.description}</section>
+                </div>
+              )}
+
+              <div className={layoutStyles.buttons}>
+                <Button
+                  theme="tertiary"
+                  onClick={() => {
+                    if (selectedChapter) {
+                      let index = selectedStory.chapters.indexOf(selectedChapter);
+                      const previousChapter = selectedStory.chapters[--index];
+                      if (previousChapter) {
+                        setSelectedChapter(previousChapter);
+                      }
+                    }
+                  }}
+                >
+                  Previous
+                </Button>
+                <Button
+                  theme="Primary"
+                  onClick={() => {
+                    if (selectedChapter) {
+                      let index = selectedStory.chapters.indexOf(selectedChapter);
+                      const nextChapter = selectedStory.chapters[++index];
+                      if (nextChapter) {
+                        setSelectedChapter(nextChapter);
+                      }
+                    }
+                  }}
+                >
+                  Next
+                </Button>
+              </div>
+            </div>
+          )}
+        </div>
+      )}
     </>
   );
 };

@@ -68,6 +68,10 @@ describe('Map Layout Component', () => {
       sidebar: {
         isMenuVisible: false,
         visibleMenuItem: ''
+      },
+      stories: {
+        stories: [],
+        selectedStory: null
       }
     });
 

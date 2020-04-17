@@ -104,3 +104,5 @@ server/static
 .venv/
 .terraform/
 terraform/**/deploy.plan
+
+client/src/dev-tools/*.local.js
