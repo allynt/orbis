@@ -77,10 +77,7 @@ const LoginForm = ({ login, user, error }) => {
               onChange={() => console.log('Keep me logged in')}
             />
             <p className={formStyles.row}>
-              Forgotten your&nbsp;
-              <Button theme="link" href={PASSWORD_RESET_URL}>
-                password?
-              </Button>
+              <Button href={PASSWORD_RESET_URL}>Forgotten your&nbsp;password?</Button>
             </p>
           </div>
         </div>
@@ -89,7 +86,7 @@ const LoginForm = ({ login, user, error }) => {
           <Button
             type="submit"
             theme="primary"
-            className={formStyles.button}
+            className={loginStyles.loginButton}
             disabled={Object.keys(errors).length > 0 || Object.keys(values).length === 0}
           >
             Login
@@ -98,9 +95,7 @@ const LoginForm = ({ login, user, error }) => {
 
         <p className={loginStyles.footer}>
           Don't have an account?&nbsp;
-          <Button theme="link" href={REGISTER_URL}>
-            Sign Up
-          </Button>
+          <Button href={REGISTER_URL}>Sign Up</Button>
         </p>
       </form>
     </div>

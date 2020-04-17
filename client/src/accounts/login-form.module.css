@@ -10,5 +10,13 @@
 
 .footer {
   display: flex;
+  align-items: baseline;
   padding: 1rem 0 1.5rem 0;
+}
+
+.loginButton {
+  margin-top: 1.5rem;
+  --padding-x: 8rem;
+  padding-left: var(--padding-x);
+  padding-right: var(--padding-x);
 }
