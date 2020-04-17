@@ -126,7 +126,7 @@
 .createNew:hover {
   border: 2.5px solid var(--primary-foreground-color);
   background-color: #fff;
-  color: var(--primary-button-background-active-color);
+  color: var(--button--primary--background-color--hover);
   opacity: 0.9;
 }
 

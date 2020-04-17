@@ -15,7 +15,7 @@
 }
 
 .select svg {
-  fill: var(--button-background);
+  fill: var(--button--primary--background-color);
 }
 
 .label {

@@ -90,7 +90,7 @@ const App = () => {
   }, [user, pollingPeriod]);
 
   return (
-    <div className={`${styles.app} ${styles[selectedTheme.value]}`} ref={ref}>
+    <div className={`${styles.app}`} ref={ref}>
       <ReactTooltip />
 
       <main>
