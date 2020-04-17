@@ -20,7 +20,7 @@ import './polyfills/object-fromEntries';
 import './normalize.css';
 import './reset.css';
 import './typography.css';
-import './index.css';
+import { ThemeProvider } from '@astrosat/astrosat-ui/dist/containers/theme-provider';
 
 window.onerror = (msg, url, line, col, error) => {
   // Note that col & error are new to the HTML 5 spec and may not be
@@ -47,14 +47,16 @@ const render = () => {
   const App = require('./app.component').default;
 
   ReactDOM.render(
-    <Provider store={store}>
-      <ConnectedRouter history={history}>
-        <NotificationContainer />
-        <PersistGate loading={<div>Loading...</div>} persistor={persistor}>
-          <App />
-        </PersistGate>
-      </ConnectedRouter>
-    </Provider>,
+    <ThemeProvider>
+      <Provider store={store}>
+        <ConnectedRouter history={history}>
+          <NotificationContainer />
+          <PersistGate loading={<div>Loading...</div>} persistor={persistor}>
+            <App />
+          </PersistGate>
+        </ConnectedRouter>
+      </Provider>
+    </ThemeProvider>,
     document.getElementById('root')
   );
 };
