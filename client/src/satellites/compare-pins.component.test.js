@@ -110,13 +110,13 @@ describe('Compare Pins Component', () => {
   it('should render Clear Pins button disabled', () => {
     const { getByText } = renderComponent();
 
-    expect(getByText('Clear Pins')).toHaveAttribute('disabled', '');
+    expect(getByText('Clear Pins')).toHaveAttribute('disabled');
   });
 
   it('should render Clear Pins button enabled', () => {
     const { getByText } = renderComponent({ selectedPinnedScenes: [{ ...mockScenes[2] }] });
 
-    expect(getByText('Clear Pins')).not.toHaveAttribute('disabled', '');
+    expect(getByText('Clear Pins')).not.toHaveAttribute('disabled');
   });
 
   it('should Clear selected pinned scenes', () => {
