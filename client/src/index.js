@@ -49,18 +49,18 @@ const render = () => {
   const App = require('./app.component').default;
 
   ReactDOM.render(
-    <ThemeProvider>
-      <Provider store={store}>
-        <ConnectedRouter history={history}>
-          <NotificationContainer />
-          <PersistGate loading={<div>Loading...</div>} persistor={persistor}>
-            <StrictMode>
+    <Provider store={store}>
+      <ConnectedRouter history={history}>
+        <NotificationContainer />
+        <PersistGate loading={<div>Loading...</div>} persistor={persistor}>
+          <StrictMode>
+            <ThemeProvider>
               <App />
-            </StrictMode>
-          </PersistGate>
-        </ConnectedRouter>
-      </Provider>
-    </ThemeProvider>,
+            </ThemeProvider>
+          </StrictMode>
+        </PersistGate>
+      </ConnectedRouter>
+    </Provider>,
     document.getElementById('root')
   );
 };
