@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { render, cleanup, within, fireEvent } from '@testing-library/react';
+import { render, within, fireEvent } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
 import { parseISO, format } from 'date-fns';
@@ -52,8 +52,6 @@ describe('Satellite Results Component', () => {
   let deletePinnedScene = null;
   let saveSatelliteSearch = null;
   let currentSearchQuery = null;
-
-  beforeEach(cleanup);
 
   beforeEach(() => {
     scenes = [
