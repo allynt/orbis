@@ -43,11 +43,7 @@ const BookmarkForm = ({ submit }) => {
           {errors.title && <p className={formStyles.errorMessage}>{errors.title}</p>}
         </div>
 
-        <Button
-          type="submit"
-          classNames={[bookmarkStyles.button]}
-          disabled={Object.keys(errors).length > 0 || Object.keys(values).length === 0}
-        >
+        <Button type="submit" disabled={Object.keys(errors).length > 0 || Object.keys(values).length === 0}>
           Save Bookmark
         </Button>
       </form>

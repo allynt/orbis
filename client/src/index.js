@@ -20,7 +20,7 @@ import './polyfills/object-fromEntries';
 import './normalize.css';
 import './reset.css';
 import './typography.css';
-import './index.css';
+import { ThemeProvider } from '@astrosat/astrosat-ui/dist/containers/theme-provider';
 
 import installDevTools from './dev-tools/load';
 
@@ -54,7 +54,9 @@ const render = () => {
         <NotificationContainer />
         <PersistGate loading={<div>Loading...</div>} persistor={persistor}>
           <StrictMode>
-            <App />
+            <ThemeProvider>
+              <App />
+            </ThemeProvider>
           </StrictMode>
         </PersistGate>
       </ConnectedRouter>

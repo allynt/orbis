@@ -11,6 +11,12 @@
   color: #fff;
 }
 
+.updateAccountButton {
+  --padding-x: 1rem;
+  padding-left: var(--padding-x);
+  padding-right: var(--padding-x);
+}
+
 .linkContainer {
   padding: 0 0 2rem 0;
 }

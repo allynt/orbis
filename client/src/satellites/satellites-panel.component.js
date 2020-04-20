@@ -58,7 +58,7 @@ const SatellitesPanel = ({ map }) => {
       <div className={styles.navigationPanel}>
         <Button
           theme="primary"
-          classNames={visiblePanel === SEARCH ? [styles.button, styles.active] : [styles.button]}
+          className={visiblePanel === SEARCH ? [styles.button, styles.active] : [styles.button]}
           onClick={() => setVisiblePanel(SEARCH)}
         >
           Search
@@ -66,7 +66,7 @@ const SatellitesPanel = ({ map }) => {
         <Button
           theme="primary"
           disabled={!scenes}
-          classNames={visiblePanel === RESULTS ? [styles.button, styles.active] : [styles.button]}
+          className={visiblePanel === RESULTS ? [styles.button, styles.active] : [styles.button]}
           onClick={() => setVisiblePanel(RESULTS)}
         >
           Results
@@ -74,14 +74,14 @@ const SatellitesPanel = ({ map }) => {
         <Button
           theme="primary"
           disabled={!visualisations}
-          classNames={visiblePanel === VISUALISATION ? [styles.button, styles.active] : [styles.button]}
+          className={visiblePanel === VISUALISATION ? [styles.button, styles.active] : [styles.button]}
           onClick={() => setVisiblePanel(VISUALISATION)}
         >
           Visualisation
         </Button>
         <Button
           theme="primary"
-          classNames={visiblePanel === PINS ? [styles.button, styles.active] : [styles.button]}
+          className={visiblePanel === PINS ? [styles.button, styles.active] : [styles.button]}
           onClick={() => setVisiblePanel(PINS)}
         >
           My Pins

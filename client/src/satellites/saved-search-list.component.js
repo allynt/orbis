@@ -21,14 +21,10 @@ const SavedSearchList = ({ savedSearches, setCurrentSearchQuery, deleteSavedSate
               <p>{search.tiers.join(', ')}</p>
             </div>
             <div className={styles.buttons}>
-              <Button classNames={[styles.button]} onClick={() => setCurrentSearchQuery(search)}>
+              <Button className={styles.button} onClick={() => setCurrentSearchQuery(search)}>
                 Reload
               </Button>
-              <Button
-                classNames={[styles.button]}
-                theme="tertiary"
-                onClick={() => deleteSavedSatelliteSearch(search.id)}
-              >
+              <Button className={styles.button} theme="tertiary" onClick={() => deleteSavedSatelliteSearch(search.id)}>
                 Delete
               </Button>
             </div>

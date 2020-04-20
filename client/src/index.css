@@ -23,6 +23,4 @@ body {
   --toggle-button-border: rgba(51, 63, 72, 0.9);
   --toggle-button-slider: #fff;
   --toggle-button-slider-active: #fff;
-
-  --toolbar-width: 6.875em;
 }

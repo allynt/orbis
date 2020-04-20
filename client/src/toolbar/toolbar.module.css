@@ -55,9 +55,8 @@
 }
 
 .item.active {
-  background-color: var(--primary-button-background-color);
-  color: var(--primary-foreground-color);
-  /* color: #fff; */
+  background-color: var(--button--primary--background-color);
+  color: var(--button--primary--color);
 }
 
 .bottomPanel {

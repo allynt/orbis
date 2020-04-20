@@ -36,8 +36,8 @@
 }
 
 .button:hover {
-  background-color: var(--primary-button-background-color);
-  color: var(--primary-foreground-color);
+  background-color: var(--button--primary--background-color);
+  color: var(--button--primary--color);
 }
 
 .active {

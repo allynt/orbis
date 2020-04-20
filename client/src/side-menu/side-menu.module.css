@@ -41,9 +41,11 @@
 }
 
 .button {
+  --padding-y: 0.532rem;
+  padding-top: var(--padding-y);
+  padding-bottom: var(--padding-y);
   width: 70%;
   margin: 0.5rem 0;
-  font-weight: 600;
 }
 
 .row {
