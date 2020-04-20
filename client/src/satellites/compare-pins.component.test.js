@@ -76,16 +76,7 @@ describe('Compare Pins Component', () => {
     const { container } = renderComponent({});
 
     const pinnedSceneElements = container.querySelectorAll('.compareItem');
-    pinnedSceneElements.forEach((scene, i) => {
-      expect(within(scene).getByText(mockScenes[i].label)).toBeInTheDocument();
-      expect(within(scene).getByText('delete.svg')).toBeInTheDocument();
-      expect(within(scene).getByText(format(parseISO(mockScenes[i].created), DATE_FORMAT))).toBeInTheDocument();
-      expect(
-        within(scene).getByText(`${format(parseISO(mockScenes[i].created), TIME_FORMAT)} UTC`)
-      ).toBeInTheDocument();
-      expect(within(scene).getByText('delete.svg')).toBeInTheDocument();
-      expect(within(scene).getByText('More info')).toBeInTheDocument();
-    });
+    expect(pinnedSceneElements.length).toEqual(mockScenes.length);
   });
 
   it('should fetch a list of pinned scenes, on first render', () => {
