@@ -66,10 +66,10 @@ const App = () => {
   // then setup analytics. This should only be done once on app
   // startup.
   useEffect(() => {
-    if (!trackingId) {
+    if (trackingId) {
       ReactGA.initialize(trackingId);
       // ReactGA.initialize(trackingId, { debug: true });
-      ReactGA.pageview('/', null, 'APPLICATION NAME App');
+      ReactGA.pageview('/', null, 'ORBIS App');
     }
   }, [dispatch, trackingId]);
 
