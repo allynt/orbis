@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "start:dev": "concurrently --raw 'nodemon -w proxy ./proxy/proxy.js' 'react-scripts start'",
+    "proxy": "nodemon -w proxy ./proxy/proxy.js",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
