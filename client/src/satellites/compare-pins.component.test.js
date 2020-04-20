@@ -8,95 +8,64 @@ import { DATE_FORMAT, TIME_FORMAT } from './satellite.constants';
 
 import ComparePins from './compare-pins.component';
 
-const renderComponent = (
-  setSelectedMoreInfo,
-  toggleMoreInfoDialog,
-  fetchPinnedScenes,
-  selectPinnedScene,
-  deselectPinnedScene,
-  clearSelectedPinnedScenes,
-  deletePinnedScene,
-  toggleCompareMode,
-  pinnedScenes,
-  selectedPinnedScenes,
-  isCompareMode
-) =>
-  render(
+const mockScenes = [
+  {
+    id: 1,
+    label: 'Pinned Scene 1',
+    created: '2000-01-01T00:00:00Z'
+  },
+  {
+    id: 2,
+    label: 'Pinned Scene 2',
+    created: '2000-01-02T00:00:00Z'
+  },
+  {
+    id: 3,
+    label: 'Pinned Scene 3',
+    created: '2000-01-03T00:00:00Z'
+  }
+];
+
+const renderComponent = args => {
+  const attributes = {
+    setSelectedMoreInfo: jest.fn(),
+    toggleMoreInfoDialog: jest.fn(),
+    fetchPinnedScenes: jest.fn(),
+    selectPinnedScene: jest.fn(),
+    deselectPinnedScene: jest.fn(),
+    clearSelectedPinnedScenes: jest.fn(),
+    deletePinnedScene: jest.fn(),
+    toggleCompareMode: jest.fn(),
+    pinnedScenes: mockScenes,
+    selectedPinnedScenes: [],
+    isCompareMode: false,
+    ...args
+  };
+
+  const testee = render(
     <ComparePins
-      setSelectedMoreInfo={setSelectedMoreInfo}
-      toggleMoreInfoDialog={toggleMoreInfoDialog}
-      fetchPinnedScenes={fetchPinnedScenes}
-      selectPinnedScene={selectPinnedScene}
-      deselectPinnedScene={deselectPinnedScene}
-      clearSelectedPinnedScenes={clearSelectedPinnedScenes}
-      deletePinnedScene={deletePinnedScene}
-      toggleCompareMode={toggleCompareMode}
-      pinnedScenes={pinnedScenes}
-      selectedPinnedScenes={selectedPinnedScenes}
-      isCompareMode={isCompareMode}
+      setSelectedMoreInfo={attributes.setSelectedMoreInfo}
+      toggleMoreInfoDialog={attributes.toggleMoreInfoDialog}
+      fetchPinnedScenes={attributes.fetchPinnedScenes}
+      selectPinnedScene={attributes.selectPinnedScene}
+      deselectPinnedScene={attributes.deselectPinnedScene}
+      clearSelectedPinnedScenes={attributes.clearSelectedPinnedScenes}
+      deletePinnedScene={attributes.deletePinnedScene}
+      toggleCompareMode={attributes.toggleCompareMode}
+      pinnedScenes={attributes.pinnedScenes}
+      selectedPinnedScenes={attributes.selectedPinnedScenes}
+      isCompareMode={attributes.isCompareMode}
     />
   );
 
-describe('Compare Pins Component', () => {
-  let setSelectedMoreInfo = null;
-  let toggleMoreInfoDialog = null;
-  let fetchPinnedScenes = null;
-  let selectPinnedScene = null;
-  let deselectPinnedScene = null;
-  let clearSelectedPinnedScenes = null;
-  let deletePinnedScene = null;
-  let toggleCompareMode = null;
-  let pinnedScenes = null;
-  let selectedPinnedScenes = null;
-  let isCompareMode = null;
+  return { ...attributes, ...testee };
+};
 
+describe('Compare Pins Component', () => {
   beforeEach(cleanup);
 
-  beforeEach(() => {
-    setSelectedMoreInfo = jest.fn();
-    toggleMoreInfoDialog = jest.fn();
-
-    fetchPinnedScenes = jest.fn();
-    selectPinnedScene = jest.fn();
-    deselectPinnedScene = jest.fn();
-    clearSelectedPinnedScenes = jest.fn();
-    deletePinnedScene = jest.fn();
-    toggleCompareMode = jest.fn();
-    pinnedScenes = [
-      {
-        id: 1,
-        label: 'Pinned Scene 1',
-        created: '2000-01-01T00:00:00Z'
-      },
-      {
-        id: 2,
-        label: 'Pinned Scene 2',
-        created: '2000-01-02T00:00:00Z'
-      },
-      {
-        id: 3,
-        label: 'Pinned Scene 3',
-        created: '2000-01-03T00:00:00Z'
-      }
-    ];
-    selectedPinnedScenes = [];
-    isCompareMode = false;
-  });
-
   it('should render an empty list of pinned scenes', () => {
-    const { container, getByText } = renderComponent(
-      setSelectedMoreInfo,
-      toggleMoreInfoDialog,
-      fetchPinnedScenes,
-      selectPinnedScene,
-      deselectPinnedScene,
-      clearSelectedPinnedScenes,
-      deletePinnedScene,
-      toggleCompareMode,
-      [],
-      selectedPinnedScenes,
-      isCompareMode
-    );
+    const { container, getByText } = renderComponent({ pinnedScenes: [] });
 
     expect(getByText('Compare')).toBeInTheDocument();
     expect(getByText('Clear Pins')).toBeInTheDocument();
@@ -104,27 +73,15 @@ describe('Compare Pins Component', () => {
   });
 
   it('should render a list of pinned scenes', () => {
-    const { container } = renderComponent(
-      setSelectedMoreInfo,
-      toggleMoreInfoDialog,
-      fetchPinnedScenes,
-      selectPinnedScene,
-      deselectPinnedScene,
-      clearSelectedPinnedScenes,
-      deletePinnedScene,
-      toggleCompareMode,
-      pinnedScenes,
-      selectedPinnedScenes,
-      isCompareMode
-    );
+    const { container } = renderComponent({});
 
     const pinnedSceneElements = container.querySelectorAll('.compareItem');
     pinnedSceneElements.forEach((scene, i) => {
-      expect(within(scene).getByText(pinnedScenes[i].label)).toBeInTheDocument();
+      expect(within(scene).getByText(mockScenes[i].label)).toBeInTheDocument();
       expect(within(scene).getByText('delete.svg')).toBeInTheDocument();
-      expect(within(scene).getByText(format(parseISO(pinnedScenes[i].created), DATE_FORMAT))).toBeInTheDocument();
+      expect(within(scene).getByText(format(parseISO(mockScenes[i].created), DATE_FORMAT))).toBeInTheDocument();
       expect(
-        within(scene).getByText(`${format(parseISO(pinnedScenes[i].created), TIME_FORMAT)} UTC`)
+        within(scene).getByText(`${format(parseISO(mockScenes[i].created), TIME_FORMAT)} UTC`)
       ).toBeInTheDocument();
       expect(within(scene).getByText('delete.svg')).toBeInTheDocument();
       expect(within(scene).getByText('More info')).toBeInTheDocument();
@@ -132,75 +89,27 @@ describe('Compare Pins Component', () => {
   });
 
   it('should fetch a list of pinned scenes, on first render', () => {
-    renderComponent(
-      setSelectedMoreInfo,
-      toggleMoreInfoDialog,
-      fetchPinnedScenes,
-      selectPinnedScene,
-      deselectPinnedScene,
-      clearSelectedPinnedScenes,
-      deletePinnedScene,
-      toggleCompareMode,
-      null,
-      selectedPinnedScenes,
-      isCompareMode
-    );
-
+    const { fetchPinnedScenes } = renderComponent({ pinnedScenes: null });
     expect(fetchPinnedScenes).toHaveBeenCalled();
   });
 
   it('should render Compare Mode button disabled when not enough pinned scenes selected', () => {
-    const { getByLabelText } = renderComponent(
-      setSelectedMoreInfo,
-      toggleMoreInfoDialog,
-      fetchPinnedScenes,
-      selectPinnedScene,
-      deselectPinnedScene,
-      clearSelectedPinnedScenes,
-      deletePinnedScene,
-      toggleCompareMode,
-      pinnedScenes,
-      [{ ...pinnedScenes[1] }],
-      isCompareMode
-    );
+    const { getByLabelText } = renderComponent({ selectedPinnedScenes: [{ ...mockScenes[1] }] });
 
     expect(getByLabelText('Compare')).toHaveAttribute('disabled');
   });
 
   it('should not be able to toggle Compare Mode when not enough pinned scenes selected', () => {
-    const { getByLabelText } = renderComponent(
-      setSelectedMoreInfo,
-      toggleMoreInfoDialog,
-      fetchPinnedScenes,
-      selectPinnedScene,
-      deselectPinnedScene,
-      clearSelectedPinnedScenes,
-      deletePinnedScene,
-      toggleCompareMode,
-      pinnedScenes,
-      [{ ...pinnedScenes[1] }],
-      isCompareMode
-    );
+    const { toggleCompareMode, getByLabelText } = renderComponent({ selectedPinnedScenes: [{ ...mockScenes[1] }] });
 
     fireEvent.click(getByLabelText('Compare'));
     expect(toggleCompareMode).not.toHaveBeenCalled();
   });
 
   it('should toggle into Compare Mode when there are enough pinned scenes selected', () => {
-    const { getByLabelText } = renderComponent(
-      setSelectedMoreInfo,
-      toggleMoreInfoDialog,
-      fetchPinnedScenes,
-      selectPinnedScene,
-      deselectPinnedScene,
-      clearSelectedPinnedScenes,
-      deletePinnedScene,
-      toggleCompareMode,
-      pinnedScenes,
-      [pinnedScenes[0], pinnedScenes[0]],
-
-      isCompareMode
-    );
+    const { toggleCompareMode, getByLabelText } = renderComponent({
+      selectedPinnedScenes: [mockScenes[0], mockScenes[1]]
+    });
 
     expect(getByLabelText('Compare')).not.toHaveAttribute('disabled');
     fireEvent.click(getByLabelText('Compare'));
@@ -208,118 +117,46 @@ describe('Compare Pins Component', () => {
   });
 
   it('should render Clear Pins button disabled', () => {
-    const { getByText } = renderComponent(
-      setSelectedMoreInfo,
-      toggleMoreInfoDialog,
-      fetchPinnedScenes,
-      selectPinnedScene,
-      deselectPinnedScene,
-      clearSelectedPinnedScenes,
-      deletePinnedScene,
-      toggleCompareMode,
-      pinnedScenes,
-      selectedPinnedScenes,
-      isCompareMode
-    );
+    const { getByText } = renderComponent();
 
     expect(getByText('Clear Pins')).toHaveAttribute('disabled', '');
   });
 
   it('should render Clear Pins button enabled', () => {
-    const { getByText } = renderComponent(
-      setSelectedMoreInfo,
-      toggleMoreInfoDialog,
-      fetchPinnedScenes,
-      selectPinnedScene,
-      deselectPinnedScene,
-      clearSelectedPinnedScenes,
-      deletePinnedScene,
-      toggleCompareMode,
-      pinnedScenes,
-      [{ ...pinnedScenes[2] }],
-      isCompareMode
-    );
+    const { getByText } = renderComponent({ selectedPinnedScenes: [{ ...mockScenes[2] }] });
 
     expect(getByText('Clear Pins')).not.toHaveAttribute('disabled', '');
   });
 
   it('should Clear selected pinned scenes', () => {
-    const { getByText } = renderComponent(
-      setSelectedMoreInfo,
-      toggleMoreInfoDialog,
-      fetchPinnedScenes,
-      selectPinnedScene,
-      deselectPinnedScene,
-      clearSelectedPinnedScenes,
-      deletePinnedScene,
-      toggleCompareMode,
-      pinnedScenes,
-      [{ ...pinnedScenes[2] }],
-      isCompareMode
-    );
+    const { clearSelectedPinnedScenes, getByText } = renderComponent({ selectedPinnedScenes: [{ ...mockScenes[2] }] });
 
     fireEvent.click(getByText('Clear Pins'));
     expect(clearSelectedPinnedScenes).toHaveBeenCalled();
   });
 
   it("should delete pinned scene, when scene's icon clicked", () => {
-    const { getByText } = renderComponent(
-      setSelectedMoreInfo,
-      toggleMoreInfoDialog,
-      fetchPinnedScenes,
-      selectPinnedScene,
-      deselectPinnedScene,
-      clearSelectedPinnedScenes,
-      deletePinnedScene,
-      toggleCompareMode,
-      pinnedScenes,
-      selectedPinnedScenes,
-      isCompareMode
-    );
+    const { deletePinnedScene, getByText } = renderComponent();
 
     const element = getByText('Pinned Scene 1').nextSibling;
 
     fireEvent.click(within(element).getByText('delete.svg'));
-    expect(deletePinnedScene).toHaveBeenCalledWith(pinnedScenes[0].id);
+    expect(deletePinnedScene).toHaveBeenCalledWith(mockScenes[0].id);
   });
 
   it('should deselect pinned scene, when scene clicked and already selected', () => {
-    const { getByText } = renderComponent(
-      setSelectedMoreInfo,
-      toggleMoreInfoDialog,
-      fetchPinnedScenes,
-      selectPinnedScene,
-      deselectPinnedScene,
-      clearSelectedPinnedScenes,
-      deletePinnedScene,
-      toggleCompareMode,
-      pinnedScenes,
-      [{ ...pinnedScenes[0] }],
-      isCompareMode
-    );
+    const { deselectPinnedScene, getByText } = renderComponent({ selectedPinnedScenes: [{ ...mockScenes[0] }] });
 
     fireEvent.click(getByText('Pinned Scene 1').firstChild);
 
-    expect(deselectPinnedScene).toHaveBeenCalledWith(pinnedScenes[0]);
+    expect(deselectPinnedScene).toHaveBeenCalledWith(mockScenes[0]);
   });
 
   it('should select pinned scene, when scene clicked and not already selected', () => {
-    const { getByText } = renderComponent(
-      setSelectedMoreInfo,
-      toggleMoreInfoDialog,
-      fetchPinnedScenes,
-      selectPinnedScene,
-      deselectPinnedScene,
-      clearSelectedPinnedScenes,
-      deletePinnedScene,
-      toggleCompareMode,
-      pinnedScenes,
-      selectedPinnedScenes,
-      isCompareMode
-    );
+    const { selectPinnedScene, getByText } = renderComponent();
 
     fireEvent.click(getByText('Pinned Scene 1').firstChild);
 
-    expect(selectPinnedScene).toHaveBeenCalledWith(pinnedScenes[0]);
+    expect(selectPinnedScene).toHaveBeenCalledWith(mockScenes[0]);
   });
 });
