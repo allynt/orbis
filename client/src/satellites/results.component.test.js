@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { render, cleanup, within, fireEvent } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 
 import { parseISO, format } from 'date-fns';
 
@@ -230,7 +231,7 @@ describe('Satellite Results Component', () => {
   });
 
   it('should enable Save Search button when Save Search form valid', () => {
-    const { getByText } = renderComponent(
+    const { getByText, getByPlaceholderText } = renderComponent(
       scenes,
       setVisiblePanel,
       selectScene,
@@ -248,12 +249,12 @@ describe('Satellite Results Component', () => {
 
     const dialogElement = getByText('Name Search').parentElement.parentElement;
     const textToEnter = 'Test Saved Satellite';
-    fireEvent.change(within(dialogElement).getByPlaceholderText('Name'), { target: { value: textToEnter } });
+    userEvent.type(getByPlaceholderText('Name'), textToEnter);
     expect(within(dialogElement).getByText(buttonText)).not.toHaveAttribute('disabled');
   });
 
   it('should save search query when name entered and Save Search button clicked', () => {
-    const { getByText } = renderComponent(
+    const { getByText, getByPlaceholderText } = renderComponent(
       scenes,
       setVisiblePanel,
       selectScene,
@@ -271,7 +272,7 @@ describe('Satellite Results Component', () => {
 
     const dialogElement = getByText('Name Search').parentElement.parentElement;
     const textToEnter = 'Test Saved Satellite';
-    fireEvent.change(within(dialogElement).getByPlaceholderText('Name'), { target: { value: textToEnter } });
+    userEvent.type(getByPlaceholderText('Name'), textToEnter);
     fireEvent.click(within(dialogElement).getByText(buttonText));
     expect(saveSatelliteSearch).toHaveBeenCalledWith({ name: textToEnter });
   });
