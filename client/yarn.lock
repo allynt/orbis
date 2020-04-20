@@ -2,10 +2,10 @@
 # yarn lockfile v1
 
 
-"@astrosat/astrosat-ui@^1.12.3":
-  version "1.12.3"
-  resolved "https://npm.pkg.github.com/download/@astrosat/astrosat-ui/1.12.3/c7b8563bbc15a0ded6ddd63cdb06722a5f75a7df9b36e2fa0df6efc145b3a674#6eb4e4553678af7806b6802eaf533548cd33a9f0"
-  integrity sha512-r7goitflHLI7UF9bkTK3cdpVJJO5aRlLEAN1aaRfrFzuEFY6CbYtMG7YxMkFWy2Ll8PJEKCSciN2kQrMqrRLMA==
+"@astrosat/astrosat-ui@^1.12.4":
+  version "1.12.4"
+  resolved "https://npm.pkg.github.com/download/@astrosat/astrosat-ui/1.12.4/aba7fd516a2290123dada331a788f7ff71bdb6e53a885f004949976cc8946f65#544ec637a2fbd9b8b80c696260e86abc0a6cc990"
+  integrity sha512-rYq7HWScnnihMNhH2lIO/U2RUc6P+CfGRbGlDW382rMR7+52wzY2pVCbasmdPYTkW3RFkTjH52c1OxjxykYS/g==
   dependencies:
     clsx "^1.1.0"
     d3-scale "^3.2.1"
