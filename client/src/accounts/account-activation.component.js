@@ -2,20 +2,16 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 
 import { Redirect } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
-
-import { activateAccount } from './accounts.slice';
 
 import { LOGIN_URL } from './accounts.constants';
 
-const AccountActivation = ({ match }) => {
+const AccountActivation = ({ match, activateAccount }) => {
   const [redirectToLogin, setRedirectToLogin] = useState(false);
-  const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(activateAccount({ key: match.params.key }));
+    activateAccount({ key: match.params.key });
     setRedirectToLogin(true);
-  }, []);
+  }, [activateAccount, match]);
 
   // Re-direct to login.
   if (redirectToLogin) {
@@ -26,7 +22,8 @@ const AccountActivation = ({ match }) => {
 };
 
 AccountActivation.propTypes = {
-  match: PropTypes.object.isRequired
+  match: PropTypes.object.isRequired,
+  activateAccount: PropTypes.func.isRequired
 };
 
 export default AccountActivation;
