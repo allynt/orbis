@@ -33,7 +33,7 @@ services:
       - orbis
 
   client:
-    image: node:10.16.3
+    image: node:12.13.1
     tty: true
     environment:
       NODE_ENV: "development"
