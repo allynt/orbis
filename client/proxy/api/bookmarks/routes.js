@@ -1,12 +1,11 @@
 const express = require('express');
 
-const { getCurrentUser } = require('../authentication/data');
+const currentUserMiddleware = require('../authentication/middleware/currentUserMiddleware');
 const { getBookmarks, setBookmarks, addBookmark } = require('./data');
 
 const getBookmarksHandler = (req, res) => {
   console.log('Returning Bookmarks');
-  const currentUser = getCurrentUser();
-  const userBookmarks = getBookmarks().filter(bookmark => bookmark.owner === currentUser.id);
+  const userBookmarks = getBookmarks().filter(bookmark => bookmark.owner === req.currentUser.id);
 
   res.status(200);
   res.json(userBookmarks);
@@ -33,7 +32,7 @@ const bookmarksRouter = express.Router();
 
 bookmarksRouter
   .route('/')
-  .get(getBookmarksHandler)
+  .get(currentUserMiddleware, getBookmarksHandler)
   .post(addBookmarkHandler);
 bookmarksRouter.route('/:id').delete(deleteBookmark);
 

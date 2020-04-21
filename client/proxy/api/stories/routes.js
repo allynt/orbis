@@ -1,11 +1,10 @@
 const express = require('express');
+const currentUserMiddleware = require('../authentication/middleware/currentUserMiddleware');
 const { addStory, deleteStory, getStories } = require('./data');
-const { getCurrentUser } = require('../authentication/data');
 
 const getStoriesHandler = (req, res) => {
   console.log('Returning Stories');
-  const currentUser = getCurrentUser();
-  const userStories = getStories().filter(story => story.owner === currentUser.id);
+  const userStories = getStories().filter(story => story.owner === req.currentUser.id);
 
   res.status(200);
   res.json(userStories);
@@ -30,7 +29,7 @@ const storiesRouter = express.Router();
 
 storiesRouter
   .route('/')
-  .get(getStoriesHandler)
+  .get(currentUserMiddleware, getStoriesHandler)
   .post(addStoryHandler);
 storiesRouter.route('/:id').delete(deleteStoryHandler);
 
