@@ -1,10 +1,10 @@
-const appRoutes = require('./app/routes');
-const authRoutes = require('./authentication/routes');
-const bookmarksRoutes = require('./bookmarks/routes');
-const dataRoutes = require('./data/routes');
-const satellitesRoutes = require('./satellites/routes');
-const storiesRoutes = require('./stories/routes');
-const usersRoutes = require('./users/routes');
+const appRoutes = require('./app');
+const authRoutes = require('./authentication');
+const bookmarksRoutes = require('./bookmarks');
+const dataRoutes = require('./data');
+const satellitesRoutes = require('./satellites');
+const storiesRoutes = require('./stories');
+const usersRoutes = require('./users');
 
 module.exports = {
   appRoutes,
