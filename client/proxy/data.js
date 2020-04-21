@@ -1,6 +1,5 @@
 ('use strict');
-
-const userKey = { key: '57bd67287664bb1497cb29fe89d2d5087195a3ae' };
+const { getCurrentUser } = require('./api/authentication/data');
 
 const users = [
   {
@@ -522,94 +521,22 @@ let stories = [
   }
 ];
 
-let currentUser = null;
-
 const getUsers = (req, res) => {
   console.log('Returning All Users');
   res.status(200);
   res.json(users);
 };
 
-const getCurrentUser = (req, res) => {
-  console.log('Returning Current User');
+const getCurrentUserHandler = (req, res) => {
+  const currentUser = getCurrentUser();
+  console.log('Returning Current User', currentUser);
   res.status(200);
   res.json(currentUser);
 };
 
-const register = (req, res) => {
-  const details = req.body;
-  console.log('Registering User: ', details);
-
-  const existingUser = users.find(user => user.username === details.username);
-
-  if (existingUser) {
-    res.status(400);
-    res.json({ message: `Sorry, ${details.username} already exists` });
-  } else {
-    let oldId = users.length;
-    const user = {
-      id: ++oldId,
-      username: details.username,
-      email: details.email,
-      name: null,
-      description: '',
-      is_verified: false,
-      is_approved: false,
-      profiles: {},
-      roles: []
-    };
-
-    users.push(user);
-
-    res.status(200);
-    res.json(userKey);
-  }
-};
-
-const login = (req, res) => {
-  const user = req.body;
-  console.log('Logging User: ', user);
-
-  currentUser = users.find(usr => usr.email === user.email);
-  console.log('USER Matched: ', currentUser);
-
-  if (currentUser) {
-    if (!currentUser.is_approved) {
-      res.status(400);
-      res.json({ message: `Sorry, Registration not approved, please ask your manager to approve this account` });
-    }
-
-    if (!currentUser.is_verified) {
-      res.status(400);
-      res.json({ message: `Sorry, Registration not verified, please ask your manager to approve this account` });
-    }
-
-    if (user.password === currentUser.password) {
-      res.status(200);
-      res.json(userKey);
-    } else {
-      res.status(400);
-      res.json({
-        message:
-          '<p>Sorry, email and password did not match.</p><p><strong>Warning:</strong> After 7 consecutive unsuccessful login attempts, your account will be locked out for 60 minutes.</p>'
-      });
-    }
-  } else {
-    res.status(400);
-    res.json({ message: `Sorry, ${user.username} could not be found` });
-  }
-};
-
-const logout = (req, res) => {
-  console.log('User Logout');
-  currentUser = null;
-
-  res.status(200);
-  res.json(userKey);
-};
-
 const getBookmarks = (req, res) => {
   console.log('Returning Bookmarks');
+  const currentUser = getCurrentUser();
   const userBookmarks = bookmarks.filter(bookmark => bookmark.owner === currentUser.id);
 
   res.status(200);
@@ -634,27 +561,6 @@ const deleteBookmark = (req, res) => {
   res.json(bookmarks);
 };
 
-const changePassword = (req, res) => {
-  console.log(`Changing User Password`);
-  const oldPassword = req.body.old_password;
-  const newPassword = req.body.new_password1;
-  console.log(`Changing User Password from ${oldPassword} to ${newPassword}`);
-  const user = users.find(user => user.username === currentUser.username);
-
-  if (currentUser.password === oldPassword) {
-    if (req.body.new_password1 === 'razorpelicanturf') {
-      res.status(400);
-      res.json({ message: 'Some Error' });
-    } else {
-      user.password = newPassword;
-      currentUser.password = newPassword;
-
-      res.status(200);
-      res.json(user);
-    }
-  }
-};
-
 const getSources = (req, res) => {
   res.status(200);
   res.json(sources);
@@ -662,6 +568,7 @@ const getSources = (req, res) => {
 
 const getStories = (req, res) => {
   console.log('Returning Stories');
+  const currentUser = getCurrentUser();
   const userStories = stories.filter(story => story.owner === currentUser.id);
 
   res.status(200);
@@ -686,15 +593,12 @@ const deleteStory = (req, res) => {
 };
 
 module.exports = {
+  users,
   getUsers,
-  getCurrentUser,
-  register,
-  login,
-  logout,
+  getCurrentUserHandler,
   getBookmarks,
   addBookmark,
   deleteBookmark,
-  changePassword,
   getSources,
   getStories,
   addStory,

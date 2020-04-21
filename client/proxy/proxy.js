@@ -4,6 +4,7 @@ const bodyParser = require('body-parser');
 const app = express();
 const data = require('./data');
 const appRouter = require('./api/app/routes');
+const authRouter = require('./api/authentication/routes');
 const satellitesRouter = require('./api/satellites/routes');
 
 // configure body parser
@@ -28,16 +29,11 @@ router.get('/', function(req, res) {
 
 // router.get('/app/config', (req, res) => config.getAppConfig(req, res));
 router.use('/app', appRouter);
+router.use('/authentication', authRouter);
 router.use('/satellites', satellitesRouter);
 
 router.get('/users/', (req, res) => data.getUsers(req, res));
-router.get('/users/:username/', (req, res) => data.getCurrentUser(req, res));
-
-router.route('/authentication/registration/').post((req, res) => data.register(req, res));
-router.route('/authentication/login/').post((req, res) => data.login(req, res));
-router.route('/authentication/logout/').post((req, res) => data.logout(req, res));
-
-router.route('/authentication/password/change/').post((req, res) => data.changePassword(req, res));
+router.get('/users/:username/', (req, res) => data.getCurrentUserHandler(req, res));
 
 router.get('/bookmarks/', (req, res) => data.getBookmarks(req, res));
 router.route('/bookmarks/').post((req, res) => data.addBookmark(req, res));
