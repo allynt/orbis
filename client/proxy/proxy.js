@@ -6,6 +6,7 @@ const data = require('./data');
 const appRouter = require('./api/app/routes');
 const authRouter = require('./api/authentication/routes');
 const bookmarksRouter = require('./api/bookmarks/routes');
+const dataRouter = require('./api/data/routes');
 const satellitesRouter = require('./api/satellites/routes');
 const usersRouter = require('./api/users/routes');
 
@@ -33,14 +34,13 @@ router.get('/', function(req, res) {
 router.use('/app', appRouter);
 router.use('/authentication', authRouter);
 router.use('/bookmarks', bookmarksRouter);
+router.use('/data', dataRouter);
 router.use('/satellites', satellitesRouter);
 router.use('/users', usersRouter);
 
 router.get('/stories/', (req, res) => data.getStories(req, res));
 router.route('/stories/').post((req, res) => data.addStory(req, res));
 router.delete('/stories/:id', (req, res) => data.deleteStory(req, res));
-
-router.get('/data/sources/', (req, res) => data.getSources(req, res));
 
 // REGISTER OUR ROUTES -------------------------------
 app.use('/api', router);
