@@ -14,11 +14,6 @@ const port = process.env.PORT || 8000; // set our port
 // create our router
 const router = express.Router();
 
-// middleware to use for all requests
-app.all('*', function(req, res, next) {
-  next();
-});
-
 /* API */
 // test route to make sure everything is working (accessed at GET http://localhost:8080/api)
 router.get('/', function(req, res) {
