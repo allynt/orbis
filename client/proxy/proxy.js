@@ -5,6 +5,7 @@ const app = express();
 const data = require('./data');
 const appRouter = require('./api/app/routes');
 const authRouter = require('./api/authentication/routes');
+const bookmarksRouter = require('./api/bookmarks/routes');
 const satellitesRouter = require('./api/satellites/routes');
 const usersRouter = require('./api/users/routes');
 
@@ -31,12 +32,9 @@ router.get('/', function(req, res) {
 // router.get('/app/config', (req, res) => config.getAppConfig(req, res));
 router.use('/app', appRouter);
 router.use('/authentication', authRouter);
+router.use('/bookmarks', bookmarksRouter);
 router.use('/satellites', satellitesRouter);
 router.use('/users', usersRouter);
-
-router.get('/bookmarks/', (req, res) => data.getBookmarks(req, res));
-router.route('/bookmarks/').post((req, res) => data.addBookmark(req, res));
-router.delete('/bookmarks/:id', (req, res) => data.deleteBookmark(req, res));
 
 router.get('/stories/', (req, res) => data.getStories(req, res));
 router.route('/stories/').post((req, res) => data.addStory(req, res));
