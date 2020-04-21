@@ -1,6 +1,6 @@
 const express = require('express');
 const { userKey, getCurrentUser, setCurrentUser } = require('./data');
-const { users } = require('../../data');
+const { users } = require('../users/data');
 
 const register = (req, res) => {
   const details = req.body;
