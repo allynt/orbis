@@ -1,6 +1,3 @@
-('use strict');
-const { getCurrentUser } = require('./api/authentication/data');
-
 let stories = [
   {
     title: 'History of Hibs',
@@ -115,34 +112,8 @@ let stories = [
   }
 ];
 
-const getStories = (req, res) => {
-  console.log('Returning Stories');
-  const currentUser = getCurrentUser();
-  const userStories = stories.filter(story => story.owner === currentUser.id);
+const getStories = () => stories;
+const addStory = story => (stories = [...stories, story]);
+const deleteStory = id => (stories = stories.filter(story => story.id !== id));
 
-  res.status(200);
-  res.json(userStories);
-};
-
-const addStory = (req, res) => {
-  console.log('Adding Story');
-  const story = {
-    ...req.body
-  };
-
-  stories = [...stories, story];
-
-  res.status(200);
-  res.json(story);
-};
-
-const deleteStory = (req, res) => {
-  stories = stories.filter(story => story.id !== req.params.id);
-  res.status(200);
-};
-
-module.exports = {
-  getStories,
-  addStory,
-  deleteStory
-};
+module.exports = { getStories, addStory, deleteStory };
