@@ -4,6 +4,7 @@ const bodyParser = require('body-parser');
 const app = express();
 const data = require('./data');
 const appRouter = require('./api/app/routes');
+const satellitesRouter = require('./api/satellites/routes');
 
 // configure body parser
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -27,18 +28,10 @@ router.get('/', function(req, res) {
 
 // router.get('/app/config', (req, res) => config.getAppConfig(req, res));
 router.use('/app', appRouter);
+router.use('/satellites', satellitesRouter);
 
 router.get('/users/', (req, res) => data.getUsers(req, res));
 router.get('/users/:username/', (req, res) => data.getCurrentUser(req, res));
-
-router.get('/satellites/', (req, res) => data.getSatellites(req, res));
-router.route('/satellites/run_query/').post((req, res) => data.searchSatelliteScenes(req, res));
-router.get('/satellites/results/', (req, res) => data.getPinnedScenes(req, res));
-router.route('/satellites/results/').post((req, res) => data.pinScene(req, res));
-router.delete('/satellites/results/:id', (req, res) => data.deletePinnedScene(req, res));
-router.get('/satellites/searches/', (req, res) => data.getSatelliteSearches(req, res));
-router.route('/satellites/searches/').post((req, res) => data.saveSatelliteSearch(req, res));
-router.delete('/satellites/searches/:id', (req, res) => data.deleteSatelliteSearch(req, res));
 
 router.route('/authentication/registration/').post((req, res) => data.register(req, res));
 router.route('/authentication/login/').post((req, res) => data.login(req, res));
