@@ -151,10 +151,11 @@ class SatelliteResultViewSet(
     but not the "update" action.
     """
 
-    permission_classes = [IsAuthenticated]
-    serializer_class = SatelliteResultSerializer
     filter_backends = (filters.DjangoFilterBackend,)
     filterset_class = SatelliteResultFilterSet
+    lookup_field = "scene_id"
+    permission_classes = [IsAuthenticated]
+    serializer_class = SatelliteResultSerializer
 
     def get_queryset(self):
 
