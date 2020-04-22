@@ -33,10 +33,11 @@ describe('Bookmark Form Component', () => {
     const submitButton = getByText('Save Bookmark');
     expect(submitButton).toHaveAttribute('disabled');
     fireEvent.change(getByPlaceholderText('Title'), { target: { value: 'New Bookmark Title' } });
+    fireEvent.change(getByPlaceholderText('Description'), { target: { value: 'New Bookmark Description' } });
     expect(submitButton).not.toHaveAttribute('disabled');
   });
 
-  it('should cat submit function when form is valid and submit button clicked', () => {
+  it('should call submit function when form is valid and submit button clicked', () => {
     const { getByPlaceholderText, getByText } = render(<BookmarkForm submit={submit} />);
 
     fireEvent.change(getByPlaceholderText('Title'), { target: { value: 'New Bookmark Title' } });
