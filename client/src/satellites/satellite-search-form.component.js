@@ -94,7 +94,7 @@ const SatelliteSearchForm = ({ satellites, geometry, setVisiblePanel, setSelecte
   const maximumAoiArea = useSelector(state => state.app.config.maximumAoiArea);
   const geometryTooLarge = geometry && getGeometryAreaKmSquared(geometry) > maximumAoiArea;
 
-  const { handleChange, handleSubmit, values, setValues } = useForm(onSubmit, validate, defaults);
+  const { handleChange, handleSubmit, values, setValues } = useForm(onSubmit, validate, null, defaults);
 
   useEffect(() => {
     if (currentSearchQuery) {

@@ -41,6 +41,7 @@ const Profile = () => {
           classNames={[sideMenuStyles.button, styles.profileButton]}
           theme="tertiary"
           onClick={() => dispatch(logout())}
+          data-testid="logout"
         >
           Logout
         </Button>

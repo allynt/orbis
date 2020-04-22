@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom';
 
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 import validate from './login-form.validator';
 
@@ -21,7 +21,12 @@ import formStyles from './forms.module.css';
 import loginStyles from './login-form.module.css';
 
 const LoginForm = ({ login, user, error }) => {
-  const { handleChange, handleSubmit, values, errors } = useForm(onSubmit, validate);
+  const { passwordMinLength, passwordMaxLength } = useSelector(state => state.app.config);
+  const validators = {
+    passwordMinLength,
+    passwordMaxLength
+  };
+  const { handleChange, handleSubmit, values, errors } = useForm(onSubmit, validate, validators);
   // const error = useSelector(state => state.accounts.error);
   // const user = useSelector(state => state.accounts.user);
 

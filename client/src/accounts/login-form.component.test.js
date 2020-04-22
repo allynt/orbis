@@ -1,16 +1,25 @@
 import React from 'react';
 
+import { render, cleanup, fireEvent } from '@testing-library/react';
+
 import { Provider } from 'react-redux';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 
-import { render, cleanup, fireEvent } from '@testing-library/react';
-
-import { BrowserRouter } from 'react-router-dom';
+import { MemoryRouter } from 'react-router-dom';
 
 import LoginForm from './login-form.component';
 
 const mockStore = configureMockStore([thunk]);
+
+const renderComponent = (store, login, user, error) =>
+  render(
+    <MemoryRouter>
+      <Provider store={store}>
+        <LoginForm login={login} user={user} error={error} />
+      </Provider>
+    </MemoryRouter>
+  );
 
 describe('Login Form Component', () => {
   let store = null;
@@ -19,7 +28,11 @@ describe('Login Form Component', () => {
   let error = null;
 
   beforeEach(() => {
-    store = mockStore({});
+    store = mockStore({
+      app: {
+        config: {}
+      }
+    });
     login = jest.fn();
     user = null;
     error = {};
@@ -28,11 +41,7 @@ describe('Login Form Component', () => {
   afterEach(cleanup);
 
   it('should render form with `Login` button disabled when form is invalid', () => {
-    const { container, getByText, getByPlaceholderText } = render(
-      <BrowserRouter>
-        <LoginForm login={login} user={user} error={error} />
-      </BrowserRouter>
-    );
+    const { container, getByText, getByPlaceholderText } = renderComponent(store, login, user, error);
 
     expect(container.querySelector('form')).toBeInTheDocument();
     expect(getByPlaceholderText('Email')).toBeInTheDocument();
@@ -43,11 +52,7 @@ describe('Login Form Component', () => {
   });
 
   it('should enable `Login` button when form is valid', () => {
-    const { getByText, getByPlaceholderText } = render(
-      <BrowserRouter>
-        <LoginForm login={login} user={user} error={error} />
-      </BrowserRouter>
-    );
+    const { getByText, getByPlaceholderText } = renderComponent(store, login, user, error);
 
     fireEvent.change(getByPlaceholderText('Email'), { target: { value: 'testusername@test.com' } });
     fireEvent.change(getByPlaceholderText('Password'), { target: { value: 'testPassword' } });
@@ -56,22 +61,14 @@ describe('Login Form Component', () => {
   });
 
   it('should not call `login` function when form is invalid and `Login` button clicked', () => {
-    const { getByText } = render(
-      <BrowserRouter>
-        <LoginForm login={login} user={user} error={error} />
-      </BrowserRouter>
-    );
+    const { getByText } = renderComponent(store, login, user, error);
 
     fireEvent.click(getByText('Login'));
     expect(login).not.toHaveBeenCalled();
   });
 
   it('should call `login` function when form is valid and `Update User` button clicked', () => {
-    const { getByText, getByPlaceholderText } = render(
-      <BrowserRouter>
-        <LoginForm login={login} user={user} error={error} />
-      </BrowserRouter>
-    );
+    const { getByText, getByPlaceholderText } = renderComponent(store, login, user, error);
 
     fireEvent.change(getByPlaceholderText('Email'), { target: { value: 'testusername@test.com' } });
     fireEvent.change(getByPlaceholderText('Password'), { target: { value: 'testpassword' } });
