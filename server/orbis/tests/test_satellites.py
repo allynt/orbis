@@ -58,6 +58,39 @@ class TestSatellites:
 
 @pytest.mark.django_db
 class TestSatelliteResults:
+
+    def test_get_result(self, user, api_client):
+        """
+        Tests that I can get a single result using scene_id.
+        """
+
+        client = api_client(user)
+
+        satellite_result = SatelliteResultFactory(owner=user)
+        url = reverse("satellite-result-detail", kwargs={"scene_id": satellite_result.scene_id})
+        response = client.get(url)
+        result = response.json()
+
+        assert status.is_success(response.status_code)
+        assert result["id"] == satellite_result.scene_id
+
+    def test_delete_result(self, user, api_client):
+        """
+        Tests that I can delete a single result using scene_id.
+        """
+
+        client = api_client(user)
+
+        satellite_result = SatelliteResultFactory(owner=user)
+        assert SatelliteResult.objects.filter(scene_id=satellite_result.scene_id).count() == 1
+
+        url = reverse("satellite-result-detail", kwargs={"scene_id": satellite_result.scene_id})
+        response = client.delete(url)
+
+        assert status.is_success(response.status_code)
+        assert SatelliteResult.objects.filter(scene_id=satellite_result.scene_id).count() == 0
+
+
     def test_get_results(self, user, api_client):
 
         N_RESULTS = 10
