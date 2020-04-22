@@ -9,8 +9,8 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "release": "semantic-release",
-    "e2e": "cypress open --confiyg defaultCommandTimeout=10000",
-    "e2e:develop": "cypress open --config baseUrl=http://server:3000",
+    "e2e": "cypress open --config defaultCommandTimeout=10000",
+    "e2e:develop": "cypress open --config baseUrl=http://localhost:3000",
     "e2e:install": "cypress install",
     "e2e:verify": "cypress verify",
     "e2e:run": "cypress run"
@@ -59,12 +59,16 @@
   "devDependencies": {
     "@semantic-release/changelog": "^4.0.0",
     "@semantic-release/git": "^8.0.0",
+    "@testing-library/cypress": "^6.0.0",
     "@testing-library/react-hooks": "^3.2.1",
     "@turf/centroid": "^6.0.2",
     "body-parser": "^1.19.0",
     "codecov": "^3.6.5",
     "concurrently": "^5.0.2",
+    "cypress": "^4.3.0",
+    "cypress-cucumber-preprocessor": "^2.2.1",
     "eslint-config-prettier": "^6.9.0",
+    "eslint-plugin-cypress": "^2.10.3",
     "eslint-plugin-prettier": "^3.1.2",
     "eslint-plugin-react-hooks": "^2.3.0",
     "express": "^4.17.1",
@@ -82,5 +86,8 @@
     "not dead",
     "not ie <= 11",
     "not op_mini all"
-  ]
+  ],
+  "cypress-cucumber-preprocessor": {
+    "nonGlobalStepDefinitions": true
+  }
 }
