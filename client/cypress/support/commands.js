@@ -33,16 +33,15 @@ Cypress.Commands.add('login', () => {
 //   cy.get('[data-testid="map-container"]', { timeout: timeout }).find('.mapboxgl-map');
 // });
 
-// Cypress.Commands.add('getMap', (id, timeout = 10000) => {
-//   cy.get(`[data-testid="map-${id}"]`, { timeout: timeout })
-//     .should(mapContainers => {
-//       const { map } = mapContainers[id];
-//       expect(!!map).to.eql(true, 'Style loaded');
-//       expect(map.isSourceLoaded('lsoas')).to.eql(true, 'LSOA Source loaded');
-//       expect(map.areTilesLoaded()).to.eql(true, 'Tiles loaded');
-//     })
-//     .then(mapContainers => mapContainers[id].map);
-// });
+Cypress.Commands.add('getMap', (id, timeout = 10000) => {
+  cy.get(`[data-testid="map-${id}"]`, { timeout: timeout })
+    .should(mapContainers => {
+      const { map } = mapContainers[id];
+      expect(!!map).to.eql(true, 'Style loaded');
+      expect(map.areTilesLoaded()).to.eql(true, 'Tiles loaded');
+    })
+    .then(mapContainers => mapContainers[id].map);
+});
 
 // Cypress.Commands.add('clickLsoa', lsoaCode => {
 //   cy.getMap(0).then(map => {
