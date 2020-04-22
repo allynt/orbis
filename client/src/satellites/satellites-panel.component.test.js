@@ -27,6 +27,9 @@ const baseStore = {
       mapbox_token: 'token',
       mapStyles: MAPSTYLES
     }
+  },
+  map: {
+    isCompareMode: false
   }
 };
 

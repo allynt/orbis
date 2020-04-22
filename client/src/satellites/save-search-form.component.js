@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 
 import Button from '@astrosat/astrosat-ui/dist/buttons/button';
 import Textfield from '@astrosat/astrosat-ui/dist/forms/text-field';
@@ -8,6 +7,7 @@ import useForm from '@astrosat/astrosat-ui/dist/forms/use-form';
 import validate from './save-search-form.validator';
 
 import formStyles from '../accounts/forms.module.css';
+import styles from './save-search-form.module.css';
 
 const SaveSearchForm = ({ query, close, saveSearch }) => {
   const { handleChange, handleSubmit, values, errors } = useForm(onSubmit, validate);
@@ -18,7 +18,7 @@ const SaveSearchForm = ({ query, close, saveSearch }) => {
   }
 
   return (
-    <div>
+    <div className={styles.saveSearchForm}>
       <form className={formStyles.form} onSubmit={handleSubmit}>
         <p>Please name your search. Find your saved searches alongside your saved AOIs under "Saved Searches"</p>
         <div className={formStyles.fields}>
@@ -48,7 +48,5 @@ const SaveSearchForm = ({ query, close, saveSearch }) => {
     </div>
   );
 };
-
-SaveSearchForm.propTypes = {};
 
 export default SaveSearchForm;

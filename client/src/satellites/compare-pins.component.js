@@ -1,7 +1,5 @@
 import React, { useEffect } from 'react';
 
-import { useDispatch, useSelector } from 'react-redux';
-
 import Button from '@astrosat/astrosat-ui/dist/buttons/button';
 import Switch from '@astrosat/astrosat-ui/dist/buttons/switch';
 import Checkbox from '@astrosat/astrosat-ui/dist/forms/checkbox';
@@ -10,46 +8,44 @@ import SceneListItem from './scene-list-item.component';
 
 import { ReactComponent as DeleteIcon } from './delete.svg';
 
-import {
-  fetchPinnedScenes,
-  selectPinnedScene,
-  deselectPinnedScene,
-  clearSelectedPinnedScenes,
-  deletePinnedScene
-} from './satellites.slice';
-import { toggleCompareMode } from '../map/map.slice';
-
 import styles from './compare-pins.module.css';
 
 const MAX_SELECTED = 2;
 
-const ComparePins = ({ setSelectedMoreInfo, toggleMoreInfoDialog }, ref) => {
-  const dispatch = useDispatch();
-
-  const pinnedScenes = useSelector(state => state.satellites.pinnedScenes);
-  const isCompareMode = useSelector(state => state.map.isCompareMode);
-  const selectedPinnedScenes = useSelector(state => state.satellites.selectedPinnedScenes);
-
-  const choosePinnedScene = scene => dispatch(selectPinnedScene(scene));
-
+const ComparePins = (
+  {
+    setSelectedMoreInfo,
+    toggleMoreInfoDialog,
+    fetchPinnedScenes,
+    selectPinnedScene,
+    deselectPinnedScene,
+    clearSelectedPinnedScenes,
+    deletePinnedScene,
+    toggleCompareMode,
+    pinnedScenes,
+    selectedPinnedScenes,
+    isCompareMode
+  },
+  ref
+) => {
   useEffect(() => {
     if (!pinnedScenes) {
-      dispatch(fetchPinnedScenes());
+      fetchPinnedScenes();
     }
 
     return () => {
       if (isCompareMode) {
-        dispatch(toggleCompareMode());
+        toggleCompareMode();
       }
     };
-  }, [pinnedScenes, isCompareMode]);
+  }, [pinnedScenes, fetchPinnedScenes, isCompareMode, toggleCompareMode]);
 
   const handleChange = (isSelected, scene) => {
     if (isSelected) {
-      dispatch(deselectPinnedScene(scene));
+      deselectPinnedScene(scene);
     } else {
       if (selectedPinnedScenes.length !== MAX_SELECTED) {
-        choosePinnedScene(scene);
+        selectPinnedScene(scene);
       }
     }
   };
@@ -62,14 +58,14 @@ const ComparePins = ({ setSelectedMoreInfo, toggleMoreInfoDialog }, ref) => {
           label="Compare"
           checked={isCompareMode}
           disabled={selectedPinnedScenes.length !== MAX_SELECTED}
-          onClick={() => dispatch(toggleCompareMode())}
-          ariaLabel="Compare"
+          onClick={() => toggleCompareMode()}
+          ariaLabel="Compare Toggle"
         />
         <Button
           theme="link"
-          className={styles.button}
-          onClick={() => dispatch(clearSelectedPinnedScenes([]))}
-          disabled={isCompareMode}
+          classNames={[styles.button]}
+          onClick={() => clearSelectedPinnedScenes([])}
+          disabled={selectedPinnedScenes.length < 1}
         >
           Clear Pins
         </Button>
@@ -80,15 +76,10 @@ const ComparePins = ({ setSelectedMoreInfo, toggleMoreInfoDialog }, ref) => {
       <ul className={styles.pinnedScenes}>
         {pinnedScenes &&
           pinnedScenes.map((scene, index) => {
-            const isSelected = selectedPinnedScenes.includes(scene);
+            const isSelected = selectedPinnedScenes.some(selectedScene => selectedScene.id === scene.id);
             const isDisabled = !selectedPinnedScenes.includes(scene) && selectedPinnedScenes.length === MAX_SELECTED;
-            const Icon = (
-              <DeleteIcon
-                onClick={() => {
-                  !isCompareMode && dispatch(deletePinnedScene(scene.id));
-                }}
-              />
-            );
+            const Icon = <DeleteIcon onClick={() => !isCompareMode && deletePinnedScene(scene.id)} />;
+
             return (
               <div key={scene.id} className={styles.compareItem}>
                 <Checkbox
@@ -104,7 +95,7 @@ const ComparePins = ({ setSelectedMoreInfo, toggleMoreInfoDialog }, ref) => {
                   icon={Icon}
                   setSelectedMoreInfo={setSelectedMoreInfo}
                   toggleMoreInfoDialog={toggleMoreInfoDialog}
-                  selectScene={choosePinnedScene}
+                  selectScene={scene => handleChange(isSelected, scene)}
                 />
               </div>
             );
@@ -113,7 +104,5 @@ const ComparePins = ({ setSelectedMoreInfo, toggleMoreInfoDialog }, ref) => {
     </div>
   );
 };
-
-ComparePins.propTypes = {};
 
 export default React.memo(React.forwardRef(ComparePins));

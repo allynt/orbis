@@ -1,72 +1,110 @@
 import React from 'react';
 
-import { Provider } from 'react-redux';
-import configureMockStore from 'redux-mock-store';
-import thunk from 'redux-thunk';
-
-import { render, cleanup, fireEvent } from '@testing-library/react';
+import { render, within, fireEvent } from '@testing-library/react';
 
 import Results from './results.component';
 
-const mockStore = configureMockStore([thunk]);
+const mockeDialogRef = {
+  current: document.body
+};
+
+const mockScenes = [
+  {
+    id: 1,
+    cloudCover: 0.5,
+    thumbnail_url: '/thumbnail.png',
+    created: '2000-01-01T00:00:00Z'
+  },
+  {
+    id: 2,
+    cloudCover: 0.9,
+    thumbnail_url: '/thumbnail.png',
+    created: '2000-01-02T01:00:00Z'
+  },
+  {
+    id: 3,
+    cloudCover: 10.9,
+    thumbnail_url: '/thumbnail.png',
+    created: '2000-01-02T01:00:00Z'
+  }
+];
+
+const renderComponent = args => {
+  const attributes = {
+    scenes: mockScenes,
+    setVisiblePanel: jest.fn(),
+    selectScene: jest.fn(),
+    setSelectedMoreInfo: jest.fn(),
+    toggleMoreInfoDialog: jest.fn(),
+    pinnedScenes: mockScenes,
+    pinScene: jest.fn(),
+    deletePinnedScene: jest.fn(),
+    saveSatelliteSearch: jest.fn(),
+    currentSearchQuery: false,
+    ...args
+  };
+  const testee = render(
+    <Results
+      scenes={attributes.scenes}
+      setVisiblePanel={attributes.setVisiblePanel}
+      selectScene={attributes.selectScene}
+      setSelectedMoreInfo={attributes.setSelectedMoreInfo}
+      toggleMoreInfoDialog={attributes.toggleMoreInfoDialog}
+      pinnedScenes={attributes.pinnedScenes}
+      pinScene={attributes.pinScene}
+      deletePinnedScene={attributes.deletePinnedScene}
+      saveSatelliteSearch={attributes.saveSatelliteSearch}
+      currentSearchQuery={attributes.currentSearchQuery}
+      ref={mockeDialogRef}
+    />
+  );
+
+  return { ...attributes, ...testee };
+};
 
 describe('Satellite Results Component', () => {
-  const store = mockStore({
-    accounts: { userKey: { key: '123' } },
-    satellites: {
-      currentSearchQuery: null
-    }
-  });
-  let scenes = null;
-  let setVisiblePanel = null;
-  let selectScene = null;
-  let setSelectedMoreInfo = null;
-  let toggleMoreInfoDialog = null;
+  it('should render a list of Scene results', () => {
+    const { container, getByText, getByRole } = renderComponent({});
 
-  beforeEach(cleanup);
+    const element = getByRole('slider');
+    expect(getByText('CLOUD COVER %:')).toBeInTheDocument();
+    expect(element).toBeInTheDocument();
+    const defaultValue = '10';
+    expect(within(element).getByText(defaultValue)).toBeInTheDocument();
 
-  beforeEach(() => {
-    scenes = [
-      {
-        id: 1,
-        cloudCover: 0.5,
-        thumbnail_url: '/thumbnail.png',
-        created: '2000-01-01T00:00:00Z'
-      },
-      {
-        id: 2,
-        cloudCover: 0.9,
-        thumbnail_url: '/thumbnail.png',
-        created: '2000-01-02T01:00:00Z'
-      }
-    ];
-    setVisiblePanel = jest.fn();
-    selectScene = jest.fn();
-    setSelectedMoreInfo = jest.fn();
-    toggleMoreInfoDialog = jest.fn();
+    expect(getByText('RESULTS')).toBeInTheDocument();
+    expect(getByText('Showing 2 Results')).toBeInTheDocument();
+
+    const sceneElements = container.querySelectorAll('.scene');
+    expect(sceneElements.length).toEqual(2);
+
+    expect(getByText('Save Search')).toBeInTheDocument();
   });
 
-  it('should display a list of Scene results', () => {
-    const userKey = { key: 'testkey' };
-    const user = { username: 'testusername', email: 'testusername@test.com' };
+  it('should pin scene when pin icon clicked', () => {
+    const { pinScene, getAllByText } = renderComponent({ pinnedScenes: [] });
 
-    fetch.once(JSON.stringify(userKey)).once(JSON.stringify(user));
-    const { getByPlaceholderText, getByText } = render(
-      <Provider store={store}>
-        <Results
-          scenes={scenes}
-          setVisiblePanel={setVisiblePanel}
-          selectScene={selectScene}
-          setSelectedMoreInfo={setSelectedMoreInfo}
-          toggleMoreInfoDialog={toggleMoreInfoDialog}
-        />
-      </Provider>
-    );
+    fireEvent.click(getAllByText('pin.svg')[0]);
+    expect(pinScene).toHaveBeenCalledWith(mockScenes[0]);
   });
 
-  it('should trigger a panel change when setVisiblePanel called', () => {});
+  it('should delete pinned scene when already pinned pin icon clicked', () => {
+    const { deletePinnedScene, getAllByText } = renderComponent({ pinnedScenes: [{ ...mockScenes[0] }] });
 
-  it('should call `selectScene` when result clicked', () => {});
+    fireEvent.click(getAllByText('pin.svg')[0]);
+    expect(deletePinnedScene).toHaveBeenCalledWith(mockScenes[0].id);
+  });
 
-  it('should toggle a `More Info` dialog when button clicked', () => {});
+  it('should show dialog component when Save Search button clicked', () => {
+    const { queryByText, getByText } = renderComponent({ pinnedScenes: [{ ...mockScenes[0] }] });
+
+    const dialogTitle = 'Name Search';
+    expect(queryByText(dialogTitle)).toEqual(null);
+    fireEvent.click(getByText('Save Search'));
+
+    expect(getByText(dialogTitle)).toBeInTheDocument();
+    expect(
+      getByText('Please name your search. Find your saved searches alongside your saved AOIs under "Saved Searches"')
+    ).toBeInTheDocument();
+  });
 });

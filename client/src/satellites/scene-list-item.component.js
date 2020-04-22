@@ -29,7 +29,7 @@ const SceneListItem = ({
       onClick={() => {
         if (selectScene) {
           selectScene(scene);
-          setVisiblePanel(VISUALISATION);
+          setVisiblePanel && setVisiblePanel(VISUALISATION);
         }
       }}
     >

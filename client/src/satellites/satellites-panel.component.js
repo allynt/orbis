@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef } from 'react';
-import PropTypes from 'prop-types';
 
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -7,7 +6,19 @@ import Button from '@astrosat/astrosat-ui/dist/buttons/button';
 import Dialog from '@astrosat/astrosat-ui/dist/containers/dialog';
 import useModal from '@astrosat/astrosat-ui/dist/containers/use-modal';
 
-import { fetchSatellites, selectScene } from './satellites.slice';
+import {
+  fetchSatellites,
+  selectScene,
+  fetchPinnedScenes,
+  selectPinnedScene,
+  deselectPinnedScene,
+  clearSelectedPinnedScenes,
+  deletePinnedScene,
+  pinScene,
+  saveSatelliteSearch
+} from './satellites.slice';
+
+import { toggleCompareMode } from '../map/map.slice';
 
 import SatelliteSearch from './satellite-search.component';
 import Results from './results.component';
@@ -40,11 +51,16 @@ const SatellitesPanel = ({ map }) => {
   const scenes = useSelector(state => state.satellites.scenes);
   const selectedScene = useSelector(state => state.satellites.selectedScene);
 
+  const pinnedScenes = useSelector(state => state.satellites.pinnedScenes);
+  const isCompareMode = useSelector(state => state.map.isCompareMode);
+  const selectedPinnedScenes = useSelector(state => state.satellites.selectedPinnedScenes);
+  const currentSearchQuery = useSelector(state => state.satellites.currentSearchQuery);
+
   useEffect(() => {
     if (!satellites) {
       dispatch(fetchSatellites());
     }
-  }, [satellites]);
+  }, [satellites, dispatch]);
 
   useEffect(() => {
     if (selectedScene) {
@@ -103,9 +119,14 @@ const SatellitesPanel = ({ map }) => {
           <Results
             setVisiblePanel={setVisiblePanel}
             scenes={scenes}
-            selectScene={selectScene}
+            selectScene={scene => dispatch(selectScene(scene))}
             setSelectedMoreInfo={setSelectedMoreInfo}
             toggleMoreInfoDialog={toggleMoreInfoDialog}
+            pinnedScenes={pinnedScenes}
+            pinScene={scene => dispatch(pinScene(scene))}
+            deletePinnedScene={id => dispatch(deletePinnedScene(id))}
+            saveSatelliteSearch={query => dispatch(saveSatelliteSearch(query))}
+            currentSearchQuery={currentSearchQuery}
             ref={dialogRef}
           />
         )}
@@ -116,6 +137,15 @@ const SatellitesPanel = ({ map }) => {
           <PinnedScenes
             setSelectedMoreInfo={setSelectedMoreInfo}
             toggleMoreInfoDialog={toggleMoreInfoDialog}
+            fetchPinnedScenes={() => dispatch(fetchPinnedScenes())}
+            selectPinnedScene={scene => dispatch(selectPinnedScene(scene))}
+            deselectPinnedScene={scene => dispatch(deselectPinnedScene(scene))}
+            clearSelectedPinnedScenes={() => dispatch(clearSelectedPinnedScenes())}
+            deletePinnedScene={id => dispatch(deletePinnedScene(id))}
+            toggleCompareMode={() => dispatch(toggleCompareMode())}
+            pinnedScenes={pinnedScenes}
+            selectedPinnedScenes={selectedPinnedScenes}
+            isCompareMode={isCompareMode}
             ref={dialogRef}
           />
         )}
@@ -132,7 +162,5 @@ const SatellitesPanel = ({ map }) => {
     </div>
   );
 };
-
-SatellitesPanel.propTypes = {};
 
 export default SatellitesPanel;
