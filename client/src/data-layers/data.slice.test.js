@@ -1,4 +1,4 @@
-import reducer, { addLayers, removeLayer } from './data-layers.slice';
+import reducer, { addLayers, removeLayer } from './data.slice';
 
 describe('Dat Layers Slice', () => {
   describe('Dat Layers Reducer', () => {

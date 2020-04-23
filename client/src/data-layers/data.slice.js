@@ -4,8 +4,8 @@ const initialState = {
   layers: []
 };
 
-const dataLayersSlice = createSlice({
-  name: 'layers',
+const dataSlice = createSlice({
+  name: 'data',
   initialState,
   reducers: {
     addLayers: (state, { payload }) => {
@@ -17,6 +17,6 @@ const dataLayersSlice = createSlice({
   }
 });
 
-export const { addLayers, removeLayer } = dataLayersSlice.actions;
+export const { addLayers, removeLayer } = dataSlice.actions;
 
-export default dataLayersSlice.reducer;
+export default dataSlice.reducer;

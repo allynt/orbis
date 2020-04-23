@@ -100,7 +100,7 @@ const Map = ({
 
   const [selectedInfoFeatures, setSelectedInfoFeatures] = useState(null);
   const [clickableLayers, setClickableLayers] = useState([]);
-  const selectedLayers = useSelector(state => state.dataLayers.layers);
+  const selectedLayers = useSelector(state => state.data.layers);
   const nonSelectedLayers = dataSources && dataSources.filter(layer => !selectedLayers.includes(layer));
   const scenes = useSelector(state => state.satellites.scenes);
   const selectedScene = useSelector(state => state.satellites.selectedScene);

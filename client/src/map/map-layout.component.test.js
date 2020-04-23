@@ -46,7 +46,7 @@ describe('Map Layout Component', () => {
         selectedMapStyle: MAPSTYLES[0],
         dataSources: []
       },
-      dataLayers: {
+      data: {
         layers: []
       },
       satellites: {
