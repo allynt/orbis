@@ -77,7 +77,7 @@ const Map = ({
   comparisonScene
 }) => {
   const accessToken = useSelector(state => (state.app.config ? state.app.config.mapbox_token : null));
-  const dataAuthToken = useSelector(state => state.map.dataToken);
+  const dataAuthToken = useSelector(state => state.data.dataToken);
   const { mapContainer, mapInstance } = useMapbox(style, accessToken, dataAuthToken);
 
   if (setMap) setMap(mapInstance);
@@ -96,7 +96,7 @@ const Map = ({
 
   const isLoading = useSelector(state => state.bookmarks.isLoading);
 
-  const dataSources = useSelector(state => state.map.dataSources);
+  const dataSources = useSelector(state => state.data.dataSources);
 
   const [selectedInfoFeatures, setSelectedInfoFeatures] = useState(null);
   const [clickableLayers, setClickableLayers] = useState([]);

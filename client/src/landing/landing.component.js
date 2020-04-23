@@ -181,7 +181,7 @@ const Landing = () => {
 
   const chooseBookmark = bookmark => dispatch(selectBookmark(bookmark));
   const regions = useSelector(state => state.map.regions);
-  const domains = useSelector(state => state.map.domains);
+  const domains = useSelector(state => state.data.domains);
   const updateViewport = region => dispatch(setViewport(region));
 
   useEffect(() => {
