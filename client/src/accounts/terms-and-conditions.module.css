@@ -103,6 +103,7 @@ li {
 li span {
   font-weight: bold;
   margin-right: 0.5rem;
+  min-width: 7.5rem;
 }
 
 .schedule1 {
@@ -115,4 +116,9 @@ li span {
 
 .schedule1 h1 {
   margin-bottom: 1rem;
+}
+
+.link {
+  color: blue;
+  text-decoration: underline;
 }
