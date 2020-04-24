@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { format } from 'date-fns';
 
 import { setViewport } from '../map/map.slice';
+import { selectDomainList } from '../data-layers/data.slice';
 import { fetchBookmarks, selectBookmark } from '../bookmarks/bookmark.slice';
 
 import Button from '@astrosat/astrosat-ui/dist/buttons/button';
@@ -181,7 +182,7 @@ const Landing = () => {
 
   const chooseBookmark = bookmark => dispatch(selectBookmark(bookmark));
   const regions = useSelector(state => state.map.regions);
-  const domains = useSelector(state => state.data.domains);
+  const domains = useSelector(selectDomainList);
   const updateViewport = region => dispatch(setViewport(region));
 
   useEffect(() => {

@@ -1,9 +1,8 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, createSelector } from '@reduxjs/toolkit';
 import { getJsonAuthHeaders, getData } from 'utils/http';
 
 const initialState = {
   layers: [],
-  domains: [],
   pollingPeriod: 30000,
   token: null,
   sources: null
@@ -22,12 +21,11 @@ const dataSlice = createSlice({
     fetchSourcesSuccess: (state, { payload }) => {
       // Convert from minutes to millliseconds and then half the value.
       // This will ensure we update the token before it expires.
-      const { domains, sources, token, timeout } = payload;
+      const { sources, token, timeout } = payload;
       const timeoutInMilliseconds = (timeout * 60 * 1000) / 2;
       state.token = token;
       state.sources = sources;
       state.pollingPeriod = timeoutInMilliseconds;
-      state.domains = domains;
     },
     fetchSourcesFailure: (state, { payload }) => {
       state.error = payload;
@@ -49,9 +47,20 @@ export const fetchSources = () => async (dispatch, getState) => {
     return dispatch(fetchSourcesFailure({ message }));
   }
 
-  const domains = Array.from(new Set(data.sources.map(source => source.metadata.domain)));
-
-  return dispatch(fetchSourcesSuccess({ ...data, domains }));
+  return dispatch(fetchSourcesSuccess(data));
 };
+
+const baseSelector = state => state.data ?? {};
+export const selectDataSources = createSelector(baseSelector, state => state.sources ?? []);
+export const selectDomainList = createSelector(selectDataSources, sources =>
+  Array.from(
+    new Set(
+      sources.reduce(
+        (acc, source) => (source.metadata && source.metadata.domain ? [...acc, source.metadata.domain] : acc),
+        []
+      )
+    )
+  )
+);
 
 export default dataSlice.reducer;

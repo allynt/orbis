@@ -16,6 +16,7 @@ import CloseButton from '@astrosat/astrosat-ui/dist/buttons/close-button';
 import LoadMask from '@astrosat/astrosat-ui/dist/load-mask/load-mask';
 
 import { selectMapStyle, saveMap, setViewport } from './map.slice';
+import { selectDataSources } from '../data-layers/data.slice';
 import { isLoaded } from '../bookmarks/bookmark.slice';
 import { closeMenu } from '../side-menu/side-menu.slice';
 
@@ -96,7 +97,7 @@ const Map = ({
 
   const isLoading = useSelector(state => state.bookmarks.isLoading);
 
-  const dataSources = useSelector(state => state.data.sources);
+  const dataSources = useSelector(selectDataSources);
 
   const [selectedInfoFeatures, setSelectedInfoFeatures] = useState(null);
   const [clickableLayers, setClickableLayers] = useState([]);

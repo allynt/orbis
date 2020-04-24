@@ -1,10 +1,18 @@
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
-import reducer, { addLayers, removeLayer, fetchSourcesFailure, fetchSourcesSuccess, fetchSources } from './data.slice';
+import reducer, {
+  addLayers,
+  removeLayer,
+  fetchSourcesFailure,
+  fetchSourcesSuccess,
+  fetchSources,
+  selectDomainList,
+  selectDataSources
+} from './data.slice';
 
 const mockStore = configureMockStore([thunk]);
 
-describe('Dat Layers Slice', () => {
+describe('Data Slice', () => {
   describe('actions', () => {
     let store = null;
 
@@ -54,18 +62,17 @@ describe('Dat Layers Slice', () => {
           }
         ]
       };
-      const domains = Array.from(new Set(data.sources.map(source => source.metadata.domain)));
 
       fetch.mockResponse(JSON.stringify(data));
 
-      const expectedActions = [{ type: fetchSourcesSuccess.type, payload: { domains, ...data } }];
+      const expectedActions = [{ type: fetchSourcesSuccess.type, payload: data }];
 
       await store.dispatch(fetchSources());
 
       expect(store.getActions()).toEqual(expectedActions);
     });
   });
-  describe('Dat Layers Reducer', () => {
+  describe('reducer', () => {
     let beforeState;
 
     beforeEach(() => {
@@ -73,7 +80,6 @@ describe('Dat Layers Slice', () => {
         layers: [],
         sources: null,
         token: null,
-        domains: [],
         pollingPeriod: 30000
       };
     });
@@ -151,17 +157,15 @@ describe('Dat Layers Slice', () => {
         ]
       };
       const timeoutInMilliseconds = (data.timeout * 60 * 1000) / 2;
-      const domains = Array.from(new Set(data.sources.map(source => source.metadata.domain)));
 
       const actualState = reducer(beforeState, {
         type: fetchSourcesSuccess.type,
-        payload: { ...data, domains }
+        payload: data
       });
 
       expect(actualState.token).toEqual(data.token);
       expect(actualState.pollingPeriod).toEqual(timeoutInMilliseconds);
       expect(actualState.sources).toEqual(data.sources);
-      expect(actualState.domains).toEqual(domains);
     });
 
     it('should update the error state, when failed to retrieve sources', () => {
@@ -173,6 +177,147 @@ describe('Dat Layers Slice', () => {
       });
 
       expect(actualState.error).toEqual(error);
+    });
+  });
+
+  describe('selectors', () => {
+    describe('selectDataSources', () => {
+      it('should return the list of data sources', () => {
+        const state = {
+          data: {
+            sources: [{ name: 'source 1' }, { name: 'source 2' }, { name: 'source 3' }]
+          }
+        };
+        const result = selectDataSources(state);
+        expect(result).toEqual(state.data.sources);
+      });
+
+      it('should return an empty array if no data state is present', () => {
+        const state = {};
+        const result = selectDataSources(state);
+        expect(result).toEqual([]);
+      });
+
+      it('should return an empty array if no sources are present', () => {
+        const state = { data: {} };
+        const result = selectDataSources(state);
+        expect(result).toEqual([]);
+      });
+    });
+
+    describe('selectDomainList', () => {
+      it('should return a list of domains from the data sources list', () => {
+        const state = {
+          data: {
+            sources: [
+              {
+                metadata: {
+                  domain: 'Domain 1'
+                }
+              },
+              {
+                metadata: {
+                  domain: 'Domain 2'
+                }
+              },
+              {
+                metadata: {
+                  domain: 'Domain 3'
+                }
+              }
+            ]
+          }
+        };
+        const expected = [
+          state.data.sources[0].metadata.domain,
+          state.data.sources[1].metadata.domain,
+          state.data.sources[2].metadata.domain
+        ];
+
+        const result = selectDomainList(state);
+        expect(result).toEqual(expected);
+      });
+
+      it('should not contain duplicates', () => {
+        const state = {
+          data: {
+            sources: [
+              {
+                metadata: {
+                  domain: 'Domain 1'
+                }
+              },
+              {
+                metadata: {
+                  domain: 'Domain 1'
+                }
+              },
+              {
+                metadata: {
+                  domain: 'Domain 2'
+                }
+              },
+              {
+                metadata: {
+                  domain: 'Domain 3'
+                }
+              },
+              {
+                metadata: {
+                  domain: 'Domain 3'
+                }
+              }
+            ]
+          }
+        };
+        const expected = ['Domain 1', 'Domain 2', 'Domain 3'];
+        const notExpected = ['Domain 1', 'Domain 1', 'Domain 2', 'Domain 3', 'Domain 3'];
+        const result = selectDomainList(state);
+        expect(result.sort()).toEqual(expected.sort());
+        expect(result.sort()).not.toEqual(notExpected.sort());
+      });
+
+      it('should return an empty array if no data state is present', () => {
+        const state = {};
+        const result = selectDomainList(state);
+        expect(result).toEqual([]);
+      });
+
+      it('should return an empty array if no sources are present', () => {
+        const state = { data: {} };
+        const result = selectDomainList(state);
+        expect(result).toEqual([]);
+      });
+
+      it('should return an empty array if sources is an empty array', () => {
+        const state = {
+          data: {
+            sources: []
+          }
+        };
+        const result = selectDomainList(state);
+        expect(result).toEqual([]);
+      });
+
+      it('should return an empty array if no sources have a metadata property', () => {
+        const state = {
+          data: {
+            sources: [{}, {}, {}]
+          }
+        };
+        const result = selectDomainList(state);
+        expect(result).toEqual([]);
+      });
+
+      it('should return an empty array if no sources have a domain property', () => {
+        const state = {
+          data: {
+            sources: [{ metadata: {} }, { metadata: {} }, { metadata: {} }]
+          }
+        };
+        const result = selectDomainList(state);
+        expect(result).toEqual([]);
+      });
     });
   });
 });
