@@ -14,64 +14,67 @@ const mockStore = configureMockStore([thunk]);
 
 describe('Data Slice', () => {
   describe('actions', () => {
-    let store = null;
+    describe('fetchSources', () => {
+      let store = null;
 
-    beforeEach(() => {
-      fetch.resetMocks();
+      beforeEach(() => {
+        fetch.resetMocks();
 
-      store = mockStore({
-        accounts: { userKey: 'Test-User-Key' }
+        store = mockStore({
+          accounts: { userKey: 'Test-User-Key' }
+        });
+      });
+
+      it('should dispatch fetch sources failure action.', async () => {
+        fetch.mockResponse(
+          JSON.stringify({
+            message: 'Test error message'
+          }),
+          {
+            ok: false,
+            status: 401,
+            statusText: 'Test Error'
+          }
+        );
+
+        const expectedActions = [{ type: fetchSourcesFailure.type, payload: { message: '401 Test Error' } }];
+
+        await store.dispatch(fetchSources());
+
+        expect(store.getActions()).toEqual(expectedActions);
+      });
+
+      it('should dispatch fetch sources success action.', async () => {
+        const data = {
+          token: 'Test Token',
+          timeout: 60,
+          sources: [
+            {
+              id: 1,
+              metadata: {
+                domain: 'Test Domain 1'
+              }
+            },
+            {
+              id: 2,
+              metadata: {
+                domains: 'Test Domain 2'
+              }
+            }
+          ]
+        };
+
+        fetch.mockResponse(JSON.stringify(data));
+
+        const expectedActions = [{ type: fetchSourcesSuccess.type, payload: data }];
+
+        await store.dispatch(fetchSources());
+
+        expect(store.getActions()).toEqual(expectedActions);
       });
     });
-
-    it('should dispatch fetch sources failure action.', async () => {
-      fetch.mockResponse(
-        JSON.stringify({
-          message: 'Test error message'
-        }),
-        {
-          ok: false,
-          status: 401,
-          statusText: 'Test Error'
-        }
-      );
-
-      const expectedActions = [{ type: fetchSourcesFailure.type, payload: { message: '401 Test Error' } }];
-
-      await store.dispatch(fetchSources());
-
-      expect(store.getActions()).toEqual(expectedActions);
-    });
-
-    it('should dispatch fetch sources success action.', async () => {
-      const data = {
-        token: 'Test Token',
-        timeout: 60,
-        sources: [
-          {
-            id: 1,
-            metadata: {
-              domain: 'Test Domain 1'
-            }
-          },
-          {
-            id: 2,
-            metadata: {
-              domains: 'Test Domain 2'
-            }
-          }
-        ]
-      };
-
-      fetch.mockResponse(JSON.stringify(data));
-
-      const expectedActions = [{ type: fetchSourcesSuccess.type, payload: data }];
-
-      await store.dispatch(fetchSources());
-
-      expect(store.getActions()).toEqual(expectedActions);
-    });
   });
+
   describe('reducer', () => {
     let beforeState;
 
