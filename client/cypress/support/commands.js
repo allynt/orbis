@@ -15,8 +15,8 @@ import '@testing-library/cypress/add-commands';
 import { login } from '../../src/accounts/accounts.slice';
 
 const loginUrl = '/login';
-const email = Cypress.env('EMAIL');
-const password = Cypress.env('PASSWORD');
+const email = Cypress.env('email');
+const password = Cypress.env('password');
 
 // -- This is a parent command --
 Cypress.Commands.add('login', () => {
