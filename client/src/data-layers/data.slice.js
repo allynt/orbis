@@ -6,7 +6,7 @@ const initialState = {
   domains: [],
   pollingPeriod: 30000,
   token: null,
-  dataSources: null
+  sources: null
 };
 
 const dataSlice = createSlice({
@@ -25,7 +25,7 @@ const dataSlice = createSlice({
       const { domains, sources, token, timeout } = payload;
       const timeoutInMilliseconds = (timeout * 60 * 1000) / 2;
       state.token = token;
-      state.dataSources = sources;
+      state.sources = sources;
       state.pollingPeriod = timeoutInMilliseconds;
       state.domains = domains;
     },

@@ -96,7 +96,7 @@ const Map = ({
 
   const isLoading = useSelector(state => state.bookmarks.isLoading);
 
-  const dataSources = useSelector(state => state.data.dataSources);
+  const dataSources = useSelector(state => state.data.sources);
 
   const [selectedInfoFeatures, setSelectedInfoFeatures] = useState(null);
   const [clickableLayers, setClickableLayers] = useState([]);

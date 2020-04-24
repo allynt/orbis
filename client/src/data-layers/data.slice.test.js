@@ -71,7 +71,7 @@ describe('Dat Layers Slice', () => {
     beforeEach(() => {
       beforeState = {
         layers: [],
-        dataSources: null,
+        sources: null,
         token: null,
         domains: [],
         pollingPeriod: 30000
@@ -160,7 +160,7 @@ describe('Dat Layers Slice', () => {
 
       expect(actualState.token).toEqual(data.token);
       expect(actualState.pollingPeriod).toEqual(timeoutInMilliseconds);
-      expect(actualState.dataSources).toEqual(data.sources);
+      expect(actualState.sources).toEqual(data.sources);
       expect(actualState.domains).toEqual(domains);
     });
 
