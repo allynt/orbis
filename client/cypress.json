@@ -1,0 +1,11 @@
+{
+  "ignoreTestFiles": "*.js",
+  "baseUrl": "http://localhost:8000",
+  "viewportWidth": 1600,
+  "viewportHeight": 1060,
+  "reporter": "junit",
+  "reporterOptions": {
+    "mochaFile": "reports/cypress-report-[hash].xml",
+    "toConsole": true
+  }
+}

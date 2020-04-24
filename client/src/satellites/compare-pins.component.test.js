@@ -85,25 +85,33 @@ describe('Compare Pins Component', () => {
   });
 
   it('should render Compare Mode button disabled when not enough pinned scenes selected', () => {
-    const { getByLabelText } = renderComponent({ selectedPinnedScenes: [{ ...mockScenes[1] }] });
+    const { getAllByLabelText } = renderComponent({
+      selectedPinnedScenes: [{ ...mockScenes[1] }]
+    });
 
-    expect(getByLabelText('Compare')).toHaveAttribute('disabled');
+    // It turns out, our switch label is wrapping 2 elements, so we can't easily
+    // just target one.
+    const switchElements = getAllByLabelText('Compare');
+    switchElements.forEach(element => expect(element).toHaveAttribute('disabled'));
   });
 
   it('should not be able to toggle Compare Mode when not enough pinned scenes selected', () => {
-    const { toggleCompareMode, getByLabelText } = renderComponent({ selectedPinnedScenes: [{ ...mockScenes[1] }] });
+    const { toggleCompareMode, getAllByLabelText } = renderComponent({
+      selectedPinnedScenes: [{ ...mockScenes[1] }]
+    });
 
-    fireEvent.click(getByLabelText('Compare'));
+    fireEvent.click(getAllByLabelText('Compare')[1]);
     expect(toggleCompareMode).not.toHaveBeenCalled();
   });
 
   it('should toggle into Compare Mode when there are enough pinned scenes selected', () => {
-    const { toggleCompareMode, getByLabelText } = renderComponent({
+    const { toggleCompareMode, getAllByLabelText } = renderComponent({
       selectedPinnedScenes: [mockScenes[0], mockScenes[1]]
     });
 
-    expect(getByLabelText('Compare')).not.toHaveAttribute('disabled');
-    fireEvent.click(getByLabelText('Compare'));
+    const buttonElement = getAllByLabelText('Compare')[1];
+    expect(buttonElement).not.toHaveAttribute('disabled');
+    fireEvent.click(buttonElement);
     expect(toggleCompareMode).toHaveBeenCalled();
   });
 

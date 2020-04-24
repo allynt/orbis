@@ -1,6 +1,6 @@
 {
-  "extends": "react-app",
-  "plugins": ["prettier", "react-hooks"],
+  "extends": ["react-app", "plugin:cypress/recommended", "plugin:prettier/recommended"],
+  "plugins": ["react-hooks", "cypress", "prettier"],
   "rules": {
     "prettier/prettier": "error",
     "jsx-a11y/href-no-hash": "off",

@@ -7,6 +7,12 @@ const validate = form => {
     errors.title = 'Title must be at least 3 characters';
   }
 
+  if (!form.description) {
+    errors.description = 'Description is required';
+  } else if (form.description.length < 3) {
+    errors.description = 'Description must be at least 3 characters';
+  }
+
   return errors;
 };
 

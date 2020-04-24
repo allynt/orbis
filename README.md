@@ -6,6 +6,8 @@
   - [How to install](#how-to-install)
   - [Environment variables](#environment-variables)
   - [How to start](#how-to-start)
+  - [Testing](#testing)
+    - [End-to-End Testing](#end-to-end-testing)
 
 ## Overview
 
@@ -76,3 +78,8 @@ $ docker-compose exec server pipenv run server/manage.py force_verification --us
 
 To view all API endpoints, navigate to "localhost:8000/api/swagger"
 
+## Testing
+
+### End-to-End Testing
+
+We use [Cypress](https://www.cypress.io/) to run our End-to-End tests. We augment Cypress with the [Cypress Cucumber Preprocessor](https://github.com/TheBrainFamily/cypress-cucumber-preprocessor). This allows us to use the `cucumber`/`gherkin` syntax to write **Feature** files. The idea is, **BAs** write the **Feature** files to define the requirements of the app, while the **developers** take these and implement a solution to each **Scenario**. Running and passing the tests, is proof, we have developed what was asked for.

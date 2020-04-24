@@ -22,7 +22,12 @@ import formStyles from './forms.module.css';
 import registerStyles from './register-form.module.css';
 
 const RegisterForm = () => {
-  const { handleChange, handleSubmit, values, errors } = useForm(onSubmit, validate);
+  const { passwordMinLength, passwordMaxLength } = useSelector(state => state.app.config);
+  const validators = {
+    passwordMinLength,
+    passwordMaxLength
+  };
+  const { handleChange, handleSubmit, values, errors } = useForm(onSubmit, validate, validators);
   const dispatch = useDispatch();
   const error = useSelector(state => state.accounts.error);
   const config = useSelector(state => state.app.config);

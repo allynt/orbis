@@ -5,11 +5,19 @@ describe('Bookmark Form Validator', () => {
     const testFields = [
       {
         title: '', // Error, missing
-        description: ''
+        description: 'description'
       },
       {
         title: 'id', // Error, too short
         description: 'description'
+      },
+      {
+        title: 'Bookmark Title',
+        description: '' // Error, missing
+      },
+      {
+        title: 'Bookmark Title',
+        description: 'de' // Error, too short
       }
     ];
 
@@ -23,11 +31,11 @@ describe('Bookmark Form Validator', () => {
     const testFields = [
       {
         title: 'Bookmark Title',
-        description: ''
+        description: 'description'
       },
       {
         title: 'gid',
-        description: 'description'
+        description: 'des'
       }
     ];
 

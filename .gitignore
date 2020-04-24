@@ -106,3 +106,4 @@ server/static
 terraform/**/deploy.plan
 
 client/src/dev-tools/*.local.js
+client/cypress.env.json
