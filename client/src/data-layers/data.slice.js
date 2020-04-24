@@ -13,10 +13,16 @@ const dataSlice = createSlice({
   initialState,
   reducers: {
     addLayers: (state, { payload }) => {
-      state.layers = Array.from(new Set([...state.layers, ...payload]));
+      let newLayers;
+      if (typeof payload[0] === 'object') {
+        newLayers = payload.map(layer => layer.name);
+      } else {
+        newLayers = payload;
+      }
+      state.layers = Array.from(new Set([...state.layers, ...newLayers]));
     },
     removeLayer: (state, { payload }) => {
-      state.layers = state.layers.filter(layer => layer.name !== payload.name);
+      state.layers = state.layers.filter(layer => layer !== payload);
     },
     fetchSourcesSuccess: (state, { payload }) => {
       // Convert from minutes to millliseconds and then half the value.
@@ -52,6 +58,9 @@ export const fetchSources = () => async (dispatch, getState) => {
 
 const baseSelector = state => state.data ?? {};
 export const selectDataSources = createSelector(baseSelector, state => state.sources ?? []);
+export const selectUserLayers = createSelector(baseSelector, state =>
+  state.sources ? state.sources.filter(source => state.layers.includes(source.name)) : []
+);
 export const selectDomainList = createSelector(selectDataSources, sources =>
   Array.from(
     new Set(

@@ -11,7 +11,7 @@ import { ReactComponent as RemoveIcon } from './remove.svg';
 import { ReactComponent as HideIcon } from './layer-invisible.svg';
 import { ReactComponent as AddNewCategoryIcon } from './add-more-categories.svg';
 
-import { removeLayer, addLayers, selectDataSources } from './data.slice';
+import { removeLayer, addLayers, selectDataSources, selectUserLayers } from './data.slice';
 
 import { PopulationInformation } from './population-information.component';
 import { HealthInfrastructure } from './health-infrastructure.component';
@@ -47,7 +47,7 @@ const DataLayers = () => {
   const ref = useRef(null);
   const dispatch = useDispatch();
   const dataSources = useSelector(selectDataSources);
-  const selectedLayers = useSelector(state => state.data.layers);
+  const selectedLayers = useSelector(selectUserLayers);
 
   // Create an array of sources, grouped by their domain.
   const domains = dataSources.reduce((acc, value) => {

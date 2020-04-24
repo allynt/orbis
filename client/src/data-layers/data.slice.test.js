@@ -7,6 +7,7 @@ import reducer, {
   fetchSourcesSuccess,
   fetchSources,
   selectDomainList,
+  selectUserLayers,
   selectDataSources
 } from './data.slice';
 
@@ -94,7 +95,7 @@ describe('Data Slice', () => {
     });
 
     it('should update the data layers in state, when none previously selected', () => {
-      const layers = [{ name: 'Test Layer 1' }, { name: 'Test Layer 2' }];
+      const layers = ['Test Layer 1', 'Test Layer 2'];
 
       const actualState = reducer(beforeState, {
         type: addLayers.type,
@@ -105,8 +106,8 @@ describe('Data Slice', () => {
     });
 
     it('should update the data layers in state, when layers previously selected', () => {
-      beforeState.layers = [{ name: 'Test Layer 1' }, { name: 'Test Layer 2' }];
-      const layers = [{ name: 'Test Layer 3' }, { name: 'Test Layer 4' }];
+      beforeState.layers = ['Test Layer 1', 'Test Layer 2'];
+      const layers = ['Test Layer 3', 'Test Layer 4'];
 
       const actualState = reducer(beforeState, {
         type: addLayers.type,
@@ -117,8 +118,8 @@ describe('Data Slice', () => {
     });
 
     it('should update the data layers in state, when layers previously selected is removed', () => {
-      beforeState.layers = [{ name: 'Test Layer 1' }, { name: 'Test Layer 2' }];
-      const layer = { name: 'Test Layer 1' };
+      beforeState.layers = ['Test Layer 1', 'Test Layer 2'];
+      const layer = 'Test Layer 1';
 
       const actualState = reducer(beforeState, {
         type: removeLayer.type,
@@ -129,8 +130,8 @@ describe('Data Slice', () => {
     });
 
     it("should not update the data layers in state, when layer selected doesn't exist", () => {
-      beforeState.layers = [{ name: 'Test Layer 1' }, { name: 'Test Layer 2' }];
-      const layer = { name: 'Test Layer 3' };
+      beforeState.layers = ['Test Layer 1', 'Test Layer 2'];
+      const layer = 'Test Layer 3';
 
       const actualState = reducer(beforeState, {
         type: removeLayer.type,
@@ -204,6 +205,63 @@ describe('Data Slice', () => {
       it('should return an empty array if no sources are present', () => {
         const state = { data: {} };
         const result = selectDataSources(state);
+        expect(result).toEqual([]);
+      });
+    });
+
+    describe('selectUserLayers', () => {
+      it('returns only data sources which are selected', () => {
+        const state = {
+          data: {
+            sources: [{ name: 'Source 1' }, { name: 'Source 2' }, { name: 'Source 3' }],
+            layers: ['Source 1', 'Source 3']
+          }
+        };
+        const expected = [state.data.sources[0], state.data.sources[2]];
+        const result = selectUserLayers(state);
+        expect(result).toEqual(expected);
+      });
+
+      it('returns an empty array when no layers are selected', () => {
+        const state = {
+          data: {
+            sources: [{ name: 'Source 1' }, { name: 'Source 2' }, { name: 'Source 3' }],
+            layers: []
+          }
+        };
+        const result = selectUserLayers(state);
+        expect(result).toEqual([]);
+      });
+
+      it('returns an empty array if sources is empty', () => {
+        const state = {
+          data: {
+            sources: [],
+            layers: []
+          }
+        };
+        const result = selectUserLayers(state);
+        expect(result).toEqual([]);
+      });
+
+      it('returns an empty array if sources is undefined', () => {
+        const state = {
+          data: {
+            layers: []
+          }
+        };
+        const result = selectUserLayers(state);
+        expect(result).toEqual([]);
+      });
+
+      it("returns an empty array if layers are present but sources aren't", () => {
+        const state = {
+          data: {
+            sources: [],
+            layers: ['Source 1', 'Source 3']
+          }
+        };
+        const result = selectUserLayers(state);
         expect(result).toEqual([]);
       });
     });
