@@ -25,14 +25,6 @@ Feature: Bookmarks
     When I submit the "Save Bookmark" form
     Then I see the "400 Bad Request" error
 
-  # Scenario: Load an existing Bookmark
-  #   When I click the "Load" button
-  #   Then I see the
-
-  # Scenario: Delete existing Bookmark
-  #   When I click the "Delete" button
-  #   Then I see the Bookmark item removed from the list
-
   Scenario: Successfully add new Bookmark
     When I type "Test Title" into the "Title" field
     When I type "Test Description" into the "Description" field

@@ -1,7 +1,6 @@
 import { When, Then } from 'cypress-cucumber-preprocessor/steps';
 
 When(`I type {string} in the "search box"`, place => {
-  // cy.get('.mapboxgl-ctrl-geocoder--input')
   cy.findByPlaceholderText('Search')
     .click()
     .type(place)

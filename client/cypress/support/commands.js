@@ -29,10 +29,6 @@ Cypress.Commands.add('login', () => {
   }
 });
 
-// Cypress.Commands.add('getMapContainer', (timeout = 10000) => {
-//   cy.get('[data-testid="map-container"]', { timeout: timeout }).find('.mapboxgl-map');
-// });
-
 Cypress.Commands.add('getMap', (id, timeout = 10000) => {
   cy.get(`[data-testid="map-${id}"]`, { timeout: timeout })
     .should(mapContainers => {
@@ -42,26 +38,3 @@ Cypress.Commands.add('getMap', (id, timeout = 10000) => {
     })
     .then(mapContainers => mapContainers[id].map);
 });
-
-// Cypress.Commands.add('clickLsoa', lsoaCode => {
-//   cy.getMap(0).then(map => {
-//     const feature = map.queryRenderedFeatures({
-//       filter: ['==', ['get', 'lsoa_code'], lsoaCode]
-//     })[0];
-//     const point = map.project(centroid(feature).geometry.coordinates);
-
-//     return cy.get('.mapboxgl-map').click(point.x, point.y);
-//   });
-// });
-// //
-// //
-// // -- This is a child command --
-// // Cypress.Commands.add("drag", { prevSubject: 'element'}, (subject, options) => { ... })
-// //
-// //
-// // -- This is a dual command --
-// // Cypress.Commands.add("dismiss", { prevSubject: 'optional'}, (subject, options) => { ... })
-// //
-// //
-// // -- This is will overwrite an existing command --
-// // Cypress.Commands.overwrite("visit", (originalFn, url, options) => { ... })
