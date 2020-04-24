@@ -17,6 +17,7 @@ from astrosat_users.conf import app_settings as astrosat_users_settings
 # the one-and-only index_view #
 ###############################
 
+
 # this 'index.html' comes from CLIENT_DIR
 index_view = TemplateView.as_view(template_name="index.html")
 
