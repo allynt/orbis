@@ -77,7 +77,7 @@ const Map = ({
   comparisonScene
 }) => {
   const accessToken = useSelector(state => (state.app.config ? state.app.config.mapbox_token : null));
-  const dataAuthToken = useSelector(state => state.data.dataToken);
+  const dataAuthToken = useSelector(state => state.data.token);
   const { mapContainer, mapInstance } = useMapbox(style, accessToken, dataAuthToken);
 
   if (setMap) setMap(mapInstance);

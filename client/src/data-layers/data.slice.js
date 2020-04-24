@@ -5,7 +5,7 @@ const initialState = {
   layers: [],
   domains: [],
   pollingPeriod: 30000,
-  dataToken: null,
+  token: null,
   dataSources: null
 };
 
@@ -24,7 +24,7 @@ const dataSlice = createSlice({
       // This will ensure we update the token before it expires.
       const { domains, sources, token, timeout } = payload;
       const timeoutInMilliseconds = (timeout * 60 * 1000) / 2;
-      state.dataToken = token;
+      state.token = token;
       state.dataSources = sources;
       state.pollingPeriod = timeoutInMilliseconds;
       state.domains = domains;
