@@ -16,7 +16,7 @@ import CloseButton from '@astrosat/astrosat-ui/dist/buttons/close-button';
 import LoadMask from '@astrosat/astrosat-ui/dist/load-mask/load-mask';
 
 import { selectMapStyle, saveMap, setViewport } from './map.slice';
-import { selectDataSources, selectUserLayers } from '../data-layers/data.slice';
+import { selectDataSources, selectUserLayers, selectDataToken } from '../data-layers/data.slice';
 import { isLoaded } from '../bookmarks/bookmark.slice';
 import { closeMenu } from '../side-menu/side-menu.slice';
 
@@ -78,7 +78,7 @@ const Map = ({
   comparisonScene
 }) => {
   const accessToken = useSelector(state => (state.app.config ? state.app.config.mapbox_token : null));
-  const dataAuthToken = useSelector(state => state.data.token);
+  const dataAuthToken = useSelector(selectDataToken);
   const { mapContainer, mapInstance } = useMapbox(style, accessToken, dataAuthToken);
 
   if (setMap) setMap(mapInstance);

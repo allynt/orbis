@@ -9,7 +9,8 @@ import reducer, {
   selectDomainList,
   selectUserLayers,
   selectDataSources,
-  selectPollingPeriod
+  selectPollingPeriod,
+  selectDataToken
 } from './data.slice';
 
 const mockStore = configureMockStore([thunk]);
@@ -193,6 +194,39 @@ describe('Data Slice', () => {
   });
 
   describe('selectors', () => {
+    describe('selectDataToken', () => {
+      it('should return the data token from state', () => {
+        const state = {
+          data: {
+            token: `If there's a place you got to go
+            I'm the one you need to know
+            I'm the token
+            I'm the token
+            I'm the token
+            oh oh oh
+            I'm the token
+            `
+          }
+        };
+        const result = selectDataToken(state);
+        expect(result).toBe(state.data.token);
+      });
+
+      it('should return an empty string if no data state is present', () => {
+        const state = {};
+        const result = selectDataToken(state);
+        expect(result).toBe('');
+      });
+
+      it('should return an empty string if no token is present', () => {
+        const state = {
+          data: {}
+        };
+        const result = selectDataToken(state);
+        expect(result).toBe('');
+      });
+    });
+
     describe('selectPollingPeriod', () => {
       it('should return the polling period from state', () => {
         const state = {
