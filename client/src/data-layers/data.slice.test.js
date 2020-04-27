@@ -8,7 +8,8 @@ import reducer, {
   fetchSources,
   selectDomainList,
   selectUserLayers,
-  selectDataSources
+  selectDataSources,
+  selectPollingPeriod
 } from './data.slice';
 
 const mockStore = configureMockStore([thunk]);
@@ -192,6 +193,32 @@ describe('Data Slice', () => {
   });
 
   describe('selectors', () => {
+    describe('selectPollingPeriod', () => {
+      it('should return the polling period from state', () => {
+        const state = {
+          data: {
+            pollingPeriod: 1
+          }
+        };
+        const result = selectPollingPeriod(state);
+        expect(result).toBe(state.data.pollingPeriod);
+      });
+
+      it('returns undefined if no data state is present', () => {
+        const state = {};
+        const result = selectPollingPeriod(state);
+        expect(result).toBeUndefined();
+      });
+
+      it('returns undefined if no polling period is present', () => {
+        const state = {
+          data: {}
+        };
+        const result = selectPollingPeriod(state);
+        expect(result).toBeUndefined();
+      });
+    });
+
     describe('selectDataSources', () => {
       it('should return the list of data sources', () => {
         const state = {

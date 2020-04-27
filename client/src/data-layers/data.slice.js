@@ -58,6 +58,7 @@ export const fetchSources = () => async (dispatch, getState) => {
 
 const baseSelector = state => state.data ?? {};
 export const selectDataSources = createSelector(baseSelector, state => state.sources ?? []);
+export const selectPollingPeriod = createSelector(baseSelector, state => state.pollingPeriod);
 export const selectUserLayers = createSelector(baseSelector, state =>
   state.sources ? state.sources.filter(source => state.layers.includes(source.name)) : []
 );
