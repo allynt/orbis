@@ -73,14 +73,13 @@ export const selectDomainList = createSelector(selectDataSources, sources =>
 );
 
 const createLayerFilters = layer => {
-  const filters = {};
-  for (let filter of layer.metadata.filters) {
+  const filters = layer.metadata.filters.reduce((acc, filter) => {
     const options = new Set();
     for (let feature of layer.data.features) {
       feature.properties[filter] && options.add(feature.properties[filter]);
     }
-    if (options.size) filters[filter] = Array.from(options);
-  }
+    return options.size ? { ...acc, [filter]: Array.from(options) } : acc;
+  }, {});
   return filters;
 };
 
