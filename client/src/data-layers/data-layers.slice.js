@@ -98,6 +98,22 @@ export const selectAvailableFilters = createSelector(selectUserLayers, layers =>
   return filters;
 });
 
-export const selectFilteredData = state => state;
+export const selectCurrentFilters = createSelector(baseSelector, state => state.filters);
+
+export const selectFilteredData = createSelector([selectUserLayers, selectCurrentFilters], (layers, filters) => {
+  const filteredLayers = layers;
+  for (let layer of filteredLayers) {
+    if (filters[layer.name]) {
+      const layerFilters = filters[layer.name];
+      layer.data.features = layer.data.features.filter(feature => {
+        for (let property in layerFilters) {
+          if (!layerFilters[property].includes(feature.properties[property])) return false;
+        }
+        return true;
+      });
+    }
+  }
+  return filteredLayers;
+});
 
 export default dataSlice.reducer;
