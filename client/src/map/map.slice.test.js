@@ -1,8 +1,6 @@
 import reducer, { setViewport, selectMapStyle, toggleCompareMode, saveMap } from './map.slice';
 
 describe('Map Slice', () => {
-  describe('Map Actions', () => {});
-
   describe('Map Reducer', () => {
     let beforeState;
 
