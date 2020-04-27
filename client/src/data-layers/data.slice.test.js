@@ -105,6 +105,13 @@ describe('Data Slice', () => {
       expect(actualState.layers).toEqual(layers);
     });
 
+    it('should set the data layers as strings when the function receives objects', () => {
+      const layers = ['Test Layer 1', 'Test Layer 2'];
+      const objects = layers.map(layer => ({ name: layer }));
+      const actualState = reducer(beforeState, addLayers(objects));
+      expect(actualState.layers).toEqual(layers);
+    });
+
     it('should update the data layers in state, when layers previously selected', () => {
       beforeState.layers = ['Test Layer 1', 'Test Layer 2'];
       const layers = ['Test Layer 3', 'Test Layer 4'];
