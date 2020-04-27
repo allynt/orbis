@@ -5,6 +5,7 @@ module.exports = {
     domain: 'Action for Health and Help',
     range: false,
     description: 'Description of Health infrastructure layer.',
+    filters: ['type'],
   },
   type: 'geojson',
   data: {

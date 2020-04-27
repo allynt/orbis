@@ -5,6 +5,7 @@ module.exports = {
     domain: 'Action for Health and Help',
     range: false,
     description: 'Description of Population information layer.',
+    filters: ['Type'],
   },
   type: 'geojson',
   data: {
@@ -17,7 +18,7 @@ module.exports = {
         properties: {
           pk: 1,
           created: '2020-03-30T12:41:38.618452Z',
-          Type: 'HELPER',
+          Type: 'VOLUNTEER',
           name: 'MR Zdenek Zlamal',
           age: 25,
           phone_number: '+447561866337',
@@ -33,7 +34,7 @@ module.exports = {
         properties: {
           pk: 2,
           created: '2020-03-30T12:42:31.761525Z',
-          Type: 'HELPEE',
+          Type: 'RECIPIENT',
           name: 'MR Colin Doyle',
           age: 25,
           phone_number: '+447561866337',
@@ -49,7 +50,7 @@ module.exports = {
         properties: {
           pk: 3,
           created: '2020-03-30T12:43:07.309154Z',
-          Type: 'HELPER',
+          Type: 'VOLUNTEER',
           name: 'MR Joel Pereira',
           age: 25,
           phone_number: '+447561866337',
@@ -65,7 +66,7 @@ module.exports = {
         properties: {
           pk: 4,
           created: '2020-03-30T12:44:06.601159Z',
-          Type: 'HELPEE',
+          Type: 'RECIPIENT',
           name: 'MR Michael Smith',
           age: 25,
           phone_number: '+447561866337',
@@ -81,7 +82,7 @@ module.exports = {
         properties: {
           pk: 5,
           created: '2020-03-30T12:44:06.601159Z',
-          Type: 'HELPEE',
+          Type: 'RECIPIENT',
           name: 'MR Michael Smith II',
           age: 25,
           phone_number: '+447561866337',
@@ -97,7 +98,7 @@ module.exports = {
         properties: {
           pk: 6,
           created: '2020-03-30T12:44:06.601159Z',
-          Type: 'HELPEE',
+          Type: 'RECIPIENT',
           name: 'Ms Jane Doe',
           age: 25,
           phone_number: '+447561866337',
@@ -113,7 +114,7 @@ module.exports = {
         properties: {
           pk: 7,
           created: '2020-03-30T12:44:06.601159Z',
-          Type: 'HELPEE',
+          Type: 'RECIPIENT',
           name: 'Ms Jane Doe-Smith',
           age: 25,
           phone_number: '+447561866337',
@@ -129,7 +130,7 @@ module.exports = {
         properties: {
           pk: 8,
           created: '2020-03-30T12:44:06.601159Z',
-          Type: 'HELPER',
+          Type: 'VOLUNTEER',
           name: 'MR Jack Frost',
           age: 25,
           phone_number: '+447561866337',
@@ -145,7 +146,7 @@ module.exports = {
         properties: {
           pk: 9,
           created: '2020-03-30T12:44:06.601159Z',
-          Type: 'HELPEE',
+          Type: 'RECIPIENT',
           name: 'MR John Hancock',
           age: 25,
           phone_number: '+447561866337',
