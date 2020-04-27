@@ -98,4 +98,6 @@ export const selectAvailableFilters = createSelector(selectUserLayers, layers =>
   return filters;
 });
 
+export const selectFilteredData = state => state;
+
 export default dataSlice.reducer;

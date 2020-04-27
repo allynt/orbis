@@ -13,6 +13,7 @@ import reducer, {
   selectDataToken,
   selectAvailableFilters,
   addFilters,
+  selectFilteredData,
 } from './data-layers.slice';
 
 const mockStore = configureMockStore([thunk]);
@@ -1000,6 +1001,563 @@ describe('Data Slice', () => {
           },
         };
         const result = selectAvailableFilters(state);
+        expect(result).toEqual(expected);
+      });
+    });
+
+    describe.only('selectFilteredData', () => {
+      const sources = [
+        {
+          name: 'fruit-bowl',
+          metadata: {
+            filters: ['fruit', 'status'],
+          },
+          data: {
+            features: [
+              {
+                properties: {
+                  fruit: 'apple',
+                  status: 'fresh',
+                },
+              },
+              {
+                properties: {
+                  fruit: 'apple',
+                  status: 'rotten',
+                },
+              },
+              {
+                properties: {
+                  fruit: 'banana',
+                  status: 'fresh',
+                },
+              },
+              {
+                properties: {
+                  fruit: 'banana',
+                  status: 'rotten',
+                },
+              },
+              {
+                properties: {
+                  fruit: 'orange',
+                  status: 'fresh',
+                },
+              },
+              {
+                properties: {
+                  fruit: 'orange',
+                  status: 'rotten',
+                },
+              },
+            ],
+          },
+        },
+        {
+          name: 'cars',
+          metadata: {
+            filters: ['make', 'engine'],
+          },
+          data: {
+            features: [
+              {
+                properties: {
+                  make: 'BMW',
+                  model: 'Straight 6',
+                },
+              },
+              {
+                properties: {
+                  make: 'BMW',
+                  model: 'V8',
+                },
+              },
+              {
+                properties: {
+                  make: 'BMW',
+                  model: 'V10',
+                },
+              },
+              {
+                properties: {
+                  make: 'BMW',
+                  model: 'V12',
+                },
+              },
+              {
+                properties: {
+                  make: 'Mercedes',
+                  model: 'Straight 6',
+                },
+              },
+              {
+                properties: {
+                  make: 'Mercedes',
+                  model: 'V8',
+                },
+              },
+              {
+                properties: {
+                  make: 'Mercedes',
+                  model: 'V12',
+                },
+              },
+              {
+                properties: {
+                  make: 'Lamborghini',
+                  model: 'V12',
+                },
+              },
+              {
+                properties: {
+                  make: 'Lamborghini',
+                  model: 'V10',
+                },
+              },
+            ],
+          },
+        },
+      ];
+
+      it('should return data based on the current filters', () => {
+        const state = {
+          sources,
+          layers: ['fruit-bowl'],
+          filters: {
+            'fruit-bowl': {
+              fruit: ['apple'],
+            },
+          },
+        };
+        const expected = [
+          {
+            name: 'fruit-bowl',
+            metadata: {
+              filters: ['fruit', 'status'],
+            },
+            data: {
+              features: [
+                {
+                  properties: {
+                    fruit: 'apple',
+                    status: 'fresh',
+                  },
+                },
+                {
+                  properties: {
+                    fruit: 'apple',
+                    status: 'rotten',
+                  },
+                },
+              ],
+            },
+          },
+        ];
+        const result = selectFilteredData(state);
+        expect(result).toEqual(expected);
+      });
+
+      it('should handle filtering multiple values', () => {
+        const state = {
+          sources,
+          layers: ['fruit-bowl'],
+          filters: {
+            'fruit-bowl': {
+              fruit: ['apple', 'banana'],
+            },
+          },
+        };
+        const expected = [
+          {
+            name: 'fruit-bowl',
+            metadata: {
+              filters: ['fruit', 'status'],
+            },
+            data: {
+              features: [
+                {
+                  properties: {
+                    fruit: 'apple',
+                    status: 'fresh',
+                  },
+                },
+                {
+                  properties: {
+                    fruit: 'apple',
+                    status: 'rotten',
+                  },
+                },
+                {
+                  properties: {
+                    fruit: 'banana',
+                    status: 'fresh',
+                  },
+                },
+                {
+                  properties: {
+                    fruit: 'banana',
+                    status: 'rotten',
+                  },
+                },
+              ],
+            },
+          },
+        ];
+        const result = selectFilteredData(state);
+        expect(result).toEqual(expected);
+      });
+
+      it('should handle filtering of multiple properties', () => {
+        const state = {
+          sources,
+          layers: ['fruit-bowl'],
+          filters: {
+            'fruit-bowl': {
+              fruit: ['apple'],
+              status: ['rotten'],
+            },
+          },
+        };
+        const expected = [
+          {
+            name: 'fruit-bowl',
+            metadata: {
+              filters: ['fruit', 'status'],
+            },
+            data: {
+              features: [
+                {
+                  properties: {
+                    fruit: 'apple',
+                    status: 'rotten',
+                  },
+                },
+              ],
+            },
+          },
+        ];
+        const result = selectFilteredData(state);
+        expect(result).toEqual(expected);
+      });
+
+      it('should be able to filter multiple layers', () => {
+        const state = {
+          sources,
+          layers: ['fruit-bowl', 'cars'],
+          filters: {
+            'fruit-bowl': {
+              fruit: ['apple'],
+            },
+            cars: {
+              engine: ['V8'],
+            },
+          },
+        };
+        const expected = [
+          {
+            name: 'fruit-bowl',
+            metadata: {
+              filters: ['fruit', 'status'],
+            },
+            data: {
+              features: [
+                {
+                  properties: {
+                    fruit: 'apple',
+                    status: 'fresh',
+                  },
+                },
+                {
+                  properties: {
+                    fruit: 'apple',
+                    status: 'rotten',
+                  },
+                },
+              ],
+            },
+          },
+          {
+            name: 'cars',
+            metadata: {
+              filters: ['make', 'engine'],
+            },
+            data: {
+              features: [
+                {
+                  properties: {
+                    make: 'BMW',
+                    model: 'V8',
+                  },
+                },
+                {
+                  properties: {
+                    make: 'Mercedes',
+                    model: 'V8',
+                  },
+                },
+              ],
+            },
+          },
+        ];
+        const result = selectFilteredData(state);
+        expect(result).toEqual(expected);
+      });
+
+      it('should handle filtering multiple values over multiple layers', () => {
+        const state = {
+          sources,
+          layers: ['fruit-bowl', 'cars'],
+          filters: {
+            'fruit-bowl': {
+              fruit: ['apple', 'orange'],
+            },
+            cars: {
+              engine: ['V10', 'V12'],
+            },
+          },
+        };
+        const expected = [
+          {
+            name: 'fruit-bowl',
+            metadata: {
+              filters: ['fruit', 'status'],
+            },
+            data: {
+              features: [
+                {
+                  properties: {
+                    fruit: 'apple',
+                    status: 'fresh',
+                  },
+                },
+                {
+                  properties: {
+                    fruit: 'apple',
+                    status: 'rotten',
+                  },
+                },
+                {
+                  properties: {
+                    fruit: 'orange',
+                    status: 'fresh',
+                  },
+                },
+                {
+                  properties: {
+                    fruit: 'orange',
+                    status: 'rotten',
+                  },
+                },
+              ],
+            },
+          },
+          {
+            name: 'cars',
+            metadata: {
+              filters: ['make', 'engine'],
+            },
+            data: {
+              features: [
+                {
+                  properties: {
+                    make: 'BMW',
+                    model: 'V10',
+                  },
+                },
+                {
+                  properties: {
+                    make: 'BMW',
+                    model: 'V12',
+                  },
+                },
+                {
+                  properties: {
+                    make: 'Mercedes',
+                    model: 'V12',
+                  },
+                },
+                {
+                  properties: {
+                    make: 'Lamborghini',
+                    model: 'V12',
+                  },
+                },
+                {
+                  properties: {
+                    make: 'Lamborghini',
+                    model: 'V10',
+                  },
+                },
+              ],
+            },
+          },
+        ];
+        const result = selectFilteredData(state);
+        expect(result).toEqual(expected);
+      });
+
+      it('should handle filtering multiple properties on multiple layers', () => {
+        const state = {
+          sources,
+          layers: ['fruit-bowl', 'cars'],
+          filters: {
+            'fruit-bowl': {
+              fruit: ['apple'],
+              status: ['fresh'],
+            },
+            cars: {
+              make: ['BMW'],
+              engine: ['V12'],
+            },
+          },
+        };
+        const expected = [
+          {
+            name: 'fruit-bowl',
+            metadata: {
+              filters: ['fruit', 'status'],
+            },
+            data: {
+              features: [
+                {
+                  properties: {
+                    fruit: 'apple',
+                    status: 'fresh',
+                  },
+                },
+              ],
+            },
+          },
+          {
+            name: 'cars',
+            metadata: {
+              filters: ['make', 'engine'],
+            },
+            data: {
+              features: [
+                {
+                  properties: {
+                    make: 'BMW',
+                    model: 'V12',
+                  },
+                },
+              ],
+            },
+          },
+        ];
+        const result = selectFilteredData(state);
+        expect(result).toEqual(expected);
+      });
+
+      it('should handle filtering multiple values over multiple properties over multiple layers', () => {
+        const state = {
+          sources,
+          layers: ['fruit-bowl', 'cars'],
+          filters: {
+            'fruit-bowl': {
+              fruit: ['apple', 'orange'],
+              status: ['rotten'],
+            },
+            cars: {
+              make: ['BMW', 'Mercedes', 'Lamborghini'],
+              engine: ['V12'],
+            },
+          },
+        };
+        const expected = [
+          {
+            name: 'fruit-bowl',
+            metadata: {
+              filters: ['fruit', 'status'],
+            },
+            data: {
+              features: [
+                {
+                  properties: {
+                    fruit: 'apple',
+                    status: 'rotten',
+                  },
+                },
+
+                {
+                  properties: {
+                    fruit: 'orange',
+                    status: 'rotten',
+                  },
+                },
+              ],
+            },
+          },
+          {
+            name: 'cars',
+            metadata: {
+              filters: ['make', 'engine'],
+            },
+            data: {
+              features: [
+                {
+                  properties: {
+                    make: 'BMW',
+                    model: 'V12',
+                  },
+                },
+
+                {
+                  properties: {
+                    make: 'Mercedes',
+                    model: 'V12',
+                  },
+                },
+                {
+                  properties: {
+                    make: 'Lamborghini',
+                    model: 'V12',
+                  },
+                },
+              ],
+            },
+          },
+        ];
+        const result = selectFilteredData(state);
+        expect(result).toEqual(expected);
+      });
+
+      it('should include unfiltered data for a layer if no filters are applied', () => {
+        const state = {
+          sources,
+          layers: ['fruit-bowl', 'cars'],
+          filters: {
+            cars: {
+              engine: ['Straight 6'],
+            },
+          },
+        };
+        const expected = [
+          sources[0],
+          {
+            name: 'cars',
+            metadata: {
+              filters: ['make', 'engine'],
+            },
+            data: {
+              features: [
+                {
+                  properties: {
+                    make: 'BMW',
+                    model: 'Straight 6',
+                  },
+                },
+                {
+                  properties: {
+                    make: 'Mercedes',
+                    model: 'Straight 6',
+                  },
+                },
+              ],
+            },
+          },
+        ];
+        const result = selectFilteredData(state);
         expect(result).toEqual(expected);
       });
     });
