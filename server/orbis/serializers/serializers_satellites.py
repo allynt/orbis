@@ -7,6 +7,8 @@ from django.contrib.gis.geos import Polygon, MultiPolygon, GEOSGeometry
 from rest_framework import serializers
 from rest_framework_gis.serializers import GeometryField
 
+from drf_yasg import openapi
+
 from astrosat.views import SwaggerCurrentUserDefault
 
 from orbis.models import (
@@ -23,9 +25,18 @@ from orbis.models import (
 
 class SimplifiedGeometryField(serializers.Field):
     """
-    don't deal w/ the WKT serialization of the GeoDjango field
-    just deal w/ simpler arrays
+    don't deal w/ the actual WKT serialization of the GeoDjango field
+    just deal w/ simple arrays (also adds some swagger-friendliness)
     """
+
+    class Meta:
+        swagger_schema_fields = openapi.Schema(
+            type=openapi.TYPE_ARRAY,
+            items=openapi.Schema(
+                type=openapi.TYPE_ARRAY, items=openapi.Schema(type=openapi.TYPE_NUMBER),
+            ),
+            example=[[55.000001, 1.000001], [55.000002, 1.000002]],
+        )
 
     def __init__(self, *args, **kwargs):
         self.precision = kwargs.pop("precision", 12)
@@ -51,6 +62,31 @@ class SimplifiedGeometryField(serializers.Field):
             return self.geometry_class(data)
         except TypeError as e:
             raise serializers.ValidationError(str(e))
+
+
+class SwaggerGeometryField(GeometryField):
+    """
+    Just a standard rest_framework_gis GeometryField,
+    but makes the swagger documentation a bit more user-friendly.
+    """
+
+    class Meta:
+        swagger_schema_fields = {
+            "type": openapi.TYPE_OBJECT,
+            "properties": {
+                "type": openapi.Schema(
+                    type=openapi.TYPE_STRING, example="GeometryType"
+                ),
+                "coordinates": openapi.Schema(
+                    type=openapi.TYPE_ARRAY,
+                    items=openapi.Schema(
+                        type=openapi.TYPE_ARRAY,
+                        items=openapi.Schema(type=openapi.TYPE_NUMBER),
+                    ),
+                    example=[[55.000001, 1.000001], [55.000002, 1.000002]],
+                ),
+            },
+        }
 
 
 ##############
@@ -134,7 +170,9 @@ class SatelliteResultSerializer(serializers.ModelSerializer):
 
     cloudCover = serializers.FloatField(source="cloud_cover")
 
-    footprint = GeometryField(precision=SatelliteResult.PRECISION, remove_duplicates=True)
+    footprint = SwaggerGeometryField(
+        precision=SatelliteResult.PRECISION, remove_duplicates=True
+    )
 
     owner = serializers.PrimaryKeyRelatedField(
         # (using a wrapper around CurrentUserDefault so that yasg doesn't complain)
@@ -209,7 +247,7 @@ class SatelliteSearchSerializer(serializers.ModelSerializer):
         if data["aoi"].area > settings.MAXIMUM_AOI_AREA:
             raise serializers.ValidationError(
                 f"The area of the aoi must be less than or equal to {settings.MAXIMUM_AOI_AREA}."
-        )
+            )
 
         # make sure owner is allowed to save this search
         user = data["owner"]
