@@ -13,16 +13,14 @@ const dataSlice = createSlice({
   initialState,
   reducers: {
     addLayers: (state, { payload }) => {
-      let newLayers;
-      if (typeof payload[0] === 'object') {
-        newLayers = payload.map(layer => layer.name);
-      } else {
-        newLayers = payload;
-      }
+      let newLayers = payload;
+      if (typeof payload[0] === 'object') newLayers = payload.map(layer => layer.name);
       state.layers = Array.from(new Set([...state.layers, ...newLayers]));
     },
     removeLayer: (state, { payload }) => {
-      state.layers = state.layers.filter(layer => layer !== payload);
+      let layerName = payload;
+      if (typeof payload === 'object') layerName = payload.name;
+      state.layers = state.layers.filter(layer => layer !== layerName);
     },
     fetchSourcesSuccess: (state, { payload }) => {
       // Convert from minutes to millliseconds and then half the value.

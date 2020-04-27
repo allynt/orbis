@@ -150,6 +150,14 @@ describe('Data Slice', () => {
       expect(actualState.layers).toEqual(beforeState.layers);
     });
 
+    it('should remove layers when an object is received', () => {
+      beforeState.layers = ['Test Layer 1', 'Test Layer 2'];
+      const expected = [beforeState.layers[0]];
+      const layer = { name: beforeState.layers[1] };
+      const actualState = reducer(beforeState, removeLayer(layer));
+      expect(actualState.layers).toEqual(expected);
+    });
+
     it('should update the sources in state, when successfully retrieved', () => {
       const data = {
         token: 'Test Token',
