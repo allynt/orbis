@@ -12,6 +12,7 @@ import reducer, {
   selectPollingPeriod,
   selectDataToken,
   selectAvailableFilters,
+  addFilters,
 } from './data-layers.slice';
 
 const mockStore = configureMockStore([thunk]);
@@ -91,114 +92,245 @@ describe('Data Slice', () => {
       };
     });
 
-    it('should return the initial state', () => {
-      const actualState = reducer(undefined, {});
+    describe('addLayers', () => {
+      it('should return the initial state', () => {
+        const actualState = reducer(undefined, {});
 
-      expect(actualState).toEqual(beforeState);
-    });
-
-    it('should update the data layers in state, when none previously selected', () => {
-      const layers = ['Test Layer 1', 'Test Layer 2'];
-
-      const actualState = reducer(beforeState, {
-        type: addLayers.type,
-        payload: layers,
+        expect(actualState).toEqual(beforeState);
       });
 
-      expect(actualState.layers).toEqual(layers);
-    });
+      it('should update the data layers in state, when none previously selected', () => {
+        const layers = ['Test Layer 1', 'Test Layer 2'];
 
-    it('should set the data layers as strings when the function receives objects', () => {
-      const layers = ['Test Layer 1', 'Test Layer 2'];
-      const objects = layers.map(layer => ({ name: layer }));
-      const actualState = reducer(beforeState, addLayers(objects));
-      expect(actualState.layers).toEqual(layers);
-    });
+        const actualState = reducer(beforeState, {
+          type: addLayers.type,
+          payload: layers,
+        });
 
-    it('should update the data layers in state, when layers previously selected', () => {
-      beforeState.layers = ['Test Layer 1', 'Test Layer 2'];
-      const layers = ['Test Layer 3', 'Test Layer 4'];
-
-      const actualState = reducer(beforeState, {
-        type: addLayers.type,
-        payload: layers,
+        expect(actualState.layers).toEqual(layers);
       });
 
-      expect(actualState.layers).toEqual([...beforeState.layers, ...layers]);
-    });
-
-    it('should update the data layers in state, when layers previously selected is removed', () => {
-      beforeState.layers = ['Test Layer 1', 'Test Layer 2'];
-      const layer = 'Test Layer 1';
-
-      const actualState = reducer(beforeState, {
-        type: removeLayer.type,
-        payload: layer,
+      it('should set the data layers as strings when the function receives objects', () => {
+        const layers = ['Test Layer 1', 'Test Layer 2'];
+        const objects = layers.map(layer => ({ name: layer }));
+        const actualState = reducer(beforeState, addLayers(objects));
+        expect(actualState.layers).toEqual(layers);
       });
 
-      expect(actualState.layers).toEqual([beforeState.layers[1]]);
+      it('should update the data layers in state, when layers previously selected', () => {
+        beforeState.layers = ['Test Layer 1', 'Test Layer 2'];
+        const layers = ['Test Layer 3', 'Test Layer 4'];
+
+        const actualState = reducer(beforeState, {
+          type: addLayers.type,
+          payload: layers,
+        });
+
+        expect(actualState.layers).toEqual([...beforeState.layers, ...layers]);
+      });
     });
 
-    it("should not update the data layers in state, when layer selected doesn't exist", () => {
-      beforeState.layers = ['Test Layer 1', 'Test Layer 2'];
-      const layer = 'Test Layer 3';
+    describe('removeLayer', () => {
+      it('should update the data layers in state, when layers previously selected is removed', () => {
+        beforeState.layers = ['Test Layer 1', 'Test Layer 2'];
+        const layer = 'Test Layer 1';
 
-      const actualState = reducer(beforeState, {
-        type: removeLayer.type,
-        payload: layer,
+        const actualState = reducer(beforeState, {
+          type: removeLayer.type,
+          payload: layer,
+        });
+
+        expect(actualState.layers).toEqual([beforeState.layers[1]]);
       });
 
-      expect(actualState.layers).toEqual(beforeState.layers);
+      it("should not update the data layers in state, when layer selected doesn't exist", () => {
+        beforeState.layers = ['Test Layer 1', 'Test Layer 2'];
+        const layer = 'Test Layer 3';
+
+        const actualState = reducer(beforeState, {
+          type: removeLayer.type,
+          payload: layer,
+        });
+
+        expect(actualState.layers).toEqual(beforeState.layers);
+      });
+
+      it('should remove layers when an object is received', () => {
+        beforeState.layers = ['Test Layer 1', 'Test Layer 2'];
+        const expected = [beforeState.layers[0]];
+        const layer = { name: beforeState.layers[1] };
+        const actualState = reducer(beforeState, removeLayer(layer));
+        expect(actualState.layers).toEqual(expected);
+      });
     });
 
-    it('should remove layers when an object is received', () => {
-      beforeState.layers = ['Test Layer 1', 'Test Layer 2'];
-      const expected = [beforeState.layers[0]];
-      const layer = { name: beforeState.layers[1] };
-      const actualState = reducer(beforeState, removeLayer(layer));
-      expect(actualState.layers).toEqual(expected);
+    describe('fetchSourcesSuccess', () => {
+      it('should update the sources in state, when successfully retrieved', () => {
+        const data = {
+          token: 'Test Token',
+          timeout: 60,
+          sources: [
+            {
+              id: 1,
+              metadata: {
+                domain: 'Test Domain 1',
+              },
+            },
+            {
+              id: 2,
+              metadata: {
+                domain: 'Test Domain 2',
+              },
+            },
+          ],
+        };
+        const timeoutInMilliseconds = (data.timeout * 60 * 1000) / 2;
+
+        const actualState = reducer(beforeState, {
+          type: fetchSourcesSuccess.type,
+          payload: data,
+        });
+
+        expect(actualState.token).toEqual(data.token);
+        expect(actualState.pollingPeriod).toEqual(timeoutInMilliseconds);
+        expect(actualState.sources).toEqual(data.sources);
+      });
     });
 
-    it('should update the sources in state, when successfully retrieved', () => {
-      const data = {
-        token: 'Test Token',
-        timeout: 60,
-        sources: [
-          {
-            id: 1,
-            metadata: {
-              domain: 'Test Domain 1',
+    describe('fetchSourcesFailure', () => {
+      it('should update the error state, when failed to retrieve sources', () => {
+        const error = { message: 'Test Bookmarks Error' };
+
+        const actualState = reducer(beforeState, {
+          type: fetchSourcesFailure.type,
+          payload: error,
+        });
+
+        expect(actualState.error).toEqual(error);
+      });
+    });
+
+    describe('addFilters', () => {
+      it('should add filters to state when none are applied', () => {
+        const state = {};
+        const filters = {
+          'fruit-bowl': {
+            fruit: ['apple'],
+          },
+        };
+        const expected = { filters };
+        const result = reducer(state, addFilters(filters));
+        expect(result).toEqual(expected);
+      });
+
+      it('should merge new layer filters with current', () => {
+        const state = {
+          filters: {
+            'fruit-bowl': {
+              fruit: ['apple'],
             },
           },
-          {
-            id: 2,
-            metadata: {
-              domain: 'Test Domain 2',
+        };
+        const filters = {
+          'fruit-bowl': {
+            fruit: ['banana'],
+          },
+        };
+        const expected = {
+          filters: {
+            'fruit-bowl': {
+              fruit: ['apple', 'banana'],
             },
           },
-        ],
-      };
-      const timeoutInMilliseconds = (data.timeout * 60 * 1000) / 2;
-
-      const actualState = reducer(beforeState, {
-        type: fetchSourcesSuccess.type,
-        payload: data,
+        };
+        const result = reducer(state, addFilters(filters));
+        expect(result).toEqual(expected);
       });
 
-      expect(actualState.token).toEqual(data.token);
-      expect(actualState.pollingPeriod).toEqual(timeoutInMilliseconds);
-      expect(actualState.sources).toEqual(data.sources);
-    });
-
-    it('should update the error state, when failed to retrieve sources', () => {
-      const error = { message: 'Test Bookmarks Error' };
-
-      const actualState = reducer(beforeState, {
-        type: fetchSourcesFailure.type,
-        payload: error,
+      it('should merge new properties into layer filters', () => {
+        const state = {
+          filters: {
+            'fruit-bowl': {
+              fruit: ['apple', 'banana'],
+            },
+          },
+        };
+        const filters = {
+          'fruit-bowl': {
+            status: ['fresh'],
+          },
+        };
+        const expected = {
+          filters: {
+            'fruit-bowl': {
+              fruit: ['apple', 'banana'],
+              status: ['fresh'],
+            },
+          },
+        };
+        const result = reducer(state, addFilters(filters));
+        expect(result).toEqual(expected);
       });
 
-      expect(actualState.error).toEqual(error);
+      it('should add layer filters alongside other layers', () => {
+        const state = {
+          filters: {
+            'fruit-bowl': {
+              fruit: ['apple', 'banana'],
+            },
+          },
+        };
+        const filters = {
+          cars: {
+            engine: ['V8'],
+          },
+        };
+        const expected = {
+          filters: {
+            'fruit-bowl': {
+              fruit: ['apple', 'banana'],
+            },
+            cars: {
+              engine: ['V8'],
+            },
+          },
+        };
+        const result = reducer(state, addFilters(filters));
+        expect(result).toEqual(expected);
+      });
+
+      it('should be able to merge from two layers', () => {
+        const state = {
+          filters: {
+            'fruit-bowl': {
+              fruit: ['apple'],
+            },
+            cars: {
+              engine: ['V8'],
+            },
+          },
+        };
+        const filters = {
+          'fruit-bowl': {
+            fruit: ['banana'],
+          },
+          cars: {
+            engine: ['W12'],
+          },
+        };
+        const expected = {
+          filters: {
+            'fruit-bowl': {
+              fruit: ['apple', 'banana'],
+            },
+            cars: {
+              engine: ['V8', 'W12'],
+            },
+          },
+        };
+        const result = reducer(state, addFilters(filters));
+        expect(result).toEqual(expected);
+      });
     });
   });
 

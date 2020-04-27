@@ -1,5 +1,6 @@
 import { createSlice, createSelector } from '@reduxjs/toolkit';
 import { getJsonAuthHeaders, getData } from 'utils/http';
+import { mergeWith } from 'lodash';
 
 const initialState = {
   layers: [],
@@ -34,10 +35,17 @@ const dataSlice = createSlice({
     fetchSourcesFailure: (state, { payload }) => {
       state.error = payload;
     },
+    addFilters: (state, { payload }) => {
+      state.filters = mergeWith(payload, state.filters, (objValue, srcValue) => {
+        if (Array.isArray(objValue) && Array.isArray(srcValue)) {
+          return [...srcValue, ...objValue];
+        }
+      });
+    },
   },
 });
 
-export const { addLayers, removeLayer, fetchSourcesFailure, fetchSourcesSuccess } = dataSlice.actions;
+export const { addLayers, removeLayer, fetchSourcesFailure, fetchSourcesSuccess, addFilters } = dataSlice.actions;
 
 export const fetchSources = () => async (dispatch, getState) => {
   const headers = getJsonAuthHeaders(getState());
