@@ -16,6 +16,7 @@ import CloseButton from '@astrosat/astrosat-ui/dist/buttons/close-button';
 import LoadMask from '@astrosat/astrosat-ui/dist/load-mask/load-mask';
 
 import { selectMapStyle, saveMap, setViewport } from './map.slice';
+import { selectDataSources, selectUserLayers, selectDataToken } from '../data-layers/data-layers.slice';
 import { isLoaded } from '../bookmarks/bookmark.slice';
 import { closeMenu } from '../side-menu/side-menu.slice';
 
@@ -77,7 +78,7 @@ const Map = ({
   comparisonScene
 }) => {
   const accessToken = useSelector(state => (state.app.config ? state.app.config.mapbox_token : null));
-  const dataAuthToken = useSelector(state => state.map.dataToken);
+  const dataAuthToken = useSelector(selectDataToken);
   const { mapContainer, mapInstance } = useMapbox(style, accessToken, dataAuthToken);
 
   if (setMap) setMap(mapInstance);
@@ -96,11 +97,11 @@ const Map = ({
 
   const isLoading = useSelector(state => state.bookmarks.isLoading);
 
-  const dataSources = useSelector(state => state.map.dataSources);
+  const dataSources = useSelector(selectDataSources);
 
   const [selectedInfoFeatures, setSelectedInfoFeatures] = useState(null);
   const [clickableLayers, setClickableLayers] = useState([]);
-  const selectedLayers = useSelector(state => state.dataLayers.layers);
+  const selectedLayers = useSelector(selectUserLayers);
   const nonSelectedLayers = dataSources && dataSources.filter(layer => !selectedLayers.includes(layer));
   const scenes = useSelector(state => state.satellites.scenes);
   const selectedScene = useSelector(state => state.satellites.selectedScene);

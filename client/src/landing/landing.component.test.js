@@ -45,7 +45,9 @@ describe('Landing Component', () => {
         bookmarks
       },
       map: {
-        regions,
+        regions
+      },
+      data: {
         domains
       }
     });
@@ -61,9 +63,9 @@ describe('Landing Component', () => {
         bookmarks: []
       },
       map: {
-        regions,
-        domains
-      }
+        regions
+      },
+      data: { domains }
     });
 
     const { getByText, queryByText } = render(

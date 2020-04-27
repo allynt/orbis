@@ -1,16 +1,10 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-import { getData, getJsonAuthHeaders } from '../utils/http';
-
 const initialState = {
   viewport: { zoom: 6, center: [-4.84, 54.71] },
   mapStyles: [],
   selectedMapStyle: {},
   isCompareMode: false,
-  domains: [],
-  pollingPeriod: 30000,
-  dataToken: null,
-  dataSources: null,
   saveMap: false,
   dimensions: {
     width: -1,
@@ -33,49 +27,12 @@ const mapSlice = createSlice({
     toggleCompareMode: state => {
       state.isCompareMode = !state.isCompareMode;
     },
-    fetchSourcesSuccess: (state, { payload }) => {
-      // Convert from minutes to millliseconds and then half the value.
-      // This will ensure we update the token before it expires.
-      const { domains, sources, token, timeout } = payload;
-      const timeoutInMilliseconds = (timeout * 60 * 1000) / 2;
-      state.dataToken = token;
-      state.dataSources = sources;
-      state.pollingPeriod = timeoutInMilliseconds;
-      state.domains = domains;
-    },
-    fetchSourcesFailure: (state, { payload }) => {
-      state.error = payload;
-    },
     saveMap: state => {
       state.saveMap = !state.saveMap;
     }
   }
 });
 
-export const {
-  setViewport,
-  selectMapStyle,
-  toggleCompareMode,
-  fetchSourcesSuccess,
-  fetchSourcesFailure,
-  saveMap
-} = mapSlice.actions;
-
-export const fetchSources = () => async (dispatch, getState) => {
-  const headers = getJsonAuthHeaders(getState());
-
-  const response = await getData('/api/data/sources/', headers);
-  const data = await response.json();
-
-  if (!response.ok) {
-    const message = `${response.status} ${response.statusText}`;
-    // NotificationManager.error(message, 'Fetching Source Data', 50000, () => {});
-    return dispatch(fetchSourcesFailure({ message }));
-  }
-
-  const domains = Array.from(new Set(data.sources.map(source => source.metadata.domain)));
-
-  return dispatch(fetchSourcesSuccess({ ...data, domains }));
-};
+export const { setViewport, selectMapStyle, toggleCompareMode, saveMap } = mapSlice.actions;
 
 export default mapSlice.reducer;

@@ -12,7 +12,7 @@ import PrivateRoute from './utils/private-route.component';
 import { fetchAppConfig } from './app.slice';
 import { fetchUser, login, changePassword, activateAccount } from './accounts/accounts.slice';
 // import { fetchUsers, createUser, deleteUser, updateUser, copyUser } from './accounts/admin/users.slice';
-import { fetchSources } from './map/map.slice';
+import { fetchSources, selectPollingPeriod } from './data-layers/data-layers.slice';
 
 import RegisterForm from './accounts/register-form.component';
 import TermsAndConditions from './accounts/terms-and-conditions.component';
@@ -43,7 +43,7 @@ const App = () => {
   const users = useSelector(state => state.accounts.users);
   const user = useSelector(state => state.accounts.user);
   const error = useSelector(state => state.accounts.error);
-  const pollingPeriod = useSelector(state => state.map.pollingPeriod);
+  const pollingPeriod = useSelector(selectPollingPeriod);
 
   const notYetImplementedDescription = useSelector(state => state.app.notYetImplementedDescription);
   const ref = useRef(null);

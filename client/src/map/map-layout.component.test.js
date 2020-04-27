@@ -43,10 +43,9 @@ describe('Map Layout Component', () => {
       },
       map: {
         isMultiMapMode: false,
-        selectedMapStyle: MAPSTYLES[0],
-        dataSources: []
+        selectedMapStyle: MAPSTYLES[0]
       },
-      dataLayers: {
+      data: {
         layers: []
       },
       satellites: {

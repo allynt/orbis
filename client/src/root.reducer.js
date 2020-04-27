@@ -6,7 +6,7 @@ import { connectRouter } from 'connected-react-router';
 
 import app from './app.slice';
 import map from './map/map.slice';
-import dataLayers from './data-layers/data-layers.slice';
+import data from './data-layers/data-layers.slice';
 import satellites from './satellites/satellites.slice';
 import accounts from './accounts/accounts.slice';
 import theming from './theming/theming.slice';
@@ -21,7 +21,7 @@ const createRootReducer = history =>
   combineReducers({
     map,
     sidebar,
-    dataLayers,
+    data,
     satellites,
     app,
     accounts,
