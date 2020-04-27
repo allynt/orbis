@@ -11,7 +11,7 @@ import { ReactComponent as RemoveIcon } from './remove.svg';
 import { ReactComponent as HideIcon } from './layer-invisible.svg';
 import { ReactComponent as AddNewCategoryIcon } from './add-more-categories.svg';
 
-import { removeLayer, addLayers, selectDataSources, selectUserLayers } from './data.slice';
+import { removeLayer, addLayers, selectDataSources, selectUserLayers } from './data-layers.slice';
 
 import { PopulationInformation } from './population-information.component';
 import { HealthInfrastructure } from './health-infrastructure.component';

@@ -16,7 +16,7 @@ import CloseButton from '@astrosat/astrosat-ui/dist/buttons/close-button';
 import LoadMask from '@astrosat/astrosat-ui/dist/load-mask/load-mask';
 
 import { selectMapStyle, saveMap, setViewport } from './map.slice';
-import { selectDataSources, selectUserLayers, selectDataToken } from '../data-layers/data.slice';
+import { selectDataSources, selectUserLayers, selectDataToken } from '../data-layers/data-layers.slice';
 import { isLoaded } from '../bookmarks/bookmark.slice';
 import { closeMenu } from '../side-menu/side-menu.slice';
 

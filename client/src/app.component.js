@@ -12,7 +12,7 @@ import PrivateRoute from './utils/private-route.component';
 import { fetchAppConfig } from './app.slice';
 import { fetchUser, login, changePassword, activateAccount } from './accounts/accounts.slice';
 // import { fetchUsers, createUser, deleteUser, updateUser, copyUser } from './accounts/admin/users.slice';
-import { fetchSources, selectPollingPeriod } from './data-layers/data.slice';
+import { fetchSources, selectPollingPeriod } from './data-layers/data-layers.slice';
 
 import RegisterForm from './accounts/register-form.component';
 import TermsAndConditions from './accounts/terms-and-conditions.component';

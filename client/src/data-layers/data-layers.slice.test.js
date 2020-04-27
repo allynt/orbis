@@ -11,7 +11,7 @@ import reducer, {
   selectDataSources,
   selectPollingPeriod,
   selectDataToken
-} from './data.slice';
+} from './data-layers.slice';
 
 const mockStore = configureMockStore([thunk]);
 
