@@ -38,7 +38,7 @@ const dataSlice = createSlice({
     addFilters: (state, { payload }) => {
       state.filters = mergeWith(payload, state.filters, (objValue, srcValue) => {
         if (Array.isArray(objValue) && Array.isArray(srcValue)) {
-          return [...srcValue, ...objValue];
+          return Array.from(new Set([...srcValue, ...objValue]));
         }
       });
     },

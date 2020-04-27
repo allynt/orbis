@@ -331,6 +331,28 @@ describe('Data Slice', () => {
         const result = reducer(state, addFilters(filters));
         expect(result).toEqual(expected);
       });
+
+      it('should not add filters which already exist', () => {
+        const state = {
+          filters: {
+            'fruit-bowl': {
+              fruit: ['apple'],
+            },
+          },
+        };
+        const filters = {
+          'fruit-bowl': { fruit: ['apple', 'banana'] },
+        };
+        const expected = {
+          filters: {
+            'fruit-bowl': {
+              fruit: ['apple', 'banana'],
+            },
+          },
+        };
+        const result = reducer(state, addFilters(filters));
+        expect(result).toEqual(expected);
+      });
     });
   });
 
