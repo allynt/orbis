@@ -4,7 +4,7 @@ module.exports = {
     label: 'Health infrastructure',
     domain: 'Action for Health and Help',
     range: false,
-    description: 'Description of Health infrastructure layer.'
+    description: 'Description of Health infrastructure layer.',
   },
   type: 'geojson',
   data: {
@@ -21,8 +21,8 @@ module.exports = {
           phone_number: '+447561866337',
           address1: '1 Street Name',
           address2: 'Edinburgh',
-          postcode: 'EH15 1AS'
-        }
+          postcode: 'EH15 1AS',
+        },
       },
       {
         id: 2,
@@ -35,8 +35,8 @@ module.exports = {
           phone_number: '+447561866337',
           address1: '1 Street Name',
           address2: 'Edinburgh',
-          postcode: 'EH15 1AS'
-        }
+          postcode: 'EH15 1AS',
+        },
       },
       {
         id: 3,
@@ -49,8 +49,8 @@ module.exports = {
           phone_number: '+447561866337',
           address1: '1 Street Name',
           address2: 'Edinburgh',
-          postcode: 'EH15 1AS'
-        }
+          postcode: 'EH15 1AS',
+        },
       },
       {
         id: 4,
@@ -63,9 +63,9 @@ module.exports = {
           phone_number: '+447561866337',
           address1: '1 Street Name',
           address2: 'Edinburgh',
-          postcode: 'EH15 1AS'
-        }
-      }
-    ]
-  }
+          postcode: 'EH15 1AS',
+        },
+      },
+    ],
+  },
 };

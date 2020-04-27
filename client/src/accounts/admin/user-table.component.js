@@ -23,7 +23,7 @@ const EditableCell = ({ row, data, updateUser }) => (
       updateUser(newData.find(user => user.pk === row.original.pk));
     }}
     dangerouslySetInnerHTML={{
-      __html: data[row.index][row.column.id]
+      __html: data[row.index][row.column.id],
     }}
   />
 );
@@ -63,7 +63,7 @@ const UserTable = ({ data, deleteUser, updateUser, copyUser }) => (
                   </ReactTooltip>
                 </span>
               );
-            }
+            },
           },
           {
             Header: 'Key',
@@ -74,7 +74,7 @@ const UserTable = ({ data, deleteUser, updateUser, copyUser }) => (
             filterMethod: (filter, row) => row[filter.id].startsWith(filter.value),
             Cell: row => {
               return <EditableCell row={row} data={data} updateUser={updateUser} />;
-            }
+            },
           },
           {
             Header: 'Username',
@@ -85,7 +85,7 @@ const UserTable = ({ data, deleteUser, updateUser, copyUser }) => (
             filterMethod: (filter, row) => row[filter.id].startsWith(filter.value),
             Cell: row => {
               return <EditableCell row={row} data={data} updateUser={updateUser} />;
-            }
+            },
           },
           {
             Header: 'Email',
@@ -96,7 +96,7 @@ const UserTable = ({ data, deleteUser, updateUser, copyUser }) => (
             filterMethod: (filter, row) => row[filter.id].startsWith(filter.value),
             Cell: row => {
               return <EditableCell row={row} data={data} updateUser={updateUser} />;
-            }
+            },
           },
           {
             Header: 'First Name',
@@ -107,7 +107,7 @@ const UserTable = ({ data, deleteUser, updateUser, copyUser }) => (
             filterMethod: (filter, row) => row[filter.id].startsWith(filter.value),
             Cell: row => {
               return <EditableCell row={row} data={data} updateUser={updateUser} />;
-            }
+            },
           },
           {
             Header: 'Last Name',
@@ -118,8 +118,8 @@ const UserTable = ({ data, deleteUser, updateUser, copyUser }) => (
             filterMethod: (filter, row) => row[filter.id].startsWith(filter.value),
             Cell: row => {
               return <EditableCell row={row} data={data} updateUser={updateUser} />;
-            }
-          }
+            },
+          },
         ]}
         defaultPageSize={5}
         className="-striped -highlight"
@@ -154,7 +154,7 @@ UserTable.propTypes = {
   data: PropTypes.array,
   deleteUser: PropTypes.func.isRequired,
   updateUser: PropTypes.func.isRequired,
-  copyUser: PropTypes.func.isRequired
+  copyUser: PropTypes.func.isRequired,
 };
 
 export default UserTable;

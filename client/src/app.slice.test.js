@@ -8,7 +8,7 @@ import reducer, {
   appConfigSuccess,
   appConfigFailure,
   notYetImplemented,
-  DEFAULT_MAP_STYLE
+  DEFAULT_MAP_STYLE,
 } from './app.slice';
 
 const mockStore = configureMockStore([thunk]);
@@ -22,13 +22,13 @@ describe('App Slice', () => {
     it('should dispatch fetch app config failure action.', async () => {
       fetch.mockResponse(
         JSON.stringify({
-          message: 'Test error message'
+          message: 'Test error message',
         }),
         {
           ok: false,
           status: 401,
-          statusText: 'Test Error'
-        }
+          statusText: 'Test Error',
+        },
       );
 
       const expectedActions = [{ type: appConfigFailure.type, payload: { message: '401 Test Error' } }];
@@ -44,25 +44,25 @@ describe('App Slice', () => {
       const config = {
         mapStyles: [
           {
-            id: 1
+            id: 1,
           },
           {
-            id: 2
+            id: 2,
           },
           {
-            id: 3
+            id: 3,
           },
           {
-            id: 4
-          }
-        ]
+            id: 4,
+          },
+        ],
       };
 
       fetch.mockResponse(JSON.stringify(config));
 
       const expectedActions = [
         { type: appConfigSuccess.type, payload: config },
-        { type: selectMapStyle.type, payload: config.mapStyles[DEFAULT_MAP_STYLE] }
+        { type: selectMapStyle.type, payload: config.mapStyles[DEFAULT_MAP_STYLE] },
       ];
 
       const store = mockStore({});
@@ -80,7 +80,7 @@ describe('App Slice', () => {
       beforeState = {
         config: {},
         error: null,
-        notYetImplementedDescription: null
+        notYetImplementedDescription: null,
       };
     });
 
@@ -95,7 +95,7 @@ describe('App Slice', () => {
 
       const actualState = reducer(beforeState, {
         type: appConfigSuccess.type,
-        payload: config
+        payload: config,
       });
 
       expect(actualState.config).toEqual(config);
@@ -106,7 +106,7 @@ describe('App Slice', () => {
 
       const actualState = reducer(beforeState, {
         type: appConfigFailure.type,
-        payload: error
+        payload: error,
       });
 
       expect(actualState.error).toEqual(error);
@@ -117,7 +117,7 @@ describe('App Slice', () => {
 
       const actualState = reducer(beforeState, {
         type: notYetImplemented.type,
-        payload: message
+        payload: message,
       });
 
       expect(actualState.notYetImplementedDescription).toEqual(message);

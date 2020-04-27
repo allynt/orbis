@@ -32,15 +32,15 @@ describe('Satellite Scene List Item Component', () => {
         thumbnail_url: 'thumbnail1',
         created: '2000-01-01T00:00:00Z',
         cloudCover: 5,
-        tier: 'free'
+        tier: 'free',
       },
       {
         id: 2,
         thumbnail_url: 'thumbnail2',
         created: '2010-01-01T00:00:00Z',
         cloudCover: 15,
-        tier: 'mid'
-      }
+        tier: 'mid',
+      },
     ];
     index = 0;
     icon = 'icon';
@@ -63,7 +63,7 @@ describe('Satellite Scene List Item Component', () => {
           setSelectedMoreInfo={setSelectedMoreInfo}
           toggleMoreInfoDialog={toggleMoreInfoDialog}
         />
-      </Provider>
+      </Provider>,
     );
 
     expect(getByText('icon')).toBeInTheDocument();
@@ -88,7 +88,7 @@ describe('Satellite Scene List Item Component', () => {
           setSelectedMoreInfo={setSelectedMoreInfo}
           toggleMoreInfoDialog={toggleMoreInfoDialog}
         />
-      </Provider>
+      </Provider>,
     );
 
     expect(getByText('icon')).toBeInTheDocument();
@@ -112,7 +112,7 @@ describe('Satellite Scene List Item Component', () => {
           setSelectedMoreInfo={setSelectedMoreInfo}
           toggleMoreInfoDialog={toggleMoreInfoDialog}
         />
-      </Provider>
+      </Provider>,
     );
 
     fireEvent.click(container.querySelector('.sceneSection'));
@@ -131,7 +131,7 @@ describe('Satellite Scene List Item Component', () => {
           setSelectedMoreInfo={setSelectedMoreInfo}
           toggleMoreInfoDialog={toggleMoreInfoDialog}
         />
-      </Provider>
+      </Provider>,
     );
 
     fireEvent.click(container.querySelector('.sceneSection'));
@@ -150,7 +150,7 @@ describe('Satellite Scene List Item Component', () => {
           setSelectedMoreInfo={setSelectedMoreInfo}
           toggleMoreInfoDialog={toggleMoreInfoDialog}
         />
-      </Provider>
+      </Provider>,
     );
 
     fireEvent.click(container.querySelector('.moreInfo'));
@@ -169,7 +169,7 @@ describe('Satellite Scene List Item Component', () => {
           setSelectedMoreInfo={setSelectedMoreInfo}
           toggleMoreInfoDialog={toggleMoreInfoDialog}
         />
-      </Provider>
+      </Provider>,
     );
 
     fireEvent.click(container.querySelector('.moreInfo'));

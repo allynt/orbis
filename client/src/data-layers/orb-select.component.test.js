@@ -6,12 +6,12 @@ const setup = selectedDomain => {
   const handleDomainClick = jest.fn();
   const domains = [{ label: 'domain-one' }, { label: 'domain-two' }, { label: 'domain-three' }];
   const utils = render(
-    <OrbSelect domains={domains} selectedDomain={selectedDomain} onDomainClick={handleDomainClick} />
+    <OrbSelect domains={domains} selectedDomain={selectedDomain} onDomainClick={handleDomainClick} />,
   );
   return {
     ...utils,
     domains,
-    handleDomainClick
+    handleDomainClick,
   };
 };
 

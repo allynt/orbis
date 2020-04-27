@@ -18,7 +18,7 @@ const testAppConfig = {
   passwordStrength: 2,
   isRegistrationOpen: true,
   isVerificationRequired: true,
-  isApprovalRequired: false
+  isApprovalRequired: false,
 };
 
 describe('Register Form Component', () => {
@@ -28,7 +28,7 @@ describe('Register Form Component', () => {
     fetch.resetMocks();
     store = mockStore({
       accounts: { error: 'Test Error' },
-      app: { config: testAppConfig }
+      app: { config: testAppConfig },
     });
   });
 
@@ -40,7 +40,7 @@ describe('Register Form Component', () => {
         <Provider store={store}>
           <RegisterForm />
         </Provider>
-      </MemoryRouter>
+      </MemoryRouter>,
     );
 
     expect(container.querySelector('form')).toBeInTheDocument();
@@ -67,7 +67,7 @@ describe('Register Form Component', () => {
         <Provider store={store}>
           <RegisterForm />
         </Provider>
-      </MemoryRouter>
+      </MemoryRouter>,
     );
 
     fireEvent.change(getByPlaceholderText('Email'), { target: { value: 'test@test.com' } });
@@ -83,7 +83,7 @@ describe('Register Form Component', () => {
         <Provider store={store}>
           <RegisterForm />
         </Provider>
-      </MemoryRouter>
+      </MemoryRouter>,
     );
 
     fireEvent.change(getByPlaceholderText('Email'), { target: { value: 'test@test.com' } });
@@ -93,7 +93,7 @@ describe('Register Form Component', () => {
   it('should keep `Sign Up` button disabled when registration is disabled', () => {
     store = mockStore({
       accounts: { error: 'Test Error' },
-      app: { config: { ...testAppConfig, isRegistrationOpen: false } }
+      app: { config: { ...testAppConfig, isRegistrationOpen: false } },
     });
 
     const { getByText, getByPlaceholderText } = render(
@@ -101,7 +101,7 @@ describe('Register Form Component', () => {
         <Provider store={store}>
           <RegisterForm />
         </Provider>
-      </MemoryRouter>
+      </MemoryRouter>,
     );
 
     fireEvent.change(getByPlaceholderText('Email'), { target: { value: 'test@test.com' } });
@@ -119,7 +119,7 @@ describe('Register Form Component', () => {
         <Provider store={store}>
           <RegisterForm />
         </Provider>
-      </MemoryRouter>
+      </MemoryRouter>,
     );
 
     fireEvent.click(getByText('Sign Up'));
@@ -134,7 +134,7 @@ describe('Register Form Component', () => {
         <Provider store={store}>
           <RegisterForm />
         </Provider>
-      </MemoryRouter>
+      </MemoryRouter>,
     );
 
     fireEvent.change(getByPlaceholderText('Email'), { target: { value: 'test@test.com' } });

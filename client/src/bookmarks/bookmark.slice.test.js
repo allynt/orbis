@@ -12,7 +12,7 @@ import reducer, {
   deleteBookmarkFailure,
   deleteBookmark,
   selectBookmark,
-  isLoaded
+  isLoaded,
 } from './bookmark.slice';
 
 const mockStore = configureMockStore([thunk]);
@@ -25,20 +25,20 @@ describe('Bookmark Slice', () => {
       fetch.resetMocks();
 
       store = mockStore({
-        accounts: { userKey: 'Test-User-Key' }
+        accounts: { userKey: 'Test-User-Key' },
       });
     });
 
     it('should dispatch fetch bookmarks failure action.', async () => {
       fetch.mockResponse(
         JSON.stringify({
-          message: 'Test error message'
+          message: 'Test error message',
         }),
         {
           ok: false,
           status: 401,
-          statusText: 'Test Error'
-        }
+          statusText: 'Test Error',
+        },
       );
 
       const expectedActions = [{ type: fetchBookmarksFailure.type, payload: { message: '401 Test Error' } }];
@@ -51,17 +51,17 @@ describe('Bookmark Slice', () => {
     it('should dispatch fetch bookmarks success action.', async () => {
       const bookmarks = [
         {
-          id: 1
+          id: 1,
         },
         {
-          id: 2
+          id: 2,
         },
         {
-          id: 3
+          id: 3,
         },
         {
-          id: 4
-        }
+          id: 4,
+        },
       ];
       fetch.mockResponse(JSON.stringify(bookmarks));
 
@@ -75,19 +75,19 @@ describe('Bookmark Slice', () => {
     it('should dispatch add bookmark failure action.', async () => {
       fetch.mockResponse(
         JSON.stringify({
-          message: 'Test error message'
+          message: 'Test error message',
         }),
         {
           ok: false,
           status: 401,
-          statusText: 'Test Error'
-        }
+          statusText: 'Test Error',
+        },
       );
 
       const expectedActions = [{ type: addBookmarkFailure.type, payload: { message: '401 Test Error' } }];
 
       const bookmark = {
-        id: 5
+        id: 5,
       };
       await store.dispatch(addBookmark(bookmark));
 
@@ -96,7 +96,7 @@ describe('Bookmark Slice', () => {
 
     it('should dispatch add bookmark success action.', async () => {
       const bookmark = {
-        id: 5
+        id: 5,
       };
       fetch.mockResponse(JSON.stringify(bookmark));
 
@@ -110,19 +110,19 @@ describe('Bookmark Slice', () => {
     it('should dispatch delete bookmark failure action.', async () => {
       fetch.mockResponse(
         JSON.stringify({
-          message: 'Test error message'
+          message: 'Test error message',
         }),
         {
           ok: false,
           status: 401,
-          statusText: 'Test Error'
-        }
+          statusText: 'Test Error',
+        },
       );
 
       const expectedActions = [{ type: deleteBookmarkFailure.type, payload: { message: '401 Test Error' } }];
 
       const bookmark = {
-        id: 5
+        id: 5,
       };
       await store.dispatch(deleteBookmark(bookmark));
 
@@ -131,7 +131,7 @@ describe('Bookmark Slice', () => {
 
     it('should dispatch delete bookmark success action.', async () => {
       const bookmark = {
-        id: 5
+        id: 5,
       };
       fetch.mockResponse(JSON.stringify(bookmark));
 
@@ -144,7 +144,7 @@ describe('Bookmark Slice', () => {
 
     it('should dispatch select bookmark action.', async () => {
       const bookmark = {
-        id: 5
+        id: 5,
       };
 
       const expectedActions = [{ type: selectBookmark.type, payload: bookmark }];
@@ -163,7 +163,7 @@ describe('Bookmark Slice', () => {
         bookmarks: null,
         selectedBookmark: null,
         error: null,
-        isLoading: false
+        isLoading: false,
       };
     });
 
@@ -178,7 +178,7 @@ describe('Bookmark Slice', () => {
 
       const actualState = reducer(beforeState, {
         type: fetchBookmarksSuccess.type,
-        payload: bookmarks
+        payload: bookmarks,
       });
 
       expect(actualState.bookmarks).toEqual(bookmarks);
@@ -189,7 +189,7 @@ describe('Bookmark Slice', () => {
 
       const actualState = reducer(beforeState, {
         type: fetchBookmarksFailure.type,
-        payload: error
+        payload: error,
       });
 
       expect(actualState.error).toEqual(error);
@@ -200,7 +200,7 @@ describe('Bookmark Slice', () => {
 
       const actualState = reducer(beforeState, {
         type: addBookmarkSuccess.type,
-        payload: bookmark
+        payload: bookmark,
       });
 
       expect(actualState.bookmarks).toEqual([bookmark]);
@@ -211,7 +211,7 @@ describe('Bookmark Slice', () => {
 
       const actualState = reducer(beforeState, {
         type: addBookmarkFailure.type,
-        payload: error
+        payload: error,
       });
 
       expect(actualState.error).toEqual(error);
@@ -223,7 +223,7 @@ describe('Bookmark Slice', () => {
 
       const actualState = reducer(beforeState, {
         type: deleteBookmarkSuccess.type,
-        payload: bookmark
+        payload: bookmark,
       });
 
       expect(actualState.bookmarks).toEqual(beforeState.bookmarks.filter(bm => bm.id !== bookmark.id));
@@ -234,7 +234,7 @@ describe('Bookmark Slice', () => {
 
       const actualState = reducer(beforeState, {
         type: deleteBookmarkFailure.type,
-        payload: error
+        payload: error,
       });
 
       expect(actualState.error).toEqual(error);
@@ -246,7 +246,7 @@ describe('Bookmark Slice', () => {
 
       const actualState = reducer(beforeState, {
         type: selectBookmark.type,
-        payload: bookmark
+        payload: bookmark,
       });
 
       expect(actualState.selectedBookmark).toEqual(bookmark);
@@ -254,7 +254,7 @@ describe('Bookmark Slice', () => {
 
     it('should update the selected bookmark in state, when one selected', () => {
       const actualState = reducer(beforeState, {
-        type: isLoaded.type
+        type: isLoaded.type,
       });
 
       expect(actualState.isLoading).toEqual(false);

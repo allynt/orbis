@@ -8,7 +8,7 @@ let bookmarks = [
     zoom: 6.61084694352591,
     center: [-5.205274, 57.178733],
     feature_collection: { type: 'FeatureCollection', features: [] },
-    thumbnail: 'https://www.undiscoveredscotland.co.uk/usscotfax/geography/images/geography-450.jpg'
+    thumbnail: 'https://www.undiscoveredscotland.co.uk/usscotfax/geography/images/geography-450.jpg',
   },
   {
     id: 7,
@@ -19,7 +19,7 @@ let bookmarks = [
     zoom: 5.23484291387757,
     center: [-86.87191, 17.438782],
     feature_collection: { type: 'FeatureCollection', features: [] },
-    thumbnail: 'https://cdn.mos.cms.futurecdn.net/PuMd7Vw3wsZafT27T2xWtF.jpg'
+    thumbnail: 'https://cdn.mos.cms.futurecdn.net/PuMd7Vw3wsZafT27T2xWtF.jpg',
   },
   {
     id: 6,
@@ -30,7 +30,7 @@ let bookmarks = [
     zoom: 7.1319501464789,
     center: [108.312151, 20.053918],
     feature_collection: { type: 'FeatureCollection', features: [] },
-    thumbnail: 'https://spacewatch.global/wp-content/uploads/2019/10/Vietnam.A2002092.0330.500m.jpg'
+    thumbnail: 'https://spacewatch.global/wp-content/uploads/2019/10/Vietnam.A2002092.0330.500m.jpg',
   },
   {
     id: 5,
@@ -42,8 +42,8 @@ let bookmarks = [
     center: [100.616221, 5.804306],
     feature_collection: { type: 'FeatureCollection', features: [] },
     thumbnail:
-      'https://s3.amazonaws.com/images.spaceref.com/news/2018/esa_earth_from_space_shanghai_china_071318_945.jpg'
-  }
+      'https://s3.amazonaws.com/images.spaceref.com/news/2018/esa_earth_from_space_shanghai_china_071318_945.jpg',
+  },
 ];
 
 const getBookmarks = () => bookmarks;

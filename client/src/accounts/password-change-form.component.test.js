@@ -30,7 +30,7 @@ describe('Password Reset Form Component', () => {
         <Provider store={store}>
           <PasswordChangeForm />
         </Provider>
-      </MemoryRouter>
+      </MemoryRouter>,
     );
 
     expect(container.querySelector('form')).toBeInTheDocument();
@@ -56,7 +56,7 @@ describe('Password Reset Form Component', () => {
         <Provider store={store}>
           <PasswordChangeForm />
         </Provider>
-      </MemoryRouter>
+      </MemoryRouter>,
     );
 
     let password = getByPlaceholderText('Old Password');
@@ -85,7 +85,7 @@ describe('Password Reset Form Component', () => {
         <Provider store={store}>
           <PasswordChangeForm />
         </Provider>
-      </MemoryRouter>
+      </MemoryRouter>,
     );
 
     fireEvent.change(getByPlaceholderText('Old Password'), { target: { value: 'oldpassword' } });
@@ -104,7 +104,7 @@ describe('Password Reset Form Component', () => {
         <Provider store={store}>
           <PasswordChangeForm />
         </Provider>
-      </MemoryRouter>
+      </MemoryRouter>,
     );
 
     fireEvent.click(getByText('Change Password'));
@@ -115,15 +115,15 @@ describe('Password Reset Form Component', () => {
     fetch.mockResponse(JSON.stringify({}, { status: 200 }));
     const store = mockStore({
       accounts: {
-        userKey: 'KEY'
-      }
+        userKey: 'KEY',
+      },
     });
 
     const expectedResults = {
       old_password: 'oldpassword',
       new_password1: 'newpassword',
       new_password2: 'newpassword',
-      accepted_terms: true
+      accepted_terms: true,
     };
 
     const { getByText, getByPlaceholderText } = render(
@@ -131,7 +131,7 @@ describe('Password Reset Form Component', () => {
         <Provider store={store}>
           <PasswordChangeForm changePassword={changePassword} />
         </Provider>
-      </MemoryRouter>
+      </MemoryRouter>,
     );
 
     fireEvent.change(getByPlaceholderText('Old Password'), { target: { value: 'oldpassword' } });

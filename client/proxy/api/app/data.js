@@ -7,10 +7,10 @@ const appConfig = {
     { id: 'light', uri: 'mapbox://styles/mapbox/light-v10', title: 'Light My Fire' },
     { id: 'dark', uri: 'mapbox://styles/mapbox/dark-v10', title: 'Dark Was The Night' },
     // { id: 'satellite', uri: 'mapbox://styles/mapbox/satellite-v9', title: 'Satellite Of Love' }
-    { id: 'satellite', uri: 'mapbox://styles/astrosat/ck8em8hzn2cdv1hnvj8e179b8', title: 'Satellite Of Love' }
+    { id: 'satellite', uri: 'mapbox://styles/astrosat/ck8em8hzn2cdv1hnvj8e179b8', title: 'Satellite Of Love' },
   ],
   maximumAoiArea: 500,
-  isRegistrationOpen: true
+  isRegistrationOpen: true,
 };
 
 module.exports = { appConfig };

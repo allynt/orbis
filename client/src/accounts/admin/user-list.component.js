@@ -40,7 +40,7 @@ UserList.propTypes = {
   createUser: PropTypes.func.isRequired,
   deleteUser: PropTypes.func.isRequired,
   updateUser: PropTypes.func.isRequired,
-  copyUser: PropTypes.func.isRequired
+  copyUser: PropTypes.func.isRequired,
 };
 
 export default UserList;

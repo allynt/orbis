@@ -17,7 +17,7 @@ import reducer, {
   createUserRequested,
   createUserSuccess,
   createUserFailure,
-  createUser
+  createUser,
 } from './users.slice';
 
 const mockStore = configureMockStore([thunk]);
@@ -30,29 +30,29 @@ describe('Users Slice', () => {
       fetch.resetMocks();
 
       store = mockStore({
-        accounts: { userKey: 'Test-User-Key' }
+        accounts: { userKey: 'Test-User-Key' },
       });
     });
 
     it('should dispatch create user failure action.', async () => {
       fetch.mockResponse(
         JSON.stringify({
-          message: 'Test error message'
+          message: 'Test error message',
         }),
         {
           ok: false,
           status: 401,
-          statusText: 'Test Error'
-        }
+          statusText: 'Test Error',
+        },
       );
 
       const expectedActions = [
         { type: createUserRequested.type },
-        { type: createUserFailure.type, payload: { message: '401 Test Error' } }
+        { type: createUserFailure.type, payload: { message: '401 Test Error' } },
       ];
 
       const user = {
-        name: 'Test User'
+        name: 'Test User',
       };
       await store.dispatch(createUser(user));
 
@@ -61,7 +61,7 @@ describe('Users Slice', () => {
 
     it('should dispatch create user success action.', async () => {
       const user = {
-        name: 'Test User'
+        name: 'Test User',
       };
 
       fetch.mockResponse(JSON.stringify(user));
@@ -76,18 +76,18 @@ describe('Users Slice', () => {
     it('should dispatch fetch users failure action.', async () => {
       fetch.mockResponse(
         JSON.stringify({
-          message: 'Test error message'
+          message: 'Test error message',
         }),
         {
           ok: false,
           status: 401,
-          statusText: 'Test Error'
-        }
+          statusText: 'Test Error',
+        },
       );
 
       const expectedActions = [
         { type: fetchUsersRequested.type },
-        { type: fetchUsersFailure.type, payload: { message: '401 Test Error' } }
+        { type: fetchUsersFailure.type, payload: { message: '401 Test Error' } },
       ];
 
       await store.dispatch(fetchUsers());
@@ -98,11 +98,11 @@ describe('Users Slice', () => {
     it('should dispatch fetch users success action.', async () => {
       const users = [
         {
-          id: 1
+          id: 1,
         },
         {
-          id: 2
-        }
+          id: 2,
+        },
       ];
 
       fetch.mockResponse(JSON.stringify(users));
@@ -117,22 +117,22 @@ describe('Users Slice', () => {
     it('should dispatch update user failure action.', async () => {
       fetch.mockResponse(
         JSON.stringify({
-          message: 'Test error message'
+          message: 'Test error message',
         }),
         {
           ok: false,
           status: 401,
-          statusText: 'Test Error'
-        }
+          statusText: 'Test Error',
+        },
       );
 
       const expectedActions = [
         { type: updateUserRequested.type },
-        { type: updateUserFailure.type, payload: { message: '401 Test Error' } }
+        { type: updateUserFailure.type, payload: { message: '401 Test Error' } },
       ];
 
       const user = {
-        name: 'Test User'
+        name: 'Test User',
       };
 
       await store.dispatch(updateUser(user));
@@ -143,7 +143,7 @@ describe('Users Slice', () => {
     it('should dispatch update user success action.', async () => {
       const user = {
         id: 1,
-        name: 'Test User'
+        name: 'Test User',
       };
 
       fetch.mockResponse(JSON.stringify(user));
@@ -158,22 +158,22 @@ describe('Users Slice', () => {
     it('should dispatch delete user failure action.', async () => {
       fetch.mockResponse(
         JSON.stringify({
-          message: 'Test error message'
+          message: 'Test error message',
         }),
         {
           ok: false,
           status: 401,
-          statusText: 'Test Error'
-        }
+          statusText: 'Test Error',
+        },
       );
 
       const expectedActions = [
         { type: deleteUserRequested.type },
-        { type: deleteUserFailure.type, payload: { message: '401 Test Error' } }
+        { type: deleteUserFailure.type, payload: { message: '401 Test Error' } },
       ];
 
       const user = {
-        id: 1
+        id: 1,
       };
 
       await store.dispatch(deleteUser(user.id));
@@ -184,7 +184,7 @@ describe('Users Slice', () => {
     it('should dispatch delete user success action.', async () => {
       const user = {
         id: 1,
-        name: 'Test User'
+        name: 'Test User',
       };
 
       fetch.mockResponse(JSON.stringify(user));
@@ -204,7 +204,7 @@ describe('Users Slice', () => {
       beforeState = {
         users: null,
         isLoading: false,
-        error: null
+        error: null,
       };
     });
 
@@ -216,7 +216,7 @@ describe('Users Slice', () => {
 
     it("'should update the is loading state, when users requested", () => {
       const actualState = reducer(beforeState, {
-        type: fetchUsersRequested.type
+        type: fetchUsersRequested.type,
       });
 
       expect(actualState.isLoading).toEqual(true);
@@ -225,16 +225,16 @@ describe('Users Slice', () => {
     it('should update the users in state, when successfully retrieved', () => {
       const users = [
         {
-          id: 1
+          id: 1,
         },
         {
-          id: 2
-        }
+          id: 2,
+        },
       ];
 
       const actualState = reducer(beforeState, {
         type: fetchUsersSuccess.type,
-        payload: users
+        payload: users,
       });
 
       expect(actualState.users).toEqual(users);
@@ -247,7 +247,7 @@ describe('Users Slice', () => {
 
       const actualState = reducer(beforeState, {
         type: fetchUsersFailure.type,
-        payload: error
+        payload: error,
       });
 
       expect(actualState.error).toEqual(error);
@@ -255,7 +255,7 @@ describe('Users Slice', () => {
 
     it("'should update the is loading state, when deleting user", () => {
       const actualState = reducer(beforeState, {
-        type: deleteUserRequested.type
+        type: deleteUserRequested.type,
       });
 
       expect(actualState.isLoading).toEqual(true);
@@ -264,17 +264,17 @@ describe('Users Slice', () => {
     it('should update the users in state, when successfully deleted user', () => {
       beforeState.users = [
         {
-          id: 1
+          id: 1,
         },
         {
-          id: 2
-        }
+          id: 2,
+        },
       ];
       const userToDelete = beforeState.users[1];
 
       const actualState = reducer(beforeState, {
         type: deleteUserSuccess.type,
-        payload: userToDelete.id
+        payload: userToDelete.id,
       });
 
       expect(actualState.users).toEqual(beforeState.users.filter(user => user.id !== userToDelete.id));
@@ -287,7 +287,7 @@ describe('Users Slice', () => {
 
       const actualState = reducer(beforeState, {
         type: deleteUserFailure.type,
-        payload: error
+        payload: error,
       });
 
       expect(actualState.error).toEqual(error);
@@ -295,7 +295,7 @@ describe('Users Slice', () => {
 
     it("'should update the is loading state, when updating user", () => {
       const actualState = reducer(beforeState, {
-        type: updateUserRequested.type
+        type: updateUserRequested.type,
       });
 
       expect(actualState.isLoading).toEqual(true);
@@ -305,21 +305,21 @@ describe('Users Slice', () => {
       beforeState.users = [
         {
           id: 1,
-          name: 'Test User 1'
+          name: 'Test User 1',
         },
         {
           id: 2,
-          name: 'Test User 1'
-        }
+          name: 'Test User 1',
+        },
       ];
       const userToUpdate = {
-        ...beforeState.users[1]
+        ...beforeState.users[1],
       };
       userToUpdate.name = 'New Test User Name';
 
       const actualState = reducer(beforeState, {
         type: updateUserSuccess.type,
-        payload: userToUpdate
+        payload: userToUpdate,
       });
 
       expect(actualState.users[1]).toEqual(userToUpdate);
@@ -332,7 +332,7 @@ describe('Users Slice', () => {
 
       const actualState = reducer(beforeState, {
         type: updateUserFailure.type,
-        payload: error
+        payload: error,
       });
 
       expect(actualState.error).toEqual(error);
@@ -340,7 +340,7 @@ describe('Users Slice', () => {
 
     it("'should update the is loading state, when creating user", () => {
       const actualState = reducer(beforeState, {
-        type: createUserRequested.type
+        type: createUserRequested.type,
       });
 
       expect(actualState.isLoading).toEqual(true);
@@ -350,21 +350,21 @@ describe('Users Slice', () => {
       beforeState.users = [
         {
           id: 1,
-          name: 'Test User 1'
+          name: 'Test User 1',
         },
         {
           id: 2,
-          name: 'Test User 1'
-        }
+          name: 'Test User 1',
+        },
       ];
       const userToCreate = {
         id: 3,
-        name: 'Test User 3'
+        name: 'Test User 3',
       };
 
       const actualState = reducer(beforeState, {
         type: createUserSuccess.type,
-        payload: userToCreate
+        payload: userToCreate,
       });
 
       expect(actualState.users).toEqual([...beforeState.users, userToCreate]);
@@ -377,7 +377,7 @@ describe('Users Slice', () => {
 
       const actualState = reducer(beforeState, {
         type: createUserFailure.type,
-        payload: error
+        payload: error,
       });
 
       expect(actualState.error).toEqual(error);

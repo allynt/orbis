@@ -44,7 +44,7 @@ const InfrastructureDetail = ({ features }) => (
 );
 
 InfrastructureDetail.propTypes = {
-  features: PropTypes.array.isRequired
+  features: PropTypes.array.isRequired,
 };
 
 export default InfrastructureDetail;

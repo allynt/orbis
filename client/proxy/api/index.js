@@ -13,5 +13,5 @@ module.exports = {
   dataRoutes,
   satellitesRoutes,
   storiesRoutes,
-  usersRoutes
+  usersRoutes,
 };

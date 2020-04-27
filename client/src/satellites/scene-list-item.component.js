@@ -19,7 +19,7 @@ const SceneListItem = ({
   selectScene,
   setVisiblePanel,
   setSelectedMoreInfo,
-  toggleMoreInfoDialog
+  toggleMoreInfoDialog,
 }) => (
   <div key={`${scene.id}-${index}`} className={styles.scene}>
     <div className={styles.icon}>{icon}</div>

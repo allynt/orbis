@@ -45,9 +45,9 @@ SavedSearchList.propTypes = {
       end_date: PropTypes.string,
       aoi: PropTypes.array,
       owner: PropTypes.number,
-      created: PropTypes.string
-    })
-  )
+      created: PropTypes.string,
+    }),
+  ),
 };
 
 export default SavedSearchList;

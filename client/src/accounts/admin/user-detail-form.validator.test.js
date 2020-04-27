@@ -6,43 +6,43 @@ fdescribe('User Detail Form Validator', () => {
       {
         username: '', // Error, missing
         email: 'user@test.com',
-        password: 'password'
+        password: 'password',
       },
       {
         username: 'user',
         email: '', // Error, missing
-        password: 'password'
+        password: 'password',
       },
       {
         username: 'user',
         email: 'user@test.com',
-        password: '' // Error, missing
+        password: '', // Error, missing
       },
       {
         username: 'su', // Error, too short
         email: 'user@test.com',
-        password: 'password'
+        password: 'password',
       },
       {
         username: 'user',
         email: 'user@test.com',
-        password: 'pass' // Error, too short
+        password: 'pass', // Error, too short
       },
       {
         username: 'user',
         email: '@test.com', // Error, missing username, prior to `@`
-        password: 'password'
+        password: 'password',
       },
       {
         username: 'user',
         email: 'usertest.com', // Error, missing `@`
-        password: 'password'
+        password: 'password',
       },
       {
         username: 'user',
         email: 'user@test', // Error, missing `.com|.net` etc
-        password: 'password'
-      }
+        password: 'password',
+      },
     ];
 
     it.each(testFields)('Invalid Value %o', form => {

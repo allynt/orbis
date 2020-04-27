@@ -29,7 +29,7 @@ const createRootReducer = history =>
     admin,
     bookmarks,
     stories,
-    router: connectRouter(history)
+    router: connectRouter(history),
   });
 
 const rootReducer = createRootReducer(history);

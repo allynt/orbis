@@ -13,7 +13,7 @@ import { setViewport } from './map/map.slice';
 
 const store = configureStore({
   reducer: rootReducer,
-  middleware: [thunk, routerMiddleware(history)]
+  middleware: [thunk, routerMiddleware(history)],
 });
 
 ReduxQuerySync({
@@ -23,10 +23,10 @@ ReduxQuerySync({
       selector: state => state.map.viewport,
       action: value => setViewport(value),
       stringToValue: string => JSON.parse(string),
-      valueToString: value => JSON.stringify(value)
-    }
+      valueToString: value => JSON.stringify(value),
+    },
   },
-  initialTruth: 'location'
+  initialTruth: 'location',
 });
 
 if (process.env.NODE_ENV === 'development' && module.hot) {

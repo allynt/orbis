@@ -102,11 +102,7 @@ const NewUserLanding = forwardRef(({ setRedirect, toggle, isVisible, regions, do
         <p className={styles.journeyText}>Click Browse Map below to start</p>
 
         <div>
-          <Button
-            theme="tertiary"
-            onClick={() => setRedirect('/map')}
-            data-testid="browse-map"
-          >
+          <Button theme="tertiary" onClick={() => setRedirect('/map')} data-testid="browse-map">
             Browse Map
           </Button>
         </div>
@@ -174,7 +170,7 @@ const ExistingUserLanding = forwardRef(
         </Dialog>
       </div>
     );
-  }
+  },
 );
 
 const Landing = () => {

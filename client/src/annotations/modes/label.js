@@ -14,17 +14,17 @@ LabelMode.onSetup = function(opts) {
   const props = MapboxDraw.modes.draw_point.onSetup.call(this, opts);
   props.point.properties = {
     ...props.point.properties,
-    ...opts
+    ...opts,
   };
 
   return {
-    ...props
+    ...props,
   };
 };
 
 LabelMode.onClick = LabelMode.onTap = function(state, event) {
   const {
-    lngLat: { lng, lat }
+    lngLat: { lng, lat },
   } = event;
 
   this.updateUIClasses({ mouse: Constants.cursors.MOVE });
@@ -42,7 +42,7 @@ LabelMode.onClick = LabelMode.onTap = function(state, event) {
     state.point.properties.label = input.value;
     console.log('STATE POINT: ', state.point);
     this.map.fire(Constants.events.CREATE, {
-      features: [state.point.toGeoJSON()]
+      features: [state.point.toGeoJSON()],
     });
     // this.map.fire(Constants.events.UPDATE, {
     //   features: [state.point.toGeoJSON()]

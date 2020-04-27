@@ -58,7 +58,7 @@ const MapStyleSwitcher = ({ mapStyles, selectedMapStyle, selectMapStyle }) => (
 MapStyleSwitcher.propTypes = {
   mapStyles: PropTypes.array.isRequired,
   selectedMapStyle: PropTypes.object.isRequired,
-  selectMapStyle: PropTypes.func.isRequired
+  selectMapStyle: PropTypes.func.isRequired,
 };
 
 export default MapStyleSwitcher;

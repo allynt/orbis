@@ -9,7 +9,7 @@ export const DEFAULT_MAP_STYLE = 3;
 const initialState = {
   config: {},
   error: null,
-  notYetImplementedDescription: null
+  notYetImplementedDescription: null,
 };
 
 const appSlice = createSlice({
@@ -25,8 +25,8 @@ const appSlice = createSlice({
     },
     notYetImplemented: (state, { payload }) => {
       state.notYetImplementedDescription = payload;
-    }
-  }
+    },
+  },
 });
 
 export const { appConfigSuccess, appConfigFailure, notYetImplemented } = appSlice.actions;

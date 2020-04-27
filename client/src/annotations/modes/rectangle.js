@@ -12,12 +12,12 @@ RectangleMode.onSetup = function(opts) {
     properties: {
       drawType: 'AOI',
       fillOpacity: 0.5,
-      fillColor: 'green'
+      fillColor: 'green',
     },
     geometry: {
       type: 'Polygon',
-      coordinates: [[]]
-    }
+      coordinates: [[]],
+    },
   });
 
   this.addFeature(rectangle);
@@ -27,12 +27,12 @@ RectangleMode.onSetup = function(opts) {
   this.updateUIClasses({ mouse: Constants.cursors.ADD });
 
   this.setActionableState({
-    trash: true
+    trash: true,
   });
 
   return {
     ...opts,
-    rectangle
+    rectangle,
   };
 };
 
@@ -86,7 +86,7 @@ RectangleMode.onStop = function(state) {
   state.rectangle.removeCoordinate('0.4');
   if (state.rectangle.isValid()) {
     this.map.fire('draw.create', {
-      features: [state.rectangle.toGeoJSON()]
+      features: [state.rectangle.toGeoJSON()],
     });
   } else {
     this.deleteFeature([state.rectangle.id], { silent: true });

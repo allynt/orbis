@@ -31,7 +31,7 @@ import reducer, {
   selectPinnedScene,
   deselectPinnedScene,
   clearSelectedPinnedScenes,
-  setCurrentSatelliteSearchQuery
+  setCurrentSatelliteSearchQuery,
 } from './satellites.slice';
 
 const mockStore = configureMockStore([thunk]);
@@ -44,20 +44,20 @@ describe('Satellites Slice', () => {
       fetch.resetMocks();
 
       store = mockStore({
-        accounts: { userKey: 'Test-User-Key' }
+        accounts: { userKey: 'Test-User-Key' },
       });
     });
 
     it('should dispatch fetch satellites failure action.', async () => {
       fetch.mockResponse(
         JSON.stringify({
-          message: 'Test error message'
+          message: 'Test error message',
         }),
         {
           ok: false,
           status: 401,
-          statusText: 'Test Error'
-        }
+          statusText: 'Test Error',
+        },
       );
 
       const expectedActions = [{ type: fetchSatellitesFailure.type, payload: { message: '401 Test Error' } }];
@@ -70,17 +70,17 @@ describe('Satellites Slice', () => {
     it('should dispatch fetch satellites success action.', async () => {
       const satellites = [
         {
-          id: 1
+          id: 1,
         },
         {
-          id: 2
+          id: 2,
         },
         {
-          id: 3
+          id: 3,
         },
         {
-          id: 4
-        }
+          id: 4,
+        },
       ];
       fetch.mockResponse(JSON.stringify(satellites));
 
@@ -94,18 +94,18 @@ describe('Satellites Slice', () => {
     it('should dispatch fetch satellites scenes failure action.', async () => {
       fetch.mockResponse(
         JSON.stringify({
-          message: 'Test error message'
+          message: 'Test error message',
         }),
         {
           ok: false,
           status: 401,
-          statusText: 'Test Error'
-        }
+          statusText: 'Test Error',
+        },
       );
 
       const expectedActions = [
         { type: removeScenes.type },
-        { type: fetchSatelliteScenesFailure.type, payload: { message: '401 Test Error' } }
+        { type: fetchSatelliteScenesFailure.type, payload: { message: '401 Test Error' } },
       ];
 
       await store.dispatch(fetchSatelliteScenes());
@@ -116,23 +116,23 @@ describe('Satellites Slice', () => {
     it('should dispatch fetch satellites scenes success action.', async () => {
       const scenes = [
         {
-          id: 1
+          id: 1,
         },
         {
-          id: 2
+          id: 2,
         },
         {
-          id: 3
+          id: 3,
         },
         {
-          id: 4
-        }
+          id: 4,
+        },
       ];
       fetch.mockResponse(JSON.stringify(scenes));
 
       const expectedActions = [
         { type: removeScenes.type },
-        { type: fetchSatelliteScenesSuccess.type, payload: scenes }
+        { type: fetchSatelliteScenesSuccess.type, payload: scenes },
       ];
 
       await store.dispatch(fetchSatelliteScenes());
@@ -143,13 +143,13 @@ describe('Satellites Slice', () => {
     it('should dispatch fetch saved satellite searches failure action.', async () => {
       fetch.mockResponse(
         JSON.stringify({
-          message: 'Test error message'
+          message: 'Test error message',
         }),
         {
           ok: false,
           status: 401,
-          statusText: 'Test Error'
-        }
+          statusText: 'Test Error',
+        },
       );
 
       const expectedActions = [{ type: fetchSatellitesSearchesFailure.type, payload: { message: '401 Test Error' } }];
@@ -162,17 +162,17 @@ describe('Satellites Slice', () => {
     it('should dispatch fetch saved satellite searches success action.', async () => {
       const searches = [
         {
-          id: 1
+          id: 1,
         },
         {
-          id: 2
+          id: 2,
         },
         {
-          id: 3
+          id: 3,
         },
         {
-          id: 4
-        }
+          id: 4,
+        },
       ];
       fetch.mockResponse(JSON.stringify(searches));
 
@@ -186,13 +186,13 @@ describe('Satellites Slice', () => {
     it('should dispatch delete saved satellite search failure action.', async () => {
       fetch.mockResponse(
         JSON.stringify({
-          message: 'Test error message'
+          message: 'Test error message',
         }),
         {
           ok: false,
           status: 401,
-          statusText: 'Test Error'
-        }
+          statusText: 'Test Error',
+        },
       );
 
       const expectedActions = [{ type: deleteSatelliteSearchFailure.type, payload: { message: '401 Test Error' } }];
@@ -204,7 +204,7 @@ describe('Satellites Slice', () => {
 
     it('should dispatch delete saved satellite search success action.', async () => {
       const search = {
-        id: 1
+        id: 1,
       };
       fetch.mockResponse(JSON.stringify(search));
 
@@ -218,13 +218,13 @@ describe('Satellites Slice', () => {
     it('should dispatch save satellite search failure action.', async () => {
       fetch.mockResponse(
         JSON.stringify({
-          message: 'Test error message'
+          message: 'Test error message',
         }),
         {
           ok: false,
           status: 401,
-          statusText: 'Test Error'
-        }
+          statusText: 'Test Error',
+        },
       );
 
       const expectedActions = [{ type: saveSatelliteSearchFailure.type, payload: { message: '401 Test Error' } }];
@@ -240,8 +240,8 @@ describe('Satellites Slice', () => {
           [-4.167081994951957, 55.92440885733765],
           [-4.167081994951957, 55.841075664393315],
           [-4.4642292869796165, 55.841075664393315],
-          [-4.4642292869796165, 55.92440885733765]
-        ]
+          [-4.4642292869796165, 55.92440885733765],
+        ],
       };
 
       await store.dispatch(saveSatelliteSearch(form));
@@ -261,13 +261,13 @@ describe('Satellites Slice', () => {
           [-4.167081994951957, 55.92440885733765],
           [-4.167081994951957, 55.841075664393315],
           [-4.4642292869796165, 55.841075664393315],
-          [-4.4642292869796165, 55.92440885733765]
-        ]
+          [-4.4642292869796165, 55.92440885733765],
+        ],
       };
 
       const savedSearch = {
         ...form,
-        id: 1
+        id: 1,
       };
       fetch.mockResponse(JSON.stringify(savedSearch));
 
@@ -281,13 +281,13 @@ describe('Satellites Slice', () => {
     it('should dispatch fetch pinned scenes failure action.', async () => {
       fetch.mockResponse(
         JSON.stringify({
-          message: 'Test error message'
+          message: 'Test error message',
         }),
         {
           ok: false,
           status: 401,
-          statusText: 'Test Error'
-        }
+          statusText: 'Test Error',
+        },
       );
 
       const expectedActions = [{ type: fetchPinnedScenesFailure.type, payload: { message: '401 Test Error' } }];
@@ -300,17 +300,17 @@ describe('Satellites Slice', () => {
     it('should dispatch fetch pinned scenes success action.', async () => {
       const scenes = [
         {
-          id: 1
+          id: 1,
         },
         {
-          id: 2
+          id: 2,
         },
         {
-          id: 3
+          id: 3,
         },
         {
-          id: 4
-        }
+          id: 4,
+        },
       ];
 
       fetch.mockResponse(JSON.stringify(scenes));
@@ -325,13 +325,13 @@ describe('Satellites Slice', () => {
     it('should dispatch pin scene failure action.', async () => {
       fetch.mockResponse(
         JSON.stringify({
-          message: 'Test error message'
+          message: 'Test error message',
         }),
         {
           ok: false,
           status: 401,
-          statusText: 'Test Error'
-        }
+          statusText: 'Test Error',
+        },
       );
 
       const expectedActions = [{ type: pinSceneFailure.type, payload: { message: '401 Test Error' } }];
@@ -345,17 +345,17 @@ describe('Satellites Slice', () => {
     it('should dispatch pin scene success action.', async () => {
       const scenes = [
         {
-          id: 1
+          id: 1,
         },
         {
-          id: 2
+          id: 2,
         },
         {
-          id: 3
+          id: 3,
         },
         {
-          id: 4
-        }
+          id: 4,
+        },
       ];
 
       fetch.mockResponse(JSON.stringify(scenes));
@@ -371,13 +371,13 @@ describe('Satellites Slice', () => {
     it('should dispatch delete pinned scene failure action.', async () => {
       fetch.mockResponse(
         JSON.stringify({
-          message: 'Test error message'
+          message: 'Test error message',
         }),
         {
           ok: false,
           status: 401,
-          statusText: 'Test Error'
-        }
+          statusText: 'Test Error',
+        },
       );
 
       const expectedActions = [{ type: deletePinnedSceneFailure.type, payload: { message: '401 Test Error' } }];
@@ -390,7 +390,7 @@ describe('Satellites Slice', () => {
 
     it('should dispatch delete pinned scene success action.', async () => {
       const scene = {
-        id: 1
+        id: 1,
       };
 
       fetch.mockResponse(JSON.stringify(scene));
@@ -415,7 +415,7 @@ describe('Satellites Slice', () => {
         satelliteSearches: null,
         pinnedScenes: null,
         selectedPinnedScenes: [],
-        currentSearchQuery: null
+        currentSearchQuery: null,
       };
     });
 
@@ -430,7 +430,7 @@ describe('Satellites Slice', () => {
 
       const actualState = reducer(beforeState, {
         type: fetchSatellitesSuccess.type,
-        payload: satellites
+        payload: satellites,
       });
 
       expect(actualState.satellites).toEqual(satellites);
@@ -441,7 +441,7 @@ describe('Satellites Slice', () => {
 
       const actualState = reducer(beforeState, {
         type: fetchSatellitesFailure.type,
-        payload: error
+        payload: error,
       });
 
       expect(actualState.error).toEqual(error);
@@ -452,7 +452,7 @@ describe('Satellites Slice', () => {
 
       const actualState = reducer(beforeState, {
         type: fetchSatelliteScenesSuccess.type,
-        payload: satellitesScenes
+        payload: satellitesScenes,
       });
 
       expect(actualState.scenes).toEqual(satellitesScenes);
@@ -463,7 +463,7 @@ describe('Satellites Slice', () => {
 
       const actualState = reducer(beforeState, {
         type: fetchSatelliteScenesFailure.type,
-        payload: error
+        payload: error,
       });
 
       expect(actualState.error).toEqual(error);
@@ -474,7 +474,7 @@ describe('Satellites Slice', () => {
 
       const actualState = reducer(beforeState, {
         type: selectScene.type,
-        payload: scene
+        payload: scene,
       });
 
       expect(actualState.selectedScene).toEqual(scene);
@@ -482,7 +482,7 @@ describe('Satellites Slice', () => {
 
     it('should update the selected scenes in state, when they are cleared', () => {
       const actualState = reducer(beforeState, {
-        type: removeScenes.type
+        type: removeScenes.type,
       });
 
       expect(actualState.selectedScene).toEqual(null);
@@ -494,7 +494,7 @@ describe('Satellites Slice', () => {
 
       const actualState = reducer(beforeState, {
         type: saveSatelliteSearchSuccess.type,
-        payload: searchToSave
+        payload: searchToSave,
       });
 
       expect(actualState.satelliteSearches).toEqual([...beforeState.satelliteSearches, searchToSave]);
@@ -505,7 +505,7 @@ describe('Satellites Slice', () => {
 
       const actualState = reducer(beforeState, {
         type: saveSatelliteSearchFailure.type,
-        payload: error
+        payload: error,
       });
 
       expect(actualState.error).toEqual(error);
@@ -517,11 +517,11 @@ describe('Satellites Slice', () => {
 
       const actualState = reducer(beforeState, {
         type: deleteSatelliteSearchSuccess.type,
-        payload: searchToDelete.id
+        payload: searchToDelete.id,
       });
 
       expect(actualState.satelliteSearches).toEqual(
-        beforeState.satelliteSearches.filter(search => search.id !== searchToDelete.id)
+        beforeState.satelliteSearches.filter(search => search.id !== searchToDelete.id),
       );
     });
 
@@ -530,7 +530,7 @@ describe('Satellites Slice', () => {
 
       const actualState = reducer(beforeState, {
         type: deleteSatelliteSearchFailure.type,
-        payload: error
+        payload: error,
       });
 
       expect(actualState.error).toEqual(error);
@@ -541,7 +541,7 @@ describe('Satellites Slice', () => {
 
       const actualState = reducer(beforeState, {
         type: fetchPinnedScenesSuccess.type,
-        payload: pinnedScenes
+        payload: pinnedScenes,
       });
 
       expect(actualState.pinnedScenes).toEqual(pinnedScenes);
@@ -552,7 +552,7 @@ describe('Satellites Slice', () => {
 
       const actualState = reducer(beforeState, {
         type: fetchPinnedScenesFailure.type,
-        payload: error
+        payload: error,
       });
 
       expect(actualState.error).toEqual(error);
@@ -564,7 +564,7 @@ describe('Satellites Slice', () => {
 
       const actualState = reducer(beforeState, {
         type: pinSceneSuccess.type,
-        payload: sceneToPin
+        payload: sceneToPin,
       });
 
       expect(actualState.pinnedScenes).toEqual([...beforeState.pinnedScenes, sceneToPin]);
@@ -575,7 +575,7 @@ describe('Satellites Slice', () => {
 
       const actualState = reducer(beforeState, {
         type: pinSceneFailure.type,
-        payload: error
+        payload: error,
       });
 
       expect(actualState.error).toEqual(error);
@@ -587,11 +587,11 @@ describe('Satellites Slice', () => {
 
       const actualState = reducer(beforeState, {
         type: deletePinnedSceneSuccess.type,
-        payload: pinnedSceneToDelete.id
+        payload: pinnedSceneToDelete.id,
       });
 
       expect(actualState.pinnedScenes).toEqual(
-        beforeState.pinnedScenes.filter(scene => scene.id !== pinnedSceneToDelete.id)
+        beforeState.pinnedScenes.filter(scene => scene.id !== pinnedSceneToDelete.id),
       );
     });
 
@@ -600,7 +600,7 @@ describe('Satellites Slice', () => {
 
       const actualState = reducer(beforeState, {
         type: deletePinnedSceneFailure.type,
-        payload: error
+        payload: error,
       });
 
       expect(actualState.error).toEqual(error);
@@ -611,7 +611,7 @@ describe('Satellites Slice', () => {
 
       const actualState = reducer(beforeState, {
         type: selectPinnedScene.type,
-        payload: selectedScene
+        payload: selectedScene,
       });
 
       expect(actualState.selectedPinnedScenes).toEqual([selectedScene]);
@@ -623,7 +623,7 @@ describe('Satellites Slice', () => {
 
       const actualState = reducer(beforeState, {
         type: selectPinnedScene.type,
-        payload: selectedScene
+        payload: selectedScene,
       });
 
       expect(actualState.selectedPinnedScenes).toEqual([...beforeState.selectedPinnedScenes, selectedScene]);
@@ -635,11 +635,11 @@ describe('Satellites Slice', () => {
 
       const actualState = reducer(beforeState, {
         type: deselectPinnedScene.type,
-        payload: sceneToDelete
+        payload: sceneToDelete,
       });
 
       expect(actualState.selectedPinnedScenes).toEqual([
-        ...beforeState.selectedPinnedScenes.filter(scene => scene.id !== sceneToDelete.id)
+        ...beforeState.selectedPinnedScenes.filter(scene => scene.id !== sceneToDelete.id),
       ]);
     });
 
@@ -649,11 +649,11 @@ describe('Satellites Slice', () => {
 
       const actualState = reducer(beforeState, {
         type: deselectPinnedScene.type,
-        payload: sceneToDelete
+        payload: sceneToDelete,
       });
 
       expect(actualState.selectedPinnedScenes).toEqual([
-        ...beforeState.selectedPinnedScenes.filter(scene => scene.id !== sceneToDelete.id)
+        ...beforeState.selectedPinnedScenes.filter(scene => scene.id !== sceneToDelete.id),
       ]);
     });
 
@@ -661,7 +661,7 @@ describe('Satellites Slice', () => {
       beforeState.selectedPinnedScenes = [{ id: 1 }, { id: 2 }, { id: 3 }, { id: 4 }];
 
       const actualState = reducer(beforeState, {
-        type: clearSelectedPinnedScenes.type
+        type: clearSelectedPinnedScenes.type,
       });
 
       expect(actualState.selectedPinnedScenes).toEqual([]);
@@ -669,12 +669,12 @@ describe('Satellites Slice', () => {
 
     it('should update the current satellite search query in state', () => {
       const query = {
-        id: 1
+        id: 1,
       };
 
       const actualState = reducer(beforeState, {
         type: setCurrentSatelliteSearchQuery.type,
-        payload: query
+        payload: query,
       });
 
       expect(actualState.currentSearchQuery).toEqual(query);

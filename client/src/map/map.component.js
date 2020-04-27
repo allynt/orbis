@@ -46,7 +46,7 @@ import {
   STORIES,
   DATA_LAYERS,
   PROFILE,
-  SATELLITE_LAYERS
+  SATELLITE_LAYERS,
 } from '../toolbar/toolbar-constants';
 import { GEOJSON, RASTER, VECTOR, personTypes } from './map.constants';
 import useMapControl from './use-map-control.hook';
@@ -75,7 +75,7 @@ const Map = ({
   setMap,
   compare,
   selectedPinnedScenes,
-  comparisonScene
+  comparisonScene,
 }) => {
   const accessToken = useSelector(state => (state.app.config ? state.app.config.mapbox_token : null));
   const dataAuthToken = useSelector(selectDataToken);
@@ -136,7 +136,7 @@ const Map = ({
   useMapControl(mapInstance, geocoder, MapboxGeocoder, 'top-right', {
     accessToken: accessToken,
     reverseGeocode: true,
-    mapboxgl
+    mapboxgl,
   });
   useMapControl(mapInstance, draw, MapboxDraw, 'top-left', {
     displayControlsDefault: false,
@@ -152,8 +152,8 @@ const Map = ({
       CircleMode,
       LabelMode,
       ImageMode,
-      RectangleMode
-    }
+      RectangleMode,
+    },
   });
 
   useMap(
@@ -164,7 +164,7 @@ const Map = ({
       }, 0);
       return () => clearTimeout(timer);
     },
-    [layoutInvalidation]
+    [layoutInvalidation],
   );
 
   useMapEvent(
@@ -173,11 +173,11 @@ const Map = ({
     () => {
       const viewport = {
         center: mapInstance.getCenter(),
-        zoom: mapInstance.getZoom()
+        zoom: mapInstance.getZoom(),
       };
       dispatch(setViewport(viewport));
     },
-    []
+    [],
   );
 
   useMap(
@@ -193,7 +193,7 @@ const Map = ({
         dispatch(isLoaded());
       }
     },
-    [selectedBookmark]
+    [selectedBookmark],
   );
 
   useMap(
@@ -207,7 +207,7 @@ const Map = ({
         });
       }
     },
-    [isSaveMap, saveMap]
+    [isSaveMap, saveMap],
   );
 
   useMap(
@@ -236,7 +236,7 @@ const Map = ({
         });
       }
     },
-    [nonSelectedLayers]
+    [nonSelectedLayers],
   );
 
   useMap(
@@ -249,7 +249,7 @@ const Map = ({
             map.addSource(sourceId, {
               type: layer.type,
               tiles: [layer.metadata.url],
-              scheme: 'tms'
+              scheme: 'tms',
             });
 
             map.addLayer({
@@ -257,7 +257,7 @@ const Map = ({
               type: layer.type,
               source: sourceId,
               layout: {},
-              paint: {}
+              paint: {},
             });
 
             return () => {
@@ -267,7 +267,7 @@ const Map = ({
           } else if (layer.type.toLowerCase() === VECTOR) {
             map.addSource(sourceId, {
               type: layer.type,
-              tiles: [layer.metadata.url]
+              tiles: [layer.metadata.url],
             });
 
             map.addLayer({
@@ -276,7 +276,7 @@ const Map = ({
               source: sourceId,
               'source-layer': layer.name,
               layout: {},
-              paint: { 'fill-outline-color': '#484496', 'fill-color': 'green' }
+              paint: { 'fill-outline-color': '#484496', 'fill-color': 'green' },
             });
             return () => {
               map.removeLayer(`${layer.name}-layer`);
@@ -295,7 +295,7 @@ const Map = ({
               data,
               cluster: true,
               clusterMaxZoom: 14,
-              clusterRadius: 50
+              clusterRadius: 50,
             });
 
             // Calculate the radius for each zoom level between 0-5 as that is
@@ -316,8 +316,8 @@ const Map = ({
               paint: {
                 'circle-color': '#f6be00',
                 'circle-opacity': 1,
-                'circle-radius': ['interpolate', ['linear'], ['zoom'], ...radi]
-              } //,
+                'circle-radius': ['interpolate', ['linear'], ['zoom'], ...radi],
+              }, //,
               // minzoom: 10,
               // maxzoom: 19
             });
@@ -329,8 +329,8 @@ const Map = ({
               type: 'symbol',
               filter: ['has', 'point_count'],
               layout: {
-                'text-field': '{point_count}'
-              } //,
+                'text-field': '{point_count}',
+              }, //,
               // minzoom: 10,
               // maxzoom: 19
             });
@@ -345,8 +345,8 @@ const Map = ({
               paint: {
                 'circle-color': '#f6be00',
                 'circle-opacity': 1,
-                'circle-radius': 30
-              } //,
+                'circle-radius': 30,
+              }, //,
               // minzoom: 10,
               // maxzoom: 19
             });
@@ -360,8 +360,8 @@ const Map = ({
               layout: {
                 'icon-image': '{type}',
                 'icon-size': 0.75,
-                'icon-allow-overlap': true
-              } //,
+                'icon-allow-overlap': true,
+              }, //,
               // minzoom: 10,
               // maxzoom: 19
             });
@@ -378,11 +378,11 @@ const Map = ({
                   ...personTypes.reduce((acc, personType) => {
                     return [...acc, ['==', ['get', 'Type'], personType.name], personType.color];
                   }, []),
-                  'black'
+                  'black',
                 ],
                 'circle-opacity': 1,
-                'circle-radius': 10
-              } //,
+                'circle-radius': 10,
+              }, //,
               // minzoom: 10,
               // maxzoom: 19
             });
@@ -390,7 +390,7 @@ const Map = ({
               ...currentLayers,
               clusterlayerName,
               nonClusteredInfrastructureName,
-              populationLayerName
+              populationLayerName,
             ]);
           }
         }
@@ -410,7 +410,7 @@ const Map = ({
         };
       });
     },
-    [selectedLayers]
+    [selectedLayers],
   );
 
   useMapLayerEvent(
@@ -426,7 +426,7 @@ const Map = ({
         if (features[0].properties.point_count) {
           mapInstance.flyTo({
             center: [lngLat.lng, lngLat.lat],
-            zoom: mapInstance.getZoom() + 1
+            zoom: mapInstance.getZoom() + 1,
           });
         } else {
           if (!popupRef.current) {
@@ -449,7 +449,7 @@ const Map = ({
         }
       }
     },
-    [clickableLayers, setSelectedInfoFeatures]
+    [clickableLayers, setSelectedInfoFeatures],
   );
 
   useMap(
@@ -462,12 +462,12 @@ const Map = ({
           type: 'raster',
           tiles: [selectedScene.tile_url],
           scheme: 'tms',
-          tileSize: 256
+          tileSize: 256,
         });
         map.addLayer({
           id: layerId,
           type: 'raster',
-          source: sourceId
+          source: sourceId,
         });
         return () => {
           map.removeLayer(layerId);
@@ -486,7 +486,7 @@ const Map = ({
         }
       }
     },
-    [selectedScene, scenes]
+    [selectedScene, scenes],
   );
 
   useMap(
@@ -499,12 +499,12 @@ const Map = ({
           type: 'raster',
           tiles: [comparisonScene.tile_url],
           scheme: 'tms',
-          tileSize: 256
+          tileSize: 256,
         });
         map.addLayer({
           id: layerId,
           type: 'raster',
-          source: sourceId
+          source: sourceId,
         });
       } else {
         if (selectedPinnedScenes) {
@@ -519,7 +519,7 @@ const Map = ({
         }
       }
     },
-    [compare]
+    [compare],
   );
 
   const heading = useSelector(state => state.sidebar.heading);
@@ -549,7 +549,7 @@ const Map = ({
                 console.log('Add VECTOR SOURCE/LAYER: ', layer);
                 map.addSource(sourceId, {
                   type: layer.type,
-                  tiles: [layer.url]
+                  tiles: [layer.url],
                 });
 
                 map.addLayer({
@@ -558,7 +558,7 @@ const Map = ({
                   source: sourceId,
                   'source-layer': layer.id,
                   layout: {},
-                  paint: { 'fill-outline-color': '#484496', 'fill-color': 'green' }
+                  paint: { 'fill-outline-color': '#484496', 'fill-color': 'green' },
                 });
               } else if (layer.type.toLowerCase() === GEOJSON) {
                 console.log('Add GEOJSON SOURCE/LAYER: ', layer);
@@ -567,7 +567,7 @@ const Map = ({
                   data: layer.url,
                   cluster: true,
                   clusterMaxZoom: 14,
-                  clusterRadius: 50
+                  clusterRadius: 50,
                 });
 
                 // circle and symbol layers for rendering clustered and
@@ -580,10 +580,10 @@ const Map = ({
                     'circle-color': 'green',
                     // 'circle-color': ['case', ['has', 'point_count'], 'red', 'green'],
                     'circle-opacity': 0.6,
-                    'circle-radius': 30
+                    'circle-radius': 30,
                   },
                   minzoom: 10,
-                  maxzoom: 19
+                  maxzoom: 19,
                 });
               }
             }
@@ -593,7 +593,7 @@ const Map = ({
         }
       }
     },
-    [selectedStory, selectedChapter, setSelectedChapter]
+    [selectedStory, selectedChapter, setSelectedChapter],
   );
 
   return (
@@ -653,7 +653,7 @@ const Map = ({
               <InfrastructureDetail features={selectedInfoFeatures.data} />
             )}
           </div>,
-          popupRef.current
+          popupRef.current,
         )}
 
       {selectedStory && (

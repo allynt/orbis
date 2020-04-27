@@ -31,12 +31,12 @@ const LayerTree = ({ map }) => {
       const layers = mapInstance.getStyle().layers;
       const layerNodes = layers.map(layer => ({
         label: layer.id,
-        visible: true
+        visible: true,
       }));
 
       setNodes(layerNodes);
     },
-    [setNodes]
+    [setNodes],
   );
 
   const toggleLayerVisibility = layer => {

@@ -18,7 +18,7 @@ const renderComponent = (store, login, user, error) =>
       <Provider store={store}>
         <LoginForm login={login} user={user} error={error} />
       </Provider>
-    </MemoryRouter>
+    </MemoryRouter>,
   );
 
 describe('Login Form Component', () => {
@@ -30,8 +30,8 @@ describe('Login Form Component', () => {
   beforeEach(() => {
     store = mockStore({
       app: {
-        config: {}
-      }
+        config: {},
+      },
     });
     login = jest.fn();
     user = null;

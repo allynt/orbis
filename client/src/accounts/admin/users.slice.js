@@ -8,7 +8,7 @@ const API = '/api/users/';
 const initialState = {
   users: null,
   isLoading: false,
-  error: null
+  error: null,
 };
 
 const usersSlice = createSlice({
@@ -62,8 +62,8 @@ const usersSlice = createSlice({
     createUserFailure: (state, { payload }) => {
       state.error = payload;
       state.isLoading = false;
-    }
-  }
+    },
+  },
 });
 
 export const {
@@ -78,16 +78,16 @@ export const {
   updateUserFailure,
   createUserRequested,
   createUserSuccess,
-  createUserFailure
+  createUserFailure,
 } = usersSlice.actions;
 
 export const createUser = fields => async (dispatch, getState) => {
   const {
-    accounts: { userKey }
+    accounts: { userKey },
   } = getState();
   const headers = {
     ...JSON_HEADERS,
-    Authorization: `Token ${userKey}`
+    Authorization: `Token ${userKey}`,
   };
 
   dispatch(createUserRequested());
@@ -108,11 +108,11 @@ export const createUser = fields => async (dispatch, getState) => {
 
 export const fetchUsers = () => async (dispatch, getState) => {
   const {
-    accounts: { userKey }
+    accounts: { userKey },
   } = getState();
   const headers = {
     ...JSON_HEADERS,
-    Authorization: `Token ${userKey}`
+    Authorization: `Token ${userKey}`,
   };
 
   dispatch(fetchUsersRequested());
@@ -134,11 +134,11 @@ export const fetchUsers = () => async (dispatch, getState) => {
 
 export const updateUser = user => async (dispatch, getState) => {
   const {
-    accounts: { userKey }
+    accounts: { userKey },
   } = getState();
   const headers = {
     ...JSON_HEADERS,
-    Authorization: `Token ${userKey}`
+    Authorization: `Token ${userKey}`,
   };
 
   dispatch(updateUserRequested());
@@ -160,11 +160,11 @@ export const updateUser = user => async (dispatch, getState) => {
 
 export const deleteUser = id => async (dispatch, getState) => {
   const {
-    accounts: { userKey }
+    accounts: { userKey },
   } = getState();
   const headers = {
     ...JSON_HEADERS,
-    Authorization: `Token ${userKey}`
+    Authorization: `Token ${userKey}`,
   };
 
   dispatch(deleteUserRequested());
@@ -187,7 +187,7 @@ export const copyUser = user => async (dispatch, getState) => {
   const data = {
     ...user,
     name: `Copy of ${user.name}`,
-    description: `Copy of ${user.description}`
+    description: `Copy of ${user.description}`,
   };
 
   return dispatch(createUser(data));

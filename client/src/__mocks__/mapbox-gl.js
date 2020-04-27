@@ -37,13 +37,13 @@ export default {
         getNorthWest: jest.fn(() => ({ lng: 0, lat: 0 })),
         getNorthEast: jest.fn(() => ({ lng: 0, lat: 0 })),
         getSouthEast: jest.fn(() => ({ lng: 0, lat: 0 })),
-        getSouthWest: jest.fn(() => ({ lng: 0, lat: 0 }))
+        getSouthWest: jest.fn(() => ({ lng: 0, lat: 0 })),
       })),
       getStyle: jest.fn(() => ({
-        layers: []
-      }))
+        layers: [],
+      })),
     };
-  })
+  }),
 };
 export const ScaleControl = jest.fn();
 export const AttributionControl = jest.fn();

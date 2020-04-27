@@ -11,7 +11,7 @@ import {
   SHARE,
   FAQ,
   PROFILE,
-  CHANGE_PASSWORD
+  CHANGE_PASSWORD,
 } from './toolbar-constants';
 
 import { ReactComponent as DataIcon } from './data.svg';
@@ -42,7 +42,7 @@ export const getToolbarItems = dispatch => {
         dispatch(toggleMenuItem(DATA_LAYERS));
         dispatch(setMenuHeadings({ heading: 'SELECT ORB', strapline: 'Choose your ORB and then add data layers' }));
       },
-      tooltip: DATA_LAYERS
+      tooltip: DATA_LAYERS,
     },
     // {
     //   label: SATELLITE_LAYERS,
@@ -68,7 +68,7 @@ export const getToolbarItems = dispatch => {
         dispatch(toggleMenuItem(BOOKMARKS));
         dispatch(setMenuHeadings({ heading: 'MAPS', strapline: 'Select an Existing Map or Add New' }));
       },
-      tooltip: BOOKMARKS
+      tooltip: BOOKMARKS,
     },
     // {
     //   label: ANNOTATIONS,
@@ -143,8 +143,8 @@ export const getToolbarItems = dispatch => {
         dispatch(setMenuHeadings({ heading: 'My Account', strapline: 'Edit your details below' }));
       },
       tooltip: PROFILE,
-      footer: true
-    }
+      footer: true,
+    },
   ];
 
   if (featureToggles.stories) {
@@ -156,7 +156,7 @@ export const getToolbarItems = dispatch => {
         dispatch(toggleMenuItem(STORIES));
         dispatch(setMenuHeadings({ heading: 'STORIES', strapline: 'Select an Existing Story or Add New' }));
       },
-      tooltip: STORIES
+      tooltip: STORIES,
     });
   }
   return items;

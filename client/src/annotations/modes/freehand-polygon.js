@@ -20,7 +20,7 @@ const drag = {
       // Always disable here, as it's necessary in some cases.
       ctx.map.dragPan.disable();
     }, 0);
-  }
+  },
 };
 
 FreehandPolygonMode.onSetup = function(opts) {
@@ -28,12 +28,12 @@ FreehandPolygonMode.onSetup = function(opts) {
   props.polygon.properties = {
     ...props.polygon.properties,
     ...opts,
-    dragging: false
+    dragging: false,
   };
   drag.disable(this);
 
   return {
-    ...props
+    ...props,
   };
 };
 
@@ -50,7 +50,7 @@ FreehandPolygonMode.onMouseUp = function(state) {
   if (state.dragging) {
     this.map.fire(Constants.events.UPDATE, {
       action: Constants.updateActions.MOVE,
-      features: this.getSelected().map(f => f.toGeoJSON())
+      features: this.getSelected().map(f => f.toGeoJSON()),
     });
     this.changeMode(Constants.modes.SIMPLE_SELECT, { featureIds: [state.polygon.id] });
   }

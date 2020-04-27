@@ -52,7 +52,7 @@ const BookmarkForm = ({ submit }) => {
 };
 
 BookmarkForm.propTypes = {
-  submit: PropTypes.func.isRequired
+  submit: PropTypes.func.isRequired,
 };
 
 export default BookmarkForm;

@@ -9,7 +9,7 @@ const mockStore = configureMockStore(middlewares);
 const USER_STATE = {
   userKey: 'authenticationToken',
   user: null,
-  error: null
+  error: null,
 };
 
 describe('Http', () => {
@@ -18,7 +18,7 @@ describe('Http', () => {
 
   beforeEach(() => {
     beforeState = {
-      accounts: USER_STATE
+      accounts: USER_STATE,
     };
     store = mockStore(beforeState);
 
@@ -44,7 +44,7 @@ describe('Http', () => {
     fetch.mockResponse('');
 
     const {
-      accounts: { userKey }
+      accounts: { userKey },
     } = store.getState();
 
     const url = '/api/test';
@@ -81,7 +81,7 @@ describe('Http', () => {
     fetch.mockResponse(JSON.stringify(data));
 
     const {
-      accounts: { userKey }
+      accounts: { userKey },
     } = store.getState();
 
     const url = '/api/test';
@@ -101,7 +101,7 @@ describe('Http', () => {
     fetch.mockReject({ message: 'Error posting data' });
 
     const {
-      accounts: { userKey }
+      accounts: { userKey },
     } = store.getState();
 
     const url = '/api/test';

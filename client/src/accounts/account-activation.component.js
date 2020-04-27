@@ -23,7 +23,7 @@ const AccountActivation = ({ match, activateAccount }) => {
 
 AccountActivation.propTypes = {
   match: PropTypes.object.isRequired,
-  activateAccount: PropTypes.func.isRequired
+  activateAccount: PropTypes.func.isRequired,
 };
 
 export default AccountActivation;

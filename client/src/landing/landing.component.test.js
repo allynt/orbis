@@ -24,14 +24,14 @@ describe('Landing Component', () => {
       id: 1,
       title: 'Bookmark Title 1',
       created: '2000-01-01T00:00:00Z',
-      thumbnail: 'Bookmark Thumbnail 1'
+      thumbnail: 'Bookmark Thumbnail 1',
     },
     {
       id: 2,
       title: 'Bookmark Title 2',
       created: '2000-01-02T00:00:00Z',
-      thumbnail: 'Bookmark Thumbnail 2'
-    }
+      thumbnail: 'Bookmark Thumbnail 2',
+    },
   ];
 
   let store = null;
@@ -42,14 +42,14 @@ describe('Landing Component', () => {
   beforeEach(() => {
     store = mockStore({
       bookmarks: {
-        bookmarks
+        bookmarks,
       },
       map: {
-        regions
+        regions,
       },
       data: {
-        domains
-      }
+        domains,
+      },
     });
 
     history = createMemoryHistory({ initialEntries: ['/'] });
@@ -60,18 +60,18 @@ describe('Landing Component', () => {
   it('should render the New User Landing view', () => {
     store = mockStore({
       bookmarks: {
-        bookmarks: []
+        bookmarks: [],
       },
       map: {
-        regions
+        regions,
       },
-      data: { domains }
+      data: { domains },
     });
 
     const { getByText, queryByText } = render(
       <Provider store={store}>
         <Landing />
-      </Provider>
+      </Provider>,
     );
 
     expect(getByText('your Earth exploration journey starts here')).toBeInTheDocument();
@@ -85,7 +85,7 @@ describe('Landing Component', () => {
     const { getByText, queryByText } = render(
       <Provider store={store}>
         <Landing />
-      </Provider>
+      </Provider>,
     );
 
     expect(getByText(bookmarkText)).toBeInTheDocument();
@@ -99,7 +99,7 @@ describe('Landing Component', () => {
     const { getByText, queryByText } = render(
       <Provider store={store}>
         <Landing />
-      </Provider>
+      </Provider>,
     );
     const yourMapsHeader = getByText(bookmarkText).parentElement;
     fireEvent.click(within(yourMapsHeader).getByText('View all'));
@@ -115,7 +115,7 @@ describe('Landing Component', () => {
     const { getByText, queryByText } = render(
       <Provider store={store}>
         <Landing />
-      </Provider>
+      </Provider>,
     );
 
     const yourMapsHeader = getByText(bookmarkText).parentElement;
@@ -139,7 +139,7 @@ describe('Landing Component', () => {
         <Provider store={store}>
           <Landing />
         </Provider>
-      </Router>
+      </Router>,
     );
 
     const bookmarkedMaps = container.querySelectorAll('.items')[0];

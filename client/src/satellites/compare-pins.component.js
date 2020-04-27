@@ -24,9 +24,9 @@ const ComparePins = (
     toggleCompareMode,
     pinnedScenes,
     selectedPinnedScenes,
-    isCompareMode
+    isCompareMode,
   },
-  ref
+  ref,
 ) => {
   useEffect(() => {
     if (!pinnedScenes) {

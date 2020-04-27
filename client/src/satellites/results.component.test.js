@@ -5,7 +5,7 @@ import { render, within, fireEvent } from '@testing-library/react';
 import Results from './results.component';
 
 const mockeDialogRef = {
-  current: document.body
+  current: document.body,
 };
 
 const mockScenes = [
@@ -13,20 +13,20 @@ const mockScenes = [
     id: 1,
     cloudCover: 0.5,
     thumbnail_url: '/thumbnail.png',
-    created: '2000-01-01T00:00:00Z'
+    created: '2000-01-01T00:00:00Z',
   },
   {
     id: 2,
     cloudCover: 0.9,
     thumbnail_url: '/thumbnail.png',
-    created: '2000-01-02T01:00:00Z'
+    created: '2000-01-02T01:00:00Z',
   },
   {
     id: 3,
     cloudCover: 10.9,
     thumbnail_url: '/thumbnail.png',
-    created: '2000-01-02T01:00:00Z'
-  }
+    created: '2000-01-02T01:00:00Z',
+  },
 ];
 
 const renderComponent = args => {
@@ -41,7 +41,7 @@ const renderComponent = args => {
     deletePinnedScene: jest.fn(),
     saveSatelliteSearch: jest.fn(),
     currentSearchQuery: false,
-    ...args
+    ...args,
   };
   const testee = render(
     <Results
@@ -56,7 +56,7 @@ const renderComponent = args => {
       saveSatelliteSearch={attributes.saveSatelliteSearch}
       currentSearchQuery={attributes.currentSearchQuery}
       ref={mockeDialogRef}
-    />
+    />,
   );
 
   return { ...attributes, ...testee };
@@ -104,7 +104,7 @@ describe('Satellite Results Component', () => {
 
     expect(getByText(dialogTitle)).toBeInTheDocument();
     expect(
-      getByText('Please name your search. Find your saved searches alongside your saved AOIs under "Saved Searches"')
+      getByText('Please name your search. Find your saved searches alongside your saved AOIs under "Saved Searches"'),
     ).toBeInTheDocument();
   });
 });

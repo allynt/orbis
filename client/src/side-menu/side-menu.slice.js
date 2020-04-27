@@ -4,7 +4,7 @@ const initialState = {
   isMenuVisible: false,
   visibleMenuItem: '',
   heading: '',
-  strapline: ''
+  strapline: '',
 };
 
 const sideMenuSlice = createSlice({
@@ -32,8 +32,8 @@ const sideMenuSlice = createSlice({
     closeMenu: state => {
       state.visibleMenuItem = '';
       state.isMenuVisible = false;
-    }
-  }
+    },
+  },
 });
 
 export const { toggleMenu, toggleMenuItem, setMenuHeadings, closeMenu } = sideMenuSlice.actions;

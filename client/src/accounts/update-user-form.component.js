@@ -59,7 +59,7 @@ const UpdateUserForm = ({ user, updateUser }) => {
 
 UpdateUserForm.propTypes = {
   user: PropTypes.object.isRequired,
-  updateUser: PropTypes.func.isRequired
+  updateUser: PropTypes.func.isRequired,
 };
 
 export default UpdateUserForm;

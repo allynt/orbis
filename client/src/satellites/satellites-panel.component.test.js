@@ -11,13 +11,13 @@ const MAPSTYLES = [
   {
     id: 'light',
     uri: 'mapbox://styles/mapbox/light-v10',
-    title: 'Light'
+    title: 'Light',
   },
   {
     id: 'dark',
     uri: 'mapbox://styles/mapbox/dark-v10',
-    title: 'Dark'
-  }
+    title: 'Dark',
+  },
 ];
 
 const baseStore = {
@@ -25,12 +25,12 @@ const baseStore = {
   app: {
     config: {
       mapbox_token: 'token',
-      mapStyles: MAPSTYLES
-    }
+      mapStyles: MAPSTYLES,
+    },
   },
   map: {
-    isCompareMode: false
-  }
+    isCompareMode: false,
+  },
 };
 
 const satellites = [
@@ -42,18 +42,18 @@ const satellites = [
       {
         id: 'free',
         label: 'Free Images',
-        description: 'Free scenes.'
+        description: 'Free scenes.',
       },
       {
         id: 'mid',
         label: 'Mid Resolution',
-        description: 'Mid resolution scenes.'
+        description: 'Mid resolution scenes.',
       },
       {
         id: 'high',
         label: 'High Resolution',
-        description: 'High resolution scenes.'
-      }
+        description: 'High resolution scenes.',
+      },
     ],
     visualisations: [
       {
@@ -61,30 +61,30 @@ const satellites = [
         label: 'True Color',
         description: 'Based on bands 4,3,2',
         thumbnail:
-          'https://cnet4.cbsistatic.com/img/-JKG69A9xmdlvxVwYtpIztVHxHI=/940x0/2018/08/21/09803db6-578f-41f7-9c7a-0b9efc5d6751/starshot-satellite-launch.jpg'
+          'https://cnet4.cbsistatic.com/img/-JKG69A9xmdlvxVwYtpIztVHxHI=/940x0/2018/08/21/09803db6-578f-41f7-9c7a-0b9efc5d6751/starshot-satellite-launch.jpg',
       },
       {
         id: 'false-color',
         label: 'False Color',
         description: 'Based on bands 4,3,2',
         thumbnail:
-          'https://cnet4.cbsistatic.com/img/-JKG69A9xmdlvxVwYtpIztVHxHI=/940x0/2018/08/21/09803db6-578f-41f7-9c7a-0b9efc5d6751/starshot-satellite-launch.jpg'
+          'https://cnet4.cbsistatic.com/img/-JKG69A9xmdlvxVwYtpIztVHxHI=/940x0/2018/08/21/09803db6-578f-41f7-9c7a-0b9efc5d6751/starshot-satellite-launch.jpg',
       },
       {
         id: 'false-color-urban',
         label: 'False Color (urban)',
         description: 'Based on bands 4,3,2',
         thumbnail:
-          'https://cnet4.cbsistatic.com/img/-JKG69A9xmdlvxVwYtpIztVHxHI=/940x0/2018/08/21/09803db6-578f-41f7-9c7a-0b9efc5d6751/starshot-satellite-launch.jpg'
+          'https://cnet4.cbsistatic.com/img/-JKG69A9xmdlvxVwYtpIztVHxHI=/940x0/2018/08/21/09803db6-578f-41f7-9c7a-0b9efc5d6751/starshot-satellite-launch.jpg',
       },
       {
         id: 'ndvi',
         label: 'NDVI',
         description: 'Based on conbination bands (B8A-B4)/(B8A + B11)',
         thumbnail:
-          'https://cnet4.cbsistatic.com/img/-JKG69A9xmdlvxVwYtpIztVHxHI=/940x0/2018/08/21/09803db6-578f-41f7-9c7a-0b9efc5d6751/starshot-satellite-launch.jpg'
-      }
-    ]
+          'https://cnet4.cbsistatic.com/img/-JKG69A9xmdlvxVwYtpIztVHxHI=/940x0/2018/08/21/09803db6-578f-41f7-9c7a-0b9efc5d6751/starshot-satellite-launch.jpg',
+      },
+    ],
   },
   {
     id: 'sentinel-2',
@@ -94,18 +94,18 @@ const satellites = [
       {
         id: 'free',
         label: 'Free Images',
-        description: 'Free scenes.'
+        description: 'Free scenes.',
       },
       {
         id: 'mid',
         label: 'Mid Resolution',
-        description: 'Mid resolution scenes.'
+        description: 'Mid resolution scenes.',
       },
       {
         id: 'high',
         label: 'High Resolution',
-        description: 'High resolution scenes.'
-      }
+        description: 'High resolution scenes.',
+      },
     ],
     visualisations: [
       {
@@ -113,30 +113,30 @@ const satellites = [
         label: 'True Color',
         description: 'Based on bands 4,3,2',
         thumbnail:
-          'https://cnet4.cbsistatic.com/img/-JKG69A9xmdlvxVwYtpIztVHxHI=/940x0/2018/08/21/09803db6-578f-41f7-9c7a-0b9efc5d6751/starshot-satellite-launch.jpg'
+          'https://cnet4.cbsistatic.com/img/-JKG69A9xmdlvxVwYtpIztVHxHI=/940x0/2018/08/21/09803db6-578f-41f7-9c7a-0b9efc5d6751/starshot-satellite-launch.jpg',
       },
       {
         id: 'false-color',
         label: 'False Color',
         description: 'Based on bands 4,3,2',
         thumbnail:
-          'https://cnet4.cbsistatic.com/img/-JKG69A9xmdlvxVwYtpIztVHxHI=/940x0/2018/08/21/09803db6-578f-41f7-9c7a-0b9efc5d6751/starshot-satellite-launch.jpg'
+          'https://cnet4.cbsistatic.com/img/-JKG69A9xmdlvxVwYtpIztVHxHI=/940x0/2018/08/21/09803db6-578f-41f7-9c7a-0b9efc5d6751/starshot-satellite-launch.jpg',
       },
       {
         id: 'false-color-urban',
         label: 'False Color (urban)',
         description: 'Based on bands 4,3,2',
         thumbnail:
-          'https://cnet4.cbsistatic.com/img/-JKG69A9xmdlvxVwYtpIztVHxHI=/940x0/2018/08/21/09803db6-578f-41f7-9c7a-0b9efc5d6751/starshot-satellite-launch.jpg'
+          'https://cnet4.cbsistatic.com/img/-JKG69A9xmdlvxVwYtpIztVHxHI=/940x0/2018/08/21/09803db6-578f-41f7-9c7a-0b9efc5d6751/starshot-satellite-launch.jpg',
       },
       {
         id: 'ndvi',
         label: 'NDVI',
         description: 'Based on conbination bands (B8A-B4)/(B8A + B11)',
         thumbnail:
-          'https://cnet4.cbsistatic.com/img/-JKG69A9xmdlvxVwYtpIztVHxHI=/940x0/2018/08/21/09803db6-578f-41f7-9c7a-0b9efc5d6751/starshot-satellite-launch.jpg'
-      }
-    ]
+          'https://cnet4.cbsistatic.com/img/-JKG69A9xmdlvxVwYtpIztVHxHI=/940x0/2018/08/21/09803db6-578f-41f7-9c7a-0b9efc5d6751/starshot-satellite-launch.jpg',
+      },
+    ],
   },
   {
     id: 'sentinel-3',
@@ -146,18 +146,18 @@ const satellites = [
       {
         id: 'free',
         label: 'Free Images',
-        description: 'Free scenes.'
+        description: 'Free scenes.',
       },
       {
         id: 'mid',
         label: 'Mid Resolution',
-        description: 'Mid resolution scenes.'
+        description: 'Mid resolution scenes.',
       },
       {
         id: 'high',
         label: 'High Resolution',
-        description: 'High resolution scenes.'
-      }
+        description: 'High resolution scenes.',
+      },
     ],
     visualisations: [
       {
@@ -165,30 +165,30 @@ const satellites = [
         label: 'True Color',
         description: 'Based on bands 4,3,2',
         thumbnail:
-          'https://cnet4.cbsistatic.com/img/-JKG69A9xmdlvxVwYtpIztVHxHI=/940x0/2018/08/21/09803db6-578f-41f7-9c7a-0b9efc5d6751/starshot-satellite-launch.jpg'
+          'https://cnet4.cbsistatic.com/img/-JKG69A9xmdlvxVwYtpIztVHxHI=/940x0/2018/08/21/09803db6-578f-41f7-9c7a-0b9efc5d6751/starshot-satellite-launch.jpg',
       },
       {
         id: 'false-color',
         label: 'False Color',
         description: 'Based on bands 4,3,2',
         thumbnail:
-          'https://cnet4.cbsistatic.com/img/-JKG69A9xmdlvxVwYtpIztVHxHI=/940x0/2018/08/21/09803db6-578f-41f7-9c7a-0b9efc5d6751/starshot-satellite-launch.jpg'
+          'https://cnet4.cbsistatic.com/img/-JKG69A9xmdlvxVwYtpIztVHxHI=/940x0/2018/08/21/09803db6-578f-41f7-9c7a-0b9efc5d6751/starshot-satellite-launch.jpg',
       },
       {
         id: 'false-color-urban',
         label: 'False Color (urban)',
         description: 'Based on bands 4,3,2',
         thumbnail:
-          'https://cnet4.cbsistatic.com/img/-JKG69A9xmdlvxVwYtpIztVHxHI=/940x0/2018/08/21/09803db6-578f-41f7-9c7a-0b9efc5d6751/starshot-satellite-launch.jpg'
+          'https://cnet4.cbsistatic.com/img/-JKG69A9xmdlvxVwYtpIztVHxHI=/940x0/2018/08/21/09803db6-578f-41f7-9c7a-0b9efc5d6751/starshot-satellite-launch.jpg',
       },
       {
         id: 'ndvi',
         label: 'NDVI',
         description: 'Based on conbination bands (B8A-B4)/(B8A + B11)',
         thumbnail:
-          'https://cnet4.cbsistatic.com/img/-JKG69A9xmdlvxVwYtpIztVHxHI=/940x0/2018/08/21/09803db6-578f-41f7-9c7a-0b9efc5d6751/starshot-satellite-launch.jpg'
-      }
-    ]
+          'https://cnet4.cbsistatic.com/img/-JKG69A9xmdlvxVwYtpIztVHxHI=/940x0/2018/08/21/09803db6-578f-41f7-9c7a-0b9efc5d6751/starshot-satellite-launch.jpg',
+      },
+    ],
   },
   {
     id: 'landsat',
@@ -198,18 +198,18 @@ const satellites = [
       {
         id: 'free',
         label: 'Free Images',
-        description: 'Free scenes.'
+        description: 'Free scenes.',
       },
       {
         id: 'mid',
         label: 'Mid Resolution',
-        description: 'Mid resolution scenes.'
+        description: 'Mid resolution scenes.',
       },
       {
         id: 'high',
         label: 'High Resolution',
-        description: 'High resolution scenes.'
-      }
+        description: 'High resolution scenes.',
+      },
     ],
     visualisations: [
       {
@@ -217,30 +217,30 @@ const satellites = [
         label: 'NDVI',
         description: 'Based on conbination bands (B8A-B4)/(B8A + B11)',
         thumbnail:
-          'https://cnet4.cbsistatic.com/img/-JKG69A9xmdlvxVwYtpIztVHxHI=/940x0/2018/08/21/09803db6-578f-41f7-9c7a-0b9efc5d6751/starshot-satellite-launch.jpg'
+          'https://cnet4.cbsistatic.com/img/-JKG69A9xmdlvxVwYtpIztVHxHI=/940x0/2018/08/21/09803db6-578f-41f7-9c7a-0b9efc5d6751/starshot-satellite-launch.jpg',
       },
       {
         id: 'false-color-urban',
         label: 'False Color (urban)',
         description: 'Based on bands 4,3,2',
         thumbnail:
-          'https://cnet4.cbsistatic.com/img/-JKG69A9xmdlvxVwYtpIztVHxHI=/940x0/2018/08/21/09803db6-578f-41f7-9c7a-0b9efc5d6751/starshot-satellite-launch.jpg'
+          'https://cnet4.cbsistatic.com/img/-JKG69A9xmdlvxVwYtpIztVHxHI=/940x0/2018/08/21/09803db6-578f-41f7-9c7a-0b9efc5d6751/starshot-satellite-launch.jpg',
       },
       {
         id: 'false-color',
         label: 'False Color',
         description: 'Based on bands 4,3,2',
         thumbnail:
-          'https://cnet4.cbsistatic.com/img/-JKG69A9xmdlvxVwYtpIztVHxHI=/940x0/2018/08/21/09803db6-578f-41f7-9c7a-0b9efc5d6751/starshot-satellite-launch.jpg'
+          'https://cnet4.cbsistatic.com/img/-JKG69A9xmdlvxVwYtpIztVHxHI=/940x0/2018/08/21/09803db6-578f-41f7-9c7a-0b9efc5d6751/starshot-satellite-launch.jpg',
       },
       {
         id: 'true-color',
         label: 'True Color',
         description: 'Based on bands 4,3,2',
         thumbnail:
-          'https://cnet4.cbsistatic.com/img/-JKG69A9xmdlvxVwYtpIztVHxHI=/940x0/2018/08/21/09803db6-578f-41f7-9c7a-0b9efc5d6751/starshot-satellite-launch.jpg'
-      }
-    ]
+          'https://cnet4.cbsistatic.com/img/-JKG69A9xmdlvxVwYtpIztVHxHI=/940x0/2018/08/21/09803db6-578f-41f7-9c7a-0b9efc5d6751/starshot-satellite-launch.jpg',
+      },
+    ],
   },
   {
     id: 'envisat-meris',
@@ -250,18 +250,18 @@ const satellites = [
       {
         id: 'free',
         label: 'Free Images',
-        description: 'Free scenes.'
+        description: 'Free scenes.',
       },
       {
         id: 'mid',
         label: 'Mid Resolution',
-        description: 'Mid resolution scenes.'
+        description: 'Mid resolution scenes.',
       },
       {
         id: 'high',
         label: 'High Resolution',
-        description: 'High resolution scenes.'
-      }
+        description: 'High resolution scenes.',
+      },
     ],
     visualisations: [
       {
@@ -269,30 +269,30 @@ const satellites = [
         label: 'NDVI',
         description: 'Based on conbination bands (B8A-B4)/(B8A + B11)',
         thumbnail:
-          'https://cnet4.cbsistatic.com/img/-JKG69A9xmdlvxVwYtpIztVHxHI=/940x0/2018/08/21/09803db6-578f-41f7-9c7a-0b9efc5d6751/starshot-satellite-launch.jpg'
+          'https://cnet4.cbsistatic.com/img/-JKG69A9xmdlvxVwYtpIztVHxHI=/940x0/2018/08/21/09803db6-578f-41f7-9c7a-0b9efc5d6751/starshot-satellite-launch.jpg',
       },
       {
         id: 'false-color-urban',
         label: 'False Color (urban)',
         description: 'Based on bands 4,3,2',
         thumbnail:
-          'https://cnet4.cbsistatic.com/img/-JKG69A9xmdlvxVwYtpIztVHxHI=/940x0/2018/08/21/09803db6-578f-41f7-9c7a-0b9efc5d6751/starshot-satellite-launch.jpg'
+          'https://cnet4.cbsistatic.com/img/-JKG69A9xmdlvxVwYtpIztVHxHI=/940x0/2018/08/21/09803db6-578f-41f7-9c7a-0b9efc5d6751/starshot-satellite-launch.jpg',
       },
       {
         id: 'false-color',
         label: 'False Color',
         description: 'Based on bands 4,3,2',
         thumbnail:
-          'https://cnet4.cbsistatic.com/img/-JKG69A9xmdlvxVwYtpIztVHxHI=/940x0/2018/08/21/09803db6-578f-41f7-9c7a-0b9efc5d6751/starshot-satellite-launch.jpg'
+          'https://cnet4.cbsistatic.com/img/-JKG69A9xmdlvxVwYtpIztVHxHI=/940x0/2018/08/21/09803db6-578f-41f7-9c7a-0b9efc5d6751/starshot-satellite-launch.jpg',
       },
       {
         id: 'true-color',
         label: 'True Color',
         description: 'Based on bands 4,3,2',
         thumbnail:
-          'https://cnet4.cbsistatic.com/img/-JKG69A9xmdlvxVwYtpIztVHxHI=/940x0/2018/08/21/09803db6-578f-41f7-9c7a-0b9efc5d6751/starshot-satellite-launch.jpg'
-      }
-    ]
+          'https://cnet4.cbsistatic.com/img/-JKG69A9xmdlvxVwYtpIztVHxHI=/940x0/2018/08/21/09803db6-578f-41f7-9c7a-0b9efc5d6751/starshot-satellite-launch.jpg',
+      },
+    ],
   },
   {
     id: 'modis',
@@ -302,18 +302,18 @@ const satellites = [
       {
         id: 'free',
         label: 'Free Images',
-        description: 'Free scenes.'
+        description: 'Free scenes.',
       },
       {
         id: 'mid',
         label: 'Mid Resolution',
-        description: 'Mid resolution scenes.'
+        description: 'Mid resolution scenes.',
       },
       {
         id: 'high',
         label: 'High Resolution',
-        description: 'High resolution scenes.'
-      }
+        description: 'High resolution scenes.',
+      },
     ],
     visualisations: [
       {
@@ -321,9 +321,9 @@ const satellites = [
         label: 'ndvi',
         description: 'This is a description of this visualization',
         thumbnail:
-          'https://landsat-pds.s3.amazonaws.com/c1/L8/027/033/LC08_L1TP_027033_20200107_20200114_01_T1/LC08_L1TP_027033_20200107_20200114_01_T1_thumb_small.jpg'
-      }
-    ]
+          'https://landsat-pds.s3.amazonaws.com/c1/L8/027/033/LC08_L1TP_027033_20200107_20200114_01_T1/LC08_L1TP_027033_20200107_20200114_01_T1_thumb_small.jpg',
+      },
+    ],
   },
   {
     id: 'proba-v',
@@ -333,18 +333,18 @@ const satellites = [
       {
         id: 'free',
         label: 'Free Images',
-        description: 'Free scenes.'
+        description: 'Free scenes.',
       },
       {
         id: 'mid',
         label: 'Mid Resolution',
-        description: 'Mid resolution scenes.'
+        description: 'Mid resolution scenes.',
       },
       {
         id: 'high',
         label: 'High Resolution',
-        description: 'High resolution scenes.'
-      }
+        description: 'High resolution scenes.',
+      },
     ],
     visualisations: [
       {
@@ -352,30 +352,30 @@ const satellites = [
         label: 'NDVI',
         description: 'Based on conbination bands (B8A-B4)/(B8A + B11)',
         thumbnail:
-          'https://cnet4.cbsistatic.com/img/-JKG69A9xmdlvxVwYtpIztVHxHI=/940x0/2018/08/21/09803db6-578f-41f7-9c7a-0b9efc5d6751/starshot-satellite-launch.jpg'
+          'https://cnet4.cbsistatic.com/img/-JKG69A9xmdlvxVwYtpIztVHxHI=/940x0/2018/08/21/09803db6-578f-41f7-9c7a-0b9efc5d6751/starshot-satellite-launch.jpg',
       },
       {
         id: 'false-color-urban',
         label: 'False Color (urban)',
         description: 'Based on bands 4,3,2',
         thumbnail:
-          'https://cnet4.cbsistatic.com/img/-JKG69A9xmdlvxVwYtpIztVHxHI=/940x0/2018/08/21/09803db6-578f-41f7-9c7a-0b9efc5d6751/starshot-satellite-launch.jpg'
+          'https://cnet4.cbsistatic.com/img/-JKG69A9xmdlvxVwYtpIztVHxHI=/940x0/2018/08/21/09803db6-578f-41f7-9c7a-0b9efc5d6751/starshot-satellite-launch.jpg',
       },
       {
         id: 'false-color',
         label: 'False Color',
         description: 'Based on bands 4,3,2',
         thumbnail:
-          'https://cnet4.cbsistatic.com/img/-JKG69A9xmdlvxVwYtpIztVHxHI=/940x0/2018/08/21/09803db6-578f-41f7-9c7a-0b9efc5d6751/starshot-satellite-launch.jpg'
+          'https://cnet4.cbsistatic.com/img/-JKG69A9xmdlvxVwYtpIztVHxHI=/940x0/2018/08/21/09803db6-578f-41f7-9c7a-0b9efc5d6751/starshot-satellite-launch.jpg',
       },
       {
         id: 'true-color',
         label: 'True Color',
         description: 'Based on bands 4,3,2',
         thumbnail:
-          'https://cnet4.cbsistatic.com/img/-JKG69A9xmdlvxVwYtpIztVHxHI=/940x0/2018/08/21/09803db6-578f-41f7-9c7a-0b9efc5d6751/starshot-satellite-launch.jpg'
-      }
-    ]
+          'https://cnet4.cbsistatic.com/img/-JKG69A9xmdlvxVwYtpIztVHxHI=/940x0/2018/08/21/09803db6-578f-41f7-9c7a-0b9efc5d6751/starshot-satellite-launch.jpg',
+      },
+    ],
   },
   {
     id: 'gibs',
@@ -385,18 +385,18 @@ const satellites = [
       {
         id: 'free',
         label: 'Free Images',
-        description: 'Free scenes.'
+        description: 'Free scenes.',
       },
       {
         id: 'mid',
         label: 'Mid Resolution',
-        description: 'Mid resolution scenes.'
+        description: 'Mid resolution scenes.',
       },
       {
         id: 'high',
         label: 'High Resolution',
-        description: 'High resolution scenes.'
-      }
+        description: 'High resolution scenes.',
+      },
     ],
     visualisations: [
       {
@@ -404,31 +404,31 @@ const satellites = [
         label: 'NDVI',
         description: 'Based on conbination bands (B8A-B4)/(B8A + B11)',
         thumbnail:
-          'https://landsat-pds.s3.amazonaws.com/c1/L8/027/033/LC08_L1TP_027033_20200107_20200114_01_T1/LC08_L1TP_027033_20200107_20200114_01_T1_thumb_small.jpg'
+          'https://landsat-pds.s3.amazonaws.com/c1/L8/027/033/LC08_L1TP_027033_20200107_20200114_01_T1/LC08_L1TP_027033_20200107_20200114_01_T1_thumb_small.jpg',
       },
       {
         id: 'false-color-urban',
         label: 'False Color (urban)',
         description: 'Based on bands 4,3,2',
         thumbnail:
-          'https://landsat-pds.s3.amazonaws.com/c1/L8/027/033/LC08_L1TP_027033_20200107_20200114_01_T1/LC08_L1TP_027033_20200107_20200114_01_T1_thumb_small.jpg'
+          'https://landsat-pds.s3.amazonaws.com/c1/L8/027/033/LC08_L1TP_027033_20200107_20200114_01_T1/LC08_L1TP_027033_20200107_20200114_01_T1_thumb_small.jpg',
       },
       {
         id: 'false-color',
         label: 'False Color',
         description: 'Based on bands 4,3,2',
         thumbnail:
-          'https://landsat-pds.s3.amazonaws.com/c1/L8/027/033/LC08_L1TP_027033_20200107_20200114_01_T1/LC08_L1TP_027033_20200107_20200114_01_T1_thumb_small.jpg'
+          'https://landsat-pds.s3.amazonaws.com/c1/L8/027/033/LC08_L1TP_027033_20200107_20200114_01_T1/LC08_L1TP_027033_20200107_20200114_01_T1_thumb_small.jpg',
       },
       {
         id: 'true-color',
         label: 'True Color',
         description: 'Based on bands 4,3,2',
         thumbnail:
-          'https://landsat-pds.s3.amazonaws.com/c1/L8/027/033/LC08_L1TP_027033_20200107_20200114_01_T1/LC08_L1TP_027033_20200107_20200114_01_T1_thumb_small.jpg'
-      }
-    ]
-  }
+          'https://landsat-pds.s3.amazonaws.com/c1/L8/027/033/LC08_L1TP_027033_20200107_20200114_01_T1/LC08_L1TP_027033_20200107_20200114_01_T1_thumb_small.jpg',
+      },
+    ],
+  },
 ];
 
 const scenes = [
@@ -440,13 +440,13 @@ const scenes = [
       'https://landsat-pds.s3.amazonaws.com/c1/L8/027/033/LC08_L1TP_027033_20200107_20200114_01_T1/LC08_L1TP_027033_20200107_20200114_01_T1_thumb_small.jpg',
     tier: 'free',
     metadata: {
-      key: 'To be decided'
+      key: 'To be decided',
     },
     tile_url:
       'https://landsat-pds.s3.amazonaws.com/c1/L8/027/033/LC08_L1TP_027033_20190613_20190619_01_T1/LC08_L1TP_027033_20190613_20190619_01_T1_thumb_small.jpg',
     thumbnail_url:
       'https://landsat-pds.s3.amazonaws.com/c1/L8/027/033/LC08_L1TP_027033_20190613_20190619_01_T1/LC08_L1TP_027033_20190613_20190619_01_T1_thumb_small.jpg',
-    satellite: 'sentinel-2'
+    satellite: 'sentinel-2',
   },
   {
     id: '323UVD',
@@ -457,13 +457,13 @@ const scenes = [
     tier: 'mid-res',
     swath: 'Geometry object to be added',
     metadata: {
-      key: 'To be decided'
+      key: 'To be decided',
     },
     tile_url:
       'https://landsat-pds.s3.amazonaws.com/c1/L8/027/033/LC08_L1TP_027033_20190613_20190619_01_T1/LC08_L1TP_027033_20190613_20190619_01_T1_thumb_small.jpg',
     thumbnail_url:
       'https://landsat-pds.s3.amazonaws.com/c1/L8/027/033/LC08_L1TP_027033_20190613_20190619_01_T1/LC08_L1TP_027033_20190613_20190619_01_T1_thumb_small.jpg',
-    satellite: 'sentinel-2'
+    satellite: 'sentinel-2',
   },
   {
     id: '34UVD',
@@ -474,13 +474,13 @@ const scenes = [
     tier: 'high-res',
     swath: 'Geometry object to be added',
     metadata: {
-      key: 'To be decided'
+      key: 'To be decided',
     },
     tile_url:
       'https://landsat-pds.s3.amazonaws.com/c1/L8/027/033/LC08_L1TP_027033_20190613_20190619_01_T1/LC08_L1TP_027033_20190613_20190619_01_T1_thumb_small.jpg',
     thumbnail_url:
       'https://landsat-pds.s3.amazonaws.com/c1/L8/027/033/LC08_L1TP_027033_20190613_20190619_01_T1/LC08_L1TP_027033_20190613_20190619_01_T1_thumb_small.jpg',
-    satellite: 'sentinel-2'
+    satellite: 'sentinel-2',
   },
   {
     id: '35UVD',
@@ -491,13 +491,13 @@ const scenes = [
     tier: 'free',
     swath: 'Geometry object to be added',
     metadata: {
-      key: 'To be decided'
+      key: 'To be decided',
     },
     tile_url:
       'https://landsat-pds.s3.amazonaws.com/c1/L8/027/033/LC08_L1TP_027033_20190613_20190619_01_T1/LC08_L1TP_027033_20190613_20190619_01_T1_thumb_small.jpg',
     thumbnail_url:
       'https://landsat-pds.s3.amazonaws.com/c1/L8/027/033/LC08_L1TP_027033_20190613_20190619_01_T1/LC08_L1TP_027033_20190613_20190619_01_T1_thumb_small.jpg',
-    satellite: 'sentinel-2'
+    satellite: 'sentinel-2',
   },
   {
     id: '36UVD',
@@ -508,13 +508,13 @@ const scenes = [
     tier: 'mid-res',
     swath: 'Geometry object to be added',
     metadata: {
-      key: 'To be decided'
+      key: 'To be decided',
     },
     tile_url:
       'https://landsat-pds.s3.amazonaws.com/c1/L8/027/033/LC08_L1TP_027033_20190613_20190619_01_T1/LC08_L1TP_027033_20190613_20190619_01_T1_thumb_small.jpg',
     thumbnail_url:
       'https://landsat-pds.s3.amazonaws.com/c1/L8/027/033/LC08_L1TP_027033_20190613_20190619_01_T1/LC08_L1TP_027033_20190613_20190619_01_T1_thumb_small.jpg',
-    satellite: 'sentinel-2'
+    satellite: 'sentinel-2',
   },
   {
     id: '37UVD',
@@ -525,14 +525,14 @@ const scenes = [
     tier: 'high-res',
     swath: 'Geometry object to be added',
     metadata: {
-      key: 'To be decided'
+      key: 'To be decided',
     },
     tile_url:
       'https://landsat-pds.s3.amazonaws.com/c1/L8/027/033/LC08_L1TP_027033_20190613_20190619_01_T1/LC08_L1TP_027033_20190613_20190619_01_T1_thumb_small.jpg',
     thumbnail_url:
       'https://landsat-pds.s3.amazonaws.com/c1/L8/027/033/LC08_L1TP_027033_20190613_20190619_01_T1/LC08_L1TP_027033_20190613_20190619_01_T1_thumb_small.jpg',
-    satellite: 'sentinel-2'
-  }
+    satellite: 'sentinel-2',
+  },
 ];
 
 const selectedScene = {
@@ -543,13 +543,13 @@ const selectedScene = {
     'https://landsat-pds.s3.amazonaws.com/c1/L8/027/033/LC08_L1TP_027033_20200107_20200114_01_T1/LC08_L1TP_027033_20200107_20200114_01_T1_thumb_small.jpg',
   tier: 'free',
   metadata: {
-    key: 'To be decided'
+    key: 'To be decided',
   },
   tile_url:
     'https://landsat-pds.s3.amazonaws.com/c1/L8/027/033/LC08_L1TP_027033_20190613_20190619_01_T1/LC08_L1TP_027033_20190613_20190619_01_T1_thumb_small.jpg',
   thumbnail_url:
     'https://landsat-pds.s3.amazonaws.com/c1/L8/027/033/LC08_L1TP_027033_20190613_20190619_01_T1/LC08_L1TP_027033_20190613_20190619_01_T1_thumb_small.jpg',
-  satellite: 'sentinel-2'
+  satellite: 'sentinel-2',
 };
 
 describe('SatellitesPanel', () => {
@@ -569,7 +569,7 @@ describe('SatellitesPanel', () => {
         const { getByText } = render(
           <Provider store={store}>
             <SatellitesPanel />
-          </Provider>
+          </Provider>,
         );
         expect(getByText('Results')).toHaveProperty('disabled', true);
       });
@@ -578,7 +578,7 @@ describe('SatellitesPanel', () => {
         const { getByText } = render(
           <Provider store={store}>
             <SatellitesPanel />
-          </Provider>
+          </Provider>,
         );
         expect(getByText('Visualisation')).toHaveProperty('disabled', true);
       });
@@ -589,13 +589,13 @@ describe('SatellitesPanel', () => {
         ...baseStore,
         satellites: {
           scenes,
-          selectedScene: null
-        }
+          selectedScene: null,
+        },
       });
       const { getByText } = render(
         <Provider store={store}>
           <SatellitesPanel />
-        </Provider>
+        </Provider>,
       );
       expect(getByText('Results')).toHaveProperty('disabled', false);
       expect(getByText('Visualisation')).toHaveProperty('disabled', true);
@@ -606,7 +606,7 @@ describe('SatellitesPanel', () => {
       const { getByText } = render(
         <Provider store={store}>
           <SatellitesPanel />
-        </Provider>
+        </Provider>,
       );
       expect(getByText('Results')).toHaveProperty('disabled', false);
       expect(getByText('Visualisation')).toHaveProperty('disabled', false);

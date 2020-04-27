@@ -4,11 +4,11 @@ describe('Satellite Search Form Validator', () => {
   describe('Failure values', () => {
     const testFields = [
       {
-        name: 'ids' // Error, too short
+        name: 'ids', // Error, too short
       },
       {
-        name: '' // Error, too short
-      }
+        name: '', // Error, too short
+      },
     ];
 
     it.each(testFields)('Invalid Value %o', form => {
@@ -20,8 +20,8 @@ describe('Satellite Search Form Validator', () => {
   describe('Success values', () => {
     const testFields = [
       {
-        name: 'John'
-      }
+        name: 'John',
+      },
     ];
 
     it.each(testFields)('Valid Value %o', form => {

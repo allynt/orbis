@@ -9,7 +9,7 @@ describe('Side Menu Slice', () => {
         isMenuVisible: false,
         visibleMenuItem: '',
         heading: '',
-        strapline: ''
+        strapline: '',
       };
     });
 
@@ -22,7 +22,7 @@ describe('Side Menu Slice', () => {
     it('should toggle side menu open, if not already', () => {
       const actualState = reducer(beforeState, {
         type: toggleMenu.type,
-        payload: 'Test Item'
+        payload: 'Test Item',
       });
 
       expect(actualState.isMenuVisible).toEqual(true);
@@ -34,7 +34,7 @@ describe('Side Menu Slice', () => {
 
       const actualState = reducer(beforeState, {
         type: toggleMenu.type,
-        payload: 'Test Item'
+        payload: 'Test Item',
       });
 
       expect(actualState.visibleMenuItem).toEqual('');
@@ -44,7 +44,7 @@ describe('Side Menu Slice', () => {
     it('should not toggle side menu open, if `screenshot` option selected', () => {
       const actualState = reducer(beforeState, {
         type: toggleMenu.type,
-        payload: 'screenshot'
+        payload: 'screenshot',
       });
 
       expect(actualState.visibleMenuItem).toEqual('');
@@ -56,7 +56,7 @@ describe('Side Menu Slice', () => {
 
       const actualState = reducer(beforeState, {
         type: toggleMenuItem.type,
-        payload
+        payload,
       });
 
       expect(actualState.visibleMenuItem).toEqual(payload);
@@ -65,12 +65,12 @@ describe('Side Menu Slice', () => {
     it('should update heading and strapline state, when called', () => {
       const payload = {
         heading: 'Test Heading',
-        strapline: 'Test Strapline'
+        strapline: 'Test Strapline',
       };
 
       const actualState = reducer(beforeState, {
         type: setMenuHeadings.type,
-        payload
+        payload,
       });
 
       expect(actualState.heading).toEqual(payload.heading);
@@ -79,7 +79,7 @@ describe('Side Menu Slice', () => {
 
     it('should update state so Side Menu closes', () => {
       const actualState = reducer(beforeState, {
-        type: closeMenu.type
+        type: closeMenu.type,
       });
 
       expect(actualState.visibleMenuItem).toEqual('');

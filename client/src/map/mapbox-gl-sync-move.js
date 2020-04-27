@@ -12,7 +12,7 @@ function moveToMapPosition(master, clones) {
       center: center,
       zoom: zoom,
       bearing: bearing,
-      pitch: pitch
+      pitch: pitch,
     });
   });
 }
@@ -47,7 +47,7 @@ function syncMaps() {
       map,
       maps.filter(function(o, i) {
         return i !== index;
-      })
+      }),
     );
   });
 

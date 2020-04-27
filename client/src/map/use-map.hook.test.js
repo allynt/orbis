@@ -16,7 +16,7 @@ describe('useMap Hook', () => {
     const map = {};
     const cb = jest.fn();
     const { rerender } = renderHook(({ dep }) => useMap(map, cb, [dep]), {
-      initialProps: { dep: 1 }
+      initialProps: { dep: 1 },
     });
     expect(cb.mock.calls.length).toBe(1);
     rerender({ dep: 2 });

@@ -7,10 +7,13 @@ const setup = initialSelectedLayers => {
     layers: [
       {
         name: 'test-layer-one',
-        metadata: { label: 'test-layer-one-label', description: 'test-layer-one-description' }
+        metadata: { label: 'test-layer-one-label', description: 'test-layer-one-description' },
       },
-      { name: 'test-layer-two', metadata: { label: 'test-layer-two-label', description: 'test-layer-two-description' } }
-    ]
+      {
+        name: 'test-layer-two',
+        metadata: { label: 'test-layer-two-label', description: 'test-layer-two-description' },
+      },
+    ],
   };
   const handleAddLayers = jest.fn();
   const handleRemoveLayer = jest.fn();
@@ -20,7 +23,7 @@ const setup = initialSelectedLayers => {
       onAddLayers={handleAddLayers}
       onRemoveLayer={handleRemoveLayer}
       initialSelectedLayers={initialSelectedLayers}
-    />
+    />,
   );
   return { ...utils, handleAddLayers, layers: domain.layers };
 };

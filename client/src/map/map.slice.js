@@ -8,8 +8,8 @@ const initialState = {
   saveMap: false,
   dimensions: {
     width: -1,
-    height: -1
-  }
+    height: -1,
+  },
 };
 
 const mapSlice = createSlice({
@@ -29,8 +29,8 @@ const mapSlice = createSlice({
     },
     saveMap: state => {
       state.saveMap = !state.saveMap;
-    }
-  }
+    },
+  },
 });
 
 export const { setViewport, selectMapStyle, toggleCompareMode, saveMap } = mapSlice.actions;

@@ -13,7 +13,7 @@ const types = [
   { name: 'GP Surgery', icon: GpIcon },
   { name: 'NHS', icon: NhsIcon },
   { name: 'Pharmacy', icon: PharmacyIcon },
-  { name: 'Care Home', icon: CareHomeIcon }
+  { name: 'Care Home', icon: CareHomeIcon },
 ];
 
 export const HealthInfrastructure = () => (

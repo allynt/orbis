@@ -6,11 +6,11 @@ LineMode.onSetup = function(opts) {
   const props = MapboxDraw.modes.draw_line_string.onSetup.call(this, opts);
   props.line.properties = {
     ...props.line.properties,
-    ...opts
+    ...opts,
   };
 
   return {
-    ...props
+    ...props,
   };
 };
 

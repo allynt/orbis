@@ -12,7 +12,7 @@ import reducer, {
   deleteStoryFailure,
   deleteStory,
   selectStory,
-  STORIES
+  STORIES,
 } from './stories.slice';
 
 const mockStore = configureMockStore([thunk]);
@@ -25,20 +25,20 @@ describe('Stories Slice', () => {
       fetch.resetMocks();
 
       store = mockStore({
-        accounts: { userKey: 'Test-User-Key' }
+        accounts: { userKey: 'Test-User-Key' },
       });
     });
 
     it('should dispatch fetch stories failure action.', async () => {
       fetch.mockResponse(
         JSON.stringify({
-          message: 'Test error message'
+          message: 'Test error message',
         }),
         {
           ok: false,
           status: 401,
-          statusText: 'Test Error'
-        }
+          statusText: 'Test Error',
+        },
       );
 
       const expectedActions = [{ type: fetchStoriesFailure.type, payload: { message: '401 Test Error' } }];
@@ -61,19 +61,19 @@ describe('Stories Slice', () => {
     it('should dispatch add story failure action.', async () => {
       fetch.mockResponse(
         JSON.stringify({
-          message: 'Test error message'
+          message: 'Test error message',
         }),
         {
           ok: false,
           status: 401,
-          statusText: 'Test Error'
-        }
+          statusText: 'Test Error',
+        },
       );
 
       const expectedActions = [{ type: addStoryFailure.type, payload: { message: '401 Test Error' } }];
 
       const story = {
-        id: 5
+        id: 5,
       };
       await store.dispatch(addStory(story));
 
@@ -82,7 +82,7 @@ describe('Stories Slice', () => {
 
     it('should dispatch add story success action.', async () => {
       const story = {
-        id: 5
+        id: 5,
       };
       fetch.mockResponse(JSON.stringify(story));
 
@@ -96,13 +96,13 @@ describe('Stories Slice', () => {
     it('should dispatch delete story failure action.', async () => {
       fetch.mockResponse(
         JSON.stringify({
-          message: 'Test error message'
+          message: 'Test error message',
         }),
         {
           ok: false,
           status: 401,
-          statusText: 'Test Error'
-        }
+          statusText: 'Test Error',
+        },
       );
 
       const expectedActions = [{ type: deleteStoryFailure.type, payload: { message: '401 Test Error' } }];
@@ -138,7 +138,7 @@ describe('Stories Slice', () => {
       beforeState = {
         stories: null,
         selectedStory: null,
-        error: null
+        error: null,
       };
     });
 
@@ -151,7 +151,7 @@ describe('Stories Slice', () => {
     it('should update the stories in state, when successfully retrieved', () => {
       const actualState = reducer(beforeState, {
         type: fetchStoriesSuccess.type,
-        payload: STORIES
+        payload: STORIES,
       });
 
       expect(actualState.stories).toEqual(STORIES);
@@ -162,7 +162,7 @@ describe('Stories Slice', () => {
 
       const actualState = reducer(beforeState, {
         type: fetchStoriesFailure.type,
-        payload: error
+        payload: error,
       });
 
       expect(actualState.error).toEqual(error);
@@ -173,7 +173,7 @@ describe('Stories Slice', () => {
 
       const actualState = reducer(beforeState, {
         type: addStorySuccess.type,
-        payload: story
+        payload: story,
       });
 
       expect(actualState.stories).toEqual([story]);
@@ -184,7 +184,7 @@ describe('Stories Slice', () => {
 
       const actualState = reducer(beforeState, {
         type: addStoryFailure.type,
-        payload: error
+        payload: error,
       });
 
       expect(actualState.error).toEqual(error);
@@ -196,7 +196,7 @@ describe('Stories Slice', () => {
 
       const actualState = reducer(beforeState, {
         type: deleteStorySuccess.type,
-        payload: story
+        payload: story,
       });
 
       expect(actualState.stories).toEqual(beforeState.stories.filter(stateStory => stateStory.id !== story.id));
@@ -207,7 +207,7 @@ describe('Stories Slice', () => {
 
       const actualState = reducer(beforeState, {
         type: deleteStoryFailure.type,
-        payload: error
+        payload: error,
       });
 
       expect(actualState.error).toEqual(error);
@@ -219,7 +219,7 @@ describe('Stories Slice', () => {
 
       const actualState = reducer(beforeState, {
         type: selectStory.type,
-        payload: story
+        payload: story,
       });
 
       expect(actualState.selectedStory).toEqual(story);

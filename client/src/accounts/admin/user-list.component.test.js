@@ -41,7 +41,7 @@ describe('User List Component', () => {
         deleteUser={deleteUser}
         updateUser={updateUser}
         copyUser={copyUser}
-      />
+      />,
     );
 
     expect(getByText('Maintain Users')).toBeInTheDocument();
@@ -60,15 +60,15 @@ describe('User List Component', () => {
         username: 'user 1',
         email: 'user1@test.com',
         first_name: 'John',
-        last_name: 'Smith'
+        last_name: 'Smith',
       },
       {
         pk: 2,
         username: 'user 2',
         email: 'user2@test.com',
         first_name: 'Jane',
-        last_name: 'Doe'
-      }
+        last_name: 'Doe',
+      },
     ];
 
     const { getByText } = render(
@@ -79,7 +79,7 @@ describe('User List Component', () => {
         deleteUser={deleteUser}
         updateUser={updateUser}
         copyUser={copyUser}
-      />
+      />,
     );
 
     expect(getByText('Maintain Users')).toBeInTheDocument();
@@ -99,7 +99,7 @@ describe('User List Component', () => {
           updateUser={updateUser}
           copyUser={copyUser}
         />
-      </Provider>
+      </Provider>,
     );
 
     fireEvent.click(getByText('New User'));

@@ -28,7 +28,7 @@ const PasswordResetConfirmForm = ({ match }) => {
   function onSubmit() {
     const data = {
       ...values,
-      termsAgreed
+      termsAgreed,
     };
     dispatch(confirmChangePassword(data, match.params));
   }
@@ -107,7 +107,7 @@ const PasswordResetConfirmForm = ({ match }) => {
 };
 
 PasswordResetConfirmForm.propTypes = {
-  match: PropTypes.object.isRequired
+  match: PropTypes.object.isRequired,
 };
 
 export default PasswordResetConfirmForm;

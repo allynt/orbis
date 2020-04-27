@@ -17,13 +17,13 @@ const LINKS = [
   {
     prefix: 'Need help? Contact us',
     url: 'https://share.hsforms.com/1U1g8jQnFQ2ej1lyaDcncfA4cctf',
-    text: 'here'
+    text: 'here',
   },
   {
     prefix: 'Read our',
     url: TERMS_URL,
-    text: 'Terms & Conditions'
-  }
+    text: 'Terms & Conditions',
+  },
 ];
 
 const Profile = () => {

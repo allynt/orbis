@@ -7,14 +7,14 @@ import { getData, sendData, getJsonAuthHeaders, getFormAuthHeaders } from '../ut
 const API = {
   fetch: '/api/bookmarks/',
   add: '/api/bookmarks/',
-  delete: '/api/bookmarks/'
+  delete: '/api/bookmarks/',
 };
 
 const initialState = {
   bookmarks: null,
   selectedBookmark: null,
   error: null,
-  isLoading: false
+  isLoading: false,
 };
 
 const bookmarkSlice = createSlice({
@@ -56,8 +56,8 @@ const bookmarkSlice = createSlice({
     },
     isLoaded: state => {
       state.isLoading = false;
-    }
-  }
+    },
+  },
 });
 
 export const {
@@ -68,7 +68,7 @@ export const {
   deleteBookmarkSuccess,
   deleteBookmarkFailure,
   selectBookmark,
-  isLoaded
+  isLoaded,
 } = bookmarkSlice.actions;
 
 export const fetchBookmarks = () => async (dispatch, getState) => {

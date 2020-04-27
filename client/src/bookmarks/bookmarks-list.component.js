@@ -47,7 +47,7 @@ const BookmarkList = ({ bookmarks, selectBookmark, deleteBookmark }) => (
 BookmarkList.propTypes = {
   bookmarks: PropTypes.array,
   selectBookmark: PropTypes.func.isRequired,
-  deleteBookmark: PropTypes.func.isRequired
+  deleteBookmark: PropTypes.func.isRequired,
 };
 
 export default BookmarkList;

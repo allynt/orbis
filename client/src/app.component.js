@@ -36,7 +36,7 @@ const Admin = lazy(() => import('./accounts/admin/admin.component'));
 const App = () => {
   const dispatch = useDispatch();
   const trackingId = useSelector(state =>
-    state && state.app && state.app.config ? state.app.config.trackingId : null
+    state && state.app && state.app.config ? state.app.config.trackingId : null,
   );
   const selectedTheme = useSelector(state => state.theming.selectedTheme);
 

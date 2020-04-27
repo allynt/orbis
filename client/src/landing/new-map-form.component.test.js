@@ -29,8 +29,8 @@ describe('New Map Form Component', () => {
     store = mockStore({
       map: {
         regions,
-        domains
-      }
+        domains,
+      },
     });
 
     setViewport = jest.fn();
@@ -42,7 +42,7 @@ describe('New Map Form Component', () => {
         <Provider store={store}>
           <NewMapForm regions={regions} domains={domains} setViewport={setViewport} />
         </Provider>
-      </Router>
+      </Router>,
     );
 
     expect(getByPlaceholderText('Add Name*')).toBeInTheDocument();
@@ -66,7 +66,7 @@ describe('New Map Form Component', () => {
         <Provider store={store}>
           <NewMapForm regions={regions} domains={domains} setViewport={setViewport} />
         </Provider>
-      </Router>
+      </Router>,
     );
 
     const submitButton = getByText('Create');
@@ -84,7 +84,7 @@ describe('New Map Form Component', () => {
         <Provider store={store}>
           <NewMapForm regions={regions} domains={domains} setViewport={setViewport} />
         </Provider>
-      </Router>
+      </Router>,
     );
 
     fireEvent.change(getByPlaceholderText('Add Name*'), { target: { value: 'New Map Name' } });

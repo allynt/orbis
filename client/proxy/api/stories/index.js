@@ -13,7 +13,7 @@ const getStoriesHandler = (req, res) => {
 const addStoryHandler = (req, res) => {
   console.log('Adding Story');
   const story = {
-    ...req.body
+    ...req.body,
   };
   addStory(story);
   res.status(200);

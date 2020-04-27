@@ -11,7 +11,7 @@ describe('Update User Form Component', () => {
     const user = {};
     const updateUser = jest.fn();
     const { container, getByText, getByPlaceholderText } = render(
-      <UpdateUserForm user={user} updateUser={updateUser} />
+      <UpdateUserForm user={user} updateUser={updateUser} />,
     );
 
     expect(container.querySelector('form')).toBeInTheDocument();

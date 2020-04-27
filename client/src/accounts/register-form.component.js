@@ -25,7 +25,7 @@ const RegisterForm = () => {
   const { passwordMinLength, passwordMaxLength } = useSelector(state => state.app.config);
   const validators = {
     passwordMinLength,
-    passwordMaxLength
+    passwordMaxLength,
   };
   const { handleChange, handleSubmit, values, errors } = useForm(onSubmit, validate, validators);
   const dispatch = useDispatch();
@@ -37,7 +37,7 @@ const RegisterForm = () => {
   function onSubmit() {
     const data = {
       ...values,
-      accepted_terms: termsAgreed
+      accepted_terms: termsAgreed,
     };
     dispatch(register(data));
   }

@@ -14,7 +14,7 @@ const getBookmarksHandler = (req, res) => {
 const addBookmarkHandler = (req, res) => {
   console.log('Adding Bookmark');
   const bookmark = {
-    ...req.body
+    ...req.body,
   };
 
   addBookmark(bookmark);

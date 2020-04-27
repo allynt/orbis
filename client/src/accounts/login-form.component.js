@@ -24,7 +24,7 @@ const LoginForm = ({ login, user, error }) => {
   const { passwordMinLength, passwordMaxLength } = useSelector(state => state.app.config);
   const validators = {
     passwordMinLength,
-    passwordMaxLength
+    passwordMaxLength,
   };
   const { handleChange, handleSubmit, values, errors } = useForm(onSubmit, validate, validators);
   // const error = useSelector(state => state.accounts.error);
@@ -108,7 +108,7 @@ const LoginForm = ({ login, user, error }) => {
 };
 
 LoginForm.propTypes = {
-  location: PropTypes.object
+  location: PropTypes.object,
 };
 
 export default LoginForm;

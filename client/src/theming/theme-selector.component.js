@@ -24,7 +24,7 @@ const ThemeSelector = React.memo(({ themes, selectedTheme, selectTheme }) => (
 ThemeSelector.propTypes = {
   themes: PropTypes.array.isRequired,
   selectedTheme: PropTypes.object.isRequired,
-  selectTheme: PropTypes.func.isRequired
+  selectTheme: PropTypes.func.isRequired,
 };
 
 export default ThemeSelector;

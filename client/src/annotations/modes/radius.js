@@ -31,7 +31,7 @@ function getDisplayMeasurements(feature) {
 
   return {
     metric: `${toDecimalPlaces(metricMeasurement, 2)} ${metricUnits}`,
-    standard: `${toDecimalPlaces(imperialMeasurement, 2)} ${standardUnits}`
+    standard: `${toDecimalPlaces(imperialMeasurement, 2)} ${standardUnits}`,
   };
 }
 
@@ -39,19 +39,19 @@ RadiusMode.onSetup = function(opts) {
   const props = MapboxDraw.modes.draw_line_string.onSetup.call(this, opts);
   props.line.properties = {
     ...props.line.properties,
-    ...opts
+    ...opts,
   };
 
   const circle = this.newFeature({
     type: 'Feature',
     properties: {
       meta: 'feature',
-      ...opts
+      ...opts,
     },
     geometry: {
       type: 'Polygon',
-      coordinates: [[0, 0]]
-    }
+      coordinates: [[0, 0]],
+    },
   });
   this.addFeature(circle);
 
@@ -59,25 +59,25 @@ RadiusMode.onSetup = function(opts) {
     type: 'Feature',
     properties: {
       meta: 'feature',
-      ...opts
+      ...opts,
     },
     geometry: {
       type: 'Point',
-      coordinates: [0, 0]
-    }
+      coordinates: [0, 0],
+    },
   });
   this.addFeature(label);
 
   return {
     ...props,
     circle,
-    label
+    label,
   };
 };
 
 RadiusMode.clickAnywhere = function(state, event) {
   const {
-    lngLat: { lng, lat }
+    lngLat: { lng, lat },
   } = event;
   // this ends the drawing after the user creates a second point, triggering this.onStop
   if (state.currentVertexPosition === 1) {
@@ -105,7 +105,7 @@ RadiusMode.onMouseMove = function(state, event) {
   const options = {
     steps: 60,
     units: 'kilometers',
-    properties: { parent: state.line.properties.id, ...state.circle.properties }
+    properties: { parent: state.line.properties.id, ...state.circle.properties },
   };
 
   if (radius) {
@@ -119,7 +119,7 @@ RadiusMode.onMouseMove = function(state, event) {
     ...state.label.properties,
     radiusMetric: displayMeasurements.metric,
     radiusStandard: displayMeasurements.standard,
-    parent: state.line.id
+    parent: state.line.id,
   };
 };
 
@@ -134,7 +134,7 @@ RadiusMode.onStop = function(state) {
   state.line.removeCoordinate('0');
   if (state.line.isValid()) {
     this.map.fire(Constants.events.CREATE, {
-      features: [state.line.toGeoJSON(), state.circle.toGeoJSON(), state.label.toGeoJSON()]
+      features: [state.line.toGeoJSON(), state.circle.toGeoJSON(), state.label.toGeoJSON()],
     });
   } else {
     console.log('DELETEING');

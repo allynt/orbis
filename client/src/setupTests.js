@@ -6,7 +6,7 @@ import './polyfills/array-flat';
 import './polyfills/object-fromEntries';
 
 jest.mock('react-ga', () => ({
-  event: jest.fn()
+  event: jest.fn(),
 }));
 
 import '../public/config';

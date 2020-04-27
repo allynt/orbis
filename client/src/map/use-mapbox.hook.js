@@ -22,12 +22,12 @@ const useMapbox = (style, accessToken, authToken) => {
           if (!url.startsWith('https://api.mapbox.com')) {
             const request = {
               url,
-              headers: { Authorization: `Bearer ${authToken}` }
+              headers: { Authorization: `Bearer ${authToken}` },
             };
 
             return request;
           }
-        }
+        },
       });
 
       map.on('load', () => {
@@ -39,7 +39,7 @@ const useMapbox = (style, accessToken, authToken) => {
       return () => {
         viewport.current = {
           zoom: map.getZoom(),
-          center: map.getCenter()
+          center: map.getCenter(),
         };
         setMapInstance(null);
         if (window.requestIdleCallback) {

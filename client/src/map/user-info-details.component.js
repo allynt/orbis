@@ -30,7 +30,7 @@ const UserInfoDetail = ({ features }) => (
 );
 
 UserInfoDetail.propTypes = {
-  features: PropTypes.array.isRequired
+  features: PropTypes.array.isRequired,
 };
 
 export default UserInfoDetail;

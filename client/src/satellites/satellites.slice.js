@@ -8,7 +8,7 @@ const API = {
   sources: '/api/satellites/',
   scenes: '/api/satellites/run_query/',
   savedSearches: '/api/satellites/searches/',
-  pinScene: '/api/satellites/results/'
+  pinScene: '/api/satellites/results/',
 };
 
 const initialState = {
@@ -19,7 +19,7 @@ const initialState = {
   satelliteSearches: null,
   pinnedScenes: null,
   selectedPinnedScenes: [],
-  currentSearchQuery: null
+  currentSearchQuery: null,
 };
 
 const satellitesSlice = createSlice({
@@ -98,8 +98,8 @@ const satellitesSlice = createSlice({
     },
     setCurrentSatelliteSearchQuery: (state, { payload }) => {
       state.currentSearchQuery = payload;
-    }
-  }
+    },
+  },
 });
 
 export const {
@@ -124,7 +124,7 @@ export const {
   selectPinnedScene,
   deselectPinnedScene,
   clearSelectedPinnedScenes,
-  setCurrentSatelliteSearchQuery
+  setCurrentSatelliteSearchQuery,
 } = satellitesSlice.actions;
 
 export const fetchSatellites = () => async (dispatch, getState) => {

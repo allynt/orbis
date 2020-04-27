@@ -27,9 +27,9 @@ const Results = (
     pinScene,
     deletePinnedScene,
     saveSatelliteSearch,
-    currentSearchQuery
+    currentSearchQuery,
   },
-  ref
+  ref,
 ) => {
   const [cloudCoverPercentage, setCloudCoverPercentage] = useState([DEFAULT_CLOUD_COVER]);
 

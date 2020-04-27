@@ -33,7 +33,7 @@ describe('Save Satellite Search Form Component', () => {
     const { getByPlaceholderText, getByText } = render(
       <Provider store={store}>
         <SaveSearchForm query={query} close={close} saveSearch={saveSearch} />
-      </Provider>
+      </Provider>,
     );
 
     expect(getByPlaceholderText(textfieldPlaceholder)).toBeInTheDocument();
@@ -44,7 +44,7 @@ describe('Save Satellite Search Form Component', () => {
     const { getByPlaceholderText, getByText } = render(
       <Provider store={store}>
         <SaveSearchForm query={query} close={close} saveSearch={saveSearch} />
-      </Provider>
+      </Provider>,
     );
 
     fireEvent.change(getByPlaceholderText(textfieldPlaceholder), { target: { value: 'id' } });
@@ -55,7 +55,7 @@ describe('Save Satellite Search Form Component', () => {
     const { getByPlaceholderText, getByText } = render(
       <Provider store={store}>
         <SaveSearchForm query={query} close={close} saveSearch={saveSearch} />
-      </Provider>
+      </Provider>,
     );
 
     expect(getByText(buttonName)).toHaveAttribute('disabled');
@@ -67,7 +67,7 @@ describe('Save Satellite Search Form Component', () => {
     const { getByPlaceholderText, getByText } = render(
       <Provider store={store}>
         <SaveSearchForm query={query} close={close} saveSearch={saveSearch} />
-      </Provider>
+      </Provider>,
     );
 
     expect(getByText(buttonName)).toHaveAttribute('disabled');
@@ -79,7 +79,7 @@ describe('Save Satellite Search Form Component', () => {
     const { getByPlaceholderText, getByText } = render(
       <Provider store={store}>
         <SaveSearchForm query={query} close={close} saveSearch={saveSearch} />
-      </Provider>
+      </Provider>,
     );
 
     fireEvent.change(getByPlaceholderText(textfieldPlaceholder), { target: { value: 'id' } });
@@ -91,7 +91,7 @@ describe('Save Satellite Search Form Component', () => {
     const { getByPlaceholderText, getByText } = render(
       <Provider store={store}>
         <SaveSearchForm query={query} close={close} saveSearch={saveSearch} />
-      </Provider>
+      </Provider>,
     );
 
     fireEvent.change(getByPlaceholderText(textfieldPlaceholder), { target: { value: textfieldPlaceholder } });
