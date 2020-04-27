@@ -11,6 +11,7 @@ import reducer, {
   selectDataSources,
   selectPollingPeriod,
   selectDataToken,
+  selectAvailableFilters,
 } from './data-layers.slice';
 
 const mockStore = configureMockStore([thunk]);
@@ -454,6 +455,398 @@ describe('Data Slice', () => {
         };
         const result = selectDomainList(state);
         expect(result).toEqual([]);
+      });
+    });
+
+    describe('selectAvailableFilters', () => {
+      it('should return the filters with options based on the current user selected layers', () => {
+        const state = {
+          data: {
+            layers: ['fruit-bowl'],
+            sources: [
+              {
+                name: 'fruit-bowl',
+                metadata: {
+                  filters: ['fruit'],
+                },
+                data: {
+                  features: [
+                    {
+                      properties: {
+                        fruit: 'apple',
+                      },
+                    },
+                    {
+                      properties: {
+                        fruit: 'banana',
+                      },
+                    },
+                    {
+                      properties: {
+                        fruit: 'orange',
+                      },
+                    },
+                  ],
+                },
+              },
+            ],
+          },
+        };
+        const expected = {
+          'fruit-bowl': {
+            fruit: ['apple', 'banana', 'orange'],
+          },
+        };
+        const result = selectAvailableFilters(state);
+        expect(result).toEqual(expected);
+      });
+
+      it('should only return unique options', () => {
+        const state = {
+          data: {
+            layers: ['fruit-bowl'],
+            sources: [
+              {
+                name: 'fruit-bowl',
+                metadata: {
+                  filters: ['fruit'],
+                },
+                data: {
+                  features: [
+                    {
+                      properties: {
+                        fruit: 'apple',
+                      },
+                    },
+                    {
+                      properties: {
+                        fruit: 'banana',
+                      },
+                    },
+                    {
+                      properties: {
+                        fruit: 'banana',
+                      },
+                    },
+                    {
+                      properties: {
+                        fruit: 'orange',
+                      },
+                    },
+                    {
+                      properties: {
+                        fruit: 'orange',
+                      },
+                    },
+                  ],
+                },
+              },
+            ],
+          },
+        };
+        const expected = {
+          'fruit-bowl': {
+            fruit: ['apple', 'banana', 'orange'],
+          },
+        };
+        const result = selectAvailableFilters(state);
+        expect(result).toEqual(expected);
+      });
+
+      it('should return filter sections for each selected layer', () => {
+        const state = {
+          data: {
+            layers: ['fruit-bowl', 'cars'],
+            sources: [
+              {
+                name: 'fruit-bowl',
+                metadata: {
+                  filters: ['fruit'],
+                },
+                data: {
+                  features: [
+                    {
+                      properties: {
+                        fruit: 'apple',
+                      },
+                    },
+                    {
+                      properties: {
+                        fruit: 'banana',
+                      },
+                    },
+                    {
+                      properties: {
+                        fruit: 'banana',
+                      },
+                    },
+                    {
+                      properties: {
+                        fruit: 'orange',
+                      },
+                    },
+                    {
+                      properties: {
+                        fruit: 'orange',
+                      },
+                    },
+                  ],
+                },
+              },
+              {
+                name: 'cars',
+                metadata: {
+                  filters: ['model'],
+                },
+                data: {
+                  features: [
+                    {
+                      properties: {
+                        model: 'BMW',
+                      },
+                    },
+                    {
+                      properties: {
+                        model: 'Porsche',
+                      },
+                    },
+                    {
+                      properties: {
+                        model: 'Lada',
+                      },
+                    },
+                  ],
+                },
+              },
+            ],
+          },
+        };
+        const expected = {
+          cars: {
+            model: ['BMW', 'Porsche', 'Lada'],
+          },
+          'fruit-bowl': {
+            fruit: ['apple', 'banana', 'orange'],
+          },
+        };
+        const result = selectAvailableFilters(state);
+        expect(result).toEqual(expected);
+      });
+
+      it('should return options for each filterable property', () => {
+        const state = {
+          data: {
+            layers: ['cars'],
+            sources: [
+              {
+                name: 'cars',
+                metadata: {
+                  filters: ['model', 'engine'],
+                },
+                data: {
+                  features: [
+                    {
+                      properties: {
+                        model: 'BMW',
+                        engine: 'Straight 6',
+                      },
+                    },
+                    {
+                      properties: {
+                        model: 'Porsche',
+                        engine: 'Flat 4',
+                      },
+                    },
+                    {
+                      properties: {
+                        model: 'Lada',
+                        engine: 'Hamster',
+                      },
+                    },
+                  ],
+                },
+              },
+            ],
+          },
+        };
+        const expected = {
+          cars: {
+            model: ['BMW', 'Porsche', 'Lada'],
+            engine: ['Straight 6', 'Flat 4', 'Hamster'],
+          },
+        };
+        const result = selectAvailableFilters(state);
+        expect(result).toEqual(expected);
+      });
+
+      it('should return an empty object if the user has not selected layers', () => {
+        const state = {
+          data: {
+            layers: [],
+            sources: [
+              {
+                name: 'fruit-bowl',
+                metadata: {
+                  filters: ['fruit'],
+                },
+                data: {
+                  features: [
+                    {
+                      properties: {
+                        fruit: 'apple',
+                      },
+                    },
+                    {
+                      properties: {
+                        fruit: 'banana',
+                      },
+                    },
+                    {
+                      properties: {
+                        fruit: 'orange',
+                      },
+                    },
+                  ],
+                },
+              },
+            ],
+          },
+        };
+        const result = selectAvailableFilters(state);
+        expect(result).toEqual({});
+      });
+
+      it('should return an empty object if there are no sources available', () => {
+        const state = {
+          data: {
+            layers: ['fruit-bowl'],
+            sources: [],
+          },
+        };
+        const result = selectAvailableFilters(state);
+        expect(result).toEqual({});
+      });
+
+      it('should return an empty object if there are sources but non are filterable', () => {
+        const state = {
+          data: {
+            layers: ['fruit-bowl'],
+            sources: [
+              {
+                name: 'fruit-bowl',
+                metadata: {},
+                data: {
+                  features: [
+                    {
+                      properties: {
+                        fruit: 'apple',
+                      },
+                    },
+                    {
+                      properties: {
+                        fruit: 'banana',
+                      },
+                    },
+                    {
+                      properties: {
+                        fruit: 'orange',
+                      },
+                    },
+                  ],
+                },
+              },
+            ],
+          },
+        };
+        const result = selectAvailableFilters(state);
+        expect(result).toEqual({});
+      });
+
+      it('should not include a filter if it is specified but does not match to a property', () => {
+        const state = {
+          data: {
+            layers: ['fruit-bowl'],
+            sources: [
+              {
+                name: 'fruit-bowl',
+                metadata: {
+                  filters: ['fruit', 'status'],
+                },
+                data: {
+                  features: [
+                    {
+                      properties: {
+                        fruit: 'apple',
+                      },
+                    },
+                    {
+                      properties: {
+                        fruit: 'banana',
+                      },
+                    },
+                    {
+                      properties: {
+                        fruit: 'orange',
+                      },
+                    },
+                  ],
+                },
+              },
+            ],
+          },
+        };
+        const expected = {
+          'fruit-bowl': {
+            fruit: ['apple', 'banana', 'orange'],
+          },
+        };
+        const result = selectAvailableFilters(state);
+        expect(result).toEqual(expected);
+      });
+
+      it('should not fail if a feature does not contain the filterable property', () => {
+        const state = {
+          data: {
+            layers: ['fruit-bowl'],
+            sources: [
+              {
+                name: 'fruit-bowl',
+                metadata: {
+                  filters: ['fruit', 'status'],
+                },
+                data: {
+                  features: [
+                    {
+                      properties: {
+                        fruit: 'apple',
+                        status: 'fresh',
+                      },
+                    },
+                    {
+                      properties: {
+                        fruit: 'banana',
+                        status: 'rotten',
+                      },
+                    },
+                    {
+                      properties: {
+                        fruit: 'orange',
+                      },
+                    },
+                  ],
+                },
+              },
+            ],
+          },
+        };
+        const expected = {
+          'fruit-bowl': {
+            fruit: ['apple', 'banana', 'orange'],
+            status: ['fresh', 'rotten'],
+          },
+        };
+        const result = selectAvailableFilters(state);
+        expect(result).toEqual(expected);
       });
     });
   });

@@ -72,4 +72,23 @@ export const selectDomainList = createSelector(selectDataSources, sources =>
   ),
 );
 
+const createLayerFilters = layer => {
+  const filters = {};
+  for (let filter of layer.metadata.filters) {
+    const options = new Set();
+    for (let feature of layer.data.features) {
+      feature.properties[filter] && options.add(feature.properties[filter]);
+    }
+    if (options.size) filters[filter] = Array.from(options);
+  }
+  return filters;
+};
+
+export const selectAvailableFilters = createSelector(selectUserLayers, layers => {
+  const filters = layers.reduce((acc, layer) => {
+    return layer.metadata.filters ? { ...acc, [layer.name]: createLayerFilters(layer) } : acc;
+  }, {});
+  return filters;
+});
+
 export default dataSlice.reducer;
