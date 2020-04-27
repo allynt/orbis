@@ -8,13 +8,13 @@ export default [
       ['==', '$type', 'Polygon'],
       ['!=', 'mode', 'static'],
       ['==', 'user_drawType', 'AOI'],
-      ['==', 'user_error', 'true']
+      ['==', 'user_error', 'true'],
     ],
     paint: {
       'fill-color': 'red',
       'fill-outline-color': 'red',
-      'fill-opacity': 0.5
-    }
+      'fill-opacity': 0.5,
+    },
   },
   {
     id: 'gl-draw-aoi-fill-inactive',
@@ -25,13 +25,13 @@ export default [
       ['==', '$type', 'Polygon'],
       ['!=', 'mode', 'static'],
       ['==', 'user_drawType', 'AOI'],
-      ['!=', 'user_error', 'true']
+      ['!=', 'user_error', 'true'],
     ],
     paint: {
       'fill-color': '#3bb2d0',
       'fill-outline-color': '#3bb2d0',
-      'fill-opacity': 0.5
-    }
+      'fill-opacity': 0.5,
+    },
   },
   {
     id: 'gl-draw-aoi-fill-active',
@@ -40,8 +40,8 @@ export default [
     paint: {
       'fill-color': 'red',
       'fill-outline-color': 'yellow',
-      'fill-opacity': 0.5
-    }
+      'fill-opacity': 0.5,
+    },
   },
   {
     id: 'gl-draw-polygon-fill-inactive',
@@ -52,9 +52,9 @@ export default [
       // 'fill-color': 'blue',
       // 'fill-outline-color': 'yellow',
       'fill-outline-color': '#3bb2d0',
-      'fill-opacity': ['get', 'user_fillOpacity']
+      'fill-opacity': ['get', 'user_fillOpacity'],
       // 'fill-opacity': 0.1
-    }
+    },
   },
   {
     id: 'gl-draw-polygon-fill-active',
@@ -63,9 +63,9 @@ export default [
     paint: {
       'fill-color': '#fbb03b',
       'fill-outline-color': '#fbb03b',
-      'fill-opacity': ['get', 'user_fillOpacity']
+      'fill-opacity': ['get', 'user_fillOpacity'],
       // 'fill-opacity': 0.1
-    }
+    },
   },
   {
     id: 'gl-draw-polygon-midpoint',
@@ -73,9 +73,9 @@ export default [
     filter: ['all', ['==', '$type', 'Point'], ['==', 'meta', 'midpoint']],
     paint: {
       'circle-radius': 3,
-      'circle-color': 'purple'
+      'circle-color': 'purple',
       // 'circle-color': '#fbb03b'
-    }
+    },
   },
   {
     id: 'gl-draw-solid-polygon-stroke-inactive',
@@ -85,16 +85,16 @@ export default [
       ['==', 'active', 'false'],
       ['==', '$type', 'Polygon'],
       ['!=', 'mode', 'static'],
-      ['==', 'user_lineTypeName', 'solid']
+      ['==', 'user_lineTypeName', 'solid'],
     ],
     layout: {
       'line-cap': 'round',
-      'line-join': 'round'
+      'line-join': 'round',
     },
     paint: {
       'line-color': ['get', 'user_lineColour'],
-      'line-width': ['get', 'user_lineWidth']
-    }
+      'line-width': ['get', 'user_lineWidth'],
+    },
   },
   {
     id: 'gl-draw-dashed-polygon-stroke-inactive',
@@ -104,17 +104,17 @@ export default [
       ['==', 'active', 'false'],
       ['==', '$type', 'Polygon'],
       ['!=', 'mode', 'static'],
-      ['==', 'user_lineTypeName', 'dashed']
+      ['==', 'user_lineTypeName', 'dashed'],
     ],
     layout: {
       'line-cap': 'round',
-      'line-join': 'round'
+      'line-join': 'round',
     },
     paint: {
       'line-color': ['get', 'user_lineColour'],
       'line-dasharray': [2, 2],
-      'line-width': ['get', 'user_lineWidth']
-    }
+      'line-width': ['get', 'user_lineWidth'],
+    },
   },
   {
     id: 'gl-draw-dotted-polygon-stroke-inactive',
@@ -124,17 +124,17 @@ export default [
       ['==', 'active', 'false'],
       ['==', '$type', 'Polygon'],
       ['!=', 'mode', 'static'],
-      ['==', 'user_lineTypeName', 'dotted']
+      ['==', 'user_lineTypeName', 'dotted'],
     ],
     layout: {
       'line-cap': 'round',
-      'line-join': 'round'
+      'line-join': 'round',
     },
     paint: {
       'line-color': ['get', 'user_lineColour'],
       'line-dasharray': [0.2, 2],
-      'line-width': ['get', 'user_lineWidth']
-    }
+      'line-width': ['get', 'user_lineWidth'],
+    },
   },
   {
     id: 'gl-draw-polygon-stroke-active',
@@ -142,15 +142,15 @@ export default [
     filter: ['all', ['==', 'active', 'true'], ['==', '$type', 'Polygon']],
     layout: {
       'line-cap': 'round',
-      'line-join': 'round'
+      'line-join': 'round',
     },
     paint: {
       'line-color': 'grey',
       // 'line-color': '#fbb03b',
       'line-dasharray': [0.2, 2],
       // 'line-width': 2
-      'line-width': ['get', 'user_lineWidth']
-    }
+      'line-width': ['get', 'user_lineWidth'],
+    },
   },
   {
     id: 'gl-draw-solid-line-inactive',
@@ -160,16 +160,16 @@ export default [
       ['==', 'active', 'false'],
       ['==', '$type', 'LineString'],
       ['!=', 'mode', 'static'],
-      ['==', 'user_lineTypeName', 'solid']
+      ['==', 'user_lineTypeName', 'solid'],
     ],
     layout: {
       'line-cap': 'round',
-      'line-join': 'round'
+      'line-join': 'round',
     },
     paint: {
       'line-color': ['get', 'user_lineColour'],
-      'line-width': ['get', 'user_lineWidth']
-    }
+      'line-width': ['get', 'user_lineWidth'],
+    },
   },
   {
     id: 'gl-draw-dashed-line-inactive',
@@ -179,17 +179,17 @@ export default [
       ['==', 'active', 'false'],
       ['==', '$type', 'LineString'],
       ['!=', 'mode', 'static'],
-      ['==', 'user_lineTypeName', 'dashed']
+      ['==', 'user_lineTypeName', 'dashed'],
     ],
     layout: {
       'line-cap': 'round',
-      'line-join': 'round'
+      'line-join': 'round',
     },
     paint: {
       'line-color': ['get', 'user_lineColour'],
       'line-dasharray': [2, 2],
-      'line-width': ['get', 'user_lineWidth']
-    }
+      'line-width': ['get', 'user_lineWidth'],
+    },
   },
   {
     id: 'gl-draw-dotted-line-inactive',
@@ -199,17 +199,17 @@ export default [
       ['==', 'active', 'false'],
       ['==', '$type', 'LineString'],
       ['!=', 'mode', 'static'],
-      ['==', 'user_lineTypeName', 'dotted']
+      ['==', 'user_lineTypeName', 'dotted'],
     ],
     layout: {
       'line-cap': 'round',
-      'line-join': 'round'
+      'line-join': 'round',
     },
     paint: {
       'line-color': ['get', 'user_lineColour'],
       'line-dasharray': [0.2, 2],
-      'line-width': ['get', 'user_lineWidth']
-    }
+      'line-width': ['get', 'user_lineWidth'],
+    },
   },
   {
     id: 'gl-draw-line-active',
@@ -217,7 +217,7 @@ export default [
     filter: ['all', ['==', '$type', 'LineString'], ['==', 'active', 'true']],
     layout: {
       'line-cap': 'round',
-      'line-join': 'round'
+      'line-join': 'round',
     },
     paint: {
       // 'line-color': ['get', 'fillColour'],
@@ -225,8 +225,8 @@ export default [
       'line-color': '#fbb03b',
       'line-dasharray': [0.2, 2],
       // 'line-width': 2
-      'line-width': ['get', 'user_lineWidth']
-    }
+      'line-width': ['get', 'user_lineWidth'],
+    },
   },
   {
     id: 'gl-draw-line-label',
@@ -238,7 +238,7 @@ export default [
       'text-anchor': 'left',
       'text-offset': [0, 0],
       'text-size': 16,
-      'text-allow-overlap': true
+      'text-allow-overlap': true,
     },
     paint: {
       'text-color': 'rgba(0, 0, 0, 1)',
@@ -248,8 +248,8 @@ export default [
       //   base: 1,
       //   stops: [[7.99, 1], [8, 0]]
       // },
-      'text-halo-blur': 1
-    }
+      'text-halo-blur': 1,
+    },
   },
   {
     id: 'gl-draw-polygon-and-line-vertex-stroke-inactive',
@@ -257,8 +257,8 @@ export default [
     filter: ['all', ['==', 'meta', 'vertex'], ['==', '$type', 'Point'], ['!=', 'mode', 'static']],
     paint: {
       'circle-radius': 5,
-      'circle-color': '#fff'
-    }
+      'circle-color': '#fff',
+    },
   },
   {
     id: 'gl-draw-polygon-and-line-vertex-inactive',
@@ -266,8 +266,8 @@ export default [
     filter: ['all', ['==', 'meta', 'vertex'], ['==', '$type', 'Point'], ['!=', 'mode', 'static']],
     paint: {
       'circle-radius': 3,
-      'circle-color': '#fbb03b'
-    }
+      'circle-color': '#fbb03b',
+    },
   },
   {
     id: 'gl-draw-point-stroke-inactive',
@@ -277,13 +277,13 @@ export default [
       ['==', 'active', 'false'],
       ['==', '$type', 'Point'],
       ['==', 'meta', 'feature'],
-      ['!=', 'mode', 'static']
+      ['!=', 'mode', 'static'],
     ],
     paint: {
       'circle-radius': 7,
       'circle-opacity': 1,
-      'circle-color': '#fff'
-    }
+      'circle-color': '#fff',
+    },
   },
   {
     id: 'gl-draw-point-stroke-active',
@@ -291,8 +291,8 @@ export default [
     filter: ['all', ['==', '$type', 'Point'], ['==', 'active', 'true'], ['!=', 'meta', 'midpoint']],
     paint: {
       'circle-radius': 7,
-      'circle-color': '#fff'
-    }
+      'circle-color': '#fff',
+    },
   },
   {
     id: 'gl-draw-point-inactive',
@@ -302,12 +302,12 @@ export default [
       ['==', 'active', 'false'],
       ['==', '$type', 'Point'],
       ['==', 'meta', 'feature'],
-      ['!=', 'mode', 'static']
+      ['!=', 'mode', 'static'],
     ],
     paint: {
       'circle-radius': 5,
-      'circle-color': 'green'
-    }
+      'circle-color': 'green',
+    },
   },
   {
     id: 'gl-draw-point-active',
@@ -315,8 +315,8 @@ export default [
     filter: ['all', ['==', '$type', 'Point'], ['!=', 'meta', 'midpoint'], ['==', 'active', 'true']],
     paint: {
       'circle-radius': 5,
-      'circle-color': 'blue'
-    }
+      'circle-color': 'blue',
+    },
   },
   {
     id: 'gl-draw-polygon-fill-static',
@@ -325,8 +325,8 @@ export default [
     paint: {
       'fill-color': '#404040',
       'fill-outline-color': '#404040',
-      'fill-opacity': 0.1
-    }
+      'fill-opacity': 0.1,
+    },
   },
   {
     id: 'gl-draw-polygon-stroke-static',
@@ -334,12 +334,12 @@ export default [
     filter: ['all', ['==', 'mode', 'static'], ['==', '$type', 'Polygon']],
     layout: {
       'line-cap': 'round',
-      'line-join': 'round'
+      'line-join': 'round',
     },
     paint: {
       'line-color': '#404040',
-      'line-width': 2
-    }
+      'line-width': 2,
+    },
   },
   {
     id: 'gl-draw-line-static',
@@ -347,12 +347,12 @@ export default [
     filter: ['all', ['==', 'mode', 'static'], ['==', '$type', 'LineString']],
     layout: {
       'line-cap': 'round',
-      'line-join': 'round'
+      'line-join': 'round',
     },
     paint: {
       'line-color': '#404040',
-      'line-width': 2
-    }
+      'line-width': 2,
+    },
   },
   {
     id: 'gl-draw-point-static',
@@ -360,8 +360,8 @@ export default [
     filter: ['all', ['==', 'mode', 'static'], ['==', '$type', 'Point']],
     paint: {
       'circle-radius': 5,
-      'circle-color': '#404040'
-    }
+      'circle-color': '#404040',
+    },
   },
   {
     id: 'gl-draw-point-label',
@@ -372,14 +372,14 @@ export default [
       'text-anchor': 'left',
       'text-offset': [0, 0],
       'text-size': 16,
-      'text-allow-overlap': true
+      'text-allow-overlap': true,
     },
     paint: {
       'text-color': 'rgba(0, 0, 0, 1)',
       'text-halo-color': 'rgba(255, 255, 255, 1)',
       'text-halo-width': 3,
-      'text-halo-blur': 1
-    }
+      'text-halo-blur': 1,
+    },
   },
   {
     id: 'gl-draw-point-label-inactive',
@@ -390,14 +390,14 @@ export default [
       'text-anchor': 'left',
       'text-offset': [0, 0],
       'text-size': 16,
-      'text-allow-overlap': true
+      'text-allow-overlap': true,
     },
     paint: {
       'text-color': 'rgba(0, 0, 0, 1)',
       'text-halo-color': 'rgba(255, 255, 255, 1)',
       'text-halo-width': 3,
-      'text-halo-blur': 1
-    }
+      'text-halo-blur': 1,
+    },
     // },
     // {
     //   id: 'gl-draw-image',
@@ -406,5 +406,5 @@ export default [
     //   paint: {
     //     'raster-opacity': 0.5
     //   }
-  }
+  },
 ];

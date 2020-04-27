@@ -25,14 +25,14 @@ describe('Satellite Visualisation Component', () => {
         id: 1,
         label: 'Visualisation One',
         description: 'Visualisation One Description',
-        thumbnail: '/test-thumbnail-1.png'
+        thumbnail: '/test-thumbnail-1.png',
       },
       {
         id: 2,
         label: 'Visualisation Two',
         description: 'Visualisation Two Description',
-        thumbnail: '/test-thumbnail-2.png'
-      }
+        thumbnail: '/test-thumbnail-2.png',
+      },
     ];
     setVisiblePanel = jest.fn();
   });
@@ -41,7 +41,7 @@ describe('Satellite Visualisation Component', () => {
     const { getByText, container } = render(
       <Provider store={store}>
         <Visualisation visualisations={visualisations} setVisiblePanel={setVisiblePanel}></Visualisation>
-      </Provider>
+      </Provider>,
     );
 
     expect(getByText('VISUALISATION')).toBeInTheDocument();
@@ -57,7 +57,7 @@ describe('Satellite Visualisation Component', () => {
     const { getByText } = render(
       <Provider store={store}>
         <Visualisation visualisations={visualisations} setVisiblePanel={setVisiblePanel}></Visualisation>
-      </Provider>
+      </Provider>,
     );
 
     fireEvent.click(getByText('Return to Search'));

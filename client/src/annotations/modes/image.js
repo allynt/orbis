@@ -7,17 +7,17 @@ ImageMode.onSetup = function(opts) {
   const props = MapboxDraw.modes.draw_point.onSetup.call(this, opts);
   props.point.properties = {
     ...props.point.properties,
-    ...opts
+    ...opts,
   };
 
   return {
-    ...props
+    ...props,
   };
 };
 
 ImageMode.onClick = ImageMode.onTap = function(state, event) {
   const {
-    lngLat: { lng, lat }
+    lngLat: { lng, lat },
   } = event;
 
   this.updateUIClasses({ mouse: Constants.cursors.MOVE });

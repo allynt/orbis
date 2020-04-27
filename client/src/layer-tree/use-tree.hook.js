@@ -18,7 +18,7 @@ const useTree = map => {
   return {
     nodes,
     getRootNodes,
-    getChildNodes
+    getChildNodes,
   };
   // }
 };

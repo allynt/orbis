@@ -10,7 +10,7 @@ import reducer, {
   selectUserLayers,
   selectDataSources,
   selectPollingPeriod,
-  selectDataToken
+  selectDataToken,
 } from './data-layers.slice';
 
 const mockStore = configureMockStore([thunk]);
@@ -24,20 +24,20 @@ describe('Data Slice', () => {
         fetch.resetMocks();
 
         store = mockStore({
-          accounts: { userKey: 'Test-User-Key' }
+          accounts: { userKey: 'Test-User-Key' },
         });
       });
 
       it('should dispatch fetch sources failure action.', async () => {
         fetch.mockResponse(
           JSON.stringify({
-            message: 'Test error message'
+            message: 'Test error message',
           }),
           {
             ok: false,
             status: 401,
-            statusText: 'Test Error'
-          }
+            statusText: 'Test Error',
+          },
         );
 
         const expectedActions = [{ type: fetchSourcesFailure.type, payload: { message: '401 Test Error' } }];
@@ -55,16 +55,16 @@ describe('Data Slice', () => {
             {
               id: 1,
               metadata: {
-                domain: 'Test Domain 1'
-              }
+                domain: 'Test Domain 1',
+              },
             },
             {
               id: 2,
               metadata: {
-                domains: 'Test Domain 2'
-              }
-            }
-          ]
+                domains: 'Test Domain 2',
+              },
+            },
+          ],
         };
 
         fetch.mockResponse(JSON.stringify(data));
@@ -86,7 +86,7 @@ describe('Data Slice', () => {
         layers: [],
         sources: null,
         token: null,
-        pollingPeriod: 30000
+        pollingPeriod: 30000,
       };
     });
 
@@ -101,7 +101,7 @@ describe('Data Slice', () => {
 
       const actualState = reducer(beforeState, {
         type: addLayers.type,
-        payload: layers
+        payload: layers,
       });
 
       expect(actualState.layers).toEqual(layers);
@@ -120,7 +120,7 @@ describe('Data Slice', () => {
 
       const actualState = reducer(beforeState, {
         type: addLayers.type,
-        payload: layers
+        payload: layers,
       });
 
       expect(actualState.layers).toEqual([...beforeState.layers, ...layers]);
@@ -132,7 +132,7 @@ describe('Data Slice', () => {
 
       const actualState = reducer(beforeState, {
         type: removeLayer.type,
-        payload: layer
+        payload: layer,
       });
 
       expect(actualState.layers).toEqual([beforeState.layers[1]]);
@@ -144,7 +144,7 @@ describe('Data Slice', () => {
 
       const actualState = reducer(beforeState, {
         type: removeLayer.type,
-        payload: layer
+        payload: layer,
       });
 
       expect(actualState.layers).toEqual(beforeState.layers);
@@ -166,22 +166,22 @@ describe('Data Slice', () => {
           {
             id: 1,
             metadata: {
-              domain: 'Test Domain 1'
-            }
+              domain: 'Test Domain 1',
+            },
           },
           {
             id: 2,
             metadata: {
-              domain: 'Test Domain 2'
-            }
-          }
-        ]
+              domain: 'Test Domain 2',
+            },
+          },
+        ],
       };
       const timeoutInMilliseconds = (data.timeout * 60 * 1000) / 2;
 
       const actualState = reducer(beforeState, {
         type: fetchSourcesSuccess.type,
-        payload: data
+        payload: data,
       });
 
       expect(actualState.token).toEqual(data.token);
@@ -194,7 +194,7 @@ describe('Data Slice', () => {
 
       const actualState = reducer(beforeState, {
         type: fetchSourcesFailure.type,
-        payload: error
+        payload: error,
       });
 
       expect(actualState.error).toEqual(error);
@@ -213,8 +213,8 @@ describe('Data Slice', () => {
             I'm the token
             oh oh oh
             I'm the token
-            `
-          }
+            `,
+          },
         };
         const result = selectDataToken(state);
         expect(result).toBe(state.data.token);
@@ -228,7 +228,7 @@ describe('Data Slice', () => {
 
       it('should return an empty string if no token is present', () => {
         const state = {
-          data: {}
+          data: {},
         };
         const result = selectDataToken(state);
         expect(result).toBe('');
@@ -239,8 +239,8 @@ describe('Data Slice', () => {
       it('should return the polling period from state', () => {
         const state = {
           data: {
-            pollingPeriod: 1
-          }
+            pollingPeriod: 1,
+          },
         };
         const result = selectPollingPeriod(state);
         expect(result).toBe(state.data.pollingPeriod);
@@ -254,7 +254,7 @@ describe('Data Slice', () => {
 
       it('returns undefined if no polling period is present', () => {
         const state = {
-          data: {}
+          data: {},
         };
         const result = selectPollingPeriod(state);
         expect(result).toBeUndefined();
@@ -265,8 +265,8 @@ describe('Data Slice', () => {
       it('should return the list of data sources', () => {
         const state = {
           data: {
-            sources: [{ name: 'source 1' }, { name: 'source 2' }, { name: 'source 3' }]
-          }
+            sources: [{ name: 'source 1' }, { name: 'source 2' }, { name: 'source 3' }],
+          },
         };
         const result = selectDataSources(state);
         expect(result).toEqual(state.data.sources);
@@ -290,8 +290,8 @@ describe('Data Slice', () => {
         const state = {
           data: {
             sources: [{ name: 'Source 1' }, { name: 'Source 2' }, { name: 'Source 3' }],
-            layers: ['Source 1', 'Source 3']
-          }
+            layers: ['Source 1', 'Source 3'],
+          },
         };
         const expected = [state.data.sources[0], state.data.sources[2]];
         const result = selectUserLayers(state);
@@ -302,8 +302,8 @@ describe('Data Slice', () => {
         const state = {
           data: {
             sources: [{ name: 'Source 1' }, { name: 'Source 2' }, { name: 'Source 3' }],
-            layers: []
-          }
+            layers: [],
+          },
         };
         const result = selectUserLayers(state);
         expect(result).toEqual([]);
@@ -313,8 +313,8 @@ describe('Data Slice', () => {
         const state = {
           data: {
             sources: [],
-            layers: []
-          }
+            layers: [],
+          },
         };
         const result = selectUserLayers(state);
         expect(result).toEqual([]);
@@ -323,8 +323,8 @@ describe('Data Slice', () => {
       it('returns an empty array if sources is undefined', () => {
         const state = {
           data: {
-            layers: []
-          }
+            layers: [],
+          },
         };
         const result = selectUserLayers(state);
         expect(result).toEqual([]);
@@ -334,8 +334,8 @@ describe('Data Slice', () => {
         const state = {
           data: {
             sources: [],
-            layers: ['Source 1', 'Source 3']
-          }
+            layers: ['Source 1', 'Source 3'],
+          },
         };
         const result = selectUserLayers(state);
         expect(result).toEqual([]);
@@ -349,26 +349,26 @@ describe('Data Slice', () => {
             sources: [
               {
                 metadata: {
-                  domain: 'Domain 1'
-                }
+                  domain: 'Domain 1',
+                },
               },
               {
                 metadata: {
-                  domain: 'Domain 2'
-                }
+                  domain: 'Domain 2',
+                },
               },
               {
                 metadata: {
-                  domain: 'Domain 3'
-                }
-              }
-            ]
-          }
+                  domain: 'Domain 3',
+                },
+              },
+            ],
+          },
         };
         const expected = [
           state.data.sources[0].metadata.domain,
           state.data.sources[1].metadata.domain,
-          state.data.sources[2].metadata.domain
+          state.data.sources[2].metadata.domain,
         ];
 
         const result = selectDomainList(state);
@@ -381,31 +381,31 @@ describe('Data Slice', () => {
             sources: [
               {
                 metadata: {
-                  domain: 'Domain 1'
-                }
+                  domain: 'Domain 1',
+                },
               },
               {
                 metadata: {
-                  domain: 'Domain 1'
-                }
+                  domain: 'Domain 1',
+                },
               },
               {
                 metadata: {
-                  domain: 'Domain 2'
-                }
+                  domain: 'Domain 2',
+                },
               },
               {
                 metadata: {
-                  domain: 'Domain 3'
-                }
+                  domain: 'Domain 3',
+                },
               },
               {
                 metadata: {
-                  domain: 'Domain 3'
-                }
-              }
-            ]
-          }
+                  domain: 'Domain 3',
+                },
+              },
+            ],
+          },
         };
         const expected = ['Domain 1', 'Domain 2', 'Domain 3'];
         const notExpected = ['Domain 1', 'Domain 1', 'Domain 2', 'Domain 3', 'Domain 3'];
@@ -429,8 +429,8 @@ describe('Data Slice', () => {
       it('should return an empty array if sources is an empty array', () => {
         const state = {
           data: {
-            sources: []
-          }
+            sources: [],
+          },
         };
         const result = selectDomainList(state);
         expect(result).toEqual([]);
@@ -439,8 +439,8 @@ describe('Data Slice', () => {
       it('should return an empty array if no sources have a metadata property', () => {
         const state = {
           data: {
-            sources: [{}, {}, {}]
-          }
+            sources: [{}, {}, {}],
+          },
         };
         const result = selectDomainList(state);
         expect(result).toEqual([]);
@@ -449,8 +449,8 @@ describe('Data Slice', () => {
       it('should return an empty array if no sources have a domain property', () => {
         const state = {
           data: {
-            sources: [{ metadata: {} }, { metadata: {} }, { metadata: {} }]
-          }
+            sources: [{ metadata: {} }, { metadata: {} }, { metadata: {} }],
+          },
         };
         const result = selectDomainList(state);
         expect(result).toEqual([]);

@@ -26,15 +26,15 @@ describe('Saved Satellite Search List Component', () => {
         name: 'Test Search 1',
         start_date: '2000-01-01T00:00:00Z',
         end_date: '2000-01-01T01:00:00Z',
-        tiers: ['free']
+        tiers: ['free'],
       },
       {
         id: 2,
         name: 'Test Search 2',
         start_date: '2010-01-01T00:00:00Z',
         end_date: '2010-01-01T01:00:00Z',
-        tiers: ['mid']
-      }
+        tiers: ['mid'],
+      },
     ];
     setCurrentSearchQuery = jest.fn();
     deleteSavedSatelliteSearch = jest.fn();
@@ -49,7 +49,7 @@ describe('Saved Satellite Search List Component', () => {
           setCurrentSearchQuery={setCurrentSearchQuery}
           deleteSavedSatelliteSearch={deleteSavedSatelliteSearch}
         />
-      </Provider>
+      </Provider>,
     );
 
     expect(queryByText('li')).toBeNull();
@@ -63,14 +63,14 @@ describe('Saved Satellite Search List Component', () => {
           setCurrentSearchQuery={setCurrentSearchQuery}
           deleteSavedSatelliteSearch={deleteSavedSatelliteSearch}
         />
-      </Provider>
+      </Provider>,
     );
 
     const searchItems = container.querySelectorAll('li');
     searchItems.forEach((item, i) => {
       expect(within(item).getByText(savedSearches[i].name)).toBeInTheDocument();
       expect(
-        within(item).getByText(`${savedSearches[i].start_date} to ${savedSearches[i].end_date}`)
+        within(item).getByText(`${savedSearches[i].start_date} to ${savedSearches[i].end_date}`),
       ).toBeInTheDocument();
       expect(within(item).getByText('Reload')).toBeInTheDocument();
       expect(within(item).getByText('Delete')).toBeInTheDocument();
@@ -85,14 +85,14 @@ describe('Saved Satellite Search List Component', () => {
           setCurrentSearchQuery={setCurrentSearchQuery}
           deleteSavedSatelliteSearch={deleteSavedSatelliteSearch}
         />
-      </Provider>
+      </Provider>,
     );
 
     const searchItems = container.querySelectorAll('li');
     searchItems.forEach((item, i) => {
       expect(within(item).getByText(savedSearches[i].name)).toBeInTheDocument();
       expect(
-        within(item).getByText(`${savedSearches[i].start_date} to ${savedSearches[i].end_date}`)
+        within(item).getByText(`${savedSearches[i].start_date} to ${savedSearches[i].end_date}`),
       ).toBeInTheDocument();
       expect(within(item).getByText('Reload')).toBeInTheDocument();
       expect(within(item).getByText('Delete')).toBeInTheDocument();
@@ -107,7 +107,7 @@ describe('Saved Satellite Search List Component', () => {
           setCurrentSearchQuery={setCurrentSearchQuery}
           deleteSavedSatelliteSearch={deleteSavedSatelliteSearch}
         />
-      </Provider>
+      </Provider>,
     );
     const searchItem = container.querySelectorAll('li')[0];
     fireEvent.click(within(searchItem).getByText('Reload'));
@@ -122,7 +122,7 @@ describe('Saved Satellite Search List Component', () => {
           setCurrentSearchQuery={setCurrentSearchQuery}
           deleteSavedSatelliteSearch={deleteSavedSatelliteSearch}
         />
-      </Provider>
+      </Provider>,
     );
     const searchItem = container.querySelectorAll('li')[0];
     fireEvent.click(within(searchItem).getByText('Delete'));

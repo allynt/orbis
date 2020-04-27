@@ -24,7 +24,7 @@ const LineWidth = ({ options, select }) => (
 
 LineWidth.propTypes = {
   options: PropTypes.array.isRequired,
-  select: PropTypes.func.isRequired
+  select: PropTypes.func.isRequired,
 };
 
 export default LineWidth;

@@ -5,8 +5,8 @@ import { EMAIL_REGEX } from '../utils/form';
 const validate = form => {
   const {
     app: {
-      config: { passwordMinLength, passwordMaxLength }
-    }
+      config: { passwordMinLength, passwordMaxLength },
+    },
   } = store.getState();
 
   let errors = {};

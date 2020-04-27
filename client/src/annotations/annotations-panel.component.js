@@ -53,20 +53,20 @@ const lineWidthOptions = [
     id: 'lineWidth1',
     icon: lineWidth1PixelIcon,
     value: 1,
-    tooltip: 'Set Line Width to 1px'
+    tooltip: 'Set Line Width to 1px',
   },
   {
     id: 'lineWidth2',
     icon: lineWidth2PixelIcon,
     value: 5,
-    tooltip: 'Set Line Width to 2px'
+    tooltip: 'Set Line Width to 2px',
   },
   {
     id: 'lineWidth3',
     icon: lineWidth3PixelIcon,
     value: 10,
-    tooltip: 'Set Line Width to 3px'
-  }
+    tooltip: 'Set Line Width to 3px',
+  },
 ];
 
 const lineTypeOptions = [
@@ -74,20 +74,20 @@ const lineTypeOptions = [
     id: 'solid',
     icon: lineTypeSolidIcon,
     value: false,
-    tooltip: 'Set Line Type to Solid'
+    tooltip: 'Set Line Type to Solid',
   },
   {
     id: 'dashed',
     icon: lineTypeDashedIcon,
     value: [2, 1],
-    tooltip: 'Set Line Type to Dashed'
+    tooltip: 'Set Line Type to Dashed',
   },
   {
     id: 'dotted',
     icon: lineTypeDottedIcon,
     value: [1, 1],
-    tooltip: 'Set Line Type to Dotted'
-  }
+    tooltip: 'Set Line Type to Dotted',
+  },
 ];
 
 const initialState = {
@@ -103,7 +103,7 @@ const initialState = {
   fillOpacity: 0.5,
   textLabelSelected: false,
   addImageSelected: false,
-  imageUrl: ''
+  imageUrl: '',
 };
 
 const SET_FILL_COLOUR_SELECTED = 'SET_FILL_COLOUR_SELECTED';
@@ -177,7 +177,7 @@ const AnnotationsPanel = ({ map }) => {
     lineTypeOption,
     textLabelSelected,
     addImageSelected,
-    imageUrl
+    imageUrl,
   } = state;
 
   const drawOptions = {
@@ -187,7 +187,7 @@ const AnnotationsPanel = ({ map }) => {
     lineTypeName: lineTypeOption.id,
     lineType: lineTypeOption.value,
     fillOpacity,
-    imageUrl
+    imageUrl,
   };
 
   const popupRef = useRef(null);
@@ -224,7 +224,7 @@ const AnnotationsPanel = ({ map }) => {
         }
       }
     },
-    [mode, drawOptions]
+    [mode, drawOptions],
   );
 
   useMapEvent(
@@ -252,7 +252,7 @@ const AnnotationsPanel = ({ map }) => {
           .addTo(map);
       }
     },
-    [textLabelSelected]
+    [textLabelSelected],
   );
 
   return (

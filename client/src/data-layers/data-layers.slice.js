@@ -5,7 +5,7 @@ const initialState = {
   layers: [],
   pollingPeriod: 30000,
   token: null,
-  sources: null
+  sources: null,
 };
 
 const dataSlice = createSlice({
@@ -33,8 +33,8 @@ const dataSlice = createSlice({
     },
     fetchSourcesFailure: (state, { payload }) => {
       state.error = payload;
-    }
-  }
+    },
+  },
 });
 
 export const { addLayers, removeLayer, fetchSourcesFailure, fetchSourcesSuccess } = dataSlice.actions;
@@ -59,17 +59,17 @@ export const selectDataToken = createSelector(baseSelector, state => state.token
 export const selectDataSources = createSelector(baseSelector, state => state.sources ?? []);
 export const selectPollingPeriod = createSelector(baseSelector, state => state.pollingPeriod);
 export const selectUserLayers = createSelector(baseSelector, state =>
-  state.sources ? state.sources.filter(source => state.layers.includes(source.name)) : []
+  state.sources ? state.sources.filter(source => state.layers.includes(source.name)) : [],
 );
 export const selectDomainList = createSelector(selectDataSources, sources =>
   Array.from(
     new Set(
       sources.reduce(
         (acc, source) => (source.metadata && source.metadata.domain ? [...acc, source.metadata.domain] : acc),
-        []
-      )
-    )
-  )
+        [],
+      ),
+    ),
+  ),
 );
 
 export default dataSlice.reducer;

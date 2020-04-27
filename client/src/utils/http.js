@@ -1,31 +1,31 @@
 export const JSON_HEADERS = {
   Accept: 'application/json',
-  'Content-Type': 'application/json'
+  'Content-Type': 'application/json',
 };
 
 export const FORM_HEADERS = {
-  Accept: 'application/json, application/xml, text/plain, text/html, *.*'
+  Accept: 'application/json, application/xml, text/plain, text/html, *.*',
 };
 
 export const getJsonAuthHeaders = state => {
   const {
-    accounts: { userKey }
+    accounts: { userKey },
   } = state;
 
   return {
     ...JSON_HEADERS,
-    Authorization: `Token ${userKey}`
+    Authorization: `Token ${userKey}`,
   };
 };
 
 export const getFormAuthHeaders = state => {
   const {
-    accounts: { userKey }
+    accounts: { userKey },
   } = state;
 
   return {
     ...FORM_HEADERS,
-    Authorization: `Token ${userKey}`
+    Authorization: `Token ${userKey}`,
   };
 };
 
@@ -33,7 +33,7 @@ export const getData = (url, headers = {}) => {
   return fetch(url, {
     credentials: 'include',
     method: 'GET',
-    headers: headers
+    headers: headers,
   })
     .then(response => response)
     .catch(error => error);
@@ -52,7 +52,7 @@ export const sendData = (url, data = '', headers = {}, method = 'POST') => {
     return fetch(`${url}${data}/`, {
       credentials: 'include',
       method,
-      headers: headers
+      headers: headers,
     })
       .then(response => response)
       .catch(error => error);
@@ -61,7 +61,7 @@ export const sendData = (url, data = '', headers = {}, method = 'POST') => {
       credentials: 'include',
       method,
       headers: headers,
-      body: submission
+      body: submission,
     })
       .then(response => response)
       .catch(error => error);
@@ -70,7 +70,7 @@ export const sendData = (url, data = '', headers = {}, method = 'POST') => {
       credentials: 'include',
       method,
       headers: headers,
-      body: submission
+      body: submission,
     })
       .then(response => response)
       .catch(error => error);

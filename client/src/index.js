@@ -36,7 +36,7 @@ window.onerror = (msg, url, line, col, error) => {
   // Report this error
   ReactGA.ga('send', 'exception', {
     exDescription: errorMsg,
-    exFatal: false
+    exFatal: false,
   });
 
   const suppressErrorAlert = true;
@@ -61,7 +61,7 @@ const render = () => {
         </PersistGate>
       </ConnectedRouter>
     </Provider>,
-    document.getElementById('root')
+    document.getElementById('root'),
   );
 };
 

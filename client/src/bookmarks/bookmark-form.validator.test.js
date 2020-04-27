@@ -5,20 +5,20 @@ describe('Bookmark Form Validator', () => {
     const testFields = [
       {
         title: '', // Error, missing
-        description: 'description'
+        description: 'description',
       },
       {
         title: 'id', // Error, too short
-        description: 'description'
+        description: 'description',
       },
       {
         title: 'Bookmark Title',
-        description: '' // Error, missing
+        description: '', // Error, missing
       },
       {
         title: 'Bookmark Title',
-        description: 'de' // Error, too short
-      }
+        description: 'de', // Error, too short
+      },
     ];
 
     it.each(testFields)('Invalid Value %o', form => {
@@ -31,12 +31,12 @@ describe('Bookmark Form Validator', () => {
     const testFields = [
       {
         title: 'Bookmark Title',
-        description: 'description'
+        description: 'description',
       },
       {
         title: 'gid',
-        description: 'des'
-      }
+        description: 'des',
+      },
     ];
 
     it.each(testFields)('Valid Value %o', form => {

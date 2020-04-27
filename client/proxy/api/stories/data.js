@@ -13,20 +13,20 @@ let stories = [
           center: [-3.1887179999999944, 55.948564000000005],
           zoom: 16,
           pitch: 0.0,
-          bearing: 0.0
+          bearing: 0.0,
         },
         onEnter: [
           {
             id: 'cowgate',
             type: 'vector',
-            url: 'https://staticdata.testing.or3is.com/astrosat/test/stoke-on-trent/v1/metadata.json'
+            url: 'https://staticdata.testing.or3is.com/astrosat/test/stoke-on-trent/v1/metadata.json',
           },
           {
             id: 'cowgate-infrastructure',
             type: 'geojson',
-            url: 'https://staticdata.testing.or3is.com/astrosat/core/hospitals-uk/2019-12-17/hospitals_uk.geojson'
-          }
-        ]
+            url: 'https://staticdata.testing.or3is.com/astrosat/core/hospitals-uk/2019-12-17/hospitals_uk.geojson',
+          },
+        ],
       },
       {
         id: 'meadows',
@@ -37,8 +37,8 @@ let stories = [
           center: [-3.1943694999999934, 55.941046],
           zoom: 16,
           pitch: 0.0,
-          bearing: 0.0
-        }
+          bearing: 0.0,
+        },
       },
       {
         id: 'easterrd',
@@ -49,23 +49,23 @@ let stories = [
           center: [-3.165666500000043, 55.9617145],
           zoom: 16,
           pitch: 0.0,
-          bearing: 0.0
+          bearing: 0.0,
         },
         onEnter: [
           {
             id: 'easterrd',
             type: 'vector',
-            url: 'https://staticdata.testing.or3is.com/astrosat/test/stoke-on-trent/v1/metadata.json'
+            url: 'https://staticdata.testing.or3is.com/astrosat/test/stoke-on-trent/v1/metadata.json',
           },
           {
             id: 'easterrd-infrastructure',
             type: 'geojson',
-            url: 'https://staticdata.testing.or3is.com/astrosat/core/hospitals-uk/2019-12-17/hospitals_uk.geojson'
-          }
+            url: 'https://staticdata.testing.or3is.com/astrosat/core/hospitals-uk/2019-12-17/hospitals_uk.geojson',
+          },
         ],
-        onLeave: []
-      }
-    ]
+        onLeave: [],
+      },
+    ],
   },
   {
     title: 'History of Something else',
@@ -81,8 +81,8 @@ let stories = [
           center: [-3.1887179999999944, 55.948564000000005],
           zoom: 16,
           pitch: 0.0,
-          bearing: 0.0
-        }
+          bearing: 0.0,
+        },
       },
       {
         id: 'place2',
@@ -93,8 +93,8 @@ let stories = [
           center: [-3.1943694999999934, 55.941046],
           zoom: 16,
           pitch: 0.0,
-          bearing: 0.0
-        }
+          bearing: 0.0,
+        },
       },
       {
         id: 'place3',
@@ -105,11 +105,11 @@ let stories = [
           center: [-3.165666500000043, 55.9617145],
           zoom: 16,
           pitch: 0.0,
-          bearing: 0.0
-        }
-      }
-    ]
-  }
+          bearing: 0.0,
+        },
+      },
+    ],
+  },
 ];
 
 const getStories = () => stories;

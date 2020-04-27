@@ -6,12 +6,12 @@ describe('Satellite Search Form Validator', () => {
     const testFields = [
       {
         first_name: 'J', // Error, too short
-        last_name: 'Smith'
+        last_name: 'Smith',
       },
       {
         first_name: 'James',
-        last_name: 'S' // Error, too short
-      }
+        last_name: 'S', // Error, too short
+      },
     ];
 
     it.each(testFields)('Invalid Value %o', form => {
@@ -25,20 +25,20 @@ describe('Satellite Search Form Validator', () => {
     const testFields = [
       {
         first_name: 'Su',
-        last_name: 'Smith'
+        last_name: 'Smith',
       },
       {
         first_name: 'John',
-        last_name: 'Smith'
+        last_name: 'Smith',
       },
       {
         first_name: '',
-        last_name: 'Smith'
+        last_name: 'Smith',
       },
       {
         first_name: 'John',
-        last_name: ''
-      }
+        last_name: '',
+      },
     ];
 
     it.each(testFields)('Valid Value %o', form => {

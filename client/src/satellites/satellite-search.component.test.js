@@ -31,13 +31,13 @@ describe('Satellite Search Component', () => {
     store = mockStore({
       satellites: {
         satelliteSearches: [],
-        currentSearchQuery: null
+        currentSearchQuery: null,
       },
       app: {
         config: {
-          maximumAoiArea: 5
-        }
-      }
+          maximumAoiArea: 5,
+        },
+      },
     });
 
     map = mapboxgl.Map();
@@ -54,24 +54,24 @@ describe('Satellite Search Component', () => {
                   [0, 0],
                   [1, 0],
                   [1, 1],
-                  [0, 0]
-                ]
-              ]
-            }
-          }
-        ]
+                  [0, 0],
+                ],
+              ],
+            },
+          },
+        ],
       })),
-      setFeatureProperty: jest.fn()
+      setFeatureProperty: jest.fn(),
     });
     satellites = [
       {
         id: 1,
-        label: 'Test Satellite 1'
+        label: 'Test Satellite 1',
       },
       {
         id: 2,
-        label: 'Test Satellite 2'
-      }
+        label: 'Test Satellite 2',
+      },
     ];
     setVisiblePanel = jest.fn();
     setSelectedMoreInfo = jest.fn();
@@ -88,7 +88,7 @@ describe('Satellite Search Component', () => {
           setSelectedMoreInfo={setSelectedMoreInfo}
           toggleMoreInfoDialog={toggleMoreInfoDialog}
         />
-      </Provider>
+      </Provider>,
     );
 
     expect(getByText('There are no saved AOI yet')).toBeInTheDocument();
@@ -129,7 +129,7 @@ describe('Satellite Search Component', () => {
           setSelectedMoreInfo={setSelectedMoreInfo}
           toggleMoreInfoDialog={toggleMoreInfoDialog}
         />
-      </Provider>
+      </Provider>,
     );
 
     expect(map._controls[0].changeMode).not.toHaveBeenCalled();

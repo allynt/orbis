@@ -23,7 +23,7 @@ describe('Password Reset Form Component', () => {
     const store = mockStore({});
 
     const match = {
-      params: 'value'
+      params: 'value',
     };
 
     const { container, getByText, getAllByText, getByPlaceholderText } = render(
@@ -31,7 +31,7 @@ describe('Password Reset Form Component', () => {
         <Provider store={store}>
           <PasswordResetConfirmForm match={match} />
         </Provider>
-      </MemoryRouter>
+      </MemoryRouter>,
     );
 
     expect(container.querySelector('form')).toBeInTheDocument();
@@ -52,7 +52,7 @@ describe('Password Reset Form Component', () => {
     const store = mockStore({});
 
     const match = {
-      params: 'value'
+      params: 'value',
     };
 
     const { getByText, getByPlaceholderText } = render(
@@ -60,7 +60,7 @@ describe('Password Reset Form Component', () => {
         <Provider store={store}>
           <PasswordResetConfirmForm match={match} />
         </Provider>
-      </MemoryRouter>
+      </MemoryRouter>,
     );
 
     const password = getByPlaceholderText('New Password');
@@ -74,7 +74,7 @@ describe('Password Reset Form Component', () => {
     const store = mockStore({});
 
     const match = {
-      params: 'value'
+      params: 'value',
     };
 
     const { getByText, getByPlaceholderText } = render(
@@ -82,7 +82,7 @@ describe('Password Reset Form Component', () => {
         <Provider store={store}>
           <PasswordResetConfirmForm match={match} />
         </Provider>
-      </MemoryRouter>
+      </MemoryRouter>,
     );
 
     let password = getByPlaceholderText('New Password');
@@ -102,7 +102,7 @@ describe('Password Reset Form Component', () => {
     const store = mockStore({});
 
     const match = {
-      params: 'value'
+      params: 'value',
     };
 
     const { getByText } = render(
@@ -110,7 +110,7 @@ describe('Password Reset Form Component', () => {
         <Provider store={store}>
           <PasswordResetConfirmForm match={match} />
         </Provider>
-      </MemoryRouter>
+      </MemoryRouter>,
     );
 
     fireEvent.click(getByText('Reset Password'));
@@ -122,7 +122,7 @@ describe('Password Reset Form Component', () => {
     const store = mockStore({});
 
     const match = {
-      params: 'value'
+      params: 'value',
     };
 
     const { getByText, getByPlaceholderText } = render(
@@ -130,7 +130,7 @@ describe('Password Reset Form Component', () => {
         <Provider store={store}>
           <PasswordResetConfirmForm match={match} />
         </Provider>
-      </MemoryRouter>
+      </MemoryRouter>,
     );
 
     fireEvent.change(getByPlaceholderText('New Password'), { target: { value: 'newpassword' } });

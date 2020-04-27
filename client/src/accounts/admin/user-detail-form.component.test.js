@@ -25,7 +25,7 @@ describe('User Detail Form Component', () => {
     const { container, getByText, getByLabelText } = render(
       <Provider store={store}>
         <UserDetailForm createUser={createUser} />
-      </Provider>
+      </Provider>,
     );
 
     expect(container.querySelector('form')).toBeInTheDocument();
@@ -42,7 +42,7 @@ describe('User Detail Form Component', () => {
     const { getByText, getByLabelText } = render(
       <Provider store={store}>
         <UserDetailForm createUser={createUser} />
-      </Provider>
+      </Provider>,
     );
 
     const username = getByLabelText('Username:');
@@ -57,7 +57,7 @@ describe('User Detail Form Component', () => {
     const { getByText, getByLabelText } = render(
       <Provider store={store}>
         <UserDetailForm createUser={createUser} />
-      </Provider>
+      </Provider>,
     );
 
     fireEvent.change(getByLabelText('Username:'), { target: { value: 'testusername' } });
@@ -72,7 +72,7 @@ describe('User Detail Form Component', () => {
     const { getByText } = render(
       <Provider store={store}>
         <UserDetailForm createUser={createUser} />
-      </Provider>
+      </Provider>,
     );
 
     fireEvent.click(getByText('Create User'));
@@ -84,7 +84,7 @@ describe('User Detail Form Component', () => {
     const { getByLabelText } = render(
       <Provider store={store}>
         <UserDetailForm createUser={createUser} />
-      </Provider>
+      </Provider>,
     );
 
     fireEvent.change(getByLabelText('Username:'), { target: { value: 'testusername' } });

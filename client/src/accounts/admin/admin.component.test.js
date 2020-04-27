@@ -20,7 +20,7 @@ describe('Admin Component', () => {
     const { container, getByText } = render(
       <Router history={history}>
         <Admin />
-      </Router>
+      </Router>,
     );
 
     expect(getByText('Admin Users')).toBeInTheDocument();
@@ -32,7 +32,7 @@ describe('Admin Component', () => {
     const { getByText } = render(
       <Router history={history}>
         <Admin />
-      </Router>
+      </Router>,
     );
 
     expect(history.location.pathname).toBe('/');
@@ -44,7 +44,7 @@ describe('Admin Component', () => {
     const { getByText } = render(
       <Router history={history}>
         <Admin />
-      </Router>
+      </Router>,
     );
 
     expect(history.location.pathname).toBe('/');

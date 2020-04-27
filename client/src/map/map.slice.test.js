@@ -13,8 +13,8 @@ describe('Map Slice', () => {
         saveMap: false,
         dimensions: {
           width: -1,
-          height: -1
-        }
+          height: -1,
+        },
       };
     });
 
@@ -27,11 +27,11 @@ describe('Map Slice', () => {
     it("should not update the viewport in state, when value doesn't exist", () => {
       const viewport = {
         center: [-4.84, 54.71],
-        zoom: 6
+        zoom: 6,
       };
       const actualState = reducer(beforeState, {
         type: setViewport.type,
-        payload: null
+        payload: null,
       });
 
       expect(actualState.viewport).toEqual(viewport);
@@ -40,11 +40,11 @@ describe('Map Slice', () => {
     it('should update the viewport in state, when value exists', () => {
       const viewport = {
         center: { lng: -4.84, lat: 54.71 },
-        zoom: 5
+        zoom: 5,
       };
       const actualState = reducer(beforeState, {
         type: setViewport.type,
-        payload: viewport
+        payload: viewport,
       });
 
       expect(actualState.viewport).toEqual(viewport);
@@ -54,16 +54,16 @@ describe('Map Slice', () => {
       const mapStyles = [
         {
           name: 'light',
-          label: 'Light'
+          label: 'Light',
         },
         {
           name: 'light',
-          label: 'Light'
-        }
+          label: 'Light',
+        },
       ];
       const actualState = reducer(beforeState, {
         type: selectMapStyle.type,
-        payload: mapStyles[1]
+        payload: mapStyles[1],
       });
 
       expect(actualState.selectedMapStyle).toEqual(mapStyles[1]);
@@ -71,7 +71,7 @@ describe('Map Slice', () => {
 
     it('should update the compare map state, when in comparison mode', () => {
       const actualState = reducer(beforeState, {
-        type: toggleCompareMode.type
+        type: toggleCompareMode.type,
       });
 
       expect(actualState.isCompareMode).toEqual(!beforeState.isCompareMode);
@@ -79,7 +79,7 @@ describe('Map Slice', () => {
 
     it('should update the saved map in state, when successfully called', () => {
       const actualState = reducer(beforeState, {
-        type: saveMap.type
+        type: saveMap.type,
       });
 
       expect(actualState.saveMap).toEqual(true);

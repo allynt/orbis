@@ -8,7 +8,7 @@ export const useMapEvent = (mapInstance, type, fn, deps) => {
 
       return () => map.off(type, fn);
     },
-    [deps]
+    [deps],
   );
 };
 
@@ -22,6 +22,6 @@ export const useMapLayerEvent = (mapInstance, type, layers, fn, deps) => {
 
       return () => layers.forEach(layer => map.off(type, layer, fn));
     },
-    [deps]
+    [deps],
   );
 };

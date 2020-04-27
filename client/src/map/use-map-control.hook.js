@@ -10,7 +10,7 @@ const useMapControl = (map, cond, control, position, ...args) => {
         return () => map.removeControl(ctrl);
       }
     },
-    [cond]
+    [cond],
   );
 };
 

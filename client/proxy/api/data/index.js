@@ -4,7 +4,7 @@ const sources = require('./sources');
 const allSources = {
   token: 'sdfasdfasf',
   timeout: 60,
-  sources
+  sources,
 };
 
 const getSources = (req, res) => {

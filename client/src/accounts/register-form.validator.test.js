@@ -6,28 +6,28 @@ describe('Register Form Validator', () => {
       {
         // Error, missing `email`
         password1: 'password',
-        password2: 'password'
+        password2: 'password',
       },
       {
         email: '', // Error, missing value
         password1: 'password',
-        password2: 'password'
+        password2: 'password',
       },
       {
         email: ' ', // Error, missing value
         password1: 'password',
-        password2: 'password'
+        password2: 'password',
       },
       {
         email: 'testuser:test.com', // Error, malformed email
         password1: 'password',
-        password2: 'password'
+        password2: 'password',
       },
       {
         email: 'testuser@testcom', // Error, malformed email
         password1: 'password',
-        password2: 'password'
-      }
+        password2: 'password',
+      },
     ];
 
     it.each(testFields)('Invalid Value %o', form => {
@@ -41,8 +41,8 @@ describe('Register Form Validator', () => {
       {
         email: 'testuser@test.com',
         password1: 'password',
-        password2: 'password'
-      }
+        password2: 'password',
+      },
     ];
 
     it.each(testFields)('Valid Value %o', form => {

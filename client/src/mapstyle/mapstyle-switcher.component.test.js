@@ -20,23 +20,23 @@ describe('MapStyle Switcher Component', () => {
     {
       id: 'streets',
       uri: 'mapbox://styles/astrosat/cjtrrv8be37ge1fqwl0ef8rb9',
-      title: 'Streets'
+      title: 'Streets',
     },
     {
       id: 'light',
       uri: 'mapbox://styles/astrosat/cjtiotoam3tff1fruptp84ekd',
-      title: 'Light'
+      title: 'Light',
     },
     {
       id: 'dark',
       uri: 'mapbox://styles/astrosat/cjtrrxg8l1nxt1fpd6x7f0ln8',
-      title: 'Dark'
+      title: 'Dark',
     },
     {
       id: 'satellite',
       uri: 'mapbox://styles/astrosat/cjtsgocbv57ok1fqqsjez3de6',
-      title: 'Satellite'
-    }
+      title: 'Satellite',
+    },
   ];
 
   beforeEach(() => {
@@ -51,7 +51,7 @@ describe('MapStyle Switcher Component', () => {
           selectedMapStyle={selectedMapStyle}
           selectMapStyle={selectMapStyle}
         />
-      </Provider>
+      </Provider>,
     );
   });
 

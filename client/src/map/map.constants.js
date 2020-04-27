@@ -7,30 +7,30 @@ export const regions = [
     name: 'Europe',
     value: {
       zoom: 6,
-      center: [2.588083, 48.953583]
-    }
+      center: [2.588083, 48.953583],
+    },
   },
   {
     name: 'Africa',
     value: {
       zoom: 6,
-      center: [23.44175, 0.0]
-    }
+      center: [23.44175, 0.0],
+    },
   },
   {
     name: 'Central Asia',
     value: {
       zoom: 6,
-      center: [68.110556, 45.517806]
-    }
+      center: [68.110556, 45.517806],
+    },
   },
   {
     name: 'North America',
     value: {
       zoom: 6,
-      center: [-104.634381, 51.83855]
-    }
-  }
+      center: [-104.634381, 51.83855],
+    },
+  },
 ];
 
 // FIX-ME make it so the color values and types are
@@ -38,14 +38,14 @@ export const regions = [
 export const personTypes = [
   {
     name: 'VOLUNTEER',
-    color: 'green'
+    color: 'green',
   },
   {
     name: 'RECIPIENT',
-    color: 'red'
+    color: 'red',
   },
   {
     name: 'REPORTER',
-    color: 'yellow'
-  }
+    color: 'yellow',
+  },
 ];

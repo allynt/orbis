@@ -7,17 +7,17 @@ describe('Password Reset Form Validator', () => {
         // Error, missing `email`
       },
       {
-        email: '' // Error, missing value
+        email: '', // Error, missing value
       },
       {
-        email: ' ' // Error, missing value
+        email: ' ', // Error, missing value
       },
       {
-        email: 'testuser:test.com' // Error, malformed email
+        email: 'testuser:test.com', // Error, malformed email
       },
       {
-        email: 'testuser@testcom' // Error, malformed email
-      }
+        email: 'testuser@testcom', // Error, malformed email
+      },
     ];
 
     it.each(testFields)('Invalid Value %o', form => {
@@ -29,8 +29,8 @@ describe('Password Reset Form Validator', () => {
   describe('Success values', () => {
     const testFields = [
       {
-        email: 'testuser@test.com'
-      }
+        email: 'testuser@test.com',
+      },
     ];
 
     it.each(testFields)('Valid Value %o', form => {

@@ -47,7 +47,7 @@ const LabelForm = ({ submit }) => {
 };
 
 LabelForm.propTypes = {
-  submit: PropTypes.func.isRequired
+  submit: PropTypes.func.isRequired,
 };
 
 export default LabelForm;

@@ -96,7 +96,7 @@ const MapLayout = () => {
                         height: '100%',
                         top: 0,
                         left: 0,
-                        clip: `rect(0px, 999em, 100vh, ${compareRatio * bounds.width}px)`
+                        clip: `rect(0px, 999em, 100vh, ${compareRatio * bounds.width}px)`,
                       }
                 }
               >

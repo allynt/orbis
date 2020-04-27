@@ -18,15 +18,15 @@ const defaultProps = {
   navigation: true,
   scale: true,
   layoutInvalidation: 1,
-  position: 1
+  position: 1,
 };
 
 const MAPSTYLES = [
   {
     id: 'satellite',
     uri: 'mapbox://styles/mapbox/satellite-v9',
-    title: 'Satellite'
-  }
+    title: 'Satellite',
+  },
 ];
 
 const renderMap = async ({ is3DMode = false }) => {
@@ -34,23 +34,23 @@ const renderMap = async ({ is3DMode = false }) => {
     app: {
       config: {
         mapbox_token: 'token',
-        mapStyles: MAPSTYLES
-      }
+        mapStyles: MAPSTYLES,
+      },
     },
     map: {
       selectedMapStyle: {},
-      is3DMode
+      is3DMode,
     },
     annotations: {
-      textLabelSelected: false
+      textLabelSelected: false,
     },
     bookmarks: {
-      selectedBookmarks: []
-    }
+      selectedBookmarks: [],
+    },
   });
 
   const result = render(<Map {...defaultProps} />, {
-    wrapper: ({ children }) => <Provider store={store}>{children}</Provider>
+    wrapper: ({ children }) => <Provider store={store}>{children}</Provider>,
   });
 
   fireMapEvent('load');
@@ -61,7 +61,7 @@ const renderMap = async ({ is3DMode = false }) => {
 jest.mock('@mapbox/mapbox-gl-draw', () => ({
   deleteAll: jest.fn(),
   modes: {},
-  draw_line_string: { deleteAll: jest.fn() }
+  draw_line_string: { deleteAll: jest.fn() },
   // }
 }));
 

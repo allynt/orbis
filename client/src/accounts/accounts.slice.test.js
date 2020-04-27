@@ -15,7 +15,7 @@ import reducer, {
   logout,
   updateUserSuccess,
   updateUserFailure,
-  updateUser
+  updateUser,
 } from './accounts.slice';
 
 const mockStore = configureMockStore([thunk]);
@@ -30,21 +30,21 @@ describe('Accounts Slice', () => {
       store = mockStore({
         accounts: {
           userKey: 'testkey',
-          user: { username: 'testusername', email: 'testusername@test.com' }
-        }
+          user: { username: 'testusername', email: 'testusername@test.com' },
+        },
       });
     });
 
     it('should dispatch register failure action.', async () => {
       fetch.mockResponse(
         JSON.stringify({
-          message: 'Test error message'
+          message: 'Test error message',
         }),
         {
           ok: false,
           status: 401,
-          statusText: 'Test Error'
-        }
+          statusText: 'Test Error',
+        },
       );
 
       const expectedActions = [{ type: registerUserFailure.type, payload: { message: '401 Test Error' } }];
@@ -53,7 +53,7 @@ describe('Accounts Slice', () => {
         username: 'testusername',
         email: 'testusername@test.com',
         password1: 'password1',
-        password2: 'password2'
+        password2: 'password2',
       };
       await store.dispatch(register(form));
 
@@ -68,7 +68,7 @@ describe('Accounts Slice', () => {
         username: 'testusername',
         email: 'testusername@test.com',
         password1: 'password1',
-        password2: 'password2'
+        password2: 'password2',
       };
 
       await store.dispatch(register(form));
@@ -78,13 +78,13 @@ describe('Accounts Slice', () => {
     it('should dispatch fetch user failure action.', async () => {
       fetch.mockResponse(
         JSON.stringify({
-          message: 'Test error message'
+          message: 'Test error message',
         }),
         {
           ok: false,
           status: 401,
-          statusText: 'Test Error'
-        }
+          statusText: 'Test Error',
+        },
       );
 
       const expectedActions = [{ type: fetchUserFailure.type, payload: { message: '401 Test Error' } }];
@@ -106,20 +106,20 @@ describe('Accounts Slice', () => {
     it('should dispatch login failure action.', async () => {
       fetch.mockResponse(
         JSON.stringify({
-          message: 'Test error message'
+          message: 'Test error message',
         }),
         {
           ok: false,
           status: 401,
-          statusText: 'Test Error'
-        }
+          statusText: 'Test Error',
+        },
       );
 
       const expectedActions = [{ type: loginUserFailure.type, payload: { message: '401 Test Error' } }];
 
       const form = {
         email: 'testusername@test.com',
-        password: 'password2'
+        password: 'password2',
       };
       await store.dispatch(login(form));
 
@@ -134,12 +134,12 @@ describe('Accounts Slice', () => {
 
       const expectedActions = [
         { type: loginUserSuccess.type, payload: userKey.token },
-        { type: fetchUserSuccess.type, payload: user }
+        { type: fetchUserSuccess.type, payload: user },
       ];
 
       const form = {
         email: 'testusername@test.com',
-        password: 'password2'
+        password: 'password2',
       };
 
       await store.dispatch(login(form));
@@ -150,13 +150,13 @@ describe('Accounts Slice', () => {
     it('should dispatch logout failure action.', async () => {
       fetch.mockResponse(
         JSON.stringify({
-          message: 'Test error message'
+          message: 'Test error message',
         }),
         {
           ok: false,
           status: 401,
-          statusText: 'Test Error'
-        }
+          statusText: 'Test Error',
+        },
       );
 
       const expectedActions = [{ type: logoutUserFailure.type, payload: { message: '401 Test Error' } }];
@@ -182,20 +182,20 @@ describe('Accounts Slice', () => {
     it('should dispatch update user failure action.', async () => {
       fetch.mockResponse(
         JSON.stringify({
-          message: 'Test error message'
+          message: 'Test error message',
         }),
         {
           ok: false,
           status: 401,
-          statusText: 'Test Error'
-        }
+          statusText: 'Test Error',
+        },
       );
 
       const expectedActions = [{ type: updateUserFailure.type, payload: { message: '401 Test Error' } }];
 
       const form = {
         email: 'testusername@test.com',
-        password: 'password2'
+        password: 'password2',
       };
 
       await store.dispatch(updateUser(form));
@@ -212,7 +212,7 @@ describe('Accounts Slice', () => {
 
       const form = {
         email: 'testusername@test.com',
-        password: 'password2'
+        password: 'password2',
       };
 
       await store.dispatch(updateUser(form));
@@ -228,7 +228,7 @@ describe('Accounts Slice', () => {
       beforeState = {
         userKey: null,
         user: null,
-        error: null
+        error: null,
       };
     });
 
@@ -243,7 +243,7 @@ describe('Accounts Slice', () => {
 
       const actualState = reducer(beforeState, {
         type: registerUserSuccess.type,
-        payload: userKey
+        payload: userKey,
       });
 
       expect(actualState.error).toEqual(null);
@@ -254,7 +254,7 @@ describe('Accounts Slice', () => {
 
       const actualState = reducer(beforeState, {
         type: registerUserFailure.type,
-        payload: error
+        payload: error,
       });
 
       expect(actualState.error).toEqual(error);
@@ -265,7 +265,7 @@ describe('Accounts Slice', () => {
 
       const actualState = reducer(beforeState, {
         type: loginUserSuccess.type,
-        payload: userKey
+        payload: userKey,
       });
 
       expect(actualState.userKey).toEqual(userKey);
@@ -276,7 +276,7 @@ describe('Accounts Slice', () => {
 
       const actualState = reducer(beforeState, {
         type: loginUserFailure.type,
-        payload: error
+        payload: error,
       });
 
       expect(actualState.error).toEqual(error);
@@ -287,7 +287,7 @@ describe('Accounts Slice', () => {
 
       const actualState = reducer(beforeState, {
         type: fetchUserSuccess.type,
-        payload: user
+        payload: user,
       });
 
       expect(actualState.user).toEqual(user);
@@ -298,7 +298,7 @@ describe('Accounts Slice', () => {
 
       const actualState = reducer(beforeState, {
         type: fetchUserFailure.type,
-        payload: error
+        payload: error,
       });
 
       expect(actualState.error).toEqual(error);
@@ -311,7 +311,7 @@ describe('Accounts Slice', () => {
 
       const actualState = reducer(beforeState, {
         type: updateUserSuccess.type,
-        payload: user
+        payload: user,
       });
 
       expect(actualState.user).toEqual(user);
@@ -322,7 +322,7 @@ describe('Accounts Slice', () => {
 
       const actualState = reducer(beforeState, {
         type: updateUserFailure.type,
-        payload: error
+        payload: error,
       });
 
       expect(actualState.error).toEqual(error);
@@ -334,7 +334,7 @@ describe('Accounts Slice', () => {
       expect(beforeState.user).not.toEqual(user);
 
       const actualState = reducer(beforeState, {
-        type: logoutUserSuccess.type
+        type: logoutUserSuccess.type,
       });
 
       expect(actualState.user).toEqual(null);
@@ -346,7 +346,7 @@ describe('Accounts Slice', () => {
 
       const actualState = reducer(beforeState, {
         type: logoutUserFailure.type,
-        payload: error
+        payload: error,
       });
 
       expect(actualState.error).toEqual(error);

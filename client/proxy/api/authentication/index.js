@@ -22,7 +22,7 @@ const register = (req, res) => {
       is_verified: false,
       is_approved: false,
       profiles: {},
-      roles: []
+      roles: [],
     };
 
     users.push(user);
@@ -58,7 +58,7 @@ const login = (req, res) => {
       res.status(400);
       res.json({
         message:
-          '<p>Sorry, email and password did not match.</p><p><strong>Warning:</strong> After 7 consecutive unsuccessful login attempts, your account will be locked out for 60 minutes.</p>'
+          '<p>Sorry, email and password did not match.</p><p><strong>Warning:</strong> After 7 consecutive unsuccessful login attempts, your account will be locked out for 60 minutes.</p>',
       });
     }
   } else {

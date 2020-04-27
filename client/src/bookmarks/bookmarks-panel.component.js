@@ -27,10 +27,10 @@ const BookmarksPanel = ({ map }) => {
             center: [lng, lat],
             zoom: map.getZoom(),
             owner,
-            thumbnail: blob
+            thumbnail: blob,
           },
-          'image/png'
-        )
+          'image/png',
+        ),
       );
     });
   };

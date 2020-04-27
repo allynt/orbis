@@ -12,8 +12,8 @@ describe('Account Activation', () => {
   let history = null;
   const match = {
     params: {
-      key: 'Test Key'
-    }
+      key: 'Test Key',
+    },
   };
 
   beforeEach(() => {
@@ -26,7 +26,7 @@ describe('Account Activation', () => {
     render(
       <Router history={history}>
         <AccountActivation activateAccount={activateAccount} match={match} />
-      </Router>
+      </Router>,
     );
 
     expect(history.location.pathname).toEqual('/login');

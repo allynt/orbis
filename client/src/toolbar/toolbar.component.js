@@ -78,7 +78,7 @@ const Toolbar = ({ items }) => {
 };
 
 Toolbar.propTypes = {
-  items: PropTypes.array.isRequired
+  items: PropTypes.array.isRequired,
 };
 
 export default Toolbar;

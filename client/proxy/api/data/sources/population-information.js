@@ -4,7 +4,7 @@ module.exports = {
     label: 'Population information',
     domain: 'Action for Health and Help',
     range: false,
-    description: 'Description of Population information layer.'
+    description: 'Description of Population information layer.',
   },
   type: 'geojson',
   data: {
@@ -23,8 +23,8 @@ module.exports = {
           phone_number: '+447561866337',
           email_address: 'a@b.com',
           description: 'Hello world.',
-          postcode: 'EH15 1AS'
-        }
+          postcode: 'EH15 1AS',
+        },
       },
       {
         id: 2,
@@ -39,8 +39,8 @@ module.exports = {
           phone_number: '+447561866337',
           email_address: 'a@b.com',
           description: 'Hello world.',
-          postcode: 'EH15 1AS'
-        }
+          postcode: 'EH15 1AS',
+        },
       },
       {
         id: 3,
@@ -55,8 +55,8 @@ module.exports = {
           phone_number: '+447561866337',
           email_address: 'a@b.com',
           description: 'Hello world.',
-          postcode: 'EH15 1AS'
-        }
+          postcode: 'EH15 1AS',
+        },
       },
       {
         id: 4,
@@ -71,8 +71,8 @@ module.exports = {
           phone_number: '+447561866337',
           email_address: 'a@b.com',
           description: 'Hello world.',
-          postcode: 'EH15 1AS'
-        }
+          postcode: 'EH15 1AS',
+        },
       },
       {
         id: 5,
@@ -87,8 +87,8 @@ module.exports = {
           phone_number: '+447561866337',
           email_address: 'a@b.com',
           description: 'Hello world.',
-          postcode: 'EH15 1AS'
-        }
+          postcode: 'EH15 1AS',
+        },
       },
       {
         id: 6,
@@ -103,8 +103,8 @@ module.exports = {
           phone_number: '+447561866337',
           email_address: 'a@b.com',
           description: 'Hello world.',
-          postcode: 'EH15 1AS'
-        }
+          postcode: 'EH15 1AS',
+        },
       },
       {
         id: 7,
@@ -119,8 +119,8 @@ module.exports = {
           phone_number: '+447561866337',
           email_address: 'a@b.com',
           description: 'Hello world.',
-          postcode: 'EH15 1AS'
-        }
+          postcode: 'EH15 1AS',
+        },
       },
       {
         id: 8,
@@ -135,8 +135,8 @@ module.exports = {
           phone_number: '+447561866337',
           email_address: 'a@b.com',
           description: 'Hello world.',
-          postcode: 'EH15 1AS'
-        }
+          postcode: 'EH15 1AS',
+        },
       },
       {
         id: 9,
@@ -151,9 +151,9 @@ module.exports = {
           phone_number: '+447561866337',
           email_address: 'a@b.com',
           description: 'Hello world.',
-          postcode: 'EH15 1AS'
-        }
-      }
-    ]
-  }
+          postcode: 'EH15 1AS',
+        },
+      },
+    ],
+  },
 };

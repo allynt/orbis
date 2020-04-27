@@ -3,17 +3,17 @@ import { createSlice } from '@reduxjs/toolkit';
 export const themes = [
   {
     value: 'light',
-    label: 'Light'
+    label: 'Light',
   },
   {
     value: 'dark',
-    label: 'Dark'
-  }
+    label: 'Dark',
+  },
 ];
 
 const initialState = {
   themes,
-  selectedTheme: themes[1]
+  selectedTheme: themes[1],
 };
 
 const themingSlice = createSlice({
@@ -22,8 +22,8 @@ const themingSlice = createSlice({
   reducers: {
     selectTheme: (state, { payload }) => {
       state.selectedTheme = themes.find(theme => theme.value === payload);
-    }
-  }
+    },
+  },
 });
 
 export const { selectTheme } = themingSlice.actions;

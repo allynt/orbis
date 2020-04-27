@@ -12,18 +12,18 @@ const mockScenes = [
   {
     id: 1,
     label: 'Pinned Scene 1',
-    created: '2000-01-01T00:00:00Z'
+    created: '2000-01-01T00:00:00Z',
   },
   {
     id: 2,
     label: 'Pinned Scene 2',
-    created: '2000-01-02T00:00:00Z'
+    created: '2000-01-02T00:00:00Z',
   },
   {
     id: 3,
     label: 'Pinned Scene 3',
-    created: '2000-01-03T00:00:00Z'
-  }
+    created: '2000-01-03T00:00:00Z',
+  },
 ];
 
 const renderComponent = args => {
@@ -39,7 +39,7 @@ const renderComponent = args => {
     pinnedScenes: mockScenes,
     selectedPinnedScenes: [],
     isCompareMode: false,
-    ...args
+    ...args,
   };
 
   const testee = render(
@@ -55,7 +55,7 @@ const renderComponent = args => {
       pinnedScenes={attributes.pinnedScenes}
       selectedPinnedScenes={attributes.selectedPinnedScenes}
       isCompareMode={attributes.isCompareMode}
-    />
+    />,
   );
 
   return { ...attributes, ...testee };
@@ -86,7 +86,7 @@ describe('Compare Pins Component', () => {
 
   it('should render Compare Mode button disabled when not enough pinned scenes selected', () => {
     const { getAllByLabelText } = renderComponent({
-      selectedPinnedScenes: [{ ...mockScenes[1] }]
+      selectedPinnedScenes: [{ ...mockScenes[1] }],
     });
 
     // It turns out, our switch label is wrapping 2 elements, so we can't easily
@@ -97,7 +97,7 @@ describe('Compare Pins Component', () => {
 
   it('should not be able to toggle Compare Mode when not enough pinned scenes selected', () => {
     const { toggleCompareMode, getAllByLabelText } = renderComponent({
-      selectedPinnedScenes: [{ ...mockScenes[1] }]
+      selectedPinnedScenes: [{ ...mockScenes[1] }],
     });
 
     fireEvent.click(getAllByLabelText('Compare')[1]);
@@ -106,7 +106,7 @@ describe('Compare Pins Component', () => {
 
   it('should toggle into Compare Mode when there are enough pinned scenes selected', () => {
     const { toggleCompareMode, getAllByLabelText } = renderComponent({
-      selectedPinnedScenes: [mockScenes[0], mockScenes[1]]
+      selectedPinnedScenes: [mockScenes[0], mockScenes[1]],
     });
 
     const buttonElement = getAllByLabelText('Compare')[1];

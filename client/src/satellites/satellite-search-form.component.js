@@ -28,18 +28,18 @@ const tiers = [
   {
     id: 'free',
     label: 'Free images',
-    description: 'Some text describing the FREE images'
+    description: 'Some text describing the FREE images',
   },
   {
     id: 'mid',
     label: 'Mid-resolution',
-    description: 'Some text describing the MID-RES images'
+    description: 'Some text describing the MID-RES images',
   },
   {
     id: 'high',
     label: 'High-resolution',
-    description: 'Some text describing the HIGH-RES images'
-  }
+    description: 'Some text describing the HIGH-RES images',
+  },
 ];
 
 const CustomDatePicker = React.forwardRef(({ value, onClick }, ref) => (
@@ -81,8 +81,8 @@ const FormSection = ({ title, children }) => (
 const defaults = {
   values: {
     'sentinel-2': true,
-    free: true
-  }
+    free: true,
+  },
 };
 
 const SatelliteSearchForm = ({ satellites, geometry, setVisiblePanel, setSelectedMoreInfo, toggleMoreInfoDialog }) => {
@@ -116,7 +116,7 @@ const SatelliteSearchForm = ({ satellites, geometry, setVisiblePanel, setSelecte
       start_date: formatISO(startDate),
       end_date: formatISO(endDate),
       tiers: selectedTiersIds,
-      aoi: geometry
+      aoi: geometry,
     };
     dispatch(setCurrentSatelliteSearchQuery(query));
     dispatch(fetchSatelliteScenes(query));

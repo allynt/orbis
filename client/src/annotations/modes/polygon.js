@@ -6,11 +6,11 @@ PolygonMode.onSetup = function(opts) {
   const props = MapboxDraw.modes.draw_polygon.onSetup.call(this, opts);
   props.polygon.properties = {
     ...props.polygon.properties,
-    ...opts
+    ...opts,
   };
 
   return {
-    ...props
+    ...props,
   };
 };
 

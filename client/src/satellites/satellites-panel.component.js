@@ -15,7 +15,7 @@ import {
   clearSelectedPinnedScenes,
   deletePinnedScene,
   pinScene,
-  saveSatelliteSearch
+  saveSatelliteSearch,
 } from './satellites.slice';
 
 import { toggleCompareMode } from '../map/map.slice';

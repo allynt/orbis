@@ -108,7 +108,7 @@ const UserDetailForm = ({ createUser }) => {
 };
 
 UserDetailForm.propTypes = {
-  createUser: PropTypes.func.isRequired
+  createUser: PropTypes.func.isRequired,
 };
 
 export default UserDetailForm;

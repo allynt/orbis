@@ -7,7 +7,7 @@ describe('Theming Slice', () => {
     beforeEach(() => {
       beforeState = {
         themes,
-        selectedTheme: themes[1]
+        selectedTheme: themes[1],
       };
     });
 
@@ -22,7 +22,7 @@ describe('Theming Slice', () => {
 
       const actualState = reducer(beforeState, {
         type: selectTheme.type,
-        payload: theme.value
+        payload: theme.value,
       });
 
       expect(actualState.selectedTheme).toEqual(theme);

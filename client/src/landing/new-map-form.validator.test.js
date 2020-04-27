@@ -5,20 +5,20 @@ describe('New Map Form Validator', () => {
     const testFields = [
       {
         name: '', // Error, missing
-        description: 'Description'
+        description: 'Description',
       },
       {
         name: 'id', // Error, too short
-        description: 'password'
+        description: 'password',
       },
       {
         name: 'New Map Name',
-        description: '' // Error, missing
+        description: '', // Error, missing
       },
       {
         name: 'New Map Name',
-        description: 'desc' // Error, too short
-      }
+        description: 'desc', // Error, too short
+      },
     ];
 
     it.each(testFields)('Invalid Value %o', form => {
@@ -31,12 +31,12 @@ describe('New Map Form Validator', () => {
     const testFields = [
       {
         name: 'New Map Name',
-        description: 'Map Description'
+        description: 'Map Description',
       },
       {
         name: 'map',
-        description: 'descr'
-      }
+        description: 'descr',
+      },
     ];
 
     it.each(testFields)('Valid Value %o', form => {

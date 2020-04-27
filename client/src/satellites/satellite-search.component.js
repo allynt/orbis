@@ -9,7 +9,7 @@ import Detail from '@astrosat/astrosat-ui/dist/containers/detail';
 import {
   fetchSavedSatelliteSearches,
   deleteSavedSatelliteSearch,
-  setCurrentSatelliteSearchQuery
+  setCurrentSatelliteSearchQuery,
 } from './satellites.slice';
 
 import useMap from '../map/use-map.hook';
@@ -82,7 +82,7 @@ const SatelliteSearch = ({ map, satellites, setVisiblePanel, setSelectedMoreInfo
       [northEastCoord.lng, northEastCoord.lat],
       [southEastCoord.lng, southEastCoord.lat],
       [southWestCoord.lng, southWestCoord.lat],
-      [northWestCoord.lng, northWestCoord.lat]
+      [northWestCoord.lng, northWestCoord.lat],
     ];
 
     setGeometry(newGeometry);
@@ -97,7 +97,7 @@ const SatelliteSearch = ({ map, satellites, setVisiblePanel, setSelectedMoreInfo
       if (!feature) setGeometryToMapBounds();
       return () => drawControl.deleteAll();
     },
-    []
+    [],
   );
 
   useEffect(() => {
@@ -149,12 +149,12 @@ const SatelliteSearch = ({ map, satellites, setVisiblePanel, setSelectedMoreInfo
             properties: {
               drawType: 'AOI',
               fillOpacity: 0.5,
-              fillColor: 'green'
+              fillColor: 'green',
             },
             geometry: {
               type: 'Polygon',
-              coordinates: [aoi]
-            }
+              coordinates: [aoi],
+            },
           };
           drawCtrl.add(feature);
         }
@@ -166,7 +166,7 @@ const SatelliteSearch = ({ map, satellites, setVisiblePanel, setSelectedMoreInfo
         };
       }
     },
-    [currentSearchQuery]
+    [currentSearchQuery],
   );
 
   return (

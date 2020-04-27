@@ -17,14 +17,14 @@ describe('Bookmark List Component', () => {
         id: 1,
         title: 'Bookmark Title 1',
         description: 'Bookmark Description 1',
-        thumbnail: 'Bookmark Thumbnail Image 1'
+        thumbnail: 'Bookmark Thumbnail Image 1',
       },
       {
         id: 2,
         title: 'Bookmark Title 2',
         description: 'Bookmark Description 2',
-        thumbnail: 'Bookmark Thumbnail Image 2'
-      }
+        thumbnail: 'Bookmark Thumbnail Image 2',
+      },
     ];
     selectBookmark = jest.fn();
     deleteBookmark = jest.fn();
@@ -33,7 +33,7 @@ describe('Bookmark List Component', () => {
   it('should render the `No Bookmarks` message', () => {
     bookmarks = [];
     const { getByText } = render(
-      <BookmarkList bookmarks={bookmarks} selectBookmark={selectBookmark} deleteBookmark={deleteBookmark} />
+      <BookmarkList bookmarks={bookmarks} selectBookmark={selectBookmark} deleteBookmark={deleteBookmark} />,
     );
 
     expect(getByText('No Bookmarks')).toBeInTheDocument();
@@ -41,7 +41,7 @@ describe('Bookmark List Component', () => {
 
   it('should render a list of Bookmarks', () => {
     const { container, queryByText } = render(
-      <BookmarkList bookmarks={bookmarks} selectBookmark={selectBookmark} deleteBookmark={deleteBookmark} />
+      <BookmarkList bookmarks={bookmarks} selectBookmark={selectBookmark} deleteBookmark={deleteBookmark} />,
     );
 
     const bookmarkItems = container.querySelectorAll('.bookmark');
@@ -60,7 +60,7 @@ describe('Bookmark List Component', () => {
 
   it('should set the selected bookmark when `Load` button clicked', () => {
     const { container } = render(
-      <BookmarkList bookmarks={bookmarks} selectBookmark={selectBookmark} deleteBookmark={deleteBookmark} />
+      <BookmarkList bookmarks={bookmarks} selectBookmark={selectBookmark} deleteBookmark={deleteBookmark} />,
     );
 
     const bookmarkItem = container.querySelectorAll('.bookmark')[1];
@@ -71,7 +71,7 @@ describe('Bookmark List Component', () => {
 
   it('should delete the selected bookmark when `Delete` button clicked', () => {
     const { container } = render(
-      <BookmarkList bookmarks={bookmarks} selectBookmark={selectBookmark} deleteBookmark={deleteBookmark} />
+      <BookmarkList bookmarks={bookmarks} selectBookmark={selectBookmark} deleteBookmark={deleteBookmark} />,
     );
 
     const bookmarkItem = container.querySelectorAll('.bookmark')[1];

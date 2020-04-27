@@ -15,13 +15,13 @@ const MAPSTYLES = [
   {
     id: 'light',
     uri: 'mapbox://styles/mapbox/light-v10',
-    title: 'Light'
+    title: 'Light',
   },
   {
     id: 'dark',
     uri: 'mapbox://styles/mapbox/dark-v10',
-    title: 'Dark'
-  }
+    title: 'Dark',
+  },
 ];
 
 describe('Map Layout Component', () => {
@@ -38,46 +38,46 @@ describe('Map Layout Component', () => {
       app: {
         config: {
           mapbox_token: 'token',
-          mapStyles: MAPSTYLES
-        }
+          mapStyles: MAPSTYLES,
+        },
       },
       map: {
         isMultiMapMode: false,
-        selectedMapStyle: MAPSTYLES[0]
+        selectedMapStyle: MAPSTYLES[0],
       },
       data: {
-        layers: []
+        layers: [],
       },
       satellites: {
-        selectedScene: null
+        selectedScene: null,
       },
       annotations: {
-        textLabelSelected: false
+        textLabelSelected: false,
       },
       bookmarks: {
-        selectedBookmarks: []
+        selectedBookmarks: [],
       },
       accounts: {
         userKey: '123',
         user: {
-          id: 1
+          id: 1,
         },
-        error: null
+        error: null,
       },
       sidebar: {
         isMenuVisible: false,
-        visibleMenuItem: ''
+        visibleMenuItem: '',
       },
       stories: {
         stories: [],
-        selectedStory: null
-      }
+        selectedStory: null,
+      },
     });
 
     const { container } = render(
       <Provider store={store}>
         <MapLayout count={1} />
-      </Provider>
+      </Provider>,
     );
 
     expect(container.querySelector('.layout-1')).toBeInTheDocument();

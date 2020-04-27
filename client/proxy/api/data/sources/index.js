@@ -11,5 +11,5 @@ module.exports = [
   populationInformation,
   sentinel2Rgb,
   stokeOnTrent,
-  superSen2JapanBand
+  superSen2JapanBand,
 ];

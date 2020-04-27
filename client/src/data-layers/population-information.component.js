@@ -13,7 +13,7 @@ export const PopulationInformation = () => (
         <div
           className={styles.colorBox}
           style={{
-            backgroundColor: personType.color
+            backgroundColor: personType.color,
           }}
         />
         {toTitleCase(personType.name)}

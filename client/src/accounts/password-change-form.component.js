@@ -23,7 +23,7 @@ const PasswordChangeForm = ({ changePassword }) => {
   function onSubmit() {
     const data = {
       ...values,
-      accepted_terms: termsAgreed
+      accepted_terms: termsAgreed,
     };
     changePassword(data);
   }

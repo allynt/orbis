@@ -18,13 +18,13 @@ const API = {
   resetPassword: API_PREFIX + 'password/reset/',
   verifyResetPassword: API_PREFIX + 'password/verify-reset/',
   logout: API_PREFIX + 'logout/',
-  user: '/api/users/'
+  user: '/api/users/',
 };
 
 const initialState = {
   userKey: null,
   user: null,
-  error: null
+  error: null,
 };
 
 const accountsSlice = createSlice({
@@ -65,8 +65,8 @@ const accountsSlice = createSlice({
     },
     logoutUserFailure: (state, { payload }) => {
       state.error = payload;
-    }
-  }
+    },
+  },
 });
 
 export const {
@@ -79,13 +79,13 @@ export const {
   updateUserSuccess,
   updateUserFailure,
   logoutUserSuccess,
-  logoutUserFailure
+  logoutUserFailure,
 } = accountsSlice.actions;
 
 export const register = form => async dispatch => {
   const data = {
     ...form,
-    username: form.email
+    username: form.email,
   };
 
   const response = await sendData(API.register, data, JSON_HEADERS);
@@ -102,7 +102,7 @@ export const register = form => async dispatch => {
     'Successfully registered, verification email has been sent',
     'Successful Registration',
     5000,
-    () => {}
+    () => {},
   );
 
   history.push('/login');
@@ -207,7 +207,7 @@ export const confirmChangePassword = (form, params) => async () => {
   const data = {
     ...form,
     token,
-    uid
+    uid,
   };
 
   const response = await sendData(API.verifyResetPassword, data, JSON_HEADERS);
@@ -223,14 +223,14 @@ export const confirmChangePassword = (form, params) => async () => {
 
 export const updateUser = form => async (dispatch, getState) => {
   const {
-    accounts: { user }
+    accounts: { user },
   } = getState();
   const headers = getJsonAuthHeaders(getState());
 
   const data = {
     ...user,
     ...form,
-    name: `${form.first_name} ${form.last_name}`
+    name: `${form.first_name} ${form.last_name}`,
   };
 
   const response = await sendData(`${API.user}${user.email}/`, data, headers, 'PUT');
@@ -252,7 +252,7 @@ export const updateUser = form => async (dispatch, getState) => {
 const persistConfig = {
   key: 'accounts',
   whitelist: ['userKey'],
-  storage
+  storage,
 };
 
 export default persistReducer(persistConfig, accountsSlice.reducer);
