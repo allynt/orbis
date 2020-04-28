@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom';
 
@@ -15,20 +15,24 @@ import Well from '@astrosat/astrosat-ui/dist/containers/well';
 
 import { ReactComponent as OrbisLogo } from '../orbis.svg';
 
+import { status } from './accounts.slice';
+
 import { REGISTER_URL, PASSWORD_RESET_URL } from './accounts.constants';
 
 import formStyles from './forms.module.css';
 import loginStyles from './login-form.module.css';
 
-const LoginForm = ({ login, user, error }) => {
+const LoginForm = ({ login, user, error, resendVerificationEmail, verificationEmailStatus }) => {
   const { passwordMinLength, passwordMaxLength } = useSelector(state => state.app.config);
   const validators = {
     passwordMinLength,
     passwordMaxLength,
   };
   const { handleChange, handleSubmit, values, errors } = useForm(onSubmit, validate, validators);
-  // const error = useSelector(state => state.accounts.error);
-  // const user = useSelector(state => state.accounts.user);
+
+  const [notVerified, setNotVerified] = useState(false);
+
+  const NOT_VERIFIED = `${values.email} is not verified.`;
 
   function onSubmit() {
     login(values);
@@ -46,7 +50,22 @@ const LoginForm = ({ login, user, error }) => {
 
         {error && (
           <Well type="error">
-            <div>{error.message}</div>
+            <ul>
+              {error.map(error => {
+                // Adding '!notVerfied' condition allows only one state change, prevents infinite loop
+                if (error === NOT_VERIFIED) !notVerified && setNotVerified(true);
+                return <li key={error}>{error}</li>;
+              })}
+            </ul>
+          </Well>
+        )}
+
+        {verificationEmailStatus === status.PENDING && (
+          <Well type="success">
+            <p>
+              An e-mail verification has been sent to <strong>{values.email}</strong>, click the link inside to verify
+              your account.
+            </p>
           </Well>
         )}
 
@@ -81,17 +100,35 @@ const LoginForm = ({ login, user, error }) => {
               label="Keep me logged in"
               onChange={() => console.log('Keep me logged in')}
             />
+
             <p className={formStyles.row}>
-              <Button href={PASSWORD_RESET_URL}>Forgotten your&nbsp;password?</Button>
+              Forgotten your&nbsp;
+              <Button theme="link" href={PASSWORD_RESET_URL}>
+                password?
+              </Button>
             </p>
           </div>
+        </div>
+
+        <div>
+          {notVerified && (
+            <Button
+              theme="secondary"
+              onClick={e => {
+                e.preventDefault();
+                resendVerificationEmail(values.email);
+              }}
+            >
+              Resend Verification Email
+            </Button>
+          )}
         </div>
 
         <div className={formStyles.buttons}>
           <Button
             type="submit"
             theme="primary"
-            className={loginStyles.loginButton}
+            className={formStyles.button}
             disabled={Object.keys(errors).length > 0 || Object.keys(values).length === 0}
           >
             Login
@@ -100,7 +137,9 @@ const LoginForm = ({ login, user, error }) => {
 
         <p className={loginStyles.footer}>
           Don't have an account?&nbsp;
-          <Button href={REGISTER_URL}>Sign Up</Button>
+          <Button theme="link" href={REGISTER_URL}>
+            Sign Up
+          </Button>
         </p>
       </form>
     </div>

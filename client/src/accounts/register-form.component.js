@@ -21,15 +21,16 @@ import { LOGIN_URL, TERMS_URL } from './accounts.constants';
 import formStyles from './forms.module.css';
 import registerStyles from './register-form.module.css';
 
-const RegisterForm = () => {
+const RegisterForm = ({ error }) => {
   const { passwordMinLength, passwordMaxLength } = useSelector(state => state.app.config);
   const validators = {
     passwordMinLength,
     passwordMaxLength,
   };
+
   const { handleChange, handleSubmit, values, errors } = useForm(onSubmit, validate, validators);
   const dispatch = useDispatch();
-  const error = useSelector(state => state.accounts.error);
+
   const config = useSelector(state => state.app.config);
 
   const [termsAgreed, setTermsAgreed] = useState(false);
@@ -55,7 +56,11 @@ const RegisterForm = () => {
 
         {error && (
           <Well type="error">
-            <div>{error.message}</div>
+            <ul>
+              {error.map(error => (
+                <li key={error}>{error}</li>
+              ))}
+            </ul>
           </Well>
         )}
 
@@ -113,15 +118,15 @@ const RegisterForm = () => {
           <div className={formStyles.row}>
             <Checkbox name="loggedIn" label="I agree with" value="true" onChange={() => setTermsAgreed(!termsAgreed)} />
             &nbsp;
-            <Button target="_blank" href={TERMS_URL} rel="noopener noreferrer">
+            <Button theme="link" target="_blank" href={TERMS_URL} rel="noopener noreferrer">
               Terms &amp; Conditions
             </Button>
           </div>
         </div>
-
         <div className={formStyles.buttons}>
           <Button
             type="submit"
+            className={formStyles.button}
             disabled={
               !termsAgreed ||
               (config && !config.isRegistrationOpen) ||
@@ -132,10 +137,11 @@ const RegisterForm = () => {
             Sign Up
           </Button>
         </div>
-
         <p className={registerStyles.footer}>
           Do you have an account?&nbsp;
-          <Button href={LOGIN_URL}>Login</Button>
+          <Button theme="link" href={LOGIN_URL}>
+            Login
+          </Button>
         </p>
       </form>
     </div>
