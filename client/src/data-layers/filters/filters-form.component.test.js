@@ -1,5 +1,5 @@
 import React from 'react';
-import { FiltersForm } from './filters-form.component';
+import { FiltersForm, checkboxReducer } from './filters-form.component';
 import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
@@ -9,7 +9,7 @@ const setup = (currentFilters = {}) => {
       type: ['citrus', 'berry'],
     },
     cars: {
-      engine: ['V6', 'V10', 'V12'],
+      engine: ['V6', 'V8', 'V10', 'V12'],
     },
   };
   const onFiltersChange = jest.fn();
@@ -26,7 +26,7 @@ const setup = (currentFilters = {}) => {
   };
 };
 
-describe.only('FiltersForm', () => {
+describe('FiltersForm', () => {
   it('has an "Add Filters" button', () => {
     const { getByText } = setup();
     const addButton = getByText('Add Filters');
@@ -66,12 +66,12 @@ describe.only('FiltersForm', () => {
     expect(onFiltersChange).toHaveBeenCalled();
   });
 
-  it('calls the onFiltersChange with any filters which have been added', () => {
+  it('calls the onFiltersChange with any filters which have been added', async () => {
     const { getByText, getByLabelText, onFiltersChange } = setup();
     const expected = { cars: { engine: ['V8'] } };
     userEvent.click(getByLabelText(expected.cars.engine[0]));
     userEvent.click(getByText('Filters', { exact: false }));
-    expect(onFiltersChange).toHaveBeenCalledWith(expected);
+    expect(onFiltersChange).toHaveBeenCalledWith(expected, undefined);
   });
 
   it('calls the onFiltersChange with any filters which have been removed', () => {
@@ -79,7 +79,7 @@ describe.only('FiltersForm', () => {
     const { getByText, getByLabelText, onFiltersChange } = setup(currentFilters);
     userEvent.click(getByLabelText(currentFilters.cars.engine[0]));
     userEvent.click(getByText('Filters', { exact: false }));
-    expect(onFiltersChange).toHaveBeenCalledWith(currentFilters);
+    expect(onFiltersChange).toHaveBeenCalledWith(undefined, currentFilters);
   });
 
   it('calls the onFiltersChange with filters which were both added and removed', () => {
@@ -92,25 +92,136 @@ describe.only('FiltersForm', () => {
     expect(onFiltersChange).toHaveBeenCalledWith(toAdd, toRemove);
   });
 
+  it("does not call onFiltersChange with toAdd items which are in currentFilters if they're double checked", () => {
+    const currentFilters = {
+      cars: { engine: ['V8'] },
+    };
+    const { getByLabelText, getByText, onFiltersChange } = setup(currentFilters);
+    userEvent.dblClick(getByLabelText(currentFilters.cars.engine[0]));
+    userEvent.click(getByText('Filters', { exact: false }));
+    expect(onFiltersChange).toHaveBeenCalledWith(undefined, { cars: { engine: [] } });
+  });
+
+  it('does not call onFiltersChange with toAdd items which have been toggled on then off', () => {
+    const { getByLabelText, getByText, onFiltersChange, availableFilters } = setup();
+    userEvent.click(getByLabelText(availableFilters.fruit.type[0]));
+    userEvent.click(getByLabelText(availableFilters.fruit.type[0]));
+    userEvent.click(getByText('Filters', { exact: false }));
+    expect(onFiltersChange).toHaveBeenCalledWith({ fruit: { type: [] } }, undefined);
+  });
+
   it('keeps the button text as "Add Filters" if the user is only adding filters', () => {
     const { getByText, getByLabelText, availableFilters } = setup();
     userEvent.click(getByLabelText(availableFilters.cars.engine[0]));
     expect(getByText('Add Filters')).toBeInTheDocument();
   });
 
-  it('changes the button text to "Remove Filters" if the user is only removing filters', () => {
-    const currentFilters = { cars: { engine: ['V8'] } };
-    const { getByText, getByLabelText } = setup(currentFilters);
-    userEvent.click(getByLabelText(currentFilters.cars.engine[0]));
-    expect(getByText('Remove Filters')).toBeInTheDocument();
-  });
+  // For a later date
+  // it('changes the button text to "Remove Filters" if the user is only removing filters', () => {
+  //   const currentFilters = { cars: { engine: ['V8'] } };
+  //   const { getByText, getByLabelText } = setup(currentFilters);
+  //   userEvent.click(getByLabelText(currentFilters.cars.engine[0]));
+  //   expect(getByText('Remove Filters')).toBeInTheDocument();
+  // });
 
-  it('changes the button text to "Update Filters" if the user is adding and removing filters', () => {
-    const toRemove = { cars: { engine: ['V8'] } };
-    const toAdd = { fruit: { type: ['berry'] } };
-    const { getByText, getByLabelText } = setup(toRemove);
-    userEvent.click(getByLabelText(toRemove.cars.engine[0]));
-    userEvent.click(getByLabelText(toAdd.fruit.type[0]));
-    expect(getByText('Update Filters')).toBeInTheDocument();
+  // it('changes the button text to "Update Filters" if the user is adding and removing filters', () => {
+  //   const toRemove = { cars: { engine: ['V8'] } };
+  //   const toAdd = { fruit: { type: ['berry'] } };
+  //   const { getByText, getByLabelText } = setup(toRemove);
+  //   userEvent.click(getByLabelText(toRemove.cars.engine[0]));
+  //   userEvent.click(getByLabelText(toAdd.fruit.type[0]));
+  //   expect(getByText('Update Filters')).toBeInTheDocument();
+  // });
+
+  describe('checkboxReducer', () => {
+    it('returns state by default', () => {
+      const state = 'test';
+      const result = checkboxReducer(state, { type: 'wrong type' });
+      expect(result).toBe(state);
+    });
+
+    describe('handles adding an item to "toAdd"', () => {
+      it('new layer', () => {
+        const state = {};
+        const item = 'cars.engine.V8';
+        const expected = { toAdd: { cars: { engine: ['V8'] } } };
+        const result = checkboxReducer(state, { type: 'add/toAdd', item });
+        expect(result).toEqual(expected);
+      });
+
+      it('existing layer', () => {
+        const state = {
+          toAdd: {
+            cars: {
+              engine: ['V6'],
+            },
+          },
+        };
+        const item = 'cars.engine.V8';
+        const expected = { toAdd: { cars: { engine: ['V6', 'V8'] } } };
+        const result = checkboxReducer(state, { type: 'add/toAdd', item });
+        expect(result).toEqual(expected);
+      });
+    });
+
+    describe('handles removing an item from "toAdd"', () => {
+      it('only value', () => {
+        const state = { toAdd: { cars: { engine: ['V8'] } } };
+        const item = 'cars.engine.V8';
+        const expected = { toAdd: { cars: { engine: [] } } };
+        const result = checkboxReducer(state, { type: 'remove/toAdd', item });
+        expect(result).toEqual(expected);
+      });
+
+      it('existing values', () => {
+        const state = { toAdd: { cars: { engine: ['V12', 'V8'] } } };
+        const item = 'cars.engine.V8';
+        const expected = { toAdd: { cars: { engine: ['V12'] } } };
+        const result = checkboxReducer(state, { type: 'remove/toAdd', item });
+        expect(result).toEqual(expected);
+      });
+    });
+
+    describe('handles adding an item to "toRemove"', () => {
+      it('new layer', () => {
+        const state = {};
+        const item = 'cars.engine.V8';
+        const expected = { toRemove: { cars: { engine: ['V8'] } } };
+        const result = checkboxReducer(state, { type: 'add/toRemove', item });
+        expect(result).toEqual(expected);
+      });
+
+      it('existing layer', () => {
+        const state = {
+          toRemove: {
+            cars: {
+              engine: ['V6'],
+            },
+          },
+        };
+        const item = 'cars.engine.V8';
+        const expected = { toRemove: { cars: { engine: ['V6', 'V8'] } } };
+        const result = checkboxReducer(state, { type: 'add/toRemove', item });
+        expect(result).toEqual(expected);
+      });
+    });
+
+    describe('handles removing an item from "toRemove"', () => {
+      it('only value', () => {
+        const state = { toRemove: { cars: { engine: ['V8'] } } };
+        const item = 'cars.engine.V8';
+        const expected = { toRemove: { cars: { engine: [] } } };
+        const result = checkboxReducer(state, { type: 'remove/toRemove', item });
+        expect(result).toEqual(expected);
+      });
+
+      it('existing values', () => {
+        const state = { toRemove: { cars: { engine: ['V12', 'V8'] } } };
+        const item = 'cars.engine.V8';
+        const expected = { toRemove: { cars: { engine: ['V12'] } } };
+        const result = checkboxReducer(state, { type: 'remove/toRemove', item });
+        expect(result).toEqual(expected);
+      });
+    });
   });
 });
