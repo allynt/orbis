@@ -16,6 +16,7 @@ import reducer, {
   updateUserSuccess,
   updateUserFailure,
   updateUser,
+  status,
 } from './accounts.slice';
 
 const mockStore = configureMockStore([thunk]);
@@ -38,7 +39,11 @@ describe('Accounts Slice', () => {
     it('should dispatch register failure action.', async () => {
       fetch.mockResponse(
         JSON.stringify({
-          message: 'Test error message',
+          errors: {
+            error_1: ['First error relating to failed request.'],
+            error_2: ['Second error relating to failed request.'],
+            error_3: ['Third error relating to failed request.'],
+          },
         }),
         {
           ok: false,
@@ -47,7 +52,16 @@ describe('Accounts Slice', () => {
         },
       );
 
-      const expectedActions = [{ type: registerUserFailure.type, payload: { message: '401 Test Error' } }];
+      const expectedActions = [
+        {
+          type: registerUserFailure.type,
+          payload: [
+            'First error relating to failed request.',
+            'Second error relating to failed request.',
+            'Third error relating to failed request.',
+          ],
+        },
+      ];
 
       const form = {
         username: 'testusername',
@@ -78,7 +92,11 @@ describe('Accounts Slice', () => {
     it('should dispatch fetch user failure action.', async () => {
       fetch.mockResponse(
         JSON.stringify({
-          message: 'Test error message',
+          errors: {
+            error_1: ['First error relating to failed request.'],
+            error_2: ['Second error relating to failed request.'],
+            error_3: ['Third error relating to failed request.'],
+          },
         }),
         {
           ok: false,
@@ -87,7 +105,16 @@ describe('Accounts Slice', () => {
         },
       );
 
-      const expectedActions = [{ type: fetchUserFailure.type, payload: { message: '401 Test Error' } }];
+      const expectedActions = [
+        {
+          type: fetchUserFailure.type,
+          payload: [
+            'First error relating to failed request.',
+            'Second error relating to failed request.',
+            'Third error relating to failed request.',
+          ],
+        },
+      ];
 
       await store.dispatch(fetchUser());
 
@@ -106,7 +133,11 @@ describe('Accounts Slice', () => {
     it('should dispatch login failure action.', async () => {
       fetch.mockResponse(
         JSON.stringify({
-          message: 'Test error message',
+          errors: {
+            error_1: ['First error relating to failed request.'],
+            error_2: ['Second error relating to failed request.'],
+            error_3: ['Third error relating to failed request.'],
+          },
         }),
         {
           ok: false,
@@ -115,7 +146,16 @@ describe('Accounts Slice', () => {
         },
       );
 
-      const expectedActions = [{ type: loginUserFailure.type, payload: { message: '401 Test Error' } }];
+      const expectedActions = [
+        {
+          type: loginUserFailure.type,
+          payload: [
+            'First error relating to failed request.',
+            'Second error relating to failed request.',
+            'Third error relating to failed request.',
+          ],
+        },
+      ];
 
       const form = {
         email: 'testusername@test.com',
@@ -150,7 +190,11 @@ describe('Accounts Slice', () => {
     it('should dispatch logout failure action.', async () => {
       fetch.mockResponse(
         JSON.stringify({
-          message: 'Test error message',
+          errors: {
+            error_1: ['First error relating to failed request.'],
+            error_2: ['Second error relating to failed request.'],
+            error_3: ['Third error relating to failed request.'],
+          },
         }),
         {
           ok: false,
@@ -159,7 +203,16 @@ describe('Accounts Slice', () => {
         },
       );
 
-      const expectedActions = [{ type: logoutUserFailure.type, payload: { message: '401 Test Error' } }];
+      const expectedActions = [
+        {
+          type: logoutUserFailure.type,
+          payload: [
+            'First error relating to failed request.',
+            'Second error relating to failed request.',
+            'Third error relating to failed request.',
+          ],
+        },
+      ];
 
       await store.dispatch(logout());
 
@@ -182,7 +235,11 @@ describe('Accounts Slice', () => {
     it('should dispatch update user failure action.', async () => {
       fetch.mockResponse(
         JSON.stringify({
-          message: 'Test error message',
+          errors: {
+            error_1: ['First error relating to failed request.'],
+            error_2: ['Second error relating to failed request.'],
+            error_3: ['Third error relating to failed request.'],
+          },
         }),
         {
           ok: false,
@@ -191,7 +248,16 @@ describe('Accounts Slice', () => {
         },
       );
 
-      const expectedActions = [{ type: updateUserFailure.type, payload: { message: '401 Test Error' } }];
+      const expectedActions = [
+        {
+          type: updateUserFailure.type,
+          payload: [
+            'First error relating to failed request.',
+            'Second error relating to failed request.',
+            'Third error relating to failed request.',
+          ],
+        },
+      ];
 
       const form = {
         email: 'testusername@test.com',
@@ -229,6 +295,11 @@ describe('Accounts Slice', () => {
         userKey: null,
         user: null,
         error: null,
+        accountActivationSuccessful: false,
+        passwordResetSuccessful: false,
+        resetStatus: status.NONE,
+        changeStatus: status.NONE,
+        verificationEmailStatus: status.NONE,
       };
     });
 

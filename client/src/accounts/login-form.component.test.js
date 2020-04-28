@@ -35,7 +35,7 @@ describe('Login Form Component', () => {
     });
     login = jest.fn();
     user = null;
-    error = {};
+    error = ['Test Error 1', 'Test Error 2', 'Test Error 3'];
   });
 
   afterEach(cleanup);

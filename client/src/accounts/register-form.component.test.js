@@ -23,6 +23,7 @@ const testAppConfig = {
 
 describe('Register Form Component', () => {
   let store;
+  let error = null;
 
   beforeEach(() => {
     fetch.resetMocks();
@@ -30,15 +31,16 @@ describe('Register Form Component', () => {
       accounts: { error: 'Test Error' },
       app: { config: testAppConfig },
     });
+    error = ['Test Error 1', 'Test Error 2', 'Test Error 3'];
   });
 
   afterEach(cleanup);
 
   it('should render a form', () => {
-    const { container, getByText, getAllByText, getByPlaceholderText } = render(
+    const { container, getByText, getByPlaceholderText } = render(
       <MemoryRouter>
         <Provider store={store}>
-          <RegisterForm />
+          <RegisterForm error={error} />
         </Provider>
       </MemoryRouter>,
     );
@@ -65,7 +67,7 @@ describe('Register Form Component', () => {
     const { getByText, getByPlaceholderText } = render(
       <MemoryRouter>
         <Provider store={store}>
-          <RegisterForm />
+          <RegisterForm error={error} />
         </Provider>
       </MemoryRouter>,
     );
@@ -81,7 +83,7 @@ describe('Register Form Component', () => {
     const { getByText, getByPlaceholderText } = render(
       <MemoryRouter>
         <Provider store={store}>
-          <RegisterForm />
+          <RegisterForm error={error} />
         </Provider>
       </MemoryRouter>,
     );
@@ -99,7 +101,7 @@ describe('Register Form Component', () => {
     const { getByText, getByPlaceholderText } = render(
       <MemoryRouter>
         <Provider store={store}>
-          <RegisterForm />
+          <RegisterForm error={error} />
         </Provider>
       </MemoryRouter>,
     );
@@ -117,7 +119,7 @@ describe('Register Form Component', () => {
     const { getByText } = render(
       <MemoryRouter>
         <Provider store={store}>
-          <RegisterForm />
+          <RegisterForm error={error} />
         </Provider>
       </MemoryRouter>,
     );
@@ -132,7 +134,7 @@ describe('Register Form Component', () => {
     const { getByText, getByPlaceholderText } = render(
       <MemoryRouter>
         <Provider store={store}>
-          <RegisterForm />
+          <RegisterForm error={error} />
         </Provider>
       </MemoryRouter>,
     );
