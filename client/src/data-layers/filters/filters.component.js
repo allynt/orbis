@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { DataLayersFilterForm } from './data-layers-filter-form.component';
+import { FiltersForm } from './filters-form.component';
 
 import { ReactComponent as FilterIcon } from './filter-icon.svg';
 import { ReactComponent as CloseIcon } from './close.svg';
@@ -17,14 +17,7 @@ export const Filters = () => {
         <h3>Data Filtering</h3>
         <h4>Find all the requested results</h4>
       </header>
-      {filtersPanelVisible && (
-        <DataLayersFilterForm
-          // selectedLayers={selectedLayers}
-          // onAddLayers={selectedLayers => dispatch(addLayers(selectedLayers))}
-          filtersPanelVisible={filtersPanelVisible}
-          setFiltersPanelVisible={setFiltersPanelVisible}
-        />
-      )}
+      {filtersPanelVisible && <FiltersForm />}
     </>
   );
 };
