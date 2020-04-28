@@ -1154,7 +1154,7 @@ describe('Data Slice', () => {
         ];
       });
 
-      it('should return data based on the current filters', () => {
+      it('handles single layer property value filters', () => {
         const state = {
           data: {
             sources,
@@ -1195,7 +1195,7 @@ describe('Data Slice', () => {
         expect(state.sources).not.toEqual(result);
       });
 
-      it('should handle filtering multiple values', () => {
+      it('handles filtering multiple values', () => {
         const state = {
           data: {
             sources,
@@ -1248,7 +1248,7 @@ describe('Data Slice', () => {
         expect(state.sources).not.toEqual(result);
       });
 
-      it('should handle filtering of multiple properties', () => {
+      it('handles filtering multiple properties', () => {
         const state = {
           data: {
             sources,
@@ -1284,7 +1284,7 @@ describe('Data Slice', () => {
         expect(state.sources).not.toEqual(result);
       });
 
-      it('should be able to filter multiple layers', () => {
+      it('handles filtering multiple layers', () => {
         const state = {
           data: {
             sources,
@@ -1350,7 +1350,7 @@ describe('Data Slice', () => {
         expect(state.sources).not.toEqual(result);
       });
 
-      it('should handle filtering multiple values over multiple layers', () => {
+      it('handles filtering multiple values over multiple layers', () => {
         const state = {
           data: {
             sources,
@@ -1446,7 +1446,7 @@ describe('Data Slice', () => {
         expect(state.sources).not.toEqual(result);
       });
 
-      it('should handle filtering multiple properties on multiple layers', () => {
+      it('handles filtering multiple properties on multiple layers', () => {
         const state = {
           data: {
             sources,
@@ -1502,7 +1502,7 @@ describe('Data Slice', () => {
         expect(state.sources).not.toEqual(result);
       });
 
-      it('should handle filtering multiple values over multiple properties over multiple layers', () => {
+      it('handles filtering multiple values over multiple properties over multiple layers', () => {
         const state = {
           data: {
             sources,
@@ -1578,7 +1578,7 @@ describe('Data Slice', () => {
         expect(state.sources).not.toEqual(result);
       });
 
-      it('should include unfiltered data for a layer if no filters are applied', () => {
+      it('includes unfiltered data for a layer if no filters are applied', () => {
         const state = {
           data: {
             sources,
@@ -1618,6 +1618,97 @@ describe('Data Slice', () => {
         const result = selectFilteredData(state);
         expect(result).toEqual(expected);
         expect(state.sources).not.toEqual(result);
+      });
+
+      it('returns all unfiltered data if no filters are present', () => {
+        const state = {
+          data: { sources, layers: ['fruit-bowl', 'cars'] },
+        };
+        const result = selectFilteredData(state);
+        expect(result).toEqual(sources);
+      });
+
+      it('returns all unfiltered data if no filters are applied', () => {
+        const state = {
+          data: { sources, layers: ['fruit-bowl', 'cars'], filters: {} },
+        };
+        const result = selectFilteredData(state);
+        expect(result).toEqual(sources);
+      });
+
+      it('returns unfiltered data for a layer if the layer is present but no filters are', () => {
+        const state = {
+          data: {
+            sources,
+            layers: ['fruit-bowl'],
+            filters: {
+              'fruit-bowl': {},
+            },
+          },
+        };
+        const expected = [sources[0]];
+        const result = selectFilteredData(state);
+        expect(result).toEqual(expected);
+      });
+
+      it('returns unfiltered data for a layer if a filter is present but has no value', () => {
+        const state = {
+          data: {
+            sources,
+            layers: ['cars'],
+            filters: {
+              cars: {
+                engine: [],
+              },
+            },
+          },
+        };
+        const expected = [sources[1]];
+        const result = selectFilteredData(state);
+        expect(result).toEqual(expected);
+      });
+
+      it('returns an empty array if no state is present', () => {
+        const state = {};
+        const result = selectFilteredData(state);
+        expect(result).toEqual([]);
+      });
+
+      it('returns an empty array if no sources are present', () => {
+        const state = {
+          data: {
+            layers: ['fruit-bowl', 'cars'],
+            filters: {
+              'fruit-bowl': {
+                fruit: ['apple'],
+              },
+              cars: {
+                make: ['BMW'],
+              },
+            },
+          },
+        };
+        const result = selectFilteredData(state);
+        expect(result).toEqual([]);
+      });
+
+      it('returns an empty array if no layers are selected', () => {
+        const state = {
+          data: {
+            sources,
+            layers: [],
+            filters: {
+              'fruit-bowl': {
+                fruit: ['apple'],
+              },
+              cars: {
+                make: ['BMW'],
+              },
+            },
+          },
+        };
+        const result = selectFilteredData(state);
+        expect(result).toEqual([]);
       });
     });
   });
