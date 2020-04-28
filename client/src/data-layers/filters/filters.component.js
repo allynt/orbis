@@ -5,8 +5,13 @@ import { FiltersForm } from './filters-form.component';
 import { ReactComponent as FilterIcon } from './filter-icon.svg';
 import { ReactComponent as CloseIcon } from './close.svg';
 
-export const Filters = () => {
+export const Filters = ({ availableFilters, currentFilters, onFiltersChange }) => {
   const [filtersPanelVisible, setFiltersPanelVisible] = useState(false);
+
+  const handleFiltersChange = (toAdd, toRemove) => {
+    setFiltersPanelVisible(current => !current);
+    onFiltersChange && onFiltersChange(toAdd, toRemove);
+  };
 
   return (
     <>
@@ -17,7 +22,13 @@ export const Filters = () => {
         <h3>Data Filtering</h3>
         <h4>Find all the requested results</h4>
       </header>
-      {filtersPanelVisible && <FiltersForm />}
+      {filtersPanelVisible && (
+        <FiltersForm
+          availableFilters={availableFilters}
+          currentFilters={currentFilters}
+          onFiltersChange={handleFiltersChange}
+        />
+      )}
     </>
   );
 };

@@ -11,7 +11,15 @@ import { ReactComponent as RemoveIcon } from './remove.svg';
 import { ReactComponent as HideIcon } from './layer-invisible.svg';
 import { ReactComponent as AddNewCategoryIcon } from './add-more-categories.svg';
 
-import { removeLayer, addLayers, selectDataSources, selectUserLayers } from './data-layers.slice';
+import {
+  removeLayer,
+  addLayers,
+  addFilters,
+  selectDataSources,
+  selectUserLayers,
+  selectAvailableFilters,
+  selectCurrentFilters,
+} from './data-layers.slice';
 
 import { PopulationInformation } from './population-information.component';
 import { HealthInfrastructure } from './health-infrastructure.component';
@@ -49,6 +57,8 @@ const DataLayers = () => {
   const dispatch = useDispatch();
   const dataSources = useSelector(selectDataSources);
   const selectedLayers = useSelector(selectUserLayers);
+  const availableFilters = useSelector(selectAvailableFilters);
+  const currentFilters = useSelector(selectCurrentFilters);
 
   // Create an array of sources, grouped by their domain.
   const domains = dataSources.reduce((acc, value) => {
@@ -61,9 +71,18 @@ const DataLayers = () => {
     return acc;
   }, []);
 
+  const handleFiltersChange = (toAdd, toRemove) => {
+    dispatch(addFilters(toAdd));
+    console.log(toRemove);
+  };
+
   return (
     <div className={styles.selectData} ref={ref}>
-      <Filters />
+      <Filters
+        availableFilters={availableFilters}
+        currentFilters={currentFilters}
+        onFiltersChange={handleFiltersChange}
+      />
       <div className={styles.layers}>
         {selectedLayers.map(selectedLayer => {
           const Component = detailComponentMap[selectedLayer.name] ?? detailComponentMap['default'];

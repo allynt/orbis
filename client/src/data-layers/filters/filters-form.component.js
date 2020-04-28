@@ -38,8 +38,9 @@ export const checkboxReducer = (state, action) => {
 export const FiltersForm = ({ availableFilters, currentFilters, onFiltersChange }) => {
   const [state, dispatch] = useReducer(checkboxReducer, {});
 
-  const handleSubmit = () => {
-    onFiltersChange(state.toAdd, state.toRemove);
+  const handleSubmit = event => {
+    event.preventDefault();
+    onFiltersChange && onFiltersChange(state.toAdd, state.toRemove);
   };
 
   const handleCheckboxChange = item => event => {
@@ -68,7 +69,7 @@ export const FiltersForm = ({ availableFilters, currentFilters, onFiltersChange 
         {availableFilters &&
           Object.keys(availableFilters).map(layer =>
             Object.keys(availableFilters[layer]).map(property => (
-              <fieldset>
+              <fieldset key={`${layer}.${property}`}>
                 <legend>{property}</legend>
                 {availableFilters[layer][property].map(value => {
                   const defaultChecked =
@@ -77,6 +78,7 @@ export const FiltersForm = ({ availableFilters, currentFilters, onFiltersChange 
                     currentFilters[layer][property].includes(value);
                   return (
                     <Checkbox
+                      key={`${layer}.${property}.${value}`}
                       label={value}
                       defaultChecked={defaultChecked}
                       onChange={handleCheckboxChange({ layer, property, value })}

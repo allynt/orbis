@@ -43,4 +43,11 @@ describe('Filters', () => {
     userEvent.click(getByLabelText('Toggle filters popup'));
     expect(queryByText('Add Filters')).not.toBeInTheDocument();
   });
+
+  it('closes the popup when the "Add Filters" button is clicked', () => {
+    const { getByLabelText, getByText, queryByText } = render(<Filters />);
+    userEvent.click(getByLabelText('Toggle filters popup'));
+    userEvent.click(getByText('Add Filters'));
+    expect(queryByText('Add Filters')).not.toBeInTheDocument();
+  });
 });
