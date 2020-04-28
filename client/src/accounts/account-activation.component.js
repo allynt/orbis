@@ -3,9 +3,17 @@ import PropTypes from 'prop-types';
 
 import { Redirect } from 'react-router-dom';
 
+import Button from '@astrosat/astrosat-ui/dist/buttons/button';
+import Well from '@astrosat/astrosat-ui/dist/containers/well';
+
+import { ReactComponent as OrbisLogo } from '../orbis.svg';
+
 import { LOGIN_URL } from './accounts.constants';
 
-const AccountActivation = ({ match, activateAccount }) => {
+import formStyles from './forms.module.css';
+import styles from './password-reset-form.module.css';
+
+const AccountActivation = ({ match, error, activateAccount, accountActivationSuccessful }) => {
   const [redirectToLogin, setRedirectToLogin] = useState(false);
 
   useEffect(() => {
@@ -13,17 +21,38 @@ const AccountActivation = ({ match, activateAccount }) => {
     setRedirectToLogin(true);
   }, [activateAccount, match]);
 
-  // Re-direct to login.
-  if (redirectToLogin) {
+  // Re-direct to login if account activation is successful, show error if not
+  if (redirectToLogin && accountActivationSuccessful) {
     return <Redirect to={LOGIN_URL} />;
   }
+  return (
+    <div className={`${formStyles.container} ${formStyles.accountsBackground}`}>
+      <div className={`${formStyles.form} ${styles.resend}`}>
+        <OrbisLogo className={formStyles.logo} />
 
-  return <div></div>;
+        {error && (
+          <Well type="error">
+            <ul>
+              {error.map(error => (
+                <li key={error}>{error}</li>
+              ))}
+            </ul>
+          </Well>
+        )}
+
+        <p className={styles.paragraph}>Sorry, there was an error in activating your account.</p>
+        <p className={styles.paragraph}>Please try again later.</p>
+
+        <div className={styles.buttons}>
+          <Button href={LOGIN_URL}>Continue</Button>
+        </div>
+      </div>
+    </div>
+  );
 };
 
 AccountActivation.propTypes = {
   match: PropTypes.object.isRequired,
-  activateAccount: PropTypes.func.isRequired,
 };
 
 export default AccountActivation;
