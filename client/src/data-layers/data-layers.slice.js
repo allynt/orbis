@@ -98,7 +98,7 @@ export const selectAvailableFilters = createSelector(selectUserLayers, layers =>
   return filters;
 });
 
-export const selectCurrentFilters = createSelector(baseSelector, state => state.filters);
+export const selectCurrentFilters = createSelector(baseSelector, state => state.filters ?? {});
 
 export const selectFilteredData = createSelector([selectUserLayers, selectCurrentFilters], (layers, filters) =>
   layers.map(layer => {

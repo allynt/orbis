@@ -14,6 +14,7 @@ import reducer, {
   selectAvailableFilters,
   addFilters,
   selectFilteredData,
+  selectCurrentFilters,
 } from './data-layers.slice';
 
 const mockStore = configureMockStore([thunk]);
@@ -1002,6 +1003,36 @@ describe('Data Slice', () => {
         };
         const result = selectAvailableFilters(state);
         expect(result).toEqual(expected);
+      });
+    });
+
+    describe('selectCurrentFilters', () => {
+      it('should return the filters from state', () => {
+        const state = {
+          data: {
+            filters: {
+              layer: {
+                property: ['one', 'two'],
+              },
+            },
+          },
+        };
+        const result = selectCurrentFilters(state);
+        expect(result).toEqual(state.data.filters);
+      });
+
+      it('should return an empty object if no state is present', () => {
+        const state = {};
+        const result = selectCurrentFilters(state);
+        expect(result).toEqual({});
+      });
+
+      it('should return an empty object if no filters are present', () => {
+        const state = {
+          data: {},
+        };
+        const result = selectCurrentFilters(state);
+        expect(result).toEqual({});
       });
     });
 
