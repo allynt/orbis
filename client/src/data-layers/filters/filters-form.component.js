@@ -4,19 +4,16 @@ import { mergeWith, get } from 'lodash';
 
 import { Checkbox } from '@astrosat/astrosat-ui';
 
-const filterValueIsPresent = (object, item) => {
-  const [layer, property, value] = item.split('.');
+const filterValueIsPresent = (object, { layer, property, value }) => {
   return !!object[layer] && object[layer][property] && object[layer][property].includes(value);
 };
 
-const addItem = (state, set, item) => {
-  const [layer, property, value] = item.split('.');
+const addItem = (state, set, { layer, property, value }) => {
   const current = get(state, `${set}.${layer}.${property}`, []);
   return mergeWith({ [set]: { [layer]: { [property]: [...current, value] } } }, state);
 };
 
-const removeItem = (state, set, item) => {
-  const [layer, property, value] = item.split('.');
+const removeItem = (state, set, { layer, property, value }) => {
   const current = get(state, `${set}.${layer}.${property}`);
   const index = current.indexOf(value);
   current.splice(index, 1);
@@ -45,22 +42,22 @@ export const FiltersForm = ({ availableFilters, currentFilters, onFiltersChange 
     onFiltersChange(state.toAdd, state.toRemove);
   };
 
-  const handleCheckboxChange = path => event => {
+  const handleCheckboxChange = item => event => {
     const isChecked = event.target.checked;
-    const isInCurrent = filterValueIsPresent(currentFilters, path);
+    const isInCurrent = filterValueIsPresent(currentFilters, item);
     if (isChecked) {
       if (isInCurrent) {
-        const isInToRemove = filterValueIsPresent(state.toRemove, path);
-        if (isInToRemove) dispatch({ type: 'remove/toRemove', item: path });
+        const isInToRemove = filterValueIsPresent(state.toRemove, item);
+        if (isInToRemove) dispatch({ type: 'remove/toRemove', item: item });
       } else {
-        dispatch({ type: 'add/toAdd', item: path });
+        dispatch({ type: 'add/toAdd', item: item });
       }
     } else {
       if (isInCurrent) {
-        dispatch({ type: 'add/toRemove', item: path });
+        dispatch({ type: 'add/toRemove', item: item });
       } else {
-        const isInToAdd = filterValueIsPresent(state.toAdd, path);
-        if (isInToAdd) dispatch({ type: 'remove/toAdd', item: path });
+        const isInToAdd = filterValueIsPresent(state.toAdd, item);
+        if (isInToAdd) dispatch({ type: 'remove/toAdd', item: item });
       }
     }
   };
@@ -82,7 +79,7 @@ export const FiltersForm = ({ availableFilters, currentFilters, onFiltersChange 
                     <Checkbox
                       label={value}
                       defaultChecked={defaultChecked}
-                      onChange={handleCheckboxChange(`${layer}.${property}.${value}`)}
+                      onChange={handleCheckboxChange({ layer, property, value })}
                     />
                   );
                 })}
