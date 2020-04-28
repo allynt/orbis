@@ -37,35 +37,9 @@
   padding: 1.25rem;
 }
 
-/* DATA FILTERS STYLING BELOW HERE */
-
-.dataFilters {
-  display: flex;
-  justify-content: center;
-  min-height: 5rem;
-  border: 2px solid #fff;
-  margin-bottom: 1rem;
-}
-
-.iconAndText {
-  display: flex;
-}
-
 .icon {
   color: gold;
   font-weight: bold;
   font-size: 1.5rem;
   align-self: center;
-}
-
-.resetButton {
-  align-self: center;
-  color: gold;
-}
-
-.description {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  padding: 1rem;
 }
