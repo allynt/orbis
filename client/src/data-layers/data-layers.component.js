@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useState, useRef } from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -16,6 +16,7 @@ import { removeLayer, addLayers, selectDataSources, selectUserLayers } from './d
 import { PopulationInformation } from './population-information.component';
 import { HealthInfrastructure } from './health-infrastructure.component';
 import DataLayersDialog from './data-layers-dialog.component';
+import DataLayersFilterForm from './data-layers-filter-form.component';
 
 import styles from './data-layers.module.css';
 
@@ -43,6 +44,7 @@ const detailComponentMap = {
 };
 
 const DataLayers = () => {
+  const [filtersPanelVisible, setFiltersPanelVisible] = useState(false);
   const [isVisible, toggle] = useModal(false);
   const ref = useRef(null);
   const dispatch = useDispatch();
@@ -62,6 +64,22 @@ const DataLayers = () => {
 
   return (
     <div className={styles.selectData} ref={ref}>
+      {selectedLayers.length > 0 && (
+        <div className={styles.dataFilters}>
+          <div className={styles.iconAndText}>
+            <button className={styles.icon} onClick={() => setFiltersPanelVisible(!filtersPanelVisible)}>
+              {filtersPanelVisible ? 'X' : 'Y'}
+            </button>
+            <div className={styles.description}>
+              <h1>Data Filtering</h1>
+              <p>Find all the requested Results</p>
+            </div>
+          </div>
+          <div className={styles.resetButton}>
+            <button onClick={() => console.log('RESET')}>Reset</button>
+          </div>
+        </div>
+      )}
       <div className={styles.layers}>
         {selectedLayers.map(selectedLayer => {
           const Component = detailComponentMap[selectedLayer.name] ?? detailComponentMap['default'];
@@ -81,6 +99,15 @@ const DataLayers = () => {
           Add New Orb
         </Button>
       </div>
+
+      {filtersPanelVisible && (
+        <DataLayersFilterForm
+          selectedLayers={selectedLayers}
+          onAddLayers={selectedLayers => dispatch(addLayers(selectedLayers))}
+          filtersPanelVisible={filtersPanelVisible}
+          setFiltersPanelVisible={setFiltersPanelVisible}
+        />
+      )}
 
       <DataLayersDialog
         domains={domains}
