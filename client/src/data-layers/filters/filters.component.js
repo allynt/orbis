@@ -16,7 +16,7 @@ export const Filters = ({ availableFilters, currentFilters, onFiltersChange }) =
   };
 
   return (
-    <>
+    <div className={styles.filtersContainer}>
       <header className={styles.filters}>
         <button
           className={styles.popupToggleButton}
@@ -39,6 +39,6 @@ export const Filters = ({ availableFilters, currentFilters, onFiltersChange }) =
           onFiltersChange={handleFiltersChange}
         />
       )}
-    </>
+    </div>
   );
 };
