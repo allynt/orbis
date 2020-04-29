@@ -1,6 +1,6 @@
 import { createSlice, createSelector } from '@reduxjs/toolkit';
-import { getJsonAuthHeaders, getData } from 'utils/http';
 import { mergeWith } from 'lodash';
+import { getJsonAuthHeaders, getData } from 'utils/http';
 
 const initialState = {
   layers: [],
@@ -69,6 +69,9 @@ export const selectPollingPeriod = createSelector(baseSelector, state => state.p
 export const selectUserLayers = createSelector(baseSelector, state =>
   state.sources ? state.sources.filter(source => state.layers.includes(source.name)) : [],
 );
+export const selectNonUserLayers = createSelector(baseSelector, state =>
+  state.sources ? state.sources.filter(source => !state.layers.includes(source.name)) : [],
+);
 export const selectDomainList = createSelector(selectDataSources, sources =>
   Array.from(
     new Set(
@@ -100,8 +103,9 @@ export const selectAvailableFilters = createSelector(selectUserLayers, layers =>
 
 export const selectCurrentFilters = createSelector(baseSelector, state => state.filters ?? {});
 
-export const selectFilteredData = createSelector([selectUserLayers, selectCurrentFilters], (layers, filters) =>
-  layers.map(layer => {
+export const selectFilteredData = createSelector([selectUserLayers, selectCurrentFilters], (layers, filters) => {
+  const filteredLayers = JSON.parse(JSON.stringify(layers));
+  return filteredLayers.map(layer => {
     if (filters[layer.name]) {
       const layerFilters = filters[layer.name];
       layer.data.features = layer.data.features.filter(feature => {
@@ -112,7 +116,7 @@ export const selectFilteredData = createSelector([selectUserLayers, selectCurren
       });
     }
     return layer;
-  }),
-);
+  });
+});
 
 export default dataSlice.reducer;

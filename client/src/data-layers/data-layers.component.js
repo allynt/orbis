@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useRef } from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { isEmpty } from 'lodash';
@@ -75,7 +75,6 @@ const DataLayers = () => {
 
   const handleFiltersChange = (toAdd, toRemove) => {
     dispatch(addFilters(toAdd));
-    console.log(toRemove);
   };
 
   return (
