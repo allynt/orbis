@@ -50,4 +50,16 @@ describe('Filters', () => {
     userEvent.click(getByText('Add Filters'));
     expect(queryByText('Add Filters')).not.toBeInTheDocument();
   });
+
+  it('does not call onFiltersChange when changes are made to the filters but the close button is clicked', () => {
+    const availableFilters = { cars: { engine: ['V8'] } };
+    const onFiltersChange = jest.fn();
+    const { getByLabelText } = render(
+      <Filters availableFilters={availableFilters} onFiltersChange={onFiltersChange} />,
+    );
+    userEvent.click(getByLabelText('Toggle filters popup'));
+    userEvent.click(getByLabelText(availableFilters.cars.engine[0]));
+    userEvent.click(getByLabelText('Toggle filters popup'));
+    expect(onFiltersChange).not.toHaveBeenCalled();
+  });
 });
