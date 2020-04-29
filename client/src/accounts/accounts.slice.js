@@ -11,7 +11,7 @@ const API_PREFIX = '/api/authentication/';
 const API = {
   register: API_PREFIX + 'registration/',
   activate: API_PREFIX + 'registration/verify-email/',
-  resendVerificationEmail: API_PREFIX + '/api/authentication/send-email-verification/',
+  resendVerificationEmail: API_PREFIX + 'send-email-verification/',
   login: API_PREFIX + 'login/',
   changePassword: API_PREFIX + 'password/change/',
   resetPassword: API_PREFIX + 'password/reset/',
@@ -25,6 +25,7 @@ export const status = {
   PENDING: 'Pending',
 };
 
+// Shape error data into a single array of only error strings.
 const errorTransformer = errorObject => {
   const errors = errorObject.errors;
 
@@ -213,10 +214,10 @@ export const login = form => async dispatch => {
   return dispatch(fetchUser());
 };
 
-export const resendVerificationEmail = form => async (dispatch, getState) => {
+export const resendVerificationEmail = email => async (dispatch, getState) => {
   const headers = getJsonAuthHeaders(getState());
 
-  const response = await sendData(API.resendVerificationEmail, form, headers);
+  const response = await sendData(API.resendVerificationEmail, email, headers);
 
   if (!response.ok) {
     const errorObject = await response.json();

@@ -114,8 +114,7 @@ const LoginForm = ({ login, user, error, resendVerificationEmail, verificationEm
           {notVerified && (
             <Button
               theme="secondary"
-              onClick={e => {
-                e.preventDefault();
+              onClick={() => {
                 resendVerificationEmail(values.email);
               }}
             >

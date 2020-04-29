@@ -13,6 +13,7 @@ import { fetchAppConfig } from './app.slice';
 import {
   fetchUser,
   login,
+  register,
   activateAccount,
   resendVerificationEmail,
   changePassword,
@@ -140,7 +141,7 @@ const App = () => {
 
           <PrivateRoute exact path="/" user={user} component={LandingView} />
 
-          <Route exact path="/register" render={() => <RegisterForm error={error} />} />
+          <Route exact path="/register" render={() => <RegisterForm register={register} error={error} />} />
           <Route exact path="/terms" component={TermsAndConditions} />
           <Route
             exact

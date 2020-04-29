@@ -23,6 +23,7 @@ const testAppConfig = {
 
 describe('Register Form Component', () => {
   let store;
+  let register = null;
   let error = null;
 
   beforeEach(() => {
@@ -32,6 +33,7 @@ describe('Register Form Component', () => {
       app: { config: testAppConfig },
     });
     error = ['Test Error 1', 'Test Error 2', 'Test Error 3'];
+    register = jest.fn();
   });
 
   afterEach(cleanup);
@@ -40,7 +42,7 @@ describe('Register Form Component', () => {
     const { container, getByText, getByPlaceholderText } = render(
       <MemoryRouter>
         <Provider store={store}>
-          <RegisterForm error={error} />
+          <RegisterForm register={register} error={error} />
         </Provider>
       </MemoryRouter>,
     );
@@ -67,7 +69,7 @@ describe('Register Form Component', () => {
     const { getByText, getByPlaceholderText } = render(
       <MemoryRouter>
         <Provider store={store}>
-          <RegisterForm error={error} />
+          <RegisterForm register={register} error={error} />
         </Provider>
       </MemoryRouter>,
     );
@@ -83,7 +85,7 @@ describe('Register Form Component', () => {
     const { getByText, getByPlaceholderText } = render(
       <MemoryRouter>
         <Provider store={store}>
-          <RegisterForm error={error} />
+          <RegisterForm register={register} error={error} />
         </Provider>
       </MemoryRouter>,
     );
@@ -101,7 +103,7 @@ describe('Register Form Component', () => {
     const { getByText, getByPlaceholderText } = render(
       <MemoryRouter>
         <Provider store={store}>
-          <RegisterForm error={error} />
+          <RegisterForm register={register} error={error} />
         </Provider>
       </MemoryRouter>,
     );
@@ -119,7 +121,7 @@ describe('Register Form Component', () => {
     const { getByText } = render(
       <MemoryRouter>
         <Provider store={store}>
-          <RegisterForm error={error} />
+          <RegisterForm register={register} error={error} />
         </Provider>
       </MemoryRouter>,
     );
@@ -131,10 +133,17 @@ describe('Register Form Component', () => {
   it('should call register function when form is valid and `Sign Up` button clicked', () => {
     fetch.mockResponse(JSON.stringify({}, { status: 200 }));
 
+    const expectedResults = {
+      email: 'test@test.com',
+      password1: 'pandasconcreterealty',
+      password2: 'pandasconcreterealty',
+      accepted_terms: true
+    };
+
     const { getByText, getByPlaceholderText } = render(
       <MemoryRouter>
         <Provider store={store}>
-          <RegisterForm error={error} />
+          <RegisterForm register={register} error={error} />
         </Provider>
       </MemoryRouter>,
     );
@@ -145,6 +154,6 @@ describe('Register Form Component', () => {
     fireEvent.click(getByText('I agree with'));
 
     fireEvent.click(getByText('Sign Up'));
-    expect(fetch.mock.calls[0][0]).toEqual('/api/authentication/registration/');
+    expect(register).toHaveBeenCalledWith(expectedResults);
   });
 });

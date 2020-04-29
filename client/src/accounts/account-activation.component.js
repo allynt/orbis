@@ -51,8 +51,11 @@ const AccountActivation = ({ match, error, activateAccount, accountActivationSuc
   );
 };
 
+<<<<<<< HEAD
 AccountActivation.propTypes = {
   match: PropTypes.object.isRequired,
 };
 
+=======
+>>>>>>> 293d6be... fix(frontend): Make requested changes 1
 export default AccountActivation;

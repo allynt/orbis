@@ -24,6 +24,11 @@ const mockStore = configureMockStore([thunk]);
 describe('Accounts Slice', () => {
   describe('Accounts Actions', () => {
     let store = null;
+    const errorMessages = {
+      error_1: ['First error relating to failed request.'],
+      error_2: ['Second error relating to failed request.'],
+      error_3: ['Third error relating to failed request.'],
+    };
 
     beforeEach(() => {
       fetch.resetMocks();
@@ -39,11 +44,7 @@ describe('Accounts Slice', () => {
     it('should dispatch register failure action.', async () => {
       fetch.mockResponse(
         JSON.stringify({
-          errors: {
-            error_1: ['First error relating to failed request.'],
-            error_2: ['Second error relating to failed request.'],
-            error_3: ['Third error relating to failed request.'],
-          },
+          errors: errorMessages,
         }),
         {
           ok: false,
@@ -92,11 +93,7 @@ describe('Accounts Slice', () => {
     it('should dispatch fetch user failure action.', async () => {
       fetch.mockResponse(
         JSON.stringify({
-          errors: {
-            error_1: ['First error relating to failed request.'],
-            error_2: ['Second error relating to failed request.'],
-            error_3: ['Third error relating to failed request.'],
-          },
+          errors: errorMessages,
         }),
         {
           ok: false,
@@ -133,11 +130,7 @@ describe('Accounts Slice', () => {
     it('should dispatch login failure action.', async () => {
       fetch.mockResponse(
         JSON.stringify({
-          errors: {
-            error_1: ['First error relating to failed request.'],
-            error_2: ['Second error relating to failed request.'],
-            error_3: ['Third error relating to failed request.'],
-          },
+          errors: errorMessages,
         }),
         {
           ok: false,
@@ -190,11 +183,7 @@ describe('Accounts Slice', () => {
     it('should dispatch logout failure action.', async () => {
       fetch.mockResponse(
         JSON.stringify({
-          errors: {
-            error_1: ['First error relating to failed request.'],
-            error_2: ['Second error relating to failed request.'],
-            error_3: ['Third error relating to failed request.'],
-          },
+          errors: errorMessages,
         }),
         {
           ok: false,
@@ -235,11 +224,7 @@ describe('Accounts Slice', () => {
     it('should dispatch update user failure action.', async () => {
       fetch.mockResponse(
         JSON.stringify({
-          errors: {
-            error_1: ['First error relating to failed request.'],
-            error_2: ['Second error relating to failed request.'],
-            error_3: ['Third error relating to failed request.'],
-          },
+          errors: errorMessages,
         }),
         {
           ok: false,

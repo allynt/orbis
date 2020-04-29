@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 import validate from './register-form.validator';
 
@@ -12,8 +12,6 @@ import Checkbox from '@astrosat/astrosat-ui/dist/forms/checkbox';
 import useForm from '@astrosat/astrosat-ui/dist/forms/use-form';
 import Well from '@astrosat/astrosat-ui/dist/containers/well';
 
-import { register } from './accounts.slice';
-
 import { ReactComponent as OrbisLogo } from '../orbis.svg';
 
 import { LOGIN_URL, TERMS_URL } from './accounts.constants';
@@ -21,15 +19,13 @@ import { LOGIN_URL, TERMS_URL } from './accounts.constants';
 import formStyles from './forms.module.css';
 import registerStyles from './register-form.module.css';
 
-const RegisterForm = ({ error }) => {
+const RegisterForm = ({ register, error }) => {
   const { passwordMinLength, passwordMaxLength } = useSelector(state => state.app.config);
   const validators = {
     passwordMinLength,
     passwordMaxLength,
   };
-
   const { handleChange, handleSubmit, values, errors } = useForm(onSubmit, validate, validators);
-  const dispatch = useDispatch();
 
   const config = useSelector(state => state.app.config);
 
@@ -40,7 +36,7 @@ const RegisterForm = ({ error }) => {
       ...values,
       accepted_terms: termsAgreed,
     };
-    dispatch(register(data));
+    register(data);
   }
 
   return (

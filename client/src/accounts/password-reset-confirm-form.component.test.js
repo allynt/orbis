@@ -2,29 +2,20 @@ import React from 'react';
 
 import { render, cleanup, fireEvent } from '@testing-library/react';
 
-import { Provider } from 'react-redux';
-import configureMockStore from 'redux-mock-store';
-import thunk from 'redux-thunk';
-
 import { MemoryRouter } from 'react-router-dom';
 
 import PasswordResetConfirmForm from './password-reset-confirm-form.component';
 
-const mockStore = configureMockStore([thunk]);
-
-const renderComponent = (store, confirmResetPassword, match, error) =>
+const renderComponent = (confirmResetPassword, match, error) =>
   render(
     <MemoryRouter>
-      <Provider store={store}>
-        <PasswordResetConfirmForm confirmResetPassword={confirmResetPassword} match={match} error={error} />
-      </Provider>
+      <PasswordResetConfirmForm confirmResetPassword={confirmResetPassword} match={match} error={error} />
     </MemoryRouter>,
   );
 
 describe('Password Reset Form Component', () => {
   let confirmResetPassword = null;
   let match = null;
-  let store = null;
   let error = null;
 
   beforeEach(() => {
@@ -37,19 +28,13 @@ describe('Password Reset Form Component', () => {
         token: 'Test Token',
       },
     };
-    store = mockStore({});
     error = null;
   });
 
   afterEach(cleanup);
 
   it('should render a form', () => {
-    const { container, getByText, getAllByText, getByPlaceholderText } = renderComponent(
-      store,
-      confirmResetPassword,
-      match,
-      error,
-    );
+    const { container, getByText, getByPlaceholderText } = renderComponent(confirmResetPassword, match, error);
 
     expect(container.querySelector('form')).toBeInTheDocument();
     expect(getByPlaceholderText('New Password')).toBeInTheDocument();
@@ -66,7 +51,7 @@ describe('Password Reset Form Component', () => {
   });
 
   it('should enable `Reset` button when form is dirty', async () => {
-    const { getByText, getByPlaceholderText } = renderComponent(store, confirmResetPassword, match, error);
+    const { getByText, getByPlaceholderText } = renderComponent(confirmResetPassword, match, error);
 
     const password = getByPlaceholderText('New Password');
     expect(password.value).toEqual('');
@@ -76,7 +61,7 @@ describe('Password Reset Form Component', () => {
   });
 
   it('should enable `Reset Password` button when form is valid', () => {
-    const { getByText, getByPlaceholderText } = renderComponent(store, confirmResetPassword, match, error);
+    const { getByText, getByPlaceholderText } = renderComponent(confirmResetPassword, match, error);
 
     let password = getByPlaceholderText('New Password');
     fireEvent.change(password, { target: { value: 'newpassword' } });
@@ -93,7 +78,7 @@ describe('Password Reset Form Component', () => {
   it('should not call `confirmResetPassword` function when form is invalid and `Reset Password` button clicked', () => {
     fetch.mockResponse(JSON.stringify({}, { status: 200 }));
 
-    const { getByText } = renderComponent(store, confirmResetPassword, match, error);
+    const { getByText } = renderComponent(confirmResetPassword, match, error);
 
     fireEvent.click(getByText('Reset Password'));
     expect(fetch.mock.calls.length).toBe(0);
@@ -102,7 +87,7 @@ describe('Password Reset Form Component', () => {
   it('should call `confirmResetPassword` function when form is valid and `Reset Password` button clicked', () => {
     fetch.mockResponse(JSON.stringify({}, { status: 200 }));
 
-    const { getByText, getByPlaceholderText } = renderComponent(store, confirmResetPassword, match, error);
+    const { getByText, getByPlaceholderText } = renderComponent(confirmResetPassword, match, error);
 
     fireEvent.change(getByPlaceholderText('New Password'), { target: { value: 'newpassword' } });
     fireEvent.change(getByPlaceholderText('New Password Confirmation'), { target: { value: 'newpassword' } });
