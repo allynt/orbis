@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import PropTypes from 'prop-types';
 
 import { Redirect } from 'react-router-dom';
 
@@ -7,6 +6,8 @@ import Button from '@astrosat/astrosat-ui/dist/buttons/button';
 import Well from '@astrosat/astrosat-ui/dist/containers/well';
 
 import { ReactComponent as OrbisLogo } from '../orbis.svg';
+
+import { status } from './accounts.slice';
 
 import { LOGIN_URL } from './accounts.constants';
 
@@ -22,7 +23,7 @@ const AccountActivation = ({ match, error, activateAccount, accountActivationSuc
   }, [activateAccount, match]);
 
   // Re-direct to login if account activation is successful, show error if not
-  if (redirectToLogin && accountActivationSuccessful) {
+  if (redirectToLogin && accountActivationSuccessful === status.COMPLETE) {
     return <Redirect to={LOGIN_URL} />;
   }
   return (
@@ -32,7 +33,7 @@ const AccountActivation = ({ match, error, activateAccount, accountActivationSuc
 
         {error && (
           <Well type="error">
-            <ul>
+            <ul data-testid="error-well">
               {error.map(error => (
                 <li key={error}>{error}</li>
               ))}
@@ -51,11 +52,4 @@ const AccountActivation = ({ match, error, activateAccount, accountActivationSuc
   );
 };
 
-<<<<<<< HEAD
-AccountActivation.propTypes = {
-  match: PropTypes.object.isRequired,
-};
-
-=======
->>>>>>> 293d6be... fix(frontend): Make requested changes 1
 export default AccountActivation;

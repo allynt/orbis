@@ -13,12 +13,14 @@ import Well from '@astrosat/astrosat-ui/dist/containers/well';
 
 import { ReactComponent as OrbisLogo } from '../orbis.svg';
 
+import { status } from './accounts.slice';
+
 import { LOGIN_URL, TERMS_URL } from './accounts.constants';
 
 import formStyles from './forms.module.css';
 import styles from './password-reset-confirm-form.module.css';
 
-const PasswordResetConfirmForm = ({ confirmResetPassword, passwordResetSuccessful, match, error }) => {
+const PasswordResetConfirmForm = ({ confirmResetPassword, resetStatus, match, error }) => {
   const [termsAgreed, setTermsAgreed] = useState(false);
 
   const { handleChange, handleSubmit, values, errors } = useForm(onSubmit, validate);
@@ -31,8 +33,8 @@ const PasswordResetConfirmForm = ({ confirmResetPassword, passwordResetSuccessfu
     confirmResetPassword(data, match.params);
   }
 
-  if (passwordResetSuccessful) {
-    return <Redirect to="reset_password_done" />;
+  if (resetStatus === status.COMPLETE) {
+    return <Redirect to="/reset_password_done" />;
   }
 
   return (
@@ -42,7 +44,7 @@ const PasswordResetConfirmForm = ({ confirmResetPassword, passwordResetSuccessfu
 
         {error && (
           <Well type="error">
-            <ul>
+            <ul data-testid="error-well">
               {error.map(error => (
                 <li key={error}>{error}</li>
               ))}

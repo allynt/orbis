@@ -3,25 +3,36 @@ import React from 'react';
 import { render, cleanup, fireEvent } from '@testing-library/react';
 
 import { MemoryRouter } from 'react-router-dom';
+import { createMemoryHistory } from 'history';
 
 import PasswordResetConfirmForm from './password-reset-confirm-form.component';
+import { status } from './accounts.slice';
 
-const renderComponent = (confirmResetPassword, match, error) =>
+const renderComponent = (history, confirmResetPassword, resetStatus, match, error) =>
   render(
-    <MemoryRouter>
-      <PasswordResetConfirmForm confirmResetPassword={confirmResetPassword} match={match} error={error} />
+    <MemoryRouter history={history}>
+      <PasswordResetConfirmForm
+        confirmResetPassword={confirmResetPassword}
+        resetStatus={resetStatus}
+        match={match}
+        error={error}
+      />
     </MemoryRouter>,
   );
 
 describe('Password Reset Form Component', () => {
+  let history = null;
   let confirmResetPassword = null;
+  let resetStatus = null;
   let match = null;
   let error = null;
 
   beforeEach(() => {
     fetch.resetMocks();
 
+    history = createMemoryHistory({ initialEntries: ['/'] });
     confirmResetPassword = jest.fn();
+    resetStatus = status.NONE;
     match = {
       params: {
         uid: 'Test UID',
@@ -34,7 +45,13 @@ describe('Password Reset Form Component', () => {
   afterEach(cleanup);
 
   it('should render a form', () => {
-    const { container, getByText, getByPlaceholderText } = renderComponent(confirmResetPassword, match, error);
+    const { container, getByText, getByPlaceholderText } = renderComponent(
+      history,
+      confirmResetPassword,
+      resetStatus,
+      match,
+      error,
+    );
 
     expect(container.querySelector('form')).toBeInTheDocument();
     expect(getByPlaceholderText('New Password')).toBeInTheDocument();
@@ -50,8 +67,14 @@ describe('Password Reset Form Component', () => {
     expect(getByText('Reset Password')).toHaveAttribute('disabled');
   });
 
-  it('should enable `Reset` button when form is dirty', async () => {
-    const { getByText, getByPlaceholderText } = renderComponent(confirmResetPassword, match, error);
+  it('should disable `Reset` button when form is dirty', async () => {
+    const { getByText, getByPlaceholderText } = renderComponent(
+      history,
+      confirmResetPassword,
+      resetStatus,
+      match,
+      error,
+    );
 
     const password = getByPlaceholderText('New Password');
     expect(password.value).toEqual('');
@@ -61,7 +84,13 @@ describe('Password Reset Form Component', () => {
   });
 
   it('should enable `Reset Password` button when form is valid', () => {
-    const { getByText, getByPlaceholderText } = renderComponent(confirmResetPassword, match, error);
+    const { getByText, getByPlaceholderText } = renderComponent(
+      history,
+      confirmResetPassword,
+      resetStatus,
+      match,
+      error,
+    );
 
     let password = getByPlaceholderText('New Password');
     fireEvent.change(password, { target: { value: 'newpassword' } });
@@ -78,16 +107,22 @@ describe('Password Reset Form Component', () => {
   it('should not call `confirmResetPassword` function when form is invalid and `Reset Password` button clicked', () => {
     fetch.mockResponse(JSON.stringify({}, { status: 200 }));
 
-    const { getByText } = renderComponent(confirmResetPassword, match, error);
+    const { getByText } = renderComponent(history, confirmResetPassword, resetStatus, match, error);
 
     fireEvent.click(getByText('Reset Password'));
     expect(fetch.mock.calls.length).toBe(0);
   });
 
-  it('should call `confirmResetPassword` function when form is valid and `Reset Password` button clicked', () => {
+  it('should call `confirmResetPassword` function and redirect to login when form is valid and `Reset Password` button clicked', () => {
     fetch.mockResponse(JSON.stringify({}, { status: 200 }));
 
-    const { getByText, getByPlaceholderText } = renderComponent(confirmResetPassword, match, error);
+    const { getByText, getByPlaceholderText } = renderComponent(
+      history,
+      confirmResetPassword,
+      resetStatus,
+      match,
+      error,
+    );
 
     fireEvent.change(getByPlaceholderText('New Password'), { target: { value: 'newpassword' } });
     fireEvent.change(getByPlaceholderText('New Password Confirmation'), { target: { value: 'newpassword' } });
@@ -107,5 +142,24 @@ describe('Password Reset Form Component', () => {
         uid: 'Test UID',
       },
     );
+  });
+
+  it('should redirect when password reset successful', () => {
+    resetStatus = status.COMPLETE;
+
+    const { getByTestId } = renderComponent(history, confirmResetPassword, resetStatus, match, error);
+
+    expect(history.location.pathname).toEqual('/reset_password_done');
+    expect(getByTestId('error-well')).not.toBeInTheDocument();
+  });
+
+  it('should not redirect, but display error well if password reset is unsucessful', () => {
+    resetStatus = status.NONE;
+    error = ['Test Error 1', 'Test Error 2', 'Test Error 3'];
+
+    const { getByTestId } = renderComponent(history, confirmResetPassword, resetStatus, match, error);
+
+    expect(history.location.pathname).toEqual('/');
+    expect(getByTestId('error-well')).toBeInTheDocument();
   });
 });

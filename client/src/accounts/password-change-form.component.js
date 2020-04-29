@@ -9,6 +9,8 @@ import Checkbox from '@astrosat/astrosat-ui/dist/forms/checkbox';
 import useForm from '@astrosat/astrosat-ui/dist/forms/use-form';
 import Well from '@astrosat/astrosat-ui/dist/containers/well';
 
+import { status } from './accounts.slice';
+
 import { ReactComponent as OrbisLogo } from '../orbis.svg';
 
 import { LOGIN_URL, TERMS_URL } from './accounts.constants';
@@ -30,7 +32,7 @@ const PasswordChangeForm = ({ changePassword, changeStatus, error }) => {
 
   return (
     <div className={`${formStyles.container} ${formStyles.accountsBackground}`}>
-      {changeStatus.PENDING ? (
+      {changeStatus === status.PENDING ? (
         <div className={`${formStyles.form} ${styles.resend}`}>
           <OrbisLogo className={formStyles.logo} />
           <p className={styles.paragraph}>Thank you! Your password has been changed.</p>

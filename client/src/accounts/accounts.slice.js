@@ -23,6 +23,7 @@ const API = {
 export const status = {
   NONE: 'None',
   PENDING: 'Pending',
+  COMPLETE: 'Complete',
 };
 
 // Shape error data into a single array of only error strings.
@@ -44,7 +45,6 @@ const initialState = {
   user: null,
   error: null,
   accountActivationSuccessful: false,
-  passwordResetSuccessful: false,
   resetStatus: status.NONE,
   changeStatus: status.NONE,
   verificationEmailStatus: status.NONE,
@@ -97,7 +97,7 @@ const accountsSlice = createSlice({
       state.error = payload;
     },
     activateAccountSuccess: state => {
-      state.accountActivationSuccessful = true;
+      state.accountActivationSuccessful = status.COMPLETE;
       state.error = null;
     },
     activateAccountFailure: (state, { payload }) => {
@@ -118,8 +118,8 @@ const accountsSlice = createSlice({
       state.error = payload;
     },
     passwordResetRequestedSuccess: state => {
+      state.resetStatus = status.COMPLETE;
       state.error = null;
-      state.passwordResetSuccess = true;
     },
     passwordResetRequestedFailure: (state, { payload }) => {
       state.error = payload;

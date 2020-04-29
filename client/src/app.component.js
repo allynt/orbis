@@ -54,9 +54,7 @@ const App = () => {
   const pollingPeriod = useSelector(selectPollingPeriod);
 
   const accountActivationSuccessful = useSelector(state => state.accounts.accountActivationSuccessful);
-  const passwordResetSuccessful = useSelector(state => state.passwordResetSuccessful);
 
-  const pollingPeriod = useSelector(state => state.map.pollingPeriod);
   const verificationEmailStatus = useSelector(state => state.accounts.verificationEmailStatus);
   const resetStatus = useSelector(state => state.accounts.resetStatus);
   const changeStatus = useSelector(state => state.accounts.changeStatus);
@@ -175,6 +173,7 @@ const App = () => {
             render={props => (
               <PasswordResetConfirm
                 confirmResetPassword={(form, params) => dispatch(confirmResetPassword(form, params))}
+                resetStatus={resetStatus}
                 match={props.match}
                 error={error}
               />
@@ -188,7 +187,6 @@ const App = () => {
               render={() => (
                 <PasswordResetForm
                   resetPassword={values => dispatch(resetPassword(values))}
-                  passwordResetSuccessful={passwordResetSuccessful}
                   resetStatus={resetStatus}
                   error={error}
                 />
