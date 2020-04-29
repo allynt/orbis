@@ -2,10 +2,7 @@ import React, { useReducer } from 'react';
 
 import { Checkbox } from '@astrosat/astrosat-ui';
 import { checkboxReducer } from './checkbox-reducer';
-
-export const filterValueIsPresent = (object, { layer, property, value }) => {
-  return object[layer] && object[layer][property] && object[layer][property].includes(value);
-};
+import { filterValueIsPresent } from './filter-value-is-present';
 
 export const FiltersForm = ({ availableFilters, currentFilters, onFiltersChange }) => {
   const [state, dispatch] = useReducer(checkboxReducer, {});
