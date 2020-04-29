@@ -78,7 +78,7 @@ const DataLayers = () => {
   };
 
   return (
-    <div className={styles.selectData} ref={ref}>
+    <>
       {canFilter && (
         <Filters
           availableFilters={availableFilters}
@@ -86,36 +86,38 @@ const DataLayers = () => {
           onFiltersChange={handleFiltersChange}
         />
       )}
-      <div className={styles.layers}>
-        {selectedLayers.map(selectedLayer => {
-          const Component = detailComponentMap[selectedLayer.name] ?? detailComponentMap['default'];
-          return (
-            <Detail key={selectedLayer.name} title={selectedLayer.metadata.label}>
-              <div className={styles.detailContent}>
-                <Component selectedLayer={selectedLayer} dispatch={dispatch} />
-              </div>
-            </Detail>
-          );
-        })}
-      </div>
+      <div className={styles.selectData} ref={ref}>
+        <div className={styles.layers}>
+          {selectedLayers.map(selectedLayer => {
+            const Component = detailComponentMap[selectedLayer.name] ?? detailComponentMap['default'];
+            return (
+              <Detail key={selectedLayer.name} title={selectedLayer.metadata.label}>
+                <div className={styles.detailContent}>
+                  <Component selectedLayer={selectedLayer} dispatch={dispatch} />
+                </div>
+              </Detail>
+            );
+          })}
+        </div>
 
-      <div className={styles.buttons}>
-        <AddNewCategoryIcon className={styles.addNewCategoryIcon} onClick={toggle} />
-        <Button theme="link" className={styles.addOrbButton} onClick={toggle}>
-          Add New Orb
-        </Button>
-      </div>
+        <div className={styles.buttons}>
+          <AddNewCategoryIcon className={styles.addNewCategoryIcon} onClick={toggle} />
+          <Button theme="link" className={styles.addOrbButton} onClick={toggle}>
+            Add New Orb
+          </Button>
+        </div>
 
-      <DataLayersDialog
-        domains={domains}
-        selectedLayers={selectedLayers}
-        onAddLayers={selectedLayers => dispatch(addLayers(selectedLayers))}
-        onRemoveLayer={layer => dispatch(removeLayer(layer))}
-        isVisible={isVisible}
-        close={toggle}
-        ref={ref}
-      ></DataLayersDialog>
-    </div>
+        <DataLayersDialog
+          domains={domains}
+          selectedLayers={selectedLayers}
+          onAddLayers={selectedLayers => dispatch(addLayers(selectedLayers))}
+          onRemoveLayer={layer => dispatch(removeLayer(layer))}
+          isVisible={isVisible}
+          close={toggle}
+          ref={ref}
+        ></DataLayersDialog>
+      </div>
+    </>
   );
 };
 
