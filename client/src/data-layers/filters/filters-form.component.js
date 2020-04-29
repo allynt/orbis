@@ -1,11 +1,24 @@
-import React, { useReducer } from 'react';
+import React, { useReducer, useState, useEffect } from 'react';
 
 import { Checkbox } from '@astrosat/astrosat-ui';
 import { checkboxReducer } from './checkbox-reducer';
-import { filterValueIsPresent } from './filter-value-is-present';
+import { filterValueIsPresent, areAnyFilterValuesPresent } from './filters-utils';
 
 export const FiltersForm = ({ availableFilters, currentFilters, onFiltersChange }) => {
-  const [state, dispatch] = useReducer(checkboxReducer, {});
+  const [state, dispatch] = useReducer(checkboxReducer, { toAdd: {}, toRemove: {} });
+  const [buttonActionText, setButtonActionText] = useState('Add');
+
+  useEffect(() => {
+    const isRemoving = areAnyFilterValuesPresent(state.toRemove);
+    const isAdding = areAnyFilterValuesPresent(state.toAdd);
+    if (isAdding && isRemoving) {
+      setButtonActionText('Update');
+    } else if (!isAdding && isRemoving) {
+      setButtonActionText('Remove');
+    } else {
+      setButtonActionText('Add');
+    }
+  }, [state]);
 
   const handleSubmit = event => {
     event.preventDefault();
@@ -55,7 +68,7 @@ export const FiltersForm = ({ availableFilters, currentFilters, onFiltersChange 
             )),
           )}
         <div>
-          <button type="submit">Add Filters</button>
+          <button type="submit">{`${buttonActionText} Filters`}</button>
         </div>
       </form>
     </div>
