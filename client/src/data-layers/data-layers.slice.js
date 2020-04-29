@@ -110,7 +110,8 @@ export const selectFilteredData = createSelector([selectUserLayers, selectCurren
       const layerFilters = filters[layer.name];
       layer.data.features = layer.data.features.filter(feature => {
         for (let property in layerFilters) {
-          if (!layerFilters[property].includes(feature.properties[property])) return false;
+          if (layerFilters[property].length > 0 && !layerFilters[property].includes(feature.properties[property]))
+            return false;
         }
         return true;
       });
