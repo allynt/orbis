@@ -1,38 +1,10 @@
 import React, { useReducer } from 'react';
-import ReactDOM from 'react-dom';
-import { mergeWith, get } from 'lodash';
 
 import { Checkbox } from '@astrosat/astrosat-ui';
+import { checkboxReducer } from './checkbox-reducer';
 
-const filterValueIsPresent = (object, { layer, property, value }) => {
-  return !!object[layer] && object[layer][property] && object[layer][property].includes(value);
-};
-
-const addItem = (state, set, { layer, property, value }) => {
-  const current = get(state, `${set}.${layer}.${property}`, []);
-  return mergeWith({ [set]: { [layer]: { [property]: [...current, value] } } }, state);
-};
-
-const removeItem = (state, set, { layer, property, value }) => {
-  const current = get(state, `${set}.${layer}.${property}`);
-  const index = current.indexOf(value);
-  current.splice(index, 1);
-  return mergeWith({ [set]: { [layer]: { [property]: current } } }, state);
-};
-
-export const checkboxReducer = (state, action) => {
-  switch (action.type) {
-    case 'add/toAdd':
-      return addItem(state, 'toAdd', action.item);
-    case 'remove/toAdd':
-      return removeItem(state, 'toAdd', action.item);
-    case 'add/toRemove':
-      return addItem(state, 'toRemove', action.item);
-    case 'remove/toRemove':
-      return removeItem(state, 'toRemove', action.item);
-    default:
-      return state;
-  }
+export const filterValueIsPresent = (object, { layer, property, value }) => {
+  return object[layer] && object[layer][property] && object[layer][property].includes(value);
 };
 
 export const FiltersForm = ({ availableFilters, currentFilters, onFiltersChange }) => {
@@ -63,7 +35,7 @@ export const FiltersForm = ({ availableFilters, currentFilters, onFiltersChange 
     }
   };
 
-  return ReactDOM.createPortal(
+  return (
     <div>
       <form onSubmit={handleSubmit}>
         {availableFilters &&
@@ -72,10 +44,7 @@ export const FiltersForm = ({ availableFilters, currentFilters, onFiltersChange 
               <fieldset key={`${layer}.${property}`}>
                 <legend>{property}</legend>
                 {availableFilters[layer][property].map(value => {
-                  const defaultChecked =
-                    currentFilters[layer] &&
-                    currentFilters[layer][property] &&
-                    currentFilters[layer][property].includes(value);
+                  const defaultChecked = filterValueIsPresent(currentFilters, { layer, property, value });
                   return (
                     <Checkbox
                       key={`${layer}.${property}.${value}`}
@@ -92,7 +61,6 @@ export const FiltersForm = ({ availableFilters, currentFilters, onFiltersChange 
           <button type="submit">Add Filters</button>
         </div>
       </form>
-    </div>,
-    document.body,
+    </div>
   );
 };
