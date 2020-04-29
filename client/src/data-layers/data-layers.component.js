@@ -1,6 +1,7 @@
 import React, { useState, useRef } from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
+import { isEmpty } from 'lodash';
 
 import Button from '@astrosat/astrosat-ui/dist/buttons/button';
 import Detail from '@astrosat/astrosat-ui/dist/containers/detail';
@@ -59,6 +60,7 @@ const DataLayers = () => {
   const selectedLayers = useSelector(selectUserLayers);
   const availableFilters = useSelector(selectAvailableFilters);
   const currentFilters = useSelector(selectCurrentFilters);
+  const canFilter = availableFilters !== undefined && availableFilters !== null && !isEmpty(availableFilters);
 
   // Create an array of sources, grouped by their domain.
   const domains = dataSources.reduce((acc, value) => {
@@ -78,11 +80,13 @@ const DataLayers = () => {
 
   return (
     <div className={styles.selectData} ref={ref}>
-      <Filters
-        availableFilters={availableFilters}
-        currentFilters={currentFilters}
-        onFiltersChange={handleFiltersChange}
-      />
+      {canFilter && (
+        <Filters
+          availableFilters={availableFilters}
+          currentFilters={currentFilters}
+          onFiltersChange={handleFiltersChange}
+        />
+      )}
       <div className={styles.layers}>
         {selectedLayers.map(selectedLayer => {
           const Component = detailComponentMap[selectedLayer.name] ?? detailComponentMap['default'];
