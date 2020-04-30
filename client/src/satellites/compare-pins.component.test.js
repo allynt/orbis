@@ -26,7 +26,7 @@ const mockScenes = [
   },
 ];
 
-const renderComponent = (args) => {
+const renderComponent = args => {
   const attributes = {
     setSelectedMoreInfo: jest.fn(),
     toggleMoreInfoDialog: jest.fn(),
@@ -92,7 +92,7 @@ describe('Compare Pins Component', () => {
     // It turns out, our switch label is wrapping 2 elements, so we can't easily
     // just target one.
     const switchElements = getAllByLabelText('Compare');
-    switchElements.forEach((element) => expect(element).toHaveAttribute('disabled'));
+    switchElements.forEach(element => expect(element).toHaveAttribute('disabled'));
   });
 
   it('should not be able to toggle Compare Mode when not enough pinned scenes selected', () => {
