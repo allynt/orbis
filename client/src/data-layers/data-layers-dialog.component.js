@@ -31,6 +31,7 @@ const DataLayersDialog = ({ domains, isVisible, close, selectedLayers, onAddLaye
                 initialSelectedLayers={selectedLayers}
                 onAddLayers={onAddLayers}
                 onRemoveLayer={onRemoveLayer}
+                close={close}
               />
             </div>
           </div>
