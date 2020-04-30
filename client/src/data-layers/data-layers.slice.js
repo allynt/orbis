@@ -1,5 +1,5 @@
 import { createSlice, createSelector } from '@reduxjs/toolkit';
-import { getJsonAuthHeaders, getData } from '../utils/http';
+import { getJsonAuthHeaders, getData } from 'utils/http';
 
 const initialState = {
   layers: [],

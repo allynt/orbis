@@ -9,8 +9,8 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "release": "semantic-release",
-    "e2e": "cypress open --config defaultCommandTimeout=10000",
-    "e2e:develop": "cypress open --config baseUrl=http://localhost:3000",
+    "e2e": "NODE_PATH=src cypress open --config defaultCommandTimeout=10000",
+    "e2e:develop": "NODE_PATH=src cypress open --config baseUrl=http://localhost:3000",
     "e2e:install": "cypress install",
     "e2e:verify": "cypress verify",
     "e2e:run": "cypress run"
