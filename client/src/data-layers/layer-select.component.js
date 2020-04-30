@@ -16,7 +16,6 @@ export const LayerSelect = ({ domain, initialSelectedLayers, onAddLayers, onRemo
   const [hasMadeChanges, setHasMadeChanges] = useState(false);
 
   const handleSwitchClick = layer => () => {
-    // "Accept and Close" button is disabled initially, but is enabled as soon as the user clicks something, and stays enabled for dialog lifetime
     if (!hasMadeChanges) setHasMadeChanges(true);
 
     // Remove if already selected, otherwise add to list of selected layers.
@@ -39,14 +38,10 @@ export const LayerSelect = ({ domain, initialSelectedLayers, onAddLayers, onRemo
   };
 
   const handleAddClick = () => {
-    //Check Redux layers, if there are layers in Redux state that are not in selectedLayers, they have been de-selected. Remove them all.
     for (const layer of initialSelectedLayers) {
-      if (!selectedLayers.includes(layer)) {
-        onRemoveLayer(layer);
-      }
+      if (!selectedLayers.includes(layer)) onRemoveLayer(layer);
     }
 
-    //Proceed to add selectedLayers if there are any
     selectedLayers.length > 0 && onAddLayers(selectedLayers);
     close();
   };
@@ -92,7 +87,7 @@ export const LayerSelect = ({ domain, initialSelectedLayers, onAddLayers, onRemo
           onClick={handleAddClick}
           disabled={!hasMadeChanges}
         >
-          Accept and Close
+          Accept
         </Button>
       </div>
     </div>
