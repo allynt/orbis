@@ -24,8 +24,7 @@ export const FiltersForm = ({ availableFilters, currentFilters, onFiltersChange 
     }
   }, [state]);
 
-  const handleSubmit = event => {
-    event.preventDefault();
+  const handleSubmit = () => {
     onFiltersChange && onFiltersChange(state.toAdd, state.toRemove);
   };
 
