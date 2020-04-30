@@ -6,6 +6,7 @@ import { filterValueIsPresent, areAnyFilterValuesPresent } from './filters-utils
 import { Button } from '@astrosat/astrosat-ui';
 
 import styles from './filters-form.module.css';
+import { toTitleCase } from 'utils/text';
 
 export const FiltersForm = ({ availableFilters, currentFilters, onFiltersChange }) => {
   const [state, dispatch] = useReducer(checkboxReducer, { toAdd: {}, toRemove: {} });
@@ -55,7 +56,7 @@ export const FiltersForm = ({ availableFilters, currentFilters, onFiltersChange 
           Object.keys(availableFilters[layer]).map(property => (
             <fieldset key={`${layer}.${property}`}>
               <div className={styles.property}>
-                <legend>{property} :</legend>
+                <legend>{toTitleCase(property)} :</legend>
                 <div className={styles.options}>
                   {availableFilters[layer][property].map(value => {
                     const defaultChecked = filterValueIsPresent(currentFilters, { layer, property, value });
@@ -63,7 +64,8 @@ export const FiltersForm = ({ availableFilters, currentFilters, onFiltersChange 
                       <div className={styles.option}>
                         <Checkbox
                           key={`${layer}.${property}.${value}`}
-                          label={value}
+                          label={toTitleCase(value)}
+                          ariaLabel={value}
                           defaultChecked={defaultChecked}
                           onChange={handleCheckboxChange({ layer, property, value })}
                         />
