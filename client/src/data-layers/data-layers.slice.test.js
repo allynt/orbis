@@ -7,7 +7,7 @@ import reducer, {
   fetchSourcesSuccess,
   fetchSources,
   selectDomainList,
-  selectUserLayers,
+  selectActiveLayers,
   selectDataSources,
   selectPollingPeriod,
   selectDataToken,
@@ -442,7 +442,7 @@ describe('Data Slice', () => {
       });
     });
 
-    describe('selectUserLayers', () => {
+    describe('selectActiveLayers', () => {
       it('returns only data sources which are selected', () => {
         const state = {
           data: {
@@ -451,7 +451,7 @@ describe('Data Slice', () => {
           },
         };
         const expected = [state.data.sources[0], state.data.sources[2]];
-        const result = selectUserLayers(state);
+        const result = selectActiveLayers(state);
         expect(result).toEqual(expected);
       });
 
@@ -462,7 +462,7 @@ describe('Data Slice', () => {
             layers: [],
           },
         };
-        const result = selectUserLayers(state);
+        const result = selectActiveLayers(state);
         expect(result).toEqual([]);
       });
 
@@ -473,7 +473,7 @@ describe('Data Slice', () => {
             layers: [],
           },
         };
-        const result = selectUserLayers(state);
+        const result = selectActiveLayers(state);
         expect(result).toEqual([]);
       });
 
@@ -483,7 +483,7 @@ describe('Data Slice', () => {
             layers: [],
           },
         };
-        const result = selectUserLayers(state);
+        const result = selectActiveLayers(state);
         expect(result).toEqual([]);
       });
 
@@ -494,7 +494,7 @@ describe('Data Slice', () => {
             layers: ['Source 1', 'Source 3'],
           },
         };
-        const result = selectUserLayers(state);
+        const result = selectActiveLayers(state);
         expect(result).toEqual([]);
       });
     });

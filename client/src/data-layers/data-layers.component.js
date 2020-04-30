@@ -17,7 +17,7 @@ import {
   addLayers,
   addFilters,
   selectDataSources,
-  selectUserLayers,
+  selectActiveLayers,
   selectAvailableFilters,
   selectCurrentFilters,
 } from './data-layers.slice';
@@ -57,7 +57,7 @@ const DataLayers = () => {
   const ref = useRef(null);
   const dispatch = useDispatch();
   const dataSources = useSelector(selectDataSources);
-  const selectedLayers = useSelector(selectUserLayers);
+  const selectedLayers = useSelector(selectActiveLayers);
   const availableFilters = useSelector(selectAvailableFilters);
   const currentFilters = useSelector(selectCurrentFilters);
   const canFilter = availableFilters !== undefined && availableFilters !== null && !isEmpty(availableFilters);
@@ -73,9 +73,7 @@ const DataLayers = () => {
     return acc;
   }, []);
 
-  const handleFiltersChange = (toAdd, toRemove) => {
-    dispatch(addFilters(toAdd));
-  };
+  const handleFiltersChange = toAdd => dispatch(addFilters(toAdd));
 
   return (
     <>

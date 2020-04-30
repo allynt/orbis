@@ -66,10 +66,10 @@ const baseSelector = state => state.data ?? {};
 export const selectDataToken = createSelector(baseSelector, state => state.token ?? '');
 export const selectDataSources = createSelector(baseSelector, state => state.sources ?? []);
 export const selectPollingPeriod = createSelector(baseSelector, state => state.pollingPeriod);
-export const selectUserLayers = createSelector(baseSelector, state =>
+export const selectActiveLayers = createSelector(baseSelector, state =>
   state.sources ? state.sources.filter(source => state.layers.includes(source.name)) : [],
 );
-export const selectNonUserLayers = createSelector(baseSelector, state =>
+export const selectInactiveLayers = createSelector(baseSelector, state =>
   state.sources ? state.sources.filter(source => !state.layers.includes(source.name)) : [],
 );
 export const selectDomainList = createSelector(selectDataSources, sources =>
@@ -94,7 +94,7 @@ const createLayerFilters = layer => {
   return filters;
 };
 
-export const selectAvailableFilters = createSelector(selectUserLayers, layers => {
+export const selectAvailableFilters = createSelector(selectActiveLayers, layers => {
   const filters = layers.reduce((acc, layer) => {
     return layer.metadata.filters ? { ...acc, [layer.name]: createLayerFilters(layer) } : acc;
   }, {});
@@ -103,7 +103,7 @@ export const selectAvailableFilters = createSelector(selectUserLayers, layers =>
 
 export const selectCurrentFilters = createSelector(baseSelector, state => state.filters ?? {});
 
-export const selectFilteredData = createSelector([selectUserLayers, selectCurrentFilters], (layers, filters) => {
+export const selectFilteredData = createSelector([selectActiveLayers, selectCurrentFilters], (layers, filters) => {
   const filteredLayers = JSON.parse(JSON.stringify(layers));
   return filteredLayers.map(layer => {
     if (filters[layer.name]) {
