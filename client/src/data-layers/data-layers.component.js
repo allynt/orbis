@@ -29,6 +29,8 @@ import DataLayersDialog from './data-layers-dialog.component';
 import styles from './data-layers.module.css';
 import { Filters } from './filters/filters.component';
 
+import featureToggles from '../feature-toggles';
+
 const DefaultComponent = ({ selectedLayer, dispatch }) => (
   <div>
     {selectedLayer.metadata.range && (
@@ -77,7 +79,7 @@ const DataLayers = () => {
 
   return (
     <>
-      {canFilter && (
+      {featureToggles.filters && canFilter && (
         <Filters
           availableFilters={availableFilters}
           currentFilters={currentFilters}

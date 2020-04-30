@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 
 import StoriesTool from './features/stories.component';
+import FiltersTool from './features/filters.component';
 
 import styles from './tools.module.css';
 
@@ -27,6 +28,7 @@ const install = () => {
         <div className={styles.tools}>
           <LocalDevTools />
           <StoriesTool />
+          <FiltersTool />
         </div>
       </div>
     );
