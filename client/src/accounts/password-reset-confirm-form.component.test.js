@@ -2,7 +2,7 @@ import React from 'react';
 
 import { render, cleanup, fireEvent } from '@testing-library/react';
 
-import { MemoryRouter } from 'react-router-dom';
+import { Router } from 'react-router-dom';
 import { createMemoryHistory } from 'history';
 
 import PasswordResetConfirmForm from './password-reset-confirm-form.component';
@@ -10,14 +10,14 @@ import { status } from './accounts.slice';
 
 const renderComponent = (history, confirmResetPassword, resetStatus, match, error) =>
   render(
-    <MemoryRouter history={history}>
+    <Router history={history}>
       <PasswordResetConfirmForm
         confirmResetPassword={confirmResetPassword}
         resetStatus={resetStatus}
         match={match}
         error={error}
       />
-    </MemoryRouter>,
+    </Router>,
   );
 
 describe('Password Reset Form Component', () => {
@@ -147,10 +147,9 @@ describe('Password Reset Form Component', () => {
   it('should redirect when password reset successful', () => {
     resetStatus = status.COMPLETE;
 
-    const { getByTestId } = renderComponent(history, confirmResetPassword, resetStatus, match, error);
+    renderComponent(history, confirmResetPassword, resetStatus, match, error);
 
     expect(history.location.pathname).toEqual('/reset_password_done');
-    expect(getByTestId('error-well')).not.toBeInTheDocument();
   });
 
   it('should not redirect, but display error well if password reset is unsucessful', () => {
