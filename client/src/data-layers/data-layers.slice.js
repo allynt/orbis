@@ -62,9 +62,9 @@ export const fetchSources = () => async (dispatch, getState) => {
   return dispatch(fetchSourcesSuccess(data));
 };
 
-const baseSelector = state => state.data ?? {};
-export const selectDataToken = createSelector(baseSelector, state => state.token ?? '');
-export const selectDataSources = createSelector(baseSelector, state => state.sources ?? []);
+const baseSelector = state => state.data || {};
+export const selectDataToken = createSelector(baseSelector, state => state.token || '');
+export const selectDataSources = createSelector(baseSelector, state => state.sources || []);
 export const selectPollingPeriod = createSelector(baseSelector, state => state.pollingPeriod);
 export const selectActiveLayers = createSelector(baseSelector, state =>
   state.sources ? state.sources.filter(source => state.layers.includes(source.name)) : [],
@@ -101,7 +101,7 @@ export const selectAvailableFilters = createSelector(selectActiveLayers, layers 
   return filters;
 });
 
-export const selectCurrentFilters = createSelector(baseSelector, state => state.filters ?? {});
+export const selectCurrentFilters = createSelector(baseSelector, state => state.filters || {});
 
 export const selectFilteredData = createSelector([selectActiveLayers, selectCurrentFilters], (layers, filters) => {
   const filteredLayers = JSON.parse(JSON.stringify(layers));
