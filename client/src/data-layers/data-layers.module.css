@@ -1,7 +1,6 @@
 .selectData {
   width: 100%;
   padding: 1rem;
-  margin-top: 1rem;
 }
 
 .buttons {
@@ -35,4 +34,11 @@
 
 .detailContent {
   padding: 1.25rem;
+}
+
+.icon {
+  color: gold;
+  font-weight: bold;
+  font-size: 1.5rem;
+  align-self: center;
 }

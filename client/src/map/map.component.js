@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef } from 'react';
 import ReactDOM from 'react-dom';
 
 import MapboxDraw from '@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw';
@@ -16,7 +16,7 @@ import CloseButton from '@astrosat/astrosat-ui/dist/buttons/close-button';
 import LoadMask from '@astrosat/astrosat-ui/dist/load-mask/load-mask';
 
 import { selectMapStyle, saveMap, setViewport } from './map.slice';
-import { selectDataSources, selectUserLayers, selectDataToken } from '../data-layers/data-layers.slice';
+import { selectDataToken, selectFilteredData, selectInactiveLayers } from '../data-layers/data-layers.slice';
 import { isLoaded } from '../bookmarks/bookmark.slice';
 import { closeMenu } from '../side-menu/side-menu.slice';
 
@@ -97,18 +97,36 @@ const Map = ({
 
   const isLoading = useSelector(state => state.bookmarks.isLoading);
 
-  const dataSources = useSelector(selectDataSources);
-
   const [selectedInfoFeatures, setSelectedInfoFeatures] = useState(null);
   const [clickableLayers, setClickableLayers] = useState([]);
-  const selectedLayers = useSelector(selectUserLayers);
-  const nonSelectedLayers = dataSources && dataSources.filter(layer => !selectedLayers.includes(layer));
+  const selectedLayers = useSelector(selectFilteredData);
+  const nonSelectedLayers = useSelector(selectInactiveLayers);
   const scenes = useSelector(state => state.satellites.scenes);
   const selectedScene = useSelector(state => state.satellites.selectedScene);
 
   const popupRef = useRef(null);
 
   const dispatch = useDispatch();
+
+  const mapCleanup = map => {
+    const suffixes = [
+      '-circle',
+      '-infrastructure-label',
+      '-infrastructure-circle',
+      '-population-label',
+      '-label-clustered',
+      '-cluster',
+    ];
+    selectedLayers
+      .filter(layer => layer.visible === undefined || layer.visible)
+      .forEach(layer => {
+        suffixes.forEach(suffix => {
+          const layerId = `${layer.name}${suffix}`;
+          map.getLayer(layerId) && map.removeLayer(layerId);
+        });
+        map.getSource(`${layer.name}-source`) && map.removeSource(`${layer.name}-source`);
+      });
+  };
 
   // let scroller = null;
   // useEffect(() => {
@@ -242,6 +260,7 @@ const Map = ({
   useMap(
     mapInstance,
     map => {
+      mapCleanup(map);
       selectedLayers.forEach(layer => {
         const sourceId = `${layer.name}-source`;
         if (!map.getSource(sourceId)) {
@@ -396,17 +415,7 @@ const Map = ({
         }
 
         return () => {
-          selectedLayers
-            .filter(layer => layer.visible)
-            .forEach(layer => {
-              map.removeLayer(`${layer.name}-circle`);
-              map.removeLayer(`${layer.name}-infrastructure-label`);
-              map.removeLayer(`${layer.name}-infrastructure-circle`);
-              map.removeLayer(`${layer.name}-population-label`);
-              map.removeLayer(`${layer.name}-label-clustered`);
-              map.removeLayer(`${layer.name}-cluster`);
-              map.removeSource(sourceId);
-            });
+          mapCleanup(map);
         };
       });
     },

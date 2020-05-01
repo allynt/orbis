@@ -1,4 +1,5 @@
 import { createSlice, createSelector } from '@reduxjs/toolkit';
+import { mergeWith } from 'lodash';
 import { getJsonAuthHeaders, getData } from 'utils/http';
 
 const initialState = {
@@ -34,10 +35,17 @@ const dataSlice = createSlice({
     fetchSourcesFailure: (state, { payload }) => {
       state.error = payload;
     },
+    addFilters: (state, { payload }) => {
+      state.filters = mergeWith(payload, state.filters, (objValue, srcValue) => {
+        if (Array.isArray(objValue) && Array.isArray(srcValue)) {
+          return Array.from(new Set([...srcValue, ...objValue]));
+        }
+      });
+    },
   },
 });
 
-export const { addLayers, removeLayer, fetchSourcesFailure, fetchSourcesSuccess } = dataSlice.actions;
+export const { addLayers, removeLayer, fetchSourcesFailure, fetchSourcesSuccess, addFilters } = dataSlice.actions;
 
 export const fetchSources = () => async (dispatch, getState) => {
   const headers = getJsonAuthHeaders(getState());
@@ -58,8 +66,11 @@ const baseSelector = state => state.data ?? {};
 export const selectDataToken = createSelector(baseSelector, state => state.token ?? '');
 export const selectDataSources = createSelector(baseSelector, state => state.sources ?? []);
 export const selectPollingPeriod = createSelector(baseSelector, state => state.pollingPeriod);
-export const selectUserLayers = createSelector(baseSelector, state =>
+export const selectActiveLayers = createSelector(baseSelector, state =>
   state.sources ? state.sources.filter(source => state.layers.includes(source.name)) : [],
+);
+export const selectInactiveLayers = createSelector(baseSelector, state =>
+  state.sources ? state.sources.filter(source => !state.layers.includes(source.name)) : [],
 );
 export const selectDomainList = createSelector(selectDataSources, sources =>
   Array.from(
@@ -71,5 +82,42 @@ export const selectDomainList = createSelector(selectDataSources, sources =>
     ),
   ),
 );
+
+const createLayerFilters = layer => {
+  const filters = layer.metadata.filters.reduce((acc, filter) => {
+    const options = new Set();
+    for (let feature of layer.data.features) {
+      feature.properties[filter] && options.add(feature.properties[filter]);
+    }
+    return options.size ? { ...acc, [filter]: Array.from(options) } : acc;
+  }, {});
+  return filters;
+};
+
+export const selectAvailableFilters = createSelector(selectActiveLayers, layers => {
+  const filters = layers.reduce((acc, layer) => {
+    return layer.metadata.filters ? { ...acc, [layer.name]: createLayerFilters(layer) } : acc;
+  }, {});
+  return filters;
+});
+
+export const selectCurrentFilters = createSelector(baseSelector, state => state.filters ?? {});
+
+export const selectFilteredData = createSelector([selectActiveLayers, selectCurrentFilters], (layers, filters) => {
+  const filteredLayers = JSON.parse(JSON.stringify(layers));
+  return filteredLayers.map(layer => {
+    if (filters[layer.name]) {
+      const layerFilters = filters[layer.name];
+      layer.data.features = layer.data.features.filter(feature => {
+        for (let property in layerFilters) {
+          if (layerFilters[property].length > 0 && !layerFilters[property].includes(feature.properties[property]))
+            return false;
+        }
+        return true;
+      });
+    }
+    return layer;
+  });
+});
 
 export default dataSlice.reducer;

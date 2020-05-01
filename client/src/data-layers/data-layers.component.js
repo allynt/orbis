@@ -1,6 +1,7 @@
 import React, { useRef } from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
+import { isEmpty } from 'lodash';
 
 import Button from '@astrosat/astrosat-ui/dist/buttons/button';
 import Detail from '@astrosat/astrosat-ui/dist/containers/detail';
@@ -11,13 +12,24 @@ import { ReactComponent as RemoveIcon } from './remove.svg';
 import { ReactComponent as HideIcon } from './layer-invisible.svg';
 import { ReactComponent as AddNewCategoryIcon } from './add-more-categories.svg';
 
-import { removeLayer, addLayers, selectDataSources, selectUserLayers } from './data-layers.slice';
+import {
+  removeLayer,
+  addLayers,
+  addFilters,
+  selectDataSources,
+  selectActiveLayers,
+  selectAvailableFilters,
+  selectCurrentFilters,
+} from './data-layers.slice';
 
 import { PopulationInformation } from './population-information.component';
 import { HealthInfrastructure } from './health-infrastructure.component';
 import DataLayersDialog from './data-layers-dialog.component';
 
 import styles from './data-layers.module.css';
+import { Filters } from './filters/filters.component';
+
+import featureToggles from '../feature-toggles';
 
 const DefaultComponent = ({ selectedLayer, dispatch }) => (
   <div>
@@ -47,7 +59,10 @@ const DataLayers = () => {
   const ref = useRef(null);
   const dispatch = useDispatch();
   const dataSources = useSelector(selectDataSources);
-  const selectedLayers = useSelector(selectUserLayers);
+  const selectedLayers = useSelector(selectActiveLayers);
+  const availableFilters = useSelector(selectAvailableFilters);
+  const currentFilters = useSelector(selectCurrentFilters);
+  const canFilter = availableFilters !== undefined && availableFilters !== null && !isEmpty(availableFilters);
 
   // Create an array of sources, grouped by their domain.
   const domains = dataSources.reduce((acc, value) => {
@@ -60,38 +75,49 @@ const DataLayers = () => {
     return acc;
   }, []);
 
+  const handleFiltersChange = toAdd => dispatch(addFilters(toAdd));
+
   return (
-    <div className={styles.selectData} ref={ref}>
-      <div className={styles.layers}>
-        {selectedLayers.map(selectedLayer => {
-          const Component = detailComponentMap[selectedLayer.name] ?? detailComponentMap['default'];
-          return (
-            <Detail key={selectedLayer.name} title={selectedLayer.metadata.label}>
-              <div className={styles.detailContent}>
-                <Component selectedLayer={selectedLayer} dispatch={dispatch} />
-              </div>
-            </Detail>
-          );
-        })}
-      </div>
+    <>
+      {featureToggles.filters && canFilter && (
+        <Filters
+          availableFilters={availableFilters}
+          currentFilters={currentFilters}
+          onFiltersChange={handleFiltersChange}
+        />
+      )}
+      <div className={styles.selectData} ref={ref}>
+        <div className={styles.layers}>
+          {selectedLayers.map(selectedLayer => {
+            const Component = detailComponentMap[selectedLayer.name] ?? detailComponentMap['default'];
+            return (
+              <Detail key={selectedLayer.name} title={selectedLayer.metadata.label}>
+                <div className={styles.detailContent}>
+                  <Component selectedLayer={selectedLayer} dispatch={dispatch} />
+                </div>
+              </Detail>
+            );
+          })}
+        </div>
 
-      <div className={styles.buttons}>
-        <AddNewCategoryIcon className={styles.addNewCategoryIcon} onClick={toggle} />
-        <Button theme="link" className={styles.addOrbButton} onClick={toggle}>
-          Add New Orb
-        </Button>
-      </div>
+        <div className={styles.buttons}>
+          <AddNewCategoryIcon className={styles.addNewCategoryIcon} onClick={toggle} />
+          <Button theme="link" className={styles.addOrbButton} onClick={toggle}>
+            Add New Orb
+          </Button>
+        </div>
 
-      <DataLayersDialog
-        domains={domains}
-        selectedLayers={selectedLayers}
-        onAddLayers={selectedLayers => dispatch(addLayers(selectedLayers))}
-        onRemoveLayer={layer => dispatch(removeLayer(layer))}
-        isVisible={isVisible}
-        close={toggle}
-        ref={ref}
-      ></DataLayersDialog>
-    </div>
+        <DataLayersDialog
+          domains={domains}
+          selectedLayers={selectedLayers}
+          onAddLayers={selectedLayers => dispatch(addLayers(selectedLayers))}
+          onRemoveLayer={layer => dispatch(removeLayer(layer))}
+          isVisible={isVisible}
+          close={toggle}
+          ref={ref}
+        ></DataLayersDialog>
+      </div>
+    </>
   );
 };
 
