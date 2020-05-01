@@ -51,18 +51,15 @@ const dataSlice = createSlice({
             state.filters[layer][property][0] === payload[layer][property][0]
           ) {
             delete state.filters[layer][property];
-          }
-          if (state.filters[layer][property]) {
-            for (let value of payload[layer][property]) {
-              const index = state.filters[layer][property].indexOf(value);
-              if (index >= 0) {
-                state.filters[layer][property].splice(index, 1);
-              }
+            if (isEmpty(state.filters[layer])) {
+              delete state.filters[layer];
+              break;
             }
           }
-          if (isEmpty(state.filters[layer])) {
-            delete state.filters[layer];
-            continue;
+          if (state.filters[layer][property]) {
+            state.filters[layer][property] = state.filters[layer][property].filter(
+              value => !payload[layer][property].includes(value),
+            );
           }
         }
       }
