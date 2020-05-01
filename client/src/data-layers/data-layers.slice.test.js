@@ -358,7 +358,7 @@ describe('Data Slice', () => {
       });
     });
 
-    describe.only('removeFilters', () => {
+    describe('removeFilters', () => {
       it('removes single values from a single property', () => {
         const state = { filters: { cars: { engine: ['V8', 'V12'] } } };
         const toRemove = { cars: { engine: ['V8'] } };

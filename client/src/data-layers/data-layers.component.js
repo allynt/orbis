@@ -20,6 +20,7 @@ import {
   selectActiveLayers,
   selectAvailableFilters,
   selectCurrentFilters,
+  removeFilters,
 } from './data-layers.slice';
 
 import { PopulationInformation } from './population-information.component';
@@ -75,7 +76,10 @@ const DataLayers = () => {
     return acc;
   }, []);
 
-  const handleFiltersChange = toAdd => dispatch(addFilters(toAdd));
+  const handleFiltersChange = (toAdd, toRemove) => {
+    dispatch(addFilters(toAdd));
+    dispatch(removeFilters(toRemove));
+  };
 
   return (
     <>
