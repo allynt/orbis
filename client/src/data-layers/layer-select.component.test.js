@@ -17,12 +17,14 @@ const setup = initialSelectedLayers => {
   };
   const handleAddLayers = jest.fn();
   const handleRemoveLayer = jest.fn();
+  const close = jest.fn();
   const utils = render(
     <LayerSelect
       domain={domain}
       onAddLayers={handleAddLayers}
       onRemoveLayer={handleRemoveLayer}
       initialSelectedLayers={initialSelectedLayers}
+      close={close}
     />,
   );
   return { ...utils, handleAddLayers, layers: domain.layers };
@@ -35,32 +37,32 @@ describe('LayerSelect', () => {
   });
 
   it('should render the provided layers', () => {
-    const { getAllByTestId, layers } = setup();
+    const { getAllByTestId, layers } = setup([]);
     const listItems = getAllByTestId(/^layer-list-item[a-zA-Z-]*$/);
     expect(listItems).toHaveLength(layers.length);
   });
 
   it('should have the button disabled if no layers are selected', () => {
-    const { getByText } = setup();
+    const { getByText } = setup([]);
     expect(getByText('Accept')).toHaveProperty('disabled', true);
   });
 
-  it('should enable the Accept button when at least one layer is selected', () => {
-    const { getByText, layers } = setup();
+  it('should keep the Accept button enabled after user has made any change', () => {
+    const { getByText, layers } = setup([]);
+    expect(getByText('Accept')).toHaveProperty('disabled', true);
+    fireEvent.click(getByText(layers[0].metadata.label));
+    expect(getByText('Accept')).toHaveProperty('disabled', false);
     fireEvent.click(getByText(layers[0].metadata.label));
     expect(getByText('Accept')).toHaveProperty('disabled', false);
   });
 
-  it('should disabled the button when all layers are deselected', () => {
-    const { getByText, layers } = setup();
-    fireEvent.click(getByText(layers[0].metadata.label));
-    expect(getByText('Accept')).toHaveProperty('disabled', false);
-    fireEvent.click(getByText(layers[0].metadata.label));
+  it('should disable the button when user has made no changes', () => {
+    const { getByText } = setup([]);
     expect(getByText('Accept')).toHaveProperty('disabled', true);
   });
 
   it('should call onAddLayers with the selected layers when the button is clicked', () => {
-    const { getByText, layers, handleAddLayers } = setup();
+    const { getByText, layers, handleAddLayers } = setup([]);
     fireEvent.click(getByText(layers[0].metadata.label));
     fireEvent.click(getByText('Accept'));
     expect(handleAddLayers).toHaveBeenCalled();
@@ -69,14 +71,14 @@ describe('LayerSelect', () => {
 
   describe('InfoBox', () => {
     it('should show when the info button is clicked', () => {
-      const { getAllByLabelText, getByText, layers } = setup();
+      const { getAllByLabelText, getByText, layers } = setup([]);
       const infoButtons = getAllByLabelText('Info');
       fireEvent.click(infoButtons[0]);
       expect(getByText(layers[0].metadata.description)).toBeInTheDocument();
     });
 
     it('should remain visible when a following info button is clicked', async () => {
-      const { getAllByLabelText, getByText, layers } = setup();
+      const { getAllByLabelText, getByText, layers } = setup([]);
       const infoButtons = getAllByLabelText('Info');
       fireEvent.click(infoButtons[0]);
       fireEvent.click(infoButtons[1]);

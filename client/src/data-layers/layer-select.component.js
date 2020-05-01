@@ -9,20 +9,20 @@ import styles from './layer-select.module.css';
 
 const InfoBox = ({ info }) => <div className={styles.infoBox}>{info}</div>;
 
-export const LayerSelect = ({ domain, initialSelectedLayers, onAddLayers, onRemoveLayer }) => {
+export const LayerSelect = ({ domain, initialSelectedLayers, onAddLayers, onRemoveLayer, close }) => {
   const [selectedLayers, setSelectedLayers] = useState(initialSelectedLayers ?? []);
   const [isInfoVisible, setIsInfoVisible] = useState(false);
   const [info, setInfo] = useState(null);
-
-  const addButtonDisabled = selectedLayers.length <= 0;
+  const [hasMadeChanges, setHasMadeChanges] = useState(false);
 
   const handleSwitchClick = layer => () => {
+    if (!hasMadeChanges) setHasMadeChanges(true);
+
     // Remove if already selected, otherwise add to list of selected layers.
     const selectedLayer = selectedLayers.find(selected => selected.metadata.label === layer.metadata.label);
 
     if (selectedLayer) {
       setSelectedLayers(selectedLayers.filter(lyr => lyr.metadata.label !== selectedLayer.metadata.label));
-      onRemoveLayer(selectedLayer);
     } else {
       setSelectedLayers([...selectedLayers, layer]);
     }
@@ -38,7 +38,12 @@ export const LayerSelect = ({ domain, initialSelectedLayers, onAddLayers, onRemo
   };
 
   const handleAddClick = () => {
-    onAddLayers(selectedLayers);
+    for (const layer of initialSelectedLayers) {
+      if (!selectedLayers.includes(layer)) onRemoveLayer(layer);
+    }
+
+    selectedLayers.length > 0 && onAddLayers(selectedLayers);
+    close();
   };
 
   return (
@@ -78,9 +83,9 @@ export const LayerSelect = ({ domain, initialSelectedLayers, onAddLayers, onRemo
       </div>
       <div className={dialogStyles.buttons}>
         <Button
-          classNames={[styles.addButton, addButtonDisabled && styles.disabled]}
+          classNames={[styles.addButton, !hasMadeChanges && styles.disabled]}
           onClick={handleAddClick}
-          disabled={addButtonDisabled}
+          disabled={!hasMadeChanges}
         >
           Accept
         </Button>
