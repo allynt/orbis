@@ -221,8 +221,11 @@ export const resendVerificationEmail = email => async (dispatch, getState) => {
 
   if (!response.ok) {
     const errorObject = await response.json();
-    const errorMessages = errorTransformer(errorObject);
-    return dispatch(resendVerificationEmailFailure(errorMessages));
+    // const errorMessages = errorTransformer(errorObject);
+    // return dispatch(resendVerificationEmailFailure(errorMessages));
+
+    console.log('Error response: ', errorObject);
+    return;
   }
 
   return dispatch(resendVerificationEmailSuccess());

@@ -139,7 +139,11 @@ const App = () => {
 
           <PrivateRoute exact path="/" user={user} component={LandingView} />
 
-          <Route exact path="/register" render={() => <RegisterForm register={register} error={error} />} />
+          <Route
+            exact
+            path="/register"
+            render={() => <RegisterForm register={form => dispatch(register(form))} error={error} />}
+          />
           <Route exact path="/terms" component={TermsAndConditions} />
           <Route
             exact
