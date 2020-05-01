@@ -15,6 +15,7 @@ import reducer, {
   addFilters,
   selectFilteredData,
   selectCurrentFilters,
+  removeFilters,
 } from './data-layers.slice';
 
 const mockStore = configureMockStore([thunk]);
@@ -353,6 +354,73 @@ describe('Data Slice', () => {
           },
         };
         const result = reducer(state, addFilters(filters));
+        expect(result).toEqual(expected);
+      });
+    });
+
+    describe('removeFilters', () => {
+      it('removes single values from a single property', () => {
+        const state = { filters: { cars: { engine: ['V8', 'V12'] } } };
+        const toRemove = { cars: { engine: ['V8'] } };
+        const expected = { filters: { cars: { engine: ['V12'] } } };
+        const result = reducer(state, removeFilters(toRemove));
+        expect(result).toEqual(expected);
+      });
+
+      it('removes multiple values from a single property', () => {
+        const state = { filters: { cars: { engine: ['V6', 'V8', 'V12'] } } };
+        const toRemove = { cars: { engine: ['V6', 'V12'] } };
+        const expected = { filters: { cars: { engine: ['V8'] } } };
+        const result = reducer(state, removeFilters(toRemove));
+        expect(result).toEqual(expected);
+      });
+
+      it('removes multiple values from multiple properties', () => {
+        const state = { filters: { cars: { make: ['BMW', 'Mercedes', 'Lamborghini'], engine: ['V6', 'V8', 'V12'] } } };
+        const toRemove = { cars: { engine: ['V6', 'V12'], make: ['Mercedes', 'Lamborghini'] } };
+        const expected = { filters: { cars: { engine: ['V8'], make: ['BMW'] } } };
+        const result = reducer(state, removeFilters(toRemove));
+        expect(result).toEqual(expected);
+      });
+
+      it('removes multiple properties from multiple layers', () => {
+        const state = {
+          filters: {
+            fruit: { type: ['citrus', 'berry', 'tropical'], status: ['unripe', 'fresh', 'rotten'] },
+            cars: { make: ['BMW', 'Mercedes', 'Lamborghini'], engine: ['V6', 'V8', 'V12'] },
+          },
+        };
+        const toRemove = {
+          cars: { engine: ['V6', 'V12'], make: ['Mercedes', 'Lamborghini'] },
+          fruit: { type: ['citrus', 'tropical'], status: ['unripe', 'rotten'] },
+        };
+        const expected = {
+          filters: { cars: { engine: ['V8'], make: ['BMW'] }, fruit: { type: ['berry'], status: ['fresh'] } },
+        };
+        const result = reducer(state, removeFilters(toRemove));
+        expect(result).toEqual(expected);
+      });
+
+      it('does not fail if a filter cannot be found', () => {
+        const state = { filters: { cars: { make: ['BMW'] } } };
+        const toRemove = { cars: { make: ['Mercedes'] } };
+        const result = reducer(state, removeFilters(toRemove));
+        expect(result).toEqual(state);
+      });
+
+      it('removes properties if no values are left', () => {
+        const state = { filters: { cars: { make: ['BMW'], engine: ['V8'] } } };
+        const toRemove = { cars: { make: ['BMW'] } };
+        const expected = { filters: { cars: { engine: ['V8'] } } };
+        const result = reducer(state, removeFilters(toRemove));
+        expect(result).toEqual(expected);
+      });
+
+      it('removes layers if no properties are left', () => {
+        const state = { filters: { cars: { make: ['BMW'] } } };
+        const toRemove = { cars: { make: ['BMW'] } };
+        const expected = { filters: {} };
+        const result = reducer(state, removeFilters(toRemove));
         expect(result).toEqual(expected);
       });
     });
