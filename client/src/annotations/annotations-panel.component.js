@@ -9,7 +9,7 @@ import { useMapEvent } from '../map/use-map-event.hook';
 
 // import Slider from 'rc-slider'
 import Slider from '@astrosat/astrosat-ui/dist/forms/slider';
-import { scaleUtc, scalePow } from 'd3-scale';
+import { scalePow } from 'd3-scale';
 
 import Button from '@astrosat/astrosat-ui/dist/buttons/button';
 // import { Button } from '@astrosat/astrosat-ui';
@@ -26,13 +26,13 @@ import ImageForm from './image-form.component';
 import { ReactComponent as LineStringIcon } from './linestring.svg';
 import { ReactComponent as PolygonIcon } from './polygon.svg';
 import { ReactComponent as DropPinIcon } from './drawing-tool-drop-pin.svg';
-import { ReactComponent as FontIcon } from './font.svg';
-import { ReactComponent as RotateIcon } from './rotate.svg';
+// import { ReactComponent as FontIcon } from './font.svg';
+// import { ReactComponent as RotateIcon } from './rotate.svg';
 import { ReactComponent as FreehandIcon } from './freehand.svg';
 import { ReactComponent as RadiusIcon } from './radius.svg';
-import { ReactComponent as LabelIcon } from './label.svg';
+// import { ReactComponent as LabelIcon } from './label.svg';
 import { ReactComponent as CircleIcon } from './circle.svg';
-import { ReactComponent as ImageIcon } from './image.svg';
+// import { ReactComponent as ImageIcon } from './image.svg';
 
 import lineWidth1PixelIcon from './1px-line-width.svg';
 import lineWidth2PixelIcon from './2px-line-width.svg';
@@ -44,9 +44,6 @@ import lineTypeDottedIcon from './line-type-dotted.svg';
 
 import styles from './annotations-panel.module.css';
 import sideMenuStyles from '../side-menu/side-menu.module.css';
-
-const primaryColor = '#5796e2';
-const secondaryColor = '#e2e2e2';
 
 const lineWidthOptions = [
   {

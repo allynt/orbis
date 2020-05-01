@@ -5,8 +5,6 @@ import { Redirect } from 'react-router-dom';
 
 import ReactTooltip from 'react-tooltip';
 
-import Button from '@astrosat/astrosat-ui/dist/buttons/button';
-
 import { ReactComponent as OrbisLogo } from '../orbis.svg';
 
 import styles from './toolbar.module.css';

@@ -30,17 +30,15 @@ import MapLayout from './map';
 import styles from './app.module.css';
 
 const PasswordResetForm = lazy(() => import('./accounts/password-reset-form.component'));
-const UserList = lazy(() => import('./accounts/admin/user-list.component'));
-const Admin = lazy(() => import('./accounts/admin/admin.component'));
+// const UserList = lazy(() => import('./accounts/admin/user-list.component'));
+// const Admin = lazy(() => import('./accounts/admin/admin.component'));
 
 const App = () => {
   const dispatch = useDispatch();
   const trackingId = useSelector(state =>
     state && state.app && state.app.config ? state.app.config.trackingId : null,
   );
-  const selectedTheme = useSelector(state => state.theming.selectedTheme);
 
-  const users = useSelector(state => state.accounts.users);
   const user = useSelector(state => state.accounts.user);
   const error = useSelector(state => state.accounts.error);
   const pollingPeriod = useSelector(selectPollingPeriod);
@@ -55,7 +53,7 @@ const App = () => {
     if (notYetImplementedDescription !== null) {
       toggle();
     }
-  }, [notYetImplementedDescription]);
+  }, [notYetImplementedDescription, toggle]);
 
   // If page refreshed, ensure we try to retrieve the logged in user.
   useEffect(() => {
@@ -90,7 +88,7 @@ const App = () => {
         clearInterval(interval);
       };
     }
-  }, [user, pollingPeriod]);
+  }, [user, pollingPeriod, dispatch]);
 
   return (
     <div className={`${styles.app}`} ref={ref}>

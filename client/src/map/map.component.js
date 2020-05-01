@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import ReactDOM from 'react-dom';
 
 import MapboxDraw from '@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw';
@@ -81,7 +81,9 @@ const Map = ({
   const dataAuthToken = useSelector(selectDataToken);
   const { mapContainer, mapInstance } = useMapbox(style, accessToken, dataAuthToken);
 
-  if (setMap) setMap(mapInstance);
+  useEffect(() => {
+    if (setMap) setMap(mapInstance);
+  }, [setMap, mapInstance]);
 
   const [isMapStyleSwitcherVisible, setIsMapStyleSwitcherVisible] = useState(false);
   const mapStyles = useSelector(state => state.app.config.mapStyles);
@@ -675,7 +677,7 @@ const Map = ({
               {selectedChapter && (
                 <div className={layoutStyles.chapter}>
                   <picture>
-                    <img src={selectedChapter.image} />
+                    <img src={selectedChapter.image} alt={selectedChapter.title} />
                   </picture>
 
                   <section>{selectedChapter.description}</section>

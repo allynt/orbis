@@ -1,4 +1,3 @@
-import MapboxDraw from '@mapbox/mapbox-gl-draw';
 import Constants from '@mapbox/mapbox-gl-draw/src/constants';
 import doubleClickZoom from '@mapbox/mapbox-gl-draw/src/lib/double_click_zoom';
 

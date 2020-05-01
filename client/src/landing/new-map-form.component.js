@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 
 import { useHistory } from 'react-router-dom';
 
@@ -11,7 +10,7 @@ import useForm from '@astrosat/astrosat-ui/dist/forms/use-form';
 import validate from './new-map-form.validator';
 
 import formStyles from '../accounts/forms.module.css';
-import styles from './new-map-form.module.css';
+// import styles from './new-map-form.module.css';
 
 const NewMapForm = ({ regions, domains, setViewport }) => {
   const { handleChange, handleSubmit, values, errors } = useForm(onSubmit, validate);
