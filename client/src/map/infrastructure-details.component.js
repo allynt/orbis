@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import styles from './infrastructure-detail.module.css';
+// import styles from './infrastructure-detail.module.css';
 import infoStyles from './info-details.module.css';
 
 const NO_DATA = 'No data available';

@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import styles from './user-info-details.module.css';
+// import styles from './user-info-details.module.css';
 import infoStyles from './info-details.module.css';
 
 const PK = 'pk';

@@ -5,7 +5,6 @@ import validate from './update-user-form.validator';
 
 import Button from '@astrosat/astrosat-ui/dist/buttons/button';
 import Textfield from '@astrosat/astrosat-ui/dist/forms/text-field';
-import Select from '@astrosat/astrosat-ui/dist/forms/select';
 import useForm from '@astrosat/astrosat-ui/dist/forms/use-form';
 
 import formStyles from './forms.module.css';

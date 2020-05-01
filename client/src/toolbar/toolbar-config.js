@@ -2,34 +2,34 @@ import React from 'react';
 
 import {
   DATA_LAYERS,
-  SATELLITE_LAYERS,
-  PAGES,
+  // SATELLITE_LAYERS,
+  // PAGES,
   BOOKMARKS,
   STORIES,
-  ANNOTATIONS,
-  SAVE_MAP,
-  SHARE,
-  FAQ,
+  // ANNOTATIONS,
+  // SAVE_MAP,
+  // SHARE,
+  // FAQ,
   PROFILE,
-  CHANGE_PASSWORD,
+  // CHANGE_PASSWORD,
 } from './toolbar-constants';
 
 import { ReactComponent as DataIcon } from './data.svg';
-import { ReactComponent as SatelliteIcon } from './satellite.svg';
-import { ReactComponent as PagesIcon } from './pages.svg';
+// import { ReactComponent as SatelliteIcon } from './satellite.svg';
+// import { ReactComponent as PagesIcon } from './pages.svg';
 import { ReactComponent as BookmarksIcon } from './map.svg';
 import { ReactComponent as StoryIcon } from './story.svg';
-import { ReactComponent as AnnotationsIcon } from './annotations.svg';
-import { ReactComponent as ImageIcon } from './image.svg';
-import { ReactComponent as ShareIcon } from './share.svg';
-import { ReactComponent as FaqIcon } from './faq.svg';
+// import { ReactComponent as AnnotationsIcon } from './annotations.svg';
+// import { ReactComponent as ImageIcon } from './image.svg';
+// import { ReactComponent as ShareIcon } from './share.svg';
+// import { ReactComponent as FaqIcon } from './faq.svg';
 import { ReactComponent as ProfileIcon } from './profile.svg';
 
 import { toggleMenu, toggleMenuItem, setMenuHeadings } from '../side-menu/side-menu.slice';
 
-import { saveMap } from '../map/map.slice';
+// import { saveMap } from '../map/map.slice';
 
-import { notYetImplemented } from '../app.slice';
+// import { notYetImplemented } from '../app.slice';
 import featureToggles from '../feature-toggles';
 
 export const getToolbarItems = dispatch => {
@@ -52,7 +52,7 @@ export const getToolbarItems = dispatch => {
     //     dispatch(toggleMenuItem(SATELLITE_LAYERS));
     //     dispatch(setMenuHeadings({ heading: 'SATELLITE IMAGES', strapline: 'Select Type of imagery For The Layers' }));
     //   },
-    //   tooltip: SATELLITE_LAYERS
+    //   tooltip: SATELLITE_LAYERS,
     // },
     // {
     //   label: PAGES,
