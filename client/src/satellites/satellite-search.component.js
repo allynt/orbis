@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 
 import { bbox, lineString } from '@turf/turf';
 import { useDispatch, useSelector } from 'react-redux';
@@ -36,11 +36,11 @@ const SatelliteSearch = ({ map, satellites, setVisiblePanel, setSelectedMoreInfo
   const [geometry, setGeometry] = useState(null);
   const [isAoiMode, setIsAoiMode] = useState(false);
 
-  const getDraw = () => {
+  const getDraw = useCallback(() => {
     const control = map?._controls.find(ctrl => ctrl.changeMode);
     const feature = control?.getAll().features[0];
     return [control, feature];
-  };
+  }, [map]);
 
   const chooseSearchQuery = search => dispatch(setCurrentSatelliteSearchQuery(search));
   const deleteSavedSearchQuery = id => dispatch(deleteSavedSatelliteSearch(id));
@@ -57,7 +57,7 @@ const SatelliteSearch = ({ map, satellites, setVisiblePanel, setSelectedMoreInfo
       // Reset local state variable.
       setIsAoiMode(false);
     };
-  }, [isAoiMode]);
+  }, [isAoiMode, getDraw]);
 
   useEffect(() => {
     const [drawControl, feature] = getDraw();
@@ -68,9 +68,9 @@ const SatelliteSearch = ({ map, satellites, setVisiblePanel, setSelectedMoreInfo
         drawControl.setFeatureProperty(feature.id, 'error', 'true');
       }
     }
-  }, [geometry]);
+  }, [geometry, getDraw, maximumAoiArea]);
 
-  const setGeometryToMapBounds = () => {
+  const setGeometryToMapBounds = useCallback(() => {
     // Get the map's bbox from the bounds.
     const bounds = map.getBounds();
     const northWestCoord = bounds.getNorthWest();
@@ -86,7 +86,7 @@ const SatelliteSearch = ({ map, satellites, setVisiblePanel, setSelectedMoreInfo
     ];
 
     setGeometry(newGeometry);
-  };
+  }, [map]);
 
   // Set geometry to the viewbox as long as there's no drawn feature
   useMapEvent(
@@ -106,7 +106,9 @@ const SatelliteSearch = ({ map, satellites, setVisiblePanel, setSelectedMoreInfo
         setGeometryToMapBounds();
       }
     }
+  }, [map, geometry, setGeometryToMapBounds]);
 
+  useEffect(() => {
     const [drawCtrl] = getDraw();
 
     if (drawCtrl) {
@@ -123,13 +125,13 @@ const SatelliteSearch = ({ map, satellites, setVisiblePanel, setSelectedMoreInfo
       // Remove any drawn polygons when changing view
       return () => drawCtrl.deleteAll();
     }
-  }, []);
+  }, [getDraw, map]);
 
   useEffect(() => {
     if (!savedSearches) {
       dispatch(fetchSavedSatelliteSearches());
     }
-  }, [savedSearches]);
+  }, [savedSearches, dispatch]);
 
   // If the current search query changes, redraw the AOI on map
   useMap(
