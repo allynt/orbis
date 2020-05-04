@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -55,6 +55,8 @@ const SatellitesPanel = ({ map }) => {
   const isCompareMode = useSelector(state => state.map.isCompareMode);
   const selectedPinnedScenes = useSelector(state => state.satellites.selectedPinnedScenes);
   const currentSearchQuery = useSelector(state => state.satellites.currentSearchQuery);
+
+  const getPinnedScenes = useCallback(() => dispatch(fetchPinnedScenes()), [dispatch]);
 
   useEffect(() => {
     if (!satellites) {
@@ -137,7 +139,7 @@ const SatellitesPanel = ({ map }) => {
           <PinnedScenes
             setSelectedMoreInfo={setSelectedMoreInfo}
             toggleMoreInfoDialog={toggleMoreInfoDialog}
-            fetchPinnedScenes={() => dispatch(fetchPinnedScenes())}
+            fetchPinnedScenes={getPinnedScenes}
             selectPinnedScene={scene => dispatch(selectPinnedScene(scene))}
             deselectPinnedScene={scene => dispatch(deselectPinnedScene(scene))}
             clearSelectedPinnedScenes={() => dispatch(clearSelectedPinnedScenes())}

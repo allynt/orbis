@@ -50,6 +50,7 @@ describe('Map Layout Component', () => {
       },
       satellites: {
         selectedScene: null,
+        selectedPinnedScenes: [],
       },
       annotations: {
         textLabelSelected: false,

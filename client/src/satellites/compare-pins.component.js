@@ -38,7 +38,7 @@ const ComparePins = (
         toggleCompareMode();
       }
     };
-  }, [pinnedScenes, fetchPinnedScenes, isCompareMode, toggleCompareMode]);
+  }, []);
 
   const handleChange = (isSelected, scene) => {
     if (isSelected) {

@@ -509,7 +509,6 @@ const Map = ({
         map.addSource(sourceId, {
           type: 'raster',
           tiles: [comparisonScene.tile_url],
-          scheme: 'tms',
           tileSize: 256,
         });
         map.addLayer({
