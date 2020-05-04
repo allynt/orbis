@@ -20,7 +20,6 @@ import { status } from './accounts.slice';
 import { REGISTER_URL, PASSWORD_RESET_URL } from './accounts.constants';
 
 import formStyles from './forms.module.css';
-import loginStyles from './login-form.module.css';
 
 const LoginForm = ({ login, user, error, resendVerificationEmail, verificationEmailStatus }) => {
   const { passwordMinLength, passwordMaxLength } = useSelector(state => state.app.config);
@@ -93,7 +92,7 @@ const LoginForm = ({ login, user, error, resendVerificationEmail, verificationEm
           </div>
           {errors.password && <p className={formStyles.errorMessage}>{errors.password}</p>}
 
-          <div className={`${formStyles.row} ${loginStyles.incidentals}`}>
+          <div className={`${formStyles.row} ${formStyles.incidentals}`}>
             <Checkbox
               name="loggedIn"
               value="true"
@@ -134,7 +133,7 @@ const LoginForm = ({ login, user, error, resendVerificationEmail, verificationEm
           </Button>
         </div>
 
-        <p className={loginStyles.footer}>
+        <p className={formStyles.footer}>
           Don't have an account?&nbsp;
           <Button theme="link" href={REGISTER_URL}>
             Sign Up

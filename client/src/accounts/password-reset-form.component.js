@@ -14,31 +14,30 @@ import { ReactComponent as OrbisLogo } from '../orbis.svg';
 import { LOGIN_URL } from './accounts.constants';
 
 import formStyles from './forms.module.css';
-import styles from './password-reset-form.module.css';
 
 const PasswordResetResend = ({ email, onSubmit }) => {
   return (
-    <div className={`${formStyles.form} ${styles.resend}`}>
+    <div className={`${formStyles.form} ${formStyles.resend}`}>
       <OrbisLogo className={formStyles.logo} />
 
-      <div>
-        <p className={styles.paragraph}>
+      <div className={formStyles.content}>
+        <p className={formStyles.paragraph}>
           <strong>Check your email</strong>
         </p>
 
-        <p className={styles.paragraph}>
+        <p className={formStyles.paragraph}>
           If <strong>{email}</strong> is associated with an Astrosat ID, you should receive an email containing
           instructions on how to create a new password.
         </p>
 
-        <p className={styles.paragraph}>
+        <p className={formStyles.paragraph}>
           <strong>You haven't received the email?</strong>
         </p>
-        <p className={styles.paragraph}>Pleas check your spam or bulk folders.</p>
+        <p className={formStyles.paragraph}>Please check your spam or bulk folders.</p>
       </div>
 
-      <div className={styles.buttons}>
-        <Button theme="secondary" onClick={() => onSubmit(email)}>
+      <div className={formStyles.buttons}>
+        <Button classNames={[formStyles.resendButton]} theme="secondary" onClick={() => onSubmit(email)}>
           Resend email
         </Button>
         <Button href="/login">Return to login</Button>
@@ -96,7 +95,7 @@ const PasswordResetForm = ({ resetPassword, resetStatus, error }) => {
             </Button>
           </div>
 
-          <p className={styles.footer}>
+          <p className={formStyles.footer}>
             Do you have an account?&nbsp;
             <Button theme="link" href={LOGIN_URL}>
               Login

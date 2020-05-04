@@ -17,7 +17,6 @@ import { ReactComponent as OrbisLogo } from '../orbis.svg';
 import { LOGIN_URL, TERMS_URL } from './accounts.constants';
 
 import formStyles from './forms.module.css';
-import registerStyles from './register-form.module.css';
 
 const RegisterForm = ({ register, error }) => {
   const { passwordMinLength, passwordMaxLength } = useSelector(state => state.app.config);
@@ -99,7 +98,7 @@ const RegisterForm = ({ register, error }) => {
           </div>
           {errors.password2 && <p className={formStyles.errorMessage}>{errors.password2}</p>}
 
-          <div className={`${formStyles.row} ${registerStyles.incidentals}`}>
+          <div className={`${formStyles.row} ${formStyles.incidentals}`}>
             <ul>
               {config && config.passwordStrength >= 2 && <li>No weak passwords</li>}
               {config && <li>At least {config.passwordMinLength} characters long</li>}
@@ -133,7 +132,7 @@ const RegisterForm = ({ register, error }) => {
             Sign Up
           </Button>
         </div>
-        <p className={registerStyles.footer}>
+        <p className={formStyles.footer}>
           Do you have an account?&nbsp;
           <Button theme="link" href={LOGIN_URL}>
             Login

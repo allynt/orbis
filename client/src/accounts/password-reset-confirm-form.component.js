@@ -18,7 +18,6 @@ import { status } from './accounts.slice';
 import { LOGIN_URL, TERMS_URL } from './accounts.constants';
 
 import formStyles from './forms.module.css';
-import styles from './password-reset-confirm-form.module.css';
 
 const PasswordResetConfirmForm = ({ confirmResetPassword, resetStatus, match, error }) => {
   const [termsAgreed, setTermsAgreed] = useState(false);
@@ -78,7 +77,7 @@ const PasswordResetConfirmForm = ({ confirmResetPassword, resetStatus, match, er
 
           <PasswordStrengthMeter password={values.new_password1} />
 
-          <div className={`${formStyles.row} ${styles.incidentals}`}>
+          <div className={`${formStyles.row} ${formStyles.incidentals}`}>
             <ul>
               <li>No weak passwords</li>
               <li>At least 8 characters long</li>
@@ -109,7 +108,7 @@ const PasswordResetConfirmForm = ({ confirmResetPassword, resetStatus, match, er
           </Button>
         </div>
 
-        <p className={styles.footer}>
+        <p className={formStyles.footer}>
           Do you have an account?&nbsp;
           <Button theme="link" href={LOGIN_URL}>
             Login

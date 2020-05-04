@@ -8,11 +8,10 @@ import { ReactComponent as OrbisLogo } from '../orbis.svg';
 import { LOGIN_URL } from './accounts.constants';
 
 import formStyles from './forms.module.css';
-import styles from './password-reset-form.module.css';
 
 const PasswordResetDone = ({ error }) => (
   <div className={`${formStyles.container} ${formStyles.accountsBackground}`}>
-    <div className={`${formStyles.form} ${styles.resend}`}>
+    <div className={`${formStyles.form} ${formStyles.resend}`}>
       <OrbisLogo className={formStyles.logo} />
 
       {error && (
@@ -25,11 +24,11 @@ const PasswordResetDone = ({ error }) => (
         </Well>
       )}
 
-      <p className={styles.paragraph}>
+      <p className={formStyles.paragraph}>
         Your password has successfully been reset. Click the button in order to continue.
       </p>
 
-      <div className={styles.buttons}>
+      <div className={formStyles.buttons}>
         <Button href={LOGIN_URL}>Continue</Button>
       </div>
     </div>

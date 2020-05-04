@@ -12,7 +12,6 @@ import { status } from './accounts.slice';
 import { LOGIN_URL } from './accounts.constants';
 
 import formStyles from './forms.module.css';
-import styles from './password-reset-form.module.css';
 
 const AccountActivation = ({ match, error, activateAccount, accountActivationSuccessful }) => {
   const [redirectToLogin, setRedirectToLogin] = useState(false);
@@ -28,7 +27,7 @@ const AccountActivation = ({ match, error, activateAccount, accountActivationSuc
   }
   return (
     <div className={`${formStyles.container} ${formStyles.accountsBackground}`}>
-      <div className={`${formStyles.form} ${styles.resend}`}>
+      <div className={`${formStyles.form} ${formStyles.resend}`}>
         <OrbisLogo className={formStyles.logo} />
 
         {error && (
@@ -41,10 +40,10 @@ const AccountActivation = ({ match, error, activateAccount, accountActivationSuc
           </Well>
         )}
 
-        <p className={styles.paragraph}>Sorry, there was an error in activating your account.</p>
-        <p className={styles.paragraph}>Please try again later.</p>
+        <p className={formStyles.paragraph}>Sorry, there was an error in activating your account.</p>
+        <p className={formStyles.paragraph}>Please try again later.</p>
 
-        <div className={styles.buttons}>
+        <div className={formStyles.buttons}>
           <Button href={LOGIN_URL}>Continue</Button>
         </div>
       </div>

@@ -16,7 +16,6 @@ import { ReactComponent as OrbisLogo } from '../orbis.svg';
 import { LOGIN_URL, TERMS_URL } from './accounts.constants';
 
 import formStyles from './forms.module.css';
-import styles from './password-change-form.module.css';
 
 const PasswordChangeForm = ({ changePassword, changeStatus, error }) => {
   const [termsAgreed, setTermsAgreed] = useState(false);
@@ -33,14 +32,14 @@ const PasswordChangeForm = ({ changePassword, changeStatus, error }) => {
   return (
     <div className={`${formStyles.container} ${formStyles.accountsBackground}`}>
       {changeStatus === status.PENDING ? (
-        <div className={`${formStyles.form} ${styles.resend}`}>
+        <div className={`${formStyles.form} ${formStyles.resend}`}>
           <OrbisLogo className={formStyles.logo} />
-          <p className={styles.paragraph}>Thank you! Your password has been changed.</p>
-          <p className={styles.paragraph}>
+          <p className={formStyles.paragraph}>Thank you! Your password has been changed.</p>
+          <p className={formStyles.paragraph}>
             You have completed your OR3IS account. Click the button in order to continue.
           </p>
 
-          <div className={styles.buttons}>
+          <div className={formStyles.buttons}>
             <Button href="/login">Continue</Button>
           </div>
         </div>
@@ -95,7 +94,7 @@ const PasswordChangeForm = ({ changePassword, changeStatus, error }) => {
 
             <PasswordStrengthMeter password={values.password1} />
 
-            <div className={`${formStyles.row} ${styles.incidentals}`}>
+            <div className={`${formStyles.row} ${formStyles.incidentals}`}>
               <ul>
                 <li>No weak passwords</li>
                 <li>At least 8 characters long</li>
@@ -131,7 +130,7 @@ const PasswordChangeForm = ({ changePassword, changeStatus, error }) => {
             </Button>
           </div>
 
-          <p className={styles.footer}>
+          <p className={formStyles.footer}>
             Do you have an account?&nbsp;
             <Button theme="link" href={LOGIN_URL}>
               Login
