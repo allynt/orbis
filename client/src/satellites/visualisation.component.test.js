@@ -16,6 +16,7 @@ describe('Satellite Visualisation Component', () => {
   const store = mockStore({});
   let visualisations = null;
   let setVisiblePanel = null;
+  let removeScenes = null;
 
   beforeEach(cleanup);
 
@@ -35,12 +36,13 @@ describe('Satellite Visualisation Component', () => {
       },
     ];
     setVisiblePanel = jest.fn();
+    removeScenes = jest.fn();
   });
 
   it('should render a list of visualisation options', () => {
     const { getByText, container } = render(
       <Provider store={store}>
-        <Visualisation visualisations={visualisations} setVisiblePanel={setVisiblePanel}></Visualisation>
+        <Visualisation visualisations={visualisations} setVisiblePanel={setVisiblePanel} removeScenes={removeScenes} />
       </Provider>,
     );
 
@@ -56,7 +58,7 @@ describe('Satellite Visualisation Component', () => {
   it('should trigger a panel change when setVisiblePanel called', () => {
     const { getByText } = render(
       <Provider store={store}>
-        <Visualisation visualisations={visualisations} setVisiblePanel={setVisiblePanel}></Visualisation>
+        <Visualisation visualisations={visualisations} setVisiblePanel={setVisiblePanel} removeScenes={removeScenes} />
       </Provider>,
     );
 

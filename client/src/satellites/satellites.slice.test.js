@@ -416,6 +416,7 @@ describe('Satellites Slice', () => {
         pinnedScenes: null,
         selectedPinnedScenes: [],
         currentSearchQuery: null,
+        visualisationId: 'TCI',
       };
     });
 

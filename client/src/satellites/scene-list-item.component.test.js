@@ -11,8 +11,33 @@ import { VISUALISATION } from './satellites-panel.component';
 
 const mockStore = configureMockStore([thunk]);
 
+const renderComponent = (
+  store,
+  index,
+  scene,
+  icon,
+  selectScene,
+  setVisiblePanel,
+  setSelectedMoreInfo,
+  toggleMoreInfoDialog,
+) => {
+  return render(
+    <Provider store={store}>
+      <SceneListItem
+        index={index}
+        scene={scene}
+        icon={icon}
+        selectScene={selectScene}
+        setVisiblePanel={setVisiblePanel}
+        setSelectedMoreInfo={setSelectedMoreInfo}
+        toggleMoreInfoDialog={toggleMoreInfoDialog}
+      />
+    </Provider>,
+  );
+};
+
 describe('Satellite Scene List Item Component', () => {
-  const store = mockStore({});
+  let store = null;
 
   let index = null;
   let scene = null;
@@ -26,6 +51,11 @@ describe('Satellite Scene List Item Component', () => {
   beforeEach(cleanup);
 
   beforeEach(() => {
+    store = mockStore({
+      satellites: {
+        visualisationId: 'TCI',
+      },
+    });
     scenes = [
       {
         id: 1,
@@ -52,18 +82,15 @@ describe('Satellite Scene List Item Component', () => {
   });
 
   it('should render a single Free Product scene list item', () => {
-    const { container, getByText } = render(
-      <Provider store={store}>
-        <SceneListItem
-          index={index}
-          scene={scene}
-          icon={icon}
-          selectScene={selectScene}
-          setVisiblePanel={setVisiblePanel}
-          setSelectedMoreInfo={setSelectedMoreInfo}
-          toggleMoreInfoDialog={toggleMoreInfoDialog}
-        />
-      </Provider>,
+    const { container, getByText } = renderComponent(
+      store,
+      index,
+      scene,
+      icon,
+      selectScene,
+      setVisiblePanel,
+      setSelectedMoreInfo,
+      toggleMoreInfoDialog,
     );
 
     expect(getByText('icon')).toBeInTheDocument();
@@ -77,18 +104,15 @@ describe('Satellite Scene List Item Component', () => {
 
   it('should render a single scene list item', () => {
     scene = scenes[1];
-    const { container, getByText, queryByText } = render(
-      <Provider store={store}>
-        <SceneListItem
-          index={index}
-          scene={scene}
-          icon={icon}
-          selectScene={selectScene}
-          setVisiblePanel={setVisiblePanel}
-          setSelectedMoreInfo={setSelectedMoreInfo}
-          toggleMoreInfoDialog={toggleMoreInfoDialog}
-        />
-      </Provider>,
+    const { container, getByText, queryByText } = renderComponent(
+      store,
+      index,
+      scene,
+      icon,
+      selectScene,
+      setVisiblePanel,
+      setSelectedMoreInfo,
+      toggleMoreInfoDialog,
     );
 
     expect(getByText('icon')).toBeInTheDocument();
@@ -101,18 +125,15 @@ describe('Satellite Scene List Item Component', () => {
   });
 
   it('should select scene when scene selected', () => {
-    const { container } = render(
-      <Provider store={store}>
-        <SceneListItem
-          index={index}
-          scene={scene}
-          icon={icon}
-          selectScene={selectScene}
-          setVisiblePanel={setVisiblePanel}
-          setSelectedMoreInfo={setSelectedMoreInfo}
-          toggleMoreInfoDialog={toggleMoreInfoDialog}
-        />
-      </Provider>,
+    const { container } = renderComponent(
+      store,
+      index,
+      scene,
+      icon,
+      selectScene,
+      setVisiblePanel,
+      setSelectedMoreInfo,
+      toggleMoreInfoDialog,
     );
 
     fireEvent.click(container.querySelector('.sceneSection'));
@@ -120,18 +141,15 @@ describe('Satellite Scene List Item Component', () => {
   });
 
   it('should trigger a panel change when setVisiblePanel called', () => {
-    const { container } = render(
-      <Provider store={store}>
-        <SceneListItem
-          index={index}
-          scene={scene}
-          icon={icon}
-          selectScene={selectScene}
-          setVisiblePanel={setVisiblePanel}
-          setSelectedMoreInfo={setSelectedMoreInfo}
-          toggleMoreInfoDialog={toggleMoreInfoDialog}
-        />
-      </Provider>,
+    const { container } = renderComponent(
+      store,
+      index,
+      scene,
+      icon,
+      selectScene,
+      setVisiblePanel,
+      setSelectedMoreInfo,
+      toggleMoreInfoDialog,
     );
 
     fireEvent.click(container.querySelector('.sceneSection'));
@@ -139,18 +157,15 @@ describe('Satellite Scene List Item Component', () => {
   });
 
   it('should set the scene when `more info` clicked', () => {
-    const { container } = render(
-      <Provider store={store}>
-        <SceneListItem
-          index={index}
-          scene={scene}
-          icon={icon}
-          selectScene={selectScene}
-          setVisiblePanel={setVisiblePanel}
-          setSelectedMoreInfo={setSelectedMoreInfo}
-          toggleMoreInfoDialog={toggleMoreInfoDialog}
-        />
-      </Provider>,
+    const { container } = renderComponent(
+      store,
+      index,
+      scene,
+      icon,
+      selectScene,
+      setVisiblePanel,
+      setSelectedMoreInfo,
+      toggleMoreInfoDialog,
     );
 
     fireEvent.click(container.querySelector('.moreInfo'));
@@ -158,18 +173,15 @@ describe('Satellite Scene List Item Component', () => {
   });
 
   it('should display a dialog when `more info` clicked', () => {
-    const { container } = render(
-      <Provider store={store}>
-        <SceneListItem
-          index={index}
-          scene={scene}
-          icon={icon}
-          selectScene={selectScene}
-          setVisiblePanel={setVisiblePanel}
-          setSelectedMoreInfo={setSelectedMoreInfo}
-          toggleMoreInfoDialog={toggleMoreInfoDialog}
-        />
-      </Provider>,
+    const { container } = renderComponent(
+      store,
+      index,
+      scene,
+      icon,
+      selectScene,
+      setVisiblePanel,
+      setSelectedMoreInfo,
+      toggleMoreInfoDialog,
     );
 
     fireEvent.click(container.querySelector('.moreInfo'));
