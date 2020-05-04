@@ -16,6 +16,8 @@ import {
   deletePinnedScene,
   pinScene,
   saveSatelliteSearch,
+  removeScenes,
+  setCurrentVisualisation,
 } from './satellites.slice';
 
 import { toggleCompareMode } from '../map/map.slice';
@@ -23,7 +25,7 @@ import { toggleCompareMode } from '../map/map.slice';
 import SatelliteSearch from './satellite-search.component';
 import Results from './results.component';
 import Visualisation from './visualisation.component';
-import PinnedScenes from './compare-pins.component';
+import ComparePins from './compare-pins.component';
 import { SatelliteInfoTable, TierInfoTable, SceneInfoTable } from './satellites-info-tables.component';
 
 import styles from './satellites-panel.module.css';
@@ -133,10 +135,15 @@ const SatellitesPanel = ({ map }) => {
           />
         )}
         {visiblePanel === VISUALISATION && (
-          <Visualisation visualisations={visualisations} setVisiblePanel={setVisiblePanel} />
+          <Visualisation
+            visualisations={visualisations}
+            setVisiblePanel={setVisiblePanel}
+            removeScenes={() => dispatch(removeScenes())}
+            setCurrentVisualisation={visualisation => dispatch(setCurrentVisualisation(visualisation))}
+          />
         )}
         {visiblePanel === PINS && (
-          <PinnedScenes
+          <ComparePins
             setSelectedMoreInfo={setSelectedMoreInfo}
             toggleMoreInfoDialog={toggleMoreInfoDialog}
             fetchPinnedScenes={getPinnedScenes}

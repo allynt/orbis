@@ -105,6 +105,7 @@ const Map = ({
   const nonSelectedLayers = useSelector(selectInactiveLayers);
   const scenes = useSelector(state => state.satellites.scenes);
   const selectedScene = useSelector(state => state.satellites.selectedScene);
+  const visualisationId = useSelector(state => state.satellites.visualisationId);
 
   const popupRef = useRef(null);
 
@@ -506,9 +507,12 @@ const Map = ({
       if (compare && comparisonScene) {
         const sourceId = `${comparisonScene.id}-source`;
         const layerId = `${comparisonScene.id}-layer`;
+
+        const tileUrl = comparisonScene.tile_url.replace(/{VISUALISATION_ID}/, visualisationId);
+
         map.addSource(sourceId, {
           type: 'raster',
-          tiles: [comparisonScene.tile_url],
+          tiles: [tileUrl],
           tileSize: 256,
         });
         map.addLayer({
