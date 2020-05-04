@@ -2,7 +2,7 @@ import React from 'react';
 
 import {
   DATA_LAYERS,
-  // SATELLITE_LAYERS,
+  SATELLITE_LAYERS,
   // PAGES,
   BOOKMARKS,
   STORIES,
@@ -15,7 +15,7 @@ import {
 } from './toolbar-constants';
 
 import { ReactComponent as DataIcon } from './data.svg';
-// import { ReactComponent as SatelliteIcon } from './satellite.svg';
+import { ReactComponent as SatelliteIcon } from './satellite.svg';
 // import { ReactComponent as PagesIcon } from './pages.svg';
 import { ReactComponent as BookmarksIcon } from './map.svg';
 import { ReactComponent as StoryIcon } from './story.svg';
@@ -147,8 +147,26 @@ export const getToolbarItems = dispatch => {
     },
   ];
 
+  if (featureToggles.satellites) {
+    items.splice(1, 0, {
+      label: SATELLITE_LAYERS,
+      icon: <SatelliteIcon />,
+      action: () => {
+        dispatch(toggleMenu(SATELLITE_LAYERS));
+        dispatch(toggleMenuItem(SATELLITE_LAYERS));
+        dispatch(
+          setMenuHeadings({
+            heading: 'SATELLITE IMAGES',
+            strapline: 'Select Type of imagery For The Layers',
+          }),
+        );
+      },
+      tooltip: SATELLITE_LAYERS,
+    });
+  }
+
   if (featureToggles.stories) {
-    items.splice(2, 0, {
+    items.splice(3, 0, {
       label: STORIES,
       icon: <StoryIcon />,
       action: () => {
@@ -159,5 +177,6 @@ export const getToolbarItems = dispatch => {
       tooltip: STORIES,
     });
   }
+
   return items;
 };
