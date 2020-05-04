@@ -20,6 +20,7 @@ const initialState = {
   pinnedScenes: null,
   selectedPinnedScenes: [],
   currentSearchQuery: null,
+  visualisationId: 'TCI',
 };
 
 const satellitesSlice = createSlice({
@@ -99,6 +100,9 @@ const satellitesSlice = createSlice({
     setCurrentSatelliteSearchQuery: (state, { payload }) => {
       state.currentSearchQuery = payload;
     },
+    setCurrentVisualisation: (state, { payload }) => {
+      state.visualisationId = payload;
+    },
   },
 });
 
@@ -125,6 +129,7 @@ export const {
   deselectPinnedScene,
   clearSelectedPinnedScenes,
   setCurrentSatelliteSearchQuery,
+  setCurrentVisualisation,
 } = satellitesSlice.actions;
 
 export const fetchSatellites = () => async (dispatch, getState) => {
