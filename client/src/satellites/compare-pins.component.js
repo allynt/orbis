@@ -95,7 +95,7 @@ const ComparePins = (
                   icon={Icon}
                   setSelectedMoreInfo={setSelectedMoreInfo}
                   toggleMoreInfoDialog={toggleMoreInfoDialog}
-                  selectScene={scene => handleChange(isSelected, scene)}
+                  selectScene={scene => !isCompareMode && handleChange(isSelected, scene)}
                 />
               </div>
             );
