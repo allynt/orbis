@@ -4,6 +4,7 @@ import ReactDOM from 'react-dom';
 import StoriesTool from './features/stories.component';
 import FiltersTool from './features/filters.component';
 import SatellitesTool from './features/satellites.component';
+import AdminTool from './features/admin.component';
 
 import styles from './tools.module.css';
 
@@ -33,6 +34,7 @@ const install = () => {
           {!isProduction && <StoriesTool />}
           {!isProduction && <FiltersTool />}
           {!isProduction && <SatellitesTool />}
+          {!isProduction && <AdminTool />}
         </div>
       </div>
     );

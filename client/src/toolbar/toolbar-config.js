@@ -32,6 +32,8 @@ import { toggleMenu, toggleMenuItem, setMenuHeadings } from '../side-menu/side-m
 // import { notYetImplemented } from '../app.slice';
 import featureToggles from '../feature-toggles';
 
+import { history } from 'root.reducer';
+
 export const getToolbarItems = dispatch => {
   const items = [
     {
@@ -195,6 +197,18 @@ export const getToolbarItems = dispatch => {
         );
       },
       tooltip: STORIES,
+    });
+  }
+
+  if (featureToggles.admin) {
+    items.splice(items.length - 1, 0, {
+      label: 'Admin',
+      icon: <StoryIcon />,
+      action: () => {
+        history.push('/admin');
+      },
+      tooltip: 'Admin',
+      footer: true,
     });
   }
 

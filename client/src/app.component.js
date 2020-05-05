@@ -20,7 +20,9 @@ import {
   confirmResetPassword,
   resetPassword,
 } from './accounts/accounts.slice';
-// import { fetchUsers, createUser, deleteUser, updateUser, copyUser } from './accounts/admin/users.slice';
+
+import { fetchUsers, createUser, deleteUser, updateUser, copyUser } from './accounts/admin/users.slice';
+
 import { fetchSources, selectPollingPeriod } from './data-layers/data-layers.slice';
 
 import RegisterForm from './accounts/register-form.component';
@@ -38,8 +40,8 @@ import MapLayout from './map';
 import styles from './app.module.css';
 
 const PasswordResetForm = lazy(() => import('./accounts/password-reset-form.component'));
-// const UserList = lazy(() => import('./accounts/admin/user-list.component'));
-// const Admin = lazy(() => import('./accounts/admin/admin.component'));
+const UserList = lazy(() => import('./accounts/admin/user-list.component'));
+const Admin = lazy(() => import('./accounts/admin/admin.component'));
 
 const App = () => {
   const dispatch = useDispatch();
@@ -47,6 +49,7 @@ const App = () => {
     state && state.app && state.app.config ? state.app.config.trackingId : null,
   );
 
+  const users = useSelector(state => state.admin.users);
   const user = useSelector(state => state.accounts.user);
   const userKey = useSelector(state => state.accounts.userKey);
   const error = useSelector(state => state.accounts.error);
@@ -61,6 +64,7 @@ const App = () => {
   const notYetImplementedDescription = useSelector(state => state.app.notYetImplementedDescription);
   const ref = useRef(null);
   const [isVisible, toggle] = useModal(notYetImplementedDescription !== null ? true : false);
+
   const activateAccountFn = form => dispatch(activateAccount(form));
   const userExists = user ? true : false;
 
@@ -190,7 +194,35 @@ const App = () => {
               />
             )}
           />
-          <Suspense fallback={<h3>Password Rest Loading...</h3>}>
+
+          <Suspense fallback={<h3>Loading...</h3>}>
+            <PrivateRoute exact path="/admin" user={user} component={Admin} />
+
+            <PrivateRoute
+              exact
+              path="/users"
+              user={user}
+              component={UserList}
+              users={users}
+              fetchUsers={() => dispatch(fetchUsers())}
+              createUser={user => dispatch(createUser(user))}
+              updateUser={user => dispatch(updateUser(user))}
+              copyUser={user => dispatch(copyUser(user))}
+              deleteUser={id => dispatch(deleteUser(id))}
+            />
+
+            <PrivateRoute
+              exact
+              path="/others"
+              user={user}
+              component={UserList}
+              fetchUsers={() => dispatch(fetchUsers())}
+              createUser={user => dispatch(createUser(user))}
+              updateUser={user => dispatch(updateUser(user))}
+              copyUser={user => dispatch(copyUser(user))}
+              deleteUser={id => dispatch(deleteUser(id))}
+            />
+
             <Route
               exact
               path="/password/reset"
@@ -204,25 +236,6 @@ const App = () => {
               )}
             />
           </Suspense>
-          {/* <Suspense fallback={<h3>Admin Loading...</h3>}>
-            <PrivateRoute path="/admin" user={user} component={Admin} />
-            <PrivateRoute
-              exact
-              path="/users"
-              user={user}
-              render={() => (
-                <UserList
-                  users={users}
-                  fetchUsers={fetchUsers}
-                  createUser={createUser}
-                  deleteUser={deleteUser}
-                  updateUser={updateUser}
-                  copyUser={copyUser}
-                />
-              )}
-            />
-            <PrivateRoute exact path="/others" user={user} component={UserList} />
-          </Suspense> */}
         </Switch>
       </main>
     </div>
