@@ -4,6 +4,7 @@ import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import { render } from '@testing-library/react';
 import SatellitesPanel from './satellites-panel.component';
+import { fetchPinnedScenes } from './satellites.slice';
 
 const mockStore = configureMockStore([thunk]);
 
@@ -553,8 +554,12 @@ const selectedScene = {
 };
 
 describe('SatellitesPanel', () => {
+  let fetchPinnedScenes = null;
+
   beforeEach(() => {
     fetch.mockResponse(JSON.stringify([], { status: 200 }));
+
+    fetchPinnedScenes = jest.fn();
   });
 
   describe('top navigation', () => {

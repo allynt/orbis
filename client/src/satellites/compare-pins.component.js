@@ -16,7 +16,6 @@ const ComparePins = (
   {
     setSelectedMoreInfo,
     toggleMoreInfoDialog,
-    fetchPinnedScenes,
     selectPinnedScene,
     deselectPinnedScene,
     clearSelectedPinnedScenes,
@@ -29,10 +28,6 @@ const ComparePins = (
   ref,
 ) => {
   useEffect(() => {
-    if (!pinnedScenes) {
-      fetchPinnedScenes();
-    }
-
     return () => {
       if (isCompareMode) {
         toggleCompareMode();

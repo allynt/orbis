@@ -35,7 +35,6 @@ const renderComponent = (store, args) => {
   const attributes = {
     setSelectedMoreInfo: jest.fn(),
     toggleMoreInfoDialog: jest.fn(),
-    fetchPinnedScenes: jest.fn(),
     selectPinnedScene: jest.fn(),
     deselectPinnedScene: jest.fn(),
     clearSelectedPinnedScenes: jest.fn(),
@@ -52,7 +51,6 @@ const renderComponent = (store, args) => {
       <ComparePins
         setSelectedMoreInfo={attributes.setSelectedMoreInfo}
         toggleMoreInfoDialog={attributes.toggleMoreInfoDialog}
-        fetchPinnedScenes={attributes.fetchPinnedScenes}
         selectPinnedScene={attributes.selectPinnedScene}
         deselectPinnedScene={attributes.deselectPinnedScene}
         clearSelectedPinnedScenes={attributes.clearSelectedPinnedScenes}
@@ -91,11 +89,6 @@ describe('Compare Pins Component', () => {
     const { container } = renderComponent(store, {});
     const pinnedSceneElements = container.querySelectorAll('.compareItem');
     expect(pinnedSceneElements.length).toEqual(mockScenes.length);
-  });
-
-  it('should fetch a list of pinned scenes, on first render', () => {
-    const { fetchPinnedScenes } = renderComponent(store, { pinnedScenes: null });
-    expect(fetchPinnedScenes).toHaveBeenCalled();
   });
 
   it('should render Compare Mode button disabled when not enough pinned scenes selected', () => {
