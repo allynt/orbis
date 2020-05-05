@@ -470,10 +470,12 @@ const Map = ({
       if (selectedScene) {
         const sourceId = `${selectedScene.id}-source`;
         const layerId = `${selectedScene.id}-layer`;
+
+        const tileUrl = selectedScene.tile_url.replace(/{VISUALISATION_ID}/, visualisationId);
+
         map.addSource(sourceId, {
           type: 'raster',
-          tiles: [selectedScene.tile_url],
-          scheme: 'tms',
+          tiles: [tileUrl],
           tileSize: 256,
         });
         map.addLayer({
