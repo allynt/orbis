@@ -73,7 +73,12 @@ const ComparePins = (
           pinnedScenes.map((scene, index) => {
             const isSelected = selectedPinnedScenes.some(selectedScene => selectedScene.id === scene.id);
             const isDisabled = !selectedPinnedScenes.includes(scene) && selectedPinnedScenes.length === MAX_SELECTED;
-            const Icon = <DeleteIcon onClick={() => !isCompareMode && deletePinnedScene(scene.id)} />;
+            const Icon = (
+              <DeleteIcon
+                className={isSelected ? styles.disabled : ''}
+                onClick={() => !isSelected && deletePinnedScene(scene.id)}
+              />
+            );
 
             return (
               <div key={scene.id} className={styles.compareItem}>
