@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -16,6 +16,8 @@ import {
   deletePinnedScene,
   pinScene,
   saveSatelliteSearch,
+  removeScenes,
+  setCurrentVisualisation,
 } from './satellites.slice';
 
 import { toggleCompareMode } from '../map/map.slice';
@@ -23,7 +25,7 @@ import { toggleCompareMode } from '../map/map.slice';
 import SatelliteSearch from './satellite-search.component';
 import Results from './results.component';
 import Visualisation from './visualisation.component';
-import PinnedScenes from './compare-pins.component';
+import ComparePins from './compare-pins.component';
 import { SatelliteInfoTable, TierInfoTable, SceneInfoTable } from './satellites-info-tables.component';
 
 import styles from './satellites-panel.module.css';
@@ -55,6 +57,8 @@ const SatellitesPanel = ({ map }) => {
   const isCompareMode = useSelector(state => state.map.isCompareMode);
   const selectedPinnedScenes = useSelector(state => state.satellites.selectedPinnedScenes);
   const currentSearchQuery = useSelector(state => state.satellites.currentSearchQuery);
+
+  const getPinnedScenes = useCallback(() => dispatch(fetchPinnedScenes()), [dispatch]);
 
   useEffect(() => {
     if (!satellites) {
@@ -131,13 +135,18 @@ const SatellitesPanel = ({ map }) => {
           />
         )}
         {visiblePanel === VISUALISATION && (
-          <Visualisation visualisations={visualisations} setVisiblePanel={setVisiblePanel} />
+          <Visualisation
+            visualisations={visualisations}
+            setVisiblePanel={setVisiblePanel}
+            removeScenes={() => dispatch(removeScenes())}
+            setCurrentVisualisation={visualisation => dispatch(setCurrentVisualisation(visualisation))}
+          />
         )}
         {visiblePanel === PINS && (
-          <PinnedScenes
+          <ComparePins
             setSelectedMoreInfo={setSelectedMoreInfo}
             toggleMoreInfoDialog={toggleMoreInfoDialog}
-            fetchPinnedScenes={() => dispatch(fetchPinnedScenes())}
+            fetchPinnedScenes={getPinnedScenes}
             selectPinnedScene={scene => dispatch(selectPinnedScene(scene))}
             deselectPinnedScene={scene => dispatch(deselectPinnedScene(scene))}
             clearSelectedPinnedScenes={() => dispatch(clearSelectedPinnedScenes())}

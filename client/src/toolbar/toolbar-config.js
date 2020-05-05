@@ -2,7 +2,7 @@ import React from 'react';
 
 import {
   DATA_LAYERS,
-  // SATELLITE_LAYERS,
+  SATELLITE_LAYERS,
   // PAGES,
   BOOKMARKS,
   STORIES,
@@ -15,7 +15,7 @@ import {
 } from './toolbar-constants';
 
 import { ReactComponent as DataIcon } from './data.svg';
-// import { ReactComponent as SatelliteIcon } from './satellite.svg';
+import { ReactComponent as SatelliteIcon } from './satellite.svg';
 // import { ReactComponent as PagesIcon } from './pages.svg';
 import { ReactComponent as BookmarksIcon } from './map.svg';
 import { ReactComponent as StoryIcon } from './story.svg';
@@ -40,7 +40,12 @@ export const getToolbarItems = dispatch => {
       action: () => {
         dispatch(toggleMenu(DATA_LAYERS));
         dispatch(toggleMenuItem(DATA_LAYERS));
-        dispatch(setMenuHeadings({ heading: 'SELECT ORB', strapline: 'Choose your ORB and then add data layers' }));
+        dispatch(
+          setMenuHeadings({
+            heading: 'SELECT ORB',
+            strapline: 'Choose your ORB and then add data layers',
+          }),
+        );
       },
       tooltip: DATA_LAYERS,
     },
@@ -66,7 +71,12 @@ export const getToolbarItems = dispatch => {
       action: () => {
         dispatch(toggleMenu(BOOKMARKS));
         dispatch(toggleMenuItem(BOOKMARKS));
-        dispatch(setMenuHeadings({ heading: 'MAPS', strapline: 'Select an Existing Map or Add New' }));
+        dispatch(
+          setMenuHeadings({
+            heading: 'MAPS',
+            strapline: 'Select an Existing Map or Add New',
+          }),
+        );
       },
       tooltip: BOOKMARKS,
     },
@@ -140,24 +150,53 @@ export const getToolbarItems = dispatch => {
       action: () => {
         dispatch(toggleMenu(PROFILE));
         dispatch(toggleMenuItem(PROFILE));
-        dispatch(setMenuHeadings({ heading: 'My Account', strapline: 'Edit your details below' }));
+        dispatch(
+          setMenuHeadings({
+            heading: 'My Account',
+            strapline: 'Edit your details below',
+          }),
+        );
       },
       tooltip: PROFILE,
       footer: true,
     },
   ];
 
+  if (featureToggles.satellites) {
+    items.splice(1, 0, {
+      label: SATELLITE_LAYERS,
+      icon: <SatelliteIcon />,
+      action: () => {
+        dispatch(toggleMenu(SATELLITE_LAYERS));
+        dispatch(toggleMenuItem(SATELLITE_LAYERS));
+        dispatch(
+          setMenuHeadings({
+            heading: 'SATELLITE IMAGES',
+            strapline: 'Select Type of imagery For The Layers',
+          }),
+        );
+      },
+      tooltip: SATELLITE_LAYERS,
+    });
+  }
+
   if (featureToggles.stories) {
-    items.splice(2, 0, {
+    items.splice(3, 0, {
       label: STORIES,
       icon: <StoryIcon />,
       action: () => {
         dispatch(toggleMenu(STORIES));
         dispatch(toggleMenuItem(STORIES));
-        dispatch(setMenuHeadings({ heading: 'STORIES', strapline: 'Select an Existing Story or Add New' }));
+        dispatch(
+          setMenuHeadings({
+            heading: 'STORIES',
+            strapline: 'Select an Existing Story or Add New',
+          }),
+        );
       },
       tooltip: STORIES,
     });
   }
+
   return items;
 };

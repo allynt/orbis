@@ -115,7 +115,7 @@ const MapLayout = () => {
                   compareRatio={compareRatio}
                   compare={isCompareMode}
                   selectedPinnedScenes={selectedPinnedScenes}
-                  comparisonScene={isCompareMode && selectedPinnedScenes[i]}
+                  comparisonScene={selectedPinnedScenes[i]}
                 />
               </div>
             ))}

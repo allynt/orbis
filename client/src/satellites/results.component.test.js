@@ -1,8 +1,14 @@
 import React from 'react';
 
+import { Provider } from 'react-redux';
+import configureMockStore from 'redux-mock-store';
+import thunk from 'redux-thunk';
+
 import { render, within, fireEvent } from '@testing-library/react';
 
 import Results from './results.component';
+
+const mockStore = configureMockStore([thunk]);
 
 const mockeDialogRef = {
   current: document.body,
@@ -29,7 +35,7 @@ const mockScenes = [
   },
 ];
 
-const renderComponent = args => {
+const renderComponent = (store, args) => {
   const attributes = {
     scenes: mockScenes,
     setVisiblePanel: jest.fn(),
@@ -44,27 +50,39 @@ const renderComponent = args => {
     ...args,
   };
   const testee = render(
-    <Results
-      scenes={attributes.scenes}
-      setVisiblePanel={attributes.setVisiblePanel}
-      selectScene={attributes.selectScene}
-      setSelectedMoreInfo={attributes.setSelectedMoreInfo}
-      toggleMoreInfoDialog={attributes.toggleMoreInfoDialog}
-      pinnedScenes={attributes.pinnedScenes}
-      pinScene={attributes.pinScene}
-      deletePinnedScene={attributes.deletePinnedScene}
-      saveSatelliteSearch={attributes.saveSatelliteSearch}
-      currentSearchQuery={attributes.currentSearchQuery}
-      ref={mockeDialogRef}
-    />,
+    <Provider store={store}>
+      <Results
+        scenes={attributes.scenes}
+        setVisiblePanel={attributes.setVisiblePanel}
+        selectScene={attributes.selectScene}
+        setSelectedMoreInfo={attributes.setSelectedMoreInfo}
+        toggleMoreInfoDialog={attributes.toggleMoreInfoDialog}
+        pinnedScenes={attributes.pinnedScenes}
+        pinScene={attributes.pinScene}
+        deletePinnedScene={attributes.deletePinnedScene}
+        saveSatelliteSearch={attributes.saveSatelliteSearch}
+        currentSearchQuery={attributes.currentSearchQuery}
+        ref={mockeDialogRef}
+      />
+    </Provider>,
   );
 
   return { ...attributes, ...testee };
 };
 
 describe('Satellite Results Component', () => {
+  let store = null;
+
+  beforeEach(() => {
+    store = mockStore({
+      satellites: {
+        visualisationId: 'TCI',
+      },
+    });
+  });
+
   it('should render a list of Scene results', () => {
-    const { container, getByText, getByRole } = renderComponent({});
+    const { container, getByText, getByRole } = renderComponent(store, {});
 
     const element = getByRole('slider');
     expect(getByText('CLOUD COVER %:')).toBeInTheDocument();
@@ -82,21 +100,21 @@ describe('Satellite Results Component', () => {
   });
 
   it('should pin scene when pin icon clicked', () => {
-    const { pinScene, getAllByText } = renderComponent({ pinnedScenes: [] });
+    const { pinScene, getAllByText } = renderComponent(store, { pinnedScenes: [] });
 
     fireEvent.click(getAllByText('pin.svg')[0]);
     expect(pinScene).toHaveBeenCalledWith(mockScenes[0]);
   });
 
   it('should delete pinned scene when already pinned pin icon clicked', () => {
-    const { deletePinnedScene, getAllByText } = renderComponent({ pinnedScenes: [{ ...mockScenes[0] }] });
+    const { deletePinnedScene, getAllByText } = renderComponent(store, { pinnedScenes: [{ ...mockScenes[0] }] });
 
     fireEvent.click(getAllByText('pin.svg')[0]);
     expect(deletePinnedScene).toHaveBeenCalledWith(mockScenes[0].id);
   });
 
   it('should show dialog component when Save Search button clicked', () => {
-    const { queryByText, getByText } = renderComponent({ pinnedScenes: [{ ...mockScenes[0] }] });
+    const { queryByText, getByText } = renderComponent(store, { pinnedScenes: [{ ...mockScenes[0] }] });
 
     const dialogTitle = 'Name Search';
     expect(queryByText(dialogTitle)).toEqual(null);

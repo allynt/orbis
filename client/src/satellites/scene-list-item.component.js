@@ -1,5 +1,7 @@
 import React from 'react';
 
+import { useSelector } from 'react-redux';
+
 import parseISO from 'date-fns/parseISO';
 import format from 'date-fns/format';
 
@@ -20,50 +22,55 @@ const SceneListItem = ({
   setVisiblePanel,
   setSelectedMoreInfo,
   toggleMoreInfoDialog,
-}) => (
-  <div key={`${scene.id}-${index}`} className={styles.scene}>
-    <div className={styles.icon}>{icon}</div>
+}) => {
+  const visualisationId = useSelector(state => state.satellites.visualisationId);
+  const thumbnailUrl = scene.thumbnail_url.replace(/{VISUALISATION_ID}/, visualisationId);
 
-    <div
-      className={styles.sceneSection}
-      onClick={() => {
-        if (selectScene) {
-          selectScene(scene);
-          setVisiblePanel && setVisiblePanel(VISUALISATION);
-        }
-      }}
-    >
-      <div className={styles.thumbContainer}>
-        <picture>
-          <img className={styles.thumbnail} src={scene.thumbnail_url} alt="Thumbnail of a satellite scene" />
-        </picture>
-      </div>
-      <ul className={styles.metadata}>
-        <li>{format(parseISO(scene.created), DATE_FORMAT)}</li>
-        <li>{format(parseISO(scene.created), TIME_FORMAT)} UTC</li>
-        <li>{scene.cloudCover} %</li>
-        <li>{scene.id}</li>
-      </ul>
-    </div>
+  return (
+    <div key={`${scene.id}-${index}`} className={styles.scene}>
+      <div className={styles.icon}>{icon}</div>
 
-    <div className={`${styles.sceneSection} ${styles.sceneOptions}`}>
       <div
-        className={styles.moreInfo}
+        className={styles.sceneSection}
         onClick={() => {
-          setSelectedMoreInfo({ type: SCENE, data: scene });
-          toggleMoreInfoDialog();
+          if (selectScene) {
+            selectScene(scene);
+            setVisiblePanel && setVisiblePanel(VISUALISATION);
+          }
         }}
       >
-        <InfoIcon classes={styles.moreInfoIcon} />
-        <span>More info</span>
+        <div className={styles.thumbContainer}>
+          <picture>
+            <img className={styles.thumbnail} src={thumbnailUrl} alt="Thumbnail of a satellite scene" />
+          </picture>
+        </div>
+        <ul className={styles.metadata}>
+          <li>{format(parseISO(scene.created), DATE_FORMAT)}</li>
+          <li>{format(parseISO(scene.created), TIME_FORMAT)} UTC</li>
+          <li>{scene.cloudCover} %</li>
+          <li>{scene.id}</li>
+        </ul>
       </div>
 
-      <div className={styles.freeProductContainer}>
-        {scene.tier === 'free' && <span className={styles.freeProduct}>Free Product</span>}
+      <div className={`${styles.sceneSection} ${styles.sceneOptions}`}>
+        <div
+          className={styles.moreInfo}
+          onClick={() => {
+            setSelectedMoreInfo({ type: SCENE, data: scene });
+            toggleMoreInfoDialog();
+          }}
+        >
+          <InfoIcon classes={styles.moreInfoIcon} />
+          <span>More info</span>
+        </div>
+
+        <div className={styles.freeProductContainer}>
+          {scene.tier === 'free' && <span className={styles.freeProduct}>Free Product</span>}
+        </div>
       </div>
     </div>
-  </div>
-);
+  );
+};
 
 export const SceneListItemSkeleton = () => (
   <li className={styles.sceneSkeleton}>

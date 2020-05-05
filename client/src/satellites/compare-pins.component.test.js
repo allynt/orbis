@@ -1,32 +1,37 @@
 import React from 'react';
 
+import { Provider } from 'react-redux';
+import configureMockStore from 'redux-mock-store';
+import thunk from 'redux-thunk';
+
 import { render, cleanup, within, fireEvent } from '@testing-library/react';
 
-import { parseISO, format } from 'date-fns';
-
-import { DATE_FORMAT, TIME_FORMAT } from './satellite.constants';
-
 import ComparePins from './compare-pins.component';
+
+const mockStore = configureMockStore([thunk]);
 
 const mockScenes = [
   {
     id: 1,
     label: 'Pinned Scene 1',
     created: '2000-01-01T00:00:00Z',
+    thumbnail_url: '/test/url/{VISUALISATION_ID}/tile.png',
   },
   {
     id: 2,
     label: 'Pinned Scene 2',
     created: '2000-01-02T00:00:00Z',
+    thumbnail_url: '/test/url/{VISUALISATION_ID}/tile.png',
   },
   {
     id: 3,
     label: 'Pinned Scene 3',
     created: '2000-01-03T00:00:00Z',
+    thumbnail_url: '/test/url/{VISUALISATION_ID}/tile.png',
   },
 ];
 
-const renderComponent = args => {
+const renderComponent = (store, args) => {
   const attributes = {
     setSelectedMoreInfo: jest.fn(),
     toggleMoreInfoDialog: jest.fn(),
@@ -43,29 +48,39 @@ const renderComponent = args => {
   };
 
   const testee = render(
-    <ComparePins
-      setSelectedMoreInfo={attributes.setSelectedMoreInfo}
-      toggleMoreInfoDialog={attributes.toggleMoreInfoDialog}
-      fetchPinnedScenes={attributes.fetchPinnedScenes}
-      selectPinnedScene={attributes.selectPinnedScene}
-      deselectPinnedScene={attributes.deselectPinnedScene}
-      clearSelectedPinnedScenes={attributes.clearSelectedPinnedScenes}
-      deletePinnedScene={attributes.deletePinnedScene}
-      toggleCompareMode={attributes.toggleCompareMode}
-      pinnedScenes={attributes.pinnedScenes}
-      selectedPinnedScenes={attributes.selectedPinnedScenes}
-      isCompareMode={attributes.isCompareMode}
-    />,
+    <Provider store={store}>
+      <ComparePins
+        setSelectedMoreInfo={attributes.setSelectedMoreInfo}
+        toggleMoreInfoDialog={attributes.toggleMoreInfoDialog}
+        fetchPinnedScenes={attributes.fetchPinnedScenes}
+        selectPinnedScene={attributes.selectPinnedScene}
+        deselectPinnedScene={attributes.deselectPinnedScene}
+        clearSelectedPinnedScenes={attributes.clearSelectedPinnedScenes}
+        deletePinnedScene={attributes.deletePinnedScene}
+        toggleCompareMode={attributes.toggleCompareMode}
+        pinnedScenes={attributes.pinnedScenes}
+        selectedPinnedScenes={attributes.selectedPinnedScenes}
+        isCompareMode={attributes.isCompareMode}
+      />
+    </Provider>,
   );
 
   return { ...attributes, ...testee };
 };
 
 describe('Compare Pins Component', () => {
-  beforeEach(cleanup);
+  let store = null;
+
+  beforeEach(() => {
+    store = mockStore({
+      satellites: {
+        visualisationId: 'TCI',
+      },
+    });
+  });
 
   it('should render an empty list of pinned scenes', () => {
-    const { container, getByText } = renderComponent({ pinnedScenes: [] });
+    const { container, getByText } = renderComponent(store, { pinnedScenes: [] });
 
     expect(getByText('Compare')).toBeInTheDocument();
     expect(getByText('Clear Pins')).toBeInTheDocument();
@@ -73,19 +88,18 @@ describe('Compare Pins Component', () => {
   });
 
   it('should render a list of pinned scenes', () => {
-    const { container } = renderComponent({});
-
+    const { container } = renderComponent(store, {});
     const pinnedSceneElements = container.querySelectorAll('.compareItem');
     expect(pinnedSceneElements.length).toEqual(mockScenes.length);
   });
 
   it('should fetch a list of pinned scenes, on first render', () => {
-    const { fetchPinnedScenes } = renderComponent({ pinnedScenes: null });
+    const { fetchPinnedScenes } = renderComponent(store, { pinnedScenes: null });
     expect(fetchPinnedScenes).toHaveBeenCalled();
   });
 
   it('should render Compare Mode button disabled when not enough pinned scenes selected', () => {
-    const { getAllByLabelText } = renderComponent({
+    const { getAllByLabelText } = renderComponent(store, {
       selectedPinnedScenes: [{ ...mockScenes[1] }],
     });
 
@@ -96,7 +110,7 @@ describe('Compare Pins Component', () => {
   });
 
   it('should not be able to toggle Compare Mode when not enough pinned scenes selected', () => {
-    const { toggleCompareMode, getAllByLabelText } = renderComponent({
+    const { toggleCompareMode, getAllByLabelText } = renderComponent(store, {
       selectedPinnedScenes: [{ ...mockScenes[1] }],
     });
 
@@ -105,7 +119,7 @@ describe('Compare Pins Component', () => {
   });
 
   it('should toggle into Compare Mode when there are enough pinned scenes selected', () => {
-    const { toggleCompareMode, getAllByLabelText } = renderComponent({
+    const { toggleCompareMode, getAllByLabelText } = renderComponent(store, {
       selectedPinnedScenes: [mockScenes[0], mockScenes[1]],
     });
 
@@ -116,26 +130,28 @@ describe('Compare Pins Component', () => {
   });
 
   it('should render Clear Pins button disabled', () => {
-    const { getByText } = renderComponent();
+    const { getByText } = renderComponent(store);
 
     expect(getByText('Clear Pins')).toHaveAttribute('disabled');
   });
 
   it('should render Clear Pins button enabled', () => {
-    const { getByText } = renderComponent({ selectedPinnedScenes: [{ ...mockScenes[2] }] });
+    const { getByText } = renderComponent(store, { selectedPinnedScenes: [{ ...mockScenes[2] }] });
 
     expect(getByText('Clear Pins')).not.toHaveAttribute('disabled');
   });
 
   it('should Clear selected pinned scenes', () => {
-    const { clearSelectedPinnedScenes, getByText } = renderComponent({ selectedPinnedScenes: [{ ...mockScenes[2] }] });
+    const { clearSelectedPinnedScenes, getByText } = renderComponent(store, {
+      selectedPinnedScenes: [{ ...mockScenes[2] }],
+    });
 
     fireEvent.click(getByText('Clear Pins'));
     expect(clearSelectedPinnedScenes).toHaveBeenCalled();
   });
 
   it("should delete pinned scene, when scene's icon clicked", () => {
-    const { deletePinnedScene, getByText } = renderComponent();
+    const { deletePinnedScene, getByText } = renderComponent(store);
 
     const element = getByText('Pinned Scene 1').nextSibling;
 
@@ -144,7 +160,7 @@ describe('Compare Pins Component', () => {
   });
 
   it('should deselect pinned scene, when scene clicked and already selected', () => {
-    const { deselectPinnedScene, getByText } = renderComponent({ selectedPinnedScenes: [{ ...mockScenes[0] }] });
+    const { deselectPinnedScene, getByText } = renderComponent(store, { selectedPinnedScenes: [{ ...mockScenes[0] }] });
 
     fireEvent.click(getByText('Pinned Scene 1').firstChild);
 
@@ -152,7 +168,7 @@ describe('Compare Pins Component', () => {
   });
 
   it('should select pinned scene, when scene clicked and not already selected', () => {
-    const { selectPinnedScene, getByText } = renderComponent();
+    const { selectPinnedScene, getByText } = renderComponent(store);
 
     fireEvent.click(getByText('Pinned Scene 1').firstChild);
 

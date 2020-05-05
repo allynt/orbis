@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 
 import StoriesTool from './features/stories.component';
 import FiltersTool from './features/filters.component';
+import SatellitesTool from './features/satellites.component';
 
 import styles from './tools.module.css';
 
@@ -29,6 +30,7 @@ const install = () => {
           <LocalDevTools />
           <StoriesTool />
           <FiltersTool />
+          <SatellitesTool />
         </div>
       </div>
     );
