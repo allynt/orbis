@@ -86,7 +86,10 @@
   width: 90%;
 }
 
-.paragraph,
+.paragraph {
+  margin: 1rem 0;
+}
+
 .buttons:last-child {
   margin-bottom: 1.5rem;
 }
@@ -112,8 +115,6 @@
 .incidentals li {
   list-style-type: disc;
 }
-
-/* These 2 below can possibly go. Not being used. */
 
 .passwordStrength {
   padding: 1rem;

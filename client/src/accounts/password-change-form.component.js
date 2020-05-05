@@ -50,7 +50,7 @@ const PasswordChangeForm = ({ changePassword, changeStatus, error }) => {
           {error && (
             <Well type="error">
               <ul>
-                {error.map(error => (
+                {error.map((error) => (
                   <li key={error}>{error}</li>
                 ))}
               </ul>

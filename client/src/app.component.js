@@ -53,8 +53,8 @@ const App = () => {
   const error = useSelector(state => state.accounts.error);
   const pollingPeriod = useSelector(selectPollingPeriod);
 
-  const accountActivationSuccessful = useSelector(state => state.accounts.accountActivationSuccessful);
-
+  const registerUserStatus = useSelector(state => state.accounts.registerUserStatus);
+  const accountActivationStatus = useSelector(state => state.accounts.accountActivationStatus);
   const verificationEmailStatus = useSelector(state => state.accounts.verificationEmailStatus);
   const resetStatus = useSelector(state => state.accounts.resetStatus);
   const changeStatus = useSelector(state => state.accounts.changeStatus);
@@ -110,7 +110,7 @@ const App = () => {
   }, [user, pollingPeriod, dispatch]);
 
   return (
-    <div className={`${styles.app} ${styles[selectedTheme.value]}`} ref={ref}>
+    <div className={styles.app} ref={ref}>
       <ReactTooltip />
 
       <main>
@@ -142,7 +142,13 @@ const App = () => {
           <Route
             exact
             path="/register"
-            render={() => <RegisterForm register={form => dispatch(register(form))} error={error} />}
+            render={() => (
+              <RegisterForm
+                register={form => dispatch(register(form))}
+                registerUserStatus={registerUserStatus}
+                error={error}
+              />
+            )}
           />
           <Route exact path="/terms" component={TermsAndConditions} />
           <Route
@@ -167,7 +173,7 @@ const App = () => {
                 match={props.match}
                 error={error}
                 activateAccount={activateAccountFn}
-                accountActivationSuccessful={accountActivationSuccessful}
+                accountActivationStatus={accountActivationStatus}
               />
             )}
           />

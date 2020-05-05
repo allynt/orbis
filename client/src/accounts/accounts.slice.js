@@ -44,7 +44,8 @@ const initialState = {
   userKey: null,
   user: null,
   error: null,
-  accountActivationSuccessful: false,
+  registerUserStatus: status.NONE,
+  accountActivationStatus: status.NONE,
   resetStatus: status.NONE,
   changeStatus: status.NONE,
   verificationEmailStatus: status.NONE,
@@ -55,6 +56,7 @@ const accountsSlice = createSlice({
   initialState,
   reducers: {
     registerUserSuccess: state => {
+      state.registerUserStatus = status.PENDING;
       state.error = null;
     },
     registerUserFailure: (state, { payload }) => {
@@ -97,7 +99,7 @@ const accountsSlice = createSlice({
       state.error = payload;
     },
     activateAccountSuccess: state => {
-      state.accountActivationSuccessful = status.COMPLETE;
+      state.accountActivationStatus = status.COMPLETE;
       state.error = null;
     },
     activateAccountFailure: (state, { payload }) => {
@@ -163,8 +165,6 @@ export const register = form => async dispatch => {
     const errorMessages = errorTransformer(errorObject);
     return dispatch(registerUserFailure(errorMessages));
   }
-
-  history.push('/login');
 
   return dispatch(registerUserSuccess());
 };

@@ -13,7 +13,7 @@ import { LOGIN_URL } from './accounts.constants';
 
 import formStyles from './forms.module.css';
 
-const AccountActivation = ({ match, error, activateAccount, accountActivationSuccessful }) => {
+const AccountActivation = ({ match, error, activateAccount, accountActivationStatus }) => {
   const [redirectToLogin, setRedirectToLogin] = useState(false);
 
   useEffect(() => {
@@ -22,7 +22,7 @@ const AccountActivation = ({ match, error, activateAccount, accountActivationSuc
   }, [activateAccount, match]);
 
   // Re-direct to login if account activation is successful, show error if not
-  if (redirectToLogin && accountActivationSuccessful === status.COMPLETE) {
+  if (redirectToLogin && accountActivationStatus === status.COMPLETE) {
     return <Redirect to={LOGIN_URL} />;
   }
   return (
@@ -33,7 +33,7 @@ const AccountActivation = ({ match, error, activateAccount, accountActivationSuc
         {error && (
           <Well type="error">
             <ul data-testid="error-well">
-              {error.map(error => (
+              {error.map((error) => (
                 <li key={error}>{error}</li>
               ))}
             </ul>
