@@ -59,8 +59,8 @@ const ComparePins = (
         <Button
           theme="link"
           classNames={[styles.button]}
-          onClick={() => clearSelectedPinnedScenes([])}
-          disabled={selectedPinnedScenes.length < 1}
+          onClick={() => !isCompareMode && clearSelectedPinnedScenes([])}
+          disabled={selectedPinnedScenes.length < 1 || isCompareMode}
         >
           Clear Pins
         </Button>
