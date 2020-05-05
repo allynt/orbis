@@ -11,7 +11,7 @@ import AccountActivation from './account-activation.component';
 
 describe('Account Activation', () => {
   let activateAccount = null;
-  let accountActivationSuccessful = null;
+  let accountActivationStatus = null;
   let history = null;
   const match = {
     params: {
@@ -22,18 +22,18 @@ describe('Account Activation', () => {
 
   beforeEach(() => {
     activateAccount = jest.fn();
-    accountActivationSuccessful = status.NONE;
+    accountActivationStatus = status.NONE;
     history = createMemoryHistory({ initialEntries: ['/'] });
   });
   afterEach(cleanup);
 
   it('should redirect to login page on successful Activation', () => {
-    accountActivationSuccessful = status.COMPLETE;
+    accountActivationStatus = status.COMPLETE;
     render(
       <Router history={history}>
         <AccountActivation
           activateAccount={activateAccount}
-          accountActivationSuccessful={accountActivationSuccessful}
+          accountActivationStatus={accountActivationStatus}
           match={match}
         />
       </Router>,
@@ -50,7 +50,7 @@ describe('Account Activation', () => {
       <Router history={history}>
         <AccountActivation
           activateAccount={activateAccount}
-          accountActivationSuccessful={accountActivationSuccessful}
+          accountActivationStatus={accountActivationStatus}
           match={match}
           error={error}
         />
