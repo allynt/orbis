@@ -100,7 +100,7 @@ li {
   margin: 1rem 0;
 }
 
-li span {
+.list span {
   font-weight: bold;
   margin-right: 0.5rem;
   min-width: 7.5rem;
