@@ -18,9 +18,9 @@
 .button {
   flex-direction: column;
   font-size: small !important;
-  background-color: #171819;
-  color: #a2aaad;
-  padding: 0.875rem 1.1rem;
+  background-color: #171819 !important;
+  color: #a2aaad !important;
+  padding: 0.875rem 1.1rem !important;
 }
 
 .button:first-child {
@@ -41,8 +41,8 @@
 }
 
 .active {
-  background-color: #414d55;
-  color: #fff;
+  background-color: #414d55 !important;
+  color: #fff !important;
 }
 
 .content {
