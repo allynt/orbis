@@ -74,7 +74,7 @@ describe('Landing Component', () => {
       </Provider>,
     );
 
-    expect(getByText('your Earth exploration journey starts here')).toBeInTheDocument();
+    expect(getByText('Your Earth Observation journey starts here')).toBeInTheDocument();
     expect(getByText('Browse Map')).toBeInTheDocument();
 
     expect(queryByText(bookmarkText)).not.toBeInTheDocument();
