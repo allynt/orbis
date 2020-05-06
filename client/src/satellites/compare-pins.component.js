@@ -16,7 +16,6 @@ const ComparePins = (
   {
     setSelectedMoreInfo,
     toggleMoreInfoDialog,
-    fetchPinnedScenes,
     selectPinnedScene,
     deselectPinnedScene,
     clearSelectedPinnedScenes,
@@ -29,10 +28,6 @@ const ComparePins = (
   ref,
 ) => {
   useEffect(() => {
-    if (!pinnedScenes) {
-      fetchPinnedScenes();
-    }
-
     return () => {
       if (isCompareMode) {
         toggleCompareMode();
@@ -64,8 +59,8 @@ const ComparePins = (
         <Button
           theme="link"
           classNames={[styles.button]}
-          onClick={() => clearSelectedPinnedScenes([])}
-          disabled={selectedPinnedScenes.length < 1}
+          onClick={() => !isCompareMode && clearSelectedPinnedScenes([])}
+          disabled={selectedPinnedScenes.length < 1 || isCompareMode}
         >
           Clear Pins
         </Button>
@@ -78,7 +73,12 @@ const ComparePins = (
           pinnedScenes.map((scene, index) => {
             const isSelected = selectedPinnedScenes.some(selectedScene => selectedScene.id === scene.id);
             const isDisabled = !selectedPinnedScenes.includes(scene) && selectedPinnedScenes.length === MAX_SELECTED;
-            const Icon = <DeleteIcon onClick={() => !isCompareMode && deletePinnedScene(scene.id)} />;
+            const Icon = (
+              <DeleteIcon
+                className={isSelected ? styles.disabled : ''}
+                onClick={() => !isSelected && deletePinnedScene(scene.id)}
+              />
+            );
 
             return (
               <div key={scene.id} className={styles.compareItem}>
@@ -95,7 +95,7 @@ const ComparePins = (
                   icon={Icon}
                   setSelectedMoreInfo={setSelectedMoreInfo}
                   toggleMoreInfoDialog={toggleMoreInfoDialog}
-                  selectScene={scene => handleChange(isSelected, scene)}
+                  selectScene={scene => !isCompareMode && handleChange(isSelected, scene)}
                 />
               </div>
             );
