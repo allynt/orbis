@@ -3,7 +3,6 @@
   justify-content: center;
   height: 100%;
   background-color: #fff;
-  padding: 0 2.5rem;
 }
 
 .landingContent {
@@ -15,6 +14,7 @@
   min-height: 100%;
   background-color: #fff;
   color: #101010;
+  padding: 0 2.5rem;
 }
 
 .banner,
@@ -153,11 +153,26 @@
 
 /* ORIGINAL STYLES */
 
-.splash {
+.splashContent {
   display: flex;
-  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+}
+
+.splash {
+  position: relative;
   background-color: #fff;
   height: 100vh;
+  width: 100vw;
+  background-image: url('./landing-image.png');
+}
+
+.splashHeader {
+  position: absolute;
+  top: 1rem;
+  left: 8rem;
 }
 
 .splash .logo {
@@ -165,40 +180,32 @@
   color: #787c82;
 }
 
-.splash .content {
-  display: flex;
-  align-items: center;
-  color: var(--foreground-color);
-  height: 100%;
-}
-
 .splash .journey {
   display: flex;
   flex-direction: column;
+  justify-content: flex-end;
   align-items: center;
-  width: 50%;
-  min-width: 25rem;
+  margin-right: 15rem;
+  color: #fff;
 }
 
 .journey h1 {
-  font-size: 2rem;
-  padding: 2rem 0;
-}
-
-.journey h1 span {
-  display: block;
+  font-size: 3.5rem;
+  font-weight: bold;
+  margin-bottom: 2rem;
 }
 
 .journey p {
   width: 100%;
+  text-align: center;
   font-size: 1.25rem;
 }
 
 .journeyText {
-  max-width: 40rem;
-  margin-bottom: 5rem;
-}
-
-.landingImage {
-  width: 55rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  min-height: 4rem;
+  margin-bottom: 2rem;
 }

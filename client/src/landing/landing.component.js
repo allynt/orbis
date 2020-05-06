@@ -18,7 +18,6 @@ import NewMapForm from './new-map-form.component';
 import { ReactComponent as OrbisLogo } from '../orbis.svg';
 import { ReactComponent as ProfileIcon } from '../toolbar/profile.svg';
 import { ReactComponent as OptionsIcon } from '../options.svg';
-import { ReactComponent as LandingImage } from './landing.svg';
 
 import styles from './landing.module.css';
 
@@ -88,18 +87,20 @@ const Items = ({ items, chooseItem, toggle, itemOptions, setItemOptions }) => {
   );
 };
 
-const NewUserLanding = forwardRef(({ setRedirect, toggle, isVisible, regions, domains, setViewport }, ref) => (
-  <div className={styles.splash} ref={ref}>
-    <div className={styles.header}>
+const NewUserLanding = ({ setRedirect }) => (
+  <div className={styles.splash}>
+    <div className={styles.splashHeader}>
       <OrbisLogo className={styles.logo} />
     </div>
-    <div className={styles.content}>
-      <div className={styles.journey}>
-        <h1>
-          <span>Hi,</span> your Earth exploration journey starts here{' '}
-        </h1>
 
-        <p className={styles.journeyText}>Click Browse Map below to start</p>
+    <div className={styles.splashContent}>
+      <div className={styles.journey}>
+        <h1>OR3IS JOURNEY</h1>
+
+        <div className={styles.journeyText}>
+          <p>Your Earth Observation journey starts here</p>
+          <p>Click Browse Map below to start</p>
+        </div>
 
         <div>
           <Button theme="tertiary" onClick={() => setRedirect('/map')} data-testid="browse-map">
@@ -107,17 +108,9 @@ const NewUserLanding = forwardRef(({ setRedirect, toggle, isVisible, regions, do
           </Button>
         </div>
       </div>
-
-      <div className={styles.journeyImage}>
-        <LandingImage className={styles.landingImage} />
-      </div>
-
-      <Dialog isVisible={isVisible} title="Create New Map" close={toggle} ref={ref}>
-        <NewMapForm regions={regions} domains={domains} setViewport={setViewport} />
-      </Dialog>
     </div>
   </div>
-));
+);
 
 const ExistingUserLanding = forwardRef(
   ({ bookmarks, chooseBookmark, setRedirect, isVisible, toggle, regions, domains, setViewport }, ref) => {
@@ -175,7 +168,8 @@ const ExistingUserLanding = forwardRef(
 
 const Landing = () => {
   const dispatch = useDispatch();
-  const bookmarks = useSelector(state => state.bookmarks.bookmarks);
+  // const bookmarks = useSelector(state => state.bookmarks.bookmarks);
+  const bookmarks = null;
   const [isVisible, toggle] = useModal(false);
   const [redirect, setRedirect] = useState(null);
   const ref = useRef(null);
