@@ -250,6 +250,36 @@ resource "kubernetes_deployment" "app_deployment" {
           }
 
           env {
+            name = "DJANGO_COPERNICUS_USERNAME"
+            value_from {
+              secret_key_ref {
+                name = local.app_deployment_secret_name
+                key  = "copernicus_username"
+              }
+            }
+          }
+
+          env {
+            name = "DJANGO_COPERNICUS_PASSWORD"
+            value_from {
+              secret_key_ref {
+                name = local.app_deployment_secret_name
+                key  = "copernicus_password"
+              }
+            }
+          }
+
+          env {
+            name = "DJANGO_OLSP_URL"
+            value_from {
+              secret_key_ref {
+                name = local.app_deployment_secret_name
+                key  = "olsp_url"
+              }
+            }
+          }
+
+          env {
             name = "DJANGO_MAPBOX_STYLES"
             value_from {
               secret_key_ref {
