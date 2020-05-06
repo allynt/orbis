@@ -49,16 +49,16 @@ export const getToolbarItems = dispatch => {
       },
       tooltip: DATA_LAYERS,
     },
-    {
-      label: SATELLITE_LAYERS,
-      icon: <SatelliteIcon />,
-      action: () => {
-        dispatch(toggleMenu(SATELLITE_LAYERS));
-        dispatch(toggleMenuItem(SATELLITE_LAYERS));
-        dispatch(setMenuHeadings({ heading: 'SATELLITE IMAGES', strapline: 'Select Type of imagery For The Layers' }));
-      },
-      tooltip: SATELLITE_LAYERS,
-    },
+    // {
+    //   label: SATELLITE_LAYERS,
+    //   icon: <SatelliteIcon />,
+    //   action: () => {
+    //     dispatch(toggleMenu(SATELLITE_LAYERS));
+    //     dispatch(toggleMenuItem(SATELLITE_LAYERS));
+    //     dispatch(setMenuHeadings({ heading: 'SATELLITE IMAGES', strapline: 'Select Type of imagery For The Layers' }));
+    //   },
+    //   tooltip: SATELLITE_LAYERS,
+    // },
     // {
     //   label: PAGES,
     //   icon: <PagesIcon />,
