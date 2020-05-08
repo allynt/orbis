@@ -12,11 +12,24 @@ import PasswordChangeForm from './password-change-form.component';
 
 const mockStore = configureMockStore([thunk]);
 
+const renderComponent = (store, changePassword, changeStatus, error) =>
+  render(
+    <MemoryRouter>
+      <Provider store={store}>
+        <PasswordChangeForm changePassword={changePassword} changeStatus={changeStatus} error={error} />
+      </Provider>
+    </MemoryRouter>,
+  );
+
 describe('Password Reset Form Component', () => {
   let changePassword = null;
+  let error = null;
+  let changeStatus = null;
 
   beforeEach(() => {
     changePassword = jest.fn();
+    error = null;
+    changeStatus = 'None';
     fetch.resetMocks();
   });
 
@@ -25,13 +38,7 @@ describe('Password Reset Form Component', () => {
   it('should render a form', () => {
     const store = mockStore({});
 
-    const { container, getByPlaceholderText, getByText, getAllByText } = render(
-      <MemoryRouter>
-        <Provider store={store}>
-          <PasswordChangeForm />
-        </Provider>
-      </MemoryRouter>,
-    );
+    const { container, getByPlaceholderText, getByText } = renderComponent(store, changePassword, changeStatus, error);
 
     expect(container.querySelector('form')).toBeInTheDocument();
     expect(getByPlaceholderText('Old Password')).toBeInTheDocument();
@@ -51,13 +58,7 @@ describe('Password Reset Form Component', () => {
   it('should enable `Change Password` button when form is valid', async () => {
     const store = mockStore({});
 
-    const { getByText, getByPlaceholderText } = render(
-      <MemoryRouter>
-        <Provider store={store}>
-          <PasswordChangeForm />
-        </Provider>
-      </MemoryRouter>,
-    );
+    const { getByText, getByPlaceholderText } = renderComponent(store, changePassword, changeStatus, error);
 
     let password = getByPlaceholderText('Old Password');
     expect(password.value).toEqual('');
@@ -80,13 +81,7 @@ describe('Password Reset Form Component', () => {
   it('should keep `Change Password` button disabled when form is invalid', () => {
     const store = mockStore({});
 
-    const { getByText, getByPlaceholderText } = render(
-      <MemoryRouter>
-        <Provider store={store}>
-          <PasswordChangeForm />
-        </Provider>
-      </MemoryRouter>,
-    );
+    const { getByText, getByPlaceholderText } = renderComponent(store, changePassword, changeStatus, error);
 
     fireEvent.change(getByPlaceholderText('Old Password'), { target: { value: 'oldpassword' } });
     fireEvent.change(getByPlaceholderText('New Password'), { target: { value: 'newpassword' } });
@@ -99,13 +94,7 @@ describe('Password Reset Form Component', () => {
     fetch.mockResponse(JSON.stringify({}, { status: 200 }));
     const store = mockStore({});
 
-    const { getByText } = render(
-      <MemoryRouter>
-        <Provider store={store}>
-          <PasswordChangeForm />
-        </Provider>
-      </MemoryRouter>,
-    );
+    const { getByText } = renderComponent(store, changePassword, changeStatus, error);
 
     fireEvent.click(getByText('Change Password'));
     expect(fetch.mock.calls.length).toBe(0);
@@ -126,13 +115,7 @@ describe('Password Reset Form Component', () => {
       accepted_terms: true,
     };
 
-    const { getByText, getByPlaceholderText } = render(
-      <MemoryRouter>
-        <Provider store={store}>
-          <PasswordChangeForm changePassword={changePassword} />
-        </Provider>
-      </MemoryRouter>,
-    );
+    const { getByText, getByPlaceholderText } = renderComponent(store, changePassword, changeStatus, error);
 
     fireEvent.change(getByPlaceholderText('Old Password'), { target: { value: 'oldpassword' } });
     fireEvent.change(getByPlaceholderText('New Password'), { target: { value: 'newpassword' } });

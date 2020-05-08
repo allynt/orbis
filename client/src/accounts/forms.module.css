@@ -73,3 +73,56 @@
 .passwordStrengthMeter {
   padding: 0 0.5rem;
 }
+
+.resend,
+.buttons {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.content {
+  width: 90%;
+}
+
+.paragraph {
+  margin: 1rem 0;
+}
+
+.buttons:last-child {
+  margin-bottom: 1.5rem;
+}
+
+.resendButton {
+  margin-bottom: 0.5rem;
+}
+
+.footer {
+  display: flex;
+  align-items: baseline;
+  padding: 1rem 0 1.5rem 0;
+}
+
+.incidentals {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  font-size: smaller;
+  opacity: 0.5;
+}
+
+.incidentals li {
+  list-style-type: disc;
+}
+
+.passwordStrength {
+  padding: 1rem;
+}
+
+.loginButton {
+  margin-top: 1.5rem;
+  --padding-x: 8rem;
+  padding-left: var(--padding-x);
+  padding-right: var(--padding-x);
+}

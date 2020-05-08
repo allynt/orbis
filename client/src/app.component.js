@@ -10,7 +10,16 @@ import useModal from '@astrosat/astrosat-ui/dist/containers/use-modal';
 import PrivateRoute from './utils/private-route.component';
 
 import { fetchAppConfig } from './app.slice';
-import { fetchUser, login, changePassword, activateAccount } from './accounts/accounts.slice';
+import {
+  fetchUser,
+  login,
+  register,
+  activateAccount,
+  resendVerificationEmail,
+  changePassword,
+  confirmResetPassword,
+  resetPassword,
+} from './accounts/accounts.slice';
 // import { fetchUsers, createUser, deleteUser, updateUser, copyUser } from './accounts/admin/users.slice';
 import { fetchSources, selectPollingPeriod } from './data-layers/data-layers.slice';
 
@@ -20,7 +29,6 @@ import AccountActivation from './accounts/account-activation.component';
 import LoginForm from './accounts/login-form.component';
 import PasswordChangeForm from './accounts/password-change-form.component';
 import UpdateUserForm from './accounts/update-user-form.component';
-import PasswordResetDone from './accounts/password-reset-done.component';
 import PasswordResetConfirm from './accounts/password-reset-confirm-form.component';
 
 import LandingView from './landing/landing.component';
@@ -40,28 +48,38 @@ const App = () => {
   );
 
   const user = useSelector(state => state.accounts.user);
+  const userKey = useSelector(state => state.accounts.userKey);
   const error = useSelector(state => state.accounts.error);
   const pollingPeriod = useSelector(selectPollingPeriod);
+
+  const registerUserStatus = useSelector(state => state.accounts.registerUserStatus);
+  const accountActivationStatus = useSelector(state => state.accounts.accountActivationStatus);
+  const verificationEmailStatus = useSelector(state => state.accounts.verificationEmailStatus);
+  const resetStatus = useSelector(state => state.accounts.resetStatus);
+  const changeStatus = useSelector(state => state.accounts.changeStatus);
 
   const notYetImplementedDescription = useSelector(state => state.app.notYetImplementedDescription);
   const ref = useRef(null);
   const [isVisible, toggle] = useModal(notYetImplementedDescription !== null ? true : false);
-
   const activateAccountFn = form => dispatch(activateAccount(form));
-
   useEffect(() => {
     if (notYetImplementedDescription !== null) {
       toggle();
     }
   }, [notYetImplementedDescription, toggle]);
 
-  // If page refreshed, ensure we try to retrieve the logged in user.
+  // Always fetch app config regardless of logged in status
   useEffect(() => {
-    if (!user) {
+    dispatch(fetchAppConfig());
+  }, [dispatch]);
+
+  // If page refreshed, ensure we try to retrieve the logged in user.
+  // Also, only fetch user if userKey is present
+  useEffect(() => {
+    if (userKey && !user) {
       dispatch(fetchUser());
-      dispatch(fetchAppConfig());
     }
-  }, [dispatch, user]);
+  }, [dispatch, user, userKey]);
 
   // If the Google Analytics tracking id doesn't exist, fetch it,
   // then setup analytics. This should only be done once on app
@@ -91,7 +109,7 @@ const App = () => {
   }, [user, pollingPeriod, dispatch]);
 
   return (
-    <div className={`${styles.app}`} ref={ref}>
+    <div className={styles.app} ref={ref}>
       <ReactTooltip />
 
       <main>
@@ -108,29 +126,81 @@ const App = () => {
             exact
             path="/password/change"
             user={user}
-            render={() => <PasswordChangeForm changePassword={form => dispatch(changePassword(form))} />}
+            render={() => (
+              <PasswordChangeForm
+                changePassword={form => dispatch(changePassword(form))}
+                changeStatus={changeStatus}
+                error={error}
+              />
+            )}
           />
           <PrivateRoute exact path="/user/update" user={user} component={UpdateUserForm} />
 
           <PrivateRoute exact path="/" user={user} component={LandingView} />
 
-          <Route exact path="/register" component={RegisterForm} />
+          <Route
+            exact
+            path="/register"
+            render={() => (
+              <RegisterForm
+                register={form => dispatch(register(form))}
+                registerUserStatus={registerUserStatus}
+                resendVerificationEmail={email => dispatch(resendVerificationEmail(email))}
+                error={error}
+              />
+            )}
+          />
           <Route exact path="/terms" component={TermsAndConditions} />
           <Route
             exact
             path="/login"
-            render={() => <LoginForm login={values => dispatch(login(values))} user={user} error={error} />}
+            render={() => (
+              <LoginForm
+                login={values => dispatch(login(values))}
+                user={user}
+                error={error}
+                resendVerificationEmail={email => dispatch(resendVerificationEmail(email))}
+                verificationEmailStatus={verificationEmailStatus}
+              />
+            )}
           />
           <Route
             exact
             path="/account/confirm-email/:key"
             user={user}
-            render={props => <AccountActivation match={props.match} activateAccount={activateAccountFn} />}
+            render={props => (
+              <AccountActivation
+                match={props.match}
+                error={error}
+                activateAccount={activateAccountFn}
+                accountActivationStatus={accountActivationStatus}
+              />
+            )}
           />
-          <Route path="/reset_password_done" component={PasswordResetDone} />
-          <Route path="/password/reset/:token/:uid/" component={PasswordResetConfirm} />
+          <Route
+            path="/password/reset/:token/:uid/"
+            render={props => (
+              <PasswordResetConfirm
+                confirmResetPassword={(form, params) => dispatch(confirmResetPassword(form, params))}
+                resetStatus={resetStatus}
+                match={props.match}
+                error={error}
+              />
+            )}
+          />
           <Suspense fallback={<h3>Password Rest Loading...</h3>}>
-            <Route exact path="/password/reset" user={user} component={PasswordResetForm} />
+            <Route
+              exact
+              path="/password/reset"
+              user={user}
+              render={() => (
+                <PasswordResetForm
+                  resetPassword={values => dispatch(resetPassword(values))}
+                  resetStatus={resetStatus}
+                  error={error}
+                />
+              )}
+            />
           </Suspense>
           {/* <Suspense fallback={<h3>Admin Loading...</h3>}>
             <PrivateRoute path="/admin" user={user} component={Admin} />

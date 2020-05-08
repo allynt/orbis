@@ -1,11 +1,19 @@
 import React, { useState, useEffect } from 'react';
-import PropTypes from 'prop-types';
 
 import { Redirect } from 'react-router-dom';
 
+import Button from '@astrosat/astrosat-ui/dist/buttons/button';
+import Well from '@astrosat/astrosat-ui/dist/containers/well';
+
+import { ReactComponent as OrbisLogo } from '../orbis.svg';
+
+import { status } from './accounts.slice';
+
 import { LOGIN_URL } from './accounts.constants';
 
-const AccountActivation = ({ match, activateAccount }) => {
+import formStyles from './forms.module.css';
+
+const AccountActivation = ({ match, error, activateAccount, accountActivationStatus }) => {
   const [redirectToLogin, setRedirectToLogin] = useState(false);
 
   useEffect(() => {
@@ -13,17 +21,36 @@ const AccountActivation = ({ match, activateAccount }) => {
     setRedirectToLogin(true);
   }, [activateAccount, match]);
 
-  // Re-direct to login.
-  if (redirectToLogin) {
+  // Re-direct to login if account activation is successful, show error if not
+  if (redirectToLogin && accountActivationStatus === status.COMPLETE) {
     return <Redirect to={LOGIN_URL} />;
   }
+  return (
+    <div className={`${formStyles.container} ${formStyles.accountsBackground}`}>
+      <div className={`${formStyles.form} ${formStyles.resend}`}>
+        <OrbisLogo className={formStyles.logo} />
 
-  return <div></div>;
-};
+        {error && (
+          <Well type="error">
+            <ul data-testid="error-well">
+              {error.map(error => (
+                <li key={error}>{error}</li>
+              ))}
+            </ul>
+          </Well>
+        )}
 
-AccountActivation.propTypes = {
-  match: PropTypes.object.isRequired,
-  activateAccount: PropTypes.func.isRequired,
+        <div className={formStyles.content}>
+          <p className={formStyles.paragraph}>Sorry, there was an error in activating your account.</p>
+          <p className={formStyles.paragraph}>Please try again later.</p>
+        </div>
+
+        <div className={formStyles.buttons}>
+          <Button href={LOGIN_URL}>Continue</Button>
+        </div>
+      </div>
+    </div>
+  );
 };
 
 export default AccountActivation;
