@@ -160,8 +160,7 @@ export const register = form => async dispatch => {
 
   if (!response.ok) {
     const errorObject = await response.json();
-    const errorMessages = errorTransformer(errorObject);
-    return dispatch(registerUserFailure(errorMessages));
+    return dispatch(registerUserFailure(errorTransformer(errorObject)));
   }
 
   return dispatch(registerUserSuccess());
@@ -172,8 +171,7 @@ export const activateAccount = form => async dispatch => {
 
   if (!response.ok) {
     const errorObject = await response.json();
-    const errorMessages = errorTransformer(errorObject);
-    return dispatch(activateAccountFailure(errorMessages));
+    return dispatch(activateAccountFailure(errorTransformer(errorObject)));
   }
 
   return dispatch(activateAccountSuccess());
@@ -186,8 +184,7 @@ export const fetchUser = (email = 'current') => async (dispatch, getState) => {
 
   if (!response.ok) {
     const errorObject = await response.json();
-    const errorMessages = errorTransformer(errorObject);
-    return dispatch(fetchUserFailure(errorMessages));
+    return dispatch(fetchUserFailure(errorTransformer(errorObject)));
   }
 
   const user = await response.json();
@@ -200,8 +197,7 @@ export const login = form => async dispatch => {
 
   if (!response.ok) {
     const errorObject = await response.json();
-    const errorMessages = errorTransformer(errorObject);
-    return dispatch(loginUserFailure(errorMessages));
+    return dispatch(loginUserFailure(errorTransformer(errorObject)));
   }
 
   const userKey = (await response.json()).token;
@@ -234,8 +230,7 @@ export const logout = () => async (dispatch, getState) => {
 
   if (!response.ok) {
     const errorObject = await response.json();
-    const errorMessages = errorTransformer(errorObject);
-    return dispatch(logoutUserFailure(errorMessages));
+    return dispatch(logoutUserFailure(errorTransformer(errorObject)));
   }
 
   return dispatch(logoutUserSuccess());
@@ -248,8 +243,7 @@ export const changePassword = form => async (dispatch, getState) => {
 
   if (!response.ok) {
     const errorObject = await response.json();
-    const errorMessages = errorTransformer(errorObject);
-    return dispatch(changePasswordFailure(errorMessages));
+    return dispatch(changePasswordFailure(errorTransformer(errorObject)));
   }
 
   return dispatch(changePasswordSuccess());
@@ -267,8 +261,7 @@ export const confirmResetPassword = (form, params) => async dispatch => {
 
   if (!response.ok) {
     const errorObject = await response.json();
-    const errorMessages = errorTransformer(errorObject);
-    return dispatch(passwordResetRequestedFailure(errorMessages));
+    return dispatch(passwordResetRequestedFailure(errorTransformer(errorObject)));
   }
 
   return dispatch(passwordResetRequestedSuccess());
@@ -279,8 +272,7 @@ export const resetPassword = form => async dispatch => {
 
   if (!response.ok) {
     const errorObject = await response.json();
-    const errorMessages = errorTransformer(errorObject);
-    return dispatch(resetPasswordFailure(errorMessages));
+    return dispatch(resetPasswordFailure(errorTransformer(errorObject)));
   }
 
   return dispatch(resetPasswordSuccess());
@@ -302,8 +294,7 @@ export const updateUser = form => async (dispatch, getState) => {
 
   if (!response.ok) {
     const errorObject = await response.json();
-    const errorMessages = errorTransformer(errorObject);
-    return dispatch(updateUserFailure(errorMessages));
+    return dispatch(updateUserFailure(errorTransformer(errorObject)));
   }
 
   const userObj = await response.json();
