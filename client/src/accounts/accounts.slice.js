@@ -3,8 +3,6 @@ import { createSlice } from '@reduxjs/toolkit';
 import { persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage'; // defaults to localStorage for web
 
-import { history } from '../root.reducer';
-
 import { sendData, getData, JSON_HEADERS, getJsonAuthHeaders } from '../utils/http';
 
 const API_PREFIX = '/api/authentication/';

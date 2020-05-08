@@ -33,7 +33,7 @@ const AccountActivation = ({ match, error, activateAccount, accountActivationSta
         {error && (
           <Well type="error">
             <ul data-testid="error-well">
-              {error.map((error) => (
+              {error.map(error => (
                 <li key={error}>{error}</li>
               ))}
             </ul>
