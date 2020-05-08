@@ -7,6 +7,8 @@ import SatellitesTool from './features/satellites.component';
 
 import styles from './tools.module.css';
 
+const isProduction = process.env.NODE_ENV === 'production';
+
 const install = () => {
   window.devToolsEnabled = true;
 
@@ -27,10 +29,10 @@ const install = () => {
       <div className={styles.devTools}>
         <div>🛠 Dev Tools</div>
         <div className={styles.tools}>
-          <LocalDevTools />
-          <StoriesTool />
-          <FiltersTool />
-          <SatellitesTool />
+          {!isProduction && <LocalDevTools />}
+          {!isProduction && <StoriesTool />}
+          {!isProduction && <FiltersTool />}
+          {!isProduction && <SatellitesTool />}
         </div>
       </div>
     );
