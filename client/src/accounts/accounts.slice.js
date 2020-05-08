@@ -26,16 +26,21 @@ export const status = {
 
 // Shape error data into a single array of only error strings.
 const errorTransformer = errorObject => {
-  const errors = errorObject.errors;
+  if (errorObject.detail) {
+    console.log('Error: ', errorObject.detail);
+    return;
+  } else {
+    const errors = errorObject.errors;
 
-  let errorMessages = [];
-  for (const key of Object.keys(errors)) {
-    for (const index in errors[key]) {
-      const array = errors[key];
-      errorMessages = [...errorMessages, array[index]];
+    let errorMessages = [];
+    for (const key of Object.keys(errors)) {
+      for (const index in errors[key]) {
+        const array = errors[key];
+        errorMessages = [...errorMessages, array[index]];
+      }
     }
+    return errorMessages;
   }
-  return errorMessages;
 };
 
 const initialState = {

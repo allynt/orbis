@@ -202,15 +202,7 @@ const Landing = () => {
           ref={ref}
         />
       ) : (
-        <NewUserLanding
-          setRedirect={setRedirect}
-          toggle={toggle}
-          isVisible={isVisible}
-          regions={regions}
-          domains={domains}
-          setViewport={updateViewport}
-          ref={ref}
-        />
+        <NewUserLanding setRedirect={setRedirect} />
       )}
     </div>
   );
