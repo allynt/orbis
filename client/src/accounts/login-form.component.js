@@ -105,18 +105,34 @@ const LoginForm = ({ login, user, error, resendVerificationEmail, verificationEm
             </div>
           </div>
 
-          <div>
-            {notVerified && (
-              <Button
-                theme="secondary"
-                onClick={() => {
-                  resendVerificationEmail(values.email);
-                }}
-              >
-                Resend Verification Email
-              </Button>
-            )}
-          </div>
+          {notVerified && (
+            <div className={formStyles.content}>
+              <p className={formStyles.paragraph}>
+                <strong>Check your email</strong>
+              </p>
+
+              <p className={formStyles.paragraph}>
+                An email was sent to <strong>{values.email}</strong> when the account was registered. Please click the
+                link inside to verify your account before logging in.
+              </p>
+
+              <p className={formStyles.paragraph}>
+                <strong>You haven't received the email?</strong>
+              </p>
+
+              <p className={formStyles.paragraph}>Please check your spam or bulk folders.</p>
+              <div className={formStyles.buttons}>
+                <Button
+                  theme="secondary"
+                  onClick={() => {
+                    resendVerificationEmail(values.email);
+                  }}
+                >
+                  Resend Verification Email
+                </Button>
+              </div>
+            </div>
+          )}
 
           <div className={formStyles.buttons}>
             <Button
