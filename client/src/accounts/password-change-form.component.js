@@ -17,6 +17,20 @@ import { LOGIN_URL, TERMS_URL } from './accounts.constants';
 
 import formStyles from './forms.module.css';
 
+const ChangePasswordSuccessView = () => (
+  <div className={`${formStyles.form} ${formStyles.resend}`}>
+    <OrbisLogo className={formStyles.logo} />
+    <p className={formStyles.paragraph}>Thank you! Your password has been changed.</p>
+    <p className={formStyles.paragraph}>
+      You have completed your OR3IS account. Click the button in order to continue.
+    </p>
+
+    <div className={formStyles.buttons}>
+      <Button href={LOGIN_URL}>Continue</Button>
+    </div>
+  </div>
+);
+
 const PasswordChangeForm = ({ changePassword, changeStatus, error }) => {
   const [termsAgreed, setTermsAgreed] = useState(false);
   const { handleChange, handleSubmit, values, errors } = useForm(onSubmit, validate);
@@ -32,17 +46,7 @@ const PasswordChangeForm = ({ changePassword, changeStatus, error }) => {
   return (
     <div className={`${formStyles.container} ${formStyles.accountsBackground}`}>
       {changeStatus === status.PENDING ? (
-        <div className={`${formStyles.form} ${formStyles.resend}`}>
-          <OrbisLogo className={formStyles.logo} />
-          <p className={formStyles.paragraph}>Thank you! Your password has been changed.</p>
-          <p className={formStyles.paragraph}>
-            You have completed your OR3IS account. Click the button in order to continue.
-          </p>
-
-          <div className={formStyles.buttons}>
-            <Button href="/login">Continue</Button>
-          </div>
-        </div>
+        <ChangePasswordSuccessView />
       ) : (
         <form className={formStyles.form} onSubmit={handleSubmit}>
           <OrbisLogo className={formStyles.logo} />
@@ -50,7 +54,7 @@ const PasswordChangeForm = ({ changePassword, changeStatus, error }) => {
           {error && (
             <Well type="error">
               <ul>
-                {error.map((error) => (
+                {error.map(error => (
                   <li key={error}>{error}</li>
                 ))}
               </ul>

@@ -29,7 +29,6 @@ import AccountActivation from './accounts/account-activation.component';
 import LoginForm from './accounts/login-form.component';
 import PasswordChangeForm from './accounts/password-change-form.component';
 import UpdateUserForm from './accounts/update-user-form.component';
-import PasswordResetDone from './accounts/password-reset-done.component';
 import PasswordResetConfirm from './accounts/password-reset-confirm-form.component';
 
 import LandingView from './landing/landing.component';
@@ -146,6 +145,7 @@ const App = () => {
               <RegisterForm
                 register={form => dispatch(register(form))}
                 registerUserStatus={registerUserStatus}
+                resendVerificationEmail={email => dispatch(resendVerificationEmail(email))}
                 error={error}
               />
             )}
@@ -177,7 +177,6 @@ const App = () => {
               />
             )}
           />
-          <Route path="/reset_password_done" render={() => <PasswordResetDone error={error} />} />
           <Route
             path="/password/reset/:token/:uid/"
             render={props => (

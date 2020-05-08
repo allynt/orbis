@@ -144,14 +144,6 @@ describe('Password Reset Form Component', () => {
     );
   });
 
-  it('should redirect when password reset successful', () => {
-    resetStatus = status.COMPLETE;
-
-    renderComponent(history, confirmResetPassword, resetStatus, match, error);
-
-    expect(history.location.pathname).toEqual('/reset_password_done');
-  });
-
   it('should not redirect, but display error well if password reset is unsucessful', () => {
     resetStatus = status.NONE;
     error = ['Test Error 1', 'Test Error 2', 'Test Error 3'];

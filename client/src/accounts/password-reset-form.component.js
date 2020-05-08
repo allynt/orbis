@@ -15,36 +15,34 @@ import { LOGIN_URL } from './accounts.constants';
 
 import formStyles from './forms.module.css';
 
-const PasswordResetResend = ({ email, onSubmit }) => {
-  return (
-    <div className={`${formStyles.form} ${formStyles.resend}`}>
-      <OrbisLogo className={formStyles.logo} />
+const PasswordResetSuccessView = ({ email, onSubmit }) => (
+  <div className={`${formStyles.form} ${formStyles.resend}`}>
+    <OrbisLogo className={formStyles.logo} />
 
-      <div className={formStyles.content}>
-        <p className={formStyles.paragraph}>
-          <strong>Check your email</strong>
-        </p>
+    <div className={formStyles.content}>
+      <p className={formStyles.paragraph}>
+        <strong>Check your email</strong>
+      </p>
 
-        <p className={formStyles.paragraph}>
-          If <strong>{email}</strong> is associated with an Astrosat ID, you should receive an email containing
-          instructions on how to create a new password.
-        </p>
+      <p className={formStyles.paragraph}>
+        If <strong>{email}</strong> is associated with an Astrosat ID, you should receive an email containing
+        instructions on how to create a new password.
+      </p>
 
-        <p className={formStyles.paragraph}>
-          <strong>You haven't received the email?</strong>
-        </p>
-        <p className={formStyles.paragraph}>Please check your spam or bulk folders.</p>
-      </div>
-
-      <div className={formStyles.buttons}>
-        <Button classNames={[formStyles.resendButton]} theme="secondary" onClick={() => onSubmit(email)}>
-          Resend email
-        </Button>
-        <Button href="/login">Return to login</Button>
-      </div>
+      <p className={formStyles.paragraph}>
+        <strong>You haven't received the email?</strong>
+      </p>
+      <p className={formStyles.paragraph}>Please check your spam or bulk folders.</p>
     </div>
-  );
-};
+
+    <div className={formStyles.buttons}>
+      <Button classNames={[formStyles.resendButton]} theme="secondary" onClick={() => onSubmit(email)}>
+        Resend email
+      </Button>
+      <Button href={LOGIN_URL}>Return to login</Button>
+    </div>
+  </div>
+);
 
 const PasswordResetForm = ({ resetPassword, resetStatus, error }) => {
   const { handleChange, handleSubmit, values, errors } = useForm(onSubmit, validate);
@@ -56,7 +54,7 @@ const PasswordResetForm = ({ resetPassword, resetStatus, error }) => {
   return (
     <div className={`${formStyles.container} ${formStyles.accountsBackground}`}>
       {resetStatus === status.PENDING ? (
-        <PasswordResetResend email={values.email} onSubmit={onSubmit} />
+        <PasswordResetSuccessView email={values.email} onSubmit={onSubmit} />
       ) : (
         <form className={formStyles.form} onSubmit={handleSubmit}>
           <OrbisLogo className={formStyles.logo} />

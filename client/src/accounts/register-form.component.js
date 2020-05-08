@@ -20,7 +20,35 @@ import { LOGIN_URL, TERMS_URL } from './accounts.constants';
 
 import formStyles from './forms.module.css';
 
-const RegisterForm = ({ register, error, registerUserStatus }) => {
+export const RegisterFormSuccessView = ({ email, resendVerificationEmail }) => (
+  <div className={`${formStyles.form} ${formStyles.resend}`}>
+    <OrbisLogo className={formStyles.logo} />
+
+    <p className={formStyles.paragraph}>
+      <strong>Check your email</strong>
+    </p>
+
+    <p className={formStyles.paragraph}>
+      An email has been sent to <strong>{email}</strong>. Please click the link inside to verify your account before
+      logging in.
+    </p>
+
+    <p className={formStyles.paragraph}>
+      <strong>You haven't received the email?</strong>
+    </p>
+
+    <p className={formStyles.paragraph}>Please check your spam or bulk folders.</p>
+
+    <div className={formStyles.buttons}>
+      <Button classNames={[formStyles.resendButton]} theme="secondary" onClick={() => resendVerificationEmail(email)}>
+        Resend email
+      </Button>
+      <Button href={LOGIN_URL}>Continue</Button>
+    </div>
+  </div>
+);
+
+const RegisterForm = ({ register, registerUserStatus, resendVerificationEmail, error }) => {
   const { passwordMinLength, passwordMaxLength } = useSelector(state => state.app.config);
   const validators = {
     passwordMinLength,
@@ -43,17 +71,7 @@ const RegisterForm = ({ register, error, registerUserStatus }) => {
   return (
     <div className={`${formStyles.container} ${formStyles.accountsBackground}`}>
       {registerUserStatus === status.PENDING ? (
-        <div className={`${formStyles.form} ${formStyles.resend}`}>
-          <OrbisLogo className={formStyles.logo} />
-          CHECK YOUR EMAIL STUFF GOES HERE
-          <p className={formStyles.paragraph}>
-            Thank you! An email has been sent to <strong>{values.email}</strong>
-          </p>
-          <p className={formStyles.paragraph}>Please click the link inside to verify your account before logging in.</p>
-          <div className={formStyles.buttons}>
-            <Button href="/login">Continue</Button>
-          </div>
-        </div>
+        <RegisterFormSuccessView email={values.email} resendVerificationEmail={resendVerificationEmail} />
       ) : (
         <form className={formStyles.form} onSubmit={handleSubmit}>
           <OrbisLogo className={formStyles.logo} />
