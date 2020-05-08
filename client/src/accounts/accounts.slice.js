@@ -27,7 +27,6 @@ export const status = {
 // Shape error data into a single array of only error strings.
 const errorTransformer = errorObject => {
   if (errorObject.detail) {
-    console.log('Error: ', errorObject.detail);
     return;
   } else {
     const errors = errorObject.errors;
