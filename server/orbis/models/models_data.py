@@ -11,6 +11,7 @@ from django.core.exceptions import ValidationError
 from django.core.validators import MaxValueValidator
 from django.db import models
 from django.db.models import Q, F
+from django.utils.html import mark_safe
 
 from astrosat_users.conf import app_settings as astrosat_users_app_settings
 from astrosat_users.models import User, UserRole
@@ -286,6 +287,8 @@ class RoleAccess(AccessModel):
     class Meta:
         app_label = "orbis"
         verbose_name = "Role Access"
+        # RoleAccess.verbose_name_plural is only exposed in DataSourceAdmin.inlines, so it's a good place for extra documentation
+        verbose_name_plural = mark_safe("Role Access <em>(please save the DataSource prior to adding RoleAccess instances)</em>")
         # constraints = [
         #     models.UniqueConstraint(
         #         fields=["data_scope", "role"],
@@ -301,6 +304,8 @@ class OwnerAccess(AccessModel):
     class Meta:
         app_label = "orbis"
         verbose_name = "Owner Access"
+        # OwnerAccess.verbose_name_plural is only exposed in DataSourceAdmin.inlines, so it's a good place for extra documentation
+        verbose_name_plural = mark_safe("Owner Access <em>(please save the DataSource prior to adding OwnerAccess instances)</em>")
         # constraints = [
         #     models.UniqueConstraint(
         #         fields=["data_scope", "owner"],
