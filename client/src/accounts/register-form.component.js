@@ -24,20 +24,22 @@ export const RegisterFormSuccessView = ({ email, resendVerificationEmail }) => (
   <div className={`${formStyles.form} ${formStyles.resend}`}>
     <OrbisLogo className={formStyles.logo} />
 
-    <p className={formStyles.paragraph}>
-      <strong>Check your email</strong>
-    </p>
+    <div className={formStyles.content}>
+      <p className={formStyles.paragraph}>
+        <strong>Check your email</strong>
+      </p>
 
-    <p className={formStyles.paragraph}>
-      An email has been sent to <strong>{email}</strong>. Please click the link inside to verify your account before
-      logging in.
-    </p>
+      <p className={formStyles.paragraph}>
+        An email has been sent to <strong>{email}</strong>. Please click the link inside to verify your account before
+        logging in.
+      </p>
 
-    <p className={formStyles.paragraph}>
-      <strong>You haven't received the email?</strong>
-    </p>
+      <p className={formStyles.paragraph}>
+        <strong>You haven't received the email?</strong>
+      </p>
 
-    <p className={formStyles.paragraph}>Please check your spam or bulk folders.</p>
+      <p className={formStyles.paragraph}>Please check your spam or bulk folders.</p>
+    </div>
 
     <div className={formStyles.buttons}>
       <Button classNames={[formStyles.resendButton]} theme="secondary" onClick={() => resendVerificationEmail(email)}>

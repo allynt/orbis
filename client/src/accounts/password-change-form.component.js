@@ -20,10 +20,13 @@ import formStyles from './forms.module.css';
 const ChangePasswordSuccessView = () => (
   <div className={`${formStyles.form} ${formStyles.resend}`}>
     <OrbisLogo className={formStyles.logo} />
-    <p className={formStyles.paragraph}>Thank you! Your password has been changed.</p>
-    <p className={formStyles.paragraph}>
-      You have completed your OR3IS account. Click the button in order to continue.
-    </p>
+
+    <div className={formStyles.content}>
+      <p className={formStyles.paragraph}>Thank you! Your password has been changed.</p>
+      <p className={formStyles.paragraph}>
+        You have completed your OR3IS account. Click the button in order to continue.
+      </p>
+    </div>
 
     <div className={formStyles.buttons}>
       <Button href={LOGIN_URL}>Continue</Button>

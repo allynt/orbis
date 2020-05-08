@@ -40,8 +40,10 @@ const AccountActivation = ({ match, error, activateAccount, accountActivationSta
           </Well>
         )}
 
-        <p className={formStyles.paragraph}>Sorry, there was an error in activating your account.</p>
-        <p className={formStyles.paragraph}>Please try again later.</p>
+        <div className={formStyles.content}>
+          <p className={formStyles.paragraph}>Sorry, there was an error in activating your account.</p>
+          <p className={formStyles.paragraph}>Please try again later.</p>
+        </div>
 
         <div className={formStyles.buttons}>
           <Button href={LOGIN_URL}>Continue</Button>
