@@ -1,5 +1,5 @@
 import { createSlice, createSelector } from '@reduxjs/toolkit';
-import { mergeWith, isEmpty } from 'lodash';
+import { mergeWith, isEmpty, get, set } from 'lodash';
 import { getJsonAuthHeaders, getData } from 'utils/http';
 
 const initialState = {
@@ -116,9 +116,16 @@ const createLayerFilters = layer => {
   const filters = layer.metadata.filters.reduce((acc, filter) => {
     const options = new Set();
     for (let feature of layer.data.features) {
-      feature.properties[filter] && options.add(feature.properties[filter]);
+      const value = get(feature.properties, filter);
+      if (value) {
+        if (Array.isArray(value)) {
+          value.forEach(val => options.add(val));
+        } else {
+          options.add(value);
+        }
+      }
     }
-    return options.size ? { ...acc, [filter]: Array.from(options) } : acc;
+    return options.size ? set(acc, filter, Array.from(options)) : acc;
   }, {});
   return filters;
 };

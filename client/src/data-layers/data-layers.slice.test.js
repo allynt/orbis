@@ -682,7 +682,7 @@ describe('Data Slice', () => {
       });
     });
 
-    describe.only('selectAvailableFilters', () => {
+    describe('selectAvailableFilters', () => {
       it('returns the filters with options based on the current user selected layers', () => {
         const state = {
           data: {
@@ -1121,7 +1121,9 @@ describe('Data Slice', () => {
         };
         const expected = {
           people: {
-            contactDetails: ['country'],
+            contactDetails: {
+              country: ['Scotland', 'Wales', 'England'],
+            },
           },
         };
         const result = selectAvailableFilters(state);
@@ -1194,21 +1196,25 @@ describe('Data Slice', () => {
                       },
                     },
                     {
-                      contactDetails: {
-                        country: 'Scotland',
-                      },
-                      favouriteAnimal: 'cat',
-                      information: {
-                        requires: ['food', 'water'],
+                      properties: {
+                        contactDetails: {
+                          country: 'Scotland',
+                        },
+                        favouriteAnimal: 'cat',
+                        information: {
+                          requires: ['food', 'water'],
+                        },
                       },
                     },
                     {
-                      contactDetails: {
-                        country: 'England',
-                      },
-                      favouriteAnimal: 'cat',
-                      information: {
-                        requires: ['water'],
+                      properties: {
+                        contactDetails: {
+                          country: 'England',
+                        },
+                        favouriteAnimal: 'cat',
+                        information: {
+                          requires: ['water'],
+                        },
                       },
                     },
                   ],
