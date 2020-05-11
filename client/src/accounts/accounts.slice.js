@@ -212,16 +212,13 @@ export const login = form => async dispatch => {
   return dispatch(fetchUser());
 };
 
-export const resendVerificationEmail = email => async (dispatch, getState) => {
-  const headers = getJsonAuthHeaders(getState());
-
-  const response = await sendData(API.resendVerificationEmail, email, headers);
+export const resendVerificationEmail = email => async dispatch => {
+  const emailObj = { email };
+  const response = await sendData(API.resendVerificationEmail, emailObj, JSON_HEADERS);
 
   if (!response.ok) {
     const errorObject = await response.json();
-
-    console.log('Error response: ', errorObject);
-    return;
+    return dispatch(resendVerificationEmailFailure(errorObject));
   }
 
   return dispatch(resendVerificationEmailSuccess());
