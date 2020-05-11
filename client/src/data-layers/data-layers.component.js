@@ -50,7 +50,7 @@ const DefaultComponent = ({ selectedLayer, dispatch }) => (
 );
 
 const detailComponentMap = {
-  'population-information': PopulationInformation,
+  people: PopulationInformation,
   infrastructure: HealthInfrastructure,
   default: DefaultComponent,
 };
