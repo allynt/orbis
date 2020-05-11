@@ -682,8 +682,8 @@ describe('Data Slice', () => {
       });
     });
 
-    describe('selectAvailableFilters', () => {
-      it('should return the filters with options based on the current user selected layers', () => {
+    describe.only('selectAvailableFilters', () => {
+      it('returns the filters with options based on the current user selected layers', () => {
         const state = {
           data: {
             layers: ['fruit-bowl'],
@@ -725,7 +725,7 @@ describe('Data Slice', () => {
         expect(result).toEqual(expected);
       });
 
-      it('should only return unique options', () => {
+      it('only returns unique options', () => {
         const state = {
           data: {
             layers: ['fruit-bowl'],
@@ -777,7 +777,7 @@ describe('Data Slice', () => {
         expect(result).toEqual(expected);
       });
 
-      it('should return filter sections for each selected layer', () => {
+      it('returns filter sections for each selected layer', () => {
         const state = {
           data: {
             layers: ['fruit-bowl', 'cars'],
@@ -857,7 +857,7 @@ describe('Data Slice', () => {
         expect(result).toEqual(expected);
       });
 
-      it('should return options for each filterable property', () => {
+      it('returns options for each filterable property', () => {
         const state = {
           data: {
             layers: ['cars'],
@@ -903,7 +903,7 @@ describe('Data Slice', () => {
         expect(result).toEqual(expected);
       });
 
-      it('should return an empty object if the user has not selected layers', () => {
+      it('returns an empty object if the user has not selected layers', () => {
         const state = {
           data: {
             layers: [],
@@ -940,7 +940,7 @@ describe('Data Slice', () => {
         expect(result).toEqual({});
       });
 
-      it('should return an empty object if there are no sources available', () => {
+      it('returns an empty object if there are no sources available', () => {
         const state = {
           data: {
             layers: ['fruit-bowl'],
@@ -951,7 +951,7 @@ describe('Data Slice', () => {
         expect(result).toEqual({});
       });
 
-      it('should return an empty object if there are sources but non are filterable', () => {
+      it('returns an empty object if there are sources but non are filterable', () => {
         const state = {
           data: {
             layers: ['fruit-bowl'],
@@ -986,7 +986,7 @@ describe('Data Slice', () => {
         expect(result).toEqual({});
       });
 
-      it('should not include a filter if it is specified but does not match to a property', () => {
+      it('does not include a filter if it is specified but does not match to a property', () => {
         const state = {
           data: {
             layers: ['fruit-bowl'],
@@ -1028,7 +1028,7 @@ describe('Data Slice', () => {
         expect(result).toEqual(expected);
       });
 
-      it('should not fail if a feature does not contain the filterable property', () => {
+      it('does not fail if a feature does not contain the filterable property', () => {
         const state = {
           data: {
             layers: ['fruit-bowl'],
@@ -1067,6 +1067,165 @@ describe('Data Slice', () => {
           'fruit-bowl': {
             fruit: ['apple', 'banana', 'orange'],
             status: ['fresh', 'rotten'],
+          },
+        };
+        const result = selectAvailableFilters(state);
+        expect(result).toEqual(expected);
+      });
+
+      it('works on grouped properties', () => {
+        const state = {
+          data: {
+            layers: ['people'],
+            sources: [
+              {
+                name: 'people',
+                metadata: {
+                  filters: ['contactDetails.country'],
+                },
+                data: {
+                  features: [
+                    {
+                      properties: {
+                        contactDetails: {
+                          country: 'Scotland',
+                        },
+                      },
+                    },
+                    {
+                      properties: {
+                        contactDetails: {
+                          country: 'Wales',
+                        },
+                      },
+                    },
+                    {
+                      properties: {
+                        contactDetails: {
+                          country: 'Scotland',
+                        },
+                      },
+                    },
+                    {
+                      properties: {
+                        contactDetails: {
+                          country: 'England',
+                        },
+                      },
+                    },
+                  ],
+                },
+              },
+            ],
+          },
+        };
+        const expected = {
+          people: {
+            contactDetails: ['country'],
+          },
+        };
+        const result = selectAvailableFilters(state);
+        expect(result).toEqual(expected);
+      });
+
+      it('works on array properties', () => {
+        const state = {
+          data: {
+            layers: ['people'],
+            sources: [
+              {
+                name: 'people',
+                metadata: {
+                  filters: ['favouriteAnimals'],
+                },
+                data: {
+                  features: [
+                    {
+                      properties: {
+                        favouriteAnimals: ['dog', 'cat'],
+                      },
+                    },
+                    {
+                      properties: {
+                        favouriteAnimals: ['aardvark'],
+                      },
+                    },
+                    {
+                      properties: {
+                        favouriteAnimals: ['shark', 'dog', 'aardvark'],
+                      },
+                    },
+                  ],
+                },
+              },
+            ],
+          },
+        };
+        const expected = {
+          people: {
+            favouriteAnimals: ['dog', 'cat', 'aardvark', 'shark'],
+          },
+        };
+        const result = selectAvailableFilters(state);
+        expect(result).toEqual(expected);
+      });
+
+      it('works on a mix of grouped, arrays, and singles', () => {
+        const state = {
+          data: {
+            layers: ['people'],
+            sources: [
+              {
+                name: 'people',
+                metadata: {
+                  filters: ['contactDetails.country', 'favouriteAnimal', 'information.requires'],
+                },
+                data: {
+                  features: [
+                    {
+                      properties: {
+                        contactDetails: {
+                          country: 'Scotland',
+                        },
+                        favouriteAnimal: 'dog',
+                        information: {
+                          requires: ['food', 'shelter'],
+                        },
+                      },
+                    },
+                    {
+                      contactDetails: {
+                        country: 'Scotland',
+                      },
+                      favouriteAnimal: 'cat',
+                      information: {
+                        requires: ['food', 'water'],
+                      },
+                    },
+                    {
+                      contactDetails: {
+                        country: 'England',
+                      },
+                      favouriteAnimal: 'cat',
+                      information: {
+                        requires: ['water'],
+                      },
+                    },
+                  ],
+                },
+              },
+            ],
+          },
+        };
+        const expected = {
+          people: {
+            contactDetails: {
+              country: ['Scotland', 'England'],
+            },
+            favouriteAnimal: ['dog', 'cat'],
+            information: {
+              requires: ['food', 'shelter', 'water'],
+            },
           },
         };
         const result = selectAvailableFilters(state);
