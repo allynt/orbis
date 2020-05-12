@@ -1,12 +1,10 @@
 import React, { useReducer, useState, useEffect } from 'react';
 import ReactDOM from 'react-dom';
-import { Checkbox } from '@astrosat/astrosat-ui';
 import { checkboxReducer } from './checkbox-reducer';
 import { filterValueIsPresent, areAnyFilterValuesPresent } from './filters-utils';
 import { Button } from '@astrosat/astrosat-ui';
-
+import { FiltersFormSection } from './filters-form-section.component';
 import styles from './filters-form.module.css';
-import { toTitleCase } from 'utils/text';
 
 export const FiltersForm = ({ availableFilters, currentFilters, onFiltersChange }) => {
   const [state, dispatch] = useReducer(checkboxReducer, { toAdd: {}, toRemove: {} });
@@ -53,27 +51,14 @@ export const FiltersForm = ({ availableFilters, currentFilters, onFiltersChange 
       {availableFilters &&
         Object.keys(availableFilters).map(layer =>
           Object.keys(availableFilters[layer]).map(property => (
-            <fieldset key={`${layer}.${property}`}>
-              <div className={styles.property}>
-                <legend>{toTitleCase(property)} :</legend>
-                <div className={styles.options}>
-                  {availableFilters[layer][property].map(value => {
-                    const defaultChecked = filterValueIsPresent(currentFilters, { layer, property, value });
-                    return (
-                      <div className={styles.option}>
-                        <Checkbox
-                          key={`${layer}.${property}.${value}`}
-                          label={toTitleCase(value)}
-                          ariaLabel={value}
-                          defaultChecked={defaultChecked}
-                          onChange={handleCheckboxChange({ layer, property, value })}
-                        />
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
-            </fieldset>
+            <FiltersFormSection
+              key={`${layer}.${property}`}
+              options={availableFilters[layer][property]}
+              layer={layer}
+              property={property}
+              currentFilters={currentFilters}
+              onCheckboxChange={handleCheckboxChange}
+            />
           )),
         )}
       <Button className={styles.submit} type="submit">{`${buttonActionText} Filters`}</Button>
