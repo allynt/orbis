@@ -1,5 +1,5 @@
 import { createSlice, createSelector } from '@reduxjs/toolkit';
-import { mergeWith, isEmpty, get, set } from 'lodash';
+import { mergeWith, isEmpty, get } from 'lodash';
 import { getJsonAuthHeaders, getData } from 'utils/http';
 
 const initialState = {
