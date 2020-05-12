@@ -4,44 +4,54 @@ import PropTypes from 'prop-types';
 // import styles from './infrastructure-detail.module.css';
 import infoStyles from './info-details.module.css';
 
-const NO_DATA = 'No data available';
+const PK = 'pk';
+const PERSON_TYPE = 'person_type';
+const OBJECT = 'object';
+const NO_DATA = 'Not available';
 
-const InfrastructureDetail = ({ features }) => (
-  <>
-    <h1 className={infoStyles.header}>Infrastructure Details</h1>
-    <div className={infoStyles.modal}>
-      {features &&
-        features.map(feature => (
-          <ul key={feature.id} className={infoStyles.list}>
-            <li className={infoStyles.label}>
-              {feature.properties.name && feature.properties.name !== 'null' ? feature.properties.name : NO_DATA}
-            </li>
-            <li>
-              {feature.properties.address1 && feature.properties.address1 !== 'null'
-                ? feature.properties.address1
-                : NO_DATA}
-            </li>
-            <li>
-              {feature.properties.address2 && feature.properties.address2 !== 'null' ? feature.properties.address2 : ''}
-            </li>
-            <li>
-              {feature.properties.postcode && feature.properties.postcode !== 'null'
-                ? feature.properties.postcode
-                : NO_DATA}
-            </li>
-            <li>
-              <span className={infoStyles.label}>Phone Number: </span>
-              <span className={infoStyles.content}>
-                {feature.properties.phone_number && feature.properties.phone_number !== 'null'
-                  ? feature.properties.phone_number
-                  : NO_DATA}
-              </span>
-            </li>
-          </ul>
+const mapObject = data => {
+  const feature = JSON.parse(data);
+  return Object.keys(feature)
+    .filter(key => key !== PK && key !== PERSON_TYPE)
+    .map(key => {
+      if (typeof feature[key] === OBJECT) {
+        // When value is object, make new table inside li and map out values
+        // Parent is ul, so must return li
+        return (
+          <li>
+            <ul className={infoStyles.table}>
+              <h1 className={infoStyles.listTitle}>{key}</h1>
+              {mapObject(feature[key])}
+            </ul>
+          </li>
+        );
+      } else {
+        //when value is not object, render li to browser
+        return (
+          <li key={key} className={infoStyles.listItem2}>
+            <span className={infoStyles.label}>{typeof key === 'number' ? key + 1 : key}: </span>
+            <span className={infoStyles.content}>{feature[key] || NO_DATA}</span>
+          </li>
+        );
+      }
+    });
+};
+
+const InfrastructureDetail = ({ features }) => {
+  console.log('Features: ', features);
+  return (
+    <>
+      <h1 className={infoStyles.header}>User Details</h1>
+      <div className={infoStyles.modal}>
+        {features.map(feature => (
+          <div key={feature.id}>
+            <ul className={infoStyles.list}>{mapObject(feature.properties)}</ul>
+          </div>
         ))}
-    </div>
-  </>
-);
+      </div>
+    </>
+  );
+};
 
 InfrastructureDetail.propTypes = {
   features: PropTypes.array.isRequired,
