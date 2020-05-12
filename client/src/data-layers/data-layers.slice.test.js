@@ -2162,6 +2162,70 @@ describe('Data Slice', () => {
         const result = selectFilteredData(state);
         expect(result).toEqual(expected);
       });
+
+      it('works with array properties', () => {
+        const state = {
+          data: {
+            sources: [
+              {
+                name: 'array-test',
+                metadata: {
+                  filters: ['arrayproperty'],
+                },
+                data: {
+                  features: [
+                    {
+                      properties: {
+                        arrayproperty: ['value 1', 'value 2'],
+                      },
+                    },
+                    {
+                      properties: {
+                        arrayproperty: ['value 3', 'value 4'],
+                      },
+                    },
+                    {
+                      properties: {
+                        arrayproperty: ['value 1', 'value 5'],
+                      },
+                    },
+                  ],
+                },
+              },
+            ],
+            layers: ['array-test'],
+            filters: {
+              'array-test': {
+                arrayproperty: ['value 1', 'value 5'],
+              },
+            },
+          },
+        };
+        const expected = [
+          {
+            name: 'array-test',
+            metadata: {
+              filters: ['arrayproperty'],
+            },
+            data: {
+              features: [
+                {
+                  properties: {
+                    arrayproperty: ['value 1', 'value 2'],
+                  },
+                },
+                {
+                  properties: {
+                    arrayproperty: ['value 1', 'value 5'],
+                  },
+                },
+              ],
+            },
+          },
+        ];
+        const result = selectFilteredData(state);
+        expect(result).toEqual(expected);
+      });
     });
   });
 });

@@ -148,7 +148,9 @@ export const selectFilteredData = createSelector([selectActiveLayers, selectCurr
         for (let filterPath in layerFilters) {
           if (layerFilters[filterPath].length > 0) {
             const value = get(feature.properties, filterPath);
-            if (!layerFilters[filterPath].includes(value)) return false;
+            if (Array.isArray(value)) {
+              if (!value.some(val => layerFilters[filterPath].includes(val))) return false;
+            } else if (!layerFilters[filterPath].includes(value)) return false;
           }
         }
         return true;
