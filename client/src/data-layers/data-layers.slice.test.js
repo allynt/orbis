@@ -214,7 +214,7 @@ describe('Data Slice', () => {
     });
 
     describe('addFilters', () => {
-      it('should add filters to state when none are applied', () => {
+      it('adds filters to state when none are applied', () => {
         const state = {};
         const filters = {
           'fruit-bowl': {
@@ -226,7 +226,7 @@ describe('Data Slice', () => {
         expect(result).toEqual(expected);
       });
 
-      it('should merge new layer filters with current', () => {
+      it('merges new layer filters with current', () => {
         const state = {
           filters: {
             'fruit-bowl': {
@@ -250,7 +250,7 @@ describe('Data Slice', () => {
         expect(result).toEqual(expected);
       });
 
-      it('should merge new properties into layer filters', () => {
+      it('merges new properties into layer filters', () => {
         const state = {
           filters: {
             'fruit-bowl': {
@@ -275,7 +275,7 @@ describe('Data Slice', () => {
         expect(result).toEqual(expected);
       });
 
-      it('should add layer filters alongside other layers', () => {
+      it('adds layer filters alongside other layers', () => {
         const state = {
           filters: {
             'fruit-bowl': {
@@ -302,7 +302,7 @@ describe('Data Slice', () => {
         expect(result).toEqual(expected);
       });
 
-      it('should be able to merge from two layers', () => {
+      it('merges from two layers', () => {
         const state = {
           filters: {
             'fruit-bowl': {
@@ -335,7 +335,7 @@ describe('Data Slice', () => {
         expect(result).toEqual(expected);
       });
 
-      it('should not add filters which already exist', () => {
+      it('does not add filters which already exist', () => {
         const state = {
           filters: {
             'fruit-bowl': {
@@ -350,6 +350,36 @@ describe('Data Slice', () => {
           filters: {
             'fruit-bowl': {
               fruit: ['apple', 'banana'],
+            },
+          },
+        };
+        const result = reducer(state, addFilters(filters));
+        expect(result).toEqual(expected);
+      });
+
+      it('adds nested filter properties', () => {
+        const state = {
+          filters: {
+            people: {
+              a: {
+                nested: {
+                  property: ['value 1'],
+                },
+              },
+            },
+          },
+        };
+        const filters = {
+          people: { a: { nested: { property: ['value 2'] } } },
+        };
+        const expected = {
+          filters: {
+            people: {
+              a: {
+                nested: {
+                  property: ['value 1', 'value 2'],
+                },
+              },
             },
           },
         };
@@ -419,6 +449,30 @@ describe('Data Slice', () => {
       it('removes layers if no properties are left', () => {
         const state = { filters: { cars: { make: ['BMW'] } } };
         const toRemove = { cars: { make: ['BMW'] } };
+        const expected = { filters: {} };
+        const result = reducer(state, removeFilters(toRemove));
+        expect(result).toEqual(expected);
+      });
+
+      it('removes filter values from nested properties', () => {
+        const state = {
+          filters: {
+            people: { 'a.nested.property': ['value 1', 'value 2'] },
+          },
+        };
+        const toRemove = { people: { 'a.nested.property': ['value 2'] } };
+        const expected = { filters: { people: { 'a.nested.property': ['value 1'] } } };
+        const result = reducer(state, removeFilters(toRemove));
+        expect(result).toEqual(expected);
+      });
+
+      it('removes nested properties when no filters are left', () => {
+        const state = {
+          filters: {
+            people: { 'a.nested.property': ['value 1'] },
+          },
+        };
+        const toRemove = { people: { 'a.nested.property': ['value 1'] } };
         const expected = { filters: {} };
         const result = reducer(state, removeFilters(toRemove));
         expect(result).toEqual(expected);
@@ -1121,9 +1175,7 @@ describe('Data Slice', () => {
         };
         const expected = {
           people: {
-            contactDetails: {
-              country: ['Scotland', 'Wales', 'England'],
-            },
+            'contactDetails.country': ['Scotland', 'Wales', 'England'],
           },
         };
         const result = selectAvailableFilters(state);
@@ -1225,13 +1277,51 @@ describe('Data Slice', () => {
         };
         const expected = {
           people: {
-            contactDetails: {
-              country: ['Scotland', 'England'],
-            },
+            'contactDetails.country': ['Scotland', 'England'],
             favouriteAnimal: ['dog', 'cat'],
-            information: {
-              requires: ['food', 'shelter', 'water'],
-            },
+            'information.requires': ['food', 'shelter', 'water'],
+          },
+        };
+        const result = selectAvailableFilters(state);
+        expect(result).toEqual(expected);
+      });
+
+      it('works on super nested objects', () => {
+        const state = {
+          data: {
+            layers: ['nesting-test'],
+            sources: [
+              {
+                name: 'nesting-test',
+                metadata: {
+                  filters: ['this.is.a.super.nested.property', 'this.is.a.super.nested.array'],
+                },
+                data: {
+                  features: [
+                    {
+                      properties: {
+                        this: {
+                          is: { a: { super: { nested: { property: 'value 1', array: ['arr val 1', 'arr val 2'] } } } },
+                        },
+                      },
+                    },
+                    {
+                      properties: {
+                        this: {
+                          is: { a: { super: { nested: { property: 'value 2', array: ['arr val 2', 'arr val 3'] } } } },
+                        },
+                      },
+                    },
+                  ],
+                },
+              },
+            ],
+          },
+        };
+        const expected = {
+          'nesting-test': {
+            'this.is.a.super.nested.property': ['value 1', 'value 2'],
+            'this.is.a.super.nested.array': ['arr val 1', 'arr val 2', 'arr val 3'],
           },
         };
         const result = selectAvailableFilters(state);
@@ -1942,6 +2032,135 @@ describe('Data Slice', () => {
         };
         const result = selectFilteredData(state);
         expect(result).toEqual([]);
+      });
+
+      it('works with nested properties', () => {
+        const state = {
+          data: {
+            sources: [
+              {
+                name: 'fruit-bowl',
+                metadata: {
+                  filters: ['nested.property'],
+                },
+                data: {
+                  features: [
+                    {
+                      properties: {
+                        fruit: 'apple',
+                        status: 'fresh',
+                        nested: {
+                          property: 'value 1',
+                        },
+                      },
+                    },
+                    {
+                      properties: {
+                        fruit: 'apple',
+                        status: 'rotten',
+                        nested: {
+                          property: 'value 2',
+                        },
+                      },
+                    },
+                    {
+                      properties: {
+                        fruit: 'banana',
+                        status: 'fresh',
+                        nested: {
+                          property: 'value 2',
+                        },
+                      },
+                    },
+                    {
+                      properties: {
+                        fruit: 'banana',
+                        status: 'rotten',
+                        nested: {
+                          property: 'value 3',
+                        },
+                      },
+                    },
+                    {
+                      properties: {
+                        fruit: 'orange',
+                        status: 'fresh',
+                        nested: {
+                          property: 'value 1',
+                        },
+                      },
+                    },
+                    {
+                      properties: {
+                        fruit: 'orange',
+                        status: 'rotten',
+                        nested: {
+                          property: 'value 3',
+                        },
+                      },
+                    },
+                  ],
+                },
+              },
+            ],
+            layers: ['fruit-bowl'],
+            filters: {
+              'fruit-bowl': {
+                'nested.property': ['value 1', 'value 2'],
+              },
+            },
+          },
+        };
+        const expected = [
+          {
+            name: 'fruit-bowl',
+            metadata: {
+              filters: ['nested.property'],
+            },
+            data: {
+              features: [
+                {
+                  properties: {
+                    fruit: 'apple',
+                    status: 'fresh',
+                    nested: {
+                      property: 'value 1',
+                    },
+                  },
+                },
+                {
+                  properties: {
+                    fruit: 'apple',
+                    status: 'rotten',
+                    nested: {
+                      property: 'value 2',
+                    },
+                  },
+                },
+                {
+                  properties: {
+                    fruit: 'banana',
+                    status: 'fresh',
+                    nested: {
+                      property: 'value 2',
+                    },
+                  },
+                },
+                {
+                  properties: {
+                    fruit: 'orange',
+                    status: 'fresh',
+                    nested: {
+                      property: 'value 1',
+                    },
+                  },
+                },
+              ],
+            },
+          },
+        ];
+        const result = selectFilteredData(state);
+        expect(result).toEqual(expected);
       });
     });
   });

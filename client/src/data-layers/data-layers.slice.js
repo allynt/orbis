@@ -125,7 +125,7 @@ const createLayerFilters = layer => {
         }
       }
     }
-    return options.size ? set(acc, filter, Array.from(options)) : acc;
+    return options.size ? { ...acc, [filter]: Array.from(options) } : acc;
   }, {});
   return filters;
 };
@@ -145,9 +145,11 @@ export const selectFilteredData = createSelector([selectActiveLayers, selectCurr
     if (filters[layer.name]) {
       const layerFilters = filters[layer.name];
       layer.data.features = layer.data.features.filter(feature => {
-        for (let property in layerFilters) {
-          if (layerFilters[property].length > 0 && !layerFilters[property].includes(feature.properties[property]))
-            return false;
+        for (let filterPath in layerFilters) {
+          if (layerFilters[filterPath].length > 0) {
+            const value = get(feature.properties, filterPath);
+            if (!layerFilters[filterPath].includes(value)) return false;
+          }
         }
         return true;
       });
