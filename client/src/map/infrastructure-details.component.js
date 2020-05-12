@@ -10,7 +10,16 @@ const OBJECT = 'object';
 const NO_DATA = 'Not available';
 
 const mapObject = data => {
-  const feature = JSON.parse(data);
+  // FIXME: Once https://github.com/mapbox/mapbox-gl-js/issues/9678#issuecomment-627456271 is resolved, we should no longer need this.
+  const feature = Object.keys(data).reduce((acc, key) => {
+    acc[key] =
+      typeof data[key] === 'string' && (data[key].startsWith('{') || data[key].startsWith('['))
+        ? JSON.parse(data[key])
+        : data[key];
+
+    return acc;
+  }, {});
+
   return Object.keys(feature)
     .filter(key => key !== PK && key !== PERSON_TYPE)
     .map(key => {
