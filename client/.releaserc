@@ -20,5 +20,5 @@
   ],
   "preset": "angular",
   "dryRun": false,
-  "ci": true
+  "ci": false
 }

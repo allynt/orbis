@@ -8,6 +8,12 @@
   - [How to start](#how-to-start)
   - [Testing](#testing)
     - [End-to-End Testing](#end-to-end-testing)
+  - [Releases](#releases)
+    - [Setup GitHub Token](#setup-github-token)
+    - [Releasing Code](#releasing-code)
+    - [Manage hung release](#manage-hung-release)
+    - [Deploying to environments](#deploying-to-environments)
+    - [Release Strategy](#release-strategy)
 
 ## Overview
 
@@ -83,3 +89,89 @@ To view all API endpoints, navigate to "localhost:8000/api/swagger"
 ### End-to-End Testing
 
 We use [Cypress](https://www.cypress.io/) to run our End-to-End tests. We augment Cypress with the [Cypress Cucumber Preprocessor](https://github.com/TheBrainFamily/cypress-cucumber-preprocessor). This allows us to use the `cucumber`/`gherkin` syntax to write **Feature** files. The idea is, **BAs** write the **Feature** files to define the requirements of the app, while the **developers** take these and implement a solution to each **Scenario**. Running and passing the tests, is proof, we have developed what was asked for.
+
+## Releases
+
+Automated releases will only work if you adhere to the [Angular Commit Guidlines](https://github.com/angular/angular.js/blob/master/DEVELOPERS.md#-git-commit-guidelines)
+
+It can be useful to create a file called `~/.gitmessage` and add it as config to your `~/.gitconfig` file e.g.
+
+```Javascript
+  [commit]
+    template = ~/.gitmessage
+```
+
+Content of `~/.gitmessage`
+
+```bash
+  feat(frontend): Some Title text
+
+  Describe why you did what you did
+
+  IssueID #
+```
+
+This scaffolds the message in your editor of choice, when committing code. You then amend the message as appropriate for your commit.
+
+### Setup GitHub Token
+
+**NOTE:** This is a one time setup you need to do:
+
+1. Log into GitHub.
+1. Click **Settings** from your profile drop-down in top-right of github.
+1. Click **Developer settings** from left-side menu
+1. Click **Personal access tokens**
+1. Click **Generate new token**, enter your password to confirm it is you
+1. Give the token a name e.g. **Astrosat Release Token**
+1. Click **repo** checkbox to give full access
+1. Click **Generate token** button
+1. Save token locally, **NOTE:** you will not be able to see the value again
+1. In `.bashrc` add `export GITHUB_TOKEN='????????'`
+
+### Releasing Code
+
+One you have a token setup (see previous [section](#setup-github-token)), you can run releases.
+
+Follow these steps to produce a release of the application:
+
+```bash
+cd client
+yarn install
+yarn release
+```
+
+**NOTE:** This must be done in the `master` branch and it must be up-to-date with the remote.
+
+**PROBLEM:** One thing I see a lot, is that the command never completes. It does do most things through to completion, but for some reason the **Github release** page is **not published**.
+
+```text
+I tend to kill the process and manually publish the release in GitHub, in these situations. It seems fine.
+```
+
+### Manage hung release
+
+1. Kill the running `yarn release` process in the terminal, simple `CTRL + C`, should suffice.
+2. Check that all new commits have been pushed, e.g. CHANGELOG updates.
+3. Select **Edit** button for the draft release of interest, from https://github.com/astrosat/orbis/releases
+4. Scroll down and click **Publish release** button.
+
+### Deploying to environments
+
+Since the release command pushed code to the `master` branch, it will automatically be re-built and deployed to the `testing` environment.
+
+1. The `testing` environment should be checked by the developer(s) to ensure no new bugs have been introduced, if satisfied.
+1. Then update `staging` e.g. `gort gh deploy <app> staging <tag>` as in `gort gh deploy orbis staging v1.0.0`.
+1. Announce to the wider team in Slack that the release has been deployed to `staging` and is ready for final review, if you get **sign-off** by management.
+1. Update `production` with the same tagged version e.g. `gort gh deploy <app> production <tag>`
+
+### Release Strategy
+
+`semantic-release` has been configured via **plugins** to do the following:
+
+- Analyze **Angular style** commit messages
+- Generate `CHANGELOG.md` entry
+- Increment version in `package.json`
+- Commit changes
+- Create tag of the form v1.1.1
+- Create GitHub release
+- **Do NOT** publish to npm registry
