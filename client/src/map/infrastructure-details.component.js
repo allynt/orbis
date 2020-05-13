@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-// import styles from './infrastructure-detail.module.css';
 import infoStyles from './info-details.module.css';
 
 const PK = 'pk';
@@ -23,9 +22,20 @@ const mapObject = data => {
   return Object.keys(feature)
     .filter(key => key !== PK && key !== PERSON_TYPE)
     .map(key => {
-      if (typeof feature[key] === OBJECT) {
+      if (Array.isArray(feature[key])) {
+        // When value is array, render li to browser in array-specific structure
+        return (
+          <li key={key} className={infoStyles.listItem}>
+            <ul className={infoStyles.table}>
+              <h2 className={infoStyles.label}>{key}: </h2>
+              {feature[key].map(value => (
+                <li className={`${infoStyles.content} ${infoStyles.listItem}`}>{value}</li>
+              ))}
+            </ul>
+          </li>
+        );
+      } else if (typeof feature[key] === OBJECT) {
         // When value is object, make new table inside li and map out values
-        // Parent is ul, so must return li
         return (
           <li>
             <ul className={infoStyles.table}>
@@ -35,10 +45,10 @@ const mapObject = data => {
           </li>
         );
       } else {
-        //when value is not object, render li to browser
+        //when value is not object or array, render li to browser
         return (
-          <li key={key} className={infoStyles.listItem2}>
-            <span className={infoStyles.label}>{typeof key === 'number' ? key + 1 : key}: </span>
+          <li key={key} className={infoStyles.listItem}>
+            <span className={infoStyles.label}>{key}: </span>
             <span className={infoStyles.content}>{feature[key] || NO_DATA}</span>
           </li>
         );
@@ -47,15 +57,14 @@ const mapObject = data => {
 };
 
 const InfrastructureDetail = ({ features }) => {
-  console.log('Features: ', features);
   return (
     <>
       <h1 className={infoStyles.header}>User Details</h1>
       <div className={infoStyles.modal}>
         {features.map(feature => (
-          <div key={feature.id}>
-            <ul className={infoStyles.list}>{mapObject(feature.properties)}</ul>
-          </div>
+          <ul key={feature.id} className={infoStyles.list}>
+            {mapObject(feature.properties)}
+          </ul>
         ))}
       </div>
     </>

@@ -38,40 +38,42 @@
   color: #fff;
 }
 
-.list > li {
+.list li {
   font-size: 0.875rem;
-  margin: 0.3125rem 0;
+  /* margin: 0.3125rem 0; */
 }
 
 .list .label {
   font-weight: bolder;
-  padding-right: 0.3rem;
+  padding-right: 0.5rem;
 }
 
 .list .content {
+  display: flex;
+  align-items: center;
   font-weight: normal;
+}
+
+.list .label,
+.list content {
+  margin: 0.25rem 0;
 }
 
 .table {
   display: flex;
   flex-direction: column;
-}
-
-.listItem {
-  display: flex;
-  flex-direction: column;
-  margin-left: 1rem;
-}
-
-.listItem2 {
-  display: flex;
-  margin: 0.5rem 0;
+  list-style: square;
 }
 
 .listTitle {
   font-size: 1rem;
   font-weight: bold;
+  margin-bottom: 0.5rem;
   padding: 0.5rem 0;
   border-bottom: 1px solid #f6be00;
   width: fit-content;
+}
+
+.listItem {
+  margin: 0 0 0.5rem 1rem;
 }
