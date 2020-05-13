@@ -3,16 +3,20 @@ import PropTypes from 'prop-types';
 
 import infoStyles from './info-details.module.css';
 
+const OBJECT = 'object';
+const STRING = 'string';
+const BRACE = '{';
+const BRACKET = '[';
+
 const PK = 'pk';
 const PERSON_TYPE = 'person_type';
-const OBJECT = 'object';
 const NO_DATA = 'Not available';
 
 const mapObject = data => {
   // FIXME: Once https://github.com/mapbox/mapbox-gl-js/issues/9678#issuecomment-627456271 is resolved, we should no longer need this.
   const feature = Object.keys(data).reduce((acc, key) => {
     acc[key] =
-      typeof data[key] === 'string' && (data[key].startsWith('{') || data[key].startsWith('['))
+      typeof data[key] === STRING && (data[key].startsWith(BRACE) || data[key].startsWith(BRACKET))
         ? JSON.parse(data[key])
         : data[key];
 
