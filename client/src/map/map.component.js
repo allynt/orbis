@@ -54,13 +54,9 @@ import { useMapEvent, useMapLayerEvent } from './use-map-event.hook';
 import useMap from './use-map.hook';
 import useMapbox from './use-mapbox.hook';
 
-import InfrastructureDetail from './infrastructure-details.component';
-import UserInfoDetail from './user-info-details.component';
+import FeatureDetail from './feature-detail.component';
 
 import layoutStyles from './map-layout.module.css';
-
-const USER_INFO_TYPE = 'USER_INFO_TYPE';
-const INFRASTRUCTURE_INFO_TYPE = 'INFRASTRUCTURE_INFO_TYPE';
 
 const Map = ({
   style = 'mapbox://styles/mapbox/satellite-v9',
@@ -452,11 +448,8 @@ const Map = ({
             .setDOMContent(popupRef.current)
             .on('close', () => setSelectedInfoFeatures(null))
             .addTo(mapInstance);
-          if (features[0].properties.Type) {
-            setSelectedInfoFeatures({ type: USER_INFO_TYPE, data: features });
-          } else {
-            setSelectedInfoFeatures({ type: INFRASTRUCTURE_INFO_TYPE, data: features });
-          }
+
+          setSelectedInfoFeatures(features);
         }
       }
     },
@@ -765,12 +758,7 @@ const Map = ({
       {selectedInfoFeatures &&
         ReactDOM.createPortal(
           <div className={layoutStyles.popup}>
-            {selectedInfoFeatures && selectedInfoFeatures.type === USER_INFO_TYPE && (
-              <InfrastructureDetail features={selectedInfoFeatures.data} />
-            )}
-            {selectedInfoFeatures && selectedInfoFeatures.type === INFRASTRUCTURE_INFO_TYPE && (
-              <InfrastructureDetail features={selectedInfoFeatures.data} />
-            )}
+            {selectedInfoFeatures && <FeatureDetail features={selectedInfoFeatures} />}
           </div>,
           popupRef.current,
         )}

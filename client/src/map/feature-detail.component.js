@@ -40,7 +40,7 @@ const mapObject = data => {
       } else if (typeof feature[key] === OBJECT) {
         // When value is object, make new table inside li and map out values
         return (
-          <li key={key}>
+          <li key={key} className={infoStyles.groupedListItem}>
             <ul className={infoStyles.table}>
               <h1 className={infoStyles.listTitle}>{key}</h1>
               {mapObject(feature[key])}
@@ -59,7 +59,7 @@ const mapObject = data => {
     });
 };
 
-const InfrastructureDetail = ({ features }) => {
+const FeatureDetail = ({ features }) => {
   return (
     <>
       <h1 className={infoStyles.header}>User Details</h1>
@@ -74,8 +74,8 @@ const InfrastructureDetail = ({ features }) => {
   );
 };
 
-InfrastructureDetail.propTypes = {
+FeatureDetail.propTypes = {
   features: PropTypes.array.isRequired,
 };
 
-export default InfrastructureDetail;
+export default FeatureDetail;

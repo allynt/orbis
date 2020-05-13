@@ -62,7 +62,6 @@
 .table {
   display: flex;
   flex-direction: column;
-  list-style: square;
 }
 
 .listTitle {
@@ -72,6 +71,10 @@
   padding: 0.5rem 0;
   border-bottom: 1px solid #f6be00;
   width: fit-content;
+}
+
+.groupedListItem {
+  margin: 0;
 }
 
 .listItem {
