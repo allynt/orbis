@@ -22,6 +22,7 @@ const mapObject = data => {
   return Object.keys(feature)
     .filter(key => key !== PK && key !== PERSON_TYPE)
     .map(key => {
+      // Parent is always ul, so must always return li
       if (Array.isArray(feature[key])) {
         // When value is array, render li to browser in array-specific structure
         return (
