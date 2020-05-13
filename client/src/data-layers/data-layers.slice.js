@@ -1,6 +1,7 @@
 import { createSlice, createSelector } from '@reduxjs/toolkit';
 import { mergeWith, isEmpty, get } from 'lodash';
 import { getJsonAuthHeaders, getData } from 'utils/http';
+import { getFilterOptions } from './filters/filters-utils';
 
 const initialState = {
   layers: [],
@@ -112,23 +113,17 @@ export const selectDomainList = createSelector(selectDataSources, sources =>
   ),
 );
 
-const createLayerFilters = layer => {
-  const filters = layer.metadata.filters.reduce((acc, filter) => {
-    const options = new Set();
-    for (let feature of layer.data.features) {
-      const value = get(feature.properties, filter);
-      if (value) {
-        if (Array.isArray(value)) {
-          value.forEach(val => options.add(val));
-        } else {
-          options.add(value);
-        }
-      }
-    }
-    return options.size ? { ...acc, [filter]: Array.from(options) } : acc;
-  }, {});
-  return filters;
-};
+const createLayerFilters = layer =>
+  layer.metadata.filters.reduce(
+    (acc, filter) => ({
+      ...acc,
+      ...getFilterOptions(
+        filter,
+        layer.data.features.map(feature => feature.properties),
+      ),
+    }),
+    {},
+  );
 
 export const selectAvailableFilters = createSelector(selectActiveLayers, layers => {
   const filters = layers.reduce((acc, layer) => {

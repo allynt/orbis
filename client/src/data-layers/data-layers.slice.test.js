@@ -1327,6 +1327,64 @@ describe('Data Slice', () => {
         const result = selectAvailableFilters(state);
         expect(result).toEqual(expected);
       });
+
+      it('returns filters for all properties of a group if a group key is specified as a filter', () => {
+        const state = {
+          data: {
+            layers: ['availability-test'],
+            sources: [
+              {
+                name: 'availability-test',
+                metadata: {
+                  filters: ['Availability'],
+                },
+                data: {
+                  features: [
+                    {
+                      properties: {
+                        Availability: {
+                          Saturday: ['Afternoon'],
+                          Sunday: ['Evening'],
+                          Monday: ['Morning'],
+                          Tuesday: ['Afternoon'],
+                          Thursday: ['Afternoon'],
+                          Friday: ['Morning'],
+                        },
+                      },
+                    },
+                    {
+                      properties: {
+                        Availability: {
+                          Saturday: ['Morning', 'Afternoon', 'Evening'],
+                          Sunday: [],
+                          Monday: ['Morning'],
+                          Tuesday: ['Afternoon'],
+                          Wednesday: ['Evening'],
+                          Thursday: [],
+                          Friday: [],
+                        },
+                      },
+                    },
+                  ],
+                },
+              },
+            ],
+          },
+        };
+        const expected = {
+          'availability-test': {
+            'Availability.Saturday': ['Afternoon', 'Morning', 'Evening'],
+            'Availability.Sunday': ['Evening'],
+            'Availability.Monday': ['Morning'],
+            'Availability.Tuesday': ['Afternoon'],
+            'Availability.Wednesday': ['Evening'],
+            'Availability.Thursday': ['Afternoon'],
+            'Availability.Friday': ['Morning'],
+          },
+        };
+        const result = selectAvailableFilters(state);
+        expect(result).toEqual(expected);
+      });
     });
 
     describe('selectCurrentFilters', () => {
