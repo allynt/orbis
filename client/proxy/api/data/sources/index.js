@@ -4,13 +4,11 @@ const populationInformation = require('./population-information');
 const sentinel2Rgb = require('./sentinel-2-rgb');
 const stokeOnTrent = require('./stoke-on-trent');
 const superSen2JapanBand = require('./super-sen2-japan-band');
-const populationInformationNested = require('./population-information-nested');
 
 module.exports = [
   healthInfrastructure,
   hospitalsUk,
   populationInformation,
-  populationInformationNested,
   sentinel2Rgb,
   stokeOnTrent,
   superSen2JapanBand,
