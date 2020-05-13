@@ -184,4 +184,43 @@ describe('getFilterOptions', () => {
     const result = getFilterOptions(filter, filterableCollection);
     expect(result).toEqual(expected);
   });
+
+  it('sibling super nesting', () => {
+    const filterableCollection = [
+      {
+        house: {
+          'fruit-bowl': { fruit: 'apple', status: 'ripe' },
+          livingRoom: {
+            seating: 'couch',
+          },
+        },
+      },
+      { house: { 'fruit-bowl': { fruit: 'orange', status: 'rotten' } } },
+      {
+        house: {
+          'fruit-bowl': { fruit: 'banana', status: 'ripe' },
+          livingRoom: {
+            seating: 'chairs',
+          },
+        },
+      },
+      { house: { 'fruit-bowl': { fruit: 'apple', status: 'rotten' } } },
+      {
+        house: {
+          'fruit-bowl': { fruit: 'banana', status: 'ripe' },
+          livingRoom: {
+            seating: 'the floor you savage',
+          },
+        },
+      },
+    ];
+    const filter = 'house';
+    const expected = {
+      'house.fruit-bowl.fruit': ['apple', 'orange', 'banana'],
+      'house.fruit-bowl.status': ['ripe', 'rotten'],
+      'house.livingRoom.seating': ['couch', 'chairs', 'the floor you savage'],
+    };
+    const result = getFilterOptions(filter, filterableCollection);
+    expect(result).toEqual(expected);
+  });
 });
