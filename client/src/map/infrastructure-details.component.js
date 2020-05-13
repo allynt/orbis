@@ -21,16 +21,18 @@ const mapObject = data => {
 
   return Object.keys(feature)
     .filter(key => key !== PK && key !== PERSON_TYPE)
-    .map(key => {
+    .map((key, i) => {
       // Parent is always ul, so must always return li
       if (Array.isArray(feature[key])) {
         // When value is array, render li to browser in array-specific structure
         return (
-          <li key={key} className={infoStyles.listItem}>
+          <li key={i} className={infoStyles.listItem}>
             <ul className={infoStyles.table}>
               <h2 className={infoStyles.label}>{key}: </h2>
-              {feature[key].map(value => (
-                <li className={`${infoStyles.content} ${infoStyles.listItem}`}>{value}</li>
+              {feature[key].map((value, i) => (
+                <li key={i} className={`${infoStyles.content} ${infoStyles.listItem}`}>
+                  {value}
+                </li>
               ))}
             </ul>
           </li>
@@ -38,7 +40,7 @@ const mapObject = data => {
       } else if (typeof feature[key] === OBJECT) {
         // When value is object, make new table inside li and map out values
         return (
-          <li>
+          <li key={key}>
             <ul className={infoStyles.table}>
               <h1 className={infoStyles.listTitle}>{key}</h1>
               {mapObject(feature[key])}
