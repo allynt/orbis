@@ -1,6 +1,7 @@
 import { createSlice, createSelector } from '@reduxjs/toolkit';
-import { mergeWith, isEmpty } from 'lodash';
+import { mergeWith, isEmpty, get } from 'lodash';
 import { getJsonAuthHeaders, getData } from 'utils/http';
+import { getFilterOptions } from './filters/filters-utils';
 
 const initialState = {
   layers: [],
@@ -112,16 +113,17 @@ export const selectDomainList = createSelector(selectDataSources, sources =>
   ),
 );
 
-const createLayerFilters = layer => {
-  const filters = layer.metadata.filters.reduce((acc, filter) => {
-    const options = new Set();
-    for (let feature of layer.data.features) {
-      feature.properties[filter] && options.add(feature.properties[filter]);
-    }
-    return options.size ? { ...acc, [filter]: Array.from(options) } : acc;
-  }, {});
-  return filters;
-};
+const createLayerFilters = layer =>
+  layer.metadata.filters.reduce(
+    (acc, filter) => ({
+      ...acc,
+      ...getFilterOptions(
+        filter,
+        layer.data.features.map(feature => feature.properties),
+      ),
+    }),
+    {},
+  );
 
 export const selectAvailableFilters = createSelector(selectActiveLayers, layers => {
   const filters = layers.reduce((acc, layer) => {
@@ -138,9 +140,13 @@ export const selectFilteredData = createSelector([selectActiveLayers, selectCurr
     if (filters[layer.name]) {
       const layerFilters = filters[layer.name];
       layer.data.features = layer.data.features.filter(feature => {
-        for (let property in layerFilters) {
-          if (layerFilters[property].length > 0 && !layerFilters[property].includes(feature.properties[property]))
-            return false;
+        for (let filterPath in layerFilters) {
+          if (layerFilters[filterPath].length > 0) {
+            const value = get(feature.properties, filterPath);
+            if (Array.isArray(value)) {
+              if (!value.some(val => layerFilters[filterPath].includes(val))) return false;
+            } else if (!layerFilters[filterPath].includes(value)) return false;
+          }
         }
         return true;
       });

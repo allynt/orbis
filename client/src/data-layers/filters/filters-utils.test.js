@@ -1,4 +1,4 @@
-import { filterValueIsPresent, areAnyFilterValuesPresent } from './filters-utils';
+import { filterValueIsPresent, areAnyFilterValuesPresent, getFilterOptions } from './filters-utils';
 
 describe('filterValueIsPresent', () => {
   it('throws an error if the item is undefined', () => {
@@ -91,5 +91,136 @@ describe('areAnyFilterValuesPresent', () => {
 
   it('returns false if the filter object is null', () => {
     expect(areAnyFilterValuesPresent(null)).toBe(false);
+  });
+});
+
+describe('getFilterOptions', () => {
+  it('single value properties', () => {
+    const filterableCollection = [
+      { fruit: 'apple' },
+      { fruit: 'orange' },
+      { fruit: 'banana' },
+      { fruit: 'apple' },
+      { fruit: 'banana' },
+    ];
+    const filter = 'fruit';
+    const expected = { [filter]: ['apple', 'orange', 'banana'] };
+    const result = getFilterOptions(filter, filterableCollection);
+    expect(result).toEqual(expected);
+  });
+
+  it('array properties', () => {
+    const filterableCollection = [
+      { fruit: ['apple', 'orange'] },
+      { fruit: ['orange', 'lemon'] },
+      { fruit: ['banana', 'apple'] },
+      { fruit: ['apple'] },
+      { fruit: ['banana'] },
+    ];
+    const filter = 'fruit';
+    const expected = { [filter]: ['apple', 'orange', 'lemon', 'banana'] };
+    const result = getFilterOptions(filter, filterableCollection);
+    expect(result).toEqual(expected);
+  });
+
+  it('nested single value properties', () => {
+    const filterableCollection = [
+      { 'fruit-bowl': { fruit: 'apple' } },
+      { 'fruit-bowl': { fruit: 'orange' } },
+      { 'fruit-bowl': { fruit: 'banana' } },
+      { 'fruit-bowl': { fruit: 'apple' } },
+      { 'fruit-bowl': { fruit: 'banana' } },
+    ];
+    const filter = 'fruit-bowl.fruit';
+    const expected = { [filter]: ['apple', 'orange', 'banana'] };
+    const result = getFilterOptions(filter, filterableCollection);
+    expect(result).toEqual(expected);
+  });
+
+  it('nested array properties', () => {
+    const filterableCollection = [
+      { 'fruit-bowl': { fruit: ['apple', 'orange'] } },
+      { 'fruit-bowl': { fruit: ['orange', 'lemon'] } },
+      { 'fruit-bowl': { fruit: ['banana', 'apple'] } },
+      { 'fruit-bowl': { fruit: ['apple'] } },
+      { 'fruit-bowl': { fruit: ['banana'] } },
+    ];
+    const filter = 'fruit-bowl.fruit';
+    const expected = { [filter]: ['apple', 'orange', 'lemon', 'banana'] };
+    const result = getFilterOptions(filter, filterableCollection);
+    expect(result).toEqual(expected);
+  });
+
+  it('objects', () => {
+    const filterableCollection = [
+      { 'fruit-bowl': { fruit: 'apple', status: 'ripe' } },
+      { 'fruit-bowl': { fruit: 'orange', status: 'rotten' } },
+      { 'fruit-bowl': { fruit: 'banana', status: 'ripe' } },
+      { 'fruit-bowl': { fruit: 'apple', status: 'rotten' } },
+      { 'fruit-bowl': { fruit: 'banana', status: 'ripe' } },
+    ];
+    const filter = 'fruit-bowl';
+    const expected = {
+      'fruit-bowl.fruit': ['apple', 'orange', 'banana'],
+      'fruit-bowl.status': ['ripe', 'rotten'],
+    };
+    const result = getFilterOptions(filter, filterableCollection);
+    expect(result).toEqual(expected);
+  });
+
+  it('nested objects', () => {
+    const filterableCollection = [
+      { house: { 'fruit-bowl': { fruit: 'apple', status: 'ripe' } } },
+      { house: { 'fruit-bowl': { fruit: 'orange', status: 'rotten' } } },
+      { house: { 'fruit-bowl': { fruit: 'banana', status: 'ripe' } } },
+      { house: { 'fruit-bowl': { fruit: 'apple', status: 'rotten' } } },
+      { house: { 'fruit-bowl': { fruit: 'banana', status: 'ripe' } } },
+    ];
+    const filter = 'house';
+    const expected = {
+      'house.fruit-bowl.fruit': ['apple', 'orange', 'banana'],
+      'house.fruit-bowl.status': ['ripe', 'rotten'],
+    };
+    const result = getFilterOptions(filter, filterableCollection);
+    expect(result).toEqual(expected);
+  });
+
+  it('sibling super nesting', () => {
+    const filterableCollection = [
+      {
+        house: {
+          'fruit-bowl': { fruit: 'apple', status: 'ripe' },
+          livingRoom: {
+            seating: 'couch',
+          },
+        },
+      },
+      { house: { 'fruit-bowl': { fruit: 'orange', status: 'rotten' } } },
+      {
+        house: {
+          'fruit-bowl': { fruit: 'banana', status: 'ripe' },
+          livingRoom: {
+            seating: 'chairs',
+          },
+        },
+      },
+      { house: { 'fruit-bowl': { fruit: 'apple', status: 'rotten' } } },
+      {
+        house: {
+          'fruit-bowl': { fruit: 'banana', status: 'ripe' },
+          livingRoom: {
+            seating: 'the floor you savage',
+          },
+        },
+      },
+    ];
+    const filter = 'house';
+    const expected = {
+      'house.fruit-bowl.fruit': ['apple', 'orange', 'banana'],
+      'house.fruit-bowl.status': ['ripe', 'rotten'],
+      'house.livingRoom.seating': ['couch', 'chairs', 'the floor you savage'],
+    };
+    const result = getFilterOptions(filter, filterableCollection);
+    expect(result).toEqual(expected);
   });
 });

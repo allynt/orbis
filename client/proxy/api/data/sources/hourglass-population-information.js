@@ -5,7 +5,7 @@ module.exports = {
     domain: 'Action for Health and Help',
     range: false,
     description: 'Description of Population information layer.',
-    filters: ['Type'],
+    filters: ['Type', 'Availability', 'Contact Details.Country'],
   },
   type: 'geojson',
   data: {
