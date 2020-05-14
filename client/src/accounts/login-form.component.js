@@ -98,9 +98,7 @@ const LoginForm = ({ login, user, error, resendVerificationEmail, verificationEm
 
               <p className={formStyles.row}>
                 Forgotten your&nbsp;
-                <Button theme="link" href={PASSWORD_RESET_URL}>
-                  password?
-                </Button>
+                <Button href={PASSWORD_RESET_URL}>password?</Button>
               </p>
             </div>
           </div>
@@ -147,9 +145,7 @@ const LoginForm = ({ login, user, error, resendVerificationEmail, verificationEm
 
           <p className={formStyles.footer}>
             Don't have an account?&nbsp;
-            <Button theme="link" href={REGISTER_URL}>
-              Sign Up
-            </Button>
+            <Button href={REGISTER_URL}>Sign Up</Button>
           </p>
         </form>
       )}

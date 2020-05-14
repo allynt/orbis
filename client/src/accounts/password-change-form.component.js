@@ -121,7 +121,7 @@ const PasswordChangeForm = ({ changePassword, changeStatus, error }) => {
                 onChange={() => setTermsAgreed(!termsAgreed)}
               />
               &nbsp;
-              <Button theme="link" target="_blank" rel="noopener noreferrer" href={TERMS_URL}>
+              <Button target="_blank" rel="noopener noreferrer" href={TERMS_URL}>
                 Terms &amp; Conditions
               </Button>
             </div>
@@ -139,9 +139,7 @@ const PasswordChangeForm = ({ changePassword, changeStatus, error }) => {
 
           <p className={formStyles.footer}>
             Do you have an account?&nbsp;
-            <Button theme="link" href={LOGIN_URL}>
-              Login
-            </Button>
+            <Button href={LOGIN_URL}>Login</Button>
           </p>
         </form>
       )}
