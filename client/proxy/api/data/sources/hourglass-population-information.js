@@ -20,7 +20,7 @@ module.exports = {
         },
         properties: {
           pk: 6,
-          person_type: 'VOLUNTEER',
+          TYPE: 'VOLUNTEER',
           'Contact Details': {
             Name: 'Son #2',
             Email: 'son2@home.com',
@@ -65,7 +65,7 @@ module.exports = {
         },
         properties: {
           pk: 5,
-          person_type: 'VOLUNTEER',
+          Type: 'VOLUNTEER',
           'Contact Details': {
             Name: 'Mr Mark Small',
             Email: 'marksmall37@gmail.com',
@@ -110,7 +110,7 @@ module.exports = {
         },
         properties: {
           pk: 4,
-          person_type: 'RECIPIENT',
+          Type: 'RECIPIENT',
           'Help Receiving': ['Pick up / Delivery (Food + Prescription)'],
           'Help Required': ['Pick up / Delivery (Food + Prescription)', 'Support to access Home help/care needs'],
           'Self-Isolating': 'No',
@@ -134,7 +134,7 @@ module.exports = {
         },
         properties: {
           pk: 3,
-          person_type: 'RECIPIENT',
+          Type: 'RECIPIENT',
           'Help Receiving': ['Pick up / Delivery (Food + Prescription)', 'Homehelp/care needs'],
           'Help Required': ['Coversation', 'Advice'],
           'Self-Isolating': 'Yes',
