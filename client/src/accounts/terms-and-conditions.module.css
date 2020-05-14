@@ -18,6 +18,7 @@
 .logo {
   width: 10rem;
   margin: 2rem;
+  cursor: pointer;
 }
 
 .body {
