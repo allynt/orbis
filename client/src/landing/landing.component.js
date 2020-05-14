@@ -16,12 +16,10 @@ import useModal from '@astrosat/astrosat-ui/dist/containers/use-modal';
 import NewMapForm from './new-map-form.component';
 
 import { ReactComponent as OrbisLogo } from '../orbis.svg';
-import { ReactComponent as ProfileIcon } from '../toolbar/profile.svg';
-import { ReactComponent as OptionsIcon } from '../options.svg';
 
 import styles from './landing.module.css';
 
-const ViewAllItems = ({ items, chooseBookmark, toggle, itemOptions, setItemOptions, setViewAllItems }) => (
+const ViewAllItems = ({ items, chooseBookmark, toggle, setViewAllItems }) => (
   <div className={styles.content}>
     <div className={styles.header}>
       <h1>View All</h1>
@@ -29,17 +27,11 @@ const ViewAllItems = ({ items, chooseBookmark, toggle, itemOptions, setItemOptio
         Back to menu
       </Button>
     </div>
-    <Items
-      items={items}
-      chooseItem={chooseBookmark}
-      toggle={toggle}
-      itemOptions={itemOptions}
-      setItemOptions={setItemOptions}
-    />
+    <Items items={items} chooseItem={chooseBookmark} toggle={toggle} />
   </div>
 );
 
-const Items = ({ items, chooseItem, toggle, itemOptions, setItemOptions }) => {
+const Items = ({ items, chooseItem, toggle }) => {
   const [item, setItem] = useState(null);
 
   if (item) {
@@ -62,18 +54,10 @@ const Items = ({ items, chooseItem, toggle, itemOptions, setItemOptions }) => {
                 <img src={item.thumbnail} alt={item.title}></img>
               </picture>
             </div>
-
             <div className={styles.info}>
-              {itemOptions === item ? (
-                <h3 className={styles.notYetImplemented}>Not yet implemented...</h3>
-              ) : (
-                <div>
-                  <h3 className={styles.title}>{item.title}</h3>
-                  <p className={styles.creationDate}>{dateString}</p>
-                </div>
-              )}
-              <div className={styles.optionsIcon} onClick={() => setItemOptions(itemOptions === item ? null : item)}>
-                <OptionsIcon />
+              <div>
+                <h3 className={styles.title}>{item.title}</h3>
+                <p className={styles.creationDate}>{dateString}</p>
               </div>
             </div>
           </div>
@@ -116,13 +100,11 @@ const ExistingUserLanding = forwardRef(
   ({ bookmarks, chooseBookmark, setRedirect, isVisible, toggle, regions, domains, setViewport }, ref) => {
     const recentItems = bookmarks.slice(0, 4);
     const [viewAllItems, setViewAllItems] = useState(false);
-    const [itemOptions, setItemOptions] = useState(null);
 
     return (
       <div className={styles.landingContent} ref={ref}>
         <div className={styles.banner}>
           <OrbisLogo className={styles.logo} />
-          <ProfileIcon className={styles.icon} />
         </div>
 
         {viewAllItems ? (
@@ -130,8 +112,6 @@ const ExistingUserLanding = forwardRef(
             items={bookmarks}
             chooseBookmark={chooseBookmark}
             toggle={toggle}
-            itemOptions={itemOptions}
-            setItemOptions={setItemOptions}
             setViewAllItems={setViewAllItems}
           />
         ) : (
@@ -142,13 +122,7 @@ const ExistingUserLanding = forwardRef(
                 View all
               </Button>
             </div>
-            <Items
-              items={recentItems}
-              chooseItem={chooseBookmark}
-              toggle={toggle}
-              itemOptions={itemOptions}
-              setItemOptions={setItemOptions}
-            />
+            <Items items={recentItems} chooseItem={chooseBookmark} toggle={toggle} />
           </div>
         )}
 
