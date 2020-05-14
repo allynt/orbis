@@ -116,6 +116,7 @@ const Map = ({
       '-label-clustered',
       '-cluster',
     ];
+    setClickableLayers([]);
     selectedLayers
       .filter(layer => layer.visible === undefined || layer.visible)
       .forEach(layer => {
@@ -405,7 +406,12 @@ const Map = ({
               // maxzoom: 19
             });
             setClickableLayers(currentLayers => [
-              ...currentLayers,
+              ...currentLayers.filter(
+                layer =>
+                  layer !== clusterlayerName &&
+                  layer !== nonClusteredInfrastructureName &&
+                  layer !== populationLayerName,
+              ),
               clusterlayerName,
               nonClusteredInfrastructureName,
               populationLayerName,
@@ -429,7 +435,6 @@ const Map = ({
       event.preventDefault();
 
       const { features, lngLat } = event;
-
       if (features && features.length > 0) {
         if (features[0].properties.point_count) {
           mapInstance.flyTo({
