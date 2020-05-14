@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 
+import { Redirect } from 'react-router-dom';
+
 import Button from '@astrosat/astrosat-ui/dist/buttons/button';
 
 import { ReactComponent as OrbisLogo } from '../orbis.svg';
@@ -1200,10 +1202,15 @@ const EndUserLicenseAgreement = () => {
 
 const TermsAndConditions = () => {
   const [info, setInfo] = useState(PRIVACY_POLICY);
+  const [redirect, setRedirect] = useState(null);
+
+  if (redirect) {
+    return <Redirect to={redirect} />;
+  }
   return (
     <div className={styles.content}>
       <div className={styles.header}>
-        <OrbisLogo className={styles.logo} />
+        <OrbisLogo className={styles.logo} onClick={() => setRedirect('/')} />
       </div>
       <div className={styles.body}>
         <div className={styles.buttons}>
