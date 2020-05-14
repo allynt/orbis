@@ -107,9 +107,8 @@
 .incidentals {
   display: flex;
   justify-content: space-between;
-  align-items: flex-start;
+  align-items: center;
   font-size: smaller;
-  opacity: 0.5;
 }
 
 .incidentals li {
