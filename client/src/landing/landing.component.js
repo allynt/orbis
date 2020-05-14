@@ -79,7 +79,7 @@ const NewUserLanding = ({ setRedirect }) => (
 
     <div className={styles.splashContent}>
       <div className={styles.journey}>
-        <h1>OR3IS JOURNEY</h1>
+        <h1>ORBIS JOURNEY</h1>
 
         <div className={styles.journeyText}>
           <p>Your Earth Observation journey starts here</p>
