@@ -95,9 +95,7 @@ const PasswordResetForm = ({ resetPassword, resetStatus, error }) => {
 
           <p className={formStyles.footer}>
             Do you have an account?&nbsp;
-            <Button theme="link" href={LOGIN_URL}>
-              Login
-            </Button>
+            <Button href={LOGIN_URL}>Login</Button>
           </p>
         </form>
       )}

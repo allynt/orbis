@@ -118,7 +118,7 @@ const PasswordResetConfirmForm = ({ confirmResetPassword, resetStatus, match, er
                 onChange={() => setTermsAgreed(!termsAgreed)}
               />
               &nbsp;
-              <Button theme="link" target="_blank" href={TERMS_URL} rel="noopener noreferrer">
+              <Button target="_blank" href={TERMS_URL} rel="noopener noreferrer">
                 Terms &amp; Conditions
               </Button>
             </div>
@@ -136,9 +136,7 @@ const PasswordResetConfirmForm = ({ confirmResetPassword, resetStatus, match, er
 
           <p className={formStyles.footer}>
             Do you have an account?&nbsp;
-            <Button theme="link" href={LOGIN_URL}>
-              Login
-            </Button>
+            <Button href={LOGIN_URL}>Login</Button>
           </p>
         </form>
       )}
