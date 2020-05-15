@@ -1,3 +1,4 @@
+import { NotificationManager } from 'react-notifications';
 import { createSlice } from '@reduxjs/toolkit';
 
 import { persistReducer } from 'redux-persist';
@@ -288,18 +289,20 @@ export const updateUser = form => async (dispatch, getState) => {
   const data = {
     ...user,
     ...form,
-    name: `${form.first_name} ${form.last_name}`,
   };
 
   const response = await sendData(`${API.user}${user.email}/`, data, headers, 'PUT');
 
   if (!response.ok) {
-    const errorObject = await response.json();
-    return dispatch(updateUserFailure(errorTransformer(errorObject)));
+    const error = await response.json();
+    const errorObject = errorTransformer(error);
+    NotificationManager.error('Error updating user', '', 5000, () => {});
+    return dispatch(updateUserFailure(errorObject));
   }
 
   const userObj = await response.json();
 
+  NotificationManager.success('Successfully updated user', '', 5000, () => {});
   return dispatch(updateUserSuccess(userObj));
 };
 

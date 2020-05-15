@@ -48,7 +48,7 @@ const Profile = () => {
 
       <div className={styles.linkContainer}>
         {LINKS.map(link => (
-          <span className={styles.links}>
+          <span key={link.text} className={styles.links}>
             {link.prefix}
             <Button classNames={[styles.link]} href={link.url} rel="noopener noreferrer" target="_blank">
               {link.text}

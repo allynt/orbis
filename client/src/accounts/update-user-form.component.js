@@ -1,8 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import validate from './update-user-form.validator';
-
 import Button from '@astrosat/astrosat-ui/dist/buttons/button';
 import Textfield from '@astrosat/astrosat-ui/dist/forms/text-field';
 import useForm from '@astrosat/astrosat-ui/dist/forms/use-form';
@@ -12,7 +10,13 @@ import sideMenuStyles from '../side-menu/side-menu.module.css';
 import profileStyles from './profile.module.css';
 
 const UpdateUserForm = ({ user, updateUser }) => {
-  const { handleChange, handleSubmit, values, errors } = useForm(onSubmit, validate);
+  const defaults = {
+    values: {
+      name: user.name ? user.name : '',
+    },
+  };
+
+  const { handleChange, handleSubmit, values } = useForm(onSubmit, () => ({}), defaults);
 
   function onSubmit() {
     updateUser(values);
@@ -24,30 +28,11 @@ const UpdateUserForm = ({ user, updateUser }) => {
         <div className={`${formStyles.fields} ${sideMenuStyles.fields}`}>
           <p className={sideMenuStyles.header}>Personal Details</p>
           <Textfield name="email" value={user.email || ''} placeholder="Email" onChange={handleChange} readOnly />
-          {errors.email && <p className={formStyles.errorMessage}>{errors.email}</p>}
 
-          <Textfield
-            name="first_name"
-            value={user.first_name || values.first_name || ''}
-            placeholder="First Name"
-            onChange={handleChange}
-          />
-          {errors.first_name && <p className={formStyles.errorMessage}>{errors.first_name}</p>}
-
-          <Textfield
-            name="last_name"
-            value={user.last_name || values.last_name || ''}
-            placeholder="Last Name"
-            onChange={handleChange}
-          />
-          {errors.last_name && <p className={formStyles.errorMessage}>{errors.last_name}</p>}
+          <Textfield name="name" value={values.name || ''} placeholder="Name" onChange={handleChange} />
         </div>
         <div className={sideMenuStyles.buttons}>
-          <Button
-            type="submit"
-            classNames={[sideMenuStyles.button, profileStyles.updateAccountButton]}
-            disabled={Object.keys(errors).length > 0 || Object.keys(values).length === 0}
-          >
+          <Button type="submit" classNames={[sideMenuStyles.button, profileStyles.updateAccountButton]}>
             Update Account
           </Button>
         </div>
