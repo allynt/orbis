@@ -97,8 +97,7 @@ const LoginForm = ({ login, user, error, resendVerificationEmail, verificationEm
               />
 
               <p className={formStyles.row}>
-                Forgotten your&nbsp;
-                <Button href={PASSWORD_RESET_URL}>password?</Button>
+                <Button href={PASSWORD_RESET_URL}>Forgot password?</Button>
               </p>
             </div>
           </div>
