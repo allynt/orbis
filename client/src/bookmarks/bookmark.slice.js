@@ -56,6 +56,7 @@ const bookmarkSlice = createSlice({
     },
     isLoaded: state => {
       state.isLoading = false;
+      state.selectedBookmark = null;
     },
   },
 });
