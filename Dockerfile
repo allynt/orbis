@@ -24,9 +24,6 @@ WORKDIR $APP_HOME
 COPY --chown=app:app ./server/Pipfile* $APP_HOME/
 RUN cd $APP_HOME && pipenv install --dev
 
-# Install backend code
-COPY --chown=app:app ./server $APP_HOME/server
-
 # Start backend dev server
 COPY --chown=root:root run-server.sh /etc/service/server/run
 
