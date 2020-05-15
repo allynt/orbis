@@ -49,7 +49,11 @@
 }
 
 .unselected {
-  border: 0;
+  border-bottom: 2px solid transparent !important;
+}
+
+.button:focus {
+  opacity: 1 !important;
 }
 
 .infoContainer {
