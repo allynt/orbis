@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { format } from 'date-fns';
 
 import { setViewport } from '../map/map.slice';
+import { regions } from '../map/map.constants';
 import { selectDomainList } from '../data-layers/data-layers.slice';
 import { fetchBookmarks, selectBookmark } from '../bookmarks/bookmark.slice';
 
@@ -148,7 +149,6 @@ const Landing = () => {
   const ref = useRef(null);
 
   const chooseBookmark = bookmark => dispatch(selectBookmark(bookmark));
-  const regions = useSelector(state => state.map.regions);
   const domains = useSelector(selectDomainList);
   const updateViewport = region => dispatch(setViewport(region));
 
