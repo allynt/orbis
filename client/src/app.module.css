@@ -19,6 +19,7 @@ main {
   height: 100%;
   color: var(--primary-text-color);
   background-color: #fff;
+  overflow: auto;
 }
 
 header {
