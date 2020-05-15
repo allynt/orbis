@@ -32,6 +32,10 @@ import { Filters } from './filters/filters.component';
 
 import featureToggles from '../feature-toggles';
 
+// NOTE: This regex looks for hyphens and groups everything after the last
+// hyphen, otherwise, groups everything if no hyphens.
+const REGEX = /.*-(.*)|(.*)/;
+
 const DefaultComponent = ({ selectedLayer, dispatch }) => (
   <div>
     {selectedLayer.metadata.range && (
@@ -93,7 +97,13 @@ const DataLayers = () => {
       <div className={styles.selectData} ref={ref}>
         <div className={styles.layers}>
           {selectedLayers.map(selectedLayer => {
-            const Component = detailComponentMap[selectedLayer.name] ?? detailComponentMap['default'];
+            // We need to have structure to our layer naming for this to work,
+            // but if we prepend each layer with it's type, e.g `scotish-infrastructure` becomes `insfrastructure` and `people`,
+            // remains `people`.
+            const layerType = selectedLayer.name.match(REGEX)[1];
+            const Component =
+              detailComponentMap[layerType ? layerType : selectedLayer.name] ?? detailComponentMap['default'];
+
             return (
               <Detail key={selectedLayer.name} title={selectedLayer.metadata.label}>
                 <div className={styles.detailContent}>
