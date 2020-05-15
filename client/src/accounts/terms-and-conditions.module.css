@@ -49,7 +49,7 @@
 }
 
 .unselected {
-  border: 0 !important;
+  border-bottom: 2px solid transparent !important;
 }
 
 .button:focus {
