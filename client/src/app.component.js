@@ -62,6 +62,8 @@ const App = () => {
   const ref = useRef(null);
   const [isVisible, toggle] = useModal(notYetImplementedDescription !== null ? true : false);
   const activateAccountFn = form => dispatch(activateAccount(form));
+  const userExists = user ? true : false;
+
   useEffect(() => {
     if (notYetImplementedDescription !== null) {
       toggle();
@@ -96,7 +98,7 @@ const App = () => {
     // Poll API to get new Data token (expires every X seconds/mins etc)
     // this also fetches the list of data sources the user has access to.
     // console.log('Initial Request for sources');
-    if (user) {
+    if (userExists) {
       dispatch(fetchSources());
 
       const interval = setInterval(() => {
@@ -106,7 +108,7 @@ const App = () => {
         clearInterval(interval);
       };
     }
-  }, [user, pollingPeriod, dispatch]);
+  }, [userExists, pollingPeriod, dispatch]);
 
   return (
     <div className={styles.app} ref={ref}>
