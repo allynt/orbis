@@ -39,11 +39,17 @@ const mapObject = data => {
             <li key={i} className={infoStyles.listItem}>
               <ul className={infoStyles.table}>
                 <h2 className={infoStyles.label}>{key}: </h2>
-                {feature[key].map((value, i) => (
+                {feature[key].length > 0 ? (
+                  feature[key].map((value, i) => (
+                    <li key={i} className={`${infoStyles.content} ${infoStyles.listItem}`}>
+                      {value}
+                    </li>
+                  ))
+                ) : (
                   <li key={i} className={`${infoStyles.content} ${infoStyles.listItem}`}>
-                    {value}
+                    {NO_DATA}
                   </li>
-                ))}
+                )}
               </ul>
             </li>
           );
