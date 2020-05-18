@@ -2,7 +2,14 @@
   display: flex;
   justify-content: center;
   height: 100%;
+  min-width: 75%;
   background-color: #fff;
+}
+
+.header,
+.itemLayout {
+  display: flex;
+  justify-content: space-between;
 }
 
 .landingContent {
@@ -12,18 +19,28 @@
   align-items: center;
   position: relative;
   min-height: 100%;
+  width: 100%;
+  max-width: 85rem;
   background-color: #fff;
   color: #101010;
   padding: 0 2.5rem;
 }
 
 .banner,
-.header,
-.items,
-.buttonContainer {
+.items {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start;
   width: 100%;
+}
+
+.items {
+  flex-wrap: wrap;
+  overflow: overlay;
+  max-height: 35rem;
+}
+
+.items::-webkit-scrollbar {
+  display: none;
 }
 
 .icon,
@@ -140,14 +157,6 @@
 .button {
   width: 15rem;
   margin-bottom: 1rem;
-}
-
-.viewAllItems {
-  display: flex;
-  flex-wrap: wrap;
-  flex-direction: row;
-  align-content: space-between;
-  justify-content: space-evenly;
 }
 
 /* ORIGINAL STYLES */
