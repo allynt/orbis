@@ -39,6 +39,7 @@ const BookmarksPanel = ({ map }) => {
   const deleteBookmarkItem = bookmark => dispatch(deleteBookmark(bookmark));
 
   const bookmarks = useSelector(state => state.bookmarks.bookmarks);
+  const bookmarkTitles = bookmarks.map(bookmark => bookmark.title.toLowerCase());
 
   useEffect(() => {
     if (!bookmarks) {
@@ -48,7 +49,7 @@ const BookmarksPanel = ({ map }) => {
 
   return (
     <div className={styles.container}>
-      <BookmarkForm submit={submit} />
+      <BookmarkForm bookmarkTitles={bookmarkTitles} submit={submit} />
       <BookmarkList bookmarks={bookmarks} selectBookmark={chooseBookmark} deleteBookmark={deleteBookmarkItem} />
     </div>
   );

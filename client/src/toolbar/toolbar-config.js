@@ -74,7 +74,7 @@ export const getToolbarItems = dispatch => {
         dispatch(
           setMenuHeadings({
             heading: 'MAPS',
-            strapline: 'Select an Existing Map or Add New',
+            strapline: 'Add new map or Select an existing map',
           }),
         );
       },
