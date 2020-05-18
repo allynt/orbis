@@ -20,6 +20,8 @@ import { ReactComponent as OrbisLogo } from '../orbis.svg';
 
 import styles from './landing.module.css';
 
+const DATE_FORMAT = ['MMMM do Y'];
+
 const ViewAllItems = ({ items, chooseBookmark, toggle, setViewAllItems }) => (
   <div className={styles.content}>
     <div className={styles.header}>
@@ -43,28 +45,28 @@ const Items = ({ items, chooseItem, toggle }) => {
     return <Redirect to={`/map/${queryString}`} />;
   }
   return (
-    <div className={styles.items}>
-      {items.map(item => {
-        const date = format(new Date(item.created), ['MMMM do Y']);
-        const dateString = `Created ${date}`;
+    <div className={styles.itemLayout}>
+      <div className={styles.items}>
+        {items.map(item => {
+          const date = format(new Date(item.created), DATE_FORMAT);
 
-        return (
-          <div className={styles.item} key={item.title}>
-            <div className={styles.image} onClick={() => setItem(item)}>
-              <picture>
-                <img src={item.thumbnail} alt={item.title}></img>
-              </picture>
-            </div>
-            <div className={styles.info}>
-              <div>
-                <h3 className={styles.title}>{item.title}</h3>
-                <p className={styles.creationDate}>{dateString}</p>
+          return (
+            <div className={styles.item} key={item.title}>
+              <div className={styles.image} onClick={() => setItem(item)}>
+                <picture>
+                  <img src={item.thumbnail} alt={item.title}></img>
+                </picture>
+              </div>
+              <div className={styles.info}>
+                <div>
+                  <h3 className={styles.title}>{item.title}</h3>
+                  <p className={styles.creationDate}>{`Created ${date}`}</p>
+                </div>
               </div>
             </div>
-          </div>
-        );
-      })}
-
+          );
+        })}
+      </div>
       <div onClick={toggle}>
         <div className={styles.createNew}>+</div>
       </div>
