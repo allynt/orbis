@@ -7,6 +7,8 @@ import { ReactComponent as GpIcon } from './gp-surgeries.svg';
 import { ReactComponent as HospitalIcon } from './hospitals.svg';
 import { ReactComponent as NhsIcon } from './nhs.svg';
 import { ReactComponent as PharmacyIcon } from './pharmacies.svg';
+import { ReactComponent as LocalAuthorityAgencyIcon } from './local-authority-agency.svg';
+import { ReactComponent as HealthAndSocialCareTrustIcon } from './health-and-social-care-trust.svg';
 
 const types = [
   { name: 'Hospital', icon: HospitalIcon },
@@ -14,6 +16,8 @@ const types = [
   { name: 'NHS', icon: NhsIcon },
   { name: 'Pharmacy', icon: PharmacyIcon },
   { name: 'Care Home', icon: CareHomeIcon },
+  { name: 'Local authority agency', icon: LocalAuthorityAgencyIcon },
+  { name: 'Health & social care trust', icon: HealthAndSocialCareTrustIcon },
 ];
 
 export const HealthInfrastructure = () => (

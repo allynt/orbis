@@ -1,5 +1,5 @@
 module.exports = {
-  name: 'population-information',
+  name: 'people',
   metadata: {
     label: 'Population information',
     domain: 'Action for Health and Help',
