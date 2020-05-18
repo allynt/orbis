@@ -2,7 +2,7 @@
   border-top-right-radius: 1rem;
   border-bottom-right-radius: 1rem;
   background-color: #fff;
-  min-width: 30rem;
+  min-width: 34.875rem;
 }
 
 .layerList {
@@ -65,6 +65,7 @@
   border-radius: 0.3125rem;
   top: -0.9375rem;
   right: 2.0625rem;
+  max-width: 14.25rem;
   background-color: #f6be00;
   z-index: 2;
 }
