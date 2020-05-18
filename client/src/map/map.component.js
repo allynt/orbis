@@ -260,7 +260,6 @@ const Map = ({
   useMap(
     mapInstance,
     map => {
-      mapCleanup(map);
       selectedLayers.forEach(layer => {
         const sourceId = `${layer.name}-source`;
         if (!map.getSource(sourceId)) {
