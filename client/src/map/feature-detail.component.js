@@ -7,6 +7,7 @@ const OBJECT = 'object';
 const STRING = 'string';
 const BRACE = '{';
 const BRACKET = '[';
+const NULL = 'null';
 
 const PK = 'pk';
 const PERSON_TYPE = 'person_type';
@@ -57,11 +58,12 @@ const mapObject = data => {
             </li>
           );
         } else {
-          //when value is not object or array, render li to browser
+          //when value is not object or array, parse null values and render li to browser
+          const value = feature[key] === NULL ? JSON.parse(feature[key]) : feature[key];
           return (
             <li key={key} className={infoStyles.listItem}>
               <span className={infoStyles.label}>{key}: </span>
-              <span className={infoStyles.content}>{feature[key] || NO_DATA}</span>
+              <span className={infoStyles.content}>{value || NO_DATA}</span>
             </li>
           );
         }
