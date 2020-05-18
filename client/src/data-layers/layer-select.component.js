@@ -6,6 +6,7 @@ import Switch from '@astrosat/astrosat-ui/dist/buttons/switch';
 
 import dialogStyles from './data-layers-dialog.module.css';
 import styles from './layer-select.module.css';
+import { useEffect } from 'react';
 
 const InfoBox = ({ info }) => <div className={styles.infoBox}>{info}</div>;
 
@@ -14,6 +15,30 @@ export const LayerSelect = ({ domain, initialSelectedLayers, onAddLayers, onRemo
   const [isInfoVisible, setIsInfoVisible] = useState(false);
   const [info, setInfo] = useState(null);
   const [hasMadeChanges, setHasMadeChanges] = useState(false);
+
+  const handleClick = React.useCallback(
+    event => {
+      if (isInfoVisible && event.path) {
+        for (let element of event.path) {
+          if (element.classList)
+            if (
+              Object.values(element.classList).includes(styles.info) ||
+              Object.values(element.classList).includes(styles.infoBox)
+            )
+              return;
+        }
+        setIsInfoVisible(false);
+      }
+    },
+    [isInfoVisible],
+  );
+
+  useEffect(() => {
+    document.addEventListener('click', handleClick);
+    return () => {
+      document.removeEventListener('click', handleClick);
+    };
+  }, [handleClick]);
 
   const handleSwitchClick = layer => () => {
     if (!hasMadeChanges) setHasMadeChanges(true);
@@ -56,7 +81,7 @@ export const LayerSelect = ({ domain, initialSelectedLayers, onAddLayers, onRemo
           <div className={styles.switchContainer}>
             <ul>
               {domain &&
-                domain.layers.map(layer => {
+                domain.layers.map((layer, i) => {
                   const isSelected = !!selectedLayers.find(selected => layer.name === selected.name);
                   return (
                     <li key={layer.metadata.label} className={styles.row} data-testid={`layer-list-item-${layer.name}`}>

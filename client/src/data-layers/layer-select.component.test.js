@@ -1,5 +1,8 @@
 import React from 'react';
-import { render, fireEvent } from '@testing-library/react';
+
+import { render, wait } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+
 import { LayerSelect } from './layer-select.component';
 
 const setup = initialSelectedLayers => {
@@ -50,9 +53,9 @@ describe('LayerSelect', () => {
   it('should keep the Accept button enabled after user has made any change', () => {
     const { getByText, layers } = setup([]);
     expect(getByText('Accept')).toHaveProperty('disabled', true);
-    fireEvent.click(getByText(layers[0].metadata.label));
+    userEvent.click(getByText(layers[0].metadata.label));
     expect(getByText('Accept')).toHaveProperty('disabled', false);
-    fireEvent.click(getByText(layers[0].metadata.label));
+    userEvent.click(getByText(layers[0].metadata.label));
     expect(getByText('Accept')).toHaveProperty('disabled', false);
   });
 
@@ -63,8 +66,8 @@ describe('LayerSelect', () => {
 
   it('should call onAddLayers with the selected layers when the button is clicked', () => {
     const { getByText, layers, handleAddLayers } = setup([]);
-    fireEvent.click(getByText(layers[0].metadata.label));
-    fireEvent.click(getByText('Accept'));
+    userEvent.click(getByText(layers[0].metadata.label));
+    userEvent.click(getByText('Accept'));
     expect(handleAddLayers).toHaveBeenCalled();
     expect(handleAddLayers).toHaveBeenCalledWith([layers[0]]);
   });
@@ -73,16 +76,26 @@ describe('LayerSelect', () => {
     it('should show when the info button is clicked', () => {
       const { getAllByLabelText, getByText, layers } = setup([]);
       const infoButtons = getAllByLabelText('Info');
-      fireEvent.click(infoButtons[0]);
+      userEvent.click(infoButtons[0]);
       expect(getByText(layers[0].metadata.description)).toBeInTheDocument();
     });
 
-    it('should remain visible when a following info button is clicked', async () => {
+    it('should remain visible when a following info button is clicked', () => {
       const { getAllByLabelText, getByText, layers } = setup([]);
       const infoButtons = getAllByLabelText('Info');
-      fireEvent.click(infoButtons[0]);
-      fireEvent.click(infoButtons[1]);
+      userEvent.click(infoButtons[0]);
+      userEvent.click(infoButtons[1]);
       expect(getByText(layers[1].metadata.description)).toBeInTheDocument();
+    });
+
+    it('should disappear when clicked away', () => {
+      const { getAllByLabelText, queryByText, getByText, layers } = setup([]);
+      userEvent.click(getAllByLabelText('Info')[0]);
+      expect(getByText(layers[0].metadata.description)).toBeInTheDocument();
+      userEvent.click(getByText('Select Your Layers'));
+      wait(() => {
+        expect(queryByText(layers[0].metadata.description)).not.toBeInTheDocument();
+      });
     });
   });
 });
