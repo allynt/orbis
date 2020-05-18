@@ -7,18 +7,6 @@ describe('Bookmark Form Validator', () => {
         title: '', // Error, missing
         description: 'description',
       },
-      {
-        title: 'id', // Error, too short
-        description: 'description',
-      },
-      {
-        title: 'Bookmark Title',
-        description: '', // Error, missing
-      },
-      {
-        title: 'Bookmark Title',
-        description: 'de', // Error, too short
-      },
     ];
 
     it.each(testFields)('Invalid Value %o', form => {
