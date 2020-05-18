@@ -96,7 +96,7 @@ const DataLayers = () => {
             // We need to have structure to our layer naming for this to work,
             // but if we prepend each layer with it's type, e.g `scotish-infrastructure` becomes `infrastructure` and `people`,
             // remains `people`.
-            const layerType = selectedLayer.name.split('-').slice(-1);
+            const [layerType] = selectedLayer.name.split('-').slice(-1);
             const Component =
               detailComponentMap[layerType ? layerType : selectedLayer.name] ?? detailComponentMap['default'];
 
