@@ -36,7 +36,7 @@ describe('Bookmark List Component', () => {
       <BookmarkList bookmarks={bookmarks} selectBookmark={selectBookmark} deleteBookmark={deleteBookmark} />,
     );
 
-    expect(getByText('No Bookmarks')).toBeInTheDocument();
+    expect(getByText('No Saved Maps')).toBeInTheDocument();
   });
 
   it('should render a list of Bookmarks', () => {
