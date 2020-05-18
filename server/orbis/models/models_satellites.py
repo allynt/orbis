@@ -400,7 +400,7 @@ class SatelliteResult(gis_models.Model):
         The URL to retrieve a thumbnail image from the OLSP (On-Line Scene Processor);
         templated bits are filled in by the client
         """
-        url_template = "{0}/{1}/{2}/{{VISUALISATION_ID}}/thumbnail/image.png"
+        url_template = "{0}/{1}/{2}/{{VISUALISATION_ID}}/preview"
         return url_template.format(
             settings.OLSP_URL, self.satellite.satellite_id, self.scene_id
         )
@@ -412,7 +412,7 @@ class SatelliteResult(gis_models.Model):
         templated bits are filled in by the client
         """
         url_template = (
-        "{0}/{1}/{2}/{{VISUALISATION_ID}}/tile/{{z}}/{{x}}/{{y}}.png"
+        "{0}/{1}/{2}/{{VISUALISATION_ID}}/tile/{{z}}/{{x}}/{{y}}"
         )
         return url_template.format(
             settings.OLSP_URL, self.satellite.satellite_id, self.scene_id
