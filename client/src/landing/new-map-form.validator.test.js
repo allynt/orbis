@@ -7,18 +7,6 @@ describe('New Map Form Validator', () => {
         name: '', // Error, missing
         description: 'Description',
       },
-      {
-        name: 'id', // Error, too short
-        description: 'password',
-      },
-      {
-        name: 'New Map Name',
-        description: '', // Error, missing
-      },
-      {
-        name: 'New Map Name',
-        description: 'desc', // Error, too short
-      },
     ];
 
     it.each(testFields)('Invalid Value %o', form => {
@@ -35,7 +23,7 @@ describe('New Map Form Validator', () => {
       },
       {
         name: 'map',
-        description: 'descr',
+        description: 'd',
       },
     ];
 
