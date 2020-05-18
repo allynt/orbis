@@ -38,7 +38,6 @@ const BookmarkForm = ({ submit }) => {
             value={values.description || ''}
             placeholder="Description"
             onChange={handleChange}
-            required
           />
           {errors.title && <p className={formStyles.errorMessage}>{errors.title}</p>}
         </div>
