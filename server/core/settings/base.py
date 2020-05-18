@@ -18,7 +18,7 @@ env = environ.Env()
 
 PROJECT_NAME = "orbis"
 PROJECT_SLUG = slugify(PROJECT_NAME)
-PROJECT_EMAIL = "{role}@astrosat.space"
+PROJECT_EMAIL = "{role}@astrosat.net"
 
 ROOT_DIR = environ.Path(__file__) - 4
 SERVER_DIR = ROOT_DIR.path("server")
@@ -245,7 +245,7 @@ LOCALE_PATHS = [str(SERVER_DIR("core/locale"))]
 
 ADMIN_URL = "admin/"
 
-ADMINS = [(PROJECT_NAME, PROJECT_EMAIL.format(role="noreply"))]
+ADMINS = [(PROJECT_NAME, PROJECT_EMAIL.format(role="techdev"))]
 MANAGERS = ADMINS
 
 ADMIN_SITE_HEADER = f"{PROJECT_NAME} administration console"
