@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { render, wait } from '@testing-library/react';
+import { render, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
 import { LayerSelect } from './layer-select.component';
@@ -93,7 +93,7 @@ describe('LayerSelect', () => {
       userEvent.click(getAllByLabelText('Info')[0]);
       expect(getByText(layers[0].metadata.description)).toBeInTheDocument();
       userEvent.click(getByText('Select Your Layers'));
-      wait(() => {
+      waitFor(() => {
         expect(queryByText(layers[0].metadata.description)).not.toBeInTheDocument();
       });
     });
