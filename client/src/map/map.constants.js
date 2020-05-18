@@ -44,8 +44,9 @@ export const personTypes = [
     name: 'RECIPIENT',
     color: 'red',
   },
-  {
+  // Removed for hourglass
+  /* {
     name: 'REPORTER',
     color: 'yellow',
-  },
+  }, */
 ];
