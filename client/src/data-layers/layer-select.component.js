@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 
 import InfoButton from '@astrosat/astrosat-ui/dist/buttons/info-button';
 import Button from '@astrosat/astrosat-ui/dist/buttons/button';
@@ -6,7 +6,6 @@ import Switch from '@astrosat/astrosat-ui/dist/buttons/switch';
 
 import dialogStyles from './data-layers-dialog.module.css';
 import styles from './layer-select.module.css';
-import { useEffect } from 'react';
 
 const InfoBox = ({ info }) => <div className={styles.infoBox}>{info}</div>;
 
@@ -16,7 +15,7 @@ export const LayerSelect = ({ domain, initialSelectedLayers, onAddLayers, onRemo
   const [info, setInfo] = useState(null);
   const [hasMadeChanges, setHasMadeChanges] = useState(false);
 
-  const handleClick = React.useCallback(
+  const handleClick = useCallback(
     event => {
       if (isInfoVisible && event.path) {
         for (let element of event.path) {
