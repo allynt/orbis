@@ -35,7 +35,7 @@ const BookmarkForm = ({ bookmarkTitles, submit }) => {
           />
           {errors.title && <p className={formStyles.errorMessage}>{errors.title}</p>}
 
-          {values.title && isDuplicateTitle && (
+          {isDuplicateTitle && (
             <p className={formStyles.errorMessage}>
               A map already exists with the title: <strong>{values.title}</strong>
             </p>
