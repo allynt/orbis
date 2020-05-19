@@ -1,7 +1,7 @@
 import React, { useMemo, useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 
-import { useTable, usePagination } from 'react-table';
+import { useTable, usePagination, useFilters } from 'react-table';
 
 import ReactTooltip from 'react-tooltip';
 
@@ -31,11 +31,29 @@ const EditableCell = ({ value: initialValue, row, column: { id }, updateUser }) 
   return <input value={value} onChange={onChange} onBlur={onBlur} />;
 };
 
-const defaultColumn = {
-  Cell: EditableCell,
+const DefaultColumnFilter = ({ column: { filterValue, preFilteredRows, setFilter } }) => {
+  const count = preFilteredRows.length;
+
+  return (
+    <input
+      value={filterValue || ''}
+      onChange={event => {
+        setFilter(event.target.value || undefined); // Set undefined to remove the filter entirely
+      }}
+      placeholder={`Search ${count} records...`}
+    />
+  );
 };
 
 const UserTable = ({ data, deleteUser, updateUser, copyUser }) => {
+  const defaultColumn = useMemo(
+    () => ({
+      Filter: DefaultColumnFilter,
+      Cell: EditableCell,
+    }),
+    [],
+  );
+
   const columns = useMemo(
     () => [
       {
@@ -114,6 +132,7 @@ const UserTable = ({ data, deleteUser, updateUser, copyUser }) => {
       defaultColumn,
       updateUser,
     },
+    useFilters,
     usePagination,
   );
 
@@ -125,7 +144,10 @@ const UserTable = ({ data, deleteUser, updateUser, copyUser }) => {
           {headerGroups.map(headerGroup => (
             <tr {...headerGroup.getHeaderGroupProps()}>
               {headerGroup.headers.map(column => (
-                <th {...column.getHeaderProps()}>{column.render('Header')}</th>
+                <th {...column.getHeaderProps()}>
+                  <div>{column.render('Header')}</div>
+                  <div>{column.canFilter ? column.render('Filter') : null}</div>
+                </th>
               ))}
             </tr>
           ))}
