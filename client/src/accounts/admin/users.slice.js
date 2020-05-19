@@ -125,7 +125,7 @@ export const updateUser = user => async (dispatch, getState) => {
 
   dispatch(updateUserRequested());
 
-  const response = await sendData(`${API}${user.pk}/`, user, headers, 'PUT');
+  const response = await sendData(`${API}${user.id}/`, user, headers, 'PUT');
 
   if (!response.ok) {
     const message = `${response.status} ${response.statusText}`;
