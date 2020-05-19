@@ -1,8 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { useDispatch } from 'react-redux';
-
 import Button from '@astrosat/astrosat-ui/dist/buttons/button';
 import useForm from '@astrosat/astrosat-ui/dist/forms/use-form';
 
@@ -11,35 +9,16 @@ import validate from './user-detail-form.validator';
 import styles from './user-detail-form.module.css';
 
 const UserDetailForm = ({ createUser }) => {
-  const dispatch = useDispatch();
-
   const { handleChange, handleSubmit, reset, values, errors } = useForm(onSubmit, validate);
 
   function onSubmit() {
-    dispatch(createUser(values));
+    createUser(values);
   }
 
   return (
     <div className={styles['user-detail-form-container']}>
       <form className={styles['user-detail-form']} onSubmit={handleSubmit}>
         <h3>Create New User</h3>
-
-        <div className={styles['form-row']}>
-          <label className={styles.label}>
-            Username:
-            <input
-              className={`${styles.input} ${errors.username ? styles.error : ''}`}
-              type="text"
-              name="username"
-              onChange={handleChange}
-              value={values.username || ''}
-              required
-              autoFocus
-            />
-          </label>
-          <em className={styles.required}>(Required)</em>
-        </div>
-        {errors.username && <p className={styles['error-message']}>{errors.username}</p>}
 
         <div className={styles['form-row']}>
           <label className={styles.label}>
