@@ -1,11 +1,12 @@
 const express = require('express');
 const { userKey, getCurrentUser, setCurrentUser } = require('./data');
-const { users } = require('../users/data');
+const { getUsers } = require('../users/data');
 
 const register = (req, res) => {
   const details = req.body;
   console.log('Registering User: ', details);
 
+  const users = getUsers();
   const existingUser = users.find(user => user.username === details.username);
 
   if (existingUser) {
@@ -36,6 +37,7 @@ const login = (req, res) => {
   const user = req.body;
   console.log('Logging User: ', user);
 
+  const users = getUsers();
   setCurrentUser(users.find(usr => usr.email === user.email));
   const currentUser = getCurrentUser();
   console.log('USER Matched: ', currentUser);
@@ -77,6 +79,8 @@ const logout = (req, res) => {
 
 const changePassword = (req, res) => {
   console.log(`Changing User Password`);
+  const users = getUsers();
+
   const oldPassword = req.body.old_password;
   const newPassword = req.body.new_password1;
   console.log(`Changing User Password from ${oldPassword} to ${newPassword}`);

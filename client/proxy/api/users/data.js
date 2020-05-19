@@ -1,4 +1,4 @@
-const users = [
+let users = [
   {
     id: 1,
     username: 'user@test.com',
@@ -49,4 +49,9 @@ const users = [
   },
 ];
 
-module.exports = { users };
+const getUsers = () => users;
+const addUser = user => (users = [...users, { ...user, id: users.length + 1 }]);
+const updateUser = user => (users = users.map(usr => (usr.id === user.id ? user : usr)));
+const deleteUser = id => (users = users.filter(user => user.id !== id));
+
+module.exports = { getUsers, addUser, updateUser, deleteUser };
