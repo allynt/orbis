@@ -9,7 +9,7 @@ const users = [
     is_verified: true,
     is_approved: true,
     profiles: {},
-    roles: [{ id: 2, name: 'IsUser', description: '', permissions: [] }],
+    roles: ['UserRole'],
   },
   {
     id: 2,
@@ -21,10 +21,7 @@ const users = [
     is_verified: true,
     is_approved: true,
     profiles: {},
-    roles: [
-      { id: 1, name: 'IsManager', description: '', permissions: [] },
-      { id: 2, name: 'IsUser', description: '', permissions: [] },
-    ],
+    roles: ['AdminRole', 'UserRole'],
   },
   {
     id: 2,
@@ -36,7 +33,7 @@ const users = [
     is_verified: true,
     is_approved: false,
     profiles: {},
-    roles: [{ id: 2, name: 'IsUser', description: '', permissions: [] }],
+    roles: ['UserRole'],
   },
   {
     id: 3,
@@ -48,7 +45,7 @@ const users = [
     is_verified: false,
     is_approved: true,
     profiles: {},
-    roles: [{ id: 2, name: 'IsUser', description: '', permissions: [] }],
+    roles: ['UserRole'],
   },
 ];
 
