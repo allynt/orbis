@@ -104,13 +104,13 @@ export const addBookmark = bookmark => async (dispatch, getState) => {
   if (!response.ok) {
     const message = `${response.status} ${response.statusText}`;
 
-    NotificationManager.error(message, `Adding Bookmark Error - ${response.statusText}`, 50000, () => {});
+    NotificationManager.error(message, `Adding Map Error`, 50000, () => {});
 
     return dispatch(addBookmarkFailure({ message }));
   }
 
   const newBookmark = await response.json();
-  NotificationManager.success('Successfully bookmarked map', 'Successful map bookmarking', 5000, () => {});
+  NotificationManager.success(undefined, `Successfully saved ${bookmark.title}`, 5000, () => {});
 
   return dispatch(addBookmarkSuccess(newBookmark));
 };
@@ -123,12 +123,12 @@ export const deleteBookmark = bookmark => async (dispatch, getState) => {
   if (!response.ok) {
     const message = `${response.status} ${response.statusText}`;
 
-    NotificationManager.error(message, `Deleting Bookmark Error - ${response.statusText}`, 50000, () => {});
+    NotificationManager.error(message, `Deleting Map Error`, 50000, () => {});
 
     return dispatch(deleteBookmarkFailure({ message }));
   }
 
-  NotificationManager.success('Successfully deleted bookmark', 'Successful bookmark deletion', 5000, () => {});
+  NotificationManager.success(undefined, `Successfully deleted ${bookmark.title}`, 5000, () => {});
 
   return dispatch(deleteBookmarkSuccess(bookmark));
 };
