@@ -17,10 +17,9 @@ const EditableCell = ({ row, data, updateUser }) => (
     contentEditable
     suppressContentEditableWarning
     onBlur={event => {
-      console.log('EVENT: ', event, row);
       const newData = [...data];
       newData[row.index][row.column.id] = event.target.innerHTML;
-      updateUser(newData.find(user => user.pk === row.original.pk));
+      updateUser(newData.find(user => user.id === row.original.id));
     }}
     dangerouslySetInnerHTML={{
       __html: data[row.index][row.column.id],
@@ -45,7 +44,6 @@ const UserTable = ({ data, deleteUser, updateUser, copyUser }) => (
             accessor: 'action',
             maxWidth: 150,
             Cell: row => {
-              // console.log('CELL ROW: ', row);
               return (
                 <span>
                   <button onClick={() => copyUser(row.original)} data-tip data-for="copy-user">
@@ -55,7 +53,7 @@ const UserTable = ({ data, deleteUser, updateUser, copyUser }) => (
                     <span>Copy User</span>
                   </ReactTooltip>
 
-                  <button onClick={() => deleteUser(row.original.pk)} data-tip data-for="delete-user">
+                  <button onClick={() => deleteUser(row.original.id)} data-tip data-for="delete-user">
                     <DeleteIcon className={style.icon} alt="Delete" />
                   </button>
                   <ReactTooltip id="delete-user">
@@ -67,19 +65,8 @@ const UserTable = ({ data, deleteUser, updateUser, copyUser }) => (
           },
           {
             Header: 'Key',
-            id: 'pk',
-            accessor: d => d.pk,
-            contentEditable: true,
-            filterable: true,
-            filterMethod: (filter, row) => row[filter.id].startsWith(filter.value),
-            Cell: row => {
-              return <EditableCell row={row} data={data} updateUser={updateUser} />;
-            },
-          },
-          {
-            Header: 'Username',
-            id: 'username',
-            accessor: d => d.username,
+            id: 'id',
+            accessor: d => d.id,
             contentEditable: true,
             filterable: true,
             filterMethod: (filter, row) => row[filter.id].startsWith(filter.value),
@@ -99,20 +86,9 @@ const UserTable = ({ data, deleteUser, updateUser, copyUser }) => (
             },
           },
           {
-            Header: 'First Name',
-            id: 'first_name',
-            accessor: d => d.first_name,
-            contentEditable: true,
-            filterable: true,
-            filterMethod: (filter, row) => row[filter.id].startsWith(filter.value),
-            Cell: row => {
-              return <EditableCell row={row} data={data} updateUser={updateUser} />;
-            },
-          },
-          {
-            Header: 'Last Name',
-            id: 'last_name',
-            accessor: d => d.last_name,
+            Header: 'Name',
+            id: 'name',
+            accessor: d => d.name,
             contentEditable: true,
             filterable: true,
             filterMethod: (filter, row) => row[filter.id].startsWith(filter.value),
@@ -123,28 +99,6 @@ const UserTable = ({ data, deleteUser, updateUser, copyUser }) => (
         ]}
         defaultPageSize={5}
         className="-striped -highlight"
-        // getTdProps={(state, row, col, instance) => ({
-        //   onClick: (event, cb) => {
-        //     // do some stuff with the event
-        //     // console.log('CLICKED TD: ', row, col, instance, event);
-        //     if (col.id !== 'action') {
-        //       const {
-        //         original: { id, name, description }
-        //       } = row;
-        //       setActiveUser({
-        //         id,
-        //         'user-name': name,
-        //         'user-description': description
-        //       });
-        //     }
-        //     // cb()
-        //   }
-        // })}
-        // getTrProps={(state, rowInfo, column) => ({
-        //   onClick: event => {
-        //     console.log('CLICKED TABLE ROW: ', rowInfo, state, event, column);
-        //   }
-        // })}
       />
     )}
   </div>
