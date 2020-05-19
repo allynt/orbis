@@ -1,3 +1,57 @@
+# [1.2.0](https://github.com/astrosat/orbis/compare/v1.1.0...v1.2.0) (2020-05-19)
+
+
+### Bug Fixes
+
+* **accounts:** Remove interesting styles ([ae81e3a](https://github.com/astrosat/orbis/commit/ae81e3a21e09b841fc30c87d70a60a3604903b1d)), closes [#396](https://github.com/astrosat/orbis/issues/396)
+* **accounts:** Removed link theme ([9284f86](https://github.com/astrosat/orbis/commit/9284f866ef2c98976ad1d94b6c32d1641c4cddf3)), closes [#396](https://github.com/astrosat/orbis/issues/396)
+* **App:** Add overflow ([6bcd178](https://github.com/astrosat/orbis/commit/6bcd178b2c751153b00a6e6dd0564a69c58df8c9)), closes [#393](https://github.com/astrosat/orbis/issues/393)
+* **BookmarkForm:** Update validation criteria ([d480e97](https://github.com/astrosat/orbis/commit/d480e97302da06545f0e5f4c583b712c20bc833c)), closes [#424](https://github.com/astrosat/orbis/issues/424)
+* **Bookmarks:** Fix infinate loadmask ([acf0725](https://github.com/astrosat/orbis/commit/acf07251a9fb5c64bb0fba46e07974758ebc71d0)), closes [#394](https://github.com/astrosat/orbis/issues/394)
+* **Data Slice:** Filters working with nested properties ([ea9b692](https://github.com/astrosat/orbis/commit/ea9b6925b002c1bfdcc5cb19865ddf764fb818e9)), closes [#385](https://github.com/astrosat/orbis/issues/385) [#385](https://github.com/astrosat/orbis/issues/385)
+* **Data Slice:** remove import ([a5bd488](https://github.com/astrosat/orbis/commit/a5bd488e37ed0c7ef821a8cdbdb320204ded326f)), closes [#385](https://github.com/astrosat/orbis/issues/385)
+* **Data Slice:** selectAvailableFilters groups and arrays ([2442608](https://github.com/astrosat/orbis/commit/2442608853eec31c7d11ea2d30c02795c8fbfb13)), closes [#385](https://github.com/astrosat/orbis/issues/385)
+* **Data Slice:** selectFilteredData arrays ([def4ed7](https://github.com/astrosat/orbis/commit/def4ed7e6b99f391619336118cc94544e0dd3d4b)), closes [#385](https://github.com/astrosat/orbis/issues/385)
+* **Filters:** Change logic ([60b432f](https://github.com/astrosat/orbis/commit/60b432f4c43f2693662f03fe2e8e2bcd3e0e4ce4)), closes [#385](https://github.com/astrosat/orbis/issues/385)
+* **Filters:** Split jsx ([1fb77bb](https://github.com/astrosat/orbis/commit/1fb77bba233589cfb470a769f96825f10367ee2c)), closes [#385](https://github.com/astrosat/orbis/issues/385)
+* **filters-utils:** Add test for nested siblings ([fbe90a3](https://github.com/astrosat/orbis/commit/fbe90a312c55adde3290c30c12b4661683d6da7b)), closes [#385](https://github.com/astrosat/orbis/issues/385)
+* **frontend:** Add conditional for empty arrays ([5e8306c](https://github.com/astrosat/orbis/commit/5e8306cf032eab32738e2f17d2753059c6489219))
+* **frontend:** Bump deps ([ac55cac](https://github.com/astrosat/orbis/commit/ac55cac6baa585d7995f4ce30d038afc8f4ae73b))
+* **frontend:** Change landing page title ([9bd9e3d](https://github.com/astrosat/orbis/commit/9bd9e3d7d70c8ed8d78107fbc870ac342eac0b0a))
+* **frontend:** Change removed border to transparent ([7dfdc7d](https://github.com/astrosat/orbis/commit/7dfdc7d2339eb3a9c280425c715c8d1046b3df57))
+* **frontend:** Combine first/last name fields into a single field ([a89afad](https://github.com/astrosat/orbis/commit/a89afad15106a08668cc647e822fe489d508e069)), closes [#417](https://github.com/astrosat/orbis/issues/417)
+* **frontend:** Display correct legend for data ([e05fcd0](https://github.com/astrosat/orbis/commit/e05fcd0129c6b2e1ca13ab2abab710f5fc8ad6b6)), closes [#416](https://github.com/astrosat/orbis/issues/416)
+* **frontend:** Dynamically inject detail title ([269d22e](https://github.com/astrosat/orbis/commit/269d22e78f1e6cafcf703afa63c60510ae4d5f5c))
+* **frontend:** Extract data format to constant, inline date string ([d8d7d02](https://github.com/astrosat/orbis/commit/d8d7d029c0771f3aef506f8970bd9836d474ef1f))
+* **frontend:** Fix buttons in T&C component ([9dc36c3](https://github.com/astrosat/orbis/commit/9dc36c33c3ae327a1332810c8a31ee9ff3617d32))
+* **frontend:** Fix missing brackets ([d392065](https://github.com/astrosat/orbis/commit/d392065f28cb5d949ce578226956d260abd7384b)), closes [#416](https://github.com/astrosat/orbis/issues/416)
+* **frontend:** Only map data when it exists ([244311a](https://github.com/astrosat/orbis/commit/244311aa701a21bdbb321783ce8af2cf7c216166))
+* **frontend:** Parse null values so thay can be caught by fallback ([751873d](https://github.com/astrosat/orbis/commit/751873dac91814d3c403abbb5cf69cff5991dd8c))
+* **frontend:** Prevent sources being re-fetched ([29e2236](https://github.com/astrosat/orbis/commit/29e2236741f7cae4b7fed02ef32440c487ef29df)), closes [#417](https://github.com/astrosat/orbis/issues/417)
+* **frontend:** Refactor landing page ([db7f19c](https://github.com/astrosat/orbis/commit/db7f19c840300ab408c01ae1d812b29b2de34a9e))
+* **frontend:** Replace regex ([920c7d2](https://github.com/astrosat/orbis/commit/920c7d221d83ed14c7c76b2c6937ccfa2fdc28d1)), closes [#416](https://github.com/astrosat/orbis/issues/416)
+* **frontend:** Update proxy data to follow naming convention ([e9b35de](https://github.com/astrosat/orbis/commit/e9b35deebe3b9c88cc047116f68518d280fa7dac)), closes [#416](https://github.com/astrosat/orbis/issues/416)
+* **frontend:** Update proxy test data to match real ([2d71dd3](https://github.com/astrosat/orbis/commit/2d71dd3df1120812a388d14d98e6fab131713f2e))
+* **frontend:** Update T&C logo to redirect to landing page ([3a77eac](https://github.com/astrosat/orbis/commit/3a77eac3fd07d628153ae199a5cc347c2b88a1f1))
+* **Landing:** Imported regions ([344213b](https://github.com/astrosat/orbis/commit/344213bf3fe31f988b94185e53ee1579ea573774)), closes [#411](https://github.com/astrosat/orbis/issues/411)
+* **Landing:** Remove cursor from logo ([db2e99b](https://github.com/astrosat/orbis/commit/db2e99b764da59adef3faf6d01d3d3deec576ccd)), closes [#391](https://github.com/astrosat/orbis/issues/391)
+* **Landing:** Remove profile and item options ([1c80fd8](https://github.com/astrosat/orbis/commit/1c80fd88f025b6289659fff4660edc78badc4bf5)), closes [#402](https://github.com/astrosat/orbis/issues/402)
+* **LayerSelect:** Add clickaway ([7a0eec2](https://github.com/astrosat/orbis/commit/7a0eec2e70ba22090c1f884abc9401138aa893a9)), closes [#425](https://github.com/astrosat/orbis/issues/425)
+* **LayerSelect:** Add/update min-width ([ce75655](https://github.com/astrosat/orbis/commit/ce756553d47aaf15f2cdbabac3bd9d69c2e120d3)), closes [#426](https://github.com/astrosat/orbis/issues/426)
+* **LayerSelect:** Solve test fail ([3942a83](https://github.com/astrosat/orbis/commit/3942a8381aefd0db1377374901818469c8647612)), closes [#425](https://github.com/astrosat/orbis/issues/425)
+* **LayerSelect:** Sort imports ([2fe665a](https://github.com/astrosat/orbis/commit/2fe665abc4e1608ca112ba36c2590a1eb80c7a9d)), closes [#425](https://github.com/astrosat/orbis/issues/425)
+* **LoginForm:** Change text ([59b9728](https://github.com/astrosat/orbis/commit/59b9728c278cf11dcd93925cfbcfafc2e08a2e42)), closes [#396](https://github.com/astrosat/orbis/issues/396)
+* **Map:** Prevent multiple popups ([287586d](https://github.com/astrosat/orbis/commit/287586dd2682ada6e583ddb34ef23a506ab9311f))
+* **Map:** Remove extra cleanup ([9d8250a](https://github.com/astrosat/orbis/commit/9d8250adc6a556fcee0c33794bd4091c695757f6))
+* **Proxy:** Add fake population data ([9a8af2a](https://github.com/astrosat/orbis/commit/9a8af2a2f474f88888d958dc4e94e4c2b03da2ec)), closes [#385](https://github.com/astrosat/orbis/issues/385)
+* **Proxy:** Add filters ([c194f4b](https://github.com/astrosat/orbis/commit/c194f4bcb89ded6ebf76d55cfbd906ca7bd61724)), closes [#385](https://github.com/astrosat/orbis/issues/385)
+* **Proxy:** Add real covid-app data ([072fa4e](https://github.com/astrosat/orbis/commit/072fa4e4d1a5760c0686364ce5c386b4e43158d4)), closes [#385](https://github.com/astrosat/orbis/issues/385)
+
+
+### Features
+
+* **Data Slice:** Create tests for grouped filters ([cbde2db](https://github.com/astrosat/orbis/commit/cbde2dbc0ceddcf65114928bbdce071c95e1afbc)), closes [#385](https://github.com/astrosat/orbis/issues/385)
+
 # [1.1.0](https://github.com/astrosat/orbis/compare/v1.0.0...v1.1.0) (2020-05-13)
 
 
