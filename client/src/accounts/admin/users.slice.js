@@ -158,10 +158,12 @@ export const deleteUser = id => async (dispatch, getState) => {
   return dispatch(deleteUserSuccess(id));
 };
 
-export const copyUser = user => async (dispatch, getState) => {
+export const copyUser = user => async dispatch => {
   // Update User to prepend 'Copy of' text.
   const data = {
     ...user,
+    email: `UPDATE-${user.email}`,
+    username: `UPDATE-${user.email}`,
     name: `Copy of ${user.name}`,
     description: `Copy of ${user.description}`,
   };
