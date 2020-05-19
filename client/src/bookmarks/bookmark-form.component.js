@@ -17,9 +17,7 @@ const BookmarkForm = ({ bookmarkTitles, submit }) => {
     submit(values);
   }
 
-  const { handleChange, handleSubmit, values, errors } = useForm(onSubmit, validate);
-
-  const isDuplicateTitle = values.title && bookmarkTitles.includes(values.title.toLowerCase());
+  const { handleChange, handleSubmit, values, errors } = useForm(onSubmit, validate(bookmarkTitles));
 
   return (
     <div className={formStyles.container}>
@@ -35,11 +33,7 @@ const BookmarkForm = ({ bookmarkTitles, submit }) => {
           />
           {errors.title && <p className={formStyles.errorMessage}>{errors.title}</p>}
 
-          {isDuplicateTitle && (
-            <p className={formStyles.errorMessage}>
-              A map already exists with the title: <strong>{values.title}</strong>
-            </p>
-          )}
+          {errors.duplicateTitle && <p className={formStyles.errorMessage}>{errors.duplicateTitle}</p>}
 
           <Textfield
             name="description"
@@ -49,10 +43,7 @@ const BookmarkForm = ({ bookmarkTitles, submit }) => {
           />
         </div>
 
-        <Button
-          type="submit"
-          disabled={isDuplicateTitle || Object.keys(errors).length > 0 || Object.keys(values).length === 0}
-        >
+        <Button type="submit" disabled={Object.keys(errors).length > 0 || Object.keys(values).length === 0}>
           Save Map
         </Button>
       </form>
