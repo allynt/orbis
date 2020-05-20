@@ -58,10 +58,8 @@ const getCurrentUserHandler = (req, res) => {
 
 const usersRouter = express.Router();
 
-usersRouter.route('/').get(getUsersHandler);
-usersRouter.route('/').post(addUserHandler);
-usersRouter.route('/:id').put(updateUserHandler);
-usersRouter.route('/:id').delete(deleteUserHandler);
+usersRouter.route('/').get(getUsersHandler).post(addUserHandler);
+usersRouter.route('/:id').put(updateUserHandler).delete(deleteUserHandler);
 usersRouter.route('/:username').get(currentUserMiddleware, getCurrentUserHandler);
 
 module.exports = usersRouter;
