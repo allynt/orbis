@@ -10,6 +10,10 @@ resource "kubernetes_deployment" "app_deployment" {
   metadata {
     name   = local.app_name
     labels = local.app_labels
+
+    annotations = {
+      "linkerd.io/inject" = "enabled"
+    }
   }
 
   timeouts {
@@ -29,9 +33,16 @@ resource "kubernetes_deployment" "app_deployment" {
     template {
       metadata {
         labels = local.app_labels
+
+        annotations = {
+          "linkerd.io/inject" = "enabled"
+        }
       }
 
       spec {
+
+        automount_service_account_token = true
+
         container {
           name  = local.app_name
           image = local.app_image
