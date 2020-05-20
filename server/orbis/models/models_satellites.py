@@ -412,7 +412,7 @@ class SatelliteResult(gis_models.Model):
         templated bits are filled in by the client
         """
         url_template = (
-        "{0}/{1}/{2}/{{VISUALISATION_ID}}/tile/{{z}}/{{x}}/{{y}}"
+        "{0}/{1}/{2}/{{VISUALISATION_ID}}/tilejson"
         )
         return url_template.format(
             settings.OLSP_URL, self.satellite.satellite_id, self.scene_id

@@ -471,7 +471,7 @@ const Map = ({
 
         map.addSource(sourceId, {
           type: 'raster',
-          tiles: [tileUrl],
+          url: tileUrl,
           tileSize: 256,
         });
         map.addLayer({
@@ -510,7 +510,7 @@ const Map = ({
 
         map.addSource(sourceId, {
           type: 'raster',
-          tiles: [tileUrl],
+          url: tileUrl,
           tileSize: 256,
         });
         map.addLayer({
