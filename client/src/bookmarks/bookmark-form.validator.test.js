@@ -9,7 +9,7 @@ describe('Bookmark Form Validator', () => {
       },
     ];
 
-    const titles = ['title1', 'title2', 'title3'];
+    const titles = ['title 1', 'title 2', 'title 3'];
 
     it.each(testFields)('Invalid Value %o', form => {
       const validateCallback = validate(titles);
