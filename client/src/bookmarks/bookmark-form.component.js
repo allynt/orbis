@@ -33,8 +33,6 @@ const BookmarkForm = ({ bookmarkTitles, submit }) => {
           />
           {errors.title && <p className={formStyles.errorMessage}>{errors.title}</p>}
 
-          {errors.duplicateTitle && <p className={formStyles.errorMessage}>{errors.duplicateTitle}</p>}
-
           <Textfield
             name="description"
             value={values.description || ''}

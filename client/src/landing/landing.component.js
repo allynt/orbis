@@ -136,7 +136,12 @@ const ExistingUserLanding = forwardRef(
         </div>
 
         <Dialog isVisible={isVisible} title="Create New Map" close={toggle} ref={ref}>
-          <NewMapForm regions={regions} domains={domains} setViewport={setViewport} />
+          <NewMapForm
+            regions={regions}
+            domains={domains}
+            bookmarkTitles={bookmarks.map(b => b.title.toLowerCase())}
+            setViewport={setViewport}
+          />
         </Dialog>
       </div>
     );

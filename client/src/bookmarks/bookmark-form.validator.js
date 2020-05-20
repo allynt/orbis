@@ -3,10 +3,8 @@ const validate = titles => form => {
 
   if (!form.title) {
     errors.title = 'Title is required';
-  }
-
-  if (titles.includes(form.title.toLowerCase())) {
-    errors.duplicateTitle = `There is already a map with the title: ${form.title}`;
+  } else if (titles.includes(form.title.toLowerCase())) {
+    errors.title = `There is already a map with the title: ${form.title}`;
   }
 
   return errors;

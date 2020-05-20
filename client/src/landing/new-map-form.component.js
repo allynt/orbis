@@ -7,13 +7,12 @@ import Textfield from '@astrosat/astrosat-ui/dist/forms/text-field';
 import Select from '@astrosat/astrosat-ui/dist/forms/select';
 import useForm from '@astrosat/astrosat-ui/dist/forms/use-form';
 
-import validate from './new-map-form.validator';
+import validate from '../bookmarks/bookmark-form.validator';
 
 import formStyles from '../accounts/forms.module.css';
-// import styles from './new-map-form.module.css';
 
-const NewMapForm = ({ regions, domains, setViewport }) => {
-  const { handleChange, handleSubmit, values, errors } = useForm(onSubmit, validate);
+const NewMapForm = ({ regions, domains, bookmarkTitles, setViewport }) => {
+  const { handleChange, handleSubmit, values, errors } = useForm(onSubmit, validate(bookmarkTitles));
   const history = useHistory();
 
   function onSubmit() {
@@ -27,15 +26,15 @@ const NewMapForm = ({ regions, domains, setViewport }) => {
         <div className={formStyles.fields}>
           <div className={formStyles.row}>
             <Textfield
-              name="name"
-              value={values.name || ''}
-              placeholder="Add Name*"
+              name="title"
+              value={values.title || ''}
+              placeholder="Add Title*"
               onChange={handleChange}
               required
               autoFocus
             />
           </div>
-          {errors.name && <p className={formStyles.errorMessage}>{errors.name}</p>}
+          {errors.title && <p className={formStyles.errorMessage}>{errors.title}</p>}
 
           <div className={formStyles.row}>
             <Textfield
