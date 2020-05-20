@@ -39,7 +39,7 @@ const BookmarkList = ({ bookmarks, selectBookmark, deleteBookmark }) => (
         })}
       </ul>
     ) : (
-      <p className={styles.noBookmarks}>No Bookmarks</p>
+      <p className={styles.noBookmarks}>No Saved Maps</p>
     )}
   </div>
 );

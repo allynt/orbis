@@ -20,6 +20,7 @@ describe('New Map Form Component', () => {
   let history = null;
   let store = null;
   let setViewport = null;
+  let bookmarkTitles = null;
 
   beforeEach(cleanup);
 
@@ -34,18 +35,20 @@ describe('New Map Form Component', () => {
     });
 
     setViewport = jest.fn();
+
+    bookmarkTitles = ['Title 1', 'Title 2', 'Title 3'];
   });
 
   it('should display form with a disabled submit button', () => {
     const { getByPlaceholderText, getByText } = render(
       <Router history={history}>
         <Provider store={store}>
-          <NewMapForm regions={regions} domains={domains} setViewport={setViewport} />
+          <NewMapForm regions={regions} domains={domains} bookmarkTitles={bookmarkTitles} setViewport={setViewport} />
         </Provider>
       </Router>,
     );
 
-    expect(getByPlaceholderText('Add Name*')).toBeInTheDocument();
+    expect(getByPlaceholderText('Add Title*')).toBeInTheDocument();
     expect(getByPlaceholderText('Add Description')).toBeInTheDocument();
 
     // FIXME: Ensure select boxes are present.
@@ -64,14 +67,14 @@ describe('New Map Form Component', () => {
     const { getByPlaceholderText, getByText } = render(
       <Router history={history}>
         <Provider store={store}>
-          <NewMapForm regions={regions} domains={domains} setViewport={setViewport} />
+          <NewMapForm regions={regions} domains={domains} bookmarkTitles={bookmarkTitles} setViewport={setViewport} />
         </Provider>
       </Router>,
     );
 
     const submitButton = getByText('Create');
     expect(submitButton).toHaveAttribute('disabled');
-    fireEvent.change(getByPlaceholderText('Add Name*'), { target: { value: 'New Map Name' } });
+    fireEvent.change(getByPlaceholderText('Add Title*'), { target: { value: 'New Map Title' } });
     fireEvent.change(getByPlaceholderText('Add Description'), { target: { value: 'New Map Description' } });
     expect(submitButton).not.toHaveAttribute('disabled');
 
@@ -82,12 +85,12 @@ describe('New Map Form Component', () => {
     const { getByPlaceholderText, getByText } = render(
       <Router history={history}>
         <Provider store={store}>
-          <NewMapForm regions={regions} domains={domains} setViewport={setViewport} />
+          <NewMapForm regions={regions} domains={domains} bookmarkTitles={bookmarkTitles} setViewport={setViewport} />
         </Provider>
       </Router>,
     );
 
-    fireEvent.change(getByPlaceholderText('Add Name*'), { target: { value: 'New Map Name' } });
+    fireEvent.change(getByPlaceholderText('Add Title*'), { target: { value: 'New Map Title' } });
     fireEvent.change(getByPlaceholderText('Add Description'), { target: { value: 'New Map Description' } });
     fireEvent.click(getByText('Create'));
     expect(setViewport).toHaveBeenCalled();

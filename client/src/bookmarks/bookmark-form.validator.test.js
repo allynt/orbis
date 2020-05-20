@@ -9,8 +9,11 @@ describe('Bookmark Form Validator', () => {
       },
     ];
 
+    const titles = ['title 1', 'title 2', 'title 3'];
+
     it.each(testFields)('Invalid Value %o', form => {
-      const errors = validate(form);
+      const validateCallback = validate(titles);
+      const errors = validateCallback(form);
       expect(Object.keys(errors).length).toBeGreaterThan(0);
     });
   });

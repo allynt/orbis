@@ -12,12 +12,12 @@ import useForm from '@astrosat/astrosat-ui/dist/forms/use-form';
 import formStyles from '../accounts/forms.module.css';
 import bookmarkStyles from '../side-menu/side-menu.module.css';
 
-const BookmarkForm = ({ submit }) => {
+const BookmarkForm = ({ bookmarkTitles, submit }) => {
   function onSubmit() {
     submit(values);
   }
 
-  const { handleChange, handleSubmit, values, errors } = useForm(onSubmit, validate);
+  const { handleChange, handleSubmit, values, errors } = useForm(onSubmit, validate(bookmarkTitles));
 
   return (
     <div className={formStyles.container}>
@@ -39,11 +39,10 @@ const BookmarkForm = ({ submit }) => {
             placeholder="Description"
             onChange={handleChange}
           />
-          {errors.title && <p className={formStyles.errorMessage}>{errors.title}</p>}
         </div>
 
         <Button type="submit" disabled={Object.keys(errors).length > 0 || Object.keys(values).length === 0}>
-          Save Bookmark
+          Save Map
         </Button>
       </form>
     </div>
