@@ -32,6 +32,8 @@ import { toggleMenu, toggleMenuItem, setMenuHeadings } from '../side-menu/side-m
 // import { notYetImplemented } from '../app.slice';
 import featureToggles from '../feature-toggles';
 
+import { history } from 'root.reducer';
+
 export const getToolbarItems = dispatch => {
   const items = [
     {
@@ -48,6 +50,7 @@ export const getToolbarItems = dispatch => {
         );
       },
       tooltip: DATA_LAYERS,
+      roles: ['UserRole'],
     },
     // {
     //   label: SATELLITE_LAYERS,
@@ -63,7 +66,8 @@ export const getToolbarItems = dispatch => {
     //   label: PAGES,
     //   icon: <PagesIcon />,
     //   action: () => dispatch(notYetImplemented('No Pages designed yet')),
-    //   tooltip: PAGES
+    //   tooltip: PAGES,
+    //   roles: ['UserRole'],
     // },
     {
       label: BOOKMARKS,
@@ -79,6 +83,7 @@ export const getToolbarItems = dispatch => {
         );
       },
       tooltip: BOOKMARKS,
+      roles: ['UserRole'],
     },
     // {
     //   label: ANNOTATIONS,
@@ -103,7 +108,8 @@ export const getToolbarItems = dispatch => {
     //   label: SHARE,
     //   icon: <ShareIcon />,
     //   action: () => dispatch(notYetImplemented('No Share designed yet')),
-    //   tooltip: SHARE
+    //   tooltip: SHARE,
+    // roles: ['UserRole'],
     // },
     // {
     //   label: 'Layers',
@@ -142,7 +148,8 @@ export const getToolbarItems = dispatch => {
     //   icon: <FaqIcon />,
     //   action: () => dispatch(notYetImplemented(FAQ)),
     //   tooltip: 'FAQ',
-    //   footer: true
+    //   footer: true,
+    //   roles: ['UserRole'],
     // },
     {
       label: PROFILE,
@@ -159,6 +166,7 @@ export const getToolbarItems = dispatch => {
       },
       tooltip: PROFILE,
       footer: true,
+      roles: ['UserRole'],
     },
   ];
 
@@ -177,6 +185,7 @@ export const getToolbarItems = dispatch => {
         );
       },
       tooltip: SATELLITE_LAYERS,
+      roles: ['UserRole'],
     });
   }
 
@@ -195,6 +204,20 @@ export const getToolbarItems = dispatch => {
         );
       },
       tooltip: STORIES,
+      roles: ['UserRole'],
+    });
+  }
+
+  if (featureToggles.admin) {
+    items.splice(items.length - 1, 0, {
+      label: 'Admin',
+      icon: <StoryIcon />,
+      action: () => {
+        history.push('/admin');
+      },
+      tooltip: 'Admin',
+      footer: true,
+      roles: ['AdminRole'],
     });
   }
 

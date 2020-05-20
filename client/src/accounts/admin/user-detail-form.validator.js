@@ -3,14 +3,6 @@ import { EMAIL_REGEX } from '../../utils/form';
 const validate = form => {
   let errors = {};
 
-  if (!form.username) {
-    errors.username = 'username is required';
-  } else if (form.username.length < 3) {
-    errors.username = `username ${form.username} is too short`;
-  } else if (form.username.length > 15) {
-    errors.username = `username ${form.username} is too long`;
-  }
-
   if (!form.email) {
     errors.email = 'Email address is required';
   } else if (!EMAIL_REGEX.test(form.email)) {

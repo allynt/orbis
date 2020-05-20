@@ -1,7 +1,7 @@
 import { NotificationManager } from 'react-notifications';
 import { createSlice } from '@reduxjs/toolkit';
 
-import { getData, sendData, JSON_HEADERS } from '../../utils/http';
+import { getData, sendData, getJsonAuthHeaders } from 'utils/http';
 
 const API = '/api/users/';
 
@@ -82,13 +82,7 @@ export const {
 } = usersSlice.actions;
 
 export const createUser = fields => async (dispatch, getState) => {
-  const {
-    accounts: { userKey },
-  } = getState();
-  const headers = {
-    ...JSON_HEADERS,
-    Authorization: `Token ${userKey}`,
-  };
+  const headers = getJsonAuthHeaders(getState());
 
   dispatch(createUserRequested());
 
@@ -107,13 +101,7 @@ export const createUser = fields => async (dispatch, getState) => {
 };
 
 export const fetchUsers = () => async (dispatch, getState) => {
-  const {
-    accounts: { userKey },
-  } = getState();
-  const headers = {
-    ...JSON_HEADERS,
-    Authorization: `Token ${userKey}`,
-  };
+  const headers = getJsonAuthHeaders(getState());
 
   dispatch(fetchUsersRequested());
 
@@ -133,17 +121,11 @@ export const fetchUsers = () => async (dispatch, getState) => {
 };
 
 export const updateUser = user => async (dispatch, getState) => {
-  const {
-    accounts: { userKey },
-  } = getState();
-  const headers = {
-    ...JSON_HEADERS,
-    Authorization: `Token ${userKey}`,
-  };
+  const headers = getJsonAuthHeaders(getState());
 
   dispatch(updateUserRequested());
 
-  const response = await sendData(`${API}${user.pk}/`, user, headers, 'PUT');
+  const response = await sendData(`${API}${user.id}/`, user, headers, 'PUT');
 
   if (!response.ok) {
     const message = `${response.status} ${response.statusText}`;
@@ -159,13 +141,7 @@ export const updateUser = user => async (dispatch, getState) => {
 };
 
 export const deleteUser = id => async (dispatch, getState) => {
-  const {
-    accounts: { userKey },
-  } = getState();
-  const headers = {
-    ...JSON_HEADERS,
-    Authorization: `Token ${userKey}`,
-  };
+  const headers = getJsonAuthHeaders(getState());
 
   dispatch(deleteUserRequested());
 
@@ -182,10 +158,12 @@ export const deleteUser = id => async (dispatch, getState) => {
   return dispatch(deleteUserSuccess(id));
 };
 
-export const copyUser = user => async (dispatch, getState) => {
+export const copyUser = user => async dispatch => {
   // Update User to prepend 'Copy of' text.
   const data = {
     ...user,
+    email: `UPDATE-${user.email}`,
+    username: `UPDATE-${user.email}`,
     name: `Copy of ${user.name}`,
     description: `Copy of ${user.description}`,
   };

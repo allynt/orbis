@@ -25,7 +25,7 @@ const UserList = ({ users, fetchUsers, createUser, deleteUser, updateUser, copyU
         <strong>NOTE:</strong> Use actions within table to update user(s)
       </p>
 
-      <UserTable data={users} deleteUser={deleteUser} updateUser={updateUser} copyUser={copyUser} />
+      {users && <UserTable data={users} deleteUser={deleteUser} updateUser={updateUser} copyUser={copyUser} />}
 
       <Button onClick={() => setIsNewUserMode(!isNewUserMode)}>New User</Button>
 

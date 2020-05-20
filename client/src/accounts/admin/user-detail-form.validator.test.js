@@ -4,42 +4,26 @@ fdescribe('User Detail Form Validator', () => {
   describe('Failure values', () => {
     const testFields = [
       {
-        username: '', // Error, missing
-        email: 'user@test.com',
-        password: 'password',
-      },
-      {
-        username: 'user',
         email: '', // Error, missing
         password: 'password',
       },
       {
-        username: 'user',
         email: 'user@test.com',
         password: '', // Error, missing
       },
       {
-        username: 'su', // Error, too short
-        email: 'user@test.com',
-        password: 'password',
-      },
-      {
-        username: 'user',
         email: 'user@test.com',
         password: 'pass', // Error, too short
       },
       {
-        username: 'user',
         email: '@test.com', // Error, missing username, prior to `@`
         password: 'password',
       },
       {
-        username: 'user',
         email: 'usertest.com', // Error, missing `@`
         password: 'password',
       },
       {
-        username: 'user',
         email: 'user@test', // Error, missing `.com|.net` etc
         password: 'password',
       },

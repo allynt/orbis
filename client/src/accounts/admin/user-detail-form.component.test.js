@@ -30,7 +30,6 @@ describe('User Detail Form Component', () => {
 
     expect(container.querySelector('form')).toBeInTheDocument();
     expect(getByText('Create New User')).toBeInTheDocument();
-    expect(getByLabelText('Username:')).toBeInTheDocument();
     expect(getByLabelText('Email Address:')).toBeInTheDocument();
     expect(getByLabelText('Password:')).toBeInTheDocument();
 
@@ -45,7 +44,7 @@ describe('User Detail Form Component', () => {
       </Provider>,
     );
 
-    const username = getByLabelText('Username:');
+    const username = getByLabelText('Email Address:');
     expect(username.value).toEqual('');
     expect(getByText('Reset')).toHaveAttribute('disabled');
     fireEvent.change(username, { target: { value: 'testusername' } });
@@ -60,7 +59,6 @@ describe('User Detail Form Component', () => {
       </Provider>,
     );
 
-    fireEvent.change(getByLabelText('Username:'), { target: { value: 'testusername' } });
     fireEvent.change(getByLabelText('Email Address:'), { target: { value: 'testusername@test.com' } });
     fireEvent.change(getByLabelText('Password:'), { target: { value: 'testusername@test.com' } });
     fireEvent.change(getByLabelText('Password (Confirm):'), { target: { value: 'testusername@test.com' } });
@@ -87,7 +85,6 @@ describe('User Detail Form Component', () => {
       </Provider>,
     );
 
-    fireEvent.change(getByLabelText('Username:'), { target: { value: 'testusername' } });
     fireEvent.change(getByLabelText('Email Address:'), { target: { value: 'testusername@test.com' } });
     fireEvent.change(getByLabelText('Password:'), { target: { value: 'testusername@test.com' } });
     fireEvent.change(getByLabelText('Password (Confirm):'), { target: { value: 'testusername@test.com' } });
