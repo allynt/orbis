@@ -10,6 +10,8 @@ import UserList from './user-list.component';
 
 const mockStore = configureMockStore([thunk]);
 
+jest.mock('./user-table.component', () => () => <div />);
+
 describe('User List Component', () => {
   let store = null;
   let users = null;
@@ -35,7 +37,7 @@ describe('User List Component', () => {
   it('should render an empty list of users', () => {
     const { getByText } = render(
       <UserList
-        users={users}
+        users={null}
         fetchUsers={fetchUsers}
         createUser={createUser}
         deleteUser={deleteUser}
@@ -45,46 +47,8 @@ describe('User List Component', () => {
     );
 
     expect(getByText('Maintain Users')).toBeInTheDocument();
-    expect(getByText('Actions')).toBeInTheDocument();
-    expect(getByText('Key')).toBeInTheDocument();
-    expect(getByText('Username')).toBeInTheDocument();
-    expect(getByText('Email')).toBeInTheDocument();
-    expect(getByText('First Name')).toBeInTheDocument();
-    expect(getByText('Last Name')).toBeInTheDocument();
-  });
-
-  it('should render a populated list of users', () => {
-    users = [
-      {
-        pk: 1,
-        username: 'user 1',
-        email: 'user1@test.com',
-        first_name: 'John',
-        last_name: 'Smith',
-      },
-      {
-        pk: 2,
-        username: 'user 2',
-        email: 'user2@test.com',
-        first_name: 'Jane',
-        last_name: 'Doe',
-      },
-    ];
-
-    const { getByText } = render(
-      <UserList
-        users={users}
-        fetchUsers={fetchUsers}
-        createUser={createUser}
-        deleteUser={deleteUser}
-        updateUser={updateUser}
-        copyUser={copyUser}
-      />,
-    );
-
-    expect(getByText('Maintain Users')).toBeInTheDocument();
-    expect(getByText('user1@test.com')).toBeInTheDocument();
-    expect(getByText('user2@test.com')).toBeInTheDocument();
+    expect(getByText('Use actions within table to update user(s)')).toBeInTheDocument();
+    expect(fetchUsers).toHaveBeenCalled();
   });
 
   it('should render the `New User` form when `New User` button clicked', () => {
@@ -106,7 +70,6 @@ describe('User List Component', () => {
     const userDetailForm = container.querySelector('.user-detail-form-container');
 
     expect(within(userDetailForm).getByText('Create New User')).toBeInTheDocument();
-    expect(within(userDetailForm).getByText('Username:')).toBeInTheDocument();
     expect(within(userDetailForm).getByText('Email Address:')).toBeInTheDocument();
     expect(within(userDetailForm).getByText('Password:')).toBeInTheDocument();
     expect(within(userDetailForm).getByText('Password (Confirm):')).toBeInTheDocument();

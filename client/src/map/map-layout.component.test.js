@@ -62,6 +62,7 @@ describe('Map Layout Component', () => {
         userKey: '123',
         user: {
           id: 1,
+          roles: [],
         },
         error: null,
       },
