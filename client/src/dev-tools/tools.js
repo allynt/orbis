@@ -1,14 +1,17 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
+import { Provider } from 'react-redux';
+import { useSelector } from 'react-redux';
+
+import useAuthorization from 'hooks/useAuthorization';
+import store from 'store';
 import StoriesTool from './features/stories.component';
 import FiltersTool from './features/filters.component';
 import SatellitesTool from './features/satellites.component';
 import AdminTool from './features/admin.component';
 
 import styles from './tools.module.css';
-
-const isProduction = process.env.NODE_ENV === 'production';
 
 const install = () => {
   window.devToolsEnabled = true;
@@ -26,24 +29,34 @@ const install = () => {
   LocalDevTools = LocalDevTools || (() => null);
 
   const DevTools = () => {
+    const user = useSelector(state => state.accounts.user);
+    const isAuthorized = useAuthorization(user, ['AstrosatRole']);
+
     return (
-      <div className={styles.devTools}>
-        <div>🛠 Dev Tools</div>
-        <div className={styles.tools}>
-          {!isProduction && <LocalDevTools />}
-          {!isProduction && <StoriesTool />}
-          {!isProduction && <FiltersTool />}
-          {!isProduction && <SatellitesTool />}
-          {!isProduction && <AdminTool />}
+      isAuthorized && (
+        <div className={styles.devTools}>
+          <div>🛠 Dev Tools</div>
+          <div className={styles.tools}>
+            <LocalDevTools />
+            <StoriesTool />
+            <FiltersTool />
+            <SatellitesTool />
+            <AdminTool />
+          </div>
         </div>
-      </div>
+      )
     );
   };
 
   // Add dev tools UI to the page.
   const devToolsRoot = document.createElement('div');
   document.body.appendChild(devToolsRoot);
-  ReactDOM.render(<DevTools />, devToolsRoot);
+  ReactDOM.render(
+    <Provider store={store}>
+      <DevTools />
+    </Provider>,
+    devToolsRoot,
+  );
 };
 
 export { install };
