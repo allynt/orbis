@@ -33,6 +33,9 @@ locals {
   healthcheck_path = "/healthcheck/"
 
   # Other Services
+  # staticdata URL is the external URL used by the frontend
   staticdata_url             = (var.environment == "production") ? "https://staticdata.astrosat.net/" : "https://staticdata.${var.environment}.astrosat.net/"
-  data_sources_directory_url = (var.environment == "production") ? "https://data-sources-directory.astrosat.net/" : "https://data-sources-directory.${var.environment}.astrosat.net/"
+  # data directory URL is the internal URL used by the backend
+  # this is the internal hostname for direct communication between services within the kubernetes cluster
+  data_sources_directory_url = "http://data-sources-directory-${var.environment}.default.svc.cluster.local/"
 }
