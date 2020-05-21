@@ -1,3 +1,43 @@
+# [1.3.0](https://github.com/astrosat/orbis/compare/v1.2.0...v1.3.0) (2020-05-21)
+
+
+### Bug Fixes
+
+* **backend:** Use new OLSP API ([ab871ba](https://github.com/astrosat/orbis/commit/ab871baa82e2911854cbb5214cbbff76f8a70f5c))
+* **Bookmark Slice:** Update notification messages ([a336a5a](https://github.com/astrosat/orbis/commit/a336a5ae56bde191037d38c36268af5d4b20b1b9)), closes [#423](https://github.com/astrosat/orbis/issues/423)
+* **ci:** Enable linkerd proxy injection ([46e79b3](https://github.com/astrosat/orbis/commit/46e79b3d1cae7d785e4e580e7e6141dae39f6702))
+* **frontend:** Add filtering to columns ([0529389](https://github.com/astrosat/orbis/commit/0529389af4fe5bbc4f1cdf62eee0dc35ab0ce582))
+* **frontend:** Add pagination of users ([972440b](https://github.com/astrosat/orbis/commit/972440b95b1b82ec31419639f15f818971c0dfa1))
+* **frontend:** Chain request handlers ([6387935](https://github.com/astrosat/orbis/commit/6387935beb93fe6904a709877d96c776300e53ec))
+* **frontend:** Fix scrollbar appearing on satellite-search-form ([614c542](https://github.com/astrosat/orbis/commit/614c542a21f9eb565f160a0842d19cdb77320221))
+* **frontend:** Fix tests broken by changes to admin/auth ([6401890](https://github.com/astrosat/orbis/commit/6401890f30f7da0e769e7d5aca20fed796849475))
+* **frontend:** Integrated duplicate title check into validator ([1a7cd91](https://github.com/astrosat/orbis/commit/1a7cd9137f424d12f8e0b4b569608f04e34d1a51))
+* **frontend:** Make Dev Tools Roles based ([bd47cab](https://github.com/astrosat/orbis/commit/bd47cabb3dd69cab33053635f54951c43865cb1e)), closes [#452](https://github.com/astrosat/orbis/issues/452)
+* **frontend:** Reduce New Map form validation ([325f42d](https://github.com/astrosat/orbis/commit/325f42dbd0a8d50fc48218a4f8428ad5a0e9d5e4)), closes [#419](https://github.com/astrosat/orbis/issues/419)
+* **frontend:** Remove second title check ([7a139d6](https://github.com/astrosat/orbis/commit/7a139d632b6cea83a363555c0e957ceca906de4b))
+* **frontend:** Remove username field ([223e3c6](https://github.com/astrosat/orbis/commit/223e3c6524f66470f4afd0c57e8b07dde2855800))
+* **frontend:** Set the user id to update in API request ([7592160](https://github.com/astrosat/orbis/commit/75921609da9018cc81229e3c53fa6bb23ff916bc))
+* **frontend:** Simplify getting Auth headers ([d910b40](https://github.com/astrosat/orbis/commit/d910b40ba983484c0ed5b6060e7066810c16a907))
+* **frontend:** Update bookmarks validators in both bookmarks panel and landing page ([3731cde](https://github.com/astrosat/orbis/commit/3731cdeeef9a3c88c9fd565444a227bfaa718f00))
+* **frontend:** Update fields that are unique ([6bfb925](https://github.com/astrosat/orbis/commit/6bfb925e15af86985ef9716f7ff7f27cf51ce59b))
+* **frontend:** Update proxy to work with new dev roles ([0046cb8](https://github.com/astrosat/orbis/commit/0046cb8ca647f5b58102bf7849e6155c4fb30985))
+* **frontend:** Update Satellite panel ([89fba1d](https://github.com/astrosat/orbis/commit/89fba1d6f4e045e24f77e0a2b8624406c0ffc70b))
+* **frontend:** Update tests ([822e624](https://github.com/astrosat/orbis/commit/822e6248533a0b12aeb1091f5088c4ac6f10b3c9))
+* **frontend:** Update tests ([0c1dc43](https://github.com/astrosat/orbis/commit/0c1dc436228bb78f0fd32fd8800e3c821184d047))
+* **frontend:** Update the table to work ([e535112](https://github.com/astrosat/orbis/commit/e535112f0d7173bb99a4c3c005f646903bc6f239))
+* **frontend:** Update validator test ([30d79fc](https://github.com/astrosat/orbis/commit/30d79fc3c69d0c89cbe155702e1c187d139f62dc))
+* **frontend:** Upgrade react-table to latest ([9d02e4f](https://github.com/astrosat/orbis/commit/9d02e4f08e96501de5677be0fb6d7f0366436ac7))
+* **infra:** Use internal hostname for data-directory ([e9d67b2](https://github.com/astrosat/orbis/commit/e9d67b20ac8bdc1ff6b42b1702c613930d49d20b))
+* **Map:** Remove reporter population type ([ccaa38b](https://github.com/astrosat/orbis/commit/ccaa38b4d365dbfaf5c1c50152c889164a9e3657)), closes [#421](https://github.com/astrosat/orbis/issues/421)
+* **project:** Fix release building from hanging ([09b7bba](https://github.com/astrosat/orbis/commit/09b7bba88ce4375c96e37c4f6e7e47e68e24beb0)), closes [#455](https://github.com/astrosat/orbis/issues/455)
+
+
+### Features
+
+* **frontend:** Authorize access to features ([4506892](https://github.com/astrosat/orbis/commit/4506892d40b1a81397349fa604789a46d64bb0ef))
+* **frontend:** Re-add Admin Area ([d60ca2a](https://github.com/astrosat/orbis/commit/d60ca2a1c9b89028308dda74affd62a3ef4d5489))
+* **frontend:** Update Proxy API to handle User editing ([44818b4](https://github.com/astrosat/orbis/commit/44818b44b6d0fa0551919eab17d34c8a870890dc))
+
 # [1.2.0](https://github.com/astrosat/orbis/compare/v1.1.0...v1.2.0) (2020-05-19)
 
 
