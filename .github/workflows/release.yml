@@ -1,0 +1,30 @@
+name: RELEASE
+
+on:
+  repository_dispatch:
+    types: [make_release]
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - name: Use Node.js 12.x
+        uses: actions/setup-node@v1
+        with:
+          node-version: 12.x
+      - name: Cache Node Modules
+        uses: actions/cache@v1
+        with:
+          path: node_modules
+          key: frontend-build-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            frontend-build-
+      - name: Build Release
+        env:
+          CI: true
+          GITHUB_TOKEN: ${{ secrets.ORBIS_GITHUB_RELEASE_TOKEN }}
+        working-directory: client
+        run: |
+          yarn install
+          yarn release
