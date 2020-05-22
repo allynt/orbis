@@ -75,7 +75,7 @@ const ComparePins = (
             const isDisabled = !selectedPinnedScenes.includes(scene) && selectedPinnedScenes.length === MAX_SELECTED;
             const Icon = (
               <DeleteIcon
-                classes={isSelected ? [styles.disabled] : []}
+                classes={isSelected ? styles.disabled : ''}
                 onClick={() => !isSelected && deletePinnedScene(scene.id)}
               />
             );

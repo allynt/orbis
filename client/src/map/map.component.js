@@ -645,7 +645,7 @@ const Map = ({
         onClick={() => setIsMapStyleSwitcherVisible(!isMapStyleSwitcherVisible)}
         classNames={[layoutStyles.mapStyleButton]}
       >
-        <LayersIcon classes={[layoutStyles.icon]} />
+        <LayersIcon classes={layoutStyles.icon} />
       </Button>
       {isMapStyleSwitcherVisible && (
         <MapStyleSwitcher

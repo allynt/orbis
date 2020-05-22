@@ -187,7 +187,7 @@ const SatelliteSearch = ({ map, satellites, setVisiblePanel, setSelectedMoreInfo
         <p>There are no saved AOI yet</p>
       )}
       <div className={styles.drawAOI} onClick={() => setIsAoiMode(true)}>
-        <DrawAoiIcon classes={[styles.icon]} />
+        <DrawAoiIcon classes={styles.icon} />
         <Button theme="link" classNames={[styles.button]}>
           Draw AOI
         </Button>

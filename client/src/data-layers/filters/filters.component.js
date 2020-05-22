@@ -27,7 +27,7 @@ export const Filters = ({ availableFilters, currentFilters, onFiltersChange }) =
           {filtersPanelVisible ? (
             <CloseIcon classNames={styles.icon} title="Close icon" />
           ) : (
-            <FilterIconIcon classes={[styles.icon]} title="Filter icon" />
+            <FilterIconIcon classes={styles.icon} title="Filter icon" />
           )}
         </button>
         <h3 className={styles.heading}>Data Filtering</h3>
