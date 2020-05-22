@@ -9,7 +9,7 @@
   width: var(--toolbar-width, 6.875em);
   height: 100vh;
   background-color: var(--background-color);
-  border-right: 2px solid var(--primary-background-color);
+  border-right: 2px solid var(--color-primary);
   overflow-y: auto;
   overflow-x: hidden;
   z-index: 4;

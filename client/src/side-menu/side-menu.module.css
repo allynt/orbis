@@ -8,7 +8,7 @@
   width: 25rem;
   height: 99.8vh;
   background-color: var(--primary-foreground-color);
-  border-left: 2px solid var(--primary-background-color);
+  border-left: 2px solid var(--color-primary);
   color: #fff;
   visibility: hidden;
   transition: visibility 500ms, left 500ms ease-in-out;
