@@ -36,17 +36,6 @@
   grid-template-rows: repeat(2, 1fr);
 } */
 
-.header {
-  display: flex;
-  justify-content: flex-end;
-  position: absolute;
-  top: 0;
-  left: 0;
-  height: 2.7rem;
-  width: 100%;
-  background-color: var(--background-color-with-opacity);
-}
-
 .map {
   /* flex-grow: 1; */
   width: 100%;
