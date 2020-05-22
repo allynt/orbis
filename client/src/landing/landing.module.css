@@ -54,7 +54,7 @@
 .logo {
   /* HEIGHT MUST BE SAME AS BUTTON CONTAINER */
   height: 5rem;
-  color: var(--primary-foreground-color);
+  color: var(--color-secondary);
 }
 
 .icon {
@@ -132,7 +132,7 @@
   align-items: center;
   width: 7.5rem;
   height: 12rem;
-  border: 2px dashed var(--primary-foreground-color);
+  border: 2px dashed var(--color-secondary);
   border-radius: 1rem;
   background-color: #f6f4f4;
   font-size: 2.5rem;
@@ -140,7 +140,7 @@
 }
 
 .createNew:hover {
-  border: 2.5px solid var(--primary-foreground-color);
+  border: 2.5px solid var(--color-secondary);
   background-color: #fff;
   color: var(--button--primary--background-color--hover);
   opacity: 0.9;

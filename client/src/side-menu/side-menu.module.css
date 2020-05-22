@@ -7,7 +7,7 @@
   align-items: center;
   width: 25rem;
   height: 100%;
-  background-color: var(--primary-foreground-color);
+  background-color: var(--color-secondary);
   border-left: 2px solid var(--color-primary);
   color: #fff;
   visibility: hidden;

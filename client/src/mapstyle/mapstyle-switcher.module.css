@@ -8,7 +8,7 @@
   align-items: center;
   padding: 0;
   list-style-type: none;
-  background-color: var(--primary-foreground-color);
+  background-color: var(--color-secondary);
 }
 
 .mapstyle-switcher-container li {
