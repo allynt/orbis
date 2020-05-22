@@ -110,10 +110,6 @@
   opacity: 1;
 }
 
-.map :global(.mapboxgl-ctrl-geocoder) :global(.geocoder-icon-search) {
-  background-image: var(--search);
-}
-
 .map :global(.mapboxgl-ctrl-geocoder--icon) {
   fill: var(--color-primary);
 }
