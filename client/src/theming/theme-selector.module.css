@@ -5,13 +5,13 @@
 
 .select div {
   background-color: var(--header-background-color);
-  color: var(--foreground-color);
+  color: var(--color--text--dark);
   cursor: pointer;
 }
 
 .select div:nth-child(3n) div div:hover {
   background-color: var(--color-secondary);
-  color: var(--foreground-color);
+  color: var(--color--text--dark);
 }
 
 .select svg {
