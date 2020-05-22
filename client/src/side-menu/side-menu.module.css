@@ -6,7 +6,7 @@
   flex-direction: column;
   align-items: center;
   width: 25rem;
-  height: 99.8vh;
+  height: 100%;
   background-color: var(--primary-foreground-color);
   border-left: 2px solid var(--color-primary);
   color: #fff;
