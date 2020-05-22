@@ -23,24 +23,25 @@ import ImageForm from './image-form.component';
 
 // import { setTextLabelSelected } from './annotations.actions';
 
-import { ReactComponent as LineStringIcon } from './linestring.svg';
-import { ReactComponent as PolygonIcon } from './polygon.svg';
-import { ReactComponent as DropPinIcon } from './drawing-tool-drop-pin.svg';
+import RulerIcon from '@astrosat/astrosat-ui/dist/icons/ruler-icon';
+import PolygonIcon from '@astrosat/astrosat-ui/dist/icons/polygon-icon';
+import MapPinIcon from '@astrosat/astrosat-ui/dist/icons/map-pin-icon';
+import FreehandIcon from '@astrosat/astrosat-ui/dist/icons/freehand-icon';
+import RadiusIcon from '@astrosat/astrosat-ui/dist/icons/radius-icon';
+import CircleIcon from '@astrosat/astrosat-ui/dist/icons/draw-circle-icon';
+// import RotateIcon from '@astrosat/astrosat-ui/dist/icons/rotate-icon';
+// import ImageIcon from '@astrosat/astrosat-ui/dist/icons/image-icon';
+
 // import { ReactComponent as FontIcon } from './font.svg';
-// import { ReactComponent as RotateIcon } from './rotate.svg';
-import { ReactComponent as FreehandIcon } from './freehand.svg';
-import { ReactComponent as RadiusIcon } from './radius.svg';
 // import { ReactComponent as LabelIcon } from './label.svg';
-import { ReactComponent as CircleIcon } from './circle.svg';
-// import { ReactComponent as ImageIcon } from './image.svg';
 
-import lineWidth1PixelIcon from './1px-line-width.svg';
-import lineWidth2PixelIcon from './2px-line-width.svg';
-import lineWidth3PixelIcon from './3px-line-width.svg';
+import lineWidth1PixelIcon from '@astrosat/astrosat-ui/dist/icons/line-width-1px-icon';
+import lineWidth2PixelIcon from '@astrosat/astrosat-ui/dist/icons/line-width-2px-icon';
+import lineWidth3PixelIcon from '@astrosat/astrosat-ui/dist/icons/line-width-3px-icon';
 
-import lineTypeSolidIcon from './line-type-solid.svg';
-import lineTypeDashedIcon from './line-type-dashed.svg';
-import lineTypeDottedIcon from './line-type-dotted.svg';
+import lineTypeSolidIcon from '@astrosat/astrosat-ui/dist/icons/line-type-solid-icon';
+import lineTypeDashedIcon from '@astrosat/astrosat-ui/dist/icons/line-type-dashed-icon';
+import lineTypeDottedIcon from '@astrosat/astrosat-ui/dist/icons/line-type-dotted-icon';
 
 import styles from './annotations-panel.module.css';
 import sideMenuStyles from '../side-menu/side-menu.module.css';
@@ -380,7 +381,7 @@ const AnnotationsPanel = ({ map }) => {
               onClick={() => dispatch({ type: SET_DRAW_MODE, mode: 'LineMode' })}
               dataFor="drawLineString"
             >
-              <LineStringIcon className={styles.icon} />
+              <RulerIcon classes={styles.icon} />
             </Button>
             <ReactTooltip id="drawLineString">
               <span>Draw LineString</span>
@@ -391,7 +392,7 @@ const AnnotationsPanel = ({ map }) => {
               onClick={() => dispatch({ type: SET_DRAW_MODE, mode: 'PolygonMode' })}
               dataFor="drawPolygon"
             >
-              <PolygonIcon className={styles.icon} />
+              <PolygonIcon classes={styles.icon} />
             </Button>
             <ReactTooltip id="drawPolygon">
               <span>Draw Polygon</span>
@@ -418,7 +419,7 @@ const AnnotationsPanel = ({ map }) => {
               onClick={() => dispatch({ type: SET_DRAW_MODE, mode: 'draw_point' })}
               dataFor="drawPoint"
             >
-              <DropPinIcon className={styles.icon} />
+              <MapPinIcon classes={styles.icon} />
             </Button>
             <ReactTooltip id="drawPoint">
               <span>Place Point</span>
@@ -429,7 +430,7 @@ const AnnotationsPanel = ({ map }) => {
               onClick={() => dispatch({ type: SET_DRAW_MODE, mode: 'CircleMode' })}
               dataFor="drawCircle"
             >
-              <CircleIcon className={styles.icon} />
+              <CircleIcon classes={styles.icon} />
             </Button>
             <ReactTooltip id="drawCircle">
               <span>Draw Circle</span>
@@ -440,7 +441,7 @@ const AnnotationsPanel = ({ map }) => {
               onClick={() => dispatch({ type: SET_DRAW_MODE, mode: 'FreehandPolygonMode' })}
               dataFor="drawFreehandPolygon"
             >
-              <FreehandIcon className={styles.icon} />
+              <FreehandIcon classes={styles.icon} />
             </Button>
             <ReactTooltip id="drawFreehandPolygon">
               <span>Draw Freehand Polygon</span>
@@ -451,7 +452,7 @@ const AnnotationsPanel = ({ map }) => {
               onClick={() => dispatch({ type: SET_DRAW_MODE, mode: 'RadiusMode' })}
               dataFor="radius"
             >
-              <RadiusIcon className={styles.icon} />
+              <RadiusIcon classes={styles.icon} />
             </Button>
             <ReactTooltip id="radius">
               <span>Radius Shape</span>
@@ -462,7 +463,7 @@ const AnnotationsPanel = ({ map }) => {
               onClick={() => dispatch({ type: ADD_IMAGE_SELECTED })}
               dataFor="image"
             >
-              <ImageIcon className={styles.icon} />
+              <ImageIcon classes={styles.icon} />
             </Button>
             <ReactTooltip id="image">
               <span>Add Image</span>
