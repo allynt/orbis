@@ -77,7 +77,7 @@
 }
 
 .map :global(.mapboxgl-ctrl-group button:hover) {
-  background-color: var(--header-background-color) !important;
+  background-color: var(--color-secondary) !important;
 }
 
 .map :global(.mapboxgl-ctrl button) {
