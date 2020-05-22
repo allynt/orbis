@@ -29,7 +29,7 @@
 
 .savedSearchDetail .descriptionItem {
   justify-self: end;
-  color: var(--primary-text-color);
+  color: var(--color-lightgrey);
 }
 
 .savedSearchDetail .buttons {
