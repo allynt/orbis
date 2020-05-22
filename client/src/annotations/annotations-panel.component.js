@@ -35,13 +35,13 @@ import CircleIcon from '@astrosat/astrosat-ui/dist/icons/draw-circle-icon';
 // import { ReactComponent as FontIcon } from './font.svg';
 // import { ReactComponent as LabelIcon } from './label.svg';
 
-import lineWidth1PixelIcon from '@astrosat/astrosat-ui/dist/icons/line-width-1px-icon';
-import lineWidth2PixelIcon from '@astrosat/astrosat-ui/dist/icons/line-width-2px-icon';
-import lineWidth3PixelIcon from '@astrosat/astrosat-ui/dist/icons/line-width-3px-icon';
+import LineWidth1PixelIcon from '@astrosat/astrosat-ui/dist/icons/line-width-1px-icon';
+import LineWidth2PixelIcon from '@astrosat/astrosat-ui/dist/icons/line-width-2px-icon';
+import LineWidth3PixelIcon from '@astrosat/astrosat-ui/dist/icons/line-width-3px-icon';
 
-import lineTypeSolidIcon from '@astrosat/astrosat-ui/dist/icons/line-type-solid-icon';
-import lineTypeDashedIcon from '@astrosat/astrosat-ui/dist/icons/line-type-dashed-icon';
-import lineTypeDottedIcon from '@astrosat/astrosat-ui/dist/icons/line-type-dotted-icon';
+import LineTypeSolidIcon from '@astrosat/astrosat-ui/dist/icons/line-type-solid-icon';
+import LineTypeDashedIcon from '@astrosat/astrosat-ui/dist/icons/line-type-dashed-icon';
+import LineTypeDottedIcon from '@astrosat/astrosat-ui/dist/icons/line-type-dotted-icon';
 
 import styles from './annotations-panel.module.css';
 import sideMenuStyles from '../side-menu/side-menu.module.css';
@@ -49,19 +49,19 @@ import sideMenuStyles from '../side-menu/side-menu.module.css';
 const lineWidthOptions = [
   {
     id: 'lineWidth1',
-    icon: lineWidth1PixelIcon,
+    icon: <LineWidth1PixelIcon classes={styles.icon} />,
     value: 1,
     tooltip: 'Set Line Width to 1px',
   },
   {
     id: 'lineWidth2',
-    icon: lineWidth2PixelIcon,
+    icon: <LineWidth2PixelIcon classes={styles.icon} />,
     value: 5,
     tooltip: 'Set Line Width to 2px',
   },
   {
     id: 'lineWidth3',
-    icon: lineWidth3PixelIcon,
+    icon: <LineWidth3PixelIcon classes={styles.icon} />,
     value: 10,
     tooltip: 'Set Line Width to 3px',
   },
@@ -70,19 +70,19 @@ const lineWidthOptions = [
 const lineTypeOptions = [
   {
     id: 'solid',
-    icon: lineTypeSolidIcon,
+    icon: <LineTypeSolidIcon classes={styles.icon} />,
     value: false,
     tooltip: 'Set Line Type to Solid',
   },
   {
     id: 'dashed',
-    icon: lineTypeDashedIcon,
+    icon: <LineTypeDashedIcon classes={styles.icon} />,
     value: [2, 1],
     tooltip: 'Set Line Type to Dashed',
   },
   {
     id: 'dotted',
-    icon: lineTypeDottedIcon,
+    icon: <LineTypeDottedIcon classes={styles.icon} />,
     value: [1, 1],
     tooltip: 'Set Line Type to Dotted',
   },
@@ -327,7 +327,7 @@ const AnnotationsPanel = ({ map }) => {
             onClick={() => dispatch({ type: SET_LINE_TYPE_SELECTED })}
             dataFor="lineType"
           >
-            <img className={styles.icon} src={lineTypeOption.icon} alt={lineTypeOption.tooltip} />
+            {lineTypeOption.icon}
           </Button>
           <ReactTooltip id="lineType">
             <span>Set Line Type</span>
@@ -345,7 +345,7 @@ const AnnotationsPanel = ({ map }) => {
             onClick={() => dispatch({ type: SET_LINE_WIDTH_SELECTED })}
             dataFor="lineWidth"
           >
-            <img className={styles.icon} src={lineWidthOption.icon} alt={lineWidthOption.tooltip} />
+            {lineWidthOption.icon}
           </Button>
           <ReactTooltip id="lineWidth">
             <span>Set Line Width</span>

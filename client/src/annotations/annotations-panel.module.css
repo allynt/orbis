@@ -53,7 +53,7 @@
 
 .lineButton,
 .drawingToolsButton {
-  padding: 0.5rem 0.5rem;
+  padding: 0.5rem 0.5rem !important;
 }
 
 .annotationButtonsRow {
@@ -67,7 +67,7 @@
   display: flex !important;
   flex-direction: column !important;
   justify-content: space-between !important;
-  padding: 0.5rem 1rem;
+  padding: 0.5rem 1rem !important;
   height: 3rem !important;
   width: 4rem !important;
 }

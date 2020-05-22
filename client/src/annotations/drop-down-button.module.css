@@ -8,8 +8,8 @@
 }
 
 .lineWidth {
-  height: 1rem;
-  /* padding: 0.3rem; */
+  padding: 0.3rem !important;
+  margin-bottom: 0.5rem;
 }
 
 .icon {
