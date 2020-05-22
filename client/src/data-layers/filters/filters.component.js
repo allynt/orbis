@@ -2,8 +2,9 @@ import React, { useState } from 'react';
 
 import { FiltersForm } from './filters-form.component';
 
-import { ReactComponent as FilterIcon } from './filter-icon.svg';
-import { ReactComponent as CloseIcon } from './close.svg';
+import FilterIconIcon from '@astrosat/astrosat-ui/dist/icons/filter-icon-icon';
+
+import CloseIcon from '@astrosat/astrosat-ui/dist/icons/close-icon';
 
 import styles from './filters.module.css';
 
@@ -24,9 +25,9 @@ export const Filters = ({ availableFilters, currentFilters, onFiltersChange }) =
           onClick={() => setFiltersPanelVisible(current => !current)}
         >
           {filtersPanelVisible ? (
-            <CloseIcon className={styles.icon} title="Close icon" />
+            <CloseIcon classNames={styles.icon} title="Close icon" />
           ) : (
-            <FilterIcon className={styles.icon} title="Filter icon" />
+            <FilterIconIcon classes={[styles.icon]} title="Filter icon" />
           )}
         </button>
         <h3 className={styles.heading}>Data Filtering</h3>

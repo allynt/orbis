@@ -10,7 +10,7 @@ import SceneListItem, { SceneListItemSkeleton } from './scene-list-item.componen
 
 import { DEFAULT_CLOUD_COVER } from './satellite.constants';
 
-import { ReactComponent as PinIcon } from './pin.svg';
+import PinIcon from '@astrosat/astrosat-ui/dist/icons/pin-icon';
 
 import styles from './results.module.css';
 import sceneStyles from './scene-list-item.module.css';
@@ -63,7 +63,7 @@ const Results = (
                   const Icon = (
                     <PinIcon
                       key={`${scene.id}-icon`}
-                      className={`${styles.pinIcon} ${isPinned && styles.pinned}`}
+                      classes={isPinned && [styles.pinned]}
                       onClick={() => {
                         isPinned ? deletePinnedScene(scene.id) : pinScene(scene);
                       }}

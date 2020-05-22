@@ -14,16 +14,16 @@ import {
   // CHANGE_PASSWORD,
 } from './toolbar-constants';
 
-import { ReactComponent as DataIcon } from './data.svg';
-import { ReactComponent as SatelliteIcon } from './satellite.svg';
-// import { ReactComponent as PagesIcon } from './pages.svg';
-import { ReactComponent as BookmarksIcon } from './map.svg';
-import { ReactComponent as StoryIcon } from './story.svg';
-// import { ReactComponent as AnnotationsIcon } from './annotations.svg';
-// import { ReactComponent as ImageIcon } from './image.svg';
-// import { ReactComponent as ShareIcon } from './share.svg';
-// import { ReactComponent as FaqIcon } from './faq.svg';
-import { ReactComponent as ProfileIcon } from './profile.svg';
+import DataIcon from '@astrosat/astrosat-ui/dist/icons/data-icon';
+import MapIcon from '@astrosat/astrosat-ui/dist/icons/map-icon';
+import SatelliteIcon from '@astrosat/astrosat-ui/dist/icons/satellite-icon';
+import StoryIcon from '@astrosat/astrosat-ui/dist/icons/story-icon';
+// import PagesIcon from '@astrosat/astrosat-ui/dist/icons/pages-icon';
+// import AnnotationsIcon from '@astrosat/astrosat-ui/dist/icons/annotations-icon';
+// import ImageIcon from '@astrosat/astrosat-ui/dist/icons/image-icon';
+// import ShareIcon from '@astrosat/astrosat-ui/dist/icons/share-icon';
+// import FaqIcon from '@astrosat/astrosat-ui/dist/icons/faq-icon';
+import ProfileIcon from '@astrosat/astrosat-ui/dist/icons/profile-icon';
 
 import { toggleMenu, toggleMenuItem, setMenuHeadings } from '../side-menu/side-menu.slice';
 
@@ -71,7 +71,7 @@ export const getToolbarItems = dispatch => {
     // },
     {
       label: BOOKMARKS,
-      icon: <BookmarksIcon />,
+      icon: <MapIcon />,
       action: () => {
         dispatch(toggleMenu(BOOKMARKS));
         dispatch(toggleMenuItem(BOOKMARKS));

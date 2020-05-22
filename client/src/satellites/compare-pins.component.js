@@ -6,7 +6,7 @@ import Checkbox from '@astrosat/astrosat-ui/dist/forms/checkbox';
 
 import SceneListItem from './scene-list-item.component';
 
-import { ReactComponent as DeleteIcon } from './delete.svg';
+import DeleteIcon from '@astrosat/astrosat-ui/dist/icons/delete-icon';
 
 import styles from './compare-pins.module.css';
 
@@ -75,7 +75,7 @@ const ComparePins = (
             const isDisabled = !selectedPinnedScenes.includes(scene) && selectedPinnedScenes.length === MAX_SELECTED;
             const Icon = (
               <DeleteIcon
-                className={isSelected ? styles.disabled : ''}
+                classes={isSelected ? [styles.disabled] : []}
                 onClick={() => !isSelected && deletePinnedScene(scene.id)}
               />
             );
