@@ -81,7 +81,7 @@
 }
 
 .map :global(.mapboxgl-ctrl button) {
-  background-color: var(--background-color) !important;
+  background-color: var(--button--secondary--background-color) !important;
 }
 
 .map :global(.mapboxgl-ctrl button.mapboxgl-ctrl-zoom-in .mapboxgl-ctrl-icon) {
@@ -101,7 +101,7 @@
 }
 
 .map :global(.mapboxgl-ctrl-geocoder) {
-  background-color: var(--background-color);
+  background-color: var(--color-secondary);
   min-width: 2rem;
   width: 2rem;
 }
@@ -151,12 +151,12 @@
 .map :global(.mapboxgl-popup-anchor-top-right) :global(.mapboxgl-popup-tip),
 .map :global(.mapboxgl-popup-anchor-bottom-left) :global(.mapboxgl-popup-tip),
 .map :global(.mapboxgl-popup-anchor-bottom-right) :global(.mapboxgl-popup-tip) {
-  border-top-color: var(--background-color);
-  border-bottom-color: var(--background-color);
+  border-top-color: var(--color-secondary);
+  border-bottom-color: var(--color-secondary);
 }
 
 .map :global(.mapboxgl-popup) :global(.mapboxgl-popup-content) {
-  background: var(--background-color);
+  background: var(--color-secondary);
   border-radius: 1rem;
   min-width: 25rem;
   /* MIN_WIDTH ^^^ WAS ADDED FOR COVID_APP. COMMENT FOR IF/WHEN IT IS CHANGED BACK */

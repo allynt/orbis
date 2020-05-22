@@ -10,7 +10,7 @@
 }
 
 .select div:nth-child(3n) div div:hover {
-  background-color: var(--background-color);
+  background-color: var(--color-secondary);
   color: var(--foreground-color);
 }
 
