@@ -8,11 +8,29 @@ import useMap from '../map/use-map.hook';
 import { useMapEvent } from '../map/use-map-event.hook';
 
 // import Slider from 'rc-slider'
-import Slider from '@astrosat/astrosat-ui/dist/forms/slider';
 import { scalePow } from 'd3-scale';
 
-import Button from '@astrosat/astrosat-ui/dist/buttons/button';
-// import { Button } from '@astrosat/astrosat-ui';
+import { Button, Slider } from '@astrosat/astrosat-ui';
+
+import {
+  RulerIcon,
+  PolygonIcon,
+  MapPinIcon,
+  FreehandIcon,
+  RadiusIcon,
+  DrawCircleIcon,
+  // RotateIcon,
+  // ImageIcon,
+  LineWidth1pxIcon,
+  LineWidth2pxIcon,
+  LineWidth3pxIcon,
+  LineTypeSolidIcon,
+  LineTypeDashedIcon,
+  LineTypeDottedIcon,
+} from '@astrosat/astrosat-ui/';
+
+// import { ReactComponent as FontIcon } from './font.svg';
+// import { ReactComponent as LabelIcon } from './label.svg';
 
 import ColorPicker from './color-picker.component';
 import DropDownButton from './drop-down-button.component';
@@ -23,45 +41,25 @@ import ImageForm from './image-form.component';
 
 // import { setTextLabelSelected } from './annotations.actions';
 
-import RulerIcon from '@astrosat/astrosat-ui/dist/icons/ruler-icon';
-import PolygonIcon from '@astrosat/astrosat-ui/dist/icons/polygon-icon';
-import MapPinIcon from '@astrosat/astrosat-ui/dist/icons/map-pin-icon';
-import FreehandIcon from '@astrosat/astrosat-ui/dist/icons/freehand-icon';
-import RadiusIcon from '@astrosat/astrosat-ui/dist/icons/radius-icon';
-import CircleIcon from '@astrosat/astrosat-ui/dist/icons/draw-circle-icon';
-// import RotateIcon from '@astrosat/astrosat-ui/dist/icons/rotate-icon';
-// import ImageIcon from '@astrosat/astrosat-ui/dist/icons/image-icon';
-
-// import { ReactComponent as FontIcon } from './font.svg';
-// import { ReactComponent as LabelIcon } from './label.svg';
-
-import LineWidth1PixelIcon from '@astrosat/astrosat-ui/dist/icons/line-width-1px-icon';
-import LineWidth2PixelIcon from '@astrosat/astrosat-ui/dist/icons/line-width-2px-icon';
-import LineWidth3PixelIcon from '@astrosat/astrosat-ui/dist/icons/line-width-3px-icon';
-
-import LineTypeSolidIcon from '@astrosat/astrosat-ui/dist/icons/line-type-solid-icon';
-import LineTypeDashedIcon from '@astrosat/astrosat-ui/dist/icons/line-type-dashed-icon';
-import LineTypeDottedIcon from '@astrosat/astrosat-ui/dist/icons/line-type-dotted-icon';
-
 import styles from './annotations-panel.module.css';
 import sideMenuStyles from '../side-menu/side-menu.module.css';
 
 const lineWidthOptions = [
   {
     id: 'lineWidth1',
-    icon: <LineWidth1PixelIcon classes={styles.icon} />,
+    icon: <LineWidth1pxIcon classes={styles.icon} />,
     value: 1,
     tooltip: 'Set Line Width to 1px',
   },
   {
     id: 'lineWidth2',
-    icon: <LineWidth2PixelIcon classes={styles.icon} />,
+    icon: <LineWidth2pxIcon classes={styles.icon} />,
     value: 5,
     tooltip: 'Set Line Width to 2px',
   },
   {
     id: 'lineWidth3',
-    icon: <LineWidth3PixelIcon classes={styles.icon} />,
+    icon: <LineWidth3pxIcon classes={styles.icon} />,
     value: 10,
     tooltip: 'Set Line Width to 3px',
   },
@@ -430,7 +428,7 @@ const AnnotationsPanel = ({ map }) => {
               onClick={() => dispatch({ type: SET_DRAW_MODE, mode: 'CircleMode' })}
               dataFor="drawCircle"
             >
-              <CircleIcon classes={styles.icon} />
+              <DrawCircleIcon classes={styles.icon} />
             </Button>
             <ReactTooltip id="drawCircle">
               <span>Draw Circle</span>

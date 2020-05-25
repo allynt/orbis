@@ -2,9 +2,7 @@ import React, { useState } from 'react';
 
 import { FiltersForm } from './filters-form.component';
 
-import FilterIconIcon from '@astrosat/astrosat-ui/dist/icons/filter-icon-icon';
-
-import CloseIcon from '@astrosat/astrosat-ui/dist/icons/close-icon';
+import { FilterIconIcon, CloseIcon } from '@astrosat/astrosat-ui/';
 
 import styles from './filters.module.css';
 
@@ -16,6 +14,8 @@ export const Filters = ({ availableFilters, currentFilters, onFiltersChange }) =
     onFiltersChange && onFiltersChange(toAdd, toRemove);
   };
 
+  console.log('Icon: ', <CloseIcon />);
+
   return (
     <div className={styles.filtersContainer}>
       <header className={styles.filters}>
@@ -25,7 +25,7 @@ export const Filters = ({ availableFilters, currentFilters, onFiltersChange }) =
           onClick={() => setFiltersPanelVisible(current => !current)}
         >
           {filtersPanelVisible ? (
-            <CloseIcon classNames={styles.icon} title="Close icon" />
+            <CloseIcon classes={styles.icon} title="Close icon" />
           ) : (
             <FilterIconIcon classes={styles.icon} title="Filter icon" />
           )}

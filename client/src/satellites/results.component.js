@@ -10,7 +10,7 @@ import SceneListItem, { SceneListItemSkeleton } from './scene-list-item.componen
 
 import { DEFAULT_CLOUD_COVER } from './satellite.constants';
 
-import PinIcon from '@astrosat/astrosat-ui/dist/icons/pin-icon';
+import { PinIcon } from '@astrosat/astrosat-ui/';
 
 import styles from './results.module.css';
 import sceneStyles from './scene-list-item.module.css';

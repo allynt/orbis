@@ -14,7 +14,7 @@ import {
 
 import useMap from '../map/use-map.hook';
 
-import DrawAoiIcon from '@astrosat/astrosat-ui/dist/icons/draw-aoi-icon';
+import { DrawAoiIcon } from '@astrosat/astrosat-ui/';
 import SatelliteSearchForm from './satellite-search-form.component';
 import SavedSearchList from './saved-search-list.component';
 import { useMapEvent } from 'map/use-map-event.hook';

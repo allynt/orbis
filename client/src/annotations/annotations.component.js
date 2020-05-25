@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 // import MapboxDraw from '@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw';
 
 import { Button } from '@astrosat/astrosat-ui';
-import AnnotationsIcon from '@astrosat/astrosat-ui/dist/icons/annotations-icon';
+import { AnnotationsIcon } from '@astrosat/astrosat-ui/dist/icons/annotations-icon';
 
 // import useMapControl from '../map/use-map-control.hook';
 
