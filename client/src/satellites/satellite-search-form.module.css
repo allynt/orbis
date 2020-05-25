@@ -100,7 +100,7 @@
 }
 
 .errorContainer .errorMessage {
-  color: var(--primary-foreground-color);
+  color: var(--color-secondary);
   padding: 0;
 }
 

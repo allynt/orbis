@@ -9,7 +9,7 @@ let users = [
     is_verified: true,
     is_approved: true,
     profiles: {},
-    roles: ['UserRole'],
+    roles: ['UserRole', 'AstrosatRole'],
   },
   {
     id: 2,
