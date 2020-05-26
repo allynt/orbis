@@ -144,11 +144,9 @@ describe('Compare Pins Component', () => {
   });
 
   it("should delete pinned scene, when scene's icon clicked", () => {
-    const { deletePinnedScene, getByText } = renderComponent(store);
+    const { deletePinnedScene, getByTitle } = renderComponent(store);
 
-    const element = getByText('Pinned Scene 1').nextSibling;
-
-    fireEvent.click(within(element).getByText('delete.svg'));
+    fireEvent.click(getByTitle('delete-icon-32UVD'));
     expect(deletePinnedScene).toHaveBeenCalledWith(mockScenes[0].id);
   });
 

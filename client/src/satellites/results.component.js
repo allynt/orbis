@@ -63,7 +63,8 @@ const Results = (
                   const Icon = (
                     <PinIcon
                       key={`${scene.id}-icon`}
-                      classes={isPinned && [styles.pinned]}
+                      title={`pin-icon-${scene.id}`}
+                      classes={`${isPinned && styles.pinned}`}
                       onClick={() => {
                         isPinned ? deletePinnedScene(scene.id) : pinScene(scene);
                       }}

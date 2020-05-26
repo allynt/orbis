@@ -4,7 +4,7 @@ import { Provider } from 'react-redux';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 
-import { render, within, fireEvent } from '@testing-library/react';
+import { render, within, fireEvent, getByTitle } from '@testing-library/react';
 
 import Results from './results.component';
 
@@ -100,16 +100,16 @@ describe('Satellite Results Component', () => {
   });
 
   it('should pin scene when pin icon clicked', () => {
-    const { pinScene, getAllByText } = renderComponent(store, { pinnedScenes: [] });
+    const { pinScene, getByTitle } = renderComponent(store, { pinnedScenes: [] });
 
-    fireEvent.click(getAllByText('pin.svg')[0]);
+    fireEvent.click(getByTitle('pin-icon-32UVD'));
     expect(pinScene).toHaveBeenCalledWith(mockScenes[0]);
   });
 
   it('should delete pinned scene when already pinned pin icon clicked', () => {
-    const { deletePinnedScene, getAllByText } = renderComponent(store, { pinnedScenes: [{ ...mockScenes[0] }] });
+    const { deletePinnedScene, getByTitle } = renderComponent(store, { pinnedScenes: [{ ...mockScenes[0] }] });
 
-    fireEvent.click(getAllByText('pin.svg')[0]);
+    fireEvent.click(getByTitle('pin-icon-32UVD'));
     expect(deletePinnedScene).toHaveBeenCalledWith(mockScenes[0].id);
   });
 

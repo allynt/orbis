@@ -4,7 +4,7 @@ import { Provider } from 'react-redux';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 
-import { render, cleanup, fireEvent, within } from '@testing-library/react';
+import { render, cleanup, fireEvent, within, getByTitle } from '@testing-library/react';
 
 import mapboxgl from 'mapbox-gl';
 
@@ -79,7 +79,7 @@ describe('Satellite Search Component', () => {
   });
 
   it('should render the `No Satellite Searches` message', () => {
-    const { container, getByText } = render(
+    const { container, getByText, getByTitle } = render(
       <Provider store={store}>
         <SatelliteSearch
           map={map}
@@ -92,7 +92,7 @@ describe('Satellite Search Component', () => {
     );
 
     expect(getByText('There are no saved AOI yet')).toBeInTheDocument();
-    expect(getByText('draw-aoi.svg')).toBeInTheDocument();
+    expect(getByTitle('draw-area-icon')).toBeInTheDocument();
     expect(getByText('Draw AOI')).toBeInTheDocument();
 
     const formSections = container.querySelectorAll('.formSection');

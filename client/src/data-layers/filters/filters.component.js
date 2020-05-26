@@ -14,8 +14,6 @@ export const Filters = ({ availableFilters, currentFilters, onFiltersChange }) =
     onFiltersChange && onFiltersChange(toAdd, toRemove);
   };
 
-  console.log('Icon: ', <CloseIcon />);
-
   return (
     <div className={styles.filtersContainer}>
       <header className={styles.filters}>
