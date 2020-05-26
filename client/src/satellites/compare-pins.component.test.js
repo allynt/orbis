@@ -12,19 +12,19 @@ const mockStore = configureMockStore([thunk]);
 
 const mockScenes = [
   {
-    id: 1,
+    id: '32UVD',
     label: 'Pinned Scene 1',
     created: '2000-01-01T00:00:00Z',
     thumbnail_url: '/test/url/{VISUALISATION_ID}/tile.png',
   },
   {
-    id: 2,
+    id: '323UVD',
     label: 'Pinned Scene 2',
     created: '2000-01-02T00:00:00Z',
     thumbnail_url: '/test/url/{VISUALISATION_ID}/tile.png',
   },
   {
-    id: 3,
+    id: '33UVD',
     label: 'Pinned Scene 3',
     created: '2000-01-03T00:00:00Z',
     thumbnail_url: '/test/url/{VISUALISATION_ID}/tile.png',
@@ -146,7 +146,7 @@ describe('Compare Pins Component', () => {
   it("should delete pinned scene, when scene's icon clicked", () => {
     const { deletePinnedScene, getByTitle } = renderComponent(store);
 
-    fireEvent.click(getByTitle('delete-icon-32UVD'));
+    fireEvent.click(getByTitle(`delete-icon-${mockScenes[0].id}`));
     expect(deletePinnedScene).toHaveBeenCalledWith(mockScenes[0].id);
   });
 

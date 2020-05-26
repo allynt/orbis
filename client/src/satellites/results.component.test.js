@@ -16,19 +16,19 @@ const mockeDialogRef = {
 
 const mockScenes = [
   {
-    id: 1,
+    id: '32UVD',
     cloudCover: 0.5,
     thumbnail_url: '/thumbnail.png',
     created: '2000-01-01T00:00:00Z',
   },
   {
-    id: 2,
+    id: '323UVD',
     cloudCover: 0.9,
     thumbnail_url: '/thumbnail.png',
     created: '2000-01-02T01:00:00Z',
   },
   {
-    id: 3,
+    id: '33UVD',
     cloudCover: 10.9,
     thumbnail_url: '/thumbnail.png',
     created: '2000-01-02T01:00:00Z',
@@ -102,14 +102,14 @@ describe('Satellite Results Component', () => {
   it('should pin scene when pin icon clicked', () => {
     const { pinScene, getByTitle } = renderComponent(store, { pinnedScenes: [] });
 
-    fireEvent.click(getByTitle('pin-icon-32UVD'));
+    fireEvent.click(getByTitle(`pin-icon-${mockScenes[0].id}`));
     expect(pinScene).toHaveBeenCalledWith(mockScenes[0]);
   });
 
   it('should delete pinned scene when already pinned pin icon clicked', () => {
     const { deletePinnedScene, getByTitle } = renderComponent(store, { pinnedScenes: [{ ...mockScenes[0] }] });
 
-    fireEvent.click(getByTitle('pin-icon-32UVD'));
+    fireEvent.click(getByTitle(`pin-icon-${mockScenes[0].id}`));
     expect(deletePinnedScene).toHaveBeenCalledWith(mockScenes[0].id);
   });
 

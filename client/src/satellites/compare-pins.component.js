@@ -80,7 +80,6 @@ const ComparePins = (
                 onClick={() => !isSelected && deletePinnedScene(scene.id)}
               />
             );
-
             return (
               <div key={scene.id} className={styles.compareItem}>
                 <Checkbox
