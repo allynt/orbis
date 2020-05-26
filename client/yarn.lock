@@ -7,7 +7,7 @@
   resolved "https://registry.yarnpkg.com/@ant-design/css-animation/-/css-animation-1.7.2.tgz#4ee5d2ec0fb7cc0a78b44e1c82628bd4621ac7e3"
   integrity sha512-bvVOe7A+r7lws58B7r+fgnQDK90cV45AXuvGx6i5CCSX1W/M3AJnHsNggDANBxEtWdNdFWcDd5LorB+RdSIlBw==
 
-"@astrosat/astrosat-ui@^1.14.0":
+"@astrosat/astrosat-ui@^1.13.0":
   version "1.14.4"
   resolved "https://npm.pkg.github.com/download/@astrosat/astrosat-ui/1.14.4/f0dc49901cb9ef53c6fc8462eb070402e6ac650338ea00351c53136c2ccc4dcb#12369179a37f30ee65c4b0f2481519ce457bc234"
   integrity sha512-ZqtN6t3kujqWFAS/CRjFsWSEoM3EWtyqONjb9XEfpxvJJgciMviORpRJFAU5GjbhVhLqZgdKmdKAOkTyJTCrHw==
