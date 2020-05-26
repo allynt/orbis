@@ -45,6 +45,7 @@ const SatelliteSearch = ({ map, satellites, setVisiblePanel, setSelectedMoreInfo
   const chooseSearchQuery = search => dispatch(setCurrentSatelliteSearchQuery(search));
   const deleteSavedSearchQuery = id => dispatch(deleteSavedSatelliteSearch(id));
 
+  // Put the draw control into AOI Draw mode.
   useEffect(() => {
     const [drawCtrl] = getDraw();
     if (drawCtrl && isAoiMode) {
@@ -59,6 +60,7 @@ const SatelliteSearch = ({ map, satellites, setVisiblePanel, setSelectedMoreInfo
     };
   }, [isAoiMode, getDraw]);
 
+  // Set AOI to have exceeded max AOI.
   useEffect(() => {
     const [drawControl, feature] = getDraw();
     if (feature) {
@@ -100,6 +102,7 @@ const SatelliteSearch = ({ map, satellites, setVisiblePanel, setSelectedMoreInfo
     [],
   );
 
+  // Set geometry to map bounds if null
   useEffect(() => {
     if (map) {
       if (!geometry) {
@@ -108,12 +111,12 @@ const SatelliteSearch = ({ map, satellites, setVisiblePanel, setSelectedMoreInfo
     }
   }, [map, geometry, setGeometryToMapBounds]);
 
+  // Setup what to do when the AOI is drawn.
   useEffect(() => {
-    const [drawCtrl] = getDraw();
+    if (map) {
+      map.on('draw.create', event => {
+        const feature = event.features[0];
 
-    if (drawCtrl) {
-      map.on('draw.create', () => {
-        const feature = drawCtrl.getAll().features[0];
         // Only set the geometry for Satellite Search AOI features.
         if (feature && feature.properties.drawType === 'AOI') {
           const coordinates = feature.geometry.coordinates;
@@ -122,10 +125,10 @@ const SatelliteSearch = ({ map, satellites, setVisiblePanel, setSelectedMoreInfo
           }
         }
       });
-      // Remove any drawn polygons when changing view
-      return () => drawCtrl.deleteAll();
+
+      return () => map?._controls.find(ctrl => ctrl.changeMode)?.deleteAll();
     }
-  }, [getDraw, map]);
+  }, [map]);
 
   useEffect(() => {
     if (!savedSearches) {

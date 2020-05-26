@@ -91,7 +91,7 @@ describe('Satellite Results Component', () => {
     expect(within(element).getByText(defaultValue)).toBeInTheDocument();
 
     expect(getByText('RESULTS')).toBeInTheDocument();
-    expect(getByText('Showing 2 Results')).toBeInTheDocument();
+    expect(getByText('Showing 2 Results of 3')).toBeInTheDocument();
 
     const sceneElements = container.querySelectorAll('.scene');
     expect(sceneElements.length).toEqual(2);
