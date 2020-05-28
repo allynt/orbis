@@ -29,7 +29,7 @@ const bookmarkSlice = createSlice({
       state.error = payload;
     },
     addBookmarkSuccess: (state, { payload }) => {
-      state.bookmarks = state.bookmarks ? [...state.bookmarks, payload] : [payload];
+      state.bookmarks = state.bookmarks ? [payload, ...state.bookmarks] : [payload];
       state.selectedBookmark = payload;
       state.error = null;
     },
