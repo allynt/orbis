@@ -196,9 +196,20 @@ const App = () => {
           />
 
           <Suspense fallback={<h3>Loading...</h3>}>
-            <PrivateRoute exact path="/admin" user={user} component={Admin} />
-
             <PrivateRoute
+              exact
+              path="/admin"
+              user={user}
+              component={Admin}
+              users={users}
+              fetchUsers={() => dispatch(fetchUsers())}
+              createUser={user => dispatch(createUser(user))}
+              updateUser={user => dispatch(updateUser(user))}
+              copyUser={user => dispatch(copyUser(user))}
+              deleteUser={id => dispatch(deleteUser(id))}
+            />
+
+            {/* <PrivateRoute
               exact
               path="/users"
               user={user}
@@ -221,7 +232,7 @@ const App = () => {
               updateUser={user => dispatch(updateUser(user))}
               copyUser={user => dispatch(copyUser(user))}
               deleteUser={id => dispatch(deleteUser(id))}
-            />
+            /> */}
 
             <Route
               exact
