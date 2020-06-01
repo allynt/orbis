@@ -1,20 +1,18 @@
 import React from 'react';
 
-import { cleanup, render, fireEvent } from '@testing-library/react';
+import { render, fireEvent } from '@testing-library/react';
 
 import { Router } from 'react-router-dom';
 import { createMemoryHistory } from 'history';
 
 import AdminSideMenu from './admin-side-menu.component';
 
-import { HOME, ACTIVITY_LOG } from './admin.component';
+import { USER_TABLE, ACTIVITY_LOG } from './admin.component';
 
 describe('Admin Side Menu Component', () => {
   let history = null;
   let user = null;
   let setVisiblePanel = null;
-
-  afterEach(cleanup);
 
   beforeEach(() => {
     history = createMemoryHistory({ initialEntries: ['/'] });
@@ -56,6 +54,6 @@ describe('Admin Side Menu Component', () => {
     fireEvent.click(getByText('Activity Log'));
     expect(setVisiblePanel).toHaveBeenCalledWith(ACTIVITY_LOG);
     fireEvent.click(getByText('Home'));
-    expect(setVisiblePanel).toHaveBeenCalledWith(HOME);
+    expect(setVisiblePanel).toHaveBeenCalledWith(USER_TABLE);
   });
 });

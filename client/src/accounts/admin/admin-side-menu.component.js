@@ -2,7 +2,7 @@ import React from 'react';
 
 import { ReactComponent as OrbisLogo } from '../../orbis.svg';
 
-import { HOME, ACTIVITY_LOG, LICENCE_DASHBOARD, CORPORATE_ACCOUNT, MESSAGES } from './admin.component';
+import { USER_TABLE, ACTIVITY_LOG, LICENCE_DASHBOARD, CORPORATE_ACCOUNT, MESSAGES } from './admin.component';
 import styles from './admin-side-menu.module.css';
 
 const AdminSideMenu = ({ user, setVisiblePanel }) => (
@@ -11,6 +11,7 @@ const AdminSideMenu = ({ user, setVisiblePanel }) => (
     <div className={styles.content}>
       <div className={styles.userProfile}>
         <picture>
+          <source srcSet="https://www.hashatit.com/images/uploads/users/66144/profile_picture/3F6B966D00000578-4428630-image-m-80_1492690622006.jpg" />
           <img
             className={styles.userImage}
             src="https://www.hashatit.com/images/uploads/users/66144/profile_picture/3F6B966D00000578-4428630-image-m-80_1492690622006.jpg"
@@ -23,7 +24,7 @@ const AdminSideMenu = ({ user, setVisiblePanel }) => (
         </div>
       </div>
       <div className={styles.buttons}>
-        <button onClick={() => setVisiblePanel(HOME)}>Home</button>
+        <button onClick={() => setVisiblePanel(USER_TABLE)}>Home</button>
         <a href="/" rel="noopener noreferrer" target="_blank">
           Launch Orbis
         </a>
