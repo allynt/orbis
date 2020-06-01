@@ -3,11 +3,15 @@ import React, { useState } from 'react';
 
 import AdminSideMenu from './admin-side-menu.component';
 import UserList from './user-list.component';
+import CompanyMenu from './company-menu.component';
 
 import styles from './admin.module.css';
 
 export const HOME = 'home';
 export const ACTIVITY_LOG = 'activity-log';
+export const LICENCE_DASHBOARD = 'licence dashboard';
+export const CORPORATE_ACCOUNT = 'corporate account';
+export const MESSAGES = 'messages';
 
 const Admin = ({ user, users, fetchUsers, createUser, updateUser, copyUser, deleteUser }) => {
   const [visiblePanel, setVisiblePanel] = useState(HOME);
@@ -27,25 +31,11 @@ const Admin = ({ user, users, fetchUsers, createUser, updateUser, copyUser, dele
           />
         )}
         {visiblePanel === ACTIVITY_LOG && <div>ACTIVITY LOG GOES HERE</div>}
+        {visiblePanel === LICENCE_DASHBOARD && <div>LICENCE DASHBOARD GOES HERE</div>}
+        {visiblePanel === CORPORATE_ACCOUNT && <div>CORPORATE ACCOUNT GOES HERE</div>}
+        {visiblePanel === MESSAGES && <div>MESSAGES GOES HERE</div>}
       </div>
-      <div className={styles.rightMenu}>
-        <div className={styles.companyInfo}>
-          <picture>
-            <img
-              className={styles.companyLogo}
-              src="https://www.logodesignlove.com/images/monograms/tesla-symbol.jpg"
-              alt="Company Logo"
-            />
-          </picture>
-          <h2>Tesla, Inc</h2>
-        </div>
-        <div className={styles.buttons}>
-          <button>Button 1</button>
-          <button>Button 2</button>
-          <button>Button 3</button>
-          <button>Button 4</button>
-        </div>
-      </div>
+      <CompanyMenu />
     </div>
   );
 };

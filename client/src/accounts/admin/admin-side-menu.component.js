@@ -2,8 +2,7 @@ import React from 'react';
 
 import { ReactComponent as OrbisLogo } from '../../orbis.svg';
 
-import { HOME, ACTIVITY_LOG } from './admin.component';
-
+import { HOME, ACTIVITY_LOG, LICENCE_DASHBOARD, CORPORATE_ACCOUNT, MESSAGES } from './admin.component';
 import styles from './admin-side-menu.module.css';
 
 const AdminSideMenu = ({ user, setVisiblePanel }) => (
@@ -28,7 +27,11 @@ const AdminSideMenu = ({ user, setVisiblePanel }) => (
         <a href="/" rel="noopener noreferrer" target="_blank">
           Launch Orbis
         </a>
+        <button onClick={() => setVisiblePanel(CORPORATE_ACCOUNT)}>Corporate Account</button>
+        <button onClick={() => setVisiblePanel(LICENCE_DASHBOARD)}>Licence Dashboard</button>
+
         <button onClick={() => setVisiblePanel(ACTIVITY_LOG)}>Activity Log</button>
+        <button onClick={() => setVisiblePanel(MESSAGES)}>Messages</button>
       </div>
       <div className={styles.storage}>Storage Meter Goes Here</div>
     </div>

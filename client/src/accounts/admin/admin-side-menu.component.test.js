@@ -9,7 +9,7 @@ import AdminSideMenu from './admin-side-menu.component';
 
 import { HOME, ACTIVITY_LOG } from './admin.component';
 
-describe('Admin Component', () => {
+describe('Admin Side Menu Component', () => {
   let history = null;
   let user = null;
   let setVisiblePanel = null;

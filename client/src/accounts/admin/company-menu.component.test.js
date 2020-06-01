@@ -5,9 +5,9 @@ import { cleanup, render, fireEvent } from '@testing-library/react';
 import { Router } from 'react-router-dom';
 import { createMemoryHistory } from 'history';
 
-import Admin from './admin.component';
+import CompanyMenu from './company-menu.component';
 
-describe('Admin Component', () => {
+describe('Admin Company Menu Component', () => {
   let history = null;
 
   afterEach(cleanup);
@@ -16,15 +16,13 @@ describe('Admin Component', () => {
     history = createMemoryHistory({ initialEntries: ['/'] });
   });
 
-  xit('should render links to admin areas', () => {
-    const { container, getByText } = render(
+  xit('should render the admin company menu', () => {
+    const { getByText } = render(
       <Router history={history}>
-        <Admin />
+        <CompanyMenu />
       </Router>,
     );
 
-    expect(getByText('Admin Users')).toBeInTheDocument();
-    expect(getByText('Admin Others')).toBeInTheDocument();
-    expect(container.querySelectorAll('a').length).toEqual(2);
+    expect(getByText('Administrator')).toBeInTheDocument();
   });
 });
