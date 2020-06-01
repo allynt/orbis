@@ -16,7 +16,7 @@ let users = [
     username: 'admin@test.com',
     email: 'admin@test.com',
     password: 'pandaconcretespoon',
-    name: null,
+    name: 'Harry Callahan',
     description: '',
     is_verified: true,
     is_approved: true,
