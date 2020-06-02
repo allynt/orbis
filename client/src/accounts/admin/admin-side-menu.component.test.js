@@ -33,6 +33,17 @@ describe('Admin Side Menu Component', () => {
     expect(getByText('Launch Orbis')).toBeInTheDocument();
   });
 
+  it('should return to user table view when Orbis logo is clicked', () => {
+    const { getByTestId } = render(
+      <Router history={history}>
+        <AdminSideMenu user={user} setVisiblePanel={setVisiblePanel} />
+      </Router>,
+    );
+
+    fireEvent.click(getByTestId('orbis logo'));
+    expect(setVisiblePanel).toHaveBeenCalledWith(USER_TABLE);
+  });
+
   it('should open Orbis in a new tab when "Launch Orbis" link clicked', () => {
     const { getByText } = render(
       <Router history={history}>

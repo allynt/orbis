@@ -7,7 +7,7 @@ import styles from './admin-side-menu.module.css';
 
 const AdminSideMenu = ({ user, setVisiblePanel }) => (
   <div className={styles.sideMenu}>
-    <OrbisLogo className={styles.logo} />
+    <OrbisLogo className={styles.logo} onClick={() => setVisiblePanel(USER_TABLE)} data-testid="orbis logo" />
     <div className={styles.content}>
       <div className={styles.userProfile}>
         <picture>
