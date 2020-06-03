@@ -16,10 +16,10 @@ const AdminSideMenu = ({ user, setVisiblePanel }) => {
           {user.avatar ? (
             <picture>
               <source srcSet={user.avatar} />
-              <img src={user.avatar} alt="user profile" className={styles.profileIcon} />
+              <img src={user.avatar} alt="User Profile" className={styles.profileIcon} />
             </picture>
           ) : (
-            <ProfileIcon classes={styles.defaultIcon} />
+            <ProfileIcon data-testid="default-icon" classes={styles.defaultIcon} />
           )}
 
           <div className={styles.userInfo}>
