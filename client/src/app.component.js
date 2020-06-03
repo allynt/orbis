@@ -196,17 +196,21 @@ const App = () => {
           />
 
           <Suspense fallback={<h3>Loading...</h3>}>
-            <PrivateRoute
+            <Route
               exact
               path="/admin"
               user={user}
-              component={Admin}
-              users={users}
-              fetchUsers={() => dispatch(fetchUsers())}
-              createUser={user => dispatch(createUser(user))}
-              updateUser={user => dispatch(updateUser(user))}
-              copyUser={user => dispatch(copyUser(user))}
-              deleteUser={id => dispatch(deleteUser(id))}
+              render={() => (
+                <Admin
+                  user={user}
+                  users={users}
+                  fetchUsers={() => dispatch(fetchUsers())}
+                  createUser={user => dispatch(createUser(user))}
+                  updateUser={user => dispatch(updateUser(user))}
+                  copyUser={user => dispatch(copyUser(user))}
+                  deleteUser={id => dispatch(deleteUser(id))}
+                />
+              )}
             />
 
             <Route

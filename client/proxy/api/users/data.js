@@ -17,6 +17,8 @@ let users = [
     email: 'admin@test.com',
     password: 'pandaconcretespoon',
     name: 'Harry Callahan',
+    avatar:
+      'https://www.bfi.org.uk/sites/bfi.org.uk/files/styles/full/public/image/dirty-harry-1971-002-clint-eastwood-medium-shot.jpg?itok=Gt8uYZDg',
     description: '',
     is_verified: true,
     is_approved: true,
