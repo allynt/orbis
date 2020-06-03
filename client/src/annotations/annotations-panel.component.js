@@ -8,11 +8,29 @@ import useMap from '../map/use-map.hook';
 import { useMapEvent } from '../map/use-map-event.hook';
 
 // import Slider from 'rc-slider'
-import Slider from '@astrosat/astrosat-ui/dist/forms/slider';
 import { scalePow } from 'd3-scale';
 
-import Button from '@astrosat/astrosat-ui/dist/buttons/button';
-// import { Button } from '@astrosat/astrosat-ui';
+import { Button, Slider } from '@astrosat/astrosat-ui';
+
+import {
+  RulerIcon,
+  PolygonIcon,
+  MapPinIcon,
+  FreehandIcon,
+  RadiusIcon,
+  DrawCircleIcon,
+  // RotateIcon,
+  // ImageIcon,
+  LineWidth1pxIcon,
+  LineWidth2pxIcon,
+  LineWidth3pxIcon,
+  LineTypeSolidIcon,
+  LineTypeDashedIcon,
+  LineTypeDottedIcon,
+} from '@astrosat/astrosat-ui/';
+
+// import { ReactComponent as FontIcon } from './font.svg';
+// import { ReactComponent as LabelIcon } from './label.svg';
 
 import ColorPicker from './color-picker.component';
 import DropDownButton from './drop-down-button.component';
@@ -23,44 +41,25 @@ import ImageForm from './image-form.component';
 
 // import { setTextLabelSelected } from './annotations.actions';
 
-import { ReactComponent as LineStringIcon } from './linestring.svg';
-import { ReactComponent as PolygonIcon } from './polygon.svg';
-import { ReactComponent as DropPinIcon } from './drawing-tool-drop-pin.svg';
-// import { ReactComponent as FontIcon } from './font.svg';
-// import { ReactComponent as RotateIcon } from './rotate.svg';
-import { ReactComponent as FreehandIcon } from './freehand.svg';
-import { ReactComponent as RadiusIcon } from './radius.svg';
-// import { ReactComponent as LabelIcon } from './label.svg';
-import { ReactComponent as CircleIcon } from './circle.svg';
-// import { ReactComponent as ImageIcon } from './image.svg';
-
-import lineWidth1PixelIcon from './1px-line-width.svg';
-import lineWidth2PixelIcon from './2px-line-width.svg';
-import lineWidth3PixelIcon from './3px-line-width.svg';
-
-import lineTypeSolidIcon from './line-type-solid.svg';
-import lineTypeDashedIcon from './line-type-dashed.svg';
-import lineTypeDottedIcon from './line-type-dotted.svg';
-
 import styles from './annotations-panel.module.css';
 import sideMenuStyles from '../side-menu/side-menu.module.css';
 
 const lineWidthOptions = [
   {
     id: 'lineWidth1',
-    icon: lineWidth1PixelIcon,
+    icon: <LineWidth1pxIcon classes={styles.icon} />,
     value: 1,
     tooltip: 'Set Line Width to 1px',
   },
   {
     id: 'lineWidth2',
-    icon: lineWidth2PixelIcon,
+    icon: <LineWidth2pxIcon classes={styles.icon} />,
     value: 5,
     tooltip: 'Set Line Width to 2px',
   },
   {
     id: 'lineWidth3',
-    icon: lineWidth3PixelIcon,
+    icon: <LineWidth3pxIcon classes={styles.icon} />,
     value: 10,
     tooltip: 'Set Line Width to 3px',
   },
@@ -69,19 +68,19 @@ const lineWidthOptions = [
 const lineTypeOptions = [
   {
     id: 'solid',
-    icon: lineTypeSolidIcon,
+    icon: <LineTypeSolidIcon classes={styles.icon} />,
     value: false,
     tooltip: 'Set Line Type to Solid',
   },
   {
     id: 'dashed',
-    icon: lineTypeDashedIcon,
+    icon: <LineTypeDashedIcon classes={styles.icon} />,
     value: [2, 1],
     tooltip: 'Set Line Type to Dashed',
   },
   {
     id: 'dotted',
-    icon: lineTypeDottedIcon,
+    icon: <LineTypeDottedIcon classes={styles.icon} />,
     value: [1, 1],
     tooltip: 'Set Line Type to Dotted',
   },
@@ -326,7 +325,7 @@ const AnnotationsPanel = ({ map }) => {
             onClick={() => dispatch({ type: SET_LINE_TYPE_SELECTED })}
             dataFor="lineType"
           >
-            <img className={styles.icon} src={lineTypeOption.icon} alt={lineTypeOption.tooltip} />
+            {lineTypeOption.icon}
           </Button>
           <ReactTooltip id="lineType">
             <span>Set Line Type</span>
@@ -344,7 +343,7 @@ const AnnotationsPanel = ({ map }) => {
             onClick={() => dispatch({ type: SET_LINE_WIDTH_SELECTED })}
             dataFor="lineWidth"
           >
-            <img className={styles.icon} src={lineWidthOption.icon} alt={lineWidthOption.tooltip} />
+            {lineWidthOption.icon}
           </Button>
           <ReactTooltip id="lineWidth">
             <span>Set Line Width</span>
@@ -380,7 +379,7 @@ const AnnotationsPanel = ({ map }) => {
               onClick={() => dispatch({ type: SET_DRAW_MODE, mode: 'LineMode' })}
               dataFor="drawLineString"
             >
-              <LineStringIcon className={styles.icon} />
+              <RulerIcon classes={styles.icon} />
             </Button>
             <ReactTooltip id="drawLineString">
               <span>Draw LineString</span>
@@ -391,7 +390,7 @@ const AnnotationsPanel = ({ map }) => {
               onClick={() => dispatch({ type: SET_DRAW_MODE, mode: 'PolygonMode' })}
               dataFor="drawPolygon"
             >
-              <PolygonIcon className={styles.icon} />
+              <PolygonIcon classes={styles.icon} />
             </Button>
             <ReactTooltip id="drawPolygon">
               <span>Draw Polygon</span>
@@ -418,7 +417,7 @@ const AnnotationsPanel = ({ map }) => {
               onClick={() => dispatch({ type: SET_DRAW_MODE, mode: 'draw_point' })}
               dataFor="drawPoint"
             >
-              <DropPinIcon className={styles.icon} />
+              <MapPinIcon classes={styles.icon} />
             </Button>
             <ReactTooltip id="drawPoint">
               <span>Place Point</span>
@@ -429,7 +428,7 @@ const AnnotationsPanel = ({ map }) => {
               onClick={() => dispatch({ type: SET_DRAW_MODE, mode: 'CircleMode' })}
               dataFor="drawCircle"
             >
-              <CircleIcon className={styles.icon} />
+              <DrawCircleIcon classes={styles.icon} />
             </Button>
             <ReactTooltip id="drawCircle">
               <span>Draw Circle</span>
@@ -440,7 +439,7 @@ const AnnotationsPanel = ({ map }) => {
               onClick={() => dispatch({ type: SET_DRAW_MODE, mode: 'FreehandPolygonMode' })}
               dataFor="drawFreehandPolygon"
             >
-              <FreehandIcon className={styles.icon} />
+              <FreehandIcon classes={styles.icon} />
             </Button>
             <ReactTooltip id="drawFreehandPolygon">
               <span>Draw Freehand Polygon</span>
@@ -451,7 +450,7 @@ const AnnotationsPanel = ({ map }) => {
               onClick={() => dispatch({ type: SET_DRAW_MODE, mode: 'RadiusMode' })}
               dataFor="radius"
             >
-              <RadiusIcon className={styles.icon} />
+              <RadiusIcon classes={styles.icon} />
             </Button>
             <ReactTooltip id="radius">
               <span>Radius Shape</span>
@@ -462,7 +461,7 @@ const AnnotationsPanel = ({ map }) => {
               onClick={() => dispatch({ type: ADD_IMAGE_SELECTED })}
               dataFor="image"
             >
-              <ImageIcon className={styles.icon} />
+              <ImageIcon classes={styles.icon} />
             </Button>
             <ReactTooltip id="image">
               <span>Add Image</span>

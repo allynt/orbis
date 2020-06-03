@@ -44,9 +44,9 @@
   }
 }
 
-.item svg {
-  width: 3.125rem;
-  height: 3.125rem;
+.item .icon {
+  margin: 0.5rem;
+  width: 2.125rem;
 }
 
 .item:hover {

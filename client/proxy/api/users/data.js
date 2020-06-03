@@ -3,7 +3,7 @@ let users = [
     id: 1,
     username: 'user@test.com',
     email: 'user@test.com',
-    password: 'pandaconcretespoon',
+    password: 'panda',
     name: null,
     description: '',
     is_verified: true,

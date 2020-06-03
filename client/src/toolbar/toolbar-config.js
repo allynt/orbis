@@ -14,16 +14,16 @@ import {
   // CHANGE_PASSWORD,
 } from './toolbar-constants';
 
-import { ReactComponent as DataIcon } from './data.svg';
-import { ReactComponent as SatelliteIcon } from './satellite.svg';
-// import { ReactComponent as PagesIcon } from './pages.svg';
-import { ReactComponent as BookmarksIcon } from './map.svg';
-import { ReactComponent as StoryIcon } from './story.svg';
-// import { ReactComponent as AnnotationsIcon } from './annotations.svg';
-// import { ReactComponent as ImageIcon } from './image.svg';
-// import { ReactComponent as ShareIcon } from './share.svg';
-// import { ReactComponent as FaqIcon } from './faq.svg';
-import { ReactComponent as ProfileIcon } from './profile.svg';
+import DataIcon from '@astrosat/astrosat-ui/dist/icons/data-icon';
+import MapIcon from '@astrosat/astrosat-ui/dist/icons/map-icon';
+import SatelliteIcon from '@astrosat/astrosat-ui/dist/icons/satellite-icon';
+import StoryIcon from '@astrosat/astrosat-ui/dist/icons/story-icon';
+// import PagesIcon from '@astrosat/astrosat-ui/dist/icons/pages-icon';
+// import AnnotationsIcon from '@astrosat/astrosat-ui/dist/icons/annotations-icon';
+// import ImageIcon from '@astrosat/astrosat-ui/dist/icons/image-icon';
+// import ShareIcon from '@astrosat/astrosat-ui/dist/icons/share-icon';
+// import FaqIcon from '@astrosat/astrosat-ui/dist/icons/faq-icon';
+import ProfileIcon from '@astrosat/astrosat-ui/dist/icons/profile-icon';
 
 import { toggleMenu, toggleMenuItem, setMenuHeadings } from '../side-menu/side-menu.slice';
 
@@ -34,11 +34,13 @@ import featureToggles from '../feature-toggles';
 
 import { history } from 'root.reducer';
 
+import styles from './toolbar.module.css';
+
 export const getToolbarItems = dispatch => {
   const items = [
     {
       label: DATA_LAYERS,
-      icon: <DataIcon />,
+      icon: <DataIcon classes={styles.icon} />,
       action: () => {
         dispatch(toggleMenu(DATA_LAYERS));
         dispatch(toggleMenuItem(DATA_LAYERS));
@@ -54,7 +56,7 @@ export const getToolbarItems = dispatch => {
     },
     // {
     //   label: SATELLITE_LAYERS,
-    //   icon: <SatelliteIcon />,
+    //   icon: <SatelliteIcon classes={styles.icon} />,
     //   action: () => {
     //     dispatch(toggleMenu(SATELLITE_LAYERS));
     //     dispatch(toggleMenuItem(SATELLITE_LAYERS));
@@ -64,14 +66,14 @@ export const getToolbarItems = dispatch => {
     // },
     // {
     //   label: PAGES,
-    //   icon: <PagesIcon />,
+    //   icon: <PagesIcon classes={styles.icon} />,
     //   action: () => dispatch(notYetImplemented('No Pages designed yet')),
     //   tooltip: PAGES,
     //   roles: ['UserRole'],
     // },
     {
       label: BOOKMARKS,
-      icon: <BookmarksIcon />,
+      icon: <MapIcon classes={styles.icon} />,
       action: () => {
         dispatch(toggleMenu(BOOKMARKS));
         dispatch(toggleMenuItem(BOOKMARKS));
@@ -87,17 +89,17 @@ export const getToolbarItems = dispatch => {
     },
     // {
     //   label: ANNOTATIONS,
-    //   icon: <AnnotationsIcon />,
+    //   icon: <AnnotationsIcon classes={styles.icon} />,
     //   action: () => {
     //     dispatch(toggleMenu(ANNOTATIONS));
     //     dispatch(toggleMenuItem(ANNOTATIONS));
     //     dispatch(setMenuHeadings({ heading: 'ANNOTATIONS', strapline: 'Select Your Drawing Tool Or Saved Areas' }));
     //   },
-    //   tooltip: ANNOTATIONS
+    //   tooltip: ANNOTATIONS,
     // },
     // {
     //   label: SAVE_MAP,
-    //   icon: <ImageIcon />,
+    //   icon: <ImageIcon classes={styles.icon} />,
     //   action: () => {
     //     dispatch(toggleMenu('screenshot'));
     //     dispatch(saveMap());
@@ -106,14 +108,14 @@ export const getToolbarItems = dispatch => {
     // },
     // {
     //   label: SHARE,
-    //   icon: <ShareIcon />,
+    //   icon: <ShareIcon classes={styles.icon} />,
     //   action: () => dispatch(notYetImplemented('No Share designed yet')),
     //   tooltip: SHARE,
     // roles: ['UserRole'],
     // },
     // {
     //   label: 'Layers',
-    //   icon: <BookmarksLogo />,
+    //   icon: <BookmarksLogo classes={styles.icon} />,
     //   action: () => {
     //     dispatch(toggleMenu());
     //     dispatch(toggleMenuItem('Layers'));
@@ -122,7 +124,7 @@ export const getToolbarItems = dispatch => {
     // },
     // {
     //   label: 'Change Password',
-    //   icon: <BookmarksLogo />,
+    //   icon: <BookmarksLogo classes={styles.icon} />,
     //   action: () => {
     //     dispatch(toggleMenu());
     //     dispatch(toggleMenuItem('Change Password'));
@@ -131,13 +133,13 @@ export const getToolbarItems = dispatch => {
     // },
     // {
     //   label: 'Toggle Mini-Map',
-    //   icon: <ShareIcon />,
+    //   icon: <ShareIcon classes={styles.icon} />,
     //   action: () => dispatch(toggleMiniMap()),
     //   tooltip: 'Toggle Mini-Map'
     // },
     // {
     //   label: 'Toggle Spyglass',
-    //   icon: <StoryIcon />,
+    //   icon: <StoryIcon classes={styles.icon} />,
     //   // action: () => dispatch(toggleSpyglassMap()),
     //   action: () => dispatch(notYetImplemented('No Stories designed yet')),
     //   // action: () => dispatch(toggleCompareMaps()),
@@ -145,7 +147,7 @@ export const getToolbarItems = dispatch => {
     // },
     // {
     //   label: 'FAQ',
-    //   icon: <FaqIcon />,
+    //   icon: <FaqIcon classes={styles.icon} />,
     //   action: () => dispatch(notYetImplemented(FAQ)),
     //   tooltip: 'FAQ',
     //   footer: true,
@@ -153,7 +155,7 @@ export const getToolbarItems = dispatch => {
     // },
     {
       label: PROFILE,
-      icon: <ProfileIcon />,
+      icon: <ProfileIcon classes={styles.icon} />,
       action: () => {
         dispatch(toggleMenu(PROFILE));
         dispatch(toggleMenuItem(PROFILE));
@@ -173,7 +175,7 @@ export const getToolbarItems = dispatch => {
   if (featureToggles.satellites) {
     items.splice(1, 0, {
       label: SATELLITE_LAYERS,
-      icon: <SatelliteIcon />,
+      icon: <SatelliteIcon classes={styles.icon} />,
       action: () => {
         dispatch(toggleMenu(SATELLITE_LAYERS));
         dispatch(toggleMenuItem(SATELLITE_LAYERS));
@@ -192,7 +194,7 @@ export const getToolbarItems = dispatch => {
   if (featureToggles.stories) {
     items.splice(3, 0, {
       label: STORIES,
-      icon: <StoryIcon />,
+      icon: <StoryIcon classes={styles.icon} />,
       action: () => {
         dispatch(toggleMenu(STORIES));
         dispatch(toggleMenuItem(STORIES));
@@ -211,7 +213,7 @@ export const getToolbarItems = dispatch => {
   if (featureToggles.admin) {
     items.splice(items.length - 1, 0, {
       label: 'Admin',
-      icon: <StoryIcon />,
+      icon: <StoryIcon classes={styles.icon} />,
       action: () => {
         history.push('/admin');
       },

@@ -75,11 +75,11 @@ const ComparePins = (
             const isDisabled = !selectedPinnedScenes.includes(scene) && selectedPinnedScenes.length === MAX_SELECTED;
             const Icon = (
               <DeleteIcon
-                className={isSelected ? styles.disabled : ''}
+                title={`delete-icon-${scene.id}`}
+                classes={isSelected ? styles.disabled : ''}
                 onClick={() => !isSelected && deletePinnedScene(scene.id)}
               />
             );
-
             return (
               <div key={scene.id} className={styles.compareItem}>
                 <Checkbox

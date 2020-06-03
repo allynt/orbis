@@ -14,6 +14,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import Button from '@astrosat/astrosat-ui/dist/buttons/button';
 import CloseButton from '@astrosat/astrosat-ui/dist/buttons/close-button';
 import LoadMask from '@astrosat/astrosat-ui/dist/load-mask/load-mask';
+import { LayersIcon } from '@astrosat/astrosat-ui/';
 
 import { selectMapStyle, saveMap, setViewport } from './map.slice';
 import { selectDataToken, selectFilteredData, selectInactiveLayers } from '../data-layers/data-layers.slice';
@@ -35,7 +36,6 @@ import drawStyles from '../annotations/styles';
 import BookmarksPanel from '../bookmarks/bookmarks-panel.component';
 import StoriesPanel from '../stories/stories-panel.component';
 import DataLayers from '../data-layers/data-layers.component';
-import { ReactComponent as DataIcon } from '../mapstyle/layers.svg';
 import MapStyleSwitcher from '../mapstyle/mapstyle-switcher.component';
 import SatellitesPanel from '../satellites/satellites-panel.component';
 import SideMenu from '../side-menu/side-menu.component';
@@ -645,7 +645,7 @@ const Map = ({
         onClick={() => setIsMapStyleSwitcherVisible(!isMapStyleSwitcherVisible)}
         classNames={[layoutStyles.mapStyleButton]}
       >
-        <DataIcon className={layoutStyles.icon} />
+        <LayersIcon classes={layoutStyles.icon} />
       </Button>
       {isMapStyleSwitcherVisible && (
         <MapStyleSwitcher

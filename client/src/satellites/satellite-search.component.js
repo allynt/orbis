@@ -14,7 +14,7 @@ import {
 
 import useMap from '../map/use-map.hook';
 
-import { ReactComponent as DrawAoiIcon } from './draw-aoi.svg';
+import { DrawAoiIcon } from '@astrosat/astrosat-ui/';
 import SatelliteSearchForm from './satellite-search-form.component';
 import SavedSearchList from './saved-search-list.component';
 import { useMapEvent } from 'map/use-map-event.hook';
@@ -190,7 +190,7 @@ const SatelliteSearch = ({ map, satellites, setVisiblePanel, setSelectedMoreInfo
         <p>There are no saved AOI yet</p>
       )}
       <div className={styles.drawAOI} onClick={() => setIsAoiMode(true)}>
-        <DrawAoiIcon className={styles.icon} />
+        <DrawAoiIcon classes={styles.icon} title="draw-area-icon" />
         <Button theme="link" classNames={[styles.button]}>
           Draw AOI
         </Button>
