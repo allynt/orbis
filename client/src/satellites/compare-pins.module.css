@@ -14,7 +14,7 @@
 
 .selectMessage {
   font-weight: bold;
-  color: var(--primary-background-color);
+  color: var(--color-primary);
 }
 
 .selectMessage span {

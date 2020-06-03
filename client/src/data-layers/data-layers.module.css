@@ -25,7 +25,7 @@
 
 .icon {
   height: 1.5rem;
-  fill: var(--primary-background-color);
+  fill: var(--button--primary--color);
 }
 
 .domain {

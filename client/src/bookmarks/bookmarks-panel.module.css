@@ -2,8 +2,6 @@
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
-  background-color: var(--background-color);
-  color: #fff;
   height: 100%;
   width: 100%;
 }

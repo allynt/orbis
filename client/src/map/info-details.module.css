@@ -19,7 +19,7 @@
   border-radius: 1rem;
   -webkit-box-shadow: var(--scrollbar-box-shadow);
   box-shadow: var(--scrollbar-box-shadow);
-  background-color: var(--primary-foreground-color);
+  background-color: var(--color-secondary);
 }
 
 .list {

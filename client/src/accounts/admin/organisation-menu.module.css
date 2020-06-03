@@ -1,0 +1,40 @@
+.organisationMenu {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
+  width: 25rem;
+  margin-top: 2.5rem;
+}
+
+.organisationInfo {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+}
+
+.organisationInfo .organisationLogo {
+  object-fit: fill;
+  border-radius: 1rem;
+  height: 10rem;
+  width: auto;
+}
+
+.organisationInfo h2 {
+  margin: 0.5rem 0;
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #000;
+}
+
+.buttons {
+  display: flex;
+  flex-direction: column;
+  margin: 1rem 0;
+}
+
+.buttons > * {
+  margin: 0.5rem 0;
+}

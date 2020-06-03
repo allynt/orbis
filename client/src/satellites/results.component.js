@@ -36,7 +36,9 @@ const Results = (
   const [isSaveDialogVisible, toggleSaveDialog] = useModal(false);
 
   const resultCountText = scenes
-    ? `Showing ${scenes.filter(scene => scene.cloudCover <= cloudCoverPercentage[0]).length} Results`
+    ? `Showing ${scenes.filter(scene => scene.cloudCover <= cloudCoverPercentage[0]).length} Results of ${
+        scenes.length
+      }`
     : 'Loading Results...';
 
   return (

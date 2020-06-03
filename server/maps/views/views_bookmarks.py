@@ -47,4 +47,4 @@ class BookmarkViewSet(viewsets.ModelViewSet):
 
         # restrict the queryset to those bookmarks owned by the current user
         user = self.request.user
-        return user.bookmarks.all()
+        return user.bookmarks.all().order_by("-created")

@@ -79,8 +79,8 @@ export const getToolbarItems = dispatch => {
         dispatch(toggleMenuItem(BOOKMARKS));
         dispatch(
           setMenuHeadings({
-            heading: 'MAPS',
-            strapline: 'Add new map or Select an existing map',
+            heading: 'MY MAPS',
+            strapline: 'Save your map and pick up later',
           }),
         );
       },

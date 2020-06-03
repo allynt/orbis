@@ -40,7 +40,7 @@ import MapLayout from './map';
 import styles from './app.module.css';
 
 const PasswordResetForm = lazy(() => import('./accounts/password-reset-form.component'));
-const UserList = lazy(() => import('./accounts/admin/user-list.component'));
+
 const Admin = lazy(() => import('./accounts/admin/admin.component'));
 
 const App = () => {
@@ -196,26 +196,12 @@ const App = () => {
           />
 
           <Suspense fallback={<h3>Loading...</h3>}>
-            <PrivateRoute exact path="/admin" user={user} component={Admin} />
-
             <PrivateRoute
               exact
-              path="/users"
+              path="/admin"
               user={user}
-              component={UserList}
+              component={Admin}
               users={users}
-              fetchUsers={() => dispatch(fetchUsers())}
-              createUser={user => dispatch(createUser(user))}
-              updateUser={user => dispatch(updateUser(user))}
-              copyUser={user => dispatch(copyUser(user))}
-              deleteUser={id => dispatch(deleteUser(id))}
-            />
-
-            <PrivateRoute
-              exact
-              path="/others"
-              user={user}
-              component={UserList}
               fetchUsers={() => dispatch(fetchUsers())}
               createUser={user => dispatch(createUser(user))}
               updateUser={user => dispatch(updateUser(user))}
