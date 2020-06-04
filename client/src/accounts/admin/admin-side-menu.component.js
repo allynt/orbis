@@ -2,8 +2,7 @@ import React from 'react';
 
 import { ReactComponent as OrbisLogo } from '../../orbis.svg';
 
-import Button from '@astrosat/astrosat-ui/dist/buttons/button';
-import ProfileIcon from '@astrosat/astrosat-ui/dist/icons/profile-icon';
+import { ProfileIcon, ProgressBar, Button } from '@astrosat/astrosat-ui/';
 
 import { USER_TABLE, ACTIVITY_LOG, LICENCE_DASHBOARD, CORPORATE_ACCOUNT, MESSAGES } from './admin.component';
 import styles from './admin-side-menu.module.css';
@@ -53,7 +52,16 @@ const AdminSideMenu = ({ user, selectedCustomer, setVisiblePanel }) => (
           Messages
         </Button>
       </div>
-      <div className={styles.storage}>Storage Meter Goes Here</div>
+      <div className={styles.storage}>
+        <div className={styles.storageHeader}>
+          <ProfileIcon classes={styles.storageIcon} />
+          Storage
+        </div>
+        <ProgressBar classes={styles.progressBar} percentage={selectedCustomer.data_total} />
+        <p
+          className={styles.storageInfo}
+        >{`${selectedCustomer.data_total}GB of ${selectedCustomer.data_limit}GB storage`}</p>
+      </div>
     </div>
   </div>
 );

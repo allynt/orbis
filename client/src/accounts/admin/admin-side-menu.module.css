@@ -16,7 +16,11 @@
 .content {
   width: 100%;
   padding: 1rem;
+<<<<<<< HEAD
   margin: 2rem 0;
+=======
+  margin-top: 1rem;
+>>>>>>> fix(frontend): Added and styled storage meter
   border-top: 1px solid var(--color-primary);
 }
 
@@ -24,6 +28,7 @@
   fill: var(--button-color);
   color: #fff;
   margin: 0;
+  cursor: pointer;
 }
 
 .userProfile {
@@ -44,10 +49,6 @@
   width: 4rem;
   border-radius: 50%;
   object-fit: cover;
-}
-
-.logo {
-  cursor: pointer;
 }
 
 .userInfo {
@@ -72,6 +73,7 @@
   margin: 1rem 0;
 }
 
+<<<<<<< HEAD
 .button,
 .buttonText {
   display: flex;
@@ -80,6 +82,9 @@
 
 .button {
   font-weight: 600;
+=======
+.buttons > * {
+>>>>>>> fix(frontend): Added and styled storage meter
   margin: 0.5rem 0;
   border: 0;
   color: var(--color-lightgrey-light);
@@ -94,6 +99,30 @@
   margin: 0 1rem;
 }
 
-.content .storage {
-  margin-top: auto;
+.storage {
+  margin: auto 1rem 0 1rem;
+  color: var(--color-lightgrey-light);
+  width: 100%;
+}
+
+.storageHeader {
+  display: flex;
+  align-items: center;
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.storageIcon {
+  width: 1rem;
+  margin-right: 0.25rem;
+}
+
+.progressBar {
+  width: 100%;
+}
+
+.storageInfo {
+  text-align: center;
+  margin-top: 0.5rem;
+  font-size: 0.75rem;
 }
