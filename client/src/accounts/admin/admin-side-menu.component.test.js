@@ -31,6 +31,7 @@ describe('Admin Side Menu Component', () => {
     expect(getByText(user.name)).toBeInTheDocument();
     expect(getByAltText('User Profile')).toBeInTheDocument();
     expect(getByText('Launch Orbis')).toBeInTheDocument();
+    expect(getByText('Storage')).toBeInTheDocument();
   });
 
   it('should render the default profile if user has no avatar', () => {
