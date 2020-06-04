@@ -28,29 +28,27 @@ const AdminSideMenu = ({ user, setVisiblePanel }) => (
         </div>
       </div>
       <div className={styles.buttons}>
-        <Button theme="link" onClick={() => setVisiblePanel(USER_TABLE)}>
+        <Button classNames={styles.button} theme="link" onClick={() => setVisiblePanel(USER_TABLE)}>
           <ProfileIcon classes={styles.buttonIcon} />
           Home
         </Button>
-        <Button theme="link">
-          <a href="/" rel="noopener noreferrer" target="_blank">
-            <ProfileIcon classes={styles.buttonIcon} />
-            Launch Orbis
-          </a>
+        <Button classNames={styles.button} theme="link" href="/" rel="noopener noreferrer" target="_blank">
+          <ProfileIcon classes={styles.buttonIcon} />
+          Launch Orbis
         </Button>
-        <Button theme="link" onClick={() => setVisiblePanel(CORPORATE_ACCOUNT)}>
+        <Button classNames={styles.button} theme="link" onClick={() => setVisiblePanel(CORPORATE_ACCOUNT)}>
           <ProfileIcon classes={styles.buttonIcon} />
           Corporate Account
         </Button>
-        <Button theme="link" onClick={() => setVisiblePanel(LICENCE_DASHBOARD)}>
+        <Button classNames={styles.button} theme="link" onClick={() => setVisiblePanel(LICENCE_DASHBOARD)}>
           <ProfileIcon classes={styles.buttonIcon} />
           Licence Dashboard
         </Button>
-        <Button theme="link" onClick={() => setVisiblePanel(ACTIVITY_LOG)}>
+        <Button classNames={styles.button} theme="link" onClick={() => setVisiblePanel(ACTIVITY_LOG)}>
           <ProfileIcon classes={styles.buttonIcon} />
           Activity Log
         </Button>
-        <Button theme="link" onClick={() => setVisiblePanel(MESSAGES)}>
+        <Button classNames={styles.button} theme="link" onClick={() => setVisiblePanel(MESSAGES)}>
           <ProfileIcon classes={styles.buttonIcon} />
           Messages
         </Button>
