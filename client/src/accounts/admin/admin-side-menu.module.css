@@ -8,9 +8,6 @@
 }
 
 .sideMenu {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
   width: 25rem;
   background-color: var(--color-secondary);
   border-right: 1px solid var(--color-primary);
@@ -23,41 +20,50 @@
   border-top: 1px solid var(--color-primary);
 }
 
-.sideMenu .logo {
+.logo {
   fill: var(--button-color);
   color: #fff;
   margin: 0;
 }
 
-.content .userProfile {
+.userProfile {
   display: flex;
   justify-content: flex-start;
   align-items: center;
   width: 100%;
 }
 
-.userProfile .userImage {
-  width: 5rem;
+.defaultIcon {
+  color: var(--color-primary);
+}
+
+.profileIcon,
+.defaultIcon {
+  display: flex;
+  height: 4rem;
+  width: 4rem;
   border-radius: 50%;
-  object-fit: fill;
-  margin-right: 1rem;
+  object-fit: cover;
 }
 
 .logo {
   cursor: pointer;
 }
 
-.userProfile .userInfo {
+.userInfo {
   display: flex;
   flex-direction: column;
+  justify-content: space-evenly;
+  height: 100%;
+  margin: 0.5rem;
 }
 
-.userProfile .userInfo h2 {
+.userInfo h2 {
   font-size: 1.25rem;
   font-weight: bold;
 }
 
-.content .buttons {
+.buttons {
   display: flex;
   flex-direction: column;
   justify-content: center;

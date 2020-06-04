@@ -16,7 +16,7 @@ describe('Admin Side Menu Component', () => {
 
   beforeEach(() => {
     history = createMemoryHistory({ initialEntries: ['/'] });
-    user = { name: 'John Smith' };
+    user = { name: 'John Smith', avatar: 'test-url' };
     setVisiblePanel = jest.fn();
   });
 
@@ -31,6 +31,17 @@ describe('Admin Side Menu Component', () => {
     expect(getByText(user.name)).toBeInTheDocument();
     expect(getByAltText('User Profile')).toBeInTheDocument();
     expect(getByText('Launch Orbis')).toBeInTheDocument();
+  });
+
+  it('should render the default profile if user has no avatar', () => {
+    user.avatar = null;
+    const { getByTestId } = render(
+      <Router history={history}>
+        <AdminSideMenu user={user} setVisiblePanel={setVisiblePanel} />
+      </Router>,
+    );
+
+    expect(getByTestId('default-icon')).toBeInTheDocument();
   });
 
   it('should return to user table view when Orbis logo is clicked', () => {

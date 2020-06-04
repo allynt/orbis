@@ -116,7 +116,6 @@ export const fetchUsers = () => async (dispatch, getState) => {
   }
 
   const users = await response.json();
-
   return dispatch(fetchUsersSuccess(users));
 };
 

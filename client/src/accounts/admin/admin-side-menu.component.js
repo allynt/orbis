@@ -2,6 +2,8 @@ import React from 'react';
 
 import { ReactComponent as OrbisLogo } from '../../orbis.svg';
 
+import ProfileIcon from '@astrosat/astrosat-ui/dist/icons/profile-icon';
+
 import { USER_TABLE, ACTIVITY_LOG, LICENCE_DASHBOARD, CORPORATE_ACCOUNT, MESSAGES } from './admin.component';
 import styles from './admin-side-menu.module.css';
 
@@ -10,16 +12,17 @@ const AdminSideMenu = ({ user, setVisiblePanel }) => (
     <OrbisLogo className={styles.logo} onClick={() => setVisiblePanel(USER_TABLE)} data-testid="orbis logo" />
     <div className={styles.content}>
       <div className={styles.userProfile}>
-        <picture>
-          <source srcSet="https://www.hashatit.com/images/uploads/users/66144/profile_picture/3F6B966D00000578-4428630-image-m-80_1492690622006.jpg" />
-          <img
-            className={styles.userImage}
-            src="https://www.hashatit.com/images/uploads/users/66144/profile_picture/3F6B966D00000578-4428630-image-m-80_1492690622006.jpg"
-            alt="User Profile"
-          />
-        </picture>
+        {user.avatar ? (
+          <picture>
+            <source srcSet={user.avatar} />
+            <img src={user.avatar} alt="User Profile" className={styles.profileIcon} />
+          </picture>
+        ) : (
+          <ProfileIcon data-testid="default-icon" classes={styles.defaultIcon} />
+        )}
+
         <div className={styles.userInfo}>
-          <h2>John Smith</h2>
+          <h2>{user.name}</h2>
           <p>Administrator</p>
         </div>
       </div>
