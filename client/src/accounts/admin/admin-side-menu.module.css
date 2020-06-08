@@ -69,7 +69,14 @@
   margin: 1rem 0;
 }
 
-.buttons > * {
+.button,
+.buttonText {
+  display: flex;
+  align-items: center;
+}
+
+.button {
+  font-weight: 600;
   margin: 0.5rem 0;
   border: 0;
   color: var(--color-lightgrey-light);
