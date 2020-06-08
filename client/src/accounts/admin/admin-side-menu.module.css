@@ -16,11 +16,7 @@
 .content {
   width: 100%;
   padding: 1rem;
-<<<<<<< HEAD
-  margin: 2rem 0;
-=======
   margin-top: 1rem;
->>>>>>> fix(frontend): Added and styled storage meter
   border-top: 1px solid var(--color-primary);
 }
 
@@ -73,18 +69,7 @@
   margin: 1rem 0;
 }
 
-<<<<<<< HEAD
-.button,
-.buttonText {
-  display: flex;
-  align-items: center;
-}
-
-.button {
-  font-weight: 600;
-=======
 .buttons > * {
->>>>>>> fix(frontend): Added and styled storage meter
   margin: 0.5rem 0;
   border: 0;
   color: var(--color-lightgrey-light);
@@ -115,10 +100,6 @@
 .storageIcon {
   width: 1rem;
   margin-right: 0.25rem;
-}
-
-.progressBar {
-  width: 100%;
 }
 
 .storageInfo {
