@@ -1,6 +1,6 @@
 import { Then } from 'cypress-cucumber-preprocessor/steps';
 
-const url = '/login';
+const url = '/accounts/login';
 
 Then(`I am logged out and redirected to the Login page`, () => {
   // Verify text in URL.
