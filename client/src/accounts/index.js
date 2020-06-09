@@ -70,7 +70,7 @@ export default () => {
       />
       <Route
         exact
-        path={`${match.path}/account/confirm-email/:key`}
+        path={`${match.path}/confirm-email/:key`}
         user={user}
         render={props => (
           <AccountActivation
