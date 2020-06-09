@@ -118,7 +118,7 @@ const RegisterForm = ({ register, registerUserStatus, resendVerificationEmail, e
             </div>
             {errors.password1 && <p className={formStyles.errorMessage}> {errors.password1}</p>}
 
-            <div className={formStyles.passwordStrengthMeter}>
+            <div className={formStyles.row}>
               <PasswordStrengthMeter password={values.password1} />
             </div>
 

@@ -51,10 +51,6 @@
   padding: 0.5rem;
 }
 
-.passwordStrengthMeter {
-  padding: 0 0.5rem;
-}
-
 .resend,
 .buttons {
   display: flex;
