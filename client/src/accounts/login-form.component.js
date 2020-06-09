@@ -103,7 +103,7 @@ const LoginForm = ({ login, user, error, resendVerificationEmail, verificationEm
           </div>
 
           {notVerified && (
-            <div className={formStyles.content}>
+            <div className={formStyles.textContent}>
               <p className={formStyles.paragraph}>
                 <strong>Check your email</strong>
               </p>

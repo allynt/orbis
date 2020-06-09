@@ -19,7 +19,7 @@ const PasswordResetSuccessView = ({ email, onSubmit }) => (
   <div className={formStyles.form}>
     <OrbisLogo className={formStyles.logo} />
 
-    <div className={formStyles.content}>
+    <div className={formStyles.textContent}>
       <p className={formStyles.paragraph}>
         <strong>Check your email</strong>
       </p>

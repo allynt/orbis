@@ -40,7 +40,7 @@ const AccountActivation = ({ match, error, activateAccount, accountActivationSta
           </Well>
         )}
 
-        <div className={formStyles.content}>
+        <div className={formStyles.textContent}>
           <p className={formStyles.paragraph}>Sorry, there was an error in activating your account.</p>
           <p className={formStyles.paragraph}>Please try again later.</p>
         </div>
