@@ -19,7 +19,7 @@ import formStyles from './forms.module.css';
 
 const PasswordResetSuccessView = ({ error }) => (
   <div className={`${formStyles.container} ${formStyles.accountsBackground}`}>
-    <div className={`${formStyles.form} ${formStyles.resend}`}>
+    <div className={formStyles.form}>
       <OrbisLogo className={formStyles.logo} />
 
       {error && (

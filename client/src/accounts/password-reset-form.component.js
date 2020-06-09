@@ -16,7 +16,7 @@ import { LOGIN_URL } from './accounts.constants';
 import formStyles from './forms.module.css';
 
 const PasswordResetSuccessView = ({ email, onSubmit }) => (
-  <div className={`${formStyles.form} ${formStyles.resend}`}>
+  <div className={formStyles.form}>
     <OrbisLogo className={formStyles.logo} />
 
     <div className={formStyles.content}>

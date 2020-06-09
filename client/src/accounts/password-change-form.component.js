@@ -18,7 +18,7 @@ import { LOGIN_URL, TERMS_URL } from './accounts.constants';
 import formStyles from './forms.module.css';
 
 const ChangePasswordSuccessView = () => (
-  <div className={`${formStyles.form} ${formStyles.resend}`}>
+  <div className={formStyles.form}>
     <OrbisLogo className={formStyles.logo} />
 
     <div className={formStyles.content}>
