@@ -3,7 +3,7 @@ Feature: Login
   I want to test the Login functionality
 
   Background:
-    Given I am on the "/login" page
+    Given I am on the "/accounts/login" page
 
   Scenario: View Login Form
     Then I see the "Login" page
