@@ -89,6 +89,7 @@
 .buttonIcon {
   height: 2rem;
   margin: 0 1rem;
+  fill: var(--color-lightgrey-light);
 }
 
 .storage {
