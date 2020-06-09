@@ -130,7 +130,6 @@ const PasswordChangeForm = ({ changePassword, changeStatus, error }) => {
           <div className={formStyles.buttons}>
             <Button
               type="submit"
-              className={formStyles.button}
               disabled={!termsAgreed || Object.keys(errors).length > 0 || Object.keys(values).length === 0}
             >
               Change Password

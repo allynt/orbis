@@ -135,7 +135,6 @@ const LoginForm = ({ login, user, error, resendVerificationEmail, verificationEm
             <Button
               type="submit"
               theme="primary"
-              className={formStyles.button}
               disabled={Object.keys(errors).length > 0 || Object.keys(values).length === 0}
             >
               Login

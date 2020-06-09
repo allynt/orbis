@@ -84,11 +84,7 @@ const PasswordResetForm = ({ resetPassword, resetStatus, error }) => {
           </div>
 
           <div className={formStyles.buttons}>
-            <Button
-              type="submit"
-              className={formStyles.button}
-              disabled={Object.keys(errors).length > 0 || Object.keys(values).length === 0}
-            >
+            <Button type="submit" disabled={Object.keys(errors).length > 0 || Object.keys(values).length === 0}>
               Reset Password
             </Button>
           </div>

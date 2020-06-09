@@ -161,7 +161,6 @@ const RegisterForm = ({ register, registerUserStatus, resendVerificationEmail, e
           <div className={formStyles.buttons}>
             <Button
               type="submit"
-              className={formStyles.button}
               disabled={
                 !termsAgreed ||
                 (config && !config.isRegistrationOpen) ||
