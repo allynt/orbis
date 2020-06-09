@@ -41,11 +41,6 @@
   padding: 0.5rem;
 }
 
-.error {
-  border-color: red;
-  color: red;
-}
-
 .errorMessage {
   color: red;
   padding: 0 1.5rem;
