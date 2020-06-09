@@ -96,10 +96,6 @@
   list-style-type: disc;
 }
 
-.passwordStrength {
-  padding: 1rem;
-}
-
 .loginButton {
   margin-top: 1.5rem;
   --padding-x: 8rem;
