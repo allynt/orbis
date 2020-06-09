@@ -36,7 +36,7 @@ const PasswordResetSuccessView = ({ email, onSubmit }) => (
     </div>
 
     <div className={formStyles.buttons}>
-      <Button classNames={[formStyles.resendButton]} theme="secondary" onClick={() => onSubmit(email)}>
+      <Button theme="secondary" onClick={() => onSubmit(email)}>
         Resend email
       </Button>
       <Button href={LOGIN_URL}>Return to login</Button>

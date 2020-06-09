@@ -42,7 +42,7 @@ export const RegisterFormSuccessView = ({ email, resendVerificationEmail }) => (
     </div>
 
     <div className={formStyles.buttons}>
-      <Button classNames={[formStyles.resendButton]} theme="secondary" onClick={() => resendVerificationEmail(email)}>
+      <Button theme="secondary" onClick={() => resendVerificationEmail(email)}>
         Resend email
       </Button>
       <Button href={LOGIN_URL}>Continue</Button>
