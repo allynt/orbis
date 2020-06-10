@@ -355,8 +355,8 @@ REST_AUTH_REGISTER_SERIALIZERS = {
     "REGISTER_SERIALIZER": "astrosat_users.serializers.RegisterSerializer"
 }
 
-ACCOUNT_CONFIRM_EMAIL_CLIENT_URL = "/account/confirm-email/{key}"
-ACCOUNT_CONFIRM_PASSWORD_CLIENT_URL = "/password/reset/{key}/{uid}"
+ACCOUNT_CONFIRM_EMAIL_CLIENT_URL = "/accounts/confirm-email/{key}"
+ACCOUNT_CONFIRM_PASSWORD_CLIENT_URL = "/accounts/password/reset/{key}/{uid}"
 
 #############
 # passwords #
