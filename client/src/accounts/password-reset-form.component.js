@@ -11,7 +11,7 @@ import { status } from './accounts.slice';
 
 import { LOGIN_URL } from './accounts.constants';
 
-import formStyles from './forms.module.css';
+import formStyles from '../forms.module.css';
 
 const PasswordResetSuccessView = ({ email, onSubmit }) => (
   <div className={formStyles.form}>

@@ -9,7 +9,7 @@ import Button from '@astrosat/astrosat-ui/dist/buttons/button';
 import Textfield from '@astrosat/astrosat-ui/dist/forms/text-field';
 import useForm from '@astrosat/astrosat-ui/dist/forms/use-form';
 
-import formStyles from '../accounts/forms.module.css';
+import formStyles from '../forms.module.css';
 import bookmarkStyles from '../side-menu/side-menu.module.css';
 
 const BookmarkForm = ({ bookmarkTitles, submit }) => {

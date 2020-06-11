@@ -16,7 +16,7 @@ import { status } from './accounts.slice';
 
 import { LOGIN_URL, TERMS_URL } from './accounts.constants';
 
-import formStyles from './forms.module.css';
+import formStyles from '../forms.module.css';
 
 export const RegisterFormSuccessView = ({ email, resendVerificationEmail }) => (
   <div className={formStyles.form}>

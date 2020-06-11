@@ -9,7 +9,7 @@ import useForm from '@astrosat/astrosat-ui/dist/forms/use-form';
 
 import validate from '../bookmarks/bookmark-form.validator';
 
-import formStyles from '../accounts/forms.module.css';
+import formStyles from '../forms.module.css';
 
 const NewMapForm = ({ regions, domains, bookmarkTitles, setViewport }) => {
   const { handleChange, handleSubmit, values, errors } = useForm(onSubmit, validate(bookmarkTitles));

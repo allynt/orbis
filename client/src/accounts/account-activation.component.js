@@ -9,7 +9,7 @@ import { status } from './accounts.slice';
 
 import { LOGIN_URL } from './accounts.constants';
 
-import formStyles from './forms.module.css';
+import formStyles from '../forms.module.css';
 
 const AccountActivation = ({ match, error, activateAccount, accountActivationStatus }) => {
   const [redirectToLogin, setRedirectToLogin] = useState(false);

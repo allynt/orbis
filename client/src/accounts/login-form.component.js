@@ -19,7 +19,7 @@ import { REGISTER_URL, PASSWORD_RESET_URL } from './accounts.constants';
 
 import { RegisterFormSuccessView } from './register-form.component';
 
-import formStyles from './forms.module.css';
+import formStyles from '../forms.module.css';
 
 const LoginForm = ({ login, user, error, resendVerificationEmail, verificationEmailStatus }) => {
   const { passwordMinLength, passwordMaxLength } = useSelector(state => state.app.config);
