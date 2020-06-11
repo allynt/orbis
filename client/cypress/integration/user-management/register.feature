@@ -3,7 +3,7 @@ Feature: Register
   I want to test the Register functionality
 
   Background:
-    Given I am on the "/register" page
+    Given I am on the "/accounts/register" page
 
   Scenario: View registration page
     Then I see the "Registration" page

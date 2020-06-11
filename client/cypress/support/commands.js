@@ -14,7 +14,7 @@ import '@testing-library/cypress/add-commands';
 
 import { login } from '../../src/accounts/accounts.slice';
 
-const loginUrl = '/login';
+const loginUrl = '/accounts/login';
 const email = Cypress.env('email');
 const password = Cypress.env('password');
 
@@ -23,9 +23,7 @@ Cypress.Commands.add('login', () => {
   if (Cypress.config('baseUrl') !== 'http://localhost:3000') {
     cy.visit(loginUrl);
 
-    cy.window()
-      .its('store')
-      .invoke('dispatch', login({ email, password }));
+    cy.window().its('store').invoke('dispatch', login({ email, password }));
   }
 });
 

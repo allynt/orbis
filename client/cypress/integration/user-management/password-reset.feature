@@ -3,7 +3,7 @@ Feature: Reset Password
   I want to test the Logout functionality
 
   Background:
-    Given I am on the "/password/reset" page
+    Given I am on the "/accounts/password/reset" page
 
   Scenario: View Password Reset Form
     Then I see the "Password Reset" page

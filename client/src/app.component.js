@@ -10,36 +10,21 @@ import useModal from '@astrosat/astrosat-ui/dist/containers/use-modal';
 import PrivateRoute from './utils/private-route.component';
 
 import { fetchAppConfig } from './app.slice';
-import {
-  fetchUser,
-  login,
-  register,
-  activateAccount,
-  resendVerificationEmail,
-  changePassword,
-  confirmResetPassword,
-  resetPassword,
-} from './accounts/accounts.slice';
+import { fetchUser } from './accounts/accounts.slice';
 
 import { fetchUsers, createUser, deleteUser, updateUser, copyUser } from './accounts/admin/users.slice';
 
 import { fetchSources, selectPollingPeriod } from './data-layers/data-layers.slice';
 
-import RegisterForm from './accounts/register-form.component';
+import Accounts from './accounts';
 import TermsAndConditions from './accounts/terms-and-conditions.component';
-import AccountActivation from './accounts/account-activation.component';
-import LoginForm from './accounts/login-form.component';
-import PasswordChangeForm from './accounts/password-change-form.component';
 import UpdateUserForm from './accounts/update-user-form.component';
-import PasswordResetConfirm from './accounts/password-reset-confirm-form.component';
 
 import LandingView from './landing/landing.component';
 
 import MapLayout from './map';
 
 import styles from './app.module.css';
-
-const PasswordResetForm = lazy(() => import('./accounts/password-reset-form.component'));
 
 const Admin = lazy(() => import('./accounts/admin/admin.component'));
 
@@ -48,24 +33,14 @@ const App = () => {
   const trackingId = useSelector(state =>
     state && state.app && state.app.config ? state.app.config.trackingId : null,
   );
-
   const users = useSelector(state => state.admin.users);
   const user = useSelector(state => state.accounts.user);
   const userKey = useSelector(state => state.accounts.userKey);
-  const error = useSelector(state => state.accounts.error);
   const pollingPeriod = useSelector(selectPollingPeriod);
-
-  const registerUserStatus = useSelector(state => state.accounts.registerUserStatus);
-  const accountActivationStatus = useSelector(state => state.accounts.accountActivationStatus);
-  const verificationEmailStatus = useSelector(state => state.accounts.verificationEmailStatus);
-  const resetStatus = useSelector(state => state.accounts.resetStatus);
-  const changeStatus = useSelector(state => state.accounts.changeStatus);
-
   const notYetImplementedDescription = useSelector(state => state.app.notYetImplementedDescription);
   const ref = useRef(null);
   const [isVisible, toggle] = useModal(notYetImplementedDescription !== null ? true : false);
 
-  const activateAccountFn = form => dispatch(activateAccount(form));
   const userExists = user ? true : false;
 
   useEffect(() => {
@@ -127,74 +102,11 @@ const App = () => {
         </Dialog>
 
         <Switch>
-          <PrivateRoute path="/map" user={user} component={MapLayout} />
-          <PrivateRoute
-            exact
-            path="/password/change"
-            user={user}
-            render={() => (
-              <PasswordChangeForm
-                changePassword={form => dispatch(changePassword(form))}
-                changeStatus={changeStatus}
-                error={error}
-              />
-            )}
-          />
-          <PrivateRoute exact path="/user/update" user={user} component={UpdateUserForm} />
-
           <PrivateRoute exact path="/" user={user} component={LandingView} />
-
-          <Route
-            exact
-            path="/register"
-            render={() => (
-              <RegisterForm
-                register={form => dispatch(register(form))}
-                registerUserStatus={registerUserStatus}
-                resendVerificationEmail={email => dispatch(resendVerificationEmail(email))}
-                error={error}
-              />
-            )}
-          />
+          <Route path="/accounts" component={Accounts} />
+          <PrivateRoute path="/map" user={user} component={MapLayout} />
+          <PrivateRoute exact path="/user/update" user={user} component={UpdateUserForm} />
           <Route exact path="/terms" component={TermsAndConditions} />
-          <Route
-            exact
-            path="/login"
-            render={() => (
-              <LoginForm
-                login={values => dispatch(login(values))}
-                user={user}
-                error={error}
-                resendVerificationEmail={email => dispatch(resendVerificationEmail(email))}
-                verificationEmailStatus={verificationEmailStatus}
-              />
-            )}
-          />
-          <Route
-            exact
-            path="/account/confirm-email/:key"
-            user={user}
-            render={props => (
-              <AccountActivation
-                match={props.match}
-                error={error}
-                activateAccount={activateAccountFn}
-                accountActivationStatus={accountActivationStatus}
-              />
-            )}
-          />
-          <Route
-            path="/password/reset/:token/:uid/"
-            render={props => (
-              <PasswordResetConfirm
-                confirmResetPassword={(form, params) => dispatch(confirmResetPassword(form, params))}
-                resetStatus={resetStatus}
-                match={props.match}
-                error={error}
-              />
-            )}
-          />
-
           <Suspense fallback={<h3>Loading...</h3>}>
             <PrivateRoute
               exact
@@ -207,19 +119,6 @@ const App = () => {
               updateUser={user => dispatch(updateUser(user))}
               copyUser={user => dispatch(copyUser(user))}
               deleteUser={id => dispatch(deleteUser(id))}
-            />
-
-            <Route
-              exact
-              path="/password/reset"
-              user={user}
-              render={() => (
-                <PasswordResetForm
-                  resetPassword={values => dispatch(resetPassword(values))}
-                  resetStatus={resetStatus}
-                  error={error}
-                />
-              )}
             />
           </Suspense>
         </Switch>

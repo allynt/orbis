@@ -40,7 +40,7 @@ describe('Account Activation', () => {
     );
 
     expect(activateAccount).toHaveBeenCalled();
-    expect(history.location.pathname).toEqual('/login');
+    expect(history.location.pathname).toEqual('/accounts/login');
   });
 
   it('should not redirect, but display error well on unsuccessful Activation', () => {
