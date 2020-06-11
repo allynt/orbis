@@ -13,7 +13,9 @@
     "e2e:develop": "NODE_PATH=src cypress open --config baseUrl=http://localhost:3000",
     "e2e:install": "cypress install",
     "e2e:verify": "cypress verify",
-    "e2e:run": "cypress run"
+    "e2e:run": "cypress run",
+    "storybook": "start-storybook -p 9009 -s public",
+    "build-storybook": "build-storybook -s public"
   },
   "dependencies": {
     "@astrosat/astrosat-ui": "^1.15.0",
@@ -57,9 +59,16 @@
     "zxcvbn": "^4.4.2"
   },
   "devDependencies": {
+    "@babel/core": "^7.0.0-0",
     "@babel/plugin-proposal-nullish-coalescing-operator": "^7.8.3",
     "@semantic-release/changelog": "^5.0.1",
     "@semantic-release/git": "^9.0.0",
+    "@storybook/addon-actions": "^5.3.19",
+    "@storybook/addon-knobs": "^5.3.19",
+    "@storybook/addon-links": "^5.3.19",
+    "@storybook/addons": "^5.3.19",
+    "@storybook/preset-create-react-app": "^3.0.0",
+    "@storybook/react": "^5.3.19",
     "@testing-library/cypress": "^6.0.0",
     "@testing-library/react-hooks": "^3.2.1",
     "@turf/centroid": "^6.0.2",
@@ -81,7 +90,9 @@
     "react-test-renderer": "^16.12.0",
     "redux-devtools-extension": "2.13.8",
     "redux-mock-store": "^1.5.4",
-    "semantic-release": "^17.0.7"
+    "regenerator-runtime": "^0.13.5",
+    "semantic-release": "^17.0.7",
+    "webpack": "4.42.0"
   },
   "browserslist": [
     ">0.2%",
