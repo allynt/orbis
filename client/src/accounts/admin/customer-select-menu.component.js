@@ -14,7 +14,7 @@ const CustomerSelectMenu = ({ userCustomers, setSelectedCustomer, setCustomerSel
       {userCustomers.map(customer => {
         return (
           <Button key={customer.name} onClick={() => handleClick(customer)}>
-            {customer.name}
+            {customer.title}
           </Button>
         );
       })}
