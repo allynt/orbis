@@ -4,8 +4,10 @@ import { createSlice } from '@reduxjs/toolkit';
 import { getData, sendData, getJsonAuthHeaders } from 'utils/http';
 
 const API = '/api/users/';
+const CUSTOMER_API = '/api/customers/';
 
 const initialState = {
+  userCustomers: null,
   users: null,
   isLoading: false,
   error: null,
@@ -15,6 +17,18 @@ const usersSlice = createSlice({
   name: 'users',
   initialState,
   reducers: {
+    fetchUserCustomersRequested: state => {
+      state.isLoading = true;
+    },
+    fetchUserCustomersSuccess: (state, { payload }) => {
+      state.userCustomers = payload;
+      state.isLoading = false;
+      state.error = null;
+    },
+    fetchUserCustomersFailure: (state, { payload }) => {
+      state.error = payload;
+      state.isLoading = false;
+    },
     fetchUsersRequested: state => {
       state.isLoading = true;
     },
@@ -67,6 +81,9 @@ const usersSlice = createSlice({
 });
 
 export const {
+  fetchUserCustomersRequested,
+  fetchUserCustomersSuccess,
+  fetchUserCustomersFailure,
   fetchUsersRequested,
   fetchUsersSuccess,
   fetchUsersFailure,
@@ -80,6 +97,21 @@ export const {
   createUserSuccess,
   createUserFailure,
 } = usersSlice.actions;
+
+export const fetchUserCustomers = user => async (dispatch, getState) => {
+  const headers = getJsonAuthHeaders(getState());
+
+  dispatch(fetchUserCustomersRequested());
+
+  const response = await getData(`${CUSTOMER_API}${user.username}`, headers);
+
+  if (!response.ok) {
+    return dispatch(fetchUserCustomersFailure({ message: 'message' }));
+  }
+
+  const userCustomers = await response.json();
+  return dispatch(fetchUserCustomersSuccess(userCustomers));
+};
 
 export const createUser = fields => async (dispatch, getState) => {
   const headers = getJsonAuthHeaders(getState());
