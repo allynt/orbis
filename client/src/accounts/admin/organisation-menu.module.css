@@ -15,7 +15,7 @@
   cursor: pointer;
 }
 
-.organisationInfo .organisationLogo {
+.organisationLogo {
   object-fit: fill;
   border-radius: 1rem;
   height: 10rem;
@@ -23,6 +23,7 @@
 }
 
 .organisationInfo h2 {
+  text-align: center;
   margin: 0.5rem 0;
   font-size: 1.5rem;
   font-weight: bold;

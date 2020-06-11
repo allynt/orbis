@@ -8,14 +8,8 @@ import UserDetailForm from './user-detail-form.component';
 
 import styles from './user-list.module.css';
 
-const UserList = ({ users, fetchUsers, createUser, deleteUser, updateUser, copyUser }) => {
+const UserList = ({ users, createUser, deleteUser, updateUser, copyUser }) => {
   const [isNewUserMode, setIsNewUserMode] = useState(false);
-
-  useEffect(() => {
-    if (!users) {
-      fetchUsers();
-    }
-  }, [users, fetchUsers]);
 
   return (
     <div className={styles['table-container']}>
@@ -36,7 +30,6 @@ const UserList = ({ users, fetchUsers, createUser, deleteUser, updateUser, copyU
 
 UserList.propTypes = {
   users: PropTypes.array,
-  fetchUsers: PropTypes.func.isRequired,
   createUser: PropTypes.func.isRequired,
   deleteUser: PropTypes.func.isRequired,
   updateUser: PropTypes.func.isRequired,
