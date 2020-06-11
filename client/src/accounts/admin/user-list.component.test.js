@@ -15,7 +15,6 @@ jest.mock('./user-table.component', () => () => <div />);
 describe('User List Component', () => {
   let store = null;
   let users = null;
-  let fetchUsers = null;
   let createUser = null;
   let deleteUser = null;
   let updateUser = null;
@@ -23,7 +22,6 @@ describe('User List Component', () => {
 
   beforeEach(() => {
     users = [];
-    fetchUsers = jest.fn();
     createUser = jest.fn();
     deleteUser = jest.fn();
     updateUser = jest.fn();
@@ -38,7 +36,6 @@ describe('User List Component', () => {
     const { getByText } = render(
       <UserList
         users={null}
-        fetchUsers={fetchUsers}
         createUser={createUser}
         deleteUser={deleteUser}
         updateUser={updateUser}
@@ -48,7 +45,6 @@ describe('User List Component', () => {
 
     expect(getByText('Maintain Users')).toBeInTheDocument();
     expect(getByText('Use actions within table to update user(s)')).toBeInTheDocument();
-    expect(fetchUsers).toHaveBeenCalled();
   });
 
   it('should render the `New User` form when `New User` button clicked', () => {
@@ -57,7 +53,6 @@ describe('User List Component', () => {
       <Provider store={store}>
         <UserList
           users={users}
-          fetchUsers={fetchUsers}
           createUser={createUser}
           deleteUser={deleteUser}
           updateUser={updateUser}
