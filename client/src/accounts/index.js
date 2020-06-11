@@ -17,6 +17,8 @@ import PasswordChangeForm from './password-change-form.component';
 import PasswordResetConfirmForm from './password-reset-confirm-form.component';
 import PasswordResetForm from './password-reset-form.component';
 import RegisterForm from './register-form.component';
+import styles from './index.module.css';
+import { ReactComponent as OrbisLogo } from '../orbis.svg';
 
 export default () => {
   const dispatch = useDispatch();
@@ -30,80 +32,85 @@ export default () => {
   const user = useSelector(state => state.accounts.user);
 
   return (
-    <Switch>
-      <Route
-        exact
-        path={`${match.path}/register`}
-        render={() => (
-          <RegisterForm
-            register={form => dispatch(register(form))}
-            registerUserStatus={registerUserStatus}
-            resendVerificationEmail={email => dispatch(resendVerificationEmail(email))}
-            error={error}
+    <div className={styles.page}>
+      <div className={styles.container}>
+        <OrbisLogo className={styles.logo} />
+        <Switch>
+          <Route
+            exact
+            path={`${match.path}/register`}
+            render={() => (
+              <RegisterForm
+                register={form => dispatch(register(form))}
+                registerUserStatus={registerUserStatus}
+                resendVerificationEmail={email => dispatch(resendVerificationEmail(email))}
+                error={error}
+              />
+            )}
           />
-        )}
-      />
-      <Route
-        exact
-        path={`${match.path}/login`}
-        render={() => (
-          <LoginForm
-            login={values => dispatch(login(values))}
+          <Route
+            exact
+            path={`${match.path}/login`}
+            render={() => (
+              <LoginForm
+                login={values => dispatch(login(values))}
+                user={user}
+                error={error}
+                resendVerificationEmail={email => dispatch(resendVerificationEmail(email))}
+                verificationEmailStatus={verificationEmailStatus}
+              />
+            )}
+          />
+          <PrivateRoute
+            exact
+            path={`${match.path}/password/change`}
             user={user}
-            error={error}
-            resendVerificationEmail={email => dispatch(resendVerificationEmail(email))}
-            verificationEmailStatus={verificationEmailStatus}
+            render={() => (
+              <PasswordChangeForm
+                changePassword={form => dispatch(changePassword(form))}
+                changeStatus={changeStatus}
+                error={error}
+              />
+            )}
           />
-        )}
-      />
-      <PrivateRoute
-        exact
-        path={`${match.path}/password/change`}
-        user={user}
-        render={() => (
-          <PasswordChangeForm
-            changePassword={form => dispatch(changePassword(form))}
-            changeStatus={changeStatus}
-            error={error}
+          <Route
+            exact
+            path={`${match.path}/confirm-email/:key`}
+            user={user}
+            render={props => (
+              <AccountActivation
+                match={props.match}
+                error={error}
+                activateAccount={form => dispatch(activateAccount(form))}
+                accountActivationStatus={accountActivationStatus}
+              />
+            )}
           />
-        )}
-      />
-      <Route
-        exact
-        path={`${match.path}/confirm-email/:key`}
-        user={user}
-        render={props => (
-          <AccountActivation
-            match={props.match}
-            error={error}
-            activateAccount={form => dispatch(activateAccount(form))}
-            accountActivationStatus={accountActivationStatus}
+          <Route
+            exact
+            path={`${match.path}/password/reset`}
+            user={user}
+            render={() => (
+              <PasswordResetForm
+                resetPassword={values => dispatch(resetPassword(values))}
+                resetStatus={resetStatus}
+                error={error}
+              />
+            )}
           />
-        )}
-      />
-      <Route
-        exact
-        path={`${match.path}/password/reset`}
-        user={user}
-        render={() => (
-          <PasswordResetForm
-            resetPassword={values => dispatch(resetPassword(values))}
-            resetStatus={resetStatus}
-            error={error}
+          <Route
+            path={`${match.path}/password/reset/:token/:uid/`}
+            render={props => (
+              <PasswordResetConfirmForm
+                confirmResetPassword={(form, params) => dispatch(confirmResetPassword(form, params))}
+                resetStatus={resetStatus}
+                match={props.match}
+                error={error}
+              />
+            )}
           />
-        )}
-      />
-      <Route
-        path={`${match.path}/password/reset/:token/:uid/`}
-        render={props => (
-          <PasswordResetConfirmForm
-            confirmResetPassword={(form, params) => dispatch(confirmResetPassword(form, params))}
-            resetStatus={resetStatus}
-            match={props.match}
-            error={error}
-          />
-        )}
-      />
-    </Switch>
+        </Switch>
+      </div>
+    </div>
   );
 };
