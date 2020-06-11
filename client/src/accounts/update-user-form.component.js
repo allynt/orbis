@@ -23,10 +23,10 @@ const UpdateUserForm = ({ user, updateUser }) => {
   }
 
   return (
-    <div className={`${formStyles.container} ${sideMenuStyles.container}`}>
+    <div className={sideMenuStyles.container}>
       <form className={`${formStyles.form} ${sideMenuStyles.form}`} onSubmit={handleSubmit}>
         <div className={`${formStyles.fields} ${sideMenuStyles.fields}`}>
-          <p className={sideMenuStyles.header}>Personal Details</p>
+          <p className={formStyles.paragraph}>Personal Details</p>
           <Textfield name="email" value={user.email || ''} placeholder="Email" onChange={handleChange} readOnly />
 
           <Textfield name="name" value={values.name || ''} placeholder="Name" onChange={handleChange} />

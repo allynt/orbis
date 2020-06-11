@@ -21,54 +21,52 @@ const NewMapForm = ({ regions, domains, bookmarkTitles, setViewport }) => {
   }
 
   return (
-    <div className={formStyles.container}>
-      <form className={formStyles.form} onSubmit={handleSubmit}>
-        <div className={formStyles.fields}>
-          <div className={formStyles.row}>
-            <Textfield
-              name="title"
-              value={values.title || ''}
-              placeholder="Add Title*"
-              onChange={handleChange}
-              required
-              autoFocus
-            />
-          </div>
-          {errors.title && <p className={formStyles.errorMessage}>{errors.title}</p>}
-
-          <div className={formStyles.row}>
-            <Textfield
-              name="description"
-              value={values.description || ''}
-              placeholder="Add Description"
-              onChange={handleChange}
-            />
-          </div>
-          {errors.description && <p className={formStyles.errorMessage}>{errors.description}</p>}
-        </div>
-
+    <form className={formStyles.form} onSubmit={handleSubmit}>
+      <div className={formStyles.fields}>
         <div className={formStyles.row}>
-          <Select name="region" value={values.region || ''} options={regions} onChange={handleChange} />
-          <Select
-            name="domain"
-            value={values.domain || ''}
-            options={domains.map(domain => ({ name: domain, value: domain }))}
+          <Textfield
+            name="title"
+            value={values.title || ''}
+            placeholder="Add Title*"
             onChange={handleChange}
-            disabled={values.region ? false : true}
+            required
+            autoFocus
           />
         </div>
+        {errors.title && <p className={formStyles.errorMessage}>{errors.title}</p>}
 
-        <div className={formStyles.buttons}>
-          <Button
-            type="submit"
-            theme="primary"
-            disabled={Object.keys(errors).length > 0 || Object.keys(values).length === 0}
-          >
-            Create
-          </Button>
+        <div className={formStyles.row}>
+          <Textfield
+            name="description"
+            value={values.description || ''}
+            placeholder="Add Description"
+            onChange={handleChange}
+          />
         </div>
-      </form>
-    </div>
+        {errors.description && <p className={formStyles.errorMessage}>{errors.description}</p>}
+      </div>
+
+      <div className={formStyles.row}>
+        <Select name="region" value={values.region || ''} options={regions} onChange={handleChange} />
+        <Select
+          name="domain"
+          value={values.domain || ''}
+          options={domains.map(domain => ({ name: domain, value: domain }))}
+          onChange={handleChange}
+          disabled={values.region ? false : true}
+        />
+      </div>
+
+      <div className={formStyles.buttons}>
+        <Button
+          type="submit"
+          theme="primary"
+          disabled={Object.keys(errors).length > 0 || Object.keys(values).length === 0}
+        >
+          Create
+        </Button>
+      </div>
+    </form>
   );
 };
 
