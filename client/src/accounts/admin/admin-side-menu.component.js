@@ -8,7 +8,7 @@ import ProfileIcon from '@astrosat/astrosat-ui/dist/icons/profile-icon';
 import { USER_TABLE, ACTIVITY_LOG, LICENCE_DASHBOARD, CORPORATE_ACCOUNT, MESSAGES } from './admin.component';
 import styles from './admin-side-menu.module.css';
 
-const AdminSideMenu = ({ user, setVisiblePanel }) => (
+const AdminSideMenu = ({ user, selectedCustomer, setVisiblePanel }) => (
   <div className={styles.sideMenu}>
     <OrbisLogo className={styles.logo} onClick={() => setVisiblePanel(USER_TABLE)} data-testid="orbis logo" />
     <div className={styles.content}>

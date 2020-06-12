@@ -24,6 +24,20 @@ let users = [
     is_approved: true,
     profiles: {},
     roles: ['AdminRole', 'UserRole'],
+    customers: [
+      {
+        name: 'cyberdyne',
+        manager: true,
+      },
+      {
+        name: 'OCP',
+        manager: true,
+      },
+      {
+        name: 'customer3',
+        manager: false,
+      },
+    ],
   },
   {
     id: 2,

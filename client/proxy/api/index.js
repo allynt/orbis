@@ -5,6 +5,7 @@ const dataRoutes = require('./data');
 const satellitesRoutes = require('./satellites');
 const storiesRoutes = require('./stories');
 const usersRoutes = require('./users');
+const customersRoutes = require('./customers');
 
 module.exports = {
   appRoutes,
@@ -14,4 +15,5 @@ module.exports = {
   satellitesRoutes,
   storiesRoutes,
   usersRoutes,
+  customersRoutes,
 };

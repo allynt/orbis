@@ -2,6 +2,10 @@ import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 
 import reducer, {
+  fetchUserCustomersRequested,
+  fetchUserCustomersSuccess,
+  fetchUserCustomersFailure,
+  fetchUserCustomers,
   fetchUsersRequested,
   fetchUsersSuccess,
   fetchUsersFailure,
@@ -203,6 +207,7 @@ describe('Users Slice', () => {
     beforeEach(() => {
       beforeState = {
         users: null,
+        userCustomers: null,
         isLoading: false,
         error: null,
       };
