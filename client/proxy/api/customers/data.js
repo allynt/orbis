@@ -114,9 +114,7 @@ let customers = [
   },
 ];
 
-const getAllCustomers = () => customers;
-
-const getAllUserCustomers = userCustomers => {
+const getCustomersOfUser = userCustomers => {
   let customerObjs = [];
 
   for (const customer of customers) {
@@ -129,4 +127,4 @@ const getAllUserCustomers = userCustomers => {
   return customerObjs;
 };
 
-module.exports = { getAllCustomers, getAllUserCustomers };
+module.exports = { getCustomersOfUser };

@@ -11,13 +11,11 @@ const CustomerSelectMenu = ({ userCustomers, setSelectedCustomer, setCustomerSel
 
   return (
     <div className={styles.buttonContainer}>
-      {userCustomers.map(customer => {
-        return (
-          <Button key={customer.name} onClick={() => handleClick(customer)}>
-            {customer.title}
-          </Button>
-        );
-      })}
+      {userCustomers.map(customer => (
+        <Button key={customer.name} onClick={() => handleClick(customer)}>
+          {customer.title}
+        </Button>
+      ))}
     </div>
   );
 };
