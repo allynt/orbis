@@ -44,8 +44,6 @@ psycopg2-binary = ">=2.8.4"
 pyjwt = ">=1.7.1"
 # sentinel data
 sentinelsat = ">=0.13"
-# wsgi... duh
-uwsgi = ">=2.0.18"
 # static file management (gzipping, etc.)
 whitenoise = ">=5.0.1"
 # astrosat-specific code
