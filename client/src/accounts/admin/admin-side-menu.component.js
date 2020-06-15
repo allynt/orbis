@@ -1,11 +1,15 @@
 import React from 'react';
 
 import { ReactComponent as OrbisLogo } from '../../orbis.svg';
+import { ReactComponent as HomeIcon } from './home.svg';
+import { ReactComponent as LaunchOrbisIcon } from './launch-orbis.svg';
+import { ReactComponent as MessagesIcon } from './messages.svg';
+import { ReactComponent as LicencesIcon } from './licenses.svg';
+import { ReactComponent as ActivityLogIcon } from './log.svg';
 
-import Button from '@astrosat/astrosat-ui/dist/buttons/button';
-import ProfileIcon from '@astrosat/astrosat-ui/dist/icons/profile-icon';
+import { ProfileIcon, ProgressBar, Button } from '@astrosat/astrosat-ui/';
 
-import { USER_TABLE, ACTIVITY_LOG, LICENCE_DASHBOARD, CORPORATE_ACCOUNT, MESSAGES } from './admin.component';
+import { USER_TABLE, ACTIVITY_LOG, LICENCE_DASHBOARD, MESSAGES } from './admin.component';
 import styles from './admin-side-menu.module.css';
 
 const AdminSideMenu = ({ user, selectedCustomer, setVisiblePanel }) => (
@@ -29,31 +33,36 @@ const AdminSideMenu = ({ user, selectedCustomer, setVisiblePanel }) => (
       </div>
       <div className={styles.buttons}>
         <Button classNames={styles.button} theme="link" onClick={() => setVisiblePanel(USER_TABLE)}>
-          <ProfileIcon classes={styles.buttonIcon} />
+          <HomeIcon className={styles.buttonIcon} />
           Home
         </Button>
-        <Button classNames={styles.button} theme="link" href="/" rel="noopener noreferrer" target="_blank">
-          <ProfileIcon classes={styles.buttonIcon} />
-          Launch Orbis
-        </Button>
-        <Button classNames={styles.button} theme="link" onClick={() => setVisiblePanel(CORPORATE_ACCOUNT)}>
-          <ProfileIcon classes={styles.buttonIcon} />
-          Corporate Account
-        </Button>
-        <Button classNames={styles.button} theme="link" onClick={() => setVisiblePanel(LICENCE_DASHBOARD)}>
-          <ProfileIcon classes={styles.buttonIcon} />
-          Licence Dashboard
-        </Button>
-        <Button classNames={styles.button} theme="link" onClick={() => setVisiblePanel(ACTIVITY_LOG)}>
-          <ProfileIcon classes={styles.buttonIcon} />
-          Activity Log
-        </Button>
         <Button classNames={styles.button} theme="link" onClick={() => setVisiblePanel(MESSAGES)}>
-          <ProfileIcon classes={styles.buttonIcon} />
+          <MessagesIcon className={styles.buttonIcon} />
           Messages
         </Button>
+        <Button classNames={styles.button} theme="link" href="/" rel="noopener noreferrer" target="_blank">
+          <LaunchOrbisIcon className={styles.buttonIcon} />
+          Launch Orbis
+        </Button>
+        <Button classNames={styles.button} theme="link" onClick={() => setVisiblePanel(ACTIVITY_LOG)}>
+          <ActivityLogIcon className={styles.buttonIcon} />
+          Activity Log
+        </Button>
+        <Button classNames={styles.button} theme="link" onClick={() => setVisiblePanel(LICENCE_DASHBOARD)}>
+          <LicencesIcon className={styles.buttonIcon} />
+          Licence Dashboard
+        </Button>
       </div>
-      <div className={styles.storage}>Storage Meter Goes Here</div>
+      <div className={styles.storage}>
+        <div className={styles.storageHeader}>
+          <ProfileIcon classes={styles.storageIcon} />
+          Storage
+        </div>
+        <ProgressBar classes={styles.progressBar} percentage={selectedCustomer.data_total} />
+        <p
+          className={styles.storageInfo}
+        >{`${selectedCustomer.data_total}GB of ${selectedCustomer.data_limit}GB storage`}</p>
+      </div>
     </div>
   </div>
 );

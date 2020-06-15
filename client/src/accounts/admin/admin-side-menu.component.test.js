@@ -13,17 +13,22 @@ describe('Admin Side Menu Component', () => {
   let history = null;
   let user = null;
   let setVisiblePanel = null;
+  let selectedCustomer = null;
 
   beforeEach(() => {
     history = createMemoryHistory({ initialEntries: ['/'] });
     user = { name: 'John Smith', avatar: 'test-url' };
     setVisiblePanel = jest.fn();
+    selectedCustomer = {
+      data_limit: 100,
+      data_total: 50,
+    };
   });
 
   it('should render the admin console side menu', () => {
     const { getByText, getByAltText } = render(
       <Router history={history}>
-        <AdminSideMenu user={user} setVisiblePanel={setVisiblePanel} />
+        <AdminSideMenu user={user} selectedCustomer={selectedCustomer} setVisiblePanel={setVisiblePanel} />
       </Router>,
     );
 
@@ -31,13 +36,14 @@ describe('Admin Side Menu Component', () => {
     expect(getByText(user.name)).toBeInTheDocument();
     expect(getByAltText('User Profile')).toBeInTheDocument();
     expect(getByText('Launch Orbis')).toBeInTheDocument();
+    expect(getByText('Storage')).toBeInTheDocument();
   });
 
   it('should render the default profile if user has no avatar', () => {
     user.avatar = null;
     const { getByTestId } = render(
       <Router history={history}>
-        <AdminSideMenu user={user} setVisiblePanel={setVisiblePanel} />
+        <AdminSideMenu user={user} selectedCustomer={selectedCustomer} setVisiblePanel={setVisiblePanel} />
       </Router>,
     );
 
@@ -47,7 +53,7 @@ describe('Admin Side Menu Component', () => {
   it('should return to user table view when Orbis logo is clicked', () => {
     const { getByTestId } = render(
       <Router history={history}>
-        <AdminSideMenu user={user} setVisiblePanel={setVisiblePanel} />
+        <AdminSideMenu user={user} selectedCustomer={selectedCustomer} setVisiblePanel={setVisiblePanel} />
       </Router>,
     );
 
@@ -58,7 +64,7 @@ describe('Admin Side Menu Component', () => {
   it('should open Orbis in a new tab when "Launch Orbis" link clicked', () => {
     const { getByText } = render(
       <Router history={history}>
-        <AdminSideMenu user={user} setVisiblePanel={setVisiblePanel} />
+        <AdminSideMenu user={user} selectedCustomer={selectedCustomer} setVisiblePanel={setVisiblePanel} />
       </Router>,
     );
 
@@ -69,7 +75,7 @@ describe('Admin Side Menu Component', () => {
   it('should switch main panel views when side-menu buttons are clicked', () => {
     const { getByText } = render(
       <Router history={history}>
-        <AdminSideMenu user={user} setVisiblePanel={setVisiblePanel} />
+        <AdminSideMenu user={user} selectedCustomer={selectedCustomer} setVisiblePanel={setVisiblePanel} />
       </Router>,
     );
 
