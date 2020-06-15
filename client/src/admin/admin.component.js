@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 
-import CustomerSelectMenu from './customer-select-menu.component';
 import AdminSideMenu from './admin-side-menu.component';
 import UserList from './user-list.component';
 import OrganisationMenu from './organisation-menu.component';
@@ -14,19 +13,11 @@ export const CORPORATE_ACCOUNT = 'corporate account';
 export const MESSAGES = 'messages';
 
 const Admin = ({ user, userCustomers, createUser, updateUser, copyUser, deleteUser }) => {
-  const [customerSelectMenu, setCustomerSelectMenu] = useState(userCustomers && userCustomers.length > 1);
-
-  const [selectedCustomer, setSelectedCustomer] = useState(userCustomers && userCustomers[0]);
+  const selectedCustomer = userCustomers[0];
 
   const [visiblePanel, setVisiblePanel] = useState(USER_TABLE);
 
-  return customerSelectMenu ? (
-    <CustomerSelectMenu
-      userCustomers={userCustomers}
-      setSelectedCustomer={setSelectedCustomer}
-      setCustomerSelectMenu={setCustomerSelectMenu}
-    />
-  ) : (
+  return (
     selectedCustomer && (
       <div className={styles.adminConsole}>
         <AdminSideMenu user={user} selectedCustomer={selectedCustomer} setVisiblePanel={setVisiblePanel} />
@@ -46,11 +37,7 @@ const Admin = ({ user, userCustomers, createUser, updateUser, copyUser, deleteUs
           {visiblePanel === CORPORATE_ACCOUNT && <div>CORPORATE ACCOUNT GOES HERE</div>}
           {visiblePanel === MESSAGES && <div>MESSAGES GOES HERE</div>}
         </div>
-        <OrganisationMenu
-          selectedCustomer={selectedCustomer}
-          setVisiblePanel={setVisiblePanel}
-          setCustomerSelectMenu={userCustomers.length > 1 ? setCustomerSelectMenu : null}
-        />
+        <OrganisationMenu selectedCustomer={selectedCustomer} setVisiblePanel={setVisiblePanel} />
       </div>
     )
   );
