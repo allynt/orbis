@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { ReactComponent as OrbisLogo } from '../../orbis.svg';
+import { ReactComponent as OrbisLogo } from '../orbis.svg';
 
 import Button from '@astrosat/astrosat-ui/dist/buttons/button';
 import ProfileIcon from '@astrosat/astrosat-ui/dist/icons/profile-icon';
