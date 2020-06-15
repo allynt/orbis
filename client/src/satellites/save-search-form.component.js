@@ -6,7 +6,7 @@ import useForm from '@astrosat/astrosat-ui/dist/forms/use-form';
 
 import validate from './save-search-form.validator';
 
-import formStyles from '../accounts/forms.module.css';
+import formStyles from '../forms.module.css';
 import styles from './save-search-form.module.css';
 
 const SaveSearchForm = ({ query, close, saveSearch }) => {

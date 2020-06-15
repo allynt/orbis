@@ -1,0 +1,26 @@
+.page,
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.page {
+  width: 100%;
+  height: 100%;
+  background: url('./background.png');
+}
+
+.container {
+  width: 37.875rem;
+  flex-direction: column;
+  padding: 1.875rem 6.5rem;
+  border-radius: 0.9375rem;
+  background-color: #ffffff;
+}
+
+.logo {
+  width: 11.5rem;
+  margin: 0.5rem 0 2rem;
+  color: #787c82;
+}

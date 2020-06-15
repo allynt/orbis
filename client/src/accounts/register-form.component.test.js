@@ -137,7 +137,7 @@ describe('Register Form Component', () => {
       email: 'test@test.com',
       password1: 'pandasconcreterealty',
       password2: 'pandasconcreterealty',
-      accepted_terms: true
+      accepted_terms: true,
     };
 
     const { getByText, getByPlaceholderText } = render(
