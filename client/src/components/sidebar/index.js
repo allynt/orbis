@@ -1,2 +1,2 @@
-export { Sidebar, SidebarBottomItems, SidebarTopItems } from './sidebar.component';
+export { Sidebar, SidebarBottomItems } from './sidebar.component';
 export { SidebarItem } from './sidebaritem/sidebaritem.component';
