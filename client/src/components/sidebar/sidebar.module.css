@@ -31,3 +31,12 @@
 .bottomItems {
   margin-top: auto;
 }
+
+.bottomItems + .footer {
+  margin-top: 0;
+}
+
+.footer {
+  margin-top: auto;
+  padding: 1.125rem 0.5rem 0;
+}
