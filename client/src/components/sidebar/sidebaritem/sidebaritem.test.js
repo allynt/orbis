@@ -3,7 +3,7 @@ import { render } from '@testing-library/react';
 import { SidebarItem } from './sidebaritem.component';
 import userEvent from '@testing-library/user-event';
 
-describe.only('SidebarItem', () => {
+describe('SidebarItem', () => {
   it('Displays an icon if present', () => {
     const { getByText } = render(<SidebarItem icon={<div>Hello</div>} />);
     expect(getByText('Hello')).toBeInTheDocument();

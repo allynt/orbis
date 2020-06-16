@@ -1,8 +1,6 @@
 import React from 'react';
 import styles from './sidebar.module.css';
 
-export const SidebarTopItems = ({ children }) => <div>{children}</div>;
-
 export const SidebarBottomItems = ({ children }) => <div className={styles.bottomItems}>{children}</div>;
 
 export const Sidebar = ({ children, footer, header, logo }) => (
