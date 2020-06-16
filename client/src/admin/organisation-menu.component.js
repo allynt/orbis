@@ -6,7 +6,7 @@ import { LICENCE_DASHBOARD, CORPORATE_ACCOUNT } from './admin.component';
 
 import styles from './organisation-menu.module.css';
 
-const OrganisationMenu = ({ selectedCustomer, setVisiblePanel, setCustomerSelectMenu }) => (
+const OrganisationMenu = ({ selectedCustomer, setVisiblePanel }) => (
   <div className={styles.organisationMenu}>
     <div
       className={styles.organisationInfo}
@@ -27,15 +27,8 @@ const OrganisationMenu = ({ selectedCustomer, setVisiblePanel, setCustomerSelect
       <Button theme="primary" onClick={() => setVisiblePanel(LICENCE_DASHBOARD)}>
         Assign Users
       </Button>
-      <Button theme="primary" disabled={true}>
-        ALL ORBS
-      </Button>
+      <Button theme="primary">ALL ORBS</Button>
     </div>
-    <ul>
-      <Button theme="link">COVID-19</Button>
-      <Button theme="link">Rice Paddies</Button>
-    </ul>
-    {setCustomerSelectMenu && <Button onClick={() => setCustomerSelectMenu(true)}>Return to Customer List</Button>}
   </div>
 );
 
