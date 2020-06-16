@@ -2,6 +2,7 @@ import React from 'react';
 import { ProfileIcon, SatelliteIcon, DataIcon } from '@astrosat/astrosat-ui';
 import { Sidebar, SidebarItem, SidebarTopItems, SidebarBottomItems } from '.';
 import { ReactComponent as OrbisLogo } from '../../orbis.svg';
+import { ReactComponent as OrbisAdminLogo } from '../../admin/orbis-admin-logo.svg';
 
 const logoStyle = { height: '33px', color: '#fff' };
 
@@ -21,7 +22,9 @@ export const NoItems = () => <Sidebar>Hello</Sidebar>;
 
 export const WithLogo = () => <Sidebar logo={<OrbisLogo style={logoStyle} />} />;
 
-export const Header = () => <Sidebar logo={<OrbisLogo style={logoStyle} />} header={<AdminHeader />} />;
+export const Header = () => (
+  <Sidebar logo={<OrbisAdminLogo style={{ height: '70px', color: '#fff' }} />} header={<AdminHeader />} />
+);
 
 export const Items = () => (
   <Sidebar logo={<OrbisLogo style={logoStyle} />}>
@@ -32,7 +35,7 @@ export const Items = () => (
 );
 
 export const ItemsWithLabels = () => (
-  <Sidebar logo={<OrbisLogo style={logoStyle} />}>
+  <Sidebar logo={<OrbisAdminLogo style={{ height: '70px', color: '#fff' }} />}>
     <SidebarItem icon={<ProfileIcon style={{ width: '100%' }} />} selected>
       Item one
     </SidebarItem>
@@ -42,16 +45,18 @@ export const ItemsWithLabels = () => (
 );
 
 export const ItemPosition = () => (
-  <Sidebar logo={<OrbisLogo style={logoStyle} />} header={<AdminHeader />}>
+  <Sidebar logo={<OrbisAdminLogo style={{ height: '70px', color: '#fff' }} />}>
     <SidebarTopItems>
-      <SidebarItem>Item one</SidebarItem>
-      <SidebarItem>Item two</SidebarItem>
-      <SidebarItem>Item three</SidebarItem>
+      <SidebarItem icon={<ProfileIcon style={{ width: '100%' }} />} selected>
+        Item one
+      </SidebarItem>
+      <SidebarItem icon={<SatelliteIcon style={{ width: '100%' }} />}>Item two</SidebarItem>
+      <SidebarItem icon={<DataIcon style={{ width: '100%' }} />}>Item three</SidebarItem>
     </SidebarTopItems>
     <SidebarBottomItems>
-      <SidebarItem>Item four</SidebarItem>
-      <SidebarItem>Item five</SidebarItem>
-      <SidebarItem>Item six</SidebarItem>
+      <SidebarItem icon={<ProfileIcon style={{ width: '100%' }} />}>Item four</SidebarItem>
+      <SidebarItem icon={<SatelliteIcon style={{ width: '100%' }} />}>Item five</SidebarItem>
+      <SidebarItem icon={<DataIcon style={{ width: '100%' }} />}>Item six</SidebarItem>
     </SidebarBottomItems>
   </Sidebar>
 );

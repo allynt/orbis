@@ -1,15 +1,16 @@
 .sidebar {
-  position: relative;
   padding-inline-start: 0;
   margin-block-start: 0;
   margin-block-end: 0;
-  display: inline-block;
   height: 100vh;
   width: fit-content;
+  padding-bottom: 1.25rem;
+  display: flex;
+  flex-direction: column;
   color: #ffffff;
   background-color: var(--color-secondary);
   border-right: 2px solid var(--color-primary);
-  overflow: hidden;
+  overflow-x: hidden;
 }
 
 .logo {
@@ -19,7 +20,14 @@
 }
 
 .header {
-  padding: 0 0.5rem;
-  padding-top: 1.125rem;
+  padding: 1.125rem 0.5rem;
   border-top: solid 1px var(--color-primary);
+}
+
+.items {
+  height: 100%;
+}
+
+.bottomItems {
+  margin-top: auto;
 }
