@@ -1,5 +1,5 @@
 import React from 'react';
-import { ProfileIcon } from '@astrosat/astrosat-ui';
+import { ProfileIcon, SatelliteIcon, DataIcon } from '@astrosat/astrosat-ui';
 import { Sidebar, SidebarItem, SidebarTopItems, SidebarBottomItems } from '.';
 import { ReactComponent as OrbisLogo } from '../../orbis.svg';
 
@@ -25,17 +25,19 @@ export const Header = () => <Sidebar logo={<OrbisLogo style={logoStyle} />} head
 
 export const Items = () => (
   <Sidebar logo={<OrbisLogo style={logoStyle} />}>
-    <SidebarItem>Item one</SidebarItem>
-    <SidebarItem>Item two</SidebarItem>
-    <SidebarItem>Item three</SidebarItem>
+    <SidebarItem icon={<ProfileIcon style={{ width: '100%' }} />} selected />
+    <SidebarItem icon={<SatelliteIcon style={{ width: '100%' }} />} />
+    <SidebarItem icon={<DataIcon style={{ width: '100%' }} />} />
   </Sidebar>
 );
 
 export const ItemsWithLabels = () => (
   <Sidebar logo={<OrbisLogo style={logoStyle} />}>
-    <SidebarItem>Item one</SidebarItem>
-    <SidebarItem>Item two</SidebarItem>
-    <SidebarItem>Item three</SidebarItem>
+    <SidebarItem icon={<ProfileIcon style={{ width: '100%' }} />} selected>
+      Item one
+    </SidebarItem>
+    <SidebarItem icon={<SatelliteIcon style={{ width: '100%' }} />}>Item two</SidebarItem>
+    <SidebarItem icon={<DataIcon style={{ width: '100%' }} />}>Item three</SidebarItem>
   </Sidebar>
 );
 
