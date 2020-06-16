@@ -6,9 +6,10 @@ export const SidebarBottomItems = ({ children }) => <div>{children}</div>;
 
 export const SidebarItem = ({ children }) => <div>{children}</div>;
 
-export const Sidebar = ({ children, logo }) => (
+export const Sidebar = ({ children, header, logo }) => (
   <menu className={styles.sidebar}>
     {logo && <div className={styles.logo}>{logo}</div>}
+    {header && <div className={styles.header}>{header}</div>}
     {children}
   </menu>
 );

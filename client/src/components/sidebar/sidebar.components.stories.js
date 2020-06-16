@@ -1,8 +1,19 @@
 import React from 'react';
+import { ProfileIcon } from '@astrosat/astrosat-ui';
 import { Sidebar, SidebarItem, SidebarTopItems, SidebarBottomItems } from './sidebar.component';
 import { ReactComponent as OrbisLogo } from '../../orbis.svg';
 
 const logoStyle = { height: '33px', color: '#fff' };
+
+const AdminHeader = () => (
+  <div style={{ display: 'flex', alignItems: 'center' }}>
+    <ProfileIcon style={{ width: '3.125rem' }} />
+    <div style={{ display: 'flex', flexDirection: 'column', marginLeft: '8px' }}>
+      <h2 style={{ fontSize: '1.25rem', whiteSpace: 'nowrap', marginTop: 0, marginBottom: '0.25rem' }}>Adam Raymond</h2>
+      <h5 style={{ margin: 0, color: '#b9bed3' }}>Administrator</h5>
+    </div>
+  </div>
+);
 
 export default { title: 'Components/Sidebar', component: Sidebar };
 
@@ -10,10 +21,18 @@ export const NoItems = () => <Sidebar>Hello</Sidebar>;
 
 export const WithLogo = () => <Sidebar logo={<OrbisLogo style={logoStyle} />} />;
 
-export const WithHeader = () => <Sidebar logo={<OrbisLogo style={logoStyle} />} header={<h3>This is a sidebar</h3>} />;
+export const Header = () => <Sidebar logo={<OrbisLogo style={logoStyle} />} header={<AdminHeader />} />;
 
-export const WithItems = () => (
-  <Sidebar logo={<OrbisLogo style={logoStyle} />} header={<h3>This is a sidebar</h3>}>
+export const Items = () => (
+  <Sidebar logo={<OrbisLogo style={logoStyle} />}>
+    <SidebarItem>Item one</SidebarItem>
+    <SidebarItem>Item two</SidebarItem>
+    <SidebarItem>Item three</SidebarItem>
+  </Sidebar>
+);
+
+export const ItemsWithLabels = () => (
+  <Sidebar logo={<OrbisLogo style={logoStyle} />}>
     <SidebarItem>Item one</SidebarItem>
     <SidebarItem>Item two</SidebarItem>
     <SidebarItem>Item three</SidebarItem>
@@ -21,7 +40,7 @@ export const WithItems = () => (
 );
 
 export const ItemPosition = () => (
-  <Sidebar logo={<OrbisLogo />} header={<h1>This is a sidebar</h1>}>
+  <Sidebar logo={<OrbisLogo style={logoStyle} />} header={<AdminHeader />}>
     <SidebarTopItems>
       <SidebarItem>Item one</SidebarItem>
       <SidebarItem>Item two</SidebarItem>
@@ -35,8 +54,8 @@ export const ItemPosition = () => (
   </Sidebar>
 );
 
-export const WithFooter = () => (
-  <Sidebar logo={<OrbisLogo />} header={<h1>This is a sidebar</h1>} footer={<h3>This is the footer</h3>}>
+export const Footer = () => (
+  <Sidebar logo={<OrbisLogo style={logoStyle} />} header={<AdminHeader />} footer={<h3>This is the footer</h3>}>
     <SidebarItem>Item one</SidebarItem>
     <SidebarItem>Item two</SidebarItem>
     <SidebarItem>Item three</SidebarItem>
