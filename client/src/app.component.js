@@ -12,7 +12,7 @@ import PrivateRoute from './utils/private-route.component';
 import { fetchAppConfig } from './app.slice';
 import { fetchUser } from './accounts/accounts.slice';
 
-import { fetchUserCustomers, createUser, deleteUser, updateUser, copyUser } from './accounts/admin/users.slice';
+import { fetchUserCustomers, createUser, deleteUser, updateUser, copyUser } from './admin/users.slice';
 
 import { fetchSources, selectPollingPeriod } from './data-layers/data-layers.slice';
 
@@ -26,7 +26,7 @@ import MapLayout from './map';
 
 import styles from './app.module.css';
 
-const Admin = lazy(() => import('./accounts/admin/admin.component'));
+const Admin = lazy(() => import('./admin/admin.component'));
 
 const App = () => {
   const dispatch = useDispatch();

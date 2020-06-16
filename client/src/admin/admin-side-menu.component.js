@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { ReactComponent as OrbisLogo } from '../../orbis.svg';
+import { ReactComponent as OrbisLogo } from '../orbis.svg';
 import { ReactComponent as HomeIcon } from './home.svg';
 import { ReactComponent as LaunchOrbisIcon } from './launch-orbis.svg';
 import { ReactComponent as MessagesIcon } from './messages.svg';
