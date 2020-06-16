@@ -8,7 +8,7 @@ import format from 'date-fns/format';
 import { DATE_FORMAT, TIME_FORMAT } from './satellite.constants';
 
 import { VISUALISATION, SCENE } from './satellites-panel.component';
-import { Skeleton } from '../skeleton.component';
+import { Skeleton } from 'components/skeleton/skeleton.component';
 
 import InfoIcon from '@astrosat/astrosat-ui/dist/icons/info-icon';
 
