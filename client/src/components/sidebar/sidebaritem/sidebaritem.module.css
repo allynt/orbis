@@ -1,0 +1,14 @@
+.sidebarItem {
+  display: flex;
+  align-items: center;
+  min-height: 1.875rem;
+}
+
+.icon {
+  max-height: 1.875rem;
+  max-width: 1.875rem;
+}
+
+.icon + .label {
+  margin-left: 1.25rem;
+}

@@ -1,6 +1,6 @@
 import React from 'react';
 import { ProfileIcon } from '@astrosat/astrosat-ui';
-import { Sidebar, SidebarItem, SidebarTopItems, SidebarBottomItems } from './sidebar.component';
+import { Sidebar, SidebarItem, SidebarTopItems, SidebarBottomItems } from '.';
 import { ReactComponent as OrbisLogo } from '../../orbis.svg';
 
 const logoStyle = { height: '33px', color: '#fff' };
