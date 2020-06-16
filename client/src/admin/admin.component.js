@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useSelector } from 'react';
 
 import LeftSidebar from './left-sidebar/left-sidebar.component';
 import UserList from './user-list.component';
@@ -12,8 +12,14 @@ export const LICENCE_DASHBOARD = 'Licence Dashboard';
 export const CORPORATE_ACCOUNT = 'Corporate Account';
 export const MESSAGES = 'Messages';
 
-const Admin = ({ user, userCustomers, createUser, updateUser, copyUser, deleteUser }) => {
-  const selectedCustomer = userCustomers[0];
+const Admin = ({ user, fetchCustomer, createUser, updateUser, copyUser, deleteUser }) => {
+  useEffect(() => {
+    if (!selectedCustomer) {
+      fetchCustomer(user);
+    }
+  });
+
+  const selectedCustomer = useSelector(state => state.admin.currentCustomer);
 
   const [visiblePanel, setVisiblePanel] = useState(USER_TABLE);
 

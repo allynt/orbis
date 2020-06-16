@@ -12,7 +12,7 @@ import PrivateRoute from './utils/private-route.component';
 import { fetchAppConfig } from './app.slice';
 import { fetchUser } from './accounts/accounts.slice';
 
-import { fetchUserCustomers, createUser, deleteUser, updateUser, copyUser } from './admin/users.slice';
+import { fetchCustomer, createUser, deleteUser, updateUser, copyUser } from './admin/admin.slice';
 
 import { fetchSources, selectPollingPeriod } from './data-layers/data-layers.slice';
 
@@ -34,7 +34,6 @@ const App = () => {
     state && state.app && state.app.config ? state.app.config.trackingId : null,
   );
 
-  const userCustomers = useSelector(state => state.admin.userCustomers);
   const user = useSelector(state => state.accounts.user);
   const userKey = useSelector(state => state.accounts.userKey);
   const pollingPeriod = useSelector(selectPollingPeriod);
@@ -62,12 +61,6 @@ const App = () => {
       dispatch(fetchUser());
     }
   }, [dispatch, user, userKey]);
-
-  useEffect(() => {
-    if (user) {
-      dispatch(fetchUserCustomers(user));
-    }
-  }, [dispatch, user]);
 
   // If the Google Analytics tracking id doesn't exist, fetch it,
   // then setup analytics. This should only be done once on app
@@ -120,7 +113,7 @@ const App = () => {
               path="/admin"
               user={user}
               component={Admin}
-              userCustomers={userCustomers}
+              fetchCustomer={user => dispatch(fetchCustomer(user))}
               createUser={user => dispatch(createUser(user))}
               updateUser={user => dispatch(updateUser(user))}
               copyUser={user => dispatch(copyUser(user))}

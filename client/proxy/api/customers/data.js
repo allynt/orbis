@@ -90,15 +90,18 @@ let customers = [
         customers: [
           {
             name: 'cyberdyne',
-            manager: true,
+            type: 'manager',
+            status: 'approved',
           },
           {
             name: 'customer2',
-            manager: true,
+            type: 'manager',
+            status: 'pending',
           },
           {
             name: 'customer3',
-            manager: false,
+            type: 'user',
+            status: 'approved',
           },
         ],
       },
@@ -114,17 +117,15 @@ let customers = [
   },
 ];
 
-const getCustomersOfUser = userCustomers => {
-  let customerObjs = [];
+const getCustomer = customer => customers.find(c => c.name === customer.name);
 
-  for (const customer of customers) {
-    for (const userCustomer of userCustomers) {
-      if (userCustomer.manager && userCustomer.name === customer.name) {
-        customerObjs = [...customerObjs, customer];
-      }
-    }
-  }
-  return customerObjs;
+const getAllUsersOfCustomer = customer => {
+  const selectedCustomer = customers.find(c => c.name === customer.name);
+  return selectedCustomer.users;
 };
 
-module.exports = { getCustomersOfUser };
+const getSelectedUser = customer => {
+  console.log('SELECTED USER');
+};
+
+module.exports = { getCustomer, getAllUsersOfCustomer, getSelectedUser };

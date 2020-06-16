@@ -10,7 +10,7 @@ import data from './data-layers/data-layers.slice';
 import satellites from './satellites/satellites.slice';
 import accounts from './accounts/accounts.slice';
 import theming from './theming/theming.slice';
-import admin from './admin/users.slice';
+import admin from './admin/admin.slice';
 import bookmarks from './bookmarks/bookmark.slice';
 import sidebar from './side-menu/side-menu.slice';
 import stories from './stories/stories.slice';
