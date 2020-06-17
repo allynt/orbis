@@ -1,6 +1,7 @@
 .sidebarItem {
   min-height: 1.875rem;
   margin-left: 1.875rem;
+  margin-top: 1rem;
   padding: 0.5rem;
   padding-right: 1.875rem;
   display: flex;
