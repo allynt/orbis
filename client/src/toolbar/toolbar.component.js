@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import { useHistory } from 'react-router-dom';
 
@@ -9,45 +9,42 @@ import styles from './toolbar.module.css';
 
 const Toolbar = ({ user, items }) => {
   const [selected, setSelected] = useState(null);
+  const [permissionFilteredItems, setPermissionFilteredItems] = useState([]);
   const history = useHistory();
+
+  useEffect(() => {
+    setPermissionFilteredItems(items.filter(item => user.roles.some(role => item.roles.includes(role))));
+  }, [user, items]);
 
   const select = item => {
     setSelected(item);
     item.action();
   };
 
+  const makeSidebarItem = item => (
+    <SidebarItem
+      key={item.label}
+      icon={item.icon}
+      onClick={() => select(item)}
+      tooltip={item.label}
+      selected={selected?.label === item.label}
+    />
+  );
+
   return (
     <Sidebar
       className={styles.toolbar}
       logo={
-        <OrbisLogo style={{ height: '33px', color: '#fff', cursor: 'pointer' }} onClick={() => history.push('/')} />
+        <OrbisLogo
+          title="Orbis Logo"
+          style={{ height: '33px', color: '#fff', cursor: 'pointer' }}
+          onClick={() => history.push('/')}
+        />
       }
     >
-      {items
-        .filter(item => !item.footer)
-        .filter(item => user.roles.some(role => item.roles.includes(role)))
-        .map(item => (
-          <SidebarItem
-            key={item.label}
-            icon={item.icon}
-            onClick={() => select(item)}
-            tooltip={item.label}
-            selected={selected && selected.label === item.label}
-          />
-        ))}
+      {permissionFilteredItems.filter(item => !item.footer).map(makeSidebarItem)}
       <SidebarBottomItems>
-        {items
-          .filter(item => item.footer)
-          .filter(item => user.roles.some(role => item.roles.includes(role)))
-          .map(item => (
-            <SidebarItem
-              key={item.label}
-              icon={item.icon}
-              onClick={() => select(item)}
-              tooltip={item.label}
-              selected={selected && selected.label === item.label}
-            />
-          ))}
+        {permissionFilteredItems.filter(item => item.footer).map(makeSidebarItem)}
       </SidebarBottomItems>
     </Sidebar>
   );
