@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import AdminSideMenu from './left-sidebar/left-sidebar.component';
+import LeftSidebar from './left-sidebar/left-sidebar.component';
 import UserList from './user-list.component';
 import OrganisationMenu from './organisation-menu.component';
 
@@ -20,7 +20,7 @@ const Admin = ({ user, userCustomers, createUser, updateUser, copyUser, deleteUs
   return (
     selectedCustomer && (
       <div className={styles.adminConsole}>
-        <AdminSideMenu user={user} selectedCustomer={selectedCustomer} setVisiblePanel={setVisiblePanel} />
+        <LeftSidebar user={user} selectedCustomer={selectedCustomer} setVisiblePanel={setVisiblePanel} />
         <div className={styles.contentPanel}>
           {visiblePanel === USER_TABLE && (
             <UserList

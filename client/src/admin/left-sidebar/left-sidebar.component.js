@@ -12,7 +12,7 @@ import { ProfileIcon, Button } from '@astrosat/astrosat-ui/';
 import { USER_TABLE, ACTIVITY_LOG, LICENCE_DASHBOARD, MESSAGES } from '../admin.component';
 import styles from './left-sidebar.module.css';
 
-const AdminSideMenu = ({ user, selectedCustomer, setVisiblePanel }) => (
+const LeftSidebar = ({ user, selectedCustomer, setVisiblePanel }) => (
   <div className={styles.sideMenu}>
     <OrbisLogo className={styles.logo} onClick={() => setVisiblePanel(USER_TABLE)} data-testid="orbis logo" />
     <div className={styles.content}>
@@ -57,4 +57,4 @@ const AdminSideMenu = ({ user, selectedCustomer, setVisiblePanel }) => (
   </div>
 );
 
-export default AdminSideMenu;
+export default LeftSidebar;

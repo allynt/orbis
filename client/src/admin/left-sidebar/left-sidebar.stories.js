@@ -1,6 +1,6 @@
 import React from 'react';
-import AdminSideMenu from './left-sidebar.component';
+import LeftSidebar from './left-sidebar.component';
 
-export default { title: 'Admin/Admin Side Menu', component: AdminSideMenu };
+export default { title: 'Admin/LeftSidebar', component: LeftSidebar };
 
-export const Default = () => <AdminSideMenu user={{}} />;
+export const Default = () => <LeftSidebar user={{}} />;

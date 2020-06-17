@@ -5,7 +5,7 @@ import { render, fireEvent } from '@testing-library/react';
 import { Router } from 'react-router-dom';
 import { createMemoryHistory } from 'history';
 
-import AdminSideMenu from './left-sidebar.component';
+import LeftSidebar from './left-sidebar.component';
 
 import { USER_TABLE, ACTIVITY_LOG } from '../admin.component';
 
@@ -28,7 +28,7 @@ describe('Admin Side Menu Component', () => {
   it('should render the admin console side menu', () => {
     const { getByText, getByAltText } = render(
       <Router history={history}>
-        <AdminSideMenu user={user} selectedCustomer={selectedCustomer} setVisiblePanel={setVisiblePanel} />
+        <LeftSidebar user={user} selectedCustomer={selectedCustomer} setVisiblePanel={setVisiblePanel} />
       </Router>,
     );
 
@@ -42,7 +42,7 @@ describe('Admin Side Menu Component', () => {
     user.avatar = null;
     const { getByTestId } = render(
       <Router history={history}>
-        <AdminSideMenu user={user} selectedCustomer={selectedCustomer} setVisiblePanel={setVisiblePanel} />
+        <LeftSidebar user={user} selectedCustomer={selectedCustomer} setVisiblePanel={setVisiblePanel} />
       </Router>,
     );
 
@@ -52,7 +52,7 @@ describe('Admin Side Menu Component', () => {
   it('should return to user table view when Orbis logo is clicked', () => {
     const { getByTestId } = render(
       <Router history={history}>
-        <AdminSideMenu user={user} selectedCustomer={selectedCustomer} setVisiblePanel={setVisiblePanel} />
+        <LeftSidebar user={user} selectedCustomer={selectedCustomer} setVisiblePanel={setVisiblePanel} />
       </Router>,
     );
 
@@ -63,7 +63,7 @@ describe('Admin Side Menu Component', () => {
   it('should open Orbis in a new tab when "Launch Orbis" link clicked', () => {
     const { getByText } = render(
       <Router history={history}>
-        <AdminSideMenu user={user} selectedCustomer={selectedCustomer} setVisiblePanel={setVisiblePanel} />
+        <LeftSidebar user={user} selectedCustomer={selectedCustomer} setVisiblePanel={setVisiblePanel} />
       </Router>,
     );
 
@@ -74,7 +74,7 @@ describe('Admin Side Menu Component', () => {
   it('should switch main panel views when side-menu buttons are clicked', () => {
     const { getByText } = render(
       <Router history={history}>
-        <AdminSideMenu user={user} selectedCustomer={selectedCustomer} setVisiblePanel={setVisiblePanel} />
+        <LeftSidebar user={user} selectedCustomer={selectedCustomer} setVisiblePanel={setVisiblePanel} />
       </Router>,
     );
 
