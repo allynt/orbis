@@ -12,7 +12,14 @@ import PrivateRoute from './utils/private-route.component';
 import { fetchAppConfig } from './app.slice';
 import { fetchUser } from './accounts/accounts.slice';
 
-import { fetchCustomer, createUser, deleteUser, updateUser, copyUser } from './admin/admin.slice';
+import {
+  fetchCustomer,
+  fetchCustomerUsers,
+  createCustomerUser,
+  deleteCustomerUser,
+  updateCustomerUser,
+  copyCustomerUser,
+} from './admin/admin.slice';
 
 import { fetchSources, selectPollingPeriod } from './data-layers/data-layers.slice';
 
@@ -114,10 +121,11 @@ const App = () => {
               user={user}
               component={Admin}
               fetchCustomer={user => dispatch(fetchCustomer(user))}
-              createUser={user => dispatch(createUser(user))}
-              updateUser={user => dispatch(updateUser(user))}
-              copyUser={user => dispatch(copyUser(user))}
-              deleteUser={id => dispatch(deleteUser(id))}
+              fetchCustomerUsers={customer => dispatch(fetchCustomerUsers(customer))}
+              createUser={user => dispatch(createCustomerUser(user))}
+              updateUser={user => dispatch(updateCustomerUser(user))}
+              copyUser={user => dispatch(copyCustomerUser(user))}
+              deleteUser={id => dispatch(deleteCustomerUser(id))}
             />
           </Suspense>
         </Switch>

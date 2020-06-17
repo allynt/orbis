@@ -6,7 +6,7 @@ import { getData, sendData, getJsonAuthHeaders } from 'utils/http';
 const API = '/api/customers/';
 
 const initialState = {
-  customer: null,
+  currentCustomer: null,
   customerUsers: null,
   isLoading: false,
   error: null,
@@ -20,7 +20,7 @@ const usersSlice = createSlice({
       state.isLoading = true;
     },
     fetchCustomerSuccess: (state, { payload }) => {
-      state.customer = payload;
+      state.currentCustomer = payload;
       state.isLoading = false;
       state.error = null;
     },
@@ -136,11 +136,13 @@ export const createCustomerUser = (customer, fields) => async (dispatch, getStat
 };
 
 export const fetchCustomerUsers = customer => async (dispatch, getState) => {
+  console.log('in fetchCustomerUsers');
+  console.log(customer);
   const headers = getJsonAuthHeaders(getState());
 
   dispatch(fetchCustomerUsersRequested());
 
-  const response = await getData(`${API}${customer}/users/`, headers);
+  const response = await getData(`${API}${customer.name}/users/`, headers);
 
   if (!response.ok) {
     const message = `${response.status} ${response.statusText}`;
@@ -174,7 +176,7 @@ export const updateCustomerUser = (customer, user) => async (dispatch, getState)
   return dispatch(updateCustomerUserSuccess(userData));
 };
 
-export const deleteUser = (customer, id) => async (dispatch, getState) => {
+export const deleteCustomerUser = (customer, id) => async (dispatch, getState) => {
   const headers = getJsonAuthHeaders(getState());
 
   dispatch(deleteCustomerUserRequested());
@@ -192,7 +194,7 @@ export const deleteUser = (customer, id) => async (dispatch, getState) => {
   return dispatch(deleteCustomerUserSuccess(id));
 };
 
-export const copyUser = (customer, user) => async dispatch => {
+export const copyCustomerUser = (customer, user) => async dispatch => {
   // Update User to prepend 'Copy of' text.
   const data = {
     ...user,

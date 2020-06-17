@@ -1,10 +1,12 @@
-import React, { useState, useEffect, useSelector } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
 import LeftSidebar from './left-sidebar/left-sidebar.component';
 import UserList from './user-list.component';
 import OrganisationMenu from './organisation-menu/organisation-menu.component';
 
 import styles from './admin.module.css';
+import { fetchCustomerUsers } from './admin.slice';
 
 export const USER_TABLE = 'Users';
 export const ACTIVITY_LOG = 'Activity Log';
@@ -12,14 +14,19 @@ export const LICENCE_DASHBOARD = 'Licence Dashboard';
 export const CORPORATE_ACCOUNT = 'Corporate Account';
 export const MESSAGES = 'Messages';
 
-const Admin = ({ user, fetchCustomer, createUser, updateUser, copyUser, deleteUser }) => {
+const Admin = ({ user, fetchCustomer, fetchCustomerUsers, createUser, updateUser, copyUser, deleteUser }) => {
+  const selectedCustomer = useSelector(state => state.admin.currentCustomer);
+  const selectedCustomerUsers = useSelector(state => state.admin.customerUsers);
+
   useEffect(() => {
     if (!selectedCustomer) {
       fetchCustomer(user);
+      fetchCustomerUsers(selectedCustomer);
     }
-  });
-
-  const selectedCustomer = useSelector(state => state.admin.currentCustomer);
+    // if (!selectedCustomerUsers) {
+    //   fetchCustomerUsers(selectedCustomer);
+    // }
+  }, [user, selectedCustomer, selectedCustomerUsers, fetchCustomer, fetchCustomerUsers]);
 
   const [visiblePanel, setVisiblePanel] = useState(USER_TABLE);
 
