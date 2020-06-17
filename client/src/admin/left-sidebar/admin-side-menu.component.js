@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { ReactComponent as OrbisLogo } from '../orbis.svg';
+import { ReactComponent as OrbisLogo } from '../../orbis.svg';
 import { ReactComponent as HomeIcon } from './home.svg';
 import { ReactComponent as LaunchOrbisIcon } from './launch-orbis.svg';
 import { ReactComponent as MessagesIcon } from './messages.svg';
@@ -9,7 +9,7 @@ import { ReactComponent as ActivityLogIcon } from './log.svg';
 
 import { ProfileIcon, ProgressBar, Button } from '@astrosat/astrosat-ui/';
 
-import { USER_TABLE, ACTIVITY_LOG, LICENCE_DASHBOARD, MESSAGES } from './admin.component';
+import { USER_TABLE, ACTIVITY_LOG, LICENCE_DASHBOARD, MESSAGES } from '../admin.component';
 import styles from './admin-side-menu.module.css';
 
 const AdminSideMenu = ({ user, selectedCustomer, setVisiblePanel }) => (

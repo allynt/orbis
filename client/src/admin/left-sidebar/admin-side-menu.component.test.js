@@ -7,7 +7,7 @@ import { createMemoryHistory } from 'history';
 
 import AdminSideMenu from './admin-side-menu.component';
 
-import { USER_TABLE, ACTIVITY_LOG } from './admin.component';
+import { USER_TABLE, ACTIVITY_LOG } from '../admin.component';
 
 describe('Admin Side Menu Component', () => {
   let history = null;
