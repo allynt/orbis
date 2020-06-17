@@ -13,7 +13,7 @@ import { USER_TABLE, ACTIVITY_LOG, LICENCE_DASHBOARD, MESSAGES } from '../admin.
 import styles from './left-sidebar.module.css';
 import { UserProfile } from './user-profile/user-profile.component';
 
-const LeftSidebar = ({ user, selectedCustomer, setVisiblePanel }) => (
+const LeftSidebar = ({ user, setVisiblePanel }) => (
   <div className={styles.sideMenu}>
     <OrbisLogo className={styles.logo} onClick={() => setVisiblePanel(USER_TABLE)} data-testid="orbis logo" />
     <div className={styles.content}>
