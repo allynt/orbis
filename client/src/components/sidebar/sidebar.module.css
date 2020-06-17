@@ -7,6 +7,7 @@
   padding-bottom: 1.25rem;
   display: flex;
   flex-direction: column;
+  flex-shrink: 0;
   color: #ffffff;
   background-color: var(--color-secondary);
   border-right: 2px solid var(--color-primary);
@@ -14,13 +15,14 @@
 }
 
 .logo {
-  padding: 1.25rem 1rem;
+  padding: 1.25rem 1rem 1rem 1rem;
   display: flex;
   justify-content: center;
 }
 
 .header {
   padding: 1.25rem 0.5rem;
+  margin-bottom: 1.5rem;
   border-top: solid 1px var(--color-primary);
 }
 
