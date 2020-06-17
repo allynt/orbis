@@ -26,11 +26,11 @@ describe('Admin organisation Menu Component', () => {
   });
 
   it('should switch content panel view to corporate account when logo is clicked', () => {
-    const { getByTestId } = render(
+    const { getByAltText } = render(
       <OrganisationMenu selectedCustomer={selectedCustomer} setVisiblePanel={setVisiblePanel} />,
     );
 
-    fireEvent.click(getByTestId('organization-info-container'));
+    fireEvent.click(getByAltText('Organisation Logo'));
     expect(setVisiblePanel).toHaveBeenCalledWith(CORPORATE_ACCOUNT);
   });
 });
