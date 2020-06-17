@@ -17,7 +17,7 @@ const LeftSidebar = ({ user, setVisiblePanel, visiblePanel }) => (
     header={<UserProfile {...user} />}
   >
     <SidebarItem
-      icon={<HomeIcon className={styles.buttonIcon} />}
+      icon={<HomeIcon className={styles.itemIcon} />}
       onClick={() => setVisiblePanel(USER_TABLE)}
       selected={visiblePanel === USER_TABLE}
     >
@@ -27,7 +27,7 @@ const LeftSidebar = ({ user, setVisiblePanel, visiblePanel }) => (
       href="/"
       rel="noopener noreferrer"
       target="_blank"
-      icon={<LaunchOrbisIcon className={styles.buttonIcon} />}
+      icon={<LaunchOrbisIcon className={styles.itemIcon} />}
     >
       Launch Orbis
     </SidebarLinkItem>
