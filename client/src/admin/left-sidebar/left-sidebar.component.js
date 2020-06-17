@@ -7,10 +7,10 @@ import { ReactComponent as MessagesIcon } from './messages.svg';
 import { ReactComponent as LicencesIcon } from './licenses.svg';
 import { ReactComponent as ActivityLogIcon } from './log.svg';
 
-import { ProfileIcon, ProgressBar, Button } from '@astrosat/astrosat-ui/';
+import { ProfileIcon, Button } from '@astrosat/astrosat-ui/';
 
 import { USER_TABLE, ACTIVITY_LOG, LICENCE_DASHBOARD, MESSAGES } from '../admin.component';
-import styles from './admin-side-menu.module.css';
+import styles from './left-sidebar.module.css';
 
 const AdminSideMenu = ({ user, selectedCustomer, setVisiblePanel }) => (
   <div className={styles.sideMenu}>
@@ -52,16 +52,6 @@ const AdminSideMenu = ({ user, selectedCustomer, setVisiblePanel }) => (
           <LicencesIcon className={styles.buttonIcon} />
           Licence Dashboard
         </Button>
-      </div>
-      <div className={styles.storage}>
-        <div className={styles.storageHeader}>
-          <ProfileIcon classes={styles.storageIcon} />
-          Storage
-        </div>
-        <ProgressBar classes={styles.progressBar} percentage={selectedCustomer.data_total} />
-        <p
-          className={styles.storageInfo}
-        >{`${selectedCustomer.data_total}GB of ${selectedCustomer.data_limit}GB storage`}</p>
       </div>
     </div>
   </div>
