@@ -11,10 +11,12 @@ import { Sidebar, SidebarItem, SidebarLinkItem } from 'components/sidebar';
 
 const LeftSidebar = ({ user, setVisiblePanel }) => (
   <Sidebar
-    logo={<OrbisAdminLogo title="Orbis Admin Logo" className={styles.logo} />}
+    logo={
+      <OrbisAdminLogo title="Orbis Admin Logo" className={styles.logo} onClick={() => setVisiblePanel(USER_TABLE)} />
+    }
     header={<UserProfile {...user} />}
   >
-    <SidebarItem icon={<HomeIcon className={styles.buttonIcon} onClick={() => setVisiblePanel(USER_TABLE)} />}>
+    <SidebarItem icon={<HomeIcon className={styles.buttonIcon} />} onClick={() => setVisiblePanel(USER_TABLE)}>
       Home
     </SidebarItem>
     <SidebarLinkItem
