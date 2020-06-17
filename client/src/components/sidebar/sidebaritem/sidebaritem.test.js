@@ -1,5 +1,5 @@
 import React from 'react';
-import { render } from '@testing-library/react';
+import { render, fireEvent } from '@testing-library/react';
 import { SidebarItem } from './sidebaritem.component';
 import userEvent from '@testing-library/user-event';
 
@@ -18,6 +18,20 @@ describe('SidebarItem', () => {
     const onClick = jest.fn();
     const { getByText } = render(<SidebarItem onClick={onClick}>Hello</SidebarItem>);
     userEvent.click(getByText('Hello'));
+    expect(onClick).toHaveBeenCalled();
+  });
+
+  it('Calls the onClick function when Enter is pressed', () => {
+    const onClick = jest.fn();
+    const { getByText } = render(<SidebarItem onClick={onClick}>Hello</SidebarItem>);
+    fireEvent.keyUp(getByText('Hello'), { key: 'Enter', code: 13, keyCode: 13 });
+    expect(onClick).toHaveBeenCalled();
+  });
+
+  it('Calls the onClick function when Space is pressed', () => {
+    const onClick = jest.fn();
+    const { getByText } = render(<SidebarItem onClick={onClick}>Hello</SidebarItem>);
+    fireEvent.keyUp(getByText('Hello'), { key: 'Space', code: 32, keyCode: 32 });
     expect(onClick).toHaveBeenCalled();
   });
 

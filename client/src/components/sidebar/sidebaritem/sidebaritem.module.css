@@ -11,6 +11,11 @@
   color: var(--color-lightgrey);
 }
 
+.sidebarItem:hover,
+.sidebarItem:focus {
+  outline: none;
+  background-color: var(--color-darkgrey-light);
+}
 .sidebarItem:hover {
   cursor: pointer;
 }
