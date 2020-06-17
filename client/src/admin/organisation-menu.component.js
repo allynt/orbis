@@ -1,8 +1,6 @@
 import React from 'react';
 
-import { Button } from '@astrosat/astrosat-ui';
-
-import { LICENCE_DASHBOARD, CORPORATE_ACCOUNT } from './admin.component';
+import { CORPORATE_ACCOUNT } from './admin.component';
 
 import styles from './organisation-menu.module.css';
 
@@ -13,21 +11,8 @@ const OrganisationMenu = ({ selectedCustomer, setVisiblePanel }) => (
       onClick={() => setVisiblePanel(CORPORATE_ACCOUNT)}
       data-testid="organization-info-container"
     >
-      <picture>
-        <source srcSet={selectedCustomer.logo} />
-        <img
-          className={styles.organisationLogo}
-          src="https://www.logodesignlove.com/images/monograms/tesla-symbol.jpg"
-          alt="Organisation Logo"
-        />
-      </picture>
+      <img className={styles.organisationLogo} src={selectedCustomer.logo} alt="Organisation Logo" />
       <h2>{selectedCustomer.title}</h2>
-    </div>
-    <div className={styles.buttons}>
-      <Button theme="primary" onClick={() => setVisiblePanel(LICENCE_DASHBOARD)}>
-        Assign Users
-      </Button>
-      <Button theme="primary">ALL ORBS</Button>
     </div>
   </div>
 );
