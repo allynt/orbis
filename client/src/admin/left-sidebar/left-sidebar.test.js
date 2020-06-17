@@ -5,7 +5,7 @@ import { render, fireEvent } from '@testing-library/react';
 import { Router } from 'react-router-dom';
 import { createMemoryHistory } from 'history';
 
-import AdminSideMenu from './admin-side-menu.component';
+import AdminSideMenu from './left-sidebar.component';
 
 import { USER_TABLE, ACTIVITY_LOG } from '../admin.component';
 
@@ -36,7 +36,6 @@ describe('Admin Side Menu Component', () => {
     expect(getByText(user.name)).toBeInTheDocument();
     expect(getByAltText('User Profile')).toBeInTheDocument();
     expect(getByText('Launch Orbis')).toBeInTheDocument();
-    expect(getByText('Storage')).toBeInTheDocument();
   });
 
   it('should render the default profile if user has no avatar', () => {
