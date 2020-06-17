@@ -3,6 +3,7 @@ import { action } from '@storybook/addon-actions';
 import { boolean } from '@storybook/addon-knobs';
 import React from 'react';
 import { SidebarItem } from './sidebaritem.component';
+import { SidebarLinkItem } from './sidebarlinkitem.component';
 
 export default { title: 'Components/Sidebar/SidebarItem' };
 
@@ -29,4 +30,15 @@ export const IconAndLabel = () => (
   >
     Item Label
   </SidebarItem>
+);
+
+export const LinkItem = () => (
+  <SidebarLinkItem
+    icon={<ProfileIcon style={{ width: '100%' }} />}
+    href="https://www.google.com"
+    rel="noopener noreferrer"
+    target="_blank"
+  >
+    Item Label
+  </SidebarLinkItem>
 );
