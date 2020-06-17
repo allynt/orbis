@@ -8,8 +8,8 @@ import { Sidebar, SidebarItem, SidebarBottomItems } from 'components/sidebar';
 import styles from './toolbar.module.css';
 
 const Toolbar = ({ user, items }) => {
-  const [selected, setSelected] = useState(null);
-  const [permissionFilteredItems, setPermissionFilteredItems] = useState([]);
+  const [selected, setSelected] = useState();
+  const [permissionFilteredItems, setPermissionFilteredItems] = useState();
   const history = useHistory();
 
   useEffect(() => {
@@ -34,17 +34,11 @@ const Toolbar = ({ user, items }) => {
   return (
     <Sidebar
       className={styles.toolbar}
-      logo={
-        <OrbisLogo
-          title="Orbis Logo"
-          style={{ height: '33px', color: '#fff', cursor: 'pointer' }}
-          onClick={() => history.push('/')}
-        />
-      }
+      logo={<OrbisLogo title="Orbis Logo" className={styles.logo} onClick={() => history.push('/')} />}
     >
-      {permissionFilteredItems.filter(item => !item.footer).map(makeSidebarItem)}
+      {permissionFilteredItems?.filter(item => !item.footer).map(makeSidebarItem)}
       <SidebarBottomItems>
-        {permissionFilteredItems.filter(item => item.footer).map(makeSidebarItem)}
+        {permissionFilteredItems?.filter(item => item.footer).map(makeSidebarItem)}
       </SidebarBottomItems>
     </Sidebar>
   );
