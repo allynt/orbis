@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import AdminSideMenu from './left-sidebar/admin-side-menu.component';
+import AdminSideMenu from './left-sidebar/left-sidebar.component';
 import UserList from './user-list.component';
 import OrganisationMenu from './organisation-menu.component';
 
