@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
 import LeftSidebar from './left-sidebar/left-sidebar.component';
+import CorporateView from './corporate-view/corporate-view.component';
 import OrganisationMenu from './organisation-menu/organisation-menu.component';
 import ContentWrapper from './content-wrapper.component';
 
@@ -38,7 +39,7 @@ const Admin = ({ user }) => {
             <ActiveUsersBoard activeUsers={selectedCustomerUsers?.filter(user => user.status === USER_STATUS.active)} />
           </ContentWrapper>
         )}
-        {visiblePanel === ADMIN_VIEW.corporateAccount && <div>CORPORATE ACCOUNT GOES HERE</div>}
+        {visiblePanel === ADMIN_VIEW.corporateAccount && <CorporateView user={user} customer={selectedCustomer} />}
         <OrganisationMenu customer={selectedCustomer} setVisiblePanel={setVisiblePanel} />
       </div>
     )

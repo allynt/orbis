@@ -1,0 +1,25 @@
+.corporateAccount {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 100%;
+  height: 100%;
+  padding-left: 1.875rem;
+}
+
+.logoContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logoContainer > * {
+  margin-right: 1.25rem;
+}
+
+.logo {
+  height: 4.4375rem;
+  width: 4.875rem;
+  border-radius: 1rem;
+  box-shadow: 0 16px 24px 0 rgba(213, 213, 213, 0.5);
+}
