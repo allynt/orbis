@@ -20,7 +20,7 @@ const Admin = ({ user, userCustomers, createUser, updateUser, copyUser, deleteUs
   return (
     selectedCustomer && (
       <div className={styles.adminConsole}>
-        <LeftSidebar user={user} setVisiblePanel={setVisiblePanel} />
+        <LeftSidebar user={user} setVisiblePanel={setVisiblePanel} visiblePanel={visiblePanel} />
         <div className={styles.contentPanel}>
           {visiblePanel === USER_TABLE && (
             <UserList

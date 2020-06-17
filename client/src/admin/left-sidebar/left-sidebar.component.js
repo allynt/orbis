@@ -9,14 +9,18 @@ import styles from './left-sidebar.module.css';
 import { UserProfile } from './user-profile/user-profile.component';
 import { Sidebar, SidebarItem, SidebarLinkItem } from 'components/sidebar';
 
-const LeftSidebar = ({ user, setVisiblePanel }) => (
+const LeftSidebar = ({ user, setVisiblePanel, visiblePanel }) => (
   <Sidebar
     logo={
       <OrbisAdminLogo title="Orbis Admin Logo" className={styles.logo} onClick={() => setVisiblePanel(USER_TABLE)} />
     }
     header={<UserProfile {...user} />}
   >
-    <SidebarItem icon={<HomeIcon className={styles.buttonIcon} />} onClick={() => setVisiblePanel(USER_TABLE)}>
+    <SidebarItem
+      icon={<HomeIcon className={styles.buttonIcon} />}
+      onClick={() => setVisiblePanel(USER_TABLE)}
+      selected={visiblePanel === USER_TABLE}
+    >
       Home
     </SidebarItem>
     <SidebarLinkItem
