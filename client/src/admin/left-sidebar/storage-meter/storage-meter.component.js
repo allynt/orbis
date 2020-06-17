@@ -1,5 +1,7 @@
 import React from 'react';
+
 import { ProgressBar, ProfileIcon } from '@astrosat/astrosat-ui';
+
 import styles from './storage-meter.module.css';
 
 export const StorageMeter = ({ total, limit }) => (

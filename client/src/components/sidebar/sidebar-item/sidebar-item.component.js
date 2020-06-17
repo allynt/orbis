@@ -1,6 +1,8 @@
 import React from 'react';
-import styles from './sidebaritem.module.css';
+
 import { SidebarItemInner } from './sidebar-item-inner.component';
+
+import styles from './sidebar-item.module.css';
 
 export const SidebarItem = ({ children, icon, selected, tooltip, onClick }) => (
   <li

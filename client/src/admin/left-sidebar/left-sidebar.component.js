@@ -1,13 +1,15 @@
 import React from 'react';
 
-import { ReactComponent as OrbisAdminLogo } from '../orbis-admin-logo.svg';
+import { Sidebar, SidebarItem, SidebarLinkItem } from 'components/sidebar';
+
 import { ReactComponent as HomeIcon } from './home.svg';
 import { ReactComponent as LaunchOrbisIcon } from './launch-orbis.svg';
+import { ReactComponent as OrbisAdminLogo } from '../orbis-admin-logo.svg';
 
-import { USER_TABLE } from '../admin.component';
-import styles from './left-sidebar.module.css';
 import { UserProfile } from './user-profile/user-profile.component';
-import { Sidebar, SidebarItem, SidebarLinkItem } from 'components/sidebar';
+import { USER_TABLE } from '../admin.component';
+
+import styles from './left-sidebar.module.css';
 
 const LeftSidebar = ({ user, setVisiblePanel, visiblePanel }) => (
   <Sidebar

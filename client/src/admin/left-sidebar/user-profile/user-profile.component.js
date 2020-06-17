@@ -1,5 +1,7 @@
 import React from 'react';
+
 import { ProfileIcon } from '@astrosat/astrosat-ui';
+
 import styles from './user-profile.module.css';
 
 export const UserProfile = ({ avatar, name }) => (

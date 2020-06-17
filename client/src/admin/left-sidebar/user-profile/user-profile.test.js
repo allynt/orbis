@@ -1,6 +1,8 @@
-import { UserProfile } from './user-profile.component';
-import { render } from '@testing-library/react';
 import React from 'react';
+
+import { render } from '@testing-library/react';
+
+import { UserProfile } from './user-profile.component';
 
 describe('UserProfile', () => {
   it('Shows the role "Administrator"', () => {

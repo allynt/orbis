@@ -1,7 +1,10 @@
+import React from 'react';
+
 import { ProfileIcon } from '@astrosat/astrosat-ui';
+
 import { action } from '@storybook/addon-actions';
 import { boolean } from '@storybook/addon-knobs';
-import React from 'react';
+
 import { SidebarItem } from './sidebar-item.component';
 import { SidebarLinkItem } from './sidebar-link-item.component';
 

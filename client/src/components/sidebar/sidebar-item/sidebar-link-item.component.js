@@ -1,6 +1,8 @@
 import React from 'react';
-import styles from './sidebaritem.module.css';
+
 import { SidebarItemInner } from './sidebar-item-inner.component';
+
+import styles from './sidebar-item.module.css';
 
 export const SidebarLinkItem = ({ children, href, icon, rel, target, tooltip }) => (
   <a className={styles.sidebarItem} href={href} rel={rel} target={target}>

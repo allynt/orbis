@@ -1,6 +1,8 @@
 import React from 'react';
+
 import ReactTooltip from 'react-tooltip';
-import styles from './sidebaritem.module.css';
+
+import styles from './sidebar-item.module.css';
 
 export const SidebarItemInner = ({ children, icon, tooltip }) => (
   <>

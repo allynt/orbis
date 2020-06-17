@@ -1,4 +1,5 @@
 import React from 'react';
+
 import styles from './sidebar.module.css';
 
 export const SidebarBottomItems = ({ children }) => <div className={styles.bottomItems}>{children}</div>;

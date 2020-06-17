@@ -1,7 +1,9 @@
 import React from 'react';
+
 import { render, fireEvent } from '@testing-library/react';
-import { SidebarItem } from './sidebar-item.component';
 import userEvent from '@testing-library/user-event';
+
+import { SidebarItem } from './sidebar-item.component';
 
 describe('SidebarItem', () => {
   it('Displays an icon if present', () => {
