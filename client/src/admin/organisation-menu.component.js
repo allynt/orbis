@@ -4,16 +4,16 @@ import { CORPORATE_ACCOUNT } from './admin.component';
 
 import styles from './organisation-menu.module.css';
 
-const OrganisationMenu = ({ selectedCustomer, setVisiblePanel }) => (
+const OrganisationMenu = ({ customer, setVisiblePanel }) => (
   <div className={styles.organisationMenu}>
     <div className={styles.organisationInfo}>
       <img
         className={styles.organisationLogo}
-        src={selectedCustomer.logo}
+        src={customer.logo}
         alt="Organisation Logo"
         onClick={() => setVisiblePanel(CORPORATE_ACCOUNT)}
       />
-      <h2>{selectedCustomer.title}</h2>
+      <h2 className={styles.organisationTitle}>{customer.title}</h2>
     </div>
   </div>
 );

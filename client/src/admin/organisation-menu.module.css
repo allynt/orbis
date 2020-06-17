@@ -20,9 +20,10 @@
   border-radius: 0.625rem;
   height: 9.5rem;
   width: 10.5rem;
+  box-shadow: 0 2px 4px 0 rgba(177, 175, 175, 0.5);
 }
 
-.organisationInfo h2 {
+.organisationTitle {
   text-align: center;
   margin: 1.25rem 0;
   font-size: 1.25rem;

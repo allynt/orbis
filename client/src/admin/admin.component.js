@@ -37,7 +37,7 @@ const Admin = ({ user, userCustomers, createUser, updateUser, copyUser, deleteUs
           {visiblePanel === CORPORATE_ACCOUNT && <div>CORPORATE ACCOUNT GOES HERE</div>}
           {visiblePanel === MESSAGES && <div>MESSAGES GOES HERE</div>}
         </div>
-        <OrganisationMenu selectedCustomer={selectedCustomer} setVisiblePanel={setVisiblePanel} />
+        <OrganisationMenu customer={selectedCustomer} setVisiblePanel={setVisiblePanel} />
       </div>
     )
   );
