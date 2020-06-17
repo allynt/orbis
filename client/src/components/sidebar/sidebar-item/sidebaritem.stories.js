@@ -2,8 +2,8 @@ import { ProfileIcon } from '@astrosat/astrosat-ui';
 import { action } from '@storybook/addon-actions';
 import { boolean } from '@storybook/addon-knobs';
 import React from 'react';
-import { SidebarItem } from './sidebaritem.component';
-import { SidebarLinkItem } from './sidebarlinkitem.component';
+import { SidebarItem } from './sidebar-item.component';
+import { SidebarLinkItem } from './sidebar-link-item.component';
 
 export default { title: 'Components/Sidebar/SidebarItem' };
 

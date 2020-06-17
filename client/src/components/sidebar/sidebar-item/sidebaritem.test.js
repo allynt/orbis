@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, fireEvent } from '@testing-library/react';
-import { SidebarItem } from './sidebaritem.component';
+import { SidebarItem } from './sidebar-item.component';
 import userEvent from '@testing-library/user-event';
 
 describe('SidebarItem', () => {
