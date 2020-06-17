@@ -7,12 +7,12 @@ export const UserProfile = ({ avatar, name }) => (
     {avatar ? (
       <img src={avatar} alt="User Profile" className={styles.profileIcon} />
     ) : (
-      <ProfileIcon data-testid="default-icon" classes={styles.defaultIcon} />
+      <ProfileIcon title="Profile Icon" classes={styles.defaultIcon} />
     )}
 
     <div className={styles.userInfo}>
       <h2 className={styles.name}>{name}</h2>
-      <p>Administrator</p>
+      <p className={!name ? styles.name : styles.role}>Administrator</p>
     </div>
   </div>
 );

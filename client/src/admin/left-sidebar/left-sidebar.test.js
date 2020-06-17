@@ -26,27 +26,12 @@ describe('Admin Side Menu Component', () => {
   });
 
   it('should render the admin console side menu', () => {
-    const { getByText, getByAltText } = render(
+    const { getByText } = render(
       <Router history={history}>
         <LeftSidebar user={user} selectedCustomer={selectedCustomer} setVisiblePanel={setVisiblePanel} />
       </Router>,
     );
-
-    expect(getByText('Administrator')).toBeInTheDocument();
-    expect(getByText(user.name)).toBeInTheDocument();
-    expect(getByAltText('User Profile')).toBeInTheDocument();
     expect(getByText('Launch Orbis')).toBeInTheDocument();
-  });
-
-  it('should render the default profile if user has no avatar', () => {
-    user.avatar = null;
-    const { getByTestId } = render(
-      <Router history={history}>
-        <LeftSidebar user={user} selectedCustomer={selectedCustomer} setVisiblePanel={setVisiblePanel} />
-      </Router>,
-    );
-
-    expect(getByTestId('default-icon')).toBeInTheDocument();
   });
 
   it('should return to user table view when Orbis logo is clicked', () => {
