@@ -5,10 +5,7 @@ import styles from './user-profile.module.css';
 export const UserProfile = ({ avatar, name }) => (
   <div className={styles.userProfile}>
     {avatar ? (
-      <picture>
-        <source srcSet={avatar} />
-        <img src={avatar} alt="User Profile" className={styles.profileIcon} />
-      </picture>
+      <img src={avatar} alt="User Profile" className={styles.profileIcon} />
     ) : (
       <ProfileIcon data-testid="default-icon" classes={styles.defaultIcon} />
     )}
