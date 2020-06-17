@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 import AdminSideMenu from './admin-side-menu.component';
 import UserList from './user-list.component';
-import OrganisationMenu from './organisation-menu.component';
+import OrganisationMenu from './organisation-menu/organisation-menu.component';
 
 import styles from './admin.module.css';
 
