@@ -1,6 +1,6 @@
 import React from 'react';
 
-import styles from './admin.module.css';
+import styles from './content-wrapper.module.css';
 
 const ContentWrapper = ({ children, title }) => (
   <div className={styles.contentPanel}>
