@@ -19,7 +19,7 @@ const Admin = ({ user, userCustomers, createUser, updateUser, copyUser, deleteUs
 
   const ContentPanel = ({ children }) => (
     <div className={styles.contentPanel}>
-      <h1>{visiblePanel}</h1>
+      <h1 className={styles.title}>{visiblePanel}</h1>
       {children}
     </div>
   );
