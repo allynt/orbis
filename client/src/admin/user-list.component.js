@@ -5,7 +5,7 @@ import Button from '@astrosat/astrosat-ui/dist/buttons/button';
 
 import UserTable from './user-table.component';
 import UserDetailForm from './user-detail-form.component';
-import AdminWrapper from './admin-wrapper.component';
+import ContentWrapper from './content-wrapper.component';
 
 import styles from './user-list.module.css';
 
@@ -13,7 +13,7 @@ const UserList = ({ title, users, createUser, deleteUser, updateUser, copyUser }
   const [isNewUserMode, setIsNewUserMode] = useState(false);
 
   return (
-    <AdminWrapper title={title}>
+    <ContentWrapper title={title}>
       <div className={styles['table-container']}>
         <h3>Maintain Users</h3>
 
@@ -27,7 +27,7 @@ const UserList = ({ title, users, createUser, deleteUser, updateUser, copyUser }
 
         {isNewUserMode && <UserDetailForm createUser={createUser} />}
       </div>
-    </AdminWrapper>
+    </ContentWrapper>
   );
 };
 

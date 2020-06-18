@@ -2,11 +2,11 @@ import React from 'react';
 
 import styles from './admin.module.css';
 
-const AdminWrapper = ({ children, title }) => (
+const ContentWrapper = ({ children, title }) => (
   <div className={styles.contentPanel}>
     <h1 className={styles.title}>{title}</h1>
     {children}
   </div>
 );
 
-export default AdminWrapper;
+export default ContentWrapper;
