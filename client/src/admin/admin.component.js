@@ -6,23 +6,31 @@ import OrganisationMenu from './organisation-menu/organisation-menu.component';
 
 import styles from './admin.module.css';
 
-export const USER_TABLE = 'home';
-export const ACTIVITY_LOG = 'activity-log';
-export const LICENCE_DASHBOARD = 'licence dashboard';
-export const CORPORATE_ACCOUNT = 'corporate account';
-export const MESSAGES = 'messages';
+export const USER_TABLE = 'Users';
+export const ACTIVITY_LOG = 'Activity Log';
+export const LICENCE_DASHBOARD = 'Licence Dashboard';
+export const CORPORATE_ACCOUNT = 'Corporate Account';
+export const MESSAGES = 'Messages';
 
 const Admin = ({ user, userCustomers, createUser, updateUser, copyUser, deleteUser }) => {
   const selectedCustomer = userCustomers[0];
 
   const [visiblePanel, setVisiblePanel] = useState(USER_TABLE);
 
+  const ContentPanel = ({ children }) => (
+    <div className={styles.contentPanel}>
+      <h1>{visiblePanel}</h1>
+      {children}
+    </div>
+  );
+
   return (
     selectedCustomer && (
       <div className={styles.adminConsole}>
         <LeftSidebar user={user} setVisiblePanel={setVisiblePanel} visiblePanel={visiblePanel} />
-        <div className={styles.contentPanel}>
-          {visiblePanel === USER_TABLE && (
+
+        {visiblePanel === USER_TABLE && (
+          <ContentPanel>
             <UserList
               user={user}
               users={selectedCustomer.users}
@@ -31,12 +39,12 @@ const Admin = ({ user, userCustomers, createUser, updateUser, copyUser, deleteUs
               copyUser={copyUser}
               deleteUser={deleteUser}
             />
-          )}
-          {visiblePanel === ACTIVITY_LOG && <div>ACTIVITY LOG GOES HERE</div>}
-          {visiblePanel === LICENCE_DASHBOARD && <div>LICENCE DASHBOARD GOES HERE</div>}
-          {visiblePanel === CORPORATE_ACCOUNT && <div>CORPORATE ACCOUNT GOES HERE</div>}
-          {visiblePanel === MESSAGES && <div>MESSAGES GOES HERE</div>}
-        </div>
+          </ContentPanel>
+        )}
+        {visiblePanel === ACTIVITY_LOG && <div>ACTIVITY LOG GOES HERE</div>}
+        {visiblePanel === LICENCE_DASHBOARD && <div>LICENCE DASHBOARD GOES HERE</div>}
+        {visiblePanel === CORPORATE_ACCOUNT && <div>CORPORATE ACCOUNT GOES HERE</div>}
+        {visiblePanel === MESSAGES && <div>MESSAGES GOES HERE</div>}
         <OrganisationMenu customer={selectedCustomer} setVisiblePanel={setVisiblePanel} />
       </div>
     )
