@@ -17,7 +17,7 @@
 }
 
 .show {
-  left: calc(var(--toolbar-width) - 0.1rem);
+  left: calc(var(--toolbar-width) - 0.6875rem);
   visibility: visible;
   border-top-right-radius: 1rem;
   border-bottom-right-radius: 1rem;
