@@ -8,7 +8,7 @@ export const Sidebar = ({ children, className, footer, header, logo }) => (
   <nav className={`${styles.sidebar} ${className}`}>
     {logo && <div className={styles.logo}>{logo}</div>}
     {header && <header className={styles.header}>{header}</header>}
-    {children}
+    <ul className={styles.items}>{children}</ul>
     {footer && <footer className={styles.footer}>{footer}</footer>}
   </nav>
 );

@@ -21,16 +21,14 @@ const AdminHeader = () => (
 
 export default { title: 'Components/Sidebar', component: Sidebar };
 
-export const NoItems = () => <Sidebar>Hello</Sidebar>;
+export const Nothing = () => <Sidebar />;
 
-export const WithLogo = () => <Sidebar logo={<OrbisLogo style={logoStyle} />} />;
+export const Logo = () => <Sidebar logo={<OrbisLogo style={logoStyle} />} />;
 
-export const Header = () => (
-  <Sidebar logo={<OrbisAdminLogo style={{ height: '70px', color: '#fff' }} />} header={<AdminHeader />} />
-);
+export const Header = () => <Sidebar header={<AdminHeader />} />;
 
 export const Items = () => (
-  <Sidebar logo={<OrbisLogo style={logoStyle} />}>
+  <Sidebar>
     <SidebarItem icon={<ProfileIcon style={{ width: '100%' }} />} selected />
     <SidebarItem icon={<SatelliteIcon style={{ width: '100%' }} />} />
     <SidebarItem icon={<DataIcon style={{ width: '100%' }} />} />
@@ -38,7 +36,7 @@ export const Items = () => (
 );
 
 export const ItemsWithLabels = () => (
-  <Sidebar logo={<OrbisAdminLogo style={{ height: '70px', color: '#fff' }} />}>
+  <Sidebar>
     <SidebarItem icon={<ProfileIcon style={{ width: '100%' }} />} selected>
       Item one
     </SidebarItem>
@@ -48,7 +46,7 @@ export const ItemsWithLabels = () => (
 );
 
 export const ItemPosition = () => (
-  <Sidebar logo={<OrbisAdminLogo style={{ height: '70px', color: '#fff' }} />}>
+  <Sidebar>
     <SidebarItem icon={<ProfileIcon style={{ width: '100%' }} />} selected>
       Item one
     </SidebarItem>
@@ -62,10 +60,23 @@ export const ItemPosition = () => (
   </Sidebar>
 );
 
-export const Footer = () => (
-  <Sidebar logo={<OrbisLogo style={logoStyle} />} header={<AdminHeader />} footer={<h3>This is the footer</h3>}>
-    <SidebarItem>Item one</SidebarItem>
-    <SidebarItem>Item two</SidebarItem>
-    <SidebarItem>Item three</SidebarItem>
+export const Footer = () => <Sidebar footer={<h3>This is the footer</h3>} />;
+
+export const KitchenSink = () => (
+  <Sidebar
+    logo={<OrbisAdminLogo style={{ height: '70px', color: '#fff' }} />}
+    header={<AdminHeader />}
+    footer={<h3>This is the footer</h3>}
+  >
+    <SidebarItem icon={<ProfileIcon style={{ width: '100%' }} />} selected>
+      Item one
+    </SidebarItem>
+    <SidebarItem icon={<SatelliteIcon style={{ width: '100%' }} />}>Item two</SidebarItem>
+    <SidebarItem icon={<DataIcon style={{ width: '100%' }} />}>Item three</SidebarItem>
+    <SidebarBottomItems>
+      <SidebarItem icon={<ProfileIcon style={{ width: '100%' }} />}>Item four</SidebarItem>
+      <SidebarItem icon={<SatelliteIcon style={{ width: '100%' }} />}>Item five</SidebarItem>
+      <SidebarItem icon={<DataIcon style={{ width: '100%' }} />}>Item six</SidebarItem>
+    </SidebarBottomItems>
   </Sidebar>
 );
