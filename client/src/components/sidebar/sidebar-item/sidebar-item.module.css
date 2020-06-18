@@ -11,6 +11,10 @@
   color: var(--color-lightgrey);
 }
 
+.sidebarItem.withLabel {
+  margin-left: 1rem;
+}
+
 .sidebarItem:hover,
 .sidebarItem:focus {
   outline: none;
