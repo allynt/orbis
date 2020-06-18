@@ -25,7 +25,7 @@ const CorporateAccount = ({ customer }) => {
         </Button>
       </div>
 
-      <div className={styles.name}>
+      <div className={styles.nameFields}>
         <h2>Name: </h2>
         <Textfield name="name" value={values.name || ''} placeholder="Name" onChange={handleChange} />
       </div>

@@ -23,3 +23,16 @@
   border-radius: 1rem;
   box-shadow: 0 16px 24px 0 rgba(213, 213, 213, 0.5);
 }
+
+.nameFields {
+  margin: 2.625rem 0;
+}
+
+.nameFields {
+  display: flex;
+  align-items: baseline;
+}
+
+.nameFields > * {
+  margin-right: 1rem;
+}
