@@ -12,7 +12,7 @@ import PrivateRoute from './utils/private-route.component';
 import { fetchAppConfig } from './app.slice';
 import { fetchUser } from './accounts/accounts.slice';
 
-import { fetchUserCustomers, createUser, deleteUser, updateUser, copyUser } from './admin/users.slice';
+import { fetchUserCustomers } from './admin/users.slice';
 
 import { fetchSources, selectPollingPeriod } from './data-layers/data-layers.slice';
 
@@ -115,17 +115,7 @@ const App = () => {
           <PrivateRoute exact path="/user/update" user={user} component={UpdateUserForm} />
           <Route exact path="/terms" component={TermsAndConditions} />
           <Suspense fallback={<h3>Loading...</h3>}>
-            <PrivateRoute
-              exact
-              path="/admin"
-              user={user}
-              component={Admin}
-              userCustomers={userCustomers}
-              createUser={user => dispatch(createUser(user))}
-              updateUser={user => dispatch(updateUser(user))}
-              copyUser={user => dispatch(copyUser(user))}
-              deleteUser={id => dispatch(deleteUser(id))}
-            />
+            <PrivateRoute exact path="/admin" user={user} component={Admin} userCustomers={userCustomers} />
           </Suspense>
         </Switch>
       </main>
