@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 import LeftSidebar from './left-sidebar/left-sidebar.component';
 import UserList from './user-list.component';
-import OrganisationMenu from './organisation-menu.component';
+import OrganisationMenu from './organisation-menu/organisation-menu.component';
 
 import styles from './admin.module.css';
 
@@ -37,7 +37,7 @@ const Admin = ({ user, userCustomers, createUser, updateUser, copyUser, deleteUs
           {visiblePanel === CORPORATE_ACCOUNT && <div>CORPORATE ACCOUNT GOES HERE</div>}
           {visiblePanel === MESSAGES && <div>MESSAGES GOES HERE</div>}
         </div>
-        <OrganisationMenu selectedCustomer={selectedCustomer} setVisiblePanel={setVisiblePanel} />
+        <OrganisationMenu customer={selectedCustomer} setVisiblePanel={setVisiblePanel} />
       </div>
     )
   );
