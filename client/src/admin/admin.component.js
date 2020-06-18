@@ -17,29 +17,21 @@ const Admin = ({ user, userCustomers, createUser, updateUser, copyUser, deleteUs
 
   const [visiblePanel, setVisiblePanel] = useState(USER_TABLE);
 
-  const ContentPanel = ({ children }) => (
-    <div className={styles.contentPanel}>
-      <h1 className={styles.title}>{visiblePanel}</h1>
-      {children}
-    </div>
-  );
-
   return (
     selectedCustomer && (
       <div className={styles.adminConsole}>
         <LeftSidebar user={user} setVisiblePanel={setVisiblePanel} visiblePanel={visiblePanel} />
 
         {visiblePanel === USER_TABLE && (
-          <ContentPanel>
-            <UserList
-              user={user}
-              users={selectedCustomer.users}
-              createUser={createUser}
-              updateUser={updateUser}
-              copyUser={copyUser}
-              deleteUser={deleteUser}
-            />
-          </ContentPanel>
+          <UserList
+            title={USER_TABLE}
+            user={user}
+            users={selectedCustomer.users}
+            createUser={createUser}
+            updateUser={updateUser}
+            copyUser={copyUser}
+            deleteUser={deleteUser}
+          />
         )}
         {visiblePanel === ACTIVITY_LOG && <div>ACTIVITY LOG GOES HERE</div>}
         {visiblePanel === LICENCE_DASHBOARD && <div>LICENCE DASHBOARD GOES HERE</div>}
