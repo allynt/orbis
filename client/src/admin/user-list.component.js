@@ -5,26 +5,29 @@ import Button from '@astrosat/astrosat-ui/dist/buttons/button';
 
 import UserTable from './user-table.component';
 import UserDetailForm from './user-detail-form.component';
+import ContentWrapper from './content-wrapper.component';
 
 import styles from './user-list.module.css';
 
-const UserList = ({ users, createUser, deleteUser, updateUser, copyUser }) => {
+const UserList = ({ title, users, createUser, deleteUser, updateUser, copyUser }) => {
   const [isNewUserMode, setIsNewUserMode] = useState(false);
 
   return (
-    <div className={styles['table-container']}>
-      <h3>Maintain Users</h3>
+    <ContentWrapper title={title}>
+      <div className={styles['table-container']}>
+        <h3>Maintain Users</h3>
 
-      <p className={styles.strapline}>
-        <strong>NOTE:</strong> Use actions within table to update user(s)
-      </p>
+        <p className={styles.strapline}>
+          <strong>NOTE:</strong> Use actions within table to update user(s)
+        </p>
 
-      {users && <UserTable data={users} deleteUser={deleteUser} updateUser={updateUser} copyUser={copyUser} />}
+        {users && <UserTable data={users} deleteUser={deleteUser} updateUser={updateUser} copyUser={copyUser} />}
 
-      <Button onClick={() => setIsNewUserMode(!isNewUserMode)}>New User</Button>
+        <Button onClick={() => setIsNewUserMode(!isNewUserMode)}>New User</Button>
 
-      {isNewUserMode && <UserDetailForm createUser={createUser} />}
-    </div>
+        {isNewUserMode && <UserDetailForm createUser={createUser} />}
+      </div>
+    </ContentWrapper>
   );
 };
 
