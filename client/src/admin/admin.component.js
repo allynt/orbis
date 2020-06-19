@@ -2,8 +2,10 @@ import React, { useState } from 'react';
 
 import LeftSidebar from './left-sidebar/left-sidebar.component';
 import OrganisationMenu from './organisation-menu/organisation-menu.component';
+import ContentWrapper from './content-wrapper.component';
 
 import styles from './admin.module.css';
+import { ActiveUsersBoard } from './active-users-board/active-users-board.component';
 
 export const USER_TABLE = 'Users';
 export const ACTIVITY_LOG = 'Activity Log';
@@ -20,9 +22,12 @@ const Admin = ({ user, userCustomers }) => {
     selectedCustomer && (
       <div className={styles.adminConsole}>
         <LeftSidebar user={user} setVisiblePanel={setVisiblePanel} visiblePanel={visiblePanel} />
-        <div className={styles.contentPanel}>
-          {visiblePanel === CORPORATE_ACCOUNT && <div>CORPORATE ACCOUNT GOES HERE</div>}
-        </div>
+        {visiblePanel === USER_TABLE && (
+          <ContentWrapper title="Users">
+            <ActiveUsersBoard activeUsers={selectedCustomer.users} />
+          </ContentWrapper>
+        )}
+        {visiblePanel === CORPORATE_ACCOUNT && <div>CORPORATE ACCOUNT GOES HERE</div>}
         <OrganisationMenu customer={selectedCustomer} setVisiblePanel={setVisiblePanel} />
       </div>
     )

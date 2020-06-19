@@ -6,8 +6,9 @@
   padding: 1.875rem;
   margin: 1.875rem;
   border-radius: 1rem;
-  box-shadow: 0 16px 24px 0 rgba(19, 16, 16, 0.5);
+  box-shadow: 0 1rem 1.5rem 0 rgba(213, 213, 213, 0.5);
   background-color: #fff;
+  overflow: auto;
 }
 
 .title {
