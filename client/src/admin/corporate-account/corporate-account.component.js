@@ -14,12 +14,12 @@ const CorporateAccount = ({ title, user, customer }) => {
   const [vatRegistered, setVatRegistered] = useState(false);
 
   function onSubmit() {
-    console.log('Submit!');
+    console.log('Values: ', values);
   }
 
-  const handleVatChange = (cb, bool) => {
+  const handleVatChange = (e, cb, bool) => {
     setVatRegistered(bool);
-    cb();
+    cb(e);
   };
 
   return (
@@ -69,8 +69,8 @@ const CorporateAccount = ({ title, user, customer }) => {
           <div className={styles.fieldContainer}>
             <div className={styles.vatField}>
               <h2 className={styles.fieldKey}>VAT Registered:</h2>
-              <Radio label="Yes" onChange={() => handleVatChange(handleChange, true)} />
-              <Radio label="No" onChange={() => handleVatChange(handleChange, false)} />
+              <Radio label="Yes" onChange={e => handleVatChange(e, handleChange, true)} checked={vatRegistered} />
+              <Radio label="No" onChange={e => handleVatChange(e, handleChange, false)} checked={!vatRegistered} />
             </div>
 
             <div className={`${styles.field} ${!vatRegistered && styles.notRegistered}`}>
@@ -117,11 +117,64 @@ const CorporateAccount = ({ title, user, customer }) => {
           <div className={styles.paymentID}>
             Payment Account ID:<span className={styles.ID}> 1234-1234-1234</span>
           </div>
+          <Button theme="tertiary" type="submit">
+            Update Changes
+          </Button>
         </form>
       </ContentWrapper>
 
       <ContentWrapper title={'Administrator Profile'} user={user}>
-        <h1>{user.name}</h1>
+        <form className={styles.corporateAccount} onSubmit={handleSubmit}>
+          <div className={styles.logoContainer}>
+            <img src={user.avatar} className={styles.logo} alt="Admin Avatar" />
+            <Button theme="link" onClick={() => console.log('Upload new image!')}>
+              Upload new image
+            </Button>
+            <Button theme="link" onClick={() => console.log('Remove!')}>
+              Remove
+            </Button>
+          </div>
+
+          <div className={styles.fieldContainer}>
+            <div className={styles.field}>
+              <h2 className={styles.fieldKey}>Name:</h2>
+              <Textfield name="name" value={values.name || user.name} onChange={handleChange} placeholder="Add Name" />
+            </div>
+            <div className={styles.field}>
+              <h2 className={styles.fieldKey}>Email:</h2>
+              <Textfield
+                name="email"
+                value={values.email || user.email}
+                onChange={handleChange}
+                placeholder="Add Email"
+              />
+            </div>
+            <div className={styles.field}>
+              <h2 className={styles.fieldKey}>Phone:</h2>
+              <Textfield
+                name="phone"
+                value={values.phone || user.phone}
+                onChange={handleChange}
+                placeholder="Add Phone Number"
+              />
+            </div>
+          </div>
+
+          <div className={styles.fieldContainer}>
+            <div className={styles.field}>
+              <h2 className={styles.fieldKey}>Role:</h2>
+              <Textfield
+                name="name"
+                value={values.name || user.type}
+                onChange={handleChange}
+                placeholder="Change Role"
+              />
+            </div>
+          </div>
+          <Button theme="tertiary" type="submit">
+            Update Changes
+          </Button>
+        </form>
       </ContentWrapper>
     </div>
   );
