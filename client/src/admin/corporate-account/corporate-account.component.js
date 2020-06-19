@@ -123,7 +123,7 @@ const CorporateAccount = ({ title, user, customer }) => {
         </form>
       </ContentWrapper>
 
-      <ContentWrapper title={'Administrator Profile'} user={user}>
+      <ContentWrapper title={'Administrator'} user={user}>
         <form className={styles.corporateAccount} onSubmit={handleSubmit}>
           <div className={styles.logoContainer}>
             <img src={user.avatar} className={styles.logo} alt="Admin Avatar" />
