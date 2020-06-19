@@ -5,11 +5,11 @@ import OrganisationMenu from './organisation-menu/organisation-menu.component';
 
 import styles from './admin.module.css';
 
-export const USER_TABLE = 'home';
-export const ACTIVITY_LOG = 'activity-log';
-export const LICENCE_DASHBOARD = 'licence dashboard';
-export const CORPORATE_ACCOUNT = 'corporate account';
-export const MESSAGES = 'messages';
+export const USER_TABLE = 'Users';
+export const ACTIVITY_LOG = 'Activity Log';
+export const LICENCE_DASHBOARD = 'Licence Dashboard';
+export const CORPORATE_ACCOUNT = 'Corporate Account';
+export const MESSAGES = 'Messages';
 
 const Admin = ({ user, userCustomers }) => {
   const selectedCustomer = userCustomers[0];
