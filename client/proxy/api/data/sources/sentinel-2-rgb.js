@@ -4,7 +4,7 @@ module.exports = {
   namespace: 'test',
   name: 'sentinel-2-rgb',
   version: 'S2A_20191223T034141_T47NPG_RGB',
-  type: 'raster', // vector|raster|geojson
+  type: 'raster', // vector|raster
   status: 'published', // draft|published|deprecated
   metadata: {
     label: 'Sentinel 2 RGB',
