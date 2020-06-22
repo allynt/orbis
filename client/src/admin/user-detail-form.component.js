@@ -8,11 +8,11 @@ import validate from './user-detail-form.validator';
 
 import styles from './user-detail-form.module.css';
 
-const UserDetailForm = ({ createUser }) => {
+const UserDetailForm = ({ customer, createCustomerUser }) => {
   const { handleChange, handleSubmit, reset, values, errors } = useForm(onSubmit, validate);
 
   function onSubmit() {
-    createUser(values);
+    createCustomerUser(customer, values);
   }
 
   return (
@@ -87,7 +87,7 @@ const UserDetailForm = ({ createUser }) => {
 };
 
 UserDetailForm.propTypes = {
-  createUser: PropTypes.func.isRequired,
+  createCustomerUser: PropTypes.func.isRequired,
 };
 
 export default UserDetailForm;

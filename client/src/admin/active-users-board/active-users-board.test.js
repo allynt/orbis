@@ -8,7 +8,7 @@ const activeUsers = [
   { name: 'Test Three', licences: ['five', 'six'], email: 'test3@test.com' },
 ];
 
-describe.only('ActiveUsersBoard', () => {
+describe('ActiveUsersBoard', () => {
   const cases = [
     ['names', 'name'],
     ['assigned licences', 'licences'],

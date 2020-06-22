@@ -85,8 +85,8 @@ THIRD_PARTY_APPS = [
     "allauth",
     "allauth.account",
     "allauth.socialaccount",
-    "rest_auth",
-    "rest_auth.registration",
+    "dj_rest_auth",
+    "dj_rest_auth.registration",
     "knox",
     # healthchecks...
     "health_check",
@@ -335,13 +335,19 @@ ACCOUNT_USERNAME_BLACKLIST = ["admin", "sentinel"]
 REST_AUTH_TOKEN_MODEL = "knox.models.AuthToken"
 REST_AUTH_TOKEN_CREATOR = "astrosat_users.utils.create_knox_token"
 
+# custom forms...
 ACCOUNT_FORMS = {
-    # customize forms for astrosat_users
+    # "add_email": "allauth.account.forms.AddEmailForm",
+    "change_password": "astrosat_users.forms.PasswordChangeForm",
+    # "disconnect": "allauth.socialaccount.forms.DisconnectForm",
     "login": "astrosat_users.forms.LoginForm",
     "reset_password": "astrosat_users.forms.PasswordResetForm",
+    # "reset_password_from_key": "allauth.account.forms.ResetPasswordKeyForm",
+    "set_password": "astrosat_users.forms.PasswordSetForm",
     "signup": "astrosat_users.forms.RegistrationForm",
 }
 
+# custom serializers...
 REST_AUTH_SERIALIZERS = {
     # customize serializers for astrosat_users
     "TOKEN_SERIALIZER": "astrosat_users.serializers.KnoxTokenSerializer",
@@ -350,6 +356,8 @@ REST_AUTH_SERIALIZERS = {
     "PASSWORD_RESET_SERIALIZER": "astrosat_users.serializers.PasswordResetSerializer",
     "PASSWORD_RESET_CONFIRM_SERIALIZER": "astrosat_users.serializers.PasswordResetConfirmSerializer",
 }
+
+# more custom serializers...
 REST_AUTH_REGISTER_SERIALIZERS = {
     # customize serializers for astrosat_users
     "REGISTER_SERIALIZER": "astrosat_users.serializers.RegisterSerializer"
@@ -380,14 +388,14 @@ AUTH_PASSWORD_VALIDATORS = [
         "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator"
     },
     {
-        "NAME": "astrosat_users.utils.LengthPasswordValidator",
+        "NAME": "astrosat_users.validators.LengthPasswordValidator",
         "OPTIONS": {
             "min_length": PASSWORD_MIN_LENGTH,
             "max_length": PASSWORD_MAX_LENGTH,
         },
     },
     {
-        "NAME": "astrosat_users.utils.StrengthPasswordValidator",
+        "NAME": "astrosat_users.validators.StrengthPasswordValidator",
         "OPTIONS": {"strength": PASSWORD_STRENGTH,},
     },
 ]

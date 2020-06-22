@@ -12,8 +12,6 @@ import PrivateRoute from './utils/private-route.component';
 import { fetchAppConfig } from './app.slice';
 import { fetchUser } from './accounts/accounts.slice';
 
-import { fetchUserCustomers } from './admin/users.slice';
-
 import { fetchSources, selectPollingPeriod } from './data-layers/data-layers.slice';
 
 import Accounts from './accounts';
@@ -34,7 +32,6 @@ const App = () => {
     state && state.app && state.app.config ? state.app.config.trackingId : null,
   );
 
-  const userCustomers = useSelector(state => state.admin.userCustomers);
   const user = useSelector(state => state.accounts.user);
   const userKey = useSelector(state => state.accounts.userKey);
   const pollingPeriod = useSelector(selectPollingPeriod);
@@ -62,12 +59,6 @@ const App = () => {
       dispatch(fetchUser());
     }
   }, [dispatch, user, userKey]);
-
-  useEffect(() => {
-    if (user) {
-      dispatch(fetchUserCustomers(user));
-    }
-  }, [dispatch, user]);
 
   // If the Google Analytics tracking id doesn't exist, fetch it,
   // then setup analytics. This should only be done once on app
@@ -115,7 +106,7 @@ const App = () => {
           <PrivateRoute exact path="/user/update" user={user} component={UpdateUserForm} />
           <Route exact path="/terms" component={TermsAndConditions} />
           <Suspense fallback={<h3>Loading...</h3>}>
-            <PrivateRoute exact path="/admin" user={user} component={Admin} userCustomers={userCustomers} />
+            <PrivateRoute exact path="/admin" user={user} component={Admin} />
           </Suspense>
         </Switch>
       </main>

@@ -10,6 +10,7 @@ let users = [
     is_approved: true,
     profiles: {},
     roles: ['UserRole', 'AstrosatRole'],
+    customers: [],
   },
   {
     id: 2,
@@ -20,6 +21,7 @@ let users = [
     avatar:
       'https://www.bfi.org.uk/sites/bfi.org.uk/files/styles/full/public/image/dirty-harry-1971-002-clint-eastwood-medium-shot.jpg?itok=Gt8uYZDg',
     description: '',
+    change_password: false,
     is_verified: true,
     is_approved: true,
     profiles: {},
@@ -27,15 +29,18 @@ let users = [
     customers: [
       {
         name: 'cyberdyne',
-        manager: true,
+        type: 'MANAGER',
+        status: 'ACTIVE',
       },
       {
         name: 'OCP',
-        manager: true,
+        type: 'MANAGER',
+        status: 'ACTIVE',
       },
       {
         name: 'customer3',
-        manager: false,
+        type: 'MEMBER',
+        status: 'ACTIVE',
       },
     ],
   },
@@ -50,6 +55,7 @@ let users = [
     is_approved: false,
     profiles: {},
     roles: ['UserRole'],
+    customers: [],
   },
   {
     id: 3,
@@ -62,6 +68,7 @@ let users = [
     is_approved: true,
     profiles: {},
     roles: ['UserRole'],
+    customers: [],
   },
 ];
 
