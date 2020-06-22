@@ -9,7 +9,15 @@ import ContentWrapper from './content-wrapper.component';
 
 import styles from './user-list.module.css';
 
-const UserList = ({ title, users, createUser, deleteUser, updateUser, copyUser }) => {
+const UserList = ({
+  title,
+  users,
+  customer,
+  createCustomerUser,
+  deleteCustomerUser,
+  updateCustomerUser,
+  copyCustomerUser,
+}) => {
   const [isNewUserMode, setIsNewUserMode] = useState(false);
 
   return (
@@ -21,11 +29,18 @@ const UserList = ({ title, users, createUser, deleteUser, updateUser, copyUser }
           <strong>NOTE:</strong> Use actions within table to update user(s)
         </p>
 
-        {users && <UserTable data={users} deleteUser={deleteUser} updateUser={updateUser} copyUser={copyUser} />}
+        {users && (
+          <UserTable
+            data={users}
+            deleteCustomerUser={deleteCustomerUser}
+            updateCustomerUser={updateCustomerUser}
+            copyCustomerUser={copyCustomerUser}
+          />
+        )}
 
         <Button onClick={() => setIsNewUserMode(!isNewUserMode)}>New User</Button>
 
-        {isNewUserMode && <UserDetailForm createUser={createUser} />}
+        {isNewUserMode && <UserDetailForm customer={customer} createCustomerUser={createCustomerUser} />}
       </div>
     </ContentWrapper>
   );
@@ -33,10 +48,10 @@ const UserList = ({ title, users, createUser, deleteUser, updateUser, copyUser }
 
 UserList.propTypes = {
   users: PropTypes.array,
-  createUser: PropTypes.func.isRequired,
-  deleteUser: PropTypes.func.isRequired,
-  updateUser: PropTypes.func.isRequired,
-  copyUser: PropTypes.func.isRequired,
+  createCustomerUser: PropTypes.func.isRequired,
+  deleteCustomerUser: PropTypes.func.isRequired,
+  updateCustomerUser: PropTypes.func.isRequired,
+  copyCustomerUser: PropTypes.func.isRequired,
 };
 
 export default UserList;

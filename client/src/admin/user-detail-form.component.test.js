@@ -11,11 +11,13 @@ import UserDetailForm from './user-detail-form.component';
 const mockStore = configureMockStore([thunk]);
 
 describe('User Detail Form Component', () => {
-  let createUser = null;
+  let customer = null;
+  let createCustomerUser = null;
   let store = null;
 
   beforeEach(() => {
-    createUser = jest.fn();
+    customer = {};
+    createCustomerUser = jest.fn();
     store = mockStore({});
   });
 
@@ -24,7 +26,7 @@ describe('User Detail Form Component', () => {
   it('should render a form', () => {
     const { container, getByText, getByLabelText } = render(
       <Provider store={store}>
-        <UserDetailForm createUser={createUser} />
+        <UserDetailForm customer={customer} createCustomerUser={createCustomerUser} />
       </Provider>,
     );
 
@@ -40,7 +42,7 @@ describe('User Detail Form Component', () => {
   it('should enable `Reset` button when form is dirty', async () => {
     const { getByText, getByLabelText } = render(
       <Provider store={store}>
-        <UserDetailForm createUser={createUser} />
+        <UserDetailForm customer={customer} createCustomerUser={createCustomerUser} />
       </Provider>,
     );
 
@@ -55,7 +57,7 @@ describe('User Detail Form Component', () => {
   it('should enable `Create User` button when form is valid', () => {
     const { getByText, getByLabelText } = render(
       <Provider store={store}>
-        <UserDetailForm createUser={createUser} />
+        <UserDetailForm customer={customer} createCustomerUser={createCustomerUser} />
       </Provider>,
     );
 
@@ -69,19 +71,19 @@ describe('User Detail Form Component', () => {
   it('should not call `createUser` function when form is invalid and `Create User` button clicked', () => {
     const { getByText } = render(
       <Provider store={store}>
-        <UserDetailForm createUser={createUser} />
+        <UserDetailForm customer={customer} createCustomerUser={createCustomerUser} />
       </Provider>,
     );
 
     fireEvent.click(getByText('Create User'));
-    expect(createUser).not.toHaveBeenCalled();
+    expect(createCustomerUser).not.toHaveBeenCalled();
   });
 
   it('should call `createUser` function when form is valid and `Create User` button clicked', () => {
     fetch.mockResponse(JSON.stringify({ status: 200 }));
     const { getByLabelText } = render(
       <Provider store={store}>
-        <UserDetailForm createUser={createUser} />
+        <UserDetailForm customer={customer} createCustomerUser={createCustomerUser} />
       </Provider>,
     );
 

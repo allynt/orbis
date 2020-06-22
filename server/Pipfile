@@ -12,6 +12,8 @@ boto3 = ">=1.12.23"
 brotli = ">=1.0.7"
 # django... duh
 django = "~=3.0"
+# users
+dj-rest-auth = {extras = ["with_social"],version = ">=1.0"}
 # cross-origin resource sharing
 django-cors-headers = ">=3.2.1"
 # access environment variables
@@ -42,6 +44,7 @@ pandas = ">=1.0.2"
 psycopg2-binary = ">=2.8.4"
 # data tokens
 pyjwt = ">=1.7.1"
+djangorestframework-simplejwt = "*"
 # sentinel data
 sentinelsat = ">=0.13"
 # static file management (gzipping, etc.)

@@ -20,7 +20,7 @@ class Migration(migrations.Migration):
             name='OrbisUserProfile',
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('user', astrosat_users.models.models_profiles.UserProfileField(on_delete=django.db.models.deletion.CASCADE, related_name='orbis_profile', to=settings.AUTH_USER_MODEL)),
+                ('user', astrosat_users.fields.UserProfileField(on_delete=django.db.models.deletion.CASCADE, related_name='orbis_profile', to=settings.AUTH_USER_MODEL)),
             ],
             options={
                 'verbose_name': 'Orbis User Profile',

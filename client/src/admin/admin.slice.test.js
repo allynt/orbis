@@ -2,27 +2,27 @@ import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 
 import reducer, {
-  fetchUserCustomersRequested,
-  fetchUserCustomersSuccess,
-  fetchUserCustomersFailure,
-  fetchUserCustomers,
-  fetchUsersRequested,
-  fetchUsersSuccess,
-  fetchUsersFailure,
-  fetchUsers,
-  deleteUserRequested,
-  deleteUserSuccess,
-  deleteUserFailure,
-  deleteUser,
-  updateUserRequested,
-  updateUserSuccess,
-  updateUserFailure,
-  updateUser,
-  createUserRequested,
-  createUserSuccess,
-  createUserFailure,
-  createUser,
-} from './users.slice';
+  fetchCustomerRequested,
+  fetchCustomerSuccess,
+  fetchCustomerFailure,
+  fetchCustomer,
+  fetchCustomerUsersRequested,
+  fetchCustomerUsersSuccess,
+  fetchCustomerUsersFailure,
+  fetchCustomerUsers,
+  deleteCustomerUserRequested,
+  deleteCustomerUserSuccess,
+  deleteCustomerUserFailure,
+  deleteCustomerUser,
+  updateCustomerUserRequested,
+  updateCustomerUserSuccess,
+  updateCustomerUserFailure,
+  updateCustomerUser,
+  createCustomerUserRequested,
+  createCustomerUserSuccess,
+  createCustomerUserFailure,
+  createCustomerUser,
+} from './admin.slice';
 
 const mockStore = configureMockStore([thunk]);
 
@@ -51,14 +51,14 @@ describe('Users Slice', () => {
       );
 
       const expectedActions = [
-        { type: createUserRequested.type },
-        { type: createUserFailure.type, payload: { message: '401 Test Error' } },
+        { type: createCustomerUserRequested.type },
+        { type: createCustomerUserFailure.type, payload: { message: '401 Test Error' } },
       ];
 
       const user = {
         name: 'Test User',
       };
-      await store.dispatch(createUser(user));
+      await store.dispatch(createCustomerUser(user));
 
       expect(store.getActions()).toEqual(expectedActions);
     });
@@ -70,14 +70,21 @@ describe('Users Slice', () => {
 
       fetch.mockResponse(JSON.stringify(user));
 
-      const expectedActions = [{ type: createUserRequested.type }, { type: createUserSuccess.type, payload: user }];
+      const expectedActions = [
+        { type: createCustomerUserRequested.type },
+        { type: createCustomerUserSuccess.type, payload: user },
+      ];
 
-      await store.dispatch(createUser(user));
+      await store.dispatch(createCustomerUser(user));
 
       expect(store.getActions()).toEqual(expectedActions);
     });
 
     it('should dispatch fetch users failure action.', async () => {
+      const customer = {
+        name: 'test_customer',
+      };
+
       fetch.mockResponse(
         JSON.stringify({
           message: 'Test error message',
@@ -90,16 +97,20 @@ describe('Users Slice', () => {
       );
 
       const expectedActions = [
-        { type: fetchUsersRequested.type },
-        { type: fetchUsersFailure.type, payload: { message: '401 Test Error' } },
+        { type: fetchCustomerUsersRequested.type },
+        { type: fetchCustomerUsersFailure.type, payload: { message: '401 Test Error' } },
       ];
 
-      await store.dispatch(fetchUsers());
+      await store.dispatch(fetchCustomerUsers(customer));
 
       expect(store.getActions()).toEqual(expectedActions);
     });
 
     it('should dispatch fetch users success action.', async () => {
+      const customer = {
+        name: 'test_customer',
+      };
+
       const users = [
         {
           id: 1,
@@ -111,14 +122,26 @@ describe('Users Slice', () => {
 
       fetch.mockResponse(JSON.stringify(users));
 
-      const expectedActions = [{ type: fetchUsersRequested.type }, { type: fetchUsersSuccess.type, payload: users }];
+      const expectedActions = [
+        { type: fetchCustomerUsersRequested.type },
+        { type: fetchCustomerUsersSuccess.type, payload: users },
+      ];
 
-      await store.dispatch(fetchUsers());
+      await store.dispatch(fetchCustomerUsers(customer));
 
       expect(store.getActions()).toEqual(expectedActions);
     });
 
     it('should dispatch update user failure action.', async () => {
+      const customer = {
+        name: 'test_customer',
+      };
+
+      const user = {
+        name: 'Test User',
+        id: 1,
+      };
+
       fetch.mockResponse(
         JSON.stringify({
           message: 'Test error message',
@@ -131,20 +154,20 @@ describe('Users Slice', () => {
       );
 
       const expectedActions = [
-        { type: updateUserRequested.type },
-        { type: updateUserFailure.type, payload: { message: '401 Test Error' } },
+        { type: updateCustomerUserRequested.type },
+        { type: updateCustomerUserFailure.type, payload: { message: '401 Test Error' } },
       ];
 
-      const user = {
-        name: 'Test User',
-      };
-
-      await store.dispatch(updateUser(user));
+      await store.dispatch(updateCustomerUser(customer, user));
 
       expect(store.getActions()).toEqual(expectedActions);
     });
 
     it('should dispatch update user success action.', async () => {
+      const customer = {
+        name: 'test_customer',
+      };
+
       const user = {
         id: 1,
         name: 'Test User',
@@ -152,14 +175,25 @@ describe('Users Slice', () => {
 
       fetch.mockResponse(JSON.stringify(user));
 
-      const expectedActions = [{ type: updateUserRequested.type }, { type: updateUserSuccess.type, payload: user }];
+      const expectedActions = [
+        { type: updateCustomerUserRequested.type },
+        { type: updateCustomerUserSuccess.type, payload: user },
+      ];
 
-      await store.dispatch(updateUser(user));
+      await store.dispatch(updateCustomerUser(customer, user));
 
       expect(store.getActions()).toEqual(expectedActions);
     });
 
     it('should dispatch delete user failure action.', async () => {
+      const customer = {
+        name: 'test_customer',
+      };
+
+      const user = {
+        id: 1,
+      };
+
       fetch.mockResponse(
         JSON.stringify({
           message: 'Test error message',
@@ -172,20 +206,20 @@ describe('Users Slice', () => {
       );
 
       const expectedActions = [
-        { type: deleteUserRequested.type },
-        { type: deleteUserFailure.type, payload: { message: '401 Test Error' } },
+        { type: deleteCustomerUserRequested.type },
+        { type: deleteCustomerUserFailure.type, payload: { message: '401 Test Error' } },
       ];
 
-      const user = {
-        id: 1,
-      };
-
-      await store.dispatch(deleteUser(user.id));
+      await store.dispatch(deleteCustomerUser(customer, user));
 
       expect(store.getActions()).toEqual(expectedActions);
     });
 
     it('should dispatch delete user success action.', async () => {
+      const customer = {
+        name: 'test_customer',
+      };
+
       const user = {
         id: 1,
         name: 'Test User',
@@ -193,9 +227,12 @@ describe('Users Slice', () => {
 
       fetch.mockResponse(JSON.stringify(user));
 
-      const expectedActions = [{ type: deleteUserRequested.type }, { type: deleteUserSuccess.type, payload: user.id }];
+      const expectedActions = [
+        { type: deleteCustomerUserRequested.type },
+        { type: deleteCustomerUserSuccess.type, payload: user },
+      ];
 
-      await store.dispatch(deleteUser(user.id));
+      await store.dispatch(deleteCustomerUser(customer, user));
 
       expect(store.getActions()).toEqual(expectedActions);
     });
@@ -206,8 +243,8 @@ describe('Users Slice', () => {
 
     beforeEach(() => {
       beforeState = {
-        users: null,
-        userCustomers: null,
+        currentCustomer: null,
+        customerUsers: null,
         isLoading: false,
         error: null,
       };
@@ -221,7 +258,7 @@ describe('Users Slice', () => {
 
     it("'should update the is loading state, when users requested", () => {
       const actualState = reducer(beforeState, {
-        type: fetchUsersRequested.type,
+        type: fetchCustomerUsersRequested.type,
       });
 
       expect(actualState.isLoading).toEqual(true);
@@ -238,11 +275,11 @@ describe('Users Slice', () => {
       ];
 
       const actualState = reducer(beforeState, {
-        type: fetchUsersSuccess.type,
+        type: fetchCustomerUsersSuccess.type,
         payload: users,
       });
 
-      expect(actualState.users).toEqual(users);
+      expect(actualState.customerUsers).toEqual(users);
       expect(actualState.isLoading).toEqual(false);
       expect(actualState.error).toEqual(null);
     });
@@ -251,7 +288,7 @@ describe('Users Slice', () => {
       const error = { message: 'Test Users Error' };
 
       const actualState = reducer(beforeState, {
-        type: fetchUsersFailure.type,
+        type: fetchCustomerUsersFailure.type,
         payload: error,
       });
 
@@ -260,14 +297,14 @@ describe('Users Slice', () => {
 
     it("'should update the is loading state, when deleting user", () => {
       const actualState = reducer(beforeState, {
-        type: deleteUserRequested.type,
+        type: deleteCustomerUserRequested.type,
       });
 
       expect(actualState.isLoading).toEqual(true);
     });
 
     it('should update the users in state, when successfully deleted user', () => {
-      beforeState.users = [
+      beforeState.customerUsers = [
         {
           id: 1,
         },
@@ -275,14 +312,14 @@ describe('Users Slice', () => {
           id: 2,
         },
       ];
-      const userToDelete = beforeState.users[1];
+      const userToDelete = beforeState.customerUsers[1];
 
       const actualState = reducer(beforeState, {
-        type: deleteUserSuccess.type,
-        payload: userToDelete.id,
+        type: deleteCustomerUserSuccess.type,
+        payload: userToDelete,
       });
 
-      expect(actualState.users).toEqual(beforeState.users.filter(user => user.id !== userToDelete.id));
+      expect(actualState.customerUsers).toEqual(beforeState.customerUsers.filter(user => user.id !== userToDelete.id));
       expect(actualState.isLoading).toEqual(false);
       expect(actualState.error).toEqual(null);
     });
@@ -291,7 +328,7 @@ describe('Users Slice', () => {
       const error = { message: 'Test Users Error' };
 
       const actualState = reducer(beforeState, {
-        type: deleteUserFailure.type,
+        type: deleteCustomerUserFailure.type,
         payload: error,
       });
 
@@ -300,14 +337,14 @@ describe('Users Slice', () => {
 
     it("'should update the is loading state, when updating user", () => {
       const actualState = reducer(beforeState, {
-        type: updateUserRequested.type,
+        type: updateCustomerUserRequested.type,
       });
 
       expect(actualState.isLoading).toEqual(true);
     });
 
     it('should update the users in state, when successfully updated user', () => {
-      beforeState.users = [
+      beforeState.customerUsers = [
         {
           id: 1,
           name: 'Test User 1',
@@ -318,16 +355,16 @@ describe('Users Slice', () => {
         },
       ];
       const userToUpdate = {
-        ...beforeState.users[1],
+        ...beforeState.customerUsers[1],
       };
       userToUpdate.name = 'New Test User Name';
 
       const actualState = reducer(beforeState, {
-        type: updateUserSuccess.type,
+        type: updateCustomerUserSuccess.type,
         payload: userToUpdate,
       });
 
-      expect(actualState.users[1]).toEqual(userToUpdate);
+      expect(actualState.customerUsers[1]).toEqual(userToUpdate);
       expect(actualState.isLoading).toEqual(false);
       expect(actualState.error).toEqual(null);
     });
@@ -336,7 +373,7 @@ describe('Users Slice', () => {
       const error = { message: 'Test Users Error' };
 
       const actualState = reducer(beforeState, {
-        type: updateUserFailure.type,
+        type: updateCustomerUserFailure.type,
         payload: error,
       });
 
@@ -345,14 +382,14 @@ describe('Users Slice', () => {
 
     it("'should update the is loading state, when creating user", () => {
       const actualState = reducer(beforeState, {
-        type: createUserRequested.type,
+        type: createCustomerUserRequested.type,
       });
 
       expect(actualState.isLoading).toEqual(true);
     });
 
     it('should update the users in state, when successfully created user', () => {
-      beforeState.users = [
+      beforeState.customerUsers = [
         {
           id: 1,
           name: 'Test User 1',
@@ -368,11 +405,11 @@ describe('Users Slice', () => {
       };
 
       const actualState = reducer(beforeState, {
-        type: createUserSuccess.type,
+        type: createCustomerUserSuccess.type,
         payload: userToCreate,
       });
 
-      expect(actualState.users).toEqual([...beforeState.users, userToCreate]);
+      expect(actualState.customerUsers).toEqual([...beforeState.customerUsers, userToCreate]);
       expect(actualState.isLoading).toEqual(false);
       expect(actualState.error).toEqual(null);
     });
@@ -381,7 +418,7 @@ describe('Users Slice', () => {
       const error = { message: 'Test Users Error' };
 
       const actualState = reducer(beforeState, {
-        type: createUserFailure.type,
+        type: createCustomerUserFailure.type,
         payload: error,
       });
 

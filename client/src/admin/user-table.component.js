@@ -45,7 +45,7 @@ const DefaultColumnFilter = ({ column: { filterValue, preFilteredRows, setFilter
   );
 };
 
-const UserTable = ({ data, deleteUser, updateUser, copyUser }) => {
+const UserTable = ({ data, deleteCustomerUser, updateCustomerUser, copyCustomerUser }) => {
   const defaultColumn = useMemo(
     () => ({
       Filter: DefaultColumnFilter,
@@ -63,7 +63,7 @@ const UserTable = ({ data, deleteUser, updateUser, copyUser }) => {
             Header: 'Copy User',
             Cell: ({ row }) => (
               <span>
-                <button onClick={() => copyUser(row.original)} data-tip data-for="copy-user">
+                <button onClick={() => copyCustomerUser(row.original)} data-tip data-for="copy-user">
                   <CopyIcon className={style.icon} alt="Copy" />
                 </button>
                 <ReactTooltip id="copy-user">
@@ -76,7 +76,7 @@ const UserTable = ({ data, deleteUser, updateUser, copyUser }) => {
             Header: 'Delete User',
             Cell: ({ row }) => (
               <span>
-                <button onClick={() => deleteUser(row.original.id)} data-tip data-for="delete-user">
+                <button onClick={() => deleteCustomerUser(row.original.id)} data-tip data-for="delete-user">
                   <DeleteIcon className={style.icon} alt="Delete" />
                 </button>
                 <ReactTooltip id="delete-user">
@@ -97,16 +97,16 @@ const UserTable = ({ data, deleteUser, updateUser, copyUser }) => {
           },
           {
             Header: 'Email',
-            accessor: 'email',
+            accessor: 'user.email',
           },
           {
             Header: 'Name',
-            accessor: 'name',
+            accessor: 'user.name',
           },
         ],
       },
     ],
-    [copyUser, deleteUser],
+    [copyCustomerUser, deleteCustomerUser],
   );
 
   const {
@@ -130,7 +130,7 @@ const UserTable = ({ data, deleteUser, updateUser, copyUser }) => {
       columns,
       data,
       defaultColumn,
-      updateUser,
+      updateCustomerUser,
     },
     useFilters,
     usePagination,
@@ -218,9 +218,9 @@ const UserTable = ({ data, deleteUser, updateUser, copyUser }) => {
 
 UserTable.propTypes = {
   data: PropTypes.array,
-  deleteUser: PropTypes.func.isRequired,
-  updateUser: PropTypes.func.isRequired,
-  copyUser: PropTypes.func.isRequired,
+  deleteCustomerUser: PropTypes.func.isRequired,
+  updateCustomerUser: PropTypes.func.isRequired,
+  copyCustomerUser: PropTypes.func.isRequired,
 };
 
 export default UserTable;
