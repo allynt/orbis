@@ -14,21 +14,30 @@ export const LICENCE_DASHBOARD = 'Licence Dashboard';
 export const CORPORATE_ACCOUNT = 'Corporate Account';
 export const MESSAGES = 'Messages';
 
-const Admin = ({ user, fetchCustomer, fetchCustomerUsers, createUser, updateUser, copyUser, deleteUser }) => {
+const Admin = ({
+  user,
+  fetchCustomer,
+  fetchCustomerUsers,
+  createCustomerUser,
+  updateCustomerUser,
+  copyCustomerUser,
+  deleteCustomerUser,
+}) => {
   const selectedCustomer = useSelector(state => state.admin.currentCustomer);
   const selectedCustomerUsers = useSelector(state => state.admin.customerUsers);
+  const [visiblePanel, setVisiblePanel] = useState(USER_TABLE);
 
   useEffect(() => {
     if (!selectedCustomer) {
       fetchCustomer(user);
+    }
+  }, [user, selectedCustomer, fetchCustomer]);
+
+  useEffect(() => {
+    if (selectedCustomer && !selectedCustomerUsers) {
       fetchCustomerUsers(selectedCustomer);
     }
-    // if (!selectedCustomerUsers) {
-    //   fetchCustomerUsers(selectedCustomer);
-    // }
-  }, [user, selectedCustomer, selectedCustomerUsers, fetchCustomer, fetchCustomerUsers]);
-
-  const [visiblePanel, setVisiblePanel] = useState(USER_TABLE);
+  }, [selectedCustomer, selectedCustomerUsers, fetchCustomerUsers]);
 
   return (
     selectedCustomer && (
@@ -39,11 +48,12 @@ const Admin = ({ user, fetchCustomer, fetchCustomerUsers, createUser, updateUser
           <UserList
             title={USER_TABLE}
             user={user}
-            users={selectedCustomer.users}
-            createUser={createUser}
-            updateUser={updateUser}
-            copyUser={copyUser}
-            deleteUser={deleteUser}
+            customer={selectedCustomer}
+            users={selectedCustomerUsers}
+            createCustomerUser={createCustomerUser}
+            updateCustomerUser={updateCustomerUser}
+            copyCustomerUser={copyCustomerUser}
+            deleteCustomerUser={deleteCustomerUser}
           />
         )}
         {visiblePanel === ACTIVITY_LOG && <div>ACTIVITY LOG GOES HERE</div>}

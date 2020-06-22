@@ -34,11 +34,13 @@ let users = [
       },
       {
         name: 'OCP',
-        manager: true,
+        type: 'MANAGER',
+        status: 'ACTIVE',
       },
       {
         name: 'customer3',
-        manager: false,
+        type: 'MEMBER',
+        status: 'ACTIVE',
       },
     ],
   },
@@ -53,6 +55,7 @@ let users = [
     is_approved: false,
     profiles: {},
     roles: ['UserRole'],
+    customers: [],
   },
   {
     id: 3,
@@ -65,6 +68,7 @@ let users = [
     is_approved: true,
     profiles: {},
     roles: ['UserRole'],
+    customers: [],
   },
 ];
 

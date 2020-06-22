@@ -44,7 +44,7 @@ const usersSlice = createSlice({
       state.isLoading = true;
     },
     deleteCustomerUserSuccess: (state, { payload }) => {
-      state.customerUsers = state.customerUsers.filter(user => user.id !== payload);
+      state.customerUsers = state.customerUsers.filter(user => user.id !== payload.id);
       state.isLoading = false;
       state.error = null;
     },
@@ -64,7 +64,7 @@ const usersSlice = createSlice({
       state.error = payload;
       state.isLoading = false;
     },
-    createCustomerCustomerUserRequested: state => {
+    createCustomerUserRequested: state => {
       state.isLoading = true;
     },
     createCustomerUserSuccess: (state, { payload }) => {
@@ -102,8 +102,8 @@ export const fetchCustomer = user => async (dispatch, getState) => {
 
   dispatch(fetchCustomerRequested());
 
-  const customer = user.customers[0].name;
-  const response = await getData(`${API}${customer}`, headers);
+  const customerName = user.customers[0].name;
+  const response = await getData(`${API}${customerName}`, headers);
 
   if (!response.ok) {
     const message = `${response.status} ${response.statusText}`;
@@ -121,7 +121,15 @@ export const createCustomerUser = (customer, fields) => async (dispatch, getStat
 
   dispatch(createCustomerUserRequested());
 
-  const response = await sendData(`${API}${customer}/users/`, fields, headers);
+  const data = {
+    status: 'PENDING',
+    type: 'MEMBER',
+    user: {
+      ...fields,
+      agreed_terms: true,
+    },
+  };
+  const response = await sendData(`${API}${customer.name}/users/`, data, headers);
 
   if (!response.ok) {
     const message = `${response.status} ${response.statusText}`;
@@ -161,7 +169,7 @@ export const updateCustomerUser = (customer, user) => async (dispatch, getState)
 
   dispatch(updateCustomerUserRequested());
 
-  const response = await sendData(`${API}${customer}/users/${user.id}`, user, headers, 'PUT');
+  const response = await sendData(`${API}${customer.name}/users/${user.id}`, user, headers, 'PUT');
 
   if (!response.ok) {
     const message = `${response.status} ${response.statusText}`;
@@ -176,12 +184,12 @@ export const updateCustomerUser = (customer, user) => async (dispatch, getState)
   return dispatch(updateCustomerUserSuccess(userData));
 };
 
-export const deleteCustomerUser = (customer, id) => async (dispatch, getState) => {
+export const deleteCustomerUser = (customer, user) => async (dispatch, getState) => {
   const headers = getJsonAuthHeaders(getState());
 
   dispatch(deleteCustomerUserRequested());
 
-  const response = await sendData(`${API}${customer}/users/`, id, headers, 'DELETE');
+  const response = await sendData(`${API}${customer.name}/users/${user.id}`, null, headers, 'DELETE');
 
   if (!response.ok) {
     const message = `${response.status} ${response.statusText}`;
@@ -191,7 +199,7 @@ export const deleteCustomerUser = (customer, id) => async (dispatch, getState) =
     return dispatch(deleteCustomerUserFailure({ message }));
   }
 
-  return dispatch(deleteCustomerUserSuccess(id));
+  return dispatch(deleteCustomerUserSuccess(user));
 };
 
 export const copyCustomerUser = (customer, user) => async dispatch => {

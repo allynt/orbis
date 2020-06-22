@@ -15,17 +15,19 @@ jest.mock('./user-table.component', () => () => <div />);
 describe('User List Component', () => {
   let store = null;
   let users = null;
-  let createUser = null;
-  let deleteUser = null;
-  let updateUser = null;
-  let copyUser = null;
+  let customer = null;
+  let createCustomerUser = null;
+  let deleteCustomerUser = null;
+  let updateCustomerUser = null;
+  let copyCustomerUser = null;
 
   beforeEach(() => {
     users = [];
-    createUser = jest.fn();
-    deleteUser = jest.fn();
-    updateUser = jest.fn();
-    copyUser = jest.fn();
+    customer = {};
+    createCustomerUser = jest.fn();
+    deleteCustomerUser = jest.fn();
+    updateCustomerUser = jest.fn();
+    copyCustomerUser = jest.fn();
 
     fetch.resetMocks();
   });
@@ -36,10 +38,11 @@ describe('User List Component', () => {
     const { getByText } = render(
       <UserList
         users={null}
-        createUser={createUser}
-        deleteUser={deleteUser}
-        updateUser={updateUser}
-        copyUser={copyUser}
+        customer={null}
+        createCustomerUser={createCustomerUser}
+        deleteCustomerUser={deleteCustomerUser}
+        updateCustomerUser={updateCustomerUser}
+        copyCustomerUser={copyCustomerUser}
       />,
     );
 
@@ -53,10 +56,11 @@ describe('User List Component', () => {
       <Provider store={store}>
         <UserList
           users={users}
-          createUser={createUser}
-          deleteUser={deleteUser}
-          updateUser={updateUser}
-          copyUser={copyUser}
+          customer={customer}
+          createCustomerUser={createCustomerUser}
+          deleteCustomerUser={deleteCustomerUser}
+          updateCustomerUser={updateCustomerUser}
+          copyCustomerUser={copyCustomerUser}
         />
       </Provider>,
     );

@@ -122,10 +122,10 @@ const App = () => {
               component={Admin}
               fetchCustomer={user => dispatch(fetchCustomer(user))}
               fetchCustomerUsers={customer => dispatch(fetchCustomerUsers(customer))}
-              createUser={user => dispatch(createCustomerUser(user))}
-              updateUser={user => dispatch(updateCustomerUser(user))}
-              copyUser={user => dispatch(copyCustomerUser(user))}
-              deleteUser={id => dispatch(deleteCustomerUser(id))}
+              createCustomerUser={(customer, user) => dispatch(createCustomerUser(customer, user))}
+              updateCustomerUser={(customer, user) => dispatch(updateCustomerUser(customer, user))}
+              copyCustomerUser={(customer, user) => dispatch(copyCustomerUser(customer, user))}
+              deleteCustomerUser={(customer, user) => dispatch(deleteCustomerUser(customer, user))}
             />
           </Suspense>
         </Switch>
