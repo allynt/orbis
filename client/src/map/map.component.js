@@ -48,7 +48,7 @@ import {
   PROFILE,
   SATELLITE_LAYERS,
 } from '../toolbar/toolbar-constants';
-import { GEOJSON, RASTER, VECTOR, personTypes } from './map.constants';
+import { RASTER, VECTOR, personTypes } from './map.constants';
 import useMapControl from './use-map-control.hook';
 import { useMapEvent, useMapLayerEvent } from './use-map-event.hook';
 import useMap from './use-map.hook';
@@ -283,24 +283,6 @@ const Map = ({
               map.removeSource(sourceId);
             };
           } else if (layer.type.toLowerCase() === VECTOR) {
-            map.addSource(sourceId, {
-              type: layer.type,
-              tiles: [layer.metadata.url],
-            });
-
-            map.addLayer({
-              id: `${layer.name}-layer`,
-              type: 'fill',
-              source: sourceId,
-              'source-layer': layer.name,
-              layout: {},
-              paint: { 'fill-outline-color': '#484496', 'fill-color': 'green' },
-            });
-            return () => {
-              map.removeLayer(`${layer.name}-layer`);
-              map.removeSource(sourceId);
-            };
-          } else if (layer.type.toLowerCase() === GEOJSON) {
             const sourceId = `${layer.name}-source`;
             let data = null;
             if (layer.data) {
@@ -558,21 +540,6 @@ const Map = ({
             const sourceId = `${layer.id}-source`;
             if (!map.getSource(sourceId)) {
               if (layer.type.toLowerCase() === VECTOR) {
-                console.log('Add VECTOR SOURCE/LAYER: ', layer);
-                map.addSource(sourceId, {
-                  type: layer.type,
-                  tiles: [layer.url],
-                });
-
-                map.addLayer({
-                  id: `${layer.id}-layer`,
-                  type: 'fill',
-                  source: sourceId,
-                  'source-layer': layer.id,
-                  layout: {},
-                  paint: { 'fill-outline-color': '#484496', 'fill-color': 'green' },
-                });
-              } else if (layer.type.toLowerCase() === GEOJSON) {
                 console.log('Add GEOJSON SOURCE/LAYER: ', layer);
                 map.addSource(sourceId, {
                   type: 'geojson',
