@@ -21,6 +21,7 @@ const usersSlice = createSlice({
     },
     fetchCustomerSuccess: (state, { payload }) => {
       state.currentCustomer = payload;
+      state.customerUsers = null;
       state.isLoading = false;
       state.error = null;
     },
@@ -144,8 +145,6 @@ export const createCustomerUser = (customer, fields) => async (dispatch, getStat
 };
 
 export const fetchCustomerUsers = customer => async (dispatch, getState) => {
-  console.log('in fetchCustomerUsers');
-  console.log(customer);
   const headers = getJsonAuthHeaders(getState());
 
   dispatch(fetchCustomerUsersRequested());

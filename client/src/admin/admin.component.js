@@ -6,7 +6,6 @@ import UserList from './user-list.component';
 import OrganisationMenu from './organisation-menu/organisation-menu.component';
 
 import styles from './admin.module.css';
-import { fetchCustomerUsers } from './admin.slice';
 
 export const USER_TABLE = 'Users';
 export const ACTIVITY_LOG = 'Activity Log';
