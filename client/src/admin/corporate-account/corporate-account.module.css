@@ -50,12 +50,13 @@
   margin-right: 3.125rem;
 }
 
-.vatField {
-  align-items: center !important;
-}
-
+.vatField > *,
 .field > *:not(:last-child) {
   margin-right: 1rem;
+}
+
+.vatField {
+  align-items: center !important;
 }
 
 .fieldKey {

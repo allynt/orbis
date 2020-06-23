@@ -87,4 +87,16 @@ describe('Update User Form Component', () => {
 
     expect(getByText('Update Account')).not.toHaveAttribute('disabled');
   });
+
+  xit('should switch view to `User Table` when `Assign New  Admin` button is clicked', () => {
+    const { getByText } = render(<CorporateAccount title={title} user={user} customer={customer} />);
+
+    expect(getByText('Update Account')).not.toHaveAttribute('disabled');
+  });
+
+  xit('should open dialog when `Assign New  Admin` button is clicked', () => {
+    const { getByText } = render(<CorporateAccount title={title} user={user} customer={customer} />);
+
+    expect(getByText('Update Account')).not.toHaveAttribute('disabled');
+  });
 });

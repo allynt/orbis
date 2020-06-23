@@ -39,7 +39,7 @@ const CorporateAccount = ({ title, user, customer }) => {
           <div className={styles.fieldContainer}>
             <div className={styles.field}>
               <h2 className={styles.fieldKey}>Name:</h2>
-              <Textfield name="name" value={values.name || 'Add Name'} onChange={handleChange} />
+              <Textfield name="name" value={values.name || ''} onChange={handleChange} placeholder="Add Name" />
             </div>
           </div>
 
@@ -48,19 +48,30 @@ const CorporateAccount = ({ title, user, customer }) => {
           <div className={styles.fieldContainer}>
             <div className={styles.field}>
               <h2 className={styles.fieldKey}>Country:</h2>
-              <Textfield name="country" value={values.country || 'Add Country'} onChange={handleChange} />
+              <Textfield
+                name="country"
+                value={values.country || ''}
+                onChange={handleChange}
+                placeholder="Add Country"
+              />
             </div>
             <div className={styles.field}>
               <h2 className={styles.fieldKey}>Street &amp; House Number:</h2>
               <Textfield
                 name="street-house-number"
-                value={values.streetAndNumber || 'Add Address'}
+                value={values.streetAndNumber || ''}
                 onChange={handleChange}
+                placeholder="Add Address"
               />
             </div>
             <div className={styles.field}>
               <h2 className={styles.fieldKey}>Postcode:</h2>
-              <Textfield name="postcode" value={values.postcode || 'Add Postcode'} onChange={handleChange} />
+              <Textfield
+                name="postcode"
+                value={values.postcode || ''}
+                onChange={handleChange}
+                placeholder="Add Postcode"
+              />
             </div>
           </div>
 
@@ -77,8 +88,9 @@ const CorporateAccount = ({ title, user, customer }) => {
               <h2 className={styles.fieldKey}>VAT Number:</h2>
               <Textfield
                 name="vat number"
-                value={values.vatNumber || 'Add Number'}
+                value={values.vatNumber || ''}
                 onChange={handleChange}
+                placeholder="Add Number"
                 disabled={!vatRegistered}
               />
             </div>
@@ -89,15 +101,15 @@ const CorporateAccount = ({ title, user, customer }) => {
           <div className={styles.fieldContainer}>
             <div className={styles.field}>
               <h2 className={styles.fieldKey}>Full Name:</h2>
-              <Textfield name="full name" value={values.name || 'Add Name'} onChange={handleChange} />
+              <Textfield name="full name" value={values.name || ''} onChange={handleChange} placeholder="Add Name" />
             </div>
             <div className={styles.field}>
               <h2 className={styles.fieldKey}>Email:</h2>
-              <Textfield name="email" value={values.email || 'Add Email'} onChange={handleChange} />
+              <Textfield name="email" value={values.email || ''} onChange={handleChange} placeholder="Add Email" />
             </div>
             <div className={styles.field}>
               <h2 className={styles.fieldKey}>Phone:</h2>
-              <Textfield name="phone" value={values.phone || 'Add Phone'} onChange={handleChange} />
+              <Textfield name="phone" value={values.phone || ''} onChange={handleChange} placeholder="Add Phone" />
             </div>
           </div>
 
