@@ -8,9 +8,9 @@ export const NoUsers = () => <ActiveUsersBoard />;
 export const Users = () => (
   <ActiveUsersBoard
     activeUsers={[
-      { name: 'User One', licences: ['Rice', 'Oil'], email: 'userone@test.com' },
-      { name: 'User Two', licences: ['Oil', 'Rice'], email: 'usertwo@test.com' },
-      { name: 'User Three', licences: new Array(20).fill('lots'), email: 'userthree@test.com' },
+      { licences: ['Rice', 'Oil'], user: { name: 'User One', email: 'userone@test.com' } },
+      { licences: ['Oil', 'Rice'], user: { name: 'User Two', email: 'usertwo@test.com' } },
+      { licences: new Array(20).fill('lots'), user: { name: 'User Three', email: 'userthree@test.com' } },
     ]}
   />
 );

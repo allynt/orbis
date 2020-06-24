@@ -9,6 +9,8 @@ import styles from './admin.module.css';
 import { ActiveUsersBoard } from './active-users-board/active-users-board.component';
 import { fetchCustomer, fetchCustomerUsers } from './admin.slice';
 
+import { USER_STATUS } from './admin.constants';
+
 export const USER_TABLE = 'Users';
 export const ACTIVITY_LOG = 'Activity Log';
 export const LICENCE_DASHBOARD = 'Licence Dashboard';
@@ -39,7 +41,7 @@ const Admin = ({ user }) => {
         <LeftSidebar user={user} setVisiblePanel={setVisiblePanel} visiblePanel={visiblePanel} />
         {visiblePanel === USER_TABLE && (
           <ContentWrapper title="Users">
-            <ActiveUsersBoard activeUsers={selectedCustomerUsers.map(cm => cm.user)} />
+            <ActiveUsersBoard activeUsers={selectedCustomerUsers?.filter(user => user.status === USER_STATUS.active)} />
           </ContentWrapper>
         )}
         {visiblePanel === CORPORATE_ACCOUNT && <div>CORPORATE ACCOUNT GOES HERE</div>}

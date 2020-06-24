@@ -3,9 +3,9 @@ import { render } from '@testing-library/react';
 import { ActiveUsersBoard } from './active-users-board.component';
 
 const activeUsers = [
-  { name: 'Test One', licences: ['one', 'two'], email: 'test1@test.com' },
-  { name: 'Test Two', licences: ['three', 'four'], email: 'test2@test.com' },
-  { name: 'Test Three', licences: ['five', 'six'], email: 'test3@test.com' },
+  { licences: ['one', 'two'], user: { name: 'Test One', email: 'test1@test.com' } },
+  { licences: ['three', 'four'], user: { name: 'Test Two', email: 'test2@test.com' } },
+  { licences: ['five', 'six'], user: { name: 'Test Three', email: 'test3@test.com' } },
 ];
 
 describe('ActiveUsersBoard', () => {
@@ -18,7 +18,7 @@ describe('ActiveUsersBoard', () => {
   it.each(cases)("Displays all active user's %s", (_, text) => {
     const { getByText } = render(<ActiveUsersBoard activeUsers={activeUsers} />);
     activeUsers.forEach(user =>
-      expect(getByText(text === 'licences' ? user[text].sort().join(', ') : user[text])).toBeInTheDocument(),
+      expect(getByText(text === 'licences' ? user[text].sort().join(', ') : user.user[text])).toBeInTheDocument(),
     );
   });
 

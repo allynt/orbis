@@ -39,6 +39,7 @@ let customerUsers = [
     type: 'MANAGER',
     status: 'ACTIVE',
     customer: 'cyberdyne',
+    licences: ['licence1', 'licence2'],
     user: {
       id: 2,
       username: 'admin@test.com',
@@ -55,6 +56,25 @@ let customerUsers = [
       permissions: [],
     },
   },
+  {
+    id: 2,
+    type: 'MEMBER',
+    status: 'PENDING',
+    customer: 'cyberdyne',
+    user: {
+      id: 1,
+      username: 'user@test.com',
+      email: 'user@test.com',
+      password: 'panda',
+      name: null,
+      description: '',
+      is_verified: true,
+      is_approved: true,
+      profiles: {},
+      roles: ['UserRole', 'AstrosatRole'],
+      customers: [],
+    },
+  },
 ];
 
 const getCustomer = user => {
@@ -63,7 +83,6 @@ const getCustomer = user => {
 };
 
 const getCustomerUsers = customer => {
-  const users = customerUsers.filter(cu => cu.customer === customer.name);
   return customerUsers.filter(cu => cu.customer === customer.name);
 };
 
