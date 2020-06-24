@@ -1,0 +1,79 @@
+.corporate {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  padding: 0 1.875rem;
+  color: var(--color-darkgrey);
+  overflow-y: scroll !important;
+}
+
+.corporateAccount {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.logoContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logoContainer > * {
+  margin-right: 1.25rem;
+}
+
+.logo {
+  height: 4.4375rem;
+  width: 4.875rem;
+  border-radius: 1rem;
+  box-shadow: 0 16px 24px 0 rgba(213, 213, 213, 0.5);
+  object-fit: cover;
+}
+
+.fieldTitle {
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.fieldContainer {
+  display: flex;
+  margin: 1.25rem 0;
+}
+
+.field {
+  display: flex;
+  align-items: baseline;
+  margin-right: 3.125rem;
+}
+
+.field > *:not(:last-child) {
+  margin-right: 1rem;
+}
+
+.vatField {
+  align-items: center;
+}
+
+.fieldLabel {
+  font-size: 1rem;
+  font-weight: 600;
+  min-width: fit-content;
+}
+
+.notRegistered > * {
+  opacity: 0.5;
+}
+
+.paymentID {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.paymentID .ID {
+  font-style: italic;
+}
