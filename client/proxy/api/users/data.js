@@ -25,7 +25,7 @@ let users = [
     is_verified: true,
     is_approved: true,
     profiles: {},
-    roles: ['AdminRole', 'UserRole'],
+    roles: ['AdminRole', 'UserRole', 'AstrosatRole'],
     customers: [
       {
         name: 'cyberdyne',

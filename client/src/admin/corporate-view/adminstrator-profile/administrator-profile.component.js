@@ -4,9 +4,11 @@ import { useForm, Button, Textfield } from '@astrosat/astrosat-ui';
 
 import validate from './administrator-profile.validator';
 
-import ContentWrapper from '../content-wrapper.component';
+import ContentWrapper from '../../content-wrapper.component';
 
-import styles from './corporate.module.css';
+import { Field } from '../corporate-view.component';
+
+import styles from '../corporate-view.module.css';
 
 const AdministratorProfile = ({ user }) => {
   const { handleChange, handleSubmit, values, errors } = useForm(onSubmit, validate);
@@ -14,8 +16,6 @@ const AdministratorProfile = ({ user }) => {
   function onSubmit() {
     console.log('Values: ', values);
   }
-
-  const Field = ({ children }) => <div className={styles.fieldContainer}>{children}</div>;
 
   return (
     <ContentWrapper title={'Administrator'} user={user}>

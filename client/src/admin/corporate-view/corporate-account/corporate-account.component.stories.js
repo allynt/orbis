@@ -1,21 +1,9 @@
 import React from 'react';
 
-import Corporate from './corporate.component';
+import CorporateAccount from './corporate-account.component';
 
-export default { title: 'Admin/Corporate', component: Corporate };
+export default { title: 'Admin/Corporate', component: CorporateAccount };
 
-const title = 'Corporate';
-const user = {
-  name: 'John Smith',
-  email: 'jsmith@gmail.com',
-  phone: '12345678910',
-  customers: [
-    {
-      name: 'cyberdyne',
-      type: 'manager',
-    },
-  ],
-};
 const customer = {
   type: 'MULTIPLE',
   name: 'cyberdyne',
@@ -46,4 +34,4 @@ const customer = {
   data_total: 50,
 };
 
-export const Default = () => <Corporate title={title} user={user} customer={customer} />;
+export const Default = () => <CorporateAccount customer={customer} />;
