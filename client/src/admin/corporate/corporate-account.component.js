@@ -6,7 +6,7 @@ import validate from './corporate-account.validator';
 
 import ContentWrapper from '../content-wrapper.component';
 
-import styles from './corporate-account.module.css';
+import styles from './corporate.module.css';
 
 const CorporateAccount = ({ customer }) => {
   const { handleChange, handleSubmit, values, errors } = useForm(onSubmit, validate);
@@ -33,8 +33,13 @@ const CorporateAccount = ({ customer }) => {
         <fieldset>
           <Field>
             <div className={styles.field}>
-              <label className={styles.fieldKey}>Name:</label>
-              <Textfield name="name" value={values.name || ''} onChange={handleChange} placeholder="Add Name" />
+              <label className={styles.fieldLabel}>Name:</label>
+              <Textfield
+                name="name"
+                value={values.name || customer.title}
+                onChange={handleChange}
+                placeholder="Add Name"
+              />
             </div>
           </Field>
 
@@ -42,7 +47,7 @@ const CorporateAccount = ({ customer }) => {
 
           <Field>
             <div className={styles.field}>
-              <h2 className={styles.fieldKey}>Country:</h2>
+              <label className={styles.fieldLabel}>Country:</label>
               <Textfield
                 name="country"
                 value={values.country || ''}
@@ -51,7 +56,7 @@ const CorporateAccount = ({ customer }) => {
               />
             </div>
             <div className={styles.field}>
-              <h2 className={styles.fieldKey}>Street &amp; House Number:</h2>
+              <label className={styles.fieldLabel}>Street &amp; House Number:</label>
               <Textfield
                 name="streetAndNumber"
                 value={values.streetAndNumber || ''}
@@ -60,7 +65,7 @@ const CorporateAccount = ({ customer }) => {
               />
             </div>
             <div className={styles.field}>
-              <h2 className={styles.fieldKey}>Postcode:</h2>
+              <label className={styles.fieldLabel}>Postcode:</label>
               <Textfield
                 name="postcode"
                 value={values.postcode || ''}
@@ -74,13 +79,13 @@ const CorporateAccount = ({ customer }) => {
 
           <Field>
             <div className={styles.vatField}>
-              <h2 className={styles.fieldKey}>VAT Registered:</h2>
+              <label className={styles.fieldLabel}>VAT Registered:</label>
               <Radio name="vat" ariaLabel="true" value={values.vat || ''} onChange={handleChange} />
               <Radio name="vat" ariaLabel="false" value={values.vat || ''} onChange={handleChange} />
             </div>
 
-            <div className={`${styles.field}`}>
-              <h2 className={styles.fieldKey}>VAT Number:</h2>
+            <div className={styles.field}>
+              <label className={styles.fieldLabel}>VAT Number:</label>
               <Textfield
                 name="vat number"
                 value={values.vatNumber || ''}
@@ -95,15 +100,15 @@ const CorporateAccount = ({ customer }) => {
 
           <Field>
             <div className={styles.field}>
-              <h2 className={styles.fieldKey}>Full Name:</h2>
+              <label className={styles.fieldLabel}>Full Name:</label>
               <Textfield name="full name" value={values.name || ''} onChange={handleChange} placeholder="Add Name" />
             </div>
             <div className={styles.field}>
-              <h2 className={styles.fieldKey}>Email:</h2>
+              <label className={styles.fieldLabel}>Email:</label>
               <Textfield name="email" value={values.email || ''} onChange={handleChange} placeholder="Add Email" />
             </div>
             <div className={styles.field}>
-              <h2 className={styles.fieldKey}>Phone:</h2>
+              <label className={styles.fieldLabel}>Phone:</label>
               <Textfield name="phone" value={values.phone || ''} onChange={handleChange} placeholder="Add Phone" />
             </div>
           </Field>
@@ -112,11 +117,11 @@ const CorporateAccount = ({ customer }) => {
 
           <Field>
             <div className={styles.field}>
-              <h2 className={styles.fieldKey}>Full Storage</h2>
+              <label className={styles.fieldLabel}>Full Storage</label>
               <p>{customer.data_limit} GB</p>
             </div>
             <div className={styles.field}>
-              <h2 className={styles.fieldKey}>Used Storage:</h2>
+              <label className={styles.fieldLabel}>Used Storage:</label>
               <p>{customer.data_total} GB</p>
             </div>
           </Field>

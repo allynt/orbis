@@ -6,7 +6,7 @@ import validate from './corporate-account.validator';
 
 import ContentWrapper from '../content-wrapper.component';
 
-import styles from './corporate-account.module.css';
+import styles from './corporate.module.css';
 
 const AdministratorProfile = ({ user }) => {
   const { handleChange, handleSubmit, values, errors } = useForm(onSubmit, validate);
@@ -33,11 +33,11 @@ const AdministratorProfile = ({ user }) => {
         <fieldset>
           <Field>
             <div className={styles.field}>
-              <h2 className={styles.fieldKey}>Name:</h2>
+              <label className={styles.fieldLabel}>Name:</label>
               <Textfield name="name" value={values.name || user.name} onChange={handleChange} placeholder="Add Name" />
             </div>
             <div className={styles.field}>
-              <h2 className={styles.fieldKey}>Email:</h2>
+              <label className={styles.fieldLabel}>Email:</label>
               <Textfield
                 name="email"
                 value={values.email || user.email}
@@ -46,7 +46,7 @@ const AdministratorProfile = ({ user }) => {
               />
             </div>
             <div className={styles.field}>
-              <h2 className={styles.fieldKey}>Phone:</h2>
+              <label className={styles.fieldLabel}>Phone:</label>
               <Textfield
                 name="phone"
                 value={values.phone || user.phone}
@@ -58,7 +58,7 @@ const AdministratorProfile = ({ user }) => {
 
           <Field>
             <div className={styles.field}>
-              <h2 className={styles.fieldKey}>Role:</h2>
+              <label className={styles.fieldLabel}>Role:</label>
               <Textfield
                 name="name"
                 value={values.name || user.type}
