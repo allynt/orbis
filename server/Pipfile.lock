@@ -54,18 +54,18 @@
         },
         "boto3": {
             "hashes": [
-                "sha256:4856c8cb4150b900cc7dccbdf16f542fb8c12e97b17639979e58760847f7cf35",
-                "sha256:fe6f7f58fa53c4dd86432315717c989a65a5a8748e6219a53725be1041c4a113"
+                "sha256:185f7b36c16f76e501d8dfc5cd209113426e078e4968dd13cc355c916bc99597",
+                "sha256:51243ba0e976343ca0b98bb4a15fc3d588526220f6ba45bfed7ea45472b1e033"
             ],
             "index": "pypi",
-            "version": "==1.14.7"
+            "version": "==1.14.9"
         },
         "botocore": {
             "hashes": [
-                "sha256:cce790e65368d28dfd715558daea6890922716efa69d3a4c76d80348a71ad460",
-                "sha256:e582e3ba61d812e8dd0939c0455c6f68cf41587506a3a30deafc54825087de01"
+                "sha256:7dd59bc766d567ca83bc6113aa139d92ba447738ccdfcd40788848553d329a52",
+                "sha256:cd4bb2d96ff2ec6bf4fbcdb2f241d0fb6ba1e7955b4721cf1d81f13db02768b6"
             ],
-            "version": "==1.17.7"
+            "version": "==1.17.9"
         },
         "brotli": {
             "hashes": [
@@ -232,10 +232,10 @@
                 "with_social"
             ],
             "hashes": [
-                "sha256:fb348f476925622aee5b93845a7e7c7bc0c6b3ab95511e4ee830ad6d98b1abe8"
+                "sha256:e96467385ed19b812a6f0490bf7c5098e24b4d1b6c1b64d7ca295a97741a63df"
             ],
             "index": "pypi",
-            "version": "==1.0.8"
+            "version": "==1.0.9"
         },
         "django": {
             "hashes": [
@@ -254,12 +254,12 @@
         "django-astrosat-core": {
             "editable": true,
             "git": "https://github.com/astrosat/django-astrosat-core.git",
-            "ref": "bfb29d31d4c560ec81cdac19f235b2f69fd82f08"
+            "ref": "4a9856c0367abf6ed028882c6954a0a046f8693a"
         },
         "django-astrosat-users": {
             "editable": true,
             "git": "https://github.com/astrosat/django-astrosat-users.git",
-            "ref": "87cffadb222d5890e6b650bb4990fb1333c100f1"
+            "ref": "5b8a3fb2dcc4b1caa381c4159bcd50d92ae8f27e"
         },
         "django-cors-headers": {
             "hashes": [
@@ -1105,10 +1105,10 @@
         },
         "wcwidth": {
             "hashes": [
-                "sha256:79375666b9954d4a1a10739315816324c3e73110af9d0e102d906fdb0aec009f",
-                "sha256:8c6b5b6ee1360b842645f336d9e5d68c55817c26d3050f46b235ef2bc650e48f"
+                "sha256:beb4802a9cebb9144e99086eff703a642a13d6a0052920003a230f3294bbe784",
+                "sha256:c4d647b99872929fdb7bdcaa4fbe7f01413ed3d98077df798530e5b04f116c83"
             ],
-            "version": "==0.2.4"
+            "version": "==0.2.5"
         },
         "zipp": {
             "hashes": [
