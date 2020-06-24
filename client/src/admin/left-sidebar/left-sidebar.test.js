@@ -4,7 +4,7 @@ import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
 import LeftSidebar from './left-sidebar.component';
-import { USER_TABLE } from '../admin.component';
+import { ADMIN_VIEWS } from '../admin.constants';
 
 describe('Admin Side Menu Component', () => {
   let setVisiblePanel = null;
@@ -22,13 +22,13 @@ describe('Admin Side Menu Component', () => {
     const { getByTitle } = render(<LeftSidebar setVisiblePanel={setVisiblePanel} />);
 
     userEvent.click(getByTitle('Orbis Admin Logo'));
-    expect(setVisiblePanel).toHaveBeenCalledWith(USER_TABLE);
+    expect(setVisiblePanel).toHaveBeenCalledWith(ADMIN_VIEWS.home);
   });
 
   it('should switch main panel views when side-menu buttons are clicked', () => {
     const { getByText } = render(<LeftSidebar setVisiblePanel={setVisiblePanel} />);
     userEvent.click(getByText('Home'));
-    expect(setVisiblePanel).toHaveBeenCalledWith(USER_TABLE);
+    expect(setVisiblePanel).toHaveBeenCalledWith(ADMIN_VIEWS.home);
   });
 
   it('should open Orbis in a new tab when "Launch Orbis" link clicked', () => {
