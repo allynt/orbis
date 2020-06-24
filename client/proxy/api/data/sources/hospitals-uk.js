@@ -4,7 +4,7 @@ module.exports = {
   namespace: 'core',
   name: 'hospitals-uk',
   version: '2019-12-17',
-  type: 'geojson', // vector|raster|geojson
+  type: 'geojson', // vector|raster
   status: 'published', // draft|published|deprecated
   metadata: {
     label: 'UK Hospitals',

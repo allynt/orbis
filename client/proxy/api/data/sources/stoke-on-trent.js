@@ -4,7 +4,7 @@ module.exports = {
   namespace: 'test',
   name: 'stoke-on-trent',
   version: 'v1',
-  type: 'vector', // vector|raster|geojson
+  type: 'vector', // vector|raster
   status: 'published', // draft|published|deprecated
   metadata: {
     label: 'Stoke-On-Trent',

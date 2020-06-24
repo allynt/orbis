@@ -4,7 +4,7 @@ module.exports = {
   namespace: 'test',
   name: 'super-sen2-japan-band',
   version: 'dec-2019',
-  type: 'raster', // vector|raster|geojson
+  type: 'raster', // vector|raster
   status: 'published', // draft|published|deprecated
   metadata: {
     label: 'Japan Band5',

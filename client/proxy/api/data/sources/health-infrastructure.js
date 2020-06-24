@@ -7,7 +7,7 @@ module.exports = {
     description: 'Description of Health infrastructure layer.',
     filters: ['type'],
   },
-  type: 'geojson',
+  type: 'vector',
   data: {
     type: 'FeatureCollection',
     features: [
