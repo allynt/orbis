@@ -7,6 +7,8 @@ from django.urls import resolve, reverse
 from rest_framework import status
 from rest_framework.test import APIClient
 
+from astrosat.tests.utils import shuffle_string
+
 from astrosat_users.models import User
 from astrosat_users.tests.utils import *
 

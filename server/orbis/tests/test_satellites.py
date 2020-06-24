@@ -8,6 +8,8 @@ from django.urls import resolve, reverse
 
 from rest_framework import status
 
+from astrosat.tests.utils import shuffle_string
+
 from astrosat_users.tests.utils import *
 
 from orbis.serializers.serializers_satellites import SimplifiedGeometryField
