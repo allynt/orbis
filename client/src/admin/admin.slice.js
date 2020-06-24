@@ -99,7 +99,6 @@ export const {
 } = usersSlice.actions;
 
 export const fetchCustomer = user => async (dispatch, getState) => {
-  console.log('fetchCustomer');
   const headers = getJsonAuthHeaders(getState());
   dispatch(fetchCustomerRequested());
 

@@ -9,13 +9,13 @@ import styles from './admin.module.css';
 import { ActiveUsersBoard } from './active-users-board/active-users-board.component';
 import { fetchCustomer, fetchCustomerUsers } from './admin.slice';
 
-import { USER_STATUS, ADMIN_VIEWS } from './admin.constants';
+import { USER_STATUS, ADMIN_VIEW } from './admin.constants';
 
 const Admin = ({ user }) => {
   const dispatch = useDispatch();
   const selectedCustomer = useSelector(state => state.admin.currentCustomer);
   const selectedCustomerUsers = useSelector(state => state.admin.customerUsers);
-  const [visiblePanel, setVisiblePanel] = useState(ADMIN_VIEWS.home);
+  const [visiblePanel, setVisiblePanel] = useState(ADMIN_VIEW.home);
 
   useEffect(() => {
     if (!selectedCustomer) {
@@ -33,12 +33,12 @@ const Admin = ({ user }) => {
     selectedCustomer && (
       <div className={styles.adminConsole}>
         <LeftSidebar user={user} setVisiblePanel={setVisiblePanel} visiblePanel={visiblePanel} />
-        {visiblePanel === ADMIN_VIEWS.home && (
+        {visiblePanel === ADMIN_VIEW.home && (
           <ContentWrapper title="Users">
             <ActiveUsersBoard activeUsers={selectedCustomerUsers?.filter(user => user.status === USER_STATUS.active)} />
           </ContentWrapper>
         )}
-        {visiblePanel === ADMIN_VIEWS.corporateAccount && <div>CORPORATE ACCOUNT GOES HERE</div>}
+        {visiblePanel === ADMIN_VIEW.corporateAccount && <div>CORPORATE ACCOUNT GOES HERE</div>}
         <OrganisationMenu customer={selectedCustomer} setVisiblePanel={setVisiblePanel} />
       </div>
     )

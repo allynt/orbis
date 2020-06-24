@@ -3,7 +3,7 @@ export const USER_STATUS = {
   active: 'ACTIVE',
 };
 
-export const ADMIN_VIEWS = {
+export const ADMIN_VIEW = {
   home: 'Home',
   corporateAccount: 'Corporate Account',
 };
