@@ -2,7 +2,7 @@ import React from 'react';
 
 import { useForm, Button, Textfield } from '@astrosat/astrosat-ui';
 
-import validate from './corporate-account.validator';
+import validate from './administrator-profile.validator';
 
 import ContentWrapper from '../content-wrapper.component';
 
