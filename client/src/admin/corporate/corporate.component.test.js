@@ -3,6 +3,7 @@ import React from 'react';
 import { cleanup, render } from '@testing-library/react';
 
 import CorporateAccount from './corporate-account.component';
+import AdministratorProfile from './administrator-profile.component';
 
 describe('Update User Form Component', () => {
   let title = 'Corporate Account';
@@ -50,30 +51,26 @@ describe('Update User Form Component', () => {
   afterEach(cleanup);
 
   it('should render the Corporate Account Form', () => {
-    const { container, getByText, getByAltText, getAllByText } = render(
-      <CorporateAccount title={title} user={user} customer={customer} />,
-    );
+    const { container, getByText, getByAltText } = render(<CorporateAccount title={title} customer={customer} />);
 
     expect(container.querySelector('form')).toBeInTheDocument();
     expect(getByAltText('Organisation Logo')).toBeInTheDocument();
-    expect(getAllByText('Name:')[0]).toBeInTheDocument();
+    expect(getByText('Name:')).toBeInTheDocument();
     expect(getByText('VAT Registered:')).toBeInTheDocument();
     expect(getByText('Full Name:')).toBeInTheDocument();
     expect(getByText('Storage Info')).toBeInTheDocument();
     expect(getByText('Payment Account ID:')).toBeInTheDocument();
-    expect(getAllByText('Update Changes')[0]).toBeInTheDocument();
+    expect(getByText('Update Changes')).toBeInTheDocument();
   });
 
   it('should render the Administrator Form', () => {
-    const { container, getByText, getByAltText, getAllByText } = render(
-      <CorporateAccount title={title} user={user} customer={customer} />,
-    );
+    const { container, getByText, getByAltText } = render(<AdministratorProfile title={title} user={user} />);
 
     expect(container.querySelector('form')).toBeInTheDocument();
     expect(getByAltText('Admin Avatar')).toBeInTheDocument();
-    expect(getAllByText('Name:')[1]).toBeInTheDocument();
+    expect(getByText('Name:')).toBeInTheDocument();
     expect(getByText('Role:')).toBeInTheDocument();
-    expect(getAllByText('Update Changes')[1]).toBeInTheDocument();
+    expect(getByText('Update Changes')).toBeInTheDocument();
   });
 
   xit('should disable `Update Changes` buttons until changes have been made', () => {
