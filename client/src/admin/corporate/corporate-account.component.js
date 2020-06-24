@@ -75,7 +75,7 @@ const CorporateAccount = ({ customer }) => {
             </div>
           </Field>
 
-          <h2 className={styles.fieldTitle}>VAT Info</h2>
+          {/* <h2 className={styles.fieldTitle}>VAT Info</h2>
 
           <Field>
             <div className={`${styles.field} ${styles.vatField}`}>
@@ -129,7 +129,8 @@ const CorporateAccount = ({ customer }) => {
 
         <div className={styles.paymentID}>
           Payment Account ID:<span className={styles.ID}> 1234-1234-1234</span>
-        </div>
+        </div> */}
+        </fieldset>
         <Button theme="tertiary" type="submit">
           Update Changes
         </Button>
