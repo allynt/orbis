@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
 import LeftSidebar from './left-sidebar/left-sidebar.component';
-import CorporateView from './corporate-view/corporate-view.component';
+import CorporateView from './corporate/corporate.component';
 import OrganisationMenu from './organisation-menu/organisation-menu.component';
 import ContentWrapper from './content-wrapper.component';
 
