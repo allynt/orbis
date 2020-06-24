@@ -8,7 +8,7 @@ describe('Update User Form Component', () => {
   let title = 'Corporate Account';
   let user = {
     name: 'John Smith',
-    email: 'johnnybigdick@gmail.com',
+    email: 'jsmith@gmail.com',
     phone: '12345678910',
     customers: [
       {

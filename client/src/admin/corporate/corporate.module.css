@@ -43,20 +43,18 @@
   margin: 1.25rem 0;
 }
 
-.field,
-.vatField {
+.field {
   display: flex;
   align-items: baseline;
   margin-right: 3.125rem;
 }
 
-.vatField > *,
 .field > *:not(:last-child) {
   margin-right: 1rem;
 }
 
 .vatField {
-  align-items: center !important;
+  align-items: center;
 }
 
 .fieldLabel {

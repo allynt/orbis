@@ -78,7 +78,7 @@ const CorporateAccount = ({ customer }) => {
           <h2 className={styles.fieldTitle}>VAT Info</h2>
 
           <Field>
-            <div className={styles.vatField}>
+            <div className={`${styles.field} ${styles.vatField}`}>
               <label className={styles.fieldLabel}>VAT Registered:</label>
               <Radio name="vat" ariaLabel="true" value={values.vat || ''} onChange={handleChange} />
               <Radio name="vat" ariaLabel="false" value={values.vat || ''} onChange={handleChange} />

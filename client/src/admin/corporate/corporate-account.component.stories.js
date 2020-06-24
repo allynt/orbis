@@ -7,7 +7,7 @@ export default { title: 'Admin/CorporateAccount', component: CorporateAccount };
 const title = 'Corporate Account';
 const user = {
   name: 'John Smith',
-  email: 'johnnybigdick@gmail.com',
+  email: 'jsmith@gmail.com',
   phone: '12345678910',
   customers: [
     {
