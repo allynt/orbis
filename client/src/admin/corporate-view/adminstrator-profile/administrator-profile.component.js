@@ -33,12 +33,23 @@ const AdministratorProfile = ({ user }) => {
         <fieldset>
           <Field>
             <div className={styles.field}>
-              <label className={styles.fieldLabel}>Name:</label>
-              <Textfield name="name" value={values.name || user.name} onChange={handleChange} placeholder="Add Name" />
+              <label htmlFor="name" className={styles.fieldLabel}>
+                Name:
+              </label>
+              <Textfield
+                id="name"
+                name="name"
+                value={values.name || user.name}
+                onChange={handleChange}
+                placeholder="Add Name"
+              />
             </div>
             <div className={styles.field}>
-              <label className={styles.fieldLabel}>Email:</label>
+              <label htmlFor="email" className={styles.fieldLabel}>
+                Email:
+              </label>
               <Textfield
+                id="email"
                 name="email"
                 value={values.email || user.email}
                 onChange={handleChange}
@@ -46,8 +57,11 @@ const AdministratorProfile = ({ user }) => {
               />
             </div>
             <div className={styles.field}>
-              <label className={styles.fieldLabel}>Phone:</label>
+              <label htmlFor="phone" className={styles.fieldLabel}>
+                Phone:
+              </label>
               <Textfield
+                id="phone"
                 name="phone"
                 value={values.phone || user.phone}
                 onChange={handleChange}
@@ -58,8 +72,11 @@ const AdministratorProfile = ({ user }) => {
 
           <Field>
             <div className={styles.field}>
-              <label className={styles.fieldLabel}>Role:</label>
+              <label htmlFor="role" className={styles.fieldLabel}>
+                Role:
+              </label>
               <Textfield
+                id="role"
                 name="name"
                 value={values.name || user.type}
                 onChange={handleChange}

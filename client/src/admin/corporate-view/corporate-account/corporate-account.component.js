@@ -32,8 +32,11 @@ const CorporateAccount = ({ customer }) => {
 
         <Field>
           <div className={styles.field}>
-            <label className={styles.fieldLabel}>Name:</label>
+            <label htmlFor="name" className={styles.fieldLabel}>
+              Name:
+            </label>
             <Textfield
+              id="name"
               name="name"
               value={values.name || customer.title}
               onChange={handleChange}
@@ -47,8 +50,11 @@ const CorporateAccount = ({ customer }) => {
 
           <Field>
             <div className={styles.field}>
-              <label className={styles.fieldLabel}>Country:</label>
+              <label htmlFor="country" className={styles.fieldLabel}>
+                Country:
+              </label>
               <Textfield
+                id="country"
                 name="country"
                 value={values.country || ''}
                 onChange={handleChange}
@@ -56,17 +62,23 @@ const CorporateAccount = ({ customer }) => {
               />
             </div>
             <div className={styles.field}>
-              <label className={styles.fieldLabel}>Street &amp; House Number:</label>
+              <label htmlFor="address" className={styles.fieldLabel}>
+                Street &amp; House Number:
+              </label>
               <Textfield
-                name="streetAndNumber"
-                value={values.streetAndNumber || ''}
+                id="address"
+                name="address"
+                value={values.address || ''}
                 onChange={handleChange}
                 placeholder="Add Address"
               />
             </div>
             <div className={styles.field}>
-              <label className={styles.fieldLabel}>Postcode:</label>
+              <label htmlFor="postcode" className={styles.fieldLabel}>
+                Postcode:
+              </label>
               <Textfield
+                id="postcode"
                 name="postcode"
                 value={values.postcode || ''}
                 onChange={handleChange}
