@@ -3,7 +3,7 @@ import React from 'react';
 import { render, fireEvent } from '@testing-library/react';
 
 import OrganisationMenu from './organisation-menu.component';
-import { CORPORATE_ACCOUNT } from '../admin.component';
+import { ADMIN_VIEW } from '../admin.constants';
 
 describe('Admin organisation Menu Component', () => {
   let setVisiblePanel = null;
@@ -29,13 +29,13 @@ describe('Admin organisation Menu Component', () => {
     const { getByAltText } = render(<OrganisationMenu customer={selectedCustomer} setVisiblePanel={setVisiblePanel} />);
 
     fireEvent.click(getByAltText('Organisation Logo'));
-    expect(setVisiblePanel).toHaveBeenCalledWith(CORPORATE_ACCOUNT);
+    expect(setVisiblePanel).toHaveBeenCalledWith(ADMIN_VIEW.corporateAccount);
   });
 
   it('should switch content panel view to corporate account when customer name is clicked', () => {
     const { getByText } = render(<OrganisationMenu customer={selectedCustomer} setVisiblePanel={setVisiblePanel} />);
 
     fireEvent.click(getByText(selectedCustomer.title));
-    expect(setVisiblePanel).toHaveBeenCalledWith(CORPORATE_ACCOUNT);
+    expect(setVisiblePanel).toHaveBeenCalledWith(ADMIN_VIEW.corporateAccount);
   });
 });

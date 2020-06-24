@@ -12,15 +12,6 @@ import PrivateRoute from './utils/private-route.component';
 import { fetchAppConfig } from './app.slice';
 import { fetchUser } from './accounts/accounts.slice';
 
-import {
-  fetchCustomer,
-  fetchCustomerUsers,
-  createCustomerUser,
-  deleteCustomerUser,
-  updateCustomerUser,
-  copyCustomerUser,
-} from './admin/admin.slice';
-
 import { fetchSources, selectPollingPeriod } from './data-layers/data-layers.slice';
 
 import Accounts from './accounts';
@@ -115,18 +106,7 @@ const App = () => {
           <PrivateRoute exact path="/user/update" user={user} component={UpdateUserForm} />
           <Route exact path="/terms" component={TermsAndConditions} />
           <Suspense fallback={<h3>Loading...</h3>}>
-            <PrivateRoute
-              exact
-              path="/admin"
-              user={user}
-              component={Admin}
-              fetchCustomer={user => dispatch(fetchCustomer(user))}
-              fetchCustomerUsers={customer => dispatch(fetchCustomerUsers(customer))}
-              createCustomerUser={(customer, user) => dispatch(createCustomerUser(customer, user))}
-              updateCustomerUser={(customer, user) => dispatch(updateCustomerUser(customer, user))}
-              copyCustomerUser={(customer, user) => dispatch(copyCustomerUser(customer, user))}
-              deleteCustomerUser={(customer, user) => dispatch(deleteCustomerUser(customer, user))}
-            />
+            <PrivateRoute exact path="/admin" user={user} component={Admin} />
           </Suspense>
         </Switch>
       </main>

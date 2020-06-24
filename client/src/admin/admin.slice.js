@@ -100,7 +100,6 @@ export const {
 
 export const fetchCustomer = user => async (dispatch, getState) => {
   const headers = getJsonAuthHeaders(getState());
-
   dispatch(fetchCustomerRequested());
 
   const customerName = user.customers[0].name;

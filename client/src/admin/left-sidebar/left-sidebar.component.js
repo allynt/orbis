@@ -7,21 +7,25 @@ import { ReactComponent as LaunchOrbisIcon } from './launch-orbis.svg';
 import { ReactComponent as OrbisAdminLogo } from '../orbis-admin-logo.svg';
 
 import { UserProfile } from './user-profile/user-profile.component';
-import { USER_TABLE } from '../admin.component';
+import { ADMIN_VIEW } from '../admin.constants';
 
 import styles from './left-sidebar.module.css';
 
 const LeftSidebar = ({ user, setVisiblePanel, visiblePanel }) => (
   <Sidebar
     logo={
-      <OrbisAdminLogo title="Orbis Admin Logo" className={styles.logo} onClick={() => setVisiblePanel(USER_TABLE)} />
+      <OrbisAdminLogo
+        title="Orbis Admin Logo"
+        className={styles.logo}
+        onClick={() => setVisiblePanel(ADMIN_VIEW.home)}
+      />
     }
     header={<UserProfile {...user} />}
   >
     <SidebarItem
       icon={<HomeIcon className={styles.itemIcon} />}
-      onClick={() => setVisiblePanel(USER_TABLE)}
-      selected={visiblePanel === USER_TABLE}
+      onClick={() => setVisiblePanel(ADMIN_VIEW.home)}
+      selected={visiblePanel === ADMIN_VIEW.home}
     >
       Home
     </SidebarItem>
