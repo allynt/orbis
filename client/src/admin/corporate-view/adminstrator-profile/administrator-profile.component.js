@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { useForm, Button, Textfield } from '@astrosat/astrosat-ui';
+import { useForm, Textfield, ProfileIcon } from '@astrosat/astrosat-ui';
 
 import validate from './administrator-profile.validator';
 
@@ -21,13 +21,11 @@ const AdministratorProfile = ({ user }) => {
     <ContentWrapper title={'Administrator'} user={user}>
       <form className={styles.corporateAccount} onSubmit={handleSubmit}>
         <div className={styles.logoContainer}>
-          <img src={user.avatar} className={styles.logo} alt="Admin Avatar" />
-          <Button theme="link" onClick={() => console.log('Upload new image!')}>
-            Upload new image
-          </Button>
-          <Button theme="link" onClick={() => console.log('Remove!')}>
-            Remove
-          </Button>
+          {user.avatar ? (
+            <img src={user.avatar} className={styles.logo} alt="Admin Avatar" />
+          ) : (
+            <ProfileIcon title="Profile Icon" classes={styles.defaultIcon} />
+          )}
         </div>
 
         <fieldset>
@@ -69,25 +67,7 @@ const AdministratorProfile = ({ user }) => {
               />
             </div>
           </Field>
-
-          <Field>
-            <div className={styles.field}>
-              <label htmlFor="role" className={styles.fieldLabel}>
-                Role:
-              </label>
-              <Textfield
-                id="role"
-                name="name"
-                value={values.name || user.type}
-                onChange={handleChange}
-                placeholder="Change Role"
-              />
-            </div>
-          </Field>
         </fieldset>
-        <Button theme="tertiary" type="submit">
-          Update Changes
-        </Button>
       </form>
     </ContentWrapper>
   );

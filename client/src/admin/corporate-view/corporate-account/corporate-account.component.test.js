@@ -39,10 +39,9 @@ describe('Update User Form Component', () => {
   afterEach(cleanup);
 
   it('should render the Corporate Account Form', () => {
-    const { container, getByText, getByAltText } = render(<CorporateAccount title={title} customer={customer} />);
+    const { container, getByAltText } = render(<CorporateAccount title={title} customer={customer} />);
 
     expect(container.querySelector('form')).toBeInTheDocument();
     expect(getByAltText('Organisation Logo')).toBeInTheDocument();
-    expect(getByText('Update Changes')).toBeInTheDocument();
   });
 });

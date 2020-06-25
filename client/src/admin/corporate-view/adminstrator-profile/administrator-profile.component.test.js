@@ -10,6 +10,8 @@ describe('Update User Form Component', () => {
     name: 'John Smith',
     email: 'jsmith@gmail.com',
     phone: '12345678910',
+    avatar:
+      'https://www.bfi.org.uk/sites/bfi.org.uk/files/styles/full/public/image/dirty-harry-1971-002-clint-eastwood-medium-shot.jpg?itok=Gt8uYZDg',
     customers: [
       {
         name: 'cyberdyne',
@@ -26,7 +28,5 @@ describe('Update User Form Component', () => {
     expect(container.querySelector('form')).toBeInTheDocument();
     expect(getByAltText('Admin Avatar')).toBeInTheDocument();
     expect(getByText('Name:')).toBeInTheDocument();
-    expect(getByText('Role:')).toBeInTheDocument();
-    expect(getByText('Update Changes')).toBeInTheDocument();
   });
 });

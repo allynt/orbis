@@ -33,6 +33,15 @@
   object-fit: cover;
 }
 
+.defaultIcon {
+  display: flex;
+  height: 3.125rem;
+  width: 3.125rem;
+  border-radius: 50%;
+  object-fit: cover;
+  color: var(--color-primary);
+}
+
 .fieldTitle {
   font-size: 1.25rem;
   font-weight: 600;
