@@ -9,8 +9,8 @@ import { history } from 'root.reducer';
 
 import styles from './toolbar.module.css';
 
-export const getToolbarItems = dispatch => {
-  const items = [
+export const getToolbarItems = (dispatch, user) => {
+  let items = [
     {
       label: DATA_LAYERS,
       icon: <DataIcon classes={styles.icon} />,
@@ -25,6 +25,7 @@ export const getToolbarItems = dispatch => {
       },
       tooltip: DATA_LAYERS,
       roles: ['UserRole'],
+      order: 0,
     },
     {
       label: BOOKMARKS,
@@ -40,6 +41,7 @@ export const getToolbarItems = dispatch => {
       },
       tooltip: BOOKMARKS,
       roles: ['UserRole'],
+      order: 2,
     },
     {
       label: PROFILE,
@@ -56,11 +58,12 @@ export const getToolbarItems = dispatch => {
       tooltip: PROFILE,
       footer: true,
       roles: ['UserRole'],
+      order: 5,
     },
   ];
 
   if (featureToggles.satellites) {
-    items.splice(1, 0, {
+    items.push({
       label: SATELLITE_LAYERS,
       icon: <SatelliteIcon classes={styles.icon} />,
       action: () => {
@@ -74,11 +77,12 @@ export const getToolbarItems = dispatch => {
       },
       tooltip: SATELLITE_LAYERS,
       roles: ['UserRole'],
+      order: 1,
     });
   }
 
   if (featureToggles.stories) {
-    items.splice(3, 0, {
+    items.push({
       label: STORIES,
       icon: <StoryIcon classes={styles.icon} />,
       action: () => {
@@ -92,11 +96,12 @@ export const getToolbarItems = dispatch => {
       },
       tooltip: STORIES,
       roles: ['UserRole'],
+      order: 3,
     });
   }
 
-  if (featureToggles.admin) {
-    items.splice(items.length - 1, 0, {
+  if (user.customers?.some(customer => customer.type === 'MANAGER')) {
+    items.push({
       label: 'Admin',
       icon: <StoryIcon classes={styles.icon} />,
       action: () => {
@@ -105,10 +110,13 @@ export const getToolbarItems = dispatch => {
       tooltip: 'Admin',
       footer: true,
       roles: ['AdminRole'],
+      order: 4,
     });
   }
 
-  return items;
+  return items
+    .filter(item => user.roles.some(role => item.roles.includes(role)))
+    .sort((item1, item2) => item1.order - item2.order);
 };
 
 /* UNUSED ITEMS */
