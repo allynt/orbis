@@ -106,7 +106,7 @@ const App = () => {
           <PrivateRoute exact path="/user/update" user={user} component={UpdateUserForm} />
           <Route exact path="/terms" component={TermsAndConditions} />
           <Suspense fallback={<h3>Loading...</h3>}>
-            <PrivateRoute exact path="/admin" user={user} component={Admin} />
+            <PrivateRoute exact path="/admin-console" user={user} component={Admin} />
           </Suspense>
         </Switch>
       </main>
