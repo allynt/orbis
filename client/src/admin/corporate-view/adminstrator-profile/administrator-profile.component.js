@@ -18,7 +18,7 @@ const AdministratorProfile = ({ user }) => {
   }
 
   return (
-    <ContentWrapper title={'Administrator'} user={user}>
+    <ContentWrapper title="Administrator" user={user}>
       <form className={styles.corporateAccount} onSubmit={handleSubmit}>
         <div className={styles.logoContainer}>
           {user.avatar ? (
