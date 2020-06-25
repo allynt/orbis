@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { useForm, Button, Textfield } from '@astrosat/astrosat-ui';
+import { useForm, Textfield } from '@astrosat/astrosat-ui';
 
 import validate from './corporate-account.validator';
 
@@ -22,12 +22,6 @@ const CorporateAccount = ({ customer }) => {
       <form className={styles.corporateAccount} onSubmit={handleSubmit}>
         <div className={styles.logoContainer}>
           <img src={customer.logo} className={styles.logo} alt="Organisation Logo" />
-          <Button theme="link" onClick={() => console.log('Upload new image!')}>
-            Upload new image
-          </Button>
-          <Button theme="link" onClick={() => console.log('Remove!')}>
-            Remove
-          </Button>
         </div>
 
         <Field>
@@ -56,7 +50,7 @@ const CorporateAccount = ({ customer }) => {
               <Textfield
                 id="country"
                 name="country"
-                value={values.country || ''}
+                value={values.country || customer.country}
                 onChange={handleChange}
                 placeholder="Add Country"
               />
@@ -68,7 +62,7 @@ const CorporateAccount = ({ customer }) => {
               <Textfield
                 id="address"
                 name="address"
-                value={values.address || ''}
+                value={values.address || customer.address}
                 onChange={handleChange}
                 placeholder="Add Address"
               />
@@ -80,16 +74,13 @@ const CorporateAccount = ({ customer }) => {
               <Textfield
                 id="postcode"
                 name="postcode"
-                value={values.postcode || ''}
+                value={values.postcode || customer.postcode}
                 onChange={handleChange}
                 placeholder="Add Postcode"
               />
             </div>
           </Field>
         </fieldset>
-        <Button theme="tertiary" type="submit">
-          Update Changes
-        </Button>
       </form>
     </ContentWrapper>
   );
