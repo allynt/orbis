@@ -4,7 +4,7 @@ import { DataIcon, MapIcon, SatelliteIcon, StoryIcon, ProfileIcon } from '@astro
 
 import { DATA_LAYERS, SATELLITE_LAYERS, BOOKMARKS, STORIES, PROFILE } from './toolbar-constants';
 import featureToggles from '../feature-toggles';
-import { toggleMenu, toggleMenuItem, setMenuHeadings } from '../side-menu/side-menu.slice';
+import { toggleMenu, setMenuHeadings } from '../side-menu/side-menu.slice';
 import { history } from 'root.reducer';
 
 import styles from './toolbar.module.css';
@@ -16,7 +16,6 @@ export const getToolbarItems = dispatch => {
       icon: <DataIcon classes={styles.icon} />,
       action: () => {
         dispatch(toggleMenu(DATA_LAYERS));
-        dispatch(toggleMenuItem(DATA_LAYERS));
         dispatch(
           setMenuHeadings({
             heading: 'SELECT ORB',
@@ -32,7 +31,6 @@ export const getToolbarItems = dispatch => {
       icon: <MapIcon classes={styles.icon} />,
       action: () => {
         dispatch(toggleMenu(BOOKMARKS));
-        dispatch(toggleMenuItem(BOOKMARKS));
         dispatch(
           setMenuHeadings({
             heading: 'MY MAPS',
@@ -48,7 +46,6 @@ export const getToolbarItems = dispatch => {
       icon: <ProfileIcon classes={styles.icon} />,
       action: () => {
         dispatch(toggleMenu(PROFILE));
-        dispatch(toggleMenuItem(PROFILE));
         dispatch(
           setMenuHeadings({
             heading: 'My Account',
@@ -68,7 +65,6 @@ export const getToolbarItems = dispatch => {
       icon: <SatelliteIcon classes={styles.icon} />,
       action: () => {
         dispatch(toggleMenu(SATELLITE_LAYERS));
-        dispatch(toggleMenuItem(SATELLITE_LAYERS));
         dispatch(
           setMenuHeadings({
             heading: 'SATELLITE IMAGES',
@@ -87,7 +83,6 @@ export const getToolbarItems = dispatch => {
       icon: <StoryIcon classes={styles.icon} />,
       action: () => {
         dispatch(toggleMenu(STORIES));
-        dispatch(toggleMenuItem(STORIES));
         dispatch(
           setMenuHeadings({
             heading: 'STORIES',

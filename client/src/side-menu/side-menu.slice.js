@@ -13,17 +13,14 @@ const sideMenuSlice = createSlice({
   reducers: {
     toggleMenu: (state, { payload }) => {
       if (!state.isMenuVisible && payload !== 'screenshot') {
+        state.visibleMenuItem = payload;
         state.isMenuVisible = true;
-      } else if (state.isMenuVisible && state.visibleMenuItem === payload) {
+      } else if ((state.isMenuVisible && state.visibleMenuItem === payload) || payload === 'screenshot') {
         state.visibleMenuItem = '';
         state.isMenuVisible = false;
-      } else if (payload === 'screenshot') {
-        state.visibleMenuItem = '';
-        state.isMenuVisible = false;
+      } else {
+        state.visibleMenuItem = payload;
       }
-    },
-    toggleMenuItem: (state, { payload }) => {
-      state.visibleMenuItem = payload;
     },
     setMenuHeadings: (state, { payload }) => {
       state.heading = payload.heading;
@@ -36,6 +33,6 @@ const sideMenuSlice = createSlice({
   },
 });
 
-export const { toggleMenu, toggleMenuItem, setMenuHeadings, closeMenu } = sideMenuSlice.actions;
+export const { toggleMenu, setMenuHeadings, closeMenu } = sideMenuSlice.actions;
 
 export default sideMenuSlice.reducer;
