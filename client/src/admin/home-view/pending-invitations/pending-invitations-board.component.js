@@ -7,7 +7,7 @@ import ContentWrapper from '../../content-wrapper.component';
 import styles from './pending-invitations.module.css';
 import tableStyles from '../../table.module.css';
 
-const PendingUsersBoard = ({ pendingUsers }) => (
+const PendingInvitationsBoard = ({ pendingUsers }) => (
   <ContentWrapper title="Pending Invitations">
     <table className={tableStyles.table}>
       <thead className={tableStyles.thead}>
@@ -56,4 +56,4 @@ const PendingUsersBoard = ({ pendingUsers }) => (
   </ContentWrapper>
 );
 
-export default PendingUsersBoard;
+export default PendingInvitationsBoard;
