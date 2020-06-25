@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 
 import { useHistory } from 'react-router-dom';
 
@@ -7,14 +7,9 @@ import { Sidebar, SidebarItem, SidebarBottomItems } from 'components/sidebar';
 
 import styles from './toolbar.module.css';
 
-const Toolbar = ({ user, items }) => {
+const Toolbar = ({ items }) => {
   const [selected, setSelected] = useState();
-  const [permissionFilteredItems, setPermissionFilteredItems] = useState();
   const history = useHistory();
-
-  useEffect(() => {
-    setPermissionFilteredItems(items.filter(item => user.roles.some(role => item.roles.includes(role))));
-  }, [user, items]);
 
   const select = item => {
     setSelected(item);
@@ -36,10 +31,8 @@ const Toolbar = ({ user, items }) => {
       className={styles.toolbar}
       logo={<OrbisLogo title="Orbis Logo" className={styles.logo} onClick={() => history.push('/')} />}
     >
-      {permissionFilteredItems?.filter(item => !item.footer).map(makeSidebarItem)}
-      <SidebarBottomItems>
-        {permissionFilteredItems?.filter(item => item.footer).map(makeSidebarItem)}
-      </SidebarBottomItems>
+      {items?.filter(item => !item.footer).map(makeSidebarItem)}
+      <SidebarBottomItems>{items?.filter(item => item.footer).map(makeSidebarItem)}</SidebarBottomItems>
     </Sidebar>
   );
 };

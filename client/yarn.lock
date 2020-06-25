@@ -8,9 +8,9 @@
   integrity sha512-bvVOe7A+r7lws58B7r+fgnQDK90cV45AXuvGx6i5CCSX1W/M3AJnHsNggDANBxEtWdNdFWcDd5LorB+RdSIlBw==
 
 "@astrosat/astrosat-ui@^1.15.0":
-  version "1.15.3"
-  resolved "https://npm.pkg.github.com/download/@astrosat/astrosat-ui/1.15.3/4437c5668621f6348ab336d31b8903d6d64c2299f390c6a820f487dbfa35485a#5c784fe480271807a713eae77a05d03cc3f0284d"
-  integrity sha512-z6Wm8wVxbHIMGFDSyNfJeoe49EG+Oeb4jkwq7zJuajN3gKywiuc+zD2xoPBy/pZbMQtwY4S7yHl9Y8veyJS00g==
+  version "1.15.4"
+  resolved "https://npm.pkg.github.com/download/@astrosat/astrosat-ui/1.15.4/71f870458de83b3e4c1f94f852f0a69519b079884726b8f5912c108ad5ab6c5a#6596b15d46dd7354891460f096e2b5c90531320e"
+  integrity sha512-4eNAlau35dtY2KgNZBVTncLBq+5KIoQqDioyiBm/T9oha/x7mbYM0GJ6Rw/mmWf00MSAApxBLMr0OvjvuGc50w==
   dependencies:
     clsx "^1.1.0"
     d3-scale "^3.2.1"

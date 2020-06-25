@@ -9,7 +9,6 @@ import store from 'store';
 import StoriesTool from './features/stories.component';
 import FiltersTool from './features/filters.component';
 import SatellitesTool from './features/satellites.component';
-import AdminTool from './features/admin.component';
 
 import styles from './tools.module.css';
 
@@ -41,7 +40,6 @@ const install = () => {
             <StoriesTool />
             <FiltersTool />
             <SatellitesTool />
-            <AdminTool />
           </div>
         </div>
       )

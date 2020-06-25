@@ -26,7 +26,7 @@ const MapLayout = () => {
   const isCompareMode = useSelector(state => state.map.isCompareMode);
   const mapCount = isCompareMode ? 2 : 1;
 
-  const toolbarItems = getToolbarItems(dispatch);
+  const toolbarItems = getToolbarItems(dispatch, user);
 
   const mapStyle = useSelector(state => state.map.selectedMapStyle);
   const selectedPinnedScenes = useSelector(state => state.satellites.selectedPinnedScenes);
