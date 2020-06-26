@@ -1,5 +1,5 @@
 import React from 'react';
-import { render } from '@testing-library/react';
+import { render, wait } from '@testing-library/react';
 import { CreateUserForm } from './create-user-form.component';
 import userEvent from '@testing-library/user-event';
 
@@ -51,14 +51,14 @@ describe('<CreateUserForm />', () => {
     expect(button).toHaveProperty('type', 'submit');
   });
 
-  it('Calls the onSubmit function when submit button is clicked', () => {
+  it('Calls the onSubmit function when submit button is clicked', async () => {
     const onSubmit = jest.fn();
     const { getByText } = render(<CreateUserForm onSubmit={onSubmit} />);
     userEvent.click(getByText('Create User'));
-    expect(onSubmit).toHaveBeenCalled();
+    await wait(() => expect(onSubmit).toHaveBeenCalled());
   });
 
-  it('Calls the onSubmit function with the form values', () => {
+  it('Calls the onSubmit function with the form values', async () => {
     const licences = [
       { name: 'Oil', available: true },
       { name: 'Rice', available: true },
@@ -70,6 +70,6 @@ describe('<CreateUserForm />', () => {
     userEvent.type(getByLabelText('Email'), expected.email);
     userEvent.click(getByLabelText(licences[1].name));
     userEvent.click(getByText('Create User'));
-    expect(onSubmit).toHaveBeenCalledWith(expected);
+    await wait(() => expect(onSubmit).toHaveBeenCalledWith(expected));
   });
 });
