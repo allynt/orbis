@@ -1,5 +1,6 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
+import { Button, Checkbox, Textfield } from '@astrosat/astrosat-ui';
 
 /**
  * @param {{licences?: {
@@ -15,29 +16,28 @@ export const CreateUserForm = ({ licences, onSubmit }) => {
   return (
     <form className="createUserForm" onSubmit={handleSubmit(v => onSubmit(v))}>
       <label for="name">Name</label>
-      <input ref={register} type="text" name="name" id="name" placeholder="Name" />
+      <Textfield ref={register} name="name" id="name" placeholder="Name" />
       <label for="email">Email</label>
-      <input ref={register} type="text" name="email" id="email" placeholder="Email" />
+      <Textfield ref={register} name="email" id="email" placeholder="Email" />
       <fieldset>
         <legend>Licences</legend>
         {licences?.length ? (
           licences.map(licence => (
-            <label key={licence.name}>
-              <input
-                ref={register}
-                type="checkbox"
-                name="licences"
-                value={licence.name}
-                disabled={!licence.available}
-              />
-              {licence.name}
-            </label>
+            <Checkbox
+              key={licence.name}
+              label={licence.name}
+              ref={register}
+              type="checkbox"
+              name="licences"
+              value={licence.name}
+              disabled={!licence.available}
+            />
           ))
         ) : (
           <p>No Licences Available</p>
         )}
       </fieldset>
-      <button type="submit">Create User</button>
+      <Button type="submit">Create User</Button>
     </form>
   );
 };
