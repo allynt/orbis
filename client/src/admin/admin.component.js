@@ -31,18 +31,16 @@ const Admin = ({ user }) => {
   }, [selectedCustomer, selectedCustomerUsers, dispatch]);
 
   return (
-    selectedCustomer && (
-      <div className={styles.adminConsole}>
-        <LeftSidebar user={user} setVisiblePanel={setVisiblePanel} visiblePanel={visiblePanel} />
-        {visiblePanel === ADMIN_VIEW.home && (
-          <ContentWrapper title="Users">
-            <ActiveUsersBoard activeUsers={selectedCustomerUsers?.filter(user => user.status === USER_STATUS.active)} />
-          </ContentWrapper>
-        )}
-        {visiblePanel === ADMIN_VIEW.corporateAccount && <CorporateView user={user} customer={selectedCustomer} />}
-        <OrganisationMenu customer={selectedCustomer} setVisiblePanel={setVisiblePanel} />
-      </div>
-    )
+    <div className={styles.adminConsole}>
+      <LeftSidebar user={user} setVisiblePanel={setVisiblePanel} visiblePanel={visiblePanel} />
+      {visiblePanel === ADMIN_VIEW.home && (
+        <ContentWrapper title="Users">
+          <ActiveUsersBoard activeUsers={selectedCustomerUsers?.filter(user => user.status === USER_STATUS.active)} />
+        </ContentWrapper>
+      )}
+      {visiblePanel === ADMIN_VIEW.corporateAccount && <CorporateView user={user} customer={selectedCustomer} />}
+      <OrganisationMenu customer={selectedCustomer} setVisiblePanel={setVisiblePanel} />
+    </div>
   );
 };
 

@@ -38,4 +38,9 @@ describe('Admin organisation Menu Component', () => {
     fireEvent.click(getByText(selectedCustomer.title));
     expect(setVisiblePanel).toHaveBeenCalledWith(ADMIN_VIEW.corporateAccount);
   });
+
+  it('shows the "Create User" button', () => {
+    const { getByText } = render(<OrganisationMenu />);
+    expect(getByText('Create User')).toBeInTheDocument();
+  });
 });
