@@ -11,7 +11,7 @@ const OrganisationMenu = ({ customer, setVisiblePanel }) => (
       <img className={styles.organisationLogo} src={customer?.logo} alt="Organisation Logo" />
       <h2 className={styles.organisationTitle}>{customer?.title}</h2>
     </div>
-    <Button>Create User</Button>
+    <Button size="small">Create User</Button>
   </div>
 );
 
