@@ -13,7 +13,7 @@ locals {
   eks_cluster_name = "astrosat-cluster"
 
   app_name   = "${local.app}-${var.environment}"
-  app_domain = (var.environment == "production") ? "app.or3is.com" : "app.${var.environment}.or3is.com"
+  app_domain = (var.environment == "production") ? "app.orbis.astrosat.net" : "app.${var.environment}.orbis.astrosat.net"
   app_image  = "339570402237.dkr.ecr.eu-west-1.amazonaws.com/company/orbis/django:${var.tag}"
   app_labels = {
     app         = local.app
