@@ -9,6 +9,19 @@ const pendingUsers = [
 ];
 
 describe('ActiveUsersBoard', () => {
+  const cases = [
+    ['names', 'name'],
+    ['assigned licences', 'licences'],
+    ["email address'", 'email'],
+  ];
+
+  it.each(cases)("Displays all active user's %s", (_, text) => {
+    const { getByText } = render(<PendingInvitationsBoard pendingUsers={pendingUsers} />);
+    pendingUsers.forEach(user =>
+      expect(getByText(text === 'licences' ? user[text].sort().join(', ') : user.user[text])).toBeInTheDocument(),
+    );
+  });
+
   describe('Displays a placeholder when there are no active users', () => {
     const cases = [
       ['undefined', undefined],

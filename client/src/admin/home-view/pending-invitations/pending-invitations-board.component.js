@@ -35,7 +35,7 @@ const PendingInvitationsBoard = ({ pendingUsers }) => (
             <tr key={user.id} className={tableStyles.tr}>
               <td className={tableStyles.td}>{user.user.name}</td>
               <td className={tableStyles.td}>{user.user.email}</td>
-              <td className={tableStyles.td}>{user.licences.map(l => `${l}, `)}</td>
+              <td className={tableStyles.td}>{user.licences?.slice().sort().join(', ')}</td>
               <td className={tableStyles.td}>14.34 20th April 2020</td>
               <td className={tableStyles.td}>
                 <Button className={styles.resendButton} onClick={() => console.log('CLICKED!')}>
