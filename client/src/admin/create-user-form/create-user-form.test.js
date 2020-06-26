@@ -72,4 +72,19 @@ describe('<CreateUserForm />', () => {
     userEvent.click(getByText('Create User'));
     await wait(() => expect(onSubmit).toHaveBeenCalledWith(expected));
   });
+
+  it('Does not include licences which are disabled', async () => {
+    const licences = [
+      { name: 'Oil', available: true },
+      { name: 'Rice', available: false },
+    ];
+    const onSubmit = jest.fn();
+    const expected = { name: 'Test User', email: 'test@test.com', licences: [] };
+    const { getByText, getByLabelText } = render(<CreateUserForm licences={licences} onSubmit={onSubmit} />);
+    userEvent.type(getByLabelText('Name'), expected.name);
+    userEvent.type(getByLabelText('Email'), expected.email);
+    userEvent.click(getByLabelText(licences[1].name));
+    userEvent.click(getByText('Create User'));
+    await wait(() => expect(onSubmit).toHaveBeenCalledWith(expected));
+  });
 });
