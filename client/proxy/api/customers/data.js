@@ -112,6 +112,7 @@ let customerUsers = [
     id: 4,
     type: 'MANAGER',
     status: 'PENDING',
+    invitation_date: '2020-01-31T11:46:12.618090Z',
     customer: 'cyberdyne',
     licences: ['licence1', 'licence2', 'licence3'],
     user: {
@@ -132,6 +133,7 @@ let customerUsers = [
     id: 5,
     type: 'MEMBER',
     status: 'PENDING',
+    invitation_date: '2020-01-31T11:46:12.618090Z',
     customer: 'cyberdyne',
     licences: ['licence1', 'licence2'],
     user: {
@@ -152,6 +154,7 @@ let customerUsers = [
     id: 6,
     type: 'MANAGER',
     status: 'PENDING',
+    invitation_date: '2020-01-31T11:46:12.618090Z',
     customer: 'cyberdyne',
     licences: ['licence1', 'licence2', 'licence3', 'licence4'],
     user: {
