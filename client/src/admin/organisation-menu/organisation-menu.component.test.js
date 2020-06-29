@@ -4,6 +4,7 @@ import { render, fireEvent } from '@testing-library/react';
 
 import OrganisationMenu from './organisation-menu.component';
 import { ADMIN_VIEW } from '../admin.constants';
+import userEvent from '@testing-library/user-event';
 
 describe('Admin organisation Menu Component', () => {
   let setVisiblePanel = null;
@@ -42,5 +43,12 @@ describe('Admin organisation Menu Component', () => {
   it('shows the "Create User" button', () => {
     const { getByText } = render(<OrganisationMenu />);
     expect(getByText('Create User')).toBeInTheDocument();
+  });
+
+  it('Calls the showCreateUser function when the "Create User" button is clicked', () => {
+    const onCreateUserClick = jest.fn();
+    const { getByText } = render(<OrganisationMenu onCreateUserClick={onCreateUserClick} />);
+    userEvent.click(getByText('Create User'));
+    expect(onCreateUserClick).toHaveBeenCalled();
   });
 });

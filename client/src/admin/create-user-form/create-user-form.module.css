@@ -1,3 +1,14 @@
+.form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.fieldset {
+  composes: row from '../../forms.module.css';
+  margin-top: 1rem;
+}
+
 .legend {
   margin-bottom: 1em;
   color: var(--color--text--dark);
@@ -13,6 +24,10 @@
   margin-left: 1rem;
 }
 
+.noLicencesText {
+  color: var(--color--text--dark);
+}
+
 .button {
-  margin: 0 auto;
+  margin: 1rem auto 0;
 }

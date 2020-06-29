@@ -16,7 +16,7 @@ export const CreateUserForm = ({ licences, onSubmit }) => {
   const { register, handleSubmit } = useForm();
 
   return (
-    <form onSubmit={handleSubmit(v => onSubmit(v))}>
+    <form className={styles.form} onSubmit={handleSubmit(v => onSubmit && onSubmit(v))}>
       <div className={formStyles.row}>
         <label className={formStyles.hiddenLabel} for="name">
           Name
@@ -29,7 +29,7 @@ export const CreateUserForm = ({ licences, onSubmit }) => {
         </label>
         <Textfield ref={register} name="email" id="email" placeholder="Email" />
       </div>
-      <fieldset className={formStyles.row}>
+      <fieldset className={styles.fieldset}>
         <legend className={styles.legend}>Licences</legend>
         <div className={styles.licences}>
           {licences?.length ? (
@@ -39,14 +39,13 @@ export const CreateUserForm = ({ licences, onSubmit }) => {
                 key={licence.name}
                 label={licence.name}
                 ref={register}
-                type="checkbox"
                 name="licences"
                 value={licence.name}
                 disabled={!licence.available}
               />
             ))
           ) : (
-            <p>No Licences Available</p>
+            <p className={styles.noLicencesText}>No Licences Available</p>
           )}
         </div>
       </fieldset>
