@@ -7,6 +7,18 @@ let customers = [
     logo: 'https://ichef.bbci.co.uk/images/ic/1200x675/p03t1sm8.jpg',
     roles: ['SaveTheWorldRole'],
     permissions: ['can_deploy_skynet'],
+    licences: [
+      {
+        id: 1,
+        orb: 'Rice',
+      },
+      {
+        id: 2,
+        orb: 'Rice',
+        customer_user: 1,
+      },
+      { id: 3, orb: 'Oil' },
+    ],
     data_limit: 100,
     data_total: 50,
   },
@@ -39,7 +51,7 @@ let customerUsers = [
     type: 'MANAGER',
     status: 'ACTIVE',
     customer: 'cyberdyne',
-    licences: ['licence1', 'licence2'],
+    licences: [2],
     user: {
       id: 2,
       username: 'admin@test.com',
