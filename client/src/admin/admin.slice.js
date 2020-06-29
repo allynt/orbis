@@ -1,5 +1,5 @@
 import { NotificationManager } from 'react-notifications';
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, createSelector } from '@reduxjs/toolkit';
 
 import { getData, sendData, getJsonAuthHeaders } from 'utils/http';
 
@@ -12,7 +12,7 @@ const initialState = {
   error: null,
 };
 
-const usersSlice = createSlice({
+const adminSlice = createSlice({
   name: 'users',
   initialState,
   reducers: {
@@ -96,8 +96,9 @@ export const {
   createCustomerUserRequested,
   createCustomerUserSuccess,
   createCustomerUserFailure,
-} = usersSlice.actions;
+} = adminSlice.actions;
 
+/* === Thunks === */
 export const fetchCustomer = user => async (dispatch, getState) => {
   const headers = getJsonAuthHeaders(getState());
   dispatch(fetchCustomerRequested());
@@ -200,17 +201,9 @@ export const deleteCustomerUser = (customer, user) => async (dispatch, getState)
   return dispatch(deleteCustomerUserSuccess(user));
 };
 
-export const copyCustomerUser = (customer, user) => async dispatch => {
-  // Update User to prepend 'Copy of' text.
-  const data = {
-    ...user,
-    email: `UPDATE-${user.email}`,
-    username: `UPDATE-${user.email}`,
-    name: `Copy of ${user.name}`,
-    description: `Copy of ${user.description}`,
-  };
+/* === Selectors === */
+const baseSelector = state => state.admin;
+export const selectCurrentCustomer = createSelector(baseSelector, state => state.currentCustomer);
+export const selectCustomerUsers = createSelector(baseSelector, state => state.customerUsers);
 
-  return dispatch(createCustomerUser(customer, data));
-};
-
-export default usersSlice.reducer;
+export default adminSlice.reducer;

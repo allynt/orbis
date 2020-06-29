@@ -22,12 +22,14 @@ import reducer, {
   createCustomerUserSuccess,
   createCustomerUserFailure,
   createCustomerUser,
+  selectCurrentCustomer,
+  selectCustomerUsers,
 } from './admin.slice';
 
 const mockStore = configureMockStore([thunk]);
 
-describe('Users Slice', () => {
-  describe('Users Actions', () => {
+describe('Admin Slice', () => {
+  describe('Actions', () => {
     let store = null;
 
     beforeEach(() => {
@@ -238,7 +240,7 @@ describe('Users Slice', () => {
     });
   });
 
-  describe('Users Reducer', () => {
+  describe('Reducer', () => {
     let beforeState;
 
     beforeEach(() => {
@@ -423,6 +425,30 @@ describe('Users Slice', () => {
       });
 
       expect(actualState.error).toEqual(error);
+    });
+  });
+
+  describe('Selectors', () => {
+    describe('selectCurrentCustomer', () => {
+      it('returns the current customer', () => {
+        const state = {
+          admin: {
+            currentCustomer: 'test',
+          },
+        };
+        const result = selectCurrentCustomer(state);
+        expect(result).toBe(state.admin.currentCustomer);
+      });
+    });
+
+    describe('selectCustomerUsers', () => {
+      const state = {
+        admin: {
+          customerUsers: [{ id: 1 }, { id: 2 }],
+        },
+      };
+      const result = selectCustomerUsers(state);
+      expect(result).toEqual(state.admin.customerUsers);
     });
   });
 });

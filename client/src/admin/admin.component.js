@@ -5,7 +5,7 @@ import { Dialog } from '@astrosat/astrosat-ui';
 
 import { ActiveUsersBoard } from './active-users-board/active-users-board.component';
 import { ADMIN_VIEW, USER_STATUS } from './admin.constants';
-import { fetchCustomer, fetchCustomerUsers } from './admin.slice';
+import { fetchCustomer, fetchCustomerUsers, selectCurrentCustomer, selectCustomerUsers } from './admin.slice';
 import ContentWrapper from './content-wrapper.component';
 import CorporateView from './corporate-view/corporate-view.component';
 import { CreateUserForm } from './create-user-form/create-user-form.component';
@@ -16,8 +16,8 @@ import styles from './admin.module.css';
 
 const Admin = ({ user }) => {
   const dispatch = useDispatch();
-  const selectedCustomer = useSelector(state => state.admin.currentCustomer);
-  const selectedCustomerUsers = useSelector(state => state.admin.customerUsers);
+  const selectedCustomer = useSelector(selectCurrentCustomer);
+  const selectedCustomerUsers = useSelector(selectCustomerUsers);
   const [visiblePanel, setVisiblePanel] = useState(ADMIN_VIEW.home);
   const createUserDialogRef = useRef(document.body);
   const [createUserDialogVisible, setCreateUserDialogVisible] = useState();
