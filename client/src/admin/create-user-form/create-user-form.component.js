@@ -3,17 +3,22 @@ import { useForm } from 'react-hook-form';
 import { Button, Checkbox, Textfield } from '@astrosat/astrosat-ui';
 import styles from './create-user-form.module.css';
 import formStyles from 'forms.module.css';
+import { createUserFormValidator } from './create-user-form.validator';
 
 /**
  * @param {{licences?: {
  *            orb: string,
  *            available: boolean
  *          }[],
+ *          existingEmails: string[],
  *          onSubmit({name: string, email: string, licences: string[]}): void
  *        }} props
  */
-export const CreateUserForm = ({ licences, onSubmit }) => {
-  const { register, handleSubmit } = useForm();
+export const CreateUserForm = ({ licences, existingEmails, onSubmit }) => {
+  const { register, handleSubmit, errors } = useForm({
+    validationResolver: createUserFormValidator,
+    validationContext: { existingEmails },
+  });
 
   return (
     <form className={styles.form} onSubmit={handleSubmit(v => onSubmit && onSubmit(v))}>
@@ -23,11 +28,14 @@ export const CreateUserForm = ({ licences, onSubmit }) => {
         </label>
         <Textfield ref={register} name="name" id="name" placeholder="Name" />
       </div>
-      <div className={formStyles.row}>
+      <div className={`${formStyles.row} ${errors.email && styles.error}`}>
         <label className={formStyles.hiddenLabel} for="email">
           Email
         </label>
-        <Textfield ref={register} name="email" id="email" placeholder="Email" />
+        <div className={styles.field}>
+          <Textfield ref={register} name="email" id="email" placeholder="Email" />
+          <p className={styles.errorMessage}>{errors.email}</p>
+        </div>
       </div>
       <fieldset className={styles.fieldset}>
         <legend className={styles.legend}>Licences</legend>

@@ -61,7 +61,7 @@ const Admin = ({ user }) => {
         ref={createUserDialogRef}
         close={() => setCreateUserDialogVisible(false)}
       >
-        <CreateUserForm licences={licencesAndAvailability} />
+        <CreateUserForm licences={licencesAndAvailability} existingEmails={customerUsers?.map(cu => cu.user.email)} />
       </Dialog>
     </div>
   );

@@ -51,14 +51,7 @@ describe('<CreateUserForm />', () => {
     expect(button).toHaveProperty('type', 'submit');
   });
 
-  it('Calls the onSubmit function when submit button is clicked', async () => {
-    const onSubmit = jest.fn();
-    const { getByText } = render(<CreateUserForm onSubmit={onSubmit} />);
-    userEvent.click(getByText('Create User'));
-    await wait(() => expect(onSubmit).toHaveBeenCalled());
-  });
-
-  it('Calls the onSubmit function with the form values', async () => {
+  it('Calls the onSubmit function with the form values on successful completion', async () => {
     const licences = [
       { orb: 'Oil', available: true },
       { orb: 'Rice', available: true },
@@ -86,5 +79,13 @@ describe('<CreateUserForm />', () => {
     userEvent.click(getByLabelText(licences[1].orb));
     userEvent.click(getByText('Create User'));
     await wait(() => expect(onSubmit).toHaveBeenCalledWith(expected));
+  });
+
+  it('Shows an error if email is not provided', async () => {
+    const { getByText } = render(<CreateUserForm />);
+    userEvent.click(getByText('Create User'));
+    await wait(() => {
+      expect(getByText('Email is required')).toBeInTheDocument();
+    });
   });
 });
