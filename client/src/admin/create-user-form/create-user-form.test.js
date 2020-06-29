@@ -16,20 +16,20 @@ describe('<CreateUserForm />', () => {
 
   it('Has a checkbox for each available licence', () => {
     const licences = [
-      { name: 'Rice', available: true },
-      { name: 'Oil', available: true },
+      { orb: 'Rice', available: true },
+      { orb: 'Oil', available: true },
     ];
     const { getByLabelText } = render(<CreateUserForm licences={licences} />);
-    licences.forEach(licence => expect(getByLabelText(licence.name)).toBeInTheDocument());
+    licences.forEach(licence => expect(getByLabelText(licence.orb)).toBeInTheDocument());
   });
 
   it('Shows a disabled checkbox for a licence which is unavailable', () => {
     const licences = [
-      { name: 'Rice', available: true },
-      { name: 'Oil', available: false },
+      { orb: 'Rice', available: true },
+      { orb: 'Oil', available: false },
     ];
     const { getByLabelText } = render(<CreateUserForm licences={licences} />);
-    expect(getByLabelText(licences[1].name)).toHaveProperty('disabled', true);
+    expect(getByLabelText(licences[1].orb)).toHaveProperty('disabled', true);
   });
 
   describe('Shows text if the customer has no licences', () => {
@@ -60,30 +60,30 @@ describe('<CreateUserForm />', () => {
 
   it('Calls the onSubmit function with the form values', async () => {
     const licences = [
-      { name: 'Oil', available: true },
-      { name: 'Rice', available: true },
+      { orb: 'Oil', available: true },
+      { orb: 'Rice', available: true },
     ];
     const onSubmit = jest.fn();
     const expected = { name: 'Test User', email: 'test@test.com', licences: ['Rice'] };
     const { getByText, getByLabelText } = render(<CreateUserForm licences={licences} onSubmit={onSubmit} />);
     userEvent.type(getByLabelText('Name'), expected.name);
     userEvent.type(getByLabelText('Email'), expected.email);
-    userEvent.click(getByLabelText(licences[1].name));
+    userEvent.click(getByLabelText(licences[1].orb));
     userEvent.click(getByText('Create User'));
     await wait(() => expect(onSubmit).toHaveBeenCalledWith(expected));
   });
 
   it('Does not include licences which are disabled', async () => {
     const licences = [
-      { name: 'Oil', available: true },
-      { name: 'Rice', available: false },
+      { orb: 'Oil', available: true },
+      { orb: 'Rice', available: false },
     ];
     const onSubmit = jest.fn();
     const expected = { name: 'Test User', email: 'test@test.com', licences: [] };
     const { getByText, getByLabelText } = render(<CreateUserForm licences={licences} onSubmit={onSubmit} />);
     userEvent.type(getByLabelText('Name'), expected.name);
     userEvent.type(getByLabelText('Email'), expected.email);
-    userEvent.click(getByLabelText(licences[1].name));
+    userEvent.click(getByLabelText(licences[1].orb));
     userEvent.click(getByText('Create User'));
     await wait(() => expect(onSubmit).toHaveBeenCalledWith(expected));
   });

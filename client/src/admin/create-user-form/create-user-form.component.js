@@ -6,7 +6,7 @@ import formStyles from 'forms.module.css';
 
 /**
  * @param {{licences?: {
- *            name: string,
+ *            orb: string,
  *            available: boolean
  *          }[],
  *          onSubmit({name: string, email: string, licences: string[]}): void
@@ -36,11 +36,11 @@ export const CreateUserForm = ({ licences, onSubmit }) => {
             licences.map(licence => (
               <Checkbox
                 className={styles.licence}
-                key={licence.name}
-                label={licence.name}
+                key={licence.orb}
+                label={licence.orb}
                 ref={register}
                 name="licences"
-                value={licence.name}
+                value={licence.orb}
                 disabled={!licence.available}
               />
             ))

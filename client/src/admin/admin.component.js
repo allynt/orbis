@@ -5,7 +5,13 @@ import { Dialog } from '@astrosat/astrosat-ui';
 
 import { ActiveUsersBoard } from './active-users-board/active-users-board.component';
 import { ADMIN_VIEW, USER_STATUS } from './admin.constants';
-import { fetchCustomer, fetchCustomerUsers, selectCurrentCustomer, selectCustomerUsers } from './admin.slice';
+import {
+  fetchCustomer,
+  fetchCustomerUsers,
+  selectCurrentCustomer,
+  selectCustomerUsers,
+  selectLicencesAndAvailability,
+} from './admin.slice';
 import ContentWrapper from './content-wrapper.component';
 import CorporateView from './corporate-view/corporate-view.component';
 import { CreateUserForm } from './create-user-form/create-user-form.component';
@@ -16,35 +22,36 @@ import styles from './admin.module.css';
 
 const Admin = ({ user }) => {
   const dispatch = useDispatch();
-  const selectedCustomer = useSelector(selectCurrentCustomer);
-  const selectedCustomerUsers = useSelector(selectCustomerUsers);
+  const currentCustomer = useSelector(selectCurrentCustomer);
+  const customerUsers = useSelector(selectCustomerUsers);
+  const licencesAndAvailability = useSelector(selectLicencesAndAvailability);
   const [visiblePanel, setVisiblePanel] = useState(ADMIN_VIEW.home);
   const createUserDialogRef = useRef(document.body);
   const [createUserDialogVisible, setCreateUserDialogVisible] = useState();
 
   useEffect(() => {
-    if (!selectedCustomer) {
+    if (!currentCustomer) {
       dispatch(fetchCustomer(user));
     }
-  }, [user, selectedCustomer, dispatch]);
+  }, [user, currentCustomer, dispatch]);
 
   useEffect(() => {
-    if (selectedCustomer && !selectedCustomerUsers) {
-      dispatch(fetchCustomerUsers(selectedCustomer));
+    if (currentCustomer && !customerUsers) {
+      dispatch(fetchCustomerUsers(currentCustomer));
     }
-  }, [selectedCustomer, selectedCustomerUsers, dispatch]);
+  }, [currentCustomer, customerUsers, dispatch]);
 
   return (
     <div className={styles.adminConsole}>
       <LeftSidebar user={user} setVisiblePanel={setVisiblePanel} visiblePanel={visiblePanel} />
       {visiblePanel === ADMIN_VIEW.home && (
         <ContentWrapper title="Users">
-          <ActiveUsersBoard activeUsers={selectedCustomerUsers?.filter(user => user.status === USER_STATUS.active)} />
+          <ActiveUsersBoard activeUsers={customerUsers?.filter(user => user.status === USER_STATUS.active)} />
         </ContentWrapper>
       )}
-      {visiblePanel === ADMIN_VIEW.corporateAccount && <CorporateView user={user} customer={selectedCustomer} />}
+      {visiblePanel === ADMIN_VIEW.corporateAccount && <CorporateView user={user} customer={currentCustomer} />}
       <OrganisationMenu
-        customer={selectedCustomer}
+        customer={currentCustomer}
         setVisiblePanel={setVisiblePanel}
         onCreateUserClick={() => setCreateUserDialogVisible(true)}
       />
@@ -54,7 +61,7 @@ const Admin = ({ user }) => {
         ref={createUserDialogRef}
         close={() => setCreateUserDialogVisible(false)}
       >
-        <CreateUserForm />
+        <CreateUserForm licences={licencesAndAvailability} />
       </Dialog>
     </div>
   );

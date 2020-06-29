@@ -24,6 +24,7 @@ import reducer, {
   createCustomerUser,
   selectCurrentCustomer,
   selectCustomerUsers,
+  selectLicencesAndAvailability,
 } from './admin.slice';
 
 const mockStore = configureMockStore([thunk]);
@@ -433,7 +434,7 @@ describe('Admin Slice', () => {
       it('returns the current customer', () => {
         const state = {
           admin: {
-            currentCustomer: 'test',
+            currentCustomer: { title: 'test customer' },
           },
         };
         const result = selectCurrentCustomer(state);
@@ -442,13 +443,90 @@ describe('Admin Slice', () => {
     });
 
     describe('selectCustomerUsers', () => {
-      const state = {
-        admin: {
-          customerUsers: [{ id: 1 }, { id: 2 }],
-        },
-      };
-      const result = selectCustomerUsers(state);
-      expect(result).toEqual(state.admin.customerUsers);
+      it('returns customerUsers from state', () => {
+        const state = {
+          admin: {
+            customerUsers: [{ id: 1 }, { id: 2 }],
+          },
+        };
+        const result = selectCustomerUsers(state);
+        expect(result).toEqual(state.admin.customerUsers);
+      });
+    });
+
+    describe('selectLicencesAndAvailability', () => {
+      it('Returns a list of unique licences', () => {
+        const state = {
+          admin: {
+            currentCustomer: {
+              licences: [
+                {
+                  id: 0,
+                  orb: 'Rice',
+                },
+                {
+                  id: 1,
+                  orb: 'Oil',
+                },
+                {
+                  id: 2,
+                  orb: 'Rice',
+                },
+              ],
+            },
+          },
+        };
+        const expected = [
+          { orb: 'Rice', available: true },
+          { orb: 'Oil', available: true },
+        ];
+        const result = selectLicencesAndAvailability(state);
+        expect(result).toEqual(expected);
+      });
+
+      it('Returns `available: false` for any orbs with all licences claimed', () => {
+        const state = {
+          admin: {
+            currentCustomer: {
+              licences: [
+                {
+                  id: 0,
+                  orb: 'Rice',
+                  customer_user: 'test@test.com',
+                },
+                {
+                  id: 1,
+                  orb: 'Oil',
+                },
+                {
+                  id: 2,
+                  orb: 'Rice',
+                  customer_user: 'test@test.com',
+                },
+                { id: 3, orb: 'Oil', customer_user: null },
+              ],
+            },
+          },
+        };
+        const expected = [
+          { orb: 'Rice', available: false },
+          { orb: 'Oil', available: true },
+        ];
+        const result = selectLicencesAndAvailability(state);
+        expect(result).toEqual(expected);
+      });
+
+      const falsyTests = [
+        ['empty', []],
+        ['undefined', undefined],
+        ['null', null],
+      ];
+
+      it.each(falsyTests)('returns an empty array if licences is %s', (_, value) => {
+        const state = { admin: { currentCustomer: { licences: value } } };
+        const result = selectLicencesAndAvailability(state);
+        expect(result).toEqual([]);
+      });
     });
   });
 });
