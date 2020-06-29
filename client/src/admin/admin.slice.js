@@ -146,7 +146,7 @@ export const createCustomerUser = fields => async (dispatch, getState) => {
 
   const licences =
     fields.licences &&
-    fields.licences.map(orb => customer.licences.find(licence => licence.orb === orb && !licence.customer_user));
+    fields.licences.map(orb => customer.licences.find(licence => licence.orb === orb && !licence.customer_user).id);
 
   const { email, name } = fields;
 
