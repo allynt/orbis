@@ -10,8 +10,8 @@ export const Licences = () => (
   <CreateUserForm
     onSubmit={action('onSubmit')}
     licences={[
-      { name: 'Rice', available: true },
-      { name: 'Oil', available: true },
+      { orb: 'Rice', available: true },
+      { orb: 'Oil', available: true },
     ]}
   />
 );
@@ -19,8 +19,8 @@ export const Licences = () => (
 export const UnavailableLicences = () => (
   <CreateUserForm
     licences={[
-      { name: 'Rice', available: true },
-      { name: 'Oil', available: false },
+      { orb: 'Rice', available: true },
+      { orb: 'Oil', available: false },
     ]}
   />
 );
