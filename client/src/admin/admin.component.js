@@ -11,6 +11,7 @@ import {
   selectCurrentCustomer,
   selectCustomerUsers,
   selectLicencesAndAvailability,
+  createCustomerUser,
 } from './admin.slice';
 import ContentWrapper from './content-wrapper.component';
 import CorporateView from './corporate-view/corporate-view.component';
@@ -41,6 +42,11 @@ const Admin = ({ user }) => {
     }
   }, [currentCustomer, customerUsers, dispatch]);
 
+  const handleCreateUserFormSubmit = values => {
+    setCreateUserDialogVisible(false);
+    dispatch(createCustomerUser(values));
+  };
+
   return (
     <div className={styles.adminConsole}>
       <LeftSidebar user={user} setVisiblePanel={setVisiblePanel} visiblePanel={visiblePanel} />
@@ -61,7 +67,11 @@ const Admin = ({ user }) => {
         ref={createUserDialogRef}
         close={() => setCreateUserDialogVisible(false)}
       >
-        <CreateUserForm licences={licencesAndAvailability} existingEmails={customerUsers?.map(cu => cu.user.email)} />
+        <CreateUserForm
+          licences={licencesAndAvailability}
+          existingEmails={customerUsers?.map(cu => cu.user.email)}
+          onSubmit={handleCreateUserFormSubmit}
+        />
       </Dialog>
     </div>
   );

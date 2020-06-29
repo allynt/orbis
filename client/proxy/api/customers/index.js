@@ -7,6 +7,7 @@ const getCustomerHandler = (req, res) => {
   res.status(200);
   res.json(getCustomer(req.currentUser));
 };
+
 const getCustomerUsersHandler = (req, res) => {
   console.log('Returning all Users of Current Customer');
   const currentCustomer = getCustomer(req.currentUser);

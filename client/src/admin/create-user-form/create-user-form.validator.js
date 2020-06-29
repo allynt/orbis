@@ -18,6 +18,5 @@ export const createUserFormValidator = (values, { existingEmails }) => {
     errors.email = ERROR_MESSAGES.email.required;
   if (!!values.email && !EMAIL_REGEX.test(values.email)) errors.email = ERROR_MESSAGES.email.invalid;
   if (existingEmails?.find(email => email === values.email)) errors.email = ERROR_MESSAGES.email.exists(values.email);
-  console.log(errors);
   return { errors, values };
 };

@@ -117,17 +117,27 @@ export const fetchCustomer = user => async (dispatch, getState) => {
   return dispatch(fetchCustomerSuccess(currentCustomer));
 };
 
-export const createCustomerUser = (customer, fields) => async (dispatch, getState) => {
+/**
+ * @param {{email: string, name?: string, licences: string[]}} fields
+ */
+export const createCustomerUser = fields => async (dispatch, getState) => {
   const headers = getJsonAuthHeaders(getState());
-
+  const customer = selectCurrentCustomer(getState());
   dispatch(createCustomerUserRequested());
+
+  const licences =
+    fields.licences &&
+    fields.licences.map(orb => customer.licences.find(licence => licence.orb === orb && !licence.customer_user));
+
+  const { email, name } = fields;
 
   const data = {
     status: 'PENDING',
     type: 'MEMBER',
+    licences,
     user: {
-      ...fields,
-      agreed_terms: true,
+      email,
+      name,
     },
   };
   const response = await sendData(`${API}${customer.name}/users/`, data, headers);

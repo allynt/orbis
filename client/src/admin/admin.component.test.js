@@ -1,5 +1,5 @@
 import React from 'react';
-import { render } from '@testing-library/react';
+import { render, waitFor } from '@testing-library/react';
 import Admin from './admin.component';
 import { Provider } from 'react-redux';
 import configureMockStore from 'redux-mock-store';
@@ -9,19 +9,19 @@ import userEvent from '@testing-library/user-event';
 const mockStore = configureMockStore([thunk]);
 
 const setup = () => {
-  fetch.mockResponse(
-    JSON.stringify({
-      id: 0,
-      name: 'test-customer',
-      title: 'Test Customer',
-    }),
-  );
-
   return render(
     <Provider
       store={mockStore({
         accounts: { userKey: '123abc' },
-        admin: {},
+        admin: {
+          currentCustomer: {
+            id: 0,
+            name: 'test-customer',
+            title: 'Test Customer',
+            licences: [{ id: 1, orb: 'Rice' }],
+          },
+          customerUsers: [],
+        },
       })}
     >
       <Admin user={{ customers: [{ type: 'MANAGER', name: 'test-customer' }] }} />
@@ -40,11 +40,22 @@ describe('<Admin />', () => {
     });
 
     it('Closes the Create User Dialog when the close button is clicked', () => {
-      const { getByText, getByRole, getByLabelText, queryByRole } = setup();
-      userEvent.click(getByText('Create User'));
+      const { getAllByText, getByRole, getByLabelText, queryByRole } = setup();
+      userEvent.click(getAllByText('Create User')[0]);
       expect(getByRole('dialog')).toBeInTheDocument();
       userEvent.click(getByLabelText('Close'));
       expect(queryByRole('dialog')).not.toBeInTheDocument();
+    });
+
+    it('Closes the Create User Dialog when the form is successfully submitted', () => {
+      fetch.mockResponse(JSON.stringify({}));
+      const { getByText, getAllByText, queryByRole, getByLabelText } = setup();
+      userEvent.click(getByText('Create User'));
+      userEvent.type(getByLabelText('Email'), 'hello@test.com');
+      userEvent.click(getAllByText('Create User')[1]);
+      waitFor(() => {
+        expect(queryByRole('dialog')).not.toBeInTheDocument();
+      });
     });
   });
 });

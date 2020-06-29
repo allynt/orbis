@@ -23,13 +23,13 @@ export const CreateUserForm = ({ licences, existingEmails, onSubmit }) => {
   return (
     <form className={styles.form} onSubmit={handleSubmit(v => onSubmit && onSubmit(v))}>
       <div className={formStyles.row}>
-        <label className={formStyles.hiddenLabel} for="name">
+        <label className={formStyles.hiddenLabel} htmlFor="name">
           Name
         </label>
         <Textfield ref={register} name="name" id="name" placeholder="Name" />
       </div>
       <div className={`${formStyles.row} ${errors.email && styles.error}`}>
-        <label className={formStyles.hiddenLabel} for="email">
+        <label className={formStyles.hiddenLabel} htmlFor="email">
           Email
         </label>
         <div className={styles.field}>

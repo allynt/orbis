@@ -2,10 +2,6 @@ import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 
 import reducer, {
-  fetchCustomerRequested,
-  fetchCustomerSuccess,
-  fetchCustomerFailure,
-  fetchCustomer,
   fetchCustomerUsersRequested,
   fetchCustomerUsersSuccess,
   fetchCustomerUsersFailure,
@@ -38,6 +34,7 @@ describe('Admin Slice', () => {
 
       store = mockStore({
         accounts: { userKey: 'Test-User-Key' },
+        admin: { currentCustomer: { name: 'test-customer', licences: [{ id: 1, orb: 'Rice' }] }, customerUsers: [] },
       });
     });
 
