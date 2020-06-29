@@ -3,9 +3,21 @@ import { render } from '@testing-library/react';
 import PendingInvitationsBoard from './pending-invitations-board.component';
 
 const pendingUsers = [
-  { licences: ['one', 'two'], user: { name: 'Test One', email: 'test1@test.com' } },
-  { licences: ['three', 'four'], user: { name: 'Test Two', email: 'test2@test.com' } },
-  { licences: ['five', 'six'], user: { name: 'Test Three', email: 'test3@test.com' } },
+  {
+    licences: ['one', 'two'],
+    invitation_date: '2020-01-31T11:46:12.618090Z',
+    user: { name: 'Test One', email: 'test1@test.com' },
+  },
+  {
+    licences: ['three', 'four'],
+    invitation_date: '2020-01-31T11:46:12.618090Z',
+    user: { name: 'Test Two', email: 'test2@test.com' },
+  },
+  {
+    licences: ['five', 'six'],
+    invitation_date: '2020-01-31T11:46:12.618090Z',
+    user: { name: 'Test Three', email: 'test3@test.com' },
+  },
 ];
 
 describe('ActiveUsersBoard', () => {
