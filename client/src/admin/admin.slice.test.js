@@ -38,203 +38,246 @@ describe('Admin Slice', () => {
       });
     });
 
-    it('should dispatch create user failure action.', async () => {
-      fetch.mockResponse(
-        JSON.stringify({
-          message: 'Test error message',
-        }),
-        {
-          ok: false,
-          status: 401,
-          statusText: 'Test Error',
-        },
-      );
+    describe('fetchCustomerUsers', () => {
+      it('should dispatch fetch users failure action.', async () => {
+        const customer = {
+          name: 'test_customer',
+        };
 
-      const expectedActions = [
-        { type: createCustomerUserRequested.type },
-        { type: createCustomerUserFailure.type, payload: { message: '401 Test Error' } },
-      ];
+        fetch.mockResponse(
+          JSON.stringify({
+            message: 'Test error message',
+          }),
+          {
+            ok: false,
+            status: 401,
+            statusText: 'Test Error',
+          },
+        );
 
-      const user = {
-        name: 'Test User',
-      };
-      await store.dispatch(createCustomerUser(user));
+        const expectedActions = [
+          { type: fetchCustomerUsersRequested.type },
+          { type: fetchCustomerUsersFailure.type, payload: { message: '401 Test Error' } },
+        ];
 
-      expect(store.getActions()).toEqual(expectedActions);
+        await store.dispatch(fetchCustomerUsers(customer));
+
+        expect(store.getActions()).toEqual(expectedActions);
+      });
+
+      it('should dispatch fetch users success action.', async () => {
+        const customer = {
+          name: 'test_customer',
+        };
+
+        const users = [
+          {
+            id: 1,
+          },
+          {
+            id: 2,
+          },
+        ];
+
+        fetch.mockResponse(JSON.stringify(users));
+
+        const expectedActions = [
+          { type: fetchCustomerUsersRequested.type },
+          { type: fetchCustomerUsersSuccess.type, payload: users },
+        ];
+
+        await store.dispatch(fetchCustomerUsers(customer));
+
+        expect(store.getActions()).toEqual(expectedActions);
+      });
     });
 
-    it('should dispatch create user success action.', async () => {
-      const user = {
-        name: 'Test User',
-      };
+    describe('createCustomerUser', () => {
+      it('should dispatch create user failure action.', async () => {
+        fetch.mockResponse(
+          JSON.stringify({
+            message: 'Test error message',
+          }),
+          {
+            ok: false,
+            status: 401,
+            statusText: 'Test Error',
+          },
+        );
 
-      fetch.mockResponse(JSON.stringify(user));
+        const expectedActions = [
+          { type: createCustomerUserRequested.type },
+          { type: createCustomerUserFailure.type, payload: { message: '401 Test Error' } },
+        ];
 
-      const expectedActions = [
-        { type: createCustomerUserRequested.type },
-        { type: createCustomerUserSuccess.type, payload: user },
-      ];
+        const user = {
+          name: 'Test User',
+        };
+        await store.dispatch(createCustomerUser(user));
 
-      await store.dispatch(createCustomerUser(user));
+        expect(store.getActions()).toEqual(expectedActions);
+      });
 
-      expect(store.getActions()).toEqual(expectedActions);
-    });
+      it('should dispatch create user success action.', async () => {
+        const user = {
+          name: 'Test User',
+        };
 
-    it('should dispatch fetch users failure action.', async () => {
-      const customer = {
-        name: 'test_customer',
-      };
+        fetch.mockResponse(JSON.stringify(user));
 
-      fetch.mockResponse(
-        JSON.stringify({
-          message: 'Test error message',
-        }),
-        {
-          ok: false,
-          status: 401,
-          statusText: 'Test Error',
-        },
-      );
+        const expectedActions = [
+          { type: createCustomerUserRequested.type },
+          { type: createCustomerUserSuccess.type, payload: user },
+        ];
 
-      const expectedActions = [
-        { type: fetchCustomerUsersRequested.type },
-        { type: fetchCustomerUsersFailure.type, payload: { message: '401 Test Error' } },
-      ];
+        await store.dispatch(createCustomerUser(user));
 
-      await store.dispatch(fetchCustomerUsers(customer));
+        expect(store.getActions()).toEqual(expectedActions);
+      });
 
-      expect(store.getActions()).toEqual(expectedActions);
-    });
-
-    it('should dispatch fetch users success action.', async () => {
-      const customer = {
-        name: 'test_customer',
-      };
-
-      const users = [
-        {
-          id: 1,
-        },
-        {
+      it('Sets the licences on the new user to IDs of available licences', async () => {
+        store = mockStore({
+          accounts: { userKey: 'Test-User-Key' },
+          admin: {
+            currentCustomer: {
+              name: 'test-customer',
+              licences: [
+                { id: 1, orb: 'Rice' },
+                { id: 2, orb: 'Rice', customer_user: 1 },
+                { id: 3, orb: 'Oil' },
+              ],
+            },
+            customerUsers: [{ id: 1, licences: [2] }],
+          },
+        });
+        const request = {
+          name: 'Test User',
+          email: 'test.user@test.com',
+          licences: ['Rice', 'Oil'],
+        };
+        const expectedCustomerUser = {
           id: 2,
-        },
-      ];
-
-      fetch.mockResponse(JSON.stringify(users));
-
-      const expectedActions = [
-        { type: fetchCustomerUsersRequested.type },
-        { type: fetchCustomerUsersSuccess.type, payload: users },
-      ];
-
-      await store.dispatch(fetchCustomerUsers(customer));
-
-      expect(store.getActions()).toEqual(expectedActions);
+          status: 'PENDING',
+          type: 'MEMBER',
+          licences: [1, 3],
+          user: {
+            name: 'Test User',
+            email: 'test.user@test.com',
+          },
+        };
+        fetch.mockResponse(JSON.stringify(expectedCustomerUser));
+        const response = await store.dispatch(createCustomerUser(request));
+        expect(response.payload).toEqual(expectedCustomerUser);
+      });
     });
 
-    it('should dispatch update user failure action.', async () => {
-      const customer = {
-        name: 'test_customer',
-      };
+    describe('updateCustomerUser', () => {
+      it('should dispatch update user failure action.', async () => {
+        const customer = {
+          name: 'test_customer',
+        };
 
-      const user = {
-        name: 'Test User',
-        id: 1,
-      };
+        const user = {
+          name: 'Test User',
+          id: 1,
+        };
 
-      fetch.mockResponse(
-        JSON.stringify({
-          message: 'Test error message',
-        }),
-        {
-          ok: false,
-          status: 401,
-          statusText: 'Test Error',
-        },
-      );
+        fetch.mockResponse(
+          JSON.stringify({
+            message: 'Test error message',
+          }),
+          {
+            ok: false,
+            status: 401,
+            statusText: 'Test Error',
+          },
+        );
 
-      const expectedActions = [
-        { type: updateCustomerUserRequested.type },
-        { type: updateCustomerUserFailure.type, payload: { message: '401 Test Error' } },
-      ];
+        const expectedActions = [
+          { type: updateCustomerUserRequested.type },
+          { type: updateCustomerUserFailure.type, payload: { message: '401 Test Error' } },
+        ];
 
-      await store.dispatch(updateCustomerUser(customer, user));
+        await store.dispatch(updateCustomerUser(customer, user));
 
-      expect(store.getActions()).toEqual(expectedActions);
+        expect(store.getActions()).toEqual(expectedActions);
+      });
+
+      it('should dispatch update user success action.', async () => {
+        const customer = {
+          name: 'test_customer',
+        };
+
+        const user = {
+          id: 1,
+          name: 'Test User',
+        };
+
+        fetch.mockResponse(JSON.stringify(user));
+
+        const expectedActions = [
+          { type: updateCustomerUserRequested.type },
+          { type: updateCustomerUserSuccess.type, payload: user },
+        ];
+
+        await store.dispatch(updateCustomerUser(customer, user));
+
+        expect(store.getActions()).toEqual(expectedActions);
+      });
     });
 
-    it('should dispatch update user success action.', async () => {
-      const customer = {
-        name: 'test_customer',
-      };
+    describe('deleteCustomerUser', () => {
+      it('should dispatch delete user failure action.', async () => {
+        const customer = {
+          name: 'test_customer',
+        };
 
-      const user = {
-        id: 1,
-        name: 'Test User',
-      };
+        const user = {
+          id: 1,
+        };
 
-      fetch.mockResponse(JSON.stringify(user));
+        fetch.mockResponse(
+          JSON.stringify({
+            message: 'Test error message',
+          }),
+          {
+            ok: false,
+            status: 401,
+            statusText: 'Test Error',
+          },
+        );
 
-      const expectedActions = [
-        { type: updateCustomerUserRequested.type },
-        { type: updateCustomerUserSuccess.type, payload: user },
-      ];
+        const expectedActions = [
+          { type: deleteCustomerUserRequested.type },
+          { type: deleteCustomerUserFailure.type, payload: { message: '401 Test Error' } },
+        ];
 
-      await store.dispatch(updateCustomerUser(customer, user));
+        await store.dispatch(deleteCustomerUser(customer, user));
 
-      expect(store.getActions()).toEqual(expectedActions);
-    });
+        expect(store.getActions()).toEqual(expectedActions);
+      });
 
-    it('should dispatch delete user failure action.', async () => {
-      const customer = {
-        name: 'test_customer',
-      };
+      it('should dispatch delete user success action.', async () => {
+        const customer = {
+          name: 'test_customer',
+        };
 
-      const user = {
-        id: 1,
-      };
+        const user = {
+          id: 1,
+          name: 'Test User',
+        };
 
-      fetch.mockResponse(
-        JSON.stringify({
-          message: 'Test error message',
-        }),
-        {
-          ok: false,
-          status: 401,
-          statusText: 'Test Error',
-        },
-      );
+        fetch.mockResponse(JSON.stringify(user));
 
-      const expectedActions = [
-        { type: deleteCustomerUserRequested.type },
-        { type: deleteCustomerUserFailure.type, payload: { message: '401 Test Error' } },
-      ];
+        const expectedActions = [
+          { type: deleteCustomerUserRequested.type },
+          { type: deleteCustomerUserSuccess.type, payload: user },
+        ];
 
-      await store.dispatch(deleteCustomerUser(customer, user));
+        await store.dispatch(deleteCustomerUser(customer, user));
 
-      expect(store.getActions()).toEqual(expectedActions);
-    });
-
-    it('should dispatch delete user success action.', async () => {
-      const customer = {
-        name: 'test_customer',
-      };
-
-      const user = {
-        id: 1,
-        name: 'Test User',
-      };
-
-      fetch.mockResponse(JSON.stringify(user));
-
-      const expectedActions = [
-        { type: deleteCustomerUserRequested.type },
-        { type: deleteCustomerUserSuccess.type, payload: user },
-      ];
-
-      await store.dispatch(deleteCustomerUser(customer, user));
-
-      expect(store.getActions()).toEqual(expectedActions);
+        expect(store.getActions()).toEqual(expectedActions);
+      });
     });
   });
 

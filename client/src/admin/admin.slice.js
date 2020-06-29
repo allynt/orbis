@@ -117,6 +117,25 @@ export const fetchCustomer = user => async (dispatch, getState) => {
   return dispatch(fetchCustomerSuccess(currentCustomer));
 };
 
+export const fetchCustomerUsers = customer => async (dispatch, getState) => {
+  const headers = getJsonAuthHeaders(getState());
+
+  dispatch(fetchCustomerUsersRequested());
+
+  const response = await getData(`${API}${customer.name}/users/`, headers);
+
+  if (!response.ok) {
+    const message = `${response.status} ${response.statusText}`;
+
+    NotificationManager.error(message, `Fetching Customer Users Error - ${response.statusText}`, 5000, () => {});
+
+    return dispatch(fetchCustomerUsersFailure({ message }));
+  }
+
+  const users = await response.json();
+  return dispatch(fetchCustomerUsersSuccess(users));
+};
+
 /**
  * @param {{email: string, name?: string, licences: string[]}} fields
  */
@@ -132,8 +151,6 @@ export const createCustomerUser = fields => async (dispatch, getState) => {
   const { email, name } = fields;
 
   const data = {
-    status: 'PENDING',
-    type: 'MEMBER',
     licences,
     user: {
       email,
@@ -152,25 +169,6 @@ export const createCustomerUser = fields => async (dispatch, getState) => {
   const user = await response.json();
 
   return dispatch(createCustomerUserSuccess(user));
-};
-
-export const fetchCustomerUsers = customer => async (dispatch, getState) => {
-  const headers = getJsonAuthHeaders(getState());
-
-  dispatch(fetchCustomerUsersRequested());
-
-  const response = await getData(`${API}${customer.name}/users/`, headers);
-
-  if (!response.ok) {
-    const message = `${response.status} ${response.statusText}`;
-
-    NotificationManager.error(message, `Fetching Customer Users Error - ${response.statusText}`, 5000, () => {});
-
-    return dispatch(fetchCustomerUsersFailure({ message }));
-  }
-
-  const users = await response.json();
-  return dispatch(fetchCustomerUsersSuccess(users));
 };
 
 export const updateCustomerUser = (customer, user) => async (dispatch, getState) => {
