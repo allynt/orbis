@@ -93,41 +93,72 @@ describe('Admin Slice', () => {
     });
 
     describe('createCustomerUser', () => {
-      it('should dispatch create user failure action.', async () => {
-        fetch.mockResponse(
-          JSON.stringify({
-            message: 'Test error message',
-          }),
-          {
-            ok: false,
-            status: 401,
-            statusText: 'Test Error',
-          },
-        );
+      describe('should dispatch create user failure action.', () => {
+        it('on create user failure', async () => {
+          fetch.mockResponse(
+            JSON.stringify({
+              message: 'Test error message',
+            }),
+            {
+              ok: false,
+              status: 401,
+              statusText: 'Test Error',
+            },
+          );
 
-        const expectedActions = [
-          { type: createCustomerUserRequested.type },
-          { type: createCustomerUserFailure.type, payload: { message: '401 Test Error' } },
-        ];
+          const expectedActions = [
+            { type: createCustomerUserRequested.type },
+            { type: createCustomerUserFailure.type, payload: { message: '401 Test Error' } },
+          ];
 
-        const user = {
-          name: 'Test User',
-        };
-        await store.dispatch(createCustomerUser(user));
+          const user = {
+            name: 'Test User',
+          };
+          await store.dispatch(createCustomerUser(user));
 
-        expect(store.getActions()).toEqual(expectedActions);
+          expect(store.getActions()).toEqual(expectedActions);
+        });
+
+        it('on fetch customer failure', async () => {
+          fetch.once(JSON.stringify({ name: 'User' }));
+          fetch.once(
+            JSON.stringify({
+              message: 'Test error message',
+            }),
+            {
+              ok: false,
+              status: 401,
+              statusText: 'Test Error',
+            },
+          );
+
+          const expectedActions = [
+            { type: createCustomerUserRequested.type },
+            { type: createCustomerUserFailure.type, payload: { message: '401 Test Error' } },
+          ];
+
+          const user = {
+            name: 'Test User',
+          };
+          await store.dispatch(createCustomerUser(user));
+
+          expect(store.getActions()).toEqual(expectedActions);
+        });
       });
 
       it('should dispatch create user success action.', async () => {
         const user = {
           name: 'Test User',
         };
+        const customer = {
+          name: 'test-customer',
+        };
 
-        fetch.mockResponse(JSON.stringify(user));
+        fetch.once(JSON.stringify(user)).once(JSON.stringify(customer));
 
         const expectedActions = [
           { type: createCustomerUserRequested.type },
-          { type: createCustomerUserSuccess.type, payload: user },
+          { type: createCustomerUserSuccess.type, payload: { user, customer } },
         ];
 
         await store.dispatch(createCustomerUser(user));
@@ -167,7 +198,7 @@ describe('Admin Slice', () => {
         };
         fetch.mockResponse(JSON.stringify(expectedCustomerUser));
         const response = await store.dispatch(createCustomerUser(request));
-        expect(response.payload).toEqual(expectedCustomerUser);
+        expect(response.payload.user).toEqual(expectedCustomerUser);
       });
     });
 
@@ -449,12 +480,22 @@ describe('Admin Slice', () => {
 
       const actualState = reducer(beforeState, {
         type: createCustomerUserSuccess.type,
-        payload: userToCreate,
+        payload: { user: userToCreate },
       });
 
       expect(actualState.customerUsers).toEqual([...beforeState.customerUsers, userToCreate]);
       expect(actualState.isLoading).toEqual(false);
       expect(actualState.error).toEqual(null);
+    });
+
+    it('updates the current customer after creating a user', () => {
+      beforeState.currentCustomer = { name: 'previous' };
+      const customer = {
+        name: 'current',
+      };
+
+      const result = reducer(beforeState, createCustomerUserSuccess({ customer }));
+      expect(result.currentCustomer).toEqual(customer);
     });
 
     it('should update the error state, when failed to create user', () => {
