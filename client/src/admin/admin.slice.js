@@ -13,7 +13,7 @@ const initialState = {
 };
 
 const adminSlice = createSlice({
-  name: 'users',
+  name: 'admin',
   initialState,
   reducers: {
     fetchCustomerRequested: state => {

@@ -1,5 +1,4 @@
 const express = require('express');
-const currentUserMiddleware = require('../authentication/middleware/currentUserMiddleware');
 const { getCustomer, getCustomerUsers, getSelectedUser, createCustomerUser } = require('./data');
 
 const getCustomerHandler = (req, res) => {
@@ -28,7 +27,7 @@ const getSelectedUserHandler = (req, res) => {
 
 const usersRouter = express.Router();
 
-usersRouter.route('/:customer').get(currentUserMiddleware, getCustomerHandler);
+usersRouter.route('/:customer').get(getCustomerHandler);
 
 usersRouter.route('/:customer/users').get(getCustomerUsersHandler).post(createCustomerUserHandler);
 

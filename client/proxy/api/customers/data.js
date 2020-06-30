@@ -95,7 +95,7 @@ const getCustomerUsers = customerId => customerUsers.filter(cu => cu.customer ==
 
 /**
  * @param {string} customerId The id of the customer to add the user to
- * @param {{email: string, name: string, licences: number[]}} user the form data
+ * @param {{email: string, name: string, licences: number[]}} userData the form data
  */
 const createCustomerUser = (customerId, userData) => {
   const newUserId = getCustomerUsers(customerId).length + 1;
