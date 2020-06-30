@@ -8,9 +8,9 @@
   integrity sha512-bvVOe7A+r7lws58B7r+fgnQDK90cV45AXuvGx6i5CCSX1W/M3AJnHsNggDANBxEtWdNdFWcDd5LorB+RdSIlBw==
 
 "@astrosat/astrosat-ui@^1.15.0":
-  version "1.15.4"
-  resolved "https://npm.pkg.github.com/download/@astrosat/astrosat-ui/1.15.4/71f870458de83b3e4c1f94f852f0a69519b079884726b8f5912c108ad5ab6c5a#6596b15d46dd7354891460f096e2b5c90531320e"
-  integrity sha512-4eNAlau35dtY2KgNZBVTncLBq+5KIoQqDioyiBm/T9oha/x7mbYM0GJ6Rw/mmWf00MSAApxBLMr0OvjvuGc50w==
+  version "1.16.0"
+  resolved "https://npm.pkg.github.com/download/@astrosat/astrosat-ui/1.16.0/d1e778b4f3131043d40b2a8a9c126d5beb021d2dc404d4c466057c3360000a45#36bb22769c1ad4704054036cd17372c3030f622f"
+  integrity sha512-uWff1VamILoYQYxToQzvrmXbLOCEacwdliOi2x5V+WyMw4oehie50xEjskmLEXHclmtC8yeoyTIUNOfq2PP15g==
   dependencies:
     clsx "^1.1.0"
     d3-scale "^3.2.1"
@@ -16583,6 +16583,11 @@ react-helmet-async@^1.0.2:
     prop-types "^15.7.2"
     react-fast-compare "^3.0.1"
     shallowequal "^1.1.0"
+
+react-hook-form@^5.7.2:
+  version "5.7.2"
+  resolved "https://registry.yarnpkg.com/react-hook-form/-/react-hook-form-5.7.2.tgz#a84e259e5d37dd30949af4f79c4dac31101b79ac"
+  integrity sha512-bJvY348vayIvEUmSK7Fvea/NgqbT2racA2IbnJz/aPlQ3GBtaTeDITH6rtCa6y++obZzG6E3Q8VuoXPir7QYUg==
 
 react-hotkeys@2.0.0:
   version "2.0.0"

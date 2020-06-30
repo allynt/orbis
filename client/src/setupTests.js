@@ -1,4 +1,4 @@
-import fetchMock from 'jest-fetch-mock';
+import { enableFetchMocks } from 'jest-fetch-mock';
 import '@testing-library/jest-dom/extend-expect';
 
 import './polyfills/flat-map';
@@ -11,6 +11,6 @@ jest.mock('react-ga', () => ({
 
 import '../public/config';
 
-global.fetch = fetchMock;
+enableFetchMocks();
 global.URL.createObjectURL = jest.fn();
 global.requestIdleCallback = jest.fn().mockImplementation(args => setTimeout(args, 0));

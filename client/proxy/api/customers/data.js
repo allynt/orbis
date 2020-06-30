@@ -7,6 +7,18 @@ let customers = [
     logo: 'https://ichef.bbci.co.uk/images/ic/1200x675/p03t1sm8.jpg',
     roles: ['SaveTheWorldRole'],
     permissions: ['can_deploy_skynet'],
+    licences: [
+      {
+        id: 1,
+        orb: 'Rice',
+      },
+      {
+        id: 2,
+        orb: 'Rice',
+        customer_user: 1,
+      },
+      { id: 3, orb: 'Oil' },
+    ],
     data_limit: 100,
     data_total: 50,
   },
@@ -39,7 +51,7 @@ let customerUsers = [
     type: 'MANAGER',
     status: 'ACTIVE',
     customer: 'cyberdyne',
-    licences: ['licence1', 'licence2'],
+    licences: [2],
     user: {
       id: 2,
       username: 'admin@test.com',
@@ -77,17 +89,34 @@ let customerUsers = [
   },
 ];
 
-const getCustomer = user => {
-  const customerName = user.customers[0].name;
-  return customers.find(c => c.name === customerName);
-};
+const getCustomer = customerId => customers.find(c => c.name === customerId);
 
-const getCustomerUsers = customer => {
-  return customerUsers.filter(cu => cu.customer === customer.name);
+const getCustomerUsers = customerId => customerUsers.filter(cu => cu.customer === customerId);
+
+/**
+ * @param {string} customerId The id of the customer to add the user to
+ * @param {{email: string, name: string, licences: number[]}} userData the form data
+ */
+const createCustomerUser = (customerId, userData) => {
+  const newUserId = getCustomerUsers(customerId).length + 1;
+  const customerLicences = getCustomer(customerId).licences;
+  userData.licences.forEach(
+    licenceId => (customerLicences.find(licence => licence.id === licenceId).customer_user = newUserId),
+  );
+  const newUser = {
+    id: newUserId,
+    type: 'MEMBER',
+    status: 'PENDING',
+    licences: userData.licences,
+    customer: customerId,
+    user: userData.user,
+  };
+  customerUsers.push(newUser);
+  return newUser;
 };
 
 const getSelectedUser = customer => {
   console.log('SELECTED USER');
 };
 
-module.exports = { getCustomer, getCustomerUsers, getSelectedUser };
+module.exports = { getCustomer, getCustomerUsers, createCustomerUser, getSelectedUser };

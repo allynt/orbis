@@ -1,5 +1,5 @@
 import { NotificationManager } from 'react-notifications';
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, createSelector } from '@reduxjs/toolkit';
 
 import { getData, sendData, getJsonAuthHeaders } from 'utils/http';
 
@@ -12,8 +12,8 @@ const initialState = {
   error: null,
 };
 
-const usersSlice = createSlice({
-  name: 'users',
+const adminSlice = createSlice({
+  name: 'admin',
   initialState,
   reducers: {
     fetchCustomerRequested: state => {
@@ -69,7 +69,8 @@ const usersSlice = createSlice({
       state.isLoading = true;
     },
     createCustomerUserSuccess: (state, { payload }) => {
-      state.customerUsers = [...state.customerUsers, payload];
+      if (payload.user) state.customerUsers = [...state.customerUsers, payload.user];
+      if (payload.customer) state.currentCustomer = payload.customer;
       state.isLoading = false;
       state.error = null;
     },
@@ -96,7 +97,21 @@ export const {
   createCustomerUserRequested,
   createCustomerUserSuccess,
   createCustomerUserFailure,
-} = usersSlice.actions;
+} = adminSlice.actions;
+
+/* === Thunks === */
+
+/**
+ * @param {Response} response
+ * @param {string} title
+ * @param {ActionCreatorWithPayload} action
+ * @param {Dispatch} dispatch
+ */
+const handleFailure = (response, title, action, dispatch) => {
+  const message = `${response.status} ${response.statusText}`;
+  NotificationManager.error(message, `${title} - ${response.statusText}`, 5000, () => {});
+  return dispatch(action({ message }));
+};
 
 export const fetchCustomer = user => async (dispatch, getState) => {
   const headers = getJsonAuthHeaders(getState());
@@ -105,42 +120,10 @@ export const fetchCustomer = user => async (dispatch, getState) => {
   const customerName = user.customers[0].name;
   const response = await getData(`${API}${customerName}`, headers);
 
-  if (!response.ok) {
-    const message = `${response.status} ${response.statusText}`;
-
-    NotificationManager.error(message, `Fetching Customer Error - ${response.statusText}`, 5000, () => {});
-    return dispatch(fetchCustomerFailure({ message: 'message' }));
-  }
+  if (!response.ok) return handleFailure(response, 'Fetching Customer Error', fetchCustomerFailure, dispatch);
 
   const currentCustomer = await response.json();
   return dispatch(fetchCustomerSuccess(currentCustomer));
-};
-
-export const createCustomerUser = (customer, fields) => async (dispatch, getState) => {
-  const headers = getJsonAuthHeaders(getState());
-
-  dispatch(createCustomerUserRequested());
-
-  const data = {
-    status: 'PENDING',
-    type: 'MEMBER',
-    user: {
-      ...fields,
-      agreed_terms: true,
-    },
-  };
-  const response = await sendData(`${API}${customer.name}/users/`, data, headers);
-
-  if (!response.ok) {
-    const message = `${response.status} ${response.statusText}`;
-
-    NotificationManager.error(message, `Creating Customer User Error - ${response.statusText}`, 5000, () => {});
-    return dispatch(createCustomerUserFailure({ message }));
-  }
-
-  const user = await response.json();
-
-  return dispatch(createCustomerUserSuccess(user));
 };
 
 export const fetchCustomerUsers = customer => async (dispatch, getState) => {
@@ -150,16 +133,49 @@ export const fetchCustomerUsers = customer => async (dispatch, getState) => {
 
   const response = await getData(`${API}${customer.name}/users/`, headers);
 
-  if (!response.ok) {
-    const message = `${response.status} ${response.statusText}`;
-
-    NotificationManager.error(message, `Fetching Customer Users Error - ${response.statusText}`, 5000, () => {});
-
-    return dispatch(fetchCustomerUsersFailure({ message }));
-  }
+  if (!response.ok)
+    return handleFailure(response, 'Fetching Customer Users Error', fetchCustomerUsersFailure, dispatch);
 
   const users = await response.json();
   return dispatch(fetchCustomerUsersSuccess(users));
+};
+
+/**
+ * @param {{email: string, name?: string, licences: string[]}} fields
+ */
+export const createCustomerUser = fields => async (dispatch, getState) => {
+  const headers = getJsonAuthHeaders(getState());
+  const currentCustomer = selectCurrentCustomer(getState());
+  dispatch(createCustomerUserRequested());
+
+  const licences =
+    fields.licences &&
+    fields.licences.map(
+      orb => currentCustomer.licences.find(licence => licence.orb === orb && !licence.customer_user).id,
+    );
+
+  const { email, name } = fields;
+
+  const data = {
+    licences,
+    user: {
+      email,
+      name,
+    },
+  };
+
+  const createUserResponse = await sendData(`${API}${currentCustomer.name}/users/`, data, headers);
+
+  if (!createUserResponse.ok)
+    return handleFailure(createUserResponse, 'Creating Customer User Error', createCustomerUserFailure, dispatch);
+
+  const fetchCustomerResponse = await getData(`${API}${currentCustomer.name}`, headers);
+  if (!fetchCustomerResponse.ok)
+    return handleFailure(fetchCustomerResponse, 'Creating Customer User Error', createCustomerUserFailure, dispatch);
+
+  const [user, customer] = await Promise.all([createUserResponse.json(), fetchCustomerResponse.json()]);
+
+  return dispatch(createCustomerUserSuccess({ user, customer }));
 };
 
 export const updateCustomerUser = (customer, user) => async (dispatch, getState) => {
@@ -169,13 +185,7 @@ export const updateCustomerUser = (customer, user) => async (dispatch, getState)
 
   const response = await sendData(`${API}${customer.name}/users/${user.id}`, user, headers, 'PUT');
 
-  if (!response.ok) {
-    const message = `${response.status} ${response.statusText}`;
-
-    NotificationManager.error(message, 'Updating User', 5000, () => {});
-
-    return dispatch(updateCustomerUserFailure({ message }));
-  }
+  if (!response.ok) return handleFailure(response, 'Updating User', updateCustomerUserFailure, dispatch);
 
   const userData = await response.json();
 
@@ -189,28 +199,32 @@ export const deleteCustomerUser = (customer, user) => async (dispatch, getState)
 
   const response = await sendData(`${API}${customer.name}/users/${user.id}`, null, headers, 'DELETE');
 
-  if (!response.ok) {
-    const message = `${response.status} ${response.statusText}`;
-
-    NotificationManager.error(message, 'Deleting User', 5000, () => {});
-
-    return dispatch(deleteCustomerUserFailure({ message }));
-  }
+  if (!response.ok) return handleFailure(response, 'Deleting User', deleteCustomerUserFailure, dispatch);
 
   return dispatch(deleteCustomerUserSuccess(user));
 };
 
-export const copyCustomerUser = (customer, user) => async dispatch => {
-  // Update User to prepend 'Copy of' text.
-  const data = {
-    ...user,
-    email: `UPDATE-${user.email}`,
-    username: `UPDATE-${user.email}`,
-    name: `Copy of ${user.name}`,
-    description: `Copy of ${user.description}`,
-  };
+/* === Selectors === */
+const baseSelector = state => state.admin;
+export const selectCurrentCustomer = createSelector(baseSelector, state => state.currentCustomer);
+export const selectCustomerUsers = createSelector(baseSelector, state => state.customerUsers);
+export const selectLicencesAndAvailability = createSelector(selectCurrentCustomer, customer => {
+  if (!customer?.licences || !customer?.licences.length) return [];
+  const { licences } = customer;
+  const uniqueOrbNameArray = Array.from(
+    licences.reduce((acc, cur) => {
+      acc.add(cur.orb);
+      return acc;
+    }, new Set()),
+  );
+  const orbsAndAvailability = uniqueOrbNameArray.map(orb => {
+    const orbLicences = licences.filter(licence => licence.orb === orb);
+    const available = orbLicences.some(
+      ({ customer_user }) => customer_user === undefined || customer_user === null || customer_user === '',
+    );
+    return { orb, available };
+  });
+  return orbsAndAvailability;
+});
 
-  return dispatch(createCustomerUser(customer, data));
-};
-
-export default usersSlice.reducer;
+export default adminSlice.reducer;
