@@ -4,7 +4,7 @@ import ContentWrapper from '../../content-wrapper.component';
 
 import tableStyles from '../../table.module.css';
 
-export const ActiveUsersBoard = ({ activeUsers }) => (
+export const ActiveUsersBoard = ({ activeUsers, customer, getUserLicences }) => (
   <ContentWrapper title="Users">
     <table className={tableStyles.table}>
       <thead className={tableStyles.thead}>
@@ -22,13 +22,16 @@ export const ActiveUsersBoard = ({ activeUsers }) => (
       </thead>
       <tbody>
         {activeUsers && activeUsers.length > 0 ? (
-          activeUsers.map(user => (
-            <tr key={user.id} className={tableStyles.tr}>
-              <td className={tableStyles.td}>{user.user.name}</td>
-              <td className={tableStyles.td}>{user.licences?.slice().sort().join(', ')}</td>
-              <td className={tableStyles.td}>{user.user.email}</td>
-            </tr>
-          ))
+          activeUsers.map(user => {
+            const licences = getUserLicences(user, customer);
+            return (
+              <tr key={user.id} className={tableStyles.tr}>
+                <td className={tableStyles.td}>{user.user.name}</td>
+                <td className={tableStyles.td}>{licences?.slice().sort().join(', ')}</td>
+                <td className={tableStyles.td}>{user.user.email}</td>
+              </tr>
+            );
+          })
         ) : (
           <tr className={tableStyles.tr}>
             <td align="center" colSpan={3} className={tableStyles.td}>

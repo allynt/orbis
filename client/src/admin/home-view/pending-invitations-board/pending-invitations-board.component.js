@@ -2,16 +2,13 @@ import React from 'react';
 
 import { format } from 'date-fns';
 
-import Button from '@astrosat/astrosat-ui/dist/buttons/button';
-
 import ContentWrapper from '../../content-wrapper.component';
 
-import styles from './pending-invitations.module.css';
 import tableStyles from '../../table.module.css';
 
 const DATE_FORMAT = ['k:s d MMMM yyyy'];
 
-export const PendingInvitationsBoard = ({ pendingUsers }) => (
+export const PendingInvitationsBoard = ({ pendingUsers, customer, getUserLicences }) => (
   <ContentWrapper title="Pending Invitations">
     <table className={tableStyles.table}>
       <thead className={tableStyles.thead}>
@@ -34,11 +31,12 @@ export const PendingInvitationsBoard = ({ pendingUsers }) => (
         {pendingUsers && pendingUsers.length > 0 ? (
           pendingUsers.map(user => {
             const date = format(new Date(user.invitation_date), DATE_FORMAT);
+            const licences = getUserLicences(user, customer);
             return (
               <tr key={user.id} className={tableStyles.tr}>
                 <td className={tableStyles.td}>{user.user.name}</td>
                 <td className={tableStyles.td}>{user.user.email}</td>
-                <td className={tableStyles.td}>{user.licences?.slice().sort().join(', ')}</td>
+                <td className={tableStyles.td}>{licences?.slice().sort().join(', ')}</td>
                 <td className={tableStyles.td}>{date}</td>
               </tr>
             );

@@ -49,7 +49,7 @@ const Admin = ({ user }) => {
   return (
     <div className={styles.adminConsole}>
       <LeftSidebar user={user} setVisiblePanel={setVisiblePanel} visiblePanel={visiblePanel} />
-      {visiblePanel === ADMIN_VIEW.home && <HomeView users={customerUsers} />}
+      {visiblePanel === ADMIN_VIEW.home && <HomeView users={customerUsers} customer={currentCustomer} />}
       {visiblePanel === ADMIN_VIEW.corporateAccount && <CorporateView user={user} customer={currentCustomer} />}
       <OrganisationMenu
         customer={currentCustomer}
