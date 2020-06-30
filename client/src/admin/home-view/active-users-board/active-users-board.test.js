@@ -1,6 +1,6 @@
 import React from 'react';
 import { render } from '@testing-library/react';
-import ActiveUsersBoard from './active-users-board.component';
+import { ActiveUsersBoard } from './active-users-board.component';
 
 const activeUsers = [
   { licences: ['one', 'two'], user: { name: 'Test One', email: 'test1@test.com' } },

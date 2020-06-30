@@ -1,6 +1,6 @@
 import React from 'react';
 import { render } from '@testing-library/react';
-import PendingInvitationsBoard from './pending-invitations-board.component';
+import { PendingInvitationsBoard } from './pending-invitations-board.component';
 
 const pendingUsers = [
   {
@@ -20,21 +20,21 @@ const pendingUsers = [
   },
 ];
 
-describe('ActiveUsersBoard', () => {
+describe('PendingUsersBoard', () => {
   const cases = [
     ['names', 'name'],
     ['assigned licences', 'licences'],
     ["email address'", 'email'],
   ];
 
-  it.each(cases)("Displays all active user's %s", (_, text) => {
+  it.each(cases)("Displays all pending user's %s", (_, text) => {
     const { getByText } = render(<PendingInvitationsBoard pendingUsers={pendingUsers} />);
     pendingUsers.forEach(user =>
       expect(getByText(text === 'licences' ? user[text].sort().join(', ') : user.user[text])).toBeInTheDocument(),
     );
   });
 
-  describe('Displays a placeholder when there are no active users', () => {
+  describe('Displays a placeholder when there are no pending users', () => {
     const cases = [
       ['undefined', undefined],
       ['null', null],

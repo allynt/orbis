@@ -11,7 +11,7 @@ import tableStyles from '../../table.module.css';
 
 const DATE_FORMAT = ['k:s d MMMM yyyy'];
 
-const PendingInvitationsBoard = ({ pendingUsers }) => (
+export const PendingInvitationsBoard = ({ pendingUsers }) => (
   <ContentWrapper title="Pending Invitations">
     <table className={tableStyles.table}>
       <thead className={tableStyles.thead}>
@@ -28,9 +28,6 @@ const PendingInvitationsBoard = ({ pendingUsers }) => (
           <th align="left" className={tableStyles.th}>
             Invitation Sent
           </th>
-          <th align="left" className={tableStyles.th}>
-            Invited
-          </th>
         </tr>
       </thead>
       <tbody>
@@ -43,11 +40,6 @@ const PendingInvitationsBoard = ({ pendingUsers }) => (
                 <td className={tableStyles.td}>{user.user.email}</td>
                 <td className={tableStyles.td}>{user.licences?.slice().sort().join(', ')}</td>
                 <td className={tableStyles.td}>{date}</td>
-                <td className={tableStyles.td}>
-                  <Button className={styles.resendButton} onClick={() => console.log('CLICKED!')}>
-                    Resend Invitation
-                  </Button>
-                </td>
               </tr>
             );
           })
@@ -62,5 +54,3 @@ const PendingInvitationsBoard = ({ pendingUsers }) => (
     </table>
   </ContentWrapper>
 );
-
-export default PendingInvitationsBoard;

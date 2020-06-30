@@ -4,7 +4,7 @@ import ContentWrapper from '../../content-wrapper.component';
 
 import tableStyles from '../../table.module.css';
 
-const ActiveUsersBoard = ({ activeUsers }) => (
+export const ActiveUsersBoard = ({ activeUsers }) => (
   <ContentWrapper title="Users">
     <table className={tableStyles.table}>
       <thead className={tableStyles.thead}>
@@ -40,5 +40,3 @@ const ActiveUsersBoard = ({ activeUsers }) => (
     </table>
   </ContentWrapper>
 );
-
-export default ActiveUsersBoard;
