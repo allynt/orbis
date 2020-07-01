@@ -287,6 +287,10 @@ export const selectCustomerUsers = createSelector(
   baseSelector,
   state => state.customerUsers,
 );
+const selectLicences = createSelector(
+  selectCurrentCustomer,
+  customer => customer?.licences,
+);
 
 export const selectLicencesAndAvailability = createSelector(
   selectCurrentCustomer,
@@ -323,6 +327,34 @@ export const selectNonPendingLicences = createSelector(
       );
       return customer_user && customer_user.status !== USER_STATUS.pending;
     }),
+);
+
+export const selectLicenceInformation = createSelector(
+  [selectLicences, selectCustomerUsers],
+  (licences, users) =>
+    users &&
+    licences?.reduce((licenceInformation, { orb, customer_user }) => {
+      const orbLicenceInformation = licenceInformation[orb];
+      const user =
+        !!customer_user && users.find(user => user.id === customer_user);
+      const isActive = user.status === USER_STATUS.active;
+      const isPending = user.status === USER_STATUS.pending;
+      let purchased, active, pending;
+      if (orbLicenceInformation) {
+        purchased = orbLicenceInformation.purchased + 1;
+        active = orbLicenceInformation.active + isActive;
+        pending = orbLicenceInformation.pending + isPending;
+      } else {
+        purchased = 1;
+        active = +isActive;
+        pending = +isPending;
+      }
+      const available = purchased - active - pending;
+      return {
+        ...licenceInformation,
+        [orb]: { purchased, available, active, pending },
+      };
+    }, {}),
 );
 
 export default adminSlice.reducer;

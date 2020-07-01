@@ -11,7 +11,7 @@ import {
   selectCurrentCustomer,
   selectCustomerUsers,
   selectLicencesAndAvailability,
-  selectNonPendingLicences,
+  selectLicenceInformation,
 } from './admin.slice';
 import ContentWrapper from './content-wrapper.component';
 import CorporateView from './corporate-view/corporate-view.component';
@@ -25,7 +25,7 @@ const Admin = ({ user }) => {
   const currentCustomer = useSelector(selectCurrentCustomer);
   const customerUsers = useSelector(selectCustomerUsers);
   const licencesAndAvailability = useSelector(selectLicencesAndAvailability);
-  const nonPendingLicences = useSelector(selectNonPendingLicences);
+  const licenceInformation = useSelector(selectLicenceInformation);
   const [visiblePanel, setVisiblePanel] = useState(ADMIN_VIEW.home);
   const createUserDialogRef = useRef(document.body);
   const [createUserDialogVisible, setCreateUserDialogVisible] = useState();
@@ -54,14 +54,18 @@ const Admin = ({ user }) => {
       case ADMIN_VIEW.licenceDashboard:
         return (
           <ContentWrapper title="Licence Dashboard">
-            <LicenceDashboard licences={nonPendingLicences} />
+            <LicenceDashboard licenceInformation={licenceInformation} />
           </ContentWrapper>
         );
       case ADMIN_VIEW.home:
       default:
         return (
           <ContentWrapper title="Users">
-            <ActiveUsersBoard activeUsers={customerUsers?.filter(user => user.status === USER_STATUS.active)} />
+            <ActiveUsersBoard
+              activeUsers={customerUsers?.filter(
+                user => user.status === USER_STATUS.active,
+              )}
+            />
           </ContentWrapper>
         );
     }
@@ -69,7 +73,11 @@ const Admin = ({ user }) => {
 
   return (
     <div className={styles.adminConsole}>
-      <LeftSidebar user={user} setVisiblePanel={setVisiblePanel} visiblePanel={visiblePanel} />
+      <LeftSidebar
+        user={user}
+        setVisiblePanel={setVisiblePanel}
+        visiblePanel={visiblePanel}
+      />
       {getMainView()}
       <OrganisationMenu
         customer={currentCustomer}

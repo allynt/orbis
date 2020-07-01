@@ -22,6 +22,7 @@ import reducer, {
   selectCustomerUsers,
   selectLicencesAndAvailability,
   selectNonPendingLicences,
+  selectLicenceInformation,
 } from './admin.slice';
 import { USER_STATUS } from './admin.constants';
 
@@ -704,6 +705,74 @@ describe('Admin Slice', () => {
         const expected = [{ id: 3, customer_user: 2 }];
         const result = selectNonPendingLicences(state);
         expect(result).toEqual(expected);
+      });
+    });
+
+    describe('selectLicenceInformation', () => {
+      const state = {
+        admin: {
+          currentCustomer: {
+            licences: [
+              { orb: 'Rice' },
+              { orb: 'Rice', customer_user: 2 },
+              { orb: 'Rice', customer_user: 1 },
+              { orb: 'Oil', customer_user: 1 },
+              { orb: 'Oil', customer_user: 3 },
+              { orb: 'Health', customer_user: 4 },
+              { orb: 'Health', customer_user: 3 },
+              { orb: 'Health', customer_user: 2 },
+              { orb: 'Health' },
+              { orb: 'Health' },
+            ],
+          },
+          customerUsers: [
+            { id: 1, status: USER_STATUS.active },
+            { id: 2, status: USER_STATUS.active },
+            { id: 3, status: USER_STATUS.pending },
+            { id: 4, status: USER_STATUS.pending },
+          ],
+        },
+      };
+
+      it('creates an entry for each orb', () => {
+        const result = selectLicenceInformation(state);
+        expect(Object.keys(result)).toEqual(['Rice', 'Oil', 'Health']);
+      });
+
+      it('calculates purchased amount', () => {
+        const result = selectLicenceInformation(state);
+        [
+          ['Rice', 3],
+          ['Oil', 2],
+          ['Health', 5],
+        ].forEach(([orb, count]) => expect(result[orb].purchased).toBe(count));
+      });
+
+      it('calculates available amount', () => {
+        const result = selectLicenceInformation(state);
+        [
+          ['Rice', 1],
+          ['Oil', 0],
+          ['Health', 2],
+        ].forEach(([orb, count]) => expect(result[orb].available).toBe(count));
+      });
+
+      it('calculates active amount', () => {
+        const result = selectLicenceInformation(state);
+        [
+          ['Rice', 2],
+          ['Oil', 1],
+          ['Health', 1],
+        ].forEach(([orb, count]) => expect(result[orb].active).toBe(count));
+      });
+
+      it('calculates pending count', () => {
+        const result = selectLicenceInformation(state);
+        [
+          ['Rice', 0],
+          ['Oil', 1],
+          ['Health', 2],
+        ].forEach(([orb, count]) => expect(result[orb].pending).toBe(count));
       });
     });
   });
