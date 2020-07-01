@@ -2,6 +2,7 @@ import { NotificationManager } from 'react-notifications';
 import { createSlice, createSelector } from '@reduxjs/toolkit';
 
 import { getData, sendData, getJsonAuthHeaders } from 'utils/http';
+import { USER_STATUS } from './admin.constants';
 
 const API = '/api/customers/';
 
@@ -208,6 +209,7 @@ export const deleteCustomerUser = (customer, user) => async (dispatch, getState)
 const baseSelector = state => state.admin;
 export const selectCurrentCustomer = createSelector(baseSelector, state => state.currentCustomer);
 export const selectCustomerUsers = createSelector(baseSelector, state => state.customerUsers);
+
 export const selectLicencesAndAvailability = createSelector(selectCurrentCustomer, customer => {
   if (!customer?.licences || !customer?.licences.length) return [];
   const { licences } = customer;
@@ -226,5 +228,15 @@ export const selectLicencesAndAvailability = createSelector(selectCurrentCustome
   });
   return orbsAndAvailability;
 });
+
+export const selectNonPendingLicences = createSelector(
+  [selectCurrentCustomer, selectCustomerUsers],
+  (customer, users) =>
+    customer.licences.filter(licence => {
+      if (!licence.customer_user) return true;
+      const customer_user = users.find(user => licence.customer_user === user.id);
+      return customer_user.status !== USER_STATUS.pending;
+    }),
+);
 
 export default adminSlice.reducer;
