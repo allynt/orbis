@@ -1,12 +1,5 @@
 .corporate {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 100%;
-  height: 100%;
-  padding: 0 1.875rem;
-  color: var(--color-darkgrey);
-  overflow-y: scroll !important;
+  composes: parentView from '../admin.module.css';
 }
 
 .corporateAccount {

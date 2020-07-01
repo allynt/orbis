@@ -1,8 +1,7 @@
 import { Dialog } from '@astrosat/astrosat-ui';
 import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { ActiveUsersBoard } from './active-users-board/active-users-board.component';
-import { ADMIN_VIEW, USER_STATUS } from './admin.constants';
+import { ADMIN_VIEW } from './admin.constants';
 import styles from './admin.module.css';
 import {
   createCustomerUser,
@@ -12,12 +11,13 @@ import {
   selectCustomerUsers,
   selectLicenceInformation,
 } from './admin.slice';
-import ContentWrapper from './content-wrapper.component';
+import HomeView from './home-view/home-view.component';
 import CorporateView from './corporate-view/corporate-view.component';
 import { CreateUserForm } from './create-user-form/create-user-form.component';
 import LeftSidebar from './left-sidebar/left-sidebar.component';
 import { LicenceDashboard } from './licence-dashboard/licence-dashboard.component';
 import OrganisationMenu from './organisation-menu/organisation-menu.component';
+import ContentWrapper from './content-wrapper.component';
 
 const Admin = ({ user }) => {
   const dispatch = useDispatch();
@@ -57,15 +57,7 @@ const Admin = ({ user }) => {
         );
       case ADMIN_VIEW.home:
       default:
-        return (
-          <ContentWrapper title="Users">
-            <ActiveUsersBoard
-              activeUsers={customerUsers?.filter(
-                user => user.status === USER_STATUS.active,
-              )}
-            />
-          </ContentWrapper>
-        );
+        return <HomeView users={customerUsers} customer={currentCustomer} />;
     }
   };
 
