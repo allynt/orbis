@@ -18,7 +18,7 @@ const CorporateAccount = ({ customer }) => {
   }
 
   return (
-    <ContentWrapper title={'Corporate Account'}>
+    <ContentWrapper title="Corporate Account">
       <form className={styles.corporateAccount} onSubmit={handleSubmit}>
         <div className={styles.logoContainer}>
           <img src={customer.logo} className={styles.logo} alt="Organisation Logo" />

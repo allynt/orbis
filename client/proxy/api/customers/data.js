@@ -11,13 +11,71 @@ let customers = [
       {
         id: 1,
         orb: 'Rice',
+        customer_user: 1,
       },
       {
         id: 2,
         orb: 'Rice',
+        customer_user: 2,
+      },
+      {
+        id: 3,
+        orb: 'Rice',
+        customer_user: 3,
+      },
+      {
+        id: 4,
+        orb: 'Rice',
+        customer_user: 4,
+      },
+      {
+        id: 5,
+        orb: 'Oil',
+        customer_user: 5,
+      },
+      {
+        id: 6,
+        orb: 'Oil',
+        customer_user: 6,
+      },
+      {
+        id: 7,
+        orb: 'Oil',
         customer_user: 1,
       },
-      { id: 3, orb: 'Oil' },
+      {
+        id: 8,
+        orb: 'Oil',
+        customer_user: 2,
+      },
+      {
+        id: 9,
+        orb: 'Oil',
+        customer_user: 3,
+      },
+      {
+        id: 10,
+        orb: 'Oil',
+        customer_user: 4,
+      },
+      {
+        id: 11,
+        orb: 'Rice',
+        customer_user: 5,
+      },
+      {
+        id: 12,
+        orb: 'Rice',
+        customer_user: 6,
+      },
+      {
+        id: 13,
+        orb: 'Rice',
+      },
+      {
+        id: 14,
+        orb: 'Oil',
+      },
     ],
     data_limit: 100,
     data_total: 50,
@@ -51,9 +109,8 @@ let customerUsers = [
     type: 'MANAGER',
     status: 'ACTIVE',
     customer: 'cyberdyne',
-    licences: [2],
+    licences: [1, 7],
     user: {
-      id: 2,
       username: 'admin@test.com',
       email: 'admin@test.com',
       name: 'Harry Callahan',
@@ -70,21 +127,106 @@ let customerUsers = [
   },
   {
     id: 2,
-    type: 'MEMBER',
-    status: 'PENDING',
+    type: 'MANAGER',
+    status: 'ACTIVE',
     customer: 'cyberdyne',
+    licences: [2, 8],
     user: {
-      id: 1,
-      username: 'user@test.com',
-      email: 'user@test.com',
-      password: 'panda',
-      name: null,
+      id: 2,
+      username: 'f.mulder@fbi.gov',
+      email: 'f.mulder@fbi.gov',
+      name: 'Fox Mulder',
       description: '',
+      change_password: false,
       is_verified: true,
       is_approved: true,
+      avatar: 'some/path/to/an/image',
       profiles: {},
-      roles: ['UserRole', 'AstrosatRole'],
-      customers: [],
+      roles: ['UserRole', 'AdminRole', 'AstrosatRole'],
+      permissions: [],
+    },
+  },
+  {
+    id: 3,
+    type: 'MANAGER',
+    status: 'ACTIVE',
+    customer: 'cyberdyne',
+    licences: [3, 9],
+    user: {
+      username: 'm.riggs@lapd.gov',
+      email: 'm.riggs@lapd.gov',
+      name: 'Martin Riggs',
+      description: '',
+      change_password: false,
+      is_verified: true,
+      is_approved: true,
+      avatar: 'some/path/to/an/image',
+      profiles: {},
+      roles: ['UserRole', 'AdminRole', 'AstrosatRole'],
+      permissions: [],
+    },
+  },
+  {
+    id: 4,
+    type: 'MANAGER',
+    status: 'PENDING',
+    invitation_date: '2020-01-31T11:46:12.618090Z',
+    customer: 'cyberdyne',
+    licences: [4, 10],
+    user: {
+      username: 'f.serpico@nypd.gov',
+      email: 'f.serpico@nypd.gov',
+      name: 'Frank Serpico',
+      description: '',
+      change_password: false,
+      is_verified: true,
+      is_approved: true,
+      avatar: 'some/path/to/an/image',
+      profiles: {},
+      roles: ['UserRole', 'AdminRole', 'AstrosatRole'],
+      permissions: [],
+    },
+  },
+  {
+    id: 5,
+    type: 'MEMBER',
+    status: 'PENDING',
+    invitation_date: '2020-01-31T11:46:12.618090Z',
+    customer: 'cyberdyne',
+    licences: [5, 11],
+    user: {
+      username: 'e.exley@lapd.gov',
+      email: 'e.exley@lapd.gov',
+      name: 'Edmund Exley',
+      description: '',
+      change_password: false,
+      is_verified: true,
+      is_approved: true,
+      avatar: 'some/path/to/an/image',
+      profiles: {},
+      roles: ['UserRole', 'AdminRole', 'AstrosatRole'],
+      permissions: [],
+    },
+  },
+  {
+    id: 6,
+    type: 'MANAGER',
+    status: 'PENDING',
+    invitation_date: '2020-01-31T11:46:12.618090Z',
+    customer: 'cyberdyne',
+    licences: [6, 12],
+    user: {
+      username: 'a.murphy@dpd.gov',
+      email: 'a.murphy@dpd.gov',
+      name: 'Alex Murphy',
+      description: '',
+      change_password: false,
+      is_verified: true,
+      is_approved: true,
+      avatar: 'some/path/to/an/image',
+      profiles: {},
+      roles: ['UserRole', 'AdminRole', 'AstrosatRole'],
+      permissions: [],
     },
   },
 ];
@@ -100,6 +242,7 @@ const getCustomerUsers = customerId => customerUsers.filter(cu => cu.customer ==
 const createCustomerUser = (customerId, userData) => {
   const newUserId = getCustomerUsers(customerId).length + 1;
   const customerLicences = getCustomer(customerId).licences;
+  const invitation_date = new Date().toISOString();
   userData.licences.forEach(
     licenceId => (customerLicences.find(licence => licence.id === licenceId).customer_user = newUserId),
   );
@@ -110,13 +253,10 @@ const createCustomerUser = (customerId, userData) => {
     licences: userData.licences,
     customer: customerId,
     user: userData.user,
+    invitation_date,
   };
   customerUsers.push(newUser);
   return newUser;
 };
 
-const getSelectedUser = customer => {
-  console.log('SELECTED USER');
-};
-
-module.exports = { getCustomer, getCustomerUsers, createCustomerUser, getSelectedUser };
+module.exports = { getCustomer, getCustomerUsers, createCustomerUser };

@@ -3,8 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { Dialog } from '@astrosat/astrosat-ui';
 
-import { ActiveUsersBoard } from './active-users-board/active-users-board.component';
-import { ADMIN_VIEW, USER_STATUS } from './admin.constants';
+import { ADMIN_VIEW } from './admin.constants';
 import {
   fetchCustomer,
   fetchCustomerUsers,
@@ -13,7 +12,7 @@ import {
   selectLicencesAndAvailability,
   createCustomerUser,
 } from './admin.slice';
-import ContentWrapper from './content-wrapper.component';
+import HomeView from './home-view/home-view.component';
 import CorporateView from './corporate-view/corporate-view.component';
 import { CreateUserForm } from './create-user-form/create-user-form.component';
 import LeftSidebar from './left-sidebar/left-sidebar.component';
@@ -50,11 +49,7 @@ const Admin = ({ user }) => {
   return (
     <div className={styles.adminConsole}>
       <LeftSidebar user={user} setVisiblePanel={setVisiblePanel} visiblePanel={visiblePanel} />
-      {visiblePanel === ADMIN_VIEW.home && (
-        <ContentWrapper title="Users">
-          <ActiveUsersBoard activeUsers={customerUsers?.filter(user => user.status === USER_STATUS.active)} />
-        </ContentWrapper>
-      )}
+      {visiblePanel === ADMIN_VIEW.home && <HomeView users={customerUsers} customer={currentCustomer} />}
       {visiblePanel === ADMIN_VIEW.corporateAccount && <CorporateView user={user} customer={currentCustomer} />}
       <OrganisationMenu
         customer={currentCustomer}
