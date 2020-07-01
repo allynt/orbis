@@ -1,23 +1,19 @@
 import React from 'react';
 import { LicenceDashboard } from './licence-dashboard.component';
 
-export default { title: 'Admin/Licence Dashboard', component: LicenceDashboard };
+export default {
+  title: 'Admin/Licence Dashboard',
+  component: LicenceDashboard,
+};
 
 export const NoLicences = () => <LicenceDashboard />;
 
 export const Licences = () => (
   <LicenceDashboard
-    licences={[
-      { orb: 'Rice' },
-      { orb: 'Oil', customer_user: 1 },
-      { orb: 'Rice', customer_user: 2 },
-      { orb: 'Health', customer_user: '1' },
-      { orb: 'Rice', customer_user: 1 },
-      { orb: 'Health' },
-      { orb: 'Health', customer_user: 3 },
-      { orb: 'Oil', customer_user: 3 },
-      { orb: 'Health', customer_user: 2 },
-      { orb: 'Health' },
-    ]}
+    licenceInformation={{
+      Rice: { purchased: 5, available: 3, pending: 1, active: 1 },
+      Oil: { purchased: 2, available: 1, pending: 1, active: 0 },
+      Health: { purchased: 10, available: 5, pending: 2, active: 3 },
+    }}
   />
 );

@@ -6,10 +6,14 @@ import formStyles from 'forms.module.css';
 import { createUserFormValidator } from './create-user-form.validator';
 
 /**
- * @param {{licences?: {
- *            orb: string,
- *            available: boolean
- *          }[],
+ * @param {{licenceInformation?: {
+ *            [key: string]: {
+ *              purchased: number,
+ *              available: number,
+ *              active: number,
+ *              pending: number
+ *            }
+ *          },
  *          existingEmails: string[],
  *          onSubmit({name: string, email: string, licences: string[]}): void
  *        }} props
