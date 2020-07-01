@@ -21,7 +21,6 @@ import reducer, {
   selectCurrentCustomer,
   selectCustomerUsers,
   selectLicencesAndAvailability,
-  selectNonPendingLicences,
   selectLicenceInformation,
 } from './admin.slice';
 import { USER_STATUS } from './admin.constants';
@@ -643,69 +642,6 @@ describe('Admin Slice', () => {
           expect(result).toEqual([]);
         },
       );
-    });
-
-    describe('selectNonPendingLicences', () => {
-      it('returns all licences if no users are pending', () => {
-        const state = {
-          admin: {
-            currentCustomer: {
-              licences: [
-                { id: 1, customer_user: 1 },
-                { id: 2, customer_user: 1 },
-                { id: 3, customer_user: 2 },
-              ],
-            },
-            customerUsers: [
-              { id: 1, status: USER_STATUS.active },
-              { id: 2, status: USER_STATUS.active },
-            ],
-          },
-        };
-        const result = selectNonPendingLicences(state);
-        expect(result).toEqual(state.admin.currentCustomer.licences);
-      });
-
-      it('returns a licence if it is not assigned', () => {
-        const state = {
-          admin: {
-            currentCustomer: {
-              licences: [
-                { id: 1 },
-                { id: 2, customer_user: null },
-                { id: 3, customer_user: 2 },
-              ],
-            },
-            customerUsers: [
-              { id: 1, status: USER_STATUS.active },
-              { id: 2, status: USER_STATUS.active },
-            ],
-          },
-        };
-        const result = selectNonPendingLicences(state);
-        expect(result).toEqual(state.admin.currentCustomer.licences);
-      });
-
-      it('filters out licences which are assigned to pending users', () => {
-        const state = {
-          admin: {
-            currentCustomer: {
-              licences: [
-                { id: 1, customer_user: 1 },
-                { id: 2, customer_user: 1 },
-                { id: 3, customer_user: 2 },
-              ],
-            },
-            customerUsers: [
-              { id: 1, status: USER_STATUS.pending },
-              { id: 2, status: USER_STATUS.active },
-            ],
-          },
-        };
-        const expected = [{ id: 3, customer_user: 2 }];
-        const result = selectNonPendingLicences(state);
-        expect(result).toEqual(expected);
-      });
     });
 
     describe('selectLicenceInformation', () => {

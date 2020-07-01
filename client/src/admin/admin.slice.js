@@ -317,18 +317,6 @@ export const selectLicencesAndAvailability = createSelector(
   },
 );
 
-export const selectNonPendingLicences = createSelector(
-  [selectCurrentCustomer, selectCustomerUsers],
-  (customer, users) =>
-    customer?.licences.filter(licence => {
-      if (!licence.customer_user) return true;
-      const customer_user = users?.find(
-        user => licence.customer_user === user.id,
-      );
-      return customer_user && customer_user.status !== USER_STATUS.pending;
-    }),
-);
-
 export const selectLicenceInformation = createSelector(
   [selectLicences, selectCustomerUsers],
   (licences, users) =>
