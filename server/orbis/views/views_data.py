@@ -13,6 +13,8 @@ from rest_framework.permissions import BasePermission, IsAuthenticated, SAFE_MET
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
+from requests.exceptions import Timeout
+
 from drf_yasg import openapi
 from drf_yasg.utils import swagger_auto_schema
 
@@ -114,9 +116,11 @@ class DataView(APIView):
         }
 
         try:
-            response = requests.get(url, headers=headers)
+            response = requests.get(url, headers=headers, timeout=2.5)
             if not status.is_success(response.status_code):
                 raise APIException("Error retrieving data sources")
+        except Timeout as e:
+            raise APIException(f"Request {url} timed out, exception was: {str(e)}")
         except Exception as e:
             # TODO: REMOVE THIS TRY/CATCH BLOCK ONCE I'M SURE THINGS ARE WORKING
             raise APIException(f"Unable to retrieve data sources at '{url}': {str(e)}")
