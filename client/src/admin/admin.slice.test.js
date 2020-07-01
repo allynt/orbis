@@ -36,7 +36,13 @@ describe('Admin Slice', () => {
 
       store = mockStore({
         accounts: { userKey: 'Test-User-Key' },
-        admin: { currentCustomer: { name: 'test-customer', licences: [{ id: 1, orb: 'Rice' }] }, customerUsers: [] },
+        admin: {
+          currentCustomer: {
+            name: 'test-customer',
+            licences: [{ id: 1, orb: 'Rice' }],
+          },
+          customerUsers: [],
+        },
       });
     });
 
@@ -59,7 +65,10 @@ describe('Admin Slice', () => {
 
         const expectedActions = [
           { type: fetchCustomerUsersRequested.type },
-          { type: fetchCustomerUsersFailure.type, payload: { message: '401 Test Error' } },
+          {
+            type: fetchCustomerUsersFailure.type,
+            payload: { message: '401 Test Error' },
+          },
         ];
 
         await store.dispatch(fetchCustomerUsers(customer));
@@ -110,7 +119,10 @@ describe('Admin Slice', () => {
 
           const expectedActions = [
             { type: createCustomerUserRequested.type },
-            { type: createCustomerUserFailure.type, payload: { message: '401 Test Error' } },
+            {
+              type: createCustomerUserFailure.type,
+              payload: { message: '401 Test Error' },
+            },
           ];
 
           const user = {
@@ -136,7 +148,10 @@ describe('Admin Slice', () => {
 
           const expectedActions = [
             { type: createCustomerUserRequested.type },
-            { type: createCustomerUserFailure.type, payload: { message: '401 Test Error' } },
+            {
+              type: createCustomerUserFailure.type,
+              payload: { message: '401 Test Error' },
+            },
           ];
 
           const user = {
@@ -228,7 +243,10 @@ describe('Admin Slice', () => {
 
         const expectedActions = [
           { type: updateCustomerUserRequested.type },
-          { type: updateCustomerUserFailure.type, payload: { message: '401 Test Error' } },
+          {
+            type: updateCustomerUserFailure.type,
+            payload: { message: '401 Test Error' },
+          },
         ];
 
         await store.dispatch(updateCustomerUser(customer, user));
@@ -282,7 +300,10 @@ describe('Admin Slice', () => {
 
         const expectedActions = [
           { type: deleteCustomerUserRequested.type },
-          { type: deleteCustomerUserFailure.type, payload: { message: '401 Test Error' } },
+          {
+            type: deleteCustomerUserFailure.type,
+            payload: { message: '401 Test Error' },
+          },
         ];
 
         await store.dispatch(deleteCustomerUser(customer, user));
@@ -395,7 +416,9 @@ describe('Admin Slice', () => {
         payload: userToDelete,
       });
 
-      expect(actualState.customerUsers).toEqual(beforeState.customerUsers.filter(user => user.id !== userToDelete.id));
+      expect(actualState.customerUsers).toEqual(
+        beforeState.customerUsers.filter(user => user.id !== userToDelete.id),
+      );
       expect(actualState.isLoading).toEqual(false);
       expect(actualState.error).toEqual(null);
     });
@@ -485,7 +508,10 @@ describe('Admin Slice', () => {
         payload: { user: userToCreate },
       });
 
-      expect(actualState.customerUsers).toEqual([...beforeState.customerUsers, userToCreate]);
+      expect(actualState.customerUsers).toEqual([
+        ...beforeState.customerUsers,
+        userToCreate,
+      ]);
       expect(actualState.isLoading).toEqual(false);
       expect(actualState.error).toEqual(null);
     });
@@ -496,7 +522,10 @@ describe('Admin Slice', () => {
         name: 'current',
       };
 
-      const result = reducer(beforeState, createCustomerUserSuccess({ customer }));
+      const result = reducer(
+        beforeState,
+        createCustomerUserSuccess({ customer }),
+      );
       expect(result.currentCustomer).toEqual(customer);
     });
 
@@ -605,11 +634,14 @@ describe('Admin Slice', () => {
         ['null', null],
       ];
 
-      it.each(falsyTests)('returns an empty array if licences is %s', (_, value) => {
-        const state = { admin: { currentCustomer: { licences: value } } };
-        const result = selectLicencesAndAvailability(state);
-        expect(result).toEqual([]);
-      });
+      it.each(falsyTests)(
+        'returns an empty array if licences is %s',
+        (_, value) => {
+          const state = { admin: { currentCustomer: { licences: value } } };
+          const result = selectLicencesAndAvailability(state);
+          expect(result).toEqual([]);
+        },
+      );
     });
 
     describe('selectNonPendingLicences', () => {
@@ -637,7 +669,11 @@ describe('Admin Slice', () => {
         const state = {
           admin: {
             currentCustomer: {
-              licences: [{ id: 1 }, { id: 2, customer_user: null }, { id: 3, customer_user: 2 }],
+              licences: [
+                { id: 1 },
+                { id: 2, customer_user: null },
+                { id: 3, customer_user: 2 },
+              ],
             },
             customerUsers: [
               { id: 1, status: USER_STATUS.active },
