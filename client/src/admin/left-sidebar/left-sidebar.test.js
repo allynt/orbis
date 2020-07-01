@@ -13,7 +13,7 @@ describe('Admin Side Menu Component', () => {
     setVisiblePanel = jest.fn();
   });
 
-  it.each(['Launch Orbis', 'Home'])('Shows the %s item', item => {
+  it.each(['Launch Orbis', 'Home', 'Licences'])('Shows the %s item', item => {
     const { getByText } = render(<LeftSidebar />);
     expect(getByText(item)).toBeInTheDocument();
   });
@@ -35,5 +35,11 @@ describe('Admin Side Menu Component', () => {
     const { getByText } = render(<LeftSidebar />);
     userEvent.click(getByText('Launch Orbis'));
     expect(window.location.pathname).toEqual('/');
+  });
+
+  it('switches the main view to the licence dashboard when the licences item is clicked', () => {
+    const { getByText } = render(<LeftSidebar setVisiblePanel={setVisiblePanel} />);
+    userEvent.click(getByText('Licences'));
+    expect(setVisiblePanel).toHaveBeenCalledWith(ADMIN_VIEW.licenceDashboard);
   });
 });

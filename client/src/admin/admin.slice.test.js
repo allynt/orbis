@@ -20,8 +20,9 @@ import reducer, {
   createCustomerUser,
   selectCurrentCustomer,
   selectCustomerUsers,
-  selectLicencesAndAvailability,
+  selectLicenceInformation,
 } from './admin.slice';
+import { USER_STATUS } from './admin.constants';
 
 const mockStore = configureMockStore([thunk]);
 
@@ -34,7 +35,13 @@ describe('Admin Slice', () => {
 
       store = mockStore({
         accounts: { userKey: 'Test-User-Key' },
-        admin: { currentCustomer: { name: 'test-customer', licences: [{ id: 1, orb: 'Rice' }] }, customerUsers: [] },
+        admin: {
+          currentCustomer: {
+            name: 'test-customer',
+            licences: [{ id: 1, orb: 'Rice' }],
+          },
+          customerUsers: [],
+        },
       });
     });
 
@@ -57,7 +64,10 @@ describe('Admin Slice', () => {
 
         const expectedActions = [
           { type: fetchCustomerUsersRequested.type },
-          { type: fetchCustomerUsersFailure.type, payload: { message: '401 Test Error' } },
+          {
+            type: fetchCustomerUsersFailure.type,
+            payload: { message: '401 Test Error' },
+          },
         ];
 
         await store.dispatch(fetchCustomerUsers(customer));
@@ -108,7 +118,10 @@ describe('Admin Slice', () => {
 
           const expectedActions = [
             { type: createCustomerUserRequested.type },
-            { type: createCustomerUserFailure.type, payload: { message: '401 Test Error' } },
+            {
+              type: createCustomerUserFailure.type,
+              payload: { message: '401 Test Error' },
+            },
           ];
 
           const user = {
@@ -134,7 +147,10 @@ describe('Admin Slice', () => {
 
           const expectedActions = [
             { type: createCustomerUserRequested.type },
-            { type: createCustomerUserFailure.type, payload: { message: '401 Test Error' } },
+            {
+              type: createCustomerUserFailure.type,
+              payload: { message: '401 Test Error' },
+            },
           ];
 
           const user = {
@@ -226,7 +242,10 @@ describe('Admin Slice', () => {
 
         const expectedActions = [
           { type: updateCustomerUserRequested.type },
-          { type: updateCustomerUserFailure.type, payload: { message: '401 Test Error' } },
+          {
+            type: updateCustomerUserFailure.type,
+            payload: { message: '401 Test Error' },
+          },
         ];
 
         await store.dispatch(updateCustomerUser(customer, user));
@@ -280,7 +299,10 @@ describe('Admin Slice', () => {
 
         const expectedActions = [
           { type: deleteCustomerUserRequested.type },
-          { type: deleteCustomerUserFailure.type, payload: { message: '401 Test Error' } },
+          {
+            type: deleteCustomerUserFailure.type,
+            payload: { message: '401 Test Error' },
+          },
         ];
 
         await store.dispatch(deleteCustomerUser(customer, user));
@@ -393,7 +415,9 @@ describe('Admin Slice', () => {
         payload: userToDelete,
       });
 
-      expect(actualState.customerUsers).toEqual(beforeState.customerUsers.filter(user => user.id !== userToDelete.id));
+      expect(actualState.customerUsers).toEqual(
+        beforeState.customerUsers.filter(user => user.id !== userToDelete.id),
+      );
       expect(actualState.isLoading).toEqual(false);
       expect(actualState.error).toEqual(null);
     });
@@ -483,7 +507,10 @@ describe('Admin Slice', () => {
         payload: { user: userToCreate },
       });
 
-      expect(actualState.customerUsers).toEqual([...beforeState.customerUsers, userToCreate]);
+      expect(actualState.customerUsers).toEqual([
+        ...beforeState.customerUsers,
+        userToCreate,
+      ]);
       expect(actualState.isLoading).toEqual(false);
       expect(actualState.error).toEqual(null);
     });
@@ -494,7 +521,10 @@ describe('Admin Slice', () => {
         name: 'current',
       };
 
-      const result = reducer(beforeState, createCustomerUserSuccess({ customer }));
+      const result = reducer(
+        beforeState,
+        createCustomerUserSuccess({ customer }),
+      );
       expect(result.currentCustomer).toEqual(customer);
     });
 
@@ -535,78 +565,71 @@ describe('Admin Slice', () => {
       });
     });
 
-    describe('selectLicencesAndAvailability', () => {
-      it('Returns a list of unique licences', () => {
-        const state = {
-          admin: {
-            currentCustomer: {
-              licences: [
-                {
-                  id: 0,
-                  orb: 'Rice',
-                },
-                {
-                  id: 1,
-                  orb: 'Oil',
-                },
-                {
-                  id: 2,
-                  orb: 'Rice',
-                },
-              ],
-            },
+    describe('selectLicenceInformation', () => {
+      const state = {
+        admin: {
+          currentCustomer: {
+            licences: [
+              { orb: 'Rice' },
+              { orb: 'Rice', customer_user: 2 },
+              { orb: 'Rice', customer_user: 1 },
+              { orb: 'Oil', customer_user: 1 },
+              { orb: 'Oil', customer_user: 3 },
+              { orb: 'Health', customer_user: 4 },
+              { orb: 'Health', customer_user: 3 },
+              { orb: 'Health', customer_user: 2 },
+              { orb: 'Health' },
+              { orb: 'Health' },
+            ],
           },
-        };
-        const expected = [
-          { orb: 'Rice', available: true },
-          { orb: 'Oil', available: true },
-        ];
-        const result = selectLicencesAndAvailability(state);
-        expect(result).toEqual(expected);
+          customerUsers: [
+            { id: 1, status: USER_STATUS.active },
+            { id: 2, status: USER_STATUS.active },
+            { id: 3, status: USER_STATUS.pending },
+            { id: 4, status: USER_STATUS.pending },
+          ],
+        },
+      };
+
+      it('creates an entry for each orb', () => {
+        const result = selectLicenceInformation(state);
+        expect(Object.keys(result)).toEqual(['Rice', 'Oil', 'Health']);
       });
 
-      it('Returns `available: false` for any orbs with all licences claimed', () => {
-        const state = {
-          admin: {
-            currentCustomer: {
-              licences: [
-                {
-                  id: 0,
-                  orb: 'Rice',
-                  customer_user: 'test@test.com',
-                },
-                {
-                  id: 1,
-                  orb: 'Oil',
-                },
-                {
-                  id: 2,
-                  orb: 'Rice',
-                  customer_user: 'test@test.com',
-                },
-                { id: 3, orb: 'Oil', customer_user: null },
-              ],
-            },
-          },
-        };
-        const expected = [
-          { orb: 'Rice', available: false },
-          { orb: 'Oil', available: true },
-        ];
-        const result = selectLicencesAndAvailability(state);
-        expect(result).toEqual(expected);
+      it('calculates purchased amount', () => {
+        const result = selectLicenceInformation(state);
+        [
+          ['Rice', 3],
+          ['Oil', 2],
+          ['Health', 5],
+        ].forEach(([orb, count]) => expect(result[orb].purchased).toBe(count));
       });
 
-      const falsyTests = [
-        ['empty', []],
-        ['undefined', undefined],
-        ['null', null],
-      ];
+      it('calculates available amount', () => {
+        const result = selectLicenceInformation(state);
+        [
+          ['Rice', 1],
+          ['Oil', 0],
+          ['Health', 2],
+        ].forEach(([orb, count]) => expect(result[orb].available).toBe(count));
+      });
 
-      it.each(falsyTests)('returns an empty array if licences is %s', (_, value) => {
-        const state = { admin: { currentCustomer: { licences: value } } };
-        const result = selectLicencesAndAvailability(state);
-        expect(result).toEqual([]);
+      it('calculates active amount', () => {
+        const result = selectLicenceInformation(state);
+        [
+          ['Rice', 2],
+          ['Oil', 1],
+          ['Health', 1],
+        ].forEach(([orb, count]) => expect(result[orb].active).toBe(count));
+      });
+
+      it('calculates pending count', () => {
+        const result = selectLicenceInformation(state);
+        [
+          ['Rice', 0],
+          ['Oil', 1],
+          ['Health', 2],
+        ].forEach(([orb, count]) => expect(result[orb].pending).toBe(count));
       });
     });
   });

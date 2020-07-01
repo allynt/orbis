@@ -1,30 +1,29 @@
-import React, { useEffect, useState, useRef } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-
 import { Dialog } from '@astrosat/astrosat-ui';
-
+import React, { useEffect, useRef, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { ADMIN_VIEW } from './admin.constants';
+import styles from './admin.module.css';
 import {
+  createCustomerUser,
   fetchCustomer,
   fetchCustomerUsers,
   selectCurrentCustomer,
   selectCustomerUsers,
-  selectLicencesAndAvailability,
-  createCustomerUser,
+  selectLicenceInformation,
 } from './admin.slice';
 import HomeView from './home-view/home-view.component';
 import CorporateView from './corporate-view/corporate-view.component';
 import { CreateUserForm } from './create-user-form/create-user-form.component';
 import LeftSidebar from './left-sidebar/left-sidebar.component';
+import { LicenceDashboard } from './licence-dashboard/licence-dashboard.component';
 import OrganisationMenu from './organisation-menu/organisation-menu.component';
-
-import styles from './admin.module.css';
+import ContentWrapper from './content-wrapper.component';
 
 const Admin = ({ user }) => {
   const dispatch = useDispatch();
   const currentCustomer = useSelector(selectCurrentCustomer);
   const customerUsers = useSelector(selectCustomerUsers);
-  const licencesAndAvailability = useSelector(selectLicencesAndAvailability);
+  const licenceInformation = useSelector(selectLicenceInformation);
   const [visiblePanel, setVisiblePanel] = useState(ADMIN_VIEW.home);
   const createUserDialogRef = useRef(document.body);
   const [createUserDialogVisible, setCreateUserDialogVisible] = useState();
@@ -46,11 +45,30 @@ const Admin = ({ user }) => {
     dispatch(createCustomerUser(values));
   };
 
+  const getMainView = () => {
+    switch (visiblePanel) {
+      case ADMIN_VIEW.corporateAccount:
+        return <CorporateView user={user} customer={currentCustomer} />;
+      case ADMIN_VIEW.licenceDashboard:
+        return (
+          <ContentWrapper title="Licence Dashboard">
+            <LicenceDashboard licenceInformation={licenceInformation} />
+          </ContentWrapper>
+        );
+      case ADMIN_VIEW.home:
+      default:
+        return <HomeView users={customerUsers} customer={currentCustomer} />;
+    }
+  };
+
   return (
     <div className={styles.adminConsole}>
-      <LeftSidebar user={user} setVisiblePanel={setVisiblePanel} visiblePanel={visiblePanel} />
-      {visiblePanel === ADMIN_VIEW.home && <HomeView users={customerUsers} customer={currentCustomer} />}
-      {visiblePanel === ADMIN_VIEW.corporateAccount && <CorporateView user={user} customer={currentCustomer} />}
+      <LeftSidebar
+        user={user}
+        setVisiblePanel={setVisiblePanel}
+        visiblePanel={visiblePanel}
+      />
+      {getMainView()}
       <OrganisationMenu
         customer={currentCustomer}
         setVisiblePanel={setVisiblePanel}
@@ -63,7 +81,7 @@ const Admin = ({ user }) => {
         close={() => setCreateUserDialogVisible(false)}
       >
         <CreateUserForm
-          licences={licencesAndAvailability}
+          licenceInformation={licenceInformation}
           existingEmails={customerUsers?.map(cu => cu.user.email)}
           onSubmit={handleCreateUserFormSubmit}
         />

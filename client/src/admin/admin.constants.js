@@ -6,4 +6,5 @@ export const USER_STATUS = {
 export const ADMIN_VIEW = {
   home: 'Home',
   corporateAccount: 'Corporate Account',
+  licenceDashboard: 'Licence Dashboard',
 };
