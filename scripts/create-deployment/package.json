@@ -1,0 +1,13 @@
+{
+  "name": "create-deployment",
+  "version": "1.0.0",
+  "main": "createDeployment.js",
+  "author": "Astrosat",
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "@octokit/rest": "^16.36.0",
+    "aws-sdk": "^2.706.0",
+    "commander": "^5.1.0"
+  }
+}

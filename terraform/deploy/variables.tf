@@ -3,6 +3,11 @@ variable "environment" {
   type        = string
 }
 
+variable "instance" {
+  description = "The name of the instance e.g. 'primary' or 'pr-123'"
+  type        = string
+}
+
 variable "tag" {
   description = "The tag of the docker image to deploy, usually a 7-letter git ref hash"
   type        = string
@@ -12,23 +17,26 @@ locals {
   app              = "orbis"
   eks_cluster_name = "astrosat-cluster"
 
-  app_name   = "${local.app}-${var.environment}"
-  app_domain = (var.environment == "production") ? "app.orbis.astrosat.net" : "app.${var.environment}.orbis.astrosat.net"
+  app_instance_hostname = (var.instance == "primary") ? "app" : var.instance
+  app_instance_db_name  = (var.instance == "primary") ? data.kubernetes_secret.environment_secret.data["db_name"] : "${data.kubernetes_secret.environment_secret.data["db_name"]}-${var.instance}"
+  app_name   = "${local.app}-${var.environment}-${var.instance}"
+  app_domain = (var.environment == "production") ? "app.orbis.astrosat.net" : "${local.app_instance_hostname}.${var.environment}.orbis.astrosat.net"
   app_image  = "339570402237.dkr.ecr.eu-west-1.amazonaws.com/company/orbis/django:${var.tag}"
   app_labels = {
     app         = local.app
     environment = var.environment
-    deployment  = var.environment
+    instance    = var.instance
+    deployment  = "${var.environment}-${var.instance}"
   }
 
   # Deployment secrets are created by the deployment (this module)
-  app_deployment_secret_name = "${local.app}-${var.environment}-deployment-secrets"
+  app_deployment_secret_name = "${local.app}-${var.environment}-${var.instance}-deployment-secrets"
 
   # Environment secrets are created by the infrastructure module, and used by this module
   app_environment_secret_name = "${local.app}-${var.environment}-environment-secrets"
 
   is_production = (var.environment == "staging" || var.environment == "production")
-  num_replicas  = local.is_production ? 3 : 2
+  num_replicas  = local.is_production ? 3 : ((var.instance == "primary") ? 2 : 1)
 
   healthcheck_path = "/healthcheck/"
 

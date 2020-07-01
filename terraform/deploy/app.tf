@@ -22,7 +22,7 @@ resource "kubernetes_deployment" "app_deployment" {
   }
 
   spec {
-    progress_deadline_seconds = 60 * 10 // 10 minutes
+    progress_deadline_seconds = 60 * 15 // 15 minutes
 
     selector {
       match_labels = local.app_labels
@@ -154,13 +154,8 @@ resource "kubernetes_deployment" "app_deployment" {
           }
 
           env {
-            name = "DJANGO_DB_NAME"
-            value_from {
-              secret_key_ref {
-                name = local.app_environment_secret_name
-                key  = "db_name"
-              }
-            }
+            name  = "DJANGO_DB_NAME"
+            value = local.app_instance_db_name
           }
 
           env {

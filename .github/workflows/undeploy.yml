@@ -1,0 +1,44 @@
+name: Undeploy
+
+on:
+  pull_request:
+    types: [closed]
+
+# Seperate but identical jobs are unfortunately required for testing/staging/production
+# because they have to each run inside their respective environment clusters
+# using the `runs-on: ...` key
+
+jobs:
+  deploy-testing-pr:
+    name: Undeploy Testing PR Instances
+    runs-on: [self-hosted, eu-west-1-testing-deployer]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          ref: "${{ github.event.pull_request.head.sha }}"
+
+      - name: Undeploy the app
+        run: |
+          set -x
+          PR_NUMBER="${{ github.event.pull_request.number }}"
+          ./scripts/undeploy.sh "testing-pr-${PR_NUMBER}"
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
+      - name: Set the Deployment Status to Inactive
+        if: success()
+        run: |
+          export GITHUB_TOKEN="${{ github.token }}"
+          cd scripts/create-deployment-status
+          yarn install
+
+          REPO_OWNER="$(dirname "$GITHUB_REPOSITORY")"
+          REPO_NAME="$(basename "$GITHUB_REPOSITORY")"
+          PR_NUMBER="${{ github.event.pull_request.number }}"
+
+          node createDeploymentStatus.js \
+            --repo-owner $REPO_OWNER --repo-name $REPO_NAME \
+            --environment testing-pr-${PR_NUMBER} \
+            --status inactive

@@ -56,3 +56,17 @@ provider "kubernetes" {
   token                  = data.aws_eks_cluster_auth.cluster.token
   load_config_file       = false
 }
+
+data "kubernetes_secret" "environment_secret" {
+  metadata {
+    name = local.app_environment_secret_name
+  }
+}
+
+provider "postgresql" {
+  host     = data.kubernetes_secret.environment_secret.data["db_host"]
+  port     = data.kubernetes_secret.environment_secret.data["db_port"]
+  database = data.kubernetes_secret.environment_secret.data["db_name"]
+  username = data.kubernetes_secret.environment_secret.data["db_user"]
+  password = data.kubernetes_secret.environment_secret.data["db_password"]
+}

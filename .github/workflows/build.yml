@@ -97,7 +97,6 @@ jobs:
     needs: [docker]
     name: Deploy to Testing
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/master'
     steps:
       - name: Checkout
         uses: actions/checkout@v1
@@ -110,8 +109,35 @@ jobs:
 
       - name: Create Deployment
         run: |
-          TAG="${GITHUB_SHA:0:7}"
-          BRANCH="${GITHUB_REF##*/}"
-          echo "TAG=$TAG"
-          echo "BRANCH=$BRANCH"
-          aws lambda invoke --profile staging --region eu-west-1 --function-name staging-create-github-deployment --payload "{\"owner\":\"astrosat\", \"repo\":\"orbis\", \"ref\":\"${BRANCH}\", \"environment\":\"testing\" }" -
+          set -eu
+
+          # Used to query for PRs associated with the commit
+          export GITHUB_TOKEN="${{ github.token }}"
+
+          # Required for createDeployment.js to use the AWS profiles defined by ci-setup-deps.sh
+          export AWS_SDK_LOAD_CONFIG=1
+
+          set -x
+
+          cd scripts/create-deployment
+          yarn install
+
+          REPO_OWNER="$(dirname "$GITHUB_REPOSITORY")"
+          REPO_NAME="$(basename "$GITHUB_REPOSITORY")"
+
+          if [[ "$GITHUB_REF" == "refs/heads/master" ]]; then
+            node createDeployment.js \
+              --environment testing \
+              --repo-owner "$REPO_OWNER" \
+              --repo-name "$REPO_NAME" \
+              deploy-primary \
+              --commit "$GITHUB_SHA"
+
+          else
+            node createDeployment.js \
+              --environment testing \
+              --repo-owner "$REPO_OWNER" \
+              --repo-name "$REPO_NAME" \
+              deploy-associated-prs \
+              --commit "$GITHUB_SHA"
+          fi

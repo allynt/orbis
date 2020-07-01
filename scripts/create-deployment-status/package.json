@@ -1,0 +1,12 @@
+{
+  "name": "create-deployment-status",
+  "version": "1.0.0",
+  "main": "createDeploymentStatus.js",
+  "author": "Astrosat",
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "@octokit/rest": "^16.36.0",
+    "commander": "^5.1.0"
+  }
+}
