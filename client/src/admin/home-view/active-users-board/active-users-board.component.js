@@ -4,10 +4,13 @@ import ContentWrapper from '../../content-wrapper.component';
 
 import { getUserLicences } from '../get-user-licences-helper';
 
+import QuickView from '../active-users-board/quick-view/quick-view.component';
+
 import tableStyles from '../../table.module.css';
 
-export const ActiveUsersBoard = ({ activeUsers, customer }) => (
+export const ActiveUsersBoard = ({ activeUsers, customer, licenceData }) => (
   <ContentWrapper title="Users">
+    <QuickView licenceData={licenceData} />
     <table className={tableStyles.table}>
       <thead className={tableStyles.thead}>
         <tr className={tableStyles.tr}>

@@ -32,12 +32,12 @@
   border-right: 1px solid #e8e8e8;
 }
 
-.column h2 {
+.value {
   font-size: 2rem;
   font-weight: 600;
   margin-bottom: 1rem;
 }
 
-.column h3 {
+..title {
   font-size: 1.25rem;
 }
