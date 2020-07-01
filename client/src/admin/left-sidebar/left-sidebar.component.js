@@ -5,6 +5,7 @@ import { Sidebar, SidebarItem, SidebarLinkItem } from 'components/sidebar';
 import { ReactComponent as HomeIcon } from './home.svg';
 import { ReactComponent as LaunchOrbisIcon } from './launch-orbis.svg';
 import { ReactComponent as OrbisAdminLogo } from '../orbis-admin-logo.svg';
+import { ReactComponent as LicencesIcon } from './licences.svg';
 
 import { UserProfile } from './user-profile/user-profile.component';
 import { ADMIN_VIEW } from '../admin.constants';
@@ -28,6 +29,13 @@ const LeftSidebar = ({ user, setVisiblePanel, visiblePanel }) => (
       selected={visiblePanel === ADMIN_VIEW.home}
     >
       Home
+    </SidebarItem>
+    <SidebarItem
+      icon={<LicencesIcon className={styles.itemIcon} />}
+      onClick={() => setVisiblePanel(ADMIN_VIEW.licenceDashboard)}
+      selected={visiblePanel === ADMIN_VIEW.licenceDashboard}
+    >
+      Licences
     </SidebarItem>
     <SidebarLinkItem
       href="/"

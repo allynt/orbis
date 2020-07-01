@@ -1,31 +1,31 @@
-import React, { useEffect, useState, useRef } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-
 import { Dialog } from '@astrosat/astrosat-ui';
-
+import React, { useEffect, useRef, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { ActiveUsersBoard } from './active-users-board/active-users-board.component';
 import { ADMIN_VIEW, USER_STATUS } from './admin.constants';
+import styles from './admin.module.css';
 import {
+  createCustomerUser,
   fetchCustomer,
   fetchCustomerUsers,
   selectCurrentCustomer,
   selectCustomerUsers,
   selectLicencesAndAvailability,
-  createCustomerUser,
+  selectNonPendingLicences,
 } from './admin.slice';
 import ContentWrapper from './content-wrapper.component';
 import CorporateView from './corporate-view/corporate-view.component';
 import { CreateUserForm } from './create-user-form/create-user-form.component';
 import LeftSidebar from './left-sidebar/left-sidebar.component';
+import { LicenceDashboard } from './licence-dashboard/licence-dashboard.component';
 import OrganisationMenu from './organisation-menu/organisation-menu.component';
-
-import styles from './admin.module.css';
 
 const Admin = ({ user }) => {
   const dispatch = useDispatch();
   const currentCustomer = useSelector(selectCurrentCustomer);
   const customerUsers = useSelector(selectCustomerUsers);
   const licencesAndAvailability = useSelector(selectLicencesAndAvailability);
+  const nonPendingLicences = useSelector(selectNonPendingLicences);
   const [visiblePanel, setVisiblePanel] = useState(ADMIN_VIEW.home);
   const createUserDialogRef = useRef(document.body);
   const [createUserDialogVisible, setCreateUserDialogVisible] = useState();
@@ -47,15 +47,30 @@ const Admin = ({ user }) => {
     dispatch(createCustomerUser(values));
   };
 
+  const getMainView = () => {
+    switch (visiblePanel) {
+      case ADMIN_VIEW.corporateAccount:
+        return <CorporateView user={user} customer={currentCustomer} />;
+      case ADMIN_VIEW.licenceDashboard:
+        return (
+          <ContentWrapper title="Licence Dashboard">
+            <LicenceDashboard licences={nonPendingLicences} />
+          </ContentWrapper>
+        );
+      case ADMIN_VIEW.home:
+      default:
+        return (
+          <ContentWrapper title="Users">
+            <ActiveUsersBoard activeUsers={customerUsers?.filter(user => user.status === USER_STATUS.active)} />
+          </ContentWrapper>
+        );
+    }
+  };
+
   return (
     <div className={styles.adminConsole}>
       <LeftSidebar user={user} setVisiblePanel={setVisiblePanel} visiblePanel={visiblePanel} />
-      {visiblePanel === ADMIN_VIEW.home && (
-        <ContentWrapper title="Users">
-          <ActiveUsersBoard activeUsers={customerUsers?.filter(user => user.status === USER_STATUS.active)} />
-        </ContentWrapper>
-      )}
-      {visiblePanel === ADMIN_VIEW.corporateAccount && <CorporateView user={user} customer={currentCustomer} />}
+      {getMainView()}
       <OrganisationMenu
         customer={currentCustomer}
         setVisiblePanel={setVisiblePanel}
