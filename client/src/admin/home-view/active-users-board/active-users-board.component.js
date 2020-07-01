@@ -32,7 +32,9 @@ export const ActiveUsersBoard = ({ activeUsers, customer, licenceData }) => (
             return (
               <tr key={user.id} className={tableStyles.tr}>
                 <td className={tableStyles.td}>{user.user.name}</td>
-                <td className={tableStyles.td}>{licences?.slice().sort().join(', ')}</td>
+                <td className={tableStyles.td}>
+                  {licences?.slice().sort().join(', ')}
+                </td>
                 <td className={tableStyles.td}>{user.user.email}</td>
               </tr>
             );

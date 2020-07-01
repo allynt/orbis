@@ -9,8 +9,12 @@ import styles from './home-view.module.css';
 
 const HomeView = ({ users, customer }) => {
   const activeUsers = users?.filter(user => user.status === USER_STATUS.active);
-  const pendingUsers = users?.filter(user => user.status === USER_STATUS.pending);
-  const availableLicences = customer?.licences.filter(licence => !licence.customer_user);
+  const pendingUsers = users?.filter(
+    user => user.status === USER_STATUS.pending,
+  );
+  const availableLicences = customer?.licences.filter(
+    licence => !licence.customer_user,
+  );
 
   const licenceData = {
     active: activeUsers?.length,
@@ -20,8 +24,15 @@ const HomeView = ({ users, customer }) => {
 
   return (
     <div className={styles.home}>
-      <ActiveUsersBoard activeUsers={activeUsers} customer={customer} licenceData={licenceData} />
-      <PendingInvitationsBoard pendingUsers={pendingUsers} customer={customer} />
+      <ActiveUsersBoard
+        activeUsers={activeUsers}
+        customer={customer}
+        licenceData={licenceData}
+      />
+      <PendingInvitationsBoard
+        pendingUsers={pendingUsers}
+        customer={customer}
+      />
     </div>
   );
 };
