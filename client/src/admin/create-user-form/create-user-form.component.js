@@ -14,14 +14,21 @@ import { createUserFormValidator } from './create-user-form.validator';
  *          onSubmit({name: string, email: string, licences: string[]}): void
  *        }} props
  */
-export const CreateUserForm = ({ licences, existingEmails, onSubmit }) => {
+export const CreateUserForm = ({
+  licenceInformation,
+  existingEmails,
+  onSubmit,
+}) => {
   const { register, handleSubmit, errors } = useForm({
     validationResolver: createUserFormValidator,
     validationContext: { existingEmails },
   });
 
   return (
-    <form className={styles.form} onSubmit={handleSubmit(v => onSubmit && onSubmit(v))}>
+    <form
+      className={styles.form}
+      onSubmit={handleSubmit(v => onSubmit && onSubmit(v))}
+    >
       <div className={formStyles.row}>
         <label className={formStyles.hiddenLabel} htmlFor="name">
           Name
@@ -33,23 +40,28 @@ export const CreateUserForm = ({ licences, existingEmails, onSubmit }) => {
           Email
         </label>
         <div className={styles.field}>
-          <Textfield ref={register} name="email" id="email" placeholder="Email" />
+          <Textfield
+            ref={register}
+            name="email"
+            id="email"
+            placeholder="Email"
+          />
           <p className={styles.errorMessage}>{errors.email}</p>
         </div>
       </div>
       <fieldset className={styles.fieldset}>
         <legend className={styles.legend}>Licences</legend>
         <div className={styles.licences}>
-          {licences?.length ? (
-            licences.map(licence => (
+          {licenceInformation && Object.keys(licenceInformation)?.length ? (
+            Object.keys(licenceInformation).map(orb => (
               <Checkbox
                 className={styles.licence}
-                key={licence.orb}
-                label={licence.orb}
+                key={orb}
+                label={orb}
                 ref={register}
                 name="licences"
-                value={licence.orb}
-                disabled={!licence.available}
+                value={orb}
+                disabled={licenceInformation[orb].available <= 0}
               />
             ))
           ) : (

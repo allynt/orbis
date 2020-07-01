@@ -10,7 +10,6 @@ import {
   fetchCustomerUsers,
   selectCurrentCustomer,
   selectCustomerUsers,
-  selectLicencesAndAvailability,
   selectLicenceInformation,
 } from './admin.slice';
 import ContentWrapper from './content-wrapper.component';
@@ -24,7 +23,6 @@ const Admin = ({ user }) => {
   const dispatch = useDispatch();
   const currentCustomer = useSelector(selectCurrentCustomer);
   const customerUsers = useSelector(selectCustomerUsers);
-  const licencesAndAvailability = useSelector(selectLicencesAndAvailability);
   const licenceInformation = useSelector(selectLicenceInformation);
   const [visiblePanel, setVisiblePanel] = useState(ADMIN_VIEW.home);
   const createUserDialogRef = useRef(document.body);
@@ -91,7 +89,7 @@ const Admin = ({ user }) => {
         close={() => setCreateUserDialogVisible(false)}
       >
         <CreateUserForm
-          licences={licencesAndAvailability}
+          licenceInformation={licenceInformation}
           existingEmails={customerUsers?.map(cu => cu.user.email)}
           onSubmit={handleCreateUserFormSubmit}
         />

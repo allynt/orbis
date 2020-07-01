@@ -292,31 +292,6 @@ const selectLicences = createSelector(
   customer => customer?.licences,
 );
 
-export const selectLicencesAndAvailability = createSelector(
-  selectCurrentCustomer,
-  customer => {
-    if (!customer?.licences || !customer?.licences.length) return [];
-    const { licences } = customer;
-    const uniqueOrbNameArray = Array.from(
-      licences.reduce((acc, cur) => {
-        acc.add(cur.orb);
-        return acc;
-      }, new Set()),
-    );
-    const orbsAndAvailability = uniqueOrbNameArray.map(orb => {
-      const orbLicences = licences.filter(licence => licence.orb === orb);
-      const available = orbLicences.some(
-        ({ customer_user }) =>
-          customer_user === undefined ||
-          customer_user === null ||
-          customer_user === '',
-      );
-      return { orb, available };
-    });
-    return orbsAndAvailability;
-  },
-);
-
 export const selectLicenceInformation = createSelector(
   [selectLicences, selectCustomerUsers],
   (licences, users) =>
