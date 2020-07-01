@@ -4,11 +4,13 @@ import { format } from 'date-fns';
 
 import ContentWrapper from '../../content-wrapper.component';
 
+import { getUserLicences } from '../get-user-licences-helper';
+
 import tableStyles from '../../table.module.css';
 
 const DATE_FORMAT = ['k:s d MMMM yyyy'];
 
-export const PendingInvitationsBoard = ({ pendingUsers, customer, getUserLicences }) => (
+export const PendingInvitationsBoard = ({ pendingUsers, customer }) => (
   <ContentWrapper title="Pending Invitations">
     <table className={tableStyles.table}>
       <thead className={tableStyles.thead}>
