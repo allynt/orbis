@@ -65,14 +65,36 @@ describe('PendingUsersBoard', () => {
   ];
 
   it.each(cases)("Displays all pending user's %s", (_, text) => {
-    const { getByText } = render(<PendingInvitationsBoard pendingUsers={pendingUsers} customer={customer} />);
-    pendingUsers.forEach(user => expect(getByText(user.user[text])).toBeInTheDocument());
+    const { getByText } = render(
+      <PendingInvitationsBoard
+        pendingUsers={pendingUsers}
+        customer={customer}
+      />,
+    );
+    pendingUsers.forEach(user =>
+      expect(getByText(user.user[text])).toBeInTheDocument(),
+    );
   });
 
   it('Displays user Orb licence names', () => {
-    const { getAllByText } = render(<PendingInvitationsBoard pendingUsers={pendingUsers} customer={customer} />);
+    const { getAllByText } = render(
+      <PendingInvitationsBoard
+        pendingUsers={pendingUsers}
+        customer={customer}
+      />,
+    );
 
     expect(getAllByText('Oil, Rice')[0]).toBeInTheDocument();
+  });
+
+  it('displays default message in licences if no customer is present', () => {
+    const { getAllByText } = render(
+      <PendingInvitationsBoard pendingUsers={pendingUsers} customer={null} />,
+    );
+
+    pendingUsers.forEach((user, i) =>
+      expect(getAllByText('Not currently available')[i]).toBeInTheDocument(),
+    );
   });
 
   describe('Displays a placeholder when there are no pending users', () => {
@@ -83,7 +105,9 @@ describe('PendingUsersBoard', () => {
     ];
 
     it.each(cases)('%s', (_, value) => {
-      const { getByText } = render(<PendingInvitationsBoard pendingUsers={value} />);
+      const { getByText } = render(
+        <PendingInvitationsBoard pendingUsers={value} customer={customer} />,
+      );
       expect(getByText('No Pending Users')).toBeInTheDocument();
     });
   });

@@ -38,7 +38,11 @@ export const PendingInvitationsBoard = ({ pendingUsers, customer }) => (
               <tr key={user.id} className={tableStyles.tr}>
                 <td className={tableStyles.td}>{user.user.name}</td>
                 <td className={tableStyles.td}>{user.user.email}</td>
-                <td className={tableStyles.td}>{licences?.slice().sort().join(', ')}</td>
+                <td className={tableStyles.td}>
+                  {licences
+                    ? licences.slice().sort().join(', ')
+                    : 'Not currently available'}
+                </td>
                 <td className={tableStyles.td}>{date}</td>
               </tr>
             );
