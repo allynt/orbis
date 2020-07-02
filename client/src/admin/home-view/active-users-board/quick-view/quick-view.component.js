@@ -2,6 +2,7 @@ import React from 'react';
 
 import styles from './quick-view.module.css';
 
+// Adding comment so I can push again
 const QuickView = ({ licenceData }) => (
   <div className={styles.quickView}>
     <div className={styles.column}>
