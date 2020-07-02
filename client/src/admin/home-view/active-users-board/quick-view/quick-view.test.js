@@ -20,8 +20,8 @@ describe('QuickView', () => {
     expect(getByText(`${licenceData.available}`)).toBeInTheDocument();
   });
 
-  it('should show dashes if no data is present', () => {
-    const { getAllByText } = render(<QuickView licenceData={undefined} />);
+  it('should show defaults if no data is present', () => {
+    const { getAllByText } = render(<QuickView licenceData={null} />);
 
     expect(getAllByText('-')[0]).toBeInTheDocument();
     expect(getAllByText('-')[1]).toBeInTheDocument();
