@@ -1,7 +1,6 @@
 import React from 'react';
-import { render, getByDisplayValue, getByTestId } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import { ActiveUsersBoard } from './active-users-board.component';
-import { within } from '@turf/turf';
 
 const customer = {
   licences: [
@@ -56,30 +55,6 @@ const activeUsers = [
   },
 ];
 
-const pendingUsers = [
-  {
-    id: 4,
-    licences: [7, 8],
-    user: { name: 'Test Four', email: 'test4@test.com' },
-  },
-  {
-    id: 5,
-    licences: [9, 10],
-    user: { name: 'Test Five', email: 'test5@test.com' },
-  },
-  {
-    id: 6,
-    licences: [11, 12],
-    user: { name: 'Test Six', email: 'test6@test.com' },
-  },
-];
-
-const licenceData = {
-  active: activeUsers?.length,
-  panding: pendingUsers?.length,
-  available: customer?.licences?.filter(l => !l.customer_user).length,
-};
-
 describe('ActiveUsersBoard', () => {
   const cases = [
     ['names', 'name'],
@@ -88,11 +63,7 @@ describe('ActiveUsersBoard', () => {
 
   it.each(cases)("Displays all active user's %s", (_, text) => {
     const { getByText } = render(
-      <ActiveUsersBoard
-        activeUsers={activeUsers}
-        customer={customer}
-        licenceData={licenceData}
-      />,
+      <ActiveUsersBoard activeUsers={activeUsers} customer={customer} />,
     );
     activeUsers.forEach(user =>
       expect(getByText(user.user[text])).toBeInTheDocument(),
@@ -101,31 +72,10 @@ describe('ActiveUsersBoard', () => {
 
   it('Displays user Orb licence names', () => {
     const { getAllByText } = render(
-      <ActiveUsersBoard
-        activeUsers={activeUsers}
-        customer={customer}
-        licenceData={licenceData}
-      />,
+      <ActiveUsersBoard activeUsers={activeUsers} customer={customer} />,
     );
 
     expect(getAllByText('Oil, Rice')[0]).toBeInTheDocument();
-  });
-
-  xit('Displays the licence data in the QuickView', () => {
-    const { getByText, getByTestId } = render(
-      <ActiveUsersBoard
-        activeUsers={activeUsers}
-        customer={customer}
-        licenceData={licenceData}
-      />,
-    );
-
-    expect(getByText('Active Users')).toBeInTheDocument();
-    expect(getByTestId('active')).toHaveValue(licenceData.active);
-    expect(getByText('Pending Invitations')).toBeInTheDocument();
-    expect(getByTestId('pending')).toHaveValue(licenceData.pending);
-    expect(getByText('Licences Available')).toBeInTheDocument();
-    expect(getByTestId('available')).toHaveValue(licenceData.available);
   });
 
   describe('Displays a placeholder when there are no active users', () => {
@@ -137,11 +87,7 @@ describe('ActiveUsersBoard', () => {
 
     it.each(cases)('%s', (_, value) => {
       const { getByText } = render(
-        <ActiveUsersBoard
-          activeUsers={value}
-          customer={customer}
-          licenceData={licenceData}
-        />,
+        <ActiveUsersBoard activeUsers={value} customer={customer} />,
       );
       expect(getByText('No Active Users')).toBeInTheDocument();
     });

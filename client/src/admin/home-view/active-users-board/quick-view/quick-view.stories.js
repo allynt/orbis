@@ -10,4 +10,6 @@ const licenceData = {
   available: 5,
 };
 
+export const Empty = () => <QuickView licenceData={undefined} />;
+
 export const Default = () => <QuickView licenceData={licenceData} />;

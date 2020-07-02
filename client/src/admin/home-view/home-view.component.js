@@ -16,11 +16,7 @@ const HomeView = ({ users, customer }) => {
     licence => !licence.customer_user,
   );
 
-  const licenceData = {
-    active: activeUsers?.length,
-    pending: pendingUsers?.length,
-    available: availableLicences?.length,
-  };
+  const licenceData = undefined;
 
   return (
     <div className={styles.home}>
