@@ -13,7 +13,13 @@ import {
   SATELLITE_LAYERS,
   STORIES,
 } from '../toolbar/toolbar-constants';
-import { closeMenu } from '../side-menu/side-menu.slice';
+import {
+  closeMenu,
+  selectIsMenuVisible,
+  selectHeading,
+  selectStrapline,
+  selectVisibleMenuItem,
+} from '../side-menu/side-menu.slice';
 import StoriesPanel from '../stories/stories-panel.component';
 import PasswordChangeForm from '../accounts/password-change-form.component';
 import Profile from '../accounts/profile.component';
@@ -26,10 +32,10 @@ import styles from './side-menu.module.css';
 
 const SideMenu = () => {
   const dispatch = useDispatch();
-  const isMenuVisible = useSelector(state => state.sidebar.isMenuVisible);
-  const heading = useSelector(state => state.sidebar.heading);
-  const strapline = useSelector(state => state.sidebar.strapline);
-  const visibleMenuItem = useSelector(state => state.sidebar.visibleMenuItem);
+  const isMenuVisible = useSelector(selectIsMenuVisible);
+  const heading = useSelector(selectHeading);
+  const strapline = useSelector(selectStrapline);
+  const visibleMenuItem = useSelector(selectVisibleMenuItem);
 
   return (
     <div

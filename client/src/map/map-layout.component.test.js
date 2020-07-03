@@ -66,7 +66,7 @@ describe('Map Layout Component', () => {
         },
         error: null,
       },
-      sidebar: {
+      sideMenu: {
         isMenuVisible: false,
         visibleMenuItem: '',
       },
