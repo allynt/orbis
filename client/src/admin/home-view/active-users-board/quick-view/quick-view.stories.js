@@ -10,6 +10,16 @@ const licenceData = {
   available: 5,
 };
 
-export const Empty = () => <QuickView licenceData={undefined} />;
+export const NoData = () => <QuickView licenceData={undefined} />;
+
+export const SomeDataButNotAll = () => (
+  <QuickView
+    licenceData={{
+      active: null,
+      pending: undefined,
+      available: 5,
+    }}
+  />
+);
 
 export const Default = () => <QuickView licenceData={licenceData} />;

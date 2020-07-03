@@ -32,6 +32,18 @@ export const NoCustomer = () => (
   />
 );
 
+export const CustomerButNoLicences = () => (
+  <ActiveUsersBoard
+    activeUsers={activeUsers}
+    customer={{ name: 'Company Name' }}
+    licenceData={{
+      active: activeUsers?.length,
+      pending: pendingUsers?.length,
+      available: null,
+    }}
+  />
+);
+
 export const NoLicenceData = () => (
   <ActiveUsersBoard
     activeUsers={activeUsers}

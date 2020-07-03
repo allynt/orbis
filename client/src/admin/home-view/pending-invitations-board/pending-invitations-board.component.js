@@ -33,7 +33,10 @@ export const PendingInvitationsBoard = ({ pendingUsers, customer }) => (
         {pendingUsers && pendingUsers.length > 0 ? (
           pendingUsers.map(user => {
             const date = format(new Date(user.invitation_date), DATE_FORMAT);
-            const licences = getUserLicences(user, customer);
+            let licences = null;
+            if (customer && customer.licences) {
+              licences = getUserLicences(user, customer);
+            }
             return (
               <tr key={user.id} className={tableStyles.tr}>
                 <td className={tableStyles.td}>{user.user.name}</td>

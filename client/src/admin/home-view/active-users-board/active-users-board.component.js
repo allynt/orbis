@@ -28,7 +28,10 @@ export const ActiveUsersBoard = ({ activeUsers, customer, licenceData }) => (
       <tbody>
         {activeUsers && activeUsers.length > 0 ? (
           activeUsers.map(user => {
-            const licences = getUserLicences(user, customer);
+            let licences = null;
+            if (customer && customer.licences) {
+              licences = getUserLicences(user, customer);
+            }
             return (
               <tr key={user.id} className={tableStyles.tr}>
                 <td className={tableStyles.td}>{user.user.name}</td>

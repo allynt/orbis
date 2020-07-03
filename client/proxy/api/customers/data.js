@@ -7,76 +7,6 @@ let customers = [
     logo: 'https://ichef.bbci.co.uk/images/ic/1200x675/p03t1sm8.jpg',
     roles: ['SaveTheWorldRole'],
     permissions: ['can_deploy_skynet'],
-    licences: [
-      {
-        id: 1,
-        orb: 'Rice',
-        customer_user: 1,
-      },
-      {
-        id: 2,
-        orb: 'Rice',
-        customer_user: 2,
-      },
-      {
-        id: 3,
-        orb: 'Rice',
-        customer_user: 3,
-      },
-      {
-        id: 4,
-        orb: 'Rice',
-        customer_user: 4,
-      },
-      {
-        id: 5,
-        orb: 'Oil',
-        customer_user: 5,
-      },
-      {
-        id: 6,
-        orb: 'Oil',
-        customer_user: 6,
-      },
-      {
-        id: 7,
-        orb: 'Oil',
-        customer_user: 1,
-      },
-      {
-        id: 8,
-        orb: 'Oil',
-        customer_user: 2,
-      },
-      {
-        id: 9,
-        orb: 'Oil',
-        customer_user: 3,
-      },
-      {
-        id: 10,
-        orb: 'Oil',
-        customer_user: 4,
-      },
-      {
-        id: 11,
-        orb: 'Rice',
-        customer_user: 5,
-      },
-      {
-        id: 12,
-        orb: 'Rice',
-        customer_user: 6,
-      },
-      {
-        id: 13,
-        orb: 'Rice',
-      },
-      {
-        id: 14,
-        orb: 'Oil',
-      },
-    ],
     data_limit: 100,
     data_total: 50,
   },
@@ -233,7 +163,8 @@ let customerUsers = [
 
 const getCustomer = customerId => customers.find(c => c.name === customerId);
 
-const getCustomerUsers = customerId => customerUsers.filter(cu => cu.customer === customerId);
+const getCustomerUsers = customerId =>
+  customerUsers.filter(cu => cu.customer === customerId);
 
 /**
  * @param {string} customerId The id of the customer to add the user to
@@ -244,7 +175,10 @@ const createCustomerUser = (customerId, userData) => {
   const customerLicences = getCustomer(customerId).licences;
   const invitation_date = new Date().toISOString();
   userData.licences.forEach(
-    licenceId => (customerLicences.find(licence => licence.id === licenceId).customer_user = newUserId),
+    licenceId =>
+      (customerLicences.find(
+        licence => licence.id === licenceId,
+      ).customer_user = newUserId),
   );
   const newUser = {
     id: newUserId,

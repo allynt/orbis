@@ -12,9 +12,13 @@ const HomeView = ({ users, customer }) => {
   const pendingUsers = users?.filter(
     user => user.status === USER_STATUS.pending,
   );
-  const availableLicences = customer?.licences.filter(
-    licence => !licence.customer_user,
-  );
+
+  let availableLicences = null;
+  if (customer && customer.licences) {
+    availableLicences = customer.licences.filter(
+      licence => !licence.customer_user,
+    );
+  }
 
   const licenceData = {
     active: activeUsers?.length,

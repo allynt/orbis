@@ -27,4 +27,20 @@ describe('QuickView', () => {
     expect(getAllByText('-')[1]).toBeInTheDocument();
     expect(getAllByText('-')[2]).toBeInTheDocument();
   });
+
+  it('should show defaults if only some data is present', () => {
+    const { getByText, getAllByText } = render(
+      <QuickView
+        licenceData={{
+          active: 1,
+          pending: undefined,
+          available: null,
+        }}
+      />,
+    );
+
+    expect(getByText('1')).toBeInTheDocument();
+    expect(getAllByText('-')[0]).toBeInTheDocument();
+    expect(getAllByText('-')[1]).toBeInTheDocument();
+  });
 });

@@ -14,6 +14,13 @@ export const NoCustomer = () => (
   <PendingInvitationsBoard pendingUsers={pendingUsers} customer={null} />
 );
 
+export const CustomerButNoLicences = () => (
+  <PendingInvitationsBoard
+    pendingUsers={pendingUsers}
+    customer={{ name: 'Company Name' }}
+  />
+);
+
 export const Default = () => (
   <PendingInvitationsBoard pendingUsers={pendingUsers} customer={customer} />
 );

@@ -28,6 +28,19 @@ describe('ActiveUsersBoard', () => {
     expect(getAllByText('Oil, Rice')[0]).toBeInTheDocument();
   });
 
+  it('Displays a placeholder when customer is present but has no licences', () => {
+    const { getAllByText } = render(
+      <ActiveUsersBoard
+        activeUsers={activeUsers}
+        customer={{ name: 'Customer Name' }}
+      />,
+    );
+
+    activeUsers.forEach((user, i) =>
+      expect(getAllByText('Not currently available')[i]).toBeInTheDocument(),
+    );
+  });
+
   describe('Displays a placeholder when there are no active users', () => {
     const cases = [
       ['undefined', undefined],

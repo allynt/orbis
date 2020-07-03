@@ -35,9 +35,22 @@ describe('PendingUsersBoard', () => {
     expect(getAllByText('Oil, Rice')[0]).toBeInTheDocument();
   });
 
-  it('displays default message in licences if no customer is present', () => {
+  it('Displays a placeholder if no customer is present', () => {
     const { getAllByText } = render(
       <PendingInvitationsBoard pendingUsers={pendingUsers} customer={null} />,
+    );
+
+    pendingUsers.forEach((user, i) =>
+      expect(getAllByText('Not currently available')[i]).toBeInTheDocument(),
+    );
+  });
+
+  it('Displays a placeholder when customer is present but has no licences', () => {
+    const { getAllByText } = render(
+      <PendingInvitationsBoard
+        pendingUsers={pendingUsers}
+        customer={{ name: 'Customer Name' }}
+      />,
     );
 
     pendingUsers.forEach((user, i) =>
