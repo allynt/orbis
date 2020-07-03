@@ -55,10 +55,48 @@
 .fields {
   width: 100% !important;
 }
+
 .fields > * {
   margin-bottom: 1rem;
 }
 
-.Header {
-  font-size: 0.9rem;
+.sidebar {
+  height: 100%;
+  width: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  border-bottom: 2px solid var(--color-primary);
+}
+
+.headings,
+.headings .heading,
+.headings .strapline {
+  padding: 0.3rem;
+}
+
+.headings {
+  display: flex;
+  flex-direction: column;
+}
+
+.headings .heading {
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.headings .strapline {
+  color: lightgray;
+  font-size: 0.75rem;
+}
+
+.closeButton {
+  align-self: flex-start;
 }

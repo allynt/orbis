@@ -3,32 +3,14 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import Button from '@astrosat/astrosat-ui/dist/buttons/button';
-import CloseButton from '@astrosat/astrosat-ui/dist/buttons/close-button';
+
 import LoadMask from '@astrosat/astrosat-ui/dist/load-mask/load-mask';
 import { LayersIcon } from '@astrosat/astrosat-ui/';
 
 import { selectMapStyle } from './map.slice';
 import { isLoaded } from '../bookmarks/bookmark.slice';
-import { closeMenu } from '../side-menu/side-menu.slice';
 
-import PasswordChangeForm from '../accounts/password-change-form.component';
-import Profile from '../accounts/profile.component';
-import AnnotationsPanel from '../annotations/annotations-panel.component';
-import BookmarksPanel from '../bookmarks/bookmarks-panel.component';
-import StoriesPanel from '../stories/stories-panel.component';
-import DataLayers from '../data-layers/data-layers.component';
 import MapStyleSwitcher from '../mapstyle/mapstyle-switcher.component';
-import SatellitesPanel from '../satellites/satellites-panel.component';
-import SideMenu from '../side-menu/side-menu.component';
-import {
-  ANNOTATIONS,
-  BOOKMARKS,
-  CHANGE_PASSWORD,
-  STORIES,
-  DATA_LAYERS,
-  PROFILE,
-  SATELLITE_LAYERS,
-} from '../toolbar/toolbar-constants';
 
 import layoutStyles from './map-layout.module.css';
 
@@ -41,7 +23,6 @@ const Map = ({
   draw = true,
   layoutInvalidation,
   position,
-  sidebar = false,
   setMap,
   compare,
   selectedPinnedScenes,
@@ -69,41 +50,12 @@ const Map = ({
     dispatch(isLoaded());
   }, [selectedBookmark, dispatch]);
 
-  const heading = useSelector(state => state.sidebar.heading);
-  const strapline = useSelector(state => state.sidebar.strapline);
-  const visibleMenuItem = useSelector(state => state.sidebar.visibleMenuItem);
-
   return (
     <>
       {isLoading && (
         <div className={layoutStyles.loadMask}>
           <LoadMask />
         </div>
-      )}
-
-      {sidebar && (
-        <SideMenu>
-          <div className={layoutStyles.heading}>
-            <div className={layoutStyles.headings}>
-              <h3>{heading}</h3>
-              <p className={layoutStyles.strapline}>{strapline}</p>
-            </div>
-            <CloseButton
-              className={layoutStyles.closeButton}
-              onClick={() => dispatch(closeMenu())}
-            />
-          </div>
-
-          <div className={layoutStyles.sidebar}>
-            {visibleMenuItem === DATA_LAYERS && <DataLayers />}
-            {visibleMenuItem === SATELLITE_LAYERS && <SatellitesPanel />}
-            {visibleMenuItem === ANNOTATIONS && <AnnotationsPanel />}
-            {visibleMenuItem === BOOKMARKS && <BookmarksPanel />}
-            {visibleMenuItem === STORIES && <StoriesPanel />}
-            {visibleMenuItem === PROFILE && <Profile />}
-            {visibleMenuItem === CHANGE_PASSWORD && <PasswordChangeForm />}
-          </div>
-        </SideMenu>
       )}
 
       <Button

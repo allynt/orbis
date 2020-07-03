@@ -1,14 +1,13 @@
 import React, { useEffect, useState } from 'react';
 
 import Measure from 'react-measure';
-
-import Map from './map.component';
-import syncMaps from './mapbox-gl-sync-move';
 import { useDispatch, useSelector } from 'react-redux';
 
+import SideMenu from '../side-menu/side-menu.component';
 import { getToolbarItems } from '../toolbar/toolbar-config';
-
 import Toolbar from '../toolbar/toolbar.component';
+import Map from './map.component';
+import syncMaps from './mapbox-gl-sync-move';
 
 import styles from './map-layout.module.css';
 
@@ -29,10 +28,19 @@ const MapLayout = () => {
   const toolbarItems = getToolbarItems(dispatch, user);
 
   const mapStyle = useSelector(state => state.map.selectedMapStyle);
-  const selectedPinnedScenes = useSelector(state => state.satellites.selectedPinnedScenes);
+  const selectedPinnedScenes = useSelector(
+    state => state.satellites.selectedPinnedScenes,
+  );
 
   const [compareRatio, setCompareRatio] = useState(0.5);
-  const [bounds, setBounds] = useState({ top: 0, right: 0, bottom: 0, left: 0, width: 0, height: 0 });
+  const [bounds, setBounds] = useState({
+    top: 0,
+    right: 0,
+    bottom: 0,
+    left: 0,
+    width: 0,
+    height: 0,
+  });
 
   const compareMove = event => {
     event = event.touches ? event.touches[0] : event;
@@ -82,22 +90,38 @@ const MapLayout = () => {
         {({ measureRef }) => (
           <div
             ref={measureRef}
-            className={`${styles.layout} ${isCompareMode ? styles.compareMode : styles[`layout-${mapCount}`]}`}
+            className={`${styles.layout} ${
+              isCompareMode ? styles.compareMode : styles[`layout-${mapCount}`]
+            }`}
             data-testid="map-container"
           >
+            {user && (
+              <>
+                <Toolbar user={user} items={toolbarItems} />
+                <SideMenu />
+              </>
+            )}
             {times(mapCount, i => (
               <div
                 key={i}
                 style={
                   i === 0
-                    ? { position: 'absolute', width: '100%', height: '100%', top: 0, left: 0 }
+                    ? {
+                        position: 'absolute',
+                        width: '100%',
+                        height: '100%',
+                        top: 0,
+                        left: 0,
+                      }
                     : {
                         position: 'absolute',
                         width: '100%',
                         height: '100%',
                         top: 0,
                         left: 0,
-                        clip: `rect(0px, 999em, 100vh, ${compareRatio * bounds.width}px)`,
+                        clip: `rect(0px, 999em, 100vh, ${
+                          compareRatio * bounds.width
+                        }px)`,
                       }
                 }
               >
@@ -123,7 +147,9 @@ const MapLayout = () => {
             {isCompareMode && (
               <div
                 className={styles.compare}
-                style={{ transform: `translate(${compareRatio * bounds.width}px, 0px` }}
+                style={{
+                  transform: `translate(${compareRatio * bounds.width}px, 0px`,
+                }}
                 onMouseDown={compareDown}
                 onTouchStart={compareDown}
               >
@@ -133,7 +159,6 @@ const MapLayout = () => {
           </div>
         )}
       </Measure>
-      {user && <Toolbar user={user} items={toolbarItems} />}
     </div>
   );
 };
