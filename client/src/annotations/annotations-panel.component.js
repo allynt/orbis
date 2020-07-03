@@ -3,7 +3,7 @@ import React, { useReducer, useRef } from 'react';
 
 // import { useDispatch } from 'react-redux';
 
-import mapboxgl from 'mapbox-gl';
+// import mapboxgl from 'mapbox-gl';
 import useMap from '../map/use-map.hook';
 import { useMapEvent } from '../map/use-map-event.hook';
 
@@ -240,12 +240,12 @@ const AnnotationsPanel = ({ map }) => {
       // feature and the one you meant.
       if (textLabelSelected) {
         console.log('POPUP CONTENT: ', popupRef);
-        new mapboxgl.Popup()
-          // .setLngLat(features[0].geometry.coordinates.slice())
-          .setLngLat(lngLat)
-          .setDOMContent(popupRef.current)
-          .on('close', () => console.log('Closing Popup'))
-          .addTo(map);
+        // new mapboxgl.Popup()
+        //   // .setLngLat(features[0].geometry.coordinates.slice())
+        //   .setLngLat(lngLat)
+        //   .setDOMContent(popupRef.current)
+        //   .on('close', () => console.log('Closing Popup'))
+        //   .addTo(map);
       }
     },
     [textLabelSelected],
@@ -259,7 +259,9 @@ const AnnotationsPanel = ({ map }) => {
           <div className={styles.annotationButtonsRow}>
             <Button
               classNames={[styles.annotationButtons]}
-              onClick={() => dispatch({ type: SET_DRAW_MODE, mode: 'LabelMode' })}
+              onClick={() =>
+                dispatch({ type: SET_DRAW_MODE, mode: 'LabelMode' })
+              }
               dataFor="textLabel"
             >
               <span className={styles.text}>T</span>
@@ -275,7 +277,13 @@ const AnnotationsPanel = ({ map }) => {
                 onClick={() => dispatch({ type: SET_FILL_COLOUR_SELECTED })}
                 dataFor="fillColour"
               >
-                <span style={{ width: '1rem', height: '1rem', backgroundColor: fillColour.hex }}></span>
+                <span
+                  style={{
+                    width: '1rem',
+                    height: '1rem',
+                    backgroundColor: fillColour.hex,
+                  }}
+                ></span>
                 <span className={styles.buttonLabel}>Fill</span>
               </Button>
               <ReactTooltip id="fillColour">
@@ -284,7 +292,12 @@ const AnnotationsPanel = ({ map }) => {
 
               {fillColourSelected && (
                 <div className={styles.colorPicker}>
-                  <ColorPicker colour={fillColour} setColour={colour => dispatch({ type: SET_FILL_COLOUR, colour })} />
+                  <ColorPicker
+                    colour={fillColour}
+                    setColour={colour =>
+                      dispatch({ type: SET_FILL_COLOUR, colour })
+                    }
+                  />
                 </div>
               )}
             </div>
@@ -295,7 +308,13 @@ const AnnotationsPanel = ({ map }) => {
                 onClick={() => dispatch({ type: SET_LINE_COLOUR_SELECTED })}
                 dataFor="lineColour"
               >
-                <span style={{ width: '1rem', height: '1rem', backgroundColor: lineColour.hex }}></span>
+                <span
+                  style={{
+                    width: '1rem',
+                    height: '1rem',
+                    backgroundColor: lineColour.hex,
+                  }}
+                ></span>
                 <span className={styles.buttonLabel}>Line</span>
               </Button>
               <ReactTooltip id="lineColour">
@@ -304,7 +323,12 @@ const AnnotationsPanel = ({ map }) => {
 
               {lineColourSelected && (
                 <div className={styles.colorPicker}>
-                  <ColorPicker colour={lineColour} setColour={colour => dispatch({ type: SET_LINE_COLOUR, colour })} />
+                  <ColorPicker
+                    colour={lineColour}
+                    setColour={colour =>
+                      dispatch({ type: SET_LINE_COLOUR, colour })
+                    }
+                  />
                 </div>
               )}
             </div>
@@ -334,7 +358,10 @@ const AnnotationsPanel = ({ map }) => {
           {lineTypeSelected && (
             <div>
               <h3>Select line type: </h3>
-              <DropDownButton options={lineTypeOptions} select={option => dispatch({ type: SET_LINE_TYPE, option })} />
+              <DropDownButton
+                options={lineTypeOptions}
+                select={option => dispatch({ type: SET_LINE_TYPE, option })}
+              />
             </div>
           )}
 
@@ -376,7 +403,9 @@ const AnnotationsPanel = ({ map }) => {
           <div className={styles.drawingTools}>
             <Button
               classNames={[styles.drawingToolsButton]}
-              onClick={() => dispatch({ type: SET_DRAW_MODE, mode: 'LineMode' })}
+              onClick={() =>
+                dispatch({ type: SET_DRAW_MODE, mode: 'LineMode' })
+              }
               dataFor="drawLineString"
             >
               <RulerIcon classes={styles.icon} />
@@ -387,7 +416,9 @@ const AnnotationsPanel = ({ map }) => {
 
             <Button
               classNames={[styles.drawingToolsButton]}
-              onClick={() => dispatch({ type: SET_DRAW_MODE, mode: 'PolygonMode' })}
+              onClick={() =>
+                dispatch({ type: SET_DRAW_MODE, mode: 'PolygonMode' })
+              }
               dataFor="drawPolygon"
             >
               <PolygonIcon classes={styles.icon} />
@@ -414,7 +445,9 @@ const AnnotationsPanel = ({ map }) => {
 
             <Button
               classNames={[styles.drawingToolsButton]}
-              onClick={() => dispatch({ type: SET_DRAW_MODE, mode: 'draw_point' })}
+              onClick={() =>
+                dispatch({ type: SET_DRAW_MODE, mode: 'draw_point' })
+              }
               dataFor="drawPoint"
             >
               <MapPinIcon classes={styles.icon} />
@@ -425,7 +458,9 @@ const AnnotationsPanel = ({ map }) => {
 
             <Button
               classNames={[styles.drawingToolsButton]}
-              onClick={() => dispatch({ type: SET_DRAW_MODE, mode: 'CircleMode' })}
+              onClick={() =>
+                dispatch({ type: SET_DRAW_MODE, mode: 'CircleMode' })
+              }
               dataFor="drawCircle"
             >
               <DrawCircleIcon classes={styles.icon} />
@@ -436,7 +471,9 @@ const AnnotationsPanel = ({ map }) => {
 
             <Button
               classNames={[styles.drawingToolsButton]}
-              onClick={() => dispatch({ type: SET_DRAW_MODE, mode: 'FreehandPolygonMode' })}
+              onClick={() =>
+                dispatch({ type: SET_DRAW_MODE, mode: 'FreehandPolygonMode' })
+              }
               dataFor="drawFreehandPolygon"
             >
               <FreehandIcon classes={styles.icon} />
@@ -447,7 +484,9 @@ const AnnotationsPanel = ({ map }) => {
 
             <Button
               classNames={[styles.drawingToolsButton]}
-              onClick={() => dispatch({ type: SET_DRAW_MODE, mode: 'RadiusMode' })}
+              onClick={() =>
+                dispatch({ type: SET_DRAW_MODE, mode: 'RadiusMode' })
+              }
               dataFor="radius"
             >
               <RadiusIcon classes={styles.icon} />

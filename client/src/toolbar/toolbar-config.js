@@ -1,12 +1,23 @@
 import React from 'react';
 
-import { DataIcon, MapIcon, SatelliteIcon, StoryIcon, ProfileIcon } from '@astrosat/astrosat-ui';
+import {
+  DataIcon,
+  MapIcon,
+  SatelliteIcon,
+  StoryIcon,
+  ProfileIcon,
+} from '@astrosat/astrosat-ui';
 
 import { ReactComponent as AdminIcon } from './admin.svg';
-import { DATA_LAYERS, SATELLITE_LAYERS, BOOKMARKS, STORIES, PROFILE } from './toolbar-constants';
+import {
+  DATA_LAYERS,
+  SATELLITE_LAYERS,
+  BOOKMARKS,
+  STORIES,
+  PROFILE,
+} from './toolbar-constants';
 import featureToggles from '../feature-toggles';
 import { toggleMenu, setMenuHeadings } from '../side-menu/side-menu.slice';
-import { history } from 'root.reducer';
 
 import styles from './toolbar.module.css';
 
@@ -105,7 +116,7 @@ export const getToolbarItems = (dispatch, user) => {
     items.push({
       label: 'Admin',
       icon: <AdminIcon className={styles.icon} />,
-      action: () => {
+      action: history => {
         history.push('/admin-console');
       },
       tooltip: 'Admin',
