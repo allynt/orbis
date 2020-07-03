@@ -1,7 +1,13 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-  viewport: { zoom: 6, center: [-4.84, 54.71] },
+  viewport: {
+    zoom: 6,
+    longitude: -4.84,
+    latitude: 54.71,
+    pitch: 0,
+    bearing: 0,
+  },
   mapStyles: [],
   selectedMapStyle: {},
   isCompareMode: false,
@@ -33,6 +39,11 @@ const mapSlice = createSlice({
   },
 });
 
-export const { setViewport, selectMapStyle, toggleCompareMode, saveMap } = mapSlice.actions;
+export const {
+  setViewport,
+  selectMapStyle,
+  toggleCompareMode,
+  saveMap,
+} = mapSlice.actions;
 
 export default mapSlice.reducer;

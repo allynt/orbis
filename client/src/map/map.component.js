@@ -1,55 +1,35 @@
-import React, { useState, useEffect } from 'react';
-
+import { LayersIcon, Button, LoadMask } from '@astrosat/astrosat-ui/';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-
-import Button from '@astrosat/astrosat-ui/dist/buttons/button';
-
-import LoadMask from '@astrosat/astrosat-ui/dist/load-mask/load-mask';
-import { LayersIcon } from '@astrosat/astrosat-ui/';
-
-import { selectMapStyle } from './map.slice';
 import { isLoaded } from '../bookmarks/bookmark.slice';
-
 import MapStyleSwitcher from '../mapstyle/mapstyle-switcher.component';
-
 import layoutStyles from './map-layout.module.css';
+import { selectMapStyle } from './map.slice';
 
-const Map = ({
-  style = 'mapbox://styles/mapbox/satellite-v9',
-  attribution = true,
-  geocoder = true,
-  navigation = true,
-  scale = true,
-  draw = true,
-  layoutInvalidation,
-  position,
-  setMap,
-  compare,
-  selectedPinnedScenes,
-  comparisonScene,
-}) => {
+import DeckGL from '@deck.gl/react';
+import { StaticMap } from 'react-map-gl';
+
+const Map = () => {
+  const dispatch = useDispatch();
+  const accessToken = useSelector(state =>
+    state.app.config ? state.app.config.mapbox_token : null,
+  );
   const [isMapStyleSwitcherVisible, setIsMapStyleSwitcherVisible] = useState(
     false,
   );
   const mapStyles = useSelector(state => state.app.config.mapStyles);
+  const viewport = useSelector(state => state.map.viewport);
   const selectedMapStyle = useSelector(state => state.map.selectedMapStyle);
-  const chooseMapStyle = mapStyle => dispatch(selectMapStyle(mapStyle));
-
   const selectedBookmark = useSelector(
     state => state.bookmarks.selectedBookmark,
   );
-
   const selectedStory = useSelector(state => state.stories.selectedStory);
   const [selectedChapter, setSelectedChapter] = useState(null);
-
   const isLoading = useSelector(state => state.bookmarks.isLoading);
-
-  const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(isLoaded());
   }, [selectedBookmark, dispatch]);
-
   return (
     <>
       {isLoading && (
@@ -57,7 +37,13 @@ const Map = ({
           <LoadMask />
         </div>
       )}
-
+      <DeckGL controller initialViewState={viewport}>
+        <StaticMap
+          reuseMap
+          mapboxApiAccessToken={accessToken}
+          mapStyle={selectedMapStyle.uri}
+        />
+      </DeckGL>
       <Button
         theme="secondary"
         onClick={() => setIsMapStyleSwitcherVisible(!isMapStyleSwitcherVisible)}
@@ -69,7 +55,7 @@ const Map = ({
         <MapStyleSwitcher
           mapStyles={mapStyles || []}
           selectedMapStyle={selectedMapStyle}
-          selectMapStyle={chooseMapStyle}
+          selectMapStyle={mapStyle => dispatch(selectMapStyle(mapStyle))}
         />
       )}
 

@@ -1,4 +1,9 @@
-import reducer, { setViewport, selectMapStyle, toggleCompareMode, saveMap } from './map.slice';
+import reducer, {
+  setViewport,
+  selectMapStyle,
+  toggleCompareMode,
+  saveMap,
+} from './map.slice';
 
 describe('Map Slice', () => {
   describe('Map Reducer', () => {
@@ -6,7 +11,13 @@ describe('Map Slice', () => {
 
     beforeEach(() => {
       beforeState = {
-        viewport: { zoom: 6, center: [-4.84, 54.71] },
+        viewport: {
+          zoom: 6,
+          longitude: -4.84,
+          latitude: 54.71,
+          pitch: 0,
+          bearing: 0,
+        },
         mapStyles: [],
         selectedMapStyle: {},
         isCompareMode: false,
@@ -25,16 +36,12 @@ describe('Map Slice', () => {
     });
 
     it("should not update the viewport in state, when value doesn't exist", () => {
-      const viewport = {
-        center: [-4.84, 54.71],
-        zoom: 6,
-      };
       const actualState = reducer(beforeState, {
         type: setViewport.type,
         payload: null,
       });
 
-      expect(actualState.viewport).toEqual(viewport);
+      expect(actualState.viewport).toEqual(beforeState.viewport);
     });
 
     it('should update the viewport in state, when value exists', () => {
