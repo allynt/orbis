@@ -11,6 +11,7 @@ import Map from './map.component';
 import styles from './map-layout.module.css';
 import { userSelector } from 'accounts/accounts.slice';
 import { isCompareModeSelector } from './map.slice';
+import { selectedPinnedScenesSelector } from 'satellites/satellites.slice';
 
 const times = (n, fn) => {
   const result = [];
@@ -27,9 +28,7 @@ const MapLayout = () => {
   const mapCount = isCompareMode ? 2 : 1;
 
   const toolbarItems = getToolbarItems(dispatch, user);
-  const selectedPinnedScenes = useSelector(
-    state => state.satellites.selectedPinnedScenes,
-  );
+  const selectedPinnedScenes = useSelector(selectedPinnedScenesSelector);
 
   const [compareRatio, setCompareRatio] = useState(0.5);
   const [bounds, setBounds] = useState({

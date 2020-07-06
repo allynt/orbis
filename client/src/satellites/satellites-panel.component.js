@@ -18,6 +18,7 @@ import {
   saveSatelliteSearch,
   removeScenes,
   setCurrentVisualisation,
+  selectedPinnedScenesSelector,
 } from './satellites.slice';
 
 import { toggleCompareMode, isCompareModeSelector } from '../map/map.slice';
@@ -62,9 +63,7 @@ const SatellitesPanel = ({ map }) => {
 
   const pinnedScenes = useSelector(state => state.satellites.pinnedScenes);
   const isCompareMode = useSelector(isCompareModeSelector);
-  const selectedPinnedScenes = useSelector(
-    state => state.satellites.selectedPinnedScenes,
-  );
+  const selectedPinnedScenes = useSelector(selectedPinnedScenesSelector);
   const currentSearchQuery = useSelector(
     state => state.satellites.currentSearchQuery,
   );

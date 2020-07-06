@@ -1,6 +1,6 @@
 import { NotificationManager } from 'react-notifications';
 
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, createSelector } from '@reduxjs/toolkit';
 
 import { getData, sendData, getJsonAuthHeaders } from '../utils/http';
 
@@ -329,5 +329,11 @@ export const deletePinnedScene = id => async (dispatch, getState) => {
 
   return dispatch(deletePinnedSceneSuccess(id));
 };
+
+const baseSelector = state => state?.satellites;
+export const selectedPinnedScenesSelector = createSelector(
+  baseSelector,
+  satellites => satellites?.selectedPinnedScenes || [],
+);
 
 export default satellitesSlice.reducer;
