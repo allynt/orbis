@@ -4,7 +4,12 @@ import { createSlice } from '@reduxjs/toolkit';
 import { persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage'; // defaults to localStorage for web
 
-import { sendData, getData, JSON_HEADERS, getJsonAuthHeaders } from '../utils/http';
+import {
+  sendData,
+  getData,
+  JSON_HEADERS,
+  getJsonAuthHeaders,
+} from '../utils/http';
 
 const API_PREFIX = '/api/authentication/';
 const API = {
@@ -215,7 +220,11 @@ export const login = form => async dispatch => {
 
 export const resendVerificationEmail = email => async dispatch => {
   const emailObj = { email };
-  const response = await sendData(API.resendVerificationEmail, emailObj, JSON_HEADERS);
+  const response = await sendData(
+    API.resendVerificationEmail,
+    emailObj,
+    JSON_HEADERS,
+  );
 
   if (!response.ok) {
     const errorObject = await response.json();
@@ -263,7 +272,9 @@ export const confirmResetPassword = (form, params) => async dispatch => {
 
   if (!response.ok) {
     const errorObject = await response.json();
-    return dispatch(passwordResetRequestedFailure(errorTransformer(errorObject)));
+    return dispatch(
+      passwordResetRequestedFailure(errorTransformer(errorObject)),
+    );
   }
 
   return dispatch(passwordResetRequestedSuccess());
@@ -291,7 +302,12 @@ export const updateUser = form => async (dispatch, getState) => {
     ...form,
   };
 
-  const response = await sendData(`${API.user}${user.email}/`, data, headers, 'PUT');
+  const response = await sendData(
+    `${API.user}${user.email}/`,
+    data,
+    headers,
+    'PUT',
+  );
 
   if (!response.ok) {
     const error = await response.json();
