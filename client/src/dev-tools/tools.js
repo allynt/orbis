@@ -11,6 +11,7 @@ import FiltersTool from './features/filters.component';
 import SatellitesTool from './features/satellites.component';
 
 import styles from './tools.module.css';
+import { userSelector } from 'accounts/accounts.slice';
 
 const install = () => {
   window.devToolsEnabled = true;
@@ -28,7 +29,7 @@ const install = () => {
   LocalDevTools = LocalDevTools || (() => null);
 
   const DevTools = () => {
-    const user = useSelector(state => state.accounts.user);
+    const user = useSelector(userSelector);
     const isAuthorized = useAuthorization(user, ['AstrosatRole']);
 
     return (

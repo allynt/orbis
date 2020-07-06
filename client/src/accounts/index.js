@@ -11,6 +11,7 @@ import {
   register,
   resendVerificationEmail,
   resetPassword,
+  userSelector,
 } from './accounts.slice';
 import LoginForm from './login-form.component';
 import PasswordChangeForm from './password-change-form.component';
@@ -24,12 +25,18 @@ export default () => {
   const dispatch = useDispatch();
   const match = useRouteMatch();
   const error = useSelector(state => state.accounts.error);
-  const registerUserStatus = useSelector(state => state.accounts.registerUserStatus);
-  const accountActivationStatus = useSelector(state => state.accounts.accountActivationStatus);
-  const verificationEmailStatus = useSelector(state => state.accounts.verificationEmailStatus);
+  const registerUserStatus = useSelector(
+    state => state.accounts.registerUserStatus,
+  );
+  const accountActivationStatus = useSelector(
+    state => state.accounts.accountActivationStatus,
+  );
+  const verificationEmailStatus = useSelector(
+    state => state.accounts.verificationEmailStatus,
+  );
   const resetStatus = useSelector(state => state.accounts.resetStatus);
   const changeStatus = useSelector(state => state.accounts.changeStatus);
-  const user = useSelector(state => state.accounts.user);
+  const user = useSelector(userSelector);
 
   return (
     <div className={styles.page}>
@@ -43,7 +50,9 @@ export default () => {
               <RegisterForm
                 register={form => dispatch(register(form))}
                 registerUserStatus={registerUserStatus}
-                resendVerificationEmail={email => dispatch(resendVerificationEmail(email))}
+                resendVerificationEmail={email =>
+                  dispatch(resendVerificationEmail(email))
+                }
                 error={error}
               />
             )}
@@ -56,7 +65,9 @@ export default () => {
                 login={values => dispatch(login(values))}
                 user={user}
                 error={error}
-                resendVerificationEmail={email => dispatch(resendVerificationEmail(email))}
+                resendVerificationEmail={email =>
+                  dispatch(resendVerificationEmail(email))
+                }
                 verificationEmailStatus={verificationEmailStatus}
               />
             )}
@@ -102,7 +113,9 @@ export default () => {
             path={`${match.path}/password/reset/:token/:uid/`}
             render={props => (
               <PasswordResetConfirmForm
-                confirmResetPassword={(form, params) => dispatch(confirmResetPassword(form, params))}
+                confirmResetPassword={(form, params) =>
+                  dispatch(confirmResetPassword(form, params))
+                }
                 resetStatus={resetStatus}
                 match={props.match}
                 error={error}

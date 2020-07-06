@@ -1,5 +1,5 @@
 import { NotificationManager } from 'react-notifications';
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, createSelector } from '@reduxjs/toolkit';
 
 import { persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage'; // defaults to localStorage for web
@@ -327,5 +327,11 @@ const persistConfig = {
   whitelist: ['userKey'],
   storage,
 };
+
+const baseSelector = state => state?.accounts;
+export const userSelector = createSelector(
+  baseSelector,
+  accounts => accounts?.user,
+);
 
 export default persistReducer(persistConfig, accountsSlice.reducer);

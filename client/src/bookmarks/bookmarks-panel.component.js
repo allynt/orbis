@@ -12,10 +12,11 @@ import {
 } from './bookmark.slice';
 
 import styles from '../side-menu/side-menu.module.css';
+import { userSelector } from 'accounts/accounts.slice';
 
 const BookmarksPanel = () => {
   const dispatch = useDispatch();
-  const owner = useSelector(state => state.accounts.user.id);
+  const { id: owner } = useSelector(userSelector);
 
   const submit = form => {
     dispatch(

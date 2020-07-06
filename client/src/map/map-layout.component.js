@@ -9,6 +9,7 @@ import Toolbar from '../toolbar/toolbar.component';
 import Map from './map.component';
 
 import styles from './map-layout.module.css';
+import { userSelector } from 'accounts/accounts.slice';
 
 const times = (n, fn) => {
   const result = [];
@@ -20,7 +21,7 @@ const times = (n, fn) => {
 
 const MapLayout = () => {
   const dispatch = useDispatch();
-  const user = useSelector(state => state.accounts.user);
+  const user = useSelector(userSelector);
   const isCompareMode = useSelector(state => state.map.isCompareMode);
   const mapCount = isCompareMode ? 2 : 1;
 
