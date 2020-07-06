@@ -20,13 +20,17 @@ import {
   setCurrentVisualisation,
 } from './satellites.slice';
 
-import { toggleCompareMode } from '../map/map.slice';
+import { toggleCompareMode, isCompareModeSelector } from '../map/map.slice';
 
 import SatelliteSearch from './satellite-search.component';
 import Results from './results.component';
 import Visualisation from './visualisation.component';
 import ComparePins from './compare-pins.component';
-import { SatelliteInfoTable, TierInfoTable, SceneInfoTable } from './satellites-info-tables.component';
+import {
+  SatelliteInfoTable,
+  TierInfoTable,
+  SceneInfoTable,
+} from './satellites-info-tables.component';
 
 import styles from './satellites-panel.module.css';
 
@@ -45,7 +49,10 @@ const SatellitesPanel = ({ map }) => {
 
   const [visiblePanel, setVisiblePanel] = useState(SEARCH);
   const [visualisations, setVisualisations] = useState(null);
-  const [selectedMoreInfo, setSelectedMoreInfo] = useState({ type: null, data: null });
+  const [selectedMoreInfo, setSelectedMoreInfo] = useState({
+    type: null,
+    data: null,
+  });
 
   const [isMoreInfoDialogVisible, toggleMoreInfoDialog] = useModal(false);
 
@@ -54,9 +61,13 @@ const SatellitesPanel = ({ map }) => {
   const selectedScene = useSelector(state => state.satellites.selectedScene);
 
   const pinnedScenes = useSelector(state => state.satellites.pinnedScenes);
-  const isCompareMode = useSelector(state => state.map.isCompareMode);
-  const selectedPinnedScenes = useSelector(state => state.satellites.selectedPinnedScenes);
-  const currentSearchQuery = useSelector(state => state.satellites.currentSearchQuery);
+  const isCompareMode = useSelector(isCompareModeSelector);
+  const selectedPinnedScenes = useSelector(
+    state => state.satellites.selectedPinnedScenes,
+  );
+  const currentSearchQuery = useSelector(
+    state => state.satellites.currentSearchQuery,
+  );
 
   useEffect(() => {
     if (!satellites) {
@@ -72,7 +83,9 @@ const SatellitesPanel = ({ map }) => {
 
   useEffect(() => {
     if (selectedScene) {
-      const satellite = satellites.find(sat => sat.id === selectedScene.satellite);
+      const satellite = satellites.find(
+        sat => sat.id === selectedScene.satellite,
+      );
       setVisualisations(satellite.visualisations);
     }
   }, [satellites, selectedScene]);
@@ -82,7 +95,11 @@ const SatellitesPanel = ({ map }) => {
       <div className={styles.navigationPanel}>
         <Button
           theme="primary"
-          className={visiblePanel === SEARCH ? [styles.button, styles.active] : [styles.button]}
+          className={
+            visiblePanel === SEARCH
+              ? [styles.button, styles.active]
+              : [styles.button]
+          }
           onClick={() => setVisiblePanel(SEARCH)}
         >
           Search
@@ -90,7 +107,11 @@ const SatellitesPanel = ({ map }) => {
         <Button
           theme="primary"
           disabled={!scenes}
-          className={visiblePanel === RESULTS ? [styles.button, styles.active] : [styles.button]}
+          className={
+            visiblePanel === RESULTS
+              ? [styles.button, styles.active]
+              : [styles.button]
+          }
           onClick={() => setVisiblePanel(RESULTS)}
         >
           Results
@@ -98,14 +119,22 @@ const SatellitesPanel = ({ map }) => {
         <Button
           theme="primary"
           disabled={!visualisations}
-          className={visiblePanel === VISUALISATION ? [styles.button, styles.active] : [styles.button]}
+          className={
+            visiblePanel === VISUALISATION
+              ? [styles.button, styles.active]
+              : [styles.button]
+          }
           onClick={() => setVisiblePanel(VISUALISATION)}
         >
           Visualisation
         </Button>
         <Button
           theme="primary"
-          className={visiblePanel === PINS ? [styles.button, styles.active] : [styles.button]}
+          className={
+            visiblePanel === PINS
+              ? [styles.button, styles.active]
+              : [styles.button]
+          }
           onClick={() => setVisiblePanel(PINS)}
         >
           My Pins
@@ -143,7 +172,9 @@ const SatellitesPanel = ({ map }) => {
             visualisations={visualisations}
             setVisiblePanel={setVisiblePanel}
             removeScenes={() => dispatch(removeScenes())}
-            setCurrentVisualisation={visualisation => dispatch(setCurrentVisualisation(visualisation))}
+            setCurrentVisualisation={visualisation =>
+              dispatch(setCurrentVisualisation(visualisation))
+            }
           />
         )}
         {visiblePanel === PINS && (
@@ -152,7 +183,9 @@ const SatellitesPanel = ({ map }) => {
             toggleMoreInfoDialog={toggleMoreInfoDialog}
             selectPinnedScene={scene => dispatch(selectPinnedScene(scene))}
             deselectPinnedScene={scene => dispatch(deselectPinnedScene(scene))}
-            clearSelectedPinnedScenes={() => dispatch(clearSelectedPinnedScenes())}
+            clearSelectedPinnedScenes={() =>
+              dispatch(clearSelectedPinnedScenes())
+            }
             deletePinnedScene={id => dispatch(deletePinnedScene(id))}
             toggleCompareMode={() => dispatch(toggleCompareMode())}
             pinnedScenes={pinnedScenes}
@@ -162,14 +195,27 @@ const SatellitesPanel = ({ map }) => {
           />
         )}
       </div>
-      <Dialog isVisible={isMoreInfoDialogVisible} title="More Information" close={toggleMoreInfoDialog} ref={dialogRef}>
-        {!selectedMoreInfo && <p className={styles.noInfoAvailable}>No information currently available</p>}
+      <Dialog
+        isVisible={isMoreInfoDialogVisible}
+        title="More Information"
+        close={toggleMoreInfoDialog}
+        ref={dialogRef}
+      >
+        {!selectedMoreInfo && (
+          <p className={styles.noInfoAvailable}>
+            No information currently available
+          </p>
+        )}
 
         {selectedMoreInfo && selectedMoreInfo.type === SATELLITE && (
           <SatelliteInfoTable satellite={selectedMoreInfo.data} />
         )}
-        {selectedMoreInfo && selectedMoreInfo.type === SCENE && <SceneInfoTable scene={selectedMoreInfo.data} />}
-        {selectedMoreInfo && selectedMoreInfo.type === TIER && <TierInfoTable tier={selectedMoreInfo.data} />}
+        {selectedMoreInfo && selectedMoreInfo.type === SCENE && (
+          <SceneInfoTable scene={selectedMoreInfo.data} />
+        )}
+        {selectedMoreInfo && selectedMoreInfo.type === TIER && (
+          <TierInfoTable tier={selectedMoreInfo.data} />
+        )}
       </Dialog>
     </div>
   );

@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, createSelector } from '@reduxjs/toolkit';
 
 const initialState = {
   viewport: {
@@ -45,5 +45,11 @@ export const {
   toggleCompareMode,
   saveMap,
 } = mapSlice.actions;
+
+const baseSelector = state => state?.map;
+export const isCompareModeSelector = createSelector(
+  baseSelector,
+  map => map?.isCompareMode || false,
+);
 
 export default mapSlice.reducer;

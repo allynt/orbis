@@ -3,6 +3,7 @@ import reducer, {
   selectMapStyle,
   toggleCompareMode,
   saveMap,
+  isCompareModeSelector,
 } from './map.slice';
 
 describe('Map Slice', () => {
@@ -90,6 +91,33 @@ describe('Map Slice', () => {
       });
 
       expect(actualState.saveMap).toEqual(true);
+    });
+  });
+
+  describe('selectors', () => {
+    describe('isCompareModeSelector', () => {
+      it('returns false if state is undefined', () => {
+        const result = isCompareModeSelector();
+        expect(result).toBe(false);
+      });
+
+      it('returns false if map is undefined', () => {
+        const state = {};
+        const result = isCompareModeSelector(state);
+        expect(result).toBe(false);
+      });
+
+      it('returns false if isCompareMode is undefined', () => {
+        const state = { map: {} };
+        const result = isCompareModeSelector(state);
+        expect(result).toBe(false);
+      });
+
+      it('returns isCompareMode', () => {
+        const state = { map: { isCompareMode: true } };
+        const result = isCompareModeSelector(state);
+        expect(result).toEqual(state.map.isCompareMode);
+      });
     });
   });
 });
