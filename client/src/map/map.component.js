@@ -1,21 +1,26 @@
-import { LayersIcon, Button, LoadMask } from '@astrosat/astrosat-ui/';
 import React, { useEffect, useState } from 'react';
+
+import { LayersIcon, Button, LoadMask } from '@astrosat/astrosat-ui/';
+
+import DeckGL from '@deck.gl/react';
 import { useDispatch, useSelector } from 'react-redux';
+import { StaticMap } from 'react-map-gl';
+
 import {
   isLoaded,
   selectedBookmarkSelector,
   isLoadingSelector as bookmarksLoadingSelector,
 } from '../bookmarks/bookmark.slice';
 import MapStyleSwitcher from '../mapstyle/mapstyle-switcher.component';
-import layoutStyles from './map-layout.module.css';
 import {
   selectMapStyle,
   viewportSelector,
   selectedMapStyleSelector,
 } from './map.slice';
-import DeckGL from '@deck.gl/react';
-import { StaticMap } from 'react-map-gl';
 import { mapboxTokenSelector, mapStylesSelector } from 'app.slice';
+
+import styles from './map.module.css';
+import layoutStyles from './map-layout.module.css';
 
 const Map = () => {
   const dispatch = useDispatch();
@@ -35,7 +40,7 @@ const Map = () => {
   return (
     <>
       {bookmarksLoading && (
-        <div className={layoutStyles.loadMask} data-testid="load-mask">
+        <div className={styles.loadMask} data-testid="load-mask">
           <LoadMask />
         </div>
       )}
@@ -49,9 +54,9 @@ const Map = () => {
       <Button
         theme="secondary"
         onClick={() => setIsMapStyleSwitcherVisible(!isMapStyleSwitcherVisible)}
-        className={layoutStyles.mapStyleButton}
+        className={styles.mapStyleButton}
       >
-        <LayersIcon title="layers" classes={layoutStyles.icon} />
+        <LayersIcon title="layers" classes={styles.icon} />
       </Button>
       {isMapStyleSwitcherVisible && (
         <MapStyleSwitcher
