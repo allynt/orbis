@@ -15,7 +15,7 @@ import {
 } from './map.slice';
 import DeckGL from '@deck.gl/react';
 import { StaticMap } from 'react-map-gl';
-import { mapboxTokenSelector } from 'app.slice';
+import { mapboxTokenSelector, mapStylesSelector } from 'app.slice';
 
 const Map = () => {
   const dispatch = useDispatch();
@@ -23,13 +23,11 @@ const Map = () => {
   const viewport = useSelector(viewportSelector);
   const selectedBookmark = useSelector(selectedBookmarkSelector);
   const bookmarksLoading = useSelector(bookmarksLoadingSelector);
-  const mapStyles = useSelector(state => state.app.config.mapStyles);
+  const mapStyles = useSelector(mapStylesSelector);
   const selectedMapStyle = useSelector(selectedMapStyleSelector);
   const [isMapStyleSwitcherVisible, setIsMapStyleSwitcherVisible] = useState(
     false,
   );
-  const selectedStory = useSelector(state => state.stories.selectedStory);
-  const [selectedChapter, setSelectedChapter] = useState(null);
 
   useEffect(() => {
     dispatch(isLoaded());
@@ -61,65 +59,6 @@ const Map = () => {
           selectedMapStyle={selectedMapStyle}
           selectMapStyle={mapStyle => dispatch(selectMapStyle(mapStyle))}
         />
-      )}
-
-      {selectedStory && (
-        <div className={`${layoutStyles.story} step`}>
-          {selectedStory && (
-            <div>
-              <h1>{selectedStory.title}</h1>
-              <h3>{selectedStory.subtitle}</h3>
-
-              {selectedChapter && (
-                <div className={layoutStyles.chapter}>
-                  <picture>
-                    <img
-                      src={selectedChapter.image}
-                      alt={selectedChapter.title}
-                    />
-                  </picture>
-
-                  <section>{selectedChapter.description}</section>
-                </div>
-              )}
-
-              <div className={layoutStyles.buttons}>
-                <Button
-                  theme="tertiary"
-                  onClick={() => {
-                    if (selectedChapter) {
-                      let index = selectedStory.chapters.indexOf(
-                        selectedChapter,
-                      );
-                      const previousChapter = selectedStory.chapters[--index];
-                      if (previousChapter) {
-                        setSelectedChapter(previousChapter);
-                      }
-                    }
-                  }}
-                >
-                  Previous
-                </Button>
-                <Button
-                  theme="Primary"
-                  onClick={() => {
-                    if (selectedChapter) {
-                      let index = selectedStory.chapters.indexOf(
-                        selectedChapter,
-                      );
-                      const nextChapter = selectedStory.chapters[++index];
-                      if (nextChapter) {
-                        setSelectedChapter(nextChapter);
-                      }
-                    }
-                  }}
-                >
-                  Next
-                </Button>
-              </div>
-            </div>
-          )}
-        </div>
       )}
     </>
   );
