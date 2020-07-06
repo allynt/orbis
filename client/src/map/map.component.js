@@ -4,8 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { isLoaded } from '../bookmarks/bookmark.slice';
 import MapStyleSwitcher from '../mapstyle/mapstyle-switcher.component';
 import layoutStyles from './map-layout.module.css';
-import { selectMapStyle } from './map.slice';
-
+import { selectMapStyle, viewportSelector } from './map.slice';
 import DeckGL from '@deck.gl/react';
 import { StaticMap } from 'react-map-gl';
 import { mapboxTokenSelector } from 'app.slice';
@@ -13,7 +12,7 @@ import { mapboxTokenSelector } from 'app.slice';
 const Map = () => {
   const dispatch = useDispatch();
   const accessToken = useSelector(mapboxTokenSelector);
-  const viewport = useSelector(state => state.map.viewport);
+  const viewport = useSelector(viewportSelector);
   const selectedBookmark = useSelector(
     state => state.bookmarks.selectedBookmark,
   );
@@ -40,7 +39,7 @@ const Map = () => {
         <StaticMap
           reuseMap
           mapboxApiAccessToken={accessToken}
-          mapStyle={selectedMapStyle.uri}
+          mapStyle={selectedMapStyle?.uri}
         />
       </DeckGL>
       <Button

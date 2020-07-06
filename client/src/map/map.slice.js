@@ -51,5 +51,9 @@ export const isCompareModeSelector = createSelector(
   baseSelector,
   map => map?.isCompareMode || false,
 );
+export const viewportSelector = createSelector(
+  baseSelector,
+  map => map?.viewport,
+);
 
 export default mapSlice.reducer;

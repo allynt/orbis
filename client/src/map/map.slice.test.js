@@ -4,6 +4,7 @@ import reducer, {
   toggleCompareMode,
   saveMap,
   isCompareModeSelector,
+  viewportSelector,
 } from './map.slice';
 
 describe('Map Slice', () => {
@@ -117,6 +118,35 @@ describe('Map Slice', () => {
         const state = { map: { isCompareMode: true } };
         const result = isCompareModeSelector(state);
         expect(result).toEqual(state.map.isCompareMode);
+      });
+    });
+
+    describe('viewportSelector', () => {
+      it('returns undefined if state is undefined', () => {
+        const result = viewportSelector();
+        expect(result).toBeUndefined();
+      });
+
+      it('returns undefined if map is undefined', () => {
+        const state = {};
+        const result = viewportSelector(state);
+        expect(result).toBeUndefined();
+      });
+
+      it('returns undefined if viewport is undefined', () => {
+        const state = { map: {} };
+        const result = viewportSelector(state);
+        expect(result).toBeUndefined();
+      });
+
+      it('returns viewport', () => {
+        const state = {
+          map: {
+            viewport: { zoom: 1, latitude: -33.867627, longitude: -63.98602 },
+          },
+        };
+        const result = viewportSelector(state);
+        expect(result).toEqual(state.map.viewport);
       });
     });
   });
