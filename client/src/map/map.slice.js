@@ -55,5 +55,9 @@ export const viewportSelector = createSelector(
   baseSelector,
   map => map?.viewport,
 );
+export const selectedMapStyleSelector = createSelector(
+  baseSelector,
+  map => map?.selectedMapStyle,
+);
 
 export default mapSlice.reducer;

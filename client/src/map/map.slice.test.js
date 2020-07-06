@@ -5,6 +5,7 @@ import reducer, {
   saveMap,
   isCompareModeSelector,
   viewportSelector,
+  selectedMapStyleSelector,
 } from './map.slice';
 
 describe('Map Slice', () => {
@@ -147,6 +148,35 @@ describe('Map Slice', () => {
         };
         const result = viewportSelector(state);
         expect(result).toEqual(state.map.viewport);
+      });
+    });
+
+    describe('selectedMapStyleSelector', () => {
+      it('returns undefined if state is undefined', () => {
+        const result = selectedMapStyleSelector();
+        expect(result).toBeUndefined();
+      });
+
+      it('returns undefined if map is undefined', () => {
+        const state = {};
+        const result = selectedMapStyleSelector(state);
+        expect(result).toBeUndefined();
+      });
+
+      it('returns undefined if selectedMapStyle is undefined', () => {
+        const state = { map: {} };
+        const result = selectedMapStyleSelector(state);
+        expect(result).toBeUndefined();
+      });
+
+      it('returns selectedMapStyle', () => {
+        const state = {
+          map: {
+            selectedMapStyle: { uri: 'hello' },
+          },
+        };
+        const result = selectedMapStyleSelector(state);
+        expect(result).toEqual(state.map.selectedMapStyle);
       });
     });
   });

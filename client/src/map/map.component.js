@@ -4,7 +4,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import { isLoaded } from '../bookmarks/bookmark.slice';
 import MapStyleSwitcher from '../mapstyle/mapstyle-switcher.component';
 import layoutStyles from './map-layout.module.css';
-import { selectMapStyle, viewportSelector } from './map.slice';
+import {
+  selectMapStyle,
+  viewportSelector,
+  selectedMapStyleSelector,
+} from './map.slice';
 import DeckGL from '@deck.gl/react';
 import { StaticMap } from 'react-map-gl';
 import { mapboxTokenSelector } from 'app.slice';
@@ -18,7 +22,7 @@ const Map = () => {
   );
   const isLoading = useSelector(state => state.bookmarks.isLoading);
   const mapStyles = useSelector(state => state.app.config.mapStyles);
-  const selectedMapStyle = useSelector(state => state.map.selectedMapStyle);
+  const selectedMapStyle = useSelector(selectedMapStyleSelector);
   const [isMapStyleSwitcherVisible, setIsMapStyleSwitcherVisible] = useState(
     false,
   );
