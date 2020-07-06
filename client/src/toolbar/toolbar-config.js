@@ -25,7 +25,7 @@ export const getToolbarItems = (dispatch, user) => {
   let items = [
     {
       label: DATA_LAYERS,
-      icon: <DataIcon classes={styles.icon} />,
+      icon: <DataIcon title="data" classes={styles.icon} />,
       action: () => {
         dispatch(toggleMenu(DATA_LAYERS));
         dispatch(
@@ -112,7 +112,7 @@ export const getToolbarItems = (dispatch, user) => {
     });
   }
 
-  if (user.customers?.some(customer => customer.type === 'MANAGER')) {
+  if (user?.customers?.some(customer => customer.type === 'MANAGER')) {
     items.push({
       label: 'Admin',
       icon: <AdminIcon className={styles.icon} />,
@@ -127,7 +127,7 @@ export const getToolbarItems = (dispatch, user) => {
   }
 
   return items
-    .filter(item => user.roles.some(role => item.roles.includes(role)))
+    .filter(item => user?.roles?.some(role => item.roles.includes(role)))
     .sort((item1, item2) => item1.order - item2.order);
 };
 
