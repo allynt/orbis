@@ -1,7 +1,11 @@
 import { LayersIcon, Button, LoadMask } from '@astrosat/astrosat-ui/';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { isLoaded } from '../bookmarks/bookmark.slice';
+import {
+  isLoaded,
+  selectedBookmarkSelector,
+  isLoadingSelector as bookmarksLoadingSelector,
+} from '../bookmarks/bookmark.slice';
 import MapStyleSwitcher from '../mapstyle/mapstyle-switcher.component';
 import layoutStyles from './map-layout.module.css';
 import {
@@ -17,10 +21,8 @@ const Map = () => {
   const dispatch = useDispatch();
   const accessToken = useSelector(mapboxTokenSelector);
   const viewport = useSelector(viewportSelector);
-  const selectedBookmark = useSelector(
-    state => state.bookmarks.selectedBookmark,
-  );
-  const isLoading = useSelector(state => state.bookmarks.isLoading);
+  const selectedBookmark = useSelector(selectedBookmarkSelector);
+  const bookmarksLoading = useSelector(bookmarksLoadingSelector);
   const mapStyles = useSelector(state => state.app.config.mapStyles);
   const selectedMapStyle = useSelector(selectedMapStyleSelector);
   const [isMapStyleSwitcherVisible, setIsMapStyleSwitcherVisible] = useState(
@@ -34,7 +36,7 @@ const Map = () => {
   }, [selectedBookmark, dispatch]);
   return (
     <>
-      {isLoading && (
+      {bookmarksLoading && (
         <div className={layoutStyles.loadMask}>
           <LoadMask />
         </div>

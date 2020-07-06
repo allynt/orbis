@@ -1,6 +1,6 @@
 import { NotificationManager } from 'react-notifications';
 
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, createSelector } from '@reduxjs/toolkit';
 
 import {
   getData,
@@ -162,5 +162,15 @@ export const deleteBookmark = bookmark => async (dispatch, getState) => {
 
   return dispatch(deleteBookmarkSuccess(bookmark));
 };
+
+const baseSelector = state => state?.bookmarks;
+export const selectedBookmarkSelector = createSelector(
+  baseSelector,
+  bookmarks => bookmarks?.selectedBookmark,
+);
+export const isLoadingSelector = createSelector(
+  baseSelector,
+  bookmarks => bookmarks?.isLoading || false,
+);
 
 export default bookmarkSlice.reducer;

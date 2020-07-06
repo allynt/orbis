@@ -13,6 +13,8 @@ import reducer, {
   deleteBookmark,
   selectBookmark,
   isLoaded,
+  selectedBookmarkSelector,
+  isLoadingSelector,
 } from './bookmark.slice';
 
 const mockStore = configureMockStore([thunk]);
@@ -283,6 +285,58 @@ describe('Bookmark Slice', () => {
       });
 
       expect(actualState.isLoading).toEqual(false);
+    });
+  });
+
+  describe('selectors', () => {
+    describe('selectedBookmarkSelector', () => {
+      it('returns undefined if state is undefined', () => {
+        const result = selectedBookmarkSelector();
+        expect(result).toBeUndefined();
+      });
+
+      it('returns undefined if bookmarks is undefined', () => {
+        const state = {};
+        const result = selectedBookmarkSelector(state);
+        expect(result).toBeUndefined();
+      });
+
+      it('returns undefined if selectedBookmark is undefined', () => {
+        const state = { bookmarks: {} };
+        const result = selectedBookmarkSelector(state);
+        expect(result).toBeUndefined();
+      });
+
+      it('returns selectedBookmark', () => {
+        const state = { bookmarks: { selectedBookmark: { title: 'heloo' } } };
+        const result = selectedBookmarkSelector(state);
+        expect(result).toEqual(state.bookmarks.selectedBookmark);
+      });
+    });
+
+    describe('isLoadingSelector', () => {
+      it('returns false if state is undefined', () => {
+        const result = isLoadingSelector();
+        expect(result).toBe(false);
+      });
+
+      it('returns false if bookmarks is undefined', () => {
+        const state = {};
+        const result = isLoadingSelector(state);
+        expect(result).toBe(false);
+      });
+
+      it('returns false if isLoading is undefined', () => {
+        const state = { bookmarks: {} };
+        const result = isLoadingSelector(state);
+        expect(result).toBe(false);
+      });
+
+      it('returns isLoading', () => {
+        const state = { bookmarks: { isLoading: true } };
+        const result = isLoadingSelector(state);
+        expect(result).toEqual(state.bookmarks.isLoading);
+      });
     });
   });
 });
