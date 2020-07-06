@@ -4,7 +4,11 @@ import { LayersIcon, Button, LoadMask } from '@astrosat/astrosat-ui/';
 
 import DeckGL from '@deck.gl/react';
 import { useDispatch, useSelector } from 'react-redux';
-import { StaticMap } from 'react-map-gl';
+import {
+  StaticMap,
+  NavigationControl,
+  _MapContext as MapContext,
+} from 'react-map-gl';
 
 import {
   isLoaded,
@@ -19,6 +23,7 @@ import {
 } from './map.slice';
 import { mapboxTokenSelector, mapStylesSelector } from 'app.slice';
 
+import 'mapbox-gl/dist/mapbox-gl.css';
 import styles from './map.module.css';
 
 const Map = () => {
@@ -43,12 +48,17 @@ const Map = () => {
           <LoadMask />
         </div>
       )}
-      <DeckGL controller initialViewState={viewport}>
+      <DeckGL
+        controller
+        initialViewState={viewport}
+        ContextProvider={MapContext.Provider}
+      >
         <StaticMap
           reuseMap
           mapboxApiAccessToken={accessToken}
           mapStyle={selectedMapStyle?.uri}
         />
+        <NavigationControl className={styles.navigationControl} />
       </DeckGL>
       <Button
         theme="secondary"

@@ -19,3 +19,9 @@
   width: 1rem;
   color: var(--color-primary);
 }
+
+.navigationControl {
+  position: absolute;
+  right: 0.6rem;
+  bottom: 2rem;
+}
