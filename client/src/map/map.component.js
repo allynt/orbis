@@ -8,24 +8,23 @@ import { selectMapStyle } from './map.slice';
 
 import DeckGL from '@deck.gl/react';
 import { StaticMap } from 'react-map-gl';
+import { mapboxTokenSelector } from 'app.slice';
 
 const Map = () => {
   const dispatch = useDispatch();
-  const accessToken = useSelector(state =>
-    state.app.config ? state.app.config.mapbox_token : null,
-  );
-  const [isMapStyleSwitcherVisible, setIsMapStyleSwitcherVisible] = useState(
-    false,
-  );
-  const mapStyles = useSelector(state => state.app.config.mapStyles);
+  const accessToken = useSelector(mapboxTokenSelector);
   const viewport = useSelector(state => state.map.viewport);
-  const selectedMapStyle = useSelector(state => state.map.selectedMapStyle);
   const selectedBookmark = useSelector(
     state => state.bookmarks.selectedBookmark,
   );
+  const isLoading = useSelector(state => state.bookmarks.isLoading);
+  const mapStyles = useSelector(state => state.app.config.mapStyles);
+  const selectedMapStyle = useSelector(state => state.map.selectedMapStyle);
+  const [isMapStyleSwitcherVisible, setIsMapStyleSwitcherVisible] = useState(
+    false,
+  );
   const selectedStory = useSelector(state => state.stories.selectedStory);
   const [selectedChapter, setSelectedChapter] = useState(null);
-  const isLoading = useSelector(state => state.bookmarks.isLoading);
 
   useEffect(() => {
     dispatch(isLoaded());

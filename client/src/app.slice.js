@@ -1,6 +1,6 @@
 import { NotificationManager } from 'react-notifications';
 
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, createSelector } from '@reduxjs/toolkit';
 
 import { selectMapStyle } from './map/map.slice';
 
@@ -57,5 +57,12 @@ export const fetchAppConfig = () => async dispatch => {
   const mapStyles = config.mapStyles;
   return dispatch(selectMapStyle(mapStyles[DEFAULT_MAP_STYLE]));
 };
+
+const baseSelector = state => state?.app;
+const configSelector = createSelector(baseSelector, app => app?.config);
+export const mapboxTokenSelector = createSelector(
+  configSelector,
+  config => config?.mapbox_token,
+);
 
 export default appSlice.reducer;

@@ -9,6 +9,7 @@ import reducer, {
   appConfigFailure,
   notYetImplemented,
   DEFAULT_MAP_STYLE,
+  mapboxTokenSelector,
 } from './app.slice';
 
 const mockStore = configureMockStore([thunk]);
@@ -31,7 +32,9 @@ describe('App Slice', () => {
         },
       );
 
-      const expectedActions = [{ type: appConfigFailure.type, payload: { message: '401 Test Error' } }];
+      const expectedActions = [
+        { type: appConfigFailure.type, payload: { message: '401 Test Error' } },
+      ];
 
       const store = mockStore({});
 
@@ -62,7 +65,10 @@ describe('App Slice', () => {
 
       const expectedActions = [
         { type: appConfigSuccess.type, payload: config },
-        { type: selectMapStyle.type, payload: config.mapStyles[DEFAULT_MAP_STYLE] },
+        {
+          type: selectMapStyle.type,
+          payload: config.mapStyles[DEFAULT_MAP_STYLE],
+        },
       ];
 
       const store = mockStore({});
@@ -121,6 +127,39 @@ describe('App Slice', () => {
       });
 
       expect(actualState.notYetImplementedDescription).toEqual(message);
+    });
+  });
+
+  describe('selectors', () => {
+    describe('mapboxTokenSelector', () => {
+      it('returns undefined if state is undefined', () => {
+        const result = mapboxTokenSelector();
+        expect(result).toBeUndefined();
+      });
+
+      it('returns undefined if app is undefined', () => {
+        const state = {};
+        const result = mapboxTokenSelector(state);
+        expect(result).toBeUndefined();
+      });
+
+      it('returns undefined if config is undefined', () => {
+        const state = { app: {} };
+        const result = mapboxTokenSelector(state);
+        expect(result).toBeUndefined();
+      });
+
+      it('returns undefined if mapbox_token is undefined', () => {
+        const state = { app: { config: {} } };
+        const result = mapboxTokenSelector(state);
+        expect(result).toBeUndefined();
+      });
+
+      it('returns the value of mapbox_token', () => {
+        const state = { app: { config: { mapbox_token: '123abc' } } };
+        const result = mapboxTokenSelector(state);
+        expect(result).toEqual(state.app.config.mapbox_token);
+      });
     });
   });
 });
