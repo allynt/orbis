@@ -20,7 +20,7 @@ const setup = initialState => {
   return { ...utils, store };
 };
 
-describe.only('<Map />', () => {
+describe('<Map />', () => {
   it('displays the load mask when bookmarks is loading', () => {
     const { getByTestId } = setup({ bookmarks: { isLoading: true } });
     expect(getByTestId('load-mask')).toBeInTheDocument();
