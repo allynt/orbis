@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 
 import { LayersIcon, Button, LoadMask } from '@astrosat/astrosat-ui/';
 
@@ -9,6 +9,7 @@ import {
   NavigationControl,
   _MapContext as MapContext,
 } from 'react-map-gl';
+import Geocoder from 'react-map-gl-geocoder';
 
 import {
   isLoaded,
@@ -23,10 +24,12 @@ import {
 } from './map.slice';
 import { mapboxTokenSelector, mapStylesSelector } from 'app.slice';
 
+import 'react-map-gl-geocoder/dist/mapbox-gl-geocoder.css';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import styles from './map.module.css';
 
 const Map = () => {
+  const mapRef = useRef();
   const dispatch = useDispatch();
   const accessToken = useSelector(mapboxTokenSelector);
   const viewport = useSelector(viewportSelector);
@@ -54,10 +57,12 @@ const Map = () => {
         ContextProvider={MapContext.Provider}
       >
         <StaticMap
+          ref={mapRef}
           reuseMap
           mapboxApiAccessToken={accessToken}
           mapStyle={selectedMapStyle?.uri}
         />
+        <Geocoder mapRef={mapRef} mapboxApiAccessToken={accessToken} />
         <NavigationControl className={styles.navigationControl} />
       </DeckGL>
       <Button
