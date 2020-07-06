@@ -8,7 +8,6 @@ const initialState = {
     pitch: 0,
     bearing: 0,
   },
-  mapStyles: [],
   selectedMapStyle: {},
   isCompareMode: false,
   saveMap: false,

@@ -35,7 +35,7 @@ const Map = () => {
   return (
     <>
       {bookmarksLoading && (
-        <div className={layoutStyles.loadMask}>
+        <div className={layoutStyles.loadMask} data-testid="load-mask">
           <LoadMask />
         </div>
       )}
@@ -49,13 +49,13 @@ const Map = () => {
       <Button
         theme="secondary"
         onClick={() => setIsMapStyleSwitcherVisible(!isMapStyleSwitcherVisible)}
-        classNames={[layoutStyles.mapStyleButton]}
+        className={layoutStyles.mapStyleButton}
       >
-        <LayersIcon classes={layoutStyles.icon} />
+        <LayersIcon title="layers" classes={layoutStyles.icon} />
       </Button>
       {isMapStyleSwitcherVisible && (
         <MapStyleSwitcher
-          mapStyles={mapStyles || []}
+          mapStyles={mapStyles}
           selectedMapStyle={selectedMapStyle}
           selectMapStyle={mapStyle => dispatch(selectMapStyle(mapStyle))}
         />
