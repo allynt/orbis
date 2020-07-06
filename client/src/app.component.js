@@ -12,7 +12,10 @@ import PrivateRoute from './utils/private-route.component';
 import { fetchAppConfig } from './app.slice';
 import { fetchUser } from './accounts/accounts.slice';
 
-import { fetchSources, selectPollingPeriod } from './data-layers/data-layers.slice';
+import {
+  fetchSources,
+  selectPollingPeriod,
+} from './data-layers/data-layers.slice';
 
 import Accounts from './accounts';
 import TermsAndConditions from './accounts/terms-and-conditions.component';
@@ -35,9 +38,13 @@ const App = () => {
   const user = useSelector(state => state.accounts.user);
   const userKey = useSelector(state => state.accounts.userKey);
   const pollingPeriod = useSelector(selectPollingPeriod);
-  const notYetImplementedDescription = useSelector(state => state.app.notYetImplementedDescription);
+  const notYetImplementedDescription = useSelector(
+    state => state.app.notYetImplementedDescription,
+  );
   const ref = useRef(null);
-  const [isVisible, toggle] = useModal(notYetImplementedDescription !== null ? true : false);
+  const [isVisible, toggle] = useModal(
+    notYetImplementedDescription !== null ? true : false,
+  );
 
   const userExists = user ? true : false;
 
@@ -92,10 +99,15 @@ const App = () => {
       <ReactTooltip />
 
       <main>
-        <Dialog isVisible={isVisible} title="Sorry, Not Ready Yet!" close={toggle} ref={ref}>
+        <Dialog
+          isVisible={isVisible}
+          title="Sorry, Not Ready Yet!"
+          close={toggle}
+          ref={ref}
+        >
           <p className={styles.paragraph}>
-            Sorry for the inconvenience, but this feature is not available yet! Do not worry, we will let you know when
-            it will be ready.
+            Sorry for the inconvenience, but this feature is not available yet!
+            Do not worry, we will let you know when it will be ready.
           </p>
         </Dialog>
 
@@ -103,10 +115,20 @@ const App = () => {
           <PrivateRoute exact path="/" user={user} component={LandingView} />
           <Route path="/accounts" component={Accounts} />
           <PrivateRoute path="/map" user={user} component={MapLayout} />
-          <PrivateRoute exact path="/user/update" user={user} component={UpdateUserForm} />
+          <PrivateRoute
+            exact
+            path="/user/update"
+            user={user}
+            component={UpdateUserForm}
+          />
           <Route exact path="/terms" component={TermsAndConditions} />
           <Suspense fallback={<h3>Loading...</h3>}>
-            <PrivateRoute exact path="/admin-console" user={user} component={Admin} />
+            <PrivateRoute
+              exact
+              path="/admin-console"
+              user={user}
+              component={Admin}
+            />
           </Suspense>
         </Switch>
       </main>
