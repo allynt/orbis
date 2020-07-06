@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import styles from './feature-detail.module.css';
+import infoStyles from './info-details.module.css';
 
 const OBJECT = 'object';
 const STRING = 'string';
@@ -19,8 +19,7 @@ const mapObject = data => {
   if (data) {
     feature = Object.keys(data).reduce((acc, key) => {
       acc[key] =
-        typeof data[key] === STRING &&
-        (data[key].startsWith(BRACE) || data[key].startsWith(BRACKET))
+        typeof data[key] === STRING && (data[key].startsWith(BRACE) || data[key].startsWith(BRACKET))
           ? JSON.parse(data[key])
           : data[key];
 
@@ -37,23 +36,17 @@ const mapObject = data => {
         if (Array.isArray(feature[key])) {
           // When value is array, render li to browser in array-specific structure
           return (
-            <li key={i} className={styles.listItem}>
-              <ul className={styles.table}>
-                <h2 className={styles.label}>{key}: </h2>
+            <li key={i} className={infoStyles.listItem}>
+              <ul className={infoStyles.table}>
+                <h2 className={infoStyles.label}>{key}: </h2>
                 {feature[key].length > 0 ? (
                   feature[key].map((value, i) => (
-                    <li
-                      key={i}
-                      className={`${styles.content} ${styles.listItem}`}
-                    >
+                    <li key={i} className={`${infoStyles.content} ${infoStyles.listItem}`}>
                       {value}
                     </li>
                   ))
                 ) : (
-                  <li
-                    key={i}
-                    className={`${styles.content} ${styles.listItem}`}
-                  >
+                  <li key={i} className={`${infoStyles.content} ${infoStyles.listItem}`}>
                     {NO_DATA}
                   </li>
                 )}
@@ -63,21 +56,20 @@ const mapObject = data => {
         } else if (typeof feature[key] === OBJECT) {
           // When value is object, make new table inside li and map out values
           return (
-            <li key={key} className={styles.groupedListItem}>
-              <ul className={styles.table}>
-                <h1 className={styles.listTitle}>{key}</h1>
+            <li key={key} className={infoStyles.groupedListItem}>
+              <ul className={infoStyles.table}>
+                <h1 className={infoStyles.listTitle}>{key}</h1>
                 {mapObject(feature[key])}
               </ul>
             </li>
           );
         } else {
           //when value is not object or array, parse null values and render li to browser
-          const value =
-            feature[key] === NULL ? JSON.parse(feature[key]) : feature[key];
+          const value = feature[key] === NULL ? JSON.parse(feature[key]) : feature[key];
           return (
-            <li key={key} className={styles.listItem}>
-              <span className={styles.label}>{key}: </span>
-              <span className={styles.content}>{value || NO_DATA}</span>
+            <li key={key} className={infoStyles.listItem}>
+              <span className={infoStyles.label}>{key}: </span>
+              <span className={infoStyles.content}>{value || NO_DATA}</span>
             </li>
           );
         }
@@ -86,15 +78,13 @@ const mapObject = data => {
 };
 
 const FeatureDetail = ({ features }) => {
-  const title = features[0].properties.Type
-    ? 'User Details'
-    : 'Infrastructure Details';
+  const title = features[0].properties.Type ? 'User Details' : 'Infrastructure Details';
   return (
     <>
-      <h1 className={styles.header}>{title}</h1>
-      <div className={styles.modal}>
+      <h1 className={infoStyles.header}>{title}</h1>
+      <div className={infoStyles.modal}>
         {features.map(feature => (
-          <ul key={feature.id} className={styles.list}>
+          <ul key={feature.id} className={infoStyles.list}>
             {mapObject(feature.properties)}
           </ul>
         ))}
