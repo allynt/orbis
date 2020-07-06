@@ -20,7 +20,6 @@ import {
 import { mapboxTokenSelector, mapStylesSelector } from 'app.slice';
 
 import styles from './map.module.css';
-import layoutStyles from './map-layout.module.css';
 
 const Map = () => {
   const dispatch = useDispatch();
