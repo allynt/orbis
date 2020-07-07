@@ -1,16 +1,26 @@
 import React from 'react';
-import PendingInvitationsBoard from './pending-invitations-board.component';
+
+import { PendingInvitationsBoard } from './pending-invitations-board.component';
+
+import { customer, pendingUsers } from '../test-story-data';
 
 export default { title: 'Admin/Pending Users Board' };
 
-export const NoUsers = () => <PendingInvitationsBoard />;
+export const NoUsers = () => (
+  <PendingInvitationsBoard users={null} customer={customer} />
+);
 
-export const Users = () => (
+export const NoCustomer = () => (
+  <PendingInvitationsBoard pendingUsers={pendingUsers} customer={null} />
+);
+
+export const CustomerButNoLicences = () => (
   <PendingInvitationsBoard
-    pendingUsers={[
-      { licences: ['Rice', 'Oil'], user: { name: 'User One', email: 'userone@test.com' } },
-      { licences: ['Oil', 'Rice'], user: { name: 'User Two', email: 'usertwo@test.com' } },
-      { licences: new Array(20).fill('lots'), user: { name: 'User Three', email: 'userthree@test.com' } },
-    ]}
+    pendingUsers={pendingUsers}
+    customer={{ name: 'Company Name' }}
   />
+);
+
+export const Default = () => (
+  <PendingInvitationsBoard pendingUsers={pendingUsers} customer={customer} />
 );
