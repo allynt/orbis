@@ -4,9 +4,17 @@ import { OrbSelect } from './orb-select.component';
 
 const setup = selectedDomain => {
   const handleDomainClick = jest.fn();
-  const domains = [{ label: 'domain-one' }, { label: 'domain-two' }, { label: 'domain-three' }];
+  const domains = [
+    { label: 'domain-one' },
+    { label: 'domain-two' },
+    { label: 'domain-three' },
+  ];
   const utils = render(
-    <OrbSelect domains={domains} selectedDomain={selectedDomain} onDomainClick={handleDomainClick} />,
+    <OrbSelect
+      domains={domains}
+      selectedDomain={selectedDomain}
+      onDomainClick={handleDomainClick}
+    />,
   );
   return {
     ...utils,
@@ -20,13 +28,17 @@ describe('OrbSelect', () => {
     const { getByTestId, domains } = setup();
     for (let domain of domains) {
       expect(getByTestId(`orb-select-${domain.label}`)).toBeInTheDocument();
-      expect(getByTestId(`orb-select-${domain.label}`)).toHaveTextContent(domain.label);
+      expect(getByTestId(`orb-select-${domain.label}`)).toHaveTextContent(
+        domain.label,
+      );
     }
   });
 
   it('should only give on item the selected class when an orb is selected', () => {
     const { getAllByRole } = setup({ label: 'domain-one' });
-    const selectedListItems = getAllByRole('listitem').filter(item => item.classList.contains('selected'));
+    const selectedListItems = getAllByRole('listitem').filter(item =>
+      item.classList.contains('selected'),
+    );
     expect(selectedListItems).toHaveLength(1);
   });
 

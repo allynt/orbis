@@ -1,0 +1,39 @@
+.quickView,
+.quickView > * {
+  display: flex;
+  color: var(--color-darkgrey);
+}
+
+.quickView {
+  justify-content: space-between;
+  align-items: center;
+  align-self: center;
+  width: 70%;
+  padding: 2rem 0;
+}
+
+.column {
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+}
+
+.column:nth-child(1) {
+  border-right: 1px solid #e8e8e8;
+}
+
+.column:nth-child(3) {
+  border-left: 1px solid #e8e8e8;
+}
+
+.value {
+  font-size: 2rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+.title {
+  font-size: 1.25rem;
+}

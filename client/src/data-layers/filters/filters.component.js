@@ -6,7 +6,11 @@ import { FilterIcon, CloseIcon } from '@astrosat/astrosat-ui/';
 
 import styles from './filters.module.css';
 
-export const Filters = ({ availableFilters, currentFilters, onFiltersChange }) => {
+export const Filters = ({
+  availableFilters,
+  currentFilters,
+  onFiltersChange,
+}) => {
   const [filtersPanelVisible, setFiltersPanelVisible] = useState(false);
 
   const handleFiltersChange = (toAdd, toRemove) => {

@@ -11,7 +11,11 @@ const LineWidth = ({ options, select }) => (
   <div className={styles.lineWidthContainer}>
     {options.map(option => (
       <React.Fragment key={option.id}>
-        <Button className={styles.lineWidth} onClick={() => select(option)} dataFor={option.id}>
+        <Button
+          className={styles.lineWidth}
+          onClick={() => select(option)}
+          dataFor={option.id}
+        >
           {option.icon}
         </Button>
         <ReactTooltip id={option.id}>

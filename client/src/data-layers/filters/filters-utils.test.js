@@ -1,4 +1,8 @@
-import { filterValueIsPresent, areAnyFilterValuesPresent, getFilterOptions } from './filters-utils';
+import {
+  filterValueIsPresent,
+  areAnyFilterValuesPresent,
+  getFilterOptions,
+} from './filters-utils';
 
 describe('filterValueIsPresent', () => {
   it('throws an error if the item is undefined', () => {

@@ -16,7 +16,9 @@ describe('Sidebar', () => {
   });
 
   it('Keeps the logo at the top', () => {
-    const { container } = render(<Sidebar logo={<div>Logo</div>} header={<div>Header</div>} />);
+    const { container } = render(
+      <Sidebar logo={<div>Logo</div>} header={<div>Header</div>} />,
+    );
     expect(container.firstChild.firstChild).toHaveTextContent('Logo');
   });
 
@@ -27,7 +29,11 @@ describe('Sidebar', () => {
 
   it('Keeps the footer at the bottom', () => {
     const { container } = render(
-      <Sidebar logo={<div>Logo</div>} header={<div>Header</div>} footer={<div>Footer</div>} />,
+      <Sidebar
+        logo={<div>Logo</div>}
+        header={<div>Header</div>}
+        footer={<div>Footer</div>}
+      />,
     );
     expect(container.firstChild.lastChild).toHaveTextContent('Footer');
   });

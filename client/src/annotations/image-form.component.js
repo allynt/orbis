@@ -18,7 +18,10 @@ const ImageForm = ({ submit }) => {
     submit(values.image);
   }
 
-  const { handleChange, handleSubmit, values, errors } = useForm(onSubmit, validate);
+  const { handleChange, handleSubmit, values, errors } = useForm(
+    onSubmit,
+    validate,
+  );
 
   return (
     <form className={styles.form} onSubmit={handleSubmit}>

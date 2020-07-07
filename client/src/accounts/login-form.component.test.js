@@ -41,7 +41,12 @@ describe('Login Form Component', () => {
   afterEach(cleanup);
 
   it('should render form with `Login` button disabled when form is invalid', () => {
-    const { container, getByText, getByPlaceholderText } = renderComponent(store, login, user, error);
+    const { container, getByText, getByPlaceholderText } = renderComponent(
+      store,
+      login,
+      user,
+      error,
+    );
 
     expect(container.querySelector('form')).toBeInTheDocument();
     expect(getByPlaceholderText('Email')).toBeInTheDocument();
@@ -52,10 +57,19 @@ describe('Login Form Component', () => {
   });
 
   it('should enable `Login` button when form is valid', () => {
-    const { getByText, getByPlaceholderText } = renderComponent(store, login, user, error);
+    const { getByText, getByPlaceholderText } = renderComponent(
+      store,
+      login,
+      user,
+      error,
+    );
 
-    fireEvent.change(getByPlaceholderText('Email'), { target: { value: 'testusername@test.com' } });
-    fireEvent.change(getByPlaceholderText('Password'), { target: { value: 'testPassword' } });
+    fireEvent.change(getByPlaceholderText('Email'), {
+      target: { value: 'testusername@test.com' },
+    });
+    fireEvent.change(getByPlaceholderText('Password'), {
+      target: { value: 'testPassword' },
+    });
 
     expect(getByText('Login')).not.toHaveAttribute('disabled');
   });
@@ -68,10 +82,19 @@ describe('Login Form Component', () => {
   });
 
   it('should call `login` function when form is valid and `Update User` button clicked', () => {
-    const { getByText, getByPlaceholderText } = renderComponent(store, login, user, error);
+    const { getByText, getByPlaceholderText } = renderComponent(
+      store,
+      login,
+      user,
+      error,
+    );
 
-    fireEvent.change(getByPlaceholderText('Email'), { target: { value: 'testusername@test.com' } });
-    fireEvent.change(getByPlaceholderText('Password'), { target: { value: 'testpassword' } });
+    fireEvent.change(getByPlaceholderText('Email'), {
+      target: { value: 'testusername@test.com' },
+    });
+    fireEvent.change(getByPlaceholderText('Password'), {
+      target: { value: 'testpassword' },
+    });
 
     fireEvent.click(getByText('Login'));
     expect(login).toHaveBeenCalled();

@@ -16,7 +16,11 @@ const UpdateUserForm = ({ user, updateUser }) => {
     },
   };
 
-  const { handleChange, handleSubmit, values } = useForm(onSubmit, () => ({}), defaults);
+  const { handleChange, handleSubmit, values } = useForm(
+    onSubmit,
+    () => ({}),
+    defaults,
+  );
 
   function onSubmit() {
     updateUser(values);
@@ -24,15 +28,35 @@ const UpdateUserForm = ({ user, updateUser }) => {
 
   return (
     <div className={sideMenuStyles.container}>
-      <form className={`${formStyles.form} ${sideMenuStyles.form}`} onSubmit={handleSubmit}>
+      <form
+        className={`${formStyles.form} ${sideMenuStyles.form}`}
+        onSubmit={handleSubmit}
+      >
         <div className={`${formStyles.fields} ${sideMenuStyles.fields}`}>
           <p className={formStyles.paragraph}>Personal Details</p>
-          <Textfield name="email" value={user.email || ''} placeholder="Email" onChange={handleChange} readOnly />
+          <Textfield
+            name="email"
+            value={user.email || ''}
+            placeholder="Email"
+            onChange={handleChange}
+            readOnly
+          />
 
-          <Textfield name="name" value={values.name || ''} placeholder="Name" onChange={handleChange} />
+          <Textfield
+            name="name"
+            value={values.name || ''}
+            placeholder="Name"
+            onChange={handleChange}
+          />
         </div>
         <div className={sideMenuStyles.buttons}>
-          <Button type="submit" classNames={[sideMenuStyles.button, profileStyles.updateAccountButton]}>
+          <Button
+            type="submit"
+            classNames={[
+              sideMenuStyles.button,
+              profileStyles.updateAccountButton,
+            ]}
+          >
             Update Account
           </Button>
         </div>

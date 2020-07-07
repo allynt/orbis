@@ -90,7 +90,11 @@ const NewUserLanding = ({ setRedirect }) => (
         </div>
 
         <div>
-          <Button theme="tertiary" onClick={() => setRedirect('/map')} data-testid="browse-map">
+          <Button
+            theme="tertiary"
+            onClick={() => setRedirect('/map')}
+            data-testid="browse-map"
+          >
             Browse Map
           </Button>
         </div>
@@ -100,7 +104,19 @@ const NewUserLanding = ({ setRedirect }) => (
 );
 
 const ExistingUserLanding = forwardRef(
-  ({ bookmarks, chooseBookmark, setRedirect, isVisible, toggle, regions, domains, setViewport }, ref) => {
+  (
+    {
+      bookmarks,
+      chooseBookmark,
+      setRedirect,
+      isVisible,
+      toggle,
+      regions,
+      domains,
+      setViewport,
+    },
+    ref,
+  ) => {
     const recentItems = bookmarks.slice(0, 4);
     const [viewAllItems, setViewAllItems] = useState(false);
 
@@ -125,7 +141,11 @@ const ExistingUserLanding = forwardRef(
                 View all
               </Button>
             </div>
-            <Items items={recentItems} chooseItem={chooseBookmark} toggle={toggle} />
+            <Items
+              items={recentItems}
+              chooseItem={chooseBookmark}
+              toggle={toggle}
+            />
           </div>
         )}
 
@@ -135,7 +155,12 @@ const ExistingUserLanding = forwardRef(
           </Button>
         </div>
 
-        <Dialog isVisible={isVisible} title="Create New Map" close={toggle} ref={ref}>
+        <Dialog
+          isVisible={isVisible}
+          title="Create New Map"
+          close={toggle}
+          ref={ref}
+        >
           <NewMapForm
             regions={regions}
             domains={domains}

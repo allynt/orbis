@@ -45,7 +45,12 @@ describe('Data Slice', () => {
           },
         );
 
-        const expectedActions = [{ type: fetchSourcesFailure.type, payload: { message: '401 Test Error' } }];
+        const expectedActions = [
+          {
+            type: fetchSourcesFailure.type,
+            payload: { message: '401 Test Error' },
+          },
+        ];
 
         await store.dispatch(fetchSources());
 
@@ -74,7 +79,9 @@ describe('Data Slice', () => {
 
         fetch.mockResponse(JSON.stringify(data));
 
-        const expectedActions = [{ type: fetchSourcesSuccess.type, payload: data }];
+        const expectedActions = [
+          { type: fetchSourcesSuccess.type, payload: data },
+        ];
 
         await store.dispatch(fetchSources());
 
@@ -406,9 +413,20 @@ describe('Data Slice', () => {
       });
 
       it('removes multiple values from multiple properties', () => {
-        const state = { filters: { cars: { make: ['BMW', 'Mercedes', 'Lamborghini'], engine: ['V6', 'V8', 'V12'] } } };
-        const toRemove = { cars: { engine: ['V6', 'V12'], make: ['Mercedes', 'Lamborghini'] } };
-        const expected = { filters: { cars: { engine: ['V8'], make: ['BMW'] } } };
+        const state = {
+          filters: {
+            cars: {
+              make: ['BMW', 'Mercedes', 'Lamborghini'],
+              engine: ['V6', 'V8', 'V12'],
+            },
+          },
+        };
+        const toRemove = {
+          cars: { engine: ['V6', 'V12'], make: ['Mercedes', 'Lamborghini'] },
+        };
+        const expected = {
+          filters: { cars: { engine: ['V8'], make: ['BMW'] } },
+        };
         const result = reducer(state, removeFilters(toRemove));
         expect(result).toEqual(expected);
       });
@@ -416,8 +434,14 @@ describe('Data Slice', () => {
       it('removes multiple properties from multiple layers', () => {
         const state = {
           filters: {
-            fruit: { type: ['citrus', 'berry', 'tropical'], status: ['unripe', 'fresh', 'rotten'] },
-            cars: { make: ['BMW', 'Mercedes', 'Lamborghini'], engine: ['V6', 'V8', 'V12'] },
+            fruit: {
+              type: ['citrus', 'berry', 'tropical'],
+              status: ['unripe', 'fresh', 'rotten'],
+            },
+            cars: {
+              make: ['BMW', 'Mercedes', 'Lamborghini'],
+              engine: ['V6', 'V8', 'V12'],
+            },
           },
         };
         const toRemove = {
@@ -425,7 +449,10 @@ describe('Data Slice', () => {
           fruit: { type: ['citrus', 'tropical'], status: ['unripe', 'rotten'] },
         };
         const expected = {
-          filters: { cars: { engine: ['V8'], make: ['BMW'] }, fruit: { type: ['berry'], status: ['fresh'] } },
+          filters: {
+            cars: { engine: ['V8'], make: ['BMW'] },
+            fruit: { type: ['berry'], status: ['fresh'] },
+          },
         };
         const result = reducer(state, removeFilters(toRemove));
         expect(result).toEqual(expected);
@@ -461,7 +488,9 @@ describe('Data Slice', () => {
           },
         };
         const toRemove = { people: { 'a.nested.property': ['value 2'] } };
-        const expected = { filters: { people: { 'a.nested.property': ['value 1'] } } };
+        const expected = {
+          filters: { people: { 'a.nested.property': ['value 1'] } },
+        };
         const result = reducer(state, removeFilters(toRemove));
         expect(result).toEqual(expected);
       });
@@ -544,7 +573,11 @@ describe('Data Slice', () => {
       it('should return the list of data sources', () => {
         const state = {
           data: {
-            sources: [{ name: 'source 1' }, { name: 'source 2' }, { name: 'source 3' }],
+            sources: [
+              { name: 'source 1' },
+              { name: 'source 2' },
+              { name: 'source 3' },
+            ],
           },
         };
         const result = selectDataSources(state);
@@ -568,7 +601,11 @@ describe('Data Slice', () => {
       it('returns only data sources which are selected', () => {
         const state = {
           data: {
-            sources: [{ name: 'Source 1' }, { name: 'Source 2' }, { name: 'Source 3' }],
+            sources: [
+              { name: 'Source 1' },
+              { name: 'Source 2' },
+              { name: 'Source 3' },
+            ],
             layers: ['Source 1', 'Source 3'],
           },
         };
@@ -580,7 +617,11 @@ describe('Data Slice', () => {
       it('returns an empty array when no layers are selected', () => {
         const state = {
           data: {
-            sources: [{ name: 'Source 1' }, { name: 'Source 2' }, { name: 'Source 3' }],
+            sources: [
+              { name: 'Source 1' },
+              { name: 'Source 2' },
+              { name: 'Source 3' },
+            ],
             layers: [],
           },
         };
@@ -687,7 +728,13 @@ describe('Data Slice', () => {
           },
         };
         const expected = ['Domain 1', 'Domain 2', 'Domain 3'];
-        const notExpected = ['Domain 1', 'Domain 1', 'Domain 2', 'Domain 3', 'Domain 3'];
+        const notExpected = [
+          'Domain 1',
+          'Domain 1',
+          'Domain 2',
+          'Domain 3',
+          'Domain 3',
+        ];
         const result = selectDomainList(state);
         expect(result.sort()).toEqual(expected.sort());
         expect(result.sort()).not.toEqual(notExpected.sort());
@@ -1232,7 +1279,11 @@ describe('Data Slice', () => {
               {
                 name: 'people',
                 metadata: {
-                  filters: ['contactDetails.country', 'favouriteAnimal', 'information.requires'],
+                  filters: [
+                    'contactDetails.country',
+                    'favouriteAnimal',
+                    'information.requires',
+                  ],
                 },
                 data: {
                   features: [
@@ -1294,21 +1345,42 @@ describe('Data Slice', () => {
               {
                 name: 'nesting-test',
                 metadata: {
-                  filters: ['this.is.a.super.nested.property', 'this.is.a.super.nested.array'],
+                  filters: [
+                    'this.is.a.super.nested.property',
+                    'this.is.a.super.nested.array',
+                  ],
                 },
                 data: {
                   features: [
                     {
                       properties: {
                         this: {
-                          is: { a: { super: { nested: { property: 'value 1', array: ['arr val 1', 'arr val 2'] } } } },
+                          is: {
+                            a: {
+                              super: {
+                                nested: {
+                                  property: 'value 1',
+                                  array: ['arr val 1', 'arr val 2'],
+                                },
+                              },
+                            },
+                          },
                         },
                       },
                     },
                     {
                       properties: {
                         this: {
-                          is: { a: { super: { nested: { property: 'value 2', array: ['arr val 2', 'arr val 3'] } } } },
+                          is: {
+                            a: {
+                              super: {
+                                nested: {
+                                  property: 'value 2',
+                                  array: ['arr val 2', 'arr val 3'],
+                                },
+                              },
+                            },
+                          },
                         },
                       },
                     },
@@ -1321,7 +1393,11 @@ describe('Data Slice', () => {
         const expected = {
           'nesting-test': {
             'this.is.a.super.nested.property': ['value 1', 'value 2'],
-            'this.is.a.super.nested.array': ['arr val 1', 'arr val 2', 'arr val 3'],
+            'this.is.a.super.nested.array': [
+              'arr val 1',
+              'arr val 2',
+              'arr val 3',
+            ],
           },
         };
         const result = selectAvailableFilters(state);

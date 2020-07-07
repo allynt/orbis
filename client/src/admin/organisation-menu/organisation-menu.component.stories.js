@@ -1,7 +1,10 @@
 import React from 'react';
 import OrganisationMenu from './organisation-menu.component';
 
-export default { title: 'Admin/Organisation Menu', component: OrganisationMenu };
+export default {
+  title: 'Admin/Organisation Menu',
+  component: OrganisationMenu,
+};
 
 const customer = {
   title: 'Cyberdyne Systems',

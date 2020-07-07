@@ -7,7 +7,10 @@ import styles from './data-layers-dialog.module.css';
 import { OrbSelect } from './orb-select.component';
 import { LayerSelect } from './layer-select.component';
 
-const DataLayersDialog = ({ domains, isVisible, close, selectedLayers, onAddLayers, onRemoveLayer }, ref) => {
+const DataLayersDialog = (
+  { domains, isVisible, close, selectedLayers, onAddLayers, onRemoveLayer },
+  ref,
+) => {
   const overlayRef = useRef(null);
   const [selectedDomain, setSelectedDomain] = useState(null);
 
@@ -22,10 +25,23 @@ const DataLayersDialog = ({ domains, isVisible, close, selectedLayers, onAddLaye
           }}
           ref={overlayRef}
         >
-          <div className={styles.dialog} tabIndex={-1} role="dialog" aria-label="Data Layer dialog">
-            <CloseButton className={styles.closeButton} onClick={close} ariaLabel="Close" />
+          <div
+            className={styles.dialog}
+            tabIndex={-1}
+            role="dialog"
+            aria-label="Data Layer dialog"
+          >
+            <CloseButton
+              className={styles.closeButton}
+              onClick={close}
+              ariaLabel="Close"
+            />
             <div className={styles.content}>
-              <OrbSelect domains={domains} onDomainClick={setSelectedDomain} selectedDomain={selectedDomain} />
+              <OrbSelect
+                domains={domains}
+                onDomainClick={setSelectedDomain}
+                selectedDomain={selectedDomain}
+              />
               <LayerSelect
                 domain={selectedDomain}
                 initialSelectedLayers={selectedLayers}

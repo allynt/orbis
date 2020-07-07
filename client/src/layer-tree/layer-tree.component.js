@@ -58,7 +58,12 @@ const LayerTree = ({ map }) => {
       <ul>
         {nodes &&
           nodes.map(node => (
-            <LayerNode toggleLayerVisibility={toggleLayerVisibility} key={node.label} node={node} map={map} />
+            <LayerNode
+              toggleLayerVisibility={toggleLayerVisibility}
+              key={node.label}
+              node={node}
+              map={map}
+            />
           ))}
       </ul>
     </div>

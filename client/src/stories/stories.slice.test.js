@@ -41,7 +41,12 @@ describe('Stories Slice', () => {
         },
       );
 
-      const expectedActions = [{ type: fetchStoriesFailure.type, payload: { message: '401 Test Error' } }];
+      const expectedActions = [
+        {
+          type: fetchStoriesFailure.type,
+          payload: { message: '401 Test Error' },
+        },
+      ];
 
       await store.dispatch(fetchStories());
 
@@ -51,7 +56,9 @@ describe('Stories Slice', () => {
     it('should dispatch fetch stories success action.', async () => {
       fetch.mockResponse(JSON.stringify(STORIES));
 
-      const expectedActions = [{ type: fetchStoriesSuccess.type, payload: STORIES }];
+      const expectedActions = [
+        { type: fetchStoriesSuccess.type, payload: STORIES },
+      ];
 
       await store.dispatch(fetchStories());
 
@@ -70,7 +77,9 @@ describe('Stories Slice', () => {
         },
       );
 
-      const expectedActions = [{ type: addStoryFailure.type, payload: { message: '401 Test Error' } }];
+      const expectedActions = [
+        { type: addStoryFailure.type, payload: { message: '401 Test Error' } },
+      ];
 
       const story = {
         id: 5,
@@ -105,7 +114,12 @@ describe('Stories Slice', () => {
         },
       );
 
-      const expectedActions = [{ type: deleteStoryFailure.type, payload: { message: '401 Test Error' } }];
+      const expectedActions = [
+        {
+          type: deleteStoryFailure.type,
+          payload: { message: '401 Test Error' },
+        },
+      ];
 
       await store.dispatch(deleteStory(STORIES[1]));
 
@@ -115,7 +129,9 @@ describe('Stories Slice', () => {
     it('should dispatch delete story success action.', async () => {
       fetch.mockResponse(JSON.stringify(STORIES[1]));
 
-      const expectedActions = [{ type: deleteStorySuccess.type, payload: STORIES[1] }];
+      const expectedActions = [
+        { type: deleteStorySuccess.type, payload: STORIES[1] },
+      ];
 
       await store.dispatch(deleteStory(STORIES[1]));
 
@@ -199,7 +215,9 @@ describe('Stories Slice', () => {
         payload: story,
       });
 
-      expect(actualState.stories).toEqual(beforeState.stories.filter(stateStory => stateStory.id !== story.id));
+      expect(actualState.stories).toEqual(
+        beforeState.stories.filter(stateStory => stateStory.id !== story.id),
+      );
     });
 
     it('should update the error state, when failed to delete a story', () => {

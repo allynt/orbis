@@ -2,7 +2,10 @@ import React from 'react';
 
 import { UserProfile } from './user-profile.component';
 
-export default { title: 'Admin/LeftSidebar/UserProfile', component: UserProfile };
+export default {
+  title: 'Admin/LeftSidebar/UserProfile',
+  component: UserProfile,
+};
 
 export const NoUser = () => <UserProfile />;
 

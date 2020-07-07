@@ -6,7 +6,9 @@ import useModal from '@astrosat/astrosat-ui/dist/containers/use-modal';
 import Dialog from '@astrosat/astrosat-ui/dist/containers/dialog';
 
 import SaveSearchForm from './save-search-form.component';
-import SceneListItem, { SceneListItemSkeleton } from './scene-list-item.component';
+import SceneListItem, {
+  SceneListItemSkeleton,
+} from './scene-list-item.component';
 
 import { DEFAULT_CLOUD_COVER } from './satellite.constants';
 
@@ -31,14 +33,17 @@ const Results = (
   },
   ref,
 ) => {
-  const [cloudCoverPercentage, setCloudCoverPercentage] = useState([DEFAULT_CLOUD_COVER]);
+  const [cloudCoverPercentage, setCloudCoverPercentage] = useState([
+    DEFAULT_CLOUD_COVER,
+  ]);
 
   const [isSaveDialogVisible, toggleSaveDialog] = useModal(false);
 
   const resultCountText = scenes
-    ? `Showing ${scenes.filter(scene => scene.cloudCover <= cloudCoverPercentage[0]).length} Results of ${
-        scenes.length
-      }`
+    ? `Showing ${
+        scenes.filter(scene => scene.cloudCover <= cloudCoverPercentage[0])
+          .length
+      } Results of ${scenes.length}`
     : 'Loading Results...';
 
   return (
@@ -61,14 +66,18 @@ const Results = (
             ? scenes
                 .filter(scene => scene.cloudCover <= cloudCoverPercentage[0])
                 .map(scene => {
-                  const isPinned = pinnedScenes?.some(pin => scene.id === pin.id);
+                  const isPinned = pinnedScenes?.some(
+                    pin => scene.id === pin.id,
+                  );
                   const Icon = (
                     <PinIcon
                       key={`${scene.id}-icon`}
                       title={`pin-icon-${scene.id}`}
                       classes={`${isPinned && styles.pinned}`}
                       onClick={() => {
-                        isPinned ? deletePinnedScene(scene.id) : pinScene(scene);
+                        isPinned
+                          ? deletePinnedScene(scene.id)
+                          : pinScene(scene);
                       }}
                     />
                   );
@@ -91,12 +100,25 @@ const Results = (
         </ul>
       </div>
       <div className={sideMenuStyles.buttons}>
-        <Button classNames={[sideMenuStyles.button]} theme="primary" onClick={() => toggleSaveDialog()}>
+        <Button
+          classNames={[sideMenuStyles.button]}
+          theme="primary"
+          onClick={() => toggleSaveDialog()}
+        >
           Save Search
         </Button>
       </div>
-      <Dialog isVisible={isSaveDialogVisible} title="Name Search" close={toggleSaveDialog} ref={ref}>
-        <SaveSearchForm query={currentSearchQuery} close={toggleSaveDialog} saveSearch={saveSatelliteSearch} />
+      <Dialog
+        isVisible={isSaveDialogVisible}
+        title="Name Search"
+        close={toggleSaveDialog}
+        ref={ref}
+      >
+        <SaveSearchForm
+          query={currentSearchQuery}
+          close={toggleSaveDialog}
+          saveSearch={saveSatelliteSearch}
+        />
       </Dialog>
     </div>
   );

@@ -4,7 +4,13 @@ import styles from './filters-form-section.module.css';
 import { filterValueIsPresent } from './filters-utils';
 import { Checkbox } from '@astrosat/astrosat-ui';
 
-export const FiltersFormSection = ({ layer, property, options, currentFilters, onCheckboxChange }) => {
+export const FiltersFormSection = ({
+  layer,
+  property,
+  options,
+  currentFilters,
+  onCheckboxChange,
+}) => {
   let propertyLabel = property.split('.');
   propertyLabel = propertyLabel[propertyLabel.length - 1];
   return (
@@ -13,7 +19,11 @@ export const FiltersFormSection = ({ layer, property, options, currentFilters, o
         <legend>{toTitleCase(propertyLabel)} :</legend>
         <div className={styles.options}>
           {options.map(value => {
-            const defaultChecked = filterValueIsPresent(currentFilters, { layer, property, value });
+            const defaultChecked = filterValueIsPresent(currentFilters, {
+              layer,
+              property,
+              value,
+            });
             return (
               <div className={styles.option}>
                 <Checkbox

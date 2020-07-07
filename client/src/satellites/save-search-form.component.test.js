@@ -47,8 +47,12 @@ describe('Save Satellite Search Form Component', () => {
       </Provider>,
     );
 
-    fireEvent.change(getByPlaceholderText(textfieldPlaceholder), { target: { value: 'id' } });
-    expect(getByText('Name field must exceed 3 characters')).toBeInTheDocument();
+    fireEvent.change(getByPlaceholderText(textfieldPlaceholder), {
+      target: { value: 'id' },
+    });
+    expect(
+      getByText('Name field must exceed 3 characters'),
+    ).toBeInTheDocument();
   });
 
   it('should disable `Save Search` button when form is invalid', () => {
@@ -59,7 +63,9 @@ describe('Save Satellite Search Form Component', () => {
     );
 
     expect(getByText(buttonName)).toHaveAttribute('disabled');
-    fireEvent.change(getByPlaceholderText(textfieldPlaceholder), { target: { value: 'id' } });
+    fireEvent.change(getByPlaceholderText(textfieldPlaceholder), {
+      target: { value: 'id' },
+    });
     expect(getByText(buttonName)).toHaveAttribute('disabled');
   });
 
@@ -71,7 +77,9 @@ describe('Save Satellite Search Form Component', () => {
     );
 
     expect(getByText(buttonName)).toHaveAttribute('disabled');
-    fireEvent.change(getByPlaceholderText(textfieldPlaceholder), { target: { value: textfieldPlaceholder } });
+    fireEvent.change(getByPlaceholderText(textfieldPlaceholder), {
+      target: { value: textfieldPlaceholder },
+    });
     expect(getByText(buttonName)).not.toHaveAttribute('disabled');
   });
 
@@ -82,7 +90,9 @@ describe('Save Satellite Search Form Component', () => {
       </Provider>,
     );
 
-    fireEvent.change(getByPlaceholderText(textfieldPlaceholder), { target: { value: 'id' } });
+    fireEvent.change(getByPlaceholderText(textfieldPlaceholder), {
+      target: { value: 'id' },
+    });
     fireEvent.click(getByText(buttonName));
     expect(saveSearch).not.toHaveBeenCalled();
   });
@@ -94,7 +104,9 @@ describe('Save Satellite Search Form Component', () => {
       </Provider>,
     );
 
-    fireEvent.change(getByPlaceholderText(textfieldPlaceholder), { target: { value: textfieldPlaceholder } });
+    fireEvent.change(getByPlaceholderText(textfieldPlaceholder), {
+      target: { value: textfieldPlaceholder },
+    });
     fireEvent.click(getByText(buttonName));
 
     expect(saveSearch).toHaveBeenCalled();

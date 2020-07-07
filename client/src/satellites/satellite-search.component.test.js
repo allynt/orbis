@@ -4,7 +4,13 @@ import { Provider } from 'react-redux';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 
-import { render, cleanup, fireEvent, within, getByTitle } from '@testing-library/react';
+import {
+  render,
+  cleanup,
+  fireEvent,
+  within,
+  getByTitle,
+} from '@testing-library/react';
 
 import mapboxgl from 'mapbox-gl';
 
@@ -98,7 +104,9 @@ describe('Satellite Search Component', () => {
     const formSections = container.querySelectorAll('.formSection');
 
     const satellitesSection = formSections[0];
-    expect(within(satellitesSection).getByText('Data Source')).toBeInTheDocument();
+    expect(
+      within(satellitesSection).getByText('Data Source'),
+    ).toBeInTheDocument();
     const satelliteListItems = satellitesSection.querySelectorAll('li');
     satelliteListItems.forEach((item, i) => {
       expect(within(item).getByText(satellites[i].label)).toBeInTheDocument();
@@ -112,8 +120,12 @@ describe('Satellite Search Component', () => {
 
     const tiersSection = formSections[2];
     expect(within(tiersSection).getByText('Free images')).toBeInTheDocument();
-    expect(within(tiersSection).getByText('Mid-resolution')).toBeInTheDocument();
-    expect(within(tiersSection).getByText('High-resolution')).toBeInTheDocument();
+    expect(
+      within(tiersSection).getByText('Mid-resolution'),
+    ).toBeInTheDocument();
+    expect(
+      within(tiersSection).getByText('High-resolution'),
+    ).toBeInTheDocument();
 
     expect(getByText('Search')).toBeInTheDocument();
     expect(getByText('Task Satellite')).toBeInTheDocument();

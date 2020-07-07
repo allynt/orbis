@@ -5,7 +5,9 @@ import AdministratorProfile from './adminstrator-profile/administrator-profile.c
 
 import styles from './corporate-view.module.css';
 
-export const Field = ({ children }) => <div className={styles.fieldContainer}>{children}</div>;
+export const Field = ({ children }) => (
+  <div className={styles.fieldContainer}>{children}</div>
+);
 
 const CorporateView = ({ user, customer }) => (
   <div className={styles.corporate}>

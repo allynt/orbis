@@ -7,7 +7,7 @@ function moveToMapPosition(master, clones) {
   var bearing = master.getBearing();
   var pitch = master.getPitch();
 
-  clones.forEach(function(clone) {
+  clones.forEach(function (clone) {
     clone.jumpTo({
       center: center,
       zoom: zoom,
@@ -41,24 +41,24 @@ function syncMaps() {
   // Create all the movement functions, because if they're created every time
   // they wouldn't be the same and couldn't be removed.
   var fns = [];
-  maps.forEach(function(map, index) {
+  maps.forEach(function (map, index) {
     fns[index] = sync.bind(
       null,
       map,
-      maps.filter(function(o, i) {
+      maps.filter(function (o, i) {
         return i !== index;
       }),
     );
   });
 
   function on() {
-    maps.forEach(function(map, index) {
+    maps.forEach(function (map, index) {
       map.on('move', fns[index]);
     });
   }
 
   function off() {
-    maps.forEach(function(map, index) {
+    maps.forEach(function (map, index) {
       map.off('move', fns[index]);
     });
   }
@@ -72,7 +72,7 @@ function syncMaps() {
   }
 
   sync(maps[0], maps.slice(1));
-  return function() {
+  return function () {
     off();
     fns = [];
     maps = [];
