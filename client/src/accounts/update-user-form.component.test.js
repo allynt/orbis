@@ -23,7 +23,9 @@ describe('Update User Form Component', () => {
   it('should have `Update User` button enabled', () => {
     const user = {};
     const updateUser = jest.fn();
-    const { getByText } = render(<UpdateUserForm user={user} updateUser={updateUser} />);
+    const { getByText } = render(
+      <UpdateUserForm user={user} updateUser={updateUser} />,
+    );
 
     expect(getByText('Update Account')).not.toHaveAttribute('disabled');
   });

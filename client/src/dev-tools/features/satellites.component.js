@@ -17,7 +17,11 @@ const Satellites = () => {
     <div>
       <label>
         Enable Satellites:
-        <input type="checkbox" checked={satellites} onChange={e => setSatellites(e.target.checked)} />
+        <input
+          type="checkbox"
+          checked={satellites}
+          onChange={e => setSatellites(e.target.checked)}
+        />
       </label>
     </div>
   );

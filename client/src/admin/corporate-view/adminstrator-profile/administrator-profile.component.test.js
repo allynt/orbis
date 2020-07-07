@@ -23,7 +23,9 @@ describe('Update User Form Component', () => {
   afterEach(cleanup);
 
   it('should render the Administrator Form', () => {
-    const { container, getByText, getByAltText } = render(<AdministratorProfile title={title} user={user} />);
+    const { container, getByText, getByAltText } = render(
+      <AdministratorProfile title={title} user={user} />,
+    );
 
     expect(container.querySelector('form')).toBeInTheDocument();
     expect(getByAltText('Admin Avatar')).toBeInTheDocument();

@@ -19,7 +19,8 @@ const mapObject = data => {
   if (data) {
     feature = Object.keys(data).reduce((acc, key) => {
       acc[key] =
-        typeof data[key] === STRING && (data[key].startsWith(BRACE) || data[key].startsWith(BRACKET))
+        typeof data[key] === STRING &&
+        (data[key].startsWith(BRACE) || data[key].startsWith(BRACKET))
           ? JSON.parse(data[key])
           : data[key];
 
@@ -41,12 +42,18 @@ const mapObject = data => {
                 <h2 className={infoStyles.label}>{key}: </h2>
                 {feature[key].length > 0 ? (
                   feature[key].map((value, i) => (
-                    <li key={i} className={`${infoStyles.content} ${infoStyles.listItem}`}>
+                    <li
+                      key={i}
+                      className={`${infoStyles.content} ${infoStyles.listItem}`}
+                    >
                       {value}
                     </li>
                   ))
                 ) : (
-                  <li key={i} className={`${infoStyles.content} ${infoStyles.listItem}`}>
+                  <li
+                    key={i}
+                    className={`${infoStyles.content} ${infoStyles.listItem}`}
+                  >
                     {NO_DATA}
                   </li>
                 )}
@@ -65,7 +72,8 @@ const mapObject = data => {
           );
         } else {
           //when value is not object or array, parse null values and render li to browser
-          const value = feature[key] === NULL ? JSON.parse(feature[key]) : feature[key];
+          const value =
+            feature[key] === NULL ? JSON.parse(feature[key]) : feature[key];
           return (
             <li key={key} className={infoStyles.listItem}>
               <span className={infoStyles.label}>{key}: </span>
@@ -78,7 +86,9 @@ const mapObject = data => {
 };
 
 const FeatureDetail = ({ features }) => {
-  const title = features[0].properties.Type ? 'User Details' : 'Infrastructure Details';
+  const title = features[0].properties.Type
+    ? 'User Details'
+    : 'Infrastructure Details';
   return (
     <>
       <h1 className={infoStyles.header}>{title}</h1>

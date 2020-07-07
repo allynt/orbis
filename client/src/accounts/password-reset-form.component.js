@@ -21,14 +21,17 @@ const PasswordResetSuccessView = ({ email, onSubmit }) => (
       </p>
 
       <p className={formStyles.paragraph}>
-        If <strong>{email}</strong> is associated with an Astrosat ID, you should receive an email containing
-        instructions on how to create a new password.
+        If <strong>{email}</strong> is associated with an Astrosat ID, you
+        should receive an email containing instructions on how to create a new
+        password.
       </p>
 
       <p className={formStyles.paragraph}>
         <strong>You haven't received the email?</strong>
       </p>
-      <p className={formStyles.paragraph}>Please check your spam or bulk folders.</p>
+      <p className={formStyles.paragraph}>
+        Please check your spam or bulk folders.
+      </p>
     </div>
 
     <div className={formStyles.buttons}>
@@ -41,9 +44,15 @@ const PasswordResetSuccessView = ({ email, onSubmit }) => (
 );
 
 const PasswordResetForm = ({ resetPassword, resetStatus, error }) => {
-  const { handleChange, handleSubmit, values, errors } = useForm(onSubmit, validate);
+  const { handleChange, handleSubmit, values, errors } = useForm(
+    onSubmit,
+    validate,
+  );
 
-  if (resetStatus === status.PENDING) return <PasswordResetSuccessView email={values.email} onSubmit={onSubmit} />;
+  if (resetStatus === status.PENDING)
+    return (
+      <PasswordResetSuccessView email={values.email} onSubmit={onSubmit} />
+    );
 
   function onSubmit() {
     resetPassword(values);
@@ -72,11 +81,18 @@ const PasswordResetForm = ({ resetPassword, resetStatus, error }) => {
             autoFocus
           />
         </div>
-        {errors.email && <p className={formStyles.errorMessage}>{errors.email}</p>}
+        {errors.email && (
+          <p className={formStyles.errorMessage}>{errors.email}</p>
+        )}
       </div>
 
       <div className={formStyles.buttons}>
-        <Button type="submit" disabled={Object.keys(errors).length > 0 || Object.keys(values).length === 0}>
+        <Button
+          type="submit"
+          disabled={
+            Object.keys(errors).length > 0 || Object.keys(values).length === 0
+          }
+        >
           Reset Password
         </Button>
       </div>

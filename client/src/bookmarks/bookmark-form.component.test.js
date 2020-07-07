@@ -38,8 +38,12 @@ describe('Bookmark Form Component', () => {
 
     const submitButton = getByText('Save Map');
     expect(submitButton).toHaveAttribute('disabled');
-    fireEvent.change(getByPlaceholderText('Title'), { target: { value: 'New Bookmark Title' } });
-    fireEvent.change(getByPlaceholderText('Description'), { target: { value: 'New Bookmark Description' } });
+    fireEvent.change(getByPlaceholderText('Title'), {
+      target: { value: 'New Bookmark Title' },
+    });
+    fireEvent.change(getByPlaceholderText('Description'), {
+      target: { value: 'New Bookmark Description' },
+    });
     expect(submitButton).not.toHaveAttribute('disabled');
   });
 
@@ -48,11 +52,18 @@ describe('Bookmark Form Component', () => {
       <BookmarkForm bookmarkTitles={bookmarkTitles} submit={submit} />,
     );
 
-    fireEvent.change(getByPlaceholderText('Title'), { target: { value: 'New Bookmark Title' } });
-    fireEvent.change(getByPlaceholderText('Description'), { target: { value: 'New Bookmark Description' } });
+    fireEvent.change(getByPlaceholderText('Title'), {
+      target: { value: 'New Bookmark Title' },
+    });
+    fireEvent.change(getByPlaceholderText('Description'), {
+      target: { value: 'New Bookmark Description' },
+    });
 
     expect(submit).not.toHaveBeenCalled();
     fireEvent.click(getByText('Save Map'));
-    expect(submit).toHaveBeenCalledWith({ title: 'New Bookmark Title', description: 'New Bookmark Description' });
+    expect(submit).toHaveBeenCalledWith({
+      title: 'New Bookmark Title',
+      description: 'New Bookmark Description',
+    });
   });
 });

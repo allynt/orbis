@@ -26,15 +26,17 @@ export const RegisterFormSuccessView = ({ email, resendVerificationEmail }) => (
       </p>
 
       <p className={formStyles.paragraph}>
-        An email has been sent to <strong>{email}</strong>. Please click the link inside to verify your account before
-        logging in.
+        An email has been sent to <strong>{email}</strong>. Please click the
+        link inside to verify your account before logging in.
       </p>
 
       <p className={formStyles.paragraph}>
         <strong>You haven't received the email?</strong>
       </p>
 
-      <p className={formStyles.paragraph}>Please check your spam or bulk folders.</p>
+      <p className={formStyles.paragraph}>
+        Please check your spam or bulk folders.
+      </p>
     </div>
 
     <div className={formStyles.buttons}>
@@ -46,20 +48,36 @@ export const RegisterFormSuccessView = ({ email, resendVerificationEmail }) => (
   </div>
 );
 
-const RegisterForm = ({ register, registerUserStatus, resendVerificationEmail, error }) => {
-  const { passwordMinLength, passwordMaxLength } = useSelector(state => state.app.config);
+const RegisterForm = ({
+  register,
+  registerUserStatus,
+  resendVerificationEmail,
+  error,
+}) => {
+  const { passwordMinLength, passwordMaxLength } = useSelector(
+    state => state.app.config,
+  );
   const validators = {
     passwordMinLength,
     passwordMaxLength,
   };
-  const { handleChange, handleSubmit, values, errors } = useForm(onSubmit, validate, validators);
+  const { handleChange, handleSubmit, values, errors } = useForm(
+    onSubmit,
+    validate,
+    validators,
+  );
 
   const config = useSelector(state => state.app.config);
 
   const [termsAgreed, setTermsAgreed] = useState(false);
 
   if (registerUserStatus === status.PENDING)
-    return <RegisterFormSuccessView email={values.email} resendVerificationEmail={resendVerificationEmail} />;
+    return (
+      <RegisterFormSuccessView
+        email={values.email}
+        resendVerificationEmail={resendVerificationEmail}
+      />
+    );
 
   function onSubmit() {
     const data = {
@@ -98,7 +116,9 @@ const RegisterForm = ({ register, registerUserStatus, resendVerificationEmail, e
             autoFocus
           />
         </div>
-        {errors.email && <p className={formStyles.errorMessage}>{errors.email}</p>}
+        {errors.email && (
+          <p className={formStyles.errorMessage}>{errors.email}</p>
+        )}
 
         <div className={formStyles.row}>
           <PasswordField
@@ -109,7 +129,9 @@ const RegisterForm = ({ register, registerUserStatus, resendVerificationEmail, e
             required
           />
         </div>
-        {errors.password1 && <p className={formStyles.errorMessage}> {errors.password1}</p>}
+        {errors.password1 && (
+          <p className={formStyles.errorMessage}> {errors.password1}</p>
+        )}
 
         <div className={formStyles.row}>
           <PasswordStrengthMeter password={values.password1} />
@@ -124,12 +146,18 @@ const RegisterForm = ({ register, registerUserStatus, resendVerificationEmail, e
             required
           />
         </div>
-        {errors.password2 && <p className={formStyles.errorMessage}>{errors.password2}</p>}
+        {errors.password2 && (
+          <p className={formStyles.errorMessage}>{errors.password2}</p>
+        )}
 
         <div className={`${formStyles.row} ${formStyles.incidentals}`}>
           <ul>
-            {config && config.passwordStrength >= 2 && <li>No weak passwords</li>}
-            {config && <li>At least {config.passwordMinLength} characters long</li>}
+            {config && config.passwordStrength >= 2 && (
+              <li>No weak passwords</li>
+            )}
+            {config && (
+              <li>At least {config.passwordMinLength} characters long</li>
+            )}
             <li>Contains uppercase letters</li>
           </ul>
           <ul>
@@ -139,7 +167,12 @@ const RegisterForm = ({ register, registerUserStatus, resendVerificationEmail, e
         </div>
 
         <div className={formStyles.row}>
-          <Checkbox name="loggedIn" label="I agree with" value="true" onChange={() => setTermsAgreed(!termsAgreed)} />
+          <Checkbox
+            name="loggedIn"
+            label="I agree with"
+            value="true"
+            onChange={() => setTermsAgreed(!termsAgreed)}
+          />
           &nbsp;
           <Button target="_blank" href={TERMS_URL} rel="noopener noreferrer">
             Terms &amp; Conditions

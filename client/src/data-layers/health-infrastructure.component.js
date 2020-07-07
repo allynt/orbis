@@ -26,7 +26,9 @@ export const HealthInfrastructure = () => (
       const Icon = type.icon;
       return (
         <li key={type.name} className={styles.listItem}>
-          <div className={`${styles.icon} ${!Icon && styles.noIcon}`}>{type.icon && <Icon />}</div>
+          <div className={`${styles.icon} ${!Icon && styles.noIcon}`}>
+            {type.icon && <Icon />}
+          </div>
           {type.name}
         </li>
       );

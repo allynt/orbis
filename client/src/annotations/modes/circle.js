@@ -6,7 +6,7 @@ import circleFn from '@turf/circle';
 
 const CircleMode = { ...MapboxDraw.modes.draw_line_string };
 
-CircleMode.onSetup = function(opts) {
+CircleMode.onSetup = function (opts) {
   const props = MapboxDraw.modes.draw_line_string.onSetup.call(this, opts);
   props.line.properties = {
     ...props.line.properties,
@@ -32,7 +32,7 @@ CircleMode.onSetup = function(opts) {
   };
 };
 
-CircleMode.clickAnywhere = function(state, event) {
+CircleMode.clickAnywhere = function (state, event) {
   const {
     lngLat: { lng, lat },
   } = event;
@@ -53,7 +53,7 @@ CircleMode.clickAnywhere = function(state, event) {
   return null;
 };
 
-CircleMode.onMouseMove = function(state, event) {
+CircleMode.onMouseMove = function (state, event) {
   MapboxDraw.modes.draw_line_string.onMouseMove.call(this, state, event);
   const geojson = state.line.toGeoJSON();
   const center = geojson.geometry.coordinates[0];
@@ -62,7 +62,10 @@ CircleMode.onMouseMove = function(state, event) {
   const options = {
     steps: 60,
     units: 'kilometers',
-    properties: { parent: state.line.properties.id, ...state.circle.properties },
+    properties: {
+      parent: state.line.properties.id,
+      ...state.circle.properties,
+    },
   };
 
   if (radius) {
@@ -71,7 +74,7 @@ CircleMode.onMouseMove = function(state, event) {
   }
 };
 
-CircleMode.onStop = function(state) {
+CircleMode.onStop = function (state) {
   doubleClickZoom.enable(this);
   this.activateUIButton();
 
@@ -92,9 +95,11 @@ CircleMode.onStop = function(state) {
   }
 };
 
-CircleMode.toDisplayFeatures = function(state, geojson, display) {
+CircleMode.toDisplayFeatures = function (state, geojson, display) {
   const isActiveLine = geojson.properties.id === state.line.id;
-  geojson.properties.active = isActiveLine ? Constants.activeStates.ACTIVE : Constants.activeStates.INACTIVE;
+  geojson.properties.active = isActiveLine
+    ? Constants.activeStates.ACTIVE
+    : Constants.activeStates.INACTIVE;
   if (!isActiveLine) return display(geojson);
 
   // Only render the line if it has at least one real coordinate

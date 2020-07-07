@@ -26,11 +26,24 @@ import sideMenuStyles from '../side-menu/side-menu.module.css';
 const AOI_DRAW_MODE = 'RectangleMode';
 const BBOX_NO_OF_POINTS = 5;
 
-const SatelliteSearch = ({ map, satellites, setVisiblePanel, setSelectedMoreInfo, toggleMoreInfoDialog }, ref) => {
+const SatelliteSearch = (
+  {
+    map,
+    satellites,
+    setVisiblePanel,
+    setSelectedMoreInfo,
+    toggleMoreInfoDialog,
+  },
+  ref,
+) => {
   const dispatch = useDispatch();
 
-  const savedSearches = useSelector(state => state.satellites.satelliteSearches);
-  const currentSearchQuery = useSelector(state => state.satellites.currentSearchQuery);
+  const savedSearches = useSelector(
+    state => state.satellites.satelliteSearches,
+  );
+  const currentSearchQuery = useSelector(
+    state => state.satellites.currentSearchQuery,
+  );
   const maximumAoiArea = useSelector(state => state.app.config.maximumAoiArea);
 
   const [geometry, setGeometry] = useState(null);
@@ -42,7 +55,8 @@ const SatelliteSearch = ({ map, satellites, setVisiblePanel, setSelectedMoreInfo
     return [control, feature];
   }, [map]);
 
-  const chooseSearchQuery = search => dispatch(setCurrentSatelliteSearchQuery(search));
+  const chooseSearchQuery = search =>
+    dispatch(setCurrentSatelliteSearchQuery(search));
   const deleteSavedSearchQuery = id => dispatch(deleteSavedSatelliteSearch(id));
 
   // Put the draw control into AOI Draw mode.
@@ -64,7 +78,9 @@ const SatelliteSearch = ({ map, satellites, setVisiblePanel, setSelectedMoreInfo
   useEffect(() => {
     const [drawControl, feature] = getDraw();
     if (feature) {
-      const featureArea = getGeometryAreaKmSquared(feature.geometry.coordinates[0]);
+      const featureArea = getGeometryAreaKmSquared(
+        feature.geometry.coordinates[0],
+      );
       const isTooLarge = featureArea > maximumAoiArea;
       if (drawControl && isTooLarge) {
         drawControl.setFeatureProperty(feature.id, 'error', 'true');

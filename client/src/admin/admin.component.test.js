@@ -24,7 +24,9 @@ const setup = () => {
         },
       })}
     >
-      <Admin user={{ customers: [{ type: 'MANAGER', name: 'test-customer' }] }} />
+      <Admin
+        user={{ customers: [{ type: 'MANAGER', name: 'test-customer' }] }}
+      />
     </Provider>,
   );
 };

@@ -29,10 +29,18 @@ const Toolbar = ({ items }) => {
   return (
     <Sidebar
       className={styles.toolbar}
-      logo={<OrbisLogo title="Orbis Logo" className={styles.logo} onClick={() => history.push('/')} />}
+      logo={
+        <OrbisLogo
+          title="Orbis Logo"
+          className={styles.logo}
+          onClick={() => history.push('/')}
+        />
+      }
     >
       {items?.filter(item => !item.footer).map(makeSidebarItem)}
-      <SidebarBottomItems>{items?.filter(item => item.footer).map(makeSidebarItem)}</SidebarBottomItems>
+      <SidebarBottomItems>
+        {items?.filter(item => item.footer).map(makeSidebarItem)}
+      </SidebarBottomItems>
     </Sidebar>
   );
 };

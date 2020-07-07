@@ -2,7 +2,12 @@ import { NotificationManager } from 'react-notifications';
 
 import { createSlice } from '@reduxjs/toolkit';
 
-import { getData, sendData, getJsonAuthHeaders, getFormAuthHeaders } from '../utils/http';
+import {
+  getData,
+  sendData,
+  getJsonAuthHeaders,
+  getFormAuthHeaders,
+} from '../utils/http';
 
 const API = {
   fetch: '/api/bookmarks/',
@@ -29,7 +34,9 @@ const bookmarkSlice = createSlice({
       state.error = payload;
     },
     addBookmarkSuccess: (state, { payload }) => {
-      state.bookmarks = state.bookmarks ? [payload, ...state.bookmarks] : [payload];
+      state.bookmarks = state.bookmarks
+        ? [payload, ...state.bookmarks]
+        : [payload];
       state.selectedBookmark = payload;
       state.error = null;
     },
@@ -37,9 +44,14 @@ const bookmarkSlice = createSlice({
       state.error = payload;
     },
     deleteBookmarkSuccess: (state, { payload }) => {
-      const filteredBookmarks = state.bookmarks.filter(bookmark => bookmark.id !== payload.id);
-      const isSelectedBookmark = state.selectedBookmark && state.selectedBookmark.id === payload.id;
-      const selectedBookmark = isSelectedBookmark ? null : state.selectedBookmark;
+      const filteredBookmarks = state.bookmarks.filter(
+        bookmark => bookmark.id !== payload.id,
+      );
+      const isSelectedBookmark =
+        state.selectedBookmark && state.selectedBookmark.id === payload.id;
+      const selectedBookmark = isSelectedBookmark
+        ? null
+        : state.selectedBookmark;
 
       state.bookmarks = filteredBookmarks;
       state.selectedBookmark = selectedBookmark;
@@ -80,7 +92,12 @@ export const fetchBookmarks = () => async (dispatch, getState) => {
   if (!response.ok) {
     const message = `${response.status} ${response.statusText}`;
 
-    NotificationManager.error(message, `Fetching Bookmark Error - ${response.statusText}`, 50000, () => {});
+    NotificationManager.error(
+      message,
+      `Fetching Bookmark Error - ${response.statusText}`,
+      50000,
+      () => {},
+    );
 
     return dispatch(fetchBookmarksFailure({ message }));
   }
@@ -95,7 +112,10 @@ export const addBookmark = bookmark => async (dispatch, getState) => {
   Object.keys(bookmark).forEach(key => formData.append(key, bookmark[key]));
   // nested JSON should be stringified prior to passing to backend
   formData.set('center', JSON.stringify(bookmark['center']));
-  formData.set('feature_collection', JSON.stringify(bookmark['feature_collection']));
+  formData.set(
+    'feature_collection',
+    JSON.stringify(bookmark['feature_collection']),
+  );
 
   const headers = getFormAuthHeaders(getState());
 
@@ -110,7 +130,12 @@ export const addBookmark = bookmark => async (dispatch, getState) => {
   }
 
   const newBookmark = await response.json();
-  NotificationManager.success(undefined, `Successfully saved ${bookmark.title}`, 5000, () => {});
+  NotificationManager.success(
+    undefined,
+    `Successfully saved ${bookmark.title}`,
+    5000,
+    () => {},
+  );
 
   return dispatch(addBookmarkSuccess(newBookmark));
 };
@@ -128,7 +153,12 @@ export const deleteBookmark = bookmark => async (dispatch, getState) => {
     return dispatch(deleteBookmarkFailure({ message }));
   }
 
-  NotificationManager.success(undefined, `Successfully deleted ${bookmark.title}`, 5000, () => {});
+  NotificationManager.success(
+    undefined,
+    `Successfully deleted ${bookmark.title}`,
+    5000,
+    () => {},
+  );
 
   return dispatch(deleteBookmarkSuccess(bookmark));
 };

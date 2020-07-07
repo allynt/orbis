@@ -33,6 +33,11 @@ const mapSlice = createSlice({
   },
 });
 
-export const { setViewport, selectMapStyle, toggleCompareMode, saveMap } = mapSlice.actions;
+export const {
+  setViewport,
+  selectMapStyle,
+  toggleCompareMode,
+  saveMap,
+} = mapSlice.actions;
 
 export default mapSlice.reducer;

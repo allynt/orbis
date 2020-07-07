@@ -31,7 +31,9 @@ describe('App Slice', () => {
         },
       );
 
-      const expectedActions = [{ type: appConfigFailure.type, payload: { message: '401 Test Error' } }];
+      const expectedActions = [
+        { type: appConfigFailure.type, payload: { message: '401 Test Error' } },
+      ];
 
       const store = mockStore({});
 
@@ -62,7 +64,10 @@ describe('App Slice', () => {
 
       const expectedActions = [
         { type: appConfigSuccess.type, payload: config },
-        { type: selectMapStyle.type, payload: config.mapStyles[DEFAULT_MAP_STYLE] },
+        {
+          type: selectMapStyle.type,
+          payload: config.mapStyles[DEFAULT_MAP_STYLE],
+        },
       ];
 
       const store = mockStore({});

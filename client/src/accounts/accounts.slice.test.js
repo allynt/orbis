@@ -259,7 +259,9 @@ describe('Accounts Slice', () => {
 
       fetch.mockResponse(JSON.stringify(userKey));
 
-      const expectedActions = [{ type: updateUserSuccess.type, payload: userKey }];
+      const expectedActions = [
+        { type: updateUserSuccess.type, payload: userKey },
+      ];
 
       const form = {
         email: 'testusername@test.com',

@@ -78,7 +78,9 @@ describe('Compare Pins Component', () => {
   });
 
   it('should render an empty list of pinned scenes', () => {
-    const { container, getByText } = renderComponent(store, { pinnedScenes: [] });
+    const { container, getByText } = renderComponent(store, {
+      pinnedScenes: [],
+    });
 
     expect(getByText('Compare')).toBeInTheDocument();
     expect(getByText('Clear Pins')).toBeInTheDocument();
@@ -99,7 +101,9 @@ describe('Compare Pins Component', () => {
     // It turns out, our switch label is wrapping 2 elements, so we can't easily
     // just target one.
     const switchElements = getAllByLabelText('Compare');
-    switchElements.forEach(element => expect(element).toHaveAttribute('disabled'));
+    switchElements.forEach(element =>
+      expect(element).toHaveAttribute('disabled'),
+    );
   });
 
   it('should not be able to toggle Compare Mode when not enough pinned scenes selected', () => {
@@ -129,7 +133,9 @@ describe('Compare Pins Component', () => {
   });
 
   it('should render Clear Pins button enabled', () => {
-    const { getByText } = renderComponent(store, { selectedPinnedScenes: [{ ...mockScenes[2] }] });
+    const { getByText } = renderComponent(store, {
+      selectedPinnedScenes: [{ ...mockScenes[2] }],
+    });
 
     expect(getByText('Clear Pins')).not.toHaveAttribute('disabled');
   });
@@ -151,7 +157,9 @@ describe('Compare Pins Component', () => {
   });
 
   it('should deselect pinned scene, when scene clicked and already selected', () => {
-    const { deselectPinnedScene, getByText } = renderComponent(store, { selectedPinnedScenes: [{ ...mockScenes[0] }] });
+    const { deselectPinnedScene, getByText } = renderComponent(store, {
+      selectedPinnedScenes: [{ ...mockScenes[0] }],
+    });
 
     fireEvent.click(getByText('Pinned Scene 1').firstChild);
 

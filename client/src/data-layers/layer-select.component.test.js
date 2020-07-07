@@ -10,11 +10,17 @@ const setup = initialSelectedLayers => {
     layers: [
       {
         name: 'test-layer-one',
-        metadata: { label: 'test-layer-one-label', description: 'test-layer-one-description' },
+        metadata: {
+          label: 'test-layer-one-label',
+          description: 'test-layer-one-description',
+        },
       },
       {
         name: 'test-layer-two',
-        metadata: { label: 'test-layer-two-label', description: 'test-layer-two-description' },
+        metadata: {
+          label: 'test-layer-two-label',
+          description: 'test-layer-two-description',
+        },
       },
     ],
   };
@@ -94,7 +100,9 @@ describe('LayerSelect', () => {
       expect(getByText(layers[0].metadata.description)).toBeInTheDocument();
       userEvent.click(getByText('Select Your Layers'));
       waitFor(() => {
-        expect(queryByText(layers[0].metadata.description)).not.toBeInTheDocument();
+        expect(
+          queryByText(layers[0].metadata.description),
+        ).not.toBeInTheDocument();
       });
     });
   });

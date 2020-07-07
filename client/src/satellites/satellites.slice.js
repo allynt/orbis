@@ -62,7 +62,9 @@ const satellitesSlice = createSlice({
       state.error = payload;
     },
     deleteSatelliteSearchSuccess: (state, { payload }) => {
-      state.satelliteSearches = state.satelliteSearches.filter(search => search.id !== payload);
+      state.satelliteSearches = state.satelliteSearches.filter(
+        search => search.id !== payload,
+      );
       state.error = null;
     },
     deleteSatelliteSearchFailure: (state, { payload }) => {
@@ -82,7 +84,9 @@ const satellitesSlice = createSlice({
       state.error = payload;
     },
     deletePinnedSceneSuccess: (state, { payload }) => {
-      state.pinnedScenes = state.pinnedScenes.filter(scene => scene.id !== payload);
+      state.pinnedScenes = state.pinnedScenes.filter(
+        scene => scene.id !== payload,
+      );
     },
     deletePinnedSceneFailure: (state, { payload }) => {
       state.error = payload;
@@ -91,7 +95,9 @@ const satellitesSlice = createSlice({
       state.selectedPinnedScenes = [...state.selectedPinnedScenes, payload];
     },
     deselectPinnedScene: (state, { payload }) => {
-      const filteredScenes = state.selectedPinnedScenes.filter(scene => scene.id !== payload.id);
+      const filteredScenes = state.selectedPinnedScenes.filter(
+        scene => scene.id !== payload.id,
+      );
       state.selectedPinnedScenes = filteredScenes;
     },
     clearSelectedPinnedScenes: state => {
@@ -140,7 +146,12 @@ export const fetchSatellites = () => async (dispatch, getState) => {
   if (!response.ok) {
     const message = `${response.status} ${response.statusText}`;
 
-    NotificationManager.error(message, `Fetching Satellites Error - ${response.statusText}`, 50000, () => {});
+    NotificationManager.error(
+      message,
+      `Fetching Satellites Error - ${response.statusText}`,
+      50000,
+      () => {},
+    );
 
     return dispatch(fetchSatellitesFailure({ message }));
   }
@@ -162,7 +173,12 @@ export const fetchSatelliteScenes = query => async (dispatch, getState) => {
   if (!response.ok) {
     const message = `${response.status} ${response.statusText}`;
 
-    NotificationManager.error(message, `Fetching Satellite Scenes Error - ${response.statusText}`, 50000, () => {});
+    NotificationManager.error(
+      message,
+      `Fetching Satellite Scenes Error - ${response.statusText}`,
+      50000,
+      () => {},
+    );
 
     return dispatch(fetchSatelliteScenesFailure({ message }));
   }
@@ -181,7 +197,12 @@ export const fetchSavedSatelliteSearches = () => async (dispatch, getState) => {
   if (!response.ok) {
     const message = `${response.status} ${response.statusText}`;
 
-    NotificationManager.error(message, `Fetching Satellite Searches Error - ${response.statusText}`, 50000, () => {});
+    NotificationManager.error(
+      message,
+      `Fetching Satellite Searches Error - ${response.statusText}`,
+      50000,
+      () => {},
+    );
 
     return dispatch(fetchSatellitesSearchesFailure({ message }));
   }
@@ -199,7 +220,12 @@ export const deleteSavedSatelliteSearch = id => async (dispatch, getState) => {
   if (!response.ok) {
     const message = `${response.status} ${response.statusText}`;
 
-    NotificationManager.error(message, `Deleting Satellite Search Error - ${response.statusText}`, 5000, () => {});
+    NotificationManager.error(
+      message,
+      `Deleting Satellite Search Error - ${response.statusText}`,
+      5000,
+      () => {},
+    );
 
     return dispatch(deleteSatelliteSearchFailure({ message }));
   }
@@ -215,14 +241,24 @@ export const saveSatelliteSearch = form => async (dispatch, getState) => {
   if (!response.ok) {
     const message = `${response.status} ${response.statusText}`;
 
-    NotificationManager.error(message, `"Saving Satellite Search Error - ${response.statusText}`, 50000, () => {});
+    NotificationManager.error(
+      message,
+      `"Saving Satellite Search Error - ${response.statusText}`,
+      50000,
+      () => {},
+    );
 
     return dispatch(saveSatelliteSearchFailure({ message }));
   }
 
   const savedSearch = await response.json();
 
-  NotificationManager.success('Successfully Saved Satellite Search Query Terms', 'Successful Saving', 5000, () => {});
+  NotificationManager.success(
+    'Successfully Saved Satellite Search Query Terms',
+    'Successful Saving',
+    5000,
+    () => {},
+  );
 
   return dispatch(saveSatelliteSearchSuccess(savedSearch));
 };
@@ -236,7 +272,12 @@ export const fetchPinnedScenes = () => async (dispatch, getState) => {
   if (!response.ok) {
     const message = `${response.status} ${response.statusText}`;
 
-    NotificationManager.error(message, `Fetching Pinned Scenes Error - ${response.statusText}`, 50000, () => {});
+    NotificationManager.error(
+      message,
+      `Fetching Pinned Scenes Error - ${response.statusText}`,
+      50000,
+      () => {},
+    );
 
     return dispatch(fetchPinnedScenesFailure({ message }));
   }
@@ -254,7 +295,12 @@ export const pinScene = form => async (dispatch, getState) => {
   if (!response.ok) {
     const message = `${response.status} ${response.statusText}`;
 
-    NotificationManager.error(message, `Pinning Scene Error - ${response.statusText}`, 50000, () => {});
+    NotificationManager.error(
+      message,
+      `Pinning Scene Error - ${response.statusText}`,
+      50000,
+      () => {},
+    );
 
     return dispatch(pinSceneFailure({ message }));
   }
@@ -272,7 +318,12 @@ export const deletePinnedScene = id => async (dispatch, getState) => {
   if (!response.ok) {
     const message = `${response.status} ${response.statusText}`;
 
-    NotificationManager.error(message, 'Deleting Pinned Scene Error', 5000, () => {});
+    NotificationManager.error(
+      message,
+      'Deleting Pinned Scene Error',
+      5000,
+      () => {},
+    );
     return dispatch(deletePinnedSceneFailure({ message }));
   }
 

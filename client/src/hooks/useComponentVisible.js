@@ -8,7 +8,9 @@ import { useState, useEffect, useRef } from 'react';
  * @returns
  */
 const useComponentVisible = initialIsVisible => {
-  const [isComponentVisible, setIsComponentVisible] = useState(initialIsVisible);
+  const [isComponentVisible, setIsComponentVisible] = useState(
+    initialIsVisible,
+  );
   const ref = useRef(null);
 
   useEffect(() => {

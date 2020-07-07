@@ -5,7 +5,11 @@ import Button from '@astrosat/astrosat-ui/dist/buttons/button';
 
 import styles from './saved-search-list.module.css';
 
-const SavedSearchList = ({ savedSearches, setCurrentSearchQuery, deleteSavedSatelliteSearch }) => (
+const SavedSearchList = ({
+  savedSearches,
+  setCurrentSearchQuery,
+  deleteSavedSatelliteSearch,
+}) => (
   <ul className={styles.list}>
     {savedSearches &&
       savedSearches.map(search => {
@@ -21,10 +25,17 @@ const SavedSearchList = ({ savedSearches, setCurrentSearchQuery, deleteSavedSate
               <p>{search.tiers.join(', ')}</p>
             </div>
             <div className={styles.buttons}>
-              <Button className={styles.button} onClick={() => setCurrentSearchQuery(search)}>
+              <Button
+                className={styles.button}
+                onClick={() => setCurrentSearchQuery(search)}
+              >
                 Reload
               </Button>
-              <Button className={styles.button} theme="tertiary" onClick={() => deleteSavedSatelliteSearch(search.id)}>
+              <Button
+                className={styles.button}
+                theme="tertiary"
+                onClick={() => deleteSavedSatelliteSearch(search.id)}
+              >
                 Delete
               </Button>
             </div>

@@ -16,7 +16,8 @@ const dataSlice = createSlice({
   reducers: {
     addLayers: (state, { payload }) => {
       let newLayers = payload;
-      if (typeof payload[0] === 'object') newLayers = payload.map(layer => layer.name);
+      if (typeof payload[0] === 'object')
+        newLayers = payload.map(layer => layer.name);
       state.layers = Array.from(new Set([...state.layers, ...newLayers]));
     },
     removeLayer: (state, { payload }) => {
@@ -37,11 +38,15 @@ const dataSlice = createSlice({
       state.error = payload;
     },
     addFilters: (state, { payload }) => {
-      state.filters = mergeWith(payload, state.filters, (objValue, srcValue) => {
-        if (Array.isArray(objValue) && Array.isArray(srcValue)) {
-          return Array.from(new Set([...srcValue, ...objValue]));
-        }
-      });
+      state.filters = mergeWith(
+        payload,
+        state.filters,
+        (objValue, srcValue) => {
+          if (Array.isArray(objValue) && Array.isArray(srcValue)) {
+            return Array.from(new Set([...srcValue, ...objValue]));
+          }
+        },
+      );
     },
     removeFilters: (state, { payload }) => {
       for (let layer of Object.keys(payload)) {
@@ -58,9 +63,9 @@ const dataSlice = createSlice({
             }
           }
           if (state.filters[layer][property]) {
-            state.filters[layer][property] = state.filters[layer][property].filter(
-              value => !payload[layer][property].includes(value),
-            );
+            state.filters[layer][property] = state.filters[layer][
+              property
+            ].filter(value => !payload[layer][property].includes(value));
           }
         }
       }
@@ -93,20 +98,36 @@ export const fetchSources = () => async (dispatch, getState) => {
 };
 
 const baseSelector = state => state.data ?? {};
-export const selectDataToken = createSelector(baseSelector, state => state.token ?? '');
-export const selectDataSources = createSelector(baseSelector, state => state.sources ?? []);
-export const selectPollingPeriod = createSelector(baseSelector, state => state.pollingPeriod);
+export const selectDataToken = createSelector(
+  baseSelector,
+  state => state.token ?? '',
+);
+export const selectDataSources = createSelector(
+  baseSelector,
+  state => state.sources ?? [],
+);
+export const selectPollingPeriod = createSelector(
+  baseSelector,
+  state => state.pollingPeriod,
+);
 export const selectActiveLayers = createSelector(baseSelector, state =>
-  state.sources ? state.sources.filter(source => state.layers.includes(source.name)) : [],
+  state.sources
+    ? state.sources.filter(source => state.layers.includes(source.name))
+    : [],
 );
 export const selectInactiveLayers = createSelector(baseSelector, state =>
-  state.sources ? state.sources.filter(source => !state.layers.includes(source.name)) : [],
+  state.sources
+    ? state.sources.filter(source => !state.layers.includes(source.name))
+    : [],
 );
 export const selectDomainList = createSelector(selectDataSources, sources =>
   Array.from(
     new Set(
       sources.reduce(
-        (acc, source) => (source.metadata && source.metadata.domain ? [...acc, source.metadata.domain] : acc),
+        (acc, source) =>
+          source.metadata && source.metadata.domain
+            ? [...acc, source.metadata.domain]
+            : acc,
         [],
       ),
     ),
@@ -125,34 +146,47 @@ const createLayerFilters = layer =>
     {},
   );
 
-export const selectAvailableFilters = createSelector(selectActiveLayers, layers => {
-  const filters = layers.reduce((acc, layer) => {
-    return layer.metadata.filters ? { ...acc, [layer.name]: createLayerFilters(layer) } : acc;
-  }, {});
-  return filters;
-});
+export const selectAvailableFilters = createSelector(
+  selectActiveLayers,
+  layers => {
+    const filters = layers.reduce((acc, layer) => {
+      return layer.metadata.filters
+        ? { ...acc, [layer.name]: createLayerFilters(layer) }
+        : acc;
+    }, {});
+    return filters;
+  },
+);
 
-export const selectCurrentFilters = createSelector(baseSelector, state => state.filters ?? {});
+export const selectCurrentFilters = createSelector(
+  baseSelector,
+  state => state.filters ?? {},
+);
 
-export const selectFilteredData = createSelector([selectActiveLayers, selectCurrentFilters], (layers, filters) => {
-  const filteredLayers = JSON.parse(JSON.stringify(layers));
-  return filteredLayers.map(layer => {
-    if (filters[layer.name]) {
-      const layerFilters = filters[layer.name];
-      layer.data.features = layer.data.features.filter(feature => {
-        for (let filterPath in layerFilters) {
-          if (layerFilters[filterPath].length > 0) {
-            const value = get(feature.properties, filterPath);
-            if (Array.isArray(value)) {
-              if (!value.some(val => layerFilters[filterPath].includes(val))) return false;
-            } else if (!layerFilters[filterPath].includes(value)) return false;
+export const selectFilteredData = createSelector(
+  [selectActiveLayers, selectCurrentFilters],
+  (layers, filters) => {
+    const filteredLayers = JSON.parse(JSON.stringify(layers));
+    return filteredLayers.map(layer => {
+      if (filters[layer.name]) {
+        const layerFilters = filters[layer.name];
+        layer.data.features = layer.data.features.filter(feature => {
+          for (let filterPath in layerFilters) {
+            if (layerFilters[filterPath].length > 0) {
+              const value = get(feature.properties, filterPath);
+              if (Array.isArray(value)) {
+                if (!value.some(val => layerFilters[filterPath].includes(val)))
+                  return false;
+              } else if (!layerFilters[filterPath].includes(value))
+                return false;
+            }
           }
-        }
-        return true;
-      });
-    }
-    return layer;
-  });
-});
+          return true;
+        });
+      }
+      return layer;
+    });
+  },
+);
 
 export default dataSlice.reducer;

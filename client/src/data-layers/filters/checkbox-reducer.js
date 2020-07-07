@@ -2,7 +2,10 @@ import { get, merge } from 'lodash';
 
 const addItem = (state, set, { layer, property, value }) => {
   const current = get(state, `${set}.${layer}.${property}`, []);
-  return merge({ [set]: { [layer]: { [property]: [...current, value] } } }, state);
+  return merge(
+    { [set]: { [layer]: { [property]: [...current, value] } } },
+    state,
+  );
 };
 
 const removeItem = (state, set, { layer, property, value }) => {

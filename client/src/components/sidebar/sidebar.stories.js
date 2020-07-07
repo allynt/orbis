@@ -12,8 +12,19 @@ const logoStyle = { height: '33px', color: '#fff' };
 const AdminHeader = () => (
   <div style={{ display: 'flex', alignItems: 'center' }}>
     <ProfileIcon style={{ width: '3.125rem' }} />
-    <div style={{ display: 'flex', flexDirection: 'column', marginLeft: '8px' }}>
-      <h2 style={{ fontSize: '1.25rem', whiteSpace: 'nowrap', marginTop: 0, marginBottom: '0.25rem' }}>Adam Raymond</h2>
+    <div
+      style={{ display: 'flex', flexDirection: 'column', marginLeft: '8px' }}
+    >
+      <h2
+        style={{
+          fontSize: '1.25rem',
+          whiteSpace: 'nowrap',
+          marginTop: 0,
+          marginBottom: '0.25rem',
+        }}
+      >
+        Adam Raymond
+      </h2>
       <h5 style={{ margin: 0, color: '#b9bed3' }}>Administrator</h5>
     </div>
   </div>
@@ -40,8 +51,12 @@ export const ItemsWithLabels = () => (
     <SidebarItem icon={<ProfileIcon style={{ width: '100%' }} />} selected>
       Item one
     </SidebarItem>
-    <SidebarItem icon={<SatelliteIcon style={{ width: '100%' }} />}>Item two</SidebarItem>
-    <SidebarItem icon={<DataIcon style={{ width: '100%' }} />}>Item three</SidebarItem>
+    <SidebarItem icon={<SatelliteIcon style={{ width: '100%' }} />}>
+      Item two
+    </SidebarItem>
+    <SidebarItem icon={<DataIcon style={{ width: '100%' }} />}>
+      Item three
+    </SidebarItem>
   </Sidebar>
 );
 
@@ -50,12 +65,22 @@ export const ItemPosition = () => (
     <SidebarItem icon={<ProfileIcon style={{ width: '100%' }} />} selected>
       Item one
     </SidebarItem>
-    <SidebarItem icon={<SatelliteIcon style={{ width: '100%' }} />}>Item two</SidebarItem>
-    <SidebarItem icon={<DataIcon style={{ width: '100%' }} />}>Item three</SidebarItem>
+    <SidebarItem icon={<SatelliteIcon style={{ width: '100%' }} />}>
+      Item two
+    </SidebarItem>
+    <SidebarItem icon={<DataIcon style={{ width: '100%' }} />}>
+      Item three
+    </SidebarItem>
     <SidebarBottomItems>
-      <SidebarItem icon={<ProfileIcon style={{ width: '100%' }} />}>Item four</SidebarItem>
-      <SidebarItem icon={<SatelliteIcon style={{ width: '100%' }} />}>Item five</SidebarItem>
-      <SidebarItem icon={<DataIcon style={{ width: '100%' }} />}>Item six</SidebarItem>
+      <SidebarItem icon={<ProfileIcon style={{ width: '100%' }} />}>
+        Item four
+      </SidebarItem>
+      <SidebarItem icon={<SatelliteIcon style={{ width: '100%' }} />}>
+        Item five
+      </SidebarItem>
+      <SidebarItem icon={<DataIcon style={{ width: '100%' }} />}>
+        Item six
+      </SidebarItem>
     </SidebarBottomItems>
   </Sidebar>
 );
@@ -71,12 +96,22 @@ export const KitchenSink = () => (
     <SidebarItem icon={<ProfileIcon style={{ width: '100%' }} />} selected>
       Item one
     </SidebarItem>
-    <SidebarItem icon={<SatelliteIcon style={{ width: '100%' }} />}>Item two</SidebarItem>
-    <SidebarItem icon={<DataIcon style={{ width: '100%' }} />}>Item three</SidebarItem>
+    <SidebarItem icon={<SatelliteIcon style={{ width: '100%' }} />}>
+      Item two
+    </SidebarItem>
+    <SidebarItem icon={<DataIcon style={{ width: '100%' }} />}>
+      Item three
+    </SidebarItem>
     <SidebarBottomItems>
-      <SidebarItem icon={<ProfileIcon style={{ width: '100%' }} />}>Item four</SidebarItem>
-      <SidebarItem icon={<SatelliteIcon style={{ width: '100%' }} />}>Item five</SidebarItem>
-      <SidebarItem icon={<DataIcon style={{ width: '100%' }} />}>Item six</SidebarItem>
+      <SidebarItem icon={<ProfileIcon style={{ width: '100%' }} />}>
+        Item four
+      </SidebarItem>
+      <SidebarItem icon={<SatelliteIcon style={{ width: '100%' }} />}>
+        Item five
+      </SidebarItem>
+      <SidebarItem icon={<DataIcon style={{ width: '100%' }} />}>
+        Item six
+      </SidebarItem>
     </SidebarBottomItems>
   </Sidebar>
 );
