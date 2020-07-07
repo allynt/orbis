@@ -3,9 +3,10 @@ import React, { useEffect, useState } from 'react';
 import { LayersIcon, Button, LoadMask } from '@astrosat/astrosat-ui/';
 
 import DeckGL from '@deck.gl/react';
-import { IconLayer } from '@deck.gl/layers';
+import { IconLayer, TextLayer } from '@deck.gl/layers';
 import { useDispatch, useSelector } from 'react-redux';
 import { StaticMap } from 'react-map-gl';
+import { ClusteredIconLayer } from './clustered-icon-layer';
 
 import {
   isLoaded,
@@ -45,30 +46,35 @@ const Map = () => {
   }, [selectedBookmark, dispatch]);
 
   useEffect(() => {
-    const newLayers = layers.filter(
-      layer =>
-        !!selectedLayers.find(selectedLayer => selectedLayer.name === layer.id),
-    );
+    const newLayers = layers
+      ? layers.filter(
+          layer =>
+            !!selectedLayers.find(
+              selectedLayer => selectedLayer.name === layer.id,
+            ),
+        )
+      : [];
     const infraLayer = selectedLayers.find(
       layer => layer.name === 'health-infrastructure',
     );
     if (infraLayer) {
       newLayers.push(
-        new IconLayer({
+        new ClusteredIconLayer({
           id: infraLayer.name,
           data: infraLayer.data.features,
           iconMapping,
           iconAtlas,
-          getIcon: d => d.properties.type,
           getPosition: d => d.geometry.coordinates,
-          getSize: 60,
+          getIcon: d => d.properties.type,
+          getIconSize: 60,
+          getText: d => d.properties.name,
+          getTextSize: 32,
+          getTextColor: [255, 255, 255],
         }),
       );
     }
     setLayers(newLayers);
-  }, [selectedLayers, layers]);
-
-  console.log(layers[0]?.id);
+  }, [selectedLayers]);
 
   return (
     <>
