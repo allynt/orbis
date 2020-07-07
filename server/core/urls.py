@@ -5,7 +5,7 @@ from django.urls import include, path, re_path
 
 from rest_framework.routers import SimpleRouter
 
-from astrosat.views import api_schema_views
+from astrosat.views import api_schema_views, remove_urlpatterns
 
 from astrosat.urls import (
     urlpatterns as astrosat_urlpatterns,
@@ -19,12 +19,12 @@ from astrosat_users.urls import (
 
 from maps.urls import (
     urlpatterns as maps_urlpatterns,
-    api_urlpatterns as maps_api_urlpatterns
+    api_urlpatterns as maps_api_urlpatterns,
 )
 
 from orbis.urls import (
     urlpatterns as orbis_urlpatterns,
-    api_urlpatterns as orbis_api_urlpatterns
+    api_urlpatterns as orbis_api_urlpatterns,
 )
 
 from .views import index_view, app_config_view
@@ -44,6 +44,12 @@ handler500 = "astrosat.views.handler500"
 ##############
 # api routes #
 ##############
+
+# orbis replaces the default customer & customer_user views (to include licenses)
+astrosat_users_api_urlpatterns = remove_urlpatterns(
+    astrosat_users_api_urlpatterns,
+    ["customers-detail", "customer-users-list", "customer-users-detail"],
+)
 
 api_router = SimpleRouter()
 api_urlpatterns = [

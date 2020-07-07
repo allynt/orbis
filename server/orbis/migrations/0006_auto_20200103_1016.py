@@ -5,7 +5,7 @@ Data Migration for ensuring ORBIS's default DataScope exist
 """
 
 from django.db import migrations
-from orbis.models.models_data import Access
+from orbis.models.models_orbs import Access
 
 
 def create_orbis_role_and_data_scope(apps, schema_editor):

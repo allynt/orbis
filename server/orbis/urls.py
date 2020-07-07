@@ -3,6 +3,10 @@ from django.urls import include, path
 from rest_framework.routers import SimpleRouter
 
 from .views import (
+    OrbListView,
+    CustomerDetailView,
+    CustomerUserDetailView,
+    CustomerUserListView,
     DataView,
     TokenView,
     SatelliteViewSet,
@@ -21,9 +25,13 @@ api_router.register(r"satellites/searches", SatelliteSearchViewSet, basename="sa
 api_router.register(r"satellites/results", SatelliteResultViewSet, basename="satellite-result")
 api_router.register(r"satellites", SatelliteViewSet, basename="satellite")
 api_urlpatterns = [
-    path("satellites/run_query/", run_satellite_query, name="satellite-run-query"),
+    path("orbs/", OrbListView.as_view(), name="orbs-list"),
+    path("customers/<slug:name>/", CustomerDetailView.as_view(), name="customers-detail"),
+    path("customers/<slug:name>/users/", CustomerUserListView.as_view(), name="customer-users-list"),
+    path("customers/<slug:name>/users/<str:email>/", CustomerUserDetailView.as_view(), name="customer-users-detail"),
     path("data/sources/", DataView.as_view(), name="data"),
     path("data/token/", TokenView.as_view(), name="token"),
+    path("satellites/run_query/", run_satellite_query, name="satellite-run-query"),
     path("", include(api_router.urls)),
 ]
 
