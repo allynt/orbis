@@ -8,7 +8,14 @@ const drag = {
   enable(ctx) {
     setTimeout(() => {
       // First check we've got a map and some context.
-      if (!ctx.map || !ctx.map.dragPan || !ctx._ctx || !ctx._ctx.store || !ctx._ctx.store.getInitialConfigValue) return;
+      if (
+        !ctx.map ||
+        !ctx.map.dragPan ||
+        !ctx._ctx ||
+        !ctx._ctx.store ||
+        !ctx._ctx.store.getInitialConfigValue
+      )
+        return;
       // Now check initial state wasn't false (we leave it disabled if so)
       if (!ctx._ctx.store.getInitialConfigValue('dragPan')) return;
       ctx.map.dragPan.enable();
@@ -23,7 +30,7 @@ const drag = {
   },
 };
 
-FreehandPolygonMode.onSetup = function(opts) {
+FreehandPolygonMode.onSetup = function (opts) {
   const props = MapboxDraw.modes.draw_polygon.onSetup.call(this, opts);
   props.polygon.properties = {
     ...props.polygon.properties,
@@ -37,22 +44,32 @@ FreehandPolygonMode.onSetup = function(opts) {
   };
 };
 
-FreehandPolygonMode.onDrag = function(state, event) {
+FreehandPolygonMode.onDrag = function (state, event) {
   const { lngLat } = event;
   state.dragging = true;
   this.updateUIClasses({ mouse: Constants.cursors.ADD });
-  state.polygon.updateCoordinate(`0.${state.currentVertexPosition}`, lngLat.lng, lngLat.lat);
+  state.polygon.updateCoordinate(
+    `0.${state.currentVertexPosition}`,
+    lngLat.lng,
+    lngLat.lat,
+  );
   state.currentVertexPosition++;
-  state.polygon.updateCoordinate(`0.${state.currentVertexPosition}`, lngLat.lng, lngLat.lat);
+  state.polygon.updateCoordinate(
+    `0.${state.currentVertexPosition}`,
+    lngLat.lng,
+    lngLat.lat,
+  );
 };
 
-FreehandPolygonMode.onMouseUp = function(state) {
+FreehandPolygonMode.onMouseUp = function (state) {
   if (state.dragging) {
     this.map.fire(Constants.events.UPDATE, {
       action: Constants.updateActions.MOVE,
       features: this.getSelected().map(f => f.toGeoJSON()),
     });
-    this.changeMode(Constants.modes.SIMPLE_SELECT, { featureIds: [state.polygon.id] });
+    this.changeMode(Constants.modes.SIMPLE_SELECT, {
+      featureIds: [state.polygon.id],
+    });
   }
 };
 

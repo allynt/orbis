@@ -16,7 +16,9 @@ const MapStyleSwitcher = ({ mapStyles, selectedMapStyle, selectMapStyle }) => (
   <ul className={style['mapstyle-switcher-container']}>
     {mapStyles.map((mapStyle, index) => (
       <li key={index}>
-        <label className={mapStyle.id === selectedMapStyle.id ? style.checked : ''}>
+        <label
+          className={mapStyle.id === selectedMapStyle.id ? style.checked : ''}
+        >
           <input
             name="mapStyle"
             type="radio"

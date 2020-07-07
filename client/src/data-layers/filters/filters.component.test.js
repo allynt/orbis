@@ -55,7 +55,10 @@ describe('Filters', () => {
     const availableFilters = { cars: { engine: ['V8'] } };
     const onFiltersChange = jest.fn();
     const { getByLabelText } = render(
-      <Filters availableFilters={availableFilters} onFiltersChange={onFiltersChange} />,
+      <Filters
+        availableFilters={availableFilters}
+        onFiltersChange={onFiltersChange}
+      />,
     );
     userEvent.click(getByLabelText('Toggle filters popup'));
     userEvent.click(getByLabelText(availableFilters.cars.engine[0]));

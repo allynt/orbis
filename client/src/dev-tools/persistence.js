@@ -9,7 +9,8 @@ try {
   window.localStorage.removeItem(key);
 }
 
-const persist = () => window.localStorage.setItem(key, JSON.stringify(featureToggles));
+const persist = () =>
+  window.localStorage.setItem(key, JSON.stringify(featureToggles));
 
 function enable(name) {
   featureToggles[name] = true;

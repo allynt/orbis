@@ -27,7 +27,9 @@ const PasswordResetSuccessView = ({ error }) => (
       </Well>
     )}
 
-    <p className={formStyles.paragraph}>Your password has successfully been reset. Click the button to continue.</p>
+    <p className={formStyles.paragraph}>
+      Your password has successfully been reset. Click the button to continue.
+    </p>
 
     <div className={formStyles.buttons}>
       <Button href={LOGIN_URL}>Continue</Button>
@@ -35,10 +37,18 @@ const PasswordResetSuccessView = ({ error }) => (
   </div>
 );
 
-const PasswordResetConfirmForm = ({ confirmResetPassword, resetStatus, match, error }) => {
+const PasswordResetConfirmForm = ({
+  confirmResetPassword,
+  resetStatus,
+  match,
+  error,
+}) => {
   const [termsAgreed, setTermsAgreed] = useState(false);
 
-  const { handleChange, handleSubmit, values, errors } = useForm(onSubmit, validate);
+  const { handleChange, handleSubmit, values, errors } = useForm(
+    onSubmit,
+    validate,
+  );
 
   if (resetStatus === status.COMPLETE) {
     return <PasswordResetSuccessView />;
@@ -75,7 +85,9 @@ const PasswordResetConfirmForm = ({ confirmResetPassword, resetStatus, match, er
             autoFocus
           />
         </div>
-        {errors.new_password1 && <p className={formStyles.errorMessage}>{errors.new_password1}</p>}
+        {errors.new_password1 && (
+          <p className={formStyles.errorMessage}>{errors.new_password1}</p>
+        )}
 
         <div className={formStyles.row}>
           <PasswordField
@@ -86,7 +98,9 @@ const PasswordResetConfirmForm = ({ confirmResetPassword, resetStatus, match, er
             required
           />
         </div>
-        {errors.new_password2 && <p className={formStyles.errorMessage}>{errors.new_password2}</p>}
+        {errors.new_password2 && (
+          <p className={formStyles.errorMessage}>{errors.new_password2}</p>
+        )}
 
         <PasswordStrengthMeter password={values.new_password1} />
 
@@ -103,7 +117,12 @@ const PasswordResetConfirmForm = ({ confirmResetPassword, resetStatus, match, er
         </div>
 
         <div className={formStyles.row}>
-          <Checkbox name="loggedIn" value="true" label="I agree with" onChange={() => setTermsAgreed(!termsAgreed)} />
+          <Checkbox
+            name="loggedIn"
+            value="true"
+            label="I agree with"
+            onChange={() => setTermsAgreed(!termsAgreed)}
+          />
           &nbsp;
           <Button target="_blank" href={TERMS_URL} rel="noopener noreferrer">
             Terms &amp; Conditions
@@ -114,7 +133,11 @@ const PasswordResetConfirmForm = ({ confirmResetPassword, resetStatus, match, er
       <div className={formStyles.buttons}>
         <Button
           type="submit"
-          disabled={!termsAgreed || Object.keys(errors).length > 0 || Object.keys(values).length === 0}
+          disabled={
+            !termsAgreed ||
+            Object.keys(errors).length > 0 ||
+            Object.keys(values).length === 0
+          }
         >
           Reset Password
         </Button>

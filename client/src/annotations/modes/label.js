@@ -10,7 +10,7 @@ import styles from './label.module.css';
 
 const LabelMode = { ...MapboxDraw.modes.draw_point };
 
-LabelMode.onSetup = function(opts) {
+LabelMode.onSetup = function (opts) {
   const props = MapboxDraw.modes.draw_point.onSetup.call(this, opts);
   props.point.properties = {
     ...props.point.properties,
@@ -22,7 +22,7 @@ LabelMode.onSetup = function(opts) {
   };
 };
 
-LabelMode.onClick = LabelMode.onTap = function(state, event) {
+LabelMode.onClick = LabelMode.onTap = function (state, event) {
   const {
     lngLat: { lng, lat },
   } = event;
@@ -47,7 +47,9 @@ LabelMode.onClick = LabelMode.onTap = function(state, event) {
     // this.map.fire(Constants.events.UPDATE, {
     //   features: [state.point.toGeoJSON()]
     // });
-    this.changeMode(Constants.modes.SIMPLE_SELECT, { featureIds: [state.point.id] });
+    this.changeMode(Constants.modes.SIMPLE_SELECT, {
+      featureIds: [state.point.id],
+    });
   };
   div.appendChild(button);
   document.body.appendChild(div);
@@ -113,10 +115,12 @@ LabelMode.onClick = LabelMode.onTap = function(state, event) {
 //   }
 // };
 
-LabelMode.toDisplayFeatures = function(state, geojson, display) {
+LabelMode.toDisplayFeatures = function (state, geojson, display) {
   console.log('DISPLAY: ', state, geojson);
   const isActiveLine = geojson.properties.id === state.point.id;
-  geojson.properties.active = isActiveLine ? Constants.activeStates.ACTIVE : Constants.activeStates.INACTIVE;
+  geojson.properties.active = isActiveLine
+    ? Constants.activeStates.ACTIVE
+    : Constants.activeStates.INACTIVE;
   if (!isActiveLine) return display(geojson);
 
   // Only render the line if it has at least one real coordinate

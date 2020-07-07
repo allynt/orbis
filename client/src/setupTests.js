@@ -13,4 +13,6 @@ import '../public/config';
 
 enableFetchMocks();
 global.URL.createObjectURL = jest.fn();
-global.requestIdleCallback = jest.fn().mockImplementation(args => setTimeout(args, 0));
+global.requestIdleCallback = jest
+  .fn()
+  .mockImplementation(args => setTimeout(args, 0));

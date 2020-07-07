@@ -100,21 +100,27 @@ describe('Satellite Results Component', () => {
   });
 
   it('should pin scene when pin icon clicked', () => {
-    const { pinScene, getByTitle } = renderComponent(store, { pinnedScenes: [] });
+    const { pinScene, getByTitle } = renderComponent(store, {
+      pinnedScenes: [],
+    });
 
     fireEvent.click(getByTitle(`pin-icon-${mockScenes[0].id}`));
     expect(pinScene).toHaveBeenCalledWith(mockScenes[0]);
   });
 
   it('should delete pinned scene when already pinned pin icon clicked', () => {
-    const { deletePinnedScene, getByTitle } = renderComponent(store, { pinnedScenes: [{ ...mockScenes[0] }] });
+    const { deletePinnedScene, getByTitle } = renderComponent(store, {
+      pinnedScenes: [{ ...mockScenes[0] }],
+    });
 
     fireEvent.click(getByTitle(`pin-icon-${mockScenes[0].id}`));
     expect(deletePinnedScene).toHaveBeenCalledWith(mockScenes[0].id);
   });
 
   it('should show dialog component when Save Search button clicked', () => {
-    const { queryByText, getByText } = renderComponent(store, { pinnedScenes: [{ ...mockScenes[0] }] });
+    const { queryByText, getByText } = renderComponent(store, {
+      pinnedScenes: [{ ...mockScenes[0] }],
+    });
 
     const dialogTitle = 'Name Search';
     expect(queryByText(dialogTitle)).toEqual(null);
@@ -122,7 +128,9 @@ describe('Satellite Results Component', () => {
 
     expect(getByText(dialogTitle)).toBeInTheDocument();
     expect(
-      getByText('Please name your search. Find your saved searches alongside your saved AOIs under "Saved Searches"'),
+      getByText(
+        'Please name your search. Find your saved searches alongside your saved AOIs under "Saved Searches"',
+      ),
     ).toBeInTheDocument();
   });
 });

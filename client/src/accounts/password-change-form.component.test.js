@@ -16,7 +16,11 @@ const renderComponent = (store, changePassword, changeStatus, error) =>
   render(
     <MemoryRouter>
       <Provider store={store}>
-        <PasswordChangeForm changePassword={changePassword} changeStatus={changeStatus} error={error} />
+        <PasswordChangeForm
+          changePassword={changePassword}
+          changeStatus={changeStatus}
+          error={error}
+        />
       </Provider>
     </MemoryRouter>,
   );
@@ -38,12 +42,19 @@ describe('Password Reset Form Component', () => {
   it('should render a form', () => {
     const store = mockStore({});
 
-    const { container, getByPlaceholderText, getByText } = renderComponent(store, changePassword, changeStatus, error);
+    const { container, getByPlaceholderText, getByText } = renderComponent(
+      store,
+      changePassword,
+      changeStatus,
+      error,
+    );
 
     expect(container.querySelector('form')).toBeInTheDocument();
     expect(getByPlaceholderText('Old Password')).toBeInTheDocument();
     expect(getByPlaceholderText('New Password')).toBeInTheDocument();
-    expect(getByPlaceholderText('New Password Confirmation')).toBeInTheDocument();
+    expect(
+      getByPlaceholderText('New Password Confirmation'),
+    ).toBeInTheDocument();
     // Check password strength component exists
     expect(getByText('Password Strength:')).toBeInTheDocument();
     //Check Terms and Conditions checkbox
@@ -58,7 +69,12 @@ describe('Password Reset Form Component', () => {
   it('should enable `Change Password` button when form is valid', async () => {
     const store = mockStore({});
 
-    const { getByText, getByPlaceholderText } = renderComponent(store, changePassword, changeStatus, error);
+    const { getByText, getByPlaceholderText } = renderComponent(
+      store,
+      changePassword,
+      changeStatus,
+      error,
+    );
 
     let password = getByPlaceholderText('Old Password');
     expect(password.value).toEqual('');
@@ -81,11 +97,22 @@ describe('Password Reset Form Component', () => {
   it('should keep `Change Password` button disabled when form is invalid', () => {
     const store = mockStore({});
 
-    const { getByText, getByPlaceholderText } = renderComponent(store, changePassword, changeStatus, error);
+    const { getByText, getByPlaceholderText } = renderComponent(
+      store,
+      changePassword,
+      changeStatus,
+      error,
+    );
 
-    fireEvent.change(getByPlaceholderText('Old Password'), { target: { value: 'oldpassword' } });
-    fireEvent.change(getByPlaceholderText('New Password'), { target: { value: 'newpassword' } });
-    fireEvent.change(getByPlaceholderText('New Password Confirmation'), { target: { value: 'newpasswordconfirm' } });
+    fireEvent.change(getByPlaceholderText('Old Password'), {
+      target: { value: 'oldpassword' },
+    });
+    fireEvent.change(getByPlaceholderText('New Password'), {
+      target: { value: 'newpassword' },
+    });
+    fireEvent.change(getByPlaceholderText('New Password Confirmation'), {
+      target: { value: 'newpasswordconfirm' },
+    });
 
     expect(getByText('Change Password')).toHaveAttribute('disabled');
   });
@@ -94,7 +121,12 @@ describe('Password Reset Form Component', () => {
     fetch.mockResponse(JSON.stringify({}, { status: 200 }));
     const store = mockStore({});
 
-    const { getByText } = renderComponent(store, changePassword, changeStatus, error);
+    const { getByText } = renderComponent(
+      store,
+      changePassword,
+      changeStatus,
+      error,
+    );
 
     fireEvent.click(getByText('Change Password'));
     expect(fetch.mock.calls.length).toBe(0);
@@ -115,11 +147,22 @@ describe('Password Reset Form Component', () => {
       accepted_terms: true,
     };
 
-    const { getByText, getByPlaceholderText } = renderComponent(store, changePassword, changeStatus, error);
+    const { getByText, getByPlaceholderText } = renderComponent(
+      store,
+      changePassword,
+      changeStatus,
+      error,
+    );
 
-    fireEvent.change(getByPlaceholderText('Old Password'), { target: { value: 'oldpassword' } });
-    fireEvent.change(getByPlaceholderText('New Password'), { target: { value: 'newpassword' } });
-    fireEvent.change(getByPlaceholderText('New Password Confirmation'), { target: { value: 'newpassword' } });
+    fireEvent.change(getByPlaceholderText('Old Password'), {
+      target: { value: 'oldpassword' },
+    });
+    fireEvent.change(getByPlaceholderText('New Password'), {
+      target: { value: 'newpassword' },
+    });
+    fireEvent.change(getByPlaceholderText('New Password Confirmation'), {
+      target: { value: 'newpassword' },
+    });
     fireEvent.click(getByText('I agree with'));
 
     fireEvent.click(getByText('Change Password'));

@@ -16,7 +16,12 @@ const Filters = () => {
   return (
     <div>
       <label>
-        Enable Filters: <input type="checkbox" checked={filters} onChange={e => setFilters(e.target.checked)} />
+        Enable Filters:{' '}
+        <input
+          type="checkbox"
+          checked={filters}
+          onChange={e => setFilters(e.target.checked)}
+        />
       </label>
     </div>
   );

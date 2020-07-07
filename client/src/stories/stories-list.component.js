@@ -24,10 +24,17 @@ const StoryList = ({ stories, selectStory, deleteStory }) => {
                   <h3 className={styles.storyTitle}>{story.title}</h3>
                   <p className={styles.storyDescription}>{story.description}</p>
                   <div className={styles.storyButtons}>
-                    <Button classNames={[styles.storyButton]} onClick={() => selectStory(story)}>
+                    <Button
+                      classNames={[styles.storyButton]}
+                      onClick={() => selectStory(story)}
+                    >
                       Load
                     </Button>
-                    <Button theme="tertiary" classNames={[styles.storyButton]} onClick={() => deleteStory(story)}>
+                    <Button
+                      theme="tertiary"
+                      classNames={[styles.storyButton]}
+                      onClick={() => deleteStory(story)}
+                    >
                       Delete
                     </Button>
                   </div>

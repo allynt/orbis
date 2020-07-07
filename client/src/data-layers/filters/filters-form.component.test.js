@@ -59,7 +59,10 @@ describe('FiltersForm', () => {
   it('renders a checkbox as checked if it already has the filter applied', () => {
     const currentFilters = { cars: { engine: ['V6'] } };
     const { getByLabelText } = setup(currentFilters);
-    expect(getByLabelText(currentFilters.cars.engine[0])).toHaveProperty('defaultChecked', true);
+    expect(getByLabelText(currentFilters.cars.engine[0])).toHaveProperty(
+      'defaultChecked',
+      true,
+    );
   });
 
   it('calls the onFiltersChange when the submit button is pressed', () => {
@@ -78,7 +81,9 @@ describe('FiltersForm', () => {
 
   it('calls the onFiltersChange with any filters which have been removed', () => {
     const currentFilters = { cars: { engine: ['V8'] } };
-    const { getByText, getByLabelText, onFiltersChange } = setup(currentFilters);
+    const { getByText, getByLabelText, onFiltersChange } = setup(
+      currentFilters,
+    );
     userEvent.click(getByLabelText(currentFilters.cars.engine[0]));
     userEvent.click(getByText(buttonTextRegex));
     expect(onFiltersChange).toHaveBeenCalledWith({}, currentFilters);
@@ -98,14 +103,21 @@ describe('FiltersForm', () => {
     const currentFilters = {
       cars: { engine: ['V8'] },
     };
-    const { getByLabelText, getByText, onFiltersChange } = setup(currentFilters);
+    const { getByLabelText, getByText, onFiltersChange } = setup(
+      currentFilters,
+    );
     userEvent.dblClick(getByLabelText(currentFilters.cars.engine[0]));
     userEvent.click(getByText(buttonTextRegex));
     expect(onFiltersChange).toHaveBeenCalledWith({}, { cars: { engine: [] } });
   });
 
   it('does not call onFiltersChange with toAdd items which have been toggled on then off', () => {
-    const { getByLabelText, getByText, onFiltersChange, availableFilters } = setup();
+    const {
+      getByLabelText,
+      getByText,
+      onFiltersChange,
+      availableFilters,
+    } = setup();
     userEvent.click(getByLabelText(availableFilters.fruit.type[0]));
     userEvent.click(getByLabelText(availableFilters.fruit.type[0]));
     userEvent.click(getByText(buttonTextRegex));

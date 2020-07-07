@@ -14,9 +14,15 @@ export const ERROR_MESSAGES = {
  */
 export const createUserFormValidator = (values, { existingEmails }) => {
   let errors = {};
-  if (values.email === undefined || values.email === null || values.email === '')
+  if (
+    values.email === undefined ||
+    values.email === null ||
+    values.email === ''
+  )
     errors.email = ERROR_MESSAGES.email.required;
-  if (!!values.email && !EMAIL_REGEX.test(values.email)) errors.email = ERROR_MESSAGES.email.invalid;
-  if (existingEmails?.find(email => email === values.email)) errors.email = ERROR_MESSAGES.email.exists(values.email);
+  if (!!values.email && !EMAIL_REGEX.test(values.email))
+    errors.email = ERROR_MESSAGES.email.invalid;
+  if (existingEmails?.find(email => email === values.email))
+    errors.email = ERROR_MESSAGES.email.exists(values.email);
   return { errors, values };
 };

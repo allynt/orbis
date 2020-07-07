@@ -23,8 +23,13 @@ const SceneListItem = ({
   setSelectedMoreInfo,
   toggleMoreInfoDialog,
 }) => {
-  const visualisationId = useSelector(state => state.satellites.visualisationId);
-  const thumbnailUrl = scene.thumbnail_url.replace(/{VISUALISATION_ID}/, visualisationId);
+  const visualisationId = useSelector(
+    state => state.satellites.visualisationId,
+  );
+  const thumbnailUrl = scene.thumbnail_url.replace(
+    /{VISUALISATION_ID}/,
+    visualisationId,
+  );
 
   return (
     <div key={`${scene.id}-${index}`} className={styles.scene}>
@@ -41,7 +46,11 @@ const SceneListItem = ({
       >
         <div className={styles.thumbContainer}>
           <picture>
-            <img className={styles.thumbnail} src={thumbnailUrl} alt="Thumbnail of a satellite scene" />
+            <img
+              className={styles.thumbnail}
+              src={thumbnailUrl}
+              alt="Thumbnail of a satellite scene"
+            />
           </picture>
         </div>
         <ul className={styles.metadata}>
@@ -65,7 +74,9 @@ const SceneListItem = ({
         </div>
 
         <div className={styles.freeProductContainer}>
-          {scene.tier === 'free' && <span className={styles.freeProduct}>Free Product</span>}
+          {scene.tier === 'free' && (
+            <span className={styles.freeProduct}>Free Product</span>
+          )}
         </div>
       </div>
     </div>

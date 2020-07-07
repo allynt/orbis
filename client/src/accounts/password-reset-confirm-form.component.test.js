@@ -8,7 +8,13 @@ import { createMemoryHistory } from 'history';
 import PasswordResetConfirmForm from './password-reset-confirm-form.component';
 import { status } from './accounts.slice';
 
-const renderComponent = (history, confirmResetPassword, resetStatus, match, error) =>
+const renderComponent = (
+  history,
+  confirmResetPassword,
+  resetStatus,
+  match,
+  error,
+) =>
   render(
     <Router history={history}>
       <PasswordResetConfirmForm
@@ -55,7 +61,9 @@ describe('Password Reset Form Component', () => {
 
     expect(container.querySelector('form')).toBeInTheDocument();
     expect(getByPlaceholderText('New Password')).toBeInTheDocument();
-    expect(getByPlaceholderText('New Password Confirmation')).toBeInTheDocument();
+    expect(
+      getByPlaceholderText('New Password Confirmation'),
+    ).toBeInTheDocument();
     // Check password strength component exists
     expect(getByText('Password Strength:')).toBeInTheDocument();
     // Check form submit button
@@ -107,7 +115,13 @@ describe('Password Reset Form Component', () => {
   it('should not call `confirmResetPassword` function when form is invalid and `Reset Password` button clicked', () => {
     fetch.mockResponse(JSON.stringify({}, { status: 200 }));
 
-    const { getByText } = renderComponent(history, confirmResetPassword, resetStatus, match, error);
+    const { getByText } = renderComponent(
+      history,
+      confirmResetPassword,
+      resetStatus,
+      match,
+      error,
+    );
 
     fireEvent.click(getByText('Reset Password'));
     expect(fetch.mock.calls.length).toBe(0);
@@ -124,8 +138,12 @@ describe('Password Reset Form Component', () => {
       error,
     );
 
-    fireEvent.change(getByPlaceholderText('New Password'), { target: { value: 'newpassword' } });
-    fireEvent.change(getByPlaceholderText('New Password Confirmation'), { target: { value: 'newpassword' } });
+    fireEvent.change(getByPlaceholderText('New Password'), {
+      target: { value: 'newpassword' },
+    });
+    fireEvent.change(getByPlaceholderText('New Password Confirmation'), {
+      target: { value: 'newpassword' },
+    });
     fireEvent.click(getByText('I agree with'));
 
     fireEvent.click(getByText('Reset Password'));
@@ -148,7 +166,13 @@ describe('Password Reset Form Component', () => {
     resetStatus = status.NONE;
     error = ['Test Error 1', 'Test Error 2', 'Test Error 3'];
 
-    const { getByTestId } = renderComponent(history, confirmResetPassword, resetStatus, match, error);
+    const { getByTestId } = renderComponent(
+      history,
+      confirmResetPassword,
+      resetStatus,
+      match,
+      error,
+    );
 
     expect(history.location.pathname).toEqual('/');
     expect(getByTestId('error-well')).toBeInTheDocument();

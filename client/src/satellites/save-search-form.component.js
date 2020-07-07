@@ -10,7 +10,10 @@ import formStyles from '../forms.module.css';
 import styles from './save-search-form.module.css';
 
 const SaveSearchForm = ({ query, close, saveSearch }) => {
-  const { handleChange, handleSubmit, values, errors } = useForm(onSubmit, validate);
+  const { handleChange, handleSubmit, values, errors } = useForm(
+    onSubmit,
+    validate,
+  );
 
   function onSubmit() {
     saveSearch({ ...values, ...query });
@@ -20,7 +23,10 @@ const SaveSearchForm = ({ query, close, saveSearch }) => {
   return (
     <div className={styles.saveSearchForm}>
       <form className={formStyles.form} onSubmit={handleSubmit}>
-        <p>Please name your search. Find your saved searches alongside your saved AOIs under "Saved Searches"</p>
+        <p>
+          Please name your search. Find your saved searches alongside your saved
+          AOIs under "Saved Searches"
+        </p>
         <div className={formStyles.fields}>
           <div className={formStyles.row}>
             <Textfield
@@ -32,14 +38,18 @@ const SaveSearchForm = ({ query, close, saveSearch }) => {
               autoFocus
             />
           </div>
-          {errors.name && <p className={formStyles.errorMessage}>{errors.name}</p>}
+          {errors.name && (
+            <p className={formStyles.errorMessage}>{errors.name}</p>
+          )}
         </div>
 
         <div className={formStyles.buttons}>
           <Button
             type="submit"
             theme="primary"
-            disabled={Object.keys(errors).length > 0 || Object.keys(values).length === 0}
+            disabled={
+              Object.keys(errors).length > 0 || Object.keys(values).length === 0
+            }
           >
             Save Search
           </Button>

@@ -169,7 +169,10 @@ describe('Satellite Scene List Item Component', () => {
     );
 
     fireEvent.click(container.querySelector('.moreInfo'));
-    expect(setSelectedMoreInfo).toHaveBeenCalledWith({ type: 'Scene', data: scenes[0] });
+    expect(setSelectedMoreInfo).toHaveBeenCalledWith({
+      type: 'Scene',
+      data: scenes[0],
+    });
   });
 
   it('should display a dialog when `more info` clicked', () => {

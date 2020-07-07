@@ -11,7 +11,12 @@ export const filterValueIsPresent = (object, item) => {
     throw new TypeError('item cannot be null or undefined');
   }
   const { layer, property, value } = item;
-  return !!object && !!object[layer] && !!object[layer][property] && object[layer][property].includes(value);
+  return (
+    !!object &&
+    !!object[layer] &&
+    !!object[layer][property] &&
+    object[layer][property].includes(value)
+  );
 };
 
 /**
@@ -58,7 +63,10 @@ export const getFilterOptions = (filter, filterableCollection) =>
       if (typeof value === 'object' && !Array.isArray(value)) {
         const properties = Object.keys(value);
         for (let property of properties) {
-          acc = { ...acc, ...getFilterOptions(`${filter}.${property}`, filterableCollection) };
+          acc = {
+            ...acc,
+            ...getFilterOptions(`${filter}.${property}`, filterableCollection),
+          };
         }
         return acc;
       }
