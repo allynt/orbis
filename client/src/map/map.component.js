@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { StaticMap } from 'react-map-gl';
 
 import {
-  isLoaded,
+  isLoaded as onBookmarkLoaded,
   selectedBookmarkSelector,
   isLoadingSelector as bookmarksLoadingSelector,
 } from '../bookmarks/bookmark.slice';
@@ -34,7 +34,7 @@ const Map = () => {
   );
 
   useEffect(() => {
-    dispatch(isLoaded());
+    dispatch(onBookmarkLoaded());
   }, [selectedBookmark, dispatch]);
   return (
     <>
