@@ -23,7 +23,6 @@ import {
 } from './map.slice';
 import { mapboxTokenSelector, mapStylesSelector } from 'app.slice';
 
-import 'react-map-gl-geocoder/dist/mapbox-gl-geocoder.css';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import styles from './map.module.css';
 
