@@ -11,7 +11,10 @@ import useForm from '@astrosat/astrosat-ui/dist/forms/use-form';
 import { InfoIcon, ErrorIcon } from '@astrosat/astrosat-ui/';
 import validate from './satellite-search-form.validator';
 
-import { setCurrentSatelliteSearchQuery, fetchSatelliteScenes } from './satellites.slice';
+import {
+  setCurrentSatelliteSearchQuery,
+  fetchSatelliteScenes,
+} from './satellites.slice';
 
 import { RESULTS, SATELLITE, TIER } from './satellites-panel.component';
 import { getGeometryAreaKmSquared } from 'utils/geometry';
@@ -83,21 +86,37 @@ const defaults = {
   },
 };
 
-const SatelliteSearchForm = ({ satellites, geometry, setVisiblePanel, setSelectedMoreInfo, toggleMoreInfoDialog }) => {
+const SatelliteSearchForm = ({
+  satellites,
+  geometry,
+  setVisiblePanel,
+  setSelectedMoreInfo,
+  toggleMoreInfoDialog,
+}) => {
   const dispatch = useDispatch();
 
   const [startDate, setStartDate] = useState(subDays(new Date(), DAYS_IN_PAST));
   const [endDate, setEndDate] = useState(new Date());
-  const currentSearchQuery = useSelector(state => state.satellites.currentSearchQuery);
+  const currentSearchQuery = useSelector(
+    state => state.satellites.currentSearchQuery,
+  );
   const maximumAoiArea = useSelector(state => state.app.config.maximumAoiArea);
-  const geometryTooLarge = geometry && getGeometryAreaKmSquared(geometry) > maximumAoiArea;
+  const geometryTooLarge =
+    geometry && getGeometryAreaKmSquared(geometry) > maximumAoiArea;
 
-  const { handleChange, handleSubmit, values, setValues } = useForm(onSubmit, validate, null, defaults);
+  const { handleChange, handleSubmit, values, setValues } = useForm(
+    onSubmit,
+    validate,
+    null,
+    defaults,
+  );
 
   useEffect(() => {
     if (currentSearchQuery) {
-      currentSearchQuery.start_date && setStartDate(new Date(currentSearchQuery.start_date));
-      currentSearchQuery.end_date && setEndDate(new Date(currentSearchQuery.end_date));
+      currentSearchQuery.start_date &&
+        setStartDate(new Date(currentSearchQuery.start_date));
+      currentSearchQuery.end_date &&
+        setEndDate(new Date(currentSearchQuery.end_date));
       const convertedSearch = savedSearchToFormValues(currentSearchQuery);
       setValues(convertedSearch);
     }
@@ -205,11 +224,17 @@ const SatelliteSearchForm = ({ satellites, geometry, setVisiblePanel, setSelecte
           <div className={styles.errorContainerBackground}>
             <div className={styles.errorContainer}>
               <ErrorIcon classes={styles.errorIcon} />
-              <p className={styles.errorMessage}>AOI is too large, redraw or zoom in</p>
+              <p className={styles.errorMessage}>
+                AOI is too large, redraw or zoom in
+              </p>
             </div>
           </div>
         )}
-        <Button type="submit" disabled={geometryTooLarge} className={sideMenuStyles.button}>
+        <Button
+          type="submit"
+          disabled={geometryTooLarge}
+          className={sideMenuStyles.button}
+        >
           Search
         </Button>
       </div>

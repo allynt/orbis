@@ -29,10 +29,19 @@ const MapLayout = () => {
   const toolbarItems = getToolbarItems(dispatch, user);
 
   const mapStyle = useSelector(state => state.map.selectedMapStyle);
-  const selectedPinnedScenes = useSelector(state => state.satellites.selectedPinnedScenes);
+  const selectedPinnedScenes = useSelector(
+    state => state.satellites.selectedPinnedScenes,
+  );
 
   const [compareRatio, setCompareRatio] = useState(0.5);
-  const [bounds, setBounds] = useState({ top: 0, right: 0, bottom: 0, left: 0, width: 0, height: 0 });
+  const [bounds, setBounds] = useState({
+    top: 0,
+    right: 0,
+    bottom: 0,
+    left: 0,
+    width: 0,
+    height: 0,
+  });
 
   const compareMove = event => {
     event = event.touches ? event.touches[0] : event;
@@ -82,7 +91,9 @@ const MapLayout = () => {
         {({ measureRef }) => (
           <div
             ref={measureRef}
-            className={`${styles.layout} ${isCompareMode ? styles.compareMode : styles[`layout-${mapCount}`]}`}
+            className={`${styles.layout} ${
+              isCompareMode ? styles.compareMode : styles[`layout-${mapCount}`]
+            }`}
             data-testid="map-container"
           >
             {times(mapCount, i => (
@@ -90,14 +101,22 @@ const MapLayout = () => {
                 key={i}
                 style={
                   i === 0
-                    ? { position: 'absolute', width: '100%', height: '100%', top: 0, left: 0 }
+                    ? {
+                        position: 'absolute',
+                        width: '100%',
+                        height: '100%',
+                        top: 0,
+                        left: 0,
+                      }
                     : {
                         position: 'absolute',
                         width: '100%',
                         height: '100%',
                         top: 0,
                         left: 0,
-                        clip: `rect(0px, 999em, 100vh, ${compareRatio * bounds.width}px)`,
+                        clip: `rect(0px, 999em, 100vh, ${
+                          compareRatio * bounds.width
+                        }px)`,
                       }
                 }
               >
@@ -123,7 +142,9 @@ const MapLayout = () => {
             {isCompareMode && (
               <div
                 className={styles.compare}
-                style={{ transform: `translate(${compareRatio * bounds.width}px, 0px` }}
+                style={{
+                  transform: `translate(${compareRatio * bounds.width}px, 0px`,
+                }}
                 onMouseDown={compareDown}
                 onTouchStart={compareDown}
               >

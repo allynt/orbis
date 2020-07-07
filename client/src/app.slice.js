@@ -29,7 +29,11 @@ const appSlice = createSlice({
   },
 });
 
-export const { appConfigSuccess, appConfigFailure, notYetImplemented } = appSlice.actions;
+export const {
+  appConfigSuccess,
+  appConfigFailure,
+  notYetImplemented,
+} = appSlice.actions;
 
 export const fetchAppConfig = () => async dispatch => {
   const response = await fetch('/api/app/config', { credentials: 'include' });
@@ -37,7 +41,12 @@ export const fetchAppConfig = () => async dispatch => {
   if (!response.ok) {
     const message = `${response.status} ${response.statusText}`;
 
-    NotificationManager.error(message, `Fetching App Config Error - ${response.statusText}`, 50000, () => {});
+    NotificationManager.error(
+      message,
+      `Fetching App Config Error - ${response.statusText}`,
+      50000,
+      () => {},
+    );
 
     return dispatch(appConfigFailure({ message }));
   }

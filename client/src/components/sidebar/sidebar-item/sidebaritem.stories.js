@@ -20,7 +20,10 @@ export const Icon = () => (
 );
 
 export const Label = () => (
-  <SidebarItem selected={boolean('Selected', false)} onClick={action('onClick')}>
+  <SidebarItem
+    selected={boolean('Selected', false)}
+    onClick={action('onClick')}
+  >
     Item Label
   </SidebarItem>
 );

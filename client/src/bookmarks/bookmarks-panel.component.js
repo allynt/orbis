@@ -4,7 +4,12 @@ import { useDispatch, useSelector } from 'react-redux';
 import BookmarkForm from './bookmark-form.component';
 import BookmarkList from './bookmarks-list.component';
 
-import { fetchBookmarks, addBookmark, selectBookmark, deleteBookmark } from './bookmark.slice';
+import {
+  fetchBookmarks,
+  addBookmark,
+  selectBookmark,
+  deleteBookmark,
+} from './bookmark.slice';
 
 import styles from '../side-menu/side-menu.module.css';
 
@@ -47,8 +52,15 @@ const BookmarksPanel = ({ map }) => {
 
   return (
     <div className={styles.container}>
-      <BookmarkForm bookmarkTitles={bookmarks.map(b => b.title.toLowerCase())} submit={submit} />
-      <BookmarkList bookmarks={bookmarks} selectBookmark={chooseBookmark} deleteBookmark={deleteBookmarkItem} />
+      <BookmarkForm
+        bookmarkTitles={bookmarks.map(b => b.title.toLowerCase())}
+        submit={submit}
+      />
+      <BookmarkList
+        bookmarks={bookmarks}
+        selectBookmark={chooseBookmark}
+        deleteBookmark={deleteBookmarkItem}
+      />
     </div>
   );
 };

@@ -70,7 +70,9 @@ describe('Saved Satellite Search List Component', () => {
     searchItems.forEach((item, i) => {
       expect(within(item).getByText(savedSearches[i].name)).toBeInTheDocument();
       expect(
-        within(item).getByText(`${savedSearches[i].start_date} to ${savedSearches[i].end_date}`),
+        within(item).getByText(
+          `${savedSearches[i].start_date} to ${savedSearches[i].end_date}`,
+        ),
       ).toBeInTheDocument();
       expect(within(item).getByText('Reload')).toBeInTheDocument();
       expect(within(item).getByText('Delete')).toBeInTheDocument();
@@ -92,7 +94,9 @@ describe('Saved Satellite Search List Component', () => {
     searchItems.forEach((item, i) => {
       expect(within(item).getByText(savedSearches[i].name)).toBeInTheDocument();
       expect(
-        within(item).getByText(`${savedSearches[i].start_date} to ${savedSearches[i].end_date}`),
+        within(item).getByText(
+          `${savedSearches[i].start_date} to ${savedSearches[i].end_date}`,
+        ),
       ).toBeInTheDocument();
       expect(within(item).getByText('Reload')).toBeInTheDocument();
       expect(within(item).getByText('Delete')).toBeInTheDocument();
@@ -126,6 +130,8 @@ describe('Saved Satellite Search List Component', () => {
     );
     const searchItem = container.querySelectorAll('li')[0];
     fireEvent.click(within(searchItem).getByText('Delete'));
-    expect(deleteSavedSatelliteSearch).toHaveBeenCalledWith(savedSearches[0].id);
+    expect(deleteSavedSatelliteSearch).toHaveBeenCalledWith(
+      savedSearches[0].id,
+    );
   });
 });

@@ -17,10 +17,16 @@ const BookmarkForm = ({ bookmarkTitles, submit }) => {
     submit(values);
   }
 
-  const { handleChange, handleSubmit, values, errors } = useForm(onSubmit, validate(bookmarkTitles));
+  const { handleChange, handleSubmit, values, errors } = useForm(
+    onSubmit,
+    validate(bookmarkTitles),
+  );
 
   return (
-    <form className={`${formStyles.form} ${bookmarkStyles.form}`} onSubmit={handleSubmit}>
+    <form
+      className={`${formStyles.form} ${bookmarkStyles.form}`}
+      onSubmit={handleSubmit}
+    >
       <div className={`${formStyles.fields} ${bookmarkStyles.fields}`}>
         <Textfield
           name="title"
@@ -30,7 +36,9 @@ const BookmarkForm = ({ bookmarkTitles, submit }) => {
           required
           autoFocus
         />
-        {errors.title && <p className={formStyles.errorMessage}>{errors.title}</p>}
+        {errors.title && (
+          <p className={formStyles.errorMessage}>{errors.title}</p>
+        )}
 
         <Textfield
           name="description"
@@ -40,7 +48,12 @@ const BookmarkForm = ({ bookmarkTitles, submit }) => {
         />
       </div>
 
-      <Button type="submit" disabled={Object.keys(errors).length > 0 || Object.keys(values).length === 0}>
+      <Button
+        type="submit"
+        disabled={
+          Object.keys(errors).length > 0 || Object.keys(values).length === 0
+        }
+      >
         Save Map
       </Button>
     </form>

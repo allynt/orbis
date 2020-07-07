@@ -18,22 +18,36 @@ describe('SidebarItem', () => {
 
   it('Calls the onClick function when clicked', () => {
     const onClick = jest.fn();
-    const { getByText } = render(<SidebarItem onClick={onClick}>Hello</SidebarItem>);
+    const { getByText } = render(
+      <SidebarItem onClick={onClick}>Hello</SidebarItem>,
+    );
     userEvent.click(getByText('Hello'));
     expect(onClick).toHaveBeenCalled();
   });
 
   it('Calls the onClick function when Enter is pressed', () => {
     const onClick = jest.fn();
-    const { getByText } = render(<SidebarItem onClick={onClick}>Hello</SidebarItem>);
-    fireEvent.keyUp(getByText('Hello'), { key: 'Enter', code: 13, keyCode: 13 });
+    const { getByText } = render(
+      <SidebarItem onClick={onClick}>Hello</SidebarItem>,
+    );
+    fireEvent.keyUp(getByText('Hello'), {
+      key: 'Enter',
+      code: 13,
+      keyCode: 13,
+    });
     expect(onClick).toHaveBeenCalled();
   });
 
   it('Calls the onClick function when Space is pressed', () => {
     const onClick = jest.fn();
-    const { getByText } = render(<SidebarItem onClick={onClick}>Hello</SidebarItem>);
-    fireEvent.keyUp(getByText('Hello'), { key: 'Space', code: 32, keyCode: 32 });
+    const { getByText } = render(
+      <SidebarItem onClick={onClick}>Hello</SidebarItem>,
+    );
+    fireEvent.keyUp(getByText('Hello'), {
+      key: 'Space',
+      code: 32,
+      keyCode: 32,
+    });
     expect(onClick).toHaveBeenCalled();
   });
 

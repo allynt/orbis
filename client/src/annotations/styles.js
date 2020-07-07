@@ -36,7 +36,12 @@ export default [
   {
     id: 'gl-draw-aoi-fill-active',
     type: 'fill',
-    filter: ['all', ['==', 'active', 'true'], ['==', '$type', 'Polygon'], ['==', 'user_drawType', 'AOI']],
+    filter: [
+      'all',
+      ['==', 'active', 'true'],
+      ['==', '$type', 'Polygon'],
+      ['==', 'user_drawType', 'AOI'],
+    ],
     paint: {
       'fill-color': 'red',
       'fill-outline-color': 'yellow',
@@ -46,7 +51,12 @@ export default [
   {
     id: 'gl-draw-polygon-fill-inactive',
     type: 'fill',
-    filter: ['all', ['==', 'active', 'false'], ['==', '$type', 'Polygon'], ['!=', 'mode', 'static']],
+    filter: [
+      'all',
+      ['==', 'active', 'false'],
+      ['==', '$type', 'Polygon'],
+      ['!=', 'mode', 'static'],
+    ],
     paint: {
       'fill-color': ['get', 'user_fillColour'],
       // 'fill-color': 'blue',
@@ -254,7 +264,12 @@ export default [
   {
     id: 'gl-draw-polygon-and-line-vertex-stroke-inactive',
     type: 'circle',
-    filter: ['all', ['==', 'meta', 'vertex'], ['==', '$type', 'Point'], ['!=', 'mode', 'static']],
+    filter: [
+      'all',
+      ['==', 'meta', 'vertex'],
+      ['==', '$type', 'Point'],
+      ['!=', 'mode', 'static'],
+    ],
     paint: {
       'circle-radius': 5,
       'circle-color': '#fff',
@@ -263,7 +278,12 @@ export default [
   {
     id: 'gl-draw-polygon-and-line-vertex-inactive',
     type: 'circle',
-    filter: ['all', ['==', 'meta', 'vertex'], ['==', '$type', 'Point'], ['!=', 'mode', 'static']],
+    filter: [
+      'all',
+      ['==', 'meta', 'vertex'],
+      ['==', '$type', 'Point'],
+      ['!=', 'mode', 'static'],
+    ],
     paint: {
       'circle-radius': 3,
       'circle-color': '#fbb03b',
@@ -288,7 +308,12 @@ export default [
   {
     id: 'gl-draw-point-stroke-active',
     type: 'circle',
-    filter: ['all', ['==', '$type', 'Point'], ['==', 'active', 'true'], ['!=', 'meta', 'midpoint']],
+    filter: [
+      'all',
+      ['==', '$type', 'Point'],
+      ['==', 'active', 'true'],
+      ['!=', 'meta', 'midpoint'],
+    ],
     paint: {
       'circle-radius': 7,
       'circle-color': '#fff',
@@ -312,7 +337,12 @@ export default [
   {
     id: 'gl-draw-point-active',
     type: 'circle',
-    filter: ['all', ['==', '$type', 'Point'], ['!=', 'meta', 'midpoint'], ['==', 'active', 'true']],
+    filter: [
+      'all',
+      ['==', '$type', 'Point'],
+      ['!=', 'meta', 'midpoint'],
+      ['==', 'active', 'true'],
+    ],
     paint: {
       'circle-radius': 5,
       'circle-color': 'blue',

@@ -16,7 +16,12 @@ const Taco = () => {
   return (
     <div>
       <label>
-        Enable Tacos: <input type="checkbox" checked={tacos} onChange={e => setTacos(e.target.checked)} />
+        Enable Tacos:{' '}
+        <input
+          type="checkbox"
+          checked={tacos}
+          onChange={e => setTacos(e.target.checked)}
+        />
       </label>
     </div>
   );

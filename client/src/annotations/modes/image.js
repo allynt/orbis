@@ -3,7 +3,7 @@ import Constants from '@mapbox/mapbox-gl-draw/src/constants';
 
 const ImageMode = { ...MapboxDraw.modes.draw_point };
 
-ImageMode.onSetup = function(opts) {
+ImageMode.onSetup = function (opts) {
   const props = MapboxDraw.modes.draw_point.onSetup.call(this, opts);
   props.point.properties = {
     ...props.point.properties,
@@ -15,7 +15,7 @@ ImageMode.onSetup = function(opts) {
   };
 };
 
-ImageMode.onClick = ImageMode.onTap = function(state, event) {
+ImageMode.onClick = ImageMode.onTap = function (state, event) {
   const {
     lngLat: { lng, lat },
   } = event;
@@ -24,10 +24,12 @@ ImageMode.onClick = ImageMode.onTap = function(state, event) {
   state.point.updateCoordinate('', lng, lat);
 };
 
-ImageMode.toDisplayFeatures = function(state, geojson, display) {
+ImageMode.toDisplayFeatures = function (state, geojson, display) {
   console.log('DISPLAY: ', state, geojson);
   const isActivePoint = geojson.properties.id === state.point.id;
-  geojson.properties.active = isActivePoint ? Constants.activeStates.ACTIVE : Constants.activeStates.INACTIVE;
+  geojson.properties.active = isActivePoint
+    ? Constants.activeStates.ACTIVE
+    : Constants.activeStates.INACTIVE;
   if (!isActivePoint) return display(geojson);
 
   return display(geojson);

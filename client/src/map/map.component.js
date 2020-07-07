@@ -6,7 +6,11 @@ import '@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css';
 import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder';
 import '@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css';
 import * as FileSaver from 'file-saver';
-import mapboxgl, { AttributionControl, NavigationControl, ScaleControl } from 'mapbox-gl';
+import mapboxgl, {
+  AttributionControl,
+  NavigationControl,
+  ScaleControl,
+} from 'mapbox-gl';
 import RotateMode from 'mapbox-gl-draw-rotate-mode';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import { useDispatch, useSelector } from 'react-redux';
@@ -17,7 +21,11 @@ import LoadMask from '@astrosat/astrosat-ui/dist/load-mask/load-mask';
 import { LayersIcon } from '@astrosat/astrosat-ui/';
 
 import { selectMapStyle, saveMap, setViewport } from './map.slice';
-import { selectDataToken, selectFilteredData, selectInactiveLayers } from '../data-layers/data-layers.slice';
+import {
+  selectDataToken,
+  selectFilteredData,
+  selectInactiveLayers,
+} from '../data-layers/data-layers.slice';
 import { isLoaded } from '../bookmarks/bookmark.slice';
 import { closeMenu } from '../side-menu/side-menu.slice';
 
@@ -73,22 +81,32 @@ const Map = ({
   selectedPinnedScenes,
   comparisonScene,
 }) => {
-  const accessToken = useSelector(state => (state.app.config ? state.app.config.mapbox_token : null));
+  const accessToken = useSelector(state =>
+    state.app.config ? state.app.config.mapbox_token : null,
+  );
   const dataAuthToken = useSelector(selectDataToken);
-  const { mapContainer, mapInstance } = useMapbox(style, accessToken, dataAuthToken);
+  const { mapContainer, mapInstance } = useMapbox(
+    style,
+    accessToken,
+    dataAuthToken,
+  );
 
   useEffect(() => {
     if (setMap) setMap(mapInstance);
   }, [setMap, mapInstance]);
 
-  const [isMapStyleSwitcherVisible, setIsMapStyleSwitcherVisible] = useState(false);
+  const [isMapStyleSwitcherVisible, setIsMapStyleSwitcherVisible] = useState(
+    false,
+  );
   const mapStyles = useSelector(state => state.app.config.mapStyles);
   const selectedMapStyle = useSelector(state => state.map.selectedMapStyle);
   const chooseMapStyle = mapStyle => dispatch(selectMapStyle(mapStyle));
 
   const isSaveMap = useSelector(state => state.map.saveMap);
 
-  const selectedBookmark = useSelector(state => state.bookmarks.selectedBookmark);
+  const selectedBookmark = useSelector(
+    state => state.bookmarks.selectedBookmark,
+  );
 
   const selectedStory = useSelector(state => state.stories.selectedStory);
   const [selectedChapter, setSelectedChapter] = useState(null);
@@ -101,7 +119,9 @@ const Map = ({
   const nonSelectedLayers = useSelector(selectInactiveLayers);
   const scenes = useSelector(state => state.satellites.scenes);
   const selectedScene = useSelector(state => state.satellites.selectedScene);
-  const visualisationId = useSelector(state => state.satellites.visualisationId);
+  const visualisationId = useSelector(
+    state => state.satellites.visualisationId,
+  );
 
   const popupRef = useRef(null);
 
@@ -124,7 +144,8 @@ const Map = ({
           const layerId = `${layer.name}${suffix}`;
           map.getLayer(layerId) && map.removeLayer(layerId);
         });
-        map.getSource(`${layer.name}-source`) && map.removeSource(`${layer.name}-source`);
+        map.getSource(`${layer.name}-source`) &&
+          map.removeSource(`${layer.name}-source`);
       });
   };
 
@@ -302,7 +323,11 @@ const Map = ({
             // where the styling starts to break.
             let radi = [];
             for (let i = 0; i < 20; i++) {
-              radi = [...radi, i, ['*', ['sqrt', ['to-number', ['get', 'point_count'], 0]], i]];
+              radi = [
+                ...radi,
+                i,
+                ['*', ['sqrt', ['to-number', ['get', 'point_count'], 0]], i],
+              ];
             }
 
             let clusterlayerName = `${layer.name}-cluster`;
@@ -341,7 +366,11 @@ const Map = ({
               id: nonClusteredInfrastructureName,
               source: sourceId,
               type: 'circle',
-              filter: ['all', ['!', ['has', 'point_count']], ['!', ['has', 'Type']]],
+              filter: [
+                'all',
+                ['!', ['has', 'point_count']],
+                ['!', ['has', 'Type']],
+              ],
               paint: {
                 'circle-color': '#f6be00',
                 'circle-opacity': 1,
@@ -356,7 +385,11 @@ const Map = ({
               id: `${layer.name}-infrastructure-label`,
               source: sourceId,
               type: 'symbol',
-              filter: ['all', ['!', ['has', 'point_count']], ['!', ['has', 'Type']]],
+              filter: [
+                'all',
+                ['!', ['has', 'point_count']],
+                ['!', ['has', 'Type']],
+              ],
               layout: {
                 'icon-image': '{type}',
                 'icon-size': 0.75,
@@ -376,7 +409,11 @@ const Map = ({
                 'circle-color': [
                   'case',
                   ...personTypes.reduce((acc, personType) => {
-                    return [...acc, ['==', ['get', 'Type'], personType.name], personType.color];
+                    return [
+                      ...acc,
+                      ['==', ['get', 'Type'], personType.name],
+                      personType.color,
+                    ];
                   }, []),
                   'black',
                 ],
@@ -449,7 +486,10 @@ const Map = ({
         const sourceId = `${selectedScene.id}-source`;
         const layerId = `${selectedScene.id}-layer`;
 
-        const tileUrl = selectedScene.tile_url.replace(/{VISUALISATION_ID}/, visualisationId);
+        const tileUrl = selectedScene.tile_url.replace(
+          /{VISUALISATION_ID}/,
+          visualisationId,
+        );
 
         map.addSource(sourceId, {
           type: 'raster',
@@ -488,7 +528,10 @@ const Map = ({
         const sourceId = `${comparisonScene.id}-source`;
         const layerId = `${comparisonScene.id}-layer`;
 
-        const tileUrl = comparisonScene.tile_url.replace(/{VISUALISATION_ID}/, visualisationId);
+        const tileUrl = comparisonScene.tile_url.replace(
+          /{VISUALISATION_ID}/,
+          visualisationId,
+        );
 
         map.addSource(sourceId, {
           type: 'raster',
@@ -534,7 +577,11 @@ const Map = ({
           map.flyTo(selectedChapter.location);
         }
 
-        if (selectedChapter && selectedChapter.onEnter && selectedChapter.onEnter.length > 0) {
+        if (
+          selectedChapter &&
+          selectedChapter.onEnter &&
+          selectedChapter.onEnter.length > 0
+        ) {
           console.log('DO MAP LAYER STUFF');
           selectedChapter.onEnter.forEach(layer => {
             const sourceId = `${layer.id}-source`;
@@ -577,7 +624,11 @@ const Map = ({
 
   return (
     <>
-      <div ref={mapContainer} className={layoutStyles.map} data-testid={`map-${position}`} />
+      <div
+        ref={mapContainer}
+        className={layoutStyles.map}
+        data-testid={`map-${position}`}
+      />
 
       {isLoading && (
         <div className={layoutStyles.loadMask}>
@@ -592,14 +643,23 @@ const Map = ({
               <h3>{heading}</h3>
               <p className={layoutStyles.strapline}>{strapline}</p>
             </div>
-            <CloseButton className={layoutStyles.closeButton} onClick={() => dispatch(closeMenu())} />
+            <CloseButton
+              className={layoutStyles.closeButton}
+              onClick={() => dispatch(closeMenu())}
+            />
           </div>
 
           <div className={layoutStyles.sidebar}>
             {visibleMenuItem === DATA_LAYERS && <DataLayers />}
-            {visibleMenuItem === SATELLITE_LAYERS && <SatellitesPanel map={mapInstance} />}
-            {visibleMenuItem === ANNOTATIONS && <AnnotationsPanel map={mapInstance} />}
-            {visibleMenuItem === BOOKMARKS && <BookmarksPanel map={mapInstance} />}
+            {visibleMenuItem === SATELLITE_LAYERS && (
+              <SatellitesPanel map={mapInstance} />
+            )}
+            {visibleMenuItem === ANNOTATIONS && (
+              <AnnotationsPanel map={mapInstance} />
+            )}
+            {visibleMenuItem === BOOKMARKS && (
+              <BookmarksPanel map={mapInstance} />
+            )}
             {visibleMenuItem === STORIES && <StoriesPanel map={mapInstance} />}
             {visibleMenuItem === PROFILE && <Profile />}
             {visibleMenuItem === CHANGE_PASSWORD && <PasswordChangeForm />}
@@ -625,7 +685,9 @@ const Map = ({
       {selectedInfoFeatures &&
         ReactDOM.createPortal(
           <div className={layoutStyles.popup}>
-            {selectedInfoFeatures && <FeatureDetail features={selectedInfoFeatures} />}
+            {selectedInfoFeatures && (
+              <FeatureDetail features={selectedInfoFeatures} />
+            )}
           </div>,
           popupRef.current,
         )}
@@ -640,7 +702,10 @@ const Map = ({
               {selectedChapter && (
                 <div className={layoutStyles.chapter}>
                   <picture>
-                    <img src={selectedChapter.image} alt={selectedChapter.title} />
+                    <img
+                      src={selectedChapter.image}
+                      alt={selectedChapter.title}
+                    />
                   </picture>
 
                   <section>{selectedChapter.description}</section>
@@ -652,7 +717,9 @@ const Map = ({
                   theme="tertiary"
                   onClick={() => {
                     if (selectedChapter) {
-                      let index = selectedStory.chapters.indexOf(selectedChapter);
+                      let index = selectedStory.chapters.indexOf(
+                        selectedChapter,
+                      );
                       const previousChapter = selectedStory.chapters[--index];
                       if (previousChapter) {
                         setSelectedChapter(previousChapter);
@@ -666,7 +733,9 @@ const Map = ({
                   theme="Primary"
                   onClick={() => {
                     if (selectedChapter) {
-                      let index = selectedStory.chapters.indexOf(selectedChapter);
+                      let index = selectedStory.chapters.indexOf(
+                        selectedChapter,
+                      );
                       const nextChapter = selectedStory.chapters[++index];
                       if (nextChapter) {
                         setSelectedChapter(nextChapter);

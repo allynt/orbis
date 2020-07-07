@@ -31,7 +31,8 @@ window.onerror = (msg, url, line, col, error) => {
   extra += !error ? '' : '\nerror: ' + error;
 
   // You can view the information in an alert to see things working like this:
-  const errorMsg = 'Error: ' + msg + '\nurl: ' + url + '\nline: ' + line + extra;
+  const errorMsg =
+    'Error: ' + msg + '\nurl: ' + url + '\nline: ' + line + extra;
 
   // Report this error
   ReactGA.ga('send', 'exception', {

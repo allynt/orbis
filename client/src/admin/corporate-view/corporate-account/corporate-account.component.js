@@ -11,7 +11,10 @@ import { Field } from '../corporate-view.component';
 import styles from '../corporate-view.module.css';
 
 const CorporateAccount = ({ customer }) => {
-  const { handleChange, handleSubmit, values, errors } = useForm(onSubmit, validate);
+  const { handleChange, handleSubmit, values, errors } = useForm(
+    onSubmit,
+    validate,
+  );
 
   function onSubmit() {
     console.log('Values: ', values);
@@ -21,7 +24,11 @@ const CorporateAccount = ({ customer }) => {
     <ContentWrapper title="Corporate Account">
       <form className={styles.corporateAccount} onSubmit={handleSubmit}>
         <div className={styles.logoContainer}>
-          <img src={customer.logo} className={styles.logo} alt="Organisation Logo" />
+          <img
+            src={customer.logo}
+            className={styles.logo}
+            alt="Organisation Logo"
+          />
         </div>
 
         <Field>

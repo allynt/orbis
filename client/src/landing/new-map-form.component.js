@@ -12,7 +12,10 @@ import validate from '../bookmarks/bookmark-form.validator';
 import formStyles from '../forms.module.css';
 
 const NewMapForm = ({ regions, domains, bookmarkTitles, setViewport }) => {
-  const { handleChange, handleSubmit, values, errors } = useForm(onSubmit, validate(bookmarkTitles));
+  const { handleChange, handleSubmit, values, errors } = useForm(
+    onSubmit,
+    validate(bookmarkTitles),
+  );
   const history = useHistory();
 
   function onSubmit() {
@@ -33,7 +36,9 @@ const NewMapForm = ({ regions, domains, bookmarkTitles, setViewport }) => {
             autoFocus
           />
         </div>
-        {errors.title && <p className={formStyles.errorMessage}>{errors.title}</p>}
+        {errors.title && (
+          <p className={formStyles.errorMessage}>{errors.title}</p>
+        )}
 
         <div className={formStyles.row}>
           <Textfield
@@ -43,11 +48,18 @@ const NewMapForm = ({ regions, domains, bookmarkTitles, setViewport }) => {
             onChange={handleChange}
           />
         </div>
-        {errors.description && <p className={formStyles.errorMessage}>{errors.description}</p>}
+        {errors.description && (
+          <p className={formStyles.errorMessage}>{errors.description}</p>
+        )}
       </div>
 
       <div className={formStyles.row}>
-        <Select name="region" value={values.region || ''} options={regions} onChange={handleChange} />
+        <Select
+          name="region"
+          value={values.region || ''}
+          options={regions}
+          onChange={handleChange}
+        />
         <Select
           name="domain"
           value={values.domain || ''}
@@ -61,7 +73,9 @@ const NewMapForm = ({ regions, domains, bookmarkTitles, setViewport }) => {
         <Button
           type="submit"
           theme="primary"
-          disabled={Object.keys(errors).length > 0 || Object.keys(values).length === 0}
+          disabled={
+            Object.keys(errors).length > 0 || Object.keys(values).length === 0
+          }
         >
           Create
         </Button>

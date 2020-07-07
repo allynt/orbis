@@ -16,7 +16,12 @@ const Stories = () => {
   return (
     <div>
       <label>
-        Enable Stories: <input type="checkbox" checked={stories} onChange={e => setStories(e.target.checked)} />
+        Enable Stories:{' '}
+        <input
+          type="checkbox"
+          checked={stories}
+          onChange={e => setStories(e.target.checked)}
+        />
       </label>
     </div>
   );

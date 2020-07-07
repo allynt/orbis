@@ -11,7 +11,10 @@ import { Field } from '../corporate-view.component';
 import styles from '../corporate-view.module.css';
 
 const AdministratorProfile = ({ user }) => {
-  const { handleChange, handleSubmit, values, errors } = useForm(onSubmit, validate);
+  const { handleChange, handleSubmit, values, errors } = useForm(
+    onSubmit,
+    validate,
+  );
 
   function onSubmit() {
     console.log('Values: ', values);

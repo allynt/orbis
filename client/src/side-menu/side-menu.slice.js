@@ -15,7 +15,10 @@ const sideMenuSlice = createSlice({
       if (!state.isMenuVisible && payload !== 'screenshot') {
         state.visibleMenuItem = payload;
         state.isMenuVisible = true;
-      } else if ((state.isMenuVisible && state.visibleMenuItem === payload) || payload === 'screenshot') {
+      } else if (
+        (state.isMenuVisible && state.visibleMenuItem === payload) ||
+        payload === 'screenshot'
+      ) {
         state.visibleMenuItem = '';
         state.isMenuVisible = false;
       } else {

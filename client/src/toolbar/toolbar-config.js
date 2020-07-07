@@ -1,9 +1,21 @@
 import React from 'react';
 
-import { DataIcon, MapIcon, SatelliteIcon, StoryIcon, ProfileIcon } from '@astrosat/astrosat-ui';
+import {
+  DataIcon,
+  MapIcon,
+  SatelliteIcon,
+  StoryIcon,
+  ProfileIcon,
+} from '@astrosat/astrosat-ui';
 
 import { ReactComponent as AdminIcon } from './admin.svg';
-import { DATA_LAYERS, SATELLITE_LAYERS, BOOKMARKS, STORIES, PROFILE } from './toolbar-constants';
+import {
+  DATA_LAYERS,
+  SATELLITE_LAYERS,
+  BOOKMARKS,
+  STORIES,
+  PROFILE,
+} from './toolbar-constants';
 import featureToggles from '../feature-toggles';
 import { toggleMenu, setMenuHeadings } from '../side-menu/side-menu.slice';
 import { history } from 'root.reducer';

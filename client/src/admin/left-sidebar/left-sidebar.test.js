@@ -19,14 +19,18 @@ describe('Admin Side Menu Component', () => {
   });
 
   it('should return to user table view when the Orbis logo is clicked', () => {
-    const { getByTitle } = render(<LeftSidebar setVisiblePanel={setVisiblePanel} />);
+    const { getByTitle } = render(
+      <LeftSidebar setVisiblePanel={setVisiblePanel} />,
+    );
 
     userEvent.click(getByTitle('Orbis Admin Logo'));
     expect(setVisiblePanel).toHaveBeenCalledWith(ADMIN_VIEW.home);
   });
 
   it('should switch main panel views when side-menu buttons are clicked', () => {
-    const { getByText } = render(<LeftSidebar setVisiblePanel={setVisiblePanel} />);
+    const { getByText } = render(
+      <LeftSidebar setVisiblePanel={setVisiblePanel} />,
+    );
     userEvent.click(getByText('Home'));
     expect(setVisiblePanel).toHaveBeenCalledWith(ADMIN_VIEW.home);
   });
@@ -38,7 +42,9 @@ describe('Admin Side Menu Component', () => {
   });
 
   it('switches the main view to the licence dashboard when the licences item is clicked', () => {
-    const { getByText } = render(<LeftSidebar setVisiblePanel={setVisiblePanel} />);
+    const { getByText } = render(
+      <LeftSidebar setVisiblePanel={setVisiblePanel} />,
+    );
     userEvent.click(getByText('Licences'));
     expect(setVisiblePanel).toHaveBeenCalledWith(ADMIN_VIEW.licenceDashboard);
   });

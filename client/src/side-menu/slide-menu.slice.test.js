@@ -1,4 +1,8 @@
-import reducer, { toggleMenu, setMenuHeadings, closeMenu } from './side-menu.slice';
+import reducer, {
+  toggleMenu,
+  setMenuHeadings,
+  closeMenu,
+} from './side-menu.slice';
 
 describe('Side Menu Slice', () => {
   describe('Side Menu Reducer', () => {

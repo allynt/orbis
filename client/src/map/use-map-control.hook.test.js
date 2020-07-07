@@ -37,15 +37,21 @@ describe('useMapControl', () => {
     const map = mockMap();
     const control = jest.fn();
     renderHook(() => useMapControl(map, true, control, 'bottom-left'));
-    expect(map.addControl).toHaveBeenCalledWith(control.mock.instances[0], 'bottom-left');
+    expect(map.addControl).toHaveBeenCalledWith(
+      control.mock.instances[0],
+      'bottom-left',
+    );
   });
 
   it('removes the control from the map when condition changes', () => {
     const map = mockMap();
     const control = jest.fn();
-    const { rerender } = renderHook(({ condition }) => useMapControl(map, condition, control, 'bottom-left'), {
-      initialProps: { condition: true },
-    });
+    const { rerender } = renderHook(
+      ({ condition }) => useMapControl(map, condition, control, 'bottom-left'),
+      {
+        initialProps: { condition: true },
+      },
+    );
     expect(map.removeControl).not.toHaveBeenCalled();
     rerender({ condition: false });
     expect(map.removeControl).toHaveBeenCalledWith(control.mock.instances[0]);

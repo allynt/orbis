@@ -35,14 +35,27 @@ import featureToggles from '../feature-toggles';
 const DefaultComponent = ({ selectedLayer, dispatch }) => (
   <div>
     {selectedLayer.metadata.range && (
-      <Slider min={0} max={10} values={[1, 7]} onChange={() => console.log('Slider changed')} />
+      <Slider
+        min={0}
+        max={10}
+        values={[1, 7]}
+        onChange={() => console.log('Slider changed')}
+      />
     )}
 
     <div className={styles.buttons}>
-      <Button theme="primary" classNames={[styles.button]} onClick={() => console.log('Toggle Show/Hide Layer')}>
+      <Button
+        theme="primary"
+        classNames={[styles.button]}
+        onClick={() => console.log('Toggle Show/Hide Layer')}
+      >
         <HideIcon className={styles.icon} />
       </Button>
-      <Button theme="primary" classNames={[styles.button]} onClick={() => dispatch(removeLayer(selectedLayer))}>
+      <Button
+        theme="primary"
+        classNames={[styles.button]}
+        onClick={() => dispatch(removeLayer(selectedLayer))}
+      >
         <RemoveIcon className={styles.icon} />
       </Button>
     </div>
@@ -63,7 +76,10 @@ const DataLayers = () => {
   const selectedLayers = useSelector(selectActiveLayers);
   const availableFilters = useSelector(selectAvailableFilters);
   const currentFilters = useSelector(selectCurrentFilters);
-  const canFilter = availableFilters !== undefined && availableFilters !== null && !isEmpty(availableFilters);
+  const canFilter =
+    availableFilters !== undefined &&
+    availableFilters !== null &&
+    !isEmpty(availableFilters);
 
   // Create an array of sources, grouped by their domain.
   const domains = dataSources.reduce((acc, value) => {
@@ -98,12 +114,19 @@ const DataLayers = () => {
             // remains `people`.
             const [layerType] = selectedLayer.name.split('-').slice(-1);
             const Component =
-              detailComponentMap[layerType ? layerType : selectedLayer.name] ?? detailComponentMap['default'];
+              detailComponentMap[layerType ? layerType : selectedLayer.name] ??
+              detailComponentMap['default'];
 
             return (
-              <Detail key={selectedLayer.name} title={selectedLayer.metadata.label}>
+              <Detail
+                key={selectedLayer.name}
+                title={selectedLayer.metadata.label}
+              >
                 <div className={styles.detailContent}>
-                  <Component selectedLayer={selectedLayer} dispatch={dispatch} />
+                  <Component
+                    selectedLayer={selectedLayer}
+                    dispatch={dispatch}
+                  />
                 </div>
               </Detail>
             );
@@ -111,7 +134,10 @@ const DataLayers = () => {
         </div>
 
         <div className={styles.buttons}>
-          <AddNewCategoryIcon className={styles.addNewCategoryIcon} onClick={toggle} />
+          <AddNewCategoryIcon
+            className={styles.addNewCategoryIcon}
+            onClick={toggle}
+          />
           <Button theme="link" className={styles.addOrbButton} onClick={toggle}>
             Add New Orb
           </Button>
