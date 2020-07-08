@@ -66,7 +66,7 @@ export class ClusteredIconLayer extends CompositeLayer {
           fontWeight: this.props.fontWeight,
           getPosition: this.props.getPosition,
           getText: d =>
-            d.properties.cluster ? `${d.properties.point_count}` : `\r`,
+            d.properties.cluster ? `${d.properties.point_count}` : ` `,
           getSize: this.props.getTextSize,
           getColor: this.props.getTextColor,
           updateTriggers: {

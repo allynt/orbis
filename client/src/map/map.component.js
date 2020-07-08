@@ -23,7 +23,7 @@ import { mapboxTokenSelector, mapStylesSelector } from 'app.slice';
 import styles from './map.module.css';
 import { selectActiveLayers } from 'data-layers/data-layers.slice';
 
-import iconAtlas from './layers/hourglass/infrastructure/iconAtlas.png';
+import iconAtlas from './layers/hourglass/infrastructure/iconAtlas.svg';
 import iconMapping from './layers/hourglass/infrastructure/iconMapping.json';
 
 const Map = () => {
