@@ -3,7 +3,7 @@ import React, { useReducer, useRef } from 'react';
 
 // import { useDispatch } from 'react-redux';
 
-import mapboxgl from 'mapbox-gl';
+// import mapboxgl from 'mapbox-gl';
 import useMap from '../map/use-map.hook';
 import { useMapEvent } from '../map/use-map-event.hook';
 
@@ -240,12 +240,12 @@ const AnnotationsPanel = ({ map }) => {
       // feature and the one you meant.
       if (textLabelSelected) {
         console.log('POPUP CONTENT: ', popupRef);
-        new mapboxgl.Popup()
-          // .setLngLat(features[0].geometry.coordinates.slice())
-          .setLngLat(lngLat)
-          .setDOMContent(popupRef.current)
-          .on('close', () => console.log('Closing Popup'))
-          .addTo(map);
+        // new mapboxgl.Popup()
+        //   // .setLngLat(features[0].geometry.coordinates.slice())
+        //   .setLngLat(lngLat)
+        //   .setDOMContent(popupRef.current)
+        //   .on('close', () => console.log('Closing Popup'))
+        //   .addTo(map);
       }
     },
     [textLabelSelected],

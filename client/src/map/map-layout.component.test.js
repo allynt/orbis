@@ -1,87 +1,31 @@
 import React from 'react';
-import { cleanup, render } from '@testing-library/react';
-
-import { Provider } from 'react-redux';
-import configureMockStore from 'redux-mock-store';
-import thunk from 'redux-thunk';
-
+import { render } from '@testing-library/react';
+import configureStore from 'redux-mock-store';
 import MapLayout from './map-layout.component';
+import { Provider } from 'react-redux';
 
-jest.mock('mapbox-gl');
+jest.mock('@deck.gl/react');
 
-const mockStore = configureMockStore([thunk]);
+const mockStore = configureStore();
 
-const MAPSTYLES = [
-  {
-    id: 'light',
-    uri: 'mapbox://styles/mapbox/light-v10',
-    title: 'Light',
-  },
-  {
-    id: 'dark',
-    uri: 'mapbox://styles/mapbox/dark-v10',
-    title: 'Dark',
-  },
-];
-
-describe('Map Layout Component', () => {
-  beforeEach(() => {
-    fetch.resetMocks();
-  });
-
-  afterEach(cleanup);
-
-  it('should render a single map', () => {
-    fetch.mockResponse(JSON.stringify([], { status: 200 }));
-
-    const store = mockStore({
-      app: {
-        config: {
-          mapbox_token: 'token',
-          mapStyles: MAPSTYLES,
-        },
-      },
-      map: {
-        isMultiMapMode: false,
-        selectedMapStyle: MAPSTYLES[0],
-      },
-      data: {
-        layers: [],
-      },
-      satellites: {
-        selectedScene: null,
-        selectedPinnedScenes: [],
-      },
-      annotations: {
-        textLabelSelected: false,
-      },
-      bookmarks: {
-        selectedBookmarks: [],
-      },
-      accounts: {
-        userKey: '123',
-        user: {
-          id: 1,
-          roles: [],
-        },
-        error: null,
-      },
-      sidebar: {
-        isMenuVisible: false,
-        visibleMenuItem: '',
-      },
-      stories: {
-        stories: [],
-        selectedStory: null,
-      },
-    });
-
-    const { container } = render(
-      <Provider store={store}>
-        <MapLayout count={1} />
+describe('<MapLayout />', () => {
+  it("does not show the toolbar if there's no user", () => {
+    const { queryByTitle } = render(
+      <Provider store={mockStore()}>
+        <MapLayout />
       </Provider>,
     );
 
-    expect(container.querySelector('.layout-1')).toBeInTheDocument();
+    expect(queryByTitle('Orbis Logo')).not.toBeInTheDocument();
+  });
+
+  it('shows the toolbar if a user is present', () => {
+    const { getByTitle } = render(
+      <Provider store={mockStore({ accounts: { user: {} } })}>
+        <MapLayout />
+      </Provider>,
+    );
+
+    expect(getByTitle('Orbis Logo')).toBeInTheDocument();
   });
 });

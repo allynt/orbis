@@ -10,7 +10,7 @@ import useModal from '@astrosat/astrosat-ui/dist/containers/use-modal';
 import PrivateRoute from './utils/private-route.component';
 
 import { fetchAppConfig } from './app.slice';
-import { fetchUser } from './accounts/accounts.slice';
+import { fetchUser, userSelector } from './accounts/accounts.slice';
 
 import {
   fetchSources,
@@ -35,7 +35,7 @@ const App = () => {
     state && state.app && state.app.config ? state.app.config.trackingId : null,
   );
 
-  const user = useSelector(state => state.accounts.user);
+  const user = useSelector(userSelector);
   const userKey = useSelector(state => state.accounts.userKey);
   const pollingPeriod = useSelector(selectPollingPeriod);
   const notYetImplementedDescription = useSelector(

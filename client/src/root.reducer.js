@@ -12,7 +12,7 @@ import accounts from './accounts/accounts.slice';
 import theming from './theming/theming.slice';
 import admin from './admin/admin.slice';
 import bookmarks from './bookmarks/bookmark.slice';
-import sidebar from './side-menu/side-menu.slice';
+import sideMenu from './side-menu/side-menu.slice';
 import stories from './stories/stories.slice';
 
 export const history = createBrowserHistory();
@@ -20,7 +20,7 @@ export const history = createBrowserHistory();
 const createRootReducer = history =>
   combineReducers({
     map,
-    sidebar,
+    sideMenu,
     data,
     satellites,
     app,

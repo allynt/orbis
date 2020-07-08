@@ -13,7 +13,7 @@ const Toolbar = ({ items }) => {
 
   const select = item => {
     setSelected(item);
-    item.action();
+    item.action(history);
   };
 
   const makeSidebarItem = item => (

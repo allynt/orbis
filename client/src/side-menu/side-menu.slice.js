@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, createSelector } from '@reduxjs/toolkit';
 
 const initialState = {
   isMenuVisible: false,
@@ -8,7 +8,7 @@ const initialState = {
 };
 
 const sideMenuSlice = createSlice({
-  name: 'sidebar',
+  name: 'sideMenu',
   initialState,
   reducers: {
     toggleMenu: (state, { payload }) => {
@@ -37,5 +37,23 @@ const sideMenuSlice = createSlice({
 });
 
 export const { toggleMenu, setMenuHeadings, closeMenu } = sideMenuSlice.actions;
+
+const baseSelector = state => state.sideMenu || {};
+export const selectIsMenuVisible = createSelector(
+  baseSelector,
+  ({ isMenuVisible }) => isMenuVisible || false,
+);
+export const selectVisibleMenuItem = createSelector(
+  baseSelector,
+  ({ visibleMenuItem }) => visibleMenuItem || '',
+);
+export const selectHeading = createSelector(
+  baseSelector,
+  ({ heading }) => heading || '',
+);
+export const selectStrapline = createSelector(
+  baseSelector,
+  ({ strapline }) => strapline || '',
+);
 
 export default sideMenuSlice.reducer;

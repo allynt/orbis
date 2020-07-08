@@ -12,32 +12,26 @@ import {
 } from './bookmark.slice';
 
 import styles from '../side-menu/side-menu.module.css';
+import { userSelector } from 'accounts/accounts.slice';
 
-const BookmarksPanel = ({ map }) => {
+const BookmarksPanel = () => {
   const dispatch = useDispatch();
-  const owner = useSelector(state => state.accounts.user.id);
+  const { id: owner } = useSelector(userSelector);
 
   const submit = form => {
-    const drawCtrl = map._controls.find(ctrl => ctrl.changeMode);
-    const featureCollection = drawCtrl.getAll();
-
-    const { lng, lat } = map.getCenter();
-
-    map.getCanvas().toBlob(blob => {
-      dispatch(
-        addBookmark(
-          {
-            ...form,
-            feature_collection: featureCollection,
-            center: [lng, lat],
-            zoom: map.getZoom(),
-            owner,
-            thumbnail: blob,
-          },
-          'image/png',
-        ),
-      );
-    });
+    dispatch(
+      addBookmark(
+        {
+          ...form,
+          feature_collection: {},
+          center: [0, 0],
+          zoom: 0,
+          owner,
+          thumbnail: '',
+        },
+        'image/png',
+      ),
+    );
   };
 
   const chooseBookmark = bookmark => dispatch(selectBookmark(bookmark));
@@ -53,7 +47,7 @@ const BookmarksPanel = ({ map }) => {
   return (
     <div className={styles.container}>
       <BookmarkForm
-        bookmarkTitles={bookmarks.map(b => b.title.toLowerCase())}
+        bookmarkTitles={bookmarks.map(b => b?.title?.toLowerCase())}
         submit={submit}
       />
       <BookmarkList

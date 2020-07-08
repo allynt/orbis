@@ -10,7 +10,6 @@ import styles from '../side-menu/side-menu.module.css';
 const StoriesPanel = ({ map }) => {
   const dispatch = useDispatch();
 
-  // const owner = useSelector(state => state.accounts.user.id);
   const stories = useSelector(state => state.stories.stories);
 
   const chooseStory = story => dispatch(selectStory(story));

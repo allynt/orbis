@@ -2,6 +2,10 @@ import reducer, {
   toggleMenu,
   setMenuHeadings,
   closeMenu,
+  selectIsMenuVisible,
+  selectVisibleMenuItem,
+  selectHeading,
+  selectStrapline,
 } from './side-menu.slice';
 
 describe('Side Menu Slice', () => {
@@ -91,6 +95,88 @@ describe('Side Menu Slice', () => {
 
         expect(actualState.visibleMenuItem).toEqual('');
         expect(actualState.isMenuVisible).toEqual(false);
+      });
+    });
+  });
+
+  describe('selectors', () => {
+    describe('selectIsMenuVisible', () => {
+      it('returns false if sideMenu is undefined', () => {
+        const state = {};
+        const result = selectIsMenuVisible(state);
+        expect(result).toBe(false);
+      });
+
+      it('returns false if undefined', () => {
+        const state = { sideMenu: {} };
+        const result = selectIsMenuVisible(state);
+        expect(result).toBe(false);
+      });
+
+      it('returns the actual value', () => {
+        const state = { sideMenu: { isMenuVisible: true } };
+        const result = selectIsMenuVisible(state);
+        expect(result).toBe(state.sideMenu.isMenuVisible);
+      });
+    });
+
+    describe('selectVisibleMenuItem', () => {
+      it('returns empty string if sideMenu is undefined', () => {
+        const state = {};
+        const result = selectVisibleMenuItem(state);
+        expect(result).toBe('');
+      });
+
+      it('returns empty string if undefined', () => {
+        const state = { sideMenu: {} };
+        const result = selectVisibleMenuItem(state);
+        expect(result).toBe('');
+      });
+
+      it('returns the actual value', () => {
+        const state = { sideMenu: { visibleMenuItem: 'hello' } };
+        const result = selectVisibleMenuItem(state);
+        expect(result).toBe(state.sideMenu.visibleMenuItem);
+      });
+    });
+
+    describe('selectHeading', () => {
+      it('returns empty string if sideMenu is undefined', () => {
+        const state = {};
+        const result = selectHeading(state);
+        expect(result).toBe('');
+      });
+
+      it('returns empty string if undefined', () => {
+        const state = { sideMenu: {} };
+        const result = selectHeading(state);
+        expect(result).toBe('');
+      });
+
+      it('returns the actual value', () => {
+        const state = { sideMenu: { heading: 'hello' } };
+        const result = selectHeading(state);
+        expect(result).toBe(state.sideMenu.heading);
+      });
+    });
+
+    describe('selectStrapline', () => {
+      it('returns empty string if sideMenu is undefined', () => {
+        const state = {};
+        const result = selectStrapline(state);
+        expect(result).toBe('');
+      });
+
+      it('returns empty string if undefined', () => {
+        const state = { sideMenu: {} };
+        const result = selectStrapline(state);
+        expect(result).toBe('');
+      });
+
+      it('returns the actual value', () => {
+        const state = { sideMenu: { strapline: 'hello' } };
+        const result = selectStrapline(state);
+        expect(result).toBe(state.sideMenu.strapline);
       });
     });
   });

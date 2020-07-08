@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import Button from '@astrosat/astrosat-ui/dist/buttons/button';
 
 import UpdateUserForm from './update-user-form.component';
-import { updateUser, logout } from './accounts.slice';
+import { updateUser, logout, userSelector } from './accounts.slice';
 
 import { TERMS_URL } from './accounts.constants';
 
@@ -27,7 +27,7 @@ const LINKS = [
 
 const Profile = () => {
   const dispatch = useDispatch();
-  const user = useSelector(state => state.accounts.user);
+  const user = useSelector(userSelector);
 
   const updateUserProfile = user => dispatch(updateUser(user));
 

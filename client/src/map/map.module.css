@@ -1,0 +1,21 @@
+.loadMask {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #fff;
+  width: 100vw;
+  height: 100vh;
+}
+
+.mapStyleButton {
+  position: absolute;
+  padding: 0.5rem;
+  bottom: 8rem;
+  right: 0.6rem;
+  z-index: 10;
+}
+
+.icon {
+  width: 1rem;
+  color: var(--color-primary);
+}

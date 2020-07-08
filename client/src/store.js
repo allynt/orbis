@@ -9,7 +9,7 @@ import ReduxQuerySync from 'redux-query-sync';
 
 import rootReducer, { history } from './root.reducer';
 
-import { setViewport } from './map/map.slice';
+import { setViewport, viewportSelector } from './map/map.slice';
 
 const store = configureStore({
   reducer: rootReducer,
@@ -20,7 +20,7 @@ ReduxQuerySync({
   store,
   params: {
     viewport: {
-      selector: state => state.map.viewport,
+      selector: viewportSelector,
       action: value => setViewport(value),
       stringToValue: string => JSON.parse(string),
       valueToString: value => JSON.stringify(value),

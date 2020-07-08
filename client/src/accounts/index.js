@@ -11,6 +11,7 @@ import {
   register,
   resendVerificationEmail,
   resetPassword,
+  userSelector,
 } from './accounts.slice';
 import LoginForm from './login-form.component';
 import PasswordChangeForm from './password-change-form.component';
@@ -35,7 +36,7 @@ export default () => {
   );
   const resetStatus = useSelector(state => state.accounts.resetStatus);
   const changeStatus = useSelector(state => state.accounts.changeStatus);
-  const user = useSelector(state => state.accounts.user);
+  const user = useSelector(userSelector);
 
   return (
     <div className={styles.page}>
