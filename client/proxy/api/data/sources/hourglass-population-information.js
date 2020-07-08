@@ -1,5 +1,10 @@
 module.exports = {
-  name: 'people',
+  name: 'population-information',
+  namespace: 'covid',
+  source_id: 'astrosat/covid/population-information/v1',
+  status: 'published',
+  type: 'vector',
+  version: 'v1',
   metadata: {
     label: 'Population information',
     domain: 'Action for Health and Help',
@@ -7,7 +12,6 @@ module.exports = {
     description: 'Description of Population information layer.',
     filters: ['Type', 'Availability', 'Contact Details.Country'],
   },
-  type: 'geojson',
   data: {
     type: 'FeatureCollection',
     features: [

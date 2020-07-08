@@ -1,5 +1,6 @@
 module.exports = {
   name: 'health-infrastructure',
+  namespace: 'covid',
   metadata: {
     label: 'Health infrastructure',
     domain: 'Action for Health and Help',

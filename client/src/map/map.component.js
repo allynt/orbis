@@ -76,7 +76,9 @@ const Map = () => {
         }),
       );
     }
-    const peopleLayer = selectedLayers.find(layer => layer.name === 'people');
+    const peopleLayer = selectedLayers.find(
+      layer => layer.name === 'population-information',
+    );
     if (peopleLayer) {
       newLayers.push(
         new ClusteredIconLayer({
