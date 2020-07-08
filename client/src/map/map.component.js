@@ -3,7 +3,6 @@ import React, { useEffect, useState } from 'react';
 import { LayersIcon, Button, LoadMask } from '@astrosat/astrosat-ui/';
 
 import DeckGL from '@deck.gl/react';
-import { IconLayer, TextLayer } from '@deck.gl/layers';
 import { useDispatch, useSelector } from 'react-redux';
 import { StaticMap } from 'react-map-gl';
 import { ClusteredIconLayer } from './clustered-icon-layer';
@@ -66,10 +65,12 @@ const Map = () => {
           iconAtlas,
           getPosition: d => d.geometry.coordinates,
           getIcon: d => d.properties.type,
-          getIconSize: 60,
-          getText: d => d.properties.name,
+          getIconSize: 80,
+          getIconColor: [246, 190, 0],
           getTextSize: 32,
-          getTextColor: [255, 255, 255],
+          getTextColor: [51, 63, 72],
+          clusterRadius: 40,
+          sizeMinPixels: 6,
         }),
       );
     }

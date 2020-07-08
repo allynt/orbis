@@ -47,5 +47,12 @@
     "width": 88,
     "height": 88,
     "mask": false
+  },
+  "cluster": {
+    "x": 616,
+    "y": 0,
+    "width": 88,
+    "height": 88,
+    "mask": false
   }
 }

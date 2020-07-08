@@ -1,21 +1,55 @@
 import { CompositeLayer, IconLayer, TextLayer } from 'deck.gl';
+import Supercluster from 'supercluster';
 
 const DEFAULT_FONT_FAMILY = 'Open Sans';
 const DEFAULT_FONT_WEIGHT = 600;
 
 export class ClusteredIconLayer extends CompositeLayer {
+  shouldUpdateState({ changeFlags }) {
+    return changeFlags.somethingChanged;
+  }
+
+  updateState({ props, oldProps, changeFlags }) {
+    const rebuildIndex =
+      changeFlags.dataChanged || props.sizeScale !== oldProps.sizeScale;
+    if (rebuildIndex) {
+      const index = new Supercluster({
+        maxZoom: this.props.maxZoom || 16,
+        radius: this.props.clusterRadius,
+      });
+      index.load(
+        props.data.map(d => ({
+          geometry: { coordinates: this.props.getPosition(d) },
+          properties: d,
+        })),
+      );
+      this.setState({ index });
+    }
+
+    const zoom = Math.floor(this.context.viewport.zoom);
+    if (rebuildIndex || zoom !== this.state.zoom) {
+      this.setState({
+        data: this.state.index.getClusters([-180, -85, 180, 85], zoom),
+        zoom,
+      });
+    }
+  }
+
   renderLayers() {
+    const { data } = this.state;
     return [
       new IconLayer(
         this.getSubLayerProps({
           id: 'icon',
-          data: this.props.data,
+          data,
           iconAtlas: this.props.iconAtlas,
           iconMapping: this.props.iconMapping,
           getPosition: this.props.getPosition,
-          getIcon: this.props.getIcon,
+          getIcon: d =>
+            d.properties.cluster ? 'cluster' : this.props.getIcon(d.properties),
           getSize: this.props.getIconSize,
           getColor: this.props.getIconColor,
+          // sizeScale: this.props.sizeScale,
           updateTriggers: {
             getPosition: this.props.updateTriggers.getPosition,
             getIcon: this.props.updateTriggers.getIcon,
@@ -27,11 +61,12 @@ export class ClusteredIconLayer extends CompositeLayer {
       new TextLayer(
         this.getSubLayerProps({
           id: 'text',
-          data: this.props.data,
+          data,
           fontFamily: this.props.fontFamily,
           fontWeight: this.props.fontWeight,
           getPosition: this.props.getPosition,
-          getText: this.props.getText,
+          getText: d =>
+            d.properties.cluster ? `${d.properties.point_count}` : `\r`,
           getSize: this.props.getTextSize,
           getColor: this.props.getTextColor,
           updateTriggers: {
