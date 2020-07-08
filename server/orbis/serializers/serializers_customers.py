@@ -14,12 +14,16 @@ class CustomerSerializer(AstrosatUsersCustomerSerializer):
     class Meta:
         model = Customer
         fields = (
+            "id",
             "type",
             "name",
             "title",
             "description",
             "logo",
             "url",
+            "country",
+            "address",
+            "postcode",
             "licenses",
         )
 
@@ -27,7 +31,6 @@ class CustomerSerializer(AstrosatUsersCustomerSerializer):
 
     def create(self, validated_data):
         raise NotImplementedError("Customers can only be created manually in orbis")
-        # return super().create(validated_data)
 
     def update(self, instance, validated_data):
         # LicenseSerializer uses "astrosat.serializers.WritableNestedListSerializer", this means

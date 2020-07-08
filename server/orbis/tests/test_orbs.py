@@ -40,7 +40,7 @@ class TestLicenses:
         customer.add_user(user, type="MANAGER", status="ACTIVE")
 
         client = api_client(user)
-        url = reverse("customers-detail", args=[customer.name])
+        url = reverse("customers-detail", args=[customer.id])
         response = client.get(url)
         customer_data = response.json()
 
@@ -71,7 +71,7 @@ class TestLicenses:
         ]
 
         client = api_client(user)
-        url = reverse("customers-detail", args=[customer.name])
+        url = reverse("customers-detail", args=[customer.id])
         response = client.get(url)
         customer_data = response.json()
 
@@ -102,7 +102,7 @@ class TestLicenses:
         ]
 
         client = api_client(user)
-        url = reverse("customers-detail", args=[customer.name])
+        url = reverse("customers-detail", args=[customer.id])
         response = client.get(url)
         customer_data = response.json()
 
@@ -136,12 +136,12 @@ class TestLicenses:
     def test_add_licenses_to_customer_user(self, user, api_client, mock_storage):
 
         customer = CustomerFactory(logo=None)
-        (customer_user, _) = customer.add_user(user, type="MANAGER")
+        (customer_user, _) = customer.add_user(user, type="MANAGER", status="ACTIVE")
         orb = OrbFactory()
         license = LicenseFactory(customer=customer, orb=orb)
 
         client = api_client(user)
-        url = reverse("customer-users-detail", args=[customer.name, user.email])
+        url = reverse("customer-users-detail", args=[customer.id, user.uuid])
         response = client.get(url, format="json")
         customer_user_data = response.json()
 
@@ -157,14 +157,14 @@ class TestLicenses:
     def test_remove_licenses_to_customer_user(self, user, api_client, mock_storage):
 
         customer = CustomerFactory(logo=None)
-        (customer_user, _) = customer.add_user(user, type="MANAGER")
+        (customer_user, _) = customer.add_user(user, type="MANAGER", status="ACTIVE")
         orb = OrbFactory()
         license = LicenseFactory(customer=customer, orb=orb, customer_user=customer_user)
 
         assert license.customer_user == customer_user
 
         client = api_client(user)
-        url = reverse("customer-users-detail", args=[customer.name, user.email])
+        url = reverse("customer-users-detail", args=[customer.id, user.uuid])
         response = client.get(url, format="json")
         customer_user_data = response.json()
 
@@ -183,14 +183,14 @@ class TestLicenses:
     ):
 
         customer = CustomerFactory(logo=None)
-        (customer_user, _) = customer.add_user(user, type="MANAGER")
+        (customer_user, _) = customer.add_user(user, type="MANAGER", status="ACTIVE")
         orb = OrbFactory()
 
         license_1 = LicenseFactory(orb=orb, customer=customer, customer_user=customer_user)
         license_2 = LicenseFactory(orb=orb, customer=customer, customer_user=None)
 
         client = api_client(user)
-        url = reverse("customer-users-detail", args=[customer.name, user.email])
+        url = reverse("customer-users-detail", args=[customer.id, user.uuid])
         response = client.get(url, format="json")
         customer_user_data = response.json()
 
@@ -216,14 +216,14 @@ class TestLicenses:
 
         customer_1 = CustomerFactory(logo=None)
         customer_2 = CustomerFactory(logo=None)
-        (customer_user, _) = customer_1.add_user(user, type="MANAGER")
+        (customer_user, _) = customer_1.add_user(user, type="MANAGER", status="ACTIVE")
         orb = OrbFactory()
         license_1 = LicenseFactory(orb=orb, customer=customer_1)
         license_2 = LicenseFactory(orb=orb, customer=customer_2)
         license_3 = LicenseFactory(orb=orb, customer=customer_1)
 
         client = api_client(user)
-        url = reverse("customer-users-detail", args=[customer_1.name, user.email])
+        url = reverse("customer-users-detail", args=[customer_1.id, user.uuid])
         response = client.get(url, format="json")
         customer_user_data = response.json()
 
