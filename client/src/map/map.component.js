@@ -23,8 +23,10 @@ import { mapboxTokenSelector, mapStylesSelector } from 'app.slice';
 import styles from './map.module.css';
 import { selectActiveLayers } from 'data-layers/data-layers.slice';
 
-import iconAtlas from './layers/hourglass/infrastructure/iconAtlas.svg';
-import iconMapping from './layers/hourglass/infrastructure/iconMapping.json';
+import infrastructureIconAtlas from './layers/hourglass/infrastructure/iconAtlas.svg';
+import infrastructureIconMapping from './layers/hourglass/infrastructure/iconMapping.json';
+import peopleIconAtlas from './layers/hourglass/people/iconAtlas.svg';
+import peopleIconMapping from './layers/hourglass/people/iconMapping.json';
 
 const Map = () => {
   const dispatch = useDispatch();
@@ -61,15 +63,34 @@ const Map = () => {
         new ClusteredIconLayer({
           id: infraLayer.name,
           data: infraLayer.data.features,
-          iconMapping,
-          iconAtlas,
+          iconMapping: infrastructureIconMapping,
+          iconAtlas: infrastructureIconAtlas,
           getPosition: d => d.geometry.coordinates,
           getIcon: d => d.properties.type,
-          getIconSize: 80,
+          getIconSize: 60,
           getIconColor: [246, 190, 0],
           getTextSize: 32,
           getTextColor: [51, 63, 72],
           clusterRadius: 40,
+          sizeMinPixels: 6,
+        }),
+      );
+    }
+    const peopleLayer = selectedLayers.find(layer => layer.name === 'people');
+    if (peopleLayer) {
+      newLayers.push(
+        new ClusteredIconLayer({
+          id: peopleLayer.name,
+          data: peopleLayer.data.features,
+          iconMapping: peopleIconMapping,
+          iconAtlas: peopleIconAtlas,
+          getPosition: d => d.geometry.coordinates,
+          getIcon: d => d.properties.Type,
+          getIconSize: d => (d.properties.cluster ? 60 : 15),
+          getIconColor: [246, 190, 0],
+          getTextSize: 32,
+          getTextColor: [51, 63, 72],
+          clusterRadius: 20,
           sizeMinPixels: 6,
         }),
       );

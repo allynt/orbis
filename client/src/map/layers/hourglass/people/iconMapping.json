@@ -1,0 +1,23 @@
+{
+  "VOLUNTEER": {
+    "x": 0,
+    "y": 0,
+    "width": 15,
+    "height": 15,
+    "mask": false
+  },
+  "RECIPIENT": {
+    "x": 17,
+    "y": 0,
+    "width": 15,
+    "height": 15,
+    "mask": false
+  },
+  "cluster": {
+    "x": 34,
+    "y": 0,
+    "width": 88,
+    "height": 88,
+    "mask": false
+  }
+}

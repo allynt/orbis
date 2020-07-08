@@ -20,7 +20,7 @@ module.exports = {
         },
         properties: {
           pk: 6,
-          TYPE: 'VOLUNTEER',
+          Type: 'VOLUNTEER',
           'Contact Details': {
             Name: 'Son #2',
             Email: 'son2@home.com',
@@ -33,7 +33,9 @@ module.exports = {
           'Specific Needs': '',
           'Why are you interested in volunteering?': ['I want to help others'],
           'Specific Skills': {
-            'Selected Skills': ['I have skills I can bring to the organisation'],
+            'Selected Skills': [
+              'I have skills I can bring to the organisation',
+            ],
             'More Details': 'I can play the harmonica',
           },
           'How Did You Hear about Us': {
@@ -76,9 +78,13 @@ module.exports = {
           },
           'Date of Birth': '1973-01-18',
           'Specific Needs': '',
-          'Why are you interested in volunteering?': ['I have spare time and want to use it productively'],
+          'Why are you interested in volunteering?': [
+            'I have spare time and want to use it productively',
+          ],
           'Specific Skills': {
-            'Selected Skills': ['I have skills I can bring to the organisation'],
+            'Selected Skills': [
+              'I have skills I can bring to the organisation',
+            ],
             'More Details': '',
           },
           'How Did You Hear about Us': {
@@ -112,7 +118,10 @@ module.exports = {
           pk: 4,
           Type: 'RECIPIENT',
           'Help Receiving': ['Pick up / Delivery (Food + Prescription)'],
-          'Help Required': ['Pick up / Delivery (Food + Prescription)', 'Support to access Home help/care needs'],
+          'Help Required': [
+            'Pick up / Delivery (Food + Prescription)',
+            'Support to access Home help/care needs',
+          ],
           'Self-Isolating': 'No',
           'High-Risk': 'No',
           'Contact Details': {
@@ -135,7 +144,10 @@ module.exports = {
         properties: {
           pk: 3,
           Type: 'RECIPIENT',
-          'Help Receiving': ['Pick up / Delivery (Food + Prescription)', 'Homehelp/care needs'],
+          'Help Receiving': [
+            'Pick up / Delivery (Food + Prescription)',
+            'Homehelp/care needs',
+          ],
           'Help Required': ['Coversation', 'Advice'],
           'Self-Isolating': 'Yes',
           'High-Risk': 'Yes',
