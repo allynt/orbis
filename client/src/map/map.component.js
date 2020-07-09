@@ -8,7 +8,7 @@ import { StaticMap } from 'react-map-gl';
 import { ClusteredIconLayer } from './clustered-icon-layer';
 
 import {
-  isLoaded,
+  isLoaded as onBookmarkLoaded,
   selectedBookmarkSelector,
   isLoadingSelector as bookmarksLoadingSelector,
 } from '../bookmarks/bookmark.slice';
@@ -43,7 +43,7 @@ const Map = () => {
   const [layers, setLayers] = useState([]);
 
   useEffect(() => {
-    dispatch(isLoaded());
+    dispatch(onBookmarkLoaded());
   }, [selectedBookmark, dispatch]);
 
   useEffect(() => {

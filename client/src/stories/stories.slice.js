@@ -2,7 +2,12 @@ import { NotificationManager } from 'react-notifications';
 
 import { createSlice } from '@reduxjs/toolkit';
 
-import { getData, sendData, getJsonAuthHeaders, getFormAuthHeaders } from '../utils/http';
+import {
+  getData,
+  sendData,
+  getJsonAuthHeaders,
+  getFormAuthHeaders,
+} from '../utils/http';
 
 export const STORIES = [
   {
@@ -25,12 +30,14 @@ export const STORIES = [
           {
             id: 'cowgate',
             type: 'vector',
-            url: 'https://staticdata.testing.or3is.com/astrosat/test/stoke-on-trent/v1/metadata.json',
+            url:
+              'https://staticdata.testing.or3is.com/astrosat/test/stoke-on-trent/v1/metadata.json',
           },
           {
             id: 'cowgate-infrastructure',
             type: 'geojson',
-            url: 'https://staticdata.testing.or3is.com/astrosat/core/hospitals-uk/2019-12-17/hospitals_uk.geojson',
+            url:
+              'https://staticdata.testing.or3is.com/astrosat/core/hospitals-uk/2019-12-17/hospitals_uk.geojson',
           },
         ],
       },
@@ -61,12 +68,14 @@ export const STORIES = [
           {
             id: 'easterrd',
             type: 'vector',
-            url: 'https://staticdata.testing.or3is.com/astrosat/test/stoke-on-trent/v1/metadata.json',
+            url:
+              'https://staticdata.testing.or3is.com/astrosat/test/stoke-on-trent/v1/metadata.json',
           },
           {
             id: 'easterrd-infrastructure',
             type: 'geojson',
-            url: 'https://staticdata.testing.or3is.com/astrosat/core/hospitals-uk/2019-12-17/hospitals_uk.geojson',
+            url:
+              'https://staticdata.testing.or3is.com/astrosat/core/hospitals-uk/2019-12-17/hospitals_uk.geojson',
           },
         ],
         onLeave: [],
@@ -146,8 +155,11 @@ const storiesSlice = createSlice({
       state.error = payload;
     },
     deleteStorySuccess: (state, { payload }) => {
-      const filteredStories = state.stories.filter(story => story.id !== payload.id);
-      const isSelectedStory = state.selectedStory && state.selectedStory.id === payload.id;
+      const filteredStories = state.stories.filter(
+        story => story.id !== payload.id,
+      );
+      const isSelectedStory =
+        state.selectedStory && state.selectedStory.id === payload.id;
       const selectedStory = isSelectedStory ? null : state.selectedStory;
 
       state.stories = filteredStories;
@@ -181,7 +193,12 @@ export const fetchStories = () => async (dispatch, getState) => {
   if (!response.ok) {
     const message = `${response.status} ${response.statusText}`;
 
-    NotificationManager.error(message, `Fetching Stories Error - ${response.statusText}`, 50000, () => {});
+    NotificationManager.error(
+      message,
+      `Fetching Stories Error - ${response.statusText}`,
+      50000,
+      () => {},
+    );
 
     return dispatch(fetchStoriesFailure({ message }));
   }
@@ -203,13 +220,23 @@ export const addStory = story => async (dispatch, getState) => {
   if (!response.ok) {
     const message = `${response.status} ${response.statusText}`;
 
-    NotificationManager.error(message, `Adding Story Error - ${response.statusText}`, 50000, () => {});
+    NotificationManager.error(
+      message,
+      `Adding Story Error - ${response.statusText}`,
+      50000,
+      () => {},
+    );
 
     return dispatch(addStoryFailure({ message }));
   }
 
   const newStory = await response.json();
-  NotificationManager.success('Successfully created a story', 'Successful story creation', 5000, () => {});
+  NotificationManager.success(
+    'Successfully created a story',
+    'Successful story creation',
+    5000,
+    () => {},
+  );
 
   return dispatch(addStorySuccess(newStory));
 };
@@ -222,12 +249,22 @@ export const deleteStory = story => async (dispatch, getState) => {
   if (!response.ok) {
     const message = `${response.status} ${response.statusText}`;
 
-    NotificationManager.error(message, `Deleting Story Error - ${response.statusText}`, 50000, () => {});
+    NotificationManager.error(
+      message,
+      `Deleting Story Error - ${response.statusText}`,
+      50000,
+      () => {},
+    );
 
     return dispatch(deleteStoryFailure({ message }));
   }
 
-  NotificationManager.success('Successfully deleted story', 'Successful story deletion', 5000, () => {});
+  NotificationManager.success(
+    'Successfully deleted story',
+    'Successful story deletion',
+    5000,
+    () => {},
+  );
 
   return dispatch(deleteStorySuccess(story));
 };

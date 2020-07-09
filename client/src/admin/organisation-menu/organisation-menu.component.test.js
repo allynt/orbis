@@ -19,7 +19,10 @@ describe('Admin organisation Menu Component', () => {
 
   it('should render the admin organisation menu', () => {
     const { getByText, getByAltText } = render(
-      <OrganisationMenu customer={selectedCustomer} setVisiblePanel={setVisiblePanel} />,
+      <OrganisationMenu
+        customer={selectedCustomer}
+        setVisiblePanel={setVisiblePanel}
+      />,
     );
 
     expect(getByText(selectedCustomer.title)).toBeInTheDocument();
@@ -27,14 +30,24 @@ describe('Admin organisation Menu Component', () => {
   });
 
   it('should switch content panel view to corporate account when customer logo is clicked', () => {
-    const { getByAltText } = render(<OrganisationMenu customer={selectedCustomer} setVisiblePanel={setVisiblePanel} />);
+    const { getByAltText } = render(
+      <OrganisationMenu
+        customer={selectedCustomer}
+        setVisiblePanel={setVisiblePanel}
+      />,
+    );
 
     fireEvent.click(getByAltText('Organisation Logo'));
     expect(setVisiblePanel).toHaveBeenCalledWith(ADMIN_VIEW.corporateAccount);
   });
 
   it('should switch content panel view to corporate account when customer name is clicked', () => {
-    const { getByText } = render(<OrganisationMenu customer={selectedCustomer} setVisiblePanel={setVisiblePanel} />);
+    const { getByText } = render(
+      <OrganisationMenu
+        customer={selectedCustomer}
+        setVisiblePanel={setVisiblePanel}
+      />,
+    );
 
     fireEvent.click(getByText(selectedCustomer.title));
     expect(setVisiblePanel).toHaveBeenCalledWith(ADMIN_VIEW.corporateAccount);
@@ -47,7 +60,9 @@ describe('Admin organisation Menu Component', () => {
 
   it('Calls the showCreateUser function when the "Create User" button is clicked', () => {
     const onCreateUserClick = jest.fn();
-    const { getByText } = render(<OrganisationMenu onCreateUserClick={onCreateUserClick} />);
+    const { getByText } = render(
+      <OrganisationMenu onCreateUserClick={onCreateUserClick} />,
+    );
     userEvent.click(getByText('Create User'));
     expect(onCreateUserClick).toHaveBeenCalled();
   });

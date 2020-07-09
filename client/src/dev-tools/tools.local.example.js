@@ -17,8 +17,14 @@ enable('tacos');
 // password on load:
 async function automaticallyLogin() {
   try {
-    await userEvent.type(await screen.findByLabelText(/username/i), 'FAKE_USER');
-    await userEvent.type(await screen.findByLabelText(/password/i), 'FAKE_PASSWORD');
+    await userEvent.type(
+      await screen.findByLabelText(/username/i),
+      'FAKE_USER',
+    );
+    await userEvent.type(
+      await screen.findByLabelText(/password/i),
+      'FAKE_PASSWORD',
+    );
     await userEvent.click(await screen.findByText(/submit/i));
     await waitForElementToBeRemoved(() => screen.getByText(/loading/i));
   } catch (error) {

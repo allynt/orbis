@@ -1,4 +1,7 @@
-import { createUserFormValidator, ERROR_MESSAGES } from './create-user-form.validator';
+import {
+  createUserFormValidator,
+  ERROR_MESSAGES,
+} from './create-user-form.validator';
 
 describe('createUserFormValidator', () => {
   describe('email', () => {
@@ -17,9 +20,15 @@ describe('createUserFormValidator', () => {
     });
 
     it('must be unique', () => {
-      const existingEmails = ['test@test.com', 'test1@test.com', 'test2@test.com'];
+      const existingEmails = [
+        'test@test.com',
+        'test1@test.com',
+        'test2@test.com',
+      ];
       const values = { email: 'test1@test.com' };
-      const expectedErrors = { email: ERROR_MESSAGES.email.exists(values.email) };
+      const expectedErrors = {
+        email: ERROR_MESSAGES.email.exists(values.email),
+      };
       const result = createUserFormValidator(values, { existingEmails });
       expect(result.errors).toEqual(expectedErrors);
     });

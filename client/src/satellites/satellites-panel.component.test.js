@@ -567,7 +567,10 @@ describe('SatellitesPanel', () => {
       let store;
 
       beforeEach(() => {
-        store = mockStore({ ...baseStore, satellites: { satellites, scenes: undefined, selectedScene: null } });
+        store = mockStore({
+          ...baseStore,
+          satellites: { satellites, scenes: undefined, selectedScene: null },
+        });
       });
 
       it('results', () => {
@@ -607,7 +610,10 @@ describe('SatellitesPanel', () => {
     });
 
     it('has free navigation when each step has been completed', () => {
-      const store = mockStore({ ...baseStore, satellites: { satellites, scenes, selectedScene } });
+      const store = mockStore({
+        ...baseStore,
+        satellites: { satellites, scenes, selectedScene },
+      });
       const { getByText } = render(
         <Provider store={store}>
           <SatellitesPanel />

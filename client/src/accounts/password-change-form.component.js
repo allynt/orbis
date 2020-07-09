@@ -22,9 +22,12 @@ const ChangePasswordSuccessView = () => (
     <OrbisLogo className={formStyles.logo} />
 
     <div className={formStyles.textContent}>
-      <p className={formStyles.paragraph}>Thank you! Your password has been changed.</p>
       <p className={formStyles.paragraph}>
-        You have completed your OR3IS account. Click the button in order to continue.
+        Thank you! Your password has been changed.
+      </p>
+      <p className={formStyles.paragraph}>
+        You have completed your OR3IS account. Click the button in order to
+        continue.
       </p>
     </div>
 
@@ -36,7 +39,10 @@ const ChangePasswordSuccessView = () => (
 
 const PasswordChangeForm = ({ changePassword, changeStatus, error }) => {
   const [termsAgreed, setTermsAgreed] = useState(false);
-  const { handleChange, handleSubmit, values, errors } = useForm(onSubmit, validate);
+  const { handleChange, handleSubmit, values, errors } = useForm(
+    onSubmit,
+    validate,
+  );
 
   if (changeStatus === status.PENDING) return <ChangePasswordSuccessView />;
 
@@ -71,7 +77,9 @@ const PasswordChangeForm = ({ changePassword, changeStatus, error }) => {
             autoFocus
           />
         </div>
-        {errors.old_password && <p className={formStyles.errorMessage}>{errors.old_password}</p>}
+        {errors.old_password && (
+          <p className={formStyles.errorMessage}>{errors.old_password}</p>
+        )}
 
         <div className={formStyles.row}>
           <PasswordField
@@ -82,7 +90,9 @@ const PasswordChangeForm = ({ changePassword, changeStatus, error }) => {
             required
           />
         </div>
-        {errors.new_password1 && <p className={formStyles.errorMessage}>{errors.new_password1}</p>}
+        {errors.new_password1 && (
+          <p className={formStyles.errorMessage}>{errors.new_password1}</p>
+        )}
 
         <div className={formStyles.row}>
           <PasswordField
@@ -93,7 +103,9 @@ const PasswordChangeForm = ({ changePassword, changeStatus, error }) => {
             required
           />
         </div>
-        {errors.new_password2 && <p className={formStyles.errorMessage}>{errors.new_password2}</p>}
+        {errors.new_password2 && (
+          <p className={formStyles.errorMessage}>{errors.new_password2}</p>
+        )}
 
         <PasswordStrengthMeter password={values.password1} />
 
@@ -110,7 +122,12 @@ const PasswordChangeForm = ({ changePassword, changeStatus, error }) => {
         </div>
 
         <div className={formStyles.row}>
-          <Checkbox name="loggedIn" value="true" label="I agree with" onChange={() => setTermsAgreed(!termsAgreed)} />
+          <Checkbox
+            name="loggedIn"
+            value="true"
+            label="I agree with"
+            onChange={() => setTermsAgreed(!termsAgreed)}
+          />
           &nbsp;
           <Button target="_blank" rel="noopener noreferrer" href={TERMS_URL}>
             Terms &amp; Conditions
@@ -121,7 +138,11 @@ const PasswordChangeForm = ({ changePassword, changeStatus, error }) => {
       <div className={formStyles.buttons}>
         <Button
           type="submit"
-          disabled={!termsAgreed || Object.keys(errors).length > 0 || Object.keys(values).length === 0}
+          disabled={
+            !termsAgreed ||
+            Object.keys(errors).length > 0 ||
+            Object.keys(values).length === 0
+          }
         >
           Change Password
         </Button>

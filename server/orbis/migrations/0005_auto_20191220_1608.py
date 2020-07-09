@@ -4,7 +4,7 @@ from django.conf import settings
 import django.core.validators
 from django.db import migrations, models
 import django.db.models.deletion
-import orbis.models.models_data
+import orbis.models.models_orbs
 
 
 class Migration(migrations.Migration):
@@ -35,7 +35,7 @@ class Migration(migrations.Migration):
             name='RoleAccess',
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('access', models.PositiveIntegerField(default=orbis.models.models_data.Access(1), validators=[django.core.validators.MaxValueValidator(7)])),
+                ('access', models.PositiveIntegerField(default=orbis.models.models_orbs.Access(1), validators=[django.core.validators.MaxValueValidator(7)])),
                 ('data_scope', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='orbis.DataScope')),
                 ('role', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='astrosat_users.UserRole')),
             ],
@@ -47,7 +47,7 @@ class Migration(migrations.Migration):
             name='OwnerAccess',
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('access', models.PositiveIntegerField(default=orbis.models.models_data.Access(1), validators=[django.core.validators.MaxValueValidator(7)])),
+                ('access', models.PositiveIntegerField(default=orbis.models.models_orbs.Access(1), validators=[django.core.validators.MaxValueValidator(7)])),
                 ('data_scope', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='orbis.DataScope')),
                 ('owner', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
             ],

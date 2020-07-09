@@ -233,7 +233,8 @@ let customerUsers = [
 
 const getCustomer = customerId => customers.find(c => c.name === customerId);
 
-const getCustomerUsers = customerId => customerUsers.filter(cu => cu.customer === customerId);
+const getCustomerUsers = customerId =>
+  customerUsers.filter(cu => cu.customer === customerId);
 
 /**
  * @param {string} customerId The id of the customer to add the user to
@@ -244,7 +245,10 @@ const createCustomerUser = (customerId, userData) => {
   const customerLicences = getCustomer(customerId).licences;
   const invitation_date = new Date().toISOString();
   userData.licences.forEach(
-    licenceId => (customerLicences.find(licence => licence.id === licenceId).customer_user = newUserId),
+    licenceId =>
+      (customerLicences.find(
+        licence => licence.id === licenceId,
+      ).customer_user = newUserId),
   );
   const newUser = {
     id: newUserId,

@@ -20,9 +20,14 @@ const BookmarkList = ({ bookmarks, selectBookmark, deleteBookmark }) => (
               </div>
               <div className={styles.bookmarkContent}>
                 <h3 className={styles.bookmarkTitle}>{bookmark.title}</h3>
-                <p className={styles.bookmarkDescription}>{bookmark.description || ''}</p>
+                <p className={styles.bookmarkDescription}>
+                  {bookmark.description || ''}
+                </p>
                 <div className={styles.bookmarkButtons}>
-                  <Button classNames={[styles.bookmarkButton]} onClick={() => selectBookmark(bookmark)}>
+                  <Button
+                    classNames={[styles.bookmarkButton]}
+                    onClick={() => selectBookmark(bookmark)}
+                  >
                     Load
                   </Button>
                   <Button

@@ -71,8 +71,12 @@ const ComparePins = (
       <ul className={styles.pinnedScenes}>
         {pinnedScenes &&
           pinnedScenes.map((scene, index) => {
-            const isSelected = selectedPinnedScenes.some(selectedScene => selectedScene.id === scene.id);
-            const isDisabled = !selectedPinnedScenes.includes(scene) && selectedPinnedScenes.length === MAX_SELECTED;
+            const isSelected = selectedPinnedScenes.some(
+              selectedScene => selectedScene.id === scene.id,
+            );
+            const isDisabled =
+              !selectedPinnedScenes.includes(scene) &&
+              selectedPinnedScenes.length === MAX_SELECTED;
             const Icon = (
               <DeleteIcon
                 title={`delete-icon-${scene.id}`}
@@ -95,7 +99,9 @@ const ComparePins = (
                   icon={Icon}
                   setSelectedMoreInfo={setSelectedMoreInfo}
                   toggleMoreInfoDialog={toggleMoreInfoDialog}
-                  selectScene={scene => !isCompareMode && handleChange(isSelected, scene)}
+                  selectScene={scene =>
+                    !isCompareMode && handleChange(isSelected, scene)
+                  }
                 />
               </div>
             );

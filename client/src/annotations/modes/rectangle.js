@@ -3,7 +3,7 @@ import doubleClickZoom from '@mapbox/mapbox-gl-draw/src/lib/double_click_zoom';
 
 const RectangleMode = {};
 
-RectangleMode.onSetup = function(opts) {
+RectangleMode.onSetup = function (opts) {
   // console.log('THIS: ', this);
   const rectangle = this.newFeature({
     type: 'Feature',
@@ -35,10 +35,14 @@ RectangleMode.onSetup = function(opts) {
   };
 };
 
-RectangleMode.onClick = function(state, e) {
+RectangleMode.onClick = function (state, e) {
   // if state.startPoint exist, means its second click
   //change to  simple_select mode
-  if (state.startPoint && state.startPoint[0] !== e.lngLat.lng && state.startPoint[1] !== e.lngLat.lat) {
+  if (
+    state.startPoint &&
+    state.startPoint[0] !== e.lngLat.lng &&
+    state.startPoint[1] !== e.lngLat.lat
+  ) {
     this.updateUIClasses({ mouse: 'pointer' });
     state.endPoint = [e.lngLat.lng, e.lngLat.lat];
     this.changeMode('simple_select', { featuresId: state.rectangle.id });
@@ -49,21 +53,29 @@ RectangleMode.onClick = function(state, e) {
   state.startPoint = startPoint;
 };
 
-RectangleMode.onMouseMove = function(state, e) {
+RectangleMode.onMouseMove = function (state, e) {
   // if startPoint, update the feature coordinates, using the bounding box
   // concept we are simply using the startingPoint coordinates and the current
   // Mouse Position coordinates to calculate the bounding box on the fly, which
   // will be our rectangle.
   if (state.startPoint) {
-    state.rectangle.updateCoordinate('0.0', state.startPoint[0], state.startPoint[1]); //minX, minY - the starting point
+    state.rectangle.updateCoordinate(
+      '0.0',
+      state.startPoint[0],
+      state.startPoint[1],
+    ); //minX, minY - the starting point
     state.rectangle.updateCoordinate('0.1', e.lngLat.lng, state.startPoint[1]); // maxX, minY
     state.rectangle.updateCoordinate('0.2', e.lngLat.lng, e.lngLat.lat); // maxX, maxY
     state.rectangle.updateCoordinate('0.3', state.startPoint[0], e.lngLat.lat); // minX,maxY
-    state.rectangle.updateCoordinate('0.4', state.startPoint[0], state.startPoint[1]); //minX,minY - ending point (equals to starting point)
+    state.rectangle.updateCoordinate(
+      '0.4',
+      state.startPoint[0],
+      state.startPoint[1],
+    ); //minX,minY - ending point (equals to starting point)
   }
 };
 
-RectangleMode.toDisplayFeatures = function(state, geojson, display) {
+RectangleMode.toDisplayFeatures = function (state, geojson, display) {
   const isActivePolygon = geojson.properties.id === state.rectangle.id;
   geojson.properties.active = isActivePolygon ? 'true' : 'false';
   if (!isActivePolygon) return display(geojson);
@@ -73,7 +85,7 @@ RectangleMode.toDisplayFeatures = function(state, geojson, display) {
   return display(geojson);
 };
 
-RectangleMode.onStop = function(state) {
+RectangleMode.onStop = function (state) {
   doubleClickZoom.enable(this);
   this.updateUIClasses({ mouse: Constants.cursors.NONE });
   this.activateUIButton();

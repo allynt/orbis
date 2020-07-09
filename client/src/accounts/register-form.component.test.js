@@ -74,9 +74,15 @@ describe('Register Form Component', () => {
       </MemoryRouter>,
     );
 
-    fireEvent.change(getByPlaceholderText('Email'), { target: { value: 'test@test.com' } });
-    fireEvent.change(getByPlaceholderText('Password'), { target: { value: 'pandasconcreterealty' } });
-    fireEvent.change(getByPlaceholderText('Password Confirmation'), { target: { value: 'pandasconcreterealty' } });
+    fireEvent.change(getByPlaceholderText('Email'), {
+      target: { value: 'test@test.com' },
+    });
+    fireEvent.change(getByPlaceholderText('Password'), {
+      target: { value: 'pandasconcreterealty' },
+    });
+    fireEvent.change(getByPlaceholderText('Password Confirmation'), {
+      target: { value: 'pandasconcreterealty' },
+    });
     fireEvent.click(getByText('I agree with'));
     expect(getByText('Sign Up')).not.toHaveAttribute('disabled');
   });
@@ -90,7 +96,9 @@ describe('Register Form Component', () => {
       </MemoryRouter>,
     );
 
-    fireEvent.change(getByPlaceholderText('Email'), { target: { value: 'test@test.com' } });
+    fireEvent.change(getByPlaceholderText('Email'), {
+      target: { value: 'test@test.com' },
+    });
     expect(getByText('Sign Up')).toHaveAttribute('disabled');
   });
 
@@ -108,9 +116,15 @@ describe('Register Form Component', () => {
       </MemoryRouter>,
     );
 
-    fireEvent.change(getByPlaceholderText('Email'), { target: { value: 'test@test.com' } });
-    fireEvent.change(getByPlaceholderText('Password'), { target: { value: 'pandasconcreterealty' } });
-    fireEvent.change(getByPlaceholderText('Password Confirmation'), { target: { value: 'pandasconcreterealty' } });
+    fireEvent.change(getByPlaceholderText('Email'), {
+      target: { value: 'test@test.com' },
+    });
+    fireEvent.change(getByPlaceholderText('Password'), {
+      target: { value: 'pandasconcreterealty' },
+    });
+    fireEvent.change(getByPlaceholderText('Password Confirmation'), {
+      target: { value: 'pandasconcreterealty' },
+    });
 
     expect(getByText('Sign Up')).toHaveAttribute('disabled');
   });
@@ -148,9 +162,15 @@ describe('Register Form Component', () => {
       </MemoryRouter>,
     );
 
-    fireEvent.change(getByPlaceholderText('Email'), { target: { value: 'test@test.com' } });
-    fireEvent.change(getByPlaceholderText('Password'), { target: { value: 'pandasconcreterealty' } });
-    fireEvent.change(getByPlaceholderText('Password Confirmation'), { target: { value: 'pandasconcreterealty' } });
+    fireEvent.change(getByPlaceholderText('Email'), {
+      target: { value: 'test@test.com' },
+    });
+    fireEvent.change(getByPlaceholderText('Password'), {
+      target: { value: 'pandasconcreterealty' },
+    });
+    fireEvent.change(getByPlaceholderText('Password Confirmation'), {
+      target: { value: 'pandasconcreterealty' },
+    });
     fireEvent.click(getByText('I agree with'));
 
     fireEvent.click(getByText('Sign Up'));
