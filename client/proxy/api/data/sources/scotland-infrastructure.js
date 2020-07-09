@@ -10,5 +10,5 @@ module.exports = {
   },
   type: 'vector',
   data:
-    'http://localhost:8000/static-data/astrosat/hourglass/scotland-infrastructure/v1/scotland_infrastructure.json',
+    '/static-data/astrosat/hourglass/scotland-infrastructure/v1/scotland_infrastructure.json',
 };

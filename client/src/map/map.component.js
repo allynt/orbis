@@ -5,7 +5,7 @@ import { LayersIcon, Button, LoadMask } from '@astrosat/astrosat-ui/';
 import DeckGL from '@deck.gl/react';
 import { useDispatch, useSelector } from 'react-redux';
 import { StaticMap } from 'react-map-gl';
-import { ClusteredIconLayer } from './clustered-icon-layer';
+import { GeoJsonClusteredIconLayer } from './geo-json-clustered-icon-layer';
 
 import {
   isLoaded as onBookmarkLoaded,
@@ -20,6 +20,7 @@ import {
 } from './map.slice';
 import { mapboxTokenSelector, mapStylesSelector } from 'app.slice';
 
+import 'mapbox-gl/dist/mapbox-gl.css';
 import styles from './map.module.css';
 import { selectActiveLayers } from 'data-layers/data-layers.slice';
 
@@ -47,57 +48,55 @@ const Map = () => {
   }, [selectedBookmark, dispatch]);
 
   useEffect(() => {
-    const newLayers = layers
-      ? layers.filter(
-          layer =>
-            !!selectedLayers.find(
-              selectedLayer => selectedLayer.name === layer.id,
-            ),
-        )
-      : [];
-    const infraLayer = selectedLayers.find(
-      layer => layer.name === 'health-infrastructure',
-    );
-    if (infraLayer) {
-      newLayers.push(
-        new ClusteredIconLayer({
-          id: infraLayer.name,
-          data: infraLayer.data.features,
-          iconMapping: infrastructureIconMapping,
-          iconAtlas: infrastructureIconAtlas,
-          getPosition: d => d.geometry.coordinates,
-          getIcon: d => d.properties.type,
-          getIconSize: 60,
-          getIconColor: [246, 190, 0],
-          getTextSize: 32,
-          getTextColor: [51, 63, 72],
-          clusterRadius: 40,
-          sizeMinPixels: 6,
-        }),
+    setLayers(currentLayers => {
+      const newLayers = currentLayers.filter(
+        layer =>
+          !!selectedLayers.find(
+            selectedLayer => selectedLayer.name === layer.id,
+          ),
       );
-    }
-    const peopleLayer = selectedLayers.find(
-      layer => layer.name === 'population-information',
-    );
-    if (peopleLayer) {
-      newLayers.push(
-        new ClusteredIconLayer({
-          id: peopleLayer.name,
-          data: peopleLayer.data.features,
-          iconMapping: peopleIconMapping,
-          iconAtlas: peopleIconAtlas,
-          getPosition: d => d.geometry.coordinates,
-          getIcon: d => d.properties.Type,
-          getIconSize: d => (d.properties.cluster ? 60 : 15),
-          getIconColor: [246, 190, 0],
-          getTextSize: 32,
-          getTextColor: [51, 63, 72],
-          clusterRadius: 20,
-          sizeMinPixels: 6,
-        }),
+      const infraLayer = selectedLayers.find(
+        layer => layer.name === 'scotland-infrastructure',
       );
-    }
-    setLayers(newLayers);
+      if (infraLayer) {
+        newLayers.push(
+          new GeoJsonClusteredIconLayer({
+            id: infraLayer.name,
+            data: infraLayer.data,
+            iconMapping: infrastructureIconMapping,
+            iconAtlas: infrastructureIconAtlas,
+            getPosition: d => d.geometry.coordinates,
+            getIcon: d => d.properties.type,
+            getIconSize: 60,
+            getIconColor: [246, 190, 0],
+            getTextSize: 32,
+            getTextColor: [51, 63, 72],
+            clusterRadius: 40,
+            sizeMinPixels: 6,
+          }),
+        );
+      }
+      const peopleLayer = selectedLayers.find(layer => layer.name === 'people');
+      if (peopleLayer) {
+        newLayers.push(
+          new GeoJsonClusteredIconLayer({
+            id: peopleLayer.name,
+            data: peopleLayer.data,
+            iconMapping: peopleIconMapping,
+            iconAtlas: peopleIconAtlas,
+            getPosition: d => d.geometry.coordinates,
+            getIcon: d => d.properties.Type,
+            getIconSize: d => (d.properties.cluster ? 60 : 15),
+            getIconColor: [246, 190, 0],
+            getTextSize: 32,
+            getTextColor: [51, 63, 72],
+            clusterRadius: 20,
+            sizeMinPixels: 6,
+          }),
+        );
+      }
+      return newLayers;
+    });
   }, [selectedLayers]);
 
   return (

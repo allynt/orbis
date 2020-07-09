@@ -13,6 +13,5 @@ module.exports = {
     description: 'Description of Population information layer.',
     filters: ['Type', 'Availability', 'Contact Details.Country'],
   },
-  data:
-    'http://localhost:8000/static-data/astrosat/hourglass/people/v1/people.json',
+  data: '/static-data/astrosat/hourglass/people/v1/people.json',
 };

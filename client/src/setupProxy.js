@@ -16,5 +16,9 @@ module.exports = function (app) {
       target,
       changeOrigin: true,
     }),
+    createProxyMiddleware('/static-data', {
+      target,
+      changeOrigin: true,
+    }),
   );
 };
