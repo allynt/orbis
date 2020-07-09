@@ -16,11 +16,15 @@ from astrosat_users.tests.factories import (
     UserFactory as AstrosatUserFactory,
     UserRoleFactory,
     UserPermissionFactory,
+    CustomerFactory,
 )
 
 from orbis.models import (
     OrbisUserProfile,
+    Orb,
     DataScope,
+    License,
+    Access,
     Satellite,
     SatelliteTier,
     SatelliteVisualisation,
@@ -71,8 +75,26 @@ class UserFactory(AstrosatUserFactory):
 
 
 ########
-# data #
+# orbs #
 ########
+
+
+class OrbFactory(factory.DjangoModelFactory):
+    class Meta:
+        model = Orb
+
+    is_active = True
+    name = factory.LazyAttributeSequence(lambda o, n: f"orb-{n}")
+    description = optional_declaration(FactoryFaker("text"), chance=50)
+
+    @factory.post_generation
+    def data_scopes(self, create, extracted, **kwargs):
+        if not create:
+            return
+
+        if extracted:
+            for data_scope in extracted:
+                self.data_scopes.add(data_scope)
 
 
 class DataScopeFactory(factory.DjangoModelFactory):
@@ -85,6 +107,13 @@ class DataScopeFactory(factory.DjangoModelFactory):
     namespace = FactoryFaker("word")
     name = FactoryFaker("word")
     version = FactoryFaker("date", pattern="%Y-%m-%d")
+
+
+class LicenseFactory(factory.DjangoModelFactory):
+    class Meta:
+        model = License
+
+    access = FactoryFaker("pyint", min_value=0, max_value=sum(Access))
 
 
 ##############

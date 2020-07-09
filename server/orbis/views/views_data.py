@@ -18,7 +18,8 @@ from requests.exceptions import Timeout
 from drf_yasg import openapi
 from drf_yasg.utils import swagger_auto_schema
 
-from orbis.models import DataScope, generate_data_token, validate_data_token
+from orbis.models import DataScope
+from orbis.utils import generate_data_token, validate_data_token
 
 
 class IsAuthenticatedOrAdmin(BasePermission):
