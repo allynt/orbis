@@ -93,7 +93,7 @@ const DataLayers = () => {
 
             return (
               <Detail
-                key={selectedLayer.name}
+                key={selectedLayer.source_id}
                 title={selectedLayer.metadata.label}
               >
                 <div className={styles.detailContent}>

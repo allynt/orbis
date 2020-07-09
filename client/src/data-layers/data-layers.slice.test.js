@@ -122,7 +122,7 @@ describe('Data Slice', () => {
 
       it('should set the data layers as strings when the function receives objects', () => {
         const layers = ['Test Layer 1', 'Test Layer 2'];
-        const objects = layers.map(layer => ({ name: layer }));
+        const objects = layers.map(layer => ({ source_id: layer }));
         const actualState = reducer(beforeState, addLayers(objects));
         expect(actualState.layers).toEqual(layers);
       });
@@ -168,7 +168,7 @@ describe('Data Slice', () => {
       it('should remove layers when an object is received', () => {
         beforeState.layers = ['Test Layer 1', 'Test Layer 2'];
         const expected = [beforeState.layers[0]];
-        const layer = { name: beforeState.layers[1] };
+        const layer = { source_id: beforeState.layers[1] };
         const actualState = reducer(beforeState, removeLayer(layer));
         expect(actualState.layers).toEqual(expected);
       });
@@ -574,9 +574,9 @@ describe('Data Slice', () => {
         const state = {
           data: {
             sources: [
-              { name: 'source 1' },
-              { name: 'source 2' },
-              { name: 'source 3' },
+              { source_id: 'source 1' },
+              { source_id: 'source 2' },
+              { source_id: 'source 3' },
             ],
           },
         };
@@ -602,9 +602,9 @@ describe('Data Slice', () => {
         const state = {
           data: {
             sources: [
-              { name: 'Source 1' },
-              { name: 'Source 2' },
-              { name: 'Source 3' },
+              { source_id: 'Source 1' },
+              { source_id: 'Source 2' },
+              { source_id: 'Source 3' },
             ],
             layers: ['Source 1', 'Source 3'],
           },
@@ -618,9 +618,9 @@ describe('Data Slice', () => {
         const state = {
           data: {
             sources: [
-              { name: 'Source 1' },
-              { name: 'Source 2' },
-              { name: 'Source 3' },
+              { source_id: 'Source 1' },
+              { source_id: 'Source 2' },
+              { source_id: 'Source 3' },
             ],
             layers: [],
           },
@@ -790,7 +790,7 @@ describe('Data Slice', () => {
             layers: ['fruit-bowl'],
             sources: [
               {
-                name: 'fruit-bowl',
+                source_id: 'fruit-bowl',
                 metadata: {
                   filters: ['fruit'],
                 },
@@ -832,7 +832,7 @@ describe('Data Slice', () => {
             layers: ['fruit-bowl'],
             sources: [
               {
-                name: 'fruit-bowl',
+                source_id: 'fruit-bowl',
                 metadata: {
                   filters: ['fruit'],
                 },
@@ -884,7 +884,7 @@ describe('Data Slice', () => {
             layers: ['fruit-bowl', 'cars'],
             sources: [
               {
-                name: 'fruit-bowl',
+                source_id: 'fruit-bowl',
                 metadata: {
                   filters: ['fruit'],
                 },
@@ -919,7 +919,7 @@ describe('Data Slice', () => {
                 },
               },
               {
-                name: 'cars',
+                source_id: 'cars',
                 metadata: {
                   filters: ['make'],
                 },
@@ -964,7 +964,7 @@ describe('Data Slice', () => {
             layers: ['cars'],
             sources: [
               {
-                name: 'cars',
+                source_id: 'cars',
                 metadata: {
                   filters: ['make', 'engine'],
                 },
@@ -1010,7 +1010,7 @@ describe('Data Slice', () => {
             layers: [],
             sources: [
               {
-                name: 'fruit-bowl',
+                source_id: 'fruit-bowl',
                 metadata: {
                   filters: ['fruit'],
                 },
@@ -1058,7 +1058,7 @@ describe('Data Slice', () => {
             layers: ['fruit-bowl'],
             sources: [
               {
-                name: 'fruit-bowl',
+                source_id: 'fruit-bowl',
                 metadata: {},
                 data: {
                   features: [
@@ -1093,7 +1093,7 @@ describe('Data Slice', () => {
             layers: ['fruit-bowl'],
             sources: [
               {
-                name: 'fruit-bowl',
+                source_id: 'fruit-bowl',
                 metadata: {
                   filters: ['fruit', 'status'],
                 },
@@ -1135,7 +1135,7 @@ describe('Data Slice', () => {
             layers: ['fruit-bowl'],
             sources: [
               {
-                name: 'fruit-bowl',
+                source_id: 'fruit-bowl',
                 metadata: {
                   filters: ['fruit', 'status'],
                 },
@@ -1180,7 +1180,7 @@ describe('Data Slice', () => {
             layers: ['people'],
             sources: [
               {
-                name: 'people',
+                source_id: 'people',
                 metadata: {
                   filters: ['contactDetails.country'],
                 },
@@ -1235,7 +1235,7 @@ describe('Data Slice', () => {
             layers: ['people'],
             sources: [
               {
-                name: 'people',
+                source_id: 'people',
                 metadata: {
                   filters: ['favouriteAnimals'],
                 },
@@ -1277,7 +1277,7 @@ describe('Data Slice', () => {
             layers: ['people'],
             sources: [
               {
-                name: 'people',
+                source_id: 'people',
                 metadata: {
                   filters: [
                     'contactDetails.country',
@@ -1343,7 +1343,7 @@ describe('Data Slice', () => {
             layers: ['nesting-test'],
             sources: [
               {
-                name: 'nesting-test',
+                source_id: 'nesting-test',
                 metadata: {
                   filters: [
                     'this.is.a.super.nested.property',
@@ -1410,7 +1410,7 @@ describe('Data Slice', () => {
             layers: ['availability-test'],
             sources: [
               {
-                name: 'availability-test',
+                source_id: 'availability-test',
                 metadata: {
                   filters: ['Availability'],
                 },
@@ -1499,7 +1499,7 @@ describe('Data Slice', () => {
       beforeEach(() => {
         sources = [
           {
-            name: 'fruit-bowl',
+            source_id: 'fruit-bowl',
             metadata: {
               filters: ['fruit', 'status'],
             },
@@ -1545,7 +1545,7 @@ describe('Data Slice', () => {
             },
           },
           {
-            name: 'cars',
+            source_id: 'cars',
             metadata: {
               filters: ['make', 'engine'],
             },
@@ -1625,7 +1625,7 @@ describe('Data Slice', () => {
         };
         const expected = [
           {
-            name: 'fruit-bowl',
+            source_id: 'fruit-bowl',
             metadata: {
               filters: ['fruit', 'status'],
             },
@@ -1666,7 +1666,7 @@ describe('Data Slice', () => {
         };
         const expected = [
           {
-            name: 'fruit-bowl',
+            source_id: 'fruit-bowl',
             metadata: {
               filters: ['fruit', 'status'],
             },
@@ -1720,7 +1720,7 @@ describe('Data Slice', () => {
         };
         const expected = [
           {
-            name: 'fruit-bowl',
+            source_id: 'fruit-bowl',
             metadata: {
               filters: ['fruit', 'status'],
             },
@@ -1758,7 +1758,7 @@ describe('Data Slice', () => {
         };
         const expected = [
           {
-            name: 'fruit-bowl',
+            source_id: 'fruit-bowl',
             metadata: {
               filters: ['fruit', 'status'],
             },
@@ -1780,7 +1780,7 @@ describe('Data Slice', () => {
             },
           },
           {
-            name: 'cars',
+            source_id: 'cars',
             metadata: {
               filters: ['make', 'engine'],
             },
@@ -1824,7 +1824,7 @@ describe('Data Slice', () => {
         };
         const expected = [
           {
-            name: 'fruit-bowl',
+            source_id: 'fruit-bowl',
             metadata: {
               filters: ['fruit', 'status'],
             },
@@ -1858,7 +1858,7 @@ describe('Data Slice', () => {
             },
           },
           {
-            name: 'cars',
+            source_id: 'cars',
             metadata: {
               filters: ['make', 'engine'],
             },
@@ -1922,7 +1922,7 @@ describe('Data Slice', () => {
         };
         const expected = [
           {
-            name: 'fruit-bowl',
+            source_id: 'fruit-bowl',
             metadata: {
               filters: ['fruit', 'status'],
             },
@@ -1938,7 +1938,7 @@ describe('Data Slice', () => {
             },
           },
           {
-            name: 'cars',
+            source_id: 'cars',
             metadata: {
               filters: ['make', 'engine'],
             },
@@ -1978,7 +1978,7 @@ describe('Data Slice', () => {
         };
         const expected = [
           {
-            name: 'fruit-bowl',
+            source_id: 'fruit-bowl',
             metadata: {
               filters: ['fruit', 'status'],
             },
@@ -2001,7 +2001,7 @@ describe('Data Slice', () => {
             },
           },
           {
-            name: 'cars',
+            source_id: 'cars',
             metadata: {
               filters: ['make', 'engine'],
             },
@@ -2050,7 +2050,7 @@ describe('Data Slice', () => {
         const expected = [
           sources[0],
           {
-            name: 'cars',
+            source_id: 'cars',
             metadata: {
               filters: ['make', 'engine'],
             },
@@ -2173,7 +2173,7 @@ describe('Data Slice', () => {
           data: {
             sources: [
               {
-                name: 'fruit-bowl',
+                source_id: 'fruit-bowl',
                 metadata: {
                   filters: ['nested.property'],
                 },
@@ -2247,7 +2247,7 @@ describe('Data Slice', () => {
         };
         const expected = [
           {
-            name: 'fruit-bowl',
+            source_id: 'fruit-bowl',
             metadata: {
               filters: ['nested.property'],
             },
@@ -2302,7 +2302,7 @@ describe('Data Slice', () => {
           data: {
             sources: [
               {
-                name: 'array-test',
+                source_id: 'array-test',
                 metadata: {
                   filters: ['arrayproperty'],
                 },
@@ -2337,7 +2337,7 @@ describe('Data Slice', () => {
         };
         const expected = [
           {
-            name: 'array-test',
+            source_id: 'array-test',
             metadata: {
               filters: ['arrayproperty'],
             },

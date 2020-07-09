@@ -72,7 +72,6 @@ const Map = () => {
             getTextSize: 32,
             getTextColor: [51, 63, 72],
             clusterRadius: 40,
-            sizeMinPixels: 6,
           }),
         );
       }
@@ -91,7 +90,6 @@ const Map = () => {
             getTextSize: 32,
             getTextColor: [51, 63, 72],
             clusterRadius: 20,
-            sizeMinPixels: 6,
           }),
         );
       }

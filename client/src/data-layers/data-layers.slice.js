@@ -17,13 +17,12 @@ const dataSlice = createSlice({
     addLayers: (state, { payload }) => {
       let newLayers = payload;
       if (typeof payload[0] === 'object')
-        newLayers = payload.map(layer => layer.name);
+        newLayers = payload.map(layer => layer.source_id);
       state.layers = Array.from(new Set([...state.layers, ...newLayers]));
     },
     removeLayer: (state, { payload }) => {
-      let layerName = payload;
-      if (typeof payload === 'object') layerName = payload.name;
-      state.layers = state.layers.filter(layer => layer !== layerName);
+      let layerId = typeof payload === 'object' ? payload.source_id : payload;
+      state.layers = state.layers.filter(layer => layer !== layerId);
     },
     fetchSourcesSuccess: (state, { payload }) => {
       // Convert from minutes to millliseconds and then half the value.
@@ -112,12 +111,12 @@ export const selectPollingPeriod = createSelector(
 );
 export const selectActiveLayers = createSelector(baseSelector, state =>
   state.sources
-    ? state.sources.filter(source => state.layers.includes(source.name))
+    ? state.sources.filter(source => state.layers.includes(source.source_id))
     : [],
 );
 export const selectInactiveLayers = createSelector(baseSelector, state =>
   state.sources
-    ? state.sources.filter(source => !state.layers.includes(source.name))
+    ? state.sources.filter(source => !state.layers.includes(source.source_id))
     : [],
 );
 export const selectDomainList = createSelector(selectDataSources, sources =>
@@ -151,7 +150,7 @@ export const selectAvailableFilters = createSelector(
   layers => {
     const filters = layers.reduce((acc, layer) => {
       return layer.metadata.filters
-        ? { ...acc, [layer.name]: createLayerFilters(layer) }
+        ? { ...acc, [layer.source_id]: createLayerFilters(layer) }
         : acc;
     }, {});
     return filters;
@@ -168,8 +167,8 @@ export const selectFilteredData = createSelector(
   (layers, filters) => {
     const filteredLayers = JSON.parse(JSON.stringify(layers));
     return filteredLayers.map(layer => {
-      if (filters[layer.name]) {
-        const layerFilters = filters[layer.name];
+      if (filters[layer.source_id]) {
+        const layerFilters = filters[layer.source_id];
         layer.data.features = layer.data.features.filter(feature => {
           for (let filterPath in layerFilters) {
             if (layerFilters[filterPath].length > 0) {
