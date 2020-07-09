@@ -9,7 +9,7 @@
 
 .mapStyleButton {
   position: absolute;
-  padding: 0.5rem;
+  padding: 0.5rem !important;
   bottom: 8rem;
   right: 0.6rem;
   z-index: 10;
