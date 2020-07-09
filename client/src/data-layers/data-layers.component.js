@@ -74,12 +74,6 @@ const DataLayers = () => {
   const dispatch = useDispatch();
   const dataSources = useSelector(selectDataSources);
   const selectedLayers = useSelector(selectActiveLayers);
-  const availableFilters = useSelector(selectAvailableFilters);
-  const currentFilters = useSelector(selectCurrentFilters);
-  const canFilter =
-    availableFilters !== undefined &&
-    availableFilters !== null &&
-    !isEmpty(availableFilters);
 
   // Create an array of sources, grouped by their domain.
   const domains = dataSources.reduce((acc, value) => {
@@ -92,20 +86,8 @@ const DataLayers = () => {
     return acc;
   }, []);
 
-  const handleFiltersChange = (toAdd, toRemove) => {
-    dispatch(addFilters(toAdd));
-    dispatch(removeFilters(toRemove));
-  };
-
   return (
     <>
-      {featureToggles.filters && canFilter && (
-        <Filters
-          availableFilters={availableFilters}
-          currentFilters={currentFilters}
-          onFiltersChange={handleFiltersChange}
-        />
-      )}
       <div className={styles.selectData} ref={ref}>
         <div className={styles.layers}>
           {selectedLayers.map(selectedLayer => {

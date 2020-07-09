@@ -39,7 +39,6 @@ const install = () => {
           <div className={styles.tools}>
             <LocalDevTools />
             <StoriesTool />
-            <FiltersTool />
             <SatellitesTool />
           </div>
         </div>
