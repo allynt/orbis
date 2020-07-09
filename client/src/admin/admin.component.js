@@ -14,10 +14,14 @@ import {
 import HomeView from './home-view/home-view.component';
 import CorporateView from './corporate-view/corporate-view.component';
 import { CreateUserForm } from './create-user-form/create-user-form.component';
+import { EditUserForm } from './edit-user-form/edit-user-form.component';
 import LeftSidebar from './left-sidebar/left-sidebar.component';
 import { LicenceDashboard } from './licence-dashboard/licence-dashboard.component';
 import OrganisationMenu from './organisation-menu/organisation-menu.component';
 import ContentWrapper from './content-wrapper.component';
+
+const CREATE_USER = 'Create New User';
+const EDIT_USER = 'Edit User';
 
 const Admin = ({ user }) => {
   const dispatch = useDispatch();
@@ -25,8 +29,8 @@ const Admin = ({ user }) => {
   const customerUsers = useSelector(selectCustomerUsers);
   const licenceInformation = useSelector(selectLicenceInformation);
   const [visiblePanel, setVisiblePanel] = useState(ADMIN_VIEW.home);
-  const createUserDialogRef = useRef(document.body);
-  const [createUserDialogVisible, setCreateUserDialogVisible] = useState();
+  const createDialogRef = useRef(document.body);
+  const [dialog, setDialog] = useState(null);
 
   useEffect(() => {
     if (!currentCustomer) {
@@ -41,7 +45,7 @@ const Admin = ({ user }) => {
   }, [currentCustomer, customerUsers, dispatch]);
 
   const handleCreateUserFormSubmit = values => {
-    setCreateUserDialogVisible(false);
+    setDialog(false);
     dispatch(createCustomerUser(values));
   };
 
@@ -57,7 +61,13 @@ const Admin = ({ user }) => {
         );
       case ADMIN_VIEW.home:
       default:
-        return <HomeView users={customerUsers} customer={currentCustomer} />;
+        return (
+          <HomeView
+            users={customerUsers}
+            customer={currentCustomer}
+            onEditUserClick={user => setDialog({ type: EDIT_USER, user })}
+          />
+        );
     }
   };
 
@@ -72,19 +82,22 @@ const Admin = ({ user }) => {
       <OrganisationMenu
         customer={currentCustomer}
         setVisiblePanel={setVisiblePanel}
-        onCreateUserClick={() => setCreateUserDialogVisible(true)}
+        onCreateUserClick={() => setDialog({ type: CREATE_USER })}
       />
       <Dialog
-        title="Create New User"
-        isVisible={createUserDialogVisible}
-        ref={createUserDialogRef}
-        close={() => setCreateUserDialogVisible(false)}
+        title={dialog?.type}
+        isVisible={dialog}
+        ref={createDialogRef}
+        close={() => setDialog(null)}
       >
-        <CreateUserForm
-          licenceInformation={licenceInformation}
-          existingEmails={customerUsers?.map(cu => cu.user.email)}
-          onSubmit={handleCreateUserFormSubmit}
-        />
+        {dialog?.type === CREATE_USER && (
+          <CreateUserForm
+            licenceInformation={licenceInformation}
+            existingEmails={customerUsers?.map(cu => cu.user.email)}
+            onSubmit={handleCreateUserFormSubmit}
+          />
+        )}
+        {dialog?.type === EDIT_USER && <EditUserForm user={dialog.user} />}
       </Dialog>
     </div>
   );

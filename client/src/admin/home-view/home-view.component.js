@@ -7,7 +7,7 @@ import { USER_STATUS } from '../admin.constants';
 
 import styles from './home-view.module.css';
 
-const HomeView = ({ users, customer }) => {
+const HomeView = ({ users, customer, onEditUserClick }) => {
   const activeUsers = users?.filter(user => user.status === USER_STATUS.active);
   const pendingUsers = users?.filter(
     user => user.status === USER_STATUS.pending,
@@ -32,6 +32,7 @@ const HomeView = ({ users, customer }) => {
         activeUsers={activeUsers}
         customer={customer}
         licenceData={licenceData}
+        onEditUserClick={onEditUserClick}
       />
       <PendingInvitationsBoard
         pendingUsers={pendingUsers}

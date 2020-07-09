@@ -1,5 +1,7 @@
 import React from 'react';
 
+import { OptionsIcon } from '@astrosat/astrosat-ui';
+
 import ContentWrapper from '../../content-wrapper.component';
 
 import { getUserLicences } from '../get-user-licences-helper';
@@ -8,7 +10,12 @@ import QuickView from '../active-users-board/quick-view/quick-view.component';
 
 import tableStyles from '../../table.module.css';
 
-export const ActiveUsersBoard = ({ activeUsers, customer, licenceData }) => (
+export const ActiveUsersBoard = ({
+  activeUsers,
+  customer,
+  licenceData,
+  onEditUserClick,
+}) => (
   <ContentWrapper title="Users">
     <QuickView licenceData={licenceData} />
     <table className={tableStyles.table}>
@@ -41,6 +48,12 @@ export const ActiveUsersBoard = ({ activeUsers, customer, licenceData }) => (
                     : 'Not currently available'}
                 </td>
                 <td className={tableStyles.td}>{user.user.email}</td>
+                <td className={tableStyles.td}>
+                  <OptionsIcon
+                    classes={tableStyles.optionsIcon}
+                    onClick={() => onEditUserClick(user)}
+                  />
+                </td>
               </tr>
             );
           })

@@ -17,3 +17,8 @@
 .td {
   padding: 2.5rem 2rem 1.75rem;
 }
+
+.optionsIcon {
+  width: 1.5rem;
+  cursor: pointer;
+}
