@@ -1,7 +1,6 @@
 import React, { useRef } from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
-import { isEmpty } from 'lodash';
 
 import Button from '@astrosat/astrosat-ui/dist/buttons/button';
 import Detail from '@astrosat/astrosat-ui/dist/containers/detail';
@@ -15,12 +14,8 @@ import { ReactComponent as AddNewCategoryIcon } from './add-more-categories.svg'
 import {
   removeLayer,
   addLayers,
-  addFilters,
   selectDataSources,
   selectActiveLayers,
-  selectAvailableFilters,
-  selectCurrentFilters,
-  removeFilters,
 } from './data-layers.slice';
 
 import { PopulationInformation } from './population-information.component';
@@ -28,9 +23,6 @@ import { HealthInfrastructure } from './health-infrastructure.component';
 import DataLayersDialog from './data-layers-dialog.component';
 
 import styles from './data-layers.module.css';
-import { Filters } from './filters/filters.component';
-
-import featureToggles from '../feature-toggles';
 
 const DefaultComponent = ({ selectedLayer, dispatch }) => (
   <div>
