@@ -1,4 +1,4 @@
-const healthInfrastructure = require('./health-infrastructure');
+const healthInfrastructure = require('./scotland-infrastructure');
 const hospitalsUk = require('./hospitals-uk');
 const populationInformation = require('./hourglass-population-information');
 const sentinel2Rgb = require('./sentinel-2-rgb');
