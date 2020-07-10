@@ -23,7 +23,7 @@ from orbis.models import (
     OrbisUserProfile,
     Orb,
     DataScope,
-    License,
+    Licence,
     Access,
     Satellite,
     SatelliteTier,
@@ -109,9 +109,9 @@ class DataScopeFactory(factory.DjangoModelFactory):
     version = FactoryFaker("date", pattern="%Y-%m-%d")
 
 
-class LicenseFactory(factory.DjangoModelFactory):
+class LicenceFactory(factory.DjangoModelFactory):
     class Meta:
-        model = License
+        model = Licence
 
     access = FactoryFaker("pyint", min_value=0, max_value=sum(Access))
 
