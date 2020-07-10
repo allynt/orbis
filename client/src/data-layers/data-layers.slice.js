@@ -28,7 +28,7 @@ const dataSlice = createSlice({
     },
     removeLayer: (state, { payload }) => {
       let layerId = typeof payload === 'object' ? payload.source_id : payload;
-      state.layers = state.layers.filter(layer => layer !== layerId);
+      if (state.layers[layerId]) state.layers[layerId].visible = false;
     },
     fetchSourcesSuccess: (state, { payload }) => {
       // Convert from minutes to millliseconds and then half the value.

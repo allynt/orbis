@@ -173,36 +173,56 @@ describe.only('Data Slice', () => {
     });
 
     describe('removeLayer', () => {
-      it('should update the data layers in state, when layers previously selected is removed', () => {
-        beforeState.layers = ['Test Layer 1', 'Test Layer 2'];
-        const layer = 'Test Layer 1';
-
-        const actualState = reducer(beforeState, {
-          type: removeLayer.type,
-          payload: layer,
-        });
-
-        expect(actualState.layers).toEqual([beforeState.layers[1]]);
+      it('does nothing if the layer being removed does not exist', () => {
+        const state = {
+          layers: {},
+        };
+        const layer = 'test/layer/1';
+        const actualState = reducer(state, removeLayer(layer));
+        expect(actualState).toEqual(state);
       });
 
-      it("should not update the data layers in state, when layer selected doesn't exist", () => {
-        beforeState.layers = ['Test Layer 1', 'Test Layer 2'];
-        const layer = 'Test Layer 3';
-
-        const actualState = reducer(beforeState, {
-          type: removeLayer.type,
-          payload: layer,
-        });
-
-        expect(actualState.layers).toEqual(beforeState.layers);
+      it("sets the layer's visible property to false", () => {
+        const state = {
+          layers: {
+            'test/layer/1': { loaded: true, visible: true },
+          },
+        };
+        const expected = {
+          'test/layer/1': { loaded: true, visible: false },
+        };
+        const layer = 'test/layer/1';
+        const result = reducer(state, removeLayer(layer));
+        expect(result.layers).toEqual(expected);
       });
 
       it('should remove layers when an object is received', () => {
-        beforeState.layers = ['Test Layer 1', 'Test Layer 2'];
-        const expected = [beforeState.layers[0]];
-        const layer = { source_id: beforeState.layers[1] };
-        const actualState = reducer(beforeState, removeLayer(layer));
-        expect(actualState.layers).toEqual(expected);
+        const state = {
+          layers: {
+            'test/layer/1': { loaded: true, visible: true },
+            'test/layer/2': { loaded: true, visible: true },
+          },
+        };
+        const layer = { source_id: 'test/layer/2' };
+        const result = reducer(state, removeLayer(layer));
+        expect(result.layers[layer.source_id].visible).toBe(false);
+      });
+
+      it('does not affect other layers', () => {
+        const state = {
+          layers: {
+            'test/layer/1': { loaded: true, visible: true },
+            'test/layer/2': { loaded: true, visible: true },
+          },
+        };
+        const expected = {
+          layers: {
+            'test/layer/1': { loaded: true, visible: false },
+            'test/layer/2': { loaded: true, visible: true },
+          },
+        };
+        const result = reducer(state, removeLayer('test/layer/1'));
+        expect(result).toEqual(expected);
       });
     });
 
