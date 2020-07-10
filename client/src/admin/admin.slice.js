@@ -223,6 +223,28 @@ export const createCustomerUser = fields => async (dispatch, getState) => {
   return dispatch(createCustomerUserSuccess({ user, customer }));
 };
 
+export const withdrawInvitation = (user, customer) => async (
+  dispatch,
+  getState,
+) => {
+  const headers = getJsonAuthHeaders(getState());
+
+  const response = await sendData(
+    `${API}${customer.name}/users/${user.id}`,
+    user,
+    headers,
+    'PUT',
+  );
+
+  if (!response.ok) {
+    console.log('Not ok!');
+  }
+
+  const userData = await response.json();
+
+  console.log('OK!: ', userData);
+};
+
 export const updateCustomerUser = (customer, user) => async (
   dispatch,
   getState,

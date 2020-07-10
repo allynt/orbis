@@ -10,11 +10,13 @@ import {
   selectCurrentCustomer,
   selectCustomerUsers,
   selectLicenceInformation,
+  withdrawInvitation,
 } from './admin.slice';
 import HomeView from './home-view/home-view.component';
 import CorporateView from './corporate-view/corporate-view.component';
 import { CreateUserForm } from './create-user-form/create-user-form.component';
 import { EditUserForm } from './edit-user-form/edit-user-form.component';
+import { WithdrawUserInvitationForm } from './withdraw-invitation-form/withdraw-user-invitation-form.component';
 import LeftSidebar from './left-sidebar/left-sidebar.component';
 import { LicenceDashboard } from './licence-dashboard/licence-dashboard.component';
 import OrganisationMenu from './organisation-menu/organisation-menu.component';
@@ -22,6 +24,7 @@ import ContentWrapper from './content-wrapper.component';
 
 const CREATE_USER = 'Create New User';
 const EDIT_USER = 'Edit User';
+const WITHDRAW_INVITATION = 'Withdraw Invitation';
 
 const Admin = ({ user }) => {
   const dispatch = useDispatch();
@@ -66,6 +69,9 @@ const Admin = ({ user }) => {
             users={customerUsers}
             customer={currentCustomer}
             onEditUserClick={user => setDialog({ type: EDIT_USER, user })}
+            onWithdrawInvitationClick={user =>
+              setDialog({ type: WITHDRAW_INVITATION, user })
+            }
           />
         );
     }
@@ -98,6 +104,15 @@ const Admin = ({ user }) => {
           />
         )}
         {dialog?.type === EDIT_USER && <EditUserForm user={dialog.user} />}
+        {dialog?.type === WITHDRAW_INVITATION && (
+          <WithdrawUserInvitationForm
+            user={dialog.user}
+            withdrawInvitation={user =>
+              dispatch(withdrawInvitation(user, currentCustomer))
+            }
+            close={() => setDialog(null)}
+          />
+        )}
       </Dialog>
     </div>
   );
