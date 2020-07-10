@@ -21,42 +21,6 @@
   display: none;
 }
 
-.map :global(.mapboxgl-ctrl-group button + button) {
-  border-top: 1px solid var(--color-primary);
-}
-
-.map :global(.mapboxgl-ctrl-group button:first-child) {
-  border-radius: 0.3rem 0.3rem 0 0;
-}
-
-.map :global(.mapboxgl-ctrl-group button:last-child) {
-  border-radius: 0 0 0.3rem 0.3rem;
-}
-
-.map :global(.mapboxgl-ctrl-group button:hover) {
-  background-color: var(--color-secondary) !important;
-}
-
-.map :global(.mapboxgl-ctrl button) {
-  background-color: var(--button--secondary--background-color) !important;
-}
-
-.map :global(.mapboxgl-ctrl button.mapboxgl-ctrl-zoom-in .mapboxgl-ctrl-icon) {
-  background-image: url(./plus.svg);
-}
-
-.map :global(.mapboxgl-ctrl button.mapboxgl-ctrl-zoom-out .mapboxgl-ctrl-icon) {
-  background-image: url(./minus.svg);
-}
-
-.map :global(.mapboxgl-ctrl button.mapboxgl-ctrl-compass .mapboxgl-ctrl-icon) {
-  background-image: url(./compass.svg);
-}
-
-.map :global(.mapboxgl-ctrl button.mapboxgl-ctrl-compass:hover) {
-  cursor: pointer;
-}
-
 .map :global(.mapboxgl-ctrl-geocoder) {
   background-color: var(--color-secondary);
   min-width: 2rem;
@@ -111,24 +75,7 @@
 .map :global(.mapboxgl-popup) :global(.mapboxgl-popup-content) {
   background: var(--color-secondary);
   border-radius: 1rem;
-  min-width: 25rem;
-  /* MIN_WIDTH ^^^ WAS ADDED FOR COVID_APP. COMMENT FOR IF/WHEN IT IS CHANGED BACK */
 }
-
-/* .map :global(.mapboxgl-popup-close-button) {
-  border-radius: 50%;
-  cursor: pointer;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 2rem;
-  height: 2rem;
-  background-color: var(--close-button-text);
-  color: var(--button-text);
-  font-size: x-large;
-} */
-
-/* PREVIOUS STYLING FROM BEFORE COVID-APP ^^^ KEEPING THIS FOR IF/WHEN IT GETS CHANGED BACK */
 
 .map :global(.mapboxgl-popup-close-button) {
   border-radius: 50%;
