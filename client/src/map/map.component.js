@@ -26,7 +26,7 @@ import { mapboxTokenSelector, mapStylesSelector } from 'app.slice';
 
 import 'mapbox-gl/dist/mapbox-gl.css';
 import styles from './map.module.css';
-import { selectActiveLayers } from 'data-layers/data-layers.slice';
+import { selectActiveSources } from 'data-layers/data-layers.slice';
 
 import infrastructureIconAtlas from './layers/hourglass/infrastructure/iconAtlas.svg';
 import infrastructureIconMapping from './layers/hourglass/infrastructure/iconMapping.json';
@@ -44,7 +44,7 @@ const Map = () => {
   const [isMapStyleSwitcherVisible, setIsMapStyleSwitcherVisible] = useState(
     false,
   );
-  const selectedLayers = useSelector(selectActiveLayers);
+  const selectedLayers = useSelector(selectActiveSources);
   const [layers, setLayers] = useState([]);
 
   useEffect(() => {

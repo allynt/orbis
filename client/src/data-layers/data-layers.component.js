@@ -15,7 +15,7 @@ import {
   removeLayer,
   addLayers,
   selectDataSources,
-  selectActiveLayers,
+  selectActiveSources,
 } from './data-layers.slice';
 
 import { PopulationInformation } from './population-information.component';
@@ -65,7 +65,7 @@ const DataLayers = () => {
   const ref = useRef(null);
   const dispatch = useDispatch();
   const dataSources = useSelector(selectDataSources);
-  const selectedLayers = useSelector(selectActiveLayers);
+  const selectedLayers = useSelector(selectActiveSources);
 
   // Create an array of sources, grouped by their domain.
   const domains = dataSources.reduce((acc, value) => {

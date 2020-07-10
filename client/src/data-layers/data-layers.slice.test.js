@@ -7,7 +7,7 @@ import reducer, {
   fetchSourcesSuccess,
   fetchSources,
   selectDomainList,
-  selectActiveLayers,
+  selectActiveSources,
   selectDataSources,
   selectPollingPeriod,
   selectDataToken,
@@ -356,7 +356,7 @@ describe('Data Slice', () => {
       });
     });
 
-    describe('selectActiveLayers', () => {
+    describe('selectActiveSources', () => {
       it('returns only data sources which are loaded and visible', () => {
         const state = {
           data: {
@@ -373,7 +373,7 @@ describe('Data Slice', () => {
           },
         };
         const expected = [state.data.sources[0], state.data.sources[2]];
-        const result = selectActiveLayers(state);
+        const result = selectActiveSources(state);
         expect(result).toEqual(expected);
       });
 
@@ -388,7 +388,7 @@ describe('Data Slice', () => {
             layers: {},
           },
         };
-        const result = selectActiveLayers(state);
+        const result = selectActiveSources(state);
         expect(result).toEqual([]);
       });
 
@@ -399,7 +399,7 @@ describe('Data Slice', () => {
             layers: {},
           },
         };
-        const result = selectActiveLayers(state);
+        const result = selectActiveSources(state);
         expect(result).toEqual([]);
       });
 
@@ -409,7 +409,7 @@ describe('Data Slice', () => {
             layers: {},
           },
         };
-        const result = selectActiveLayers(state);
+        const result = selectActiveSources(state);
         expect(result).toEqual([]);
       });
 
@@ -423,7 +423,7 @@ describe('Data Slice', () => {
             },
           },
         };
-        const result = selectActiveLayers(state);
+        const result = selectActiveSources(state);
         expect(result).toEqual([]);
       });
     });

@@ -78,7 +78,7 @@ export const selectPollingPeriod = createSelector(
   baseSelector,
   state => state.pollingPeriod,
 );
-export const selectActiveLayers = createSelector(baseSelector, state =>
+export const selectActiveSources = createSelector(baseSelector, state =>
   state.sources
     ? state.sources.filter(
         source =>
