@@ -4,7 +4,11 @@ import { LayersIcon, Button, LoadMask } from '@astrosat/astrosat-ui/';
 
 import DeckGL from '@deck.gl/react';
 import { useDispatch, useSelector } from 'react-redux';
-import { StaticMap } from 'react-map-gl';
+import {
+  StaticMap,
+  NavigationControl,
+  _MapContext as MapContext,
+} from 'react-map-gl';
 import { GeoJsonClusteredIconLayer } from './geo-json-clustered-icon-layer';
 
 import {
@@ -104,12 +108,18 @@ const Map = () => {
           <LoadMask />
         </div>
       )}
-      <DeckGL controller initialViewState={viewport} layers={layers}>
+      <DeckGL
+        controller
+        initialViewState={viewport}
+        layers={layers}
+        ContextProvider={MapContext.Provider}
+      >
         <StaticMap
           reuseMap
           mapboxApiAccessToken={accessToken}
           mapStyle={selectedMapStyle?.uri}
         />
+        <NavigationControl className={styles.navigationControl} />
       </DeckGL>
       <Button
         theme="secondary"
