@@ -65,19 +65,27 @@ export const fetchSources = () => async (dispatch, getState) => {
   return dispatch(fetchSourcesSuccess(data));
 };
 
-const baseSelector = state => state.data ?? {};
+const baseSelector = state => state?.data ?? {};
 export const selectDataToken = createSelector(
   baseSelector,
   state => state.token ?? '',
 );
+
 export const selectDataSources = createSelector(
   baseSelector,
   state => state.sources ?? [],
 );
+
 export const selectPollingPeriod = createSelector(
   baseSelector,
   state => state.pollingPeriod,
 );
+
+export const layersSelector = createSelector(
+  baseSelector,
+  data => data.layers ?? {},
+);
+
 export const selectActiveSources = createSelector(baseSelector, state =>
   state.sources
     ? state.sources.filter(

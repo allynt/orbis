@@ -11,6 +11,7 @@ import reducer, {
   selectDataSources,
   selectPollingPeriod,
   selectDataToken,
+  layersSelector,
 } from './data-layers.slice';
 
 const mockStore = configureMockStore([thunk]);
@@ -353,6 +354,33 @@ describe('Data Slice', () => {
         const state = { data: {} };
         const result = selectDataSources(state);
         expect(result).toEqual([]);
+      });
+    });
+
+    describe('selectLayers', () => {
+      it('returns an empty object if state is undefined', () => {
+        const result = layersSelector();
+        expect(result).toEqual({});
+      });
+
+      it('returns an empty object if data is undefined', () => {
+        const result = layersSelector({});
+        expect(result).toEqual({});
+      });
+
+      it('returns an empty object if layers is undefined', () => {
+        const result = layersSelector({ data: {} });
+        expect(result).toEqual({});
+      });
+
+      it('returns layers', () => {
+        const state = {
+          data: {
+            layers: { 'test/layer/1': { loaded: true, visible: true } },
+          },
+        };
+        const result = layersSelector(state);
+        expect(result).toEqual(state.data.layers);
       });
     });
 
