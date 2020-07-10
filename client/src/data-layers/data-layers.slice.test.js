@@ -20,8 +20,8 @@ import reducer, {
 
 const mockStore = configureMockStore([thunk]);
 
-describe('Data Slice', () => {
-  describe('actions', () => {
+describe.only('Data Slice', () => {
+  describe('thunks', () => {
     describe('fetchSources', () => {
       let store = null;
 
@@ -95,48 +95,80 @@ describe('Data Slice', () => {
 
     beforeEach(() => {
       beforeState = {
-        layers: [],
+        layers: {},
         sources: null,
         token: null,
         pollingPeriod: 30000,
       };
     });
 
+    it('should return the initial state', () => {
+      const actualState = reducer(undefined, {});
+
+      expect(actualState).toEqual(beforeState);
+    });
+
     describe('addLayers', () => {
-      it('should return the initial state', () => {
-        const actualState = reducer(undefined, {});
-
-        expect(actualState).toEqual(beforeState);
+      it('adds a layer', () => {
+        const layers = ['test/layer/1'];
+        const actualState = reducer(beforeState, addLayers(layers));
+        expect(actualState.layers[layers[0]]).toBeTruthy();
       });
 
-      it('should update the data layers in state, when none previously selected', () => {
-        const layers = ['Test Layer 1', 'Test Layer 2'];
-
-        const actualState = reducer(beforeState, {
-          type: addLayers.type,
-          payload: layers,
-        });
-
-        expect(actualState.layers).toEqual(layers);
+      it('adds a layer when the payload is an object', () => {
+        const layer = { source_id: 'test/layer/1' };
+        const actualState = reducer(beforeState, addLayers([layer]));
+        expect(actualState.layers[layer.source_id]).toBeTruthy();
       });
 
-      it('should set the data layers as strings when the function receives objects', () => {
-        const layers = ['Test Layer 1', 'Test Layer 2'];
-        const objects = layers.map(layer => ({ source_id: layer }));
-        const actualState = reducer(beforeState, addLayers(objects));
-        expect(actualState.layers).toEqual(layers);
+      it("sets a layer to loaded if it wasn't previously", () => {
+        const layer = 'test/layer/1';
+        const result = reducer(beforeState, addLayers([layer]));
+        expect(result.layers[layer].loaded).toBe(true);
       });
 
-      it('should update the data layers in state, when layers previously selected', () => {
-        beforeState.layers = ['Test Layer 1', 'Test Layer 2'];
-        const layers = ['Test Layer 3', 'Test Layer 4'];
+      it('sets a layer to visible', () => {
+        const layer = 'test/layer/1';
+        const result = reducer(beforeState, addLayers([layer]));
+        expect(result.layers[layer].visible).toBe(true);
+      });
 
-        const actualState = reducer(beforeState, {
-          type: addLayers.type,
-          payload: layers,
-        });
+      it('sets a layer to visible if it has been loaded and hidden', () => {
+        const state = {
+          layers: { 'test/layer/1': { loaded: true, visible: false } },
+        };
+        const expected = { 'test/layer/1': { loaded: true, visible: true } };
+        const result = reducer(state, addLayers(['test/layer/1']));
+        expect(result.layers).toEqual(expected);
+      });
 
-        expect(actualState.layers).toEqual([...beforeState.layers, ...layers]);
+      it('adds layers alongside previously selected layers', () => {
+        const state = {
+          layers: {
+            'test/layer/1': {
+              loaded: true,
+              visible: true,
+            },
+            'test/layer/2': {
+              loaded: true,
+              visible: false,
+            },
+          },
+        };
+        const layers = ['test/layer/4', 'test/layer/3'];
+        const expected = {
+          ...state.layers,
+          'test/layer/3': {
+            loaded: true,
+            visible: true,
+          },
+          'test/layer/4': {
+            loaded: true,
+            visible: true,
+          },
+        };
+        const result = reducer(state, addLayers(layers));
+        expect(result.layers).toEqual(expected);
       });
     });
 

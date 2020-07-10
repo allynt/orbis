@@ -4,7 +4,7 @@ import { getJsonAuthHeaders, getData } from 'utils/http';
 import { getFilterOptions } from './filters/filters-utils';
 
 const initialState = {
-  layers: [],
+  layers: {},
   pollingPeriod: 30000,
   token: null,
   sources: null,
@@ -15,10 +15,16 @@ const dataSlice = createSlice({
   initialState,
   reducers: {
     addLayers: (state, { payload }) => {
-      let newLayers = payload;
-      if (typeof payload[0] === 'object')
-        newLayers = payload.map(layer => layer.source_id);
-      state.layers = Array.from(new Set([...state.layers, ...newLayers]));
+      let newLayers =
+        typeof payload[0] === 'object'
+          ? payload.map(layer => layer.source_id)
+          : payload;
+      newLayers.forEach(layer => {
+        if (state.layers[layer] && !state.layers[layer].visible)
+          state.layers[layer].visible = true;
+        else if (!state.layers[layer])
+          state.layers[layer] = { loaded: true, visible: true };
+      });
     },
     removeLayer: (state, { payload }) => {
       let layerId = typeof payload === 'object' ? payload.source_id : payload;
