@@ -86,15 +86,18 @@ export const layersSelector = createSelector(
   data => data.layers ?? {},
 );
 
-export const selectActiveSources = createSelector(baseSelector, state =>
-  state.sources
-    ? state.sources.filter(
-        source =>
-          state.layers[source.source_id]?.loaded &&
-          state.layers[source.source_id]?.visible,
-      )
-    : [],
+export const selectActiveSources = createSelector(
+  [selectDataSources, layersSelector],
+  (sources, layers) =>
+    sources
+      ? sources.filter(
+          source =>
+            layers[source.source_id]?.loaded &&
+            layers[source.source_id]?.visible,
+        )
+      : [],
 );
+
 export const selectDomainList = createSelector(selectDataSources, sources =>
   Array.from(
     new Set(

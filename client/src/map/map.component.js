@@ -26,7 +26,11 @@ import { mapboxTokenSelector, mapStylesSelector } from 'app.slice';
 
 import 'mapbox-gl/dist/mapbox-gl.css';
 import styles from './map.module.css';
-import { selectActiveSources } from 'data-layers/data-layers.slice';
+import {
+  selectActiveSources,
+  layersSelector,
+  selectDataSources,
+} from 'data-layers/data-layers.slice';
 
 import infrastructureIconAtlas from './layers/hourglass/infrastructure/iconAtlas.svg';
 import infrastructureIconMapping from './layers/hourglass/infrastructure/iconMapping.json';
@@ -44,62 +48,48 @@ const Map = () => {
   const [isMapStyleSwitcherVisible, setIsMapStyleSwitcherVisible] = useState(
     false,
   );
-  const selectedLayers = useSelector(selectActiveSources);
-  const [layers, setLayers] = useState([]);
+  const sources = useSelector(selectDataSources);
+  const layers = useSelector(layersSelector);
 
   useEffect(() => {
     dispatch(onBookmarkLoaded());
   }, [selectedBookmark, dispatch]);
 
-  useEffect(() => {
-    setLayers(currentLayers => {
-      const newLayers = currentLayers.filter(
-        layer =>
-          !!selectedLayers.find(
-            selectedLayer => selectedLayer.name === layer.id,
-          ),
-      );
-      const infraLayer = selectedLayers.find(
-        layer => layer.name === 'scotland-infrastructure',
-      );
-      if (infraLayer) {
-        newLayers.push(
-          new GeoJsonClusteredIconLayer({
-            id: infraLayer.name,
-            data: infraLayer.data,
-            iconMapping: infrastructureIconMapping,
-            iconAtlas: infrastructureIconAtlas,
-            getPosition: d => d.geometry.coordinates,
-            getIcon: d => d.properties.type,
-            getIconSize: 60,
-            getIconColor: [246, 190, 0],
-            getTextSize: 32,
-            getTextColor: [51, 63, 72],
-            clusterRadius: 40,
-          }),
-        );
-      }
-      const peopleLayer = selectedLayers.find(layer => layer.name === 'people');
-      if (peopleLayer) {
-        newLayers.push(
-          new GeoJsonClusteredIconLayer({
-            id: peopleLayer.name,
-            data: peopleLayer.data,
-            iconMapping: peopleIconMapping,
-            iconAtlas: peopleIconAtlas,
-            getPosition: d => d.geometry.coordinates,
-            getIcon: d => d.properties.Type,
-            getIconSize: d => (d.properties.cluster ? 60 : 15),
-            getIconColor: [246, 190, 0],
-            getTextSize: 32,
-            getTextColor: [51, 63, 72],
-            clusterRadius: 20,
-          }),
-        );
-      }
-      return newLayers;
-    });
-  }, [selectedLayers]);
+  const deckGlLayers = [
+    new GeoJsonClusteredIconLayer({
+      id: 'astrosat/hourglass/scotland-infrastructure/v1',
+      data: sources.find(
+        source =>
+          source.source_id === 'astrosat/hourglass/scotland-infrastructure/v1',
+      )?.data,
+      visible: layers['astrosat/hourglass/scotland-infrastructure/v1']?.visible,
+      iconMapping: infrastructureIconMapping,
+      iconAtlas: infrastructureIconAtlas,
+      getPosition: d => d.geometry.coordinates,
+      getIcon: d => d.properties.type,
+      getIconSize: 60,
+      getIconColor: [246, 190, 0],
+      getTextSize: 32,
+      getTextColor: [51, 63, 72],
+      clusterRadius: 40,
+    }),
+    new GeoJsonClusteredIconLayer({
+      id: 'astrosat/hourglass/people/v1',
+      data: sources.find(
+        source => source.source_id === 'astrosat/hourglass/people/v1',
+      )?.data,
+      visible: layers['astrosat/hourglass/people/v1']?.visible,
+      iconMapping: peopleIconMapping,
+      iconAtlas: peopleIconAtlas,
+      getPosition: d => d.geometry.coordinates,
+      getIcon: d => d.properties.Type,
+      getIconSize: d => (d.properties.cluster ? 60 : 15),
+      getIconColor: [246, 190, 0],
+      getTextSize: 32,
+      getTextColor: [51, 63, 72],
+      clusterRadius: 20,
+    }),
+  ];
 
   return (
     <>
@@ -111,7 +101,7 @@ const Map = () => {
       <DeckGL
         controller
         initialViewState={viewport}
-        layers={layers}
+        layers={deckGlLayers}
         ContextProvider={MapContext.Provider}
       >
         <StaticMap
