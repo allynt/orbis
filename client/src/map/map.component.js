@@ -9,7 +9,7 @@ import {
   NavigationControl,
   _MapContext as MapContext,
 } from 'react-map-gl';
-import { GeoJsonClusteredIconLayer } from './geo-json-clustered-icon-layer';
+import { GeoJsonClusteredIconLayer } from './deck.gl/custom-layers/geo-json-clustered-icon-layer';
 
 import {
   isLoaded as onBookmarkLoaded,
