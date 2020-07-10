@@ -108,7 +108,7 @@ let customers = [
     data_total: 50,
   },
   {
-    id: '56f2eab2-3aeb-4fe1-9266-4230725ccd94'
+    id: '56f2eab2-3aeb-4fe1-9266-4230725ccd94',
     type: 'MULTIPLE',
     name: 'customer3',
     title: 'Customer 3',
@@ -125,7 +125,7 @@ let customerUsers = [
     id: 1,
     type: 'MANAGER',
     status: 'ACTIVE',
-    customer: 'cyberdyne',
+    customer: '7009b9d8-c286-11ea-b3de-0242ac130004',
     licences: [
       '055aa73b-7a5f-41d7-b9d4-b3124c16ffde',
       '7b2df564-3b91-4ed2-9b57-a362f7212c94',
@@ -150,7 +150,7 @@ let customerUsers = [
     id: 2,
     type: 'MANAGER',
     status: 'ACTIVE',
-    customer: 'cyberdyne',
+    customer: '7009b9d8-c286-11ea-b3de-0242ac130004',
     licences: [
       'd499964f-1bb4-4aa1-baf4-0164eabec297',
       'c2f0bae8-b2f5-412d-9780-551c6bbe3248',
@@ -174,7 +174,7 @@ let customerUsers = [
     id: 3,
     type: 'MANAGER',
     status: 'ACTIVE',
-    customer: 'cyberdyne',
+    customer: '7009b9d8-c286-11ea-b3de-0242ac130004',
     licences: [
       '3e9dbb09-133b-4316-bf7c-c6e0be98bb05',
       'c2f0bae8-b2f5-412d-9780-551c6bbe3248',
@@ -199,7 +199,7 @@ let customerUsers = [
     type: 'MANAGER',
     status: 'PENDING',
     invitation_date: '2020-01-31T11:46:12.618090Z',
-    customer: 'cyberdyne',
+    customer: '7009b9d8-c286-11ea-b3de-0242ac130004',
     licences: [
       'db153830-d72a-44f7-88e0-d95b203b2383',
       'f9a8a715-dbeb-4fbc-92c6-fd2138475a87',
@@ -224,7 +224,7 @@ let customerUsers = [
     type: 'MEMBER',
     status: 'PENDING',
     invitation_date: '2020-01-31T11:46:12.618090Z',
-    customer: 'cyberdyne',
+    customer: '7009b9d8-c286-11ea-b3de-0242ac130004',
     licences: [
       'a4a4bf7e-8980-4fd8-a3e8-dccc0ada36e1',
       'bca4255f-5147-4023-9b34-e52b0b8fcd86',
@@ -249,7 +249,7 @@ let customerUsers = [
     type: 'MANAGER',
     status: 'PENDING',
     invitation_date: '2020-01-31T11:46:12.618090Z',
-    customer: 'cyberdyne',
+    customer: '7009b9d8-c286-11ea-b3de-0242ac130004',
     licences: [
       'e7d31181-61e3-4880-9529-6408ce9d2cd3',
       '2c6c43e0-d0d4-4379-ab6e-895b06f7f71b',
@@ -271,7 +271,7 @@ let customerUsers = [
   },
 ];
 
-const getCustomer = customerId => customers.find(c => c.name === customerId);
+const getCustomer = customerId => customers.find(c => c.id === customerId);
 
 const getCustomerUsers = customerId =>
   customerUsers.filter(cu => cu.customer === customerId);

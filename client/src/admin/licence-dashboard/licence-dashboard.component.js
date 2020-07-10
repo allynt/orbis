@@ -24,7 +24,7 @@ export const LicenceDashboard = ({ licenceInformation }) => (
     <tbody className={tableStyles.tbody}>
       {licenceInformation && Object.keys(licenceInformation).length ? (
         Object.keys(licenceInformation).map(orb => (
-          <tr className={tableStyles.tr} key="orb-${index}-licences">
+          <tr className={tableStyles.tr} key={`${orb}-licenses`}>
             <td className={tableStyles.td}>{orb}</td>
             <td align="center" className={tableStyles.td}>
               {licenceInformation[orb].purchased}
