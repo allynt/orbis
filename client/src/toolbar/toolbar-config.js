@@ -132,7 +132,7 @@ export const getToolbarItems = (dispatch, user) => {
       item =>
         item.roles === undefined ||
         item.roles === null ||
-        item.roles.length == 0 ||
+        item.roles.length === 0 ||
         user.roles.some(role => item.roles.includes(role)),
     )
     .sort((item1, item2) => item1.order - item2.order);
