@@ -27,7 +27,6 @@ import { mapboxTokenSelector, mapStylesSelector } from 'app.slice';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import styles from './map.module.css';
 import {
-  selectActiveSources,
   layersSelector,
   selectDataSources,
 } from 'data-layers/data-layers.slice';
