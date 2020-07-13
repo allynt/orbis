@@ -15,7 +15,6 @@ import {
 import HomeView from './home-view/home-view.component';
 import CorporateView from './corporate-view/corporate-view.component';
 import { CreateUserForm } from './create-user-form/create-user-form.component';
-import { EditUserForm } from './edit-user-form/edit-user-form.component';
 import { WithdrawUserInvitationForm } from './withdraw-invitation-form/withdraw-user-invitation-form.component';
 import LeftSidebar from './left-sidebar/left-sidebar.component';
 import { LicenceDashboard } from './licence-dashboard/licence-dashboard.component';
@@ -87,8 +86,6 @@ const Admin = ({ user }) => {
             onSubmit={handleCreateUserFormSubmit}
           />
         );
-      case EDIT_USER:
-        return <EditUserForm user={dialogForm.user} />;
       case WITHDRAW_INVITATION:
         return (
           <WithdrawUserInvitationForm
