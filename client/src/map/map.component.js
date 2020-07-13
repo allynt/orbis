@@ -56,23 +56,27 @@ const Map = () => {
   }, [selectedBookmark, dispatch]);
 
   const deckGlLayers = [
-    new GeoJsonClusteredIconLayer({
-      id: 'astrosat/hourglass/scotland-infrastructure/v1',
-      data: sources.find(
-        source =>
-          source.source_id === 'astrosat/hourglass/scotland-infrastructure/v1',
-      )?.data,
-      visible: layers['astrosat/hourglass/scotland-infrastructure/v1']?.visible,
-      iconMapping: infrastructureIconMapping,
-      iconAtlas: infrastructureIconAtlas,
-      getPosition: d => d.geometry.coordinates,
-      getIcon: d => d.properties.type,
-      getIconSize: 60,
-      getIconColor: [246, 190, 0],
-      getTextSize: 32,
-      getTextColor: [51, 63, 72],
-      clusterRadius: 40,
-    }),
+    ...[
+      'astrosat/hourglass/scotland-infrastructure/v1',
+      'astrosat/hourglass/wales-infrastructure/v1',
+      'astrosat/hourglass/northern-ireland-infrastructure/v1',
+    ].map(
+      id =>
+        new GeoJsonClusteredIconLayer({
+          id,
+          data: sources.find(source => source.source_id === id)?.data,
+          visible: layers[id]?.visible,
+          iconMapping: infrastructureIconMapping,
+          iconAtlas: infrastructureIconAtlas,
+          getPosition: d => d.geometry.coordinates,
+          getIcon: d => d.properties.type,
+          getIconSize: 60,
+          getIconColor: [246, 190, 0],
+          getTextSize: 32,
+          getTextColor: [51, 63, 72],
+          clusterRadius: 40,
+        }),
+    ),
     new GeoJsonClusteredIconLayer({
       id: 'astrosat/hourglass/people/v1',
       data: sources.find(
