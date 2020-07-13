@@ -17,10 +17,7 @@ export const PendingInvitationsBoard = ({
   customer,
   onWithdrawInvitationClick,
 }) => {
-  const [optionsDropdownVisible, setOptionsDropdownVisible] = useState(false);
-
-  const toggleOptionsDropdown = () =>
-    setOptionsDropdownVisible(!optionsDropdownVisible);
+  const [userOptions, setUserOptions] = useState(null);
 
   return (
     <ContentWrapper title="Pending Invitations">
@@ -47,6 +44,7 @@ export const PendingInvitationsBoard = ({
         <tbody>
           {pendingUsers && pendingUsers.length > 0 ? (
             pendingUsers.map(user => {
+              const selected = userOptions === user;
               const date = format(new Date(user.invitation_date), DATE_FORMAT);
               let licences = null;
               if (customer && customer.licences) {
@@ -62,15 +60,24 @@ export const PendingInvitationsBoard = ({
                       : 'Not currently available'}
                   </td>
                   <td className={tableStyles.td}>{date}</td>
-                  <td className={tableStyles.td}>
+                  <td
+                    className={`${tableStyles.td} ${tableStyles.optionsColumn}`}
+                  >
                     <OptionsIcon
-                      classes={tableStyles.optionsIcon}
-                      onClick={toggleOptionsDropdown}
-                      onBlur={toggleOptionsDropdown}
+                      classes={`${tableStyles.optionsIcon} ${
+                        selected && tableStyles.optionsIconSelected
+                      }`}
+                      onClick={() => setUserOptions(selected ? null : user)}
                     />
-                    {optionsDropdownVisible && (
-                      <div onClick={() => onWithdrawInvitationClick(user)}>
-                        Withdraw Invitation
+                    {selected && (
+                      <div
+                        className={tableStyles.optionsDropdown}
+                        onClick={() => {
+                          onWithdrawInvitationClick(user);
+                          setUserOptions(null);
+                        }}
+                      >
+                        <p>Withdraw Invitation</p>
                       </div>
                     )}
                   </td>

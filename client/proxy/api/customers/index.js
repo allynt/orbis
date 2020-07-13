@@ -4,6 +4,7 @@ const {
   getCustomerUsers,
   getSelectedUser,
   createCustomerUser,
+  deleteCustomerUser,
 } = require('./data');
 
 const getCustomerHandler = (req, res) => {
@@ -30,6 +31,13 @@ const getSelectedUserHandler = (req, res) => {
   res.json(getSelectedUser(req.currentUser.customers));
 };
 
+const deleteSelectedUserHandler = (req, res) => {
+  console.log('Deleting Selected user of customer');
+  deleteCustomerUser(req.params.user);
+  res.status(200);
+  res.json(getCustomerUsers());
+};
+
 const usersRouter = express.Router();
 
 usersRouter.route('/:customer').get(getCustomerHandler);
@@ -39,6 +47,9 @@ usersRouter
   .get(getCustomerUsersHandler)
   .post(createCustomerUserHandler);
 
-usersRouter.route('/:customer/users/:username').get(getSelectedUserHandler);
+usersRouter
+  .route('/:customer/users/:username')
+  .get(getSelectedUserHandler)
+  .delete(deleteSelectedUserHandler);
 
 module.exports = usersRouter;

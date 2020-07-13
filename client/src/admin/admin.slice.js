@@ -223,28 +223,6 @@ export const createCustomerUser = fields => async (dispatch, getState) => {
   return dispatch(createCustomerUserSuccess({ user, customer }));
 };
 
-export const withdrawInvitation = (user, customer) => async (
-  dispatch,
-  getState,
-) => {
-  const headers = getJsonAuthHeaders(getState());
-
-  const response = await sendData(
-    `${API}${customer.name}/users/${user.id}`,
-    user,
-    headers,
-    'PUT',
-  );
-
-  if (!response.ok) {
-    console.log('Not ok!');
-  }
-
-  const userData = await response.json();
-
-  console.log('OK!: ', userData);
-};
-
 export const updateCustomerUser = (customer, user) => async (
   dispatch,
   getState,
@@ -322,8 +300,8 @@ export const selectLicenceInformation = createSelector(
       const orbLicenceInformation = licenceInformation[orb];
       const user =
         !!customer_user && users.find(user => user.id === customer_user);
-      const isActive = user.status === USER_STATUS.active;
-      const isPending = user.status === USER_STATUS.pending;
+      const isActive = user?.status === USER_STATUS.active;
+      const isPending = user?.status === USER_STATUS.pending;
       let purchased, active, pending;
       if (orbLicenceInformation) {
         purchased = orbLicenceInformation.purchased + 1;

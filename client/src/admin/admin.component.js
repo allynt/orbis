@@ -10,7 +10,7 @@ import {
   selectCurrentCustomer,
   selectCustomerUsers,
   selectLicenceInformation,
-  withdrawInvitation,
+  deleteCustomerUser,
 } from './admin.slice';
 import HomeView from './home-view/home-view.component';
 import CorporateView from './corporate-view/corporate-view.component';
@@ -108,7 +108,7 @@ const Admin = ({ user }) => {
           <WithdrawUserInvitationForm
             user={dialog.user}
             withdrawInvitation={user =>
-              dispatch(withdrawInvitation(user, currentCustomer))
+              dispatch(deleteCustomerUser(currentCustomer, user))
             }
             close={() => setDialog(null)}
           />

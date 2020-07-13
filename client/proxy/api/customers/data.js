@@ -303,4 +303,13 @@ const createCustomerUser = (customerId, userData) => {
   return newUser;
 };
 
-module.exports = { getCustomer, getCustomerUsers, createCustomerUser };
+const deleteCustomerUser = user => {
+  customerUsers = customerUsers.filter(cu => cu !== user);
+};
+
+module.exports = {
+  getCustomer,
+  getCustomerUsers,
+  createCustomerUser,
+  deleteCustomerUser,
+};
