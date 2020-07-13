@@ -260,8 +260,8 @@ export const deleteCustomerUser = (customer, user) => async (
   dispatch(deleteCustomerUserRequested());
 
   const response = await sendData(
-    `${API}${customer.id}/users/${user.id}`,
-    null,
+    `${API}${customer.id}/users/`,
+    user.id,
     headers,
     'DELETE',
   );

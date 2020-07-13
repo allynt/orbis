@@ -33,7 +33,7 @@ const getSelectedUserHandler = (req, res) => {
 
 const deleteSelectedUserHandler = (req, res) => {
   console.log('Deleting Selected user of customer');
-  deleteCustomerUser(req.params.user);
+  deleteCustomerUser(req.params.username);
   res.status(200);
   res.json(getCustomerUsers());
 };

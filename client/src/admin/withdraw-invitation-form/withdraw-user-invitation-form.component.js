@@ -9,20 +9,20 @@ export const WithdrawUserInvitationForm = ({
   withdrawInvitation,
   close,
 }) => {
-  const handleSubmit = e => {
+  const handleClick = e => {
     e.preventDefault();
     withdrawInvitation(user);
     close();
   };
   return (
-    <form className={formStyles.form} onSubmit={handleSubmit}>
+    <div className={formStyles.form}>
       <p>
         Do you really want to withdraw the pending{' '}
         <strong>{user.user.name}</strong> license and send email to the address
         about the act of withdrawal?
       </p>
       <div className={formStyles.buttons}>
-        <Button type="submit">Yes</Button>
+        <Button onClick={handleClick}>Yes</Button>
         <Button
           theme="link"
           className={formStyles.button}
@@ -31,6 +31,6 @@ export const WithdrawUserInvitationForm = ({
           Cancel
         </Button>
       </div>
-    </form>
+    </div>
   );
 };

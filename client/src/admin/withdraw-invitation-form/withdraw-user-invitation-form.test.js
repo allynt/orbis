@@ -1,6 +1,7 @@
 import React from 'react';
 
-import { render, cleanup, fireEvent } from '@testing-library/react';
+import { render } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 
 import { WithdrawUserInvitationForm } from './withdraw-user-invitation-form.component';
 
@@ -14,8 +15,6 @@ describe('WithdrawUserInvitationForm', () => {
     withdrawInvitation = jest.fn();
     close = jest.fn();
   });
-
-  afterEach(cleanup);
 
   it('displays name of user to be withdrawn in message text', () => {
     const { getByText } = render(
@@ -37,7 +36,7 @@ describe('WithdrawUserInvitationForm', () => {
         close={close}
       />,
     );
-    fireEvent.click(getByText('Cancel'));
+    userEvent.click(getByText('Cancel'));
     expect(close).toHaveBeenCalled();
   });
 
@@ -49,7 +48,7 @@ describe('WithdrawUserInvitationForm', () => {
         close={close}
       />,
     );
-    fireEvent.click(getByText('Yes'));
+    userEvent.click(getByText('Yes'));
     expect(withdrawInvitation).toHaveBeenCalledWith(user);
     expect(close).toHaveBeenCalled();
   });

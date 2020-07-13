@@ -21,9 +21,10 @@ import { LicenceDashboard } from './licence-dashboard/licence-dashboard.componen
 import OrganisationMenu from './organisation-menu/organisation-menu.component';
 import ContentWrapper from './content-wrapper.component';
 
-const CREATE_USER = 'Create New User';
-const EDIT_USER = 'Edit User';
-const WITHDRAW_INVITATION = 'Withdraw Invitation';
+const DIALOG_VIEW = {
+  createUser: 'Create New User',
+  withdrawInvitation: 'Withdraw Invitation',
+};
 
 const Admin = ({ user }) => {
   const dispatch = useDispatch();
@@ -68,7 +69,7 @@ const Admin = ({ user }) => {
             users={customerUsers}
             customer={currentCustomer}
             onWithdrawInvitationClick={user =>
-              setDialogForm({ type: WITHDRAW_INVITATION, user })
+              setDialogForm({ type: DIALOG_VIEW.withdrawInvitation, user })
             }
           />
         );
@@ -77,7 +78,7 @@ const Admin = ({ user }) => {
 
   const getDialogForm = () => {
     switch (dialogForm?.type) {
-      case CREATE_USER:
+      case DIALOG_VIEW.createUser:
         return (
           <CreateUserForm
             licenceInformation={licenceInformation}
@@ -85,7 +86,7 @@ const Admin = ({ user }) => {
             onSubmit={handleCreateUserFormSubmit}
           />
         );
-      case WITHDRAW_INVITATION:
+      case DIALOG_VIEW.withdrawInvitation:
         return (
           <WithdrawUserInvitationForm
             user={dialogForm.user}
@@ -111,7 +112,9 @@ const Admin = ({ user }) => {
       <OrganisationMenu
         customer={currentCustomer}
         setVisiblePanel={setVisiblePanel}
-        onCreateUserClick={() => setDialogForm({ type: CREATE_USER })}
+        onCreateUserClick={() =>
+          setDialogForm({ type: DIALOG_VIEW.createUser })
+        }
       />
       <Dialog
         title={dialogForm?.type}

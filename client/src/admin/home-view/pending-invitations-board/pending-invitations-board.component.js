@@ -77,7 +77,9 @@ export const PendingInvitationsBoard = ({
                           setUserOptions(null);
                         }}
                       >
-                        <p>Withdraw Invitation</p>
+                        <p className={tableStyles.optionsText}>
+                          Withdraw Invitation
+                        </p>
                       </div>
                     )}
                   </td>

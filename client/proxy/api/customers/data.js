@@ -304,7 +304,8 @@ const createCustomerUser = (customerId, userData) => {
 };
 
 const deleteCustomerUser = user => {
-  customerUsers = customerUsers.filter(cu => cu !== user);
+  const userId = Number(user);
+  customerUsers = customerUsers.filter(cu => cu.id !== userId);
 };
 
 module.exports = {
