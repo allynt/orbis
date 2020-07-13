@@ -33,7 +33,7 @@ const Admin = ({ user }) => {
   const licenceInformation = useSelector(selectLicenceInformation);
   const [visiblePanel, setVisiblePanel] = useState(ADMIN_VIEW.home);
   const createDialogRef = useRef(document.body);
-  const [dialog, setDialog] = useState(null);
+  const [dialogForm, setDialogForm] = useState(null);
 
   useEffect(() => {
     if (!currentCustomer) {
@@ -48,7 +48,7 @@ const Admin = ({ user }) => {
   }, [currentCustomer, customerUsers, dispatch]);
 
   const handleCreateUserFormSubmit = values => {
-    setDialog(false);
+    setDialogForm(null);
     dispatch(createCustomerUser(values));
   };
 
@@ -68,12 +68,39 @@ const Admin = ({ user }) => {
           <HomeView
             users={customerUsers}
             customer={currentCustomer}
-            onEditUserClick={user => setDialog({ type: EDIT_USER, user })}
+            onEditUserClick={user => setDialogForm({ type: EDIT_USER, user })}
             onWithdrawInvitationClick={user =>
-              setDialog({ type: WITHDRAW_INVITATION, user })
+              setDialogForm({ type: WITHDRAW_INVITATION, user })
             }
           />
         );
+    }
+  };
+
+  const getDialogForm = () => {
+    switch (dialogForm?.type) {
+      case CREATE_USER:
+        return (
+          <CreateUserForm
+            licenceInformation={licenceInformation}
+            existingEmails={customerUsers?.map(cu => cu.user.email)}
+            onSubmit={handleCreateUserFormSubmit}
+          />
+        );
+      case EDIT_USER:
+        return <EditUserForm user={dialogForm.user} />;
+      case WITHDRAW_INVITATION:
+        return (
+          <WithdrawUserInvitationForm
+            user={dialogForm.user}
+            withdrawInvitation={user =>
+              dispatch(deleteCustomerUser(currentCustomer, user))
+            }
+            close={() => setDialogForm(null)}
+          />
+        );
+      default:
+        return null;
     }
   };
 
@@ -88,31 +115,15 @@ const Admin = ({ user }) => {
       <OrganisationMenu
         customer={currentCustomer}
         setVisiblePanel={setVisiblePanel}
-        onCreateUserClick={() => setDialog({ type: CREATE_USER })}
+        onCreateUserClick={() => setDialogForm({ type: CREATE_USER })}
       />
       <Dialog
-        title={dialog?.type}
-        isVisible={dialog}
+        title={dialogForm?.type}
+        isVisible={dialogForm}
         ref={createDialogRef}
-        close={() => setDialog(null)}
+        close={() => setDialogForm(null)}
       >
-        {dialog?.type === CREATE_USER && (
-          <CreateUserForm
-            licenceInformation={licenceInformation}
-            existingEmails={customerUsers?.map(cu => cu.user.email)}
-            onSubmit={handleCreateUserFormSubmit}
-          />
-        )}
-        {dialog?.type === EDIT_USER && <EditUserForm user={dialog.user} />}
-        {dialog?.type === WITHDRAW_INVITATION && (
-          <WithdrawUserInvitationForm
-            user={dialog.user}
-            withdrawInvitation={user =>
-              dispatch(deleteCustomerUser(currentCustomer, user))
-            }
-            close={() => setDialog(null)}
-          />
-        )}
+        {getDialogForm()}
       </Dialog>
     </div>
   );
