@@ -128,8 +128,8 @@ export const fetchCustomer = user => async (dispatch, getState) => {
   const headers = getJsonAuthHeaders(getState());
   dispatch(fetchCustomerRequested());
 
-  const customerName = user.customers[0].name;
-  const response = await getData(`${API}${customerName}`, headers);
+  const customerId = user.customers[0].id;
+  const response = await getData(`${API}${customerId}`, headers);
 
   if (!response.ok)
     return handleFailure(
@@ -148,7 +148,7 @@ export const fetchCustomerUsers = customer => async (dispatch, getState) => {
 
   dispatch(fetchCustomerUsersRequested());
 
-  const response = await getData(`${API}${customer.name}/users/`, headers);
+  const response = await getData(`${API}${customer.id}/users/`, headers);
 
   if (!response.ok)
     return handleFailure(
@@ -313,6 +313,12 @@ export const selectLicenceInformation = createSelector(
         pending = +isPending;
       }
       const available = purchased - active - pending;
+      const foobar = {
+        ...licenceInformation,
+        [orb]: { purchased, available, active, pending },
+      };
+      console.log(Object.keys(foobar).map(orb => foobar[orb].purchased));
+
       return {
         ...licenceInformation,
         [orb]: { purchased, available, active, pending },

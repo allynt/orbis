@@ -14,7 +14,6 @@ let users = [
   },
   {
     id: 2,
-    username: 'admin@test.com',
     email: 'admin@test.com',
     password: 'pandaconcretespoon',
     name: 'Harry Callahan',
@@ -24,21 +23,22 @@ let users = [
     change_password: false,
     is_verified: true,
     is_approved: true,
+    accepted_terms: true,
     profiles: {},
-    roles: ['AdminRole', 'UserRole', 'AstrosatRole'],
+    roles: ['UserRole', 'AstrosatRole'],
     customers: [
       {
-        name: 'cyberdyne',
+        id: '7009b9d8-c286-11ea-b3de-0242ac130004',
         type: 'MANAGER',
         status: 'ACTIVE',
       },
       {
-        name: 'OCP',
+        id: '8e4bc896-c286-11ea-b3de-0242ac130004',
         type: 'MANAGER',
         status: 'ACTIVE',
       },
       {
-        name: 'customer3',
+        id: '56f2eab2-3aeb-4fe1-9266-4230725ccd94',
         type: 'MEMBER',
         status: 'ACTIVE',
       },
@@ -74,7 +74,8 @@ let users = [
 
 const getUsers = () => users;
 const addUser = user => (users = [...users, { ...user, id: users.length + 1 }]);
-const updateUser = user => (users = users.map(usr => (usr.id === user.id ? user : usr)));
+const updateUser = user =>
+  (users = users.map(usr => (usr.id === user.id ? user : usr)));
 const deleteUser = id => (users = users.filter(user => user.id !== id));
 
 module.exports = { getUsers, addUser, updateUser, deleteUser };

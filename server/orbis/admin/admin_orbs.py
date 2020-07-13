@@ -6,7 +6,7 @@ from django.utils.html import format_html
 from astrosat.admin import get_clickable_m2m_list_display
 from astrosat_users.models import Customer
 
-from orbis.models import Orb, License, DataScope, Access
+from orbis.models import Orb, Licence, DataScope, Access
 
 
 ##############################
@@ -115,8 +115,8 @@ class OrbAdmin(admin.ModelAdmin):
     search_fields = ("name",)
 
 
-@admin.register(License)
-class LicenseAdmin(admin.ModelAdmin):
+@admin.register(Licence)
+class LicenceAdmin(admin.ModelAdmin):
     fields = (
         "id",
         "orb",

@@ -15,14 +15,14 @@ models_orbs includes all the classes used to define:
 
 * Orbs - a thematic collection of data & functionality; a "product"
 * DataScopes - a pattern defining which data from *data-sources-directory* can be accessed
-* License - a way to map orbs to Customers (and CustomerUsers); a "subscription"
-* Access - a clever little model to encode the access type for a given License
+* Licence - a way to map orbs to Customers (and CustomerUsers); a "subscription"
+* Access - a clever little model to encode the access type for a given Licence
 
-An orb can contain multiple data_scopes.  A license refers to a single orb.
+An orb can contain multiple data_scopes.  A licence refers to a single orb.
 
-A JWT is created for a user based on the licenses held by that user.
+A JWT is created for a user based on the licences held by that user.
 
-A user can only hold a license if it is owned by that  user's customer (and not in use by another user).
+A user can only hold a licence if it is owned by that  user's customer (and not in use by another user).
 
 """
 
@@ -80,18 +80,18 @@ class OrbQuerySet(models.QuerySet):
         return self.filter(is_active=True)
 
 
-class LicenseQuerySet(models.QuerySet):
+class LicenceQuerySet(models.QuerySet):
 
     def purchased(self):
-        # returns all licenses (just defined for symmetry w/ the frontend)
+        # returns all licences (just defined for symmetry w/ the frontend)
         return self
 
     def active(self):
-        # returns all licenses that have been assigned to a user
+        # returns all licences that have been assigned to a user
         return self.filter(customer_user__isnull=False)
 
     def available(self):
-        # returns all license that have not been assigned to a user
+        # returns all licence that have not been assigned to a user
         return self.filter(customer_user__isnull=True)
 
     def can_read(self):
@@ -152,32 +152,32 @@ class Orb(models.Model):
         return (self.name,)
 
 
-class License(AccessModel):
+class Licence(AccessModel):
     class Meta:
         app_label = "orbis"
-        verbose_name = "License"
-        verbose_name_plural = "Licenses"
+        verbose_name = "Licence"
+        verbose_name_plural = "Licences"
         constraints = [
             models.UniqueConstraint(
                 fields=["orb", "customer", "customer_user"],
-                name="unique_license_orb_customer_user",
+                name="unique_licence_orb_customer_user",
             )
         ]
 
-    objects = LicenseQuerySet.as_manager()
+    objects = LicenceQuerySet.as_manager()
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
 
-    orb = models.ForeignKey(Orb, related_name="licenses", on_delete=models.CASCADE)
+    orb = models.ForeignKey(Orb, related_name="licences", on_delete=models.CASCADE)
 
     customer = models.ForeignKey(
-        Customer, related_name="licenses", on_delete=models.CASCADE
+        Customer, related_name="licences", on_delete=models.CASCADE
     )
     customer_user = models.ForeignKey(
         CustomerUser,
         blank=True,
         null=True,
-        related_name="licenses",
+        related_name="licences",
         on_delete=models.SET_NULL,
     )
 
@@ -188,7 +188,7 @@ class License(AccessModel):
         if self.customer_user:
             if self.customer_user.customer != self.customer:
                 raise ValidationError(
-                    f"The license user must belong to {self.customer}."
+                    f"The licence user must belong to {self.customer}."
                 )
 
 
