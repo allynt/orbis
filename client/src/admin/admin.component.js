@@ -67,7 +67,6 @@ const Admin = ({ user }) => {
           <HomeView
             users={customerUsers}
             customer={currentCustomer}
-            onEditUserClick={user => setDialogForm({ type: EDIT_USER, user })}
             onWithdrawInvitationClick={user =>
               setDialogForm({ type: WITHDRAW_INVITATION, user })
             }
