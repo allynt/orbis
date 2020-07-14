@@ -27,7 +27,7 @@ import { mapboxTokenSelector, mapStylesSelector } from 'app.slice';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import styles from './map.module.css';
 import {
-  dataLayersSelector,
+  activeLayersSelector,
   dataSourcesSelector,
 } from 'data-layers/data-layers.slice';
 
@@ -48,7 +48,7 @@ const Map = () => {
     false,
   );
   const sources = useSelector(dataSourcesSelector);
-  const layers = useSelector(dataLayersSelector);
+  const activeLayers = useSelector(activeLayersSelector);
 
   useEffect(() => {
     dispatch(onBookmarkLoaded());
@@ -64,7 +64,7 @@ const Map = () => {
         new GeoJsonClusteredIconLayer({
           id,
           data: sources.find(source => source.source_id === id)?.data,
-          visible: layers[id]?.visible,
+          visible: activeLayers[id]?.visible,
           iconMapping: infrastructureIconMapping,
           iconAtlas: infrastructureIconAtlas,
           getPosition: d => d.geometry.coordinates,
@@ -81,7 +81,7 @@ const Map = () => {
       data: sources.find(
         source => source.source_id === 'astrosat/hourglass/people/v1',
       )?.data,
-      visible: layers['astrosat/hourglass/people/v1']?.visible,
+      visible: activeLayers['astrosat/hourglass/people/v1']?.visible,
       iconMapping: peopleIconMapping,
       iconAtlas: peopleIconAtlas,
       getPosition: d => d.geometry.coordinates,
