@@ -58,6 +58,20 @@ const Map = () => {
     dispatch(onBookmarkLoaded());
   }, [selectedBookmark, dispatch]);
 
+  const handleLayerClick = d =>
+    d.object.properties.cluster
+      ? dispatch(
+          setViewport({
+            ...viewport,
+            longitude: d.object.geometry.coordinates[0],
+            latitude: d.object.geometry.coordinates[1],
+            zoom: d.object.properties.expansion_zoom,
+            transitionDuration: 1000,
+            transitionInterpolator: new FlyToInterpolator(),
+          }),
+        )
+      : setPickedObject(d.object);
+
   const deckGlLayers = [
     ...[
       'astrosat/hourglass/scotland-infrastructure/v1',
@@ -69,6 +83,7 @@ const Map = () => {
           id,
           data: sources.find(source => source.source_id === id)?.data,
           visible: layers[id]?.visible,
+          pickable: true,
           iconMapping: infrastructureIconMapping,
           iconAtlas: infrastructureIconAtlas,
           getPosition: d => d.geometry.coordinates,
@@ -78,6 +93,7 @@ const Map = () => {
           getTextSize: 32,
           getTextColor: [51, 63, 72],
           clusterRadius: 40,
+          onClick: handleLayerClick,
         }),
     ),
     new GeoJsonClusteredIconLayer({
@@ -96,19 +112,7 @@ const Map = () => {
       getTextSize: 32,
       getTextColor: [51, 63, 72],
       clusterRadius: 20,
-      onClick: d =>
-        d.object.properties.cluster
-          ? dispatch(
-              setViewport({
-                ...viewport,
-                longitude: d.object.geometry.coordinates[0],
-                latitude: d.object.geometry.coordinates[1],
-                zoom: d.object.properties.expansion_zoom,
-                transitionDuration: 1000,
-                transitionInterpolator: new FlyToInterpolator(),
-              }),
-            )
-          : setPickedObject(d.object),
+      onClick: handleLayerClick,
     }),
   ];
 
