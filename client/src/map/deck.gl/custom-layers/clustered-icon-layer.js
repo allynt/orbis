@@ -20,7 +20,7 @@ export class ClusteredIconLayer extends CompositeLayer {
       index.load(
         props.data.map(d => ({
           geometry: { coordinates: this.props.getPosition(d) },
-          properties: d,
+          properties: d.properties,
         })),
       );
       this.setState({ index });
@@ -49,7 +49,7 @@ export class ClusteredIconLayer extends CompositeLayer {
             d.properties.cluster ? 'cluster' : this.props.getIcon(d.properties),
           getSize: this.props.getIconSize,
           getColor: this.props.getIconColor,
-          // sizeScale: this.props.sizeScale,
+          onHover: this.props.onHover,
           updateTriggers: {
             getPosition: this.props.updateTriggers.getPosition,
             getIcon: this.props.updateTriggers.getIcon,
