@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 
 import { LayersIcon, Button, LoadMask } from '@astrosat/astrosat-ui/';
 
-import DeckGL from '@deck.gl/react';
+import DeckGL, { FlyToInterpolator } from 'deck.gl';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   StaticMap,
@@ -22,6 +22,7 @@ import {
   selectMapStyle,
   viewportSelector,
   selectedMapStyleSelector,
+  setViewport,
 } from './map.slice';
 import { mapboxTokenSelector, mapStylesSelector } from 'app.slice';
 
@@ -97,7 +98,16 @@ const Map = () => {
       clusterRadius: 20,
       onClick: d =>
         d.object.properties.cluster
-          ? console.log(d)
+          ? dispatch(
+              setViewport({
+                ...viewport,
+                longitude: d.object.geometry.coordinates[0],
+                latitude: d.object.geometry.coordinates[1],
+                zoom: d.object.properties.expansion_zoom,
+                transitionDuration: 1000,
+                transitionInterpolator: new FlyToInterpolator(),
+              }),
+            )
           : setPickedObject(d.object),
     }),
   ];
