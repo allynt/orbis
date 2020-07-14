@@ -13,7 +13,7 @@ const dataSlice = createSlice({
   initialState,
   reducers: {
     addLayers: (state, { payload }) => {
-      let newLayers =
+      const newLayers =
         typeof payload[0] === 'object'
           ? payload.map(layer => layer.source_id)
           : payload;
@@ -25,7 +25,7 @@ const dataSlice = createSlice({
       });
     },
     removeLayer: (state, { payload }) => {
-      let layerId = typeof payload === 'object' ? payload.source_id : payload;
+      const layerId = typeof payload === 'object' ? payload.source_id : payload;
       if (state.layers[layerId]) state.layers[layerId].visible = false;
     },
     fetchSourcesSuccess: (state, { payload }) => {
