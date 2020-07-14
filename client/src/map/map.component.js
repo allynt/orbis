@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import {
   StaticMap,
   NavigationControl,
+  Popup,
   _MapContext as MapContext,
 } from 'react-map-gl';
 import { GeoJsonClusteredIconLayer } from './deck.gl/custom-layers/geo-json-clustered-icon-layer';
@@ -30,6 +31,7 @@ import {
   layersSelector,
   selectDataSources,
 } from 'data-layers/data-layers.slice';
+import FeatureDetail from './feature-detail.component';
 
 import infrastructureIconAtlas from './layers/hourglass/infrastructure/iconAtlas.svg';
 import infrastructureIconMapping from './layers/hourglass/infrastructure/iconMapping.json';
@@ -49,6 +51,7 @@ const Map = () => {
   );
   const sources = useSelector(selectDataSources);
   const layers = useSelector(layersSelector);
+  const [pickedObject, setPickedObject] = useState();
 
   useEffect(() => {
     dispatch(onBookmarkLoaded());
@@ -92,7 +95,7 @@ const Map = () => {
       getTextSize: 32,
       getTextColor: [51, 63, 72],
       clusterRadius: 20,
-      onClick: d => console.log(d),
+      onClick: d => !d.object.properties.cluster && setPickedObject(d.object),
     }),
   ];
 
@@ -114,6 +117,16 @@ const Map = () => {
           mapboxApiAccessToken={accessToken}
           mapStyle={selectedMapStyle?.uri}
         />
+        {pickedObject && (
+          <Popup
+            longitude={pickedObject.geometry.coordinates[0]}
+            latitude={pickedObject.geometry.coordinates[1]}
+            onClose={() => setPickedObject(undefined)}
+            captureScroll
+          >
+            <FeatureDetail features={[pickedObject]} />
+          </Popup>
+        )}
         <NavigationControl className={styles.navigationControl} />
       </DeckGL>
       <Button

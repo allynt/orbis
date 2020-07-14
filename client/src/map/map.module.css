@@ -62,3 +62,57 @@
   background-color: var(--color-darkgrey);
   opacity: var(--button--opacity--hover);
 }
+
+:global(.mapboxgl-popup-anchor-bottom) :global(.mapboxgl-popup-tip),
+:global(.mapboxgl-popup-anchor-bottom-left) :global(.mapboxgl-popup-tip),
+:global(.mapboxgl-popup-anchor-bottom-right) :global(.mapboxgl-popup-tip) {
+  border-top-color: var(--color-secondary);
+}
+:global(.mapboxgl-popup-anchor-top) :global(.mapboxgl-popup-tip),
+:global(.mapboxgl-popup-anchor-top-left) :global(.mapboxgl-popup-tip),
+:global(.mapboxgl-popup-anchor-top-right) :global(.mapboxgl-popup-tip) {
+  border-bottom-color: var(--color-secondary);
+}
+
+:global(.mapboxgl-popup-anchor-left) :global(.mapboxgl-popup-tip) {
+  border-right-color: var(--color-secondary);
+}
+
+:global(.mapboxgl-popup-anchor-right) :global(.mapboxgl-popup-tip) {
+  border-left-color: var(--color-secondary);
+}
+
+/* ,
+
+  */
+
+:global(.mapboxgl-popup) :global(.mapboxgl-popup-content) {
+  background: var(--color-secondary);
+  border-radius: 1rem;
+}
+
+:global(.mapboxgl-popup-close-button) {
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 2rem;
+  height: 2rem;
+  color: #fff;
+  font-size: x-large;
+}
+
+:global(.mapboxgl-popup-close-button):hover {
+  background-color: var(--close-button-hover);
+}
+
+:global(.mapboxgl-popup-close-button):active {
+  background-color: var(--close-button-active);
+}
+
+:global(.mapboxgl-popup-close-button) svg {
+  width: 1rem;
+  height: 1rem;
+  fill: var(--close-button-text);
+}

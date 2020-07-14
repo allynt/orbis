@@ -86,14 +86,14 @@ const mapObject = data => {
 };
 
 const FeatureDetail = ({ features }) => {
-  const title = features[0].properties.Type
+  const title = features?.[0]?.properties?.Type
     ? 'User Details'
     : 'Infrastructure Details';
   return (
     <>
       <h1 className={infoStyles.header}>{title}</h1>
       <div className={infoStyles.modal}>
-        {features.map(feature => (
+        {features?.map(feature => (
           <ul key={feature.id} className={infoStyles.list}>
             {mapObject(feature.properties)}
           </ul>
