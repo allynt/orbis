@@ -1,7 +1,7 @@
 import { Dialog } from '@astrosat/astrosat-ui';
 import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { ADMIN_VIEW } from './admin.constants';
+import { ADMIN_VIEW, DIALOG_VIEW } from './admin.constants';
 import styles from './admin.module.css';
 import {
   createCustomerUser,
@@ -20,11 +20,6 @@ import LeftSidebar from './left-sidebar/left-sidebar.component';
 import { LicenceDashboard } from './licence-dashboard/licence-dashboard.component';
 import OrganisationMenu from './organisation-menu/organisation-menu.component';
 import ContentWrapper from './content-wrapper.component';
-
-const DIALOG_VIEW = {
-  createUser: 'Create New User',
-  withdrawInvitation: 'Withdraw Invitation',
-};
 
 const Admin = ({ user }) => {
   const dispatch = useDispatch();
