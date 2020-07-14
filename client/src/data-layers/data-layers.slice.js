@@ -81,13 +81,13 @@ export const selectPollingPeriod = createSelector(
   state => state.pollingPeriod,
 );
 
-export const layersSelector = createSelector(
+export const dataLayersSelector = createSelector(
   baseSelector,
   data => data.layers ?? {},
 );
 
 export const selectActiveSources = createSelector(
-  [selectDataSources, layersSelector],
+  [selectDataSources, dataLayersSelector],
   (sources, layers) =>
     sources
       ? sources.filter(

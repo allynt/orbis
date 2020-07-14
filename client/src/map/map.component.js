@@ -27,7 +27,7 @@ import { mapboxTokenSelector, mapStylesSelector } from 'app.slice';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import styles from './map.module.css';
 import {
-  layersSelector,
+  dataLayersSelector,
   selectDataSources,
 } from 'data-layers/data-layers.slice';
 
@@ -48,7 +48,7 @@ const Map = () => {
     false,
   );
   const sources = useSelector(selectDataSources);
-  const layers = useSelector(layersSelector);
+  const layers = useSelector(dataLayersSelector);
 
   useEffect(() => {
     dispatch(onBookmarkLoaded());
