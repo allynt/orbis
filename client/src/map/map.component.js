@@ -54,7 +54,7 @@ const Map = () => {
     dispatch(onBookmarkLoaded());
   }, [selectedBookmark, dispatch]);
 
-  const deckGlLayers = [
+  const layers = [
     ...[
       'astrosat/hourglass/scotland-infrastructure/v1',
       'astrosat/hourglass/wales-infrastructure/v1',
@@ -104,7 +104,7 @@ const Map = () => {
       <DeckGL
         controller
         initialViewState={viewport}
-        layers={deckGlLayers}
+        layers={layers}
         ContextProvider={MapContext.Provider}
       >
         <StaticMap
