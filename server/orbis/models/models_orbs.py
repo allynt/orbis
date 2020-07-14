@@ -168,6 +168,9 @@ class Licence(AccessModel):
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
 
+    created = models.DateTimeField(auto_now_add=True, db_index=True)
+    modified = models.DateTimeField(auto_now=True, db_index=True)
+
     orb = models.ForeignKey(Orb, related_name="licences", on_delete=models.CASCADE)
 
     customer = models.ForeignKey(
