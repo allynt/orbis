@@ -4,7 +4,7 @@ from django.urls import reverse
 from django.utils.html import format_html
 
 from astrosat.admin import get_clickable_m2m_list_display
-from astrosat_users.models import Customer
+from astrosat_users.models import Customer, User
 
 from orbis.models import Orb, Licence, DataScope, Access
 
@@ -118,23 +118,44 @@ class OrbAdmin(admin.ModelAdmin):
 
 @admin.register(Licence)
 class LicenceAdmin(admin.ModelAdmin):
+    form = AccessForm
     fields = (
         "id",
         "orb",
         "customer",
         "customer_user",
         "access",
+        "created",
+        "modified",
     )
-    readonly_fields = ("id",)
-    form = AccessForm
+    readonly_fields = (
+        "id",
+        "created",
+        "modified",
+    )
     list_display = (
         "id",
+        "created",
+        "modified",
         "get_orb_for_list_display",
         "get_customer_for_list_display",
+        "get_customer_user_for_list_display",
     )
     list_filter = (
         "orb",
         "customer",
+        "created",
+        "modified",
+    )
+    ordering = ("modified",)
+    search_fields = (
+        "id",
+        "orb__name",
+        "customer__name",
+        "customer__title",
+        "customer_user__user__name",
+        "customer_user__user__email",
+        "customer_user__user__username",
     )
 
     def get_orb_for_list_display(self, obj):
@@ -154,3 +175,14 @@ class LicenceAdmin(admin.ModelAdmin):
         return format_html(list_display)
 
     get_customer_for_list_display.short_description = "customer"
+
+    def get_customer_user_for_list_display(self, obj):
+        customer_user = obj.customer_user
+        if customer_user is not None:
+            # (there is no admin for a CustomerUser; so this link just goes to User)
+            user = customer_user.user
+            admin_change_url_name = f"admin:{User._meta.db_table}_change"
+            list_display = f"<a href='{reverse(admin_change_url_name, args=[user.pk])}'>{customer_user}</a>"
+            return format_html(list_display)
+
+    get_customer_user_for_list_display.short_description = "customer_user"
