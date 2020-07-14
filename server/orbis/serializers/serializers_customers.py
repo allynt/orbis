@@ -49,7 +49,7 @@ class CustomerSerializer(AstrosatUsersCustomerSerializer):
 class CustomerUserSerializer(AstrosatUsersCustomerUserSerializer):
     class Meta:
         model = CustomerUser
-        fields = ("id", "type", "status", "user", "customer", "licences")
+        fields = ("id", "type", "status", "invitation_date", "user", "customer", "licences",)
 
     licences = serializers.SlugRelatedField(
         many=True, slug_field="id", queryset=Licence.objects.all()
@@ -58,7 +58,7 @@ class CustomerUserSerializer(AstrosatUsersCustomerUserSerializer):
     def validate_licences(self, value):
 
         # make sure the licences all come from the correct customer...
-        customer = self.instance.customer
+        customer = self.context["customer"]
         if not all(map(lambda x: x.customer == customer, value)):
             raise serializers.ValidationError(
                 f"All licences must come from customer {customer.name}."

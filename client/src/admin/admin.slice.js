@@ -190,7 +190,7 @@ export const createCustomerUser = fields => async (dispatch, getState) => {
   };
 
   const createUserResponse = await sendData(
-    `${API}${currentCustomer.name}/users/`,
+    `${API}${currentCustomer.id}/users/`,
     data,
     headers,
   );
@@ -204,7 +204,7 @@ export const createCustomerUser = fields => async (dispatch, getState) => {
     );
 
   const fetchCustomerResponse = await getData(
-    `${API}${currentCustomer.name}`,
+    `${API}${currentCustomer.id}`,
     headers,
   );
   if (!fetchCustomerResponse.ok)
@@ -232,7 +232,7 @@ export const updateCustomerUser = (customer, user) => async (
   dispatch(updateCustomerUserRequested());
 
   const response = await sendData(
-    `${API}${customer.name}/users/${user.id}`,
+    `${API}${customer.id}/users/${user.id}`,
     user,
     headers,
     'PUT',
@@ -260,7 +260,7 @@ export const deleteCustomerUser = (customer, user) => async (
   dispatch(deleteCustomerUserRequested());
 
   const response = await sendData(
-    `${API}${customer.name}/users/${user.id}`,
+    `${API}${customer.id}/users/${user.id}`,
     null,
     headers,
     'DELETE',
