@@ -74,6 +74,7 @@ class DataScopeAdmin(admin.ModelAdmin):
         "namespace",
         "name",
         "version",
+        "description",
         "orbs",
     )
     list_display = (

@@ -212,8 +212,9 @@ class DataScope(models.Model):
     version = models.CharField(max_length=128, default="*")
 
     is_active = models.BooleanField(default=True)
+    description = models.TextField(blank=True, null=True)
 
-    orbs = models.ManyToManyField(Orb, related_name="data_scopes")
+    orbs = models.ManyToManyField(Orb, blank=True, related_name="data_scopes")
 
     def __str__(self):
         return self.source_id_pattern
