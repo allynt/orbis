@@ -71,7 +71,7 @@ export const selectDataToken = createSelector(
   state => state.token ?? '',
 );
 
-export const selectDataSources = createSelector(
+export const dataSourcesSelector = createSelector(
   baseSelector,
   state => state.sources ?? [],
 );
@@ -86,8 +86,8 @@ export const dataLayersSelector = createSelector(
   data => data.layers ?? {},
 );
 
-export const selectActiveSources = createSelector(
-  [selectDataSources, dataLayersSelector],
+export const activeDataSourcesSelector = createSelector(
+  [dataSourcesSelector, dataLayersSelector],
   (sources, layers) =>
     sources
       ? sources.filter(
@@ -98,7 +98,7 @@ export const selectActiveSources = createSelector(
       : [],
 );
 
-export const selectDomainList = createSelector(selectDataSources, sources =>
+export const selectDomainList = createSelector(dataSourcesSelector, sources =>
   Array.from(
     new Set(
       sources.reduce(

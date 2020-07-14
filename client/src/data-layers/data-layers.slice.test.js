@@ -7,8 +7,8 @@ import reducer, {
   fetchSourcesSuccess,
   fetchSources,
   selectDomainList,
-  selectActiveSources,
-  selectDataSources,
+  activeDataSourcesSelector,
+  dataSourcesSelector,
   selectPollingPeriod,
   selectDataToken,
   dataLayersSelector,
@@ -340,19 +340,19 @@ describe('Data Slice', () => {
             ],
           },
         };
-        const result = selectDataSources(state);
+        const result = dataSourcesSelector(state);
         expect(result).toEqual(state.data.sources);
       });
 
       it('should return an empty array if no data state is present', () => {
         const state = {};
-        const result = selectDataSources(state);
+        const result = dataSourcesSelector(state);
         expect(result).toEqual([]);
       });
 
       it('should return an empty array if no sources are present', () => {
         const state = { data: {} };
-        const result = selectDataSources(state);
+        const result = dataSourcesSelector(state);
         expect(result).toEqual([]);
       });
     });
@@ -401,7 +401,7 @@ describe('Data Slice', () => {
           },
         };
         const expected = [state.data.sources[0], state.data.sources[2]];
-        const result = selectActiveSources(state);
+        const result = activeDataSourcesSelector(state);
         expect(result).toEqual(expected);
       });
 
@@ -416,7 +416,7 @@ describe('Data Slice', () => {
             layers: {},
           },
         };
-        const result = selectActiveSources(state);
+        const result = activeDataSourcesSelector(state);
         expect(result).toEqual([]);
       });
 
@@ -427,7 +427,7 @@ describe('Data Slice', () => {
             layers: {},
           },
         };
-        const result = selectActiveSources(state);
+        const result = activeDataSourcesSelector(state);
         expect(result).toEqual([]);
       });
 
@@ -437,7 +437,7 @@ describe('Data Slice', () => {
             layers: {},
           },
         };
-        const result = selectActiveSources(state);
+        const result = activeDataSourcesSelector(state);
         expect(result).toEqual([]);
       });
 
@@ -451,7 +451,7 @@ describe('Data Slice', () => {
             },
           },
         };
-        const result = selectActiveSources(state);
+        const result = activeDataSourcesSelector(state);
         expect(result).toEqual([]);
       });
     });
