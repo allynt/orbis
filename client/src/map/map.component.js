@@ -95,7 +95,10 @@ const Map = () => {
       getTextSize: 32,
       getTextColor: [51, 63, 72],
       clusterRadius: 20,
-      onClick: d => !d.object.properties.cluster && setPickedObject(d.object),
+      onClick: d =>
+        d.object.properties.cluster
+          ? console.log(d)
+          : setPickedObject(d.object),
     }),
   ];
 

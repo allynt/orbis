@@ -35,6 +35,26 @@ export class ClusteredIconLayer extends CompositeLayer {
     }
   }
 
+  getPickingInfo({ info }) {
+    if (info.picked) {
+      if (info.object.properties.cluster) {
+        return {
+          ...info,
+          object: {
+            ...info.object,
+            properties: {
+              ...info.object.properties,
+              expansion_zoom: this.state.index.getClusterExpansionZoom(
+                info.object.properties.cluster_id,
+              ),
+            },
+          },
+        };
+      }
+    }
+    return info;
+  }
+
   renderLayers() {
     const { data } = this.state;
     return [
