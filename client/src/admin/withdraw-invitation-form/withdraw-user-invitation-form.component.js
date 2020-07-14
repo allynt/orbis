@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Button } from '@astrosat/astrosat-ui';
 
-import formStyles from '../../forms.module.css';
+import styles from './withdraw-user-invitation-form.module.css';
 
 export const WithdrawUserInvitationForm = ({
   user,
@@ -15,19 +15,15 @@ export const WithdrawUserInvitationForm = ({
     close();
   };
   return (
-    <div className={formStyles.form}>
-      <p>
+    <div className={styles.form}>
+      <p className={styles.message}>
         Do you really want to withdraw the pending{' '}
         <strong>{user.user.name}</strong> license and send email to the address
         about the act of withdrawal?
       </p>
-      <div className={formStyles.buttons}>
+      <div className={styles.buttons}>
         <Button onClick={handleClick}>Yes</Button>
-        <Button
-          theme="link"
-          className={formStyles.button}
-          onClick={() => close()}
-        >
+        <Button theme="link" onClick={() => close()}>
           Cancel
         </Button>
       </div>

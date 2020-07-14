@@ -26,6 +26,7 @@
   color: var(--color-darkgey);
   width: 1.5rem;
   cursor: pointer;
+  transform: rotate(90deg);
 }
 
 .optionsIconSelected {
@@ -37,18 +38,18 @@
   justify-content: center;
   align-items: center;
   position: absolute;
-  right: 8.5rem;
+  right: 9rem;
   top: 2rem;
   height: 4rem;
-  min-width: 12rem;
-  border-radius: 1rem;
+  border-radius: 0.9375rem;
   background-color: #fff;
-  box-shadow: 0 16px 24px 0 var(--color-darkgrey);
+  box-shadow: 0 16px 24px 0 var(--color-lightgrey);
   cursor: pointer;
 }
 
 .optionsText {
-  padding: 0.5rem;
-  margin: 0.5rem;
-  border-bottom: 1px solid var(--color-darkgrey);
+  font-size: 1rem;
+  padding: 0.25rem 1.25rem;
+  margin: 0.8125rem;
+  border-bottom: 1px solid var(--color-lightgrey);
 }
