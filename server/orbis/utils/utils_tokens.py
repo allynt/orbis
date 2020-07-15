@@ -11,7 +11,7 @@ from django.core.exceptions import ValidationError
 from astrosat_users.conf import app_settings as astrosat_users_app_settings
 from astrosat_users.models import User
 
-from orbis.models import DataScope, License
+from orbis.models import DataScope, Licence
 
 
 def generate_data_token(user):
@@ -23,27 +23,27 @@ def generate_data_token(user):
     }
 
     # TODO: RESTRICT customer_user BY customer
-    licenses = License.objects.filter(
-        id__in=user.customer_users.values("licenses")
+    licences = Licence.objects.filter(
+        id__in=user.customer_users.values("licences")
     ).select_related("orb")
 
     restricted_data_scopes = {
         "read": [
             str(scope)
             for scope in DataScope.objects.filter(
-                orbs__in=licenses.can_read().values_list("orb", flat=True)
+                orbs__in=licences.can_read().values_list("orb", flat=True)
             ).distinct()
         ],
         "create": [
             str(scope)
             for scope in DataScope.objects.filter(
-                orbs__in=licenses.can_create().values_list("orb", flat=True)
+                orbs__in=licences.can_create().values_list("orb", flat=True)
             ).distinct()
         ],
         "delete": [
             str(scope)
             for scope in DataScope.objects.filter(
-                orbs__in=licenses.can_delete().values_list("orb", flat=True)
+                orbs__in=licences.can_delete().values_list("orb", flat=True)
             ).distinct()
         ],
     }

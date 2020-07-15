@@ -1,5 +1,10 @@
 const express = require('express');
-const { getCustomer, getCustomerUsers, getSelectedUser, createCustomerUser } = require('./data');
+const {
+  getCustomer,
+  getCustomerUsers,
+  getSelectedUser,
+  createCustomerUser,
+} = require('./data');
 
 const getCustomerHandler = (req, res) => {
   console.log('Returning Current Customer');
@@ -29,7 +34,10 @@ const usersRouter = express.Router();
 
 usersRouter.route('/:customer').get(getCustomerHandler);
 
-usersRouter.route('/:customer/users').get(getCustomerUsersHandler).post(createCustomerUserHandler);
+usersRouter
+  .route('/:customer/users')
+  .get(getCustomerUsersHandler)
+  .post(createCustomerUserHandler);
 
 usersRouter.route('/:customer/users/:username').get(getSelectedUserHandler);
 

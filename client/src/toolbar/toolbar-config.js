@@ -121,13 +121,19 @@ export const getToolbarItems = (dispatch, user) => {
       },
       tooltip: 'Admin',
       footer: true,
-      roles: ['AdminRole'],
+      roles: [], // not restricted by role
       order: 4,
     });
   }
 
   return items
-    .filter(item => user?.roles?.some(role => item.roles.includes(role)))
+    .filter(
+      item =>
+        item.roles === undefined ||
+        item.roles === null ||
+        item.roles.length === 0 ||
+        user?.roles?.some(role => item.roles.includes(role)),
+    )
     .sort((item1, item2) => item1.order - item2.order);
 };
 
