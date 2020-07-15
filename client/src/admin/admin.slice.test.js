@@ -399,7 +399,7 @@ describe('Admin Slice', () => {
       expect(actualState.isLoading).toEqual(true);
     });
 
-    it('should update the users in state, when successfully deleted user', () => {
+    it('should update the users and customer in state, when successfully deleted user', () => {
       beforeState.customerUsers = [
         {
           id: '1',
@@ -408,6 +408,10 @@ describe('Admin Slice', () => {
           id: '2',
         },
       ];
+
+      beforeState.currentCustomer = {
+        licences: [{ customer_user: '1' }, { customer_user: '2' }],
+      };
       const userToDelete = beforeState.customerUsers[1];
 
       const actualState = reducer(beforeState, {
@@ -418,6 +422,10 @@ describe('Admin Slice', () => {
       expect(actualState.customerUsers).toEqual(
         beforeState.customerUsers.filter(user => user.id !== userToDelete.id),
       );
+      expect(actualState.currentCustomer.licences).toEqual([
+        { customer_user: '1' },
+        { customer_user: null },
+      ]);
       expect(actualState.isLoading).toEqual(false);
       expect(actualState.error).toEqual(null);
     });
