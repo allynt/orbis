@@ -4,7 +4,7 @@ from astrosat.serializers import ContextVariableDefault, WritableNestedListSeria
 
 from astrosat_users.models import Customer
 
-from orbis.models import Orb, License
+from orbis.models import Orb, Licence
 
 
 class OrbSerializer(serializers.ModelSerializer):
@@ -17,17 +17,17 @@ class OrbSerializer(serializers.ModelSerializer):
         )
 
 
-class LicenseSerializer(serializers.ModelSerializer):
+class LicenceSerializer(serializers.ModelSerializer):
     class Meta:
-        model = License
+        model = Licence
         fields = ("id", "orb", "customer", "customer_user", "access",)
         list_serializer_class = WritableNestedListSerializer
 
     id = serializers.UUIDField(read_only=True)
     orb = serializers.SlugRelatedField(slug_field="name", queryset=Orb.objects.active())
     customer = serializers.SlugRelatedField(
-        # a license can only exist w/ a pre-existing customer, and
-        # I will only CRUD licenses in the context of a customer, so
+        # a licence can only exist w/ a pre-existing customer, and
+        # I will only CRUD licences in the context of a customer, so
         # if I don't include a customer, provide it from the context
         default=ContextVariableDefault("customer"),
         queryset=Customer.objects.all(),
