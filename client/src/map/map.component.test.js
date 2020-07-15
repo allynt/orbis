@@ -21,6 +21,8 @@ const setup = initialState => {
 };
 
 describe('<Map />', () => {
+  beforeEach(() => fetch.mockResponse(JSON.stringify({})));
+
   it('displays the load mask when bookmarks is loading', () => {
     const { getByTestId } = setup({ bookmarks: { isLoading: true } });
     expect(getByTestId('load-mask')).toBeInTheDocument();

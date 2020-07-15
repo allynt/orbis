@@ -2,6 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 
 const routes = require('./api');
+const staticDataRouter = require('./static-data');
 
 const app = express();
 
@@ -31,8 +32,9 @@ router.use('/customers', routes.customersRoutes);
 
 // REGISTER OUR ROUTES -------------------------------
 app.use('/api', router);
+app.use('/static-data', staticDataRouter);
 
 // START THE SERVER
 // =============================================================================
 app.listen(port);
-console.log(`API Proxy listening on: http://localhost:${port}/api`);
+console.log(`API Proxy listening on: http://localhost:${port}`);

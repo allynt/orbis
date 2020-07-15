@@ -9,6 +9,8 @@ jest.mock('@deck.gl/react');
 const mockStore = configureStore();
 
 describe('<MapLayout />', () => {
+  beforeEach(() => fetch.mockResponse(JSON.stringify({})));
+
   it("does not show the toolbar if there's no user", () => {
     const { queryByTitle } = render(
       <Provider store={mockStore()}>
