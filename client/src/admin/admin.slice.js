@@ -4,6 +4,15 @@ import { createSlice, createSelector } from '@reduxjs/toolkit';
 import { getData, sendData, getJsonAuthHeaders } from 'utils/http';
 import { USER_STATUS } from './admin.constants';
 
+const filterCustomerLicences = (customer, userId) => {
+  for (let licence of customer.licences) {
+    if (licence.customer_user === userId) {
+      licence.customer_user = null;
+    }
+  }
+  return customer;
+};
+
 const API = '/api/customers/';
 
 const initialState = {
@@ -48,6 +57,10 @@ const adminSlice = createSlice({
     deleteCustomerUserSuccess: (state, { payload }) => {
       state.customerUsers = state.customerUsers.filter(
         user => user.id !== payload.id,
+      );
+      state.currentCustomer = filterCustomerLicences(
+        state.currentCustomer,
+        payload.id,
       );
       state.isLoading = false;
       state.error = null;
