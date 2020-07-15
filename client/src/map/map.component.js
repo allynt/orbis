@@ -64,7 +64,9 @@ const Map = () => {
       id =>
         new GeoJsonClusteredIconLayer({
           id,
-          data: sources.find(source => source.source_id === id)?.data,
+          data:
+            sources.find(source => source.source_id === id)?.metadata.url ||
+            sources.find(source => source.source_id === id)?.data,
           visible: activeLayers[id]?.visible,
           iconMapping: infrastructureIconMapping,
           iconAtlas: infrastructureIconAtlas,
@@ -79,9 +81,13 @@ const Map = () => {
     ),
     new GeoJsonClusteredIconLayer({
       id: LAYER_IDS.astrosat.hourglass.people.v1,
-      data: sources.find(
-        source => source.source_id === LAYER_IDS.astrosat.hourglass.people.v1,
-      )?.data,
+      data:
+        sources.find(
+          source => source.source_id === LAYER_IDS.astrosat.hourglass.people.v1,
+        )?.metadata.url ||
+        sources.find(
+          source => source.source_id === LAYER_IDS.astrosat.hourglass.people.v1,
+        )?.data,
       visible: activeLayers[LAYER_IDS.astrosat.hourglass.people.v1]?.visible,
       iconMapping: peopleIconMapping,
       iconAtlas: peopleIconAtlas,
