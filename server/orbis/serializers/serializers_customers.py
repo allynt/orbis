@@ -6,8 +6,8 @@ from astrosat_users.serializers import (
     CustomerUserSerializer as AstrosatUsersCustomerUserSerializer,
 )
 
-from orbis.models import License
-from orbis.serializers.serializers_orbs import LicenseSerializer
+from orbis.models import Licence
+from orbis.serializers.serializers_orbs import LicenceSerializer
 
 
 class CustomerSerializer(AstrosatUsersCustomerSerializer):
@@ -24,22 +24,22 @@ class CustomerSerializer(AstrosatUsersCustomerSerializer):
             "country",
             "address",
             "postcode",
-            "licenses",
+            "licences",
         )
 
-    licenses = LicenseSerializer(many=True, required=False)
+    licences = LicenceSerializer(many=True, required=False)
 
     def create(self, validated_data):
         raise NotImplementedError("Customers can only be created manually in orbis")
 
     def update(self, instance, validated_data):
-        # LicenseSerializer uses "astrosat.serializers.WritableNestedListSerializer", this means
+        # LicenceSerializer uses "astrosat.serializers.WritableNestedListSerializer", this means
         # it has a "crud" method which works out which models to create/update/delete automatically
-        licenses_serializer = self.fields["licenses"]
-        licenses_data = validated_data.pop(licenses_serializer.source)
-        licenses_serializer.crud(
-            instances=instance.licenses.all(),
-            validated_data=licenses_data,
+        licences_serializer = self.fields["licences"]
+        licences_data = validated_data.pop(licences_serializer.source)
+        licences_serializer.crud(
+            instances=instance.licences.all(),
+            validated_data=licences_data,
             delete_missing=True,
         )
         customer = super().update(instance, validated_data)
@@ -49,25 +49,25 @@ class CustomerSerializer(AstrosatUsersCustomerSerializer):
 class CustomerUserSerializer(AstrosatUsersCustomerUserSerializer):
     class Meta:
         model = CustomerUser
-        fields = ("id", "type", "status", "user", "customer", "licenses")
+        fields = ("id", "type", "status", "invitation_date", "user", "customer", "licences",)
 
-    licenses = serializers.SlugRelatedField(
-        many=True, slug_field="id", queryset=License.objects.all()
+    licences = serializers.SlugRelatedField(
+        many=True, slug_field="id", queryset=Licence.objects.all()
     )
 
-    def validate_licenses(self, value):
+    def validate_licences(self, value):
 
-        # make sure the licenses all come from the correct customer...
-        customer = self.instance.customer
+        # make sure the licences all come from the correct customer...
+        customer = self.context["customer"]
         if not all(map(lambda x: x.customer == customer, value)):
             raise serializers.ValidationError(
-                f"All licenses must come from customer {customer.name}."
+                f"All licences must come from customer {customer.name}."
             )
 
-        # make sure the licenses all come from unique orbs...
+        # make sure the licences all come from unique orbs...
         if not len(set(map(lambda x: x.orb, value))) == len(value):
             raise serializers.ValidationError(
-                "All licenses must come from unique orbs."
+                "All licences must come from unique orbs."
             )
 
         return value

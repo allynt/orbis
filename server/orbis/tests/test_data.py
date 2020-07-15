@@ -26,7 +26,7 @@ class TestTokens:
         customer = CustomerFactory(logo=None)
         (customer_user, _) = customer.add_user(user)
         orb = OrbFactory(data_scopes=[DataScopeFactory()])
-        license = LicenseFactory(
+        license = LicenceFactory(
             customer=customer,
             orb=orb,
             customer_user=customer_user,
@@ -80,7 +80,7 @@ class TestTokens:
         orbs = [OrbFactory(data_scopes=[data_scope]) for data_scope in data_scopes]
 
         for i, access_scope in enumerate(access_scopes):
-            LicenseFactory(
+            LicenceFactory(
                 customer=customer,
                 orb=orbs[i],
                 customer_user=customer_user,
