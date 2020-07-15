@@ -29,6 +29,7 @@ import styles from './map.module.css';
 import {
   activeLayersSelector,
   dataSourcesSelector,
+  selectDataToken,
 } from 'data-layers/data-layers.slice';
 
 import infrastructureIconAtlas from './layers/hourglass/infrastructure/iconAtlas.svg';
@@ -37,9 +38,18 @@ import peopleIconAtlas from './layers/hourglass/people/iconAtlas.svg';
 import peopleIconMapping from './layers/hourglass/people/iconMapping.json';
 import { LAYER_IDS } from './map.constants';
 
+const dataUrlFromId = (id, sources) => {
+  const source = sources.find(source => source.source_id === id);
+  if (!source) return;
+  return source.data && typeof source.data === 'string'
+    ? source.data
+    : source.metadata.url;
+};
+
 const Map = () => {
   const dispatch = useDispatch();
   const accessToken = useSelector(mapboxTokenSelector);
+  const authToken = useSelector(selectDataToken);
   const viewport = useSelector(viewportSelector);
   const selectedBookmark = useSelector(selectedBookmarkSelector);
   const bookmarksLoading = useSelector(bookmarksLoadingSelector);
@@ -55,6 +65,15 @@ const Map = () => {
     dispatch(onBookmarkLoaded());
   }, [selectedBookmark, dispatch]);
 
+  const dataRequest = (url = '') =>
+    new Promise(async (resolve, reject) => {
+      const response = await fetch(url, {
+        headers: { Authorization: `Bearer ${authToken}` },
+      });
+      if (!response.ok) reject(response.status);
+      resolve(response.json());
+    });
+
   const layers = [
     ...[
       LAYER_IDS.astrosat.hourglass.scotlandInfrastructure.v1,
@@ -64,9 +83,7 @@ const Map = () => {
       id =>
         new GeoJsonClusteredIconLayer({
           id,
-          data:
-            sources.find(source => source.source_id === id)?.metadata.url ||
-            sources.find(source => source.source_id === id)?.data,
+          data: dataRequest(dataUrlFromId(id, sources)),
           visible: activeLayers[id]?.visible,
           iconMapping: infrastructureIconMapping,
           iconAtlas: infrastructureIconAtlas,
@@ -81,13 +98,9 @@ const Map = () => {
     ),
     new GeoJsonClusteredIconLayer({
       id: LAYER_IDS.astrosat.hourglass.people.v1,
-      data:
-        sources.find(
-          source => source.source_id === LAYER_IDS.astrosat.hourglass.people.v1,
-        )?.metadata.url ||
-        sources.find(
-          source => source.source_id === LAYER_IDS.astrosat.hourglass.people.v1,
-        )?.data,
+      data: dataRequest(
+        dataUrlFromId(LAYER_IDS.astrosat.hourglass.people.v1, sources),
+      ),
       visible: activeLayers[LAYER_IDS.astrosat.hourglass.people.v1]?.visible,
       iconMapping: peopleIconMapping,
       iconAtlas: peopleIconAtlas,
