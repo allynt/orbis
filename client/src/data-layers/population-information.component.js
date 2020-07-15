@@ -1,10 +1,24 @@
 import React from 'react';
 
-import { personTypes } from 'map/map.constants';
-
 import { toTitleCase } from 'utils/text';
 
 import styles from './population-information.module.css';
+
+const personTypes = [
+  {
+    name: 'VOLUNTEER',
+    color: '#6cc24a',
+  },
+  {
+    name: 'RECIPIENT',
+    color: '#f6e800',
+  },
+  // Removed for hourglass
+  /* {
+    name: 'REPORTER',
+    color: 'yellow',
+  }, */
+];
 
 export const PopulationInformation = () => (
   <ul>

@@ -35,6 +35,7 @@ import infrastructureIconAtlas from './layers/hourglass/infrastructure/iconAtlas
 import infrastructureIconMapping from './layers/hourglass/infrastructure/iconMapping.json';
 import peopleIconAtlas from './layers/hourglass/people/iconAtlas.svg';
 import peopleIconMapping from './layers/hourglass/people/iconMapping.json';
+import { LAYER_IDS } from './map.constants';
 
 const Map = () => {
   const dispatch = useDispatch();
@@ -56,9 +57,9 @@ const Map = () => {
 
   const layers = [
     ...[
-      'astrosat/hourglass/scotland-infrastructure/v1',
-      'astrosat/hourglass/wales-infrastructure/v1',
-      'astrosat/hourglass/northern-ireland-infrastructure/v1',
+      LAYER_IDS.astrosat.hourglass.scotlandInfrastructure.v1,
+      LAYER_IDS.astrosat.hourglass.walesInfrastructure.v1,
+      LAYER_IDS.astrosat.hourglass.northernIrelandInfrastructure.v1,
     ].map(
       id =>
         new GeoJsonClusteredIconLayer({
@@ -77,11 +78,11 @@ const Map = () => {
         }),
     ),
     new GeoJsonClusteredIconLayer({
-      id: 'astrosat/hourglass/people/v1',
+      id: LAYER_IDS.astrosat.hourglass.people.v1,
       data: sources.find(
-        source => source.source_id === 'astrosat/hourglass/people/v1',
+        source => source.source_id === LAYER_IDS.astrosat.hourglass.people.v1,
       )?.data,
-      visible: activeLayers['astrosat/hourglass/people/v1']?.visible,
+      visible: activeLayers[LAYER_IDS.astrosat.hourglass.people.v1]?.visible,
       iconMapping: peopleIconMapping,
       iconAtlas: peopleIconAtlas,
       getPosition: d => d.geometry.coordinates,

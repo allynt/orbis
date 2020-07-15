@@ -32,20 +32,21 @@ export const regions = [
   },
 ];
 
-// FIX-ME make it so the color values and types are
-// gotten from fetched data rather than a constant
-export const personTypes = [
-  {
-    name: 'VOLUNTEER',
-    color: 'green',
+export const LAYER_IDS = {
+  astrosat: {
+    hourglass: {
+      people: {
+        v1: 'astrosat/hourglass/people/v1',
+      },
+      scotlandInfrastructure: {
+        v1: 'astrosat/hourglass/scotland-infrastructure/v1',
+      },
+      northernIrelandInfrastructure: {
+        v1: 'astrosat/hourglass/northern-ireland-infrastructure/v1',
+      },
+      walesInfrastructure: {
+        v1: 'astrosat/hourglass/wales-infrastructure/v1',
+      },
+    },
   },
-  {
-    name: 'RECIPIENT',
-    color: 'red',
-  },
-  // Removed for hourglass
-  /* {
-    name: 'REPORTER',
-    color: 'yellow',
-  }, */
-];
+};
