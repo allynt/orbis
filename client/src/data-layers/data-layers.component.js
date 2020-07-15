@@ -14,8 +14,8 @@ import { ReactComponent as AddNewCategoryIcon } from './add-more-categories.svg'
 import {
   removeLayer,
   addLayers,
-  selectDataSources,
-  selectActiveSources,
+  dataSourcesSelector,
+  activeDataSourcesSelector,
 } from './data-layers.slice';
 
 import { PopulationInformation } from './population-information.component';
@@ -64,8 +64,8 @@ const DataLayers = () => {
   const [isVisible, toggle] = useModal(false);
   const ref = useRef(null);
   const dispatch = useDispatch();
-  const dataSources = useSelector(selectDataSources);
-  const selectedLayers = useSelector(selectActiveSources);
+  const dataSources = useSelector(dataSourcesSelector);
+  const selectedLayers = useSelector(activeDataSourcesSelector);
 
   // Create an array of sources, grouped by their domain.
   const domains = dataSources.reduce((acc, value) => {

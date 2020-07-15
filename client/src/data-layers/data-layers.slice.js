@@ -13,7 +13,7 @@ const dataSlice = createSlice({
   initialState,
   reducers: {
     addLayers: (state, { payload }) => {
-      let newLayers =
+      const newLayers =
         typeof payload[0] === 'object'
           ? payload.map(layer => layer.source_id)
           : payload;
@@ -25,7 +25,7 @@ const dataSlice = createSlice({
       });
     },
     removeLayer: (state, { payload }) => {
-      let layerId = typeof payload === 'object' ? payload.source_id : payload;
+      const layerId = typeof payload === 'object' ? payload.source_id : payload;
       if (state.layers[layerId]) state.layers[layerId].visible = false;
     },
     fetchSourcesSuccess: (state, { payload }) => {
@@ -71,7 +71,7 @@ export const selectDataToken = createSelector(
   state => state.token ?? '',
 );
 
-export const selectDataSources = createSelector(
+export const dataSourcesSelector = createSelector(
   baseSelector,
   state => state.sources ?? [],
 );
@@ -81,13 +81,13 @@ export const selectPollingPeriod = createSelector(
   state => state.pollingPeriod,
 );
 
-export const layersSelector = createSelector(
+export const activeLayersSelector = createSelector(
   baseSelector,
   data => data.layers ?? {},
 );
 
-export const selectActiveSources = createSelector(
-  [selectDataSources, layersSelector],
+export const activeDataSourcesSelector = createSelector(
+  [dataSourcesSelector, activeLayersSelector],
   (sources, layers) =>
     sources
       ? sources.filter(
@@ -98,7 +98,7 @@ export const selectActiveSources = createSelector(
       : [],
 );
 
-export const selectDomainList = createSelector(selectDataSources, sources =>
+export const selectDomainList = createSelector(dataSourcesSelector, sources =>
   Array.from(
     new Set(
       sources.reduce(

@@ -29,8 +29,8 @@ import { mapboxTokenSelector, mapStylesSelector } from 'app.slice';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import styles from './map.module.css';
 import {
-  layersSelector,
-  selectDataSources,
+  activeLayersSelector,
+  dataSourcesSelector,
 } from 'data-layers/data-layers.slice';
 import FeatureDetail from './feature-detail.component';
 
@@ -38,6 +38,7 @@ import infrastructureIconAtlas from './layers/hourglass/infrastructure/iconAtlas
 import infrastructureIconMapping from './layers/hourglass/infrastructure/iconMapping.json';
 import peopleIconAtlas from './layers/hourglass/people/iconAtlas.svg';
 import peopleIconMapping from './layers/hourglass/people/iconMapping.json';
+import { LAYER_IDS } from './map.constants';
 
 const Map = () => {
   const dispatch = useDispatch();
@@ -50,8 +51,8 @@ const Map = () => {
   const [isMapStyleSwitcherVisible, setIsMapStyleSwitcherVisible] = useState(
     false,
   );
-  const sources = useSelector(selectDataSources);
-  const layers = useSelector(layersSelector);
+  const sources = useSelector(dataSourcesSelector);
+  const activeLayers = useSelector(activeLayersSelector);
   const [pickedObject, setPickedObject] = useState();
 
   useEffect(() => {
@@ -72,17 +73,17 @@ const Map = () => {
         )
       : setPickedObject(d.object);
 
-  const deckGlLayers = [
+  const layers = [
     ...[
-      'astrosat/hourglass/scotland-infrastructure/v1',
-      'astrosat/hourglass/wales-infrastructure/v1',
-      'astrosat/hourglass/northern-ireland-infrastructure/v1',
+      LAYER_IDS.astrosat.hourglass.scotlandInfrastructure.v1,
+      LAYER_IDS.astrosat.hourglass.walesInfrastructure.v1,
+      LAYER_IDS.astrosat.hourglass.northernIrelandInfrastructure.v1,
     ].map(
       id =>
         new GeoJsonClusteredIconLayer({
           id,
           data: sources.find(source => source.source_id === id)?.data,
-          visible: layers[id]?.visible,
+          visible: activeLayers[id]?.visible,
           pickable: true,
           iconMapping: infrastructureIconMapping,
           iconAtlas: infrastructureIconAtlas,
@@ -97,11 +98,11 @@ const Map = () => {
         }),
     ),
     new GeoJsonClusteredIconLayer({
-      id: 'astrosat/hourglass/people/v1',
+      id: LAYER_IDS.astrosat.hourglass.people.v1,
       data: sources.find(
-        source => source.source_id === 'astrosat/hourglass/people/v1',
+        source => source.source_id === LAYER_IDS.astrosat.hourglass.people.v1,
       )?.data,
-      visible: layers['astrosat/hourglass/people/v1']?.visible,
+      visible: activeLayers[LAYER_IDS.astrosat.hourglass.people.v1]?.visible,
       pickable: true,
       iconMapping: peopleIconMapping,
       iconAtlas: peopleIconAtlas,
@@ -126,7 +127,7 @@ const Map = () => {
       <DeckGL
         controller
         initialViewState={viewport}
-        layers={deckGlLayers}
+        layers={layers}
         ContextProvider={MapContext.Provider}
       >
         <StaticMap
