@@ -1,11 +1,11 @@
 module.exports = {
-  name: 'people',
-  namespace: 'hourglass',
+  name: 'hourglass',
+  namespace: 'covid',
   authority: 'astrosat',
-  source_id: 'astrosat/hourglass/people/v1',
+  source_id: 'astrosat/covid/hourglass/latest',
   status: 'published',
   type: 'vector',
-  version: 'v1',
+  version: 'latest',
   metadata: {
     label: 'Population information',
     domain: 'Action for Health',

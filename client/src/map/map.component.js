@@ -117,11 +117,11 @@ const Map = () => {
         }),
     ),
     new GeoJsonClusteredIconLayer({
-      id: LAYER_IDS.astrosat.hourglass.people.v1,
+      id: LAYER_IDS.astrosat.covid.hourglass.latest,
       data: dataRequest(
-        dataUrlFromId(LAYER_IDS.astrosat.hourglass.people.v1, sources),
+        dataUrlFromId(LAYER_IDS.astrosat.covid.hourglass.latest, sources),
       ),
-      visible: activeLayers[LAYER_IDS.astrosat.hourglass.people.v1]?.visible,
+      visible: activeLayers[LAYER_IDS.astrosat.covid.hourglass.latest]?.visible,
       pickable: true,
       iconMapping: peopleIconMapping,
       iconAtlas: peopleIconAtlas,
