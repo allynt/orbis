@@ -12,7 +12,7 @@ export default {
 export const Default = () => (
   <DeleteUserForm
     user={user}
-    deleteCustomerUser={action('Delete Customer Invitation')}
+    deleteUser={action('Delete Customer Invitation')}
     close={action('Close')}
   />
 );
