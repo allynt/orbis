@@ -148,7 +148,10 @@ const Map = () => {
       getIconSize: feature => (feature.properties.cluster ? 60 : 15),
       getIconColor: [246, 190, 0],
       getTextSize: 32,
-      getTextColor: [51, 63, 72],
+      getTextColor: feature =>
+        feature.properties.expansion_zoom > MAX_ZOOM
+          ? [0, 0, 0, 0]
+          : [51, 63, 72],
       clusterRadius: 20,
       maxZoom: MAX_ZOOM,
       onClick: handleLayerClick,
