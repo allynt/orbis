@@ -63,7 +63,17 @@ export class ClusteredIconLayer extends CompositeLayer {
           iconMapping: this.props.iconMapping,
           getPosition: this.props.getPosition,
           getIcon: d =>
-            d.properties.cluster ? 'cluster' : this.props.getIcon(d.properties),
+            d.properties.cluster
+              ? this.props.getIcon({
+                  ...d,
+                  properties: {
+                    ...d.properties,
+                    expansion_zoom: this.state.index.getClusterExpansionZoom(
+                      d.properties.cluster_id,
+                    ),
+                  },
+                })
+              : this.props.getIcon(d),
           getSize: this.props.getIconSize,
           getColor: this.props.getIconColor,
           updateTriggers: {

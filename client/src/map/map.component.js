@@ -116,7 +116,8 @@ const Map = () => {
           iconMapping: infrastructureIconMapping,
           iconAtlas: infrastructureIconAtlas,
           getPosition: feature => feature.geometry.coordinates,
-          getIcon: feature => feature.type,
+          getIcon: feature =>
+            feature.properties.cluster ? 'cluster' : feature.properties.type,
           getIconSize: 60,
           getIconColor: [246, 190, 0],
           getTextSize: 32,
@@ -136,7 +137,14 @@ const Map = () => {
       iconMapping: peopleIconMapping,
       iconAtlas: peopleIconAtlas,
       getPosition: feature => feature.geometry.coordinates,
-      getIcon: feature => feature.Type,
+      getIcon: feature => {
+        if (feature.properties.cluster) {
+          return feature.properties.expansion_zoom > MAX_ZOOM
+            ? 'group'
+            : 'cluster';
+        }
+        return feature.properties.Type;
+      },
       getIconSize: feature => (feature.properties.cluster ? 60 : 15),
       getIconColor: [246, 190, 0],
       getTextSize: 32,
