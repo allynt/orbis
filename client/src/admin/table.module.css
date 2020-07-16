@@ -35,12 +35,13 @@
 
 .optionsDropdown {
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   position: absolute;
   right: 9rem;
   top: 2rem;
-  height: 4rem;
+  width: fit-content;
   border-radius: 0.9375rem;
   background-color: #fff;
   box-shadow: 0 16px 24px 0 var(--color-lightgrey);
