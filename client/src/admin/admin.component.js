@@ -85,9 +85,7 @@ const Admin = ({ user }) => {
         return (
           <WithdrawUserInvitationForm
             user={dialogForm.user}
-            withdrawInvitation={user =>
-              dispatch(deleteCustomerUser(currentCustomer, user))
-            }
+            withdrawInvitation={user => dispatch(deleteCustomerUser(user))}
             close={() => setDialogForm(null)}
           />
         );

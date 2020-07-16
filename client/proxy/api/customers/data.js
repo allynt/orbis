@@ -73,7 +73,7 @@ let customers = [
         id: 'bca4255f-5147-4023-9b34-e52b0b8fcd86',
         orb: 'Rice',
         customer_user: '5',
-        access: 1,
+        access: '1',
       },
       {
         id: '2c6c43e0-d0d4-4379-ab6e-895b06f7f71b',
@@ -306,13 +306,16 @@ const createCustomerUser = (customerId, userData) => {
 };
 
 const deleteCustomerUser = userId => {
-  customerUsers = customerUsers.filter(cu => cu.id !== userId);
+  const deletedUser = customerUsers.find(cu => cu.id === userId);
+  customerUsers = customerUsers.filter(cu => cu.id !== deletedUser.id);
 
   for (let licence of customers[0].licences) {
     if (licence.customer_user === userId) {
       licence.customer_user = null;
     }
   }
+
+  return deletedUser;
 };
 
 module.exports = {

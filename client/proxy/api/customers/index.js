@@ -33,9 +33,9 @@ const getSelectedUserHandler = (req, res) => {
 
 const deleteSelectedUserHandler = (req, res) => {
   console.log('Deleting Selected user of customer');
-  deleteCustomerUser(req.params.userId);
+  const deletedUser = deleteCustomerUser(req.params.userId);
   res.status(200);
-  res.json(getCustomerUsers());
+  res.json(deletedUser);
 };
 
 const usersRouter = express.Router();
