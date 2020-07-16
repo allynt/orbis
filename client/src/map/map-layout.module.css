@@ -55,21 +55,6 @@
   color: #fff;
 }
 
-/* .map :global(.mapboxgl-control-container) :global(.mapboxgl-ctrl-bottom-right) {
-  bottom: 5rem;
-} */
-
-.list {
-  list-style-type: none;
-  padding-left: unset;
-  padding-top: 1rem;
-}
-
-.label {
-  font-weight: bolder;
-  padding-right: 0.3rem;
-}
-
 .compare {
   display: unset;
   position: absolute;
