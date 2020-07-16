@@ -8,6 +8,7 @@ from rest_framework.serializers import (
     ModelSerializer,
     PrimaryKeyRelatedField,
     SerializerMethodField,
+    SlugRelatedField,
     ValidationError,
 )
 
@@ -56,9 +57,10 @@ class BookmarkSerializer(ModelSerializer):
             "thumbnail",
         )
 
-    owner = PrimaryKeyRelatedField(
+    owner = SlugRelatedField(
          # (using a wrapper around CurrentUserDefault so that yasg doesn't complain)
-        queryset=get_user_model().objects.all(), default=SwaggerCurrentUserDefault()
+        queryset=get_user_model().objects.all(), default=SwaggerCurrentUserDefault(),
+        slug_field="uuid"
     )
 
     center = SimplifiedGeometryField(geometry_class=Point, precision=Bookmark.PRECISION)
