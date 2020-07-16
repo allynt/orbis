@@ -69,19 +69,19 @@ const Map = () => {
     dispatch(onBookmarkLoaded());
   }, [selectedBookmark, dispatch]);
 
-  const handleLayerClick = d =>
-    d.object.properties.cluster
+  const handleLayerClick = ({ object }) =>
+    object.properties.cluster
       ? dispatch(
           setViewport({
             ...viewport,
-            longitude: d.object.geometry.coordinates[0],
-            latitude: d.object.geometry.coordinates[1],
-            zoom: d.object.properties.expansion_zoom,
+            longitude: object.geometry.coordinates[0],
+            latitude: object.geometry.coordinates[1],
+            zoom: object.properties.expansion_zoom,
             transitionDuration: 1000,
             transitionInterpolator: new FlyToInterpolator(),
           }),
         )
-      : setPickedObject(d.object);
+      : setPickedObject(object);
 
   const dataRequest = (url = '') =>
     new Promise(async (resolve, reject) => {
@@ -106,8 +106,8 @@ const Map = () => {
           pickable: true,
           iconMapping: infrastructureIconMapping,
           iconAtlas: infrastructureIconAtlas,
-          getPosition: d => d.geometry.coordinates,
-          getIcon: d => d.type,
+          getPosition: feature => feature.geometry.coordinates,
+          getIcon: feature => feature.type,
           getIconSize: 60,
           getIconColor: [246, 190, 0],
           getTextSize: 32,
@@ -125,9 +125,9 @@ const Map = () => {
       pickable: true,
       iconMapping: peopleIconMapping,
       iconAtlas: peopleIconAtlas,
-      getPosition: d => d.geometry.coordinates,
-      getIcon: d => d.Type,
-      getIconSize: d => (d.properties.cluster ? 60 : 15),
+      getPosition: feature => feature.geometry.coordinates,
+      getIcon: feature => feature.Type,
+      getIconSize: feature => (feature.properties.cluster ? 60 : 15),
       getIconColor: [246, 190, 0],
       getTextSize: 32,
       getTextColor: [51, 63, 72],
