@@ -4,22 +4,23 @@ const {
   getCustomerUsers,
   getSelectedUser,
   createCustomerUser,
+  deleteCustomerUser,
 } = require('./data');
 
 const getCustomerHandler = (req, res) => {
   console.log('Returning Current Customer');
   res.status(200);
-  res.json(getCustomer(req.params.customer));
+  res.json(getCustomer(req.params.customerId));
 };
 
 const getCustomerUsersHandler = (req, res) => {
   console.log('Returning all Users of Current Customer');
   res.status(200);
-  res.json(getCustomerUsers(req.params.customer));
+  res.json(getCustomerUsers(req.params.customerId));
 };
 
 const createCustomerUserHandler = (req, res) => {
-  const newUser = createCustomerUser(req.params.customer, req.body);
+  const newUser = createCustomerUser(req.params.customerId, req.body);
   res.status(201);
   res.json(newUser);
 };
@@ -30,15 +31,25 @@ const getSelectedUserHandler = (req, res) => {
   res.json(getSelectedUser(req.currentUser.customers));
 };
 
+const deleteSelectedUserHandler = (req, res) => {
+  console.log('Deleting Selected user of customer');
+  const deletedUser = deleteCustomerUser(req.params.userId);
+  res.status(200);
+  res.json(deletedUser);
+};
+
 const usersRouter = express.Router();
 
-usersRouter.route('/:customer').get(getCustomerHandler);
+usersRouter.route('/:customerId').get(getCustomerHandler);
 
 usersRouter
-  .route('/:customer/users')
+  .route('/:customerId/users')
   .get(getCustomerUsersHandler)
   .post(createCustomerUserHandler);
 
-usersRouter.route('/:customer/users/:username').get(getSelectedUserHandler);
+usersRouter
+  .route('/:customerId/users/:userId')
+  .get(getSelectedUserHandler)
+  .delete(deleteSelectedUserHandler);
 
 module.exports = usersRouter;

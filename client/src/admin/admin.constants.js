@@ -8,3 +8,8 @@ export const ADMIN_VIEW = {
   corporateAccount: 'Corporate Account',
   licenceDashboard: 'Licence Dashboard',
 };
+
+export const DIALOG_VIEW = {
+  createUser: 'Create New User',
+  withdrawInvitation: 'Confirm',
+};

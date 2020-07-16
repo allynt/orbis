@@ -1,7 +1,7 @@
 import { Dialog } from '@astrosat/astrosat-ui';
 import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { ADMIN_VIEW } from './admin.constants';
+import { ADMIN_VIEW, DIALOG_VIEW } from './admin.constants';
 import styles from './admin.module.css';
 import {
   createCustomerUser,
@@ -10,10 +10,12 @@ import {
   selectCurrentCustomer,
   selectCustomerUsers,
   selectLicenceInformation,
+  deleteCustomerUser,
 } from './admin.slice';
 import HomeView from './home-view/home-view.component';
 import CorporateView from './corporate-view/corporate-view.component';
 import { CreateUserForm } from './create-user-form/create-user-form.component';
+import { WithdrawUserInvitationForm } from './withdraw-invitation-form/withdraw-user-invitation-form.component';
 import LeftSidebar from './left-sidebar/left-sidebar.component';
 import { LicenceDashboard } from './licence-dashboard/licence-dashboard.component';
 import OrganisationMenu from './organisation-menu/organisation-menu.component';
@@ -25,8 +27,8 @@ const Admin = ({ user }) => {
   const customerUsers = useSelector(selectCustomerUsers);
   const licenceInformation = useSelector(selectLicenceInformation);
   const [visiblePanel, setVisiblePanel] = useState(ADMIN_VIEW.home);
-  const createUserDialogRef = useRef(document.body);
-  const [createUserDialogVisible, setCreateUserDialogVisible] = useState();
+  const createDialogRef = useRef(document.body);
+  const [dialogForm, setDialogForm] = useState(null);
 
   useEffect(() => {
     if (!currentCustomer) {
@@ -41,7 +43,7 @@ const Admin = ({ user }) => {
   }, [currentCustomer, customerUsers, dispatch]);
 
   const handleCreateUserFormSubmit = values => {
-    setCreateUserDialogVisible(false);
+    setDialogForm(null);
     dispatch(createCustomerUser(values));
   };
 
@@ -57,7 +59,38 @@ const Admin = ({ user }) => {
         );
       case ADMIN_VIEW.home:
       default:
-        return <HomeView users={customerUsers} customer={currentCustomer} />;
+        return (
+          <HomeView
+            users={customerUsers}
+            customer={currentCustomer}
+            onWithdrawInvitationClick={user =>
+              setDialogForm({ type: DIALOG_VIEW.withdrawInvitation, user })
+            }
+          />
+        );
+    }
+  };
+
+  const getDialogForm = () => {
+    switch (dialogForm?.type) {
+      case DIALOG_VIEW.createUser:
+        return (
+          <CreateUserForm
+            licenceInformation={licenceInformation}
+            existingEmails={customerUsers?.map(cu => cu.user.email)}
+            onSubmit={handleCreateUserFormSubmit}
+          />
+        );
+      case DIALOG_VIEW.withdrawInvitation:
+        return (
+          <WithdrawUserInvitationForm
+            user={dialogForm.user}
+            withdrawInvitation={user => dispatch(deleteCustomerUser(user))}
+            close={() => setDialogForm(null)}
+          />
+        );
+      default:
+        return null;
     }
   };
 
@@ -72,19 +105,17 @@ const Admin = ({ user }) => {
       <OrganisationMenu
         customer={currentCustomer}
         setVisiblePanel={setVisiblePanel}
-        onCreateUserClick={() => setCreateUserDialogVisible(true)}
+        onCreateUserClick={() =>
+          setDialogForm({ type: DIALOG_VIEW.createUser })
+        }
       />
       <Dialog
-        title="Create New User"
-        isVisible={createUserDialogVisible}
-        ref={createUserDialogRef}
-        close={() => setCreateUserDialogVisible(false)}
+        title={dialogForm?.type}
+        isVisible={dialogForm}
+        ref={createDialogRef}
+        close={() => setDialogForm(null)}
       >
-        <CreateUserForm
-          licenceInformation={licenceInformation}
-          existingEmails={customerUsers?.map(cu => cu.user.email)}
-          onSubmit={handleCreateUserFormSubmit}
-        />
+        {getDialogForm()}
       </Dialog>
     </div>
   );

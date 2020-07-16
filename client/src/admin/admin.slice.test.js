@@ -38,7 +38,7 @@ describe('Admin Slice', () => {
         admin: {
           currentCustomer: {
             name: 'test-customer',
-            licences: [{ id: 1, orb: 'Rice' }],
+            licences: [{ id: '1', orb: 'Rice' }],
           },
           customerUsers: [],
         },
@@ -82,10 +82,10 @@ describe('Admin Slice', () => {
 
         const users = [
           {
-            id: 1,
+            id: '1',
           },
           {
-            id: 2,
+            id: '2',
           },
         ];
 
@@ -189,12 +189,12 @@ describe('Admin Slice', () => {
             currentCustomer: {
               name: 'test-customer',
               licences: [
-                { id: 1, orb: 'Rice' },
-                { id: 2, orb: 'Rice', customer_user: 1 },
-                { id: 3, orb: 'Oil' },
+                { id: '1', orb: 'Rice' },
+                { id: '2', orb: 'Rice', customer_user: '1' },
+                { id: '3', orb: 'Oil' },
               ],
             },
-            customerUsers: [{ id: 1, licences: [2] }],
+            customerUsers: [{ id: '1', licences: ['2'] }],
           },
         });
         const request = {
@@ -203,10 +203,10 @@ describe('Admin Slice', () => {
           licences: ['Rice', 'Oil'],
         };
         const expectedCustomerUser = {
-          id: 2,
+          id: '2',
           status: 'PENDING',
           type: 'MEMBER',
-          licences: [1, 3],
+          licences: ['1', '3'],
           user: {
             name: 'Test User',
             email: 'test.user@test.com',
@@ -226,7 +226,7 @@ describe('Admin Slice', () => {
 
         const user = {
           name: 'Test User',
-          id: 1,
+          id: '1',
         };
 
         fetch.mockResponse(
@@ -259,7 +259,7 @@ describe('Admin Slice', () => {
         };
 
         const user = {
-          id: 1,
+          id: '1',
           name: 'Test User',
         };
 
@@ -283,7 +283,7 @@ describe('Admin Slice', () => {
         };
 
         const user = {
-          id: 1,
+          id: '1',
         };
 
         fetch.mockResponse(
@@ -316,15 +316,19 @@ describe('Admin Slice', () => {
         };
 
         const user = {
-          id: 1,
+          id: '1',
           name: 'Test User',
         };
 
-        fetch.mockResponse(JSON.stringify(user));
+        fetch.once(JSON.stringify(user));
+        fetch.once(JSON.stringify(customer));
 
         const expectedActions = [
-          { type: deleteCustomerUserRequested.type },
-          { type: deleteCustomerUserSuccess.type, payload: user },
+          { type: deleteCustomerUserRequested.type, payload: undefined },
+          {
+            type: deleteCustomerUserSuccess.type,
+            payload: { deletedUser: user, customer },
+          },
         ];
 
         await store.dispatch(deleteCustomerUser(customer, user));
@@ -363,10 +367,10 @@ describe('Admin Slice', () => {
     it('should update the users in state, when successfully retrieved', () => {
       const users = [
         {
-          id: 1,
+          id: '1',
         },
         {
-          id: 2,
+          id: '2',
         },
       ];
 
@@ -399,25 +403,39 @@ describe('Admin Slice', () => {
       expect(actualState.isLoading).toEqual(true);
     });
 
-    it('should update the users in state, when successfully deleted user', () => {
+    it('should update the users and customer in state, when successfully deleted user', () => {
       beforeState.customerUsers = [
         {
-          id: 1,
+          id: '1',
         },
         {
-          id: 2,
+          id: '2',
         },
       ];
+
+      beforeState.currentCustomer = {
+        licences: [{ customer_user: '1' }, { customer_user: '2' }],
+      };
       const userToDelete = beforeState.customerUsers[1];
 
       const actualState = reducer(beforeState, {
         type: deleteCustomerUserSuccess.type,
-        payload: userToDelete,
+        payload: {
+          deletedUser: userToDelete,
+          customer: {
+            ...beforeState.customer,
+            licences: [{ customer_user: '1' }, { customer_user: null }],
+          },
+        },
       });
 
       expect(actualState.customerUsers).toEqual(
         beforeState.customerUsers.filter(user => user.id !== userToDelete.id),
       );
+      expect(actualState.currentCustomer.licences).toEqual([
+        { customer_user: '1' },
+        { customer_user: null },
+      ]);
       expect(actualState.isLoading).toEqual(false);
       expect(actualState.error).toEqual(null);
     });
@@ -444,11 +462,11 @@ describe('Admin Slice', () => {
     it('should update the users in state, when successfully updated user', () => {
       beforeState.customerUsers = [
         {
-          id: 1,
+          id: '1',
           name: 'Test User 1',
         },
         {
-          id: 2,
+          id: '2',
           name: 'Test User 1',
         },
       ];
@@ -489,16 +507,16 @@ describe('Admin Slice', () => {
     it('should update the users in state, when successfully created user', () => {
       beforeState.customerUsers = [
         {
-          id: 1,
+          id: '1',
           name: 'Test User 1',
         },
         {
-          id: 2,
+          id: '2',
           name: 'Test User 1',
         },
       ];
       const userToCreate = {
-        id: 3,
+        id: '3',
         name: 'Test User 3',
       };
 
@@ -557,7 +575,7 @@ describe('Admin Slice', () => {
       it('returns customerUsers from state', () => {
         const state = {
           admin: {
-            customerUsers: [{ id: 1 }, { id: 2 }],
+            customerUsers: [{ id: '1' }, { id: '2' }],
           },
         };
         const result = selectCustomerUsers(state);
@@ -571,22 +589,22 @@ describe('Admin Slice', () => {
           currentCustomer: {
             licences: [
               { orb: 'Rice' },
-              { orb: 'Rice', customer_user: 2 },
-              { orb: 'Rice', customer_user: 1 },
-              { orb: 'Oil', customer_user: 1 },
-              { orb: 'Oil', customer_user: 3 },
-              { orb: 'Health', customer_user: 4 },
-              { orb: 'Health', customer_user: 3 },
-              { orb: 'Health', customer_user: 2 },
+              { orb: 'Rice', customer_user: '2' },
+              { orb: 'Rice', customer_user: '1' },
+              { orb: 'Oil', customer_user: '1' },
+              { orb: 'Oil', customer_user: '3' },
+              { orb: 'Health', customer_user: '4' },
+              { orb: 'Health', customer_user: '3' },
+              { orb: 'Health', customer_user: '2' },
               { orb: 'Health' },
               { orb: 'Health' },
             ],
           },
           customerUsers: [
-            { id: 1, status: USER_STATUS.active },
-            { id: 2, status: USER_STATUS.active },
-            { id: 3, status: USER_STATUS.pending },
-            { id: 4, status: USER_STATUS.pending },
+            { id: '1', status: USER_STATUS.active },
+            { id: '2', status: USER_STATUS.active },
+            { id: '3', status: USER_STATUS.pending },
+            { id: '4', status: USER_STATUS.pending },
           ],
         },
       };
