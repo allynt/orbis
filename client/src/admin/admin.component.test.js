@@ -15,10 +15,10 @@ const setup = () => {
         accounts: { userKey: '123abc' },
         admin: {
           currentCustomer: {
-            id: 0,
+            id: '0',
             name: 'test-customer',
             title: 'Test Customer',
-            licences: [{ id: 1, orb: 'Rice' }],
+            licences: [{ id: '1', orb: 'Rice' }],
           },
           customerUsers: [],
         },

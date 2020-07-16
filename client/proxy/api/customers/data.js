@@ -12,84 +12,86 @@ let customers = [
       {
         id: '055aa73b-7a5f-41d7-b9d4-b3124c16ffde',
         orb: 'Rice',
-        customer_user: 1,
-        access: 1,
+        customer_user: '1',
+        access: '1',
       },
       {
         id: 'd499964f-1bb4-4aa1-baf4-0164eabec297',
         orb: 'Rice',
-        customer_user: 2,
-        access: 1,
+        customer_user: '2',
+        access: '1',
       },
       {
         id: '3e9dbb09-133b-4316-bf7c-c6e0be98bb05',
         orb: 'Rice',
-        customer_user: 3,
-        access: 1,
+        customer_user: '3',
+        access: '1',
       },
       {
         id: 'db153830-d72a-44f7-88e0-d95b203b2383',
         orb: 'Rice',
-        customer_user: 4,
-        access: 1,
+        customer_user: '4',
+        access: '1',
       },
       {
         id: 'a4a4bf7e-8980-4fd8-a3e8-dccc0ada36e1',
         orb: 'Oil',
-        customer_user: 5,
-        access: 1,
+        customer_user: '5',
+        access: '1',
       },
       {
         id: 'e7d31181-61e3-4880-9529-6408ce9d2cd3',
         orb: 'Oil',
-        customer_user: 6,
-        access: 1,
+        customer_user: '6',
+        access: '1',
       },
       {
         id: '7b2df564-3b91-4ed2-9b57-a362f7212c94',
         orb: 'Oil',
-        customer_user: 1,
-        access: 1,
+        customer_user: '1',
+        access: '1',
       },
       {
         id: 'c2f0bae8-b2f5-412d-9780-551c6bbe3248',
         orb: 'Oil',
-        customer_user: 2,
-        access: 1,
+        customer_user: '2',
+        access: '1',
       },
       {
         id: '4d16b720-2a7a-4ee7-a942-fd999af5aa15',
         orb: 'Oil',
-        customer_user: 3,
-        access: 1,
+        customer_user: '3',
+        access: '1',
       },
       {
         id: 'f9a8a715-dbeb-4fbc-92c6-fd2138475a87',
         orb: 'Oil',
-        customer_user: 4,
-        access: 1,
+        customer_user: '4',
+        access: '1',
       },
       {
         id: 'bca4255f-5147-4023-9b34-e52b0b8fcd86',
         orb: 'Rice',
-        customer_user: 5,
-        access: 1,
+        customer_user: '5',
+        access: '1',
       },
       {
         id: '2c6c43e0-d0d4-4379-ab6e-895b06f7f71b',
         orb: 'Rice',
-        customer_user: 6,
-        access: 1,
+        customer_user: '6',
+        access: '1',
       },
       {
         id: 'cffb1c43-54b9-47ce-be3b-572d2a3d2e14',
         orb: 'Rice',
-        access: 1,
+        customer_user: null,
+        access: '1',
       },
       {
         id: '580468ba-fd78-4ea6-bd50-52a7b7ecf686',
         orb: 'Oil',
-        access: 1,
+        customer_user: null,
+        access: '1',
       },
     ],
     data_limit: 100,
@@ -122,7 +124,7 @@ let customers = [
 
 let customerUsers = [
   {
-    id: 1,
+    id: '1',
     type: 'MANAGER',
     status: 'ACTIVE',
     customer: '7009b9d8-c286-11ea-b3de-0242ac130004',
@@ -147,7 +149,7 @@ let customerUsers = [
     },
   },
   {
-    id: 2,
+    id: '2',
     type: 'MANAGER',
     status: 'ACTIVE',
     customer: '7009b9d8-c286-11ea-b3de-0242ac130004',
@@ -171,7 +173,7 @@ let customerUsers = [
     },
   },
   {
-    id: 3,
+    id: '3',
     type: 'MANAGER',
     status: 'ACTIVE',
     customer: '7009b9d8-c286-11ea-b3de-0242ac130004',
@@ -195,7 +197,7 @@ let customerUsers = [
     },
   },
   {
-    id: 4,
+    id: '4',
     type: 'MANAGER',
     status: 'PENDING',
     invitation_date: '2020-01-31T11:46:12.618090Z',
@@ -220,7 +222,7 @@ let customerUsers = [
     },
   },
   {
-    id: 5,
+    id: '5',
     type: 'MEMBER',
     status: 'PENDING',
     invitation_date: '2020-01-31T11:46:12.618090Z',
@@ -245,7 +247,7 @@ let customerUsers = [
     },
   },
   {
-    id: 6,
+    id: '6',
     type: 'MANAGER',
     status: 'PENDING',
     invitation_date: '2020-01-31T11:46:12.618090Z',
@@ -303,4 +305,22 @@ const createCustomerUser = (customerId, userData) => {
   return newUser;
 };
 
-module.exports = { getCustomer, getCustomerUsers, createCustomerUser };
+const deleteCustomerUser = userId => {
+  const deletedUser = customerUsers.find(cu => cu.id === userId);
+  customerUsers = customerUsers.filter(cu => cu.id !== deletedUser.id);
+
+  for (let licence of customers[0].licences) {
+    if (licence.customer_user === userId) {
+      licence.customer_user = null;
+    }
+  }
+
+  return deletedUser;
+};
+
+module.exports = {
+  getCustomer,
+  getCustomerUsers,
+  createCustomerUser,
+  deleteCustomerUser,
+};

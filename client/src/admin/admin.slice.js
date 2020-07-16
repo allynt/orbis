@@ -46,9 +46,13 @@ const adminSlice = createSlice({
       state.isLoading = true;
     },
     deleteCustomerUserSuccess: (state, { payload }) => {
-      state.customerUsers = state.customerUsers.filter(
-        user => user.id !== payload.id,
-      );
+      if (payload.deletedUser) {
+        state.customerUsers = state.customerUsers.filter(
+          cu => cu.id !== payload.deletedUser.id,
+        );
+      }
+
+      if (payload.customer) state.currentCustomer = payload.customer;
       state.isLoading = false;
       state.error = null;
     },
@@ -251,30 +255,44 @@ export const updateCustomerUser = (customer, user) => async (
   return dispatch(updateCustomerUserSuccess(userData));
 };
 
-export const deleteCustomerUser = (customer, user) => async (
-  dispatch,
-  getState,
-) => {
+export const deleteCustomerUser = user => async (dispatch, getState) => {
   const headers = getJsonAuthHeaders(getState());
-
+  const currentCustomer = selectCurrentCustomer(getState());
   dispatch(deleteCustomerUserRequested());
 
-  const response = await sendData(
-    `${API}${customer.id}/users/${user.id}`,
-    null,
+  const deleteUserResponse = await sendData(
+    `${API}${currentCustomer.id}/users/`,
+    user.id,
     headers,
     'DELETE',
   );
 
-  if (!response.ok)
+  if (!deleteUserResponse.ok)
     return handleFailure(
-      response,
-      'Deleting User',
+      deleteUserResponse,
+      'Deleting Customer User Error',
       deleteCustomerUserFailure,
       dispatch,
     );
 
-  return dispatch(deleteCustomerUserSuccess(user));
+  const fetchCustomerResponse = await getData(
+    `${API}${currentCustomer.id}`,
+    headers,
+  );
+  if (!fetchCustomerResponse.ok)
+    return handleFailure(
+      fetchCustomerResponse,
+      'Deleting Customer User Error',
+      deleteCustomerUserFailure,
+      dispatch,
+    );
+
+  const [deletedUser, customer] = await Promise.all([
+    deleteUserResponse.json(),
+    fetchCustomerResponse.json(),
+  ]);
+
+  return dispatch(deleteCustomerUserSuccess({ deletedUser, customer }));
 };
 
 /* === Selectors === */
@@ -300,8 +318,8 @@ export const selectLicenceInformation = createSelector(
       const orbLicenceInformation = licenceInformation[orb];
       const user =
         !!customer_user && users.find(user => user.id === customer_user);
-      const isActive = user.status === USER_STATUS.active;
-      const isPending = user.status === USER_STATUS.pending;
+      const isActive = user?.status === USER_STATUS.active;
+      const isPending = user?.status === USER_STATUS.pending;
       let purchased, active, pending;
       if (orbLicenceInformation) {
         purchased = orbLicenceInformation.purchased + 1;
