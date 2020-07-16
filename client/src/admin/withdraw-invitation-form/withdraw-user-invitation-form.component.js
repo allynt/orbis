@@ -9,8 +9,7 @@ export const WithdrawUserInvitationForm = ({
   withdrawInvitation,
   close,
 }) => {
-  const handleClick = e => {
-    e.preventDefault();
+  const handleClick = () => {
     withdrawInvitation(user);
     close();
   };
