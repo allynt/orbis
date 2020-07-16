@@ -4,9 +4,9 @@ import { Button } from '@astrosat/astrosat-ui';
 
 import styles from './delete-user-form.module.css';
 
-export const DeleteUserForm = ({ user, deleteCustomerUser, close }) => {
+export const DeleteUserForm = ({ user, deleteUser, close }) => {
   const handleClick = user => {
-    deleteCustomerUser(user);
+    deleteUser(user);
     close();
   };
 
