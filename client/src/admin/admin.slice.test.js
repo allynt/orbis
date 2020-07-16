@@ -320,11 +320,15 @@ describe('Admin Slice', () => {
           name: 'Test User',
         };
 
-        fetch.mockResponse(JSON.stringify(user));
+        fetch.once(JSON.stringify(user));
+        fetch.once(JSON.stringify(customer));
 
         const expectedActions = [
-          { type: deleteCustomerUserRequested.type },
-          { type: deleteCustomerUserSuccess.type, payload: user },
+          { type: deleteCustomerUserRequested.type, payload: undefined },
+          {
+            type: deleteCustomerUserSuccess.type,
+            payload: { deletedUser: user, customer },
+          },
         ];
 
         await store.dispatch(deleteCustomerUser(customer, user));
@@ -416,7 +420,13 @@ describe('Admin Slice', () => {
 
       const actualState = reducer(beforeState, {
         type: deleteCustomerUserSuccess.type,
-        payload: userToDelete,
+        payload: {
+          deletedUser: userToDelete,
+          customer: {
+            ...beforeState.customer,
+            licences: [{ customer_user: '1' }, { customer_user: null }],
+          },
+        },
       });
 
       expect(actualState.customerUsers).toEqual(
