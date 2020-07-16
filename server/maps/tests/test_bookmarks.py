@@ -130,6 +130,7 @@ class TestBookmarkViews:
         assert bookmark.title == new_title
 
     def test_list_filter(self):
+        # tests that the BookmarkView only returns bookmarks owned by the user making the request
 
         users = [UserFactory() for _ in range(2)]
         bookmarks = [
@@ -148,7 +149,7 @@ class TestBookmarkViews:
         data = response.json()
 
         assert status.is_success(response.status_code)
-        assert all(d["owner"] == users[0].pk for d in data)
+        assert all(d["owner"] == str(users[0].uuid) for d in data)
         assert len(data) == 5
         assert Bookmark.objects.count() == 10
 
