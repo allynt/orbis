@@ -2,11 +2,12 @@ import React, { useEffect, useState } from 'react';
 
 import { LayersIcon, Button, LoadMask } from '@astrosat/astrosat-ui/';
 
-import DeckGL from '@deck.gl/react';
+import DeckGL, { FlyToInterpolator } from 'deck.gl';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   StaticMap,
   NavigationControl,
+  Popup,
   _MapContext as MapContext,
 } from 'react-map-gl';
 import { GeoJsonClusteredIconLayer } from './deck.gl/custom-layers/geo-json-clustered-icon-layer';
@@ -21,6 +22,7 @@ import {
   selectMapStyle,
   viewportSelector,
   selectedMapStyleSelector,
+  setViewport,
 } from './map.slice';
 import { mapboxTokenSelector, mapStylesSelector } from 'app.slice';
 
@@ -31,6 +33,7 @@ import {
   dataSourcesSelector,
   selectDataToken,
 } from 'data-layers/data-layers.slice';
+import FeatureDetail from './feature-detail.component';
 
 import infrastructureIconAtlas from './layers/hourglass/infrastructure/iconAtlas.svg';
 import infrastructureIconMapping from './layers/hourglass/infrastructure/iconMapping.json';
@@ -46,6 +49,8 @@ const dataUrlFromId = (id, sources) => {
     : source.metadata.url;
 };
 
+const MAX_ZOOM = 20;
+
 const Map = () => {
   const dispatch = useDispatch();
   const accessToken = useSelector(mapboxTokenSelector);
@@ -60,10 +65,32 @@ const Map = () => {
   );
   const sources = useSelector(dataSourcesSelector);
   const activeLayers = useSelector(activeLayersSelector);
+  const [pickedObject, setPickedObject] = useState();
 
   useEffect(() => {
     dispatch(onBookmarkLoaded());
   }, [selectedBookmark, dispatch]);
+
+  const handleLayerClick = info => {
+    if (info.object.properties.cluster) {
+      if (info.object.properties.expansion_zoom <= MAX_ZOOM)
+        dispatch(
+          setViewport({
+            ...viewport,
+            longitude: info.object.geometry.coordinates[0],
+            latitude: info.object.geometry.coordinates[1],
+            zoom:
+              info.object.properties.expansion_zoom >= MAX_ZOOM
+                ? MAX_ZOOM
+                : info.object.properties.expansion_zoom,
+            transitionDuration: 1000,
+            transitionInterpolator:
+              viewport.transitionInterpolator || new FlyToInterpolator(),
+          }),
+        );
+      else setPickedObject(info.objects);
+    } else setPickedObject([info.object]);
+  };
 
   const dataRequest = (url = '') =>
     new Promise(async (resolve, reject) => {
@@ -85,32 +112,49 @@ const Map = () => {
           id,
           data: dataRequest(dataUrlFromId(id, sources)),
           visible: activeLayers[id]?.visible,
+          pickable: true,
           iconMapping: infrastructureIconMapping,
           iconAtlas: infrastructureIconAtlas,
-          getPosition: d => d.geometry.coordinates,
-          getIcon: d => d.properties.type,
+          getPosition: feature => feature.geometry.coordinates,
+          getIcon: feature =>
+            feature.properties.cluster ? 'cluster' : feature.properties.type,
           getIconSize: 60,
           getIconColor: [246, 190, 0],
           getTextSize: 32,
           getTextColor: [51, 63, 72],
           clusterRadius: 40,
+          maxZoom: MAX_ZOOM,
+          onClick: handleLayerClick,
         }),
     ),
     new GeoJsonClusteredIconLayer({
-      id: LAYER_IDS.astrosat.hourglass.people.v1,
+      id: LAYER_IDS.astrosat.covid.hourglass.latest,
       data: dataRequest(
-        dataUrlFromId(LAYER_IDS.astrosat.hourglass.people.v1, sources),
+        dataUrlFromId(LAYER_IDS.astrosat.covid.hourglass.latest, sources),
       ),
-      visible: activeLayers[LAYER_IDS.astrosat.hourglass.people.v1]?.visible,
+      visible: activeLayers[LAYER_IDS.astrosat.covid.hourglass.latest]?.visible,
+      pickable: true,
       iconMapping: peopleIconMapping,
       iconAtlas: peopleIconAtlas,
-      getPosition: d => d.geometry.coordinates,
-      getIcon: d => d.properties.Type,
-      getIconSize: d => (d.properties.cluster ? 60 : 15),
+      getPosition: feature => feature.geometry.coordinates,
+      getIcon: feature => {
+        if (feature.properties.cluster) {
+          return feature.properties.expansion_zoom > MAX_ZOOM
+            ? 'group'
+            : 'cluster';
+        }
+        return feature.properties.Type;
+      },
+      getIconSize: feature => (feature.properties.cluster ? 60 : 15),
       getIconColor: [246, 190, 0],
       getTextSize: 32,
-      getTextColor: [51, 63, 72],
+      getTextColor: feature =>
+        feature.properties.expansion_zoom > MAX_ZOOM
+          ? [0, 0, 0, 0]
+          : [51, 63, 72],
       clusterRadius: 20,
+      maxZoom: MAX_ZOOM,
+      onClick: handleLayerClick,
     }),
   ];
 
@@ -132,6 +176,16 @@ const Map = () => {
           mapboxApiAccessToken={accessToken}
           mapStyle={selectedMapStyle?.uri}
         />
+        {pickedObject && (
+          <Popup
+            longitude={pickedObject[0].geometry.coordinates[0]}
+            latitude={pickedObject[0].geometry.coordinates[1]}
+            onClose={() => setPickedObject(undefined)}
+            captureScroll
+          >
+            <FeatureDetail features={pickedObject} />
+          </Popup>
+        )}
         <NavigationControl className={styles.navigationControl} />
       </DeckGL>
       <Button

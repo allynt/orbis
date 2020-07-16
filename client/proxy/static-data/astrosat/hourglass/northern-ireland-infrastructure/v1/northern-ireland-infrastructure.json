@@ -16,6 +16,20 @@
       }
     },
     {
+      "id": 20,
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [-3.16856, 55.911667] },
+      "properties": {
+        "pk": 1,
+        "type": "hospitals",
+        "name": "Hospital One",
+        "phone_number": "+447561866337",
+        "address1": "1 Street Name",
+        "address2": "Edinburgh",
+        "postcode": "EH15 1AS"
+      }
+    },
+    {
       "id": 2,
       "type": "Feature",
       "geometry": { "type": "Point", "coordinates": [-3.165856, 55.911567] },

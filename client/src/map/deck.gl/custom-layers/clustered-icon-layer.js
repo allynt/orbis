@@ -5,6 +5,18 @@ const DEFAULT_FONT_FAMILY = 'Open Sans';
 const DEFAULT_FONT_WEIGHT = 600;
 
 export class ClusteredIconLayer extends CompositeLayer {
+  _injectExpansionZoom(feature) {
+    return {
+      ...feature,
+      properties: {
+        ...feature.properties,
+        expansion_zoom: this.state.index.getClusterExpansionZoom(
+          feature.properties.cluster_id,
+        ),
+      },
+    };
+  }
+
   shouldUpdateState({ changeFlags }) {
     return changeFlags.somethingChanged;
   }
@@ -20,7 +32,7 @@ export class ClusteredIconLayer extends CompositeLayer {
       index.load(
         props.data.map(d => ({
           geometry: { coordinates: this.props.getPosition(d) },
-          properties: d,
+          properties: d.properties,
         })),
       );
       this.setState({ index });
@@ -35,6 +47,23 @@ export class ClusteredIconLayer extends CompositeLayer {
     }
   }
 
+  getPickingInfo({ info, mode }) {
+    if (info.picked) {
+      if (info.object.properties.cluster) {
+        info.object.properties.expansion_zoom = this.state.index.getClusterExpansionZoom(
+          info.object.properties.cluster_id,
+        );
+        if (mode !== 'hover') {
+          info.objects = this.state.index.getLeaves(
+            info.object.properties.cluster_id,
+            Infinity,
+          );
+        }
+      }
+    }
+    return info;
+  }
+
   renderLayers() {
     const { data } = this.state;
     return [
@@ -45,8 +74,13 @@ export class ClusteredIconLayer extends CompositeLayer {
           iconAtlas: this.props.iconAtlas,
           iconMapping: this.props.iconMapping,
           getPosition: this.props.getPosition,
-          getIcon: d =>
-            d.properties.cluster ? 'cluster' : this.props.getIcon(d.properties),
+          getIcon: feature => {
+            if (typeof this.props.getIcon === 'function')
+              return feature.properties.cluster
+                ? this.props.getIcon(this._injectExpansionZoom(feature))
+                : this.props.getIcon(feature);
+            return this.props.getIcon;
+          },
           getSize: this.props.getIconSize,
           getColor: this.props.getIconColor,
           updateTriggers: {
@@ -64,10 +98,18 @@ export class ClusteredIconLayer extends CompositeLayer {
           fontFamily: this.props.fontFamily,
           fontWeight: this.props.fontWeight,
           getPosition: this.props.getPosition,
-          getText: d =>
-            d.properties.cluster ? `${d.properties.point_count}` : ` `,
+          getText: feature =>
+            feature.properties.cluster
+              ? `${feature.properties.point_count}`
+              : ` `,
           getSize: this.props.getTextSize,
-          getColor: this.props.getTextColor,
+          getColor: feature => {
+            if (typeof this.props.getTextColor === 'function')
+              return feature.properties.cluster
+                ? this.props.getTextColor(this._injectExpansionZoom(feature))
+                : this.props.getTextColor(feature);
+            return this.props.getTextColor;
+          },
           updateTriggers: {
             getPosition: this.props.updateTriggers.getPosition,
             getText: this.props.updateTriggers.getText,

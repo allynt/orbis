@@ -1,5 +1,7 @@
 .modal {
   max-height: 20rem;
+  min-width: 20rem;
+  max-width: 25rem;
   overflow-y: auto;
   --scrollbar-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
 }
@@ -38,7 +40,7 @@
   color: #fff;
 }
 
-.list li {
+.list .listItem {
   font-size: 0.875rem;
   /* margin: 0.3125rem 0; */
 }
@@ -55,7 +57,7 @@
 }
 
 .list .label,
-.list content {
+.list .content {
   margin: 0.25rem 0;
 }
 

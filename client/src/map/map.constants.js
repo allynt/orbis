@@ -34,6 +34,11 @@ export const regions = [
 
 export const LAYER_IDS = {
   astrosat: {
+    covid: {
+      hourglass: {
+        latest: 'astrosat/covid/hourglass/latest',
+      },
+    },
     hourglass: {
       people: {
         v1: 'astrosat/hourglass/people/v1',
