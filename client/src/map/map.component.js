@@ -49,6 +49,8 @@ const dataUrlFromId = (id, sources) => {
     : source.metadata.url;
 };
 
+const MAX_ZOOM = 20;
+
 const Map = () => {
   const dispatch = useDispatch();
   const accessToken = useSelector(mapboxTokenSelector);
@@ -69,19 +71,26 @@ const Map = () => {
     dispatch(onBookmarkLoaded());
   }, [selectedBookmark, dispatch]);
 
-  const handleLayerClick = ({ object }) =>
-    object.properties.cluster
-      ? dispatch(
+  const handleLayerClick = info => {
+    if (info.object.properties.cluster) {
+      if (info.object.properties.expansion_zoom <= MAX_ZOOM)
+        dispatch(
           setViewport({
             ...viewport,
-            longitude: object.geometry.coordinates[0],
-            latitude: object.geometry.coordinates[1],
-            zoom: object.properties.expansion_zoom,
+            longitude: info.object.geometry.coordinates[0],
+            latitude: info.object.geometry.coordinates[1],
+            zoom:
+              info.object.properties.expansion_zoom >= MAX_ZOOM
+                ? MAX_ZOOM
+                : info.object.properties.expansion_zoom,
             transitionDuration: 1000,
-            transitionInterpolator: new FlyToInterpolator(),
+            transitionInterpolator:
+              viewport.transitionInterpolator || new FlyToInterpolator(),
           }),
-        )
-      : setPickedObject(object);
+        );
+      else setPickedObject(info.objects);
+    } else setPickedObject([info.object]);
+  };
 
   const dataRequest = (url = '') =>
     new Promise(async (resolve, reject) => {
@@ -113,6 +122,7 @@ const Map = () => {
           getTextSize: 32,
           getTextColor: [51, 63, 72],
           clusterRadius: 40,
+          maxZoom: MAX_ZOOM,
           onClick: handleLayerClick,
         }),
     ),
@@ -132,6 +142,7 @@ const Map = () => {
       getTextSize: 32,
       getTextColor: [51, 63, 72],
       clusterRadius: 20,
+      maxZoom: MAX_ZOOM,
       onClick: handleLayerClick,
     }),
   ];
@@ -156,12 +167,12 @@ const Map = () => {
         />
         {pickedObject && (
           <Popup
-            longitude={pickedObject.geometry.coordinates[0]}
-            latitude={pickedObject.geometry.coordinates[1]}
+            longitude={pickedObject[0].geometry.coordinates[0]}
+            latitude={pickedObject[0].geometry.coordinates[1]}
             onClose={() => setPickedObject(undefined)}
             captureScroll
           >
-            <FeatureDetail features={[pickedObject]} />
+            <FeatureDetail features={pickedObject} />
           </Popup>
         )}
         <NavigationControl className={styles.navigationControl} />
