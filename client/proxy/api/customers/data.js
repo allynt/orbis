@@ -305,7 +305,6 @@ const createCustomerUser = (customerId, userData) => {
   return newUser;
 };
 
-<<<<<<< HEAD
 const deleteCustomerUser = userId => {
   const deletedUser = customerUsers.find(cu => cu.id === userId);
   customerUsers = customerUsers.filter(cu => cu.id !== deletedUser.id);
@@ -317,13 +316,6 @@ const deleteCustomerUser = userId => {
   }
 
   return deletedUser;
-<<<<<<< HEAD
-=======
-const deleteCustomerUser = user => {
-  customerUsers = customerUsers.filter(cu => cu !== user);
->>>>>>> fix(frontend): Add tests, tidy up code and styling
-=======
->>>>>>> fix(frontend): Make requested changes
 };
 
 module.exports = {

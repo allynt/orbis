@@ -33,21 +33,10 @@ const getSelectedUserHandler = (req, res) => {
 
 const deleteSelectedUserHandler = (req, res) => {
   console.log('Deleting Selected user of customer');
-<<<<<<< HEAD
-<<<<<<< HEAD
+
   const deletedUser = deleteCustomerUser(req.params.userId);
   res.status(200);
   res.json(deletedUser);
-=======
-  deleteCustomerUser(req.params.user);
-  res.status(200);
-  res.json(getCustomerUsers());
->>>>>>> fix(frontend): Add tests, tidy up code and styling
-=======
-  const deletedUser = deleteCustomerUser(req.params.userId);
-  res.status(200);
-  res.json(deletedUser);
->>>>>>> fix(frontend): Make requested changes
 };
 
 const usersRouter = express.Router();
@@ -60,11 +49,7 @@ usersRouter
   .post(createCustomerUserHandler);
 
 usersRouter
-<<<<<<< HEAD
   .route('/:customerId/users/:userId')
-=======
-  .route('/:customer/users/:username')
->>>>>>> fix(frontend): Add tests, tidy up code and styling
   .get(getSelectedUserHandler)
   .delete(deleteSelectedUserHandler);
 
