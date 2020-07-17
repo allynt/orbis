@@ -305,6 +305,15 @@ const createCustomerUser = (customerId, userData) => {
   return newUser;
 };
 
+const editCustomerUser = (userId, data) => {
+  let editedUser = customerUsers.find(cu => cu.id === userId);
+  for (let key of Object.keys(data)) {
+    editedUser[key] = data[key];
+  }
+
+  return editedUser;
+};
+
 const deleteCustomerUser = userId => {
   const deletedUser = customerUsers.find(cu => cu.id === userId);
   customerUsers = customerUsers.filter(cu => cu.id !== deletedUser.id);
@@ -322,5 +331,6 @@ module.exports = {
   getCustomer,
   getCustomerUsers,
   createCustomerUser,
+  editCustomerUser,
   deleteCustomerUser,
 };

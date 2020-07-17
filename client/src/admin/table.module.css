@@ -18,8 +18,17 @@
   padding: 2.5rem 2rem 1.75rem;
 }
 
-.optionsColumn {
+.optionsContainer {
   position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.optionsButton {
+  width: fit-content;
+  padding: 0.5rem 1rem;
 }
 
 .optionsIcon {

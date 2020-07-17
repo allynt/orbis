@@ -10,8 +10,9 @@ import styles from './home-view.module.css';
 const HomeView = ({
   users,
   customer,
-  onWithdrawInvitationClick,
+  onChangeRoleClick,
   onDeleteUserClick,
+  onWithdrawInvitationClick,
 }) => {
   const activeUsers = users?.filter(user => user.status === USER_STATUS.active);
   const pendingUsers = users?.filter(
@@ -37,6 +38,7 @@ const HomeView = ({
         activeUsers={activeUsers}
         customer={customer}
         licenceData={licenceData}
+        onChangeRoleClick={onChangeRoleClick}
         onDeleteUserClick={onDeleteUserClick}
       />
       <PendingInvitationsBoard

@@ -74,6 +74,20 @@ const adminSlice = createSlice({
       state.error = payload;
       state.isLoading = false;
     },
+    changeUserRoleRequested: state => {
+      state.isLoading = true;
+    },
+    changeUserRoleSuccess: (state, { payload }) => {
+      state.customerUsers = state.customerUsers
+        .filter(cu => cu.id !== payload.id)
+        .push(payload);
+      state.isLoading = false;
+      state.error = null;
+    },
+    changeUserRoleFailure: (state, { payload }) => {
+      state.error = payload;
+      state.isLoading = false;
+    },
     createCustomerUserRequested: state => {
       state.isLoading = true;
     },
@@ -104,6 +118,9 @@ export const {
   updateCustomerUserRequested,
   updateCustomerUserSuccess,
   updateCustomerUserFailure,
+  changeUserRoleRequested,
+  changeUserRoleSuccess,
+  changeUserRoleFailure,
   createCustomerUserRequested,
   createCustomerUserSuccess,
   createCustomerUserFailure,
@@ -253,6 +270,34 @@ export const updateCustomerUser = (customer, user) => async (
   const userData = await response.json();
 
   return dispatch(updateCustomerUserSuccess(userData));
+};
+
+export const changeUserRole = user => async (dispatch, getState) => {
+  const headers = getJsonAuthHeaders(getState());
+  const currentCustomer = selectCurrentCustomer(getState());
+
+  const type = user.type === 'MANAGER' ? 'MEMBER' : 'MANAGER';
+  const data = { type };
+
+  dispatch(changeUserRoleRequested());
+
+  const changeUserRoleResponse = await sendData(
+    `${API}${currentCustomer.id}/users/${user.id}`,
+    data,
+    headers,
+    'PATCH',
+  );
+
+  if (!changeUserRoleResponse.ok)
+    return handleFailure(
+      changeUserRoleResponse,
+      'Changing User Role Error',
+      changeUserRoleFailure,
+      dispatch,
+    );
+
+  const editedUser = await changeUserRoleResponse.json();
+  return dispatch(dispatch(changeUserRoleSuccess(editedUser)));
 };
 
 export const deleteCustomerUser = user => async (dispatch, getState) => {
