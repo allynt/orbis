@@ -5,6 +5,9 @@ import userEvent from '@testing-library/user-event';
 
 import { DeleteUserForm } from './delete-user-form.component';
 
+const renderComponent = (user, deleteUser, close) =>
+  render(<DeleteUserForm user={user} deleteUser={deleteUser} close={close} />);
+
 describe('DeleteUserForm', () => {
   let user = null;
   let deleteUser = null;
@@ -17,25 +20,21 @@ describe('DeleteUserForm', () => {
   });
 
   it('displays name of user to be deleted in message text', () => {
-    const { getByText } = render(
-      <DeleteUserForm user={user} deleteUser={deleteUser} close={close} />,
-    );
+    const { getByText } = renderComponent(user, deleteUser, close);
 
     expect(getByText(user.user.name)).toBeInTheDocument();
   });
 
   it('closes when `cancel` button is clicked', () => {
-    const { getByText } = render(
-      <DeleteUserForm user={user} deleteUser={deleteUser} close={close} />,
-    );
+    const { getByText } = renderComponent(user, deleteUser, close);
+
     userEvent.click(getByText('Cancel'));
     expect(close).toHaveBeenCalled();
   });
 
   it('calls dispatch function with user and closes the dialog when `Yes` button is clicked', () => {
-    const { getByText } = render(
-      <DeleteUserForm user={user} deleteUser={deleteUser} close={close} />,
-    );
+    const { getByText } = renderComponent(user, deleteUser, close);
+
     userEvent.click(getByText('Yes, Send'));
     expect(deleteUser).toHaveBeenCalledWith(user);
     expect(close).toHaveBeenCalled();
