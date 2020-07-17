@@ -1,0 +1,19 @@
+.form {
+  composes: form from '../../forms.module.css';
+}
+
+.message {
+  max-width: 42.5rem;
+}
+
+.buttons {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 1.9375rem;
+}
+
+.buttons Button:first-child {
+  margin-bottom: 0.8125rem;
+}

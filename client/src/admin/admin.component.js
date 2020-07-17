@@ -15,6 +15,7 @@ import {
 import HomeView from './home-view/home-view.component';
 import CorporateView from './corporate-view/corporate-view.component';
 import { CreateUserForm } from './create-user-form/create-user-form.component';
+import { DeleteUserForm } from './delete-user-form/delete-user-form.component';
 import { WithdrawUserInvitationForm } from './withdraw-invitation-form/withdraw-user-invitation-form.component';
 import LeftSidebar from './left-sidebar/left-sidebar.component';
 import { LicenceDashboard } from './licence-dashboard/licence-dashboard.component';
@@ -66,6 +67,9 @@ const Admin = ({ user }) => {
             onWithdrawInvitationClick={user =>
               setDialogForm({ type: DIALOG_VIEW.withdrawInvitation, user })
             }
+            onDeleteUserClick={user =>
+              setDialogForm({ type: DIALOG_VIEW.deleteUser, user })
+            }
           />
         );
     }
@@ -86,6 +90,14 @@ const Admin = ({ user }) => {
           <WithdrawUserInvitationForm
             user={dialogForm.user}
             withdrawInvitation={user => dispatch(deleteCustomerUser(user))}
+            close={() => setDialogForm(null)}
+          />
+        );
+      case DIALOG_VIEW.deleteUser:
+        return (
+          <DeleteUserForm
+            user={dialogForm.user}
+            deleteUser={user => dispatch(deleteCustomerUser(user))}
             close={() => setDialogForm(null)}
           />
         );
