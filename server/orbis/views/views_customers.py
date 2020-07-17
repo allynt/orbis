@@ -14,7 +14,7 @@ from orbis.serializers import CustomerSerializer, CustomerUserSerializer
 
 
 class LicenceNotifyingMixIn(object):
-    def notify_licences_changed(self, old_licences, new_licences, customer=None, customer_user=None):
+    def notify_licences_changed(self, customer, customer_user, old_licences=set(), new_licences=set()):
 
         context = {
             "customer": customer,
@@ -56,10 +56,10 @@ class CustomerUserListView(LicenceNotifyingMixIn, AstrosatUsersCustomerUserListV
 
         if customer_user.licences.count():
             message = self.notify_licences_changed(
-                set(),
-                set(customer_user.licences.all()),
-                customer=self.customer,
-                customer_user=customer_user,
+                self.customer,
+                customer_user,
+                old_licences=set(),
+                new_licences=set(customer_user.licences.all()),
             )
             if self.active_managers.filter(user=self.request.user).exists():
                 # TODO...
@@ -83,10 +83,10 @@ class CustomerUserDetailView(LicenceNotifyingMixIn, AstrosatUsersCustomerUserDet
         if old_licences != new_licences:
 
             message = self.notify_licences_changed(
-                old_licences,
-                new_licences,
-                customer=self.customer,
-                customer_user=customer_user,
+                self.customer,
+                customer_user,
+                old_licences=old_licences,
+                new_licences=new_licences,
             )
             if self.active_managers.filter(user=self.request.user).exists():
                 # TODO...
