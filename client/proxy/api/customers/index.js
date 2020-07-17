@@ -21,6 +21,8 @@ const getCustomerUsersHandler = (req, res) => {
 };
 
 const createCustomerUserHandler = (req, res) => {
+  console.log('Creating New User of Customer');
+
   const newUser = createCustomerUser(req.params.customerId, req.body);
   res.status(201);
   res.json(newUser);
@@ -34,7 +36,6 @@ const getSelectedUserHandler = (req, res) => {
 
 const editSelectedUserHandler = (req, res) => {
   console.log('Editing Selected User of Customer');
-  console.log('Req.body: ', req.body);
 
   const editedUser = editCustomerUser(req.params.userId, req.body);
   res.status(200);

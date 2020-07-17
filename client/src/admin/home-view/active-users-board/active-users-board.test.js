@@ -4,12 +4,14 @@ import { render } from '@testing-library/react';
 import { customer, activeUsers } from '../test-story-data';
 
 import { ActiveUsersBoard } from './active-users-board.component';
+import userEvent from '@testing-library/user-event';
 
 describe('ActiveUsersBoard', () => {
   const cases = [
     ['names', 'name'],
     ["email address'", 'email'],
   ];
+  const onChangeRoleClick = jest.fn();
 
   it.each(cases)("Displays all active user's %s", (_, text) => {
     const { getByText } = render(
@@ -39,6 +41,41 @@ describe('ActiveUsersBoard', () => {
     activeUsers.forEach((user, i) =>
       expect(getAllByText('Not currently available')[i]).toBeInTheDocument(),
     );
+  });
+
+  it('Disables `Change Role` button when only 1 admin remains', () => {
+    const { getByText } = render(
+      <ActiveUsersBoard
+        activeUsers={[{ type: 'MANAGER', user: { name: 'John Smith' } }]}
+        customer={{ name: 'Customer Name' }}
+      />,
+    );
+
+    const button = getByText('Admin');
+    expect(button).toHaveAttribute('disabled');
+  });
+
+  it('Calls `changeRole` function with user when buttons are clicked', () => {
+    const MEMBER = { type: 'MEMBER', user: { name: 'Steve Brown' } };
+
+    const { getByText, getByTestId } = render(
+      <ActiveUsersBoard
+        activeUsers={[
+          { type: 'MANAGER', user: { name: 'John Smith' } },
+          MEMBER,
+        ]}
+        customer={{ name: 'Customer Name' }}
+        onChangeRoleClick={onChangeRoleClick}
+      />,
+    );
+
+    userEvent.click(getByText('Standard'));
+
+    const changeRoleButton = getByTestId('change-role-button');
+    expect(changeRoleButton).toBeInTheDocument();
+
+    userEvent.click(changeRoleButton);
+    expect(onChangeRoleClick).toHaveBeenCalledWith(MEMBER);
   });
 
   describe('Displays a placeholder when there are no active users', () => {

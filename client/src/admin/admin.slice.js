@@ -78,9 +78,10 @@ const adminSlice = createSlice({
       state.isLoading = true;
     },
     changeUserRoleSuccess: (state, { payload }) => {
-      state.customerUsers = state.customerUsers
-        .filter(cu => cu.id !== payload.id)
-        .push(payload);
+      state.customerUsers = state.customerUsers.map(cu =>
+        cu.id === payload.id ? payload : cu,
+      );
+
       state.isLoading = false;
       state.error = null;
     },

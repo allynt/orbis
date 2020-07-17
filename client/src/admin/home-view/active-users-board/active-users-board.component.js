@@ -19,6 +19,9 @@ export const ActiveUsersBoard = ({
 }) => {
   const [dropdown, setDropdown] = useState(null);
 
+  const ONE_ADMIN_REMAINING =
+    activeUsers?.filter(au => au.type === 'MANAGER').length === 1;
+
   const handleClick = (fn, user) => {
     fn(user);
     setDropdown(null);
@@ -78,6 +81,9 @@ export const ActiveUsersBoard = ({
                               : { type: 'change-role', user },
                           )
                         }
+                        disabled={
+                          user.type === 'MANAGER' && ONE_ADMIN_REMAINING
+                        }
                       >
                         {user.type === 'MANAGER' ? 'Admin' : 'Standard'}
                       </Button>
@@ -94,6 +100,7 @@ export const ActiveUsersBoard = ({
                       {changeRoleSelected && (
                         <div className={tableStyles.optionsDropdown}>
                           <p
+                            data-testid="change-role-button"
                             className={tableStyles.optionsText}
                             onClick={() => handleClick(onChangeRoleClick, user)}
                           >
