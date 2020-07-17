@@ -5,6 +5,15 @@ import userEvent from '@testing-library/user-event';
 
 import { WithdrawUserInvitationForm } from './withdraw-user-invitation-form.component';
 
+const renderComponent = (user, withdrawInvitation, close) =>
+  render(
+    <WithdrawUserInvitationForm
+      user={user}
+      withdrawInvitation={withdrawInvitation}
+      close={close}
+    />,
+  );
+
 describe('WithdrawUserInvitationForm', () => {
   let user = null;
   let withdrawInvitation = null;
@@ -17,37 +26,21 @@ describe('WithdrawUserInvitationForm', () => {
   });
 
   it('displays name of user to be withdrawn in message text', () => {
-    const { getByText } = render(
-      <WithdrawUserInvitationForm
-        user={user}
-        withdrawInvitation={withdrawInvitation}
-        close={close}
-      />,
-    );
+    const { getByText } = renderComponent(user, withdrawInvitation, close);
 
     expect(getByText(user.user.name)).toBeInTheDocument();
   });
 
   it('closes when `cancel` button is clicked', () => {
-    const { getByText } = render(
-      <WithdrawUserInvitationForm
-        user={user}
-        withdrawInvitation={withdrawInvitation}
-        close={close}
-      />,
-    );
+    const { getByText } = renderComponent(user, withdrawInvitation, close);
+
     userEvent.click(getByText('Cancel'));
     expect(close).toHaveBeenCalled();
   });
 
   it('calls dispatch function with user and closes the dialog when `Yes` button is clicked', () => {
-    const { getByText } = render(
-      <WithdrawUserInvitationForm
-        user={user}
-        withdrawInvitation={withdrawInvitation}
-        close={close}
-      />,
-    );
+    const { getByText } = renderComponent(user, withdrawInvitation, close);
+
     userEvent.click(getByText('Yes'));
     expect(withdrawInvitation).toHaveBeenCalledWith(user);
     expect(close).toHaveBeenCalled();
