@@ -10,7 +10,7 @@ import {
   selectCurrentCustomer,
   selectCustomerUsers,
   selectLicenceInformation,
-  changeUserRole,
+  editCustomerUser,
   deleteCustomerUser,
 } from './admin.slice';
 import HomeView from './home-view/home-view.component';
@@ -66,7 +66,11 @@ const Admin = ({ user }) => {
             users={customerUsers}
             customer={currentCustomer}
             onChangeRoleClick={user => {
-              dispatch(changeUserRole(user));
+              dispatch(
+                editCustomerUser(user, {
+                  type: user.type === 'MANAGER' ? 'MEMBER' : 'MANAGER',
+                }),
+              );
             }}
             onDeleteUserClick={user =>
               setDialogForm({ type: DIALOG_VIEW.deleteUser, user })

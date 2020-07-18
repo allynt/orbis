@@ -74,10 +74,10 @@ const adminSlice = createSlice({
       state.error = payload;
       state.isLoading = false;
     },
-    changeUserRoleRequested: state => {
+    editCustomerUserRequested: state => {
       state.isLoading = true;
     },
-    changeUserRoleSuccess: (state, { payload }) => {
+    editCustomerUserSuccess: (state, { payload }) => {
       state.customerUsers = state.customerUsers.map(cu =>
         cu.id === payload.id ? payload : cu,
       );
@@ -85,7 +85,7 @@ const adminSlice = createSlice({
       state.isLoading = false;
       state.error = null;
     },
-    changeUserRoleFailure: (state, { payload }) => {
+    editCustomerUserFailure: (state, { payload }) => {
       state.error = payload;
       state.isLoading = false;
     },
@@ -119,9 +119,9 @@ export const {
   updateCustomerUserRequested,
   updateCustomerUserSuccess,
   updateCustomerUserFailure,
-  changeUserRoleRequested,
-  changeUserRoleSuccess,
-  changeUserRoleFailure,
+  editCustomerUserRequested,
+  editCustomerUserSuccess,
+  editCustomerUserFailure,
   createCustomerUserRequested,
   createCustomerUserSuccess,
   createCustomerUserFailure,
@@ -273,32 +273,29 @@ export const updateCustomerUser = (customer, user) => async (
   return dispatch(updateCustomerUserSuccess(userData));
 };
 
-export const changeUserRole = user => async (dispatch, getState) => {
+export const editCustomerUser = (user, data) => async (dispatch, getState) => {
   const headers = getJsonAuthHeaders(getState());
   const currentCustomer = selectCurrentCustomer(getState());
 
-  const type = user.type === 'MANAGER' ? 'MEMBER' : 'MANAGER';
-  const data = { type };
+  dispatch(editCustomerUserRequested());
 
-  dispatch(changeUserRoleRequested());
-
-  const changeUserRoleResponse = await sendData(
+  const editCustomerUserResponse = await sendData(
     `${API}${currentCustomer.id}/users/${user.id}`,
     data,
     headers,
     'PATCH',
   );
 
-  if (!changeUserRoleResponse.ok)
+  if (!editCustomerUserResponse.ok)
     return handleFailure(
-      changeUserRoleResponse,
+      editCustomerUserResponse,
       'Changing User Role Error',
-      changeUserRoleFailure,
+      editCustomerUserFailure,
       dispatch,
     );
 
-  const editedUser = await changeUserRoleResponse.json();
-  return dispatch(dispatch(changeUserRoleSuccess(editedUser)));
+  const editedUser = await editCustomerUserResponse.json();
+  return dispatch(editCustomerUserSuccess(editedUser));
 };
 
 export const deleteCustomerUser = user => async (dispatch, getState) => {

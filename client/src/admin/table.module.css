@@ -55,6 +55,7 @@
   background-color: #fff;
   box-shadow: 0 16px 24px 0 var(--color-lightgrey);
   cursor: pointer;
+  z-index: 1;
 }
 
 .optionsText {
