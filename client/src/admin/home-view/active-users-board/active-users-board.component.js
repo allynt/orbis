@@ -5,7 +5,7 @@ import { Button, OptionsIcon } from '@astrosat/astrosat-ui';
 import ContentWrapper from '../../content-wrapper.component';
 import OptionsDropdown from '../options-dropdown/options-dropdown.component';
 
-import { getUserLicences } from '../get-user-licences-helper';
+import { getUserLicences } from '../../get-user-licences-helper';
 
 import QuickView from '../active-users-board/quick-view/quick-view.component';
 
@@ -18,6 +18,7 @@ export const ActiveUsersBoard = ({
   customer,
   licenceData,
   onChangeRoleClick,
+  onEditUserClick,
   onDeleteUserClick,
 }) => {
   const [dropdown, setDropdown] = useState(null);

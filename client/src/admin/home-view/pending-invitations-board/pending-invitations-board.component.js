@@ -7,7 +7,7 @@ import { OptionsIcon } from '@astrosat/astrosat-ui';
 import ContentWrapper from '../../content-wrapper.component';
 import OptionsDropdown from '../options-dropdown/options-dropdown.component';
 
-import { getUserLicences } from '../get-user-licences-helper';
+import { getUserLicences } from '../../get-user-licences-helper';
 
 import styles from './pending-invitations.module.css';
 import tableStyles from '../../table.module.css';

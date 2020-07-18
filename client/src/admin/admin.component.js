@@ -16,6 +16,7 @@ import {
 import HomeView from './home-view/home-view.component';
 import CorporateView from './corporate-view/corporate-view.component';
 import { CreateUserForm } from './create-user-form/create-user-form.component';
+import { EditUserForm } from './edit-user-form/edit-user-form.component';
 import { DeleteUserForm } from './delete-user-form/delete-user-form.component';
 import { WithdrawUserInvitationForm } from './withdraw-invitation-form/withdraw-user-invitation-form.component';
 import LeftSidebar from './left-sidebar/left-sidebar.component';
@@ -100,6 +101,15 @@ const Admin = ({ user }) => {
           <WithdrawUserInvitationForm
             user={dialogForm.user}
             withdrawInvitation={user => dispatch(deleteCustomerUser(user))}
+            close={() => setDialogForm(null)}
+          />
+        );
+      case DIALOG_VIEW.editUser:
+        return (
+          <EditUserForm
+            user={dialogForm.user}
+            customer={currentCustomer}
+            editUser={data => dispatch(editCustomerUser(data))}
             close={() => setDialogForm(null)}
           />
         );

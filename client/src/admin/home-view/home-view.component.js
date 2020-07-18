@@ -12,8 +12,9 @@ const HomeView = ({
   users,
   customer,
   onChangeRoleClick,
-  onDeleteUserClick,
   onWithdrawInvitationClick,
+  onEditUserClick,
+  onDeleteUserClick,
 }) => {
   const activeUsers = users?.filter(user => user.status === USER_STATUS.active);
   const pendingUsers = users?.filter(
@@ -41,6 +42,7 @@ const HomeView = ({
         customer={customer}
         licenceData={licenceData}
         onChangeRoleClick={onChangeRoleClick}
+        onEditUserClick={onEditUserClick}
         onDeleteUserClick={onDeleteUserClick}
       />
       <PendingInvitationsBoard
