@@ -63,6 +63,6 @@ usersRouter
   .route('/:customerId/users/:userId')
   .get(getSelectedUserHandler)
   .delete(deleteSelectedUserHandler)
-  .patch(editSelectedUserHandler);
+  .put(editSelectedUserHandler);
 
 module.exports = usersRouter;

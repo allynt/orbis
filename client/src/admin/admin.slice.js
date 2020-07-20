@@ -283,13 +283,13 @@ export const editCustomerUser = (user, data) => async (dispatch, getState) => {
     `${API}${currentCustomer.id}/users/${user.id}`,
     data,
     headers,
-    'PATCH',
+    'PUT',
   );
 
   if (!editCustomerUserResponse.ok)
     return handleFailure(
       editCustomerUserResponse,
-      'Changing User Role Error',
+      'Edit Customer User Error',
       editCustomerUserFailure,
       dispatch,
     );

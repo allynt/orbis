@@ -65,15 +65,6 @@ export const sendData = (url, data = '', headers = {}, method = 'POST') => {
     })
       .then(response => response)
       .catch(error => error);
-  } else if (method === 'PATCH') {
-    return fetch(`${url}/`, {
-      credentials: 'include',
-      method,
-      headers: headers,
-      body: submission,
-    })
-      .then(response => response)
-      .catch(error => error);
   } else {
     return fetch(url, {
       credentials: 'include',
