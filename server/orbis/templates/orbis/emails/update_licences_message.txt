@@ -1,0 +1,28 @@
+{% extends "orbis/emails/message_base.txt" %}
+
+{% block body %}
+
+    Hi,
+
+    Changes have been made to your account by the Administrator of {{ customer.title }}'s ORBIS Account.
+
+    {% if added_licences %}
+
+        The following licences have been added to your account:
+
+        {{ added_licences }}
+
+    {% endif %}
+
+    {% if revoked_licences %}
+
+        The following licences have been revoked from your account:
+
+        {{ revoked_licences }}
+
+    {% endif %}
+
+    Cheers,
+    ORBIS by Astrosat
+
+{% endblock %}

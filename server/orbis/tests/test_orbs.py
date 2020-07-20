@@ -1,5 +1,6 @@
 import pytest
 
+from django.core import mail
 from django.urls import resolve, reverse
 
 from rest_framework import status
@@ -209,6 +210,42 @@ class TestLicences:
         assert licence_1.customer_user is None
         assert licence_2.customer_user == customer_user
 
+    def test_update_licences_to_customer_user_sends_notification(
+        self, user, api_client, mock_storage
+    ):
+
+        customer = CustomerFactory(logo=None)
+        (customer_user, _) = customer.add_user(user, type="MANAGER", status="ACTIVE")
+
+        licence_1 = LicenceFactory(orb=OrbFactory(), customer=customer, customer_user=customer_user)
+        licence_2 = LicenceFactory(orb=OrbFactory(), customer=customer, customer_user=customer_user)
+        licence_3 = LicenceFactory(orb=OrbFactory(), customer=customer)
+        licence_4 = LicenceFactory(orb=OrbFactory(), customer=customer)
+
+        client = api_client(user)
+        url = reverse("customer-users-detail", args=[customer.id, user.uuid])
+
+        response = client.get(url, format="json")
+        customer_user_data = response.json()
+
+        # at this point customer_user has licence_1 & licence_2
+        # test that when we update this to licence_2 & licence_3
+        # the user receives a notification that licence_1 was
+        # revoked and licence_3 was added
+
+        customer_user_data["licences"] = [
+            licence_2.id, licence_3.id
+        ]
+        response = client.put(url, customer_user_data, format="json")
+        customer_user_data = response.json()
+
+        email = mail.outbox[0]
+        assert len(mail.outbox) == 1
+        assert user.email in email.to
+        assert str(licence_1.orb) in email.body
+        assert str(licence_2.orb) not in email.body
+        assert str(licence_3.orb) in email.body
+        assert str(licence_4.orb) not in email.body
 
     def test_add_invalid_licences_to_customer_user(
         self, user, api_client, mock_storage

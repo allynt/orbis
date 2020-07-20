@@ -12,4 +12,5 @@ export const ADMIN_VIEW = {
 export const DIALOG_VIEW = {
   createUser: 'Create New User',
   withdrawInvitation: 'Confirm',
+  deleteUser: 'Verify Update',
 };
