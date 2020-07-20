@@ -4,8 +4,8 @@ import React, { useReducer, useRef } from 'react';
 // import { useDispatch } from 'react-redux';
 
 // import mapboxgl from 'mapbox-gl';
-import useMap from '../map/use-map.hook';
-import { useMapEvent } from '../map/use-map-event.hook';
+// import useMap from '../map/use-map.hook';
+// import { useMapEvent } from '../map/use-map-event.hook';
 
 // import Slider from 'rc-slider'
 import { scalePow } from 'd3-scale';
@@ -188,68 +188,68 @@ const AnnotationsPanel = ({ map }) => {
 
   const popupRef = useRef(null);
 
-  useMap(
-    map,
-    mapInstance => {
-      const drawCtrl = mapInstance._controls.find(ctrl => ctrl.changeMode);
-      // console.log('DRAW CTRL STYLE: ', mode, drawCtrl);
-      if (drawCtrl) {
-        // mapInstance.on('draw.selectionchange', event => {
-        //   console.log('SELECTION CHANGE: ', event, drawCtrl.getMode());
-        // });
-        // mapInstance.on('draw.create', event => {
-        //   console.log('CREATE EVENT: ', event, drawCtrl.getAll());
-        // });
-        // mapInstance.on('draw.render', event => {
-        //   console.log('RENDER EVENT: ', event, drawCtrl.getAll());
-        // });
-        // mapInstance.on('draw.update', event => {
-        //   console.log('UPDATE EVENT: ', event, drawCtrl.getAll());
-        // });
-        // mapInstance.on('draw.modechange', event => {
-        //   console.log('MODE CHANGE: ', event);
-        // });
-        if (mode !== 'trash' && mode !== 'deleteAll') {
-          drawCtrl.changeMode(mode, drawOptions);
-        } else {
-          if (mode === 'deleteAll') {
-            drawCtrl.deleteAll();
-          } else {
-            drawCtrl.trash();
-          }
-        }
-      }
-    },
-    [mode, drawOptions],
-  );
+  // useMap(
+  //   map,
+  //   mapInstance => {
+  //     const drawCtrl = mapInstance._controls.find(ctrl => ctrl.changeMode);
+  //     // console.log('DRAW CTRL STYLE: ', mode, drawCtrl);
+  //     if (drawCtrl) {
+  //       // mapInstance.on('draw.selectionchange', event => {
+  //       //   console.log('SELECTION CHANGE: ', event, drawCtrl.getMode());
+  //       // });
+  //       // mapInstance.on('draw.create', event => {
+  //       //   console.log('CREATE EVENT: ', event, drawCtrl.getAll());
+  //       // });
+  //       // mapInstance.on('draw.render', event => {
+  //       //   console.log('RENDER EVENT: ', event, drawCtrl.getAll());
+  //       // });
+  //       // mapInstance.on('draw.update', event => {
+  //       //   console.log('UPDATE EVENT: ', event, drawCtrl.getAll());
+  //       // });
+  //       // mapInstance.on('draw.modechange', event => {
+  //       //   console.log('MODE CHANGE: ', event);
+  //       // });
+  //       if (mode !== 'trash' && mode !== 'deleteAll') {
+  //         drawCtrl.changeMode(mode, drawOptions);
+  //       } else {
+  //         if (mode === 'deleteAll') {
+  //           drawCtrl.deleteAll();
+  //         } else {
+  //           drawCtrl.trash();
+  //         }
+  //       }
+  //     }
+  //   },
+  //   [mode, drawOptions],
+  // );
 
-  useMapEvent(
-    map,
-    'click',
-    event => {
-      event.preventDefault();
-      const { lngLat } = event;
-      // console.log('FEATURES');
+  // useMapEvent(
+  //   map,
+  //   'click',
+  //   event => {
+  //     event.preventDefault();
+  //     const { lngLat } = event;
+  //     // console.log('FEATURES');
 
-      // When user clicks map open Label Editor.
-      if (!popupRef.current) {
-        popupRef.current = document.createElement('div');
-      }
+  //     // When user clicks map open Label Editor.
+  //     if (!popupRef.current) {
+  //       popupRef.current = document.createElement('div');
+  //     }
 
-      // Only take the first feature, which should be the top most
-      // feature and the one you meant.
-      if (textLabelSelected) {
-        console.log('POPUP CONTENT: ', popupRef);
-        // new mapboxgl.Popup()
-        //   // .setLngLat(features[0].geometry.coordinates.slice())
-        //   .setLngLat(lngLat)
-        //   .setDOMContent(popupRef.current)
-        //   .on('close', () => console.log('Closing Popup'))
-        //   .addTo(map);
-      }
-    },
-    [textLabelSelected],
-  );
+  //     // Only take the first feature, which should be the top most
+  //     // feature and the one you meant.
+  //     if (textLabelSelected) {
+  //       console.log('POPUP CONTENT: ', popupRef);
+  //       // new mapboxgl.Popup()
+  //       //   // .setLngLat(features[0].geometry.coordinates.slice())
+  //       //   .setLngLat(lngLat)
+  //       //   .setDOMContent(popupRef.current)
+  //       //   .on('close', () => console.log('Closing Popup'))
+  //       //   .addTo(map);
+  //     }
+  //   },
+  //   [textLabelSelected],
+  // );
 
   return (
     <div className={styles.panel}>
