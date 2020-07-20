@@ -1,3 +1,8 @@
+from itertools import filterfalse
+
+from django.db.models import CharField
+from django.db.models.functions import Cast
+
 from rest_framework import serializers
 
 from astrosat_users.models import Customer, CustomerUser
@@ -29,6 +34,28 @@ class CustomerSerializer(AstrosatUsersCustomerSerializer):
 
     licences = LicenceSerializer(many=True, required=False)
 
+    def to_internal_value(self, data):
+        # when inputting data, include private licences...
+        private_licences = self.instance.licences.private()
+        data["licences"] += LicenceSerializer(private_licences, many=True).data
+        return super().to_internal_value(data)
+
+    def to_representation(self, instance):
+        # when outputting data, exclude private licences...
+        representation = super().to_representation(instance)
+        licences_representation = representation.pop("licences", [])
+        private_licences = instance.licences.private().annotate(
+            str_id=Cast(
+                "id", output_field=CharField()
+            )  # cast UUIDField to CharField (for the comparison below)
+        )
+        representation["licences"] = filterfalse(
+            lambda x: x["id"] in private_licences.values_list("str_id", flat=True),
+            licences_representation,
+        )
+
+        return representation
+
     def create(self, validated_data):
         raise NotImplementedError("Customers can only be created manually in orbis")
 
@@ -49,14 +76,45 @@ class CustomerSerializer(AstrosatUsersCustomerSerializer):
 class CustomerUserSerializer(AstrosatUsersCustomerUserSerializer):
     class Meta:
         model = CustomerUser
-        fields = ("id", "type", "status", "invitation_date", "user", "customer", "licences",)
+        fields = (
+            "id",
+            "type",
+            "status",
+            "invitation_date",
+            "user",
+            "customer",
+            "licences",
+        )
 
     licences = serializers.SlugRelatedField(
         many=True, slug_field="id", queryset=Licence.objects.all()
     )
 
-    def validate_licences(self, value):
+    def to_internal_value(self, data):
+        # when inputting data, include private licences...
+        private_licences = self.instance.licences.private().annotate(
+            str_id=Cast(
+                "id", output_field=CharField()
+            )  # cast UUIDField to CharField
+        )
+        data["licences"] += private_licences.values_list("str_id", flat=True)
+        internal_value = super().to_internal_value(data)
+        return internal_value
 
+    def to_representation(self, instance):
+        # when outputting data, exclude private licences...
+        representation = super().to_representation(instance)
+        licences_representation = representation.pop("licences", [])
+        private_licences = instance.licences.private()
+        representation["licences"] = filterfalse(
+            lambda x: x in private_licences.values_list("id", flat=True),
+            licences_representation,
+        )
+
+        return representation
+
+
+    def validate_licences(self, value):
         # make sure the licences all come from the correct customer...
         customer = self.context["customer"]
         if not all(map(lambda x: x.customer == customer, value)):

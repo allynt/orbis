@@ -82,6 +82,15 @@ class OrbQuerySet(models.QuerySet):
 
 class LicenceQuerySet(models.QuerySet):
 
+    def private(self):
+        # CustomerSerializer & CustomerUserSerializer exclude "core" licences
+        # the private/public methods make it easier for me to do that
+        return self.filter(orb__name="core")
+
+    def public(self):
+        # returns the licences that shouldn't be exluded from serialization
+        return self.exclude(orb__name="core")
+
     def purchased(self):
         # returns all licences (just defined for symmetry w/ the frontend)
         return self
@@ -148,6 +157,19 @@ class Orb(models.Model):
     def __str__(self):
         return self.name
 
+    @classmethod
+    def get_core_orb(cls):
+        core_orb, orb_created = cls.objects.get_or_create(name="core")
+        if orb_created:
+            core_data_scope, data_scope_created = DataScope.objects.get_or_create(
+                authority="astrosat",
+                namespace="core",
+                name="*",
+                version="*",
+            )
+            core_orb.data_scopes.add(core_data_scope)
+        return core_orb
+
     def natural_key(self):
         return (self.name,)
 
@@ -182,7 +204,7 @@ class Licence(AccessModel):
         null=True,
         related_name="licences",
         on_delete=models.SET_NULL,
-    )
+    )  # note that despite `on_delete=models.SET_NULL`, the pre-delete signal will delete the "core" Licence
 
     def clean(self):
         # extra validation to ensure that the customer_user belongs to the customer
