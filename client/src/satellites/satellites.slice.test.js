@@ -32,6 +32,7 @@ import reducer, {
   deselectPinnedScene,
   clearSelectedPinnedScenes,
   setCurrentSatelliteSearchQuery,
+  selectedPinnedScenesSelector,
 } from './satellites.slice';
 
 const mockStore = configureMockStore([thunk]);
@@ -773,6 +774,37 @@ describe('Satellites Slice', () => {
       });
 
       expect(actualState.currentSearchQuery).toEqual(query);
+    });
+  });
+
+  describe('selectors', () => {
+    describe('selectedPinnedScenesSelector', () => {
+      it('returns an empty array if state is undefined', () => {
+        const result = selectedPinnedScenesSelector();
+        expect(result).toEqual([]);
+      });
+
+      it('returns an empty array if satellites is undefined', () => {
+        const state = {};
+        const result = selectedPinnedScenesSelector(state);
+        expect(result).toEqual([]);
+      });
+
+      it('returns an empty array if selectedPinnedScenes is undefined', () => {
+        const state = { satellites: {} };
+        const result = selectedPinnedScenesSelector(state);
+        expect(result).toEqual([]);
+      });
+
+      it('returns selectedPinnedScenes', () => {
+        const state = {
+          satellites: {
+            selectedPinnedScenes: [{ test: 'val1' }, { test: 'val2' }],
+          },
+        };
+        const result = selectedPinnedScenesSelector(state);
+        expect(result).toEqual(state.satellites.selectedPinnedScenes);
+      });
     });
   });
 });

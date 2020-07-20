@@ -1,16 +1,17 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 
 import Measure from 'react-measure';
-
-import Map from './map.component';
-import syncMaps from './mapbox-gl-sync-move';
 import { useDispatch, useSelector } from 'react-redux';
 
+import SideMenu from '../side-menu/side-menu.component';
 import { getToolbarItems } from '../toolbar/toolbar-config';
-
 import Toolbar from '../toolbar/toolbar.component';
+import Map from './map.component';
 
 import styles from './map-layout.module.css';
+import { userSelector } from 'accounts/accounts.slice';
+import { isCompareModeSelector } from './map.slice';
+import { selectedPinnedScenesSelector } from 'satellites/satellites.slice';
 
 const times = (n, fn) => {
   const result = [];
@@ -22,16 +23,12 @@ const times = (n, fn) => {
 
 const MapLayout = () => {
   const dispatch = useDispatch();
-  const user = useSelector(state => state.accounts.user);
-  const isCompareMode = useSelector(state => state.map.isCompareMode);
+  const user = useSelector(userSelector);
+  const isCompareMode = useSelector(isCompareModeSelector);
   const mapCount = isCompareMode ? 2 : 1;
 
   const toolbarItems = getToolbarItems(dispatch, user);
-
-  const mapStyle = useSelector(state => state.map.selectedMapStyle);
-  const selectedPinnedScenes = useSelector(
-    state => state.satellites.selectedPinnedScenes,
-  );
+  const selectedPinnedScenes = useSelector(selectedPinnedScenesSelector);
 
   const [compareRatio, setCompareRatio] = useState(0.5);
   const [bounds, setBounds] = useState({
@@ -73,93 +70,69 @@ const MapLayout = () => {
     }
   };
 
-  const [map1, setMap1] = useState(null);
-  const [map2, setMap2] = useState(null);
-
-  useEffect(() => {
-    if (map1 && map2) {
-      const removeSyncMove = syncMaps([map1, map2]);
-      return () => {
-        removeSyncMove();
-      };
-    }
-  }, [map1, map2]);
-
   return (
-    <div className={styles['map-column']}>
-      <Measure bounds onResize={contentRect => setBounds(contentRect.bounds)}>
-        {({ measureRef }) => (
-          <div
-            ref={measureRef}
-            className={`${styles.layout} ${
-              isCompareMode ? styles.compareMode : styles[`layout-${mapCount}`]
-            }`}
-            data-testid="map-container"
-          >
-            {times(mapCount, i => (
-              <div
-                key={i}
-                style={
-                  i === 0
-                    ? {
-                        position: 'absolute',
-                        width: '100%',
-                        height: '100%',
-                        top: 0,
-                        left: 0,
-                      }
-                    : {
-                        position: 'absolute',
-                        width: '100%',
-                        height: '100%',
-                        top: 0,
-                        left: 0,
-                        clip: `rect(0px, 999em, 100vh, ${
-                          compareRatio * bounds.width
-                        }px)`,
-                      }
-                }
-              >
-                <Map
-                  setMap={i === 0 ? setMap1 : setMap2}
-                  attribution={bottomRight(i, mapCount)}
-                  scale={bottomLeft(i, mapCount)}
-                  geocoder={i === 0}
-                  navigation={bottomRight(i, mapCount)}
-                  miniMap={bottomRight(i, mapCount)}
-                  spyglass={bottomRight(i, mapCount)}
-                  layoutInvalidation={mapCount}
-                  style={mapStyle.uri}
-                  position={i}
-                  sidebar={i === 0}
-                  compareRatio={compareRatio}
-                  compare={isCompareMode}
-                  selectedPinnedScenes={selectedPinnedScenes}
-                  comparisonScene={selectedPinnedScenes[i]}
-                />
-              </div>
-            ))}
-            {isCompareMode && (
-              <div
-                className={styles.compare}
-                style={{
-                  transform: `translate(${compareRatio * bounds.width}px, 0px`,
-                }}
-                onMouseDown={compareDown}
-                onTouchStart={compareDown}
-              >
-                <div className={styles.swiper} />
-              </div>
-            )}
-          </div>
-        )}
-      </Measure>
-      {user && <Toolbar user={user} items={toolbarItems} />}
-    </div>
+    <Measure bounds onResize={contentRect => setBounds(contentRect.bounds)}>
+      {({ measureRef }) => (
+        <div
+          ref={measureRef}
+          className={`${styles.layout} ${
+            isCompareMode ? styles.compareMode : styles[`layout-${mapCount}`]
+          }`}
+        >
+          {user && (
+            <>
+              <Toolbar user={user} items={toolbarItems} />
+              <SideMenu />
+            </>
+          )}
+          {times(mapCount, i => (
+            <div
+              key={i}
+              style={
+                i === 0
+                  ? {
+                      position: 'absolute',
+                      width: '100%',
+                      height: '100%',
+                      top: 0,
+                      left: 0,
+                    }
+                  : {
+                      position: 'absolute',
+                      width: '100%',
+                      height: '100%',
+                      top: 0,
+                      left: 0,
+                      clip: `rect(0px, 999em, 100vh, ${
+                        compareRatio * bounds.width
+                      }px)`,
+                    }
+              }
+            >
+              <Map
+                compareRatio={compareRatio}
+                compare={isCompareMode}
+                selectedPinnedScenes={selectedPinnedScenes}
+                comparisonScene={selectedPinnedScenes[i]}
+              />
+            </div>
+          ))}
+          {isCompareMode && (
+            <div
+              className={styles.compare}
+              style={{
+                transform: `translate(${compareRatio * bounds.width}px, 0px`,
+              }}
+              onMouseDown={compareDown}
+              onTouchStart={compareDown}
+            >
+              <div className={styles.swiper} />
+            </div>
+          )}
+        </div>
+      )}
+    </Measure>
   );
 };
-
-const bottomRight = (i, n) => i === n - 1;
-const bottomLeft = (i, n) => (n === 4 ? i === 2 : i === 0);
 
 export default MapLayout;

@@ -1,0 +1,58 @@
+{
+  "care-homes": {
+    "x": 0,
+    "y": 0,
+    "width": 88,
+    "height": 88,
+    "mask": false
+  },
+  "gp-surgeries": {
+    "x": 88,
+    "y": 0,
+    "width": 88,
+    "height": 88,
+    "mask": false
+  },
+  "hospitals": {
+    "x": 176,
+    "y": 0,
+    "width": 88,
+    "height": 88,
+    "mask": false
+  },
+  "health-and-social-care-trust": {
+    "x": 264,
+    "y": 0,
+    "width": 88,
+    "height": 88,
+    "mask": false
+  },
+  "local-authority-agency": {
+    "x": 352,
+    "y": 0,
+    "width": 88,
+    "height": 88,
+    "mask": false
+  },
+  "nhs": {
+    "x": 440,
+    "y": 0,
+    "width": 88,
+    "height": 88,
+    "mask": false
+  },
+  "pharmacies": {
+    "x": 528,
+    "y": 0,
+    "width": 88,
+    "height": 88,
+    "mask": false
+  },
+  "cluster": {
+    "x": 616,
+    "y": 0,
+    "width": 88,
+    "height": 88,
+    "mask": false
+  }
+}

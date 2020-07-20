@@ -18,7 +18,6 @@ import {
 } from './toolbar-constants';
 import featureToggles from '../feature-toggles';
 import { toggleMenu, setMenuHeadings } from '../side-menu/side-menu.slice';
-import { history } from 'root.reducer';
 
 import styles from './toolbar.module.css';
 
@@ -26,7 +25,7 @@ export const getToolbarItems = (dispatch, user) => {
   let items = [
     {
       label: DATA_LAYERS,
-      icon: <DataIcon classes={styles.icon} />,
+      icon: <DataIcon title="data" classes={styles.icon} />,
       action: () => {
         dispatch(toggleMenu(DATA_LAYERS));
         dispatch(
@@ -113,11 +112,11 @@ export const getToolbarItems = (dispatch, user) => {
     });
   }
 
-  if (user.customers?.some(customer => customer.type === 'MANAGER')) {
+  if (user?.customers?.some(customer => customer.type === 'MANAGER')) {
     items.push({
       label: 'Admin',
       icon: <AdminIcon className={styles.icon} />,
-      action: () => {
+      action: history => {
         history.push('/admin-console');
       },
       tooltip: 'Admin',
@@ -133,7 +132,7 @@ export const getToolbarItems = (dispatch, user) => {
         item.roles === undefined ||
         item.roles === null ||
         item.roles.length === 0 ||
-        user.roles.some(role => item.roles.includes(role)),
+        user?.roles?.some(role => item.roles.includes(role)),
     )
     .sort((item1, item2) => item1.order - item2.order);
 };

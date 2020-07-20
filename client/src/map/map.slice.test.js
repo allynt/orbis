@@ -3,6 +3,9 @@ import reducer, {
   selectMapStyle,
   toggleCompareMode,
   saveMap,
+  isCompareModeSelector,
+  viewportSelector,
+  selectedMapStyleSelector,
 } from './map.slice';
 
 describe('Map Slice', () => {
@@ -11,8 +14,13 @@ describe('Map Slice', () => {
 
     beforeEach(() => {
       beforeState = {
-        viewport: { zoom: 6, center: [-4.84, 54.71] },
-        mapStyles: [],
+        viewport: {
+          zoom: 6,
+          longitude: -4.84,
+          latitude: 54.71,
+          pitch: 0,
+          bearing: 0,
+        },
         selectedMapStyle: {},
         isCompareMode: false,
         saveMap: false,
@@ -30,16 +38,12 @@ describe('Map Slice', () => {
     });
 
     it("should not update the viewport in state, when value doesn't exist", () => {
-      const viewport = {
-        center: [-4.84, 54.71],
-        zoom: 6,
-      };
       const actualState = reducer(beforeState, {
         type: setViewport.type,
         payload: null,
       });
 
-      expect(actualState.viewport).toEqual(viewport);
+      expect(actualState.viewport).toEqual(beforeState.viewport);
     });
 
     it('should update the viewport in state, when value exists', () => {
@@ -88,6 +92,91 @@ describe('Map Slice', () => {
       });
 
       expect(actualState.saveMap).toEqual(true);
+    });
+  });
+
+  describe('selectors', () => {
+    describe('isCompareModeSelector', () => {
+      it('returns false if state is undefined', () => {
+        const result = isCompareModeSelector();
+        expect(result).toBe(false);
+      });
+
+      it('returns false if map is undefined', () => {
+        const state = {};
+        const result = isCompareModeSelector(state);
+        expect(result).toBe(false);
+      });
+
+      it('returns false if isCompareMode is undefined', () => {
+        const state = { map: {} };
+        const result = isCompareModeSelector(state);
+        expect(result).toBe(false);
+      });
+
+      it('returns isCompareMode', () => {
+        const state = { map: { isCompareMode: true } };
+        const result = isCompareModeSelector(state);
+        expect(result).toEqual(state.map.isCompareMode);
+      });
+    });
+
+    describe('viewportSelector', () => {
+      it('returns undefined if state is undefined', () => {
+        const result = viewportSelector();
+        expect(result).toBeUndefined();
+      });
+
+      it('returns undefined if map is undefined', () => {
+        const state = {};
+        const result = viewportSelector(state);
+        expect(result).toBeUndefined();
+      });
+
+      it('returns undefined if viewport is undefined', () => {
+        const state = { map: {} };
+        const result = viewportSelector(state);
+        expect(result).toBeUndefined();
+      });
+
+      it('returns viewport', () => {
+        const state = {
+          map: {
+            viewport: { zoom: 1, latitude: -33.867627, longitude: -63.98602 },
+          },
+        };
+        const result = viewportSelector(state);
+        expect(result).toEqual(state.map.viewport);
+      });
+    });
+
+    describe('selectedMapStyleSelector', () => {
+      it('returns undefined if state is undefined', () => {
+        const result = selectedMapStyleSelector();
+        expect(result).toBeUndefined();
+      });
+
+      it('returns undefined if map is undefined', () => {
+        const state = {};
+        const result = selectedMapStyleSelector(state);
+        expect(result).toBeUndefined();
+      });
+
+      it('returns undefined if selectedMapStyle is undefined', () => {
+        const state = { map: {} };
+        const result = selectedMapStyleSelector(state);
+        expect(result).toBeUndefined();
+      });
+
+      it('returns selectedMapStyle', () => {
+        const state = {
+          map: {
+            selectedMapStyle: { uri: 'hello' },
+          },
+        };
+        const result = selectedMapStyleSelector(state);
+        expect(result).toEqual(state.map.selectedMapStyle);
+      });
     });
   });
 });

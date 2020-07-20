@@ -1,147 +1,89 @@
 import React from 'react';
-import { cleanup, render } from '@testing-library/react';
-
+import configureStore from 'redux-mock-store';
+import Map from './map.component';
+import { render } from '@testing-library/react';
 import { Provider } from 'react-redux';
-import configureMockStore from 'redux-mock-store';
-import thunk from 'redux-thunk';
-// import { Provider as CrossFilterProvider } from '../crossfilter';
-// import { setupCrossFilterStore } from '../crossfilter/test-helpers';
-// import Map from './map.component';
-import mapboxgl, { fireMapEvent } from 'mapbox-gl';
+import userEvent from '@testing-library/user-event';
+import { waitFor } from '@testing-library/dom';
 
-const mockStore = configureMockStore([thunk]);
+jest.mock('@deck.gl/react');
 
-const defaultProps = {
-  style: 'mapbox://styles/thermcert/cjxzywxui08131cry0du0zn4v',
-  attribution: true,
-  geocoder: true,
-  navigation: true,
-  scale: true,
-  layoutInvalidation: 1,
-  position: 1,
+const mockStore = configureStore();
+
+const setup = initialState => {
+  const store = mockStore(initialState);
+  const utils = render(
+    <Provider store={store}>
+      <Map />
+    </Provider>,
+  );
+  return { ...utils, store };
 };
 
-const MAPSTYLES = [
-  {
-    id: 'satellite',
-    uri: 'mapbox://styles/mapbox/satellite-v9',
-    title: 'Satellite',
-  },
-];
+describe('<Map />', () => {
+  beforeEach(() => fetch.mockResponse(JSON.stringify({})));
 
-const renderMap = async ({ is3DMode = false }) => {
-  const store = mockStore({
-    app: {
-      config: {
-        mapbox_token: 'token',
-        mapStyles: MAPSTYLES,
+  it('displays the load mask when bookmarks is loading', () => {
+    const { getByTestId } = setup({ bookmarks: { isLoading: true } });
+    expect(getByTestId('load-mask')).toBeInTheDocument();
+  });
+
+  it('displays the map style switcher when the style button is clicked', () => {
+    const { getByText, getByTitle } = setup({
+      app: {
+        config: {
+          mapStyles: [
+            { id: 'light', title: 'style one' },
+            { id: 'dark', title: 'style two' },
+          ],
+        },
       },
-    },
-    map: {
-      selectedMapStyle: {},
-      is3DMode,
-    },
-    annotations: {
-      textLabelSelected: false,
-    },
-    bookmarks: {
-      selectedBookmarks: [],
-    },
+      map: {
+        selectedMapStyle: { id: 'light' },
+      },
+    });
+    userEvent.click(getByTitle('layers'));
+    expect(getByText('style one')).toBeInTheDocument();
   });
 
-  const result = render(<Map {...defaultProps} />, {
-    wrapper: ({ children }) => <Provider store={store}>{children}</Provider>,
+  it('hides the style switcher when the style button is clicked again', () => {
+    const { getByText, getByTitle, queryByText } = setup({
+      app: {
+        config: {
+          mapStyles: [
+            { id: 'light', title: 'style one' },
+            { id: 'dark', title: 'style two' },
+          ],
+        },
+      },
+      map: {
+        selectedMapStyle: { id: 'light' },
+      },
+    });
+    userEvent.click(getByTitle('layers'));
+    expect(getByText('style one')).toBeInTheDocument();
+    userEvent.click(getByTitle('layers'));
+    expect(queryByText('style one')).not.toBeInTheDocument();
   });
 
-  fireMapEvent('load');
-
-  return { ...result, map: mapboxgl.Map.mock.results[0].value };
-};
-
-jest.mock('@mapbox/mapbox-gl-draw', () => ({
-  deleteAll: jest.fn(),
-  modes: {},
-  draw_line_string: { deleteAll: jest.fn() },
-  // }
-}));
-
-describe('Map Component', () => {
-  afterEach(() => {
-    cleanup();
-    mapboxgl.Map.mockClear();
+  it('sets the selected map style in state when the style is changed', () => {
+    const { getByText, getByTitle, store } = setup({
+      app: {
+        config: {
+          mapStyles: [
+            { id: 'light', title: 'style one' },
+            { id: 'dark', title: 'style two' },
+          ],
+        },
+      },
+      map: {
+        selectedMapStyle: { id: 'light' },
+      },
+    });
+    userEvent.click(getByTitle('layers'));
+    userEvent.click(getByText('style two'));
+    waitFor(() => {
+      expect(store.getState().map.selectedMapStyle.id).toEqual('dark');
+    });
   });
-
-  it('should render a map based on the props', async () => {
-    //   const { container } = await renderMap({});
-    //   expect(container.querySelector('.map')).toBeInTheDocument();
-    //   expect(container.querySelector('[data-testid="map-1"]')).toBeInTheDocument();
-  });
-
-  // xit('should filter layer based on store filters', async () => {
-  //   const { map } = await renderMap({
-  //     selectedProperty: 'fuel_poverty_pct'
-  //   });
-
-  //   expect(map.setFilter).toHaveBeenCalledWith('lsoa', [
-  //     'all',
-  //     ['>=', ['get', 'fuel_poverty_pct'], 0],
-  //     ['<', ['get', 'fuel_poverty_pct'], 50]
-  //   ]);
-  // });
-
-  // xit('should filter layer based on store filters in 3D mode', async () => {
-  //   const { map } = await renderMap({
-  //     selectedProperty: 'fuel_poverty_pct',
-  //     is3DMode: true
-  //   });
-
-  //   expect(map.setFilter).toHaveBeenCalledWith('lsoa-extrusion', [
-  //     'all',
-  //     ['>=', ['get', 'fuel_poverty_pct'], 0],
-  //     ['<', ['get', 'fuel_poverty_pct'], 50]
-  //   ]);
-  // });
-
-  // xit('should set the proper color scale when props change', async () => {
-  //   const { rerender, map } = await renderMap({
-  //     selectedProperty: 'fuel_poverty_pct',
-  //     allProperties: ['fuel_poverty_pct', 'imd_overall_decile']
-  //   });
-
-  //   rerender(<Map {...defaultProps} selectedProperty="imd_overall_decile" />);
-
-  //   expect(map.setPaintProperty).toHaveBeenCalledWith(
-  //     'lsoa',
-  //     'fill-color',
-  //     expect.arrayContaining([
-  //       expect.arrayContaining([['get', 'imd_overall_decile']])
-  //     ])
-  //   );
-  // });
-
-  // xit('should set the proper color scale and height when props change in 3D mode', async () => {
-  //   const { rerender, map } = await renderMap({
-  //     selectedProperty: 'fuel_poverty_pct',
-  //     allProperties: ['fuel_poverty_pct', 'imd_overall_decile'],
-  //     is3DMode: true
-  //   });
-
-  //   rerender(<Map {...defaultProps} selectedProperty="imd_overall_decile" />);
-
-  //   expect(map.setPaintProperty).toHaveBeenCalledWith(
-  //     'lsoa-extrusion',
-  //     'fill-extrusion-color',
-  //     expect.arrayContaining([
-  //       expect.arrayContaining([['get', 'imd_overall_decile']])
-  //     ])
-  //   );
-
-  //   expect(map.setPaintProperty).toHaveBeenCalledWith(
-  //     'lsoa-extrusion',
-  //     'fill-extrusion-height',
-  //     expect.arrayContaining([
-  //       expect.arrayContaining([['get', 'imd_overall_decile']])
-  //     ])
-  //   );
-  // });
 });

@@ -9,6 +9,8 @@ import reducer, {
   appConfigFailure,
   notYetImplemented,
   DEFAULT_MAP_STYLE,
+  mapboxTokenSelector,
+  mapStylesSelector,
 } from './app.slice';
 
 const mockStore = configureMockStore([thunk]);
@@ -126,6 +128,72 @@ describe('App Slice', () => {
       });
 
       expect(actualState.notYetImplementedDescription).toEqual(message);
+    });
+  });
+
+  describe('selectors', () => {
+    describe('mapboxTokenSelector', () => {
+      it('returns undefined if state is undefined', () => {
+        const result = mapboxTokenSelector();
+        expect(result).toBeUndefined();
+      });
+
+      it('returns undefined if app is undefined', () => {
+        const state = {};
+        const result = mapboxTokenSelector(state);
+        expect(result).toBeUndefined();
+      });
+
+      it('returns undefined if config is undefined', () => {
+        const state = { app: {} };
+        const result = mapboxTokenSelector(state);
+        expect(result).toBeUndefined();
+      });
+
+      it('returns undefined if mapbox_token is undefined', () => {
+        const state = { app: { config: {} } };
+        const result = mapboxTokenSelector(state);
+        expect(result).toBeUndefined();
+      });
+
+      it('returns the value of mapbox_token', () => {
+        const state = { app: { config: { mapbox_token: '123abc' } } };
+        const result = mapboxTokenSelector(state);
+        expect(result).toEqual(state.app.config.mapbox_token);
+      });
+    });
+
+    describe('mapStylesSelector', () => {
+      it('returns an empty array if state is undefined', () => {
+        const result = mapStylesSelector();
+        expect(result).toEqual([]);
+      });
+
+      it('returns an empty array if app is undefined', () => {
+        const state = {};
+        const result = mapStylesSelector(state);
+        expect(result).toEqual([]);
+      });
+
+      it('returns an empty array if config is undefined', () => {
+        const state = { app: {} };
+        const result = mapStylesSelector(state);
+        expect(result).toEqual([]);
+      });
+
+      it('returns an empty array if mapStyles is undefined', () => {
+        const state = { app: { config: {} } };
+        const result = mapStylesSelector(state);
+        expect(result).toEqual([]);
+      });
+
+      it('returns mapStyles', () => {
+        const state = {
+          app: { config: { mapStyles: [{ name: 'one' }, { name: 'two' }] } },
+        };
+        const result = mapStylesSelector(state);
+        expect(result).toEqual(state.app.config.mapStyles);
+      });
     });
   });
 });

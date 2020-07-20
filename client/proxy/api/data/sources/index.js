@@ -1,4 +1,5 @@
-const healthInfrastructure = require('./health-infrastructure');
+const scotlandInfrastructure = require('./scotland-infrastructure');
+const northernIrelandInfrastructure = require('./northern-ireland-infrastructure');
 const hospitalsUk = require('./hospitals-uk');
 const populationInformation = require('./hourglass-population-information');
 const sentinel2Rgb = require('./sentinel-2-rgb');
@@ -6,7 +7,8 @@ const stokeOnTrent = require('./stoke-on-trent');
 const superSen2JapanBand = require('./super-sen2-japan-band');
 
 module.exports = [
-  healthInfrastructure,
+  scotlandInfrastructure,
+  northernIrelandInfrastructure,
   hospitalsUk,
   populationInformation,
   sentinel2Rgb,
