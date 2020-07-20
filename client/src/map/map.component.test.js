@@ -1,10 +1,12 @@
+import { waitFor } from '@testing-library/dom';
+import { render } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import { DeckProvider } from 'DeckGlContext';
+import { MapProvider } from 'MapContext';
 import React from 'react';
+import { Provider } from 'react-redux';
 import configureStore from 'redux-mock-store';
 import Map from './map.component';
-import { render } from '@testing-library/react';
-import { Provider } from 'react-redux';
-import userEvent from '@testing-library/user-event';
-import { waitFor } from '@testing-library/dom';
 
 jest.mock('@deck.gl/react');
 
@@ -16,6 +18,15 @@ const setup = initialState => {
     <Provider store={store}>
       <Map />
     </Provider>,
+    {
+      wrapper: ({ children }) => (
+        <>
+          <DeckProvider>
+            <MapProvider children={children} />
+          </DeckProvider>
+        </>
+      ),
+    },
   );
   return { ...utils, store };
 };

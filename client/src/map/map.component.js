@@ -40,6 +40,8 @@ import infrastructureIconMapping from './layers/hourglass/infrastructure/iconMap
 import peopleIconAtlas from './layers/hourglass/people/iconAtlas.svg';
 import peopleIconMapping from './layers/hourglass/people/iconMapping.json';
 import { LAYER_IDS } from './map.constants';
+import { useMap } from 'MapContext';
+import { useDeck } from 'DeckGlContext';
 
 const dataUrlFromId = (id, sources) => {
   const source = sources.find(source => source.source_id === id);
@@ -52,6 +54,8 @@ const dataUrlFromId = (id, sources) => {
 const MAX_ZOOM = 20;
 
 const Map = () => {
+  const { setMap } = useMap();
+  const { setDeck } = useDeck();
   const deckRef = useRef();
   const mapRef = useRef();
   const dispatch = useDispatch();
@@ -183,14 +187,14 @@ const Map = () => {
         </div>
       )}
       <DeckGL
-        ref={deckRef}
+        ref={ref => ref && setDeck(ref.deck)}
         controller
         initialViewState={viewport}
         layers={layers}
         ContextProvider={MapContext.Provider}
       >
         <StaticMap
-          ref={mapRef}
+          ref={ref => ref && setMap(ref.getMap())}
           preserveDrawingBuffer
           reuseMap
           mapboxApiAccessToken={accessToken}

@@ -23,6 +23,8 @@ import './typography.css';
 import { ThemeProvider } from '@astrosat/astrosat-ui/dist/containers/theme-provider';
 
 import installDevTools from './dev-tools/load';
+import { MapProvider } from 'MapContext';
+import { DeckProvider } from 'DeckGlContext';
 
 window.onerror = (msg, url, line, col, error) => {
   // Note that col & error are new to the HTML 5 spec and may not be
@@ -55,9 +57,13 @@ const render = () => {
         <NotificationContainer />
         <PersistGate loading={<div>Loading...</div>} persistor={persistor}>
           <StrictMode>
-            <ThemeProvider>
-              <App />
-            </ThemeProvider>
+            <DeckProvider>
+              <MapProvider>
+                <ThemeProvider>
+                  <App />
+                </ThemeProvider>
+              </MapProvider>
+            </DeckProvider>
           </StrictMode>
         </PersistGate>
       </ConnectedRouter>
