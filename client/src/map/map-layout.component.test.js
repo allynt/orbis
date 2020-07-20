@@ -4,7 +4,6 @@ import configureStore from 'redux-mock-store';
 import MapLayout from './map-layout.component';
 import { Provider } from 'react-redux';
 import { MapProvider } from 'MapContext';
-import { DeckProvider } from 'DeckGlContext';
 
 jest.mock('@deck.gl/react');
 
@@ -16,13 +15,7 @@ const setup = initialState =>
       <MapLayout />
     </Provider>,
     {
-      wrapper: ({ children }) => (
-        <>
-          <DeckProvider>
-            <MapProvider children={children} />
-          </DeckProvider>
-        </>
-      ),
+      wrapper: MapProvider,
     },
   );
 

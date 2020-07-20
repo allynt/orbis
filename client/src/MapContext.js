@@ -7,6 +7,8 @@ MapContext.displayName = 'MapContext';
  * @typedef {Object} MapContextType
  * @property {mapboxgl.Map} map
  * @property {React.Dispatch<mapboxgl.Map>} setMap
+ * @property {import('deck.gl').Deck} deck
+ * @property {React.Dispatch<import('deck.gl').Deck>} setDeck
  */
 
 /**
@@ -15,7 +17,10 @@ MapContext.displayName = 'MapContext';
  */
 export const MapProvider = props => {
   const [map, setMap] = useState();
-  return <MapContext.Provider value={{ map, setMap }} {...props} />;
+  const [deck, setDeck] = useState();
+  return (
+    <MapContext.Provider value={{ map, setMap, deck, setDeck }} {...props} />
+  );
 };
 
 /**

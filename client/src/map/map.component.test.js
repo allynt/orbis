@@ -1,7 +1,6 @@
 import { waitFor } from '@testing-library/dom';
 import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { DeckProvider } from 'DeckGlContext';
 import { MapProvider } from 'MapContext';
 import React from 'react';
 import { Provider } from 'react-redux';
@@ -19,13 +18,7 @@ const setup = initialState => {
       <Map />
     </Provider>,
     {
-      wrapper: ({ children }) => (
-        <>
-          <DeckProvider>
-            <MapProvider children={children} />
-          </DeckProvider>
-        </>
-      ),
+      wrapper: MapProvider,
     },
   );
   return { ...utils, store };
