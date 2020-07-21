@@ -3,7 +3,7 @@ const { v4: uuid } = require('uuid');
 
 let bookmarks = [
   {
-    id: 1,
+    id: '96342e19-7690-4b2b-b60f-9e866472d38a',
     owner: '6e5ac533-0245-4031-ab65-b1eff4d30a1f',
     title: 'Scotland',
     description:
@@ -16,7 +16,7 @@ let bookmarks = [
       'https://www.undiscoveredscotland.co.uk/usscotfax/geography/images/geography-450.jpg',
   },
   {
-    id: 2,
+    id: '8d334184-b270-4699-b359-e747a7df461d',
     owner: '6e5ac533-0245-4031-ab65-b1eff4d30a1f',
     title: 'Guatemala',
     description:
@@ -28,7 +28,7 @@ let bookmarks = [
     thumbnail: 'https://cdn.mos.cms.futurecdn.net/PuMd7Vw3wsZafT27T2xWtF.jpg',
   },
   {
-    id: 3,
+    id: '58512c96-2a43-42ac-a94d-7e608ea6a6db',
     owner: '6e5ac533-0245-4031-ab65-b1eff4d30a1f',
     title: 'Vietnam',
     description:
@@ -41,7 +41,7 @@ let bookmarks = [
       'https://spacewatch.global/wp-content/uploads/2019/10/Vietnam.A2002092.0330.500m.jpg',
   },
   {
-    id: 4,
+    id: 'e0ac0607-dbc2-48d9-8a92-fd2428925c75',
     owner: '6e5ac533-0245-4031-ab65-b1eff4d30a1f',
     title: 'Malaysia',
     description:
@@ -87,9 +87,13 @@ const deleteBookmark = deletionId => {
   const bookmarkToDelete = bookmarks.find(
     bookmark => bookmark.id === deletionId,
   );
-  fs.unlinkSync(
-    `${__dirname}/${bookmarkToDelete.thumbnail.split('bookmarks/')[1]}`,
-  );
+  try {
+    fs.unlinkSync(
+      `${__dirname}/${bookmarkToDelete.thumbnail.split('bookmarks/')[1]}`,
+    );
+  } catch (error) {
+    console.log('not a local thumbnail');
+  }
   bookmarks = bookmarks.filter(bookmark => bookmark.id !== bookmarkToDelete.id);
 };
 
