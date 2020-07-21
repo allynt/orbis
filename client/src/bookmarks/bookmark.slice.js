@@ -112,10 +112,6 @@ export const addBookmark = bookmark => async (dispatch, getState) => {
   Object.keys(bookmark).forEach(key => formData.append(key, bookmark[key]));
   // nested JSON should be stringified prior to passing to backend
   formData.set('center', JSON.stringify(bookmark['center']));
-  formData.set(
-    'feature_collection',
-    JSON.stringify(bookmark['feature_collection']),
-  );
 
   const headers = getFormAuthHeaders(getState());
 

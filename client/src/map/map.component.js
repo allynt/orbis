@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { LayersIcon, Button, LoadMask } from '@astrosat/astrosat-ui/';
 
@@ -54,8 +54,6 @@ const MAX_ZOOM = 20;
 
 const Map = () => {
   const { setMap, setDeck } = useMap();
-  const deckRef = useRef();
-  const mapRef = useRef();
   const dispatch = useDispatch();
   const accessToken = useSelector(mapboxTokenSelector);
   const authToken = useSelector(selectDataToken);
@@ -162,21 +160,6 @@ const Map = () => {
     }),
   ];
 
-  const logClick = () => {
-    const mapCanvas = mapRef.current.getMap().getCanvas();
-    deckRef.current.deck.redraw(true);
-    const deckCanvas = deckRef.current.deck.canvas;
-    let merged = document.createElement('canvas');
-    merged.width = deckCanvas.width;
-    merged.height = deckCanvas.height;
-    const context = merged.getContext('2d');
-    context.globalAlpha = 1.0;
-    context.drawImage(mapCanvas, 0, 0);
-    context.globalAlpha = 1.0;
-    context.drawImage(deckCanvas, 0, 0);
-    merged.toBlob(console.log);
-  };
-
   return (
     <>
       {bookmarksLoading && (
@@ -216,9 +199,6 @@ const Map = () => {
         className={styles.mapStyleButton}
       >
         <LayersIcon title="layers" classes={styles.icon} />
-      </Button>
-      <Button className={styles.mapStyleButton} onClick={logClick}>
-        Log
       </Button>
       {isMapStyleSwitcherVisible && (
         <MapStyleSwitcher

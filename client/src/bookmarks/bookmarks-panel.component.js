@@ -13,25 +13,25 @@ import {
 
 import styles from '../side-menu/side-menu.module.css';
 import { userSelector } from 'accounts/accounts.slice';
+import { useMap } from 'MapContext';
 
 const BookmarksPanel = () => {
+  const { createScreenshot } = useMap();
   const dispatch = useDispatch();
   const { id: owner } = useSelector(userSelector);
 
   const submit = form => {
-    dispatch(
-      addBookmark(
-        {
+    createScreenshot(thumbnail => {
+      dispatch(
+        addBookmark({
           ...form,
-          feature_collection: {},
           center: [0, 0],
           zoom: 0,
           owner,
-          thumbnail: '',
-        },
-        'image/png',
-      ),
-    );
+          thumbnail,
+        }),
+      );
+    });
   };
 
   const chooseBookmark = bookmark => dispatch(selectBookmark(bookmark));
@@ -43,6 +43,8 @@ const BookmarksPanel = () => {
       dispatch(fetchBookmarks());
     }
   }, [bookmarks, dispatch]);
+
+  console.log(bookmarks);
 
   return (
     <div className={styles.container}>
