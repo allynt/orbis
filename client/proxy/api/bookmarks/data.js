@@ -59,7 +59,13 @@ const getBookmarks = () => bookmarks;
 
 /**
  *
- * @param {{ title: string, center: string, zoom: string, owner: string}} bookmarkData
+ * @param {{
+ *    title: string,
+ *    center: string,
+ *    zoom: string,
+ *    owner: string,
+ *    layers: string
+ * }} bookmarkData
  * @param {*} thumbnailFile
  */
 const addBookmark = (bookmarkData, thumbnailFile) => {
@@ -77,6 +83,7 @@ const addBookmark = (bookmarkData, thumbnailFile) => {
     created: new Date().toISOString(),
     center: JSON.parse(bookmarkData.center),
     zoom: +bookmarkData.zoom,
+    layers: JSON.parse(bookmarkData.layers),
     thumbnail: `http://localhost:8000/api/bookmarks/media/${bookmarkData.owner}/${fileName}`,
   };
   bookmarks.push(newBookmark);

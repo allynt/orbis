@@ -15,10 +15,12 @@ import styles from '../side-menu/side-menu.module.css';
 import { userSelector } from 'accounts/accounts.slice';
 import { useMap } from 'MapContext';
 import { viewportSelector } from 'map/map.slice';
+import { activeLayersSelector } from 'data-layers/data-layers.slice';
 
 const BookmarksPanel = () => {
   const { createScreenshot } = useMap();
   const viewState = useSelector(viewportSelector);
+  const layers = useSelector(activeLayersSelector);
   const dispatch = useDispatch();
   const { id: owner } = useSelector(userSelector);
 
@@ -31,6 +33,7 @@ const BookmarksPanel = () => {
           zoom: viewState.zoom,
           owner,
           thumbnail,
+          layers: Object.keys(layers),
         }),
       );
     });

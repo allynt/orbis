@@ -32,6 +32,7 @@ import {
   activeLayersSelector,
   dataSourcesSelector,
   selectDataToken,
+  setLayers,
 } from 'data-layers/data-layers.slice';
 import FeatureDetail from './feature-detail.component';
 
@@ -74,6 +75,7 @@ const Map = () => {
       const {
         center: [longitude, latitude],
         zoom,
+        layers,
       } = selectedBookmark;
       dispatch(
         setViewport({
@@ -82,12 +84,12 @@ const Map = () => {
           latitude,
           zoom,
           transitionDuration: 2000,
-          transitionInterpolator:
-            viewport?.transitionInterpolator || new FlyToInterpolator(),
+          transitionInterpolator: new FlyToInterpolator(),
         }),
       );
+      dispatch(setLayers(layers));
+      dispatch(onBookmarkLoaded());
     }
-    dispatch(onBookmarkLoaded());
   }, [selectedBookmark, viewport, dispatch]);
 
   const handleLayerClick = info => {
@@ -130,7 +132,7 @@ const Map = () => {
         new GeoJsonClusteredIconLayer({
           id,
           data: dataRequest(dataUrlFromId(id, sources)),
-          visible: activeLayers[id]?.visible,
+          visible: activeLayers?.includes(id),
           pickable: true,
           iconMapping: infrastructureIconMapping,
           iconAtlas: infrastructureIconAtlas,
@@ -151,7 +153,9 @@ const Map = () => {
       data: dataRequest(
         dataUrlFromId(LAYER_IDS.astrosat.covid.hourglass.latest, sources),
       ),
-      visible: activeLayers[LAYER_IDS.astrosat.covid.hourglass.latest]?.visible,
+      visible: activeLayers?.includes(
+        LAYER_IDS.astrosat.covid.hourglass.latest,
+      ),
       pickable: true,
       iconMapping: peopleIconMapping,
       iconAtlas: peopleIconAtlas,
