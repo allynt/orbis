@@ -14,9 +14,11 @@ import {
 import styles from '../side-menu/side-menu.module.css';
 import { userSelector } from 'accounts/accounts.slice';
 import { useMap } from 'MapContext';
+import { viewportSelector } from 'map/map.slice';
 
 const BookmarksPanel = () => {
-  const { createScreenshot, deck } = useMap();
+  const { createScreenshot } = useMap();
+  const viewState = useSelector(viewportSelector);
   const dispatch = useDispatch();
   const { id: owner } = useSelector(userSelector);
 
@@ -25,8 +27,8 @@ const BookmarksPanel = () => {
       dispatch(
         addBookmark({
           ...form,
-          center: [deck.viewState.longitude, deck.viewState.latitude],
-          zoom: deck.viewState.zoom,
+          center: [viewState.longitude, viewState.latitude],
+          zoom: viewState.zoom,
           owner,
           thumbnail,
         }),
@@ -43,8 +45,6 @@ const BookmarksPanel = () => {
       dispatch(fetchBookmarks());
     }
   }, [bookmarks, dispatch]);
-
-  console.log(bookmarks);
 
   return (
     <div className={styles.container}>

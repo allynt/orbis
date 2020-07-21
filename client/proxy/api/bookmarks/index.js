@@ -3,7 +3,7 @@ const multer = require('multer');
 const upload = multer();
 
 const currentUserMiddleware = require('../authentication/middleware/currentUserMiddleware');
-const { getBookmarks, setBookmarks, addBookmark } = require('./data');
+const { getBookmarks, addBookmark, deleteBookmark } = require('./data');
 
 const getBookmarksHandler = (req, res) => {
   console.log('Returning Bookmarks');
@@ -22,12 +22,8 @@ const addBookmarkHandler = (req, res) => {
   res.json(newBookmark);
 };
 
-const deleteBookmark = (req, res) => {
-  setBookmarks(
-    getBookmarks().filter(
-      bookmark => bookmark.id !== parseInt(req.params.id, 10),
-    ),
-  );
+const deleteBookmarkHandler = (req, res) => {
+  deleteBookmark(req.params.id);
   res.status(200);
   res.json(getBookmarks());
 };
@@ -37,7 +33,7 @@ bookmarksRouter
   .route('/')
   .get(currentUserMiddleware, getBookmarksHandler)
   .post(upload.single('thumbnail'), addBookmarkHandler);
-bookmarksRouter.route('/:id').delete(deleteBookmark);
+bookmarksRouter.route('/:id').delete(deleteBookmarkHandler);
 bookmarksRouter.use('/media', express.static(`${__dirname}/media`));
 
 module.exports = bookmarksRouter;

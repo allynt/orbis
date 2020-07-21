@@ -56,7 +56,7 @@ let bookmarks = [
 ];
 
 const getBookmarks = () => bookmarks;
-const setBookmarks = newBookmarks => (bookmarks = newBookmarks);
+
 /**
  *
  * @param {{ title: string, center: string, zoom: string, owner: string}} bookmarkData
@@ -83,4 +83,14 @@ const addBookmark = (bookmarkData, thumbnailFile) => {
   return newBookmark;
 };
 
-module.exports = { getBookmarks, setBookmarks, addBookmark };
+const deleteBookmark = deletionId => {
+  const bookmarkToDelete = bookmarks.find(
+    bookmark => bookmark.id === deletionId,
+  );
+  fs.unlinkSync(
+    `${__dirname}/${bookmarkToDelete.thumbnail.split('bookmarks/')[1]}`,
+  );
+  bookmarks = bookmarks.filter(bookmark => bookmark.id !== bookmarkToDelete.id);
+};
+
+module.exports = { getBookmarks, addBookmark, deleteBookmark };

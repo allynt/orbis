@@ -70,8 +70,25 @@ const Map = () => {
   const [pickedObject, setPickedObject] = useState();
 
   useEffect(() => {
+    if (selectedBookmark) {
+      const {
+        center: [longitude, latitude],
+        zoom,
+      } = selectedBookmark;
+      dispatch(
+        setViewport({
+          ...viewport,
+          longitude,
+          latitude,
+          zoom,
+          transitionDuration: 2000,
+          transitionInterpolator:
+            viewport.transitionInterpolator || new FlyToInterpolator(),
+        }),
+      );
+    }
     dispatch(onBookmarkLoaded());
-  }, [selectedBookmark, dispatch]);
+  }, [selectedBookmark, viewport, dispatch]);
 
   const handleLayerClick = info => {
     if (info.object.properties.cluster) {
@@ -170,7 +187,8 @@ const Map = () => {
       <DeckGL
         ref={ref => ref && setDeck(ref.deck)}
         controller
-        initialViewState={viewport}
+        viewState={viewport}
+        onViewStateChange={({ viewState }) => dispatch(setViewport(viewState))}
         layers={layers}
         ContextProvider={MapContext.Provider}
       >
