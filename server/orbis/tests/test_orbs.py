@@ -9,6 +9,7 @@ from rest_framework.test import APIClient
 from astrosat.tests.utils import *
 from astrosat_users.tests.utils import *
 
+from orbis.models import Licence, Orb
 from orbis.serializers.serializers_orbs import LicenceSerializer
 
 from .factories import *
@@ -56,7 +57,8 @@ class TestLicences:
         customer_data = response.json()
 
         assert len(customer_data["licences"]) == N_LICENCES
-        for licence in Licence.objects.all():
+        assert Licence.objects.count() == N_LICENCES + 1
+        for licence in Licence.objects.public():
             assert licence.orb == orb
             assert licence.customer == customer
             assert licence.access == Access.READ
@@ -146,14 +148,14 @@ class TestLicences:
         response = client.get(url, format="json")
         customer_user_data = response.json()
 
-        customer_user_data["licences"].append(licence.id)
+        customer_user_data["licences"].append(str(licence.id))
         response = client.put(url, customer_user_data, format="json")
         customer_user_data = response.json()
 
         assert customer_user_data["licences"] == [str(licence.id)]
-        assert [str(id) for id in customer_user.licences.values_list("id", flat=True)] == [str(licence.id)]
-        assert customer.licences.count() == 1
-        assert customer.licences.filter(customer_user__isnull=False).count() == 1
+        assert [str(id) for id in customer_user.licences.public().values_list("id", flat=True)] == [str(licence.id)]
+        assert customer.licences.count() == 2
+        assert customer.licences.filter(customer_user__isnull=False).count() == 2
 
     def test_remove_licences_to_customer_user(self, user, api_client, mock_storage):
 
@@ -233,9 +235,7 @@ class TestLicences:
         # the user receives a notification that licence_1 was
         # revoked and licence_3 was added
 
-        customer_user_data["licences"] = [
-            licence_2.id, licence_3.id
-        ]
+        customer_user_data["licences"] = [licence_2.id, licence_3.id]
         response = client.put(url, customer_user_data, format="json")
         customer_user_data = response.json()
 
@@ -271,7 +271,9 @@ class TestLicences:
         response = client.put(url, customer_user_data, format="json")
         content = response.json()
         assert status.is_client_error(response.status_code)
-        assert content["licences"] == [f"All licences must come from customer {customer_1.name}."]
+        assert content["licences"] == [
+            f"All licences must come from customer {customer_1.name}."
+        ]
 
         # I cannot add a licence w/ the same orb to a customer_user
         customer_user_data["licences"] = [str(licence_1.id), str(licence_3.id)]
@@ -293,7 +295,7 @@ class TestLicences:
 
         licences = [
             LicenceFactory(orb=orb, customer=customer, access=i)
-            for i in range(sum(Access)+1)
+            for i in range(sum(Access) + 1)
         ]
 
         # licences should have the following access_rights...
@@ -306,6 +308,47 @@ class TestLicences:
         # 6 (110): CREATE, DELETE
         # 7 (111): READ, CREATE, DELETE
 
-        assert [licences.index(licence) for licence in Licence.objects.can_read()] == [1,3,5,7]
-        assert [licences.index(licence) for licence in Licence.objects.can_create()] == [2,3,6,7]
-        assert [licences.index(licence) for licence in Licence.objects.can_delete()] == [4,5,6,7]
+        assert [licences.index(licence) for licence in Licence.objects.can_read()] == [1, 3, 5, 7]
+        assert [licences.index(licence) for licence in Licence.objects.can_create()] == [2, 3, 6, 7]
+        assert [licences.index(licence) for licence in Licence.objects.can_delete()] == [4, 5, 6, 7]
+
+    def test_core_licence_added_and_removed(self, user, mock_storage):
+
+        customer = CustomerFactory(logo=None)
+        assert customer.licences.count() == 0
+
+        (customer_user, _) = customer.add_user(user)
+
+        assert customer.licences.count() == 1
+        assert customer_user.licences.count() == 1
+
+        licence = customer.licences.first()
+        assert licence.customer_user == customer_user
+        assert licence.orb == Orb.get_core_orb()
+
+        customer_user.delete()
+        customer.refresh_from_db()
+        assert customer.licences.count() == 0
+
+    def test_core_licence_added_in_view(self, admin, api_client, mock_storage):
+
+        customer = CustomerFactory(logo=None)
+
+        client = api_client(admin)
+        url = reverse("customer-users-list", args=[customer.id])
+
+        data = {"user": {"email": "test1@test.com", "name": "test1",}, "licences": []}
+        response = client.post(url, data, format="json")
+        assert status.is_success(response.status_code)
+
+        assert Licence.objects.count() == 1
+        assert Licence.objects.filter(orb=Orb.get_core_orb(), customer=customer, customer_user__user__name="test1").exists()
+
+        # (let's just make sure nothing weird happens when there's more than 1 user)
+        data = {"user": {"email": "test2@test.com", "name": "test2",}, "licences": []}
+        response = client.post(url, data, format="json")
+        assert status.is_success(response.status_code)
+
+        assert Licence.objects.count() == 2
+        assert Licence.objects.filter(orb=Orb.get_core_orb(), customer=customer, customer_user__user__name="test1").exists()
+        assert Licence.objects.filter(orb=Orb.get_core_orb(), customer=customer, customer_user__user__name="test2").exists()
