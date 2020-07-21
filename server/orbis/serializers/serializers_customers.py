@@ -110,8 +110,8 @@ class CustomerUserSerializer(AstrosatUsersCustomerUserSerializer):
         # the post-save signal already creates a "core" Licence for the
         # newly created CustomerUser, but the built-in DRF serializer.create fn
         # ovewrites m2m fields w/ the value in validated_data. Annoyingly, I can't
-        # add the core licence to validated_data b/c prior to calling create below
-        # because the licence does not yet exist !
+        # add the core licence to validated_data prior to calling create below
+        # because that licence does not yet exist !
         customer_user = super().create(validated_data)
         customer_user.licences.add(
             customer_user.customer.licences.get(
