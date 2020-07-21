@@ -83,7 +83,7 @@ const Map = () => {
           zoom,
           transitionDuration: 2000,
           transitionInterpolator:
-            viewport.transitionInterpolator || new FlyToInterpolator(),
+            viewport?.transitionInterpolator || new FlyToInterpolator(),
         }),
       );
     }
