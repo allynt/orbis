@@ -101,6 +101,7 @@
     "regenerator-runtime": "^0.13.5",
     "semantic-release": "^17.0.7",
     "typescript": "^3.9.6",
+    "uuid": "^8.2.0",
     "webpack": "4.42.0"
   },
   "browserslist": [

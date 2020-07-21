@@ -16,7 +16,7 @@ import { userSelector } from 'accounts/accounts.slice';
 import { useMap } from 'MapContext';
 
 const BookmarksPanel = () => {
-  const { createScreenshot } = useMap();
+  const { createScreenshot, deck } = useMap();
   const dispatch = useDispatch();
   const { id: owner } = useSelector(userSelector);
 
@@ -25,8 +25,8 @@ const BookmarksPanel = () => {
       dispatch(
         addBookmark({
           ...form,
-          center: [0, 0],
-          zoom: 0,
+          center: [deck.viewState.longitude, deck.viewState.latitude],
+          zoom: deck.viewState.zoom,
           owner,
           thumbnail,
         }),

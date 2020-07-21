@@ -1,5 +1,4 @@
 const express = require('express');
-const fs = require('fs');
 const multer = require('multer');
 const upload = multer();
 
@@ -18,18 +17,9 @@ const getBookmarksHandler = (req, res) => {
 
 const addBookmarkHandler = (req, res) => {
   console.log('Adding Bookmark');
-  const thumbnailBuffer = req.file.buffer;
-  const fileName = `${req.body.title.split(/\s/).join('-').toLowerCase()}.png`;
-  const dirPath = `${__dirname}/media/${req.body.owner}`;
-  if (!fs.existsSync(dirPath)) fs.mkdirSync(dirPath, { recursive: true });
-  fs.createWriteStream(`${dirPath}/${fileName}`).write(thumbnailBuffer);
-  const bookmark = {
-    ...req.body,
-    thumbnail: `http://localhost:8000/api/bookmarks/media/${req.body.owner}/${fileName}`,
-  };
-  addBookmark(bookmark);
+  const newBookmark = addBookmark(req.body, req.file);
   res.status(200);
-  res.json(bookmark);
+  res.json(newBookmark);
 };
 
 const deleteBookmark = (req, res) => {

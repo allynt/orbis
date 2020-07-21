@@ -1,7 +1,10 @@
+const fs = require('fs');
+const { v4: uuid } = require('uuid');
+
 let bookmarks = [
   {
-    id: 8,
-    owner: 1,
+    id: 1,
+    owner: '6e5ac533-0245-4031-ab65-b1eff4d30a1f',
     title: 'Scotland',
     description:
       'This is a description paragraph that describes the contents of this bookmark.',
@@ -13,8 +16,8 @@ let bookmarks = [
       'https://www.undiscoveredscotland.co.uk/usscotfax/geography/images/geography-450.jpg',
   },
   {
-    id: 7,
-    owner: 1,
+    id: 2,
+    owner: '6e5ac533-0245-4031-ab65-b1eff4d30a1f',
     title: 'Guatemala',
     description:
       'This is a description paragraph that describes the contents of this bookmark.',
@@ -25,8 +28,8 @@ let bookmarks = [
     thumbnail: 'https://cdn.mos.cms.futurecdn.net/PuMd7Vw3wsZafT27T2xWtF.jpg',
   },
   {
-    id: 6,
-    owner: 1,
+    id: 3,
+    owner: '6e5ac533-0245-4031-ab65-b1eff4d30a1f',
     title: 'Vietnam',
     description:
       'This is a description paragraph that describes the contents of this bookmark.',
@@ -38,8 +41,8 @@ let bookmarks = [
       'https://spacewatch.global/wp-content/uploads/2019/10/Vietnam.A2002092.0330.500m.jpg',
   },
   {
-    id: 5,
-    owner: 1,
+    id: 4,
+    owner: '6e5ac533-0245-4031-ab65-b1eff4d30a1f',
     title: 'Malaysia',
     description:
       'This is a description paragraph that describes the contents of this bookmark.',
@@ -54,6 +57,30 @@ let bookmarks = [
 
 const getBookmarks = () => bookmarks;
 const setBookmarks = newBookmarks => (bookmarks = newBookmarks);
-const addBookmark = newBookmark => bookmarks.push(newBookmark);
+/**
+ *
+ * @param {{ title: string, center: string, zoom: string, owner: string}} bookmarkData
+ * @param {*} thumbnailFile
+ */
+const addBookmark = (bookmarkData, thumbnailFile) => {
+  const thumbnailBuffer = thumbnailFile.buffer;
+  const fileName = `${bookmarkData.title
+    .split(/\s/)
+    .join('-')
+    .toLowerCase()}.png`;
+  const dirPath = `${__dirname}/media/${bookmarkData.owner}`;
+  if (!fs.existsSync(dirPath)) fs.mkdirSync(dirPath, { recursive: true });
+  fs.createWriteStream(`${dirPath}/${fileName}`).write(thumbnailBuffer);
+  const newBookmark = {
+    ...bookmarkData,
+    id: uuid(),
+    created: new Date().toISOString(),
+    center: JSON.parse(bookmarkData.center),
+    zoom: +bookmarkData.zoom,
+    thumbnail: `http://localhost:8000/api/bookmarks/media/${bookmarkData.owner}/${fileName}`,
+  };
+  bookmarks.push(newBookmark);
+  return newBookmark;
+};
 
 module.exports = { getBookmarks, setBookmarks, addBookmark };
