@@ -161,7 +161,7 @@ class Orb(models.Model):
     def get_core_orb(cls):
         core_orb, orb_created = cls.objects.get_or_create(name="core")
         if orb_created:
-            core_data_scope, data_scope_created = DataScope.objects.get_or_create(
+            core_data_scope, _ = DataScope.objects.get_or_create(
                 authority="astrosat",
                 namespace="core",
                 name="*",
