@@ -35,8 +35,11 @@ def pre_delete_customer_user_handler(sender, *args, **kwargs):
     """
     instance = kwargs.get("instance", None)
     if instance:
-        core_licence = instance.licences.get(orb=Orb.get_core_orb())
-        core_licence.delete()
+        try:
+            core_licence = instance.licences.get(orb=Orb.get_core_orb())
+            core_licence.delete()
+        except Licence.DoesNotExist:
+            pass
 
 
 pre_delete.connect(

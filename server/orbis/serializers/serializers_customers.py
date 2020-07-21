@@ -92,14 +92,33 @@ class CustomerUserSerializer(AstrosatUsersCustomerUserSerializer):
 
     def to_internal_value(self, data):
         # when inputting data, include private licences...
-        private_licences = self.instance.licences.private().annotate(
-            str_id=Cast(
-                "id", output_field=CharField()
-            )  # cast UUIDField to CharField
-        )
-        data["licences"] += private_licences.values_list("str_id", flat=True)
+        if self.instance:
+            # if the CustomerUser doesn't exist yet, then the post-save signal
+            # will add the "core" licence; otherwise this bit of code will ensure
+            # the "core" licence doesn't get removed (BUT SEE "create" BELOW)
+            private_licences = self.instance.licences.private().annotate(
+                str_id=Cast(
+                    "id", output_field=CharField()
+                )  # cast UUIDField to CharField
+            )
+            data["licences"] += private_licences.values_list("str_id", flat=True)
         internal_value = super().to_internal_value(data)
         return internal_value
+
+    def create(self, validated_data):
+        # TODO: I AM NOT HAPPY W/ THIS CODE !
+        # the post-save signal already creates a "core" Licence for the
+        # newly created CustomerUser, but the built-in DRF serializer.create fn
+        # ovewrites m2m fields w/ the value in validated_data. Annoyingly, I can't
+        # add the core licence to validated_data b/c prior to calling create below
+        # because the licence does not yet exist !
+        customer_user = super().create(validated_data)
+        customer_user.licences.add(
+            customer_user.customer.licences.get(
+                orb__name="core", customer_user__isnull=True
+            )
+        )
+        return customer_user
 
     def to_representation(self, instance):
         # when outputting data, exclude private licences...
@@ -110,9 +129,7 @@ class CustomerUserSerializer(AstrosatUsersCustomerUserSerializer):
             lambda x: x in private_licences.values_list("id", flat=True),
             licences_representation,
         )
-
         return representation
-
 
     def validate_licences(self, value):
         # make sure the licences all come from the correct customer...
