@@ -42,6 +42,7 @@ import peopleIconAtlas from './layers/hourglass/people/iconAtlas.svg';
 import peopleIconMapping from './layers/hourglass/people/iconMapping.json';
 import { LAYER_IDS } from './map.constants';
 import { useMap } from 'MapContext';
+import { easeInOutCubic } from 'utils/easingFunctions';
 
 const dataUrlFromId = (id, sources) => {
   const source = sources.find(source => source.source_id === id);
@@ -105,6 +106,7 @@ const Map = () => {
                 ? MAX_ZOOM
                 : info.object.properties.expansion_zoom,
             transitionDuration: 1000,
+          transitionEasing: easeInOutCubic,
             transitionInterpolator:
               viewport.transitionInterpolator || new FlyToInterpolator(),
           }),
