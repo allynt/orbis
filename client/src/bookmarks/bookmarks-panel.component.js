@@ -1,25 +1,20 @@
+import { userSelector } from 'accounts/accounts.slice';
+import { activeLayersSelector } from 'data-layers/data-layers.slice';
+import { useMap } from 'MapContext';
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-
+import styles from '../side-menu/side-menu.module.css';
 import BookmarkForm from './bookmark-form.component';
+import {
+  addBookmark,
+  deleteBookmark,
+  fetchBookmarks,
+  selectBookmark,
+} from './bookmark.slice';
 import BookmarkList from './bookmarks-list.component';
 
-import {
-  fetchBookmarks,
-  addBookmark,
-  selectBookmark,
-  deleteBookmark,
-} from './bookmark.slice';
-
-import styles from '../side-menu/side-menu.module.css';
-import { userSelector } from 'accounts/accounts.slice';
-import { useMap } from 'MapContext';
-import { viewportSelector } from 'map/map.slice';
-import { activeLayersSelector } from 'data-layers/data-layers.slice';
-
 const BookmarksPanel = () => {
-  const { createScreenshot } = useMap();
-  const viewState = useSelector(viewportSelector);
+  const { createScreenshot, viewState } = useMap();
   const layers = useSelector(activeLayersSelector);
   const dispatch = useDispatch();
   const user = useSelector(userSelector);

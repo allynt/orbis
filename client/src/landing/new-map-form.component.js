@@ -11,7 +11,7 @@ import validate from '../bookmarks/bookmark-form.validator';
 
 import formStyles from '../forms.module.css';
 
-const NewMapForm = ({ regions, domains, bookmarkTitles, setViewport }) => {
+const NewMapForm = ({ regions, domains, bookmarkTitles }) => {
   const { handleChange, handleSubmit, values, errors } = useForm(
     onSubmit,
     validate(bookmarkTitles),
@@ -19,7 +19,6 @@ const NewMapForm = ({ regions, domains, bookmarkTitles, setViewport }) => {
   const history = useHistory();
 
   function onSubmit() {
-    setViewport(values.region);
     history.push('/map');
   }
 

@@ -1,7 +1,24 @@
 import React, { createContext, useContext, useState } from 'react';
 
+const INITIAL_VIEW_STATE = {
+  zoom: 6,
+  longitude: -4.84,
+  latitude: 54.71,
+  pitch: 0,
+  bearing: 0,
+};
+
 const MapContext = createContext();
 MapContext.displayName = 'MapContext';
+
+/**
+ * @typedef {Object} ViewState
+ * @property {number} [longitude]
+ * @property {number} [latitude]
+ * @property {number} [zoom]
+ * @property {number} [pitch]
+ * @property {number} [bearing]
+ */
 
 /**
  * @typedef {Object} MapContextType
@@ -9,6 +26,8 @@ MapContext.displayName = 'MapContext';
  * @property {React.Dispatch<mapboxgl.Map>} setMap
  * @property {import('deck.gl').Deck} deck
  * @property {React.Dispatch<import('deck.gl').Deck>} setDeck
+ * @property {ViewState} viewState
+ * @property {React.Dispatch<ViewState>} setViewState
  */
 
 /**
@@ -18,8 +37,13 @@ MapContext.displayName = 'MapContext';
 export const MapProvider = props => {
   const [map, setMap] = useState();
   const [deck, setDeck] = useState();
+  const [viewState, setViewState] = useState(INITIAL_VIEW_STATE);
+
   return (
-    <MapContext.Provider value={{ map, setMap, deck, setDeck }} {...props} />
+    <MapContext.Provider
+      value={{ map, setMap, deck, setDeck, viewState, setViewState }}
+      {...props}
+    />
   );
 };
 
@@ -28,7 +52,9 @@ export const MapProvider = props => {
  *   map: mapboxgl.Map
  *   setMap: React.Dispatch<mapboxgl.Map>
  *   deck: import('deck.gl').Deck
- *   setDeck: React.Dispatch<import('deck.gl').Deck>
+ *   setDeck: React.Dispatch<import('deck.gl').Deck
+ *   viewState: ViewState
+ *   setViewState: React.Dispatch<ViewState>
  *   createScreenshot: (callback: BlobCallback) => void
  * }}
  */

@@ -10,14 +10,13 @@ jest.mock('@deck.gl/react');
 const mockStore = configureStore();
 
 const setup = initialState =>
-  render(
-    <Provider store={mockStore(initialState)}>
-      <MapLayout />
-    </Provider>,
-    {
-      wrapper: MapProvider,
-    },
-  );
+  render(<MapLayout />, {
+    wrapper: ({ children }) => (
+      <Provider store={mockStore(initialState)}>
+        <MapProvider>{children}</MapProvider>
+      </Provider>
+    ),
+  });
 
 describe('<MapLayout />', () => {
   beforeEach(() => fetch.mockResponse(JSON.stringify({})));

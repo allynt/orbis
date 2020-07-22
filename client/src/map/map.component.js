@@ -18,12 +18,7 @@ import {
   isLoadingSelector as bookmarksLoadingSelector,
 } from '../bookmarks/bookmark.slice';
 import MapStyleSwitcher from '../mapstyle/mapstyle-switcher.component';
-import {
-  selectMapStyle,
-  viewportSelector,
-  selectedMapStyleSelector,
-  setViewport,
-} from './map.slice';
+import { selectMapStyle, selectedMapStyleSelector } from './map.slice';
 import { mapboxTokenSelector, mapStylesSelector } from 'app.slice';
 
 import 'mapbox-gl/dist/mapbox-gl.css';
@@ -55,11 +50,10 @@ const dataUrlFromId = (id, sources) => {
 const MAX_ZOOM = 20;
 
 const Map = () => {
-  const { setMap, setDeck } = useMap();
+  const { setMap, setDeck, viewState, setViewState } = useMap();
   const dispatch = useDispatch();
   const accessToken = useSelector(mapboxTokenSelector);
   const authToken = useSelector(selectDataToken);
-  const viewport = useSelector(viewportSelector);
   const selectedBookmark = useSelector(selectedBookmarkSelector);
   const bookmarksLoading = useSelector(bookmarksLoadingSelector);
   const mapStyles = useSelector(mapStylesSelector);
@@ -78,39 +72,34 @@ const Map = () => {
         zoom,
         layers,
       } = selectedBookmark;
-      dispatch(
-        setViewport({
-          ...viewport,
-          longitude,
-          latitude,
-          zoom,
-          transitionDuration: 2000,
-          transitionInterpolator: new FlyToInterpolator(),
-        }),
-      );
+      setViewState({
+        ...viewState,
+        longitude,
+        latitude,
+        zoom,
+        transitionDuration: 2000,
+        transitionInterpolator: new FlyToInterpolator(),
+      });
       dispatch(setLayers(layers));
       dispatch(onBookmarkLoaded());
     }
-  }, [selectedBookmark, viewport, dispatch]);
+  }, [selectedBookmark, viewState, setViewState, dispatch]);
 
   const handleLayerClick = info => {
     if (info.object.properties.cluster) {
       if (info.object.properties.expansion_zoom <= MAX_ZOOM)
-        dispatch(
-          setViewport({
-            ...viewport,
-            longitude: info.object.geometry.coordinates[0],
-            latitude: info.object.geometry.coordinates[1],
-            zoom:
-              info.object.properties.expansion_zoom >= MAX_ZOOM
-                ? MAX_ZOOM
-                : info.object.properties.expansion_zoom,
-            transitionDuration: 1000,
+        setViewState({
+          ...viewState,
+          longitude: info.object.geometry.coordinates[0],
+          latitude: info.object.geometry.coordinates[1],
+          zoom:
+            info.object.properties.expansion_zoom >= MAX_ZOOM
+              ? MAX_ZOOM
+              : info.object.properties.expansion_zoom,
+          transitionDuration: 1000,
           transitionEasing: easeInOutCubic,
-            transitionInterpolator:
-              viewport.transitionInterpolator || new FlyToInterpolator(),
-          }),
-        );
+          transitionInterpolator: new FlyToInterpolator(),
+        });
       else setPickedObject(info.objects);
     } else setPickedObject([info.object]);
   };
@@ -193,8 +182,8 @@ const Map = () => {
       <DeckGL
         ref={ref => ref && setDeck(ref.deck)}
         controller
-        viewState={viewport}
-        onViewStateChange={({ viewState }) => dispatch(setViewport(viewState))}
+        viewState={viewState}
+        onViewStateChange={({ viewState }) => setViewState(viewState)}
         layers={layers}
         ContextProvider={MapContext.Provider}
       >

@@ -6,7 +6,6 @@ import React from 'react';
 import { Provider } from 'react-redux';
 import configureStore from 'redux-mock-store';
 import Map from './map.component';
-import { setViewport } from './map.slice';
 
 jest.mock('deck.gl');
 
@@ -14,14 +13,13 @@ const mockStore = configureStore();
 
 const setup = initialState => {
   const store = mockStore(initialState);
-  const utils = render(
-    <Provider store={store}>
-      <Map />
-    </Provider>,
-    {
-      wrapper: MapProvider,
-    },
-  );
+  const utils = render(<Map />, {
+    wrapper: ({ children }) => (
+      <Provider store={store}>
+        <MapProvider>{children}</MapProvider>
+      </Provider>
+    ),
+  });
   return { ...utils, store };
 };
 
@@ -31,21 +29,6 @@ describe('<Map />', () => {
   it('displays the load mask when bookmarks is loading', () => {
     const { getByTestId } = setup({ bookmarks: { isLoading: true } });
     expect(getByTestId('load-mask')).toBeInTheDocument();
-  });
-
-  it('sets the viewport when a bookmark is selected', async () => {
-    const { store } = setup({
-      bookmarks: {
-        selectedBookmark: { center: [1, 2], zoom: 3 },
-        loading: true,
-      },
-    });
-    const viewportAction = store
-      .getActions()
-      .find(action => action.type === setViewport.type);
-    expect(viewportAction.payload).toHaveProperty('longitude', 1);
-    expect(viewportAction.payload).toHaveProperty('latitude', 2);
-    expect(viewportAction.payload).toHaveProperty('zoom', 3);
   });
 
   it('displays the map style switcher when the style button is clicked', () => {
