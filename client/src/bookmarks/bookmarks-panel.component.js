@@ -22,7 +22,7 @@ const BookmarksPanel = () => {
   const viewState = useSelector(viewportSelector);
   const layers = useSelector(activeLayersSelector);
   const dispatch = useDispatch();
-  const { id: owner } = useSelector(userSelector);
+  const user = useSelector(userSelector);
 
   const submit = form => {
     createScreenshot(thumbnail => {
@@ -31,7 +31,7 @@ const BookmarksPanel = () => {
           ...form,
           center: [viewState.longitude, viewState.latitude],
           zoom: viewState.zoom,
-          owner,
+          owner: user.id,
           thumbnail,
           layers: Object.keys(layers),
         }),
@@ -42,7 +42,8 @@ const BookmarksPanel = () => {
   const chooseBookmark = bookmark => dispatch(selectBookmark(bookmark));
   const deleteBookmarkItem = bookmark => dispatch(deleteBookmark(bookmark));
 
-  const bookmarks = useSelector(state => state.bookmarks.bookmarks);
+  const bookmarks = useSelector(state => state?.bookmarks?.bookmarks);
+
   useEffect(() => {
     if (!bookmarks) {
       dispatch(fetchBookmarks());
@@ -52,7 +53,7 @@ const BookmarksPanel = () => {
   return (
     <div className={styles.container}>
       <BookmarkForm
-        bookmarkTitles={bookmarks.map(b => b?.title?.toLowerCase())}
+        bookmarkTitles={bookmarks?.map(b => b?.title?.toLowerCase())}
         submit={submit}
       />
       <BookmarkList
