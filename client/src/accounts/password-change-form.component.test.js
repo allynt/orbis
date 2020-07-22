@@ -55,8 +55,6 @@ describe('Password Reset Form Component', () => {
     expect(
       getByPlaceholderText('New Password Confirmation'),
     ).toBeInTheDocument();
-    // Check password strength component exists
-    expect(getByText('Password Strength:')).toBeInTheDocument();
     //Check Terms and Conditions checkbox
     expect(getByText('I agree with')).toBeInTheDocument();
     // Check form submit button

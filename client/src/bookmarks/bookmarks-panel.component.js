@@ -28,7 +28,7 @@ const BookmarksPanel = () => {
           zoom: viewState.zoom,
           owner: user.id,
           thumbnail,
-          layers: Object.keys(layers),
+          layers,
         }),
       );
     });

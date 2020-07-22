@@ -24,7 +24,7 @@ const dataSlice = createSlice({
       state.layers = state.layers.filter(layer => layer !== layerId);
     },
     setLayers: (state, { payload }) => {
-      if (!payload || !payload.length) return;
+      if (!payload) return;
       const layers =
         typeof payload[0] === 'object'
           ? payload.map(source => source.source_id)

@@ -80,7 +80,7 @@ const Map = () => {
         transitionDuration: 2000,
         transitionInterpolator: new FlyToInterpolator(),
       });
-      dispatch(setLayers(layers));
+      dispatch(setLayers(layers || []));
       dispatch(onBookmarkLoaded());
     }
   }, [selectedBookmark, viewState, setViewState, dispatch]);

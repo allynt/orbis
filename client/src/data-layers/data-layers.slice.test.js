@@ -167,10 +167,10 @@ describe('Data Slice', () => {
         expect(result.layers).toEqual(state.layers);
       });
 
-      it('does nothing if the payload array is empty', () => {
+      it('removes all layers if set to an empty array', () => {
         const state = { layers: ['test/id/1', 'test/id/2'] };
         const result = reducer(state, setLayers([]));
-        expect(result.layers).toEqual(state.layers);
+        expect(result.layers).toEqual([]);
       });
     });
 
