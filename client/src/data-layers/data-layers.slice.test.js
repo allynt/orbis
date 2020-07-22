@@ -12,6 +12,7 @@ import reducer, {
   selectPollingPeriod,
   selectDataToken,
   activeLayersSelector,
+  setLayers,
 } from './data-layers.slice';
 
 const mockStore = configureMockStore([thunk]);
@@ -125,6 +126,51 @@ describe('Data Slice', () => {
         const expected = [...state.layers, 'test/layer/3', 'test/layer/4'];
         const result = reducer(state, addLayers(layers));
         expect([...result.layers].sort()).toEqual(expected.sort());
+      });
+    });
+
+    describe('setLayers', () => {
+      it("sets the layers in state if it doesn't exist", () => {
+        const state = {};
+        const layers = ['test/id/1', 'test/id/2'];
+        const result = reducer(state, setLayers(layers));
+        expect(result.layers).toEqual(layers);
+      });
+
+      it('replaces the layers array in state', () => {
+        const state = {
+          layers: ['test/id/1', 'test/id/2'],
+        };
+        const layers = ['test/id/3', 'test/id/4'];
+        const result = reducer(state, setLayers(layers));
+        expect(result.layers).toEqual(layers);
+      });
+
+      it('works if the payload is an array of objects', () => {
+        const state = { layers: ['test/id/1', 'test/id/2'] };
+        const layers = [{ source_id: 'test/id/3' }, { source_id: 'test/id/4' }];
+        const expected = ['test/id/3', 'test/id/4'];
+        const result = reducer(state, setLayers(layers));
+        expect(result.layers).toEqual(expected);
+      });
+
+      it('does nothing if the object array does not contain `source_id` properties', () => {
+        const state = { layers: ['test/id/1', 'test/id/2'] };
+        const layers = [{ id: 'test/id/3' }, { id: 'test/id/4' }];
+        const result = reducer(state, setLayers(layers));
+        expect(result.layers).toEqual(state.layers);
+      });
+
+      it('does nothing if the payload is undefined', () => {
+        const state = { layers: ['test/id/1', 'test/id/2'] };
+        const result = reducer(state, setLayers(undefined));
+        expect(result.layers).toEqual(state.layers);
+      });
+
+      it('does nothing if the payload array is empty', () => {
+        const state = { layers: ['test/id/1', 'test/id/2'] };
+        const result = reducer(state, setLayers([]));
+        expect(result.layers).toEqual(state.layers);
       });
     });
 

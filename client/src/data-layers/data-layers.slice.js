@@ -24,10 +24,12 @@ const dataSlice = createSlice({
       state.layers = state.layers.filter(layer => layer !== layerId);
     },
     setLayers: (state, { payload }) => {
+      if (!payload || !payload.length) return;
       const layers =
         typeof payload[0] === 'object'
           ? payload.map(source => source.source_id)
           : payload;
+      if (layers.some(layer => layer === undefined)) return;
       state.layers = layers;
     },
     fetchSourcesSuccess: (state, { payload }) => {
