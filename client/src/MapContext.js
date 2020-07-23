@@ -73,7 +73,7 @@ export const useMap = () => {
     const { deck, map } = context;
     deck.redraw(true);
     const deckCanvas = deck.canvas;
-    let merged = document.createElement('canvas');
+    const merged = document.createElement('canvas');
     merged.width = deckCanvas.width;
     merged.height = deckCanvas.height;
     const mergedContext = merged.getContext('2d');
