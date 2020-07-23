@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { Button, OptionsIcon } from '@astrosat/astrosat-ui';
 
 import ContentWrapper from '../../content-wrapper.component';
+import OptionsDropdown from '../options-dropdown/options-dropdown.component';
 
 import { getUserLicences } from '../get-user-licences-helper';
 
@@ -19,7 +20,7 @@ export const ActiveUsersBoard = ({
 }) => {
   const [dropdown, setDropdown] = useState(null);
 
-  const ONE_ADMIN_REMAINING =
+  const oneAdminRemaining =
     activeUsers?.filter(au => au.type === 'MANAGER').length === 1;
 
   const handleClick = (fn, user) => {
@@ -45,6 +46,7 @@ export const ActiveUsersBoard = ({
             <th align="left" className={tableStyles.th}>
               Type
             </th>
+            <th align="left" className={tableStyles.th}></th>
           </tr>
         </thead>
         <tbody>
@@ -73,7 +75,7 @@ export const ActiveUsersBoard = ({
                     <div className={tableStyles.optionsContainer}>
                       <Button
                         theme="tertiary"
-                        className={tableStyles.optionsButton}
+                        className={tableStyles.optionsRoleButton}
                         onClick={() =>
                           setDropdown(
                             changeRoleSelected
@@ -81,12 +83,28 @@ export const ActiveUsersBoard = ({
                               : { type: 'change-role', user },
                           )
                         }
-                        disabled={
-                          user.type === 'MANAGER' && ONE_ADMIN_REMAINING
-                        }
+                        disabled={user.type === 'MANAGER' && oneAdminRemaining}
                       >
                         {user.type === 'MANAGER' ? 'Admin' : 'Standard'}
                       </Button>
+
+                      {changeRoleSelected && (
+                        <div
+                          className={`${tableStyles.optionsDropdown} ${tableStyles.roleDropdown}`}
+                        >
+                          <OptionsDropdown
+                            textContent={
+                              user.type === 'MANAGER' ? 'Standard' : 'Admin'
+                            }
+                            onClick={() => handleClick(onChangeRoleClick, user)}
+                            close={() => setDropdown(null)}
+                          />
+                        </div>
+                      )}
+                    </div>
+                  </td>
+                  <td className={tableStyles.td}>
+                    <div className={tableStyles.optionsContainer}>
                       <OptionsIcon
                         classes={`${tableStyles.optionsIcon} ${
                           optionsSelected && tableStyles.optionsIconSelected
@@ -97,31 +115,20 @@ export const ActiveUsersBoard = ({
                           )
                         }
                       />
-                      {changeRoleSelected && (
-                        <div className={tableStyles.optionsDropdown}>
-                          <p
-                            data-testid="change-role-button"
-                            className={tableStyles.optionsText}
-                            onClick={() => handleClick(onChangeRoleClick, user)}
-                          >
-                            {user.type === 'MANAGER' ? 'Standard' : 'Admin'}
-                          </p>
-                        </div>
-                      )}
                       {optionsSelected && (
-                        <div className={tableStyles.optionsDropdown}>
-                          <p
-                            className={tableStyles.optionsText}
+                        <div
+                          className={`${tableStyles.optionsDropdown} ${tableStyles.editDropdown}`}
+                        >
+                          <OptionsDropdown
+                            textContent="Edit"
                             onClick={() => handleClick(console.log, user)}
-                          >
-                            Edit
-                          </p>
-                          <p
-                            className={tableStyles.optionsText}
+                            close={() => setDropdown(null)}
+                          />
+                          <OptionsDropdown
+                            textContent="Delete User"
                             onClick={() => handleClick(onDeleteUserClick, user)}
-                          >
-                            Delete User
-                          </p>
+                            close={() => setDropdown(null)}
+                          />
                         </div>
                       )}
                     </div>

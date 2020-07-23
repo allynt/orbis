@@ -46,7 +46,10 @@ describe('ActiveUsersBoard', () => {
   it('Disables `Change Role` button when only 1 admin remains', () => {
     const { getByText } = render(
       <ActiveUsersBoard
-        activeUsers={[{ type: 'MANAGER', user: { name: 'John Smith' } }]}
+        activeUsers={[
+          { type: 'MANAGER', user: { name: 'John Smith' } },
+          { type: 'MEMBER', user: { name: 'Steve Brown' } },
+        ]}
         customer={{ name: 'Customer Name' }}
       />,
     );
@@ -71,7 +74,7 @@ describe('ActiveUsersBoard', () => {
 
     userEvent.click(getByText('Standard'));
 
-    const changeRoleButton = getByTestId('change-role-button');
+    const changeRoleButton = getByTestId('options-dropdown-button');
     expect(changeRoleButton).toBeInTheDocument();
 
     userEvent.click(changeRoleButton);

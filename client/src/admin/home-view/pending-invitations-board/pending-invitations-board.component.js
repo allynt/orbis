@@ -5,6 +5,7 @@ import { format } from 'date-fns';
 import { OptionsIcon } from '@astrosat/astrosat-ui';
 
 import ContentWrapper from '../../content-wrapper.component';
+import OptionsDropdown from '../options-dropdown/options-dropdown.component';
 
 import { getUserLicences } from '../get-user-licences-helper';
 
@@ -17,7 +18,7 @@ export const PendingInvitationsBoard = ({
   customer,
   onWithdrawInvitationClick,
 }) => {
-  const [userOptions, setUserOptions] = useState(null);
+  const [dropdown, setDropdown] = useState(null);
 
   return (
     <ContentWrapper title="Pending Invitations">
@@ -44,7 +45,7 @@ export const PendingInvitationsBoard = ({
         <tbody>
           {pendingUsers && pendingUsers.length > 0 ? (
             pendingUsers.map(user => {
-              const selected = userOptions === user;
+              const selected = dropdown === user;
               const date = format(new Date(user.invitation_date), DATE_FORMAT);
               let licences = null;
               if (customer && customer.licences) {
@@ -63,23 +64,29 @@ export const PendingInvitationsBoard = ({
                   <td
                     className={`${tableStyles.td} ${tableStyles.optionsColumn}`}
                   >
-                    <OptionsIcon
-                      classes={`${tableStyles.optionsIcon} ${
-                        selected && tableStyles.optionsIconSelected
-                      }`}
-                      onClick={() => setUserOptions(selected ? null : user)}
-                    />
-                    {selected && (
-                      <div
-                        className={tableStyles.optionsDropdown}
-                        onClick={() => {
-                          onWithdrawInvitationClick(user);
-                          setUserOptions(null);
-                        }}
-                      >
-                        <p className={tableStyles.optionsText}>Withdraw</p>
-                      </div>
-                    )}
+                    <div className={tableStyles.optionsContainer}>
+                      <OptionsIcon
+                        data-testid="options-icon"
+                        classes={`${tableStyles.optionsIcon} ${
+                          selected && tableStyles.optionsIconSelected
+                        }`}
+                        onClick={() => setDropdown(selected ? null : user)}
+                      />
+                      {selected && (
+                        <div
+                          className={`${tableStyles.optionsDropdown} ${tableStyles.withdrawDropdown}`}
+                        >
+                          <OptionsDropdown
+                            textContent="Withdraw"
+                            onClick={() => {
+                              onWithdrawInvitationClick(user);
+                              setDropdown(null);
+                            }}
+                            close={() => setDropdown(null)}
+                          />
+                        </div>
+                      )}
+                    </div>
                   </td>
                 </tr>
               );

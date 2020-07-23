@@ -64,28 +64,15 @@ const adminSlice = createSlice({
       state.isLoading = true;
     },
     updateCustomerUserSuccess: (state, { payload }) => {
-      state.customerUsers = state.customerUsers.map(user =>
-        user.id === payload.id ? payload : user,
+      const userIndex = state.customerUsers.indexOf(
+        state.customerUsers.find(cu => cu.id === payload.id),
       );
-      state.isLoading = false;
-      state.error = null;
-    },
-    updateCustomerUserFailure: (state, { payload }) => {
-      state.error = payload;
-      state.isLoading = false;
-    },
-    editCustomerUserRequested: state => {
-      state.isLoading = true;
-    },
-    editCustomerUserSuccess: (state, { payload }) => {
-      state.customerUsers = state.customerUsers.map(cu =>
-        cu.id === payload.id ? payload : cu,
-      );
+      state.customerUsers[userIndex] = payload;
 
       state.isLoading = false;
       state.error = null;
     },
-    editCustomerUserFailure: (state, { payload }) => {
+    updateCustomerUserFailure: (state, { payload }) => {
       state.error = payload;
       state.isLoading = false;
     },
@@ -119,9 +106,6 @@ export const {
   updateCustomerUserRequested,
   updateCustomerUserSuccess,
   updateCustomerUserFailure,
-  editCustomerUserRequested,
-  editCustomerUserSuccess,
-  editCustomerUserFailure,
   createCustomerUserRequested,
   createCustomerUserSuccess,
   createCustomerUserFailure,
@@ -245,57 +229,32 @@ export const createCustomerUser = fields => async (dispatch, getState) => {
   return dispatch(createCustomerUserSuccess({ user, customer }));
 };
 
-export const updateCustomerUser = (customer, user) => async (
+export const updateCustomerUser = (user, data) => async (
   dispatch,
   getState,
 ) => {
   const headers = getJsonAuthHeaders(getState());
+  const currentCustomer = selectCurrentCustomer(getState());
 
   dispatch(updateCustomerUserRequested());
 
-  const response = await sendData(
-    `${API}${customer.id}/users/${user.id}`,
-    user,
-    headers,
-    'PUT',
-  );
-
-  if (!response.ok)
-    return handleFailure(
-      response,
-      'Updating User',
-      updateCustomerUserFailure,
-      dispatch,
-    );
-
-  const userData = await response.json();
-
-  return dispatch(updateCustomerUserSuccess(userData));
-};
-
-export const editCustomerUser = (user, data) => async (dispatch, getState) => {
-  const headers = getJsonAuthHeaders(getState());
-  const currentCustomer = selectCurrentCustomer(getState());
-
-  dispatch(editCustomerUserRequested());
-
-  const editCustomerUserResponse = await sendData(
+  const updateCustomerUserResponse = await sendData(
     `${API}${currentCustomer.id}/users/${user.id}`,
     data,
     headers,
     'PUT',
   );
 
-  if (!editCustomerUserResponse.ok)
+  if (!updateCustomerUserResponse.ok)
     return handleFailure(
-      editCustomerUserResponse,
+      updateCustomerUserResponse,
       'Edit Customer User Error',
-      editCustomerUserFailure,
+      updateCustomerUserFailure,
       dispatch,
     );
 
-  const editedUser = await editCustomerUserResponse.json();
-  return dispatch(editCustomerUserSuccess(editedUser));
+  const updatedUser = await updateCustomerUserResponse.json();
+  return dispatch(updateCustomerUserSuccess(updatedUser));
 };
 
 export const deleteCustomerUser = user => async (dispatch, getState) => {

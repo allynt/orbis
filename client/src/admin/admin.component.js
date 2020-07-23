@@ -10,7 +10,7 @@ import {
   selectCurrentCustomer,
   selectCustomerUsers,
   selectLicenceInformation,
-  editCustomerUser,
+  updateCustomerUser,
   deleteCustomerUser,
 } from './admin.slice';
 import HomeView from './home-view/home-view.component';
@@ -67,7 +67,7 @@ const Admin = ({ user }) => {
             customer={currentCustomer}
             onChangeRoleClick={user => {
               dispatch(
-                editCustomerUser(user, {
+                updateCustomerUser(user, {
                   type: user.type === 'MANAGER' ? 'MEMBER' : 'MANAGER',
                 }),
               );
