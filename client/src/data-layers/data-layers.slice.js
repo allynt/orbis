@@ -2,7 +2,7 @@ import { createSlice, createSelector } from '@reduxjs/toolkit';
 import { getJsonAuthHeaders, getData } from 'utils/http';
 
 const initialState = {
-  layers: {},
+  layers: [],
   pollingPeriod: 30000,
   token: null,
   sources: null,
@@ -17,16 +17,20 @@ const dataSlice = createSlice({
         typeof payload[0] === 'object'
           ? payload.map(layer => layer.source_id)
           : payload;
-      newLayers.forEach(layer => {
-        if (state.layers[layer] && !state.layers[layer].visible)
-          state.layers[layer].visible = true;
-        else if (!state.layers[layer])
-          state.layers[layer] = { loaded: true, visible: true };
-      });
+      state.layers = [...state.layers, ...newLayers];
     },
     removeLayer: (state, { payload }) => {
       const layerId = typeof payload === 'object' ? payload.source_id : payload;
-      if (state.layers[layerId]) state.layers[layerId].visible = false;
+      state.layers = state.layers.filter(layer => layer !== layerId);
+    },
+    setLayers: (state, { payload }) => {
+      if (!payload) return;
+      const layers =
+        typeof payload[0] === 'object'
+          ? payload.map(source => source.source_id)
+          : payload;
+      if (layers.some(layer => layer === undefined)) return;
+      state.layers = layers;
     },
     fetchSourcesSuccess: (state, { payload }) => {
       // Convert from minutes to millliseconds and then half the value.
@@ -45,6 +49,7 @@ const dataSlice = createSlice({
 
 export const {
   addLayers,
+  setLayers,
   removeLayer,
   fetchSourcesFailure,
   fetchSourcesSuccess,
@@ -83,19 +88,13 @@ export const selectPollingPeriod = createSelector(
 
 export const activeLayersSelector = createSelector(
   baseSelector,
-  data => data.layers ?? {},
+  data => data.layers ?? [],
 );
 
 export const activeDataSourcesSelector = createSelector(
   [dataSourcesSelector, activeLayersSelector],
   (sources, layers) =>
-    sources
-      ? sources.filter(
-          source =>
-            layers[source.source_id]?.loaded &&
-            layers[source.source_id]?.visible,
-        )
-      : [],
+    sources ? sources.filter(source => layers.includes(source.source_id)) : [],
 );
 
 export const selectDomainList = createSelector(dataSourcesSelector, sources =>

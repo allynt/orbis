@@ -5,7 +5,6 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { format } from 'date-fns';
 
-import { setViewport } from '../map/map.slice';
 import { regions } from '../map/map.constants';
 import { selectDomainList } from '../data-layers/data-layers.slice';
 import { fetchBookmarks, selectBookmark } from '../bookmarks/bookmark.slice';
@@ -113,7 +112,6 @@ const ExistingUserLanding = forwardRef(
       toggle,
       regions,
       domains,
-      setViewport,
     },
     ref,
   ) => {
@@ -165,7 +163,6 @@ const ExistingUserLanding = forwardRef(
             regions={regions}
             domains={domains}
             bookmarkTitles={bookmarks.map(b => b.title.toLowerCase())}
-            setViewport={setViewport}
           />
         </Dialog>
       </div>
@@ -182,7 +179,6 @@ const Landing = () => {
 
   const chooseBookmark = bookmark => dispatch(selectBookmark(bookmark));
   const domains = useSelector(selectDomainList);
-  const updateViewport = region => dispatch(setViewport(region));
 
   useEffect(() => {
     if (!bookmarks) {
@@ -204,7 +200,6 @@ const Landing = () => {
           isVisible={isVisible}
           regions={regions}
           domains={domains}
-          setViewport={updateViewport}
           ref={ref}
         />
       ) : (

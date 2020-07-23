@@ -12,6 +12,7 @@ import reducer, {
   selectPollingPeriod,
   selectDataToken,
   activeLayersSelector,
+  setLayers,
 } from './data-layers.slice';
 
 const mockStore = configureMockStore([thunk]);
@@ -91,7 +92,7 @@ describe('Data Slice', () => {
 
     beforeEach(() => {
       beforeState = {
-        layers: {},
+        layers: [],
         sources: null,
         token: null,
         pollingPeriod: 30000,
@@ -108,85 +109,86 @@ describe('Data Slice', () => {
       it('adds a layer', () => {
         const layers = ['test/layer/1'];
         const actualState = reducer(beforeState, addLayers(layers));
-        expect(actualState.layers[layers[0]]).toBeTruthy();
+        expect(actualState.layers).toContain(layers[0]);
       });
 
       it('adds a layer when the payload is an object', () => {
         const layer = { source_id: 'test/layer/1' };
         const actualState = reducer(beforeState, addLayers([layer]));
-        expect(actualState.layers[layer.source_id]).toBeTruthy();
-      });
-
-      it("sets a layer to loaded if it wasn't previously", () => {
-        const layer = 'test/layer/1';
-        const result = reducer(beforeState, addLayers([layer]));
-        expect(result.layers[layer].loaded).toBe(true);
-      });
-
-      it('sets a layer to visible', () => {
-        const layer = 'test/layer/1';
-        const result = reducer(beforeState, addLayers([layer]));
-        expect(result.layers[layer].visible).toBe(true);
-      });
-
-      it('sets a layer to visible if it has been loaded and hidden', () => {
-        const state = {
-          layers: { 'test/layer/1': { loaded: true, visible: false } },
-        };
-        const expected = { 'test/layer/1': { loaded: true, visible: true } };
-        const result = reducer(state, addLayers(['test/layer/1']));
-        expect(result.layers).toEqual(expected);
+        expect(actualState.layers).toContain(layer.source_id);
       });
 
       it('adds layers alongside previously selected layers', () => {
         const state = {
-          layers: {
-            'test/layer/1': {
-              loaded: true,
-              visible: true,
-            },
-            'test/layer/2': {
-              loaded: true,
-              visible: false,
-            },
-          },
+          layers: ['test/layer/1', 'test/layer/2'],
         };
         const layers = ['test/layer/4', 'test/layer/3'];
-        const expected = {
-          ...state.layers,
-          'test/layer/3': {
-            loaded: true,
-            visible: true,
-          },
-          'test/layer/4': {
-            loaded: true,
-            visible: true,
-          },
-        };
+        const expected = [...state.layers, 'test/layer/3', 'test/layer/4'];
         const result = reducer(state, addLayers(layers));
+        expect([...result.layers].sort()).toEqual(expected.sort());
+      });
+    });
+
+    describe('setLayers', () => {
+      it("sets the layers in state if it doesn't exist", () => {
+        const state = {};
+        const layers = ['test/id/1', 'test/id/2'];
+        const result = reducer(state, setLayers(layers));
+        expect(result.layers).toEqual(layers);
+      });
+
+      it('replaces the layers array in state', () => {
+        const state = {
+          layers: ['test/id/1', 'test/id/2'],
+        };
+        const layers = ['test/id/3', 'test/id/4'];
+        const result = reducer(state, setLayers(layers));
+        expect(result.layers).toEqual(layers);
+      });
+
+      it('works if the payload is an array of objects', () => {
+        const state = { layers: ['test/id/1', 'test/id/2'] };
+        const layers = [{ source_id: 'test/id/3' }, { source_id: 'test/id/4' }];
+        const expected = ['test/id/3', 'test/id/4'];
+        const result = reducer(state, setLayers(layers));
         expect(result.layers).toEqual(expected);
+      });
+
+      it('does nothing if the object array does not contain `source_id` properties', () => {
+        const state = { layers: ['test/id/1', 'test/id/2'] };
+        const layers = [{ id: 'test/id/3' }, { id: 'test/id/4' }];
+        const result = reducer(state, setLayers(layers));
+        expect(result.layers).toEqual(state.layers);
+      });
+
+      it('does nothing if the payload is undefined', () => {
+        const state = { layers: ['test/id/1', 'test/id/2'] };
+        const result = reducer(state, setLayers(undefined));
+        expect(result.layers).toEqual(state.layers);
+      });
+
+      it('removes all layers if set to an empty array', () => {
+        const state = { layers: ['test/id/1', 'test/id/2'] };
+        const result = reducer(state, setLayers([]));
+        expect(result.layers).toEqual([]);
       });
     });
 
     describe('removeLayer', () => {
       it('does nothing if the layer being removed does not exist', () => {
         const state = {
-          layers: {},
+          layers: [],
         };
         const layer = 'test/layer/1';
         const actualState = reducer(state, removeLayer(layer));
         expect(actualState).toEqual(state);
       });
 
-      it("sets the layer's visible property to false", () => {
+      it('removes a layer', () => {
         const state = {
-          layers: {
-            'test/layer/1': { loaded: true, visible: true },
-          },
+          layers: ['test/layer/1'],
         };
-        const expected = {
-          'test/layer/1': { loaded: true, visible: false },
-        };
+        const expected = [];
         const layer = 'test/layer/1';
         const result = reducer(state, removeLayer(layer));
         expect(result.layers).toEqual(expected);
@@ -194,31 +196,12 @@ describe('Data Slice', () => {
 
       it('should remove layers when an object is received', () => {
         const state = {
-          layers: {
-            'test/layer/1': { loaded: true, visible: true },
-            'test/layer/2': { loaded: true, visible: true },
-          },
+          layers: ['test/layer/1', 'test/layer/2'],
         };
         const layer = { source_id: 'test/layer/2' };
+        const expected = ['test/layer/1'];
         const result = reducer(state, removeLayer(layer));
-        expect(result.layers[layer.source_id].visible).toBe(false);
-      });
-
-      it('does not affect other layers', () => {
-        const state = {
-          layers: {
-            'test/layer/1': { loaded: true, visible: true },
-            'test/layer/2': { loaded: true, visible: true },
-          },
-        };
-        const expected = {
-          layers: {
-            'test/layer/1': { loaded: true, visible: false },
-            'test/layer/2': { loaded: true, visible: true },
-          },
-        };
-        const result = reducer(state, removeLayer('test/layer/1'));
-        expect(result).toEqual(expected);
+        expect(result.layers).toEqual(expected);
       });
     });
 
@@ -357,26 +340,26 @@ describe('Data Slice', () => {
       });
     });
 
-    describe('selectLayers', () => {
+    describe('activeLayersSelector', () => {
       it('returns an empty object if state is undefined', () => {
         const result = activeLayersSelector();
-        expect(result).toEqual({});
+        expect(result).toEqual([]);
       });
 
       it('returns an empty object if data is undefined', () => {
         const result = activeLayersSelector({});
-        expect(result).toEqual({});
+        expect(result).toEqual([]);
       });
 
       it('returns an empty object if layers is undefined', () => {
         const result = activeLayersSelector({ data: {} });
-        expect(result).toEqual({});
+        expect(result).toEqual([]);
       });
 
       it('returns layers', () => {
         const state = {
           data: {
-            layers: { 'test/layer/1': { loaded: true, visible: true } },
+            layers: ['test/layer/1'],
           },
         };
         const result = activeLayersSelector(state);
@@ -393,11 +376,7 @@ describe('Data Slice', () => {
               { source_id: 'Source 2' },
               { source_id: 'Source 3' },
             ],
-            layers: {
-              'Source 1': { loaded: true, visible: true },
-              'source 2': { loaded: true, visible: false },
-              'Source 3': { loaded: true, visible: true },
-            },
+            layers: ['Source 1', 'source 2', 'Source 3'],
           },
         };
         const expected = [state.data.sources[0], state.data.sources[2]];
@@ -413,7 +392,7 @@ describe('Data Slice', () => {
               { source_id: 'Source 2' },
               { source_id: 'Source 3' },
             ],
-            layers: {},
+            layers: [],
           },
         };
         const result = activeDataSourcesSelector(state);
@@ -424,7 +403,7 @@ describe('Data Slice', () => {
         const state = {
           data: {
             sources: [],
-            layers: {},
+            layers: [],
           },
         };
         const result = activeDataSourcesSelector(state);
@@ -434,7 +413,7 @@ describe('Data Slice', () => {
       it('returns an empty array if sources is undefined', () => {
         const state = {
           data: {
-            layers: {},
+            layers: [],
           },
         };
         const result = activeDataSourcesSelector(state);
@@ -445,10 +424,7 @@ describe('Data Slice', () => {
         const state = {
           data: {
             sources: [],
-            layers: {
-              'Source 1': { loaded: true, visible: true },
-              'Source 3': { loaded: true, visible: true },
-            },
+            layers: ['Source 1', 'Source 3'],
           },
         };
         const result = activeDataSourcesSelector(state);

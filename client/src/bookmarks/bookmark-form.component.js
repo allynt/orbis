@@ -28,7 +28,11 @@ const BookmarkForm = ({ bookmarkTitles, submit }) => {
       onSubmit={handleSubmit}
     >
       <div className={`${formStyles.fields} ${bookmarkStyles.fields}`}>
+        <label className={formStyles.hiddenLabel} htmlFor="title">
+          Title
+        </label>
         <Textfield
+          id="title"
           name="title"
           value={values.title || ''}
           placeholder="Title"
@@ -40,7 +44,11 @@ const BookmarkForm = ({ bookmarkTitles, submit }) => {
           <p className={formStyles.errorMessage}>{errors.title}</p>
         )}
 
+        <label className={formStyles.hiddenLabel} htmlFor="description">
+          Description
+        </label>
         <Textfield
+          id="description"
           name="description"
           value={values.description || ''}
           placeholder="Description"

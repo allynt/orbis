@@ -1,43 +1,44 @@
+import { userSelector } from 'accounts/accounts.slice';
+import { activeLayersSelector } from 'data-layers/data-layers.slice';
+import { useMap } from 'MapContext';
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-
+import styles from '../side-menu/side-menu.module.css';
 import BookmarkForm from './bookmark-form.component';
+import {
+  addBookmark,
+  deleteBookmark,
+  fetchBookmarks,
+  selectBookmark,
+} from './bookmark.slice';
 import BookmarkList from './bookmarks-list.component';
 
-import {
-  fetchBookmarks,
-  addBookmark,
-  selectBookmark,
-  deleteBookmark,
-} from './bookmark.slice';
-
-import styles from '../side-menu/side-menu.module.css';
-import { userSelector } from 'accounts/accounts.slice';
-
 const BookmarksPanel = () => {
+  const { createScreenshot, viewState } = useMap();
+  const layers = useSelector(activeLayersSelector);
   const dispatch = useDispatch();
-  const { id: owner } = useSelector(userSelector);
+  const user = useSelector(userSelector);
 
   const submit = form => {
-    dispatch(
-      addBookmark(
-        {
+    createScreenshot(thumbnail => {
+      dispatch(
+        addBookmark({
           ...form,
-          feature_collection: {},
-          center: [0, 0],
-          zoom: 0,
-          owner,
-          thumbnail: '',
-        },
-        'image/png',
-      ),
-    );
+          center: [viewState.longitude, viewState.latitude],
+          zoom: viewState.zoom,
+          owner: user.id,
+          thumbnail,
+          layers,
+        }),
+      );
+    });
   };
 
   const chooseBookmark = bookmark => dispatch(selectBookmark(bookmark));
   const deleteBookmarkItem = bookmark => dispatch(deleteBookmark(bookmark));
 
-  const bookmarks = useSelector(state => state.bookmarks.bookmarks);
+  const bookmarks = useSelector(state => state?.bookmarks?.bookmarks);
+
   useEffect(() => {
     if (!bookmarks) {
       dispatch(fetchBookmarks());
@@ -47,7 +48,7 @@ const BookmarksPanel = () => {
   return (
     <div className={styles.container}>
       <BookmarkForm
-        bookmarkTitles={bookmarks.map(b => b?.title?.toLowerCase())}
+        bookmarkTitles={bookmarks?.map(b => b?.title?.toLowerCase())}
         submit={submit}
       />
       <BookmarkList

@@ -51,8 +51,6 @@ describe('Register Form Component', () => {
     expect(getByPlaceholderText('Email')).toBeInTheDocument();
     expect(getByPlaceholderText('Password')).toBeInTheDocument();
     expect(getByPlaceholderText('Password Confirmation')).toBeInTheDocument();
-    // Check password strength component exists
-    expect(getByText('Password Strength:')).toBeInTheDocument();
     expect(getByText('I agree with')).toBeInTheDocument();
 
     //Check the I agree with button is in the document and has the correct href

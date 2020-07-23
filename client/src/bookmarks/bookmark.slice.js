@@ -37,7 +37,6 @@ const bookmarkSlice = createSlice({
       state.bookmarks = state.bookmarks
         ? [payload, ...state.bookmarks]
         : [payload];
-      state.selectedBookmark = payload;
       state.error = null;
     },
     addBookmarkFailure: (state, { payload }) => {
@@ -112,10 +111,7 @@ export const addBookmark = bookmark => async (dispatch, getState) => {
   Object.keys(bookmark).forEach(key => formData.append(key, bookmark[key]));
   // nested JSON should be stringified prior to passing to backend
   formData.set('center', JSON.stringify(bookmark['center']));
-  formData.set(
-    'feature_collection',
-    JSON.stringify(bookmark['feature_collection']),
-  );
+  formData.set('layers', JSON.stringify(bookmark['layers']));
 
   const headers = getFormAuthHeaders(getState());
 
@@ -131,7 +127,7 @@ export const addBookmark = bookmark => async (dispatch, getState) => {
 
   const newBookmark = await response.json();
   NotificationManager.success(
-    undefined,
+    '',
     `Successfully saved ${bookmark.title}`,
     5000,
     () => {},
@@ -154,7 +150,7 @@ export const deleteBookmark = bookmark => async (dispatch, getState) => {
   }
 
   NotificationManager.success(
-    undefined,
+    '',
     `Successfully deleted ${bookmark.title}`,
     5000,
     () => {},

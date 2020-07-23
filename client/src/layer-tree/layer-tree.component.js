@@ -1,7 +1,4 @@
 import React, { useState } from 'react';
-// import PropTypes from 'prop-types';
-
-import useMap from '../map/use-map.hook';
 
 import styles from './layer-tree.module.css';
 
@@ -24,20 +21,6 @@ const LayerNode = ({ node, toggleLayerVisibility }) => {
 
 const LayerTree = ({ map }) => {
   const [nodes, setNodes] = useState(null);
-
-  useMap(
-    map,
-    mapInstance => {
-      const layers = mapInstance.getStyle().layers;
-      const layerNodes = layers.map(layer => ({
-        label: layer.id,
-        visible: true,
-      }));
-
-      setNodes(layerNodes);
-    },
-    [setNodes],
-  );
 
   const toggleLayerVisibility = layer => {
     const visibility = map.getLayoutProperty(layer, 'visibility');
