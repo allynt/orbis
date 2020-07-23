@@ -23,7 +23,7 @@ const addBookmarkHandler = (req, res) => {
 };
 
 const deleteBookmarkHandler = (req, res) => {
-  deleteBookmark(req.params.id);
+  deleteBookmark(+req.params.id);
   res.status(200);
   res.json(getBookmarks());
 };
