@@ -88,6 +88,7 @@ class TestBookmarkViews:
             "zoom": bookmark.zoom,
             "center": json.dumps(bookmark.center.coords),
             "feature_collection": json.dumps(bookmark.feature_collection),
+            "layers": json.dumps(bookmark.layers),
         }
 
         client = APIClient()
@@ -112,6 +113,7 @@ class TestBookmarkViews:
             "zoom": bookmark.zoom,
             "center": json.dumps(bookmark.center.coords),
             "feature_collection": json.dumps(bookmark.feature_collection),
+            "layers": json.dumps(bookmark.layers),
         }
 
         old_title = bookmark_data["title"]
