@@ -1,11 +1,15 @@
 const express = require('express');
+const multer = require('multer');
+const upload = multer();
 
 const currentUserMiddleware = require('../authentication/middleware/currentUserMiddleware');
-const { getBookmarks, setBookmarks, addBookmark } = require('./data');
+const { getBookmarks, addBookmark, deleteBookmark } = require('./data');
 
 const getBookmarksHandler = (req, res) => {
   console.log('Returning Bookmarks');
-  const userBookmarks = getBookmarks().filter(bookmark => bookmark.owner === req.currentUser.id);
+  const userBookmarks = getBookmarks().filter(
+    bookmark => bookmark.owner === req.currentUser.id,
+  );
 
   res.status(200);
   res.json(userBookmarks);
@@ -13,27 +17,23 @@ const getBookmarksHandler = (req, res) => {
 
 const addBookmarkHandler = (req, res) => {
   console.log('Adding Bookmark');
-  const bookmark = {
-    ...req.body,
-  };
-
-  addBookmark(bookmark);
+  const newBookmark = addBookmark(req.body, req.file);
   res.status(200);
-  res.json(bookmark);
+  res.json(newBookmark);
 };
 
-const deleteBookmark = (req, res) => {
-  setBookmarks(getBookmarks().filter(bookmark => bookmark.id !== parseInt(req.params.id, 10)));
+const deleteBookmarkHandler = (req, res) => {
+  deleteBookmark(+req.params.id);
   res.status(200);
   res.json(getBookmarks());
 };
 
 const bookmarksRouter = express.Router();
-
 bookmarksRouter
   .route('/')
   .get(currentUserMiddleware, getBookmarksHandler)
-  .post(addBookmarkHandler);
-bookmarksRouter.route('/:id').delete(deleteBookmark);
+  .post(upload.single('thumbnail'), addBookmarkHandler);
+bookmarksRouter.route('/:id').delete(deleteBookmarkHandler);
+bookmarksRouter.use('/media', express.static(`${__dirname}/media`));
 
 module.exports = bookmarksRouter;

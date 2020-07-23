@@ -1,6 +1,6 @@
 let users = [
   {
-    id: 1,
+    id: '6e5ac533-0245-4031-ab65-b1eff4d30a1f',
     username: 'user@test.com',
     email: 'user@test.com',
     password: 'panda',
@@ -13,7 +13,7 @@ let users = [
     customers: [],
   },
   {
-    id: 2,
+    id: '5edd4615-34a7-4c55-9243-0092671ef9d8',
     email: 'admin@test.com',
     password: 'pandaconcretespoon',
     name: 'Harry Callahan',
@@ -45,7 +45,7 @@ let users = [
     ],
   },
   {
-    id: 2,
+    id: 'e3e7cd24-cfc7-49b3-837c-332dde8f1033',
     username: 'verified@test.com',
     email: 'verified@test.com',
     password: 'pandaconcretespoon',
@@ -58,7 +58,7 @@ let users = [
     customers: [],
   },
   {
-    id: 3,
+    id: '14247edb-5e41-4770-aa91-d652466880be',
     username: 'approved@test.com',
     email: 'approved@test.com',
     password: 'pandaconcretespoon',

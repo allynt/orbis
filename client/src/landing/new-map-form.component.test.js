@@ -19,7 +19,6 @@ const mockStore = configureMockStore([thunk]);
 describe('New Map Form Component', () => {
   let history = null;
   let store = null;
-  let setViewport = null;
   let bookmarkTitles = null;
 
   beforeEach(cleanup);
@@ -34,8 +33,6 @@ describe('New Map Form Component', () => {
       },
     });
 
-    setViewport = jest.fn();
-
     bookmarkTitles = ['Title 1', 'Title 2', 'Title 3'];
   });
 
@@ -47,7 +44,6 @@ describe('New Map Form Component', () => {
             regions={regions}
             domains={domains}
             bookmarkTitles={bookmarkTitles}
-            setViewport={setViewport}
           />
         </Provider>
       </Router>,
@@ -76,7 +72,6 @@ describe('New Map Form Component', () => {
             regions={regions}
             domains={domains}
             bookmarkTitles={bookmarkTitles}
-            setViewport={setViewport}
           />
         </Provider>
       </Router>,
@@ -103,7 +98,6 @@ describe('New Map Form Component', () => {
             regions={regions}
             domains={domains}
             bookmarkTitles={bookmarkTitles}
-            setViewport={setViewport}
           />
         </Provider>
       </Router>,
@@ -116,6 +110,6 @@ describe('New Map Form Component', () => {
       target: { value: 'New Map Description' },
     });
     fireEvent.click(getByText('Create'));
-    expect(setViewport).toHaveBeenCalled();
+    expect(history.location.pathname).toBe('/map');
   });
 });

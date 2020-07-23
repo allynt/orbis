@@ -1,13 +1,5 @@
 import React, { useReducer, useRef } from 'react';
-// import ReactDOM from 'react-dom';
 
-// import { useDispatch } from 'react-redux';
-
-// import mapboxgl from 'mapbox-gl';
-import useMap from '../map/use-map.hook';
-import { useMapEvent } from '../map/use-map-event.hook';
-
-// import Slider from 'rc-slider'
 import { scalePow } from 'd3-scale';
 
 import { Button, Slider } from '@astrosat/astrosat-ui';
@@ -19,8 +11,6 @@ import {
   FreehandIcon,
   RadiusIcon,
   DrawCircleIcon,
-  // RotateIcon,
-  // ImageIcon,
   LineWidth1pxIcon,
   LineWidth2pxIcon,
   LineWidth3pxIcon,
@@ -29,17 +19,10 @@ import {
   LineTypeDottedIcon,
 } from '@astrosat/astrosat-ui/';
 
-// import { ReactComponent as FontIcon } from './font.svg';
-// import { ReactComponent as LabelIcon } from './label.svg';
-
 import ColorPicker from './color-picker.component';
 import DropDownButton from './drop-down-button.component';
 import ReactTooltip from 'react-tooltip';
-// import TextDialog from './text-dialog.component';
-// import LabelForm from './label-form.component';
 import ImageForm from './image-form.component';
-
-// import { setTextLabelSelected } from './annotations.actions';
 
 import styles from './annotations-panel.module.css';
 import sideMenuStyles from '../side-menu/side-menu.module.css';
@@ -187,69 +170,6 @@ const AnnotationsPanel = ({ map }) => {
   };
 
   const popupRef = useRef(null);
-
-  useMap(
-    map,
-    mapInstance => {
-      const drawCtrl = mapInstance._controls.find(ctrl => ctrl.changeMode);
-      // console.log('DRAW CTRL STYLE: ', mode, drawCtrl);
-      if (drawCtrl) {
-        // mapInstance.on('draw.selectionchange', event => {
-        //   console.log('SELECTION CHANGE: ', event, drawCtrl.getMode());
-        // });
-        // mapInstance.on('draw.create', event => {
-        //   console.log('CREATE EVENT: ', event, drawCtrl.getAll());
-        // });
-        // mapInstance.on('draw.render', event => {
-        //   console.log('RENDER EVENT: ', event, drawCtrl.getAll());
-        // });
-        // mapInstance.on('draw.update', event => {
-        //   console.log('UPDATE EVENT: ', event, drawCtrl.getAll());
-        // });
-        // mapInstance.on('draw.modechange', event => {
-        //   console.log('MODE CHANGE: ', event);
-        // });
-        if (mode !== 'trash' && mode !== 'deleteAll') {
-          drawCtrl.changeMode(mode, drawOptions);
-        } else {
-          if (mode === 'deleteAll') {
-            drawCtrl.deleteAll();
-          } else {
-            drawCtrl.trash();
-          }
-        }
-      }
-    },
-    [mode, drawOptions],
-  );
-
-  useMapEvent(
-    map,
-    'click',
-    event => {
-      event.preventDefault();
-      const { lngLat } = event;
-      // console.log('FEATURES');
-
-      // When user clicks map open Label Editor.
-      if (!popupRef.current) {
-        popupRef.current = document.createElement('div');
-      }
-
-      // Only take the first feature, which should be the top most
-      // feature and the one you meant.
-      if (textLabelSelected) {
-        console.log('POPUP CONTENT: ', popupRef);
-        // new mapboxgl.Popup()
-        //   // .setLngLat(features[0].geometry.coordinates.slice())
-        //   .setLngLat(lngLat)
-        //   .setDOMContent(popupRef.current)
-        //   .on('close', () => console.log('Closing Popup'))
-        //   .addTo(map);
-      }
-    },
-    [textLabelSelected],
-  );
 
   return (
     <div className={styles.panel}>

@@ -1,13 +1,6 @@
 import { createSlice, createSelector } from '@reduxjs/toolkit';
 
 const initialState = {
-  viewport: {
-    zoom: 6,
-    longitude: -4.84,
-    latitude: 54.71,
-    pitch: 0,
-    bearing: 0,
-  },
   selectedMapStyle: {},
   isCompareMode: false,
   saveMap: false,
@@ -21,11 +14,6 @@ const mapSlice = createSlice({
   name: 'map',
   initialState,
   reducers: {
-    setViewport: (state, { payload }) => {
-      if (payload) {
-        state.viewport = payload;
-      }
-    },
     selectMapStyle: (state, { payload }) => {
       state.selectedMapStyle = payload;
     },
@@ -38,21 +26,12 @@ const mapSlice = createSlice({
   },
 });
 
-export const {
-  setViewport,
-  selectMapStyle,
-  toggleCompareMode,
-  saveMap,
-} = mapSlice.actions;
+export const { selectMapStyle, toggleCompareMode, saveMap } = mapSlice.actions;
 
 const baseSelector = state => state?.map;
 export const isCompareModeSelector = createSelector(
   baseSelector,
   map => map?.isCompareMode || false,
-);
-export const viewportSelector = createSelector(
-  baseSelector,
-  map => map?.viewport,
 );
 export const selectedMapStyleSelector = createSelector(
   baseSelector,

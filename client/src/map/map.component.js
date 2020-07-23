@@ -18,12 +18,7 @@ import {
   isLoadingSelector as bookmarksLoadingSelector,
 } from '../bookmarks/bookmark.slice';
 import MapStyleSwitcher from '../mapstyle/mapstyle-switcher.component';
-import {
-  selectMapStyle,
-  viewportSelector,
-  selectedMapStyleSelector,
-  setViewport,
-} from './map.slice';
+import { selectMapStyle, selectedMapStyleSelector } from './map.slice';
 import { mapboxTokenSelector, mapStylesSelector } from 'app.slice';
 
 import 'mapbox-gl/dist/mapbox-gl.css';
@@ -32,6 +27,7 @@ import {
   activeLayersSelector,
   dataSourcesSelector,
   selectDataToken,
+  setLayers,
 } from 'data-layers/data-layers.slice';
 import FeatureDetail from './feature-detail.component';
 
@@ -40,6 +36,8 @@ import infrastructureIconMapping from './layers/hourglass/infrastructure/iconMap
 import peopleIconAtlas from './layers/hourglass/people/iconAtlas.svg';
 import peopleIconMapping from './layers/hourglass/people/iconMapping.json';
 import { LAYER_IDS } from './map.constants';
+import { useMap } from 'MapContext';
+import { easeInOutCubic } from 'utils/easingFunctions';
 
 const dataUrlFromId = (id, sources) => {
   const source = sources.find(source => source.source_id === id);
@@ -52,10 +50,10 @@ const dataUrlFromId = (id, sources) => {
 const MAX_ZOOM = 20;
 
 const Map = () => {
+  const { setMap, setDeck, viewState, setViewState } = useMap();
   const dispatch = useDispatch();
   const accessToken = useSelector(mapboxTokenSelector);
   const authToken = useSelector(selectDataToken);
-  const viewport = useSelector(viewportSelector);
   const selectedBookmark = useSelector(selectedBookmarkSelector);
   const bookmarksLoading = useSelector(bookmarksLoadingSelector);
   const mapStyles = useSelector(mapStylesSelector);
@@ -68,26 +66,40 @@ const Map = () => {
   const [pickedObject, setPickedObject] = useState();
 
   useEffect(() => {
-    dispatch(onBookmarkLoaded());
-  }, [selectedBookmark, dispatch]);
+    if (selectedBookmark) {
+      const {
+        center: [longitude, latitude],
+        zoom,
+        layers,
+      } = selectedBookmark;
+      setViewState({
+        ...viewState,
+        longitude,
+        latitude,
+        zoom,
+        transitionDuration: 2000,
+        transitionInterpolator: new FlyToInterpolator(),
+      });
+      dispatch(setLayers(layers || []));
+      dispatch(onBookmarkLoaded());
+    }
+  }, [selectedBookmark, viewState, setViewState, dispatch]);
 
   const handleLayerClick = info => {
     if (info.object.properties.cluster) {
       if (info.object.properties.expansion_zoom <= MAX_ZOOM)
-        dispatch(
-          setViewport({
-            ...viewport,
-            longitude: info.object.geometry.coordinates[0],
-            latitude: info.object.geometry.coordinates[1],
-            zoom:
-              info.object.properties.expansion_zoom >= MAX_ZOOM
-                ? MAX_ZOOM
-                : info.object.properties.expansion_zoom,
-            transitionDuration: 1000,
-            transitionInterpolator:
-              viewport.transitionInterpolator || new FlyToInterpolator(),
-          }),
-        );
+        setViewState({
+          ...viewState,
+          longitude: info.object.geometry.coordinates[0],
+          latitude: info.object.geometry.coordinates[1],
+          zoom:
+            info.object.properties.expansion_zoom >= MAX_ZOOM
+              ? MAX_ZOOM
+              : info.object.properties.expansion_zoom,
+          transitionDuration: 1000,
+          transitionEasing: easeInOutCubic,
+          transitionInterpolator: new FlyToInterpolator(),
+        });
       else setPickedObject(info.objects);
     } else setPickedObject([info.object]);
   };
@@ -111,7 +123,7 @@ const Map = () => {
         new GeoJsonClusteredIconLayer({
           id,
           data: dataRequest(dataUrlFromId(id, sources)),
-          visible: activeLayers[id]?.visible,
+          visible: activeLayers?.includes(id),
           pickable: true,
           iconMapping: infrastructureIconMapping,
           iconAtlas: infrastructureIconAtlas,
@@ -132,7 +144,9 @@ const Map = () => {
       data: dataRequest(
         dataUrlFromId(LAYER_IDS.astrosat.covid.hourglass.latest, sources),
       ),
-      visible: activeLayers[LAYER_IDS.astrosat.covid.hourglass.latest]?.visible,
+      visible: activeLayers?.includes(
+        LAYER_IDS.astrosat.covid.hourglass.latest,
+      ),
       pickable: true,
       iconMapping: peopleIconMapping,
       iconAtlas: peopleIconAtlas,
@@ -166,12 +180,16 @@ const Map = () => {
         </div>
       )}
       <DeckGL
+        ref={ref => ref && setDeck(ref.deck)}
         controller
-        initialViewState={viewport}
+        viewState={viewState}
+        onViewStateChange={({ viewState }) => setViewState(viewState)}
         layers={layers}
         ContextProvider={MapContext.Provider}
       >
         <StaticMap
+          ref={ref => ref && setMap(ref.getMap())}
+          preserveDrawingBuffer
           reuseMap
           mapboxApiAccessToken={accessToken}
           mapStyle={selectedMapStyle?.uri}

@@ -33,5 +33,14 @@ export const PopulationInformation = () => (
         {toTitleCase(personType.name)}
       </li>
     ))}
+    <li className={styles.listItem}>
+      <div
+        className={styles.colorBox}
+        style={{
+          backgroundColor: '#8031A7',
+        }}
+      />
+      Group
+    </li>
   </ul>
 );
