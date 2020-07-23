@@ -204,7 +204,7 @@ const Map = () => {
             <FeatureDetail features={pickedObject} />
           </Popup>
         )}
-        / <NavigationControl className={styles.navigationControl} />
+        <NavigationControl className={styles.navigationControl} />
       </DeckGL>
       <Button
         theme="secondary"
