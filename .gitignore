@@ -96,6 +96,7 @@ target/
 client/cypress/integration/examples/*
 client/cypress/screenshots
 client/cypress/videos
+client/coverage
 client/reports/
 node_modules/
 spec_generated/

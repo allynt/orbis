@@ -14,6 +14,7 @@
     "e2e:install": "cypress install",
     "e2e:verify": "cypress verify",
     "e2e:run": "cypress run",
+    "test:coverage": "react-scripts test --env=jest-environment-jsdom-sixteen --coverage --watchAll",
     "storybook": "start-storybook -p 9009 -s public",
     "build-storybook": "build-storybook -s public",
     "proxy": "nodemon -w proxy ./proxy/proxy.js"
