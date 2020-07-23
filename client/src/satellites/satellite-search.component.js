@@ -1,6 +1,5 @@
 import React, { useEffect, useState, useCallback } from 'react';
 
-import { bbox, lineString } from '@turf/turf';
 import { useDispatch, useSelector } from 'react-redux';
 
 import Button from '@astrosat/astrosat-ui/dist/buttons/button';
@@ -12,12 +11,9 @@ import {
   setCurrentSatelliteSearchQuery,
 } from './satellites.slice';
 
-// import useMap from '../map/use-map.hook';
-
 import { DrawAoiIcon } from '@astrosat/astrosat-ui/';
 import SatelliteSearchForm from './satellite-search-form.component';
 import SavedSearchList from './saved-search-list.component';
-// import { useMapEvent } from 'map/use-map-event.hook';
 import { getGeometryAreaKmSquared } from 'utils/geometry';
 
 import styles from './satellite-search.module.css';
@@ -40,9 +36,6 @@ const SatelliteSearch = (
 
   const savedSearches = useSelector(
     state => state.satellites.satelliteSearches,
-  );
-  const currentSearchQuery = useSelector(
-    state => state.satellites.currentSearchQuery,
   );
   const maximumAoiArea = useSelector(state => state.app.config.maximumAoiArea);
 
@@ -106,18 +99,6 @@ const SatelliteSearch = (
     setGeometry(newGeometry);
   }, [map]);
 
-  // Set geometry to the viewbox as long as there's no drawn feature
-  // useMapEvent(
-  //   map,
-  //   'move',
-  //   () => {
-  //     const [drawControl, feature] = getDraw();
-  //     if (!feature) setGeometryToMapBounds();
-  //     return () => drawControl.deleteAll();
-  //   },
-  //   [],
-  // );
-
   // Set geometry to map bounds if null
   useEffect(() => {
     if (map) {
@@ -151,44 +132,6 @@ const SatelliteSearch = (
       dispatch(fetchSavedSatelliteSearches());
     }
   }, [savedSearches, dispatch]);
-
-  // If the current search query changes, redraw the AOI on map
-  // useMap(
-  //   map,
-  //   mapInstance => {
-  //     if (currentSearchQuery?.aoi) {
-  //       const { aoi } = currentSearchQuery;
-  //       setGeometry(aoi);
-  //       const line = lineString(aoi);
-  //       mapInstance.fitBounds(bbox(line), { padding: 275, offset: [100, 0] });
-  //       const [drawCtrl] = getDraw();
-  //       if (drawCtrl) {
-  //         drawCtrl.deleteAll();
-  //         const feature = {
-  //           type: 'Feature',
-  //           drawType: 'AOI',
-  //           properties: {
-  //             drawType: 'AOI',
-  //             fillOpacity: 0.5,
-  //             fillColor: 'green',
-  //           },
-  //           geometry: {
-  //             type: 'Polygon',
-  //             coordinates: [aoi],
-  //           },
-  //         };
-  //         drawCtrl.add(feature);
-  //       }
-
-  //       return () => {
-  //         if (drawCtrl) {
-  //           drawCtrl.deleteAll();
-  //         }
-  //       };
-  //     }
-  //   },
-  //   [currentSearchQuery],
-  // );
 
   return (
     <div className={styles.search} ref={ref}>
