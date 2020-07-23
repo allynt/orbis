@@ -1,17 +1,4 @@
-const scotlandInfrastructure = require('./scotland-infrastructure');
-const northernIrelandInfrastructure = require('./northern-ireland-infrastructure');
-const hospitalsUk = require('./hospitals-uk');
-const populationInformation = require('./hourglass-population-information');
-const sentinel2Rgb = require('./sentinel-2-rgb');
-const stokeOnTrent = require('./stoke-on-trent');
-const superSen2JapanBand = require('./super-sen2-japan-band');
+const hourglass = require('./hourglass');
+const rice = require('./rice');
 
-module.exports = [
-  scotlandInfrastructure,
-  northernIrelandInfrastructure,
-  hospitalsUk,
-  populationInformation,
-  sentinel2Rgb,
-  stokeOnTrent,
-  superSen2JapanBand,
-];
+module.exports = [...hourglass, ...rice];
