@@ -3,7 +3,7 @@ import iconMapping from './iconMapping.json';
 import iconAtlas from './iconAtlas.svg';
 import { MAX_ZOOM } from '../constants';
 
-export default (id, data, visible, onClick) =>
+export const infrastructureLayer = (id, data, visible, onClick) =>
   new GeoJsonClusteredIconLayer({
     id,
     data,

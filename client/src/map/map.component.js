@@ -13,25 +13,16 @@ import MapStyleSwitcher from 'mapstyle/mapstyle-switcher.component';
 import React, { useEffect, useState } from 'react';
 import {
   NavigationControl,
-  Popup,
   StaticMap,
   _MapContext as MapContext,
 } from 'react-map-gl';
 import { useDispatch, useSelector } from 'react-redux';
-import FeatureDetail from './feature-detail.component';
-import { useLayers } from './layers/useLayers';
+import { useOrbs } from './orbs/useOrbs';
 import styles from './map.module.css';
 import { selectedMapStyleSelector, selectMapStyle } from './map.slice';
 
 const Map = () => {
-  const {
-    setMap,
-    setDeck,
-    viewState,
-    setViewState,
-    pickedObject,
-    setPickedObject,
-  } = useMap();
+  const { setMap, setDeck, viewState, setViewState } = useMap();
   const dispatch = useDispatch();
   const accessToken = useSelector(mapboxTokenSelector);
   const selectedBookmark = useSelector(selectedBookmarkSelector);
@@ -41,7 +32,7 @@ const Map = () => {
   const [isMapStyleSwitcherVisible, setIsMapStyleSwitcherVisible] = useState(
     false,
   );
-  const { layers } = useLayers();
+  const { layers, mapComponents } = useOrbs();
 
   useEffect(() => {
     if (selectedBookmark) {
@@ -85,16 +76,7 @@ const Map = () => {
           mapboxApiAccessToken={accessToken}
           mapStyle={selectedMapStyle?.uri}
         />
-        {pickedObject && (
-          <Popup
-            longitude={pickedObject[0].geometry.coordinates[0]}
-            latitude={pickedObject[0].geometry.coordinates[1]}
-            onClose={() => setPickedObject(undefined)}
-            captureScroll
-          >
-            <FeatureDetail features={pickedObject} />
-          </Popup>
-        )}
+        {mapComponents}
         <NavigationControl className={styles.navigationControl} />
       </DeckGL>
       <Button
