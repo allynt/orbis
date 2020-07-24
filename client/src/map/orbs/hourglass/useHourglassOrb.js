@@ -7,7 +7,7 @@ import { peopleLayer } from './people';
 import { useMap } from 'MapContext';
 import { Popup } from 'react-map-gl';
 import React, { useState } from 'react';
-import FeatureDetail from 'map/feature-detail.component';
+import FeatureDetail from './feature-detail/feature-detail.component';
 
 export const useHourglassOrb = (data, activeLayers) => {
   const { setViewState } = useMap();
