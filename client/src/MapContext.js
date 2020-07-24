@@ -28,6 +28,8 @@ MapContext.displayName = 'MapContext';
  * @property {React.Dispatch<import('deck.gl').Deck>} setDeck
  * @property {ViewState} viewState
  * @property {React.Dispatch<ViewState>} setViewState
+ * @property {Object} pickedObject
+ * @property {React.Dispatch<*>} setPickedObject
  */
 
 /**
@@ -37,11 +39,21 @@ MapContext.displayName = 'MapContext';
 export const MapProvider = props => {
   const [map, setMap] = useState();
   const [deck, setDeck] = useState();
+  const [pickedObject, setPickedObject] = useState();
   const [viewState, setViewState] = useState(INITIAL_VIEW_STATE);
 
   return (
     <MapContext.Provider
-      value={{ map, setMap, deck, setDeck, viewState, setViewState }}
+      value={{
+        map,
+        setMap,
+        deck,
+        setDeck,
+        viewState,
+        setViewState,
+        pickedObject,
+        setPickedObject,
+      }}
       {...props}
     />
   );
@@ -55,6 +67,8 @@ export const MapProvider = props => {
  *   setDeck: React.Dispatch<import('deck.gl').Deck
  *   viewState: ViewState
  *   setViewState: React.Dispatch<ViewState>
+ *   pickedObject: Object
+ *   setPickedObject: React.Dispatch<*>
  *   createScreenshot: (callback: BlobCallback) => void
  * }}
  */
