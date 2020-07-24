@@ -1,7 +1,13 @@
-.optionsButton {
-  font-size: 1rem;
-  padding: 0.25rem 1.25rem;
-  margin: 0.8125rem;
-  border-bottom: 1px solid var(--color-lightgrey);
-  width: fit-content;
+.optionsDropdown {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  min-width: 10rem;
+  border-radius: 0.9375rem;
+  background-color: #fff;
+  box-shadow: 0 16px 24px 0 var(--color-lightgrey);
+  cursor: pointer;
+  z-index: 1;
 }

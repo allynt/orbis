@@ -9,6 +9,7 @@ import { getUserLicences } from '../get-user-licences-helper';
 
 import QuickView from '../active-users-board/quick-view/quick-view.component';
 
+import styles from './active-users-board.module.css';
 import tableStyles from '../../table.module.css';
 
 export const ActiveUsersBoard = ({
@@ -71,67 +72,75 @@ export const ActiveUsersBoard = ({
                       : 'Not currently available'}
                   </td>
                   <td className={tableStyles.td}>{user.user.email}</td>
-                  <td className={tableStyles.td}>
-                    <div className={tableStyles.optionsContainer}>
-                      <Button
-                        theme="tertiary"
-                        className={tableStyles.optionsRoleButton}
-                        onClick={() =>
-                          setDropdown(
-                            changeRoleSelected
-                              ? null
-                              : { type: 'change-role', user },
-                          )
-                        }
-                        disabled={user.type === 'MANAGER' && oneAdminRemaining}
-                      >
-                        {user.type === 'MANAGER' ? 'Admin' : 'Standard'}
-                      </Button>
-
-                      {changeRoleSelected && (
-                        <div
-                          className={`${tableStyles.optionsDropdown} ${tableStyles.roleDropdown}`}
-                        >
-                          <OptionsDropdown
-                            textContent={
-                              user.type === 'MANAGER' ? 'Standard' : 'Admin'
-                            }
-                            onClick={() => handleClick(onChangeRoleClick, user)}
-                            close={() => setDropdown(null)}
-                          />
-                        </div>
-                      )}
-                    </div>
-                  </td>
-                  <td className={tableStyles.td}>
-                    <div className={tableStyles.optionsContainer}>
-                      <OptionsIcon
-                        classes={`${tableStyles.optionsIcon} ${
-                          optionsSelected && tableStyles.optionsIconSelected
+                  <td
+                    className={`${tableStyles.td} ${tableStyles.optionsColumn}`}
+                  >
+                    <Button
+                      theme="tertiary"
+                      className={styles.optionsRoleButton}
+                      onClick={() =>
+                        setDropdown(
+                          changeRoleSelected
+                            ? null
+                            : { type: 'change-role', user },
+                        )
+                      }
+                      disabled={user.type === 'MANAGER' && oneAdminRemaining}
+                    >
+                      {user.type === 'MANAGER' ? 'Admin' : 'Standard'}
+                      <span
+                        className={`${styles.arrow} ${
+                          changeRoleSelected && styles.selected
                         }`}
-                        onClick={() =>
-                          setDropdown(
-                            optionsSelected ? null : { type: 'options', user },
-                          )
-                        }
-                      />
-                      {optionsSelected && (
-                        <div
-                          className={`${tableStyles.optionsDropdown} ${tableStyles.editDropdown}`}
+                      ></span>
+                    </Button>
+
+                    {changeRoleSelected && (
+                      <OptionsDropdown
+                        className={styles.roleDropdown}
+                        onClickAway={() => setDropdown(null)}
+                      >
+                        <button
+                          className={tableStyles.optionsButton}
+                          onClick={() => handleClick(onChangeRoleClick, user)}
                         >
-                          <OptionsDropdown
-                            textContent="Edit"
-                            onClick={() => handleClick(console.log, user)}
-                            close={() => setDropdown(null)}
-                          />
-                          <OptionsDropdown
-                            textContent="Delete User"
-                            onClick={() => handleClick(onDeleteUserClick, user)}
-                            close={() => setDropdown(null)}
-                          />
-                        </div>
-                      )}
-                    </div>
+                          {user.type === 'MANAGER' ? 'Standard' : 'Admin'}
+                        </button>
+                      </OptionsDropdown>
+                    )}
+                  </td>
+                  <td
+                    className={`${tableStyles.td} ${tableStyles.optionsColumn}`}
+                  >
+                    <OptionsIcon
+                      classes={`${tableStyles.optionsIcon} ${
+                        optionsSelected && tableStyles.optionsIconSelected
+                      }`}
+                      onClick={() =>
+                        setDropdown(
+                          optionsSelected ? null : { type: 'options', user },
+                        )
+                      }
+                    />
+                    {optionsSelected && (
+                      <OptionsDropdown
+                        className={styles.editDropdown}
+                        onClickAway={() => setDropdown(null)}
+                      >
+                        <button
+                          className={tableStyles.optionsButton}
+                          onClick={() => handleClick(console.log, user)}
+                        >
+                          Edit
+                        </button>
+                        <button
+                          className={tableStyles.optionsButton}
+                          onClick={() => handleClick(onDeleteUserClick, user)}
+                        >
+                          Delete User
+                        </button>
+                      </OptionsDropdown>
+                    )}
                   </td>
                 </tr>
               );

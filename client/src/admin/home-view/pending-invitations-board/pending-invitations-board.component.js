@@ -9,6 +9,7 @@ import OptionsDropdown from '../options-dropdown/options-dropdown.component';
 
 import { getUserLicences } from '../get-user-licences-helper';
 
+import styles from './pending-invitations.module.css';
 import tableStyles from '../../table.module.css';
 
 const DATE_FORMAT = ['k:s d MMMM yyyy'];
@@ -64,29 +65,29 @@ export const PendingInvitationsBoard = ({
                   <td
                     className={`${tableStyles.td} ${tableStyles.optionsColumn}`}
                   >
-                    <div className={tableStyles.optionsContainer}>
-                      <OptionsIcon
-                        data-testid="options-icon"
-                        classes={`${tableStyles.optionsIcon} ${
-                          selected && tableStyles.optionsIconSelected
-                        }`}
-                        onClick={() => setDropdown(selected ? null : user)}
-                      />
-                      {selected && (
-                        <div
-                          className={`${tableStyles.optionsDropdown} ${tableStyles.withdrawDropdown}`}
+                    <OptionsIcon
+                      data-testid="options-icon"
+                      classes={`${tableStyles.optionsIcon} ${
+                        selected && tableStyles.optionsIconSelected
+                      }`}
+                      onClick={() => setDropdown(selected ? null : user)}
+                    />
+                    {selected && (
+                      <OptionsDropdown
+                        className={styles.withdrawDropdown}
+                        onClickAway={() => setDropdown(null)}
+                      >
+                        <button
+                          className={tableStyles.optionsButton}
+                          onClick={() => {
+                            onWithdrawInvitationClick(user);
+                            setDropdown(null);
+                          }}
                         >
-                          <OptionsDropdown
-                            textContent="Withdraw"
-                            onClick={() => {
-                              onWithdrawInvitationClick(user);
-                              setDropdown(null);
-                            }}
-                            close={() => setDropdown(null)}
-                          />
-                        </div>
-                      )}
-                    </div>
+                          Withdraw
+                        </button>
+                      </OptionsDropdown>
+                    )}
                   </td>
                 </tr>
               );

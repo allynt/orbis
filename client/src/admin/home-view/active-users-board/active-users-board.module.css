@@ -1,0 +1,31 @@
+.optionsRoleButton {
+  position: relative;
+  width: 8.875rem;
+  height: 2.1875rem;
+}
+
+.arrow {
+  position: absolute;
+  top: 0.85rem;
+  right: 0.6rem;
+  width: 0;
+  height: 0;
+  border-left: 0.5rem solid transparent;
+  border-right: 0.5rem solid transparent;
+  border-top: 0.5rem solid var(--button--tertiary--color);
+}
+
+.selected {
+  border-top: 0;
+  border-bottom: 0.5rem solid #fff;
+}
+
+.roleDropdown {
+  top: 2rem;
+  right: 17rem;
+}
+
+.editDropdown {
+  top: 1rem;
+  right: 6rem;
+}

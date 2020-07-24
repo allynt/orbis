@@ -1,30 +1,22 @@
 import React, { useEffect } from 'react';
 
-import useComponentVisible from '../../../hooks/useComponentVisible';
-
 import styles from './options-dropdown.module.css';
 
-const OptionsDropdown = ({ textContent, onClick, close }) => {
+import useComponentVisible from 'hooks/useComponentVisible';
+
+export const OptionsDropdown = ({ children, className, onClickAway }) => {
   const { ref, isComponentVisible } = useComponentVisible(true);
 
   useEffect(() => {
     if (!isComponentVisible) {
-      close();
+      onClickAway();
     }
-  }, [isComponentVisible, close]);
+  }, [isComponentVisible, onClickAway]);
 
-  const handleClick = () => {
-    onClick();
-  };
   return (
-    <button
-      data-testid="options-dropdown-button"
-      ref={ref}
-      className={styles.optionsButton}
-      onClick={handleClick}
-    >
-      {textContent}
-    </button>
+    <div ref={ref} className={`${styles.optionsDropdown} ${className}`}>
+      {children}
+    </div>
   );
 };
 

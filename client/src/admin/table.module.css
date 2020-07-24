@@ -18,31 +18,16 @@
   padding: 2.5rem 2rem 1.75rem;
 }
 
-.optionsContainer {
+.optionsColumn {
   position: relative;
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
 }
 
-.optionsDropdown {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  position: absolute;
-  min-width: 10rem;
-  border-radius: 0.9375rem;
-  background-color: #fff;
-  box-shadow: 0 16px 24px 0 var(--color-lightgrey);
-  cursor: pointer;
-  z-index: 1;
-}
-
-.optionsRoleButton {
-  width: 8.875rem;
-  height: 2.1875rem;
-  text-align: center;
+.optionsButton {
+  font-size: 1rem;
+  padding: 0.25rem 1.25rem;
+  margin: 0.8125rem;
+  border-bottom: 1px solid var(--color-lightgrey);
+  width: fit-content;
 }
 
 .optionsIcon {
@@ -54,23 +39,4 @@
 
 .optionsIconSelected {
   color: var(--color-yellow);
-}
-
-.optionsIconSelected {
-  color: var(--color-yellow);
-}
-
-.roleDropdown {
-  top: -0.5rem;
-  right: 15rem;
-}
-
-.editDropdown {
-  top: -2rem;
-  right: 5rem;
-}
-
-.withdrawDropdown {
-  top: -1rem;
-  right: 7rem;
 }
