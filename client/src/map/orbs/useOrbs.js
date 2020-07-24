@@ -3,11 +3,12 @@ import {
   dataSourcesSelector,
   selectDataToken,
 } from 'data-layers/data-layers.slice';
-import { LAYER_IDS } from 'map/map.constants';
 import { useCallback, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useHourglassOrb } from './hourglass/useHourglassOrb';
-import paddiesHealthLayer from './rice/paddies-health';
+import { useRiceOrb } from './rice/useRiceOrb';
+
+const orbs = [useHourglassOrb, useRiceOrb];
 
 const dataUrlFromId = (id, sources) => {
   const source = sources.find(source => source.source_id === id);
@@ -22,16 +23,6 @@ export const useOrbs = () => {
   const sources = useSelector(dataSourcesSelector);
   const activeLayers = useSelector(activeLayersSelector);
   const [data, setData] = useState({});
-
-  const {
-    layers: hourglassLayers,
-    mapComponents: hourglassMapComponents,
-  } = useHourglassOrb(
-    Object.keys(data)
-      .filter(key => key.includes('hourglass'))
-      .reduce((res, key) => ({ ...res, [key]: data[key] }), {}),
-    activeLayers,
-  );
 
   const dataRequest = useCallback(
     url =>
@@ -58,16 +49,17 @@ export const useOrbs = () => {
     }
   }, [activeLayers, sources, dataRequest, data]);
 
-  const layers = [
-    ...hourglassLayers,
-    paddiesHealthLayer(
-      LAYER_IDS.astrosat.rice.paddiesHealth.latest,
-      data[LAYER_IDS.astrosat.rice.paddiesHealth.latest],
-      activeLayers?.includes(LAYER_IDS.astrosat.rice.paddiesHealth.latest),
-    ),
-  ];
+  let layers = [];
+  let mapComponents = [];
 
-  const mapComponents = [...hourglassMapComponents];
+  for (let orbHook of orbs) {
+    const { layers: orbLayers, mapComponents: orbMapComponents } = orbHook(
+      data,
+      activeLayers,
+    );
+    layers = [...layers, ...orbLayers];
+    mapComponents = [...mapComponents, ...orbMapComponents];
+  }
 
   return { layers, mapComponents };
 };
