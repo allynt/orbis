@@ -62,7 +62,7 @@ describe('PendingUsersBoard', () => {
   });
 
   it('Opens `Withdraw Invitation` dialog when button is clicked', () => {
-    const { getAllByTestId, getByTestId } = render(
+    const { getByText, getAllByTestId } = render(
       <PendingInvitationsBoard
         pendingUsers={pendingUsers}
         customer={customer}
@@ -72,7 +72,7 @@ describe('PendingUsersBoard', () => {
 
     userEvent.click(getAllByTestId('options-icon')[0]);
 
-    const optionsDropdownButton = getByTestId('options-dropdown-button');
+    const optionsDropdownButton = getByText('Withdraw');
 
     expect(optionsDropdownButton).toBeInTheDocument();
     userEvent.click(optionsDropdownButton);

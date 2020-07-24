@@ -14,7 +14,11 @@ export const OptionsDropdown = ({ children, className, onClickAway }) => {
   }, [isComponentVisible, onClickAway]);
 
   return (
-    <div ref={ref} className={`${styles.optionsDropdown} ${className}`}>
+    <div
+      data-testid="options-dropdown"
+      ref={ref}
+      className={`${styles.optionsDropdown} ${className}`}
+    >
       {children}
     </div>
   );

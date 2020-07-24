@@ -61,7 +61,7 @@ describe('ActiveUsersBoard', () => {
   it('Calls `changeRole` function with user when buttons are clicked', () => {
     const MEMBER = { type: 'MEMBER', user: { name: 'Steve Brown' } };
 
-    const { getByText, getByTestId } = render(
+    const { getByText, getAllByText } = render(
       <ActiveUsersBoard
         activeUsers={[
           { type: 'MANAGER', user: { name: 'John Smith' } },
@@ -74,10 +74,9 @@ describe('ActiveUsersBoard', () => {
 
     userEvent.click(getByText('Standard'));
 
-    const changeRoleButton = getByTestId('options-dropdown-button');
-    expect(changeRoleButton).toBeInTheDocument();
+    expect(getAllByText('Admin').length).toEqual(2);
 
-    userEvent.click(changeRoleButton);
+    userEvent.click(getAllByText('Admin')[1]);
     expect(onChangeRoleClick).toHaveBeenCalledWith(MEMBER);
   });
 
