@@ -3,21 +3,14 @@ import json
 from django.contrib.auth import get_user_model
 from django.contrib.gis.geos import Point
 
-from rest_framework.serializers import (
-    Field,
-    ModelSerializer,
-    PrimaryKeyRelatedField,
-    SerializerMethodField,
-    SlugRelatedField,
-    ValidationError,
-)
+from rest_framework import serializers
 
 from astrosat.views import SwaggerCurrentUserDefault
 
 from maps.models import Bookmark
 
 
-class SimplifiedGeometryField(Field):
+class SimplifiedGeometryField(serializers.Field):
     """
     don't deal w/ the WKT serialization of the GeoDJango field
     just deal w/ a simple array
@@ -38,10 +31,10 @@ class SimplifiedGeometryField(Field):
         try:
             return self.geometry_class(data)
         except TypeError as e:
-            raise ValidationError(str(e))
+            raise serializers.ValidationError(str(e))
 
 
-class BookmarkSerializer(ModelSerializer):
+class BookmarkSerializer(serializers.ModelSerializer):
     # _not_ using GeoFeatureModelSerializer b/c I do not want to convert the whole queryset to GeoJSON
     class Meta:
         model = Bookmark
@@ -54,10 +47,11 @@ class BookmarkSerializer(ModelSerializer):
             "zoom",
             "center",
             "feature_collection",
+            "layers",
             "thumbnail",
         )
 
-    owner = SlugRelatedField(
+    owner = serializers.SlugRelatedField(
          # (using a wrapper around CurrentUserDefault so that yasg doesn't complain)
         queryset=get_user_model().objects.all(), default=SwaggerCurrentUserDefault(),
         slug_field="uuid"

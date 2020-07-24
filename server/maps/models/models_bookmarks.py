@@ -35,6 +35,14 @@ def validate_feature_collection(value):
     return validate_schema(value, FEATURE_COLLECTION_SCHEMA)
 
 
+def validate_layers(value):
+    """
+    validate that data_layers are lists (rather than a primitive or an object)
+    """
+    layers_schema = {"type": "array"}
+    return validate_schema(value, layers_schema)
+
+
 def bookmark_thumbnail_path(instance, filename):
     filename = slugify(instance.title)
     return f"bookmarks/{instance.owner.username}/{filename}.png"
@@ -79,7 +87,14 @@ class Bookmark(gis_models.Model):
         blank=True,
         null=True,
         validators=[validate_feature_collection],
-        help_text=_("a GeoJSON description of the data being bookmarked."),
+        help_text=_("a GeoJSON description of the annotations on the map."),
+    )
+
+    layers = JSONField(
+        blank=True,
+        null=True,
+        validators=[validate_layers],
+        help_text=_("A list of all the source_ids of the data layers loaded on the map.")
     )
 
     center = gis_models.PointField(
