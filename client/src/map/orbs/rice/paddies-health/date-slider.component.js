@@ -2,20 +2,16 @@ import React from 'react';
 import InputRange from 'react-input-range';
 import 'react-input-range/lib/css/index.css';
 import { useDispatch, useSelector } from 'react-redux';
-import { setDateRange } from '../rice.slice';
+import {
+  dateRangeSelector,
+  maxDateRangeSelector,
+  setDateRange,
+} from '../rice.slice';
 import './date-slider.css';
 
 export const DateSlider = () => {
-  /**
-   * @type {{min: Date, max: Date}}
-   */
-  const dateRange = useSelector(
-    state => state.orbs.rice.dateRange || state.orbs.rice.maxDateRange,
-  );
-  /**
-   * @type {{min: Date, max: Date}}
-   */
-  const maxDateRange = useSelector(state => state.orbs.rice.maxDateRange);
+  const dateRange = useSelector(dateRangeSelector);
+  const maxDateRange = useSelector(maxDateRangeSelector);
   const dispatch = useDispatch();
 
   return (

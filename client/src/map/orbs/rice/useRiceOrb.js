@@ -1,9 +1,13 @@
-import { paddiesHealthLayer } from './paddies-health';
 import { LAYER_IDS } from 'map/map.constants';
-import { DateSlider } from './paddies-health/date-slider.component';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { setMaxDateRange } from './rice.slice';
+import { paddiesHealthLayer } from './paddies-health';
+import { DateSlider } from './paddies-health/date-slider.component';
+import {
+  dateRangeSelector,
+  maxDateRangeSelector,
+  setMaxDateRange,
+} from './rice.slice';
 
 export const sidebarComponents = {
   [LAYER_IDS.astrosat.rice.paddiesHealth.latest]: DateSlider,
@@ -11,10 +15,8 @@ export const sidebarComponents = {
 
 export const useRiceOrb = (data, activeLayers) => {
   const dispatch = useDispatch();
-  const maxDateRange = useSelector(state => state.orbs.rice.maxDateRange);
-  const dateRange = useSelector(
-    state => state.orbs.rice.dateRange || state.orbs.rice.maxDateRange,
-  );
+  const maxDateRange = useSelector(maxDateRangeSelector);
+  const dateRange = useSelector(dateRangeSelector);
 
   useEffect(() => {
     if (data[LAYER_IDS.astrosat.rice.paddiesHealth.latest]) {

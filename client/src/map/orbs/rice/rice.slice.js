@@ -1,4 +1,5 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, createSelector } from '@reduxjs/toolkit';
+import { orbsSelector } from '../orbsSelectors';
 
 const slice = createSlice({
   name: 'rice',
@@ -16,4 +17,15 @@ const slice = createSlice({
 });
 
 export const { setDateRange, setMaxDateRange } = slice.actions;
+
+const baseSelector = createSelector(orbsSelector, orbs => orbs[slice.name]);
+export const maxDateRangeSelector = createSelector(
+  baseSelector,
+  rice => rice.maxDateRange,
+);
+export const dateRangeSelector = createSelector(
+  [baseSelector, maxDateRangeSelector],
+  (rice, maxDateRange) => rice.dateRange || maxDateRange,
+);
+
 export default slice.reducer;
