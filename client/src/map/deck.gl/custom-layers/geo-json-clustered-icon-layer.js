@@ -9,3 +9,6 @@ export class GeoJsonClusteredIconLayer extends ClusteredIconLayer {
 }
 
 GeoJsonClusteredIconLayer.layerName = 'GeoJsonClusteredIconLayer';
+GeoJsonClusteredIconLayer.defaultProps = {
+  getPosition: { type: 'accessor', value: x => x.geometry.coordinates },
+};

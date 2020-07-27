@@ -11,7 +11,6 @@ export const infrastructureLayer = ({ id, data, visible, onClick }) =>
     pickable: true,
     iconMapping,
     iconAtlas,
-    getPosition: feature => feature.geometry.coordinates,
     getIcon: feature =>
       feature.properties.cluster ? 'cluster' : feature.properties.type,
     getIconSize: 60,

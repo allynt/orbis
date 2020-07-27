@@ -3,6 +3,9 @@ import { MAX_ZOOM } from '../constants';
 import iconAtlas from './iconAtlas.svg';
 import iconMapping from './iconMapping.json';
 
+export const TEXT_COLOR_TRANSPARENT = [0, 0, 0, 0];
+export const TEXT_COLOR_VISIBLE = [51, 63, 72];
+
 export const peopleLayer = ({ id, data, visible, onClick }) =>
   new GeoJsonClusteredIconLayer({
     id,
@@ -11,7 +14,6 @@ export const peopleLayer = ({ id, data, visible, onClick }) =>
     pickable: true,
     iconAtlas,
     iconMapping,
-    getPosition: feature => feature.geometry.coordinates,
     getIcon: feature => {
       if (feature.properties.cluster) {
         return feature.properties.expansion_zoom > MAX_ZOOM
@@ -25,8 +27,8 @@ export const peopleLayer = ({ id, data, visible, onClick }) =>
     getTextSize: 32,
     getTextColor: feature =>
       feature.properties.expansion_zoom > MAX_ZOOM
-        ? [0, 0, 0, 0]
-        : [51, 63, 72],
+        ? TEXT_COLOR_TRANSPARENT
+        : TEXT_COLOR_VISIBLE,
     clusterRadius: 20,
     maxZoom: MAX_ZOOM,
     onClick,
