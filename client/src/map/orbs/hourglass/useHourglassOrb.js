@@ -8,6 +8,22 @@ import { useMap } from 'MapContext';
 import { Popup } from 'react-map-gl';
 import React, { useState } from 'react';
 import FeatureDetail from './feature-detail/feature-detail.component';
+import { HealthInfrastructure } from './infrastructure-layer/infrastructure-component/health-infrastructure.component';
+import { PopulationInformation } from './people-layer/people-component/population-information.component';
+
+const INFRASTRUCTURE_LAYER_IDS = [
+  LAYER_IDS.astrosat.hourglass.scotlandInfrastructure.v1,
+  LAYER_IDS.astrosat.hourglass.walesInfrastructure.v1,
+  LAYER_IDS.astrosat.hourglass.northernIrelandInfrastructure.v1,
+];
+
+const sidebarComponents = {
+  ...INFRASTRUCTURE_LAYER_IDS.reduce(
+    (obj, layerId) => ({ ...obj, [layerId]: HealthInfrastructure }),
+    {},
+  ),
+  [LAYER_IDS.astrosat.covid.hourglass.latest]: PopulationInformation,
+};
 
 export const useHourglassOrb = (data, activeLayers) => {
   const { setViewState } = useMap();
@@ -45,11 +61,7 @@ export const useHourglassOrb = (data, activeLayers) => {
   ];
 
   const layers = [
-    ...[
-      LAYER_IDS.astrosat.hourglass.scotlandInfrastructure.v1,
-      LAYER_IDS.astrosat.hourglass.walesInfrastructure.v1,
-      LAYER_IDS.astrosat.hourglass.northernIrelandInfrastructure.v1,
-    ].map(id =>
+    ...INFRASTRUCTURE_LAYER_IDS.map(id =>
       infrastructureLayer({
         id,
         data: data[id],
@@ -67,6 +79,6 @@ export const useHourglassOrb = (data, activeLayers) => {
     }),
   ];
 
-  return { layers, mapComponents, sidebarComponents: {} };
+  return { layers, mapComponents, sidebarComponents };
 };
 useHourglassOrb.id = 'hourglass';
