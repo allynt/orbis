@@ -29,8 +29,8 @@ export const paddiesHealthLayer = ({ id, data, visible, dateRange }) =>
         interpolateGreens(
           averageValueForTimeRange(
             paddy.properties.ndvi,
-            dateRange.min,
-            dateRange.max,
+            dateRange?.min,
+            dateRange?.max,
           ),
         ),
       ),

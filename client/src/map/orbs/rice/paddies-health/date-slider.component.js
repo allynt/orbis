@@ -8,6 +8,7 @@ import {
   setDateRange,
 } from '../rice.slice';
 import './date-slider.css';
+import { format } from 'date-fns';
 
 export const DateSlider = () => {
   const dateRange = useSelector(dateRangeSelector);
@@ -24,7 +25,7 @@ export const DateSlider = () => {
           setDateRange({ min: new Date(val.min), max: new Date(val.max) }),
         )
       }
-      formatLabel={value => new Date(value).toUTCString()}
+      formatLabel={value => !isNaN(value) && format(value, 'MM/dd/yyyy')}
       draggableTrack
     />
   );
