@@ -86,6 +86,7 @@ const DataLayers = () => {
         <div className={styles.layers}>
           {selectedLayers.map(selectedLayer => {
             const Component = sidebarComponents[selectedLayer.source_id];
+            if (!Component) return null;
             return (
               <Detail
                 key={selectedLayer.source_id}

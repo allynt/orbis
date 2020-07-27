@@ -3,14 +3,17 @@ import { createSlice } from '@reduxjs/toolkit';
 const slice = createSlice({
   name: 'rice',
   initialState: {
-    dateRange: { min: new Date(), max: new Date() },
+    maxDateRange: { min: Infinity, max: -Infinity },
   },
   reducers: {
     setDateRange: (state, { payload }) => {
       state.dateRange = payload;
     },
+    setMaxDateRange: (state, { payload }) => {
+      state.maxDateRange = payload;
+    },
   },
 });
 
-export const { setDateRange } = slice.actions;
+export const { setDateRange, setMaxDateRange } = slice.actions;
 export default slice.reducer;

@@ -67,6 +67,6 @@ export const useHourglassOrb = (data, activeLayers) => {
     }),
   ];
 
-  return { layers, mapComponents };
+  return { layers, mapComponents, sidebarComponents: {} };
 };
 useHourglassOrb.id = 'hourglass';
