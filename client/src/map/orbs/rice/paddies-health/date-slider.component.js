@@ -25,7 +25,7 @@ export const DateSlider = () => {
           setDateRange({ min: new Date(val.min), max: new Date(val.max) }),
         )
       }
-      formatLabel={value => !isNaN(value) && format(value, 'MM/dd/yyyy')}
+      formatLabel={value => !isNaN(value) && format(value, 'dd/MM/yyyy')}
       draggableTrack
     />
   );
