@@ -41,7 +41,14 @@ export const MapProvider = props => {
 
   return (
     <MapContext.Provider
-      value={{ map, setMap, deck, setDeck, viewState, setViewState }}
+      value={{
+        map,
+        setMap,
+        deck,
+        setDeck,
+        viewState,
+        setViewState,
+      }}
       {...props}
     />
   );

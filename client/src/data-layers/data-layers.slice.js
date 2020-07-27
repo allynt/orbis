@@ -17,7 +17,7 @@ const dataSlice = createSlice({
         typeof payload[0] === 'object'
           ? payload.map(layer => layer.source_id)
           : payload;
-      state.layers = [...state.layers, ...newLayers];
+      state.layers = Array.from(new Set([...state.layers, ...newLayers]));
     },
     removeLayer: (state, { payload }) => {
       const layerId = typeof payload === 'object' ? payload.source_id : payload;
