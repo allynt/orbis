@@ -1,5 +1,10 @@
 import { paddiesHealthLayer } from './paddies-health';
 import { LAYER_IDS } from 'map/map.constants';
+import { DateSlider } from './paddies-health/date-slider.component';
+
+export const sidebarComponents = {
+  [LAYER_IDS.astrosat.rice.paddiesHealth.latest]: DateSlider,
+};
 
 export const useRiceOrb = (data, activeLayers) => {
   const layers = [
@@ -12,6 +17,6 @@ export const useRiceOrb = (data, activeLayers) => {
     }),
   ];
 
-  return { layers, mapComponents: [] };
+  return { layers, mapComponents: [], sidebarComponents };
 };
 useRiceOrb.id = 'rice';
