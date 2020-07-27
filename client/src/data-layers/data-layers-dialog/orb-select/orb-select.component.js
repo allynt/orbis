@@ -1,6 +1,6 @@
 import React from 'react';
 
-import dialogStyles from './data-layers-dialog.module.css';
+import dialogStyles from '../data-layers-dialog.module.css';
 import styles from './orb-select.module.css';
 
 export const OrbSelect = ({ domains, selectedDomain, onDomainClick }) => (

@@ -4,8 +4,8 @@ import ReactDOM from 'react-dom';
 import CloseButton from '@astrosat/astrosat-ui/dist/buttons/close-button';
 
 import styles from './data-layers-dialog.module.css';
-import { OrbSelect } from './orb-select.component';
-import { LayerSelect } from './layer-select.component';
+import { OrbSelect } from './orb-select/orb-select.component';
+import { LayerSelect } from './layer-select/layer-select.component';
 
 const DataLayersDialog = (
   { domains, isVisible, close, selectedLayers, onAddLayers, onRemoveLayer },

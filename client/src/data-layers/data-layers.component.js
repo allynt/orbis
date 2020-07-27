@@ -20,7 +20,7 @@ import {
 
 import { PopulationInformation } from './population-information.component';
 import { HealthInfrastructure } from './health-infrastructure.component';
-import DataLayersDialog from './data-layers-dialog.component';
+import DataLayersDialog from './data-layers-dialog/data-layers-dialog.component';
 
 import styles from './data-layers.module.css';
 
