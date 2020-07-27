@@ -278,12 +278,16 @@ describe('Admin Slice', () => {
 
     describe('deleteCustomerUser', () => {
       it('should dispatch delete user failure action.', async () => {
-        const customer = {
-          name: 'test_customer',
-        };
-
-        const user = {
+        const customerUser = {
           id: '1',
+          status: 'PENDING',
+          type: 'MEMBER',
+          licences: [],
+          user: {
+            id: '1',
+            name: 'Test User',
+            email: 'test.user@test.com',
+          },
         };
 
         fetch.mockResponse(
@@ -305,7 +309,7 @@ describe('Admin Slice', () => {
           },
         ];
 
-        await store.dispatch(deleteCustomerUser(customer, user));
+        await store.dispatch(deleteCustomerUser(customerUser));
 
         expect(store.getActions()).toEqual(expectedActions);
       });
@@ -318,6 +322,15 @@ describe('Admin Slice', () => {
         const user = {
           id: '1',
           name: 'Test User',
+          email: 'test.user@test.com',
+        };
+
+        const customerUser = {
+          id: '1',
+          status: 'PENDING',
+          type: 'MEMBER',
+          licences: [],
+          user: user,
         };
 
         fetch.once(JSON.stringify(user));
@@ -327,11 +340,11 @@ describe('Admin Slice', () => {
           { type: deleteCustomerUserRequested.type, payload: undefined },
           {
             type: deleteCustomerUserSuccess.type,
-            payload: { deletedUser: user, customer },
+            payload: { deletedUser: customerUser, customer },
           },
         ];
 
-        await store.dispatch(deleteCustomerUser(customer, user));
+        await store.dispatch(deleteCustomerUser(customerUser));
 
         expect(store.getActions()).toEqual(expectedActions);
       });

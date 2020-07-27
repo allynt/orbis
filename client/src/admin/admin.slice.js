@@ -174,14 +174,14 @@ export const createCustomerUser = fields => async (dispatch, getState) => {
   const currentCustomer = selectCurrentCustomer(getState());
   dispatch(createCustomerUserRequested());
 
-  const licences =
-    fields.licences &&
-    fields.licences.map(
-      orb =>
-        currentCustomer.licences.find(
-          licence => licence.orb === orb && !licence.customer_user,
-        ).id,
-    );
+  const licences = fields.licences
+    ? fields.licences.map(
+        orb =>
+          currentCustomer.licences.find(
+            licence => licence.orb === orb && !licence.customer_user,
+          ).id,
+      )
+    : []; // if fields.licences is undefined set licences to an empty list
 
   const { email, name } = fields;
 
@@ -255,14 +255,17 @@ export const updateCustomerUser = (customer, user) => async (
   return dispatch(updateCustomerUserSuccess(userData));
 };
 
-export const deleteCustomerUser = user => async (dispatch, getState) => {
+export const deleteCustomerUser = customerUser => async (
+  dispatch,
+  getState,
+) => {
   const headers = getJsonAuthHeaders(getState());
   const currentCustomer = selectCurrentCustomer(getState());
   dispatch(deleteCustomerUserRequested());
 
   const deleteUserResponse = await sendData(
     `${API}${currentCustomer.id}/users/`,
-    user.id,
+    customerUser.user.id,
     headers,
     'DELETE',
   );
@@ -287,12 +290,11 @@ export const deleteCustomerUser = user => async (dispatch, getState) => {
       dispatch,
     );
 
-  const [deletedUser, customer] = await Promise.all([
-    deleteUserResponse.json(),
-    fetchCustomerResponse.json(),
-  ]);
+  const [customer] = await Promise.all([fetchCustomerResponse.json()]);
 
-  return dispatch(deleteCustomerUserSuccess({ deletedUser, customer }));
+  return dispatch(
+    deleteCustomerUserSuccess({ deletedUser: customerUser, customer }),
+  );
 };
 
 /* === Selectors === */
@@ -331,11 +333,6 @@ export const selectLicenceInformation = createSelector(
         pending = +isPending;
       }
       const available = purchased - active - pending;
-      const foobar = {
-        ...licenceInformation,
-        [orb]: { purchased, available, active, pending },
-      };
-      console.log(Object.keys(foobar).map(orb => foobar[orb].purchased));
 
       return {
         ...licenceInformation,
