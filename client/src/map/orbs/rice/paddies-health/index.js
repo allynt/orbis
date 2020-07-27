@@ -9,7 +9,7 @@ const rgbStringToArray = string => {
   return values.map(str => +str);
 };
 
-export const paddiesHealthLayer = (id, data, visible) =>
+export const paddiesHealthLayer = ({ id, data, visible }) =>
   new GeoJsonLayer({
     id,
     data,

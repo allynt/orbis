@@ -50,20 +50,23 @@ export const useHourglassOrb = (data, activeLayers) => {
       LAYER_IDS.astrosat.hourglass.walesInfrastructure.v1,
       LAYER_IDS.astrosat.hourglass.northernIrelandInfrastructure.v1,
     ].map(id =>
-      infrastructureLayer(
+      infrastructureLayer({
         id,
-        data[id],
-        activeLayers?.includes(id),
-        handleLayerClick,
+        data: data[id],
+        visible: activeLayers?.includes(id),
+        onClick: handleLayerClick,
+      }),
+    ),
+    peopleLayer({
+      id: LAYER_IDS.astrosat.covid.hourglass.latest,
+      data: data[LAYER_IDS.astrosat.covid.hourglass.latest],
+      visible: activeLayers?.includes(
+        LAYER_IDS.astrosat.covid.hourglass.latest,
       ),
-    ),
-    peopleLayer(
-      LAYER_IDS.astrosat.covid.hourglass.latest,
-      data[LAYER_IDS.astrosat.covid.hourglass.latest],
-      activeLayers?.includes(LAYER_IDS.astrosat.covid.hourglass.latest),
-      handleLayerClick,
-    ),
+      onClick: handleLayerClick,
+    }),
   ];
 
   return { layers, mapComponents };
 };
+useHourglassOrb.id = 'hourglass';
