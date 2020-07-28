@@ -51,17 +51,20 @@ export const useOrbs = () => {
 
   let layers = [];
   let mapComponents = [];
+  let sidebarComponents = {};
 
   for (let orbHook of orbs.filter(orb =>
     sources.some(source => source.source_id.includes(orb.id)),
   )) {
-    const { layers: orbLayers, mapComponents: orbMapComponents } = orbHook(
-      data,
-      activeLayers,
-    );
+    const {
+      layers: orbLayers,
+      mapComponents: orbMapComponents,
+      sidebarComponents: orbSidebarComponents,
+    } = orbHook(data, activeLayers);
     layers = [...layers, ...orbLayers];
     mapComponents = [...mapComponents, ...orbMapComponents];
+    sidebarComponents = { ...sidebarComponents, ...orbSidebarComponents };
   }
 
-  return { layers, mapComponents };
+  return { layers, mapComponents, sidebarComponents };
 };

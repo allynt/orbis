@@ -1,0 +1,5 @@
+.input-range__track,
+.input-range__slider-container,
+.input-range__slider {
+  transition: none;
+}

@@ -14,6 +14,7 @@ import admin from './admin/admin.slice';
 import bookmarks from './bookmarks/bookmark.slice';
 import sideMenu from './side-menu/side-menu.slice';
 import stories from './stories/stories.slice';
+import orbs from './map/orbs/orbReducer';
 
 export const history = createBrowserHistory();
 
@@ -30,6 +31,7 @@ const createRootReducer = history =>
     bookmarks,
     stories,
     router: connectRouter(history),
+    orbs,
   });
 
 const rootReducer = createRootReducer(history);
