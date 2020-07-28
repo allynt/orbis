@@ -41,7 +41,6 @@
 
 .children {
   padding: 0 9px;
-  background-color: hotpink;
   height: 0;
   visibility: hidden;
   transition: height 250ms ease;
