@@ -21,9 +21,9 @@ const getCustomerUsersHandler = (req, res) => {
 };
 
 const createCustomerUserHandler = (req, res) => {
-  console.log('Creating New User of Customer');
-
   const newUser = createCustomerUser(req.params.customerId, req.body);
+  console.log('Created New Customer User: ', newUser);
+
   res.status(201);
   res.json(newUser);
 };

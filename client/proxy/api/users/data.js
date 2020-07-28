@@ -1,3 +1,5 @@
+const { v4: uuidv4 } = require('uuid');
+
 let users = [
   {
     id: '6e5ac533-0245-4031-ab65-b1eff4d30a1f',
@@ -73,7 +75,7 @@ let users = [
 ];
 
 const getUsers = () => users;
-const addUser = user => (users = [...users, { ...user, id: users.length + 1 }]);
+const addUser = user => (users = [...users, { ...user, id: uuidv4() }]);
 const updateUser = user =>
   (users = users.map(usr => (usr.id === user.id ? user : usr)));
 const deleteUser = id => (users = users.filter(user => user.id !== id));

@@ -1,3 +1,5 @@
+const { v4: uuidv4 } = require('uuid');
+
 let customers = [
   {
     id: '7009b9d8-c286-11ea-b3de-0242ac130004',
@@ -283,10 +285,8 @@ const getCustomerUsers = customerId =>
  * @param {{email: string, name: string, licences: number[]}} userData the form data
  */
 const createCustomerUser = (customerId, userData) => {
-  // ID for customerUser
-  const newUserId = getCustomerUsers(customerId).length + 1;
-  // ID for nested user object
-  const newNestedUserId = Math.floor(Math.random() * 100).toString();
+  const newCustomerUserId = getCustomerUsers(customerId).length + 1;
+  const newUserId = uuidv4();
 
   const customerLicences = getCustomer(customerId).licences;
   const invitation_date = new Date().toISOString();
@@ -294,15 +294,15 @@ const createCustomerUser = (customerId, userData) => {
     licenceId =>
       (customerLicences.find(
         licence => licence.id === licenceId,
-      ).customer_user = newNestedUserId),
+      ).customer_user = newUserId),
   );
   const newUser = {
-    id: newUserId.toString(),
+    id: newCustomerUserId.toString(),
     type: 'MEMBER',
     status: 'PENDING',
     licences: userData.licences,
     customer: customerId,
-    user: { ...userData.user, id: newNestedUserId },
+    user: { ...userData.user, id: newUserId },
     invitation_date,
   };
   customerUsers.push(newUser);
