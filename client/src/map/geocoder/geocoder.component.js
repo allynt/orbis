@@ -6,9 +6,12 @@ import { useState } from 'react';
 const GEOCODE_API_URL = 'https://api.mapbox.com/geocoding/v5/mapbox.places/';
 
 /**
- * @param {{ mapboxApiAccessToken: string }} props
+ * @param {{
+ *   mapboxApiAccessToken: string
+ *   onSelect: (feature: import('@turf/turf').Feature) => void
+ *  }} props
  */
-export const Geocoder = ({ mapboxApiAccessToken }) => {
+export const Geocoder = ({ mapboxApiAccessToken, onSelect }) => {
   if (!mapboxApiAccessToken)
     console.warn('You need to provide a Mapbox API token to <Geocoder />');
 
@@ -28,7 +31,7 @@ export const Geocoder = ({ mapboxApiAccessToken }) => {
         setSearchResults(results.features);
       }
     };
-    if (searchString?.length >= 3 && mapboxApiAccessToken) {
+    if (searchString.length >= 3) {
       search();
     }
   }, [mapboxApiAccessToken, searchString]);
@@ -36,6 +39,10 @@ export const Geocoder = ({ mapboxApiAccessToken }) => {
   /** @param {React.ChangeEvent<HTMLInputElement>} e */
   const handleInputChange = e => {
     setSearchString(e.target.value);
+  };
+
+  const handleResultClick = feature => () => {
+    if (onSelect) onSelect(feature);
   };
 
   return (
@@ -48,10 +55,13 @@ export const Geocoder = ({ mapboxApiAccessToken }) => {
         type="text"
         id="geocoder"
         value={searchString}
+        placeholder="type to search..."
         onChange={handleInputChange}
       />
       {searchResults.map(feature => (
-        <p key={feature.id}>{feature.place_name}</p>
+        <p key={feature.id} onClick={handleResultClick(feature)}>
+          {feature.place_name}
+        </p>
       ))}
     </div>
   );

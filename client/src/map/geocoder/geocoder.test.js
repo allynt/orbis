@@ -164,7 +164,11 @@ const fakeResponse = {
     'NOTICE: © 2020 Mapbox and its suppliers. All rights reserved. Use of this data is subject to the Mapbox Terms of Service (https://www.mapbox.com/about/maps/). This response and the information it contains may not be retained. POI(s) provided by Foursquare.',
 };
 
-describe('<Geocoder />', () => {
+describe.only('<Geocoder />', () => {
+  beforeEach(() => {
+    fetch.once(JSON.stringify(fakeResponse));
+  });
+
   it('shows the search icon', () => {
     const { getByTitle } = render(<Geocoder />);
     expect(getByTitle('Location Search')).toBeInTheDocument();
@@ -175,18 +179,41 @@ describe('<Geocoder />', () => {
     expect(getByLabelText('Location Search')).toBeInTheDocument();
   });
 
-  it('displays suggestions after 3 characters are typed', () => {
+  it('displays suggestions after 3 characters are typed', async () => {
     const { getByLabelText, getByText } = render(
       <Geocoder mapboxApiAccessToken="fake" />,
     );
-    fetch.once(JSON.stringify(fakeResponse));
     userEvent.type(getByLabelText('Location Search'), 'lon');
-    waitFor(() => {
-      expect(getByText('London')).toBeInTheDocument();
+    await waitFor(() => {
+      expect(getByText('London', { exact: false })).toBeInTheDocument();
     });
   });
 
-  it.todo('calls the onSelect function when a result is clicked');
+  it('calls the onSelect function when a result is clicked', async () => {
+    const onSelect = jest.fn();
+    const { getByLabelText, getByText } = render(
+      <Geocoder mapboxApiAccessToken="fake" onSelect={onSelect} />,
+    );
+    userEvent.type(getByLabelText('Location Search'), 'lon');
+    await waitFor(() => {
+      userEvent.click(
+        getByText(fakeResponse.features[0].text, { exact: false }),
+      );
+    });
+    expect(onSelect).toHaveBeenCalled();
+  });
 
-  it.todo('calls the onSelect function with the selected location');
+  it('calls the onSelect function with the selected location', async () => {
+    const onSelect = jest.fn();
+    const { getByLabelText, getByText } = render(
+      <Geocoder mapboxApiAccessToken="fake" onSelect={onSelect} />,
+    );
+    userEvent.type(getByLabelText('Location Search'), 'lon');
+    await waitFor(() => {
+      userEvent.click(
+        getByText(fakeResponse.features[0].text, { exact: false }),
+      );
+    });
+    expect(onSelect).toHaveBeenCalledWith(fakeResponse.features[0]);
+  });
 });
