@@ -12,73 +12,73 @@ let customers = [
       {
         id: '055aa73b-7a5f-41d7-b9d4-b3124c16ffde',
         orb: 'Rice',
-        customer_user: '1',
+        customer_user: '5edd4615-34a7-4c55-9243-0092671ef9d8',
         access: '1',
       },
       {
         id: 'd499964f-1bb4-4aa1-baf4-0164eabec297',
         orb: 'Rice',
-        customer_user: '2',
+        customer_user: '3183f6ba-da80-4c0d-811c-9c2e45d5e95d',
         access: '1',
       },
       {
         id: '3e9dbb09-133b-4316-bf7c-c6e0be98bb05',
         orb: 'Rice',
-        customer_user: '3',
+        customer_user: '0414efbd-4bca-4197-8f2d-a00f841fa80b',
         access: '1',
       },
       {
         id: 'db153830-d72a-44f7-88e0-d95b203b2383',
         orb: 'Rice',
-        customer_user: '4',
+        customer_user: 'a7bc79cf-fa3d-4a98-8af1-9e6a6cb18af6',
         access: '1',
       },
       {
         id: 'a4a4bf7e-8980-4fd8-a3e8-dccc0ada36e1',
         orb: 'Oil',
-        customer_user: '5',
+        customer_user: 'abb63511-e88d-47f5-a884-3cba800b9714',
         access: '1',
       },
       {
         id: 'e7d31181-61e3-4880-9529-6408ce9d2cd3',
         orb: 'Oil',
-        customer_user: '6',
+        customer_user: 'e7e26c78-d66a-4c26-9f62-c5926846fad2',
         access: '1',
       },
       {
         id: '7b2df564-3b91-4ed2-9b57-a362f7212c94',
         orb: 'Oil',
-        customer_user: '1',
+        customer_user: '5edd4615-34a7-4c55-9243-0092671ef9d8',
         access: '1',
       },
       {
         id: 'c2f0bae8-b2f5-412d-9780-551c6bbe3248',
         orb: 'Oil',
-        customer_user: '2',
+        customer_user: '3183f6ba-da80-4c0d-811c-9c2e45d5e95d',
         access: '1',
       },
       {
         id: '4d16b720-2a7a-4ee7-a942-fd999af5aa15',
         orb: 'Oil',
-        customer_user: '3',
+        customer_user: '0414efbd-4bca-4197-8f2d-a00f841fa80b',
         access: '1',
       },
       {
         id: 'f9a8a715-dbeb-4fbc-92c6-fd2138475a87',
         orb: 'Oil',
-        customer_user: '4',
+        customer_user: 'a7bc79cf-fa3d-4a98-8af1-9e6a6cb18af6',
         access: '1',
       },
       {
         id: 'bca4255f-5147-4023-9b34-e52b0b8fcd86',
         orb: 'Rice',
-        customer_user: '5',
+        customer_user: 'abb63511-e88d-47f5-a884-3cba800b9714',
         access: '1',
       },
       {
         id: '2c6c43e0-d0d4-4379-ab6e-895b06f7f71b',
         orb: 'Rice',
-        customer_user: '6',
+        customer_user: 'e7e26c78-d66a-4c26-9f62-c5926846fad2',
         access: '1',
       },
       {
@@ -283,22 +283,26 @@ const getCustomerUsers = customerId =>
  * @param {{email: string, name: string, licences: number[]}} userData the form data
  */
 const createCustomerUser = (customerId, userData) => {
+  // ID for customerUser
   const newUserId = getCustomerUsers(customerId).length + 1;
+  // ID for nested user object
+  const newNestedUserId = Math.floor(Math.random() * 100).toString();
+
   const customerLicences = getCustomer(customerId).licences;
   const invitation_date = new Date().toISOString();
   userData.licences.forEach(
     licenceId =>
       (customerLicences.find(
         licence => licence.id === licenceId,
-      ).customer_user = newUserId),
+      ).customer_user = newNestedUserId),
   );
   const newUser = {
-    id: newUserId,
+    id: newUserId.toString(),
     type: 'MEMBER',
     status: 'PENDING',
     licences: userData.licences,
     customer: customerId,
-    user: userData.user,
+    user: { ...userData.user, id: newNestedUserId },
     invitation_date,
   };
   customerUsers.push(newUser);
@@ -316,16 +320,16 @@ const updateCustomerUser = user => {
 };
 
 const deleteCustomerUser = userId => {
-  const deletedUser = customerUsers.find(cu => cu.id === userId);
-  customerUsers = customerUsers.filter(cu => cu.id !== deletedUser.id);
+  const deletedUser = customerUsers.find(cu => cu.user.id === userId);
+  customerUsers = customerUsers.filter(
+    cu => cu.user.id !== deletedUser.user.id,
+  );
 
   for (let licence of customers[0].licences) {
     if (licence.customer_user === userId) {
       licence.customer_user = null;
     }
   }
-
-  return deletedUser;
 };
 
 module.exports = {
