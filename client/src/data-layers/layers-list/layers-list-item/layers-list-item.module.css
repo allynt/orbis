@@ -40,13 +40,14 @@
 }
 
 .children {
+  overflow: hidden;
   padding: 0 9px;
-  height: 0;
-  visibility: hidden;
-  transition: height 250ms ease;
+  max-height: 0;
+  opacity: 0;
+  transition: max-height 250ms ease, opacity 250ms ease;
 }
 
 .children.expanded {
-  visibility: visible;
-  height: 100%;
+  opacity: 1;
+  max-height: 100%;
 }

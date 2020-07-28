@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Detail, Slider, Button } from '@astrosat/astrosat-ui';
+import { Slider, Button } from '@astrosat/astrosat-ui';
 
 import { PopulationInformation } from '../population-information.component';
 import { HealthInfrastructure } from '../health-infrastructure.component';
@@ -9,8 +9,8 @@ import { ReactComponent as RemoveIcon } from '../remove.svg';
 import { ReactComponent as HideIcon } from '../layer-invisible.svg';
 
 import styles from '../data-layers.module.css';
-import { useDispatch } from 'react-redux';
 import { removeLayer } from 'data-layers/data-layers.slice';
+import { LayersListItem } from './layers-list-item/layers-list-item.component';
 
 const DefaultComponent = ({ selectedLayer, dispatch }) => (
   <div>
@@ -48,9 +48,21 @@ const detailComponentMap = {
   default: DefaultComponent,
 };
 
+/**
+ * @typedef Layer
+ * @property {string} name
+ * @property {string} source_id
+ * @property {{ label: string }} metadata
+ */
+/**
+ * @param {{
+ *   dispatch: import('redux').Dispatch
+ *   selectedLayers: Layer[]
+ * }} props
+ */
 export const LayersList = ({ dispatch, selectedLayers }) => (
   <div className={styles.layers}>
-    {selectedLayers.map(selectedLayer => {
+    {selectedLayers?.map(selectedLayer => {
       // We need to have structure to our layer naming for this to work,
       // but if we prepend each layer with it's type, e.g `scotish-infrastructure` becomes `infrastructure` and `people`,
       // remains `people`.
@@ -60,14 +72,12 @@ export const LayersList = ({ dispatch, selectedLayers }) => (
         detailComponentMap['default'];
 
       return (
-        <Detail
+        <LayersListItem
           key={selectedLayer.source_id}
           title={selectedLayer.metadata.label}
         >
-          <div className={styles.detailContent}>
-            <Component selectedLayer={selectedLayer} dispatch={dispatch} />
-          </div>
-        </Detail>
+          <Component selectedLayer={selectedLayer} dispatch={dispatch} />
+        </LayersListItem>
       );
     })}
   </div>
