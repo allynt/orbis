@@ -305,13 +305,14 @@ const createCustomerUser = (customerId, userData) => {
   return newUser;
 };
 
-const editCustomerUser = (userId, data) => {
-  let editedUser = customerUsers.find(cu => cu.id === userId);
-  for (let key of Object.keys(data)) {
-    editedUser[key] = data[key];
-  }
+const updateCustomerUser = user => {
+  const index = customerUsers.indexOf(
+    customerUsers.find(cu => cu.id === user.id),
+  );
 
-  return editedUser;
+  customerUsers[index] = user;
+
+  return customerUsers[index];
 };
 
 const deleteCustomerUser = userId => {
@@ -331,6 +332,6 @@ module.exports = {
   getCustomer,
   getCustomerUsers,
   createCustomerUser,
-  editCustomerUser,
+  updateCustomerUser,
   deleteCustomerUser,
 };
