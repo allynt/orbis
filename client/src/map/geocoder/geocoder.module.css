@@ -31,3 +31,23 @@
   height: 1rem;
   margin-left: 12px;
 }
+
+.resultsList {
+  margin-top: 6px;
+  background-color: var(--color-secondary);
+  color: var(--color-lightgrey-light);
+  border-radius: 2px;
+}
+
+.resultsListItem {
+  padding-left: 12px;
+  padding-right: 12px;
+}
+
+.resultsList:hover {
+  cursor: pointer;
+}
+
+.resultsListItem + .resultsListItem {
+  margin-top: 0.5rem;
+}

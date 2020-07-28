@@ -75,12 +75,19 @@ export const Geocoder = ({ className, mapboxApiAccessToken, onSelect }) => {
           onChange={handleInputChange}
         />
       </div>
-      {searchString.length >= 3 &&
-        searchResults.map(feature => (
-          <p key={feature.id} onClick={handleResultClick(feature)}>
-            {feature.place_name}
-          </p>
-        ))}
+      {searchString.length >= 3 && (
+        <ul className={styles.resultsList}>
+          {searchResults.map(feature => (
+            <li
+              key={feature.id}
+              className={styles.resultsListItem}
+              onClick={handleResultClick(feature)}
+            >
+              {feature.place_name}
+            </li>
+          ))}
+        </ul>
+      )}
     </div>
   );
 };
