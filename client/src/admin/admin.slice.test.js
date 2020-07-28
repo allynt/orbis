@@ -220,13 +220,30 @@ describe('Admin Slice', () => {
 
     describe('updateCustomerUser', () => {
       it('should dispatch update user failure action.', async () => {
+        const customer = {
+          name: 'test_customer',
+        };
+
         const user = {
-          name: 'Test User',
           id: '1',
+          name: 'Test User',
+          email: 'test.user@test.com',
+        };
+
+        const customerUser = {
+          id: '1',
+          status: 'PENDING',
+          type: 'MEMBER',
+          licences: [],
+          user: user,
         };
 
         const data = {
-          name: 'Updated User Name',
+          ...customerUser,
+          user: {
+            ...user,
+            name: 'Updated User Name',
+          },
         };
 
         fetch.mockResponse(
@@ -248,29 +265,46 @@ describe('Admin Slice', () => {
           },
         ];
 
-        await store.dispatch(updateCustomerUser(user, data));
+        await store.dispatch(updateCustomerUser(customerUser, data));
 
         expect(store.getActions()).toEqual(expectedActions);
       });
 
       it('should dispatch update user success action.', async () => {
+        const customer = {
+          name: 'test_customer',
+        };
+
         const user = {
           id: '1',
           name: 'Test User',
+          email: 'test.user@test.com',
+        };
+
+        const customerUser = {
+          id: '1',
+          status: 'PENDING',
+          type: 'MEMBER',
+          licences: [],
+          user: user,
         };
 
         const data = {
-          name: 'Updated User Name',
+          ...customerUser,
+          user: {
+            ...user,
+            name: 'Updated User Name',
+          },
         };
 
-        fetch.mockResponse(JSON.stringify(user));
+        fetch.mockResponse(JSON.stringify(customerUser));
 
         const expectedActions = [
           { type: updateCustomerUserRequested.type },
-          { type: updateCustomerUserSuccess.type, payload: user },
+          { type: updateCustomerUserSuccess.type, payload: customerUser },
         ];
 
-        await store.dispatch(updateCustomerUser(user, data));
+        await store.dispatch(updateCustomerUser(customerUser, data));
 
         expect(store.getActions()).toEqual(expectedActions);
       });
