@@ -13,6 +13,7 @@ import styles from './active-users-board.module.css';
 import tableStyles from '../../table.module.css';
 
 export const ActiveUsersBoard = ({
+  currentUser,
   activeUsers,
   customer,
   licenceData,
@@ -20,6 +21,9 @@ export const ActiveUsersBoard = ({
   onDeleteUserClick,
 }) => {
   const [dropdown, setDropdown] = useState(null);
+
+  const CHANGE_ROLE = 'Change Role';
+  const OPTIONS = 'Options';
 
   const oneAdminRemaining =
     activeUsers?.filter(au => au.type === 'MANAGER').length === 1;
@@ -54,10 +58,10 @@ export const ActiveUsersBoard = ({
           {activeUsers && activeUsers.length > 0 ? (
             activeUsers.map(user => {
               const optionsSelected =
-                dropdown?.type === 'options' && dropdown.user === user;
+                dropdown?.type === OPTIONS && dropdown.user === user;
 
               const changeRoleSelected =
-                dropdown?.type === 'change-role' && dropdown.user === user;
+                dropdown?.type === CHANGE_ROLE && dropdown.user === user;
 
               let licences = null;
               if (customer && customer.licences) {
@@ -82,7 +86,7 @@ export const ActiveUsersBoard = ({
                         setDropdown(
                           changeRoleSelected
                             ? null
-                            : { type: 'change-role', user },
+                            : { type: CHANGE_ROLE, user },
                         )
                       }
                       disabled={user.type === 'MANAGER' && oneAdminRemaining}
@@ -113,12 +117,13 @@ export const ActiveUsersBoard = ({
                     className={`${tableStyles.td} ${tableStyles.optionsColumn}`}
                   >
                     <OptionsIcon
+                      data-testid="options-icon"
                       classes={`${tableStyles.optionsIcon} ${
                         optionsSelected && tableStyles.optionsIconSelected
                       }`}
                       onClick={() =>
                         setDropdown(
-                          optionsSelected ? null : { type: 'options', user },
+                          optionsSelected ? null : { type: OPTIONS, user },
                         )
                       }
                     />
@@ -133,12 +138,14 @@ export const ActiveUsersBoard = ({
                         >
                           Edit
                         </button>
-                        <button
-                          className={tableStyles.optionsButton}
-                          onClick={() => handleClick(onDeleteUserClick, user)}
-                        >
-                          Delete User
-                        </button>
+                        {user.user.id !== currentUser.id && (
+                          <button
+                            className={tableStyles.optionsButton}
+                            onClick={() => handleClick(onDeleteUserClick, user)}
+                          >
+                            Delete User
+                          </button>
+                        )}
                       </OptionsDropdown>
                     )}
                   </td>

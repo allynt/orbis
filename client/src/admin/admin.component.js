@@ -63,15 +63,17 @@ const Admin = ({ user }) => {
       default:
         return (
           <HomeView
+            currentUser={user}
             users={customerUsers}
             customer={currentCustomer}
-            onChangeRoleClick={user => {
+            onChangeRoleClick={user =>
               dispatch(
-                updateCustomerUser(user, {
+                updateCustomerUser({
+                  ...user,
                   type: user.type === 'MANAGER' ? 'MEMBER' : 'MANAGER',
                 }),
-              );
-            }}
+              )
+            }
             onDeleteUserClick={user =>
               setDialogForm({ type: DIALOG_VIEW.deleteUser, user })
             }

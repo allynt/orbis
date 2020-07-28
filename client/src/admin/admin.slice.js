@@ -229,10 +229,7 @@ export const createCustomerUser = fields => async (dispatch, getState) => {
   return dispatch(createCustomerUserSuccess({ user, customer }));
 };
 
-export const updateCustomerUser = (user, data) => async (
-  dispatch,
-  getState,
-) => {
+export const updateCustomerUser = user => async (dispatch, getState) => {
   const headers = getJsonAuthHeaders(getState());
   const currentCustomer = selectCurrentCustomer(getState());
 
@@ -240,7 +237,7 @@ export const updateCustomerUser = (user, data) => async (
 
   const updateCustomerUserResponse = await sendData(
     `${API}${currentCustomer.id}/users/${user.id}`,
-    data,
+    user,
     headers,
     'PUT',
   );

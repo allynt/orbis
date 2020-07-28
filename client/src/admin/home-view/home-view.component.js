@@ -8,6 +8,7 @@ import { USER_STATUS } from '../admin.constants';
 import styles from './home-view.module.css';
 
 const HomeView = ({
+  currentUser,
   users,
   customer,
   onChangeRoleClick,
@@ -35,6 +36,7 @@ const HomeView = ({
   return (
     <div className={styles.home}>
       <ActiveUsersBoard
+        currentUser={currentUser}
         activeUsers={activeUsers}
         customer={customer}
         licenceData={licenceData}
