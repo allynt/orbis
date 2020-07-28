@@ -229,15 +229,18 @@ export const createCustomerUser = fields => async (dispatch, getState) => {
   return dispatch(createCustomerUserSuccess({ user, customer }));
 };
 
-export const updateCustomerUser = user => async (dispatch, getState) => {
+export const updateCustomerUser = customerUser => async (
+  dispatch,
+  getState,
+) => {
   const headers = getJsonAuthHeaders(getState());
   const currentCustomer = selectCurrentCustomer(getState());
 
   dispatch(updateCustomerUserRequested());
 
   const updateCustomerUserResponse = await sendData(
-    `${API}${currentCustomer.id}/users/${user.id}`,
-    user,
+    `${API}${currentCustomer.id}/users/${customerUser.user.id}/`,
+    customerUser,
     headers,
     'PUT',
   );
@@ -250,8 +253,8 @@ export const updateCustomerUser = user => async (dispatch, getState) => {
       dispatch,
     );
 
-  const updatedUser = await updateCustomerUserResponse.json();
-  return dispatch(updateCustomerUserSuccess(updatedUser));
+  const updatedCustomerUser = await updateCustomerUserResponse.json();
+  return dispatch(updateCustomerUserSuccess(updatedCustomerUser));
 };
 
 export const deleteCustomerUser = customerUser => async (
