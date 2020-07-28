@@ -48,31 +48,27 @@ const detailComponentMap = {
   default: DefaultComponent,
 };
 
-export const DataLayersList = ({ selectedLayers }) => {
-  const dispatch = useDispatch();
+export const LayersList = ({ dispatch, selectedLayers }) => (
+  <div className={styles.layers}>
+    {selectedLayers.map(selectedLayer => {
+      // We need to have structure to our layer naming for this to work,
+      // but if we prepend each layer with it's type, e.g `scotish-infrastructure` becomes `infrastructure` and `people`,
+      // remains `people`.
+      const [layerType] = selectedLayer.name.split('-').slice(-1);
+      const Component =
+        detailComponentMap[layerType ? layerType : selectedLayer.name] ??
+        detailComponentMap['default'];
 
-  return (
-    <div className={styles.layers}>
-      {selectedLayers.map(selectedLayer => {
-        // We need to have structure to our layer naming for this to work,
-        // but if we prepend each layer with it's type, e.g `scotish-infrastructure` becomes `infrastructure` and `people`,
-        // remains `people`.
-        const [layerType] = selectedLayer.name.split('-').slice(-1);
-        const Component =
-          detailComponentMap[layerType ? layerType : selectedLayer.name] ??
-          detailComponentMap['default'];
-
-        return (
-          <Detail
-            key={selectedLayer.source_id}
-            title={selectedLayer.metadata.label}
-          >
-            <div className={styles.detailContent}>
-              <Component selectedLayer={selectedLayer} dispatch={dispatch} />
-            </div>
-          </Detail>
-        );
-      })}
-    </div>
-  );
-};
+      return (
+        <Detail
+          key={selectedLayer.source_id}
+          title={selectedLayer.metadata.label}
+        >
+          <div className={styles.detailContent}>
+            <Component selectedLayer={selectedLayer} dispatch={dispatch} />
+          </div>
+        </Detail>
+      );
+    })}
+  </div>
+);

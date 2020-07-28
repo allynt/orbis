@@ -17,7 +17,7 @@ import {
 import DataLayersDialog from './data-layers-dialog/data-layers-dialog.component';
 
 import styles from './data-layers.module.css';
-import { DataLayersList } from './data-layers-list/data-layers-list.component';
+import { LayersList } from './layers-list/layers-list.component';
 
 const DataLayers = () => {
   const [isVisible, toggle] = useModal(false);
@@ -40,7 +40,7 @@ const DataLayers = () => {
   return (
     <>
       <div className={styles.selectData} ref={ref}>
-        <DataLayersList selectedLayers={selectedLayers} />
+        <LayersList dispatch={dispatch} selectedLayers={selectedLayers} />
         <div className={styles.buttons}>
           <AddNewCategoryIcon
             className={styles.addNewCategoryIcon}
