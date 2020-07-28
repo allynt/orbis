@@ -7,11 +7,12 @@ const GEOCODE_API_URL = 'https://api.mapbox.com/geocoding/v5/mapbox.places/';
 
 /**
  * @param {{
+ *   className: string
  *   mapboxApiAccessToken: string
  *   onSelect: (feature: import('@turf/turf').Feature) => void
  *  }} props
  */
-export const Geocoder = ({ mapboxApiAccessToken, onSelect }) => {
+export const Geocoder = ({ className, mapboxApiAccessToken, onSelect }) => {
   if (!mapboxApiAccessToken)
     console.warn('You need to provide a Mapbox API token to <Geocoder />');
 
@@ -46,7 +47,7 @@ export const Geocoder = ({ mapboxApiAccessToken, onSelect }) => {
   };
 
   return (
-    <div>
+    <div className={className}>
       <SearchIcon title="Location Search" />
       <label className={formStyles.hiddenLabel} htmlFor="geocoder">
         Location Search
