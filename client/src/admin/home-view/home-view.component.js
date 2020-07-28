@@ -8,10 +8,12 @@ import { USER_STATUS } from '../admin.constants';
 import styles from './home-view.module.css';
 
 const HomeView = ({
+  currentUser,
   users,
   customer,
-  onWithdrawInvitationClick,
+  onChangeRoleClick,
   onDeleteUserClick,
+  onWithdrawInvitationClick,
 }) => {
   const activeUsers = users?.filter(user => user.status === USER_STATUS.active);
   const pendingUsers = users?.filter(
@@ -34,9 +36,11 @@ const HomeView = ({
   return (
     <div className={styles.home}>
       <ActiveUsersBoard
+        currentUser={currentUser}
         activeUsers={activeUsers}
         customer={customer}
         licenceData={licenceData}
+        onChangeRoleClick={onChangeRoleClick}
         onDeleteUserClick={onDeleteUserClick}
       />
       <PendingInvitationsBoard

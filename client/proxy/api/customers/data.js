@@ -305,6 +305,16 @@ const createCustomerUser = (customerId, userData) => {
   return newUser;
 };
 
+const updateCustomerUser = user => {
+  const index = customerUsers.indexOf(
+    customerUsers.find(cu => cu.id === user.id),
+  );
+
+  customerUsers[index] = user;
+
+  return customerUsers[index];
+};
+
 const deleteCustomerUser = userId => {
   const deletedUser = customerUsers.find(cu => cu.id === userId);
   customerUsers = customerUsers.filter(cu => cu.id !== deletedUser.id);
@@ -322,5 +332,6 @@ module.exports = {
   getCustomer,
   getCustomerUsers,
   createCustomerUser,
+  updateCustomerUser,
   deleteCustomerUser,
 };

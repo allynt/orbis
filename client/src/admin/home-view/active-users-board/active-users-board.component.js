@@ -1,26 +1,36 @@
 import React, { useState } from 'react';
 
-import { OptionsIcon } from '@astrosat/astrosat-ui';
+import { Button, OptionsIcon } from '@astrosat/astrosat-ui';
 
 import ContentWrapper from '../../content-wrapper.component';
+import OptionsDropdown from '../options-dropdown/options-dropdown.component';
 
 import { getUserLicences } from '../get-user-licences-helper';
 
 import QuickView from '../active-users-board/quick-view/quick-view.component';
 
+import styles from './active-users-board.module.css';
 import tableStyles from '../../table.module.css';
 
 export const ActiveUsersBoard = ({
+  currentUser,
   activeUsers,
   customer,
   licenceData,
+  onChangeRoleClick,
   onDeleteUserClick,
 }) => {
-  const [userOptions, setUserOptions] = useState(null);
+  const [dropdown, setDropdown] = useState(null);
+
+  const CHANGE_ROLE = 'Change Role';
+  const OPTIONS = 'Options';
+
+  const oneAdminRemaining =
+    activeUsers?.filter(au => au.type === 'MANAGER').length === 1;
 
   const handleClick = (fn, user) => {
     fn(user);
-    setUserOptions(null);
+    setDropdown(null);
   };
 
   return (
@@ -41,12 +51,18 @@ export const ActiveUsersBoard = ({
             <th align="left" className={tableStyles.th}>
               Type
             </th>
+            <th align="left" className={tableStyles.th}></th>
           </tr>
         </thead>
         <tbody>
           {activeUsers && activeUsers.length > 0 ? (
             activeUsers.map(user => {
-              const selected = userOptions === user;
+              const optionsSelected =
+                dropdown?.type === OPTIONS && dropdown.user === user;
+
+              const changeRoleSelected =
+                dropdown?.type === CHANGE_ROLE && dropdown.user === user;
+
               let licences = null;
               if (customer && customer.licences) {
                 licences = getUserLicences(user, customer);
@@ -63,27 +79,74 @@ export const ActiveUsersBoard = ({
                   <td
                     className={`${tableStyles.td} ${tableStyles.optionsColumn}`}
                   >
+                    <Button
+                      theme="tertiary"
+                      className={styles.optionsRoleButton}
+                      onClick={() =>
+                        setDropdown(
+                          changeRoleSelected
+                            ? null
+                            : { type: CHANGE_ROLE, user },
+                        )
+                      }
+                      disabled={user.type === 'MANAGER' && oneAdminRemaining}
+                    >
+                      {user.type === 'MANAGER' ? 'Admin' : 'Standard'}
+                      <span
+                        className={`${styles.arrow} ${
+                          changeRoleSelected && styles.selected
+                        }`}
+                      ></span>
+                    </Button>
+
+                    {changeRoleSelected && (
+                      <OptionsDropdown
+                        className={styles.roleDropdown}
+                        onClickAway={() => setDropdown(null)}
+                      >
+                        <button
+                          className={tableStyles.optionsButton}
+                          onClick={() => handleClick(onChangeRoleClick, user)}
+                        >
+                          {user.type === 'MANAGER' ? 'Standard' : 'Admin'}
+                        </button>
+                      </OptionsDropdown>
+                    )}
+                  </td>
+                  <td
+                    className={`${tableStyles.td} ${tableStyles.optionsColumn}`}
+                  >
                     <OptionsIcon
+                      data-testid="options-icon"
                       classes={`${tableStyles.optionsIcon} ${
-                        selected && tableStyles.optionsIconSelected
+                        optionsSelected && tableStyles.optionsIconSelected
                       }`}
-                      onClick={() => setUserOptions(selected ? null : user)}
+                      onClick={() =>
+                        setDropdown(
+                          optionsSelected ? null : { type: OPTIONS, user },
+                        )
+                      }
                     />
-                    {selected && (
-                      <div className={tableStyles.optionsDropdown}>
-                        <p
-                          className={tableStyles.optionsText}
+                    {optionsSelected && (
+                      <OptionsDropdown
+                        className={styles.editDropdown}
+                        onClickAway={() => setDropdown(null)}
+                      >
+                        <button
+                          className={tableStyles.optionsButton}
                           onClick={() => handleClick(console.log, user)}
                         >
                           Edit
-                        </p>
-                        <p
-                          className={tableStyles.optionsText}
-                          onClick={() => handleClick(onDeleteUserClick, user)}
-                        >
-                          Delete User
-                        </p>
-                      </div>
+                        </button>
+                        {user.user.id !== currentUser.id && (
+                          <button
+                            className={tableStyles.optionsButton}
+                            onClick={() => handleClick(onDeleteUserClick, user)}
+                          >
+                            Delete User
+                          </button>
+                        )}
+                      </OptionsDropdown>
                     )}
                   </td>
                 </tr>

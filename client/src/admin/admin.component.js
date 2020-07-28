@@ -10,6 +10,7 @@ import {
   selectCurrentCustomer,
   selectCustomerUsers,
   selectLicenceInformation,
+  updateCustomerUser,
   deleteCustomerUser,
 } from './admin.slice';
 import HomeView from './home-view/home-view.component';
@@ -62,13 +63,22 @@ const Admin = ({ user }) => {
       default:
         return (
           <HomeView
+            currentUser={user}
             users={customerUsers}
             customer={currentCustomer}
-            onWithdrawInvitationClick={user =>
-              setDialogForm({ type: DIALOG_VIEW.withdrawInvitation, user })
+            onChangeRoleClick={user =>
+              dispatch(
+                updateCustomerUser({
+                  ...user,
+                  type: user.type === 'MANAGER' ? 'MEMBER' : 'MANAGER',
+                }),
+              )
             }
             onDeleteUserClick={user =>
               setDialogForm({ type: DIALOG_VIEW.deleteUser, user })
+            }
+            onWithdrawInvitationClick={user =>
+              setDialogForm({ type: DIALOG_VIEW.withdrawInvitation, user })
             }
           />
         );

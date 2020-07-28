@@ -220,13 +220,13 @@ describe('Admin Slice', () => {
 
     describe('updateCustomerUser', () => {
       it('should dispatch update user failure action.', async () => {
-        const customer = {
-          name: 'test_customer',
-        };
-
         const user = {
           name: 'Test User',
           id: '1',
+        };
+
+        const data = {
+          name: 'Updated User Name',
         };
 
         fetch.mockResponse(
@@ -248,19 +248,19 @@ describe('Admin Slice', () => {
           },
         ];
 
-        await store.dispatch(updateCustomerUser(customer, user));
+        await store.dispatch(updateCustomerUser(user, data));
 
         expect(store.getActions()).toEqual(expectedActions);
       });
 
       it('should dispatch update user success action.', async () => {
-        const customer = {
-          name: 'test_customer',
-        };
-
         const user = {
           id: '1',
           name: 'Test User',
+        };
+
+        const data = {
+          name: 'Updated User Name',
         };
 
         fetch.mockResponse(JSON.stringify(user));
@@ -270,7 +270,7 @@ describe('Admin Slice', () => {
           { type: updateCustomerUserSuccess.type, payload: user },
         ];
 
-        await store.dispatch(updateCustomerUser(customer, user));
+        await store.dispatch(updateCustomerUser(user, data));
 
         expect(store.getActions()).toEqual(expectedActions);
       });
@@ -356,7 +356,7 @@ describe('Admin Slice', () => {
       expect(actualState).toEqual(beforeState);
     });
 
-    it("'should update the is loading state, when users requested", () => {
+    it('should update the is loading state, when users requested', () => {
       const actualState = reducer(beforeState, {
         type: fetchCustomerUsersRequested.type,
       });
@@ -451,7 +451,7 @@ describe('Admin Slice', () => {
       expect(actualState.error).toEqual(error);
     });
 
-    it("'should update the is loading state, when updating user", () => {
+    it('should update the is loading state, when updating user', () => {
       const actualState = reducer(beforeState, {
         type: updateCustomerUserRequested.type,
       });
