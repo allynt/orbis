@@ -292,7 +292,7 @@ export const deleteCustomerUser = customerUser => async (
       dispatch,
     );
 
-  const [customer] = await Promise.all([fetchCustomerResponse.json()]);
+  const customer = await fetchCustomerResponse.json();
 
   return dispatch(
     deleteCustomerUserSuccess({ deletedUser: customerUser, customer }),

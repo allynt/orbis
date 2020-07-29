@@ -21,9 +21,9 @@ const getCustomerUsersHandler = (req, res) => {
 };
 
 const createCustomerUserHandler = (req, res) => {
-  console.log('Creating New User of Customer');
-
   const newUser = createCustomerUser(req.params.customerId, req.body);
+  console.log('Created New Customer User: ', newUser);
+
   res.status(201);
   res.json(newUser);
 };
@@ -47,9 +47,8 @@ const updateSelectedUserHandler = (req, res) => {
 const deleteSelectedUserHandler = (req, res) => {
   console.log('Deleting Selected User of Customer');
 
-  const deletedUser = deleteCustomerUser(req.params.userId);
-  res.status(200);
-  res.json(deletedUser);
+  deleteCustomerUser(req.params.userId);
+  res.sendStatus(200);
 };
 
 const usersRouter = express.Router();
