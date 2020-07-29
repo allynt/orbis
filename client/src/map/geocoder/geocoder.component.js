@@ -21,8 +21,6 @@ export const Geocoder = ({ className, mapboxApiAccessToken, onSelect }) => {
   const [searchString, setSearchString] = useState('');
   /** @type {[import('@turf/turf').Feature[], React.Dispatch<import('@turf/turf').Feature[]>]} */
   const [searchResults, setSearchResults] = useState([]);
-  /** @type {React.Ref<HTMLInputElement>} */
-  const inputRef = useRef();
 
   useEffect(() => {
     const search = async () => {
@@ -40,11 +38,6 @@ export const Geocoder = ({ className, mapboxApiAccessToken, onSelect }) => {
     }
   }, [mapboxApiAccessToken, searchString]);
 
-  /** @param {React.MouseEvent<SVGElement>} e */
-  const handleIconClick = e => {
-    if (document.activeElement !== inputRef.current) inputRef.current.focus();
-  };
-
   /** @param {React.ChangeEvent<HTMLInputElement>} e */
   const handleInputChange = e => {
     setSearchString(e.target.value);
@@ -57,16 +50,12 @@ export const Geocoder = ({ className, mapboxApiAccessToken, onSelect }) => {
   return (
     <div className={className}>
       <div className={styles.searchBox}>
-        <SearchIcon
-          className={styles.icon}
-          title="Location Search"
-          onClick={handleIconClick}
-        />
-        <label className={formStyles.hiddenLabel} htmlFor="geocoder">
+        <SearchIcon className={styles.icon} title="Location Search" />
+        <label className={styles.label} htmlFor="geocoder">
           Location Search
         </label>
         <input
-          ref={inputRef}
+          autoComplete="off"
           className={styles.input}
           type="text"
           id="geocoder"
