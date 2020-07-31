@@ -12,8 +12,8 @@ const HomeView = ({
   users,
   customer,
   onChangeRoleClick,
-  onWithdrawInvitationClick,
   onEditUserClick,
+  onWithdrawInvitationClick,
   onDeleteUserClick,
 }) => {
   const activeUsers = users?.filter(user => user.status === USER_STATUS.active);

@@ -75,6 +75,9 @@ const Admin = ({ user }) => {
                 }),
               )
             }
+            onEditUserClick={user =>
+              setDialogForm({ type: DIALOG_VIEW.editUser, user })
+            }
             onDeleteUserClick={user =>
               setDialogForm({ type: DIALOG_VIEW.deleteUser, user })
             }
@@ -109,7 +112,7 @@ const Admin = ({ user }) => {
           <EditUserForm
             user={dialogForm.user}
             customer={currentCustomer}
-            editUser={data => dispatch(editCustomerUser(data))}
+            editUser={editedUser => dispatch(updateCustomerUser(editedUser))}
             close={() => setDialogForm(null)}
           />
         );

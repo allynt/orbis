@@ -1,6 +1,12 @@
 import React from 'react';
 
-import { useForm, Button, Textfield, Radio } from '@astrosat/astrosat-ui';
+import {
+  useForm,
+  Button,
+  Textfield,
+  Radio,
+  Checkbox,
+} from '@astrosat/astrosat-ui';
 
 import validate from './edit-user-form-validator';
 
@@ -13,6 +19,8 @@ export const EditUserForm = ({ user, customer, editUser, close }) => {
     onSubmit,
     validate,
   );
+
+  const userLicences = getUserLicences(user, customer);
 
   const hasMadeChanges = values => {
     let bool = false;
@@ -29,10 +37,31 @@ export const EditUserForm = ({ user, customer, editUser, close }) => {
     }
   };
 
-  const userLicences = getUserLicences(user, customer);
+  const getUpdatedLicences = values => {
+    let newIds = [];
+    for (let key of Object.keys(values)) {
+      if (userLicences.includes(key) && values[key]) {
+        const licence = customer?.licences.find(
+          l => l.customer_user === user.user.id && l.orb === key,
+        );
+        newIds = [...newIds, licence.id];
+      }
+    }
+    return newIds;
+  };
 
   function onSubmit() {
-    editUser(values);
+    const editedUser = {
+      ...user,
+      type: values.type,
+      licences: getUpdatedLicences(values),
+      user: {
+        ...user.user,
+        name: values.name,
+        email: values.email,
+      },
+    };
+    editUser(editedUser);
     close();
   }
   return (
@@ -53,7 +82,7 @@ export const EditUserForm = ({ user, customer, editUser, close }) => {
       <h2 className={styles.title}>Project Access</h2>
       <div className={styles.radios}>
         {userLicences.map(l => (
-          <Radio key={l} label={l} checked={true} onChange={handleChange} />
+          <Checkbox key={l} name={l} label={l} onChange={handleChange} />
         ))}
       </div>
 
@@ -61,12 +90,16 @@ export const EditUserForm = ({ user, customer, editUser, close }) => {
       <div className={styles.radios}>
         <Radio
           label="Yes"
-          checked={user.type === 'MANAGER'}
+          id="yes"
+          name="type"
+          value="MANAGER"
           onChange={handleChange}
         />
         <Radio
           label="No"
-          checked={user.type !== 'MANAGER'}
+          id="No"
+          name="type"
+          value="MEMBER"
           onChange={handleChange}
         />
       </div>

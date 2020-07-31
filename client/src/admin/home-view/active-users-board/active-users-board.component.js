@@ -135,7 +135,7 @@ export const ActiveUsersBoard = ({
                       >
                         <button
                           className={tableStyles.optionsButton}
-                          onClick={() => handleClick(console.log, user)}
+                          onClick={() => handleClick(onEditUserClick, user)}
                         >
                           Edit
                         </button>

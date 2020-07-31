@@ -64,10 +64,19 @@ const adminSlice = createSlice({
       state.isLoading = true;
     },
     updateCustomerUserSuccess: (state, { payload }) => {
-      const userIndex = state.customerUsers.indexOf(
-        state.customerUsers.find(cu => cu.id === payload.id),
-      );
-      state.customerUsers[userIndex] = payload;
+      if (payload.updatedCustomerUser) {
+        const userIndex = state.customerUsers.indexOf(
+          state.customerUsers.find(
+            cu => cu.id === payload.updatedCustomerUser.id,
+          ),
+        );
+
+        state.customerUsers[userIndex] = payload.updatedCustomerUser;
+      }
+
+      if (payload.updatedCustomer) {
+        state.currentCustomer = payload.updatedCustomer;
+      }
 
       state.isLoading = false;
       state.error = null;
@@ -248,13 +257,31 @@ export const updateCustomerUser = customerUser => async (
   if (!updateCustomerUserResponse.ok)
     return handleFailure(
       updateCustomerUserResponse,
-      'Edit Customer User Error',
+      'Update Customer User Error',
       updateCustomerUserFailure,
       dispatch,
     );
 
-  const updatedCustomerUser = await updateCustomerUserResponse.json();
-  return dispatch(updateCustomerUserSuccess(updatedCustomerUser));
+  const fetchCustomerResponse = await getData(
+    `${API}${currentCustomer.id}`,
+    headers,
+  );
+  if (!fetchCustomerResponse.ok)
+    return handleFailure(
+      fetchCustomerResponse,
+      'Update Customer User Error',
+      updateCustomerUserFailure,
+      dispatch,
+    );
+
+  const [updatedCustomerUser, updatedCustomer] = await Promise.all([
+    updateCustomerUserResponse.json(),
+    fetchCustomerResponse.json(),
+  ]);
+
+  return dispatch(
+    updateCustomerUserSuccess({ updatedCustomerUser, updatedCustomer }),
+  );
 };
 
 export const deleteCustomerUser = customerUser => async (
