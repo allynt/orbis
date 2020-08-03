@@ -1,18 +1,14 @@
 import {
-  activeLayersSelector,
-  dataSourcesSelector,
   selectDataToken,
+  activeDataSourcesSelector,
 } from 'data-layers/data-layers.slice';
 import { useCallback, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useHourglassOrb } from './hourglass/useHourglassOrb';
 import { useRiceOrb } from './rice/useRiceOrb';
+import { useIsolationPlusOrb } from './rice/isolationPlus/useIsolationPlusOrb';
 
-const orbs = [useHourglassOrb, useRiceOrb];
-
-const dataUrlFromId = (id, sources) => {
-  const source = sources.find(source => source.source_id === id);
-  if (!source) return;
+const dataUrlFromId = source => {
   return source.data && typeof source.data === 'string'
     ? source.data
     : source.metadata.url;
@@ -20,8 +16,7 @@ const dataUrlFromId = (id, sources) => {
 
 export const useOrbs = () => {
   const authToken = useSelector(selectDataToken);
-  const sources = useSelector(dataSourcesSelector);
-  const activeLayers = useSelector(activeLayersSelector);
+  const activeSources = useSelector(activeDataSourcesSelector);
   const [data, setData] = useState({});
 
   const dataRequest = useCallback(
@@ -38,33 +33,47 @@ export const useOrbs = () => {
   );
 
   useEffect(() => {
-    const fetchData = async layerId => {
-      const dataSet = await dataRequest(dataUrlFromId(layerId, sources));
-      setData({ ...data, [layerId]: dataSet });
+    const fetchData = async source => {
+      const dataSet = await dataRequest(dataUrlFromId(source));
+      setData({ ...data, [source.source_id]: dataSet });
     };
-    for (let layerId of activeLayers) {
-      if (!data[layerId]) {
-        fetchData(layerId);
+    for (let source of activeSources) {
+      if (!data[source.source_id]) {
+        if (source.metadata.tiles)
+          setData({ ...data, [source.source_id]: source.metadata.tiles });
+        else fetchData(source);
       }
     }
-  }, [activeLayers, sources, dataRequest, data]);
+  }, [activeSources, dataRequest, data]);
 
-  let layers = [];
-  let mapComponents = [];
-  let sidebarComponents = {};
+  // This needs to be more dynamic but it was breaking the rules of hooks when loading from the array
+  const {
+    layers: hourglassLayers,
+    mapComponents: hourglassMapComponents,
+    sidebarComponents: hourglassSidebarComponents,
+  } = useHourglassOrb(data, activeSources);
+  const {
+    layers: riceLayers,
+    mapComponents: riceMapComponents,
+    sidebarComponents: riceSidebarComponents,
+  } = useRiceOrb(data, activeSources);
+  const {
+    layers: isoPlusLayers,
+    mapComponents: isoPlusMapComponents,
+    sidebarComponents: isoPlusSidebarComponents,
+  } = useIsolationPlusOrb(data, activeSources, authToken);
 
-  for (let orbHook of orbs.filter(orb =>
-    sources.some(source => source.source_id.includes(orb.id)),
-  )) {
-    const {
-      layers: orbLayers,
-      mapComponents: orbMapComponents,
-      sidebarComponents: orbSidebarComponents,
-    } = orbHook(data, activeLayers);
-    layers = [...layers, ...orbLayers];
-    mapComponents = [...mapComponents, ...orbMapComponents];
-    sidebarComponents = { ...sidebarComponents, ...orbSidebarComponents };
-  }
+  let layers = [...hourglassLayers, ...riceLayers, ...isoPlusLayers];
+  let mapComponents = [
+    ...hourglassMapComponents,
+    ...riceMapComponents,
+    ...isoPlusMapComponents,
+  ];
+  let sidebarComponents = {
+    ...hourglassSidebarComponents,
+    ...riceSidebarComponents,
+    ...isoPlusSidebarComponents,
+  };
 
   return { layers, mapComponents, sidebarComponents };
 };
