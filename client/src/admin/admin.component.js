@@ -1,7 +1,7 @@
 import { Dialog } from '@astrosat/astrosat-ui';
 import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { ADMIN_VIEW, DIALOG_VIEW } from './admin.constants';
+import { ADMIN_VIEW, DIALOG_VIEW, USER_STATUS } from './admin.constants';
 import styles from './admin.module.css';
 import {
   createCustomerUser,
@@ -50,6 +50,29 @@ const Admin = ({ user }) => {
     dispatch(createCustomerUser(values));
   };
 
+  const activeUsers = customerUsers?.filter(
+    user => user.status === USER_STATUS.active,
+  );
+  const pendingUsers = customerUsers?.filter(
+    user => user.status === USER_STATUS.pending,
+  );
+
+  const oneAdminRemaining =
+    activeUsers?.filter(au => au.type === 'MANAGER').length === 1;
+
+  let availableLicences = null;
+  if (currentCustomer && currentCustomer.licences) {
+    availableLicences = currentCustomer.licences.filter(
+      licence => !licence.customer_user,
+    );
+  }
+
+  const licenceData = {
+    active: activeUsers?.length,
+    pending: pendingUsers?.length,
+    available: availableLicences?.length,
+  };
+
   const getMainView = () => {
     switch (visiblePanel) {
       case ADMIN_VIEW.corporateAccount:
@@ -65,7 +88,10 @@ const Admin = ({ user }) => {
         return (
           <HomeView
             currentUser={user}
-            users={customerUsers}
+            activeUsers={activeUsers}
+            pendingUsers={pendingUsers}
+            oneAdminRemaining={oneAdminRemaining}
+            licenceData={licenceData}
             customer={currentCustomer}
             onChangeRoleClick={user =>
               dispatch(
@@ -112,6 +138,8 @@ const Admin = ({ user }) => {
           <EditUserForm
             user={dialogForm.user}
             customer={currentCustomer}
+            availableLicences={availableLicences}
+            oneAdminRemaining={oneAdminRemaining}
             editUser={editedUser => dispatch(updateCustomerUser(editedUser))}
             close={() => setDialogForm(null)}
           />

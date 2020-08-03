@@ -95,6 +95,18 @@ let customers = [
         customer_user: null,
         access: '1',
       },
+      {
+        id: 'cffb1c43-54b9-47ce-be3b-572d2a3d2g59',
+        orb: 'Steel',
+        customer_user: null,
+        access: '1',
+      },
+      {
+        id: '580468ba-fd78-4ea6-bd50-52a7b7ecwpdc',
+        orb: 'Steel',
+        customer_user: null,
+        access: '1',
+      },
     ],
     data_limit: 100,
     data_total: 50,
@@ -275,7 +287,7 @@ let customerUsers = [
   },
 ];
 
-const removeUserFromCustomerLicences = (type, user) => {
+const updateCustomerLicences = (type, user) => {
   let customer = customers[0];
 
   for (let licence of customer.licences) {
@@ -288,6 +300,10 @@ const removeUserFromCustomerLicences = (type, user) => {
     } else if (type === 'edit') {
       if (idMatch && !user.licences.includes(licence.id)) {
         licence.customer_user = null;
+      }
+
+      if (!licence.customer_user && user.licences.includes(licence.id)) {
+        licence.customer_user = user.user.id;
       }
     }
   }
@@ -334,7 +350,7 @@ const updateCustomerUser = user => {
 
   customerUsers[index] = user;
 
-  removeUserFromCustomerLicences('edit', user);
+  updateCustomerLicences('edit', user);
 
   return customerUsers[index];
 };
@@ -345,7 +361,7 @@ const deleteCustomerUser = userId => {
     cu => cu.user.id !== deletedUser.user.id,
   );
 
-  removeUserFromCustomerLicences('delete', deletedUser);
+  updateCustomerLicences('delete', deletedUser);
 };
 
 module.exports = {

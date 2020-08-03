@@ -1,4 +1,5 @@
 .editForm,
+.checkboxes,
 .radios,
 .button {
   display: flex;
@@ -20,7 +21,8 @@
   font-weight: bold;
 }
 
-.radios:first-child {
+.checkboxes > *,
+.radios > * {
   margin-right: 1.25rem;
 }
 

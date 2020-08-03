@@ -15,6 +15,7 @@ import tableStyles from '../../table.module.css';
 export const ActiveUsersBoard = ({
   currentUser,
   activeUsers,
+  oneAdminRemaining,
   customer,
   licenceData,
   onChangeRoleClick,
@@ -25,9 +26,6 @@ export const ActiveUsersBoard = ({
 
   const CHANGE_ROLE = 'Change Role';
   const OPTIONS = 'Options';
-
-  const oneAdminRemaining =
-    activeUsers?.filter(au => au.type === 'MANAGER').length === 1;
 
   const handleClick = (fn, user) => {
     fn(user);

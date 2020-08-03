@@ -10,17 +10,36 @@ import {
 
 import validate from './edit-user-form-validator';
 
-import { getUserLicences } from '../get-user-licences-helper';
-
 import styles from './edit-user-form.module.css';
 
-export const EditUserForm = ({ user, customer, editUser, close }) => {
+export const EditUserForm = ({
+  user,
+  customer,
+  availableLicences,
+  oneAdminRemaining,
+  editUser,
+  close,
+}) => {
   const { handleChange, handleSubmit, values, errors } = useForm(
     onSubmit,
     validate,
   );
 
-  const userLicences = getUserLicences(user, customer);
+  const getCheckboxLicences = () => {
+    const userLicences = customer.licences.filter(
+      l => l.customer_user === user.user.id,
+    );
+
+    let allLicences = [...userLicences];
+
+    for (let licence of availableLicences) {
+      if (!allLicences.map(l => l.orb).includes(licence.orb)) {
+        allLicences = [...allLicences, licence];
+      }
+    }
+
+    return allLicences;
+  };
 
   const hasMadeChanges = values => {
     let bool = false;
@@ -28,7 +47,7 @@ export const EditUserForm = ({ user, customer, editUser, close }) => {
       return bool;
     } else {
       for (let key of Object.keys(values)) {
-        if (values[key] !== '') {
+        if (values[key] && values[key] !== '') {
           bool = true;
           break;
         }
@@ -37,12 +56,14 @@ export const EditUserForm = ({ user, customer, editUser, close }) => {
     }
   };
 
-  const getUpdatedLicences = values => {
+  const getUpdatedLicenceIds = values => {
     let newIds = [];
     for (let key of Object.keys(values)) {
-      if (userLicences.includes(key) && values[key]) {
+      if (values[key] === true) {
         const licence = customer?.licences.find(
-          l => l.customer_user === user.user.id && l.orb === key,
+          l =>
+            l.orb === key &&
+            (l.customer_user === user.user.id || l.customer_user === null),
         );
         newIds = [...newIds, licence.id];
       }
@@ -54,13 +75,14 @@ export const EditUserForm = ({ user, customer, editUser, close }) => {
     const editedUser = {
       ...user,
       type: values.type,
-      licences: getUpdatedLicences(values),
+      licences: getUpdatedLicenceIds(values),
       user: {
         ...user.user,
         name: values.name,
         email: values.email,
       },
     };
+
     editUser(editedUser);
     close();
   }
@@ -80,9 +102,14 @@ export const EditUserForm = ({ user, customer, editUser, close }) => {
       />
 
       <h2 className={styles.title}>Project Access</h2>
-      <div className={styles.radios}>
-        {userLicences.map(l => (
-          <Checkbox key={l} name={l} label={l} onChange={handleChange} />
+      <div className={styles.checkboxes}>
+        {getCheckboxLicences().map(l => (
+          <Checkbox
+            key={l.id}
+            name={l.orb}
+            label={l.orb}
+            onChange={handleChange}
+          />
         ))}
       </div>
 
@@ -101,6 +128,7 @@ export const EditUserForm = ({ user, customer, editUser, close }) => {
           name="type"
           value="MEMBER"
           onChange={handleChange}
+          disabled={oneAdminRemaining}
         />
       </div>
 
