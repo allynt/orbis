@@ -20,11 +20,6 @@ export const EditUserForm = ({
   editUser,
   close,
 }) => {
-  const { handleChange, handleSubmit, values, errors } = useForm(
-    onSubmit,
-    validate,
-  );
-
   const getCheckboxLicences = () => {
     const userLicences = customer.licences.filter(
       l => l.customer_user === user.user.id,
@@ -41,13 +36,36 @@ export const EditUserForm = ({
     return allLicences;
   };
 
+  const getDefaults = () => {
+    const defaults = {
+      values: {
+        name: user.user.name ? user.user.name : '',
+        type: user.type === 'MANAGER' ? 'MANAGER' : 'MEMBER',
+      },
+    };
+
+    for (let licence of getCheckboxLicences()) {
+      defaults.values[licence.orb] =
+        licence.customer_user === user.user.id ? true : false;
+    }
+
+    return defaults;
+  };
+
+  const { handleChange, handleSubmit, values, errors } = useForm(
+    onSubmit,
+    validate,
+    getDefaults(),
+  );
+
   const hasMadeChanges = values => {
     let bool = false;
     if (Object.keys(values).length === 0) {
       return bool;
     } else {
-      for (let key of Object.keys(values)) {
-        if (values[key] && values[key] !== '') {
+      const defaults = getDefaults().values;
+      for (let key of Object.keys(defaults)) {
+        if (values[key] !== defaults[key]) {
           bool = true;
           break;
         }
@@ -60,7 +78,7 @@ export const EditUserForm = ({
     let newIds = [];
     for (let key of Object.keys(values)) {
       if (values[key] === true) {
-        const licence = customer?.licences.find(
+        const licence = customer.licences.find(
           l =>
             l.orb === key &&
             (l.customer_user === user.user.id || l.customer_user === null),
@@ -79,27 +97,23 @@ export const EditUserForm = ({
       user: {
         ...user.user,
         name: values.name,
-        email: values.email,
       },
     };
 
     editUser(editedUser);
     close();
   }
+
   return (
     <form className={styles.editForm} onSubmit={handleSubmit}>
       <Textfield
         name="name"
         value={values.name || ''}
-        placeholder={user.user.name}
+        placeholder="Name"
         onChange={handleChange}
       />
-      <Textfield
-        name="email"
-        value={values.email || ''}
-        placeholder={user.user.email}
-        onChange={handleChange}
-      />
+
+      <Textfield name="email" value={user.user.email} readOnly />
 
       <h2 className={styles.title}>Project Access</h2>
       <div className={styles.checkboxes}>
@@ -108,6 +122,7 @@ export const EditUserForm = ({
             key={l.id}
             name={l.orb}
             label={l.orb}
+            checked={values[l.orb]}
             onChange={handleChange}
           />
         ))}
@@ -120,6 +135,7 @@ export const EditUserForm = ({
           id="yes"
           name="type"
           value="MANAGER"
+          checked={values.type === 'MANAGER'}
           onChange={handleChange}
         />
         <Radio
@@ -127,6 +143,7 @@ export const EditUserForm = ({
           id="No"
           name="type"
           value="MEMBER"
+          checked={values.type === 'MEMBER'}
           onChange={handleChange}
           disabled={oneAdminRemaining}
         />
