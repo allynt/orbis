@@ -3,17 +3,23 @@ import { VectorTile } from '@mapbox/vector-tile';
 import Protobuf from 'pbf';
 import { LAYER_IDS } from '../../../map.constants';
 import { gunzipSync } from 'zlib';
+import { interpolateBlues } from 'd3-scale-chromatic';
+
+const rgbStringToArray = string => {
+  const values = string.match(/(\d)+/g);
+  return values.map(str => +str);
+};
 
 export const useIsolationPlusOrb = (data, sources, authToken) => {
   const layers = [
     new TileLayer({
       id: LAYER_IDS.astrosat.isolationPlus.ahah.v0,
       data: data[LAYER_IDS.astrosat.isolationPlus.ahah.v0],
+      visible: true,
       getTileData: tile =>
         fetch(tile.url, {
           headers: {
             Authorization: `Bearer ${authToken}`,
-            'Content-Type': 'application/x-protobuf',
           },
         })
           .then(res => {
@@ -22,11 +28,11 @@ export const useIsolationPlusOrb = (data, sources, authToken) => {
           })
           .then(buffer => {
             if (buffer) {
-              const unzipped = gunzipSync(new Buffer(buffer));
-              const tile = new VectorTile(new Protobuf(unzipped));
+              const unzipped = gunzipSync(Buffer.from(buffer));
+              const vectorTile = new VectorTile(new Protobuf(unzipped));
               const features = [];
-              for (const layerName in tile.layers) {
-                const vectorTileLayer = tile.layers[layerName];
+              for (const layerName in vectorTile.layers) {
+                const vectorTileLayer = vectorTile.layers[layerName];
                 for (let i = 0; i < vectorTileLayer.length; i += 1) {
                   const vectorTileFeature = vectorTileLayer.feature(i);
                   const feature = vectorTileFeature.toGeoJSON(
@@ -44,7 +50,17 @@ export const useIsolationPlusOrb = (data, sources, authToken) => {
       uniqueIdProperty: sources.find(
         source => source.source_id === LAYER_IDS.astrosat.isolationPlus.ahah.v0,
       )?.metadata.uniqueIdProperty,
-      getFillColor: [140, 170, 180, 255],
+      filled: true,
+      getFillColor: d => {
+        return [
+          ...rgbStringToArray(
+            interpolateBlues(d.properties['IMD: Income decile'] / 10),
+          ),
+          175,
+        ];
+      },
+      pickable: true,
+      autoHighlight: true,
     }),
   ];
 
