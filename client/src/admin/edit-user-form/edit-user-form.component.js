@@ -58,6 +58,8 @@ export const EditUserForm = ({
     getDefaults(),
   );
 
+  console.log('Errors: ', errors);
+
   const hasMadeChanges = values => {
     let bool = false;
     if (Object.keys(values).length === 0) {
@@ -112,6 +114,8 @@ export const EditUserForm = ({
         placeholder="Name"
         onChange={handleChange}
       />
+
+      {errors.name && <p className={styles.errorMessage}>{errors.name}</p>}
 
       <Textfield name="email" value={user.user.email} readOnly />
 

@@ -107,6 +107,18 @@ let customers = [
         customer_user: null,
         access: '1',
       },
+      {
+        id: 'cffb1c43-54b9-47ce-be3b-572d2a3d2p23',
+        orb: 'Timber',
+        customer_user: null,
+        access: '1',
+      },
+      {
+        id: '580468ba-fd78-4ea6-bd50-52a7b7ecwlxn',
+        orb: 'Timber',
+        customer_user: null,
+        access: '1',
+      },
     ],
     data_limit: 100,
     data_total: 50,
