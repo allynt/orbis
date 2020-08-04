@@ -6,7 +6,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useHourglassOrb } from './hourglass/useHourglassOrb';
 import { useRiceOrb } from './rice/useRiceOrb';
-import { useIsolationPlusOrb } from './rice/isolationPlus/useIsolationPlusOrb';
+import { useIsolationPlusOrb } from './isolationPlus/useIsolationPlusOrb';
 
 const dataUrlFromId = source => {
   return source.data && typeof source.data === 'string'
