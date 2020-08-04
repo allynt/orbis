@@ -58,8 +58,6 @@ export const EditUserForm = ({
     getDefaults(),
   );
 
-  console.log('Errors: ', errors);
-
   const hasMadeChanges = values => {
     let bool = false;
     if (Object.keys(values).length === 0) {

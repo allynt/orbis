@@ -12,6 +12,7 @@ describe('ActiveUsersBoard', () => {
     ["email address'", 'email'],
   ];
   const onChangeRoleClick = jest.fn();
+  const onEditUserClick = jest.fn();
   const onDeleteUserClick = jest.fn();
 
   it.each(cases)("Displays all active user's %s", (_, text) => {
@@ -51,6 +52,7 @@ describe('ActiveUsersBoard', () => {
           { type: 'MANAGER', user: { name: 'John Smith' } },
           { type: 'MEMBER', user: { name: 'Steve Brown' } },
         ]}
+        oneAdminRemaining={true}
         customer={{ name: 'Customer Name' }}
       />,
     );
@@ -79,6 +81,25 @@ describe('ActiveUsersBoard', () => {
 
     userEvent.click(getAllByText('Admin')[1]);
     expect(onChangeRoleClick).toHaveBeenCalledWith(MEMBER);
+  });
+
+  it('Calls `editCustomerUser` function with user when buttons are clicked', () => {
+    const USER = { type: 'MEMBER', user: { id: '123', name: 'Steve Brown' } };
+
+    const { getByText, getAllByTestId } = render(
+      <ActiveUsersBoard
+        currentUser={{ id: '456' }}
+        activeUsers={[{ type: 'MANAGER', user: { name: 'John Smith' } }, USER]}
+        customer={{ name: 'Customer Name' }}
+        onEditUserClick={onEditUserClick}
+      />,
+    );
+
+    userEvent.click(getAllByTestId('options-icon')[1]);
+    expect(getByText('Edit')).toBeInTheDocument();
+
+    userEvent.click(getByText('Edit'));
+    expect(onEditUserClick).toHaveBeenCalledWith(USER);
   });
 
   it('Does not show `Delete User` button for currently logged-in user', () => {

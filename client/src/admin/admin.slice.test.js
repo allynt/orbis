@@ -289,22 +289,20 @@ describe('Admin Slice', () => {
           user: user,
         };
 
-        const data = {
-          ...customerUser,
-          user: {
-            ...user,
-            name: 'Updated User Name',
-          },
-        };
-
         fetch.mockResponse(JSON.stringify(customerUser));
 
         const expectedActions = [
           { type: updateCustomerUserRequested.type },
-          { type: updateCustomerUserSuccess.type, payload: customerUser },
+          {
+            type: updateCustomerUserSuccess.type,
+            payload: {
+              updatedCustomerUser: customerUser,
+              updatedCustomer: customer,
+            },
+          },
         ];
 
-        await store.dispatch(updateCustomerUser(customerUser, data));
+        await store.dispatch(updateCustomerUser(customerUser));
 
         expect(store.getActions()).toEqual(expectedActions);
       });
@@ -514,7 +512,7 @@ describe('Admin Slice', () => {
         },
         {
           id: '2',
-          name: 'Test User 1',
+          name: 'Test User 2',
         },
       ];
       const userToUpdate = {
@@ -524,7 +522,7 @@ describe('Admin Slice', () => {
 
       const actualState = reducer(beforeState, {
         type: updateCustomerUserSuccess.type,
-        payload: userToUpdate,
+        payload: { updatedCustomerUser: userToUpdate },
       });
 
       expect(actualState.customerUsers[1]).toEqual(userToUpdate);
