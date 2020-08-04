@@ -94,7 +94,7 @@ export const PendingInvitationsBoard = ({
             })
           ) : (
             <tr className={tableStyles.tr}>
-              <td align="center" colSpan={3} className={tableStyles.td}>
+              <td align="center" colSpan={5} className={tableStyles.td}>
                 No Pending Users
               </td>
             </tr>

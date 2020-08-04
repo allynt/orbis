@@ -22,7 +22,7 @@ export const EditUserForm = ({
 }) => {
   const getCheckboxLicences = () => {
     const userLicences = customer.licences.filter(
-      l => l.customer_user === user.user.id,
+      l => l.customer_user === user.id,
     );
 
     let allLicences = [...userLicences];
@@ -46,7 +46,7 @@ export const EditUserForm = ({
 
     for (let licence of getCheckboxLicences()) {
       defaults.values[licence.orb] =
-        licence.customer_user === user.user.id ? true : false;
+        licence.customer_user === user.id ? true : false;
     }
 
     return defaults;
@@ -81,7 +81,7 @@ export const EditUserForm = ({
         const licence = customer.licences.find(
           l =>
             l.orb === key &&
-            (l.customer_user === user.user.id || l.customer_user === null),
+            (l.customer_user === user.id || l.customer_user === null),
         );
         newIds = [...newIds, licence.id];
       }

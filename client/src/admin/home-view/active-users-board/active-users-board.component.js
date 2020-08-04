@@ -65,14 +65,15 @@ export const ActiveUsersBoard = ({
               let licences = null;
               if (customer && customer.licences) {
                 licences = getUserLicences(user, customer);
+                console.log('Licences: ', licences);
               }
               return (
                 <tr key={user.id} className={tableStyles.tr}>
                   <td className={tableStyles.td}>{user.user.name}</td>
                   <td className={tableStyles.td}>
-                    {licences
-                      ? licences.slice().sort().join(', ')
-                      : 'Not currently available'}
+                    {!licences && 'Not currently available'}
+                    {licences.length === 0 && 'No licences'}
+                    {licences.length > 0 && licences.slice().sort().join(', ')}
                   </td>
                   <td className={tableStyles.td}>{user.user.email}</td>
                   <td
@@ -153,7 +154,7 @@ export const ActiveUsersBoard = ({
             })
           ) : (
             <tr className={tableStyles.tr}>
-              <td align="center" colSpan={3} className={tableStyles.td}>
+              <td align="center" colSpan={5} className={tableStyles.td}>
                 No Active Users
               </td>
             </tr>
