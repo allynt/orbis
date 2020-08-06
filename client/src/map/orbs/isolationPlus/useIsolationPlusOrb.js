@@ -1,7 +1,7 @@
 import { TileLayer } from 'deck.gl';
 import { VectorTile } from '@mapbox/vector-tile';
 import Protobuf from 'pbf';
-import { LAYER_IDS } from '../../../map.constants';
+import { LAYER_IDS } from '../../map.constants';
 import { gunzipSync } from 'zlib';
 import { interpolateBlues } from 'd3-scale-chromatic';
 
@@ -47,10 +47,7 @@ export const useIsolationPlusOrb = (data, sources, authToken) => {
             }
             return [];
           }),
-      uniqueIdProperty: sources.find(
-        source => source.source_id === LAYER_IDS.astrosat.isolationPlus.ahah.v0,
-      )?.metadata.uniqueIdProperty,
-      filled: true,
+      uniqueIdProperty: 'LSOA code',
       getFillColor: d => {
         return [
           ...rgbStringToArray(
@@ -68,9 +65,3 @@ export const useIsolationPlusOrb = (data, sources, authToken) => {
 };
 
 useIsolationPlusOrb.id = 'test';
-
-/*
-
-          
-
-*/
