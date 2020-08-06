@@ -9,7 +9,7 @@ import { render, cleanup, fireEvent, within } from '@testing-library/react';
 import { Router } from 'react-router-dom';
 import { createMemoryHistory } from 'history';
 
-import { regions, domains } from '../map/map.constants';
+import { regions } from '../map/map.constants';
 
 import Landing from './landing.component';
 
@@ -47,9 +47,9 @@ describe('Landing Component', () => {
       map: {
         regions,
       },
-      data: {
-        domains,
-      },
+      // data: {
+      //   domains,
+      // },
     });
 
     history = createMemoryHistory({ initialEntries: ['/'] });
@@ -65,7 +65,7 @@ describe('Landing Component', () => {
       map: {
         regions,
       },
-      data: { domains },
+      // data: { domains },
     });
 
     const { getByText, queryByText } = render(
