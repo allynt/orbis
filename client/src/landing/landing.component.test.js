@@ -47,9 +47,6 @@ describe('Landing Component', () => {
       map: {
         regions,
       },
-      // data: {
-      //   domains,
-      // },
     });
 
     history = createMemoryHistory({ initialEntries: ['/'] });
@@ -65,7 +62,6 @@ describe('Landing Component', () => {
       map: {
         regions,
       },
-      // data: { domains },
     });
 
     const { getByText, queryByText } = render(
