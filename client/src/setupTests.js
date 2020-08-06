@@ -5,11 +5,11 @@ import './polyfills/flat-map';
 import './polyfills/array-flat';
 import './polyfills/object-fromEntries';
 
+import '../public/config';
+
 jest.mock('react-ga', () => ({
   event: jest.fn(),
 }));
-
-import '../public/config';
 
 enableFetchMocks();
 global.URL.createObjectURL = jest.fn();
