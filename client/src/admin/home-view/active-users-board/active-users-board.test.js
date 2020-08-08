@@ -1,7 +1,7 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 
-import { customer, activeUsers } from '../test-story-data';
+import { customer, activeUsers } from '../../test-story-data';
 
 import { ActiveUsersBoard } from './active-users-board.component';
 import userEvent from '@testing-library/user-event';
@@ -33,16 +33,32 @@ describe('ActiveUsersBoard', () => {
   });
 
   it('Displays a placeholder when customer is present but has no licences', () => {
-    const { getAllByText } = render(
+    const { getAllByText, queryByText } = render(
       <ActiveUsersBoard
         activeUsers={activeUsers}
         customer={{ name: 'Customer Name' }}
       />,
     );
 
+    expect(queryByText('No licences')).not.toBeInTheDocument();
+
     activeUsers.forEach((user, i) =>
       expect(getAllByText('Not currently available')[i]).toBeInTheDocument(),
     );
+  });
+
+  it('Displays a placeholder when user has no licences', () => {
+    const TEST_USER = {
+      ...activeUsers[0],
+      id: '99',
+    };
+
+    const { getByText, queryByText } = render(
+      <ActiveUsersBoard activeUsers={[TEST_USER]} customer={customer} />,
+    );
+
+    expect(queryByText('Not currently available')).not.toBeInTheDocument();
+    expect(getByText('No licences')).toBeInTheDocument();
   });
 
   it('Disables `Change Role` button when only 1 admin remains', () => {

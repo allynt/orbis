@@ -8,6 +8,7 @@ import ContentWrapper from '../../content-wrapper.component';
 import OptionsDropdown from '../options-dropdown/options-dropdown.component';
 
 import { getUserLicences } from '../../get-user-licences-helper';
+import { getLicenceInfo } from '../get-licence-info-helper';
 
 import styles from './pending-invitations.module.css';
 import tableStyles from '../../table.module.css';
@@ -56,11 +57,7 @@ export const PendingInvitationsBoard = ({
                 <tr key={user.id} className={tableStyles.tr}>
                   <td className={tableStyles.td}>{user.user.name}</td>
                   <td className={tableStyles.td}>{user.user.email}</td>
-                  <td className={tableStyles.td}>
-                    {licences
-                      ? licences.slice().sort().join(', ')
-                      : 'Not currently available'}
-                  </td>
+                  <td className={tableStyles.td}>{getLicenceInfo(licences)}</td>
                   <td className={tableStyles.td}>{date}</td>
                   <td
                     className={`${tableStyles.td} ${tableStyles.optionsColumn}`}

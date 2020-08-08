@@ -2,7 +2,7 @@ import React from 'react';
 
 import { PendingInvitationsBoard } from './pending-invitations-board.component';
 
-import { customer, pendingUsers } from '../test-story-data';
+import { customer, pendingUsers } from '../../test-story-data';
 
 export default { title: 'Admin/Pending Users Board' };
 

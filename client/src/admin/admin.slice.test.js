@@ -271,38 +271,38 @@ describe('Admin Slice', () => {
       });
 
       it('should dispatch update user success action.', async () => {
-        const customer = {
+        const updatedCustomer = {
           name: 'test_customer',
         };
 
-        const user = {
-          id: '1',
-          name: 'Test User',
-          email: 'test.user@test.com',
-        };
-
-        const customerUser = {
+        const updatedCustomerUser = {
           id: '1',
           status: 'PENDING',
           type: 'MEMBER',
           licences: [],
-          user: user,
+          user: {
+            id: '1',
+            name: 'Test User',
+            email: 'test.user@test.com',
+          },
         };
 
-        fetch.mockResponse(JSON.stringify(customerUser));
+        fetch
+          .once(JSON.stringify(updatedCustomerUser))
+          .once(JSON.stringify(updatedCustomer));
 
         const expectedActions = [
           { type: updateCustomerUserRequested.type },
           {
             type: updateCustomerUserSuccess.type,
             payload: {
-              updatedCustomerUser: customerUser,
-              updatedCustomer: customer,
+              updatedCustomerUser,
+              updatedCustomer,
             },
           },
         ];
 
-        await store.dispatch(updateCustomerUser(customerUser));
+        await store.dispatch(updateCustomerUser(updatedCustomerUser));
 
         expect(store.getActions()).toEqual(expectedActions);
       });

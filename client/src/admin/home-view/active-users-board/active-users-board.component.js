@@ -6,6 +6,7 @@ import ContentWrapper from '../../content-wrapper.component';
 import OptionsDropdown from '../options-dropdown/options-dropdown.component';
 
 import { getUserLicences } from '../../get-user-licences-helper';
+import { getLicenceInfo } from '../get-licence-info-helper';
 
 import QuickView from '../active-users-board/quick-view/quick-view.component';
 
@@ -65,16 +66,11 @@ export const ActiveUsersBoard = ({
               let licences = null;
               if (customer && customer.licences) {
                 licences = getUserLicences(user, customer);
-                console.log('Licences: ', licences);
               }
               return (
                 <tr key={user.id} className={tableStyles.tr}>
                   <td className={tableStyles.td}>{user.user.name}</td>
-                  <td className={tableStyles.td}>
-                    {!licences && 'Not currently available'}
-                    {licences.length === 0 && 'No licences'}
-                    {licences.length > 0 && licences.slice().sort().join(', ')}
-                  </td>
+                  <td className={tableStyles.td}>{getLicenceInfo(licences)}</td>
                   <td className={tableStyles.td}>{user.user.email}</td>
                   <td
                     className={`${tableStyles.td} ${tableStyles.optionsColumn}`}

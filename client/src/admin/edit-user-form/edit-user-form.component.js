@@ -21,6 +21,10 @@ export const EditUserForm = ({
   close,
 }) => {
   const getCheckboxLicences = () => {
+    // This returns a combined array of the user's current licences,
+    // and one of each type of available licence that the user does
+    // not already have.
+
     const userLicences = customer.licences.filter(
       l => l.customer_user === user.id,
     );
@@ -37,7 +41,11 @@ export const EditUserForm = ({
   };
 
   const getDefaults = () => {
-    const defaults = {
+    // This goes through the array of sorted licences for the user,
+    // and assigns a key of each licence's name to the default values
+    // object, with true/false for assigned/available.
+
+    let defaults = {
       values: {
         name: user.user.name ? user.user.name : '',
         type: user.type === 'MANAGER' ? 'MANAGER' : 'MEMBER',
@@ -70,19 +78,33 @@ export const EditUserForm = ({
           break;
         }
       }
-      return bool;
     }
+    return bool;
   };
 
   const getUpdatedLicenceIds = values => {
+    // The checked licence boxes will be the only elements with 'true' values,
+    // so only they make it past the if check. If all are false (unchecked),
+    // an empty array is returned.
+
+    // It then returns a licence of the correct type from the customer,
+    // searching first for one already assigned to the user, and failing that,
+    // the first available one of the correct type.
+
     let newIds = [];
     for (let key of Object.keys(values)) {
       if (values[key] === true) {
-        const licence = customer.licences.find(
-          l =>
-            l.orb === key &&
-            (l.customer_user === user.id || l.customer_user === null),
+        let licence;
+
+        licence = customer.licences.find(
+          l => l.orb === key && l.customer_user === user.id,
         );
+
+        if (!licence)
+          licence = customer.licences.find(
+            l => l.orb === key && l.customer_user === null,
+          );
+
         newIds = [...newIds, licence.id];
       }
     }
@@ -154,7 +176,7 @@ export const EditUserForm = ({
       <Button
         type="submit"
         className={styles.button}
-        disabled={!hasMadeChanges(values)}
+        disabled={!hasMadeChanges(values) || Object.keys(errors).length > 0}
       >
         Save Changes
       </Button>

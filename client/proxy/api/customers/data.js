@@ -14,73 +14,73 @@ let customers = [
       {
         id: '055aa73b-7a5f-41d7-b9d4-b3124c16ffde',
         orb: 'Rice',
-        customer_user: '5edd4615-34a7-4c55-9243-0092671ef9d8',
+        customer_user: '1',
         access: '1',
       },
       {
         id: 'd499964f-1bb4-4aa1-baf4-0164eabec297',
         orb: 'Rice',
-        customer_user: '3183f6ba-da80-4c0d-811c-9c2e45d5e95d',
+        customer_user: '2',
         access: '1',
       },
       {
         id: '3e9dbb09-133b-4316-bf7c-c6e0be98bb05',
         orb: 'Rice',
-        customer_user: '0414efbd-4bca-4197-8f2d-a00f841fa80b',
+        customer_user: '3',
         access: '1',
       },
       {
         id: 'db153830-d72a-44f7-88e0-d95b203b2383',
         orb: 'Rice',
-        customer_user: 'a7bc79cf-fa3d-4a98-8af1-9e6a6cb18af6',
+        customer_user: '4',
         access: '1',
       },
       {
         id: 'a4a4bf7e-8980-4fd8-a3e8-dccc0ada36e1',
         orb: 'Oil',
-        customer_user: 'abb63511-e88d-47f5-a884-3cba800b9714',
+        customer_user: '5',
         access: '1',
       },
       {
         id: 'e7d31181-61e3-4880-9529-6408ce9d2cd3',
         orb: 'Oil',
-        customer_user: 'e7e26c78-d66a-4c26-9f62-c5926846fad2',
+        customer_user: '6',
         access: '1',
       },
       {
         id: '7b2df564-3b91-4ed2-9b57-a362f7212c94',
         orb: 'Oil',
-        customer_user: '5edd4615-34a7-4c55-9243-0092671ef9d8',
+        customer_user: '1',
         access: '1',
       },
       {
         id: 'c2f0bae8-b2f5-412d-9780-551c6bbe3248',
         orb: 'Oil',
-        customer_user: '3183f6ba-da80-4c0d-811c-9c2e45d5e95d',
+        customer_user: '2',
         access: '1',
       },
       {
         id: '4d16b720-2a7a-4ee7-a942-fd999af5aa15',
         orb: 'Oil',
-        customer_user: '0414efbd-4bca-4197-8f2d-a00f841fa80b',
+        customer_user: '3',
         access: '1',
       },
       {
         id: 'f9a8a715-dbeb-4fbc-92c6-fd2138475a87',
         orb: 'Oil',
-        customer_user: 'a7bc79cf-fa3d-4a98-8af1-9e6a6cb18af6',
+        customer_user: '4',
         access: '1',
       },
       {
         id: 'bca4255f-5147-4023-9b34-e52b0b8fcd86',
         orb: 'Rice',
-        customer_user: 'abb63511-e88d-47f5-a884-3cba800b9714',
+        customer_user: '5',
         access: '1',
       },
       {
         id: '2c6c43e0-d0d4-4379-ab6e-895b06f7f71b',
         orb: 'Rice',
-        customer_user: 'e7e26c78-d66a-4c26-9f62-c5926846fad2',
+        customer_user: '6',
         access: '1',
       },
       {
@@ -303,7 +303,7 @@ const updateCustomerLicences = (type, user) => {
   let customer = customers[0];
 
   for (let licence of customer.licences) {
-    const idMatch = licence.customer_user === user.user.id;
+    const idMatch = licence.customer_user === user.id;
 
     if (type === 'delete') {
       if (idMatch) {
@@ -315,7 +315,7 @@ const updateCustomerLicences = (type, user) => {
       }
 
       if (!licence.customer_user && user.licences.includes(licence.id)) {
-        licence.customer_user = user.user.id;
+        licence.customer_user = user.id;
       }
     }
   }
@@ -340,7 +340,7 @@ const createCustomerUser = (customerId, userData) => {
     licenceId =>
       (customerLicences.find(
         licence => licence.id === licenceId,
-      ).customer_user = newUserId),
+      ).customer_user = newCustomerUserId.toString()),
   );
   const newUser = {
     id: newCustomerUserId.toString(),
