@@ -19,6 +19,15 @@ function getURLFromTemplate(template, properties) {
     : null;
 }
 
+/**
+ * An extended version of deck.gl's MVTLayer to allow for
+ * the way our vector-data-server works.
+ *
+ * Adds an `authToken` property which is added to the authorization header
+ * and unzips the file before handing off to loaders.gl for conversion
+ *
+ * MVTLayer docs https://deck.gl/docs/api-reference/geo-layers/mvt-layer
+ */
 export default class CustomMVTLayer extends MVTLayer {
   async getTileData(tile) {
     const url = getURLFromTemplate(this.props.data, tile);

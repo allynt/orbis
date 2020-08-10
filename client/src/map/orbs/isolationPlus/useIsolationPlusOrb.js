@@ -13,7 +13,9 @@ export const useIsolationPlusOrb = (data, sources, authToken) => {
       id: LAYER_IDS.astrosat.isolationPlus.ahah.v0,
       data: data[LAYER_IDS.astrosat.isolationPlus.ahah.v0],
       authToken,
-      visible: true,
+      visible: !!sources?.find(
+        source => source.source_id === LAYER_IDS.astrosat.isolationPlus.ahah.v0,
+      ),
       uniqueIdProperty: 'LSOA code',
       filled: true,
       getFillColor: d => [
