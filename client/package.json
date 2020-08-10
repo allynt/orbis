@@ -22,6 +22,7 @@
   "dependencies": {
     "@astrosat/astrosat-ui": "^1.15.0",
     "@loaders.gl/core": "^2.2.5",
+    "@loaders.gl/gis": "^2.2.8",
     "@loaders.gl/gltf": "^2.2.5",
     "@loaders.gl/images": "^2.2.5",
     "@luma.gl/engine": "^8.2.0",
@@ -43,6 +44,7 @@
     "history": "^4.10.1",
     "http-proxy-middleware": "^1.0.3",
     "immutable": "^3.8.1",
+    "math.gl": "^3.2.2",
     "pbf": "^3.2.1",
     "prop-types": "^15.7.2",
     "react": "^16.12.0",
