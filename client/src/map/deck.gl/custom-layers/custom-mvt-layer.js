@@ -1,5 +1,7 @@
+import { load } from '@loaders.gl/core';
+import { MVTLoader } from '@loaders.gl/mvt';
 import { MVTLayer } from 'deck.gl';
-import parseMVT from './parse-mvt';
+import { gunzipSync } from 'zlib';
 
 function getURLFromTemplate(template, properties) {
   if (!template || !template.length) {
@@ -17,25 +19,19 @@ function getURLFromTemplate(template, properties) {
     : null;
 }
 
-export default class CustomMvtLayer extends MVTLayer {
-  getTileData(tile) {
+export default class CustomMVTLayer extends MVTLayer {
+  async getTileData(tile) {
     const url = getURLFromTemplate(this.props.data, tile);
     if (!url) {
       return Promise.reject('Invalid URL');
     }
-    return fetch(url, {
+    const res = await fetch(url, {
       headers: {
         Authorization: `Bearer ${this.props.authToken}`,
       },
-    })
-      .then(res => {
-        if (res.status === 200) return res.arrayBuffer();
-        return null;
-      })
-      .then(buffer => {
-        if (buffer) {
-          return parseMVT(buffer);
-        }
-      });
+    });
+    if (res.status !== 200) return null;
+    const buffer = await res.arrayBuffer();
+    if (buffer) return load(gunzipSync(Buffer.from(buffer)), MVTLoader);
   }
 }
