@@ -63,7 +63,7 @@ export const useOrbs = () => {
     sidebarComponents: isoPlusSidebarComponents,
   } = useIsolationPlusOrb(data, activeSources, authToken);
 
-  let layers = [...hourglassLayers, ...riceLayers, ...isoPlusLayers];
+  let layers = [...isoPlusLayers, ...hourglassLayers, ...riceLayers];
   let mapComponents = [
     ...hourglassMapComponents,
     ...riceMapComponents,
