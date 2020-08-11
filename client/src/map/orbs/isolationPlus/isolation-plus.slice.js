@@ -5,7 +5,7 @@ import { LAYER_IDS } from 'map/map.constants';
 const isolationPlusSlice = createSlice({
   name: 'isolationPlus',
   initialState: {
-    colorScheme: 'interpolateBlues',
+    colorScheme: 'Blues',
     [LAYER_IDS.astrosat.isolationPlus.ahah.v0]: 'IMD: Income decile',
   },
   reducers: {

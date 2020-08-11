@@ -1,25 +1,25 @@
-import * as colorSchemes from 'd3-scale-chromatic';
+import chroma from 'chroma-js';
 import CustomMVTLayer from 'map/deck.gl/custom-layers/custom-mvt-layer';
-import { LAYER_IDS } from '../../map.constants';
-import { RadioPicker } from './radio-picker/radio-picker.component';
 import { useSelector } from 'react-redux';
-import { propertySelector, colorSchemeSelector } from './isolation-plus.slice';
-
-const rgbStringToArray = string => {
-  const values = string.match(/(\d)+/g);
-  return values.map(str => +str);
-};
+import { LAYER_IDS } from '../../map.constants';
+import { colorSchemeSelector, propertySelector } from './isolation-plus.slice';
+import { RadioPicker } from './radio-picker/radio-picker.component';
 
 export const useIsolationPlusOrb = (data, sources, authToken) => {
   const ahahSource = sources?.find(
     source => source.source_id === LAYER_IDS.astrosat.isolationPlus.ahah.v0,
   );
-
   const ahahSelectedProperty = useSelector(state =>
     propertySelector(state, LAYER_IDS.astrosat.isolationPlus.ahah.v0),
   );
 
   const colorScheme = useSelector(colorSchemeSelector);
+  const colorScale = chroma
+    .scale(colorScheme)
+    .domain([
+      ahahSource?.metadata.properties[ahahSelectedProperty].min,
+      ahahSource?.metadata.properties[ahahSelectedProperty].max,
+    ]);
 
   const layers = [
     new CustomMVTLayer({
@@ -34,9 +34,7 @@ export const useIsolationPlusOrb = (data, sources, authToken) => {
       autoHighlight: true,
       filled: true,
       getFillColor: d => [
-        ...rgbStringToArray(
-          colorSchemes[colorScheme](d.properties[ahahSelectedProperty] / 10),
-        ),
+        ...colorScale(d.properties[ahahSelectedProperty]).rgb(),
         150,
       ],
       updateTriggers: {
