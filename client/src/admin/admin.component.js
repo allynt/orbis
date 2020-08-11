@@ -1,7 +1,7 @@
 import { Dialog } from '@astrosat/astrosat-ui';
 import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { ADMIN_VIEW, DIALOG_VIEW, USER_STATUS } from './admin.constants';
+import { ADMIN_VIEW, DIALOG_VIEW, ADMIN_STATUS } from './admin.constants';
 import styles from './admin.module.css';
 import {
   createCustomerUser,
@@ -88,7 +88,10 @@ const Admin = ({ user }) => {
               dispatch(
                 updateCustomerUser({
                   ...user,
-                  type: user.type === 'MANAGER' ? 'MEMBER' : 'MANAGER',
+                  type:
+                    user.type === ADMIN_STATUS.manager
+                      ? ADMIN_STATUS.member
+                      : ADMIN_STATUS.manager,
                 }),
               )
             }

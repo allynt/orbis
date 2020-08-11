@@ -8,6 +8,10 @@ import {
   Checkbox,
 } from '@astrosat/astrosat-ui';
 
+import { getCheckboxLicences, getUpdatedLicenceIds } from '../licence-utils';
+
+import { ADMIN_STATUS } from '../admin.constants';
+
 import validate from './edit-user-form-validator';
 
 import styles from './edit-user-form.module.css';
@@ -20,32 +24,13 @@ export const EditUserForm = ({
   editUser,
   close,
 }) => {
-  const getCheckboxLicences = () => {
-    // This returns a combined array of the user's current licences,
-    // and one of each type of available licence that the user does
-    // not already have.
-
-    const userLicences = customer.licences.filter(
-      l => l.customer_user === user.id,
-    );
-
-    let allLicences = [...userLicences];
-
-    for (let licence of availableLicences) {
-      const orbNames = allLicences.map(l => l.orb);
-      if (!orbNames.includes(licence.orb)) {
-        allLicences = [...allLicences, licence];
-      }
-    }
-
-    return allLicences;
-  };
+  const checkboxLicences = getCheckboxLicences(
+    customer,
+    user,
+    availableLicences,
+  );
 
   const getDefaults = () => {
-    // This goes through the array of sorted licences for the user,
-    // and assigns a key of each licence's name to the default values
-    // object, with true/false for assigned/available.
-
     const defaults = {
       values: {
         name: user.user.name ? user.user.name : '',
@@ -53,7 +38,7 @@ export const EditUserForm = ({
       },
     };
 
-    for (let licence of getCheckboxLicences()) {
+    for (let licence of checkboxLicences) {
       defaults.values[licence.orb] =
         licence.customer_user === user.id ? true : false;
     }
@@ -82,40 +67,11 @@ export const EditUserForm = ({
     }
   };
 
-  const getUpdatedLicenceIds = values => {
-    // The checked licence boxes will be the only elements with 'true' values,
-    // so only they make it past the if check. If all are false (unchecked),
-    // an empty array is returned.
-
-    // It then returns a licence of the correct type from the customer,
-    // searching first for one already assigned to the user, and failing that,
-    // the first available one of the correct type.
-
-    let newIds = [];
-    Object.keys(values).forEach(key => {
-      if (values[key] === true) {
-        let licence;
-
-        licence = customer.licences.find(
-          l => l.orb === key && l.customer_user === user.id,
-        );
-
-        if (!licence)
-          licence = customer.licences.find(
-            l => l.orb === key && l.customer_user === null,
-          );
-
-        newIds = [...newIds, licence.id];
-      }
-    });
-    return newIds;
-  };
-
   function onSubmit() {
     const editedUser = {
       ...user,
       type: values.type,
-      licences: getUpdatedLicenceIds(values),
+      licences: getUpdatedLicenceIds(customer, user, values),
       user: {
         ...user.user,
         name: values.name,
@@ -141,7 +97,7 @@ export const EditUserForm = ({
 
       <h2 className={styles.title}>Project Access</h2>
       <div className={styles.checkboxes}>
-        {getCheckboxLicences().map(l => (
+        {checkboxLicences.map(l => (
           <Checkbox
             key={l.id}
             name={l.orb}
@@ -158,16 +114,16 @@ export const EditUserForm = ({
           label="Yes"
           id="yes"
           name="type"
-          value="MANAGER"
-          checked={values.type === 'MANAGER'}
+          value={ADMIN_STATUS.manager}
+          checked={values.type === ADMIN_STATUS.manager}
           onChange={handleChange}
         />
         <Radio
           label="No"
           id="No"
           name="type"
-          value="MEMBER"
-          checked={values.type === 'MEMBER'}
+          value={ADMIN_STATUS.member}
+          checked={values.type === ADMIN_STATUS.member}
           onChange={handleChange}
           disabled={oneAdminRemaining}
         />

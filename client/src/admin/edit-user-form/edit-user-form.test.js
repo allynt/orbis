@@ -9,30 +9,39 @@ import { EditUserForm } from './edit-user-form.component';
 import userEvent from '@testing-library/user-event';
 
 describe('EditUserForm', () => {
-  const user = {
-    id: '2',
-    licences: ['2', '5'],
-    type: 'MANAGER',
-    user: { name: 'John Smith', email: 'jsmith@test.com' },
-  };
+  let user = null;
+  let availableLicences = null;
+  let userCheckboxes = null;
+  let oneAdminRemaining = null;
+  let editUser = null;
+  let close = null;
 
-  const availableLicences = [
-    { id: '9', orb: 'Steel', customer_user: null },
-    { id: '10', orb: 'Timber', customer_user: null },
-    { id: '11', orb: 'Steel', customer_user: null },
-    { id: '12', orb: 'Timber', customer_user: null },
-  ];
+  beforeEach(() => {
+    user = {
+      id: '2',
+      licences: ['2', '5'],
+      type: 'MANAGER',
+      user: { name: 'John Smith', email: 'jsmith@test.com' },
+    };
 
-  const userCheckboxes = [
-    { id: '2', orb: 'Rice', customer_user: '2' },
-    { id: '5', orb: 'Oil', customer_user: '2' },
-    { id: '9', orb: 'Steel', customer_user: null },
-    { id: '10', orb: 'Timber', customer_user: null },
-  ];
+    availableLicences = [
+      { id: '9', orb: 'Steel', customer_user: null },
+      { id: '10', orb: 'Timber', customer_user: null },
+      { id: '11', orb: 'Steel', customer_user: null },
+      { id: '12', orb: 'Timber', customer_user: null },
+    ];
 
-  const oneAdminRemaining = true;
-  const editUser = jest.fn();
-  const close = jest.fn();
+    userCheckboxes = [
+      { id: '2', orb: 'Rice', customer_user: '2' },
+      { id: '5', orb: 'Oil', customer_user: '2' },
+      { id: '9', orb: 'Steel', customer_user: null },
+      { id: '10', orb: 'Timber', customer_user: null },
+    ];
+
+    oneAdminRemaining = true;
+    editUser = jest.fn();
+    close = jest.fn();
+  });
 
   const renderComponent = () =>
     render(
@@ -205,20 +214,30 @@ describe('EditUserForm', () => {
       licences: ['2', '5', '9'],
     };
 
-    expect(user.licences).toEqual(['2', '5']);
-
     userEvent.click(getByLabelText('Steel'));
     userEvent.click(getByText('Save Changes'));
-
     expect(editUser).toHaveBeenCalledWith(userWithAddedLicence);
   });
 
-  it('disables the `Save Changes` button only when no changes have been made', () => {
+  it('disables the `Save Changes` button when no changes have been made', () => {
+    const { getByText } = renderComponent();
+    expect(getByText('Save Changes')).toHaveAttribute('disabled');
+  });
+
+  it('enables the `Save Changes` button when changes have been made', () => {
     const { getByText, getByLabelText } = renderComponent();
 
-    expect(getByText('Save Changes')).toHaveAttribute('disabled');
     userEvent.click(getByLabelText('Steel'));
     expect(getByText('Save Changes')).not.toHaveAttribute('disabled');
+  });
+
+  it('re-disables the `Save Changes` button if changes are reverted', () => {
+    const { getByText, getByLabelText } = renderComponent();
+
+    userEvent.click(getByLabelText('Steel'));
+    expect(getByText('Save Changes')).not.toHaveAttribute('disabled');
+    userEvent.click(getByLabelText('Steel'));
+    expect(getByText('Save Changes')).toHaveAttribute('disabled');
   });
 
   it('disables the `No` button (admin status) when only one admin remains', () => {

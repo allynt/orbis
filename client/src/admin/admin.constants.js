@@ -1,3 +1,8 @@
+export const ADMIN_STATUS = {
+  manager: 'MANAGER',
+  member: 'MEMBER',
+};
+
 export const USER_STATUS = {
   pending: 'PENDING',
   active: 'ACTIVE',
