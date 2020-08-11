@@ -53,15 +53,13 @@ export const EditUserForm = ({
   );
 
   const hasMadeChanges = values => {
-    let bool = false;
     if (Object.keys(values).length === 0) {
-      return bool;
+      return;
     } else {
       const defaults = getDefaults().values;
       for (let key of Object.keys(defaults)) {
         if (values[key] !== defaults[key]) {
-          bool = true;
-          return bool;
+          return true;
         }
       }
     }

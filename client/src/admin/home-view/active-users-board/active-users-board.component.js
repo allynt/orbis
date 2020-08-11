@@ -34,7 +34,7 @@ export const ActiveUsersBoard = ({
 
   return (
     <ContentWrapper title="Users">
-      <QuickView quickViewData={quickViewData} />
+      <QuickView data={quickViewData} />
       <table className={tableStyles.table}>
         <thead className={tableStyles.thead}>
           <tr className={tableStyles.tr}>
