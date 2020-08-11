@@ -12,6 +12,10 @@ import {
   selectLicenceInformation,
   updateCustomerUser,
   deleteCustomerUser,
+  selectActiveUsers,
+  selectPendingUsers,
+  selectAvailableLicences,
+  selectOneAdminRemaining,
 } from './admin.slice';
 import HomeView from './home-view/home-view.component';
 import CorporateView from './corporate-view/corporate-view.component';
@@ -29,6 +33,10 @@ const Admin = ({ user }) => {
   const currentCustomer = useSelector(selectCurrentCustomer);
   const customerUsers = useSelector(selectCustomerUsers);
   const licenceInformation = useSelector(selectLicenceInformation);
+  const availableLicences = useSelector(selectAvailableLicences);
+  const activeUsers = useSelector(selectActiveUsers);
+  const pendingUsers = useSelector(selectPendingUsers);
+  const oneAdminRemaining = useSelector(selectOneAdminRemaining);
   const [visiblePanel, setVisiblePanel] = useState(ADMIN_VIEW.home);
   const createDialogRef = useRef(document.body);
   const [dialogForm, setDialogForm] = useState(null);
@@ -49,23 +57,6 @@ const Admin = ({ user }) => {
     setDialogForm(null);
     dispatch(createCustomerUser(values));
   };
-
-  const activeUsers = customerUsers?.filter(
-    user => user.status === USER_STATUS.active,
-  );
-  const pendingUsers = customerUsers?.filter(
-    user => user.status === USER_STATUS.pending,
-  );
-
-  const oneAdminRemaining =
-    activeUsers?.filter(au => au.type === 'MANAGER').length === 1;
-
-  let availableLicences = null;
-  if (currentCustomer && currentCustomer.licences) {
-    availableLicences = currentCustomer.licences.filter(
-      licence => !licence.customer_user,
-    );
-  }
 
   const quickViewData = {
     active: activeUsers?.length,

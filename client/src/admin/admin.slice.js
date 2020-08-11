@@ -333,9 +333,33 @@ export const selectCustomerUsers = createSelector(
   baseSelector,
   state => state.customerUsers,
 );
+
 const selectLicences = createSelector(
   selectCurrentCustomer,
   customer => customer?.licences,
+);
+
+export const selectActiveUsers = createSelector(
+  selectCustomerUsers,
+  customerUsers =>
+    customerUsers?.filter(user => user.status === USER_STATUS.active),
+);
+
+export const selectPendingUsers = createSelector(
+  selectCustomerUsers,
+  customerUsers =>
+    customerUsers?.filter(user => user.status === USER_STATUS.pending),
+);
+
+export const selectAvailableLicences = createSelector(
+  selectLicences,
+  licences => licences?.filter(licence => !licence.customer_user),
+);
+
+export const selectOneAdminRemaining = createSelector(
+  selectActiveUsers,
+  activeUsers =>
+    activeUsers?.filter(user => user.type === 'MANAGER').length === 1,
 );
 
 export const selectLicenceInformation = createSelector(
