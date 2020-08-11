@@ -44,7 +44,7 @@ export const CustomerButNoLicences = () => (
   />
 );
 
-export const NolicenceData = () => (
+export const NoLicenceData = () => (
   <ActiveUsersBoard
     activeUsers={activeUsers}
     customer={customer}
