@@ -1,12 +1,15 @@
-import {
-  selectDataToken,
-  activeDataSourcesSelector,
-} from 'data-layers/data-layers.slice';
 import { useCallback, useEffect, useState } from 'react';
+
 import { useSelector } from 'react-redux';
+
+import {
+  activeDataSourcesSelector,
+  selectDataToken,
+} from 'data-layers/data-layers.slice';
+import { getData } from 'utils/http';
 import { useHourglassOrb } from './hourglass/useHourglassOrb';
-import { useRiceOrb } from './rice/useRiceOrb';
 import { useIsolationPlusOrb } from './isolationPlus/useIsolationPlusOrb';
+import { useRiceOrb } from './rice/useRiceOrb';
 
 const dataUrlFromId = source => {
   return source.data && typeof source.data === 'string'
@@ -23,8 +26,8 @@ export const useOrbs = () => {
     url =>
       url &&
       new Promise(async (resolve, reject) => {
-        const response = await fetch(url, {
-          headers: { Authorization: `Bearer ${authToken}` },
+        const response = await getData(url, {
+          Authorization: `Bearer ${authToken}`,
         });
         if (!response.ok) reject(response.status);
         resolve(response.json());
