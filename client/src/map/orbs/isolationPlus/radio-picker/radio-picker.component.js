@@ -1,10 +1,9 @@
 import React from 'react';
 import { Radio } from '@astrosat/astrosat-ui';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { propertySelector, setProperty } from '../isolation-plus.slice';
 
-export const RadioPicker = ({ selectedLayer }) => {
-  const dispatch = useDispatch();
+export const RadioPicker = ({ selectedLayer, dispatch }) => {
   const selectedProperty = useSelector(state =>
     propertySelector(state, selectedLayer.source_id),
   );
