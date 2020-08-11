@@ -10,7 +10,7 @@ export const RadioPicker = ({ selectedLayer }) => {
   );
 
   return (
-    <div>
+    <>
       {Object.keys(selectedLayer?.metadata?.properties)
         .filter(p => !p.includes('LSOA'))
         .map(property => (
@@ -29,6 +29,6 @@ export const RadioPicker = ({ selectedLayer }) => {
             }
           />
         ))}
-    </div>
+    </>
   );
 };

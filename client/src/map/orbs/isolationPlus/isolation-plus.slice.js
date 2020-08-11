@@ -5,6 +5,7 @@ import { LAYER_IDS } from 'map/map.constants';
 const isolationPlusSlice = createSlice({
   name: 'isolationPlus',
   initialState: {
+    colorScheme: 'interpolateBlues',
     [LAYER_IDS.astrosat.isolationPlus.ahah.v0]: 'IMD: Income decile',
   },
   reducers: {
@@ -20,6 +21,11 @@ export const { setProperty } = isolationPlusSlice.actions;
 const baseSelector = createSelector(
   orbsSelector,
   orbs => orbs[isolationPlusSlice.name],
+);
+
+export const colorSchemeSelector = createSelector(
+  baseSelector,
+  orb => orb?.colorScheme,
 );
 
 export const propertySelector = createSelector(

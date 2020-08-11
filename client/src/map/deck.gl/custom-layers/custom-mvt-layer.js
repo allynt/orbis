@@ -40,7 +40,8 @@ export default class CustomMVTLayer extends MVTLayer {
       },
     });
     if (res.status !== 200) return null;
-    const buffer = await res.arrayBuffer();
-    if (buffer) return load(gunzipSync(Buffer.from(buffer)), MVTLoader);
+    const arrayBuffer = await res.arrayBuffer();
+    if (arrayBuffer)
+      return load(gunzipSync(Buffer.from(arrayBuffer)), MVTLoader);
   }
 }

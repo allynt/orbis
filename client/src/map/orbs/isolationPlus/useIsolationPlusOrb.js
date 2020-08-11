@@ -1,9 +1,9 @@
-import { interpolateBlues } from 'd3-scale-chromatic';
+import * as colorSchemes from 'd3-scale-chromatic';
 import CustomMVTLayer from 'map/deck.gl/custom-layers/custom-mvt-layer';
 import { LAYER_IDS } from '../../map.constants';
 import { RadioPicker } from './radio-picker/radio-picker.component';
 import { useSelector } from 'react-redux';
-import { propertySelector } from './isolation-plus.slice';
+import { propertySelector, colorSchemeSelector } from './isolation-plus.slice';
 
 const rgbStringToArray = string => {
   const values = string.match(/(\d)+/g);
@@ -19,6 +19,8 @@ export const useIsolationPlusOrb = (data, sources, authToken) => {
     propertySelector(state, LAYER_IDS.astrosat.isolationPlus.ahah.v0),
   );
 
+  const colorScheme = useSelector(colorSchemeSelector);
+
   const layers = [
     new CustomMVTLayer({
       id: LAYER_IDS.astrosat.isolationPlus.ahah.v0,
@@ -33,7 +35,7 @@ export const useIsolationPlusOrb = (data, sources, authToken) => {
       filled: true,
       getFillColor: d => [
         ...rgbStringToArray(
-          interpolateBlues(d.properties[ahahSelectedProperty] / 10),
+          colorSchemes[colorScheme](d.properties[ahahSelectedProperty] / 10),
         ),
         150,
       ],
