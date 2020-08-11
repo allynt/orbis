@@ -2,7 +2,7 @@ import React from 'react';
 
 import { ActiveUsersBoard } from './active-users-board.component';
 
-import { customer, activeUsers, pendingUsers } from '../test-story-data';
+import { customer, activeUsers, pendingUsers } from '../../test-story-data';
 
 export default { title: 'Admin/Active Users Board' };
 

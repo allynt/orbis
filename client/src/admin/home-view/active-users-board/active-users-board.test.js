@@ -1,7 +1,7 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 
-import { customer, activeUsers } from '../test-story-data';
+import { customer, activeUsers } from '../../test-story-data';
 
 import { ActiveUsersBoard } from './active-users-board.component';
 import userEvent from '@testing-library/user-event';
@@ -12,6 +12,7 @@ describe('ActiveUsersBoard', () => {
     ["email address'", 'email'],
   ];
   const onChangeRoleClick = jest.fn();
+  const onEditUserClick = jest.fn();
   const onDeleteUserClick = jest.fn();
 
   it.each(cases)("Displays all active user's %s", (_, text) => {
@@ -32,16 +33,32 @@ describe('ActiveUsersBoard', () => {
   });
 
   it('Displays a placeholder when customer is present but has no licences', () => {
-    const { getAllByText } = render(
+    const { getAllByText, queryByText } = render(
       <ActiveUsersBoard
         activeUsers={activeUsers}
         customer={{ name: 'Customer Name' }}
       />,
     );
 
+    expect(queryByText('No licences')).not.toBeInTheDocument();
+
     activeUsers.forEach((user, i) =>
       expect(getAllByText('Not currently available')[i]).toBeInTheDocument(),
     );
+  });
+
+  it('Displays a placeholder when user has no licences', () => {
+    const TEST_USER = {
+      ...activeUsers[0],
+      id: '99',
+    };
+
+    const { getByText, queryByText } = render(
+      <ActiveUsersBoard activeUsers={[TEST_USER]} customer={customer} />,
+    );
+
+    expect(queryByText('Not currently available')).not.toBeInTheDocument();
+    expect(getByText('No licences')).toBeInTheDocument();
   });
 
   it('Disables `Change Role` button when only 1 admin remains', () => {
@@ -51,6 +68,7 @@ describe('ActiveUsersBoard', () => {
           { type: 'MANAGER', user: { name: 'John Smith' } },
           { type: 'MEMBER', user: { name: 'Steve Brown' } },
         ]}
+        oneAdminRemaining={true}
         customer={{ name: 'Customer Name' }}
       />,
     );
@@ -79,6 +97,25 @@ describe('ActiveUsersBoard', () => {
 
     userEvent.click(getAllByText('Admin')[1]);
     expect(onChangeRoleClick).toHaveBeenCalledWith(MEMBER);
+  });
+
+  it('Calls `editCustomerUser` function with user when buttons are clicked', () => {
+    const USER = { type: 'MEMBER', user: { id: '123', name: 'Steve Brown' } };
+
+    const { getByText, getAllByTestId } = render(
+      <ActiveUsersBoard
+        currentUser={{ id: '456' }}
+        activeUsers={[{ type: 'MANAGER', user: { name: 'John Smith' } }, USER]}
+        customer={{ name: 'Customer Name' }}
+        onEditUserClick={onEditUserClick}
+      />,
+    );
+
+    userEvent.click(getAllByTestId('options-icon')[1]);
+    expect(getByText('Edit')).toBeInTheDocument();
+
+    userEvent.click(getByText('Edit'));
+    expect(onEditUserClick).toHaveBeenCalledWith(USER);
   });
 
   it('Does not show `Delete User` button for currently logged-in user', () => {

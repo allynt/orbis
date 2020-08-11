@@ -64,10 +64,16 @@ const adminSlice = createSlice({
       state.isLoading = true;
     },
     updateCustomerUserSuccess: (state, { payload }) => {
-      const userIndex = state.customerUsers.indexOf(
-        state.customerUsers.find(cu => cu.id === payload.id),
-      );
-      state.customerUsers[userIndex] = payload;
+      if (payload.updatedCustomerUser) {
+        const userIndex = state.customerUsers.findIndex(
+          user => user.id === payload.updatedCustomerUser.id,
+        );
+        state.customerUsers[userIndex] = payload.updatedCustomerUser;
+      }
+
+      if (payload.updatedCustomer) {
+        state.currentCustomer = payload.updatedCustomer;
+      }
 
       state.isLoading = false;
       state.error = null;
@@ -248,13 +254,31 @@ export const updateCustomerUser = customerUser => async (
   if (!updateCustomerUserResponse.ok)
     return handleFailure(
       updateCustomerUserResponse,
-      'Edit Customer User Error',
+      'Update Customer User Error',
       updateCustomerUserFailure,
       dispatch,
     );
 
-  const updatedCustomerUser = await updateCustomerUserResponse.json();
-  return dispatch(updateCustomerUserSuccess(updatedCustomerUser));
+  const fetchCustomerResponse = await getData(
+    `${API}${currentCustomer.id}`,
+    headers,
+  );
+  if (!fetchCustomerResponse.ok)
+    return handleFailure(
+      fetchCustomerResponse,
+      'Update Customer User Error',
+      updateCustomerUserFailure,
+      dispatch,
+    );
+
+  const [updatedCustomerUser, updatedCustomer] = await Promise.all([
+    updateCustomerUserResponse.json(),
+    fetchCustomerResponse.json(),
+  ]);
+
+  return dispatch(
+    updateCustomerUserSuccess({ updatedCustomerUser, updatedCustomer }),
+  );
 };
 
 export const deleteCustomerUser = customerUser => async (
@@ -309,9 +333,33 @@ export const selectCustomerUsers = createSelector(
   baseSelector,
   state => state.customerUsers,
 );
+
 const selectLicences = createSelector(
   selectCurrentCustomer,
   customer => customer?.licences,
+);
+
+export const selectActiveUsers = createSelector(
+  selectCustomerUsers,
+  customerUsers =>
+    customerUsers?.filter(user => user.status === USER_STATUS.active),
+);
+
+export const selectPendingUsers = createSelector(
+  selectCustomerUsers,
+  customerUsers =>
+    customerUsers?.filter(user => user.status === USER_STATUS.pending),
+);
+
+export const selectAvailableLicences = createSelector(
+  selectLicences,
+  licences => licences?.filter(licence => !licence.customer_user),
+);
+
+export const selectOneAdminRemaining = createSelector(
+  selectActiveUsers,
+  activeUsers =>
+    activeUsers?.filter(user => user.type === 'MANAGER').length === 1,
 );
 
 export const selectLicenceInformation = createSelector(
