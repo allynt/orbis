@@ -22,24 +22,19 @@ export const useOrbs = () => {
   const activeSources = useSelector(activeDataSourcesSelector);
   const [data, setData] = useState({});
 
-  const dataRequest = useCallback(
-    url =>
-      url &&
-      new Promise(async (resolve, reject) => {
-        const response = await getData(url, {
-          Authorization: `Bearer ${authToken}`,
-        });
-        if (!response.ok) reject(response.status);
-        resolve(response.json());
-      }),
-    [authToken],
+  const fetchData = useCallback(
+    async source => {
+      const response = await getData(dataUrlFromId(source), {
+        Authorization: `Bearer ${authToken}`,
+      });
+      if (!response.ok) console.error(response.status);
+      const dataSet = await response.json();
+      setData({ ...data, [source.source_id]: dataSet });
+    },
+    [authToken, data],
   );
 
   useEffect(() => {
-    const fetchData = async source => {
-      const dataSet = await dataRequest(dataUrlFromId(source));
-      setData({ ...data, [source.source_id]: dataSet });
-    };
     for (let source of activeSources) {
       if (!data[source.source_id]) {
         if (source.metadata.tiles)
@@ -47,7 +42,7 @@ export const useOrbs = () => {
         else fetchData(source);
       }
     }
-  }, [activeSources, dataRequest, data]);
+  }, [activeSources, data, fetchData]);
 
   // This needs to be more dynamic but it was breaking the rules of hooks when loading from the array
   const {
