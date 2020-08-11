@@ -34,6 +34,11 @@ export const regions = [
 
 export const LAYER_IDS = {
   astrosat: {
+    isolationPlus: {
+      ahah: {
+        v0: 'astrosat/test/lsoa_gb_ahah_imd_isoplus/v0alpha1-2020-07',
+      },
+    },
     rice: {
       paddiesHealth: {
         latest: 'astrosat/rice/paddies-health/latest',

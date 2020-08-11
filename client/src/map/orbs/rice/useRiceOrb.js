@@ -13,7 +13,7 @@ export const sidebarComponents = {
   [LAYER_IDS.astrosat.rice.paddiesHealth.latest]: DateSlider,
 };
 
-export const useRiceOrb = (data, activeLayers) => {
+export const useRiceOrb = (data, activeSources) => {
   const dispatch = useDispatch();
   const maxDateRange = useSelector(maxDateRangeSelector);
   const dateRange = useSelector(dateRangeSelector);
@@ -41,8 +41,9 @@ export const useRiceOrb = (data, activeLayers) => {
     paddiesHealthLayer({
       id: LAYER_IDS.astrosat.rice.paddiesHealth.latest,
       data: data[LAYER_IDS.astrosat.rice.paddiesHealth.latest],
-      visible: activeLayers?.includes(
-        LAYER_IDS.astrosat.rice.paddiesHealth.latest,
+      visible: !!activeSources?.find(
+        source =>
+          source.source_id === LAYER_IDS.astrosat.rice.paddiesHealth.latest,
       ),
       dateRange,
     }),

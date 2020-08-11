@@ -25,7 +25,7 @@ const sidebarComponents = {
   [LAYER_IDS.astrosat.covid.hourglass.latest]: PopulationInformation,
 };
 
-export const useHourglassOrb = (data, activeLayers) => {
+export const useHourglassOrb = (data, activeSources) => {
   const { setViewState } = useMap();
   const [pickedObject, setPickedObject] = useState();
 
@@ -65,15 +65,16 @@ export const useHourglassOrb = (data, activeLayers) => {
       infrastructureLayer({
         id,
         data: data[id],
-        visible: activeLayers?.includes(id),
+        visible: !!activeSources?.find(source => source.source_id === id),
         onClick: handleLayerClick,
       }),
     ),
     peopleLayer({
       id: LAYER_IDS.astrosat.covid.hourglass.latest,
       data: data[LAYER_IDS.astrosat.covid.hourglass.latest],
-      visible: activeLayers?.includes(
-        LAYER_IDS.astrosat.covid.hourglass.latest,
+      visible: !!activeSources?.find(
+        source =>
+          source.source_id === LAYER_IDS.astrosat.covid.hourglass.latest,
       ),
       onClick: handleLayerClick,
     }),

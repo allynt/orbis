@@ -18,7 +18,10 @@ const slice = createSlice({
 
 export const { setDateRange, setMaxDateRange } = slice.actions;
 
-const baseSelector = createSelector(orbsSelector, orbs => orbs[slice.name]);
+const baseSelector = createSelector(
+  orbsSelector,
+  orbs => orbs[slice.name] || {},
+);
 export const maxDateRangeSelector = createSelector(
   baseSelector,
   rice => rice.maxDateRange,
