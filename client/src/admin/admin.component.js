@@ -67,7 +67,7 @@ const Admin = ({ user }) => {
     );
   }
 
-  const licenceData = {
+  const quickViewData = {
     active: activeUsers?.length,
     pending: pendingUsers?.length,
     available: availableLicences?.length,
@@ -91,7 +91,7 @@ const Admin = ({ user }) => {
             activeUsers={activeUsers}
             pendingUsers={pendingUsers}
             oneAdminRemaining={oneAdminRemaining}
-            licenceData={licenceData}
+            quickViewData={quickViewData}
             customer={currentCustomer}
             onChangeRoleClick={user =>
               dispatch(

@@ -10,32 +10,30 @@ const HomeView = ({
   activeUsers,
   pendingUsers,
   oneAdminRemaining,
-  licenceData,
+  quickViewData,
   customer,
   onChangeRoleClick,
   onEditUserClick,
   onWithdrawInvitationClick,
   onDeleteUserClick,
-}) => {
-  return (
-    <div className={styles.home}>
-      <ActiveUsersBoard
-        currentUser={currentUser}
-        activeUsers={activeUsers}
-        oneAdminRemaining={oneAdminRemaining}
-        customer={customer}
-        licenceData={licenceData}
-        onChangeRoleClick={onChangeRoleClick}
-        onEditUserClick={onEditUserClick}
-        onDeleteUserClick={onDeleteUserClick}
-      />
-      <PendingInvitationsBoard
-        pendingUsers={pendingUsers}
-        customer={customer}
-        onWithdrawInvitationClick={onWithdrawInvitationClick}
-      />
-    </div>
-  );
-};
+}) => (
+  <div className={styles.home}>
+    <ActiveUsersBoard
+      currentUser={currentUser}
+      activeUsers={activeUsers}
+      oneAdminRemaining={oneAdminRemaining}
+      customer={customer}
+      quickViewData={quickViewData}
+      onChangeRoleClick={onChangeRoleClick}
+      onEditUserClick={onEditUserClick}
+      onDeleteUserClick={onDeleteUserClick}
+    />
+    <PendingInvitationsBoard
+      pendingUsers={pendingUsers}
+      customer={customer}
+      onWithdrawInvitationClick={onWithdrawInvitationClick}
+    />
+  </div>
+);
 
 export default HomeView;

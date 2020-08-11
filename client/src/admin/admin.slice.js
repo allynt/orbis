@@ -65,12 +65,9 @@ const adminSlice = createSlice({
     },
     updateCustomerUserSuccess: (state, { payload }) => {
       if (payload.updatedCustomerUser) {
-        const userIndex = state.customerUsers.indexOf(
-          state.customerUsers.find(
-            cu => cu.id === payload.updatedCustomerUser.id,
-          ),
+        const userIndex = state.customerUsers.findIndex(
+          user => user.id === payload.updatedCustomerUser.id,
         );
-
         state.customerUsers[userIndex] = payload.updatedCustomerUser;
       }
 

@@ -5,8 +5,7 @@ import { Button, OptionsIcon } from '@astrosat/astrosat-ui';
 import ContentWrapper from '../../content-wrapper.component';
 import OptionsDropdown from '../options-dropdown/options-dropdown.component';
 
-import { getUserLicences } from '../../get-user-licences-helper';
-import { getLicenceInfo } from '../get-licence-info-helper';
+import { getUserLicences, getLicenceInfo } from '../licence-utils';
 
 import QuickView from '../active-users-board/quick-view/quick-view.component';
 
@@ -18,7 +17,7 @@ export const ActiveUsersBoard = ({
   activeUsers,
   oneAdminRemaining,
   customer,
-  licenceData,
+  quickViewData,
   onChangeRoleClick,
   onEditUserClick,
   onDeleteUserClick,
@@ -35,7 +34,7 @@ export const ActiveUsersBoard = ({
 
   return (
     <ContentWrapper title="Users">
-      <QuickView licenceData={licenceData} />
+      <QuickView quickViewData={quickViewData} />
       <table className={tableStyles.table}>
         <thead className={tableStyles.thead}>
           <tr className={tableStyles.tr}>

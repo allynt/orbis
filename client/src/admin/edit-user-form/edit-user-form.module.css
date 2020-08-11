@@ -18,7 +18,7 @@
 }
 
 .title {
-  font-weight: bold;
+  font-weight: 700;
 }
 
 .checkboxes > *,
@@ -31,7 +31,7 @@
 }
 
 .errorMessage {
-  color: red;
+  color: var(--color-error);
   padding: 0 1.5rem;
   margin-bottom: 1rem;
 }

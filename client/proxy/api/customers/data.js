@@ -299,17 +299,19 @@ let customerUsers = [
   },
 ];
 
+const EDIT = 'edit';
+const DELETE = 'delete';
+
 const updateCustomerLicences = (type, user) => {
   let customer = customers[0];
 
-  for (let licence of customer.licences) {
+  customer.licences.forEach(licence => {
     const idMatch = licence.customer_user === user.id;
-
-    if (type === 'delete') {
+    if (type === DELETE) {
       if (idMatch) {
         licence.customer_user = null;
       }
-    } else if (type === 'edit') {
+    } else if (type === EDIT) {
       if (idMatch && !user.licences.includes(licence.id)) {
         licence.customer_user = null;
       }
@@ -318,7 +320,7 @@ const updateCustomerLicences = (type, user) => {
         licence.customer_user = user.id;
       }
     }
-  }
+  });
 };
 
 const getCustomer = customerId => customers.find(c => c.id === customerId);
@@ -362,7 +364,7 @@ const updateCustomerUser = user => {
 
   customerUsers[index] = user;
 
-  updateCustomerLicences('edit', user);
+  updateCustomerLicences(EDIT, user);
 
   return customerUsers[index];
 };
@@ -373,7 +375,7 @@ const deleteCustomerUser = userId => {
     cu => cu.user.id !== deletedUser.user.id,
   );
 
-  updateCustomerLicences('delete', deletedUser);
+  updateCustomerLicences(DELETE, deletedUser);
 };
 
 module.exports = {

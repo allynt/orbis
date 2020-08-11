@@ -32,7 +32,8 @@ export const EditUserForm = ({
     let allLicences = [...userLicences];
 
     for (let licence of availableLicences) {
-      if (!allLicences.map(l => l.orb).includes(licence.orb)) {
+      const orbNames = allLicences.map(l => l.orb);
+      if (!orbNames.includes(licence.orb)) {
         allLicences = [...allLicences, licence];
       }
     }
@@ -45,10 +46,10 @@ export const EditUserForm = ({
     // and assigns a key of each licence's name to the default values
     // object, with true/false for assigned/available.
 
-    let defaults = {
+    const defaults = {
       values: {
         name: user.user.name ? user.user.name : '',
-        type: user.type === 'MANAGER' ? 'MANAGER' : 'MEMBER',
+        type: user.type,
       },
     };
 
@@ -75,11 +76,10 @@ export const EditUserForm = ({
       for (let key of Object.keys(defaults)) {
         if (values[key] !== defaults[key]) {
           bool = true;
-          break;
+          return bool;
         }
       }
     }
-    return bool;
   };
 
   const getUpdatedLicenceIds = values => {
@@ -92,7 +92,7 @@ export const EditUserForm = ({
     // the first available one of the correct type.
 
     let newIds = [];
-    for (let key of Object.keys(values)) {
+    Object.keys(values).forEach(key => {
       if (values[key] === true) {
         let licence;
 
@@ -107,7 +107,7 @@ export const EditUserForm = ({
 
         newIds = [...newIds, licence.id];
       }
-    }
+    });
     return newIds;
   };
 

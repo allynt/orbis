@@ -23,9 +23,6 @@ describe('EditUserForm', () => {
     { id: '12', orb: 'Timber', customer_user: null },
   ];
 
-  // The userCheckboxes below were retrieved by calling
-  // 'getCheckboxLicences' on the user, and logging the output.
-  // This was the only way I could see to test this.
   const userCheckboxes = [
     { id: '2', orb: 'Rice', customer_user: '2' },
     { id: '5', orb: 'Oil', customer_user: '2' },
@@ -63,10 +60,21 @@ describe('EditUserForm', () => {
     const { getByLabelText } = renderComponent();
 
     userCheckboxes.forEach(ul => {
-      expect(getByLabelText(ul.orb)).toBeInTheDocument();
-      ul.customer_user
-        ? expect(getByLabelText(ul.orb)).toBeChecked()
-        : expect(getByLabelText(ul.orb)).not.toBeChecked();
+      if (ul.customer_user) {
+        expect(getByLabelText(ul.orb)).toBeInTheDocument();
+        expect(getByLabelText(ul.orb)).toBeChecked();
+      }
+    });
+  });
+
+  it('displays and unchecks by default the available licence options', () => {
+    const { getByLabelText } = renderComponent();
+
+    userCheckboxes.forEach(ul => {
+      if (!ul.customer_user) {
+        expect(getByLabelText(ul.orb)).toBeInTheDocument();
+        expect(getByLabelText(ul.orb)).not.toBeChecked();
+      }
     });
   });
 
@@ -195,7 +203,6 @@ describe('EditUserForm', () => {
     const userWithAddedLicence = {
       ...user,
       licences: ['2', '5', '9'],
-      user: { ...user.user },
     };
 
     expect(user.licences).toEqual(['2', '5']);
