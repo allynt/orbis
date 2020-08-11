@@ -2,7 +2,7 @@ import React from 'react';
 import { render } from '@testing-library/react';
 import QuickView from './quick-view.component';
 
-const quickViewData = {
+const data = {
   active: 1,
   pending: 2,
   available: 3,
@@ -10,18 +10,18 @@ const quickViewData = {
 
 describe('QuickView', () => {
   it('should display the licence data in the QuickView', () => {
-    const { getByText } = render(<QuickView quickViewData={quickViewData} />);
+    const { getByText } = render(<QuickView data={data} />);
 
     expect(getByText('Active Users')).toBeInTheDocument();
-    expect(getByText(`${quickViewData.active}`)).toBeInTheDocument();
+    expect(getByText(`${data.active}`)).toBeInTheDocument();
     expect(getByText('Pending Invitations')).toBeInTheDocument();
-    expect(getByText(`${quickViewData.pending}`)).toBeInTheDocument();
+    expect(getByText(`${data.pending}`)).toBeInTheDocument();
     expect(getByText('Licences Available')).toBeInTheDocument();
-    expect(getByText(`${quickViewData.available}`)).toBeInTheDocument();
+    expect(getByText(`${data.available}`)).toBeInTheDocument();
   });
 
   it('should show defaults if no data is present', () => {
-    const { getAllByText } = render(<QuickView quickViewData={null} />);
+    const { getAllByText } = render(<QuickView data={null} />);
 
     expect(getAllByText('-')[0]).toBeInTheDocument();
     expect(getAllByText('-')[1]).toBeInTheDocument();
@@ -31,7 +31,7 @@ describe('QuickView', () => {
   it('should show defaults if only some data is present', () => {
     const { getByText, getAllByText } = render(
       <QuickView
-        quickViewData={{
+        data={{
           active: 1,
           pending: undefined,
           available: null,

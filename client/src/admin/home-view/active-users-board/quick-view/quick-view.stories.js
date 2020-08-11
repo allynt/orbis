@@ -4,17 +4,17 @@ import QuickView from './quick-view.component';
 
 export default { title: 'Admin/QuickView', component: QuickView };
 
-const licenceData = {
+const data = {
   active: 3,
   pending: 4,
   available: 5,
 };
 
-export const NoData = () => <QuickView licenceData={undefined} />;
+export const NoData = () => <QuickView data={undefined} />;
 
 export const SomeDataButNotAll = () => (
   <QuickView
-    licenceData={{
+    data={{
       active: null,
       pending: undefined,
       available: 5,
@@ -22,4 +22,4 @@ export const SomeDataButNotAll = () => (
   />
 );
 
-export const Default = () => <QuickView licenceData={licenceData} />;
+export const Default = () => <QuickView data={data} />;
