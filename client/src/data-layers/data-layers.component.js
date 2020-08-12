@@ -2,23 +2,24 @@ import React, { useRef } from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
 
-import Button from '@astrosat/astrosat-ui/dist/buttons/button';
-import useModal from '@astrosat/astrosat-ui/dist/containers/use-modal';
+import { Button, useModal } from '@astrosat/astrosat-ui';
 
+import { useOrbs } from 'map/orbs/useOrbs';
 import { ReactComponent as AddNewCategoryIcon } from './add-more-categories.svg';
-
+import DataLayersDialog from './data-layers-dialog/data-layers-dialog.component';
 import {
-  removeLayer,
+  activeDataSourcesSelector,
   addLayers,
   dataSourcesSelector,
-  activeDataSourcesSelector,
+  removeLayer,
 } from './data-layers.slice';
-
-import DataLayersDialog from './data-layers-dialog/data-layers-dialog.component';
-
 import { LayersList } from './layers-list/layers-list.component';
 
 import styles from './data-layers.module.css';
+
+const DataLayers = () => {
+  const { sidebarComponents } = useOrbs();
+  const [isVisible, toggle] = useModal(false);
   const ref = useRef(null);
   const dispatch = useDispatch();
   const dataSources = useSelector(dataSourcesSelector);
@@ -38,7 +39,11 @@ import styles from './data-layers.module.css';
   return (
     <>
       <div className={styles.selectData} ref={ref}>
-        <LayersList dispatch={dispatch} selectedLayers={selectedLayers} />
+        <LayersList
+          dispatch={dispatch}
+          selectedLayers={selectedLayers}
+          sidebarComponents={sidebarComponents}
+        />
         <div className={styles.buttons}>
           <AddNewCategoryIcon
             className={styles.addNewCategoryIcon}
