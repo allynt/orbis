@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 
 import { LayersListItem } from './layers-list-item/layers-list-item.component';
 
@@ -14,7 +14,7 @@ import styles from '../data-layers.module.css';
  * @param {{
  *   dispatch: import('redux').Dispatch
  *   selectedLayers: Layer[]
- *   sidebarComponents: { [key: string]: Component }
+ *   sidebarComponents: { [key: string]: React.Component }
  * }} props
  */
 export const LayersList = ({ dispatch, selectedLayers, sidebarComponents }) => (
