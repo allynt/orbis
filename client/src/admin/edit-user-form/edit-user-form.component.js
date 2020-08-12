@@ -97,6 +97,7 @@ export const EditUserForm = ({
       <div className={styles.checkboxes}>
         {checkboxLicences.map(l => (
           <Checkbox
+            id={l.id}
             key={l.id}
             name={l.orb}
             label={l.orb}

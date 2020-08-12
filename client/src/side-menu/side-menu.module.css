@@ -1,4 +1,6 @@
 .side-menu-container {
+  --checkbox--label--color: #fff;
+  --checkbox--border-color: #fff;
   position: absolute;
   top: 0;
   left: calc(-25rem + var(--toolbar-width));

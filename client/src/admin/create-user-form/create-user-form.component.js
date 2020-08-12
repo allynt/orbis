@@ -59,6 +59,7 @@ export const CreateUserForm = ({
           {licenceInformation && Object.keys(licenceInformation)?.length ? (
             Object.keys(licenceInformation).map(orb => (
               <Checkbox
+                id={orb}
                 className={styles.licence}
                 key={orb}
                 label={orb}
