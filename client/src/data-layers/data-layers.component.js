@@ -37,34 +37,32 @@ const DataLayers = () => {
   }, []);
 
   return (
-    <>
-      <div className={styles.selectData} ref={ref}>
-        <LayersList
-          dispatch={dispatch}
-          selectedLayers={selectedLayers}
-          sidebarComponents={sidebarComponents}
+    <div className={styles.selectData} ref={ref}>
+      <LayersList
+        dispatch={dispatch}
+        selectedLayers={selectedLayers}
+        sidebarComponents={sidebarComponents}
+      />
+      <div className={styles.buttons}>
+        <AddNewCategoryIcon
+          className={styles.addNewCategoryIcon}
+          onClick={toggle}
         />
-        <div className={styles.buttons}>
-          <AddNewCategoryIcon
-            className={styles.addNewCategoryIcon}
-            onClick={toggle}
-          />
-          <Button theme="link" className={styles.addOrbButton} onClick={toggle}>
-            Add New Orb
-          </Button>
-        </div>
-
-        <DataLayersDialog
-          domains={domains}
-          selectedLayers={selectedLayers}
-          onAddLayers={selectedLayers => dispatch(addLayers(selectedLayers))}
-          onRemoveLayer={layer => dispatch(removeLayer(layer))}
-          isVisible={isVisible}
-          close={toggle}
-          ref={ref}
-        ></DataLayersDialog>
+        <Button theme="link" className={styles.addOrbButton} onClick={toggle}>
+          Add New Orb
+        </Button>
       </div>
-    </>
+
+      <DataLayersDialog
+        domains={domains}
+        selectedLayers={selectedLayers}
+        onAddLayers={selectedLayers => dispatch(addLayers(selectedLayers))}
+        onRemoveLayer={layer => dispatch(removeLayer(layer))}
+        isVisible={isVisible}
+        close={toggle}
+        ref={ref}
+      ></DataLayersDialog>
+    </div>
   );
 };
 

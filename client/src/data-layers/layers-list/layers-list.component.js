@@ -18,7 +18,7 @@ import styles from '../data-layers.module.css';
  * }} props
  */
 export const LayersList = ({ dispatch, selectedLayers, sidebarComponents }) => (
-  <div className={styles.layers}>
+  <>
     {selectedLayers?.map(selectedLayer => {
       const Component = sidebarComponents?.[selectedLayer.source_id];
 
@@ -33,5 +33,5 @@ export const LayersList = ({ dispatch, selectedLayers, sidebarComponents }) => (
         </LayersListItem>
       );
     })}
-  </div>
+  </>
 );
