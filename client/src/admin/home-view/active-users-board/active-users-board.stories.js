@@ -2,7 +2,7 @@ import React from 'react';
 
 import { ActiveUsersBoard } from './active-users-board.component';
 
-import { customer, activeUsers, pendingUsers } from '../test-story-data';
+import { customer, activeUsers, pendingUsers } from '../../test-story-data';
 
 export default { title: 'Admin/Active Users Board' };
 
@@ -54,23 +54,7 @@ export const NoLicenceData = () => (
 
 export const Default = () => (
   <ActiveUsersBoard
-    activeUsers={[
-      {
-        id: 1,
-        invitation_date: '2020-01-31T11:46:12.618090Z',
-        user: { name: 'Test One', email: 'test1@test.com' },
-      },
-      {
-        id: 2,
-        invitation_date: '2020-01-31T11:46:12.618090Z',
-        user: { name: 'Test Two', email: 'test2@test.com' },
-      },
-      {
-        id: 3,
-        invitation_date: '2020-01-31T11:46:12.618090Z',
-        user: { name: 'Test Three', email: 'test3@test.com' },
-      },
-    ]}
+    activeUsers={activeUsers}
     customer={customer}
     licenceData={licenceData}
   />

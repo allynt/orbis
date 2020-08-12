@@ -1,16 +1,18 @@
 import React from 'react';
 
 import { render } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 
 import { PendingInvitationsBoard } from './pending-invitations-board.component';
 
-import { customer, pendingUsers } from '../test-story-data';
+import { customer, pendingUsers } from '../../test-story-data';
 
 describe('PendingUsersBoard', () => {
   const cases = [
     ['names', 'name'],
     ["email address'", 'email'],
   ];
+  const onWithdrawInvitationClick = jest.fn();
 
   it.each(cases)("Displays all pending user's %s", (_, text) => {
     const { getByText } = render(
@@ -46,16 +48,53 @@ describe('PendingUsersBoard', () => {
   });
 
   it('Displays a placeholder when customer is present but has no licences', () => {
-    const { getAllByText } = render(
+    const { getAllByText, queryByText } = render(
       <PendingInvitationsBoard
         pendingUsers={pendingUsers}
         customer={{ name: 'Customer Name' }}
       />,
     );
 
+    expect(queryByText('No licences')).not.toBeInTheDocument();
+
     pendingUsers.forEach((user, i) =>
       expect(getAllByText('Not currently available')[i]).toBeInTheDocument(),
     );
+  });
+
+  it('Displays a placeholder when user has no licences', () => {
+    const TEST_USER = {
+      ...pendingUsers[0],
+      id: '99',
+    };
+
+    const { getByText, queryByText } = render(
+      <PendingInvitationsBoard
+        pendingUsers={[TEST_USER]}
+        customer={customer}
+      />,
+    );
+
+    expect(queryByText('Not currently available')).not.toBeInTheDocument();
+    expect(getByText('No licences')).toBeInTheDocument();
+  });
+
+  it('Opens `Withdraw Invitation` dialog when button is clicked', () => {
+    const { getByText, getAllByTestId } = render(
+      <PendingInvitationsBoard
+        pendingUsers={pendingUsers}
+        customer={customer}
+        onWithdrawInvitationClick={onWithdrawInvitationClick}
+      />,
+    );
+
+    userEvent.click(getAllByTestId('options-icon')[0]);
+
+    const optionsDropdownButton = getByText('Withdraw');
+
+    expect(optionsDropdownButton).toBeInTheDocument();
+    userEvent.click(optionsDropdownButton);
+    expect(onWithdrawInvitationClick).toHaveBeenCalledWith(pendingUsers[0]);
   });
 
   describe('Displays a placeholder when there are no pending users', () => {

@@ -42,3 +42,8 @@
   font-size: 1.5rem;
   align-self: center;
 }
+
+.layerName {
+  font-weight: bold;
+  padding: 0.3rem 2rem;
+}

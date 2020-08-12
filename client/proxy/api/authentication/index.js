@@ -1,10 +1,13 @@
 const express = require('express');
+
+const { v4: uuidv4 } = require('uuid');
+
 const { userKey, getCurrentUser, setCurrentUser } = require('./data');
 const { getUsers } = require('../users/data');
 
 const register = (req, res) => {
   const details = req.body;
-  console.log('Registering User: ', details);
+  console.log('Registering New User');
 
   const users = getUsers();
   const existingUser = users.find(user => user.username === details.username);
@@ -13,9 +16,8 @@ const register = (req, res) => {
     res.status(400);
     res.json({ message: `Sorry, ${details.username} already exists` });
   } else {
-    let oldId = users.length;
     const user = {
-      id: ++oldId,
+      id: uuidv4(),
       username: details.username,
       email: details.email,
       name: null,
@@ -25,6 +27,8 @@ const register = (req, res) => {
       profiles: {},
       roles: [],
     };
+
+    console.log('Registered New User :', user);
 
     users.push(user);
 
@@ -45,12 +49,16 @@ const login = (req, res) => {
   if (currentUser) {
     if (!currentUser.is_approved) {
       res.status(400);
-      res.json({ message: `Sorry, Registration not approved, please ask your manager to approve this account` });
+      res.json({
+        message: `Sorry, Registration not approved, please ask your manager to approve this account`,
+      });
     }
 
     if (!currentUser.is_verified) {
       res.status(400);
-      res.json({ message: `Sorry, Registration not verified, please ask your manager to approve this account` });
+      res.json({
+        message: `Sorry, Registration not verified, please ask your manager to approve this account`,
+      });
     }
 
     if (user.password === currentUser.password) {

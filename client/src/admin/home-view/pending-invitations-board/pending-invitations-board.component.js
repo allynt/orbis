@@ -5,9 +5,11 @@ import { format } from 'date-fns';
 import { OptionsIcon } from '@astrosat/astrosat-ui';
 
 import ContentWrapper from '../../content-wrapper.component';
+import OptionsDropdown from '../options-dropdown/options-dropdown.component';
 
-import { getUserLicences } from '../get-user-licences-helper';
+import { getUserLicences, getLicenceInfo } from '../../licence-utils';
 
+import styles from './pending-invitations.module.css';
 import tableStyles from '../../table.module.css';
 
 const DATE_FORMAT = ['k:s d MMMM yyyy'];
@@ -17,7 +19,7 @@ export const PendingInvitationsBoard = ({
   customer,
   onWithdrawInvitationClick,
 }) => {
-  const [userOptions, setUserOptions] = useState(null);
+  const [dropdown, setDropdown] = useState(null);
 
   return (
     <ContentWrapper title="Pending Invitations">
@@ -44,7 +46,7 @@ export const PendingInvitationsBoard = ({
         <tbody>
           {pendingUsers && pendingUsers.length > 0 ? (
             pendingUsers.map(user => {
-              const selected = userOptions === user;
+              const selected = dropdown === user;
               const date = format(new Date(user.invitation_date), DATE_FORMAT);
               let licences = null;
               if (customer && customer.licences) {
@@ -54,31 +56,33 @@ export const PendingInvitationsBoard = ({
                 <tr key={user.id} className={tableStyles.tr}>
                   <td className={tableStyles.td}>{user.user.name}</td>
                   <td className={tableStyles.td}>{user.user.email}</td>
-                  <td className={tableStyles.td}>
-                    {licences
-                      ? licences.slice().sort().join(', ')
-                      : 'Not currently available'}
-                  </td>
+                  <td className={tableStyles.td}>{getLicenceInfo(licences)}</td>
                   <td className={tableStyles.td}>{date}</td>
                   <td
                     className={`${tableStyles.td} ${tableStyles.optionsColumn}`}
                   >
                     <OptionsIcon
+                      data-testid="options-icon"
                       classes={`${tableStyles.optionsIcon} ${
                         selected && tableStyles.optionsIconSelected
                       }`}
-                      onClick={() => setUserOptions(selected ? null : user)}
+                      onClick={() => setDropdown(selected ? null : user)}
                     />
                     {selected && (
-                      <div
-                        className={tableStyles.optionsDropdown}
-                        onClick={() => {
-                          onWithdrawInvitationClick(user);
-                          setUserOptions(null);
-                        }}
+                      <OptionsDropdown
+                        className={styles.withdrawDropdown}
+                        onClickAway={() => setDropdown(null)}
                       >
-                        <p className={tableStyles.optionsText}>Withdraw</p>
-                      </div>
+                        <button
+                          className={tableStyles.optionsButton}
+                          onClick={() => {
+                            onWithdrawInvitationClick(user);
+                            setDropdown(null);
+                          }}
+                        >
+                          Withdraw
+                        </button>
+                      </OptionsDropdown>
                     )}
                   </td>
                 </tr>
@@ -86,7 +90,7 @@ export const PendingInvitationsBoard = ({
             })
           ) : (
             <tr className={tableStyles.tr}>
-              <td align="center" colSpan={3} className={tableStyles.td}>
+              <td align="center" colSpan={5} className={tableStyles.td}>
                 No Pending Users
               </td>
             </tr>

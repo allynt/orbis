@@ -16,11 +16,9 @@ import {
 
 import DataLayersDialog from './data-layers-dialog/data-layers-dialog.component';
 
-import styles from './data-layers.module.css';
 import { LayersList } from './layers-list/layers-list.component';
 
-const DataLayers = () => {
-  const [isVisible, toggle] = useModal(false);
+import styles from './data-layers.module.css';
   const ref = useRef(null);
   const dispatch = useDispatch();
   const dataSources = useSelector(dataSourcesSelector);

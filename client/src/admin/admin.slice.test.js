@@ -225,8 +225,25 @@ describe('Admin Slice', () => {
         };
 
         const user = {
-          name: 'Test User',
           id: '1',
+          name: 'Test User',
+          email: 'test.user@test.com',
+        };
+
+        const customerUser = {
+          id: '1',
+          status: 'PENDING',
+          type: 'MEMBER',
+          licences: [],
+          user: user,
+        };
+
+        const data = {
+          ...customerUser,
+          user: {
+            ...user,
+            name: 'Updated User Name',
+          },
         };
 
         fetch.mockResponse(
@@ -248,29 +265,44 @@ describe('Admin Slice', () => {
           },
         ];
 
-        await store.dispatch(updateCustomerUser(customer, user));
+        await store.dispatch(updateCustomerUser(customerUser, data));
 
         expect(store.getActions()).toEqual(expectedActions);
       });
 
       it('should dispatch update user success action.', async () => {
-        const customer = {
+        const updatedCustomer = {
           name: 'test_customer',
         };
 
-        const user = {
+        const updatedCustomerUser = {
           id: '1',
-          name: 'Test User',
+          status: 'PENDING',
+          type: 'MEMBER',
+          licences: [],
+          user: {
+            id: '1',
+            name: 'Test User',
+            email: 'test.user@test.com',
+          },
         };
 
-        fetch.mockResponse(JSON.stringify(user));
+        fetch
+          .once(JSON.stringify(updatedCustomerUser))
+          .once(JSON.stringify(updatedCustomer));
 
         const expectedActions = [
           { type: updateCustomerUserRequested.type },
-          { type: updateCustomerUserSuccess.type, payload: user },
+          {
+            type: updateCustomerUserSuccess.type,
+            payload: {
+              updatedCustomerUser,
+              updatedCustomer,
+            },
+          },
         ];
 
-        await store.dispatch(updateCustomerUser(customer, user));
+        await store.dispatch(updateCustomerUser(updatedCustomerUser));
 
         expect(store.getActions()).toEqual(expectedActions);
       });
@@ -278,12 +310,16 @@ describe('Admin Slice', () => {
 
     describe('deleteCustomerUser', () => {
       it('should dispatch delete user failure action.', async () => {
-        const customer = {
-          name: 'test_customer',
-        };
-
-        const user = {
+        const customerUser = {
           id: '1',
+          status: 'PENDING',
+          type: 'MEMBER',
+          licences: [],
+          user: {
+            id: '1',
+            name: 'Test User',
+            email: 'test.user@test.com',
+          },
         };
 
         fetch.mockResponse(
@@ -305,7 +341,7 @@ describe('Admin Slice', () => {
           },
         ];
 
-        await store.dispatch(deleteCustomerUser(customer, user));
+        await store.dispatch(deleteCustomerUser(customerUser));
 
         expect(store.getActions()).toEqual(expectedActions);
       });
@@ -318,6 +354,15 @@ describe('Admin Slice', () => {
         const user = {
           id: '1',
           name: 'Test User',
+          email: 'test.user@test.com',
+        };
+
+        const customerUser = {
+          id: '1',
+          status: 'PENDING',
+          type: 'MEMBER',
+          licences: [],
+          user: user,
         };
 
         fetch.once(JSON.stringify(user));
@@ -327,11 +372,11 @@ describe('Admin Slice', () => {
           { type: deleteCustomerUserRequested.type, payload: undefined },
           {
             type: deleteCustomerUserSuccess.type,
-            payload: { deletedUser: user, customer },
+            payload: { deletedUser: customerUser, customer },
           },
         ];
 
-        await store.dispatch(deleteCustomerUser(customer, user));
+        await store.dispatch(deleteCustomerUser(customerUser));
 
         expect(store.getActions()).toEqual(expectedActions);
       });
@@ -356,7 +401,7 @@ describe('Admin Slice', () => {
       expect(actualState).toEqual(beforeState);
     });
 
-    it("'should update the is loading state, when users requested", () => {
+    it('should update the is loading state, when users requested', () => {
       const actualState = reducer(beforeState, {
         type: fetchCustomerUsersRequested.type,
       });
@@ -451,7 +496,7 @@ describe('Admin Slice', () => {
       expect(actualState.error).toEqual(error);
     });
 
-    it("'should update the is loading state, when updating user", () => {
+    it('should update the is loading state, when updating user', () => {
       const actualState = reducer(beforeState, {
         type: updateCustomerUserRequested.type,
       });
@@ -467,7 +512,7 @@ describe('Admin Slice', () => {
         },
         {
           id: '2',
-          name: 'Test User 1',
+          name: 'Test User 2',
         },
       ];
       const userToUpdate = {
@@ -477,7 +522,7 @@ describe('Admin Slice', () => {
 
       const actualState = reducer(beforeState, {
         type: updateCustomerUserSuccess.type,
-        payload: userToUpdate,
+        payload: { updatedCustomerUser: userToUpdate },
       });
 
       expect(actualState.customerUsers[1]).toEqual(userToUpdate);

@@ -4,6 +4,7 @@ const {
   getCustomerUsers,
   getSelectedUser,
   createCustomerUser,
+  updateCustomerUser,
   deleteCustomerUser,
 } = require('./data');
 
@@ -21,6 +22,8 @@ const getCustomerUsersHandler = (req, res) => {
 
 const createCustomerUserHandler = (req, res) => {
   const newUser = createCustomerUser(req.params.customerId, req.body);
+  console.log('Created New Customer User: ', newUser);
+
   res.status(201);
   res.json(newUser);
 };
@@ -31,12 +34,21 @@ const getSelectedUserHandler = (req, res) => {
   res.json(getSelectedUser(req.currentUser.customers));
 };
 
-const deleteSelectedUserHandler = (req, res) => {
-  console.log('Deleting Selected user of customer');
+const updateSelectedUserHandler = (req, res) => {
+  console.log('Updating Selected User of Customer');
 
-  const deletedUser = deleteCustomerUser(req.params.userId);
+  const user = req.body;
+
+  const updatedUser = updateCustomerUser(user);
   res.status(200);
-  res.json(deletedUser);
+  res.json(updatedUser);
+};
+
+const deleteSelectedUserHandler = (req, res) => {
+  console.log('Deleting Selected User of Customer');
+
+  deleteCustomerUser(req.params.userId);
+  res.sendStatus(200);
 };
 
 const usersRouter = express.Router();
@@ -51,6 +63,7 @@ usersRouter
 usersRouter
   .route('/:customerId/users/:userId')
   .get(getSelectedUserHandler)
-  .delete(deleteSelectedUserHandler);
+  .delete(deleteSelectedUserHandler)
+  .put(updateSelectedUserHandler);
 
 module.exports = usersRouter;
