@@ -53,13 +53,14 @@ class CustomerUserListView(LicenceNotifyingMixIn, AstrosatUsersCustomerUserListV
     def perform_create(self, serializer):
 
         customer_user = serializer.save()
+        customer_user.invite()
 
-        if customer_user.licences.count():
+        if customer_user.licences.public().count():
             message = self.notify_licences_changed(
                 self.customer,
                 customer_user,
                 old_licences=set(),
-                new_licences=set(customer_user.licences.all()),
+                new_licences=set(customer_user.licences.public()),
             )
             if self.active_managers.filter(user=self.request.user).exists():
                 # TODO...
@@ -76,9 +77,9 @@ class CustomerUserDetailView(LicenceNotifyingMixIn, AstrosatUsersCustomerUserDet
     def perform_update(self, serializer):
         customer_user = self.get_object()
 
-        old_licences = set(customer_user.licences.all())
+        old_licences = set(customer_user.licences.public())
         customer_user = serializer.save()
-        new_licences = set(customer_user.licences.all())
+        new_licences = set(customer_user.licences.public())
 
         if old_licences != new_licences:
 
@@ -95,3 +96,12 @@ class CustomerUserDetailView(LicenceNotifyingMixIn, AstrosatUsersCustomerUserDet
                 pass
 
         return customer_user
+
+    def perform_destroy(self, instance):
+        # the super method will notify the user they've left the customer
+        # w/in orbis, though, we should also delete the corresponding user
+        # TODO: WHAT HAPPENS TO THE USER'S DATA/BOOKMARKS/ETC ?
+        user = instance.user
+        destroyed_value = super().perform_destroy(instance)
+        user.delete()
+        return destroyed_value

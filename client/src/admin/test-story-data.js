@@ -33,10 +33,22 @@ export const customer = {
     {
       id: '7',
       orb: 'Oil',
+      customer_user: null,
     },
     {
       id: '8',
       orb: 'Rice',
+      customer_user: null,
+    },
+    {
+      id: '9',
+      orb: 'Steel',
+      customer_user: null,
+    },
+    {
+      id: '10',
+      orb: 'Timber',
+      customer_user: null,
     },
   ],
 };

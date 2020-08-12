@@ -1,10 +1,5 @@
 import { GeoJsonLayer } from 'deck.gl';
-import { interpolateGreens } from 'd3-scale-chromatic';
-
-const rgbStringToArray = string => {
-  const values = string.match(/(\d)+/g);
-  return values.map(str => +str);
-};
+import chroma from 'chroma-js';
 
 const averageValueForTimeRange = (array, min, max) => {
   const filtered = array.filter(value => {
@@ -16,8 +11,10 @@ const averageValueForTimeRange = (array, min, max) => {
   );
 };
 
-export const paddiesHealthLayer = ({ id, data, visible, dateRange }) =>
-  new GeoJsonLayer({
+export const paddiesHealthLayer = ({ id, data, visible, dateRange }) => {
+  const colorScale = chroma.scale('Greens');
+
+  return new GeoJsonLayer({
     id,
     data,
     visible,
@@ -25,15 +22,13 @@ export const paddiesHealthLayer = ({ id, data, visible, dateRange }) =>
     filled: true,
     extruded: true,
     getFillColor: paddy => [
-      ...rgbStringToArray(
-        interpolateGreens(
-          averageValueForTimeRange(
-            paddy.properties.ndvi,
-            dateRange?.min,
-            dateRange?.max,
-          ),
+      ...colorScale(
+        averageValueForTimeRange(
+          paddy.properties.ndvi,
+          dateRange?.min,
+          dateRange?.max,
         ),
-      ),
+      ).rgb(),
       200,
     ],
     getElevation: paddy =>
@@ -47,3 +42,4 @@ export const paddiesHealthLayer = ({ id, data, visible, dateRange }) =>
       getElevation: [dateRange],
     },
   });
+};

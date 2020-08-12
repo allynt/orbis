@@ -5,7 +5,7 @@ import { Button, OptionsIcon } from '@astrosat/astrosat-ui';
 import ContentWrapper from '../../content-wrapper.component';
 import OptionsDropdown from '../options-dropdown/options-dropdown.component';
 
-import { getUserLicences } from '../get-user-licences-helper';
+import { getUserLicences, getLicenceInfo } from '../../licence-utils';
 
 import QuickView from '../active-users-board/quick-view/quick-view.component';
 
@@ -15,18 +15,17 @@ import tableStyles from '../../table.module.css';
 export const ActiveUsersBoard = ({
   currentUser,
   activeUsers,
+  oneAdminRemaining,
   customer,
-  licenceData,
+  quickViewData,
   onChangeRoleClick,
+  onEditUserClick,
   onDeleteUserClick,
 }) => {
   const [dropdown, setDropdown] = useState(null);
 
   const CHANGE_ROLE = 'Change Role';
   const OPTIONS = 'Options';
-
-  const oneAdminRemaining =
-    activeUsers?.filter(au => au.type === 'MANAGER').length === 1;
 
   const handleClick = (fn, user) => {
     fn(user);
@@ -35,7 +34,7 @@ export const ActiveUsersBoard = ({
 
   return (
     <ContentWrapper title="Users">
-      <QuickView licenceData={licenceData} />
+      <QuickView data={quickViewData} />
       <table className={tableStyles.table}>
         <thead className={tableStyles.thead}>
           <tr className={tableStyles.tr}>
@@ -70,11 +69,7 @@ export const ActiveUsersBoard = ({
               return (
                 <tr key={user.id} className={tableStyles.tr}>
                   <td className={tableStyles.td}>{user.user.name}</td>
-                  <td className={tableStyles.td}>
-                    {licences
-                      ? licences.slice().sort().join(', ')
-                      : 'Not currently available'}
-                  </td>
+                  <td className={tableStyles.td}>{getLicenceInfo(licences)}</td>
                   <td className={tableStyles.td}>{user.user.email}</td>
                   <td
                     className={`${tableStyles.td} ${tableStyles.optionsColumn}`}
@@ -134,7 +129,7 @@ export const ActiveUsersBoard = ({
                       >
                         <button
                           className={tableStyles.optionsButton}
-                          onClick={() => handleClick(console.log, user)}
+                          onClick={() => handleClick(onEditUserClick, user)}
                         >
                           Edit
                         </button>
@@ -154,7 +149,7 @@ export const ActiveUsersBoard = ({
             })
           ) : (
             <tr className={tableStyles.tr}>
-              <td align="center" colSpan={3} className={tableStyles.td}>
+              <td align="center" colSpan={5} className={tableStyles.td}>
                 No Active Users
               </td>
             </tr>

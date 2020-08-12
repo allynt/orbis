@@ -27,6 +27,7 @@ export const FiltersFormSection = ({
             return (
               <div className={styles.option}>
                 <Checkbox
+                  id={`${layer}.${property}.${value}`}
                   key={`${layer}.${property}.${value}`}
                   label={toTitleCase(value)}
                   ariaLabel={value}

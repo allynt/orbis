@@ -26,7 +26,7 @@ const addUserHandler = (req, res) => {
 
   // Get the user from the list.
   const usr = getUsers().find(usr => usr.email === user.email);
-  console.log('Added User: ', usr);
+  console.log('Created New User: ', usr);
 
   res.status(200);
   res.json(usr);

@@ -1,1 +1,1 @@
-export const orbsSelector = state => state.orbs;
+export const orbsSelector = state => state?.orbs || {};

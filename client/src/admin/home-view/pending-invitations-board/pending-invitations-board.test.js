@@ -5,8 +5,7 @@ import userEvent from '@testing-library/user-event';
 
 import { PendingInvitationsBoard } from './pending-invitations-board.component';
 
-import { customer, pendingUsers } from '../test-story-data';
-import { getByText, getByTestId } from '@testing-library/dom';
+import { customer, pendingUsers } from '../../test-story-data';
 
 describe('PendingUsersBoard', () => {
   const cases = [
@@ -49,16 +48,35 @@ describe('PendingUsersBoard', () => {
   });
 
   it('Displays a placeholder when customer is present but has no licences', () => {
-    const { getAllByText } = render(
+    const { getAllByText, queryByText } = render(
       <PendingInvitationsBoard
         pendingUsers={pendingUsers}
         customer={{ name: 'Customer Name' }}
       />,
     );
 
+    expect(queryByText('No licences')).not.toBeInTheDocument();
+
     pendingUsers.forEach((user, i) =>
       expect(getAllByText('Not currently available')[i]).toBeInTheDocument(),
     );
+  });
+
+  it('Displays a placeholder when user has no licences', () => {
+    const TEST_USER = {
+      ...pendingUsers[0],
+      id: '99',
+    };
+
+    const { getByText, queryByText } = render(
+      <PendingInvitationsBoard
+        pendingUsers={[TEST_USER]}
+        customer={customer}
+      />,
+    );
+
+    expect(queryByText('Not currently available')).not.toBeInTheDocument();
+    expect(getByText('No licences')).toBeInTheDocument();
   });
 
   it('Opens `Withdraw Invitation` dialog when button is clicked', () => {

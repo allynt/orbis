@@ -1,18 +1,17 @@
+import { useCallback, useEffect, useState } from 'react';
+
+import { useSelector } from 'react-redux';
+
 import {
-  activeLayersSelector,
-  dataSourcesSelector,
+  activeDataSourcesSelector,
   selectDataToken,
 } from 'data-layers/data-layers.slice';
-import { useCallback, useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { getData } from 'utils/http';
 import { useHourglassOrb } from './hourglass/useHourglassOrb';
+import { useIsolationPlusOrb } from './isolationPlus/useIsolationPlusOrb';
 import { useRiceOrb } from './rice/useRiceOrb';
 
-const orbs = [useHourglassOrb, useRiceOrb];
-
-const dataUrlFromId = (id, sources) => {
-  const source = sources.find(source => source.source_id === id);
-  if (!source) return;
+const dataUrlFromId = source => {
   return source.data && typeof source.data === 'string'
     ? source.data
     : source.metadata.url;
@@ -20,51 +19,59 @@ const dataUrlFromId = (id, sources) => {
 
 export const useOrbs = () => {
   const authToken = useSelector(selectDataToken);
-  const sources = useSelector(dataSourcesSelector);
-  const activeLayers = useSelector(activeLayersSelector);
+  const activeSources = useSelector(activeDataSourcesSelector);
   const [data, setData] = useState({});
 
-  const dataRequest = useCallback(
-    url =>
-      url &&
-      new Promise(async (resolve, reject) => {
-        const response = await fetch(url, {
-          headers: { Authorization: `Bearer ${authToken}` },
-        });
-        if (!response.ok) reject(response.status);
-        resolve(response.json());
-      }),
-    [authToken],
+  const fetchData = useCallback(
+    async source => {
+      const response = await getData(dataUrlFromId(source), {
+        Authorization: `Bearer ${authToken}`,
+      });
+      if (!response.ok) console.error(response.status);
+      const dataSet = await response.json();
+      setData({ ...data, [source.source_id]: dataSet });
+    },
+    [authToken, data],
   );
 
   useEffect(() => {
-    const fetchData = async layerId => {
-      const dataSet = await dataRequest(dataUrlFromId(layerId, sources));
-      setData({ ...data, [layerId]: dataSet });
-    };
-    for (let layerId of activeLayers) {
-      if (!data[layerId]) {
-        fetchData(layerId);
+    for (let source of activeSources) {
+      if (!data[source.source_id]) {
+        if (source.metadata.tiles)
+          setData({ ...data, [source.source_id]: source.metadata.tiles });
+        else fetchData(source);
       }
     }
-  }, [activeLayers, sources, dataRequest, data]);
+  }, [activeSources, data, fetchData]);
 
-  let layers = [];
-  let mapComponents = [];
-  let sidebarComponents = {};
+  // This needs to be more dynamic but it was breaking the rules of hooks when loading from the array
+  const {
+    layers: hourglassLayers,
+    mapComponents: hourglassMapComponents,
+    sidebarComponents: hourglassSidebarComponents,
+  } = useHourglassOrb(data, activeSources);
+  const {
+    layers: riceLayers,
+    mapComponents: riceMapComponents,
+    sidebarComponents: riceSidebarComponents,
+  } = useRiceOrb(data, activeSources);
+  const {
+    layers: isoPlusLayers,
+    mapComponents: isoPlusMapComponents,
+    sidebarComponents: isoPlusSidebarComponents,
+  } = useIsolationPlusOrb(data, activeSources, authToken);
 
-  for (let orbHook of orbs.filter(orb =>
-    sources.some(source => source.source_id.includes(orb.id)),
-  )) {
-    const {
-      layers: orbLayers,
-      mapComponents: orbMapComponents,
-      sidebarComponents: orbSidebarComponents,
-    } = orbHook(data, activeLayers);
-    layers = [...layers, ...orbLayers];
-    mapComponents = [...mapComponents, ...orbMapComponents];
-    sidebarComponents = { ...sidebarComponents, ...orbSidebarComponents };
-  }
+  let layers = [...isoPlusLayers, ...hourglassLayers, ...riceLayers];
+  let mapComponents = [
+    ...hourglassMapComponents,
+    ...riceMapComponents,
+    ...isoPlusMapComponents,
+  ];
+  let sidebarComponents = {
+    ...hourglassSidebarComponents,
+    ...riceSidebarComponents,
+    ...isoPlusSidebarComponents,
+  };
 
   return { layers, mapComponents, sidebarComponents };
 };

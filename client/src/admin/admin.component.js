@@ -1,7 +1,7 @@
 import { Dialog } from '@astrosat/astrosat-ui';
 import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { ADMIN_VIEW, DIALOG_VIEW } from './admin.constants';
+import { ADMIN_VIEW, DIALOG_VIEW, ADMIN_STATUS } from './admin.constants';
 import styles from './admin.module.css';
 import {
   createCustomerUser,
@@ -12,10 +12,15 @@ import {
   selectLicenceInformation,
   updateCustomerUser,
   deleteCustomerUser,
+  selectActiveUsers,
+  selectPendingUsers,
+  selectAvailableLicences,
+  selectOneAdminRemaining,
 } from './admin.slice';
 import HomeView from './home-view/home-view.component';
 import CorporateView from './corporate-view/corporate-view.component';
 import { CreateUserForm } from './create-user-form/create-user-form.component';
+import { EditUserForm } from './edit-user-form/edit-user-form.component';
 import { DeleteUserForm } from './delete-user-form/delete-user-form.component';
 import { WithdrawUserInvitationForm } from './withdraw-invitation-form/withdraw-user-invitation-form.component';
 import LeftSidebar from './left-sidebar/left-sidebar.component';
@@ -28,6 +33,10 @@ const Admin = ({ user }) => {
   const currentCustomer = useSelector(selectCurrentCustomer);
   const customerUsers = useSelector(selectCustomerUsers);
   const licenceInformation = useSelector(selectLicenceInformation);
+  const availableLicences = useSelector(selectAvailableLicences);
+  const activeUsers = useSelector(selectActiveUsers);
+  const pendingUsers = useSelector(selectPendingUsers);
+  const oneAdminRemaining = useSelector(selectOneAdminRemaining);
   const [visiblePanel, setVisiblePanel] = useState(ADMIN_VIEW.home);
   const createDialogRef = useRef(document.body);
   const [dialogForm, setDialogForm] = useState(null);
@@ -49,6 +58,12 @@ const Admin = ({ user }) => {
     dispatch(createCustomerUser(values));
   };
 
+  const quickViewData = {
+    active: activeUsers?.length,
+    pending: pendingUsers?.length,
+    available: availableLicences?.length,
+  };
+
   const getMainView = () => {
     switch (visiblePanel) {
       case ADMIN_VIEW.corporateAccount:
@@ -64,15 +79,24 @@ const Admin = ({ user }) => {
         return (
           <HomeView
             currentUser={user}
-            users={customerUsers}
+            activeUsers={activeUsers}
+            pendingUsers={pendingUsers}
+            oneAdminRemaining={oneAdminRemaining}
+            quickViewData={quickViewData}
             customer={currentCustomer}
             onChangeRoleClick={user =>
               dispatch(
                 updateCustomerUser({
                   ...user,
-                  type: user.type === 'MANAGER' ? 'MEMBER' : 'MANAGER',
+                  type:
+                    user.type === ADMIN_STATUS.manager
+                      ? ADMIN_STATUS.member
+                      : ADMIN_STATUS.manager,
                 }),
               )
+            }
+            onEditUserClick={user =>
+              setDialogForm({ type: DIALOG_VIEW.editUser, user })
             }
             onDeleteUserClick={user =>
               setDialogForm({ type: DIALOG_VIEW.deleteUser, user })
@@ -100,6 +124,17 @@ const Admin = ({ user }) => {
           <WithdrawUserInvitationForm
             user={dialogForm.user}
             withdrawInvitation={user => dispatch(deleteCustomerUser(user))}
+            close={() => setDialogForm(null)}
+          />
+        );
+      case DIALOG_VIEW.editUser:
+        return (
+          <EditUserForm
+            user={dialogForm.user}
+            customer={currentCustomer}
+            availableLicences={availableLicences}
+            oneAdminRemaining={oneAdminRemaining}
+            editUser={editedUser => dispatch(updateCustomerUser(editedUser))}
             close={() => setDialogForm(null)}
           />
         );
