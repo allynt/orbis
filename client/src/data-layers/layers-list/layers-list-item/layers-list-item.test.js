@@ -5,7 +5,7 @@ import userEvent from '@testing-library/user-event';
 
 const title = 'Test title';
 
-describe.only('<LayersListItem />', () => {
+describe('<LayersListItem />', () => {
   it('Shows the name of the layer', () => {
     const { getByText } = render(<LayersListItem title={title} />);
     expect(getByText(title)).toBeInTheDocument();
