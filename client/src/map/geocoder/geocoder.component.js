@@ -66,7 +66,7 @@ export const Geocoder = ({ className, mapboxApiAccessToken, onSelect }) => {
   };
 
   return (
-    <div ref={geocoderRef} className={className}>
+    <div ref={geocoderRef} className={`${styles.geocoder} ${className}`}>
       <div className={styles.searchBox}>
         <SearchIcon className={styles.icon} title="Location Search" />
         <label className={styles.label} htmlFor="geocoder">
