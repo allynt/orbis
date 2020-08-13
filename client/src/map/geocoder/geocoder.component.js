@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { ReactComponent as SearchIcon } from './magnifier.svg';
 import styles from './geocoder.module.css';
 
@@ -22,6 +22,19 @@ export const Geocoder = ({ className, mapboxApiAccessToken, onSelect }) => {
   /** @type {[import('@turf/turf').Feature, React.Dispatch<import('@turf/turf').Feature>]} */
   const [chosenResult, setChosenResult] = useState();
   const [showResults, setShowResults] = useState(false);
+  const geocoderRef = useRef();
+
+  const handleClickaway = event => {
+    if (geocoderRef.current && !event.path.includes(geocoderRef.current))
+      setShowResults(false);
+  };
+
+  useEffect(() => {
+    document.addEventListener('click', handleClickaway, true);
+    return () => {
+      document.removeEventListener('click', handleClickaway, true);
+    };
+  }, []);
 
   useEffect(() => {
     const search = async () => {
@@ -53,7 +66,7 @@ export const Geocoder = ({ className, mapboxApiAccessToken, onSelect }) => {
   };
 
   return (
-    <div className={className}>
+    <div ref={geocoderRef} className={className}>
       <div className={styles.searchBox}>
         <SearchIcon className={styles.icon} title="Location Search" />
         <label className={styles.label} htmlFor="geocoder">
