@@ -7,7 +7,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 1.875rem;
+  margin-top: 0.75rem;
 }
 
 .buttons > * {
@@ -21,29 +21,4 @@
 
 .addOrbButton {
   color: #fff !important;
-}
-
-.icon {
-  height: 1.5rem;
-  fill: var(--button--primary--color);
-}
-
-.domain {
-  color: #fff;
-}
-
-.detailContent {
-  padding: 1.25rem;
-}
-
-.icon {
-  color: var(--button--primary--background-color);
-  font-weight: bold;
-  font-size: 1.5rem;
-  align-self: center;
-}
-
-.layerName {
-  font-weight: bold;
-  padding: 0.3rem 2rem;
 }
