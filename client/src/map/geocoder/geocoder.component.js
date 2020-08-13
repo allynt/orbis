@@ -1,7 +1,5 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useState } from 'react';
 import { ReactComponent as SearchIcon } from './magnifier.svg';
-import formStyles from 'forms.module.css';
-import { useState } from 'react';
 import styles from './geocoder.module.css';
 
 const GEOCODE_API_URL = 'https://api.mapbox.com/geocoding/v5/mapbox.places/';
@@ -21,6 +19,9 @@ export const Geocoder = ({ className, mapboxApiAccessToken, onSelect }) => {
   const [searchString, setSearchString] = useState('');
   /** @type {[import('@turf/turf').Feature[], React.Dispatch<import('@turf/turf').Feature[]>]} */
   const [searchResults, setSearchResults] = useState([]);
+  /** @type {[import('@turf/turf').Feature, React.Dispatch<import('@turf/turf').Feature>]} */
+  const [chosenResult, setChosenResult] = useState();
+  const [showResults, setShowResults] = useState(false);
 
   useEffect(() => {
     const search = async () => {
@@ -31,12 +32,13 @@ export const Geocoder = ({ className, mapboxApiAccessToken, onSelect }) => {
       if (response.ok) {
         const results = await response.json();
         setSearchResults(results.features);
+        setShowResults(true);
       }
     };
-    if (searchString.length >= 3) {
+    if (searchString.length >= 3 && searchString !== chosenResult?.place_name) {
       search();
     }
-  }, [mapboxApiAccessToken, searchString]);
+  }, [mapboxApiAccessToken, searchString, chosenResult]);
 
   /** @param {React.ChangeEvent<HTMLInputElement>} e */
   const handleInputChange = e => {
@@ -45,6 +47,9 @@ export const Geocoder = ({ className, mapboxApiAccessToken, onSelect }) => {
 
   const handleResultClick = feature => () => {
     if (onSelect) onSelect(feature);
+    setChosenResult(feature);
+    setSearchString(feature.place_name);
+    setShowResults(false);
   };
 
   return (
@@ -62,9 +67,12 @@ export const Geocoder = ({ className, mapboxApiAccessToken, onSelect }) => {
           value={searchString}
           placeholder="type to search..."
           onChange={handleInputChange}
+          onFocus={() => {
+            if (searchResults.length) setShowResults(true);
+          }}
         />
       </div>
-      {searchString.length >= 3 && (
+      {showResults && (
         <ul className={styles.resultsList}>
           {searchResults.map(feature => (
             <li
