@@ -161,12 +161,7 @@ export const {
 } = accountsSlice.actions;
 
 export const register = form => async dispatch => {
-  const data = {
-    ...form,
-    username: form.email,
-  };
-
-  const response = await sendData(API.register, data, JSON_HEADERS);
+  const response = await sendData(API.register, form, JSON_HEADERS);
 
   if (!response.ok) {
     const errorObject = await response.json();

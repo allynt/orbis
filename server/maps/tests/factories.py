@@ -34,7 +34,7 @@ test_annotations = {
 }
 
 
-class BookmarkFactory(factory.DjangoModelFactory):
+class BookmarkFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = Bookmark
 
