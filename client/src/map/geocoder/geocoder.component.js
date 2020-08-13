@@ -25,7 +25,8 @@ export const Geocoder = ({ className, mapboxApiAccessToken, onSelect }) => {
   const geocoderRef = useRef();
 
   const handleClickaway = event => {
-    if (geocoderRef.current && !event.path.includes(geocoderRef.current))
+    const path = event.path || (event.composedPath && event.composedPath());
+    if (geocoderRef.current && !path.includes(geocoderRef.current))
       setShowResults(false);
   };
 
