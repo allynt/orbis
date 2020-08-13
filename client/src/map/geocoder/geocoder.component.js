@@ -1,8 +1,61 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useReducer } from 'react';
 import { ReactComponent as SearchIcon } from './magnifier.svg';
 import styles from './geocoder.module.css';
 
 const GEOCODE_API_URL = 'https://api.mapbox.com/geocoding/v5/mapbox.places/';
+
+/**
+ * @typedef State
+ * @property {string} searchString
+ * @property {import('@turf/turf').Feature[]} searchResults
+ * @property {import('@turf/turf').Feature | undefined} chosenResult
+ * @property {boolean} showResults
+ */
+
+/**
+ * @typedef {(
+ *   'handleClickaway' |
+ *   'inputFocus' |
+ *   'searchComplete' |
+ *   'resultClick' |
+ *   'inputChange')} ActionType
+ */
+
+/**
+ * @type {React.Reducer<State, {type: ActionType, payload?: any}>}
+ */
+const reducer = (state, { type, payload }) => {
+  switch (type) {
+    case 'handleClickaway': {
+      return { ...state, showResults: false };
+    }
+    case 'inputFocus': {
+      return { ...state, showResults: true };
+    }
+    case 'searchComplete': {
+      return { ...state, showResults: true, searchResults: payload };
+    }
+    case 'resultClick': {
+      return {
+        ...state,
+        showResults: false,
+        chosenResult: payload,
+        searchString: payload.place_name,
+      };
+    }
+    case 'inputChange':
+      return { ...state, searchString: payload };
+    default:
+      throw new Error();
+  }
+};
+
+/**@type {State} */
+const defaultState = {
+  searchString: '',
+  searchResults: [],
+  showResults: false,
+};
 
 /**
  * @param {{
@@ -15,19 +68,14 @@ export const Geocoder = ({ className, mapboxApiAccessToken, onSelect }) => {
   if (!mapboxApiAccessToken)
     console.warn('You need to provide a Mapbox API token to <Geocoder />');
 
-  /** @type {[string, React.Dispatch<string>]} */
-  const [searchString, setSearchString] = useState('');
-  /** @type {[import('@turf/turf').Feature[], React.Dispatch<import('@turf/turf').Feature[]>]} */
-  const [searchResults, setSearchResults] = useState([]);
-  /** @type {[import('@turf/turf').Feature, React.Dispatch<import('@turf/turf').Feature>]} */
-  const [chosenResult, setChosenResult] = useState();
-  const [showResults, setShowResults] = useState(false);
+  /** @type {[State, React.Dispatch<{type: ActionType, payload?: any]} */
+  const [state, dispatch] = useReducer(reducer, defaultState);
   const geocoderRef = useRef();
 
   const handleClickaway = event => {
     const path = event.path || (event.composedPath && event.composedPath());
     if (geocoderRef.current && !path.includes(geocoderRef.current))
-      setShowResults(false);
+      dispatch({ type: 'handleClickaway' });
   };
 
   useEffect(() => {
@@ -40,30 +88,30 @@ export const Geocoder = ({ className, mapboxApiAccessToken, onSelect }) => {
   useEffect(() => {
     const search = async () => {
       const response = await fetch(
-        `${GEOCODE_API_URL}${searchString}.json?access_token=${mapboxApiAccessToken}`,
+        `${GEOCODE_API_URL}${state.searchString}.json?access_token=${mapboxApiAccessToken}`,
       );
 
       if (response.ok) {
         const results = await response.json();
-        setSearchResults(results.features);
-        setShowResults(true);
+        dispatch({ type: 'searchComplete', payload: results.features });
       }
     };
-    if (searchString.length >= 3 && searchString !== chosenResult?.place_name) {
+    if (
+      state.searchString.length >= 3 &&
+      state.searchString !== state.chosenResult?.place_name
+    ) {
       search();
     }
-  }, [mapboxApiAccessToken, searchString, chosenResult]);
+  }, [mapboxApiAccessToken, state.chosenResult, state.searchString]);
 
   /** @param {React.ChangeEvent<HTMLInputElement>} e */
   const handleInputChange = e => {
-    setSearchString(e.target.value);
+    dispatch({ type: 'inputChange', payload: e.target.value });
   };
 
   const handleResultClick = feature => () => {
     if (onSelect) onSelect(feature);
-    setChosenResult(feature);
-    setSearchString(feature.place_name);
-    setShowResults(false);
+    dispatch({ type: 'resultClick', payload: feature });
   };
 
   return (
@@ -78,17 +126,17 @@ export const Geocoder = ({ className, mapboxApiAccessToken, onSelect }) => {
           className={styles.input}
           type="text"
           id="geocoder"
-          value={searchString}
+          value={state.searchString}
           placeholder="type to search..."
           onChange={handleInputChange}
           onFocus={() => {
-            if (searchResults.length) setShowResults(true);
+            if (state.searchResults.length) dispatch({ type: 'inputFocus' });
           }}
         />
       </div>
-      {showResults && (
+      {state.showResults && (
         <ul className={styles.resultsList}>
-          {searchResults.map(feature => (
+          {state.searchResults.map(feature => (
             <li
               key={feature.id}
               className={styles.resultsListItem}
