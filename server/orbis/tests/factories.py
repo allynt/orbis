@@ -42,7 +42,7 @@ FactoryFaker.add_provider(PrettyLoremProvider)
 #########
 
 
-class OrbisUserProfileFactory(factory.DjangoModelFactory):
+class OrbisUserProfileFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = OrbisUserProfile
 
@@ -79,7 +79,7 @@ class UserFactory(AstrosatUserFactory):
 ########
 
 
-class OrbFactory(factory.DjangoModelFactory):
+class OrbFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = Orb
 
@@ -97,7 +97,7 @@ class OrbFactory(factory.DjangoModelFactory):
                 self.data_scopes.add(data_scope)
 
 
-class DataScopeFactory(factory.DjangoModelFactory):
+class DataScopeFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = DataScope
 
@@ -109,7 +109,7 @@ class DataScopeFactory(factory.DjangoModelFactory):
     version = FactoryFaker("date", pattern="%Y-%m-%d")
 
 
-class LicenceFactory(factory.DjangoModelFactory):
+class LicenceFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = Licence
 
@@ -121,7 +121,7 @@ class LicenceFactory(factory.DjangoModelFactory):
 ##############
 
 
-class SatelliteFactory(factory.DjangoModelFactory):
+class SatelliteFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = Satellite
 
@@ -143,7 +143,7 @@ class SatelliteFactory(factory.DjangoModelFactory):
                 self.visualisations.add(visualisation)
 
 
-class SatelliteTierFactory(factory.DjangoModelFactory):
+class SatelliteTierFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = SatelliteTier
 
@@ -156,7 +156,7 @@ class SatelliteTierFactory(factory.DjangoModelFactory):
         return SatelliteTier.objects.count() + 1
 
 
-class SatelliteVisualisationFactory(factory.DjangoModelFactory):
+class SatelliteVisualisationFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = SatelliteVisualisation
 
@@ -173,7 +173,7 @@ class SatelliteVisualisationFactory(factory.DjangoModelFactory):
         return Satellite.objects.count() + 1
 
 
-class SatelliteSearchFactory(factory.DjangoModelFactory):
+class SatelliteSearchFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = SatelliteSearch
 
@@ -204,7 +204,7 @@ class SatelliteSearchFactory(factory.DjangoModelFactory):
                 self.tiers.add(tier)
 
 
-class SatelliteResultFactory(factory.DjangoModelFactory):
+class SatelliteResultFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = SatelliteResult
 
