@@ -1,0 +1,54 @@
+.layersListItem {
+  width: 100%;
+  padding: 12px 0;
+}
+
+.button {
+  width: 100%;
+  min-height: 18px;
+  display: flex;
+  align-items: center;
+  color: #ffffff;
+  font-size: 12px;
+  margin-bottom: 0;
+  transition: margin-bottom 250ms ease;
+}
+
+.button:disabled {
+  cursor: default;
+}
+
+.button.expanded {
+  margin-bottom: 1rem;
+}
+
+.icon {
+  height: 12px;
+}
+
+.dragIcon {
+  margin-right: 12px;
+}
+
+.expandIcon {
+  margin-left: auto;
+  transform: rotate(90deg);
+  transition: transform 250ms ease;
+}
+
+.expandIcon.expanded {
+  transform: rotate(180deg);
+}
+
+.children {
+  overflow: hidden;
+  padding: 0 9px;
+  max-height: 0;
+  opacity: 0;
+  transition: max-height 250ms ease, opacity 250ms ease;
+}
+
+.children.expanded {
+  opacity: 1;
+  max-height: 100%;
+}

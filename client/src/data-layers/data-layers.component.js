@@ -2,22 +2,20 @@ import React, { useRef } from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
 
-import Button from '@astrosat/astrosat-ui/dist/buttons/button';
-import Detail from '@astrosat/astrosat-ui/dist/containers/detail';
-import useModal from '@astrosat/astrosat-ui/dist/containers/use-modal';
+import { Button, useModal } from '@astrosat/astrosat-ui';
 
+import { useOrbs } from 'map/orbs/useOrbs';
 import { ReactComponent as AddNewCategoryIcon } from './add-more-categories.svg';
-
+import DataLayersDialog from './data-layers-dialog/data-layers-dialog.component';
 import {
-  removeLayer,
+  activeDataSourcesSelector,
   addLayers,
   dataSourcesSelector,
-  activeDataSourcesSelector,
+  removeLayer,
 } from './data-layers.slice';
-import DataLayersDialog from './data-layers-dialog.component';
+import { LayersList } from './layers-list/layers-list.component';
 
 import styles from './data-layers.module.css';
-import { useOrbs } from 'map/orbs/useOrbs';
 
 const DataLayers = () => {
   const { sidebarComponents } = useOrbs();
@@ -39,50 +37,32 @@ const DataLayers = () => {
   }, []);
 
   return (
-    <>
-      <div className={styles.selectData} ref={ref}>
-        <div className={styles.layers}>
-          {selectedLayers.map(selectedLayer => {
-            const Component = sidebarComponents[selectedLayer.source_id];
-            return !Component ? (
-              <p className={styles.layerName}>{selectedLayer.metadata.label}</p>
-            ) : (
-              <Detail
-                key={selectedLayer.source_id}
-                title={selectedLayer.metadata.label}
-              >
-                <div className={styles.detailContent}>
-                  <Component
-                    selectedLayer={selectedLayer}
-                    dispatch={dispatch}
-                  />
-                </div>
-              </Detail>
-            );
-          })}
-        </div>
-
-        <div className={styles.buttons}>
-          <AddNewCategoryIcon
-            className={styles.addNewCategoryIcon}
-            onClick={toggle}
-          />
-          <Button theme="link" className={styles.addOrbButton} onClick={toggle}>
-            Add New Orb
-          </Button>
-        </div>
-
-        <DataLayersDialog
-          domains={domains}
-          selectedLayers={selectedLayers}
-          onAddLayers={selectedLayers => dispatch(addLayers(selectedLayers))}
-          onRemoveLayer={layer => dispatch(removeLayer(layer))}
-          isVisible={isVisible}
-          close={toggle}
-          ref={ref}
-        ></DataLayersDialog>
+    <div className={styles.selectData} ref={ref}>
+      <LayersList
+        dispatch={dispatch}
+        selectedLayers={selectedLayers}
+        sidebarComponents={sidebarComponents}
+      />
+      <div className={styles.buttons}>
+        <AddNewCategoryIcon
+          className={styles.addNewCategoryIcon}
+          onClick={toggle}
+        />
+        <Button theme="link" className={styles.addOrbButton} onClick={toggle}>
+          Add New Orb
+        </Button>
       </div>
-    </>
+
+      <DataLayersDialog
+        domains={domains}
+        selectedLayers={selectedLayers}
+        onAddLayers={selectedLayers => dispatch(addLayers(selectedLayers))}
+        onRemoveLayer={layer => dispatch(removeLayer(layer))}
+        isVisible={isVisible}
+        close={toggle}
+        ref={ref}
+      ></DataLayersDialog>
+    </div>
   );
 };
 

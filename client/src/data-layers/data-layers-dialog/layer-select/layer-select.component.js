@@ -4,7 +4,7 @@ import InfoButton from '@astrosat/astrosat-ui/dist/buttons/info-button';
 import Button from '@astrosat/astrosat-ui/dist/buttons/button';
 import Switch from '@astrosat/astrosat-ui/dist/buttons/switch';
 
-import dialogStyles from './data-layers-dialog.module.css';
+import dialogStyles from '../data-layers-dialog.module.css';
 import styles from './layer-select.module.css';
 
 const InfoBox = ({ info }) => <div className={styles.infoBox}>{info}</div>;
