@@ -15,7 +15,8 @@ import useModal from '@astrosat/astrosat-ui/dist/containers/use-modal';
 
 import NewMapForm from './new-map-form.component';
 
-import { ReactComponent as OrbisLogo } from '../orbis.svg';
+import { ReactComponent as OrbisLogoLight } from '../orbis-light.svg';
+import { ReactComponent as OrbisLogoDark } from '../orbis-dark.svg';
 
 import styles from './landing.module.css';
 
@@ -76,7 +77,7 @@ const Items = ({ items, chooseItem, toggle }) => {
 const NewUserLanding = ({ setRedirect }) => (
   <div className={styles.splash}>
     <div className={styles.splashHeader}>
-      <OrbisLogo className={styles.logo} />
+      <OrbisLogoLight className={styles.logo} />
     </div>
 
     <div className={styles.splashContent}>
@@ -121,7 +122,7 @@ const ExistingUserLanding = forwardRef(
     return (
       <div className={styles.landingContent} ref={ref}>
         <div className={styles.banner}>
-          <OrbisLogo className={styles.logo} />
+          <OrbisLogoDark className={styles.logo} />
         </div>
 
         {viewAllItems ? (
