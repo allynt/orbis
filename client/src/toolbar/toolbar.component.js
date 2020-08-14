@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 import { useHistory } from 'react-router-dom';
 
-import { ReactComponent as OrbisLogo } from '../orbis.svg';
+import { ReactComponent as OrbisLogo } from '../orbis-light.svg';
 import { Sidebar, SidebarItem, SidebarBottomItems } from 'components/sidebar';
 
 import styles from './toolbar.module.css';
