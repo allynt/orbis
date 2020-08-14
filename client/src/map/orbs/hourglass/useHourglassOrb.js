@@ -7,7 +7,7 @@ import { peopleLayer } from './people-layer';
 import { useMap } from 'MapContext';
 import { Popup } from 'react-map-gl';
 import React, { useState } from 'react';
-import FeatureDetail from './feature-detail/feature-detail.component';
+import FeatureDetail from '../../../components/feature-detail/feature-detail.component';
 import { HealthInfrastructure } from './infrastructure-layer/infrastructure-component/health-infrastructure.component';
 import { PopulationInformation } from './people-layer/people-component/population-information.component';
 
