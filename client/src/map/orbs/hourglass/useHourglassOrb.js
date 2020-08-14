@@ -27,7 +27,7 @@ const sidebarComponents = {
 
 export const useHourglassOrb = (data, activeSources) => {
   const { setViewState } = useMap();
-  const [pickedObject, setPickedObject] = useState();
+  const [pickedObjects, setPickedObjects] = useState([]);
 
   const handleLayerClick = info => {
     if (info.object.properties.cluster) {
@@ -43,19 +43,26 @@ export const useHourglassOrb = (data, activeSources) => {
           transitionEasing: easeInOutCubic,
           transitionInterpolator: new FlyToInterpolator(),
         });
-      else setPickedObject(info.objects);
-    } else setPickedObject([info.object]);
+      else setPickedObjects(info.objects);
+    } else setPickedObjects([info.object]);
   };
 
   const mapComponents = [
-    pickedObject && (
+    pickedObjects.length && (
       <Popup
-        longitude={pickedObject[0].geometry.coordinates[0]}
-        latitude={pickedObject[0].geometry.coordinates[1]}
-        onClose={() => setPickedObject(undefined)}
+        longitude={pickedObjects[0]?.geometry.coordinates[0]}
+        latitude={pickedObjects[0]?.geometry.coordinates[1]}
+        onClose={() => setPickedObjects([])}
         captureScroll
       >
-        <FeatureDetail features={pickedObject} />
+        <FeatureDetail
+          features={pickedObjects.map(obj => obj.properties)}
+          title={
+            pickedObjects[0].properties.Type
+              ? 'User Details'
+              : 'Infrastructure Details'
+          }
+        />
       </Popup>
     ),
   ];

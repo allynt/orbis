@@ -1,7 +1,7 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 
 import infoStyles from './feature-detail.module.css';
+import { DEFAULT_TITLE } from './feature-detail.constants';
 
 const OBJECT = 'object';
 const STRING = 'string';
@@ -85,26 +85,26 @@ const mapObject = data => {
   );
 };
 
-const FeatureDetail = ({ features }) => {
-  const title = features?.[0]?.properties?.Type
-    ? 'User Details'
-    : 'Infrastructure Details';
-  return (
-    <>
-      <h1 className={infoStyles.header}>{title}</h1>
-      <div className={infoStyles.modal}>
-        {features?.map(feature => (
-          <ul key={feature.id} className={infoStyles.list}>
-            {mapObject(feature.properties)}
-          </ul>
-        ))}
-      </div>
-    </>
-  );
-};
+/**
+ * @typedef FeatureDetailProps
+ * @property {{[key: string]: any}[]} features
+ * @property {string} [title]
+ */
 
-FeatureDetail.propTypes = {
-  features: PropTypes.array.isRequired,
-};
+/**
+ * @param {FeatureDetailProps} props
+ */
+const FeatureDetail = ({ features, title = DEFAULT_TITLE }) => (
+  <>
+    <h1 className={infoStyles.header}>{title}</h1>
+    <div className={infoStyles.modal}>
+      {features?.map(feature => (
+        <ul key={feature.id} className={infoStyles.list}>
+          {mapObject(feature)}
+        </ul>
+      ))}
+    </div>
+  </>
+);
 
 export default FeatureDetail;
