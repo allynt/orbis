@@ -8,7 +8,7 @@ const INITIAL_VIEW_STATE = {
   bearing: 0,
 };
 
-const MapContext = createContext();
+const MapContext = createContext(undefined);
 MapContext.displayName = 'MapContext';
 
 /**
@@ -18,6 +18,9 @@ MapContext.displayName = 'MapContext';
  * @property {number} [zoom]
  * @property {number} [pitch]
  * @property {number} [bearing]
+ * @property {number} [transitionDuration]
+ * @property {*} [transitionEasing]
+ * @property {*} [transitionInterpolator]
  */
 
 /**
@@ -32,7 +35,7 @@ MapContext.displayName = 'MapContext';
 
 /**
  * @param {React.Props} props
- * @returns {React.Provider<MapContextType>} MapContextProvider
+ * @returns {JSX.Element} MapContextProvider
  */
 export const MapProvider = props => {
   const [map, setMap] = useState();
