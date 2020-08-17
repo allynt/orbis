@@ -3,38 +3,18 @@ import React from 'react';
 import styles from './feature-detail.module.css';
 import { DEFAULT_TITLE } from './feature-detail.constants';
 
-const OBJECT = 'object';
 const NULL = 'null';
 const NO_DATA = 'Not available';
 
 /**
- * @param {{
- *   jsonKey?: string
- *   value: any[]
- * }} props
+ * @param {*} value
+ * @returns {'array' | 'object' | 'item'}
  */
-const ArrayItem = ({ jsonKey, value }) => (
-  <li className={styles.listItem}>
-    <ul className={styles.table}>
-      {jsonKey && <h2 className={styles.label}>{jsonKey}: </h2>}
-      {value.length > 0 ? (
-        value.map((item, i) => {
-          if (Array.isArray(item))
-            return <ArrayItem key={`${jsonKey}-${i}`} value={item} />;
-          if (typeof item === 'object' && item !== null)
-            return <ObjectItem key={`${jsonKey}-${i}`} value={item} />;
-          return (
-            <li key={i} className={`${styles.value} ${styles.listItem}`}>
-              {item}
-            </li>
-          );
-        })
-      ) : (
-        <li className={`${styles.value} ${styles.listItem}`}>{NO_DATA}</li>
-      )}
-    </ul>
-  </li>
-);
+const getTypeForValue = value => {
+  if (Array.isArray(value)) return 'array';
+  if (typeof value === 'object' && value !== null) return 'object';
+  return 'item';
+};
 
 /**
  * @param {{
@@ -67,23 +47,66 @@ const Item = ({ jsonKey, value }) => {
   );
 };
 
+/**
+ * @param {{
+ *   jsonKey?: string
+ *   value: any[]
+ * }} props
+ */
+const ArrayItem = ({ jsonKey, value }) => (
+  <li className={styles.listItem}>
+    <ul className={styles.table}>
+      {jsonKey && <h2 className={styles.label}>{jsonKey}: </h2>}
+      {value.length > 0 ? (
+        value.map((item, i) => {
+          switch (getTypeForValue(item)) {
+            case 'array':
+              return <ArrayItem key={`${jsonKey}-${i}`} value={item} />;
+            case 'object':
+              return <ObjectItem key={`${jsonKey}-${i}`} value={item} />;
+            case 'item':
+            default:
+              return (
+                <li key={i} className={`${styles.value} ${styles.listItem}`}>
+                  {item}
+                </li>
+              );
+          }
+        })
+      ) : (
+        <li className={`${styles.value} ${styles.listItem}`}>{NO_DATA}</li>
+      )}
+    </ul>
+  </li>
+);
+
 const mapObject = feature => {
   return (
     feature &&
     Object.entries(feature).map(([jsonKey, value], i) => {
-      // Parent is always ul, so must always return li
-      if (Array.isArray(value)) {
-        return (
-          <ArrayItem key={`${jsonKey}-${i}`} jsonKey={jsonKey} value={value} />
-        );
-      } else if (typeof value === OBJECT && value !== null) {
-        // When value is object, make new table inside li and map out values
-        return (
-          <ObjectItem key={`${jsonKey}-${i}`} jsonKey={jsonKey} value={value} />
-        );
+      switch (getTypeForValue(value)) {
+        case 'array':
+          return (
+            <ArrayItem
+              key={`${jsonKey}-${i}`}
+              jsonKey={jsonKey}
+              value={value}
+            />
+          );
+        case 'object':
+          return (
+            <ObjectItem
+              key={`${jsonKey}-${i}`}
+              jsonKey={jsonKey}
+              value={value}
+            />
+          );
+        case 'item':
+        default:
+          return (
+            <Item key={`${jsonKey}-${i}`} jsonKey={jsonKey} value={value} />
+          );
       }
-      //when value is not object or array, parse null values and render li to browser
-      return <Item key={`${jsonKey}-${i}`} jsonKey={jsonKey} value={value} />;
     })
   );
 };
