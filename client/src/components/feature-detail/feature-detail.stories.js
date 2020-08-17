@@ -130,3 +130,35 @@ export const LotsOfFeatures = () => (
     ]}
   />
 );
+
+export const ObjectValues = () => (
+  <FeatureDetail
+    features={[
+      { key1: 'value1', key2: { subkey1: 'subvalue1', subkey2: 'subvalue2' } },
+    ]}
+  />
+);
+
+export const ArrayValues = () => (
+  <FeatureDetail
+    features={[
+      { fruitInMyBowl: ['apple', 'orange', 'kiwi', 'banana', 'pomegranate'] },
+    ]}
+  />
+);
+
+export const ArrayOfObjects = () => (
+  <FeatureDetail
+    features={[
+      {
+        fruitInMyBowl: [
+          { fruit: 'apple', ripeness: 'overripe' },
+          { fruit: 'orange', ripeness: 'ripe' },
+          { fruit: 'kiwi', ripeness: 'unripe' },
+          { fruit: 'banana', ripeness: 'overripe' },
+          { fruit: 'pomegranate', ripeness: 'ripe' },
+        ],
+      },
+    ]}
+  />
+);
