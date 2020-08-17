@@ -6,7 +6,7 @@ import '../src/reset.css';
 
 export const parameters = {
   backgrounds: {
-    default: 'twitter',
+    default: 'light',
     values: [
       {
         name: 'dark',
