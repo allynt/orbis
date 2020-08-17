@@ -10,6 +10,18 @@ from astrosat.views import SwaggerCurrentUserDefault
 from maps.models import Bookmark
 
 
+class StringifiedJSONField(serializers.JSONField):
+    """
+    DRF JSONField that can cope w/ stringified input
+    (such as gets sent as multipart/form data)
+    """
+
+    def to_internal_value(self, data):
+        if isinstance(data, str):
+            data = json.loads(data)
+        return super().to_internal_value(data)
+
+
 class SimplifiedGeometryField(serializers.Field):
     """
     don't deal w/ the WKT serialization of the GeoDJango field
@@ -58,3 +70,6 @@ class BookmarkSerializer(serializers.ModelSerializer):
     )
 
     center = SimplifiedGeometryField(geometry_class=Point, precision=Bookmark.PRECISION)
+
+    layers = StringifiedJSONField(required=False)
+    feature_collection = StringifiedJSONField(required=False)

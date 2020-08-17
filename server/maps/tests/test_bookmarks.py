@@ -100,6 +100,9 @@ class TestBookmarkViews:
         assert status.is_success(response.status_code)
 
         assert Bookmark.objects.count() == 1
+        new_bookmark = Bookmark.objects.first()
+        assert new_bookmark.feature_collection == bookmark.feature_collection
+        assert new_bookmark.layers == bookmark.layers
 
     def test_detail_put(self):
 
@@ -144,7 +147,6 @@ class TestBookmarkViews:
 
         client = APIClient()
         client.credentials(HTTP_AUTHORIZATION=f"Token {key}")
-
 
         url = reverse('bookmark-list')
         response = client.get(url)
