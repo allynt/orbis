@@ -46,6 +46,7 @@ export const useIsolationPlusOrb = (data, sources, authToken) => {
       onClick: info => setPickedInfo(info),
       filled: true,
       getFillColor: d => [
+        // @ts-ignore
         ...colorScale(d.properties[ahahSelectedProperty]).rgb(),
         150,
       ],
@@ -66,12 +67,12 @@ export const useIsolationPlusOrb = (data, sources, authToken) => {
       >
         <FeatureDetail
           features={[
-            omitBy(pickedInfo.object.properties, (_, key) => {
-              return (
+            omitBy(
+              pickedInfo.object.properties,
+              (_, key) =>
                 key !== ahahSelectedProperty &&
-                !key.toLowerCase().includes('code')
-              );
-            }),
+                !key.toLowerCase().includes('code'),
+            ),
           ]}
           title="Metadata"
         />

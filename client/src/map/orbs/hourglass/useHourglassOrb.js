@@ -1,15 +1,16 @@
 import { FlyToInterpolator } from 'deck.gl';
 import { LAYER_IDS } from 'map/map.constants';
+import { useMap } from 'MapContext';
+import React, { useState } from 'react';
+import { Popup } from 'react-map-gl';
 import { easeInOutCubic } from 'utils/easingFunctions';
+import FeatureDetail from '../../../components/feature-detail/feature-detail.component';
 import { MAX_ZOOM } from './constants';
 import { infrastructureLayer } from './infrastructure-layer';
-import { peopleLayer } from './people-layer';
-import { useMap } from 'MapContext';
-import { Popup } from 'react-map-gl';
-import React, { useState } from 'react';
-import FeatureDetail from '../../../components/feature-detail/feature-detail.component';
 import { HealthInfrastructure } from './infrastructure-layer/infrastructure-component/health-infrastructure.component';
+import { peopleLayer } from './people-layer';
 import { PopulationInformation } from './people-layer/people-component/population-information.component';
+import { pickBy } from 'lodash';
 
 const INFRASTRUCTURE_LAYER_IDS = [
   LAYER_IDS.astrosat.hourglass.scotlandInfrastructure.v1,
@@ -56,7 +57,12 @@ export const useHourglassOrb = (data, activeSources) => {
         captureScroll
       >
         <FeatureDetail
-          features={pickedObjects.map(obj => obj.properties)}
+          features={pickedObjects.map(obj =>
+            pickBy(
+              obj.properties,
+              (_, key) => !key.toLowerCase().includes('type'),
+            ),
+          )}
           title={
             pickedObjects[0].properties.Type
               ? 'User Details'
