@@ -14,6 +14,7 @@ export const RadioPicker = ({ selectedLayer, dispatch }) => {
         .filter(p => !p.includes('LSOA'))
         .map(property => (
           <Radio
+            key={property}
             label={property}
             name={selectedLayer?.source_id}
             value={property}
