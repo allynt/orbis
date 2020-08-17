@@ -31,6 +31,14 @@ const ObjectItem = ({ jsonKey, value }) => (
   </li>
 );
 
+const renderItemValue = value => {
+  let toRender = value;
+  if (value === NULL) toRender = JSON.parse(value);
+  if (typeof value === 'boolean') toRender = JSON.stringify(value);
+  if (value === 0) toRender = '0';
+  return toRender || NO_DATA;
+};
+
 /**
  * @param {{
  *   jsonKey: string
@@ -38,11 +46,10 @@ const ObjectItem = ({ jsonKey, value }) => (
  * }} props
  */
 const Item = ({ jsonKey, value }) => {
-  const parsedValue = value === NULL ? JSON.parse(value) : value;
   return (
     <li className={styles.listItem}>
       {jsonKey && <span className={styles.label}>{jsonKey}: </span>}
-      <span className={styles.value}>{parsedValue || NO_DATA}</span>
+      <span className={styles.value}>{renderItemValue(value)}</span>
     </li>
   );
 };
@@ -68,7 +75,7 @@ const ArrayItem = ({ jsonKey, value }) => (
             default:
               return (
                 <li key={i} className={`${styles.value} ${styles.listItem}`}>
-                  {item}
+                  {renderItemValue(item)}
                 </li>
               );
           }
