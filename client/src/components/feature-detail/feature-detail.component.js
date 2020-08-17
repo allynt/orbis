@@ -44,16 +44,13 @@ const mapObject = data => {
                   feature[key].map((value, i) => (
                     <li
                       key={i}
-                      className={`${styles.content} ${styles.listItem}`}
+                      className={`${styles.value} ${styles.listItem}`}
                     >
                       {value}
                     </li>
                   ))
                 ) : (
-                  <li
-                    key={i}
-                    className={`${styles.content} ${styles.listItem}`}
-                  >
+                  <li key={i} className={`${styles.value} ${styles.listItem}`}>
                     {NO_DATA}
                   </li>
                 )}
@@ -77,7 +74,7 @@ const mapObject = data => {
           return (
             <li key={key} className={styles.listItem}>
               <span className={styles.label}>{key}: </span>
-              <span className={styles.content}>{value || NO_DATA}</span>
+              <span className={styles.value}>{value || NO_DATA}</span>
             </li>
           );
         }
@@ -95,16 +92,16 @@ const mapObject = data => {
  * @param {FeatureDetailProps} props
  */
 const FeatureDetail = ({ features, title = DEFAULT_TITLE }) => (
-  <>
+  <div className={styles.featureDetail}>
     <h1 className={styles.header}>{title}</h1>
-    <div className={styles.modal}>
+    <div className={styles.content}>
       {features?.map(feature => (
         <ul key={feature.id} className={styles.list}>
           {mapObject(feature)}
         </ul>
       ))}
     </div>
-  </>
+  </div>
 );
 
 export default FeatureDetail;

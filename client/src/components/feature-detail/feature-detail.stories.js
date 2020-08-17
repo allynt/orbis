@@ -3,17 +3,15 @@ import FeatureDetail from './feature-detail.component';
 
 export default { title: 'Map/Feature Detail', component: FeatureDetail };
 
-export const NoFeatures = () => <FeatureDetail />;
+export const NoFeatures = () => <FeatureDetail features={[]} />;
 
 export const SingleFeature = () => (
   <FeatureDetail
     features={[
       {
-        properties: {
-          Type: 'Volunteer',
-          name: 'Test Person',
-          email: 'test@test.com',
-        },
+        Type: 'Volunteer',
+        name: 'Test Person',
+        email: 'test@test.com',
       },
     ]}
   />
@@ -23,18 +21,111 @@ export const MultipleFeatures = () => (
   <FeatureDetail
     features={[
       {
-        properties: {
-          Type: 'Volunteer',
-          name: 'Test Person',
-          email: 'test@test.com',
-        },
+        Type: 'Volunteer',
+        name: 'Test Person',
+        email: 'test@test.com',
       },
       {
-        properties: {
-          Type: 'Recipient',
-          name: 'Test Person 2',
-          email: 'test2@test.com',
-        },
+        Type: 'Recipient',
+        name: 'Test Person 2',
+        email: 'test2@test.com',
+      },
+    ]}
+  />
+);
+
+export const LotsOfFeatures = () => (
+  <FeatureDetail
+    features={[
+      {
+        Type: 'Volunteer',
+        name: 'Test Person',
+        email: 'test@test.com',
+      },
+      {
+        Type: 'Recipient',
+        name: 'Test Person 2',
+        email: 'test2@test.com',
+      },
+      {
+        Type: 'Recipient',
+        name: 'Test Person 2',
+        email: 'test2@test.com',
+      },
+      {
+        Type: 'Recipient',
+        name: 'Test Person 2',
+        email: 'test2@test.com',
+      },
+      {
+        Type: 'Recipient',
+        name: 'Test Person 2',
+        email: 'test2@test.com',
+      },
+      {
+        Type: 'Recipient',
+        name: 'Test Person 2',
+        email: 'test2@test.com',
+      },
+      {
+        Type: 'Recipient',
+        name: 'Test Person 2',
+        email: 'test2@test.com',
+      },
+      {
+        Type: 'Recipient',
+        name: 'Test Person 2',
+        email: 'test2@test.com',
+      },
+      {
+        Type: 'Recipient',
+        name: 'Test Person 2',
+        email: 'test2@test.com',
+      },
+      {
+        Type: 'Recipient',
+        name: 'Test Person 2',
+        email: 'test2@test.com',
+      },
+      {
+        Type: 'Recipient',
+        name: 'Test Person 2',
+        email: 'test2@test.com',
+      },
+      {
+        Type: 'Recipient',
+        name: 'Test Person 2',
+        email: 'test2@test.com',
+      },
+      {
+        Type: 'Recipient',
+        name: 'Test Person 2',
+        email: 'test2@test.com',
+      },
+      {
+        Type: 'Recipient',
+        name: 'Test Person 2',
+        email: 'test2@test.com',
+      },
+      {
+        Type: 'Recipient',
+        name: 'Test Person 2',
+        email: 'test2@test.com',
+      },
+      {
+        Type: 'Recipient',
+        name: 'Test Person 2',
+        email: 'test2@test.com',
+      },
+      {
+        Type: 'Recipient',
+        name: 'Test Person 2',
+        email: 'test2@test.com',
+      },
+      {
+        Type: 'Recipient',
+        name: 'Test Person 2',
+        email: 'test2@test.com',
       },
     ]}
   />
