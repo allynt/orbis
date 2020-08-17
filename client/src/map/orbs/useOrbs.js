@@ -10,6 +10,7 @@ import { getData } from 'utils/http';
 import { useHourglassOrb } from './hourglass/useHourglassOrb';
 import { useIsolationPlusOrb } from './isolationPlus/useIsolationPlusOrb';
 import { useRiceOrb } from './rice/useRiceOrb';
+import { useMySupplyLynkOrb } from './mysupplylynk/useMySupplyLynkOrb';
 
 const dataUrlFromId = source => {
   return source.data && typeof source.data === 'string'
@@ -60,17 +61,29 @@ export const useOrbs = () => {
     mapComponents: isoPlusMapComponents,
     sidebarComponents: isoPlusSidebarComponents,
   } = useIsolationPlusOrb(data, activeSources, authToken);
+  const {
+    layers: mySupplyLynkLayers,
+    mapComponents: mySupplyLynkMapComponents,
+    sidebarComponents: mySupplyLynkSidebarComponents,
+  } = useMySupplyLynkOrb(data, activeSources);
 
-  let layers = [...isoPlusLayers, ...hourglassLayers, ...riceLayers];
+  let layers = [
+    ...isoPlusLayers,
+    ...hourglassLayers,
+    ...riceLayers,
+    ...mySupplyLynkLayers,
+  ];
   let mapComponents = [
     ...hourglassMapComponents,
     ...riceMapComponents,
     ...isoPlusMapComponents,
+    ...mySupplyLynkMapComponents,
   ];
   let sidebarComponents = {
     ...hourglassSidebarComponents,
     ...riceSidebarComponents,
     ...isoPlusSidebarComponents,
+    ...mySupplyLynkSidebarComponents,
   };
 
   return { layers, mapComponents, sidebarComponents };
