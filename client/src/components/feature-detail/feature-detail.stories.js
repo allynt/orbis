@@ -134,7 +134,10 @@ export const LotsOfFeatures = () => (
 export const ObjectValues = () => (
   <FeatureDetail
     features={[
-      { key1: 'value1', key2: { subkey1: 'subvalue1', subkey2: 'subvalue2' } },
+      {
+        key1: 'value1',
+        object: { subkey1: 'subvalue1', subkey2: 'subvalue2' },
+      },
     ]}
   />
 );
@@ -158,6 +161,30 @@ export const ArrayOfObjects = () => (
           { fruit: 'banana', ripeness: 'overripe' },
           { fruit: 'pomegranate', ripeness: 'ripe' },
         ],
+      },
+    ]}
+  />
+);
+
+export const BooleanValues = () => (
+  <FeatureDetail
+    features={[
+      {
+        true: true,
+        false: false,
+      },
+    ]}
+  />
+);
+
+export const FalsyValues = () => (
+  <FeatureDetail
+    features={[
+      {
+        undefined: undefined,
+        null: null,
+        emptyString: '',
+        zero: 0,
       },
     ]}
   />
