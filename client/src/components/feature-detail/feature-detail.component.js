@@ -1,9 +1,9 @@
 import React from 'react';
 
-import styles from './feature-detail.module.css';
 import { DEFAULT_TITLE } from './feature-detail.constants';
 
-const NULL = 'null';
+import styles from './feature-detail.module.css';
+
 const NO_DATA = 'Not available';
 
 /**
@@ -14,6 +14,17 @@ const getTypeForValue = value => {
   if (Array.isArray(value)) return 'array';
   if (typeof value === 'object' && value !== null) return 'object';
   return 'item';
+};
+
+/**
+ * @param {*} value
+ */
+const renderItemValue = value => {
+  let toRender = value;
+  if (value === 'null') toRender = JSON.parse(value);
+  if (typeof value === 'boolean') toRender = JSON.stringify(value);
+  if (value === 0) toRender = '0';
+  return toRender || NO_DATA;
 };
 
 /**
@@ -30,14 +41,6 @@ const ObjectItem = ({ jsonKey, value }) => (
     </ul>
   </li>
 );
-
-const renderItemValue = value => {
-  let toRender = value;
-  if (value === NULL) toRender = JSON.parse(value);
-  if (typeof value === 'boolean') toRender = JSON.stringify(value);
-  if (value === 0) toRender = '0';
-  return toRender || NO_DATA;
-};
 
 /**
  * @param {{

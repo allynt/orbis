@@ -69,7 +69,7 @@ describe('<FeatureDetail />', () => {
     );
   });
 
-  it.skip('renders arrays of objects', () => {
+  it('renders arrays of objects', () => {
     const feature = {
       'key 1': [
         { 'subkey 1': 'value 1' },
@@ -80,7 +80,7 @@ describe('<FeatureDetail />', () => {
     const { getByText } = render(<FeatureDetail features={[feature]} />);
     feature['key 1'].forEach(obj =>
       Object.entries(obj).forEach(([key, value]) => {
-        expect(getByText(key)).toBeInTheDocument();
+        expect(getByText(key, { exact: false })).toBeInTheDocument();
         expect(getByText(value)).toBeInTheDocument();
       }),
     );
