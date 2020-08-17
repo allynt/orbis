@@ -1,15 +1,16 @@
 import { FlyToInterpolator } from 'deck.gl';
 import { LAYER_IDS } from 'map/map.constants';
+import { useMap } from 'MapContext';
+import React, { useState } from 'react';
+import { Popup } from 'react-map-gl';
 import { easeInOutCubic } from 'utils/easingFunctions';
+import FeatureDetail from '../../../components/feature-detail/feature-detail.component';
 import { MAX_ZOOM } from './constants';
 import { infrastructureLayer } from './infrastructure-layer';
-import { peopleLayer } from './people-layer';
-import { useMap } from 'MapContext';
-import { Popup } from 'react-map-gl';
-import React, { useState } from 'react';
-import FeatureDetail from './feature-detail/feature-detail.component';
 import { HealthInfrastructure } from './infrastructure-layer/infrastructure-component/health-infrastructure.component';
+import { peopleLayer } from './people-layer';
 import { PopulationInformation } from './people-layer/people-component/population-information.component';
+import { pickBy } from 'lodash';
 
 const INFRASTRUCTURE_LAYER_IDS = [
   LAYER_IDS.astrosat.hourglass.scotlandInfrastructure.v1,
@@ -27,7 +28,7 @@ const sidebarComponents = {
 
 export const useHourglassOrb = (data, activeSources) => {
   const { setViewState } = useMap();
-  const [pickedObject, setPickedObject] = useState();
+  const [pickedObjects, setPickedObjects] = useState([]);
 
   const handleLayerClick = info => {
     if (info.object.properties.cluster) {
@@ -43,19 +44,31 @@ export const useHourglassOrb = (data, activeSources) => {
           transitionEasing: easeInOutCubic,
           transitionInterpolator: new FlyToInterpolator(),
         });
-      else setPickedObject(info.objects);
-    } else setPickedObject([info.object]);
+      else setPickedObjects(info.objects);
+    } else setPickedObjects([info.object]);
   };
 
   const mapComponents = [
-    pickedObject && (
+    pickedObjects.length && (
       <Popup
-        longitude={pickedObject[0].geometry.coordinates[0]}
-        latitude={pickedObject[0].geometry.coordinates[1]}
-        onClose={() => setPickedObject(undefined)}
+        longitude={pickedObjects[0]?.geometry.coordinates[0]}
+        latitude={pickedObjects[0]?.geometry.coordinates[1]}
+        onClose={() => setPickedObjects([])}
         captureScroll
       >
-        <FeatureDetail features={pickedObject} />
+        <FeatureDetail
+          features={pickedObjects.map(obj =>
+            pickBy(
+              obj.properties,
+              (_, key) => !key.toLowerCase().includes('type'),
+            ),
+          )}
+          title={
+            pickedObjects[0].properties.Type
+              ? 'User Details'
+              : 'Infrastructure Details'
+          }
+        />
       </Popup>
     ),
   ];
