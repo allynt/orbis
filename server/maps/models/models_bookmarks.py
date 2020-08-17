@@ -1,6 +1,5 @@
 from django.conf import settings
 from django.contrib.gis.db import models as gis_models
-from django.contrib.postgres.fields import JSONField
 from django.db import models
 from django.utils.text import slugify
 from django.utils.translation import gettext as _
@@ -83,14 +82,14 @@ class Bookmark(gis_models.Model):
         help_text=_("A description of the bookmark."),
     )
 
-    feature_collection = JSONField(
+    feature_collection = models.JSONField(
         blank=True,
         null=True,
         validators=[validate_feature_collection],
         help_text=_("a GeoJSON description of the annotations on the map."),
     )
 
-    layers = JSONField(
+    layers = models.JSONField(
         blank=True,
         null=True,
         validators=[validate_layers],

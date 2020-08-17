@@ -1,6 +1,5 @@
 from django.conf import settings
 from django.contrib.gis.db import models as gis_models
-from django.contrib.postgres.fields import JSONField
 from django.core.exceptions import ValidationError
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
@@ -358,14 +357,14 @@ class SatelliteResult(gis_models.Model):
 
     footprint = gis_models.GeometryField(blank=False)
 
-    metadata = JSONField(
+    metadata = models.JSONField(
         blank=True,
         null=True,
         validators=[validate_properties],
         help_text=_("Some more information to associate with the scene."),
     )
 
-    raw_data = JSONField(
+    raw_data = models.JSONField(
         blank=True,
         null=True,
         validators=[validate_properties],
