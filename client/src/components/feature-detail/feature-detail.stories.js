@@ -198,3 +198,16 @@ export const FalsyValues = () => (
     ]}
   />
 );
+
+export const Paragraphs = () => (
+  <FeatureDetail
+    features={[
+      {
+        paragraph1:
+          'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Adipiscing tristique risus nec feugiat in fermentum posuere urna. Consectetur a erat nam at lectus urna. At in tellus integer feugiat scelerisque varius morbi enim nunc. Odio morbi quis commodo odio aenean sed. Lectus quam id leo in vitae turpis massa sed elementum. Id nibh tortor id aliquet lectus proin nibh nisl condimentum. Ac tortor dignissim convallis aenean et tortor. Praesent tristique magna sit amet purus gravida. Hac habitasse platea dictumst quisque sagittis purus sit amet. Tincidunt vitae semper quis lectus. Morbi tristique senectus et netus et malesuada fames.',
+        paragraph2:
+          'Congue mauris rhoncus aenean vel elit scelerisque mauris. Sollicitudin tempor id eu nisl. Viverra tellus in hac habitasse platea dictumst vestibulum rhoncus est. Duis at consectetur lorem donec massa sapien. Lectus vestibulum mattis ullamcorper velit sed ullamcorper morbi. Urna cursus eget nunc scelerisque viverra. Posuere morbi leo urna molestie. Risus ultricies tristique nulla aliquet enim. Pellentesque habitant morbi tristique senectus et netus. Sed vulputate mi sit amet mauris commodo. Dui sapien eget mi proin sed libero. Tincidunt augue interdum velit euismod in pellentesque massa placerat duis. Scelerisque felis imperdiet proin fermentum leo vel orci porta. Sed nisi lacus sed viverra tellus in hac. Enim diam vulputate ut pharetra sit amet. Nunc eget lorem dolor sed viverra ipsum nunc aliquet bibendum. Venenatis urna cursus eget nunc scelerisque.',
+      },
+    ]}
+  />
+);
