@@ -7,16 +7,28 @@ const OBJECT = 'object';
 const NULL = 'null';
 const NO_DATA = 'Not available';
 
-const ArrayItem = ({ label, value }) => (
+/**
+ * @param {{
+ *   jsonKey?: string
+ *   value: any[]
+ * }} props
+ */
+const ArrayItem = ({ jsonKey, value }) => (
   <li className={styles.listItem}>
     <ul className={styles.table}>
-      <h2 className={styles.label}>{label}: </h2>
+      {jsonKey && <h2 className={styles.label}>{jsonKey}: </h2>}
       {value.length > 0 ? (
-        value.map((item, i) => (
-          <li key={i} className={`${styles.value} ${styles.listItem}`}>
-            {item}
-          </li>
-        ))
+        value.map((item, i) => {
+          if (Array.isArray(item))
+            return <ArrayItem key={`${jsonKey}-${i}`} value={item} />;
+          if (typeof item === 'object' && item !== null)
+            return <ObjectItem key={`${jsonKey}-${i}`} value={item} />;
+          return (
+            <li key={i} className={`${styles.value} ${styles.listItem}`}>
+              {item}
+            </li>
+          );
+        })
       ) : (
         <li className={`${styles.value} ${styles.listItem}`}>{NO_DATA}</li>
       )}
@@ -24,20 +36,32 @@ const ArrayItem = ({ label, value }) => (
   </li>
 );
 
+/**
+ * @param {{
+ *   jsonKey?: string
+ *   value: {[key: string]: any}
+ * }} props
+ */
 const ObjectItem = ({ jsonKey, value }) => (
   <li className={styles.groupedListItem}>
     <ul className={styles.table}>
-      <h1 className={styles.listTitle}>{jsonKey}</h1>
+      {jsonKey && <h1 className={styles.listTitle}>{jsonKey}</h1>}
       {mapObject(value)}
     </ul>
   </li>
 );
 
+/**
+ * @param {{
+ *   jsonKey: string
+ *   value: any
+ * }} props
+ */
 const Item = ({ jsonKey, value }) => {
   const parsedValue = value === NULL ? JSON.parse(value) : value;
   return (
     <li className={styles.listItem}>
-      <span className={styles.label}>{jsonKey}: </span>
+      {jsonKey && <span className={styles.label}>{jsonKey}: </span>}
       <span className={styles.value}>{parsedValue || NO_DATA}</span>
     </li>
   );
@@ -46,17 +70,20 @@ const Item = ({ jsonKey, value }) => {
 const mapObject = feature => {
   return (
     feature &&
-    Object.entries(feature).map(([key, value], i) => {
+    Object.entries(feature).map(([jsonKey, value], i) => {
       // Parent is always ul, so must always return li
       if (Array.isArray(value)) {
-        return <ArrayItem key={`${key}-${i}`} label={key} value={value} />;
-      } else if (typeof value === OBJECT) {
+        return (
+          <ArrayItem key={`${jsonKey}-${i}`} jsonKey={jsonKey} value={value} />
+        );
+      } else if (typeof value === OBJECT && value !== null) {
         // When value is object, make new table inside li and map out values
-        return <ObjectItem key={`${key}-${i}`} jsonKey={key} value={value} />;
-      } else {
-        //when value is not object or array, parse null values and render li to browser
-        return <Item key={`${key}-${i}`} jsonKey={key} value={value} />;
+        return (
+          <ObjectItem key={`${jsonKey}-${i}`} jsonKey={jsonKey} value={value} />
+        );
       }
+      //when value is not object or array, parse null values and render li to browser
+      return <Item key={`${jsonKey}-${i}`} jsonKey={jsonKey} value={value} />;
     })
   );
 };

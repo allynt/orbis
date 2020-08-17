@@ -148,6 +148,11 @@ export const ArrayValues = () => (
       {
         fruitInMyBowl: ['apple', 'orange', 'kiwi', 'banana', 'pomegranate'],
         emptyArray: [],
+        nestedArrays: [
+          [1, 2],
+          [3, 4],
+          [5, 6, [7, 8]],
+        ],
       },
     ]}
   />
