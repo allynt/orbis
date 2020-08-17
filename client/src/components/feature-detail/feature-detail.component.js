@@ -1,6 +1,6 @@
 import React from 'react';
 
-import infoStyles from './feature-detail.module.css';
+import styles from './feature-detail.module.css';
 import { DEFAULT_TITLE } from './feature-detail.constants';
 
 const OBJECT = 'object';
@@ -37,14 +37,14 @@ const mapObject = data => {
         if (Array.isArray(feature[key])) {
           // When value is array, render li to browser in array-specific structure
           return (
-            <li key={i} className={infoStyles.listItem}>
-              <ul className={infoStyles.table}>
-                <h2 className={infoStyles.label}>{key}: </h2>
+            <li key={i} className={styles.listItem}>
+              <ul className={styles.table}>
+                <h2 className={styles.label}>{key}: </h2>
                 {feature[key].length > 0 ? (
                   feature[key].map((value, i) => (
                     <li
                       key={i}
-                      className={`${infoStyles.content} ${infoStyles.listItem}`}
+                      className={`${styles.content} ${styles.listItem}`}
                     >
                       {value}
                     </li>
@@ -52,7 +52,7 @@ const mapObject = data => {
                 ) : (
                   <li
                     key={i}
-                    className={`${infoStyles.content} ${infoStyles.listItem}`}
+                    className={`${styles.content} ${styles.listItem}`}
                   >
                     {NO_DATA}
                   </li>
@@ -63,9 +63,9 @@ const mapObject = data => {
         } else if (typeof feature[key] === OBJECT) {
           // When value is object, make new table inside li and map out values
           return (
-            <li key={key} className={infoStyles.groupedListItem}>
-              <ul className={infoStyles.table}>
-                <h1 className={infoStyles.listTitle}>{key}</h1>
+            <li key={key} className={styles.groupedListItem}>
+              <ul className={styles.table}>
+                <h1 className={styles.listTitle}>{key}</h1>
                 {mapObject(feature[key])}
               </ul>
             </li>
@@ -75,9 +75,9 @@ const mapObject = data => {
           const value =
             feature[key] === NULL ? JSON.parse(feature[key]) : feature[key];
           return (
-            <li key={key} className={infoStyles.listItem}>
-              <span className={infoStyles.label}>{key}: </span>
-              <span className={infoStyles.content}>{value || NO_DATA}</span>
+            <li key={key} className={styles.listItem}>
+              <span className={styles.label}>{key}: </span>
+              <span className={styles.content}>{value || NO_DATA}</span>
             </li>
           );
         }
@@ -96,10 +96,10 @@ const mapObject = data => {
  */
 const FeatureDetail = ({ features, title = DEFAULT_TITLE }) => (
   <>
-    <h1 className={infoStyles.header}>{title}</h1>
-    <div className={infoStyles.modal}>
+    <h1 className={styles.header}>{title}</h1>
+    <div className={styles.modal}>
       {features?.map(feature => (
-        <ul key={feature.id} className={infoStyles.list}>
+        <ul key={feature.id} className={styles.list}>
           {mapObject(feature)}
         </ul>
       ))}
