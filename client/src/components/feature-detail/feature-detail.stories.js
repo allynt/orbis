@@ -145,7 +145,10 @@ export const ObjectValues = () => (
 export const ArrayValues = () => (
   <FeatureDetail
     features={[
-      { fruitInMyBowl: ['apple', 'orange', 'kiwi', 'banana', 'pomegranate'] },
+      {
+        fruitInMyBowl: ['apple', 'orange', 'kiwi', 'banana', 'pomegranate'],
+        emptyArray: [],
+      },
     ]}
   />
 );
@@ -185,6 +188,7 @@ export const FalsyValues = () => (
         null: null,
         emptyString: '',
         zero: 0,
+        nullString: 'null',
       },
     ]}
   />
