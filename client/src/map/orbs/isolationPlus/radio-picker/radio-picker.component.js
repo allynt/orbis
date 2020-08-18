@@ -32,17 +32,23 @@ export const RadioPicker = ({ selectedLayer, dispatch }) => {
               )
             }
           />
-          <button
-            className={styles.infoButton}
-            onClick={() =>
-              setVisibleInfoProperty(visibleInfoProperty ? undefined : property)
-            }
-          >
-            <InfoIcon classes={styles.infoIcon} title={property} />
-          </button>
-          {visibleInfoProperty === property && (
-            <p>{selectedLayer.metadata.properties[property].description}</p>
-          )}
+          <div className={styles.info}>
+            <button
+              className={styles.infoButton}
+              onClick={() =>
+                setVisibleInfoProperty(
+                  visibleInfoProperty === property ? undefined : property,
+                )
+              }
+            >
+              <InfoIcon classes={styles.infoIcon} title={property} />
+            </button>
+            {visibleInfoProperty === property && (
+              <p className={styles.description}>
+                {selectedLayer.metadata.properties[property].description}
+              </p>
+            )}
+          </div>
         </div>
       ))}
     </>
