@@ -11,35 +11,34 @@ export const RadioPicker = ({ selectedLayer, dispatch }) => {
   /** @type {[string | undefined, React.Dispatch<string | undefined>]} */
   const [visibleInfoProperty, setVisibleInfoProperty] = useState();
 
+  if (!selectedLayer?.metadata?.properties) return null;
   return (
     <>
-      {Object.keys(selectedLayer?.metadata?.properties)
-        .filter(p => !p.includes('LSOA'))
-        .map(property => (
-          <>
-            <Radio
-              key={property}
-              label={property}
-              name={selectedLayer?.source_id}
-              value={property}
-              checked={property === selectedProperty}
-              onChange={() =>
-                dispatch(
-                  setProperty({
-                    source_id: selectedLayer.source_id,
-                    property,
-                  }),
-                )
-              }
-            />
-            <button onClick={() => setVisibleInfoProperty(property)}>
-              <InfoIcon title={property} />
-            </button>
-            {visibleInfoProperty === property && (
-              <p>{selectedLayer.metadata.properties[property].description}</p>
-            )}
-          </>
-        ))}
+      {Object.keys(selectedLayer?.metadata?.properties).map(property => (
+        <>
+          <Radio
+            key={property}
+            label={property}
+            name={selectedLayer?.source_id}
+            value={property}
+            checked={property === selectedProperty}
+            onChange={() =>
+              dispatch(
+                setProperty({
+                  source_id: selectedLayer.source_id,
+                  property,
+                }),
+              )
+            }
+          />
+          <button onClick={() => setVisibleInfoProperty(property)}>
+            <InfoIcon title={property} />
+          </button>
+          {visibleInfoProperty === property && (
+            <p>{selectedLayer.metadata.properties[property].description}</p>
+          )}
+        </>
+      ))}
     </>
   );
 };
