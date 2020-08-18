@@ -6,7 +6,7 @@ const isolationPlusSlice = createSlice({
   name: 'isolationPlus',
   initialState: {
     colorScheme: 'Blues',
-    [LAYER_IDS.astrosat.isolationPlus.ahah.v0]: 'IMD: Income decile',
+    [LAYER_IDS.astrosat.isolationPlus.imdIncome.v1]: 'Income decile',
   },
   reducers: {
     setProperty: (state, { payload }) => {
