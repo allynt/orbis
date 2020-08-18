@@ -5,6 +5,7 @@ import { useSelector } from 'react-redux';
 import { Radio, InfoIcon } from '@astrosat/astrosat-ui';
 
 import { useClickaway } from 'hooks/useClickaway';
+import InfoBox from 'components/info-box/info-box.component';
 import { propertySelector, setProperty } from '../isolation-plus.slice';
 import styles from './radio-picker.module.css';
 
@@ -48,9 +49,9 @@ export const RadioPicker = ({ selectedLayer, dispatch }) => {
               <InfoIcon classes={styles.infoIcon} title={property} />
             </button>
             {visibleInfoProperty === property && (
-              <p ref={ref} className={styles.description}>
-                {selectedLayer.metadata.properties[property].description}
-              </p>
+              <InfoBox ref={ref} className={styles.description} arrow="left">
+                <p>{selectedLayer.metadata.properties[property].description}</p>
+              </InfoBox>
             )}
           </div>
         </div>
