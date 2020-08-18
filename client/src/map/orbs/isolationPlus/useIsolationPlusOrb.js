@@ -8,52 +8,56 @@ import { useSelector } from 'react-redux';
 import FeatureDetail from 'components/feature-detail/feature-detail.component';
 import CustomMVTLayer from 'map/deck.gl/custom-layers/custom-mvt-layer';
 import { LAYER_IDS } from 'map/map.constants';
-import { colorSchemeSelector, propertySelector } from './isolation-plus.slice';
+import {
+  propertiesSelector,
+  colorSchemesSelector,
+} from './isolation-plus.slice';
 import { RadioPicker } from './radio-picker/radio-picker.component';
+
+const TILE_LAYERS = [
+  LAYER_IDS.astrosat.isolationPlus.imdIncome.v1,
+  LAYER_IDS.astrosat.isolationPlus.ahah.v1,
+];
 
 export const useIsolationPlusOrb = (data, sources, authToken) => {
   /** @type {[*, React.Dispatch<*>]} */
   const [pickedInfo, setPickedInfo] = useState();
 
-  const imdIncomeSource = sources?.find(
-    source =>
-      source.source_id === LAYER_IDS.astrosat.isolationPlus.imdIncome.v1,
-  );
-  const imdIncomeSelectedProperty = useSelector(state =>
-    // @ts-ignore
-    propertySelector(state, LAYER_IDS.astrosat.isolationPlus.imdIncome.v1),
-  );
+  const selectedProperties = useSelector(propertiesSelector);
 
-  const colorScheme = useSelector(colorSchemeSelector);
-  const colorScale = chroma
-    .scale(colorScheme)
-    .domain([
-      imdIncomeSource?.metadata.properties[imdIncomeSelectedProperty].min,
-      imdIncomeSource?.metadata.properties[imdIncomeSelectedProperty].max,
-    ]);
+  const colorSchemes = useSelector(colorSchemesSelector);
 
   const layers = [
-    // @ts-ignore
-    new CustomMVTLayer({
-      id: LAYER_IDS.astrosat.isolationPlus.imdIncome.v1,
-      data: data[LAYER_IDS.astrosat.isolationPlus.imdIncome.v1],
-      authToken,
-      visible: !!imdIncomeSource,
-      minZoom: imdIncomeSource?.metadata.minZoom,
-      maxZoom: imdIncomeSource?.metadata.maxZoom,
-      uniqueIdProperty: imdIncomeSource?.metadata.uniqueIdProperty,
-      pickable: true,
-      autoHighlight: true,
-      onClick: info => setPickedInfo(info),
-      filled: true,
-      getFillColor: d => [
-        // @ts-ignore
-        ...colorScale(d.properties[imdIncomeSelectedProperty]).rgb(),
-        150,
-      ],
-      updateTriggers: {
-        getFillColor: [imdIncomeSelectedProperty],
-      },
+    ...TILE_LAYERS.map(layerId => {
+      const source = sources?.find(source => source.source_id === layerId);
+      const colorScale = chroma
+        .scale(colorSchemes?.[layerId])
+        .domain([
+          source?.metadata.properties[selectedProperties[layerId]]?.min,
+          source?.metadata.properties[selectedProperties[layerId]]?.max,
+        ]);
+      // @ts-ignore
+      return new CustomMVTLayer({
+        id: layerId,
+        data: data[layerId],
+        authToken,
+        visible: !!source,
+        minZoom: source?.metadata.minZoom,
+        maxZoom: source?.metadata.maxZoom,
+        uniqueIdProperty: source?.metadata.uniqueIdProperty,
+        pickable: true,
+        autoHighlight: true,
+        onClick: info => setPickedInfo(info),
+        filled: true,
+        getFillColor: d => [
+          // @ts-ignore
+          ...colorScale(d.properties[selectedProperties?.[layerId]]).rgb(),
+          150,
+        ],
+        updateTriggers: {
+          getFillColor: [selectedProperties?.[layerId]],
+        },
+      });
     }),
   ];
 
@@ -71,7 +75,7 @@ export const useIsolationPlusOrb = (data, sources, authToken) => {
             omitBy(
               pickedInfo.object.properties,
               (_, key) =>
-                key !== imdIncomeSelectedProperty &&
+                key !== selectedProperties[pickedInfo.layer.id] &&
                 !key.toLowerCase().includes('code'),
             ),
           ]}
@@ -85,7 +89,7 @@ export const useIsolationPlusOrb = (data, sources, authToken) => {
     layers,
     mapComponents,
     sidebarComponents: {
-      [LAYER_IDS.astrosat.isolationPlus.imdIncome.v1]: RadioPicker,
+      ...TILE_LAYERS.reduce((acc, cur) => ({ ...acc, [cur]: RadioPicker }), {}),
     },
   };
 };
