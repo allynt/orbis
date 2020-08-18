@@ -1,5 +1,19 @@
+.property,
 .infoButton {
-  padding: 1rem;
+  display: flex;
+  align-items: center;
+}
+
+.infoButton {
+  font-size: 0.625em;
+  padding: 0.4em;
+  margin-left: 1em;
+  background-color: #fff;
   border-radius: 50%;
-  background-color: hotpink;
+}
+
+.infoIcon {
+  color: var(--color-secondary);
+  width: 1em;
+  height: 1em;
 }
