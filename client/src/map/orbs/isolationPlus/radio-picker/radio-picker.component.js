@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { propertySelector, setProperty } from '../isolation-plus.slice';
 import styles from './radio-picker.module.css';
+import { useClickaway } from 'hooks/useClickaway';
 
 export const RadioPicker = ({ selectedLayer, dispatch }) => {
   const selectedProperty = useSelector(state =>
@@ -11,6 +12,7 @@ export const RadioPicker = ({ selectedLayer, dispatch }) => {
   );
   /** @type {[string | undefined, React.Dispatch<string | undefined>]} */
   const [visibleInfoProperty, setVisibleInfoProperty] = useState();
+  const [ref] = useClickaway(() => setVisibleInfoProperty(undefined));
 
   if (!selectedLayer?.metadata?.properties) return null;
   return (
@@ -44,7 +46,7 @@ export const RadioPicker = ({ selectedLayer, dispatch }) => {
               <InfoIcon classes={styles.infoIcon} title={property} />
             </button>
             {visibleInfoProperty === property && (
-              <p className={styles.description}>
+              <p ref={ref} className={styles.description}>
                 {selectedLayer.metadata.properties[property].description}
               </p>
             )}
