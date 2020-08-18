@@ -1,10 +1,12 @@
-import { Radio } from '@astrosat/astrosat-ui';
-import InfoIcon from '@astrosat/astrosat-ui/dist/icons/info-icon';
 import React, { useState } from 'react';
+
 import { useSelector } from 'react-redux';
+
+import { Radio, InfoIcon } from '@astrosat/astrosat-ui';
+
+import { useClickaway } from 'hooks/useClickaway';
 import { propertySelector, setProperty } from '../isolation-plus.slice';
 import styles from './radio-picker.module.css';
-import { useClickaway } from 'hooks/useClickaway';
 
 export const RadioPicker = ({ selectedLayer, dispatch }) => {
   const selectedProperty = useSelector(state =>

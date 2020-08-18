@@ -1,9 +1,11 @@
-import { render } from '@testing-library/react';
-import { RadioPicker } from './radio-picker.component';
 import React from 'react';
+
+import { render } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { Provider } from 'react-redux';
 import configureStore from 'redux-mock-store';
-import userEvent from '@testing-library/user-event';
+
+import { RadioPicker } from './radio-picker.component';
 
 const mockStore = configureStore();
 
