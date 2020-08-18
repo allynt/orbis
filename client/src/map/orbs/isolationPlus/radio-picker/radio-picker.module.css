@@ -1,0 +1,39 @@
+.property,
+.infoButton {
+  display: flex;
+  align-items: center;
+}
+
+.info {
+  position: relative;
+}
+
+.infoButton {
+  font-size: 0.625em;
+  padding: 0.4em;
+  margin-left: 1em;
+  background-color: #fff;
+  border-radius: 50%;
+  transition: opacity 250ms ease;
+}
+
+.infoButton:hover,
+.infoButton:focus {
+  opacity: 0.5;
+}
+
+.infoIcon {
+  color: var(--color-secondary);
+  width: 1em;
+  height: 1em;
+}
+
+.description {
+  width: 30ch;
+  z-index: 1;
+  position: absolute;
+  left: 3em;
+  top: -0.5em;
+  background-color: var(--color-primary);
+  color: var(--color--text--dark);
+}

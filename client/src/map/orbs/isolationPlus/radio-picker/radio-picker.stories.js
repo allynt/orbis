@@ -1,7 +1,9 @@
 import React from 'react';
-import { RadioPicker } from './radio-picker.component';
+
 import { Provider } from 'react-redux';
+
 import store from 'store';
+import { RadioPicker } from './radio-picker.component';
 
 export default { title: 'Map/Radio Picker' };
 

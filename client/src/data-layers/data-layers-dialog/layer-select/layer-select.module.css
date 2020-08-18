@@ -59,22 +59,10 @@
 
 .infoBox {
   position: absolute;
-  display: block;
   font-size: 0.75em;
   padding: 1rem 1.25rem;
-  border-radius: 0.3125rem;
   top: -0.9375rem;
   right: 2.0625rem;
   max-width: 14.25rem;
-  background-color: #f6be00;
   z-index: 2;
-}
-
-.infoBox:before {
-  content: '';
-  position: absolute;
-  right: -1.25rem;
-  border-style: solid;
-  border-width: 0.625rem 0.625rem 0.625rem 0.625rem;
-  border-color: transparent transparent transparent #f6be00;
 }
