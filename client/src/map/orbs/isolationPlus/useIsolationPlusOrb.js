@@ -51,34 +51,36 @@ export const useIsolationPlusOrb = (data, sources, authToken) => {
   const layers = [
     ...TILE_LAYERS.map(layerId => {
       const source = sources?.find(source => source.source_id === layerId);
-      const colorScale = chroma
-        .scale(colorSchemes?.[layerId])
-        .domain([
-          source?.metadata.properties[selectedProperties[layerId]]?.min,
-          source?.metadata.properties[selectedProperties[layerId]]?.max,
-        ]);
-      // @ts-ignore
-      return new CustomMVTLayer({
-        id: layerId,
-        data: data[layerId],
-        authToken,
-        visible: !!source,
-        minZoom: source?.metadata.minZoom,
-        maxZoom: source?.metadata.maxZoom,
-        uniqueIdProperty: source?.metadata.uniqueIdProperty,
-        pickable: true,
-        autoHighlight: true,
-        onClick: info => setPickedInfo(info),
-        filled: true,
-        getFillColor: d => [
-          // @ts-ignore
-          ...colorScale(d.properties[selectedProperties?.[layerId]]).rgb(),
-          150,
-        ],
-        updateTriggers: {
-          getFillColor: [selectedProperties?.[layerId]],
-        },
-      });
+      if (source) {
+        const colorScale = chroma
+          .scale(colorSchemes?.[layerId])
+          .domain([
+            source.metadata.properties[selectedProperties[layerId]]?.min,
+            source.metadata.properties[selectedProperties[layerId]]?.max,
+          ]);
+        // @ts-ignore
+        return new CustomMVTLayer({
+          id: layerId,
+          data: data[layerId],
+          authToken,
+          visible: !!source,
+          minZoom: source.metadata.minZoom,
+          maxZoom: source.metadata.maxZoom,
+          uniqueIdProperty: source.metadata.uniqueIdProperty,
+          pickable: true,
+          autoHighlight: true,
+          onClick: info => setPickedInfo(info),
+          filled: true,
+          getFillColor: d => [
+            // @ts-ignore
+            ...colorScale(d.properties[selectedProperties?.[layerId]]).rgb(),
+            150,
+          ],
+          updateTriggers: {
+            getFillColor: [selectedProperties?.[layerId]],
+          },
+        });
+      }
     }),
   ];
 
