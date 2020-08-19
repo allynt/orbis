@@ -48,6 +48,9 @@ export const LAYER_IDS = {
       childPoverty: {
         v1: 'astrosat/isolation_plus/childpov/v1',
       },
+      ageDemographics: {
+        v1: 'astrosat/isolation_plus/age/v1',
+      },
     },
     rice: {
       paddiesHealth: {

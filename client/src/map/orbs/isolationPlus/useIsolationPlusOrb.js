@@ -21,6 +21,7 @@ const TILE_LAYERS = [
   LAYER_IDS.astrosat.isolationPlus.childPoverty.v1,
   LAYER_IDS.astrosat.isolationPlus.deprivedHouses.v1,
   LAYER_IDS.astrosat.isolationPlus.localFuelPoverty.v1,
+  LAYER_IDS.astrosat.isolationPlus.ageDemographics.v1,
 ];
 
 export const useIsolationPlusOrb = (data, sources, authToken) => {
@@ -81,6 +82,7 @@ export const useIsolationPlusOrb = (data, sources, authToken) => {
           },
         });
       }
+      return undefined;
     }),
   ];
 
