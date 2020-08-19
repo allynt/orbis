@@ -41,7 +41,7 @@ describe('<RadioPicker />', () => {
     const initialState = {
       orbs: {
         isolationPlus: {
-          'test/layer': 'property1',
+          properties: { 'test/layer': 'property1' },
         },
       },
     };
