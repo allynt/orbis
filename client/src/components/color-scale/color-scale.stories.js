@@ -9,3 +9,17 @@ export const Continuous = () => (
     <ColorScale scheme="Blues" domain={[50, 100]} />
   </>
 );
+
+export const Percentage = () => (
+  <>
+    <ColorScale type="percentage" />
+    <ColorScale type="percentage" scheme="Spectral" domain={[0, 1.77]} />
+  </>
+);
+
+export const Decile = () => (
+  <>
+    <ColorScale type="decile" />
+    <ColorScale type="decile" scheme="YlOrRd" />
+  </>
+);
