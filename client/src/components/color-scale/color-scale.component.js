@@ -2,6 +2,7 @@ import React from 'react';
 import chroma from 'chroma-js';
 import { ContinuousColorLegend, DiscreteColorLegend } from 'react-vis';
 import 'react-vis/dist/style.css';
+import './color-scale.css';
 
 /**
  * @param {{
@@ -29,7 +30,9 @@ const ColorScale = ({ domain, scheme, type = 'continuous' }) => {
       />
     );
   if (type === 'decile') {
-    const items = new Array(10).fill(undefined).map((_, i) => i + 1);
+    const items = new Array(10)
+      .fill(undefined)
+      .map((_, i) => ({ title: `${i + 1}`, strokeWidth: '1.5em' }));
     return (
       <DiscreteColorLegend
         orientation="horizontal"
