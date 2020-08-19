@@ -6,12 +6,13 @@ import './color-scale.css';
 
 /**
  * @param {{
- *   scheme?: string | chroma.Color
+ *   className?: string
  *   domain?: number[]
+ *   scheme?: string | chroma.Color
  *   type?: 'discrete' | 'decile' | 'continuous' | 'percentage'
  * }} props
  */
-const ColorScale = ({ domain, scheme, type = 'continuous' }) => {
+const ColorScale = ({ className, domain, scheme, type = 'continuous' }) => {
   /** @type {number[]} */
   let _domain;
   if (type === 'decile') _domain = [1, 10];
@@ -23,6 +24,7 @@ const ColorScale = ({ domain, scheme, type = 'continuous' }) => {
   if (type === 'continuous' || type === 'percentage')
     return (
       <ContinuousColorLegend
+        className={className}
         startTitle={_domain[0]}
         endTitle={_domain[_domain.length - 1]}
         startColor={colorScale(_domain[0]).hex()}
@@ -35,6 +37,7 @@ const ColorScale = ({ domain, scheme, type = 'continuous' }) => {
       .map((_, i) => ({ title: `${i + 1}`, strokeWidth: '1.5em' }));
     return (
       <DiscreteColorLegend
+        className={className}
         orientation="horizontal"
         items={items}
         // @ts-ignore

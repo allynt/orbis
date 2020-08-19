@@ -4,10 +4,10 @@
 
 .rv-discrete-color-legend-item {
   padding: 0;
+  color: inherit;
 }
 
 .rv-discrete-color-legend-item__color {
-  /* height: 1.5em; */
   position: relative;
 }
 

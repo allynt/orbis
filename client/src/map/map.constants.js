@@ -37,7 +37,7 @@ export const LAYER_IDS = {
     isolationPlus: {
       imdIncome: { v1: 'astrosat/isolation_plus/imd_income/v1' },
       ahah: {
-        v1: 'astrosat/isolation_plus/aha/v1',
+        v1: 'astrosat/isolation_plus/ahah/v1',
       },
     },
     rice: {
