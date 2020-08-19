@@ -8,12 +8,11 @@ const isolationPlusSlice = createSlice({
     colorSchemes: {
       [LAYER_IDS.astrosat.isolationPlus.imdIncome.v1]: 'Blues',
       [LAYER_IDS.astrosat.isolationPlus.ahah.v1]: 'Reds',
+      [LAYER_IDS.astrosat.isolationPlus.childPoverty.v1]: 'Purples',
+      [LAYER_IDS.astrosat.isolationPlus.deprivedHouses.v1]: 'Greens',
+      [LAYER_IDS.astrosat.isolationPlus.localFuelPoverty.v1]: 'Oranges',
     },
-    properties: {
-      [LAYER_IDS.astrosat.isolationPlus.imdIncome.v1]: 'Income decile',
-      [LAYER_IDS.astrosat.isolationPlus.ahah.v1]:
-        'AHAH 2017: Health services decile (1=worst, 10=best)',
-    },
+    properties: {},
   },
   reducers: {
     setProperty: (state, { payload }) => {

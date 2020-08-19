@@ -37,7 +37,16 @@ export const LAYER_IDS = {
     isolationPlus: {
       imdIncome: { v1: 'astrosat/isolation_plus/imd_income/v1' },
       ahah: {
-        v1: 'astrosat/isolation_plus/aha/v1',
+        v1: 'astrosat/isolation_plus/ahah/v1',
+      },
+      localFuelPoverty: {
+        v1: 'astrosat/isolation_plus/lfp/v1',
+      },
+      deprivedHouses: {
+        v1: 'astrosat/isolation_plus/depriv/v1',
+      },
+      childPoverty: {
+        v1: 'astrosat/isolation_plus/childpov/v1',
       },
     },
     rice: {
