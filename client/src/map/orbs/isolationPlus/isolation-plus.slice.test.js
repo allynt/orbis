@@ -18,8 +18,8 @@ describe('isolationPlusSlice', () => {
       });
 
       it('sets the property for a source in state if not yet defined', () => {
-        const state = {};
-        const expected = { 'test/layer': 'hello' };
+        const state = { properties: {} };
+        const expected = { properties: { 'test/layer': 'hello' } };
         const payload = { source_id: 'test/layer', property: 'hello' };
         const result = reducer(state, setProperty(payload));
         expect(result).toEqual(expected);
@@ -27,9 +27,9 @@ describe('isolationPlusSlice', () => {
 
       it('overwrites the property for a source in state if it exists', () => {
         const state = {
-          'test/layer': 'no thanks',
+          properties: { 'test/layer': 'no thanks' },
         };
-        const expected = { 'test/layer': 'hello' };
+        const expected = { properties: { 'test/layer': 'hello' } };
         const payload = { source_id: 'test/layer', property: 'hello' };
         const result = reducer(state, setProperty(payload));
         expect(result).toEqual(expected);
@@ -43,12 +43,16 @@ describe('isolationPlusSlice', () => {
         const state = {
           orbs: {
             isolationPlus: {
-              'test/layer': 'hello',
+              properties: {
+                'test/layer': 'hello',
+              },
             },
           },
         };
         const result = propertySelector(state, 'test/layer');
-        expect(result).toEqual(state.orbs.isolationPlus['test/layer']);
+        expect(result).toEqual(
+          state.orbs.isolationPlus.properties['test/layer'],
+        );
       });
 
       it('returns undefined if state is undefined', () => {
