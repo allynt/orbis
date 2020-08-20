@@ -52,6 +52,7 @@
   margin-left: auto;
   margin-right: auto;
   color: #fff;
+  max-width: 42%;
 }
 
 .tooltip {

@@ -25,8 +25,12 @@ const ColorScale = ({ className, domain, scheme, type = 'continuous' }) => {
     return (
       <ContinuousColorLegend
         className={className}
-        startTitle={_domain[0]}
-        endTitle={_domain[_domain.length - 1]}
+        startTitle={type === 'percentage' ? `${_domain[0]} %` : _domain[0]}
+        endTitle={
+          type === 'percentage'
+            ? `${_domain[_domain.length - 1]} %`
+            : _domain[_domain.length - 1]
+        }
         startColor={colorScale(_domain[0]).hex()}
         endColor={colorScale(_domain[_domain.length - 1]).hex()}
       />

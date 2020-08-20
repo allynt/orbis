@@ -25,7 +25,7 @@ export const RadioPicker = ({ selectedLayer, dispatch }) => {
   return (
     <>
       {Object.keys(selectedLayer?.metadata?.properties).map(property => (
-        <div className={styles.property}>
+        <div key={property} className={styles.property}>
           <Radio
             className={styles.radio}
             key={property}
