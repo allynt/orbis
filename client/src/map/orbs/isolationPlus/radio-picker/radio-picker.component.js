@@ -6,12 +6,20 @@ import { Radio, InfoIcon } from '@astrosat/astrosat-ui';
 
 import { useClickaway } from 'hooks/useClickaway';
 import InfoBox from 'components/info-box/info-box.component';
-import { propertySelector, setProperty } from '../isolation-plus.slice';
+import {
+  propertySelector,
+  setProperty,
+  colorSchemeSelector,
+} from '../isolation-plus.slice';
 import styles from './radio-picker.module.css';
+import ColorScale from 'components/color-scale/color-scale.component';
 
 export const RadioPicker = ({ selectedLayer, dispatch }) => {
   const selectedProperty = useSelector(state =>
     propertySelector(state, selectedLayer.source_id),
+  );
+  const colorScheme = useSelector(state =>
+    colorSchemeSelector(state, selectedLayer.source_id),
   );
   /** @type {[string | undefined, React.Dispatch<string | undefined>]} */
   const [visibleInfoProperty, setVisibleInfoProperty] = useState();
@@ -23,6 +31,7 @@ export const RadioPicker = ({ selectedLayer, dispatch }) => {
       {Object.keys(selectedLayer?.metadata?.properties).map(property => (
         <div key={property} className={styles.property}>
           <Radio
+            className={styles.radio}
             key={property}
             label={property}
             name={selectedLayer?.source_id}
@@ -54,6 +63,17 @@ export const RadioPicker = ({ selectedLayer, dispatch }) => {
               </InfoBox>
             )}
           </div>
+          {property === selectedProperty && (
+            <ColorScale
+              className={styles.colorScale}
+              type={selectedLayer.metadata.properties[property].type}
+              scheme={colorScheme}
+              domain={[
+                selectedLayer.metadata.properties[property].min,
+                selectedLayer.metadata.properties[property].max,
+              ]}
+            />
+          )}
         </div>
       ))}
     </>

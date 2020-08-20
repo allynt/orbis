@@ -38,7 +38,7 @@ export const colorSchemesSelector = createSelector(
 export const colorSchemeSelector = createSelector(
   baseSelector,
   (_, source_id) => source_id,
-  (orb, source_id) => orb?.colorSchemes[source_id],
+  (orb, source_id) => orb?.colorSchemes?.[source_id],
 );
 
 export const propertiesSelector = createSelector(
