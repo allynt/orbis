@@ -35,21 +35,27 @@ export const regions = [
 export const LAYER_IDS = {
   astrosat: {
     isolationPlus: {
-      imdIncome: { v1: 'astrosat/isolation_plus/imd_income/v1' },
+      ageDemographics: {
+        v1: 'astrosat/isolation_plus/age/v1',
+      },
       ahah: {
         v1: 'astrosat/isolation_plus/ahah/v1',
       },
-      localFuelPoverty: {
-        v1: 'astrosat/isolation_plus/lfp/v1',
-      },
-      deprivedHouses: {
-        v1: 'astrosat/isolation_plus/depriv/v1',
+      broadbandConnectivity: {
+        v1: 'astrosat/isolation_plus/broadband/v1',
       },
       childPoverty: {
         v1: 'astrosat/isolation_plus/childpov/v1',
       },
-      ageDemographics: {
-        v1: 'astrosat/isolation_plus/age/v1',
+      deprivedHouses: {
+        v1: 'astrosat/isolation_plus/depriv/v1',
+      },
+      imdIncome: { v1: 'astrosat/isolation_plus/imd_income/v1' },
+      localFuelPoverty: {
+        v1: 'astrosat/isolation_plus/lfp/v1',
+      },
+      mobileConnectivity: {
+        v1: 'astrosat/isolation_plus/mobile/v1',
       },
     },
     rice: {

@@ -16,12 +16,14 @@ import {
 import { RadioPicker } from './radio-picker/radio-picker.component';
 
 const TILE_LAYERS = [
-  LAYER_IDS.astrosat.isolationPlus.imdIncome.v1,
+  LAYER_IDS.astrosat.isolationPlus.ageDemographics.v1,
   LAYER_IDS.astrosat.isolationPlus.ahah.v1,
+  LAYER_IDS.astrosat.isolationPlus.broadbandConnectivity.v1,
   LAYER_IDS.astrosat.isolationPlus.childPoverty.v1,
   LAYER_IDS.astrosat.isolationPlus.deprivedHouses.v1,
+  LAYER_IDS.astrosat.isolationPlus.imdIncome.v1,
   LAYER_IDS.astrosat.isolationPlus.localFuelPoverty.v1,
-  LAYER_IDS.astrosat.isolationPlus.ageDemographics.v1,
+  LAYER_IDS.astrosat.isolationPlus.mobileConnectivity.v1,
 ];
 
 export const useIsolationPlusOrb = (data, sources, authToken) => {
