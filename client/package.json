@@ -21,6 +21,7 @@
   },
   "dependencies": {
     "@astrosat/astrosat-ui": "^1.15.0",
+    "@deck.gl/mapbox": "^8.2.5",
     "@loaders.gl/core": "^2.2.5",
     "@loaders.gl/gltf": "^2.2.5",
     "@loaders.gl/images": "^2.2.5",

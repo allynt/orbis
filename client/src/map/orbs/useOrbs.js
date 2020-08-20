@@ -59,6 +59,7 @@ export const useOrbs = () => {
     layers: isoPlusLayers,
     mapComponents: isoPlusMapComponents,
     sidebarComponents: isoPlusSidebarComponents,
+    mapboxLayers,
   } = useIsolationPlusOrb(data, activeSources, authToken);
 
   let layers = [...isoPlusLayers, ...hourglassLayers, ...riceLayers];
@@ -73,5 +74,5 @@ export const useOrbs = () => {
     ...isoPlusSidebarComponents,
   };
 
-  return { layers, mapComponents, sidebarComponents };
+  return { layers, mapComponents, sidebarComponents, mapboxLayers };
 };

@@ -118,6 +118,7 @@ export const useIsolationPlusOrb = (data, sources, authToken) => {
     sidebarComponents: {
       ...TILE_LAYERS.reduce((acc, cur) => ({ ...acc, [cur]: RadioPicker }), {}),
     },
+    mapboxLayers: TILE_LAYERS,
   };
 };
 

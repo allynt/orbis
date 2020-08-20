@@ -1,4 +1,5 @@
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useContext, useState, useRef } from 'react';
+import { updateNonNullExpression } from 'typescript';
 
 const INITIAL_VIEW_STATE = {
   zoom: 6,
@@ -38,6 +39,8 @@ MapContext.displayName = 'MapContext';
  * @returns {JSX.Element} MapContextProvider
  */
 export const MapProvider = props => {
+  const mapRef = useRef(null);
+  const deckRef = useRef(null);
   const [map, setMap] = useState();
   const [deck, setDeck] = useState();
   const [viewState, setViewState] = useState(INITIAL_VIEW_STATE);
@@ -46,7 +49,9 @@ export const MapProvider = props => {
     <MapContext.Provider
       value={{
         map,
+        mapRef,
         setMap,
+        deckRef,
         deck,
         setDeck,
         viewState,

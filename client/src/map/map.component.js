@@ -10,7 +10,7 @@ import DeckGL, { FlyToInterpolator } from 'deck.gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import { useMap } from 'MapContext';
 import MapStyleSwitcher from 'mapstyle/mapstyle-switcher.component';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import {
   NavigationControl,
   StaticMap,
@@ -21,9 +21,18 @@ import { useOrbs } from './orbs/useOrbs';
 import styles from './map.module.css';
 import { selectedMapStyleSelector, selectMapStyle } from './map.slice';
 import { Geocoder } from './geocoder/geocoder.component';
+import { MapboxLayer } from '@deck.gl/mapbox';
+import { LAYER_IDS } from './map.constants';
 
 const Map = () => {
-  const { setMap, setDeck, viewState, setViewState } = useMap();
+  const {
+    mapRef,
+    setMap,
+    deckRef,
+    setDeck,
+    viewState,
+    setViewState,
+  } = useMap();
   const dispatch = useDispatch();
   const accessToken = useSelector(mapboxTokenSelector);
   const selectedBookmark = useSelector(selectedBookmarkSelector);
@@ -33,7 +42,9 @@ const Map = () => {
   const [isMapStyleSwitcherVisible, setIsMapStyleSwitcherVisible] = useState(
     false,
   );
-  const { layers, mapComponents } = useOrbs();
+  const { layers, mapComponents, mapboxLayers } = useOrbs();
+
+  const [glContext, setGlContext] = useState();
 
   useEffect(() => {
     if (selectedBookmark) {
@@ -66,6 +77,18 @@ const Map = () => {
     });
   };
 
+  const onMapLoad = useCallback(() => {
+    const map = mapRef.current.getMap();
+    const deck = deckRef.current.deck;
+
+    map.addLayer(
+      new MapboxLayer({
+        id: LAYER_IDS.astrosat.isolationPlus.imdIncome.v1,
+        deck,
+      }),
+    );
+  }, [mapRef, deckRef]);
+
   return (
     <>
       {bookmarksLoading && (
@@ -75,19 +98,24 @@ const Map = () => {
       )}
 
       <DeckGL
-        ref={ref => ref && setDeck(ref.deck)}
+        ref={deckRef}
         controller
         viewState={viewState}
         onViewStateChange={({ viewState }) => setViewState(viewState)}
         layers={layers}
         ContextProvider={MapContext.Provider}
+        onWebGLInitialized={setGlContext}
+        glOptions={{
+          /* To render vector tile polygons correctly */
+          stencil: true,
+        }}
       >
         <StaticMap
-          ref={ref => ref && setMap(ref.getMap())}
-          preserveDrawingBuffer
-          reuseMap
+          ref={mapRef}
+          gl={glContext}
           mapboxApiAccessToken={accessToken}
           mapStyle={selectedMapStyle?.uri}
+          onLoad={onMapLoad}
         />
         {mapComponents}
         <Geocoder
