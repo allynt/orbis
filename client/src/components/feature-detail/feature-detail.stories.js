@@ -1,7 +1,7 @@
 import React from 'react';
 import FeatureDetail from './feature-detail.component';
 
-export default { title: 'Map/Feature Detail', component: FeatureDetail };
+export default { title: 'Components/Feature Detail', component: FeatureDetail };
 
 export const NoFeatures = () => <FeatureDetail features={[]} />;
 
