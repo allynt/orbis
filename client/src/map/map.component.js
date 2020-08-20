@@ -20,6 +20,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useOrbs } from './orbs/useOrbs';
 import styles from './map.module.css';
 import { selectedMapStyleSelector, selectMapStyle } from './map.slice';
+import { Geocoder } from './geocoder/geocoder.component';
 
 const Map = () => {
   const { setMap, setDeck, viewState, setViewState } = useMap();
@@ -54,6 +55,17 @@ const Map = () => {
     }
   }, [selectedBookmark, viewState, setViewState, dispatch]);
 
+  const handleGeocoderSelect = feature => {
+    const [longitude, latitude] = feature.center;
+    setViewState({
+      ...viewState,
+      longitude,
+      latitude,
+      transitionDuration: 2000,
+      transitionInterpolator: new FlyToInterpolator(),
+    });
+  };
+
   return (
     <>
       {bookmarksLoading && (
@@ -61,6 +73,7 @@ const Map = () => {
           <LoadMask />
         </div>
       )}
+
       <DeckGL
         ref={ref => ref && setDeck(ref.deck)}
         controller
@@ -77,6 +90,11 @@ const Map = () => {
           mapStyle={selectedMapStyle?.uri}
         />
         {mapComponents}
+        <Geocoder
+          className={styles.geocoder}
+          mapboxApiAccessToken={accessToken}
+          onSelect={handleGeocoderSelect}
+        />
         <NavigationControl className={styles.navigationControl} />
       </DeckGL>
       <Button

@@ -1,0 +1,80 @@
+.geocoder {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.searchBox {
+  position: relative;
+  background-color: var(--color-secondary);
+  border-radius: 0.5rem;
+  display: flex;
+  max-width: max-content;
+}
+
+.icon {
+  position: absolute;
+  top: 0.75rem;
+  left: 0.75rem;
+  width: 1rem;
+  height: 1rem;
+  color: var(--color-primary);
+  z-index: 1;
+}
+
+.label {
+  composes: hiddenLabel from '../../forms.module.css';
+  position: absolute;
+}
+
+.input {
+  color: var(--color-lightgrey-light);
+  border: none;
+  background-color: transparent;
+  padding: 0;
+  padding-left: calc(1.5rem + 1rem);
+  max-width: 0;
+  height: 2.5rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  z-index: 2;
+}
+
+.input:focus,
+.input:not([value='']) {
+  outline: none;
+  max-width: 100%;
+  padding: 0.75rem;
+  padding-left: calc(1.5rem + 1rem);
+}
+
+.resultsList {
+  margin-top: 0.375rem;
+  color: var(--color-lightgrey-light);
+  border-radius: 0.5rem;
+  max-width: 50ch;
+}
+
+.resultsListItem {
+  background-color: var(--color-secondary);
+  padding: 0.375rem 0.75rem;
+  transition: background-color 250ms ease;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.resultsListItem:first-of-type {
+  padding-top: 0.75rem;
+  border-radius: 0.5rem 0.5rem 0 0;
+}
+
+.resultsListItem:last-of-type {
+  padding-bottom: 0.75rem;
+  border-radius: 0 0 0.5rem 0.5rem;
+}
+
+.resultsListItem:hover {
+  cursor: pointer;
+  background-color: var(--color-darkgrey-light);
+}
