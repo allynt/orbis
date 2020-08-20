@@ -23,7 +23,6 @@
   visibility: visible;
   border-top-right-radius: 1rem;
   border-bottom-right-radius: 1rem;
-  overflow: hidden;
 }
 
 .container {
@@ -65,8 +64,8 @@
 .sidebar {
   height: 100%;
   width: 100%;
-  overflow-y: auto;
   overflow-x: hidden;
+  overflow-y: auto;
 }
 
 .header {

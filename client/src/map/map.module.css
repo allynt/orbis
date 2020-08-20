@@ -20,11 +20,19 @@
   color: var(--color-primary);
 }
 
-.navigationControl {
+.navigationControl,
+.geocoder {
   position: absolute;
   right: 0.6rem;
+}
+
+.navigationControl {
   bottom: 2rem;
   background-color: transparent;
+}
+
+.geocoder {
+  top: 2rem;
 }
 
 .navigationControl > button {

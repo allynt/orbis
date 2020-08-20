@@ -4,10 +4,9 @@ import InfoButton from '@astrosat/astrosat-ui/dist/buttons/info-button';
 import Button from '@astrosat/astrosat-ui/dist/buttons/button';
 import Switch from '@astrosat/astrosat-ui/dist/buttons/switch';
 
+import InfoBox from 'components/info-box/info-box.component';
 import dialogStyles from '../data-layers-dialog.module.css';
 import styles from './layer-select.module.css';
-
-const InfoBox = ({ info }) => <div className={styles.infoBox}>{info}</div>;
 
 export const LayerSelect = ({
   domain,
@@ -113,7 +112,9 @@ export const LayerSelect = ({
                         checked={isSelected}
                       />
                       {isInfoVisible && info.name === layer.name && (
-                        <InfoBox info={layer.metadata.description} />
+                        <InfoBox className={styles.infoBox} arrow="right">
+                          {layer.metadata.description}
+                        </InfoBox>
                       )}
                       <InfoButton
                         classNames={[styles.info]}
