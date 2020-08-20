@@ -1,11 +1,10 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 import { useSelector } from 'react-redux';
+import ReactTooltip from 'react-tooltip';
 
 import { Radio, InfoIcon } from '@astrosat/astrosat-ui';
 
-import { useClickaway } from 'hooks/useClickaway';
-import InfoBox from 'components/info-box/info-box.component';
 import {
   propertySelector,
   setProperty,
@@ -21,9 +20,6 @@ export const RadioPicker = ({ selectedLayer, dispatch }) => {
   const colorScheme = useSelector(state =>
     colorSchemeSelector(state, selectedLayer.source_id),
   );
-  /** @type {[string | undefined, React.Dispatch<string | undefined>]} */
-  const [visibleInfoProperty, setVisibleInfoProperty] = useState();
-  const [ref] = useClickaway(() => setVisibleInfoProperty(undefined));
 
   if (!selectedLayer?.metadata?.properties) return null;
   return (
@@ -47,21 +43,27 @@ export const RadioPicker = ({ selectedLayer, dispatch }) => {
             }
           />
           <div className={styles.info}>
-            <button
+            <div
+              data-tip
+              data-for={`${property}-tooltip`}
+              role="tooltip"
               className={styles.infoButton}
-              onClick={() =>
-                setVisibleInfoProperty(
-                  visibleInfoProperty === property ? undefined : property,
-                )
-              }
+              aria-label="tooltip"
+              data-scroll-hide="false"
             >
               <InfoIcon classes={styles.infoIcon} title={property} />
-            </button>
-            {visibleInfoProperty === property && (
-              <InfoBox ref={ref} className={styles.description} arrow="left">
-                <p>{selectedLayer.metadata.properties[property].description}</p>
-              </InfoBox>
-            )}
+            </div>
+            <ReactTooltip
+              className={styles.tooltip}
+              id={`${property}-tooltip`}
+              place="right"
+              effect="solid"
+              arrowColor="var(--color-primary)"
+              backgroundColor="var(--color-primary)"
+              textColor="var(--color--text--dark)"
+            >
+              <p>{selectedLayer.metadata.properties[property].description}</p>
+            </ReactTooltip>
           </div>
           {property === selectedProperty && (
             <ColorScale

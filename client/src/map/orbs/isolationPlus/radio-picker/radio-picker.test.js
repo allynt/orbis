@@ -51,24 +51,8 @@ describe('<RadioPicker />', () => {
 
   it('has an info icon for each radio', () => {
     const { getAllByRole } = renderComponent();
-    expect(getAllByRole('button')).toHaveLength(
+    expect(getAllByRole('tooltip')).toHaveLength(
       Object.keys(defaultSelectedLayer.metadata.properties).length,
     );
-  });
-
-  it('shows the property description when the info icon is clicked', () => {
-    const description = 'Test Description';
-    const { getByRole, getByText } = renderComponent({
-      ...defaultSelectedLayer,
-      metadata: {
-        ...defaultSelectedLayer.metadata,
-        properties: {
-          ...defaultSelectedLayer.metadata.properties,
-          property1: { description },
-        },
-      },
-    });
-    userEvent.click(getByRole('button', { name: /property1/i }));
-    expect(getByText(description)).toBeInTheDocument();
   });
 });
