@@ -1,18 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 
 import chroma from 'chroma-js';
 import { omitBy } from 'lodash';
 import { Popup } from 'react-map-gl';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 import FeatureDetail from 'components/feature-detail/feature-detail.component';
 import CustomMVTLayer from 'map/deck.gl/custom-layers/custom-mvt-layer';
 import { LAYER_IDS } from 'map/map.constants';
-import {
-  propertiesSelector,
-  colorSchemesSelector,
-  setProperty,
-} from './isolation-plus.slice';
+import { colorSchemesSelector, propertySelector } from './isolation-plus.slice';
 import { RadioPicker } from './radio-picker/radio-picker.component';
 
 const TILE_LAYERS = [
@@ -29,44 +25,26 @@ const TILE_LAYERS = [
 export const useIsolationPlusOrb = (data, sources, authToken) => {
   /** @type {[*, React.Dispatch<*>]} */
   const [pickedInfo, setPickedInfo] = useState();
-  const dispatch = useDispatch();
-  const selectedProperties = useSelector(propertiesSelector);
+  const selectedProperty = useSelector(propertySelector);
 
   const colorSchemes = useSelector(colorSchemesSelector);
-
-  useEffect(() => {
-    if (sources) {
-      sources.forEach(source => {
-        if (
-          TILE_LAYERS.includes(source.source_id) &&
-          !selectedProperties[source.source_id]
-        )
-          dispatch(
-            setProperty({
-              property: Object.keys(source.metadata.properties)[0],
-              source_id: source.source_id,
-            }),
-          );
-      });
-    }
-  }, [sources, dispatch, selectedProperties]);
 
   const layers = [
     ...TILE_LAYERS.map(layerId => {
       const source = sources?.find(source => source.source_id === layerId);
       if (source) {
+        const property = source.metadata.properties.find(
+          property => property.name === selectedProperty.name,
+        );
         const colorScale = chroma
           .scale(colorSchemes?.[layerId])
-          .domain([
-            source.metadata.properties[selectedProperties[layerId]]?.min,
-            source.metadata.properties[selectedProperties[layerId]]?.max,
-          ]);
+          .domain([property?.min, property?.max]);
         // @ts-ignore
         return new CustomMVTLayer({
           id: layerId,
           data: data[layerId],
           authToken,
-          visible: !!source,
+          visible: !!source && selectedProperty.source_id === layerId,
           minZoom: source.metadata.minZoom,
           maxZoom: source.metadata.maxZoom,
           uniqueIdProperty: source.metadata.uniqueIdProperty,
@@ -75,12 +53,11 @@ export const useIsolationPlusOrb = (data, sources, authToken) => {
           onClick: info => setPickedInfo(info),
           filled: true,
           getFillColor: d => [
-            // @ts-ignore
-            ...colorScale(d.properties[selectedProperties?.[layerId]]).rgb(),
+            ...colorScale(d.properties[selectedProperty.name]).rgb(),
             150,
           ],
           updateTriggers: {
-            getFillColor: [selectedProperties?.[layerId]],
+            getFillColor: [selectedProperty],
           },
         });
       }
@@ -102,7 +79,7 @@ export const useIsolationPlusOrb = (data, sources, authToken) => {
             omitBy(
               pickedInfo.object.properties,
               (_, key) =>
-                key !== selectedProperties[pickedInfo.layer.id] &&
+                key !== selectedProperty.name &&
                 !key.toLowerCase().includes('code'),
             ),
           ]}
