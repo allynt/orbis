@@ -31,9 +31,7 @@ import ColorScale from 'components/color-scale/color-scale.component';
  * }} props
  */
 export const RadioPicker = ({ selectedLayer, dispatch }) => {
-  const selectedProperty = useSelector(state =>
-    propertySelector(state, selectedLayer.source_id),
-  );
+  const selectedProperty = useSelector(propertySelector);
   const colorScheme = useSelector(state =>
     colorSchemeSelector(state, selectedLayer.source_id),
   );
@@ -46,14 +44,14 @@ export const RadioPicker = ({ selectedLayer, dispatch }) => {
           <Radio
             className={styles.radio}
             label={property.name}
-            name={selectedLayer?.source_id}
+            name="isolationPlus"
             value={property.name}
-            checked={property.name === selectedProperty}
+            checked={property.name === selectedProperty?.name}
             onChange={() =>
               dispatch(
                 setProperty({
                   source_id: selectedLayer.source_id,
-                  property: property.name,
+                  name: property.name,
                 }),
               )
             }
