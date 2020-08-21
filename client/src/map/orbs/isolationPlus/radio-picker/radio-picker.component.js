@@ -79,7 +79,7 @@ export const RadioPicker = ({ selectedLayer, dispatch }) => {
               <p>{property.description}</p>
             </ReactTooltip>
           </div>
-          {property.name === selectedProperty && (
+          {property.name === selectedProperty?.name && (
             <ColorScale
               className={styles.colorScale}
               type={property.type}
