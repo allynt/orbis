@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import chroma from 'chroma-js';
 import { omitBy } from 'lodash';
@@ -26,19 +26,22 @@ export const useIsolationPlusOrb = (data, sources, authToken) => {
   /** @type {[*, React.Dispatch<*>]} */
   const [pickedInfo, setPickedInfo] = useState();
   const selectedProperty = useSelector(propertySelector);
-
   const colorSchemes = useSelector(colorSchemesSelector);
+
+  useEffect(() => {
+    if (selectedProperty && pickedInfo) {
+      if (pickedInfo.layer.id !== selectedProperty.source_id)
+        setPickedInfo(undefined);
+    }
+  }, [selectedProperty, pickedInfo]);
 
   const layers = [
     ...TILE_LAYERS.map(layerId => {
       const source = sources?.find(source => source.source_id === layerId);
       if (source) {
-        const property = source.metadata.properties.find(
-          property => property.name === selectedProperty.name,
-        );
         const colorScale = chroma
           .scale(colorSchemes?.[layerId])
-          .domain([property?.min, property?.max]);
+          .domain([selectedProperty?.min, selectedProperty?.max]);
         // @ts-ignore
         return new CustomMVTLayer({
           id: layerId,
@@ -53,6 +56,7 @@ export const useIsolationPlusOrb = (data, sources, authToken) => {
           onClick: info => setPickedInfo(info),
           filled: true,
           getFillColor: d => [
+            // @ts-ignore
             ...colorScale(d.properties[selectedProperty.name]).rgb(),
             150,
           ],

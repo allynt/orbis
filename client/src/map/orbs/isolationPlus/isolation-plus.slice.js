@@ -22,9 +22,8 @@ const isolationPlusSlice = createSlice({
   },
   reducers: {
     setProperty: (state, { payload }) => {
-      if (payload.source_id && payload.name) {
-        state.property.source_id = payload.source_id;
-        state.property.name = payload.name;
+      if (payload) {
+        state.property = payload;
       }
     },
   },

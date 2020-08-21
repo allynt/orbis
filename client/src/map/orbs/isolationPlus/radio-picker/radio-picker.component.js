@@ -52,6 +52,8 @@ export const RadioPicker = ({ selectedLayer, dispatch }) => {
                 setProperty({
                   source_id: selectedLayer.source_id,
                   name: property.name,
+                  min: property.min,
+                  max: property.max,
                 }),
               )
             }
