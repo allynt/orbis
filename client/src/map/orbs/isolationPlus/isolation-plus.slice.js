@@ -15,12 +15,16 @@ const isolationPlusSlice = createSlice({
       [LAYER_IDS.astrosat.isolationPlus.localFuelPoverty.v1]: 'Oranges',
       [LAYER_IDS.astrosat.isolationPlus.mobileConnectivity.v1]: 'PuRd',
     },
-    properties: {},
+    property: {
+      source_id: undefined,
+      name: undefined,
+    },
   },
   reducers: {
     setProperty: (state, { payload }) => {
-      if (payload.source_id && payload.property)
-        state.properties[payload.source_id] = payload.property;
+      if (payload.source_id && payload.name) {
+        state.property = payload;
+      }
     },
   },
 });
@@ -43,15 +47,9 @@ export const colorSchemeSelector = createSelector(
   (orb, source_id) => orb?.colorSchemes?.[source_id],
 );
 
-export const propertiesSelector = createSelector(
-  baseSelector,
-  orb => orb?.properties,
-);
-
 export const propertySelector = createSelector(
   baseSelector,
-  (_, source_id) => source_id,
-  (orb, source_id) => orb?.properties?.[source_id],
+  orb => orb?.property,
 );
 
 export default isolationPlusSlice.reducer;
