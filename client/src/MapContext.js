@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useContext, useState, useRef } from 'react';
 
 const INITIAL_VIEW_STATE = {
   zoom: 6,
@@ -25,10 +25,8 @@ MapContext.displayName = 'MapContext';
 
 /**
  * @typedef {Object} MapContextType
- * @property {mapboxgl.Map} map
- * @property {React.Dispatch<mapboxgl.Map>} setMap
- * @property {import('deck.gl').Deck} deck
- * @property {React.Dispatch<import('deck.gl').Deck>} setDeck
+ * @property {React.MutableRefObject<import('react-map-gl').StaticMap>} mapRef
+ * @property {React.MutableRefObject<import('deck.gl').Deck>} deckRef
  * @property {ViewState} viewState
  * @property {React.Dispatch<ViewState>} setViewState
  */
@@ -38,17 +36,15 @@ MapContext.displayName = 'MapContext';
  * @returns {JSX.Element} MapContextProvider
  */
 export const MapProvider = props => {
-  const [map, setMap] = useState();
-  const [deck, setDeck] = useState();
+  const mapRef = useRef(null);
+  const deckRef = useRef(null);
   const [viewState, setViewState] = useState(INITIAL_VIEW_STATE);
 
   return (
     <MapContext.Provider
       value={{
-        map,
-        setMap,
-        deck,
-        setDeck,
+        mapRef,
+        deckRef,
         viewState,
         setViewState,
       }}
@@ -59,10 +55,8 @@ export const MapProvider = props => {
 
 /**
  * @returns {{
- *   map: mapboxgl.Map
- *   setMap: React.Dispatch<mapboxgl.Map>
- *   deck: import('deck.gl').Deck
- *   setDeck: React.Dispatch<import('deck.gl').Deck
+ *   mapRef: React.MutableRefObject<import('react-map-gl').StaticMap>
+ *   deckRef: React.MutableRefObject<import('deck.gl').Deck>
  *   viewState: ViewState
  *   setViewState: React.Dispatch<ViewState>
  *   createScreenshot: (callback: BlobCallback) => void
@@ -80,7 +74,9 @@ export const useMap = () => {
    * @param {BlobCallback} callback
    */
   const createScreenshot = callback => {
-    const { deck, map } = context;
+    const { deckRef, mapRef } = context;
+    const deck = deckRef.current.deck,
+      map = mapRef.current.getMap();
     deck.redraw(true);
     const deckCanvas = deck.canvas;
     const merged = document.createElement('canvas');
