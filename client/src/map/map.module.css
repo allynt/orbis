@@ -33,6 +33,7 @@
 
 .geocoder {
   top: 2rem;
+  z-index: 1;
 }
 
 .navigationControl > button {
