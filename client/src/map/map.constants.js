@@ -37,25 +37,35 @@ export const LAYER_IDS = {
     isolationPlus: {
       ageDemographics: {
         v1: 'astrosat/isolation_plus/age/v1',
+        v2: 'astrosat/isolation_plus/age/v2',
       },
       ahah: {
         v1: 'astrosat/isolation_plus/ahah/v1',
+        v2: 'astrosat/isolation_plus/ahah/v2',
       },
       broadbandConnectivity: {
         v1: 'astrosat/isolation_plus/broadband/v1',
+        v2: 'astrosat/isolation_plus/broadband/v2',
       },
       childPoverty: {
         v1: 'astrosat/isolation_plus/childpov/v1',
+        v2: 'astrosat/isolation_plus/childpov/v2',
       },
       deprivedHouses: {
         v1: 'astrosat/isolation_plus/depriv/v1',
+        v2: 'astrosat/isolation_plus/depriv/v2',
       },
-      imdIncome: { v1: 'astrosat/isolation_plus/imd_income/v1' },
+      imdIncome: {
+        v1: 'astrosat/isolation_plus/imd_income/v1',
+        v2: 'astrosat/isolation_plus/imd_income/v2',
+      },
       localFuelPoverty: {
         v1: 'astrosat/isolation_plus/lfp/v1',
+        v2: 'astrosat/isolation_plus/lfp/v2',
       },
       mobileConnectivity: {
         v1: 'astrosat/isolation_plus/mobile/v1',
+        v2: 'astrosat/isolation_plus/mobile/v2',
       },
     },
     rice: {
