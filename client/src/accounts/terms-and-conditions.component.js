@@ -18,7 +18,7 @@ const PrivacyPolicy = () => {
       <div className={styles.description}>
         <strong>STEVENSON ASTROSAT LIMITED</strong> a company incorporated in
         Scotland (Number SC423073) and whose Registered Office is at Copernicus
-        Kirk, 200 High Street, Musselburgh EH21 7DX trading as OR3IS&trade;
+        Kirk, 200 High Street, Musselburgh EH21 7DX trading as ORBIS&trade;
         understands that your privacy is important to you and that you care
         about how your personal data is used and shared online. We respect and
         valuethe privacy of Customers and will only collect and use personal
@@ -74,7 +74,7 @@ const PrivacyPolicy = () => {
               <span>“We/Us/Our”</span>
               <div>
                 means the said Stevenson Astrosat Limited trading astrading as
-                OR3IS™ (as above).
+                ORBIS™ (as above).
               </div>
             </li>
           </ul>
@@ -102,7 +102,7 @@ const PrivacyPolicy = () => {
       </div>
       <div className={styles.section}>
         <h2 className={styles.textSectionHeader}>
-          What Does This Policy Cover?
+          3. What Does This Policy Cover?
         </h2>
         <div className={styles.description}>
           This Privacy Policy applies only to our use of data gathered by Us in
@@ -522,15 +522,15 @@ const EndUserLicenseAgreement = () => {
         <span className={styles.emphasis}>STEVENSON ASTROSAT LIMITED</span> a
         company incorporated in Scotland (Number SC423073) and whose Registered
         Office is at Copernicus Kirk, 200 High Street, Musselburgh EH21 7DX
-        trading as OR3IS&trade; &#153; (
-        <span className={styles.emphasis}>“OR3IS”</span>) and you (
+        trading as ORBIS&trade; &#153; (
+        <span className={styles.emphasis}>“ORBIS”</span>) and you (
         <span className={styles.emphasis}>“the User”</span>). This is a Click to
         Agree Contract from within the Software if the User wishes to be bound
         by these Terms and Conditions. If the User does not agree to be bound by
         these Terms and Conditions, the User cannot USE the Software.
       </div>
       <div className={styles.description}>
-        The contract (“Agreement”) between the User and OR3IS will comprise:{' '}
+        The contract (“Agreement”) between the User and ORBIS will comprise:{' '}
         <ul className={styles.list}>
           <li className={styles.listItem}>
             <span>1.</span>
@@ -548,7 +548,7 @@ const EndUserLicenseAgreement = () => {
       <div className={styles.section}>
         <h2 className={styles.textSectionHeader}>1: Access to the Software.</h2>
         <div className={styles.description}>
-          OR3IS grants to the User a non-exclusive, royalty based,
+          ORBIS grants to the User a non-exclusive, royalty based,
           non-sublicensable licence to Use the Software for the User’s personal
           business use for the duration of this Agreement, subject to the
           following conditions: -
@@ -556,7 +556,7 @@ const EndUserLicenseAgreement = () => {
             <li className={styles.listItem}>
               <span>1.1.</span>
               <div>
-                The Software is located on the Platform. OR3IS has full
+                The Software is located on the Platform. ORBIS has full
                 administrative access rights to the Platform. Users may access
                 the Software but have no right to administer the Platform or
                 receive a copy of the object code or source code to the
@@ -614,7 +614,7 @@ const EndUserLicenseAgreement = () => {
               <div>
                 Access the Software (i) in order to build a competitive solution
                 or to assist someone else to build a competitive solution; or
-                (ii) if the User is an employee or contractor of a OR3IS
+                (ii) if the User is an employee or contractor of a ORBIS
                 competitor;
               </div>
             </li>
@@ -647,7 +647,7 @@ const EndUserLicenseAgreement = () => {
             <li className={styles.listItem}>
               <span>3.1.</span>
               <div>
-                Users provide all data for use in the Software, and OR3IS is not
+                Users provide all data for use in the Software, and ORBIS is not
                 obliged to modify or add to User Content except as specified in
                 Clause 4. The User is solely responsible for User Content and
                 the accuracy of User Content.
@@ -656,24 +656,24 @@ const EndUserLicenseAgreement = () => {
             <li className={styles.listItem}>
               <span>3.2.</span>
               <div>
-                User Content belongs to the User or its licensors, and OR3IS
+                User Content belongs to the User or its licensors, and ORBIS
                 makes no claim to any right of ownership in it.
               </div>
             </li>
             <li className={styles.listItem}>
               <span>3.3.</span>
               <div>
-                OR3IS shall keep User Content confidential in accordance with
+                ORBIS shall keep User Content confidential in accordance with
                 Clause 10 of this Agreement.
               </div>
             </li>
             <li className={styles.listItem}>
               <span>3.4.</span>
               <div>
-                Subject to the terms of Clause 4, OR3IS shall only be entitled
+                Subject to the terms of Clause 4, ORBIS shall only be entitled
                 to use User Content strictly as necessary to carry out its
                 obligations under this Agreement, and for no other purpose.
-                However, OR3IS:
+                However, ORBIS:
                 <ul className={styles.list}>
                   <li className={styles.listItem}>
                     <span>3.4.1.</span>
@@ -705,9 +705,9 @@ const EndUserLicenseAgreement = () => {
               <span>3.6.</span>
               <div>
                 Sharing of accounts is not permitted unless expressly authorised
-                in writing by OR3IS. Users must keep account details
+                in writing by ORBIS. Users must keep account details
                 confidential and Users should not reveal their username or
-                password to any unauthorised third parties. OR3IS accepts no
+                password to any unauthorised third parties. ORBIS accepts no
                 liability for any losses or damages incurred as a result of
                 account details being shared in breach of the terms of this
                 Agreement. It is recommended that Users do not save account
@@ -724,10 +724,10 @@ const EndUserLicenseAgreement = () => {
             <li className={styles.listItem}>
               <span>3.8.</span>
               <div>
-                Whereas as part of the Subscription Services, OR3IS may host
+                Whereas as part of the Subscription Services, ORBIS may host
                 email accounts or other online communications infrastructure or
-                subscription accounts (including the OR3IS subscription itself)
-                for Users, OR3IS accepts no responsibility and shall not be
+                subscription accounts (including the ORBIS subscription itself)
+                for Users, ORBIS accepts no responsibility and shall not be
                 liable for third parties accessing such email, online
                 communications accounts or subscription accounts by way of
                 breaking or hacking passwords. It is the responsibility of Users
@@ -809,15 +809,15 @@ const EndUserLicenseAgreement = () => {
             <li className={styles.listItem}>
               <span>4.2.</span>
               <div>
-                OR3IS does not screen or pre-approve any User Site or User
-                Content (although Users acknowledge that OR3IS may do so if it
+                ORBIS does not screen or pre-approve any User Site or User
+                Content (although Users acknowledge that ORBIS may do so if it
                 wishes).
               </div>
             </li>
             <li className={styles.listItem}>
               <span>4.3.</span>
               <div>
-                OR3IS may edit a User Site to comply with the provisions of
+                ORBIS may edit a User Site to comply with the provisions of
                 sub-Clause 4.1 without prior consultation. In cases of severe
                 breaches of the provisions of sub-Clause 4.1, a User Site may be
                 taken down and the relevant account may be suspended or
@@ -828,16 +828,16 @@ const EndUserLicenseAgreement = () => {
             <li className={styles.listItem}>
               <span>4.4.</span>
               <div>
-                OR3IS accepts no responsibility or liability for any
+                ORBIS accepts no responsibility or liability for any
                 infringement of third-party rights by User Sites.
               </div>
             </li>
             <li className={styles.listItem}>
               <span>4.5.</span>
               <div>
-                OR3IS will not be liable in any way or under any circumstances
+                ORBIS will not be liable in any way or under any circumstances
                 for any loss or damage that any User may incur as a result of
-                such User Sites, or OR3IS exercising its rights under this
+                such User Sites, or ORBIS exercising its rights under this
                 Agreement, nor for any errors or omissions in User Sites. Use of
                 and reliance upon User Sites is entirely at the User’s own risk.
               </div>
@@ -845,9 +845,9 @@ const EndUserLicenseAgreement = () => {
             <li className={styles.listItem}>
               <span>4.6.</span>
               <div>
-                The User acknowledges that OR3IS may retain copies of any and
+                The User acknowledges that ORBIS may retain copies of any and
                 all communications, information, User Content and User Sites
-                sent to OR3IS.
+                sent to ORBIS.
               </div>
             </li>
           </ul>
@@ -862,8 +862,8 @@ const EndUserLicenseAgreement = () => {
               <div>
                 Subject to the exceptions in Clause 6 of this Agreement, all
                 Content, that is not User Content, and the Database and the
-                Software and the Documentation are the property of OR3IS, or
-                OR3IS’ Affiliates or licensors. By continuing to use the
+                Software and the Documentation are the property of ORBIS, or
+                ORBIS’ Affiliates or licensors. By continuing to use the
                 Software the User acknowledges that such material is protected
                 by applicable United Kingdom and international Intellectual
                 Property and other laws.
@@ -874,12 +874,12 @@ const EndUserLicenseAgreement = () => {
               <div>
                 You may print, reproduce, copy, distribute, store or in any
                 other fashion re-use Content from the Software for personal or
-                educational purposes only unless otherwise given OR3IS’ express
+                educational purposes only unless otherwise given ORBIS’ express
                 written permission to do so. Specifically, the User agrees that
                 it will not systematically copy Content from the Software with a
                 view to creating or compiling any form of comprehensive
                 collection, compilation, directory or database unless given
-                OR3IS’ express written permission to do so.
+                ORBIS’ express written permission to do so.
               </div>
             </li>
             <li className={styles.listItem}>
@@ -887,15 +887,15 @@ const EndUserLicenseAgreement = () => {
               <div>
                 In the event that new inventions, designs or processes evolve in
                 performance of or as a result of this Agreement, the User
-                acknowledges that the same shall be the property of OR3IS unless
-                otherwise agreed in writing by OR3IS.
+                acknowledges that the same shall be the property of ORBIS unless
+                otherwise agreed in writing by ORBIS.
               </div>
             </li>
             <li className={styles.listItem}>
               <span>5.4.</span>
               <div>
-                Any trade mark, trade name or logo such as “Powered by OR3IS”
-                appearing on or in the Software is the property of OR3IS and
+                Any trade mark, trade name or logo such as “Powered by ORBIS”
+                appearing on or in the Software is the property of ORBIS and
                 must not be copied, obscured or removed from the Software.
               </div>
             </li>
@@ -980,9 +980,9 @@ const EndUserLicenseAgreement = () => {
               <div>
                 Except as expressly provided in this Agreement, the Software and
                 Professional Services are provided with no other warranties of
-                any kind, and OR3IS disclaims all other warranties, express or
+                any kind, and ORBIS disclaims all other warranties, express or
                 implied, including without limitation any warranty of
-                merchantability or fitness for a particular purpose. OR3IS does
+                merchantability or fitness for a particular purpose. ORBIS does
                 not warrant that the use of the Subscription Services shall be
                 uninterrupted or error-free.
               </div>
@@ -1017,10 +1017,10 @@ const EndUserLicenseAgreement = () => {
             <li className={styles.listItem}>
               <span>9.2.</span>
               <div>
-                OR3IS’ liability under this Agreement (except where provided
+                ORBIS’ liability under this Agreement (except where provided
                 otherwise in this agreement to a lesser extent) shall be limited
                 to the amount of professional indemnity insurance underwritten
-                in the name of OR3IS which shall be £1,000,000. This limitation
+                in the name of ORBIS which shall be £1,000,000. This limitation
                 shall not apply to a breach of the Privacy Legislation.
               </div>
             </li>
@@ -1119,10 +1119,10 @@ const EndUserLicenseAgreement = () => {
             <li className={styles.listItem}>
               <span>11.1.</span>
               <div>
-                The User shall indemnify and hold harmless OR3IS, its
+                The User shall indemnify and hold harmless ORBIS, its
                 Affiliates, directors, and employees from any damages finally
-                awarded against OR3IS (including, without limitation, reasonable
-                costs and legal fees incurred by OR3IS) arising out of any third
+                awarded against ORBIS (including, without limitation, reasonable
+                costs and legal fees incurred by ORBIS) arising out of any third
                 party suit, claim or other legal action (including but not
                 limited to any governmental investigations, complaints and
                 actions) in connection with the User Content, including, without
@@ -1135,21 +1135,21 @@ const EndUserLicenseAgreement = () => {
             <li className={styles.listItem}>
               <span>11.2.</span>
               <div>
-                OR3IS shall give written notice to the User of any Legal Claim
+                ORBIS shall give written notice to the User of any Legal Claim
                 no later than 30 days after first receiving notice of a Legal
                 Claim and shall give copies to the User of all communications,
-                notices and/or other actions relating to the Legal Claim. OR3IS
+                notices and/or other actions relating to the Legal Claim. ORBIS
                 shall give the User the sole control of the defence of any Legal
                 Claim, shall act in accordance with the reasonable instructions
                 of the User and shall give the User such assistance as the User
                 reasonably requests to defend or settle such claim. The User
                 shall conduct its defence at all times in a manner which is not
-                adverse to OR3IS’ interests. OR3IS may employ its own counsel to
-                assist it with respect to any such claim. OR3IS shall bear all
+                adverse to ORBIS’ interests. ORBIS may employ its own counsel to
+                assist it with respect to any such claim. ORBIS shall bear all
                 costs of engaging its own counsel, unless engagement of counsel
                 is necessary because of a conflict of interest with the User or
                 its counsel, or because the User fails to assume control of the
-                defence. OR3IS shall not settle or compromise any Legal Claim
+                defence. ORBIS shall not settle or compromise any Legal Claim
                 without the User’s express written consent.
               </div>
             </li>
@@ -1181,9 +1181,9 @@ const EndUserLicenseAgreement = () => {
               <span>13.1.</span>
               <div>
                 The User hereby acknowledges that upon submitting Feedback to
-                OR3IS, the User automatically grants to OR3IS a worldwide,
+                ORBIS, the User automatically grants to ORBIS a worldwide,
                 perpetual, irrevocable, royalty free licence to use that
-                Feedback in any way OR3IS deems appropriate including, but not
+                Feedback in any way ORBIS deems appropriate including, but not
                 limited to:
                 <ul className={styles.list}>
                   <li className={styles.listItem}>
@@ -1209,7 +1209,7 @@ const EndUserLicenseAgreement = () => {
             <li className={styles.listItem}>
               <span>13.2.</span>
               <div>
-                OR3IS’ use of the Feedback shall not bestow any rights or
+                ORBIS’ use of the Feedback shall not bestow any rights or
                 interests upon the User whatsoever.
               </div>
             </li>
@@ -1218,7 +1218,7 @@ const EndUserLicenseAgreement = () => {
               <div>
                 The User hereby acknowledges that any modifications made to the
                 Software at the request or suggestion of the User will belong to
-                and be the Intellectual Property of OR3IS.
+                and be the Intellectual Property of ORBIS.
               </div>
             </li>
           </ul>
@@ -1271,7 +1271,7 @@ const EndUserLicenseAgreement = () => {
               <span>14.5.</span>
               <div>
                 “Documentation” means user documentation provided electronically
-                by OR3IS for use with the Software, as periodically updated;
+                by ORBIS for use with the Software, as periodically updated;
               </div>
             </li>
             <li className={styles.listItem}>
@@ -1280,7 +1280,7 @@ const EndUserLicenseAgreement = () => {
                 “Feedback” means all comments, suggestions, requests,
                 requirements, improvements, feedback, or other input the User
                 provides regarding any products or Services owned or supplied by
-                OR3IS, its Affiliates and licensees;
+                ORBIS, its Affiliates and licensees;
               </div>
             </li>
             <li className={styles.listItem}>
@@ -1335,7 +1335,7 @@ const EndUserLicenseAgreement = () => {
             <li className={styles.listItem}>
               <span>14.11.</span>
               <div>
-                “Privacy Policy” means OR3IS’ policy relating to User Content
+                “Privacy Policy” means ORBIS’ policy relating to User Content
                 and compliance with (amongst others) the DPA and the GDPR from
                 time to time, the current version of which is located here
                 https://or3is.com/privacy-policy ;
@@ -1344,7 +1344,7 @@ const EndUserLicenseAgreement = () => {
             <li className={styles.listItem}>
               <span>14.12.</span>
               <div>
-                “Software” means the OR3IS™ proprietary operating software and
+                “Software” means the ORBIS™ proprietary operating software and
                 the Third Party Software written in object and source code
                 residing on and used for operating the Platform and the Software
                 as Updated and Upgraded from time to time;
@@ -1354,7 +1354,7 @@ const EndUserLicenseAgreement = () => {
               <span>14.13.</span>
               <div>
                 “Third Party Software” means software other than the Software
-                which belongs to third parties and in relation to which OR3IS
+                which belongs to third parties and in relation to which ORBIS
                 has the right to grant sub-licenses;
               </div>
             </li>
@@ -1379,7 +1379,7 @@ const EndUserLicenseAgreement = () => {
               <span>14.16.</span>
               <div>
                 “User” means the person that has permission to accesses the
-                Software as a named user and is not employed by OR3IS and acting
+                Software as a named user and is not employed by ORBIS and acting
                 in the course of their employment;
               </div>
             </li>
@@ -1397,7 +1397,7 @@ const EndUserLicenseAgreement = () => {
               <span>14.18.</span>
               <div>
                 “User Site” means a partition/tenancy on the Platform created by
-                OR3IS for a User or Users accessing the Software which shall
+                ORBIS for a User or Users accessing the Software which shall
                 contain User Content and shall be hosted on the Platform;
               </div>
             </li>
@@ -1409,7 +1409,7 @@ const EndUserLicenseAgreement = () => {
         <h3>Processing, Personal Data and Data Subjects</h3>
       </div>
       <div className={styles.section}>
-        <h2 className={styles.textSectionHeader}>1: Processing by OR3IS</h2>
+        <h2 className={styles.textSectionHeader}>1: Processing by ORBIS</h2>
         <div className={styles.description}>
           <ul className={styles.list}>
             <li className={styles.listItem}>
@@ -1482,7 +1482,7 @@ const EndUserLicenseAgreement = () => {
 };
 
 const TermsAndConditions = () => {
-  const [info, setInfo] = useState(PRIVACY_POLICY);
+  const [info, setInfo] = useState(EULA);
   const [redirect, setRedirect] = useState(null);
 
   if (redirect) {
@@ -1499,6 +1499,17 @@ const TermsAndConditions = () => {
             <Button
               theme="link"
               classNames={[
+                `${styles.button} ${info !== EULA && styles.unselected}`,
+              ]}
+              onClick={() => setInfo(EULA)}
+            >
+              End User License Agreement
+            </Button>
+          </div>
+          <div>
+            <Button
+              theme="link"
+              classNames={[
                 `${styles.button} ${
                   info !== PRIVACY_POLICY && styles.unselected
                 }`,
@@ -1508,21 +1519,10 @@ const TermsAndConditions = () => {
               Privacy Policy
             </Button>
           </div>
-          <div>
-            <Button
-              theme="link"
-              classNames={[
-                `${styles.button} ${info !== EULA && styles.unselected}`,
-              ]}
-              onClick={() => setInfo(EULA)}
-            >
-              End User License Agreement
-            </Button>
-          </div>
         </div>
         <div className={styles.infoContainer}>
-          {info === PRIVACY_POLICY && <PrivacyPolicy />}
           {info === EULA && <EndUserLicenseAgreement />}
+          {info === PRIVACY_POLICY && <PrivacyPolicy />}
         </div>
       </div>
     </div>
