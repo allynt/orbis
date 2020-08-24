@@ -49,7 +49,7 @@ const DataLayers = () => {
           onClick={toggle}
         />
         <Button theme="link" className={styles.addOrbButton} onClick={toggle}>
-          Add New Orb
+          Add/Remove Orbs and Data Layers
         </Button>
       </div>
 

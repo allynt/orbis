@@ -5,10 +5,14 @@ import styles from './geocoder.module.css';
 const GEOCODE_API_URL = 'https://api.mapbox.com/geocoding/v5/mapbox.places/';
 
 /**
+ * @typedef {import('@turf/turf').Feature & {place_name?: string}} Feature
+ */
+
+/**
  * @typedef State
  * @property {string} searchString
- * @property {import('@turf/turf').Feature[]} searchResults
- * @property {import('@turf/turf').Feature | undefined} chosenResult
+ * @property {Feature[]} searchResults
+ * @property {Feature | undefined} [chosenResult]
  * @property {boolean} showResults
  */
 

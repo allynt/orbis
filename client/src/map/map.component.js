@@ -97,6 +97,11 @@ const Map = () => {
         </div>
       )}
 
+      <Geocoder
+        className={styles.geocoder}
+        mapboxApiAccessToken={accessToken}
+        onSelect={handleGeocoderSelect}
+      />
       <DeckGL
         ref={deckRef}
         controller
@@ -118,11 +123,6 @@ const Map = () => {
           onLoad={onMapLoad}
         />
         {mapComponents}
-        <Geocoder
-          className={styles.geocoder}
-          mapboxApiAccessToken={accessToken}
-          onSelect={handleGeocoderSelect}
-        />
         <NavigationControl className={styles.navigationControl} />
       </DeckGL>
       <Button

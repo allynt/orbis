@@ -1,7 +1,6 @@
 import React from 'react';
 
 import { render } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
 import { Provider } from 'react-redux';
 import configureStore from 'redux-mock-store';
 
@@ -12,10 +11,7 @@ const mockStore = configureStore();
 const defaultSelectedLayer = {
   source_id: 'test/layer',
   metadata: {
-    properties: {
-      property1: {},
-      property2: {},
-    },
+    properties: [{ name: 'property1' }, { name: 'property2' }],
   },
 };
 
@@ -32,8 +28,8 @@ const renderComponent = (
 describe('<RadioPicker />', () => {
   it('displays a radio for each selectable property in the source', () => {
     const { getByLabelText } = renderComponent();
-    Object.keys(defaultSelectedLayer.metadata.properties).forEach(key =>
-      expect(getByLabelText(key)).toBeInTheDocument(),
+    defaultSelectedLayer.metadata.properties.forEach(property =>
+      expect(getByLabelText(property.name)).toBeInTheDocument(),
     );
   });
 
@@ -41,7 +37,7 @@ describe('<RadioPicker />', () => {
     const initialState = {
       orbs: {
         isolationPlus: {
-          properties: { 'test/layer': 'property1' },
+          property: { source_id: 'test/layer', name: 'property1' },
         },
       },
     };
