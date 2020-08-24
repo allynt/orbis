@@ -1,12 +1,17 @@
 import React from 'react';
 
-export const useMySupplyLynkOrb = ({ data, activeSources }) => {
-  console.log('Data: ', data);
-  console.log('Active Sources: ', activeSources);
+import { LAYER_IDS } from 'map/map.constants';
 
-  let layers = 'Layers';
-  let mapComponents = 'Map Components';
-  let sidebarComponents = 'Sidebar Components';
+export const useMySupplyLynkOrb = (data, activeSources) => {
+  const SUPPLYLYNK_LAYER_IDS = [LAYER_IDS.astrosat.mySupplyLynk.latest];
+
+  const handleLayerClick = () => {};
+
+  // const layers = [...SUPPLYLYNK_LAYER_IDS.map(id => {})];
+
+  let layers = [];
+  let mapComponents = [];
+  let sidebarComponents = [];
 
   return { layers, mapComponents, sidebarComponents };
 };

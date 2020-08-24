@@ -78,6 +78,9 @@ export const LAYER_IDS = {
         latest: 'astrosat/covid/hourglass/latest',
       },
     },
+    mySupplyLynk: {
+      latest: 'astrosat/mysupplylynk/orbis/latest',
+    },
     hourglass: {
       people: {
         v1: 'astrosat/hourglass/people/v1',
