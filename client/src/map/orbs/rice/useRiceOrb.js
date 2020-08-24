@@ -49,6 +49,12 @@ export const useRiceOrb = (data, activeSources) => {
     }),
   ];
 
-  return { layers, mapComponents: [], sidebarComponents };
+  return {
+    layers,
+    mapComponents: [],
+    sidebarComponents,
+    preLabelLayers: [],
+    postLabelLayers: [LAYER_IDS.astrosat.rice.paddiesHealth.latest],
+  };
 };
 useRiceOrb.id = 'rice';

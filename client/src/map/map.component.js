@@ -22,17 +22,9 @@ import styles from './map.module.css';
 import { selectedMapStyleSelector, selectMapStyle } from './map.slice';
 import { Geocoder } from './geocoder/geocoder.component';
 import { MapboxLayer } from '@deck.gl/mapbox';
-import { LAYER_IDS } from './map.constants';
 
 const Map = () => {
-  const {
-    mapRef,
-    setMap,
-    deckRef,
-    setDeck,
-    viewState,
-    setViewState,
-  } = useMap();
+  const { mapRef, deckRef, viewState, setViewState } = useMap();
   const dispatch = useDispatch();
   const accessToken = useSelector(mapboxTokenSelector);
   const selectedBookmark = useSelector(selectedBookmarkSelector);
@@ -42,7 +34,7 @@ const Map = () => {
   const [isMapStyleSwitcherVisible, setIsMapStyleSwitcherVisible] = useState(
     false,
   );
-  const { layers, mapComponents, mapboxLayers } = useOrbs();
+  const { layers, mapComponents, preLabelLayers, postLabelLayers } = useOrbs();
 
   const [glContext, setGlContext] = useState();
 
@@ -80,14 +72,33 @@ const Map = () => {
   const onMapLoad = useCallback(() => {
     const map = mapRef.current.getMap();
     const deck = deckRef.current.deck;
-
-    map.addLayer(
-      new MapboxLayer({
-        id: LAYER_IDS.astrosat.isolationPlus.imdIncome.v1,
-        deck,
-      }),
+    var styleLayers = map.getStyle().layers;
+    // Find the index of the first symbol layer in the map style
+    let firstSymbolId;
+    for (var i = 0; i < styleLayers.length; i++) {
+      if (styleLayers[i].type === 'symbol') {
+        firstSymbolId = styleLayers[i].id;
+        break;
+      }
+    }
+    preLabelLayers.forEach(id =>
+      map.addLayer(
+        new MapboxLayer({
+          id,
+          deck,
+        }),
+        firstSymbolId,
+      ),
     );
-  }, [mapRef, deckRef]);
+    postLabelLayers.forEach(id =>
+      map.addLayer(
+        new MapboxLayer({
+          id,
+          deck,
+        }),
+      ),
+    );
+  }, [mapRef, deckRef, preLabelLayers, postLabelLayers]);
 
   return (
     <>
@@ -113,11 +124,14 @@ const Map = () => {
         glOptions={{
           /* To render vector tile polygons correctly */
           stencil: true,
+          preserveDrawingBuffer: true,
         }}
       >
         <StaticMap
           ref={mapRef}
           gl={glContext}
+          reuseMaps
+          preserveDrawingBuffer
           mapboxApiAccessToken={accessToken}
           mapStyle={selectedMapStyle?.uri}
           onLoad={onMapLoad}
