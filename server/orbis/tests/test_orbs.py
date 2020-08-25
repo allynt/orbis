@@ -99,6 +99,7 @@ class TestLicences:
 
         customer = CustomerFactory(logo=None)
         customer.add_user(user, type="MANAGER", status="ACTIVE")
+        customer.licences.get(orb__is_core=True).delete() # get rid of the core licence b/c it is complicating the test
         orb = OrbFactory()
         licences = [
             LicenceFactory(customer=customer, orb=orb, access=Access.READ)
@@ -123,11 +124,11 @@ class TestLicences:
         response = client.put(url, customer_data, format="json")
         customer_data = response.json()
 
-        assert len(customer_data["licences"]) == 5
+        assert len(customer_data["licences"]) == 4
         assert str(licences[0].id) not in map(
             lambda x: x["id"], customer_data["licences"]
         )
-        assert str(licences[1].id) in map(
+        assert str(licences[1].id) not in map(
             lambda x: x["id"], customer_data["licences"]
         )
         assert str(licences[2].id) in map(lambda x: x["id"], customer_data["licences"])
@@ -154,7 +155,7 @@ class TestLicences:
         customer_user_data = response.json()
 
         assert str(licence.id) in customer_user_data["licences"]
-        assert licence.id == customer_user.licences.public()[1].id
+        assert licence in customer_user.licences.public()
         assert customer.licences.count() == 2
         assert customer.licences.filter(customer_user__isnull=False).count() == 2
 
