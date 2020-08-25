@@ -3,8 +3,6 @@ import { Dialog } from './dialog.component';
 
 export default { title: 'Orbs/MySupplyLynk/Dialog' };
 
-export const NoSupplier = () => <Dialog />;
-
 export const Suppler = () => (
   <Dialog
     supplier={{

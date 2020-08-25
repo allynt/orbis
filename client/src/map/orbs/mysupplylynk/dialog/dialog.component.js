@@ -16,7 +16,7 @@ const COPY = {
 /**
  * @param {{
  *   supplier?: any
- *   onCloseClick: (event: React.MouseEvent<HTMLButtonElement>) => void
+ *   onCloseClick?: (event: React.MouseEvent<HTMLButtonElement>) => void
  * }} props
  */
 export const Dialog = ({ supplier, onCloseClick }) => (
