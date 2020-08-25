@@ -1,7 +1,7 @@
 import React from 'react';
 
 import styles from './dialog.module.css';
-import { Button } from '@astrosat/astrosat-ui';
+import { Button, CloseButton } from '@astrosat/astrosat-ui';
 
 const COPY = {
   businessInformationHeading: 'Business Information',
@@ -12,12 +12,14 @@ const COPY = {
  *
  * @param {{
  *   supplier?: any
+ *   onCloseClick: (event: React.MouseEvent<HTMLButtonElement>) => void
  * }} props
  */
-export const Dialog = ({ supplier }) => (
+export const Dialog = ({ supplier, onCloseClick }) => (
   <div className={styles.dialog}>
     <header className={styles.header}>
       <h1 className={styles.title}>{supplier.Name || 'Supplier'}</h1>
+      <CloseButton className={styles.closeButton} onClick={onCloseClick} />
     </header>
     <div className={styles.content}>
       <div className={styles.label}>

@@ -13,6 +13,7 @@
 }
 
 .header {
+  position: relative;
   background: var(--color-primary);
   border-radius: var(--border-radius) var(--border-radius) 0 0;
   padding: 2.5em 0;
@@ -78,4 +79,9 @@
 
 .listItem + .listItem {
   margin-top: 0.5em;
+}
+
+.closeButton {
+  position: absolute;
+  right: 2rem;
 }
