@@ -66,7 +66,7 @@ export const Dialog = ({ supplier }) => (
           <dl className={styles.item}>
             {Object.entries(rest).map(([key, value]) => (
               <>
-                <dt>{key}</dt>
+                <dt className={styles.dt}>{key}</dt>
                 <dd>{value}</dd>
               </>
             ))}

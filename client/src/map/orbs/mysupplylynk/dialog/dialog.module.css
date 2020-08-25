@@ -66,3 +66,7 @@
 .highlight {
   background: rgba(246, 190, 0, 0.3);
 }
+
+.dt {
+  font-weight: 600;
+}
