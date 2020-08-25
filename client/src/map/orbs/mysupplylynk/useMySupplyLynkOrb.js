@@ -24,7 +24,7 @@ export const useMySupplyLynkOrb = (data, activeSources) => {
           pickable: true,
           iconMapping,
           iconAtlas,
-          getIcon: () => 'purple-point',
+          getIcon: feature => (feature.properties.cluster ? 'cluster' : 'pin'),
           getIconSize: 60,
           getIconColor: [246, 190, 0],
           getTextSize: 32,

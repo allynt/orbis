@@ -1,6 +1,13 @@
 {
-  "purple-point": {
+  "pin": {
     "x": 0,
+    "y": 0,
+    "width": 29,
+    "height": 40,
+    "mask": false
+  },
+  "cluster": {
+    "x": 29,
     "y": 0,
     "width": 88,
     "height": 88,
