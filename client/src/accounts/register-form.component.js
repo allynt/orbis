@@ -175,7 +175,7 @@ const RegisterForm = ({
           />
           &nbsp;
           <Button target="_blank" href={TERMS_URL} rel="noopener noreferrer">
-            Terms &amp; Conditions
+            Terms &amp; Conditions, Privacy Policy
           </Button>
         </div>
       </div>

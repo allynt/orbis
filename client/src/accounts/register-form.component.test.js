@@ -54,8 +54,10 @@ describe('Register Form Component', () => {
     expect(getByText('I agree with')).toBeInTheDocument();
 
     //Check the I agree with button is in the document and has the correct href
-    expect(getByText('Terms & Conditions')).toBeInTheDocument();
-    expect(getByText('Terms & Conditions').href).toContain('/terms');
+    expect(getByText('Terms & Conditions, Privacy Policy')).toBeInTheDocument();
+    expect(getByText('Terms & Conditions, Privacy Policy').href).toContain(
+      '/terms',
+    );
     // Check form submit button
     expect(getByText('Sign Up')).toBeInTheDocument();
     // Check link to login view
