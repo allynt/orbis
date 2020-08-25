@@ -70,3 +70,12 @@
 .dt {
   font-weight: 600;
 }
+
+.link {
+  width: max-content;
+  padding-top: 0;
+}
+
+.listItem + .listItem {
+  margin-top: 0.5em;
+}

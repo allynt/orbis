@@ -1,6 +1,7 @@
 import React from 'react';
 
 import styles from './dialog.module.css';
+import { Button } from '@astrosat/astrosat-ui';
 
 const COPY = {
   businessInformationHeading: 'Business Information',
@@ -23,24 +24,29 @@ export const Dialog = ({ supplier }) => (
         <h3>Contact Details</h3>
       </div>
       <ul className={styles.item}>
-        <li>{supplier['Contact Name']}</li>
-        <li>{supplier['Contact Email Address']}</li>
-        <li>{supplier['Contact Phone Number']}</li>
-        <li>
-          <a href={supplier.URL} target="_blank" rel="noreferrer noopener">
+        <li className={styles.listItem}>{supplier['Contact Name']}</li>
+        <li className={styles.listItem}>{supplier['Contact Email Address']}</li>
+        <li className={styles.listItem}>{supplier['Contact Phone Number']}</li>
+        <li className={styles.listItem}>
+          <Button
+            className={styles.link}
+            href={supplier.URL}
+            target="_blank"
+            rel="noreferrer noopener"
+          >
             {supplier.URL}
-          </a>
+          </Button>
         </li>
       </ul>
       <div className={styles.label}>
         <h3>Address</h3>
       </div>
       <ul className={styles.item}>
-        <li>{supplier['Address Line 1']}</li>
-        <li>{supplier['Address Line 2']}</li>
-        <li>{supplier.City}</li>
-        <li>{supplier.County}</li>
-        <li>{supplier.Postcode}</li>
+        <li className={styles.listItem}>{supplier['Address Line 1']}</li>
+        <li className={styles.listItem}>{supplier['Address Line 2']}</li>
+        <li className={styles.listItem}>{supplier.City}</li>
+        <li className={styles.listItem}>{supplier.County}</li>
+        <li className={styles.listItem}>{supplier.Postcode}</li>
       </ul>
       <h2 className={styles.heading}>{COPY.businessInformationHeading}</h2>
       <div className={styles.label}>
@@ -65,10 +71,10 @@ export const Dialog = ({ supplier }) => (
           </div>
           <dl className={styles.item}>
             {Object.entries(rest).map(([key, value]) => (
-              <>
+              <div className={styles.listItem}>
                 <dt className={styles.dt}>{key}</dt>
                 <dd>{value}</dd>
-              </>
+              </div>
             ))}
           </dl>
         </>
