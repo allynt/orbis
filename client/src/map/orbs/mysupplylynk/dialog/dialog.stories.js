@@ -40,5 +40,3 @@ export const Suppler = () => (
     }}
   />
 );
-
-export const LotsOfItems = () => <Dialog />;
