@@ -23,16 +23,11 @@ export const useOrbs = () => {
   const activeSources = useSelector(activeDataSourcesSelector);
   const [data, setData] = useState({});
 
-  console.log('Active Sources: ', activeSources);
-
   const fetchData = useCallback(
     async source => {
-      const response = await fetch(dataUrlFromId(source), {
-        headers: {
-          Authorization: `Bearer ${authToken}`,
-        },
+      const response = await getData(dataUrlFromId(source), {
+        Authorization: `Bearer ${authToken}`,
       });
-      console.log('Response: ', response);
       if (!response.ok) console.error(response.status);
       const dataSet = await response.json();
       setData({ ...data, [source.source_id]: dataSet });
@@ -66,29 +61,29 @@ export const useOrbs = () => {
     mapComponents: isoPlusMapComponents,
     sidebarComponents: isoPlusSidebarComponents,
   } = useIsolationPlusOrb(data, activeSources, authToken);
-  // const {
-  //   layers: mySupplyLynkLayers,
-  //   mapComponents: mySupplyLynkMapComponents,
-  //   sidebarComponents: mySupplyLynkSidebarComponents,
-  // } = useMySupplyLynkOrb(data, activeSources);
+  const {
+    layers: mySupplyLynkLayers,
+    mapComponents: mySupplyLynkMapComponents,
+    sidebarComponents: mySupplyLynkSidebarComponents,
+  } = useMySupplyLynkOrb(data, activeSources);
 
   let layers = [
     ...isoPlusLayers,
     ...hourglassLayers,
     ...riceLayers,
-    // ...mySupplyLynkLayers,
+    ...mySupplyLynkLayers,
   ];
   let mapComponents = [
     ...hourglassMapComponents,
     ...riceMapComponents,
     ...isoPlusMapComponents,
-    // ...mySupplyLynkMapComponents,
+    ...mySupplyLynkMapComponents,
   ];
   let sidebarComponents = {
     ...hourglassSidebarComponents,
     ...riceSidebarComponents,
     ...isoPlusSidebarComponents,
-    // ...mySupplyLynkSidebarComponents,
+    ...mySupplyLynkSidebarComponents,
   };
 
   return { layers, mapComponents, sidebarComponents };
