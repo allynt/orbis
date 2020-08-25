@@ -1,4 +1,5 @@
 from django.contrib import admin
+from django.core.exceptions import ValidationError
 from django.forms import CheckboxSelectMultiple, IntegerField, ModelForm
 from django.urls import reverse
 from django.utils.html import format_html
@@ -104,8 +105,23 @@ class DataScopeAdmin(admin.ModelAdmin):
     get_orbs_for_list_display.short_description = "orbs"
 
 
+class OrbAdminForm(ModelForm):
+    class Meta:
+        model = Orb
+        fields = "__all__"
+
+    def clean(self, *args, **kwargs):
+        data = super().clean(*args, **kwargs)
+        existing_core_orbs = Orb.objects.filter(is_core=True)
+        if data["is_core"]:
+            if self.instance:
+                existing_core_orbs = existing_core_orbs.exclude(id=self.instance.id)
+            if existing_core_orbs.count():
+                raise ValidationError("Only one core Orb is allowed.")
+
 @admin.register(Orb)
 class OrbAdmin(admin.ModelAdmin):
+    form = OrbAdminForm
     inlines = (DataScopeAdminInline,)
     list_display = (
         "name",
