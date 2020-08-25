@@ -25,8 +25,8 @@ export const useOrbs = () => {
 
   const fetchData = useCallback(
     async source => {
-      const response = await getData(dataUrlFromId(source), {
-        Authorization: `Bearer ${authToken}`,
+      const response = await fetch(dataUrlFromId(source), {
+        headers: { Authorization: `Bearer ${authToken}` },
       });
       if (!response.ok) console.error(response.status);
       const dataSet = await response.json();
