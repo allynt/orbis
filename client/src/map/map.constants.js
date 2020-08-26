@@ -77,6 +77,9 @@ export const LAYER_IDS = {
       hourglass: {
         latest: 'astrosat/covid/hourglass/latest',
       },
+      commonWeal: {
+        latest: 'astrosat/covid/commonweal/latest',
+      },
     },
     hourglass: {
       people: {

@@ -18,15 +18,23 @@ const INFRASTRUCTURE_LAYER_IDS = [
   LAYER_IDS.astrosat.hourglass.northernIrelandInfrastructure.v1,
 ];
 
+const PEOPLE_LAYER_IDS = [
+  LAYER_IDS.astrosat.covid.hourglass.latest,
+  LAYER_IDS.astrosat.covid.commonWeal.latest,
+];
+
 const sidebarComponents = {
   ...INFRASTRUCTURE_LAYER_IDS.reduce(
     (obj, layerId) => ({ ...obj, [layerId]: HealthInfrastructure }),
     {},
   ),
-  [LAYER_IDS.astrosat.covid.hourglass.latest]: PopulationInformation,
+  ...PEOPLE_LAYER_IDS.reduce(
+    (obj, layerId) => ({ ...obj, [layerId]: PopulationInformation }),
+    {},
+  ),
 };
 
-export const useHourglassOrb = (data, activeSources) => {
+export const useActionForHelpOrb = (data, activeSources) => {
   const { setViewState } = useMap();
   const [pickedObjects, setPickedObjects] = useState([]);
 
@@ -60,7 +68,9 @@ export const useHourglassOrb = (data, activeSources) => {
           features={pickedObjects.map(obj =>
             pickBy(
               obj.properties,
-              (_, key) => !key.toLowerCase().includes('type'),
+              (_, key) =>
+                !key.toLowerCase().includes('type') &&
+                !key.toLowerCase().includes('pk'),
             ),
           )}
           title={
@@ -82,15 +92,14 @@ export const useHourglassOrb = (data, activeSources) => {
         onClick: handleLayerClick,
       }),
     ),
-    peopleLayer({
-      id: LAYER_IDS.astrosat.covid.hourglass.latest,
-      data: data[LAYER_IDS.astrosat.covid.hourglass.latest],
-      visible: !!activeSources?.find(
-        source =>
-          source.source_id === LAYER_IDS.astrosat.covid.hourglass.latest,
-      ),
-      onClick: handleLayerClick,
-    }),
+    ...PEOPLE_LAYER_IDS.map(id =>
+      peopleLayer({
+        id,
+        data: data[id],
+        visible: !!activeSources?.find(source => source.source_id === id),
+        onClick: handleLayerClick,
+      }),
+    ),
   ];
 
   return {
@@ -98,10 +107,7 @@ export const useHourglassOrb = (data, activeSources) => {
     mapComponents,
     sidebarComponents,
     preLabelLayers: [],
-    postLabelLayers: [
-      ...INFRASTRUCTURE_LAYER_IDS,
-      LAYER_IDS.astrosat.covid.hourglass.latest,
-    ],
+    postLabelLayers: [...INFRASTRUCTURE_LAYER_IDS, ...PEOPLE_LAYER_IDS],
   };
 };
-useHourglassOrb.id = 'hourglass';
+useActionForHelpOrb.id = 'hourglass';
