@@ -12,8 +12,6 @@ export const useMySupplyLynkOrb = (data, activeSources) => {
 
   const handleLayerClick = () => console.log('CLICKED!');
 
-  console.log('Data: ', data);
-
   const layers = [
     ...SUPPLYLYNK_LAYER_IDS.map(
       id =>
