@@ -1,6 +1,9 @@
 import React from 'react';
-import * as Icons from './icons';
+
 import { Checkbox } from '@astrosat/astrosat-ui';
+
+import { CATEGORIES } from '../mysupplylynk.constants';
+import Icons from './icons';
 
 import styles from './checkbox-filters.module.css';
 
@@ -9,23 +12,10 @@ import styles from './checkbox-filters.module.css';
  *   name: string
  * }[]}
  */
-const CATEGORIES = [
-  {
-    name: 'PPE',
-    Icon: Icons.PPE,
-  },
-  {
-    name: 'Cleaning and Domestic',
-    Icon: Icons.Cleaning,
-  },
-  { name: 'Medical Equipment and Aids', Icon: Icons.Medical },
-  { name: 'Foods', Icon: Icons.Food },
-  { name: 'Stationary', Icon: Icons.Stationery },
-  { name: 'Clothing', Icon: Icons.Clothing },
-  { name: 'Services', Icon: Icons.Services },
-  { name: 'Staffing', Icon: Icons.Staffing },
-  { name: 'Miscellaneous', Icon: Icons.Other },
-];
+const CATEGORY_NAME_AND_ICON = CATEGORIES.map(name => ({
+  name,
+  Icon: Icons[name],
+}));
 
 export const CheckboxFilters = () => {
   /**
@@ -41,7 +31,7 @@ export const CheckboxFilters = () => {
 
   return (
     <>
-      {CATEGORIES.map(({ name, Icon }) => (
+      {CATEGORY_NAME_AND_ICON.map(({ name, Icon }) => (
         <Checkbox
           key={name}
           id={name}
