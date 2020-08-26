@@ -7,7 +7,7 @@ import {
   selectDataToken,
 } from 'data-layers/data-layers.slice';
 import { getData } from 'utils/http';
-import { useHourglassOrb } from './hourglass/useHourglassOrb';
+import { useActionForHelpOrb } from './actionForHelp/useActionForHelpOrb';
 import { useIsolationPlusOrb } from './isolationPlus/useIsolationPlusOrb';
 import { useRiceOrb } from './rice/useRiceOrb';
 
@@ -51,7 +51,7 @@ export const useOrbs = () => {
     sidebarComponents: hourglassSidebarComponents,
     preLabelLayers: hourglassPreLabelLayers,
     postLabelLayers: hourglassPostLabelLayers,
-  } = useHourglassOrb(data, activeSources);
+  } = useActionForHelpOrb(data, activeSources);
   const {
     layers: riceLayers,
     mapComponents: riceMapComponents,
