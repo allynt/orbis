@@ -1,5 +1,5 @@
 import { GeoJsonClusteredIconLayer } from 'map/deck.gl/custom-layers/geo-json-clustered-icon-layer';
-import { MAX_ZOOM } from '../constants';
+import { MAX_ZOOM } from 'map/map.constants';
 import iconAtlas from './iconAtlas.svg';
 import iconMapping from './iconMapping.json';
 

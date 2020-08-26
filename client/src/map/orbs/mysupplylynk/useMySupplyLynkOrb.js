@@ -1,11 +1,8 @@
-import React from 'react';
-
 import { GeoJsonClusteredIconLayer } from 'map/deck.gl/custom-layers/geo-json-clustered-icon-layer';
-import iconMapping from './iconMapping';
+import iconMapping from './iconMapping.json';
 import iconAtlas from './iconAtlas.svg';
-import { MAX_ZOOM } from '../hourglass/constants';
 
-import { LAYER_IDS } from 'map/map.constants';
+import { LAYER_IDS, MAX_ZOOM } from 'map/map.constants';
 
 export const useMySupplyLynkOrb = (data, activeSources) => {
   const SUPPLYLYNK_LAYER_IDS = [LAYER_IDS.astrosat.mySupplyLynk.latest];

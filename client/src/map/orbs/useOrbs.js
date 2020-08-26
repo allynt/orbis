@@ -6,7 +6,6 @@ import {
   activeDataSourcesSelector,
   selectDataToken,
 } from 'data-layers/data-layers.slice';
-import { getData } from 'utils/http';
 import { useHourglassOrb } from './hourglass/useHourglassOrb';
 import { useIsolationPlusOrb } from './isolationPlus/useIsolationPlusOrb';
 import { useRiceOrb } from './rice/useRiceOrb';
