@@ -3,20 +3,6 @@ import reducer, { propertySelector, setProperty } from './isolation-plus.slice';
 describe('isolationPlusSlice', () => {
   describe('reducer', () => {
     describe('setProperty', () => {
-      it("does not set a property if it's undefined in the payload", () => {
-        const state = {};
-        const payload = { source_id: 'test/layer' };
-        const result = reducer(state, setProperty(payload));
-        expect(result).toEqual(state);
-      });
-
-      it('does not set a property if source_id is undefined in the payload', () => {
-        const state = {};
-        const payload = { property: 'hello' };
-        const result = reducer(state, setProperty(payload));
-        expect(result).toEqual(state);
-      });
-
       it('sets the property for a source in state if not yet defined', () => {
         const state = { property: {} };
         const expected = {

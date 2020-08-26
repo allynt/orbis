@@ -46,19 +46,20 @@ class TestLicences:
         response = client.get(url)
         customer_data = response.json()
 
-        assert len(customer_data["licences"]) == 0
+        assert len(customer_data["licences"]) == 1
 
         orb = OrbFactory()
         # if I add (incomplete) licences for the orb, the serializer will
         # create it and add it to the customer w/ default (READ) access
-        customer_data["licences"] = [{"orb": orb.name} for _ in range(N_LICENCES)]
+        customer_data["licences"] += [{"orb": orb.name} for _ in range(N_LICENCES)]
 
         response = client.put(url, customer_data, format="json")
         customer_data = response.json()
 
-        assert len(customer_data["licences"]) == N_LICENCES
+        assert len(customer_data["licences"]) == N_LICENCES + 1
         assert Licence.objects.count() == N_LICENCES + 1
-        for licence in Licence.objects.public():
+        # Skip the first licence which is the default core licence.
+        for licence in Licence.objects.public()[1:]:
             assert licence.orb == orb
             assert licence.customer == customer
             assert licence.access == Access.READ
@@ -78,19 +79,19 @@ class TestLicences:
         response = client.get(url)
         customer_data = response.json()
 
-        assert len(customer_data["licences"]) == N_LICENCES
+        assert len(customer_data["licences"]) == N_LICENCES + 1
 
         customer_data["licences"] = customer_data["licences"][::2]
 
         response = client.put(url, customer_data, format="json")
         customer_data = response.json()
 
-        assert len(customer_data["licences"]) == N_LICENCES / 2
+        assert len(customer_data["licences"]) == (N_LICENCES + 2) / 2
         for i, licence in enumerate(licences):
             if i % 2:
-                assert not Licence.objects.filter(id=licence.id).exists()
-            else:
                 assert Licence.objects.filter(id=licence.id).exists()
+            else:
+                assert not Licence.objects.filter(id=licence.id).exists()
 
     def test_add_update_remove_licences_from_customer(
         self, user, api_client, mock_storage
@@ -98,6 +99,7 @@ class TestLicences:
 
         customer = CustomerFactory(logo=None)
         customer.add_user(user, type="MANAGER", status="ACTIVE")
+        customer.licences.get(orb__is_core=True).delete() # get rid of the core licence b/c it is complicating the test
         orb = OrbFactory()
         licences = [
             LicenceFactory(customer=customer, orb=orb, access=Access.READ)
@@ -152,8 +154,8 @@ class TestLicences:
         response = client.put(url, customer_user_data, format="json")
         customer_user_data = response.json()
 
-        assert customer_user_data["licences"] == [str(licence.id)]
-        assert [str(id) for id in customer_user.licences.public().values_list("id", flat=True)] == [str(licence.id)]
+        assert str(licence.id) in customer_user_data["licences"]
+        assert licence in customer_user.licences.public()
         assert customer.licences.count() == 2
         assert customer.licences.filter(customer_user__isnull=False).count() == 2
 
@@ -197,7 +199,7 @@ class TestLicences:
         response = client.get(url, format="json")
         customer_user_data = response.json()
 
-        assert customer_user_data["licences"] == [str(licence_1.id)]
+        assert str(licence_1.id) in customer_user_data["licences"]
 
         customer_user_data["licences"] = [str(licence_2.id)]
         response = client.put(url, customer_user_data, format="json")
@@ -264,7 +266,7 @@ class TestLicences:
         response = client.get(url, format="json")
         customer_user_data = response.json()
 
-        assert len(customer_user_data["licences"]) == 0
+        assert len(customer_user_data["licences"]) == 1
 
         # I cannot add a licence to a customer_user from a different customer
         customer_user_data["licences"] = [str(licence_2.id)]

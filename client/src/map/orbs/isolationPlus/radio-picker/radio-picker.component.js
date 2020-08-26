@@ -47,15 +47,15 @@ export const RadioPicker = ({ selectedLayer, dispatch }) => {
             name="isolationPlus"
             value={property.name}
             checked={property.name === selectedProperty?.name}
-            onChange={() =>
-              dispatch(
-                setProperty({
-                  source_id: selectedLayer.source_id,
-                  name: property.name,
-                  min: property.min,
-                  max: property.max,
-                }),
-              )
+            onClick={() =>
+              property.name === selectedProperty?.name
+                ? dispatch(setProperty({}))
+                : dispatch(
+                    setProperty({
+                      source_id: selectedLayer.source_id,
+                      ...property,
+                    }),
+                  )
             }
           />
           <div className={styles.info}>

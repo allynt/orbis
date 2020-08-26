@@ -10,7 +10,7 @@ import DeckGL, { FlyToInterpolator } from 'deck.gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import { useMap } from 'MapContext';
 import MapStyleSwitcher from 'mapstyle/mapstyle-switcher.component';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import {
   NavigationControl,
   StaticMap,
@@ -21,9 +21,10 @@ import { useOrbs } from './orbs/useOrbs';
 import styles from './map.module.css';
 import { selectedMapStyleSelector, selectMapStyle } from './map.slice';
 import { Geocoder } from './geocoder/geocoder.component';
+import { MapboxLayer } from '@deck.gl/mapbox';
 
 const Map = () => {
-  const { setMap, setDeck, viewState, setViewState } = useMap();
+  const { mapRef, deckRef, viewState, setViewState } = useMap();
   const dispatch = useDispatch();
   const accessToken = useSelector(mapboxTokenSelector);
   const selectedBookmark = useSelector(selectedBookmarkSelector);
@@ -33,7 +34,9 @@ const Map = () => {
   const [isMapStyleSwitcherVisible, setIsMapStyleSwitcherVisible] = useState(
     false,
   );
-  const { layers, mapComponents } = useOrbs();
+  const { layers, mapComponents, preLabelLayers, postLabelLayers } = useOrbs();
+
+  const [glContext, setGlContext] = useState();
 
   useEffect(() => {
     if (selectedBookmark) {
@@ -66,6 +69,37 @@ const Map = () => {
     });
   };
 
+  const onMapLoad = useCallback(() => {
+    const map = mapRef.current.getMap();
+    const deck = deckRef.current.deck;
+    var styleLayers = map.getStyle().layers;
+    // Find the index of the first symbol layer in the map style
+    let firstSymbolId;
+    for (var i = 0; i < styleLayers.length; i++) {
+      if (styleLayers[i].type === 'symbol') {
+        firstSymbolId = styleLayers[i].id;
+        break;
+      }
+    }
+    preLabelLayers.forEach(id =>
+      map.addLayer(
+        new MapboxLayer({
+          id,
+          deck,
+        }),
+        firstSymbolId,
+      ),
+    );
+    postLabelLayers.forEach(id =>
+      map.addLayer(
+        new MapboxLayer({
+          id,
+          deck,
+        }),
+      ),
+    );
+  }, [mapRef, deckRef, preLabelLayers, postLabelLayers]);
+
   return (
     <>
       {bookmarksLoading && (
@@ -80,19 +114,27 @@ const Map = () => {
         onSelect={handleGeocoderSelect}
       />
       <DeckGL
-        ref={ref => ref && setDeck(ref.deck)}
+        ref={deckRef}
         controller
         viewState={viewState}
         onViewStateChange={({ viewState }) => setViewState(viewState)}
         layers={layers}
         ContextProvider={MapContext.Provider}
+        onWebGLInitialized={setGlContext}
+        glOptions={{
+          /* To render vector tile polygons correctly */
+          stencil: true,
+          preserveDrawingBuffer: true,
+        }}
       >
         <StaticMap
-          ref={ref => ref && setMap(ref.getMap())}
+          ref={mapRef}
+          gl={glContext}
+          reuseMaps
           preserveDrawingBuffer
-          reuseMap
           mapboxApiAccessToken={accessToken}
           mapStyle={selectedMapStyle?.uri}
+          onLoad={onMapLoad}
         />
         {mapComponents}
         <NavigationControl className={styles.navigationControl} />

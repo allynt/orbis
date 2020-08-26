@@ -93,6 +93,15 @@ export const useHourglassOrb = (data, activeSources) => {
     }),
   ];
 
-  return { layers, mapComponents, sidebarComponents };
+  return {
+    layers,
+    mapComponents,
+    sidebarComponents,
+    preLabelLayers: [],
+    postLabelLayers: [
+      ...INFRASTRUCTURE_LAYER_IDS,
+      LAYER_IDS.astrosat.covid.hourglass.latest,
+    ],
+  };
 };
 useHourglassOrb.id = 'hourglass';

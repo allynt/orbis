@@ -50,23 +50,29 @@ export const useOrbs = () => {
     layers: hourglassLayers,
     mapComponents: hourglassMapComponents,
     sidebarComponents: hourglassSidebarComponents,
+    preLabelLayers: hourglassPreLabelLayers,
+    postLabelLayers: hourglassPostLabelLayers,
   } = useHourglassOrb(data, activeSources);
   const {
     layers: riceLayers,
     mapComponents: riceMapComponents,
     sidebarComponents: riceSidebarComponents,
+    preLabelLayers: ricePreLabelLayers,
+    postLabelLayers: ricePostLabelLayers,
   } = useRiceOrb(data, activeSources);
   const {
     layers: isoPlusLayers,
     mapComponents: isoPlusMapComponents,
     sidebarComponents: isoPlusSidebarComponents,
+    preLabelLayers: isoPlusPreLabelLayers,
+    postLabelLayers: isoPlusPostLabelLayers,
   } = useIsolationPlusOrb(data, activeSources, authToken);
   const {
     layers: mySupplyLynkLayers,
     mapComponents: mySupplyLynkMapComponents,
     sidebarComponents: mySupplyLynkSidebarComponents,
   } = useMySupplyLynkOrb(data, activeSources);
-
+  
   let layers = [
     ...isoPlusLayers,
     ...hourglassLayers,
@@ -79,12 +85,28 @@ export const useOrbs = () => {
     ...isoPlusMapComponents,
     ...mySupplyLynkMapComponents,
   ];
-  let sidebarComponents = {
+  const sidebarComponents = {
     ...hourglassSidebarComponents,
     ...riceSidebarComponents,
     ...isoPlusSidebarComponents,
     ...mySupplyLynkSidebarComponents,
   };
+  const preLabelLayers = [
+    ...hourglassPreLabelLayers,
+    ...ricePreLabelLayers,
+    ...isoPlusPreLabelLayers,
+  ];
+  const postLabelLayers = [
+    ...hourglassPostLabelLayers,
+    ...ricePostLabelLayers,
+    ...isoPlusPostLabelLayers,
+  ];
 
-  return { layers, mapComponents, sidebarComponents };
+  return {
+    layers,
+    mapComponents,
+    sidebarComponents,
+    preLabelLayers,
+    postLabelLayers,
+  };
 };

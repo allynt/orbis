@@ -1696,6 +1696,11 @@
   resolved "https://registry.yarnpkg.com/@deck.gl/mapbox/-/mapbox-8.2.3.tgz#b273815ba34cb6562b8d845642b66eb47940923e"
   integrity sha512-VhL/H4Rf4V+jQjxQEJNDaC90sBXYbRXvalNp6xhcmVG6X3yHVMtyixE8Ek0qumL/2TqFW35hAGq4LqcHfvuhlg==
 
+"@deck.gl/mapbox@^8.2.5":
+  version "8.2.5"
+  resolved "https://registry.yarnpkg.com/@deck.gl/mapbox/-/mapbox-8.2.5.tgz#669d282a12184974b2a0a64a34a85922166a6a0b"
+  integrity sha512-0fNl+a74piK7UBABFF9bzAI9VDv64GtycD+dBMr1B7hXraWHhGsbgLtW/T3Po3+7qm9g71EkwsW69/wfXQH5Jw==
+
 "@deck.gl/mesh-layers@8.2.3":
   version "8.2.3"
   resolved "https://registry.yarnpkg.com/@deck.gl/mesh-layers/-/mesh-layers-8.2.3.tgz#c601f7d896dce260441b89154c2e29af7999fcb9"

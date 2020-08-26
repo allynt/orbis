@@ -84,8 +84,11 @@ class OrbFactory(factory.django.DjangoModelFactory):
         model = Orb
 
     is_active = True
+    is_private = False
+    is_core = False
     name = factory.LazyAttributeSequence(lambda o, n: f"orb-{n}")
     description = optional_declaration(FactoryFaker("text"), chance=50)
+
 
     @factory.post_generation
     def data_scopes(self, create, extracted, **kwargs):
