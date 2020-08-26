@@ -6,6 +6,7 @@ import {
   activeDataSourcesSelector,
   selectDataToken,
 } from 'data-layers/data-layers.slice';
+import { getData } from 'utils/http';
 import { useHourglassOrb } from './hourglass/useHourglassOrb';
 import { useIsolationPlusOrb } from './isolationPlus/useIsolationPlusOrb';
 import { useRiceOrb } from './rice/useRiceOrb';
@@ -24,8 +25,8 @@ export const useOrbs = () => {
 
   const fetchData = useCallback(
     async source => {
-      const response = await fetch(dataUrlFromId(source), {
-        headers: { Authorization: `Bearer ${authToken}` },
+      const response = await getData(dataUrlFromId(source), {
+        Authorization: `Bearer ${authToken}`,
       });
       if (!response.ok) console.error(response.status);
       const dataSet = await response.json();
