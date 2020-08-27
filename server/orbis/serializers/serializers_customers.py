@@ -115,7 +115,7 @@ class CustomerUserSerializer(AstrosatUsersCustomerUserSerializer):
         customer_user = super().create(validated_data)
         customer_user.licences.add(
             customer_user.customer.licences.get(
-                orb__name="core", customer_user__isnull=True
+                orb__is_core=True, customer_user__isnull=True
             )
         )
         return customer_user
