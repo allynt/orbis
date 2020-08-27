@@ -1,5 +1,6 @@
 export const VECTOR = 'vector';
 export const RASTER = 'raster';
+export const MAX_ZOOM = 20;
 
 export const regions = [
   {
@@ -80,6 +81,9 @@ export const LAYER_IDS = {
       commonWeal: {
         latest: 'astrosat/covid/cw/latest',
       },
+    },
+    mySupplyLynk: {
+      latest: 'astrosat/mysupplylynk/orbis/latest',
     },
     hourglass: {
       people: {

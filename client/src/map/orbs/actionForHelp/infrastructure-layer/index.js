@@ -1,7 +1,7 @@
 import { GeoJsonClusteredIconLayer } from 'map/deck.gl/custom-layers/geo-json-clustered-icon-layer';
 import iconMapping from './iconMapping.json';
 import iconAtlas from './iconAtlas.svg';
-import { MAX_ZOOM } from '../constants';
+import { MAX_ZOOM } from 'map/map.constants';
 
 export const infrastructureLayer = ({ id, data, visible, onClick }) =>
   new GeoJsonClusteredIconLayer({

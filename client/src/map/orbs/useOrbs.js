@@ -10,6 +10,7 @@ import { getData } from 'utils/http';
 import { useActionForHelpOrb } from './actionForHelp/useActionForHelpOrb';
 import { useIsolationPlusOrb } from './isolationPlus/useIsolationPlusOrb';
 import { useRiceOrb } from './rice/useRiceOrb';
+import { useMySupplyLynkOrb } from './mysupplylynk/useMySupplyLynkOrb';
 
 const dataUrlFromId = source => {
   return source.data && typeof source.data === 'string'
@@ -66,17 +67,29 @@ export const useOrbs = () => {
     preLabelLayers: isoPlusPreLabelLayers,
     postLabelLayers: isoPlusPostLabelLayers,
   } = useIsolationPlusOrb(data, activeSources, authToken);
-
-  const layers = [...isoPlusLayers, ...hourglassLayers, ...riceLayers];
-  const mapComponents = [
+  const {
+    layers: mySupplyLynkLayers,
+    mapComponents: mySupplyLynkMapComponents,
+    sidebarComponents: mySupplyLynkSidebarComponents,
+  } = useMySupplyLynkOrb(data, activeSources);
+  
+  let layers = [
+    ...isoPlusLayers,
+    ...hourglassLayers,
+    ...riceLayers,
+    ...mySupplyLynkLayers,
+  ];
+  let mapComponents = [
     ...hourglassMapComponents,
     ...riceMapComponents,
     ...isoPlusMapComponents,
+    ...mySupplyLynkMapComponents,
   ];
   const sidebarComponents = {
     ...hourglassSidebarComponents,
     ...riceSidebarComponents,
     ...isoPlusSidebarComponents,
+    ...mySupplyLynkSidebarComponents,
   };
   const preLabelLayers = [
     ...hourglassPreLabelLayers,

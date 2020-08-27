@@ -1,11 +1,11 @@
 import { FlyToInterpolator } from 'deck.gl';
-import { LAYER_IDS } from 'map/map.constants';
+import { LAYER_IDS, MAX_ZOOM } from 'map/map.constants';
 import { useMap } from 'MapContext';
 import React, { useState } from 'react';
 import { Popup } from 'react-map-gl';
 import { easeInOutCubic } from 'utils/easingFunctions';
 import FeatureDetail from '../../../components/feature-detail/feature-detail.component';
-import { MAX_ZOOM } from './constants';
+
 import { infrastructureLayer } from './infrastructure-layer';
 import { HealthInfrastructure } from './infrastructure-layer/infrastructure-component/health-infrastructure.component';
 import { peopleLayer } from './people-layer';
