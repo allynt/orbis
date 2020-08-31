@@ -1510,7 +1510,7 @@ const EndUserLicenseAgreement = () => {
               <span>2.1</span>
               <div>
                 The rights and obligations of the Data Controller set out in
-                this Agreement, the Privacy Policy and the Privacy
+                this Agreement, the Privacy Policy and the Privacy Legislation
               </div>
             </li>
           </ul>
