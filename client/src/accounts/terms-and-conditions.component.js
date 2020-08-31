@@ -522,15 +522,14 @@ const EndUserLicenseAgreement = () => {
         <span className={styles.emphasis}>STEVENSON ASTROSAT LIMITED</span> a
         company incorporated in Scotland (Number SC423073) and whose Registered
         Office is at Copernicus Kirk, 200 High Street, Musselburgh EH21 7DX
-        trading as ORBIS&trade; &#153; (
-        <span className={styles.emphasis}>“ORBIS”</span>) and you (
-        <span className={styles.emphasis}>“the User”</span>). This is a Click to
-        Agree Contract from within the Software if the User wishes to be bound
-        by these Terms and Conditions. If the User does not agree to be bound by
-        these Terms and Conditions, the User cannot USE the Software.
+        trading as Stevenson AstrosatTM (“Stevenson Astrosat”) and you (“the
+        User”). This is a Click to Agree Contract from within the Software if
+        the User wishes to be bound by these Terms and Conditions. If the User
+        does not agree to be bound by these Terms and Conditions, the User
+        cannot USE the Software.
       </div>
       <div className={styles.description}>
-        The contract (“Agreement”) between the User and ORBIS will comprise:{' '}
+        The contract (“Agreement”) between the User and ORBIS will comprise:
         <ul className={styles.list}>
           <li className={styles.listItem}>
             <span>1.</span>
@@ -548,7 +547,7 @@ const EndUserLicenseAgreement = () => {
       <div className={styles.section}>
         <h2 className={styles.textSectionHeader}>1: Access to the Software.</h2>
         <div className={styles.description}>
-          ORBIS grants to the User a non-exclusive, royalty based,
+          Stevenson Astrosat grants to the User a non-exclusive, royalty based,
           non-sublicensable licence to Use the Software for the User’s personal
           business use for the duration of this Agreement, subject to the
           following conditions: -
@@ -556,10 +555,10 @@ const EndUserLicenseAgreement = () => {
             <li className={styles.listItem}>
               <span>1.1.</span>
               <div>
-                The Software is located on the Platform. ORBIS has full
-                administrative access rights to the Platform. Users may access
-                the Software but have no right to administer the Platform or
-                receive a copy of the object code or source code to the
+                The Software is located on the Platform. Stevenson Astrosat has
+                full administrative access rights to the Platform. Users may
+                access the Software but have no right to administer the Platform
+                or receive a copy of the object code or source code to the
                 Software.
               </div>
             </li>
@@ -614,8 +613,8 @@ const EndUserLicenseAgreement = () => {
               <div>
                 Access the Software (i) in order to build a competitive solution
                 or to assist someone else to build a competitive solution; or
-                (ii) if the User is an employee or contractor of a ORBIS
-                competitor;
+                (ii) if the User is an employee or contractor of a Stevenson
+                Astrosat competitor;
               </div>
             </li>
             <li className={styles.listItem}>
@@ -647,33 +646,33 @@ const EndUserLicenseAgreement = () => {
             <li className={styles.listItem}>
               <span>3.1.</span>
               <div>
-                Users provide all data for use in the Software, and ORBIS is not
-                obliged to modify or add to User Content except as specified in
-                Clause 4. The User is solely responsible for User Content and
-                the accuracy of User Content.
+                Users provide all data for use in the Software, and Stevenson
+                Astrosat is not obliged to modify or add to User Content except
+                as specified in Clause 4. The User is solely responsible for
+                User Content and the accuracy of User Content.
               </div>
             </li>
             <li className={styles.listItem}>
               <span>3.2.</span>
               <div>
-                User Content belongs to the User or its licensors, and ORBIS
-                makes no claim to any right of ownership in it.
+                User Content belongs to the User or its licensors, and Stevenson
+                Astrosat makes no claim to any right of ownership in it.
               </div>
             </li>
             <li className={styles.listItem}>
               <span>3.3.</span>
               <div>
-                ORBIS shall keep User Content confidential in accordance with
-                Clause 10 of this Agreement.
+                Stevenson Astrosat shall keep User Content confidential in
+                accordance with Clause 10 of this Agreement.
               </div>
             </li>
             <li className={styles.listItem}>
               <span>3.4.</span>
               <div>
-                Subject to the terms of Clause 4, ORBIS shall only be entitled
-                to use User Content strictly as necessary to carry out its
-                obligations under this Agreement, and for no other purpose.
-                However, ORBIS:
+                Subject to the terms of Clause 4, Stevenson Astrosat shall only
+                be entitled to use User Content strictly as necessary to carry
+                out its obligations under this Agreement, and for no other
+                purpose. However, Stevenson Astrosat:
                 <ul className={styles.list}>
                   <li className={styles.listItem}>
                     <span>3.4.1.</span>
@@ -705,13 +704,13 @@ const EndUserLicenseAgreement = () => {
               <span>3.6.</span>
               <div>
                 Sharing of accounts is not permitted unless expressly authorised
-                in writing by ORBIS. Users must keep account details
-                confidential and Users should not reveal their username or
-                password to any unauthorised third parties. ORBIS accepts no
-                liability for any losses or damages incurred as a result of
-                account details being shared in breach of the terms of this
-                Agreement. It is recommended that Users do not save account
-                details in their internet browser.
+                in writing by Stevenson Astrosat. Users must keep account
+                details confidential and Users should not reveal their username
+                or password to any unauthorised third parties. Stevenson
+                Astrosat accepts no liability for any losses or damages incurred
+                as a result of account details being shared in breach of the
+                terms of this Agreement. It is recommended that Users do not
+                save account details in their internet browser.
               </div>
             </li>
             <li className={styles.listItem}>
@@ -724,17 +723,18 @@ const EndUserLicenseAgreement = () => {
             <li className={styles.listItem}>
               <span>3.8.</span>
               <div>
-                Whereas as part of the Subscription Services, ORBIS may host
-                email accounts or other online communications infrastructure or
-                subscription accounts (including the ORBIS subscription itself)
-                for Users, ORBIS accepts no responsibility and shall not be
-                liable for third parties accessing such email, online
-                communications accounts or subscription accounts by way of
-                breaking or hacking passwords. It is the responsibility of Users
-                to ensure that all email, online communications accounts and
-                subscription accounts are properly protected with robust
-                passwords. The terms of Clause 4 apply to the use of any such
-                email, online communications accounts and subscription accounts.
+                Whereas as part of the Subscription Services, Stevenson Astrosat
+                may host email accounts or other online communications
+                infrastructure or subscription accounts (including the Stevenson
+                Astrosat subscription itself) for Users, Stevenson Astrosat
+                accepts no responsibility and shall not be liable for third
+                parties accessing such email, online communications accounts or
+                subscription accounts by way of breaking or hacking passwords.
+                It is the responsibility of Users to ensure that all email,
+                online communications accounts and subscription accounts are
+                properly protected with robust passwords. The terms of Clause 4
+                apply to the use of any such email, online communications
+                accounts and subscription accounts.
               </div>
             </li>
           </ul>
@@ -809,45 +809,46 @@ const EndUserLicenseAgreement = () => {
             <li className={styles.listItem}>
               <span>4.2.</span>
               <div>
-                ORBIS does not screen or pre-approve any User Site or User
-                Content (although Users acknowledge that ORBIS may do so if it
-                wishes).
+                Stevenson Astrosat does not screen or pre-approve any User Site
+                or User Content (although Users acknowledge that Stevenson
+                Astrosat may do so if it wishes).
               </div>
             </li>
             <li className={styles.listItem}>
               <span>4.3.</span>
               <div>
-                ORBIS may edit a User Site to comply with the provisions of
-                sub-Clause 4.1 without prior consultation. In cases of severe
-                breaches of the provisions of sub-Clause 4.1, a User Site may be
-                taken down and the relevant account may be suspended or
-                terminated. The User will not be informed in writing of the
-                reasons for such alterations or take downs.
+                Stevenson Astrosat may edit a User Site to comply with the
+                provisions of sub-Clause 4.1 without prior consultation. In
+                cases of severe breaches of the provisions of sub-Clause 4.1, a
+                User Site may be taken down and the relevant account may be
+                suspended or terminated. The User will not be informed in
+                writing of the reasons for such alterations or take downs.
               </div>
             </li>
             <li className={styles.listItem}>
               <span>4.4.</span>
               <div>
-                ORBIS accepts no responsibility or liability for any
-                infringement of third-party rights by User Sites.
+                Stevenson Astrosat accepts no responsibility or liability for
+                any infringement of third-party rights by User Sites.
               </div>
             </li>
             <li className={styles.listItem}>
               <span>4.5.</span>
               <div>
-                ORBIS will not be liable in any way or under any circumstances
-                for any loss or damage that any User may incur as a result of
-                such User Sites, or ORBIS exercising its rights under this
-                Agreement, nor for any errors or omissions in User Sites. Use of
-                and reliance upon User Sites is entirely at the User’s own risk.
+                Stevenson Astrosat will not be liable in any way or under any
+                circumstances for any loss or damage that any User may incur as
+                a result of such User Sites, or Stevenson Astrosat exercising
+                its rights under this Agreement, nor for any errors or omissions
+                in User Sites. Use of and reliance upon User Sites is entirely
+                at the User’s own risk.
               </div>
             </li>
             <li className={styles.listItem}>
               <span>4.6.</span>
               <div>
-                The User acknowledges that ORBIS may retain copies of any and
-                all communications, information, User Content and User Sites
-                sent to ORBIS.
+                The User acknowledges that Stevenson Astrosat may retain copies
+                of any and all communications, information, User Content and
+                User Sites sent to Stevenson Astrosat.
               </div>
             </li>
           </ul>
@@ -862,11 +863,11 @@ const EndUserLicenseAgreement = () => {
               <div>
                 Subject to the exceptions in Clause 6 of this Agreement, all
                 Content, that is not User Content, and the Database and the
-                Software and the Documentation are the property of ORBIS, or
-                ORBIS’ Affiliates or licensors. By continuing to use the
-                Software the User acknowledges that such material is protected
-                by applicable United Kingdom and international Intellectual
-                Property and other laws.
+                Software and the Documentation are the property of Stevenson
+                Astrosat, or Stevenson Astrosat’ Affiliates or licensors. By
+                continuing to use the Software the User acknowledges that such
+                material is protected by applicable United Kingdom and
+                international Intellectual Property and other laws.
               </div>
             </li>
             <li className={styles.listItem}>
@@ -874,12 +875,13 @@ const EndUserLicenseAgreement = () => {
               <div>
                 You may print, reproduce, copy, distribute, store or in any
                 other fashion re-use Content from the Software for personal or
-                educational purposes only unless otherwise given ORBIS’ express
-                written permission to do so. Specifically, the User agrees that
-                it will not systematically copy Content from the Software with a
-                view to creating or compiling any form of comprehensive
-                collection, compilation, directory or database unless given
-                ORBIS’ express written permission to do so.
+                educational purposes only unless otherwise given Stevenson
+                Astrosat’ express written permission to do so. Specifically, the
+                User agrees that it will not systematically copy Content from
+                the Software with a view to creating or compiling any form of
+                comprehensive collection, compilation, directory or database
+                unless given Stevenson Astrosat’ express written permission to
+                do so.
               </div>
             </li>
             <li className={styles.listItem}>
@@ -887,16 +889,18 @@ const EndUserLicenseAgreement = () => {
               <div>
                 In the event that new inventions, designs or processes evolve in
                 performance of or as a result of this Agreement, the User
-                acknowledges that the same shall be the property of ORBIS unless
-                otherwise agreed in writing by ORBIS.
+                acknowledges that the same shall be the property of Stevenson
+                Astrosat unless otherwise agreed in writing by Stevenson
+                Astrosat.
               </div>
             </li>
             <li className={styles.listItem}>
               <span>5.4.</span>
               <div>
-                Any trade mark, trade name or logo such as “Powered by ORBIS”
-                appearing on or in the Software is the property of ORBIS and
-                must not be copied, obscured or removed from the Software.
+                Any trade mark, trade name or logo such as “Powered by Stevenson
+                Astrosat” appearing on or in the Software is the property of
+                Stevenson Astrosat and must not be copied, obscured or removed
+                from the Software.
               </div>
             </li>
           </ul>
@@ -980,11 +984,11 @@ const EndUserLicenseAgreement = () => {
               <div>
                 Except as expressly provided in this Agreement, the Software and
                 Professional Services are provided with no other warranties of
-                any kind, and ORBIS disclaims all other warranties, express or
-                implied, including without limitation any warranty of
-                merchantability or fitness for a particular purpose. ORBIS does
-                not warrant that the use of the Subscription Services shall be
-                uninterrupted or error-free.
+                any kind, and Stevenson Astrosat disclaims all other warranties,
+                express or implied, including without limitation any warranty of
+                merchantability or fitness for a particular purpose. Stevenson
+                Astrosat does not warrant that the use of the Subscription
+                Services shall be uninterrupted or error-free.
               </div>
             </li>
           </ul>
@@ -1017,11 +1021,12 @@ const EndUserLicenseAgreement = () => {
             <li className={styles.listItem}>
               <span>9.2.</span>
               <div>
-                ORBIS’ liability under this Agreement (except where provided
-                otherwise in this agreement to a lesser extent) shall be limited
-                to the amount of professional indemnity insurance underwritten
-                in the name of ORBIS which shall be £1,000,000. This limitation
-                shall not apply to a breach of the Privacy Legislation.
+                Stevenson Astrosat’ liability under this Agreement (except where
+                provided otherwise in this agreement to a lesser extent) shall
+                be limited to the amount of professional indemnity insurance
+                underwritten in the name of Stevenson Astrosat which shall be
+                £1,000,000. This limitation shall not apply to a breach of the
+                Privacy Legislation.
               </div>
             </li>
           </ul>
@@ -1052,16 +1057,25 @@ const EndUserLicenseAgreement = () => {
             <li className={styles.listItem}>
               <span>10.2.</span>
               <div>
-                Subject to clauses 10.4, each party shall hold the other’s
-                Confidential Information in confidence and not make the other’s
-                Confidential Information available to any third party (other
-                than to a consultant or a Sub-contractor for the purposes of
-                this Agreement and which consultant or Sub-contractor shall have
-                entered into undertakings of confidentiality in relation to the
-                Confidential Information on terms no less onerous than those
-                contained in this Clause 10), or use the other’s Confidential
-                Information for any purpose other than to carry out its
-                obligations under this Agreement.
+                Subject to clauses A party may disclose Confidential Information
+                to the extent such Confidential Information is required to be
+                disclosed by law, by any governmental or other regulatory
+                authority or by a court or other authority of a competent
+                jurisdiction, provided that, to the extent it is legally
+                permitted to do so, it gives the other party as much notice of
+                such disclosure as possible and, where notice of disclosure is
+                not prohibited and is given in accordance with this clause 16.4,
+                it takes into account the reasonable requests of the other party
+                in relation to the content of such disclosure. , each party
+                shall hold the other’s Confidential Information in confidence
+                and not make the other’s Confidential Information available to
+                any third party (other than to a consultant or a Sub-contractor
+                for the purposes of this Agreement and which consultant or
+                Sub-contractor shall have entered into undertakings of
+                confidentiality in relation to the Confidential Information on
+                terms no less onerous than those contained in this Clause 10),
+                or use the other’s Confidential Information for any purpose
+                other than to carry out its obligations under this Agreement.
               </div>
             </li>
             <li className={styles.listItem}>
@@ -1083,9 +1097,18 @@ const EndUserLicenseAgreement = () => {
                 the extent it is legally permitted to do so, it gives the other
                 party as much notice of such disclosure as possible and, where
                 notice of disclosure is not prohibited and is given in
-                accordance with this clause 10.4, it takes into account the
-                reasonable requests of the other party in relation to the
-                content of such disclosure.
+                accordance with this clause A party may disclose Confidential
+                Information to the extent such Confidential Information is
+                required to be disclosed by law, by any governmental or other
+                regulatory authority or by a court or other authority of a
+                competent jurisdiction, provided that, to the extent it is
+                legally permitted to do so, it gives the other party as much
+                notice of such disclosure as possible and, where notice of
+                disclosure is not prohibited and is given in accordance with
+                this clause 16.4, it takes into account the reasonable requests
+                of the other party in relation to the content of such
+                disclosure. , it takes into account the reasonable requests of
+                the other party in relation to the content of such disclosure.
               </div>
             </li>
             <li className={styles.listItem}>
@@ -1112,45 +1135,48 @@ const EndUserLicenseAgreement = () => {
       </div>
       <div className={styles.section}>
         <h2 className={styles.textSectionHeader}>
-          11: Indenification by the User
+          11: Indemnification by the User
         </h2>
         <div className={styles.description}>
           <ul className={styles.list}>
             <li className={styles.listItem}>
               <span>11.1.</span>
               <div>
-                The User shall indemnify and hold harmless ORBIS, its
-                Affiliates, directors, and employees from any damages finally
-                awarded against ORBIS (including, without limitation, reasonable
-                costs and legal fees incurred by ORBIS) arising out of any third
-                party suit, claim or other legal action (including but not
-                limited to any governmental investigations, complaints and
-                actions) in connection with the User Content, including, without
-                limitation, any action for infringement of any trademark,
-                copyright, trade secret, right of publicity or privacy
-                (including defamation), patent or other proprietary right with
-                respect to the User Content (“Legal Claim”).
+                The User shall indemnify and hold harmless Stevenson Astrosat,
+                its Affiliates, directors, and employees from any damages
+                finally awarded against Stevenson Astrosat (including, without
+                limitation, reasonable costs and legal fees incurred by
+                Stevenson Astrosat) arising out of any third party suit, claim
+                or other legal action (including but not limited to any
+                governmental investigations, complaints and actions) in
+                connection with the User Content, including, without limitation,
+                any action for infringement of any trademark, copyright, trade
+                secret, right of publicity or privacy (including defamation),
+                patent or other proprietary right with respect to the User
+                Content (“Legal Claim”).
               </div>
             </li>
             <li className={styles.listItem}>
               <span>11.2.</span>
               <div>
-                ORBIS shall give written notice to the User of any Legal Claim
-                no later than 30 days after first receiving notice of a Legal
-                Claim and shall give copies to the User of all communications,
-                notices and/or other actions relating to the Legal Claim. ORBIS
-                shall give the User the sole control of the defence of any Legal
-                Claim, shall act in accordance with the reasonable instructions
-                of the User and shall give the User such assistance as the User
-                reasonably requests to defend or settle such claim. The User
-                shall conduct its defence at all times in a manner which is not
-                adverse to ORBIS’ interests. ORBIS may employ its own counsel to
-                assist it with respect to any such claim. ORBIS shall bear all
-                costs of engaging its own counsel, unless engagement of counsel
-                is necessary because of a conflict of interest with the User or
-                its counsel, or because the User fails to assume control of the
-                defence. ORBIS shall not settle or compromise any Legal Claim
-                without the User’s express written consent.
+                Stevenson Astrosat shall give written notice to the User of any
+                Legal Claim no later than 30 days after first receiving notice
+                of a Legal Claim and shall give copies to the User of all
+                communications, notices and/or other actions relating to the
+                Legal Claim. Stevenson Astrosat shall give the User the sole
+                control of the defence of any Legal Claim, shall act in
+                accordance with the reasonable instructions of the User and
+                shall give the User such assistance as the User reasonably
+                requests to defend or settle such claim. The User shall conduct
+                its defence at all times in a manner which is not adverse to
+                Stevenson Astrosat’ interests. Stevenson Astrosat may employ its
+                own counsel to assist it with respect to any such claim.
+                Stevenson Astrosat shall bear all costs of engaging its own
+                counsel, unless engagement of counsel is necessary because of a
+                conflict of interest with the User or its counsel, or because
+                the User fails to assume control of the defence. Stevenson
+                Astrosat shall not settle or compromise any Legal Claim without
+                the User’s express written consent.
               </div>
             </li>
           </ul>
@@ -1181,10 +1207,10 @@ const EndUserLicenseAgreement = () => {
               <span>13.1.</span>
               <div>
                 The User hereby acknowledges that upon submitting Feedback to
-                ORBIS, the User automatically grants to ORBIS a worldwide,
-                perpetual, irrevocable, royalty free licence to use that
-                Feedback in any way ORBIS deems appropriate including, but not
-                limited to:
+                Stevenson Astrosat, the User automatically grants to Stevenson
+                Astrosat a worldwide, perpetual, irrevocable, royalty free
+                licence to use that Feedback in any way Stevenson Astrosat deems
+                appropriate including, but not limited to:
                 <ul className={styles.list}>
                   <li className={styles.listItem}>
                     <span>13.1.1.</span>
@@ -1209,8 +1235,8 @@ const EndUserLicenseAgreement = () => {
             <li className={styles.listItem}>
               <span>13.2.</span>
               <div>
-                ORBIS’ use of the Feedback shall not bestow any rights or
-                interests upon the User whatsoever.
+                Stevenson Astrosat’ use of the Feedback shall not bestow any
+                rights or interests upon the User whatsoever.
               </div>
             </li>
             <li className={styles.listItem}>
@@ -1218,7 +1244,7 @@ const EndUserLicenseAgreement = () => {
               <div>
                 The User hereby acknowledges that any modifications made to the
                 Software at the request or suggestion of the User will belong to
-                and be the Intellectual Property of ORBIS.
+                and be the Intellectual Property of Stevenson Astrosat.
               </div>
             </li>
           </ul>
@@ -1234,96 +1260,99 @@ const EndUserLicenseAgreement = () => {
             <li className={styles.listItem}>
               <span>14.1.</span>
               <div>
-                “Affiliate” means an entity which controls, is controlled by, or
-                is under common control with, a party, and control means the
-                ability to vote 50% or more of the voting securities of any
-                entity or otherwise having the ability to influence and direct
-                the polices and direction of an entity;
+                <strong>“Affiliate”</strong> means an entity which controls, is
+                controlled by, or is under common control with, a party, and
+                control means the ability to vote 50% or more of the voting
+                securities of any entity or otherwise having the ability to
+                influence and direct the polices and direction of an entity;
               </div>
             </li>
             <li className={styles.listItem}>
               <span>14.2.</span>
               <div>
-                “Content” means any text, graphics, images, audio, video,
-                software, data compilations including, but not limited to, text,
-                graphics, logos, icons, sound clips, video clips, data
-                compilations, page layout, underlying code and software and any
-                other form of information capable of being stored in a computer
-                that appears on, is uploaded to or forms part of the Software or
-                the Platform; BUT excluding User Content;
+                <strong>“Content”</strong> means any text, graphics, images,
+                audio, video, software, data compilations including, but not
+                limited to, text, graphics, logos, icons, sound clips, video
+                clips, data compilations, page layout, underlying code and
+                software and any other form of information capable of being
+                stored in a computer that appears on, is uploaded to or forms
+                part of the Software or the Platform; BUT excluding User
+                Content;
               </div>
             </li>
             <li className={styles.listItem}>
               <span>14.3.</span>
               <div>
-                “Database” means the database stored on the Platform which
-                contains inter alia User Content;
+                <strong>“Database”</strong> means the database stored on the
+                Platform which contains inter alia User Content;
               </div>
             </li>
             <li className={styles.listItem}>
               <span>14.4.</span>
               <div>
-                “DPA” means the Data Protection Act 2018 and any modification,
-                amendment or re-enactment thereof;
+                <strong>“DPA”</strong> means the Data Protection Act 2018 and
+                any modification, amendment or re-enactment thereof;
               </div>
             </li>
             <li className={styles.listItem}>
               <span>14.5.</span>
               <div>
-                “Documentation” means user documentation provided electronically
-                by ORBIS for use with the Software, as periodically updated;
+                <strong>“Documentation”</strong> means any user documentation
+                provided electronically by Stevenson Astrosat for use with the
+                Software, as periodically updated;
               </div>
             </li>
             <li className={styles.listItem}>
               <span>14.6.</span>
               <div>
-                “Feedback” means all comments, suggestions, requests,
-                requirements, improvements, feedback, or other input the User
-                provides regarding any products or Services owned or supplied by
-                ORBIS, its Affiliates and licensees;
+                <strong>“Feedback”</strong> means all comments, suggestions,
+                requests, requirements, improvements, feedback, or other input
+                the User provides regarding any products or Services owned or
+                supplied by Stevenson Astrosat, its Affiliates and licensees;
               </div>
             </li>
             <li className={styles.listItem}>
               <span>14.7.</span>
               <div>
-                “GDPR” means the General Data Protection Regulation (Regulation
-                (EU) 2016/679) as amended, replaced, supplemented or adopted
-                into United Kingdom Legislation;
+                <strong>“GDPR”</strong> means the General Data Protection
+                Regulation (Regulation (EU) 2016/679) as amended, replaced,
+                supplemented or adopted into United Kingdom Legislation;
               </div>
             </li>
             <li className={styles.listItem}>
               <span>14.8.</span>
               <div>
-                “Intellectual Property” means patents, trademarks, trade name,
-                service mark, copyright, trade secrets, know-how, process,
-                technology, development tool, ideas, concepts, design right,
-                domain names, moral right, database right, methodology,
-                algorithm and invention, and any other proprietary information
-                (whether registered, unregistered, pending or applied for);
+                <strong>“Intellectual Property”</strong> means patents,
+                trademarks, trade name, service mark, copyright, trade secrets,
+                know-how, process, technology, development tool, ideas,
+                concepts, design right, domain names, moral right, database
+                right, methodology, algorithm and invention, and any other
+                proprietary information (whether registered, unregistered,
+                pending or applied for);
               </div>
             </li>
             <li className={styles.listItem}>
               <span>14.9.</span>
               <div>
-                “Platform” means the hardware and software environment in which
-                the software element of the Software operates, which comprises
-                one or more server computers (whether virtual or not),
-                mirroring/duplicating/back-up and storage systems and relative
-                hardware operating software, virtual machine software (where
-                relevant), operating system software, database software,
-                anti-virus and security software, switches, power supplies and
-                telecommunications infrastructure;
+                <strong>“Platform”</strong> means the hardware and software
+                environment in which the software element of the Software
+                operates, which comprises one or more server computers (whether
+                virtual or not), mirroring/duplicating/back-up and storage
+                systems and relative hardware operating software, virtual
+                machine software (where relevant), operating system software,
+                database software, anti-virus and security software, switches,
+                power supplies and telecommunications infrastructure;
               </div>
             </li>
             <li className={styles.listItem}>
               <span>14.10.</span>
               <div>
-                “Privacy Legislation” means the GDPR, the DPA, the Data
-                Protection Directive (95/46/EC), the Regulation of Investigatory
-                Powers Act 2000, the Telecommunications (Lawful Business
-                Practice) (Interception of Communications) Regulations 2000 (SI
-                2000/2699), the Electronic Communications Data Protection
-                Directive (2002/58/EC), the Privacy and Electronic
+                <strong>“Privacy Legislation”</strong> means the GDPR, the DPA,
+                the Data Protection Directive (95/46/EC), the Regulation of
+                Investigatory Powers Act 2000, the Telecommunications (Lawful
+                Business Practice) (Interception of Communications) Regulations
+                2000 (SI 2000/2699), the Electronic Communications Data
+                Protection Directive (2002/58/EC), the Privacy and Electronic
                 Communications (EC Directive) Regulations 2003 (SI 2426/2003)
                 and all applicable laws and regulations relating to the
                 processing of personal data and privacy, including where
@@ -1335,70 +1364,74 @@ const EndUserLicenseAgreement = () => {
             <li className={styles.listItem}>
               <span>14.11.</span>
               <div>
-                “Privacy Policy” means ORBIS’ policy relating to User Content
-                and compliance with (amongst others) the DPA and the GDPR from
-                time to time, the current version of which is located here
+                <strong>“Privacy Policy”</strong> means Stevenson Astrosat’
+                policy relating to User Content and compliance with (amongst
+                others) the DPA and the GDPR from time to time, the current
+                version of which is located here
                 https://or3is.com/privacy-policy ;
               </div>
             </li>
             <li className={styles.listItem}>
               <span>14.12.</span>
               <div>
-                “Software” means the ORBIS™ proprietary operating software and
-                the Third Party Software written in object and source code
-                residing on and used for operating the Platform and the Software
-                as Updated and Upgraded from time to time;
+                <strong>“Software”</strong> means the Stevenson Astrosat™
+                proprietary operating software and the Third Party Software
+                written in object and source code residing on and used for
+                operating the Platform and the Software as Updated and Upgraded
+                from time to time;
               </div>
             </li>
             <li className={styles.listItem}>
               <span>14.13.</span>
               <div>
-                “Third Party Software” means software other than the Software
-                which belongs to third parties and in relation to which ORBIS
-                has the right to grant sub-licenses;
+                <strong>“Third Party Software”</strong> means software other
+                than the Software which belongs to third parties and in relation
+                to which Stevenson Astrosat has the right to grant sub-licenses;
               </div>
             </li>
             <li className={styles.listItem}>
               <span>14.14.</span>
               <div>
-                “Update” means any update, update rollup, service pack, feature
-                pack, critical update, security update, or hotfix that is used
-                to improve or to fix a software product;
+                <strong>“Update”</strong> means any update, update rollup,
+                service pack, feature pack, critical update, security update, or
+                hotfix that is used to improve or to fix a software product;
               </div>
             </li>
             <li className={styles.listItem}>
               <span>14.15.</span>
               <div>
-                “Upgrade” means a software package that replaces an installed
-                version of a product with a newer version of the same product,
-                typically leaving existing customer data and preferences intact
-                while replacing the existing software with the newer version;
+                <strong>“Upgrade”</strong> means a software package that
+                replaces an installed version of a product with a newer version
+                of the same product, typically leaving existing customer data
+                and preferences intact while replacing the existing software
+                with the newer version;
               </div>
             </li>
             <li className={styles.listItem}>
               <span>14.16.</span>
               <div>
-                “User” means the person that has permission to accesses the
-                Software as a named user and is not employed by ORBIS and acting
-                in the course of their employment;
+                <strong>“User”</strong> means the person that has permission to
+                accesses the Software as a named user and is not employed by
+                Stevenson Astrosat and acting in the course of their employment;
               </div>
             </li>
             <li className={styles.listItem}>
               <span>14.17.</span>
               <div>
-                “User Content” means any text, graphics, images, audio, video,
-                software, data compilations and any other form of information
-                capable of being stored in a computer that appears on, is
-                uploaded to or forms part of a User Site or the Software and has
-                been uploaded by a User;
+                <strong>“User Content”</strong> means any text, graphics,
+                images, audio, video, software, data compilations and any other
+                form of information capable of being stored in a computer that
+                appears on, is uploaded to or forms part of a User Site or the
+                Software and has been uploaded by a User;
               </div>
             </li>
             <li className={styles.listItem}>
               <span>14.18.</span>
               <div>
-                “User Site” means a partition/tenancy on the Platform created by
-                ORBIS for a User or Users accessing the Software which shall
-                contain User Content and shall be hosted on the Platform;
+                <strong>“User Site”</strong> means a partition/tenancy on the
+                Platform created by Stevenson Astrosat for a User or Users
+                accessing the Software which shall contain User Content and
+                shall be hosted on the Platform;
               </div>
             </li>
           </ul>
@@ -1409,7 +1442,9 @@ const EndUserLicenseAgreement = () => {
         <h3>Processing, Personal Data and Data Subjects</h3>
       </div>
       <div className={styles.section}>
-        <h2 className={styles.textSectionHeader}>1: Processing by ORBIS</h2>
+        <h2 className={styles.textSectionHeader}>
+          1: Processing by Stevenson Astrosat
+        </h2>
         <div className={styles.description}>
           <ul className={styles.list}>
             <li className={styles.listItem}>
@@ -1417,9 +1452,9 @@ const EndUserLicenseAgreement = () => {
               <div>
                 Scope – persons who choose to enter their personal details into
                 the application as either a person wishing help or as a person
-                able and willing to offer help. Also staff of Voluntary Action
-                Orkney who access the system to facilitate the matching of
-                volunteer helpers to those requiring help.
+                able and willing to offer help. Also staff of the Customer who
+                access the system to facilitate the matching of volunteer
+                helpers to those requiring help.
               </div>
             </li>
             <li className={styles.listItem}>
@@ -1433,9 +1468,9 @@ const EndUserLicenseAgreement = () => {
             <li className={styles.listItem}>
               <span>1.3</span>
               <div>
-                Purpose of Processing – to enable Voluntary Action Orkney to
-                identify individuals in need of help and to identify volunteers
-                who may be able to provide that help.
+                Purpose of Processing – to enable the Customer to identify
+                individuals in need of help and to identify volunteers who may
+                be able to provide that help.
               </div>
             </li>
             <li className={styles.listItem}>
@@ -1448,14 +1483,18 @@ const EndUserLicenseAgreement = () => {
             <li className={styles.listItem}>
               <span>1.5</span>
               <div>
-                Types of Personal Data – names, addresses, email addresses
+                Types of Personal Data – names, addresses, email addresses,
+                phone number and information on the type of help that can be
+                offered (including availability) or the type of help required.
+                Users are discouraged from entering medical data but it is
+                possible that this could be collected
               </div>
             </li>
             <li className={styles.listItem}>
               <span>1.6</span>
               <div>
                 Categories of Data Subject – natural persons over the age of 18
-                resident in Orkney
+                resident in the Customers location or area of operation,
               </div>
             </li>
           </ul>
@@ -1471,7 +1510,7 @@ const EndUserLicenseAgreement = () => {
               <span>2.1</span>
               <div>
                 The rights and obligations of the Data Controller set out in
-                this Agreement and the GDPR and DPA.
+                this Agreement, the Privacy Policy and the Privacy
               </div>
             </li>
           </ul>
