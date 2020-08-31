@@ -150,22 +150,6 @@ const RegisterForm = ({
           <p className={formStyles.errorMessage}>{errors.password2}</p>
         )}
 
-        <div className={`${formStyles.row} ${formStyles.incidentals}`}>
-          <ul>
-            {config && config.passwordStrength >= 2 && (
-              <li>No weak passwords</li>
-            )}
-            {config && (
-              <li>At least {config.passwordMinLength} characters long</li>
-            )}
-            <li>Contains uppercase letters</li>
-          </ul>
-          <ul>
-            <li>Contains numbers</li>
-            <li>Not similar with email</li>
-          </ul>
-        </div>
-
         <div className={formStyles.row}>
           <Checkbox
             name="loggedIn"

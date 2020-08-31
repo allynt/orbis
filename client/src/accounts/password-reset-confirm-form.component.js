@@ -89,6 +89,8 @@ const PasswordResetConfirmForm = ({
           <p className={formStyles.errorMessage}>{errors.new_password1}</p>
         )}
 
+        <PasswordStrengthMeter password={values.new_password1} />
+
         <div className={formStyles.row}>
           <PasswordField
             name="new_password2"
@@ -101,20 +103,6 @@ const PasswordResetConfirmForm = ({
         {errors.new_password2 && (
           <p className={formStyles.errorMessage}>{errors.new_password2}</p>
         )}
-
-        <PasswordStrengthMeter password={values.new_password1} />
-
-        <div className={`${formStyles.row} ${formStyles.incidentals}`}>
-          <ul>
-            <li>No weak passwords</li>
-            <li>At least 8 characters long</li>
-            <li>Contains uppercase letters</li>
-          </ul>
-          <ul>
-            <li>Contains numbers</li>
-            <li>Not similar with email</li>
-          </ul>
-        </div>
 
         <div className={formStyles.row}>
           <Checkbox
