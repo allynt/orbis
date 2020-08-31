@@ -1,3 +1,23 @@
+## [2.1.1](https://github.com/astrosat/orbis/compare/v2.1.0...v2.1.1) (2020-08-31)
+
+
+### Bug Fixes
+
+* **backend:** adding the core orb to new customerusers ([b8f46f9](https://github.com/astrosat/orbis/commit/b8f46f9427df292665ceace3abbebed55f14b05e))
+* **frontend:** Add icon mapping/atlas ([24eb36d](https://github.com/astrosat/orbis/commit/24eb36d1ed28179c266f566433b067b747335a03))
+* **frontend:** Add iconMapping and IconAtlas ([55f7b8e](https://github.com/astrosat/orbis/commit/55f7b8ec610a892a032f7c9b8d19484c951d97d5))
+* **frontend:** Add new Orb hook to useOrbs, create Orb file structure ([244ddfa](https://github.com/astrosat/orbis/commit/244ddfae375aabc815c8e17fc8a73e697220cf44))
+* **frontend:** Add resolveJsonModule ([822dc8f](https://github.com/astrosat/orbis/commit/822dc8fde9682abfd965d970bc42f0be774c31dd))
+* **frontend:** Commit to share with other devs ([6a1c108](https://github.com/astrosat/orbis/commit/6a1c108152b66121563af10503396c32637e37a9))
+* **frontend:** Fix missing text ([a22316d](https://github.com/astrosat/orbis/commit/a22316d4ede4256725bffc878aecf0805b2eacb5)), closes [#696](https://github.com/astrosat/orbis/issues/696)
+* **frontend:** Make requested changes ([db97b33](https://github.com/astrosat/orbis/commit/db97b332c7faed08af9e78f3a1384fc63f2b9990))
+* **frontend:** Moved resolveJsonModule into compilerOptions ([889e93b](https://github.com/astrosat/orbis/commit/889e93bea48fcd0f1dbcb3939857c7a9111147f4))
+* **frontend:** Pushing to fix CORS issues ([db522b4](https://github.com/astrosat/orbis/commit/db522b4b726503c56dc73594ad131361056a6f11))
+* **frontend:** Remove log ([4e1a9d2](https://github.com/astrosat/orbis/commit/4e1a9d2f63b15ce0643ee406401c2ad985937fe0))
+* **frontend:** Remove some text from T&C ([0151524](https://github.com/astrosat/orbis/commit/0151524113958d51f9141dc748ae561fb5b0f8bd))
+* **frontend:** Revert getData helper ([baee173](https://github.com/astrosat/orbis/commit/baee17324770a05162c86fc0f8cb48484d1be557))
+* **frontend:** Update T&Cs ([a068e79](https://github.com/astrosat/orbis/commit/a068e79ba03cb624462e9a771a1229d30b59c9fd)), closes [#696](https://github.com/astrosat/orbis/issues/696)
+
 # [2.1.0](https://github.com/astrosat/orbis/compare/v2.0.0...v2.1.0) (2020-08-26)
 
 
