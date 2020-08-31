@@ -64,8 +64,6 @@ DJANGO_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.sites",
-    # statics...
-    "whitenoise.runserver_nostatic",
     "django.contrib.staticfiles",
     # gis...
     "django.contrib.gis",
@@ -147,7 +145,6 @@ MAXIMUM_AOI_AREA = DynamicSetting(
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
-    "whitenoise.middleware.WhiteNoiseMiddleware",
     "corsheaders.middleware.CorsMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.locale.LocaleMiddleware",
@@ -209,13 +206,10 @@ STATICFILES_FINDERS = [
 STATIC_URL = "/static/"
 STATIC_ROOT = str(SERVER_DIR("static"))
 
-STATICFILES_DIRS = [
-    # STATIC_ROOT,  # no need to explicitly specify STATIC_ROOT again
-    str(CLIENT_DIR.path("build/static"))
+STATICFILES_FINDERS = [
+    "django.contrib.staticfiles.finders.FileSystemFinder",
+    "django.contrib.staticfiles.finders.AppDirectoriesFinder",
 ]
-
-WHITENOISE_ROOT = str(CLIENT_DIR("build"))
-STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 ###############
 # Media files #

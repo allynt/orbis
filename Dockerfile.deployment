@@ -25,6 +25,7 @@ RUN cd $APP_HOME/client && yarn install && yarn build
 
 # Install backend deps
 RUN cd $APP_HOME/server && pipenv install --dev
+RUN cd $APP_HOME/server && pipenv run ./manage.py collectstatic --no-input --link
 
 # Install server code
 COPY --chown=root:root run-uwsgi.sh /etc/service/uwsgi/run
