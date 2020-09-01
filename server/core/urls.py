@@ -27,7 +27,7 @@ from orbis.urls import (
     api_urlpatterns as orbis_api_urlpatterns,
 )
 
-from .views import index_view, app_config_view
+from .views import app_config_view
 
 
 admin.site.site_header = settings.ADMIN_SITE_HEADER
@@ -118,10 +118,3 @@ if settings.DEBUG:
         import debug_toolbar
 
         urlpatterns = [path("__debug__/", include(debug_toolbar.urls))] + urlpatterns
-
-
-urlpatterns += [
-    # catch nothing-and-anything in index_view...
-    path("", index_view, name="index"),
-    re_path(r"^.*/$", index_view, name="index"),
-]
