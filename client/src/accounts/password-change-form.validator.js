@@ -30,7 +30,7 @@ const validate = form => {
   } else if (form.new_password2?.trim() !== form.new_password1?.trim()) {
     errors.new_password2 = "Passwords don't match";
   } else if (form.new_password2?.trim() === form.old_password?.trim()) {
-    errors.new_password2 = `New Password matchs Old Password`;
+    errors.new_password2 = `New Password matches Old Password`;
   }
 
   return errors;
