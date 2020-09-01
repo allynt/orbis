@@ -105,18 +105,6 @@ const PasswordChangeForm = ({ changePassword, changeStatus, error }) => {
 
         <PasswordStrengthMeter password={values.password1} />
 
-        <div className={`${formStyles.row} ${formStyles.incidentals}`}>
-          <ul>
-            <li>No weak passwords</li>
-            <li>At least 8 characters long</li>
-            <li>Contains uppercase letters</li>
-          </ul>
-          <ul>
-            <li>Contains numbers</li>
-            <li>Not similar with email</li>
-          </ul>
-        </div>
-
         <div className={formStyles.row}>
           <Checkbox
             name="loggedIn"

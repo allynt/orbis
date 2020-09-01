@@ -74,7 +74,7 @@ const PasswordResetForm = ({ resetPassword, resetStatus, error }) => {
         <div className={formStyles.row}>
           <Textfield
             name="email"
-            value={values.email || ''}
+            value={values.email?.trim() || ''}
             placeholder="Email"
             onChange={handleChange}
             required

@@ -14,11 +14,6 @@ describe('Change Password Form Validator', () => {
         new_password2: 'password',
       },
       {
-        old_password: ' ', // Error, empty value
-        new_password1: 'password',
-        new_password2: 'password',
-      },
-      {
         // Error, missing `new_password1`
         old_password: 'password',
         new_password2: 'password',

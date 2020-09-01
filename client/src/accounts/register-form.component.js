@@ -109,7 +109,7 @@ const RegisterForm = ({
         <div className={formStyles.row}>
           <Textfield
             name="email"
-            value={values.email || ''}
+            value={values.email?.trim() || ''}
             placeholder="Email"
             onChange={handleChange}
             required
@@ -149,22 +149,6 @@ const RegisterForm = ({
         {errors.password2 && (
           <p className={formStyles.errorMessage}>{errors.password2}</p>
         )}
-
-        <div className={`${formStyles.row} ${formStyles.incidentals}`}>
-          <ul>
-            {config && config.passwordStrength >= 2 && (
-              <li>No weak passwords</li>
-            )}
-            {config && (
-              <li>At least {config.passwordMinLength} characters long</li>
-            )}
-            <li>Contains uppercase letters</li>
-          </ul>
-          <ul>
-            <li>Contains numbers</li>
-            <li>Not similar with email</li>
-          </ul>
-        </div>
 
         <div className={formStyles.row}>
           <Checkbox
