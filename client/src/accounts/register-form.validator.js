@@ -19,21 +19,15 @@ const validate = form => {
 
   if (!form.password1) {
     errors.password1 = 'Password is required';
-  } else if (
-    passwordMinLength &&
-    form.password1.trim().length < passwordMinLength
-  ) {
+  } else if (passwordMinLength && form.password1.length < passwordMinLength) {
     errors.password1 = `Password is too short (minimum ${passwordMinLength} characters)`;
-  } else if (
-    passwordMaxLength &&
-    form.password1.trim().length > passwordMaxLength
-  ) {
+  } else if (passwordMaxLength && form.password1.length > passwordMaxLength) {
     errors.password1 = `Password is too long (maximum ${passwordMaxLength} characters)`;
   }
 
   if (!form.password2) {
     errors.password2 = 'Password confirmation is required';
-  } else if (form.password2.trim() !== form.password1.trim()) {
+  } else if (form.password2 !== form.password1) {
     errors.password2 = 'Passwords do not match';
   }
 
