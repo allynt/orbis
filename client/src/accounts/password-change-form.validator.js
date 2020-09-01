@@ -7,32 +7,30 @@ const validate = form => {
     },
   } = store.getState();
 
-  const data = JSON.parse(JSON.stringify(form).replace(/"\s+|\s+"/g, '"'));
-
   let errors = {};
 
-  if (!data.old_password) {
+  if (!form.old_password) {
     errors.old_password = 'Old Password is required';
-  } else if (!data.new_password1) {
+  } else if (!form.new_password1) {
     errors.new_password1 = 'New Password is required';
   } else if (
     passwordMinLength &&
-    data.new_password1.length < passwordMinLength
+    form.new_password1?.trim().length < passwordMinLength
   ) {
     errors.new_password1 = `Password is too short (minimum ${passwordMinLength} characters)`;
   } else if (
     passwordMaxLength &&
-    data.new_password1.length > passwordMaxLength
+    form.new_password1?.trim().length > passwordMaxLength
   ) {
     errors.new_password1 = `Password is too long (maximum ${passwordMaxLength} characters)`;
   }
 
-  if (!data.new_password2) {
+  if (!form.new_password2) {
     errors.new_password2 = 'New Password is required';
-  } else if (data.new_password2 !== data.new_password1) {
+  } else if (form.new_password2?.trim() !== form.new_password1?.trim()) {
     errors.new_password2 = "Passwords don't match";
-  } else if (data.new_password2 === data.old_password) {
-    errors.new_password2 = `New Passwords match Old Password`;
+  } else if (form.new_password2?.trim() === form.old_password?.trim()) {
+    errors.new_password2 = `New Password matchs Old Password`;
   }
 
   return errors;
