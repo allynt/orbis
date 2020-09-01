@@ -10,7 +10,7 @@ import { getData } from 'utils/http';
 import { useActionForHelpOrb } from './actionForHelp/useActionForHelpOrb';
 import { useIsolationPlusOrb } from './isolationPlus/useIsolationPlusOrb';
 import { useRiceOrb } from './rice/useRiceOrb';
-import { useMySupplyLynkOrb } from './mysupplylynk/useMySupplyLynkOrb';
+import { useMySupplyLynkOrb } from './mySupplyLynk/useMySupplyLynkOrb';
 
 const dataUrlFromId = source => {
   return source.data && typeof source.data === 'string'
@@ -71,8 +71,9 @@ export const useOrbs = () => {
     layers: mySupplyLynkLayers,
     mapComponents: mySupplyLynkMapComponents,
     sidebarComponents: mySupplyLynkSidebarComponents,
+    dialog: mySupplyLynkDialog,
   } = useMySupplyLynkOrb(data, activeSources);
-  
+
   let layers = [
     ...isoPlusLayers,
     ...hourglassLayers,
@@ -101,6 +102,7 @@ export const useOrbs = () => {
     ...ricePostLabelLayers,
     ...isoPlusPostLabelLayers,
   ];
+  const dialogs = [...mySupplyLynkDialog];
 
   return {
     layers,
@@ -108,5 +110,6 @@ export const useOrbs = () => {
     sidebarComponents,
     preLabelLayers,
     postLabelLayers,
+    dialogs,
   };
 };

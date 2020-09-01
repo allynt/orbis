@@ -21,6 +21,7 @@ const DataLayers = () => {
   const { sidebarComponents } = useOrbs();
   const [isVisible, toggle] = useModal(false);
   const ref = useRef(null);
+
   const dispatch = useDispatch();
   const dataSources = useSelector(dataSourcesSelector);
   const selectedLayers = useSelector(activeDataSourcesSelector);
