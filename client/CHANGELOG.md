@@ -1,3 +1,13 @@
+## [2.1.2](https://github.com/astrosat/orbis/compare/v2.1.1...v2.1.2) (2020-09-01)
+
+
+### Bug Fixes
+
+* **frontend:** Align password validation and remove suggestions ([1bc8c45](https://github.com/astrosat/orbis/commit/1bc8c454e9e8d37859daf98aee7bef00f383bf4e)), closes [#693](https://github.com/astrosat/orbis/issues/693)
+* **frontend:** Fix typo in error message ([1c37805](https://github.com/astrosat/orbis/commit/1c378057eacd5dd5854e178632071a84921bb91d)), closes [#693](https://github.com/astrosat/orbis/issues/693)
+* **frontend:** Remove trim on passwords ([675128b](https://github.com/astrosat/orbis/commit/675128b30ad50c3dfb04bf376998509e0f95dcf4)), closes [#693](https://github.com/astrosat/orbis/issues/693)
+* **frontend:** Trim form values in validator ([e0d7df9](https://github.com/astrosat/orbis/commit/e0d7df986405b7d2e2576b1458b716add19b5a6a)), closes [#693](https://github.com/astrosat/orbis/issues/693)
+
 ## [2.1.1](https://github.com/astrosat/orbis/compare/v2.1.0...v2.1.1) (2020-08-31)
 
 
