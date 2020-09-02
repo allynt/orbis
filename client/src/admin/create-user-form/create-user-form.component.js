@@ -31,8 +31,13 @@ export const CreateUserForm = ({
   const createUser = data => {
     const values = {
       ...data,
-      licences: Array.isArray(data.licences) ? data.licences : [data.licences],
+      licences: data.licences
+        ? Array.isArray(data.licences)
+          ? data.licences
+          : [data.licences]
+        : [],
     };
+
     onSubmit(values);
   };
 
