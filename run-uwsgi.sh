@@ -1,20 +1,24 @@
 #!/bin/bash
 set -euo pipefail
 
-cd $APP_HOME/server
+# echo "APP TYPE: ${APP_TYPE}"
 
-export PIPENV_DONT_LOAD_ENV=1
+if [[ $APP_TYPE = "server" ]] ; then
+  cd $APP_HOME/server
 
-setuser app pipenv run ./manage.py migrate
-setuser app pipenv run ./manage.py update_site
-setuser app pipenv run ./manage.py collectstatic --no-input --link
+  export PIPENV_DONT_LOAD_ENV=1
 
-exec /sbin/setuser app \
-     uwsgi \
-     --venv "$(pipenv --venv)" \
-     --uwsgi-socket /tmp/uwsgi.sock \
-     --chmod-socket=666 \
-     --module wsgi:application \
-     --need-app \
-     --processes 4 \
-     --master
+  setuser app pipenv run ./manage.py migrate
+  setuser app pipenv run ./manage.py update_site
+  setuser app pipenv run ./manage.py collectstatic --no-input --link
+
+  exec /sbin/setuser app \
+      uwsgi \
+      --venv "$(pipenv --venv)" \
+      --uwsgi-socket /tmp/uwsgi.sock \
+      --chmod-socket=666 \
+      --module wsgi:application \
+      --need-app \
+      --processes 4 \
+      --master
+fi

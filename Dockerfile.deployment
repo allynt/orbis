@@ -9,6 +9,9 @@ USER app
 # read in from your local environment and passed to this Dockerfile when
 # building the container.
 ARG TOKEN
+ARG TYPE
+
+ENV APP_TYPE=$TYPE
 ENV GITHUB_REGISTRY_TOKEN=$TOKEN
 
 ENV PIPENV_VENV_IN_PROJECT=1
@@ -16,21 +19,21 @@ ENV PIPENV_DONT_LOAD_ENV=1
 
 WORKDIR $APP_HOME
 
-COPY --chown=root:root nginx.conf /etc/nginx/nginx.conf
+COPY --chown=root:root "${APP_TYPE}-nginx.conf" /etc/nginx/nginx.conf
 
 COPY --chown=app:app . $APP_HOME
 
-# Install client deps and build
-RUN cd $APP_HOME/client && yarn install && yarn build
+# Build for Client container
+RUN if [ $APP_TYPE = "client" ] ; then cd $APP_HOME/client && yarn install && yarn build ; fi
 
-# Install backend deps
-RUN cd $APP_HOME/server && pipenv install --dev
-RUN cd $APP_HOME/server && pipenv run ./manage.py collectstatic --no-input --link
+# Build for Server container
+RUN if [ $APP_TYPE = "server" ] ; then cd $APP_HOME/server && pipenv install --dev ; fi
+RUN if [ $APP_TYPE = "server" ] ; then cd $APP_HOME/server && pipenv run ./manage.py collectstatic --no-input --link ; fi
 
 # Install server code
 COPY --chown=root:root run-uwsgi.sh /etc/service/uwsgi/run
 
-HEALTHCHECK --start-period=120s CMD curl -sf http://127.0.0.1/healthcheck/?format=json
+# HEALTHCHECK --start-period=120s CMD curl -sf http://127.0.0.1/healthcheck/?format=json
 EXPOSE 80
 
 # The baseimage requires ultimately running as root

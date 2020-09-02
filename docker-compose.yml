@@ -24,6 +24,7 @@ services:
       PIPENV_DONT_LOAD_ENV: 1
       DJANGO_SETTINGS_MODULE: core.settings
       GITHUB_REGISTRY_TOKEN: "${GITHUB_REGISTRY_TOKEN}"
+      DOCKER_BUILDKIT: 1
     volumes:
       - ./server:/home/app/server
       - ./client:/home/app/client
@@ -39,6 +40,7 @@ services:
       NODE_ENV: "development"
       REACT_APP_DOCKER: "true"
       GITHUB_REGISTRY_TOKEN: "${GITHUB_REGISTRY_TOKEN}"
+      DOCKER_BUILDKIT: 1
     working_dir: /home/app/client
     volumes:
       - ./client:/home/app/client
