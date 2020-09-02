@@ -4,7 +4,7 @@ import ReactDOM from 'react-dom';
 import styles from './dialog.module.css';
 import { Button, CloseButton } from '@astrosat/astrosat-ui';
 
-const COPY = {
+const LABELS = {
   businessInformationHeading: 'Business Information',
   itemsHeading: 'What can we supply?',
   contactDetailsLabel: 'Contact Details',
@@ -38,7 +38,7 @@ export const Dialog = forwardRef(
               </header>
               <div className={styles.content}>
                 <div className={styles.label}>
-                  <h3>{COPY.contactDetailsLabel}</h3>
+                  <h3>{LABELS.contactDetailsLabel}</h3>
                 </div>
                 <ul className={styles.item}>
                   <li className={styles.listItem}>
@@ -62,7 +62,7 @@ export const Dialog = forwardRef(
                   </li>
                 </ul>
                 <div className={styles.label}>
-                  <h3>{COPY.addressLabel}</h3>
+                  <h3>{LABELS.addressLabel}</h3>
                 </div>
                 <ul className={styles.item}>
                   <li className={styles.listItem}>
@@ -76,23 +76,23 @@ export const Dialog = forwardRef(
                   <li className={styles.listItem}>{supplier.Postcode}</li>
                 </ul>
                 <h2 className={styles.heading}>
-                  {COPY.businessInformationHeading}
+                  {LABELS.businessInformationHeading}
                 </h2>
                 <div className={styles.label}>
-                  <h3>{COPY.existingLineOfBusinessLabel}</h3>
+                  <h3>{LABELS.existingLineOfBusinessLabel}</h3>
                 </div>
                 <p className={styles.item}>{supplier['Line of Business']}</p>
                 <div className={`${styles.label} ${styles.highlight}`}>
-                  <h3>{COPY.newProductLinesLabel}</h3>
+                  <h3>{LABELS.newProductLinesLabel}</h3>
                 </div>
                 <p className={`${styles.item} ${styles.highlight}`}>
                   {supplier['New Product Lines']}
                 </p>
                 <div className={styles.label}>
-                  <h3>{COPY.paymentTermsLabel}</h3>
+                  <h3>{LABELS.paymentTermsLabel}</h3>
                 </div>
                 <p className={styles.item}>{supplier['Payment Terms']}</p>
-                <h2 className={styles.heading}>{COPY.itemsHeading}</h2>
+                <h2 className={styles.heading}>{LABELS.itemsHeading}</h2>
                 {supplier.Items.map(({ Name, ...rest }) => (
                   <>
                     <div className={styles.label}>

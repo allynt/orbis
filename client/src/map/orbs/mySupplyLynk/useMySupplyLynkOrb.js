@@ -15,7 +15,7 @@ import { Dialog } from './dialog/dialog.component';
 import useModal from '@astrosat/astrosat-ui/dist/containers/use-modal';
 
 import { CheckboxFilters } from './checkbox-filters/checkbox-filters.component';
-import FeatureDetail from '../../../components/feature-detail/feature-detail.component';
+import FeatureDetail from 'components/feature-detail/feature-detail.component';
 
 import { LAYER_IDS, MAX_ZOOM } from 'map/map.constants';
 
@@ -34,15 +34,10 @@ export const useMySupplyLynkOrb = (data, activeSources) => {
   const getFeatures = () => {
     const obj = data[LAYER_IDS.astrosat.mySupplyLynk.latest];
 
-    const hasCategory = feat => {
-      let result = false;
-      feat.properties.Items.forEach(item => {
-        if (selectedFeatures.includes(item.Category)) {
-          result = true;
-        }
-      });
-      return result;
-    };
+    const hasCategory = feat =>
+      feat.properties.Items.some(item =>
+        selectedFeatures.includes(item.Category),
+      );
 
     let filteredFeatures;
     if (obj) {

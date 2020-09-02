@@ -27,15 +27,13 @@ export const CheckboxFilters = ({
    * @param {React.ChangeEvent<HTMLInputElement>} event
    */
   const handleChange = event => {
-    if (event.target.checked) {
-      console.log('Checked');
-      setSelectedFeatures([...selectedFeatures, event.target.value]);
-    } else {
-      console.log('Unchecked');
-      setSelectedFeatures(
-        selectedFeatures.filter(feat => feat !== event.target.value),
-      );
-    }
+    const {
+      target: { value },
+    } = event;
+
+    event.target.checked
+      ? setSelectedFeatures([...selectedFeatures, value])
+      : setSelectedFeatures(selectedFeatures.filter(feat => feat !== value));
   };
 
   return (

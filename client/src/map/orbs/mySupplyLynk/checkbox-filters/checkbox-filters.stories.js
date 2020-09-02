@@ -1,4 +1,5 @@
 import React from 'react';
+import { action } from '@storybook/addon-actions';
 import { CheckboxFilters } from './checkbox-filters.component';
 
 import { CATEGORIES } from '../mysupplylynk.constants';
@@ -9,6 +10,6 @@ export const Default = () => (
   <CheckboxFilters
     categories={CATEGORIES}
     selectedFeatures={[]}
-    setSelectedFeatures={features => console.log('Features: ', features)}
+    setSelectedFeatures={action('Set Selected Features')}
   />
 );

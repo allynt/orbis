@@ -1,4 +1,5 @@
 import React, { useRef } from 'react';
+import { action } from '@storybook/addon-actions';
 import { Dialog } from './dialog.component';
 
 export default { title: 'Orbs/MySupplyLynk/Dialog' };
@@ -8,7 +9,7 @@ export const Suppler = () => {
   let isVisible = true;
   return (
     <Dialog
-      onCloseClick={() => (isVisible = false)}
+      onCloseClick={action('Close')}
       isVisible={isVisible}
       ref={ref}
       supplier={{
