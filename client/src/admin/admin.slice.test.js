@@ -126,6 +126,7 @@ describe('Admin Slice', () => {
 
           const user = {
             name: 'Test User',
+            licences: [],
           };
           await store.dispatch(createCustomerUser(user));
 
@@ -155,6 +156,7 @@ describe('Admin Slice', () => {
 
           const user = {
             name: 'Test User',
+            licences: [],
           };
           await store.dispatch(createCustomerUser(user));
 
@@ -165,6 +167,7 @@ describe('Admin Slice', () => {
       it('should dispatch create user success action.', async () => {
         const user = {
           name: 'Test User',
+          licences: [],
         };
         const customer = {
           name: 'test-customer',

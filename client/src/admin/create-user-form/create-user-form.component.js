@@ -28,11 +28,21 @@ export const CreateUserForm = ({
     validationContext: { existingEmails },
   });
 
+  const createUser = data => {
+    const values = {
+      ...data,
+      licences: data.licences
+        ? Array.isArray(data.licences)
+          ? data.licences
+          : [data.licences]
+        : [],
+    };
+
+    onSubmit(values);
+  };
+
   return (
-    <form
-      className={styles.form}
-      onSubmit={handleSubmit(v => onSubmit && onSubmit(v))}
-    >
+    <form className={styles.form} onSubmit={handleSubmit(createUser)}>
       <div className={formStyles.row}>
         <label className={formStyles.hiddenLabel} htmlFor="name">
           Name
