@@ -182,14 +182,12 @@ export const createCustomerUser = fields => async (dispatch, getState) => {
   const currentCustomer = selectCurrentCustomer(getState());
   dispatch(createCustomerUserRequested());
 
-  const licences = fields.licences
-    ? fields.licences.map(
-        orb =>
-          currentCustomer.licences.find(
-            licence => licence.orb === orb && !licence.customer_user,
-          ).id,
-      )
-    : []; // if fields.licences is undefined set licences to an empty list
+  const licences = fields.licences.map(
+    orb =>
+      currentCustomer.licences.find(
+        licence => licence.orb === orb && !licence.customer_user,
+      ).id,
+  );
 
   const { email, name } = fields;
 
