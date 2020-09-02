@@ -49,8 +49,6 @@ export const useMySupplyLynkOrb = (data, activeSources) => {
       filteredFeatures = obj.features.filter(feat => hasCategory(feat));
     }
 
-    // console.log('Filtered Features: ', filteredFeatures);
-
     if (filteredFeatures) {
       return {
         type: 'FeatureCollection',
@@ -65,8 +63,7 @@ export const useMySupplyLynkOrb = (data, activeSources) => {
   };
 
   const handleHover = info => {
-    // console.log('Hover: ', info.object);
-    setHoveredObjects([info.object]);
+    info.object ? setHoveredObjects([info.object]) : setHoveredObjects([]);
   };
 
   const layers = [
@@ -130,7 +127,7 @@ export const useMySupplyLynkOrb = (data, activeSources) => {
     clickedObjects.length && (
       <Dialog
         supplier={clickedObjects[0].properties}
-        onCloseClick={() => console.log('Close!')}
+        onCloseClick={toggle}
         isVisible={isVisible}
         ref={ref}
       />

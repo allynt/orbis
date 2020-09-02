@@ -1,8 +1,13 @@
 .dialog {
+  position: absolute;
+  top: 0;
+  left: 42rem;
   --border-radius: 0.9375rem;
   color: var(--color--text--dark);
-  max-width: 75vw;
+  width: 55vw;
+  height: calc(100vh - 10rem);
   border-radius: var(--border-radius);
+  margin: 5rem 0;
 }
 
 .content {
@@ -10,6 +15,9 @@
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   background: #fff;
+  overflow-y: scroll;
+  height: 100%;
+  max-height: calc(100vh - 16.6875rem);
 }
 
 .header {

@@ -45,7 +45,7 @@ export const CheckboxFilters = ({
           key={name}
           id={name}
           className={styles.checkbox}
-          defaultChecked
+          checked={selectedFeatures.includes(name)}
           name="msl-filter-checkbox"
           value={name}
           onChange={handleChange}
