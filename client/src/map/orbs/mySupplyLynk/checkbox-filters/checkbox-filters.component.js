@@ -28,10 +28,10 @@ export const CheckboxFilters = ({
    */
   const handleChange = event => {
     const {
-      target: { value },
+      target: { value, checked },
     } = event;
 
-    event.target.checked
+    checked
       ? setSelectedFeatures([...selectedFeatures, value])
       : setSelectedFeatures(selectedFeatures.filter(feat => feat !== value));
   };
