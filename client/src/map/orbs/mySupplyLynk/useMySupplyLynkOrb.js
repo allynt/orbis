@@ -71,7 +71,7 @@ export const useMySupplyLynkOrb = (data, activeSources) => {
       id =>
         new GeoJsonClusteredIconLayer({
           id,
-          data: selectedFeatures.length && getFeatures(),
+          data: selectedFeatures?.length && getFeatures(),
           visible: true,
           pickable: true,
           iconMapping,
