@@ -1,7 +1,11 @@
 import React, { useState, useRef } from 'react';
 import { Popup } from 'react-map-gl';
 
+import { FlyToInterpolator } from 'deck.gl';
 import { GeoJsonClusteredIconLayer } from 'map/deck.gl/custom-layers/geo-json-clustered-icon-layer';
+
+import { useMap } from 'MapContext';
+import { easeInOutCubic } from 'utils/easingFunctions';
 
 import iconMapping from './iconMapping.json';
 import iconAtlas from './iconAtlas.svg';
@@ -28,6 +32,7 @@ export const useMySupplyLynkOrb = (data, activeSources) => {
 
   const [clickedObjects, setClickedObjects] = useState([]);
   const [hoveredObjects, setHoveredObjects] = useState([]);
+  const { setViewState } = useMap();
 
   const SUPPLYLYNK_LAYER_IDS = [LAYER_IDS.astrosat.mySupplyLynk.latest];
 
@@ -53,12 +58,29 @@ export const useMySupplyLynkOrb = (data, activeSources) => {
   };
 
   const handleLayerClick = info => {
-    setClickedObjects([info.object]);
-    toggle();
+    if (info?.object?.properties?.cluster) {
+      if (info.object.properties.expansion_zoom <= MAX_ZOOM)
+        setViewState({
+          longitude: info.object.geometry.coordinates[0],
+          latitude: info.object.geometry.coordinates[1],
+          zoom:
+            info.object.properties.expansion_zoom >= MAX_ZOOM
+              ? MAX_ZOOM
+              : info.object.properties.expansion_zoom,
+          transitionDuration: 1000,
+          transitionEasing: easeInOutCubic,
+          transitionInterpolator: new FlyToInterpolator(),
+        });
+    } else {
+      setClickedObjects([info.object]);
+      toggle();
+    }
   };
 
   const handleHover = info => {
-    info.object ? setHoveredObjects([info.object]) : setHoveredObjects([]);
+    if (!info?.object?.properties?.cluster) {
+      info.object ? setHoveredObjects([info.object]) : setHoveredObjects([]);
+    }
   };
 
   const layers = [
