@@ -19,7 +19,8 @@ import { Dialog } from './dialog/dialog.component';
 import useModal from '@astrosat/astrosat-ui/dist/containers/use-modal';
 
 import { CheckboxFilters } from './checkbox-filters/checkbox-filters.component';
-import FeatureDetail from 'components/feature-detail/feature-detail.component';
+
+import MySupplyLynkFeatureDetail from './feature-detail/mysupplylynk-feature-detail.component';
 
 import { LAYER_IDS, MAX_ZOOM } from 'map/map.constants';
 
@@ -132,10 +133,7 @@ export const useMySupplyLynkOrb = (data, activeSources) => {
         onClose={() => setHoveredObjects([])}
         captureScroll
       >
-        <FeatureDetail
-          title={hoveredObjects[0]?.properties.Name}
-          features={[hoveredObjects[0]?.properties]}
-        />
+        <MySupplyLynkFeatureDetail data={hoveredObjects[0]?.properties} />
       </Popup>
     ),
   ];
