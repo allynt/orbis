@@ -8,7 +8,7 @@ const NOT_AVAILABLE = 'Not Available';
 const MySupplyLynkFeatureDetail = ({ data }) => {
   const getCategories = items => {
     return items.length
-      ? items.reduce((acc, cur) => (acc = [...acc, cur.Category]), [])
+      ? items.reduce((acc, cur) => [...acc, cur.Category], [])
       : [NOT_AVAILABLE];
   };
 
