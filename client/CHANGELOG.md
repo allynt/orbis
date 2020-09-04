@@ -1,3 +1,10 @@
+## [2.2.1](https://github.com/astrosat/orbis/compare/v2.2.0...v2.2.1) (2020-09-04)
+
+
+### Bug Fixes
+
+* **frontend:** Fix data displaying in dialog ([2c93b48](https://github.com/astrosat/orbis/commit/2c93b4822d4ce2a21047f108f18b98eccf0a5e4a))
+
 # [2.2.0](https://github.com/astrosat/orbis/compare/v2.1.2...v2.2.0) (2020-09-04)
 
 
