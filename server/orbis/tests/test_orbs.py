@@ -16,7 +16,7 @@ from .factories import *
 
 
 @pytest.mark.django_db
-class TestOrbs:
+class TestOrbsViews:
     def test_get_orbs_view(self, user, api_client, mock_storage):
 
         N_ORBS = 10
@@ -33,7 +33,7 @@ class TestOrbs:
 
 
 @pytest.mark.django_db
-class TestLicences:
+class TestLicencesViews:
     def test_add_licences_to_customer(self, user, api_client, mock_storage):
 
         N_LICENCES = 10
@@ -46,7 +46,7 @@ class TestLicences:
         response = client.get(url)
         customer_data = response.json()
 
-        assert len(customer_data["licences"]) == 1
+        assert len(customer_data["licences"]) == 0
 
         orb = OrbFactory()
         # if I add (incomplete) licences for the orb, the serializer will
@@ -56,16 +56,19 @@ class TestLicences:
         response = client.put(url, customer_data, format="json")
         customer_data = response.json()
 
-        assert len(customer_data["licences"]) == N_LICENCES + 1
+        # (note that the core licence will exist, but it is private by default)
+        # (so it won't appear in the serialization - hence the "+1" below)
+        assert len(customer_data["licences"]) == N_LICENCES
         assert Licence.objects.count() == N_LICENCES + 1
-        # Skip the first licence which is the default core licence.
-        for licence in Licence.objects.public()[1:]:
+        for licence in Licence.objects.public():  # (using "public()" excludes the core licence)
             assert licence.orb == orb
             assert licence.customer == customer
             assert licence.access == Access.READ
 
     def test_remove_licences_from_customer(self, user, api_client, mock_storage):
         N_LICENCES = 10
+
+        # (again, the core licence will exist, but it is private by default)
 
         customer = CustomerFactory(logo=None)
         customer.add_user(user, type="MANAGER", status="ACTIVE")
@@ -79,19 +82,19 @@ class TestLicences:
         response = client.get(url)
         customer_data = response.json()
 
-        assert len(customer_data["licences"]) == N_LICENCES + 1
+        assert len(customer_data["licences"]) == N_LICENCES
 
         customer_data["licences"] = customer_data["licences"][::2]
 
         response = client.put(url, customer_data, format="json")
         customer_data = response.json()
 
-        assert len(customer_data["licences"]) == (N_LICENCES + 2) / 2
+        assert len(customer_data["licences"]) == N_LICENCES / 2
         for i, licence in enumerate(licences):
             if i % 2:
-                assert Licence.objects.filter(id=licence.id).exists()
-            else:
                 assert not Licence.objects.filter(id=licence.id).exists()
+            else:
+                assert Licence.objects.filter(id=licence.id).exists()
 
     def test_add_update_remove_licences_from_customer(
         self, user, api_client, mock_storage
@@ -266,7 +269,7 @@ class TestLicences:
         response = client.get(url, format="json")
         customer_user_data = response.json()
 
-        assert len(customer_user_data["licences"]) == 1
+        assert len(customer_user_data["licences"]) == 0
 
         # I cannot add a licence to a customer_user from a different customer
         customer_user_data["licences"] = [str(licence_2.id)]
@@ -285,11 +288,40 @@ class TestLicences:
         assert content["licences"] == ["All licences must come from unique orbs."]
 
         # I cannot add a licence to a customer_user w/ an invalid id
-        customer_user_data["licences"] = [shuffle_string(str(licence_1.id))]
+        invalid_licence_id = shuffle_string(str(licence_1.id))
+        customer_user_data["licences"] = [invalid_licence_id]
         response = client.put(url, customer_user_data, format="json")
         content = response.json()
         assert status.is_client_error(response.status_code)
+        assert content["licences"] == [
+            f"Object with id={ invalid_licence_id } does not exist."
+        ]
 
+    def test_core_licence_added_in_view(self, admin, api_client, mock_storage):
+
+        customer = CustomerFactory(logo=None)
+
+        client = api_client(admin)
+        url = reverse("customer-users-list", args=[customer.id])
+
+        data = {"user": {"email": "test1@test.com", "name": "test1",}, "licences": []}
+        response = client.post(url, data, format="json")
+        assert status.is_success(response.status_code)
+
+        assert Licence.objects.count() == 1
+        assert Licence.objects.filter(orb=Orb.get_core_orb(), customer=customer, customer_user__user__name="test1").exists()
+
+        # (let's just make sure nothing weird happens when there's more than 1 user)
+        data = {"user": {"email": "test2@test.com", "name": "test2",}, "licences": []}
+        response = client.post(url, data, format="json")
+        assert status.is_success(response.status_code)
+
+        assert Licence.objects.count() == 2
+        assert Licence.objects.filter(orb=Orb.get_core_orb(), customer=customer, customer_user__user__name="test1").exists()
+        assert Licence.objects.filter(orb=Orb.get_core_orb(), customer=customer, customer_user__user__name="test2").exists()
+
+@pytest.mark.django_db
+class TestLicences:
     def test_licence_has_access(self, mock_storage):
 
         customer = CustomerFactory(logo=None)
@@ -332,25 +364,70 @@ class TestLicences:
         customer.refresh_from_db()
         assert customer.licences.count() == 0
 
-    def test_core_licence_added_in_view(self, admin, api_client, mock_storage):
+@pytest.mark.django_db
+class TestLicencedCustomer:
+
+    def test_add_licences(self, mock_storage):
+
+        N_LICENCES = 10
 
         customer = CustomerFactory(logo=None)
+        orb = OrbFactory()
 
-        client = api_client(admin)
-        url = reverse("customer-users-list", args=[customer.id])
+        customer.add_licences(orb, N_LICENCES)
+        assert customer.licences.filter(orb=orb, customer_user__isnull=True).count() == N_LICENCES
 
-        data = {"user": {"email": "test1@test.com", "name": "test1",}, "licences": []}
-        response = client.post(url, data, format="json")
-        assert status.is_success(response.status_code)
+    def test_assign_licences(self, mock_storage):
 
-        assert Licence.objects.count() == 1
-        assert Licence.objects.filter(orb=Orb.get_core_orb(), customer=customer, customer_user__user__name="test1").exists()
+        N_LICENCES = N_USERS = 10
 
-        # (let's just make sure nothing weird happens when there's more than 1 user)
-        data = {"user": {"email": "test2@test.com", "name": "test2",}, "licences": []}
-        response = client.post(url, data, format="json")
-        assert status.is_success(response.status_code)
+        customer = CustomerFactory(logo=None)
+        orb = OrbFactory()
+        for _ in range(N_USERS):
+            customer.add_user(UserFactory(avatar=None), type="MEMBER", status="ACTIVE")
 
-        assert Licence.objects.count() == 2
-        assert Licence.objects.filter(orb=Orb.get_core_orb(), customer=customer, customer_user__user__name="test1").exists()
-        assert Licence.objects.filter(orb=Orb.get_core_orb(), customer=customer, customer_user__user__name="test2").exists()
+        customer.assign_licences(orb, customer.customer_users.all())
+        assert customer.licences.filter(orb=orb, customer_user__isnull=False).count() == N_LICENCES
+
+    def test_assign_licences_already_exist(self, mock_storage):
+
+        N_LICENCES = N_USERS = 10
+
+        customer = CustomerFactory(logo=None)
+        orb = OrbFactory()
+        customer.add_licences(orb, N_LICENCES)
+        for _ in range(N_USERS):
+            customer.add_user(UserFactory(avatar=None), type="MEMBER", status="ACTIVE")
+
+        assert customer.licences.filter(orb=orb).count() == N_LICENCES
+
+        customer.assign_licences(orb, customer.customer_users.all())
+        assert customer.licences.filter(orb=orb).count() == N_USERS
+        assert customer.licences.filter(orb=orb, customer_user__isnull=True).count() == 0
+
+    def test_assign_licences_dont_add_missing(self, mock_storage):
+
+        N_USERS = 10
+
+        customer = CustomerFactory(logo=None)
+        orb = OrbFactory()
+        for _ in range(N_USERS):
+            customer.add_user(UserFactory(avatar=None), type="MEMBER", status="ACTIVE")
+
+        with pytest.raises(AssertionError):
+             customer.assign_licences(orb, customer.customer_users.all(), add_missing=False)
+        assert customer.licences.filter(orb=orb).count() == 0
+
+    def test_assign_licences_dont_ignore_existing(self, mock_storage):
+
+        N_USERS = 10
+
+        customer = CustomerFactory(logo=None)
+        orb = OrbFactory()
+        for _ in range(N_USERS):
+            customer.add_user(UserFactory(avatar=None), type="MEMBER", status="ACTIVE")
+
+        customer.assign_licences(orb, customer.customer_users.all())
+        with pytest.raises(AssertionError):
+            customer.assign_licences(orb, customer.customer_users.all(), ignore_existing=False)
+        assert customer.licences.filter(orb=orb).count() == N_USERS

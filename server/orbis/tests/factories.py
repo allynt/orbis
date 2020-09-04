@@ -14,9 +14,9 @@ from astrosat.tests.utils import optional_declaration
 
 from astrosat_users.tests.factories import (
     UserFactory as AstrosatUserFactory,
+    CustomerFactory as AstrosatUserCustomerFactory,
     UserRoleFactory,
     UserPermissionFactory,
-    CustomerFactory,
 )
 
 from orbis.models import (
@@ -24,6 +24,7 @@ from orbis.models import (
     Orb,
     DataScope,
     Licence,
+    LicencedCustomer,
     Access,
     Satellite,
     SatelliteTier,
@@ -72,6 +73,16 @@ class UserFactory(AstrosatUserFactory):
     # "user" means that if I create a UserFactory explicitly, another user won't be created
     # (it disables the SubFactory above)
     orbis_profile = factory.RelatedFactory(OrbisUserProfileFactory, "user")
+
+
+#############
+# customers #
+#############
+
+class CustomerFactory(AstrosatUserCustomerFactory):
+
+    class Meta:
+        model = LicencedCustomer
 
 
 ########

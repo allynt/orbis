@@ -81,7 +81,6 @@ class OrbQuerySet(models.QuerySet):
 
 
 class LicenceQuerySet(models.QuerySet):
-
     def private(self):
         # CustomerSerializer & CustomerUserSerializer exclude "core" licences
         # the private/public methods make it easier for me to do that
@@ -164,7 +163,10 @@ class Orb(models.Model):
 
     @classmethod
     def get_core_orb(cls):
-        core_orb, orb_created = cls.objects.get_or_create(is_core=True, defaults={"name": "core"})
+        core_orb, orb_created = cls.objects.get_or_create(
+            is_core=True,
+            defaults={"name": "core", "is_private": True}
+        )
         if orb_created:
             core_data_scope, _ = DataScope.objects.get_or_create(
                 authority="astrosat",
