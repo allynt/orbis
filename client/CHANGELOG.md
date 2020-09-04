@@ -1,3 +1,35 @@
+# [2.2.0](https://github.com/astrosat/orbis/compare/v2.1.2...v2.2.0) (2020-09-04)
+
+
+### Bug Fixes
+
+* **frontend:** Add checked to deconstructed event ([5147d77](https://github.com/astrosat/orbis/commit/5147d7709ba0febae7e963e8c7dabd75843f40d9))
+* **frontend:** Add dialog, create slice for MSL ([c91de34](https://github.com/astrosat/orbis/commit/c91de34c644486aa834a2ca7cee1caf2351ef5e4))
+* **frontend:** Adjust sidemenu sizes, give z-index to dialog ([95d43b6](https://github.com/astrosat/orbis/commit/95d43b67794fb941a1152f5270b560cddce1944b))
+* **frontend:** Bit of extra styling ([6ceae3b](https://github.com/astrosat/orbis/commit/6ceae3b4ba45cb6d7499eb4a3dfcab444abf44e1)), closes [#680](https://github.com/astrosat/orbis/issues/680)
+* **frontend:** Custom feature detail for MSL ([ec8e219](https://github.com/astrosat/orbis/commit/ec8e21984328a763b03b6ee1727bc5b69bcf5f12))
+* **frontend:** Fix adding the one and only licence ([7bf136d](https://github.com/astrosat/orbis/commit/7bf136df07aa5d0bb82606276612da852323ca51)), closes [#707](https://github.com/astrosat/orbis/issues/707)
+* **frontend:** Fix cluster icon crop ([425c9db](https://github.com/astrosat/orbis/commit/425c9db71671785aeea0738a41c483387706ad67))
+* **frontend:** Fix tests, add stories, fix modal ([62ef3a1](https://github.com/astrosat/orbis/commit/62ef3a1a6bac27d982bfde4cd8fb9b909b077286))
+* **frontend:** Fix when there are no licences ([0148a5d](https://github.com/astrosat/orbis/commit/0148a5d1ab1cdf6863858ca6198c5664f5d3b60e)), closes [#707](https://github.com/astrosat/orbis/issues/707)
+* **frontend:** Hide layer when toggled off ([65e67c9](https://github.com/astrosat/orbis/commit/65e67c9514f659e43077305ba59a58b11d1dc2d0)), closes [#714](https://github.com/astrosat/orbis/issues/714)
+* **frontend:** Improve cluster event handling ([ce9644b](https://github.com/astrosat/orbis/commit/ce9644b16db73075504c49eb5872b44667838729)), closes [#711](https://github.com/astrosat/orbis/issues/711)
+* **frontend:** Last of functionality, some styling of dialog ([4259825](https://github.com/astrosat/orbis/commit/425982581c315484bfa40bcf3a6078521e007316))
+* **frontend:** Make requested changes ([7d0e7e7](https://github.com/astrosat/orbis/commit/7d0e7e7cb3fa784e00091821245d1dd17af1da3e))
+* **frontend:** Prevent CRA clearing terminal ([69441e3](https://github.com/astrosat/orbis/commit/69441e3ae7fd673041759d79ce92df4638511064))
+* **frontend:** Tweak to reduce function ([2f03b04](https://github.com/astrosat/orbis/commit/2f03b04a203968b17d82d2b530c72e84069bf8fd))
+* **frontend:** Update slice since licences is always an array ([c7ab20b](https://github.com/astrosat/orbis/commit/c7ab20b7e5941a39363365a51680ae9c0b5a4c2e)), closes [#707](https://github.com/astrosat/orbis/issues/707)
+
+
+### Features
+
+* **frontend:** Add close button to icon ([f4e9ed1](https://github.com/astrosat/orbis/commit/f4e9ed1e7959ecb4e9451a92457fd2d94b3e9d43)), closes [#680](https://github.com/astrosat/orbis/issues/680)
+* **frontend:** Create checkboxes with icons ([edb0779](https://github.com/astrosat/orbis/commit/edb07797bf3656e785d061c46fd83d4dc0595941)), closes [#681](https://github.com/astrosat/orbis/issues/681)
+* **frontend:** Create raw dialog component ([bc9e2e6](https://github.com/astrosat/orbis/commit/bc9e2e6399f9c29a707684447672d424695ea83c)), closes [#680](https://github.com/astrosat/orbis/issues/680)
+* **frontend:** Style and add functionality to checkboxes ([a8b96a4](https://github.com/astrosat/orbis/commit/a8b96a4e37626c2a998a882f28192f65adf2412b)), closes [#681](https://github.com/astrosat/orbis/issues/681)
+* **frontend:** Style Dialog ([88fb81f](https://github.com/astrosat/orbis/commit/88fb81f34125e0ae5c46c58d52386c51993fb477)), closes [#680](https://github.com/astrosat/orbis/issues/680)
+* **frontend:** Style dl ([42e0ba8](https://github.com/astrosat/orbis/commit/42e0ba880ae36c2cb2b0a33ed064198776045d8a)), closes [#680](https://github.com/astrosat/orbis/issues/680)
+
 ## [2.1.2](https://github.com/astrosat/orbis/compare/v2.1.1...v2.1.2) (2020-09-01)
 
 
