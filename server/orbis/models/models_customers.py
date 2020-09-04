@@ -13,7 +13,6 @@ class LicencedCustomer(AstrosatUsersCustomer):
     """
 
     class Meta:
-        # app_label = "astrosat_users"
         verbose_name = "Customer"
         verbose_name_plural = "Customers"
         proxy = True

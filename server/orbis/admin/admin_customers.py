@@ -15,6 +15,7 @@ from orbis.models import LicencedCustomer, Orb
 
 
 try:
+    # get rid of the default CustomerAdmin to avoid confusion
     admin.site.unregister(AstrosatUserCustomer)
 except admin.sites.NotRegistered:
     pass
@@ -23,7 +24,7 @@ except admin.sites.NotRegistered:
 @admin.register(LicencedCustomer)
 class CustomerAdmin(AstrosatUserCustomerAdmin):
     """
-    Redefines the standard CustomerAdmin to include some extra
+    Redefines the default CustomerAdmin to include some extra
     actions to do w/ licences; These are included in the DetailView
     instead of the ListView so that I am forced to work w/ one Customer
     at-a-time so that I can restrict the CustomerUsers to valid choices.
@@ -41,20 +42,7 @@ class CustomerAdmin(AstrosatUserCustomerAdmin):
         (
             None,
             {
-                "fields": (
-                    "id",
-                    "is_active",
-                    "customer_type",
-                    "name",
-                    "title",
-                    "description",
-                    "logo",
-                    "url",
-                    "country",
-                    "address",
-                    "postcode",
-                )
-                # "fields": AstrosatUserCustomerAdmin.fields
+                "fields": AstrosatUserCustomerAdmin.fields
             },
         ),
     )

@@ -81,6 +81,7 @@ class OrbQuerySet(models.QuerySet):
 
 
 class LicenceQuerySet(models.QuerySet):
+
     def private(self):
         # CustomerSerializer & CustomerUserSerializer exclude "core" licences
         # the private/public methods make it easier for me to do that
