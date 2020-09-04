@@ -1,0 +1,53 @@
+{% extends "admin/base_site.html" %}
+
+{% load i18n admin_urls static %}
+
+{% block extrastyle %}
+    <link rel="stylesheet" type="text/css" href="{% static 'admin/css/forms.css' %}" />
+{% endblock %}
+
+{% block breadcrumbs %}
+    {#  mostly copied from "contrib/admin/templates/admin/change_form.html #}
+    <div class="breadcrumbs">
+        <a href="{% url 'admin:index' %}">{% trans 'Home' %}</a>
+        &rsaquo; <a href="{% url 'admin:app_list' app_label=opts.app_label %}">{{ opts.app_config.verbose_name }}</a>
+        &rsaquo; <a href="{% url opts|admin_urlname:'changelist' %}">{{ opts.verbose_name_plural|capfirst }}</a>
+        &rsaquo; Grant Licences
+    </div>
+{% endblock %}
+
+{% block content %}
+
+<h1>
+    Please configure how you wish to grant data access for '{{ customer }}'.
+</h1>
+
+<div>
+    Current licence information:
+    <table>
+        <tr><th>orb</th><th>total licences</th><th>unassigned licences</th></tr>
+        {% for orb in summary %}
+            <tr>
+                <td>{{ orb.name }}</td>
+                <td>{{ orb.total_licences }}</td>
+                <td>{{ orb.unassigned_licences }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+</div>
+&nbsp;<br/>
+&nbsp;<br/>
+
+<form action="." method="POST">
+
+    {% csrf_token %}
+
+    {{ form.as_p }}
+
+    <p>
+        <input type="submit" name="apply" value="Apply" />
+    </p>
+
+</form>
+
+{% endblock %}
