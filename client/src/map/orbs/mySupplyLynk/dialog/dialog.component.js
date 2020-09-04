@@ -4,6 +4,8 @@ import ReactDOM from 'react-dom';
 import styles from './dialog.module.css';
 import { Button, CloseButton } from '@astrosat/astrosat-ui';
 
+const NOT_AVAILABLE = 'Not available';
+
 const LABELS = {
   businessInformationHeading: 'Business Information',
   itemsHeading: 'What can we supply?',
@@ -41,39 +43,57 @@ export const Dialog = forwardRef(
                   <h3>{LABELS.contactDetailsLabel}</h3>
                 </div>
                 <ul className={styles.item}>
-                  <li className={styles.listItem}>
-                    {supplier['Contact Name']}
-                  </li>
-                  <li className={styles.listItem}>
-                    {supplier['Contact Email Address']}
-                  </li>
-                  <li className={styles.listItem}>
-                    {supplier['Contact Phone Number']}
-                  </li>
-                  <li className={styles.listItem}>
-                    <Button
-                      className={styles.link}
-                      href={supplier.URL}
-                      target="_blank"
-                      rel="noreferrer noopener"
-                    >
-                      {supplier.URL}
-                    </Button>
-                  </li>
+                  {supplier['Contact Name'] && (
+                    <li className={styles.listItem}>
+                      {supplier['Contact Name']}
+                    </li>
+                  )}
+                  {supplier['Contact Email Address'] && (
+                    <li className={styles.listItem}>
+                      {supplier['Contact Email Address']}
+                    </li>
+                  )}
+                  {supplier['Contact Phone Number'] && (
+                    <li className={styles.listItem}>
+                      {supplier['Contact Phone Number']}
+                    </li>
+                  )}
+                  {supplier.URL && (
+                    <li className={styles.listItem}>
+                      <Button
+                        className={styles.link}
+                        href={supplier.URL}
+                        target="_blank"
+                        rel="noreferrer noopener"
+                      >
+                        {supplier.URL}
+                      </Button>
+                    </li>
+                  )}
                 </ul>
                 <div className={styles.label}>
                   <h3>{LABELS.addressLabel}</h3>
                 </div>
                 <ul className={styles.item}>
-                  <li className={styles.listItem}>
-                    {supplier['Address Line 1']}
-                  </li>
-                  <li className={styles.listItem}>
-                    {supplier['Address Line 2']}
-                  </li>
-                  <li className={styles.listItem}>{supplier.City}</li>
-                  <li className={styles.listItem}>{supplier.County}</li>
-                  <li className={styles.listItem}>{supplier.Postcode}</li>
+                  {supplier['Address Line 1'] && (
+                    <li className={styles.listItem}>
+                      {supplier['Address Line 1'] || NOT_AVAILABLE}
+                    </li>
+                  )}
+                  {supplier['Address Line 2'] && (
+                    <li className={styles.listItem}>
+                      {supplier['Address Line 2']}
+                    </li>
+                  )}
+                  {supplier.City && (
+                    <li className={styles.listItem}>{supplier.City}</li>
+                  )}
+                  {supplier.County && (
+                    <li className={styles.listItem}>{supplier.County}</li>
+                  )}
+                  {supplier.Postcode && (
+                    <li className={styles.listItem}>{supplier.Postcode}</li>
+                  )}
                 </ul>
                 <h2 className={styles.heading}>
                   {LABELS.businessInformationHeading}
@@ -81,28 +101,32 @@ export const Dialog = forwardRef(
                 <div className={styles.label}>
                   <h3>{LABELS.existingLineOfBusinessLabel}</h3>
                 </div>
-                <p className={styles.item}>{supplier['Line of Business']}</p>
+                <p className={styles.item}>
+                  {supplier['Line of Business'] || NOT_AVAILABLE}
+                </p>
                 <div className={`${styles.label} ${styles.highlight}`}>
                   <h3>{LABELS.newProductLinesLabel}</h3>
                 </div>
                 <p className={`${styles.item} ${styles.highlight}`}>
-                  {supplier['New Product Lines']}
+                  {supplier['New Product Lines'] || NOT_AVAILABLE}
                 </p>
                 <div className={styles.label}>
                   <h3>{LABELS.paymentTermsLabel}</h3>
                 </div>
-                <p className={styles.item}>{supplier['Payment Terms']}</p>
+                <p className={styles.item}>
+                  {supplier['Payment Terms'] || NOT_AVAILABLE}
+                </p>
                 <h2 className={styles.heading}>{LABELS.itemsHeading}</h2>
                 {supplier.Items.map(({ Name, ...rest }) => (
                   <>
                     <div className={styles.label}>
-                      <h3>{Name}</h3>
+                      <h3>{Name || NOT_AVAILABLE}</h3>
                     </div>
                     <dl className={styles.item}>
                       {Object.entries(rest).map(([key, value]) => (
                         <div className={styles.listItem} key={key}>
                           <dt className={styles.dt}>{key}</dt>
-                          <dd>{value}</dd>
+                          <dd>{value || NOT_AVAILABLE}</dd>
                         </div>
                       ))}
                     </dl>
