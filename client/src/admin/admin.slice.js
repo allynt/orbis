@@ -140,7 +140,7 @@ export const fetchCustomer = user => async (dispatch, getState) => {
   const headers = getJsonAuthHeaders(getState());
   dispatch(fetchCustomerRequested());
 
-  const customerId = user.customers[0].id;
+  const customerId = user.customers.find(customer => customer.type === 'MANAGER').id
   const response = await getData(`${API}${customerId}`, headers);
 
   if (!response.ok)
