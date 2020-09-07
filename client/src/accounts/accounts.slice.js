@@ -298,7 +298,7 @@ export const updateUser = form => async (dispatch, getState) => {
   };
 
   const response = await sendData(
-    `${API.user}${user.email}/`,
+    `${API.user}${user.id}/`,
     data,
     headers,
     'PUT',
