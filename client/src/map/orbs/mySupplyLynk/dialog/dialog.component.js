@@ -34,6 +34,7 @@ export const Dialog = forwardRef(
               <header className={styles.header}>
                 <h1 className={styles.title}>{supplier.Name || 'Supplier'}</h1>
                 <CloseButton
+                  data-testid="close-button"
                   className={styles.closeButton}
                   onClick={onCloseClick}
                 />
@@ -44,12 +45,12 @@ export const Dialog = forwardRef(
                 </div>
                 <ul className={styles.item}>
                   {supplier['Contact Name'] && (
-                    <li className={styles.listItem}>
+                    <li className={styles.listItem} data-testid="contact-name">
                       {supplier['Contact Name']}
                     </li>
                   )}
                   {supplier['Contact Email Address'] && (
-                    <li className={styles.listItem}>
+                    <li className={styles.listItem} data-testid="contact-email">
                       {supplier['Contact Email Address']}
                     </li>
                   )}
@@ -76,8 +77,11 @@ export const Dialog = forwardRef(
                 </div>
                 <ul className={styles.item}>
                   {supplier['Address Line 1'] && (
-                    <li className={styles.listItem}>
-                      {supplier['Address Line 1'] || NOT_AVAILABLE}
+                    <li
+                      className={styles.listItem}
+                      data-testid="address-line-1"
+                    >
+                      {supplier['Address Line 1']}
                     </li>
                   )}
                   {supplier['Address Line 2'] && (

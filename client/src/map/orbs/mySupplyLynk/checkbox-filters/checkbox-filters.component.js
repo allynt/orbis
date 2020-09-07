@@ -42,6 +42,7 @@ export const CheckboxFilters = ({
         <Checkbox
           key={name}
           id={name}
+          data-testid={`${name}-checkbox`}
           className={styles.checkbox}
           checked={selectedFeatures.includes(name)}
           name="msl-filter-checkbox"
