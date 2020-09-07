@@ -90,7 +90,7 @@ class CustomerAdmin(AstrosatUserCustomerAdmin):
         class GrantLicencesForm(forms.Form):
             orb = forms.ModelChoiceField(
                 label="Orb to grant access to",
-                queryset=Orb.objects.filter(is_private=False),
+                queryset=Orb.objects.filter(is_hidden=False),
                 required=True,
             )
             n_additional_licences = forms.IntegerField(
@@ -161,9 +161,9 @@ class CustomerAdmin(AstrosatUserCustomerAdmin):
                 )
                 return HttpResponseRedirect(change_url)
 
-        # provides summary information about the current (public) licences owned by this customer
+        # provides summary information about the current (visible) licences owned by this customer
         # (effectively, this performs a "group_by" statement and then adds some extra annotations)
-        customer_licences_summary = customer.licences.public().values("orb").annotate(
+        customer_licences_summary = customer.licences.visible().values("orb").annotate(
             name=F("orb__name"),
             total_licences=Count("orb"),
             unassigned_licences=Count("orb", filter=Q(customer_user__isnull=True)),
