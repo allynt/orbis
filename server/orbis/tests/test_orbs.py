@@ -56,11 +56,11 @@ class TestLicencesViews:
         response = client.put(url, customer_data, format="json")
         customer_data = response.json()
 
-        # (note that the core licence will exist, but it is private by default)
+        # (note that the core licence will exist, but it is hidden by default)
         # (so it won't appear in the serialization - hence the "+1" below)
         assert len(customer_data["licences"]) == N_LICENCES
         assert Licence.objects.count() == N_LICENCES + 1
-        for licence in Licence.objects.public():  # (using "public()" excludes the core licence)
+        for licence in Licence.objects.visible():  # (using "visible()" excludes the core licence)
             assert licence.orb == orb
             assert licence.customer == customer
             assert licence.access == Access.READ
@@ -68,7 +68,7 @@ class TestLicencesViews:
     def test_remove_licences_from_customer(self, user, api_client, mock_storage):
         N_LICENCES = 10
 
-        # (again, the core licence will exist, but it is private by default)
+        # (again, the core licence will exist, but it is hidden by default)
 
         customer = CustomerFactory(logo=None)
         customer.add_user(user, type="MANAGER", status="ACTIVE")
@@ -158,7 +158,7 @@ class TestLicencesViews:
         customer_user_data = response.json()
 
         assert str(licence.id) in customer_user_data["licences"]
-        assert licence in customer_user.licences.public()
+        assert licence in customer_user.licences.visible()
         assert customer.licences.count() == 2
         assert customer.licences.filter(customer_user__isnull=False).count() == 2
 

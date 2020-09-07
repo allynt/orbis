@@ -35,22 +35,22 @@ class CustomerSerializer(AstrosatUsersCustomerSerializer):
     licences = LicenceSerializer(many=True, required=False)
 
     def to_internal_value(self, data):
-        # when inputting data, include private licences...
-        private_licences = self.instance.licences.private()
-        data["licences"] += LicenceSerializer(private_licences, many=True).data
+        # when inputting data, include hidden licences...
+        hidden_licences = self.instance.licences.hidden()
+        data["licences"] += LicenceSerializer(hidden_licences, many=True).data
         return super().to_internal_value(data)
 
     def to_representation(self, instance):
-        # when outputting data, exclude private licences...
+        # when outputting data, exclude hidden licences...
         representation = super().to_representation(instance)
         licences_representation = representation.pop("licences", [])
-        private_licences = instance.licences.private().annotate(
+        hidden_licences = instance.licences.hidden().annotate(
             str_id=Cast(
                 "id", output_field=CharField()
             )  # cast UUIDField to CharField (for the comparison below)
         )
         representation["licences"] = filterfalse(
-            lambda x: x["id"] in private_licences.values_list("str_id", flat=True),
+            lambda x: x["id"] in hidden_licences.values_list("str_id", flat=True),
             licences_representation,
         )
 
@@ -91,17 +91,17 @@ class CustomerUserSerializer(AstrosatUsersCustomerUserSerializer):
     )
 
     def to_internal_value(self, data):
-        # when inputting data, include private licences...
+        # when inputting data, include hidden licences...
         if self.instance:
             # if the CustomerUser doesn't exist yet, then the post-save signal
             # will add the "core" licence; otherwise this bit of code will ensure
             # the "core" licence doesn't get removed (BUT SEE "create" BELOW)
-            private_licences = self.instance.licences.private().annotate(
+            hidden_licences = self.instance.licences.hidden().annotate(
                 str_id=Cast(
                     "id", output_field=CharField()
                 )  # cast UUIDField to CharField
             )
-            data["licences"] += private_licences.values_list("str_id", flat=True)
+            data["licences"] += hidden_licences.values_list("str_id", flat=True)
         internal_value = super().to_internal_value(data)
         return internal_value
 
@@ -121,12 +121,12 @@ class CustomerUserSerializer(AstrosatUsersCustomerUserSerializer):
         return customer_user
 
     def to_representation(self, instance):
-        # when outputting data, exclude private licences...
+        # when outputting data, exclude hidden licences...
         representation = super().to_representation(instance)
         licences_representation = representation.pop("licences", [])
-        private_licences = instance.licences.private()
+        hidden_licences = instance.licences.hidden()
         representation["licences"] = filterfalse(
-            lambda x: x in private_licences.values_list("id", flat=True),
+            lambda x: x in hidden_licences.values_list("id", flat=True),
             licences_representation,
         )
         return representation

@@ -82,14 +82,14 @@ class OrbQuerySet(models.QuerySet):
 
 class LicenceQuerySet(models.QuerySet):
 
-    def private(self):
+    def hidden(self):
         # CustomerSerializer & CustomerUserSerializer exclude "core" licences
-        # the private/public methods make it easier for me to do that
-        return self.filter(orb__is_private=True)
+        # the hidden/visible methods make it easier for me to do that
+        return self.filter(orb__is_hidden=True)
 
-    def public(self):
+    def visible(self):
         # returns the licences that shouldn't be exluded from serialization
-        return self.filter(orb__is_private=False)
+        return self.filter(orb__is_hidden=False)
 
     def purchased(self):
         # returns all licences (just defined for symmetry w/ the frontend)
@@ -156,7 +156,7 @@ class Orb(models.Model):
     description = models.TextField(blank=True, null=True)
 
     is_active = models.BooleanField(default=True)
-    is_private = models.BooleanField(default=False, help_text="Licences to a private Orb are hidden from CustomerUsers.")
+    is_hidden = models.BooleanField(default=False, help_text="Licences to a hidden Orb are not shown to CustomerUsers.")
     is_core = models.BooleanField(default=False, help_text="Every CustomerUser is granted a Licence to the core Orb.")
 
     def __str__(self):
@@ -166,7 +166,7 @@ class Orb(models.Model):
     def get_core_orb(cls):
         core_orb, orb_created = cls.objects.get_or_create(
             is_core=True,
-            defaults={"name": "core", "is_private": True}
+            defaults={"name": "core", "is_hidden": True}
         )
         if orb_created:
             core_data_scope, _ = DataScope.objects.get_or_create(

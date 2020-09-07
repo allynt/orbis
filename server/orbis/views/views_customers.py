@@ -55,12 +55,12 @@ class CustomerUserListView(LicenceNotifyingMixIn, AstrosatUsersCustomerUserListV
         customer_user = serializer.save()
         customer_user.invite()
 
-        if customer_user.licences.public().count():
+        if customer_user.licences.visible().count():
             message = self.notify_licences_changed(
                 self.customer,
                 customer_user,
                 old_licences=set(),
-                new_licences=set(customer_user.licences.public()),
+                new_licences=set(customer_user.licences.visible()),
             )
             if self.active_managers.filter(user=self.request.user).exists():
                 # TODO...
@@ -77,9 +77,9 @@ class CustomerUserDetailView(LicenceNotifyingMixIn, AstrosatUsersCustomerUserDet
     def perform_update(self, serializer):
         customer_user = self.get_object()
 
-        old_licences = set(customer_user.licences.public())
+        old_licences = set(customer_user.licences.visible())
         customer_user = serializer.save()
-        new_licences = set(customer_user.licences.public())
+        new_licences = set(customer_user.licences.visible())
 
         if old_licences != new_licences:
 
