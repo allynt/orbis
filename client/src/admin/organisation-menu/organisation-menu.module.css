@@ -17,7 +17,7 @@
 }
 
 .organisationLogo {
-  object-fit: cover;
+  object-fit: scale-down;
   border-radius: 0.625rem;
   height: 9.5rem;
   width: 10.5rem;
