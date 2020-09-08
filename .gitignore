@@ -109,3 +109,7 @@ terraform/**/deploy.plan
 client/src/dev-tools/*.local.js
 client/cypress.env.json
 client/proxy/**/*.png
+
+# Temporary env files
+client/public/env-config.js
+client/env-config.js

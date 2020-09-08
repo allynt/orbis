@@ -25,6 +25,7 @@ services:
       DJANGO_SETTINGS_MODULE: core.settings
       GITHUB_REGISTRY_TOKEN: "${GITHUB_REGISTRY_TOKEN}"
       DOCKER_BUILDKIT: 1
+      DJANGO_CLIENT_HOST: http://localhost:3000
     volumes:
       - ./server:/home/app/server
       - ./client:/home/app/client
@@ -37,7 +38,7 @@ services:
     image: node:12.13.1
     tty: true
     environment:
-      NODE_ENV: "development"
+      REACT_APP_API_HOST: http://localhost:8000
       REACT_APP_DOCKER: "true"
       GITHUB_REGISTRY_TOKEN: "${GITHUB_REGISTRY_TOKEN}"
       DOCKER_BUILDKIT: 1

@@ -36,7 +36,12 @@ export const {
 } = appSlice.actions;
 
 export const fetchAppConfig = () => async dispatch => {
-  const response = await fetch('/api/app/config', { credentials: 'include' });
+  const response = await fetch(
+    `${window.getEnv().REACT_APP_API_HOST}/api/app/config`,
+    {
+      credentials: 'include',
+    },
+  );
 
   if (!response.ok) {
     const message = `${response.status} ${response.statusText}`;

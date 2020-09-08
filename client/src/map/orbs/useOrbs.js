@@ -25,6 +25,7 @@ export const useOrbs = () => {
 
   const fetchData = useCallback(
     async source => {
+      console.log('USE ORB URL: ', dataUrlFromId(source));
       const response = await getData(dataUrlFromId(source), {
         Authorization: `Bearer ${authToken}`,
       });

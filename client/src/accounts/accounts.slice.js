@@ -296,6 +296,7 @@ export const updateUser = form => async (dispatch, getState) => {
     ...user,
     ...form,
   };
+  console.log('USER: ', user);
 
   const response = await sendData(
     `${API.user}${user.id}/`,

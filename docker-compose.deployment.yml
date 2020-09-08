@@ -16,7 +16,7 @@ services:
   server:
     build:
       context: .
-      dockerfile: Dockerfile.deployment
+      dockerfile: Dockerfile.server.deployment
       args:
         TOKEN: "${GITHUB_REGISTRY_TOKEN}"
         TYPE: server
@@ -32,6 +32,7 @@ services:
       DJANGO_DB_NAME: orbis
       DJANGO_DB_HOST: db
       DJANGO_DB_PORT: 5432
+      DJANGO_CLIENT_HOST: ${CLIENT_HOST}
 
     ports:
       - "8000:80"
@@ -41,20 +42,16 @@ services:
   client:
     build:
       context: .
-      dockerfile: Dockerfile.deployment
+      dockerfile: Dockerfile.client.deployment
       args:
         TOKEN: "${GITHUB_REGISTRY_TOKEN}"
         TYPE: client
     tty: true
     environment:
-      NODE_ENV: "production"
       REACT_APP_DOCKER: "true"
+      REACT_APP_API_HOST: ${API_HOST}
       GITHUB_REGISTRY_TOKEN: "${GITHUB_REGISTRY_TOKEN}"
       DOCKER_BUILDKIT: 1
-    # working_dir: /home/app/client
-    # volumes:
-    #   - ./client:/home/app/client
-    # command: bash -c "yarn install && yarn build && yarn start"
     ports:
       - "3000:80"
     networks:
