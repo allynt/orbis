@@ -11,7 +11,7 @@ describe('Checkbox Filters', () => {
   let setSelectedFeatures = jest.fn();
 
   it('renders pre-checked checkboxes for all of the category types', () => {
-    const { getByText, getByTestId } = render(
+    const { getByText, getByLabelText } = render(
       <CheckboxFilters
         categories={CATEGORIES}
         selectedFeatures={selectedFeatures}
@@ -21,7 +21,7 @@ describe('Checkbox Filters', () => {
 
     CATEGORIES.forEach(cat => {
       expect(getByText(cat)).toBeInTheDocument();
-      expect(getByTestId(`${cat}-checkbox`).checked).toEqual(true);
+      expect(getByLabelText(cat)).toHaveProperty('checked', true);
     });
   });
 
@@ -44,7 +44,7 @@ describe('Checkbox Filters', () => {
   it('only checks checkboxes where of categories that are present in `selectedCategories`', () => {
     const testCategories = ['PPE', 'Miscellaneous'];
 
-    const { getByTestId } = render(
+    const { getByLabelText } = render(
       <CheckboxFilters
         categories={CATEGORIES}
         selectedFeatures={testCategories}
@@ -53,12 +53,12 @@ describe('Checkbox Filters', () => {
     );
 
     testCategories.forEach(cat => {
-      expect(getByTestId(`${cat}-checkbox`).checked).toEqual(true);
+      expect(getByLabelText(cat)).toHaveProperty('checked', true);
     });
 
     CATEGORIES.forEach(cat => {
       if (!testCategories.includes(cat)) {
-        expect(getByTestId(`${cat}-checkbox`).checked).toEqual(false);
+        expect(getByLabelText(cat)).toHaveProperty('checked', false);
       }
     });
   });

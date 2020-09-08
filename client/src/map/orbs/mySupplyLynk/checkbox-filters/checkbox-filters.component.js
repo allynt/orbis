@@ -42,12 +42,12 @@ export const CheckboxFilters = ({
         <Checkbox
           key={name}
           id={name}
-          data-testid={`${name}-checkbox`}
           className={styles.checkbox}
           checked={selectedFeatures.includes(name)}
           name="msl-filter-checkbox"
           value={name}
           onChange={handleChange}
+          ariaLabel={name}
           label={
             <span className={styles.label}>
               <div className={styles.iconWrapper}>
