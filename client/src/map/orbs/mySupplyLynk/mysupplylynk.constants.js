@@ -1,7 +1,7 @@
 export const CATEGORIES = [
   'PPE',
   'Cleaning',
-  'Medical Equipment & Aids',
+  'Medical Equipment and Aids',
   'Food',
   'Stationery',
   'Clothing',
