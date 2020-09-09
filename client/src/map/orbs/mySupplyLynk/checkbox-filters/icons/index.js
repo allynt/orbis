@@ -9,13 +9,13 @@ import { ReactComponent as Staffing } from './staffing.svg';
 import { ReactComponent as Stationery } from './stationery.svg';
 
 export default {
-  PPE: PPE,
-  'Cleaning and Domestic': Cleaning,
-  'Medical Equipment and Aids': Medical,
-  Foods: Food,
-  Stationary: Stationery,
-  Clothing: Clothing,
-  Services: Services,
-  Staffing: Staffing,
-  Miscellaneous: Other,
+  'PPE': PPE,
+  'Cleaning': Cleaning,
+  'Medical Equipment & Aids': Medical,
+  'Food': Food,
+  'Stationery': Stationery,
+  'Clothing': Clothing,
+  'Services': Services,
+  'Staff': Staffing,
+  'Other': Other,
 };
