@@ -1,7 +1,6 @@
 from collections import OrderedDict
 
 from django.conf import settings
-from django.views.generic import TemplateView
 
 from rest_framework import status
 from rest_framework.response import Response
@@ -11,15 +10,6 @@ from drf_yasg import openapi
 from drf_yasg.utils import swagger_auto_schema
 
 from astrosat_users.conf import app_settings as astrosat_users_settings
-
-
-###############################
-# the one-and-only index_view #
-###############################
-
-
-# this 'index.html' comes from CLIENT_DIR
-# index_view = TemplateView.as_view(template_name="index.html")
 
 
 ###############

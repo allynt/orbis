@@ -30,7 +30,7 @@ export const getFormAuthHeaders = state => {
 };
 
 export const getData = (url, headers = {}) => {
-  return url.startsWith('/')
+  return url.startsWith('/api')
     ? fetch(`${window.getEnv().REACT_APP_API_HOST}${url}`, {
         credentials: 'include',
         method: 'GET',
