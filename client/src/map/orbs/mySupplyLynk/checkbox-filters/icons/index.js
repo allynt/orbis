@@ -11,12 +11,11 @@ import { ReactComponent as Stationery } from './stationery.svg';
 export default {
   'PPE': PPE,
   'Cleaning': Cleaning,
-  'Medical Equipment and Aids': Medical,
+  'Medical Equipment & Aids': Medical,
   'Food': Food,
   'Stationery': Stationery,
   'Clothing': Clothing,
   'Services': Services,
   'Staff': Staffing,
-  'Miscellaneous': Other,
   'Other': Other,
 };
