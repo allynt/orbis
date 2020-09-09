@@ -65,7 +65,7 @@ class CustomerAdmin(AstrosatUserCustomerAdmin):
 
     def get_grant_licences_for_detail_display(self, obj):
         if obj.pk:
-            description = "Import a JSON fixture to update the set of attributes."
+            description = "Add licences to specific orbs in bulk to this customer."
             url = reverse(
                 f"admin:{LicencedCustomer.admin_url_basename}_grant", args=[obj.id]
             )
