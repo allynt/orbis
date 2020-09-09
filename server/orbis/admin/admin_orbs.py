@@ -7,7 +7,7 @@ from django.utils.html import format_html
 from astrosat.admin import get_clickable_m2m_list_display
 from astrosat_users.models import Customer, User
 
-from orbis.models import Orb, Licence, DataScope, Access
+from orbis.models import Orb, LicencedCustomer, Licence, DataScope, Access
 
 
 ##############################
@@ -186,7 +186,7 @@ class LicenceAdmin(admin.ModelAdmin):
 
     def get_customer_for_list_display(self, obj):
         customer = obj.customer
-        admin_change_url_name = f"admin:{Customer._meta.db_table}_change"
+        admin_change_url_name = f"admin:{LicencedCustomer.admin_url_basename}_change"
         list_display = f"<a href='{reverse(admin_change_url_name, args=[customer.pk])}'>{customer.name}</a>"
         return format_html(list_display)
 
