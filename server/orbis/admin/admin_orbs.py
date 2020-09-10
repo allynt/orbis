@@ -186,7 +186,7 @@ class LicenceAdmin(admin.ModelAdmin):
 
     def get_customer_for_list_display(self, obj):
         customer = obj.customer
-        admin_change_url_name = f"admin:{LicencedCustomer.admin_url_basename}_change"
+        admin_change_url_name = f"admin:{LicencedCustomer._meta.db_table}_change"
         list_display = f"<a href='{reverse(admin_change_url_name, args=[customer.pk])}'>{customer.name}</a>"
         return format_html(list_display)
 
