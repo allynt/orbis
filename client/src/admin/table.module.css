@@ -4,18 +4,28 @@
   color: var(--color-darkgrey);
 }
 
-.tr {
+.scroll {
+  overflow-y: scroll;
+}
+
+.tr,
+.theadr {
   border-bottom: 1px solid var(--color-grey);
 }
 
+.theadr {
+  border-top: 1px solid var(--color-grey);
+}
+
 .th {
-  padding: 1rem 2rem;
+  padding: 2.5rem 1.75rem;
   font-size: 1.25rem;
   font-weight: 600;
 }
 
 .td {
-  padding: 2.5rem 2rem 1.75rem;
+  padding: 2.5rem 1.75rem;
+  max-width: 30ch;
 }
 
 .optionsColumn {
