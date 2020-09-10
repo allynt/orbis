@@ -14,14 +14,6 @@ from astrosat_users.models import Customer as AstrosatUserCustomer
 from orbis.models import LicencedCustomer, Orb
 
 
-try:
-    # get rid of the default CustomerAdmin to avoid confusion
-    admin.site.unregister(AstrosatUserCustomer)
-except admin.sites.NotRegistered:
-    pass
-
-
-@admin.register(LicencedCustomer)
 class CustomerAdmin(AstrosatUserCustomerAdmin):
     """
     Redefines the default CustomerAdmin to include some extra
@@ -58,16 +50,17 @@ class CustomerAdmin(AstrosatUserCustomerAdmin):
         # adding some "local" urls to map to the "grant_licences" action below
         urls = [
             path(
-                "<slug:id>/grant/", self.grant_licences, name=f"{LicencedCustomer.admin_url_basename}_grant",
+                "<slug:id>/grant/", self.grant_licences, name=f"{LicencedCustomer._meta.db_table}_grant",
             ),
         ] + super().get_urls()  # (order is important)
         return urls
 
     def get_grant_licences_for_detail_display(self, obj):
         if obj.pk:
+            admin_url_basename = LicencedCustomer._meta.db_table
             description = "Add licences to specific orbs in bulk to this customer."
             url = reverse(
-                f"admin:{LicencedCustomer.admin_url_basename}_grant", args=[obj.id]
+                f"admin:{LicencedCustomer._meta.db_table}_grant", args=[obj.id]
             )
             return format_html(
                 f"<a href='{url}' title='{description}'>Grant Data Access</a>"
@@ -157,7 +150,7 @@ class CustomerAdmin(AstrosatUserCustomerAdmin):
                     self.message_user(request, str(e), level=messages.ERROR)
 
                 change_url = reverse(
-                    f"admin:{LicencedCustomer.admin_url_basename}_change", args=[id]
+                    f"admin:{LicencedCustomer._meta.db_table}_change", args=[id]
                 )
                 return HttpResponseRedirect(change_url)
 
@@ -179,3 +172,12 @@ class CustomerAdmin(AstrosatUserCustomerAdmin):
             "index_title": getattr(settings, "ADMIN_INDEX_TITLE", None),
         }
         return render(request, "orbis/admin/grant_licences.html", context=context)
+
+#############################################################################
+# ensure existing references to AstrosatUserCustomer use this CustomerAdmin #
+#############################################################################
+try:
+    admin.site.unregister(AstrosatUserCustomer)
+except admin.sites.NotRegistered:
+    pass
+admin.site.register(AstrosatUserCustomer, CustomerAdmin)

@@ -1,5 +1,3 @@
-from django.utils.functional import classproperty
-
 from astrosat_users.models import Customer as AstrosatUsersCustomer
 
 from orbis.models import Licence
@@ -16,13 +14,6 @@ class LicencedCustomer(AstrosatUsersCustomer):
         verbose_name = "Customer"
         verbose_name_plural = "Customers"
         proxy = True
-
-    @classproperty
-    def admin_url_basename(cls):
-        # since this is a proxy model, the db_table that I usually use to generate admin URLs
-        # won't change, but I _want_ to change it b/c I use a custom admin; this fn helps w/ that
-        opts = cls._meta
-        return f"{opts.app_label}_{opts.model_name}"
 
     def add_licences(self, orb, n):
         licences = []
