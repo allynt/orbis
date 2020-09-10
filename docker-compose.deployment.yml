@@ -26,7 +26,6 @@ services:
       PIPENV_NOSPIN: 1
       PIPENV_DONT_LOAD_ENV: 1
       GITHUB_REGISTRY_TOKEN: "${GITHUB_REGISTRY_TOKEN}"
-      DOCKER_BUILDKIT: 1
       DJANGO_DB_USER: orbis
       DJANGO_DB_PASSWORD: orbis
       DJANGO_DB_NAME: orbis
@@ -51,7 +50,6 @@ services:
       REACT_APP_DOCKER: "true"
       REACT_APP_API_HOST: ${API_HOST}
       GITHUB_REGISTRY_TOKEN: "${GITHUB_REGISTRY_TOKEN}"
-      DOCKER_BUILDKIT: 1
     ports:
       - "3000:80"
     networks:
