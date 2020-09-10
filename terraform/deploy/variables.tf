@@ -17,16 +17,32 @@ locals {
   app              = "orbis"
   eks_cluster_name = "astrosat-cluster"
 
-  app_instance_hostname = (var.instance == "primary") ? "app" : var.instance
+  api_instance_hostname = (var.instance == "primary") ? "api" : "${var.instance}-api"
+  app_instance_hostname = (var.instance == "primary") ? "app" : "${var.instance}-app"
+
   app_instance_db_name  = (var.instance == "primary") ? data.kubernetes_secret.environment_secret.data["db_name"] : "${data.kubernetes_secret.environment_secret.data["db_name"]}-${var.instance}"
-  app_name   = "${local.app}-${var.environment}-${var.instance}"
+
+  api_name   = "${local.app}-api-${var.environment}-${var.instance}"
+  app_name   = "${local.app}-app-${var.environment}-${var.instance}"
+
+  api_domain = (var.environment == "production") ? "api.orbis.astrosat.net" : "${local.api_instance_hostname}.${var.environment}.orbis.astrosat.net"
+  api_image  = "339570402237.dkr.ecr.eu-west-1.amazonaws.com/company/orbis/django:${var.tag}"
+
   app_domain = (var.environment == "production") ? "app.orbis.astrosat.net" : "${local.app_instance_hostname}.${var.environment}.orbis.astrosat.net"
-  app_image  = "339570402237.dkr.ecr.eu-west-1.amazonaws.com/company/orbis/django:${var.tag}"
+  app_image  = "339570402237.dkr.ecr.eu-west-1.amazonaws.com/company/orbis/client:${var.tag}"
+
+  api_labels = {
+    app         = local.app
+    environment = var.environment
+    instance    = var.instance
+    role        = "server"
+  }
+
   app_labels = {
     app         = local.app
     environment = var.environment
     instance    = var.instance
-    deployment  = "${var.environment}-${var.instance}"
+    role        = "client"
   }
 
   # Deployment secrets are created by the deployment (this module)
@@ -38,7 +54,8 @@ locals {
   is_production = (var.environment == "staging" || var.environment == "production")
   num_replicas  = local.is_production ? 3 : ((var.instance == "primary") ? 2 : 1)
 
-  healthcheck_path = "/healthcheck/"
+  healthcheck_api_path = "/healthcheck/"
+  healthcheck_app_path = "/env-config.js"
 
   # Other Services
   # staticdata URL is the external URL used by the frontend
