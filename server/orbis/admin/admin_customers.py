@@ -57,7 +57,6 @@ class CustomerAdmin(AstrosatUserCustomerAdmin):
 
     def get_grant_licences_for_detail_display(self, obj):
         if obj.pk:
-            admin_url_basename = LicencedCustomer._meta.db_table
             description = "Add licences to specific orbs in bulk to this customer."
             url = reverse(
                 f"admin:{LicencedCustomer._meta.db_table}_grant", args=[obj.id]
