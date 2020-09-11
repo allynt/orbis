@@ -21,7 +21,7 @@ describe('Checkbox Filters', () => {
 
     CATEGORIES.forEach(cat => {
       expect(getByText(cat)).toBeInTheDocument();
-      expect(getByLabelText(cat)).toHaveProperty('checked', true);
+      expect(getByLabelText(cat)).toHaveAttribute('checked');
     });
   });
 
@@ -53,12 +53,12 @@ describe('Checkbox Filters', () => {
     );
 
     testCategories.forEach(cat => {
-      expect(getByLabelText(cat)).toHaveProperty('checked', true);
+      expect(getByLabelText(cat)).toHaveAttribute('checked');
     });
 
     CATEGORIES.forEach(cat => {
       if (!testCategories.includes(cat)) {
-        expect(getByLabelText(cat)).toHaveProperty('checked', false);
+        expect(getByLabelText(cat)).not.toHaveAttribute('checked');
       }
     });
   });
