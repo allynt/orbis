@@ -6,6 +6,7 @@ import ContentWrapper from '../../content-wrapper.component';
 import OptionsDropdown from '../options-dropdown/options-dropdown.component';
 
 import { getUserLicences, getLicenceInfo } from '../../licence-utils';
+import { ADMIN_STATUS } from '../../admin.constants';
 
 import QuickView from '../active-users-board/quick-view/quick-view.component';
 
@@ -26,6 +27,10 @@ export const ActiveUsersBoard = ({
 
   const CHANGE_ROLE = 'Change Role';
   const OPTIONS = 'Options';
+  const USER_LABELS = {
+    standard: 'Standard',
+    admin: 'Admin',
+  };
 
   const handleClick = (fn, user) => {
     fn(user);
@@ -87,9 +92,14 @@ export const ActiveUsersBoard = ({
                               : { type: CHANGE_ROLE, user },
                           )
                         }
-                        disabled={user.type === 'MANAGER' && oneAdminRemaining}
+                        disabled={
+                          user.type === ADMIN_STATUS.manager &&
+                          oneAdminRemaining
+                        }
                       >
-                        {user.type === 'MANAGER' ? 'Admin' : 'Standard'}
+                        {user.type === ADMIN_STATUS.manager
+                          ? USER_LABELS.admin
+                          : USER_LABELS.standard}
                         <span
                           className={`${styles.arrow} ${
                             changeRoleSelected && styles.selected
@@ -106,7 +116,9 @@ export const ActiveUsersBoard = ({
                             className={tableStyles.optionsButton}
                             onClick={() => handleClick(onChangeRoleClick, user)}
                           >
-                            {user.type === 'MANAGER' ? 'Standard' : 'Admin'}
+                            {user.type === ADMIN_STATUS.manager
+                              ? USER_LABELS.standard
+                              : USER_LABELS.admin}
                           </button>
                         </OptionsDropdown>
                       )}
