@@ -18,8 +18,9 @@ COPY --chown=app:app client $APP_HOME/client
 
 RUN cd $APP_HOME/client && yarn install && yarn build
 
-COPY --chown=app:app client/.env client/env.sh $APP_HOME/client/build/
-RUN cd $APP_HOME/client/build && ./env.sh
+COPY --chown=root:root client/env.sh /etc/my_init.d/
+#COPY --chown=app:app client/.env client/env.sh $APP_HOME/client/build/
+# RUN cd $APP_HOME/client/build && ./env.sh
 
 COPY --chown=root:root client-nginx.conf /etc/nginx/nginx.conf
 

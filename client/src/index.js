@@ -78,8 +78,8 @@ if (process.env.NODE_ENV === 'development' && module.hot) {
 }
 
 process.env.NODE_ENV === 'development'
-  ? (window.getEnv = () => window._env_)
-  : (window.getEnv = () => process.env);
+  ? (window.getEnv = () => process.env)
+  : (window.getEnv = () => window._env_);
 
 if (window.Cypress) {
   window.store = store;
