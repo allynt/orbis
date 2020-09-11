@@ -42,7 +42,7 @@ describe('Checkbox Filters', () => {
   });
 
   it('only checks checkboxes where of categories that are present in `selectedCategories`', () => {
-    const testCategories = ['PPE', 'Miscellaneous'];
+    const testCategories = ['PPE', 'Other'];
 
     const { getByLabelText } = render(
       <CheckboxFilters
