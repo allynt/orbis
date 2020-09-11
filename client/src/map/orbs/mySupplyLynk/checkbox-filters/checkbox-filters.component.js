@@ -47,6 +47,7 @@ export const CheckboxFilters = ({
           name="msl-filter-checkbox"
           value={name}
           onChange={handleChange}
+          ariaLabel={name}
           label={
             <span className={styles.label}>
               <div className={styles.iconWrapper}>
