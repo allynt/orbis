@@ -6,6 +6,7 @@ import ContentWrapper from '../../content-wrapper.component';
 import OptionsDropdown from '../options-dropdown/options-dropdown.component';
 
 import { getUserLicences, getLicenceInfo } from '../../licence-utils';
+import { ADMIN_STATUS } from '../../admin.constants';
 
 import QuickView from '../active-users-board/quick-view/quick-view.component';
 
@@ -26,6 +27,10 @@ export const ActiveUsersBoard = ({
 
   const CHANGE_ROLE = 'Change Role';
   const OPTIONS = 'Options';
+  const USER_LABELS = {
+    standard: 'Standard',
+    admin: 'Admin',
+  };
 
   const handleClick = (fn, user) => {
     fn(user);
@@ -35,127 +40,140 @@ export const ActiveUsersBoard = ({
   return (
     <ContentWrapper title="Users">
       <QuickView data={quickViewData} />
-      <table className={tableStyles.table}>
-        <thead className={tableStyles.thead}>
-          <tr className={tableStyles.tr}>
-            <th align="left" className={tableStyles.th}>
-              User
-            </th>
-            <th align="left" className={tableStyles.th}>
-              Activated Licences
-            </th>
-            <th align="left" className={tableStyles.th}>
-              Email
-            </th>
-            <th align="left" className={tableStyles.th}>
-              Type
-            </th>
-            <th align="left" className={tableStyles.th}></th>
-          </tr>
-        </thead>
-        <tbody>
-          {activeUsers && activeUsers.length > 0 ? (
-            activeUsers.map(user => {
-              const optionsSelected =
-                dropdown?.type === OPTIONS && dropdown.user === user;
+      <div className={tableStyles.scroll}>
+        <table className={tableStyles.table}>
+          <thead className={tableStyles.thead}>
+            <tr className={tableStyles.theadr}>
+              <th align="left" className={tableStyles.th}>
+                User
+              </th>
+              <th align="left" className={tableStyles.th}>
+                Activated Licences
+              </th>
+              <th align="left" className={tableStyles.th}>
+                Email
+              </th>
+              <th align="left" className={tableStyles.th}>
+                Type
+              </th>
+              <th align="left" className={tableStyles.th}></th>
+            </tr>
+          </thead>
+          <tbody>
+            {activeUsers && activeUsers.length > 0 ? (
+              activeUsers.map(user => {
+                const optionsSelected =
+                  dropdown?.type === OPTIONS && dropdown.user === user;
 
-              const changeRoleSelected =
-                dropdown?.type === CHANGE_ROLE && dropdown.user === user;
+                const changeRoleSelected =
+                  dropdown?.type === CHANGE_ROLE && dropdown.user === user;
 
-              let licences = null;
-              if (customer && customer.licences) {
-                licences = getUserLicences(user, customer);
-              }
-              return (
-                <tr key={user.id} className={tableStyles.tr}>
-                  <td className={tableStyles.td}>{user.user.name}</td>
-                  <td className={tableStyles.td}>{getLicenceInfo(licences)}</td>
-                  <td className={tableStyles.td}>{user.user.email}</td>
-                  <td
-                    className={`${tableStyles.td} ${tableStyles.optionsColumn}`}
-                  >
-                    <Button
-                      theme="tertiary"
-                      className={styles.optionsRoleButton}
-                      onClick={() =>
-                        setDropdown(
-                          changeRoleSelected
-                            ? null
-                            : { type: CHANGE_ROLE, user },
-                        )
-                      }
-                      disabled={user.type === 'MANAGER' && oneAdminRemaining}
+                let licences = null;
+                if (customer && customer.licences) {
+                  licences = getUserLicences(user, customer);
+                }
+                return (
+                  <tr key={user.id} className={tableStyles.tr}>
+                    <td className={tableStyles.td}>{user.user.name}</td>
+                    <td className={tableStyles.td}>
+                      {getLicenceInfo(licences)}
+                    </td>
+                    <td className={tableStyles.td}>{user.user.email}</td>
+                    <td
+                      className={`${tableStyles.td} ${tableStyles.optionsColumn}`}
                     >
-                      {user.type === 'MANAGER' ? 'Admin' : 'Standard'}
-                      <span
-                        className={`${styles.arrow} ${
-                          changeRoleSelected && styles.selected
-                        }`}
-                      ></span>
-                    </Button>
+                      <Button
+                        theme="tertiary"
+                        className={styles.optionsRoleButton}
+                        onClick={() =>
+                          setDropdown(
+                            changeRoleSelected
+                              ? null
+                              : { type: CHANGE_ROLE, user },
+                          )
+                        }
+                        disabled={
+                          user.type === ADMIN_STATUS.manager &&
+                          oneAdminRemaining
+                        }
+                      >
+                        {user.type === ADMIN_STATUS.manager
+                          ? USER_LABELS.admin
+                          : USER_LABELS.standard}
+                        <span
+                          className={`${styles.arrow} ${
+                            changeRoleSelected && styles.selected
+                          }`}
+                        ></span>
+                      </Button>
 
-                    {changeRoleSelected && (
-                      <OptionsDropdown
-                        className={styles.roleDropdown}
-                        onClickAway={() => setDropdown(null)}
-                      >
-                        <button
-                          className={tableStyles.optionsButton}
-                          onClick={() => handleClick(onChangeRoleClick, user)}
+                      {changeRoleSelected && (
+                        <OptionsDropdown
+                          className={styles.roleDropdown}
+                          onClickAway={() => setDropdown(null)}
                         >
-                          {user.type === 'MANAGER' ? 'Standard' : 'Admin'}
-                        </button>
-                      </OptionsDropdown>
-                    )}
-                  </td>
-                  <td
-                    className={`${tableStyles.td} ${tableStyles.optionsColumn}`}
-                  >
-                    <OptionsIcon
-                      data-testid="options-icon"
-                      classes={`${tableStyles.optionsIcon} ${
-                        optionsSelected && tableStyles.optionsIconSelected
-                      }`}
-                      onClick={() =>
-                        setDropdown(
-                          optionsSelected ? null : { type: OPTIONS, user },
-                        )
-                      }
-                    />
-                    {optionsSelected && (
-                      <OptionsDropdown
-                        className={styles.editDropdown}
-                        onClickAway={() => setDropdown(null)}
-                      >
-                        <button
-                          className={tableStyles.optionsButton}
-                          onClick={() => handleClick(onEditUserClick, user)}
-                        >
-                          Edit
-                        </button>
-                        {user.user.id !== currentUser.id && (
                           <button
                             className={tableStyles.optionsButton}
-                            onClick={() => handleClick(onDeleteUserClick, user)}
+                            onClick={() => handleClick(onChangeRoleClick, user)}
                           >
-                            Delete User
+                            {user.type === ADMIN_STATUS.manager
+                              ? USER_LABELS.standard
+                              : USER_LABELS.admin}
                           </button>
-                        )}
-                      </OptionsDropdown>
-                    )}
-                  </td>
-                </tr>
-              );
-            })
-          ) : (
-            <tr className={tableStyles.tr}>
-              <td align="center" colSpan={5} className={tableStyles.td}>
-                No Active Users
-              </td>
-            </tr>
-          )}
-        </tbody>
-      </table>
+                        </OptionsDropdown>
+                      )}
+                    </td>
+                    <td
+                      className={`${tableStyles.td} ${tableStyles.optionsColumn}`}
+                    >
+                      <OptionsIcon
+                        data-testid="options-icon"
+                        classes={`${tableStyles.optionsIcon} ${
+                          optionsSelected && tableStyles.optionsIconSelected
+                        }`}
+                        onClick={() =>
+                          setDropdown(
+                            optionsSelected ? null : { type: OPTIONS, user },
+                          )
+                        }
+                      />
+                      {optionsSelected && (
+                        <OptionsDropdown
+                          className={styles.editDropdown}
+                          onClickAway={() => setDropdown(null)}
+                        >
+                          <button
+                            className={tableStyles.optionsButton}
+                            onClick={() => handleClick(onEditUserClick, user)}
+                          >
+                            Edit
+                          </button>
+                          {user.user.id !== currentUser.id && (
+                            <button
+                              className={tableStyles.optionsButton}
+                              onClick={() =>
+                                handleClick(onDeleteUserClick, user)
+                              }
+                            >
+                              Delete User
+                            </button>
+                          )}
+                        </OptionsDropdown>
+                      )}
+                    </td>
+                  </tr>
+                );
+              })
+            ) : (
+              <tr className={tableStyles.tr}>
+                <td align="center" colSpan={5} className={tableStyles.td}>
+                  No Active Users
+                </td>
+              </tr>
+            )}
+          </tbody>
+        </table>
+      </div>
     </ContentWrapper>
   );
 };
