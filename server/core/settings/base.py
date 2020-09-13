@@ -296,11 +296,10 @@ SWAGGER_SETTINGS = {
 # CORS #
 ########
 
+CLIENT_HOST = env("DJANGO_CLIENT_HOST", default="")
 CORS_ALLOW_CREDENTIALS = True
 
-CORS_ORIGIN_REGEX_WHITELIST = [
-    r"^https:\/\/(?:app|pr\-\d{1,})(?:(?:\.experimentation|\.testing|\.staging|))\.orbis\.astrosat\.net$",
-]
+CORS_ORIGIN_REGEX_WHITELIST = [rf"^{CLIENT_HOST}$"]
 
 if DEBUG:
     CORS_ORIGIN_REGEX_WHITELIST += [r"^https?://localhost(:\d+)?$"]
