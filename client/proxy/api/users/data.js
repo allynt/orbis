@@ -5,7 +5,7 @@ let users = [
     id: '6e5ac533-0245-4031-ab65-b1eff4d30a1f',
     username: 'user@test.com',
     email: 'user@test.com',
-    password: 'panda',
+    password: 'pandaconcretespoon',
     name: null,
     description: '',
     is_verified: true,
