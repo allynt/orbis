@@ -87,6 +87,7 @@ export const useMySupplyLynkOrb = (data, activeSources) => {
   const layers = [
     ...SUPPLYLYNK_LAYER_IDS.map(
       id =>
+        // @ts-ignore
         new GeoJsonClusteredIconLayer({
           id,
           data: selectedFeatures?.length && getFeatures(),
@@ -149,5 +150,11 @@ export const useMySupplyLynkOrb = (data, activeSources) => {
     ),
   ];
 
-  return { layers, mapComponents, sidebarComponents, dialog };
+  return {
+    layers,
+    mapComponents,
+    sidebarComponents,
+    dialog,
+    postLabelLayers: SUPPLYLYNK_LAYER_IDS,
+  };
 };
