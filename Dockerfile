@@ -24,7 +24,6 @@ WORKDIR $APP_HOME
 COPY --chown=app:app ./server/Pipfile* $APP_HOME/
 RUN cd $APP_HOME && pipenv install --dev
 
-# Start backend dev server
 COPY --chown=root:root run-server.sh /etc/service/server/run
 
 # necessary to have permission to remove nginx support

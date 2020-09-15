@@ -47,8 +47,6 @@ pyjwt = ">=1.7.1"
 djangorestframework-simplejwt = "*"
 # sentinel data
 sentinelsat = ">=0.13"
-# static file management (gzipping, etc.)
-whitenoise = ">=5.0.1"
 # astrosat-specific code
 django-astrosat-core = {editable = true,git = "https://github.com/astrosat/django-astrosat-core.git",ref = "master"}
 django-astrosat-users = {editable = true,git = "https://github.com/astrosat/django-astrosat-users.git",ref = "master"}

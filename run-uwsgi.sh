@@ -10,11 +10,11 @@ setuser app pipenv run ./manage.py update_site
 setuser app pipenv run ./manage.py collectstatic --no-input --link
 
 exec /sbin/setuser app \
-     uwsgi \
-     --venv "$(pipenv --venv)" \
-     --uwsgi-socket /tmp/uwsgi.sock \
-     --chmod-socket=666 \
-     --module wsgi:application \
-     --need-app \
-     --processes 4 \
-     --master
+    uwsgi \
+    --venv "$(pipenv --venv)" \
+    --uwsgi-socket /tmp/uwsgi.sock \
+    --chmod-socket=666 \
+    --module wsgi:application \
+    --need-app \
+    --processes 4 \
+    --master
