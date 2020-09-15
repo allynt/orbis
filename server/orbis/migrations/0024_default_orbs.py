@@ -3,6 +3,10 @@
 from django.db import migrations
 
 
+# NOTE: THIS DATA MIGRATION IS NO LONGER APPLIED B/C IT
+# NOTE: INTERFERES W/ THE NEWER WAY THE "CORE" ORB IS HANDLED
+
+
 # data migration to ensure that the core orb exists
 # and that all existing customer_users have a licence for it
 
@@ -43,11 +47,12 @@ class Migration(migrations.Migration):
         ('orbis', '0023_auto_20200714_1546'),
     ]
 
+    # NOTE: THIS BIT IS COMMENTED OUT
     operations = [
-        migrations.RunPython(
-            create_core_orbs_and_scopes, reverse_code=migrations.RunPython.noop
-        ),
-        migrations.RunPython(
-            create_core_licences, reverse_code=migrations.RunPython.noop
-        ),
+        # migrations.RunPython(
+        #     create_core_orbs_and_scopes, reverse_code=migrations.RunPython.noop
+        # ),
+        # migrations.RunPython(
+        #     create_core_licences, reverse_code=migrations.RunPython.noop
+        # ),
     ]
