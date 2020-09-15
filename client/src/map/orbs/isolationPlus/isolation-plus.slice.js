@@ -11,7 +11,7 @@ const isolationPlusSlice = createSlice({
       [LAYER_IDS.astrosat.isolationPlus.broadbandConnectivity.v2]: 'PuBuGn',
       [LAYER_IDS.astrosat.isolationPlus.childPoverty.v2]: 'Purples',
       [LAYER_IDS.astrosat.isolationPlus.deprivedHouses.v2]: 'Greens',
-      [LAYER_IDS.astrosat.isolationPlus.healthVulnerability.v2]: 'Blues',
+      [LAYER_IDS.astrosat.isolationPlus.healthVulnerability.v1]: 'Blues',
       [LAYER_IDS.astrosat.isolationPlus.imdIncome.v2]: 'Blues',
       [LAYER_IDS.astrosat.isolationPlus.localFuelPoverty.v2]: 'Oranges',
       [LAYER_IDS.astrosat.isolationPlus.mobileConnectivity.v2]: 'PuRd',
