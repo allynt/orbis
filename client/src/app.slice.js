@@ -37,7 +37,7 @@ export const {
 
 export const fetchAppConfig = () => async dispatch => {
   const response = await fetch(
-    `${window.getEnv().REACT_APP_API_HOST}/api/app/config`,
+    `${window.orbis.getEnv().REACT_APP_API_HOST}/api/app/config`,
     {
       credentials: 'include',
     },
