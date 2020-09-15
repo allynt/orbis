@@ -69,6 +69,7 @@ export const useOrbs = () => {
   } = useIsolationPlusOrb(data, activeSources, authToken);
   const {
     layers: mySupplyLynkLayers,
+    postLabelLayers: mySupplyLynkPostLabelLayers,
     mapComponents: mySupplyLynkMapComponents,
     sidebarComponents: mySupplyLynkSidebarComponents,
     dialog: mySupplyLynkDialog,
@@ -101,6 +102,7 @@ export const useOrbs = () => {
     ...hourglassPostLabelLayers,
     ...ricePostLabelLayers,
     ...isoPlusPostLabelLayers,
+    ...mySupplyLynkPostLabelLayers,
   ];
   const dialogs = [...mySupplyLynkDialog];
 
