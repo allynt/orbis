@@ -22,7 +22,6 @@ PROJECT_EMAIL = "{role}@astrosat.net"
 
 ROOT_DIR = environ.Path(__file__) - 4
 SERVER_DIR = ROOT_DIR.path("server")
-CLIENT_DIR = ROOT_DIR.path("client")
 
 # DEBUG and SECRET_KEY is overwritten in deployment.py, development.py, or ci.py as appropriate
 DEBUG = False
@@ -64,8 +63,6 @@ DJANGO_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.sites",
-    # statics...
-    "whitenoise.runserver_nostatic",
     "django.contrib.staticfiles",
     # gis...
     "django.contrib.gis",
@@ -147,7 +144,6 @@ MAXIMUM_AOI_AREA = DynamicSetting(
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
-    "whitenoise.middleware.WhiteNoiseMiddleware",
     "corsheaders.middleware.CorsMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.locale.LocaleMiddleware",
@@ -173,8 +169,6 @@ TEMPLATES = [
                 os.path.dirname(importlib.import_module("astrosat_users").__file__),
                 "templates",
             ),
-            # and find the "index.html" template in the client build......
-            str(CLIENT_DIR.path("build")),
         ],
         "OPTIONS": {
             "debug": DEBUG,
@@ -208,14 +202,6 @@ STATICFILES_FINDERS = [
 
 STATIC_URL = "/static/"
 STATIC_ROOT = str(SERVER_DIR("static"))
-
-STATICFILES_DIRS = [
-    # STATIC_ROOT,  # no need to explicitly specify STATIC_ROOT again
-    str(CLIENT_DIR.path("build/static"))
-]
-
-WHITENOISE_ROOT = str(CLIENT_DIR("build"))
-STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 ###############
 # Media files #
@@ -305,6 +291,22 @@ SWAGGER_SETTINGS = {
     "TAGS_SORTER": "alpha",
     "DEFAULT_MODEL_RENDERING": "example",
 }
+
+########
+# CORS #
+########
+
+CLIENT_HOST = env("DJANGO_CLIENT_HOST", default="")
+CORS_ALLOW_CREDENTIALS = True
+
+CORS_ORIGIN_REGEX_WHITELIST = [rf"^{CLIENT_HOST}$"]
+
+if DEBUG:
+    CORS_ORIGIN_REGEX_WHITELIST += [r"^https?://localhost(:\d+)?$"]
+
+
+# (only using cors on the API)
+CORS_URLS_REGEX = r"^/api/.*$"
 
 ##########################
 # Authentication & Users #

@@ -77,6 +77,11 @@ if (process.env.NODE_ENV === 'development' && module.hot) {
   module.hot.accept('./app.component', render);
 }
 
+window.orbis = {};
+process.env.NODE_ENV === 'development'
+  ? (window.orbis.getEnv = () => process.env)
+  : (window.orbis.getEnv = () => window._env_);
+
 if (window.Cypress) {
   window.store = store;
 }

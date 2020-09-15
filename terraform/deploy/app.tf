@@ -57,7 +57,7 @@ resource "kubernetes_deployment" "app_deployment" {
             period_seconds        = 10
 
             http_get {
-              path = local.healthcheck_path
+              path = local.healthcheck_app_path
               port = 80
             }
           }
@@ -69,7 +69,7 @@ resource "kubernetes_deployment" "app_deployment" {
             failure_threshold     = 15
 
             http_get {
-              path = local.healthcheck_path
+              path = local.healthcheck_app_path
               port = 80
             }
           }
@@ -80,219 +80,10 @@ resource "kubernetes_deployment" "app_deployment" {
             value = "deployment"
           }
 
+          // Host of back-end API
           env {
-            name  = "DJANGO_SITE_DOMAIN"
-            value = local.app_domain
-          }
-
-          // Media Bucket/AWS Parameters
-          env {
-            name = "DJANGO_MEDIA_BUCKET"
-            value_from {
-              secret_key_ref {
-                name = local.app_environment_secret_name
-                key  = "media_bucket"
-              }
-            }
-          }
-
-          env {
-            name = "DJANGO_AWS_ACCESS_KEY_ID"
-            value_from {
-              secret_key_ref {
-                name = local.app_environment_secret_name
-                key  = "aws_access_key_id"
-              }
-            }
-          }
-
-          env {
-            name = "DJANGO_AWS_SECRET_ACCESS_KEY"
-            value_from {
-              secret_key_ref {
-                name = local.app_environment_secret_name
-                key  = "aws_secret_access_key"
-              }
-            }
-          }
-
-          // Django Parameters
-          env {
-            name  = "DJANGO_DEBUG"
-            value = local.is_production ? false : true
-          }
-
-          env {
-            name = "DJANGO_SECRET_KEY"
-            value_from {
-              secret_key_ref {
-                name = local.app_deployment_secret_name
-                key  = "secret_key"
-              }
-            }
-          }
-
-          // Database Parameters
-          env {
-            name = "DJANGO_DB_HOST"
-            value_from {
-              secret_key_ref {
-                name = local.app_environment_secret_name
-                key  = "db_host"
-              }
-            }
-          }
-
-          env {
-            name = "DJANGO_DB_PORT"
-            value_from {
-              secret_key_ref {
-                name = local.app_environment_secret_name
-                key  = "db_port"
-              }
-            }
-          }
-
-          env {
-            name  = "DJANGO_DB_NAME"
-            value = local.app_instance_db_name
-          }
-
-          env {
-            name = "DJANGO_DB_USER"
-            value_from {
-              secret_key_ref {
-                name = local.app_environment_secret_name
-                key  = "db_user"
-              }
-            }
-          }
-
-          env {
-            name = "DJANGO_DB_PASSWORD"
-            value_from {
-              secret_key_ref {
-                name = local.app_environment_secret_name
-                key  = "db_password"
-              }
-            }
-          }
-
-          // Email Parameters
-          env {
-            name = "DJANGO_EMAIL_HOST"
-            value_from {
-              secret_key_ref {
-                name = local.app_deployment_secret_name
-                key  = "email_host"
-              }
-            }
-          }
-
-          env {
-            name = "DJANGO_EMAIL_PORT"
-            value_from {
-              secret_key_ref {
-                name = local.app_deployment_secret_name
-                key  = "email_port"
-              }
-            }
-          }
-
-          env {
-            name = "DJANGO_EMAIL_USER"
-            value_from {
-              secret_key_ref {
-                name = local.app_deployment_secret_name
-                key  = "email_user"
-              }
-            }
-          }
-
-          env {
-            name = "DJANGO_EMAIL_PASSWORD"
-            value_from {
-              secret_key_ref {
-                name = local.app_deployment_secret_name
-                key  = "email_password"
-              }
-            }
-          }
-
-          // Other Services
-          env {
-            name = "DJANGO_MAPBOX_TOKEN"
-            value_from {
-              secret_key_ref {
-                name = local.app_deployment_secret_name
-                key  = "mapbox_token"
-              }
-            }
-          }
-
-          env {
-            name = "DJANGO_TRACKING_ID"
-            value_from {
-              secret_key_ref {
-                name = local.app_deployment_secret_name
-                key  = "tracking_id"
-              }
-            }
-          }
-
-          env {
-            name  = "DJANGO_DATA_SOURCES_DIRECTORY_URL"
-            value = local.data_sources_directory_url
-          }
-
-          env {
-            name = "DJANGO_DATA_TOKEN_SECRET"
-            value_from {
-              secret_key_ref {
-                name = local.app_environment_secret_name
-                key  = "data_token_secret"
-              }
-            }
-          }
-
-          env {
-            name = "DJANGO_COPERNICUS_USERNAME"
-            value_from {
-              secret_key_ref {
-                name = local.app_deployment_secret_name
-                key  = "copernicus_username"
-              }
-            }
-          }
-
-          env {
-            name = "DJANGO_COPERNICUS_PASSWORD"
-            value_from {
-              secret_key_ref {
-                name = local.app_deployment_secret_name
-                key  = "copernicus_password"
-              }
-            }
-          }
-
-          env {
-            name = "DJANGO_OLSP_URL"
-            value_from {
-              secret_key_ref {
-                name = local.app_deployment_secret_name
-                key  = "olsp_url"
-              }
-            }
-          }
-
-          env {
-            name = "DJANGO_MAPBOX_STYLES"
-            value_from {
-              secret_key_ref {
-                name = local.app_deployment_secret_name
-                key  = "mapbox_styles"
-              }
-            }
+            name = "REACT_APP_API_HOST"
+            value = "https://${local.api_domain}"
           }
 
         }

@@ -16,3 +16,8 @@ global.URL.createObjectURL = jest.fn();
 global.requestIdleCallback = jest
   .fn()
   .mockImplementation(args => setTimeout(args, 0));
+
+global.orbis = {};
+global.orbis.getEnv = () => ({
+  REACT_APP_API_HOST: 'http://test.local',
+});

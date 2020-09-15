@@ -5,10 +5,11 @@ on:
 
 env:
   AWS_REGISTRY: 339570402237.dkr.ecr.eu-west-1.amazonaws.com
-  AWS_REPOSITORY: company/orbis/django
+  AWS_SERVER_REPOSITORY: company/orbis/django
+  AWS_CLIENT_REPOSITORY: company/orbis/client
 
 jobs:
-  client:
+  client-tests:
     name: Client-side Tests
     runs-on: ubuntu-latest
     steps:
@@ -33,7 +34,7 @@ jobs:
           yarn install
           yarn test
 
-  server:
+  server-tests:
     name: Server-side Tests
     runs-on: ubuntu-latest
     container:
@@ -69,9 +70,9 @@ jobs:
           pipenv run ./manage.py migrate --noinput
           pipenv run pytest ./
 
-  docker:
-    needs: [client, server]
-    name: Build and tag Docker Image
+  build-client-docker:
+    needs: [client-tests]
+    name: Build, Tag and Push Client Docker Image
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -86,15 +87,39 @@ jobs:
       - name: Build Docker Image
         run: |
           export GIT_SHA=${GITHUB_SHA:0:7}
-          docker build . -t ${AWS_REGISTRY}/${AWS_REPOSITORY}:${GIT_SHA} --build-arg TOKEN=${{ secrets.GITHUB_REGISTRY_TOKEN }} -f ./Dockerfile.deployment
+          DOCKER_BUILDKIT=1 docker build . -t ${AWS_REGISTRY}/${AWS_CLIENT_REPOSITORY}:${GIT_SHA} --build-arg TOKEN=${{ secrets.GITHUB_REGISTRY_TOKEN }} -f ./Dockerfile.client.deployment
 
       - name: Push image to AWS Docker Registry
         run: |
           export GIT_SHA=${GITHUB_SHA:0:7}
-          docker push ${AWS_REGISTRY}/${AWS_REPOSITORY}:${GIT_SHA}
+          docker push ${AWS_REGISTRY}/${AWS_CLIENT_REPOSITORY}:${GIT_SHA}
+
+  build-server-docker:
+    needs: [server-tests]
+    name: Build, Tag and Push Server Docker Image
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v1
+
+      - name: Setup dependencies
+        run: ./scripts/ci-setup-deps.sh
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
+      - name: Build Docker Image
+        run: |
+          export GIT_SHA=${GITHUB_SHA:0:7}
+          DOCKER_BUILDKIT=1 docker build . -t ${AWS_REGISTRY}/${AWS_SERVER_REPOSITORY}:${GIT_SHA} --build-arg TOKEN=${{ secrets.GITHUB_REGISTRY_TOKEN }} -f ./Dockerfile.server.deployment
+
+      - name: Push image to AWS Docker Registry
+        run: |
+          export GIT_SHA=${GITHUB_SHA:0:7}
+          docker push ${AWS_REGISTRY}/${AWS_SERVER_REPOSITORY}:${GIT_SHA}
 
   deploy-to-testing:
-    needs: [docker]
+    needs: [build-client-docker, build-server-docker]
     name: Deploy to Testing
     runs-on: ubuntu-latest
     steps:

@@ -56,6 +56,9 @@ export const LAYER_IDS = {
         v1: 'astrosat/isolation_plus/depriv/v1',
         v2: 'astrosat/isolation_plus/depriv/v2',
       },
+      healthVulnerability: {
+        v1: 'astrosat/isolation_plus/health_vulnerability/v1',
+      },
       imdIncome: {
         v1: 'astrosat/isolation_plus/imd_income/v1',
         v2: 'astrosat/isolation_plus/imd_income/v2',
