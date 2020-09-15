@@ -17,6 +17,7 @@ const TILE_LAYERS = [
   LAYER_IDS.astrosat.isolationPlus.broadbandConnectivity.v2,
   LAYER_IDS.astrosat.isolationPlus.childPoverty.v2,
   LAYER_IDS.astrosat.isolationPlus.deprivedHouses.v2,
+  LAYER_IDS.astrosat.isolationPlus.healthVulnerability.v1,
   LAYER_IDS.astrosat.isolationPlus.imdIncome.v2,
   LAYER_IDS.astrosat.isolationPlus.localFuelPoverty.v2,
   LAYER_IDS.astrosat.isolationPlus.mobileConnectivity.v2,
