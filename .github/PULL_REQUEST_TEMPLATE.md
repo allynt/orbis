@@ -1,6 +1,6 @@
 This PR closes #
 
-Preview at https://pr-NUMBER.testing.orbis.astrosat.net/
+Preview at https://pr-NUMBER-app.testing.orbis.astrosat.net/
 
 <!--
 FOR DEVELOPERS
