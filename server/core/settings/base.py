@@ -381,24 +381,17 @@ PASSWORD_HASHERS = [
     "django.contrib.auth.hashers.BCryptPasswordHasher",
 ]
 
-PASSWORD_MIN_LENGTH = 8
-PASSWORD_MAX_LENGTH = 255
-PASSWORD_STRENGTH = 2
+PASSWORD_RESET_TIMEOUT = 604800 # (7 days in seconds); default is 259200 (3 days in seconds)
 
 AUTH_PASSWORD_VALIDATORS = [
     {
         "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator"
     },
     {
-        "NAME": "astrosat_users.validators.LengthPasswordValidator",
-        "OPTIONS": {
-            "min_length": PASSWORD_MIN_LENGTH,
-            "max_length": PASSWORD_MAX_LENGTH,
-        },
+        "NAME": "astrosat_users.validators.LengthPasswordValidator"
     },
     {
-        "NAME": "astrosat_users.validators.StrengthPasswordValidator",
-        "OPTIONS": {"strength": PASSWORD_STRENGTH,},
+        "NAME": "astrosat_users.validators.StrengthPasswordValidator"
     },
 ]
 
