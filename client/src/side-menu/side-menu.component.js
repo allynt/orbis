@@ -22,7 +22,7 @@ import {
 } from '../side-menu/side-menu.slice';
 import StoriesPanel from '../stories/stories-panel.component';
 import PasswordChangeForm from '../accounts/password-change-form.component';
-import Profile from '../accounts/profile.component';
+import Profile from '../accounts/profile/profile.component';
 import AnnotationsPanel from '../annotations/annotations-panel.component';
 import BookmarksPanel from '../bookmarks/bookmarks-panel.component';
 import DataLayers from '../data-layers/data-layers.component';

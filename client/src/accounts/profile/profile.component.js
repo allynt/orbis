@@ -4,13 +4,13 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import Button from '@astrosat/astrosat-ui/dist/buttons/button';
 
-import UpdateUserForm from './update-user-form/update-user-form.component';
-import { updateUser, logout, userSelector } from './accounts.slice';
+import UpdateUserForm from '../update-user-form/update-user-form.component';
+import { updateUser, logout, userSelector } from '../accounts.slice';
 
-import { TERMS_URL } from './accounts.constants';
+import { TERMS_URL } from '../accounts.constants';
 
 import styles from './profile.module.css';
-import sideMenuStyles from '../side-menu/side-menu.module.css';
+import sideMenuStyles from '../../side-menu/side-menu.module.css';
 
 const LINKS = [
   {
