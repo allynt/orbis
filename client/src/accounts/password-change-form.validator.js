@@ -25,9 +25,7 @@ const validate = form => {
     form.new_password1?.length > passwordMaxLength
   ) {
     errors.new_password1 = `Password is too long (maximum ${passwordMaxLength} characters)`;
-  }
-
-  if (form.new_password1) {
+  } else {
     const passwordStrengthResponse = zxcvbn(form.new_password1);
 
     if (passwordStrengthResponse.score < passwordStrength) {
