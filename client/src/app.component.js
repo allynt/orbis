@@ -115,12 +115,6 @@ const App = () => {
           <PrivateRoute exact path="/" user={user} component={LandingView} />
           <Route path="/accounts" component={Accounts} />
           <PrivateRoute path="/map" user={user} component={MapLayout} />
-          <PrivateRoute
-            exact
-            path="/user/update"
-            user={user}
-            component={UpdateUserForm}
-          />
           <Route exact path="/terms" component={TermsAndConditions} />
           <Suspense fallback={<h3>Loading...</h3>}>
             <PrivateRoute
