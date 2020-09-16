@@ -5,9 +5,9 @@ import Button from '@astrosat/astrosat-ui/dist/buttons/button';
 import Textfield from '@astrosat/astrosat-ui/dist/forms/text-field';
 import useForm from '@astrosat/astrosat-ui/dist/forms/use-form';
 
-import formStyles from '../forms.module.css';
-import sideMenuStyles from '../side-menu/side-menu.module.css';
-import profileStyles from './profile.module.css';
+import formStyles from '../../forms.module.css';
+import sideMenuStyles from '../../side-menu/side-menu.module.css';
+import profileStyles from '../profile.module.css';
 
 const UpdateUserForm = ({ user, updateUser }) => {
   const defaults = {

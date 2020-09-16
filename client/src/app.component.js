@@ -19,7 +19,7 @@ import {
 
 import Accounts from './accounts';
 import TermsAndConditions from './accounts/terms-and-conditions.component';
-import UpdateUserForm from './accounts/update-user-form.component';
+import UpdateUserForm from './accounts/update-user-form/update-user-form.component';
 
 import LandingView from './landing/landing.component';
 
