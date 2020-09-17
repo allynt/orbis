@@ -1,9 +1,11 @@
+import zxcvbn from 'zxcvbn';
+
 import store from '../store';
 
 const validate = form => {
   const {
     app: {
-      config: { passwordMinLength, passwordMaxLength },
+      config: { passwordMinLength, passwordMaxLength, passwordStrength },
     },
   } = store.getState();
 
@@ -23,6 +25,12 @@ const validate = form => {
     form.new_password1?.length > passwordMaxLength
   ) {
     errors.new_password1 = `Password is too long (maximum ${passwordMaxLength} characters)`;
+  } else {
+    const passwordStrengthResponse = zxcvbn(form.new_password1);
+
+    if (passwordStrengthResponse.score < passwordStrength) {
+      errors.new_password1 = 'Password must not be weak”';
+    }
   }
 
   if (!form.new_password2) {

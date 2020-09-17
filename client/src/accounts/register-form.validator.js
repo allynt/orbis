@@ -1,3 +1,5 @@
+import zxcvbn from 'zxcvbn';
+
 import store from '../store';
 
 import { EMAIL_REGEX } from '../utils/form';
@@ -5,7 +7,7 @@ import { EMAIL_REGEX } from '../utils/form';
 const validate = form => {
   const {
     app: {
-      config: { passwordMinLength, passwordMaxLength },
+      config: { passwordMinLength, passwordMaxLength, passwordStrength },
     },
   } = store.getState();
 
@@ -23,6 +25,12 @@ const validate = form => {
     errors.password1 = `Password is too short (minimum ${passwordMinLength} characters)`;
   } else if (passwordMaxLength && form.password1.length > passwordMaxLength) {
     errors.password1 = `Password is too long (maximum ${passwordMaxLength} characters)`;
+  } else {
+    const passwordStrengthResponse = zxcvbn(form.password1);
+
+    if (passwordStrengthResponse.score < passwordStrength) {
+      errors.password1 = 'Password must not be weak”';
+    }
   }
 
   if (!form.password2) {
