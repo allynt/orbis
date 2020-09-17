@@ -5,14 +5,13 @@ import Button from '@astrosat/astrosat-ui/dist/buttons/button';
 import Textfield from '@astrosat/astrosat-ui/dist/forms/text-field';
 import useForm from '@astrosat/astrosat-ui/dist/forms/use-form';
 
+import styles from './update-user-form.module.css';
 import formStyles from '../../forms.module.css';
-import sideMenuStyles from '../../side-menu/side-menu.module.css';
-import profileStyles from '../profile/profile.module.css';
 
 const UpdateUserForm = ({ user, updateUser }) => {
   const defaults = {
     values: {
-      name: user.name ? user.name : '',
+      name: user?.name || '',
     },
   };
 
@@ -27,41 +26,29 @@ const UpdateUserForm = ({ user, updateUser }) => {
   }
 
   return (
-    <div className={sideMenuStyles.container}>
-      <form
-        className={`${formStyles.form} ${sideMenuStyles.form}`}
-        onSubmit={handleSubmit}
-      >
-        <div className={`${formStyles.fields} ${sideMenuStyles.fields}`}>
-          <p className={formStyles.paragraph}>Personal Details</p>
-          <Textfield
-            name="email"
-            value={user.email || ''}
-            placeholder="Email"
-            onChange={handleChange}
-            readOnly
-          />
-
-          <Textfield
-            name="name"
-            value={values.name || ''}
-            placeholder="Name"
-            onChange={handleChange}
-          />
-        </div>
-        <div className={sideMenuStyles.buttons}>
-          <Button
-            type="submit"
-            classNames={[
-              sideMenuStyles.button,
-              profileStyles.updateAccountButton,
-            ]}
-          >
-            Update Account
-          </Button>
-        </div>
-      </form>
-    </div>
+    <form className={styles.form} onSubmit={handleSubmit}>
+      <p className={formStyles.paragraph}>Personal Details</p>
+      <div className={formStyles.row}>
+        <Textfield
+          name="email"
+          value={user?.email || ''}
+          placeholder="Email"
+          onChange={handleChange}
+          readOnly
+        />
+      </div>
+      <div className={formStyles.row}>
+        <Textfield
+          name="name"
+          value={values?.name || ''}
+          placeholder="Name"
+          onChange={handleChange}
+        />
+      </div>
+      <Button className={styles.submit} type="submit">
+        Update Account
+      </Button>
+    </form>
   );
 };
 

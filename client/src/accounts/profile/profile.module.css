@@ -1,34 +1,25 @@
 .profile {
+  composes: container from '../../side-menu/side-menu.module.css';
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
   height: 100%;
 }
 
-.profileButtons {
-  padding: 0 1rem 1rem 1rem;
-  color: #fff;
+.logout {
+  margin-top: 1em;
+  margin-bottom: 1em;
 }
 
-.updateAccountButton {
-  --padding-x: 1rem;
-  padding-left: var(--padding-x);
-  padding-right: var(--padding-x);
-}
-
-.linkContainer {
-  padding: 0 0 2rem 0;
-}
-
-.links {
+.p {
+  --font-size: 0.625rem;
   display: flex;
-  justify-content: center;
   align-items: baseline;
-  font-size: smaller;
+  justify-content: center;
+  font-size: var(--font-size);
 }
 
 .link {
+  font-size: var(--font-size);
   color: #fff !important;
-  margin-left: 0.5rem !important;
+  margin-left: 0.5em !important;
 }

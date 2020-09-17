@@ -10,7 +10,6 @@ import { updateUser, logout, userSelector } from '../accounts.slice';
 import { TERMS_URL } from '../accounts.constants';
 
 import styles from './profile.module.css';
-import sideMenuStyles from '../../side-menu/side-menu.module.css';
 
 const LINKS = [
   {
@@ -34,33 +33,28 @@ const Profile = () => {
   return (
     <div className={styles.profile}>
       <UpdateUserForm user={user} updateUser={updateUserProfile} />
+      <Button
+        className={styles.logout}
+        theme="tertiary"
+        onClick={() => dispatch(logout())}
+        data-testid="logout"
+      >
+        Logout
+      </Button>
 
-      <div className={`${sideMenuStyles.buttons} ${styles.profileButtons}`}>
-        <Button
-          classNames={[sideMenuStyles.button, styles.profileButton]}
-          theme="tertiary"
-          onClick={() => dispatch(logout())}
-          data-testid="logout"
-        >
-          Logout
-        </Button>
-      </div>
-
-      <div className={styles.linkContainer}>
-        {LINKS.map(link => (
-          <span key={link.text} className={styles.links}>
-            {link.prefix}
-            <Button
-              classNames={[styles.link]}
-              href={link.url}
-              rel="noopener noreferrer"
-              target="_blank"
-            >
-              {link.text}
-            </Button>
-          </span>
-        ))}
-      </div>
+      {LINKS.map(link => (
+        <p key={link.text} className={styles.p}>
+          {link.prefix}
+          <Button
+            className={styles.link}
+            href={link.url}
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            {link.text}
+          </Button>
+        </p>
+      ))}
     </div>
   );
 };
