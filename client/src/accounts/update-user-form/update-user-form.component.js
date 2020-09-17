@@ -14,6 +14,7 @@ const NAME_FIELD_ID = 'name-field';
 const UpdateUserForm = ({ user, updateUser }) => {
   const defaults = {
     values: {
+      email: user?.email || '',
       name: user?.name || '',
     },
   };
@@ -38,7 +39,7 @@ const UpdateUserForm = ({ user, updateUser }) => {
         <Textfield
           id={EMAIL_FIELD_ID}
           name="email"
-          value={user?.email || ''}
+          value={values.email}
           placeholder="Email"
           onChange={handleChange}
           readOnly
@@ -51,7 +52,7 @@ const UpdateUserForm = ({ user, updateUser }) => {
         <Textfield
           id={NAME_FIELD_ID}
           name="name"
-          value={values?.name || ''}
+          value={values.name}
           placeholder="Name"
           onChange={handleChange}
         />
