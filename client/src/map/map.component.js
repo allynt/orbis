@@ -1,5 +1,5 @@
-import { Button, LayersIcon, LoadMask } from '@astrosat/astrosat-ui/';
-import { mapboxTokenSelector, mapStylesSelector } from 'app.slice';
+import { LoadMask } from '@astrosat/astrosat-ui/';
+import { mapboxTokenSelector } from 'app.slice';
 import {
   isLoaded as onBookmarkLoaded,
   isLoadingSelector as bookmarksLoadingSelector,
@@ -9,7 +9,6 @@ import { setLayers } from 'data-layers/data-layers.slice';
 import DeckGL, { FlyToInterpolator } from 'deck.gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import { useMap } from 'MapContext';
-import MapStyleSwitcher from 'mapstyle/mapstyle-switcher.component';
 import React, { useEffect, useState, useCallback } from 'react';
 import {
   NavigationControl,
@@ -19,7 +18,7 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 import { useOrbs } from './orbs/useOrbs';
 import styles from './map.module.css';
-import { selectedMapStyleSelector, selectMapStyle } from './map.slice';
+import { selectedMapStyleSelector } from './map.slice';
 import { Geocoder } from './geocoder/geocoder.component';
 import { MapboxLayer } from '@deck.gl/mapbox';
 
@@ -29,11 +28,11 @@ const Map = () => {
   const accessToken = useSelector(mapboxTokenSelector);
   const selectedBookmark = useSelector(selectedBookmarkSelector);
   const bookmarksLoading = useSelector(bookmarksLoadingSelector);
-  const mapStyles = useSelector(mapStylesSelector);
+  // const mapStyles = useSelector(mapStylesSelector);
   const selectedMapStyle = useSelector(selectedMapStyleSelector);
-  const [isMapStyleSwitcherVisible, setIsMapStyleSwitcherVisible] = useState(
-    false,
-  );
+  // const [isMapStyleSwitcherVisible, setIsMapStyleSwitcherVisible] = useState(
+  //   false,
+  // );
   const {
     layers,
     mapComponents,
@@ -134,6 +133,8 @@ const Map = () => {
         }}
       >
         <StaticMap
+          width="100%"
+          height="100%"
           ref={mapRef}
           gl={glContext}
           reuseMaps
@@ -146,7 +147,7 @@ const Map = () => {
         {dialogs}
         <NavigationControl className={styles.navigationControl} />
       </DeckGL>
-      <Button
+      {/* <Button
         theme="secondary"
         onClick={() => setIsMapStyleSwitcherVisible(!isMapStyleSwitcherVisible)}
         className={styles.mapStyleButton}
@@ -159,7 +160,7 @@ const Map = () => {
           selectedMapStyle={selectedMapStyle}
           selectMapStyle={mapStyle => dispatch(selectMapStyle(mapStyle))}
         />
-      )}
+      )} */}
     </>
   );
 };
