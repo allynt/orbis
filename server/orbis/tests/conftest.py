@@ -35,7 +35,7 @@ def api_client():
     def _api_client(user):
         _, key = create_auth_token(user)
         client = APIClient()
-        client.credentials(HTTP_AUTHORIZATION=f"Token {key}")
+        client.credentials(HTTP_AUTHORIZATION=f"Token {key}", HTTP_ORIGIN="http://localhost")
         return client
 
     return _api_client
