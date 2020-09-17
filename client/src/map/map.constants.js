@@ -36,13 +36,20 @@ export const regions = [
 export const LAYER_IDS = {
   astrosat: {
     isolationPlus: {
-      ageDemographics: {
+      ageDemographicsCensus: {
         v1: 'astrosat/isolation_plus/age/v1',
-        v2: 'astrosat/isolation_plus/age/v2',
+        r1v2: 'astrosat/isolation_plus/age/r1v2',
+      },
+      ageDemographicsONS: {
+        r2v1: 'astrosat/isolation_plus/age/r2v1',
       },
       ahah: {
         v1: 'astrosat/isolation_plus/ahah/v1',
         v2: 'astrosat/isolation_plus/ahah/v2',
+        r2v1: 'astrosat/isolation_plus/ahah/r2v1',
+      },
+      airPollution: {
+        r2v1: 'astrosat/isolation_plus/air_pollution/r2v1',
       },
       broadbandConnectivity: {
         v1: 'astrosat/isolation_plus/broadband/v1',
@@ -56,20 +63,29 @@ export const LAYER_IDS = {
         v1: 'astrosat/isolation_plus/depriv/v1',
         v2: 'astrosat/isolation_plus/depriv/v2',
       },
-      healthVulnerability: {
-        v1: 'astrosat/isolation_plus/health_vulnerability/v1',
+      greenspace: {
+        r2v1: 'astrosat/isolation_plus/greenspace/r2v1',
       },
-      imdIncome: {
-        v1: 'astrosat/isolation_plus/imd_income/v1',
-        v2: 'astrosat/isolation_plus/imd_income/v2',
+      healthVulnerability: {
+        r2v1: 'astrosat/isolation_plus/health_vulnerability/r2v1',
+      },
+      generalHousing: {
+        r2v1: 'astrosat/isolation_plus/housing/r2v1',
+      },
+      imd: {
+        r2v1: 'astrosat/isolation_plus/imd/r2v1',
       },
       localFuelPoverty: {
         v1: 'astrosat/isolation_plus/lfp/v1',
         v2: 'astrosat/isolation_plus/lfp/v2',
+        r1v3: 'astrosat/isolation_plus/lfp/r1v3',
       },
       mobileConnectivity: {
         v1: 'astrosat/isolation_plus/mobile/v1',
         v2: 'astrosat/isolation_plus/mobile/v2',
+      },
+      socialIsolation: {
+        r2v1: 'astrosat/isolation_plus/social_isolation/r2v1',
       },
     },
     rice: {

@@ -12,15 +12,20 @@ import { colorSchemesSelector, propertySelector } from './isolation-plus.slice';
 import { RadioPicker } from './radio-picker/radio-picker.component';
 
 const TILE_LAYERS = [
-  LAYER_IDS.astrosat.isolationPlus.ageDemographics.v2,
-  LAYER_IDS.astrosat.isolationPlus.ahah.v2,
+  LAYER_IDS.astrosat.isolationPlus.ageDemographicsCensus.r1v2,
+  LAYER_IDS.astrosat.isolationPlus.ageDemographicsONS.r2v1,
+  LAYER_IDS.astrosat.isolationPlus.ahah.r2v1,
+  LAYER_IDS.astrosat.isolationPlus.airPollution.r2v1,
   LAYER_IDS.astrosat.isolationPlus.broadbandConnectivity.v2,
   LAYER_IDS.astrosat.isolationPlus.childPoverty.v2,
   LAYER_IDS.astrosat.isolationPlus.deprivedHouses.v2,
-  LAYER_IDS.astrosat.isolationPlus.healthVulnerability.v1,
-  LAYER_IDS.astrosat.isolationPlus.imdIncome.v2,
-  LAYER_IDS.astrosat.isolationPlus.localFuelPoverty.v2,
+  LAYER_IDS.astrosat.isolationPlus.greenspace.r2v1,
+  LAYER_IDS.astrosat.isolationPlus.healthVulnerability.r2v1,
+  LAYER_IDS.astrosat.isolationPlus.generalHousing.r2v1,
+  LAYER_IDS.astrosat.isolationPlus.imd.r2v1,
+  LAYER_IDS.astrosat.isolationPlus.localFuelPoverty.r1v3,
   LAYER_IDS.astrosat.isolationPlus.mobileConnectivity.v2,
+  LAYER_IDS.astrosat.isolationPlus.socialIsolation.r2v1,
 ];
 
 export const useIsolationPlusOrb = (data, sources, authToken) => {
