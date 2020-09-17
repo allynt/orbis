@@ -37,11 +37,10 @@ export const LAYER_IDS = {
   astrosat: {
     isolationPlus: {
       ageDemographicsCensus: {
-        v1: 'astrosat/isolation_plus/age/v1',
-        r1v2: 'astrosat/isolation_plus/age/r1v2',
+        r1v2: 'astrosat/isolation_plus/age_census/r1v2',
       },
       ageDemographicsONS: {
-        r2v1: 'astrosat/isolation_plus/age/r2v1',
+        r2v1: 'astrosat/isolation_plus/age_ons/r2v1',
       },
       ahah: {
         v1: 'astrosat/isolation_plus/ahah/v1',
