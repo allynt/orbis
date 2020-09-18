@@ -137,9 +137,6 @@ export const useMySupplyLynkOrb = (data, activeSources) => {
         <MySupplyLynkFeatureDetail data={hoveredObjects[0]?.properties} />
       </Popup>
     ),
-  ];
-
-  const dialog = [
     clickedObjects.length && (
       <Dialog
         supplier={clickedObjects[0].properties}
@@ -154,7 +151,6 @@ export const useMySupplyLynkOrb = (data, activeSources) => {
     layers,
     mapComponents,
     sidebarComponents,
-    dialog,
     postLabelLayers: SUPPLYLYNK_LAYER_IDS,
   };
 };

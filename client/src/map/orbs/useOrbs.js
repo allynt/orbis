@@ -72,7 +72,6 @@ export const useOrbs = () => {
     postLabelLayers: mySupplyLynkPostLabelLayers,
     mapComponents: mySupplyLynkMapComponents,
     sidebarComponents: mySupplyLynkSidebarComponents,
-    dialog: mySupplyLynkDialog,
   } = useMySupplyLynkOrb(data, activeSources);
 
   let layers = [
@@ -104,7 +103,6 @@ export const useOrbs = () => {
     ...isoPlusPostLabelLayers,
     ...mySupplyLynkPostLabelLayers,
   ];
-  const dialogs = [...mySupplyLynkDialog];
 
   return {
     layers,
@@ -112,6 +110,5 @@ export const useOrbs = () => {
     sidebarComponents,
     preLabelLayers,
     postLabelLayers,
-    dialogs,
   };
 };
