@@ -24,6 +24,9 @@ import MySupplyLynkFeatureDetail from './feature-detail/mysupplylynk-feature-det
 
 import { LAYER_IDS, MAX_ZOOM } from 'map/map.constants';
 
+export const TEXT_COLOR_TRANSPARENT = [0, 0, 0, 0];
+export const TEXT_COLOR_VISIBLE = [51, 63, 72];
+
 export const useMySupplyLynkOrb = (data, activeSources) => {
   const dispatch = useDispatch();
   const ref = useRef(null);
@@ -59,6 +62,7 @@ export const useMySupplyLynkOrb = (data, activeSources) => {
   };
 
   const handleLayerClick = info => {
+    console.log(info);
     if (info?.object?.properties?.cluster) {
       if (info.object.properties.expansion_zoom <= MAX_ZOOM)
         setViewState({
@@ -95,11 +99,21 @@ export const useMySupplyLynkOrb = (data, activeSources) => {
           pickable: true,
           iconMapping,
           iconAtlas,
-          getIcon: feature => (feature.properties.cluster ? 'cluster' : 'pin'),
+          getIcon: feature => {
+            if (feature.properties.cluster) {
+              return feature.properties.expansion_zoom > MAX_ZOOM
+                ? 'group'
+                : 'cluster';
+            }
+            return 'pin';
+          },
           getIconSize: 60,
           getIconColor: [246, 190, 0],
           getTextSize: 32,
-          getTextColor: [51, 63, 72],
+          getTextColor: feature =>
+            feature.properties.expansion_zoom > MAX_ZOOM
+              ? TEXT_COLOR_TRANSPARENT
+              : TEXT_COLOR_VISIBLE,
           clusterRadius: 40,
           maxZoom: MAX_ZOOM,
           onClick: handleLayerClick,
