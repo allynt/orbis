@@ -69,12 +69,14 @@ const MultipleSupplierContent = ({ suppliers }) => (
 
 const MySupplyLynkFeatureDetail = ({ data }) => (
   <div className={styles.featureDetail}>
-    <h1 className={styles.header}>{data?.Name || DEFAULT_TITLE}</h1>
+    <h1 className={styles.header}>
+      {data?.length === 1 ? data[0]?.Name : DEFAULT_TITLE}
+    </h1>
     <div className={styles.content}>
-      {data.length ? (
+      {data.length > 1 ? (
         <MultipleSupplierContent suppliers={data} />
       ) : (
-        <SingleSupplierContent {...data} />
+        <SingleSupplierContent {...data[0]} />
       )}
     </div>
   </div>

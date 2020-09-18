@@ -34,8 +34,8 @@ export const useMySupplyLynkOrb = (data, activeSources) => {
 
   const selectedFeatures = useSelector(featuresSelector);
 
-  const [clickedObjects, setClickedObjects] = useState([]);
-  const [hoveredObjects, setHoveredObjects] = useState([]);
+  const [popupFeatures, setPopupFeatures] = useState([]);
+  const [dialogFeatures, setDialogFeatures] = useState([]);
   const { setViewState } = useMap();
 
   const SUPPLYLYNK_LAYER_IDS = [LAYER_IDS.astrosat.mySupplyLynk.latest];
@@ -62,7 +62,6 @@ export const useMySupplyLynkOrb = (data, activeSources) => {
   };
 
   const handleLayerClick = info => {
-    console.log(info);
     if (info?.object?.properties?.cluster) {
       if (info.object.properties.expansion_zoom <= MAX_ZOOM)
         setViewState({
@@ -76,15 +75,17 @@ export const useMySupplyLynkOrb = (data, activeSources) => {
           transitionEasing: easeInOutCubic,
           transitionInterpolator: new FlyToInterpolator(),
         });
+      else setPopupFeatures(info.objects);
     } else {
-      setClickedObjects([info.object]);
+      setDialogFeatures([info.object]);
       toggle();
     }
   };
 
   const handleHover = info => {
+    if (popupFeatures.length > 1) return;
     if (!info?.object?.properties?.cluster) {
-      info.object ? setHoveredObjects([info.object]) : setHoveredObjects([]);
+      info.object ? setPopupFeatures([info.object]) : setPopupFeatures([]);
     }
   };
 
@@ -141,19 +142,25 @@ export const useMySupplyLynkOrb = (data, activeSources) => {
   };
 
   const mapComponents = [
-    hoveredObjects.length && (
+    popupFeatures.length && (
       <Popup
-        longitude={hoveredObjects[0]?.geometry.coordinates[0]}
-        latitude={hoveredObjects[0]?.geometry.coordinates[1]}
-        onClose={() => setHoveredObjects([])}
+        longitude={popupFeatures[0]?.geometry.coordinates[0]}
+        latitude={popupFeatures[0]?.geometry.coordinates[1]}
+        closeButton={popupFeatures.length > 1}
+        onClose={() => setPopupFeatures([])}
+        closeOnClick={false}
+        offsetTop={-37}
+        captureClick
         captureScroll
       >
-        <MySupplyLynkFeatureDetail data={hoveredObjects[0]?.properties} />
+        <MySupplyLynkFeatureDetail
+          data={popupFeatures.map(feature => feature.properties)}
+        />
       </Popup>
     ),
-    clickedObjects.length && (
+    dialogFeatures.length && (
       <Dialog
-        supplier={clickedObjects[0].properties}
+        supplier={dialogFeatures[0].properties}
         onCloseClick={toggle}
         isVisible={isVisible}
         ref={ref}
