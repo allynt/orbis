@@ -33,13 +33,7 @@ const Map = () => {
   // const [isMapStyleSwitcherVisible, setIsMapStyleSwitcherVisible] = useState(
   //   false,
   // );
-  const {
-    layers,
-    mapComponents,
-    preLabelLayers,
-    postLabelLayers,
-    dialogs,
-  } = useOrbs();
+  const { layers, mapComponents, preLabelLayers, postLabelLayers } = useOrbs();
 
   const [glContext, setGlContext] = useState();
 
@@ -144,7 +138,6 @@ const Map = () => {
           onLoad={onMapLoad}
         />
         {mapComponents}
-        {dialogs}
         <NavigationControl className={styles.navigationControl} />
       </DeckGL>
       {/* <Button

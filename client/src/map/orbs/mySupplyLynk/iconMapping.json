@@ -4,10 +4,19 @@
     "y": 0,
     "width": 29,
     "height": 40,
+    "anchorY": 37,
+    "mask": false
+  },
+  "group": {
+    "x": 29,
+    "y": 0,
+    "width": 29,
+    "height": 40,
+    "anchorY": 37,
     "mask": false
   },
   "cluster": {
-    "x": 29,
+    "x": 58,
     "y": 0,
     "width": 88,
     "height": 88,
