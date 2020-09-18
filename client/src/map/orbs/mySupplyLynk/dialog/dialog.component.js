@@ -1,4 +1,4 @@
-import React, { forwardRef, useRef, Fragment } from 'react';
+import React, { forwardRef, useRef } from 'react';
 import ReactDOM from 'react-dom';
 
 import styles from './dialog.module.css';
@@ -122,7 +122,7 @@ export const Dialog = forwardRef(
                 </p>
                 <h2 className={styles.heading}>{LABELS.itemsHeading}</h2>
                 {supplier.Items.map(({ Name, ...rest }) => (
-                  <Fragment key={Name}>
+                  <>
                     <div className={styles.label}>
                       <h3>{Name || NOT_AVAILABLE}</h3>
                     </div>
@@ -134,7 +134,7 @@ export const Dialog = forwardRef(
                         </div>
                       ))}
                     </dl>
-                  </Fragment>
+                  </>
                 ))}
               </div>
             </div>
