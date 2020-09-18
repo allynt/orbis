@@ -51,10 +51,14 @@ const SingleSupplierContent = ({
   </ul>
 );
 
-const MultipleSupplierContent = ({ suppliers }) => (
+const MultipleSupplierContent = ({ suppliers, onSupplierClick }) => (
   <ul className={styles.list}>
     {suppliers.map(supplier => (
-      <li className={styles.suppliersListItem}>
+      <li
+        key={`${supplier.Name}${supplier.Postcode}`}
+        className={styles.suppliersListItem}
+        onClick={e => onSupplierClick(supplier, e)}
+      >
         {supplier.Name}
         <p className={styles['suppliersListItem__items']}>
           <span className={styles['suppliersListItem__label']}>
@@ -67,14 +71,17 @@ const MultipleSupplierContent = ({ suppliers }) => (
   </ul>
 );
 
-const MySupplyLynkFeatureDetail = ({ data }) => (
+const MySupplyLynkFeatureDetail = ({ data, onSupplierClick }) => (
   <div className={styles.featureDetail}>
     <h1 className={styles.header}>
       {data?.length === 1 ? data[0]?.Name : DEFAULT_TITLE}
     </h1>
     <div className={styles.content}>
       {data.length > 1 ? (
-        <MultipleSupplierContent suppliers={data} />
+        <MultipleSupplierContent
+          suppliers={data}
+          onSupplierClick={onSupplierClick}
+        />
       ) : (
         <SingleSupplierContent {...data[0]} />
       )}

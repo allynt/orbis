@@ -77,7 +77,8 @@ export const useMySupplyLynkOrb = (data, activeSources) => {
         });
       else setPopupFeatures(info.objects);
     } else {
-      setDialogFeatures([info.object]);
+      setDialogFeatures([info.object.properties]);
+      setPopupFeatures([]);
       toggle();
     }
   };
@@ -144,6 +145,7 @@ export const useMySupplyLynkOrb = (data, activeSources) => {
   const mapComponents = [
     popupFeatures.length && (
       <Popup
+        key="popup"
         longitude={popupFeatures[0]?.geometry.coordinates[0]}
         latitude={popupFeatures[0]?.geometry.coordinates[1]}
         closeButton={popupFeatures.length > 1}
@@ -155,12 +157,17 @@ export const useMySupplyLynkOrb = (data, activeSources) => {
       >
         <MySupplyLynkFeatureDetail
           data={popupFeatures.map(feature => feature.properties)}
+          onSupplierClick={supplier => {
+            setDialogFeatures([supplier]);
+            toggle();
+          }}
         />
       </Popup>
     ),
     dialogFeatures.length && (
       <Dialog
-        supplier={dialogFeatures[0].properties}
+        key="dialog"
+        supplier={dialogFeatures[0]}
         onCloseClick={toggle}
         isVisible={isVisible}
         ref={ref}
