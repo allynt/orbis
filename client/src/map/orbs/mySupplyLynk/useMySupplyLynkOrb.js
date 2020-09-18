@@ -24,9 +24,6 @@ import MySupplyLynkFeatureDetail from './feature-detail/mysupplylynk-feature-det
 
 import { LAYER_IDS, MAX_ZOOM } from 'map/map.constants';
 
-export const TEXT_COLOR_TRANSPARENT = [0, 0, 0, 0];
-export const TEXT_COLOR_VISIBLE = [51, 63, 72];
-
 export const useMySupplyLynkOrb = (data, activeSources) => {
   const dispatch = useDispatch();
   const ref = useRef(null);
@@ -34,8 +31,8 @@ export const useMySupplyLynkOrb = (data, activeSources) => {
 
   const selectedFeatures = useSelector(featuresSelector);
 
-  const [popupFeatures, setPopupFeatures] = useState([]);
-  const [dialogFeatures, setDialogFeatures] = useState([]);
+  const [clickedObjects, setClickedObjects] = useState([]);
+  const [hoveredObjects, setHoveredObjects] = useState([]);
   const { setViewState } = useMap();
 
   const SUPPLYLYNK_LAYER_IDS = [LAYER_IDS.astrosat.mySupplyLynk.latest];
@@ -75,18 +72,15 @@ export const useMySupplyLynkOrb = (data, activeSources) => {
           transitionEasing: easeInOutCubic,
           transitionInterpolator: new FlyToInterpolator(),
         });
-      else setPopupFeatures(info.objects);
     } else {
-      setDialogFeatures([info.object.properties]);
-      setPopupFeatures([]);
+      setClickedObjects([info.object]);
       toggle();
     }
   };
 
   const handleHover = info => {
-    if (popupFeatures.length > 1) return;
     if (!info?.object?.properties?.cluster) {
-      info.object ? setPopupFeatures([info.object]) : setPopupFeatures([]);
+      info.object ? setHoveredObjects([info.object]) : setHoveredObjects([]);
     }
   };
 
@@ -101,21 +95,11 @@ export const useMySupplyLynkOrb = (data, activeSources) => {
           pickable: true,
           iconMapping,
           iconAtlas,
-          getIcon: feature => {
-            if (feature.properties.cluster) {
-              return feature.properties.expansion_zoom > MAX_ZOOM
-                ? 'group'
-                : 'cluster';
-            }
-            return 'pin';
-          },
+          getIcon: feature => (feature.properties.cluster ? 'cluster' : 'pin'),
           getIconSize: 60,
           getIconColor: [246, 190, 0],
           getTextSize: 32,
-          getTextColor: feature =>
-            feature.properties.expansion_zoom > MAX_ZOOM
-              ? TEXT_COLOR_TRANSPARENT
-              : TEXT_COLOR_VISIBLE,
+          getTextColor: [51, 63, 72],
           clusterRadius: 40,
           maxZoom: MAX_ZOOM,
           onClick: handleLayerClick,
@@ -143,31 +127,22 @@ export const useMySupplyLynkOrb = (data, activeSources) => {
   };
 
   const mapComponents = [
-    popupFeatures.length && (
+    hoveredObjects.length && (
       <Popup
-        key="popup"
-        longitude={popupFeatures[0]?.geometry.coordinates[0]}
-        latitude={popupFeatures[0]?.geometry.coordinates[1]}
-        closeButton={popupFeatures.length > 1}
-        onClose={() => setPopupFeatures([])}
-        closeOnClick={false}
-        offsetTop={-37}
-        captureClick
+        longitude={hoveredObjects[0]?.geometry.coordinates[0]}
+        latitude={hoveredObjects[0]?.geometry.coordinates[1]}
+        onClose={() => setHoveredObjects([])}
         captureScroll
       >
-        <MySupplyLynkFeatureDetail
-          data={popupFeatures.map(feature => feature.properties)}
-          onSupplierClick={supplier => {
-            setDialogFeatures([supplier]);
-            toggle();
-          }}
-        />
+        <MySupplyLynkFeatureDetail data={hoveredObjects[0]?.properties} />
       </Popup>
     ),
-    dialogFeatures.length && (
+  ];
+
+  const dialog = [
+    clickedObjects.length && (
       <Dialog
-        key="dialog"
-        supplier={dialogFeatures[0]}
+        supplier={clickedObjects[0].properties}
         onCloseClick={toggle}
         isVisible={isVisible}
         ref={ref}
@@ -179,6 +154,7 @@ export const useMySupplyLynkOrb = (data, activeSources) => {
     layers,
     mapComponents,
     sidebarComponents,
+    dialog,
     postLabelLayers: SUPPLYLYNK_LAYER_IDS,
   };
 };
