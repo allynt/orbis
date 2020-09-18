@@ -11,10 +11,27 @@
   --scrollbar-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
 }
 
+.content::-webkit-scrollbar-track {
+  -webkit-box-shadow: var(--scrollbar-box-shadow);
+  box-shadow: var(--scrollbar-box-shadow);
+  border-radius: 1rem;
+  background-color: #fff;
+}
+
+.content::-webkit-scrollbar {
+  width: 0.5rem;
+}
+
+.content::-webkit-scrollbar-thumb {
+  border-radius: 1rem;
+  -webkit-box-shadow: var(--scrollbar-box-shadow);
+  box-shadow: var(--scrollbar-box-shadow);
+  background-color: var(--color-secondary);
+}
+
 .list {
   list-style-type: none;
   margin-top: 0.625rem;
-  padding-top: 0.625rem;
   border-top: var(--dividing-border);
 }
 
@@ -27,22 +44,54 @@
 
 .list .listItem {
   font-size: 0.875rem;
-  margin: 0 0 0.5rem 1rem;
+  padding: 0.5em 1em;
+}
+
+.listItem:first-of-type {
+  padding-top: 1em;
 }
 
 .list .label {
   font-weight: bolder;
-  padding-right: 0.5rem;
+  padding-right: 0.5em;
 }
 
 .list .value {
   display: flex;
   align-items: center;
   font-weight: normal;
-  padding-right: 0.5rem;
+  padding-right: 0.5em;
 }
 
 .list .label,
 .list .value {
-  margin: 0.25rem 0;
+  margin: 0.25em 0;
+}
+
+.suppliersListItem {
+  composes: listItem;
+  display: grid;
+  grid-template-columns: 2fr 3fr;
+  padding: 1em !important;
+  transition: background-color 250ms ease, color 250ms ease;
+}
+
+.suppliersListItem:hover {
+  cursor: pointer;
+  background-color: var(--color-lightgrey);
+  color: var(--color--text--dark);
+}
+
+.suppliersListItem__items {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.suppliersListItem__label {
+  font-weight: 600;
+}
+
+.suppliersListItem + .suppliersListItem {
+  border-top: var(--dividing-border);
 }
