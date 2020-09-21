@@ -1,3 +1,63 @@
+# [2.3.0](https://github.com/astrosat/orbis/compare/v2.2.1...v2.3.0) (2020-09-21)
+
+
+### Bug Fixes
+
+* **backend:** Allow CORs on API ([9549b2a](https://github.com/astrosat/orbis/commit/9549b2a59110081eb3f0c597327d7b83c029c866)), closes [#702](https://github.com/astrosat/orbis/issues/702)
+* **backend:** Don't serve client from django ([524af90](https://github.com/astrosat/orbis/commit/524af90747e34587a952a0312dde33f9b14afef5)), closes [#702](https://github.com/astrosat/orbis/issues/702)
+* **backend:** Fix tests ([e5397cc](https://github.com/astrosat/orbis/commit/e5397cc7045488ed37d99261c2b42b1fb98d497c)), closes [#74](https://github.com/astrosat/orbis/issues/74) [#754](https://github.com/astrosat/orbis/issues/754)
+* **backend:** fixed data migration ([2279d3a](https://github.com/astrosat/orbis/commit/2279d3ae364b6b3e93b05daaaa40a7f4e51b4550)), closes [#748](https://github.com/astrosat/orbis/issues/748)
+* **backend:** LicenceAdmin refers to an invalid CustomerAdmin ([da4ef13](https://github.com/astrosat/orbis/commit/da4ef13b07feda587afaa5ddaaa33575db469e1b))
+* **backend:** Remove whitenoise ([8f8f5f3](https://github.com/astrosat/orbis/commit/8f8f5f37f2621e820781a44b8ef0bb25448614f0)), closes [#702](https://github.com/astrosat/orbis/issues/702)
+* **backend:** UserAdmin refers to an invalid CustomerAdmin ([adcb2b9](https://github.com/astrosat/orbis/commit/adcb2b94e7b580fd4954f57986a4f2c32feb278f))
+* **backtend:** Fix CORS problems ([b93d872](https://github.com/astrosat/orbis/commit/b93d8728749f5f53b7fc956711e8f10a013ee374)), closes [#702](https://github.com/astrosat/orbis/issues/702)
+* **frontend:** Add constants ([8ede6ff](https://github.com/astrosat/orbis/commit/8ede6ff38524ed23992421ddc584604a438dca67))
+* **frontend:** Add group icon ([744662f](https://github.com/astrosat/orbis/commit/744662ffc932b120f612aafab428c67f41d6b3ed)), closes [#767](https://github.com/astrosat/orbis/issues/767)
+* **frontend:** Add labels for inputs ([e31cf4e](https://github.com/astrosat/orbis/commit/e31cf4e4e3c4904b9084bd377c5a798a4e611b66)), closes [#598](https://github.com/astrosat/orbis/issues/598)
+* **frontend:** Add unit tests for MySupplyLynk orb ([c7714fd](https://github.com/astrosat/orbis/commit/c7714fdd43ea3723e267d3eb35290a7839222a93))
+* **frontend:** Change API host ([c05424c](https://github.com/astrosat/orbis/commit/c05424cf79b990c385dd610bf71ac73bc5896b40)), closes [#702](https://github.com/astrosat/orbis/issues/702)
+* **frontend:** Change checkbox tests to use attribute ([ad4bcb4](https://github.com/astrosat/orbis/commit/ad4bcb48464bc3b25d18888386e8ab55b8a843a7))
+* **frontend:** Change fields to use the defaults properly ([365bb3d](https://github.com/astrosat/orbis/commit/365bb3d45ba3759c36db1f135e87d3d0e9ae8a13)), closes [#598](https://github.com/astrosat/orbis/issues/598)
+* **frontend:** Changed a word ([c8f9fe9](https://github.com/astrosat/orbis/commit/c8f9fe98cff1c0fb7e1ebaba0cae2ee41b2c6212))
+* **frontend:** fix invalid layer_id ([6d4de45](https://github.com/astrosat/orbis/commit/6d4de4520c65e33d3dfefa6e2509c689b9232db8)), closes [#739](https://github.com/astrosat/orbis/issues/739)
+* **frontend:** Fix typo ([b87da9f](https://github.com/astrosat/orbis/commit/b87da9f309a949c5434bc3dbfbad3556a872a964)), closes [#752](https://github.com/astrosat/orbis/issues/752)
+* **frontend:** Limit potential for clashes on window object ([0dd5269](https://github.com/astrosat/orbis/commit/0dd52690a605f8c63e7b2dc0de45ec3b04db1960)), closes [#702](https://github.com/astrosat/orbis/issues/702)
+* **frontend:** Move static method out of component ([ab1b3a5](https://github.com/astrosat/orbis/commit/ab1b3a5313e8b2bd36cc46586b457e47046bc6f8)), closes [#767](https://github.com/astrosat/orbis/issues/767)
+* **frontend:** Move the dialog component ([a575ca5](https://github.com/astrosat/orbis/commit/a575ca58181e2e152f7190fae2411fe7b5239404)), closes [#767](https://github.com/astrosat/orbis/issues/767)
+* **frontend:** Prevent form submission when password is poor ([0d42dfb](https://github.com/astrosat/orbis/commit/0d42dfb24b6075a33bec70c427bf83c1388eb8ec)), closes [#752](https://github.com/astrosat/orbis/issues/752)
+* **frontend:** Remove env-config file ([3ef64f0](https://github.com/astrosat/orbis/commit/3ef64f0719fa32f6202c1669a0746f5fed8e6c15))
+* **frontend:** Remove inaccessible route ([bfb52db](https://github.com/astrosat/orbis/commit/bfb52dbb3914f9e1ea2dd38eeea848491d2e0eb8)), closes [#598](https://github.com/astrosat/orbis/issues/598)
+* **frontend:** Remove white border ([0687291](https://github.com/astrosat/orbis/commit/0687291c4a2fcf07e1c7d2ec3dd7c0f445c8271f)), closes [#746](https://github.com/astrosat/orbis/issues/746)
+* **frontend:** rename mysupplylynk categories ([5378f2b](https://github.com/astrosat/orbis/commit/5378f2b2fc0f028a15fd8e790a67cb3615fedf35))
+* **frontend:** Revert test ([9af0048](https://github.com/astrosat/orbis/commit/9af0048169c3a671726b17292e0b2707632aab46))
+* **frontend:** show correct admin when users are members of multiple ([e5eefd9](https://github.com/astrosat/orbis/commit/e5eefd9ff8681fd8d71f1b9c3a0193e0065907f3))
+* **frontend:** Tidy up admin console ([8adf103](https://github.com/astrosat/orbis/commit/8adf103ce399ffe8e66287e2611e0572e6d877c4))
+* **frontend:** update user via their id not email ([5d80512](https://github.com/astrosat/orbis/commit/5d80512f820084015b6a4ff57bb19208857e144a)), closes [#727](https://github.com/astrosat/orbis/issues/727)
+* **frontend:** Updated checboxes to take aria labels ([409aea7](https://github.com/astrosat/orbis/commit/409aea78a8ec25739f51b27785afb9c3d9bd1779))
+* **project:** Configure client/server containers ([36c4a1c](https://github.com/astrosat/orbis/commit/36c4a1c5f68552d3bd38e454d1ae8d4178c47605)), closes [#702](https://github.com/astrosat/orbis/issues/702)
+* **project:** Fix GitHub workflow building app images ([f80d320](https://github.com/astrosat/orbis/commit/f80d3203296e0964ba50249f1eeaf3737e135efd)), closes [#702](https://github.com/astrosat/orbis/issues/702)
+* **project:** Get right Env variables at container startup ([b30011d](https://github.com/astrosat/orbis/commit/b30011dd43f04fc40f072646893f6e0aae4a101e)), closes [#702](https://github.com/astrosat/orbis/issues/702)
+* **project:** Split build to build client and server containers ([bf0e0d0](https://github.com/astrosat/orbis/commit/bf0e0d02083cd11719aa8b7381fae4b8ed757fbd)), closes [#702](https://github.com/astrosat/orbis/issues/702)
+* **project:** Update deployment terraform code for new container ([203ac6f](https://github.com/astrosat/orbis/commit/203ac6f0c96bab14d36dfc7a98153dc7ea822bf8)), closes [#702](https://github.com/astrosat/orbis/issues/702)
+* **project:** Update due to review comments ([88fdc9a](https://github.com/astrosat/orbis/commit/88fdc9a6fd537a23b59b0269e40c239020bbeafa)), closes [#702](https://github.com/astrosat/orbis/issues/702)
+
+
+### Features
+
+* **backend:** add licences in bulk ([86ee839](https://github.com/astrosat/orbis/commit/86ee839ed619f81b344c7193a4c8668cff8df26c)), closes [#701](https://github.com/astrosat/orbis/issues/701)
+* **backend:** disabled data migration ([e1eed67](https://github.com/astrosat/orbis/commit/e1eed675015c2a1b1f9208ad16a0e3dde28e6444)), closes [#748](https://github.com/astrosat/orbis/issues/748)
+* **backend:** fix password errors ([10afcfe](https://github.com/astrosat/orbis/commit/10afcfed1f30c8ea9deea5db4ad1dd4ba3b3d8ae)), closes [#747](https://github.com/astrosat/orbis/issues/747)
+* **backend:** update django-astrosat-users dependencies ([10899f9](https://github.com/astrosat/orbis/commit/10899f9a315bc20ba20b6d2d87bd6a0ea341a8cb)), closes [#701](https://github.com/astrosat/orbis/issues/701)
+* **frontend:** Add click to multi-supplier popup ([6b8d032](https://github.com/astrosat/orbis/commit/6b8d032969554524c56c2f6c80e070b9042a4863)), closes [#767](https://github.com/astrosat/orbis/issues/767)
+* **frontend:** Add group click popup ([ead49da](https://github.com/astrosat/orbis/commit/ead49daaeef8a8e2337a29313c609508e247f411)), closes [#767](https://github.com/astrosat/orbis/issues/767)
+* **frontend:** Add groups to map ([a4e34da](https://github.com/astrosat/orbis/commit/a4e34daa47e30eb75d188b07813921315e1ace08)), closes [#767](https://github.com/astrosat/orbis/issues/767)
+* **frontend:** add health vulnerability index ([c162d89](https://github.com/astrosat/orbis/commit/c162d894537ec5e7e0e41b7d7597c6bbb07203cd))
+* **frontend:** added references to R2 data ([d8a5bdd](https://github.com/astrosat/orbis/commit/d8a5bdd68ae30fbe2e0af019daf1535654dc4b4a))
+* **frontend:** fixed customer logo CSS ([6a0cc93](https://github.com/astrosat/orbis/commit/6a0cc93d52cbb166847b434423493872cd23e785))
+* **frontend:** Mutliple supplier feature detail ([2638efa](https://github.com/astrosat/orbis/commit/2638efa93a6759a277de4135692f858506ffd091)), closes [#767](https://github.com/astrosat/orbis/issues/767)
+* **frontend:** Remove the map style switcher ([07d4adb](https://github.com/astrosat/orbis/commit/07d4adbd937a80dd9257fd0b4b51ce42fb6fdbc1))
+* **frontend:** Style My Account ([a6911f2](https://github.com/astrosat/orbis/commit/a6911f2549ec5ddedc22bf667fc4aa91e3907b85)), closes [#598](https://github.com/astrosat/orbis/issues/598)
+
 ## [2.2.1](https://github.com/astrosat/orbis/compare/v2.2.0...v2.2.1) (2020-09-04)
 
 
