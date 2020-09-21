@@ -20,7 +20,7 @@ import './polyfills/object-fromEntries';
 import './normalize.css';
 import './reset.css';
 import './typography.css';
-import { ThemeProvider } from '@astrosat/astrosat-ui/dist/containers/theme-provider';
+import { ThemeProvider } from '@astrosat/astrosat-ui';
 
 import installDevTools from './dev-tools/load';
 import { MapProvider } from 'MapContext';

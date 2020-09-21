@@ -5,9 +5,7 @@ import PropTypes from 'prop-types';
 
 import validate from './bookmark-form.validator';
 
-import Button from '@astrosat/astrosat-ui/dist/buttons/button';
-import Textfield from '@astrosat/astrosat-ui/dist/forms/text-field';
-import useForm from '@astrosat/astrosat-ui/dist/forms/use-form';
+import { Button, Textfield, useForm } from '@astrosat/astrosat-ui';
 
 import formStyles from '../forms.module.css';
 import bookmarkStyles from '../side-menu/side-menu.module.css';

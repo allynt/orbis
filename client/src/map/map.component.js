@@ -1,4 +1,4 @@
-import { LoadMask } from '@astrosat/astrosat-ui/';
+import { LoadMask } from '@astrosat/astrosat-ui';
 import { mapboxTokenSelector } from 'app.slice';
 import {
   isLoaded as onBookmarkLoaded,

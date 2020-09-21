@@ -1,6 +1,6 @@
 import React from 'react';
 
-import Button from '@astrosat/astrosat-ui/dist/buttons/button';
+import { Button } from '@astrosat/astrosat-ui';
 
 import { SEARCH } from './satellites-panel.component';
 

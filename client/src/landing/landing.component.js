@@ -9,9 +9,7 @@ import { regions } from '../map/map.constants';
 import { selectDomainList } from '../data-layers/data-layers.slice';
 import { fetchBookmarks, selectBookmark } from '../bookmarks/bookmark.slice';
 
-import Button from '@astrosat/astrosat-ui/dist/buttons/button';
-import Dialog from '@astrosat/astrosat-ui/dist/containers/dialog';
-import useModal from '@astrosat/astrosat-ui/dist/containers/use-modal';
+import { Button, Dialog, useModal } from '@astrosat/astrosat-ui';
 
 import NewMapForm from './new-map-form.component';
 

@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 
-import { Button } from '@astrosat/astrosat-ui';
-import { AnnotationsIcon } from '@astrosat/astrosat-ui/dist/icons/annotations-icon';
+import { Button, AnnotationsIcon } from '@astrosat/astrosat-ui';
 
 import AnnotationsPanel from './annotations-panel.component';
 

@@ -16,7 +16,7 @@ import { setSelectedFeatures, featuresSelector } from './mysupplylynk.slice';
 import { CATEGORIES } from './mysupplylynk.constants';
 
 import { Dialog } from './dialog/dialog.component';
-import useModal from '@astrosat/astrosat-ui/dist/containers/use-modal';
+import { useModal } from '@astrosat/astrosat-ui';
 
 import { CheckboxFilters } from './checkbox-filters/checkbox-filters.component';
 

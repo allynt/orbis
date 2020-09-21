@@ -2,9 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
 
-import Button from '@astrosat/astrosat-ui/dist/buttons/button';
-import Dialog from '@astrosat/astrosat-ui/dist/containers/dialog';
-import useModal from '@astrosat/astrosat-ui/dist/containers/use-modal';
+import { Button, Dialog, useModal } from '@astrosat/astrosat-ui';
 
 import {
   fetchSatellites,
