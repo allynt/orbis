@@ -2,8 +2,7 @@ import React, { useState, useEffect } from 'react';
 
 import { Redirect } from 'react-router-dom';
 
-import Button from '@astrosat/astrosat-ui/dist/buttons/button';
-import Well from '@astrosat/astrosat-ui/dist/containers/well';
+import { Button, Well } from '@astrosat/astrosat-ui';
 
 import { status } from './accounts.slice';
 

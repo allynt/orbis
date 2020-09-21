@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
 
-import Slider from '@astrosat/astrosat-ui/dist/forms/slider';
-import Button from '@astrosat/astrosat-ui/dist/buttons/button';
-import useModal from '@astrosat/astrosat-ui/dist/containers/use-modal';
-import Dialog from '@astrosat/astrosat-ui/dist/containers/dialog';
+import {
+  Slider,
+  Button,
+  useModal,
+  Dialog,
+  PinIcon,
+} from '@astrosat/astrosat-ui';
 
 import SaveSearchForm from './save-search-form.component';
 import SceneListItem, {
@@ -11,8 +14,6 @@ import SceneListItem, {
 } from './scene-list-item.component';
 
 import { DEFAULT_CLOUD_COVER } from './satellite.constants';
-
-import { PinIcon } from '@astrosat/astrosat-ui/';
 
 import styles from './results.module.css';
 import sceneStyles from './scene-list-item.module.css';

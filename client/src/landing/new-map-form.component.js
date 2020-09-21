@@ -2,10 +2,7 @@ import React from 'react';
 
 import { useHistory } from 'react-router-dom';
 
-import Button from '@astrosat/astrosat-ui/dist/buttons/button';
-import Textfield from '@astrosat/astrosat-ui/dist/forms/text-field';
-import Select from '@astrosat/astrosat-ui/dist/forms/select';
-import useForm from '@astrosat/astrosat-ui/dist/forms/use-form';
+import { Button, Textfield, Select, useForm } from '@astrosat/astrosat-ui';
 
 import validate from '../bookmarks/bookmark-form.validator';
 

@@ -1,7 +1,7 @@
 import React, { useRef, useState } from 'react';
 import ReactDOM from 'react-dom';
 
-import CloseButton from '@astrosat/astrosat-ui/dist/buttons/close-button';
+import { CloseButton } from '@astrosat/astrosat-ui';
 
 import { OrbSelect } from './orb-select/orb-select.component';
 import { LayerSelect } from './layer-select/layer-select.component';

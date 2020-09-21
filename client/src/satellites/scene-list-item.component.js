@@ -10,7 +10,7 @@ import { DATE_FORMAT, TIME_FORMAT } from './satellite.constants';
 import { VISUALISATION, SCENE } from './satellites-panel.component';
 import { Skeleton } from 'components/skeleton/skeleton.component';
 
-import InfoIcon from '@astrosat/astrosat-ui/dist/icons/info-icon';
+import { InfoIcon } from '@astrosat/astrosat-ui';
 
 import styles from './scene-list-item.module.css';
 

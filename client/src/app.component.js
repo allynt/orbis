@@ -4,8 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Route, Switch } from 'react-router-dom';
 import ReactTooltip from 'react-tooltip';
 
-import Dialog from '@astrosat/astrosat-ui/dist/containers/dialog';
-import useModal from '@astrosat/astrosat-ui/dist/containers/use-modal';
+import { Dialog, useModal } from '@astrosat/astrosat-ui';
 
 import PrivateRoute from './utils/private-route.component';
 
@@ -19,7 +18,6 @@ import {
 
 import Accounts from './accounts';
 import TermsAndConditions from './accounts/terms-and-conditions.component';
-import UpdateUserForm from './accounts/update-user-form/update-user-form.component';
 
 import LandingView from './landing/landing.component';
 

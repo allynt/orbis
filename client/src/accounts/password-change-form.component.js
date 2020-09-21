@@ -2,12 +2,14 @@ import React, { useState } from 'react';
 
 import validate from './password-change-form.validator';
 
-import Button from '@astrosat/astrosat-ui/dist/buttons/button';
-import PasswordField from '@astrosat/astrosat-ui/dist/forms/password-field';
-import PasswordStrengthMeter from '@astrosat/astrosat-ui/dist/forms/password-strength-meter';
-import Checkbox from '@astrosat/astrosat-ui/dist/forms/checkbox';
-import useForm from '@astrosat/astrosat-ui/dist/forms/use-form';
-import Well from '@astrosat/astrosat-ui/dist/containers/well';
+import {
+  Button,
+  PasswordField,
+  PasswordStrengthMeter,
+  Checkbox,
+  useForm,
+  Well,
+} from '@astrosat/astrosat-ui';
 
 import { status } from './accounts.slice';
 

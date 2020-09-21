@@ -2,10 +2,7 @@ import React from 'react';
 
 import validate from './password-reset-form.validator';
 
-import Button from '@astrosat/astrosat-ui/dist/buttons/button';
-import Textfield from '@astrosat/astrosat-ui/dist/forms/text-field';
-import useForm from '@astrosat/astrosat-ui/dist/forms/use-form';
-import Well from '@astrosat/astrosat-ui/dist/containers/well';
+import { Button, Textfield, useForm, Well } from '@astrosat/astrosat-ui';
 
 import { status } from './accounts.slice';
 

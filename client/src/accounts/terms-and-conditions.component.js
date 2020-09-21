@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 import { Redirect } from 'react-router-dom';
 
-import Button from '@astrosat/astrosat-ui/dist/buttons/button';
+import { Button } from '@astrosat/astrosat-ui';
 
 import { ReactComponent as OrbisLogo } from '../orbis-light.svg';
 

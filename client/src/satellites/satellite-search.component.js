@@ -2,8 +2,7 @@ import React, { useEffect, useState, useCallback } from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
 
-import Button from '@astrosat/astrosat-ui/dist/buttons/button';
-import Detail from '@astrosat/astrosat-ui/dist/containers/detail';
+import { Button, Detail, DrawAoiIcon } from '@astrosat/astrosat-ui';
 
 import {
   fetchSavedSatelliteSearches,
@@ -11,7 +10,6 @@ import {
   setCurrentSatelliteSearchQuery,
 } from './satellites.slice';
 
-import { DrawAoiIcon } from '@astrosat/astrosat-ui/';
 import SatelliteSearchForm from './satellite-search-form.component';
 import SavedSearchList from './saved-search-list.component';
 import { getGeometryAreaKmSquared } from 'utils/geometry';

@@ -6,12 +6,14 @@ import { useSelector } from 'react-redux';
 
 import validate from './login-form.validator';
 
-import Button from '@astrosat/astrosat-ui/dist/buttons/button';
-import PasswordField from '@astrosat/astrosat-ui/dist/forms/password-field';
-import Textfield from '@astrosat/astrosat-ui/dist/forms/text-field';
-import Checkbox from '@astrosat/astrosat-ui/dist/forms/checkbox';
-import useForm from '@astrosat/astrosat-ui/dist/forms/use-form';
-import Well from '@astrosat/astrosat-ui/dist/containers/well';
+import {
+  Button,
+  PasswordField,
+  Textfield,
+  Checkbox,
+  useForm,
+  Well,
+} from '@astrosat/astrosat-ui';
 
 import { status } from './accounts.slice';
 

@@ -5,10 +5,14 @@ import { formatISO, subDays } from 'date-fns';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 
-import Button from '@astrosat/astrosat-ui/dist/buttons/button';
-import Checkbox from '@astrosat/astrosat-ui/dist/forms/checkbox';
-import useForm from '@astrosat/astrosat-ui/dist/forms/use-form';
-import { InfoIcon, ErrorIcon } from '@astrosat/astrosat-ui/';
+import {
+  Button,
+  Checkbox,
+  useForm,
+  InfoIcon,
+  ErrorIcon,
+} from '@astrosat/astrosat-ui/';
+
 import validate from './satellite-search-form.validator';
 
 import {

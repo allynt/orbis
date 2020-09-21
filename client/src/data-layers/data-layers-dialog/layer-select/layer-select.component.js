@@ -1,8 +1,6 @@
 import React, { useState, useCallback, useEffect } from 'react';
 
-import InfoButton from '@astrosat/astrosat-ui/dist/buttons/info-button';
-import Button from '@astrosat/astrosat-ui/dist/buttons/button';
-import Switch from '@astrosat/astrosat-ui/dist/buttons/switch';
+import { InfoButton, Button, Switch } from '@astrosat/astrosat-ui';
 
 import InfoBox from 'components/info-box/info-box.component';
 import dialogStyles from '../data-layers-dialog.module.css';

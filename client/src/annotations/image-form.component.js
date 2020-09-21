@@ -6,9 +6,7 @@ import PropTypes from 'prop-types';
 // import useForm from '../hooks/useForm';
 import validate from './label-form.validator';
 
-import Button from '@astrosat/astrosat-ui/dist/buttons/button';
-import useForm from '@astrosat/astrosat-ui/dist/forms/use-form';
-// import { Button } from '@astrosat/astrosat-ui';
+import { Button, useForm } from '@astrosat/astrosat-ui';
 
 import styles from './label-form.module.css';
 

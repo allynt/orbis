@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 import { FiltersForm } from './filters-form.component';
 
-import { FilterIcon, CloseIcon } from '@astrosat/astrosat-ui/';
+import { FilterIcon, CloseIcon } from '@astrosat/astrosat-ui';
 
 import styles from './filters.module.css';
 

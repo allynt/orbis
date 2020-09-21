@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import Button from '@astrosat/astrosat-ui/dist/buttons/button';
+import { Button } from '@astrosat/astrosat-ui';
 
 import styles from './bookmarks-panel.module.css';
 

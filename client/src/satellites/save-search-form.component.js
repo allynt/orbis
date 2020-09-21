@@ -1,8 +1,6 @@
 import React from 'react';
 
-import Button from '@astrosat/astrosat-ui/dist/buttons/button';
-import Textfield from '@astrosat/astrosat-ui/dist/forms/text-field';
-import useForm from '@astrosat/astrosat-ui/dist/forms/use-form';
+import { Button, Textfield, useForm } from '@astrosat/astrosat-ui';
 
 import validate from './save-search-form.validator';
 

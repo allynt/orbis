@@ -1,8 +1,6 @@
 import React, { useEffect } from 'react';
 
-import Button from '@astrosat/astrosat-ui/dist/buttons/button';
-import Switch from '@astrosat/astrosat-ui/dist/buttons/switch';
-import Checkbox from '@astrosat/astrosat-ui/dist/forms/checkbox';
+import { Button, Switch, Checkbox } from '@astrosat/astrosat-ui';
 
 import SceneListItem from './scene-list-item.component';
 
