@@ -4,6 +4,7 @@ import reducer, {
   saveMap,
   isCompareModeSelector,
   selectedMapStyleSelector,
+  initialState,
 } from './map.slice';
 
 describe('Map Slice', () => {
@@ -11,15 +12,7 @@ describe('Map Slice', () => {
     let beforeState;
 
     beforeEach(() => {
-      beforeState = {
-        selectedMapStyle: {},
-        isCompareMode: false,
-        saveMap: false,
-        dimensions: {
-          width: -1,
-          height: -1,
-        },
-      };
+      beforeState = initialState;
     });
 
     it('should return the initial state', () => {
@@ -111,11 +104,14 @@ describe('Map Slice', () => {
       it('returns selectedMapStyle', () => {
         const state = {
           map: {
-            selectedMapStyle: { uri: 'hello' },
+            selectedMapStyle: 'test',
+            mapStyles: {
+              test: {},
+            },
           },
         };
         const result = selectedMapStyleSelector(state);
-        expect(result).toEqual(state.map.selectedMapStyle);
+        expect(result).toEqual(state.map.mapStyles.test);
       });
     });
   });

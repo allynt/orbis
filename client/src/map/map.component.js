@@ -28,11 +28,7 @@ const Map = () => {
   const accessToken = useSelector(mapboxTokenSelector);
   const selectedBookmark = useSelector(selectedBookmarkSelector);
   const bookmarksLoading = useSelector(bookmarksLoadingSelector);
-  // const mapStyles = useSelector(mapStylesSelector);
   const selectedMapStyle = useSelector(selectedMapStyleSelector);
-  // const [isMapStyleSwitcherVisible, setIsMapStyleSwitcherVisible] = useState(
-  //   false,
-  // );
   const { layers, mapComponents, preLabelLayers, postLabelLayers } = useOrbs();
 
   const [glContext, setGlContext] = useState();
@@ -134,26 +130,12 @@ const Map = () => {
           reuseMaps
           preserveDrawingBuffer
           mapboxApiAccessToken={accessToken}
-          mapStyle={selectedMapStyle?.uri}
+          mapStyle={selectedMapStyle}
           onLoad={onMapLoad}
         />
         {mapComponents}
         <NavigationControl className={styles.navigationControl} />
       </DeckGL>
-      {/* <Button
-        theme="secondary"
-        onClick={() => setIsMapStyleSwitcherVisible(!isMapStyleSwitcherVisible)}
-        className={styles.mapStyleButton}
-      >
-        <LayersIcon title="layers" classes={styles.icon} />
-      </Button>
-      {isMapStyleSwitcherVisible && (
-        <MapStyleSwitcher
-          mapStyles={mapStyles}
-          selectedMapStyle={selectedMapStyle}
-          selectMapStyle={mapStyle => dispatch(selectMapStyle(mapStyle))}
-        />
-      )} */}
     </>
   );
 };
