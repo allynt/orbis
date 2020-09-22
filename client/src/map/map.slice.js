@@ -1,7 +1,11 @@
 import { createSlice, createSelector } from '@reduxjs/toolkit';
+import { satellite } from '../mapstyle/styles';
 
-const initialState = {
-  selectedMapStyle: {},
+export const initialState = {
+  selectedMapStyle: 'satellite',
+  mapStyles: {
+    satellite,
+  },
   isCompareMode: false,
   saveMap: false,
   dimensions: {
@@ -35,7 +39,7 @@ export const isCompareModeSelector = createSelector(
 );
 export const selectedMapStyleSelector = createSelector(
   baseSelector,
-  map => map?.selectedMapStyle,
+  map => map?.selectedMapStyle && map?.mapStyles[map?.selectedMapStyle],
 );
 
 export default mapSlice.reducer;

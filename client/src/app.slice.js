@@ -57,10 +57,7 @@ export const fetchAppConfig = () => async dispatch => {
   }
 
   const config = await response.json();
-  dispatch(appConfigSuccess(config));
-
-  const mapStyles = config.mapStyles;
-  return dispatch(selectMapStyle(mapStyles[DEFAULT_MAP_STYLE]));
+  return dispatch(appConfigSuccess(config));
 };
 
 const baseSelector = state => state?.app;

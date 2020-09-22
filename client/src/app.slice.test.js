@@ -66,10 +66,6 @@ describe('App Slice', () => {
 
       const expectedActions = [
         { type: appConfigSuccess.type, payload: config },
-        {
-          type: selectMapStyle.type,
-          payload: config.mapStyles[DEFAULT_MAP_STYLE],
-        },
       ];
 
       const store = mockStore({});
