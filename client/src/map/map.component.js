@@ -10,9 +10,8 @@ import DeckGL, { FlyToInterpolator } from 'deck.gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import { useMap } from 'MapContext';
 import React, { useEffect } from 'react';
-import {
+import ReactMapGl, {
   NavigationControl,
-  StaticMap,
   _MapContext as MapContext,
 } from 'react-map-gl';
 import { useDispatch, useSelector } from 'react-redux';
@@ -74,29 +73,31 @@ const Map = () => {
         mapboxApiAccessToken={accessToken}
         onSelect={handleGeocoderSelect}
       />
-      <DeckGL
-        ref={deckRef}
-        controller
-        viewState={viewState}
-        onViewStateChange={({ viewState }) => setViewState(viewState)}
-        layers={layers}
-        ContextProvider={MapContext.Provider}
-        glOptions={{
-          preserveDrawingBuffer: true,
+      <ReactMapGl
+        ref={mapRef}
+        width="100%"
+        height="100%"
+        {...viewState}
+        onViewStateChange={({ viewState: { width, height, ...rest } }) => {
+          setViewState(rest);
         }}
+        reuseMaps
+        preserveDrawingBuffer
+        mapboxApiAccessToken={accessToken}
+        mapStyle={selectedMapStyle}
       >
-        <StaticMap
-          width="100%"
-          height="100%"
-          ref={mapRef}
-          reuseMaps
-          preserveDrawingBuffer
-          mapboxApiAccessToken={accessToken}
-          mapStyle={selectedMapStyle}
+        <DeckGL
+          ref={deckRef}
+          viewState={viewState}
+          layers={layers}
+          ContextProvider={MapContext.Provider}
+          glOptions={{
+            preserveDrawingBuffer: true,
+          }}
         />
         {mapComponents}
         <NavigationControl className={styles.navigationControl} />
-      </DeckGL>
+      </ReactMapGl>
     </>
   );
 };
