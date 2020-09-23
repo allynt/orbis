@@ -20,6 +20,13 @@ import styles from './map.module.css';
 import { selectedMapStyleSelector } from './map.slice';
 import { Geocoder } from './geocoder/geocoder.component';
 
+/** @type {React.CSSProperties} */
+const TOP_MAP_CSS = {
+  position: 'absolute',
+  top: 0,
+  pointerEvents: 'none',
+};
+
 const Map = () => {
   const { mapRef, deckRef, viewState, setViewState } = useMap();
   const dispatch = useDispatch();
@@ -101,6 +108,7 @@ const Map = () => {
       </ReactMapGl>
       <ReactMapGl
         key="top"
+        style={TOP_MAP_CSS}
         className={styles.topMap}
         width="100%"
         height="100%"

@@ -1,6 +1,6 @@
 import { createSlice, createSelector } from '@reduxjs/toolkit';
-import { createTopMapStyle } from 'mapstyle/mapStyle.utils';
-import { satellite } from 'mapstyle/styles';
+import { createTopMapStyle } from 'map-style/mapStyle.utils';
+import { satellite } from 'map-style/styles';
 
 export const initialState = {
   selectedMapStyle: 'satellite',
