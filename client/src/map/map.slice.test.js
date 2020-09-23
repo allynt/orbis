@@ -109,6 +109,7 @@ describe('Map Slice', () => {
             mapStyles: {
               test: {},
             },
+            topMapLayerGroups: [],
           },
         };
         const expected = {
