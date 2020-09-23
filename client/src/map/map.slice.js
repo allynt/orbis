@@ -7,6 +7,7 @@ export const initialState = {
   mapStyles: {
     satellite,
   },
+  topMapLayerGroups: ['labels'],
   isCompareMode: false,
   saveMap: false,
   dimensions: {
@@ -37,6 +38,11 @@ const baseSelector = state => state?.map;
 export const isCompareModeSelector = createSelector(
   baseSelector,
   map => map?.isCompareMode || false,
+);
+
+export const topMapLayerGroupsSelector = createSelector(
+  baseSelector,
+  map => map?.topMapLayerGroups || [],
 );
 
 export const selectedMapStyleSelector = createSelector(
