@@ -105,8 +105,6 @@ export const useIsolationPlusOrb = (data, sources, authToken) => {
     sidebarComponents: {
       ...TILE_LAYERS.reduce((acc, cur) => ({ ...acc, [cur]: RadioPicker }), {}),
     },
-    preLabelLayers: TILE_LAYERS,
-    postLabelLayers: [],
   };
 };
 
