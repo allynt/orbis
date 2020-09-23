@@ -74,6 +74,7 @@ const Map = () => {
         onSelect={handleGeocoderSelect}
       />
       <ReactMapGl
+        key="bottom"
         ref={mapRef}
         width="100%"
         height="100%"
@@ -84,7 +85,7 @@ const Map = () => {
         reuseMaps
         preserveDrawingBuffer
         mapboxApiAccessToken={accessToken}
-        mapStyle={selectedMapStyle}
+        mapStyle={selectedMapStyle?.bottomMapStyle}
       >
         <DeckGL
           ref={deckRef}
@@ -98,6 +99,15 @@ const Map = () => {
         {mapComponents}
         <NavigationControl className={styles.navigationControl} />
       </ReactMapGl>
+      <ReactMapGl
+        key="top"
+        style={{ position: 'absolute', top: '0px', pointerEvents: 'none' }}
+        width="100%"
+        height="100%"
+        {...viewState}
+        mapboxApiAccessToken={accessToken}
+        mapStyle={selectedMapStyle?.topMapStyle}
+      />
     </>
   );
 };

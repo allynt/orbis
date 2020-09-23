@@ -110,8 +110,12 @@ describe('Map Slice', () => {
             },
           },
         };
+        const expected = {
+          topMapStyle: { layers: [] },
+          bottomMapStyle: state.map.mapStyles.test,
+        };
         const result = selectedMapStyleSelector(state);
-        expect(result).toEqual(state.map.mapStyles.test);
+        expect(result).toEqual(expected);
       });
     });
   });
