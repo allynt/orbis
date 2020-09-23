@@ -43,8 +43,8 @@ export const selectedMapStyleSelector = createSelector(
   baseSelector,
   map =>
     map?.selectedMapStyle && {
-      topMapStyle: createTopMapStyle(map?.mapStyles[map?.selectedMapStyle]),
-      bottomMapStyle: map?.mapStyles[map?.selectedMapStyle],
+      topMapStyle: createTopMapStyle(map.mapStyles[map.selectedMapStyle]),
+      bottomMapStyle: map.mapStyles[map.selectedMapStyle],
     },
 );
 
