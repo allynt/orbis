@@ -101,7 +101,7 @@ const Map = () => {
       </ReactMapGl>
       <ReactMapGl
         key="top"
-        style={{ position: 'absolute', top: '0px', pointerEvents: 'none' }}
+        className={styles.topMap}
         width="100%"
         height="100%"
         {...viewState}

@@ -18,7 +18,7 @@ MapContext.displayName = 'MapContext';
  * @property {number} [zoom]
  * @property {number} [pitch]
  * @property {number} [bearing]
- * @property {number} [transitionDuration]
+ * @property {number | 'auto'} [transitionDuration]
  * @property {*} [transitionEasing]
  * @property {*} [transitionInterpolator]
  */
@@ -32,7 +32,7 @@ MapContext.displayName = 'MapContext';
  */
 
 /**
- * @param {React.Props} props
+ * @param {React.ClassAttributes<React.Provider<MapContextType>>} props
  * @returns {JSX.Element} MapContextProvider
  */
 export const MapProvider = props => {
