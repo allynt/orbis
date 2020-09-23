@@ -179,6 +179,5 @@ export const useMySupplyLynkOrb = (data, activeSources) => {
     layers,
     mapComponents,
     sidebarComponents,
-    postLabelLayers: SUPPLYLYNK_LAYER_IDS,
   };
 };

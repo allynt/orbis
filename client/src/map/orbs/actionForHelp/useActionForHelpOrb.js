@@ -106,8 +106,6 @@ export const useActionForHelpOrb = (data, activeSources) => {
     layers,
     mapComponents,
     sidebarComponents,
-    preLabelLayers: [],
-    postLabelLayers: [...INFRASTRUCTURE_LAYER_IDS, ...PEOPLE_LAYER_IDS],
   };
 };
 useActionForHelpOrb.id = 'hourglass';

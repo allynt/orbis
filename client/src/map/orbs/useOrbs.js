@@ -50,26 +50,19 @@ export const useOrbs = () => {
     layers: hourglassLayers,
     mapComponents: hourglassMapComponents,
     sidebarComponents: hourglassSidebarComponents,
-    preLabelLayers: hourglassPreLabelLayers,
-    postLabelLayers: hourglassPostLabelLayers,
   } = useActionForHelpOrb(data, activeSources);
   const {
     layers: riceLayers,
     mapComponents: riceMapComponents,
     sidebarComponents: riceSidebarComponents,
-    preLabelLayers: ricePreLabelLayers,
-    postLabelLayers: ricePostLabelLayers,
   } = useRiceOrb(data, activeSources);
   const {
     layers: isoPlusLayers,
     mapComponents: isoPlusMapComponents,
     sidebarComponents: isoPlusSidebarComponents,
-    preLabelLayers: isoPlusPreLabelLayers,
-    postLabelLayers: isoPlusPostLabelLayers,
   } = useIsolationPlusOrb(data, activeSources, authToken);
   const {
     layers: mySupplyLynkLayers,
-    postLabelLayers: mySupplyLynkPostLabelLayers,
     mapComponents: mySupplyLynkMapComponents,
     sidebarComponents: mySupplyLynkSidebarComponents,
   } = useMySupplyLynkOrb(data, activeSources);
@@ -92,23 +85,10 @@ export const useOrbs = () => {
     ...isoPlusSidebarComponents,
     ...mySupplyLynkSidebarComponents,
   };
-  const preLabelLayers = [
-    ...hourglassPreLabelLayers,
-    ...ricePreLabelLayers,
-    ...isoPlusPreLabelLayers,
-  ];
-  const postLabelLayers = [
-    ...hourglassPostLabelLayers,
-    ...ricePostLabelLayers,
-    ...isoPlusPostLabelLayers,
-    ...mySupplyLynkPostLabelLayers,
-  ];
 
   return {
     layers,
     mapComponents,
     sidebarComponents,
-    preLabelLayers,
-    postLabelLayers,
   };
 };
