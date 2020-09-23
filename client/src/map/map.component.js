@@ -107,7 +107,6 @@ const Map = () => {
             preserveDrawingBuffer: true,
           }}
         />
-        {mapComponents}
         <NavigationControl className={styles.navigationControl} />
       </ReactMapGl>
       <ReactMapGl
@@ -116,7 +115,9 @@ const Map = () => {
         mapStyle={selectedMapStyle?.topMapStyle}
         attributionControl={false}
         {...mapProps}
-      />
+      >
+        {mapComponents}
+      </ReactMapGl>
     </>
   );
 };

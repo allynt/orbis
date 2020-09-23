@@ -1,4 +1,4 @@
-const { createTopMapStyle } = require('./mapStyle.utils');
+const { createTopMapStyle, createBottomMapStyle } = require('./mapStyle.utils');
 
 const TEST_MAP_STYLE = {
   version: 1,
@@ -33,6 +33,27 @@ describe('mapStyle.utils', () => {
       };
       const result = createTopMapStyle(TEST_MAP_STYLE, []);
       expect(result).toEqual(expected);
+    });
+  });
+
+  describe('createBottomMapStyle', () => {
+    it('returns layers which are not specified in topMapLayerGroups', () => {
+      const expected = {
+        ...TEST_MAP_STYLE,
+        layers: [{ id: 'road' }],
+      };
+      const result = createBottomMapStyle(TEST_MAP_STYLE, ['label']);
+      expect(result).toEqual(expected);
+    });
+
+    it('does not include layers specified for the top map', () => {
+      const result = createBottomMapStyle(TEST_MAP_STYLE, ['label']);
+      expect(result.layers).not.toContain({ id: 'label' });
+    });
+
+    it('returns the complete style if topMapLayerGroups is empty', () => {
+      const result = createBottomMapStyle(TEST_MAP_STYLE, []);
+      expect(result).toEqual(TEST_MAP_STYLE);
     });
   });
 });

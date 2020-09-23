@@ -1,5 +1,8 @@
 import { createSlice, createSelector } from '@reduxjs/toolkit';
-import { createTopMapStyle } from 'map-style/mapStyle.utils';
+import {
+  createBottomMapStyle,
+  createTopMapStyle,
+} from 'map-style/mapStyle.utils';
 import { satellite } from 'map-style/styles';
 
 /**
@@ -67,7 +70,10 @@ export const selectedMapStyleSelector = createSelector(
         map.mapStyles[map.selectedMapStyle],
         map.topMapLayerGroups,
       ),
-      bottomMapStyle: map.mapStyles[map.selectedMapStyle],
+      bottomMapStyle: createBottomMapStyle(
+        map.mapStyles[map.selectedMapStyle],
+        map.topMapLayerGroups,
+      ),
     },
 );
 
