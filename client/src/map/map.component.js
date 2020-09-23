@@ -67,6 +67,15 @@ const Map = () => {
     });
   };
 
+  const mapProps = {
+    ...viewState,
+    width: '100%',
+    height: '100%',
+    reuseMaps: true,
+    preserveDrawingBuffer: true,
+    mapboxApiAccessToken: accessToken,
+  };
+
   return (
     <>
       {bookmarksLoading && (
@@ -83,16 +92,11 @@ const Map = () => {
       <ReactMapGl
         key="bottom"
         ref={mapRef}
-        width="100%"
-        height="100%"
-        {...viewState}
         onViewStateChange={({ viewState: { width, height, ...rest } }) => {
           setViewState(rest);
         }}
-        reuseMaps
-        preserveDrawingBuffer
-        mapboxApiAccessToken={accessToken}
         mapStyle={selectedMapStyle?.bottomMapStyle}
+        {...mapProps}
       >
         <DeckGL
           ref={deckRef}
@@ -109,12 +113,8 @@ const Map = () => {
       <ReactMapGl
         key="top"
         style={TOP_MAP_CSS}
-        className={styles.topMap}
-        width="100%"
-        height="100%"
-        {...viewState}
-        mapboxApiAccessToken={accessToken}
         mapStyle={selectedMapStyle?.topMapStyle}
+        {...mapProps}
       />
     </>
   );
