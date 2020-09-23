@@ -5,7 +5,7 @@ import thunk from 'redux-thunk';
 
 import { render, cleanup, fireEvent } from '@testing-library/react';
 
-import MapStyleSwitcher from './mapstyle-switcher.component';
+import MapStyleSwitcher from './map-style-switcher.component';
 
 const mockStore = configureMockStore([thunk]);
 

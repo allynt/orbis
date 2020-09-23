@@ -10,7 +10,7 @@ import streetsWebP from './streets.webp';
 import satellite from './satellite.png';
 import satelliteWebP from './satellite.webp';
 
-import style from './mapstyle-switcher.module.css';
+import style from './map-style-switcher.module.css';
 
 const MapStyleSwitcher = ({ mapStyles, selectedMapStyle, selectMapStyle }) => (
   <ul className={style['mapstyle-switcher-container']}>

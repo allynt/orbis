@@ -38,6 +38,7 @@ export const isCompareModeSelector = createSelector(
   baseSelector,
   map => map?.isCompareMode || false,
 );
+
 export const selectedMapStyleSelector = createSelector(
   baseSelector,
   map =>
