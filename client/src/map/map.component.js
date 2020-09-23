@@ -114,6 +114,7 @@ const Map = () => {
         key="top"
         style={TOP_MAP_CSS}
         mapStyle={selectedMapStyle?.topMapStyle}
+        attributionControl={false}
         {...mapProps}
       />
     </>
