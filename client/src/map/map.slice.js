@@ -3,7 +3,7 @@ import {
   createBottomMapStyle,
   createTopMapStyle,
 } from 'map-style/mapStyle.utils';
-import { satellite } from 'map-style/styles';
+import * as mapStyles from 'map-style/styles';
 
 /**
  * @typedef {{
@@ -20,9 +20,9 @@ import { satellite } from 'map-style/styles';
  */
 export const initialState = {
   selectedMapStyle: 'satellite',
+  // @ts-ignore
   mapStyles: {
-    // @ts-ignore
-    satellite,
+    ...mapStyles,
   },
   topMapLayerGroups: ['label'],
   isCompareMode: false,
