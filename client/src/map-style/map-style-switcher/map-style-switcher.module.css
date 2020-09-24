@@ -21,17 +21,20 @@
   transition: background-color 250ms ease, color 250ms ease;
 }
 
-.label:hover {
+.label:hover,
+.label:focus-within {
   background: rgba(246, 190, 0, 0.5);
 }
 
 .item:first-of-type,
-.item:first-of-type .label:hover {
+.item:first-of-type .label:hover,
+.item:first-of-type .label:focus-within {
   border-radius: var(--global--border-radius) 0 0 var(--global--border-radius);
 }
 
 .item:last-of-type,
-.item:last-of-type .label:hover {
+.item:last-of-type .label:hover,
+.item:last-of-type .label:focus-within {
   border-radius: 0 var(--global--border-radius) var(--global--border-radius) 0;
 }
 

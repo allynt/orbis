@@ -24,7 +24,9 @@ const MapStyleSwitcher = ({ mapStyles, selectedMapStyle, selectMapStyle }) => (
             className={style.input}
             name="mapStyle"
             type="radio"
+            tabIndex={0}
             onChange={() => selectMapStyle(styleKey)}
+            onKeyUp={() => selectMapStyle(styleKey)}
             value={styleKey}
             checked={styleKey === selectedMapStyle}
           />
