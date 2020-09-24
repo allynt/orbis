@@ -5,6 +5,7 @@ import reducer, {
   isCompareModeSelector,
   selectedMapStyleSelector,
   initialState,
+  topMapLayerGroupsSelector,
 } from './map.slice';
 
 describe('Map Slice', () => {
@@ -60,7 +61,7 @@ describe('Map Slice', () => {
   describe('selectors', () => {
     describe('isCompareModeSelector', () => {
       it('returns false if state is undefined', () => {
-        const result = isCompareModeSelector();
+        const result = isCompareModeSelector(undefined);
         expect(result).toBe(false);
       });
 
@@ -85,7 +86,7 @@ describe('Map Slice', () => {
 
     describe('selectedMapStyleSelector', () => {
       it('returns undefined if state is undefined', () => {
-        const result = selectedMapStyleSelector();
+        const result = selectedMapStyleSelector(undefined);
         expect(result).toBeUndefined();
       });
 
@@ -108,6 +109,7 @@ describe('Map Slice', () => {
             mapStyles: {
               test: {},
             },
+            topMapLayerGroups: [],
           },
         };
         const expected = {
@@ -116,6 +118,31 @@ describe('Map Slice', () => {
         };
         const result = selectedMapStyleSelector(state);
         expect(result).toEqual(expected);
+      });
+    });
+
+    describe('topMapLayerGroupsSelector', () => {
+      it('returns an empty array if state is undefined', () => {
+        const result = topMapLayerGroupsSelector(undefined);
+        expect(result).toEqual([]);
+      });
+
+      it('returns an empty array if map is undefined', () => {
+        const result = topMapLayerGroupsSelector({});
+        expect(result).toEqual([]);
+      });
+
+      it('returns an empty array if topMapLayerGroups is undefined', () => {
+        const result = topMapLayerGroupsSelector({ map: {} });
+        expect(result).toEqual([]);
+      });
+
+      it('returns topMapLayerGroups', () => {
+        const topMapLayerGroups = ['labels', 'roads'];
+        const result = topMapLayerGroupsSelector({
+          map: { topMapLayerGroups },
+        });
+        expect(result).toEqual(topMapLayerGroups);
       });
     });
   });

@@ -1,18 +1,32 @@
 import { createSlice, createSelector } from '@reduxjs/toolkit';
-import { createTopMapStyle } from 'map-style/mapStyle.utils';
+import {
+  createBottomMapStyle,
+  createTopMapStyle,
+} from 'map-style/mapStyle.utils';
 import { satellite } from 'map-style/styles';
 
+/**
+ * @typedef {{
+ *   selectedMapStyle: import('map-style/styles').MapStyleKey
+ *   mapStyles: { [ key: string]: import('mapbox-gl').Style}
+ *   topMapLayerGroups: import('map-style/constants').LayerGroupSlug[]
+ *   isCompareMode: boolean
+ *   saveMap: boolean
+ * }} MapState
+ */
+
+/**
+ * @type {MapState}
+ */
 export const initialState = {
   selectedMapStyle: 'satellite',
   mapStyles: {
+    // @ts-ignore
     satellite,
   },
+  topMapLayerGroups: ['label'],
   isCompareMode: false,
   saveMap: false,
-  dimensions: {
-    width: -1,
-    height: -1,
-  },
 };
 
 const mapSlice = createSlice({
@@ -33,18 +47,33 @@ const mapSlice = createSlice({
 
 export const { selectMapStyle, toggleCompareMode, saveMap } = mapSlice.actions;
 
+/**
+ * @param {any} state
+ * @returns {MapState}
+ */
 const baseSelector = state => state?.map;
 export const isCompareModeSelector = createSelector(
   baseSelector,
   map => map?.isCompareMode || false,
 );
 
+export const topMapLayerGroupsSelector = createSelector(
+  baseSelector,
+  map => map?.topMapLayerGroups || [],
+);
+
 export const selectedMapStyleSelector = createSelector(
   baseSelector,
   map =>
     map?.selectedMapStyle && {
-      topMapStyle: createTopMapStyle(map.mapStyles[map.selectedMapStyle]),
-      bottomMapStyle: map.mapStyles[map.selectedMapStyle],
+      topMapStyle: createTopMapStyle(
+        map.mapStyles[map.selectedMapStyle],
+        map.topMapLayerGroups,
+      ),
+      bottomMapStyle: createBottomMapStyle(
+        map.mapStyles[map.selectedMapStyle],
+        map.topMapLayerGroups,
+      ),
     },
 );
 

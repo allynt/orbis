@@ -29,6 +29,7 @@
 .navigationControl {
   bottom: 2rem;
   background-color: transparent;
+  z-index: 1;
 }
 
 .geocoder {
