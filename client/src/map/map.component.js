@@ -1,4 +1,4 @@
-import { LoadMask } from '@astrosat/astrosat-ui';
+import { Button, LayersIcon, LoadMask } from '@astrosat/astrosat-ui';
 import { mapboxTokenSelector } from 'app.slice';
 import {
   isLoaded as onBookmarkLoaded,
@@ -9,7 +9,7 @@ import { setLayers } from 'data-layers/data-layers.slice';
 import DeckGL, { FlyToInterpolator } from 'deck.gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import { useMap } from 'MapContext';
-import React, { useCallback, useEffect } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import ReactMapGl, {
   NavigationControl,
   _MapContext as MapContext,
@@ -41,6 +41,7 @@ const Map = () => {
   const mapStyles = useSelector(mapStylesSelector);
   const selectedMapStyle = useSelector(selectedMapStyleSelector);
   const { layers, mapComponents } = useOrbs();
+  const [mapStyleSwitcherVisible, setMapStyleSwitcherVisible] = useState(false);
 
   useEffect(() => {
     if (selectedBookmark) {
@@ -100,6 +101,20 @@ const Map = () => {
         mapboxApiAccessToken={accessToken}
         onSelect={handleGeocoderSelect}
       />
+      <Button
+        theme="secondary"
+        className={styles.mapStyleButton}
+        onClick={() => setMapStyleSwitcherVisible(cur => !cur)}
+      >
+        <LayersIcon classes={styles.icon} />
+      </Button>
+      {mapStyleSwitcherVisible && (
+        <MapStyleSwitcher
+          mapStyles={mapStyles}
+          selectedMapStyle={selectedMapStyle.id}
+          selectMapStyle={handleMapStyleSelect}
+        />
+      )}
       <ReactMapGl
         key="bottom"
         ref={mapRef}
@@ -117,11 +132,6 @@ const Map = () => {
           glOptions={{
             preserveDrawingBuffer: true,
           }}
-        />
-        <MapStyleSwitcher
-          mapStyles={mapStyles}
-          selectedMapStyle={selectedMapStyle.id}
-          selectMapStyle={handleMapStyleSelect}
         />
         <NavigationControl className={styles.navigationControl} />
       </ReactMapGl>
