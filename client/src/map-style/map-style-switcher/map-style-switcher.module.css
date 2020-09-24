@@ -4,43 +4,51 @@
   right: 3rem;
   z-index: 10;
   display: flex;
-  justify-content: flex-end;
-  align-items: center;
   padding: 0;
   list-style-type: none;
   background-color: var(--color-secondary);
+  border-radius: var(--global--border-radius);
 }
 
-.mapstyle-switcher-container li {
-  padding: 0.2rem 0;
-}
-.mapstyle-switcher-container label {
+.label {
+  position: relative;
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
   color: #f9f9f9;
-  padding: 0 1rem;
   cursor: pointer;
+  padding: 0.5em 1em;
+  transition: background-color 250ms ease, color 250ms ease;
 }
 
-.mapstyle-switcher-container label:hover {
-  background: rgba(221, 185, 114, 0.25);
+.label:hover {
+  background: rgba(246, 190, 0, 0.5);
 }
 
-.mapstyle-switcher-container input {
+.item:first-of-type,
+.item:first-of-type .label:hover {
+  border-radius: var(--global--border-radius) 0 0 var(--global--border-radius);
+}
+
+.item:last-of-type,
+.item:last-of-type .label:hover {
+  border-radius: 0 var(--global--border-radius) var(--global--border-radius) 0;
+}
+
+.input {
   opacity: 0;
+  position: absolute;
 }
 
-.mapstyle-switcher-container img {
-  max-width: 60px;
+.picture {
+  max-width: 3.75rem;
 }
 
-.mapstyle-switcher-container span {
-  /* padding-left: 1rem; */
+.checked,
+.checked:hover {
+  background: var(--color-primary);
 }
 
-.mapstyle-switcher-container .checked,
-.mapstyle-switcher-container .checked:hover {
-  background: rgba(221, 185, 114, 0.7);
+.checked .text {
+  color: var(--color--text--dark);
 }
