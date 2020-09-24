@@ -9,7 +9,7 @@ import { setLayers } from 'data-layers/data-layers.slice';
 import DeckGL, { FlyToInterpolator } from 'deck.gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import { useMap } from 'MapContext';
-import React, { useEffect } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import ReactMapGl, {
   NavigationControl,
   _MapContext as MapContext,
@@ -17,8 +17,13 @@ import ReactMapGl, {
 import { useDispatch, useSelector } from 'react-redux';
 import { useOrbs } from './orbs/useOrbs';
 import styles from './map.module.css';
-import { selectedMapStyleSelector } from './map.slice';
+import {
+  mapStylesSelector,
+  selectedMapStyleSelector,
+  selectMapStyle,
+} from './map.slice';
 import { Geocoder } from './geocoder/geocoder.component';
+import MapStyleSwitcher from 'map-style/map-style-switcher/map-style-switcher.component';
 
 /** @type {React.CSSProperties} */
 const TOP_MAP_CSS = {
@@ -33,6 +38,7 @@ const Map = () => {
   const accessToken = useSelector(mapboxTokenSelector);
   const selectedBookmark = useSelector(selectedBookmarkSelector);
   const bookmarksLoading = useSelector(bookmarksLoadingSelector);
+  const mapStyles = useSelector(mapStylesSelector);
   const selectedMapStyle = useSelector(selectedMapStyleSelector);
   const { layers, mapComponents } = useOrbs();
 
@@ -55,6 +61,11 @@ const Map = () => {
       dispatch(onBookmarkLoaded());
     }
   }, [selectedBookmark, viewState, setViewState, dispatch]);
+
+  const handleMapStyleSelect = useCallback(
+    mapStyle => dispatch(selectMapStyle(mapStyle)),
+    [dispatch],
+  );
 
   const handleGeocoderSelect = feature => {
     const [longitude, latitude] = feature.center;
@@ -106,6 +117,11 @@ const Map = () => {
           glOptions={{
             preserveDrawingBuffer: true,
           }}
+        />
+        <MapStyleSwitcher
+          mapStyles={mapStyles}
+          selectedMapStyle={selectedMapStyle.id}
+          selectMapStyle={handleMapStyleSelect}
         />
         <NavigationControl className={styles.navigationControl} />
       </ReactMapGl>

@@ -66,9 +66,5 @@ export const mapboxTokenSelector = createSelector(
   configSelector,
   config => config?.mapbox_token,
 );
-export const mapStylesSelector = createSelector(
-  configSelector,
-  config => config?.mapStyles || [],
-);
 
 export default appSlice.reducer;

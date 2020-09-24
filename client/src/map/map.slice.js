@@ -3,12 +3,12 @@ import {
   createBottomMapStyle,
   createTopMapStyle,
 } from 'map-style/mapStyle.utils';
-import * as mapStyles from 'map-style/styles';
+import { styles as mapStyles } from 'map-style/styles';
 
 /**
  * @typedef {{
  *   selectedMapStyle: import('map-style/styles').MapStyleKey
- *   mapStyles: { [ key: string]: import('mapbox-gl').Style}
+ *   mapStyles: import('map-style/styles').MapStyles
  *   topMapLayerGroups: import('map-style/constants').LayerGroupSlug[]
  *   isCompareMode: boolean
  *   saveMap: boolean
@@ -21,9 +21,7 @@ import * as mapStyles from 'map-style/styles';
 export const initialState = {
   selectedMapStyle: 'satellite',
   // @ts-ignore
-  mapStyles: {
-    ...mapStyles,
-  },
+  mapStyles,
   topMapLayerGroups: ['label'],
   isCompareMode: false,
   saveMap: false,
@@ -33,6 +31,11 @@ const mapSlice = createSlice({
   name: 'map',
   initialState,
   reducers: {
+    /** @type { import('@reduxjs/toolkit').CaseReducer<
+     *   MapState,
+     *   import('@reduxjs/toolkit').PayloadAction<
+     *     import('map-style/styles').MapStyleKey
+     *   >>} */
     selectMapStyle: (state, { payload }) => {
       state.selectedMapStyle = payload;
     },
@@ -57,6 +60,11 @@ export const isCompareModeSelector = createSelector(
   map => map?.isCompareMode || false,
 );
 
+export const mapStylesSelector = createSelector(
+  baseSelector,
+  map => map?.mapStyles,
+);
+
 export const topMapLayerGroupsSelector = createSelector(
   baseSelector,
   map => map?.topMapLayerGroups || [],
@@ -66,12 +74,13 @@ export const selectedMapStyleSelector = createSelector(
   baseSelector,
   map =>
     map?.selectedMapStyle && {
+      id: map.selectedMapStyle,
       topMapStyle: createTopMapStyle(
-        map.mapStyles[map.selectedMapStyle],
+        map.mapStyles[map.selectedMapStyle].style,
         map.topMapLayerGroups,
       ),
       bottomMapStyle: createBottomMapStyle(
-        map.mapStyles[map.selectedMapStyle],
+        map.mapStyles[map.selectedMapStyle].style,
         map.topMapLayerGroups,
       ),
     },
