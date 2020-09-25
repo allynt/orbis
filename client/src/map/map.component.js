@@ -69,9 +69,7 @@ const Map = () => {
   }, [selectedBookmark, viewState, setViewState, dispatch]);
 
   const handleGeocoderSelect = useCallback(
-    newViewState => {
-      setViewState(newViewState);
-    },
+    newViewState => setViewState(newViewState),
     [setViewState],
   );
   const handleMapStyleSelect = useCallback(
