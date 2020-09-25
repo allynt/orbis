@@ -9,16 +9,17 @@ import { setLayers } from 'data-layers/data-layers.slice';
 import DeckGL, { FlyToInterpolator } from 'deck.gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import { useMap } from 'MapContext';
-import React, { useEffect } from 'react';
+import React, { useCallback, useEffect, useRef } from 'react';
 import ReactMapGl, {
   NavigationControl,
   _MapContext as MapContext,
 } from 'react-map-gl';
 import { useDispatch, useSelector } from 'react-redux';
 import { useOrbs } from './orbs/useOrbs';
-import styles from './map.module.css';
+import 'react-map-gl-geocoder/dist/mapbox-gl-geocoder.css';
 import { selectedMapStyleSelector } from './map.slice';
-import { Geocoder } from './geocoder/geocoder.component';
+import Geocoder from 'react-map-gl-geocoder';
+import styles from './map.module.css';
 
 /** @type {React.CSSProperties} */
 const TOP_MAP_CSS = {
@@ -34,6 +35,7 @@ const Map = () => {
   const selectedBookmark = useSelector(selectedBookmarkSelector);
   const bookmarksLoading = useSelector(bookmarksLoadingSelector);
   const selectedMapStyle = useSelector(selectedMapStyleSelector);
+  const geocoderContainerRef = useRef();
   const { layers, mapComponents } = useOrbs();
 
   useEffect(() => {
@@ -56,16 +58,12 @@ const Map = () => {
     }
   }, [selectedBookmark, viewState, setViewState, dispatch]);
 
-  const handleGeocoderSelect = feature => {
-    const [longitude, latitude] = feature.center;
-    setViewState({
-      ...viewState,
-      longitude,
-      latitude,
-      transitionDuration: 2000,
-      transitionInterpolator: new FlyToInterpolator(),
-    });
-  };
+  const handleGeocoderSelect = useCallback(
+    newViewState => {
+      setViewState(newViewState);
+    },
+    [setViewState],
+  );
 
   const mapProps = {
     ...viewState,
@@ -83,12 +81,6 @@ const Map = () => {
           <LoadMask />
         </div>
       )}
-
-      <Geocoder
-        className={styles.geocoder}
-        mapboxApiAccessToken={accessToken}
-        onSelect={handleGeocoderSelect}
-      />
       <ReactMapGl
         key="bottom"
         ref={mapRef}
@@ -116,6 +108,13 @@ const Map = () => {
         attributionControl={false}
         {...mapProps}
       >
+        <Geocoder
+          mapRef={mapRef}
+          mapboxApiAccessToken={accessToken}
+          position="top-right"
+          marker={false}
+          onViewportChange={handleGeocoderSelect}
+        />
         {mapComponents}
       </ReactMapGl>
     </>
