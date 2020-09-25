@@ -1,4 +1,4 @@
-import { LoadMask } from '@astrosat/astrosat-ui';
+import { Button, LayersIcon, LoadMask } from '@astrosat/astrosat-ui';
 import { mapboxTokenSelector } from 'app.slice';
 import {
   isLoaded as onBookmarkLoaded,
@@ -9,7 +9,7 @@ import { setLayers } from 'data-layers/data-layers.slice';
 import DeckGL, { FlyToInterpolator } from 'deck.gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import { useMap } from 'MapContext';
-import React, { useCallback, useEffect, useRef } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import ReactMapGl, {
   NavigationControl,
   _MapContext as MapContext,
@@ -17,9 +17,14 @@ import ReactMapGl, {
 import { useDispatch, useSelector } from 'react-redux';
 import { useOrbs } from './orbs/useOrbs';
 import 'react-map-gl-geocoder/dist/mapbox-gl-geocoder.css';
-import { selectedMapStyleSelector } from './map.slice';
 import Geocoder from 'react-map-gl-geocoder';
 import styles from './map.module.css';
+import {
+  mapStylesSelector,
+  selectedMapStyleSelector,
+  selectMapStyle,
+} from './map.slice';
+import MapStyleSwitcher from 'map-style/map-style-switcher/map-style-switcher.component';
 
 /** @type {React.CSSProperties} */
 const TOP_MAP_CSS = {
@@ -34,9 +39,10 @@ const Map = () => {
   const accessToken = useSelector(mapboxTokenSelector);
   const selectedBookmark = useSelector(selectedBookmarkSelector);
   const bookmarksLoading = useSelector(bookmarksLoadingSelector);
+  const mapStyles = useSelector(mapStylesSelector);
   const selectedMapStyle = useSelector(selectedMapStyleSelector);
-  const geocoderContainerRef = useRef();
   const { layers, mapComponents } = useOrbs();
+  const [mapStyleSwitcherVisible, setMapStyleSwitcherVisible] = useState(false);
 
   useEffect(() => {
     if (selectedBookmark) {
@@ -64,6 +70,10 @@ const Map = () => {
     },
     [setViewState],
   );
+  const handleMapStyleSelect = useCallback(
+    mapStyle => dispatch(selectMapStyle(mapStyle)),
+    [dispatch],
+  );
 
   const mapProps = {
     ...viewState,
@@ -80,6 +90,20 @@ const Map = () => {
         <div className={styles.loadMask} data-testid="load-mask">
           <LoadMask />
         </div>
+      )}
+      <Button
+        theme="secondary"
+        className={styles.mapStyleButton}
+        onClick={() => setMapStyleSwitcherVisible(cur => !cur)}
+      >
+        <LayersIcon classes={styles.icon} />
+      </Button>
+      {mapStyleSwitcherVisible && (
+        <MapStyleSwitcher
+          mapStyles={mapStyles}
+          selectedMapStyle={selectedMapStyle.id}
+          selectMapStyle={handleMapStyleSelect}
+        />
       )}
       <ReactMapGl
         key="bottom"

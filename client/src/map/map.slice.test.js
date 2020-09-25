@@ -107,14 +107,15 @@ describe('Map Slice', () => {
           map: {
             selectedMapStyle: 'test',
             mapStyles: {
-              test: {},
+              test: { style: {} },
             },
             topMapLayerGroups: [],
           },
         };
         const expected = {
+          id: 'test',
           topMapStyle: { layers: [] },
-          bottomMapStyle: state.map.mapStyles.test,
+          bottomMapStyle: state.map.mapStyles.test.style,
         };
         const result = selectedMapStyleSelector(state);
         expect(result).toEqual(expected);

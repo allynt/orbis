@@ -16,33 +16,17 @@ describe('MapStyle Switcher Component', () => {
   let selectMapStyle = null;
   let selectedMapStyle = null;
 
-  const MAP_STYLE_DATA = [
-    {
-      id: 'streets',
-      uri: 'mapbox://styles/astrosat/cjtrrv8be37ge1fqwl0ef8rb9',
-      title: 'Streets',
-    },
-    {
-      id: 'light',
-      uri: 'mapbox://styles/astrosat/cjtiotoam3tff1fruptp84ekd',
-      title: 'Light',
-    },
-    {
-      id: 'dark',
-      uri: 'mapbox://styles/astrosat/cjtrrxg8l1nxt1fpd6x7f0ln8',
-      title: 'Dark',
-    },
-    {
-      id: 'satellite',
-      uri: 'mapbox://styles/astrosat/cjtsgocbv57ok1fqqsjez3de6',
-      title: 'Satellite',
-    },
-  ];
+  const MAP_STYLE_DATA = {
+    streets: {},
+    light: {},
+    dark: {},
+    satellite: {},
+  };
 
   beforeEach(() => {
     selectMapStyle = jest.fn();
 
-    selectedMapStyle = MAP_STYLE_DATA[1];
+    selectedMapStyle = Object.keys(MAP_STYLE_DATA)[1];
 
     testee = render(
       <Provider store={store}>
@@ -57,8 +41,8 @@ describe('MapStyle Switcher Component', () => {
 
   afterEach(cleanup);
 
-  test.each(MAP_STYLE_DATA)('should render style %#', style => {
-    expect(testee.getByLabelText(style.title)).toBeInTheDocument();
+  it.each(Object.keys(MAP_STYLE_DATA))('should render style %s', style => {
+    expect(testee.getByLabelText(style, { exact: false })).toBeInTheDocument();
   });
 
   it('should render with the `Light` Map Style selected', () => {
@@ -70,7 +54,9 @@ describe('MapStyle Switcher Component', () => {
 
     fireEvent.click(testee.getByLabelText('Dark'));
 
-    expect(selectMapStyle).toHaveBeenCalledWith(MAP_STYLE_DATA[2]);
-    expect(selectMapStyle).not.toHaveBeenCalledWith(MAP_STYLE_DATA[1]);
+    expect(selectMapStyle).toHaveBeenCalledWith(Object.keys(MAP_STYLE_DATA)[2]);
+    expect(selectMapStyle).not.toHaveBeenCalledWith(
+      Object.keys(MAP_STYLE_DATA)[1],
+    );
   });
 });
