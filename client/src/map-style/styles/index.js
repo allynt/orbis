@@ -1,7 +1,52 @@
+import { default as dark } from './orbis-dark.json';
+import darkImg from './dark.png';
+import darkWebP from './dark.webp';
+import { default as light } from './orbis-light.json';
+import lightImg from './light.png';
+import lightWebP from './light.webp';
 import { default as satellite } from './orbis-satellite-streets.json';
+import satelliteImg from './satellite.png';
+import satelliteWebP from './satellite.webp';
+import { default as streets } from './orbis-streets.json';
+import streetsImg from './streets.png';
+import streetsWebP from './streets.webp';
 
 /**
- * @typedef {'satellite'} MapStyleKey
+ * @typedef {'satellite' | 'light' | 'dark' | 'streets'} MapStyleKey
  */
 
-export { satellite };
+/**
+ * @typedef {{
+ *   style: (Object & import('mapbox-gl').Style)
+ *   img: any
+ *   webp: any
+ * }} MapStyle
+ */
+
+/**
+ * @typedef {Record<MapStyleKey, MapStyle>} MapStyles
+ */
+
+/** @type {MapStyles} */
+export const styles = {
+  satellite: {
+    style: satellite,
+    img: satelliteImg,
+    webp: satelliteWebP,
+  },
+  light: {
+    style: light,
+    img: lightImg,
+    webp: lightWebP,
+  },
+  dark: {
+    style: dark,
+    img: darkImg,
+    webp: darkWebP,
+  },
+  streets: {
+    style: streets,
+    img: streetsImg,
+    webp: streetsWebP,
+  },
+};

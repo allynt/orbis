@@ -1,66 +1,48 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-
-import dark from './dark.png';
-import darkWebP from './dark.webp';
-import light from './light.png';
-import lightWebP from './light.webp';
-import streets from './streets.png';
-import streetsWebP from './streets.webp';
-import satellite from './satellite.png';
-import satelliteWebP from './satellite.webp';
 
 import style from './map-style-switcher.module.css';
+import { toTitleCase } from 'utils/text';
 
-const MapStyleSwitcher = ({ mapStyles, selectedMapStyle, selectMapStyle }) => (
-  <ul className={style['mapstyle-switcher-container']}>
-    {mapStyles.map((mapStyle, index) => (
-      <li key={index}>
-        <label
-          className={mapStyle.id === selectedMapStyle.id ? style.checked : ''}
+/**
+ * @param {{
+ *   mapStyles: import('map-style/styles').MapStyles
+ *   selectedMapStyle?: import('map-style/styles').MapStyleKey
+ *   selectMapStyle?: (newStyle: import('map-style/styles').MapStyleKey) => void
+ * }} props
+ */
+const MapStyleSwitcher = ({ mapStyles, selectedMapStyle, selectMapStyle }) => {
+  const handleInputChange = styleKey => () => selectMapStyle(styleKey);
+
+  return (
+    <ul className={style['mapstyle-switcher-container']}>
+      {Object.entries(mapStyles).map(([styleKey, { img, webp }]) => (
+        <li
+          key={styleKey}
+          className={`${style.item} ${
+            styleKey === selectedMapStyle ? style.checked : ''
+          }`}
         >
-          <input
-            name="mapStyle"
-            type="radio"
-            onChange={() => selectMapStyle(mapStyle)}
-            value={mapStyle.uri}
-            checked={mapStyle.id === selectedMapStyle.id}
-          />
-          {mapStyle.id === 'dark' && (
+          <label className={style.label}>
+            <input
+              className={style.input}
+              name="mapStyle"
+              type="radio"
+              tabIndex={0}
+              onChange={handleInputChange(styleKey)}
+              onKeyUp={handleInputChange(styleKey)}
+              value={styleKey}
+              checked={styleKey === selectedMapStyle}
+            />
             <picture>
-              <source srcSet={darkWebP} type="image/webp" />
-              <img src={dark} alt="Preview" />
+              <source srcSet={webp} type="image/webp" />
+              <img className={style.picture} src={img} alt="Preview" />
             </picture>
-          )}
-          {mapStyle.id === 'light' && (
-            <picture>
-              <source srcSet={lightWebP} type="image/webp" />
-              <img src={light} alt="Preview" />
-            </picture>
-          )}
-          {mapStyle.id === 'streets' && (
-            <picture>
-              <source srcSet={streetsWebP} type="image/webp" />
-              <img src={streets} alt="Preview" />
-            </picture>
-          )}
-          {mapStyle.id === 'satellite' && (
-            <picture>
-              <source srcSet={satelliteWebP} type="image/webp" />
-              <img src={satellite} alt="Preview" />
-            </picture>
-          )}
-          <span>{mapStyle.title}</span>
-        </label>
-      </li>
-    ))}
-  </ul>
-);
-
-MapStyleSwitcher.propTypes = {
-  mapStyles: PropTypes.array.isRequired,
-  selectedMapStyle: PropTypes.object.isRequired,
-  selectMapStyle: PropTypes.func.isRequired,
+            <span className={style.text}>{toTitleCase(styleKey)}</span>
+          </label>
+        </li>
+      ))}
+    </ul>
+  );
 };
 
 export default MapStyleSwitcher;
