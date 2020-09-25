@@ -1,4 +1,17 @@
+import React, { useCallback, useEffect, useState } from 'react';
+
 import { Button, LayersIcon, LoadMask } from '@astrosat/astrosat-ui';
+
+import DeckGL, { FlyToInterpolator } from 'deck.gl';
+import ReactMapGl, {
+  NavigationControl,
+  _MapContext as MapContext,
+} from 'react-map-gl';
+import 'mapbox-gl/dist/mapbox-gl.css';
+import Geocoder from 'react-map-gl-geocoder';
+import 'react-map-gl-geocoder/dist/mapbox-gl-geocoder.css';
+import { useDispatch, useSelector } from 'react-redux';
+
 import { mapboxTokenSelector } from 'app.slice';
 import {
   isLoaded as onBookmarkLoaded,
@@ -6,25 +19,16 @@ import {
   selectedBookmarkSelector,
 } from 'bookmarks/bookmark.slice';
 import { setLayers } from 'data-layers/data-layers.slice';
-import DeckGL, { FlyToInterpolator } from 'deck.gl';
-import 'mapbox-gl/dist/mapbox-gl.css';
+import MapStyleSwitcher from 'map-style/map-style-switcher/map-style-switcher.component';
 import { useMap } from 'MapContext';
-import React, { useCallback, useEffect, useState } from 'react';
-import ReactMapGl, {
-  NavigationControl,
-  _MapContext as MapContext,
-} from 'react-map-gl';
-import { useDispatch, useSelector } from 'react-redux';
-import { useOrbs } from './orbs/useOrbs';
-import 'react-map-gl-geocoder/dist/mapbox-gl-geocoder.css';
-import Geocoder from 'react-map-gl-geocoder';
-import styles from './map.module.css';
 import {
   mapStylesSelector,
   selectedMapStyleSelector,
   selectMapStyle,
 } from './map.slice';
-import MapStyleSwitcher from 'map-style/map-style-switcher/map-style-switcher.component';
+import { useOrbs } from './orbs/useOrbs';
+
+import styles from './map.module.css';
 
 /** @type {React.CSSProperties} */
 const TOP_MAP_CSS = {
