@@ -8,9 +8,6 @@ import {
 } from 'data-layers/data-layers.slice';
 import { getData } from 'utils/http';
 import { useActionForHelpOrb } from './actionForHelp/useActionForHelpOrb';
-import { useIsolationPlusOrb } from './isolationPlus/useIsolationPlusOrb';
-import { useRiceOrb } from './rice/useRiceOrb';
-import { useMySupplyLynkOrb } from './mySupplyLynk/useMySupplyLynkOrb';
 
 const dataUrlFromId = source => {
   return source.data && typeof source.data === 'string'
@@ -47,43 +44,15 @@ export const useOrbs = () => {
 
   // This needs to be more dynamic but it was breaking the rules of hooks when loading from the array
   const {
-    layers: hourglassLayers,
-    mapComponents: hourglassMapComponents,
-    sidebarComponents: hourglassSidebarComponents,
+    layers: actionForHelpLayers,
+    mapComponents: actionForHelpMapComponents,
+    sidebarComponents: actionForHelpSidebarComponents,
   } = useActionForHelpOrb(data, activeSources);
-  const {
-    layers: riceLayers,
-    mapComponents: riceMapComponents,
-    sidebarComponents: riceSidebarComponents,
-  } = useRiceOrb(data, activeSources);
-  const {
-    layers: isoPlusLayers,
-    mapComponents: isoPlusMapComponents,
-    sidebarComponents: isoPlusSidebarComponents,
-  } = useIsolationPlusOrb(data, activeSources, authToken);
-  const {
-    layers: mySupplyLynkLayers,
-    mapComponents: mySupplyLynkMapComponents,
-    sidebarComponents: mySupplyLynkSidebarComponents,
-  } = useMySupplyLynkOrb(data, activeSources);
 
-  let layers = [
-    ...isoPlusLayers,
-    ...hourglassLayers,
-    ...riceLayers,
-    ...mySupplyLynkLayers,
-  ];
-  let mapComponents = [
-    ...hourglassMapComponents,
-    ...riceMapComponents,
-    ...isoPlusMapComponents,
-    ...mySupplyLynkMapComponents,
-  ];
+  let layers = [...actionForHelpLayers];
+  let mapComponents = [...actionForHelpMapComponents];
   const sidebarComponents = {
-    ...hourglassSidebarComponents,
-    ...riceSidebarComponents,
-    ...isoPlusSidebarComponents,
-    ...mySupplyLynkSidebarComponents,
+    ...actionForHelpSidebarComponents,
   };
 
   return {

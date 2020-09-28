@@ -8,6 +8,7 @@ module.exports = {
     domain: 'Action for Health',
     range: false,
     description: 'Description of Health infrastructure layer.',
+    sidebar_component: 'InfrastructureLegend',
   },
   type: 'vector',
   data:

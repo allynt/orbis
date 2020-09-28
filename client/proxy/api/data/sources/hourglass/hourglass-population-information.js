@@ -11,7 +11,7 @@ module.exports = {
     domain: 'Action for Health',
     range: false,
     description: 'Description of Population information layer.',
-    filters: ['Type', 'Availability', 'Contact Details.Country'],
+    sidebar_component: 'PopulationLegend',
   },
   data: '/static-data/astrosat/hourglass/people/v1/people.json',
 };

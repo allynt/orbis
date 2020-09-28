@@ -7,7 +7,6 @@ import { easeInOutCubic } from 'utils/easingFunctions';
 import FeatureDetail from '../../../components/feature-detail/feature-detail.component';
 
 import { infrastructureLayer } from './infrastructure-layer';
-import { HealthInfrastructure } from './infrastructure-layer/infrastructure-component/health-infrastructure.component';
 import { peopleLayer } from './people-layer';
 import { PopulationInformation } from './people-layer/people-component/population-information.component';
 import { pickBy } from 'lodash';
@@ -24,10 +23,6 @@ const PEOPLE_LAYER_IDS = [
 ];
 
 const sidebarComponents = {
-  ...INFRASTRUCTURE_LAYER_IDS.reduce(
-    (obj, layerId) => ({ ...obj, [layerId]: HealthInfrastructure }),
-    {},
-  ),
   ...PEOPLE_LAYER_IDS.reduce(
     (obj, layerId) => ({ ...obj, [layerId]: PopulationInformation }),
     {},
