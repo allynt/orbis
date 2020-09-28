@@ -127,3 +127,34 @@
   height: 1rem;
   fill: var(--close-button-text);
 }
+
+:global(.mapboxgl-ctrl-geocoder) {
+  background-color: var(--color-secondary);
+}
+
+:global(.mapboxgl-ctrl-geocoder--icon) {
+  fill: var(--color-primary);
+}
+
+:global(.mapboxgl-ctrl-geocoder--button) {
+  background-color: transparent;
+}
+
+:global(.mapboxgl-ctrl-geocoder--input),
+:global(.mapboxgl-ctrl-geocoder--input:focus) {
+  outline: none;
+  color: var(--color-lightgrey-light);
+}
+
+:global(.mapboxgl-ctrl-geocoder .suggestions) {
+  background-color: var(--color-secondary);
+}
+
+:global(.mapboxgl-ctrl-geocoder--suggestion) {
+  color: var(--color-lightgrey-light);
+}
+
+:global(.mapboxgl-ctrl-geocoder .suggestions > .active > a),
+:global(.mapboxgl-ctrl-geocoder .suggestions > li > a:hover) {
+  background-color: var(--color-darkgrey-light);
+}

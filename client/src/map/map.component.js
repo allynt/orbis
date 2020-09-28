@@ -1,4 +1,17 @@
+import React, { useCallback, useEffect, useState } from 'react';
+
 import { Button, LayersIcon, LoadMask } from '@astrosat/astrosat-ui';
+
+import DeckGL, { FlyToInterpolator } from 'deck.gl';
+import ReactMapGl, {
+  NavigationControl,
+  _MapContext as MapContext,
+} from 'react-map-gl';
+import 'mapbox-gl/dist/mapbox-gl.css';
+import Geocoder from 'react-map-gl-geocoder';
+import 'react-map-gl-geocoder/dist/mapbox-gl-geocoder.css';
+import { useDispatch, useSelector } from 'react-redux';
+
 import { mapboxTokenSelector } from 'app.slice';
 import {
   isLoaded as onBookmarkLoaded,
@@ -6,24 +19,16 @@ import {
   selectedBookmarkSelector,
 } from 'bookmarks/bookmark.slice';
 import { setLayers } from 'data-layers/data-layers.slice';
-import DeckGL, { FlyToInterpolator } from 'deck.gl';
-import 'mapbox-gl/dist/mapbox-gl.css';
+import MapStyleSwitcher from 'map-style/map-style-switcher/map-style-switcher.component';
 import { useMap } from 'MapContext';
-import React, { useCallback, useEffect, useState } from 'react';
-import ReactMapGl, {
-  NavigationControl,
-  _MapContext as MapContext,
-} from 'react-map-gl';
-import { useDispatch, useSelector } from 'react-redux';
-import { useOrbs } from './orbs/useOrbs';
-import styles from './map.module.css';
 import {
   mapStylesSelector,
   selectedMapStyleSelector,
   selectMapStyle,
 } from './map.slice';
-import { Geocoder } from './geocoder/geocoder.component';
-import MapStyleSwitcher from 'map-style/map-style-switcher/map-style-switcher.component';
+import { useOrbs } from './orbs/useOrbs';
+
+import styles from './map.module.css';
 
 /** @type {React.CSSProperties} */
 const TOP_MAP_CSS = {
@@ -63,21 +68,14 @@ const Map = () => {
     }
   }, [selectedBookmark, viewState, setViewState, dispatch]);
 
+  const handleGeocoderSelect = useCallback(
+    newViewState => setViewState(newViewState),
+    [setViewState],
+  );
   const handleMapStyleSelect = useCallback(
     mapStyle => dispatch(selectMapStyle(mapStyle)),
     [dispatch],
   );
-
-  const handleGeocoderSelect = feature => {
-    const [longitude, latitude] = feature.center;
-    setViewState({
-      ...viewState,
-      longitude,
-      latitude,
-      transitionDuration: 2000,
-      transitionInterpolator: new FlyToInterpolator(),
-    });
-  };
 
   const mapProps = {
     ...viewState,
@@ -95,12 +93,6 @@ const Map = () => {
           <LoadMask />
         </div>
       )}
-
-      <Geocoder
-        className={styles.geocoder}
-        mapboxApiAccessToken={accessToken}
-        onSelect={handleGeocoderSelect}
-      />
       <Button
         theme="secondary"
         className={styles.mapStyleButton}
@@ -142,6 +134,13 @@ const Map = () => {
         attributionControl={false}
         {...mapProps}
       >
+        <Geocoder
+          mapRef={mapRef}
+          mapboxApiAccessToken={accessToken}
+          position="top-right"
+          marker={false}
+          onViewportChange={handleGeocoderSelect}
+        />
         {mapComponents}
       </ReactMapGl>
     </>
