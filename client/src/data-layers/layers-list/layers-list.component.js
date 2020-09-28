@@ -16,32 +16,7 @@ import styles from '../data-layers.module.css';
  *   selectedLayers: Layer[]
  * }} props
  */
-export const LayersList = ({ dispatch, selectedLayers }) => {
-  const [sidebarComponents, setSidebarComponents] = useState({});
-
-  useEffect(() => {
-    const loadComponents = async () => {
-      const componentPromises = selectedLayers.map(source => {
-        const Component = lazy(() =>
-          import(`./components/${source.metadata.sidebar_component}`),
-        );
-        return [source.source_id, <Component />];
-      });
-      Promise.all(componentPromises).then(components =>
-        setSidebarComponents(
-          components.reduce(
-            (acc, [source_id, component]) => ({
-              ...acc,
-              [source_id]: component,
-            }),
-            {},
-          ),
-        ),
-      );
-    };
-    loadComponents();
-  }, [selectedLayers, dispatch]);
-
+export const LayersList = ({ dispatch, selectedLayers, sidebarComponents }) => {
   return (
     <>
       {selectedLayers?.map(selectedLayer => {
@@ -52,10 +27,7 @@ export const LayersList = ({ dispatch, selectedLayers }) => {
             key={selectedLayer.source_id}
             title={selectedLayer.metadata.label}
           >
-            <React.Suspense
-              // key={Component.name}
-              fallback={<div>Loading...</div>}
-            >
+            <React.Suspense fallback={<div>Loading...</div>}>
               {Component}
             </React.Suspense>
           </LayersListItem>

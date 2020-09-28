@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import React, { lazy, useCallback, useEffect, useState } from 'react';
 
 import { useSelector } from 'react-redux';
 
@@ -19,6 +19,7 @@ export const useOrbs = () => {
   const authToken = useSelector(selectDataToken);
   const activeSources = useSelector(activeDataSourcesSelector);
   const [data, setData] = useState({});
+  const [sidebarComponents, setSidebarComponents] = useState({});
 
   const fetchData = useCallback(
     async source => {
@@ -42,18 +43,36 @@ export const useOrbs = () => {
     }
   }, [activeSources, data, fetchData]);
 
-  // This needs to be more dynamic but it was breaking the rules of hooks when loading from the array
+  useEffect(() => {
+    const loadComponents = async () => {
+      const componentPromises = activeSources.map(source => {
+        const Component = lazy(() =>
+          import(`./components/${source.metadata.sidebar_component}`),
+        );
+        return [source.source_id, <Component />];
+      });
+      Promise.all(componentPromises).then(components =>
+        setSidebarComponents(
+          components.reduce(
+            (acc, [source_id, component]) => ({
+              ...acc,
+              [source_id]: component,
+            }),
+            {},
+          ),
+        ),
+      );
+    };
+    loadComponents();
+  }, [activeSources]);
+
   const {
     layers: actionForHelpLayers,
     mapComponents: actionForHelpMapComponents,
-    sidebarComponents: actionForHelpSidebarComponents,
   } = useActionForHelpOrb(data, activeSources);
 
   let layers = [...actionForHelpLayers];
   let mapComponents = [...actionForHelpMapComponents];
-  const sidebarComponents = {
-    ...actionForHelpSidebarComponents,
-  };
 
   return {
     layers,

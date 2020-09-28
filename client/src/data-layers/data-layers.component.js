@@ -20,6 +20,7 @@ import styles from './data-layers.module.css';
 const DataLayers = () => {
   const [isVisible, toggle] = useModal(false);
   const ref = useRef(null);
+  const { sidebarComponents } = useOrbs();
 
   const dispatch = useDispatch();
   const dataSources = useSelector(dataSourcesSelector);
@@ -38,7 +39,11 @@ const DataLayers = () => {
 
   return (
     <div className={styles.selectData} ref={ref}>
-      <LayersList dispatch={dispatch} selectedLayers={activeDataSources} />
+      <LayersList
+        dispatch={dispatch}
+        selectedLayers={activeDataSources}
+        sidebarComponents={sidebarComponents}
+      />
       <div className={styles.buttons}>
         <AddNewCategoryIcon
           className={styles.addNewCategoryIcon}

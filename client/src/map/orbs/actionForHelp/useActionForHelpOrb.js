@@ -8,7 +8,6 @@ import FeatureDetail from '../../../components/feature-detail/feature-detail.com
 
 import { infrastructureLayer } from './infrastructure-layer';
 import { peopleLayer } from './people-layer';
-import { PopulationInformation } from './people-layer/people-component/population-information.component';
 import { pickBy } from 'lodash';
 
 const INFRASTRUCTURE_LAYER_IDS = [
@@ -21,13 +20,6 @@ const PEOPLE_LAYER_IDS = [
   LAYER_IDS.astrosat.covid.hourglass.latest,
   LAYER_IDS.astrosat.covid.commonWeal.latest,
 ];
-
-const sidebarComponents = {
-  ...PEOPLE_LAYER_IDS.reduce(
-    (obj, layerId) => ({ ...obj, [layerId]: PopulationInformation }),
-    {},
-  ),
-};
 
 export const useActionForHelpOrb = (data, activeSources) => {
   const { setViewState } = useMap();
@@ -100,7 +92,6 @@ export const useActionForHelpOrb = (data, activeSources) => {
   return {
     layers,
     mapComponents,
-    sidebarComponents,
   };
 };
 useActionForHelpOrb.id = 'hourglass';
