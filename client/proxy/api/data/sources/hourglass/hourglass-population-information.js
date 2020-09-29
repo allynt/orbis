@@ -12,6 +12,7 @@ module.exports = {
     range: false,
     description: 'Description of Population information layer.',
     sidebar_component: 'PopulationLegend',
+    map_component: 'ActionForHelpMapComponent',
   },
   data: '/static-data/astrosat/hourglass/people/v1/people.json',
 };

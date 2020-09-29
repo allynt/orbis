@@ -21,6 +21,7 @@ export const useOrbs = () => {
   const authToken = useSelector(selectDataToken);
   const activeSources = useSelector(activeDataSourcesSelector);
   const [data, setData] = useState({});
+  const [stateMapComponents, setStateMapComponents] = useState([]);
   const [sidebarComponents, setSidebarComponents] = useState({});
 
   const fetchData = useCallback(
@@ -46,7 +47,7 @@ export const useOrbs = () => {
   }, [activeSources, data, fetchData]);
 
   useEffect(() => {
-    const loadComponents = async () => {
+    const loadSidebarComponents = async () => {
       const componentPromises = activeSources.map(source => {
         if (!source.metadata.sidebar_component) return [source.source_id, null];
         const Component = lazy(() =>
@@ -69,23 +70,37 @@ export const useOrbs = () => {
         ),
       );
     };
-    loadComponents();
+    loadSidebarComponents();
   }, [activeSources, dispatch]);
 
-  const {
-    layers: actionForHelpLayers,
-    mapComponents: actionForHelpMapComponents,
-  } = useActionForHelpOrb(data, activeSources);
+  useEffect(() => {
+    const loadMapComponents = async () => {
+      const componentPromises = activeSources.map(source => {
+        if (!source.metadata.map_component) return null;
+        const Component = lazy(() =>
+          import(`./components/${source.metadata.map_component}`),
+        );
+        return <Component />;
+      });
+      Promise.all(componentPromises).then(components =>
+        setStateMapComponents(components),
+      );
+    };
+    loadMapComponents();
+  }, [activeSources, dispatch]);
+
+  const { layers: actionForHelpLayers } = useActionForHelpOrb(
+    data,
+    activeSources,
+  );
+
   const {
     layers: mySupplyLynkLayers,
     mapComponents: mySupplyLynkMapComponents,
   } = useMySupplyLynkOrb(data, activeSources);
 
   let layers = [...actionForHelpLayers, ...mySupplyLynkLayers];
-  let mapComponents = [
-    ...actionForHelpMapComponents,
-    ...mySupplyLynkMapComponents,
-  ];
+  let mapComponents = [...stateMapComponents, ...mySupplyLynkMapComponents];
 
   return {
     layers,

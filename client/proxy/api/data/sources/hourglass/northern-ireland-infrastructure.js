@@ -9,6 +9,7 @@ module.exports = {
     range: false,
     description: 'Description of Health infrastructure layer.',
     sidebar_component: 'InfrastructureLegend',
+    map_component: 'ActionForHelpMapComponent',
   },
   type: 'vector',
   data:

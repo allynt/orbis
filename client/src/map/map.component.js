@@ -141,7 +141,9 @@ const Map = () => {
           marker={false}
           onViewportChange={handleGeocoderSelect}
         />
-        {mapComponents}
+        <React.Suspense fallback={<div>Loading...</div>}>
+          {mapComponents}
+        </React.Suspense>
       </ReactMapGl>
     </>
   );
