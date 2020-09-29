@@ -8,6 +8,7 @@ import {
 } from 'data-layers/data-layers.slice';
 import { getData } from 'utils/http';
 import { useActionForHelpOrb } from './actionForHelp/useActionForHelpOrb';
+import { useDispatch } from 'react-redux/lib/hooks/useDispatch';
 
 const dataUrlFromId = source => {
   return source.data && typeof source.data === 'string'
@@ -16,6 +17,7 @@ const dataUrlFromId = source => {
 };
 
 export const useOrbs = () => {
+  const dispatch = useDispatch();
   const authToken = useSelector(selectDataToken);
   const activeSources = useSelector(activeDataSourcesSelector);
   const [data, setData] = useState({});
@@ -46,10 +48,14 @@ export const useOrbs = () => {
   useEffect(() => {
     const loadComponents = async () => {
       const componentPromises = activeSources.map(source => {
+        if (!source.metadata.sidebar_component) return [source.source_id, null];
         const Component = lazy(() =>
           import(`./components/${source.metadata.sidebar_component}`),
         );
-        return [source.source_id, <Component />];
+        return [
+          source.source_id,
+          <Component selectedLayer={source} dispatch={dispatch} />,
+        ];
       });
       Promise.all(componentPromises).then(components =>
         setSidebarComponents(
@@ -64,7 +70,7 @@ export const useOrbs = () => {
       );
     };
     loadComponents();
-  }, [activeSources]);
+  }, [activeSources, dispatch]);
 
   const {
     layers: actionForHelpLayers,
