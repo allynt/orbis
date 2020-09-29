@@ -2,7 +2,7 @@ import React from 'react';
 import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
-import { CATEGORIES } from '../mysupplylynk.constants';
+import { CATEGORIES } from '../../mySupplyLynk/mysupplylynk.constants';
 
 import { CheckboxFilters } from './checkbox-filters.component';
 

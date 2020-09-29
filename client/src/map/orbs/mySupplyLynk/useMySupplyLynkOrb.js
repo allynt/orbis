@@ -10,15 +10,11 @@ import { easeInOutCubic } from 'utils/easingFunctions';
 import iconMapping from './iconMapping.json';
 import iconAtlas from './iconAtlas.svg';
 
-import { useSelector, useDispatch } from 'react-redux';
-import { setSelectedFeatures, featuresSelector } from './mysupplylynk.slice';
-
-import { CATEGORIES } from './mysupplylynk.constants';
+import { useSelector } from 'react-redux';
+import { featuresSelector } from './mysupplylynk.slice';
 
 import { Dialog } from './dialog/dialog.component';
 import { useModal } from '@astrosat/astrosat-ui';
-
-import { CheckboxFilters } from './checkbox-filters/checkbox-filters.component';
 
 import MySupplyLynkFeatureDetail from './feature-detail/mysupplylynk-feature-detail.component';
 
@@ -28,7 +24,6 @@ export const TEXT_COLOR_TRANSPARENT = [0, 0, 0, 0];
 export const TEXT_COLOR_VISIBLE = [51, 63, 72];
 
 export const useMySupplyLynkOrb = (data, activeSources) => {
-  const dispatch = useDispatch();
   const ref = useRef(null);
   const [isVisible, toggle] = useModal(false);
 
@@ -124,24 +119,6 @@ export const useMySupplyLynkOrb = (data, activeSources) => {
     ),
   ];
 
-  const sidebarComponents = {
-    ...SUPPLYLYNK_LAYER_IDS.reduce(
-      (acc, cur) => ({
-        ...acc,
-        [cur]: () => (
-          <CheckboxFilters
-            categories={CATEGORIES}
-            selectedFeatures={selectedFeatures}
-            setSelectedFeatures={features =>
-              dispatch(setSelectedFeatures(features))
-            }
-          />
-        ),
-      }),
-      {},
-    ),
-  };
-
   const mapComponents = [
     popupFeatures.length && (
       <Popup
@@ -178,6 +155,5 @@ export const useMySupplyLynkOrb = (data, activeSources) => {
   return {
     layers,
     mapComponents,
-    sidebarComponents,
   };
 };

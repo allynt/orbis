@@ -1,6 +1,6 @@
 import React, { lazy, useCallback, useEffect, useState } from 'react';
 
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 
 import {
   activeDataSourcesSelector,
@@ -8,7 +8,7 @@ import {
 } from 'data-layers/data-layers.slice';
 import { getData } from 'utils/http';
 import { useActionForHelpOrb } from './actionForHelp/useActionForHelpOrb';
-import { useDispatch } from 'react-redux/lib/hooks/useDispatch';
+import { useMySupplyLynkOrb } from './mySupplyLynk/useMySupplyLynkOrb';
 
 const dataUrlFromId = source => {
   return source.data && typeof source.data === 'string'
@@ -76,9 +76,16 @@ export const useOrbs = () => {
     layers: actionForHelpLayers,
     mapComponents: actionForHelpMapComponents,
   } = useActionForHelpOrb(data, activeSources);
+  const {
+    layers: mySupplyLynkLayers,
+    mapComponents: mySupplyLynkMapComponents,
+  } = useMySupplyLynkOrb(data, activeSources);
 
-  let layers = [...actionForHelpLayers];
-  let mapComponents = [...actionForHelpMapComponents];
+  let layers = [...actionForHelpLayers, ...mySupplyLynkLayers];
+  let mapComponents = [
+    ...actionForHelpMapComponents,
+    ...mySupplyLynkMapComponents,
+  ];
 
   return {
     layers,
