@@ -13,8 +13,8 @@ import {
 } from '../../mySupplyLynk/mysupplylynk.slice';
 
 /** @param {{
- *   source: any
- *   dispatch: any
+ *   source?: any
+ *   dispatch?: any
  * }} props
  */
 export const CheckboxFilters = ({ dispatch }) => {
@@ -46,7 +46,7 @@ export const CheckboxFilters = ({ dispatch }) => {
           key={name}
           id={name}
           className={styles.checkbox}
-          checked={selectedFeatures.includes(name)}
+          checked={selectedFeatures?.includes(name)}
           name="msl-filter-checkbox"
           value={name}
           onChange={handleChange}
