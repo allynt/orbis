@@ -8,18 +8,6 @@ describe('peopleLayer', () => {
   });
 
   describe('getIcon', () => {
-    it('returns "cluster" if the feature is a cluster and its expansion zoom is less than the max zoom', () => {
-      const feature = { properties: { cluster: true, expansion_zoom: 3 } };
-      const result = layer.props.getIcon(feature);
-      expect(result).toBe('cluster');
-    });
-
-    it('returns "group" if the feature is a cluster and the expansion_zoom is greater than MAX_ZOOM', () => {
-      const feature = { properties: { cluster: true, expansion_zoom: 5000 } };
-      const result = layer.props.getIcon(feature);
-      expect(result).toBe('group');
-    });
-
     it("returns the feature's Type", () => {
       const feature = { properties: { Type: 'VOLUNTEER' } };
       const result = layer.props.getIcon(feature);
