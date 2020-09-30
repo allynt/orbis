@@ -87,7 +87,6 @@ export const useMySupplyLynkOrb = (data, activeSources) => {
       visible: !!activeSources?.find(
         source => source.source_id === LAYER_IDS.astrosat.mySupplyLynk.latest,
       ),
-      pickable: true,
       iconMapping,
       iconAtlas,
       getIcon: 'pin',

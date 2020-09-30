@@ -151,6 +151,7 @@ ClusteredIconLayer.layerName = 'ClusteredIconLayer';
 
 ClusteredIconLayer.defaultProps = {
   // Shared accessors
+  pickable: true,
   getPosition: { type: 'accessor', value: x => x.position },
   // Icon properties
   iconAtlas: null,

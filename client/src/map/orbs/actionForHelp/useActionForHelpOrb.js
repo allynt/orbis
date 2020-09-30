@@ -48,7 +48,6 @@ export const useActionForHelpOrb = (data, activeSources) => {
           data: data[id],
           visible: !!activeSources?.find(source => source.source_id === id),
           onClick: handleLayerClick,
-          pickable: true,
           getIcon: feature =>
             feature.properties.type || feature.properties.Type,
           getIconSize: feature => (feature.properties.Type ? 15 : 60),
