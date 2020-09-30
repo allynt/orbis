@@ -20,9 +20,6 @@ import MySupplyLynkFeatureDetail from './feature-detail/mysupplylynk-feature-det
 
 import { LAYER_IDS, MAX_ZOOM } from 'map/map.constants';
 
-export const TEXT_COLOR_TRANSPARENT = [0, 0, 0, 0];
-export const TEXT_COLOR_VISIBLE = [51, 63, 72];
-
 export const useMySupplyLynkOrb = (data, activeSources) => {
   const ref = useRef(null);
   const [isVisible, toggle] = useModal(false);
@@ -32,8 +29,6 @@ export const useMySupplyLynkOrb = (data, activeSources) => {
   const [popupFeatures, setPopupFeatures] = useState([]);
   const [dialogFeatures, setDialogFeatures] = useState([]);
   const { setViewState } = useMap();
-
-  const SUPPLYLYNK_LAYER_IDS = [LAYER_IDS.astrosat.mySupplyLynk.latest];
 
   const getFeatures = () => {
     const obj = data[LAYER_IDS.astrosat.mySupplyLynk.latest];
@@ -86,21 +81,19 @@ export const useMySupplyLynkOrb = (data, activeSources) => {
   };
 
   const layers = [
-    ...SUPPLYLYNK_LAYER_IDS.map(
-      id =>
-        // @ts-ignore
-        new GeoJsonClusteredIconLayer({
-          id,
-          data: selectedFeatures?.length && getFeatures(),
-          visible: !!activeSources?.find(source => source.source_id === id),
-          pickable: true,
-          iconMapping,
-          iconAtlas,
-          getIcon: 'pin',
-          onClick: handleLayerClick,
-          onHover: handleHover,
-        }),
-    ),
+    new GeoJsonClusteredIconLayer({
+      id: LAYER_IDS.astrosat.mySupplyLynk.latest,
+      data: selectedFeatures?.length && getFeatures(),
+      visible: !!activeSources?.find(
+        source => source.source_id === LAYER_IDS.astrosat.mySupplyLynk.latest,
+      ),
+      pickable: true,
+      iconMapping,
+      iconAtlas,
+      getIcon: 'pin',
+      onClick: handleLayerClick,
+      onHover: handleHover,
+    }),
   ];
 
   const mapComponents = [

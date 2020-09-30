@@ -1,19 +1,17 @@
 import { FlyToInterpolator } from 'deck.gl';
+import { GeoJsonClusteredIconLayer } from 'map/deck.gl/custom-layers/geo-json-clustered-icon-layer';
 import { LAYER_IDS, MAX_ZOOM } from 'map/map.constants';
 import { useMap } from 'MapContext';
 import { useDispatch } from 'react-redux';
 import { easeInOutCubic } from 'utils/easingFunctions';
 import { setPickedObjects } from './action-for-help.slice';
-import { infrastructureLayer } from './infrastructure-layer';
-import { peopleLayer } from './people-layer';
+import iconMapping from './iconMapping.json';
+import iconAtlas from './iconAtlas.svg';
 
-const INFRASTRUCTURE_LAYER_IDS = [
+const AFH_LAYER_IDS = [
   LAYER_IDS.astrosat.hourglass.scotlandInfrastructure.v1,
   LAYER_IDS.astrosat.hourglass.walesInfrastructure.v1,
   LAYER_IDS.astrosat.hourglass.northernIrelandInfrastructure.v1,
-];
-
-const PEOPLE_LAYER_IDS = [
   LAYER_IDS.astrosat.covid.hourglass.latest,
   LAYER_IDS.astrosat.covid.commonWeal.latest,
 ];
@@ -41,21 +39,20 @@ export const useActionForHelpOrb = (data, activeSources) => {
   };
 
   const layers = [
-    ...INFRASTRUCTURE_LAYER_IDS.map(id =>
-      infrastructureLayer({
-        id,
-        data: data[id],
-        visible: !!activeSources?.find(source => source.source_id === id),
-        onClick: handleLayerClick,
-      }),
-    ),
-    ...PEOPLE_LAYER_IDS.map(id =>
-      peopleLayer({
-        id,
-        data: data[id],
-        visible: !!activeSources?.find(source => source.source_id === id),
-        onClick: handleLayerClick,
-      }),
+    ...AFH_LAYER_IDS.map(
+      id =>
+        new GeoJsonClusteredIconLayer({
+          id,
+          iconMapping,
+          iconAtlas,
+          data: data[id],
+          visible: !!activeSources?.find(source => source.source_id === id),
+          onClick: handleLayerClick,
+          pickable: true,
+          getIcon: feature =>
+            feature.properties.type || feature.properties.Type,
+          getIconSize: feature => (feature.properties.Type ? 15 : 60),
+        }),
     ),
   ];
 
