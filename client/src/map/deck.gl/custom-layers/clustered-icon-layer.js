@@ -4,14 +4,18 @@ import Supercluster from 'supercluster';
 const TEXT_COLOR_TRANSPARENT = [0, 0, 0, 0];
 
 export class ClusteredIconLayer extends CompositeLayer {
+  _getExpansionZoom(feature) {
+    return this.state.index.getClusterExpansionZoom(
+      feature.properties.cluster_id,
+    );
+  }
+
   _injectExpansionZoom(feature) {
     return {
       ...feature,
       properties: {
         ...feature.properties,
-        expansion_zoom: this.state.index.getClusterExpansionZoom(
-          feature.properties.cluster_id,
-        ),
+        expansion_zoom: this._getExpansionZoom(feature),
       },
     };
   }
@@ -49,8 +53,8 @@ export class ClusteredIconLayer extends CompositeLayer {
   getPickingInfo({ info, mode }) {
     if (info.picked) {
       if (info.object.properties.cluster) {
-        info.object.properties.expansion_zoom = this.state.index.getClusterExpansionZoom(
-          info.object.properties.cluster_id,
+        info.object.properties.expansion_zoom = this._getExpansionZoom(
+          info.object,
         );
         if (mode !== 'hover') {
           info.objects = this.state.index.getLeaves(
@@ -65,10 +69,7 @@ export class ClusteredIconLayer extends CompositeLayer {
 
   _getIcon(feature) {
     if (feature.properties.cluster) {
-      const expansionZoom = this.state.index.getClusterExpansionZoom(
-        feature.properties.cluster_id,
-      );
-      return expansionZoom > this.props.maxZoom
+      return this._getExpansionZoom(feature) > this.props.maxZoom
         ? this.props.groupIconName
         : this.props.clusterIconName;
     }
@@ -79,10 +80,8 @@ export class ClusteredIconLayer extends CompositeLayer {
 
   _getTextColor(feature) {
     if (feature.properties.cluster && this.props.hideTextOnGroup) {
-      const expansionZoom = this.state.index.getClusterExpansionZoom(
-        feature.properties.cluster_id,
-      );
-      if (expansionZoom > this.props.maxZoom) return TEXT_COLOR_TRANSPARENT;
+      if (this._getExpansionZoom(feature) > this.props.maxZoom)
+        return TEXT_COLOR_TRANSPARENT;
     }
     if (typeof this.props.getTextColor === 'function')
       return feature.properties.cluster
@@ -93,10 +92,7 @@ export class ClusteredIconLayer extends CompositeLayer {
 
   _getIconSize(feature) {
     if (feature.properties.cluster) {
-      const expansionZoom = this.state.index.getClusterExpansionZoom(
-        feature.properties.cluster_id,
-      );
-      return expansionZoom > this.props.maxZoom
+      return this._getExpansionZoom(feature) > this.props.maxZoom
         ? this.props.groupIconSize
         : this.props.clusterIconSize;
     }
