@@ -89,6 +89,20 @@ export class ClusteredIconLayer extends CompositeLayer {
     return this.props.getTextColor;
   }
 
+  _getIconSize(feature) {
+    if (feature.properties.cluster) {
+      const expansionZoom = this.state.index.getClusterExpansionZoom(
+        feature.properties.cluster_id,
+      );
+      return expansionZoom > this.props.maxZoom
+        ? this.props.groupIconSize
+        : this.props.clusterIconSize;
+    }
+    return typeof this.props.getIconSize === 'function'
+      ? this.props.getIconSize(feature)
+      : this.props.getIconSize;
+  }
+
   renderLayers() {
     const { data } = this.state;
     return [
@@ -100,7 +114,7 @@ export class ClusteredIconLayer extends CompositeLayer {
           iconMapping: this.props.iconMapping,
           getPosition: this.props.getPosition,
           getIcon: d => this._getIcon(d),
-          getSize: this.props.getIconSize,
+          getSize: d => this._getIconSize(d),
           getColor: this.props.getIconColor,
           updateTriggers: {
             getPosition: this.props.updateTriggers.getPosition,
@@ -158,4 +172,6 @@ ClusteredIconLayer.defaultProps = {
   maxZoom: 20,
   clusterRadius: 40,
   hideTextOnGroup: true,
+  clusterIconSize: 60,
+  groupIconSize: 60,
 };

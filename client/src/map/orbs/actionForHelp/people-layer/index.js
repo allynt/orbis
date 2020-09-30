@@ -11,6 +11,6 @@ export const peopleLayer = ({ id, data, visible, onClick }) =>
     iconAtlas,
     iconMapping,
     getIcon: feature => feature.properties.Type,
-    getIconSize: feature => (feature.properties.cluster ? 60 : 15),
+    getIconSize: 15,
     onClick,
   });
