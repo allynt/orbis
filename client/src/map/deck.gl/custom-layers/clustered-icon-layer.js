@@ -1,8 +1,7 @@
 import { CompositeLayer, IconLayer, TextLayer } from 'deck.gl';
 import Supercluster from 'supercluster';
 
-const DEFAULT_FONT_FAMILY = 'Open Sans';
-const DEFAULT_FONT_WEIGHT = 600;
+const TEXT_COLOR_TRANSPARENT = [0, 0, 0, 0];
 
 export class ClusteredIconLayer extends CompositeLayer {
   _injectExpansionZoom(feature) {
@@ -76,6 +75,20 @@ export class ClusteredIconLayer extends CompositeLayer {
       : this.props.getIcon;
   }
 
+  _getTextColor(feature) {
+    if (feature.properties.cluster && this.props.hideTextOnGroup) {
+      const expansionZoom = this.state.index.getClusterExpansionZoom(
+        feature.properties.cluster_id,
+      );
+      if (expansionZoom > this.props.maxZoom) return TEXT_COLOR_TRANSPARENT;
+    }
+    if (typeof this.props.getTextColor === 'function')
+      return feature.properties.cluster
+        ? this.props.getTextColor(this._injectExpansionZoom(feature))
+        : this.props.getTextColor(feature);
+    return this.props.getTextColor;
+  }
+
   renderLayers() {
     const { data } = this.state;
     return [
@@ -109,13 +122,7 @@ export class ClusteredIconLayer extends CompositeLayer {
               ? `${feature.properties.point_count}`
               : ` `,
           getSize: this.props.getTextSize,
-          getColor: feature => {
-            if (typeof this.props.getTextColor === 'function')
-              return feature.properties.cluster
-                ? this.props.getTextColor(this._injectExpansionZoom(feature))
-                : this.props.getTextColor(feature);
-            return this.props.getTextColor;
-          },
+          getColor: feature => this._getTextColor(feature),
           updateTriggers: {
             getPosition: this.props.updateTriggers.getPosition,
             getText: this.props.updateTriggers.getText,
@@ -138,13 +145,17 @@ ClusteredIconLayer.defaultProps = {
   iconMapping: { type: 'object', value: {}, async: true },
   // Icon accessors
   getIcon: { type: 'accessor', value: x => x.icon },
-  getIconSize: { type: 'accessor', value: 20 },
+  getIconSize: { type: 'accessor', value: 60 },
   getIconColor: { type: 'accessor', value: [0, 0, 0, 255] },
   // Text properties
-  fontFamily: DEFAULT_FONT_FAMILY,
-  fontWeight: DEFAULT_FONT_WEIGHT,
+  fontFamily: 'Open Sans',
+  fontWeight: 600,
   // Text accessors
   getText: { type: 'accessor', value: x => x.text },
-  getTextSize: { type: 'accessor', value: 12 },
-  getTextColor: { type: 'accessor', value: [0, 0, 0, 255] },
+  getTextSize: { type: 'accessor', value: 32 },
+  getTextColor: { type: 'accessor', value: [51, 63, 72] },
+  // Clustering properties
+  maxZoom: 20,
+  clusterRadius: 40,
+  hideTextOnGroup: true,
 };

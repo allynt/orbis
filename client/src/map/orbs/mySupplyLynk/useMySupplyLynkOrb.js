@@ -97,14 +97,6 @@ export const useMySupplyLynkOrb = (data, activeSources) => {
           iconMapping,
           iconAtlas,
           getIcon: 'pin',
-          getIconSize: 60,
-          getTextSize: 32,
-          getTextColor: feature =>
-            feature.properties.expansion_zoom > MAX_ZOOM
-              ? TEXT_COLOR_TRANSPARENT
-              : TEXT_COLOR_VISIBLE,
-          clusterRadius: 40,
-          maxZoom: MAX_ZOOM,
           onClick: handleLayerClick,
           onHover: handleHover,
         }),
