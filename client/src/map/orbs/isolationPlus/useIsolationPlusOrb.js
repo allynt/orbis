@@ -6,7 +6,7 @@ import { Popup } from 'react-map-gl';
 import { useSelector } from 'react-redux';
 
 import FeatureDetail from 'components/feature-detail/feature-detail.component';
-import CustomMVTLayer from 'map/deck.gl/custom-layers/custom-mvt-layer';
+import { CustomMVTLayer } from 'map/deck.gl/custom-layers/custom-mvt-layer';
 import { LAYER_IDS } from 'map/map.constants';
 import { colorSchemesSelector, propertySelector } from './isolation-plus.slice';
 import { RadioPicker } from './radio-picker/radio-picker.component';
