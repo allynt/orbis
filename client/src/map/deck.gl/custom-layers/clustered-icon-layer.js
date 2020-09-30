@@ -68,7 +68,9 @@ export class ClusteredIconLayer extends CompositeLayer {
       const expansionZoom = this.state.index.getClusterExpansionZoom(
         feature.properties.cluster_id,
       );
-      return expansionZoom > this.props.maxZoom ? 'group' : 'cluster';
+      return expansionZoom > this.props.maxZoom
+        ? this.props.groupIconName
+        : this.props.clusterIconName;
     }
     return typeof this.props.getIcon === 'function'
       ? this.props.getIcon(feature)
@@ -172,6 +174,8 @@ ClusteredIconLayer.defaultProps = {
   maxZoom: 20,
   clusterRadius: 40,
   hideTextOnGroup: true,
+  clusterIconName: 'cluster',
   clusterIconSize: 60,
+  groupIconName: 'group',
   groupIconSize: 60,
 };
