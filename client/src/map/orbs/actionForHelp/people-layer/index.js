@@ -14,16 +14,8 @@ export const peopleLayer = ({ id, data, visible, onClick }) =>
     pickable: true,
     iconAtlas,
     iconMapping,
-    getIcon: feature => {
-      if (feature.properties.cluster) {
-        return feature.properties.expansion_zoom > MAX_ZOOM
-          ? 'group'
-          : 'cluster';
-      }
-      return feature.properties.Type;
-    },
+    getIcon: feature => feature.properties.Type,
     getIconSize: feature => (feature.properties.cluster ? 60 : 15),
-    getIconColor: [246, 190, 0],
     getTextSize: 32,
     getTextColor: feature =>
       feature.properties.expansion_zoom > MAX_ZOOM

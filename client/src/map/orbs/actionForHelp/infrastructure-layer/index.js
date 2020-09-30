@@ -11,10 +11,8 @@ export const infrastructureLayer = ({ id, data, visible, onClick }) =>
     pickable: true,
     iconMapping,
     iconAtlas,
-    getIcon: feature =>
-      feature.properties.cluster ? 'cluster' : feature.properties.type,
+    getIcon: feature => feature.properties.type,
     getIconSize: 60,
-    getIconColor: [246, 190, 0],
     getTextSize: 32,
     getTextColor: [51, 63, 72],
     clusterRadius: 40,

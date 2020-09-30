@@ -64,6 +64,18 @@ export class ClusteredIconLayer extends CompositeLayer {
     return info;
   }
 
+  _getIcon(feature) {
+    if (feature.properties.cluster) {
+      const expansionZoom = this.state.index.getClusterExpansionZoom(
+        feature.properties.cluster_id,
+      );
+      return expansionZoom > this.props.maxZoom ? 'group' : 'cluster';
+    }
+    return typeof this.props.getIcon === 'function'
+      ? this.props.getIcon(feature)
+      : this.props.getIcon;
+  }
+
   renderLayers() {
     const { data } = this.state;
     return [
@@ -74,13 +86,7 @@ export class ClusteredIconLayer extends CompositeLayer {
           iconAtlas: this.props.iconAtlas,
           iconMapping: this.props.iconMapping,
           getPosition: this.props.getPosition,
-          getIcon: feature => {
-            if (typeof this.props.getIcon === 'function')
-              return feature.properties.cluster
-                ? this.props.getIcon(this._injectExpansionZoom(feature))
-                : this.props.getIcon(feature);
-            return this.props.getIcon;
-          },
+          getIcon: d => this._getIcon(d),
           getSize: this.props.getIconSize,
           getColor: this.props.getIconColor,
           updateTriggers: {

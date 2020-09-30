@@ -96,16 +96,8 @@ export const useMySupplyLynkOrb = (data, activeSources) => {
           pickable: true,
           iconMapping,
           iconAtlas,
-          getIcon: feature => {
-            if (feature.properties.cluster) {
-              return feature.properties.expansion_zoom > MAX_ZOOM
-                ? 'group'
-                : 'cluster';
-            }
-            return 'pin';
-          },
+          getIcon: 'pin',
           getIconSize: 60,
-          getIconColor: [246, 190, 0],
           getTextSize: 32,
           getTextColor: feature =>
             feature.properties.expansion_zoom > MAX_ZOOM
