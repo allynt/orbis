@@ -7,8 +7,10 @@ import {
   selectDataToken,
 } from 'data-layers/data-layers.slice';
 import { getData } from 'utils/http';
-import { useActionForHelpOrb } from './actionForHelp/useActionForHelpOrb';
 import { useMySupplyLynkOrb } from './mySupplyLynk/useMySupplyLynkOrb';
+import { useMap } from 'MapContext';
+import { LayerFactory } from '../deck.gl/LayerFactory';
+import { useIsolationPlusOrb } from './isolationPlus/useIsolationPlusOrb';
 
 const dataUrlFromId = source => {
   return source.data && typeof source.data === 'string'
@@ -17,10 +19,12 @@ const dataUrlFromId = source => {
 };
 
 export const useOrbs = () => {
+  const { setViewState } = useMap();
   const dispatch = useDispatch();
   const authToken = useSelector(selectDataToken);
   const activeSources = useSelector(activeDataSourcesSelector);
   const [data, setData] = useState({});
+  const [stateLayers, setStateLayers] = useState([]);
   const [stateMapComponents, setStateMapComponents] = useState([]);
   const [sidebarComponents, setSidebarComponents] = useState({});
 
@@ -89,18 +93,46 @@ export const useOrbs = () => {
     loadMapComponents();
   }, [activeSources, dispatch]);
 
-  const { layers: actionForHelpLayers } = useActionForHelpOrb(
-    data,
-    activeSources,
-  );
+  useEffect(() => {
+    const createLayer = async source => {
+      const {
+        props: configuration,
+        name,
+      } = source.metadata.application.orbis.layer;
+      const imported = await import(`./configurations/${configuration}`);
+      const configFn = imported.default;
+      const config = configFn({
+        id: source.source_id,
+        data: data[source.source_id],
+        activeSources,
+        dispatch,
+        setViewState,
+      });
+      const layer = LayerFactory(name, config);
+      return layer;
+    };
+    const createLayers = async () => {
+      const layerPromises = activeSources.map(createLayer);
+      Promise.all(layerPromises).then(setStateLayers);
+    };
+    createLayers();
+  }, [activeSources, data, dispatch, setViewState]);
 
   const {
     layers: mySupplyLynkLayers,
     mapComponents: mySupplyLynkMapComponents,
   } = useMySupplyLynkOrb(data, activeSources);
+  const {
+    layers: isolationPlusLayers,
+    mapComponents: isolationPlusMapComponents,
+  } = useIsolationPlusOrb(data, activeSources, authToken);
 
-  let layers = [...actionForHelpLayers, ...mySupplyLynkLayers];
-  let mapComponents = [...stateMapComponents, ...mySupplyLynkMapComponents];
+  let layers = [...stateLayers, ...mySupplyLynkLayers, ...isolationPlusLayers];
+  let mapComponents = [
+    ...stateMapComponents,
+    ...mySupplyLynkMapComponents,
+    ...isolationPlusMapComponents,
+  ];
 
   return {
     layers,

@@ -13,6 +13,14 @@ module.exports = {
     description: 'Description of Population information layer.',
     sidebar_component: 'PopulationLegend',
     map_component: 'ActionForHelpMapComponent',
+    application: {
+      orbis: {
+        layer: {
+          name: 'GeoJsonClusteredIconLayer',
+          props: 'actionForHelp',
+        },
+      },
+    },
   },
   data: '/static-data/astrosat/hourglass/people/v1/people.json',
 };

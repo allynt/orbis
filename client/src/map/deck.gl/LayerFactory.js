@@ -10,16 +10,14 @@ const LAYER_CLASSES = {
 };
 
 /**
- * @param {Source} source
- */
-const selectLayerName = source => source.metadata.application.orbis.layer.name;
-
-/**
- * Factory function to return a new instance of a layer based on the provided source.
+ * Factory function to return a new instance of a layer based on the provided class name and configuration.
  *
- * @param {Source} source - The name of the layer class to use
+ * @param {LayerName} className
+ * @param {object} configuration
+ *
+ * @returns {LAYER_CLASSES[keyof LAYER_CLASSES]} an instance of the provided class
  */
-export const LayerFactory = source => {
-  const Class = LAYER_CLASSES[selectLayerName(source)];
-  return new Class();
+export const LayerFactory = (className, configuration = {}) => {
+  const Class = LAYER_CLASSES[className];
+  return new Class(configuration);
 };

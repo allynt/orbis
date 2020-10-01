@@ -10,6 +10,14 @@ module.exports = {
     description: 'Description of Health infrastructure layer.',
     sidebar_component: 'InfrastructureLegend',
     map_component: 'ActionForHelpMapComponent',
+    application: {
+      orbis: {
+        layer: {
+          name: 'GeoJsonClusteredIconLayer',
+          props: 'actionForHelp',
+        },
+      },
+    },
   },
   type: 'vector',
   data:
