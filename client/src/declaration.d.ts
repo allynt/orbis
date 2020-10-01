@@ -19,6 +19,15 @@ declare type SourceMetadata = {
     orbis: {
       layer: {
         name: LayerName;
+        props?: string | object;
+      };
+      map_component: {
+        name: string;
+        props?: any;
+      };
+      sidebar_component: {
+        name: string;
+        props?: any;
       };
     };
   };

@@ -11,10 +11,10 @@ module.exports = {
     domain: 'Action for Health',
     range: false,
     description: 'Description of Population information layer.',
-    sidebar_component: 'PopulationLegend',
-    map_component: 'ActionForHelpMapComponent',
     application: {
       orbis: {
+        sidebar_component: { name: 'PopulationLegend' },
+        map_component: { name: 'ActionForHelpMapComponent' },
         layer: {
           name: 'GeoJsonClusteredIconLayer',
           props: 'actionForHelp',
