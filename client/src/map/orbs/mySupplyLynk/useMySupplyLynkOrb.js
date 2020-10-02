@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useRef } from 'react';
 import { Popup } from 'react-map-gl';
 
 import { FlyToInterpolator } from 'deck.gl';
@@ -109,7 +109,7 @@ export const useMySupplyLynkOrb = (data, activeSources) => {
         longitude={popupFeatures[0]?.geometry.coordinates[0]}
         latitude={popupFeatures[0]?.geometry.coordinates[1]}
         closeButton={popupFeatures.length > 1}
-        onClose={() => setPopupFeatures([])}
+        onClose={() => dispatch(setPopupFeatures([]))}
         closeOnClick={false}
         offsetTop={-37}
         captureClick
@@ -118,7 +118,7 @@ export const useMySupplyLynkOrb = (data, activeSources) => {
         <MySupplyLynkFeatureDetail
           data={popupFeatures.map(feature => feature.properties)}
           onSupplierClick={supplier => {
-            setDialogFeatures([supplier]);
+            dispatch(setDialogFeatures([supplier]));
             toggle();
           }}
         />
