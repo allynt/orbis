@@ -10,8 +10,14 @@ import { easeInOutCubic } from 'utils/easingFunctions';
 import iconMapping from './iconMapping.json';
 import iconAtlas from './iconAtlas.svg';
 
-import { useSelector } from 'react-redux';
-import { featuresSelector } from './mysupplylynk.slice';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  categoryFiltersSelector,
+  dialogFeaturesSelector,
+  popupFeaturesSelector,
+  setDialogFeatures,
+  setPopupFeatures,
+} from './mysupplylynk.slice';
 
 import { Dialog } from './dialog/dialog.component';
 import { useModal } from '@astrosat/astrosat-ui';
@@ -23,11 +29,10 @@ import { LAYER_IDS, MAX_ZOOM } from 'map/map.constants';
 export const useMySupplyLynkOrb = (data, activeSources) => {
   const ref = useRef(null);
   const [isVisible, toggle] = useModal(false);
-
-  const selectedFeatures = useSelector(featuresSelector);
-
-  const [popupFeatures, setPopupFeatures] = useState([]);
-  const [dialogFeatures, setDialogFeatures] = useState([]);
+  const dispatch = useDispatch();
+  const categoryFilters = useSelector(categoryFiltersSelector);
+  const popupFeatures = useSelector(popupFeaturesSelector);
+  const dialogFeatures = useSelector(dialogFeaturesSelector);
   const { setViewState } = useMap();
 
   const getFeatures = () => {
@@ -35,7 +40,7 @@ export const useMySupplyLynkOrb = (data, activeSources) => {
 
     const hasCategory = feat =>
       feat.properties.Items.some(item =>
-        selectedFeatures.includes(item.Category),
+        categoryFilters.includes(item.Category),
       );
 
     let filteredFeatures;
@@ -65,10 +70,10 @@ export const useMySupplyLynkOrb = (data, activeSources) => {
           transitionEasing: easeInOutCubic,
           transitionInterpolator: new FlyToInterpolator(),
         });
-      else setPopupFeatures(info.objects);
+      else dispatch(setPopupFeatures(info.objects));
     } else {
-      setDialogFeatures([info.object.properties]);
-      setPopupFeatures([]);
+      dispatch(setDialogFeatures([info.object.properties]));
+      dispatch(setPopupFeatures([]));
       toggle();
     }
   };
@@ -76,14 +81,16 @@ export const useMySupplyLynkOrb = (data, activeSources) => {
   const handleHover = info => {
     if (popupFeatures.length > 1) return;
     if (!info?.object?.properties?.cluster) {
-      info.object ? setPopupFeatures([info.object]) : setPopupFeatures([]);
+      dispatch(
+        info.object ? setPopupFeatures([info.object]) : setPopupFeatures([]),
+      );
     }
   };
 
   const layers = [
     new GeoJsonClusteredIconLayer({
       id: LAYER_IDS.astrosat.mySupplyLynk.latest,
-      data: selectedFeatures?.length && getFeatures(),
+      data: categoryFilters?.length && getFeatures(),
       visible: !!activeSources?.find(
         source => source.source_id === LAYER_IDS.astrosat.mySupplyLynk.latest,
       ),

@@ -7,25 +7,47 @@ import { orbsSelector } from '../orbsSelectors';
 const mySupplyLynkSlice = createSlice({
   name: 'mySupplyLynk',
   initialState: {
-    selectedFeatures: CATEGORIES,
+    categoryFilters: CATEGORIES,
+    popupFeatures: [],
+    dialogFeatures: [],
   },
   reducers: {
     setSelectedFeatures: (state, { payload }) => {
-      state.selectedFeatures = payload;
+      state.categoryFilters = payload;
+    },
+    setPopupFeatures: (state, { payload }) => {
+      state.popupFeatures = payload;
+    },
+    setDialogFeatures: (state, { payload }) => {
+      state.dialogFeatures = payload;
     },
   },
 });
 
-export const { setSelectedFeatures } = mySupplyLynkSlice.actions;
+export const {
+  setSelectedFeatures,
+  setDialogFeatures,
+  setPopupFeatures,
+} = mySupplyLynkSlice.actions;
 
 const baseSelector = createSelector(
   orbsSelector,
   orbs => orbs[mySupplyLynkSlice.name],
 );
 
-export const featuresSelector = createSelector(
+export const categoryFiltersSelector = createSelector(
   baseSelector,
-  orb => orb?.selectedFeatures,
+  orb => orb?.categoryFilters,
+);
+
+export const popupFeaturesSelector = createSelector(
+  baseSelector,
+  orb => orb?.popupFeatures,
+);
+
+export const dialogFeaturesSelector = createSelector(
+  baseSelector,
+  orb => orb?.dialogFeatures,
 );
 
 export default mySupplyLynkSlice.reducer;

@@ -27,7 +27,7 @@ export const useOrbs = () => {
   const [data, setData] = useState({});
   const [stateLayers, setStateLayers] = useState([]);
   const [stateMapComponents, setStateMapComponents] = useState([]);
-  const [sidebarComponents, setSidebarComponents] = useState({});
+  const [stateSidebarComponents, setStateSidebarComponents] = useState({});
 
   const fetchData = useCallback(
     async source => {
@@ -54,7 +54,7 @@ export const useOrbs = () => {
   useEffect(() => {
     /** @type {[string, JSX.Element][]} */
     const components = activeSources.map(source => {
-      if (!source.metadata.application.orbis.sidebar_component.name)
+      if (!source?.metadata?.application?.orbis?.sidebar_component?.name)
         return [source.source_id, null];
       const Component = lazy(() =>
         import(
@@ -67,7 +67,7 @@ export const useOrbs = () => {
         <Component selectedLayer={source} dispatch={dispatch} {...props} />,
       ];
     });
-    setSidebarComponents(
+    setStateSidebarComponents(
       components.reduce(
         (acc, [source_id, component]) => ({
           ...acc,
@@ -80,7 +80,8 @@ export const useOrbs = () => {
 
   useEffect(() => {
     const components = activeSources.map(source => {
-      if (!source.metadata.application.orbis.map_component.name) return null;
+      if (!source?.metadata?.application?.orbis?.map_component?.name)
+        return null;
       const Component = lazy(() =>
         import(
           `./components/${source.metadata.application.orbis.map_component.name}`
@@ -97,6 +98,7 @@ export const useOrbs = () => {
      * @param {Source} source
      */
     const createLayer = async source => {
+      if (!source?.metadata?.application?.orbis?.layer?.name) return undefined;
       const { props, name } = source.metadata.application.orbis.layer;
       let config = props;
       if (typeof config === 'string') {
@@ -136,6 +138,6 @@ export const useOrbs = () => {
   return {
     layers,
     mapComponents,
-    sidebarComponents,
+    sidebarComponents: stateSidebarComponents,
   };
 };
