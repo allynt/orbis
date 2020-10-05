@@ -9,7 +9,6 @@ import FeatureDetail from 'components/feature-detail/feature-detail.component';
 import { CustomMVTLayer } from 'map/deck.gl/custom-layers/custom-mvt-layer';
 import { LAYER_IDS } from 'map/map.constants';
 import { colorSchemesSelector, propertySelector } from './isolation-plus.slice';
-import { RadioPicker } from './radio-picker/radio-picker.component';
 
 const TILE_LAYERS = [
   LAYER_IDS.astrosat.isolationPlus.ageDemographicsCensus.r1v2,
@@ -102,9 +101,6 @@ export const useIsolationPlusOrb = (data, sources, authToken) => {
   return {
     layers,
     mapComponents,
-    sidebarComponents: {
-      ...TILE_LAYERS.reduce((acc, cur) => ({ ...acc, [cur]: RadioPicker }), {}),
-    },
   };
 };
 

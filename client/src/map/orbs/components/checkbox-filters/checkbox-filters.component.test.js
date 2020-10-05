@@ -29,7 +29,7 @@ describe('Checkbox Filters', () => {
 
     CATEGORIES.forEach(cat => {
       expect(getByText(cat)).toBeInTheDocument();
-      expect(getByLabelText(cat)).toHaveAttribute('checked');
+      expect(getByLabelText(cat)).toHaveProperty('checked');
     });
   });
 

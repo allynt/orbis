@@ -103,7 +103,7 @@ export const useMySupplyLynkOrb = (data, activeSources) => {
   ];
 
   const mapComponents = [
-    popupFeatures.length && (
+    popupFeatures?.length && (
       <Popup
         key="popup"
         longitude={popupFeatures[0]?.geometry.coordinates[0]}
@@ -124,7 +124,7 @@ export const useMySupplyLynkOrb = (data, activeSources) => {
         />
       </Popup>
     ),
-    dialogFeatures.length && (
+    dialogFeatures?.length && (
       <Dialog
         key="dialog"
         supplier={dialogFeatures[0]}
