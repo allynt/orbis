@@ -13,7 +13,7 @@ const wrapper = ({ children }) => (
     store={configureMockStore()({
       orbs: {
         mySupplyLynk: {
-          selectedFeatures: CATEGORIES,
+          categoryFilters: CATEGORIES,
         },
       },
     })}
@@ -29,7 +29,7 @@ describe('Checkbox Filters', () => {
 
     CATEGORIES.forEach(cat => {
       expect(getByText(cat)).toBeInTheDocument();
-      expect(getByLabelText(cat)).toHaveProperty('checked');
+      expect(getByLabelText(cat)).toHaveAttribute('checked');
     });
   });
 
