@@ -13,7 +13,7 @@ const wrapper = ({ children }) => (
     store={configureMockStore()({
       orbs: {
         mySupplyLynk: {
-          selectedFeatures: CATEGORIES,
+          categoryFilters: CATEGORIES,
         },
       },
     })}

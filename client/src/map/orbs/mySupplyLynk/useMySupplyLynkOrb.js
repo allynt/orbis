@@ -1,33 +1,23 @@
-import React, { useState, useRef } from 'react';
-import { Popup } from 'react-map-gl';
-
 import { FlyToInterpolator } from 'deck.gl';
 import { GeoJsonClusteredIconLayer } from 'map/deck.gl/custom-layers/geo-json-clustered-icon-layer';
-
-import { useMap } from 'MapContext';
-import { easeInOutCubic } from 'utils/easingFunctions';
-
-import iconMapping from './iconMapping.json';
-import iconAtlas from './iconAtlas.svg';
-
-import { useSelector } from 'react-redux';
-import { featuresSelector } from './mysupplylynk.slice';
-
-import { Dialog } from './dialog/dialog.component';
-import { useModal } from '@astrosat/astrosat-ui';
-
-import MySupplyLynkFeatureDetail from './feature-detail/mysupplylynk-feature-detail.component';
-
 import { LAYER_IDS, MAX_ZOOM } from 'map/map.constants';
+import { useMap } from 'MapContext';
+import { useDispatch, useSelector } from 'react-redux';
+import { easeInOutCubic } from 'utils/easingFunctions';
+import iconAtlas from './iconAtlas.svg';
+import iconMapping from './iconMapping.json';
+import {
+  categoryFiltersSelector,
+  popupFeaturesSelector,
+  setDialogFeatures,
+  setPopupFeatures,
+  toggleDialog,
+} from './mysupplylynk.slice';
 
 export const useMySupplyLynkOrb = (data, activeSources) => {
-  const ref = useRef(null);
-  const [isVisible, toggle] = useModal(false);
-
-  const selectedFeatures = useSelector(featuresSelector);
-
-  const [popupFeatures, setPopupFeatures] = useState([]);
-  const [dialogFeatures, setDialogFeatures] = useState([]);
+  const dispatch = useDispatch();
+  const categoryFilters = useSelector(categoryFiltersSelector);
+  const popupFeatures = useSelector(popupFeaturesSelector);
   const { setViewState } = useMap();
 
   const getFeatures = () => {
@@ -35,7 +25,7 @@ export const useMySupplyLynkOrb = (data, activeSources) => {
 
     const hasCategory = feat =>
       feat.properties.Items.some(item =>
-        selectedFeatures.includes(item.Category),
+        categoryFilters.includes(item.Category),
       );
 
     let filteredFeatures;
@@ -65,25 +55,27 @@ export const useMySupplyLynkOrb = (data, activeSources) => {
           transitionEasing: easeInOutCubic,
           transitionInterpolator: new FlyToInterpolator(),
         });
-      else setPopupFeatures(info.objects);
+      else dispatch(setPopupFeatures(info.objects));
     } else {
-      setDialogFeatures([info.object.properties]);
-      setPopupFeatures([]);
-      toggle();
+      dispatch(setDialogFeatures([info.object.properties]));
+      dispatch(setPopupFeatures([]));
+      dispatch(toggleDialog());
     }
   };
 
   const handleHover = info => {
     if (popupFeatures.length > 1) return;
     if (!info?.object?.properties?.cluster) {
-      info.object ? setPopupFeatures([info.object]) : setPopupFeatures([]);
+      dispatch(
+        info.object ? setPopupFeatures([info.object]) : setPopupFeatures([]),
+      );
     }
   };
 
   const layers = [
     new GeoJsonClusteredIconLayer({
       id: LAYER_IDS.astrosat.mySupplyLynk.latest,
-      data: selectedFeatures?.length && getFeatures(),
+      data: categoryFilters?.length && getFeatures(),
       visible: !!activeSources?.find(
         source => source.source_id === LAYER_IDS.astrosat.mySupplyLynk.latest,
       ),
@@ -95,41 +87,7 @@ export const useMySupplyLynkOrb = (data, activeSources) => {
     }),
   ];
 
-  const mapComponents = [
-    popupFeatures.length && (
-      <Popup
-        key="popup"
-        longitude={popupFeatures[0]?.geometry.coordinates[0]}
-        latitude={popupFeatures[0]?.geometry.coordinates[1]}
-        closeButton={popupFeatures.length > 1}
-        onClose={() => setPopupFeatures([])}
-        closeOnClick={false}
-        offsetTop={-37}
-        captureClick
-        captureScroll
-      >
-        <MySupplyLynkFeatureDetail
-          data={popupFeatures.map(feature => feature.properties)}
-          onSupplierClick={supplier => {
-            setDialogFeatures([supplier]);
-            toggle();
-          }}
-        />
-      </Popup>
-    ),
-    dialogFeatures.length && (
-      <Dialog
-        key="dialog"
-        supplier={dialogFeatures[0]}
-        onCloseClick={toggle}
-        isVisible={isVisible}
-        ref={ref}
-      />
-    ),
-  ];
-
   return {
     layers,
-    mapComponents,
   };
 };

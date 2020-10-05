@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import {
   pickedObjectsSelector,
   setPickedObjects,
-} from '../actionForHelp/action-for-help.slice';
+} from '../slices/action-for-help.slice';
 
 const ActionForHelpMapComponent = () => {
   const pickedObjects = useSelector(pickedObjectsSelector);

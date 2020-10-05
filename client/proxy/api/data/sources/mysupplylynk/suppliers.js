@@ -17,6 +17,12 @@ module.exports = {
     range: 'false',
     domain: 'MySupplyLynk',
     description: 'Suppliers who can provide items',
-    sidebar_component: 'CheckboxFilters',
+    application: {
+      orbis: {
+        sidebar_component: {
+          name: 'CheckboxFilters',
+        },
+      },
+    },
   },
 };

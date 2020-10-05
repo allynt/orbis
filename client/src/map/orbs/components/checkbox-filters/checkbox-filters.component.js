@@ -8,7 +8,7 @@ import styles from './checkbox-filters.module.css';
 import { CATEGORIES } from '../../mySupplyLynk/mysupplylynk.constants';
 import { useSelector } from 'react-redux';
 import {
-  featuresSelector,
+  categoryFiltersSelector,
   setSelectedFeatures,
 } from '../../mySupplyLynk/mysupplylynk.slice';
 
@@ -18,7 +18,7 @@ import {
  * }} props
  */
 export const CheckboxFilters = ({ dispatch }) => {
-  const selectedFeatures = useSelector(featuresSelector);
+  const selectedFeatures = useSelector(categoryFiltersSelector);
   const CATEGORY_NAME_AND_ICON = CATEGORIES.map(name => ({
     name,
     Icon: Icons[name],

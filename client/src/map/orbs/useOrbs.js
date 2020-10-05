@@ -7,8 +7,10 @@ import {
   selectDataToken,
 } from 'data-layers/data-layers.slice';
 import { getData } from 'utils/http';
-import { useActionForHelpOrb } from './actionForHelp/useActionForHelpOrb';
 import { useMySupplyLynkOrb } from './mySupplyLynk/useMySupplyLynkOrb';
+import { useMap } from 'MapContext';
+import { LayerFactory } from '../deck.gl/LayerFactory';
+import { useIsolationPlusOrb } from './isolationPlus/useIsolationPlusOrb';
 
 const dataUrlFromId = source => {
   return source.data && typeof source.data === 'string'
@@ -17,11 +19,14 @@ const dataUrlFromId = source => {
 };
 
 export const useOrbs = () => {
+  const { setViewState } = useMap();
   const dispatch = useDispatch();
   const authToken = useSelector(selectDataToken);
+  /** @type {Source[]} */
   const activeSources = useSelector(activeDataSourcesSelector);
   const [data, setData] = useState({});
-  const [stateMapComponents, setStateMapComponents] = useState([]);
+  const [stateLayers, setStateLayers] = useState([]);
+  const [mapComponents, setMapComponents] = useState([]);
   const [sidebarComponents, setSidebarComponents] = useState({});
 
   const fetchData = useCallback(
@@ -47,60 +52,85 @@ export const useOrbs = () => {
   }, [activeSources, data, fetchData]);
 
   useEffect(() => {
-    const loadSidebarComponents = async () => {
-      const componentPromises = activeSources.map(source => {
-        if (!source.metadata.sidebar_component) return [source.source_id, null];
-        const Component = lazy(() =>
-          import(`./components/${source.metadata.sidebar_component}`),
-        );
-        return [
-          source.source_id,
-          <Component selectedLayer={source} dispatch={dispatch} />,
-        ];
-      });
-      Promise.all(componentPromises).then(components =>
-        setSidebarComponents(
-          components.reduce(
-            (acc, [source_id, component]) => ({
-              ...acc,
-              [source_id]: component,
-            }),
-            {},
-          ),
+    /** @type {[string, JSX.Element][]} */
+    const components = activeSources.map(source => {
+      if (!source?.metadata?.application?.orbis?.sidebar_component?.name)
+        return [source.source_id, null];
+      const Component = lazy(() =>
+        import(
+          `./components/${source.metadata.application.orbis.sidebar_component.name}`
         ),
       );
-    };
-    loadSidebarComponents();
+      const props = source.metadata.application.orbis.sidebar_component.props;
+      return [
+        source.source_id,
+        <Component selectedLayer={source} dispatch={dispatch} {...props} />,
+      ];
+    });
+    setSidebarComponents(
+      components.reduce(
+        (acc, [source_id, component]) => ({
+          ...acc,
+          [source_id]: component,
+        }),
+        {},
+      ),
+    );
   }, [activeSources, dispatch]);
 
   useEffect(() => {
-    const loadMapComponents = async () => {
-      const componentPromises = activeSources.map(source => {
-        if (!source.metadata.map_component) return null;
-        const Component = lazy(() =>
-          import(`./components/${source.metadata.map_component}`),
-        );
-        return <Component />;
-      });
-      Promise.all(componentPromises).then(components =>
-        setStateMapComponents(components),
+    const components = activeSources.map(source => {
+      if (!source?.metadata?.application?.orbis?.map_component?.name)
+        return null;
+      const Component = lazy(() =>
+        import(
+          `./components/${source.metadata.application.orbis.map_component.name}`
+        ),
       );
-    };
-    loadMapComponents();
+      const props = source.metadata.application.orbis.map_component.props;
+      return <Component {...props} />;
+    });
+    setMapComponents(components);
   }, [activeSources, dispatch]);
 
-  const { layers: actionForHelpLayers } = useActionForHelpOrb(
+  useEffect(() => {
+    /**
+     * @param {Source} source
+     */
+    const createLayer = async source => {
+      if (!source?.metadata?.application?.orbis?.layer?.name) return undefined;
+      const { props, name } = source.metadata.application.orbis.layer;
+      let config = props;
+      if (typeof config === 'string') {
+        const imported = await import(`./configurations/${config}`);
+        const configFn = imported.default;
+        config = configFn({
+          id: source.source_id,
+          data: data[source.source_id],
+          activeSources,
+          dispatch,
+          setViewState,
+        });
+      }
+      const layer = LayerFactory(name, config);
+      return layer;
+    };
+    const layerPromises = activeSources.map(createLayer);
+    Promise.all(layerPromises).then(setStateLayers);
+  }, [activeSources, data, dispatch, setViewState]);
+
+  const { layers: mySupplyLynkLayers } = useMySupplyLynkOrb(
     data,
     activeSources,
   );
 
-  const {
-    layers: mySupplyLynkLayers,
-    mapComponents: mySupplyLynkMapComponents,
-  } = useMySupplyLynkOrb(data, activeSources);
+  const { layers: isolationPlusLayers } = useIsolationPlusOrb(
+    data,
+    activeSources,
+    authToken,
+  );
 
-  let layers = [...actionForHelpLayers, ...mySupplyLynkLayers];
-  let mapComponents = [...stateMapComponents, ...mySupplyLynkMapComponents];
+  let layers = [...stateLayers, ...mySupplyLynkLayers, ...isolationPlusLayers];
 
   return {
     layers,
