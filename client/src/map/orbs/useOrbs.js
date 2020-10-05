@@ -121,7 +121,7 @@ export const useOrbs = () => {
 
   const {
     layers: mySupplyLynkLayers,
-    mapComponents: mySupplyLynkMapComponents,
+    // mapComponents: mySupplyLynkMapComponents,
   } = useMySupplyLynkOrb(data, activeSources);
   const { layers: isolationPlusLayers } = useIsolationPlusOrb(
     data,
@@ -131,7 +131,7 @@ export const useOrbs = () => {
 
   let layers = [...stateLayers, ...mySupplyLynkLayers, ...isolationPlusLayers];
 
-  let mapComponents = [...stateMapComponents, ...mySupplyLynkMapComponents];
+  let mapComponents = [...stateMapComponents];
 
   return {
     layers,

@@ -1,38 +1,23 @@
-import React, { useRef } from 'react';
-import { Popup } from 'react-map-gl';
-
 import { FlyToInterpolator } from 'deck.gl';
 import { GeoJsonClusteredIconLayer } from 'map/deck.gl/custom-layers/geo-json-clustered-icon-layer';
-
+import { LAYER_IDS, MAX_ZOOM } from 'map/map.constants';
 import { useMap } from 'MapContext';
-import { easeInOutCubic } from 'utils/easingFunctions';
-
-import iconMapping from './iconMapping.json';
-import iconAtlas from './iconAtlas.svg';
-
 import { useDispatch, useSelector } from 'react-redux';
+import { easeInOutCubic } from 'utils/easingFunctions';
+import iconAtlas from './iconAtlas.svg';
+import iconMapping from './iconMapping.json';
 import {
   categoryFiltersSelector,
-  dialogFeaturesSelector,
   popupFeaturesSelector,
   setDialogFeatures,
   setPopupFeatures,
+  toggleDialog,
 } from './mysupplylynk.slice';
 
-import { Dialog } from './mysupplylynk-dialog/dialog.component';
-import { useModal } from '@astrosat/astrosat-ui';
-
-import MySupplyLynkFeatureDetail from './mysupplylynk-feature-detail/mysupplylynk-feature-detail.component';
-
-import { LAYER_IDS, MAX_ZOOM } from 'map/map.constants';
-
 export const useMySupplyLynkOrb = (data, activeSources) => {
-  const ref = useRef(null);
-  const [isVisible, toggle] = useModal(false);
   const dispatch = useDispatch();
   const categoryFilters = useSelector(categoryFiltersSelector);
   const popupFeatures = useSelector(popupFeaturesSelector);
-  const dialogFeatures = useSelector(dialogFeaturesSelector);
   const { setViewState } = useMap();
 
   const getFeatures = () => {
@@ -74,7 +59,7 @@ export const useMySupplyLynkOrb = (data, activeSources) => {
     } else {
       dispatch(setDialogFeatures([info.object.properties]));
       dispatch(setPopupFeatures([]));
-      toggle();
+      dispatch(toggleDialog());
     }
   };
 
@@ -102,41 +87,7 @@ export const useMySupplyLynkOrb = (data, activeSources) => {
     }),
   ];
 
-  const mapComponents = [
-    popupFeatures?.length && (
-      <Popup
-        key="popup"
-        longitude={popupFeatures[0]?.geometry.coordinates[0]}
-        latitude={popupFeatures[0]?.geometry.coordinates[1]}
-        closeButton={popupFeatures.length > 1}
-        onClose={() => dispatch(setPopupFeatures([]))}
-        closeOnClick={false}
-        offsetTop={-37}
-        captureClick
-        captureScroll
-      >
-        <MySupplyLynkFeatureDetail
-          data={popupFeatures.map(feature => feature.properties)}
-          onSupplierClick={supplier => {
-            dispatch(setDialogFeatures([supplier]));
-            toggle();
-          }}
-        />
-      </Popup>
-    ),
-    dialogFeatures?.length && (
-      <Dialog
-        key="dialog"
-        supplier={dialogFeatures[0]}
-        onCloseClick={toggle}
-        isVisible={isVisible}
-        ref={ref}
-      />
-    ),
-  ];
-
   return {
     layers,
-    mapComponents,
   };
 };

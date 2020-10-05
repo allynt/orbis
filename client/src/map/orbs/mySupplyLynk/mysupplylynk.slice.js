@@ -10,6 +10,7 @@ const mySupplyLynkSlice = createSlice({
     categoryFilters: CATEGORIES,
     popupFeatures: [],
     dialogFeatures: [],
+    dialogVisible: false,
   },
   reducers: {
     setSelectedFeatures: (state, { payload }) => {
@@ -21,6 +22,9 @@ const mySupplyLynkSlice = createSlice({
     setDialogFeatures: (state, { payload }) => {
       state.dialogFeatures = payload;
     },
+    toggleDialog: state => {
+      state.dialogVisible = !state.dialogVisible;
+    },
   },
 });
 
@@ -28,6 +32,7 @@ export const {
   setSelectedFeatures,
   setDialogFeatures,
   setPopupFeatures,
+  toggleDialog,
 } = mySupplyLynkSlice.actions;
 
 const baseSelector = createSelector(
@@ -48,6 +53,11 @@ export const popupFeaturesSelector = createSelector(
 export const dialogFeaturesSelector = createSelector(
   baseSelector,
   orb => orb?.dialogFeatures,
+);
+
+export const dialogVisibleSelector = createSelector(
+  baseSelector,
+  orb => orb?.dialogVisible,
 );
 
 export default mySupplyLynkSlice.reducer;
