@@ -92,30 +92,8 @@ export const LAYER_IDS = {
         latest: 'astrosat/rice/paddies-health/latest',
       },
     },
-    covid: {
-      hourglass: {
-        latest: 'astrosat/covid/hourglass/latest',
-      },
-      commonWeal: {
-        latest: 'astrosat/covid/cw/latest',
-      },
-    },
     mySupplyLynk: {
       latest: 'astrosat/mysupplylynk/orbis/latest',
-    },
-    hourglass: {
-      people: {
-        v1: 'astrosat/hourglass/people/v1',
-      },
-      scotlandInfrastructure: {
-        v1: 'astrosat/hourglass/scotland-infrastructure/v1',
-      },
-      northernIrelandInfrastructure: {
-        v1: 'astrosat/hourglass/northern-ireland-infrastructure/v1',
-      },
-      walesInfrastructure: {
-        v1: 'astrosat/hourglass/wales-infrastructure/v1',
-      },
     },
   },
 };

@@ -79,33 +79,8 @@ export const useIsolationPlusOrb = (data, sources, authToken) => {
     }),
   ];
 
-  const mapComponents = [
-    pickedInfo && (
-      <Popup
-        key="isolationPlusPopup"
-        longitude={pickedInfo.lngLat[0]}
-        latitude={pickedInfo.lngLat[1]}
-        onClose={() => dispatch(setPickedInfo(undefined))}
-        captureScroll
-      >
-        <FeatureDetail
-          features={[
-            omitBy(
-              pickedInfo.object.properties,
-              (_, key) =>
-                key !== selectedProperty.name &&
-                !key.toLowerCase().includes('code'),
-            ),
-          ]}
-          title="Metadata"
-        />
-      </Popup>
-    ),
-  ];
-
   return {
     layers,
-    mapComponents,
   };
 };
 

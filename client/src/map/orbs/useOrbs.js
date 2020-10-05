@@ -26,7 +26,7 @@ export const useOrbs = () => {
   const activeSources = useSelector(activeDataSourcesSelector);
   const [data, setData] = useState({});
   const [stateLayers, setStateLayers] = useState([]);
-  const [stateMapComponents, setStateMapComponents] = useState([]);
+  const [mapComponents, setMapComponents] = useState([]);
   const [sidebarComponents, setSidebarComponents] = useState({});
 
   const fetchData = useCallback(
@@ -90,7 +90,7 @@ export const useOrbs = () => {
       const props = source.metadata.application.orbis.map_component.props;
       return <Component {...props} />;
     });
-    setStateMapComponents(components);
+    setMapComponents(components);
   }, [activeSources, dispatch]);
 
   useEffect(() => {
@@ -119,10 +119,11 @@ export const useOrbs = () => {
     Promise.all(layerPromises).then(setStateLayers);
   }, [activeSources, data, dispatch, setViewState]);
 
-  const {
-    layers: mySupplyLynkLayers,
-    // mapComponents: mySupplyLynkMapComponents,
-  } = useMySupplyLynkOrb(data, activeSources);
+  const { layers: mySupplyLynkLayers } = useMySupplyLynkOrb(
+    data,
+    activeSources,
+  );
+
   const { layers: isolationPlusLayers } = useIsolationPlusOrb(
     data,
     activeSources,
@@ -130,8 +131,6 @@ export const useOrbs = () => {
   );
 
   let layers = [...stateLayers, ...mySupplyLynkLayers, ...isolationPlusLayers];
-
-  let mapComponents = [...stateMapComponents];
 
   return {
     layers,
