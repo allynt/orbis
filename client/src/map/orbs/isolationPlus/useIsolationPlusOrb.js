@@ -1,14 +1,19 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 
 import chroma from 'chroma-js';
 import { omitBy } from 'lodash';
 import { Popup } from 'react-map-gl';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import FeatureDetail from 'components/feature-detail/feature-detail.component';
 import { CustomMVTLayer } from 'map/deck.gl/custom-layers/custom-mvt-layer';
 import { LAYER_IDS } from 'map/map.constants';
-import { colorSchemesSelector, propertySelector } from './isolation-plus.slice';
+import {
+  colorSchemesSelector,
+  propertySelector,
+  pickedInfoSelector,
+  setPickedInfo,
+} from './isolation-plus.slice';
 
 const TILE_LAYERS = [
   LAYER_IDS.astrosat.isolationPlus.ageDemographicsCensus.r1v2,
@@ -28,8 +33,8 @@ const TILE_LAYERS = [
 ];
 
 export const useIsolationPlusOrb = (data, sources, authToken) => {
-  /** @type {[*, React.Dispatch<*>]} */
-  const [pickedInfo, setPickedInfo] = useState();
+  const dispatch = useDispatch();
+  const pickedInfo = useSelector(pickedInfoSelector);
   const selectedProperty = useSelector(propertySelector);
   const colorSchemes = useSelector(colorSchemesSelector);
 
@@ -58,7 +63,7 @@ export const useIsolationPlusOrb = (data, sources, authToken) => {
           uniqueIdProperty: source.metadata.uniqueIdProperty,
           pickable: true,
           autoHighlight: true,
-          onClick: info => setPickedInfo(info),
+          onClick: info => dispatch(setPickedInfo(info)),
           filled: true,
           getFillColor: d => [
             // @ts-ignore
@@ -80,7 +85,7 @@ export const useIsolationPlusOrb = (data, sources, authToken) => {
         key="isolationPlusPopup"
         longitude={pickedInfo.lngLat[0]}
         latitude={pickedInfo.lngLat[1]}
-        onClose={() => setPickedInfo(undefined)}
+        onClose={() => dispatch(setPickedInfo(undefined))}
         captureScroll
       >
         <FeatureDetail
