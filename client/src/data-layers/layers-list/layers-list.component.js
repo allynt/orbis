@@ -27,7 +27,11 @@ export const LayersList = ({ dispatch, selectedLayers, sidebarComponents }) => {
             title={selectedLayer.metadata.label}
           >
             <React.Suspense fallback={<div>Loading...</div>}>
-              {Component}
+              {typeof Component === 'function' ? (
+                <Component selectedLayer={selectedLayer} dispatch={dispatch} />
+              ) : (
+                Component
+              )}
             </React.Suspense>
           </LayersListItem>
         );

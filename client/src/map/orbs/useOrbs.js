@@ -126,18 +126,25 @@ export const useOrbs = () => {
   const {
     layers: isolationPlusLayers,
     mapComponents: isolationPlusMapComponents,
+    sidebarComponents: isolationPlusSidebarComponents,
   } = useIsolationPlusOrb(data, activeSources, authToken);
 
   let layers = [...stateLayers, ...mySupplyLynkLayers, ...isolationPlusLayers];
+
   let mapComponents = [
     ...stateMapComponents,
     ...mySupplyLynkMapComponents,
     ...isolationPlusMapComponents,
   ];
 
+  let sidebarComponents = {
+    ...stateSidebarComponents,
+    ...isolationPlusSidebarComponents,
+  };
+
   return {
     layers,
     mapComponents,
-    sidebarComponents: stateSidebarComponents,
+    sidebarComponents,
   };
 };
