@@ -19,10 +19,10 @@ import {
   setPopupFeatures,
 } from './mysupplylynk.slice';
 
-import { Dialog } from './dialog/dialog.component';
+import { Dialog } from './mysupplylynk-dialog/dialog.component';
 import { useModal } from '@astrosat/astrosat-ui';
 
-import MySupplyLynkFeatureDetail from './feature-detail/mysupplylynk-feature-detail.component';
+import MySupplyLynkFeatureDetail from './mysupplylynk-feature-detail/mysupplylynk-feature-detail.component';
 
 import { LAYER_IDS, MAX_ZOOM } from 'map/map.constants';
 

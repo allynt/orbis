@@ -27,7 +27,7 @@ export const useOrbs = () => {
   const [data, setData] = useState({});
   const [stateLayers, setStateLayers] = useState([]);
   const [stateMapComponents, setStateMapComponents] = useState([]);
-  const [stateSidebarComponents, setStateSidebarComponents] = useState({});
+  const [sidebarComponents, setSidebarComponents] = useState({});
 
   const fetchData = useCallback(
     async source => {
@@ -67,7 +67,7 @@ export const useOrbs = () => {
         <Component selectedLayer={source} dispatch={dispatch} {...props} />,
       ];
     });
-    setStateSidebarComponents(
+    setSidebarComponents(
       components.reduce(
         (acc, [source_id, component]) => ({
           ...acc,
@@ -123,24 +123,15 @@ export const useOrbs = () => {
     layers: mySupplyLynkLayers,
     mapComponents: mySupplyLynkMapComponents,
   } = useMySupplyLynkOrb(data, activeSources);
-  const {
-    layers: isolationPlusLayers,
-    mapComponents: isolationPlusMapComponents,
-    // sidebarComponents: isolationPlusSidebarComponents,
-  } = useIsolationPlusOrb(data, activeSources, authToken);
+  const { layers: isolationPlusLayers } = useIsolationPlusOrb(
+    data,
+    activeSources,
+    authToken,
+  );
 
   let layers = [...stateLayers, ...mySupplyLynkLayers, ...isolationPlusLayers];
 
-  let mapComponents = [
-    ...stateMapComponents,
-    ...mySupplyLynkMapComponents,
-    ...isolationPlusMapComponents,
-  ];
-
-  let sidebarComponents = {
-    ...stateSidebarComponents,
-    // ...isolationPlusSidebarComponents,
-  };
+  let mapComponents = [...stateMapComponents, ...mySupplyLynkMapComponents];
 
   return {
     layers,
