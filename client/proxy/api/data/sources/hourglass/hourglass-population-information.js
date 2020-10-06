@@ -17,7 +17,7 @@ module.exports = {
         map_component: { name: 'ActionForHelpMapComponent' },
         layer: {
           name: 'GeoJsonClusteredIconLayer',
-          props: 'actionForHelp',
+          props: { config: 'actionForHelpConfig' },
         },
       },
     },
