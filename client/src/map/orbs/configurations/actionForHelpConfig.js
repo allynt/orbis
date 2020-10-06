@@ -1,7 +1,7 @@
 import { FlyToInterpolator } from 'deck.gl';
 import { MAX_ZOOM } from 'map/map.constants';
-import iconMapping from './actionForHelp.iconMapping.json';
-import iconAtlas from './actionForHelp.iconAtlas.svg';
+import iconMapping from './actionForHelpConfig.iconMapping.json';
+import iconAtlas from './actionForHelpConfig.iconAtlas.svg';
 import { setPickedObjects } from 'map/orbs/slices/action-for-help.slice';
 import { easeInOutCubic } from 'utils/easingFunctions';
 
