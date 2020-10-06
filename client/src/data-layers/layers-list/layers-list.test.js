@@ -20,7 +20,7 @@ describe('<LayersList />', () => {
 
   it('shows the component for a selected layer when clicked', () => {
     const sidebarComponents = {
-      'test/layer/1': () => <p>I'm the component</p>,
+      'test/layer/1': <p>I'm the component</p>,
     };
     const selectedLayers = [
       { source_id: 'test/layer/1', metadata: { label: 'Layer 1' } },

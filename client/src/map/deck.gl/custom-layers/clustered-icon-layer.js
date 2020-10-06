@@ -1,18 +1,21 @@
 import { CompositeLayer, IconLayer, TextLayer } from 'deck.gl';
 import Supercluster from 'supercluster';
 
-const DEFAULT_FONT_FAMILY = 'Open Sans';
-const DEFAULT_FONT_WEIGHT = 600;
+const TEXT_COLOR_TRANSPARENT = [0, 0, 0, 0];
 
 export class ClusteredIconLayer extends CompositeLayer {
+  _getExpansionZoom(feature) {
+    return this.state.index.getClusterExpansionZoom(
+      feature.properties.cluster_id,
+    );
+  }
+
   _injectExpansionZoom(feature) {
     return {
       ...feature,
       properties: {
         ...feature.properties,
-        expansion_zoom: this.state.index.getClusterExpansionZoom(
-          feature.properties.cluster_id,
-        ),
+        expansion_zoom: this._getExpansionZoom(feature),
       },
     };
   }
@@ -50,8 +53,8 @@ export class ClusteredIconLayer extends CompositeLayer {
   getPickingInfo({ info, mode }) {
     if (info.picked) {
       if (info.object.properties.cluster) {
-        info.object.properties.expansion_zoom = this.state.index.getClusterExpansionZoom(
-          info.object.properties.cluster_id,
+        info.object.properties.expansion_zoom = this._getExpansionZoom(
+          info.object,
         );
         if (mode !== 'hover') {
           info.objects = this.state.index.getLeaves(
@@ -64,6 +67,40 @@ export class ClusteredIconLayer extends CompositeLayer {
     return info;
   }
 
+  _getIcon(feature) {
+    if (feature.properties.cluster) {
+      return this._getExpansionZoom(feature) > this.props.maxZoom
+        ? this.props.groupIconName
+        : this.props.clusterIconName;
+    }
+    return typeof this.props.getIcon === 'function'
+      ? this.props.getIcon(feature)
+      : this.props.getIcon;
+  }
+
+  _getTextColor(feature) {
+    if (feature.properties.cluster && this.props.hideTextOnGroup) {
+      if (this._getExpansionZoom(feature) > this.props.maxZoom)
+        return TEXT_COLOR_TRANSPARENT;
+    }
+    if (typeof this.props.getTextColor === 'function')
+      return feature.properties.cluster
+        ? this.props.getTextColor(this._injectExpansionZoom(feature))
+        : this.props.getTextColor(feature);
+    return this.props.getTextColor;
+  }
+
+  _getIconSize(feature) {
+    if (feature.properties.cluster) {
+      return this._getExpansionZoom(feature) > this.props.maxZoom
+        ? this.props.groupIconSize
+        : this.props.clusterIconSize;
+    }
+    return typeof this.props.getIconSize === 'function'
+      ? this.props.getIconSize(feature)
+      : this.props.getIconSize;
+  }
+
   renderLayers() {
     const { data } = this.state;
     return [
@@ -74,14 +111,8 @@ export class ClusteredIconLayer extends CompositeLayer {
           iconAtlas: this.props.iconAtlas,
           iconMapping: this.props.iconMapping,
           getPosition: this.props.getPosition,
-          getIcon: feature => {
-            if (typeof this.props.getIcon === 'function')
-              return feature.properties.cluster
-                ? this.props.getIcon(this._injectExpansionZoom(feature))
-                : this.props.getIcon(feature);
-            return this.props.getIcon;
-          },
-          getSize: this.props.getIconSize,
+          getIcon: d => this._getIcon(d),
+          getSize: d => this._getIconSize(d),
           getColor: this.props.getIconColor,
           updateTriggers: {
             getPosition: this.props.updateTriggers.getPosition,
@@ -103,13 +134,7 @@ export class ClusteredIconLayer extends CompositeLayer {
               ? `${feature.properties.point_count}`
               : ` `,
           getSize: this.props.getTextSize,
-          getColor: feature => {
-            if (typeof this.props.getTextColor === 'function')
-              return feature.properties.cluster
-                ? this.props.getTextColor(this._injectExpansionZoom(feature))
-                : this.props.getTextColor(feature);
-            return this.props.getTextColor;
-          },
+          getColor: feature => this._getTextColor(feature),
           updateTriggers: {
             getPosition: this.props.updateTriggers.getPosition,
             getText: this.props.updateTriggers.getText,
@@ -126,19 +151,28 @@ ClusteredIconLayer.layerName = 'ClusteredIconLayer';
 
 ClusteredIconLayer.defaultProps = {
   // Shared accessors
+  pickable: true,
   getPosition: { type: 'accessor', value: x => x.position },
   // Icon properties
   iconAtlas: null,
   iconMapping: { type: 'object', value: {}, async: true },
   // Icon accessors
   getIcon: { type: 'accessor', value: x => x.icon },
-  getIconSize: { type: 'accessor', value: 20 },
+  getIconSize: { type: 'accessor', value: 60 },
   getIconColor: { type: 'accessor', value: [0, 0, 0, 255] },
   // Text properties
-  fontFamily: DEFAULT_FONT_FAMILY,
-  fontWeight: DEFAULT_FONT_WEIGHT,
+  fontFamily: 'Open Sans',
+  fontWeight: 600,
   // Text accessors
   getText: { type: 'accessor', value: x => x.text },
-  getTextSize: { type: 'accessor', value: 12 },
-  getTextColor: { type: 'accessor', value: [0, 0, 0, 255] },
+  getTextSize: { type: 'accessor', value: 32 },
+  getTextColor: { type: 'accessor', value: [51, 63, 72] },
+  // Clustering properties
+  maxZoom: 20,
+  clusterRadius: 40,
+  hideTextOnGroup: true,
+  clusterIconName: 'cluster',
+  clusterIconSize: 60,
+  groupIconName: 'group',
+  groupIconSize: 60,
 };

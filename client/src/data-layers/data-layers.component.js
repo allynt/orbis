@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { lazy, useEffect, useRef, useState } from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -18,13 +18,13 @@ import { LayersList } from './layers-list/layers-list.component';
 import styles from './data-layers.module.css';
 
 const DataLayers = () => {
-  const { sidebarComponents } = useOrbs();
   const [isVisible, toggle] = useModal(false);
   const ref = useRef(null);
+  const { sidebarComponents } = useOrbs();
 
   const dispatch = useDispatch();
   const dataSources = useSelector(dataSourcesSelector);
-  const selectedLayers = useSelector(activeDataSourcesSelector);
+  const activeDataSources = useSelector(activeDataSourcesSelector);
 
   // Create an array of sources, grouped by their domain.
   const domains = dataSources.reduce((acc, value) => {
@@ -41,7 +41,7 @@ const DataLayers = () => {
     <div className={styles.selectData} ref={ref}>
       <LayersList
         dispatch={dispatch}
-        selectedLayers={selectedLayers}
+        selectedLayers={activeDataSources}
         sidebarComponents={sidebarComponents}
       />
       <div className={styles.buttons}>
@@ -56,7 +56,7 @@ const DataLayers = () => {
 
       <DataLayersDialog
         domains={domains}
-        selectedLayers={selectedLayers}
+        selectedLayers={activeDataSources}
         onAddLayers={selectedLayers => dispatch(addLayers(selectedLayers))}
         onRemoveLayer={layer => dispatch(removeLayer(layer))}
         isVisible={isVisible}

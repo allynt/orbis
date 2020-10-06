@@ -25,15 +25,19 @@ const isolationPlusSlice = createSlice({
       source_id: undefined,
       name: undefined,
     },
+    pickedInfo: undefined,
   },
   reducers: {
     setProperty: (state, { payload }) => {
       state.property = payload;
     },
+    setPickedInfo: (state, { payload }) => {
+      state.pickedInfo = payload;
+    },
   },
 });
 
-export const { setProperty } = isolationPlusSlice.actions;
+export const { setProperty, setPickedInfo } = isolationPlusSlice.actions;
 
 const baseSelector = createSelector(
   orbsSelector,
@@ -54,6 +58,11 @@ export const colorSchemeSelector = createSelector(
 export const propertySelector = createSelector(
   baseSelector,
   orb => orb?.property,
+);
+
+export const pickedInfoSelector = createSelector(
+  baseSelector,
+  orb => orb?.pickedInfo,
 );
 
 export default isolationPlusSlice.reducer;
