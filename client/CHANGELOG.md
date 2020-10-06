@@ -1,3 +1,52 @@
+# [2.4.0](https://github.com/astrosat/orbis/compare/v2.3.0...v2.4.0) (2020-10-06)
+
+
+### Bug Fixes
+
+* **devops:** Add ability to manually trigger releases ([de14b69](https://github.com/astrosat/orbis/commit/de14b69a9838aed3cb512eac341e96620723f2c7)), closes [#793](https://github.com/astrosat/orbis/issues/793)
+* **frontend:** Add fallback for loading component ([5af11c4](https://github.com/astrosat/orbis/commit/5af11c4ef0a24ad15e39f9a774ac1fd5e9ccb271))
+* **frontend:** Add generic getIcon to ClusteredIconLayer ([b07ecf0](https://github.com/astrosat/orbis/commit/b07ecf0d9c1ac30ceb9d4dff510b2b1cd9c9415f)), closes [#787](https://github.com/astrosat/orbis/issues/787)
+* **frontend:** Add keyboard functionality ([078f549](https://github.com/astrosat/orbis/commit/078f54977fd842147784fe6f430363b8a26fd3fa)), closes [#776](https://github.com/astrosat/orbis/issues/776)
+* **frontend:** Add topMapLayerGroups and selector ([53836b3](https://github.com/astrosat/orbis/commit/53836b392637fcdb0092235c31bd2ddfd1980d5b)), closes [#775](https://github.com/astrosat/orbis/issues/775)
+* **frontend:** Allow for dynamic and hardcoded layers ([b1b49dc](https://github.com/astrosat/orbis/commit/b1b49dc4eacaaf321e7d4f943770640396238e36)), closes [#789](https://github.com/astrosat/orbis/issues/789)
+* **frontend:** Clean up MSL layer config, combine A4H layer config ([0f574f8](https://github.com/astrosat/orbis/commit/0f574f82951f093c6e0f361915112d46ff42b240)), closes [#787](https://github.com/astrosat/orbis/issues/787)
+* **frontend:** Cleanup ([5ae161a](https://github.com/astrosat/orbis/commit/5ae161a34ff957d6a51cdc2b8ffe8b61debfc028)), closes [#789](https://github.com/astrosat/orbis/issues/789)
+* **frontend:** Combine switcher handler functions ([61fad4c](https://github.com/astrosat/orbis/commit/61fad4c923471b2e1abccb045872bd1320a8c60f)), closes [#776](https://github.com/astrosat/orbis/issues/776)
+* **frontend:** Convert Iso+ orb to use redux ([e599059](https://github.com/astrosat/orbis/commit/e5990590fd4135e914f8f33cc894e289af22bbd8)), closes [#789](https://github.com/astrosat/orbis/issues/789)
+* **frontend:** Convert layer props to object ([16ecd6d](https://github.com/astrosat/orbis/commit/16ecd6dd8af86b5c008432859fff4764aa025463))
+* **frontend:** Default pickable to true ([ccc6bbc](https://github.com/astrosat/orbis/commit/ccc6bbc90f5f2024d0e74b603bb4f3ffea35a63d)), closes [#787](https://github.com/astrosat/orbis/issues/787)
+* **frontend:** Get colors right on geocoder ([bc133b9](https://github.com/astrosat/orbis/commit/bc133b91889a70523ebc8cb52d0750006d982ec8)), closes [#766](https://github.com/astrosat/orbis/issues/766)
+* **frontend:** Make getIconSize generic ([14ff81e](https://github.com/astrosat/orbis/commit/14ff81eccc28c90e3fbb2113bf51cb677548d34d)), closes [#787](https://github.com/astrosat/orbis/issues/787)
+* **frontend:** Make iso+ map comp dynamic, rename msl comps ([7787d72](https://github.com/astrosat/orbis/commit/7787d725231db05bacfd4253a0b3abbbcbdd544a)), closes [#789](https://github.com/astrosat/orbis/issues/789)
+* **frontend:** Make iso+ sidebar component dynamic ([5beda98](https://github.com/astrosat/orbis/commit/5beda98054a113a848cf24d32fb2991e0bab3103)), closes [#789](https://github.com/astrosat/orbis/issues/789)
+* **frontend:** Make msl map components dynamic ([4560c00](https://github.com/astrosat/orbis/commit/4560c00b7789a880e78af5869a51277ce1b101ea)), closes [#789](https://github.com/astrosat/orbis/issues/789)
+* **frontend:** Move more properties to class ([fa63f6b](https://github.com/astrosat/orbis/commit/fa63f6bf95d409d128a9cadc09a0b9f41ef33cc7)), closes [#787](https://github.com/astrosat/orbis/issues/787)
+* **frontend:** Move MSL state to redux ([71d4f02](https://github.com/astrosat/orbis/commit/71d4f02addc84d56f9bad46ab2644d5b4cc41dab)), closes [#789](https://github.com/astrosat/orbis/issues/789)
+* **frontend:** Remove "old" geocoder ([52ac5ce](https://github.com/astrosat/orbis/commit/52ac5ce5f42ab1361c0770251df356979f495c78)), closes [#766](https://github.com/astrosat/orbis/issues/766)
+* **frontend:** Remove pre/post layer infrastructure ([dc53ac9](https://github.com/astrosat/orbis/commit/dc53ac925a1109ca42c4dd8d6de388a1178e5308)), closes [#774](https://github.com/astrosat/orbis/issues/774)
+* **frontend:** Remove topMap css class ([db97b5c](https://github.com/astrosat/orbis/commit/db97b5cd8d75edda994013c44284c1d357c0e3c3)), closes [#774](https://github.com/astrosat/orbis/issues/774)
+* **frontend:** Sort overlapping attribution and nav ([798b180](https://github.com/astrosat/orbis/commit/798b1803a0d799e194c67d696577df81a8aa67ab)), closes [#775](https://github.com/astrosat/orbis/issues/775)
+* **frontend:** Switch deck/map structure around ([aa30586](https://github.com/astrosat/orbis/commit/aa305865254a3225793b8037436bcc7416709451)), closes [#774](https://github.com/astrosat/orbis/issues/774)
+* **frontend:** Test dynamic sidebar component on msl ([4401dad](https://github.com/astrosat/orbis/commit/4401dad4cf8a1b4ba426bd46cf386846a6779310))
+* **frontend:** Update Orbis to use root-level imports ([6086358](https://github.com/astrosat/orbis/commit/60863584f84f32879096822b3744a8c3dffb0d4a))
+
+
+### Features
+
+* **frontend:** Add functionality for basemap layers over data ([fb9c829](https://github.com/astrosat/orbis/commit/fb9c829a06f28a0227c8ef997117f0641990b3c1)), closes [#775](https://github.com/astrosat/orbis/issues/775)
+* **frontend:** Add react-map-gl-geocoder ([fcdb486](https://github.com/astrosat/orbis/commit/fcdb486644a7a5e82fdf6dbd7a85246af97c606e)), closes [#766](https://github.com/astrosat/orbis/issues/766)
+* **frontend:** Add remaining map styles ([1f37787](https://github.com/astrosat/orbis/commit/1f37787495e5aa2cf7e696a6d4ad1b0ab748c178)), closes [#776](https://github.com/astrosat/orbis/issues/776)
+* **frontend:** Add top map ([f9682b9](https://github.com/astrosat/orbis/commit/f9682b9e635719698a6d51b0256fa8a20fd38079)), closes [#774](https://github.com/astrosat/orbis/issues/774)
+* **frontend:** Add ui control for style changer ([2b89a3c](https://github.com/astrosat/orbis/commit/2b89a3c1c57dce6387d0a168a683ad9d80519272)), closes [#776](https://github.com/astrosat/orbis/issues/776)
+* **frontend:** Change map styles to be locally stored objects ([0a03112](https://github.com/astrosat/orbis/commit/0a0311285001c75fa31c020504ced2caa7323fff)), closes [#773](https://github.com/astrosat/orbis/issues/773)
+* **frontend:** Create createBottomMapStyle function ([ca0f044](https://github.com/astrosat/orbis/commit/ca0f0448d2c17da71adcc9fc11c596395ff607c9)), closes [#775](https://github.com/astrosat/orbis/issues/775)
+* **frontend:** Get map components dynamically loading ([bd03dc3](https://github.com/astrosat/orbis/commit/bd03dc3f73761bd62d4edb8514c1f9e18b7b77c3))
+* **frontend:** Got dynamic sidebar-components working ([1531d0f](https://github.com/astrosat/orbis/commit/1531d0f3044460b3a35611ae2548e57c0fd1a403))
+* **frontend:** Improve styling of style switcher ([512dfb9](https://github.com/astrosat/orbis/commit/512dfb981dc9ac03627c8d3a50a24939b116fb36)), closes [#776](https://github.com/astrosat/orbis/issues/776)
+* **frontend:** Make population legend dynamically loaded ([9eee519](https://github.com/astrosat/orbis/commit/9eee51927496cd84a2891f68cf21f327042e59b3))
+* **frontend:** Put map switcher back ([25b1f19](https://github.com/astrosat/orbis/commit/25b1f19c6a4fd0aa8b712758d486ec1c5944278f)), closes [#776](https://github.com/astrosat/orbis/issues/776)
+* **frontend:** Setup action for help to dynamically load ([b7dbc83](https://github.com/astrosat/orbis/commit/b7dbc83c168857d694f9f5493bf2fc1e24922842)), closes [#789](https://github.com/astrosat/orbis/issues/789)
+
 # [2.3.0](https://github.com/astrosat/orbis/compare/v2.2.1...v2.3.0) (2020-09-21)
 
 
