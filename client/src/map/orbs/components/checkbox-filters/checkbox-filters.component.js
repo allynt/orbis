@@ -5,20 +5,21 @@ import { Checkbox } from '@astrosat/astrosat-ui';
 import Icons from './icons';
 
 import styles from './checkbox-filters.module.css';
-
-/** @type {{
- *   categories: Array
- *   selectedFeatures: Array
- *   setSelectedFeatures: Function
- * }[]}
- */
-
-export const CheckboxFilters = ({
-  categories,
-  selectedFeatures,
+import { CATEGORIES } from '../../mySupplyLynk/mysupplylynk.constants';
+import { useSelector } from 'react-redux';
+import {
+  categoryFiltersSelector,
   setSelectedFeatures,
-}) => {
-  const CATEGORY_NAME_AND_ICON = categories.map(name => ({
+} from '../../mySupplyLynk/mysupplylynk.slice';
+
+/** @param {{
+ *   source?: any
+ *   dispatch?: any
+ * }} props
+ */
+export const CheckboxFilters = ({ dispatch }) => {
+  const selectedFeatures = useSelector(categoryFiltersSelector);
+  const CATEGORY_NAME_AND_ICON = CATEGORIES.map(name => ({
     name,
     Icon: Icons[name],
   }));
@@ -32,8 +33,10 @@ export const CheckboxFilters = ({
     } = event;
 
     checked
-      ? setSelectedFeatures([...selectedFeatures, value])
-      : setSelectedFeatures(selectedFeatures.filter(feat => feat !== value));
+      ? dispatch(setSelectedFeatures([...selectedFeatures, value]))
+      : dispatch(
+          setSelectedFeatures(selectedFeatures.filter(feat => feat !== value)),
+        );
   };
 
   return (
@@ -43,7 +46,7 @@ export const CheckboxFilters = ({
           key={name}
           id={name}
           className={styles.checkbox}
-          checked={selectedFeatures.includes(name)}
+          checked={selectedFeatures?.includes(name)}
           name="msl-filter-checkbox"
           value={name}
           onChange={handleChange}

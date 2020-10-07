@@ -48,7 +48,7 @@ function getURLFromTemplate(template, properties) {
  *
  * MVTLayer docs https://deck.gl/docs/api-reference/geo-layers/mvt-layer
  */
-export default class CustomMVTLayer extends MVTLayer {
+export class CustomMVTLayer extends MVTLayer {
   async getTileData(tile) {
     const url = getURLFromTemplate(this.props.data, tile);
     if (!url) {

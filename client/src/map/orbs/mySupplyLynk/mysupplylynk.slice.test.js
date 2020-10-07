@@ -1,5 +1,5 @@
 import reducer, {
-  featuresSelector,
+  categoryFiltersSelector,
   setSelectedFeatures,
 } from './mysupplylynk.slice';
 
@@ -12,7 +12,7 @@ describe('MySupplyLynk slice', () => {
         const state = { selectedFeatures: CATEGORIES };
         const payload = ['PPE, Miscellaneous'];
         const result = reducer(state, setSelectedFeatures(payload));
-        expect(result.selectedFeatures).toEqual(payload);
+        expect(result.categoryFilters).toEqual(payload);
       });
     });
 
@@ -22,12 +22,12 @@ describe('MySupplyLynk slice', () => {
           const state = {
             orbs: {
               mySupplyLynk: {
-                selectedFeatures: CATEGORIES,
+                categoryFilters: CATEGORIES,
               },
             },
           };
-          const result = featuresSelector(state);
-          expect(result).toEqual(state.orbs.mySupplyLynk.selectedFeatures);
+          const result = categoryFiltersSelector(state);
+          expect(result).toEqual(state.orbs.mySupplyLynk.categoryFilters);
         });
       });
     });

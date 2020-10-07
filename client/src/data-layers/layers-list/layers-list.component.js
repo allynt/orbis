@@ -2,19 +2,11 @@ import React from 'react';
 
 import { LayersListItem } from './layers-list-item/layers-list-item.component';
 
-import styles from '../data-layers.module.css';
-
-/**
- * @typedef Layer
- * @property {string} name
- * @property {string} source_id
- * @property {{ label: string }} metadata
- */
 /**
  * @param {{
  *   dispatch: import('redux').Dispatch
- *   selectedLayers: Layer[]
- *   sidebarComponents: { [key: string]: React.Component }
+ *   selectedLayers: Source[]
+ *   sidebarComponents: {[key: string]: React.LazyExoticComponent<React.ComponentType<any>>}
  * }} props
  */
 export const LayersList = ({ dispatch, selectedLayers, sidebarComponents }) => (
@@ -27,9 +19,13 @@ export const LayersList = ({ dispatch, selectedLayers, sidebarComponents }) => (
           key={selectedLayer.source_id}
           title={selectedLayer.metadata.label}
         >
-          {Component ? (
-            <Component selectedLayer={selectedLayer} dispatch={dispatch} />
-          ) : null}
+          <React.Suspense fallback={<div>Loading...</div>}>
+            {typeof Component === 'function' ? (
+              <Component selectedLayer={selectedLayer} dispatch={dispatch} />
+            ) : (
+              Component
+            )}
+          </React.Suspense>
         </LayersListItem>
       );
     })}

@@ -9,7 +9,7 @@ import {
   propertySelector,
   setProperty,
   colorSchemeSelector,
-} from '../isolation-plus.slice';
+} from '../../isolationPlus/isolation-plus.slice';
 import styles from './radio-picker.module.css';
 import ColorScale from 'components/color-scale/color-scale.component';
 

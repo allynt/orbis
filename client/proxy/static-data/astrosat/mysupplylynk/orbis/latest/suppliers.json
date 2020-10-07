@@ -1,0 +1,128 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "id": 1,
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [-3.116241, 55.953532] },
+      "properties": {
+        "Name": "Joe's Butcher",
+        "Line of Business": "Meat",
+        "New Product Lines": "Bleached Meat",
+        "Payment Terms": "",
+        "Contact Name": "Joe",
+        "Contact Email Address": "joe@joesbutcher.com",
+        "Contact Phone Number": "07561866337",
+        "Postcode": "EH15 1AS",
+        "Address Line 1": "2 Williamfield Square",
+        "Address Line 2": "",
+        "City": "Edinburgh",
+        "County": "City of Edinburgh",
+        "URL": "http://www.joesbutchers.com",
+        "Items": [
+          {
+            "Name": "Masks (Surgical)",
+            "Category": "PPE",
+            "Supply Capacity (Units Per Week)": "100",
+            "Supply Lead Time (Days)": "1",
+            "Delivery Frequency": "every so often"
+          },
+          {
+            "Name": "something else",
+            "Category": "Other",
+            "Supply Capacity (Units Per Week)": "100",
+            "Supply Lead Time (Days)": "1",
+            "Delivery Frequency": "every so often"
+          }
+        ]
+      }
+    },
+    {
+      "id": 2,
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [-3.151025, 55.877913] },
+      "properties": {
+        "Name": "Mark Small",
+        "Line of Business": "",
+        "New Product Lines": "",
+        "Payment Terms": "",
+        "Contact Name": "Me",
+        "Contact Email Address": "mark.small@astrosat.net",
+        "Contact Phone Number": "07837379549",
+        "Postcode": "EH20 9DN",
+        "Address Line 1": "8 George Crescent",
+        "Address Line 2": "",
+        "City": "Loanhead",
+        "County": "Midlothian",
+        "URL": "",
+        "Items": [
+          {
+            "Name": "Waste Sacks",
+            "Category": "Cleaning",
+            "Supply Capacity (Units Per Week)": "",
+            "Supply Lead Time (Days)": null,
+            "Delivery Frequency": null
+          }
+        ]
+      }
+    },
+    {
+      "id": 3,
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [-3.151025, 55.877913] },
+      "properties": {
+        "Name": "James Small",
+        "Line of Business": "",
+        "New Product Lines": "",
+        "Payment Terms": "",
+        "Contact Name": "James",
+        "Contact Email Address": "small_mark@hotmail.com",
+        "Contact Phone Number": "07837379549",
+        "Postcode": "EH20 9DN",
+        "Address Line 1": "8 George Crescent",
+        "Address Line 2": "",
+        "City": "Loanhead",
+        "County": "Midlothian",
+        "URL": "",
+        "Items": [
+          {
+            "Name": "Fruit & Vegetables",
+            "Category": "Food",
+            "Supply Capacity (Units Per Week)": "",
+            "Supply Lead Time (Days)": null,
+            "Delivery Frequency": null
+          }
+        ]
+      }
+    },
+    {
+      "id": 4,
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [-3.166643, 55.962027] },
+      "properties": {
+        "Name": "Kerry Small",
+        "Line of Business": "",
+        "New Product Lines": "",
+        "Payment Terms": "",
+        "Contact Name": "Kerry",
+        "Contact Email Address": "marksmall37@gmail.com",
+        "Contact Phone Number": "07837379549",
+        "Postcode": "EH7 5QG",
+        "Address Line 1": "Easter Road Stadium",
+        "Address Line 2": "",
+        "City": "Edinburgh",
+        "County": "Lothian",
+        "URL": "",
+        "Items": [
+          {
+            "Name": "Torches",
+            "Category": "Other",
+            "Supply Capacity (Units Per Week)": null,
+            "Supply Lead Time (Days)": null,
+            "Delivery Frequency": null
+          }
+        ]
+      }
+    }
+  ]
+}

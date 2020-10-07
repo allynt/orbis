@@ -8,6 +8,16 @@ module.exports = {
     domain: 'Action for Health',
     range: false,
     description: 'Description of Health infrastructure layer.',
+    application: {
+      orbis: {
+        sidebar_component: { name: 'InfrastructureLegend' },
+        map_component: { name: 'ActionForHelpMapComponent' },
+        layer: {
+          name: 'GeoJsonClusteredIconLayer',
+          props: { config: 'actionForHelpConfig' },
+        },
+      },
+    },
   },
   type: 'vector',
   data:

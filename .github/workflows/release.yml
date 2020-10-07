@@ -3,6 +3,11 @@ name: RELEASE
 on:
   repository_dispatch:
     types: [make_release]
+    branches:
+      - master
+  workflow_dispatch:
+    branches:
+      - master
 
 jobs:
   release:

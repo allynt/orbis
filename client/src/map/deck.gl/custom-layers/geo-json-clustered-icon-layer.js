@@ -2,9 +2,13 @@ import { getGeojsonFeatures } from '@deck.gl/layers/dist/es5/geojson-layer/geojs
 import { ClusteredIconLayer } from './clustered-icon-layer';
 
 export class GeoJsonClusteredIconLayer extends ClusteredIconLayer {
-  updateState({ props, ...rest }) {
+  updateState({ props, oldProps, changeFlags }) {
     const features = getGeojsonFeatures(props.data);
-    super.updateState({ ...rest, props: { ...props, data: features } });
+    super.updateState({
+      oldProps,
+      changeFlags,
+      props: { ...props, data: features },
+    });
   }
 }
 
