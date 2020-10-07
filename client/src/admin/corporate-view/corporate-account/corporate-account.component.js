@@ -2,8 +2,6 @@ import React from 'react';
 
 import { useForm, Textfield } from '@astrosat/astrosat-ui';
 
-import validate from './corporate-account.validator';
-
 import ContentWrapper from '../../content-wrapper.component';
 
 import { Field } from '../corporate-view.component';
@@ -11,14 +9,10 @@ import { Field } from '../corporate-view.component';
 import styles from '../corporate-view.module.css';
 
 const CorporateAccount = ({ customer }) => {
-  const { handleChange, handleSubmit, values, errors } = useForm(
-    onSubmit,
-    validate,
+  const { handleChange, handleSubmit, values } = useForm(
+    () => {},
+    () => ({}),
   );
-
-  function onSubmit() {
-    console.log('Values: ', values);
-  }
 
   return (
     <ContentWrapper title="Corporate Account">
