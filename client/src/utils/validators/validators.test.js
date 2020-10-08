@@ -1,5 +1,5 @@
 import { MESSAGES } from './constants';
-import { email, password } from './validators';
+import { email, password, oldPassword } from './validators';
 
 describe('field validators', () => {
   describe('email', () => {
@@ -63,6 +63,14 @@ describe('field validators', () => {
           context.passwordMaxLength.toString(),
         ),
       );
+    });
+
+    describe('oldPassword', () => {
+      it('is required', async () => {
+        await expect(oldPassword.validate('')).rejects.toThrow(
+          MESSAGES.oldPassword.required,
+        );
+      });
     });
   });
 });

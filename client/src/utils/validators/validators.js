@@ -12,6 +12,7 @@ export const password = yup
   .min(yup.ref('$passwordMinLength'), MESSAGES.password.min)
   .max(yup.ref('$passwordMaxLength'), MESSAGES.password.max);
 
-export const oldPassword = () => null;
+export const oldPassword = yup.string().required(MESSAGES.oldPassword.required);
+
 export const newPassword = () => null;
 export const newPasswordConfirm = () => null;
