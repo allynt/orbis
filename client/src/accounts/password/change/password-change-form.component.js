@@ -1,21 +1,20 @@
 import React, { useState } from 'react';
 
-import validate from './password-change-form.validator';
-
 import {
   Button,
   PasswordField,
   PasswordStrengthMeter,
   Checkbox,
-  useForm,
   Well,
 } from '@astrosat/astrosat-ui';
 
-import { status } from '../../accounts.slice';
+import { useForm } from 'react-hook-form';
 
-import { LOGIN_URL, TERMS_URL } from '../../accounts.constants';
+import { status } from 'accounts/accounts.slice';
+import { LOGIN_URL, TERMS_URL } from 'accounts/accounts.constants';
+import { FieldError } from 'accounts/field-error.component';
 
-import formStyles from '../../../forms.module.css';
+import formStyles from 'forms.module.css';
 
 const ChangePasswordSuccessView = () => (
   <div className={formStyles.form}>
@@ -35,28 +34,33 @@ const ChangePasswordSuccessView = () => (
   </div>
 );
 
-const PasswordChangeForm = ({ changePassword, changeStatus, error }) => {
+const PasswordChangeForm = ({
+  changePassword,
+  changeStatus,
+  error,
+  passwordMinLength,
+  passwordMaxLength,
+}) => {
   const [termsAgreed, setTermsAgreed] = useState(false);
-  const { handleChange, handleSubmit, values, errors } = useForm(
-    onSubmit,
-    validate,
-  );
+
+  const { register, handleSubmit, getValues, errors } = useForm({
+    mode: 'onBlur',
+  });
 
   if (changeStatus === status.PENDING) return <ChangePasswordSuccessView />;
 
-  function onSubmit() {
-    const data = {
-      ...values,
+  const onSubmit = data => {
+    changePassword({
+      ...data,
       accepted_terms: termsAgreed,
-    };
-    changePassword(data);
-  }
+    });
+  };
 
   return (
-    <form className={formStyles.form} onSubmit={handleSubmit}>
+    <form className={formStyles.form} onSubmit={handleSubmit(onSubmit)}>
       {error && (
         <Well type="error">
-          <ul>
+          <ul data-testid="error-well">
             {error.map(error => (
               <li key={error}>{error}</li>
             ))}
@@ -68,44 +72,47 @@ const PasswordChangeForm = ({ changePassword, changeStatus, error }) => {
         <div className={formStyles.row}>
           <PasswordField
             name="old_password"
-            value={values.old_password || ''}
-            onChange={handleChange}
+            ref={register}
             placeholder="Old Password"
             required
             autoFocus
           />
         </div>
         {errors.old_password && (
-          <p className={formStyles.errorMessage}>{errors.old_password}</p>
+          <FieldError message={errors.old_password.message} />
         )}
 
         <div className={formStyles.row}>
           <PasswordField
             name="new_password1"
-            value={values.new_password1 || ''}
-            onChange={handleChange}
+            ref={register}
             placeholder="New Password"
             required
           />
         </div>
         {errors.new_password1 && (
-          <p className={formStyles.errorMessage}>{errors.new_password1}</p>
+          <FieldError message={errors.new_password1.message} />
+        )}
+        {errors.new_password1 && errors.new_password1.type === 'validate' && (
+          <FieldError message="Password should not match old password" />
         )}
 
         <div className={formStyles.row}>
           <PasswordField
             name="new_password2"
-            value={values.new_password2 || ''}
-            onChange={handleChange}
+            ref={register}
             placeholder="New Password Confirmation"
             required
           />
         </div>
         {errors.new_password2 && (
-          <p className={formStyles.errorMessage}>{errors.new_password2}</p>
+          <FieldError message={errors.new_password2.message} />
+        )}
+        {errors.new_password2 && errors.new_password2.type === 'validate' && (
+          <FieldError message="New Passwords don't match" />
         )}
 
-        <PasswordStrengthMeter password={values.password1} />
+        <PasswordStrengthMeter password={getValues().password1} />
 
         <div className={formStyles.row}>
           <Checkbox
@@ -124,11 +131,7 @@ const PasswordChangeForm = ({ changePassword, changeStatus, error }) => {
       <div className={formStyles.buttons}>
         <Button
           type="submit"
-          disabled={
-            !termsAgreed ||
-            Object.keys(errors).length > 0 ||
-            Object.keys(values).length === 0
-          }
+          disabled={!termsAgreed || Object.keys(errors).length > 0}
         >
           Change Password
         </Button>
