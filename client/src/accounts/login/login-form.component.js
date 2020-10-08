@@ -8,16 +8,26 @@ import {
   Well,
 } from '@astrosat/astrosat-ui';
 
+import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
 import { useSelector } from 'react-redux';
 import { Redirect } from 'react-router-dom';
+import * as yup from 'yup';
 
+import { configSelector } from 'app.slice';
 import { PASSWORD_RESET_URL, REGISTER_URL } from 'accounts/accounts.constants';
 import { status } from '../accounts.slice';
 import { FieldError } from '../field-error.component';
 import { RegisterFormSuccessView } from '../register-form.component';
 
 import formStyles from 'forms.module.css';
+import { FIELD_NAMES } from 'utils/validators/constants';
+import * as validators from 'utils/validators/validators';
+
+const loginSchema = yup.object().shape({
+  [FIELD_NAMES.email]: validators.email,
+  [FIELD_NAMES.password]: validators.password,
+});
 
 const LoginForm = ({
   login,
@@ -28,11 +38,11 @@ const LoginForm = ({
 }) => {
   const [notVerified, setNotVerified] = useState(false);
 
-  const { passwordMinLength, passwordMaxLength } = useSelector(
-    state => state.app.config,
-  );
+  const { passwordMinLength, passwordMaxLength } = useSelector(configSelector);
   const { register, handleSubmit, getValues, formState, errors } = useForm({
     mode: 'onBlur',
+    resolver: yupResolver(loginSchema),
+    context: { passwordMinLength, passwordMaxLength },
   });
   const NOT_VERIFIED = `${getValues().email} is not verified.`;
 
@@ -67,12 +77,12 @@ const LoginForm = ({
 
       <div className={formStyles.fields}>
         <div className={formStyles.row}>
-          <label className={formStyles.hiddenLabel} htmlFor="email">
+          <label className={formStyles.hiddenLabel} htmlFor={FIELD_NAMES.email}>
             Email
           </label>
           <Textfield
-            id="email"
-            name="email"
+            id={FIELD_NAMES.email}
+            name={FIELD_NAMES.email}
             ref={register}
             placeholder="Email"
             autoFocus
@@ -81,12 +91,15 @@ const LoginForm = ({
         {errors.email && <FieldError message={errors.email.message} />}
 
         <div className={formStyles.row}>
-          <label className={formStyles.hiddenLabel} htmlFor="password">
+          <label
+            className={formStyles.hiddenLabel}
+            htmlFor={FIELD_NAMES.password}
+          >
             Password
           </label>
           <PasswordField
-            id="password"
-            name="password"
+            id={FIELD_NAMES.password}
+            name={FIELD_NAMES.password}
             ref={register}
             placeholder="Password"
           />
@@ -143,7 +156,7 @@ const LoginForm = ({
         <Button
           type="submit"
           theme="primary"
-          disabled={Object.keys(errors).length > 0 || !formState.dirty}
+          disabled={Object.keys(errors).length > 0 || !formState.isDirty}
         >
           Login
         </Button>
