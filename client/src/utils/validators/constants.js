@@ -19,3 +19,17 @@ export const MESSAGES = {
     notOneOf: 'New Password matches Old Password',
   },
 };
+
+export const CONTEXT_KEYS = {
+  passwordMinLength: 'passwordMinLength',
+  passwordMaxLength: 'passwordMaxLength',
+  passwordMinStrength: 'passwordMinStrength',
+};
+
+export const FIELD_NAMES = {
+  email: 'email',
+  password: 'password',
+  oldPassword: 'oldPassword',
+  newPassword: 'newPassword',
+  newPasswordConfirm: 'newPasswordConfirm',
+};

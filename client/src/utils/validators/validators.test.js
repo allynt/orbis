@@ -1,5 +1,5 @@
 import * as yup from 'yup';
-import { MESSAGES } from './constants';
+import { CONTEXT_KEYS, FIELD_NAMES, MESSAGES } from './constants';
 import {
   email,
   password,
@@ -43,9 +43,9 @@ describe('field validators', () => {
 
   describe('password', () => {
     const context = {
-      passwordMinLength: 2,
-      passwordMaxLength: 255,
-      passwordMinStrength: 1,
+      [CONTEXT_KEYS.passwordMinLength]: 2,
+      [CONTEXT_KEYS.passwordMaxLength]: 255,
+      [CONTEXT_KEYS.passwordMinStrength]: 1,
     };
 
     it('happy path', async () => {
@@ -126,8 +126,8 @@ describe('field validators', () => {
 
       it('must match newPassword', async () => {
         const schema = yup.object({
-          newPassword: yup.string(),
-          newPasswordConfirm,
+          [FIELD_NAMES.newPassword]: yup.string(),
+          [FIELD_NAMES.newPasswordConfirm]: newPasswordConfirm,
         });
         await expect(
           schema.validate(
@@ -142,9 +142,9 @@ describe('field validators', () => {
 
       it('must not equal oldPassword', async () => {
         const schema = yup.object({
-          oldPassword: yup.string(),
-          newPassword: yup.string(),
-          newPasswordConfirm,
+          [FIELD_NAMES.oldPassword]: yup.string(),
+          [FIELD_NAMES.newPassword]: yup.string(),
+          [FIELD_NAMES.newPasswordConfirm]: newPasswordConfirm,
         });
         await expect(
           schema.validate({
