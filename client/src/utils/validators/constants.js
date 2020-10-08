@@ -23,7 +23,7 @@ export const MESSAGES = {
 export const CONTEXT_KEYS = {
   passwordMinLength: 'passwordMinLength',
   passwordMaxLength: 'passwordMaxLength',
-  passwordMinStrength: 'passwordMinStrength',
+  passwordStrength: 'passwordStrength',
 };
 
 export const FIELD_NAMES = {

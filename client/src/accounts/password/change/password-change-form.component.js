@@ -8,11 +8,19 @@ import {
   Well,
 } from '@astrosat/astrosat-ui';
 
+import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
+import { object } from 'yup';
 
 import { status } from 'accounts/accounts.slice';
 import { LOGIN_URL, TERMS_URL } from 'accounts/accounts.constants';
 import { FieldError } from 'accounts/field-error.component';
+import {
+  newPassword,
+  newPasswordConfirm,
+  oldPassword,
+} from 'utils/validators/validators';
+import { FIELD_NAMES } from 'utils/validators/constants';
 
 import formStyles from 'forms.module.css';
 import { Link } from 'react-router-dom';
@@ -37,17 +45,26 @@ const ChangePasswordSuccessView = () => (
   </div>
 );
 
+const validationSchema = object({
+  oldPassword,
+  newPassword,
+  newPasswordConfirm,
+});
+
 const PasswordChangeForm = ({
   changePassword,
   changeStatus,
   error,
   passwordMinLength,
   passwordMaxLength,
+  passwordStrength,
 }) => {
   const [termsAgreed, setTermsAgreed] = useState(false);
 
-  const { register, handleSubmit, getValues, errors } = useForm({
+  const { register, handleSubmit, errors, watch } = useForm({
     mode: 'onBlur',
+    resolver: yupResolver(validationSchema),
+    context: { passwordMinLength, passwordMaxLength, passwordStrength },
   });
 
   if (changeStatus === status.PENDING) return <ChangePasswordSuccessView />;
@@ -74,48 +91,44 @@ const PasswordChangeForm = ({
       <div className={formStyles.fields}>
         <div className={formStyles.row}>
           <PasswordField
-            name="old_password"
+            name={FIELD_NAMES.oldPassword}
             ref={register}
             placeholder="Old Password"
-            required
             autoFocus
           />
         </div>
-        {errors.old_password && (
-          <FieldError message={errors.old_password.message} />
+        {errors[FIELD_NAMES.oldPassword] && (
+          <FieldError message={errors[FIELD_NAMES.oldPassword].message} />
         )}
 
         <div className={formStyles.row}>
           <PasswordField
-            name="new_password1"
+            name={FIELD_NAMES.newPassword}
             ref={register}
             placeholder="New Password"
-            required
           />
         </div>
-        {errors.new_password1 && (
-          <FieldError message={errors.new_password1.message} />
-        )}
-        {errors.new_password1 && errors.new_password1.type === 'validate' && (
-          <FieldError message="Password should not match old password" />
+        {errors[FIELD_NAMES.newPassword] && (
+          <FieldError message={errors[FIELD_NAMES.newPassword].message} />
         )}
 
         <div className={formStyles.row}>
           <PasswordField
-            name="new_password2"
+            name={FIELD_NAMES.newPasswordConfirm}
             ref={register}
             placeholder="New Password Confirmation"
-            required
           />
         </div>
-        {errors.new_password2 && (
-          <FieldError message={errors.new_password2.message} />
+        {errors[FIELD_NAMES.newPasswordConfirm] && (
+          <FieldError
+            message={errors[FIELD_NAMES.newPasswordConfirm].message}
+          />
         )}
         {errors.new_password2 && errors.new_password2.type === 'validate' && (
           <FieldError message="New Passwords don't match" />
         )}
 
-        <PasswordStrengthMeter password={getValues().password1} />
+        <PasswordStrengthMeter password={watch(FIELD_NAMES.newPassword)} />
 
         <div className={formStyles.row}>
           <Checkbox

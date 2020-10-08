@@ -45,7 +45,7 @@ describe('field validators', () => {
     const context = {
       [CONTEXT_KEYS.passwordMinLength]: 2,
       [CONTEXT_KEYS.passwordMaxLength]: 255,
-      [CONTEXT_KEYS.passwordMinStrength]: 1,
+      [CONTEXT_KEYS.passwordStrength]: 1,
     };
 
     it('happy path', async () => {

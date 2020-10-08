@@ -38,7 +38,11 @@ export default () => {
   const resetStatus = useSelector(state => state.accounts.resetStatus);
   const changeStatus = useSelector(state => state.accounts.changeStatus);
   const user = useSelector(userSelector);
-  const { passwordMinLength, passwordMaxLength } = useSelector(configSelector);
+  const {
+    passwordMinLength,
+    passwordMaxLength,
+    passwordStrength,
+  } = useSelector(configSelector);
 
   return (
     <div className={styles.page}>
@@ -85,6 +89,9 @@ export default () => {
                 changePassword={form => dispatch(changePassword(form))}
                 changeStatus={changeStatus}
                 error={error}
+                passwordMinLength={passwordMinLength}
+                passwordMaxLength={passwordMaxLength}
+                passwordStrength={passwordStrength}
               />
             )}
           />

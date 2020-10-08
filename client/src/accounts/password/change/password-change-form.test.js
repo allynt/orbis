@@ -9,6 +9,7 @@ import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 
 import { status } from 'accounts/accounts.slice';
+import { FIELD_NAMES } from 'utils/validators/constants';
 
 import PasswordChangeForm from './password-change-form.component';
 import { Router } from 'react-router-dom';
@@ -30,6 +31,9 @@ const renderComponent = (store, changePassword, changeStatus, error) =>
       changePassword={changePassword}
       changeStatus={changeStatus}
       error={error}
+      passwordMinLength={0}
+      passwordMaxLength={Infinity}
+      passwordStrength={0}
     />,
     {
       wrapper: ({ children }) => (
@@ -192,9 +196,9 @@ describe('Password Change Form Component', () => {
 
     await waitFor(() =>
       expect(changePassword).toHaveBeenCalledWith({
-        old_password: OLD_PASSWORD_TEXT,
-        new_password1: NEW_PASSWORD_TEXT,
-        new_password2: NEW_PASSWORD_TEXT,
+        [FIELD_NAMES.oldPassword]: OLD_PASSWORD_TEXT,
+        [FIELD_NAMES.newPassword]: NEW_PASSWORD_TEXT,
+        [FIELD_NAMES.newPasswordConfirm]: NEW_PASSWORD_TEXT,
         accepted_terms: true,
       }),
     );
