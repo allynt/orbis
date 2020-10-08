@@ -47,6 +47,13 @@ describe('field validators', () => {
       passwordMaxLength: 255,
       passwordMinStrength: 1,
     };
+
+    it('happy path', async () => {
+      await expect(
+        password.validate('pandaconcretespoon', { context }),
+      ).resolves.toBe('pandaconcretespoon');
+    });
+
     it('is required', async () => {
       await expect(password.validate('')).rejects.toThrow(
         MESSAGES.password.required,
@@ -85,6 +92,14 @@ describe('field validators', () => {
     });
 
     describe('newPassword', () => {
+      it('happy path', async () => {
+        await expect(
+          newPassword.validate('pandaconcretespoon', {
+            context,
+          }),
+        ).resolves.toBe('pandaconcretespoon');
+      });
+
       it('is equal or greater to the minimum strength', async () => {
         await expect(
           newPassword.validate('panda', { context }),
@@ -93,6 +108,22 @@ describe('field validators', () => {
     });
 
     describe('newPasswordConfirm', () => {
+      it('happy path', async () => {
+        const values = {
+          oldPassword: 'absolutegarbagesecurity',
+          newPassword: 'pandaconcretespoon',
+          newPasswordConfirm: 'pandaconcretespoon',
+        };
+        const schema = yup.object({
+          oldPassword,
+          newPassword,
+          newPasswordConfirm,
+        });
+        await expect(schema.validate(values, { context })).resolves.toEqual(
+          values,
+        );
+      });
+
       it('must match newPassword', async () => {
         const schema = yup.object({
           newPassword: yup.string(),
