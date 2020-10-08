@@ -1,4 +1,5 @@
 import * as yup from 'yup';
+import zxcvbn from 'zxcvbn';
 import { MESSAGES } from './constants';
 
 export const email = yup
@@ -14,5 +15,17 @@ export const password = yup
 
 export const oldPassword = yup.string().required(MESSAGES.oldPassword.required);
 
-export const newPassword = () => null;
-export const newPasswordConfirm = () => null;
+export const newPassword = yup
+  .string()
+  .concat(password)
+  .test({
+    name: 'strength',
+    test: function (value) {
+      const { score } = zxcvbn(value);
+      // @ts-ignore
+      return score > this.options.context?.passwordMinStrength;
+    },
+    message: MESSAGES.newPassword.strength,
+  });
+
+export const newPasswordConfirm = { validate: () => null };

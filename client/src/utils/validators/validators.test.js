@@ -1,5 +1,5 @@
 import { MESSAGES } from './constants';
-import { email, password, oldPassword } from './validators';
+import { email, password, oldPassword, newPassword } from './validators';
 
 describe('field validators', () => {
   describe('email', () => {
@@ -35,7 +35,11 @@ describe('field validators', () => {
   });
 
   describe('password', () => {
-    const context = { passwordMinLength: 2, passwordMaxLength: 255 };
+    const context = {
+      passwordMinLength: 2,
+      passwordMaxLength: 255,
+      passwordMinStrength: 1,
+    };
     it('is required', async () => {
       await expect(password.validate('')).rejects.toThrow(
         MESSAGES.password.required,
@@ -70,6 +74,14 @@ describe('field validators', () => {
         await expect(oldPassword.validate('')).rejects.toThrow(
           MESSAGES.oldPassword.required,
         );
+      });
+    });
+
+    describe('newPassword', () => {
+      it('is equal or greater to the minimum strength', async () => {
+        await expect(
+          newPassword.validate('panda', { context }),
+        ).rejects.toThrow(MESSAGES.newPassword.strength);
       });
     });
   });

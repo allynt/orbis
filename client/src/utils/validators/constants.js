@@ -11,4 +11,7 @@ export const MESSAGES = {
   oldPassword: {
     required: 'Old Password is required',
   },
+  newPassword: {
+    strength: 'Password must not be weak',
+  },
 };

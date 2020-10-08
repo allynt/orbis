@@ -92,6 +92,7 @@
     "@types/react-map-gl": "^5.2.4",
     "@types/react-vis": "^1.11.2",
     "@types/yup": "^0.29.7",
+    "@types/zxcvbn": "^4.4.0",
     "body-parser": "^1.19.0",
     "codecov": "^3.6.5",
     "concurrently": "^5.2.0",
