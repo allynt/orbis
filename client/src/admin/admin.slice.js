@@ -96,6 +96,23 @@ const adminSlice = createSlice({
       state.error = payload;
       state.isLoading = false;
     },
+    inviteCustomerUserRequested: state => {
+      state.isLoading = true;
+    },
+    inviteCustomerUserSuccess: (state, { payload }) => {
+      if (payload.invitedCustomerUser) {
+        const customerUserIndex = state.customerUsers.findIndex(
+          user => user.id === payload.invitedCustomerUser.id,
+        );
+        state.customerUsers[customerUserIndex] = payload.invitedCustomerUser;
+      }
+      state.isLoading = false;
+      state.error = null;
+    },
+    inviteCustomerUserFailure: (state, {payload}) => {
+      state.error = payload;
+      state.isLoading = false;
+    },
   },
 });
 
@@ -115,6 +132,9 @@ export const {
   createCustomerUserRequested,
   createCustomerUserSuccess,
   createCustomerUserFailure,
+  inviteCustomerUserRequested,
+  inviteCustomerUserSuccess,
+  inviteCustomerUserFailure,
 } = adminSlice.actions;
 
 /* === Thunks === */
@@ -318,6 +338,36 @@ export const deleteCustomerUser = customerUser => async (
 
   return dispatch(
     deleteCustomerUserSuccess({ deletedUser: customerUser, customer }),
+  );
+};
+
+export const inviteCustomerUser = customerUser => async (
+  dispatch,
+  getState,
+) => {
+  const headers = getJsonAuthHeaders(getState());
+  const currentCustomer = selectCurrentCustomer(getState());
+
+  dispatch(inviteCustomerUserRequested());
+
+  const inviteCustomerUserResponse = await sendData(
+    `${API}${currentCustomer.id}/users/${customerUser.user.id}/invite/`,
+    {},
+    headers,
+  );
+
+  if (!inviteCustomerUserResponse.ok)
+    return handleFailure(
+      inviteCustomerUserResponse,
+      'Invite Customer User Error',
+      inviteCustomerUserFailure,
+      dispatch,
+    );
+
+  const invitedCustomerUser = await inviteCustomerUserResponse.json();
+
+  return dispatch(
+    inviteCustomerUserSuccess({ invitedCustomerUser})
   );
 };
 

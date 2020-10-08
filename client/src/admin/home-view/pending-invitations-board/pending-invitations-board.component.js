@@ -17,6 +17,7 @@ const DATE_FORMAT = ['k:s d MMMM yyyy'];
 export const PendingInvitationsBoard = ({
   pendingUsers,
   customer,
+  onResendInvitationClick,
   onWithdrawInvitationClick,
 }) => {
   const [dropdown, setDropdown] = useState(null);
@@ -42,6 +43,9 @@ export const PendingInvitationsBoard = ({
               <th align="left" className={tableStyles.th}>
                 Invited
               </th>
+              <th align="left" className={tableStyles.th}>
+                &nbsp;
+              </th>
             </tr>
           </thead>
           <tbody>
@@ -64,6 +68,16 @@ export const PendingInvitationsBoard = ({
                       {getLicenceInfo(licences)}
                     </td>
                     <td className={tableStyles.td}>{date}</td>
+                    <td className={tableStyles.td}>
+                      <button
+                        className={styles.resendInvitation}
+                        onClick={() => {
+                          onResendInvitationClick(user);
+                        }}
+                      >
+                        Resend Invitation
+                      </button>
+                    </td>
                     <td
                       className={`${tableStyles.td} ${tableStyles.optionsColumn}`}
                     >

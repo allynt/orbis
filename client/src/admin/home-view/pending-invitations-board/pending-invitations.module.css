@@ -2,3 +2,7 @@
   top: 2rem;
   right: 9rem;
 }
+
+.resendInvitation {
+  color: var(--button--primary--primary--color);
+}

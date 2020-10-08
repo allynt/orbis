@@ -14,6 +14,7 @@ const HomeView = ({
   customer,
   onChangeRoleClick,
   onEditUserClick,
+  onResendInvitationClick,
   onWithdrawInvitationClick,
   onDeleteUserClick,
 }) => (
@@ -31,6 +32,7 @@ const HomeView = ({
     <PendingInvitationsBoard
       pendingUsers={pendingUsers}
       customer={customer}
+      onResendInvitationClick={onResendInvitationClick}
       onWithdrawInvitationClick={onWithdrawInvitationClick}
     />
   </div>
