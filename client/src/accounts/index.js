@@ -13,7 +13,7 @@ import {
   resetPassword,
   userSelector,
 } from './accounts.slice';
-import LoginForm from './login-form.component';
+import LoginForm from './login/login-form.component';
 import PasswordChangeForm from './password-change-form.component';
 import PasswordResetConfirmForm from './password-reset-confirm-form.component';
 import PasswordResetForm from './password-reset-form.component';

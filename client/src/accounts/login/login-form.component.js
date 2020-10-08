@@ -1,27 +1,23 @@
 import React, { useState } from 'react';
-import PropTypes from 'prop-types';
-import { Redirect } from 'react-router-dom';
-
-import { useSelector } from 'react-redux';
-
-import validate from './login-form.validator';
 
 import {
   Button,
+  Checkbox,
   PasswordField,
   Textfield,
-  Checkbox,
-  useForm,
   Well,
 } from '@astrosat/astrosat-ui';
 
-import { status } from './accounts.slice';
+import { useForm } from 'react-hook-form';
+import { useSelector } from 'react-redux';
+import { Redirect } from 'react-router-dom';
 
-import { REGISTER_URL, PASSWORD_RESET_URL } from './accounts.constants';
+import { PASSWORD_RESET_URL, REGISTER_URL } from 'accounts/accounts.constants';
+import { status } from '../accounts.slice';
+import { FieldError } from '../field-error.component';
+import { RegisterFormSuccessView } from '../register-form.component';
 
-import { RegisterFormSuccessView } from './register-form.component';
-
-import formStyles from '../forms.module.css';
+import formStyles from 'forms.module.css';
 
 const LoginForm = ({
   login,
@@ -30,21 +26,15 @@ const LoginForm = ({
   resendVerificationEmail,
   verificationEmailStatus,
 }) => {
+  const [notVerified, setNotVerified] = useState(false);
+
   const { passwordMinLength, passwordMaxLength } = useSelector(
     state => state.app.config,
   );
-  const validators = {
-    passwordMinLength,
-    passwordMaxLength,
-  };
-  const { handleChange, handleSubmit, values, errors } = useForm(
-    onSubmit,
-    validate,
-    validators,
-  );
-
-  const [notVerified, setNotVerified] = useState(false);
-  const NOT_VERIFIED = `${values.email} is not verified.`;
+  const { register, handleSubmit, getValues, formState, errors } = useForm({
+    mode: 'onBlur',
+  });
+  const NOT_VERIFIED = `${getValues().email} is not verified.`;
 
   // Re-direct to originally clicked URL on successful login.
   if (user) return <Redirect to="/" />;
@@ -52,20 +42,20 @@ const LoginForm = ({
   if (verificationEmailStatus === status.PENDING)
     return (
       <RegisterFormSuccessView
-        email={values.email}
+        email={getValues().email}
         resendVerificationEmail={resendVerificationEmail}
       />
     );
 
-  function onSubmit() {
-    login(values);
-  }
+  const onSubmit = data => {
+    login(data);
+  };
 
   return (
-    <form className={formStyles.form} onSubmit={handleSubmit}>
+    <form className={formStyles.form} onSubmit={handleSubmit(onSubmit)}>
       {error && (
         <Well type="error">
-          <ul>
+          <ul data-testid="error-well">
             {error.map(error => {
               // Adding '!notVerfied' condition allows only one state change, prevents infinite loop
               if (error === NOT_VERIFIED) !notVerified && setNotVerified(true);
@@ -77,31 +67,31 @@ const LoginForm = ({
 
       <div className={formStyles.fields}>
         <div className={formStyles.row}>
+          <label className={formStyles.hiddenLabel} htmlFor="email">
+            Email
+          </label>
           <Textfield
+            id="email"
             name="email"
-            value={values.email || ''}
+            ref={register}
             placeholder="Email"
-            onChange={handleChange}
-            required
             autoFocus
           />
         </div>
-        {errors.email && (
-          <p className={formStyles.errorMessage}>{errors.email}</p>
-        )}
+        {errors.email && <FieldError message={errors.email.message} />}
 
         <div className={formStyles.row}>
+          <label className={formStyles.hiddenLabel} htmlFor="password">
+            Password
+          </label>
           <PasswordField
+            id="password"
             name="password"
-            value={values.password || ''}
+            ref={register}
             placeholder="Password"
-            onChange={handleChange}
-            required
           />
         </div>
-        {errors.password && (
-          <p className={formStyles.errorMessage}>{errors.password}</p>
-        )}
+        {errors.password && <FieldError message={errors.password.message} />}
 
         <div className={`${formStyles.row} ${formStyles.incidentals}`}>
           <Checkbox
@@ -124,7 +114,7 @@ const LoginForm = ({
           </p>
 
           <p className={formStyles.paragraph}>
-            An email was sent to <strong>{values.email}</strong> when the
+            An email was sent to <strong>{getValues().email}</strong> when the
             account was registered. Please click the link inside to verify your
             account before logging in.
           </p>
@@ -140,7 +130,7 @@ const LoginForm = ({
             <Button
               theme="secondary"
               onClick={() => {
-                resendVerificationEmail(values.email);
+                resendVerificationEmail(getValues().email);
               }}
             >
               Resend Verification Email
@@ -153,9 +143,7 @@ const LoginForm = ({
         <Button
           type="submit"
           theme="primary"
-          disabled={
-            Object.keys(errors).length > 0 || Object.keys(values).length === 0
-          }
+          disabled={Object.keys(errors).length > 0 || !formState.dirty}
         >
           Login
         </Button>
@@ -167,10 +155,6 @@ const LoginForm = ({
       </p>
     </form>
   );
-};
-
-LoginForm.propTypes = {
-  location: PropTypes.object,
 };
 
 export default LoginForm;
