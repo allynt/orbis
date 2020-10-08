@@ -11,7 +11,7 @@ import {
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
 import { useSelector } from 'react-redux';
-import { Redirect } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import * as yup from 'yup';
 
 import { configSelector } from 'app.slice';
@@ -44,7 +44,7 @@ const LoginForm = ({
     resolver: yupResolver(loginSchema),
     context: { passwordMinLength, passwordMaxLength },
   });
-  const NOT_VERIFIED = `${getValues().email} is not verified.`;
+  const NOT_VERIFIED = `User ${getValues().email} is not verified.`;
 
   // Re-direct to originally clicked URL on successful login.
   if (user) return <Redirect to="/" />;
@@ -115,7 +115,9 @@ const LoginForm = ({
           />
 
           <p className={formStyles.row}>
-            <Button href={PASSWORD_RESET_URL}>Forgot password?</Button>
+            <Link to={PASSWORD_RESET_URL}>
+              <Button theme="link">Forgot password?</Button>
+            </Link>
           </p>
         </div>
       </div>
@@ -164,7 +166,9 @@ const LoginForm = ({
 
       <p className={formStyles.footer}>
         Don't have an account?&nbsp;
-        <Button href={REGISTER_URL}>Sign Up</Button>
+        <Link to={REGISTER_URL}>
+          <Button theme="link">Sign Up</Button>
+        </Link>
       </p>
     </form>
   );
