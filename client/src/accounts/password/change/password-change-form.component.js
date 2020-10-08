@@ -11,11 +11,11 @@ import {
   Well,
 } from '@astrosat/astrosat-ui';
 
-import { status } from './accounts.slice';
+import { status } from '../../accounts.slice';
 
-import { LOGIN_URL, TERMS_URL } from './accounts.constants';
+import { LOGIN_URL, TERMS_URL } from '../../accounts.constants';
 
-import formStyles from '../forms.module.css';
+import formStyles from '../../../forms.module.css';
 
 const ChangePasswordSuccessView = () => (
   <div className={formStyles.form}>

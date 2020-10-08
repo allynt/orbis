@@ -1,6 +1,6 @@
 import zxcvbn from 'zxcvbn';
 
-import store from '../store';
+import store from '../../../store';
 
 const validate = form => {
   const {
