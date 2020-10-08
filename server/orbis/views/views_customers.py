@@ -4,6 +4,7 @@ from astrosat_users.views import (
     CustomerDetailView as AstrosatUsersCustomerDetailView,
     CustomerUserListView as AstrosatUsersCustomerUserListView,
     CustomerUserDetailView as AstrosatUsersCustomerUserDetailView,
+    CustomerUserInviteView as AstrosatUsersCustomerUserInviteView,
 )
 
 from orbis.serializers import CustomerSerializer, CustomerUserSerializer
@@ -53,7 +54,7 @@ class CustomerUserListView(LicenceNotifyingMixIn, AstrosatUsersCustomerUserListV
     def perform_create(self, serializer):
 
         customer_user = serializer.save()
-        customer_user.invite()
+        customer_user.invite(adapter=get_adapter(self.request))
 
         if customer_user.licences.visible().count():
             message = self.notify_licences_changed(
@@ -105,3 +106,7 @@ class CustomerUserDetailView(LicenceNotifyingMixIn, AstrosatUsersCustomerUserDet
         destroyed_value = super().perform_destroy(instance)
         user.delete()
         return destroyed_value
+
+
+class CustomerUserInviteView(LicenceNotifyingMixIn, AstrosatUsersCustomerUserInviteView):
+    serializer_class = CustomerUserSerializer
