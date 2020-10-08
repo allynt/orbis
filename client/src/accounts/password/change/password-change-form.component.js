@@ -15,6 +15,7 @@ import { LOGIN_URL, TERMS_URL } from 'accounts/accounts.constants';
 import { FieldError } from 'accounts/field-error.component';
 
 import formStyles from 'forms.module.css';
+import { Link } from 'react-router-dom';
 
 const ChangePasswordSuccessView = () => (
   <div className={formStyles.form}>
@@ -29,7 +30,9 @@ const ChangePasswordSuccessView = () => (
     </div>
 
     <div className={formStyles.buttons}>
-      <Button href={LOGIN_URL}>Continue</Button>
+      <Link to={LOGIN_URL}>
+        <Button theme="link">Continue</Button>
+      </Link>
     </div>
   </div>
 );
@@ -139,7 +142,9 @@ const PasswordChangeForm = ({
 
       <p className={formStyles.footer}>
         Do you have an account?&nbsp;
-        <Button href={LOGIN_URL}>Login</Button>
+        <Link to={LOGIN_URL}>
+          <Button theme="link">Login</Button>
+        </Link>
       </p>
     </form>
   );

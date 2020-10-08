@@ -11,6 +11,8 @@ import thunk from 'redux-thunk';
 import { status } from 'accounts/accounts.slice';
 
 import PasswordChangeForm from './password-change-form.component';
+import { Router } from 'react-router-dom';
+import { createMemoryHistory } from 'history';
 
 const mockStore = configureMockStore([thunk]);
 
@@ -30,7 +32,11 @@ const renderComponent = (store, changePassword, changeStatus, error) =>
       error={error}
     />,
     {
-      wrapper: ({ children }) => <Provider store={store}>{children}</Provider>,
+      wrapper: ({ children }) => (
+        <Provider store={store}>
+          <Router history={createMemoryHistory()}>{children}</Router>
+        </Provider>
+      ),
     },
   );
 

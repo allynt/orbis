@@ -115,7 +115,9 @@ const LoginForm = ({
 
           <p className={formStyles.row}>
             <Link to={PASSWORD_RESET_URL}>
-              <Button theme="link">Forgot password?</Button>
+              <Button type="button" theme="link">
+                Forgot password?
+              </Button>
             </Link>
           </p>
         </div>
