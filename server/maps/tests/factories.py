@@ -1,7 +1,8 @@
 import factory
 from factory.faker import (
     Faker as FactoryFaker,
-)  # note I use FactoryBoy's wrapper of Faker
+)  # note I use FactoryBoy's wrapper of Faker when defining factory fields
+from faker import Faker
 import random
 
 from astrosat.tests.providers import GeometryProvider, PrettyLoremProvider
@@ -10,6 +11,8 @@ from astrosat_users.tests.factories import UserFactory
 
 from maps.models import Bookmark
 
+
+fake = Faker()
 
 FactoryFaker.add_provider(GeometryProvider)
 FactoryFaker.add_provider(PrettyLoremProvider)
@@ -53,6 +56,6 @@ class BookmarkFactory(factory.django.DjangoModelFactory):
     @factory.lazy_attribute
     def layers(self):
         return [
-            f"astrosat/core/{FactoryFaker('word').generate({})}/{i}"
+            f"astrosat/core/{fake.word()}/{i}"
             for i in range(random.randint(1, 10))
         ]

@@ -2,7 +2,8 @@ import datetime
 import factory
 from factory.faker import (
     Faker as FactoryFaker,
-)  # note I use FactoryBoy's wrapper of Faker
+)  # note I use FactoryBoy's wrapper of Faker when defining factory fields
+from faker import Faker
 
 from django.db.models.signals import post_save
 from django.utils.text import slugify
@@ -33,10 +34,14 @@ from orbis.models import (
     SatelliteResult,
 )
 
+
 json_encoder = JSONEncoder()
+
+fake = Faker()
 
 FactoryFaker.add_provider(GeometryProvider)
 FactoryFaker.add_provider(PrettyLoremProvider)
+
 
 #########
 # users #
@@ -231,5 +236,5 @@ class SatelliteResultFactory(factory.django.DjangoModelFactory):
     @factory.lazy_attribute
     def metadata(self):
         # generates a random dictionary and encodes it as JSON
-        properties_dict = FactoryFaker("pydict").generate()
+        properties_dict = fake.pydict()
         return json_encoder.encode(properties_dict)
