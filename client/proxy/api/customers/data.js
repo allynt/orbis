@@ -178,6 +178,7 @@ let customerUsers = [
     id: 2,
     type: 'MANAGER',
     status: 'ACTIVE',
+    invitation_date: '2020-01-01T12:00:00.07Z',
     customer: '7009b9d8-c286-11ea-b3de-0242ac130004',
     licences: [
       'd499964f-1bb4-4aa1-baf4-0164eabec297',
@@ -202,6 +203,7 @@ let customerUsers = [
     id: 3,
     type: 'MANAGER',
     status: 'ACTIVE',
+    invitation_date: '2020-01-01T12:00:00.07Z',
     customer: '7009b9d8-c286-11ea-b3de-0242ac130004',
     licences: [
       '3e9dbb09-133b-4316-bf7c-c6e0be98bb05',
@@ -517,6 +519,23 @@ const updateCustomerUser = user => {
   return customerUsers[index];
 };
 
+const inviteCustomerUser = customerUser => {
+  const index = customerUsers.indexOf(
+    customerUsers.find(cu => cu.id === customerUser.id),
+  )
+
+  const invitation_date = new Date().toISOString();
+
+  invitedCustomerUser = {
+    ...customerUser,
+    invitation_date
+  }
+
+  customerUsers[index] = invitedCustomerUser
+
+  return customerUsers[index]
+};
+
 const deleteCustomerUser = userId => {
   const deletedUser = customerUsers.find(cu => cu.user.id === userId);
   customerUsers = customerUsers.filter(
@@ -531,5 +550,6 @@ module.exports = {
   getCustomerUsers,
   createCustomerUser,
   updateCustomerUser,
+  inviteCustomerUser,
   deleteCustomerUser,
 };

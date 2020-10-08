@@ -5,6 +5,7 @@ const {
   getSelectedUser,
   createCustomerUser,
   updateCustomerUser,
+  inviteCustomerUser,
   deleteCustomerUser,
 } = require('./data');
 
@@ -42,6 +43,16 @@ const updateSelectedUserHandler = (req, res) => {
   const updatedUser = updateCustomerUser(user);
   res.status(200);
   res.json(updatedUser);
+};
+
+const inviteSelectedUserHandler = (req, res) => {
+  console.log('Inviting Selected user of Customer');
+
+  const customerUser = req.body;
+  const invitedCustomerUser = invitedCustomerUser(customerUser);
+
+  res.status(200)
+  res.json(invitedCustomerUser)
 };
 
 const deleteSelectedUserHandler = (req, res) => {
