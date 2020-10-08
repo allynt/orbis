@@ -12,7 +12,7 @@ import { getUserLicences, getLicenceInfo } from '../../licence-utils';
 import styles from './pending-invitations.module.css';
 import tableStyles from '../../table.module.css';
 
-const DATE_FORMAT = ['k:m d MMMM yyyy'];
+const DATE_FORMAT = ['k:mm d MMMM yyyy'];
 
 export const PendingInvitationsBoard = ({
   pendingUsers,
