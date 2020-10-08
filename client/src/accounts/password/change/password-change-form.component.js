@@ -24,7 +24,7 @@ const ChangePasswordSuccessView = () => (
         Thank you! Your password has been changed.
       </p>
       <p className={formStyles.paragraph}>
-        You have completed your OR3IS account. Click the button in order to
+        You have completed your ORBIS account. Click the button in order to
         continue.
       </p>
     </div>
