@@ -28,4 +28,10 @@ export const newPassword = yup
     message: MESSAGES.newPassword.strength,
   });
 
-export const newPasswordConfirm = { validate: () => null };
+export const newPasswordConfirm = yup
+  .string()
+  .concat(password)
+  .oneOf([yup.ref('newPassword')], MESSAGES.newPasswordConfirm.oneOf)
+  .when('oldPassword', (oldPassword, schema) =>
+    schema.notOneOf([oldPassword], MESSAGES.newPasswordConfirm.notOneOf),
+  );

@@ -1,5 +1,12 @@
+import * as yup from 'yup';
 import { MESSAGES } from './constants';
-import { email, password, oldPassword, newPassword } from './validators';
+import {
+  email,
+  password,
+  oldPassword,
+  newPassword,
+  newPasswordConfirm,
+} from './validators';
 
 describe('field validators', () => {
   describe('email', () => {
@@ -82,6 +89,39 @@ describe('field validators', () => {
         await expect(
           newPassword.validate('panda', { context }),
         ).rejects.toThrow(MESSAGES.newPassword.strength);
+      });
+    });
+
+    describe('newPasswordConfirm', () => {
+      it('must match newPassword', async () => {
+        const schema = yup.object({
+          newPassword: yup.string(),
+          newPasswordConfirm,
+        });
+        await expect(
+          schema.validate(
+            {
+              newPassword: 'pandaconcretespoon',
+              newPasswordConfirm: 'pandaconcretespoo',
+            },
+            { context },
+          ),
+        ).rejects.toThrow(MESSAGES.newPasswordConfirm.oneOf);
+      });
+
+      it('must not equal oldPassword', async () => {
+        const schema = yup.object({
+          oldPassword: yup.string(),
+          newPassword: yup.string(),
+          newPasswordConfirm,
+        });
+        await expect(
+          schema.validate({
+            oldPassword: 'absolutegarbagesecurity',
+            newPassword: 'absolutegarbagesecurity',
+            newPasswordConfirm: 'absolutegarbagesecurity',
+          }),
+        ).rejects.toThrow(MESSAGES.newPasswordConfirm.notOneOf);
       });
     });
   });

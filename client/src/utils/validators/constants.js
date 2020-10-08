@@ -14,4 +14,8 @@ export const MESSAGES = {
   newPassword: {
     strength: 'Password must not be weak',
   },
+  newPasswordConfirm: {
+    oneOf: "Passwords don't match",
+    notOneOf: 'New Password matches Old Password',
+  },
 };
