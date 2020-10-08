@@ -77,4 +77,8 @@ usersRouter
   .delete(deleteSelectedUserHandler)
   .put(updateSelectedUserHandler);
 
+usersRouter
+  .route('/:customerId/users/:userId/invite/')
+  .post(inviteSelectedUserHandler);
+
 module.exports = usersRouter;
