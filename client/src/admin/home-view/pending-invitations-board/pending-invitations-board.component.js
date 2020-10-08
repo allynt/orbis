@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 import { format } from 'date-fns';
 
-import { OptionsIcon } from '@astrosat/astrosat-ui';
+import { Button, OptionsIcon } from '@astrosat/astrosat-ui';
 
 import ContentWrapper from '../../content-wrapper.component';
 import OptionsDropdown from '../options-dropdown/options-dropdown.component';
@@ -69,14 +69,15 @@ export const PendingInvitationsBoard = ({
                     </td>
                     <td className={tableStyles.td}>{date}</td>
                     <td className={tableStyles.td}>
-                      <button
+                      <Button
                         className={styles.resendInvitation}
+                        size="small"
                         onClick={() => {
                           onResendInvitationClick(user);
                         }}
                       >
                         Resend Invitation
-                      </button>
+                      </Button>
                     </td>
                     <td
                       className={`${tableStyles.td} ${tableStyles.optionsColumn}`}

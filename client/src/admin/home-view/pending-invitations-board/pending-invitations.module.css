@@ -4,5 +4,5 @@
 }
 
 .resendInvitation {
-  color: var(--button--primary--primary--color);
+  padding: 0.5rem 2.5rem;
 }
