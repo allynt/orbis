@@ -14,12 +14,13 @@ import {
   userSelector,
 } from './accounts.slice';
 import LoginForm from './login/login-form.component';
-import PasswordChangeForm from './password-change-form.component';
+import PasswordChangeForm from './password/change/password-change-form.component';
 import PasswordResetConfirmForm from './password-reset-confirm-form.component';
 import PasswordResetForm from './password-reset-form.component';
 import RegisterForm from './register-form.component';
 import styles from './index.module.css';
 import { ReactComponent as OrbisLogo } from '../orbis-dark.svg';
+import { configSelector } from 'app.slice';
 
 export default () => {
   const dispatch = useDispatch();
@@ -37,6 +38,7 @@ export default () => {
   const resetStatus = useSelector(state => state.accounts.resetStatus);
   const changeStatus = useSelector(state => state.accounts.changeStatus);
   const user = useSelector(userSelector);
+  const { passwordMinLength, passwordMaxLength } = useSelector(configSelector);
 
   return (
     <div className={styles.page}>
@@ -69,6 +71,8 @@ export default () => {
                   dispatch(resendVerificationEmail(email))
                 }
                 verificationEmailStatus={verificationEmailStatus}
+                passwordMinLength={passwordMinLength}
+                passwordMaxLength={passwordMaxLength}
               />
             )}
           />

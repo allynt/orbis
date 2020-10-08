@@ -39,6 +39,8 @@ const renderComponent = (
       error={error}
       resendVerificationEmail={resendVerificationEmail}
       verificationEmailStatus={verificationEmailStatus}
+      passwordMinLength={2}
+      passwordMaxLength={255}
     />,
     {
       wrapper: ({ children }) => (

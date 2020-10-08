@@ -10,11 +10,9 @@ import {
 
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
-import { useSelector } from 'react-redux';
 import { Link, Redirect } from 'react-router-dom';
 import * as yup from 'yup';
 
-import { configSelector } from 'app.slice';
 import { PASSWORD_RESET_URL, REGISTER_URL } from 'accounts/accounts.constants';
 import { status } from '../accounts.slice';
 import { FieldError } from '../field-error.component';
@@ -35,10 +33,11 @@ const LoginForm = ({
   error,
   resendVerificationEmail,
   verificationEmailStatus,
+  passwordMinLength,
+  passwordMaxLength,
 }) => {
   const [notVerified, setNotVerified] = useState(false);
 
-  const { passwordMinLength, passwordMaxLength } = useSelector(configSelector);
   const { register, handleSubmit, getValues, formState, errors } = useForm({
     mode: 'onBlur',
     resolver: yupResolver(loginSchema),
