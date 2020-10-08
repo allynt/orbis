@@ -9,8 +9,8 @@ export const email = yup
 export const password = yup
   .string()
   .required(MESSAGES.password.required)
-  .min(yup.ref('$minLength'), MESSAGES.password.min)
-  .max(yup.ref('$maxLength'), MESSAGES.password.max);
+  .min(yup.ref('$passwordMinLength'), MESSAGES.password.min)
+  .max(yup.ref('$passwordMaxLength'), MESSAGES.password.max);
 
 export const oldPassword = () => null;
 export const newPassword = () => null;

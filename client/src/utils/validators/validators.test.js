@@ -35,7 +35,7 @@ describe('field validators', () => {
   });
 
   describe('password', () => {
-    const context = { minLength: 2, maxLength: 255 };
+    const context = { passwordMinLength: 2, passwordMaxLength: 255 };
     it('is required', async () => {
       await expect(password.validate('')).rejects.toThrow(
         MESSAGES.password.required,
@@ -44,16 +44,24 @@ describe('field validators', () => {
 
     it('is greater than min length provided', async () => {
       await expect(password.validate('a', { context })).rejects.toThrow(
-        MESSAGES.password.min.replace('${min}', context.minLength.toString()),
+        MESSAGES.password.min.replace(
+          '${min}',
+          context.passwordMinLength.toString(),
+        ),
       );
     });
 
     it('is less than max length provided', async () => {
-      const longPassword = new Array(context.maxLength + 1).fill('a').join('');
+      const longPassword = new Array(context.passwordMaxLength + 1)
+        .fill('a')
+        .join('');
       await expect(
         password.validate(longPassword, { context }),
       ).rejects.toThrow(
-        MESSAGES.password.max.replace('${max}', context.maxLength.toString()),
+        MESSAGES.password.max.replace(
+          '${max}',
+          context.passwordMaxLength.toString(),
+        ),
       );
     });
   });
