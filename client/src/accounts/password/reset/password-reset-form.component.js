@@ -16,18 +16,8 @@ import { FieldError } from 'accounts/field-error.component';
 
 import formStyles from 'forms.module.css';
 
-const PasswordResetSuccessView = ({ error }) => (
+const PasswordResetSuccessView = () => (
   <div className={formStyles.form}>
-    {error && (
-      <Well type="error">
-        <ul>
-          {error.map(error => (
-            <li key={error}>{error}</li>
-          ))}
-        </ul>
-      </Well>
-    )}
-
     <p className={formStyles.paragraph}>
       Your password has successfully been reset. Click the button to continue.
     </p>
@@ -80,7 +70,6 @@ const PasswordResetForm = ({
             name="new_password1"
             ref={register}
             placeholder="New Password"
-            required
             autoFocus
           />
         </div>
@@ -97,7 +86,6 @@ const PasswordResetForm = ({
             name="new_password2"
             ref={register}
             placeholder="New Password Confirmation"
-            required
           />
         </div>
         {errors.new_password2 && (
