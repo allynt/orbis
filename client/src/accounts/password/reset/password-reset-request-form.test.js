@@ -6,16 +6,20 @@ import userEvent from '@testing-library/user-event';
 
 import PasswordResetRequestForm from './password-reset-request-form.component';
 import { status } from '../../accounts.slice';
+import { Router } from 'react-router-dom';
+import { createMemoryHistory } from 'history';
 
 const RESET_BUTTON_TEXT = 'Reset Password';
 
 const renderComponent = (resetPassword, resetStatus, error) =>
   render(
-    <PasswordResetRequestForm
-      resetPassword={resetPassword}
-      resetStatus={resetStatus}
-      error={error}
-    />,
+    <Router history={createMemoryHistory()}>
+      <PasswordResetRequestForm
+        resetPassword={resetPassword}
+        resetStatus={resetStatus}
+        error={error}
+      />
+    </Router>,
   );
 
 describe('Password Reset Request Form Component', () => {

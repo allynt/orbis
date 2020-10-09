@@ -4,6 +4,7 @@ import { Button, Textfield } from '@astrosat/astrosat-ui';
 
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
+import { Link } from 'react-router-dom';
 import { object } from 'yup';
 
 import { ErrorWell } from 'accounts/error-well.component';
@@ -40,7 +41,9 @@ const PasswordResetRequestSuccessView = ({ email, onSubmit }) => (
       <Button theme="secondary" onClick={() => onSubmit(email)}>
         Resend email
       </Button>
-      <Button href={LOGIN_URL}>Return to login</Button>
+      <Link to={LOGIN_URL}>
+        <Button theme="link">Return to login</Button>
+      </Link>
     </div>
   </div>
 );
@@ -96,7 +99,9 @@ const PasswordResetRequestForm = ({ resetPassword, resetStatus, error }) => {
 
       <p className={formStyles.footer}>
         Do you have an account?&nbsp;
-        <Button href={LOGIN_URL}>Login</Button>
+        <Link to={LOGIN_URL}>
+          <Button theme="link">Login</Button>
+        </Link>
       </p>
     </form>
   );
