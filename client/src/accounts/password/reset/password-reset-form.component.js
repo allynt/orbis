@@ -38,7 +38,7 @@ const PasswordResetSuccessView = ({ error }) => (
   </div>
 );
 
-const PasswordResetConfirmForm = ({
+const PasswordResetForm = ({
   confirmResetPassword,
   resetStatus,
   match,
@@ -140,4 +140,4 @@ const PasswordResetConfirmForm = ({
   );
 };
 
-export default PasswordResetConfirmForm;
+export default PasswordResetForm;

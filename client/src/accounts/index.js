@@ -15,7 +15,7 @@ import {
 } from './accounts.slice';
 import LoginForm from './login/login-form.component';
 import PasswordChangeForm from './password/change/password-change-form.component';
-import PasswordResetConfirmForm from './password/reset/password-reset-form.component';
+import PasswordResetForm from './password/reset/password-reset-form.component';
 import PasswordResetRequestForm from './password/reset/password-reset-request-form.component';
 import RegisterForm from './register-form.component';
 import styles from './index.module.css';
@@ -123,7 +123,7 @@ export default () => {
           <Route
             path={`${match.path}/password/reset/:token/:uid/`}
             render={props => (
-              <PasswordResetConfirmForm
+              <PasswordResetForm
                 confirmResetPassword={(form, params) =>
                   dispatch(confirmResetPassword(form, params))
                 }
