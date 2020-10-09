@@ -15,7 +15,7 @@ import { email } from 'utils/validators/validators';
 
 import formStyles from 'forms.module.css';
 
-const PasswordResetSuccessView = ({ email, onSubmit }) => (
+const PasswordResetRequestSuccessView = ({ email, onSubmit }) => (
   <div className={formStyles.form}>
     <div className={formStyles.textContent}>
       <p className={formStyles.paragraph}>
@@ -49,7 +49,7 @@ const validationSchema = object({
   [FIELD_NAMES.email]: email,
 });
 
-const PasswordResetForm = ({ resetPassword, resetStatus, error }) => {
+const PasswordResetRequestForm = ({ resetPassword, resetStatus, error }) => {
   const { register, handleSubmit, getValues, formState, errors } = useForm({
     mode: 'onBlur',
     resolver: yupResolver(validationSchema),
@@ -61,7 +61,10 @@ const PasswordResetForm = ({ resetPassword, resetStatus, error }) => {
 
   if (resetStatus === status.PENDING)
     return (
-      <PasswordResetSuccessView email={getValues().email} onSubmit={onSubmit} />
+      <PasswordResetRequestSuccessView
+        email={getValues().email}
+        onSubmit={onSubmit}
+      />
     );
 
   return (
@@ -99,4 +102,4 @@ const PasswordResetForm = ({ resetPassword, resetStatus, error }) => {
   );
 };
 
-export default PasswordResetForm;
+export default PasswordResetRequestForm;

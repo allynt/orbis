@@ -4,21 +4,21 @@ import { render, waitFor } from '@testing-library/react';
 
 import userEvent from '@testing-library/user-event';
 
-import PasswordResetForm from './password-reset-request-form.component';
+import PasswordResetRequestForm from './password-reset-request-form.component';
 import { status } from '../../accounts.slice';
 
 const RESET_BUTTON_TEXT = 'Reset Password';
 
 const renderComponent = (resetPassword, resetStatus, error) =>
   render(
-    <PasswordResetForm
+    <PasswordResetRequestForm
       resetPassword={resetPassword}
       resetStatus={resetStatus}
       error={error}
     />,
   );
 
-describe('Password Reset Form Component', () => {
+describe('Password Reset Request Form Component', () => {
   let resetPassword = null;
   let resetStatus = null;
   let error = null;
