@@ -16,7 +16,7 @@ import * as yup from 'yup';
 import { PASSWORD_RESET_URL, REGISTER_URL } from 'accounts/accounts.constants';
 import { status } from '../accounts.slice';
 import { FieldError } from '../field-error.component';
-import { RegisterFormSuccessView } from '../register-form.component';
+import { RegisterFormSuccessView } from '../register/register-form.component';
 
 import formStyles from 'forms.module.css';
 import { FIELD_NAMES } from 'utils/validators/constants';

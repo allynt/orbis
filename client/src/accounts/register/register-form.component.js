@@ -6,7 +6,6 @@ import {
   PasswordStrengthMeter,
   Textfield,
   Checkbox,
-  Well,
 } from '@astrosat/astrosat-ui';
 
 import { useForm } from 'react-hook-form';
@@ -16,6 +15,7 @@ import { status } from 'accounts/accounts.slice';
 import { FieldError } from 'accounts/field-error.component';
 
 import formStyles from 'forms.module.css';
+import { ErrorWell } from 'accounts/error-well.component';
 
 export const RegisterFormSuccessView = ({ email, resendVerificationEmail }) => (
   <div className={formStyles.form}>
@@ -52,6 +52,7 @@ const RegisterForm = ({
   registerUserStatus,
   resendVerificationEmail,
   error,
+  isRegistrationOpen = true,
 }) => {
   const { register, handleSubmit, getValues, errors } = useForm({
     mode: 'onBlur',
@@ -73,21 +74,11 @@ const RegisterForm = ({
 
   return (
     <form className={formStyles.form} onSubmit={handleSubmit(onSubmit)}>
-      {/* {config && !config.isRegistrationOpen && (
-        <Well type="error">
-          <div>We are sorry, but the signup is currently closed.</div>
-        </Well>
-      )} */}
-
-      {error && (
-        <Well type="error">
-          <ul data-testid="error-well">
-            {error.map(err => (
-              <li key={err}>{err}</li>
-            ))}
-          </ul>
-        </Well>
-      )}
+      <ErrorWell errors={error}>
+        {!isRegistrationOpen && (
+          <li>We are sorry, but the signup is currently closed.</li>
+        )}
+      </ErrorWell>
 
       <div className={formStyles.fields}>
         <div className={formStyles.row}>
@@ -158,7 +149,7 @@ const RegisterForm = ({
           type="submit"
           disabled={
             !termsAgreed ||
-            // (config && !config.isRegistrationOpen) ||
+            !isRegistrationOpen ||
             Object.keys(errors).length > 0
           }
         >
