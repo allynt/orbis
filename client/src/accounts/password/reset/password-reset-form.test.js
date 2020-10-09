@@ -8,7 +8,7 @@ import { Provider } from 'react-redux';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 
-import PasswordResetConfirmForm from './password-reset-confirm-form.component';
+import PasswordResetConfirmForm from './password-reset-form.component';
 import { status } from 'accounts/accounts.slice';
 
 const mockStore = configureMockStore([thunk]);
