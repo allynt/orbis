@@ -80,7 +80,7 @@ describe('PendingUsersBoard', () => {
   });
 
   it('Calls resendInvitation when `Resend Invitation` button is clicked', () => {
-    const { getByText, getAllByTestId } = render(
+    const { getAllByText } = render(
       <PendingInvitationsBoard
         pendingUsers={pendingUsers}
         customer={customer}
@@ -88,10 +88,7 @@ describe('PendingUsersBoard', () => {
       />,
     );
 
-    userEvent.click(getAllByTestId('options-icon')[0]);
-
-    const resendInvitationButton = getByText('Resend Invitation');
-
+    const resendInvitationButton = getAllByText('Resend Invitation')[0];
     expect(resendInvitationButton).toBeInTheDocument();
     userEvent.click(resendInvitationButton);
     expect(onResendInvitationClick).toHaveBeenCalledWith(pendingUsers[0]);
