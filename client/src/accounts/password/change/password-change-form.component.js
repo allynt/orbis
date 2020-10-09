@@ -24,6 +24,7 @@ import { FIELD_NAMES } from 'utils/validators/constants';
 
 import formStyles from 'forms.module.css';
 import { Link } from 'react-router-dom';
+import { ErrorWell } from 'accounts/error-well.component';
 
 const ChangePasswordSuccessView = () => (
   <div className={formStyles.form}>
@@ -78,15 +79,7 @@ const PasswordChangeForm = ({
 
   return (
     <form className={formStyles.form} onSubmit={handleSubmit(onSubmit)}>
-      {error && (
-        <Well type="error">
-          <ul data-testid="error-well">
-            {error.map(error => (
-              <li key={error}>{error}</li>
-            ))}
-          </ul>
-        </Well>
-      )}
+      <ErrorWell errors={error} />
 
       <div className={formStyles.fields}>
         <div className={formStyles.row}>
@@ -123,9 +116,6 @@ const PasswordChangeForm = ({
           <FieldError
             message={errors[FIELD_NAMES.newPasswordConfirm].message}
           />
-        )}
-        {errors.new_password2 && errors.new_password2.type === 'validate' && (
-          <FieldError message="New Passwords don't match" />
         )}
 
         <PasswordStrengthMeter password={watch(FIELD_NAMES.newPassword)} />
