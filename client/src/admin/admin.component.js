@@ -12,6 +12,7 @@ import {
   selectLicenceInformation,
   updateCustomerUser,
   deleteCustomerUser,
+  inviteCustomerUser,
   selectActiveUsers,
   selectPendingUsers,
   selectAvailableLicences,
@@ -100,6 +101,11 @@ const Admin = ({ user }) => {
             }
             onDeleteUserClick={user =>
               setDialogForm({ type: DIALOG_VIEW.deleteUser, user })
+            }
+            onResendInvitationClick={user =>
+              dispatch(
+                inviteCustomerUser(user)
+              )
             }
             onWithdrawInvitationClick={user =>
               setDialogForm({ type: DIALOG_VIEW.withdrawInvitation, user })

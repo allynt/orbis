@@ -5,6 +5,7 @@ const {
   getSelectedUser,
   createCustomerUser,
   updateCustomerUser,
+  inviteCustomerUser,
   deleteCustomerUser,
 } = require('./data');
 
@@ -44,6 +45,16 @@ const updateSelectedUserHandler = (req, res) => {
   res.json(updatedUser);
 };
 
+const inviteSelectedUserHandler = (req, res) => {
+  console.log('Inviting Selected user of Customer');
+
+  const customerUser = req.body;
+  const invitedCustomerUser = invitedCustomerUser(customerUser);
+
+  res.status(200)
+  res.json(invitedCustomerUser)
+};
+
 const deleteSelectedUserHandler = (req, res) => {
   console.log('Deleting Selected User of Customer');
 
@@ -65,5 +76,9 @@ usersRouter
   .get(getSelectedUserHandler)
   .delete(deleteSelectedUserHandler)
   .put(updateSelectedUserHandler);
+
+usersRouter
+  .route('/:customerId/users/:userId/invite/')
+  .post(inviteSelectedUserHandler);
 
 module.exports = usersRouter;

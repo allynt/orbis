@@ -1,4 +1,4 @@
-{% extends "orbis/emails/message_base.txt" %}
+{% extends "core/emails/message_base.txt" %}
 
 {% block body %}
 

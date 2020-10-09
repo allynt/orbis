@@ -27,7 +27,7 @@ django-rest-knox = ">=4.1.0"
 # external file storage
 django-storages = ">=1.9.1"
 # API... duh
-djangorestframework = "~=3.0"
+djangorestframework = "==3.11.1"
 # API for GIS
 djangorestframework-gis = ">=0.15.0"
 # dynamic API
@@ -57,7 +57,7 @@ codecov = ">=2.0"
 # live debug info
 django-debug-toolbar = ">=2.2"
 # test fixtures replacement
-factory-boy = ">=2.12"
+factory-boy = "==3.0.1"
 # test library
 pytest = "==5.3.5"
 # pytest django plugin

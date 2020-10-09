@@ -1,0 +1,30 @@
+{% extends "core/emails/message_base.txt" %}
+
+{% load i18n %}
+
+{% block body %}
+
+  {% autoescape off %}
+
+    Hi, you have been invited by an Administrator of {{ customer.title }} to have access to {{ customer.title }}'s ORBIS Account.
+
+    {% if password_reset_url %}
+
+      Please follow the link below to create a User Account and Password.
+
+      {{ password_reset_url }}
+
+    {% endif %}
+
+    {% if username %}
+      {% blocktrans %}
+        In case you forgot, your username is {{ username }}.
+      {% endblocktrans %}
+    {% endif %}
+
+    Cheers,
+    ORBIS by Astrosat
+
+  {% endautoescape %}
+
+{% endblock %}

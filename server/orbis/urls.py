@@ -5,8 +5,9 @@ from rest_framework.routers import SimpleRouter
 from .views import (
     OrbListView,
     CustomerDetailView,
-    CustomerUserDetailView,
     CustomerUserListView,
+    CustomerUserDetailView,
+    CustomerUserInviteView,
     DataView,
     TokenView,
     SatelliteViewSet,
@@ -29,6 +30,7 @@ api_urlpatterns = [
     path("customers/<slug:customer_id>/", CustomerDetailView.as_view(), name="customers-detail"),
     path("customers/<slug:customer_id>/users/", CustomerUserListView.as_view(), name="customer-users-list"),
     path("customers/<slug:customer_id>/users/<slug:user_id>/", CustomerUserDetailView.as_view(), name="customer-users-detail"),
+    path("customers/<slug:customer_id>/users/<slug:user_id>/invite/", CustomerUserInviteView.as_view(), name="customer-users-invite"),
     path("data/sources/", DataView.as_view(), name="data"),
     path("data/token/", TokenView.as_view(), name="token"),
     path("satellites/run_query/", run_satellite_query, name="satellite-run-query"),

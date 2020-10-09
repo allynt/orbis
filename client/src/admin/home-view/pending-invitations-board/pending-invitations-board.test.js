@@ -13,7 +13,7 @@ describe('PendingUsersBoard', () => {
     ["email address'", 'email'],
   ];
   const onWithdrawInvitationClick = jest.fn();
-
+  const onResendInvitationClick = jest.fn()
   it.each(cases)("Displays all pending user's %s", (_, text) => {
     const { getByText } = render(
       <PendingInvitationsBoard
@@ -77,6 +77,21 @@ describe('PendingUsersBoard', () => {
 
     expect(queryByText('Not currently available')).not.toBeInTheDocument();
     expect(getByText('No licences')).toBeInTheDocument();
+  });
+
+  it('Calls resendInvitation when `Resend Invitation` button is clicked', () => {
+    const { getAllByText } = render(
+      <PendingInvitationsBoard
+        pendingUsers={pendingUsers}
+        customer={customer}
+        onResendInvitationClick={onResendInvitationClick}
+      />,
+    );
+
+    const resendInvitationButton = getAllByText('Resend Invitation')[0];
+    expect(resendInvitationButton).toBeInTheDocument();
+    userEvent.click(resendInvitationButton);
+    expect(onResendInvitationClick).toHaveBeenCalledWith(pendingUsers[0]);
   });
 
   it('Opens `Withdraw Invitation` dialog when button is clicked', () => {

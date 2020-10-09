@@ -14,6 +14,10 @@ import reducer, {
   updateCustomerUserSuccess,
   updateCustomerUserFailure,
   updateCustomerUser,
+  inviteCustomerUserRequested,
+  inviteCustomerUserSuccess,
+  inviteCustomerUserFailure,
+  inviteCustomerUser,
   createCustomerUserRequested,
   createCustomerUserSuccess,
   createCustomerUserFailure,
@@ -309,6 +313,78 @@ describe('Admin Slice', () => {
 
         expect(store.getActions()).toEqual(expectedActions);
       });
+    });
+
+    describe('inviteCustomerUser', () => {
+      it('should dispatch invite customer user failure action', async() => {
+
+        const customerUser = {
+          id: '1',
+          status: 'PENDING',
+          type: 'MEMBER',
+          licences: [],
+          user: {
+            id: '1',
+            name: 'Test User',
+            email: 'test.user@test.com',
+          }
+        };
+
+        fetch.mockResponse(
+          JSON.stringify({
+            message: 'Test error message',
+          }),
+          {
+            ok: false,
+            status: 401,
+            statusText: 'Test Error',
+          },
+        );
+
+        const expectedActions = [
+          { type: inviteCustomerUserRequested.type },
+          {
+            type: inviteCustomerUserFailure.type,
+            payload: { message: '401 Test Error' },
+          },
+        ];
+
+        await store.dispatch(inviteCustomerUser(customerUser));
+
+        expect(store.getActions()).toEqual(expectedActions);
+
+      })
+
+      it('should dispatch invite customer user success action', async() => {
+        const invitedCustomerUser = {
+          id: '1',
+          status: 'PENDING',
+          type: 'MEMBER',
+          licences: [],
+          user: {
+            id: '1',
+            name: 'Test User',
+            email: 'test.user@test.com',
+          },
+        };
+
+        fetch.once(JSON.stringify(invitedCustomerUser))
+
+        const expectedActions = [
+          { type: inviteCustomerUserRequested.type },
+          {
+            type: inviteCustomerUserSuccess.type,
+            payload: {
+              invitedCustomerUser
+            },
+          },
+        ];
+
+        await store.dispatch(inviteCustomerUser(invitedCustomerUser));
+
+        expect(store.getActions()).toEqual(expectedActions);
+      })
+
     });
 
     describe('deleteCustomerUser', () => {

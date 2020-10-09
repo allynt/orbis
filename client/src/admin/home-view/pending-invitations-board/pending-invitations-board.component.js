@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 import { format } from 'date-fns';
 
-import { OptionsIcon } from '@astrosat/astrosat-ui';
+import { Button, OptionsIcon } from '@astrosat/astrosat-ui';
 
 import ContentWrapper from '../../content-wrapper.component';
 import OptionsDropdown from '../options-dropdown/options-dropdown.component';
@@ -12,11 +12,12 @@ import { getUserLicences, getLicenceInfo } from '../../licence-utils';
 import styles from './pending-invitations.module.css';
 import tableStyles from '../../table.module.css';
 
-const DATE_FORMAT = ['k:s d MMMM yyyy'];
+const DATE_FORMAT = 'k:mm d MMMM yyyy';
 
 export const PendingInvitationsBoard = ({
   pendingUsers,
   customer,
+  onResendInvitationClick,
   onWithdrawInvitationClick,
 }) => {
   const [dropdown, setDropdown] = useState(null);
@@ -42,6 +43,9 @@ export const PendingInvitationsBoard = ({
               <th align="left" className={tableStyles.th}>
                 Invited
               </th>
+              <th align="left" className={tableStyles.th}>
+                &nbsp;
+              </th>
             </tr>
           </thead>
           <tbody>
@@ -64,6 +68,17 @@ export const PendingInvitationsBoard = ({
                       {getLicenceInfo(licences)}
                     </td>
                     <td className={tableStyles.td}>{date}</td>
+                    <td className={tableStyles.td}>
+                      <Button
+                        className={styles.resendInvitation}
+                        size="small"
+                        onClick={() => {
+                          onResendInvitationClick(user);
+                        }}
+                      >
+                        Resend Invitation
+                      </Button>
+                    </td>
                     <td
                       className={`${tableStyles.td} ${tableStyles.optionsColumn}`}
                     >
