@@ -13,6 +13,7 @@ import { createMemoryHistory } from 'history';
 
 import RegisterForm from './register-form.component';
 import { status } from '../accounts.slice';
+import { FIELD_NAMES } from 'utils/validators';
 
 const mockStore = configureMockStore([thunk]);
 
@@ -27,7 +28,7 @@ const I_AGREE_TEXT = 'I agree with';
 const testAppConfig = {
   passwordMinLength: 8,
   passwordMaxLength: 255,
-  passwordStrength: 2,
+  passwordStrength: 0,
   isRegistrationOpen: true,
   isVerificationRequired: true,
   isApprovalRequired: false,
@@ -47,6 +48,7 @@ const renderComponent = (
       registerUserStatus={registerUserStatus}
       resendVerificationEmail={resendVerificationEmail}
       error={error}
+      {...testAppConfig}
     />,
     {
       wrapper: ({ children }) => (
@@ -221,9 +223,9 @@ describe('Register Form Component', () => {
     expect(registerUser).not.toHaveBeenCalled();
     await waitFor(() =>
       expect(registerUser).toHaveBeenCalledWith({
-        email: EMAIL_TEXT,
-        password1: PASSWORD_TEXT,
-        password2: PASSWORD_TEXT,
+        [FIELD_NAMES.email]: EMAIL_TEXT,
+        [FIELD_NAMES.newPassword]: PASSWORD_TEXT,
+        [FIELD_NAMES.newPasswordConfirm]: PASSWORD_TEXT,
         accepted_terms: true,
       }),
     );

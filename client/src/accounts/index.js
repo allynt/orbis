@@ -59,12 +59,13 @@ export default () => {
             path={`${match.path}/register`}
             render={() => (
               <RegisterForm
-                register={form => dispatch(register(form))}
+                registerUser={form => dispatch(register(form))}
                 registerUserStatus={registerUserStatus}
                 resendVerificationEmail={email =>
                   dispatch(resendVerificationEmail(email))
                 }
                 error={error}
+                {...passwordConfig}
               />
             )}
           />
