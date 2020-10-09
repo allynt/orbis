@@ -45,7 +45,7 @@ describe('Password Reset Form Component', () => {
   });
 
   it('should disable `Reset Password` button when Email too short', async () => {
-    const { getByText, getByPlaceholderText, getByRole } = renderComponent(
+    const { getByPlaceholderText, getByRole } = renderComponent(
       resetPassword,
       resetStatus,
       error,
@@ -58,13 +58,12 @@ describe('Password Reset Form Component', () => {
     userEvent.tab();
 
     await waitFor(() => {
-      expect(getByText('Too Few Characters entered'));
       expect(resetButton).toHaveAttribute('disabled');
     });
   });
 
   it('should disable `Reset Password` button when Email invalid', async () => {
-    const { getByText, getByPlaceholderText, getByRole } = renderComponent(
+    const { getByPlaceholderText, getByRole } = renderComponent(
       resetPassword,
       resetStatus,
       error,
@@ -77,12 +76,11 @@ describe('Password Reset Form Component', () => {
     userEvent.tab();
 
     await waitFor(() => {
-      expect(getByText('Enter a valid e-mail address'));
       expect(resetButton).toHaveAttribute('disabled');
     });
   });
 
-  it.skip('should enable `Reset Password` button when form is valid', async () => {
+  it('should enable `Reset Password` button when form is valid', () => {
     const { getByPlaceholderText, getByRole } = renderComponent(
       resetPassword,
       resetStatus,
@@ -91,7 +89,7 @@ describe('Password Reset Form Component', () => {
 
     const resetButton = getByRole('button', { name: RESET_BUTTON_TEXT });
     expect(resetButton).toHaveAttribute('disabled');
-    await userEvent.type(getByPlaceholderText('Email'), 'test@test.com');
+    userEvent.type(getByPlaceholderText('Email'), 'test@test.com');
 
     expect(resetButton).not.toHaveAttribute('disabled');
   });
@@ -115,7 +113,7 @@ describe('Password Reset Form Component', () => {
     },
   );
 
-  it('should call resetPassword function when form is valid and `Reset Password` button clicked', () => {
+  it('should call resetPassword function when form is valid and `Reset Password` button clicked', async () => {
     const { getByRole, getByPlaceholderText } = renderComponent(
       resetPassword,
       resetStatus,
@@ -131,7 +129,9 @@ describe('Password Reset Form Component', () => {
 
     userEvent.click(getByRole('button', { name: RESET_BUTTON_TEXT }));
 
-    expect(resetPassword).toHaveBeenCalledWith({ email: EMAIL_TEXT });
+    await waitFor(() =>
+      expect(resetPassword).toHaveBeenCalledWith({ email: EMAIL_TEXT }),
+    );
   });
 
   it('should display error well if password reset is unsuccessful', () => {
