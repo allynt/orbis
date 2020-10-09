@@ -6,7 +6,7 @@ import { Router } from 'react-router-dom';
 import { createMemoryHistory } from 'history';
 
 import PasswordResetConfirmForm from './password-reset-confirm-form.component';
-import { status } from './accounts.slice';
+import { status } from 'accounts/accounts.slice';
 
 const renderComponent = (
   history,
