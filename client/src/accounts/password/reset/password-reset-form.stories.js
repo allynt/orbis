@@ -13,7 +13,12 @@ export default {
       </Router>
     ),
   ],
-  args: { match: { params: { uuid: '123' } } },
+  args: {
+    match: { params: { uuid: '123' } },
+    passwordMinLength: 2,
+    passwordMaxLength: 20,
+    passwordStrength: 1,
+  },
   argTypes: {
     confirmResetPassword: { action: 'confirmResetPassword' },
   },

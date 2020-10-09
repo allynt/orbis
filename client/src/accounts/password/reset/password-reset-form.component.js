@@ -8,11 +8,14 @@ import {
   Well,
 } from '@astrosat/astrosat-ui';
 
+import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
+import { object as yupObject } from 'yup';
 
 import { LOGIN_URL, TERMS_URL } from 'accounts/accounts.constants';
 import { status } from 'accounts/accounts.slice';
 import { FieldError } from 'accounts/field-error.component';
+import { FIELD_NAMES, newPassword, newPasswordConfirm } from 'utils/validators';
 
 import formStyles from 'forms.module.css';
 
@@ -28,16 +31,26 @@ const PasswordResetSuccessView = () => (
   </div>
 );
 
+const validationSchema = yupObject({
+  [FIELD_NAMES.newPassword]: newPassword,
+  [FIELD_NAMES.newPasswordConfirm]: newPasswordConfirm,
+});
+
 const PasswordResetForm = ({
   confirmResetPassword,
   resetStatus,
   match,
   error,
+  passwordMinLength,
+  passwordMaxLength,
+  passwordStrength,
 }) => {
   const [termsAgreed, setTermsAgreed] = useState(false);
 
-  const { register, handleSubmit, getValues, errors } = useForm({
+  const { register, handleSubmit, errors, watch } = useForm({
     mode: 'onBlur',
+    resolver: yupResolver(validationSchema),
+    context: { passwordMinLength, passwordMaxLength, passwordStrength },
   });
 
   if (resetStatus === status.COMPLETE) {
@@ -62,40 +75,45 @@ const PasswordResetForm = ({
 
       <div className={formStyles.fields}>
         <div className={formStyles.row}>
-          <label className={formStyles.hiddenLabel} htmlFor="password2">
+          <label
+            className={formStyles.hiddenLabel}
+            htmlFor={FIELD_NAMES.newPassword}
+          >
             Password Confirmation
           </label>
           <PasswordField
-            id="new_password1"
-            name="new_password1"
+            id={FIELD_NAMES.newPassword}
+            name={FIELD_NAMES.newPassword}
             ref={register}
             placeholder="New Password"
             autoFocus
           />
         </div>
-        {errors.new_password1 && (
-          <FieldError message={errors.new_password1.message} />
+        {errors[FIELD_NAMES.newPassword] && (
+          <FieldError message={errors[FIELD_NAMES.newPassword].message} />
         )}
 
         <div className={formStyles.row}>
-          <label className={formStyles.hiddenLabel} htmlFor="password2">
+          <label
+            className={formStyles.hiddenLabel}
+            htmlFor={FIELD_NAMES.newPasswordConfirm}
+          >
             Password Confirmation
           </label>
           <PasswordField
-            id="new_password2"
-            name="new_password2"
+            id={FIELD_NAMES.newPasswordConfirm}
+            name={FIELD_NAMES.newPasswordConfirm}
             ref={register}
             placeholder="New Password Confirmation"
           />
         </div>
-        {errors.new_password2 && (
-          <FieldError message={errors.new_password2.message} />
-        )}
-        {errors.new_password2 && errors.new_password2.type === 'validate' && (
-          <FieldError message="Passwords don't match" />
+        {errors[FIELD_NAMES.newPasswordConfirm] && (
+          <FieldError
+            message={errors[FIELD_NAMES.newPasswordConfirm].message}
+          />
         )}
 
-        <PasswordStrengthMeter password={getValues().new_password1} />
+        <PasswordStrengthMeter password={watch(FIELD_NAMES.newPassword)} />
 
         <div className={formStyles.row}>
           <Checkbox

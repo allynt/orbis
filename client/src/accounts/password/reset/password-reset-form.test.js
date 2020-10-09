@@ -10,6 +10,7 @@ import thunk from 'redux-thunk';
 
 import PasswordResetForm from './password-reset-form.component';
 import { status } from 'accounts/accounts.slice';
+import { FIELD_NAMES } from 'utils/validators';
 
 const mockStore = configureMockStore([thunk]);
 
@@ -32,6 +33,9 @@ const renderComponent = (
       resetStatus={resetStatus}
       match={match}
       error={error}
+      passwordMinLength={2}
+      passwordMaxLength={30}
+      passwordStrength={0}
     />,
     {
       wrapper: ({ children }) => <Provider store={store}>{children}</Provider>,
@@ -164,8 +168,8 @@ describe('Password Reset Form Component', () => {
     await waitFor(() =>
       expect(confirmResetPassword).toHaveBeenCalledWith(
         {
-          new_password1: PASSWORD_TEXT,
-          new_password2: PASSWORD_TEXT,
+          [FIELD_NAMES.newPassword]: PASSWORD_TEXT,
+          [FIELD_NAMES.newPasswordConfirm]: PASSWORD_TEXT,
           termsAgreed: true,
         },
         { token: 'Test Token', uid: 'Test UID' },
