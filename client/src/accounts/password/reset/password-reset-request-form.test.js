@@ -4,7 +4,7 @@ import { render, waitFor } from '@testing-library/react';
 
 import userEvent from '@testing-library/user-event';
 
-import PasswordResetForm from './password-reset-form.component';
+import PasswordResetForm from './password-reset-request-form.component';
 import { status } from '../../accounts.slice';
 
 const RESET_BUTTON_TEXT = 'Reset Password';
