@@ -1,8 +1,8 @@
 import zxcvbn from 'zxcvbn';
 
-import store from '../store';
+import store from 'store';
 
-import { EMAIL_REGEX } from '../utils/form';
+import { EMAIL_REGEX } from 'utils/form';
 
 const validate = form => {
   const {
