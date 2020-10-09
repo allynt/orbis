@@ -18,6 +18,7 @@ import { FieldError } from 'accounts/field-error.component';
 import { FIELD_NAMES, newPassword, newPasswordConfirm } from 'utils/validators';
 
 import formStyles from 'forms.module.css';
+import { ErrorWell } from 'accounts/error-well.component';
 
 const PasswordResetSuccessView = () => (
   <div className={formStyles.form}>
@@ -63,15 +64,7 @@ const PasswordResetForm = ({
 
   return (
     <form className={formStyles.form} onSubmit={handleSubmit(onSubmit)}>
-      {error && (
-        <Well type="error">
-          <ul data-testid="error-well">
-            {error.map(error => (
-              <li key={error}>{error}</li>
-            ))}
-          </ul>
-        </Well>
-      )}
+      <ErrorWell errors={error} />
 
       <div className={formStyles.fields}>
         <div className={formStyles.row}>

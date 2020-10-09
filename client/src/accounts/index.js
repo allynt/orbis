@@ -43,6 +43,11 @@ export default () => {
     passwordMaxLength,
     passwordStrength,
   } = useSelector(configSelector);
+  const passwordConfig = {
+    passwordMinLength,
+    passwordMaxLength,
+    passwordStrength,
+  };
 
   return (
     <div className={styles.page}>
@@ -75,8 +80,7 @@ export default () => {
                   dispatch(resendVerificationEmail(email))
                 }
                 verificationEmailStatus={verificationEmailStatus}
-                passwordMinLength={passwordMinLength}
-                passwordMaxLength={passwordMaxLength}
+                {...passwordConfig}
               />
             )}
           />
@@ -89,9 +93,7 @@ export default () => {
                 changePassword={form => dispatch(changePassword(form))}
                 changeStatus={changeStatus}
                 error={error}
-                passwordMinLength={passwordMinLength}
-                passwordMaxLength={passwordMaxLength}
-                passwordStrength={passwordStrength}
+                {...passwordConfig}
               />
             )}
           />
@@ -130,6 +132,7 @@ export default () => {
                 resetStatus={resetStatus}
                 match={props.match}
                 error={error}
+                {...passwordConfig}
               />
             )}
           />
