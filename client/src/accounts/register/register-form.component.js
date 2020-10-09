@@ -1,22 +1,19 @@
 import React, { useState } from 'react';
 
-import { useSelector } from 'react-redux';
-
-import validate from './register-form.validator';
-
 import {
   Button,
   PasswordField,
   PasswordStrengthMeter,
   Textfield,
   Checkbox,
-  useForm,
   Well,
 } from '@astrosat/astrosat-ui';
 
-import { status } from 'accounts/accounts.slice';
+import { useForm } from 'react-hook-form';
 
 import { LOGIN_URL, TERMS_URL } from 'accounts/accounts.constants';
+import { status } from 'accounts/accounts.slice';
+import { FieldError } from 'accounts/field-error.component';
 
 import formStyles from 'forms.module.css';
 
@@ -51,57 +48,42 @@ export const RegisterFormSuccessView = ({ email, resendVerificationEmail }) => (
 );
 
 const RegisterForm = ({
-  register,
+  registerUser,
   registerUserStatus,
   resendVerificationEmail,
   error,
 }) => {
-  const { passwordMinLength, passwordMaxLength } = useSelector(
-    state => state.app.config,
-  );
-  const validators = {
-    passwordMinLength,
-    passwordMaxLength,
-  };
-  const { handleChange, handleSubmit, values, errors } = useForm(
-    onSubmit,
-    validate,
-    validators,
-  );
-
-  const config = useSelector(state => state.app.config);
+  const { register, handleSubmit, getValues, errors } = useForm({
+    mode: 'onBlur',
+  });
 
   const [termsAgreed, setTermsAgreed] = useState(false);
 
   if (registerUserStatus === status.PENDING)
     return (
       <RegisterFormSuccessView
-        email={values.email}
+        email={getValues().email}
         resendVerificationEmail={resendVerificationEmail}
       />
     );
 
-  function onSubmit() {
-    const data = {
-      ...values,
-      accepted_terms: termsAgreed,
-    };
-    register(data);
-  }
+  const onSubmit = data => {
+    registerUser({ ...data, accepted_terms: termsAgreed });
+  };
 
   return (
-    <form className={formStyles.form} onSubmit={handleSubmit}>
-      {config && !config.isRegistrationOpen && (
+    <form className={formStyles.form} onSubmit={handleSubmit(onSubmit)}>
+      {/* {config && !config.isRegistrationOpen && (
         <Well type="error">
           <div>We are sorry, but the signup is currently closed.</div>
         </Well>
-      )}
+      )} */}
 
       {error && (
         <Well type="error">
-          <ul>
-            {error.map(error => (
-              <li key={error}>{error}</li>
+          <ul data-testid="error-well">
+            {error.map(err => (
+              <li key={err}>{err}</li>
             ))}
           </ul>
         </Well>
@@ -109,47 +91,53 @@ const RegisterForm = ({
 
       <div className={formStyles.fields}>
         <div className={formStyles.row}>
+          <label className={formStyles.hiddenLabel} htmlFor="email">
+            Email as Username
+          </label>
           <Textfield
+            id="email"
             name="email"
-            value={values.email?.trim() || ''}
+            ref={register}
             placeholder="Email"
-            onChange={handleChange}
             required
             autoFocus
           />
         </div>
-        {errors.email && (
-          <p className={formStyles.errorMessage}>{errors.email}</p>
-        )}
+        {errors.email && <FieldError message={errors.email.message} />}
 
         <div className={formStyles.row}>
+          <label className={formStyles.hiddenLabel} htmlFor="password1">
+            Password
+          </label>
           <PasswordField
+            id="password1"
             name="password1"
-            value={values.password1 || ''}
-            onChange={handleChange}
+            ref={register}
             placeholder="Password"
             required
           />
         </div>
-        {errors.password1 && (
-          <p className={formStyles.errorMessage}> {errors.password1}</p>
-        )}
+        {errors.password1 && <FieldError message={errors.password1.message} />}
 
         <div className={formStyles.row}>
-          <PasswordStrengthMeter password={values.password1} />
+          <PasswordStrengthMeter password={getValues().password1} />
         </div>
 
         <div className={formStyles.row}>
+          <label className={formStyles.hiddenLabel} htmlFor="password2">
+            Password Confirmation
+          </label>
           <PasswordField
+            id="password2"
             name="password2"
-            value={values.password2 || ''}
-            onChange={handleChange}
+            ref={register}
             placeholder="Password Confirmation"
             required
           />
         </div>
-        {errors.password2 && (
-          <p className={formStyles.errorMessage}>{errors.password2}</p>
+        {errors.password2 && <FieldError message={errors.password2.message} />}
+        {errors.password2 && errors.password2.type === 'validate' && (
+          <FieldError message="Passwords don't match" />
         )}
 
         <div className={formStyles.row}>
@@ -161,7 +149,7 @@ const RegisterForm = ({
           />
           &nbsp;
           <Button target="_blank" href={TERMS_URL} rel="noopener noreferrer">
-            Terms &amp; Conditions, Privacy Policy
+            Terms &amp; Conditions
           </Button>
         </div>
       </div>
@@ -170,9 +158,8 @@ const RegisterForm = ({
           type="submit"
           disabled={
             !termsAgreed ||
-            (config && !config.isRegistrationOpen) ||
-            Object.keys(errors).length > 0 ||
-            Object.keys(values).length === 0
+            // (config && !config.isRegistrationOpen) ||
+            Object.keys(errors).length > 0
           }
         >
           Sign Up
