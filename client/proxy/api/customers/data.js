@@ -520,8 +520,9 @@ const updateCustomerUser = user => {
 };
 
 const inviteCustomerUser = customerUser => {
-  const index = customerUsers.indexOf(
-    customerUsers.find(cu => cu.id === customerUser.id),
+
+  const index = customerUsers.findIndex(
+    cu => cu.id === customerUser.id
   )
 
   const invitation_date = new Date().toISOString();
