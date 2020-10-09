@@ -16,7 +16,7 @@ import {
 import LoginForm from './login/login-form.component';
 import PasswordChangeForm from './password/change/password-change-form.component';
 import PasswordResetConfirmForm from './password-reset-confirm-form.component';
-import PasswordResetForm from './password-reset-form.component';
+import PasswordResetForm from './password/reset/password-reset-form.component';
 import RegisterForm from './register-form.component';
 import styles from './index.module.css';
 import { ReactComponent as OrbisLogo } from '../orbis-dark.svg';

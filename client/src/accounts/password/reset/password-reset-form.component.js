@@ -4,11 +4,11 @@ import validate from './password-reset-form.validator';
 
 import { Button, Textfield, useForm, Well } from '@astrosat/astrosat-ui';
 
-import { status } from './accounts.slice';
+import { status } from '../../accounts.slice';
 
-import { LOGIN_URL } from './accounts.constants';
+import { LOGIN_URL } from '../../accounts.constants';
 
-import formStyles from '../forms.module.css';
+import formStyles from 'forms.module.css';
 
 const PasswordResetSuccessView = ({ email, onSubmit }) => (
   <div className={formStyles.form}>

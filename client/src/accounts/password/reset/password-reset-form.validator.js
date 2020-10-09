@@ -1,4 +1,4 @@
-import { EMAIL_REGEX } from '../utils/form';
+import { EMAIL_REGEX } from 'utils/form';
 
 const validate = form => {
   let errors = {};
