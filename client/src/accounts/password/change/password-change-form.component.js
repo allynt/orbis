@@ -5,7 +5,6 @@ import {
   PasswordField,
   PasswordStrengthMeter,
   Checkbox,
-  Well,
 } from '@astrosat/astrosat-ui';
 
 import { yupResolver } from '@hookform/resolvers/yup';
