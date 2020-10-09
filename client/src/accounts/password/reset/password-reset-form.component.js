@@ -1,12 +1,12 @@
 import React from 'react';
 
-import validate from './password-reset-form.validator';
+import { Button, Textfield, Well } from '@astrosat/astrosat-ui';
 
-import { Button, Textfield, useForm, Well } from '@astrosat/astrosat-ui';
+import { useForm } from 'react-hook-form';
 
-import { status } from '../../accounts.slice';
-
+import { FieldError } from 'accounts/field-error.component';
 import { LOGIN_URL } from '../../accounts.constants';
+import { status } from '../../accounts.slice';
 
 import formStyles from 'forms.module.css';
 
@@ -41,27 +41,26 @@ const PasswordResetSuccessView = ({ email, onSubmit }) => (
 );
 
 const PasswordResetForm = ({ resetPassword, resetStatus, error }) => {
-  const { handleChange, handleSubmit, values, errors } = useForm(
-    onSubmit,
-    validate,
-  );
+  const { register, handleSubmit, getValues, formState, errors } = useForm({
+    mode: 'onBlur',
+  });
+
+  const onSubmit = data => {
+    resetPassword(data);
+  };
 
   if (resetStatus === status.PENDING)
     return (
-      <PasswordResetSuccessView email={values.email} onSubmit={onSubmit} />
+      <PasswordResetSuccessView email={getValues().email} onSubmit={onSubmit} />
     );
 
-  function onSubmit() {
-    resetPassword(values);
-  }
-
   return (
-    <form className={formStyles.form} onSubmit={handleSubmit}>
+    <form className={formStyles.form} onSubmit={handleSubmit(onSubmit)}>
       {error && (
         <Well type="error">
-          <ul>
-            {error.map(error => (
-              <li key={error}>{error}</li>
+          <ul data-testid="error-well">
+            {error.map(err => (
+              <li key={err}>{err}</li>
             ))}
           </ul>
         </Well>
@@ -71,24 +70,19 @@ const PasswordResetForm = ({ resetPassword, resetStatus, error }) => {
         <div className={formStyles.row}>
           <Textfield
             name="email"
-            value={values.email?.trim() || ''}
+            ref={register}
             placeholder="Email"
-            onChange={handleChange}
             required
             autoFocus
           />
         </div>
-        {errors.email && (
-          <p className={formStyles.errorMessage}>{errors.email}</p>
-        )}
+        {errors.email && <FieldError message={errors.email.message} />}
       </div>
 
       <div className={formStyles.buttons}>
         <Button
           type="submit"
-          disabled={
-            Object.keys(errors).length > 0 || Object.keys(values).length === 0
-          }
+          disabled={Object.keys(errors).length > 0 || !formState.isDirty}
         >
           Reset Password
         </Button>

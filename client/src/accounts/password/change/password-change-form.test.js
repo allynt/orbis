@@ -158,7 +158,7 @@ describe('Password Change Form Component', () => {
       'testpassword',
     );
 
-    waitFor(async () => await userEvent.tab());
+    userEvent.tab();
 
     userEvent.click(
       getByRole('button', { name: CHANGE_PASSWORD_BUTTON_LABEL }),

@@ -1,60 +1,158 @@
 import React from 'react';
 
-import { render, cleanup, fireEvent } from '@testing-library/react';
+import { render, waitFor } from '@testing-library/react';
+
+import userEvent from '@testing-library/user-event';
 
 import PasswordResetForm from './password-reset-form.component';
+import { status } from '../../accounts.slice';
+
+const RESET_BUTTON_TEXT = 'Reset Password';
+
+const renderComponent = (resetPassword, resetStatus, error) =>
+  render(
+    <PasswordResetForm
+      resetPassword={resetPassword}
+      resetStatus={resetStatus}
+      error={error}
+    />,
+  );
 
 describe('Password Reset Form Component', () => {
   let resetPassword = null;
+  let resetStatus = null;
+  let error = null;
 
   beforeEach(() => {
     resetPassword = jest.fn();
+    resetStatus = status.NONE;
+    error = [];
   });
-
-  afterEach(cleanup);
 
   it('should render a form', () => {
-    // const resetPassword = jest.fn();
-    // const { container, getByText, getByLabelText } = render(<PasswordResetForm resetPassword={resetPassword} />);
-    // expect(container.querySelector('form')).toBeInTheDocument();
-    // expect(container.querySelector('h3')).toHaveTextContent('Reset Your Password');
-    // expect(getByLabelText('Email Address:')).toBeInTheDocument();
-    // expect(getByText('Reset')).toBeInTheDocument();
-    // expect(getByText('Reset Password')).toBeInTheDocument();
+    const { getByText, getByPlaceholderText, getByRole } = renderComponent(
+      resetPassword,
+      resetStatus,
+      error,
+    );
+
+    expect(getByPlaceholderText('Email')).toBeInTheDocument();
+    const resetButton = getByRole('button', { name: RESET_BUTTON_TEXT });
+    expect(resetButton).toBeInTheDocument();
+    expect(resetButton).toHaveAttribute('disabled');
+    expect(getByText('Do you have an account?')).toBeInTheDocument();
+    expect(getByText('Login')).toBeInTheDocument();
   });
 
-  // it('should enable `Reset` button when form is dirty', async () => {
-  //   const { getByText, getByLabelText } = render(<PasswordResetForm resetPassword={resetPassword} />);
+  it('should disable `Reset Password` button when Email too short', async () => {
+    const { getByText, getByPlaceholderText, getByRole } = renderComponent(
+      resetPassword,
+      resetStatus,
+      error,
+    );
 
-  //   const email = getByLabelText('Email Address:');
-  //   expect(email.value).toEqual('');
-  //   expect(getByText('Reset')).toHaveAttribute('disabled');
-  //   fireEvent.change(email, { target: { value: 'testusername@test.com' } });
-  //   expect(email.value).toEqual('testusername@test.com');
-  //   expect(getByText('Reset')).not.toHaveAttribute('disabled');
-  // });
+    const resetButton = getByRole('button', { name: RESET_BUTTON_TEXT });
+    expect(resetButton).toHaveAttribute('disabled');
+    userEvent.type(getByPlaceholderText('Email'), 't');
 
-  // it('should enable `Reset Password` button when form is valid', () => {
-  //   const { getByText, getByLabelText } = render(<PasswordResetForm resetPassword={resetPassword} />);
+    userEvent.tab();
 
-  //   fireEvent.change(getByLabelText('Email Address:'), { target: { value: 'testusername@test.com' } });
+    await waitFor(() => {
+      expect(getByText('Too Few Characters entered'));
+      expect(resetButton).toHaveAttribute('disabled');
+    });
+  });
 
-  //   expect(getByText('Reset Password')).not.toHaveAttribute('disabled');
-  // });
+  it('should disable `Reset Password` button when Email invalid', async () => {
+    const { getByText, getByPlaceholderText, getByRole } = renderComponent(
+      resetPassword,
+      resetStatus,
+      error,
+    );
 
-  // it('should not call updateUser function when form is invalid and `Update User` button clicked', () => {
-  //   const { getByText } = render(<PasswordResetForm resetPassword={resetPassword} />);
+    const resetButton = getByRole('button', { name: RESET_BUTTON_TEXT });
+    expect(resetButton).toHaveAttribute('disabled');
+    userEvent.type(getByPlaceholderText('Email'), 'testtest.com');
 
-  //   fireEvent.click(getByText('Reset Password'));
-  //   expect(resetPassword).not.toHaveBeenCalled();
-  // });
+    userEvent.tab();
 
-  // it('should call updateUser function when form is valid and `Update User` button clicked', () => {
-  //   const { getByText, getByLabelText } = render(<PasswordResetForm resetPassword={resetPassword} />);
+    await waitFor(() => {
+      expect(getByText('Enter a valid e-mail address'));
+      expect(resetButton).toHaveAttribute('disabled');
+    });
+  });
 
-  //   fireEvent.change(getByLabelText('Email Address:'), { target: { value: 'testusername@test.com' } });
+  it.skip('should enable `Reset Password` button when form is valid', async () => {
+    const { getByPlaceholderText, getByRole } = renderComponent(
+      resetPassword,
+      resetStatus,
+      error,
+    );
 
-  //   fireEvent.click(getByText('Reset Password'));
-  //   expect(resetPassword).toHaveBeenCalled();
-  // });
+    const resetButton = getByRole('button', { name: RESET_BUTTON_TEXT });
+    expect(resetButton).toHaveAttribute('disabled');
+    await userEvent.type(getByPlaceholderText('Email'), 'test@test.com');
+
+    expect(resetButton).not.toHaveAttribute('disabled');
+  });
+
+  it.each(['', 't', 'testtest.com', 'test@test.'])(
+    'should not call resetPassword function when email is %s and `Reset Password` button clicked',
+    email => {
+      const { getByRole, getByPlaceholderText } = renderComponent(
+        resetPassword,
+        resetStatus,
+        error,
+      );
+
+      userEvent.type(getByPlaceholderText('Email'), email);
+
+      userEvent.tab();
+
+      userEvent.click(getByRole('button', { name: RESET_BUTTON_TEXT }));
+
+      expect(resetPassword).not.toHaveBeenCalled();
+    },
+  );
+
+  it('should call resetPassword function when form is valid and `Reset Password` button clicked', () => {
+    const { getByRole, getByPlaceholderText } = renderComponent(
+      resetPassword,
+      resetStatus,
+      error,
+    );
+
+    const EMAIL_TEXT = 'test@test.com';
+    userEvent.type(getByPlaceholderText('Email'), EMAIL_TEXT);
+
+    expect(resetPassword).not.toHaveBeenCalled();
+
+    userEvent.tab();
+
+    userEvent.click(getByRole('button', { name: RESET_BUTTON_TEXT }));
+
+    expect(resetPassword).toHaveBeenCalledWith({ email: EMAIL_TEXT });
+  });
+
+  it('should display error well if password reset is unsuccessful', () => {
+    error = ['Test Error 1', 'Test Error 2', 'Test Error 3'];
+
+    const { getByTestId } = renderComponent(resetPassword, status.NONE, error);
+
+    expect(getByTestId('error-well')).toBeInTheDocument();
+  });
+
+  describe('Password Reset Success View', () => {
+    it('should show the Password Change success view', () => {
+      const { getByText } = renderComponent(
+        resetPassword,
+        status.PENDING,
+        error,
+      );
+
+      expect(getByText('Check your email')).toBeInTheDocument();
+
+      expect(getByText('Return to login')).toBeInTheDocument();
+    });
+  });
 });
