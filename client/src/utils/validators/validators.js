@@ -7,6 +7,18 @@ export const email = yup
   .required(MESSAGES.email.required)
   .email(MESSAGES.email.email);
 
+export const uniqueEmail = yup
+  .string()
+  .concat(email)
+  .test({
+    test: function (value) {
+      return !this.options.context?.[CONTEXT_KEYS.existingEmails].includes(
+        value,
+      );
+    },
+    message: MESSAGES.uniqueEmail.notOneOf,
+  });
+
 export const password = yup
   .string()
   .required(MESSAGES.password.required)

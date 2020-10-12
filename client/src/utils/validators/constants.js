@@ -3,6 +3,9 @@ export const MESSAGES = {
     required: 'Email address is required',
     email: 'Email address is invalid',
   },
+  uniqueEmail: {
+    notOneOf: 'A user with this email address already exists',
+  },
   password: {
     required: 'Password is required',
     min: 'Password is too short (minimum ${min} characters)',
@@ -24,6 +27,7 @@ export const CONTEXT_KEYS = {
   passwordMinLength: 'passwordMinLength',
   passwordMaxLength: 'passwordMaxLength',
   passwordStrength: 'passwordStrength',
+  existingEmails: 'existingEmails',
 };
 
 export const FIELD_NAMES = {
@@ -32,4 +36,5 @@ export const FIELD_NAMES = {
   oldPassword: 'oldPassword',
   newPassword: 'newPassword',
   newPasswordConfirm: 'newPasswordConfirm',
+  name: 'name',
 };

@@ -2,6 +2,7 @@ import * as yup from 'yup';
 import { CONTEXT_KEYS, FIELD_NAMES, MESSAGES } from './constants';
 import {
   email,
+  uniqueEmail,
   password,
   oldPassword,
   newPassword,
@@ -38,6 +39,24 @@ describe('field validators', () => {
           MESSAGES.email.email,
         );
       });
+    });
+  });
+
+  describe('uniqueEmail', () => {
+    const context = {
+      [CONTEXT_KEYS.existingEmails]: ['test1@test.com', 'test2@test.com'],
+    };
+
+    it('happy path', async () => {
+      await expect(
+        uniqueEmail.validate('test3@test.com', { context }),
+      ).resolves.toBe('test3@test.com');
+    });
+
+    it('is unique', async () => {
+      await expect(
+        uniqueEmail.validate('test1@test.com', { context }),
+      ).rejects.toThrow(MESSAGES.uniqueEmail.notOneOf);
     });
   });
 
