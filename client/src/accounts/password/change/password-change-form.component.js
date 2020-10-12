@@ -15,11 +15,11 @@ import { status } from 'accounts/accounts.slice';
 import { LOGIN_URL, TERMS_URL } from 'accounts/accounts.constants';
 import { FieldError } from 'accounts/field-error.component';
 import {
+  FIELD_NAMES,
   newPassword,
   newPasswordConfirm,
   oldPassword,
-} from 'utils/validators/validators';
-import { FIELD_NAMES } from 'utils/validators/constants';
+} from 'utils/validators';
 
 import formStyles from 'forms.module.css';
 import { Link } from 'react-router-dom';

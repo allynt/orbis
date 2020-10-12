@@ -34,7 +34,7 @@ export const newPassword = yup
     test: function (value) {
       const { score } = zxcvbn(value);
       // @ts-ignore
-      return score > this.options.context?.[CONTEXT_KEYS.passwordStrength];
+      return score >= this.options.context?.[CONTEXT_KEYS.passwordStrength];
     },
     message: MESSAGES.newPassword.strength,
   });

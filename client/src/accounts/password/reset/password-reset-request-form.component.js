@@ -11,8 +11,7 @@ import { ErrorWell } from 'accounts/error-well.component';
 import { FieldError } from 'accounts/field-error.component';
 import { LOGIN_URL } from '../../accounts.constants';
 import { status } from '../../accounts.slice';
-import { FIELD_NAMES } from 'utils/validators/constants';
-import { email } from 'utils/validators/validators';
+import { FIELD_NAMES, email } from 'utils/validators';
 
 import formStyles from 'forms.module.css';
 

@@ -9,7 +9,7 @@ import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 
 import { status } from 'accounts/accounts.slice';
-import { FIELD_NAMES } from 'utils/validators/constants';
+import { FIELD_NAMES } from 'utils/validators';
 
 import PasswordChangeForm from './password-change-form.component';
 import { Router } from 'react-router-dom';
