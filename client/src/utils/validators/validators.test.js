@@ -7,6 +7,7 @@ import {
   oldPassword,
   newPassword,
   newPasswordConfirm,
+  name,
 } from './validators';
 
 describe('field validators', () => {
@@ -173,6 +174,16 @@ describe('field validators', () => {
           }),
         ).rejects.toThrow(MESSAGES.newPasswordConfirm.notOneOf);
       });
+    });
+  });
+
+  describe('name', () => {
+    it('happy path', async () => {
+      await expect(name.validate('John Smith')).resolves.toBe('John Smith');
+    });
+
+    it('is required', async () => {
+      await expect(name.validate('')).rejects.toThrow(MESSAGES.name.required);
     });
   });
 });

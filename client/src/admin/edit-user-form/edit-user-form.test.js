@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { render } from '@testing-library/react';
+import { render, waitFor } from '@testing-library/react';
 
 import { customer } from '../test-story-data';
 
@@ -146,7 +146,7 @@ describe('EditUserForm', () => {
     userEvent.type(nameField, 'Steve Brown');
     userEvent.click(getByText('Save Changes'));
 
-    expect(editUser).toHaveBeenCalledWith(newUser);
+    waitFor(() => expect(editUser).toHaveBeenCalledWith(newUser));
   });
 
   it('takes first available licence of selected type with null `customer_user` value, if none exist with user`s ID', () => {
@@ -183,7 +183,7 @@ describe('EditUserForm', () => {
     userEvent.click(getByLabelText('Steel'));
     userEvent.click(getByText('Save Changes'));
 
-    expect(editUser).toHaveBeenCalledWith(newUser);
+    waitFor(() => expect(editUser).toHaveBeenCalledWith(newUser));
   });
 
   it('submits a full user object when `Save Changes` button is clicked', () => {
@@ -203,7 +203,7 @@ describe('EditUserForm', () => {
     userEvent.type(nameField, 'Jerry Thomson');
     userEvent.click(getByText('Save Changes'));
 
-    expect(editUser).toHaveBeenCalledWith(newUser);
+    waitFor(() => expect(editUser).toHaveBeenCalledWith(newUser));
   });
 
   it('retrieves and adds only the checked licence box IDs for dispatching', () => {
@@ -216,7 +216,7 @@ describe('EditUserForm', () => {
 
     userEvent.click(getByLabelText('Steel'));
     userEvent.click(getByText('Save Changes'));
-    expect(editUser).toHaveBeenCalledWith(userWithAddedLicence);
+    waitFor(() => expect(editUser).toHaveBeenCalledWith(userWithAddedLicence));
   });
 
   it('disables the `Save Changes` button when no changes have been made', () => {
@@ -253,10 +253,10 @@ describe('EditUserForm', () => {
 
     userEvent.click(getByText('Save Changes'));
 
-    expect(getByText('Name is required')).toBeInTheDocument();
-    expect(getByText('Save Changes')).toHaveAttribute('disabled');
-
-    // expect(close).not.toHaveBeenCalled();
+    waitFor(() => {
+      expect(getByText('Name is required')).toBeInTheDocument();
+      expect(getByText('Save Changes')).toHaveAttribute('disabled');
+    });
   });
 
   it('closes the dialog when the `Save Changes` button is clicked', () => {
@@ -265,6 +265,6 @@ describe('EditUserForm', () => {
     userEvent.click(getByLabelText('Steel'));
     userEvent.click(getByText('Save Changes'));
 
-    expect(close).toHaveBeenCalled();
+    waitFor(() => expect(close).toHaveBeenCalled());
   });
 });

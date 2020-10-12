@@ -1,20 +1,21 @@
 import React from 'react';
 
-import {
-  useForm,
-  Button,
-  Textfield,
-  Radio,
-  Checkbox,
-} from '@astrosat/astrosat-ui';
+import { Button, Checkbox, Radio, Textfield } from '@astrosat/astrosat-ui';
 
+import { yupResolver } from '@hookform/resolvers/yup';
+import { useForm } from 'react-hook-form';
+import * as yup from 'yup';
+
+import { FieldError } from 'accounts/field-error.component';
+import { FIELD_NAMES, name } from 'utils/validators';
+import { ADMIN_STATUS } from '../admin.constants';
 import { getCheckboxLicences, getUpdatedLicenceIds } from '../licence-utils';
 
-import { ADMIN_STATUS } from '../admin.constants';
-
-import validate from './edit-user-form-validator';
-
 import styles from './edit-user-form.module.css';
+
+const validationSchema = yup.object({
+  [FIELD_NAMES.name]: name,
+});
 
 export const EditUserForm = ({
   user,
@@ -32,40 +33,23 @@ export const EditUserForm = ({
 
   const getDefaults = () => {
     const defaults = {
-      values: {
-        name: user.user.name ? user.user.name : '',
-        type: user.type,
-      },
+      name: user.user.name,
+      type: user.type,
     };
 
     for (let licence of checkboxLicences) {
-      defaults.values[licence.orb] =
-        licence.customer_user === user.id ? true : false;
+      defaults[licence.orb] = licence.customer_user === user.id;
     }
 
     return defaults;
   };
 
-  const { handleChange, handleSubmit, values, errors } = useForm(
-    onSubmit,
-    validate,
-    getDefaults(),
-  );
+  const { register, handleSubmit, errors, formState } = useForm({
+    defaultValues: getDefaults(),
+    resolver: yupResolver(validationSchema),
+  });
 
-  const hasMadeChanges = values => {
-    if (Object.keys(values).length === 0) {
-      return;
-    } else {
-      const defaults = getDefaults().values;
-      for (let key of Object.keys(defaults)) {
-        if (values[key] !== defaults[key]) {
-          return true;
-        }
-      }
-    }
-  };
-
-  function onSubmit() {
+  const onSubmit = values => {
     const editedUser = {
       ...user,
       type: values.type,
@@ -78,18 +62,15 @@ export const EditUserForm = ({
 
     editUser(editedUser);
     close();
-  }
+  };
 
   return (
-    <form className={styles.editForm} onSubmit={handleSubmit}>
-      <Textfield
-        name="name"
-        value={values.name || ''}
-        placeholder="Name"
-        onChange={handleChange}
-      />
+    <form className={styles.editForm} onSubmit={handleSubmit(onSubmit)}>
+      <Textfield name={FIELD_NAMES.name} ref={register} placeholder="Name" />
 
-      {errors.name && <p className={styles.errorMessage}>{errors.name}</p>}
+      {errors[FIELD_NAMES.name] && (
+        <FieldError message={errors[FIELD_NAMES.name].message} />
+      )}
 
       <Textfield name="email" value={user.user.email} readOnly />
 
@@ -101,8 +82,7 @@ export const EditUserForm = ({
             key={l.id}
             name={l.orb}
             label={l.orb}
-            checked={values[l.orb]}
-            onChange={handleChange}
+            ref={register}
           />
         ))}
       </div>
@@ -114,16 +94,14 @@ export const EditUserForm = ({
           id="yes"
           name="type"
           value={ADMIN_STATUS.manager}
-          checked={values.type === ADMIN_STATUS.manager}
-          onChange={handleChange}
+          ref={register}
         />
         <Radio
           label="No"
           id="No"
           name="type"
           value={ADMIN_STATUS.member}
-          checked={values.type === ADMIN_STATUS.member}
-          onChange={handleChange}
+          ref={register}
           disabled={oneAdminRemaining}
         />
       </div>
@@ -131,7 +109,7 @@ export const EditUserForm = ({
       <Button
         type="submit"
         className={styles.button}
-        disabled={!hasMadeChanges(values) || Object.keys(errors).length > 0}
+        disabled={!formState.isDirty || Object.keys(errors).length > 0}
       >
         Save Changes
       </Button>

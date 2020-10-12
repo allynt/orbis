@@ -46,3 +46,5 @@ export const newPasswordConfirm = yup
   .when(FIELD_NAMES.oldPassword, (oldPassword, schema) =>
     schema.notOneOf([oldPassword], MESSAGES.newPasswordConfirm.notOneOf),
   );
+
+export const name = yup.string().required(MESSAGES.name.required);

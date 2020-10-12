@@ -21,6 +21,9 @@ export const MESSAGES = {
     oneOf: "Passwords don't match",
     notOneOf: 'New Password matches Old Password',
   },
+  name: {
+    required: 'Name is required',
+  },
 };
 
 export const CONTEXT_KEYS = {
