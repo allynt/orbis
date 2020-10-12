@@ -5,20 +5,20 @@ import {
   Checkbox,
   PasswordField,
   PasswordStrengthMeter,
-  Well,
 } from '@astrosat/astrosat-ui';
 
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
+import { Link } from 'react-router-dom';
 import { object as yupObject } from 'yup';
 
 import { LOGIN_URL, TERMS_URL } from 'accounts/accounts.constants';
 import { status } from 'accounts/accounts.slice';
+import { ErrorWell } from 'accounts/error-well.component';
 import { FieldError } from 'accounts/field-error.component';
 import { FIELD_NAMES, newPassword, newPasswordConfirm } from 'utils/validators';
 
 import formStyles from 'forms.module.css';
-import { ErrorWell } from 'accounts/error-well.component';
 
 const PasswordResetSuccessView = () => (
   <div className={formStyles.form}>
@@ -27,7 +27,9 @@ const PasswordResetSuccessView = () => (
     </p>
 
     <div className={formStyles.buttons}>
-      <Button href={LOGIN_URL}>Continue</Button>
+      <Link to={LOGIN_URL}>
+        <Button theme="link">Continue</Button>
+      </Link>
     </div>
   </div>
 );
@@ -133,7 +135,9 @@ const PasswordResetForm = ({
 
       <p className={formStyles.footer}>
         Do you have an account?&nbsp;
-        <Button href={LOGIN_URL}>Login</Button>
+        <Link to={LOGIN_URL}>
+          <Button theme="link">Login</Button>
+        </Link>
       </p>
     </form>
   );

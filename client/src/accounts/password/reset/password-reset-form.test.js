@@ -11,6 +11,8 @@ import thunk from 'redux-thunk';
 import PasswordResetForm from './password-reset-form.component';
 import { status } from 'accounts/accounts.slice';
 import { FIELD_NAMES } from 'utils/validators';
+import { createMemoryHistory } from 'history';
+import { Router } from 'react-router-dom';
 
 const mockStore = configureMockStore([thunk]);
 
@@ -38,7 +40,11 @@ const renderComponent = (
       passwordStrength={0}
     />,
     {
-      wrapper: ({ children }) => <Provider store={store}>{children}</Provider>,
+      wrapper: ({ children }) => (
+        <Provider store={store}>
+          <Router history={createMemoryHistory()}>{children}</Router>
+        </Provider>
+      ),
     },
   );
 

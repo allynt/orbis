@@ -10,6 +10,7 @@ import {
 
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
+import { Link } from 'react-router-dom';
 import { object as objectSchema } from 'yup';
 
 import { LOGIN_URL, TERMS_URL } from 'accounts/accounts.constants';
@@ -50,7 +51,9 @@ export const RegisterFormSuccessView = ({ email, resendVerificationEmail }) => (
       <Button theme="secondary" onClick={() => resendVerificationEmail(email)}>
         Resend email
       </Button>
-      <Button href={LOGIN_URL}>Continue</Button>
+      <Link to={LOGIN_URL}>
+        <Button theme="link">Continue</Button>
+      </Link>
     </div>
   </div>
 );
@@ -185,7 +188,9 @@ const RegisterForm = ({
       </div>
       <p className={formStyles.footer}>
         Do you have an account?&nbsp;
-        <Button href={LOGIN_URL}>Login</Button>
+        <Link to={LOGIN_URL}>
+          <Button theme="link">Login</Button>
+        </Link>
       </p>
     </form>
   );

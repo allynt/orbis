@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import {
   Button,
@@ -17,10 +17,11 @@ import { PASSWORD_RESET_URL, REGISTER_URL } from 'accounts/accounts.constants';
 import { status } from '../accounts.slice';
 import { FieldError } from '../field-error.component';
 import { RegisterFormSuccessView } from '../register/register-form.component';
-
-import formStyles from 'forms.module.css';
 import { FIELD_NAMES } from 'utils/validators/constants';
 import * as validators from 'utils/validators/validators';
+
+import formStyles from 'forms.module.css';
+import { ErrorWell } from 'accounts/error-well.component';
 
 const loginSchema = yup.object().shape({
   [FIELD_NAMES.email]: validators.email,
@@ -43,7 +44,14 @@ const LoginForm = ({
     resolver: yupResolver(loginSchema),
     context: { passwordMinLength, passwordMaxLength },
   });
-  const NOT_VERIFIED = `User ${getValues().email} is not verified.`;
+  const NOT_VERIFIED_ERROR_MESSAGE = `User ${
+    getValues().email
+  } is not verified.`;
+
+  useEffect(() => {
+    if (error?.includes(NOT_VERIFIED_ERROR_MESSAGE) && !notVerified)
+      setNotVerified(true);
+  }, [error, NOT_VERIFIED_ERROR_MESSAGE, notVerified]);
 
   // Re-direct to originally clicked URL on successful login.
   if (user) return <Redirect to="/" />;
@@ -62,17 +70,7 @@ const LoginForm = ({
 
   return (
     <form className={formStyles.form} onSubmit={handleSubmit(onSubmit)}>
-      {error && (
-        <Well type="error">
-          <ul data-testid="error-well">
-            {error.map(error => {
-              // Adding '!notVerfied' condition allows only one state change, prevents infinite loop
-              if (error === NOT_VERIFIED) !notVerified && setNotVerified(true);
-              return <li key={error}>{error}</li>;
-            })}
-          </ul>
-        </Well>
-      )}
+      {error && <ErrorWell errors={error} />}
 
       <div className={formStyles.fields}>
         <div className={formStyles.row}>
