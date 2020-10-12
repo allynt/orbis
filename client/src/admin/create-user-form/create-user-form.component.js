@@ -1,13 +1,16 @@
 import React from 'react';
-import { useForm } from 'react-hook-form';
-import { Button, Checkbox, Textfield } from '@astrosat/astrosat-ui';
-import styles from './create-user-form.module.css';
-import formStyles from 'forms.module.css';
 
-import * as yup from 'yup';
-import { FIELD_NAMES, uniqueEmail } from 'utils/validators';
+import { Button, Checkbox, Textfield } from '@astrosat/astrosat-ui';
+
 import { yupResolver } from '@hookform/resolvers/yup';
+import { useForm } from 'react-hook-form';
+import * as yup from 'yup';
+
 import { FieldError } from 'accounts/field-error.component';
+import { FIELD_NAMES, uniqueEmail } from 'utils/validators';
+
+import formStyles from 'forms.module.css';
+import styles from './create-user-form.module.css';
 
 const validationSchema = yup.object({
   [FIELD_NAMES.email]: uniqueEmail,
