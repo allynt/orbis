@@ -8,6 +8,7 @@ import {
   newPassword,
   newPasswordConfirm,
   name,
+  bookmarkTitle,
 } from './validators';
 
 describe('field validators', () => {
@@ -184,6 +185,30 @@ describe('field validators', () => {
 
     it('is required', async () => {
       await expect(name.validate('')).rejects.toThrow(MESSAGES.name.required);
+    });
+  });
+
+  describe('bookmarkTitle', () => {
+    const context = {
+      [CONTEXT_KEYS.bookmarkTitles]: ['test1', 'test2', 'test3'],
+    };
+
+    it('happy path', async () => {
+      await expect(bookmarkTitle.validate('test4', { context })).resolves.toBe(
+        'test4',
+      );
+    });
+
+    it('is required', async () => {
+      await expect(bookmarkTitle.validate('', { context })).rejects.toThrow(
+        MESSAGES.bookmarkTitle.required,
+      );
+    });
+
+    it('is unique', async () => {
+      await expect(
+        bookmarkTitle.validate('test1', { context }),
+      ).rejects.toThrow(MESSAGES.bookmarkTitle.notOneOf);
     });
   });
 });

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { render, cleanup, fireEvent } from '@testing-library/react';
+import { render, cleanup, fireEvent, waitFor } from '@testing-library/react';
 
 import BookmarkForm from './bookmark-form.component';
 
@@ -44,7 +44,7 @@ describe('Bookmark Form Component', () => {
     fireEvent.change(getByPlaceholderText('Description'), {
       target: { value: 'New Bookmark Description' },
     });
-    expect(submitButton).not.toHaveAttribute('disabled');
+    waitFor(() => expect(submitButton).not.toHaveAttribute('disabled'));
   });
 
   it('should call submit function when form is valid and submit button clicked', () => {
@@ -61,9 +61,11 @@ describe('Bookmark Form Component', () => {
 
     expect(submit).not.toHaveBeenCalled();
     fireEvent.click(getByText('Save Map'));
-    expect(submit).toHaveBeenCalledWith({
-      title: 'New Bookmark Title',
-      description: 'New Bookmark Description',
-    });
+    waitFor(() =>
+      expect(submit).toHaveBeenCalledWith({
+        title: 'New Bookmark Title',
+        description: 'New Bookmark Description',
+      }),
+    );
   });
 });

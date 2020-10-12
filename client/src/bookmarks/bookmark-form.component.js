@@ -1,73 +1,76 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 
-// import ReactTooltip from 'react-tooltip';
+import { Button, Textfield } from '@astrosat/astrosat-ui';
 
-import validate from './bookmark-form.validator';
-
-import { Button, Textfield, useForm } from '@astrosat/astrosat-ui';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { useForm } from 'react-hook-form';
+import * as yup from 'yup';
 
 import formStyles from '../forms.module.css';
 import bookmarkStyles from '../side-menu/side-menu.module.css';
+import { bookmarkTitle, CONTEXT_KEYS, FIELD_NAMES } from 'utils/validators';
+import { FieldError } from 'accounts/field-error.component';
+
+const validationSchema = yup.object({
+  [FIELD_NAMES.bookmarkTitle]: bookmarkTitle,
+  [FIELD_NAMES.bookmarkDescription]: yup.string(),
+});
 
 const BookmarkForm = ({ bookmarkTitles, submit }) => {
-  function onSubmit() {
-    submit(values);
-  }
+  const { register, handleSubmit, errors, formState } = useForm({
+    resolver: yupResolver(validationSchema),
+    context: { [CONTEXT_KEYS.bookmarkTitles]: bookmarkTitles },
+  });
 
-  const { handleChange, handleSubmit, values, errors } = useForm(
-    onSubmit,
-    validate(bookmarkTitles),
-  );
+  const onSubmit = values => {
+    submit(values);
+  };
 
   return (
     <form
       className={`${formStyles.form} ${bookmarkStyles.form}`}
-      onSubmit={handleSubmit}
+      onSubmit={handleSubmit(onSubmit)}
     >
       <div className={`${formStyles.fields} ${bookmarkStyles.fields}`}>
-        <label className={formStyles.hiddenLabel} htmlFor="title">
+        <label
+          className={formStyles.hiddenLabel}
+          htmlFor={FIELD_NAMES.bookmarkTitle}
+        >
           Title
         </label>
         <Textfield
-          id="title"
-          name="title"
-          value={values.title || ''}
+          id={FIELD_NAMES.bookmarkTitle}
+          name={FIELD_NAMES.bookmarkTitle}
+          ref={register}
           placeholder="Title"
-          onChange={handleChange}
-          required
           autoFocus
         />
-        {errors.title && (
-          <p className={formStyles.errorMessage}>{errors.title}</p>
+        {errors[FIELD_NAMES.bookmarkTitle] && (
+          <FieldError message={errors[FIELD_NAMES.bookmarkTitle].message} />
         )}
 
-        <label className={formStyles.hiddenLabel} htmlFor="description">
+        <label
+          className={formStyles.hiddenLabel}
+          htmlFor={FIELD_NAMES.bookmarkDescription}
+        >
           Description
         </label>
         <Textfield
-          id="description"
-          name="description"
-          value={values.description || ''}
+          id={FIELD_NAMES.bookmarkDescription}
+          name={FIELD_NAMES.bookmarkDescription}
+          ref={register}
           placeholder="Description"
-          onChange={handleChange}
         />
       </div>
 
       <Button
         type="submit"
-        disabled={
-          Object.keys(errors).length > 0 || Object.keys(values).length === 0
-        }
+        disabled={Object.keys(errors).length > 0 || !formState.isDirty}
       >
         Save Map
       </Button>
     </form>
   );
-};
-
-BookmarkForm.propTypes = {
-  submit: PropTypes.func.isRequired,
 };
 
 export default BookmarkForm;

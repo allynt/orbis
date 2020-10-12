@@ -48,3 +48,13 @@ export const newPasswordConfirm = yup
   );
 
 export const name = yup.string().required(MESSAGES.name.required);
+
+export const bookmarkTitle = yup
+  .string()
+  .required(MESSAGES.bookmarkTitle.required)
+  .test({
+    test: function (value) {
+      return !this.options.context[CONTEXT_KEYS.bookmarkTitles].includes(value);
+    },
+    message: MESSAGES.bookmarkTitle.notOneOf,
+  });

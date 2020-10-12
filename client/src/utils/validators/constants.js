@@ -24,6 +24,10 @@ export const MESSAGES = {
   name: {
     required: 'Name is required',
   },
+  bookmarkTitle: {
+    required: 'Title is required',
+    notOneOf: 'There is already a map with this title',
+  },
 };
 
 export const CONTEXT_KEYS = {
@@ -31,6 +35,7 @@ export const CONTEXT_KEYS = {
   passwordMaxLength: 'passwordMaxLength',
   passwordStrength: 'passwordStrength',
   existingEmails: 'existingEmails',
+  bookmarkTitles: 'bookmarkTitles',
 };
 
 export const FIELD_NAMES = {
@@ -40,4 +45,6 @@ export const FIELD_NAMES = {
   newPassword: 'newPassword',
   newPasswordConfirm: 'newPasswordConfirm',
   name: 'name',
+  bookmarkTitle: 'title',
+  bookmarkDescription: 'description',
 };
