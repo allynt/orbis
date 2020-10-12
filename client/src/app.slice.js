@@ -61,7 +61,7 @@ export const fetchAppConfig = () => async dispatch => {
 };
 
 const baseSelector = state => state?.app;
-const configSelector = createSelector(baseSelector, app => app?.config);
+export const configSelector = createSelector(baseSelector, app => app?.config);
 export const mapboxTokenSelector = createSelector(
   configSelector,
   config => config?.mapbox_token,

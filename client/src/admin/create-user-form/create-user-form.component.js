@@ -1,9 +1,21 @@
 import React from 'react';
-import { useForm } from 'react-hook-form';
+
 import { Button, Checkbox, Textfield } from '@astrosat/astrosat-ui';
-import styles from './create-user-form.module.css';
+
+import { yupResolver } from '@hookform/resolvers/yup';
+import { useForm } from 'react-hook-form';
+import * as yup from 'yup';
+
+import { FieldError } from 'accounts/field-error.component';
+import { FIELD_NAMES, uniqueEmail } from 'utils/validators';
+
 import formStyles from 'forms.module.css';
-import { createUserFormValidator } from './create-user-form.validator';
+import styles from './create-user-form.module.css';
+
+const validationSchema = yup.object({
+  [FIELD_NAMES.email]: uniqueEmail,
+  [FIELD_NAMES.name]: yup.string(),
+});
 
 /**
  * @param {{licenceInformation?: {
@@ -15,17 +27,21 @@ import { createUserFormValidator } from './create-user-form.validator';
  *            }
  *          },
  *          existingEmails: string[],
- *          onSubmit({name: string, email: string, licences: string[]}): void
+ *          onSubmit({
+ *            name: string,
+ *            email: string,
+ *            licences: string[]
+ *          }): void
  *        }} props
  */
 export const CreateUserForm = ({
   licenceInformation,
-  existingEmails,
+  existingEmails = [],
   onSubmit,
 }) => {
   const { register, handleSubmit, errors } = useForm({
-    validationResolver: createUserFormValidator,
-    validationContext: { existingEmails },
+    resolver: yupResolver(validationSchema),
+    context: { existingEmails },
   });
 
   const createUser = data => {
@@ -44,23 +60,33 @@ export const CreateUserForm = ({
   return (
     <form className={styles.form} onSubmit={handleSubmit(createUser)}>
       <div className={formStyles.row}>
-        <label className={formStyles.hiddenLabel} htmlFor="name">
+        <label className={formStyles.hiddenLabel} htmlFor={FIELD_NAMES.name}>
           Name
         </label>
-        <Textfield ref={register} name="name" id="name" placeholder="Name" />
+        <Textfield
+          ref={register}
+          name={FIELD_NAMES.name}
+          id={FIELD_NAMES.name}
+          placeholder="Name"
+        />
+        {errors[FIELD_NAMES.name] && (
+          <FieldError message={errors?.[FIELD_NAMES.name].message} />
+        )}
       </div>
       <div className={`${formStyles.row} ${errors.email && styles.error}`}>
-        <label className={formStyles.hiddenLabel} htmlFor="email">
+        <label className={formStyles.hiddenLabel} htmlFor={FIELD_NAMES.email}>
           Email
         </label>
         <div className={styles.field}>
           <Textfield
             ref={register}
-            name="email"
-            id="email"
+            name={FIELD_NAMES.email}
+            id={FIELD_NAMES.email}
             placeholder="Email"
           />
-          <p className={styles.errorMessage}>{errors.email}</p>
+          {errors[FIELD_NAMES.email] && (
+            <FieldError message={errors?.[FIELD_NAMES.email].message} />
+          )}
         </div>
       </div>
       <fieldset className={styles.fieldset}>

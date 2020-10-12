@@ -13,13 +13,14 @@ import {
   resetPassword,
   userSelector,
 } from './accounts.slice';
-import LoginForm from './login-form.component';
-import PasswordChangeForm from './password-change-form.component';
-import PasswordResetConfirmForm from './password-reset-confirm-form.component';
-import PasswordResetForm from './password-reset-form.component';
-import RegisterForm from './register-form.component';
+import LoginForm from './login/login-form.component';
+import PasswordChangeForm from './password/change/password-change-form.component';
+import PasswordResetForm from './password/reset/password-reset-form.component';
+import PasswordResetRequestForm from './password/reset/password-reset-request-form.component';
+import RegisterForm from './register/register-form.component';
 import styles from './index.module.css';
 import { ReactComponent as OrbisLogo } from '../orbis-dark.svg';
+import { configSelector } from 'app.slice';
 
 export default () => {
   const dispatch = useDispatch();
@@ -37,6 +38,16 @@ export default () => {
   const resetStatus = useSelector(state => state.accounts.resetStatus);
   const changeStatus = useSelector(state => state.accounts.changeStatus);
   const user = useSelector(userSelector);
+  const {
+    passwordMinLength,
+    passwordMaxLength,
+    passwordStrength,
+  } = useSelector(configSelector);
+  const passwordConfig = {
+    passwordMinLength,
+    passwordMaxLength,
+    passwordStrength,
+  };
 
   return (
     <div className={styles.page}>
@@ -48,12 +59,13 @@ export default () => {
             path={`${match.path}/register`}
             render={() => (
               <RegisterForm
-                register={form => dispatch(register(form))}
+                registerUser={form => dispatch(register(form))}
                 registerUserStatus={registerUserStatus}
                 resendVerificationEmail={email =>
                   dispatch(resendVerificationEmail(email))
                 }
                 error={error}
+                {...passwordConfig}
               />
             )}
           />
@@ -69,6 +81,7 @@ export default () => {
                   dispatch(resendVerificationEmail(email))
                 }
                 verificationEmailStatus={verificationEmailStatus}
+                {...passwordConfig}
               />
             )}
           />
@@ -81,6 +94,7 @@ export default () => {
                 changePassword={form => dispatch(changePassword(form))}
                 changeStatus={changeStatus}
                 error={error}
+                {...passwordConfig}
               />
             )}
           />
@@ -102,7 +116,7 @@ export default () => {
             path={`${match.path}/password/reset`}
             user={user}
             render={() => (
-              <PasswordResetForm
+              <PasswordResetRequestForm
                 resetPassword={values => dispatch(resetPassword(values))}
                 resetStatus={resetStatus}
                 error={error}
@@ -112,13 +126,14 @@ export default () => {
           <Route
             path={`${match.path}/password/reset/:token/:uid/`}
             render={props => (
-              <PasswordResetConfirmForm
+              <PasswordResetForm
                 confirmResetPassword={(form, params) =>
                   dispatch(confirmResetPassword(form, params))
                 }
                 resetStatus={resetStatus}
                 match={props.match}
                 error={error}
+                {...passwordConfig}
               />
             )}
           />

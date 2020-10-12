@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { render } from '@testing-library/react';
+import { render, waitFor } from '@testing-library/react';
 
 import { customer } from '../test-story-data';
 
@@ -105,7 +105,7 @@ describe('EditUserForm', () => {
     expect(getAllByRole('checkbox').length).toEqual(userCheckboxes.length);
   });
 
-  it('prioritises licences with the user`s ID over available licences with null `customer_user` value', () => {
+  it('prioritises licences with the user`s ID over available licences with null `customer_user` value', async () => {
     const testCustomer = {
       licences: [
         {
@@ -146,10 +146,10 @@ describe('EditUserForm', () => {
     userEvent.type(nameField, 'Steve Brown');
     userEvent.click(getByText('Save Changes'));
 
-    expect(editUser).toHaveBeenCalledWith(newUser);
+    await waitFor(() => expect(editUser).toHaveBeenCalledWith(newUser));
   });
 
-  it('takes first available licence of selected type with null `customer_user` value, if none exist with user`s ID', () => {
+  it('takes first available licence of selected type with null `customer_user` value, if none exist with user`s ID', async () => {
     const testCustomer = {
       licences: [
         {
@@ -183,10 +183,10 @@ describe('EditUserForm', () => {
     userEvent.click(getByLabelText('Steel'));
     userEvent.click(getByText('Save Changes'));
 
-    expect(editUser).toHaveBeenCalledWith(newUser);
+    await waitFor(() => expect(editUser).toHaveBeenCalledWith(newUser));
   });
 
-  it('submits a full user object when `Save Changes` button is clicked', () => {
+  it('submits a full user object when `Save Changes` button is clicked', async () => {
     const { getByText, getByDisplayValue } = renderComponent();
 
     const newUser = {
@@ -203,10 +203,10 @@ describe('EditUserForm', () => {
     userEvent.type(nameField, 'Jerry Thomson');
     userEvent.click(getByText('Save Changes'));
 
-    expect(editUser).toHaveBeenCalledWith(newUser);
+    await waitFor(() => expect(editUser).toHaveBeenCalledWith(newUser));
   });
 
-  it('retrieves and adds only the checked licence box IDs for dispatching', () => {
+  it('retrieves and adds only the checked licence box IDs for dispatching', async () => {
     const { getByText, getByLabelText } = renderComponent();
 
     const userWithAddedLicence = {
@@ -216,7 +216,9 @@ describe('EditUserForm', () => {
 
     userEvent.click(getByLabelText('Steel'));
     userEvent.click(getByText('Save Changes'));
-    expect(editUser).toHaveBeenCalledWith(userWithAddedLicence);
+    await waitFor(() =>
+      expect(editUser).toHaveBeenCalledWith(userWithAddedLicence),
+    );
   });
 
   it('disables the `Save Changes` button when no changes have been made', () => {
@@ -246,25 +248,25 @@ describe('EditUserForm', () => {
     expect(getByLabelText('No')).toHaveAttribute('disabled');
   });
 
-  it('displays error message if `Name` field is empty', () => {
+  it('displays error message if `Name` field is empty', async () => {
     const { getByText, getByDisplayValue } = renderComponent();
 
     userEvent.clear(getByDisplayValue(user.user.name));
 
     userEvent.click(getByText('Save Changes'));
 
-    expect(getByText('Name is required')).toBeInTheDocument();
-    expect(getByText('Save Changes')).toHaveAttribute('disabled');
-
-    // expect(close).not.toHaveBeenCalled();
+    await waitFor(() => {
+      expect(getByText('Name is required')).toBeInTheDocument();
+      expect(getByText('Save Changes')).toHaveAttribute('disabled');
+    });
   });
 
-  it('closes the dialog when the `Save Changes` button is clicked', () => {
+  it('closes the dialog when the `Save Changes` button is clicked', async () => {
     const { getByText, getByLabelText } = renderComponent();
 
     userEvent.click(getByLabelText('Steel'));
     userEvent.click(getByText('Save Changes'));
 
-    expect(close).toHaveBeenCalled();
+    await waitFor(() => expect(close).toHaveBeenCalled());
   });
 });

@@ -10,6 +10,7 @@ import {
   JSON_HEADERS,
   getJsonAuthHeaders,
 } from '../utils/http';
+import { FIELD_NAMES } from 'utils/validators';
 
 const API_PREFIX = '/api/authentication/';
 const API = {
@@ -23,12 +24,34 @@ const API = {
   logout: API_PREFIX + 'logout/',
   user: '/api/users/',
 };
+const FIELD_MAPPING = {
+  register: {
+    [FIELD_NAMES.email]: 'email',
+    [FIELD_NAMES.newPassword]: 'password1',
+    [FIELD_NAMES.newPasswordConfirm]: 'password2',
+    accepted_terms: 'accepted_terms',
+  },
+  changePassword: {
+    [FIELD_NAMES.newPassword]: 'new_password1',
+    [FIELD_NAMES.newPasswordConfirm]: 'new_password2',
+  },
+  confirmResetPassword: {
+    [FIELD_NAMES.newPassword]: 'new_password1',
+    [FIELD_NAMES.newPasswordConfirm]: 'new_password2',
+  },
+};
 
 export const status = {
   NONE: 'None',
   PENDING: 'Pending',
   COMPLETE: 'Complete',
 };
+
+const mapData = (data, mapping) =>
+  Object.entries(data).reduce(
+    (prev, [key, value]) => ({ ...prev, [mapping[key]]: value }),
+    {},
+  );
 
 // Shape error data into a single array of only error strings.
 const errorTransformer = errorObject => {
@@ -161,7 +184,9 @@ export const {
 } = accountsSlice.actions;
 
 export const register = form => async dispatch => {
-  const response = await sendData(API.register, form, JSON_HEADERS);
+  const data = mapData(form, FIELD_MAPPING.register);
+
+  const response = await sendData(API.register, data, JSON_HEADERS);
 
   if (!response.ok) {
     const errorObject = await response.json();
@@ -243,9 +268,10 @@ export const logout = () => async (dispatch, getState) => {
 };
 
 export const changePassword = form => async (dispatch, getState) => {
+  const data = mapData(form, FIELD_MAPPING.changePassword);
   const headers = getJsonAuthHeaders(getState());
 
-  const response = await sendData(API.changePassword, form, headers);
+  const response = await sendData(API.changePassword, data, headers);
 
   if (!response.ok) {
     const errorObject = await response.json();
@@ -258,7 +284,7 @@ export const changePassword = form => async (dispatch, getState) => {
 export const confirmResetPassword = (form, params) => async dispatch => {
   const { uid, token } = params;
   const data = {
-    ...form,
+    ...mapData(form, FIELD_MAPPING.confirmResetPassword),
     token,
     uid,
   };

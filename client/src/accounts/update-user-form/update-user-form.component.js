@@ -1,7 +1,8 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 
-import { Button, Textfield, useForm } from '@astrosat/astrosat-ui';
+import { Button, Textfield } from '@astrosat/astrosat-ui';
+
+import { useForm } from 'react-hook-form';
 
 import styles from './update-user-form.module.css';
 import formStyles from '../../forms.module.css';
@@ -10,25 +11,16 @@ const EMAIL_FIELD_ID = 'email-field';
 const NAME_FIELD_ID = 'name-field';
 
 const UpdateUserForm = ({ user, updateUser }) => {
-  const defaults = {
-    values: {
-      email: user?.email || '',
-      name: user?.name || '',
-    },
+  const { handleSubmit, register } = useForm({
+    defaultValues: { email: user?.email, name: user?.name },
+  });
+
+  const onSubmit = values => {
+    updateUser(values);
   };
 
-  const { handleChange, handleSubmit, values } = useForm(
-    onSubmit,
-    () => ({}),
-    defaults,
-  );
-
-  function onSubmit() {
-    updateUser(values);
-  }
-
   return (
-    <form className={styles.form} onSubmit={handleSubmit}>
+    <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
       <p className={formStyles.paragraph}>Personal Details</p>
       <div className={formStyles.row}>
         <label className={formStyles.hiddenLabel} htmlFor={EMAIL_FIELD_ID}>
@@ -37,9 +29,8 @@ const UpdateUserForm = ({ user, updateUser }) => {
         <Textfield
           id={EMAIL_FIELD_ID}
           name="email"
-          value={values.email}
+          ref={register}
           placeholder="Email"
-          onChange={handleChange}
           readOnly
         />
       </div>
@@ -50,9 +41,8 @@ const UpdateUserForm = ({ user, updateUser }) => {
         <Textfield
           id={NAME_FIELD_ID}
           name="name"
-          value={values.name}
+          ref={register}
           placeholder="Name"
-          onChange={handleChange}
         />
       </div>
       <Button className={styles.submit} type="submit">
@@ -60,11 +50,6 @@ const UpdateUserForm = ({ user, updateUser }) => {
       </Button>
     </form>
   );
-};
-
-UpdateUserForm.propTypes = {
-  user: PropTypes.object.isRequired,
-  updateUser: PropTypes.func.isRequired,
 };
 
 export default UpdateUserForm;

@@ -2,6 +2,7 @@ import React from 'react';
 import { render, wait } from '@testing-library/react';
 import { CreateUserForm } from './create-user-form.component';
 import userEvent from '@testing-library/user-event';
+import { MESSAGES } from 'utils/validators';
 
 describe('<CreateUserForm />', () => {
   it('Has a name field', () => {
@@ -103,7 +104,7 @@ describe('<CreateUserForm />', () => {
     const { getByText } = render(<CreateUserForm />);
     userEvent.click(getByText('Create User'));
     await wait(() => {
-      expect(getByText('Email is required')).toBeInTheDocument();
+      expect(getByText(MESSAGES.email.required)).toBeInTheDocument();
     });
   });
 });

@@ -4,7 +4,7 @@ import { Provider } from 'react-redux';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 
-import { render, cleanup, fireEvent } from '@testing-library/react';
+import { render, cleanup, fireEvent, waitFor } from '@testing-library/react';
 
 import { Router } from 'react-router-dom';
 import { createMemoryHistory } from 'history';
@@ -85,9 +85,7 @@ describe('New Map Form Component', () => {
     fireEvent.change(getByPlaceholderText('Add Description'), {
       target: { value: 'New Map Description' },
     });
-    expect(submitButton).not.toHaveAttribute('disabled');
-
-    expect(getByText('Create')).toBeInTheDocument();
+    waitFor(() => expect(submitButton).not.toHaveAttribute('disabled'));
   });
 
   it('should submit the form when form is valid and submit button clicked', () => {
@@ -110,6 +108,6 @@ describe('New Map Form Component', () => {
       target: { value: 'New Map Description' },
     });
     fireEvent.click(getByText('Create'));
-    expect(history.location.pathname).toBe('/map');
+    waitFor(() => expect(history.location.pathname).toBe('/map'));
   });
 });
