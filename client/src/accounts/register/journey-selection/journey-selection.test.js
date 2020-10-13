@@ -29,7 +29,7 @@ const renderComponent = (
   return { ...utils, history };
 };
 
-describe.only('<JourneySelection />', () => {
+describe('<JourneySelection />', () => {
   it('displays a radio for Team', () => {
     const { getByRole } = renderComponent();
     expect(getByRole('radio', { name: TEAM_REGEX })).toBeInTheDocument();
