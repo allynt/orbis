@@ -10,13 +10,16 @@ import {
   TERMS_URL,
 } from 'accounts/accounts.constants';
 
+import formStyles from 'forms.module.css';
+import styles from './journey-selection.module.css';
+
 const SMALL_PRINT = (
   <>
     A contract will be created between Astrosat and You "The Customer”. Before
     you proceed, you need to accept our Terms and Conditions and our Privacy
     Policy both of which can be found{' '}
     <Button
-      style={{ display: 'inline-block' }}
+      className={styles.link}
       href={TERMS_URL}
       target="_blank"
       rel="noreferrer noopener"
@@ -69,32 +72,38 @@ const JourneySelection = ({
   };
 
   return (
-    <>
-      <h1>Welcome to Orbis</h1>
-      <fieldset>
-        <legend>Sign Up as:</legend>
-        <Radio
-          id="customer"
-          label="Team"
-          name="journey"
-          value="customer"
-          onChange={handleChange('customer')}
-          disabled={!customerRegistrationIsOpen}
-        />
-        <Radio
-          id="individual"
-          label="Individual"
-          name="journey"
-          value="individual"
-          onChange={handleChange('individual')}
-          disabled={!individualRegistrationIsOpen}
-        />
+    <div className={formStyles.form}>
+      <h1 className={styles.heading}>Welcome to Orbis</h1>
+      <fieldset className={styles.fieldset}>
+        <legend className={styles.legend}>Sign Up as:</legend>
+        <div className={styles.radios}>
+          <Radio
+            className={styles.radio}
+            id="customer"
+            label="Team"
+            name="journey"
+            value="customer"
+            onChange={handleChange('customer')}
+            disabled={!customerRegistrationIsOpen}
+          />
+          <Radio
+            className={styles.radio}
+            id="individual"
+            label="Individual"
+            name="journey"
+            value="individual"
+            onChange={handleChange('individual')}
+            disabled={!individualRegistrationIsOpen}
+          />
+        </div>
       </fieldset>
-      <p>{SMALL_PRINT}</p>
-      <Button onClick={handleClick} disabled={!selection}>
-        Continue
-      </Button>
-    </>
+      <p className={styles.smallPrint}>{SMALL_PRINT}</p>
+      <div className={formStyles.buttons}>
+        <Button onClick={handleClick} disabled={!selection}>
+          Continue
+        </Button>
+      </div>
+    </div>
   );
 };
 
