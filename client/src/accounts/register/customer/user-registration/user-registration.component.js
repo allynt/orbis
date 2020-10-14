@@ -24,12 +24,16 @@ import {
   newPassword,
   newPasswordConfirm,
 } from 'utils/validators';
+import { FieldError } from 'accounts/field-error.component';
 
-const Field = ({ name, label, Component = Textfield, register }) => (
-  <label htmlFor={name}>
-    {label}
-    <Component ref={register} id={name} name={name} />
-  </label>
+const Field = ({ name, label, Component = Textfield, register, errors }) => (
+  <>
+    <label htmlFor={name}>
+      {label}
+      <Component ref={register} id={name} name={name} />
+    </label>
+    <FieldError message={errors?.[name]?.message} />
+  </>
 );
 
 /**
@@ -55,8 +59,8 @@ const validationSchema = yupObject({
 /**
  * @param {{
  *   serverErrors?: string[]
- *   isLoading: boolean
- *   onSubmit(values: FormValues): void
+ *   isLoading?: boolean
+ *   onSubmit?:(values: FormValues) => void
  *   passwordMinLength?: number,
  *   passwordMaxLength?: number,
  *   passwordStrength?: number
@@ -70,7 +74,7 @@ const UserRegistration = ({
   passwordMaxLength = 255,
   passwordStrength = 0,
 }) => {
-  const { handleSubmit, register, watch } = useForm({
+  const { errors, handleSubmit, register, watch } = useForm({
     defaultValues: { acceptedTerms: false },
     resolver: yupResolver(validationSchema),
     context: { passwordMinLength, passwordMaxLength, passwordStrength },
@@ -80,7 +84,7 @@ const UserRegistration = ({
     <form
       onSubmit={handleSubmit(
         /** @param {FormValues} values */
-        values => onSubmit(values),
+        values => onSubmit && onSubmit(values),
       )}
     >
       <ErrorWell errors={serverErrors} />
@@ -88,28 +92,33 @@ const UserRegistration = ({
         register={register}
         name={FIELD_NAMES.email}
         label="Work Email Address*"
+        errors={errors}
       />
       <Field
         register={register}
         name={FIELD_NAMES.firstName}
         label="First Name*"
+        errors={errors}
       />
       <Field
         register={register}
         name={FIELD_NAMES.lastName}
         label="Last Name*"
+        errors={errors}
       />
       <Field
         register={register}
         name={FIELD_NAMES.newPassword}
         label="Password*"
         Component={PasswordField}
+        errors={errors}
       />
       <Field
         register={register}
         name={FIELD_NAMES.newPasswordConfirm}
         label="Password Confirmation*"
         Component={PasswordField}
+        errors={errors}
       />
       <Checkbox
         name={FIELD_NAMES.acceptedTerms}
