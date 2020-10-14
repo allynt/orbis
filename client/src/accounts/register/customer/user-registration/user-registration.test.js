@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { render } from '@testing-library/react';
+import { render, waitFor } from '@testing-library/react';
 import UserRegistration from './user-registration.component';
 import userEvent from '@testing-library/user-event';
 import { createMemoryHistory } from 'history';
@@ -32,18 +32,16 @@ const renderComponent = ({ serverErrors = [], isLoading = false } = {}) => {
   return { onSubmit, history, ...utils };
 };
 
-describe.only('<UserRegistration />', () => {
+describe('<UserRegistration />', () => {
   it('shows the user registration form', () => {
-    const { getByRole } = renderComponent();
+    const { getByRole, getByLabelText } = renderComponent();
     expect(getByRole('textbox', { name: EMAIL_REGEX })).toBeInTheDocument();
     expect(
       getByRole('textbox', { name: FIRST_NAME_REGEX }),
     ).toBeInTheDocument();
     expect(getByRole('textbox', { name: LAST_NAME_REGEX })).toBeInTheDocument();
-    expect(getByRole('textbox', { name: PASSWORD_REGEX })).toBeInTheDocument();
-    expect(
-      getByRole('textbox', { name: PASSWORD_CONFIRMATION_REGEX }),
-    ).toBeInTheDocument();
+    expect(getByLabelText(PASSWORD_REGEX)).toBeInTheDocument();
+    expect(getByLabelText(PASSWORD_CONFIRMATION_REGEX)).toBeInTheDocument();
     expect(
       getByRole('checkbox', { name: AGREE_CHECKBOX_REGEX }),
     ).toBeInTheDocument();
@@ -64,7 +62,7 @@ describe.only('<UserRegistration />', () => {
     expect(submitButton).not.toBeDisabled();
   });
 
-  it('calls onSubmit with the form values on successful completion', () => {
+  it('calls onSubmit with the form values on successful completion', async () => {
     const values = {
       email: 'test@test.com',
       firstName: 'Test',
@@ -73,7 +71,7 @@ describe.only('<UserRegistration />', () => {
       newPasswordConfirm: 'thisisareallygoodpassword',
       acceptedTerms: true,
     };
-    const { getByRole, onSubmit } = renderComponent();
+    const { getByRole, getByLabelText, onSubmit } = renderComponent();
     userEvent.type(getByRole('textbox', { name: EMAIL_REGEX }), values.email);
     userEvent.type(
       getByRole('textbox', { name: FIRST_NAME_REGEX }),
@@ -83,19 +81,18 @@ describe.only('<UserRegistration />', () => {
       getByRole('textbox', { name: LAST_NAME_REGEX }),
       values.lastName,
     );
+    userEvent.type(getByLabelText(PASSWORD_REGEX), values.newPassword);
     userEvent.type(
-      getByRole('textbox', { name: PASSWORD_REGEX }),
-      values.newPassword,
-    );
-    userEvent.type(
-      getByRole('textbox', { name: PASSWORD_CONFIRMATION_REGEX }),
+      getByLabelText(PASSWORD_CONFIRMATION_REGEX),
       values.newPasswordConfirm,
     );
     userEvent.click(getByRole('checkbox', { name: AGREE_CHECKBOX_REGEX }));
     userEvent.click(getByRole('button', { name: SIGN_UP_REGEX }));
-    expect(onSubmit).toHaveBeenCalledWith({
-      values,
-    });
+    await waitFor(() =>
+      expect(onSubmit).toHaveBeenCalledWith({
+        ...values,
+      }),
+    );
   });
 
   it('navigates to login when the login link is clicked', () => {

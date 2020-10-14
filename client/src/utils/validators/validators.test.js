@@ -9,6 +9,9 @@ import {
   newPasswordConfirm,
   name,
   bookmarkTitle,
+  firstName,
+  lastName,
+  acceptedTerms,
 } from './validators';
 
 describe('field validators', () => {
@@ -185,6 +188,44 @@ describe('field validators', () => {
 
     it('is required', async () => {
       await expect(name.validate('')).rejects.toThrow(MESSAGES.name.required);
+    });
+  });
+
+  describe('firstName', () => {
+    it('happy path', async () => {
+      await expect(firstName.validate('John Smith')).resolves.toBe(
+        'John Smith',
+      );
+    });
+
+    it('is required', async () => {
+      await expect(firstName.validate('')).rejects.toThrow(
+        MESSAGES.firstName.required,
+      );
+    });
+  });
+
+  describe('lastName', () => {
+    it('happy path', async () => {
+      await expect(lastName.validate('John Smith')).resolves.toBe('John Smith');
+    });
+
+    it('is required', async () => {
+      await expect(lastName.validate('')).rejects.toThrow(
+        MESSAGES.lastName.required,
+      );
+    });
+  });
+
+  describe('acceptedTerms', () => {
+    it('happy path', async () => {
+      await expect(acceptedTerms.validate(true)).resolves.toBe(true);
+    });
+
+    it('must be true', async () => {
+      await expect(acceptedTerms.validate(false)).rejects.toThrow(
+        MESSAGES.acceptedTerms.oneOf,
+      );
     });
   });
 
