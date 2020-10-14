@@ -1,6 +1,7 @@
 const express = require('express');
 const {
   getCustomer,
+  updateCustomer,
   getCustomerUsers,
   getSelectedUser,
   createCustomerUser,
@@ -13,6 +14,15 @@ const getCustomerHandler = (req, res) => {
   console.log('Returning Current Customer');
   res.status(200);
   res.json(getCustomer(req.params.customerId));
+};
+
+const updateCustomerHandler = (req, res) => {
+  console.log('Returning Updated Customer');
+
+  const updatedCustomer = updateCustomer(req.body);
+
+  res.status(200);
+  res.json(updatedCustomer);
 };
 
 const getCustomerUsersHandler = (req, res) => {
@@ -51,8 +61,8 @@ const inviteSelectedUserHandler = (req, res) => {
   const customerUser = req.body;
   const invitedCustomerUser = invitedCustomerUser(customerUser);
 
-  res.status(200)
-  res.json(invitedCustomerUser)
+  res.status(200);
+  res.json(invitedCustomerUser);
 };
 
 const deleteSelectedUserHandler = (req, res) => {
@@ -65,6 +75,7 @@ const deleteSelectedUserHandler = (req, res) => {
 const usersRouter = express.Router();
 
 usersRouter.route('/:customerId').get(getCustomerHandler);
+usersRouter.route('/:customerId').put(updateCustomerHandler);
 
 usersRouter
   .route('/:customerId/users')

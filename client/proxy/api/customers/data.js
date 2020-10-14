@@ -475,6 +475,10 @@ const updateCustomerLicences = (type, user) => {
 
 const getCustomer = customerId => customers.find(c => c.id === customerId);
 
+const updateCustomer = newCustomer => {
+  console.log('Made it to DATA');
+};
+
 const getCustomerUsers = customerId =>
   customerUsers.filter(cu => cu.customer === customerId);
 
@@ -520,21 +524,18 @@ const updateCustomerUser = user => {
 };
 
 const inviteCustomerUser = customerUser => {
-
-  const index = customerUsers.findIndex(
-    cu => cu.id === customerUser.id
-  )
+  const index = customerUsers.findIndex(cu => cu.id === customerUser.id);
 
   const invitation_date = new Date().toISOString();
 
   invitedCustomerUser = {
     ...customerUser,
-    invitation_date
-  }
+    invitation_date,
+  };
 
-  customerUsers[index] = invitedCustomerUser
+  customerUsers[index] = invitedCustomerUser;
 
-  return customerUsers[index]
+  return customerUsers[index];
 };
 
 const deleteCustomerUser = userId => {
@@ -548,6 +549,7 @@ const deleteCustomerUser = userId => {
 
 module.exports = {
   getCustomer,
+  updateCustomer,
   getCustomerUsers,
   createCustomerUser,
   updateCustomerUser,

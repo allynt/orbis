@@ -1,6 +1,8 @@
 import React from 'react';
 
-import { useForm, Textfield, ProfileIcon } from '@astrosat/astrosat-ui';
+import { useForm } from 'react-hook-form';
+
+import { Textfield, ProfileIcon, Button } from '@astrosat/astrosat-ui';
 
 import ContentWrapper from '../../content-wrapper.component';
 
@@ -8,15 +10,39 @@ import { Field } from '../corporate-view.component';
 
 import styles from '../corporate-view.module.css';
 
-const AdministratorProfile = ({ user }) => {
-  const { handleChange, handleSubmit, values } = useForm(
-    () => {},
-    () => ({}),
-  );
+const AdministratorProfile = ({ user, updateAdministrator }) => {
+  const formFields = ['name', 'email', 'phone'];
+
+  const getDefaults = () => {
+    let defaults = {};
+    formFields.forEach(field => {
+      if (user[field]) {
+        defaults = { ...defaults, [field]: user[field] };
+      }
+    });
+    return defaults;
+  };
+
+  function onSubmit(values) {
+    let newUser = { ...user };
+    formFields.forEach(field => {
+      if (values[field]) {
+        newUser = { ...newUser, [field]: values[field] };
+      }
+    });
+    updateAdministrator(newUser);
+  }
+
+  const { register, handleSubmit, errors, formState } = useForm({
+    defaultValues: getDefaults(),
+  });
 
   return (
     <ContentWrapper title="Administrator">
-      <form className={styles.corporateAccount} onSubmit={handleSubmit}>
+      <form
+        className={styles.corporateAccount}
+        onSubmit={handleSubmit(onSubmit)}
+      >
         <div className={styles.logoContainer}>
           {user.avatar ? (
             <img src={user.avatar} className={styles.logo} alt="Admin Avatar" />
@@ -34,9 +60,8 @@ const AdministratorProfile = ({ user }) => {
               <Textfield
                 id="name"
                 name="name"
-                value={values.name || user.name}
-                onChange={handleChange}
                 placeholder="Add Name"
+                ref={register}
               />
             </div>
             <div className={styles.field}>
@@ -46,9 +71,8 @@ const AdministratorProfile = ({ user }) => {
               <Textfield
                 id="email"
                 name="email"
-                value={values.email || user.email}
-                onChange={handleChange}
                 placeholder="Add Email"
+                ref={register}
               />
             </div>
             <div className={styles.field}>
@@ -58,13 +82,15 @@ const AdministratorProfile = ({ user }) => {
               <Textfield
                 id="phone"
                 name="phone"
-                value={values.phone || user.phone}
-                onChange={handleChange}
                 placeholder="Add Phone Number"
+                ref={register}
               />
             </div>
           </Field>
         </fieldset>
+        <Button type="submit" disabled={!formState.isDirty}>
+          Update Changes
+        </Button>
       </form>
     </ContentWrapper>
   );

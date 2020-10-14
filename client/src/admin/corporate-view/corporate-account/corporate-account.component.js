@@ -1,6 +1,8 @@
 import React from 'react';
 
-import { useForm, Textfield } from '@astrosat/astrosat-ui';
+import { useForm } from 'react-hook-form';
+
+import { Textfield, Button } from '@astrosat/astrosat-ui';
 
 import ContentWrapper from '../../content-wrapper.component';
 
@@ -8,15 +10,39 @@ import { Field } from '../corporate-view.component';
 
 import styles from '../corporate-view.module.css';
 
-const CorporateAccount = ({ customer }) => {
-  const { handleChange, handleSubmit, values } = useForm(
-    () => {},
-    () => ({}),
-  );
+const CorporateAccount = ({ customer, updateCustomer }) => {
+  const formFields = ['address', 'country', 'name', 'postcode'];
+
+  const getDefaults = () => {
+    let defaults = {};
+    formFields.forEach(field => {
+      if (customer[field]) {
+        defaults = { ...defaults, [field]: customer[field] };
+      }
+    });
+    return defaults;
+  };
+
+  function onSubmit(values) {
+    let newCustomer = { ...customer };
+    formFields.forEach(field => {
+      if (values[field]) {
+        newCustomer = { ...newCustomer, [field]: values[field] };
+      }
+    });
+    updateCustomer(newCustomer);
+  }
+
+  const { register, handleSubmit, errors, formState } = useForm({
+    defaultValues: getDefaults(),
+  });
 
   return (
     <ContentWrapper title="Corporate Account">
-      <form className={styles.corporateAccount} onSubmit={handleSubmit}>
+      <form
+        className={styles.corporateAccount}
+        onSubmit={handleSubmit(onSubmit)}
+      >
         <div className={styles.logoContainer}>
           <img
             src={customer.logo}
@@ -33,9 +59,13 @@ const CorporateAccount = ({ customer }) => {
             <Textfield
               id="name"
               name="name"
+<<<<<<< HEAD
               value={values.name || customer.name}
               onChange={handleChange}
+=======
+>>>>>>> fix(frontend): Add new form, logic, dispatches and tests
               placeholder="Add Name"
+              ref={register}
             />
           </div>
         </Field>
@@ -51,9 +81,8 @@ const CorporateAccount = ({ customer }) => {
               <Textfield
                 id="country"
                 name="country"
-                value={values.country || customer.country}
-                onChange={handleChange}
                 placeholder="Add Country"
+                ref={register}
               />
             </div>
             <div className={styles.field}>
@@ -63,9 +92,8 @@ const CorporateAccount = ({ customer }) => {
               <Textfield
                 id="address"
                 name="address"
-                value={values.address || customer.address}
-                onChange={handleChange}
                 placeholder="Add Address"
+                ref={register}
               />
             </div>
             <div className={styles.field}>
@@ -75,13 +103,15 @@ const CorporateAccount = ({ customer }) => {
               <Textfield
                 id="postcode"
                 name="postcode"
-                value={values.postcode || customer.postcode}
-                onChange={handleChange}
                 placeholder="Add Postcode"
+                ref={register}
               />
             </div>
           </Field>
         </fieldset>
+        <Button type="submit" disabled={!formState.isDirty}>
+          Update Changes
+        </Button>
       </form>
     </ContentWrapper>
   );

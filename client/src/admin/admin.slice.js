@@ -30,6 +30,16 @@ const adminSlice = createSlice({
       state.error = payload;
       state.isLoading = false;
     },
+    updateCustomerRequested: state => {
+      state.isLoading = true;
+    },
+    updateCustomerSuccess: (state, { payload }) => {
+      console.log('Payload: ', payload);
+    },
+    updateCustomerFailure: (state, { payload }) => {
+      state.error = payload;
+      state.isLoading = false;
+    },
     fetchCustomerUsersRequested: state => {
       state.isLoading = true;
     },
@@ -109,7 +119,7 @@ const adminSlice = createSlice({
       state.isLoading = false;
       state.error = null;
     },
-    inviteCustomerUserFailure: (state, {payload}) => {
+    inviteCustomerUserFailure: (state, { payload }) => {
       state.error = payload;
       state.isLoading = false;
     },
@@ -120,6 +130,9 @@ export const {
   fetchCustomerRequested,
   fetchCustomerSuccess,
   fetchCustomerFailure,
+  updateCustomerRequested,
+  updateCustomerSuccess,
+  updateCustomerFailure,
   fetchCustomerUsersRequested,
   fetchCustomerUsersSuccess,
   fetchCustomerUsersFailure,
@@ -160,7 +173,9 @@ export const fetchCustomer = user => async (dispatch, getState) => {
   const headers = getJsonAuthHeaders(getState());
   dispatch(fetchCustomerRequested());
 
-  const customerId = user.customers.find(customer => customer.type === 'MANAGER').id
+  const customerId = user.customers.find(
+    customer => customer.type === 'MANAGER',
+  ).id;
   const response = await getData(`${API}${customerId}`, headers);
 
   if (!response.ok)
@@ -173,6 +188,30 @@ export const fetchCustomer = user => async (dispatch, getState) => {
 
   const currentCustomer = await response.json();
   return dispatch(fetchCustomerSuccess(currentCustomer));
+};
+
+export const updateCustomer = newCustomer => async (dispatch, getState) => {
+  console.log('Made it to updateCustomer!');
+  const headers = getJsonAuthHeaders(getState());
+  dispatch(updateCustomerRequested());
+
+  const response = await sendData(
+    `${API}${newCustomer.id}`,
+    newCustomer,
+    headers,
+    'PUT',
+  );
+
+  if (!response.ok)
+    return handleFailure(
+      response,
+      'Updating Customer Error',
+      updateCustomerFailure,
+      dispatch,
+    );
+
+  const updatedCustomer = await response.json();
+  return dispatch(updateCustomerSuccess(updatedCustomer));
 };
 
 export const fetchCustomerUsers = customer => async (dispatch, getState) => {
@@ -366,9 +405,7 @@ export const inviteCustomerUser = customerUser => async (
 
   const invitedCustomerUser = await inviteCustomerUserResponse.json();
 
-  return dispatch(
-    inviteCustomerUserSuccess({ invitedCustomerUser})
-  );
+  return dispatch(inviteCustomerUserSuccess({ invitedCustomerUser }));
 };
 
 /* === Selectors === */
