@@ -4,6 +4,7 @@ import {
   Button,
   Checkbox,
   PasswordField,
+  PasswordStrengthMeter,
   Textfield,
 } from '@astrosat/astrosat-ui';
 
@@ -26,14 +27,15 @@ import {
 } from 'utils/validators';
 import { FieldError } from 'accounts/field-error.component';
 
+import formStyles from 'forms.module.css';
+import styles from './user-registration.module.css';
+
 const Field = ({ name, label, Component = Textfield, register, errors }) => (
-  <>
-    <label htmlFor={name}>
-      {label}
-      <Component ref={register} id={name} name={name} />
-    </label>
+  <div className={styles.field}>
+    <label htmlFor={name}>{label}</label>
+    <Component ref={register} id={name} name={name} />
     <FieldError message={errors?.[name]?.message} />
-  </>
+  </div>
 );
 
 /**
@@ -82,62 +84,76 @@ const UserRegistration = ({
 
   return (
     <form
+      className={formStyles.form}
       onSubmit={handleSubmit(
         /** @param {FormValues} values */
         values => onSubmit && onSubmit(values),
       )}
     >
-      <ErrorWell errors={serverErrors} />
-      <Field
-        register={register}
-        name={FIELD_NAMES.email}
-        label="Work Email Address*"
-        errors={errors}
-      />
-      <Field
-        register={register}
-        name={FIELD_NAMES.firstName}
-        label="First Name*"
-        errors={errors}
-      />
-      <Field
-        register={register}
-        name={FIELD_NAMES.lastName}
-        label="Last Name*"
-        errors={errors}
-      />
-      <Field
-        register={register}
-        name={FIELD_NAMES.newPassword}
-        label="Password*"
-        Component={PasswordField}
-        errors={errors}
-      />
-      <Field
-        register={register}
-        name={FIELD_NAMES.newPasswordConfirm}
-        label="Password Confirmation*"
-        Component={PasswordField}
-        errors={errors}
-      />
+      <div className={styles.errorWell}>
+        <ErrorWell errors={serverErrors} />
+      </div>
+      <div className={formStyles.fields}>
+        <Field
+          register={register}
+          name={FIELD_NAMES.email}
+          label="Work Email Address*"
+          errors={errors}
+        />
+        <Field
+          register={register}
+          name={FIELD_NAMES.firstName}
+          label="First Name*"
+          errors={errors}
+        />
+        <Field
+          register={register}
+          name={FIELD_NAMES.lastName}
+          label="Last Name*"
+          errors={errors}
+        />
+        <Field
+          register={register}
+          name={FIELD_NAMES.newPassword}
+          label="Password*"
+          Component={PasswordField}
+          errors={errors}
+        />
+        <div style={{ marginBottom: '1em', width: '100%' }}>
+          <PasswordStrengthMeter password={watch(FIELD_NAMES.newPassword)} />
+        </div>
+        <Field
+          register={register}
+          name={FIELD_NAMES.newPasswordConfirm}
+          label="Password Confirmation*"
+          Component={PasswordField}
+          errors={errors}
+        />
+      </div>
       <Checkbox
+        className={styles.terms}
         name={FIELD_NAMES.acceptedTerms}
         ref={register}
         label={
-          <>
-            I agree with{' '}
-            <Button href={TERMS_URL} rel="noreferrer noopener" target="_blank">
+          <div className={styles.label}>
+            I agree with
+            <Button
+              className={styles.link}
+              href={TERMS_URL}
+              rel="noreferrer noopener"
+              target="_blank"
+            >
               Terms &amp; Conditions
             </Button>
-          </>
+          </div>
         }
       />
       <Button type="submit" disabled={!watch(FIELD_NAMES.acceptedTerms)}>
         {isLoading ? <LoadingSpinner /> : 'Sign Up'}
       </Button>
-      <p>
+      <p className={styles.footer}>
         Do you have an account?{' '}
-        <Link to={LOGIN_URL}>
+        <Link className={styles.link} to={LOGIN_URL}>
           <Button theme="link">Login</Button>
         </Link>
       </p>
