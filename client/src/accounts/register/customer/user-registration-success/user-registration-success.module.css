@@ -1,0 +1,23 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+.heading {
+  font-weight: 600;
+  margin-bottom: 0.625rem;
+}
+
+.paragraph + .heading,
+.button {
+  margin-top: 1.25rem;
+}
+
+.email {
+  font-weight: bold;
+}
+
+.button {
+  margin-left: auto;
+  margin-right: auto;
+}
