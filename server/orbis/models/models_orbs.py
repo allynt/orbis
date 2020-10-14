@@ -159,6 +159,8 @@ class Orb(models.Model):
     is_hidden = models.BooleanField(default=False, help_text="Licences to a hidden Orb are not shown to CustomerUsers.")
     is_core = models.BooleanField(default=False, help_text="Every CustomerUser is granted a Licence to the core Orb.")
 
+    licence_cost = models.FloatField(default=0, help_text="The cost of a single licence to this Orb.")
+
     def __str__(self):
         return self.name
 
