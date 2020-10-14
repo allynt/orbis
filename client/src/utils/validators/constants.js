@@ -45,6 +45,8 @@ export const FIELD_NAMES = {
   newPassword: 'newPassword',
   newPasswordConfirm: 'newPasswordConfirm',
   name: 'name',
+  firstName: 'firstName',
+  lastName: 'lastName',
   bookmarkTitle: 'title',
   bookmarkDescription: 'description',
 };
