@@ -119,7 +119,7 @@ const UserRegistration = ({
           Component={PasswordField}
           errors={errors}
         />
-        <div style={{ marginBottom: '1em', width: '100%' }}>
+        <div className={formStyles.row}>
           <PasswordStrengthMeter password={watch(FIELD_NAMES.newPassword)} />
         </div>
         <Field
