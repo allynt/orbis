@@ -6,7 +6,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 
-import { FieldError } from 'accounts/field-error.component';
+import { FieldError } from 'components/field-error/field-error.component';
 import { FIELD_NAMES, name } from 'utils/validators';
 import { ADMIN_STATUS } from '../admin.constants';
 import { getCheckboxLicences, getUpdatedLicenceIds } from '../licence-utils';

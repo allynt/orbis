@@ -25,7 +25,7 @@ import {
   newPassword,
   newPasswordConfirm,
 } from 'utils/validators';
-import { FieldError } from 'accounts/field-error.component';
+import { FieldError } from 'components/field-error/field-error.component';
 
 import formStyles from 'forms.module.css';
 import styles from './user-registration.module.css';
