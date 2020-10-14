@@ -49,6 +49,14 @@ export const newPasswordConfirm = yup
 
 export const name = yup.string().required(MESSAGES.name.required);
 
+export const firstName = yup.string().required(MESSAGES.firstName.required);
+
+export const lastName = yup.string().required(MESSAGES.lastName.required);
+
+export const acceptedTerms = yup
+  .bool()
+  .oneOf([true], MESSAGES.acceptedTerms.oneOf);
+
 export const bookmarkTitle = yup
   .string()
   .required(MESSAGES.bookmarkTitle.required)

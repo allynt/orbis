@@ -24,6 +24,15 @@ export const MESSAGES = {
   name: {
     required: 'Name is required',
   },
+  firstName: {
+    required: 'First Name is required',
+  },
+  lastName: {
+    required: 'Last Name is required',
+  },
+  acceptedTerms: {
+    oneOF: 'You must accept the terms and conditions',
+  },
   bookmarkTitle: {
     required: 'Title is required',
     notOneOf: 'There is already a map with this title',
@@ -45,6 +54,9 @@ export const FIELD_NAMES = {
   newPassword: 'newPassword',
   newPasswordConfirm: 'newPasswordConfirm',
   name: 'name',
+  firstName: 'firstName',
+  lastName: 'lastName',
+  acceptedTerms: 'acceptedTerms',
   bookmarkTitle: 'title',
   bookmarkDescription: 'description',
 };

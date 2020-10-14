@@ -9,7 +9,7 @@ import * as yup from 'yup';
 import formStyles from '../forms.module.css';
 import bookmarkStyles from '../side-menu/side-menu.module.css';
 import { bookmarkTitle, CONTEXT_KEYS, FIELD_NAMES } from 'utils/validators';
-import { FieldError } from 'accounts/field-error.component';
+import { FieldError } from 'components/field-error/field-error.component';
 
 const validationSchema = yup.object({
   [FIELD_NAMES.bookmarkTitle]: bookmarkTitle,

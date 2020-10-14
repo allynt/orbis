@@ -12,7 +12,7 @@ import { Router } from 'react-router-dom';
 import { createMemoryHistory } from 'history';
 
 import RegisterForm from './register-form.component';
-import { status } from '../accounts.slice';
+import { status } from 'accounts/accounts.slice';
 import { FIELD_NAMES } from 'utils/validators';
 
 const mockStore = configureMockStore([thunk]);

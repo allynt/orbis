@@ -13,7 +13,7 @@ import { object } from 'yup';
 
 import { status } from 'accounts/accounts.slice';
 import { LOGIN_URL, TERMS_URL } from 'accounts/accounts.constants';
-import { FieldError } from 'accounts/field-error.component';
+import { FieldError } from 'components/field-error/field-error.component';
 import {
   FIELD_NAMES,
   newPassword,

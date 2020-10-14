@@ -8,7 +8,7 @@ import { Link } from 'react-router-dom';
 import { object } from 'yup';
 
 import { ErrorWell } from 'accounts/error-well.component';
-import { FieldError } from 'accounts/field-error.component';
+import { FieldError } from 'components/field-error/field-error.component';
 import { LOGIN_URL } from '../../accounts.constants';
 import { status } from '../../accounts.slice';
 import { FIELD_NAMES, email } from 'utils/validators';

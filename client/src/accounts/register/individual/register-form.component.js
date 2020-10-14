@@ -16,7 +16,7 @@ import { object as objectSchema } from 'yup';
 import { LOGIN_URL, TERMS_URL } from 'accounts/accounts.constants';
 import { status } from 'accounts/accounts.slice';
 import { ErrorWell } from 'accounts/error-well.component';
-import { FieldError } from 'accounts/field-error.component';
+import { FieldError } from 'components/field-error/field-error.component';
 import {
   FIELD_NAMES,
   email,
