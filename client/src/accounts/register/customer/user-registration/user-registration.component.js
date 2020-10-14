@@ -1,11 +1,12 @@
 import { Button, Checkbox, Textfield } from '@astrosat/astrosat-ui';
 import { LOGIN_URL, TERMS_URL } from 'accounts/accounts.constants';
 import { ErrorWell } from 'accounts/error-well.component';
+import { LoadingSpinner } from 'components/loading-spinner/loading-spinner.component';
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { FIELD_NAMES } from 'utils/validators';
 
-const UserRegistration = ({ serverErrors }) => (
+const UserRegistration = ({ serverErrors, isLoading }) => (
   <form>
     <ErrorWell errors={serverErrors} />
     <label htmlFor={FIELD_NAMES.email}>
@@ -38,7 +39,7 @@ const UserRegistration = ({ serverErrors }) => (
         </>
       }
     />
-    <Button>Sign Up</Button>
+    <Button>{isLoading ? <LoadingSpinner /> : 'Sign Up'}</Button>
     <p>
       Do you have an account?{' '}
       <Link to={LOGIN_URL}>
