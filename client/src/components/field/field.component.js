@@ -22,7 +22,9 @@ export const Field = ({
   readOnly = false,
 }) => (
   <div className={styles.field}>
-    <label htmlFor={name}>{label}</label>
+    <label className={styles.label} htmlFor={name}>
+      {label}
+    </label>
     <Component ref={register} id={name} name={name} readOnly={readOnly} />
     <FieldError message={errors?.[name]?.message} />
   </div>

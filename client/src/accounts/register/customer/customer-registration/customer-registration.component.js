@@ -6,6 +6,10 @@ import { Controller, useForm } from 'react-hook-form';
 import { customerName, FIELD_NAMES } from 'utils/validators';
 import { object as yupObject } from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { FieldError } from 'components/field-error/field-error.component';
+
+import formStyles from 'forms.module.css';
+import styles from './customer-registration.module.css';
 
 const ORGANISATION_TYPES = [
   { name: 'Non-Profit Organisation', value: 'NON_PROFIT' },
@@ -90,17 +94,22 @@ const CustomerRegistration = ({ email, onSubmit }) => {
         label="Organisation Official Name"
         errors={errors}
       />
-      <label htmlFor={FIELD_NAMES.customerType}>Type of Organisation</label>
       <Controller
         control={control}
         name={FIELD_NAMES.customerType}
         render={({ onChange, ...rest }) => (
-          <Select
-            id={FIELD_NAMES.customerType}
-            options={ORGANISATION_TYPES}
-            onChange={e => onChange(e.target.value)}
-            {...rest}
-          />
+          <div className={styles.field}>
+            <label className={styles.label} htmlFor={FIELD_NAMES.customerType}>
+              Type of Organisation
+            </label>
+            <Select
+              id={FIELD_NAMES.customerType}
+              options={ORGANISATION_TYPES}
+              onChange={e => onChange(e.target.value)}
+              {...rest}
+            />
+            <FieldError message={errors?.[FIELD_NAMES.customerType]?.message} />
+          </div>
         )}
       />
       <Field
@@ -131,6 +140,7 @@ const CustomerRegistration = ({ email, onSubmit }) => {
         readOnly
       />
       <Button
+        className={styles.submit}
         type="submit"
         disabled={!formState.isDirty || Object.keys(errors).length}
       >
