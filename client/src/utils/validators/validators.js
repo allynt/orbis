@@ -66,3 +66,7 @@ export const bookmarkTitle = yup
     },
     message: MESSAGES.bookmarkTitle.notOneOf,
   });
+
+export const customerName = yup
+  .string()
+  .required(MESSAGES.customerName.required);

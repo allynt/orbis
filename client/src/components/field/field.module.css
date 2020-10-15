@@ -1,0 +1,15 @@
+.field {
+  composes: row from '../../forms.module.css';
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.label {
+  margin-bottom: 0.5em;
+}
+
+.helpText {
+  font-size: 0.6875rem;
+  font-style: italic;
+  color: var(--text--color--dark);
+}
