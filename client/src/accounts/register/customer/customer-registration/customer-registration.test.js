@@ -1,5 +1,5 @@
 import React from 'react';
-import { render } from '@testing-library/react';
+import { render, waitFor } from '@testing-library/react';
 import CustomerRegistration from './customer-registration.component';
 import userEvent from '@testing-library/user-event';
 
@@ -8,7 +8,7 @@ const NAME = /organisation\sname/i;
 const OFFICIAL_NAME = /organisation\sofficial\sname/i;
 const TYPE = /type\sof\sorganisation/i;
 const REGISTERED_NUMBER = /registered\snumber/i;
-const LICENCE = /licence/i;
+const LICENCE = /^licence$/i;
 const NUMBER_OF_LICENCES = /number\sof\slicences/i;
 const FREE_TRIAL_PERIOD = /free\strial\ssubscription\speriod\sends/i;
 const SUBMIT = /next/i;
@@ -47,10 +47,7 @@ describe('<CustomerRegistration />', () => {
 
   it('has the email field as readonly', () => {
     const { getByRole } = renderComponent();
-    expect(getByRole('textbox', { name: EMAIL })).toHaveAttribute(
-      'readonly',
-      true,
-    );
+    expect(getByRole('textbox', { name: EMAIL })).toHaveAttribute('readonly');
   });
 
   it('disables the submit button while the form is clean', () => {
@@ -58,43 +55,46 @@ describe('<CustomerRegistration />', () => {
     expect(getByRole('button', { name: SUBMIT })).toBeDisabled();
   });
 
-  it('enables the submit button when the form is dirty', () => {
+  it('enables the submit button when the form is dirty', async () => {
     const { getByRole } = renderComponent();
     userEvent.type(getByRole('textbox', { name: NAME }), 'testname');
-    expect(getByRole('button', { name: SUBMIT })).not.toBeDisabled();
+    await waitFor(() =>
+      expect(getByRole('button', { name: SUBMIT })).not.toBeDisabled(),
+    );
   });
 
-  it('disables the submit button when there is form errors', () => {
+  it('disables the submit button when there is form errors', async () => {
     const { getByRole } = renderComponent();
     const submitButton = getByRole('button', { name: SUBMIT });
     userEvent.type(getByRole('textbox', { name: OFFICIAL_NAME }), 'wrong');
     userEvent.click(submitButton);
-    expect(submitButton).toBeDisabled();
+    await waitFor(() => expect(submitButton).toBeDisabled());
   });
 
-  it('calls the onSubmit function with the form values', () => {
+  it('calls the onSubmit function with the form values', async () => {
     const values = {
       email: 'test@test.com',
-      name: 'Test Name',
-      official_name: 'Money launderers Ltd.',
-      company_type: 'GOV_AND_EXEC_AGENCIES',
-      registered_number: '1234',
+      customerName: 'Test Name',
+      customerNameOfficial: 'Money launderers Ltd.',
+      customerType: 'GOV_AND_EXEC_AGENCIES',
+      registeredNumber: '1234',
+      licence: 'ORBIS Core',
+      numberOfLicences: 10,
+      subscriptionPeriod: '2021-03-31T23:00:00.000Z',
     };
-    const { getByRole, onSubmit } = renderComponent();
-    userEvent.type(getByRole('textbox', { name: NAME }), values.name);
+    const { getByRole, getByText, onSubmit } = renderComponent();
+    userEvent.type(getByRole('textbox', { name: NAME }), values.customerName);
     userEvent.type(
       getByRole('textbox', { name: OFFICIAL_NAME }),
-      values.official_name,
+      values.customerNameOfficial,
     );
-    userEvent.selectOptions(
-      getByRole('textbox', { name: TYPE }),
-      values.company_type,
-    );
+    userEvent.click(getByRole('textbox', { name: TYPE }));
+    userEvent.click(getByText('Government & Executive Agencies'));
     userEvent.type(
       getByRole('textbox', { name: REGISTERED_NUMBER }),
-      values.registered_number,
+      values.registeredNumber,
     );
     userEvent.click(getByRole('button', { name: SUBMIT }));
-    expect(onSubmit).toHaveBeenCalledWith(values);
+    await waitFor(() => expect(onSubmit).toHaveBeenCalledWith(values));
   });
 });
