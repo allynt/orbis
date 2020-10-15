@@ -98,6 +98,7 @@ const CustomerRegistration = ({ email, onSubmit }) => {
         name={FIELD_NAMES.customerName}
         label="Organisation Name*"
         errors={errors}
+        autoFocus
       />
       <Field
         register={register}
