@@ -8,7 +8,6 @@ import { object as yupObject } from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { FieldError } from 'components/field-error/field-error.component';
 
-import formStyles from 'forms.module.css';
 import styles from './customer-registration.module.css';
 
 const ORGANISATION_TYPES = [
@@ -75,12 +74,23 @@ const CustomerRegistration = ({ email, onSubmit }) => {
 
   return (
     <form onSubmit={handleSubmit(transformValues)}>
+      <p className={styles.paragraph}>
+        <b>Welcome to Orbis.</b> Please complete your account details to
+        continue on your path to explore Orbis data. The form below will
+        complete your account and allow you to subscribe to your first Orb.
+        Additional Orbs will be available through the in-application store when
+        it goes live in a future release.
+      </p>
       <Field
         register={register}
         name={FIELD_NAMES.email}
         label="Work Email Address"
         readOnly
         errors={errors}
+        helpText="You will become the ADMIN for this Team Account. The email address and
+        password you have provided will also serve as your ADMIN account. You
+        will be able to access the Admin Console. Don’t worry, we will help you
+        find it!"
       />
       <Field
         register={register}

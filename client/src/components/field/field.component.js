@@ -11,6 +11,7 @@ import styles from './field.module.css';
  *   register: (ref: React.Ref<any>) => void
  *   errors?: import('react-hook-form').DeepMap<any, import('react-hook-form').FieldError>
  *   readOnly?: boolean
+ *   helpText?: string
  * }} props
  */
 export const Field = ({
@@ -20,12 +21,14 @@ export const Field = ({
   register,
   errors,
   readOnly = false,
+  helpText,
 }) => (
   <div className={styles.field}>
     <label className={styles.label} htmlFor={name}>
       {label}
     </label>
     <Component ref={register} id={name} name={name} readOnly={readOnly} />
+    {helpText && <p className={styles.helpText}>{helpText}</p>}
     <FieldError message={errors?.[name]?.message} />
   </div>
 );
