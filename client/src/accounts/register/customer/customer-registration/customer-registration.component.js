@@ -29,7 +29,7 @@ const ORGANISATION_TYPES = [
   { name: 'Other', value: 'OTHER' },
 ];
 
-const APRIL_THIRTYFIRST_TWENTYTWENTYONE = new Date('2021-04-01T00:00:00+0000');
+const TRIAL_PERIOD_END_DATE = new Date('2021-04-01T00:00:00+0000');
 
 const validationSchema = yupObject({
   [FIELD_NAMES.customerName]: customerName,
@@ -59,10 +59,7 @@ const CustomerRegistration = ({ email, onSubmit }) => {
       email,
       licence: 'ORBIS Core',
       numberOfLicences: 10,
-      subscriptionPeriod: format(
-        APRIL_THIRTYFIRST_TWENTYTWENTYONE,
-        'do MMMM yyyy',
-      ),
+      subscriptionPeriod: format(TRIAL_PERIOD_END_DATE, 'do MMMM yyyy'),
     },
     resolver: yupResolver(validationSchema),
   });
@@ -72,7 +69,7 @@ const CustomerRegistration = ({ email, onSubmit }) => {
     onSubmit({
       ...values,
       numberOfLicences: +values.numberOfLicences,
-      subscriptionPeriod: APRIL_THIRTYFIRST_TWENTYTWENTYONE.toISOString(),
+      subscriptionPeriod: TRIAL_PERIOD_END_DATE.toISOString(),
     });
   };
 
