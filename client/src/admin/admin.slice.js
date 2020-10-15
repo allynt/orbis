@@ -34,7 +34,9 @@ const adminSlice = createSlice({
       state.isLoading = true;
     },
     updateCustomerSuccess: (state, { payload }) => {
-      console.log('Payload: ', payload);
+      state.currentCustomer = payload;
+      state.isLoading = false;
+      state.error = null;
     },
     updateCustomerFailure: (state, { payload }) => {
       state.error = payload;
@@ -191,7 +193,6 @@ export const fetchCustomer = user => async (dispatch, getState) => {
 };
 
 export const updateCustomer = newCustomer => async (dispatch, getState) => {
-  console.log('Made it to updateCustomer!');
   const headers = getJsonAuthHeaders(getState());
   dispatch(updateCustomerRequested());
 

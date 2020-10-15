@@ -476,7 +476,10 @@ const updateCustomerLicences = (type, user) => {
 const getCustomer = customerId => customers.find(c => c.id === customerId);
 
 const updateCustomer = newCustomer => {
-  console.log('Made it to DATA');
+  const index = customers.findIndex(cust => cust.id === newCustomer.id);
+
+  customers[index] = newCustomer;
+  return customers[index];
 };
 
 const getCustomerUsers = customerId =>
@@ -528,7 +531,7 @@ const inviteCustomerUser = customerUser => {
 
   const invitation_date = new Date().toISOString();
 
-  invitedCustomerUser = {
+  const invitedCustomerUser = {
     ...customerUser,
     invitation_date,
   };

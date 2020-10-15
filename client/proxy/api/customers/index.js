@@ -59,7 +59,7 @@ const inviteSelectedUserHandler = (req, res) => {
   console.log('Inviting Selected user of Customer');
 
   const customerUser = req.body;
-  const invitedCustomerUser = invitedCustomerUser(customerUser);
+  const invitedCustomerUser = inviteCustomerUser(customerUser);
 
   res.status(200);
   res.json(invitedCustomerUser);
