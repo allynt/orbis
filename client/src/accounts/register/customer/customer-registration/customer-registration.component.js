@@ -1,16 +1,20 @@
-import { Button, Select } from '@astrosat/astrosat-ui';
-import { format } from 'date-fns';
-import { Field } from 'components/field/field.component';
 import React from 'react';
-import { Controller, useForm } from 'react-hook-form';
-import { customerName, FIELD_NAMES } from 'utils/validators';
-import { object as yupObject } from 'yup';
+
+import { Button, Select } from '@astrosat/astrosat-ui';
+
 import { yupResolver } from '@hookform/resolvers/yup';
+import { format } from 'date-fns';
+import { Controller, useForm } from 'react-hook-form';
+import { object as yupObject } from 'yup';
+
 import { FieldError } from 'components/field-error/field-error.component';
+import { Field } from 'components/field/field.component';
+import { customerName, FIELD_NAMES } from 'utils/validators';
 
 import styles from './customer-registration.module.css';
 
 const ORGANISATION_TYPES = [
+  { name: 'None', value: undefined },
   { name: 'Non-Profit Organisation', value: 'NON_PROFIT' },
   { name: 'Local Authority', value: 'LOCAL_AUTHORITY' },
   { name: 'Government & Executive Agencies', value: 'GOV_AND_EXEC_AGENCIES' },
