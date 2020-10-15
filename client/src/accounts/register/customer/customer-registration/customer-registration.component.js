@@ -68,7 +68,7 @@ const CustomerRegistration = ({ email, onSubmit }) => {
   const transformValues = values => {
     onSubmit({
       ...values,
-      numberOfLicences: +values.numberOfLicences,
+      numberOfLicences: Number(values.numberOfLicences),
       subscriptionPeriod: TRIAL_PERIOD_END_DATE.toISOString(),
     });
   };
