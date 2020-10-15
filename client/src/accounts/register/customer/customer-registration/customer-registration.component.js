@@ -29,7 +29,7 @@ const ORGANISATION_TYPES = [
   { name: 'Other', value: 'OTHER' },
 ];
 
-const APRIL_THIRTYFIRST_TWENTYTWENTYONE = new Date(2021, 3, 1);
+const APRIL_THIRTYFIRST_TWENTYTWENTYONE = new Date('2021-04-01T00:00:00+0000');
 
 const validationSchema = yupObject({
   [FIELD_NAMES.customerName]: customerName,
