@@ -1,15 +1,15 @@
+import { createSelector, createSlice } from '@reduxjs/toolkit';
+import { push } from 'connected-react-router';
 import { NotificationManager } from 'react-notifications';
-import { createSlice, createSelector } from '@reduxjs/toolkit';
-
 import { persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage'; // defaults to localStorage for web
 
 import {
-  sendData,
   getData,
-  JSON_HEADERS,
   getJsonAuthHeaders,
-} from '../utils/http';
+  JSON_HEADERS,
+  sendData,
+} from 'utils/http';
 import { FIELD_NAMES } from 'utils/validators';
 
 const API_PREFIX = '/api/authentication/';
@@ -79,14 +79,14 @@ const initialState = {
   accountActivationStatus: status.NONE,
   resetStatus: status.NONE,
   changeStatus: status.NONE,
-  verificationEmailStatus: status.NONE,
 };
 
 const accountsSlice = createSlice({
   name: 'accounts',
   initialState,
   reducers: {
-    registerUserSuccess: state => {
+    registerUserSuccess: (state, { payload }) => {
+      state.user = payload;
       state.registerUserStatus = status.PENDING;
       state.error = null;
     },
@@ -98,10 +98,10 @@ const accountsSlice = createSlice({
       state.error = null;
     },
     loginUserFailure: (state, { payload }) => {
-      state.error = payload;
+      state.user = payload.user;
+      state.error = payload.errors;
     },
     resendVerificationEmailSuccess: state => {
-      state.verificationEmailStatus = status.PENDING;
       state.error = null;
     },
     resendVerificationEmailFailure: (state, payload) => {
@@ -192,8 +192,9 @@ export const register = form => async dispatch => {
     const errorObject = await response.json();
     return dispatch(registerUserFailure(errorTransformer(errorObject)));
   }
-
-  return dispatch(registerUserSuccess());
+  const user = await response.json();
+  dispatch(registerUserSuccess(user));
+  return dispatch(push('/accounts/resend'));
 };
 
 export const activateAccount = form => async dispatch => {
@@ -226,8 +227,16 @@ export const login = form => async dispatch => {
   const response = await sendData(API.login, form, JSON_HEADERS);
 
   if (!response.ok) {
-    const errorObject = await response.json();
-    return dispatch(loginUserFailure(errorTransformer(errorObject)));
+    const responseObject = await response.json();
+    const errors = errorTransformer(responseObject);
+    if (errors.includes(`User ${form.email} is not verified.`))
+      dispatch(push('/accounts/resend'));
+    return dispatch(
+      loginUserFailure({
+        ...responseObject,
+        errors: errorTransformer(responseObject),
+      }),
+    );
   }
 
   const userKey = (await response.json()).token;
@@ -235,7 +244,8 @@ export const login = form => async dispatch => {
   dispatch(loginUserSuccess(userKey));
 
   // Now that we have an authentication key, we can proceed to get user details
-  return dispatch(fetchUser());
+  dispatch(fetchUser());
+  return dispatch(push('/'));
 };
 
 export const resendVerificationEmail = email => async dispatch => {

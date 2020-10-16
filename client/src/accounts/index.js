@@ -1,7 +1,10 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Route, Switch, useRouteMatch } from 'react-router-dom';
-import PrivateRoute from '../utils/private-route.component';
+
+import { configSelector } from 'app.slice';
+import PrivateRoute from 'utils/private-route.component';
+import { ReactComponent as OrbisLogo } from '../orbis-dark.svg';
 import AccountActivation from './account-activation.component';
 import {
   activateAccount,
@@ -13,27 +16,20 @@ import {
   resetPassword,
   userSelector,
 } from './accounts.slice';
+import styles from './index.module.css';
 import LoginForm from './login/login-form.component';
 import PasswordChangeForm from './password/change/password-change-form.component';
 import PasswordResetForm from './password/reset/password-reset-form.component';
 import PasswordResetRequestForm from './password/reset/password-reset-request-form.component';
 import RegisterForm from './register/individual/register-form.component';
-import styles from './index.module.css';
-import { ReactComponent as OrbisLogo } from '../orbis-dark.svg';
-import { configSelector } from 'app.slice';
+import { ResendVerificationEmail } from './resend-verification-email/resend-verification-email.component';
 
 export default () => {
   const dispatch = useDispatch();
   const match = useRouteMatch();
   const error = useSelector(state => state.accounts.error);
-  const registerUserStatus = useSelector(
-    state => state.accounts.registerUserStatus,
-  );
   const accountActivationStatus = useSelector(
     state => state.accounts.accountActivationStatus,
-  );
-  const verificationEmailStatus = useSelector(
-    state => state.accounts.verificationEmailStatus,
   );
   const resetStatus = useSelector(state => state.accounts.resetStatus);
   const changeStatus = useSelector(state => state.accounts.changeStatus);
@@ -60,11 +56,7 @@ export default () => {
             render={() => (
               <RegisterForm
                 registerUser={form => dispatch(register(form))}
-                registerUserStatus={registerUserStatus}
-                resendVerificationEmail={email =>
-                  dispatch(resendVerificationEmail(email))
-                }
-                error={error}
+                serverErrors={error}
                 {...passwordConfig}
               />
             )}
@@ -75,12 +67,7 @@ export default () => {
             render={() => (
               <LoginForm
                 login={values => dispatch(login(values))}
-                user={user}
-                error={error}
-                resendVerificationEmail={email =>
-                  dispatch(resendVerificationEmail(email))
-                }
-                verificationEmailStatus={verificationEmailStatus}
+                serverErrors={error}
                 {...passwordConfig}
               />
             )}
@@ -101,7 +88,6 @@ export default () => {
           <Route
             exact
             path={`${match.path}/confirm-email/:key`}
-            user={user}
             render={props => (
               <AccountActivation
                 match={props.match}
@@ -134,6 +120,18 @@ export default () => {
                 match={props.match}
                 error={error}
                 {...passwordConfig}
+              />
+            )}
+          />
+          <Route
+            exact
+            path={`${match.path}/resend`}
+            render={() => (
+              <ResendVerificationEmail
+                email={user?.email}
+                resendVerificationEmail={() =>
+                  dispatch(resendVerificationEmail(user?.email))
+                }
               />
             )}
           />

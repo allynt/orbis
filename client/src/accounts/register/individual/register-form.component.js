@@ -14,7 +14,6 @@ import { Link } from 'react-router-dom';
 import { object as objectSchema } from 'yup';
 
 import { LOGIN_URL, TERMS_URL } from 'accounts/accounts.constants';
-import { status } from 'accounts/accounts.slice';
 import { ErrorWell } from 'accounts/error-well.component';
 import { FieldError } from 'components/field-error/field-error.component';
 import {
@@ -26,55 +25,39 @@ import {
 
 import formStyles from 'forms.module.css';
 
-export const RegisterFormSuccessView = ({ email, resendVerificationEmail }) => (
-  <div className={formStyles.form}>
-    <div className={formStyles.textContent}>
-      <p className={formStyles.paragraph}>
-        <strong>Check your email</strong>
-      </p>
-
-      <p className={formStyles.paragraph}>
-        An email has been sent to <strong>{email}</strong>. Please click the
-        link inside to verify your account before logging in.
-      </p>
-
-      <p className={formStyles.paragraph}>
-        <strong>You haven't received the email?</strong>
-      </p>
-
-      <p className={formStyles.paragraph}>
-        Please check your spam or bulk folders.
-      </p>
-    </div>
-
-    <div className={formStyles.buttons}>
-      <Button theme="secondary" onClick={() => resendVerificationEmail(email)}>
-        Resend email
-      </Button>
-      <Link to={LOGIN_URL}>
-        <Button theme="link">Continue</Button>
-      </Link>
-    </div>
-  </div>
-);
-
 const validationSchema = objectSchema({
   [FIELD_NAMES.email]: email,
   [FIELD_NAMES.newPassword]: newPassword,
   [FIELD_NAMES.newPasswordConfirm]: newPasswordConfirm,
 });
 
+/**
+ * @typedef FormData
+ * @property {string} email
+ * @property {string} newPassword
+ * @property {string} newPasswordConfirm
+ * @property {boolean} accepted_terms
+ */
+
+/**
+ * @param {{
+ *   registerUser: (form: FormData) => void
+ *   serverErrors?: string[]
+ *   isRegistrationOpen?: boolean
+ *   passwordMinLength: number
+ *   passwordMaxLength: number
+ *   passwordStrength: number
+ * }} props
+ */
 const RegisterForm = ({
   registerUser,
-  registerUserStatus,
-  resendVerificationEmail,
-  error,
+  serverErrors,
   isRegistrationOpen = true,
   passwordMinLength,
   passwordMaxLength,
   passwordStrength,
 }) => {
-  const { register, handleSubmit, getValues, errors, watch } = useForm({
+  const { register, handleSubmit, errors, watch } = useForm({
     mode: 'onBlur',
     resolver: yupResolver(validationSchema),
     context: { passwordMinLength, passwordMaxLength, passwordStrength },
@@ -82,21 +65,13 @@ const RegisterForm = ({
 
   const [termsAgreed, setTermsAgreed] = useState(false);
 
-  if (registerUserStatus === status.PENDING)
-    return (
-      <RegisterFormSuccessView
-        email={getValues().email}
-        resendVerificationEmail={resendVerificationEmail}
-      />
-    );
-
   const onSubmit = data => {
     registerUser({ ...data, accepted_terms: termsAgreed });
   };
 
   return (
     <form className={formStyles.form} onSubmit={handleSubmit(onSubmit)}>
-      <ErrorWell errors={error}>
+      <ErrorWell errors={serverErrors}>
         {!isRegistrationOpen && (
           <li>We are sorry, but the signup is currently closed.</li>
         )}
