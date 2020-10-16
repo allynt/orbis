@@ -248,8 +248,10 @@ export const login = form => async dispatch => {
 
   if (!response.ok) {
     const responseObject = await response.json();
-    const errors = errorTransformer(responseObject);
-    if (errors.includes(`User ${form.email} is not verified.`))
+    if (
+      responseObject?.user?.is_verified === 'False' ||
+      !responseObject.user?.is_verified === false
+    )
       dispatch(push('/accounts/resend'));
     return dispatch(
       loginUserFailure({
