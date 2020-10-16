@@ -5,7 +5,6 @@ import { Redirect, Route, Switch, useRouteMatch } from 'react-router-dom';
 import { configSelector } from 'app.slice';
 import PrivateRoute from 'utils/private-route.component';
 import { ReactComponent as OrbisLogo } from '../orbis-dark.svg';
-import AccountActivation from './account-activation.component';
 import {
   activateAccount,
   changePassword,
@@ -28,9 +27,6 @@ export default () => {
   const dispatch = useDispatch();
   const match = useRouteMatch();
   const error = useSelector(state => state.accounts.error);
-  const accountActivationStatus = useSelector(
-    state => state.accounts.accountActivationStatus,
-  );
   const resetStatus = useSelector(state => state.accounts.resetStatus);
   const changeStatus = useSelector(state => state.accounts.changeStatus);
   const user = useSelector(userSelector);
@@ -63,14 +59,16 @@ export default () => {
           />
           <Route
             exact
-            path={`${match.path}/login`}
-            render={() =>
+            path={[`${match.path}/login`, `${match.path}/confirm-email/:key`]}
+            render={props =>
               user ? (
                 <Redirect to="/" />
               ) : (
                 <LoginForm
                   login={values => dispatch(login(values))}
                   serverErrors={error}
+                  activateAccount={form => dispatch(activateAccount(form))}
+                  {...props}
                   {...passwordConfig}
                 />
               )
@@ -86,18 +84,6 @@ export default () => {
                 changeStatus={changeStatus}
                 error={error}
                 {...passwordConfig}
-              />
-            )}
-          />
-          <Route
-            exact
-            path={`${match.path}/confirm-email/:key`}
-            render={props => (
-              <AccountActivation
-                match={props.match}
-                error={error}
-                activateAccount={form => dispatch(activateAccount(form))}
-                accountActivationStatus={accountActivationStatus}
               />
             )}
           />

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import {
   Button,
@@ -30,14 +30,21 @@ const loginSchema = yup.object({
  *   serverErrors?: string[]
  *   passwordMinLength: number
  *   passwordMaxLength: number
- * }} props
+ *   activateAccount?: (data: {key: string}) => void
+ * } & Partial<import('react-router-dom').RouteComponentProps>} props
  */
 const LoginForm = ({
   login,
   serverErrors,
   passwordMinLength,
   passwordMaxLength,
+  match,
+  activateAccount,
 }) => {
+  useEffect(() => {
+    if (match?.params?.key) activateAccount({ ...match.params });
+  }, [activateAccount, match]);
+
   const { register, handleSubmit, formState, errors } = useForm({
     mode: 'onBlur',
     resolver: yupResolver(loginSchema),

@@ -297,7 +297,6 @@ describe('Accounts Slice', () => {
         userKey: null,
         user: null,
         error: null,
-        accountActivationStatus: status.NONE,
         resetStatus: status.NONE,
         changeStatus: status.NONE,
       };

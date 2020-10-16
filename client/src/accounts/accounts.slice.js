@@ -75,7 +75,6 @@ const initialState = {
   userKey: null,
   user: null,
   error: null,
-  accountActivationStatus: status.NONE,
   resetStatus: status.NONE,
   changeStatus: status.NONE,
 };
@@ -129,7 +128,6 @@ const accountsSlice = createSlice({
       state.error = payload;
     },
     activateAccountSuccess: state => {
-      state.accountActivationStatus = status.COMPLETE;
       state.error = null;
     },
     activateAccountFailure: (state, { payload }) => {
