@@ -1,17 +1,12 @@
 import React from 'react';
 
 import { render, waitFor } from '@testing-library/react';
-
 import userEvent from '@testing-library/user-event';
-
+import { createMemoryHistory } from 'history';
 import { Provider } from 'react-redux';
+import { Router } from 'react-router-dom';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
-
-import { Router } from 'react-router-dom';
-import { createMemoryHistory } from 'history';
-
-import { status } from '../accounts.slice';
 
 import LoginForm from './login-form.component';
 
@@ -23,22 +18,11 @@ const LOGIN_BUTTON_TEXT = 'Login';
 const EMAIL_TEXT = 'test@test.com';
 const PASSWORD_TEXT = 'testpassword';
 
-const renderComponent = (
-  history,
-  store,
-  login,
-  user,
-  error,
-  resendVerificationEmail,
-  verificationEmailStatus,
-) =>
+const renderComponent = (history, store, login, error) =>
   render(
     <LoginForm
       login={login}
-      user={user}
-      error={error}
-      resendVerificationEmail={resendVerificationEmail}
-      verificationEmailStatus={verificationEmailStatus}
+      serverErrors={error}
       passwordMinLength={2}
       passwordMaxLength={255}
     />,
@@ -55,10 +39,7 @@ describe('Login Form Component', () => {
   let history = null;
   let store = null;
   let login = null;
-  let user = null;
   let error = null;
-  let resendVerificationEmail = 'resend@test.com';
-  let verificationEmailStatus = status.NONE;
 
   beforeEach(() => {
     history = createMemoryHistory({ initialEntries: ['/'] });
@@ -66,21 +47,15 @@ describe('Login Form Component', () => {
       app: { config: { passwordMinLength: 2, passwordMaxLength: 50 } },
     });
     login = jest.fn();
-    user = null;
     error = ['Test Error 1', 'Test Error 2', 'Test Error 3'];
-    resendVerificationEmail = null;
-    verificationEmailStatus = null;
   });
 
   it('should render a form', () => {
-    const { debug, getByRole, getByPlaceholderText } = renderComponent(
+    const { getByRole, getByPlaceholderText } = renderComponent(
       history,
       store,
       login,
-      user,
       error,
-      resendVerificationEmail,
-      verificationEmailStatus,
     );
 
     expect(getByPlaceholderText(EMAIL_PLACEHOLDER_TEXT)).toBeInTheDocument();
@@ -94,15 +69,7 @@ describe('Login Form Component', () => {
   });
 
   it('should disable `Login` button when form is invalid', () => {
-    const { debug, getByRole, getByPlaceholderText } = renderComponent(
-      history,
-      store,
-      login,
-      user,
-      error,
-      resendVerificationEmail,
-      verificationEmailStatus,
-    );
+    const { getByRole } = renderComponent(history, store, login, error);
 
     expect(getByRole('button', { name: LOGIN_BUTTON_TEXT })).toHaveAttribute(
       'disabled',
@@ -114,10 +81,7 @@ describe('Login Form Component', () => {
       history,
       store,
       login,
-      user,
       error,
-      resendVerificationEmail,
-      verificationEmailStatus,
     );
 
     expect(getByText(LOGIN_BUTTON_TEXT)).toHaveAttribute('disabled');
@@ -139,10 +103,7 @@ describe('Login Form Component', () => {
       history,
       store,
       login,
-      user,
       error,
-      resendVerificationEmail,
-      verificationEmailStatus,
     );
 
     const loginButton = getByRole('button', { name: LOGIN_BUTTON_TEXT });
@@ -157,14 +118,11 @@ describe('Login Form Component', () => {
   });
 
   it('should call `login` function when form is valid and `Login` button clicked', async () => {
-    const { debug, getByRole, getByPlaceholderText } = renderComponent(
+    const { getByRole, getByPlaceholderText } = renderComponent(
       history,
       store,
       login,
-      user,
       error,
-      resendVerificationEmail,
-      verificationEmailStatus,
     );
 
     userEvent.type(getByPlaceholderText(EMAIL_PLACEHOLDER_TEXT), EMAIL_TEXT);
@@ -186,15 +144,7 @@ describe('Login Form Component', () => {
   it('should display error well if login is unsuccessful', () => {
     error = ['Test Error 1', 'Test Error 2', 'Test Error 3'];
 
-    const { getByTestId } = renderComponent(
-      history,
-      store,
-      login,
-      user,
-      error,
-      resendVerificationEmail,
-      verificationEmailStatus,
-    );
+    const { getByTestId } = renderComponent(history, store, login, error);
 
     expect(getByTestId('error-well')).toBeInTheDocument();
   });
