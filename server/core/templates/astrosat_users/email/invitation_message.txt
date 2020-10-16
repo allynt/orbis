@@ -6,7 +6,7 @@
 
   {% autoescape off %}
 
-    Hi, you have been invited by an Administrator of {{ customer.title }} to have access to {{ customer.title }}'s ORBIS Account.
+    Hi, you have been invited by an Administrator of {{ customer.name }} to have access to {{ customer.name }}'s ORBIS Account.
 
     {% if password_reset_url %}
 

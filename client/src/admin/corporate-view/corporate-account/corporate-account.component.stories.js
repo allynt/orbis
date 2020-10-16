@@ -7,7 +7,6 @@ export default { title: 'Admin/Corporate', component: CorporateAccount };
 const customer = {
   type: 'MULTIPLE',
   name: 'cyberdyne',
-  title: 'Cyberdyne Systems',
   logo: 'https://ichef.bbci.co.uk/images/ic/1200x675/p03t1sm8.jpg',
   users: [
     {

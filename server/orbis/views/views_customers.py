@@ -1,7 +1,8 @@
 from allauth.account.adapter import get_adapter
 
 from astrosat_users.views import (
-    CustomerDetailView as AstrosatUsersCustomerDetailView,
+    CustomerCreateView as AstrosatUsersCustomerCreateView,
+    CustomerUpdateView as AstrosatUsersCustomerUpdateView,
     CustomerUserListView as AstrosatUsersCustomerUserListView,
     CustomerUserDetailView as AstrosatUsersCustomerUserDetailView,
     CustomerUserInviteView as AstrosatUsersCustomerUserInviteView,
@@ -36,7 +37,11 @@ class LicenceNotifyingMixIn(object):
         return message
 
 
-class CustomerDetailView(AstrosatUsersCustomerDetailView):
+class CustomerCreateView(AstrosatUsersCustomerCreateView):
+    serializer_class = CustomerSerializer
+
+
+class CustomerUpdateView(AstrosatUsersCustomerUpdateView):
     serializer_class = CustomerSerializer
 
     def get_serializer_context(self):
