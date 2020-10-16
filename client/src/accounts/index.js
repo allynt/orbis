@@ -1,6 +1,6 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Route, Switch, useRouteMatch } from 'react-router-dom';
+import { Redirect, Route, Switch, useRouteMatch } from 'react-router-dom';
 
 import { configSelector } from 'app.slice';
 import PrivateRoute from 'utils/private-route.component';
@@ -64,13 +64,17 @@ export default () => {
           <Route
             exact
             path={`${match.path}/login`}
-            render={() => (
-              <LoginForm
-                login={values => dispatch(login(values))}
-                serverErrors={error}
-                {...passwordConfig}
-              />
-            )}
+            render={() =>
+              user ? (
+                <Redirect to="/" />
+              ) : (
+                <LoginForm
+                  login={values => dispatch(login(values))}
+                  serverErrors={error}
+                  {...passwordConfig}
+                />
+              )
+            }
           />
           <PrivateRoute
             exact
