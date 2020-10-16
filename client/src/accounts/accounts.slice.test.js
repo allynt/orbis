@@ -78,7 +78,13 @@ describe('Accounts Slice', () => {
 
     it('should dispatch register success action.', async () => {
       fetch.mockResponse(JSON.stringify({}));
-      const expectedActions = [{ type: registerUserSuccess.type }];
+      const expectedActions = [
+        { payload: {}, type: registerUserSuccess.type },
+        {
+          payload: { args: ['/accounts/resend'], method: 'push' },
+          type: '@@router/CALL_HISTORY_METHOD',
+        },
+      ];
 
       const form = {
         username: 'testusername',
@@ -143,11 +149,13 @@ describe('Accounts Slice', () => {
       const expectedActions = [
         {
           type: loginUserFailure.type,
-          payload: [
-            'First error relating to failed request.',
-            'Second error relating to failed request.',
-            'Third error relating to failed request.',
-          ],
+          payload: {
+            errors: [
+              'First error relating to failed request.',
+              'Second error relating to failed request.',
+              'Third error relating to failed request.',
+            ],
+          },
         },
       ];
 
@@ -167,8 +175,14 @@ describe('Accounts Slice', () => {
       fetch.once(JSON.stringify(userKey)).once(JSON.stringify(user));
 
       const expectedActions = [
-        { type: loginUserSuccess.type, payload: userKey.token },
-        { type: fetchUserSuccess.type, payload: user },
+        {
+          type: loginUserSuccess.type,
+          payload: { userKey: userKey.token, user },
+        },
+        {
+          payload: { args: ['/'], method: 'push' },
+          type: '@@router/CALL_HISTORY_METHOD',
+        },
       ];
 
       const form = {
@@ -283,11 +297,9 @@ describe('Accounts Slice', () => {
         userKey: null,
         user: null,
         error: null,
-        registerUserStatus: status.NONE,
         accountActivationStatus: status.NONE,
         resetStatus: status.NONE,
         changeStatus: status.NONE,
-        verificationEmailStatus: status.NONE,
       };
     });
 
@@ -319,15 +331,17 @@ describe('Accounts Slice', () => {
       expect(actualState.error).toEqual(error);
     });
 
-    it('should update the user key state, on successful login', () => {
+    it('should update the user and key state, on successful login', () => {
       const userKey = { token: 'Test Login Error' };
+      const user = { name: 'Test spammington' };
 
       const actualState = reducer(beforeState, {
         type: loginUserSuccess.type,
-        payload: userKey,
+        payload: { userKey, user },
       });
 
       expect(actualState.userKey).toEqual(userKey);
+      expect(actualState.user).toEqual(user);
     });
 
     it('should update the error state, when failed to `login`', () => {
@@ -335,7 +349,7 @@ describe('Accounts Slice', () => {
 
       const actualState = reducer(beforeState, {
         type: loginUserFailure.type,
-        payload: error,
+        payload: { errors: error },
       });
 
       expect(actualState.error).toEqual(error);

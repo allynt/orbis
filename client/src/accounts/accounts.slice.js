@@ -75,7 +75,6 @@ const initialState = {
   userKey: null,
   user: null,
   error: null,
-  registerUserStatus: status.NONE,
   accountActivationStatus: status.NONE,
   resetStatus: status.NONE,
   changeStatus: status.NONE,
@@ -87,7 +86,6 @@ const accountsSlice = createSlice({
   reducers: {
     registerUserSuccess: (state, { payload }) => {
       state.user = payload;
-      state.registerUserStatus = status.PENDING;
       state.error = null;
     },
     registerUserFailure: (state, { payload }) => {
