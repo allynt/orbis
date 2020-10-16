@@ -211,6 +211,13 @@ export const updateCustomer = newCustomer => async (dispatch, getState) => {
       dispatch,
     );
 
+  NotificationManager.success(
+    'Successfully updated account',
+    '',
+    5000,
+    () => {},
+  );
+
   const updatedCustomer = await response.json();
   return dispatch(updateCustomerSuccess(updatedCustomer));
 };

@@ -25,13 +25,8 @@ describe('Admin organisation Menu Component', () => {
       />,
     );
 
-<<<<<<< HEAD
-    expect(getByText(selectedCustomer.name)).toBeInTheDocument();
-    expect(getByAltText('Organisation Logo')).toBeInTheDocument();
-=======
     expect(getByText(selectedCustomer.title)).toBeInTheDocument();
     expect(getByAltText('Cyberdyne Systems Logo')).toBeInTheDocument();
->>>>>>> fix(frontend): Restore image URL, fix import and tests after rebase
   });
 
   it('should switch content panel view to corporate account when customer logo is clicked', () => {

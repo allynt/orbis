@@ -123,7 +123,10 @@ const CorporateAccount = ({ customer, updateCustomer }) => {
           </Field>
         </fieldset>
         {errors.name && <FieldError message={errors.name.message} />}
-        <Button type="submit" disabled={!formState.isDirty}>
+        <Button
+          type="submit"
+          disabled={Object.keys(errors).length > 0 || !formState.isDirty}
+        >
           Update Changes
         </Button>
       </form>
