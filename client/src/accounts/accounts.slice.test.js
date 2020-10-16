@@ -18,6 +18,7 @@ import reducer, {
   updateUser,
   status,
   userSelector,
+  fetchRequested,
 } from './accounts.slice';
 
 const mockStore = configureMockStore([thunk]);
@@ -55,6 +56,7 @@ describe('Accounts Slice', () => {
       );
 
       const expectedActions = [
+        { type: fetchRequested.type, payload: undefined },
         {
           type: registerUserFailure.type,
           payload: [
@@ -79,6 +81,7 @@ describe('Accounts Slice', () => {
     it('should dispatch register success action.', async () => {
       fetch.mockResponse(JSON.stringify({}));
       const expectedActions = [
+        { type: fetchRequested.type, payload: undefined },
         { payload: {}, type: registerUserSuccess.type },
         {
           payload: { args: ['/accounts/resend'], method: 'push' },
@@ -110,6 +113,7 @@ describe('Accounts Slice', () => {
       );
 
       const expectedActions = [
+        { type: fetchRequested.type, payload: undefined },
         {
           type: fetchUserFailure.type,
           payload: [
@@ -128,7 +132,10 @@ describe('Accounts Slice', () => {
     it('should dispatch fetch user success action.', async () => {
       const user = { username: 'testusername', email: 'testusername@test.com' };
       fetch.mockResponse(JSON.stringify(user));
-      const expectedActions = [{ type: fetchUserSuccess.type, payload: user }];
+      const expectedActions = [
+        { type: fetchRequested.type, payload: undefined },
+        { type: fetchUserSuccess.type, payload: user },
+      ];
 
       await store.dispatch(fetchUser());
       expect(store.getActions()).toEqual(expectedActions);
@@ -147,6 +154,7 @@ describe('Accounts Slice', () => {
       );
 
       const expectedActions = [
+        { type: fetchRequested.type, payload: undefined },
         {
           type: loginUserFailure.type,
           payload: {
@@ -175,6 +183,7 @@ describe('Accounts Slice', () => {
       fetch.once(JSON.stringify(userKey)).once(JSON.stringify(user));
 
       const expectedActions = [
+        { type: fetchRequested.type, payload: undefined },
         {
           type: loginUserSuccess.type,
           payload: { userKey: userKey.token, user },
@@ -208,6 +217,7 @@ describe('Accounts Slice', () => {
       );
 
       const expectedActions = [
+        { type: fetchRequested.type, payload: undefined },
         {
           type: logoutUserFailure.type,
           payload: [
@@ -229,7 +239,10 @@ describe('Accounts Slice', () => {
 
       fetch.once(JSON.stringify(userKey)).once(JSON.stringify(user));
 
-      const expectedActions = [{ type: logoutUserSuccess.type }];
+      const expectedActions = [
+        { type: fetchRequested.type, payload: undefined },
+        { type: logoutUserSuccess.type },
+      ];
 
       await store.dispatch(logout());
 
@@ -249,6 +262,7 @@ describe('Accounts Slice', () => {
       );
 
       const expectedActions = [
+        { type: fetchRequested.type, payload: undefined },
         {
           type: updateUserFailure.type,
           payload: [
@@ -275,6 +289,7 @@ describe('Accounts Slice', () => {
       fetch.mockResponse(JSON.stringify(userKey));
 
       const expectedActions = [
+        { type: fetchRequested.type, payload: undefined },
         { type: updateUserSuccess.type, payload: userKey },
       ];
 
