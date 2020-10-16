@@ -2,13 +2,25 @@ import React from 'react';
 
 import { useForm } from 'react-hook-form';
 
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from 'yup';
+
 import { Textfield, Button } from '@astrosat/astrosat-ui';
 
 import ContentWrapper from '../../content-wrapper.component';
 
+import { DefaultCustomerLogo } from '../../default-customer-logo.component';
+
 import { Field } from '../corporate-view.component';
+import { FieldError } from 'accounts/field-error.component';
+
+import { FIELD_NAMES, name } from 'utils/validators';
 
 import styles from '../corporate-view.module.css';
+
+const loginSchema = yup.object({
+  [FIELD_NAMES.name]: name,
+});
 
 const CorporateAccount = ({ customer, updateCustomer }) => {
   const formFields = ['address', 'country', 'name', 'postcode'];
@@ -34,6 +46,8 @@ const CorporateAccount = ({ customer, updateCustomer }) => {
   }
 
   const { register, handleSubmit, errors, formState } = useForm({
+    mode: 'onBlur',
+    resolver: yupResolver(loginSchema),
     defaultValues: getDefaults(),
   });
 
@@ -44,11 +58,15 @@ const CorporateAccount = ({ customer, updateCustomer }) => {
         onSubmit={handleSubmit(onSubmit)}
       >
         <div className={styles.logoContainer}>
-          <img
-            src={customer.logo}
-            className={styles.logo}
-            alt="Organisation Logo"
-          />
+          {customer?.logo ? (
+            <img
+              src={customer.logo}
+              className={styles.logo}
+              alt="Organisation Logo"
+            />
+          ) : (
+            <DefaultCustomerLogo className={styles.logo} />
+          )}
         </div>
 
         <Field>
@@ -59,11 +77,6 @@ const CorporateAccount = ({ customer, updateCustomer }) => {
             <Textfield
               id="name"
               name="name"
-<<<<<<< HEAD
-              value={values.name || customer.name}
-              onChange={handleChange}
-=======
->>>>>>> fix(frontend): Add new form, logic, dispatches and tests
               placeholder="Add Name"
               ref={register}
             />
@@ -109,6 +122,7 @@ const CorporateAccount = ({ customer, updateCustomer }) => {
             </div>
           </Field>
         </fieldset>
+        {errors.name && <FieldError message={errors.name.message} />}
         <Button type="submit" disabled={!formState.isDirty}>
           Update Changes
         </Button>

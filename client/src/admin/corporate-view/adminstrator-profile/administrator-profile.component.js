@@ -2,13 +2,23 @@ import React from 'react';
 
 import { useForm } from 'react-hook-form';
 
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from 'yup';
+
+import { FIELD_NAMES, email } from 'utils/validators';
+
 import { Textfield, ProfileIcon, Button } from '@astrosat/astrosat-ui';
 
 import ContentWrapper from '../../content-wrapper.component';
 
 import { Field } from '../corporate-view.component';
+import { FieldError } from 'accounts/field-error.component';
 
 import styles from '../corporate-view.module.css';
+
+const loginSchema = yup.object({
+  [FIELD_NAMES.email]: email,
+});
 
 const AdministratorProfile = ({ user, updateAdministrator }) => {
   const formFields = ['name', 'email', 'phone'];
@@ -34,6 +44,8 @@ const AdministratorProfile = ({ user, updateAdministrator }) => {
   }
 
   const { register, handleSubmit, errors, formState } = useForm({
+    mode: 'onBlur',
+    resolver: yupResolver(loginSchema),
     defaultValues: getDefaults(),
   });
 
@@ -88,7 +100,11 @@ const AdministratorProfile = ({ user, updateAdministrator }) => {
             </div>
           </Field>
         </fieldset>
-        <Button type="submit" disabled={!formState.isDirty}>
+        {errors.email && <FieldError message={errors.email.message} />}
+        <Button
+          type="submit"
+          disabled={Object.keys(errors).length > 0 || !formState.isDirty}
+        >
           Update Changes
         </Button>
       </form>
