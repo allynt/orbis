@@ -4,14 +4,20 @@ import formStyles from 'forms.module.css';
 import { Button } from '@astrosat/astrosat-ui';
 import { Link } from 'react-router-dom';
 import { LOGIN_URL } from 'accounts/accounts.constants';
+import { LoadingSpinner } from 'components/loading-spinner/loading-spinner.component';
 
 /**
  * @param {{
  *   email?: string
+ *   isLoading?: boolean
  *   resendVerificationEmail: (event: React.MouseEvent<HTMLButtonElement>) => void
  * }} props
  */
-export const ResendVerificationEmail = ({ email, resendVerificationEmail }) => (
+export const ResendVerificationEmail = ({
+  email,
+  isLoading = false,
+  resendVerificationEmail,
+}) => (
   <div className={formStyles.form}>
     <div className={formStyles.textContent}>
       <p className={formStyles.paragraph}>
@@ -33,7 +39,9 @@ export const ResendVerificationEmail = ({ email, resendVerificationEmail }) => (
     </div>
 
     <div className={formStyles.buttons}>
-      <Button onClick={resendVerificationEmail}>Resend email</Button>
+      <Button onClick={resendVerificationEmail}>
+        {isLoading ? <LoadingSpinner /> : 'Resend email'}
+      </Button>
       <Link to={LOGIN_URL}>
         <Button theme="link">Continue</Button>
       </Link>

@@ -24,6 +24,7 @@ import {
 } from 'utils/validators';
 
 import formStyles from 'forms.module.css';
+import { LoadingSpinner } from 'components/loading-spinner/loading-spinner.component';
 
 const validationSchema = objectSchema({
   [FIELD_NAMES.email]: email,
@@ -47,6 +48,7 @@ const validationSchema = objectSchema({
  *   passwordMinLength: number
  *   passwordMaxLength: number
  *   passwordStrength: number
+ *   isLoading?: boolean
  * }} props
  */
 const RegisterForm = ({
@@ -56,6 +58,7 @@ const RegisterForm = ({
   passwordMinLength,
   passwordMaxLength,
   passwordStrength,
+  isLoading = false,
 }) => {
   const { register, handleSubmit, errors, watch } = useForm({
     mode: 'onBlur',
@@ -158,7 +161,7 @@ const RegisterForm = ({
             Object.keys(errors).length > 0
           }
         >
-          Sign Up
+          {isLoading ? <LoadingSpinner /> : 'Sign Up'}
         </Button>
       </div>
       <p className={formStyles.footer}>

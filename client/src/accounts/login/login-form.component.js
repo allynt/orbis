@@ -18,6 +18,7 @@ import { FieldError } from 'components/field-error/field-error.component';
 import { FIELD_NAMES, email, password } from 'utils/validators';
 
 import formStyles from 'forms.module.css';
+import { LoadingSpinner } from 'components/loading-spinner/loading-spinner.component';
 
 const loginSchema = yup.object({
   [FIELD_NAMES.email]: email,
@@ -31,6 +32,7 @@ const loginSchema = yup.object({
  *   passwordMinLength: number
  *   passwordMaxLength: number
  *   activateAccount?: (data: {key: string}) => void
+ *   isLoading?: boolean
  * } & Partial<import('react-router-dom').RouteComponentProps>} props
  */
 const LoginForm = ({
@@ -40,6 +42,7 @@ const LoginForm = ({
   passwordMaxLength,
   match,
   activateAccount,
+  isLoading = false,
 }) => {
   useEffect(() => {
     if (match?.params?.key) activateAccount({ ...match.params });
@@ -114,7 +117,7 @@ const LoginForm = ({
           theme="primary"
           disabled={Object.keys(errors).length > 0 || !formState.isDirty}
         >
-          Login
+          {isLoading ? <LoadingSpinner /> : 'Login'}
         </Button>
       </div>
 

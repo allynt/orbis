@@ -9,6 +9,7 @@ import {
   activateAccount,
   changePassword,
   confirmResetPassword,
+  isLoadingSelector,
   login,
   register,
   resendVerificationEmail,
@@ -27,6 +28,7 @@ export default () => {
   const dispatch = useDispatch();
   const match = useRouteMatch();
   const error = useSelector(state => state.accounts.error);
+  const isLoading = useSelector(isLoadingSelector);
   const resetStatus = useSelector(state => state.accounts.resetStatus);
   const changeStatus = useSelector(state => state.accounts.changeStatus);
   const user = useSelector(userSelector);
@@ -53,6 +55,7 @@ export default () => {
               <RegisterForm
                 registerUser={form => dispatch(register(form))}
                 serverErrors={error}
+                isLoading={isLoading}
                 {...passwordConfig}
               />
             )}
@@ -68,6 +71,7 @@ export default () => {
                   login={values => dispatch(login(values))}
                   serverErrors={error}
                   activateAccount={form => dispatch(activateAccount(form))}
+                  isLoading={isLoading}
                   {...props}
                   {...passwordConfig}
                 />
@@ -122,6 +126,7 @@ export default () => {
                 resendVerificationEmail={() =>
                   dispatch(resendVerificationEmail(user?.email))
                 }
+                isLoading={isLoading}
               />
             )}
           />
