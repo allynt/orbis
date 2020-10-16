@@ -94,7 +94,8 @@ const accountsSlice = createSlice({
       state.error = payload;
     },
     loginUserSuccess: (state, { payload }) => {
-      state.userKey = payload;
+      state.userKey = payload.userKey;
+      state.user = payload.user;
       state.error = null;
     },
     loginUserFailure: (state, { payload }) => {
@@ -238,13 +239,19 @@ export const login = form => async dispatch => {
       }),
     );
   }
-
   const userKey = (await response.json()).token;
-  // Record the authentication key in state
-  dispatch(loginUserSuccess(userKey));
-
-  // Now that we have an authentication key, we can proceed to get user details
-  dispatch(fetchUser());
+  const headers = getJsonAuthHeaders({ accounts: { userKey } });
+  const fetchUserResponse = await getData(`${API.user}current/`, headers);
+  if (!fetchUserResponse.ok) {
+    const responseObject = await response.json();
+    return dispatch(
+      loginUserFailure({
+        errors: errorTransformer(responseObject),
+      }),
+    );
+  }
+  const user = await fetchUserResponse.json();
+  dispatch(loginUserSuccess({ userKey, user }));
   return dispatch(push('/'));
 };
 
