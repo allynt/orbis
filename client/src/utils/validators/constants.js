@@ -58,15 +58,12 @@ export const FIELD_NAMES = {
   newPassword: 'newPassword',
   newPasswordConfirm: 'newPasswordConfirm',
   name: 'name',
-<<<<<<< HEAD
   firstName: 'firstName',
   lastName: 'lastName',
   acceptedTerms: 'acceptedTerms',
-=======
   country: 'country',
   address: 'address',
   postcode: 'postcode',
->>>>>>> fix(frontend): Add Yup, default logo
   bookmarkTitle: 'title',
   bookmarkDescription: 'description',
   customerName: 'customerName',

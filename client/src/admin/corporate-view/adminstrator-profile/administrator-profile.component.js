@@ -12,7 +12,7 @@ import { Textfield, ProfileIcon, Button } from '@astrosat/astrosat-ui';
 import ContentWrapper from '../../content-wrapper.component';
 
 import { Field } from '../corporate-view.component';
-import { FieldError } from 'accounts/field-error.component';
+import { FieldError } from 'components/field-error/field-error.component';
 
 import styles from '../corporate-view.module.css';
 

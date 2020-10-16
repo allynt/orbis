@@ -12,7 +12,7 @@ import ContentWrapper from '../../content-wrapper.component';
 import { DefaultCustomerLogo } from '../../default-customer-logo.component';
 
 import { Field } from '../corporate-view.component';
-import { FieldError } from 'accounts/field-error.component';
+import { FieldError } from 'components/field-error/field-error.component';
 
 import { FIELD_NAMES, name } from 'utils/validators';
 
@@ -62,7 +62,7 @@ const CorporateAccount = ({ customer, updateCustomer }) => {
             <img
               src={customer.logo}
               className={styles.logo}
-              alt="Organisation Logo"
+              alt={`${customer?.title} Logo`}
             />
           ) : (
             <DefaultCustomerLogo className={styles.logo} />

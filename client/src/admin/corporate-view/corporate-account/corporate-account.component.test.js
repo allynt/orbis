@@ -12,37 +12,6 @@ const renderComponent = (customer, updateCustomer) =>
   );
 
 describe('Update User Form Component', () => {
-<<<<<<< HEAD
-  let title = 'Corporate Account';
-  let customer = {
-    type: 'MULTIPLE',
-    name: 'cyberdyne',
-    logo: 'https://ichef.bbci.co.uk/images/ic/1200x675/p03t1sm8.jpg',
-    users: [
-      {
-        id: 2,
-        customers: [
-          {
-            name: 'cyberdyne',
-            manager: true,
-          },
-        ],
-        username: 'admin@test.com',
-        email: 'admin@test.com',
-        name: 'Harry Callahan',
-        avatar:
-          'https://www.bfi.org.uk/sites/bfi.org.uk/files/styles/full/public/image/dirty-harry-1971-002-clint-eastwood-medium-shot.jpg?itok=Gt8uYZDg',
-        description: '',
-        is_verified: true,
-        is_approved: true,
-        profiles: {},
-        roles: ['AdminRole', 'UserRole'],
-      },
-    ],
-    data_limit: 100,
-    data_total: 50,
-  };
-=======
   let updateCustomer = null;
   let customer = null;
 
@@ -57,7 +26,6 @@ describe('Update User Form Component', () => {
       logo: 'Test URL',
     };
   });
->>>>>>> fix(frontend): Add new form, logic, dispatches and tests
 
   afterEach(cleanup);
 
@@ -68,7 +36,7 @@ describe('Update User Form Component', () => {
     );
 
     expect(container.querySelector('form')).toBeInTheDocument();
-    expect(getByAltText('Organisation Logo')).toBeInTheDocument();
+    expect(getByAltText('Cyberdyne Systems Logo')).toBeInTheDocument();
 
     expect(getByDisplayValue(customer.name)).toBeInTheDocument();
     expect(getByDisplayValue(customer.country)).toBeInTheDocument();

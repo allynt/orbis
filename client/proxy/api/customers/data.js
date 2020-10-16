@@ -7,6 +7,7 @@ let customers = [
     name: 'cyberdyne',
     title: 'Cyberdyne Systems',
     description: 'Bringing you the future, today.',
+    logo: 'https://ichef.bbci.co.uk/images/ic/1200x675/p03t1sm8.jpg',
     roles: ['SaveTheWorldRole'],
     permissions: ['can_deploy_skynet'],
     licences: [
