@@ -7,8 +7,8 @@ import { Router } from 'react-router-dom';
 
 import LoginForm from './login-form.component';
 
-const EMAIL_PLACEHOLDER_TEXT = 'Email';
-const PASSWORD_PLACEHOLDER_TEXT = 'Password';
+const EMAIL_PLACEHOLDER_TEXT = /email/i;
+const PASSWORD_PLACEHOLDER_TEXT = /password/i;
 const LOGIN_BUTTON_TEXT = 'Login';
 const EMAIL_TEXT = 'test@test.com';
 const PASSWORD_TEXT = 'testpassword';
@@ -49,10 +49,12 @@ const renderComponent = props => {
 
 describe('Login Form Component', () => {
   it('should render a form', () => {
-    const { getByRole, getByPlaceholderText } = renderComponent();
+    const { getByRole, getByLabelText } = renderComponent();
 
-    expect(getByPlaceholderText(EMAIL_PLACEHOLDER_TEXT)).toBeInTheDocument();
-    expect(getByPlaceholderText(PASSWORD_PLACEHOLDER_TEXT)).toBeInTheDocument();
+    expect(
+      getByRole('textbox', { name: EMAIL_PLACEHOLDER_TEXT }),
+    ).toBeInTheDocument();
+    expect(getByLabelText(PASSWORD_PLACEHOLDER_TEXT)).toBeInTheDocument();
     expect(
       getByRole('button', { name: LOGIN_BUTTON_TEXT }),
     ).toBeInTheDocument();
@@ -65,28 +67,31 @@ describe('Login Form Component', () => {
   });
 
   it('should enable `Login` button when form is valid', async () => {
-    const { getByText, getByPlaceholderText } = renderComponent();
-
-    expect(getByText(LOGIN_BUTTON_TEXT)).toBeDisabled();
-
-    userEvent.type(getByPlaceholderText(EMAIL_PLACEHOLDER_TEXT), EMAIL_TEXT);
-
-    userEvent.type(
-      getByPlaceholderText(PASSWORD_PLACEHOLDER_TEXT),
-      PASSWORD_TEXT,
-    );
-
-    await waitFor(() =>
-      expect(getByText(LOGIN_BUTTON_TEXT)).not.toHaveAttribute('disabled'),
-    );
-  });
-
-  it('should not call `login` function when form is invalid and `Login` button clicked', async () => {
-    const { getByRole, getByPlaceholderText, login } = renderComponent();
+    const { getByRole, getByLabelText } = renderComponent();
 
     const loginButton = getByRole('button', { name: LOGIN_BUTTON_TEXT });
 
-    userEvent.type(getByPlaceholderText(EMAIL_PLACEHOLDER_TEXT), EMAIL_TEXT);
+    expect(loginButton).toBeDisabled();
+
+    userEvent.type(
+      getByRole('textbox', { name: EMAIL_PLACEHOLDER_TEXT }),
+      EMAIL_TEXT,
+    );
+
+    userEvent.type(getByLabelText(PASSWORD_PLACEHOLDER_TEXT), PASSWORD_TEXT);
+
+    await waitFor(() => expect(loginButton).not.toHaveAttribute('disabled'));
+  });
+
+  it('should not call `login` function when form is invalid and `Login` button clicked', async () => {
+    const { getByRole, login } = renderComponent();
+
+    const loginButton = getByRole('button', { name: LOGIN_BUTTON_TEXT });
+
+    userEvent.type(
+      getByRole('textbox', { name: EMAIL_PLACEHOLDER_TEXT }),
+      EMAIL_TEXT,
+    );
 
     userEvent.tab();
 
@@ -96,13 +101,13 @@ describe('Login Form Component', () => {
   });
 
   it('should call `login` function when form is valid and `Login` button clicked', async () => {
-    const { getByRole, getByPlaceholderText, login } = renderComponent();
+    const { getByRole, getByLabelText, login } = renderComponent();
 
-    userEvent.type(getByPlaceholderText(EMAIL_PLACEHOLDER_TEXT), EMAIL_TEXT);
     userEvent.type(
-      getByPlaceholderText(PASSWORD_PLACEHOLDER_TEXT),
-      PASSWORD_TEXT,
+      getByRole('textbox', { name: EMAIL_PLACEHOLDER_TEXT }),
+      EMAIL_TEXT,
     );
+    userEvent.type(getByLabelText(PASSWORD_PLACEHOLDER_TEXT), PASSWORD_TEXT);
 
     userEvent.click(getByRole('button', { name: LOGIN_BUTTON_TEXT }));
 

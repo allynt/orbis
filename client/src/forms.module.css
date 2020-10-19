@@ -23,8 +23,8 @@
 
 .errorMessage {
   color: var(--color-error);
-  padding: 0 1.5rem;
-  margin-bottom: 1rem;
+  margin-top: 0.5em;
+  margin-bottom: 1em;
 }
 
 .buttons {
