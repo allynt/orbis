@@ -50,6 +50,8 @@ const LoginForm = ({
   activateAccount,
   login,
 }) => {
+  const isRegisteringCustomer = user?.requires_customer_registration_completion;
+
   useEffect(() => {
     if (
       match?.params?.key &&
@@ -75,8 +77,11 @@ const LoginForm = ({
 
       <div className={formStyles.fields}>
         <div className={formStyles.row}>
-          <label className={formStyles.hiddenLabel} htmlFor={FIELD_NAMES.email}>
-            Email
+          <label
+            className={!isRegisteringCustomer && formStyles.hiddenLabel}
+            htmlFor={FIELD_NAMES.email}
+          >
+            {isRegisteringCustomer ? 'Work Email Address*' : 'Email'}
           </label>
           <Textfield
             id={FIELD_NAMES.email}
@@ -105,20 +110,20 @@ const LoginForm = ({
         {errors.password && <FieldError message={errors.password.message} />}
 
         <div className={`${formStyles.row} ${formStyles.incidentals}`}>
-          <Checkbox
-            name="loggedIn"
-            value="true"
-            label="Keep me logged in"
-            onChange={() => console.log('Keep me logged in')}
-          />
+          {!isRegisteringCustomer && (
+            <Checkbox
+              name="loggedIn"
+              value="true"
+              label="Keep me logged in"
+              onChange={() => console.log('Keep me logged in')}
+            />
+          )}
 
-          <p className={formStyles.row}>
-            <Link to={PASSWORD_RESET_URL}>
-              <Button type="button" theme="link">
-                Forgot password?
-              </Button>
-            </Link>
-          </p>
+          <Link to={PASSWORD_RESET_URL}>
+            <Button type="button" theme="link">
+              Forgot password?
+            </Button>
+          </Link>
         </div>
       </div>
 
@@ -132,12 +137,14 @@ const LoginForm = ({
         </Button>
       </div>
 
-      <p className={formStyles.footer}>
-        Don't have an account?&nbsp;
-        <Link to={REGISTER_URL}>
-          <Button theme="link">Sign Up</Button>
-        </Link>
-      </p>
+      {!isRegisteringCustomer && (
+        <p className={formStyles.footer}>
+          Don't have an account?&nbsp;
+          <Link to={REGISTER_URL}>
+            <Button theme="link">Sign Up</Button>
+          </Link>
+        </p>
+      )}
     </form>
   );
 };

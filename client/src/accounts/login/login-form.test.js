@@ -12,6 +12,9 @@ const PASSWORD_PLACEHOLDER_TEXT = 'Password';
 const LOGIN_BUTTON_TEXT = 'Login';
 const EMAIL_TEXT = 'test@test.com';
 const PASSWORD_TEXT = 'testpassword';
+const SIGN_UP = /sign\sup/i;
+const KEEP_LOGGED_IN = /keep\sme\slogged\sin/i;
+const WORK_EMAIL = /work\semail\saddress/i;
 
 /**
  * @param {Partial<Pick<import('./login-form.component').LoginProps,
@@ -132,5 +135,27 @@ describe('Login Form Component', () => {
   it('shows a loading spinner if loading', () => {
     const { getByRole } = renderComponent({ isLoading: true });
     expect(getByRole('alert')).toBeInTheDocument();
+  });
+
+  describe('Customer Registration Flow', () => {
+    /** @type {Partial<User>} */
+    const user = { requires_customer_registration_completion: true };
+
+    it('does not show the sign up link', () => {
+      const { queryByRole } = renderComponent({ user });
+      expect(queryByRole('link', { name: SIGN_UP })).not.toBeInTheDocument();
+    });
+
+    it('does not show keep me logged in', () => {
+      const { queryByRole } = renderComponent({ user });
+      expect(
+        queryByRole('checkbox', { name: KEEP_LOGGED_IN }),
+      ).not.toBeInTheDocument();
+    });
+
+    it('has the work email address label', () => {
+      const { getByRole } = renderComponent({ user });
+      expect(getByRole('textbox', { name: WORK_EMAIL })).toBeInTheDocument();
+    });
   });
 });
