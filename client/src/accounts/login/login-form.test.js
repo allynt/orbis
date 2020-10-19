@@ -22,12 +22,14 @@ const PASSWORD_TEXT = 'testpassword';
  *   | 'user'>>} [props]
  */
 const renderComponent = props => {
+  const activateAccount = jest.fn();
   const login = jest.fn();
   const utils = render(
     // @ts-ignore
     <LoginForm
       passwordMinLength={2}
       passwordMaxLength={255}
+      activateAccount={activateAccount}
       login={login}
       {...props}
     />,
@@ -39,7 +41,7 @@ const renderComponent = props => {
       ),
     },
   );
-  return { ...utils, login };
+  return { ...utils, activateAccount, login };
 };
 
 describe('Login Form Component', () => {
@@ -115,5 +117,20 @@ describe('Login Form Component', () => {
     const { getByTestId } = renderComponent({ serverErrors });
 
     expect(getByTestId('error-well')).toBeInTheDocument();
+  });
+
+  it('calls activateAccount if the supplied user is not verified and the url has a key', () => {
+    const { activateAccount } = renderComponent({
+      // @ts-ignore
+      user: { is_verified: false },
+      // @ts-ignore
+      match: { params: { key: '123' } },
+    });
+    expect(activateAccount).toBeCalledWith({ key: '123' });
+  });
+
+  it('shows a loading spinner if loading', () => {
+    const { getByRole } = renderComponent({ isLoading: true });
+    expect(getByRole('alert')).toBeInTheDocument();
   });
 });

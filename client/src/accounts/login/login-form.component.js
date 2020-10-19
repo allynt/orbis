@@ -15,10 +15,10 @@ import * as yup from 'yup';
 import { PASSWORD_RESET_URL, REGISTER_URL } from 'accounts/accounts.constants';
 import { ErrorWell } from 'accounts/error-well.component';
 import { FieldError } from 'components/field-error/field-error.component';
+import { LoadingSpinner } from 'components/loading-spinner/loading-spinner.component';
 import { FIELD_NAMES, email, password } from 'utils/validators';
 
 import formStyles from 'forms.module.css';
-import { LoadingSpinner } from 'components/loading-spinner/loading-spinner.component';
 
 const loginSchema = yup.object({
   [FIELD_NAMES.email]: email,
@@ -52,8 +52,9 @@ const LoginForm = ({
 }) => {
   useEffect(() => {
     if (
-      (match?.params?.key && !user?.is_verified) ||
-      user?.is_verified === 'False'
+      match?.params?.key &&
+      activateAccount &&
+      (!user?.is_verified || user?.is_verified === 'False')
     )
       activateAccount({ ...match.params });
   }, [activateAccount, match, user]);
