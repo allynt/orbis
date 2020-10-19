@@ -27,26 +27,32 @@ const loginSchema = yup.object({
 
 /**
  * @param {{
- *   login: (data: { email: string, password: string}) => void
- *   serverErrors?: string[]
+ *   isLoading?: boolean
  *   passwordMinLength: number
  *   passwordMaxLength: number
+ *   serverErrors?: string[]
+ *   user: any
  *   activateAccount?: (data: {key: string}) => void
- *   isLoading?: boolean
+ *   login: (data: { email: string, password: string}) => void
  * } & Partial<import('react-router-dom').RouteComponentProps>} props
  */
 const LoginForm = ({
-  login,
-  serverErrors,
+  isLoading = false,
+  match,
   passwordMinLength,
   passwordMaxLength,
-  match,
+  serverErrors,
+  user,
   activateAccount,
-  isLoading = false,
+  login,
 }) => {
   useEffect(() => {
-    if (match?.params?.key) activateAccount({ ...match.params });
-  }, [activateAccount, match]);
+    if (
+      (match?.params?.key && !user?.is_verified) ||
+      user?.is_verified === 'False'
+    )
+      activateAccount({ ...match.params });
+  }, [activateAccount, match, user]);
 
   const { register, handleSubmit, formState, errors } = useForm({
     mode: 'onBlur',

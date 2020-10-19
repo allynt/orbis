@@ -104,6 +104,7 @@ const accountsSlice = createSlice({
     },
     loginUserFailure: (state, { payload }) => {
       state.user = payload.user;
+      state.userKey = null;
       state.error = payload.errors;
       state.isLoading = false;
     },
@@ -143,7 +144,8 @@ const accountsSlice = createSlice({
       state.error = payload;
       state.isLoading = false;
     },
-    activateAccountSuccess: state => {
+    activateAccountSuccess: (state, { payload }) => {
+      state.user = payload.user;
       state.error = null;
       state.isLoading = false;
     },
@@ -222,8 +224,8 @@ export const activateAccount = form => async dispatch => {
     const errorObject = await response.json();
     return dispatch(activateAccountFailure(errorTransformer(errorObject)));
   }
-
-  return dispatch(activateAccountSuccess());
+  const { user } = await response.json();
+  return dispatch(activateAccountSuccess({ user }));
 };
 
 export const fetchUser = (email = 'current') => async (dispatch, getState) => {
@@ -394,6 +396,10 @@ const baseSelector = state => state?.accounts;
 export const userSelector = createSelector(
   baseSelector,
   accounts => accounts?.user,
+);
+export const userKeySelector = createSelector(
+  baseSelector,
+  accounts => accounts?.userKey,
 );
 
 export const isLoadingSelector = createSelector(

@@ -14,6 +14,7 @@ import {
   register,
   resendVerificationEmail,
   resetPassword,
+  userKeySelector,
   userSelector,
 } from './accounts.slice';
 import styles from './index.module.css';
@@ -32,6 +33,7 @@ export default () => {
   const resetStatus = useSelector(state => state.accounts.resetStatus);
   const changeStatus = useSelector(state => state.accounts.changeStatus);
   const user = useSelector(userSelector);
+  const userKey = useSelector(userKeySelector);
   const {
     passwordMinLength,
     passwordMaxLength,
@@ -64,10 +66,14 @@ export default () => {
             exact
             path={[`${match.path}/login`, `${match.path}/confirm-email/:key`]}
             render={props =>
-              user && user.is_verified && user.is_verified !== 'False' ? (
+              user &&
+              user.is_verified &&
+              user.is_verified !== 'False' &&
+              userKey ? (
                 <Redirect to="/" />
               ) : (
                 <LoginForm
+                  user={user}
                   login={values => dispatch(login(values))}
                   serverErrors={error}
                   activateAccount={form => dispatch(activateAccount(form))}
