@@ -1,50 +1,38 @@
 import React from 'react';
 
-import formStyles from 'forms.module.css';
 import { Button } from '@astrosat/astrosat-ui';
+
 import { Link } from 'react-router-dom';
+
 import { LOGIN_URL } from 'accounts/accounts.constants';
 import { LoadingSpinner } from 'components/loading-spinner/loading-spinner.component';
+
+import styles from './resend-verification-email.module.css';
 
 /**
  * @param {{
  *   email?: string
  *   isLoading?: boolean
- *   resendVerificationEmail: (event: React.MouseEvent<HTMLButtonElement>) => void
+ *   onResend?: (event: React.MouseEvent<HTMLButtonElement>) => void
  * }} props
  */
-export const ResendVerificationEmail = ({
-  email,
-  isLoading = false,
-  resendVerificationEmail,
-}) => (
-  <div className={formStyles.form}>
-    <div className={formStyles.textContent}>
-      <p className={formStyles.paragraph}>
-        <strong>Check your email</strong>
-      </p>
-
-      <p className={formStyles.paragraph}>
-        An email has been sent to <strong>{email}</strong>. Please click the
-        link inside to verify your account before logging in.
-      </p>
-
-      <p className={formStyles.paragraph}>
-        <strong>You haven't received the email?</strong>
-      </p>
-
-      <p className={formStyles.paragraph}>
-        Please check your spam or bulk folders.
-      </p>
-    </div>
-
-    <div className={formStyles.buttons}>
-      <Button onClick={resendVerificationEmail}>
-        {isLoading ? <LoadingSpinner /> : 'Resend email'}
-      </Button>
-      <Link to={LOGIN_URL}>
-        <Button theme="link">Continue</Button>
-      </Link>
-    </div>
+const ResendVerificationEmail = ({ email, isLoading = false, onResend }) => (
+  <div className={styles.wrapper}>
+    <h2 className={styles.heading}>Check your email</h2>
+    <p className={styles.paragraph}>
+      We have created an Astrosat ID for your email
+      {email ? <b> {email}</b> : ''}. You should have received an email
+      containing a validation link which will allow you to create your account.
+    </p>
+    <h2 className={styles.heading}>You haven’t received the email?</h2>
+    <p className={styles.paragraph}>Please check your spam or bulk folders.</p>
+    <Button className={styles.button} onClick={onResend}>
+      {isLoading ? <LoadingSpinner /> : 'Resend email'}
+    </Button>
+    <Link className={styles.button} to={LOGIN_URL}>
+      <Button theme="link">Return to login</Button>
+    </Link>
   </div>
 );
+
+export default ResendVerificationEmail;

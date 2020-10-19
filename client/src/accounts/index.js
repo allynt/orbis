@@ -22,7 +22,7 @@ import PasswordChangeForm from './password/change/password-change-form.component
 import PasswordResetForm from './password/reset/password-reset-form.component';
 import PasswordResetRequestForm from './password/reset/password-reset-request-form.component';
 import RegisterForm from './register/individual/register-form.component';
-import { ResendVerificationEmail } from './resend-verification-email/resend-verification-email.component';
+import ResendVerificationEmail from './resend-verification-email/resend-verification-email.component';
 
 export default () => {
   const dispatch = useDispatch();
@@ -123,9 +123,7 @@ export default () => {
             render={() => (
               <ResendVerificationEmail
                 email={user?.email}
-                resendVerificationEmail={() =>
-                  dispatch(resendVerificationEmail(user?.email))
-                }
+                onResend={() => dispatch(resendVerificationEmail(user?.email))}
                 isLoading={isLoading}
               />
             )}
