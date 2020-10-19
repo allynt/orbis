@@ -5,7 +5,7 @@ const useAuthorization = (user, roles) => {
 
   useEffect(() => {
     if (user) {
-      setIsAuthorized(user.roles.some(role => roles.includes(role)));
+      setIsAuthorized(user.roles?.some(role => roles.includes(role)));
     }
   }, [user, roles]);
 

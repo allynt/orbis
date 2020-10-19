@@ -32,18 +32,16 @@ const install = () => {
     const user = useSelector(userSelector);
     const isAuthorized = useAuthorization(user, ['AstrosatRole']);
 
-    return (
-      isAuthorized && (
-        <div className={styles.devTools}>
-          <div>🛠 Dev Tools</div>
-          <div className={styles.tools}>
-            <LocalDevTools />
-            <StoriesTool />
-            <SatellitesTool />
-          </div>
+    return isAuthorized ? (
+      <div className={styles.devTools}>
+        <div>🛠 Dev Tools</div>
+        <div className={styles.tools}>
+          <LocalDevTools />
+          <StoriesTool />
+          <SatellitesTool />
         </div>
-      )
-    );
+      </div>
+    ) : null;
   };
 
   // Add dev tools UI to the page.

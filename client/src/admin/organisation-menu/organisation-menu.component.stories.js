@@ -7,7 +7,7 @@ export default {
 };
 
 const customer = {
-  title: 'Cyberdyne Systems',
+  name: 'Cyberdyne Systems',
   logo: 'https://ichef.bbci.co.uk/images/ic/1200x675/p03t1sm8.jpg',
 };
 

@@ -4,7 +4,7 @@
 
     Hi,
 
-    Changes have been made to your account by the Administrator of {{ customer.title }}'s ORBIS Account.
+    Changes have been made to your account by the Administrator of {{ customer.name }}'s ORBIS Account.
 
     {% if added_licences %}
 

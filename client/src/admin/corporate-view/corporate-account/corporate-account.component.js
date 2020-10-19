@@ -33,7 +33,7 @@ const CorporateAccount = ({ customer }) => {
             <Textfield
               id="name"
               name="name"
-              value={values.name || customer.title}
+              value={values.name || customer.name}
               onChange={handleChange}
               placeholder="Add Name"
             />

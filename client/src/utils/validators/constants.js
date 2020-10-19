@@ -37,6 +37,9 @@ export const MESSAGES = {
     required: 'Title is required',
     notOneOf: 'There is already a map with this title',
   },
+  customerName: {
+    required: 'Customer name is required',
+  },
 };
 
 export const CONTEXT_KEYS = {
@@ -59,4 +62,8 @@ export const FIELD_NAMES = {
   acceptedTerms: 'acceptedTerms',
   bookmarkTitle: 'title',
   bookmarkDescription: 'description',
+  customerName: 'customerName',
+  customerNameOfficial: 'customerNameOfficial',
+  customerType: 'customerType',
+  registeredNumber: 'registeredNumber',
 };

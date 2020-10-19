@@ -8,7 +8,7 @@ import styles from './organisation-menu.module.css';
 
 /**
  *
- * @param {{ customer: { logo?: string, title?: string },
+ * @param {{ customer: { logo?: string, name?: string },
  *           setVisiblePanel(panel: string): void,
  *           onCreateUserClick(): void
  *        }} props
@@ -24,7 +24,7 @@ const OrganisationMenu = ({ customer, setVisiblePanel, onCreateUserClick }) => (
         src={customer?.logo}
         alt="Organisation Logo"
       />
-      <h2 className={styles.organisationTitle}>{customer?.title}</h2>
+      <h2 className={styles.organisationTitle}>{customer?.name}</h2>
     </div>
     <Button size="small" onClick={onCreateUserClick}>
       Create User

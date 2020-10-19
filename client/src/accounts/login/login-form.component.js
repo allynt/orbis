@@ -1,67 +1,58 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 
 import {
   Button,
   Checkbox,
   PasswordField,
   Textfield,
-  Well,
 } from '@astrosat/astrosat-ui';
 
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
-import { Link, Redirect } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import * as yup from 'yup';
 
 import { PASSWORD_RESET_URL, REGISTER_URL } from 'accounts/accounts.constants';
-import { status } from '../accounts.slice';
-import { FieldError } from '../../components/field-error/field-error.component';
-import { RegisterFormSuccessView } from '../register/individual/register-form.component';
+import { ErrorWell } from 'accounts/error-well.component';
+import { FieldError } from 'components/field-error/field-error.component';
 import { FIELD_NAMES, email, password } from 'utils/validators';
 
 import formStyles from 'forms.module.css';
-import { ErrorWell } from 'accounts/error-well.component';
+import { LoadingSpinner } from 'components/loading-spinner/loading-spinner.component';
 
 const loginSchema = yup.object({
   [FIELD_NAMES.email]: email,
   [FIELD_NAMES.password]: password,
 });
 
+/**
+ * @param {{
+ *   login: (data: { email: string, password: string}) => void
+ *   serverErrors?: string[]
+ *   passwordMinLength: number
+ *   passwordMaxLength: number
+ *   activateAccount?: (data: {key: string}) => void
+ *   isLoading?: boolean
+ * } & Partial<import('react-router-dom').RouteComponentProps>} props
+ */
 const LoginForm = ({
   login,
-  user,
-  error,
-  resendVerificationEmail,
-  verificationEmailStatus,
+  serverErrors,
   passwordMinLength,
   passwordMaxLength,
+  match,
+  activateAccount,
+  isLoading = false,
 }) => {
-  const [notVerified, setNotVerified] = useState(false);
+  useEffect(() => {
+    if (match?.params?.key) activateAccount({ ...match.params });
+  }, [activateAccount, match]);
 
-  const { register, handleSubmit, getValues, formState, errors } = useForm({
+  const { register, handleSubmit, formState, errors } = useForm({
     mode: 'onBlur',
     resolver: yupResolver(loginSchema),
     context: { passwordMinLength, passwordMaxLength },
   });
-  const NOT_VERIFIED_ERROR_MESSAGE = `User ${
-    getValues().email
-  } is not verified.`;
-
-  useEffect(() => {
-    if (error?.includes(NOT_VERIFIED_ERROR_MESSAGE) && !notVerified)
-      setNotVerified(true);
-  }, [error, NOT_VERIFIED_ERROR_MESSAGE, notVerified]);
-
-  // Re-direct to originally clicked URL on successful login.
-  if (user) return <Redirect to="/" />;
-
-  if (verificationEmailStatus === status.PENDING)
-    return (
-      <RegisterFormSuccessView
-        email={getValues().email}
-        resendVerificationEmail={resendVerificationEmail}
-      />
-    );
 
   const onSubmit = data => {
     login(data);
@@ -69,7 +60,7 @@ const LoginForm = ({
 
   return (
     <form className={formStyles.form} onSubmit={handleSubmit(onSubmit)}>
-      {error && <ErrorWell errors={error} />}
+      {serverErrors && <ErrorWell errors={serverErrors} />}
 
       <div className={formStyles.fields}>
         <div className={formStyles.row}>
@@ -120,45 +111,13 @@ const LoginForm = ({
         </div>
       </div>
 
-      {notVerified && (
-        <div className={formStyles.textContent}>
-          <p className={formStyles.paragraph}>
-            <strong>Check your email</strong>
-          </p>
-
-          <p className={formStyles.paragraph}>
-            An email was sent to <strong>{getValues().email}</strong> when the
-            account was registered. Please click the link inside to verify your
-            account before logging in.
-          </p>
-
-          <p className={formStyles.paragraph}>
-            <strong>You haven't received the email?</strong>
-          </p>
-
-          <p className={formStyles.paragraph}>
-            Please check your spam or bulk folders.
-          </p>
-          <div className={formStyles.buttons}>
-            <Button
-              theme="secondary"
-              onClick={() => {
-                resendVerificationEmail(getValues().email);
-              }}
-            >
-              Resend Verification Email
-            </Button>
-          </div>
-        </div>
-      )}
-
       <div className={formStyles.buttons}>
         <Button
           type="submit"
           theme="primary"
           disabled={Object.keys(errors).length > 0 || !formState.isDirty}
         >
-          Login
+          {isLoading ? <LoadingSpinner /> : 'Login'}
         </Button>
       </div>
 

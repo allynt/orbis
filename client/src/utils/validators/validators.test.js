@@ -12,6 +12,7 @@ import {
   firstName,
   lastName,
   acceptedTerms,
+  customerName,
 } from './validators';
 
 describe('field validators', () => {
@@ -250,6 +251,18 @@ describe('field validators', () => {
       await expect(
         bookmarkTitle.validate('test1', { context }),
       ).rejects.toThrow(MESSAGES.bookmarkTitle.notOneOf);
+    });
+  });
+
+  describe('customer name', () => {
+    describe('happy path', () => {
+      expect(customerName.validate('Test Name')).resolves.toBe('Test Name');
+    });
+
+    describe('is required', () => {
+      expect(customerName.validate('')).rejects.toThrowError(
+        MESSAGES.customerName.required,
+      );
     });
   });
 });

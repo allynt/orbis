@@ -5,7 +5,6 @@ import {
   Checkbox,
   PasswordField,
   PasswordStrengthMeter,
-  Textfield,
 } from '@astrosat/astrosat-ui';
 
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -15,6 +14,7 @@ import { object as yupObject } from 'yup';
 
 import { LOGIN_URL, TERMS_URL } from 'accounts/accounts.constants';
 import { ErrorWell } from 'accounts/error-well.component';
+import { Field } from 'components/field/field.component';
 import { LoadingSpinner } from 'components/loading-spinner/loading-spinner.component';
 import {
   acceptedTerms,
@@ -25,18 +25,9 @@ import {
   newPassword,
   newPasswordConfirm,
 } from 'utils/validators';
-import { FieldError } from 'components/field-error/field-error.component';
 
 import formStyles from 'forms.module.css';
 import styles from './user-registration.module.css';
-
-const Field = ({ name, label, Component = Textfield, register, errors }) => (
-  <div className={styles.field}>
-    <label htmlFor={name}>{label}</label>
-    <Component ref={register} id={name} name={name} />
-    <FieldError message={errors?.[name]?.message} />
-  </div>
-);
 
 /**
  * @typedef {{
