@@ -14,6 +14,7 @@ import {
   register,
   resendVerificationEmail,
   resetPassword,
+  userKeySelector,
   userSelector,
 } from './accounts.slice';
 import styles from './index.module.css';
@@ -22,7 +23,7 @@ import PasswordChangeForm from './password/change/password-change-form.component
 import PasswordResetForm from './password/reset/password-reset-form.component';
 import PasswordResetRequestForm from './password/reset/password-reset-request-form.component';
 import RegisterForm from './register/individual/register-form.component';
-import { ResendVerificationEmail } from './resend-verification-email/resend-verification-email.component';
+import ResendVerificationEmail from './resend-verification-email/resend-verification-email.component';
 
 export default () => {
   const dispatch = useDispatch();
@@ -32,6 +33,7 @@ export default () => {
   const resetStatus = useSelector(state => state.accounts.resetStatus);
   const changeStatus = useSelector(state => state.accounts.changeStatus);
   const user = useSelector(userSelector);
+  const userKey = useSelector(userKeySelector);
   const {
     passwordMinLength,
     passwordMaxLength,
@@ -64,10 +66,14 @@ export default () => {
             exact
             path={[`${match.path}/login`, `${match.path}/confirm-email/:key`]}
             render={props =>
-              user ? (
+              user &&
+              user.is_verified &&
+              user.is_verified !== 'False' &&
+              userKey ? (
                 <Redirect to="/" />
               ) : (
                 <LoginForm
+                  user={user}
                   login={values => dispatch(login(values))}
                   serverErrors={error}
                   activateAccount={form => dispatch(activateAccount(form))}
@@ -123,9 +129,7 @@ export default () => {
             render={() => (
               <ResendVerificationEmail
                 email={user?.email}
-                resendVerificationEmail={() =>
-                  dispatch(resendVerificationEmail(user?.email))
-                }
+                onResend={() => dispatch(resendVerificationEmail(user?.email))}
                 isLoading={isLoading}
               />
             )}
