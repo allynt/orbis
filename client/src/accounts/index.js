@@ -64,7 +64,7 @@ export default () => {
             exact
             path={[`${match.path}/login`, `${match.path}/confirm-email/:key`]}
             render={props =>
-              user ? (
+              user && user.is_verified && user.is_verified !== 'False' ? (
                 <Redirect to="/" />
               ) : (
                 <LoginForm
