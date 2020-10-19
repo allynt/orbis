@@ -78,19 +78,10 @@ class DataScopeAdmin(admin.ModelAdmin):
         "description",
         "orbs",
     )
-    list_display = (
-        "source_id_pattern",
-        "get_orbs_for_list_display",
-        "is_active",
-    )
+    list_display = ("source_id_pattern", "get_orbs_for_list_display", "is_active")
     list_editable = ("is_active",)
     list_filter = ("orbs",)
-    search_fields = (
-        "authority",
-        "namespace",
-        "name",
-        "version",
-    )
+    search_fields = ("authority", "namespace", "name", "version")
     filter_horizontal = ("orbs",)
 
     def get_queryset(self, request):
@@ -119,14 +110,12 @@ class OrbAdminForm(ModelForm):
             if existing_core_orbs.count():
                 raise ValidationError("Only one core Orb is allowed.")
 
+
 @admin.register(Orb)
 class OrbAdmin(admin.ModelAdmin):
     form = OrbAdminForm
     inlines = (DataScopeAdminInline,)
-    list_display = (
-        "name",
-        "is_active",
-    )
+    list_display = ("name", "is_active")
     list_editable = ("is_active",)
     list_filter = ("is_active",)
     search_fields = ("name",)
@@ -137,6 +126,7 @@ class LicenceAdmin(admin.ModelAdmin):
     form = AccessForm
     fields = (
         "id",
+        "order",
         "orb",
         "customer",
         "customer_user",
@@ -144,11 +134,7 @@ class LicenceAdmin(admin.ModelAdmin):
         "created",
         "modified",
     )
-    readonly_fields = (
-        "id",
-        "created",
-        "modified",
-    )
+    readonly_fields = ("id", "created", "modified")
     list_display = (
         "id",
         "created",
@@ -157,12 +143,7 @@ class LicenceAdmin(admin.ModelAdmin):
         "get_customer_for_list_display",
         "get_customer_user_for_list_display",
     )
-    list_filter = (
-        "orb",
-        "customer",
-        "created",
-        "modified",
-    )
+    list_filter = ("orb", "customer", "created", "modified")
     ordering = ("modified",)
     search_fields = (
         "id",

@@ -1,5 +1,9 @@
 from allauth.account.adapter import get_adapter
 
+from astrosat_users.serializers import (
+    CustomerSerializer as AstrosatUsersCustomerSerializer,
+    CustomerUserSerializer as AstrosatUsersCustomerUserSerializer,
+)
 from astrosat_users.views import (
     CustomerCreateView as AstrosatUsersCustomerCreateView,
     CustomerUpdateView as AstrosatUsersCustomerUpdateView,
@@ -38,7 +42,10 @@ class LicenceNotifyingMixIn(object):
 
 
 class CustomerCreateView(AstrosatUsersCustomerCreateView):
-    serializer_class = CustomerSerializer
+    # notice that I am not using the licence-aware (orbis) CustomerSerializer here
+    # but rather the standard AstrosatUsersCustomerSerializer; this is b/c the only
+    # way to add licences to a customer should be by creating an order
+    serializer_class = AstrosatUsersCustomerSerializer
 
 
 class CustomerUpdateView(AstrosatUsersCustomerUpdateView):

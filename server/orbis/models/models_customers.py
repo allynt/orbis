@@ -15,28 +15,34 @@ class LicencedCustomer(AstrosatUsersCustomer):
         verbose_name_plural = "Customers"
         proxy = True
 
-    def add_licences(self, orb, n):
+    def add_licences(self, orb, n, order_item=None):
         licences = []
         for _ in range(n):
-            licence = Licence(customer=self, orb=orb)
+            licence = Licence(customer=self, orb=orb, order_item=order_item)
             licence.save()
             licences.append(licence)
         return licences
 
-    def assign_licences(self, orb, customer_users, add_missing=True, ignore_existing=True):
+    def assign_licences(
+        self, orb, customer_users, add_missing=True, ignore_existing=True
+    ):
         licences = []
         for customer_user in customer_users:
             existing_licences = self.licences.filter(orb=orb)
             assigned_licences = existing_licences.filter(customer_user=customer_user)
             unassigned_licences = existing_licences.available()
             if assigned_licences.exists():
-                assert ignore_existing, f"{self} already has a licence to {orb} assigned to {customer_user.user}."
+                assert (
+                    ignore_existing
+                ), f"{self} already has a licence to {orb} assigned to {customer_user.user}."
                 continue
             else:
                 if unassigned_licences.exists():
                     licence = unassigned_licences[0]
                 else:
-                    assert add_missing, f"{self} has no unassigned licences available for {orb}."
+                    assert (
+                        add_missing
+                    ), f"{self} has no unassigned licences available for {orb}."
                     licence = self.add_licences(orb, 1)[0]
                 licence.customer_user = customer_user
                 licence.save()
