@@ -30,12 +30,11 @@ describe('Update User Form Component', () => {
   afterEach(cleanup);
 
   it('should render the Corporate Account Form, pre-populated with the customer`s information if it exists', () => {
-    const { container, getByAltText, getByDisplayValue } = renderComponent(
+    const { getByAltText, getByDisplayValue } = renderComponent(
       customer,
       updateCustomer,
     );
 
-    expect(container.querySelector('form')).toBeInTheDocument();
     expect(getByAltText('Cyberdyne Systems Logo')).toBeInTheDocument();
 
     expect(getByDisplayValue(customer.name)).toBeInTheDocument();
@@ -45,7 +44,7 @@ describe('Update User Form Component', () => {
   });
 
   it('should dispatch new values when `Update Changes` button is clicked', () => {
-    const { getByText, getByDisplayValue } = renderComponent(
+    const { getByRole, getByDisplayValue } = renderComponent(
       customer,
       updateCustomer,
     );
@@ -56,24 +55,26 @@ describe('Update User Form Component', () => {
     };
 
     const nameField = getByDisplayValue(customer.name);
+    const button = getByRole('button', { name: 'Update Changes' });
 
     userEvent.clear(nameField);
     userEvent.type(nameField, 'Reynolm Industries');
-    userEvent.click(getByText('Update Changes'));
+    userEvent.click(button);
 
     waitFor(() => expect(updateCustomer).toHaveBeenCalledWith(newCustomer));
   });
 
-  it('should disable `Update Changes` button unless no changes have been made', () => {
-    const { getByText, getByDisplayValue } = renderComponent(
+  it('should disable `Update Changes` button unless changes have been made', () => {
+    const { getByRole, getByDisplayValue } = renderComponent(
       customer,
       updateCustomer,
     );
 
     const nameField = getByDisplayValue(customer.name);
+    const button = getByRole('button', { name: 'Update Changes' });
 
-    expect(getByText('Update Changes')).toHaveAttribute('disabled');
+    expect(button).toHaveAttribute('disabled');
     userEvent.type(nameField, 'aaa');
-    expect(getByText('Update Changes')).not.toHaveAttribute('disabled');
+    expect(button).not.toHaveAttribute('disabled');
   });
 });

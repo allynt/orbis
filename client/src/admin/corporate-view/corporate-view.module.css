@@ -46,6 +46,7 @@
 }
 
 .field {
+  position: relative;
   display: flex;
   align-items: baseline;
   margin-right: 3.125rem;
@@ -53,6 +54,14 @@
 
 .field > *:not(:last-child) {
   margin-right: 1rem;
+}
+
+.errorContainer {
+  position: absolute;
+  top: 3.5rem;
+  left: 0;
+  width: 100%;
+  text-align: center;
 }
 
 .vatField {

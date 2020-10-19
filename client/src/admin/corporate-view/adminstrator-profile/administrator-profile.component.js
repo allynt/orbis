@@ -11,42 +11,25 @@ import { Textfield, ProfileIcon, Button } from '@astrosat/astrosat-ui';
 
 import ContentWrapper from '../../content-wrapper.component';
 
-import { Field } from '../corporate-view.component';
+import { Field } from '../corporate-form-field.component';
 import { FieldError } from 'components/field-error/field-error.component';
 
 import styles from '../corporate-view.module.css';
 
-const loginSchema = yup.object({
+const AdministratorProfileSchema = yup.object({
   [FIELD_NAMES.email]: email,
 });
 
 const AdministratorProfile = ({ user, updateAdministrator }) => {
-  const formFields = ['name', 'email', 'phone'];
-
-  const getDefaults = () => {
-    let defaults = {};
-    formFields.forEach(field => {
-      if (user[field]) {
-        defaults = { ...defaults, [field]: user[field] };
-      }
-    });
-    return defaults;
-  };
-
   function onSubmit(values) {
-    let newUser = { ...user };
-    formFields.forEach(field => {
-      if (values[field]) {
-        newUser = { ...newUser, [field]: values[field] };
-      }
-    });
+    let newUser = { ...user, ...values };
     updateAdministrator(newUser);
   }
 
   const { register, handleSubmit, errors, formState } = useForm({
     mode: 'onBlur',
-    resolver: yupResolver(loginSchema),
-    defaultValues: getDefaults(),
+    resolver: yupResolver(AdministratorProfileSchema),
+    defaultValues: user,
   });
 
   return (
@@ -63,44 +46,47 @@ const AdministratorProfile = ({ user, updateAdministrator }) => {
           )}
         </div>
 
-        <fieldset>
-          <Field>
-            <div className={styles.field}>
-              <label htmlFor="name" className={styles.fieldLabel}>
-                Name:
-              </label>
-              <Textfield
-                id="name"
-                name="name"
-                placeholder="Add Name"
-                ref={register}
-              />
-            </div>
-            <div className={styles.field}>
-              <label htmlFor="email" className={styles.fieldLabel}>
-                Email:
-              </label>
-              <Textfield
-                id="email"
-                name="email"
-                placeholder="Add Email"
-                ref={register}
-              />
-            </div>
-            <div className={styles.field}>
-              <label htmlFor="phone" className={styles.fieldLabel}>
-                Phone:
-              </label>
-              <Textfield
-                id="phone"
-                name="phone"
-                placeholder="Add Phone Number"
-                ref={register}
-              />
-            </div>
-          </Field>
-        </fieldset>
-        {errors.email && <FieldError message={errors.email.message} />}
+        <Field>
+          <div className={styles.field}>
+            <label htmlFor={FIELD_NAMES.name} className={styles.fieldLabel}>
+              Name:
+            </label>
+            <Textfield
+              id={FIELD_NAMES.name}
+              name={FIELD_NAMES.name}
+              placeholder="Add Name"
+              ref={register}
+            />
+          </div>
+          <div className={styles.field}>
+            <label htmlFor={FIELD_NAMES.email} className={styles.fieldLabel}>
+              Email:
+            </label>
+            <Textfield
+              id={FIELD_NAMES.email}
+              name={FIELD_NAMES.email}
+              placeholder="Add Email"
+              ref={register}
+            />
+            {errors.email && (
+              <div className={styles.errorContainer}>
+                <FieldError message={errors.email.message} />
+              </div>
+            )}
+          </div>
+          <div className={styles.field}>
+            <label htmlFor={FIELD_NAMES.phone} className={styles.fieldLabel}>
+              Phone:
+            </label>
+            <Textfield
+              id={FIELD_NAMES.phone}
+              name={FIELD_NAMES.phone}
+              placeholder="Add Phone Number"
+              ref={register}
+            />
+          </div>
+        </Field>
+
         <Button
           type="submit"
           disabled={Object.keys(errors).length > 0 || !formState.isDirty}

@@ -11,44 +11,27 @@ import ContentWrapper from '../../content-wrapper.component';
 
 import { DefaultCustomerLogo } from '../../default-customer-logo.component';
 
-import { Field } from '../corporate-view.component';
+import { Field } from '../corporate-form-field.component';
 import { FieldError } from 'components/field-error/field-error.component';
 
 import { FIELD_NAMES, name } from 'utils/validators';
 
 import styles from '../corporate-view.module.css';
 
-const loginSchema = yup.object({
+const corporateAccountSchema = yup.object({
   [FIELD_NAMES.name]: name,
 });
 
 const CorporateAccount = ({ customer, updateCustomer }) => {
-  const formFields = ['address', 'country', 'name', 'postcode'];
-
-  const getDefaults = () => {
-    let defaults = {};
-    formFields.forEach(field => {
-      if (customer[field]) {
-        defaults = { ...defaults, [field]: customer[field] };
-      }
-    });
-    return defaults;
-  };
-
   function onSubmit(values) {
-    let newCustomer = { ...customer };
-    formFields.forEach(field => {
-      if (values[field]) {
-        newCustomer = { ...newCustomer, [field]: values[field] };
-      }
-    });
+    let newCustomer = { ...customer, ...values };
     updateCustomer(newCustomer);
   }
 
   const { register, handleSubmit, errors, formState } = useForm({
     mode: 'onBlur',
-    resolver: yupResolver(loginSchema),
-    defaultValues: getDefaults(),
+    resolver: yupResolver(corporateAccountSchema),
+    defaultValues: customer,
   });
 
   return (
@@ -71,58 +54,61 @@ const CorporateAccount = ({ customer, updateCustomer }) => {
 
         <Field>
           <div className={styles.field}>
-            <label htmlFor="name" className={styles.fieldLabel}>
+            <label htmlFor={FIELD_NAMES.name} className={styles.fieldLabel}>
               Name:
             </label>
             <Textfield
-              id="name"
-              name="name"
+              id={FIELD_NAMES.name}
+              name={FIELD_NAMES.name}
               placeholder="Add Name"
+              ref={register}
+            />
+            {errors.name && (
+              <div className={styles.errorContainer}>
+                <FieldError message={errors.name.message} />
+              </div>
+            )}
+          </div>
+        </Field>
+
+        <legend className={styles.fieldTitle}>Full Address</legend>
+
+        <Field>
+          <div className={styles.field}>
+            <label htmlFor={FIELD_NAMES.country} className={styles.fieldLabel}>
+              Country:
+            </label>
+            <Textfield
+              id={FIELD_NAMES.country}
+              name={FIELD_NAMES.country}
+              placeholder="Add Country"
+              ref={register}
+            />
+          </div>
+          <div className={styles.field}>
+            <label htmlFor={FIELD_NAMES.address} className={styles.fieldLabel}>
+              Street &amp; House Number:
+            </label>
+            <Textfield
+              id={FIELD_NAMES.address}
+              name={FIELD_NAMES.address}
+              placeholder="Add Address"
+              ref={register}
+            />
+          </div>
+          <div className={styles.field}>
+            <label htmlFor={FIELD_NAMES.postcode} className={styles.fieldLabel}>
+              Postcode:
+            </label>
+            <Textfield
+              id={FIELD_NAMES.postcode}
+              name={FIELD_NAMES.postcode}
+              placeholder="Add Postcode"
               ref={register}
             />
           </div>
         </Field>
 
-        <fieldset>
-          <legend className={styles.fieldTitle}>Full Address</legend>
-
-          <Field>
-            <div className={styles.field}>
-              <label htmlFor="country" className={styles.fieldLabel}>
-                Country:
-              </label>
-              <Textfield
-                id="country"
-                name="country"
-                placeholder="Add Country"
-                ref={register}
-              />
-            </div>
-            <div className={styles.field}>
-              <label htmlFor="address" className={styles.fieldLabel}>
-                Street &amp; House Number:
-              </label>
-              <Textfield
-                id="address"
-                name="address"
-                placeholder="Add Address"
-                ref={register}
-              />
-            </div>
-            <div className={styles.field}>
-              <label htmlFor="postcode" className={styles.fieldLabel}>
-                Postcode:
-              </label>
-              <Textfield
-                id="postcode"
-                name="postcode"
-                placeholder="Add Postcode"
-                ref={register}
-              />
-            </div>
-          </Field>
-        </fieldset>
-        {errors.name && <FieldError message={errors.name.message} />}
         <Button
           type="submit"
           disabled={Object.keys(errors).length > 0 || !formState.isDirty}
