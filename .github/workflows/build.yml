@@ -60,8 +60,8 @@ jobs:
       - name: Setup container
         run: |
           apt-get update && apt-get install -y postgresql-client python3-gdal
-          pip3 install --upgrade --no-cache-dir "pip==19.1.1"
-          pip3 install --upgrade --no-cache-dir pipenv
+          pip3 install --upgrade pip
+          pip3 install --upgrade pipenv
 
       - name: Install Dependencies and Run Tests
         working-directory: server
