@@ -1,40 +1,34 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Route, Switch, useRouteMatch } from 'react-router-dom';
-import PrivateRoute from '../utils/private-route.component';
-import AccountActivation from './account-activation.component';
+import { Redirect, Route, Switch, useRouteMatch } from 'react-router-dom';
+
+import { configSelector } from 'app.slice';
+import PrivateRoute from 'utils/private-route.component';
+import { ReactComponent as OrbisLogo } from '../orbis-dark.svg';
 import {
   activateAccount,
   changePassword,
   confirmResetPassword,
+  isLoadingSelector,
   login,
   register,
   resendVerificationEmail,
   resetPassword,
   userSelector,
 } from './accounts.slice';
+import styles from './index.module.css';
 import LoginForm from './login/login-form.component';
 import PasswordChangeForm from './password/change/password-change-form.component';
 import PasswordResetForm from './password/reset/password-reset-form.component';
 import PasswordResetRequestForm from './password/reset/password-reset-request-form.component';
 import RegisterForm from './register/individual/register-form.component';
-import styles from './index.module.css';
-import { ReactComponent as OrbisLogo } from '../orbis-dark.svg';
-import { configSelector } from 'app.slice';
+import { ResendVerificationEmail } from './resend-verification-email/resend-verification-email.component';
 
 export default () => {
   const dispatch = useDispatch();
   const match = useRouteMatch();
   const error = useSelector(state => state.accounts.error);
-  const registerUserStatus = useSelector(
-    state => state.accounts.registerUserStatus,
-  );
-  const accountActivationStatus = useSelector(
-    state => state.accounts.accountActivationStatus,
-  );
-  const verificationEmailStatus = useSelector(
-    state => state.accounts.verificationEmailStatus,
-  );
+  const isLoading = useSelector(isLoadingSelector);
   const resetStatus = useSelector(state => state.accounts.resetStatus);
   const changeStatus = useSelector(state => state.accounts.changeStatus);
   const user = useSelector(userSelector);
@@ -60,30 +54,29 @@ export default () => {
             render={() => (
               <RegisterForm
                 registerUser={form => dispatch(register(form))}
-                registerUserStatus={registerUserStatus}
-                resendVerificationEmail={email =>
-                  dispatch(resendVerificationEmail(email))
-                }
-                error={error}
+                serverErrors={error}
+                isLoading={isLoading}
                 {...passwordConfig}
               />
             )}
           />
           <Route
             exact
-            path={`${match.path}/login`}
-            render={() => (
-              <LoginForm
-                login={values => dispatch(login(values))}
-                user={user}
-                error={error}
-                resendVerificationEmail={email =>
-                  dispatch(resendVerificationEmail(email))
-                }
-                verificationEmailStatus={verificationEmailStatus}
-                {...passwordConfig}
-              />
-            )}
+            path={[`${match.path}/login`, `${match.path}/confirm-email/:key`]}
+            render={props =>
+              user ? (
+                <Redirect to="/" />
+              ) : (
+                <LoginForm
+                  login={values => dispatch(login(values))}
+                  serverErrors={error}
+                  activateAccount={form => dispatch(activateAccount(form))}
+                  isLoading={isLoading}
+                  {...props}
+                  {...passwordConfig}
+                />
+              )
+            }
           />
           <PrivateRoute
             exact
@@ -95,19 +88,6 @@ export default () => {
                 changeStatus={changeStatus}
                 error={error}
                 {...passwordConfig}
-              />
-            )}
-          />
-          <Route
-            exact
-            path={`${match.path}/confirm-email/:key`}
-            user={user}
-            render={props => (
-              <AccountActivation
-                match={props.match}
-                error={error}
-                activateAccount={form => dispatch(activateAccount(form))}
-                accountActivationStatus={accountActivationStatus}
               />
             )}
           />
@@ -134,6 +114,19 @@ export default () => {
                 match={props.match}
                 error={error}
                 {...passwordConfig}
+              />
+            )}
+          />
+          <Route
+            exact
+            path={`${match.path}/resend`}
+            render={() => (
+              <ResendVerificationEmail
+                email={user?.email}
+                resendVerificationEmail={() =>
+                  dispatch(resendVerificationEmail(user?.email))
+                }
+                isLoading={isLoading}
               />
             )}
           />

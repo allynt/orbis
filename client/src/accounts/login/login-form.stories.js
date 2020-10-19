@@ -12,14 +12,14 @@ export const Form = () => (
   </Router>
 );
 
-export const PendingEmailStatus = () => (
+export const Loading = () => (
   <Router history={history}>
-    <LoginForm verificationEmailStatus={status.PENDING} />
+    <LoginForm isLoading />
   </Router>
 );
 
 export const NotVerifiedError = () => (
   <Router history={history}>
-    <LoginForm error={[`User test@test.com is not verified.`]} />
+    <LoginForm serverErrors={[`User test@test.com is not verified.`]} />
   </Router>
 );

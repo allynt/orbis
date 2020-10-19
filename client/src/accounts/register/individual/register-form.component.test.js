@@ -34,20 +34,11 @@ const testAppConfig = {
   isApprovalRequired: false,
 };
 
-const renderComponent = (
-  history,
-  store,
-  registerUser,
-  registerUserStatus,
-  resendVerificationEmail,
-  error,
-) =>
+const renderComponent = (history, store, registerUser, error) =>
   render(
     <RegisterForm
       registerUser={registerUser}
-      registerUserStatus={registerUserStatus}
-      resendVerificationEmail={resendVerificationEmail}
-      error={error}
+      serverErrors={error}
       {...testAppConfig}
     />,
     {
@@ -63,8 +54,6 @@ describe('Register Form Component', () => {
   let history = null;
   let store;
   let registerUser = null;
-  let registerUserStatus = null;
-  let resendVerificationEmail = null;
   let error = null;
 
   beforeEach(() => {
@@ -73,8 +62,6 @@ describe('Register Form Component', () => {
       app: { config: testAppConfig },
     });
     registerUser = jest.fn();
-    registerUserStatus = status.NONE;
-    resendVerificationEmail = jest.fn();
     error = ['Test Error 1', 'Test Error 2', 'Test Error 3'];
   });
 
@@ -83,8 +70,6 @@ describe('Register Form Component', () => {
       history,
       store,
       registerUser,
-      registerUserStatus,
-      resendVerificationEmail,
       error,
     );
 
@@ -113,8 +98,6 @@ describe('Register Form Component', () => {
       history,
       store,
       registerUser,
-      registerUserStatus,
-      resendVerificationEmail,
       error,
     );
 
@@ -131,8 +114,6 @@ describe('Register Form Component', () => {
       history,
       store,
       registerUser,
-      registerUserStatus,
-      resendVerificationEmail,
       error,
     );
 
@@ -162,8 +143,6 @@ describe('Register Form Component', () => {
       history,
       store,
       registerUser,
-      registerUserStatus,
-      resendVerificationEmail,
       error,
     );
 
@@ -183,14 +162,7 @@ describe('Register Form Component', () => {
   it('should not call register function when form is invalid and `Sign Up` button clicked', () => {
     fetch.mockResponse(JSON.stringify({}, { status: 200 }));
 
-    const { getByText } = renderComponent(
-      history,
-      store,
-      registerUser,
-      registerUserStatus,
-      resendVerificationEmail,
-      error,
-    );
+    const { getByText } = renderComponent(history, store, registerUser, error);
 
     waitFor(() => userEvent.click(getByText(SIGN_UP_BUTTON_TEXT)));
     expect(registerUser).not.toHaveBeenCalled();
@@ -201,8 +173,6 @@ describe('Register Form Component', () => {
       history,
       store,
       registerUser,
-      registerUserStatus,
-      resendVerificationEmail,
       error,
     );
 
@@ -238,28 +208,9 @@ describe('Register Form Component', () => {
       history,
       store,
       registerUser,
-      status.NONE,
-      resendVerificationEmail,
       error,
     );
 
     expect(getByTestId('error-well')).toBeInTheDocument();
-  });
-
-  describe('Register Success View', () => {
-    it('should show the Register success view', () => {
-      const { getByText } = renderComponent(
-        history,
-        store,
-        registerUser,
-        status.PENDING,
-        resendVerificationEmail,
-        error,
-      );
-
-      expect(getByText('Check your email')).toBeInTheDocument();
-
-      expect(getByText('Continue')).toBeInTheDocument();
-    });
   });
 });

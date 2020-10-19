@@ -1,15 +1,15 @@
+import { createSelector, createSlice } from '@reduxjs/toolkit';
+import { push } from 'connected-react-router';
 import { NotificationManager } from 'react-notifications';
-import { createSlice, createSelector } from '@reduxjs/toolkit';
-
 import { persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage'; // defaults to localStorage for web
 
 import {
-  sendData,
   getData,
-  JSON_HEADERS,
   getJsonAuthHeaders,
-} from '../utils/http';
+  JSON_HEADERS,
+  sendData,
+} from 'utils/http';
 import { FIELD_NAMES } from 'utils/validators';
 
 const API_PREFIX = '/api/authentication/';
@@ -75,66 +75,81 @@ const initialState = {
   userKey: null,
   user: null,
   error: null,
-  registerUserStatus: status.NONE,
-  accountActivationStatus: status.NONE,
+  isLoading: false,
   resetStatus: status.NONE,
   changeStatus: status.NONE,
-  verificationEmailStatus: status.NONE,
 };
 
 const accountsSlice = createSlice({
   name: 'accounts',
   initialState,
   reducers: {
-    registerUserSuccess: state => {
-      state.registerUserStatus = status.PENDING;
+    fetchRequested: state => {
+      state.isLoading = true;
+    },
+    registerUserSuccess: (state, { payload }) => {
+      state.user = payload;
       state.error = null;
+      state.isLoading = false;
     },
     registerUserFailure: (state, { payload }) => {
       state.error = payload;
+      state.isLoading = false;
     },
     loginUserSuccess: (state, { payload }) => {
-      state.userKey = payload;
+      state.userKey = payload.userKey;
+      state.user = payload.user;
       state.error = null;
+      state.isLoading = false;
     },
     loginUserFailure: (state, { payload }) => {
-      state.error = payload;
+      state.user = payload.user;
+      state.error = payload.errors;
+      state.isLoading = false;
     },
     resendVerificationEmailSuccess: state => {
-      state.verificationEmailStatus = status.PENDING;
       state.error = null;
+      state.isLoading = false;
     },
     resendVerificationEmailFailure: (state, payload) => {
       state.error = payload;
+      state.isLoading = false;
     },
     fetchUserSuccess: (state, { payload }) => {
       state.user = payload;
       state.error = null;
+      state.isLoading = false;
     },
     fetchUserFailure: (state, { payload }) => {
       state.error = payload;
+      state.isLoading = false;
     },
     updateUserSuccess: (state, { payload }) => {
       state.user = payload;
       state.error = null;
+      state.isLoading = false;
     },
     updateUserFailure: (state, { payload }) => {
       state.error = payload;
+      state.isLoading = false;
     },
     logoutUserSuccess: state => {
       state.userKey = null;
       state.user = null;
       state.error = null;
+      state.isLoading = false;
     },
     logoutUserFailure: (state, { payload }) => {
       state.error = payload;
+      state.isLoading = false;
     },
     activateAccountSuccess: state => {
-      state.accountActivationStatus = status.COMPLETE;
       state.error = null;
+      state.isLoading = false;
     },
     activateAccountFailure: (state, { payload }) => {
       state.error = payload;
+      state.isLoading = false;
     },
     changePasswordSuccess: state => {
       state.changeStatus = status.PENDING;
@@ -181,9 +196,11 @@ export const {
   resetPasswordFailure,
   passwordResetRequestedSuccess,
   passwordResetRequestedFailure,
+  fetchRequested,
 } = accountsSlice.actions;
 
 export const register = form => async dispatch => {
+  dispatch(fetchRequested());
   const data = mapData(form, FIELD_MAPPING.register);
 
   const response = await sendData(API.register, data, JSON_HEADERS);
@@ -192,11 +209,13 @@ export const register = form => async dispatch => {
     const errorObject = await response.json();
     return dispatch(registerUserFailure(errorTransformer(errorObject)));
   }
-
-  return dispatch(registerUserSuccess());
+  const user = await response.json();
+  dispatch(registerUserSuccess(user));
+  return dispatch(push('/accounts/resend'));
 };
 
 export const activateAccount = form => async dispatch => {
+  dispatch(fetchRequested());
   const response = await sendData(API.activate, form, JSON_HEADERS);
 
   if (!response.ok) {
@@ -208,6 +227,7 @@ export const activateAccount = form => async dispatch => {
 };
 
 export const fetchUser = (email = 'current') => async (dispatch, getState) => {
+  dispatch(fetchRequested());
   const headers = getJsonAuthHeaders(getState());
 
   const response = await getData(`${API.user}${email}/`, headers);
@@ -223,22 +243,41 @@ export const fetchUser = (email = 'current') => async (dispatch, getState) => {
 };
 
 export const login = form => async dispatch => {
+  dispatch(fetchRequested());
   const response = await sendData(API.login, form, JSON_HEADERS);
 
   if (!response.ok) {
-    const errorObject = await response.json();
-    return dispatch(loginUserFailure(errorTransformer(errorObject)));
+    const responseObject = await response.json();
+    if (
+      responseObject?.user?.is_verified === 'False' ||
+      !responseObject.user?.is_verified === false
+    )
+      dispatch(push('/accounts/resend'));
+    return dispatch(
+      loginUserFailure({
+        ...responseObject,
+        errors: errorTransformer(responseObject),
+      }),
+    );
   }
-
   const userKey = (await response.json()).token;
-  // Record the authentication key in state
-  dispatch(loginUserSuccess(userKey));
-
-  // Now that we have an authentication key, we can proceed to get user details
-  return dispatch(fetchUser());
+  const headers = getJsonAuthHeaders({ accounts: { userKey } });
+  const fetchUserResponse = await getData(`${API.user}current/`, headers);
+  if (!fetchUserResponse.ok) {
+    const responseObject = await response.json();
+    return dispatch(
+      loginUserFailure({
+        errors: errorTransformer(responseObject),
+      }),
+    );
+  }
+  const user = await fetchUserResponse.json();
+  dispatch(loginUserSuccess({ userKey, user }));
+  return dispatch(push('/'));
 };
 
 export const resendVerificationEmail = email => async dispatch => {
+  dispatch(fetchRequested());
   const emailObj = { email };
   const response = await sendData(
     API.resendVerificationEmail,
@@ -255,6 +294,7 @@ export const resendVerificationEmail = email => async dispatch => {
 };
 
 export const logout = () => async (dispatch, getState) => {
+  dispatch(fetchRequested());
   const headers = getJsonAuthHeaders(getState());
 
   const response = await sendData(API.logout, {}, headers);
@@ -313,6 +353,7 @@ export const resetPassword = form => async dispatch => {
 };
 
 export const updateUser = form => async (dispatch, getState) => {
+  dispatch(fetchRequested());
   const {
     accounts: { user },
   } = getState();
@@ -353,6 +394,11 @@ const baseSelector = state => state?.accounts;
 export const userSelector = createSelector(
   baseSelector,
   accounts => accounts?.user,
+);
+
+export const isLoadingSelector = createSelector(
+  baseSelector,
+  accounts => accounts?.isLoading,
 );
 
 export default persistReducer(persistConfig, accountsSlice.reducer);
