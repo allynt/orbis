@@ -3,14 +3,9 @@ import React from 'react';
 import { render, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { createMemoryHistory } from 'history';
-import { Provider } from 'react-redux';
 import { Router } from 'react-router-dom';
-import configureMockStore from 'redux-mock-store';
-import thunk from 'redux-thunk';
 
 import LoginForm from './login-form.component';
-
-const mockStore = configureMockStore([thunk]);
 
 const EMAIL_PLACEHOLDER_TEXT = 'Email';
 const PASSWORD_PLACEHOLDER_TEXT = 'Password';
@@ -18,73 +13,56 @@ const LOGIN_BUTTON_TEXT = 'Login';
 const EMAIL_TEXT = 'test@test.com';
 const PASSWORD_TEXT = 'testpassword';
 
-const renderComponent = (history, store, login, error) =>
-  render(
+/**
+ * @param {Partial<Pick<import('./login-form.component').LoginProps,
+ *   'isLoading'
+ *   | 'activateAccount'
+ *   | 'match'
+ *   | 'serverErrors'
+ *   | 'user'>>} [props]
+ */
+const renderComponent = props => {
+  const login = jest.fn();
+  const utils = render(
+    // @ts-ignore
     <LoginForm
-      login={login}
-      serverErrors={error}
       passwordMinLength={2}
       passwordMaxLength={255}
+      login={login}
+      {...props}
     />,
     {
       wrapper: ({ children }) => (
-        <Router history={history}>
-          <Provider store={store}>{children}</Provider>
+        <Router history={createMemoryHistory({ initialEntries: ['/'] })}>
+          {children}
         </Router>
       ),
     },
   );
+  return { ...utils, login };
+};
 
 describe('Login Form Component', () => {
-  let history = null;
-  let store = null;
-  let login = null;
-  let error = null;
-
-  beforeEach(() => {
-    history = createMemoryHistory({ initialEntries: ['/'] });
-    store = mockStore({
-      app: { config: { passwordMinLength: 2, passwordMaxLength: 50 } },
-    });
-    login = jest.fn();
-    error = ['Test Error 1', 'Test Error 2', 'Test Error 3'];
-  });
-
   it('should render a form', () => {
-    const { getByRole, getByPlaceholderText } = renderComponent(
-      history,
-      store,
-      login,
-      error,
-    );
+    const { getByRole, getByPlaceholderText } = renderComponent();
 
     expect(getByPlaceholderText(EMAIL_PLACEHOLDER_TEXT)).toBeInTheDocument();
     expect(getByPlaceholderText(PASSWORD_PLACEHOLDER_TEXT)).toBeInTheDocument();
-
-    const loginButton = getByRole('button', { name: LOGIN_BUTTON_TEXT });
-    expect(loginButton).toHaveTextContent(LOGIN_BUTTON_TEXT);
-
-    // debug();
-    expect(loginButton).toHaveAttribute('disabled', '');
+    expect(
+      getByRole('button', { name: LOGIN_BUTTON_TEXT }),
+    ).toBeInTheDocument();
   });
 
   it('should disable `Login` button when form is invalid', () => {
-    const { getByRole } = renderComponent(history, store, login, error);
+    const { getByRole } = renderComponent();
 
-    expect(getByRole('button', { name: LOGIN_BUTTON_TEXT })).toHaveAttribute(
-      'disabled',
-    );
+    expect(getByRole('button', { name: LOGIN_BUTTON_TEXT })).toBeDisabled();
   });
 
-  it('should enable `Login` button when form is valid', () => {
-    const { getByText, getByPlaceholderText } = renderComponent(
-      history,
-      store,
-      login,
-      error,
-    );
+  it('should enable `Login` button when form is valid', async () => {
+    const { getByText, getByPlaceholderText } = renderComponent();
 
-    expect(getByText(LOGIN_BUTTON_TEXT)).toHaveAttribute('disabled');
+    expect(getByText(LOGIN_BUTTON_TEXT)).toBeDisabled();
 
     userEvent.type(getByPlaceholderText(EMAIL_PLACEHOLDER_TEXT), EMAIL_TEXT);
 
@@ -93,24 +71,19 @@ describe('Login Form Component', () => {
       PASSWORD_TEXT,
     );
 
-    waitFor(() =>
+    await waitFor(() =>
       expect(getByText(LOGIN_BUTTON_TEXT)).not.toHaveAttribute('disabled'),
     );
   });
 
-  it('should not call `login` function when form is invalid and `Login` button clicked', () => {
-    const { getByRole, getByPlaceholderText } = renderComponent(
-      history,
-      store,
-      login,
-      error,
-    );
+  it('should not call `login` function when form is invalid and `Login` button clicked', async () => {
+    const { getByRole, getByPlaceholderText, login } = renderComponent();
 
     const loginButton = getByRole('button', { name: LOGIN_BUTTON_TEXT });
 
     userEvent.type(getByPlaceholderText(EMAIL_PLACEHOLDER_TEXT), EMAIL_TEXT);
 
-    waitFor(() => userEvent.tab());
+    userEvent.tab();
 
     userEvent.click(loginButton);
 
@@ -118,12 +91,7 @@ describe('Login Form Component', () => {
   });
 
   it('should call `login` function when form is valid and `Login` button clicked', async () => {
-    const { getByRole, getByPlaceholderText } = renderComponent(
-      history,
-      store,
-      login,
-      error,
-    );
+    const { getByRole, getByPlaceholderText, login } = renderComponent();
 
     userEvent.type(getByPlaceholderText(EMAIL_PLACEHOLDER_TEXT), EMAIL_TEXT);
     userEvent.type(
@@ -142,9 +110,9 @@ describe('Login Form Component', () => {
   });
 
   it('should display error well if login is unsuccessful', () => {
-    error = ['Test Error 1', 'Test Error 2', 'Test Error 3'];
+    const serverErrors = ['Test Error 1', 'Test Error 2', 'Test Error 3'];
 
-    const { getByTestId } = renderComponent(history, store, login, error);
+    const { getByTestId } = renderComponent({ serverErrors });
 
     expect(getByTestId('error-well')).toBeInTheDocument();
   });

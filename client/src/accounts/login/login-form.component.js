@@ -26,15 +26,19 @@ const loginSchema = yup.object({
 });
 
 /**
- * @param {{
+ * @typedef {{
  *   isLoading?: boolean
  *   passwordMinLength: number
  *   passwordMaxLength: number
  *   serverErrors?: string[]
- *   user: any
+ *   user: User
  *   activateAccount?: (data: {key: string}) => void
  *   login: (data: { email: string, password: string}) => void
- * } & Partial<import('react-router-dom').RouteComponentProps>} props
+ * } & Partial<import('react-router-dom').RouteComponentProps>} LoginProps
+ */
+
+/**
+ * @param {LoginProps} props
  */
 const LoginForm = ({
   isLoading = false,
