@@ -53,17 +53,17 @@ django-astrosat-users = {editable = true,git = "https://github.com/astrosat/djan
 
 [dev-packages]
 # coverage reports for GitHub, GitLab, etc.
-codecov = ">=2.0"
+codecov = "*"
 # live debug info
-django-debug-toolbar = ">=2.2"
+django-debug-toolbar = "*"
 # test fixtures replacement
 factory-boy = "==3.0.1"
 # test library
-pytest = "==5.3.5"
+pytest = "*"
 # pytest django plugin
-pytest-django = ">=3.8"
+pytest-django = "*"
 # pytest look-and-feel plugin
-pytest-sugar = ">=0.9"
+pytest-sugar = "*"
 
 [requires]
 python_version = "3.6"
