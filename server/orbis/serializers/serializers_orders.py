@@ -49,6 +49,13 @@ class OrderItemSerializer(serializers.ModelSerializer):
 
         return order_item
 
+    def validate(self, data):
+        if "expiration" in data and "subscription_period" in data:
+            raise serializers.ValidationError(
+                "'expiration' or 'subscription_period' can be provided, but not both."
+            )
+        return data
+
 
 class OrderSerializer(serializers.ModelSerializer):
     class Meta:
