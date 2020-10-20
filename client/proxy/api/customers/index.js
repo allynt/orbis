@@ -1,18 +1,26 @@
 const express = require('express');
+const currentUserMiddleware = require('../authentication/middleware/currentUserMiddleware');
 const {
   getCustomer,
+  createCustomer,
   getCustomerUsers,
   getSelectedUser,
   createCustomerUser,
   updateCustomerUser,
   inviteCustomerUser,
   deleteCustomerUser,
+  createOrder,
 } = require('./data');
 
 const getCustomerHandler = (req, res) => {
   console.log('Returning Current Customer');
   res.status(200);
   res.json(getCustomer(req.params.customerId));
+};
+
+const createCustomerHandler = (req, res) => {
+  res.status(200);
+  res.json(createCustomer(req.body));
 };
 
 const getCustomerUsersHandler = (req, res) => {
@@ -49,10 +57,10 @@ const inviteSelectedUserHandler = (req, res) => {
   console.log('Inviting Selected user of Customer');
 
   const customerUser = req.body;
-  const invitedCustomerUser = invitedCustomerUser(customerUser);
+  const invitedCustomerUser = inviteCustomerUser(customerUser);
 
-  res.status(200)
-  res.json(invitedCustomerUser)
+  res.status(200);
+  res.json(invitedCustomerUser);
 };
 
 const deleteSelectedUserHandler = (req, res) => {
@@ -62,23 +70,39 @@ const deleteSelectedUserHandler = (req, res) => {
   res.sendStatus(200);
 };
 
-const usersRouter = express.Router();
+const createOrderHandler = (req, res) => {
+  const order = createOrder(
+    req.currentUser.email,
+    req.params.customerId,
+    req.body,
+  );
+  req.status(200);
+  req.json(order);
+};
 
-usersRouter.route('/:customerId').get(getCustomerHandler);
+const customersRouter = express.Router();
 
-usersRouter
+customersRouter.route('/').post(createCustomerHandler);
+
+customersRouter.route('/:customerId').get(getCustomerHandler);
+
+customersRouter
   .route('/:customerId/users')
   .get(getCustomerUsersHandler)
   .post(createCustomerUserHandler);
 
-usersRouter
+customersRouter
   .route('/:customerId/users/:userId')
   .get(getSelectedUserHandler)
   .delete(deleteSelectedUserHandler)
   .put(updateSelectedUserHandler);
 
-usersRouter
+customersRouter
   .route('/:customerId/users/:userId/invite/')
   .post(inviteSelectedUserHandler);
 
-module.exports = usersRouter;
+customersRouter
+  .route('/:customerId/orders')
+  .post(currentUserMiddleware, createOrderHandler);
+
+module.exports = customersRouter;

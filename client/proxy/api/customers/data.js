@@ -475,6 +475,13 @@ const updateCustomerLicences = (type, user) => {
 
 const getCustomer = customerId => customers.find(c => c.id === customerId);
 
+const createCustomer = data => {
+  const id = uuidv4();
+  const newCustomer = { id, ...data };
+  customers.push(newCustomer);
+  return newCustomer;
+};
+
 const getCustomerUsers = customerId =>
   customerUsers.filter(cu => cu.customer === customerId);
 
@@ -520,21 +527,18 @@ const updateCustomerUser = user => {
 };
 
 const inviteCustomerUser = customerUser => {
-
-  const index = customerUsers.findIndex(
-    cu => cu.id === customerUser.id
-  )
+  const index = customerUsers.findIndex(cu => cu.id === customerUser.id);
 
   const invitation_date = new Date().toISOString();
 
   invitedCustomerUser = {
     ...customerUser,
-    invitation_date
-  }
+    invitation_date,
+  };
 
-  customerUsers[index] = invitedCustomerUser
+  customerUsers[index] = invitedCustomerUser;
 
-  return customerUsers[index]
+  return customerUsers[index];
 };
 
 const deleteCustomerUser = userId => {
@@ -546,11 +550,24 @@ const deleteCustomerUser = userId => {
   updateCustomerLicences(DELETE, deletedUser);
 };
 
+const createOrder = (user, customerId, data) => {
+  const id = uuidv4();
+  const order = { ...data, id, created: new Date().toISOString(), user };
+  const customer = customers.find(c => c.id === customerId);
+  const customerIndex = customers.indexOf(customer);
+  let orders = customer.orders || [];
+  orders.push(order);
+  customers[customerIndex] = { ...customer, orders };
+  return order;
+};
+
 module.exports = {
   getCustomer,
+  createCustomer,
   getCustomerUsers,
   createCustomerUser,
   updateCustomerUser,
   inviteCustomerUser,
   deleteCustomerUser,
+  createOrder,
 };
