@@ -12,7 +12,7 @@ import { useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
 import { object as yupObject } from 'yup';
 
-import { LOGIN_URL, TERMS_URL } from 'accounts/accounts.constants';
+import { LOGIN, TERMS } from 'accounts/accounts.constants';
 import { ErrorWell } from 'accounts/error-well.component';
 import { Field } from 'components/field/field.component';
 import { LoadingSpinner } from 'components/loading-spinner/loading-spinner.component';
@@ -130,7 +130,7 @@ const UserRegistration = ({
             I agree with
             <Button
               className={styles.link}
-              href={TERMS_URL}
+              href={TERMS}
               rel="noreferrer noopener"
               target="_blank"
             >
@@ -144,7 +144,7 @@ const UserRegistration = ({
       </Button>
       <p className={styles.footer}>
         Do you have an account?{' '}
-        <Link className={styles.link} to={LOGIN_URL}>
+        <Link className={styles.link} to={LOGIN}>
           <Button theme="link">Login</Button>
         </Link>
       </p>

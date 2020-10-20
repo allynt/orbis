@@ -9,7 +9,7 @@ import { object } from 'yup';
 
 import { ErrorWell } from 'accounts/error-well.component';
 import { FieldError } from 'components/field-error/field-error.component';
-import { LOGIN_URL } from '../../accounts.constants';
+import { LOGIN } from '../../accounts.constants';
 import { status } from '../../accounts.slice';
 import { FIELD_NAMES, email } from 'utils/validators';
 
@@ -40,7 +40,7 @@ const PasswordResetRequestSuccessView = ({ email, onSubmit }) => (
       <Button theme="secondary" onClick={() => onSubmit(email)}>
         Resend email
       </Button>
-      <Link to={LOGIN_URL}>
+      <Link to={LOGIN}>
         <Button theme="link">Return to login</Button>
       </Link>
     </div>
@@ -98,7 +98,7 @@ const PasswordResetRequestForm = ({ resetPassword, resetStatus, error }) => {
 
       <p className={formStyles.footer}>
         Do you have an account?&nbsp;
-        <Link to={LOGIN_URL}>
+        <Link to={LOGIN}>
           <Button theme="link">Login</Button>
         </Link>
       </p>

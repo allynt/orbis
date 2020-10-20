@@ -12,7 +12,7 @@ import { useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
 import { object as yupObject } from 'yup';
 
-import { LOGIN_URL, TERMS_URL } from 'accounts/accounts.constants';
+import { LOGIN, TERMS } from 'accounts/accounts.constants';
 import { status } from 'accounts/accounts.slice';
 import { ErrorWell } from 'accounts/error-well.component';
 import { FieldError } from 'components/field-error/field-error.component';
@@ -27,7 +27,7 @@ const PasswordResetSuccessView = () => (
     </p>
 
     <div className={formStyles.buttons}>
-      <Link to={LOGIN_URL}>
+      <Link to={LOGIN}>
         <Button theme="link">Continue</Button>
       </Link>
     </div>
@@ -118,7 +118,7 @@ const PasswordResetForm = ({
             onChange={() => setTermsAgreed(!termsAgreed)}
           />
           &nbsp;
-          <Button target="_blank" href={TERMS_URL} rel="noopener noreferrer">
+          <Button target="_blank" href={TERMS} rel="noopener noreferrer">
             Terms &amp; Conditions
           </Button>
         </div>
@@ -135,7 +135,7 @@ const PasswordResetForm = ({
 
       <p className={formStyles.footer}>
         Do you have an account?&nbsp;
-        <Link to={LOGIN_URL}>
+        <Link to={LOGIN}>
           <Button theme="link">Login</Button>
         </Link>
       </p>

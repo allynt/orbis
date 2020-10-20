@@ -7,7 +7,7 @@ import { useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
 import * as yup from 'yup';
 
-import { PASSWORD_RESET_URL, REGISTER_URL } from 'accounts/accounts.constants';
+import { PASSWORD_RESET_REQUEST, REGISTER } from 'accounts/accounts.constants';
 import { ErrorWell } from 'accounts/error-well.component';
 import { Field } from 'components/field/field.component';
 import { LoadingSpinner } from 'components/loading-spinner/loading-spinner.component';
@@ -97,7 +97,7 @@ const LoginForm = ({
             />
           )}
 
-          <Link className={styles.forgotPassword} to={PASSWORD_RESET_URL}>
+          <Link className={styles.forgotPassword} to={PASSWORD_RESET_REQUEST}>
             <Button type="button" theme="link">
               Forgot password?
             </Button>
@@ -118,7 +118,7 @@ const LoginForm = ({
       {!isRegisteringCustomer && (
         <p className={formStyles.footer}>
           Don't have an account?&nbsp;
-          <Link to={REGISTER_URL}>
+          <Link to={REGISTER}>
             <Button theme="link">Sign Up</Button>
           </Link>
         </p>
