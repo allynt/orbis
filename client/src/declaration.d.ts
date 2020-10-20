@@ -44,3 +44,20 @@ declare type Source = {
   source_id: string;
   metadata: SourceMetadata;
 };
+
+declare type User = {
+  accepted_terms: boolean;
+  avatar?: string;
+  change_password: boolean;
+  customers?: { type: 'MANAGER' | 'MEMBER'; status: 'ACTIVE' | 'PENDING' }[];
+  description?: string;
+  email: string;
+  id: string;
+  is_approved: boolean;
+  is_verified: boolean;
+  name?: string;
+  permissions?: string[];
+  requires_customer_registration_completion: boolean;
+  roles?: string[];
+  username: string;
+};
