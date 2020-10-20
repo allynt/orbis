@@ -1,25 +1,46 @@
 import React from 'react';
 import { Router } from 'react-router-dom';
 import { history } from '../../root.reducer';
-import { status } from '../accounts.slice';
 import LoginForm from './login-form.component';
 
-export default { title: 'Accounts/Login' };
+export default {
+  title: 'Accounts/Login',
+  args: {
+    passwordMinLength: 2,
+    passwordMaxLength: 255,
+  },
+  argTypes: {
+    activateAccount: { action: 'activateAccount' },
+    login: { action: 'login' },
+  },
+  decorators: [
+    Story => (
+      <Router history={history}>
+        <Story />
+      </Router>
+    ),
+  ],
+};
 
-export const Form = () => (
-  <Router history={history}>
-    <LoginForm />
-  </Router>
-);
+export const Form = args => <LoginForm {...args} />;
 
-export const Loading = () => (
-  <Router history={history}>
-    <LoginForm isLoading />
-  </Router>
-);
+export const Loading = args => <LoginForm {...args} />;
+Loading.args = {
+  isLoading: true,
+};
 
-export const NotVerifiedError = () => (
-  <Router history={history}>
-    <LoginForm serverErrors={[`User test@test.com is not verified.`]} />
-  </Router>
-);
+export const ShouldActivate = args => <LoginForm {...args} />;
+ShouldActivate.args = {
+  match: {
+    params: {
+      key: '123',
+    },
+  },
+};
+
+export const CustomerSignUpLogin = args => <LoginForm {...args} />;
+CustomerSignUpLogin.args = {
+  user: {
+    requires_customer_registration_completion: true,
+  },
+};

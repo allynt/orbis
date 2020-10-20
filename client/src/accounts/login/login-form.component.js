@@ -1,11 +1,6 @@
 import React, { useEffect } from 'react';
 
-import {
-  Button,
-  Checkbox,
-  PasswordField,
-  Textfield,
-} from '@astrosat/astrosat-ui';
+import { Button, Checkbox, PasswordField } from '@astrosat/astrosat-ui';
 
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
@@ -14,11 +9,12 @@ import * as yup from 'yup';
 
 import { PASSWORD_RESET_URL, REGISTER_URL } from 'accounts/accounts.constants';
 import { ErrorWell } from 'accounts/error-well.component';
-import { FieldError } from 'components/field-error/field-error.component';
+import { Field } from 'components/field/field.component';
+import { LoadingSpinner } from 'components/loading-spinner/loading-spinner.component';
 import { FIELD_NAMES, email, password } from 'utils/validators';
 
 import formStyles from 'forms.module.css';
-import { LoadingSpinner } from 'components/loading-spinner/loading-spinner.component';
+import styles from './login-form.module.css';
 
 const loginSchema = yup.object({
   [FIELD_NAMES.email]: email,
@@ -26,15 +22,19 @@ const loginSchema = yup.object({
 });
 
 /**
- * @param {{
+ * @typedef {{
  *   isLoading?: boolean
  *   passwordMinLength: number
  *   passwordMaxLength: number
  *   serverErrors?: string[]
- *   user: any
+ *   user: User
  *   activateAccount?: (data: {key: string}) => void
  *   login: (data: { email: string, password: string}) => void
- * } & Partial<import('react-router-dom').RouteComponentProps>} props
+ * } & Partial<import('react-router-dom').RouteComponentProps>} LoginProps
+ */
+
+/**
+ * @param {LoginProps} props
  */
 const LoginForm = ({
   isLoading = false,
@@ -46,10 +46,13 @@ const LoginForm = ({
   activateAccount,
   login,
 }) => {
+  const isRegisteringCustomer = user?.requires_customer_registration_completion;
+
   useEffect(() => {
     if (
-      (match?.params?.key && !user?.is_verified) ||
-      user?.is_verified === 'False'
+      match?.params?.key &&
+      activateAccount &&
+      (!user?.is_verified || user?.is_verified === 'False')
     )
       activateAccount({ ...match.params });
   }, [activateAccount, match, user]);
@@ -69,51 +72,36 @@ const LoginForm = ({
       {serverErrors && <ErrorWell errors={serverErrors} />}
 
       <div className={formStyles.fields}>
-        <div className={formStyles.row}>
-          <label className={formStyles.hiddenLabel} htmlFor={FIELD_NAMES.email}>
-            Email
-          </label>
-          <Textfield
-            id={FIELD_NAMES.email}
-            name={FIELD_NAMES.email}
-            ref={register}
-            placeholder="Email"
-            autoFocus
-          />
-        </div>
-        {errors.email && <FieldError message={errors.email.message} />}
+        <Field
+          register={register}
+          label={isRegisteringCustomer ? 'Work Email Address *' : 'Email *'}
+          name={FIELD_NAMES.email}
+          errors={errors}
+          autoFocus
+        />
+        <Field
+          register={register}
+          label="Password *"
+          name={FIELD_NAMES.password}
+          errors={errors}
+          Component={PasswordField}
+        />
 
         <div className={formStyles.row}>
-          <label
-            className={formStyles.hiddenLabel}
-            htmlFor={FIELD_NAMES.password}
-          >
-            Password
-          </label>
-          <PasswordField
-            id={FIELD_NAMES.password}
-            name={FIELD_NAMES.password}
-            ref={register}
-            placeholder="Password"
-          />
-        </div>
-        {errors.password && <FieldError message={errors.password.message} />}
+          {!isRegisteringCustomer && (
+            <Checkbox
+              name="loggedIn"
+              value="true"
+              label="Keep me logged in"
+              onChange={() => console.log('Keep me logged in')}
+            />
+          )}
 
-        <div className={`${formStyles.row} ${formStyles.incidentals}`}>
-          <Checkbox
-            name="loggedIn"
-            value="true"
-            label="Keep me logged in"
-            onChange={() => console.log('Keep me logged in')}
-          />
-
-          <p className={formStyles.row}>
-            <Link to={PASSWORD_RESET_URL}>
-              <Button type="button" theme="link">
-                Forgot password?
-              </Button>
-            </Link>
-          </p>
+          <Link className={styles.forgotPassword} to={PASSWORD_RESET_URL}>
+            <Button type="button" theme="link">
+              Forgot password?
+            </Button>
+          </Link>
         </div>
       </div>
 
@@ -127,12 +115,14 @@ const LoginForm = ({
         </Button>
       </div>
 
-      <p className={formStyles.footer}>
-        Don't have an account?&nbsp;
-        <Link to={REGISTER_URL}>
-          <Button theme="link">Sign Up</Button>
-        </Link>
-      </p>
+      {!isRegisteringCustomer && (
+        <p className={formStyles.footer}>
+          Don't have an account?&nbsp;
+          <Link to={REGISTER_URL}>
+            <Button theme="link">Sign Up</Button>
+          </Link>
+        </p>
+      )}
     </form>
   );
 };
