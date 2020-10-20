@@ -33,7 +33,7 @@ const OrderForm = ({ onSubmit }) => {
       subscription: 'ORBIS Core',
       amount: '£0',
       licences: 10,
-      period: format(TRIAL_PERIOD_END_DATE, DATE_FORMAT)
+      period: format(TRIAL_PERIOD_END_DATE, DATE_FORMAT),
       confirm: false,
     },
   });
