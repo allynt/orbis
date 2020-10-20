@@ -65,22 +65,16 @@ describe('<UserRegistration />', () => {
   it('calls onSubmit with the form values on successful completion', async () => {
     const values = {
       email: 'test@test.com',
-      firstName: 'Test',
-      lastName: 'Person',
+      name: 'Test Person',
       newPassword: 'thisisareallygoodpassword',
       newPasswordConfirm: 'thisisareallygoodpassword',
       acceptedTerms: true,
+      requires_customer_registration_completion: true,
     };
     const { getByRole, getByLabelText, onSubmit } = renderComponent();
     userEvent.type(getByRole('textbox', { name: EMAIL_REGEX }), values.email);
-    userEvent.type(
-      getByRole('textbox', { name: FIRST_NAME_REGEX }),
-      values.firstName,
-    );
-    userEvent.type(
-      getByRole('textbox', { name: LAST_NAME_REGEX }),
-      values.lastName,
-    );
+    userEvent.type(getByRole('textbox', { name: FIRST_NAME_REGEX }), 'Test');
+    userEvent.type(getByRole('textbox', { name: LAST_NAME_REGEX }), 'Person');
     userEvent.type(getByLabelText(PASSWORD_REGEX), values.newPassword);
     userEvent.type(
       getByLabelText(PASSWORD_CONFIRMATION_REGEX),

@@ -10,22 +10,21 @@ const register = (req, res) => {
   console.log('Registering New User');
 
   const users = getUsers();
-  const existingUser = users.find(user => user.username === details.username);
+  const existingUser = users.find(user => user.email === details.email);
 
   if (existingUser) {
     res.status(400);
-    res.json({ message: `Sorry, ${details.username} already exists` });
+    res.json({ message: `Sorry, ${details.email} already exists` });
   } else {
     const user = {
       id: uuidv4(),
-      username: details.username,
-      email: details.email,
       name: null,
       description: '',
       is_verified: false,
       is_approved: false,
       profiles: {},
       roles: [],
+      ...details,
     };
 
     console.log('Registered New User :', user);

@@ -38,8 +38,11 @@ import {
   PASSWORD_RESET,
   PASSWORD_RESET_REQUEST,
   REGISTER,
+  REGISTER_CUSTOMER_USER,
   RESEND,
 } from './accounts.constants';
+import JourneySelection from './register/journey-selection/journey-selection.component';
+import UserRegistration from './register/customer/user-registration/user-registration.component';
 
 export default () => {
   const dispatch = useDispatch();
@@ -60,10 +63,20 @@ export default () => {
             exact
             path={REGISTER}
             render={() => (
-              <RegisterForm
-                registerUser={form => dispatch(register(form))}
+              <JourneySelection
+                customerRegistrationIsOpen
+                individualRegistrationIsOpen={false}
+              />
+            )}
+          />
+          <Route
+            exact
+            path={REGISTER_CUSTOMER_USER}
+            render={() => (
+              <UserRegistration
                 serverErrors={error}
                 isLoading={isLoading}
+                onSubmit={values => dispatch(register(values))}
                 {...passwordConfig}
               />
             )}

@@ -32,11 +32,11 @@ import styles from './user-registration.module.css';
 /**
  * @typedef {{
  *  email: string
- *  firstName: string
- *  lastName: string
+ *  name: string
  *  newPassword: string
  *  newPasswordConfirm: string
  *  acceptedTerms: boolean
+ *  requires_customer_registration_completion: boolean
  * }} FormValues
  */
 
@@ -68,7 +68,14 @@ const UserRegistration = ({
   passwordStrength = 0,
 }) => {
   const { errors, handleSubmit, register, watch } = useForm({
-    defaultValues: { acceptedTerms: false },
+    defaultValues: {
+      email: undefined,
+      firstName: undefined,
+      lastName: undefined,
+      newPassword: undefined,
+      newPasswordConfirm: undefined,
+      acceptedTerms: false,
+    },
     resolver: yupResolver(validationSchema),
     context: { passwordMinLength, passwordMaxLength, passwordStrength },
   });
@@ -77,8 +84,13 @@ const UserRegistration = ({
     <form
       className={formStyles.form}
       onSubmit={handleSubmit(
-        /** @param {FormValues} values */
-        values => onSubmit && onSubmit(values),
+        ({ firstName, lastName, ...rest }) =>
+          onSubmit &&
+          onSubmit({
+            ...rest,
+            name: `${firstName} ${lastName}`,
+            requires_customer_registration_completion: true,
+          }),
       )}
     >
       <div className={styles.errorWell}>

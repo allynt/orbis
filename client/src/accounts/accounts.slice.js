@@ -11,6 +11,7 @@ import {
   sendData,
 } from 'utils/http';
 import { FIELD_NAMES } from 'utils/validators';
+import { RESEND } from './accounts.constants';
 
 const API_PREFIX = '/api/authentication/';
 const API = {
@@ -29,7 +30,7 @@ const FIELD_MAPPING = {
     [FIELD_NAMES.email]: 'email',
     [FIELD_NAMES.newPassword]: 'password1',
     [FIELD_NAMES.newPasswordConfirm]: 'password2',
-    accepted_terms: 'accepted_terms',
+    [FIELD_NAMES.acceptedTerms]: 'accepted_terms',
   },
   changePassword: {
     [FIELD_NAMES.newPassword]: 'new_password1',
@@ -49,13 +50,13 @@ export const status = {
 
 const mapData = (data, mapping) =>
   Object.entries(data).reduce(
-    (prev, [key, value]) => ({ ...prev, [mapping[key]]: value }),
+    (prev, [key, value]) => ({ ...prev, [mapping[key] || key]: value }),
     {},
   );
 
 // Shape error data into a single array of only error strings.
 const errorTransformer = errorObject => {
-  if (errorObject.detail) {
+  if (errorObject.detail || !errorObject.errors) {
     return;
   } else {
     const errors = errorObject.errors;
@@ -213,7 +214,7 @@ export const register = form => async dispatch => {
   }
   const user = await response.json();
   dispatch(registerUserSuccess(user));
-  return dispatch(push('/accounts/resend'));
+  return dispatch(push(RESEND));
 };
 
 export const activateAccount = form => async dispatch => {
