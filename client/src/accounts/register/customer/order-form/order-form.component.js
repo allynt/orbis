@@ -1,12 +1,16 @@
-import { Button, Checkbox } from '@astrosat/astrosat-ui';
-import { Field } from 'components/field/field.component';
-import { format } from 'date-fns';
 import React from 'react';
+
+import { Button, Checkbox } from '@astrosat/astrosat-ui';
+
+import { format } from 'date-fns';
 import { useForm } from 'react-hook-form';
-import { TRIAL_PERIOD_END_DATE } from '../customer.constants';
+
+import { Field } from 'components/field/field.component';
+import { DATE_FORMAT, TRIAL_PERIOD_END_DATE } from '../customer.constants';
 import Order from './order.component';
-import styles from './order-form.module.css';
+
 import formStyles from 'forms.module.css';
+import styles from './order-form.module.css';
 
 /**
  * @typedef {{
@@ -29,7 +33,7 @@ const OrderForm = ({ onSubmit }) => {
       subscription: 'ORBIS Core',
       amount: '£0',
       licences: 10,
-      period: format(TRIAL_PERIOD_END_DATE, 'do MMMM yyyy'),
+      period: format(TRIAL_PERIOD_END_DATE, DATE_FORMAT)
       confirm: false,
     },
   });
