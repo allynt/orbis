@@ -11,7 +11,7 @@ import FiltersTool from './features/filters.component';
 import SatellitesTool from './features/satellites.component';
 
 import styles from './tools.module.css';
-import { userSelector } from 'accounts/accounts.slice';
+import { userSelector } from 'accounts/accounts.selectors';
 
 const install = () => {
   window.devToolsEnabled = true;

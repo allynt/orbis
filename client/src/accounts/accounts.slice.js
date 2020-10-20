@@ -1,4 +1,4 @@
-import { createSelector, createSlice } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 import { push } from 'connected-react-router';
 import { NotificationManager } from 'react-notifications';
 import { persistReducer } from 'redux-persist';
@@ -391,20 +391,5 @@ const persistConfig = {
   whitelist: ['userKey'],
   storage,
 };
-
-const baseSelector = state => state?.accounts;
-export const userSelector = createSelector(
-  baseSelector,
-  accounts => accounts?.user,
-);
-export const userKeySelector = createSelector(
-  baseSelector,
-  accounts => accounts?.userKey,
-);
-
-export const isLoadingSelector = createSelector(
-  baseSelector,
-  accounts => accounts?.isLoading,
-);
 
 export default persistReducer(persistConfig, accountsSlice.reducer);

@@ -9,7 +9,8 @@ import { Dialog, useModal } from '@astrosat/astrosat-ui';
 import PrivateRoute from './utils/private-route.component';
 
 import { fetchAppConfig } from './app.slice';
-import { fetchUser, userSelector } from './accounts/accounts.slice';
+import { fetchUser } from './accounts/accounts.slice';
+import { userSelector } from './accounts/accounts.selectors';
 
 import {
   fetchSources,

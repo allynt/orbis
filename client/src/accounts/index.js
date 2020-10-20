@@ -9,14 +9,16 @@ import {
   activateAccount,
   changePassword,
   confirmResetPassword,
-  isLoadingSelector,
   login,
   register,
   resendVerificationEmail,
   resetPassword,
+} from './accounts.slice';
+import {
+  isLoadingSelector,
   userKeySelector,
   userSelector,
-} from './accounts.slice';
+} from './accounts.selectors';
 import styles from './index.module.css';
 import LoginForm from './login/login-form.component';
 import PasswordChangeForm from './password/change/password-change-form.component';

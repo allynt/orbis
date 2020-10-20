@@ -5,7 +5,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Button } from '@astrosat/astrosat-ui';
 
 import UpdateUserForm from '../update-user-form/update-user-form.component';
-import { updateUser, logout, userSelector } from '../accounts.slice';
+import { updateUser, logout } from '../accounts.slice';
+import { userSelector } from '../accounts.selectors';
 
 import { TERMS_URL } from '../accounts.constants';
 
