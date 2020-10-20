@@ -5,6 +5,8 @@ from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.core.validators import MinValueValidator
 from django.db import models
+from django.db.models import ExpressionWrapper, F
+from django.db.models import Sum
 from django.utils import timezone
 from django.utils.translation import gettext as _
 
@@ -26,6 +28,9 @@ It can probably be factored-out into its own reusable app.
 
 def order_form_path(instance, filename):
     return f"customers/{instance.customer}/orders/{filename}"
+
+
+DURATION_FORMAT = "[DD] [HH:[MM:]]ss[.uuuuuu]"
 
 
 ########################
@@ -50,12 +55,12 @@ class OrderQuerySet(models.QuerySet):
 class OrderItemQuerySet(models.QuerySet):
     def expired(self, date=None):
         """
-        returns all orders with an expiry date greater than or equal to date
+        returns all items with an expiry date greater than or equal to date
         """
-        raise NotImplementedError()
-        # if date is None:
-        #     date = timezone.now()
-        # return self.filter(whatever)
+        if date is None:
+            date = timezone.now()
+        qs = self.annotate(expiration=ExpressionWrapper(F("created") + F("subscription_period"), output_field=models.DateTimeField()))
+        return qs.filter(expiration__lt=date)
 
 
 ##########
@@ -129,6 +134,11 @@ class Order(models.Model):
     def __str__(self):
         return f"{self.customer}: {self.order_number}"
 
+    def recalculate_cost(self):
+        subtotal = self.items.aggregate(Sum("cost"))["cost__sum"]
+        self.cost = subtotal * self.order_type.cost_modifier
+        self.save()
+
     def natural_key(self):
         return (self.uuid,)
 
@@ -187,3 +197,7 @@ class OrderItem(models.Model):
             raise ValidationError(
                 "An OrderItem can only contain Licences for a single Orb"
             )
+
+    def recalculate_cost(self):
+        self.cost = self.n_licences * self.orb.licence_cost
+        self.save()

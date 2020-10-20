@@ -1,4 +1,3 @@
-from django_filters import rest_framework as filters
 from django.shortcuts import get_object_or_404
 from django.utils.functional import cached_property
 
@@ -22,24 +21,10 @@ class IsAdminOrManager(BasePermission):
         return user.is_superuser or view.active_managers.filter(user=user).exists()
 
 
-class OrderFilterSet(filters.FilterSet):
-    class Meta:
-        model = Order
-        fields = ("expired",)
-
-    expired = filters.Filter(method="filter_expired")
-
-    def filter_expired(self, queryset, name, value):
-        return queryset.expired()
-
-
 class OrderListCreateView(generics.ListCreateAPIView):
 
     permission_classes = [IsAuthenticated, IsAdminOrManager]
     serializer_class = OrderSerializer
-
-    filter_backends = (filters.DjangoFilterBackend,)
-    filterset_class = OrderFilterSet
 
     @cached_property
     def customer(self):

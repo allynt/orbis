@@ -1,7 +1,6 @@
 from collections import OrderedDict
 
 from django.contrib.auth import get_user_model
-from django.db.models import Sum
 
 from rest_framework import serializers
 
@@ -40,8 +39,7 @@ class OrderItemSerializer(serializers.ModelSerializer):
             order_item.save()
         if not cost_data:
             # if cost was not supplied then compute it here...
-            order_item.cost = order_item.n_licences * order_item.orb.licence_cost
-            order_item.save()
+            order_item.recalculate_cost()
 
         order_item.order.customer.add_licences(
             order_item.orb, order_item.n_licences, order_item=order_item
@@ -103,8 +101,6 @@ class OrderSerializer(serializers.ModelSerializer):
 
         if not cost_data:
             # if cost was not supplied then compute it here...
-            subtotal = order.items.aggregate(Sum("cost"))["cost__sum"]
-            order.cost = subtotal * order.order_type.cost_modifier
-            order.save()
+            order.recalculate_cost()
 
         return order

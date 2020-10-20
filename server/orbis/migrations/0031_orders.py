@@ -14,7 +14,7 @@ class Migration(migrations.Migration):
 
     dependencies = [
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
-        ('astrosat_users', '0021_auto_20201015_1626'),
+        # ('astrosat_users', '0021_auto_20201015_1626'),
         ('orbis', '0030_orb_licence_cost'),
     ]
 
