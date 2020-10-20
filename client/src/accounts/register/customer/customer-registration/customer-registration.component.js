@@ -12,6 +12,7 @@ import { Field } from 'components/field/field.component';
 import { customerName, FIELD_NAMES } from 'utils/validators';
 
 import styles from './customer-registration.module.css';
+import { TRIAL_PERIOD_END_DATE } from '../customer.constants';
 
 const ORGANISATION_TYPES = [
   { name: 'None', value: undefined },
@@ -28,8 +29,6 @@ const ORGANISATION_TYPES = [
   },
   { name: 'Other', value: 'OTHER' },
 ];
-
-const TRIAL_PERIOD_END_DATE = new Date('2021-04-01T00:00:00+0000');
 
 const validationSchema = yupObject({
   [FIELD_NAMES.customerName]: customerName,

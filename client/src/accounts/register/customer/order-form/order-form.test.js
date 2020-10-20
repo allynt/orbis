@@ -1,11 +1,11 @@
 import React from 'react';
-import { render } from '@testing-library/react';
+import { render, waitFor } from '@testing-library/react';
 import OrderForm from './order-form.component';
 import userEvent from '@testing-library/user-event';
 
 const SUBSCRIPTION = /selected\slicence\ssubscription/i;
 const PAYMENT_TYPE = /payment\stype/i;
-const AMOUNT = /amount\sto\sbe\spayed/i;
+const AMOUNT = /amount\sto\sbe\spaid/i;
 const NUMBER_OF_LICENCES = /number\sof\slicences/i;
 const PERIOD = /subscription\speriod\sends/i;
 const CONFIRMATION = /i\sconfirm\sthe\sinformation\sabove\sis\scorrect/i;
@@ -36,22 +36,24 @@ describe('<OrderForm />', () => {
 
   it('enables the submit button once the order is agreed', () => {
     const { getByRole } = renderComponent();
+    const submitButton = getByRole('button', { name: SUBMIT });
+    expect(submitButton).toBeDisabled();
     userEvent.click(getByRole('checkbox', { name: CONFIRMATION }));
-    expect(getByRole('button', { name: SUBMIT })).not.toBeDisabled();
+    expect(submitButton).not.toBeDisabled();
   });
 
-  it('calls onSubmit with the form values when the form is submitted', () => {
+  it('calls onSubmit with the form values when the form is submitted', async () => {
     const values = {
-      type: 'free',
-      subscriptions: {
-        orb: 'core',
-        n_licences: 10,
-        expiration: '2021-04-01T00:00:00+0000',
-      },
+      paymentType: 'free',
+      subscription: 'core',
+      licences: 10,
+      period: '2021-04-01T00:00:00.000Z',
+      confirm: true,
+      amount: 0,
     };
     const { getByRole, onSubmit } = renderComponent();
     userEvent.click(getByRole('checkbox', { name: CONFIRMATION }));
     userEvent.click(getByRole('button', { name: SUBMIT }));
-    expect(onSubmit).toHaveBeenCalledWith(values);
+    await waitFor(() => expect(onSubmit).toHaveBeenCalledWith(values));
   });
 });
