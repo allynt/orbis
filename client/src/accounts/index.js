@@ -31,10 +31,18 @@ import RegisterForm from './register/individual/register-form.component';
 import ResendVerificationEmail from './resend-verification-email/resend-verification-email.component';
 
 import styles from './index.module.css';
+import {
+  CONFIRM_EMAIL,
+  LOGIN,
+  PASSWORD_CHANGE,
+  PASSWORD_RESET,
+  PASSWORD_RESET_REQUEST,
+  REGISTER,
+  RESEND,
+} from './accounts.constants';
 
 export default () => {
   const dispatch = useDispatch();
-  const match = useRouteMatch();
   const error = useSelector(errorSelector);
   const isLoading = useSelector(isLoadingSelector);
   const resetStatus = useSelector(passwordResetStatusSelector);
@@ -50,7 +58,7 @@ export default () => {
         <Switch>
           <Route
             exact
-            path={`${match.path}/register`}
+            path={REGISTER}
             render={() => (
               <RegisterForm
                 registerUser={form => dispatch(register(form))}
@@ -62,7 +70,7 @@ export default () => {
           />
           <Route
             exact
-            path={[`${match.path}/login`, `${match.path}/confirm-email/:key`]}
+            path={[LOGIN, CONFIRM_EMAIL]}
             render={props =>
               user &&
               user.is_verified &&
@@ -84,7 +92,7 @@ export default () => {
           />
           <PrivateRoute
             exact
-            path={`${match.path}/password/change`}
+            path={PASSWORD_CHANGE}
             user={user}
             render={() => (
               <PasswordChangeForm
@@ -97,7 +105,7 @@ export default () => {
           />
           <Route
             exact
-            path={`${match.path}/password/reset`}
+            path={PASSWORD_RESET_REQUEST}
             user={user}
             render={() => (
               <PasswordResetRequestForm
@@ -108,7 +116,7 @@ export default () => {
             )}
           />
           <Route
-            path={`${match.path}/password/reset/:token/:uid/`}
+            path={PASSWORD_RESET}
             render={props => (
               <PasswordResetForm
                 confirmResetPassword={(form, params) =>
@@ -123,7 +131,7 @@ export default () => {
           />
           <Route
             exact
-            path={`${match.path}/resend`}
+            path={RESEND}
             render={() => (
               <ResendVerificationEmail
                 email={user?.email}
