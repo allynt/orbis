@@ -1,10 +1,19 @@
 import React from 'react';
+
 import { useDispatch, useSelector } from 'react-redux';
 import { Redirect, Route, Switch, useRouteMatch } from 'react-router-dom';
 
-import { configSelector } from 'app.slice';
+import { passwordConfigSelector } from 'app.slice';
 import PrivateRoute from 'utils/private-route.component';
 import { ReactComponent as OrbisLogo } from '../orbis-dark.svg';
+import {
+  errorSelector,
+  isLoadingSelector,
+  passwordChangeStatusSelector,
+  passwordResetStatusSelector,
+  userKeySelector,
+  userSelector,
+} from './accounts.selectors';
 import {
   activateAccount,
   changePassword,
@@ -14,12 +23,6 @@ import {
   resendVerificationEmail,
   resetPassword,
 } from './accounts.slice';
-import {
-  isLoadingSelector,
-  userKeySelector,
-  userSelector,
-} from './accounts.selectors';
-import styles from './index.module.css';
 import LoginForm from './login/login-form.component';
 import PasswordChangeForm from './password/change/password-change-form.component';
 import PasswordResetForm from './password/reset/password-reset-form.component';
@@ -28,25 +31,18 @@ import RegisterForm from './register/individual/register-form.component';
 import ResendVerificationEmail from './resend-verification-email/resend-verification-email.component';
 import * as routes from './routes';
 
+import styles from './index.module.css';
+
 export default () => {
   const dispatch = useDispatch();
   const match = useRouteMatch();
-  const error = useSelector(state => state.accounts.error);
+  const error = useSelector(errorSelector);
   const isLoading = useSelector(isLoadingSelector);
-  const resetStatus = useSelector(state => state.accounts.resetStatus);
-  const changeStatus = useSelector(state => state.accounts.changeStatus);
+  const resetStatus = useSelector(passwordResetStatusSelector);
+  const changeStatus = useSelector(passwordChangeStatusSelector);
   const user = useSelector(userSelector);
   const userKey = useSelector(userKeySelector);
-  const {
-    passwordMinLength,
-    passwordMaxLength,
-    passwordStrength,
-  } = useSelector(configSelector);
-  const passwordConfig = {
-    passwordMinLength,
-    passwordMaxLength,
-    passwordStrength,
-  };
+  const passwordConfig = useSelector(passwordConfigSelector);
 
   return (
     <div className={styles.page}>
