@@ -4,6 +4,9 @@ import { format } from 'date-fns';
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { TRIAL_PERIOD_END_DATE } from '../customer.constants';
+import Order from './order.component';
+import styles from './order-form.module.css';
+import formStyles from 'forms.module.css';
 
 /**
  * @typedef {{
@@ -45,42 +48,60 @@ const OrderForm = ({ onSubmit }) => {
 
   return (
     <form onSubmit={handleSubmit(() => onSubmit(transformValues()))}>
+      <h1 className={styles.heading}>Order Form</h1>
+      <p className={styles.paragraph}>
+        Please confirm that the following form contains the information that you
+        want to sign up for the final contract with ORBIS.
+      </p>
       <Field
         register={register}
         label="Selected Licence Subscription"
         name="subscription"
         readOnly
+        inline
       />
       <Field
         register={register}
         label="Payment Type"
         name="paymentType"
         readOnly
+        inline
       />
       <Field
         register={register}
         label="Amount to be paid"
         name="amount"
         readOnly
+        inline
       />
       <Field
         register={register}
         label="Number of Licences"
         name="licences"
         readOnly
+        inline
       />
       <Field
         register={register}
         label="Subscription Period Ends"
         name="period"
         readOnly
+        inline
       />
+      <div className={styles.order}>
+        <Order />
+      </div>
       <Checkbox
+        className={`${formStyles.row} ${styles.centered}`}
         ref={register}
         name="confirm"
         label="I confirm the information above is correct"
       />
-      <Button type="submit" disabled={!watch('confirm')}>
+      <Button
+        className={styles.centered}
+        type="submit"
+        disabled={!watch('confirm')}
+      >
         Confirm
       </Button>
     </form>
