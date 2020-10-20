@@ -1,6 +1,8 @@
 const ACCOUNTS_PREFIX = '/accounts';
 export const REGISTER = `${ACCOUNTS_PREFIX}/register`;
-export const REGISTER_CUSTOMER_USER = `${REGISTER}/customer`;
+export const REGISTER_CUSTOMER = `${REGISTER}/customer`;
+export const REGISTER_CUSTOMER_USER = `${REGISTER_CUSTOMER}/user`;
+export const REGISTER_CUSTOMER_ORDER = `${REGISTER_CUSTOMER}/order`;
 export const RESEND = `${ACCOUNTS_PREFIX}/resend`;
 export const CONFIRM_EMAIL = `${ACCOUNTS_PREFIX}/confirm-email/:key`;
 export const LOGIN = `${ACCOUNTS_PREFIX}/login`;
