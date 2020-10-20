@@ -1,0 +1,29 @@
+.order {
+  max-height: 12ch;
+  overflow-x: auto;
+  background-color: #fff;
+  border-radius: 1em;
+  box-shadow: 0 2px 4px 0 rgba(191, 191, 191, 0.5);
+  padding: 1.5em;
+  font-size: 0.5625rem;
+  margin-bottom: 1rem;
+}
+
+.centered {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.heading,
+.paragraph {
+  text-align: center;
+}
+
+.heading {
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.paragraph {
+  composes: paragraph from '../../../../forms.module.css';
+}

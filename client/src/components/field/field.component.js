@@ -1,4 +1,5 @@
 import React from 'react';
+import clsx from 'clsx';
 import { Textfield } from '@astrosat/astrosat-ui';
 import { FieldError } from 'components/field-error/field-error.component';
 import styles from './field.module.css';
@@ -13,6 +14,7 @@ import styles from './field.module.css';
  *   readOnly?: boolean
  *   helpText?: string
  *   autoFocus?: boolean
+ * inline?: boolean
  * }} props
  */
 export const Field = ({
@@ -24,8 +26,9 @@ export const Field = ({
   readOnly = false,
   helpText,
   autoFocus = false,
+  inline = false,
 }) => (
-  <div className={styles.field}>
+  <div className={clsx(styles.field, { [styles.inline]: inline })}>
     <label className={styles.label} htmlFor={name}>
       {label}
     </label>

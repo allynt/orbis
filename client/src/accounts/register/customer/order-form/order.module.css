@@ -1,0 +1,14 @@
+.p {
+  margin-bottom: 1em;
+}
+
+.li {
+  list-style: decimal;
+  margin-left: 1em;
+}
+
+.h1 {
+  font-weight: 600;
+  text-decoration: underline;
+  margin-bottom: 0.5em;
+}

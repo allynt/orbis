@@ -10,6 +10,7 @@ import { object as yupObject } from 'yup';
 import { FieldError } from 'components/field-error/field-error.component';
 import { Field } from 'components/field/field.component';
 import { customerName, FIELD_NAMES } from 'utils/validators';
+import { DATE_FORMAT, TRIAL_PERIOD_END_DATE } from '../customer.constants';
 
 import styles from './customer-registration.module.css';
 
@@ -28,8 +29,6 @@ const ORGANISATION_TYPES = [
   },
   { name: 'Other', value: 'OTHER' },
 ];
-
-const TRIAL_PERIOD_END_DATE = new Date('2021-04-01T00:00:00+0000');
 
 const validationSchema = yupObject({
   [FIELD_NAMES.customerName]: customerName,
@@ -59,7 +58,7 @@ const CustomerRegistration = ({ email, onSubmit }) => {
       email,
       licence: 'ORBIS Core',
       numberOfLicences: 10,
-      subscriptionPeriod: format(TRIAL_PERIOD_END_DATE, 'do MMMM yyyy'),
+      subscriptionPeriod: format(TRIAL_PERIOD_END_DATE, DATE_FORMAT),
     },
     resolver: yupResolver(validationSchema),
   });
