@@ -20,21 +20,19 @@ const Order = () => (
       any Professional Services. The Customer must be at least 18 years old to
       order Subscription Services.
     </p>
-    <p className={styles.p}>
+    <ol className={styles.ol}>
       The parties hereby agree as follows:
-      <ol className={styles.ol}>
-        <li className={styles.li}>
-          Order Form. This document constitutes an &quot;Order Form&quot; under
-          the Agreement, and this Order Form and the Subscription Services and
-          Professional Services contemplated herein are subject to the terms and
-          provisions of the Agreement.
-        </li>
-        <li className={styles.li}>
-          In this Order Form, unless specified otherwise, words and phrases
-          shall have the same meanings as those in the Agreement.
-        </li>
-      </ol>
-    </p>
+      <li className={styles.li}>
+        Order Form. This document constitutes an &quot;Order Form&quot; under
+        the Agreement, and this Order Form and the Subscription Services and
+        Professional Services contemplated herein are subject to the terms and
+        provisions of the Agreement.
+      </li>
+      <li className={styles.li}>
+        In this Order Form, unless specified otherwise, words and phrases shall
+        have the same meanings as those in the Agreement.
+      </li>
+    </ol>
     <h1 className={styles.h1}>Subscription Services</h1>
     <ol className={styles.ol}>
       <li className={styles.li}>

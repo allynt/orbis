@@ -42,7 +42,7 @@ const OrderForm = ({ onSubmit }) => {
    * @returns {FormValues}
    */
   const transformValues = () => ({
-    paymentType: 'free',
+    paymentType: 'Free Trial',
     subscription: 'core',
     amount: 0,
     licences: 10,
