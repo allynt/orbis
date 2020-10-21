@@ -1,4 +1,5 @@
 from django.contrib import admin
+from django.utils.html import mark_safe
 
 from astrosat.admin import ReadOnlyModelAdminBase
 
@@ -18,6 +19,7 @@ class OrderItemAdminInline(ReadOnlyModelAdminBase, admin.TabularInline):
     readonly_fields = fields
     show_change_link = True
     extra = 0
+    verbose_name_plural = mark_safe("<b>Order Items:</b> <i>the individual Items belonging to this Order</i>")
 
 
 class LicenceAdminInline(ReadOnlyModelAdminBase, admin.TabularInline):
@@ -27,6 +29,7 @@ class LicenceAdminInline(ReadOnlyModelAdminBase, admin.TabularInline):
     readonly_fields = fields
     show_change_link = True
     extra = 0
+    verbose_name_plural = mark_safe("<b>Licences:</b> <i>the individual Licences created by this Item</i>")
 
 
 ##########

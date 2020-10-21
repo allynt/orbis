@@ -138,7 +138,7 @@ class LicenceAdmin(admin.ModelAdmin):
     form = AccessForm
     fields = (
         "id",
-        "order",
+        "order_item",
         "orb",
         "customer",
         "customer_user",
