@@ -19,6 +19,7 @@ import {
   changePassword,
   confirmResetPassword,
   login,
+  placeOrder,
   registerCustomer,
   registerUser,
   resendVerificationEmail,
@@ -39,12 +40,14 @@ import {
   PASSWORD_RESET_REQUEST,
   REGISTER,
   REGISTER_CUSTOMER,
+  REGISTER_CUSTOMER_ORDER,
   REGISTER_CUSTOMER_USER,
   RESEND,
 } from './accounts.constants';
 import JourneySelection from './register/journey-selection/journey-selection.component';
 import UserRegistration from './register/customer/user-registration/user-registration.component';
 import CustomerRegistration from './register/customer/customer-registration/customer-registration.component';
+import OrderForm from './register/customer/order-form/order-form.component';
 
 export default () => {
   const dispatch = useDispatch();
@@ -91,6 +94,13 @@ export default () => {
                 onSubmit={values => dispatch(registerUser(values))}
                 {...passwordConfig}
               />
+            )}
+          />
+          <Route
+            exact
+            path={REGISTER_CUSTOMER_ORDER}
+            render={() => (
+              <OrderForm onSubmit={values => dispatch(placeOrder(values))} />
             )}
           />
           <Route

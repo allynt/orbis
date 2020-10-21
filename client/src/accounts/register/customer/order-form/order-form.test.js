@@ -44,7 +44,7 @@ describe('<OrderForm />', () => {
 
   it('calls onSubmit with the form values when the form is submitted', async () => {
     const values = {
-      paymentType: 'free',
+      paymentType: 'Free Trial',
       subscription: 'core',
       licences: 10,
       period: '2021-04-01T00:00:00.000Z',

@@ -1,6 +1,7 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, current } from '@reduxjs/toolkit';
 import {
   createCustomerUserSuccess,
+  selectCurrentCustomer,
   setCurrentCustomer,
 } from 'admin/admin.slice';
 import { push } from 'connected-react-router';
@@ -47,6 +48,12 @@ const FIELD_MAPPING = {
     [FIELD_NAMES.customerType]: 'company_type',
     [FIELD_NAMES.registeredNumber]: 'registered_id',
   },
+  placeOrder: {
+    paymentType: 'order_type',
+    amount: 'cost',
+    licences: 'n_licences',
+    period: 'subscription_period',
+  },
   changePassword: {
     [FIELD_NAMES.newPassword]: 'new_password1',
     [FIELD_NAMES.newPasswordConfirm]: 'new_password2',
@@ -63,6 +70,11 @@ export const status = {
   COMPLETE: 'Complete',
 };
 
+/**
+ * @param {object} data
+ * @param {object} mapping
+ * @returns {object}
+ */
 const mapData = (data, mapping) =>
   Object.entries(data).reduce(
     (prev, [key, value]) => ({ ...prev, [mapping[key] || key]: value }),
@@ -119,6 +131,14 @@ const accountsSlice = createSlice({
     registerCustomerFailure: (state, { payload }) => {
       state.isLoading = false;
       state.error = payload;
+    },
+    placeOrderSuccess: state => {
+      state.error = null;
+      state.isLoading = false;
+    },
+    placeOrderFailure: (state, { payload }) => {
+      state.error = payload.errors;
+      state.isLoading = false;
     },
     loginUserSuccess: (state, { payload }) => {
       state.userKey = payload.userKey;
@@ -208,6 +228,8 @@ export const {
   registerUserFailure,
   registerCustomerSuccess,
   registerCustomerFailure,
+  placeOrderSuccess,
+  placeOrderFailure,
   loginUserSuccess,
   loginUserFailure,
   resendVerificationEmailSuccess,
@@ -245,6 +267,8 @@ export const registerUser = form => async dispatch => {
 };
 
 /**
+ * This creates a customer but also adds the current user as a CustomerUser
+ *
  * @param {import('./register/customer/customer-registration/customer-registration.component').FormValues} form
  * @returns {import('redux-thunk').ThunkAction<void, any, any, any>}
  */
@@ -283,6 +307,38 @@ export const registerCustomer = form => async (dispatch, getState) => {
   dispatch(createCustomerUserSuccess({ user: customerUser }));
   dispatch(registerCustomerSuccess());
   dispatch(push(REGISTER_CUSTOMER_ORDER));
+};
+
+/**
+ * @param {import('./register/customer/order-form/order-form.component').FormValues} form
+ * @returns {import('redux-thunk').ThunkAction<void, any, any, any>}
+ */
+export const placeOrder = form => async (dispatch, getState) => {
+  dispatch(fetchRequested());
+  let data = mapData(form, FIELD_MAPPING.placeOrder);
+  data = {
+    order_type: data.order_type,
+    cost: data.cost,
+    items: [
+      {
+        orb: data.subscription,
+        n_licences: data.n_licences,
+        expiration: data.subscription_period,
+      },
+    ],
+  };
+  const currentCustomer = selectCurrentCustomer(getState());
+  const response = await sendData(
+    `/api/customers/${currentCustomer.id}/orders/`,
+    data,
+    getJsonAuthHeaders(getState()),
+  );
+  if (!response.ok) {
+    const body = await response.json();
+    return dispatch(placeOrderFailure({ errors: errorTransformer(body) }));
+  }
+  dispatch(placeOrderSuccess());
+  dispatch(push('/'));
 };
 
 export const activateAccount = form => async dispatch => {

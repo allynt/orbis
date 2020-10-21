@@ -2,6 +2,7 @@ import {
   createCustomerUserSuccess,
   setCurrentCustomer,
 } from 'admin/admin.slice';
+import { push } from 'connected-react-router';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import reducer, {
@@ -25,6 +26,9 @@ import reducer, {
   registerCustomer,
   registerCustomerSuccess,
   registerCustomerFailure,
+  placeOrder,
+  placeOrderSuccess,
+  placeOrderFailure,
 } from './accounts.slice';
 
 const mockStore = configureMockStore([thunk]);
@@ -448,9 +452,18 @@ describe('Accounts Slice', () => {
   });
 
   describe('Thunks', () => {
+    let dispatch;
+    let getState;
+
+    beforeEach(() => {
+      dispatch = jest.fn();
+      getState = jest.fn(() => ({
+        accounts: { userKey: '123' },
+        admin: { currentCustomer: { id: '123' } },
+      }));
+    });
+
     describe('registerCustomer', () => {
-      let dispatch;
-      let getState;
       /**@type {import('./register/customer/customer-registration/customer-registration.component').FormValues} */
       const formValues = {
         customerName: 'Test Customer',
@@ -480,10 +493,7 @@ describe('Accounts Slice', () => {
         },
         customer: 'fake-customer-id-123',
       };
-      beforeEach(() => {
-        dispatch = jest.fn();
-        getState = jest.fn(() => ({ accounts: { userKey: '123' } }));
-      });
+
       it('starts the request', async () => {
         await registerCustomer(formValues)(dispatch, getState, undefined);
         expect(dispatch).toHaveBeenCalledWith(fetchRequested());
@@ -517,6 +527,68 @@ describe('Accounts Slice', () => {
         await registerCustomer(formValues)(dispatch, getState, undefined);
         expect(dispatch).toHaveBeenCalledWith(
           createCustomerUserSuccess({ user: createCustomerUserResponse }),
+        );
+      });
+    });
+
+    describe('placeOrder', () => {
+      /** @type {import('./register/customer/order-form/order-form.component').FormValues} */
+      const formValues = {
+        amount: 0,
+        confirm: true,
+        licences: 10,
+        paymentType: 'Free Trial',
+        period: '2021-04-01T00:00:00+0000',
+        subscription: 'core',
+      };
+
+      const successResponseBody = {
+        id: 'fb0e3db8-0302-41b5-9ca5-cfe763393674',
+        user: 'test@test.com',
+        created: new Date().toISOString(),
+        order_type: 'Free Trial',
+        cost: 0,
+        items: [
+          {
+            id: 3,
+            orb: 'core',
+            n_licences: 10,
+            cost: 0,
+            subscription_period: '2021-04-01T00:00:00+0000',
+          },
+        ],
+      };
+
+      const failureResponseBody = {
+        test: ['¿problema?'],
+      };
+
+      it('starts the request', async () => {
+        await placeOrder(formValues)(dispatch, getState, undefined);
+        expect(dispatch).toHaveBeenCalledWith(fetchRequested());
+      });
+
+      it('calls the success action on successful request', async () => {
+        fetch.once(JSON.stringify(successResponseBody));
+        await placeOrder(formValues)(dispatch, getState, undefined);
+        expect(dispatch).toHaveBeenCalledWith(placeOrderSuccess());
+      });
+
+      it('navigates to landing on success', async () => {
+        fetch.once(JSON.stringify(successResponseBody));
+        await placeOrder(formValues)(dispatch, getState, undefined);
+        expect(dispatch).toHaveBeenCalledWith(push('/'));
+      });
+
+      it('calls the failure action on failed request', async () => {
+        fetch.once(JSON.stringify({ errors: failureResponseBody }), {
+          ok: false,
+          status: 401,
+          statusText: 'Test Error',
+        });
+        await placeOrder(formValues)(dispatch, getState, undefined);
+        expect(dispatch).toHaveBeenCalledWith(
+          placeOrderFailure({ errors: failureResponseBody.test }),
         );
       });
     });
