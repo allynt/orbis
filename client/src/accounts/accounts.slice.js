@@ -147,11 +147,13 @@ const accountsSlice = createSlice({
     },
     activateAccountSuccess: (state, { payload }) => {
       state.user = payload.user;
+      state.userKey = null;
       state.error = null;
       state.isLoading = false;
     },
     activateAccountFailure: (state, { payload }) => {
       state.error = payload;
+      state.userKey = null;
       state.isLoading = false;
     },
     changePasswordSuccess: state => {
