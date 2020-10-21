@@ -11,7 +11,7 @@ import ContentWrapper from '../../content-wrapper.component';
 
 import { DefaultCustomerLogo } from '../../default-customer-logo.component';
 
-import { Field } from '../corporate-form-field.component';
+import { FieldWrapper } from '../field-wrapper.component';
 import { FieldError } from 'components/field-error/field-error.component';
 
 import { FIELD_NAMES, customerName } from 'utils/validators';
@@ -58,8 +58,8 @@ const CorporateAccount = ({ customer, updateCustomer }) => {
           <DefaultCustomerLogo />
         )}
 
-        <Field>
-          <div className={styles.fieldContainer}>
+        <FieldWrapper>
+          <div className={styles.field}>
             <label htmlFor={FIELD_NAMES.name} className={styles.fieldLabel}>
               Name:
               <Textfield
@@ -73,13 +73,13 @@ const CorporateAccount = ({ customer, updateCustomer }) => {
               <FieldError message={errors.customerName.message} />
             )}
           </div>
-        </Field>
+        </FieldWrapper>
 
         <fieldset>
           <legend className={styles.fieldTitle}>Full Address</legend>
 
-          <Field>
-            <div className={styles.fieldContainer}>
+          <FieldWrapper>
+            <div className={styles.field}>
               <label
                 htmlFor={FIELD_NAMES.country}
                 className={styles.fieldLabel}
@@ -93,7 +93,7 @@ const CorporateAccount = ({ customer, updateCustomer }) => {
                 />
               </label>
             </div>
-            <div className={styles.fieldContainer}>
+            <div className={styles.field}>
               <label
                 htmlFor={FIELD_NAMES.address}
                 className={styles.fieldLabel}
@@ -107,7 +107,7 @@ const CorporateAccount = ({ customer, updateCustomer }) => {
                 />
               </label>
             </div>
-            <div className={styles.fieldContainer}>
+            <div className={styles.field}>
               <label
                 htmlFor={FIELD_NAMES.postcode}
                 className={styles.fieldLabel}
@@ -121,7 +121,7 @@ const CorporateAccount = ({ customer, updateCustomer }) => {
                 />
               </label>
             </div>
-          </Field>
+          </FieldWrapper>
         </fieldset>
 
         <Button

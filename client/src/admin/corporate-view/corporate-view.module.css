@@ -45,7 +45,7 @@
   margin: 1.25rem 0;
 }
 
-.fieldContainer {
+.field {
   position: relative;
   display: flex;
   flex-direction: column;
@@ -53,7 +53,7 @@
   margin-right: 3.125rem;
 }
 
-.fieldContainer > *:not(:last-child) {
+.field > *:not(:last-child) {
   margin-right: 1rem;
 }
 

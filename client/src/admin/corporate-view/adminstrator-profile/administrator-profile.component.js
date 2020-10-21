@@ -11,7 +11,7 @@ import { Textfield, ProfileIcon, Button } from '@astrosat/astrosat-ui';
 
 import ContentWrapper from '../../content-wrapper.component';
 
-import { Field } from '../corporate-form-field.component';
+import { FieldWrapper } from '../field-wrapper.component';
 import { FieldError } from 'components/field-error/field-error.component';
 
 import styles from '../corporate-view.module.css';
@@ -46,8 +46,8 @@ const AdministratorProfile = ({ user, updateAdministrator }) => {
           )}
         </div>
 
-        <Field>
-          <div className={styles.fieldContainer}>
+        <FieldWrapper>
+          <div className={styles.field}>
             <label htmlFor={FIELD_NAMES.name} className={styles.fieldLabel}>
               Name:
               <Textfield
@@ -58,7 +58,7 @@ const AdministratorProfile = ({ user, updateAdministrator }) => {
               />
             </label>
           </div>
-          <div className={styles.fieldContainer}>
+          <div className={styles.field}>
             <label htmlFor={FIELD_NAMES.email} className={styles.fieldLabel}>
               Email:
               <Textfield
@@ -70,7 +70,7 @@ const AdministratorProfile = ({ user, updateAdministrator }) => {
             </label>
             {errors.email && <FieldError message={errors.email.message} />}
           </div>
-          <div className={styles.fieldContainer}>
+          <div className={styles.field}>
             <label htmlFor={FIELD_NAMES.phone} className={styles.fieldLabel}>
               Phone:
               <Textfield
@@ -81,7 +81,7 @@ const AdministratorProfile = ({ user, updateAdministrator }) => {
               />
             </label>
           </div>
-        </Field>
+        </FieldWrapper>
 
         <Button
           type="submit"

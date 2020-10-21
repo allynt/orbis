@@ -12,7 +12,7 @@ describe('Admin organisation Menu Component', () => {
   beforeEach(() => {
     setVisiblePanel = jest.fn();
     selectedCustomer = {
-      name: 'Cyberdyne Systems',
+      title: 'Cyberdyne Systems',
       logo: 'https://ichef.bbci.co.uk/images/ic/1200x675/p03t1sm8.jpg',
     };
   });
@@ -49,7 +49,7 @@ describe('Admin organisation Menu Component', () => {
       />,
     );
 
-    fireEvent.click(getByText(selectedCustomer.name));
+    fireEvent.click(getByText(selectedCustomer.title));
     expect(setVisiblePanel).toHaveBeenCalledWith(ADMIN_VIEW.corporateAccount);
   });
 
