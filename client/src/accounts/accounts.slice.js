@@ -11,7 +11,7 @@ import {
   sendData,
 } from 'utils/http';
 import { FIELD_NAMES } from 'utils/validators';
-import { RESEND } from './accounts.constants';
+import { REGISTER_CUSTOMER, RESEND } from './accounts.constants';
 
 const API_PREFIX = '/api/authentication/';
 const API = {
@@ -204,7 +204,7 @@ export const {
   fetchRequested,
 } = accountsSlice.actions;
 
-export const register = form => async dispatch => {
+export const registerUser = form => async dispatch => {
   dispatch(fetchRequested());
   const data = mapData(form, FIELD_MAPPING.register);
 
@@ -276,9 +276,12 @@ export const login = form => async dispatch => {
       }),
     );
   }
+  /** @type {User} */
   const user = await fetchUserResponse.json();
   dispatch(loginUserSuccess({ userKey, user }));
-  return dispatch(push('/'));
+  return user.requires_customer_registration_completion
+    ? dispatch(push(REGISTER_CUSTOMER))
+    : dispatch(push('/'));
 };
 
 export const resendVerificationEmail = email => async dispatch => {

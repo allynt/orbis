@@ -3,7 +3,7 @@ import thunk from 'redux-thunk';
 import reducer, {
   registerUserFailure,
   registerUserSuccess,
-  register,
+  registerUser,
   fetchUserSuccess,
   fetchUserFailure,
   fetchUser,
@@ -73,7 +73,7 @@ describe('Accounts Slice', () => {
         password1: 'password1',
         password2: 'password2',
       };
-      await store.dispatch(register(form));
+      await store.dispatch(registerUser(form));
 
       expect(store.getActions()).toEqual(expectedActions);
     });
@@ -96,7 +96,7 @@ describe('Accounts Slice', () => {
         password2: 'password2',
       };
 
-      await store.dispatch(register(form));
+      await store.dispatch(registerUser(form));
       expect(store.getActions()).toEqual(expectedActions);
     });
 

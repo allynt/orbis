@@ -19,7 +19,7 @@ import {
   changePassword,
   confirmResetPassword,
   login,
-  register,
+  registerUser,
   resendVerificationEmail,
   resetPassword,
 } from './accounts.slice';
@@ -27,7 +27,6 @@ import LoginForm from './login/login-form.component';
 import PasswordChangeForm from './password/change/password-change-form.component';
 import PasswordResetForm from './password/reset/password-reset-form.component';
 import PasswordResetRequestForm from './password/reset/password-reset-request-form.component';
-import RegisterForm from './register/individual/register-form.component';
 import ResendVerificationEmail from './resend-verification-email/resend-verification-email.component';
 
 import styles from './index.module.css';
@@ -38,11 +37,13 @@ import {
   PASSWORD_RESET,
   PASSWORD_RESET_REQUEST,
   REGISTER,
+  REGISTER_CUSTOMER,
   REGISTER_CUSTOMER_USER,
   RESEND,
 } from './accounts.constants';
 import JourneySelection from './register/journey-selection/journey-selection.component';
 import UserRegistration from './register/customer/user-registration/user-registration.component';
+import CustomerRegistration from './register/customer/customer-registration/customer-registration.component';
 
 export default () => {
   const dispatch = useDispatch();
@@ -71,12 +72,22 @@ export default () => {
           />
           <Route
             exact
+            path={REGISTER_CUSTOMER}
+            render={() => (
+              <CustomerRegistration
+                email={user?.email}
+                onSubmit={console.log}
+              />
+            )}
+          />
+          <Route
+            exact
             path={REGISTER_CUSTOMER_USER}
             render={() => (
               <UserRegistration
                 serverErrors={error}
                 isLoading={isLoading}
-                onSubmit={values => dispatch(register(values))}
+                onSubmit={values => dispatch(registerUser(values))}
                 {...passwordConfig}
               />
             )}
