@@ -6,6 +6,7 @@ import styles from './admin.module.css';
 import {
   createCustomerUser,
   fetchCustomer,
+  updateCustomer,
   fetchCustomerUsers,
   selectCurrentCustomer,
   selectCustomerUsers,
@@ -18,6 +19,7 @@ import {
   selectAvailableLicences,
   selectOneAdminRemaining,
 } from './admin.slice';
+import { updateUser } from '../accounts/accounts.slice';
 import HomeView from './home-view/home-view.component';
 import CorporateView from './corporate-view/corporate-view.component';
 import { CreateUserForm } from './create-user-form/create-user-form.component';
@@ -68,7 +70,14 @@ const Admin = ({ user }) => {
   const getMainView = () => {
     switch (visiblePanel) {
       case ADMIN_VIEW.corporateAccount:
-        return <CorporateView user={user} customer={currentCustomer} />;
+        return (
+          <CorporateView
+            user={user}
+            customer={currentCustomer}
+            updateCustomer={data => dispatch(updateCustomer(data))}
+            updateAdministrator={data => dispatch(updateUser(data))}
+          />
+        );
       case ADMIN_VIEW.licenceDashboard:
         return (
           <ContentWrapper title="Licence Dashboard">
@@ -102,11 +111,7 @@ const Admin = ({ user }) => {
             onDeleteUserClick={user =>
               setDialogForm({ type: DIALOG_VIEW.deleteUser, user })
             }
-            onResendInvitationClick={user =>
-              dispatch(
-                inviteCustomerUser(user)
-              )
-            }
+            onResendInvitationClick={user => dispatch(inviteCustomerUser(user))}
             onWithdrawInvitationClick={user =>
               setDialogForm({ type: DIALOG_VIEW.withdrawInvitation, user })
             }

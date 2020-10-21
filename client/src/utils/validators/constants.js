@@ -52,6 +52,7 @@ export const CONTEXT_KEYS = {
 
 export const FIELD_NAMES = {
   email: 'email',
+  phone: 'phone',
   password: 'password',
   oldPassword: 'oldPassword',
   newPassword: 'newPassword',
@@ -60,6 +61,9 @@ export const FIELD_NAMES = {
   firstName: 'firstName',
   lastName: 'lastName',
   acceptedTerms: 'acceptedTerms',
+  country: 'country',
+  address: 'address',
+  postcode: 'postcode',
   bookmarkTitle: 'title',
   bookmarkDescription: 'description',
   customerName: 'customerName',
