@@ -10,7 +10,7 @@ let customers = [
     address: '123 Fake Street',
     postcode: 'EH6 1UF',
     description: 'Bringing you the future, today.',
-    logo: null,
+    logo: 'https://ichef.bbci.co.uk/images/ic/1200x675/p03t1sm8.jpg',
     roles: ['SaveTheWorldRole'],
     permissions: ['can_deploy_skynet'],
     licences: [
