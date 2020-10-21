@@ -14,24 +14,30 @@ import { DefaultCustomerLogo } from '../../default-customer-logo.component';
 import { Field } from '../corporate-form-field.component';
 import { FieldError } from 'components/field-error/field-error.component';
 
-import { FIELD_NAMES, name } from 'utils/validators';
+import { FIELD_NAMES, customerName } from 'utils/validators';
 
 import styles from '../corporate-view.module.css';
 
 const corporateAccountSchema = yup.object({
-  [FIELD_NAMES.name]: name,
+  [FIELD_NAMES.customerName]: customerName,
 });
 
 const CorporateAccount = ({ customer, updateCustomer }) => {
   function onSubmit(values) {
-    let newCustomer = { ...customer, ...values };
+    const data = {
+      name: values.customerName,
+      country: values.country,
+      address: values.address,
+      postcode: values.postcode,
+    };
+    const newCustomer = { ...customer, ...data };
     updateCustomer(newCustomer);
   }
 
   const { register, handleSubmit, errors, formState } = useForm({
     mode: 'onBlur',
     resolver: yupResolver(corporateAccountSchema),
-    defaultValues: customer,
+    defaultValues: { ...customer, customerName: customer.name },
   });
 
   return (
@@ -40,74 +46,83 @@ const CorporateAccount = ({ customer, updateCustomer }) => {
         className={styles.corporateAccount}
         onSubmit={handleSubmit(onSubmit)}
       >
-        <div className={styles.logoContainer}>
-          {customer?.logo ? (
+        {customer?.logo ? (
+          <div className={styles.logoContainer}>
             <img
               src={customer.logo}
               className={styles.logo}
               alt={`${customer?.title} Logo`}
             />
-          ) : (
-            <DefaultCustomerLogo className={styles.logo} />
-          )}
-        </div>
+          </div>
+        ) : (
+          <DefaultCustomerLogo />
+        )}
 
         <Field>
-          <div className={styles.field}>
+          <div className={styles.fieldContainer}>
             <label htmlFor={FIELD_NAMES.name} className={styles.fieldLabel}>
               Name:
+              <Textfield
+                id={FIELD_NAMES.customerName}
+                name={FIELD_NAMES.customerName}
+                placeholder="Add Name"
+                ref={register}
+              />
             </label>
-            <Textfield
-              id={FIELD_NAMES.name}
-              name={FIELD_NAMES.name}
-              placeholder="Add Name"
-              ref={register}
-            />
-            {errors.name && (
-              <div className={styles.errorContainer}>
-                <FieldError message={errors.name.message} />
-              </div>
+            {errors.customerName && (
+              <FieldError message={errors.customerName.message} />
             )}
           </div>
         </Field>
 
-        <legend className={styles.fieldTitle}>Full Address</legend>
+        <fieldset>
+          <legend className={styles.fieldTitle}>Full Address</legend>
 
-        <Field>
-          <div className={styles.field}>
-            <label htmlFor={FIELD_NAMES.country} className={styles.fieldLabel}>
-              Country:
-            </label>
-            <Textfield
-              id={FIELD_NAMES.country}
-              name={FIELD_NAMES.country}
-              placeholder="Add Country"
-              ref={register}
-            />
-          </div>
-          <div className={styles.field}>
-            <label htmlFor={FIELD_NAMES.address} className={styles.fieldLabel}>
-              Street &amp; House Number:
-            </label>
-            <Textfield
-              id={FIELD_NAMES.address}
-              name={FIELD_NAMES.address}
-              placeholder="Add Address"
-              ref={register}
-            />
-          </div>
-          <div className={styles.field}>
-            <label htmlFor={FIELD_NAMES.postcode} className={styles.fieldLabel}>
-              Postcode:
-            </label>
-            <Textfield
-              id={FIELD_NAMES.postcode}
-              name={FIELD_NAMES.postcode}
-              placeholder="Add Postcode"
-              ref={register}
-            />
-          </div>
-        </Field>
+          <Field>
+            <div className={styles.fieldContainer}>
+              <label
+                htmlFor={FIELD_NAMES.country}
+                className={styles.fieldLabel}
+              >
+                Country:
+                <Textfield
+                  id={FIELD_NAMES.country}
+                  name={FIELD_NAMES.country}
+                  placeholder="Add Country"
+                  ref={register}
+                />
+              </label>
+            </div>
+            <div className={styles.fieldContainer}>
+              <label
+                htmlFor={FIELD_NAMES.address}
+                className={styles.fieldLabel}
+              >
+                Street &amp; House Number:
+                <Textfield
+                  id={FIELD_NAMES.address}
+                  name={FIELD_NAMES.address}
+                  placeholder="Add Address"
+                  ref={register}
+                />
+              </label>
+            </div>
+            <div className={styles.fieldContainer}>
+              <label
+                htmlFor={FIELD_NAMES.postcode}
+                className={styles.fieldLabel}
+              >
+                Postcode:
+                <Textfield
+                  id={FIELD_NAMES.postcode}
+                  name={FIELD_NAMES.postcode}
+                  placeholder="Add Postcode"
+                  ref={register}
+                />
+              </label>
+            </div>
+          </Field>
+        </fieldset>
 
         <Button
           type="submit"

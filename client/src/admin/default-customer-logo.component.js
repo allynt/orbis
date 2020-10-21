@@ -2,8 +2,10 @@ import React from 'react';
 
 import { ReactComponent as OrbisAdminIcon } from '../orbis-admin-icon.svg';
 
-export const DefaultCustomerLogo = ({ className }) => (
-  <div style={{ height: '100%', width: '100%' }}>
-    <OrbisAdminIcon className={className} />
+import styles from './admin.module.css';
+
+export const DefaultCustomerLogo = () => (
+  <div className={styles.defaultLogoContainer}>
+    <OrbisAdminIcon />
   </div>
 );

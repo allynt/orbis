@@ -21,17 +21,17 @@ const OrganisationMenu = ({ customer, setVisiblePanel, onCreateUserClick }) => (
       className={styles.organisationInfo}
       onClick={() => setVisiblePanel(ADMIN_VIEW.corporateAccount)}
     >
-      <div className={styles.organisationLogo}>
-        {customer?.logo ? (
+      {customer?.logo ? (
+        <div className={styles.organisationLogo}>
           <img
             className={styles.logo}
             src={customer?.logo}
             alt={`${customer?.title} Logo`}
           />
-        ) : (
-          <DefaultCustomerLogo className={styles.logo} />
-        )}
-      </div>
+        </div>
+      ) : (
+        <DefaultCustomerLogo />
+      )}
 
       <h2 className={styles.organisationTitle}>{customer?.title}</h2>
     </div>

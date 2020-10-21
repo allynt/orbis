@@ -39,7 +39,7 @@ const AdministratorProfile = ({ user, updateAdministrator }) => {
         onSubmit={handleSubmit(onSubmit)}
       >
         <div className={styles.logoContainer}>
-          {user.avatar ? (
+          {user?.avatar ? (
             <img src={user.avatar} className={styles.logo} alt="Admin Avatar" />
           ) : (
             <ProfileIcon title="Profile Icon" classes={styles.defaultIcon} />
@@ -47,43 +47,39 @@ const AdministratorProfile = ({ user, updateAdministrator }) => {
         </div>
 
         <Field>
-          <div className={styles.field}>
+          <div className={styles.fieldContainer}>
             <label htmlFor={FIELD_NAMES.name} className={styles.fieldLabel}>
               Name:
+              <Textfield
+                id={FIELD_NAMES.name}
+                name={FIELD_NAMES.name}
+                placeholder="Add Name"
+                ref={register}
+              />
             </label>
-            <Textfield
-              id={FIELD_NAMES.name}
-              name={FIELD_NAMES.name}
-              placeholder="Add Name"
-              ref={register}
-            />
           </div>
-          <div className={styles.field}>
+          <div className={styles.fieldContainer}>
             <label htmlFor={FIELD_NAMES.email} className={styles.fieldLabel}>
               Email:
+              <Textfield
+                id={FIELD_NAMES.email}
+                name={FIELD_NAMES.email}
+                placeholder="Add Email"
+                ref={register}
+              />
             </label>
-            <Textfield
-              id={FIELD_NAMES.email}
-              name={FIELD_NAMES.email}
-              placeholder="Add Email"
-              ref={register}
-            />
-            {errors.email && (
-              <div className={styles.errorContainer}>
-                <FieldError message={errors.email.message} />
-              </div>
-            )}
+            {errors.email && <FieldError message={errors.email.message} />}
           </div>
-          <div className={styles.field}>
+          <div className={styles.fieldContainer}>
             <label htmlFor={FIELD_NAMES.phone} className={styles.fieldLabel}>
               Phone:
+              <Textfield
+                id={FIELD_NAMES.phone}
+                name={FIELD_NAMES.phone}
+                placeholder="Add Phone Number"
+                ref={register}
+              />
             </label>
-            <Textfield
-              id={FIELD_NAMES.phone}
-              name={FIELD_NAMES.phone}
-              placeholder="Add Phone Number"
-              ref={register}
-            />
           </div>
         </Field>
 

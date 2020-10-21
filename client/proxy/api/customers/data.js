@@ -6,8 +6,11 @@ let customers = [
     type: 'MULTIPLE',
     name: 'cyberdyne',
     title: 'Cyberdyne Systems',
+    country: 'United States',
+    address: '123 Fake Street',
+    postcode: 'EH6 1UF',
     description: 'Bringing you the future, today.',
-    logo: 'https://ichef.bbci.co.uk/images/ic/1200x675/p03t1sm8.jpg',
+    logo: null,
     roles: ['SaveTheWorldRole'],
     permissions: ['can_deploy_skynet'],
     licences: [
