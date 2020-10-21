@@ -1,3 +1,4 @@
+import { setCurrentCustomer } from 'admin/admin.slice';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import reducer, {
@@ -18,8 +19,10 @@ import reducer, {
   updateUser,
   status,
   fetchRequested,
+  registerCustomer,
+  registerCustomerSuccess,
+  registerCustomerFailure,
 } from './accounts.slice';
-import { userSelector } from './accounts.selectors';
 
 const mockStore = configureMockStore([thunk]);
 
@@ -438,6 +441,63 @@ describe('Accounts Slice', () => {
       });
 
       expect(actualState.error).toEqual(error);
+    });
+  });
+
+  describe('Thunks', () => {
+    describe('registerCustomer', () => {
+      let dispatch;
+      let getState;
+      /**@type {import('./register/customer/customer-registration/customer-registration.component').FormValues} */
+      const formValues = {
+        customerName: 'Test Customer',
+        customerNameOfficial: 'Test Customer Ltd.',
+        customerType: 'GOVERNMENT',
+        email: 'test@test.com',
+        licence: 'ORBIS Core',
+        numberOfLicences: 10,
+        registeredNumber: '1234',
+        subscriptionPeriod: '2021-04-01T00:00:00+0000',
+      };
+      beforeEach(() => {
+        dispatch = jest.fn();
+        getState = jest.fn(() => ({ accounts: { userKey: '123' } }));
+      });
+      it('starts the request', async () => {
+        await registerCustomer(formValues)(dispatch, getState, undefined);
+        expect(dispatch).toHaveBeenCalledWith(fetchRequested());
+      });
+
+      it('dispatches success and sets customer on successful creation', async () => {
+        const createCustomerResponse = {
+          id: '311221cb-fe5b-43aa-b48e-027cfb460615',
+          type: 'MULTIPLE',
+          name: formValues.customerName,
+          official_name: formValues.customerNameOfficial,
+          company_type: formValues.customerType,
+          registered_id: formValues.registeredNumber,
+        };
+
+        fetchMock.once(JSON.stringify(createCustomerResponse));
+        await registerCustomer(formValues)(dispatch, getState, undefined);
+        expect(dispatch).toHaveBeenCalledWith(
+          setCurrentCustomer(createCustomerResponse),
+        );
+        expect(dispatch).toHaveBeenCalledWith(registerCustomerSuccess());
+      });
+
+      it('dispatches failure on error', async () => {
+        const errorResponse = { errors: { test: ['problem'] } };
+        fetch.once(JSON.stringify(errorResponse), {
+          ok: false,
+          status: 401,
+          statusText: 'Test Error',
+        });
+        await registerCustomer(formValues)(dispatch, getState, undefined);
+        expect(dispatch).toHaveBeenCalledWith(
+          registerCustomerFailure(['problem']),
+        );
+      });
     });
   });
 });

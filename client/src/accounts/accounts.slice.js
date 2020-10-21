@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { setCurrentCustomer } from 'admin/admin.slice';
 import { push } from 'connected-react-router';
 import { NotificationManager } from 'react-notifications';
 import { persistReducer } from 'redux-persist';
@@ -15,7 +16,8 @@ import { REGISTER_CUSTOMER, RESEND } from './accounts.constants';
 
 const API_PREFIX = '/api/authentication/';
 const API = {
-  register: API_PREFIX + 'registration/',
+  registerUser: API_PREFIX + 'registration/',
+  registerCustomer: '/api/customers/',
   activate: API_PREFIX + 'registration/verify-email/',
   resendVerificationEmail: API_PREFIX + 'send-email-verification/',
   login: API_PREFIX + 'login/',
@@ -26,11 +28,17 @@ const API = {
   user: '/api/users/',
 };
 const FIELD_MAPPING = {
-  register: {
+  registerUser: {
     [FIELD_NAMES.email]: 'email',
     [FIELD_NAMES.newPassword]: 'password1',
     [FIELD_NAMES.newPasswordConfirm]: 'password2',
     [FIELD_NAMES.acceptedTerms]: 'accepted_terms',
+  },
+  registerCustomer: {
+    [FIELD_NAMES.customerName]: 'name',
+    [FIELD_NAMES.customerNameOfficial]: 'official_name',
+    [FIELD_NAMES.customerType]: 'company_type',
+    [FIELD_NAMES.registeredNumber]: 'registered_id',
   },
   changePassword: {
     [FIELD_NAMES.newPassword]: 'new_password1',
@@ -96,6 +104,14 @@ const accountsSlice = createSlice({
     registerUserFailure: (state, { payload }) => {
       state.error = payload;
       state.isLoading = false;
+    },
+    registerCustomerSuccess: state => {
+      state.error = null;
+      state.isLoading = false;
+    },
+    registerCustomerFailure: (state, { payload }) => {
+      state.isLoading = false;
+      state.error = payload;
     },
     loginUserSuccess: (state, { payload }) => {
       state.userKey = payload.userKey;
@@ -183,6 +199,8 @@ const accountsSlice = createSlice({
 export const {
   registerUserSuccess,
   registerUserFailure,
+  registerCustomerSuccess,
+  registerCustomerFailure,
   loginUserSuccess,
   loginUserFailure,
   resendVerificationEmailSuccess,
@@ -206,9 +224,9 @@ export const {
 
 export const registerUser = form => async dispatch => {
   dispatch(fetchRequested());
-  const data = mapData(form, FIELD_MAPPING.register);
+  const data = mapData(form, FIELD_MAPPING.registerUser);
 
-  const response = await sendData(API.register, data, JSON_HEADERS);
+  const response = await sendData(API.registerUser, data, JSON_HEADERS);
 
   if (!response.ok) {
     const errorObject = await response.json();
@@ -217,6 +235,30 @@ export const registerUser = form => async dispatch => {
   const user = await response.json();
   dispatch(registerUserSuccess(user));
   return dispatch(push(RESEND));
+};
+
+/**
+ * @param {import('./register/customer/customer-registration/customer-registration.component').FormValues} form
+ * @returns {import('redux-thunk').ThunkAction<void, any, any, any>}
+ */
+export const registerCustomer = form => async (dispatch, getState) => {
+  dispatch(fetchRequested());
+  const data = {
+    ...mapData(form, FIELD_MAPPING.registerCustomer),
+    type: 'MULTIPLE',
+  };
+  const response = await sendData(
+    API.registerCustomer,
+    data,
+    getJsonAuthHeaders(getState()),
+  );
+  if (!response.ok) {
+    const errors = await response.json();
+    return dispatch(registerCustomerFailure(errorTransformer(errors)));
+  }
+  const customer = await response.json();
+  dispatch(setCurrentCustomer(customer));
+  dispatch(registerCustomerSuccess());
 };
 
 export const activateAccount = form => async dispatch => {

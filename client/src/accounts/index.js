@@ -19,6 +19,7 @@ import {
   changePassword,
   confirmResetPassword,
   login,
+  registerCustomer,
   registerUser,
   resendVerificationEmail,
   resetPassword,
@@ -76,7 +77,7 @@ export default () => {
             render={() => (
               <CustomerRegistration
                 email={user?.email}
-                onSubmit={console.log}
+                onSubmit={values => dispatch(registerCustomer(values))}
               />
             )}
           />

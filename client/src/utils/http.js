@@ -47,6 +47,13 @@ export const getData = (url, headers = {}) => {
         .catch(error => error);
 };
 
+/**
+ * @param {string} url
+ * @param {string | object} data
+ * @param {object} headers
+ * @param {'POST' | 'PUT' | 'DELETE'} method
+ * @returns {Promise<any>}
+ */
 export const sendData = (url, data = '', headers = {}, method = 'POST') => {
   let submission = { ...data };
 

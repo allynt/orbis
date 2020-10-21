@@ -82,6 +82,9 @@ const adminSlice = createSlice({
       state.error = payload;
       state.isLoading = false;
     },
+    setCurrentCustomer: (state, { payload }) => {
+      state.currentCustomer = payload;
+    },
     createCustomerUserRequested: state => {
       state.isLoading = true;
     },
@@ -109,7 +112,7 @@ const adminSlice = createSlice({
       state.isLoading = false;
       state.error = null;
     },
-    inviteCustomerUserFailure: (state, {payload}) => {
+    inviteCustomerUserFailure: (state, { payload }) => {
       state.error = payload;
       state.isLoading = false;
     },
@@ -135,6 +138,7 @@ export const {
   inviteCustomerUserRequested,
   inviteCustomerUserSuccess,
   inviteCustomerUserFailure,
+  setCurrentCustomer,
 } = adminSlice.actions;
 
 /* === Thunks === */
@@ -160,7 +164,9 @@ export const fetchCustomer = user => async (dispatch, getState) => {
   const headers = getJsonAuthHeaders(getState());
   dispatch(fetchCustomerRequested());
 
-  const customerId = user.customers.find(customer => customer.type === 'MANAGER').id
+  const customerId = user.customers.find(
+    customer => customer.type === 'MANAGER',
+  ).id;
   const response = await getData(`${API}${customerId}`, headers);
 
   if (!response.ok)
@@ -366,9 +372,7 @@ export const inviteCustomerUser = customerUser => async (
 
   const invitedCustomerUser = await inviteCustomerUserResponse.json();
 
-  return dispatch(
-    inviteCustomerUserSuccess({ invitedCustomerUser})
-  );
+  return dispatch(inviteCustomerUserSuccess({ invitedCustomerUser }));
 };
 
 /* === Selectors === */
