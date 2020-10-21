@@ -29,10 +29,12 @@
 
 .licences {
   display: flex;
+  flex-wrap: wrap;
+  max-width: 46rem;
 }
 
-.licence + .licence {
-  margin-left: 1rem;
+.licence:not(:last-child) {
+  margin-right: 1rem;
 }
 
 .noLicencesText {

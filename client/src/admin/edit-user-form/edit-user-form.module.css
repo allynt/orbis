@@ -1,5 +1,4 @@
 .editForm,
-.checkboxes,
 .radios,
 .button {
   display: flex;
@@ -20,10 +19,13 @@
 .title {
   font-weight: 700;
 }
+.checkboxes {
+  composes: licences from '../create-user-form/create-user-form.module.css';
+}
 
-.checkboxes > *,
-.radios > * {
-  margin-right: 1.25rem;
+.checkboxes:not(:last-child) > *,
+.radios:not(:last-child) > * {
+  margin-right: 1rem;
 }
 
 .button {
