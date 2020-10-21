@@ -33,6 +33,7 @@ class CustomerSerializer(AstrosatUsersCustomerSerializer):
             "postcode",
             "licences",
         )
+        ref_name="orbis_customer_serializer"
 
     licences = LicenceSerializer(many=True, required=False)
 
@@ -87,6 +88,7 @@ class CustomerUserSerializer(AstrosatUsersCustomerUserSerializer):
             "customer",
             "licences",
         )
+        ref_name="orbis_customer_user_serializer"
 
     licences = serializers.SlugRelatedField(
         many=True, slug_field="id", queryset=Licence.objects.all()

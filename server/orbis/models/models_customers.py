@@ -15,10 +15,10 @@ class LicencedCustomer(AstrosatUsersCustomer):
         verbose_name_plural = "Customers"
         proxy = True
 
-    def add_licences(self, orb, n):
+    def add_licences(self, orb, n, order_item=None):
         licences = []
         for _ in range(n):
-            licence = Licence(customer=self, orb=orb)
+            licence = Licence(customer=self, orb=orb, order_item=order_item)
             licence.save()
             licences.append(licence)
         return licences
