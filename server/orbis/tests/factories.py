@@ -27,6 +27,9 @@ from orbis.models import (
     Licence,
     LicencedCustomer,
     Access,
+    OrderType,
+    Order,
+    OrderItem,
     Satellite,
     SatelliteTier,
     SatelliteVisualisation,
@@ -84,8 +87,8 @@ class UserFactory(AstrosatUserFactory):
 # customers #
 #############
 
-class CustomerFactory(AstrosatUserCustomerFactory):
 
+class CustomerFactory(AstrosatUserCustomerFactory):
     class Meta:
         model = LicencedCustomer
 
@@ -104,7 +107,7 @@ class OrbFactory(factory.django.DjangoModelFactory):
     is_core = False
     name = factory.LazyAttributeSequence(lambda o, n: f"orb-{n}")
     description = optional_declaration(FactoryFaker("text"), chance=50)
-
+    licence_cost = FactoryFaker("pyfloat", min_value=1.0, max_value=10.0)
 
     @factory.post_generation
     def data_scopes(self, create, extracted, **kwargs):
@@ -133,6 +136,60 @@ class LicenceFactory(factory.django.DjangoModelFactory):
         model = Licence
 
     access = FactoryFaker("pyint", min_value=0, max_value=sum(Access))
+
+
+##########
+# orders #
+##########
+
+
+class OrderTypeFactory(factory.django.DjangoModelFactory):
+    class Meta:
+        model = OrderType
+
+    name = factory.LazyAttributeSequence(lambda o, n: f"order-type-{n}")
+    description = optional_declaration(FactoryFaker("text"), chance=50)
+    cost_modifier = FactoryFaker("pyfloat", min_value=0, max_value=1)
+
+
+class OrderFactory(factory.django.DjangoModelFactory):
+    class Meta:
+        model = Order
+
+    user = factory.SubFactory(UserFactory)
+    customer = factory.SubFactory(CustomerFactory)
+    order_type = factory.SubFactory(OrderTypeFactory)
+
+
+class OrderItemFactory(factory.django.DjangoModelFactory):
+    class Meta:
+        model = OrderItem
+
+    order = factory.SubFactory(OrderFactory)
+    orb = factory.SubFactory(OrbFactory)
+    n_licences = FactoryFaker("pyint", min_value=1, max_value=10)
+    cost = FactoryFaker("pyfloat", min_value=0.0, max_value=100.0)
+
+    @factory.lazy_attribute
+    def subscription_period(self):
+        dt1 = fake.date_time()
+        dt2 = fake.date_time_between(dt1)
+        return dt2 - dt1  # returns a datetime.timedelta
+
+    # note that "licences" can be accessed via a reverse fk from Licence
+    @factory.post_generation
+    def licences(self, create, extracted, **kwargs):
+        if not create:
+            return
+
+        if extracted:
+            for licence in extracted:
+                self.licences.add(licence)
+        else:
+            for _ in range(self.n_licences):
+                licence = LicenceFactory(orb=self.orb, customer=self.order.customer)
+                self.licences.add(licence)
+
 
 
 ##############

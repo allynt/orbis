@@ -4,6 +4,8 @@ import { Button } from '@astrosat/astrosat-ui';
 
 import { ADMIN_VIEW } from '../admin.constants';
 
+import { DefaultCustomerLogo } from '../default-customer-logo.component';
+
 import styles from './organisation-menu.module.css';
 
 /**
@@ -19,12 +21,19 @@ const OrganisationMenu = ({ customer, setVisiblePanel, onCreateUserClick }) => (
       className={styles.organisationInfo}
       onClick={() => setVisiblePanel(ADMIN_VIEW.corporateAccount)}
     >
-      <img
-        className={styles.organisationLogo}
-        src={customer?.logo}
-        alt="Organisation Logo"
-      />
-      <h2 className={styles.organisationTitle}>{customer?.name}</h2>
+      {customer?.logo ? (
+        <div className={styles.organisationLogo}>
+          <img
+            className={styles.logo}
+            src={customer?.logo}
+            alt={`${customer?.title} Logo`}
+          />
+        </div>
+      ) : (
+        <DefaultCustomerLogo />
+      )}
+
+      <h2 className={styles.organisationTitle}>{customer?.title}</h2>
     </div>
     <Button size="small" onClick={onCreateUserClick}>
       Create User

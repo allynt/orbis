@@ -119,6 +119,7 @@ class OrbAdminForm(ModelForm):
             if existing_core_orbs.count():
                 raise ValidationError("Only one core Orb is allowed.")
 
+
 @admin.register(Orb)
 class OrbAdmin(admin.ModelAdmin):
     form = OrbAdminForm
@@ -137,6 +138,7 @@ class LicenceAdmin(admin.ModelAdmin):
     form = AccessForm
     fields = (
         "id",
+        "order_item",
         "orb",
         "customer",
         "customer_user",

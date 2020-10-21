@@ -1,70 +1,94 @@
 import React from 'react';
 
-import { useForm, Textfield, ProfileIcon } from '@astrosat/astrosat-ui';
+import { useForm } from 'react-hook-form';
+
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from 'yup';
+
+import { FIELD_NAMES, email } from 'utils/validators';
+
+import { Textfield, ProfileIcon, Button } from '@astrosat/astrosat-ui';
 
 import ContentWrapper from '../../content-wrapper.component';
 
-import { Field } from '../corporate-view.component';
+import { FieldWrapper } from '../field-wrapper.component';
+import { FieldError } from 'components/field-error/field-error.component';
 
 import styles from '../corporate-view.module.css';
 
-const AdministratorProfile = ({ user }) => {
-  const { handleChange, handleSubmit, values } = useForm(
-    () => {},
-    () => ({}),
-  );
+const AdministratorProfileSchema = yup.object({
+  [FIELD_NAMES.email]: email,
+});
+
+const AdministratorProfile = ({ user, updateAdministrator }) => {
+  function onSubmit(values) {
+    let newUser = { ...user, ...values };
+    updateAdministrator(newUser);
+  }
+
+  const { register, handleSubmit, errors, formState } = useForm({
+    mode: 'onBlur',
+    resolver: yupResolver(AdministratorProfileSchema),
+    defaultValues: user,
+  });
 
   return (
     <ContentWrapper title="Administrator">
-      <form className={styles.corporateAccount} onSubmit={handleSubmit}>
+      <form
+        className={styles.corporateAccount}
+        onSubmit={handleSubmit(onSubmit)}
+      >
         <div className={styles.logoContainer}>
-          {user.avatar ? (
+          {user?.avatar ? (
             <img src={user.avatar} className={styles.logo} alt="Admin Avatar" />
           ) : (
             <ProfileIcon title="Profile Icon" classes={styles.defaultIcon} />
           )}
         </div>
 
-        <fieldset>
-          <Field>
-            <div className={styles.field}>
-              <label htmlFor="name" className={styles.fieldLabel}>
-                Name:
-              </label>
+        <FieldWrapper>
+          <div className={styles.field}>
+            <label htmlFor={FIELD_NAMES.name} className={styles.fieldLabel}>
+              Name:
               <Textfield
-                id="name"
-                name="name"
-                value={values.name || user.name}
-                onChange={handleChange}
+                id={FIELD_NAMES.name}
+                name={FIELD_NAMES.name}
                 placeholder="Add Name"
+                ref={register}
               />
-            </div>
-            <div className={styles.field}>
-              <label htmlFor="email" className={styles.fieldLabel}>
-                Email:
-              </label>
+            </label>
+          </div>
+          <div className={styles.field}>
+            <label htmlFor={FIELD_NAMES.email} className={styles.fieldLabel}>
+              Email:
               <Textfield
-                id="email"
-                name="email"
-                value={values.email || user.email}
-                onChange={handleChange}
+                id={FIELD_NAMES.email}
+                name={FIELD_NAMES.email}
                 placeholder="Add Email"
+                ref={register}
               />
-            </div>
-            <div className={styles.field}>
-              <label htmlFor="phone" className={styles.fieldLabel}>
-                Phone:
-              </label>
+            </label>
+            {errors.email && <FieldError message={errors.email.message} />}
+          </div>
+          <div className={styles.field}>
+            <label htmlFor={FIELD_NAMES.phone} className={styles.fieldLabel}>
+              Phone:
               <Textfield
-                id="phone"
-                name="phone"
-                value={values.phone || user.phone}
-                onChange={handleChange}
+                id={FIELD_NAMES.phone}
+                name={FIELD_NAMES.phone}
                 placeholder="Add Phone Number"
+                ref={register}
               />
-            </div>
-          </Field>
-        </fieldset>
+            </label>
+          </div>
+        </FieldWrapper>
+
+        <Button
+          type="submit"
+          disabled={Object.keys(errors).length > 0 || !formState.isDirty}
+        >
+          Update Changes
+        </Button>
       </form>
     </ContentWrapper>
   );

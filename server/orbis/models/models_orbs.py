@@ -80,8 +80,25 @@ class OrbQuerySet(models.QuerySet):
         return self.filter(is_active=True)
 
 
-class LicenceQuerySet(models.QuerySet):
+class DataScopeManager(models.Manager):
+    def get_by_natural_key(self, source_id_pattern):
+        kwargs = {
+            key: value
+            for key, value in zip(
+                ["authority", "namespace", "name", "version"],
+                source_id_pattern.split("/"),
+            )
+        }
+        instance = self.get(**kwargs)
+        return instance
 
+
+class DataScopeQuerySet(models.QuerySet):
+    def active(self):
+        return self.filter(is_active=True)
+
+
+class LicenceQuerySet(models.QuerySet):
     def hidden(self):
         # CustomerSerializer & CustomerUserSerializer exclude "core" licences
         # the hidden/visible methods make it easier for me to do that
@@ -118,24 +135,6 @@ class LicenceQuerySet(models.QuerySet):
         )
 
 
-class DataScopeManager(models.Manager):
-    def get_by_natural_key(self, source_id_pattern):
-        kwargs = {
-            key: value
-            for key, value in zip(
-                ["authority", "namespace", "name", "version"],
-                source_id_pattern.split("/"),
-            )
-        }
-        instance = self.get(**kwargs)
-        return instance
-
-
-class DataScopeQuerySet(models.QuerySet):
-    def active(self):
-        return self.filter(is_active=True)
-
-
 ##########
 # models #
 ##########
@@ -147,7 +146,9 @@ class Orb(models.Model):
         verbose_name = "Orb"
         verbose_name_plural = "Orbs"
         constraints = [
-            models.UniqueConstraint(fields=["is_core"], condition=Q(is_core=True), name="only_one_core_orb")
+            models.UniqueConstraint(
+                fields=["is_core"], condition=Q(is_core=True), name="only_one_core_orb"
+            )
         ]
 
     objects = OrbManager.from_queryset(OrbQuerySet)()
@@ -156,8 +157,18 @@ class Orb(models.Model):
     description = models.TextField(blank=True, null=True)
 
     is_active = models.BooleanField(default=True)
-    is_hidden = models.BooleanField(default=False, help_text="Licences to a hidden Orb are not shown to CustomerUsers.")
-    is_core = models.BooleanField(default=False, help_text="Every CustomerUser is granted a Licence to the core Orb.")
+    is_hidden = models.BooleanField(
+        default=False,
+        help_text="Licences to a hidden Orb are not shown to CustomerUsers.",
+    )
+    is_core = models.BooleanField(
+        default=False,
+        help_text="Every CustomerUser is granted a Licence to the core Orb.",
+    )
+
+    licence_cost = models.FloatField(
+        default=0, help_text="The cost of a single licence to this Orb."
+    )
 
     def __str__(self):
         return self.name
@@ -165,64 +176,17 @@ class Orb(models.Model):
     @classmethod
     def get_core_orb(cls):
         core_orb, orb_created = cls.objects.get_or_create(
-            is_core=True,
-            defaults={"name": "core", "is_hidden": True}
+            is_core=True, defaults={"name": "core", "is_hidden": True}
         )
         if orb_created:
             core_data_scope, _ = DataScope.objects.get_or_create(
-                authority="astrosat",
-                namespace="core",
-                name="*",
-                version="*",
+                authority="astrosat", namespace="core", name="*", version="*"
             )
             core_orb.data_scopes.add(core_data_scope)
         return core_orb
 
     def natural_key(self):
         return (self.name,)
-
-
-class Licence(AccessModel):
-    class Meta:
-        app_label = "orbis"
-        verbose_name = "Licence"
-        verbose_name_plural = "Licences"
-        constraints = [
-            models.UniqueConstraint(
-                fields=["orb", "customer", "customer_user"],
-                name="unique_licence_orb_customer_user",
-            )
-        ]
-
-    objects = LicenceQuerySet.as_manager()
-
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-
-    created = models.DateTimeField(auto_now_add=True, db_index=True)
-    modified = models.DateTimeField(auto_now=True, db_index=True)
-
-    orb = models.ForeignKey(Orb, related_name="licences", on_delete=models.CASCADE)
-
-    customer = models.ForeignKey(
-        Customer, related_name="licences", on_delete=models.CASCADE
-    )
-    customer_user = models.ForeignKey(
-        CustomerUser,
-        blank=True,
-        null=True,
-        related_name="licences",
-        on_delete=models.SET_NULL,
-    )  # note that despite `on_delete=models.SET_NULL`, the pre-delete signal will delete the "core" Licence
-
-    def clean(self):
-        # extra validation to ensure that the customer_user belongs to the customer
-        # TODO: https://github.com/jazzband/django-smart-selects might also help
-
-        if self.customer_user:
-            if self.customer_user.customer != self.customer:
-                raise ValidationError(
-                    f"The licence user must belong to {self.customer}."
-                )
 
 
 class DataScope(models.Model):
@@ -258,3 +222,54 @@ class DataScope(models.Model):
 
     def natural_key(self):
         return (self.source_id_pattern,)
+
+
+class Licence(AccessModel):
+    class Meta:
+        app_label = "orbis"
+        verbose_name = "Licence"
+        verbose_name_plural = "Licences"
+        constraints = [
+            models.UniqueConstraint(
+                fields=["orb", "customer", "customer_user"],
+                name="unique_licence_orb_customer_user",
+            )
+        ]
+
+    objects = LicenceQuerySet.as_manager()
+
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+
+    created = models.DateTimeField(auto_now_add=True, db_index=True)
+    modified = models.DateTimeField(auto_now=True, db_index=True)
+
+    orb = models.ForeignKey(Orb, related_name="licences", on_delete=models.CASCADE)
+
+    customer = models.ForeignKey(
+        Customer, related_name="licences", on_delete=models.CASCADE
+    )
+    customer_user = models.ForeignKey(
+        CustomerUser,
+        blank=True,
+        null=True,
+        on_delete=models.SET_NULL,
+        related_name="licences",
+    )  # note that despite `on_delete=models.SET_NULL`, the pre-delete signal will delete the "core" Licence
+
+    order_item = models.ForeignKey(
+        "orbis.OrderItem",
+        blank=True,
+        null=True,
+        on_delete=models.CASCADE,
+        related_name="licences",
+    )
+
+    def clean(self):
+        # extra validation to ensure that the customer_user belongs to the customer
+        # TODO: https://github.com/jazzband/django-smart-selects might also help
+
+        if self.customer_user:
+            if self.customer_user.customer != self.customer:
+                raise ValidationError(
+                    f"The licence user must belong to {self.customer}."
+                )

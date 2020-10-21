@@ -12,7 +12,7 @@ describe('Admin organisation Menu Component', () => {
   beforeEach(() => {
     setVisiblePanel = jest.fn();
     selectedCustomer = {
-      name: 'Cyberdyne Systems',
+      title: 'Cyberdyne Systems',
       logo: 'https://ichef.bbci.co.uk/images/ic/1200x675/p03t1sm8.jpg',
     };
   });
@@ -25,8 +25,8 @@ describe('Admin organisation Menu Component', () => {
       />,
     );
 
-    expect(getByText(selectedCustomer.name)).toBeInTheDocument();
-    expect(getByAltText('Organisation Logo')).toBeInTheDocument();
+    expect(getByText(selectedCustomer.title)).toBeInTheDocument();
+    expect(getByAltText('Cyberdyne Systems Logo')).toBeInTheDocument();
   });
 
   it('should switch content panel view to corporate account when customer logo is clicked', () => {
@@ -37,7 +37,7 @@ describe('Admin organisation Menu Component', () => {
       />,
     );
 
-    fireEvent.click(getByAltText('Organisation Logo'));
+    fireEvent.click(getByAltText('Cyberdyne Systems Logo'));
     expect(setVisiblePanel).toHaveBeenCalledWith(ADMIN_VIEW.corporateAccount);
   });
 
@@ -49,7 +49,7 @@ describe('Admin organisation Menu Component', () => {
       />,
     );
 
-    fireEvent.click(getByText(selectedCustomer.name));
+    fireEvent.click(getByText(selectedCustomer.title));
     expect(setVisiblePanel).toHaveBeenCalledWith(ADMIN_VIEW.corporateAccount);
   });
 

@@ -30,6 +30,18 @@ const adminSlice = createSlice({
       state.error = payload;
       state.isLoading = false;
     },
+    updateCustomerRequested: state => {
+      state.isLoading = true;
+    },
+    updateCustomerSuccess: (state, { payload }) => {
+      state.currentCustomer = payload;
+      state.isLoading = false;
+      state.error = null;
+    },
+    updateCustomerFailure: (state, { payload }) => {
+      state.error = payload;
+      state.isLoading = false;
+    },
     fetchCustomerUsersRequested: state => {
       state.isLoading = true;
     },
@@ -123,6 +135,9 @@ export const {
   fetchCustomerRequested,
   fetchCustomerSuccess,
   fetchCustomerFailure,
+  updateCustomerRequested,
+  updateCustomerSuccess,
+  updateCustomerFailure,
   fetchCustomerUsersRequested,
   fetchCustomerUsersSuccess,
   fetchCustomerUsersFailure,
@@ -179,6 +194,36 @@ export const fetchCustomer = user => async (dispatch, getState) => {
 
   const currentCustomer = await response.json();
   return dispatch(fetchCustomerSuccess(currentCustomer));
+};
+
+export const updateCustomer = newCustomer => async (dispatch, getState) => {
+  const headers = getJsonAuthHeaders(getState());
+  dispatch(updateCustomerRequested());
+
+  const response = await sendData(
+    `${API}${newCustomer.id}`,
+    newCustomer,
+    headers,
+    'PUT',
+  );
+
+  if (!response.ok)
+    return handleFailure(
+      response,
+      'Updating Customer Error',
+      updateCustomerFailure,
+      dispatch,
+    );
+
+  NotificationManager.success(
+    'Successfully updated account',
+    '',
+    5000,
+    () => {},
+  );
+
+  const updatedCustomer = await response.json();
+  return dispatch(updateCustomerSuccess(updatedCustomer));
 };
 
 export const fetchCustomerUsers = customer => async (dispatch, getState) => {

@@ -3,6 +3,7 @@ const currentUserMiddleware = require('../authentication/middleware/currentUserM
 const {
   getCustomer,
   createCustomer,
+  updateCustomer,
   getCustomerUsers,
   getSelectedUser,
   createCustomerUser,
@@ -21,6 +22,15 @@ const getCustomerHandler = (req, res) => {
 const createCustomerHandler = (req, res) => {
   res.status(200);
   res.json(createCustomer(req.body));
+};
+
+const updateCustomerHandler = (req, res) => {
+  console.log('Returning Updated Customer');
+
+  const updatedCustomer = updateCustomer(req.body);
+
+  res.status(200);
+  res.json(updatedCustomer);
 };
 
 const getCustomerUsersHandler = (req, res) => {
@@ -84,7 +94,10 @@ const customersRouter = express.Router();
 
 customersRouter.route('/').post(createCustomerHandler);
 
-customersRouter.route('/:customerId').get(getCustomerHandler);
+customersRouter
+  .route('/:customerId')
+  .get(getCustomerHandler)
+  .put(updateCustomerHandler);
 
 customersRouter
   .route('/:customerId/users')

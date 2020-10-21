@@ -6,6 +6,9 @@ let customers = [
     type: 'MULTIPLE',
     name: 'cyberdyne',
     title: 'Cyberdyne Systems',
+    country: 'United States',
+    address: '123 Fake Street',
+    postcode: 'EH6 1UF',
     description: 'Bringing you the future, today.',
     logo: 'https://ichef.bbci.co.uk/images/ic/1200x675/p03t1sm8.jpg',
     roles: ['SaveTheWorldRole'],
@@ -482,6 +485,13 @@ const createCustomer = data => {
   return newCustomer;
 };
 
+const updateCustomer = newCustomer => {
+  const index = customers.findIndex(cust => cust.id === newCustomer.id);
+
+  customers[index] = newCustomer;
+  return customers[index];
+};
+
 const getCustomerUsers = customerId =>
   customerUsers.filter(cu => cu.customer === customerId);
 
@@ -531,7 +541,7 @@ const inviteCustomerUser = customerUser => {
 
   const invitation_date = new Date().toISOString();
 
-  invitedCustomerUser = {
+  const invitedCustomerUser = {
     ...customerUser,
     invitation_date,
   };
@@ -564,6 +574,7 @@ const createOrder = (user, customerId, data) => {
 module.exports = {
   getCustomer,
   createCustomer,
+  updateCustomer,
   getCustomerUsers,
   createCustomerUser,
   updateCustomerUser,

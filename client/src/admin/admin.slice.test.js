@@ -22,6 +22,10 @@ import reducer, {
   createCustomerUserSuccess,
   createCustomerUserFailure,
   createCustomerUser,
+  updateCustomerRequested,
+  updateCustomerSuccess,
+  updateCustomerFailure,
+  updateCustomer,
   selectCurrentCustomer,
   selectCustomerUsers,
   selectLicenceInformation,
@@ -46,6 +50,57 @@ describe('Admin Slice', () => {
           },
           customerUsers: [],
         },
+      });
+    });
+
+    describe('updateCustomer', () => {
+      it('should dispatch update customer failure action.', async () => {
+        const customer = {
+          name: 'test_customer',
+        };
+
+        fetch.mockResponse(
+          JSON.stringify({
+            message: 'Test error message',
+          }),
+          {
+            ok: false,
+            status: 401,
+            statusText: 'Test Error',
+          },
+        );
+
+        const expectedActions = [
+          { type: updateCustomerRequested.type },
+          {
+            type: updateCustomerFailure.type,
+            payload: { message: '401 Test Error' },
+          },
+        ];
+
+        await store.dispatch(updateCustomer(customer));
+
+        expect(store.getActions()).toEqual(expectedActions);
+      });
+
+      it('should dispatch update customer success action.', async () => {
+        const updatedCustomer = {
+          name: 'test_customer',
+        };
+
+        fetch.mockResponse(JSON.stringify(updatedCustomer));
+
+        const expectedActions = [
+          { type: updateCustomerRequested.type },
+          {
+            type: updateCustomerSuccess.type,
+            payload: updatedCustomer,
+          },
+        ];
+
+        await store.dispatch(updateCustomer(updatedCustomer));
+
+        expect(store.getActions()).toEqual(expectedActions);
       });
     });
 
@@ -316,8 +371,7 @@ describe('Admin Slice', () => {
     });
 
     describe('inviteCustomerUser', () => {
-      it('should dispatch invite customer user failure action', async() => {
-
+      it('should dispatch invite customer user failure action', async () => {
         const customerUser = {
           id: '1',
           status: 'PENDING',
@@ -327,7 +381,7 @@ describe('Admin Slice', () => {
             id: '1',
             name: 'Test User',
             email: 'test.user@test.com',
-          }
+          },
         };
 
         fetch.mockResponse(
@@ -352,10 +406,9 @@ describe('Admin Slice', () => {
         await store.dispatch(inviteCustomerUser(customerUser));
 
         expect(store.getActions()).toEqual(expectedActions);
+      });
 
-      })
-
-      it('should dispatch invite customer user success action', async() => {
+      it('should dispatch invite customer user success action', async () => {
         const invitedCustomerUser = {
           id: '1',
           status: 'PENDING',
@@ -368,14 +421,14 @@ describe('Admin Slice', () => {
           },
         };
 
-        fetch.once(JSON.stringify(invitedCustomerUser))
+        fetch.once(JSON.stringify(invitedCustomerUser));
 
         const expectedActions = [
           { type: inviteCustomerUserRequested.type },
           {
             type: inviteCustomerUserSuccess.type,
             payload: {
-              invitedCustomerUser
+              invitedCustomerUser,
             },
           },
         ];
@@ -383,8 +436,7 @@ describe('Admin Slice', () => {
         await store.dispatch(inviteCustomerUser(invitedCustomerUser));
 
         expect(store.getActions()).toEqual(expectedActions);
-      })
-
+      });
     });
 
     describe('deleteCustomerUser', () => {
