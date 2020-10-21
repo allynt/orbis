@@ -1,4 +1,7 @@
-import { setCurrentCustomer } from 'admin/admin.slice';
+import {
+  createCustomerUserSuccess,
+  setCurrentCustomer,
+} from 'admin/admin.slice';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import reducer, {
@@ -459,6 +462,24 @@ describe('Accounts Slice', () => {
         registeredNumber: '1234',
         subscriptionPeriod: '2021-04-01T00:00:00+0000',
       };
+      const createCustomerResponse = {
+        id: 'fake-customer-id-123',
+        type: 'MULTIPLE',
+        name: formValues.customerName,
+        official_name: formValues.customerNameOfficial,
+        company_type: formValues.customerType,
+        registered_id: formValues.registeredNumber,
+      };
+      const createCustomerUserResponse = {
+        id: 'fake-customer-user-id-123',
+        type: 'MANAGER',
+        status: 'ACTIVE',
+        invitation_date: new Date().toISOString(),
+        user: {
+          id: 'fake-user-id-123',
+        },
+        customer: 'fake-customer-id-123',
+      };
       beforeEach(() => {
         dispatch = jest.fn();
         getState = jest.fn(() => ({ accounts: { userKey: '123' } }));
@@ -468,22 +489,12 @@ describe('Accounts Slice', () => {
         expect(dispatch).toHaveBeenCalledWith(fetchRequested());
       });
 
-      it('dispatches success and sets customer on successful creation', async () => {
-        const createCustomerResponse = {
-          id: '311221cb-fe5b-43aa-b48e-027cfb460615',
-          type: 'MULTIPLE',
-          name: formValues.customerName,
-          official_name: formValues.customerNameOfficial,
-          company_type: formValues.customerType,
-          registered_id: formValues.registeredNumber,
-        };
-
+      it('creates new customer and sets in state', async () => {
         fetchMock.once(JSON.stringify(createCustomerResponse));
         await registerCustomer(formValues)(dispatch, getState, undefined);
         expect(dispatch).toHaveBeenCalledWith(
           setCurrentCustomer(createCustomerResponse),
         );
-        expect(dispatch).toHaveBeenCalledWith(registerCustomerSuccess());
       });
 
       it('dispatches failure on error', async () => {
@@ -496,6 +507,16 @@ describe('Accounts Slice', () => {
         await registerCustomer(formValues)(dispatch, getState, undefined);
         expect(dispatch).toHaveBeenCalledWith(
           registerCustomerFailure(['problem']),
+        );
+      });
+
+      it('creates a customer user and sets in state', async () => {
+        fetch
+          .once(JSON.stringify(createCustomerResponse))
+          .once(JSON.stringify(createCustomerUserResponse));
+        await registerCustomer(formValues)(dispatch, getState, undefined);
+        expect(dispatch).toHaveBeenCalledWith(
+          createCustomerUserSuccess({ user: createCustomerUserResponse }),
         );
       });
     });

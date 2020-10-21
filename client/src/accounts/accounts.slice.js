@@ -1,5 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { setCurrentCustomer } from 'admin/admin.slice';
+import {
+  createCustomerUserSuccess,
+  setCurrentCustomer,
+} from 'admin/admin.slice';
 import { push } from 'connected-react-router';
 import { NotificationManager } from 'react-notifications';
 import { persistReducer } from 'redux-persist';
@@ -12,7 +15,11 @@ import {
   sendData,
 } from 'utils/http';
 import { FIELD_NAMES } from 'utils/validators';
-import { REGISTER_CUSTOMER, RESEND } from './accounts.constants';
+import {
+  REGISTER_CUSTOMER,
+  REGISTER_CUSTOMER_ORDER,
+  RESEND,
+} from './accounts.constants';
 
 const API_PREFIX = '/api/authentication/';
 const API = {
@@ -243,22 +250,39 @@ export const registerUser = form => async dispatch => {
  */
 export const registerCustomer = form => async (dispatch, getState) => {
   dispatch(fetchRequested());
+  const headers = getJsonAuthHeaders(getState());
   const data = {
     ...mapData(form, FIELD_MAPPING.registerCustomer),
     type: 'MULTIPLE',
   };
-  const response = await sendData(
+  const createCustomerResponse = await sendData(
     API.registerCustomer,
     data,
-    getJsonAuthHeaders(getState()),
+    headers,
   );
-  if (!response.ok) {
-    const errors = await response.json();
+  if (!createCustomerResponse.ok) {
+    const errors = await createCustomerResponse.json();
     return dispatch(registerCustomerFailure(errorTransformer(errors)));
   }
-  const customer = await response.json();
+  const customer = await createCustomerResponse.json();
   dispatch(setCurrentCustomer(customer));
+  const createCustomerUserResponse = await sendData(
+    `/api/customers/${customer.id}/users/`,
+    {
+      type: 'MANAGER',
+      status: 'ACTIVE',
+      user: {
+        email: form.email,
+      },
+      licences: [],
+      customer: customer.name,
+    },
+    headers,
+  );
+  const customerUser = await createCustomerUserResponse.json();
+  dispatch(createCustomerUserSuccess({ user: customerUser }));
   dispatch(registerCustomerSuccess());
+  dispatch(push(REGISTER_CUSTOMER_ORDER));
 };
 
 export const activateAccount = form => async dispatch => {

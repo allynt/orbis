@@ -102,7 +102,7 @@ const adminSlice = createSlice({
     },
     createCustomerUserSuccess: (state, { payload }) => {
       if (payload.user)
-        state.customerUsers = [...state.customerUsers, payload.user];
+        state.customerUsers = [...(state.customerUsers || []), payload.user];
       if (payload.customer) state.currentCustomer = payload.customer;
       state.isLoading = false;
       state.error = null;
