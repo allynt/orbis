@@ -5,7 +5,6 @@ from django.core.exceptions import ValidationError
 from django.core.validators import MaxValueValidator
 from django.db import models
 from django.db.models import Q, F
-from django.utils import timezone
 from django.utils.html import mark_safe
 
 from astrosat_users.models import Customer, CustomerUser

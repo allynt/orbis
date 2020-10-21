@@ -4,21 +4,10 @@ from django.utils.functional import cached_property
 from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated, BasePermission
 
+from astrosat_users.views.views_customers import IsAdminOrManager
+
 from orbis.models import Order, LicencedCustomer as Customer
 from orbis.serializers import OrderSerializer
-
-
-class IsAdminOrManager(BasePermission):
-    """
-    Only the admin or a Customer Manager can access this view.
-    (Relies on the property "active_managers" in the views below.)
-    """
-
-    message = "Only a customer manager can perform this action."
-
-    def has_permission(self, request, view):
-        user = request.user
-        return user.is_superuser or view.active_managers.filter(user=user).exists()
 
 
 class OrderListCreateView(generics.ListCreateAPIView):
