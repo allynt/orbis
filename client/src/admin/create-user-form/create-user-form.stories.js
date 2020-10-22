@@ -18,3 +18,11 @@ export const UnavailableLicences = () => (
     licenceInformation={{ Rice: { available: 0 }, Oil: { available: 5 } }}
   />
 );
+
+export const TonnesOfLicences = () => (
+  <CreateUserForm
+    licenceInformation={new Array(30)
+      .fill(undefined)
+      .reduce((acc, cur, i) => ({ ...acc, [i]: { available: 1 } }), {})}
+  />
+);

@@ -9,11 +9,7 @@
 }
 
 .editForm {
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: flex-start;
-  width: 100%;
-  height: 100%;
+  composes: form from '../create-user-form/create-user-form.module.css';
 }
 
 .title {
