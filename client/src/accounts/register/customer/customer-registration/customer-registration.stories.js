@@ -1,3 +1,4 @@
+import Wrapper from 'accounts/wrapper.component';
 import React from 'react';
 import CustomerRegistration from './customer-registration.component';
 
@@ -8,3 +9,9 @@ export default {
 };
 
 export const Form = args => <CustomerRegistration {...args} />;
+
+export const InWrapper = args => (
+  <Wrapper>
+    <CustomerRegistration {...args} />
+  </Wrapper>
+);

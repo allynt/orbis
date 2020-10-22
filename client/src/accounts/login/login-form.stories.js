@@ -1,3 +1,4 @@
+import Wrapper from 'accounts/wrapper.component';
 import React from 'react';
 import { Router } from 'react-router-dom';
 import { history } from '../../root.reducer';
@@ -44,3 +45,9 @@ CustomerSignUpLogin.args = {
     requires_customer_registration_completion: true,
   },
 };
+
+export const InWrapper = args => (
+  <Wrapper>
+    <LoginForm {...args} />
+  </Wrapper>
+);
