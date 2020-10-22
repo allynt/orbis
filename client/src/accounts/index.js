@@ -78,6 +78,8 @@ export default () => {
           render={() => (
             <CustomerRegistration
               email={user?.email}
+              serverErrors={error}
+              isLoading={isLoading}
               onSubmit={values => dispatch(registerCustomer(values))}
             />
           )}
@@ -98,7 +100,11 @@ export default () => {
           exact
           path={REGISTER_CUSTOMER_ORDER}
           render={() => (
-            <OrderForm onSubmit={values => dispatch(placeOrder(values))} />
+            <OrderForm
+              serverErrors={error}
+              isLoading={isLoading}
+              onSubmit={values => dispatch(placeOrder(values))}
+            />
           )}
         />
         <Route
