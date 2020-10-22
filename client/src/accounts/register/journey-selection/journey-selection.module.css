@@ -35,7 +35,6 @@
 .smallPrint {
   composes: paragraph from '../../../forms.module.css';
   font-size: 0.5rem;
-  max-width: 100ch;
 }
 
 .link {

@@ -1,3 +1,4 @@
+import Wrapper from 'accounts/wrapper.component';
 import React from 'react';
 import { Router } from 'react-router-dom';
 import { history } from 'root.reducer';
@@ -26,3 +27,9 @@ export const IsLoading = args => <ResendVerificationEmail {...args} />;
 IsLoading.args = {
   isLoading: true,
 };
+
+export const InWrapper = args => (
+  <Wrapper>
+    <ResendVerificationEmail {...args} />
+  </Wrapper>
+);
