@@ -585,7 +585,7 @@ describe('Accounts Slice', () => {
         subscription: 'core',
       };
 
-      const successResponseBody = {
+      const placeOrderResponseBody = {
         id: 'fb0e3db8-0302-41b5-9ca5-cfe763393674',
         user: 'test@test.com',
         created: new Date().toISOString(),
@@ -602,8 +602,14 @@ describe('Accounts Slice', () => {
         ],
       };
 
+      const fetchCustomerResponseBody = {
+        id: 'fake-customer-id-123',
+      };
+
       const failureResponseBody = {
-        test: ['¿problema?'],
+        errors: {
+          test: ['¿problema?'],
+        },
       };
 
       it('starts the request', async () => {
@@ -612,26 +618,50 @@ describe('Accounts Slice', () => {
       });
 
       it('calls the success action on successful request', async () => {
-        fetch.once(JSON.stringify(successResponseBody));
+        fetch.once(JSON.stringify(placeOrderResponseBody));
         await placeOrder(formValues)(dispatch, getState, undefined);
         expect(dispatch).toHaveBeenCalledWith(placeOrderSuccess());
       });
 
       it('navigates to landing on success', async () => {
-        fetch.once(JSON.stringify(successResponseBody));
+        fetch.once(JSON.stringify(placeOrderResponseBody));
         await placeOrder(formValues)(dispatch, getState, undefined);
         expect(dispatch).toHaveBeenCalledWith(push('/'));
       });
 
       it('calls the failure action on failed request', async () => {
-        fetch.once(JSON.stringify({ errors: failureResponseBody }), {
+        fetch.once(JSON.stringify(failureResponseBody), {
           ok: false,
           status: 401,
           statusText: 'Test Error',
         });
         await placeOrder(formValues)(dispatch, getState, undefined);
         expect(dispatch).toHaveBeenCalledWith(
-          placeOrderFailure({ errors: failureResponseBody.test }),
+          placeOrderFailure({ errors: failureResponseBody.errors.test }),
+        );
+      });
+
+      it('fetches the updated customer and sets', async () => {
+        fetch
+          .once(JSON.stringify(placeOrderResponseBody))
+          .once(JSON.stringify(fetchCustomerResponseBody));
+        await placeOrder(formValues)(dispatch, getState, undefined);
+        expect(dispatch).toHaveBeenCalledWith(
+          setCurrentCustomer(fetchCustomerResponseBody),
+        );
+      });
+
+      it('calls the failure action on fetch customer failure', async () => {
+        fetch
+          .once(JSON.stringify(placeOrderResponseBody))
+          .once(JSON.stringify(failureResponseBody), {
+            ok: false,
+            status: 418,
+            statusText: 'ERROR',
+          });
+        await placeOrder(formValues)(dispatch, getState, undefined);
+        expect(dispatch).toHaveBeenCalledWith(
+          placeOrderFailure({ errors: failureResponseBody.errors.test }),
         );
       });
     });

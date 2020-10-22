@@ -21,6 +21,7 @@ import {
   REGISTER_CUSTOMER_ORDER,
   RESEND,
 } from './accounts.constants';
+import { userSelector } from './accounts.selectors';
 
 const API_PREFIX = '/api/authentication/';
 const API = {
@@ -325,6 +326,7 @@ export const registerCustomer = form => async (dispatch, getState) => {
  */
 export const placeOrder = form => async (dispatch, getState) => {
   dispatch(fetchRequested());
+  const headers = getJsonAuthHeaders(getState());
   let data = mapData(form, FIELD_MAPPING.placeOrder);
   data = {
     order_type: data.order_type,
@@ -337,17 +339,29 @@ export const placeOrder = form => async (dispatch, getState) => {
       },
     ],
   };
-  const currentCustomer = selectCurrentCustomer(getState());
+  const currentCustomerId =
+    selectCurrentCustomer(getState())?.id ||
+    userSelector(getState())?.customers[0]?.id;
   const response = await sendData(
-    `/api/customers/${currentCustomer.id}/orders/`,
+    `/api/customers/${currentCustomerId}/orders/`,
     data,
-    getJsonAuthHeaders(getState()),
+    headers,
   );
   if (!response.ok) {
     const body = await response.json();
     return dispatch(placeOrderFailure({ errors: errorTransformer(body) }));
   }
-  // Re-fetch, customer, customerusers and user
+  const fetchCustomerResponse = await getData(
+    `/api/customers/${currentCustomerId}`,
+    headers,
+  );
+  if (!fetchCustomerResponse.ok) {
+    const errors = await fetchCustomerResponse.json();
+    return dispatch(placeOrderFailure({ errors: errorTransformer(errors) }));
+  }
+  const customer = await fetchCustomerResponse.json();
+  console.log(customer);
+  dispatch(setCurrentCustomer(customer));
   dispatch(placeOrderSuccess());
   dispatch(push('/'));
 };
