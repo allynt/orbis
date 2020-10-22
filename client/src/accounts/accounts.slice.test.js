@@ -493,6 +493,10 @@ describe('Accounts Slice', () => {
         },
         customer: 'fake-customer-id-123',
       };
+      const fetchUserResponse = {
+        id: 'fake-user-id-123',
+      };
+      const errorResponse = { errors: { test: ['problem'] } };
 
       it('starts the request', async () => {
         await registerCustomer(formValues)(dispatch, getState, undefined);
@@ -507,8 +511,7 @@ describe('Accounts Slice', () => {
         );
       });
 
-      it('dispatches failure on error', async () => {
-        const errorResponse = { errors: { test: ['problem'] } };
+      it('dispatches failure on create customer error', async () => {
         fetch.once(JSON.stringify(errorResponse), {
           ok: false,
           status: 401,
@@ -527,6 +530,46 @@ describe('Accounts Slice', () => {
         await registerCustomer(formValues)(dispatch, getState, undefined);
         expect(dispatch).toHaveBeenCalledWith(
           createCustomerUserSuccess({ user: createCustomerUserResponse }),
+        );
+      });
+
+      it('dispatches failure on customer user creation error', async () => {
+        fetch
+          .once(JSON.stringify(createCustomerResponse))
+          .once(JSON.stringify(errorResponse), {
+            ok: false,
+            status: 401,
+            statusText: 'Test Error',
+          });
+        await registerCustomer(formValues)(dispatch, getState, undefined);
+        expect(dispatch).toHaveBeenCalledWith(
+          registerCustomerFailure(errorResponse.errors.test),
+        );
+      });
+
+      it('fetches the user after customer and customer user creation', async () => {
+        fetch
+          .once(JSON.stringify(createCustomerResponse))
+          .once(JSON.stringify(createCustomerUserResponse))
+          .once(JSON.stringify(fetchUserResponse));
+        await registerCustomer(formValues)(dispatch, getState, undefined);
+        expect(dispatch).toHaveBeenCalledWith(
+          fetchUserSuccess(fetchUserResponse),
+        );
+      });
+
+      it('dispatches failure on fetch user failure', async () => {
+        fetch
+          .once(JSON.stringify(createCustomerResponse))
+          .once(JSON.stringify(createCustomerUserResponse))
+          .once(JSON.stringify(errorResponse), {
+            ok: false,
+            status: 401,
+            statusText: 'Test Error',
+          });
+        await registerCustomer(formValues)(dispatch, getState, undefined);
+        expect(dispatch).toHaveBeenCalledWith(
+          registerCustomerFailure(errorResponse.errors.test),
         );
       });
     });

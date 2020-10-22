@@ -59,7 +59,6 @@ export default () => {
   const changeStatus = useSelector(passwordChangeStatusSelector);
   /** @type {User} */
   const user = useSelector(userSelector);
-  const userKey = useSelector(userKeySelector);
   const passwordConfig = useSelector(passwordConfigSelector);
 
   return (
