@@ -27,6 +27,11 @@ export const userKeySelector = createSelector(
   accounts => accounts?.userKey,
 );
 
+export const isLoggedInSelector = createSelector(
+  baseSelector,
+  accounts => !!accounts.userKey && !!accounts.user,
+);
+
 export const isLoadingSelector = createSelector(
   baseSelector,
   accounts => accounts?.isLoading,

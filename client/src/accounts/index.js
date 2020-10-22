@@ -9,6 +9,7 @@ import { ReactComponent as OrbisLogo } from '../orbis-dark.svg';
 import {
   errorSelector,
   isLoadingSelector,
+  isLoggedInSelector,
   passwordChangeStatusSelector,
   passwordResetStatusSelector,
   userKeySelector,
@@ -53,6 +54,7 @@ export default () => {
   const dispatch = useDispatch();
   const error = useSelector(errorSelector);
   const isLoading = useSelector(isLoadingSelector);
+  const isLoggedIn = useSelector(isLoggedInSelector);
   const resetStatus = useSelector(passwordResetStatusSelector);
   const changeStatus = useSelector(passwordChangeStatusSelector);
   /** @type {User} */
@@ -108,10 +110,10 @@ export default () => {
             exact
             path={[LOGIN, CONFIRM_EMAIL]}
             render={props =>
-              user &&
+              isLoggedIn &&
               user.is_verified &&
               user.is_verified !== 'False' &&
-              userKey ? (
+              !user.requires_customer_registration_completion ? (
                 <Redirect to="/" />
               ) : (
                 <LoginForm
