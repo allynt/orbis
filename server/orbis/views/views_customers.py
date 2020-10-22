@@ -1,5 +1,6 @@
 from allauth.account.adapter import get_adapter
 
+from astrosat_users.models.models_users import UserRegistrationStageType
 from astrosat_users.serializers import (
     CustomerSerializer as AstrosatUsersCustomerSerializer,
     CustomerUserSerializer as AstrosatUsersCustomerUserSerializer,
@@ -66,6 +67,12 @@ class CustomerUserListView(LicenceNotifyingMixIn, AstrosatUsersCustomerUserListV
     def perform_create(self, serializer):
 
         customer_user = serializer.save()
+
+        user = self.request.user
+        if user.registration_stage == UserRegistrationStageType.CUSTOMER_USER:
+            user.registration_stage = UserRegistrationStageType.ORDER
+            user.save()
+
         customer_user.invite(adapter=get_adapter(self.request))
 
         if customer_user.licences.visible().count():
