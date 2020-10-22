@@ -55,6 +55,7 @@ export default () => {
   const isLoading = useSelector(isLoadingSelector);
   const resetStatus = useSelector(passwordResetStatusSelector);
   const changeStatus = useSelector(passwordChangeStatusSelector);
+  /** @type {User} */
   const user = useSelector(userSelector);
   const userKey = useSelector(userKeySelector);
   const passwordConfig = useSelector(passwordConfigSelector);

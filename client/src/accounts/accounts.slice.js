@@ -299,7 +299,6 @@ export const registerCustomer = form => async (dispatch, getState) => {
         email: form.email,
       },
       licences: [],
-      customer: customer.name,
     },
     headers,
   );
@@ -372,14 +371,13 @@ export const fetchUser = (email = 'current') => async (dispatch, getState) => {
 export const login = form => async dispatch => {
   dispatch(fetchRequested());
   const response = await sendData(API.login, form, JSON_HEADERS);
-
   if (!response.ok) {
     const responseObject = await response.json();
     if (
       responseObject?.user?.is_verified === 'False' ||
-      !responseObject.user?.is_verified === false
+      responseObject.user?.is_verified === false
     )
-      dispatch(push('/accounts/resend'));
+      dispatch(push(RESEND));
     return dispatch(
       loginUserFailure({
         ...responseObject,
