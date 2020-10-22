@@ -73,7 +73,7 @@ const CustomerRegistration = ({ email, onSubmit }) => {
   };
 
   return (
-    <form style={{ height: '100%' }} onSubmit={handleSubmit(transformValues)}>
+    <form onSubmit={handleSubmit(transformValues)}>
       <p className={styles.paragraph}>
         <b>Welcome to Orbis.</b> Please complete your account details to
         continue on your path to explore Orbis data. The form below will

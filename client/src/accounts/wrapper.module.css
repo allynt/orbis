@@ -1,25 +1,25 @@
-.page,
-.container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
 .page {
+  display: flex;
+  place-content: center;
   width: 100%;
-  height: 100%;
+  height: 100vh;
+  padding: 5rem;
   background: url('./background.png');
 }
 
 .container {
-  width: 37.875rem;
+  display: flex;
   flex-direction: column;
-  padding: 1.875rem 6.5rem;
+  width: 37.875rem;
+  max-height: 100%;
+  overflow-y: auto;
   border-radius: 0.9375rem;
+  padding: 2rem 6rem 3rem;
   background-color: #ffffff;
 }
 
 .logo {
   width: 11.5rem;
-  margin: 0.5rem 0 2rem;
+  min-height: 6rem;
+  margin: 0 auto 2rem auto;
 }
