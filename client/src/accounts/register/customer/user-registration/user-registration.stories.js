@@ -2,6 +2,7 @@ import React from 'react';
 import { Router } from 'react-router-dom';
 import UserRegistration from './user-registration.component';
 import { history } from 'root.reducer';
+import Wrapper from 'accounts/wrapper.component';
 
 export default {
   title: 'Accounts/Customer Journey/User Registration',
@@ -33,3 +34,9 @@ export const Loading = args => <UserRegistration {...args} />;
 Loading.args = {
   isLoading: true,
 };
+
+export const InWrapper = args => (
+  <Wrapper>
+    <UserRegistration {...args} />
+  </Wrapper>
+);

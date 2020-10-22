@@ -1,25 +1,28 @@
 .page {
-  display: flex;
+  display: grid;
   place-content: center;
   width: 100%;
   height: 100vh;
-  padding: 5rem;
+  padding: 2rem;
   background: url('./background.png');
 }
 
 .container {
   display: flex;
   flex-direction: column;
-  width: 37.875rem;
-  max-height: 100%;
+  width: 100%;
+  min-width: 40rem;
+  max-width: 62.5rem;
+  height: max-content;
+  max-height: calc(100vh - calc(2 * 2rem));
   overflow-y: auto;
   border-radius: 0.9375rem;
-  padding: 2rem 6rem 3rem;
+  padding: 2rem 6rem 2rem;
   background-color: #ffffff;
 }
 
 .logo {
   width: 11.5rem;
   min-height: 6rem;
-  margin: 0 auto 2rem auto;
+  margin: 0 auto 1.5rem auto;
 }

@@ -1,5 +1,6 @@
 .field {
   composes: row from '../../forms.module.css';
+  margin-bottom: 0;
   flex-direction: column;
   align-items: flex-start;
 }
@@ -9,10 +10,6 @@
   grid-template-columns: 25ch 1fr;
   align-items: baseline;
   justify-content: flex-end;
-}
-
-.label {
-  margin-bottom: 0.5em;
 }
 
 .inline .label {
