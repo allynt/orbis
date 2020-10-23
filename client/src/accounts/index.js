@@ -114,7 +114,7 @@ export default () => {
             isLoggedIn &&
             user.is_verified &&
             user.is_verified !== 'False' &&
-            !user.requires_customer_registration_completion ? (
+            !user.registration_stage ? (
               <Redirect to="/" />
             ) : (
               <LoginForm

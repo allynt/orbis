@@ -144,7 +144,7 @@ describe('Login Form Component', () => {
 
   describe('Customer Registration Flow', () => {
     /** @type {Partial<User>} */
-    const user = { requires_customer_registration_completion: true };
+    const user = { registration_stage: 'CUSTOMER' };
 
     it('does not show the sign up link', () => {
       const { queryByRole } = renderComponent({ user });

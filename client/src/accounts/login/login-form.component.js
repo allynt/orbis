@@ -46,7 +46,7 @@ const LoginForm = ({
   activateAccount,
   login,
 }) => {
-  const isRegisteringCustomer = user?.requires_customer_registration_completion;
+  const isRegisteringCustomer = user?.registration_stage;
 
   useEffect(() => {
     if (

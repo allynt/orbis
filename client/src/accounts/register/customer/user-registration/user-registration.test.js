@@ -69,7 +69,7 @@ describe('<UserRegistration />', () => {
       newPassword: 'thisisareallygoodpassword',
       newPasswordConfirm: 'thisisareallygoodpassword',
       acceptedTerms: true,
-      requires_customer_registration_completion: true,
+      registration_stage: 'CUSTOMER',
     };
     const { getByRole, getByLabelText, onSubmit } = renderComponent();
     userEvent.type(getByRole('textbox', { name: EMAIL_REGEX }), values.email);

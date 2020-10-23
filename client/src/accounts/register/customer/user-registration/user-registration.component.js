@@ -36,7 +36,7 @@ import styles from './user-registration.module.css';
  *  newPassword: string
  *  newPasswordConfirm: string
  *  acceptedTerms: boolean
- *  requires_customer_registration_completion: boolean
+ *  registration_stage: User['registration_stage']
  * }} FormValues
  */
 
@@ -89,7 +89,7 @@ const UserRegistration = ({
           onSubmit({
             ...rest,
             name: `${firstName} ${lastName}`,
-            requires_customer_registration_completion: true,
+            registration_stage: 'CUSTOMER',
           }),
       )}
     >

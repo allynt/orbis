@@ -5,6 +5,7 @@ import {
 import { push } from 'connected-react-router';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
+import { REGISTER_CUSTOMER_ORDER } from './accounts.constants';
 import reducer, {
   registerUserFailure,
   registerUserSuccess,
@@ -556,6 +557,24 @@ describe('Accounts Slice', () => {
         expect(dispatch).toHaveBeenCalledWith(
           fetchUserSuccess(fetchUserResponse),
         );
+      });
+
+      it('dispatches the success action', async () => {
+        fetch
+          .once(JSON.stringify(createCustomerResponse))
+          .once(JSON.stringify(createCustomerUserResponse))
+          .once(JSON.stringify(fetchUserResponse));
+        await registerCustomer(formValues)(dispatch, getState, undefined);
+        expect(dispatch).toHaveBeenCalledWith(registerCustomerSuccess());
+      });
+
+      it('navigates to order view', async () => {
+        fetch
+          .once(JSON.stringify(createCustomerResponse))
+          .once(JSON.stringify(createCustomerUserResponse))
+          .once(JSON.stringify(fetchUserResponse));
+        await registerCustomer(formValues)(dispatch, getState, undefined);
+        expect(dispatch).toHaveBeenCalledWith(push(REGISTER_CUSTOMER_ORDER));
       });
 
       it('dispatches failure on fetch user failure', async () => {

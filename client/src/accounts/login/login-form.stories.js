@@ -42,7 +42,7 @@ ShouldActivate.args = {
 export const CustomerSignUpLogin = args => <LoginForm {...args} />;
 CustomerSignUpLogin.args = {
   user: {
-    requires_customer_registration_completion: true,
+    registration_stage: 'CUSTOMER',
   },
 };
 
