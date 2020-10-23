@@ -360,7 +360,6 @@ export const placeOrder = form => async (dispatch, getState) => {
     return dispatch(placeOrderFailure({ errors: errorTransformer(errors) }));
   }
   const customer = await fetchCustomerResponse.json();
-  console.log(customer);
   dispatch(setCurrentCustomer(customer));
   dispatch(placeOrderSuccess());
   dispatch(push('/'));
@@ -399,11 +398,7 @@ export const login = form => async dispatch => {
   const response = await sendData(API.login, form, JSON_HEADERS);
   if (!response.ok) {
     const responseObject = await response.json();
-    if (
-      responseObject?.user?.is_verified === 'False' ||
-      responseObject.user?.is_verified === false
-    )
-      dispatch(push(RESEND));
+    if (!responseObject.user?.is_verified) dispatch(push(RESEND));
     return dispatch(
       loginUserFailure({
         ...responseObject,
@@ -415,7 +410,7 @@ export const login = form => async dispatch => {
   const headers = getJsonAuthHeaders({ accounts: { userKey } });
   const fetchUserResponse = await getData(`${API.user}current/`, headers);
   if (!fetchUserResponse.ok) {
-    const responseObject = await response.json();
+    const responseObject = await fetchUserResponse.json();
     return dispatch(
       loginUserFailure({
         errors: errorTransformer(responseObject),
@@ -425,9 +420,15 @@ export const login = form => async dispatch => {
   /** @type {User} */
   const user = await fetchUserResponse.json();
   dispatch(loginUserSuccess({ userKey, user }));
-  return user.requires_customer_registration_completion
-    ? dispatch(push(REGISTER_CUSTOMER))
-    : dispatch(push('/'));
+  switch (user.registration_stage) {
+    case 'CUSTOMER':
+    case 'CUSTOMER_USER':
+      return dispatch(push(REGISTER_CUSTOMER));
+    case 'ORDER':
+      return dispatch(push(REGISTER_CUSTOMER_ORDER));
+    default:
+      return dispatch(push('/'));
+  }
 };
 
 export const resendVerificationEmail = email => async dispatch => {

@@ -5,7 +5,11 @@ import {
 import { push } from 'connected-react-router';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
-import { REGISTER_CUSTOMER_ORDER } from './accounts.constants';
+import {
+  REGISTER_CUSTOMER,
+  REGISTER_CUSTOMER_ORDER,
+  RESEND,
+} from './accounts.constants';
 import reducer, {
   registerUserFailure,
   registerUserSuccess,
@@ -149,69 +153,6 @@ describe('Accounts Slice', () => {
       ];
 
       await store.dispatch(fetchUser());
-      expect(store.getActions()).toEqual(expectedActions);
-    });
-
-    it('should dispatch login failure action.', async () => {
-      fetch.mockResponse(
-        JSON.stringify({
-          errors: errorMessages,
-        }),
-        {
-          ok: false,
-          status: 401,
-          statusText: 'Test Error',
-        },
-      );
-
-      const expectedActions = [
-        { type: fetchRequested.type, payload: undefined },
-        {
-          type: loginUserFailure.type,
-          payload: {
-            errors: [
-              'First error relating to failed request.',
-              'Second error relating to failed request.',
-              'Third error relating to failed request.',
-            ],
-          },
-        },
-      ];
-
-      const form = {
-        email: 'testusername@test.com',
-        password: 'password2',
-      };
-      await store.dispatch(login(form));
-
-      expect(store.getActions()).toEqual(expectedActions);
-    });
-
-    it('should dispatch login success action.', async () => {
-      const userKey = { token: 'testkey' };
-      const user = { username: 'testusername', email: 'testusername@test.com' };
-
-      fetch.once(JSON.stringify(userKey)).once(JSON.stringify(user));
-
-      const expectedActions = [
-        { type: fetchRequested.type, payload: undefined },
-        {
-          type: loginUserSuccess.type,
-          payload: { userKey: userKey.token, user },
-        },
-        {
-          payload: { args: ['/'], method: 'push' },
-          type: '@@router/CALL_HISTORY_METHOD',
-        },
-      ];
-
-      const form = {
-        email: 'testusername@test.com',
-        password: 'password2',
-      };
-
-      await store.dispatch(login(form));
-
       expect(store.getActions()).toEqual(expectedActions);
     });
 
@@ -682,6 +623,122 @@ describe('Accounts Slice', () => {
         expect(dispatch).toHaveBeenCalledWith(
           placeOrderFailure({ errors: failureResponseBody.errors.test }),
         );
+      });
+    });
+
+    describe('login', () => {
+      const formValues = {
+        email: 'test@test.com',
+        password: 'reallystongpasswordthis',
+      };
+
+      const loginResponse = {
+        token: '123',
+        user: {
+          id: '123',
+        },
+      };
+
+      const loginReponseUserNotVerified = {
+        ...loginResponse,
+        user: {
+          ...loginResponse.user,
+          is_verified: false,
+        },
+      };
+
+      const getUserResponse = { id: 'fake-user-id-123' };
+
+      const getUserCustomerResponse = {
+        ...getUserResponse,
+        registration_stage: 'CUSTOMER',
+      };
+
+      const getUserOrderResponse = {
+        ...getUserResponse,
+        registration_stage: 'ORDER',
+      };
+
+      const errorResponse = {
+        user: getUserResponse,
+        errors: { test: ['Foobar'] },
+      };
+
+      it('starts the request', async () => {
+        await login(formValues)(dispatch);
+        expect(dispatch).toHaveBeenCalledWith(fetchRequested());
+      });
+
+      it('shows the resend email view if the user is not verified', async () => {
+        fetch.once(JSON.stringify(loginReponseUserNotVerified), {
+          ok: false,
+          status: 418,
+          statusText: 'Error',
+        });
+        await login(formValues)(dispatch);
+        expect(dispatch).toHaveBeenCalledWith(push(RESEND));
+      });
+
+      it('dispatches the failure action if the login request fails', async () => {
+        fetch.once(JSON.stringify(errorResponse), {
+          ok: false,
+          status: 418,
+          statusText: 'Error',
+        });
+        await login(formValues)(dispatch);
+        expect(dispatch).toHaveBeenCalledWith(
+          loginUserFailure({
+            ...errorResponse,
+            errors: errorResponse.errors.test,
+          }),
+        );
+      });
+
+      it('fetches the user and dispatches success action', async () => {
+        fetch
+          .once(JSON.stringify(loginResponse))
+          .once(JSON.stringify(getUserResponse));
+        await login(formValues)(dispatch);
+        expect(dispatch).toHaveBeenCalledWith(
+          loginUserSuccess({
+            userKey: loginResponse.token,
+            user: getUserResponse,
+          }),
+        );
+      });
+
+      it('dispatches the failure action if the get user request fails', async () => {
+        fetch
+          .once(JSON.stringify(loginResponse))
+          .once(JSON.stringify(errorResponse), { ok: false, status: 418 });
+        await login(formValues)(dispatch);
+        expect(dispatch).toHaveBeenCalledWith(
+          loginUserFailure({ errors: errorResponse.errors.test }),
+        );
+      });
+
+      it('navigates to root if the user is not in the process of registering', async () => {
+        fetch
+          .once(JSON.stringify(loginResponse))
+          .once(JSON.stringify(getUserResponse));
+        await login(formValues)(dispatch);
+        expect(dispatch).toHaveBeenCalledWith(push('/'));
+      });
+
+      it('navigates to REGISTER_CUSTOMER if the user needs to create a customer', async () => {
+        fetch
+          .once(JSON.stringify(loginResponse))
+          .once(JSON.stringify(getUserCustomerResponse));
+        await login(formValues)(dispatch);
+        expect(dispatch).toHaveBeenCalledWith(push(REGISTER_CUSTOMER));
+      });
+
+      it('navigates to REGISTER_CUSTOMER_ORDER if the user needs to place an order', async () => {
+        fetch
+          .once(JSON.stringify(loginResponse))
+          .once(JSON.stringify(getUserOrderResponse));
+        await login(formValues)(dispatch);
+        expect(dispatch).toHaveBeenCalledWith(push(REGISTER_CUSTOMER_ORDER));
       });
     });
   });
