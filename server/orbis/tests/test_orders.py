@@ -9,6 +9,7 @@ from rest_framework import status
 from rest_framework.settings import api_settings as drf_settings
 
 from astrosat.tests.utils import *
+from astrosat_users.models.models_users import UserRegistrationStageType
 from astrosat_users.tests.utils import *
 
 from orbis.models import OrderType, OrderItem, Order, Licence
@@ -316,3 +317,32 @@ class TestOrderViews:
         response = client.post(url, order_data, format="json")
         assert status.is_client_error(response.status_code)
         assert response.json()["detail"] == IsAdminOrManager.message
+
+    def test_create_order_resets_registration_stage(self, user, api_client, mock_storage):
+
+        customer = CustomerFactory(logo=None)
+        customer.add_user(user, type="MANAGER", status="ACTIVE")
+
+        orb = OrbFactory(licence_cost=1.0)
+
+        order_type = OrderTypeFactory(cost_modifier=1.0)
+        order_data = {
+            "order_type": order_type.name,
+            "items": [
+                {
+                    "orb": orb.name,
+                    "n_licences": 10,
+                }
+            ]
+        }
+
+        user.registration_stage = UserRegistrationStageType.ORDER
+        user.save()
+
+        client = api_client(user)
+        url = reverse("orders-list", args=[customer.id])
+        response = client.post(url, order_data, format="json")
+        assert status.is_success(response.status_code)
+
+        user.refresh_from_db()
+        assert user.registration_stage == None
