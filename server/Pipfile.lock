@@ -273,7 +273,7 @@
         "django-astrosat-users": {
             "editable": true,
             "git": "https://github.com/astrosat/django-astrosat-users.git",
-            "ref": "96862ab4acdbb979dd32b158d93e9d6e43fd0bd6"
+            "ref": "6ea16d5e197e2041f992fa5dfed50a7c8126654b"
         },
         "django-cors-headers": {
             "hashes": [
