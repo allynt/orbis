@@ -1,0 +1,11 @@
+{# used for notifying a user that they have been removed from a customer #}
+
+{% load i18n %}
+
+{% autoescape off %}
+
+{% blocktrans %}
+  Invitation withdrawn
+{% endblocktrans %}
+
+{% endautoescape %}

@@ -1,0 +1,27 @@
+{% extends "core/emails/message_base.txt" %}
+
+{% load account %}
+{% load i18n %}
+
+{% block body %}
+
+  {% autoescape off %}
+
+    Hi,
+
+    This email address has been added during signup to ORBIS.
+
+    Please follow the link below to verify you email address and create an Account.
+
+    {{ activate_url }}
+
+    {% if username %}
+        In case you forgot, your username is {{ username }}.
+    {% endif %}
+
+    Cheers,
+    ORBIS by Astrosat
+
+  {% endautoescape %}
+
+{% endblock %}

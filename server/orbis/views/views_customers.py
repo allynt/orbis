@@ -35,8 +35,9 @@ class LicenceNotifyingMixIn(object):
         }
 
         adapter = get_adapter(self.request)
+        managers_emails = customer.customer_users.managers().values_list("user__email", flat=True)
         message = adapter.send_mail(
-            "orbis/emails/update_licences", customer_user.user.email, context,
+            "orbis/emails/update_licences", customer_user.user.email, context, cc=managers_emails,
         )
 
         return message
@@ -118,11 +119,15 @@ class CustomerUserDetailView(LicenceNotifyingMixIn, AstrosatUsersCustomerUserDet
         return customer_user
 
     def perform_destroy(self, instance):
-        # the super method will notify the user they've left the customer
-        # w/in orbis, though, we should also delete the corresponding user
+        # just like the super method, we notify the user they've left the customer
+        # but w/in orbis, we add extra context about licences to the uninvite method
+        # we should also delete the corresponding user
         # TODO: WHAT HAPPENS TO THE USER'S DATA/BOOKMARKS/ETC ?
         user = instance.user
-        destroyed_value = super().perform_destroy(instance)
+        uninvitation_context = {
+            "licences": instance.licences.visible().values_list("orb__name", flat=True)
+        }
+        destroyed_value = instance.uninvite(adapter=get_adapter(self.request), context=uninvitation_context, force_deletion=True)
         user.delete()
         return destroyed_value
 

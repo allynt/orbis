@@ -1,1 +1,9 @@
-Update on your ORBIS account
+{% load i18n %}
+
+{% autoescape off %}
+
+{% blocktrans %}
+  Update on your ORBIS account
+{% endblocktrans %}
+
+{% endautoescape %}
