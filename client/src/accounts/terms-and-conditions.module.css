@@ -21,6 +21,16 @@
   cursor: pointer;
 }
 
+.headerText {
+  display: flex;
+  align-self: center;
+  text-align: center;
+  max-width: 90ch;
+  font-size: 1.25rem;
+  font-weight: bold;
+  margin-top: 3rem;
+}
+
 .body {
   display: flex;
   justify-content: space-between;

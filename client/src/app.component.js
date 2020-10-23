@@ -19,6 +19,7 @@ import {
 
 import Accounts from './accounts';
 import TermsAndConditions from './accounts/terms-and-conditions.component';
+import EndUserLicenseAgreement from './accounts/end-user-licence-agreement.component';
 
 import LandingView from './landing/landing.component';
 
@@ -115,6 +116,7 @@ const App = () => {
           <Route path="/accounts" component={Accounts} />
           <PrivateRoute path="/map" user={user} component={MapLayout} />
           <Route exact path="/terms" component={TermsAndConditions} />
+          <Route exact path="/eula" component={EndUserLicenseAgreement} />
           <Suspense fallback={<h3>Loading...</h3>}>
             <PrivateRoute
               exact
