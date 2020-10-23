@@ -1,0 +1,24 @@
+{% extends "core/emails/message_base.txt" %}
+
+{% block body %}
+
+    Hey {{ user.username }},
+
+    Right now you are probably wondering:
+
+    How does it work?
+
+    Now what do I do?
+
+    Can I access Orbis from anywhere?
+
+    If you have a question? We have the answer. Astrosat is more than a space technology company and we will support you to accomplish what you want to achieve.
+
+    Our support team is just an email away and will aim to assist you within a few hours of your request.
+
+    Check Out our Help Desk at: https://share.hsforms.com/1U1g8jQnFQ2ej1lyaDcncfA4cctf
+
+    Cheers,
+    ORBIS by Astrosat
+
+{% endblock %}
