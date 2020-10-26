@@ -12,7 +12,7 @@ import { useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
 import { object as yupObject } from 'yup';
 
-import { LOGIN_URL, TERMS_URL } from 'accounts/accounts.constants';
+import { LOGIN, TERMS } from 'accounts/accounts.constants';
 import { ErrorWell } from 'accounts/error-well.component';
 import { Field } from 'components/field/field.component';
 import { LoadingSpinner } from 'components/loading-spinner/loading-spinner.component';
@@ -32,11 +32,11 @@ import styles from './user-registration.module.css';
 /**
  * @typedef {{
  *  email: string
- *  firstName: string
- *  lastName: string
+ *  name: string
  *  newPassword: string
  *  newPasswordConfirm: string
  *  acceptedTerms: boolean
+ *  registration_stage: User['registration_stage']
  * }} FormValues
  */
 
@@ -68,7 +68,14 @@ const UserRegistration = ({
   passwordStrength = 0,
 }) => {
   const { errors, handleSubmit, register, watch } = useForm({
-    defaultValues: { acceptedTerms: false },
+    defaultValues: {
+      email: undefined,
+      firstName: undefined,
+      lastName: undefined,
+      newPassword: undefined,
+      newPasswordConfirm: undefined,
+      acceptedTerms: false,
+    },
     resolver: yupResolver(validationSchema),
     context: { passwordMinLength, passwordMaxLength, passwordStrength },
   });
@@ -77,8 +84,13 @@ const UserRegistration = ({
     <form
       className={formStyles.form}
       onSubmit={handleSubmit(
-        /** @param {FormValues} values */
-        values => onSubmit && onSubmit(values),
+        ({ firstName, lastName, ...rest }) =>
+          onSubmit &&
+          onSubmit({
+            ...rest,
+            name: `${firstName} ${lastName}`,
+            registration_stage: 'CUSTOMER',
+          }),
       )}
     >
       <div className={styles.errorWell}>
@@ -130,7 +142,7 @@ const UserRegistration = ({
             I agree with
             <Button
               className={styles.link}
-              href={TERMS_URL}
+              href={TERMS}
               rel="noreferrer noopener"
               target="_blank"
             >
@@ -144,7 +156,7 @@ const UserRegistration = ({
       </Button>
       <p className={styles.footer}>
         Do you have an account?{' '}
-        <Link className={styles.link} to={LOGIN_URL}>
+        <Link className={styles.link} to={LOGIN}>
           <Button theme="link">Login</Button>
         </Link>
       </p>

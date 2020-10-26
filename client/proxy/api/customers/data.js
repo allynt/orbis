@@ -478,6 +478,13 @@ const updateCustomerLicences = (type, user) => {
 
 const getCustomer = customerId => customers.find(c => c.id === customerId);
 
+const createCustomer = data => {
+  const id = uuidv4();
+  const newCustomer = { id, ...data };
+  customers.push(newCustomer);
+  return newCustomer;
+};
+
 const updateCustomer = newCustomer => {
   const index = customers.findIndex(cust => cust.id === newCustomer.id);
 
@@ -553,12 +560,25 @@ const deleteCustomerUser = userId => {
   updateCustomerLicences(DELETE, deletedUser);
 };
 
+const createOrder = (user, customerId, data) => {
+  const id = uuidv4();
+  const order = { ...data, id, created: new Date().toISOString(), user };
+  const customer = customers.find(c => c.id === customerId);
+  const customerIndex = customers.indexOf(customer);
+  let orders = customer.orders || [];
+  orders.push(order);
+  customers[customerIndex] = { ...customer, orders };
+  return order;
+};
+
 module.exports = {
   getCustomer,
+  createCustomer,
   updateCustomer,
   getCustomerUsers,
   createCustomerUser,
   updateCustomerUser,
   inviteCustomerUser,
   deleteCustomerUser,
+  createOrder,
 };

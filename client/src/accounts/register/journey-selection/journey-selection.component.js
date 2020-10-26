@@ -5,9 +5,9 @@ import { Button, Radio } from '@astrosat/astrosat-ui';
 import { useHistory } from 'react-router-dom';
 
 import {
-  CUSTOMER_USER_REGISTER_URL,
-  REGISTER_URL,
-  TERMS_URL,
+  REGISTER_CUSTOMER_USER,
+  REGISTER,
+  TERMS,
 } from 'accounts/accounts.constants';
 
 import formStyles from 'forms.module.css';
@@ -20,7 +20,7 @@ const SMALL_PRINT = (
     Policy both of which can be found{' '}
     <Button
       className={styles.link}
-      href={TERMS_URL}
+      href={TERMS}
       target="_blank"
       rel="noreferrer noopener"
     >
@@ -61,10 +61,10 @@ const JourneySelection = ({
   const handleClick = () => {
     switch (selection) {
       case 'customer':
-        history.push(CUSTOMER_USER_REGISTER_URL);
+        history.push(REGISTER_CUSTOMER_USER);
         break;
       case 'individual':
-        history.push(REGISTER_URL);
+        history.push(REGISTER);
         break;
       default:
         break;

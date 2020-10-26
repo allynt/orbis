@@ -1,3 +1,4 @@
+import Wrapper from 'accounts/wrapper.component';
 import React from 'react';
 import JourneySelection from './journey-selection.component';
 
@@ -11,4 +12,10 @@ export const IndividualRegistrationClosed = () => (
 
 export const CustomerRegistrationClosed = () => (
   <JourneySelection customerRegistrationIsOpen={false} />
+);
+
+export const InWrapper = () => (
+  <Wrapper>
+    <JourneySelection />
+  </Wrapper>
 );

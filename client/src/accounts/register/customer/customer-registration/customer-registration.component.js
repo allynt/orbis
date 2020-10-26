@@ -7,8 +7,10 @@ import { format } from 'date-fns';
 import { Controller, useForm } from 'react-hook-form';
 import { object as yupObject } from 'yup';
 
+import { ErrorWell } from 'accounts/error-well.component';
 import { FieldError } from 'components/field-error/field-error.component';
 import { Field } from 'components/field/field.component';
+import { LoadingSpinner } from 'components/loading-spinner/loading-spinner.component';
 import { customerName, FIELD_NAMES } from 'utils/validators';
 import { DATE_FORMAT, TRIAL_PERIOD_END_DATE } from '../customer.constants';
 
@@ -49,10 +51,17 @@ const validationSchema = yupObject({
 /**
  * @param {{
  *  email: string
+ *  isLoading?: boolean
+ *  serverErrors?: string[]
  *  onSubmit?: (values: FormValues) => void
  * }} props
  */
-const CustomerRegistration = ({ email, onSubmit }) => {
+const CustomerRegistration = ({
+  email,
+  isLoading = false,
+  serverErrors,
+  onSubmit,
+}) => {
   const { control, errors, formState, handleSubmit, register } = useForm({
     defaultValues: {
       email,
@@ -81,6 +90,7 @@ const CustomerRegistration = ({ email, onSubmit }) => {
         Additional Orbs will be available through the in-application store when
         it goes live in a future release.
       </p>
+      {serverErrors && <ErrorWell errors={serverErrors} />}
       <Field
         register={register}
         name={FIELD_NAMES.email}
@@ -155,7 +165,7 @@ const CustomerRegistration = ({ email, onSubmit }) => {
         type="submit"
         disabled={!formState.isDirty || Object.keys(errors).length}
       >
-        Next
+        {isLoading ? <LoadingSpinner /> : 'Next'}
       </Button>
     </form>
   );

@@ -57,7 +57,7 @@ declare type User = {
   is_verified: boolean;
   name?: string;
   permissions?: string[];
-  requires_customer_registration_completion: boolean;
+  registration_stage?: 'USER' | 'CUSTOMER' | 'CUSTOMER_USER' | 'ORDER';
   roles?: string[];
   username: string;
 };

@@ -1,3 +1,4 @@
+import Wrapper from 'accounts/wrapper.component';
 import React from 'react';
 import CustomerRegistration from './customer-registration.component';
 
@@ -7,4 +8,20 @@ export default {
   argTypes: { onSubmit: { action: 'onSubmit' } },
 };
 
-export const Form = args => <CustomerRegistration {...args} />;
+const Template = args => <CustomerRegistration {...args} />;
+
+export const Form = Template.bind({});
+
+export const Errors = Template.bind({});
+Errors.args = { serverErrors: ['Problem'] };
+
+export const IsLoading = Template.bind({});
+IsLoading.args = {
+  isLoading: true,
+};
+
+export const InWrapper = args => (
+  <Wrapper>
+    <CustomerRegistration {...args} />
+  </Wrapper>
+);

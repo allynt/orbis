@@ -1,3 +1,4 @@
+import Wrapper from 'accounts/wrapper.component';
 import React from 'react';
 import { Router } from 'react-router-dom';
 import { history } from '../../root.reducer';
@@ -41,6 +42,12 @@ ShouldActivate.args = {
 export const CustomerSignUpLogin = args => <LoginForm {...args} />;
 CustomerSignUpLogin.args = {
   user: {
-    requires_customer_registration_completion: true,
+    registration_stage: 'CUSTOMER',
   },
 };
+
+export const InWrapper = args => (
+  <Wrapper>
+    <LoginForm {...args} />
+  </Wrapper>
+);

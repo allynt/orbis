@@ -9,7 +9,7 @@ import Toolbar from '../toolbar/toolbar.component';
 import Map from './map.component';
 
 import styles from './map-layout.module.css';
-import { userSelector } from 'accounts/accounts.slice';
+import { userSelector } from 'accounts/accounts.selectors';
 import { isCompareModeSelector } from './map.slice';
 import { selectedPinnedScenesSelector } from 'satellites/satellites.slice';
 

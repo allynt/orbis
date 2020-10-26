@@ -38,7 +38,7 @@
 }
 
 .link {
-  display: inline-block;
-  font-size: inherit;
-  padding: 0;
+  display: inline-block !important;
+  font-size: inherit !important;
+  padding: 0 !important;
 }

@@ -1,4 +1,4 @@
-import { userSelector } from 'accounts/accounts.slice';
+import { userSelector } from 'accounts/accounts.selectors';
 import { activeLayersSelector } from 'data-layers/data-layers.slice';
 import { useMap } from 'MapContext';
 import React, { useEffect } from 'react';

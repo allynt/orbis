@@ -12,7 +12,7 @@ import { useForm } from 'react-hook-form';
 import { object } from 'yup';
 
 import { status } from 'accounts/accounts.slice';
-import { LOGIN_URL, TERMS_URL } from 'accounts/accounts.constants';
+import { LOGIN, TERMS } from 'accounts/accounts.constants';
 import { FieldError } from 'components/field-error/field-error.component';
 import {
   FIELD_NAMES,
@@ -38,7 +38,7 @@ const ChangePasswordSuccessView = () => (
     </div>
 
     <div className={formStyles.buttons}>
-      <Link to={LOGIN_URL}>
+      <Link to={LOGIN}>
         <Button theme="link">Continue</Button>
       </Link>
     </div>
@@ -127,7 +127,7 @@ const PasswordChangeForm = ({
             onChange={() => setTermsAgreed(!termsAgreed)}
           />
           &nbsp;
-          <Button target="_blank" rel="noopener noreferrer" href={TERMS_URL}>
+          <Button target="_blank" rel="noopener noreferrer" href={TERMS}>
             Terms &amp; Conditions
           </Button>
         </div>
@@ -144,7 +144,7 @@ const PasswordChangeForm = ({
 
       <p className={formStyles.footer}>
         Do you have an account?&nbsp;
-        <Link to={LOGIN_URL}>
+        <Link to={LOGIN}>
           <Button theme="link">Login</Button>
         </Link>
       </p>

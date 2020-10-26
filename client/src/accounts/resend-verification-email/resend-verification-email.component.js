@@ -4,7 +4,7 @@ import { Button } from '@astrosat/astrosat-ui';
 
 import { Link } from 'react-router-dom';
 
-import { LOGIN_URL } from 'accounts/accounts.constants';
+import { LOGIN } from 'accounts/accounts.constants';
 import { LoadingSpinner } from 'components/loading-spinner/loading-spinner.component';
 
 import styles from './resend-verification-email.module.css';
@@ -29,7 +29,7 @@ const ResendVerificationEmail = ({ email, isLoading = false, onResend }) => (
     <Button className={styles.button} onClick={onResend}>
       {isLoading ? <LoadingSpinner /> : 'Resend email'}
     </Button>
-    <Link className={styles.button} to={LOGIN_URL}>
+    <Link className={styles.button} to={LOGIN}>
       <Button theme="link">Return to login</Button>
     </Link>
   </div>

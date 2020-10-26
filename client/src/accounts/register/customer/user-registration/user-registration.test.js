@@ -5,7 +5,7 @@ import UserRegistration from './user-registration.component';
 import userEvent from '@testing-library/user-event';
 import { createMemoryHistory } from 'history';
 import { Router } from 'react-router-dom';
-import { LOGIN_URL, TERMS_URL } from 'accounts/accounts.constants';
+import { LOGIN, TERMS } from 'accounts/accounts.constants';
 
 const EMAIL_REGEX = /work\semail\saddress/i;
 const FIRST_NAME_REGEX = /first\sname/i;
@@ -51,7 +51,7 @@ describe('<UserRegistration />', () => {
     const { getByRole } = renderComponent();
     expect(
       getByRole('link', { name: /terms\s&\sconditions/i }),
-    ).toHaveAttribute('href', TERMS_URL);
+    ).toHaveAttribute('href', TERMS);
   });
 
   it('enables the Sign Up button when the terms and conditions are agreed', () => {
@@ -65,22 +65,16 @@ describe('<UserRegistration />', () => {
   it('calls onSubmit with the form values on successful completion', async () => {
     const values = {
       email: 'test@test.com',
-      firstName: 'Test',
-      lastName: 'Person',
+      name: 'Test Person',
       newPassword: 'thisisareallygoodpassword',
       newPasswordConfirm: 'thisisareallygoodpassword',
       acceptedTerms: true,
+      registration_stage: 'CUSTOMER',
     };
     const { getByRole, getByLabelText, onSubmit } = renderComponent();
     userEvent.type(getByRole('textbox', { name: EMAIL_REGEX }), values.email);
-    userEvent.type(
-      getByRole('textbox', { name: FIRST_NAME_REGEX }),
-      values.firstName,
-    );
-    userEvent.type(
-      getByRole('textbox', { name: LAST_NAME_REGEX }),
-      values.lastName,
-    );
+    userEvent.type(getByRole('textbox', { name: FIRST_NAME_REGEX }), 'Test');
+    userEvent.type(getByRole('textbox', { name: LAST_NAME_REGEX }), 'Person');
     userEvent.type(getByLabelText(PASSWORD_REGEX), values.newPassword);
     userEvent.type(
       getByLabelText(PASSWORD_CONFIRMATION_REGEX),
@@ -98,7 +92,7 @@ describe('<UserRegistration />', () => {
   it('navigates to login when the login link is clicked', () => {
     const { history, getByRole } = renderComponent();
     userEvent.click(getByRole('link', { name: LOGIN_REGEX }));
-    expect(history.location.pathname).toBe(LOGIN_URL);
+    expect(history.location.pathname).toBe(LOGIN);
   });
 
   it('displays server errors if there are any', () => {

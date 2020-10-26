@@ -1,8 +1,6 @@
+import { createSelector, createSlice } from '@reduxjs/toolkit';
+import { pick } from 'lodash';
 import { NotificationManager } from 'react-notifications';
-
-import { createSlice, createSelector } from '@reduxjs/toolkit';
-
-import { selectMapStyle } from './map/map.slice';
 
 export const DEFAULT_MAP_STYLE = 3;
 
@@ -61,7 +59,20 @@ export const fetchAppConfig = () => async dispatch => {
 };
 
 const baseSelector = state => state?.app;
+
 export const configSelector = createSelector(baseSelector, app => app?.config);
+
+export const passwordConfigSelector = createSelector(
+  configSelector,
+  /** @param {{passwordMinLength: number; passwordMaxLength: number; passwordStrength: number}} config */
+  config =>
+    pick(config, [
+      'passwordMinLength',
+      'passwordMaxLength',
+      'passwordStrength',
+    ]),
+);
+
 export const mapboxTokenSelector = createSelector(
   configSelector,
   config => config?.mapbox_token,

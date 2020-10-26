@@ -94,12 +94,15 @@ const adminSlice = createSlice({
       state.error = payload;
       state.isLoading = false;
     },
+    setCurrentCustomer: (state, { payload }) => {
+      state.currentCustomer = payload;
+    },
     createCustomerUserRequested: state => {
       state.isLoading = true;
     },
     createCustomerUserSuccess: (state, { payload }) => {
       if (payload.user)
-        state.customerUsers = [...state.customerUsers, payload.user];
+        state.customerUsers = [...(state.customerUsers || []), payload.user];
       if (payload.customer) state.currentCustomer = payload.customer;
       state.isLoading = false;
       state.error = null;
@@ -150,6 +153,7 @@ export const {
   inviteCustomerUserRequested,
   inviteCustomerUserSuccess,
   inviteCustomerUserFailure,
+  setCurrentCustomer,
 } = adminSlice.actions;
 
 /* === Thunks === */

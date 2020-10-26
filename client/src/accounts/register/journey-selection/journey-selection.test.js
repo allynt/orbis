@@ -6,9 +6,9 @@ import { createMemoryHistory } from 'history';
 import { Router } from 'react-router-dom';
 
 import {
-  CUSTOMER_USER_REGISTER_URL,
-  REGISTER_URL,
-  TERMS_URL,
+  REGISTER_CUSTOMER_USER,
+  REGISTER,
+  TERMS,
 } from 'accounts/accounts.constants';
 import JourneySelection from './journey-selection.component';
 
@@ -77,21 +77,18 @@ describe('<JourneySelection />', () => {
     const { getByRole, history } = renderComponent();
     userEvent.click(getByRole('radio', { name: INDIVIDUAL_REGEX }));
     userEvent.click(getByRole('button', { name: CONTINUE_REGEX }));
-    expect(history.location.pathname).toBe(REGISTER_URL);
+    expect(history.location.pathname).toBe(REGISTER);
   });
 
   it('navigates to customer registration when Team is selected and Continue is clicked', () => {
     const { getByRole, history } = renderComponent();
     userEvent.click(getByRole('radio', { name: TEAM_REGEX }));
     userEvent.click(getByRole('button', { name: CONTINUE_REGEX }));
-    expect(history.location.pathname).toBe(CUSTOMER_USER_REGISTER_URL);
+    expect(history.location.pathname).toBe(REGISTER_CUSTOMER_USER);
   });
 
   it('Has a terms and conditions link', () => {
     const { getByRole } = renderComponent();
-    expect(getByRole('link', { name: /here/i })).toHaveAttribute(
-      'href',
-      TERMS_URL,
-    );
+    expect(getByRole('link', { name: /here/i })).toHaveAttribute('href', TERMS);
   });
 });

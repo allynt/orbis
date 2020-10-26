@@ -5,7 +5,9 @@ import { Button, Checkbox } from '@astrosat/astrosat-ui';
 import { format } from 'date-fns';
 import { useForm } from 'react-hook-form';
 
+import { ErrorWell } from 'accounts/error-well.component';
 import { Field } from 'components/field/field.component';
+import { LoadingSpinner } from 'components/loading-spinner/loading-spinner.component';
 import { DATE_FORMAT, TRIAL_PERIOD_END_DATE } from '../customer.constants';
 import Order from './order.component';
 
@@ -24,9 +26,13 @@ import styles from './order-form.module.css';
  */
 
 /**
- * @param {{onSubmit: (values: FormValues) => void}} props
+ * @param {{
+ *   serverErrors?: string[]
+ *   isLoading?: boolean
+ *   onSubmit: (values: FormValues) => void
+ * }} props
  */
-const OrderForm = ({ onSubmit }) => {
+const OrderForm = ({ serverErrors, isLoading, onSubmit }) => {
   const { handleSubmit, register, watch } = useForm({
     defaultValues: {
       paymentType: 'Free Trial',
@@ -42,8 +48,8 @@ const OrderForm = ({ onSubmit }) => {
    * @returns {FormValues}
    */
   const transformValues = () => ({
-    paymentType: 'free',
-    subscription: 'core',
+    paymentType: 'Free Trial',
+    subscription: 'ORBIS Core Datasets',
     amount: 0,
     licences: 10,
     period: TRIAL_PERIOD_END_DATE.toISOString(),
@@ -57,6 +63,7 @@ const OrderForm = ({ onSubmit }) => {
         Please confirm that the following form contains the information that you
         want to sign up for the final contract with ORBIS.
       </p>
+      <ErrorWell errors={serverErrors} />
       <Field
         register={register}
         label="Selected Licence Subscription"
@@ -106,7 +113,7 @@ const OrderForm = ({ onSubmit }) => {
         type="submit"
         disabled={!watch('confirm')}
       >
-        Confirm
+        {isLoading ? <LoadingSpinner /> : 'Confirm'}
       </Button>
     </form>
   );
