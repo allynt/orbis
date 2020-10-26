@@ -11,6 +11,7 @@ from astrosat_users.views import (
     CustomerUserListView as AstrosatUsersCustomerUserListView,
     CustomerUserDetailView as AstrosatUsersCustomerUserDetailView,
     CustomerUserInviteView as AstrosatUsersCustomerUserInviteView,
+    CustomerUserOnboardView as AstrosatUsersCustomerUserOnboardView,
 )
 
 from orbis.serializers import CustomerSerializer, CustomerUserSerializer
@@ -143,4 +144,8 @@ class CustomerUserDetailView(LicenceNotifyingMixIn, AstrosatUsersCustomerUserDet
 
 
 class CustomerUserInviteView(LicenceNotifyingMixIn, AstrosatUsersCustomerUserInviteView):
+    serializer_class = CustomerUserSerializer
+
+
+class CustomerUserOnboardView(LicenceNotifyingMixIn, AstrosatUsersCustomerUserOnboardView):
     serializer_class = CustomerUserSerializer

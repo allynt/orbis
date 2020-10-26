@@ -53,7 +53,5 @@ class OrderListCreateView(generics.ListCreateAPIView):
         if user.registration_stage == UserRegistrationStageType.ORDER:
             user.registration_stage = None
             user.save()
-            if not user.onboarded:
-                user.onboard()
 
         return order
