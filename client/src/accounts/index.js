@@ -48,7 +48,7 @@ import UserRegistration from './register/customer/user-registration/user-registr
 import CustomerRegistration from './register/customer/customer-registration/customer-registration.component';
 import OrderForm from './register/customer/order-form/order-form.component';
 import Wrapper from './wrapper.component';
-import Login2 from './login2/login2.component';
+import TeamMemberLogin from './team-member-login/team-member-login.component';
 
 export default () => {
   const dispatch = useDispatch();
@@ -185,7 +185,7 @@ export default () => {
           exact
           path={TEAM_LOGIN}
           render={() => (
-            <Login2
+            <TeamMemberLogin
               email={user?.email}
               isLoading={isLoading}
               {...passwordConfig}

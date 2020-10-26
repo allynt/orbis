@@ -2951,52 +2951,63 @@ const Terms = () => {
         </table>
       </div>
       <div className={styles.section}>
-        <h2 className={styles.textSectionHeader}>2. Incident Resolution Targets</h2>
-       <table className={styles.table}>
-         <thead>
-           <tr>
-           <td></td>
-           <td>Severity Description</td>
-           <td>Response</td>
-           <td>Resolution</td>
-           </tr>
-         </thead>
-         <tbody>
-           <tr>
-             <td>2.1</td>
-             <td>Unplanned outage impacting multiple Users</td>
-             <td>1hr</td>
-             <td><24 hrs</td>
-           </tr>
-           <tr>
-           <td>2.2</td>
-             <td>Outage / severe disruption to service for several Users</td>
-             <td>2hrs</td>
-             <td>within 2 Working Days</td>
-           </tr>
-           <tr>
-           <td>2.3</td>
-             <td>Reduced functionally causing disruption to business</td>
-             <td>4hrs</td>
-             <td>within 3 Working Days</td>
-           </tr>
-           <tr>
-           <td>2.4</td>
-             <td>Non-urgent / reduced functionality with low impact</td>
-             <td>8hrs</td>
-             <td>within 5 Working Days</td>
-           </tr>
-           <tr>
-           <td>2.5</td>
-             <td>On Demand Professional services requests for installations etc.</td>
-             <td>8hrs</td>
-             <td>Agree with Customer</td>
-           </tr>
-         </tbody>
-       </table>
-       <div className={styles.description}>
-       Astrosat shall use reasonable endeavours to provide the helpdesk support services in accordance with these Service Levels and Response Times. These Response times refer only to the time within which Astrosat shall respond to a helpdesk support request. Astrosat gives no guarantee as to the time any given issue may take to resolve save that it hereby undertakes to use reasonable endeavours to resolve issues as quickly as is reasonably possible within the target resolution times specified in the table above.
-       </div>
+        <h2 className={styles.textSectionHeader}>
+          2. Incident Resolution Targets
+        </h2>
+        <table className={styles.table}>
+          <thead>
+            <tr>
+              <td></td>
+              <td>Severity Description</td>
+              <td>Response</td>
+              <td>Resolution</td>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>2.1</td>
+              <td>Unplanned outage impacting multiple Users</td>
+              <td>1hr</td>
+              <td>{'<24 hrs'}</td>
+            </tr>
+            <tr>
+              <td>2.2</td>
+              <td>Outage / severe disruption to service for several Users</td>
+              <td>2hrs</td>
+              <td>within 2 Working Days</td>
+            </tr>
+            <tr>
+              <td>2.3</td>
+              <td>Reduced functionally causing disruption to business</td>
+              <td>4hrs</td>
+              <td>within 3 Working Days</td>
+            </tr>
+            <tr>
+              <td>2.4</td>
+              <td>Non-urgent / reduced functionality with low impact</td>
+              <td>8hrs</td>
+              <td>within 5 Working Days</td>
+            </tr>
+            <tr>
+              <td>2.5</td>
+              <td>
+                On Demand Professional services requests for installations etc.
+              </td>
+              <td>8hrs</td>
+              <td>Agree with Customer</td>
+            </tr>
+          </tbody>
+        </table>
+        <div className={styles.description}>
+          Astrosat shall use reasonable endeavours to provide the helpdesk
+          support services in accordance with these Service Levels and Response
+          Times. These Response times refer only to the time within which
+          Astrosat shall respond to a helpdesk support request. Astrosat gives
+          no guarantee as to the time any given issue may take to resolve save
+          that it hereby undertakes to use reasonable endeavours to resolve
+          issues as quickly as is reasonably possible within the target
+          resolution times specified in the table above.
+        </div>
       </div>
     </div>
   );

@@ -24,13 +24,13 @@ import {
 
 import formStyles from 'forms.module.css';
 
-const login2Schema = yup.object({
+const TeamMemberLoginSchema = yup.object({
   [FIELD_NAMES.email]: email,
   [FIELD_NAMES.newPassword]: newPassword,
   [FIELD_NAMES.newPasswordConfirm]: newPasswordConfirm,
 });
 
-const Login2 = ({
+const TeamMemberLogin = ({
   email = 'test@email.com',
   isLoading,
   passwordMinLength,
@@ -40,7 +40,7 @@ const Login2 = ({
   const { register, handleSubmit, errors, watch } = useForm({
     mode: 'onBlur',
     defaultValues: { email },
-    resolver: yupResolver(login2Schema),
+    resolver: yupResolver(TeamMemberLoginSchema),
     context: { passwordMinLength, passwordMaxLength, passwordStrength },
   });
 
@@ -112,4 +112,4 @@ const Login2 = ({
   );
 };
 
-export default Login2;
+export default TeamMemberLogin;
