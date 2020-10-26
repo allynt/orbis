@@ -2957,44 +2957,52 @@ const Terms = () => {
         <table className={styles.table}>
           <thead>
             <tr>
-              <td></td>
-              <td>Severity Description</td>
-              <td>Response</td>
-              <td>Resolution</td>
+              <td className={styles.td}></td>
+              <td className={styles.td}>Severity Description</td>
+              <td className={styles.td}>Response</td>
+              <td className={styles.td}>Resolution</td>
             </tr>
           </thead>
           <tbody>
             <tr>
-              <td>2.1</td>
-              <td>Unplanned outage impacting multiple Users</td>
-              <td>1hr</td>
-              <td>{'<24 hrs'}</td>
+              <td className={styles.td}>2.1</td>
+              <td className={styles.td}>
+                Unplanned outage impacting multiple Users
+              </td>
+              <td className={styles.td}>1hr</td>
+              <td className={styles.td}>{'<24 hrs'}</td>
             </tr>
             <tr>
-              <td>2.2</td>
-              <td>Outage / severe disruption to service for several Users</td>
-              <td>2hrs</td>
-              <td>within 2 Working Days</td>
+              <td className={styles.td}>2.2</td>
+              <td className={styles.td}>
+                Outage / severe disruption to service for several Users
+              </td>
+              <td className={styles.td}>2hrs</td>
+              <td className={styles.td}>within 2 Working Days</td>
             </tr>
             <tr>
-              <td>2.3</td>
-              <td>Reduced functionally causing disruption to business</td>
-              <td>4hrs</td>
-              <td>within 3 Working Days</td>
+              <td className={styles.td}>2.3</td>
+              <td className={styles.td}>
+                Reduced functionally causing disruption to business
+              </td>
+              <td className={styles.td}>4hrs</td>
+              <td className={styles.td}>within 3 Working Days</td>
             </tr>
             <tr>
-              <td>2.4</td>
-              <td>Non-urgent / reduced functionality with low impact</td>
-              <td>8hrs</td>
-              <td>within 5 Working Days</td>
+              <td className={styles.td}>2.4</td>
+              <td className={styles.td}>
+                Non-urgent / reduced functionality with low impact
+              </td>
+              <td className={styles.td}>8hrs</td>
+              <td className={styles.td}>within 5 Working Days</td>
             </tr>
             <tr>
-              <td>2.5</td>
-              <td>
+              <td className={styles.td}>2.5</td>
+              <td className={styles.td}>
                 On Demand Professional services requests for installations etc.
               </td>
-              <td>8hrs</td>
-              <td>Agree with Customer</td>
+              <td className={styles.td}>8hrs</td>
+              <td className={styles.td}>Agree with Customer</td>
             </tr>
           </tbody>
         </table>
@@ -3009,26 +3017,275 @@ const Terms = () => {
           resolution times specified in the table above.
         </div>
       </div>
-    </div>
-  );
-};
-
-const container = () => {
-  return (
-    <>
-      <div className={styles.title}>
-        <h1>PART ONE – SUBSCRIPTION SERVICES.</h1>
-      </div>
       <div className={styles.section}>
-        <h2 className={styles.textSectionHeader}>1: header</h2>
+        <h2 className={styles.textSectionHeader}>
+          3. Support provided under this Agreement shall include:
+        </h2>
         <ul className={styles.list}>
           <li className={styles.listItem}>
-            <span>11.1.</span>
-            <div>sdfgs</div>
+            <span>3.1. Help Desk facilities.</span>
+            <div>
+              <ul className={styles.list}>
+                <li className={styles.listItem}>
+                  <span>3.1.1.</span>
+                  <div>
+                    Due to the close working relationship required during the
+                    proof of concept, Astrosat will appoint a dedicated account
+                    manager who will be the first and primary point of contact
+                    for all communications.
+                  </div>
+                </li>
+                <li className={styles.listItem}>
+                  <span>3.1.2.</span>
+                  <div>
+                    For software issues, the Customer can raise a support ticket
+                    to contact the Astrosat Help Desk which is available at{' '}
+                    <span className={styles.link}>
+                      https://share.hsforms.com/1U1g8jQnFQ2ej1lyaDcncfA4cctf
+                    </span>{' '}
+                    and during normal business hours (Contracted Hours)
+                  </div>
+                </li>
+                <li className={styles.listItem}>
+                  <span>3.1.3.</span>
+                  <div>
+                    The Customer Contact must submit sufficient material and
+                    information to enable Astrosat support staff to duplicate
+                    the problem. A support technician will be assigned and will
+                    attempt to solve a problem immediately, or as soon
+                    thereafter as possible. When appropriate, the support
+                    technician will give an estimate of how long it will take to
+                    resolve. The technician will do their best to keep the
+                    Customer advised on the progress of problem resolution.
+                  </div>
+                </li>
+                <li className={styles.listItem}>
+                  <span>3.1.4.</span>
+                  <div>
+                    The help desk includes an on-line Support facility: The
+                    Customer shall ensure the availability at its expense of
+                    compatible Local Equipment including software, hardware,
+                    communications infrastructure and provide adequate broadband
+                    facilities for on-line problem resolution. Astrosat will
+                    work with the Customer’s hardware supplier where necessary
+                    to ensure that remote support facilities are setup according
+                    to requirements.
+                  </div>
+                </li>
+                <li className={styles.listItem}>
+                  <span>3.1.5.</span>
+                  <div>
+                    The help desk is strictly not a training facility. Its
+                    objective is to troubleshoot and resolve Software
+                    Operational Issues
+                  </div>
+                </li>
+                <li className={styles.listItem}>
+                  <span>3.1.6.</span>
+                  <div>
+                    The help desk is not a hardware or Local Equipment IT
+                    support facility. Astrosat does not support or warrant your
+                    Local Equipment, or any other system or service that you
+                    subscribe to. Its sole purpose is to support the Astrosat
+                    Software only. Anything else is strictly the Customer’s
+                    responsibility.
+                  </div>
+                </li>
+                <li className={styles.listItem}>
+                  <span>3.1.7.</span>
+                  <div>
+                    Additional Service Levels: additional service levels shall
+                    be as follows:
+                    <ul className={styles.list}>
+                      <li className={styles.listItem}>
+                        <span>3.1.7.1.</span>
+                        <div>
+                          Astrosat will maintain a help desk staffed by skilled,
+                          trained professionals.
+                        </div>
+                      </li>
+                      <li className={styles.listItem}>
+                        <span>3.1.7.2.</span>
+                        <div>
+                          The help desk is equipped with a purpose designed
+                          management system that allows Customer/User calls to
+                          be logged, tracked, traced and reported.
+                        </div>
+                      </li>
+                      <li className={styles.listItem}>
+                        <span>3.1.7.3.</span>
+                        <div>
+                          All requests are logged and prioritised, against this
+                          priority Astrosat will respond to Customer/User
+                          requests.
+                        </div>
+                      </li>
+                      <li className={styles.listItem}>
+                        <span>3.1.7.4.</span>
+                        <div>
+                          During “Contracted hours”, Astrosat will log all
+                          Customer/User calls to the Helpdesk.
+                        </div>
+                      </li>
+                      <li className={styles.listItem}>
+                        <span>3.1.7.5.</span>
+                        <div>
+                          “Contracted hours” are Monday to Friday- 9am to 5pm
+                          Monday to Friday GMT.
+                        </div>
+                      </li>
+                      <li className={styles.listItem}>
+                        <span>3.1.7.6.</span>
+                        <div>
+                          A restricted service is provided on public holidays.
+                        </div>
+                      </li>
+                    </ul>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </li>
+          <li className={styles.listItem}>
+            <span>3.2. Help Desk Procedures:</span>
+            <div>
+              <ul className={styles.list}>
+                <li className={styles.listItem}>
+                  <span>3.2.1.</span>
+                  <div>
+                    Answer the support case, received via email:
+                    <ul className={styles.list}>
+                      <li className={styles.listItem}>
+                        <span>3.2.1.1.</span>
+                        <div>Update the Case database</div>
+                      </li>
+                      <li className={styles.listItem}>
+                        <span>3.2.1.2.</span>
+                        <div>Agree case priority</div>
+                      </li>
+                      <li className={styles.listItem}>
+                        <span>3.2.1.3.</span>
+                        <div>Give the user a case reference if necessary</div>
+                      </li>
+                    </ul>
+                  </div>
+                </li>
+                <li className={styles.listItem}>
+                  <span>3.2.2.</span>
+                  <div>
+                    Take action on the case:
+                    <ul className={styles.list}>
+                      <li className={styles.listItem}>
+                        <span>3.2.2.1</span>
+                        <div>Confirm that this is a Astrosat problem</div>
+                      </li>
+                      <li className={styles.listItem}>
+                        <span>3.2.2.2</span>
+                        <div>Interrogate the Help Desk database</div>
+                      </li>
+                      <li className={styles.listItem}>
+                        <span>3.2.2.3</span>
+                        <div>
+                          Use reasonable endeavours to resolve the problem
+                          reported by Customer/User
+                        </div>
+                      </li>
+                      <li className={styles.listItem}>
+                        <span>3.2.2.4</span>
+                        <div>
+                          Report to Customer if problem cannot be resolved
+                        </div>
+                      </li>
+                      <li className={styles.listItem}>
+                        <span>3.2.2.5</span>
+                        <div>
+                          Pass to a third party if not an Astrosat problem
+                        </div>
+                      </li>
+                      <li className={styles.listItem}>
+                        <span>3.2.2.6</span>
+                        <div>Inform Customer of progress</div>
+                      </li>
+                    </ul>
+                  </div>
+                </li>
+                <li className={styles.listItem}>
+                  <span>3.2.3.</span>
+                  <div>
+                    Close the case:
+                    <ul className={styles.list}>
+                      <li className={styles.listItem}>
+                        <span>3.2.3.1.</span>
+                        <div>Inform Customer of resolution</div>
+                      </li>
+                      <li className={styles.listItem}>
+                        <span>3.2.3.2.</span>
+                        <div>Update the Help Desk System Database</div>
+                      </li>
+                      <li className={styles.listItem}>
+                        <span>3.2.3.3.</span>
+                        <div>Performance Analysis / reporting</div>
+                      </li>
+                      <li className={styles.listItem}>
+                        <span>3.2.3.4.</span>
+                        <div>Review/Update the Help Desk Database</div>
+                      </li>
+                      <li className={styles.listItem}>
+                        <span>3.2.3.5.</span>
+                        <div>Review Service Level</div>
+                      </li>
+                    </ul>
+                  </div>
+                </li>
+                <li className={styles.listItem}>
+                  <span>3.2.4.</span>
+                  <div>
+                    Correction of critical errors or assistance to overcome
+                    problems.
+                  </div>
+                </li>
+                <li className={styles.listItem}>
+                  <span>3.2.5.</span>
+                  <div>
+                    Astrosat may, at its sole discretion, correct errors by
+                    "patch" or by version update.
+                  </div>
+                </li>
+                <li className={styles.listItem}>
+                  <span>3.2.6.</span>
+                  <div>
+                    Provision of Information on availability of new versions of
+                    Licensed Software.
+                  </div>
+                </li>
+                <li className={styles.listItem}>
+                  <span>3.2.7.</span>
+                  <div>
+                    Provision Consultancy advice (chargeable at agreed rates may
+                    apply where appropriate) on Software development,
+                  </div>
+                </li>
+                <li className={styles.listItem}>
+                  <span>3.2.8.</span>
+                  <div>
+                    enhancements and modifications, together with estimates for
+                    the same.
+                  </div>
+                </li>
+                <li className={styles.listItem}>
+                  <span>3.2.9.</span>
+                  <div>
+                    Provide Installations and Re-installations of Astrosat as
+                    are required and reasonable to support use of Astrosat
+                    software.
+                  </div>
+                </li>
+              </ul>
+            </div>
           </li>
         </ul>
       </div>
-    </>
+    </div>
   );
 };
 
