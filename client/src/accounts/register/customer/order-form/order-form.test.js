@@ -45,7 +45,7 @@ describe('<OrderForm />', () => {
   it('calls onSubmit with the form values when the form is submitted', async () => {
     const values = {
       paymentType: 'Free Trial',
-      subscription: 'core',
+      subscription: 'ORBIS Core Datasets',
       licences: 10,
       period: '2021-04-30T00:00:00.000Z',
       confirm: true,

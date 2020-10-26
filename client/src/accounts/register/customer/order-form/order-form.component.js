@@ -49,7 +49,7 @@ const OrderForm = ({ serverErrors, isLoading, onSubmit }) => {
    */
   const transformValues = () => ({
     paymentType: 'Free Trial',
-    subscription: 'core',
+    subscription: 'ORBIS Core Datasets',
     amount: 0,
     licences: 10,
     period: TRIAL_PERIOD_END_DATE.toISOString(),
