@@ -2,14 +2,11 @@
 .field {
   display: flex;
   flex-direction: column;
+  width: 100%;
 }
 
 .form {
   max-width: 50rem;
-}
-
-.field {
-  width: 100%;
 }
 
 .error {
