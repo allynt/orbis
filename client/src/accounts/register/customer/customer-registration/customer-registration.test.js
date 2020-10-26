@@ -80,7 +80,7 @@ describe('<CustomerRegistration />', () => {
       registeredNumber: '1234',
       licence: 'ORBIS Core',
       numberOfLicences: 10,
-      subscriptionPeriod: '2021-04-01T00:00:00.000Z',
+      subscriptionPeriod: '2021-04-30T00:00:00.000Z',
     };
     const { getByRole, getByText, onSubmit } = renderComponent();
     userEvent.type(getByRole('textbox', { name: NAME }), values.customerName);

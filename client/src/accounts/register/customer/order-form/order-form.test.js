@@ -47,7 +47,7 @@ describe('<OrderForm />', () => {
       paymentType: 'Free Trial',
       subscription: 'core',
       licences: 10,
-      period: '2021-04-01T00:00:00.000Z',
+      period: '2021-04-30T00:00:00.000Z',
       confirm: true,
       amount: 0,
     };
