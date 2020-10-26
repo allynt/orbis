@@ -197,7 +197,7 @@ export const updateCustomer = newCustomer => async (dispatch, getState) => {
   dispatch(updateCustomerRequested());
 
   const response = await sendData(
-    `${API}${newCustomer.id}`,
+    `${API}${newCustomer.id}/`,
     newCustomer,
     headers,
     'PUT',
