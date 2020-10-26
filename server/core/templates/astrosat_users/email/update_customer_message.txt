@@ -1,0 +1,20 @@
+{% extends "core/emails/message_base.txt" %}
+
+{# used to notify all managers of a customer that the customer details have been updated #}
+
+{% load i18n %}
+
+{% block body %}
+
+  {% autoescape off %}
+
+    Hi,
+
+    The Corporate Profile details on {{ customer.name }}'s ORBIS Account have been changed (or updated) by the Administrator.
+
+    Cheers,
+    ORBIS by Astrosat
+
+  {% endautoescape %}
+
+{% endblock %}

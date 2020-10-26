@@ -52,10 +52,10 @@ class CustomerSerializer(AstrosatUsersCustomerSerializer):
                 "id", output_field=CharField()
             )  # cast UUIDField to CharField (for the comparison below)
         )
-        representation["licences"] = filterfalse(
+        representation["licences"] = list(filterfalse(
             lambda x: x["id"] in hidden_licences.values_list("str_id", flat=True),
             licences_representation,
-        )
+        ))
 
         return representation
 

@@ -110,7 +110,7 @@ class CustomerUserDetailView(LicenceNotifyingMixIn, AstrosatUsersCustomerUserDet
         customer_user = self.get_object()
 
         old_licences = set(customer_user.licences.visible())
-        customer_user = serializer.save()
+        customer_user = super().perform_update(serializer)
         new_licences = set(customer_user.licences.visible())
 
         if old_licences != new_licences:

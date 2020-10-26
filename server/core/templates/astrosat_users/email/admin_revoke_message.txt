@@ -1,0 +1,21 @@
+{% extends "core/emails/message_base.txt" %}
+
+{# used to notify a user that they've been removed as a manger to a customer #}
+
+{% load i18n %}
+
+{% block body %}
+
+  {% autoescape off %}
+
+    Hi,
+
+    Your Admin Rights for this Account have been revoked.
+    Standard User Rights remain for all existing Licences.
+
+    Cheers,
+    ORBIS by Astrosat
+
+  {% endautoescape %}
+
+{% endblock %}
