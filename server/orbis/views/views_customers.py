@@ -84,7 +84,7 @@ class CustomerUserListView(LicenceNotifyingMixIn, AstrosatUsersCustomerUserListV
         if user != created_user and not created_user.onboarded:
             # if we are adding somebody new to a customer
             # then make sure the next thing they do is get onboarded
-            created_user.registration_stage = UserRegistrationStageType.USER
+            created_user.registration_stage = UserRegistrationStageType.ONBOARD
             created_user.save()
 
         if customer_user.licences.visible().count():
