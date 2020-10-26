@@ -137,3 +137,12 @@
   color: blue;
   text-decoration: underline;
 }
+
+.table,
+.td {
+  border: 1px solid #000;
+}
+
+.table .td {
+  padding: 1rem;
+}

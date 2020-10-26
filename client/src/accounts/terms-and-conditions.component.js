@@ -1466,7 +1466,1558 @@ const Terms = () => {
           </li>
         </ul>
       </div>
+      <div className={styles.section}>
+        <h2 className={styles.textSectionHeader}>
+          17: Indemnification by Astrosat.
+        </h2>
+        <ul className={styles.list}>
+          <li className={styles.listItem}>
+            <span>17.1.</span>
+            <div>
+              Astrosat shall indemnify and hold harmless the Customer its
+              clients, its Affiliates, directors and employees from any damages
+              finally awarded against the Customer (including, without
+              limitation, reasonable costs and legal fees incurred by the
+              Customer) arising out of any third party suit, claim or other
+              legal action alleging that the use of the Subscription Services or
+              Documentation by the Customer (other than User Content – see
+              Clauses 4 and 18) infringes the Intellectual Property of any third
+              party, (“Legal Action”). Astrosat shall provide reasonable
+              assistance in the defence of such Legal Action.
+            </div>
+          </li>
+          <li className={styles.listItem}>
+            <span>17.2.</span>
+            <div>
+              However, Astrosat shall have no indemnification obligations for
+              any Legal Action arising out of: (i) a combination of the
+              Subscription Services and/or Software with software or products
+              not supplied, or approved in writing by Astrosat; (ii) any repair,
+              adjustment, modification or alteration to the Subscription
+              Services by the Customer or any third party, unless approved in
+              writing by Astrosat; or (iii) any refusal by the Customer to
+              install and use a non-infringing version of the Subscription
+              Services offered by Astrosat under Clause 8.2(ii). Clause 8.2(ii)
+              and this Clause 17 state the entire liability of Astrosat with
+              respect to any Intellectual Property infringement by the
+              Subscription Services or Software or Documentation.
+            </div>
+          </li>
+          <li className={styles.listItem}>
+            <span>17.3.</span>
+            <div>
+              The Customer shall give written notice to Astrosat of any Legal
+              Action no later than 30 days after first receiving notice of a
+              Legal Action, and shall give copies to Astrosat of all
+              communications, notices and/or other actions relating to the Legal
+              Action. The Customer shall give Astrosat the sole control of the
+              defence of any Legal Action, shall act in accordance with the
+              reasonable instructions of Astrosat and shall give Astrosat such
+              assistance as Astrosat reasonably requests to defend or settle
+              such claim. Astrosat shall conduct its defence at all times in a
+              manner that is not adverse to the Customer’s interests. the
+              Customer may employ its own counsel to assist it with respect to
+              any such claim. The Customer shall bear all costs of engaging its
+              own counsel, unless engagement of counsel is necessary because of
+              a conflict of interest with Astrosat or its counsel, or because
+              Astrosat fails to assume control of the defence. The Customer
+              shall not settle or compromise any Legal Action without Astrosat’s
+              express written consent. Astrosat shall be relieved of its
+              indemnification obligation under Clause 17 if the Customer
+              materially fails to comply with Clause 17.3.
+            </div>
+          </li>
+        </ul>
+      </div>
+      <div className={styles.section}>
+        <h2 className={styles.textSectionHeader}>
+          18. Indemnification by the Customer.
+        </h2>
+        <ul className={styles.list}>
+          <li className={styles.listItem}>
+            <span>18.1.</span>
+            <div>
+              The Customer shall indemnify and hold harmless Astrosat, its
+              Affiliates, directors, and employees from any damages finally
+              awarded against Astrosat (including, without limitation,
+              reasonable costs and legal fees incurred by Astrosat) arising out
+              of any third party suit, claim or other legal action (including
+              but not limited to any governmental investigations, complaints and
+              actions) in connection with the User Content, including, without
+              limitation, any action for infringement of any trademark,
+              copyright, trade secret, right of publicity or privacy (including
+              defamation), patent or other proprietary right with respect to the
+              User Content (“Legal Claim”).
+            </div>
+          </li>
+          <li className={styles.listItem}>
+            <span>18.2.</span>
+            <div>
+              Astrosat shall give written notice to the Customer of any Legal
+              Claim no later than 30 days after first receiving notice of a
+              Legal Claim and shall give copies to the Customer of all
+              communications, notices and/or other actions relating to the Legal
+              Claim. Astrosat shall give the Customer the sole control of the
+              defence of any Legal Claim, shall act in accordance with the
+              reasonable instructions of the Customer and shall give the
+              Customer such assistance as the Customer reasonably requests to
+              defend or settle such claim. The Customer shall conduct its
+              defence at all times in a manner which is not adverse to
+              Astrosat’s interests. Astrosat may employ its own counsel to
+              assist it with respect to any such claim. Astrosat shall bear all
+              costs of engaging its own counsel, unless engagement of counsel is
+              necessary because of a conflict of interest with the Customer or
+              its counsel, or because the Customer fails to assume control of
+              the defence. Astrosat shall not settle or compromise any Legal
+              Claim without the Customer’s express written consent. The Customer
+              shall be relieved of its indemnification obligation under Clause
+              18 if Astrosat materially fails to comply with Clause 18.2.
+            </div>
+          </li>
+        </ul>
+      </div>
+      <div className={styles.section}>
+        <h2 className={styles.textSectionHeader}>19. Publicity.</h2>
+        <div className={styles.description}>
+          Astrosat may list the Customer as a customer and use the Customer’s
+          logo on Astrosat’s website, on publicly available Customer lists, and
+          in media releases with the Customer’s consent, such consent not to be
+          unreasonably withheld.
+        </div>
+      </div>
+      <div className={styles.section}>
+        <h2 className={styles.textSectionHeader}>20. Miscellaneous.</h2>
+        <ul className={styles.list}>
+          <li className={styles.listItem}>
+            <span>20.1.</span>
+            <div>
+              This Agreement represents the entire express agreement of the
+              parties, and supersedes any prior or current agreements or
+              understandings, whether written or oral. If there is a conflict
+              between the Agreement and an Order Form, the Order Form shall
+              prevail.
+            </div>
+          </li>
+          <li className={styles.listItem}>
+            <span>20.2.</span>
+            <div>
+              This Agreement may not be changed or any part waived except by
+              written agreement between the parties.
+            </div>
+          </li>
+          <li className={styles.listItem}>
+            <span>20.3.</span>
+            <div>
+              This Agreement shall be governed by the laws of Scotland. The
+              parties consent to the exercise of exclusive jurisdiction of the
+              Scottish courts.
+            </div>
+          </li>
+          <li className={styles.listItem}>
+            <span>20.4.</span>
+            <div>
+              Neither party shall assign or otherwise transfer any of its rights
+              or obligations under this Agreement without the prior written
+              consent of the other party.
+            </div>
+          </li>
+          <li className={styles.listItem}>
+            <span>20.5.</span>
+            <div>The language of this Agreement shall be English.</div>
+          </li>
+          <li className={styles.listItem}>
+            <span>20.6.</span>
+            <div>
+              The time zone of this Agreement shall be Greenwich Mean Time.
+            </div>
+          </li>
+        </ul>
+      </div>
+      <div className={styles.section}>
+        <h2 className={styles.textSectionHeader}>21. Data Processing.</h2>
+        <ul className={styles.list}>
+          <li className={styles.listItem}>
+            <span>21.1.</span>
+            <div>
+              Both parties will comply with all applicable requirements of the
+              Privacy Legislation. This Clause 21 is in addition to, and does
+              not relieve, remove or replace a party’s obligations or rights
+              under the Privacy Legislation.
+            </div>
+          </li>
+          <li className={styles.listItem}>
+            <span>21.2.</span>
+            <div>
+              The provisions of this Agreement shall apply to the processing of
+              the Personal Data carried out for the Customer by Astrosat, and to
+              all Personal Data held by Astrosat in relation to all such
+              processing whether such Personal Data is held at the date of this
+              Agreement or received afterwards.
+            </div>
+          </li>
+          <li className={styles.listItem}>
+            <span>21.3.</span>
+            <div>
+              This Agreement shall continue in full force and effect for so long
+              as Astrosat is processing Personal Data on behalf of the Customer.
+            </div>
+          </li>
+          <li className={styles.listItem}>
+            <span>21.4.</span>
+            <div>
+              Astrosat is only to process the Personal Data received from the
+              Customer:
+              <ul className={styles.list}>
+                <li className={styles.listItem}>
+                  <span>21.4.1.</span>
+                  <div>
+                    for the purposes of this Agreement and not for any other
+                    purpose;
+                  </div>
+                </li>
+                <li className={styles.listItem}>
+                  <span>21.4.2.</span>
+                  <div>
+                    to the extent and in such a manner as is necessary for those
+                    purposes; and
+                  </div>
+                </li>
+                <li className={styles.listItem}>
+                  <span>21.4.3.</span>
+                  <div>
+                    strictly in accordance with the Agreement or otherwise with
+                    the express written authorisation and instructions of the
+                    Customer (which may be specific instructions or instructions
+                    of a general nature or as otherwise notified by the Customer
+                    to Astrosat).
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </li>
+          <li className={styles.listItem}>
+            <span>21.5.</span>
+            <div>
+              Schedule 1 sets out the scope, nature and purpose of processing by
+              Astrosat, the duration of processing and the types of Personal
+              Data and categories of data subject.
+            </div>
+          </li>
+          <li className={styles.listItem}>
+            <span>21.6.</span>
+            <div>
+              All instructions given by the Customer to Astrosat shall be made
+              in writing and shall at all times be in compliance with the GDPR
+              and other applicable laws. Astrosat shall act only on such written
+              instructions from the Customer unless Astrosat is required by law
+              to do otherwise (as per Article 29 of the GDPR).
+            </div>
+          </li>
+          <li className={styles.listItem}>
+            <span>21.7.</span>
+            <div>
+              Astrosat shall promptly assist the Customer (where the Customer
+              cannot do this itself via the Subscription Services) in complying
+              with a legitimate data subject request to amend, transfer, delete,
+              or otherwise dispose of Personal Data. Where permitted to do so by
+              law, Astrosat may charge a reasonable fee for providing such
+              assistance.
+            </div>
+          </li>
+          <li className={styles.listItem}>
+            <span>21.8.</span>
+            <div>
+              Both Parties shall comply at all times with the GDPR and other
+              applicable laws and shall not perform their obligations under this
+              Agreement or any other agreement or arrangement between themselves
+              in such way as to cause either party to breach any of its
+              applicable obligations under the GDPR.
+            </div>
+          </li>
+          <li className={styles.listItem}>
+            <span>21.9.</span>
+            <div>
+              The Customer hereby warrants, represents, and undertakes that the
+              Personal Data shall comply with the GDPR in all respects
+              including, but not limited to, its collection, holding, and
+              processing.
+            </div>
+          </li>
+          <li className={styles.listItem}>
+            <span>21.10.</span>
+            <div>
+              Astrosat agrees to comply with any reasonable measures required by
+              the Customer to ensure that its obligations under this Agreement
+              are satisfactorily performed in accordance with any and all
+              applicable legislation from time to time in force (including, but
+              not limited to, the GDPR) and any best practice guidance issued by
+              the ICO.
+            </div>
+          </li>
+          <li className={styles.listItem}>
+            <span>21.11.</span>
+            <div>
+              Astrosat shall provide all reasonable assistance (at the
+              Customer’s cost) to the Customer in complying with its obligations
+              under the GDPR with respect to the security of processing, the
+              notification of Personal Data breaches, the conduct of data
+              protection impact assessments, and in dealings with the ICO.
+            </div>
+          </li>
+          <li className={styles.listItem}>
+            <span>21.12.</span>
+            <div>
+              When processing the Personal Data on behalf of the Customer,
+              Astrosat shall:
+              <ul className={styles.list}>
+                <li className={styles.listItem}>
+                  <span>21.12.1.</span>
+                  <div>
+                    not process the Personal Data outside the European Economic
+                    Area (all EU member states, plus Iceland, Liechtenstein, and
+                    Norway) (“EEA”) other than the United Kingdom (which shall
+                    be permitted) without the prior written consent of the
+                    Customer and, where the Customer consents to such a transfer
+                    to a country that is outside of the EEA, to comply with the
+                    obligations of Data Processors under the provisions
+                    applicable to transfers of Personal Data to third countries
+                    set out in Chapter 5 of the GDPR by providing an adequate
+                    level of protection to any Personal Data that is transferred
+                    and providing appropriate safeguards in relation to the
+                    transfer;
+                  </div>
+                </li>
+                <li className={styles.listItem}>
+                  <span>21.12.2.</span>
+                  <div>
+                    not transfer any of the Personal Data to any third party
+                    without the written consent of the Customer and, in the
+                    event of such consent, the Personal Data shall be
+                    transferred strictly subject to the terms of a suitable
+                    agreement, as set out in Clause 21.21;
+                  </div>
+                </li>
+                <li className={styles.listItem}>
+                  <span>21.12.3.</span>
+                  <div>
+                    process the Personal Data only to the extent, and in such
+                    manner, as is necessary in order to comply with its
+                    obligations to the Customer or as may be required by law (in
+                    which case, Astrosat shall inform the Customer of the legal
+                    requirement in question before processing the Personal Data
+                    for that purpose unless prohibited from doing so by law);
+                  </div>
+                </li>
+                <li className={styles.listItem}>
+                  <span>21.12.4.</span>
+                  <div>
+                    Implement appropriate technical and organisational measures,
+                    and take all steps necessary to protect the Personal Data
+                    against unauthorised or unlawful processing, accidental
+                    loss, destruction, damage, alteration, or disclosure;
+                  </div>
+                </li>
+                <li className={styles.listItem}>
+                  <span>21.12.5.</span>
+                  <div>
+                    make available to the Customer any and all such information
+                    as is reasonably required and necessary to demonstrate
+                    Astrosat’s compliance with the GDPR; and
+                  </div>
+                </li>
+                <li className={styles.listItem}>
+                  <span>21.12.6.</span>
+                  <div>
+                    inform the Customer immediately if it is asked to do
+                    anything that infringes the GDPR or the Privacy Legislation
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </li>
+          <li className={styles.listItem}>
+            <span>21.13.</span>
+            <div>
+              Astrosat shall, at the Customer’s cost, assist the Customer in
+              complying with its obligations under the GDPR. In particular, the
+              following shall apply to data subject access requests, complaints,
+              and data breaches.
+            </div>
+          </li>
+          <li className={styles.listItem}>
+            <span>21.14.</span>
+            <div>
+              Astrosat shall notify the Customer without undue delay if it
+              receives:
+              <ul className={styles.list}>
+                <li className={styles.listItem}>
+                  <span>21.14.1.</span>
+                  <div>a subject access request from a data subject; or</div>
+                </li>
+                <li className={styles.listItem}>
+                  <span>21.14.2.</span>
+                  <div>
+                    any other complaint or request relating to the processing of
+                    the Personal Data.
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </li>
+          <li className={styles.listItem}>
+            <span>21.15.</span>
+            <div>
+              Astrosat shall, at the Customer’s cost, cooperate fully with the
+              Customer and assist as required in relation to any subject access
+              request, complaint, or other request, including by:
+              <ul className={styles.list}>
+                <li className={styles.listItem}>
+                  <span>21.15.1.</span>
+                  <div>
+                    providing the Customer with full details of the complaint or
+                    request;
+                  </div>
+                </li>
+                <li className={styles.listItem}>
+                  <span>21.15.2.</span>
+                  <div>
+                    providing the necessary information and assistance in order
+                    to comply with a subject access request;
+                  </div>
+                </li>
+                <li className={styles.listItem}>
+                  <span>21.15.3.</span>
+                  <div>
+                    providing the Customer with any Personal Data it holds in
+                    relation to a data subject (within the timescales required
+                    by the Customer); and
+                  </div>
+                </li>
+                <li className={styles.listItem}>
+                  <span>21.15.4.</span>
+                  <div>
+                    providing the Customer with any other information requested
+                    by the Customer.
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </li>
+          <li className={styles.listItem}>
+            <span>21.16.</span>
+            <div>
+              Astrosat shall notify the Customer immediately if it becomes aware
+              of any form of Personal Data breach, including any unauthorised or
+              unlawful processing, loss of, damage to, or destruction of any of
+              the Personal Data.
+            </div>
+          </li>
+          <li className={styles.listItem}>
+            <span>21.17.</span>
+            <div>
+              The Customer shall be liable for, and shall indemnify (and keep
+              indemnified) Astrosat in respect of any and all action,
+              proceeding, liability, cost, claim, loss, expense (including
+              reasonable legal fees and payments on a solicitor and client
+              basis), or demand suffered or incurred by, awarded against, or
+              agreed to be paid by, Astrosat and any Sub-Processor arising
+              directly or in connection with:
+              <ul className={styles.list}>
+                <li className={styles.listItem}>
+                  <span>21.17.1.</span>
+                  <div>
+                    any non-compliance by the Customer with the GDPR or other
+                    applicable legislation;
+                  </div>
+                </li>
+                <li className={styles.listItem}>
+                  <span>21.17.2.</span>
+                  <div>
+                    any Personal Data processing carried out by Astrosat or
+                    Sub-Processor in accordance with instructions given by the
+                    Customer that infringe the GDPR or other applicable
+                    legislation; or
+                  </div>
+                </li>
+                <li className={styles.listItem}>
+                  <span>21.17.3.</span>
+                  <div>
+                    any breach by the Customer of its obligations under this
+                    Agreement, except to the extent that Astrosat or a
+                    Sub-Processor is liable under sub-Clause 21.18.
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </li>
+          <li className={styles.listItem}>
+            <span>21.18.</span>
+            <div>
+              Astrosat shall be liable for, and shall indemnify (and keep
+              indemnified) the Customer in respect of any and all action,
+              proceeding, liability, cost, claim, loss, expense (including
+              reasonable legal fees and payments on a solicitor and client
+              basis), or demand suffered or incurred by, awarded against, or
+              agreed to be paid by, the Customer arising directly or in
+              connection with Astrosat’s Personal Data processing activities
+              that are subject to this Agreement:
+              <ul className={styles.list}>
+                <li className={styles.listItem}>
+                  <span>21.18.1.</span>
+                  <div>
+                    only to the extent that the same results from Astrosat’s or
+                    a Sub-Processor’s breach of this Agreement; and
+                  </div>
+                </li>
+                <li className={styles.listItem}>
+                  <span>21.18.2.</span>
+                  <div>
+                    not to the extent that the same is or are contributed to by
+                    any breach of this Agreement by the Customer.
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </li>
+          <li className={styles.listItem}>
+            <span>21.19.</span>
+            <div>
+              The Customer shall not be entitled to claim back from Astrosat or
+              a Sub-Processor any sums paid in compensation by the Customer in
+              respect of any damage to the extent that the Customer is liable to
+              indemnify Astrosat or Sub-Processor under sub-Clause 21.17.
+            </div>
+          </li>
+          <li className={styles.listItem}>
+            <span>21.20.</span>
+            <div>
+              Nothing in this Agreement (and in particular, this Clause 21)
+              shall relieve either party of, or otherwise affect, the liability
+              of either party to any data subject, or for any other breach of
+              that party’s direct obligations under the GDPR. Furthermore,
+              Astrosat hereby acknowledges that it shall remain subject to the
+              authority of the ICO and shall co-operate fully therewith, as
+              required, and that failure to comply with its obligations as a
+              Data Processor under the GDPR may render it subject to the fines,
+              penalties, and compensation requirements set out in the GDPR.
+            </div>
+          </li>
+          <li className={styles.listItem}>
+            <span>21.21.</span>
+            <div>
+              In the event that Astrosat appoints a Sub-Processor, Astrosat
+              shall:
+              <ul className={styles.list}>
+                <li className={styles.listItem}>
+                  <span>21.21.1.</span>
+                  <div>
+                    enter into a Sub-Processing Agreement with the Sub-Processor
+                    which shall impose upon the Sub-Processor the same or
+                    similar obligations as are imposed upon Astrosat by this
+                    Agreement;
+                  </div>
+                </li>
+                <li className={styles.listItem}>
+                  <span>21.21.2.</span>
+                  <div>
+                    ensure that the Sub-Processor complies fully with its
+                    obligations under the Sub-Processing Agreement and the GDPR;
+                    and
+                  </div>
+                </li>
+                <li className={styles.listItem}>
+                  <span>21.21.3.</span>
+                  <div>
+                    remain fully liable to the Customer for performance of the
+                    Sub-Processor’s obligations to the extent the Sub-Processor
+                    fails to fulfil their data protection obligations.
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </li>
+          <li className={styles.listItem}>
+            <span>21.22.</span>
+            <div>
+              Except as provided otherwise herein, Astrosat shall, at the
+              written direction of the Customer, delete or return Personal Data
+              and copies thereof to the Customer on termination of this
+              Agreement unless required by applicable law to store the Personal
+              Data (and for these purposes the term “delete” shall mean to put
+              such data beyond use).
+            </div>
+          </li>
+          <li className={styles.listItem}>
+            <span>21.23.</span>
+            <div>
+              Astrosat shall maintain complete and accurate records and
+              information to demonstrate its compliance with this Clause 21 and
+              immediately inform the Customer if, in the opinion of Astrosat,
+              its instruction infringes the DPA or GDPR or applicable laws.
+            </div>
+          </li>
+        </ul>
+      </div>
+      <div className={styles.section}>
+        <h2 className={styles.textSectionHeader}>22. Data Sharing</h2>
+        <ul className={styles.list}>
+          <li className={styles.listItem}>
+            <span>22.1.</span>
+            <div>
+              In certain circumstances, Astrosat and a Customer may require to
+              share data which includes Personal Data for example to improve and
+              enhance User experience and (2) to perform and/or improve the
+              Services and (3) to obtain relevant marketing, demographic,
+              clinical and other appropriate information from Astrosat.
+            </div>
+          </li>
+          <li className={styles.listItem}>
+            <span>22.2.</span>
+            <div>
+              The parties shall not process the Shared Personal Data for any
+              purpose or in any way that is incompatible with the Stated
+              Purposes.
+            </div>
+          </li>
+          <li className={styles.listItem}>
+            <span>22.3.</span>
+            <div>
+              The Shared Personal Data shall be disclosed by one party to
+              another only to the extent reasonably necessary for the Stated
+              Purposes.
+            </div>
+          </li>
+          <li className={styles.listItem}>
+            <span>22.4.</span>
+            <div>
+              Each party shall appoint a data protection officer and/or at least
+              one other of its representatives as a point of contact for all
+              issues relating to the sharing of the Shared Personal Data and the
+              GDPR (including, but not limited to, compliance, training, and the
+              handling of Personal Data breaches).
+            </div>
+          </li>
+          <li className={styles.listItem}>
+            <span>22.5.</span>
+            <div>
+              Both parties shall at all times during the Subscription Term
+              comply with their obligations as Data Controllers, the rights of
+              data subjects, and all other applicable requirements under the
+              GDPR. These Terms and Conditions are in addition to, and do not
+              relieve, remove, or replace either party’s obligations under the
+              GDPR. Any material breach of the GDPR by either party shall, if
+              not remedied within 14 days of written notice from the other
+              party, give the other party grounds to terminate this Agreement
+              with immediate effect.
+            </div>
+          </li>
+          <li className={styles.listItem}>
+            <span>22.6.</span>
+            <div>
+              The extent of the Shared Personal Data, including any applicable
+              restrictions relating to will be agreed between the parties and
+              set out in writing.
+            </div>
+          </li>
+          <li className={styles.listItem}>
+            <span>22.7.</span>
+            <div>
+              Each party shall ensure that the Shared Personal Data is accurate
+              and up-to-date prior to its disclosure to the other party.
+            </div>
+          </li>
+          <li className={styles.listItem}>
+            <span>22.8.</span>
+            <div>
+              The parties shall use compatible technology for the processing of
+              the Shared Personal Data in order to preserve accuracy.
+            </div>
+          </li>
+          <li className={styles.listItem}>
+            <span>22.9.</span>
+            <div>
+              Both parties shall at all times during the Term process the Shared
+              Personal Data fairly and lawfully.
+            </div>
+          </li>
+          <li className={styles.listItem}>
+            <span>22.10.</span>
+            <div>
+              Both parties shall ensure that they have legitimate grounds for
+              processing the Shared Personal Data under the GDPR.
+            </div>
+          </li>
+          <li className={styles.listItem}>
+            <span>22.11.</span>
+            <div>
+              Both parties shall ensure that they have in place all required
+              notices and consents in order to enable the sharing of the Shared
+              Personal Data under this Agreement. In particular, the parties
+              shall ensure that data subjects are provided with clear and
+              sufficient information about the following:
+              <ul className={styles.list}>
+                <li className={styles.listItem}>
+                  <span>21.11.1.</span>
+                  <div>
+                    the purposes for which their Personal Data is to be
+                    processed;
+                  </div>
+                </li>
+                <li className={styles.listItem}>
+                  <span>21.11.2.</span>
+                  <div>
+                    the legal basis upon which it is relying for such purposes;
+                  </div>
+                </li>
+                <li className={styles.listItem}>
+                  <span>21.11.3.</span>
+                  <div>
+                    the fact that their Personal Data is to be transferred to a
+                    third party and sufficient detail about the transfer to
+                    enable the data subject to understand the purpose of the
+                    transfer and any risks associated therewith; and
+                  </div>
+                </li>
+                <li className={styles.listItem}>
+                  <span>21.11.4.</span>
+                  <div>
+                    in the event that their Personal Data is to be transferred
+                    outside of the United Kingdom or EEA, the fact that such a
+                    transfer is to take place and sufficient detail about the
+                    transfer to enable the data subject to understand the
+                    purpose of the transfer and any risks associated therewith;
+                    and
+                  </div>
+                </li>
+                <li className={styles.listItem}>
+                  <span>21.11.5.</span>
+                  <div>
+                    all other information required under Article 13 of the GDPR.
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </li>
+          <li className={styles.listItem}>
+            <span>22.12.</span>
+            <div>
+              The parties shall assist one another in complying with their
+              respective obligations and the rights of data subjects under the
+              GDPR. Such assistance shall include, but not be limited to:
+              <ul className={styles.list}>
+                <li className={styles.listItem}>
+                  <span>22.12.1.</span>
+                  <div>
+                    consulting with the other party with respect to information
+                    and notices provided to data subjects relating to the Shared
+                    Personal Data;
+                  </div>
+                </li>
+                <li className={styles.listItem}>
+                  <span>22.12.2.</span>
+                  <div>
+                    informing the other party about the receipt of data subject
+                    access requests and providing reasonable assistance in
+                    complying with the same;
+                  </div>
+                </li>
+                <li className={styles.listItem}>
+                  <span>22.12.3.</span>
+                  <div>
+                    not disclosing or otherwise releasing any Shared Personal
+                    Data in response to a data subject access request without
+                    prior consultation with the other party, whenever reasonably
+                    possible;
+                  </div>
+                </li>
+                <li className={styles.listItem}>
+                  <span>22.12.4.</span>
+                  <div>
+                    assisting the other party at the cost of the other party in
+                    responding to any other data subject request.
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </li>
+          <li className={styles.listItem}>
+            <span>22.13.</span>
+            <div>
+              Each party shall maintain records of all data subject requests
+              received, the decisions made in response, and any information
+              provided to the data subject(s) concerned. Such records shall
+              include copies of the request, details of any data accessed and
+              shared, and, if applicable, details of any further correspondence,
+              telephone conversations, or meetings relating to the request.
+            </div>
+          </li>
+          <li className={styles.listItem}>
+            <span>22.14.</span>
+            <div>
+              Each party shall hold and process the Shared Personal Data only
+              for so long as is necessary for the fulfilment of the Stated
+              Purposes.
+            </div>
+          </li>
+          <li className={styles.listItem}>
+            <span>22.15.</span>
+            <div>
+              In the event that any statutory or similar retention periods apply
+              to any of the Shared Personal Data, the relevant Personal Data
+              shall be retained by the relevant party in accordance therewith.
+            </div>
+          </li>
+          <li className={styles.listItem}>
+            <span>22.16.</span>
+            <div>
+              The parties shall delete (or otherwise dispose of) or at a party’s
+              option anonymise the Shared Personal Data (or the relevant part
+              thereof) and any and all copies thereof or, on the written request
+              of the other party, other than in the case of anonymised data,
+              return it to the other disclosing party, subject to any legal
+              requirement to retain any applicable Personal Data, in the
+              following circumstances:
+              <ul className={styles.list}>
+                <li className={styles.listItem}>
+                  <span>22.16.1.</span>
+                  <div>
+                    upon the termination or expiry of this Agreement; or
+                  </div>
+                </li>
+                <li className={styles.listItem}>
+                  <span>22.16.2.</span>
+                  <div>
+                    once the Stated Purposes have been fulfilled and it is no
+                    longer necessary to retain the Shared Personal Data (or the
+                    relevant part thereof) in light of the Stated Purposes;
+                    whichever is earlier.
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </li>
+          <li className={styles.listItem}>
+            <span>22.17.</span>
+            <div>
+              All Shared Personal Data to be deleted or disposed of or
+              anonymised under this Agreement shall be deleted or disposed of
+              using methods compliant with the GDPR.
+            </div>
+          </li>
+          <li className={styles.listItem}>
+            <span>22.18.</span>
+            <div>
+              Following the deletion and/or disposal or anonymisation of the
+              Shared Personal Data (as applicable), the party deleting or
+              disposing of the data shall notify the other party of the same in
+              writing, confirming that the Shared Personal Data has been deleted
+              or disposed of or anonymised using methods compliant with the
+              GDPR.
+            </div>
+          </li>
+          <li className={styles.listItem}>
+            <span>22.19.</span>
+            <div>
+              Following the deletion and/or disposal or anonymisation of the
+              Shared Personal Data (as applicable), the party deleting or
+              disposing of the data shall notify the other party of the same in
+              writing, confirming that the Shared Personal Data has been deleted
+              or disposed of or anonymised using methods compliant with the
+              GDPR.
+            </div>
+          </li>
+          <li className={styles.listItem}>
+            <span>22.20.</span>
+            <div>
+              In the event that a party wishes to appoint a third-party Data
+              Processor, it shall remain liable to the other party for any acts
+              and/or omissions of the third-party processor and it shall comply
+              with Articles 28 and 30 of the GDPR.
+            </div>
+          </li>
+          <li className={styles.listItem}>
+            <span>22.21.</span>
+            <div>
+              Neither party shall transfer any of the Shared Personal Data
+              outside of the United Kingdom or EEA unless:
+              <ul className={styles.list}>
+                <li className={styles.listItem}>
+                  <span>22.21.1.</span>
+                  <div>
+                    that party complies with the provisions of Article 26 of the
+                    GDPR (where the third party is a joint controller); and
+                  </div>
+                </li>
+                <li className={styles.listItem}>
+                  <span>22.21.2.</span>
+                  <div>
+                    that party ensures that the transfer is to a country that
+                    the European Commission has determined (by means of an
+                    adequacy decision) offers an adequate level of data
+                    protection, pursuant to Article 45 of the GDPR; there are
+                    appropriate safeguards in place pursuant to Article 46 of
+                    the GDPR; or one of the derogations for specific situations
+                    set out in Article 49 of the GDPR applies.
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </li>
+          <li className={styles.listItem}>
+            <span>22.22.</span>
+            <div>
+              A party shall transfer the Shared Personal Data to the other party
+              using methods compliant with the GDPR.
+            </div>
+          </li>
+          <li className={styles.listItem}>
+            <span>22.23.</span>
+            <div>
+              Both parties shall ensure that they have in place appropriate
+              technical and organisational measures as reviewed and approved by
+              the other party, to protect against the unauthorised or unlawful
+              processing of, and against the accidental loss or destruction of,
+              or damage to, the Shared Personal Data, having regard to the state
+              of technological development and the cost of implementing any such
+              measures.
+            </div>
+          </li>
+          <li className={styles.listItem}>
+            <span>22.24.</span>
+            <div>
+              When putting appropriate technical and organisational measures in
+              place, both parties shall ensure a level of security appropriate
+              to the nature of the Shared Personal Data which is to be
+              protected, and to the potential harm resulting from the
+              unauthorised or unlawful processing of, the accidental loss or
+              destruction of, or damage to, the Shared Personal Data.
+            </div>
+          </li>
+          <li className={styles.listItem}>
+            <span>22.25.</span>
+            <div>
+              All technical and organisational measures put in place by both
+              parties shall be reviewed regularly by the respective party,
+              updating such measures upon the agreement of the other party as
+              appropriate throughout the Term of this Agreement.
+            </div>
+          </li>
+          <li className={styles.listItem}>
+            <span>22.26.</span>
+            <div>
+              Both parties shall ensure that any and all of their
+              representatives by whom the Shared Personal Data is to be handled
+              and processed are appropriately trained to do so in accordance
+              with the GDPR and with the requisite technical and organisational
+              measures.
+            </div>
+          </li>
+          <li className={styles.listItem}>
+            <span>22.27.</span>
+            <div>
+              The parties shall further ensure that any of their respective
+              representatives to whom the Shared Personal Data is to be
+              disclosed are subject to contractual obligations in relation to
+              confidentiality and data protection that bind those
+              Representatives and that are same as the obligations imposed upon
+              the parties by this Agreement.
+            </div>
+          </li>
+          <li className={styles.listItem}>
+            <span>22.28.</span>
+            <div>
+              In the event of a dispute or claim brought by a data subject or
+              the ICO concerning the processing of Shared Personal Data against
+              either or both parties, the parties will inform each other about
+              any such disputes or claims and will cooperate with a view to
+              settling them amicably in a timely fashion.
+            </div>
+          </li>
+          <li className={styles.listItem}>
+            <span>22.29.</span>
+            <div>
+              The parties agree to respond to any generally available
+              non-binding mediation procedure initiated by a data subject or by
+              the supervisory authority. If they do participate in the
+              proceedings, the parties may elect to do so remotely (such as by
+              telephone or other electronic means). The parties also agree to
+              consider participating in any other arbitration, mediation, or
+              other dispute resolution proceedings developed for data protection
+              disputes.
+            </div>
+          </li>
+        </ul>
+      </div>
+      <div className={styles.section}>
+        <h2 className={styles.textSectionHeader}>
+          23. Feedback and Modifications
+        </h2>
+        <ul className={styles.list}>
+          <li className={styles.listItem}>
+            <span>23.1.</span>
+            <div>
+              The Customer hereby acknowledges that upon submitting Feedback to
+              Astrosat, the Customer automatically grants to Astrosat a
+              worldwide, perpetual, irrevocable, royalty free licence to use
+              that Feedback in any way Astrosat deems appropriate including, but
+              not limited to:
+              <ul className={styles.list}>
+                <li className={styles.listItem}>
+                  <span>23.1.1.</span>
+                  <div>
+                    The use, publication, distribution, transmission,
+                    broadcasting, licensing, sub-licensing, leasing, lending and
+                    sale of the Feedback; and
+                  </div>
+                </li>
+                <li className={styles.listItem}>
+                  <span>23.1.1.</span>
+                  <div>
+                    The creation, use, publication, distribution, transmission,
+                    broadcasting, licensing, sub-licensing, leasing, lending and
+                    sale of any derivative works based upon the Feedback.
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </li>
+          <li className={styles.listItem}>
+            <span>23.2.</span>
+            <div>
+              Astrosat’s use of the Feedback shall not bestow any rights or
+              interests upon the Customer whatsoever.
+            </div>
+          </li>
+          <li className={styles.listItem}>
+            <span>23.3.</span>
+            <div>
+              The Customer hereby acknowledges that any modifications made to
+              the Software at the request or suggestion of the Customer will
+              belong to and be the Intellectual Property of Astrosat.
+            </div>
+          </li>
+        </ul>
+      </div>
+      <div className={styles.section}>
+        <h2 className={styles.textSectionHeader}>24. Change Orders.</h2>
+        <ul className={styles.list}>
+          <li className={styles.listItem}>
+            <span>24.1.</span>
+            <div>
+              If the Customer wishes to amend the scope of an Order Form, the
+              parties will use all reasonable endeavours to agree to a Change
+              Order. Each Change Order shall detail the requested changes to the
+              applicable task, responsibility, duty, budget, work programme or
+              other matter. The Change Order will become effective upon the
+              execution of the Change Order by both parties and will include a
+              specified period of time (as agreed upon by the parties) within
+              which Astrosat will implement the changes and any increase in
+              price.
+            </div>
+          </li>
+          <li className={styles.listItem}>
+            <span>24.2.</span>
+            <div>
+              Both parties agree to act in good faith and promptly when
+              considering a Change Order requested by the other party. Astrosat
+              reserves the right to postpone effecting material changes in the
+              scope of Professional Services until such time as the parties
+              agree to and execute the corresponding Change Order.
+            </div>
+          </li>
+        </ul>
+      </div>
+      <div className={styles.section}>
+        <h2 className={styles.textSectionHeader}>25. Entire Agreement</h2>
+        <div className={styles.description}>
+          This Agreement and each Order Form comprises the entire Agreement
+          between the Parties and supersedes all previous agreements between the
+          Parties. This Agreement can only be altered or amended by either an
+          Order Form or a Change Order.
+        </div>
+      </div>
+      <div className={styles.title}>
+        <h1>PART FOUR – DEFINITIONS.</h1>
+      </div>
+      <div className={styles.section}>
+        <h2 className={styles.textSectionHeader}>26. Glossary.</h2>
+        <ul className={styles.list}>
+          <li className={styles.listItem}>
+            <span>26.1.</span>
+            <div>
+              <strong>“Affiliate”</strong> means an entity which controls, is
+              controlled by, or is under common control with, a party, and
+              control means the ability to vote 50% or more of the voting
+              securities of any entity or otherwise having the ability to
+              influence and direct the polices and direction of an entity;
+            </div>
+          </li>
+          <li className={styles.listItem}>
+            <span>26.2.</span>
+            <div>
+              <strong>“Change Order”</strong>
+              means a written statement signed by the parties recording any (a)
+              change in the details of an Order Form, or (b) change in the
+              assumptions upon which the Order Form is based (including, but not
+              limited to, changes in an agreed starting date for a Subscription
+              or Professional Services or suspension of the services by the
+              Customer or (c) any changes in the fees, costs and/or time lines;
+            </div>
+          </li>
+          <li className={styles.listItem}>
+            <span>26.3.</span>
+            <div>
+              <strong>“Confidential Information”</strong> means any information
+              that is proprietary or confidential which either party directly or
+              indirectly discloses, or makes available, to the other, including
+              but not limited to, the existence and terms of this Agreement, all
+              confidential or proprietary information relating to the business,
+              affairs, operations, processes, product information, know-how,
+              technical information, designs, trade secrets or software and/or
+              Intellectual Property of the party disclosing such information;
+            </div>
+          </li>
+          <li className={styles.listItem}>
+            <span>26.4.</span>
+            <div>
+              <strong>“Content”</strong> means any text, graphics, images,
+              audio, video, software, data compilations including, but not
+              limited to, text, graphics, logos, icons, sound clips, video
+              clips, data compilations, page layout, underlying code and
+              software and any other form of information capable of being stored
+              in a computer that appears on, is uploaded to or forms part of the
+              Subscription Services or the Platform; BUT excluding User Content;
+            </div>
+          </li>
+          <li className={styles.listItem}>
+            <span>26.5.</span>
+            <div>
+              <strong>“Database”</strong> means the database stored on the
+              Platform which contains inter alia User Content;
+            </div>
+          </li>
+          <li className={styles.listItem}>
+            <span>26.6.</span>
+            <div>
+              <strong>“Data Controller”</strong>,
+              <strong>“Data Processor”</strong>,<strong>“Personal Data”</strong>
+              ,<strong>“processing”</strong>, and
+              <strong>“data subject”</strong> shall have the meanings ascribed
+              to them in the GDPR;
+            </div>
+          </li>
+          <li className={styles.listItem}>
+            <span>26.7.</span>
+            <div>
+              <strong>“DPA”</strong> means the Data Protection Act 2018 and any
+              modification, amendment or re-enactment thereof;
+            </div>
+          </li>
+          <li className={styles.listItem}>
+            <span>26.8.</span>
+            <div>
+              <strong>“Documentation”</strong> means user documentation provided
+              electronically by Astrosat for use with the Subscription Services,
+              as periodically updated;
+            </div>
+          </li>
+          <li className={styles.listItem}>
+            <span>26.9.</span>
+            <div>
+              <strong>“EULA”</strong> means the End User Licence Agreement in
+              the form set out in PART SEVEN of this Agreement;
+            </div>
+          </li>
+          <li className={styles.listItem}>
+            <span>26.10.</span>
+            <div>
+              <strong>“Feedback”</strong> means all comments, suggestions,
+              requests, requirements, improvements, feedback, or other input the
+              Customer and Users provide regarding any products or services
+              owned or supplied by Astrosat or its Affiliates;
+            </div>
+          </li>
+          <li className={styles.listItem}>
+            <span>26.11.</span>
+            <div>
+              <strong>“Force Majeure”</strong>, means circumstances beyond the
+              control of Astrosat which shall include (but shall not be limited
+              to) acts of God, perils of the sea or air, fire, flood, drought,
+              explosion, sabotage, accident, embargo, riot, civil commotion,
+              including acts of local government and parliamentary authority;
+              inability to supply the Subscription Services and or the
+              Professional Services, materials, breakdown of Local Equipment and
+              labour disputes of whatever nature and for whatever cause arising
+              including (but without prejudice to the generality of the
+              foregoing) work to rule, overtime bars, strikes and lockouts and
+              whether between either of the parties hereto and any or all of its
+              employees and/or any other employer and any or all of its
+              employees and/or between any two or more groups of employees (and
+              whether of either of the parties hereto or any other employer);
+            </div>
+          </li>
+          <li className={styles.listItem}>
+            <span>26.12.</span>
+            <div>
+              <strong>“GDPR”</strong> means the General Data Protection
+              Regulation (Regulation (EU) 2016/679) as amended, replaced,
+              supplemented or adopted into United Kingdom Legislation from time
+              to time;
+            </div>
+          </li>
+          <li className={styles.listItem}>
+            <span>26.13.</span>
+            <div>
+              <strong>“ICO”</strong> means the UK’s supervisory authority, the
+              Information Commissioner’s Office;
+            </div>
+          </li>
+          <li className={styles.listItem}>
+            <span>26.14.</span>
+            <div>
+              <strong>“Industry Best Practice”</strong> means the standard of
+              care, attention, diligence, expertise, knowledge, methods and
+              practice expected of a competent and experienced professional in
+              the IT and Cyber Security profession;
+            </div>
+          </li>
+          <li className={styles.listItem}>
+            <span>26.15.</span>
+            <div>
+              <strong>“Insolvency Event”</strong> means the other party (a)
+              enters liquidation, or a winding up petition is presented against
+              the company; (b) has a receiver, liquidator, administrator,
+              trustee or an individual with a similar role appointed over any of
+              its assets; (c) proposes to make any arrangements with its
+              creditors or passes a resolution to place the company into
+              liquidation; or (d) suffers an event which, under the law of a
+              different country, is equivalent to any of the previously
+              specified acts or events;
+            </div>
+          </li>
+          <li className={styles.listItem}>
+            <span>26.16.</span>
+            <div>
+              <strong>“Intellectual Property”</strong> means patents,
+              trademarks, trade name, service mark, copyright, trade secrets,
+              know-how, process, technology, development tool, ideas, concepts,
+              design right, domain names, moral right, database right,
+              methodology, algorithm and invention, and any other proprietary
+              information (whether registered, unregistered, pending or applied
+              for);
+            </div>
+          </li>
+          <li className={styles.listItem}>
+            <span>26.17.</span>
+            <div>
+              <strong>“Local Equipment”</strong> means the Customer or User’s
+              own on-premise equipment including hardware and software
+              environment which is used in connection with the Software
+              Services, which comprise of, but is not limited to - server
+              computers (whether virtual or not), Desktop PC’s, Laptops or any
+              other portable device, storage systems and relative hardware,
+              firmware, operating software, operating system software,
+              networking software, database software, anti-virus and security
+              software, switches, power supplies and telecommunications
+              infrastructure, internet connection, broadband availability and
+              infrastructure, routers, Printers, associated peripheral devices
+              or accessories whether fixed or portable;
+            </div>
+          </li>
+          <li className={styles.listItem}>
+            <span>26.18.</span>
+            <div>
+              <strong>“Order Form”</strong> means a document provided by
+              Astrosat and signed by the Customer that describes the
+              Subscription Services and Professional Services being purchased
+              and/or licensed by the Customer in terms of this Agreement and any
+              additional conditions pertaining thereto substantially in the form
+              comprising PART SIX of this Agreement;
+            </div>
+          </li>
+          <li className={styles.listItem}>
+            <span>26.19.</span>
+            <div>
+              <strong>“Platform”</strong> means the hardware and software
+              environment in which the software element of the Subscription
+              Services operates, which comprises one or more server computers
+              (whether virtual or not), mirroring/duplicating/back-up and
+              storage systems and relative hardware operating software, virtual
+              machine software (where relevant), operating system software,
+              database software, anti-virus and security software, switches,
+              power supplies and telecommunications infrastructure;
+            </div>
+          </li>
+          <li className={styles.listItem}>
+            <span>26.20.</span>
+            <div>
+              <strong>“Privacy Legislation”</strong> means the GDPR, the DPA,
+              the Data Protection Directive (95/46/EC), the Regulation of
+              Investigatory Powers Act 2000, the Telecommunications (Lawful
+              Business Practice) (Interception of Communications) Regulations
+              2000 (SI 2000/2699), the Electronic Communications Data Protection
+              Directive (2002/58/EC), the Privacy and Electronic Communications
+              (EC Directive) Regulations 2003 (SI 2426/2003) and all applicable
+              laws and regulations relating to the processing of personal data
+              and privacy, including where applicable the guidance and codes of
+              practice issued by the Information Commissioner. (as amended or
+              replaced from time to time) Upon the effect of the United Kingdom
+              leaving the European Union, all legislation enacted in the United
+              Kingdom in respect of the protection of personal data shall apply
+              to the contractual relationship between the Data Controller who is
+              based in the United Kingdom and the Data Processor, instead of the
+              GDPR;
+            </div>
+          </li>
+          <li className={styles.listItem}>
+            <span>26.21.</span>
+            <div>
+              <strong>“Privacy Policy”</strong> means Astrosat’s policy relating
+              to User Content and compliance with (amongst others) the Privacy
+              Legislation from time to time, the current version of which is
+              located here https://app.orbis.astrosat.net/terms;
+            </div>
+          </li>
+          <li className={styles.listItem}>
+            <span>26.22.</span>
+            <div>
+              <strong>“Professional Services”</strong> means the training,
+              consulting, development and other professional services identified
+              on an Order Form but does not include the Subscription Services;
+            </div>
+          </li>
+          <li className={styles.listItem}>
+            <span>26.23.</span>
+            <div>
+              <strong>“Shared Personal Data”</strong> means the personal data
+              and special category personal data to be shared between Astrosat
+              and the Customer under these Terms and Conditions;
+            </div>
+          </li>
+          <li className={styles.listItem}>
+            <span>26.24.</span>
+            <div>
+              <strong>“SLA”</strong> means a Service Level Agreement in the form
+              set out in PART FIVE of this Agreement;
+            </div>
+          </li>
+          <li className={styles.listItem}>
+            <span>26.25.</span>
+            <div>
+              <strong>“Software”</strong> means the Astrosat© proprietary
+              operating software and the Third-Party Software written in object
+              and source code residing on and used for operating the Platform
+              and the Subscription Services as Updated and Upgraded from time to
+              time;
+            </div>
+          </li>
+          <li className={styles.listItem}>
+            <span>26.26.</span>
+            <div>
+              <strong>“Sub-Processor”</strong> means a sub-processor appointed
+              by Astrosat to process the Personal Data;
+            </div>
+          </li>
+          <li className={styles.listItem}>
+            <span>26.27.</span>
+            <div>
+              <strong>“Sub-Processing Agreement”</strong> means an agreement
+              between Astrosat and a Sub-Processor governing the Personal Data
+              processing carried out by the Sub-Processor, as described in
+              Clause 21;
+            </div>
+          </li>
+          <li className={styles.listItem}>
+            <span>26.28.</span>
+            <div>
+              <strong>“Subscription Services”</strong> means the hosted Customer
+              experience solutions identified in an Order Form, and any
+              modifications periodically made by Astrosat, but does not include
+              the Professional Services;
+            </div>
+          </li>
+          <li className={styles.listItem}>
+            <span>26.29.</span>
+            <div>
+              <strong>“Subscription Term”</strong> means the period of time
+              during which Astrosat is required to provide the Customer with the
+              Subscription Services as specified in the relevant Order Form;
+            </div>
+          </li>
+          <li className={styles.listItem}>
+            <span>26.30.</span>
+            <div>
+              <strong>“Third-Party Software”</strong> means software other than
+              the Software which belongs to third parties and in relation to
+              which Astrosat has the right to grant sub-licenses;
+            </div>
+          </li>
+          <li className={styles.listItem}>
+            <span>26.31.</span>
+            <div>
+              <strong>“Update”</strong> means any update, update rollup, service
+              pack, feature pack, critical update, security update, or hotfix
+              that is used to improve or to fix a software product;
+            </div>
+          </li>
+          <li className={styles.listItem}>
+            <span>26.32.</span>
+            <div>
+              <strong>“Upgrade”</strong> means a software package that replaces
+              an installed version of a product with a newer version of the same
+              product, typically leaving existing customer data and preferences
+              intact while replacing the existing software with the newer
+              version;
+            </div>
+          </li>
+          <li className={styles.listItem}>
+            <span>26.33.</span>
+            <div>
+              <strong>“User”</strong> means the Customer and any of its
+              employees, or a person to whom the Customer has outsourced
+              services, that has permission to accesses the Subscription
+              Services as a named user and is not employed by Astrosat and
+              acting in the course of their employment;
+            </div>
+          </li>
+          <li className={styles.listItem}>
+            <span>26.34.</span>
+            <div>
+              <strong>“User Content”</strong> means any text, graphics, images,
+              audio, video, software, data compilations and any other form of
+              information capable of being stored in a computer that appears on,
+              is uploaded to or forms part of a User Site or the Subscription
+              Services and has been uploaded by a User;
+            </div>
+          </li>
+          <li className={styles.listItem}>
+            <span>26.35.</span>
+            <div>
+              <strong>“User Site”</strong> means a partition/tenancy/instance on
+              the Platform created by Astrosat for the Customer and/or User or
+              Users accessing the Subscription Services which shall contain User
+              Content and shall be hosted on the Platform;
+            </div>
+          </li>
+          <li className={styles.listItem}>
+            <span>26.36.</span>
+            <div>
+              <strong>“Working Day”</strong> means any day (1) which is neither
+              a Saturday or a Sunday or a public holiday in any part of the
+              United Kingdom and (2) upon which the Bank of England is open for
+              business.
+            </div>
+          </li>
+        </ul>
+      </div>
+      <div className={styles.title}>
+        <h1>PART FIVE – SLA.</h1>
+      </div>
+      <div className={styles.section}>
+        <h2 className={styles.textSectionHeader}>
+          1. Server availability Service Level Agreement (SLA)
+        </h2>
+        <div className={styles.description}>
+          This SLA is designed to ensure that Astrosat meets the needs of its
+          Customers and it outlines what levels of service can be expected.
+        </div>
+        <table className={styles.table}>
+          <thead>
+            <tr>
+              <td className={styles.td}>Service Line</td>
+              <td className={styles.td}>SLA</td>
+              <td className={styles.td}>KPI (%)</td>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td className={styles.td}>System Availability</td>
+              <td className={styles.td}>To be made available to Users 24/7</td>
+              <td className={styles.td}>99</td>
+            </tr>
+            <tr>
+              <td className={styles.td}>Support Hours:</td>
+              <td className={styles.td}>
+                Astrosat will respond within defined service levels (see below)
+              </td>
+              <td className={styles.td}>99</td>
+            </tr>
+            <tr>
+              <td className={styles.td}>Technical Support - Second Line</td>
+              <td className={styles.td}>Available 9.00am – 5.00pm GMY</td>
+              <td className={styles.td}>99</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div className={styles.section}>
+        <h2 className={styles.textSectionHeader}>2. Incident Resolution Targets</h2>
+       <table className={styles.table}>
+         <thead>
+           <tr>
+           <td></td>
+           <td>Severity Description</td>
+           <td>Response</td>
+           <td>Resolution</td>
+           </tr>
+         </thead>
+         <tbody>
+           <tr>
+             <td>2.1</td>
+             <td>Unplanned outage impacting multiple Users</td>
+             <td>1hr</td>
+             <td><24 hrs</td>
+           </tr>
+           <tr>
+           <td>2.2</td>
+             <td>Outage / severe disruption to service for several Users</td>
+             <td>2hrs</td>
+             <td>within 2 Working Days</td>
+           </tr>
+           <tr>
+           <td>2.3</td>
+             <td>Reduced functionally causing disruption to business</td>
+             <td>4hrs</td>
+             <td>within 3 Working Days</td>
+           </tr>
+           <tr>
+           <td>2.4</td>
+             <td>Non-urgent / reduced functionality with low impact</td>
+             <td>8hrs</td>
+             <td>within 5 Working Days</td>
+           </tr>
+           <tr>
+           <td>2.5</td>
+             <td>On Demand Professional services requests for installations etc.</td>
+             <td>8hrs</td>
+             <td>Agree with Customer</td>
+           </tr>
+         </tbody>
+       </table>
+       <div className={styles.description}>
+       Astrosat shall use reasonable endeavours to provide the helpdesk support services in accordance with these Service Levels and Response Times. These Response times refer only to the time within which Astrosat shall respond to a helpdesk support request. Astrosat gives no guarantee as to the time any given issue may take to resolve save that it hereby undertakes to use reasonable endeavours to resolve issues as quickly as is reasonably possible within the target resolution times specified in the table above.
+       </div>
+      </div>
     </div>
+  );
+};
+
+const container = () => {
+  return (
+    <>
+      <div className={styles.title}>
+        <h1>PART ONE – SUBSCRIPTION SERVICES.</h1>
+      </div>
+      <div className={styles.section}>
+        <h2 className={styles.textSectionHeader}>1: header</h2>
+        <ul className={styles.list}>
+          <li className={styles.listItem}>
+            <span>11.1.</span>
+            <div>sdfgs</div>
+          </li>
+        </ul>
+      </div>
+    </>
   );
 };
 
