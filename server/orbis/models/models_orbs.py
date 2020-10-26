@@ -252,7 +252,7 @@ class Licence(AccessModel):
         CustomerUser,
         blank=True,
         null=True,
-        on_delete=models.SET_NULL,
+        on_delete=models.SET_NULL,  # this line prevents the need for a "Customer.unassign" method
         related_name="licences",
     )  # note that despite `on_delete=models.SET_NULL`, the pre-delete signal will delete the "core" Licence
 

@@ -11,6 +11,7 @@ from astrosat_users.views import (
     CustomerUserListView as AstrosatUsersCustomerUserListView,
     CustomerUserDetailView as AstrosatUsersCustomerUserDetailView,
     CustomerUserInviteView as AstrosatUsersCustomerUserInviteView,
+    CustomerUserOnboardView as AstrosatUsersCustomerUserOnboardView,
 )
 
 from orbis.serializers import CustomerSerializer, CustomerUserSerializer
@@ -35,8 +36,9 @@ class LicenceNotifyingMixIn(object):
         }
 
         adapter = get_adapter(self.request)
+        managers_emails = customer.customer_users.managers().values_list("user__email", flat=True)
         message = adapter.send_mail(
-            "orbis/emails/update_licences", customer_user.user.email, context,
+            "orbis/emails/update_licences", customer_user.user.email, context, cc=managers_emails,
         )
 
         return message
@@ -66,14 +68,24 @@ class CustomerUserListView(LicenceNotifyingMixIn, AstrosatUsersCustomerUserListV
 
     def perform_create(self, serializer):
 
-        customer_user = serializer.save()
-
         user = self.request.user
-        if user.registration_stage == UserRegistrationStageType.CUSTOMER_USER:
-            user.registration_stage = UserRegistrationStageType.ORDER
-            user.save()
+
+        customer_user = serializer.save()
+        created_user = customer_user.user
+
+        if user == created_user and created_user.registration_stage == UserRegistrationStageType.CUSTOMER_USER:
+            # if we are adding ourselves to a customer as part of the "team" registration
+            # then make sure the next thing we do is create an order
+            created_user.registration_stage = UserRegistrationStageType.ORDER
+            created_user.save()
 
         customer_user.invite(adapter=get_adapter(self.request))
+
+        if user != created_user and not created_user.onboarded:
+            # if we are adding somebody new to a customer
+            # then make sure the next thing they do is get onboarded
+            created_user.registration_stage = UserRegistrationStageType.ONBOARD
+            created_user.save()
 
         if customer_user.licences.visible().count():
             message = self.notify_licences_changed(
@@ -118,14 +130,22 @@ class CustomerUserDetailView(LicenceNotifyingMixIn, AstrosatUsersCustomerUserDet
         return customer_user
 
     def perform_destroy(self, instance):
-        # the super method will notify the user they've left the customer
-        # w/in orbis, though, we should also delete the corresponding user
+        # just like the super method, we notify the user they've left the customer
+        # but w/in orbis, we add extra context about licences to the uninvite method
+        # we should also delete the corresponding user
         # TODO: WHAT HAPPENS TO THE USER'S DATA/BOOKMARKS/ETC ?
         user = instance.user
-        destroyed_value = super().perform_destroy(instance)
+        uninvitation_context = {
+            "licences": instance.licences.visible().values_list("orb__name", flat=True)
+        }
+        destroyed_value = instance.uninvite(adapter=get_adapter(self.request), context=uninvitation_context, force_deletion=True)
         user.delete()
         return destroyed_value
 
 
 class CustomerUserInviteView(LicenceNotifyingMixIn, AstrosatUsersCustomerUserInviteView):
+    serializer_class = CustomerUserSerializer
+
+
+class CustomerUserOnboardView(LicenceNotifyingMixIn, AstrosatUsersCustomerUserOnboardView):
     serializer_class = CustomerUserSerializer

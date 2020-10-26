@@ -4,6 +4,8 @@ from django.utils.functional import cached_property
 from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated, BasePermission
 
+from allauth.account.adapter import get_adapter
+
 from astrosat_users.models.models_users import UserRegistrationStageType
 from astrosat_users.views.views_customers import IsAdminOrManager
 
@@ -51,6 +53,10 @@ class OrderListCreateView(generics.ListCreateAPIView):
 
         user = self.request.user
         if user.registration_stage == UserRegistrationStageType.ORDER:
+            # this is part of the "team" self-signup...
+            # so complete the ORDER stage, and perform the ONBOARD stage
+            # (no need to set registration_stage to "ONBOARD" b/c I'm doing it here-and-now)
+            user.onboard(adapter=get_adapter(self.request))
             user.registration_stage = None
             user.save()
 

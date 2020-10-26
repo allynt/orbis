@@ -48,7 +48,7 @@ handler500 = "astrosat.views.handler500"
 # orbis replaces the default customer & customer_user views (to include licenses)
 astrosat_users_api_urlpatterns = remove_urlpatterns(
     astrosat_users_api_urlpatterns,
-    ["customers-list", "customers-detail", "customer-users-list", "customer-users-detail", "customer-users-invite",],
+    ["customers-list", "customers-detail", "customer-users-list", "customer-users-detail", "customer-users-invite", "customer-users-onboard"],
 )
 
 api_router = SimpleRouter()

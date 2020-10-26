@@ -3,7 +3,7 @@
 {% autoescape off %}
 
 {% blocktrans %}
-  Update on your ORBIS account
+  Welcome to Orbis, it's great to have you on-board!
 {% endblocktrans %}
 
 {% endautoescape %}

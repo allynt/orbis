@@ -1,0 +1,22 @@
+{# used for notifying a user that they have been removed from a customer #}
+
+{% extends "core/emails/message_base.txt" %}
+
+{% load i18n %}
+
+{% block body %}
+
+  {% autoescape off %}
+
+    Hi,
+
+    Your invitation {% if licences %} with the following licences {% endif %} has been withdrawn by the Administrator of {{ customer.name }}.
+
+    {{ licences|join:", " }}
+
+    Cheers,
+    ORBIS by Astrosat
+
+  {% endautoescape %}
+
+{% endblock %}
