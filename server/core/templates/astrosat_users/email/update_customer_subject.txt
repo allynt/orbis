@@ -1,0 +1,11 @@
+{# used to notify all managers of a customer that the customer details have been updated #}
+
+{% load i18n %}
+
+{% autoescape off %}
+
+{% blocktrans %}
+  Corporate Profile details updated on your ORBIS account
+{% endblocktrans %}
+
+{% endautoescape %}

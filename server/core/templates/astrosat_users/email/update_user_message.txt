@@ -1,0 +1,20 @@
+{% extends "core/emails/message_base.txt" %}
+
+{# used to notify a user that their details have been changed by a customer manager #}
+
+{% load i18n %}
+
+{% block body %}
+
+  {% autoescape off %}
+
+    Hi,
+
+    The user details on your ORBIS account have been changed.
+
+    Cheers,
+    ORBIS by Astrosat
+
+  {% endautoescape %}
+
+{% endblock %}
