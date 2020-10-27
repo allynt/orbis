@@ -2,6 +2,8 @@
 
 {% block body %}
 
+    {% autoescape off %}
+
     Hi,
 
     Changes have been made to your account by the Administrator of {{ customer.name }}'s ORBIS Account.
@@ -24,5 +26,8 @@
 
     Cheers,
     ORBIS by Astrosat
+
+    {% endautoescape %}
+
 
 {% endblock %}
