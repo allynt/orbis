@@ -139,11 +139,12 @@
   cursor: pointer;
 }
 
-.table,
-.td {
+.table {
+  margin-top: 1rem;
   border: 1px solid #000;
 }
 
 .table .td {
+  border: 1px solid #000;
   padding: 1rem;
 }
