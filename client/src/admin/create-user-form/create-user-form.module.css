@@ -1,8 +1,12 @@
 .form,
 .field {
-  width: 100%;
   display: flex;
   flex-direction: column;
+  width: 100%;
+}
+
+.form {
+  max-width: 50rem;
 }
 
 .error {
@@ -29,10 +33,11 @@
 
 .licences {
   display: flex;
+  flex-wrap: wrap;
 }
 
-.licence + .licence {
-  margin-left: 1rem;
+.licence:not(:last-child) {
+  margin-right: 1rem;
 }
 
 .noLicencesText {
