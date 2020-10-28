@@ -12,8 +12,6 @@ const LOGIN_BUTTON_TEXT = 'Accept and Log in';
 const EMAIL_TEXT = 'test@test.com';
 const NAME_TEXT = 'John Smith';
 const PASSWORD_TEXT = 'testpassword';
-const SIGN_UP = /sign\sup/i;
-const WORK_EMAIL = /work\semail\saddress/i;
 
 /**
  * @param {Partial<Pick<import('./team-member-login.component').TeamMemberLoginProps,
@@ -32,6 +30,7 @@ const renderComponent = props => {
       email={EMAIL_TEXT}
       passwordMinLength={2}
       passwordMaxLength={255}
+      passwordStrength={0}
       activateAccount={activateAccount}
       login={login}
       {...props}

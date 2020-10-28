@@ -69,8 +69,6 @@ const TeamMemberLogin = ({
     context: { passwordMinLength, passwordMaxLength, passwordStrength },
   });
 
-  console.log('Match: ', match);
-
   const [termsAgreed, setTermsAgreed] = useState(false);
 
   const onSubmit = data => {
