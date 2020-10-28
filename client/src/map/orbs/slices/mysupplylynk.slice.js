@@ -2,8 +2,6 @@ import { createSlice, createSelector } from '@reduxjs/toolkit';
 
 import { CATEGORIES } from './mysupplylynk.constants';
 
-import { orbsSelector } from '../orbsSelectors';
-
 const mySupplyLynkSlice = createSlice({
   name: 'mySupplyLynk',
   initialState: {

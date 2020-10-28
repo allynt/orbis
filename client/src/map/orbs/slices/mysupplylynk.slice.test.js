@@ -20,14 +20,12 @@ describe('MySupplyLynk slice', () => {
       describe('featuresSelector', () => {
         it('returns selected features', () => {
           const state = {
-            orbs: {
-              mySupplyLynk: {
-                categoryFilters: CATEGORIES,
-              },
+            mySupplyLynk: {
+              categoryFilters: CATEGORIES,
             },
           };
           const result = categoryFiltersSelector(state);
-          expect(result).toEqual(state.orbs.mySupplyLynk.categoryFilters);
+          expect(result).toEqual(state.mySupplyLynk.categoryFilters);
         });
       });
     });

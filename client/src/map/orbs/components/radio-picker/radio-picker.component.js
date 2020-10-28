@@ -8,8 +8,7 @@ import { Radio, InfoIcon } from '@astrosat/astrosat-ui';
 import {
   propertySelector,
   setProperty,
-  colorSchemeSelector,
-} from '../../isolationPlus/isolation-plus.slice';
+} from '../../slices/isolation-plus.slice';
 import styles from './radio-picker.module.css';
 import ColorScale from 'components/color-scale/color-scale.component';
 
@@ -24,6 +23,7 @@ import ColorScale from 'components/color-scale/color-scale.component';
  *         min: number
  *         max: number
  *         type: 'percentage' | 'decile' | 'continuous' | 'discrete'
+ *         application: any
  *       }[]
  *     }
  *   })
@@ -31,10 +31,12 @@ import ColorScale from 'components/color-scale/color-scale.component';
  * }} props
  */
 export const RadioPicker = ({ selectedLayer, dispatch }) => {
-  const selectedProperty = useSelector(propertySelector);
-  const colorScheme = useSelector(state =>
-    colorSchemeSelector(state, selectedLayer.source_id),
+  const selectedProperty = useSelector(state => propertySelector(state?.orbs));
+  const selectedPropertyMetadata = selectedLayer?.metadata?.properties?.find(
+    property => property.name === selectedProperty?.name,
   );
+  const colorScheme =
+    selectedPropertyMetadata?.application?.orbis?.display?.color;
 
   if (!selectedLayer?.metadata?.properties) return null;
   return (

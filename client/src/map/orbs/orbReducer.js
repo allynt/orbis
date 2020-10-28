@@ -1,7 +1,7 @@
 import { combineReducers } from 'redux';
 import rice from './rice/rice.slice';
-import isolationPlus from './isolationPlus/isolation-plus.slice';
-import mySupplyLynk from './mySupplyLynk/mysupplylynk.slice';
+import isolationPlus from './slices/isolation-plus.slice';
+import mySupplyLynk from './slices/mysupplylynk.slice';
 import actionForHelp from './slices/action-for-help.slice';
 
 const orbReducer = combineReducers({

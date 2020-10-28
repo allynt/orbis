@@ -1,18 +1,26 @@
 import FeatureDetail from 'components/feature-detail/feature-detail.component';
 import { omitBy } from 'lodash';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Popup } from 'react-map-gl';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   pickedInfoSelector,
   propertySelector,
   setPickedInfo,
-} from '../isolationPlus/isolation-plus.slice';
+} from '../slices/isolation-plus.slice';
 
 const IsolationPlusMapComponent = () => {
   const dispatch = useDispatch();
-  const pickedInfo = useSelector(pickedInfoSelector);
-  const selectedProperty = useSelector(propertySelector);
+  const pickedInfo = useSelector(state => pickedInfoSelector(state.orbs));
+  const selectedProperty = useSelector(state => propertySelector(state.orbs));
+
+  useEffect(() => {
+    if (selectedProperty && pickedInfo) {
+      if (pickedInfo.layer.id !== selectedProperty.source_id)
+        setPickedInfo(undefined);
+    }
+  }, [selectedProperty, pickedInfo]);
+
   if (!pickedInfo) return null;
 
   return (

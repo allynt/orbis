@@ -7,7 +7,7 @@ import {
   setDialogFeatures,
   setPopupFeatures,
   toggleDialog,
-} from '../mySupplyLynk/mysupplylynk.slice';
+} from '../slices/mysupplylynk.slice';
 import iconMapping from './mySupplyLynkConfig.iconMapping.json';
 import iconAtlas from './mySupplyLynkConfig.iconAtlas.svg';
 

@@ -1,10 +1,9 @@
 import React from 'react';
 import { render } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
 import { Provider } from 'react-redux';
 import configureMockStore from 'redux-mock-store';
 
-import { CATEGORIES } from '../../mySupplyLynk/mysupplylynk.constants';
+import { CATEGORIES } from '../../slices/mysupplylynk.constants';
 
 import { CheckboxFilters } from './checkbox-filters.component';
 
