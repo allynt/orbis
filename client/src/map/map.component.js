@@ -130,7 +130,8 @@ const Map = () => {
         <div
           className={styles.scaleControl}
           style={{
-            right: selectedMapStyle.id === 'satellite' ? '20.25em' : '17.25rem',
+            right:
+              selectedMapStyle?.id === 'satellite' ? '20.25em' : '17.25rem',
           }}
         >
           <ScaleControl unit="imperial" />
