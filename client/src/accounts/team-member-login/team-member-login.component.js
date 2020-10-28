@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import {
   Button,
@@ -11,8 +11,8 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 
-import { EULA_URL } from 'accounts/accounts.constants';
-
+import { EULA } from 'accounts/accounts.constants';
+import { ErrorWell } from 'accounts/error-well.component';
 import { Field } from 'components/field/field.component';
 import { LoadingSpinner } from 'components/loading-spinner/loading-spinner.component';
 import {
@@ -30,13 +30,38 @@ const TeamMemberLoginSchema = yup.object({
   [FIELD_NAMES.newPasswordConfirm]: newPasswordConfirm,
 });
 
+/**
+ * @typedef {{
+ *   serverErrors?: string[]
+ *   isLoading?: boolean
+ *   passwordMinLength: number
+ *   passwordMaxLength: number
+ *   passwordStrength: number
+ *   email: string
+ *   login: (data: { email: string, password: string}) => void
+ *   activateAccount?: (data: {key: string}) => void
+ * } & Partial<import('react-router-dom').RouteComponentProps>} TeamMemberLoginProps
+ */
+
+/**
+ * @param {TeamMemberLoginProps} props
+ */
 const TeamMemberLogin = ({
-  email = 'test@email.com',
+  login,
+  activateAccount,
+  match,
+  serverErrors,
+  email,
   isLoading,
-  passwordMinLength,
-  passwordMaxLength,
-  passwordStrength,
+  passwordMinLength = 0,
+  passwordMaxLength = 255,
+  passwordStrength = 0,
 }) => {
+  useEffect(() => {
+    if (match?.params?.key && activateAccount)
+      activateAccount({ ...match.params });
+  }, [activateAccount, match]);
+
   const { register, handleSubmit, errors, watch } = useForm({
     mode: 'onBlur',
     defaultValues: { email },
@@ -48,18 +73,18 @@ const TeamMemberLogin = ({
 
   const onSubmit = data => {
     const submission = { ...data, termsAgreed };
-    console.log('Submission: ', submission);
+    login(submission);
   };
 
   return (
     <form className={formStyles.form} onSubmit={handleSubmit(onSubmit)}>
+      <ErrorWell errors={serverErrors} />
       <div className={formStyles.fields}>
         <Field
           register={register}
           label="Work Email Address"
           name={FIELD_NAMES.email}
           errors={errors}
-          readOnly
         />
         <Field
           register={register}
@@ -94,7 +119,7 @@ const TeamMemberLogin = ({
             onChange={() => setTermsAgreed(!termsAgreed)}
           />
           &nbsp;
-          <Button target="_blank" href={EULA_URL} rel="noopener noreferrer">
+          <Button target="_blank" href={EULA} rel="noopener noreferrer">
             Terms &amp; Conditions
           </Button>
         </div>

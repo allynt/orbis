@@ -184,8 +184,12 @@ export default () => {
         <Route
           exact
           path={TEAM_LOGIN}
-          render={() => (
+          render={props => (
             <TeamMemberLogin
+              login={values => dispatch(login(values))}
+              activateAccount={form => dispatch(activateAccount(form))}
+              match={props.match}
+              serverErrors={error}
               email={user?.email}
               isLoading={isLoading}
               {...passwordConfig}

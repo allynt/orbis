@@ -70,7 +70,7 @@ const Eula = ({ onClick }) => {
           non-transferable and are for the User’s personal business use only.
           The User’s right to use the Software is subject to the following
           conditions:-
-          <div className={styles.description}>the User shall not:</div>
+          <div className={styles.description}>The User shall not:</div>
           <ul className={styles.list}>
             <li className={styles.listItem}>
               <span>2.1.</span>

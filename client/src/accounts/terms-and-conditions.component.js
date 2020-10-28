@@ -624,7 +624,8 @@ const Terms = ({ onClick }) => {
         The Subscription Services provided to the Customer are non-exclusive,
         non-transferable and are for the Customer’s internal business use only.
         The Customer’s right to use the Subscription Services is subject to the
-        following conditions:- the Customer shall not:
+        following conditions:-
+        <div className={styles.description}>The Customer shall not:</div>
         <div className={styles.description}>
           <ul className={styles.list}>
             <li className={styles.listItem}>
