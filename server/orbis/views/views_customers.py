@@ -73,19 +73,20 @@ class CustomerUserListView(LicenceNotifyingMixIn, AstrosatUsersCustomerUserListV
         customer_user = serializer.save()
         created_user = customer_user.user
 
-        if user == created_user and created_user.registration_stage == UserRegistrationStageType.CUSTOMER_USER:
-            # if we are adding ourselves to a customer as part of the "team" registration
-            # then make sure the next thing we do is create an order
-            created_user.registration_stage = UserRegistrationStageType.ORDER
-            created_user.save()
+        if user == created_user:
+            if created_user.registration_stage == UserRegistrationStageType.CUSTOMER_USER:
+                # if we are adding ourselves to a customer as part of the "team" registration
+                # then make sure the next thing we do is create an order
+                created_user.registration_stage = UserRegistrationStageType.ORDER
+                created_user.save()
 
-        customer_user.invite(adapter=get_adapter(self.request))
-
-        if user != created_user and not created_user.onboarded:
-            # if we are adding somebody new to a customer
-            # then make sure the next thing they do is get onboarded
-            created_user.registration_stage = UserRegistrationStageType.ONBOARD
-            created_user.save()
+        else:
+            customer_user.invite(adapter=get_adapter(self.request))
+            if not created_user.onboarded:
+                # if we are adding somebody new to a customer
+                # then make sure the next thing they do is get onboarded
+                created_user.registration_stage = UserRegistrationStageType.ONBOARD
+                created_user.save()
 
         if customer_user.licences.visible().count():
             message = self.notify_licences_changed(
