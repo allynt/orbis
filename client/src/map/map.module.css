@@ -21,20 +21,24 @@
 }
 
 .navigationControl,
+.scaleControl,
 .geocoder {
   position: absolute;
   right: 0.6rem;
+  z-index: 1;
+}
+
+.scaleControl {
+  bottom: 0.25em;
 }
 
 .navigationControl {
   bottom: 2rem;
   background-color: transparent;
-  z-index: 1;
 }
 
 .geocoder {
   top: 2rem;
-  z-index: 1;
 }
 
 .navigationControl > button {

@@ -5,6 +5,7 @@ import { Button, LayersIcon, LoadMask } from '@astrosat/astrosat-ui';
 import DeckGL, { FlyToInterpolator } from 'deck.gl';
 import ReactMapGl, {
   NavigationControl,
+  ScaleControl,
   _MapContext as MapContext,
 } from 'react-map-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
@@ -126,6 +127,14 @@ const Map = () => {
           }}
         />
         <NavigationControl className={styles.navigationControl} />
+        <div
+          className={styles.scaleControl}
+          style={{
+            right: selectedMapStyle.id === 'satellite' ? '20.25em' : '17.25rem',
+          }}
+        >
+          <ScaleControl unit="imperial" />
+        </div>
       </ReactMapGl>
       <ReactMapGl
         key="top"
