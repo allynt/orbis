@@ -69,6 +69,8 @@ const TeamMemberLogin = ({
     context: { passwordMinLength, passwordMaxLength, passwordStrength },
   });
 
+  console.log('Match: ', match);
+
   const [termsAgreed, setTermsAgreed] = useState(false);
 
   const onSubmit = data => {
@@ -85,6 +87,7 @@ const TeamMemberLogin = ({
           label="Work Email Address"
           name={FIELD_NAMES.email}
           errors={errors}
+          readOnly
         />
         <Field
           register={register}

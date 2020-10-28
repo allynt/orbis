@@ -7,7 +7,6 @@ import { Router } from 'react-router-dom';
 
 import TeamMemberLogin from './team-member-login.component';
 
-const EMAIL_PLACEHOLDER_TEXT = /email/i;
 const PASSWORD_PLACEHOLDER_TEXT = /password/i;
 const LOGIN_BUTTON_TEXT = 'Accept and Log in';
 const EMAIL_TEXT = 'test@test.com';
@@ -30,6 +29,7 @@ const renderComponent = props => {
   const utils = render(
     // @ts-ignore
     <TeamMemberLogin
+      email={EMAIL_TEXT}
       passwordMinLength={2}
       passwordMaxLength={255}
       activateAccount={activateAccount}
@@ -47,36 +47,37 @@ const renderComponent = props => {
   return { ...utils, activateAccount, login };
 };
 
-describe('Login Form Component', () => {
+describe('TeamMemberLogin Form Component', () => {
   it('should render a form', () => {
-    const { getByRole, getAllByLabelText } = renderComponent();
+    const {
+      getByDisplayValue,
+      getByRole,
+      getAllByLabelText,
+    } = renderComponent();
 
-    expect(
-      getByRole('textbox', { name: EMAIL_PLACEHOLDER_TEXT }),
-    ).toBeInTheDocument();
+    expect(getByDisplayValue(EMAIL_TEXT)).toBeInTheDocument();
+
     expect(getAllByLabelText(PASSWORD_PLACEHOLDER_TEXT).length).toEqual(2);
+
+    expect(getByRole('checkbox', { name: 'I agree with' })).toBeInTheDocument();
+
     expect(
       getByRole('button', { name: LOGIN_BUTTON_TEXT }),
     ).toBeInTheDocument();
   });
 
-  it('should disable `Login` button when form is invalid', () => {
+  it('should disable `Accept and Log in` button when form is invalid', () => {
     const { getByRole } = renderComponent();
 
     expect(getByRole('button', { name: LOGIN_BUTTON_TEXT })).toBeDisabled();
   });
 
-  it('should enable `Login` button when form is valid', async () => {
+  it('should enable `Accept and Log in` button when form is valid', async () => {
     const { getByRole, getAllByLabelText } = renderComponent();
 
     const loginButton = getByRole('button', { name: LOGIN_BUTTON_TEXT });
 
     expect(loginButton).toBeDisabled();
-
-    userEvent.type(
-      getByRole('textbox', { name: EMAIL_PLACEHOLDER_TEXT }),
-      EMAIL_TEXT,
-    );
 
     const passwordFields = getAllByLabelText(PASSWORD_PLACEHOLDER_TEXT);
     passwordFields.forEach(field => userEvent.type(field, PASSWORD_TEXT));
@@ -86,30 +87,19 @@ describe('Login Form Component', () => {
     await waitFor(() => expect(loginButton).not.toHaveAttribute('disabled'));
   });
 
-  it('should not call `login` function when form is invalid and `Login` button clicked', async () => {
+  it('should not call `login` function when form is invalid and `Accept and Log in` button clicked', async () => {
     const { getByRole, login } = renderComponent();
 
     const loginButton = getByRole('button', { name: LOGIN_BUTTON_TEXT });
 
-    userEvent.type(
-      getByRole('textbox', { name: EMAIL_PLACEHOLDER_TEXT }),
-      EMAIL_TEXT,
-    );
-
     userEvent.tab();
-
     userEvent.click(loginButton);
 
     expect(login).not.toHaveBeenCalled();
   });
 
-  it('should call `login` function when form is valid and `Login` button clicked', async () => {
+  it('should call `login` function when form is valid and `Accept and Log in` button clicked', async () => {
     const { getByRole, getAllByLabelText, login } = renderComponent();
-
-    userEvent.type(
-      getByRole('textbox', { name: EMAIL_PLACEHOLDER_TEXT }),
-      EMAIL_TEXT,
-    );
 
     const passwordFields = getAllByLabelText(PASSWORD_PLACEHOLDER_TEXT);
     passwordFields.forEach(field => userEvent.type(field, PASSWORD_TEXT));
@@ -152,20 +142,5 @@ describe('Login Form Component', () => {
   it('shows a loading spinner if loading', () => {
     const { getByRole } = renderComponent({ isLoading: true });
     expect(getByRole('alert')).toBeInTheDocument();
-  });
-
-  describe('Customer Registration Flow', () => {
-    /** @type {Partial<User>} */
-    const user = { registration_stage: 'CUSTOMER' };
-
-    it('does not show the sign up link', () => {
-      const { queryByRole } = renderComponent({ user });
-      expect(queryByRole('link', { name: SIGN_UP })).not.toBeInTheDocument();
-    });
-
-    it('has the work email address label', () => {
-      const { getByRole } = renderComponent({ user });
-      expect(getByRole('textbox', { name: WORK_EMAIL })).toBeInTheDocument();
-    });
   });
 });
