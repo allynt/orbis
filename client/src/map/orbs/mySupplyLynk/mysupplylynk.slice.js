@@ -35,10 +35,7 @@ export const {
   toggleDialog,
 } = mySupplyLynkSlice.actions;
 
-const baseSelector = createSelector(
-  orbsSelector,
-  orbs => orbs[mySupplyLynkSlice.name],
-);
+const baseSelector = orbs => orbs[mySupplyLynkSlice.name];
 
 export const categoryFiltersSelector = createSelector(
   baseSelector,

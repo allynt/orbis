@@ -22,6 +22,13 @@ module.exports = {
         sidebar_component: {
           name: 'CheckboxFilters',
         },
+        map_component: {
+          name: 'MySupplyLynkMapComponent',
+        },
+        layer: {
+          name: 'GeoJsonClusteredIconLayer',
+          props: { config: 'mySupplyLynkConfig' },
+        },
       },
     },
   },

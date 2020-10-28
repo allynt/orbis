@@ -18,7 +18,9 @@ import {
  * }} props
  */
 export const CheckboxFilters = ({ dispatch }) => {
-  const selectedFeatures = useSelector(categoryFiltersSelector);
+  const selectedFeatures = useSelector(state =>
+    categoryFiltersSelector(state.orbs),
+  );
   const CATEGORY_NAME_AND_ICON = CATEGORIES.map(name => ({
     name,
     Icon: Icons[name],

@@ -15,10 +15,12 @@ import MySupplyLynkFeatureDetail from './mysupplylynk-feature-detail/mysupplylyn
 
 const MySupplyLynkMapComponent = () => {
   const dispatch = useDispatch();
-  const popupFeatures = useSelector(popupFeaturesSelector);
-  const dialogFeatures = useSelector(dialogFeaturesSelector);
+  const popupFeatures = useSelector(state => popupFeaturesSelector(state.orbs));
+  const dialogFeatures = useSelector(state =>
+    dialogFeaturesSelector(state.orbs),
+  );
   const ref = useRef(null);
-  const dialogVisible = useSelector(dialogVisibleSelector);
+  const dialogVisible = useSelector(state => dialogVisibleSelector(state.orbs));
 
   return (
     <>
