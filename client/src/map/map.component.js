@@ -134,7 +134,7 @@ const Map = () => {
               selectedMapStyle?.id === 'satellite' ? '20.25em' : '17.25rem',
           }}
         >
-          <ScaleControl unit="imperial" />
+          <ScaleControl unit="metric" />
         </div>
       </ReactMapGl>
       <ReactMapGl
