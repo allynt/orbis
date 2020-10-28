@@ -44,7 +44,6 @@ const configuration = ({
   };
 
   const handleLayerClick = info => {
-    console.log('HANDLE CLICK');
     if (info?.object?.properties?.cluster) {
       if (info.object.properties.expansion_zoom <= MAX_ZOOM)
         setViewState({
