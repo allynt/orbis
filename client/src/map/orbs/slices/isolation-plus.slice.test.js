@@ -31,17 +31,15 @@ describe('isolationPlusSlice', () => {
     describe('propertySelector', () => {
       it('returns the property for the specified layer', () => {
         const state = {
-          orbs: {
-            isolationPlus: {
-              property: {
-                source_id: 'test/layer',
-                name: 'hello',
-              },
+          isolationPlus: {
+            property: {
+              source_id: 'test/layer',
+              name: 'hello',
             },
           },
         };
         const result = propertySelector(state);
-        expect(result).toEqual(state.orbs.isolationPlus.property);
+        expect(result).toEqual(state.isolationPlus.property);
       });
 
       it('returns undefined if state is undefined', () => {

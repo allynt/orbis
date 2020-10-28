@@ -7,10 +7,9 @@ import {
   selectDataToken,
 } from 'data-layers/data-layers.slice';
 import { getData } from 'utils/http';
-import { useMySupplyLynkOrb } from './mySupplyLynk/useMySupplyLynkOrb';
 import { useMap } from 'MapContext';
 import { LayerFactory } from '../deck.gl/LayerFactory';
-import { useIsolationPlusOrb } from './isolationPlus/useIsolationPlusOrb';
+import { orbsSelector } from './orbsSelectors';
 
 const dataUrlFromId = source => {
   return source.data && typeof source.data === 'string'
@@ -25,9 +24,10 @@ export const useOrbs = () => {
   /** @type {Source[]} */
   const activeSources = useSelector(activeDataSourcesSelector);
   const [data, setData] = useState({});
-  const [stateLayers, setStateLayers] = useState([]);
+  const [layers, setLayers] = useState([]);
   const [mapComponents, setMapComponents] = useState([]);
   const [sidebarComponents, setSidebarComponents] = useState({});
+  const orbState = useSelector(orbsSelector);
 
   const fetchData = useCallback(
     async source => {
@@ -111,27 +111,16 @@ export const useOrbs = () => {
           activeSources,
           dispatch,
           setViewState,
+          orbState,
+          authToken,
         });
       }
       const layer = LayerFactory(name, { ...loadedConfig, ...metadataConfig });
       return layer;
     };
     const layerPromises = activeSources.map(createLayer);
-    Promise.all(layerPromises).then(setStateLayers);
-  }, [activeSources, data, dispatch, setViewState]);
-
-  const { layers: mySupplyLynkLayers } = useMySupplyLynkOrb(
-    data,
-    activeSources,
-  );
-
-  const { layers: isolationPlusLayers } = useIsolationPlusOrb(
-    data,
-    activeSources,
-    authToken,
-  );
-
-  let layers = [...stateLayers, ...mySupplyLynkLayers, ...isolationPlusLayers];
+    Promise.all(layerPromises).then(setLayers);
+  }, [activeSources, data, dispatch, setViewState, orbState, authToken]);
 
   return {
     layers,

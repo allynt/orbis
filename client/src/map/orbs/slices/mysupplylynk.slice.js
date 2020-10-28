@@ -2,8 +2,6 @@ import { createSlice, createSelector } from '@reduxjs/toolkit';
 
 import { CATEGORIES } from './mysupplylynk.constants';
 
-import { orbsSelector } from '../orbsSelectors';
-
 const mySupplyLynkSlice = createSlice({
   name: 'mySupplyLynk',
   initialState: {
@@ -35,10 +33,7 @@ export const {
   toggleDialog,
 } = mySupplyLynkSlice.actions;
 
-const baseSelector = createSelector(
-  orbsSelector,
-  orbs => orbs[mySupplyLynkSlice.name],
-);
+const baseSelector = orbs => orbs[mySupplyLynkSlice.name];
 
 export const categoryFiltersSelector = createSelector(
   baseSelector,

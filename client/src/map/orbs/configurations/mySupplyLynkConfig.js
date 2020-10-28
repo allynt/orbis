@@ -1,27 +1,29 @@
 import { FlyToInterpolator } from 'deck.gl';
-import { GeoJsonClusteredIconLayer } from 'map/deck.gl/custom-layers/geo-json-clustered-icon-layer';
-import { LAYER_IDS, MAX_ZOOM } from 'map/map.constants';
-import { useMap } from 'MapContext';
-import { useDispatch, useSelector } from 'react-redux';
+import { MAX_ZOOM } from 'map/map.constants';
 import { easeInOutCubic } from 'utils/easingFunctions';
-import iconAtlas from './iconAtlas.svg';
-import iconMapping from './iconMapping.json';
 import {
   categoryFiltersSelector,
   popupFeaturesSelector,
   setDialogFeatures,
   setPopupFeatures,
   toggleDialog,
-} from './mysupplylynk.slice';
+} from '../slices/mysupplylynk.slice';
+import iconMapping from './mySupplyLynkConfig.iconMapping.json';
+import iconAtlas from './mySupplyLynkConfig.iconAtlas.svg';
 
-export const useMySupplyLynkOrb = (data, activeSources) => {
-  const dispatch = useDispatch();
-  const categoryFilters = useSelector(categoryFiltersSelector);
-  const popupFeatures = useSelector(popupFeaturesSelector);
-  const { setViewState } = useMap();
+const configuration = ({
+  id,
+  data,
+  activeSources,
+  dispatch,
+  setViewState,
+  orbState,
+}) => {
+  const categoryFilters = categoryFiltersSelector(orbState);
+  const popupFeatures = popupFeaturesSelector(orbState);
 
   const getFeatures = () => {
-    const obj = data[LAYER_IDS.astrosat.mySupplyLynk.latest];
+    const obj = data;
 
     const hasCategory = feat =>
       feat.properties.Items.some(item =>
@@ -72,22 +74,16 @@ export const useMySupplyLynkOrb = (data, activeSources) => {
     }
   };
 
-  const layers = [
-    new GeoJsonClusteredIconLayer({
-      id: LAYER_IDS.astrosat.mySupplyLynk.latest,
-      data: categoryFilters?.length && getFeatures(),
-      visible: !!activeSources?.find(
-        source => source.source_id === LAYER_IDS.astrosat.mySupplyLynk.latest,
-      ),
-      iconMapping,
-      iconAtlas,
-      getIcon: 'pin',
-      onClick: handleLayerClick,
-      onHover: handleHover,
-    }),
-  ];
-
   return {
-    layers,
+    id,
+    data: categoryFilters?.length && getFeatures(),
+    visible: !!activeSources?.find(source => source.source_id === id),
+    iconMapping,
+    iconAtlas,
+    getIcon: 'pin',
+    onClick: handleLayerClick,
+    onHover: handleHover,
   };
 };
+
+export default configuration;

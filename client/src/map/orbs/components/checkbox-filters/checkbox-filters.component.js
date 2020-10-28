@@ -5,12 +5,12 @@ import { Checkbox } from '@astrosat/astrosat-ui';
 import Icons from './icons';
 
 import styles from './checkbox-filters.module.css';
-import { CATEGORIES } from '../../mySupplyLynk/mysupplylynk.constants';
+import { CATEGORIES } from '../../slices/mysupplylynk.constants';
 import { useSelector } from 'react-redux';
 import {
   categoryFiltersSelector,
   setSelectedFeatures,
-} from '../../mySupplyLynk/mysupplylynk.slice';
+} from '../../slices/mysupplylynk.slice';
 
 /** @param {{
  *   source?: any
@@ -18,7 +18,9 @@ import {
  * }} props
  */
 export const CheckboxFilters = ({ dispatch }) => {
-  const selectedFeatures = useSelector(categoryFiltersSelector);
+  const selectedFeatures = useSelector(state =>
+    categoryFiltersSelector(state.orbs),
+  );
   const CATEGORY_NAME_AND_ICON = CATEGORIES.map(name => ({
     name,
     Icon: Icons[name],

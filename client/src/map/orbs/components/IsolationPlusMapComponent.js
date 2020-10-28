@@ -7,13 +7,15 @@ import {
   pickedInfoSelector,
   propertySelector,
   setPickedInfo,
-} from '../isolationPlus/isolation-plus.slice';
+} from '../slices/isolation-plus.slice';
 
 const IsolationPlusMapComponent = () => {
   const dispatch = useDispatch();
-  const pickedInfo = useSelector(pickedInfoSelector);
-  const selectedProperty = useSelector(propertySelector);
-  if (!pickedInfo) return null;
+  const pickedInfo = useSelector(state => pickedInfoSelector(state.orbs));
+  const selectedProperty = useSelector(state => propertySelector(state.orbs));
+
+  if (!pickedInfo || pickedInfo.layer.id !== selectedProperty.source_id)
+    return null;
 
   return (
     <Popup

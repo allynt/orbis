@@ -1,4 +1,3 @@
-import { useModal } from '@astrosat/astrosat-ui';
 import React, { useRef } from 'react';
 import { Popup } from 'react-map-gl';
 import { useDispatch, useSelector } from 'react-redux';
@@ -9,16 +8,18 @@ import {
   setPopupFeatures,
   toggleDialog,
   dialogVisibleSelector,
-} from '../mySupplyLynk/mysupplylynk.slice';
+} from '../slices/mysupplylynk.slice';
 import { Dialog } from './mysupplylynk-dialog/dialog.component';
 import MySupplyLynkFeatureDetail from './mysupplylynk-feature-detail/mysupplylynk-feature-detail.component';
 
 const MySupplyLynkMapComponent = () => {
   const dispatch = useDispatch();
-  const popupFeatures = useSelector(popupFeaturesSelector);
-  const dialogFeatures = useSelector(dialogFeaturesSelector);
+  const popupFeatures = useSelector(state => popupFeaturesSelector(state.orbs));
+  const dialogFeatures = useSelector(state =>
+    dialogFeaturesSelector(state.orbs),
+  );
   const ref = useRef(null);
-  const dialogVisible = useSelector(dialogVisibleSelector);
+  const dialogVisible = useSelector(state => dialogVisibleSelector(state.orbs));
 
   return (
     <>
