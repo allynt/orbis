@@ -131,7 +131,7 @@ const Map = () => {
           className={styles.scaleControl}
           style={{
             right:
-              selectedMapStyle?.id === 'satellite' ? '20.25em' : '17.25rem',
+              selectedMapStyle?.id === 'satellite' ? '20.25rem' : '17.25rem',
           }}
         >
           <ScaleControl unit="metric" />
