@@ -6,6 +6,7 @@ from urllib.parse import urljoin
 
 from django.conf import settings
 from django.contrib.sites.shortcuts import get_current_site
+from django.db.models import F
 
 from rest_framework import status
 from rest_framework.exceptions import APIException
@@ -18,7 +19,7 @@ from requests.exceptions import Timeout
 from drf_yasg2 import openapi
 from drf_yasg2.utils import swagger_auto_schema
 
-from orbis.models import DataScope
+from orbis.models import DataScope, Orb, Licence
 from orbis.utils import generate_data_token, validate_data_token
 
 
@@ -36,8 +37,8 @@ class IsAuthenticatedOrAdmin(BasePermission):
             return user.is_superuser
 
 
-# TokenView has no serializer for yasg to generate schemas from
-# so I define some here just to make the swagger documentation useful
+# Neither TokenView nor DataSourceView have serializers for yasg to generate
+# schemas, so I define some here just to make the swagger documentation useful
 
 
 _encoded_token_schema = openapi.Schema(
@@ -63,7 +64,36 @@ _decoded_token_schema = openapi.Schema(
                 ("delete", openapi.Schema(type=openapi.TYPE_ARRAY, items=openapi.Schema(type=openapi.TYPE_STRING, example="authority/namespace/name/version"))),
             )))),
         )))),
-    )),
+    ))
+)
+
+
+_data_sources_schema = openapi.Schema(
+    type=openapi.TYPE_OBJECT,
+    properties=OrderedDict((
+        ("token", openapi.Schema(type=openapi.TYPE_STRING)),
+        ("timeout", openapi.Schema(type=openapi.TYPE_NUMBER, example=60)),
+        ("sources", openapi.Schema(type=openapi.TYPE_ARRAY,items=openapi.Schema(
+            type=openapi.TYPE_OBJECT,
+            properties=OrderedDict((
+                ("source_id", openapi.Schema(type=openapi.TYPE_STRING, example="astrosat/core/infrastructure/2020")),
+                ("authority", openapi.Schema(type=openapi.TYPE_STRING, example="astrosat")),
+                ("namespace", openapi.Schema(type=openapi.TYPE_STRING, example="core")),
+                ("name", openapi.Schema(type=openapi.TYPE_STRING, example="infrastructure")),
+                ("version", openapi.Schema(type=openapi.TYPE_STRING, example="2020")),
+                ("type", openapi.Schema(type=openapi.TYPE_STRING, example="vector")),
+                ("status", openapi.Schema(type=openapi.TYPE_STRING, example="published")),
+                ("orbs", openapi.Schema(type=openapi.TYPE_ARRAY, items=openapi.Schema(
+                    type=openapi.TYPE_OBJECT,
+                    properties=OrderedDict((
+                        ("name", openapi.Schema(type=openapi.TYPE_STRING)),
+                        ("description", openapi.Schema(type=openapi.TYPE_STRING)),
+                    ))
+                ))),
+                ("metadata", openapi.Schema(type=openapi.TYPE_OBJECT)),
+            ))
+        ))),
+    ))
 )
 
 
@@ -101,10 +131,16 @@ class TokenView(APIView):
             raise APIException(e)
 
 
-class DataView(APIView):
+class DataSourceView(APIView):
+    """
+    Generates a JWT for the current user and passes it to data-sources-directory
+    in order to retrieve a list of DataSources the user can access; Adds information
+    about the JWT itself as well as which Orbs each DataSource belongs to to the response.
+    """
 
     permission_classes = [IsAuthenticated]
 
+    @swagger_auto_schema(responses={status.HTTP_200_OK: _data_sources_schema})
     def get(self, request, format=None):
 
         user = request.user
@@ -123,12 +159,51 @@ class DataView(APIView):
         except Timeout as e:
             raise APIException(f"Request {url} timed out, exception was: {str(e)}")
         except Exception as e:
-            # TODO: REMOVE THIS TRY/CATCH BLOCK ONCE I'M SURE THINGS ARE WORKING
             raise APIException(f"Unable to retrieve data sources at '{url}': {str(e)}")
         sources = response.json()["results"]
+
+        # TODO: CAN THIS BE MADE MORE EFFICIENT BY MAKING A LOOKUP TABLE AND LOOPING THROUGH THAT
+        # TODO: INSTEAD OF A SEPARATE QUERY EACH ITERATION OF THE LOOP?
+
+        # data_scopes = DataScope.objects.filter(
+        #     is_active=True, orbs__licences__in=user.customer_users.values("licences")
+        # ).prefetch_related("orbs")
+        # for source in sources:
+        #     matching_data_scopes = data_scopes.matches_source_id(source["source_id"])
+        #     source["orbs"] = [
+        #         dict(zip(["name", "description"], matching_orb_dict.values()))
+        #         for matching_orb_dict in matching_data_scopes.values("orbs__name", "orbs__description")
+        #     ]
+
+        # import pdb; pdb.set_trace()
+        licences = Licence.objects.filter(customer_user__in=user.customer_users.all()).can_read().values_list("pk", flat=True)
+        data_scopes = DataScope.objects.filter(
+            is_active=True, orbs__licences__in=licences
+        ).prefetch_related("orbs")
+        foobar = {
+            data_scope.source_id_pattern: list(data_scope.orbs.values("name", "description"))
+            for data_scope in data_scopes
+        }
+        for source in sources:
+            source["orbs"] = dict(
+                filter(lambda item: item[0]=="astrosat/core/*/*", foobar.items()
+                    )
+                ).values()
+
+
+        # orbs = Orb.objects.filter(licences__in=licences).prefetch_related("data_scopes")
+        # foobar = {}
+        # for orb in orbs:
+        #     for data_scope in orb.data_scopes.all():
+        #         foobar[data_scope.source_id]
+        # foobar = {
+        #     for orb in orbs
+
+        # }
+
 
         return Response({
             "token": data_token,
             "timeout": data_token_timeout,
-            "sources": sources
+            "sources": sources,
         })
