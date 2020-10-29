@@ -398,7 +398,7 @@ export const login = form => async dispatch => {
   const response = await sendData(API.login, form, JSON_HEADERS);
   if (!response.ok) {
     const responseObject = await response.json();
-    if (!responseObject.user?.is_verified) dispatch(push(RESEND));
+    if (responseObject.user?.is_verified === false) dispatch(push(RESEND));
     return dispatch(
       loginUserFailure({
         ...responseObject,
