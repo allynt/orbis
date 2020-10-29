@@ -41,8 +41,13 @@ class OrderItemSerializer(serializers.ModelSerializer):
             # if cost was not supplied then compute it here...
             order_item.recalculate_cost()
 
-        order_item.order.customer.add_licences(
+        customer = order_item.order.customer
+        customer_user = customer.customer_users.filter(user=order_item.order.user)
+        customer.add_licences(
             order_item.orb, order_item.n_licences, order_item=order_item
+        )
+        customer.assign_licences(
+            order_item.orb, customer_user, add_missing=False, ignore_existing=True
         )
 
         return order_item
