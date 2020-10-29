@@ -346,3 +346,29 @@ class TestOrderViews:
 
         user.refresh_from_db()
         assert user.registration_stage == None
+
+    def test_create_order_assigns_licence(self, user, api_client, mock_storage):
+
+        customer = CustomerFactory(logo=None)
+        (customer_user, _) = customer.add_user(user, type="MANAGER", status="ACTIVE")
+
+        orb = OrbFactory()
+
+        order_type = OrderTypeFactory()
+        order_data = {
+            "order_type": order_type.name,
+            "items": [
+                {
+                    "orb": orb.name,
+                    "n_licences": 10,
+                }
+            ]
+        }
+
+        client = api_client(user)
+        url = reverse("orders-list", args=[customer.id])
+        response = client.post(url, order_data, format="json")
+        assert status.is_success(response.status_code)
+
+        assert Licence.objects.filter(orb=orb, customer_user__isnull=True).count() == 9
+        assert Licence.objects.filter(orb=orb, customer_user=customer_user).count() == 1
