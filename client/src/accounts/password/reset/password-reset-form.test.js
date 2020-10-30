@@ -89,41 +89,44 @@ describe('Password Reset Form Component', () => {
     expect(getByText('Login')).toBeInTheDocument();
   });
 
-  it('should disable `Reset Password` button when form is invalid', () => {
-    const { getByText, getByPlaceholderText } = renderComponent(
+  it('should disable `Reset Password` button when form is invalid', async () => {
+    const { getByRole, getByPlaceholderText } = renderComponent(
       store,
       confirmResetPassword,
       resetStatus,
       match,
       error,
     );
-
-    const password = getByPlaceholderText(PASSWORD_PLACEHOLDER_TEXT);
-    expect(password.value).toEqual('');
-    userEvent.type(password, PASSWORD_TEXT);
-    expect(getByText(RESET_BUTTON_TEXT)).toHaveAttribute('disabled');
+    userEvent.click(getByPlaceholderText(PASSWORD_PLACEHOLDER_TEXT));
+    await waitFor(() =>
+      userEvent.click(
+        getByPlaceholderText(PASSWORD_CONFIRMATION_PLACEHOLDER_TEXT),
+      ),
+    );
+    expect(getByRole('button', { name: RESET_BUTTON_TEXT })).toBeDisabled();
   });
 
-  it('should enable `Reset Password` button when form is valid', () => {
-    const { getByText, getByPlaceholderText } = renderComponent(
+  it('should enable `Reset Password` button when form is valid', async () => {
+    const { getByRole, getByPlaceholderText } = renderComponent(
       store,
       confirmResetPassword,
       resetStatus,
       match,
       error,
     );
-
-    let password = getByPlaceholderText(PASSWORD_PLACEHOLDER_TEXT);
-    userEvent.type(password, PASSWORD_TEXT);
-    expect(password.value).toEqual(PASSWORD_TEXT);
-
-    password = getByPlaceholderText(PASSWORD_CONFIRMATION_PLACEHOLDER_TEXT);
-    userEvent.type(password, PASSWORD_TEXT);
-    expect(password.value).toEqual(PASSWORD_TEXT);
-
-    expect(getByText(RESET_BUTTON_TEXT)).toHaveAttribute('disabled');
-
-    expect(getByText(RESET_BUTTON_TEXT)).not.toHaveAttribute('disabled');
+    userEvent.type(
+      getByPlaceholderText(PASSWORD_PLACEHOLDER_TEXT),
+      PASSWORD_TEXT,
+    );
+    userEvent.type(
+      getByPlaceholderText(PASSWORD_CONFIRMATION_PLACEHOLDER_TEXT),
+      PASSWORD_TEXT,
+    );
+    await waitFor(() =>
+      expect(
+        getByRole('button', { name: RESET_BUTTON_TEXT }),
+      ).not.toBeDisabled(),
+    );
   });
 
   it('should not call `confirmResetPassword` function when form is invalid and `Reset Password` button clicked', async () => {
