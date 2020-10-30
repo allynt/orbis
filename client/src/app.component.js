@@ -18,8 +18,8 @@ import {
 } from './data-layers/data-layers.slice';
 
 import Accounts from './accounts';
-import TermsAndConditions from './accounts/terms-and-conditions.component';
-import EndUserLicenseAgreement from './accounts/end-user-licence-agreement.component';
+import TermsAndConditions from './legal-documents/terms-and-conditions.component';
+import EndUserLicenseAgreement from './legal-documents/end-user-licence-agreement.component';
 
 import LandingView from './landing/landing.component';
 

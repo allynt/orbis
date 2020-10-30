@@ -18,8 +18,7 @@ const PASSWORD_TEXT = 'testpassword';
  *   'isLoading'
  *   | 'activateAccount'
  *   | 'match'
- *   | 'serverErrors'
- *   | 'user'>>} [props]
+ *   | 'serverErrors'>>} [props]
  */
 const renderComponent = props => {
   const activateAccount = jest.fn();

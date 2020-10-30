@@ -187,12 +187,12 @@ export default () => {
           render={props => (
             <TeamMemberLogin
               login={values => dispatch(login(values))}
+              changeStatus={changeStatus}
               activateAccount={values => dispatch(activateAccount(values))}
               match={props.match}
               serverErrors={error}
               email={user?.email}
               isLoading={isLoading}
-              {...passwordConfig}
             />
           )}
         />
