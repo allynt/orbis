@@ -23,14 +23,16 @@ export default {
   ],
 };
 
-export const Form = args => <LoginForm {...args} />;
+const Template = args => <LoginForm {...args} />;
 
-export const Loading = args => <LoginForm {...args} />;
+export const Form = Template.bind({});
+
+export const Loading = Template.bind({});
 Loading.args = {
   isLoading: true,
 };
 
-export const ShouldActivate = args => <LoginForm {...args} />;
+export const ShouldActivate = Template.bind({});
 ShouldActivate.args = {
   match: {
     params: {
@@ -39,7 +41,12 @@ ShouldActivate.args = {
   },
 };
 
-export const CustomerSignUpLogin = args => <LoginForm {...args} />;
+export const ServerErrors = Template.bind({});
+ServerErrors.args = {
+  serverErrors: ['Problem 1', 'Problem 2'],
+};
+
+export const CustomerSignUpLogin = Template.bind({});
 CustomerSignUpLogin.args = {
   user: {
     registration_stage: 'CUSTOMER',
