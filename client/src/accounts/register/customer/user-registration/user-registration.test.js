@@ -5,7 +5,8 @@ import UserRegistration from './user-registration.component';
 import userEvent from '@testing-library/user-event';
 import { createMemoryHistory } from 'history';
 import { Router } from 'react-router-dom';
-import { LOGIN, TERMS } from 'accounts/accounts.constants';
+import { TERMS } from 'legal-documents/legal-documents-constants';
+import { LOGIN } from 'accounts/accounts.constants';
 
 const EMAIL_REGEX = /work\semail\saddress/i;
 const FIRST_NAME_REGEX = /first\sname/i;

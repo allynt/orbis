@@ -12,7 +12,8 @@ import { useForm } from 'react-hook-form';
 import { object } from 'yup';
 
 import { status } from 'accounts/accounts.slice';
-import { LOGIN, TERMS } from 'accounts/accounts.constants';
+import { TERMS } from 'legal-documents/legal-documents-constants';
+import { LOGIN } from 'accounts/accounts.constants';
 import { FieldError } from 'components/field-error/field-error.component';
 import {
   FIELD_NAMES,

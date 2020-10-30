@@ -7,11 +7,8 @@ import { useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
 import * as yup from 'yup';
 
-import {
-  PASSWORD_RESET_REQUEST,
-  REGISTER,
-  TERMS,
-} from 'accounts/accounts.constants';
+import { TERMS } from 'legal-documents/legal-documents-constants';
+import { PASSWORD_RESET_REQUEST, REGISTER } from 'accounts/accounts.constants';
 import { ErrorWell } from 'accounts/error-well.component';
 import { Field } from 'components/field/field.component';
 import { LoadingSpinner } from 'components/loading-spinner/loading-spinner.component';

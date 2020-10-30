@@ -1,8 +1,7 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 import {
   Button,
-  Checkbox,
   PasswordField,
   PasswordStrengthMeter,
 } from '@astrosat/astrosat-ui';
@@ -12,7 +11,7 @@ import { useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
 import { object as yupObject } from 'yup';
 
-import { LOGIN, TERMS } from 'accounts/accounts.constants';
+import { LOGIN } from 'accounts/accounts.constants';
 import { status } from 'accounts/accounts.slice';
 import { ErrorWell } from 'accounts/error-well.component';
 import { FieldError } from 'components/field-error/field-error.component';
