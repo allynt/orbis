@@ -5,48 +5,48 @@ verify_ssl = true
 
 [packages]
 # strong password hashing
-argon2-cffi = ">=19.2.0"
+argon2-cffi = "*"
 # S3 Bucket access
-boto3 = ">=1.12.23"
+boto3 = "*"
 # plain-text content zipping (files & responses)
-brotli = ">=1.0.7"
+brotli = "*"
 # django... duh
 django = "~=3.0"
 # users
-dj-rest-auth = {extras = ["with_social"],version = ">=1.0"}
+dj-rest-auth = {extras = ["with_social"],version = "*"}
 # cross-origin resource sharing
-django-cors-headers = ">=3.2.1"
+django-cors-headers = "*"
 # access environment variables
-django-environ = ">=0.4.5"
+django-environ = "*"
 # extended API filters
-django-filter = ">=2.2.0"
+django-filter = "*"
 # docker health-checking
-django-health-check = ">=3.12.1"
+django-health-check = "*"
 # secure tokens
-django-rest-knox = ">=4.1.0"
+django-rest-knox = "*"
 # external file storage
-django-storages = ">=1.9.1"
+django-storages = "*"
 # API... duh
-djangorestframework = "==3.11.1"
+djangorestframework = "*"
 # API for GIS
-djangorestframework-gis = ">=0.15.0"
+djangorestframework-gis = "*"
 # dynamic API
-drf-flex-fields = ">=0.7.5"
+drf-flex-fields = "*"
 # API documentation
 drf-yasg2 = "*"
 # GIS data processing
-geopandas = ">=0.7.0"
+geopandas = "*"
 # MapBox SDK
-mapbox = ">=0.18.0"
+mapbox = "*"
 # data processing
-pandas = ">=1.0.2"
+pandas = "*"
 # postgresql support
-psycopg2-binary = ">=2.8.4"
+psycopg2-binary = "*"
 # data tokens
-pyjwt = ">=1.7.1"
+pyjwt = "*"
 djangorestframework-simplejwt = "*"
 # sentinel data
-sentinelsat = ">=0.13"
+sentinelsat = "*"
 # astrosat-specific code
 django-astrosat-core = {editable = true,git = "https://github.com/astrosat/django-astrosat-core.git",ref = "master"}
 django-astrosat-users = {editable = true,git = "https://github.com/astrosat/django-astrosat-users.git",ref = "master"}
