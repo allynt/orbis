@@ -7,7 +7,7 @@ from django.contrib.gis.geos import Polygon, MultiPolygon, GEOSGeometry
 from rest_framework import serializers
 from rest_framework_gis.serializers import GeometryField
 
-from drf_yasg import openapi
+from drf_yasg2 import openapi
 
 from astrosat.views import SwaggerCurrentUserDefault
 
