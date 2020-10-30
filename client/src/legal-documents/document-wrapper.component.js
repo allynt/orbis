@@ -533,11 +533,9 @@ const DocumentWrapper = ({ children }) => {
           <div>
             <Button
               theme="link"
-              classNames={[
-                `${styles.button} ${
-                  info === PRIVACY_POLICY && styles.unselected
-                }`,
-              ]}
+              classNames={`${styles.button} ${
+                info === PRIVACY_POLICY && styles.unselected
+              }`}
               onClick={() => setInfo(DOCUMENT)}
             >
               End User License Agreement
@@ -546,11 +544,9 @@ const DocumentWrapper = ({ children }) => {
           <div>
             <Button
               theme="link"
-              classNames={[
-                `${styles.button} ${
-                  info !== PRIVACY_POLICY && styles.unselected
-                }`,
-              ]}
+              classNames={`${styles.button} ${
+                info !== PRIVACY_POLICY && styles.unselected
+              }`}
               onClick={() => {
                 setInfo(PRIVACY_POLICY);
               }}
