@@ -1,7 +1,5 @@
 import React from 'react';
 
-import DocumentWrapper from './document-wrapper.component';
-
 import styles from './legal-documents.module.css';
 
 const Terms = ({ onClick }) => (
@@ -3971,6 +3969,4 @@ const Terms = ({ onClick }) => (
   </div>
 );
 
-const TermsAndConditions = () => <DocumentWrapper>{Terms}</DocumentWrapper>;
-
-export default TermsAndConditions;
+export default Terms;

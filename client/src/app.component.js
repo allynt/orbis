@@ -18,14 +18,13 @@ import {
 } from './data-layers/data-layers.slice';
 
 import Accounts from './accounts';
-import TermsAndConditions from './legal-documents/terms-and-conditions.component';
-import EndUserLicenseAgreement from './legal-documents/end-user-licence-agreement.component';
 
 import LandingView from './landing/landing.component';
 
 import MapLayout from './map';
 
 import styles from './app.module.css';
+import LegalDocuments from 'legal-documents/legal-documents.component';
 
 const Admin = lazy(() => import('./admin/admin.component'));
 
@@ -115,8 +114,7 @@ const App = () => {
           <PrivateRoute exact path="/" user={user} component={LandingView} />
           <Route path="/accounts" component={Accounts} />
           <PrivateRoute path="/map" user={user} component={MapLayout} />
-          <Route exact path="/terms" component={TermsAndConditions} />
-          <Route exact path="/eula" component={EndUserLicenseAgreement} />
+          <Route exact path={['/terms', '/eula']} component={LegalDocuments} />
           <Suspense fallback={<h3>Loading...</h3>}>
             <PrivateRoute
               exact

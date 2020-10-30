@@ -1,7 +1,5 @@
 import React from 'react';
 
-import DocumentWrapper from './document-wrapper.component';
-
 import styles from './legal-documents.module.css';
 
 const Eula = ({ onClick }) => (
@@ -963,6 +961,4 @@ const Eula = ({ onClick }) => (
   </div>
 );
 
-const EndUserLicenseAgreement = () => <DocumentWrapper>{Eula}</DocumentWrapper>;
-
-export default EndUserLicenseAgreement;
+export default Eula;

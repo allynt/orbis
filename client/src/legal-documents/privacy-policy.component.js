@@ -1,16 +1,8 @@
-import React, { useState } from 'react';
-
-import { Link } from 'react-router-dom';
-
-import { Button } from '@astrosat/astrosat-ui';
-
-import { ReactComponent as OrbisLogo } from '../orbis-light.svg';
-
-import { PRIVACY_POLICY, DOCUMENT } from './legal-documents-constants';
+import React from 'react';
 
 import styles from './legal-documents.module.css';
 
-const PrivacyPolicy = () => {
+export const PrivacyPolicy = () => {
   return (
     <div className={styles.text}>
       <h1 className={styles.textHeader}>Privacy Policy</h1>
@@ -511,59 +503,3 @@ const PrivacyPolicy = () => {
     </div>
   );
 };
-
-const DocumentWrapper = ({ children }) => {
-  const Component = children;
-
-  const [info, setInfo] = useState(DOCUMENT);
-  return (
-    <div className={styles.content}>
-      <div className={styles.header}>
-        <Link to="/">
-          <OrbisLogo className={styles.logo} />
-        </Link>
-      </div>
-      <p className={styles.headerText}>
-        In the event that your company has a pre-existing wet signature contract
-        with Astrosat that conflicts with these Terms and Conditions, then the
-        conditions of that contract shall be deemed to prevail.
-      </p>
-      <div className={styles.body}>
-        <div className={styles.buttons}>
-          <div>
-            <Button
-              theme="link"
-              classNames={`${styles.button} ${
-                info === PRIVACY_POLICY && styles.unselected
-              }`}
-              onClick={() => setInfo(DOCUMENT)}
-            >
-              End User License Agreement
-            </Button>
-          </div>
-          <div>
-            <Button
-              theme="link"
-              classNames={`${styles.button} ${
-                info !== PRIVACY_POLICY && styles.unselected
-              }`}
-              onClick={() => {
-                setInfo(PRIVACY_POLICY);
-              }}
-            >
-              Privacy Policy
-            </Button>
-          </div>
-        </div>
-        <div className={styles.infoContainer}>
-          {info === PRIVACY_POLICY && <PrivacyPolicy />}
-          {info === DOCUMENT && (
-            <Component onClick={() => setInfo(PRIVACY_POLICY)} />
-          )}
-        </div>
-      </div>
-    </div>
-  );
-};
-
-export default DocumentWrapper;
