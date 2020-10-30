@@ -33,7 +33,6 @@ import ResendVerificationEmail from './resend-verification-email/resend-verifica
 import {
   CONFIRM_EMAIL,
   LOGIN,
-  TEAM_LOGIN,
   PASSWORD_CHANGE,
   PASSWORD_RESET,
   PASSWORD_RESET_REQUEST,
@@ -48,7 +47,6 @@ import UserRegistration from './register/customer/user-registration/user-registr
 import CustomerRegistration from './register/customer/customer-registration/customer-registration.component';
 import OrderForm from './register/customer/order-form/order-form.component';
 import Wrapper from './wrapper.component';
-import TeamMemberLogin from './team-member-login/team-member-login.component';
 
 export default () => {
   const dispatch = useDispatch();
@@ -177,21 +175,6 @@ export default () => {
             <ResendVerificationEmail
               email={user?.email}
               onResend={() => dispatch(resendVerificationEmail(user?.email))}
-              isLoading={isLoading}
-            />
-          )}
-        />
-        <Route
-          exact
-          path={TEAM_LOGIN}
-          render={props => (
-            <TeamMemberLogin
-              login={values => dispatch(login(values))}
-              changeStatus={changeStatus}
-              activateAccount={values => dispatch(activateAccount(values))}
-              match={props.match}
-              serverErrors={error}
-              email={user?.email}
               isLoading={isLoading}
             />
           )}

@@ -48,8 +48,6 @@ const PasswordResetForm = ({
   passwordMaxLength,
   passwordStrength,
 }) => {
-  const [termsAgreed, setTermsAgreed] = useState(false);
-
   const { register, handleSubmit, errors, watch } = useForm({
     mode: 'onBlur',
     resolver: yupResolver(validationSchema),
@@ -60,8 +58,8 @@ const PasswordResetForm = ({
     return <PasswordResetSuccessView />;
   }
 
-  const onSubmit = data => {
-    confirmResetPassword({ ...data, termsAgreed }, match.params);
+  const onSubmit = submission => {
+    confirmResetPassword(submission, match.params);
   };
 
   return (
@@ -109,26 +107,10 @@ const PasswordResetForm = ({
         )}
 
         <PasswordStrengthMeter password={watch(FIELD_NAMES.newPassword)} />
-
-        <div className={formStyles.row}>
-          <Checkbox
-            name="loggedIn"
-            value="true"
-            label="I agree with"
-            onChange={() => setTermsAgreed(!termsAgreed)}
-          />
-          &nbsp;
-          <Button target="_blank" href={TERMS} rel="noopener noreferrer">
-            Terms &amp; Conditions
-          </Button>
-        </div>
       </div>
 
       <div className={formStyles.buttons}>
-        <Button
-          type="submit"
-          disabled={!termsAgreed || Object.keys(errors).length > 0}
-        >
+        <Button type="submit" disabled={Object.keys(errors).length > 0}>
           Reset Password
         </Button>
       </div>

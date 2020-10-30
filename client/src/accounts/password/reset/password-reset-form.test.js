@@ -20,7 +20,6 @@ const PASSWORD_PLACEHOLDER_TEXT = 'New Password';
 const PASSWORD_CONFIRMATION_PLACEHOLDER_TEXT = 'New Password Confirmation';
 const RESET_BUTTON_TEXT = 'Reset Password';
 const PASSWORD_TEXT = 'newpassword';
-const I_AGREE_TEXT = 'I agree with';
 
 const renderComponent = (
   store,
@@ -86,11 +85,8 @@ describe('Password Reset Form Component', () => {
     ).toBeInTheDocument();
     // Check form submit button
     expect(getByText(RESET_BUTTON_TEXT)).toBeInTheDocument();
-    // Check Terms and Conditions checkbox
-    expect(getByText(I_AGREE_TEXT)).toBeInTheDocument();
     // Check link to login view
     expect(getByText('Login')).toBeInTheDocument();
-    expect(getByText(RESET_BUTTON_TEXT)).toHaveAttribute('disabled');
   });
 
   it('should disable `Reset Password` button when form is invalid', () => {
@@ -105,7 +101,6 @@ describe('Password Reset Form Component', () => {
     const password = getByPlaceholderText(PASSWORD_PLACEHOLDER_TEXT);
     expect(password.value).toEqual('');
     userEvent.type(password, PASSWORD_TEXT);
-    expect(password.value).toEqual(PASSWORD_TEXT);
     expect(getByText(RESET_BUTTON_TEXT)).toHaveAttribute('disabled');
   });
 
@@ -125,10 +120,8 @@ describe('Password Reset Form Component', () => {
     password = getByPlaceholderText(PASSWORD_CONFIRMATION_PLACEHOLDER_TEXT);
     userEvent.type(password, PASSWORD_TEXT);
     expect(password.value).toEqual(PASSWORD_TEXT);
-    waitFor(() => getByText(I_AGREE_TEXT));
 
     expect(getByText(RESET_BUTTON_TEXT)).toHaveAttribute('disabled');
-    userEvent.click(getByText(I_AGREE_TEXT));
 
     expect(getByText(RESET_BUTTON_TEXT)).not.toHaveAttribute('disabled');
   });
@@ -151,7 +144,7 @@ describe('Password Reset Form Component', () => {
   });
 
   it('should call `confirmResetPassword` function when form is valid and `Reset Password` button clicked', async () => {
-    const { getByRole, getByText, getByPlaceholderText } = renderComponent(
+    const { getByRole, getByPlaceholderText } = renderComponent(
       store,
       confirmResetPassword,
       resetStatus,
@@ -168,7 +161,6 @@ describe('Password Reset Form Component', () => {
       PASSWORD_TEXT,
     );
 
-    userEvent.click(getByText(I_AGREE_TEXT));
     userEvent.click(getByRole('button', { name: RESET_BUTTON_TEXT }));
 
     await waitFor(() =>
@@ -176,7 +168,6 @@ describe('Password Reset Form Component', () => {
         {
           [FIELD_NAMES.newPassword]: PASSWORD_TEXT,
           [FIELD_NAMES.newPasswordConfirm]: PASSWORD_TEXT,
-          termsAgreed: true,
         },
         { token: 'Test Token', uid: 'Test UID' },
       ),

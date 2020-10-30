@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import { Button, Checkbox, PasswordField } from '@astrosat/astrosat-ui';
 
@@ -7,7 +7,11 @@ import { useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
 import * as yup from 'yup';
 
-import { PASSWORD_RESET_REQUEST, REGISTER } from 'accounts/accounts.constants';
+import {
+  PASSWORD_RESET_REQUEST,
+  REGISTER,
+  TERMS,
+} from 'accounts/accounts.constants';
 import { ErrorWell } from 'accounts/error-well.component';
 import { Field } from 'components/field/field.component';
 import { LoadingSpinner } from 'components/loading-spinner/loading-spinner.component';
@@ -47,6 +51,9 @@ const LoginForm = ({
   login,
 }) => {
   const isRegisteringCustomer = user?.registration_stage;
+  const isOnboardingTeamMember = !user?.accepted_terms;
+
+  const [termsAgreed, setTermsAgreed] = useState(false);
 
   useEffect(() => {
     if (
@@ -64,7 +71,8 @@ const LoginForm = ({
   });
 
   const onSubmit = data => {
-    login(data);
+    const submission = isOnboardingTeamMember ? { ...data, termsAgreed } : data;
+    login(submission);
   };
 
   return (
@@ -88,13 +96,19 @@ const LoginForm = ({
         />
 
         <div className={formStyles.row}>
-          {!isRegisteringCustomer && (
-            <Checkbox
-              name="loggedIn"
-              value="true"
-              label="Keep me logged in"
-              onChange={() => console.log('Keep me logged in')}
-            />
+          {isOnboardingTeamMember && (
+            <>
+              <Checkbox
+                name="loggedIn"
+                label="I agree with"
+                value="true"
+                onChange={() => setTermsAgreed(!termsAgreed)}
+              />
+              &nbsp;
+              <Button target="_blank" href={TERMS} rel="noopener noreferrer">
+                Terms &amp; Conditions
+              </Button>
+            </>
           )}
 
           <Link className={styles.forgotPassword} to={PASSWORD_RESET_REQUEST}>
@@ -109,7 +123,11 @@ const LoginForm = ({
         <Button
           type="submit"
           theme="primary"
-          disabled={Object.keys(errors).length > 0 || !formState.isDirty}
+          disabled={
+            Object.keys(errors).length > 0 ||
+            !formState.isDirty ||
+            (isOnboardingTeamMember && !termsAgreed)
+          }
         >
           {isLoading ? <LoadingSpinner /> : 'Login'}
         </Button>
