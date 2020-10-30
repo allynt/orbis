@@ -1,21 +1,26 @@
 import React, { useState, useEffect } from 'react';
 
-import { Button, Checkbox, PasswordField } from '@astrosat/astrosat-ui';
+import {
+  Button,
+  Checkbox,
+  FormControlLabel,
+  TextField,
+  Link,
+  Typography,
+  CircularProgress,
+  Grid,
+  Box,
+} from '@astrosat/astrosat-ui';
 
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
-import { Link } from 'react-router-dom';
+import { Link as RouterLink } from 'react-router-dom';
 import * as yup from 'yup';
 
 import { TERMS } from 'legal-documents/legal-documents-constants';
 import { PASSWORD_RESET_REQUEST, REGISTER } from 'accounts/accounts.constants';
 import { ErrorWell } from 'accounts/error-well.component';
-import { Field } from 'components/field/field.component';
-import { LoadingSpinner } from 'components/loading-spinner/loading-spinner.component';
 import { FIELD_NAMES, email, password } from 'utils/validators';
-
-import formStyles from 'forms.module.css';
-import styles from './login-form.module.css';
 
 const loginSchema = yup.object({
   [FIELD_NAMES.email]: email,
@@ -75,72 +80,78 @@ const LoginForm = ({
   };
 
   return (
-    <form className={formStyles.form} onSubmit={handleSubmit(onSubmit)}>
-      {serverErrors && <ErrorWell errors={serverErrors} />}
+    <Grid
+      component="form"
+      container
+      spacing={2}
+      onSubmit={handleSubmit(onSubmit)}
+    >
+      <ErrorWell errors={serverErrors} />
 
-      <div className={formStyles.fields}>
-        <Field
-          register={register}
-          label={isRegisteringCustomer ? 'Work Email Address *' : 'Email *'}
+      <Grid item xs={12}>
+        <TextField
+          inputRef={register}
+          label={isRegisteringCustomer ? 'Work Email Address' : 'Email'}
           name={FIELD_NAMES.email}
-          errors={errors}
+          error={!!errors[FIELD_NAMES.email]}
+          helperText={errors[FIELD_NAMES.email]?.message}
           autoFocus
+          required
         />
-        <Field
-          register={register}
-          label="Password *"
-          name={FIELD_NAMES.password}
-          errors={errors}
-          Component={PasswordField}
-        />
+      </Grid>
 
-        <div className={formStyles.row}>
-          {isOnboardingTeamMember && (
-            <>
+      <Grid item xs={12}>
+        <TextField
+          inputRef={register}
+          label="Password"
+          name={FIELD_NAMES.password}
+          error={!!errors[FIELD_NAMES.password]}
+          helperText={errors[FIELD_NAMES.password]?.message}
+          type="password"
+          required
+        />
+      </Grid>
+
+      <Grid item xs={12} component={Box} display="flex">
+        {!isRegisteringCustomer && (
+          <FormControlLabel
+            label="Keep me logged in"
+            control={
               <Checkbox
                 name="loggedIn"
-                label="I agree with"
-                value="true"
-                onChange={() => setTermsAgreed(!termsAgreed)}
+                onChange={() => console.log('Keep me logged in')}
               />
-              &nbsp;
-              <Button target="_blank" href={TERMS} rel="noopener noreferrer">
-                Terms &amp; Conditions
-              </Button>
-            </>
-          )}
+            }
+          />
+        )}
 
-          <Link className={styles.forgotPassword} to={PASSWORD_RESET_REQUEST}>
-            <Button type="button" theme="link">
-              Forgot password?
-            </Button>
-          </Link>
-        </div>
-      </div>
+        <Box ml="auto">
+          <RouterLink to={PASSWORD_RESET_REQUEST} component={Link}>
+            Forgot password?
+          </RouterLink>
+        </Box>
+      </Grid>
 
-      <div className={formStyles.buttons}>
+      <Grid item xs={12} container justify="center">
         <Button
           type="submit"
-          theme="primary"
-          disabled={
-            Object.keys(errors).length > 0 ||
-            !formState.isDirty ||
-            (isOnboardingTeamMember && !termsAgreed)
-          }
+          disabled={Object.keys(errors).length > 0 || !formState.isDirty}
         >
-          {isLoading ? <LoadingSpinner /> : 'Login'}
+          {isLoading ? <CircularProgress size={22} color="inherit" /> : 'Login'}
         </Button>
-      </div>
+      </Grid>
 
-      {!isRegisteringCustomer && (
-        <p className={formStyles.footer}>
-          Don't have an account?&nbsp;
-          <Link to={REGISTER}>
-            <Button theme="link">Sign Up</Button>
-          </Link>
-        </p>
-      )}
-    </form>
+      <Grid item xs={12} container justify="center">
+        {!isRegisteringCustomer && (
+          <Typography>
+            Don't have an account?&nbsp;
+            <RouterLink to={REGISTER} component={Link}>
+              Sign Up
+            </RouterLink>
+          </Typography>
+        )}
+      </Grid>
+    </Grid>
   );
 };
 
