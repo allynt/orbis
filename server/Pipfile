@@ -33,7 +33,7 @@ djangorestframework-gis = ">=0.15.0"
 # dynamic API
 drf-flex-fields = ">=0.7.5"
 # API documentation
-drf-yasg = ">=1.17.1"
+drf-yasg2 = "*"
 # GIS data processing
 geopandas = ">=0.7.0"
 # MapBox SDK

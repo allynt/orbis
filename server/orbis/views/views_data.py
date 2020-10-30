@@ -15,8 +15,8 @@ from rest_framework.views import APIView
 
 from requests.exceptions import Timeout
 
-from drf_yasg import openapi
-from drf_yasg.utils import swagger_auto_schema
+from drf_yasg2 import openapi
+from drf_yasg2.utils import swagger_auto_schema
 
 from orbis.models import DataScope
 from orbis.utils import generate_data_token, validate_data_token

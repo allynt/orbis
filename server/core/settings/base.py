@@ -9,7 +9,7 @@ import os
 
 from django.utils.html import escape
 from django.utils.text import slugify
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 
 from astrosat.utils import DynamicSetting
 
@@ -76,7 +76,7 @@ THIRD_PARTY_APPS = [
     # apis...
     "rest_framework",
     "rest_framework_gis",
-    "drf_yasg",
+    "drf_yasg2",
     "django_filters",
     # users...,
     "allauth",
@@ -365,6 +365,7 @@ REST_AUTH_REGISTER_SERIALIZERS = {
     "REGISTER_SERIALIZER": "astrosat_users.serializers.RegisterSerializer"
 }
 
+ACCOUNT_LOGIN_CLIENT_URL = "/accounts/login"
 ACCOUNT_CONFIRM_EMAIL_CLIENT_URL = "/accounts/confirm-email/{key}"
 ACCOUNT_CONFIRM_PASSWORD_CLIENT_URL = "/accounts/password/reset/{key}/{uid}"
 
