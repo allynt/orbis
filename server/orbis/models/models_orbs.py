@@ -1,5 +1,6 @@
 from collections import OrderedDict
 from enum import IntFlag
+import fnmatch
 import re
 import uuid
 
@@ -266,6 +267,16 @@ class DataScope(models.Model):
     @property
     def source_id_pattern(self):
         return f"{self.authority}/{self.namespace}/{self.name}/{self.version}"
+
+    @staticmethod
+    def matches_source_id(source_id_pattern, source_id):
+        """
+        Checks if a given source_id_pattern matches a given source_id.
+        """
+        for source_id_part, source_id_pattern_part in zip(source_id.split("/"), source_id_pattern.split("/")):
+            if not fnmatch.fnmatch(source_id_part, source_id_pattern_part):
+                return False
+        return True
 
     def natural_key(self):
         return (self.source_id_pattern,)

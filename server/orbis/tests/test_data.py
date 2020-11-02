@@ -158,16 +158,22 @@ class TestDataSourceView:
 
     def test_num_queries(self, user, api_client, mock_data_sources, mock_storage, django_assert_num_queries):
         """
-        tests that a minimal number of queries is run
+        Tests that a minimal number of queries is run;
+        Proves complexity of DataSourceView is constant.
         """
+
+        N_SOURCES = 100
+        # N_QUERIES = 114
+        N_QUERIES = 16
 
         source_ids = [
             f"authority/namespace/name/version{i}"
-            for i in range(100)
+            for i in range(N_SOURCES)
         ]
 
         data_scope = DataScopeFactory(authority="authority", namespace="namespace", name="name", version="*")
 
+        # (worst-case-scenario: 1 orb per source)
         orbs = [OrbFactory(data_scopes=[data_scope]) for _ in source_ids]
 
         customer = CustomerFactory(logo=None)
@@ -180,7 +186,5 @@ class TestDataSourceView:
         client = api_client(user)
         url = reverse("datasources")
 
-        with django_assert_num_queries(114):
-            # DataSourceView is linear; 1 query per DataSource
-            # (plus some other initial queries)
+        with django_assert_num_queries(N_QUERIES):
             client.get(url, {}, format="json")

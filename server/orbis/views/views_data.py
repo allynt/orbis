@@ -1,12 +1,12 @@
 import jwt
 import requests
-from collections import OrderedDict
+from collections import OrderedDict, defaultdict
 from datetime import datetime, timedelta
+from functools import reduce
 from urllib.parse import urljoin
 
 from django.conf import settings
 from django.contrib.sites.shortcuts import get_current_site
-from django.db.models import F
 
 from rest_framework import status
 from rest_framework.exceptions import APIException
@@ -19,7 +19,7 @@ from requests.exceptions import Timeout
 from drf_yasg2 import openapi
 from drf_yasg2.utils import swagger_auto_schema
 
-from orbis.models import DataScope, Orb, Licence
+from orbis.models import DataScope, Orb
 from orbis.utils import generate_data_token, validate_data_token
 
 
@@ -39,7 +39,6 @@ class IsAuthenticatedOrAdmin(BasePermission):
 
 # Neither TokenView nor DataSourceView have serializers for yasg to generate
 # schemas, so I define some here just to make the swagger documentation useful
-
 
 _encoded_token_schema = openapi.Schema(
     type=openapi.TYPE_OBJECT,
@@ -175,32 +174,24 @@ class DataSourceView(APIView):
         #         for matching_orb_dict in matching_data_scopes.values("orbs__name", "orbs__description")
         #     ]
 
-        # import pdb; pdb.set_trace()
-        licences = Licence.objects.filter(customer_user__in=user.customer_users.all()).can_read().values_list("pk", flat=True)
-        data_scopes = DataScope.objects.filter(
-            is_active=True, orbs__licences__in=licences
-        ).prefetch_related("orbs")
-        foobar = {
-            data_scope.source_id_pattern: list(data_scope.orbs.values("name", "description"))
-            for data_scope in data_scopes
-        }
+        # TODO: YES IT CAN, BUT IT'S NOT VERY PRETTY
+
+        orbs = Orb.objects.filter(
+            licences__customer_user__in=user.customer_users.values_list("pk", flat=True)
+        ).prefetch_related("data_scopes")
+        data_scopes_to_orb_mapping = defaultdict(list)
+        for orb in orbs:
+            for data_scope in orb.data_scopes.all():
+                data_scopes_to_orb_mapping[data_scope.source_id_pattern] += [
+                    {"name": orb.name, "description": orb.description}
+                ]
+
         for source in sources:
-            source["orbs"] = dict(
-                filter(lambda item: item[0]=="astrosat/core/*/*", foobar.items()
-                    )
-                ).values()
-
-
-        # orbs = Orb.objects.filter(licences__in=licences).prefetch_related("data_scopes")
-        # foobar = {}
-        # for orb in orbs:
-        #     for data_scope in orb.data_scopes.all():
-        #         foobar[data_scope.source_id]
-        # foobar = {
-        #     for orb in orbs
-
-        # }
-
+            matching_orbs = dict(filter(
+                lambda item: DataScope.matches_source_id(item[0], source["source_id"]),
+                data_scopes_to_orb_mapping.items()
+            )).values()
+            source["orbs"] = reduce(lambda orb1, orb2: orb1 + orb2, matching_orbs)
 
         return Response({
             "token": data_token,
