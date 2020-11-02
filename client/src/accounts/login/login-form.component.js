@@ -56,7 +56,7 @@ const LoginForm = ({
     if (
       match?.params?.key &&
       activateAccount &&
-      (user?.is_verified === false || user?.is_verified === 'False')
+      (!user?.is_verified || user?.is_verified === 'False')
     )
       activateAccount({ ...match.params });
   }, [activateAccount, match, user]);
