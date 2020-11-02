@@ -124,7 +124,7 @@ describe('Login Form Component', () => {
       expect(login).toHaveBeenCalledWith({
         email: EMAIL_TEXT,
         password: PASSWORD_TEXT,
-        termsAgreed: true,
+        accepted_terms: true,
       }),
     );
   });
