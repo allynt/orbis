@@ -4,6 +4,7 @@ declare module '*.module.css' {
 }
 
 declare module '*.png';
+declare module '*.svg';
 declare module '*.webp';
 
 declare type LayerName =
@@ -12,11 +13,17 @@ declare type LayerName =
   | 'GeoJsonClusteredIconLayer'
   | 'GeoJsonLayer';
 
+type Category = {
+  name: string;
+  child: Category;
+};
+
 declare type SourceMetadata = {
   label: string;
   description: string;
   application: {
     orbis: {
+      categories: Category;
       layer: {
         name: LayerName;
         props?: {
@@ -42,6 +49,8 @@ declare type Source = {
   name: string;
   version: string;
   source_id: string;
+  domain?: string;
+  orbs?: { name: string; description: string }[];
   metadata: SourceMetadata;
 };
 

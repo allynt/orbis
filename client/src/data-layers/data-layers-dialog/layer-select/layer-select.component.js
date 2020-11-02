@@ -6,6 +6,15 @@ import InfoBox from 'components/info-box/info-box.component';
 import dialogStyles from '../data-layers-dialog.module.css';
 import styles from './layer-select.module.css';
 
+/**
+ * @param {{
+ *   domain: {layers: Source[]}
+ *   initialSelectedLayers: Source[]
+ *   onAddLayers: (layers: Source[]) => void
+ *   onRemoveLayer: (layer: Source) => void
+ *   close: () => void
+ * }} props
+ */
 export const LayerSelect = ({
   domain,
   initialSelectedLayers,
