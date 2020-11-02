@@ -1,7 +1,7 @@
 import React from 'react';
 import { LayersListItem } from './layers-list-item.component';
 
-export default { title: 'DataLayers/LayersList/LayersListItem' };
+export default { title: 'Data Layers/LayersList/LayersListItem' };
 
 export const NoChildren = () => <LayersListItem title="Test Layer" />;
 
