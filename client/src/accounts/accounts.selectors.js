@@ -22,11 +22,6 @@ export const userSelector = createSelector(
   accounts => accounts?.user,
 );
 
-export const minimalUserSelector = createSelector(
-  baseSelector,
-  accounts => accounts?.minimalUser,
-);
-
 export const userKeySelector = createSelector(
   baseSelector,
   accounts => accounts?.userKey,

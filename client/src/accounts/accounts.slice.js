@@ -107,7 +107,6 @@ const initialState = {
   isLoading: false,
   resetStatus: status.NONE,
   changeStatus: status.NONE,
-  minimalUser: null,
 };
 
 const accountsSlice = createSlice({
@@ -217,7 +216,7 @@ const accountsSlice = createSlice({
     },
     passwordResetRequestedSuccess: (state, { payload }) => {
       state.resetStatus = status.COMPLETE;
-      state.minimalUser = payload;
+      state.user = payload;
       state.error = null;
     },
     passwordResetRequestedFailure: (state, { payload }) => {

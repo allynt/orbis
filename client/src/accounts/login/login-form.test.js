@@ -23,13 +23,12 @@ const I_AGREE_TEXT = 'I agree with';
  *   | 'activateAccount'
  *   | 'match'
  *   | 'serverErrors'
- *   | 'user'
- *   | 'minimalUser'>>} [props]
+ *   | 'user'>>} [props]
  */
 const renderComponent = props => {
   const activateAccount = jest.fn();
   const login = jest.fn();
-  const minimalUser = props?.minimalUser ? props.minimalUser : { accepted_terms: false }
+  const user = props?.minimalUser ? props.minimalUser : { accepted_terms: false }
 
   const utils = render(
     // @ts-ignore
@@ -37,8 +36,8 @@ const renderComponent = props => {
       passwordMinLength={2}
       passwordMaxLength={255}
       activateAccount={activateAccount}
+      user={user}
       login={login}
-      minimalUser={minimalUser}
       {...props}
     />,
     {
@@ -155,12 +154,12 @@ describe('Login Form Component', () => {
 
   it('only shows `Terms and Conditions` checkbox if user has not agreed already', () => {
     const { getByRole } = renderComponent();
-    
+
     expect(getByRole('checkbox')).toBeInTheDocument();
   })
 
   it('does not show `Terms and Conditions` checkbox if user has agreed already', () => {
-    const { queryByRole } = renderComponent({ minimalUser: { accepted_terms: true } });
+    const { queryByRole } = renderComponent({ user: { accepted_terms: true } });
 
     expect(queryByRole('checkbox')).not.toBeInTheDocument();
   })

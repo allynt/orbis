@@ -44,12 +44,11 @@ const LoginForm = ({
   passwordMaxLength,
   serverErrors,
   user,
-  minimalUser,
   activateAccount,
   login,
 }) => {
   const isRegisteringCustomer = user?.registration_stage;
-  const isOnboardingTeamMember = minimalUser?.accepted_terms === false;
+  const isOnboardingTeamMember = user?.accepted_terms === false;
 
   const [termsAgreed, setTermsAgreed] = useState(false);
 
