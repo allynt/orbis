@@ -23,6 +23,7 @@ const LayerSelectItem = ({ source, selected, onChange }) => {
   return (
     <li>
       <Checkbox
+        id={source.source_id}
         label={source.metadata.label}
         defaultChecked={selected}
         onChange={
