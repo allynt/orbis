@@ -494,7 +494,7 @@ export const confirmResetPassword = (form, params) => async dispatch => {
     );
   }
 
-  const user = response.user;
+  const { user } = await response.json();
   return dispatch(passwordResetRequestedSuccess(user));
 };
 
