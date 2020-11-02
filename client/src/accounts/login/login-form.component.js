@@ -44,11 +44,12 @@ const LoginForm = ({
   passwordMaxLength,
   serverErrors,
   user,
+  minimalUser,
   activateAccount,
   login,
 }) => {
   const isRegisteringCustomer = user?.registration_stage;
-  const isOnboardingTeamMember = !user?.accepted_terms;
+  const isOnboardingTeamMember = minimalUser?.accepted_terms === false;
 
   const [termsAgreed, setTermsAgreed] = useState(false);
 
@@ -56,7 +57,7 @@ const LoginForm = ({
     if (
       match?.params?.key &&
       activateAccount &&
-      (!user?.is_verified || user?.is_verified === 'False')
+      (user?.is_verified === false || user?.is_verified === 'False')
     )
       activateAccount({ ...match.params });
   }, [activateAccount, match, user]);

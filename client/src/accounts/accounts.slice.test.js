@@ -263,6 +263,7 @@ describe('Accounts Slice', () => {
       beforeState = {
         userKey: null,
         user: null,
+        minimalUser: null,
         error: null,
         isLoading: false,
         resetStatus: status.NONE,

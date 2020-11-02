@@ -13,6 +13,7 @@ import {
   passwordChangeStatusSelector,
   passwordResetStatusSelector,
   userSelector,
+  minimalUserSelector,
 } from './accounts.selectors';
 import {
   activateAccount,
@@ -57,6 +58,7 @@ export default () => {
   const changeStatus = useSelector(passwordChangeStatusSelector);
   /** @type {User} */
   const user = useSelector(userSelector);
+  const minimalUser = useSelector(minimalUserSelector);
   const passwordConfig = useSelector(passwordConfigSelector);
 
   return (
@@ -119,6 +121,7 @@ export default () => {
             ) : (
               <LoginForm
                 user={user}
+                minimalUser={minimalUser}
                 login={values => dispatch(login(values))}
                 serverErrors={error}
                 activateAccount={form => dispatch(activateAccount(form))}
