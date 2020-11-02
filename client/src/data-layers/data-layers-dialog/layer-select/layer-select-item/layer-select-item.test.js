@@ -3,7 +3,7 @@ import { render } from '@testing-library/react';
 import { default as LayerSelectItem } from './layer-select-item.component';
 import userEvent from '@testing-library/user-event';
 
-/** @type {Partial<Source>} */
+/** @type {Source} */
 const SOURCE = {
   source_id: 'test/source/123',
   // @ts-ignore
@@ -36,19 +36,24 @@ describe('<LayerSelectItem />', () => {
   });
 
   it('hides the source description when the info button is clicked again', () => {
-    const { getByLabelText, getByText } = renderComponent();
+    const { getByLabelText, getByText, queryByText } = renderComponent();
     userEvent.click(getByLabelText('Info'));
     expect(getByText(SOURCE.metadata.description)).toBeInTheDocument();
     userEvent.click(getByLabelText('Info'));
-    expect(getByText(SOURCE.metadata.description)).not.toBeInTheDocument();
+    expect(queryByText(SOURCE.metadata.description)).not.toBeInTheDocument();
   });
 
   it('hides the source description when the info box is clicked off', () => {
-    const { getByLabelText, getByText, getByRole } = renderComponent();
+    const {
+      getByLabelText,
+      getByText,
+      getByRole,
+      queryByText,
+    } = renderComponent();
     userEvent.click(getByLabelText('Info'));
     expect(getByText(SOURCE.metadata.description)).toBeInTheDocument();
     userEvent.click(getByRole('checkbox'));
-    expect(getByText(SOURCE.metadata.description)).not.toBeInTheDocument();
+    expect(queryByText(SOURCE.metadata.description)).not.toBeInTheDocument();
   });
 
   it('shows the checkbox as checked when the source is selected', () => {
