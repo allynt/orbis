@@ -36,9 +36,8 @@ class LicenceNotifyingMixIn(object):
         }
 
         adapter = get_adapter(self.request)
-        managers_emails = customer.customer_users.managers().values_list("user__email", flat=True)
         message = adapter.send_mail(
-            "orbis/emails/update_licences", customer_user.user.email, context, cc=managers_emails,
+            "orbis/emails/update_licences", customer_user.user.email, context,
         )
 
         return message
