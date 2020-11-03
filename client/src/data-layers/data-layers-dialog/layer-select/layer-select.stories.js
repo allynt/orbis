@@ -119,3 +119,24 @@ MultiNesting.args = {
     },
   ],
 };
+
+export const SomeSelected = Template.bind({});
+SomeSelected.args = {
+  selectedSources: ['oil/source/1', 'gas/source/2'],
+  orbSources: [
+    {
+      category: 'Oil',
+      sources: [
+        { source_id: 'oil/source/1', metadata: { label: 'Oil Source 1' } },
+        { source_id: 'oil/source/2', metadata: { label: 'Oil Source 2' } },
+      ],
+    },
+    {
+      category: 'Gas',
+      sources: [
+        { source_id: 'gas/source/1', metadata: { label: 'Gas Source 1' } },
+        { source_id: 'gas/source/2', metadata: { label: 'Gas Source 2' } },
+      ],
+    },
+  ],
+};

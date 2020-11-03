@@ -7,13 +7,21 @@ import styles from './layer-select.module.css';
 import { ReactComponent as ExpandIcon } from '../../triangle.svg';
 
 /**
- * @param {OrbSources} sources
- * @param {number} level
- * @param {(params: {
+ * @param {{
+ *  sources: OrbSources
+ *  level: number
+ *  onSourceChange: (params: {
  *     source_id: Source['source_id']
- *     selected: boolean}) => void} onSourceChange
+ *     selected: boolean}) => void
+ *  selectedSources: Source['source_id'][]
+ * }} params
  */
-const renderCategories = (sources, level, onSourceChange) =>
+const renderCategories = ({
+  sources,
+  level,
+  onSourceChange,
+  selectedSources,
+}) =>
   // @ts-ignore
   sources.map(source =>
     source.category ? (
@@ -21,6 +29,7 @@ const renderCategories = (sources, level, onSourceChange) =>
         source={source}
         level={level}
         onSourceChange={onSourceChange}
+        selectedSources={selectedSources}
       />
     ) : (
       <LayerSelectItem
@@ -28,11 +37,12 @@ const renderCategories = (sources, level, onSourceChange) =>
         key={source.source_id}
         source={source}
         onChange={onSourceChange}
+        selected={selectedSources?.includes(source.source_id)}
       />
     ),
   );
 
-const Accordion = ({ source, level, onSourceChange }) => {
+const Accordion = ({ source, level, onSourceChange, selectedSources }) => {
   const [open, setOpen] = useState(false);
 
   return (
@@ -53,7 +63,12 @@ const Accordion = ({ source, level, onSourceChange }) => {
         }}
         aria-expanded={open}
       >
-        {renderCategories(source.sources, level + 1, onSourceChange)}
+        {renderCategories({
+          sources: source.sources,
+          level: level + 1,
+          onSourceChange,
+          selectedSources,
+        })}
       </div>
     </React.Fragment>
   );
@@ -89,14 +104,23 @@ export const LayerSelect = ({
       <h1 className={dialogStyles.header}>Select Your Layers</h1>
       {orbSources ? (
         <ul className={styles.list}>
-          {renderCategories(orbSources, 0, onSourceChange)}
+          {renderCategories({
+            sources: orbSources,
+            level: 0,
+            onSourceChange,
+            selectedSources,
+          })}
         </ul>
       ) : (
         <p className={styles.noOrbMessage}>
           Select Your Orb in order to find layers
         </p>
       )}
-      <Button className={styles.button} disabled={!hasMadeChanges}>
+      <Button
+        className={styles.button}
+        disabled={!hasMadeChanges}
+        onClick={onAcceptClick}
+      >
         Confirm
       </Button>
     </div>
