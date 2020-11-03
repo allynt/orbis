@@ -68,7 +68,9 @@ const LoginForm = ({
   });
 
   const onSubmit = data => {
-    const submission = isOnboardingTeamMember ? { ...data, accepted_terms: termsAgreed } : data;
+    const submission = isOnboardingTeamMember
+      ? { ...data, accepted_terms: termsAgreed }
+      : data;
     login(submission);
   };
 

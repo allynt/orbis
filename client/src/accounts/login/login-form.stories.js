@@ -47,12 +47,11 @@ CustomerSignUpLogin.args = {
 };
 
 export const TeamMemberLogin = args => <LoginForm {...args} />;
-CustomerSignUpLogin.args = {
+TeamMemberLogin.args = {
   user: {
     accepted_terms: false,
   },
 };
-
 
 export const InWrapper = args => (
   <Wrapper>
