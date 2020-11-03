@@ -38,7 +38,7 @@
   height: 0.5625em;
   margin-right: 1em;
   transform: rotate(90deg);
-  transition: transform 250ms ease-in-out;
+  transition: transform 150ms ease-in-out;
 }
 
 .arrow.open {
@@ -46,14 +46,11 @@
 }
 
 .accordionContent {
-  overflow: hidden;
-  height: min-content;
-  max-height: 0;
-  transition: max-height 250ms ease-in-out;
+  display: none;
 }
 
 .accordionContent.open {
-  max-height: 100%;
+  display: block;
 }
 
 .noOrbMessage {
