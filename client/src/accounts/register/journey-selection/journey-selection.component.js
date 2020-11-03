@@ -4,11 +4,8 @@ import { Button, Radio } from '@astrosat/astrosat-ui';
 
 import { useHistory } from 'react-router-dom';
 
-import {
-  REGISTER_CUSTOMER_USER,
-  REGISTER,
-  TERMS,
-} from 'accounts/accounts.constants';
+import { TERMS } from 'legal-documents/legal-documents-constants';
+import { REGISTER_CUSTOMER_USER, REGISTER } from 'accounts/accounts.constants';
 
 import formStyles from 'forms.module.css';
 import styles from './journey-selection.module.css';

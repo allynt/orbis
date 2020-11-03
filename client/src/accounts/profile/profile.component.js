@@ -8,7 +8,7 @@ import UpdateUserForm from '../update-user-form/update-user-form.component';
 import { updateUser, logout } from '../accounts.slice';
 import { userSelector } from '../accounts.selectors';
 
-import { TERMS } from '../accounts.constants';
+import { TERMS } from 'legal-documents/legal-documents-constants';
 
 import styles from './profile.module.css';
 

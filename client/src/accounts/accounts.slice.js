@@ -214,8 +214,9 @@ const accountsSlice = createSlice({
     resetPasswordFailure: (state, { payload }) => {
       state.error = payload;
     },
-    passwordResetRequestedSuccess: state => {
+    passwordResetRequestedSuccess: (state, { payload }) => {
       state.resetStatus = status.COMPLETE;
+      state.user = payload;
       state.error = null;
     },
     passwordResetRequestedFailure: (state, { payload }) => {
@@ -493,7 +494,8 @@ export const confirmResetPassword = (form, params) => async dispatch => {
     );
   }
 
-  return dispatch(passwordResetRequestedSuccess());
+  const { user } = await response.json();
+  return dispatch(passwordResetRequestedSuccess(user));
 };
 
 export const resetPassword = form => async dispatch => {
