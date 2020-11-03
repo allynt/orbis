@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { render } from '@testing-library/react';
+import { render, waitFor } from '@testing-library/react';
 
 import { LayerSelect } from './layer-select.component';
 import userEvent from '@testing-library/user-event';
@@ -88,32 +88,43 @@ describe('<LayerSelect />', () => {
     ).toBeInTheDocument();
   });
 
-  it('expands the category headings when clicked', () => {
+  it('expands the category headings when clicked', async () => {
     const { getByRole } = renderComponent();
     userEvent.click(getByRole('button', { name: ORB_SOURCES[0].category }));
-    expect(
-      getByRole('checkbox', { name: ORB_SOURCES[0].sources[0].metadata.label }),
-    ).toBeVisible();
+    await waitFor(() =>
+      expect(
+        getByRole('checkbox', {
+          name: ORB_SOURCES[0].sources[0].metadata.label,
+        }),
+      ).toBeInTheDocument(),
+    );
   });
 
-  it('hides categories when heading is clicked again', () => {
+  it('hides categories when heading is clicked again', async () => {
     const { getByRole, queryByRole } = renderComponent();
-    userEvent.click(getByRole('button', { name: ORB_SOURCES[0].category }));
-    expect(
-      getByRole('checkbox', { name: ORB_SOURCES[0].sources[0].metadata.label }),
-    ).toBeVisible();
     userEvent.click(getByRole('button', { name: ORB_SOURCES[0].category }));
     expect(
       queryByRole('checkbox', {
         name: ORB_SOURCES[0].sources[0].metadata.label,
       }),
-    ).not.toBeVisible();
+    ).toBeInTheDocument();
+    userEvent.click(getByRole('button', { name: ORB_SOURCES[0].category }));
+    await waitFor(() =>
+      expect(
+        queryByRole('checkbox', {
+          name: ORB_SOURCES[0].sources[0].metadata.label,
+        }),
+      ).not.toBeInTheDocument(),
+    );
   });
 
   it('shows sub-category headings', () => {
     const { getByRole } = renderComponent({
       orbSources: ORB_SOURCES_SUB_CATEGORIES,
     });
+    userEvent.click(
+      getByRole('button', { name: ORB_SOURCES_SUB_CATEGORIES[0].category }),
+    );
     expect(
       getByRole('button', {
         name: ORB_SOURCES_SUB_CATEGORIES[0].sources[0].category,
@@ -133,12 +144,14 @@ describe('<LayerSelect />', () => {
         name: ORB_SOURCES_SUB_CATEGORIES[0].sources[0].category,
       }),
     );
-    expect(
-      getByRole('checkbox', {
-        name:
-          ORB_SOURCES_SUB_CATEGORIES[0].sources[0].sources[0].metadata.label,
-      }),
-    ).toBeVisible();
+    waitFor(() =>
+      expect(
+        getByRole('checkbox', {
+          name:
+            ORB_SOURCES_SUB_CATEGORIES[0].sources[0].sources[0].metadata.label,
+        }),
+      ).toBeVisible(),
+    );
   });
 
   it('hides sub-categories when heading is clicked again', () => {
@@ -148,15 +161,16 @@ describe('<LayerSelect />', () => {
     const categoryHeading = getByRole('button', {
       name: ORB_SOURCES_SUB_CATEGORIES[0].category,
     });
+
+    userEvent.click(categoryHeading);
     const subCategoryHeading = getByRole('button', {
       name: ORB_SOURCES_SUB_CATEGORIES[0].sources[0].category,
     });
+    userEvent.click(subCategoryHeading);
     const checkbox = getByRole('checkbox', {
       name: ORB_SOURCES_SUB_CATEGORIES[0].sources[0].sources[0].metadata.label,
     });
-    userEvent.click(categoryHeading);
-    userEvent.click(subCategoryHeading);
-    expect(checkbox).toBeVisible();
+    waitFor(() => expect(checkbox).toBeVisible());
     userEvent.click(subCategoryHeading);
     expect(checkbox).not.toBeVisible();
   });
