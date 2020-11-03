@@ -162,21 +162,6 @@ class DataSourceView(APIView):
             raise APIException(f"Unable to retrieve data sources at '{url}': {str(e)}")
         sources = response.json()["results"]
 
-        # TODO: CAN THIS BE MADE MORE EFFICIENT BY MAKING A LOOKUP TABLE AND LOOPING THROUGH THAT
-        # TODO: INSTEAD OF A SEPARATE QUERY EACH ITERATION OF THE LOOP?
-
-        # data_scopes = DataScope.objects.filter(
-        #     is_active=True, orbs__licences__in=user.customer_users.values("licences")
-        # ).prefetch_related("orbs")
-        # for source in sources:
-        #     matching_data_scopes = data_scopes.matches_source_id(source["source_id"])
-        #     source["orbs"] = [
-        #         dict(zip(["name", "description"], matching_orb_dict.values()))
-        #         for matching_orb_dict in matching_data_scopes.values("orbs__name", "orbs__description")
-        #     ]
-
-        # TODO: YES IT CAN, BUT IT'S NOT VERY PRETTY
-
         orbs = Orb.objects.filter(
             is_active=True, licences__customer_user__in=user.customer_users.values_list("pk", flat=True)
         ).prefetch_related(

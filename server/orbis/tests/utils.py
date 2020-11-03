@@ -41,10 +41,9 @@ def mock_data_sources(monkeypatch):
         def _mock_get(url, params=None, **kwargs):
             if url.startswith(settings.DATA_SOURCES_DIRECTORY_URL):
                 return MockDataSourceResponse(source_ids=source_ids, status=status)
-            else:
-                # this just duplicates the standard `requests.get` behavior
-                kwargs.setdefault("allow_redirects", True)
-                return requests.request("get", url, params=params, **kwargs)
+            # this just duplicates the standard `requests.get` behavior
+            kwargs.setdefault("allow_redirects", True)
+            return requests.request("get", url, params=params, **kwargs)
 
         monkeypatch.setattr(requests, "get", _mock_get)
 

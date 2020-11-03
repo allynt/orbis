@@ -113,7 +113,8 @@ class DataScopeQuerySet(models.QuerySet):
 
     def matches_source_id(self, source_id):
         """
-        returns all the DataScopes whose source_id_pattern matches the given source_id
+        Returns all the DataScopes whose source_id_pattern matches the given source_id
+        This filter is no longer used by the DataSourceView, but it may prove useful in the future.
         """
 
         # first ensure source_id is valid...
