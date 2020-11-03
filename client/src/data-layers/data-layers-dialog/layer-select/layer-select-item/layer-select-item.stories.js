@@ -18,3 +18,15 @@ export const Default = () => (
     }}
   />
 );
+
+export const NoDescription = () => (
+  <LayerSelectItem
+    source={{
+      source_id: 'test/source/123',
+      // @ts-ignore
+      metadata: {
+        label: 'Test Source',
+      },
+    }}
+  />
+);
