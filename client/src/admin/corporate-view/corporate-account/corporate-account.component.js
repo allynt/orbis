@@ -51,7 +51,7 @@ const CorporateAccount = ({ customer, updateCustomer }) => {
             <img
               src={customer.logo}
               className={styles.logo}
-              alt={`${customer?.official_name} Logo`}
+              alt={`${customer?.name} Logo`}
             />
           </div>
         ) : (

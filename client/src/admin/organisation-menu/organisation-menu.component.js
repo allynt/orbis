@@ -10,7 +10,7 @@ import styles from './organisation-menu.module.css';
 
 /**
  *
- * @param {{ customer: { logo?: string, official_name?: string },
+ * @param {{ customer: { logo?: string, name?: string },
  *           setVisiblePanel(panel: string): void,
  *           onCreateUserClick(): void
  *        }} props
@@ -26,14 +26,14 @@ const OrganisationMenu = ({ customer, setVisiblePanel, onCreateUserClick }) => (
           <img
             className={styles.logo}
             src={customer?.logo}
-            alt={`${customer?.official_name} Logo`}
+            alt={`${customer?.name} Logo`}
           />
         </div>
       ) : (
         <DefaultCustomerLogo />
       )}
 
-      <h2 className={styles.organisationTitle}>{customer?.official_name}</h2>
+      <h2 className={styles.organisationTitle}>{customer?.name}</h2>
     </div>
     <Button size="small" onClick={onCreateUserClick}>
       Create User
