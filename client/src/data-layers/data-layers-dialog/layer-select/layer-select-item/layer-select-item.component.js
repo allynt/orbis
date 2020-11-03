@@ -40,14 +40,16 @@ const LayerSelectItem = ({ source, selected, className, onChange }) => {
             })
         }
       />
-      <div className={styles.info} ref={infoRef}>
-        {isInfoVisible && (
-          <InfoBox className={styles.infoBox} arrow="right">
-            {source.metadata.description}
-          </InfoBox>
-        )}
-        <InfoButton className={styles.infoButton} onClick={buttonClick} />
-      </div>
+      {source?.metadata?.description && (
+        <div className={styles.info} ref={infoRef}>
+          {isInfoVisible && (
+            <InfoBox className={styles.infoBox} arrow="right">
+              {source.metadata.description}
+            </InfoBox>
+          )}
+          <InfoButton className={styles.infoButton} onClick={buttonClick} />
+        </div>
+      )}
     </li>
   );
 };
