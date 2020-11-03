@@ -1,18 +1,23 @@
 import React, { useState } from 'react';
 
-import { Checkbox, InfoButton } from '@astrosat/astrosat-ui';
+import { Checkbox } from '@astrosat/astrosat-ui';
 
-import InfoBox from 'components/info-box/info-box.component';
+import clsx from 'clsx';
+
+import { InfoBox, InfoButton } from 'components';
 import { useClickaway } from 'hooks/useClickaway';
+
+import styles from './layer-select-item.module.css';
 
 /**
  * @param {{
  *   source: Source
  *   selected?: boolean
+ *   className?: string
  *   onChange: ({source_id: string, selected: boolean}) => void
  * }} props
  */
-const LayerSelectItem = ({ source, selected, onChange }) => {
+const LayerSelectItem = ({ source, selected, className, onChange }) => {
   const [isInfoVisible, setIsInfoVisible] = useState(false);
   const [infoRef] = useClickaway(() => setIsInfoVisible(false));
 
@@ -21,7 +26,7 @@ const LayerSelectItem = ({ source, selected, onChange }) => {
   };
 
   return (
-    <li>
+    <li className={clsx(styles.li, className)}>
       <Checkbox
         id={source.source_id}
         label={source.metadata.label}
@@ -35,11 +40,13 @@ const LayerSelectItem = ({ source, selected, onChange }) => {
             })
         }
       />
-      <div ref={infoRef}>
+      <div className={styles.info} ref={infoRef}>
         {isInfoVisible && (
-          <InfoBox arrow="right">{source.metadata.description}</InfoBox>
+          <InfoBox className={styles.infoBox} arrow="right">
+            {source.metadata.description}
+          </InfoBox>
         )}
-        <InfoButton onClick={buttonClick} />
+        <InfoButton className={styles.infoButton} onClick={buttonClick} />
       </div>
     </li>
   );

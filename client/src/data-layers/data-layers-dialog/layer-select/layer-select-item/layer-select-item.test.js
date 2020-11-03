@@ -30,27 +30,22 @@ describe('<LayerSelectItem />', () => {
   });
 
   it('shows the source description when the info button is clicked', () => {
-    const { getByLabelText, getByText } = renderComponent();
-    userEvent.click(getByLabelText('Info'));
+    const { getByRole, getByText } = renderComponent();
+    userEvent.click(getByRole('button'));
     expect(getByText(SOURCE.metadata.description)).toBeInTheDocument();
   });
 
   it('hides the source description when the info button is clicked again', () => {
-    const { getByLabelText, getByText, queryByText } = renderComponent();
-    userEvent.click(getByLabelText('Info'));
+    const { getByRole, getByText, queryByText } = renderComponent();
+    userEvent.click(getByRole('button'));
     expect(getByText(SOURCE.metadata.description)).toBeInTheDocument();
-    userEvent.click(getByLabelText('Info'));
+    userEvent.click(getByRole('button'));
     expect(queryByText(SOURCE.metadata.description)).not.toBeInTheDocument();
   });
 
   it('hides the source description when the info box is clicked off', () => {
-    const {
-      getByLabelText,
-      getByText,
-      getByRole,
-      queryByText,
-    } = renderComponent();
-    userEvent.click(getByLabelText('Info'));
+    const { getByText, getByRole, queryByText } = renderComponent();
+    userEvent.click(getByRole('button'));
     expect(getByText(SOURCE.metadata.description)).toBeInTheDocument();
     userEvent.click(getByRole('checkbox'));
     expect(queryByText(SOURCE.metadata.description)).not.toBeInTheDocument();

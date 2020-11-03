@@ -1,0 +1,26 @@
+.li {
+  list-style: none;
+  display: flex;
+  align-items: center;
+  border-left: 1px solid var(--color-primary);
+  padding-left: 0.5em;
+}
+
+.info {
+  margin-left: auto;
+  position: relative;
+}
+
+.infoBox {
+  position: absolute;
+  font-size: 0.75em;
+  padding: 1rem 1.25rem;
+  top: -0.9375rem;
+  right: 2.0625rem;
+  max-width: 14.25rem;
+  z-index: 1;
+}
+
+.infoButton {
+  font-size: 0.8125rem;
+}

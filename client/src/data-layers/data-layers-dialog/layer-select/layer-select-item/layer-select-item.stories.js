@@ -3,9 +3,10 @@ import LayerSelectItem from './layer-select-item.component';
 
 export default {
   title: 'Data Layers/DataLayersDialog/LayerSelect/LayerSelectItem',
+  argTypes: { onChange: { action: 'onChange' } },
 };
 
-export const Test = () => (
+export const Default = () => (
   <LayerSelectItem
     source={{
       source_id: 'test/source/123',
