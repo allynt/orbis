@@ -37,16 +37,23 @@ export const LayerSelect = ({
   const renderCategories = (sources, level) =>
     sources.map(source =>
       source.category ? (
-        <div key={source.category}>
-          <button>{source.category}</button>
+        <React.Fragment key={source.category}>
+          <button
+            className={clsx(styles.accordionHeader, {
+              [styles.accordionHeaderRoot]: level === 0,
+            })}
+          >
+            {source.category}
+          </button>
           <>
             {source.sources.map(source =>
               renderCategories([source], level + 1),
             )}
           </>
-        </div>
+        </React.Fragment>
       ) : (
         <LayerSelectItem
+          className={styles.listItem}
           key={source.source_id}
           source={source}
           onChange={onSourceChange}
@@ -55,20 +62,18 @@ export const LayerSelect = ({
     );
 
   return (
-    <div className={styles.subcategories}>
-      <div className={dialogStyles.header}>
-        <h3>Select Your Layers</h3>
-      </div>
+    <div className={styles.layerSelect}>
+      <h1 className={dialogStyles.header}>Select Your Layers</h1>
       {orbSources ? (
-        renderCategories(orbSources, 0)
+        <ul className={styles.list}>{renderCategories(orbSources, 0)}</ul>
       ) : (
-        <p>Select Your Orb in order to find layers</p>
+        <p className={styles.noOrbMessage}>
+          Select Your Orb in order to find layers
+        </p>
       )}
-      <div className={dialogStyles.buttons}>
-        <Button className={clsx(styles.addButton)} disabled={!hasMadeChanges}>
-          Confirm
-        </Button>
-      </div>
+      <Button className={styles.button} disabled={!hasMadeChanges}>
+        Confirm
+      </Button>
     </div>
   );
 };

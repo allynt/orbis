@@ -82,5 +82,37 @@ NoCategories.args = {
   orbSources: [
     { source_id: 'oil/source/1', metadata: { label: 'Oil Source 1' } },
     { source_id: 'oil/source/2', metadata: { label: 'Oil Source 2' } },
+    { source_id: 'gas/source/1', metadata: { label: 'Gas Source 1' } },
+    { source_id: 'gas/source/2', metadata: { label: 'Gas Source 2' } },
+  ],
+};
+
+export const MultiNesting = Template.bind({});
+MultiNesting.args = {
+  orbSources: [
+    {
+      category: 'Level 1',
+      sources: [
+        {
+          category: 'Level 2',
+          sources: [
+            {
+              category: 'Level 3',
+              sources: [
+                {
+                  category: 'Level 4',
+                  sources: [
+                    {
+                      source_id: 'cheeky/hidden/source/1',
+                      metadata: { label: 'You Found Me!' },
+                    },
+                  ],
+                },
+              ],
+            },
+          ],
+        },
+      ],
+    },
   ],
 };

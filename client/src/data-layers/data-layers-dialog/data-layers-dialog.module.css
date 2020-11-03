@@ -10,12 +10,12 @@
   z-index: 100;
 }
 
-.modal .closeButton {
+.closeButton {
   position: absolute;
   align-self: flex-end;
 }
 
-.modal .dialog {
+.dialog {
   display: flex;
   flex-direction: column;
   background: white;
@@ -23,7 +23,7 @@
   height: auto;
 }
 
-.dialog .header {
+.header {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -34,7 +34,7 @@
   color: #333f48;
 }
 
-.dialog .content {
+.content {
   display: flex;
   height: inherit;
 }
@@ -48,7 +48,7 @@
   font-weight: bold;
 }
 
-.dialog .buttons {
+.buttons {
   display: flex;
   justify-content: flex-end;
   width: 100%;
