@@ -7,6 +7,7 @@ from urllib.parse import urljoin
 
 from django.conf import settings
 from django.contrib.sites.shortcuts import get_current_site
+from django.db.models import Prefetch
 
 from rest_framework import status
 from rest_framework.exceptions import APIException
@@ -177,11 +178,13 @@ class DataSourceView(APIView):
         # TODO: YES IT CAN, BUT IT'S NOT VERY PRETTY
 
         orbs = Orb.objects.filter(
-            licences__customer_user__in=user.customer_users.values_list("pk", flat=True)
-        ).prefetch_related("data_scopes")
+            is_active=True, licences__customer_user__in=user.customer_users.values_list("pk", flat=True)
+        ).prefetch_related(
+            Prefetch("data_scopes", queryset=DataScope.objects.filter(is_active=True), to_attr="filtered_data_scopes")
+        )
         data_scopes_to_orb_mapping = defaultdict(list)
         for orb in orbs:
-            for data_scope in orb.data_scopes.all():
+            for data_scope in orb.filtered_data_scopes:
                 data_scopes_to_orb_mapping[data_scope.source_id_pattern] += [
                     {"name": orb.name, "description": orb.description}
                 ]
