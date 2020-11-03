@@ -50,7 +50,7 @@ declare type Source = {
   version: string;
   source_id: string;
   domain?: string;
-  orbs?: { name: string; description: string }[];
+  orbs?: { name: string; description?: string }[];
   metadata: SourceMetadata;
 };
 
