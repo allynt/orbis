@@ -11,6 +11,10 @@ import styles from './legal-documents.module.css';
 import { PrivacyPolicy } from './privacy-policy.component';
 import TermsAndConditions from './terms-and-conditions.component';
 
+const eulaHeaderText = `In the event that your company has a pre-existing wet signature contract with Astrosat that conflicts with this EULA, then the conditions of that contract shall be deemed to prevail. You should have been given a copy of the associated EULA, please contact your organisation's administrator if this is not the case.`;
+
+const termsHeaderText = `In the event that your company has a pre-existing wet signature contract with Astrosat that conflicts with these Terms and Conditions, then the conditions of that contract shall be deemed to prevail.`;
+
 const LegalDocuments = ({ match }) => {
   const Component = match.path === EULA ? Eula : TermsAndConditions;
   const buttonText =
@@ -25,9 +29,7 @@ const LegalDocuments = ({ match }) => {
         </Link>
       </div>
       <p className={styles.headerText}>
-        In the event that your company has a pre-existing wet signature contract
-        with Astrosat that conflicts with these Terms and Conditions, then the
-        conditions of that contract shall be deemed to prevail.
+        {match.path === EULA ? eulaHeaderText : termsHeaderText}
       </p>
       <div className={styles.body}>
         <div className={styles.buttons}>
