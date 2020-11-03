@@ -35,6 +35,7 @@ export const LayerSelect = ({
    * @param {number} level
    */
   const renderCategories = (sources, level) =>
+    // @ts-ignore
     sources.map(source =>
       source.category ? (
         <React.Fragment key={source.category}>
@@ -45,11 +46,14 @@ export const LayerSelect = ({
           >
             {source.category}
           </button>
-          <>
+          <div
+            className={styles.accordionContent}
+            style={{ paddingLeft: `${0.5 * (level + 1)}rem` }}
+          >
             {source.sources.map(source =>
               renderCategories([source], level + 1),
             )}
-          </>
+          </div>
         </React.Fragment>
       ) : (
         <LayerSelectItem
