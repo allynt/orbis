@@ -22,13 +22,11 @@
   font-weight: 600;
   color: var(--color--text--dark);
   padding: 0.5em 1em;
-  padding-bottom: 0;
   display: flex;
   align-items: center;
 }
 
 .accordionHeaderRoot {
-  padding-bottom: 0.5em;
   background-color: var(--button--secondary--background-color);
   color: var(--button--secondary--color);
   border-radius: var(--global--border-radius);
@@ -40,10 +38,22 @@
   height: 0.5625em;
   margin-right: 1em;
   transform: rotate(90deg);
+  transition: transform 250ms ease-in-out;
 }
 
 .arrow.open {
   transform: rotate(180deg);
+}
+
+.accordionContent {
+  overflow: hidden;
+  height: min-content;
+  max-height: 0;
+  transition: max-height 250ms ease-in-out;
+}
+
+.accordionContent.open {
+  max-height: 100%;
 }
 
 .noOrbMessage {

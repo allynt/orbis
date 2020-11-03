@@ -44,13 +44,12 @@ const Accordion = ({ source, level, onSourceChange }) => {
         onClick={() => setOpen(c => !c)}
       >
         <ExpandIcon className={clsx(styles.arrow, { [styles.open]: open })} />
-        <span>{source.category}</span>
+        {source.category}
       </button>
       <div
-        className={styles.accordionContent}
+        className={clsx(styles.accordionContent, { [styles.open]: open })}
         style={{
           paddingLeft: `${0.5 * (level + 1)}rem`,
-          display: open ? 'block' : 'none',
         }}
         aria-expanded={open}
       >

@@ -104,7 +104,10 @@ MultiNesting.args = {
                   sources: [
                     {
                       source_id: 'cheeky/hidden/source/1',
-                      metadata: { label: 'You Found Me!' },
+                      metadata: {
+                        label: 'You Found Me!',
+                        description: 'Test Description',
+                      },
                     },
                   ],
                 },
@@ -112,26 +115,6 @@ MultiNesting.args = {
             },
           ],
         },
-      ],
-    },
-  ],
-};
-
-export const Test = Template.bind({});
-Test.args = {
-  orbSources: [
-    {
-      category: 'Oil',
-      sources: [
-        { source_id: 'oil/source/1', metadata: { label: 'Oil Source 1' } },
-        { source_id: 'oil/source/2', metadata: { label: 'Oil Source 2' } },
-      ],
-    },
-    {
-      category: 'Gas',
-      sources: [
-        { source_id: 'gas/source/1', metadata: { label: 'Gas Source 1' } },
-        { source_id: 'gas/source/2', metadata: { label: 'Gas Source 2' } },
       ],
     },
   ],

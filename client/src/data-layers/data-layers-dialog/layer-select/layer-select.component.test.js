@@ -122,7 +122,7 @@ describe('<LayerSelect />', () => {
         queryByRole('checkbox', {
           name: ORB_SOURCES[0].sources[0].metadata.label,
         }),
-      ).not.toBeInTheDocument(),
+      ).not.toBeVisible(),
     );
   });
 
