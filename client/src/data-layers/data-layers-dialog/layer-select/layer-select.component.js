@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import dialogStyles from '../data-layers-dialog.module.css';
 import LayerSelectItem from './layer-select-item/layer-select-item.component';
 import styles from './layer-select.module.css';
+import { ReactComponent as ExpandIcon } from '../../triangle.svg';
 
 /**
  * @param {OrbSources} sources
@@ -42,7 +43,8 @@ const Accordion = ({ source, level, onSourceChange }) => {
         })}
         onClick={() => setOpen(c => !c)}
       >
-        {source.category}
+        <ExpandIcon className={clsx(styles.arrow, { [styles.open]: open })} />
+        <span>{source.category}</span>
       </button>
       <div
         className={styles.accordionContent}
@@ -50,6 +52,7 @@ const Accordion = ({ source, level, onSourceChange }) => {
           paddingLeft: `${0.5 * (level + 1)}rem`,
           display: open ? 'block' : 'none',
         }}
+        aria-expanded={open}
       >
         {renderCategories(source.sources, level + 1, onSourceChange)}
       </div>
