@@ -365,6 +365,45 @@ class TestLicences:
         assert customer.licences.count() == 0
 
 @pytest.mark.django_db
+class TestDataScope:
+
+    def test_matches_source_id(self):
+
+        data_scope = DataScopeFactory(
+            authority="authority",
+            namespace="namespace",
+            name="name",
+            version="version",
+        )
+        data_scopes = DataScope.objects.all()
+
+        valid_source_id = "authority/namespace/name/version"
+        invalid_source_id = "some/other/source/id"
+        assert data_scopes.matches_source_id(valid_source_id).count() == 1
+        assert data_scopes.matches_source_id(invalid_source_id).count() == 0
+
+        data_scope.version = "*"
+        data_scope.save()
+
+        valid_source_id = "authority/namespace/name/blahblahanything"
+        invalid_source_id = "some/other/source/id"
+        assert data_scopes.matches_source_id(valid_source_id).count() == 1
+        assert data_scopes.matches_source_id(invalid_source_id).count() == 0
+
+        data_scope.version = "fo?"
+        data_scope.save()
+
+        valid_source_id = "authority/namespace/name/foo"
+        invalid_source_id = "authority/namespace/name/foobar"
+        assert data_scopes.matches_source_id(valid_source_id).count() == 1
+        assert data_scopes.matches_source_id(invalid_source_id).count() == 0
+
+        with pytest.raises(ValueError):
+            very_invalid_source_id = "some/malformed/id"
+            data_scopes.matches_source_id(very_invalid_source_id)
+
+
+@pytest.mark.django_db
 class TestLicencedCustomer:
 
     def test_add_licences(self, mock_storage):

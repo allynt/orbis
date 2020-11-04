@@ -1,10 +1,14 @@
+from collections import OrderedDict
 from enum import IntFlag
+import fnmatch
+import re
 import uuid
 
 from django.core.exceptions import ValidationError
 from django.core.validators import MaxValueValidator
 from django.db import models
-from django.db.models import Q, F
+from django.db.models import Q, F, Value, ExpressionWrapper
+from django.db.models.functions import Concat, Replace
 from django.utils.html import mark_safe
 
 from astrosat_users.models import Customer, CustomerUser
@@ -26,9 +30,18 @@ A user can only hold a licence if it is owned by that  user's customer (and not 
 
 """
 
+
 ###########
 # helpers #
 ###########
+
+
+SOURCE_ID_PARTS = ["authority", "namespace", "name", "version"]
+
+
+SOURCE_ID_REGEX = re.compile(
+    r"([A-Za-z0-9_\-]+)/([A-Za-z0-9_\-]+)/([A-Za-z0-9_\-]+)/([A-Za-z0-9_\-]+)"
+)
 
 
 class Access(IntFlag):
@@ -94,8 +107,44 @@ class DataScopeManager(models.Manager):
 
 
 class DataScopeQuerySet(models.QuerySet):
+
     def active(self):
         return self.filter(is_active=True)
+
+    def matches_source_id(self, source_id):
+        """
+        Returns all the DataScopes whose source_id_pattern matches the given source_id
+        This filter is no longer used by the DataSourceView, but it may prove useful in the future.
+        """
+
+        # first ensure source_id is valid...
+        match = SOURCE_ID_REGEX.match(source_id)
+        if not match:
+            raise ValueError(f"Not a valid source id: {source_id}")
+        source_id_parts = {
+            f"_source_id_{part}": ExpressionWrapper(Value(match.group(i)), output_field=models.CharField())
+            for i, part in enumerate(SOURCE_ID_PARTS, start=1)
+        }
+
+        # and store it in the qs...
+        qs = self.annotate(**source_id_parts)
+
+        # then convert the current pattern fnmatch syntax to regex syntax...
+        source_id_pattern_regex_parts = OrderedDict()
+        for part in SOURCE_ID_PARTS:
+            source_id_pattern_regex_parts[f"___source_id_pattern_{part}"] = Concat(Value("^"), F(part), Value("$"))
+            source_id_pattern_regex_parts[f"__source_id_pattern_{part}"] = Replace(F(f"___source_id_pattern_{part}"), Value("*"), Value(".*"))
+            source_id_pattern_regex_parts[f"_source_id_pattern_{part}"] = Replace(F(f"__source_id_pattern_{part}"), Value("?"), Value("."))
+
+        # and store it in the qs...
+        qs = qs.annotate(**source_id_pattern_regex_parts)
+
+        # then construct and run the actual filter...
+        filter_expressions = {
+            f"_source_id_{part}__regex": F(f"_source_id_pattern_{part}")
+            for part in SOURCE_ID_PARTS
+        }
+        return qs.filter(**filter_expressions)
 
 
 class LicenceQuerySet(models.QuerySet):
@@ -219,6 +268,16 @@ class DataScope(models.Model):
     @property
     def source_id_pattern(self):
         return f"{self.authority}/{self.namespace}/{self.name}/{self.version}"
+
+    @staticmethod
+    def matches_source_id(source_id_pattern, source_id):
+        """
+        Checks if a given source_id_pattern matches a given source_id.
+        """
+        for source_id_part, source_id_pattern_part in zip(source_id.split("/"), source_id_pattern.split("/")):
+            if not fnmatch.fnmatch(source_id_part, source_id_pattern_part):
+                return False
+        return True
 
     def natural_key(self):
         return (self.source_id_pattern,)
