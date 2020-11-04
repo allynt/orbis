@@ -5,7 +5,7 @@ export default {
   title: 'Data Layers/DataLayersDialog/LayerSelect',
   argTypes: {
     onSourceChange: { action: 'onSourceChange' },
-    onAcceptClick: { action: 'onAcceptClick' },
+    onSubmit: { action: 'onSubmit' },
   },
 };
 

@@ -84,12 +84,12 @@ const Accordion = ({ source, level, onSourceChange, selectedSources }) => {
 /**
  * @param {{
  *   orbSources: OrbSources
- *   selectedSources: Source['source_id'][]
+ *   selectedSources?: Source['source_id'][]
  *   hasMadeChanges?: boolean
  *   onSourceChange: (params: {
  *     source_id: Source['source_id']
  *     selected: boolean}) => void
- *   onAcceptClick: () => void
+ *   onSubmit: () => void
  * }} props
  */
 export const LayerSelect = ({
@@ -97,7 +97,7 @@ export const LayerSelect = ({
   selectedSources,
   hasMadeChanges = false,
   onSourceChange,
-  onAcceptClick,
+  onSubmit,
 }) => {
   return (
     <div className={styles.layerSelect}>
@@ -119,7 +119,7 @@ export const LayerSelect = ({
       <Button
         className={styles.button}
         disabled={!hasMadeChanges}
-        onClick={onAcceptClick}
+        onClick={onSubmit}
       >
         Confirm
       </Button>

@@ -8,47 +8,60 @@ import { LayerSelect } from './layer-select/layer-select.component';
 
 import styles from './data-layers-dialog.module.css';
 
+/** @typedef {{
+ *     name: string
+ *     description: string
+ *     sources: import('./layer-select/layer-select.component').OrbSources}[]
+ * } Orbs */
+
+/**
+ * @param {{
+ *   orbs: Orbs
+ *   isVisible: boolean
+ *   selectedSources?: Source['source_id'][]
+ *   close: () => void
+ *   onSubmit: (sources: Source['source_id'][]) => void
+ * }} props
+ * @param {*} ref
+ */
 const DataLayersDialog = (
-  { domains, isVisible, close, selectedLayers, onAddLayers, onRemoveLayer },
+  { orbs, isVisible, selectedSources, close, onSubmit },
   ref,
 ) => {
   const overlayRef = useRef(null);
-  const [selectedDomain, setSelectedDomain] = useState(null);
+  /** @type {[string, React.Dispatch<string>]} */
+  const [selectedOrbName, setSelectedOrbName] = useState();
 
   return isVisible && ref.current
     ? ReactDOM.createPortal(
         <div
+          ref={overlayRef}
           className={styles.modal}
           onClick={event => {
             if (overlayRef.current === event.target) {
               close();
             }
           }}
-          ref={overlayRef}
+          data-testid="overlay"
         >
           <div
             className={styles.dialog}
             tabIndex={-1}
             role="dialog"
-            aria-label="Data Layer dialog"
+            aria-label="Data Layers dialog"
           >
-            <CloseButton
-              className={styles.closeButton}
-              onClick={close}
-              ariaLabel="Close"
-            />
+            <CloseButton className={styles.closeButton} onClick={close} />
             <div className={styles.content}>
               <OrbSelect
-                domains={domains}
-                onDomainClick={setSelectedDomain}
-                selectedDomain={selectedDomain}
+                orbs={orbs}
+                onOrbClick={setSelectedOrbName}
+                selectedOrbName={selectedOrbName}
               />
               <LayerSelect
-                domain={selectedDomain}
-                initialSelectedLayers={selectedLayers}
-                onAddLayers={onAddLayers}
-                onRemoveLayer={onRemoveLayer}
-                close={close}
+                orbSources={
+                  orbs.find(orb => orb.name === selectedOrbName)?.sources
+                }
+                selectedSources={selectedSources}
               />
             </div>
           </div>

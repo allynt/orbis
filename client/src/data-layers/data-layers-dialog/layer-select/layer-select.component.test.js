@@ -53,12 +53,12 @@ const renderComponent = ({
   hasMadeChanges = false,
 } = {}) => {
   const onSourceChange = jest.fn();
-  const onAcceptClick = jest.fn();
+  const onSubmit = jest.fn();
   const utils = render(
     <LayerSelect
       orbSources={orbSources}
       onSourceChange={onSourceChange}
-      onAcceptClick={onAcceptClick}
+      onSubmit={onSubmit}
       hasMadeChanges={hasMadeChanges}
     />,
   );
@@ -187,15 +187,17 @@ describe('<LayerSelect />', () => {
     expect(checkbox).not.toBeVisible();
   });
 
-  it('calls onSourceChange when a source is clicked', () => {
+  it('calls onSourceChange when a source is clicked', async () => {
     const { getByRole, onSourceChange } = renderComponent();
     userEvent.click(
       getByRole('button', { name: new RegExp(ORB_SOURCES[0].category) }),
     );
     userEvent.click(
-      getByRole('checkbox', { name: ORB_SOURCES[0].sources[0].metadata.label }),
+      getByRole('checkbox', {
+        name: ORB_SOURCES[0].sources[0].metadata.label,
+      }),
     );
-    expect(onSourceChange).toHaveBeenCalled();
+    await waitFor(() => expect(onSourceChange).toHaveBeenCalled());
   });
 
   it('enables the submit button when changes have been made', () => {
