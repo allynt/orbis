@@ -12,11 +12,6 @@ import { fetchAppConfig } from './app.slice';
 import { fetchUser } from './accounts/accounts.slice';
 import { userSelector } from './accounts/accounts.selectors';
 
-import {
-  fetchSources,
-  selectPollingPeriod,
-} from './data-layers/data-layers.slice';
-
 import Accounts from './accounts';
 
 import LandingView from './landing/landing.component';
@@ -36,7 +31,6 @@ const App = () => {
 
   const user = useSelector(userSelector);
   const userKey = useSelector(state => state.accounts.userKey);
-  const pollingPeriod = useSelector(selectPollingPeriod);
   const notYetImplementedDescription = useSelector(
     state => state.app.notYetImplementedDescription,
   );
@@ -44,8 +38,6 @@ const App = () => {
   const [isVisible, toggle] = useModal(
     notYetImplementedDescription !== null ? true : false,
   );
-
-  const userExists = user ? true : false;
 
   useEffect(() => {
     if (notYetImplementedDescription !== null) {
@@ -76,22 +68,6 @@ const App = () => {
       ReactGA.pageview('/', null, 'ORBIS App');
     }
   }, [dispatch, trackingId]);
-
-  useEffect(() => {
-    // Poll API to get new Data token (expires every X seconds/mins etc)
-    // this also fetches the list of data sources the user has access to.
-    // console.log('Initial Request for sources');
-    if (userExists) {
-      dispatch(fetchSources());
-
-      const interval = setInterval(() => {
-        dispatch(fetchSources());
-      }, pollingPeriod);
-      return () => {
-        clearInterval(interval);
-      };
-    }
-  }, [userExists, pollingPeriod, dispatch]);
 
   return (
     <div className={styles.app} ref={ref}>

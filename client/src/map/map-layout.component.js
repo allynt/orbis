@@ -1,17 +1,23 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import Measure from 'react-measure';
 import { useDispatch, useSelector } from 'react-redux';
 
 import SideMenu from '../side-menu/side-menu.component';
-import { getToolbarItems } from '../toolbar/toolbar-config';
 import Toolbar from '../toolbar/toolbar.component';
-import Map from './map.component';
+import { getToolbarItems } from '../toolbar/toolbar-config';
 
-import styles from './map-layout.module.css';
 import { userSelector } from 'accounts/accounts.selectors';
-import { isCompareModeSelector } from './map.slice';
+import {
+  fetchSources,
+  selectPollingPeriod,
+} from 'data-layers/data-layers.slice';
+
 import { selectedPinnedScenesSelector } from 'satellites/satellites.slice';
+
+import Map from './map.component';
+import styles from './map-layout.module.css';
+import { isCompareModeSelector } from './map.slice';
 
 const times = (n, fn) => {
   const result = [];
@@ -24,11 +30,13 @@ const times = (n, fn) => {
 const MapLayout = () => {
   const dispatch = useDispatch();
   const user = useSelector(userSelector);
+  const pollingPeriod = useSelector(selectPollingPeriod);
   const isCompareMode = useSelector(isCompareModeSelector);
-  const mapCount = isCompareMode ? 2 : 1;
-
-  const toolbarItems = getToolbarItems(dispatch, user);
   const selectedPinnedScenes = useSelector(selectedPinnedScenesSelector);
+  const toolbarItems = getToolbarItems(dispatch, user);
+
+  const mapCount = isCompareMode ? 2 : 1;
+  const userExists = user ? true : false;
 
   const [compareRatio, setCompareRatio] = useState(0.5);
   const [bounds, setBounds] = useState({
@@ -69,6 +77,20 @@ const MapLayout = () => {
       document.addEventListener('mouseup', compareMouseEnd);
     }
   };
+
+  useEffect(() => {
+    // Poll API to get new Data token (expires every X seconds/mins etc)
+    // this also fetches the list of data sources the user has access to.
+    if (userExists) {
+      dispatch(fetchSources());
+      const interval = setInterval(() => {
+        dispatch(fetchSources());
+      }, pollingPeriod);
+      return () => {
+        clearInterval(interval);
+      };
+    }
+  }, [userExists, pollingPeriod, dispatch]);
 
   return (
     <Measure bounds onResize={contentRect => setBounds(contentRect.bounds)}>

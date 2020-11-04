@@ -22,13 +22,16 @@ describe('<MapLayout />', () => {
   beforeEach(() => fetch.mockResponse(JSON.stringify({})));
 
   it("does not show the toolbar if there's no user", () => {
-    const { queryByTitle } = setup();
+    const { queryByTitle } = setup({ pollingPeriod: 30000 });
 
     expect(queryByTitle('Orbis Logo')).not.toBeInTheDocument();
   });
 
   it('shows the toolbar if a user is present', () => {
-    const { getByTitle } = setup({ accounts: { user: {} } });
+    const { getByTitle } = setup({
+      accounts: { user: {} },
+      pollingPeriod: 30000,
+    });
 
     expect(getByTitle('Orbis Logo')).toBeInTheDocument();
   });
