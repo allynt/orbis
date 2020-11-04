@@ -15,28 +15,29 @@ declare type LayerName =
 
 type Category = {
   name: string;
-  child: Category;
+  child?: Category;
 };
 
 declare type SourceMetadata = {
   label: string;
-  description: string;
+  description?: string;
   domain?: string;
-  application: {
+  application?: {
     orbis: {
+      orbs?: { name: string; description?: string }[];
       categories: Category;
-      layer: {
+      layer?: {
         name: LayerName;
         props?: {
           config?: string;
           [key: string]: any;
         };
       };
-      map_component: {
+      map_component?: {
         name: string;
         props?: any;
       };
-      sidebar_component: {
+      sidebar_component?: {
         name: string;
         props?: any;
       };
@@ -51,7 +52,6 @@ declare type Source = {
   version: string;
   source_id: string;
   domain?: string;
-  orbs?: { name: string; description?: string }[];
   metadata: SourceMetadata;
 };
 

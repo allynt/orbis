@@ -1,4 +1,5 @@
 import { createSlice, createSelector } from '@reduxjs/toolkit';
+import deepmerge from 'deepmerge';
 import { getJsonAuthHeaders, getData } from 'utils/http';
 
 const initialState = {
@@ -128,6 +129,66 @@ export const selectDomainList = createSelector(dataSourcesSelector, sources =>
       ),
     ),
   ),
+);
+
+/**
+ * @param {Category} category
+ * @param {string} currentPath
+ * @returns {string}
+ */
+const createPath = (category, currentPath) => {
+  if (category.child)
+    return createPath(
+      category.child,
+      currentPath ? `${currentPath}.${category.name}` : category.name,
+    );
+  return `${currentPath}.${category.name}`;
+};
+
+/**
+ * @param {Source} source
+ * @returns {Source['metadata']['application']['orbis']}
+ */
+const orbisMetadataSelector = source => source?.metadata?.application?.orbis;
+
+/**
+ *
+ * @param {Source} source
+ * @param {string[]} categories
+ * @returns {import('./data-layers-dialog/layer-select/layer-select.component').OrbSources}
+ */
+const createHierarchy = (source, categories, currentHierarchy = null) => {
+  if (categories.length > 1) {
+    const [last, ...remainingCategories] = categories;
+    return createHierarchy(source, remainingCategories, [
+      { category: last, sources: currentHierarchy || [source] },
+    ]);
+  }
+  return [{ category: categories[0], sources: currentHierarchy || [source] }];
+};
+
+/**
+ * @type {import('@reduxjs/toolkit').Selector<any, import('./data-layers-dialog/data-layers-dialog.component').Orbs>}
+ */
+export const categorisedSourcesSelector = createSelector(
+  dataSourcesSelector,
+  sources =>
+    sources.reduce((orbs, source) => {
+      const applicationMetadata = orbisMetadataSelector(source);
+      const categorisationPath = createPath(
+        applicationMetadata.categories,
+        applicationMetadata.orbs[0].name,
+      );
+      const [name, ...categories] = categorisationPath.split('.');
+      const sources = createHierarchy(source, categories.reverse());
+      const orb = {
+        name,
+        // description: applicationMetadata.orbs[0].description,
+        sources,
+      };
+
+      return [...orbs, orb];
+    }, []),
 );
 
 export default dataSlice.reducer;

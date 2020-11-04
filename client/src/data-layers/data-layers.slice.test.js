@@ -13,6 +13,7 @@ import reducer, {
   selectDataToken,
   activeLayersSelector,
   setLayers,
+  categorisedSourcesSelector,
 } from './data-layers.slice';
 
 const mockStore = configureMockStore([thunk]);
@@ -550,6 +551,418 @@ describe('Data Slice', () => {
         };
         const result = selectDomainList(state);
         expect(result).toEqual([]);
+      });
+    });
+
+    describe.only('categorisedSourcesSelector', () => {
+      it('returns all sources organised by orb and category', () => {
+        /**
+         * @type {{data: {sources: Partial<Source>[]}}}
+         */
+        const state = {
+          data: {
+            sources: [
+              {
+                source_id: 'orb/1/source/1',
+                metadata: {
+                  application: {
+                    orbis: {
+                      categories: { name: 'Orb 1 Category 1' },
+                      orbs: [{ name: 'Orb 1' }],
+                    },
+                  },
+                },
+              },
+              {
+                source_id: 'orb/1/source/2',
+                metadata: {
+                  application: {
+                    orbis: {
+                      categories: { name: 'Orb 1 Category 2' },
+                      orbs: [{ name: 'Orb 1' }],
+                    },
+                  },
+                },
+              },
+              {
+                source_id: 'orb/1/source/3',
+                metadata: {
+                  application: {
+                    orbis: {
+                      categories: { name: 'Orb 1 Category 1' },
+                      orbs: [{ name: 'Orb 1' }],
+                    },
+                  },
+                },
+              },
+              {
+                source_id: 'orb/1/source/4',
+                metadata: {
+                  application: {
+                    orbis: {
+                      categories: { name: 'Orb 1 Category 2' },
+                      orbs: [{ name: 'Orb 1' }],
+                    },
+                  },
+                },
+              },
+            ],
+          },
+        };
+        /** @type {import('./data-layers-dialog/data-layers-dialog.component').Orbs} */
+        const expected = [
+          {
+            name: 'Orb 1',
+            sources: [
+              {
+                category: 'Orb 1 Category 1',
+                sources: [
+                  {
+                    source_id: 'orb/1/source/1',
+                    metadata: {
+                      application: {
+                        orbis: {
+                          categories: { name: 'Orb 1 Category 1' },
+                          orbs: [{ name: 'Orb 1' }],
+                        },
+                      },
+                    },
+                  },
+                  {
+                    source_id: 'orb/1/source/3',
+                    metadata: {
+                      application: {
+                        orbis: {
+                          categories: { name: 'Orb 1 Category 1' },
+                          orbs: [{ name: 'Orb 1' }],
+                        },
+                      },
+                    },
+                  },
+                ],
+              },
+              {
+                category: 'Orb 1 Category 2',
+                sources: [
+                  {
+                    source_id: 'orb/1/source/2',
+                    metadata: {
+                      application: {
+                        orbis: {
+                          categories: { name: 'Orb 1 Category 2' },
+                          orbs: [{ name: 'Orb 1' }],
+                        },
+                      },
+                    },
+                  },
+                  {
+                    source_id: 'orb/1/source/4',
+                    metadata: {
+                      application: {
+                        orbis: {
+                          categories: { name: 'Orb 1 Category 2' },
+                          orbs: [{ name: 'Orb 1' }],
+                        },
+                      },
+                    },
+                  },
+                ],
+              },
+            ],
+          },
+        ];
+
+        const result = categorisedSourcesSelector(state);
+        console.log(JSON.stringify(result, null, 2));
+        expect(result).toEqual(expected);
+      });
+
+      it('puts sources without a category into the Other category', () => {
+        /**
+         * @type {{data: {sources: Partial<Source>[]}}}
+         */
+        const state = {
+          data: {
+            sources: [
+              {
+                source_id: 'orb/1/source/1',
+                metadata: {
+                  application: { orbis: { orbs: [{ name: 'Orb 1' }] } },
+                },
+              },
+              {
+                source_id: 'orb/1/source/2',
+                metadata: {
+                  application: {
+                    orbis: {
+                      categories: { name: 'Orb 1 Category 2' },
+                      orbs: [{ name: 'Orb 1' }],
+                    },
+                  },
+                },
+              },
+              {
+                source_id: 'orb/1/source/3',
+                metadata: {
+                  application: {
+                    orbis: {
+                      categories: { name: 'Orb 1 Category 1' },
+                      orbs: [{ name: 'Orb 1' }],
+                    },
+                  },
+                },
+              },
+              {
+                source_id: 'orb/1/source/4',
+                metadata: {
+                  application: {
+                    orbis: {
+                      categories: { name: 'Orb 1 Category 2' },
+                      orbs: [{ name: 'Orb 1' }],
+                    },
+                  },
+                },
+              },
+            ],
+          },
+        };
+        /** @type {import('./data-layers-dialog/data-layers-dialog.component').Orbs} */
+        const expected = [
+          {
+            name: 'Orb 1',
+            sources: [
+              {
+                category: 'Other',
+                sources: [
+                  {
+                    source_id: 'orb/1/source/1',
+                    metadata: {
+                      application: {
+                        orbis: { categories: { name: 'Orb 1 Category 1' } },
+                      },
+                    },
+                    orbs: [{ name: 'Orb 1' }],
+                  },
+                ],
+              },
+              {
+                category: 'Orb 1 Category 1',
+                sources: [
+                  {
+                    source_id: 'orb/1/source/3',
+                    metadata: {
+                      application: {
+                        orbis: { categories: { name: 'Orb 1 Category 1' } },
+                      },
+                    },
+                    orbs: [{ name: 'Orb 1' }],
+                  },
+                ],
+              },
+              {
+                category: 'Orb 1 Category 2',
+                sources: [
+                  {
+                    source_id: 'orb/1/source/2',
+                    metadata: {
+                      application: {
+                        orbis: { categories: { name: 'Orb 1 Category 2' } },
+                      },
+                    },
+                    orbs: [{ name: 'Orb 1' }],
+                  },
+                  {
+                    source_id: 'orb/1/source/4',
+                    metadata: {
+                      application: {
+                        orbis: { categories: { name: 'Orb 1 Category 2' } },
+                      },
+                    },
+                    orbs: [{ name: 'Orb 1' }],
+                  },
+                ],
+              },
+            ],
+          },
+        ];
+        const result = categorisedSourcesSelector(state);
+        expect(result).toEqual(expected);
+      });
+
+      it('puts sources without an orb into the "No Orb" orb', () => {
+        /**
+         * @type {{data: {sources: Partial<Source>[]}}}
+         */
+        const state = {
+          data: {
+            sources: [
+              {
+                source_id: 'orb/1/source/1',
+                metadata: {
+                  application: {
+                    orbis: {},
+                  },
+                },
+              },
+              {
+                source_id: 'orb/1/source/2',
+                metadata: {
+                  application: {
+                    orbis: {
+                      categories: { name: 'Orb 1 Category 2' },
+                      orbs: [{ name: 'Orb 1' }],
+                    },
+                  },
+                },
+              },
+              {
+                source_id: 'orb/1/source/3',
+                metadata: {
+                  application: {
+                    orbis: {
+                      categories: { name: 'Orb 1 Category 1' },
+                      orbs: [{ name: 'Orb 1' }],
+                    },
+                  },
+                },
+              },
+              {
+                source_id: 'orb/1/source/4',
+                metadata: {
+                  application: {
+                    orbis: {
+                      categories: { name: 'Orb 1 Category 2' },
+                      orbs: [{ name: 'Orb 1' }],
+                    },
+                  },
+                },
+              },
+            ],
+          },
+        };
+        /** @type {import('./data-layers-dialog/data-layers-dialog.component').Orbs} */
+        const expected = [
+          {
+            name: 'No Orb',
+            sources: [
+              {
+                category: 'Orb 1 Category 1',
+                sources: [
+                  {
+                    source_id: 'orb/1/source/1',
+                    metadata: {},
+                  },
+                ],
+              },
+            ],
+          },
+          {
+            name: 'Orb 1',
+            sources: [
+              {
+                category: 'Orb 1 Category 1',
+                sources: [
+                  {
+                    source_id: 'orb/1/source/1',
+                    metadata: {
+                      application: {
+                        orbis: { categories: { name: 'Orb 1 Category 1' } },
+                      },
+                    },
+                    orbs: [{ name: 'Orb 1' }],
+                  },
+                  {
+                    source_id: 'orb/1/source/3',
+                    metadata: {
+                      application: {
+                        orbis: { categories: { name: 'Orb 1 Category 1' } },
+                      },
+                    },
+                    orbs: [{ name: 'Orb 1' }],
+                  },
+                ],
+              },
+              {
+                category: 'Orb 1 Category 2',
+                sources: [
+                  {
+                    source_id: 'orb/1/source/2',
+                    metadata: {
+                      application: {
+                        orbis: { categories: { name: 'Orb 1 Category 2' } },
+                      },
+                    },
+                    orbs: [{ name: 'Orb 1' }],
+                  },
+                  {
+                    source_id: 'orb/1/source/4',
+                    metadata: {
+                      application: {
+                        orbis: { categories: { name: 'Orb 1 Category 2' } },
+                      },
+                    },
+                    orbs: [{ name: 'Orb 1' }],
+                  },
+                ],
+              },
+            ],
+          },
+        ];
+
+        const result = categorisedSourcesSelector(state);
+        expect(result).toEqual(expected);
+      });
+
+      it('handles nested categories', () => {
+        /**
+         * @type {{data: {sources: Partial<Source>[]}}}
+         */
+        const state = {
+          data: {
+            sources: [
+              {
+                source_id: 'source/1',
+                metadata: {
+                  application: {
+                    orbis: {
+                      categories: {
+                        name: 'Cat 1',
+                        child: {
+                          name: 'Cat 2',
+                          child: {
+                            name: 'Cat 3',
+                          },
+                        },
+                      },
+                      orbs: [{ name: 'Orb 1' }],
+                    },
+                  },
+                },
+              },
+            ],
+          },
+        };
+        /** @type {import('./data-layers-dialog/data-layers-dialog.component').Orbs} */
+        const expected = [
+          {
+            name: 'Orb 1',
+            sources: [
+              {
+                category: 'Cat 1',
+                sources: [
+                  {
+                    category: 'Cat 2',
+                    sources: [
+                      { category: 'Cat 3', sources: [state.data.sources[0]] },
+                    ],
+                  },
+                ],
+              },
+            ],
+          },
+        ];
+        const result = categorisedSourcesSelector(state);
+        expect(result).toEqual(expected);
       });
     });
   });
