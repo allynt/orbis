@@ -1,18 +1,25 @@
 import React from 'react';
+import thunk from 'redux-thunk';
 import { render } from '@testing-library/react';
-import configureStore from 'redux-mock-store';
+import configureMockStore from 'redux-mock-store';
 import MapLayout from './map-layout.component';
 import { Provider } from 'react-redux';
 import { MapProvider } from 'MapContext';
 
 jest.mock('@deck.gl/react');
 
-const mockStore = configureStore();
+const mockStore = configureMockStore([thunk]);
 
 const setup = initialState =>
   render(<MapLayout />, {
     wrapper: ({ children }) => (
-      <Provider store={mockStore(initialState)}>
+      <Provider
+        store={mockStore({
+          ...initialState,
+          pollingPeriod: 30000,
+          sources: null,
+        })}
+      >
         <MapProvider>{children}</MapProvider>
       </Provider>
     ),
@@ -21,17 +28,8 @@ const setup = initialState =>
 describe('<MapLayout />', () => {
   beforeEach(() => fetch.mockResponse(JSON.stringify({})));
 
-  it("does not show the toolbar if there's no user", () => {
-    const { queryByTitle } = setup({ pollingPeriod: 30000 });
-
-    expect(queryByTitle('Orbis Logo')).not.toBeInTheDocument();
-  });
-
   it('shows the toolbar if a user is present', () => {
-    const { getByTitle } = setup({
-      accounts: { user: {} },
-      pollingPeriod: 30000,
-    });
+    const { getByTitle } = setup({ accounts: { user: { userKey: 'test' } } });
 
     expect(getByTitle('Orbis Logo')).toBeInTheDocument();
   });

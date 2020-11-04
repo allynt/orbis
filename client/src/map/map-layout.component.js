@@ -36,7 +36,6 @@ const MapLayout = () => {
   const toolbarItems = getToolbarItems(dispatch, user);
 
   const mapCount = isCompareMode ? 2 : 1;
-  const userExists = user ? true : false;
 
   const [compareRatio, setCompareRatio] = useState(0.5);
   const [bounds, setBounds] = useState({
@@ -81,16 +80,14 @@ const MapLayout = () => {
   useEffect(() => {
     // Poll API to get new Data token (expires every X seconds/mins etc)
     // this also fetches the list of data sources the user has access to.
-    if (userExists) {
+    dispatch(fetchSources());
+    const interval = setInterval(() => {
       dispatch(fetchSources());
-      const interval = setInterval(() => {
-        dispatch(fetchSources());
-      }, pollingPeriod);
-      return () => {
-        clearInterval(interval);
-      };
-    }
-  }, [userExists, pollingPeriod, dispatch]);
+    }, pollingPeriod);
+    return () => {
+      clearInterval(interval);
+    };
+  }, [pollingPeriod, dispatch]);
 
   return (
     <Measure bounds onResize={contentRect => setBounds(contentRect.bounds)}>
