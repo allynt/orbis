@@ -2,13 +2,15 @@
   border-top-right-radius: 1rem;
   border-bottom-right-radius: 1rem;
   background-color: #fff;
-  min-height: 30rem;
+  height: 100%;
   display: grid;
   grid-template-rows: max-content 1fr max-content;
 }
 
 .list {
   padding: 1.25rem;
+  height: 100%;
+  overflow-y: auto;
 }
 
 .listItem,
@@ -59,5 +61,5 @@
 
 .button {
   padding: 1rem 2rem;
-  margin: 0 1.25rem 1rem auto !important;
+  margin: 1rem 1.25rem 1rem auto !important;
 }

@@ -2,10 +2,15 @@
   border-top-left-radius: 1rem;
   border-bottom-left-radius: 1rem;
   background-color: #f6be00;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
 .orbList {
   padding: 1.625rem 1.875rem 1.375rem;
+  overflow-y: auto;
+  height: 100%;
 }
 
 .orb::before {

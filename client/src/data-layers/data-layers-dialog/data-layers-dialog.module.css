@@ -1,4 +1,4 @@
-.modal {
+.overlay {
   position: fixed;
   top: 0;
   display: flex;
@@ -10,17 +10,12 @@
   z-index: 100;
 }
 
-.closeButton {
-  position: absolute;
-  align-self: flex-end;
-}
-
 .dialog {
+  position: relative;
   display: flex;
-  flex-direction: column;
-  background: white;
+  background: #fff;
   border-radius: 1rem;
-  height: auto;
+  height: 75%;
 }
 
 .header {
@@ -34,9 +29,10 @@
   color: #333f48;
 }
 
-.content {
-  display: flex;
-  height: inherit;
+.closeButton {
+  position: absolute;
+  top: 0;
+  right: 0;
 }
 
 .noOrbSelected {
@@ -46,10 +42,4 @@
   min-height: 30rem;
   font-size: 1rem;
   font-weight: bold;
-}
-
-.buttons {
-  display: flex;
-  justify-content: flex-end;
-  width: 100%;
 }

@@ -54,7 +54,7 @@ const DataLayersDialog = (
     ? ReactDOM.createPortal(
         <div
           ref={overlayRef}
-          className={styles.modal}
+          className={styles.overlay}
           onClick={event => {
             if (overlayRef.current === event.target) {
               close();
@@ -69,22 +69,20 @@ const DataLayersDialog = (
             aria-label="Data Layers dialog"
           >
             <CloseButton className={styles.closeButton} onClick={close} />
-            <div className={styles.content}>
-              <OrbSelect
-                orbs={orbs}
-                onOrbClick={setSelectedOrbName}
-                selectedOrbName={selectedOrbName}
-              />
-              <LayerSelect
-                orbSources={
-                  orbs?.find(orb => orb.name === selectedOrbName)?.sources
-                }
-                selectedSources={selectedSources}
-                onSourceChange={handleSourceChange}
-                onSubmit={handleSubmit}
-                hasMadeChanges={hasMadeChanges}
-              />
-            </div>
+            <OrbSelect
+              orbs={orbs}
+              onOrbClick={setSelectedOrbName}
+              selectedOrbName={selectedOrbName}
+            />
+            <LayerSelect
+              orbSources={
+                orbs?.find(orb => orb.name === selectedOrbName)?.sources
+              }
+              selectedSources={selectedSources}
+              onSourceChange={handleSourceChange}
+              onSubmit={handleSubmit}
+              hasMadeChanges={hasMadeChanges}
+            />
           </div>
         </div>,
         document.body,

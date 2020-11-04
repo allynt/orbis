@@ -84,3 +84,17 @@ LotsOfSources.args = {
     },
   ],
 };
+
+export const LotsOfBoth = Template.bind({});
+LotsOfBoth.args = {
+  orbs: new Array(50).fill(undefined).map((_, orbIndex) => ({
+    name: `Orb ${orbIndex}`,
+    sources: new Array(50).fill(undefined).map((_, layerIndex) => ({
+      source_id: `orb/${orbIndex}/source/${layerIndex}`,
+      metadata: {
+        label: `Orb ${orbIndex} Layer ${layerIndex}`,
+        description: `Orb ${orbIndex} Layer ${layerIndex} description`,
+      },
+    })),
+  })),
+};
