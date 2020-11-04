@@ -137,20 +137,22 @@ class TestDataSourceView:
         # user has a licence to 1 orb; there should be 1 object returned...
         customer.assign_licences(orb_1, customer.customer_users.all())
         response = client.get(url, {}, format="json")
-        source_content = response.json()["sources"][0]
+        content = response.json()
 
-        assert len(source_content["orbs"]) == 1
-        sorted_orb_content = sorted(source_content["orbs"], key=lambda x: x["name"])
+        source_orbis_metadata = content["sources"][0]["metadata"]["application"]["orbis"]
+        sorted_orb_content = sorted(source_orbis_metadata["orbs"], key=lambda x: x["name"])
+        assert len(source_orbis_metadata["orbs"]) == 1
         assert sorted_orb_content[0]["name"] == orb_1.name
         assert sorted_orb_content[0]["description"] == orb_1.description
 
         # user has a licence to 2 orbs; there should be 2 objects returned...
         customer.assign_licences(orb_2, customer.customer_users.all())
         response = client.get(url, {}, format="json")
-        source_content = response.json()["sources"][0]
+        content = response.json()
 
-        assert len(source_content["orbs"]) == 2
-        sorted_orb_content = sorted(source_content["orbs"], key=lambda x: x["name"])
+        source_orbis_metadata = content["sources"][0]["metadata"]["application"]["orbis"]
+        sorted_orb_content = sorted(source_orbis_metadata["orbs"], key=lambda x: x["name"])
+        assert len(source_orbis_metadata["orbs"]) == 2
         assert sorted_orb_content[0]["name"] == orb_1.name
         assert sorted_orb_content[0]["description"] == orb_1.description
         assert sorted_orb_content[1]["name"] == orb_2.name
