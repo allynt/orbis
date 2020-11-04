@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { render } from '@testing-library/react';
+import { render, waitFor } from '@testing-library/react';
 import DataLayersDialog from './data-layers-dialog.component';
 import userEvent from '@testing-library/user-event';
 
@@ -33,7 +33,7 @@ const renderComponent = ({ isVisible = true, selectedSources = [] } = {}) => {
       orbs={ORBS}
       onSubmit={onSubmit}
       close={close}
-      selectedSources={selectedSources}
+      initialSelectedSources={selectedSources}
     />,
   );
   return { ...utils, onSubmit, close };
@@ -78,7 +78,7 @@ describe('<DataLayersDialog />', () => {
     ]);
   });
 
-  it('Does not remove sources which have not been deselected', () => {
+  it('Does not remove sources which have not been deselected', async () => {
     const { getByRole, onSubmit } = renderComponent({
       selectedSources: [ORBS[0].sources[0].source_id],
     });
@@ -87,9 +87,11 @@ describe('<DataLayersDialog />', () => {
       getByRole('checkbox', { name: ORBS[1].sources[1].metadata.label }),
     );
     userEvent.click(getByRole('button', { name: /confirm/i }));
-    expect(onSubmit).toHaveBeenCalledWith([
-      ORBS[0].sources[0].source_id,
-      ORBS[1].sources[1].source_id,
-    ]);
+    await waitFor(() =>
+      expect(onSubmit).toHaveBeenCalledWith([
+        ORBS[0].sources[0].source_id,
+        ORBS[1].sources[1].source_id,
+      ]),
+    );
   });
 });

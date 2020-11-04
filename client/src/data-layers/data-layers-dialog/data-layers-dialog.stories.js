@@ -2,8 +2,85 @@ import * as React from 'react';
 
 import DataLayersDialog from './data-layers-dialog.component';
 
-export default { title: 'Data Layers/DataLayersDialog' };
+export default {
+  title: 'Data Layers/DataLayersDialog',
+  argTypes: { close: { action: 'close' }, onSubmit: { action: 'onSubmit' } },
+};
 
-export const Test = () => (
-  <DataLayersDialog ref={{ current: document.body }} isVisible />
+const Template = args => (
+  <DataLayersDialog ref={{ current: document.body }} isVisible {...args} />
 );
+
+export const Empty = Template.bind({});
+
+export const Orbs = Template.bind({});
+Orbs.args = {
+  orbs: [
+    {
+      name: 'Forestry',
+      sources: [
+        {
+          category: 'Animals',
+          sources: [
+            {
+              source_id: 'forestry/source/2',
+              metadata: { label: 'Bears', description: 'Lions and tigers' },
+            },
+            { source_id: 'forestry/source/3', metadata: { label: 'Deer' } },
+          ],
+        },
+        {
+          category: 'Trees',
+          sources: [
+            {
+              category: 'Evergreen',
+              sources: [
+                { source_id: 'forestry/source/1', metadata: { label: 'Pine' } },
+              ],
+            },
+            {
+              category: 'Deciduous',
+              sources: [
+                {
+                  source_id: 'forestry/source/4',
+                  metadata: { label: 'Birch' },
+                },
+              ],
+            },
+          ],
+        },
+      ],
+    },
+    {
+      name: 'Healthcare',
+      sources: [
+        {
+          category: 'Hospitals',
+          sources: [
+            { source_id: 'healthcare/source/2', metadata: { label: 'Bears' } },
+            { source_id: 'healthcare/source/3', metadata: { label: 'Staff' } },
+          ],
+        },
+        { source_id: 'healthcare/source/1', metadata: { label: 'PPE' } },
+      ],
+    },
+  ],
+};
+
+export const LotsOfOrbs = Template.bind({});
+LotsOfOrbs.args = {
+  orbs: new Array(50).fill(undefined).map((_, i) => ({ name: `Orb ${i}` })),
+};
+
+export const LotsOfSources = Template.bind({});
+LotsOfSources.args = {
+  orbs: [
+    {
+      name: 'Oh my',
+      sources: new Array(50).fill(undefined).map((_, i) => ({
+        source_id: `orb/source/${i}`,
+        metadata: { label: `Layer ${i}` },
+      })),
+    },
+  ],
+};

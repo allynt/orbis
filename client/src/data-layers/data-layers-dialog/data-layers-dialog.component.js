@@ -1,5 +1,6 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import ReactDOM from 'react-dom';
+import { isEqual } from 'lodash';
 
 import { CloseButton } from '@astrosat/astrosat-ui';
 
@@ -18,19 +19,36 @@ import styles from './data-layers-dialog.module.css';
  * @param {{
  *   orbs: Orbs
  *   isVisible: boolean
- *   selectedSources?: Source['source_id'][]
+ *   initialSelectedSources?: Source['source_id'][]
  *   close: () => void
  *   onSubmit: (sources: Source['source_id'][]) => void
  * }} props
  * @param {*} ref
  */
 const DataLayersDialog = (
-  { orbs, isVisible, selectedSources, close, onSubmit },
+  { orbs, isVisible, initialSelectedSources = [], close, onSubmit },
   ref,
 ) => {
   const overlayRef = useRef(null);
   /** @type {[string, React.Dispatch<string>]} */
   const [selectedOrbName, setSelectedOrbName] = useState();
+  const [selectedSources, setSelectedSources] = useState(
+    initialSelectedSources,
+  );
+  const [hasMadeChanges, setHasMadeChanges] = useState(false);
+
+  useEffect(() => {
+    setHasMadeChanges(!isEqual(initialSelectedSources, selectedSources));
+  }, [initialSelectedSources, selectedSources]);
+
+  /** @param {{source_id: Source['source_id'], selected: boolean}} params */
+  const handleSourceChange = ({ source_id, selected }) => {
+    selected
+      ? setSelectedSources(current => [...current, source_id])
+      : setSelectedSources(current => current.filter(id => id !== source_id));
+  };
+
+  const handleSubmit = () => onSubmit && onSubmit(selectedSources);
 
   return isVisible && ref.current
     ? ReactDOM.createPortal(
@@ -59,9 +77,12 @@ const DataLayersDialog = (
               />
               <LayerSelect
                 orbSources={
-                  orbs.find(orb => orb.name === selectedOrbName)?.sources
+                  orbs?.find(orb => orb.name === selectedOrbName)?.sources
                 }
                 selectedSources={selectedSources}
+                onSourceChange={handleSourceChange}
+                onSubmit={handleSubmit}
+                hasMadeChanges={hasMadeChanges}
               />
             </div>
           </div>
@@ -71,4 +92,4 @@ const DataLayersDialog = (
     : null;
 };
 
-export default React.memo(React.forwardRef(DataLayersDialog));
+export default React.forwardRef(DataLayersDialog);
