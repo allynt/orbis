@@ -14,7 +14,7 @@ import styles from './orb-select.module.css';
 export const OrbSelect = ({ orbs, selectedOrbName, onOrbClick }) => (
   <div className={styles.categories}>
     <h3 className={dialogStyles.header}>Select Your Orb</h3>
-    <ul className={styles.orbList}>
+    <ul className={dialogStyles.list}>
       {orbs?.map(orb => (
         <li
           className={clsx(styles.orb, {

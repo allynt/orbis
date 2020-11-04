@@ -103,7 +103,7 @@ export const LayerSelect = ({
     <div className={styles.layerSelect}>
       <h1 className={dialogStyles.header}>Select Your Layers</h1>
       {orbSources ? (
-        <ul className={styles.list}>
+        <ul className={dialogStyles.list}>
           {renderCategories({
             sources: orbSources,
             level: 0,

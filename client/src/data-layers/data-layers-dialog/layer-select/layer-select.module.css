@@ -1,19 +1,12 @@
 .layerSelect {
+  composes: section from '../data-layers-dialog.module.css';
+  width: 60%;
   border-top-right-radius: 1rem;
   border-bottom-right-radius: 1rem;
-  background-color: #fff;
-  height: 100%;
-  display: grid;
-  grid-template-rows: max-content 1fr max-content;
 }
 
-.list {
-  padding: 1.25rem;
-  height: 100%;
-  overflow-y: auto;
-}
-
-.listItem,
+.listItem + .listItem,
+.listItem + .accordionHeaderRoot,
 .accordionContent + .accordionHeaderRoot {
   margin-top: 0.625rem;
 }
@@ -32,6 +25,7 @@
   background-color: var(--button--secondary--background-color);
   color: var(--button--secondary--color);
   border-radius: var(--global--border-radius);
+  margin-bottom: 0.625rem;
 }
 
 .arrow {
