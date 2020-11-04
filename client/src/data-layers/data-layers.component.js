@@ -9,9 +9,8 @@ import { ReactComponent as AddNewCategoryIcon } from './add-more-categories.svg'
 import DataLayersDialog from './data-layers-dialog/data-layers-dialog.component';
 import {
   activeDataSourcesSelector,
-  addLayers,
-  dataSourcesSelector,
-  removeLayer,
+  activeLayersSelector,
+  setLayers,
 } from './data-layers.slice';
 import { LayersList } from './layers-list/layers-list.component';
 
@@ -23,19 +22,8 @@ const DataLayers = () => {
   const { sidebarComponents } = useOrbs();
 
   const dispatch = useDispatch();
-  const dataSources = useSelector(dataSourcesSelector);
   const activeDataSources = useSelector(activeDataSourcesSelector);
-
-  // Create an array of sources, grouped by their domain.
-  const domains = dataSources.reduce((acc, value) => {
-    const domain = acc.find(dom => dom.label === value.metadata.domain);
-
-    domain
-      ? (domain.layers = [...domain.layers, value])
-      : (acc = [...acc, { label: value.metadata.domain, layers: [value] }]);
-
-    return acc;
-  }, []);
+  const selectedLayers = useSelector(activeLayersSelector);
 
   return (
     <div className={styles.selectData} ref={ref}>
@@ -55,14 +43,12 @@ const DataLayers = () => {
       </div>
 
       <DataLayersDialog
-        domains={domains}
-        selectedLayers={activeDataSources}
-        onAddLayers={selectedLayers => dispatch(addLayers(selectedLayers))}
-        onRemoveLayer={layer => dispatch(removeLayer(layer))}
+        initialSelectedSources={selectedLayers}
+        onSubmit={layers => dispatch(setLayers(layers))}
         isVisible={isVisible}
         close={toggle}
         ref={ref}
-      ></DataLayersDialog>
+      />
     </div>
   );
 };

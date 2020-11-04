@@ -21,6 +21,7 @@ type Category = {
 declare type SourceMetadata = {
   label: string;
   description: string;
+  domain?: string;
   application: {
     orbis: {
       categories: Category;

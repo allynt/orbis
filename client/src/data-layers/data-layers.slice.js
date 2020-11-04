@@ -71,32 +71,51 @@ export const fetchSources = () => async (dispatch, getState) => {
 };
 
 const baseSelector = state => state?.data ?? {};
+
+/**
+ * @type {import('@reduxjs/toolkit').Selector<any, string>}
+ */
 export const selectDataToken = createSelector(
   baseSelector,
   state => state.token ?? '',
 );
 
+/**
+ * @type {import('@reduxjs/toolkit').Selector<any, Source[]>}
+ */
 export const dataSourcesSelector = createSelector(
   baseSelector,
   state => state.sources ?? [],
 );
 
+/**
+ * @type {import('@reduxjs/toolkit').Selector<any, number>}
+ */
 export const selectPollingPeriod = createSelector(
   baseSelector,
   state => state.pollingPeriod,
 );
 
+/**
+ * @type {import('@reduxjs/toolkit').Selector<any, Source['source_id'][]>}
+ */
 export const activeLayersSelector = createSelector(
   baseSelector,
   data => data.layers ?? [],
 );
 
+/**
+ * @type {import('@reduxjs/toolkit').Selector<any, Source[]>}
+ */
 export const activeDataSourcesSelector = createSelector(
   [dataSourcesSelector, activeLayersSelector],
   (sources, layers) =>
     sources ? sources.filter(source => layers.includes(source.source_id)) : [],
 );
 
+/**
+ * @type {import('@reduxjs/toolkit').Selector<any, string[]>}
+ */
 export const selectDomainList = createSelector(dataSourcesSelector, sources =>
   Array.from(
     new Set(
