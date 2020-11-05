@@ -12,12 +12,12 @@ import styles from './data-layers-dialog.module.css';
 /** @typedef {{
  *     name: string
  *     description: string
- *     sources: import('./layer-select/layer-select.component').OrbSources}[]
- * } Orbs */
+ *     sources: import('./layer-select/layer-select.component').OrbSources}
+ * } Orb */
 
 /**
  * @param {{
- *   orbs: Orbs
+ *   orbs: Orb[]
  *   isVisible: boolean
  *   initialSelectedSources?: Source['source_id'][]
  *   close: () => void

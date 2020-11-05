@@ -554,7 +554,7 @@ describe('Data Slice', () => {
       });
     });
 
-    describe.only('categorisedSourcesSelector', () => {
+    describe('categorisedSourcesSelector', () => {
       it('returns all sources organised by orb and category', () => {
         /**
          * @type {{data: {sources: Partial<Source>[]}}}
@@ -673,11 +673,11 @@ describe('Data Slice', () => {
         ];
 
         const result = categorisedSourcesSelector(state);
-        console.log(JSON.stringify(result, null, 2));
+        // console.log(JSON.stringify(result, null, 2));
         expect(result).toEqual(expected);
       });
 
-      it('puts sources without a category into the Other category', () => {
+      it.skip('puts sources without a category into the Other category', () => {
         /**
          * @type {{data: {sources: Partial<Source>[]}}}
          */
@@ -789,7 +789,7 @@ describe('Data Slice', () => {
         expect(result).toEqual(expected);
       });
 
-      it('puts sources without an orb into the "No Orb" orb', () => {
+      it.skip('puts sources without an orb into the "No Orb" orb', () => {
         /**
          * @type {{data: {sources: Partial<Source>[]}}}
          */
