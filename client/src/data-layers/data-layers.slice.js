@@ -162,33 +162,36 @@ export const categorisedSourcesSelector = createSelector(
        */
       (orbs, source) => {
         const applicationMetadata = orbisMetadataSelector(source);
-        const categorisationPath = createPath(
-          applicationMetadata.categories,
-          applicationMetadata.orbs[0].name,
-        );
-        const [name, ...categories] = categorisationPath.split('.');
-        const existingOrb = orbs.find(orb => orb.name === name);
-        if (existingOrb) {
-          const injectedSources = injectSource(
-            existingOrb.sources,
-            source,
-            categories,
+        let newOrbs = orbs;
+        applicationMetadata.orbs.forEach(orb => {
+          const categorisationPath = createPath(
+            applicationMetadata.categories,
+            orb.name,
           );
-          const existingOrbIndex = orbs.indexOf(existingOrb);
-          let newOrbs = orbs;
-          newOrbs[existingOrbIndex] = {
-            ...existingOrb,
-            sources: injectedSources,
+          const [name, ...categories] = categorisationPath.split('.');
+          const existingOrb = newOrbs.find(orb => orb.name === name);
+          if (existingOrb) {
+            const injectedSources = injectSource(
+              existingOrb.sources,
+              source,
+              categories,
+            );
+            const existingOrbIndex = newOrbs.indexOf(existingOrb);
+            newOrbs[existingOrbIndex] = {
+              ...existingOrb,
+              sources: injectedSources,
+            };
+            return newOrbs;
+          }
+          const sources = [createHierarchy(source, categories.reverse())];
+          const newOrb = {
+            ...orb,
+            sources,
           };
-          return newOrbs;
-        }
-        const sources = createHierarchy(source, categories.reverse());
-        const orb = {
-          name,
-          // description: applicationMetadata.orbs[0].description,
-          sources,
-        };
-        return [...orbs, orb];
+          newOrbs = [...newOrbs, newOrb];
+        });
+
+        return newOrbs;
       },
       [],
     ),
