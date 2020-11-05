@@ -59,9 +59,6 @@ class CustomerSerializer(AstrosatUsersCustomerSerializer):
 
         return representation
 
-    def create(self, validated_data):
-        raise NotImplementedError("Customers can only be created manually in orbis")
-
     def update(self, instance, validated_data):
         # LicenceSerializer uses "astrosat.serializers.WritableNestedListSerializer", this means
         # it has a "crud" method which works out which models to create/update/delete automatically
@@ -97,9 +94,6 @@ class CustomerUserSerializer(AstrosatUsersCustomerUserSerializer):
     def to_internal_value(self, data):
         # when inputting data, include hidden licences...
         if self.instance:
-            # if the CustomerUser doesn't exist yet, then the post-save signal
-            # will add the "core" licence; otherwise this bit of code will ensure
-            # the "core" licence doesn't get removed (BUT SEE "create" BELOW)
             hidden_licences = self.instance.licences.hidden().annotate(
                 str_id=Cast(
                     "id", output_field=CharField()
@@ -108,21 +102,6 @@ class CustomerUserSerializer(AstrosatUsersCustomerUserSerializer):
             data["licences"] += hidden_licences.values_list("str_id", flat=True)
         internal_value = super().to_internal_value(data)
         return internal_value
-
-    def create(self, validated_data):
-        # TODO: I AM NOT HAPPY W/ THIS CODE !
-        # the post-save signal already creates a "core" Licence for the
-        # newly created CustomerUser, but the built-in DRF serializer.create fn
-        # ovewrites m2m fields w/ the value in validated_data. Annoyingly, I can't
-        # add the core licence to validated_data prior to calling create below
-        # because that licence does not yet exist !
-        customer_user = super().create(validated_data)
-        customer_user.licences.add(
-            customer_user.customer.licences.get(
-                orb__is_core=True, customer_user__isnull=True
-            )
-        )
-        return customer_user
 
     def to_representation(self, instance):
         # when outputting data, exclude hidden licences...

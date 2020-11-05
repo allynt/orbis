@@ -91,7 +91,7 @@ class TestOrders:
         assert order_item.subscription_period == timedelta(days=365)
         assert order_item.expiration == order_item.created + order_item.subscription_period
         assert order_item.is_expired == False
-        assert Licence.objects.count() == N_LICENCES + 1  # adding one for user's "core" licence
+        assert Licence.objects.count() == N_LICENCES
 
     def test_recalculate_cost(self, user, create_order, mock_storage):
 
@@ -168,6 +168,7 @@ class TestOrderViews:
 
     def test_create_order(self, user, api_client, mock_storage):
 
+        N_LICENCES = 10
         customer = CustomerFactory(logo=None)
         customer.add_user(user, type="MANAGER", status="ACTIVE")
 
@@ -179,7 +180,7 @@ class TestOrderViews:
             "items": [
                 {
                     "orb": orb.name,
-                    "n_licences": 10,
+                    "n_licences": N_LICENCES,
                 }
             ]
         }
@@ -191,7 +192,7 @@ class TestOrderViews:
         content = response.json()
 
         assert Order.objects.count() == 1
-        assert Licence.objects.count() == 11  # adding one for user's "core" licence
+        assert Licence.objects.count() == N_LICENCES
 
         assert Order.objects.filter(uuid=content["id"]).exists()
 

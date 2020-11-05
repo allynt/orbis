@@ -45,7 +45,7 @@ export const RadioPicker = ({ selectedLayer, dispatch }) => {
         <div key={property.name} className={styles.property}>
           <Radio
             className={styles.radio}
-            label={property.name}
+            label={property?.application?.orbis?.label || property.name}
             name="isolationPlus"
             value={property.name}
             checked={property.name === selectedProperty?.name}

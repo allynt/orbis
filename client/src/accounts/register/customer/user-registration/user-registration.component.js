@@ -12,7 +12,8 @@ import { useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
 import { object as yupObject } from 'yup';
 
-import { LOGIN, TERMS } from 'accounts/accounts.constants';
+import { TERMS } from 'legal-documents/legal-documents-constants';
+import { LOGIN } from 'accounts/accounts.constants';
 import { ErrorWell } from 'accounts/error-well.component';
 import { Field } from 'components/field/field.component';
 import { LoadingSpinner } from 'components/loading-spinner/loading-spinner.component';
