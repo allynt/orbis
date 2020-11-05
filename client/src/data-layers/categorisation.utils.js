@@ -14,7 +14,7 @@ export const createHierarchy = (
       { category: last, sources: currentHierarchy || [source] },
     ]);
   }
-  return [{ category: categories[0], sources: currentHierarchy || [source] }];
+  return { category: categories[0], sources: currentHierarchy || [source] };
 };
 
 /**
@@ -25,41 +25,31 @@ export const createHierarchy = (
  */
 export const injectSource = (categorisedSources, source, categoryPath) => {
   const existingCategory = categorisedSources.find(
-    category => category.category === categoryPath[0],
+    cat => cat.category === categoryPath[0],
   );
-  if (existingCategory) {
+  if (!!existingCategory) {
+    let newSources;
     if (categoryPath.length === 1) {
-      return [
-        { ...existingCategory, sources: [...existingCategory.sources, source] },
-      ];
-    }
-    const [, ...remainingPath] = categoryPath;
-    let existingSources = existingCategory.sources;
-    const index = existingSources.findIndex(
-      src => src.category === remainingPath[0],
-    );
-    if (index >= 0) {
-      existingSources[index] = injectSource(
+      newSources = existingCategory.sources;
+      newSources.push(source);
+    } else {
+      const [, ...remainingPath] = categoryPath;
+      newSources = injectSource(
         existingCategory.sources,
         source,
         remainingPath,
-      )[0];
-      return [
-        {
-          ...existingCategory,
-          sources: existingSources,
-        },
-      ];
+      );
     }
-    return [
-      {
-        ...existingCategory,
-        sources: [
-          ...existingSources,
-          ...createHierarchy(source, remainingPath.reverse()),
-        ],
-      },
-    ];
+    const existingCategoryIndex = categorisedSources.indexOf(existingCategory);
+    let newCategorisedSources = categorisedSources;
+    categorisedSources[existingCategoryIndex] = {
+      ...existingCategory,
+      sources: newSources,
+    };
+    return newCategorisedSources;
   }
-  return [...categorisedSources, ...createHierarchy(source, categoryPath)];
+  return [
+    ...categorisedSources,
+    createHierarchy(source, categoryPath.reverse()),
+  ];
 };

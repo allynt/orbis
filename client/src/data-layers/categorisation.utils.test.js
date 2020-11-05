@@ -2,7 +2,7 @@ const { injectSource } = require('./categorisation.utils');
 
 describe('createHierarchy', () => {});
 
-describe.only('injectSource', () => {
+describe('injectSource', () => {
   describe("puts a source into a category's sources", () => {
     it('single level', () => {
       const categorisedSources = [
@@ -63,15 +63,13 @@ describe.only('injectSource', () => {
     const source = { source_id: 'cat/2/source/1' };
 
     it('single level', () => {
-      const categoriesPath = ['Cat 1', 'Cat 2'];
+      const categoriesPath = ['Cat 2'];
       const expected = [
         {
           category: 'Cat 1',
-          sources: [
-            { source_id: 'cat/1/source/1' },
-            { category: 'Cat 2', sources: [{ source_id: 'cat/2/source/1' }] },
-          ],
+          sources: [{ source_id: 'cat/1/source/1' }],
         },
+        { category: 'Cat 2', sources: [{ source_id: 'cat/2/source/1' }] },
       ];
       const result = injectSource(categorisedSources, source, categoriesPath);
       expect(result).toEqual(expected);
