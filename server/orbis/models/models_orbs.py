@@ -7,7 +7,7 @@ import uuid
 from django.core.exceptions import ValidationError
 from django.core.validators import MaxValueValidator
 from django.db import models
-from django.db.models import Q, F, Value, ExpressionWrapper
+from django.db.models import F, Value, ExpressionWrapper
 from django.db.models.functions import Concat, Replace
 from django.utils.html import mark_safe
 
@@ -149,8 +149,7 @@ class DataScopeQuerySet(models.QuerySet):
 
 class LicenceQuerySet(models.QuerySet):
     def hidden(self):
-        # CustomerSerializer & CustomerUserSerializer exclude "core" licences
-        # the hidden/visible methods make it easier for me to do that
+        # returns the licences that should be excluded from serialization
         return self.filter(orb__is_hidden=True)
 
     def visible(self):
@@ -194,11 +193,6 @@ class Orb(models.Model):
         app_label = "orbis"
         verbose_name = "Orb"
         verbose_name_plural = "Orbs"
-        constraints = [
-            models.UniqueConstraint(
-                fields=["is_core"], condition=Q(is_core=True), name="only_one_core_orb"
-            )
-        ]
 
     objects = OrbManager.from_queryset(OrbQuerySet)()
 
@@ -210,10 +204,6 @@ class Orb(models.Model):
         default=False,
         help_text="Licences to a hidden Orb are not shown to CustomerUsers.",
     )
-    is_core = models.BooleanField(
-        default=False,
-        help_text="Every CustomerUser is granted a Licence to the core Orb.",
-    )
 
     licence_cost = models.FloatField(
         default=0, help_text="The cost of a single licence to this Orb."
@@ -221,18 +211,6 @@ class Orb(models.Model):
 
     def __str__(self):
         return self.name
-
-    @classmethod
-    def get_core_orb(cls):
-        core_orb, orb_created = cls.objects.get_or_create(
-            is_core=True, defaults={"name": "core", "is_hidden": True}
-        )
-        if orb_created:
-            core_data_scope, _ = DataScope.objects.get_or_create(
-                authority="astrosat", namespace="core", name="*", version="*"
-            )
-            core_orb.data_scopes.add(core_data_scope)
-        return core_orb
 
     def natural_key(self):
         return (self.name,)
@@ -313,7 +291,7 @@ class Licence(AccessModel):
         null=True,
         on_delete=models.SET_NULL,  # this line prevents the need for a "Customer.unassign" method
         related_name="licences",
-    )  # note that despite `on_delete=models.SET_NULL`, the pre-delete signal will delete the "core" Licence
+    )
 
     order_item = models.ForeignKey(
         "orbis.OrderItem",

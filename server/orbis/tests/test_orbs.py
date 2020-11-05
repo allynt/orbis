@@ -56,11 +56,9 @@ class TestLicencesViews:
         response = client.put(url, customer_data, format="json")
         customer_data = response.json()
 
-        # (note that the core licence will exist, but it is hidden by default)
-        # (so it won't appear in the serialization - hence the "+1" below)
         assert len(customer_data["licences"]) == N_LICENCES
-        assert Licence.objects.count() == N_LICENCES + 1
-        for licence in Licence.objects.visible():  # (using "visible()" excludes the core licence)
+        assert Licence.objects.count() == N_LICENCES
+        for licence in Licence.objects.all():
             assert licence.orb == orb
             assert licence.customer == customer
             assert licence.access == Access.READ
@@ -102,7 +100,6 @@ class TestLicencesViews:
 
         customer = CustomerFactory(logo=None)
         customer.add_user(user, type="MANAGER", status="ACTIVE")
-        customer.licences.get(orb__is_core=True).delete() # get rid of the core licence b/c it is complicating the test
         orb = OrbFactory()
         licences = [
             LicenceFactory(customer=customer, orb=orb, access=Access.READ)
@@ -158,9 +155,9 @@ class TestLicencesViews:
         customer_user_data = response.json()
 
         assert str(licence.id) in customer_user_data["licences"]
-        assert licence in customer_user.licences.visible()
-        assert customer.licences.count() == 2
-        assert customer.licences.filter(customer_user__isnull=False).count() == 2
+        assert licence in customer_user.licences.all()
+        assert customer.licences.count() == 1
+        assert customer.licences.filter(customer_user__isnull=False).count() == 1
 
     def test_remove_licences_to_customer_user(self, user, api_client, mock_storage):
 
@@ -297,28 +294,6 @@ class TestLicencesViews:
             f"Object with id={ invalid_licence_id } does not exist."
         ]
 
-    def test_core_licence_added_in_view(self, admin, api_client, mock_storage):
-
-        customer = CustomerFactory(logo=None)
-
-        client = api_client(admin)
-        url = reverse("customer-users-list", args=[customer.id])
-
-        data = {"user": {"email": "test1@test.com", "name": "test1",}, "licences": []}
-        response = client.post(url, data, format="json")
-        assert status.is_success(response.status_code)
-
-        assert Licence.objects.count() == 1
-        assert Licence.objects.filter(orb=Orb.get_core_orb(), customer=customer, customer_user__user__name="test1").exists()
-
-        # (let's just make sure nothing weird happens when there's more than 1 user)
-        data = {"user": {"email": "test2@test.com", "name": "test2",}, "licences": []}
-        response = client.post(url, data, format="json")
-        assert status.is_success(response.status_code)
-
-        assert Licence.objects.count() == 2
-        assert Licence.objects.filter(orb=Orb.get_core_orb(), customer=customer, customer_user__user__name="test1").exists()
-        assert Licence.objects.filter(orb=Orb.get_core_orb(), customer=customer, customer_user__user__name="test2").exists()
 
 @pytest.mark.django_db
 class TestLicences:
@@ -346,23 +321,6 @@ class TestLicences:
         assert [licences.index(licence) for licence in Licence.objects.can_create()] == [2, 3, 6, 7]
         assert [licences.index(licence) for licence in Licence.objects.can_delete()] == [4, 5, 6, 7]
 
-    def test_core_licence_added_and_removed(self, user, mock_storage):
-
-        customer = CustomerFactory(logo=None)
-        assert customer.licences.count() == 0
-
-        (customer_user, _) = customer.add_user(user)
-
-        assert customer.licences.count() == 1
-        assert customer_user.licences.count() == 1
-
-        licence = customer.licences.first()
-        assert licence.customer_user == customer_user
-        assert licence.orb == Orb.get_core_orb()
-
-        customer_user.delete()
-        customer.refresh_from_db()
-        assert customer.licences.count() == 0
 
 @pytest.mark.django_db
 class TestDataScope:
