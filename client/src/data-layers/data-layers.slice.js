@@ -1,6 +1,10 @@
 import { createSlice, createSelector } from '@reduxjs/toolkit';
 import { getJsonAuthHeaders, getData } from 'utils/http';
-import { createHierarchy, injectSource } from './categorisation.utils';
+import {
+  createCategorisedSources,
+  createHierarchy,
+  injectSource,
+} from './categorisation.utils';
 
 const initialState = {
   layers: [],
@@ -132,69 +136,11 @@ export const selectDomainList = createSelector(dataSourcesSelector, sources =>
 );
 
 /**
- * @param {Category} category
- * @param {string} currentPath
- * @returns {string}
- */
-const createPath = (category, currentPath) => {
-  if (category.child)
-    return createPath(
-      category.child,
-      currentPath ? `${currentPath}.${category.name}` : category.name,
-    );
-  return `${currentPath}.${category.name}`;
-};
-
-/**
- * @param {Source} source
- */
-const orbisMetadataSelector = source => source?.metadata?.application?.orbis;
-
-/**
  * @type {import('@reduxjs/toolkit').Selector<any, import('./data-layers-dialog/data-layers-dialog.component').Orb[]>}
  */
 export const categorisedSourcesSelector = createSelector(
   dataSourcesSelector,
-  sources =>
-    sources.reduce(
-      /**
-       * @param {import('./data-layers-dialog/data-layers-dialog.component').Orb[]} orbs
-       */
-      (orbs, source) => {
-        const applicationMetadata = orbisMetadataSelector(source);
-        let newOrbs = orbs;
-        applicationMetadata.orbs.forEach(orb => {
-          const categorisationPath = createPath(
-            applicationMetadata.categories,
-            orb.name,
-          );
-          const [name, ...categories] = categorisationPath.split('.');
-          const existingOrb = newOrbs.find(orb => orb.name === name);
-          if (existingOrb) {
-            const injectedSources = injectSource(
-              existingOrb.sources,
-              source,
-              categories,
-            );
-            const existingOrbIndex = newOrbs.indexOf(existingOrb);
-            newOrbs[existingOrbIndex] = {
-              ...existingOrb,
-              sources: injectedSources,
-            };
-            return newOrbs;
-          }
-          const sources = [createHierarchy(source, categories.reverse())];
-          const newOrb = {
-            ...orb,
-            sources,
-          };
-          newOrbs = [...newOrbs, newOrb];
-        });
-
-        return newOrbs;
-      },
-      [],
-    ),
+  createCategorisedSources,
 );
 
 export default dataSlice.reducer;
