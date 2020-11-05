@@ -162,11 +162,13 @@ class DataSourceView(APIView):
             raise APIException(f"Unable to retrieve data sources at '{url}': {str(e)}")
         sources = response.json()["results"]
 
+        # find all orbs that this user has a licence to...
         orbs = Orb.objects.filter(
             is_active=True, licences__customer_user__in=user.customer_users.values_list("pk", flat=True)
         ).prefetch_related(
             Prefetch("data_scopes", queryset=DataScope.objects.filter(is_active=True), to_attr="filtered_data_scopes")
         )
+        # create a mapping from data_scopes to those orbs...
         data_scopes_to_orb_mapping = defaultdict(list)
         for orb in orbs:
             for data_scope in orb.filtered_data_scopes:
@@ -175,11 +177,17 @@ class DataSourceView(APIView):
                 ]
 
         for source in sources:
+            # find all of the above orbs w/ a data_scope that matches the source_id...
             matching_orbs = dict(filter(
                 lambda item: DataScope.matches_source_id(item[0], source["source_id"]),
                 data_scopes_to_orb_mapping.items()
             )).values()
-            source["orbs"] = reduce(lambda orb1, orb2: orb1 + orb2, matching_orbs)
+
+            # add them all as a single list (inserting missing metadata elements as needed)...
+            source_orbis_metadata = source
+            for key in ["metadata", "application", "orbis"]:
+                source_orbis_metadata = source_orbis_metadata.setdefault(key, {})
+            source_orbis_metadata["orbs"] = reduce(lambda orb1, orb2: orb1 + orb2, matching_orbs)
 
         return Response({
             "token": data_token,

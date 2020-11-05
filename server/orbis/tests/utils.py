@@ -15,7 +15,7 @@ class MockDataSourceResponse:
             dict([
                 # just the bare minimum of serialized content
                 ("source_id", source_id),
-                ("metadata", {})
+                ("metadata", { "application": {}})
             ])
             for source_id in source_ids
         ]
