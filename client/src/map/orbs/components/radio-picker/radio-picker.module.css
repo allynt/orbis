@@ -51,3 +51,47 @@
 .description {
   font-weight: 600;
 }
+
+.filters {
+  display: flex;
+  flex-direction: column;
+}
+
+.format {
+  display: flex;
+  flex-direction: column;
+}
+
+.label {
+  color: #dcdcdc;
+  margin-bottom: 0.3rem;
+  font-size: 0.75rem;
+}
+
+.buttons {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.button {
+  color: #000;
+  background-color: var(--color-yellow);
+  padding: 0.625rem;
+  width: 50%;
+  font-size: 0.875rem;
+}
+
+.buttons .active {
+  color: #fff;
+  background-color: #000;
+}
+
+.button:first-child {
+  border-radius: 0.5rem 0 0 0.5rem;
+}
+
+.button:last-child {
+  border-radius: 0 0.5rem 0.5rem 0;
+}
