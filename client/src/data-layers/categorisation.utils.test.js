@@ -272,55 +272,23 @@ describe('createOrbsWithCategorisedSources', () => {
           {
             category: 'Orb 1 Category 1',
             sources: [
-              {
+              expect.objectContaining({
                 source_id: 'orb/1/source/1',
-                metadata: {
-                  application: {
-                    orbis: {
-                      categories: { name: 'Orb 1 Category 1' },
-                      orbs: [{ name: 'Orb 1' }],
-                    },
-                  },
-                },
-              },
-              {
+              }),
+              expect.objectContaining({
                 source_id: 'orb/1/source/3',
-                metadata: {
-                  application: {
-                    orbis: {
-                      categories: { name: 'Orb 1 Category 1' },
-                      orbs: [{ name: 'Orb 1' }],
-                    },
-                  },
-                },
-              },
+              }),
             ],
           },
           {
             category: 'Orb 1 Category 2',
             sources: [
-              {
+              expect.objectContaining({
                 source_id: 'orb/1/source/2',
-                metadata: {
-                  application: {
-                    orbis: {
-                      categories: { name: 'Orb 1 Category 2' },
-                      orbs: [{ name: 'Orb 1' }],
-                    },
-                  },
-                },
-              },
-              {
+              }),
+              expect.objectContaining({
                 source_id: 'orb/1/source/4',
-                metadata: {
-                  application: {
-                    orbis: {
-                      categories: { name: 'Orb 1 Category 2' },
-                      orbs: [{ name: 'Orb 1' }],
-                    },
-                  },
-                },
-              },
+              }),
             ],
           },
         ],
@@ -412,19 +380,9 @@ describe('createOrbsWithCategorisedSources', () => {
           {
             category: 'Category 1',
             sources: [
-              {
+              expect.objectContaining({
                 source_id: 'Source 1',
-                metadata: {
-                  application: {
-                    orbis: {
-                      orbs: [{ name: 'Orb 1' }],
-                      categories: {
-                        name: 'Category 1',
-                      },
-                    },
-                  },
-                },
-              },
+              }),
             ],
           },
         ],
@@ -438,20 +396,9 @@ describe('createOrbsWithCategorisedSources', () => {
               {
                 category: 'Category 3',
                 sources: [
-                  {
+                  expect.objectContaining({
                     source_id: 'Source 2',
-                    metadata: {
-                      application: {
-                        orbis: {
-                          orbs: [{ name: 'Orb 2' }],
-                          categories: {
-                            name: 'Category 2',
-                            child: { name: 'Category 3' },
-                          },
-                        },
-                      },
-                    },
-                  },
+                  }),
                 ],
               },
             ],
@@ -493,22 +440,9 @@ describe('createOrbsWithCategorisedSources', () => {
               {
                 category: 'Category 2',
                 sources: [
-                  {
+                  expect.objectContaining({
                     source_id: 'Source 1',
-                    metadata: {
-                      application: {
-                        orbis: {
-                          orbs: [{ name: 'Orb 1' }, { name: 'Orb 2' }],
-                          categories: {
-                            name: 'Category 1',
-                            child: {
-                              name: 'Category 2',
-                            },
-                          },
-                        },
-                      },
-                    },
-                  },
+                  }),
                 ],
               },
             ],
@@ -524,22 +458,9 @@ describe('createOrbsWithCategorisedSources', () => {
               {
                 category: 'Category 2',
                 sources: [
-                  {
+                  expect.objectContaining({
                     source_id: 'Source 1',
-                    metadata: {
-                      application: {
-                        orbis: {
-                          orbs: [{ name: 'Orb 1' }, { name: 'Orb 2' }],
-                          categories: {
-                            name: 'Category 1',
-                            child: {
-                              name: 'Category 2',
-                            },
-                          },
-                        },
-                      },
-                    },
-                  },
+                  }),
                 ],
               },
             ],
@@ -560,127 +481,65 @@ describe('createOrbsWithCategorisedSources', () => {
           application: { orbis: { orbs: [{ name: 'Orb 1' }] } },
         },
       },
-      {
-        source_id: 'orb/1/source/2',
-        metadata: {
-          application: {
-            orbis: {
-              categories: { name: 'Orb 1 Category 2' },
-              orbs: [{ name: 'Orb 1' }],
-            },
-          },
-        },
-      },
     ];
     /** @type {OrbWithCategorisedSources[]} */
     const expected = [
       {
         name: 'Orb 1',
-        sources: [
+        sources: expect.arrayContaining([
           {
             category: 'Other',
             sources: [
-              {
+              expect.objectContaining({
                 source_id: 'orb/1/source/1',
-                metadata: {
-                  application: {
-                    orbis: {
-                      orbs: [{ name: 'Orb 1' }],
-                    },
-                  },
-                },
-              },
+              }),
             ],
           },
-          {
-            category: 'Orb 1 Category 2',
-            sources: [
-              {
-                source_id: 'orb/1/source/2',
-                metadata: {
-                  application: {
-                    orbis: {
-                      categories: { name: 'Orb 1 Category 2' },
-                      orbs: [{ name: 'Orb 1' }],
-                    },
-                  },
-                },
-              },
-            ],
-          },
-        ],
+        ]),
       },
     ];
     const result = createOrbsWithCategorisedSources(sources);
     expect(result).toEqual(expected);
   });
 
-  it('puts sources without an orb into the "No Orb" orb', () => {
-    const sources = [
-      {
-        source_id: 'orb/1/source/1',
-        metadata: {
-          application: {
-            orbis: { categories: { name: 'Billy no mates' } },
-          },
-        },
-      },
-      {
-        source_id: 'orb/1/source/2',
-        metadata: {
-          application: {
-            orbis: {
-              categories: { name: 'Orb 1 Category 2' },
-              orbs: [{ name: 'Orb 1' }],
+  describe('puts sources without an orb into the "No Orb" orb', () => {
+    it.each`
+      tag             | value
+      ${'emptyArray'} | ${[]}
+      ${'undefined'}  | ${undefined}
+    `('$tag', value => {
+      const sources = [
+        {
+          source_id: 'orb/1/source/1',
+          metadata: {
+            application: {
+              orbis: {
+                orbs: value,
+                categories: { name: 'Billy no mates' },
+              },
             },
           },
         },
-      },
-    ];
-    /** @type {OrbWithCategorisedSources[]} */
-    const expected = [
-      {
-        name: 'No Orb',
-        sources: [
-          {
-            category: 'Billy no mates',
-            sources: [
-              {
-                source_id: 'orb/1/source/1',
-                metadata: {
-                  application: {
-                    orbis: { categories: { name: 'Billy no mates' } },
-                  },
-                },
-              },
-            ],
-          },
-        ],
-      },
-      {
-        name: 'Orb 1',
-        sources: [
-          {
-            category: 'Orb 1 Category 2',
-            sources: [
-              {
-                source_id: 'orb/1/source/2',
-                metadata: {
-                  application: {
-                    orbis: {
-                      categories: { name: 'Orb 1 Category 2' },
-                      orbs: [{ name: 'Orb 1' }],
-                    },
-                  },
-                },
-              },
-            ],
-          },
-        ],
-      },
-    ];
+      ];
+      /** @type {OrbWithCategorisedSources[]} */
+      const expected = expect.arrayContaining([
+        {
+          name: 'No Orb',
+          sources: [
+            {
+              category: 'Billy no mates',
+              sources: [
+                expect.objectContaining({
+                  source_id: 'orb/1/source/1',
+                }),
+              ],
+            },
+          ],
+        },
+      ]);
 
-    const result = createOrbsWithCategorisedSources(sources);
-    expect(result).toEqual(expected);
+      const result = createOrbsWithCategorisedSources(sources);
+      expect(result).toEqual(expected);
+    });
   });
 });

@@ -143,8 +143,10 @@ export const createOrbsWithCategorisedSources = sources =>
      * @param {OrbWithCategorisedSources[]} categorisedOrbs
      */
     (categorisedOrbs, source) => {
-      const { orbs = [{ name: NO_ORB_NAME }] } = orbisMetadataSelector(source);
+      const metadata = orbisMetadataSelector(source);
       let newOrbs = [...categorisedOrbs];
+      let orbs = metadata.orbs;
+      if (!orbs?.length) orbs = [{ name: NO_ORB_NAME }];
       orbs.forEach(orb => {
         const existingOrb = newOrbs.find(o => orb.name === o.name);
         if (existingOrb) {
