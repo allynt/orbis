@@ -914,7 +914,7 @@ describe('Data Slice', () => {
         expect(result).toEqual(expected);
       });
 
-      it.skip('puts sources without a category into the Other category', () => {
+      it('puts sources without a category into the Other category', () => {
         /**
          * @type {{data: {sources: Partial<Source>[]}}}
          */
@@ -1026,7 +1026,7 @@ describe('Data Slice', () => {
         expect(result).toEqual(expected);
       });
 
-      it.skip('puts sources without an orb into the "No Orb" orb', () => {
+      it('puts sources without an orb into the "No Orb" orb', () => {
         /**
          * @type {{data: {sources: Partial<Source>[]}}}
          */
@@ -1037,34 +1037,12 @@ describe('Data Slice', () => {
                 source_id: 'orb/1/source/1',
                 metadata: {
                   application: {
-                    orbis: {},
+                    orbis: { categories: { name: 'Billy no mates' } },
                   },
                 },
               },
               {
                 source_id: 'orb/1/source/2',
-                metadata: {
-                  application: {
-                    orbis: {
-                      categories: { name: 'Orb 1 Category 2' },
-                      orbs: [{ name: 'Orb 1' }],
-                    },
-                  },
-                },
-              },
-              {
-                source_id: 'orb/1/source/3',
-                metadata: {
-                  application: {
-                    orbis: {
-                      categories: { name: 'Orb 1 Category 1' },
-                      orbs: [{ name: 'Orb 1' }],
-                    },
-                  },
-                },
-              },
-              {
-                source_id: 'orb/1/source/4',
                 metadata: {
                   application: {
                     orbis: {
@@ -1083,11 +1061,15 @@ describe('Data Slice', () => {
             name: 'No Orb',
             sources: [
               {
-                category: 'Orb 1 Category 1',
+                category: 'Billy no mates',
                 sources: [
                   {
                     source_id: 'orb/1/source/1',
-                    metadata: {},
+                    metadata: {
+                      application: {
+                        orbis: { categories: { name: 'Billy no mates' } },
+                      },
+                    },
                   },
                 ],
               },
@@ -1097,48 +1079,18 @@ describe('Data Slice', () => {
             name: 'Orb 1',
             sources: [
               {
-                category: 'Orb 1 Category 1',
-                sources: [
-                  {
-                    source_id: 'orb/1/source/1',
-                    metadata: {
-                      application: {
-                        orbis: { categories: { name: 'Orb 1 Category 1' } },
-                      },
-                    },
-                    orbs: [{ name: 'Orb 1' }],
-                  },
-                  {
-                    source_id: 'orb/1/source/3',
-                    metadata: {
-                      application: {
-                        orbis: { categories: { name: 'Orb 1 Category 1' } },
-                      },
-                    },
-                    orbs: [{ name: 'Orb 1' }],
-                  },
-                ],
-              },
-              {
                 category: 'Orb 1 Category 2',
                 sources: [
                   {
                     source_id: 'orb/1/source/2',
                     metadata: {
                       application: {
-                        orbis: { categories: { name: 'Orb 1 Category 2' } },
+                        orbis: {
+                          categories: { name: 'Orb 1 Category 2' },
+                          orbs: [{ name: 'Orb 1' }],
+                        },
                       },
                     },
-                    orbs: [{ name: 'Orb 1' }],
-                  },
-                  {
-                    source_id: 'orb/1/source/4',
-                    metadata: {
-                      application: {
-                        orbis: { categories: { name: 'Orb 1 Category 2' } },
-                      },
-                    },
-                    orbs: [{ name: 'Orb 1' }],
                   },
                 ],
               },

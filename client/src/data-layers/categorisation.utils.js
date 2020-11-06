@@ -106,12 +106,12 @@ const createNewCategorisedOrb = (orb, source) => {
 export const createCategorisedSources = sources =>
   sources.reduce(
     /**
-     * @param {import('./data-layers-dialog/data-layers-dialog.component').Orb[]} orbs
+     * @param {import('./data-layers-dialog/data-layers-dialog.component').Orb[]} categorisedOrbs
      */
-    (orbs, source) => {
-      const applicationMetadata = orbisMetadataSelector(source);
-      let newOrbs = [...orbs];
-      applicationMetadata.orbs.forEach(orb => {
+    (categorisedOrbs, source) => {
+      const { orbs = [{ name: 'No Orb' }] } = orbisMetadataSelector(source);
+      let newOrbs = [...categorisedOrbs];
+      orbs.forEach(orb => {
         const existingOrb = newOrbs.find(o => orb.name === o.name);
         if (existingOrb) {
           const updatedOrb = addSourceToExistingOrb(existingOrb, source);
