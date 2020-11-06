@@ -1,4 +1,38 @@
-const { injectSource } = require('./categorisation.utils');
+import { injectSource, createCategorisationPath } from './categorisation.utils';
+
+describe('createCategorisationPath', () => {
+  it('Returns one category with no delimiters if one category is given', () => {
+    const result = createCategorisationPath({ name: 'Category' });
+    expect(result).toBe('Category');
+  });
+
+  it('Returns two categories separated by a delimiter', () => {
+    const result = createCategorisationPath({
+      name: 'Cat1',
+      child: { name: 'Cat2' },
+    });
+    expect(result).toBe('Cat1.Cat2');
+  });
+
+  it('Includes the current path if supplied', () => {
+    const result = createCategorisationPath({ name: 'Cat1' }, 'Existing');
+    expect(result).toBe('Existing.Cat1');
+  });
+
+  it('Works to lots of levels', () => {
+    const cats = ['Cat1', 'Cat2', 'Cat3', 'Cat4', 'Cat5'];
+    const categories = [...cats].reverse().reduce(
+      (child, name) => ({
+        name,
+        child,
+      }),
+      undefined,
+    );
+    // @ts-ignore
+    const result = createCategorisationPath(categories);
+    expect(result).toBe(cats.join('.'));
+  });
+});
 
 describe('createHierarchy', () => {});
 

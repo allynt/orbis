@@ -3,19 +3,25 @@ const NO_ORB_NAME = 'No Orb';
 const PATH_DELIMITER = '.';
 
 /**
- * @param {SourceCategories} category
- * @param {string} currentPath
- * @returns {string}
+ * Recursively creates a . delimited categorisation path from a source's categories
+ * @param {SourceCategories} categories The category hierarchy to create the path from
+ * @param {string} [currentPath] The current path to build onto
+ * @returns {string} The complete categorisation path
  */
-const createPath = (category = { name: OTHER_CATEGORY_NAME }, currentPath) => {
-  if (category.child)
-    return createPath(
-      category.child,
+export const createCategorisationPath = (
+  categories = { name: OTHER_CATEGORY_NAME },
+  currentPath,
+) => {
+  if (categories.child)
+    return createCategorisationPath(
+      categories.child,
       currentPath
-        ? `${currentPath}${PATH_DELIMITER}${category.name}`
-        : category.name,
+        ? `${currentPath}${PATH_DELIMITER}${categories.name}`
+        : categories.name,
     );
-  return `${currentPath}${PATH_DELIMITER}${category.name}`;
+  return `${currentPath ? `${currentPath}${PATH_DELIMITER}` : ''}${
+    categories.name
+  }`;
 };
 
 /**
@@ -89,7 +95,10 @@ export const injectSource = (categorisedSources, source, categoryPath) => {
  */
 const addSourceToExistingOrb = (existingOrb, source) => {
   const { categories } = orbisMetadataSelector(source);
-  const categorisationPath = createPath(categories, existingOrb.name);
+  const categorisationPath = createCategorisationPath(
+    categories,
+    existingOrb.name,
+  );
   const [, ...categoriesPath] = categorisationPath.split(PATH_DELIMITER);
   const injectedSources = injectSource(
     existingOrb.sources,
@@ -109,7 +118,7 @@ const addSourceToExistingOrb = (existingOrb, source) => {
  */
 const createNewCategorisedOrb = (orb, source) => {
   const { categories } = orbisMetadataSelector(source);
-  const categorisationPath = createPath(categories, orb.name);
+  const categorisationPath = createCategorisationPath(categories, orb.name);
   const [, ...categoriesPath] = categorisationPath.split(PATH_DELIMITER);
   const sources = [createHierarchy(source, categoriesPath.reverse())];
   return {

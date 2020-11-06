@@ -3,7 +3,6 @@ import { render, waitFor } from '@testing-library/react';
 import DataLayersDialog from './data-layers-dialog.component';
 import userEvent from '@testing-library/user-event';
 
-/** @type {import('./data-layers-dialog.component').Orbs} */
 const ORBS = [
   {
     name: 'Orb 1',
@@ -23,13 +22,11 @@ const ORBS = [
   },
 ];
 
-const renderComponent = ({ isVisible = true, selectedSources = [] } = {}) => {
+const renderComponent = ({ selectedSources = [] } = {}) => {
   const onSubmit = jest.fn();
   const close = jest.fn();
   const utils = render(
     <DataLayersDialog
-      ref={{ current: document.body }}
-      isVisible={isVisible}
       orbs={ORBS}
       onSubmit={onSubmit}
       close={close}
