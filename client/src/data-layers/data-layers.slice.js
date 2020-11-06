@@ -13,17 +13,6 @@ const dataSlice = createSlice({
   name: 'data',
   initialState,
   reducers: {
-    addLayers: (state, { payload }) => {
-      const newLayers =
-        typeof payload[0] === 'object'
-          ? payload.map(layer => layer.source_id)
-          : payload;
-      state.layers = Array.from(new Set([...state.layers, ...newLayers]));
-    },
-    removeLayer: (state, { payload }) => {
-      const layerId = typeof payload === 'object' ? payload.source_id : payload;
-      state.layers = state.layers.filter(layer => layer !== layerId);
-    },
     setLayers: (state, { payload }) => {
       if (!payload) return;
       const layers =
@@ -49,9 +38,7 @@ const dataSlice = createSlice({
 });
 
 export const {
-  addLayers,
   setLayers,
-  removeLayer,
   fetchSourcesFailure,
   fetchSourcesSuccess,
 } = dataSlice.actions;
