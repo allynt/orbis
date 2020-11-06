@@ -1,7 +1,7 @@
 import React from 'react';
 import { LayersList } from './layers-list.component';
 
-export default { title: 'DataLayers/LayersList' };
+export default { title: 'Data Layers/LayersList' };
 
 export const NoLayers = () => <LayersList />;
 

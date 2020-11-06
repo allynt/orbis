@@ -3,48 +3,45 @@ import { render, fireEvent } from '@testing-library/react';
 import { OrbSelect } from './orb-select.component';
 
 const setup = selectedDomain => {
-  const handleDomainClick = jest.fn();
-  const domains = [
-    { label: 'domain-one' },
-    { label: 'domain-two' },
-    { label: 'domain-three' },
+  const handleOrbClick = jest.fn();
+  const orbs = [
+    { name: 'domain-one' },
+    { name: 'domain-two' },
+    { name: 'domain-three' },
   ];
   const utils = render(
     <OrbSelect
-      domains={domains}
-      selectedDomain={selectedDomain}
-      onDomainClick={handleDomainClick}
+      orbs={orbs}
+      selectedOrbName={selectedDomain}
+      onOrbClick={handleOrbClick}
     />,
   );
   return {
     ...utils,
-    domains,
-    handleDomainClick,
+    domains: orbs,
+    handleOrbClick,
   };
 };
 
 describe('OrbSelect', () => {
-  it('should render the provided domain list', () => {
-    const { getByTestId, domains } = setup();
+  it('should render the provided orb list', () => {
+    const { getByRole, domains } = setup();
     for (let domain of domains) {
-      expect(getByTestId(`orb-select-${domain.label}`)).toBeInTheDocument();
-      expect(getByTestId(`orb-select-${domain.label}`)).toHaveTextContent(
-        domain.label,
-      );
+      expect(getByRole('button', { name: domain.name })).toBeInTheDocument();
     }
   });
 
   it('should only give on item the selected class when an orb is selected', () => {
-    const { getAllByRole } = setup({ label: 'domain-one' });
-    const selectedListItems = getAllByRole('listitem').filter(item =>
+    const { getAllByRole } = setup('domain-one');
+    const selectedListItems = getAllByRole('button').filter(item =>
       item.classList.contains('selected'),
     );
     expect(selectedListItems).toHaveLength(1);
   });
 
   it('should call the handler function with the clicked domain on click', () => {
-    const { handleDomainClick, getByTestId, domains } = setup();
-    fireEvent.click(getByTestId('orb-select-domain-one'));
-    expect(handleDomainClick).toHaveBeenCalledWith(domains[0]);
+    const { handleOrbClick, getByRole, domains } = setup();
+    fireEvent.click(getByRole('button', { name: 'domain-one' }));
+    expect(handleOrbClick).toHaveBeenCalledWith(domains[0].name);
   });
 });
