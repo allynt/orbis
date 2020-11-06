@@ -40,11 +40,6 @@ const renderComponent = ({ isVisible = true, selectedSources = [] } = {}) => {
 };
 
 describe('<DataLayersDialog />', () => {
-  it('renders the dialog if visible', () => {
-    const { queryByTestId } = renderComponent({ isVisible: false });
-    expect(queryByTestId('overlay')).not.toBeInTheDocument();
-  });
-
   it('calls close when the background is clicked', () => {
     const { getByTestId, close } = renderComponent();
     userEvent.click(getByTestId('overlay'));

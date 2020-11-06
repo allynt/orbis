@@ -7,9 +7,7 @@ export default {
   argTypes: { close: { action: 'close' }, onSubmit: { action: 'onSubmit' } },
 };
 
-const Template = args => (
-  <DataLayersDialog ref={{ current: document.body }} isVisible {...args} />
-);
+const Template = args => <DataLayersDialog {...args} />;
 
 export const Empty = Template.bind({});
 

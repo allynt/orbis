@@ -1,5 +1,6 @@
 import React, { useRef } from 'react';
 
+import ReactDom from 'react-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { Button, useModal } from '@astrosat/astrosat-ui';
@@ -27,6 +28,11 @@ const DataLayers = () => {
   const selectedLayers = useSelector(activeLayersSelector);
   const categorisedOrbsAndSources = useSelector(categorisedSourcesSelector);
 
+  const handleDialogSubmit = sources => {
+    dispatch(setLayers(sources));
+    toggle();
+  };
+
   return (
     <div className={styles.selectData} ref={ref}>
       <LayersList
@@ -44,14 +50,17 @@ const DataLayers = () => {
         </Button>
       </div>
 
-      <DataLayersDialog
-        orbs={categorisedOrbsAndSources}
-        initialSelectedSources={selectedLayers}
-        onSubmit={layers => dispatch(setLayers(layers))}
-        isVisible={isVisible}
-        close={toggle}
-        ref={ref}
-      />
+      {isVisible && ref.current
+        ? ReactDom.createPortal(
+            <DataLayersDialog
+              orbs={categorisedOrbsAndSources}
+              initialSelectedSources={selectedLayers}
+              onSubmit={handleDialogSubmit}
+              close={toggle}
+            />,
+            document.body,
+          )
+        : null}
     </div>
   );
 };

@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import ReactDOM from 'react-dom';
+
 import { isEqual } from 'lodash';
 
 import { CloseButton } from '@astrosat/astrosat-ui';
@@ -12,17 +12,17 @@ import styles from './data-layers-dialog.module.css';
 /**
  * @param {{
  *   orbs: OrbWithCategorisedSources[]
- *   isVisible: boolean
  *   initialSelectedSources?: Source['source_id'][]
  *   close: () => void
  *   onSubmit: (sources: Source['source_id'][]) => void
  * }} props
- * @param {*} ref
  */
-const DataLayersDialog = (
-  { orbs, isVisible, initialSelectedSources = [], close, onSubmit },
-  ref,
-) => {
+const DataLayersDialog = ({
+  orbs,
+  initialSelectedSources = [],
+  close,
+  onSubmit,
+}) => {
   const overlayRef = useRef(null);
   /** @type {[string, React.Dispatch<string>]} */
   const [selectedOrbName, setSelectedOrbName] = useState();
@@ -44,44 +44,39 @@ const DataLayersDialog = (
 
   const handleSubmit = () => onSubmit && onSubmit(selectedSources);
 
-  return isVisible && ref.current
-    ? ReactDOM.createPortal(
-        <div
-          ref={overlayRef}
-          className={styles.overlay}
-          onClick={event => {
-            if (overlayRef.current === event.target) {
-              close();
-            }
-          }}
-          data-testid="overlay"
-        >
-          <div
-            className={styles.dialog}
-            tabIndex={-1}
-            role="dialog"
-            aria-label="Data Layers dialog"
-          >
-            <CloseButton className={styles.closeButton} onClick={close} />
-            <OrbSelect
-              orbs={orbs}
-              onOrbClick={setSelectedOrbName}
-              selectedOrbName={selectedOrbName}
-            />
-            <LayerSelect
-              orbSources={
-                orbs?.find(orb => orb.name === selectedOrbName)?.sources
-              }
-              selectedSources={selectedSources}
-              onSourceChange={handleSourceChange}
-              onSubmit={handleSubmit}
-              hasMadeChanges={hasMadeChanges}
-            />
-          </div>
-        </div>,
-        document.body,
-      )
-    : null;
+  return (
+    <div
+      ref={overlayRef}
+      className={styles.overlay}
+      onClick={event => {
+        if (overlayRef.current === event.target) {
+          close();
+        }
+      }}
+      data-testid="overlay"
+    >
+      <div
+        className={styles.dialog}
+        tabIndex={-1}
+        role="dialog"
+        aria-label="Data Layers dialog"
+      >
+        <CloseButton className={styles.closeButton} onClick={close} />
+        <OrbSelect
+          orbs={orbs}
+          onOrbClick={setSelectedOrbName}
+          selectedOrbName={selectedOrbName}
+        />
+        <LayerSelect
+          orbSources={orbs?.find(orb => orb.name === selectedOrbName)?.sources}
+          selectedSources={selectedSources}
+          onSourceChange={handleSourceChange}
+          onSubmit={handleSubmit}
+          hasMadeChanges={hasMadeChanges}
+        />
+      </div>
+    </div>
+  );
 };
 
-export default React.forwardRef(DataLayersDialog);
+export default DataLayersDialog;
