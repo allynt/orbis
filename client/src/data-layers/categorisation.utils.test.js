@@ -216,7 +216,7 @@ describe('injectSource', () => {
   });
 });
 
-describe('', () => {
+describe('createOrbsWithCategorisedSources', () => {
   it('returns all sources organised by orb and category', () => {
     const sources = [
       {

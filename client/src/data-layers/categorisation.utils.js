@@ -33,6 +33,7 @@ const orbisMetadataSelector = source =>
   source?.metadata?.application?.orbis || {};
 
 /**
+ * Creates a brand new category hierarchy with a single source
  * @param {Source} source
  * @param {string[]} categories
  * @param {CategoryHierarchy} [currentHierarchy]
@@ -53,6 +54,7 @@ export const createHierarchy = (
 };
 
 /**
+ * Performs the injection of a source into a category hierarchy
  * @param {CategorisedSources} categorisedSources
  * @param {Source} source
  * @param {string[]} categoryPath
@@ -90,6 +92,7 @@ export const injectSource = (categorisedSources, source, categoryPath) => {
 };
 
 /**
+ * Injects a source into an already existing orb's category hierarchy
  * @param {OrbWithCategorisedSources} existingOrb
  * @param {Source} source
  * @returns {OrbWithCategorisedSources}
@@ -113,6 +116,7 @@ const addSourceToExistingOrb = (existingOrb, source) => {
 };
 
 /**
+ * Creates a new orb with its sources organised by category
  * @param {Orb} orb
  * @param {Source} source
  * @returns {OrbWithCategorisedSources}
@@ -129,6 +133,7 @@ const createNewCategorisedOrb = (orb, source) => {
 };
 
 /**
+ * Creates an array of orbs with their sources organised by category
  * @param {Source[]} sources
  * @returns {OrbWithCategorisedSources[]}
  */
