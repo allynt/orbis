@@ -140,27 +140,28 @@ describe('<LayerSelect />', () => {
     ).toBeInTheDocument();
   });
 
-  it('expands sub-category headings when clicked', () => {
+  it('expands sub-category headings when clicked', async () => {
     const { getByRole } = renderComponent({
       orbSources: ORB_SOURCES_SUB_CATEGORIES,
     });
-    const categoryHeading = getByRole('button', {
-      name: new RegExp(ORB_SOURCES_SUB_CATEGORIES[0].category),
-    });
-
-    userEvent.click(categoryHeading);
-    const subCategoryHeading = getByRole('button', {
-      name: /oil$/i,
-    });
-    userEvent.click(subCategoryHeading);
+    userEvent.click(
+      getByRole('button', {
+        name: new RegExp(ORB_SOURCES_SUB_CATEGORIES[0].category),
+      }),
+    );
+    userEvent.click(
+      getByRole('button', {
+        name: /oil$/i,
+      }),
+    );
     const checkbox = getByRole('checkbox', {
       name: ORB_SOURCES_SUB_CATEGORIES[0].sources[0].sources[0].metadata.label,
     });
-    waitFor(() => expect(checkbox).toBeVisible());
+    await waitFor(() => expect(checkbox).toBeInTheDocument());
   });
 
-  it('hides sub-categories when heading is clicked again', () => {
-    const { getByRole } = renderComponent({
+  it('hides sub-categories when heading is clicked again', async () => {
+    const { getByRole, queryByRole } = renderComponent({
       orbSources: ORB_SOURCES_SUB_CATEGORIES,
     });
     const categoryHeading = getByRole('button', {
@@ -172,12 +173,21 @@ describe('<LayerSelect />', () => {
       name: /oil$/i,
     });
     userEvent.click(subCategoryHeading);
-    const checkbox = getByRole('checkbox', {
-      name: ORB_SOURCES_SUB_CATEGORIES[0].sources[0].sources[0].metadata.label,
-    });
-    waitFor(() => expect(checkbox).toBeVisible());
+    expect(
+      getByRole('checkbox', {
+        name:
+          ORB_SOURCES_SUB_CATEGORIES[0].sources[0].sources[0].metadata.label,
+      }),
+    ).toBeInTheDocument();
     userEvent.click(subCategoryHeading);
-    expect(checkbox).not.toBeVisible();
+    await waitFor(() =>
+      expect(
+        queryByRole('checkbox', {
+          name:
+            ORB_SOURCES_SUB_CATEGORIES[0].sources[0].sources[0].metadata.label,
+        }),
+      ).not.toBeVisible(),
+    );
   });
 
   it('calls onSourceChange when a source is clicked', async () => {
