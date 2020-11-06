@@ -1,10 +1,6 @@
 import { createSlice, createSelector } from '@reduxjs/toolkit';
 import { getJsonAuthHeaders, getData } from 'utils/http';
-import {
-  createOrbsWithCategorisedSources,
-  createHierarchy,
-  injectSource,
-} from './categorisation.utils';
+import { createOrbsWithCategorisedSources } from './categorisation.utils';
 
 const initialState = {
   layers: [],
@@ -136,7 +132,7 @@ export const selectDomainList = createSelector(dataSourcesSelector, sources =>
 );
 
 /**
- * @type {import('@reduxjs/toolkit').Selector<any, import('./data-layers-dialog/data-layers-dialog.component').Orb[]>}
+ * @type {import('@reduxjs/toolkit').Selector<any, OrbWithCategorisedSources[]>}
  */
 export const categorisedSourcesSelector = createSelector(
   dataSourcesSelector,

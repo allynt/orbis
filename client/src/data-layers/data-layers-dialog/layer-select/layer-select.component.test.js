@@ -7,7 +7,6 @@ import userEvent from '@testing-library/user-event';
 
 const BUTTON = /confirm/i;
 
-/**@type {import('./layer-select.component').OrbSources} */
 const ORB_SOURCES = [
   {
     category: 'Oil',
@@ -25,7 +24,6 @@ const ORB_SOURCES = [
   },
 ];
 
-/**@type {import('./layer-select.component').OrbSources} */
 const ORB_SOURCES_SUB_CATEGORIES = [
   {
     category: 'Oil and Gas',

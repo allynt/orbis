@@ -11,13 +11,13 @@ import styles from './layer-select-item.module.css';
 
 /**
  * @param {{
- *   source: Source
- *   selected?: boolean
  *   className?: string
+ *   selected?: boolean
+ *   source: Source
  *   onChange: ({source_id: string, selected: boolean}) => void
  * }} props
  */
-const LayerSelectItem = ({ source, selected, className, onChange }) => {
+const LayerSelectItem = ({ className, selected, source, onChange }) => {
   const [isInfoVisible, setIsInfoVisible] = useState(false);
   const [infoRef] = useClickaway(() => setIsInfoVisible(false));
 
@@ -31,13 +31,11 @@ const LayerSelectItem = ({ source, selected, className, onChange }) => {
         id={source.source_id}
         label={source.metadata.label}
         defaultChecked={selected}
-        onChange={
-          /** @param {React.ChangeEvent<HTMLInputElement>} e */
-          e =>
-            onChange({
-              source_id: source.source_id,
-              selected: e.target.checked,
-            })
+        onChange={e =>
+          onChange({
+            source_id: source.source_id,
+            selected: e.target.checked,
+          })
         }
       />
       {source?.metadata?.description && (

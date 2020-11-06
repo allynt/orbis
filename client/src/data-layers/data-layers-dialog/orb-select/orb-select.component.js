@@ -6,9 +6,9 @@ import styles from './orb-select.module.css';
 
 /**
  * @param {{
- *   orbs: Source['orbs']
- *   selectedOrbName: string
- *   onOrbClick: (orb: string) => void
+ *   orbs: Orb[]
+ *   selectedOrbName?: Orb['name']
+ *   onOrbClick: (orb: Orb['name']) => void
  * }} props
  */
 export const OrbSelect = ({ orbs, selectedOrbName, onOrbClick }) => (

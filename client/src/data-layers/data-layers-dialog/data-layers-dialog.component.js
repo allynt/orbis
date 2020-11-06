@@ -9,15 +9,9 @@ import { LayerSelect } from './layer-select/layer-select.component';
 
 import styles from './data-layers-dialog.module.css';
 
-/** @typedef {{
- *     name: string
- *     description: string
- *     sources: import('./layer-select/layer-select.component').OrbSources}
- * } Orb */
-
 /**
  * @param {{
- *   orbs: Orb[]
+ *   orbs: OrbWithCategorisedSources[]
  *   isVisible: boolean
  *   initialSelectedSources?: Source['source_id'][]
  *   close: () => void

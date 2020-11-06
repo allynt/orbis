@@ -74,13 +74,6 @@ const Accordion = ({ source, level, onSourceChange, selectedSources }) => {
 };
 
 /**
- * @typedef {{
- *   category: string,
- *   sources: {category: string, sources: OrbSources}[] | Source[]
- * }[] | Source[]} OrbSources
- */
-
-/**
  * @param {{
  *   orbSources: CategorisedSources
  *   selectedSources?: Source['source_id'][]
