@@ -18,7 +18,8 @@ const createPath = (category = { name: OTHER_CATEGORY_NAME }, currentPath) => {
 /**
  * @param {Source} source
  */
-const orbisMetadataSelector = source => source?.metadata?.application?.orbis;
+const orbisMetadataSelector = source =>
+  source?.metadata?.application?.orbis || {};
 
 /**
  * @param {Source} source

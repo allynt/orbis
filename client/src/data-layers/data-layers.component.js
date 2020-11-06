@@ -10,6 +10,7 @@ import DataLayersDialog from './data-layers-dialog/data-layers-dialog.component'
 import {
   activeDataSourcesSelector,
   activeLayersSelector,
+  categorisedSourcesSelector,
   setLayers,
 } from './data-layers.slice';
 import { LayersList } from './layers-list/layers-list.component';
@@ -24,6 +25,7 @@ const DataLayers = () => {
   const dispatch = useDispatch();
   const activeDataSources = useSelector(activeDataSourcesSelector);
   const selectedLayers = useSelector(activeLayersSelector);
+  const categorisedOrbsAndSources = useSelector(categorisedSourcesSelector);
 
   return (
     <div className={styles.selectData} ref={ref}>
@@ -43,6 +45,7 @@ const DataLayers = () => {
       </div>
 
       <DataLayersDialog
+        orbs={categorisedOrbsAndSources}
         initialSelectedSources={selectedLayers}
         onSubmit={layers => dispatch(setLayers(layers))}
         isVisible={isVisible}
