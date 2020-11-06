@@ -938,28 +938,6 @@ describe('Data Slice', () => {
                   },
                 },
               },
-              {
-                source_id: 'orb/1/source/3',
-                metadata: {
-                  application: {
-                    orbis: {
-                      categories: { name: 'Orb 1 Category 1' },
-                      orbs: [{ name: 'Orb 1' }],
-                    },
-                  },
-                },
-              },
-              {
-                source_id: 'orb/1/source/4',
-                metadata: {
-                  application: {
-                    orbis: {
-                      categories: { name: 'Orb 1 Category 2' },
-                      orbs: [{ name: 'Orb 1' }],
-                    },
-                  },
-                },
-              },
             ],
           },
         };
@@ -975,24 +953,11 @@ describe('Data Slice', () => {
                     source_id: 'orb/1/source/1',
                     metadata: {
                       application: {
-                        orbis: { categories: { name: 'Orb 1 Category 1' } },
+                        orbis: {
+                          orbs: [{ name: 'Orb 1' }],
+                        },
                       },
                     },
-                    orbs: [{ name: 'Orb 1' }],
-                  },
-                ],
-              },
-              {
-                category: 'Orb 1 Category 1',
-                sources: [
-                  {
-                    source_id: 'orb/1/source/3',
-                    metadata: {
-                      application: {
-                        orbis: { categories: { name: 'Orb 1 Category 1' } },
-                      },
-                    },
-                    orbs: [{ name: 'Orb 1' }],
                   },
                 ],
               },
@@ -1003,19 +968,12 @@ describe('Data Slice', () => {
                     source_id: 'orb/1/source/2',
                     metadata: {
                       application: {
-                        orbis: { categories: { name: 'Orb 1 Category 2' } },
+                        orbis: {
+                          categories: { name: 'Orb 1 Category 2' },
+                          orbs: [{ name: 'Orb 1' }],
+                        },
                       },
                     },
-                    orbs: [{ name: 'Orb 1' }],
-                  },
-                  {
-                    source_id: 'orb/1/source/4',
-                    metadata: {
-                      application: {
-                        orbis: { categories: { name: 'Orb 1 Category 2' } },
-                      },
-                    },
-                    orbs: [{ name: 'Orb 1' }],
                   },
                 ],
               },

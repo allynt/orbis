@@ -1,9 +1,12 @@
+const OTHER_CATEGORY_NAME = 'Other';
+const NO_ORB_NAME = 'No Orb';
+
 /**
  * @param {Category} category
  * @param {string} currentPath
  * @returns {string}
  */
-const createPath = (category, currentPath) => {
+const createPath = (category = { name: OTHER_CATEGORY_NAME }, currentPath) => {
   if (category.child)
     return createPath(
       category.child,
@@ -75,7 +78,7 @@ export const injectSource = (categorisedSources, source, categoryPath) => {
 
 const addSourceToExistingOrb = (existingOrb, source) => {
   const categorisationPath = createPath(
-    source.metadata.application.orbis.categories,
+    source?.metadata?.application?.orbis?.categories,
     existingOrb.name,
   );
   const [, ...categories] = categorisationPath.split('.');
@@ -88,7 +91,7 @@ const addSourceToExistingOrb = (existingOrb, source) => {
 
 const createNewCategorisedOrb = (orb, source) => {
   const categorisationPath = createPath(
-    source.metadata.application.orbis.categories,
+    source?.metadata?.application?.orbis?.categories,
     orb.name,
   );
   const [, ...categories] = categorisationPath.split('.');
@@ -109,7 +112,7 @@ export const createCategorisedSources = sources =>
      * @param {import('./data-layers-dialog/data-layers-dialog.component').Orb[]} categorisedOrbs
      */
     (categorisedOrbs, source) => {
-      const { orbs = [{ name: 'No Orb' }] } = orbisMetadataSelector(source);
+      const { orbs = [{ name: NO_ORB_NAME }] } = orbisMetadataSelector(source);
       let newOrbs = [...categorisedOrbs];
       orbs.forEach(orb => {
         const existingOrb = newOrbs.find(o => orb.name === o.name);
