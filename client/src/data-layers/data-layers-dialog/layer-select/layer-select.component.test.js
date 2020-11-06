@@ -146,24 +146,19 @@ describe('<LayerSelect />', () => {
     const { getByRole } = renderComponent({
       orbSources: ORB_SOURCES_SUB_CATEGORIES,
     });
-    userEvent.click(
-      getByRole('button', {
-        name: new RegExp(ORB_SOURCES_SUB_CATEGORIES[0].category),
-      }),
-    );
-    userEvent.click(
-      getByRole('button', {
-        name: /oil$/i,
-      }),
-    );
-    waitFor(() =>
-      expect(
-        getByRole('checkbox', {
-          name:
-            ORB_SOURCES_SUB_CATEGORIES[0].sources[0].sources[0].metadata.label,
-        }),
-      ).toBeVisible(),
-    );
+    const categoryHeading = getByRole('button', {
+      name: new RegExp(ORB_SOURCES_SUB_CATEGORIES[0].category),
+    });
+
+    userEvent.click(categoryHeading);
+    const subCategoryHeading = getByRole('button', {
+      name: /oil$/i,
+    });
+    userEvent.click(subCategoryHeading);
+    const checkbox = getByRole('checkbox', {
+      name: ORB_SOURCES_SUB_CATEGORIES[0].sources[0].sources[0].metadata.label,
+    });
+    waitFor(() => expect(checkbox).toBeVisible());
   });
 
   it('hides sub-categories when heading is clicked again', () => {
