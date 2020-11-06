@@ -2,7 +2,7 @@ const OTHER_CATEGORY_NAME = 'Other';
 const NO_ORB_NAME = 'No Orb';
 
 /**
- * @param {Category} category
+ * @param {SourceCategories} category
  * @param {string} currentPath
  * @returns {string}
  */
@@ -16,7 +16,9 @@ const createPath = (category = { name: OTHER_CATEGORY_NAME }, currentPath) => {
 };
 
 /**
+ * Helper function to get the orbis application object from source metadata
  * @param {Source} source
+ * @returns {Partial<OrbisApplicationMetadata>}
  */
 const orbisMetadataSelector = source =>
   source?.metadata?.application?.orbis || {};
@@ -78,12 +80,14 @@ export const injectSource = (categorisedSources, source, categoryPath) => {
 };
 
 const addSourceToExistingOrb = (existingOrb, source) => {
-  const categorisationPath = createPath(
-    source?.metadata?.application?.orbis?.categories,
-    existingOrb.name,
+  const { categories } = orbisMetadataSelector(source);
+  const categorisationPath = createPath(categories, existingOrb.name);
+  const [, ...categoriesPath] = categorisationPath.split('.');
+  const injectedSources = injectSource(
+    existingOrb.sources,
+    source,
+    categoriesPath,
   );
-  const [, ...categories] = categorisationPath.split('.');
-  const injectedSources = injectSource(existingOrb.sources, source, categories);
   return {
     ...existingOrb,
     sources: injectedSources,
@@ -91,12 +95,10 @@ const addSourceToExistingOrb = (existingOrb, source) => {
 };
 
 const createNewCategorisedOrb = (orb, source) => {
-  const categorisationPath = createPath(
-    source?.metadata?.application?.orbis?.categories,
-    orb.name,
-  );
-  const [, ...categories] = categorisationPath.split('.');
-  const sources = [createHierarchy(source, categories.reverse())];
+  const { categories } = orbisMetadataSelector(source);
+  const categorisationPath = createPath(categories, orb.name);
+  const [, ...categoriesPath] = categorisationPath.split('.');
+  const sources = [createHierarchy(source, categoriesPath.reverse())];
   return {
     ...orb,
     sources,
