@@ -1,4 +1,8 @@
-import { injectSource, createCategorisationPath } from './categorisation.utils';
+import {
+  injectSource,
+  createCategorisationPath,
+  createOrbsWithCategorisedSources,
+} from './categorisation.utils';
 
 describe('createCategorisationPath', () => {
   it('Returns one category with no delimiters if one category is given', () => {
@@ -209,5 +213,474 @@ describe('injectSource', () => {
       const result = injectSource(categorisedSources, source, categoriesPath);
       expect(result).toEqual(expected);
     });
+  });
+});
+
+describe('', () => {
+  it('returns all sources organised by orb and category', () => {
+    const sources = [
+      {
+        source_id: 'orb/1/source/1',
+        metadata: {
+          application: {
+            orbis: {
+              categories: { name: 'Orb 1 Category 1' },
+              orbs: [{ name: 'Orb 1' }],
+            },
+          },
+        },
+      },
+      {
+        source_id: 'orb/1/source/2',
+        metadata: {
+          application: {
+            orbis: {
+              categories: { name: 'Orb 1 Category 2' },
+              orbs: [{ name: 'Orb 1' }],
+            },
+          },
+        },
+      },
+      {
+        source_id: 'orb/1/source/3',
+        metadata: {
+          application: {
+            orbis: {
+              categories: { name: 'Orb 1 Category 1' },
+              orbs: [{ name: 'Orb 1' }],
+            },
+          },
+        },
+      },
+      {
+        source_id: 'orb/1/source/4',
+        metadata: {
+          application: {
+            orbis: {
+              categories: { name: 'Orb 1 Category 2' },
+              orbs: [{ name: 'Orb 1' }],
+            },
+          },
+        },
+      },
+    ];
+
+    const expected = [
+      {
+        name: 'Orb 1',
+        sources: [
+          {
+            category: 'Orb 1 Category 1',
+            sources: [
+              {
+                source_id: 'orb/1/source/1',
+                metadata: {
+                  application: {
+                    orbis: {
+                      categories: { name: 'Orb 1 Category 1' },
+                      orbs: [{ name: 'Orb 1' }],
+                    },
+                  },
+                },
+              },
+              {
+                source_id: 'orb/1/source/3',
+                metadata: {
+                  application: {
+                    orbis: {
+                      categories: { name: 'Orb 1 Category 1' },
+                      orbs: [{ name: 'Orb 1' }],
+                    },
+                  },
+                },
+              },
+            ],
+          },
+          {
+            category: 'Orb 1 Category 2',
+            sources: [
+              {
+                source_id: 'orb/1/source/2',
+                metadata: {
+                  application: {
+                    orbis: {
+                      categories: { name: 'Orb 1 Category 2' },
+                      orbs: [{ name: 'Orb 1' }],
+                    },
+                  },
+                },
+              },
+              {
+                source_id: 'orb/1/source/4',
+                metadata: {
+                  application: {
+                    orbis: {
+                      categories: { name: 'Orb 1 Category 2' },
+                      orbs: [{ name: 'Orb 1' }],
+                    },
+                  },
+                },
+              },
+            ],
+          },
+        ],
+      },
+    ];
+
+    const result = createOrbsWithCategorisedSources(sources);
+    expect(result).toEqual(expected);
+  });
+
+  it('handles nested categories', () => {
+    const sources = [
+      {
+        source_id: 'source/1',
+        metadata: {
+          application: {
+            orbis: {
+              categories: {
+                name: 'Cat 1',
+                child: {
+                  name: 'Cat 2',
+                  child: {
+                    name: 'Cat 3',
+                  },
+                },
+              },
+              orbs: [{ name: 'Orb 1' }],
+            },
+          },
+        },
+      },
+    ];
+
+    const expected = [
+      {
+        name: 'Orb 1',
+        sources: [
+          {
+            category: 'Cat 1',
+            sources: [
+              {
+                category: 'Cat 2',
+                sources: [{ category: 'Cat 3', sources: [sources[0]] }],
+              },
+            ],
+          },
+        ],
+      },
+    ];
+    const result = createOrbsWithCategorisedSources(sources);
+    expect(result).toEqual(expected);
+  });
+
+  it('handles multiple orbs', () => {
+    const sources = [
+      {
+        source_id: 'Source 1',
+        metadata: {
+          application: {
+            orbis: {
+              orbs: [{ name: 'Orb 1' }],
+              categories: {
+                name: 'Category 1',
+              },
+            },
+          },
+        },
+      },
+      {
+        source_id: 'Source 2',
+        metadata: {
+          application: {
+            orbis: {
+              orbs: [{ name: 'Orb 2' }],
+              categories: {
+                name: 'Category 2',
+                child: { name: 'Category 3' },
+              },
+            },
+          },
+        },
+      },
+    ];
+
+    const expected = [
+      {
+        name: 'Orb 1',
+        sources: [
+          {
+            category: 'Category 1',
+            sources: [
+              {
+                source_id: 'Source 1',
+                metadata: {
+                  application: {
+                    orbis: {
+                      orbs: [{ name: 'Orb 1' }],
+                      categories: {
+                        name: 'Category 1',
+                      },
+                    },
+                  },
+                },
+              },
+            ],
+          },
+        ],
+      },
+      {
+        name: 'Orb 2',
+        sources: [
+          {
+            category: 'Category 2',
+            sources: [
+              {
+                category: 'Category 3',
+                sources: [
+                  {
+                    source_id: 'Source 2',
+                    metadata: {
+                      application: {
+                        orbis: {
+                          orbs: [{ name: 'Orb 2' }],
+                          categories: {
+                            name: 'Category 2',
+                            child: { name: 'Category 3' },
+                          },
+                        },
+                      },
+                    },
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      },
+    ];
+    const result = createOrbsWithCategorisedSources(sources);
+    expect(result).toEqual(expected);
+  });
+
+  it('handles sources with multiple orbs', () => {
+    const sources = [
+      {
+        source_id: 'Source 1',
+        metadata: {
+          application: {
+            orbis: {
+              orbs: [{ name: 'Orb 1' }, { name: 'Orb 2' }],
+              categories: {
+                name: 'Category 1',
+                child: {
+                  name: 'Category 2',
+                },
+              },
+            },
+          },
+        },
+      },
+    ];
+
+    const expected = [
+      {
+        name: 'Orb 1',
+        sources: [
+          {
+            category: 'Category 1',
+            sources: [
+              {
+                category: 'Category 2',
+                sources: [
+                  {
+                    source_id: 'Source 1',
+                    metadata: {
+                      application: {
+                        orbis: {
+                          orbs: [{ name: 'Orb 1' }, { name: 'Orb 2' }],
+                          categories: {
+                            name: 'Category 1',
+                            child: {
+                              name: 'Category 2',
+                            },
+                          },
+                        },
+                      },
+                    },
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      },
+      {
+        name: 'Orb 2',
+        sources: [
+          {
+            category: 'Category 1',
+            sources: [
+              {
+                category: 'Category 2',
+                sources: [
+                  {
+                    source_id: 'Source 1',
+                    metadata: {
+                      application: {
+                        orbis: {
+                          orbs: [{ name: 'Orb 1' }, { name: 'Orb 2' }],
+                          categories: {
+                            name: 'Category 1',
+                            child: {
+                              name: 'Category 2',
+                            },
+                          },
+                        },
+                      },
+                    },
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      },
+    ];
+
+    const result = createOrbsWithCategorisedSources(sources);
+    expect(result).toEqual(expected);
+  });
+
+  it('puts sources without a category into the Other category', () => {
+    const sources = [
+      {
+        source_id: 'orb/1/source/1',
+        metadata: {
+          application: { orbis: { orbs: [{ name: 'Orb 1' }] } },
+        },
+      },
+      {
+        source_id: 'orb/1/source/2',
+        metadata: {
+          application: {
+            orbis: {
+              categories: { name: 'Orb 1 Category 2' },
+              orbs: [{ name: 'Orb 1' }],
+            },
+          },
+        },
+      },
+    ];
+    /** @type {OrbWithCategorisedSources[]} */
+    const expected = [
+      {
+        name: 'Orb 1',
+        sources: [
+          {
+            category: 'Other',
+            sources: [
+              {
+                source_id: 'orb/1/source/1',
+                metadata: {
+                  application: {
+                    orbis: {
+                      orbs: [{ name: 'Orb 1' }],
+                    },
+                  },
+                },
+              },
+            ],
+          },
+          {
+            category: 'Orb 1 Category 2',
+            sources: [
+              {
+                source_id: 'orb/1/source/2',
+                metadata: {
+                  application: {
+                    orbis: {
+                      categories: { name: 'Orb 1 Category 2' },
+                      orbs: [{ name: 'Orb 1' }],
+                    },
+                  },
+                },
+              },
+            ],
+          },
+        ],
+      },
+    ];
+    const result = createOrbsWithCategorisedSources(sources);
+    expect(result).toEqual(expected);
+  });
+
+  it('puts sources without an orb into the "No Orb" orb', () => {
+    const sources = [
+      {
+        source_id: 'orb/1/source/1',
+        metadata: {
+          application: {
+            orbis: { categories: { name: 'Billy no mates' } },
+          },
+        },
+      },
+      {
+        source_id: 'orb/1/source/2',
+        metadata: {
+          application: {
+            orbis: {
+              categories: { name: 'Orb 1 Category 2' },
+              orbs: [{ name: 'Orb 1' }],
+            },
+          },
+        },
+      },
+    ];
+    /** @type {OrbWithCategorisedSources[]} */
+    const expected = [
+      {
+        name: 'No Orb',
+        sources: [
+          {
+            category: 'Billy no mates',
+            sources: [
+              {
+                source_id: 'orb/1/source/1',
+                metadata: {
+                  application: {
+                    orbis: { categories: { name: 'Billy no mates' } },
+                  },
+                },
+              },
+            ],
+          },
+        ],
+      },
+      {
+        name: 'Orb 1',
+        sources: [
+          {
+            category: 'Orb 1 Category 2',
+            sources: [
+              {
+                source_id: 'orb/1/source/2',
+                metadata: {
+                  application: {
+                    orbis: {
+                      categories: { name: 'Orb 1 Category 2' },
+                      orbs: [{ name: 'Orb 1' }],
+                    },
+                  },
+                },
+              },
+            ],
+          },
+        ],
+      },
+    ];
+
+    const result = createOrbsWithCategorisedSources(sources);
+    expect(result).toEqual(expected);
   });
 });

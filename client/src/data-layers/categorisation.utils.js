@@ -35,6 +35,7 @@ const orbisMetadataSelector = source =>
 /**
  * @param {Source} source
  * @param {string[]} categories
+ * @param {CategoryHierarchy} [currentHierarchy]
  * @returns {CategoryHierarchy}
  */
 export const createHierarchy = (
