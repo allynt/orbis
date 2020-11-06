@@ -473,33 +473,41 @@ describe('createOrbsWithCategorisedSources', () => {
     expect(result).toEqual(expected);
   });
 
-  it('puts sources without a category into the Other category', () => {
-    const sources = [
-      {
-        source_id: 'orb/1/source/1',
-        metadata: {
-          application: { orbis: { orbs: [{ name: 'Orb 1' }] } },
-        },
-      },
-    ];
-    /** @type {OrbWithCategorisedSources[]} */
-    const expected = [
-      {
-        name: 'Orb 1',
-        sources: expect.arrayContaining([
-          {
-            category: 'Other',
-            sources: [
-              expect.objectContaining({
-                source_id: 'orb/1/source/1',
-              }),
-            ],
+  describe('puts sources without a category into the Other category', () => {
+    it.each`
+      tag              | value
+      ${'undefined'}   | ${undefined}
+      ${'empty objet'} | ${{}}
+    `('$tag', value => {
+      const sources = [
+        {
+          source_id: 'orb/1/source/1',
+          metadata: {
+            application: {
+              orbis: { orbs: [{ name: 'Orb 1' }], categories: value },
+            },
           },
-        ]),
-      },
-    ];
-    const result = createOrbsWithCategorisedSources(sources);
-    expect(result).toEqual(expected);
+        },
+      ];
+      /** @type {OrbWithCategorisedSources[]} */
+      const expected = [
+        {
+          name: 'Orb 1',
+          sources: expect.arrayContaining([
+            {
+              category: 'Other',
+              sources: [
+                expect.objectContaining({
+                  source_id: 'orb/1/source/1',
+                }),
+              ],
+            },
+          ]),
+        },
+      ];
+      const result = createOrbsWithCategorisedSources(sources);
+      expect(result).toEqual(expected);
+    });
   });
 
   describe('puts sources without an orb into the "No Orb" orb', () => {

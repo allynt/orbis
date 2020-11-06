@@ -8,19 +8,18 @@ const PATH_DELIMITER = '.';
  * @param {string} [currentPath] The current path to build onto
  * @returns {string} The complete categorisation path
  */
-export const createCategorisationPath = (
-  categories = { name: OTHER_CATEGORY_NAME },
-  currentPath,
-) => {
-  if (categories.child)
+export const createCategorisationPath = (categories, currentPath) => {
+  let _categories = categories;
+  if (!_categories?.name) _categories = { name: OTHER_CATEGORY_NAME };
+  if (_categories.child)
     return createCategorisationPath(
-      categories.child,
+      _categories.child,
       currentPath
-        ? `${currentPath}${PATH_DELIMITER}${categories.name}`
-        : categories.name,
+        ? `${currentPath}${PATH_DELIMITER}${_categories.name}`
+        : _categories.name,
     );
   return `${currentPath ? `${currentPath}${PATH_DELIMITER}` : ''}${
-    categories.name
+    _categories.name
   }`;
 };
 
