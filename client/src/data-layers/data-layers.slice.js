@@ -1,7 +1,7 @@
 import { createSlice, createSelector } from '@reduxjs/toolkit';
 import { getJsonAuthHeaders, getData } from 'utils/http';
 import {
-  createCategorisedSources,
+  createOrbsWithCategorisedSources,
   createHierarchy,
   injectSource,
 } from './categorisation.utils';
@@ -140,7 +140,7 @@ export const selectDomainList = createSelector(dataSourcesSelector, sources =>
  */
 export const categorisedSourcesSelector = createSelector(
   dataSourcesSelector,
-  createCategorisedSources,
+  createOrbsWithCategorisedSources,
 );
 
 export default dataSlice.reducer;

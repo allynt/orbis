@@ -50,6 +50,15 @@ type Source = {
   metadata: SourceMetadata;
 };
 
+type CategoryHierarchy = {
+  category: string;
+  sources: CategorisedSources;
+};
+
+type CategorisedSources = (CategoryHierarchy | Source)[];
+
+type OrbWithCategorisedSources = Orb & { sources: CategorisedSources };
+
 type User = {
   accepted_terms: boolean;
   avatar?: string;

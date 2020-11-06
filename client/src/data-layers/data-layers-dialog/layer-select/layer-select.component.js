@@ -8,7 +8,7 @@ import { ReactComponent as ExpandIcon } from '../../triangle.svg';
 
 /**
  * @param {{
- *  sources: OrbSources
+ *  sources: CategorisedSources
  *  level: number
  *  onSourceChange: (params: {
  *     source_id: Source['source_id']
@@ -22,7 +22,6 @@ const renderCategories = ({
   onSourceChange,
   selectedSources,
 }) =>
-  // @ts-ignore
   sources.map(source =>
     source.category ? (
       <Accordion
@@ -83,7 +82,7 @@ const Accordion = ({ source, level, onSourceChange, selectedSources }) => {
 
 /**
  * @param {{
- *   orbSources: OrbSources
+ *   orbSources: CategorisedSources
  *   selectedSources?: Source['source_id'][]
  *   hasMadeChanges?: boolean
  *   onSourceChange: (params: {
