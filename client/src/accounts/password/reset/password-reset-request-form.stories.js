@@ -3,10 +3,9 @@ import { Router } from 'react-router-dom';
 import PasswordResetRequestForm from './password-reset-request-form.component';
 import { history } from 'root.reducer';
 import { status } from 'accounts/accounts.slice';
-import {} from '@storybook/addon-essentials';
 
 export default {
-  title: 'Accounts/PasswordResetRequestForm',
+  title: 'Accounts/Password/Reset/PasswordResetRequestForm',
   argTypes: { resetPassword: { action: 'reset password' } },
 };
 

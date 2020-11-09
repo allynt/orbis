@@ -5,7 +5,7 @@ import { status } from '../../accounts.slice';
 import PasswordChangeForm from './password-change-form.component';
 
 export default {
-  title: 'Accounts/PasswordChangeForm',
+  title: 'Accounts/Password/Change/PasswordChangeForm',
   args: { passwordMinLength: 2, passwordMaxLength: 50, passwordStrength: 2 },
 };
 
