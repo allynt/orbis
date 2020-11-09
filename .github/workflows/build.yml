@@ -68,7 +68,12 @@ jobs:
         run: |
           pipenv install --dev
           pipenv run ./manage.py migrate --noinput
-          pipenv run pytest ./
+          pipenv run pytest --html=backend-report.html --self-contained-html ./
+      - name: Upload Backend Test Results
+        uses: actions/upload-artifact@v1
+        with:
+          name: Backend Test Report
+          path: server/backend-report.html
 
   build-client-docker:
     needs: [client-tests]
