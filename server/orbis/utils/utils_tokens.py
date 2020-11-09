@@ -3,7 +3,6 @@ from collections import defaultdict
 from datetime import datetime, timedelta
 from itertools import chain
 
-
 from django.conf import settings
 from django.contrib.sites.models import Site
 from django.core.exceptions import ValidationError

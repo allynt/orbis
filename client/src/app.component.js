@@ -12,19 +12,14 @@ import { fetchAppConfig } from './app.slice';
 import { fetchUser } from './accounts/accounts.slice';
 import { userSelector } from './accounts/accounts.selectors';
 
-import {
-  fetchSources,
-  selectPollingPeriod,
-} from './data-layers/data-layers.slice';
-
 import Accounts from './accounts';
-import TermsAndConditions from './accounts/terms-and-conditions.component';
 
 import LandingView from './landing/landing.component';
 
 import MapLayout from './map';
 
 import styles from './app.module.css';
+import LegalDocuments from 'legal-documents/legal-documents.component';
 
 const Admin = lazy(() => import('./admin/admin.component'));
 
@@ -36,7 +31,6 @@ const App = () => {
 
   const user = useSelector(userSelector);
   const userKey = useSelector(state => state.accounts.userKey);
-  const pollingPeriod = useSelector(selectPollingPeriod);
   const notYetImplementedDescription = useSelector(
     state => state.app.notYetImplementedDescription,
   );
@@ -44,8 +38,6 @@ const App = () => {
   const [isVisible, toggle] = useModal(
     notYetImplementedDescription !== null ? true : false,
   );
-
-  const userExists = user ? true : false;
 
   useEffect(() => {
     if (notYetImplementedDescription !== null) {
@@ -77,22 +69,6 @@ const App = () => {
     }
   }, [dispatch, trackingId]);
 
-  useEffect(() => {
-    // Poll API to get new Data token (expires every X seconds/mins etc)
-    // this also fetches the list of data sources the user has access to.
-    // console.log('Initial Request for sources');
-    if (userExists) {
-      dispatch(fetchSources());
-
-      const interval = setInterval(() => {
-        dispatch(fetchSources());
-      }, pollingPeriod);
-      return () => {
-        clearInterval(interval);
-      };
-    }
-  }, [userExists, pollingPeriod, dispatch]);
-
   return (
     <div className={styles.app} ref={ref}>
       <ReactTooltip />
@@ -114,7 +90,7 @@ const App = () => {
           <PrivateRoute exact path="/" user={user} component={LandingView} />
           <Route path="/accounts" component={Accounts} />
           <PrivateRoute path="/map" user={user} component={MapLayout} />
-          <Route exact path="/terms" component={TermsAndConditions} />
+          <Route exact path={['/terms', '/eula']} component={LegalDocuments} />
           <Suspense fallback={<h3>Loading...</h3>}>
             <PrivateRoute
               exact

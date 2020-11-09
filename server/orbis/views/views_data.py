@@ -1,11 +1,13 @@
 import jwt
 import requests
-from collections import OrderedDict
+from collections import OrderedDict, defaultdict
 from datetime import datetime, timedelta
+from functools import reduce
 from urllib.parse import urljoin
 
 from django.conf import settings
 from django.contrib.sites.shortcuts import get_current_site
+from django.db.models import Prefetch
 
 from rest_framework import status
 from rest_framework.exceptions import APIException
@@ -15,10 +17,10 @@ from rest_framework.views import APIView
 
 from requests.exceptions import Timeout
 
-from drf_yasg import openapi
-from drf_yasg.utils import swagger_auto_schema
+from drf_yasg2 import openapi
+from drf_yasg2.utils import swagger_auto_schema
 
-from orbis.models import DataScope
+from orbis.models import DataScope, Orb
 from orbis.utils import generate_data_token, validate_data_token
 
 
@@ -36,9 +38,8 @@ class IsAuthenticatedOrAdmin(BasePermission):
             return user.is_superuser
 
 
-# TokenView has no serializer for yasg to generate schemas from
-# so I define some here just to make the swagger documentation useful
-
+# Neither TokenView nor DataSourceView have serializers for yasg to generate
+# schemas, so I define some here just to make the swagger documentation useful
 
 _encoded_token_schema = openapi.Schema(
     type=openapi.TYPE_OBJECT,
@@ -63,7 +64,36 @@ _decoded_token_schema = openapi.Schema(
                 ("delete", openapi.Schema(type=openapi.TYPE_ARRAY, items=openapi.Schema(type=openapi.TYPE_STRING, example="authority/namespace/name/version"))),
             )))),
         )))),
-    )),
+    ))
+)
+
+
+_data_sources_schema = openapi.Schema(
+    type=openapi.TYPE_OBJECT,
+    properties=OrderedDict((
+        ("token", openapi.Schema(type=openapi.TYPE_STRING)),
+        ("timeout", openapi.Schema(type=openapi.TYPE_NUMBER, example=60)),
+        ("sources", openapi.Schema(type=openapi.TYPE_ARRAY,items=openapi.Schema(
+            type=openapi.TYPE_OBJECT,
+            properties=OrderedDict((
+                ("source_id", openapi.Schema(type=openapi.TYPE_STRING, example="astrosat/core/infrastructure/2020")),
+                ("authority", openapi.Schema(type=openapi.TYPE_STRING, example="astrosat")),
+                ("namespace", openapi.Schema(type=openapi.TYPE_STRING, example="core")),
+                ("name", openapi.Schema(type=openapi.TYPE_STRING, example="infrastructure")),
+                ("version", openapi.Schema(type=openapi.TYPE_STRING, example="2020")),
+                ("type", openapi.Schema(type=openapi.TYPE_STRING, example="vector")),
+                ("status", openapi.Schema(type=openapi.TYPE_STRING, example="published")),
+                ("orbs", openapi.Schema(type=openapi.TYPE_ARRAY, items=openapi.Schema(
+                    type=openapi.TYPE_OBJECT,
+                    properties=OrderedDict((
+                        ("name", openapi.Schema(type=openapi.TYPE_STRING)),
+                        ("description", openapi.Schema(type=openapi.TYPE_STRING)),
+                    ))
+                ))),
+                ("metadata", openapi.Schema(type=openapi.TYPE_OBJECT)),
+            ))
+        ))),
+    ))
 )
 
 
@@ -101,10 +131,16 @@ class TokenView(APIView):
             raise APIException(e)
 
 
-class DataView(APIView):
+class DataSourceView(APIView):
+    """
+    Generates a JWT for the current user and passes it to data-sources-directory
+    in order to retrieve a list of DataSources the user can access; Adds information
+    about the JWT itself as well as which Orbs each DataSource belongs to to the response.
+    """
 
     permission_classes = [IsAuthenticated]
 
+    @swagger_auto_schema(responses={status.HTTP_200_OK: _data_sources_schema})
     def get(self, request, format=None):
 
         user = request.user
@@ -123,12 +159,38 @@ class DataView(APIView):
         except Timeout as e:
             raise APIException(f"Request {url} timed out, exception was: {str(e)}")
         except Exception as e:
-            # TODO: REMOVE THIS TRY/CATCH BLOCK ONCE I'M SURE THINGS ARE WORKING
             raise APIException(f"Unable to retrieve data sources at '{url}': {str(e)}")
         sources = response.json()["results"]
+
+        # find all orbs that this user has a licence to...
+        orbs = Orb.objects.filter(
+            is_active=True, licences__customer_user__in=user.customer_users.values_list("pk", flat=True)
+        ).prefetch_related(
+            Prefetch("data_scopes", queryset=DataScope.objects.filter(is_active=True), to_attr="filtered_data_scopes")
+        )
+        # create a mapping from data_scopes to those orbs...
+        data_scopes_to_orb_mapping = defaultdict(list)
+        for orb in orbs:
+            for data_scope in orb.filtered_data_scopes:
+                data_scopes_to_orb_mapping[data_scope.source_id_pattern] += [
+                    {"name": orb.name, "description": orb.description}
+                ]
+
+        for source in sources:
+            # find all of the above orbs w/ a data_scope that matches the source_id...
+            matching_orbs = dict(filter(
+                lambda item: DataScope.matches_source_id(item[0], source["source_id"]),
+                data_scopes_to_orb_mapping.items()
+            )).values()
+
+            # add them all as a single list (inserting missing metadata elements as needed)...
+            source_orbis_metadata = source
+            for key in ["metadata", "application", "orbis"]:
+                source_orbis_metadata = source_orbis_metadata.setdefault(key, {})
+            source_orbis_metadata["orbs"] = reduce(lambda orb1, orb2: orb1 + orb2, matching_orbs)
 
         return Response({
             "token": data_token,
             "timeout": data_token_timeout,
-            "sources": sources
+            "sources": sources,
         })

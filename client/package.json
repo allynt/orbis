@@ -1,6 +1,6 @@
 {
   "name": "orbis",
-  "version": "2.4.0",
+  "version": "2.5.0",
   "private": true,
   "scripts": {
     "start:dev": "concurrently --raw 'nodemon -w proxy ./proxy/proxy.js' ' react-scripts start'",
@@ -91,6 +91,7 @@
     "@turf/centroid": "^6.0.2",
     "@types/chroma-js": "^2.0.0",
     "@types/lodash": "^4.14.161",
+    "@types/react-dom": "^16.9.9",
     "@types/react-map-gl": "^5.2.4",
     "@types/react-redux": "^7.1.9",
     "@types/react-router-dom": "^5.1.6",

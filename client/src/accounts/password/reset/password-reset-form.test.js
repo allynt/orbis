@@ -20,7 +20,6 @@ const PASSWORD_PLACEHOLDER_TEXT = 'New Password';
 const PASSWORD_CONFIRMATION_PLACEHOLDER_TEXT = 'New Password Confirmation';
 const RESET_BUTTON_TEXT = 'Reset Password';
 const PASSWORD_TEXT = 'newpassword';
-const I_AGREE_TEXT = 'I agree with';
 
 const renderComponent = (
   store,
@@ -86,51 +85,48 @@ describe('Password Reset Form Component', () => {
     ).toBeInTheDocument();
     // Check form submit button
     expect(getByText(RESET_BUTTON_TEXT)).toBeInTheDocument();
-    // Check Terms and Conditions checkbox
-    expect(getByText(I_AGREE_TEXT)).toBeInTheDocument();
     // Check link to login view
     expect(getByText('Login')).toBeInTheDocument();
-    expect(getByText(RESET_BUTTON_TEXT)).toHaveAttribute('disabled');
   });
 
-  it('should disable `Reset Password` button when form is invalid', () => {
-    const { getByText, getByPlaceholderText } = renderComponent(
+  it('should disable `Reset Password` button when form is invalid', async () => {
+    const { getByRole, getByPlaceholderText } = renderComponent(
       store,
       confirmResetPassword,
       resetStatus,
       match,
       error,
     );
-
-    const password = getByPlaceholderText(PASSWORD_PLACEHOLDER_TEXT);
-    expect(password.value).toEqual('');
-    userEvent.type(password, PASSWORD_TEXT);
-    expect(password.value).toEqual(PASSWORD_TEXT);
-    expect(getByText(RESET_BUTTON_TEXT)).toHaveAttribute('disabled');
+    userEvent.click(getByPlaceholderText(PASSWORD_PLACEHOLDER_TEXT));
+    await waitFor(() =>
+      userEvent.click(
+        getByPlaceholderText(PASSWORD_CONFIRMATION_PLACEHOLDER_TEXT),
+      ),
+    );
+    expect(getByRole('button', { name: RESET_BUTTON_TEXT })).toBeDisabled();
   });
 
-  it('should enable `Reset Password` button when form is valid', () => {
-    const { getByText, getByPlaceholderText } = renderComponent(
+  it('should enable `Reset Password` button when form is valid', async () => {
+    const { getByRole, getByPlaceholderText } = renderComponent(
       store,
       confirmResetPassword,
       resetStatus,
       match,
       error,
     );
-
-    let password = getByPlaceholderText(PASSWORD_PLACEHOLDER_TEXT);
-    userEvent.type(password, PASSWORD_TEXT);
-    expect(password.value).toEqual(PASSWORD_TEXT);
-
-    password = getByPlaceholderText(PASSWORD_CONFIRMATION_PLACEHOLDER_TEXT);
-    userEvent.type(password, PASSWORD_TEXT);
-    expect(password.value).toEqual(PASSWORD_TEXT);
-    waitFor(() => getByText(I_AGREE_TEXT));
-
-    expect(getByText(RESET_BUTTON_TEXT)).toHaveAttribute('disabled');
-    userEvent.click(getByText(I_AGREE_TEXT));
-
-    expect(getByText(RESET_BUTTON_TEXT)).not.toHaveAttribute('disabled');
+    userEvent.type(
+      getByPlaceholderText(PASSWORD_PLACEHOLDER_TEXT),
+      PASSWORD_TEXT,
+    );
+    userEvent.type(
+      getByPlaceholderText(PASSWORD_CONFIRMATION_PLACEHOLDER_TEXT),
+      PASSWORD_TEXT,
+    );
+    await waitFor(() =>
+      expect(
+        getByRole('button', { name: RESET_BUTTON_TEXT }),
+      ).not.toBeDisabled(),
+    );
   });
 
   it('should not call `confirmResetPassword` function when form is invalid and `Reset Password` button clicked', async () => {
@@ -151,7 +147,7 @@ describe('Password Reset Form Component', () => {
   });
 
   it('should call `confirmResetPassword` function when form is valid and `Reset Password` button clicked', async () => {
-    const { getByRole, getByText, getByPlaceholderText } = renderComponent(
+    const { getByRole, getByPlaceholderText } = renderComponent(
       store,
       confirmResetPassword,
       resetStatus,
@@ -168,7 +164,6 @@ describe('Password Reset Form Component', () => {
       PASSWORD_TEXT,
     );
 
-    userEvent.click(getByText(I_AGREE_TEXT));
     userEvent.click(getByRole('button', { name: RESET_BUTTON_TEXT }));
 
     await waitFor(() =>
@@ -176,7 +171,6 @@ describe('Password Reset Form Component', () => {
         {
           [FIELD_NAMES.newPassword]: PASSWORD_TEXT,
           [FIELD_NAMES.newPasswordConfirm]: PASSWORD_TEXT,
-          termsAgreed: true,
         },
         { token: 'Test Token', uid: 'Test UID' },
       ),

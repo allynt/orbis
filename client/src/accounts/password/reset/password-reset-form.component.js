@@ -1,8 +1,7 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 import {
   Button,
-  Checkbox,
   PasswordField,
   PasswordStrengthMeter,
 } from '@astrosat/astrosat-ui';
@@ -12,7 +11,7 @@ import { useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
 import { object as yupObject } from 'yup';
 
-import { LOGIN, TERMS } from 'accounts/accounts.constants';
+import { LOGIN } from 'accounts/accounts.constants';
 import { status } from 'accounts/accounts.slice';
 import { ErrorWell } from 'accounts/error-well.component';
 import { FieldError } from 'components/field-error/field-error.component';
@@ -48,8 +47,6 @@ const PasswordResetForm = ({
   passwordMaxLength,
   passwordStrength,
 }) => {
-  const [termsAgreed, setTermsAgreed] = useState(false);
-
   const { register, handleSubmit, errors, watch } = useForm({
     mode: 'onBlur',
     resolver: yupResolver(validationSchema),
@@ -60,8 +57,8 @@ const PasswordResetForm = ({
     return <PasswordResetSuccessView />;
   }
 
-  const onSubmit = data => {
-    confirmResetPassword({ ...data, termsAgreed }, match.params);
+  const onSubmit = submission => {
+    confirmResetPassword(submission, match.params);
   };
 
   return (
@@ -109,26 +106,10 @@ const PasswordResetForm = ({
         )}
 
         <PasswordStrengthMeter password={watch(FIELD_NAMES.newPassword)} />
-
-        <div className={formStyles.row}>
-          <Checkbox
-            name="loggedIn"
-            value="true"
-            label="I agree with"
-            onChange={() => setTermsAgreed(!termsAgreed)}
-          />
-          &nbsp;
-          <Button target="_blank" href={TERMS} rel="noopener noreferrer">
-            Terms &amp; Conditions
-          </Button>
-        </div>
       </div>
 
       <div className={formStyles.buttons}>
-        <Button
-          type="submit"
-          disabled={!termsAgreed || Object.keys(errors).length > 0}
-        >
+        <Button type="submit" disabled={Object.keys(errors).length > 0}>
           Reset Password
         </Button>
       </div>

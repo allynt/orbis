@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import {
   Button,
@@ -17,6 +17,7 @@ import { useForm } from 'react-hook-form';
 import { Link as RouterLink } from 'react-router-dom';
 import * as yup from 'yup';
 
+import { TERMS } from 'legal-documents/legal-documents-constants';
 import { PASSWORD_RESET_REQUEST, REGISTER } from 'accounts/accounts.constants';
 import { ErrorWell } from 'accounts/error-well.component';
 import { FIELD_NAMES, email, password } from 'utils/validators';
@@ -52,6 +53,9 @@ const LoginForm = ({
   login,
 }) => {
   const isRegisteringCustomer = user?.registration_stage;
+  const isOnboardingTeamMember = user?.accepted_terms === false;
+
+  const [termsAgreed, setTermsAgreed] = useState(false);
 
   useEffect(() => {
     if (
@@ -69,7 +73,10 @@ const LoginForm = ({
   });
 
   const onSubmit = data => {
-    login(data);
+    const submission = isOnboardingTeamMember
+      ? { ...data, accepted_terms: termsAgreed }
+      : data;
+    login(submission);
   };
 
   return (
@@ -106,16 +113,25 @@ const LoginForm = ({
       </Grid>
 
       <Grid item xs={12} component={Box} display="flex">
-        {!isRegisteringCustomer && (
-          <FormControlLabel
-            label="Keep me logged in"
-            control={
-              <Checkbox
-                name="loggedIn"
-                onChange={() => console.log('Keep me logged in')}
-              />
-            }
-          />
+        {isOnboardingTeamMember && (
+          <>
+            <FormControlLabel
+              label={
+                <>
+                  I agree with&nbsp;
+                  <Link target="_blank" href={TERMS} rel="noopener noreferrer">
+                    Terms &amp; Conditions
+                  </Link>
+                </>
+              }
+              control={
+                <Checkbox
+                  name="loggedIn"
+                  onChange={() => setTermsAgreed(c => !c)}
+                />
+              }
+            />
+          </>
         )}
 
         <Box ml="auto">
@@ -128,7 +144,11 @@ const LoginForm = ({
       <Grid item xs={12} container justify="center">
         <Button
           type="submit"
-          disabled={Object.keys(errors).length > 0 || !formState.isDirty}
+          disabled={
+            Object.keys(errors).length > 0 ||
+            !formState.isDirty ||
+            (isOnboardingTeamMember && !termsAgreed)
+          }
         >
           {isLoading ? <CircularProgress size={22} color="inherit" /> : 'Login'}
         </Button>

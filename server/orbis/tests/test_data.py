@@ -12,6 +12,7 @@ from astrosat_users.tests.utils import *
 from orbis.utils import generate_data_token, validate_data_token
 
 from .factories import *
+from .utils import *
 
 
 @pytest.mark.django_db
@@ -108,3 +109,84 @@ class TestTokens:
         assert data_scopes[2].source_id_pattern not in payload_data_scopes["read"]
         assert data_scopes[2].source_id_pattern not in payload_data_scopes["create"]
         assert data_scopes[2].source_id_pattern in payload_data_scopes["delete"]
+
+
+@pytest.mark.django_db
+class TestDataSourceView:
+
+    SOURCE_ID_PARTS = ["authority", "namespace", "name", "version"]
+
+    def test_adds_orb_info(self, user, api_client, mock_data_sources, mock_storage):
+        """
+        tests that the correct orbs are associated w/ the returned datasources
+        """
+
+        source_id = "test/test/test/test"
+        mock_data_sources([source_id])
+        data_scope = DataScopeFactory(**{part: "test" for part in self.SOURCE_ID_PARTS})
+
+        orb_1 = OrbFactory(data_scopes=[data_scope])
+        orb_2 = OrbFactory(data_scopes=[data_scope])
+
+        customer = CustomerFactory(logo=None)
+        customer.add_user(user)
+
+        client = api_client(user)
+        url = reverse("datasources")
+
+        # user has a licence to 1 orb; there should be 1 object returned...
+        customer.assign_licences(orb_1, customer.customer_users.all())
+        response = client.get(url, {}, format="json")
+        content = response.json()
+
+        source_orbis_metadata = content["sources"][0]["metadata"]["application"]["orbis"]
+        sorted_orb_content = sorted(source_orbis_metadata["orbs"], key=lambda x: x["name"])
+        assert len(source_orbis_metadata["orbs"]) == 1
+        assert sorted_orb_content[0]["name"] == orb_1.name
+        assert sorted_orb_content[0]["description"] == orb_1.description
+
+        # user has a licence to 2 orbs; there should be 2 objects returned...
+        customer.assign_licences(orb_2, customer.customer_users.all())
+        response = client.get(url, {}, format="json")
+        content = response.json()
+
+        source_orbis_metadata = content["sources"][0]["metadata"]["application"]["orbis"]
+        sorted_orb_content = sorted(source_orbis_metadata["orbs"], key=lambda x: x["name"])
+        assert len(source_orbis_metadata["orbs"]) == 2
+        assert sorted_orb_content[0]["name"] == orb_1.name
+        assert sorted_orb_content[0]["description"] == orb_1.description
+        assert sorted_orb_content[1]["name"] == orb_2.name
+        assert sorted_orb_content[1]["description"] == orb_2.description
+
+    def test_num_queries(self, user, api_client, mock_data_sources, mock_storage, django_assert_num_queries):
+        """
+        Tests that a minimal number of queries is run;
+        Proves complexity of DataSourceView is constant.
+        """
+
+        N_SOURCES = 100
+        # N_QUERIES = 114
+        N_QUERIES = 16
+
+        source_ids = [
+            f"authority/namespace/name/version{i}"
+            for i in range(N_SOURCES)
+        ]
+
+        data_scope = DataScopeFactory(authority="authority", namespace="namespace", name="name", version="*")
+
+        # (worst-case-scenario: 1 orb per source)
+        orbs = [OrbFactory(data_scopes=[data_scope]) for _ in source_ids]
+
+        customer = CustomerFactory(logo=None)
+        customer_user, _ = customer.add_user(user)
+        for orb in orbs:
+            customer.assign_licences(orb, [customer_user])
+
+        mock_data_sources(source_ids)
+
+        client = api_client(user)
+        url = reverse("datasources")
+
+        with django_assert_num_queries(N_QUERIES):
+            client.get(url, {}, format="json")

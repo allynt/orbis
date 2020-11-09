@@ -15,6 +15,7 @@ const PASSWORD_TEXT = 'testpassword';
 const SIGN_UP = /sign\sup/i;
 const KEEP_LOGGED_IN = /keep\sme\slogged\sin/i;
 const WORK_EMAIL = /work\semail\saddress/i;
+const I_AGREE_TEXT = 'I agree with';
 
 /**
  * @param {Partial<Pick<import('./login-form.component').LoginProps,
@@ -27,12 +28,15 @@ const WORK_EMAIL = /work\semail\saddress/i;
 const renderComponent = props => {
   const activateAccount = jest.fn();
   const login = jest.fn();
+  const user = props?.minimalUser ? props.minimalUser : { accepted_terms: false }
+
   const utils = render(
     // @ts-ignore
     <LoginForm
       passwordMinLength={2}
       passwordMaxLength={255}
       activateAccount={activateAccount}
+      user={user}
       login={login}
       {...props}
     />,
@@ -49,12 +53,13 @@ const renderComponent = props => {
 
 describe('Login Form Component', () => {
   it('should render a form', () => {
-    const { getByRole, getByLabelText } = renderComponent();
+    const { getByText, getByRole, getByLabelText } = renderComponent();
 
     expect(
       getByRole('textbox', { name: EMAIL_PLACEHOLDER_TEXT }),
     ).toBeInTheDocument();
     expect(getByLabelText(PASSWORD_PLACEHOLDER_TEXT)).toBeInTheDocument();
+    expect(getByText(I_AGREE_TEXT)).toBeInTheDocument();
     expect(
       getByRole('button', { name: LOGIN_BUTTON_TEXT }),
     ).toBeInTheDocument();
@@ -67,7 +72,7 @@ describe('Login Form Component', () => {
   });
 
   it('should enable `Login` button when form is valid', async () => {
-    const { getByRole, getByLabelText } = renderComponent();
+    const { getByText, getByRole, getByLabelText } = renderComponent();
 
     const loginButton = getByRole('button', { name: LOGIN_BUTTON_TEXT });
 
@@ -79,6 +84,8 @@ describe('Login Form Component', () => {
     );
 
     userEvent.type(getByLabelText(PASSWORD_PLACEHOLDER_TEXT), PASSWORD_TEXT);
+
+    userEvent.click(getByText(I_AGREE_TEXT));
 
     await waitFor(() => expect(loginButton).not.toHaveAttribute('disabled'));
   });
@@ -101,7 +108,7 @@ describe('Login Form Component', () => {
   });
 
   it('should call `login` function when form is valid and `Login` button clicked', async () => {
-    const { getByRole, getByLabelText, login } = renderComponent();
+    const { getByText, getByRole, getByLabelText, login } = renderComponent();
 
     userEvent.type(
       getByRole('textbox', { name: EMAIL_PLACEHOLDER_TEXT }),
@@ -109,12 +116,15 @@ describe('Login Form Component', () => {
     );
     userEvent.type(getByLabelText(PASSWORD_PLACEHOLDER_TEXT), PASSWORD_TEXT);
 
+    userEvent.click(getByText(I_AGREE_TEXT));
+
     userEvent.click(getByRole('button', { name: LOGIN_BUTTON_TEXT }));
 
     await waitFor(() =>
       expect(login).toHaveBeenCalledWith({
         email: EMAIL_TEXT,
         password: PASSWORD_TEXT,
+        accepted_terms: true,
       }),
     );
   });
@@ -141,6 +151,18 @@ describe('Login Form Component', () => {
     const { getByRole } = renderComponent({ isLoading: true });
     expect(getByRole('alert')).toBeInTheDocument();
   });
+
+  it('only shows `Terms and Conditions` checkbox if user has not agreed already', () => {
+    const { getByRole } = renderComponent();
+
+    expect(getByRole('checkbox')).toBeInTheDocument();
+  })
+
+  it('does not show `Terms and Conditions` checkbox if user has agreed already', () => {
+    const { queryByRole } = renderComponent({ user: { accepted_terms: true } });
+
+    expect(queryByRole('checkbox')).not.toBeInTheDocument();
+  })
 
   describe('Customer Registration Flow', () => {
     /** @type {Partial<User>} */

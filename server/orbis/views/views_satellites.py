@@ -14,8 +14,8 @@ from rest_framework.exceptions import APIException
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
-from drf_yasg import openapi
-from drf_yasg.utils import swagger_auto_schema
+from drf_yasg2 import openapi
+from drf_yasg2.utils import swagger_auto_schema
 
 from orbis.adapters import SATELLITE_ADAPTER_REGISTRY
 from orbis.models import Satellite, SatelliteSearch, SatelliteResult

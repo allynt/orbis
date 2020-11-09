@@ -1,5 +1,6 @@
-import React, { lazy, useEffect, useRef, useState } from 'react';
+import React, { useRef } from 'react';
 
+import ReactDom from 'react-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { Button, useModal } from '@astrosat/astrosat-ui';
@@ -9,9 +10,9 @@ import { ReactComponent as AddNewCategoryIcon } from './add-more-categories.svg'
 import DataLayersDialog from './data-layers-dialog/data-layers-dialog.component';
 import {
   activeDataSourcesSelector,
-  addLayers,
-  dataSourcesSelector,
-  removeLayer,
+  activeLayersSelector,
+  categorisedSourcesSelector,
+  setLayers,
 } from './data-layers.slice';
 import { LayersList } from './layers-list/layers-list.component';
 
@@ -23,19 +24,14 @@ const DataLayers = () => {
   const { sidebarComponents } = useOrbs();
 
   const dispatch = useDispatch();
-  const dataSources = useSelector(dataSourcesSelector);
   const activeDataSources = useSelector(activeDataSourcesSelector);
+  const selectedLayers = useSelector(activeLayersSelector);
+  const categorisedOrbsAndSources = useSelector(categorisedSourcesSelector);
 
-  // Create an array of sources, grouped by their domain.
-  const domains = dataSources.reduce((acc, value) => {
-    const domain = acc.find(dom => dom.label === value.metadata.domain);
-
-    domain
-      ? (domain.layers = [...domain.layers, value])
-      : (acc = [...acc, { label: value.metadata.domain, layers: [value] }]);
-
-    return acc;
-  }, []);
+  const handleDialogSubmit = sources => {
+    dispatch(setLayers(sources));
+    toggle();
+  };
 
   return (
     <div className={styles.selectData} ref={ref}>
@@ -54,15 +50,17 @@ const DataLayers = () => {
         </Button>
       </div>
 
-      <DataLayersDialog
-        domains={domains}
-        selectedLayers={activeDataSources}
-        onAddLayers={selectedLayers => dispatch(addLayers(selectedLayers))}
-        onRemoveLayer={layer => dispatch(removeLayer(layer))}
-        isVisible={isVisible}
-        close={toggle}
-        ref={ref}
-      ></DataLayersDialog>
+      {isVisible && ref.current
+        ? ReactDom.createPortal(
+            <DataLayersDialog
+              orbs={categorisedOrbsAndSources}
+              initialSelectedSources={selectedLayers}
+              onSubmit={handleDialogSubmit}
+              close={toggle}
+            />,
+            document.body,
+          )
+        : null}
     </div>
   );
 };
