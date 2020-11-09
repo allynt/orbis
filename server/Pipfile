@@ -62,6 +62,7 @@ factory-boy = "==3.0.1"
 pytest = "*"
 # pytest django plugin
 pytest-django = "*"
+pytest-html = "*"
 # pytest look-and-feel plugin
 pytest-sugar = "*"
 
