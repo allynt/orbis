@@ -98,6 +98,7 @@ client/cypress/screenshots
 client/cypress/videos
 client/coverage
 client/reports/
+client/jest_html_reporters.html
 node_modules/
 spec_generated/
 server/static

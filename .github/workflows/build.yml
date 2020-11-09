@@ -32,7 +32,12 @@ jobs:
         working-directory: client
         run: |
           yarn install
-          yarn test
+          yarn test:ci
+      - name: Upload Frontend Test Results
+        uses: actions/upload-artifact@v1
+        with:
+          name: Frontend Test Report
+          path: client/jest_html_reporters.html
 
   server-tests:
     name: Server-side Tests
