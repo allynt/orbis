@@ -12,6 +12,9 @@ import {
   setFilterRange,
 } from '../../slices/isolation-plus.slice';
 
+import { getRange, sortPairs } from './radio-picker-helpers';
+import { FORMAT } from './radio-picker-constants';
+
 import styles from './radio-picker.module.css';
 import { createCategorisationPath } from 'data-layers/categorisation.utils';
 
@@ -23,8 +26,8 @@ import { createCategorisationPath } from 'data-layers/categorisation.utils';
  */
 export const RadioPicker = ({ selectedLayer, dispatch }) => {
   const selectedProperty = useSelector(state => propertySelector(state?.orbs));
-  const [toggle, setToggle] = useState(null);
-  const [format, setFormat] = useState('percentage');
+  const [selectedRange, setSelectedRange] = useState(null);
+  const [selectedUnit, setselectedUnit] = useState(FORMAT.percentage);
 
   const selectedPropertyMetadata = selectedLayer?.metadata?.properties?.find(
     property => property.name === selectedProperty?.name,
@@ -35,40 +38,20 @@ export const RadioPicker = ({ selectedLayer, dispatch }) => {
     categories: selectedLayer?.metadata?.application?.orbis?.categories,
   }).replace('.', ' > ');
 
-  const sortPairs = () => {
-    let percentages = [];
-    let numbers = [];
-    let pairs = [];
-
-    for (let property of selectedLayer?.metadata?.properties) {
-      if (property.type === 'percentage') {
-        percentages = [...percentages, property];
-      } else if (property.type === 'continuous') {
-        numbers = [...numbers, property];
-      }
-    }
-
-    percentages.forEach(perc => {
-      const range = perc.description.match(/\d+/)[0];
-      const twin = numbers.find(num => num.description.includes(range));
-      pairs = [...pairs, [perc, twin]];
-    });
-
-    return pairs;
-  };
-
-  const onRadioClick = perc => {
-    setToggle(toggle ? null : perc);
+  const onRadioClick = property => {
+    setSelectedRange(selectedRange === property ? null : property);
     dispatch(
       setProperty({
         source_id: selectedLayer.source_id,
-        ...perc,
+        ...property,
       }),
     );
   };
 
   const onButtonClick = property => {
-    setFormat(property.type === 'percentage' ? 'percentage' : 'number');
+    setselectedUnit(
+      property.type === FORMAT.percentage ? FORMAT.percentage : FORMAT.number,
+    );
 
     property.name === selectedProperty?.name
       ? dispatch(setProperty({}))
@@ -83,16 +66,16 @@ export const RadioPicker = ({ selectedLayer, dispatch }) => {
   if (!selectedLayer?.metadata?.properties) return null;
   return (
     <>
-      {sortPairs().map((pair, i) => {
+      {sortPairs(selectedLayer).map(pair => {
         const [perc, num] = pair;
         return (
           <div key={perc.name} className={styles.property}>
             <Radio
-              label={`Age Range ${i}`}
+              label={getRange(perc)}
               name="isolationPlus"
               onClick={() => onRadioClick(perc)}
               value={perc.name}
-              checked={false}
+              checked={selectedRange === perc}
             />
             <div className={styles.info}>
               <div
@@ -117,7 +100,7 @@ export const RadioPicker = ({ selectedLayer, dispatch }) => {
                 <p>{perc.description}</p>
               </ReactTooltip>
             </div>
-            {toggle === perc && (
+            {selectedRange === perc && (
               <div className={styles.filters}>
                 <div className={styles.format}>
                   <label className={styles.label}>Select display type: </label>
@@ -125,7 +108,7 @@ export const RadioPicker = ({ selectedLayer, dispatch }) => {
                     <Button
                       onClick={() => onButtonClick(perc)}
                       className={`${styles.button} ${
-                        format === 'percentage' && styles.active
+                        selectedUnit === FORMAT.percentage && styles.active
                       }`}
                     >
                       Percentage
@@ -133,31 +116,10 @@ export const RadioPicker = ({ selectedLayer, dispatch }) => {
                     <Button
                       onClick={() => onButtonClick(num)}
                       className={`${styles.button} ${
-                        format === 'number' && styles.active
+                        selectedUnit === FORMAT.number && styles.active
                       }`}
                     >
                       Number
-                    </Button>
-                  </div>
-                </div>
-                <div className={styles.format}>
-                  <label className={styles.label}>Select data source: </label>
-                  <div className={styles.buttons}>
-                    <Button
-                      onClick={() => console.log('Source 1')}
-                      className={`${styles.button} ${
-                        format === 'percentage' && styles.active
-                      }`}
-                    >
-                      Census 2011 (OA)
-                    </Button>
-                    <Button
-                      onClick={() => console.log('Source 1')}
-                      className={`${styles.button} ${
-                        format === 'number' && styles.active
-                      }`}
-                    >
-                      ONS 2018 (LSOA)
                     </Button>
                   </div>
                 </div>
