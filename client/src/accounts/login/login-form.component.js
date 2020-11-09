@@ -93,6 +93,7 @@ const LoginForm = ({
           inputRef={register}
           label={isRegisteringCustomer ? 'Work Email Address' : 'Email'}
           name={FIELD_NAMES.email}
+          id={FIELD_NAMES.email}
           error={!!errors[FIELD_NAMES.email]}
           helperText={errors[FIELD_NAMES.email]?.message}
           autoFocus
@@ -104,6 +105,7 @@ const LoginForm = ({
         <TextField
           inputRef={register}
           label="Password"
+          id={FIELD_NAMES.password}
           name={FIELD_NAMES.password}
           error={!!errors[FIELD_NAMES.password]}
           helperText={errors[FIELD_NAMES.password]?.message}

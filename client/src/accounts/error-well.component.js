@@ -10,7 +10,7 @@ import { Box, Well } from '@astrosat/astrosat-ui';
 export const ErrorWell = ({ errors, children }) =>
   errors || children ? (
     <Box width="100%">
-      <Well severity="error">
+      <Well severity="error" role="alert">
         <ul data-testid="error-well">
           {errors?.map(error => (
             <li key={error}>{error}</li>
