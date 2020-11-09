@@ -4,6 +4,45 @@ type LayerName =
   | 'GeoJsonClusteredIconLayer'
   | 'GeoJsonLayer';
 
+type ColorMap =
+  | 'OrRd'
+  | 'PuBu'
+  | 'BuPu'
+  | 'Oranges'
+  | 'BuGn'
+  | 'YlOrBr'
+  | 'YlGn'
+  | 'Reds'
+  | 'RdPu'
+  | 'Greens'
+  | 'YlGnBu'
+  | 'Purples'
+  | 'GnBu'
+  | 'Greys'
+  | 'YlOrRd'
+  | 'PuRd'
+  | 'Blues'
+  | 'PuBuGn'
+  | 'Spectral'
+  | 'RdYlGn'
+  | 'RdBu'
+  | 'PiYG'
+  | 'PRGn'
+  | 'RdYlBu'
+  | 'BrBG'
+  | 'RdGy'
+  | 'PuOr'
+  | 'Set2'
+  | 'Accent'
+  | 'Set1'
+  | 'Set3'
+  | 'Dark2'
+  | 'Paired'
+  | 'Pastel2'
+  | 'Pastel1';
+
+type PropertyType = 'continuous' | 'decile' | 'discrete';
+
 type Orb = { name: string; description?: string };
 
 type SourceCategories = {
@@ -31,10 +70,27 @@ type OrbisApplicationMetadata = {
   };
 };
 
+type Property = {
+  name: string;
+  label?: string;
+  description?: string;
+  type: PropertyType;
+  units?: 'string';
+  application: {
+    orbis?: {
+      display?: {
+        colormap_reversed?: boolean;
+        color: ColorMap;
+      };
+    };
+  };
+};
+
 type SourceMetadata = {
   label: string;
   description?: string;
   domain?: string;
+  properties: Property[];
   application?: {
     orbis: OrbisApplicationMetadata;
   };
