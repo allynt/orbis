@@ -1,36 +1,36 @@
-import React from 'react';
+import * as React from 'react';
 
 import {
   Button,
-  PasswordField,
+  Grid,
+  Link,
   PasswordStrengthMeter,
+  TextField,
+  Typography,
 } from '@astrosat/astrosat-ui';
 
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
-import { Link } from 'react-router-dom';
+import { Link as RouterLink } from 'react-router-dom';
 import { object as yupObject } from 'yup';
 
 import { LOGIN } from 'accounts/accounts.constants';
 import { status } from 'accounts/accounts.slice';
 import { ErrorWell } from 'accounts/error-well.component';
-import { FieldError } from 'components/field-error/field-error.component';
 import { FIELD_NAMES, newPassword, newPasswordConfirm } from 'utils/validators';
 
-import formStyles from 'forms.module.css';
-
 const PasswordResetSuccessView = () => (
-  <div className={formStyles.form}>
-    <p className={formStyles.paragraph}>
+  <Grid container spacing={2}>
+    <Grid item xs={12} component={Typography} container justify="center">
       Your password has successfully been reset. Click the button to continue.
-    </p>
+    </Grid>
 
-    <div className={formStyles.buttons}>
-      <Link to={LOGIN}>
-        <Button theme="link">Continue</Button>
-      </Link>
-    </div>
-  </div>
+    <Grid item xs={12} container justify="center">
+      <RouterLink to={LOGIN} component={Button}>
+        Continue
+      </RouterLink>
+    </Grid>
+  </Grid>
 );
 
 const validationSchema = yupObject({
@@ -62,65 +62,55 @@ const PasswordResetForm = ({
   };
 
   return (
-    <form className={formStyles.form} onSubmit={handleSubmit(onSubmit)}>
+    <Grid
+      component="form"
+      container
+      spacing={2}
+      onSubmit={handleSubmit(onSubmit)}
+    >
       <ErrorWell errors={error} />
 
-      <div className={formStyles.fields}>
-        <div className={formStyles.row}>
-          <label
-            className={formStyles.hiddenLabel}
-            htmlFor={FIELD_NAMES.newPassword}
-          >
-            Password Confirmation
-          </label>
-          <PasswordField
-            id={FIELD_NAMES.newPassword}
-            name={FIELD_NAMES.newPassword}
-            ref={register}
-            placeholder="New Password"
-            autoFocus
-          />
-        </div>
-        {errors[FIELD_NAMES.newPassword] && (
-          <FieldError message={errors[FIELD_NAMES.newPassword].message} />
-        )}
-
-        <div className={formStyles.row}>
-          <label
-            className={formStyles.hiddenLabel}
-            htmlFor={FIELD_NAMES.newPasswordConfirm}
-          >
-            Password Confirmation
-          </label>
-          <PasswordField
-            id={FIELD_NAMES.newPasswordConfirm}
-            name={FIELD_NAMES.newPasswordConfirm}
-            ref={register}
-            placeholder="New Password Confirmation"
-          />
-        </div>
-        {errors[FIELD_NAMES.newPasswordConfirm] && (
-          <FieldError
-            message={errors[FIELD_NAMES.newPasswordConfirm].message}
-          />
-        )}
+      <Grid item xs={12}>
+        <TextField
+          inputRef={register}
+          id={FIELD_NAMES.newPassword}
+          name={FIELD_NAMES.newPassword}
+          label="New Password"
+          type="password"
+          autoFocus
+          error={!!errors[FIELD_NAMES.newPassword]}
+          helperText={errors[FIELD_NAMES.newPassword]?.message}
+        />
 
         <PasswordStrengthMeter password={watch(FIELD_NAMES.newPassword)} />
-      </div>
+      </Grid>
 
-      <div className={formStyles.buttons}>
+      <Grid item xs={12}>
+        <TextField
+          inputRef={register}
+          id={FIELD_NAMES.newPasswordConfirm}
+          name={FIELD_NAMES.newPasswordConfirm}
+          label="New Password Confirmation"
+          type="password"
+          autoFocus
+          error={!!errors[FIELD_NAMES.newPasswordConfirm]}
+          helperText={errors[FIELD_NAMES.newPasswordConfirm]?.message}
+        />
+      </Grid>
+
+      <Grid item xs={12} container justify="center">
         <Button type="submit" disabled={Object.keys(errors).length > 0}>
           Reset Password
         </Button>
-      </div>
+      </Grid>
 
-      <p className={formStyles.footer}>
+      <Grid component={Typography} item xs={12} container justify="center">
         Do you have an account?&nbsp;
-        <Link to={LOGIN}>
-          <Button theme="link">Login</Button>
-        </Link>
-      </p>
-    </form>
+        <RouterLink to={LOGIN} component={Link}>
+          Login
+        </RouterLink>
+      </Grid>
+    </Grid>
   );
 };
 
