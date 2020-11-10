@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { render } from '@testing-library/react';
+import { getByLabelText, render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { Provider } from 'react-redux';
 import configureStore from 'redux-mock-store';
@@ -36,6 +36,20 @@ const defaultSelectedLayer = {
   },
 };
 
+const noPairsLayer = {
+  source_id: 'test/layer',
+  metadata: {
+    properties: [
+      {
+        name: 'Test Name 1',
+      },
+      {
+        name: 'Test Name 2',
+      },
+    ],
+  },
+};
+
 const renderComponent = (
   selectedLayer = defaultSelectedLayer,
   initialState = {},
@@ -51,6 +65,14 @@ const renderComponent = (
   );
 };
 
+it('uses `name` for label if no number range match returned from regex', () => {
+  const { getByLabelText } = renderComponent(noPairsLayer, {});
+
+  noPairsLayer.metadata.properties.forEach(p => {
+    expect(getByLabelText(p.name)).toBeInTheDocument();
+  });
+});
+
 describe('<RadioPicker />', () => {
   it('displays a radio for each selectable property in the source', () => {
     const { getByLabelText } = renderComponent();
@@ -61,20 +83,6 @@ describe('<RadioPicker />', () => {
   });
 
   it('shows only Radio (no toggles) for each property, if there are no percentage/number pairs', () => {
-    const noPairsLayer = {
-      source_id: 'test/layer',
-      metadata: {
-        properties: [
-          {
-            name: 'Test Name 1',
-          },
-          {
-            name: 'Test Name 2',
-          },
-        ],
-      },
-    };
-
     const { queryByText, getAllByRole } = renderComponent(noPairsLayer, {});
 
     userEvent.click(getAllByRole('radio')[0]);

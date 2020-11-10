@@ -1,8 +1,11 @@
 import { numberRangeRegex, FORMAT } from './radio-picker-constants';
 
 export const getRange = property => {
-  const range = property.name.match(numberRangeRegex)[0];
-  return range;
+  const range = property.name.match(numberRangeRegex);
+  if (!range) {
+    return property.name;
+  }
+  return range[0];
 };
 
 export const sortPairs = selectedLayer => {
