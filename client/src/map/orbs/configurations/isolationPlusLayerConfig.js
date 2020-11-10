@@ -1,5 +1,7 @@
 import chroma from 'chroma-js';
+import { DataFilterExtension } from '@deck.gl/extensions';
 import {
+  filterRangeSelector,
   propertySelector,
   setPickedInfo,
 } from '../slices/isolation-plus.slice';
@@ -17,6 +19,7 @@ const configuration = ({
   const selectedPropertyMetadata = source?.metadata?.properties?.find(
     property => property.name === selectedProperty.name,
   );
+  const filterRange = filterRangeSelector(orbState);
   const colorScale =
     selectedPropertyMetadata &&
     chroma
@@ -41,9 +44,12 @@ const configuration = ({
         : [0, 0, 0]),
       150,
     ],
+    getFilterValue: d => d.properties[selectedProperty.name],
+    filterRange,
     updateTriggers: {
       getFillColor: [selectedProperty],
     },
+    extensions: [new DataFilterExtension({ filterSize: 1 })],
   };
 };
 

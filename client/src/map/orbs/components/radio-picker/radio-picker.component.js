@@ -5,13 +5,14 @@ import ReactTooltip from 'react-tooltip';
 
 import { Radio, InfoIcon } from '@astrosat/astrosat-ui';
 
+import ColorMapRangeSlider from 'components/colormap-range-slider/colormap-range-slider.component';
 import {
   propertySelector,
   setProperty,
+  setFilterRange,
 } from '../../slices/isolation-plus.slice';
+
 import styles from './radio-picker.module.css';
-import ColorScale from 'components/color-scale/color-scale.component';
-import ColorMapRangeSlider from 'components/colormap-range-slider/colormap-range-slider.component';
 
 /**
  * @param {{
@@ -77,6 +78,7 @@ export const RadioPicker = ({ selectedLayer, dispatch }) => {
               type={property.type}
               color={colorScheme}
               domain={[property.min, property.max]}
+              onChange={domain => dispatch(setFilterRange(domain))}
             />
           )}
         </div>
