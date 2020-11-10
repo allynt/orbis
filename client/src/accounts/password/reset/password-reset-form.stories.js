@@ -3,6 +3,7 @@ import { Router } from 'react-router-dom';
 import PasswordResetForm from './password-reset-form.component';
 import { history } from 'root.reducer';
 import { status } from 'accounts/accounts.slice';
+import Wrapper from 'accounts/wrapper.component';
 
 export default {
   title: 'Accounts/Password/Reset/PasswordResetForm',
@@ -32,4 +33,10 @@ export const Error = args => (
 
 export const ResetComplete = args => (
   <PasswordResetForm resetStatus={status.COMPLETE} {...args} />
+);
+
+export const InWrapper = args => (
+  <Wrapper>
+    <PasswordResetForm {...args} />
+  </Wrapper>
 );
