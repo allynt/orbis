@@ -1,14 +1,20 @@
 import React from 'react';
 
-import { Button, Textfield } from '@astrosat/astrosat-ui';
+import {
+  Button,
+  TextField,
+  Typography,
+  Grid,
+  Link,
+  Box,
+} from '@astrosat/astrosat-ui';
 
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
-import { Link } from 'react-router-dom';
+import { Link as RouterLink } from 'react-router-dom';
 import { object } from 'yup';
 
 import { ErrorWell } from 'accounts/error-well.component';
-import { FieldError } from 'components/field-error/field-error.component';
 import { LOGIN } from '../../accounts.constants';
 import { status } from '../../accounts.slice';
 import { FIELD_NAMES, email } from 'utils/validators';
@@ -16,35 +22,30 @@ import { FIELD_NAMES, email } from 'utils/validators';
 import formStyles from 'forms.module.css';
 
 const PasswordResetRequestSuccessView = ({ email, onSubmit }) => (
-  <div className={formStyles.form}>
-    <div className={formStyles.textContent}>
-      <p className={formStyles.paragraph}>
-        <strong>Check your email</strong>
-      </p>
+  <>
+    <Typography variant="h3" component="h1" gutterBottom>
+      Check your email
+    </Typography>
 
-      <p className={formStyles.paragraph}>
-        If <strong>{email}</strong> is associated with an Astrosat ID, you
-        should receive an email containing instructions on how to create a new
-        password.
-      </p>
+    <Typography paragraph>
+      If <b>{email}</b> is associated with an Astrosat ID, you should receive an
+      email containing instructions on how to create a new password.
+    </Typography>
 
-      <p className={formStyles.paragraph}>
-        <strong>You haven't received the email?</strong>
-      </p>
-      <p className={formStyles.paragraph}>
-        Please check your spam or bulk folders.
-      </p>
-    </div>
+    <Typography variant="h3" component="h1" gutterBottom>
+      You haven't received the email?
+    </Typography>
+    <Typography paragraph>Please check your spam or bulk folders.</Typography>
 
-    <div className={formStyles.buttons}>
-      <Button theme="secondary" onClick={() => onSubmit(email)}>
-        Resend email
-      </Button>
-      <Link to={LOGIN}>
-        <Button theme="link">Return to login</Button>
-      </Link>
-    </div>
-  </div>
+    <Box display="flex" flexDirection="column" alignItems="center">
+      <Box mb={2}>
+        <Button onClick={() => onSubmit(email)}>Resend email</Button>
+      </Box>
+      <RouterLink to={LOGIN} component={Link}>
+        Return to login
+      </RouterLink>
+    </Box>
+  </>
 );
 
 const validationSchema = object({
@@ -70,39 +71,42 @@ const PasswordResetRequestForm = ({ resetPassword, resetStatus, error }) => {
     );
 
   return (
-    <form className={formStyles.form} onSubmit={handleSubmit(onSubmit)}>
+    <Grid
+      container
+      spacing={2}
+      component="form"
+      onSubmit={handleSubmit(onSubmit)}
+    >
       <ErrorWell errors={error} />
 
-      <div className={formStyles.fields}>
-        <div className={formStyles.row}>
-          <Textfield
-            name={FIELD_NAMES.email}
-            ref={register}
-            placeholder="Email"
-            autoFocus
-          />
-        </div>
-        {errors[FIELD_NAMES.email] && (
-          <FieldError message={errors[FIELD_NAMES.email].message} />
-        )}
-      </div>
+      <Grid item xs={12}>
+        <TextField
+          id={FIELD_NAMES.email}
+          name={FIELD_NAMES.email}
+          inputRef={register}
+          label="Email"
+          autoFocus
+          error={!!errors[FIELD_NAMES.email]}
+          helperText={errors[FIELD_NAMES.email]?.message}
+        />
+      </Grid>
 
-      <div className={formStyles.buttons}>
+      <Grid item xs={12} container justify="center">
         <Button
           type="submit"
           disabled={Object.keys(errors).length > 0 || !formState.isDirty}
         >
           Reset Password
         </Button>
-      </div>
+      </Grid>
 
-      <p className={formStyles.footer}>
+      <Grid item xs={12} component={Typography} container justify="center">
         Do you have an account?&nbsp;
-        <Link to={LOGIN}>
-          <Button theme="link">Login</Button>
-        </Link>
-      </p>
-    </form>
+        <RouterLink to={LOGIN} component={Link}>
+          Login
+        </RouterLink>
+      </Grid>
+    </Grid>
   );
 };
 
