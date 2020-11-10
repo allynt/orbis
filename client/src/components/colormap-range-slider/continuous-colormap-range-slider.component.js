@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import chroma from 'chroma-js';
 import {
+  VictoryAxis,
   VictoryBar,
   VictoryBrushContainer,
   VictoryClipContainer,
   VictoryGroup,
+  VictoryLabel,
 } from 'victory';
 
 const DEFAULT_CLIP_POSITION = {
@@ -25,11 +27,13 @@ const ContinuousColorMapRangeSlider = ({
   color,
   domain,
   handleStyle,
+  units,
 }) => {
-  const colorScale = chroma.scale(color);
-  const scaleColors = colorScale.colors();
+  const scaleColors = chroma.scale(color).colors();
   const data = [{ x: 0.5, y: domain[1] }];
   const [clipPosition, setClipPosition] = useState(DEFAULT_CLIP_POSITION);
+  const brushMoved = clipPosition !== DEFAULT_CLIP_POSITION;
+  const [brushDomain, setBrushDomain] = useState({ y: domain });
 
   /** @type {{
    *   data: typeof data
@@ -71,7 +75,8 @@ const ContinuousColorMapRangeSlider = ({
             brushStyle={brushStyle}
             handleStyle={handleStyle}
             onBrushCleared={() => setClipPosition(DEFAULT_CLIP_POSITION)}
-            onBrushDomainChange={(_, props) => {
+            onBrushDomainChange={(domain, props) => {
+              setBrushDomain(domain);
               setClipPosition({
                 translateX: props.x2 > props.x1 ? props.x1 : props.x2,
                 clipWidth:
@@ -104,6 +109,27 @@ const ContinuousColorMapRangeSlider = ({
               opacity: 0.3,
             },
           }}
+        />
+        <VictoryAxis
+          dependentAxis
+          tickValues={brushMoved && [brushDomain.y[0], brushDomain.y[1]]}
+          orientation="top"
+          axisComponent={<></>}
+          tickFormat={t => t.toFixed(0)}
+          tickLabelComponent={
+            <VictoryLabel
+              dx={({ index, text }) => {
+                if (!brushMoved) return undefined;
+                return index === 0
+                  ? `${-text[0].length / 2}ch`
+                  : `${text[0].length / 2}ch`;
+              }}
+              style={{
+                fontFamily: '"Open Sans", sans-serif',
+                fill: '#fff',
+              }}
+            />
+          }
         />
       </VictoryGroup>
     </>
