@@ -21,6 +21,8 @@ const DecileColorMapRangeSlider = ({
   brushStyle,
   color,
   handleStyle,
+  height,
+  padding,
   tickLabelStyle,
 }) => {
   /** @type {[number, number]} */
@@ -48,8 +50,10 @@ const DecileColorMapRangeSlider = ({
 
   return (
     <VictoryGroup
+      padding={padding}
       containerComponent={
         <VictoryBrushContainer
+          height={height}
           brushDimension="x"
           brushStyle={brushStyle}
           handleStyle={handleStyle}

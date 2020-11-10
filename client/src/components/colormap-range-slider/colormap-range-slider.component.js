@@ -12,6 +12,8 @@ import DecileColorMapRangeSlider from './decile-colormap-range-slider.component'
 /**
  * @typedef {{
  *   color: ColorMap
+ *   height: number
+ *   padding: import('victory').VictoryChartProps['padding']
  *   onChange?: (domain: [number, number]) => void
  * } & StyleProps} SharedProps
  */
@@ -23,7 +25,7 @@ const STYLE = {
     fill: '#f6be00',
     width: 5,
     rx: 3,
-    height: 210,
+    height: 95,
     transform: 'translateY(-5px)',
   },
   tickLabelStyle: {
@@ -37,19 +39,34 @@ const STYLE = {
 /**
  * @param {{
  *   color: ColorMap
+ *   domain?: [number, number]
  *   type: PropertyType
  *   units?: string
- *   domain?: [number, number]
- *   snap?: boolean
  *   onChange?: (domain: [number, number]) => void
  * }} props
  */
 const ColorMapRangeSlider = ({ type, ...rest }) => {
+  const height = 130;
+  const padding = { top: 40, bottom: 175, left: 55, right: 55 };
   switch (type) {
     case 'decile':
-      return <DecileColorMapRangeSlider {...STYLE} {...rest} />;
+      return (
+        <DecileColorMapRangeSlider
+          height={height}
+          padding={padding}
+          {...STYLE}
+          {...rest}
+        />
+      );
     default:
-      return <ContinuousColorMapRangeSlider {...STYLE} {...rest} />;
+      return (
+        <ContinuousColorMapRangeSlider
+          height={height}
+          padding={padding}
+          {...STYLE}
+          {...rest}
+        />
+      );
   }
 };
 

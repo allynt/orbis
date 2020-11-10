@@ -27,8 +27,9 @@ const ContinuousColorMapRangeSlider = ({
   color,
   domain,
   handleStyle,
+  height,
+  padding,
   tickLabelStyle,
-  units,
 }) => {
   const scaleColors = chroma.scale(color).colors();
   const data = [{ x: 0.5, y: domain[1] }];
@@ -40,7 +41,7 @@ const ContinuousColorMapRangeSlider = ({
   const barProps = {
     // @ts-ignore
     data,
-    barWidth: 200,
+    barWidth: 85,
     domain: { x: [0, 1], y: domain },
     style: {
       data: {
@@ -57,12 +58,11 @@ const ContinuousColorMapRangeSlider = ({
     tickFormat: t => t.toFixed(0),
   };
 
-  const handleBrushDomainChange = (domain, props) => {
+  const handleBrushDomainChange = (domain, { x1, x2 }) => {
     setBrushDomain(domain);
     setClipPosition({
-      translateX: props.x2 > props.x1 ? props.x1 : props.x2,
-      clipWidth:
-        props.x2 > props.x1 ? props.x2 - props.x1 : props.x1 - props.x2,
+      translateX: x2 > x1 ? x1 : x2,
+      clipWidth: x2 > x1 ? x2 - x1 : x1 - x2,
     });
   };
 
@@ -83,8 +83,10 @@ const ContinuousColorMapRangeSlider = ({
       </svg>
       <VictoryGroup
         horizontal
+        padding={padding}
         containerComponent={
           <VictoryBrushContainer
+            height={height}
             brushDimension="y"
             brushStyle={brushStyle}
             handleStyle={handleStyle}
@@ -97,7 +99,7 @@ const ContinuousColorMapRangeSlider = ({
           {...barProps}
           groupComponent={
             <VictoryClipContainer
-              clipHeight={200}
+              clipHeight={height}
               translateX={
                 clipPosition.clipWidth === 0 ? 0 : clipPosition.translateX
               }
