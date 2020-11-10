@@ -31,6 +31,23 @@ const ContinuousColorMapRangeSlider = ({
   const data = [{ x: 0.5, y: domain[1] }];
   const [clipPosition, setClipPosition] = useState(DEFAULT_CLIP_POSITION);
 
+  /** @type {{
+   *   data: typeof data
+   *   barWidth: number
+   *   domain: {x: [number, number], y: [number, number]}
+   *   style: import('victory').VictoryBarProps['style']
+   * }} */
+  const barProps = {
+    data,
+    barWidth: 200,
+    domain: { x: [0, 1], y: domain },
+    style: {
+      data: {
+        fill: 'url(#colorMapGradient)',
+      },
+    },
+  };
+
   return (
     <>
       <svg style={{ height: 0 }}>
@@ -67,14 +84,7 @@ const ContinuousColorMapRangeSlider = ({
         }
       >
         <VictoryBar
-          data={data}
-          barWidth={200}
-          domain={{ x: [0, 1], y: domain }}
-          style={{
-            data: {
-              fill: 'url(#colorMapGradient)',
-            },
-          }}
+          {...barProps}
           groupComponent={
             <VictoryClipContainer
               clipHeight={200}
@@ -86,12 +96,11 @@ const ContinuousColorMapRangeSlider = ({
           }
         />
         <VictoryBar
-          data={data}
-          barWidth={200}
-          domain={{ x: [0, 1], y: domain }}
+          {...barProps}
           style={{
+            ...barProps.style,
             data: {
-              fill: 'url(#colorMapGradient)',
+              ...barProps.style.data,
               opacity: 0.3,
             },
           }}

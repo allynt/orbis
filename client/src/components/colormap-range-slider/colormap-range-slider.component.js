@@ -16,8 +16,10 @@ const BRUSH_STYLE = {
   brushStyle: { fill: 'transparent' },
   handleStyle: {
     fill: '#f6be00',
-    width: '5px',
-    borderRadius: '50%',
+    width: 5,
+    rx: 3,
+    height: 210,
+    transform: 'translateY(-5px)',
   },
 };
 
