@@ -1,5 +1,11 @@
 import React, { useState } from 'react';
-import { VictoryBrushContainer, VictoryHistogram } from 'victory';
+import {
+  VictoryAxis,
+  VictoryBrushContainer,
+  VictoryGroup,
+  VictoryHistogram,
+  VictoryLabel,
+} from 'victory';
 import chroma from 'chroma-js';
 
 /** @typedef {{x: [any, any], y: [any, any]}} BrushDomain */
@@ -36,22 +42,38 @@ const DecileColorMapRangeSlider = ({ brushStyle, color, handleStyle }) => {
   const handleBrushDomainChangeEnd = domain => setBrushDomain(domain);
 
   return (
-    <>
+    <VictoryGroup
+      containerComponent={
+        <VictoryBrushContainer
+          brushDimension="x"
+          brushStyle={brushStyle}
+          handleStyle={handleStyle}
+          brushDomain={brushDomain}
+          onBrushDomainChangeEnd={handleBrushDomainChangeEnd}
+        />
+      }
+    >
       <VictoryHistogram
         data={data}
         bins={[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]}
         style={histogramStyle}
-        containerComponent={
-          <VictoryBrushContainer
-            brushDimension="x"
-            brushStyle={brushStyle}
-            handleStyle={handleStyle}
-            brushDomain={brushDomain}
-            onBrushDomainChangeEnd={handleBrushDomainChangeEnd}
+      />
+      <VictoryAxis
+        tickValues={[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]}
+        orientation="top"
+        axisComponent={<></>}
+        tickLabelComponent={
+          <VictoryLabel
+            style={{
+              display: 'flex',
+              fontFamily: '"Open Sans", sans-serif',
+              fill: '#fff',
+            }}
+            dx={-17}
           />
         }
       />
-    </>
+    </VictoryGroup>
   );
 };
 
