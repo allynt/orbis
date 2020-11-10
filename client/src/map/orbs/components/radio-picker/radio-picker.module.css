@@ -76,16 +76,16 @@
 }
 
 .button {
-  color: #000;
-  background-color: var(--color-yellow);
+  color: #fff;
+  background-color: #171819;
   padding: 0.625rem;
   width: 50%;
   font-size: 0.875rem;
 }
 
 .buttons .active {
-  color: #fff;
-  background-color: #000;
+  color: #171819;
+  background-color: var(--color-yellow);
 }
 
 .button:first-child {

@@ -9,7 +9,8 @@ import { RadioPicker } from './radio-picker.component';
 import { sortPairs, getRange } from './radio-picker-helpers';
 
 const mockStore = configureStore();
-const dispatch = jest.fn();
+
+let dispatch = null;
 
 const defaultSelectedLayer = {
   source_id: 'test/layer',
@@ -38,18 +39,19 @@ const defaultSelectedLayer = {
 const renderComponent = (
   selectedLayer = defaultSelectedLayer,
   initialState = {},
-) =>
-  render(<RadioPicker selectedLayer={selectedLayer} dispatch={dispatch} />, {
-    wrapper: ({ children }) => (
-      <Provider store={mockStore(initialState)}>{children}</Provider>
-    ),
-  });
+) => {
+  dispatch = jest.fn();
+  return render(
+    <RadioPicker selectedLayer={selectedLayer} dispatch={dispatch} />,
+    {
+      wrapper: ({ children }) => (
+        <Provider store={mockStore(initialState)}>{children}</Provider>
+      ),
+    },
+  );
+};
 
 describe('<RadioPicker />', () => {
-  const firstPropertyLabel = getRange(
-    defaultSelectedLayer.metadata.properties[0],
-  );
-
   it('displays a radio for each selectable property in the source', () => {
     const { getByLabelText } = renderComponent();
     defaultSelectedLayer.metadata.properties.forEach(property => {
@@ -58,41 +60,70 @@ describe('<RadioPicker />', () => {
     });
   });
 
+  it('shows only Radio (no toggles) for each property, if there are no percentage/number pairs', () => {
+    const noPairsLayer = {
+      source_id: 'test/layer',
+      metadata: {
+        properties: [
+          {
+            name: 'Test Name 1',
+          },
+          {
+            name: 'Test Name 2',
+          },
+        ],
+      },
+    };
+
+    const { queryByText, getAllByRole } = renderComponent(noPairsLayer, {});
+
+    userEvent.click(getAllByRole('radio')[0]);
+
+    expect(queryByText('Percentage')).not.toBeInTheDocument();
+    expect(queryByText('Number')).not.toBeInTheDocument();
+  });
+
   it('reveals number/percentage toggle buttons when Radio is checked', () => {
-    const { getByText, getByLabelText } = renderComponent();
+    const { getByText, getAllByRole } = renderComponent();
 
-    userEvent.click(getByLabelText(firstPropertyLabel));
+    userEvent.click(getAllByRole('radio')[0]);
 
-    expect(getByLabelText(firstPropertyLabel)).toHaveProperty('checked', true);
+    expect(getAllByRole('radio')[0]).toHaveProperty('checked', true);
 
     expect(getByText('Percentage')).toBeInTheDocument();
     expect(getByText('Number')).toBeInTheDocument();
   });
 
   it('selects percentage property by default when Radio is checked', () => {
-    const { getByLabelText } = renderComponent();
+    const { getAllByRole } = renderComponent();
 
-    userEvent.click(getByLabelText(firstPropertyLabel));
+    userEvent.click(getAllByRole('radio')[0]);
 
     const expected = {
-      source_id: defaultSelectedLayer.source_id,
-      name: 'Census 2011: % of people in the age band 40 - 64',
-      type: 'percentage',
+      type: 'isolationPlus/setProperty',
+      payload: {
+        source_id: defaultSelectedLayer.source_id,
+        name: 'Census 2011: % of people in the age band 40 - 64',
+        type: 'percentage',
+      },
     };
 
     expect(dispatch).toHaveBeenCalledWith(expected);
   });
 
   it('dispatches selected property when toggle buttons are clicked', () => {
-    const { getByText, getByLabelText } = renderComponent();
+    const { getByText, getAllByRole } = renderComponent();
 
-    userEvent.click(getByLabelText(firstPropertyLabel));
+    userEvent.click(getAllByRole('radio')[0]);
     userEvent.click(getByText('Number'));
 
     const expected = {
-      source_id: defaultSelectedLayer.source_id,
-      name: 'Census 2011: number of people in the age band 40 - 64',
-      type: 'continuous',
+      type: 'isolationPlus/setProperty',
+      payload: {
+        source_id: defaultSelectedLayer.source_id,
+        name: 'Census 2011: number of people in the age band 40 - 64',
+        type: 'continuous',
+      },
     };
 
     expect(dispatch).toHaveBeenCalledTimes(2);

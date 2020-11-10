@@ -63,8 +63,12 @@ export const RadioPicker = ({ selectedLayer, dispatch }) => {
         );
   };
 
+  const hasPairs = selectedLayer?.metadata?.properties?.some(
+    p => p.type === (FORMAT.percentage || FORMAT.number),
+  );
+
   if (!selectedLayer?.metadata?.properties) return null;
-  return (
+  return hasPairs ? (
     <>
       {sortPairs(selectedLayer).map(pair => {
         const [perc, num] = pair;
@@ -125,9 +129,72 @@ export const RadioPicker = ({ selectedLayer, dispatch }) => {
                 </div>
               </div>
             )}
+            {perc.name === selectedProperty?.name && (
+              <ColorScale
+                className={styles.colorScale}
+                type={perc.type}
+                scheme={colorScheme}
+                domain={[perc.min, perc.max]}
+              />
+            )}
           </div>
         );
       })}
+    </>
+  ) : (
+    <>
+      {selectedLayer?.metadata?.properties.map(property => (
+        <div key={property.name} className={styles.property}>
+          <Radio
+            className={styles.radio}
+            label={property?.application?.orbis?.label || property.name}
+            name="isolationPlus"
+            value={property.name}
+            checked={property.name === selectedProperty?.name}
+            onClick={() =>
+              property.name === selectedProperty?.name
+                ? dispatch(setProperty({}))
+                : dispatch(
+                    setProperty({
+                      source_id: selectedLayer.source_id,
+                      ...property,
+                    }),
+                  )
+            }
+          />
+          <div className={styles.info}>
+            <div
+              data-tip
+              data-for={`${property.name}-tooltip`}
+              role="tooltip"
+              className={styles.infoButton}
+              aria-label="tooltip"
+              data-scroll-hide="false"
+            >
+              <InfoIcon classes={styles.infoIcon} title={property.name} />
+            </div>
+            <ReactTooltip
+              className={styles.tooltip}
+              id={`${property.name}-tooltip`}
+              place="right"
+              effect="solid"
+              arrowColor="var(--color-primary)"
+              backgroundColor="var(--color-primary)"
+              textColor="var(--color--text--dark)"
+            >
+              <p>{property.description}</p>
+            </ReactTooltip>
+          </div>
+          {property.name === selectedProperty?.name && (
+            <ColorScale
+              className={styles.colorScale}
+              type={property.type}
+              scheme={colorScheme}
+              domain={[property.min, property.max]}
+            />
+          )}
+        </div>
+      ))}
     </>
   );
 };
