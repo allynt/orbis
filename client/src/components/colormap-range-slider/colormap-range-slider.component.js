@@ -3,16 +3,21 @@ import ContinuousColorMapRangeSlider from './continuous-colormap-range-slider.co
 import DecileColorMapRangeSlider from './decile-colormap-range-slider.component';
 
 /**
- * @typedef {{
- *   brushStyle: React.CSSProperties
- *   handleStyle: React.CSSProperties
- *   color: ColorMap
- *   onChange?: (domain: [number, number]) => void
- * }} SharedProps
+ * @typedef StyleProps
+ * @property {React.CSSProperties} brushStyle
+ * @property {React.CSSProperties} handleStyle
+ * @property {React.CSSProperties} tickLabelStyle
  */
 
-/** @type {{ brushStyle: React.CSSProperties, handleStyle: React.CSSProperties }} */
-const BRUSH_STYLE = {
+/**
+ * @typedef {{
+ *   color: ColorMap
+ *   onChange?: (domain: [number, number]) => void
+ * } & StyleProps} SharedProps
+ */
+
+/** @type {StyleProps} */
+const STYLE = {
   brushStyle: { fill: 'transparent' },
   handleStyle: {
     fill: '#f6be00',
@@ -20,6 +25,12 @@ const BRUSH_STYLE = {
     rx: 3,
     height: 210,
     transform: 'translateY(-5px)',
+  },
+  tickLabelStyle: {
+    fontFamily: '"Open Sans", sans-serif',
+    fontSize: 24,
+    fill: '#fff',
+    transition: 'opacity 150ms ease',
   },
 };
 
@@ -36,9 +47,9 @@ const BRUSH_STYLE = {
 const ColorMapRangeSlider = ({ type, ...rest }) => {
   switch (type) {
     case 'decile':
-      return <DecileColorMapRangeSlider {...BRUSH_STYLE} {...rest} />;
+      return <DecileColorMapRangeSlider {...STYLE} {...rest} />;
     default:
-      return <ContinuousColorMapRangeSlider {...BRUSH_STYLE} {...rest} />;
+      return <ContinuousColorMapRangeSlider {...STYLE} {...rest} />;
   }
 };
 

@@ -11,22 +11,11 @@ import {
 } from '../../slices/isolation-plus.slice';
 import styles from './radio-picker.module.css';
 import ColorScale from 'components/color-scale/color-scale.component';
+import ColorMapRangeSlider from 'components/colormap-range-slider/colormap-range-slider.component';
 
 /**
  * @param {{
- *   selectedLayer: ({
- *     source_id: string
- *     metadata: {
- *       properties: {
- *         name: string
- *         description: string
- *         min: number
- *         max: number
- *         type: 'percentage' | 'decile' | 'continuous' | 'discrete'
- *         application: any
- *       }[]
- *     }
- *   })
+ *   selectedLayer: Source
  *   dispatch: import('redux').Dispatch
  * }} props
  */
@@ -84,10 +73,9 @@ export const RadioPicker = ({ selectedLayer, dispatch }) => {
             </ReactTooltip>
           </div>
           {property.name === selectedProperty?.name && (
-            <ColorScale
-              className={styles.colorScale}
+            <ColorMapRangeSlider
               type={property.type}
-              scheme={colorScheme}
+              color={colorScheme}
               domain={[property.min, property.max]}
             />
           )}

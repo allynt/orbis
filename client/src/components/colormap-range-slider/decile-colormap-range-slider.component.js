@@ -17,7 +17,12 @@ import chroma from 'chroma-js';
  *   onChange?: (domain: [number, number]) => void
  * } & import('./colormap-range-slider.component').SharedProps} props
  */
-const DecileColorMapRangeSlider = ({ brushStyle, color, handleStyle }) => {
+const DecileColorMapRangeSlider = ({
+  brushStyle,
+  color,
+  handleStyle,
+  tickLabelStyle,
+}) => {
   /** @type {[number, number]} */
   const domain = [0, 10];
   /** @type {[BrushDomain, React.Dispatch<BrushDomain>]} */
@@ -66,15 +71,12 @@ const DecileColorMapRangeSlider = ({ brushStyle, color, handleStyle }) => {
         tickLabelComponent={
           <VictoryLabel
             style={{
-              display: 'flex',
-              fontFamily: '"Open Sans", sans-serif',
-              fill: '#fff',
+              ...tickLabelStyle,
               opacity: ({ index }) =>
                 index >= Math.floor(brushDomain?.x[0]) &&
                 index <= brushDomain?.x[1]
                   ? 1
                   : 0.3,
-              transition: 'opacity 150ms ease',
             }}
             dx={-17}
           />

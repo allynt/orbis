@@ -27,6 +27,7 @@ const ContinuousColorMapRangeSlider = ({
   color,
   domain,
   handleStyle,
+  tickLabelStyle,
   units,
 }) => {
   const scaleColors = chroma.scale(color).colors();
@@ -35,13 +36,9 @@ const ContinuousColorMapRangeSlider = ({
   const brushMoved = clipPosition !== DEFAULT_CLIP_POSITION;
   const [brushDomain, setBrushDomain] = useState({ y: domain });
 
-  /** @type {{
-   *   data: typeof data
-   *   barWidth: number
-   *   domain: {x: [number, number], y: [number, number]}
-   *   style: import('victory').VictoryBarProps['style']
-   * }} */
+  /** @type {import('victory').VictoryBarProps['style']} */
   const barProps = {
+    // @ts-ignore
     data,
     barWidth: 200,
     domain: { x: [0, 1], y: domain },
@@ -52,9 +49,26 @@ const ContinuousColorMapRangeSlider = ({
     },
   };
 
+  /** @type {import('victory').VictoryAxisProps} */
+  const axisProps = {
+    dependentAxis: true,
+    orientation: 'top',
+    axisComponent: <></>,
+    tickFormat: t => t.toFixed(0),
+  };
+
+  const handleBrushDomainChange = (domain, props) => {
+    setBrushDomain(domain);
+    setClipPosition({
+      translateX: props.x2 > props.x1 ? props.x1 : props.x2,
+      clipWidth:
+        props.x2 > props.x1 ? props.x2 - props.x1 : props.x1 - props.x2,
+    });
+  };
+
   return (
     <>
-      <svg style={{ height: 0 }}>
+      <svg style={{ height: 0, width: 0, position: 'absolute' }}>
         <defs>
           <linearGradient id="colorMapGradient">
             {scaleColors.map((color, i) => (
@@ -75,16 +89,7 @@ const ContinuousColorMapRangeSlider = ({
             brushStyle={brushStyle}
             handleStyle={handleStyle}
             onBrushCleared={() => setClipPosition(DEFAULT_CLIP_POSITION)}
-            onBrushDomainChange={(domain, props) => {
-              setBrushDomain(domain);
-              setClipPosition({
-                translateX: props.x2 > props.x1 ? props.x1 : props.x2,
-                clipWidth:
-                  props.x2 > props.x1
-                    ? props.x2 - props.x1
-                    : props.x1 - props.x2,
-              });
-            }}
+            onBrushDomainChange={handleBrushDomainChange}
           />
         }
       >
@@ -111,27 +116,19 @@ const ContinuousColorMapRangeSlider = ({
           }}
         />
         <VictoryAxis
-          dependentAxis
-          orientation="top"
-          axisComponent={<></>}
-          tickFormat={t => t.toFixed(0)}
+          {...axisProps}
           tickLabelComponent={
             <VictoryLabel
               style={{
-                fontFamily: '"Open Sans", sans-serif',
-                fill: '#fff',
+                ...tickLabelStyle,
                 opacity: brushMoved ? 0 : 1,
-                transition: 'opacity 150ms ease',
               }}
             />
           }
         />
         <VictoryAxis
-          dependentAxis
+          {...axisProps}
           tickValues={brushMoved && [brushDomain.y[0], brushDomain.y[1]]}
-          orientation="top"
-          axisComponent={<></>}
-          tickFormat={t => t.toFixed(0)}
           tickLabelComponent={
             <VictoryLabel
               dx={({ index, text }) => {
@@ -141,10 +138,8 @@ const ContinuousColorMapRangeSlider = ({
                   : `${text[0].length / 2}ch`;
               }}
               style={{
-                fontFamily: '"Open Sans", sans-serif',
-                fill: '#fff',
+                ...tickLabelStyle,
                 opacity: brushMoved ? 1 : 0,
-                transition: 'opacity 150ms ease',
               }}
             />
           }

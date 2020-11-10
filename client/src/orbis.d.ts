@@ -76,8 +76,11 @@ type Property = {
   description?: string;
   type: PropertyType;
   units?: 'string';
+  min: number;
+  max: number;
   application: {
     orbis?: {
+      label?: string;
       display?: {
         colormap_reversed?: boolean;
         color: ColorMap;
