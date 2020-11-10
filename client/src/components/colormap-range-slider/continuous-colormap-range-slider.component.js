@@ -112,6 +112,22 @@ const ContinuousColorMapRangeSlider = ({
         />
         <VictoryAxis
           dependentAxis
+          orientation="top"
+          axisComponent={<></>}
+          tickFormat={t => t.toFixed(0)}
+          tickLabelComponent={
+            <VictoryLabel
+              style={{
+                fontFamily: '"Open Sans", sans-serif',
+                fill: '#fff',
+                opacity: brushMoved ? 0 : 1,
+                transition: 'opacity 150ms ease',
+              }}
+            />
+          }
+        />
+        <VictoryAxis
+          dependentAxis
           tickValues={brushMoved && [brushDomain.y[0], brushDomain.y[1]]}
           orientation="top"
           axisComponent={<></>}
@@ -127,6 +143,8 @@ const ContinuousColorMapRangeSlider = ({
               style={{
                 fontFamily: '"Open Sans", sans-serif',
                 fill: '#fff',
+                opacity: brushMoved ? 1 : 0,
+                transition: 'opacity 150ms ease',
               }}
             />
           }

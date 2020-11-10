@@ -54,6 +54,7 @@ const DecileColorMapRangeSlider = ({ brushStyle, color, handleStyle }) => {
       }
     >
       <VictoryHistogram
+        animate={{ duration: 150, onLoad: { duration: 0 } }}
         data={data}
         bins={[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]}
         style={histogramStyle}
@@ -73,6 +74,7 @@ const DecileColorMapRangeSlider = ({ brushStyle, color, handleStyle }) => {
                 index <= brushDomain?.x[1]
                   ? 1
                   : 0.3,
+              transition: 'opacity 150ms ease',
             }}
             dx={-17}
           />
