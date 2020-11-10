@@ -68,6 +68,11 @@ const DecileColorMapRangeSlider = ({ brushStyle, color, handleStyle }) => {
               display: 'flex',
               fontFamily: '"Open Sans", sans-serif',
               fill: '#fff',
+              opacity: ({ index }) =>
+                index >= Math.floor(brushDomain?.x[0]) &&
+                index <= brushDomain?.x[1]
+                  ? 1
+                  : 0.3,
             }}
             dx={-17}
           />
