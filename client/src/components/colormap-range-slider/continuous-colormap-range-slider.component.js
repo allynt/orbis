@@ -18,9 +18,14 @@ const DEFAULT_CLIP_POSITION = {
  *   units?: string
  *   domain?: [number, number]
  *   onChange?: (domain: [number, number]) => void
- * }} props
+ * } & import('./colormap-range-slider.component').SharedProps} props
  */
-const ContinuousColorMapRangeSlider = ({ color, domain }) => {
+const ContinuousColorMapRangeSlider = ({
+  brushStyle,
+  color,
+  domain,
+  handleStyle,
+}) => {
   const colorScale = chroma.scale(color);
   const scaleColors = colorScale.colors();
   const data = [{ x: 0.5, y: domain[1] }];
@@ -46,7 +51,8 @@ const ContinuousColorMapRangeSlider = ({ color, domain }) => {
         containerComponent={
           <VictoryBrushContainer
             brushDimension="y"
-            style={{ fill: 'none' }}
+            brushStyle={brushStyle}
+            handleStyle={handleStyle}
             onBrushCleared={() => setClipPosition(DEFAULT_CLIP_POSITION)}
             onBrushDomainChange={(_, props) => {
               setClipPosition({

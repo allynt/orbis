@@ -9,9 +9,9 @@ import chroma from 'chroma-js';
  *   color: ColorMap
  *   snap?: boolean
  *   onChange?: (domain: [number, number]) => void
- * }} props
+ * } & import('./colormap-range-slider.component').SharedProps} props
  */
-const DecileColorMapRangeSlider = ({ color }) => {
+const DecileColorMapRangeSlider = ({ brushStyle, color, handleStyle }) => {
   /** @type {[number, number]} */
   const domain = [0, 10];
   /** @type {[BrushDomain, React.Dispatch<BrushDomain>]} */
@@ -30,16 +30,6 @@ const DecileColorMapRangeSlider = ({ color }) => {
               .toString(),
       stroke: 'none',
     },
-  };
-
-  /** @type {React.CSSProperties} */
-  const brushStyle = { fill: 'transparent' };
-
-  /** @type {React.CSSProperties} */
-  const handleStyle = {
-    fill: '#f6be00',
-    width: '5px',
-    borderRadius: '50%',
   };
 
   /** @type {import('victory').VictoryBrushContainerProps['onBrushDomainChangeEnd']} */

@@ -3,6 +3,25 @@ import ContinuousColorMapRangeSlider from './continuous-colormap-range-slider.co
 import DecileColorMapRangeSlider from './decile-colormap-range-slider.component';
 
 /**
+ * @typedef {{
+ *   brushStyle: React.CSSProperties
+ *   handleStyle: React.CSSProperties
+ *   color: ColorMap
+ *   onChange?: (domain: [number, number]) => void
+ * }} SharedProps
+ */
+
+/** @type {{ brushStyle: React.CSSProperties, handleStyle: React.CSSProperties }} */
+const BRUSH_STYLE = {
+  brushStyle: { fill: 'transparent' },
+  handleStyle: {
+    fill: '#f6be00',
+    width: '5px',
+    borderRadius: '50%',
+  },
+};
+
+/**
  * @param {{
  *   color: ColorMap
  *   type: PropertyType
@@ -15,9 +34,9 @@ import DecileColorMapRangeSlider from './decile-colormap-range-slider.component'
 const ColorMapRangeSlider = ({ type, ...rest }) => {
   switch (type) {
     case 'decile':
-      return <DecileColorMapRangeSlider {...rest} />;
+      return <DecileColorMapRangeSlider {...BRUSH_STYLE} {...rest} />;
     default:
-      return <ContinuousColorMapRangeSlider {...rest} />;
+      return <ContinuousColorMapRangeSlider {...BRUSH_STYLE} {...rest} />;
   }
 };
 
