@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   VictoryAxis,
   VictoryBrushContainer,
@@ -24,6 +24,7 @@ const DecileColorMapRangeSlider = ({
   height,
   padding,
   tickLabelStyle,
+  onChange,
 }) => {
   /** @type {[number, number]} */
   const domain = [0, 10];
@@ -44,6 +45,11 @@ const DecileColorMapRangeSlider = ({
       stroke: 'none',
     },
   };
+
+  useEffect(() => {
+    // @ts-ignore
+    if (onChange) onChange(brushDomain.x.map(Math.ceil));
+  }, [brushDomain, onChange]);
 
   /** @type {import('victory').VictoryBrushContainerProps['onBrushDomainChangeEnd']} */
   const handleBrushDomainChangeEnd = domain => setBrushDomain(domain);
