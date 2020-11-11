@@ -1,4 +1,9 @@
-import reducer, { propertySelector, setProperty } from './isolation-plus.slice';
+import reducer, {
+  propertySelector,
+  setProperty,
+  filterRangeSelector,
+  setFilterRange,
+} from './isolation-plus.slice';
 
 describe('isolationPlusSlice', () => {
   describe('reducer', () => {
@@ -23,6 +28,20 @@ describe('isolationPlusSlice', () => {
         const payload = { source_id: 'test/layer', name: 'hello' };
         const result = reducer(state, setProperty(payload));
         expect(result).toEqual(expected);
+      });
+    });
+
+    describe('setFilterRange', () => {
+      it('sets the filter range in state', () => {
+        const payload = [1, 2];
+        const result = reducer({}, setFilterRange(payload));
+        expect(result).toEqual({ filterRange: payload });
+      });
+
+      it('rounds the values', () => {
+        const payload = [1.1, 2.9];
+        const result = reducer({}, setFilterRange(payload));
+        expect(result).toEqual({ filterRange: [1, 3] });
       });
     });
   });
@@ -67,6 +86,21 @@ describe('isolationPlusSlice', () => {
           orbs: { isolationPlus: { 'test/layer': 'hello' } },
         });
         expect(result).toBeUndefined();
+      });
+    });
+
+    describe('filterRangeSelector', () => {
+      it('returns undefined if isolationPlus state is undefined', () => {
+        const state = {};
+        const result = filterRangeSelector(state);
+        expect(result).toBeUndefined();
+      });
+
+      it('returns filterRange from state', () => {
+        const filterRange = [1, 2];
+        const state = { isolationPlus: { filterRange } };
+        const result = filterRangeSelector(state);
+        expect(result).toEqual(filterRange);
       });
     });
   });
