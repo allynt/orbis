@@ -1,5 +1,6 @@
-import chroma from 'chroma-js';
 import { DataFilterExtension } from '@deck.gl/extensions';
+import chroma from 'chroma-js';
+
 import {
   filterRangeSelector,
   propertySelector,
@@ -25,6 +26,7 @@ const configuration = ({
     chroma
       .scale(selectedPropertyMetadata?.application?.orbis?.display?.color)
       .domain([selectedProperty?.min, selectedProperty?.max]);
+
   return {
     id,
     data,
@@ -44,10 +46,14 @@ const configuration = ({
         : [0, 0, 0]),
       150,
     ],
-    getFilterValue: d => d.properties[selectedProperty.name],
-    filterRange,
+    getFilterValue: d => Math.round(d.properties[selectedProperty.name]),
+    filterRange: filterRange || [
+      selectedPropertyMetadata?.min,
+      selectedPropertyMetadata?.max,
+    ],
     updateTriggers: {
-      getFillColor: [selectedProperty],
+      getFillColor: [selectedProperty, filterRange],
+      getFilterValue: [selectedProperty],
     },
     extensions: [new DataFilterExtension({ filterSize: 1 })],
   };

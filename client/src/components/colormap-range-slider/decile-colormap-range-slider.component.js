@@ -64,6 +64,7 @@ const DecileColorMapRangeSlider = ({
           brushStyle={brushStyle}
           handleStyle={handleStyle}
           brushDomain={brushDomain}
+          onBrushCleared={handleBrushDomainChangeEnd}
           onBrushDomainChangeEnd={handleBrushDomainChangeEnd}
         />
       }

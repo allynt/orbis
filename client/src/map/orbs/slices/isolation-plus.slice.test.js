@@ -5,9 +5,9 @@ describe('isolationPlusSlice', () => {
     describe('setProperty', () => {
       it('sets the property for a source in state if not yet defined', () => {
         const state = { property: {} };
-        const expected = {
+        const expected = expect.objectContaining({
           property: { source_id: 'test/layer', name: 'hello' },
-        };
+        });
         const payload = { source_id: 'test/layer', name: 'hello' };
         const result = reducer(state, setProperty(payload));
         expect(result).toEqual(expected);
@@ -17,9 +17,9 @@ describe('isolationPlusSlice', () => {
         const state = {
           property: { source_id: 'test/layer', name: 'no thanks' },
         };
-        const expected = {
+        const expected = expect.objectContaining({
           property: { source_id: 'test/layer', name: 'hello' },
-        };
+        });
         const payload = { source_id: 'test/layer', name: 'hello' };
         const result = reducer(state, setProperty(payload));
         expect(result).toEqual(expected);

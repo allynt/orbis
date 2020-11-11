@@ -38,11 +38,7 @@ const ContinuousColorMapRangeSlider = ({
   const brushMoved = clipPosition !== DEFAULT_CLIP_POSITION;
   const [brushDomain, setBrushDomain] = useState({ y: domain });
 
-  useEffect(() => {
-    if (onChange) onChange(brushDomain.y);
-  }, [brushDomain, onChange]);
-
-  /** @type {import('victory').VictoryBarProps['style']} */
+  /** @type {import('victory').VictoryBarProps} */
   const barProps = {
     // @ts-ignore
     data,
@@ -63,12 +59,21 @@ const ContinuousColorMapRangeSlider = ({
     tickFormat: t => t.toFixed(0),
   };
 
+  const handleBrushCleared = () => {
+    setClipPosition(DEFAULT_CLIP_POSITION);
+    if (onChange) onChange(domain);
+  };
+
   const handleBrushDomainChange = (domain, { x1, x2 }) => {
     setBrushDomain(domain);
     setClipPosition({
       translateX: x2 > x1 ? x1 : x2,
       clipWidth: x2 > x1 ? x2 - x1 : x1 - x2,
     });
+  };
+
+  const handleBrushDomainChangeEnd = () => {
+    if (onChange) onChange(brushDomain.y.map(v => +v.toFixed(1)));
   };
 
   return (
@@ -95,8 +100,9 @@ const ContinuousColorMapRangeSlider = ({
             brushDimension="y"
             brushStyle={brushStyle}
             handleStyle={handleStyle}
-            onBrushCleared={() => setClipPosition(DEFAULT_CLIP_POSITION)}
+            onBrushCleared={handleBrushCleared}
             onBrushDomainChange={handleBrushDomainChange}
+            onBrushDomainChangeEnd={handleBrushDomainChangeEnd}
           />
         }
       >

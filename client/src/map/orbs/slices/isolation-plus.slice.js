@@ -13,13 +13,14 @@ const isolationPlusSlice = createSlice({
   },
   reducers: {
     setProperty: (state, { payload }) => {
+      state.filterRange = [payload.min, payload.max];
       state.property = payload;
     },
     setPickedInfo: (state, { payload }) => {
       state.pickedInfo = payload;
     },
     setFilterRange: (state, { payload }) => {
-      state.filterRange = payload;
+      state.filterRange = payload.map(Math.round);
     },
   },
 });
