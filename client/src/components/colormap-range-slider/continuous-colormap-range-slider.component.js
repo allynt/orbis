@@ -16,10 +16,8 @@ const DEFAULT_CLIP_POSITION = {
 
 /**
  * @param {{
- *   color?: ColorMap
  *   units?: string
  *   domain?: [number, number]
- *   onChange?: (domain: [number, number]) => void
  * } & import('./colormap-range-slider.component').SharedProps} props
  */
 const ContinuousColorMapRangeSlider = ({

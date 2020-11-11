@@ -12,9 +12,7 @@ import chroma from 'chroma-js';
 
 /**
  * @param {{
- *   color?: ColorMap
  *   snap?: boolean
- *   onChange?: (domain: [number, number]) => void
  * } & import('./colormap-range-slider.component').SharedProps} props
  */
 const DecileColorMapRangeSlider = ({
