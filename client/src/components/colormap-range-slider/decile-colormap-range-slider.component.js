@@ -12,7 +12,7 @@ import chroma from 'chroma-js';
 
 /**
  * @param {{
- *   color: ColorMap
+ *   color?: ColorMap
  *   snap?: boolean
  *   onChange?: (domain: [number, number]) => void
  * } & import('./colormap-range-slider.component').SharedProps} props
@@ -59,6 +59,7 @@ const DecileColorMapRangeSlider = ({
       padding={padding}
       containerComponent={
         <VictoryBrushContainer
+          title="Decile ColorMap Range Slider"
           height={height}
           brushDimension="x"
           brushStyle={brushStyle}

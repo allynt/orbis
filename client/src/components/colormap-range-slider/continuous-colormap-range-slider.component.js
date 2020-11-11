@@ -16,7 +16,7 @@ const DEFAULT_CLIP_POSITION = {
 
 /**
  * @param {{
- *   color: ColorMap
+ *   color?: ColorMap
  *   units?: string
  *   domain?: [number, number]
  *   onChange?: (domain: [number, number]) => void
@@ -25,7 +25,7 @@ const DEFAULT_CLIP_POSITION = {
 const ContinuousColorMapRangeSlider = ({
   brushStyle,
   color,
-  domain,
+  domain = [0, 1],
   handleStyle,
   height,
   padding,
@@ -96,6 +96,7 @@ const ContinuousColorMapRangeSlider = ({
         padding={padding}
         containerComponent={
           <VictoryBrushContainer
+            title="Continuous ColorMap Range Slider"
             height={height}
             brushDimension="y"
             brushStyle={brushStyle}

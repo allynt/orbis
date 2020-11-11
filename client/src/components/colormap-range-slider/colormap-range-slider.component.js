@@ -11,7 +11,7 @@ import DecileColorMapRangeSlider from './decile-colormap-range-slider.component'
 
 /**
  * @typedef {{
- *   color: ColorMap
+ *   color?: ColorMap
  *   height: number
  *   padding: import('victory').VictoryChartProps['padding']
  *   onChange?: (domain: [number, number]) => void
@@ -38,7 +38,7 @@ const STYLE = {
 
 /**
  * @param {{
- *   color: ColorMap
+ *   color?: ColorMap
  *   domain?: [number, number]
  *   type: PropertyType
  *   units?: string
