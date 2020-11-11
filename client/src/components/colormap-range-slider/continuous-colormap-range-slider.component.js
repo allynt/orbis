@@ -142,7 +142,7 @@ const ContinuousColorMapRangeSlider = ({
         />
         <VictoryAxis
           {...axisProps}
-          tickValues={brushMoved && [brushDomain.y[0], brushDomain.y[1]]}
+          tickValues={brushMoved && brushDomain.y}
           tickLabelComponent={
             <VictoryLabel
               dx={({ index, text }) => {
