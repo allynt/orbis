@@ -1,6 +1,6 @@
 import { numberRangeRegex, FORMAT } from './radio-picker-constants';
 
-export const getRange = property => {
+export const getLabel = property => {
   const range = property.name.match(numberRangeRegex);
   if (!range) {
     return property.name;
@@ -11,7 +11,6 @@ export const getRange = property => {
 export const sortPairs = selectedLayer => {
   let percentages = [];
   let numbers = [];
-  let pairs = [];
 
   for (let property of selectedLayer?.metadata?.properties) {
     if (property.type === FORMAT.percentage) {
@@ -21,10 +20,8 @@ export const sortPairs = selectedLayer => {
     }
   }
 
+  let pairs = [];
   percentages.forEach((perc, i) => {
-    // const range = perc.name.match(numberRangeRegex)[0];
-    // const twin = numbers.find(num => num.name.includes(range));
-
     const num = numbers[i];
     pairs = [...pairs, [perc, num]];
   });
