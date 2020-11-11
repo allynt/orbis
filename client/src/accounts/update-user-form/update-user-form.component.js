@@ -70,7 +70,7 @@ const UpdateUserForm = ({ user, updateUser }) => {
           />
         </Grid>
       </Grid>
-      <Box mt="auto">
+      <Box mt="auto" mx="auto">
         <Button type="submit">Update Account</Button>
       </Box>
     </Box>
