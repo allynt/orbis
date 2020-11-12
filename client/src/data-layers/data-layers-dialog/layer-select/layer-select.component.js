@@ -1,12 +1,15 @@
-import { Button } from '@astrosat/astrosat-ui';
-import clsx from 'clsx';
 import React, { useMemo, useState } from 'react';
+
+import { Button } from '@astrosat/astrosat-ui';
+
+import clsx from 'clsx';
+import { difference, isEmpty } from 'lodash';
+
+import { collectSourceIds } from 'data-layers/categorisation.utils';
+import { ReactComponent as ExpandIcon } from '../../triangle.svg';
 import dialogStyles from '../data-layers-dialog.module.css';
 import LayerSelectItem from './layer-select-item/layer-select-item.component';
 import styles from './layer-select.module.css';
-import { ReactComponent as ExpandIcon } from '../../triangle.svg';
-import { collectSourceIds } from 'data-layers/categorisation.utils';
-import { difference, isEmpty } from 'lodash';
 
 /**
  * @param {{
@@ -50,7 +53,10 @@ const Accordion = ({ source, level, onSourcesChange, selectedSources }) => {
   const allSourceIds = useMemo(() => collectSourceIds(source.sources), [
     source,
   ]);
-  const notYetSelected = difference(allSourceIds, selectedSources);
+  const notYetSelected = useMemo(
+    () => difference(allSourceIds, selectedSources),
+    [allSourceIds, selectedSources],
+  );
   const allSelected = isEmpty(notYetSelected);
 
   const handleSelectAllClick = () => {
