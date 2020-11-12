@@ -2,7 +2,8 @@ import React, { useCallback, useEffect, useState } from 'react';
 
 import { Button, LayersIcon, LoadMask } from '@astrosat/astrosat-ui';
 
-import DeckGL, { FlyToInterpolator } from 'deck.gl';
+import { FlyToInterpolator } from '@deck.gl/core';
+import DeckGL from '@deck.gl/react';
 import ReactMapGl, {
   NavigationControl,
   ScaleControl,

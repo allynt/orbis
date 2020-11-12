@@ -1,4 +1,4 @@
-import { FlyToInterpolator } from 'deck.gl';
+import { FlyToInterpolator } from '@deck.gl/core';
 import { MAX_ZOOM } from 'map/map.constants';
 import iconMapping from './actionForHelpConfig.iconMapping.json';
 import iconAtlas from './actionForHelpConfig.iconAtlas.svg';

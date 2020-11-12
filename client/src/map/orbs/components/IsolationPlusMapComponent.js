@@ -28,7 +28,7 @@ const IsolationPlusMapComponent = () => {
       <FeatureDetail
         features={[
           omitBy(
-            pickedInfo.object.properties,
+            pickedInfo?.object?.properties,
             (_, key) =>
               key !== selectedProperty.name &&
               !key.toLowerCase().includes('code'),
