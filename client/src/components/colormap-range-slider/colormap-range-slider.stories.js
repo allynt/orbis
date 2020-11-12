@@ -63,6 +63,7 @@ Percentage.args = {
 
 export const Decile = Template.bind({});
 Decile.args = {
+  snap: true,
   type: 'decile',
 };
 

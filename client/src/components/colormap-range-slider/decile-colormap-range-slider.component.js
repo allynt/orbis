@@ -10,6 +10,15 @@ import chroma from 'chroma-js';
 
 /** @typedef {{x: [any, any], y: [any, any]}} BrushDomain */
 
+const data = new Array(10).fill(undefined).map((_, i) => ({ x: i }));
+
+/**
+ * @param {number} value
+ * @param {[number, number]} domain
+ */
+const isInRange = (value, domain) =>
+  value >= Math.floor(domain[0]) && value < domain[1];
+
 /**
  * @param {{
  *   snap?: boolean
@@ -21,6 +30,7 @@ const DecileColorMapRangeSlider = ({
   handleStyle,
   height,
   padding,
+  snap = true,
   tickLabelStyle,
   onChange,
 }) => {
@@ -29,13 +39,12 @@ const DecileColorMapRangeSlider = ({
   /** @type {[BrushDomain, React.Dispatch<BrushDomain>]} */
   const [brushDomain, setBrushDomain] = useState({ x: domain, y: undefined });
   const colorScale = chroma.scale(color).domain(domain);
-  const data = new Array(10).fill(undefined).map((_, i) => ({ x: i }));
 
   /** @type {import('victory').VictoryHistogramProps['style']} */
   const histogramStyle = {
     data: {
       fill: ({ index }) =>
-        index >= Math.floor(brushDomain?.x[0]) && index <= brushDomain?.x[1]
+        isInRange(+index, brushDomain.x)
           ? colorScale(+index).toString()
           : colorScale(+index)
               .alpha(0.3)
@@ -46,11 +55,20 @@ const DecileColorMapRangeSlider = ({
 
   useEffect(() => {
     // @ts-ignore
-    if (onChange) onChange(brushDomain.x.map(Math.ceil));
+    if (onChange) onChange(brushDomain.x);
   }, [brushDomain, onChange]);
 
   /** @type {import('victory').VictoryBrushContainerProps['onBrushDomainChangeEnd']} */
-  const handleBrushDomainChangeEnd = domain => setBrushDomain(domain);
+  const handleBrushDomainChangeEnd = domain =>
+    snap
+      ? setBrushDomain({
+          ...domain,
+          x: [
+            Math.floor(domain.x[0]),
+            domain.x[1] > 10 ? 10 : Math.ceil(domain.x[1]),
+          ],
+        })
+      : setBrushDomain(domain);
 
   return (
     <VictoryGroup
@@ -83,10 +101,7 @@ const DecileColorMapRangeSlider = ({
             style={{
               ...tickLabelStyle,
               opacity: ({ index }) =>
-                index >= Math.floor(brushDomain?.x[0]) &&
-                index <= brushDomain?.x[1]
-                  ? 1
-                  : 0.3,
+                isInRange(+index, brushDomain.x) ? 1 : 0.3,
             }}
             dx={-17}
           />
