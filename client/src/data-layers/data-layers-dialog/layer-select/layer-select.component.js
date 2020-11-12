@@ -25,6 +25,7 @@ const renderCategories = ({
   sources.map(source =>
     source.category ? (
       <Accordion
+        key={source.category}
         source={source}
         level={level}
         onSourceChange={onSourceChange}
