@@ -45,11 +45,18 @@ export const CustomerButNoLicences = () => (
 );
 
 export const NoLicenceData = () => (
-  <ActiveUsersBoard
-    activeUsers={activeUsers}
-    customer={customer}
-    licenceData={null}
-  />
+  <div>
+    <ActiveUsersBoard
+      activeUsers={activeUsers}
+      customer={customer}
+      licenceData={null}
+    />
+    <ActiveUsersBoard
+      activeUsers={activeUsers}
+      customer={customer}
+      licenceData={null}
+    />
+  </div>
 );
 
 export const Default = () => (
