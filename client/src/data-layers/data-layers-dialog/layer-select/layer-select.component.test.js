@@ -197,7 +197,7 @@ describe('<LayerSelect />', () => {
   });
 
   it('calls onSourceChange when a source is clicked', async () => {
-    const { getByRole, onSourceChange } = renderComponent();
+    const { getByRole, onSourcesChange } = renderComponent();
     userEvent.click(
       getByRole('button', { name: new RegExp(ORB_SOURCES[0].category) }),
     );
@@ -206,7 +206,7 @@ describe('<LayerSelect />', () => {
         name: ORB_SOURCES[0].sources[0].metadata.label,
       }),
     );
-    await waitFor(() => expect(onSourceChange).toHaveBeenCalled());
+    await waitFor(() => expect(onSourcesChange).toHaveBeenCalled());
   });
 
   it('enables the submit button when changes have been made', () => {
@@ -214,7 +214,7 @@ describe('<LayerSelect />', () => {
     expect(getByRole('button', { name: SUBMIT_BUTTON })).not.toBeDisabled();
   });
 
-  describe.only('Select All', () => {
+  describe('Select All', () => {
     it('calls onSourcesChange with all sources within a category when "Select All"  is clicked', () => {
       const { onSourcesChange, getAllByRole } = renderComponent();
       userEvent.click(getAllByRole('button', { name: SELECT_ALL })[0]);

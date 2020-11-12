@@ -12,16 +12,16 @@ import { difference, isEmpty } from 'lodash';
  * @param {{
  *  sources: CategorisedSources
  *  level: number
- *  onSourceChange: (params: {
- *     source_id: Source['source_id']
- *     selected: boolean}) => void
+ *  onSourcesChange: (params: {
+ *    source_ids: Source['source_id'][]
+ *    selected: boolean
+ *  }) => void
  *  selectedSources: Source['source_id'][]
  * }} params
  */
 const renderCategories = ({
   sources,
   level,
-  onSourceChange,
   onSourcesChange,
   selectedSources,
 }) =>
@@ -31,7 +31,6 @@ const renderCategories = ({
         key={source.category}
         source={source}
         level={level}
-        onSourceChange={onSourceChange}
         onSourcesChange={onSourcesChange}
         selectedSources={selectedSources}
       />
@@ -40,19 +39,13 @@ const renderCategories = ({
         className={styles.listItem}
         key={source.source_id}
         source={source}
-        onChange={onSourceChange}
+        onChange={onSourcesChange}
         selected={selectedSources?.includes(source.source_id)}
       />
     ),
   );
 
-const Accordion = ({
-  source,
-  level,
-  onSourceChange,
-  onSourcesChange,
-  selectedSources,
-}) => {
+const Accordion = ({ source, level, onSourcesChange, selectedSources }) => {
   const [open, setOpen] = useState(false);
   const allSourceIds = useMemo(() => collectSourceIds(source.sources), [
     source,
@@ -91,7 +84,6 @@ const Accordion = ({
         {renderCategories({
           sources: source.sources,
           level: level + 1,
-          onSourceChange,
           onSourcesChange,
           selectedSources,
         })}
@@ -105,9 +97,6 @@ const Accordion = ({
  *   orbSources: CategorisedSources
  *   selectedSources?: Source['source_id'][]
  *   hasMadeChanges?: boolean
- *   onSourceChange: (params: {
- *     source_id: Source['source_id']
- *     selected: boolean}) => void
  *   onSourcesChange: (params: {
  *     source_ids: Source['source_id'][]
  *     selected: boolean}) => void
@@ -118,7 +107,6 @@ export const LayerSelect = ({
   orbSources,
   selectedSources,
   hasMadeChanges = false,
-  onSourceChange,
   onSourcesChange,
   onSubmit,
 }) => {
@@ -130,7 +118,6 @@ export const LayerSelect = ({
           {renderCategories({
             sources: orbSources,
             level: 0,
-            onSourceChange,
             onSourcesChange,
             selectedSources,
           })}

@@ -60,7 +60,7 @@ describe('<LayerSelectItem />', () => {
     const { getByRole, onChange } = renderComponent();
     userEvent.click(getByRole('checkbox'));
     expect(onChange).toHaveBeenCalledWith({
-      source_id: SOURCE.source_id,
+      source_ids: [SOURCE.source_id],
       selected: true,
     });
   });
@@ -69,7 +69,7 @@ describe('<LayerSelectItem />', () => {
     const { getByRole, onChange } = renderComponent({ selected: true });
     userEvent.click(getByRole('checkbox'));
     expect(onChange).toHaveBeenCalledWith({
-      source_id: SOURCE.source_id,
+      source_ids: [SOURCE.source_id],
       selected: false,
     });
   });
