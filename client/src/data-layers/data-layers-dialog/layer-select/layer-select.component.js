@@ -66,12 +66,19 @@ const Accordion = ({ source, level, onSourcesChange, selectedSources }) => {
           [styles.accordionHeaderRoot]: level === 0,
         })}
       >
-        <button onClick={() => setOpen(c => !c)}>
+        <button
+          className={styles.accordionButton}
+          onClick={() => setOpen(c => !c)}
+        >
           <ExpandIcon className={clsx(styles.arrow, { [styles.open]: open })} />
           {source.category}
         </button>
-        <Button onClick={handleSelectAllClick}>
-          {allSelected ? 'Unselect All' : 'Select All'}
+        <Button
+          className={styles.selectAll}
+          theme="link"
+          onClick={handleSelectAllClick}
+        >
+          {allSelected ? 'unselect' : 'select'} all
         </Button>
       </div>
       <div
