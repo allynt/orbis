@@ -71,7 +71,8 @@ const Accordion = ({ source, level, onSourcesChange, selectedSources }) => {
           onClick={() => setOpen(c => !c)}
         >
           <ExpandIcon className={clsx(styles.arrow, { [styles.open]: open })} />
-          {source.category}
+          {source.category}{' '}
+          <span className={styles.sourceCount}>({allSourceIds.length})</span>
         </button>
         <Button
           className={styles.selectAll}

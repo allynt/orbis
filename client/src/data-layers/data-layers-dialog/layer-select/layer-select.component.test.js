@@ -141,7 +141,7 @@ describe('<LayerSelect />', () => {
     );
     expect(
       getByRole('button', {
-        name: /oil$/i,
+        name: /oil \(/i,
       }),
     ).toBeInTheDocument();
   });
@@ -157,7 +157,7 @@ describe('<LayerSelect />', () => {
     );
     userEvent.click(
       getByRole('button', {
-        name: /oil$/i,
+        name: /oil \(/i,
       }),
     );
     const checkbox = getByRole('checkbox', {
@@ -176,7 +176,7 @@ describe('<LayerSelect />', () => {
 
     userEvent.click(categoryHeading);
     const subCategoryHeading = getByRole('button', {
-      name: /oil$/i,
+      name: /oil \(/i,
     });
     userEvent.click(subCategoryHeading);
     expect(
