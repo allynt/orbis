@@ -1,9 +1,9 @@
 import { numberRangeRegex, FORMAT } from './radio-picker-constants';
 
 export const getLabel = property => {
-  const range = property.name.match(numberRangeRegex);
+  const range = property?.name?.match(numberRangeRegex);
   if (!range) {
-    return property.name;
+    return property?.name;
   }
   return range[0];
 };

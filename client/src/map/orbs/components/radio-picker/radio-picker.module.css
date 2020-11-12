@@ -52,19 +52,12 @@
   font-weight: 600;
 }
 
-.filters {
-  display: flex;
-  flex-direction: column;
-}
-
-.format {
-  display: flex;
-  flex-direction: column;
+.toggles {
+  grid-column: 1 / span 2;
 }
 
 .label {
   color: #dcdcdc;
-  margin-bottom: 0.3rem;
   font-size: 0.75rem;
 }
 
@@ -72,6 +65,8 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-top: 0.3125rem;
+  margin-bottom: 1.25rem;
   width: 100%;
 }
 
