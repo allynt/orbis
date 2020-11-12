@@ -1,10 +1,12 @@
 import { Button } from '@astrosat/astrosat-ui';
 import clsx from 'clsx';
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import dialogStyles from '../data-layers-dialog.module.css';
 import LayerSelectItem from './layer-select-item/layer-select-item.component';
 import styles from './layer-select.module.css';
 import { ReactComponent as ExpandIcon } from '../../triangle.svg';
+import { collectSourceIds } from 'data-layers/categorisation.utils';
+import { difference, isEmpty } from 'lodash';
 
 /**
  * @param {{
@@ -20,6 +22,7 @@ const renderCategories = ({
   sources,
   level,
   onSourceChange,
+  onSourcesChange,
   selectedSources,
 }) =>
   sources.map(source =>
@@ -29,6 +32,7 @@ const renderCategories = ({
         source={source}
         level={level}
         onSourceChange={onSourceChange}
+        onSourcesChange={onSourcesChange}
         selectedSources={selectedSources}
       />
     ) : (
@@ -42,20 +46,41 @@ const renderCategories = ({
     ),
   );
 
-const Accordion = ({ source, level, onSourceChange, selectedSources }) => {
+const Accordion = ({
+  source,
+  level,
+  onSourceChange,
+  onSourcesChange,
+  selectedSources,
+}) => {
   const [open, setOpen] = useState(false);
+  const allSourceIds = useMemo(() => collectSourceIds(source.sources), [
+    source,
+  ]);
+  const notYetSelected = difference(allSourceIds, selectedSources);
+  const allSelected = isEmpty(notYetSelected);
+
+  const handleSelectAllClick = () => {
+    if (allSelected)
+      onSourcesChange({ source_ids: allSourceIds, selected: false });
+    else onSourcesChange({ source_ids: notYetSelected, selected: true });
+  };
 
   return (
     <React.Fragment key={source.category}>
-      <button
+      <div
         className={clsx(styles.accordionHeader, {
           [styles.accordionHeaderRoot]: level === 0,
         })}
-        onClick={() => setOpen(c => !c)}
       >
-        <ExpandIcon className={clsx(styles.arrow, { [styles.open]: open })} />
-        {source.category}
-      </button>
+        <button onClick={() => setOpen(c => !c)}>
+          <ExpandIcon className={clsx(styles.arrow, { [styles.open]: open })} />
+          {source.category}
+        </button>
+        <Button onClick={handleSelectAllClick}>
+          {allSelected ? 'Unselect All' : 'Select All'}
+        </Button>
+      </div>
       <div
         className={clsx(styles.accordionContent, { [styles.open]: open })}
         style={{
@@ -67,6 +92,7 @@ const Accordion = ({ source, level, onSourceChange, selectedSources }) => {
           sources: source.sources,
           level: level + 1,
           onSourceChange,
+          onSourcesChange,
           selectedSources,
         })}
       </div>
@@ -82,6 +108,9 @@ const Accordion = ({ source, level, onSourceChange, selectedSources }) => {
  *   onSourceChange: (params: {
  *     source_id: Source['source_id']
  *     selected: boolean}) => void
+ *   onSourcesChange: (params: {
+ *     source_ids: Source['source_id'][]
+ *     selected: boolean}) => void
  *   onSubmit: () => void
  * }} props
  */
@@ -90,6 +119,7 @@ export const LayerSelect = ({
   selectedSources,
   hasMadeChanges = false,
   onSourceChange,
+  onSourcesChange,
   onSubmit,
 }) => {
   return (
@@ -101,6 +131,7 @@ export const LayerSelect = ({
             sources: orbSources,
             level: 0,
             onSourceChange,
+            onSourcesChange,
             selectedSources,
           })}
         </ul>

@@ -162,3 +162,13 @@ export const createOrbsWithCategorisedSources = sources =>
     },
     [],
   );
+
+/**
+ * @param {CategorisedSources} categorisedSources
+ * @returns {Source['source_id'][]}
+ */
+export const collectSourceIds = categorisedSources =>
+  categorisedSources.reduce((acc, sourceOrCategory) => {
+    if (sourceOrCategory.source_id) return [...acc, sourceOrCategory.source_id];
+    return [...acc, ...collectSourceIds(sourceOrCategory.sources)];
+  }, []);

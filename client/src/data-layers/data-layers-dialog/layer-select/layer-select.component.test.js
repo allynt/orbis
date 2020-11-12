@@ -214,7 +214,7 @@ describe('<LayerSelect />', () => {
     expect(getByRole('button', { name: SUBMIT_BUTTON })).not.toBeDisabled();
   });
 
-  describe('Select All', () => {
+  describe.only('Select All', () => {
     it('calls onSourcesChange with all sources within a category when "Select All"  is clicked', () => {
       const { onSourcesChange, getAllByRole } = renderComponent();
       userEvent.click(getAllByRole('button', { name: SELECT_ALL })[0]);
@@ -229,7 +229,9 @@ describe('<LayerSelect />', () => {
         orbSources: ORB_SOURCES_SUB_CATEGORIES,
       });
       userEvent.click(
-        getByRole('button', { name: ORB_SOURCES_SUB_CATEGORIES[0].category }),
+        getByRole('button', {
+          name: new RegExp(ORB_SOURCES_SUB_CATEGORIES[0].category),
+        }),
       );
       userEvent.click(getAllByRole('button', { name: SELECT_ALL })[1]);
       expect(onSourcesChange).toHaveBeenCalledWith({
@@ -255,9 +257,11 @@ describe('<LayerSelect />', () => {
         selectedSources: ['oil/source/1', 'oil/source/2'],
       });
       userEvent.click(
-        getByRole('button', { name: ORB_SOURCES_SUB_CATEGORIES[0].category }),
+        getByRole('button', {
+          name: new RegExp(ORB_SOURCES_SUB_CATEGORIES[0].category),
+        }),
       );
-      userEvent.click(getAllByRole('button', { name: SELECT_ALL })[1]);
+      userEvent.click(getAllByRole('button', { name: UNSELECT_ALL })[0]);
       expect(onSourcesChange).toHaveBeenCalledWith({
         source_ids: ['oil/source/1', 'oil/source/2'],
         selected: false,
@@ -273,41 +277,6 @@ describe('<LayerSelect />', () => {
         source_ids: ['oil/source/2'],
         selected: true,
       });
-    });
-
-    it('changes "Select All" to "Unselect All" when all sources are manually selected', () => {
-      const { getByRole } = renderComponent();
-      expect(getByRole('button', { name: SELECT_ALL })).toBeInTheDocument();
-      userEvent.click(
-        getByRole('button', { name: new RegExp(ORB_SOURCES[0].category) }),
-      );
-      userEvent.click(
-        getByRole('checkbox', {
-          name: ORB_SOURCES[0].sources[0].metadata.label,
-        }),
-      );
-      userEvent.click(
-        getByRole('checkbox', {
-          name: ORB_SOURCES[0].sources[1].metadata.label,
-        }),
-      );
-      expect(getByRole('button', { name: UNSELECT_ALL })).toBeInTheDocument();
-    });
-
-    it('changes "Unselect All" to "Select All" when all sources in a category are selected and one is manually deselected', () => {
-      const { getByRole } = renderComponent({
-        selectedSources: ['oil/source/1', 'oil/source/2'],
-      });
-      expect(getByRole('button', { name: UNSELECT_ALL })).toBeInTheDocument();
-      userEvent.click(
-        getByRole('button', { name: new RegExp(ORB_SOURCES[0].category) }),
-      );
-      userEvent.click(
-        getByRole('checkbox', {
-          name: ORB_SOURCES[0].sources[0].metadata.label,
-        }),
-      );
-      expect(getByRole('button', { name: SELECT_ALL })).toBeInTheDocument();
     });
   });
 });
