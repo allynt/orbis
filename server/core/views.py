@@ -33,7 +33,7 @@ class AppConfigView(APIView):
             ("isApprovalRequired", openapi.Schema(type=openapi.TYPE_BOOLEAN)),
             ("mapStyles", openapi.Schema(type=openapi.TYPE_STRING, example="[{'id': 'streets', 'uri': 'mapbox://styles/mapbox/streets-v11', 'title': 'Streets'}]")),
             ("maximumAoiArea", openapi.Schema(type=openapi.TYPE_INTEGER, example=500)),
-
+            ("SHA", openapi.Schema(type=openapi.TYPE_STRING)),
         ))
     )
 
@@ -54,6 +54,7 @@ class AppConfigView(APIView):
             "isApprovalRequired": astrosat_users_settings.ASTROSAT_USERS_REQUIRE_APPROVAL,
             "mapStyles": settings.MAPBOX_STYLES,
             "maximumAoiArea": settings.MAXIMUM_AOI_AREA,
+            "SHA": settings.COMMIT_SHA,
         }
 
         return Response(config)
