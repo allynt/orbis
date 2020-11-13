@@ -1,4 +1,4 @@
-import { GeoJsonLayer } from 'deck.gl';
+import { GeoJsonLayer } from '@deck.gl/layers';
 import { LayerFactory } from './LayerFactory';
 
 describe('LayerFactory', () => {

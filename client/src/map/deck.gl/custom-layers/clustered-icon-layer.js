@@ -1,4 +1,5 @@
-import { CompositeLayer, IconLayer, TextLayer } from 'deck.gl';
+import { CompositeLayer } from '@deck.gl/core';
+import { IconLayer, TextLayer } from '@deck.gl/layers';
 import Supercluster from 'supercluster';
 
 const TEXT_COLOR_TRANSPARENT = [0, 0, 0, 0];

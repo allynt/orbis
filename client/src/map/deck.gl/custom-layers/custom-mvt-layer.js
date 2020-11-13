@@ -1,6 +1,6 @@
 import { load } from '@loaders.gl/core';
 import { MVTLoader } from '@loaders.gl/mvt';
-import { MVTLayer } from 'deck.gl';
+import { MVTLayer } from '@deck.gl/geo-layers';
 import { gunzipSync } from 'zlib';
 
 /**

@@ -26,7 +26,7 @@ MapContext.displayName = 'MapContext';
 /**
  * @typedef {Object} MapContextType
  * @property {React.MutableRefObject<import('react-map-gl').StaticMap>} mapRef
- * @property {React.MutableRefObject<import('deck.gl').Deck>} deckRef
+ * @property {React.MutableRefObject<import('@deck.gl/core').Deck>} deckRef
  * @property {ViewState} viewState
  * @property {React.Dispatch<ViewState>} setViewState
  */
@@ -56,7 +56,7 @@ export const MapProvider = props => {
 /**
  * @returns {{
  *   mapRef: React.MutableRefObject<import('react-map-gl').StaticMap>
- *   deckRef: React.MutableRefObject<import('deck.gl').Deck>
+ *   deckRef: React.MutableRefObject<import('@deck.gl/core').Deck>
  *   viewState: ViewState
  *   setViewState: React.Dispatch<ViewState>
  *   createScreenshot: (callback: BlobCallback) => void
