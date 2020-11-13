@@ -14,7 +14,7 @@ import styles from './layer-select-item.module.css';
  *   className?: string
  *   selected?: boolean
  *   source: Source
- *   onChange: ({source_id: string, selected: boolean}) => void
+ *   onChange: (params: {source_ids: Source['source_id'][]; selected: boolean}) => void
  * }} props
  */
 const LayerSelectItem = ({ className, selected, source, onChange }) => {
@@ -30,10 +30,10 @@ const LayerSelectItem = ({ className, selected, source, onChange }) => {
       <Checkbox
         id={source.source_id}
         label={source.metadata.label}
-        defaultChecked={selected}
+        checked={selected}
         onChange={e =>
           onChange({
-            source_id: source.source_id,
+            source_ids: [source.source_id],
             selected: e.target.checked,
           })
         }

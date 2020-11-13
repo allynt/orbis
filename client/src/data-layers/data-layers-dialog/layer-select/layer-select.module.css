@@ -16,7 +16,6 @@
   text-align: left;
   font-weight: 600;
   color: var(--color--text--dark);
-  padding: 0.5em 1em;
   display: flex;
   align-items: center;
 }
@@ -26,6 +25,27 @@
   color: var(--button--secondary--color);
   border-radius: var(--global--border-radius);
   margin-bottom: 0.625rem;
+}
+
+.accordionButton {
+  flex-grow: 1;
+  padding: 0.5em 1em;
+  text-align: left;
+  font-weight: 600;
+}
+
+.sourceCount {
+  font-weight: normal;
+}
+
+.selectAll {
+  margin-left: auto;
+  margin-right: 1em;
+  padding: 0;
+}
+
+.accordionHeaderRoot .selectAll {
+  color: #fff;
 }
 
 .arrow {

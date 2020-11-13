@@ -35,11 +35,13 @@ const DataLayersDialog = ({
     setHasMadeChanges(!isEqual(initialSelectedSources, selectedSources));
   }, [initialSelectedSources, selectedSources]);
 
-  /** @param {{source_id: Source['source_id'], selected: boolean}} params */
-  const handleSourceChange = ({ source_id, selected }) => {
+  /** @param {{source_ids: Source['source_id'][], selected: boolean}} params */
+  const handleSourcesChange = ({ source_ids, selected }) => {
     selected
-      ? setSelectedSources(current => [...current, source_id])
-      : setSelectedSources(current => current.filter(id => id !== source_id));
+      ? setSelectedSources(current => [...current, ...source_ids])
+      : setSelectedSources(current =>
+          current.filter(v => !source_ids.includes(v)),
+        );
   };
 
   const handleSubmit = () => onSubmit && onSubmit(selectedSources);
@@ -70,7 +72,7 @@ const DataLayersDialog = ({
         <LayerSelect
           orbSources={orbs?.find(orb => orb.name === selectedOrbName)?.sources}
           selectedSources={selectedSources}
-          onSourceChange={handleSourceChange}
+          onSourcesChange={handleSourcesChange}
           onSubmit={handleSubmit}
           hasMadeChanges={hasMadeChanges}
         />

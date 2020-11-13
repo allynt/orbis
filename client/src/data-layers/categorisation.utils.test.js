@@ -2,6 +2,7 @@ import {
   injectSource,
   createCategorisationPath,
   createOrbsWithCategorisedSources,
+  collectSourceIds,
 } from './categorisation.utils';
 
 describe('createCategorisationPath', () => {
@@ -549,5 +550,61 @@ describe('createOrbsWithCategorisedSources', () => {
       const result = createOrbsWithCategorisedSources(sources);
       expect(result).toEqual(expected);
     });
+  });
+});
+
+describe('collectSourceIds', () => {
+  it('returns all the source ids from a flat hierarchy', () => {
+    const categorisedSources = [
+      { source_id: 'source/1' },
+      { source_id: 'source/2' },
+      { source_id: 'source/3' },
+    ];
+    const result = collectSourceIds(categorisedSources);
+    expect(result).toEqual(['source/1', 'source/2', 'source/3']);
+  });
+
+  it('returns all source ids from a nested hierarchy', () => {
+    const categorisedSources = [
+      {
+        category: 'Forestry',
+        sources: [
+          {
+            source_id: 'forestry/1',
+          },
+          {
+            category: 'Trees',
+            sources: [
+              { source_id: 'trees/1' },
+              { source_id: 'trees/2' },
+              { category: 'Evergreen', sources: [{ source_id: 'pine/1' }] },
+            ],
+          },
+        ],
+      },
+    ];
+
+    const result = collectSourceIds(categorisedSources);
+    expect(result).toEqual(['forestry/1', 'trees/1', 'trees/2', 'pine/1']);
+  });
+
+  it('returns all source ids from a sibling hierarchy', () => {
+    const categorisedSources = [
+      {
+        category: 'Forestry',
+        sources: [{ source_id: 'forestry/1' }, { source_id: 'forestry/2' }],
+      },
+      {
+        category: 'Health',
+        sources: [{ source_id: 'health/1' }, { source_id: 'health/2' }],
+      },
+    ];
+    const result = collectSourceIds(categorisedSources);
+    expect(result).toEqual([
+      'forestry/1',
+      'forestry/2',
+      'health/1',
+      'health/2',
+    ]);
   });
 });
