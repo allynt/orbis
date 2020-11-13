@@ -1,28 +1,36 @@
 import React, { useState } from 'react';
 
-import { Button, Radio } from '@astrosat/astrosat-ui';
+import {
+  Button,
+  FormControl,
+  FormControlLabel,
+  FormLabel,
+  Grid,
+  Link,
+  makeStyles,
+  Radio,
+  RadioGroup,
+  Typography,
+} from '@astrosat/astrosat-ui';
 
 import { useHistory } from 'react-router-dom';
 
 import { TERMS } from 'legal-documents/legal-documents-constants';
 import { REGISTER_CUSTOMER_USER, REGISTER } from 'accounts/accounts.constants';
 
-import formStyles from 'forms.module.css';
-import styles from './journey-selection.module.css';
-
 const SMALL_PRINT = (
   <>
     A contract will be created between Astrosat and You "The Customer”. Before
     you proceed, you need to accept our Terms and Conditions and our Privacy
     Policy both of which can be found{' '}
-    <Button
-      className={styles.link}
+    <Link
+      variant="inherit"
       href={TERMS}
       target="_blank"
       rel="noreferrer noopener"
     >
       here
-    </Button>
+    </Link>
     , we will then verify your email address [by sending you a verification
     email to which you must reply], you can then proceed to create your company
     profile and order Subscription Services and Professional Services. We will
@@ -34,6 +42,16 @@ const SMALL_PRINT = (
   </>
 );
 
+const useStyles = makeStyles(theme => ({
+  legend: {
+    fontWeight: 600,
+    marginBottom: theme.spacing(1),
+  },
+  smallPrint: {
+    fontSize: theme.typography.pxToRem(8),
+  },
+}));
+
 /**
  * @param {{
  *  individualRegistrationIsOpen?: boolean
@@ -44,15 +62,16 @@ const JourneySelection = ({
   individualRegistrationIsOpen = true,
   customerRegistrationIsOpen = true,
 }) => {
-  /** @type {['customer'|'individual', React.Dispatch<'customer'|'individual'>]} */
+  /** @type {[string, React.Dispatch<string>]} */
   const [selection, setSelection] = useState();
   const history = useHistory();
+  const styles = useStyles();
 
   /**
-   * @param {'customer' | 'individual'} value
+   * @param {React.ChangeEvent<HTMLInputElement>} event
    */
-  const handleChange = value => () => {
-    setSelection(value);
+  const handleChange = event => {
+    setSelection(event.target.value);
   };
 
   const handleClick = () => {
@@ -69,38 +88,42 @@ const JourneySelection = ({
   };
 
   return (
-    <div className={formStyles.form}>
-      <h1 className={styles.heading}>Welcome to Orbis</h1>
-      <fieldset className={styles.fieldset}>
-        <legend className={styles.legend}>Sign Up as:</legend>
-        <div className={styles.radios}>
-          <Radio
-            className={styles.radio}
-            id="customer"
-            label="Team"
-            name="journey"
-            value="customer"
-            onChange={handleChange('customer')}
-            disabled={!customerRegistrationIsOpen}
-          />
-          <Radio
-            className={styles.radio}
-            id="individual"
-            label="Individual"
-            name="journey"
-            value="individual"
-            onChange={handleChange('individual')}
-            disabled={!individualRegistrationIsOpen}
-          />
-        </div>
-      </fieldset>
-      <p className={styles.smallPrint}>{SMALL_PRINT}</p>
-      <div className={formStyles.buttons}>
+    <Grid container spacing={2}>
+      <Grid item xs={12} container justify="center">
+        <Typography variant="h2" component="h1">
+          Welcome to Orbis
+        </Typography>
+      </Grid>
+      <Grid item xs={12}>
+        <FormControl component="fieldset">
+          <FormLabel className={styles.legend} component="legend">
+            Sign Up as:
+          </FormLabel>
+          <RadioGroup row name="journey" onChange={handleChange}>
+            <FormControlLabel
+              value="customer"
+              label="Team"
+              disabled={!customerRegistrationIsOpen}
+              control={<Radio />}
+            />
+            <FormControlLabel
+              value="individual"
+              label="Individual"
+              disabled={!individualRegistrationIsOpen}
+              control={<Radio />}
+            />
+          </RadioGroup>
+        </FormControl>
+      </Grid>
+      <Grid item xs={12} component={Typography} className={styles.smallPrint}>
+        {SMALL_PRINT}
+      </Grid>
+      <Grid item xs={12} container justify="center">
         <Button onClick={handleClick} disabled={!selection}>
           Continue
         </Button>
-      </div>
-    </div>
+      </Grid>
+    </Grid>
   );
 };
 
