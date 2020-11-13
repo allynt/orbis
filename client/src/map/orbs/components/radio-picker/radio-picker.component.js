@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 
 import { useSelector } from 'react-redux';
 
-import ColorMapRangeSlider from 'components/colormap-range-slider/colormap-range-slider.component';
 import {
   propertySelector,
   setProperty,
@@ -35,7 +34,6 @@ export const RadioPicker = ({ selectedLayer, dispatch }) => {
   }).replace('.', ' > ');
 
   const onRadioClick = property => {
-    console.log('Property: ', property);
     setSelectedRange(selectedRange === property ? null : property);
     dispatch(
       setProperty({
@@ -71,6 +69,7 @@ export const RadioPicker = ({ selectedLayer, dispatch }) => {
         <SingleProperty
           property={property}
           onRadioClick={onRadioClick}
+          onSliderChange={domain => dispatch(setFilterRange(domain))}
           selectedProperty={selectedProperty}
           colorScheme={colorScheme}
         />
@@ -83,6 +82,7 @@ export const RadioPicker = ({ selectedLayer, dispatch }) => {
           pair={pair}
           onRadioClick={onRadioClick}
           onToggleClick={onToggleClick}
+          onSliderChange={domain => dispatch(setFilterRange(domain))}
           selectedProperty={selectedProperty}
           selectedRange={selectedRange}
           selectedUnit={selectedUnit}

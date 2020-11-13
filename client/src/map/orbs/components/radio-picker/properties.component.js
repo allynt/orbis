@@ -4,7 +4,7 @@ import ReactTooltip from 'react-tooltip';
 
 import { Radio, InfoIcon, Button } from '@astrosat/astrosat-ui';
 
-import ColorScale from 'components/color-scale/color-scale.component';
+import ColorMapRangeSlider from 'components/colormap-range-slider/colormap-range-slider.component';
 
 import { getLabel } from './radio-picker-helpers';
 import { FORMAT } from './radio-picker-constants';
@@ -14,6 +14,7 @@ import styles from './radio-picker.module.css';
 export const SingleProperty = ({
   property,
   onRadioClick,
+  onSliderChange,
   selectedProperty,
   colorScheme,
 }) => (
@@ -50,11 +51,11 @@ export const SingleProperty = ({
       </ReactTooltip>
     </div>
     {property.name === selectedProperty?.name && (
-      <ColorScale
-        className={styles.colorScale}
+      <ColorMapRangeSlider
         type={property.type}
-        scheme={colorScheme}
+        color={colorScheme}
         domain={[property.min, property.max]}
+        onChange={domain => onSliderChange(domain)}
       />
     )}
   </div>
@@ -64,12 +65,14 @@ export const PairedProperty = ({
   pair,
   onRadioClick,
   onToggleClick,
+  onSliderChange,
   selectedProperty,
   selectedRange,
   selectedUnit,
   colorScheme,
 }) => {
   const [perc, num] = pair;
+  console.log('SelectedPtroperty: ', selectedProperty);
   return (
     <div key={perc.name} className={styles.property}>
       <Radio
@@ -124,11 +127,11 @@ export const PairedProperty = ({
               Number
             </Button>
           </div>
-          <ColorScale
-            className={styles.colorScale}
+          <ColorMapRangeSlider
             type={selectedProperty?.type}
-            scheme={colorScheme}
+            color={colorScheme}
             domain={[selectedProperty?.min, selectedProperty?.max]}
+            onChange={domain => onSliderChange(domain)}
           />
         </div>
       )}
