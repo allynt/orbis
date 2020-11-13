@@ -11,7 +11,7 @@ import { LOGIN } from 'accounts/accounts.constants';
 const EMAIL_REGEX = /work\semail\saddress/i;
 const FIRST_NAME_REGEX = /first\sname/i;
 const LAST_NAME_REGEX = /last\sname/i;
-const PASSWORD_REGEX = /^password\*?$/i;
+const PASSWORD_REGEX = /password(?!\sc)/i;
 const PASSWORD_CONFIRMATION_REGEX = /password\sconfirmation/i;
 const AGREE_CHECKBOX_REGEX = /i\sagree\swith/i;
 const SIGN_UP_REGEX = /sign\sup/i;
@@ -57,10 +57,9 @@ describe('<UserRegistration />', () => {
 
   it('enables the Sign Up button when the terms and conditions are agreed', () => {
     const { getByRole } = renderComponent();
-    const submitButton = getByRole('button', { name: SIGN_UP_REGEX });
-    expect(submitButton).toBeDisabled();
+    expect(getByRole('button', { name: SIGN_UP_REGEX })).toBeDisabled();
     userEvent.click(getByRole('checkbox', { name: AGREE_CHECKBOX_REGEX }));
-    expect(submitButton).not.toBeDisabled();
+    expect(getByRole('button', { name: SIGN_UP_REGEX })).not.toBeDisabled();
   });
 
   it('calls onSubmit with the form values on successful completion', async () => {
@@ -90,12 +89,6 @@ describe('<UserRegistration />', () => {
     );
   });
 
-  it('navigates to login when the login link is clicked', () => {
-    const { history, getByRole } = renderComponent();
-    userEvent.click(getByRole('link', { name: LOGIN_REGEX }));
-    expect(history.location.pathname).toBe(LOGIN);
-  });
-
   it('displays server errors if there are any', () => {
     const { getByText } = renderComponent({
       serverErrors: ['test error'],
@@ -104,9 +97,9 @@ describe('<UserRegistration />', () => {
   });
 
   it('shows a loading spinner when loading', () => {
-    const { getByRole } = renderComponent({
+    const { getAllByRole } = renderComponent({
       isLoading: true,
     });
-    expect(getByRole('alert')).toBeInTheDocument();
+    expect(getAllByRole('progressbar')[1]).toBeInTheDocument();
   });
 });
