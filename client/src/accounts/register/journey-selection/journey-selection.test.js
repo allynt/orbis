@@ -64,10 +64,9 @@ describe('<JourneySelection />', () => {
 
   it('enables the Continue button when a selection is made', () => {
     const { getByRole } = renderComponent();
-    const continueButton = getByRole('button', { name: CONTINUE_REGEX });
-    expect(continueButton).toBeDisabled();
+    expect(getByRole('button', { name: CONTINUE_REGEX })).toBeDisabled();
     userEvent.click(getByRole('radio', { name: TEAM_REGEX }));
-    expect(continueButton).not.toBeDisabled();
+    expect(getByRole('button', { name: CONTINUE_REGEX })).not.toBeDisabled();
   });
 
   it('navigates to individual registration when the selection is Individual and Continue is clicked', () => {
