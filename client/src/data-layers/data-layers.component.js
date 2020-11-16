@@ -9,9 +9,7 @@ import { useOrbs } from 'map/orbs/useOrbs';
 import { ReactComponent as AddNewCategoryIcon } from './add-more-categories.svg';
 import DataLayersDialog from './data-layers-dialog/data-layers-dialog.component';
 import {
-  activeCategorisedOrbsAndSourcesSelector,
   activeCategorisedSourcesSelector,
-  activeDataSourcesSelector,
   activeLayersSelector,
   categorisedOrbsAndSourcesSelector,
   setLayers,

@@ -129,12 +129,24 @@ export const categorisedOrbsAndSourcesSelector = depth =>
     createOrbsWithCategorisedSources(sources, depth),
   );
 
+/**
+ * @param {number} [depth]
+ */
 export const activeCategorisedOrbsAndSourcesSelector = depth =>
+  /**
+   * @type {import('@reduxjs/toolkit').Selector<any, OrbWithCategorisedSources[]>}
+   */
   createSelector(activeDataSourcesSelector, sources =>
     createOrbsWithCategorisedSources(sources, depth),
   );
 
+/**
+ * @param {number} [depth]
+ */
 export const activeCategorisedSourcesSelector = depth =>
+  /**
+   * @type {import('@reduxjs/toolkit').Selector<any, CategorisedSources>}
+   */
   createSelector(
     activeCategorisedOrbsAndSourcesSelector(depth),
     orbsAndSources =>
