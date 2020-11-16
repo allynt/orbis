@@ -1,0 +1,13 @@
+.optionsDropdown {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  min-width: 10rem;
+  border-radius: 0.9375rem;
+  background-color: #fff;
+  box-shadow: 0 16px 24px 0 var(--color-lightgrey);
+  cursor: pointer;
+  z-index: 1;
+}
