@@ -1,5 +1,5 @@
 .layersListItem {
-  --pl: 1.5rem;
+  --padding-left: 1.5rem;
   width: 100%;
   padding: 0.75rem 0;
 }
@@ -9,7 +9,7 @@
   min-height: 1.125rem;
   display: flex;
   align-items: center;
-  padding: 0 1rem 0 var(--pl);
+  padding: 0 1rem 0 var(--padding-left);
   color: #ffffff;
   font-size: 0.875rem;
   margin-bottom: 0;
@@ -39,7 +39,7 @@
 }
 
 .children {
-  padding: 0 0.5rem 0 var(--pl);
+  padding: 0 0.5rem 0 var(--padding-left);
   max-height: 0;
   opacity: 0;
   transition: max-height 250ms ease, opacity 250ms ease;
