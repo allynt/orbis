@@ -499,166 +499,123 @@ describe('Data Slice', () => {
       });
     });
 
-    describe('categorisedOrbsAndSourcesSelector', () => {
-      it('returns all sources organised by orb and category', () => {
-        const state = {
-          data: {
-            sources: [
-              {
-                source_id: 'orb/1/cat/1/source/1',
-                metadata: {
-                  application: {
-                    orbis: {
-                      orbs: [{ name: 'Orb1' }],
-                      categories: { name: 'Cat1' },
-                    },
-                  },
+    describe('categorised selectors', () => {
+      const sources = [
+        {
+          source_id: 'orb/1/cat/1/source/1',
+          metadata: {
+            application: {
+              orbis: {
+                orbs: [{ name: 'Orb1' }],
+                categories: { name: 'Cat1' },
+              },
+            },
+          },
+        },
+        {
+          source_id: 'orb/2/cat/1/source/1',
+          metadata: {
+            application: {
+              orbis: {
+                orbs: [{ name: 'Orb2' }],
+                categories: { name: 'Cat1' },
+              },
+            },
+          },
+        },
+      ];
+      describe('categorisedOrbsAndSourcesSelector', () => {
+        it('returns all sources organised by orb and category', () => {
+          const state = {
+            data: {
+              sources,
+            },
+          };
+          const expected = [
+            {
+              name: 'Orb1',
+              sources: [
+                {
+                  category: 'Cat1',
+                  sources: [
+                    expect.objectContaining({
+                      source_id: 'orb/1/cat/1/source/1',
+                    }),
+                  ],
                 },
-              },
-              {
-                source_id: 'orb/2/cat/1/source/1',
-                metadata: {
-                  application: {
-                    orbis: {
-                      orbs: [{ name: 'Orb2' }],
-                      categories: { name: 'Cat1' },
-                    },
-                  },
+              ],
+            },
+            {
+              name: 'Orb2',
+              sources: [
+                {
+                  category: 'Cat1',
+                  sources: [
+                    expect.objectContaining({
+                      source_id: 'orb/2/cat/1/source/1',
+                    }),
+                  ],
                 },
-              },
-            ],
-          },
-        };
-        const expected = [
-          {
-            name: 'Orb1',
-            sources: [
-              {
-                category: 'Cat1',
-                sources: [
-                  expect.objectContaining({
-                    source_id: 'orb/1/cat/1/source/1',
-                  }),
-                ],
-              },
-            ],
-          },
-          {
-            name: 'Orb2',
-            sources: [
-              {
-                category: 'Cat1',
-                sources: [
-                  expect.objectContaining({
-                    source_id: 'orb/2/cat/1/source/1',
-                  }),
-                ],
-              },
-            ],
-          },
-        ];
+              ],
+            },
+          ];
 
-        const result = categorisedOrbsAndSourcesSelector()(state);
-        expect(result).toEqual(expected);
+          const result = categorisedOrbsAndSourcesSelector()(state);
+          expect(result).toEqual(expected);
+        });
       });
-    });
 
-    describe('activeCategorisedOrbsAndSourcesSelector', () => {
-      it('returns sources organised by orb and category if active', () => {
-        const state = {
-          data: {
-            layers: ['orb/1/cat/1/source/1'],
-            sources: [
-              {
-                source_id: 'orb/1/cat/1/source/1',
-                metadata: {
-                  application: {
-                    orbis: {
-                      orbs: [{ name: 'Orb1' }],
-                      categories: { name: 'Cat1' },
-                    },
-                  },
+      describe('activeCategorisedOrbsAndSourcesSelector', () => {
+        it('returns sources organised by orb and category if active', () => {
+          const state = {
+            data: {
+              layers: ['orb/1/cat/1/source/1'],
+              sources,
+            },
+          };
+          const expected = [
+            {
+              name: 'Orb1',
+              sources: [
+                {
+                  category: 'Cat1',
+                  sources: [
+                    expect.objectContaining({
+                      source_id: 'orb/1/cat/1/source/1',
+                    }),
+                  ],
                 },
-              },
-              {
-                source_id: 'orb/2/cat/1/source/1',
-                metadata: {
-                  application: {
-                    orbis: {
-                      orbs: [{ name: 'Orb2' }],
-                      categories: { name: 'Cat1' },
-                    },
-                  },
-                },
-              },
-            ],
-          },
-        };
-        const expected = [
-          {
-            name: 'Orb1',
-            sources: [
-              {
-                category: 'Cat1',
-                sources: [
-                  expect.objectContaining({
-                    source_id: 'orb/1/cat/1/source/1',
-                  }),
-                ],
-              },
-            ],
-          },
-        ];
+              ],
+            },
+          ];
 
-        const result = activeCategorisedOrbsAndSourcesSelector()(state);
-        expect(result).toEqual(expected);
+          const result = activeCategorisedOrbsAndSourcesSelector()(state);
+          expect(result).toEqual(expected);
+        });
       });
-    });
 
-    describe('activeCategorisedSourcesSelector', () => {
-      it('returns only active categories and sources', () => {
-        const state = {
-          data: {
-            layers: ['orb/1/cat/1/source/1'],
-            sources: [
-              {
-                source_id: 'orb/1/cat/1/source/1',
-                metadata: {
-                  application: {
-                    orbis: {
-                      orbs: [{ name: 'Orb1' }],
-                      categories: { name: 'Cat1' },
-                    },
-                  },
-                },
-              },
-              {
-                source_id: 'orb/2/cat/1/source/1',
-                metadata: {
-                  application: {
-                    orbis: {
-                      orbs: [{ name: 'Orb2' }],
-                      categories: { name: 'Cat1' },
-                    },
-                  },
-                },
-              },
-            ],
-          },
-        };
-        const expected = [
-          {
-            category: 'Cat1',
-            sources: [
-              expect.objectContaining({
-                source_id: 'orb/1/cat/1/source/1',
-              }),
-            ],
-          },
-        ];
+      describe('activeCategorisedSourcesSelector', () => {
+        it('returns only active categories and sources', () => {
+          const state = {
+            data: {
+              layers: ['orb/1/cat/1/source/1'],
+              sources,
+            },
+          };
+          const expected = [
+            {
+              category: 'Cat1',
+              sources: [
+                expect.objectContaining({
+                  source_id: 'orb/1/cat/1/source/1',
+                }),
+              ],
+            },
+          ];
 
-        const result = activeCategorisedSourcesSelector()(state);
-        expect(result).toEqual(expected);
+          const result = activeCategorisedSourcesSelector()(state);
+          expect(result).toEqual(expected);
+        });
       });
     });
   });

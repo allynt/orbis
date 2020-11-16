@@ -79,7 +79,7 @@ describe('createHierarchy', () => {
 
     const expected = {
       category: 'Cat 1',
-      sources: [{ source_id: 'source/1' }],
+      sources: [source],
     };
 
     const result = createHierarchy(source, ['Cat 1']);
@@ -96,9 +96,7 @@ describe('createHierarchy', () => {
       sources: [
         {
           category: 'Cat 2',
-          sources: [
-            { category: 'Cat 3', sources: [{ source_id: 'source/1' }] },
-          ],
+          sources: [{ category: 'Cat 3', sources: [source] }],
         },
       ],
     };
