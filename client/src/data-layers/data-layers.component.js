@@ -9,9 +9,11 @@ import { useOrbs } from 'map/orbs/useOrbs';
 import { ReactComponent as AddNewCategoryIcon } from './add-more-categories.svg';
 import DataLayersDialog from './data-layers-dialog/data-layers-dialog.component';
 import {
+  activeCategorisedOrbsAndSourcesSelector,
+  activeCategorisedSourcesSelector,
   activeDataSourcesSelector,
   activeLayersSelector,
-  categorisedSourcesSelector,
+  categorisedOrbsAndSourcesSelector,
   setLayers,
 } from './data-layers.slice';
 import { LayersList } from './layers-list/layers-list.component';
@@ -24,9 +26,13 @@ const DataLayers = () => {
   const { sidebarComponents } = useOrbs();
 
   const dispatch = useDispatch();
-  const activeDataSources = useSelector(activeDataSourcesSelector);
+  const activeCategorisedSources = useSelector(
+    activeCategorisedSourcesSelector(1),
+  );
   const selectedLayers = useSelector(activeLayersSelector);
-  const categorisedOrbsAndSources = useSelector(categorisedSourcesSelector());
+  const categorisedOrbsAndSources = useSelector(
+    categorisedOrbsAndSourcesSelector(),
+  );
 
   const handleDialogSubmit = sources => {
     dispatch(setLayers(sources));
@@ -34,10 +40,10 @@ const DataLayers = () => {
   };
 
   return (
-    <div className={styles.selectData} ref={ref}>
+    <div ref={ref}>
       <LayersList
         dispatch={dispatch}
-        selectedLayers={activeDataSources}
+        selectedLayers={activeCategorisedSources}
         sidebarComponents={sidebarComponents}
       />
       <div className={styles.buttons}>

@@ -19,10 +19,6 @@ export const LayersListItem = ({ children, title }) => {
         disabled={!children}
         onClick={() => setExpanded(e => !e)}
       >
-        <DragIcon
-          className={`${styles.icon} ${styles.dragIcon}`}
-          title="Drag"
-        />
         {title}
         {children && (
           <ExpandIcon

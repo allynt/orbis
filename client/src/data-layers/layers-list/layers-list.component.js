@@ -2,6 +2,8 @@ import React from 'react';
 
 import { LayersListItem } from './layers-list-item/layers-list-item.component';
 
+import styles from './layers-list.module.css';
+
 /**
  * @param {{
  *   dispatch: import('redux').Dispatch
@@ -15,7 +17,7 @@ export const LayersList = ({ dispatch, selectedLayers, sidebarComponents }) => (
       if (selectedLayer.category)
         return (
           <>
-            <h1>{selectedLayer.category}</h1>
+            <h1 className={styles.category}>{selectedLayer.category}</h1>
             <LayersList
               dispatch={dispatch}
               sidebarComponents={sidebarComponents}

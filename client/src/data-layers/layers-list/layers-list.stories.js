@@ -44,3 +44,37 @@ WithCategories.args = {
     'health/1': <>Hospitals</>,
   },
 };
+
+export const DeepCategories = Template.bind({});
+DeepCategories.args = {
+  selectedLayers: [
+    {
+      category: 'Forestry',
+      sources: [
+        {
+          category: 'Trees',
+          sources: [
+            {
+              category: 'Evergreen',
+              sources: [{ metadata: { label: 'Pine' } }],
+            },
+          ],
+        },
+      ],
+    },
+  ],
+};
+
+export const Mixed = Template.bind({});
+Mixed.args = {
+  selectedLayers: [
+    {
+      category: 'Forestry',
+      sources: [
+        { source_id: 'forestry/1', metadata: { label: 'Trees 1' } },
+        { source_id: 'forestry/2', metadata: { label: 'Trees 2' } },
+      ],
+    },
+    { metadata: { label: 'Hospitals' } },
+  ],
+};
