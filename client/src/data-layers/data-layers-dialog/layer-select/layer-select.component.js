@@ -1,33 +1,40 @@
+import React, { useMemo, useState } from 'react';
+
 import { Button } from '@astrosat/astrosat-ui';
+
 import clsx from 'clsx';
-import React, { useState } from 'react';
+import { difference, isEmpty } from 'lodash';
+
+import { collectSourceIds } from 'data-layers/categorisation.utils';
+import { ReactComponent as ExpandIcon } from '../../triangle.svg';
 import dialogStyles from '../data-layers-dialog.module.css';
 import LayerSelectItem from './layer-select-item/layer-select-item.component';
 import styles from './layer-select.module.css';
-import { ReactComponent as ExpandIcon } from '../../triangle.svg';
 
 /**
  * @param {{
  *  sources: CategorisedSources
  *  level: number
- *  onSourceChange: (params: {
- *     source_id: Source['source_id']
- *     selected: boolean}) => void
+ *  onSourcesChange: (params: {
+ *    source_ids: Source['source_id'][]
+ *    selected: boolean
+ *  }) => void
  *  selectedSources: Source['source_id'][]
  * }} params
  */
 const renderCategories = ({
   sources,
   level,
-  onSourceChange,
+  onSourcesChange,
   selectedSources,
 }) =>
   sources.map(source =>
     source.category ? (
       <Accordion
+        key={source.category}
         source={source}
         level={level}
-        onSourceChange={onSourceChange}
+        onSourcesChange={onSourcesChange}
         selectedSources={selectedSources}
       />
     ) : (
@@ -35,26 +42,52 @@ const renderCategories = ({
         className={styles.listItem}
         key={source.source_id}
         source={source}
-        onChange={onSourceChange}
+        onChange={onSourcesChange}
         selected={selectedSources?.includes(source.source_id)}
       />
     ),
   );
 
-const Accordion = ({ source, level, onSourceChange, selectedSources }) => {
+const Accordion = ({ source, level, onSourcesChange, selectedSources }) => {
   const [open, setOpen] = useState(false);
+  const allSourceIds = useMemo(() => collectSourceIds(source.sources), [
+    source,
+  ]);
+  const notYetSelected = useMemo(
+    () => difference(allSourceIds, selectedSources),
+    [allSourceIds, selectedSources],
+  );
+  const allSelected = isEmpty(notYetSelected);
+
+  const handleSelectAllClick = () => {
+    if (allSelected)
+      onSourcesChange({ source_ids: allSourceIds, selected: false });
+    else onSourcesChange({ source_ids: notYetSelected, selected: true });
+  };
 
   return (
     <React.Fragment key={source.category}>
-      <button
+      <div
         className={clsx(styles.accordionHeader, {
           [styles.accordionHeaderRoot]: level === 0,
         })}
-        onClick={() => setOpen(c => !c)}
       >
-        <ExpandIcon className={clsx(styles.arrow, { [styles.open]: open })} />
-        {source.category}
-      </button>
+        <button
+          className={styles.accordionButton}
+          onClick={() => setOpen(c => !c)}
+        >
+          <ExpandIcon className={clsx(styles.arrow, { [styles.open]: open })} />
+          {source.category}{' '}
+          <span className={styles.sourceCount}>({allSourceIds.length})</span>
+        </button>
+        <Button
+          className={styles.selectAll}
+          theme="link"
+          onClick={handleSelectAllClick}
+        >
+          {allSelected ? 'unselect' : 'select'} all
+        </Button>
+      </div>
       <div
         className={clsx(styles.accordionContent, { [styles.open]: open })}
         style={{
@@ -65,7 +98,7 @@ const Accordion = ({ source, level, onSourceChange, selectedSources }) => {
         {renderCategories({
           sources: source.sources,
           level: level + 1,
-          onSourceChange,
+          onSourcesChange,
           selectedSources,
         })}
       </div>
@@ -78,8 +111,8 @@ const Accordion = ({ source, level, onSourceChange, selectedSources }) => {
  *   orbSources: CategorisedSources
  *   selectedSources?: Source['source_id'][]
  *   hasMadeChanges?: boolean
- *   onSourceChange: (params: {
- *     source_id: Source['source_id']
+ *   onSourcesChange: (params: {
+ *     source_ids: Source['source_id'][]
  *     selected: boolean}) => void
  *   onSubmit: () => void
  * }} props
@@ -88,7 +121,7 @@ export const LayerSelect = ({
   orbSources,
   selectedSources,
   hasMadeChanges = false,
-  onSourceChange,
+  onSourcesChange,
   onSubmit,
 }) => {
   return (
@@ -99,7 +132,7 @@ export const LayerSelect = ({
           {renderCategories({
             sources: orbSources,
             level: 0,
-            onSourceChange,
+            onSourcesChange,
             selectedSources,
           })}
         </ul>

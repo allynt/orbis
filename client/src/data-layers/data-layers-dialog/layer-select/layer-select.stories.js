@@ -5,6 +5,7 @@ export default {
   title: 'Data Layers/DataLayersDialog/LayerSelect',
   argTypes: {
     onSourceChange: { action: 'onSourceChange' },
+    onSourcesChange: { action: 'onSourcesChange' },
     onSubmit: { action: 'onSubmit' },
   },
 };
@@ -31,6 +32,7 @@ Categories.args = {
       ],
     },
   ],
+  selectedSources: ['oil/source/1', 'oil/source/2'],
 };
 
 export const SubCategories = Template.bind({});
