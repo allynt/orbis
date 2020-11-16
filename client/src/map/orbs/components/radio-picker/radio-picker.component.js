@@ -13,6 +13,7 @@ import {
 } from '../../slices/isolation-plus.slice';
 
 import styles from './radio-picker.module.css';
+import { createCategorisationPath } from 'data-layers/categorisation.utils';
 
 /**
  * @param {{
@@ -27,6 +28,9 @@ export const RadioPicker = ({ selectedLayer, dispatch }) => {
   );
   const colorScheme =
     selectedPropertyMetadata?.application?.orbis?.display?.color;
+  const categoryPath = createCategorisationPath({
+    categories: selectedLayer?.metadata?.application?.orbis?.categories,
+  }).replace('.', ' > ');
 
   if (!selectedLayer?.metadata?.properties) return null;
   return (
@@ -70,7 +74,8 @@ export const RadioPicker = ({ selectedLayer, dispatch }) => {
               backgroundColor="var(--color-primary)"
               textColor="var(--color--text--dark)"
             >
-              <p>{property.description}</p>
+              <p className={styles.categoryPath}>{categoryPath}</p>
+              <p className={styles.description}>{property.description}</p>
             </ReactTooltip>
           </div>
           {property.name === selectedProperty?.name && (
