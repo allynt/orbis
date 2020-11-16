@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { ReactComponent as DragIcon } from './drag-and-drop.svg';
 import { ReactComponent as ExpandIcon } from '../../triangle.svg';
 import styles from './layers-list-item.module.css';
 
