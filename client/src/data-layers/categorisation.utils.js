@@ -1,5 +1,3 @@
-import { Categories } from './data-layers-dialog/layer-select/layer-select.stories';
-
 const OTHER_CATEGORY_NAME = 'Other';
 const NO_ORB_NAME = 'No Orb';
 const PATH_DELIMITER = '.';
