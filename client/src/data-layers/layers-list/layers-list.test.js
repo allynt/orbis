@@ -18,6 +18,22 @@ describe('<LayersList />', () => {
     );
   });
 
+  it('shows top level categories for layers', () => {
+    const selectedLayers = [
+      { category: 'Forests', sources: [{ metadata: { label: 'Trees 1' } }] },
+      { category: 'Health', sources: [{ metadata: { label: 'Hospitals' } }] },
+    ];
+    const { getByText } = render(
+      <LayersList selectedLayers={selectedLayers} />,
+    );
+    selectedLayers.forEach(layer => {
+      expect(getByText(layer.category)).toBeInTheDocument();
+      layer.sources.forEach(source =>
+        expect(getByText(source.metadata.label)).toBeInTheDocument(),
+      );
+    });
+  });
+
   it('shows the component for a selected layer when clicked', () => {
     const sidebarComponents = {
       'test/layer/1': <p>I'm the component</p>,
