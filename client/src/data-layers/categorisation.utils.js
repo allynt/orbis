@@ -1,23 +1,33 @@
+import { Categories } from './data-layers-dialog/layer-select/layer-select.stories';
+
 const OTHER_CATEGORY_NAME = 'Other';
 const NO_ORB_NAME = 'No Orb';
 const PATH_DELIMITER = '.';
 
 /**
  * Recursively creates a . delimited categorisation path from a source's categories
- * @param {SourceCategories} categories The category hierarchy to create the path from
- * @param {string} [currentPath] The current path to build onto
+ * @param {{
+ *  categories: SourceCategories
+ *  currentPath?: string
+ *  depth?: number
+ * }} params
  * @returns {string} The complete categorisation path
  */
-export const createCategorisationPath = (categories, currentPath) => {
+export const createCategorisationPath = ({
+  categories,
+  currentPath = undefined,
+  depth = undefined,
+}) => {
   let _categories = categories;
   if (!_categories?.name) _categories = { name: OTHER_CATEGORY_NAME };
-  if (_categories.child)
-    return createCategorisationPath(
-      _categories.child,
-      currentPath
+  if (_categories.child && (depth > 1 || depth === undefined))
+    return createCategorisationPath({
+      categories: _categories.child,
+      currentPath: currentPath
         ? `${currentPath}${PATH_DELIMITER}${_categories.name}`
         : _categories.name,
-    );
+      depth: depth && depth - 1,
+    });
   return `${currentPath ? `${currentPath}${PATH_DELIMITER}` : ''}${
     _categories.name
   }`;
@@ -86,7 +96,7 @@ export const injectSource = (categorisedSources, source, categoryPath) => {
   }
   return [
     ...categorisedSources,
-    createHierarchy(source, categoryPath.reverse()),
+    createHierarchy(source, categoryPath.slice().reverse()),
   ];
 };
 
@@ -94,14 +104,16 @@ export const injectSource = (categorisedSources, source, categoryPath) => {
  * Injects a source into an already existing orb's category hierarchy
  * @param {OrbWithCategorisedSources} existingOrb
  * @param {Source} source
+ * @param {number} [depth]
  * @returns {OrbWithCategorisedSources}
  */
-const addSourceToExistingOrb = (existingOrb, source) => {
+const addSourceToExistingOrb = (existingOrb, source, depth) => {
   const { categories } = orbisMetadataSelector(source);
-  const categorisationPath = createCategorisationPath(
+  const categorisationPath = createCategorisationPath({
     categories,
-    existingOrb.name,
-  );
+    currentPath: existingOrb.name,
+    depth,
+  });
   const [, ...categoriesPath] = categorisationPath.split(PATH_DELIMITER);
   const injectedSources = injectSource(
     existingOrb.sources,
@@ -118,11 +130,16 @@ const addSourceToExistingOrb = (existingOrb, source) => {
  * Creates a new orb with its sources organised by category
  * @param {Orb} orb
  * @param {Source} source
+ * @param {number} [depth]
  * @returns {OrbWithCategorisedSources}
  */
-const createNewCategorisedOrb = (orb, source) => {
+const createNewCategorisedOrb = (orb, source, depth) => {
   const { categories } = orbisMetadataSelector(source);
-  const categorisationPath = createCategorisationPath(categories, orb.name);
+  const categorisationPath = createCategorisationPath({
+    categories,
+    currentPath: orb.name,
+    depth,
+  });
   const [, ...categoriesPath] = categorisationPath.split(PATH_DELIMITER);
   const sources = [createHierarchy(source, categoriesPath.reverse())];
   return {
@@ -134,9 +151,10 @@ const createNewCategorisedOrb = (orb, source) => {
 /**
  * Creates an array of orbs with their sources organised by category
  * @param {Source[]} sources
+ * @param {number} [depth]
  * @returns {OrbWithCategorisedSources[]}
  */
-export const createOrbsWithCategorisedSources = sources =>
+export const createOrbsWithCategorisedSources = (sources, depth) =>
   sources.reduce(
     /**
      * @param {OrbWithCategorisedSources[]} categorisedOrbs
@@ -149,12 +167,12 @@ export const createOrbsWithCategorisedSources = sources =>
       orbs.forEach(orb => {
         const existingOrb = newOrbs.find(o => orb.name === o.name);
         if (existingOrb) {
-          const updatedOrb = addSourceToExistingOrb(existingOrb, source);
+          const updatedOrb = addSourceToExistingOrb(existingOrb, source, depth);
           const existingOrbIndex = newOrbs.indexOf(existingOrb);
           newOrbs[existingOrbIndex] = updatedOrb;
           return newOrbs;
         }
-        const newOrb = createNewCategorisedOrb(orb, source);
+        const newOrb = createNewCategorisedOrb(orb, source, depth);
         newOrbs = [...newOrbs, newOrb];
       });
 

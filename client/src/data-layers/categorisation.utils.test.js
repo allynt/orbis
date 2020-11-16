@@ -3,24 +3,32 @@ import {
   createCategorisationPath,
   createOrbsWithCategorisedSources,
   collectSourceIds,
+  createHierarchy,
 } from './categorisation.utils';
 
 describe('createCategorisationPath', () => {
   it('Returns one category with no delimiters if one category is given', () => {
-    const result = createCategorisationPath({ name: 'Category' });
+    const result = createCategorisationPath({
+      categories: { name: 'Category' },
+    });
     expect(result).toBe('Category');
   });
 
   it('Returns two categories separated by a delimiter', () => {
     const result = createCategorisationPath({
-      name: 'Cat1',
-      child: { name: 'Cat2' },
+      categories: {
+        name: 'Cat1',
+        child: { name: 'Cat2' },
+      },
     });
     expect(result).toBe('Cat1.Cat2');
   });
 
   it('Includes the current path if supplied', () => {
-    const result = createCategorisationPath({ name: 'Cat1' }, 'Existing');
+    const result = createCategorisationPath({
+      categories: { name: 'Cat1' },
+      currentPath: 'Existing',
+    });
     expect(result).toBe('Existing.Cat1');
   });
 
@@ -34,12 +42,74 @@ describe('createCategorisationPath', () => {
       undefined,
     );
     // @ts-ignore
-    const result = createCategorisationPath(categories);
+    const result = createCategorisationPath({ categories });
     expect(result).toBe(cats.join('.'));
+  });
+
+  describe('limits the depth of the categorisation path if given', () => {
+    const cats = ['Cat1', 'Cat2', 'Cat3', 'Cat4', 'Cat5'];
+    it.each`
+      depth | expected
+      ${1}  | ${cats.slice(0, 1)[0]}
+      ${2}  | ${cats.slice(0, 2).join('.')}
+      ${3}  | ${cats.slice(0, 3).join('.')}
+      ${4}  | ${cats.slice(0, 4).join('.')}
+      ${5}  | ${cats.slice(0, 5).join('.')}
+      ${6}  | ${cats.slice(0, 6).join('.')}
+    `('$depth', ({ depth, expected }) => {
+      const categories = [...cats].reverse().reduce(
+        (child, name) => ({
+          name,
+          child,
+        }),
+        undefined,
+      );
+      // @ts-ignore
+      const result = createCategorisationPath({ categories, depth });
+      expect(result).toBe(expected);
+    });
   });
 });
 
-describe('createHierarchy', () => {});
+describe('createHierarchy', () => {
+  it("creates a category hierarchy from a source's categories", () => {
+    const source = {
+      source_id: 'source/1',
+    };
+
+    const expected = {
+      category: 'Cat 1',
+      sources: [{ source_id: 'source/1' }],
+    };
+
+    const result = createHierarchy(source, ['Cat 1']);
+    expect(result).toEqual(expected);
+  });
+
+  it('creates the hierarchy to multiple depths', () => {
+    const source = {
+      source_id: 'source/1',
+    };
+
+    const expected = {
+      category: 'Cat 1',
+      sources: [
+        {
+          category: 'Cat 2',
+          sources: [
+            { category: 'Cat 3', sources: [{ source_id: 'source/1' }] },
+          ],
+        },
+      ],
+    };
+
+    const result = createHierarchy(
+      source,
+      ['Cat 1', 'Cat 2', 'Cat 3'].slice().reverse(),
+    );
+    expect(result).toEqual(expected);
+  });
+});
 
 describe('injectSource', () => {
   describe("puts a source into a category's sources", () => {
@@ -549,6 +619,99 @@ describe('createOrbsWithCategorisedSources', () => {
 
       const result = createOrbsWithCategorisedSources(sources);
       expect(result).toEqual(expected);
+    });
+  });
+
+  describe('returns sources categorised to a depth', () => {
+    const sources = [
+      {
+        source_id: 'source/1',
+        metadata: {
+          application: {
+            orbis: {
+              orbs: [{ name: 'Orb 1' }],
+              categories: {
+                name: 'Cat 1',
+                child: { name: 'Cat 2', child: { name: 'Cat 3' } },
+              },
+            },
+          },
+        },
+      },
+      {
+        source_id: 'source/2',
+        metadata: {
+          application: {
+            orbis: {
+              orbs: [{ name: 'Orb 1' }],
+              categories: {
+                name: 'Cat 1',
+                child: { name: 'Cat 2' },
+              },
+            },
+          },
+        },
+      },
+      {
+        source_id: 'source/3',
+        metadata: {
+          application: {
+            orbis: {
+              orbs: [{ name: 'Orb 1' }],
+              categories: {
+                name: 'Cat 1',
+              },
+            },
+          },
+        },
+      },
+    ];
+
+    const depth1 = [
+      {
+        name: 'Orb 1',
+        sources: [
+          {
+            category: 'Cat 1',
+            sources: [
+              expect.objectContaining({ source_id: 'source/1' }),
+              expect.objectContaining({ source_id: 'source/2' }),
+              expect.objectContaining({ source_id: 'source/3' }),
+            ],
+          },
+        ],
+      },
+    ];
+
+    const depth2 = [
+      {
+        name: 'Orb 1',
+        sources: [
+          {
+            category: 'Cat 1',
+            sources: [
+              {
+                category: 'Cat 2',
+                sources: [
+                  expect.objectContaining({ source_id: 'source/1' }),
+                  expect.objectContaining({ source_id: 'source/2' }),
+                ],
+              },
+              expect.objectContaining({ source_id: 'source/3' }),
+            ],
+          },
+        ],
+      },
+    ];
+
+    it.each`
+      depth | expected
+      ${1}  | ${depth1}
+      ${2}  | ${depth2}
+    `('$depth', ({ depth, expected }) => {
+      expect(createOrbsWithCategorisedSources(sources, depth)).toEqual(
+        expected,
+      );
     });
   });
 });
