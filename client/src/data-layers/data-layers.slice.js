@@ -119,11 +119,14 @@ export const selectDomainList = createSelector(dataSourcesSelector, sources =>
 );
 
 /**
- * @type {import('@reduxjs/toolkit').Selector<any, OrbWithCategorisedSources[]>}
+ * @param {number} [depth]
  */
-export const categorisedSourcesSelector = createSelector(
-  dataSourcesSelector,
-  createOrbsWithCategorisedSources,
-);
+export const categorisedSourcesSelector = depth =>
+  /**
+   * @type {import('@reduxjs/toolkit').Selector<any, OrbWithCategorisedSources[]>}
+   */
+  createSelector(dataSourcesSelector, sources =>
+    createOrbsWithCategorisedSources(sources, depth),
+  );
 
 export default dataSlice.reducer;

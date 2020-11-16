@@ -26,7 +26,7 @@ const DataLayers = () => {
   const dispatch = useDispatch();
   const activeDataSources = useSelector(activeDataSourcesSelector);
   const selectedLayers = useSelector(activeLayersSelector);
-  const categorisedOrbsAndSources = useSelector(categorisedSourcesSelector);
+  const categorisedOrbsAndSources = useSelector(categorisedSourcesSelector());
 
   const handleDialogSubmit = sources => {
     dispatch(setLayers(sources));

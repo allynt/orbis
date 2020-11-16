@@ -96,7 +96,7 @@ export const injectSource = (categorisedSources, source, categoryPath) => {
   }
   return [
     ...categorisedSources,
-    createHierarchy(source, categoryPath.slice().reverse()),
+    createHierarchy(source, [...categoryPath].reverse()),
   ];
 };
 
