@@ -1,6 +1,14 @@
 import React from 'react';
 
-import { Button, Select } from '@astrosat/astrosat-ui';
+import {
+  Button,
+  CircularProgress,
+  Grid,
+  MenuItem,
+  Select,
+  TextField,
+  Typography,
+} from '@astrosat/astrosat-ui';
 
 import { yupResolver } from '@hookform/resolvers/yup';
 import { format } from 'date-fns';
@@ -62,7 +70,7 @@ const CustomerRegistration = ({
   serverErrors,
   onSubmit,
 }) => {
-  const { control, errors, formState, handleSubmit, register } = useForm({
+  const { errors, formState, handleSubmit, register } = useForm({
     defaultValues: {
       email,
       licence: 'ORBIS Core',
@@ -82,92 +90,117 @@ const CustomerRegistration = ({
   };
 
   return (
-    <form onSubmit={handleSubmit(transformValues)}>
-      <p className={styles.paragraph}>
+    <Grid
+      container
+      spacing={2}
+      component="form"
+      noValidate
+      onSubmit={handleSubmit(transformValues)}
+    >
+      <Typography style={{ textAlign: 'center' }} paragraph>
         <b>Welcome to Orbis.</b> Please complete your account details to
         continue on your path to explore Orbis data. The form below will
         complete your account and allow you to subscribe to your first Orb.
         Additional Orbs will be available through the in-application store when
         it goes live in a future release.
-      </p>
-      {serverErrors && <ErrorWell errors={serverErrors} />}
-      <Field
-        register={register}
-        name={FIELD_NAMES.email}
-        label="Work Email Address"
-        readOnly
-        errors={errors}
-        helpText="You will become the ADMIN for this Team Account. The email address and
-        password you have provided will also serve as your ADMIN account. You
-        will be able to access the Admin Console. Don’t worry, we will help you
-        find it!"
-      />
-      <Field
-        register={register}
-        name={FIELD_NAMES.customerName}
-        label="Organisation Name*"
-        errors={errors}
-        autoFocus
-      />
-      <Field
-        register={register}
-        name={FIELD_NAMES.customerNameOfficial}
-        label="Organisation Official Name"
-        errors={errors}
-      />
-      <Controller
-        control={control}
-        name={FIELD_NAMES.customerType}
-        render={({ onChange, ...rest }) => (
-          <div className={styles.field}>
-            <label className={styles.label} htmlFor={FIELD_NAMES.customerType}>
-              Type of Organisation
-            </label>
-            <Select
-              id={FIELD_NAMES.customerType}
-              options={ORGANISATION_TYPES}
-              onChange={e => onChange(e.target.value)}
-              {...rest}
-            />
-            <FieldError message={errors?.[FIELD_NAMES.customerType]?.message} />
-          </div>
-        )}
-      />
-      <Field
-        register={register}
-        name={FIELD_NAMES.registeredNumber}
-        label="Registered Number"
-        errors={errors}
-      />
-      <Field
-        register={register}
-        name="licence"
-        label="Licence"
-        errors={errors}
-        readOnly
-      />
-      <Field
-        register={register}
-        name="numberOfLicences"
-        label="Number of Licences"
-        errors={errors}
-        readOnly
-      />
-      <Field
-        register={register}
-        name="subscriptionPeriod"
-        label="Free Trial Subscription Period Ends"
-        errors={errors}
-        readOnly
-      />
-      <Button
-        className={styles.submit}
-        type="submit"
-        disabled={!formState.isDirty || Object.keys(errors).length}
-      >
-        {isLoading ? <LoadingSpinner /> : 'Next'}
-      </Button>
-    </form>
+      </Typography>
+      <ErrorWell errors={serverErrors} />
+      <Grid item xs={12}>
+        <TextField
+          id={FIELD_NAMES.email}
+          name={FIELD_NAMES.email}
+          label="Work Email Address"
+          inputRef={register}
+          InputProps={{ readOnly: true }}
+          error={!!errors[FIELD_NAMES.email]}
+          helperText={
+            errors[FIELD_NAMES.email]?.message ??
+            'You will become the ADMIN for this Team Account. The email address and password you have provided will also serve as your ADMIN account. You will be able to access the Admin Console. Don’t worry, we will help you find it!'
+          }
+        />
+      </Grid>
+      <Grid item xs={12}>
+        <TextField
+          id={FIELD_NAMES.customerName}
+          name={FIELD_NAMES.customerName}
+          label="Organisation Name"
+          inputRef={register}
+          error={!!errors[FIELD_NAMES.customerName]}
+          helperText={errors[FIELD_NAMES.customerName]?.message}
+          required
+          autoFocus
+        />
+      </Grid>
+      <Grid item xs={12}>
+        <TextField
+          id={FIELD_NAMES.customerNameOfficial}
+          name={FIELD_NAMES.customerNameOfficial}
+          label="Organisation Official Name"
+          inputRef={register}
+          error={!!errors[FIELD_NAMES.customerNameOfficial]}
+          helperText={errors[FIELD_NAMES.customerNameOfficial]?.message}
+        />
+      </Grid>
+      <Grid item xs={12}>
+        <TextField
+          id={FIELD_NAMES.customerType}
+          name={FIELD_NAMES.customerType}
+          select
+          label="Type of Organisation"
+          inputRef={register}
+          error={!!errors[FIELD_NAMES.customerType]}
+          helperText={errors[FIELD_NAMES.customerType]?.message}
+        >
+          {ORGANISATION_TYPES.map(({ name, value }) => (
+            <MenuItem key={value} value={value}>
+              {name}
+            </MenuItem>
+          ))}
+        </TextField>
+      </Grid>
+      <Grid item xs={12}>
+        <TextField
+          id={FIELD_NAMES.registeredNumber}
+          name={FIELD_NAMES.registeredNumber}
+          label="Registered Number"
+          inputRef={register}
+          error={!!errors[FIELD_NAMES.registeredNumber]}
+          helperText={errors[FIELD_NAMES.registeredNumber]?.message}
+        />
+      </Grid>
+      <Grid item xs={12}>
+        <TextField
+          name="licence"
+          label="Licence"
+          inputRef={register}
+          InputProps={{ readOnly: true }}
+        />
+      </Grid>
+      <Grid item xs={12}>
+        <TextField
+          name="numberOfLicences"
+          label="Number of Licences"
+          inputRef={register}
+          InputProps={{ readOnly: true }}
+        />
+      </Grid>
+      <Grid item xs={12}>
+        <TextField
+          name="subscriptionPeriod"
+          label="Free Trial Subscription Period Ends"
+          inputRef={register}
+          InputProps={{ readOnly: true }}
+        />
+      </Grid>
+      <Grid item xs={12} container justify="center">
+        <Button
+          type="submit"
+          disabled={!formState.isDirty || !!Object.keys(errors).length}
+        >
+          {isLoading ? <CircularProgress color="inherit" size={24} /> : 'Next'}
+        </Button>
+      </Grid>
+    </Grid>
   );
 };
 
