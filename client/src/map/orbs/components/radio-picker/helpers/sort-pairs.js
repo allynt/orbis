@@ -1,12 +1,4 @@
-import { numberRangeRegex, FORMAT } from './radio-picker-constants';
-
-export const getLabel = property => {
-  const range = property?.name?.match(numberRangeRegex);
-  if (!range) {
-    return property?.name;
-  }
-  return range[0];
-};
+import { FORMAT } from '../radio-picker-constants';
 
 export const sortPairs = selectedLayer => {
   let percentages = [];
@@ -21,8 +13,8 @@ export const sortPairs = selectedLayer => {
   }
 
   let pairs = [];
-  percentages.forEach((perc, i) => {
-    const num = numbers[i];
+  percentages.forEach(perc => {
+    const num = numbers.find(n => n.property_group === perc.property_group);
     pairs = [...pairs, [perc, num]];
   });
 

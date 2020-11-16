@@ -6,7 +6,6 @@ import { Radio, InfoIcon, Button } from '@astrosat/astrosat-ui';
 
 import ColorMapRangeSlider from 'components/colormap-range-slider/colormap-range-slider.component';
 
-import { getLabel } from './radio-picker-helpers';
 import { FORMAT } from './radio-picker-constants';
 
 import styles from './radio-picker.module.css';
@@ -18,7 +17,7 @@ export const SingleProperty = ({
   selectedProperty,
   colorScheme,
 }) => (
-  <div key={property.name} className={styles.property}>
+  <div className={styles.property}>
     <Radio
       className={styles.radio}
       label={property?.application?.orbis?.label || property.name}
@@ -72,11 +71,11 @@ export const PairedProperty = ({
   colorScheme,
 }) => {
   const [perc, num] = pair;
-  console.log('SelectedPtroperty: ', selectedProperty);
   return (
-    <div key={perc.name} className={styles.property}>
+    <div className={styles.property}>
       <Radio
-        label={getLabel(perc)}
+        className={styles.radio}
+        label={perc?.application?.orbis?.label || perc.name}
         name="isolationPlus"
         // Percentage is set by default
         onClick={() => onRadioClick(perc)}

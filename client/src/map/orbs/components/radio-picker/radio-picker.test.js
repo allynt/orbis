@@ -6,7 +6,7 @@ import { Provider } from 'react-redux';
 import configureStore from 'redux-mock-store';
 
 import { RadioPicker } from './radio-picker.component';
-import { sortPairs, getLabel } from './radio-picker-helpers';
+import { sortPairs } from './helpers/sort-pairs.js';
 
 const mockStore = configureStore();
 
@@ -51,33 +51,11 @@ const renderComponent = (
   );
 };
 
-it('uses `name` for label if no number range match returned from regex', () => {
-  const noAgeRanges = {
-    source_id: 'test/layer',
-    metadata: {
-      properties: [
-        {
-          name: 'Test Name 1',
-        },
-        {
-          name: 'Test Name 2',
-        },
-      ],
-    },
-  };
-  const { getByLabelText } = renderComponent(noAgeRanges, {});
-
-  noAgeRanges.metadata.properties.forEach(p => {
-    expect(getByLabelText(p.name)).toBeInTheDocument();
-  });
-});
-
 describe('<RadioPicker />', () => {
   it('displays a radio for each selectable property in the source', () => {
     const { getByLabelText } = renderComponent();
-    defaultSelectedLayer.metadata.properties.forEach(property => {
-      const label = getLabel(property);
-      expect(getByLabelText(label)).toBeInTheDocument();
+    sortPairs(defaultSelectedLayer).forEach(pair => {
+      expect(getByLabelText(pair[0].name)).toBeInTheDocument();
     });
   });
 
@@ -97,31 +75,6 @@ describe('<RadioPicker />', () => {
     };
 
     const { queryByText, getAllByRole } = renderComponent(noPairs, {});
-
-    userEvent.click(getAllByRole('radio')[0]);
-
-    expect(queryByText('Percentage')).not.toBeInTheDocument();
-    expect(queryByText('Number')).not.toBeInTheDocument();
-  });
-
-  it('shows only Radio (no toggles) for each property, if there are only percentage types, but no numbers', () => {
-    const onlyPercentages = {
-      source_id: 'test/layer',
-      metadata: {
-        properties: [
-          {
-            name: 'Test Name 1',
-            type: 'Percentage',
-          },
-          {
-            name: 'Test Name 2',
-            type: 'Percentage',
-          },
-        ],
-      },
-    };
-
-    const { queryByText, getAllByRole } = renderComponent(onlyPercentages, {});
 
     userEvent.click(getAllByRole('radio')[0]);
 
@@ -173,6 +126,29 @@ describe('<RadioPicker />', () => {
     };
 
     expect(dispatch).toHaveBeenCalledTimes(2);
+    expect(dispatch).toHaveBeenCalledWith(expected);
+  });
+
+  it('removes currently selected property from map when sidebar component dropdown is removed from DOM', () => {
+    let isVisible = true;
+    const { getByText } = render(
+      <Provider store={mockStore({})}>
+        {isVisible && (
+          <RadioPicker
+            selectedLayer={defaultSelectedLayer}
+            dispatch={dispatch}
+          />
+        )}
+        <button onClick={() => (isVisible = false)}>Show/Hide Radios</button>
+      </Provider>,
+    );
+
+    const expected = {
+      type: 'isolationPlus/setProperty',
+      payload: {},
+    };
+
+    userEvent.click(getByText('Show/Hide Radios'));
     expect(dispatch).toHaveBeenCalledWith(expected);
   });
 
