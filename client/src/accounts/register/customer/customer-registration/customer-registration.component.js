@@ -5,7 +5,6 @@ import {
   CircularProgress,
   Grid,
   MenuItem,
-  Select,
   TextField,
   Typography,
 } from '@astrosat/astrosat-ui';
@@ -16,13 +15,8 @@ import { Controller, useForm } from 'react-hook-form';
 import { object as yupObject } from 'yup';
 
 import { ErrorWell } from 'accounts/error-well.component';
-import { FieldError } from 'components/field-error/field-error.component';
-import { Field } from 'components/field/field.component';
-import { LoadingSpinner } from 'components/loading-spinner/loading-spinner.component';
 import { customerName, FIELD_NAMES } from 'utils/validators';
 import { DATE_FORMAT, TRIAL_PERIOD_END_DATE } from '../customer.constants';
-
-import styles from './customer-registration.module.css';
 
 const ORGANISATION_TYPES = [
   { name: 'None', value: undefined },
@@ -70,9 +64,10 @@ const CustomerRegistration = ({
   serverErrors,
   onSubmit,
 }) => {
-  const { errors, formState, handleSubmit, register } = useForm({
+  const { errors, formState, handleSubmit, register, control } = useForm({
     defaultValues: {
       email,
+      customerType: undefined,
       licence: 'ORBIS Core',
       numberOfLicences: 10,
       subscriptionPeriod: format(TRIAL_PERIOD_END_DATE, DATE_FORMAT),
@@ -142,21 +137,25 @@ const CustomerRegistration = ({
         />
       </Grid>
       <Grid item xs={12}>
-        <TextField
-          id={FIELD_NAMES.customerType}
+        <Controller
+          control={control}
           name={FIELD_NAMES.customerType}
-          select
-          label="Type of Organisation"
-          inputRef={register}
-          error={!!errors[FIELD_NAMES.customerType]}
-          helperText={errors[FIELD_NAMES.customerType]?.message}
-        >
-          {ORGANISATION_TYPES.map(({ name, value }) => (
-            <MenuItem key={value} value={value}>
-              {name}
-            </MenuItem>
-          ))}
-        </TextField>
+          as={
+            <TextField
+              id={FIELD_NAMES.customerType}
+              select
+              label="Type of Organisation"
+              error={!!errors[FIELD_NAMES.customerType]}
+              helperText={errors[FIELD_NAMES.customerType]?.message}
+            >
+              {ORGANISATION_TYPES.map(({ name, value }) => (
+                <MenuItem key={value} value={value}>
+                  {name}
+                </MenuItem>
+              ))}
+            </TextField>
+          }
+        />
       </Grid>
       <Grid item xs={12}>
         <TextField
@@ -170,6 +169,7 @@ const CustomerRegistration = ({
       </Grid>
       <Grid item xs={12}>
         <TextField
+          id="licence"
           name="licence"
           label="Licence"
           inputRef={register}
@@ -178,6 +178,7 @@ const CustomerRegistration = ({
       </Grid>
       <Grid item xs={12}>
         <TextField
+          id="numberOfLicences"
           name="numberOfLicences"
           label="Number of Licences"
           inputRef={register}
@@ -186,6 +187,7 @@ const CustomerRegistration = ({
       </Grid>
       <Grid item xs={12}>
         <TextField
+          id="subscriptionPeriod"
           name="subscriptionPeriod"
           label="Free Trial Subscription Period Ends"
           inputRef={register}
