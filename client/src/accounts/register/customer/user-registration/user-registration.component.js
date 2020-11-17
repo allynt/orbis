@@ -17,9 +17,10 @@ import { useForm } from 'react-hook-form';
 import { Link as RouterLink } from 'react-router-dom';
 import { object as yupObject } from 'yup';
 
-import { TERMS } from 'legal-documents/legal-documents-constants';
 import { LOGIN } from 'accounts/accounts.constants';
 import { ErrorWell } from 'accounts/error-well.component';
+import { Form } from 'components';
+import { TERMS } from 'legal-documents/legal-documents-constants';
 import {
   acceptedTerms,
   email,
@@ -82,10 +83,7 @@ const UserRegistration = ({
   });
 
   return (
-    <Grid
-      container
-      spacing={2}
-      component="form"
+    <Form
       noValidate
       onSubmit={handleSubmit(
         ({ firstName, lastName, ...rest }) =>
@@ -98,7 +96,7 @@ const UserRegistration = ({
       )}
     >
       <ErrorWell errors={serverErrors} />
-      <Grid item xs={12}>
+      <Form.Row>
         <TextField
           id={FIELD_NAMES.email}
           name={FIELD_NAMES.email}
@@ -108,8 +106,8 @@ const UserRegistration = ({
           helperText={errors[FIELD_NAMES.email]?.message}
           required
         />
-      </Grid>
-      <Grid item xs={12}>
+      </Form.Row>
+      <Form.Row>
         <TextField
           id={FIELD_NAMES.firstName}
           name={FIELD_NAMES.firstName}
@@ -119,8 +117,8 @@ const UserRegistration = ({
           helperText={errors[FIELD_NAMES.firstName]?.message}
           required
         />
-      </Grid>
-      <Grid item xs={12}>
+      </Form.Row>
+      <Form.Row>
         <TextField
           id={FIELD_NAMES.lastName}
           name={FIELD_NAMES.lastName}
@@ -130,8 +128,8 @@ const UserRegistration = ({
           helperText={errors[FIELD_NAMES.lastName]?.message}
           required
         />
-      </Grid>
-      <Grid item xs={12}>
+      </Form.Row>
+      <Form.Row>
         <TextField
           id={FIELD_NAMES.newPassword}
           name={FIELD_NAMES.newPassword}
@@ -143,8 +141,8 @@ const UserRegistration = ({
           required
         />
         <PasswordStrengthMeter password={watch(FIELD_NAMES.newPassword)} />
-      </Grid>
-      <Grid item xs={12}>
+      </Form.Row>
+      <Form.Row>
         <TextField
           id={FIELD_NAMES.newPasswordConfirm}
           name={FIELD_NAMES.newPasswordConfirm}
@@ -155,8 +153,8 @@ const UserRegistration = ({
           type="password"
           required
         />
-      </Grid>
-      <Grid item xs={12}>
+      </Form.Row>
+      <Form.Row>
         <FormControlLabel
           label={
             <Typography>
@@ -168,20 +166,20 @@ const UserRegistration = ({
           }
           control={<Checkbox name={FIELD_NAMES.acceptedTerms} ref={register} />}
         />
-      </Grid>
+      </Form.Row>
 
-      <Grid item xs={12} container justify="center">
+      <Form.Row centered>
         <Button type="submit" disabled={!watch(FIELD_NAMES.acceptedTerms)}>
           {isLoading ? <CircularProgress size={24} /> : 'Sign Up'}
         </Button>
-      </Grid>
-      <Grid item xs={12} container justify="center" component={Typography}>
+      </Form.Row>
+      <Form.Row component={Typography} align="center">
         Do you have an account?&nbsp;
         <RouterLink to={LOGIN} component={Link}>
           Login
         </RouterLink>
-      </Grid>
-    </Grid>
+      </Form.Row>
+    </Form>
   );
 };
 

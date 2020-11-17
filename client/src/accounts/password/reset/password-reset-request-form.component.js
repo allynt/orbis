@@ -4,7 +4,6 @@ import {
   Button,
   TextField,
   Typography,
-  Grid,
   Link,
   Box,
 } from '@astrosat/astrosat-ui';
@@ -17,9 +16,8 @@ import { object } from 'yup';
 import { ErrorWell } from 'accounts/error-well.component';
 import { LOGIN } from '../../accounts.constants';
 import { status } from '../../accounts.slice';
+import { Form } from 'components';
 import { FIELD_NAMES, email } from 'utils/validators';
-
-import formStyles from 'forms.module.css';
 
 const PasswordResetRequestSuccessView = ({ email, onSubmit }) => (
   <>
@@ -71,15 +69,10 @@ const PasswordResetRequestForm = ({ resetPassword, resetStatus, error }) => {
     );
 
   return (
-    <Grid
-      container
-      spacing={2}
-      component="form"
-      onSubmit={handleSubmit(onSubmit)}
-    >
+    <Form onSubmit={handleSubmit(onSubmit)}>
       <ErrorWell errors={error} />
 
-      <Grid item xs={12}>
+      <Form.Row>
         <TextField
           id={FIELD_NAMES.email}
           name={FIELD_NAMES.email}
@@ -89,24 +82,24 @@ const PasswordResetRequestForm = ({ resetPassword, resetStatus, error }) => {
           error={!!errors[FIELD_NAMES.email]}
           helperText={errors[FIELD_NAMES.email]?.message}
         />
-      </Grid>
+      </Form.Row>
 
-      <Grid item xs={12} container justify="center">
+      <Form.Row centered>
         <Button
           type="submit"
           disabled={Object.keys(errors).length > 0 || !formState.isDirty}
         >
           Reset Password
         </Button>
-      </Grid>
+      </Form.Row>
 
-      <Grid item xs={12} component={Typography} container justify="center">
+      <Form.Row component={Typography} align="center">
         Do you have an account?&nbsp;
         <RouterLink to={LOGIN} component={Link}>
           Login
         </RouterLink>
-      </Grid>
-    </Grid>
+      </Form.Row>
+    </Form>
   );
 };
 

@@ -5,7 +5,6 @@ import {
   Checkbox,
   CircularProgress,
   FormControlLabel,
-  Grid,
   Paper,
   styled,
   TextField,
@@ -16,6 +15,7 @@ import { format } from 'date-fns';
 import { useForm } from 'react-hook-form';
 
 import { ErrorWell } from 'accounts/error-well.component';
+import { Form } from 'components';
 import { DATE_FORMAT, TRIAL_PERIOD_END_DATE } from '../customer.constants';
 import Order from './order.component';
 
@@ -69,25 +69,20 @@ const OrderForm = ({ serverErrors, isLoading, onSubmit }) => {
   });
 
   return (
-    <Grid
-      container
-      spacing={2}
-      component="form"
-      onSubmit={handleSubmit(() => onSubmit(transformValues()))}
-    >
-      <Grid item xs={12}>
+    <Form onSubmit={handleSubmit(() => onSubmit(transformValues()))}>
+      <Form.Row>
         <Typography align="center" variant="h2" component="h1" gutterBottom>
           Order Form
         </Typography>
-      </Grid>
-      <Grid item xs={12}>
+      </Form.Row>
+      <Form.Row>
         <Typography align="center" paragraph>
           Please confirm that the following form contains the information that
           you want to sign up for the final contract with ORBIS.
         </Typography>
-      </Grid>
+      </Form.Row>
       <ErrorWell errors={serverErrors} />
-      <Grid item xs={12}>
+      <Form.Row>
         <TextField
           inputRef={register}
           label="Selected Licence Subscription"
@@ -95,8 +90,8 @@ const OrderForm = ({ serverErrors, isLoading, onSubmit }) => {
           name="subscription"
           InputProps={{ readOnly: true }}
         />
-      </Grid>
-      <Grid item xs={12}>
+      </Form.Row>
+      <Form.Row>
         <TextField
           inputRef={register}
           label="Payment Type"
@@ -104,8 +99,8 @@ const OrderForm = ({ serverErrors, isLoading, onSubmit }) => {
           name="paymentType"
           InputProps={{ readOnly: true }}
         />
-      </Grid>
-      <Grid item xs={12}>
+      </Form.Row>
+      <Form.Row>
         <TextField
           inputRef={register}
           label="Amount to be paid"
@@ -113,8 +108,8 @@ const OrderForm = ({ serverErrors, isLoading, onSubmit }) => {
           name="amount"
           InputProps={{ readOnly: true }}
         />
-      </Grid>
-      <Grid item xs={12}>
+      </Form.Row>
+      <Form.Row>
         <TextField
           inputRef={register}
           label="Number of Licences"
@@ -122,8 +117,8 @@ const OrderForm = ({ serverErrors, isLoading, onSubmit }) => {
           name="licences"
           InputProps={{ readOnly: true }}
         />
-      </Grid>
-      <Grid item xs={12}>
+      </Form.Row>
+      <Form.Row>
         <TextField
           inputRef={register}
           label="Subscription Period Ends"
@@ -131,19 +126,19 @@ const OrderForm = ({ serverErrors, isLoading, onSubmit }) => {
           name="period"
           InputProps={{ readOnly: true }}
         />
-      </Grid>
-      <Grid item xs={12}>
+      </Form.Row>
+      <Form.Row>
         <OrderWrapper>
           <Order />
         </OrderWrapper>
-      </Grid>
-      <Grid item xs={12} container justify="center">
+      </Form.Row>
+      <Form.Row centered>
         <FormControlLabel
           label="I confirm the information above is correct"
           control={<Checkbox ref={register} name="confirm" />}
         />
-      </Grid>
-      <Grid item xs={12} container justify="center">
+      </Form.Row>
+      <Form.Row centered>
         <Button type="submit" disabled={!watch('confirm')}>
           {isLoading ? (
             <CircularProgress color="inherit" size={24} />
@@ -151,8 +146,8 @@ const OrderForm = ({ serverErrors, isLoading, onSubmit }) => {
             'Confirm'
           )}
         </Button>
-      </Grid>
-    </Grid>
+      </Form.Row>
+    </Form>
   );
 };
 

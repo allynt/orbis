@@ -4,7 +4,6 @@ import {
   Button,
   PasswordStrengthMeter,
   Checkbox,
-  Grid,
   TextField,
   FormControlLabel,
   Link,
@@ -17,9 +16,10 @@ import { useForm } from 'react-hook-form';
 import { Link as RouterLink } from 'react-router-dom';
 import { object as objectSchema } from 'yup';
 
-import { TERMS } from 'legal-documents/legal-documents-constants';
 import { LOGIN } from 'accounts/accounts.constants';
 import { ErrorWell } from 'accounts/error-well.component';
+import { Form } from 'components';
+import { TERMS } from 'legal-documents/legal-documents-constants';
 import {
   FIELD_NAMES,
   email,
@@ -74,18 +74,13 @@ const RegisterForm = ({
   };
 
   return (
-    <Grid
-      container
-      spacing={2}
-      component="form"
-      onSubmit={handleSubmit(onSubmit)}
-    >
+    <Form onSubmit={handleSubmit(onSubmit)}>
       <ErrorWell errors={serverErrors}>
         {!isRegistrationOpen && (
           <li>We are sorry, but the signup is currently closed.</li>
         )}
       </ErrorWell>
-      <Grid item xs={12}>
+      <Form.Row>
         <TextField
           id={FIELD_NAMES.email}
           name={FIELD_NAMES.email}
@@ -95,8 +90,8 @@ const RegisterForm = ({
           helperText={errors[FIELD_NAMES.email]?.message}
           autoFocus
         />
-      </Grid>
-      <Grid item xs={12}>
+      </Form.Row>
+      <Form.Row>
         <TextField
           id={FIELD_NAMES.newPassword}
           name={FIELD_NAMES.newPassword}
@@ -107,8 +102,8 @@ const RegisterForm = ({
           helperText={errors[FIELD_NAMES.newPassword]?.message}
         />
         <PasswordStrengthMeter password={watch(FIELD_NAMES.newPassword)} />
-      </Grid>
-      <Grid item xs={12}>
+      </Form.Row>
+      <Form.Row>
         <TextField
           id={FIELD_NAMES.newPasswordConfirm}
           name={FIELD_NAMES.newPasswordConfirm}
@@ -118,8 +113,8 @@ const RegisterForm = ({
           error={!!errors[FIELD_NAMES.newPasswordConfirm]}
           helperText={errors[FIELD_NAMES.newPasswordConfirm]?.message}
         />
-      </Grid>
-      <Grid item xs={12}>
+      </Form.Row>
+      <Form.Row>
         <FormControlLabel
           label={
             <>
@@ -136,8 +131,8 @@ const RegisterForm = ({
             />
           }
         />
-      </Grid>
-      <Grid item xs={12} container justify="center">
+      </Form.Row>
+      <Form.Row centered>
         <Button
           type="submit"
           disabled={
@@ -152,14 +147,14 @@ const RegisterForm = ({
             'Sign Up'
           )}
         </Button>
-      </Grid>
-      <Grid item xs={12} component={Typography} align="center">
+      </Form.Row>
+      <Form.Row component={Typography} align="center">
         Do you have an account?&nbsp;
         <RouterLink to={LOGIN} component={Link}>
           Login
         </RouterLink>
-      </Grid>
-    </Grid>
+      </Form.Row>
+    </Form>
   );
 };
 

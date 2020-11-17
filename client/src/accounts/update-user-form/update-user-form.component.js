@@ -2,7 +2,6 @@ import React from 'react';
 
 import {
   Button,
-  Grid,
   TextField,
   Typography,
   makeStyles,
@@ -10,6 +9,8 @@ import {
 } from '@astrosat/astrosat-ui';
 
 import { useForm } from 'react-hook-form';
+
+import { Form } from 'components';
 
 const EMAIL_FIELD_ID = 'email-field';
 const NAME_FIELD_ID = 'name-field';
@@ -42,17 +43,11 @@ const UpdateUserForm = ({ user, updateUser }) => {
 
   return (
     <Box display="flex" flexDirection="column" height="100%">
-      <Grid
-        className={styles.form}
-        container
-        spacing={2}
-        component="form"
-        onSubmit={handleSubmit(onSubmit)}
-      >
+      <Form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
         <Typography variant="h4" component="h1">
           Personal Details
         </Typography>
-        <Grid item xs={12}>
+        <Form.Row>
           <TextField
             id={EMAIL_FIELD_ID}
             name="email"
@@ -60,16 +55,16 @@ const UpdateUserForm = ({ user, updateUser }) => {
             label="Email"
             InputProps={{ readOnly: true }}
           />
-        </Grid>
-        <Grid item xs={12}>
+        </Form.Row>
+        <Form.Row>
           <TextField
             id={NAME_FIELD_ID}
             name="name"
             inputRef={register}
             label="Name"
           />
-        </Grid>
-      </Grid>
+        </Form.Row>
+      </Form>
       <Box mt="auto" mx="auto">
         <Button type="submit">Update Account</Button>
       </Box>

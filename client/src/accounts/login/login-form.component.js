@@ -1,15 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import {
+  Box,
   Button,
   Checkbox,
-  FormControlLabel,
-  TextField,
-  Link,
-  Typography,
   CircularProgress,
-  Grid,
-  Box,
+  FormControlLabel,
+  Link,
+  TextField,
+  Typography,
 } from '@astrosat/astrosat-ui';
 
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -17,10 +16,11 @@ import { useForm } from 'react-hook-form';
 import { Link as RouterLink } from 'react-router-dom';
 import * as yup from 'yup';
 
-import { TERMS } from 'legal-documents/legal-documents-constants';
 import { PASSWORD_RESET_REQUEST, REGISTER } from 'accounts/accounts.constants';
 import { ErrorWell } from 'accounts/error-well.component';
-import { FIELD_NAMES, email, password } from 'utils/validators';
+import { Form } from 'components';
+import { TERMS } from 'legal-documents/legal-documents-constants';
+import { email, FIELD_NAMES, password } from 'utils/validators';
 
 const loginSchema = yup.object({
   [FIELD_NAMES.email]: email,
@@ -80,15 +80,10 @@ const LoginForm = ({
   };
 
   return (
-    <Grid
-      component="form"
-      container
-      spacing={2}
-      onSubmit={handleSubmit(onSubmit)}
-    >
+    <Form onSubmit={handleSubmit(onSubmit)}>
       <ErrorWell errors={serverErrors} />
 
-      <Grid item xs={12}>
+      <Form.Row>
         <TextField
           inputRef={register}
           label={isRegisteringCustomer ? 'Work Email Address' : 'Email'}
@@ -99,9 +94,9 @@ const LoginForm = ({
           autoFocus
           required
         />
-      </Grid>
+      </Form.Row>
 
-      <Grid item xs={12}>
+      <Form.Row>
         <TextField
           inputRef={register}
           label="Password"
@@ -112,19 +107,28 @@ const LoginForm = ({
           type="password"
           required
         />
-      </Grid>
+      </Form.Row>
 
-      <Grid item xs={12} component={Box} display="flex">
-        {!isRegisteringCustomer && (
-          <FormControlLabel
-            label="Keep me logged in"
-            control={
-              <Checkbox
-                name="loggedIn"
-                onChange={() => console.log('Keep me logged in')}
-              />
-            }
-          />
+      <Form.Row component={Box} display="flex">
+        {isOnboardingTeamMember && (
+          <>
+            <FormControlLabel
+              label={
+                <>
+                  I agree with&nbsp;
+                  <Link target="_blank" href={TERMS} rel="noopener noreferrer">
+                    Terms &amp; Conditions
+                  </Link>
+                </>
+              }
+              control={
+                <Checkbox
+                  name="loggedIn"
+                  onChange={() => setTermsAgreed(c => !c)}
+                />
+              }
+            />
+          </>
         )}
 
         <Box ml="auto">
@@ -132,18 +136,18 @@ const LoginForm = ({
             Forgot password?
           </RouterLink>
         </Box>
-      </Grid>
+      </Form.Row>
 
-      <Grid item xs={12} container justify="center">
+      <Form.Row centered>
         <Button
           type="submit"
           disabled={Object.keys(errors).length > 0 || !formState.isDirty}
         >
           {isLoading ? <CircularProgress size={22} color="inherit" /> : 'Login'}
         </Button>
-      </Grid>
+      </Form.Row>
 
-      <Grid item xs={12} container justify="center">
+      <Form.Row centered>
         {!isRegisteringCustomer && (
           <Typography>
             Don't have an account?&nbsp;
@@ -152,8 +156,8 @@ const LoginForm = ({
             </RouterLink>
           </Typography>
         )}
-      </Grid>
-    </Grid>
+      </Form.Row>
+    </Form>
   );
 };
 

@@ -18,19 +18,20 @@ import { LOGIN } from 'accounts/accounts.constants';
 import { status } from 'accounts/accounts.slice';
 import { ErrorWell } from 'accounts/error-well.component';
 import { FIELD_NAMES, newPassword, newPasswordConfirm } from 'utils/validators';
+import { Form } from 'components';
 
 const PasswordResetSuccessView = () => (
-  <Grid container spacing={2}>
-    <Grid item xs={12} component={Typography} container justify="center">
+  <Form>
+    <Form.Row component={Typography} align="center">
       Your password has successfully been reset. Click the button to continue.
-    </Grid>
+    </Form.Row>
 
-    <Grid item xs={12} container justify="center">
+    <Form.Row centered>
       <RouterLink to={LOGIN} component={Button}>
         Continue
       </RouterLink>
-    </Grid>
-  </Grid>
+    </Form.Row>
+  </Form>
 );
 
 const validationSchema = yupObject({
@@ -62,15 +63,10 @@ const PasswordResetForm = ({
   };
 
   return (
-    <Grid
-      component="form"
-      container
-      spacing={2}
-      onSubmit={handleSubmit(onSubmit)}
-    >
+    <Form onSubmit={handleSubmit(onSubmit)}>
       <ErrorWell errors={error} />
 
-      <Grid item xs={12}>
+      <Form.Row>
         <TextField
           inputRef={register}
           id={FIELD_NAMES.newPassword}
@@ -83,9 +79,9 @@ const PasswordResetForm = ({
         />
 
         <PasswordStrengthMeter password={watch(FIELD_NAMES.newPassword)} />
-      </Grid>
+      </Form.Row>
 
-      <Grid item xs={12}>
+      <Form.Row>
         <TextField
           inputRef={register}
           id={FIELD_NAMES.newPasswordConfirm}
@@ -96,21 +92,21 @@ const PasswordResetForm = ({
           error={!!errors[FIELD_NAMES.newPasswordConfirm]}
           helperText={errors[FIELD_NAMES.newPasswordConfirm]?.message}
         />
-      </Grid>
+      </Form.Row>
 
-      <Grid item xs={12} container justify="center">
+      <Form.Row centered>
         <Button type="submit" disabled={Object.keys(errors).length > 0}>
           Reset Password
         </Button>
-      </Grid>
+      </Form.Row>
 
-      <Grid component={Typography} item xs={12} container justify="center">
+      <Form.Row component={Typography} align="center">
         Do you have an account?&nbsp;
         <RouterLink to={LOGIN} component={Link}>
           Login
         </RouterLink>
-      </Grid>
-    </Grid>
+      </Form.Row>
+    </Form>
   );
 };
 

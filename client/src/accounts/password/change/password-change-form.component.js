@@ -5,7 +5,6 @@ import {
   Button,
   Checkbox,
   FormControlLabel,
-  Grid,
   Link,
   PasswordStrengthMeter,
   TextField,
@@ -20,6 +19,7 @@ import { object } from 'yup';
 import { LOGIN } from 'accounts/accounts.constants';
 import { status } from 'accounts/accounts.slice';
 import { ErrorWell } from 'accounts/error-well.component';
+import { Form } from 'components';
 import { TERMS } from 'legal-documents/legal-documents-constants';
 import {
   FIELD_NAMES,
@@ -76,14 +76,9 @@ const PasswordChangeForm = ({
   };
 
   return (
-    <Grid
-      component="form"
-      container
-      spacing={2}
-      onSubmit={handleSubmit(onSubmit)}
-    >
+    <Form onSubmit={handleSubmit(onSubmit)}>
       <ErrorWell errors={error} />
-      <Grid item xs={12}>
+      <Form.Row>
         <TextField
           type="password"
           id={FIELD_NAMES.oldPassword}
@@ -94,8 +89,8 @@ const PasswordChangeForm = ({
           helperText={errors[FIELD_NAMES.oldPassword]?.message}
           autoFocus
         />
-      </Grid>
-      <Grid item xs={12}>
+      </Form.Row>
+      <Form.Row>
         <TextField
           type="password"
           id={FIELD_NAMES.newPassword}
@@ -106,8 +101,8 @@ const PasswordChangeForm = ({
           helperText={errors[FIELD_NAMES.newPassword]?.message}
         />
         <PasswordStrengthMeter password={watch(FIELD_NAMES.newPassword)} />
-      </Grid>
-      <Grid item xs={12}>
+      </Form.Row>
+      <Form.Row>
         <TextField
           type="password"
           id={FIELD_NAMES.newPasswordConfirm}
@@ -117,8 +112,8 @@ const PasswordChangeForm = ({
           error={!!errors[FIELD_NAMES.newPasswordConfirm]}
           helperText={errors[FIELD_NAMES.newPasswordConfirm]?.message}
         />
-      </Grid>
-      <Grid item xs={12}>
+      </Form.Row>
+      <Form.Row>
         <FormControlLabel
           label={
             <>
@@ -135,25 +130,25 @@ const PasswordChangeForm = ({
             />
           }
         />
-      </Grid>
+      </Form.Row>
 
-      <Grid item xs={12} container justify="center">
+      <Form.Row centered>
         <Button
           type="submit"
           disabled={!termsAgreed || Object.keys(errors).length > 0}
         >
           Change Password
         </Button>
-      </Grid>
-      <Grid item xs={12} container justify="center">
+      </Form.Row>
+      <Form.Row centered>
         <Typography>
           Do you have an account?&nbsp;
           <RouterLink to={LOGIN} component={Link}>
             Login
           </RouterLink>
         </Typography>
-      </Grid>
-    </Grid>
+      </Form.Row>
+    </Form>
   );
 };
 
