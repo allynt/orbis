@@ -1,6 +1,8 @@
-import { createSelector, createSlice } from '@reduxjs/toolkit';
+import { createSelector, createSlice, current } from '@reduxjs/toolkit';
 import { pick } from 'lodash';
 import { NotificationManager } from 'react-notifications';
+
+import { getJsonAuthHeaders, sendData } from 'utils/http';
 
 export const DEFAULT_MAP_STYLE = 3;
 
@@ -8,6 +10,7 @@ const initialState = {
   config: {},
   error: null,
   notYetImplementedDescription: null,
+  tracking: [],
 };
 
 const appSlice = createSlice({
@@ -24,6 +27,14 @@ const appSlice = createSlice({
     notYetImplemented: (state, { payload }) => {
       state.notYetImplementedDescription = payload;
     },
+    addLogItem: (state, { payload }) => {
+      state.tracking = [...state.tracking, payload];
+    },
+    removeLogItems: (state, { payload }) => {
+      state.tracking = state.tracking.filter(
+        item => !payload.includes(current(item)),
+      );
+    },
   },
 });
 
@@ -31,6 +42,8 @@ export const {
   appConfigSuccess,
   appConfigFailure,
   notYetImplemented,
+  addLogItem,
+  removeLogItems,
 } = appSlice.actions;
 
 export const fetchAppConfig = () => async dispatch => {
@@ -72,6 +85,29 @@ export const passwordConfigSelector = createSelector(
       'passwordStrength',
     ]),
 );
+
+export const logUserTracking = () => async (dispatch, getState) => {
+  const headers = getJsonAuthHeaders(getState());
+  const {
+    app: { tracking },
+  } = getState();
+  if (tracking.length > 0) {
+    const response = await fetch(`/api/logs/tracking`, {
+      credentials: 'include',
+      method: 'POST',
+      headers,
+      body: JSON.stringify(tracking),
+    });
+
+    if (!response.ok) {
+      // Leave items in state, so we can retry later.
+      return;
+    }
+
+    // Remove items from state
+    return dispatch(removeLogItems(tracking));
+  }
+};
 
 export const mapboxTokenSelector = createSelector(
   configSelector,
