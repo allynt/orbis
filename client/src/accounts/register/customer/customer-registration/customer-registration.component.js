@@ -3,7 +3,6 @@ import React from 'react';
 import {
   Button,
   CircularProgress,
-  Grid,
   MenuItem,
   TextField,
   Typography,
@@ -15,6 +14,7 @@ import { Controller, useForm } from 'react-hook-form';
 import { object as yupObject } from 'yup';
 
 import { ErrorWell } from 'accounts/error-well.component';
+import { Form } from 'components';
 import { customerName, FIELD_NAMES } from 'utils/validators';
 import { DATE_FORMAT, TRIAL_PERIOD_END_DATE } from '../customer.constants';
 
@@ -85,13 +85,7 @@ const CustomerRegistration = ({
   };
 
   return (
-    <Grid
-      container
-      spacing={2}
-      component="form"
-      noValidate
-      onSubmit={handleSubmit(transformValues)}
-    >
+    <Form noValidate onSubmit={handleSubmit(transformValues)}>
       <Typography style={{ textAlign: 'center' }} paragraph>
         <b>Welcome to Orbis.</b> Please complete your account details to
         continue on your path to explore Orbis data. The form below will
@@ -100,7 +94,7 @@ const CustomerRegistration = ({
         it goes live in a future release.
       </Typography>
       <ErrorWell errors={serverErrors} />
-      <Grid item xs={12}>
+      <Form.Row>
         <TextField
           id={FIELD_NAMES.email}
           name={FIELD_NAMES.email}
@@ -113,8 +107,8 @@ const CustomerRegistration = ({
             'You will become the ADMIN for this Team Account. The email address and password you have provided will also serve as your ADMIN account. You will be able to access the Admin Console. Don’t worry, we will help you find it!'
           }
         />
-      </Grid>
-      <Grid item xs={12}>
+      </Form.Row>
+      <Form.Row>
         <TextField
           id={FIELD_NAMES.customerName}
           name={FIELD_NAMES.customerName}
@@ -125,8 +119,8 @@ const CustomerRegistration = ({
           required
           autoFocus
         />
-      </Grid>
-      <Grid item xs={12}>
+      </Form.Row>
+      <Form.Row>
         <TextField
           id={FIELD_NAMES.customerNameOfficial}
           name={FIELD_NAMES.customerNameOfficial}
@@ -135,8 +129,8 @@ const CustomerRegistration = ({
           error={!!errors[FIELD_NAMES.customerNameOfficial]}
           helperText={errors[FIELD_NAMES.customerNameOfficial]?.message}
         />
-      </Grid>
-      <Grid item xs={12}>
+      </Form.Row>
+      <Form.Row>
         <Controller
           control={control}
           name={FIELD_NAMES.customerType}
@@ -156,8 +150,8 @@ const CustomerRegistration = ({
             </TextField>
           }
         />
-      </Grid>
-      <Grid item xs={12}>
+      </Form.Row>
+      <Form.Row>
         <TextField
           id={FIELD_NAMES.registeredNumber}
           name={FIELD_NAMES.registeredNumber}
@@ -166,8 +160,8 @@ const CustomerRegistration = ({
           error={!!errors[FIELD_NAMES.registeredNumber]}
           helperText={errors[FIELD_NAMES.registeredNumber]?.message}
         />
-      </Grid>
-      <Grid item xs={12}>
+      </Form.Row>
+      <Form.Row>
         <TextField
           id="licence"
           name="licence"
@@ -175,8 +169,8 @@ const CustomerRegistration = ({
           inputRef={register}
           InputProps={{ readOnly: true }}
         />
-      </Grid>
-      <Grid item xs={12}>
+      </Form.Row>
+      <Form.Row>
         <TextField
           id="numberOfLicences"
           name="numberOfLicences"
@@ -184,8 +178,8 @@ const CustomerRegistration = ({
           inputRef={register}
           InputProps={{ readOnly: true }}
         />
-      </Grid>
-      <Grid item xs={12}>
+      </Form.Row>
+      <Form.Row>
         <TextField
           id="subscriptionPeriod"
           name="subscriptionPeriod"
@@ -193,16 +187,16 @@ const CustomerRegistration = ({
           inputRef={register}
           InputProps={{ readOnly: true }}
         />
-      </Grid>
-      <Grid item xs={12} container justify="center">
+      </Form.Row>
+      <Form.Row centered>
         <Button
           type="submit"
           disabled={!formState.isDirty || !!Object.keys(errors).length}
         >
           {isLoading ? <CircularProgress color="inherit" size={24} /> : 'Next'}
         </Button>
-      </Grid>
-    </Grid>
+      </Form.Row>
+    </Form>
   );
 };
 

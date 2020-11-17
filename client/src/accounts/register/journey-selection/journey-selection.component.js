@@ -5,7 +5,6 @@ import {
   FormControl,
   FormControlLabel,
   FormLabel,
-  Grid,
   Link,
   makeStyles,
   Radio,
@@ -15,8 +14,9 @@ import {
 
 import { useHistory } from 'react-router-dom';
 
-import { TERMS } from 'legal-documents/legal-documents-constants';
 import { REGISTER_CUSTOMER_USER, REGISTER } from 'accounts/accounts.constants';
+import { Form } from 'components';
+import { TERMS } from 'legal-documents/legal-documents-constants';
 
 const SMALL_PRINT = (
   <>
@@ -88,13 +88,13 @@ const JourneySelection = ({
   };
 
   return (
-    <Grid container spacing={2}>
-      <Grid item xs={12} container justify="center">
+    <Form>
+      <Form.Row centered>
         <Typography variant="h2" component="h1">
           Welcome to Orbis
         </Typography>
-      </Grid>
-      <Grid item xs={12}>
+      </Form.Row>
+      <Form.Row>
         <FormControl component="fieldset">
           <FormLabel className={styles.legend} component="legend">
             Sign Up as:
@@ -114,16 +114,16 @@ const JourneySelection = ({
             />
           </RadioGroup>
         </FormControl>
-      </Grid>
-      <Grid item xs={12} component={Typography} className={styles.smallPrint}>
+      </Form.Row>
+      <Form.Row component={Typography} className={styles.smallPrint}>
         {SMALL_PRINT}
-      </Grid>
-      <Grid item xs={12} container justify="center">
+      </Form.Row>
+      <Form.Row centered>
         <Button onClick={handleClick} disabled={!selection}>
           Continue
         </Button>
-      </Grid>
-    </Grid>
+      </Form.Row>
+    </Form>
   );
 };
 
