@@ -1,12 +1,15 @@
 import { createSlice, createSelector } from '@reduxjs/toolkit';
 import { getJsonAuthHeaders, getData } from 'utils/http';
 import { createOrbsWithCategorisedSources } from './categorisation.utils';
+import { addLogItem } from 'app.slice';
+import { userSelector } from 'accounts/accounts.selectors';
 
 const initialState = {
   layers: [],
   pollingPeriod: 30000,
   token: null,
   sources: null,
+  error: null,
 };
 
 const dataSlice = createSlice({
@@ -51,11 +54,34 @@ export const fetchSources = () => async (dispatch, getState) => {
 
   if (!response.ok) {
     const message = `${response.status} ${response.statusText}`;
-    // NotificationManager.error(message, 'Fetching Source Data', 50000, () => {});
+
     return dispatch(fetchSourcesFailure({ message }));
   }
 
   return dispatch(fetchSourcesSuccess(data));
+};
+
+export const calculateLayersToLog = sources => async (dispatch, getState) => {
+  const user = userSelector(getState());
+  const activeLayers = activeLayersSelector(getState());
+
+  const sourcesToLog =
+    activeLayers.length === 0
+      ? sources
+      : sources.filter(source => !activeLayers.includes(source));
+
+  sourcesToLog.forEach(source => {
+    dispatch(
+      addLogItem({
+        content: {
+          userId: user.id,
+          customerId: user.customers[0].id,
+          dataset: source,
+        },
+        tags: ['LOAD_LAYER', source],
+      }),
+    );
+  });
 };
 
 const baseSelector = state => state?.data ?? {};
