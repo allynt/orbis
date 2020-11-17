@@ -81,11 +81,6 @@ resource "kubernetes_deployment" "api_deployment" {
           }
 
           env {
-            name = "COMMIT_SHA"
-            value = var.tag
-          }
-
-          env {
             name  = "DJANGO_SITE_DOMAIN"
             value = local.app_domain
           }
