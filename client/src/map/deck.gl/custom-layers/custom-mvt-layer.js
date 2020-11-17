@@ -3,6 +3,10 @@ import { MVTLoader } from '@loaders.gl/mvt';
 import { MVTLayer } from '@deck.gl/geo-layers';
 import { gunzipSync } from 'zlib';
 
+import { useDispatch } from 'react-redux';
+
+import { logError } from 'data-layers/data-layers.slice';
+
 /**
  * @typedef Tile
  * @property {number} x x index of the tile
@@ -54,13 +58,20 @@ export class CustomMVTLayer extends MVTLayer {
     if (!url) {
       return Promise.reject('Invalid URL');
     }
-    const res = await fetch(url, {
-      headers: {
-        Authorization: `Bearer ${this.props.authToken}`,
-      },
-    });
-    if (res.status !== 200) return null;
-    const arrayBuffer = await res.arrayBuffer();
+
+    let response = null;
+    try {
+      response = await fetch(url, {
+        headers: {
+          Authorization: `Bearer ${this.props.authToken}`,
+        },
+      });
+    } catch (ex) {
+      return this.props.dispatch(logError({ source_id: this.props.id }));
+    }
+
+    if (!response.ok) return null;
+    const arrayBuffer = await response.arrayBuffer();
     if (arrayBuffer)
       return load(gunzipSync(Buffer.from(arrayBuffer)), MVTLoader);
   }

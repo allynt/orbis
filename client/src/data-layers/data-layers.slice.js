@@ -84,6 +84,20 @@ export const calculateLayersToLog = sources => async (dispatch, getState) => {
   });
 };
 
+export const logError = source => async (dispatch, getState) => {
+  const user = userSelector(getState());
+
+  dispatch(
+    addLogItem({
+      content: {
+        userId: user.id,
+        customerId: user.customers[0].id,
+        dataset: source.source_id,
+      },
+      tags: ['LOAD_LAYER_ERROR', source.source_id],
+    }),
+  );
+};
 const baseSelector = state => state?.data ?? {};
 
 /**
