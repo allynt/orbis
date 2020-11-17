@@ -5,6 +5,7 @@
   justify-content: flex-start;
   width: 100%;
   height: calc(100vh - calc(2 * var(--margin)));
+  margin: var(--margin);
   padding: var(--margin);
   border-radius: 1rem;
   box-shadow: 0 1rem 1.5rem 0 rgba(213, 213, 213, 0.5);
