@@ -122,6 +122,9 @@ let customers = [
         customer_user: null,
         access: '1',
       },
+      ...new Array(50)
+        .fill(undefined)
+        .map((_, i) => ({ id: i, orb: `Test ${i}` })),
     ],
     data_limit: 100,
     data_total: 50,
