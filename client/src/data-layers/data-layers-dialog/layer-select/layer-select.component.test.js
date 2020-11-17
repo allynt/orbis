@@ -1,108 +1,281 @@
 import React from 'react';
 
 import { render, waitFor } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
 
 import { LayerSelect } from './layer-select.component';
+import userEvent from '@testing-library/user-event';
 
-const setup = initialSelectedLayers => {
-  const domain = {
-    layers: [
+const SUBMIT_BUTTON = /confirm/i;
+const SELECT_ALL = /^select\sall/i;
+const UNSELECT_ALL = /unselect\sall/i;
+
+const ORB_SOURCES = [
+  {
+    category: 'Oil',
+    sources: [
+      { source_id: 'oil/source/1', metadata: { label: 'Oil Source 1' } },
+      { source_id: 'oil/source/2', metadata: { label: 'Oil Source 2' } },
+    ],
+  },
+  {
+    category: 'Gas',
+    sources: [
+      { source_id: 'gas/source/1', metadata: { label: 'Gas Source 1' } },
+      { source_id: 'gas/source/2', metadata: { label: 'Gas Source 2' } },
+    ],
+  },
+];
+
+const ORB_SOURCES_SUB_CATEGORIES = [
+  {
+    category: 'Oil and Gas',
+    sources: [
       {
-        name: 'test-layer-one',
-        metadata: {
-          label: 'test-layer-one-label',
-          description: 'test-layer-one-description',
-        },
+        category: 'Oil',
+        sources: [
+          { source_id: 'oil/source/1', metadata: { label: 'Oil Source 1' } },
+          { source_id: 'oil/source/2', metadata: { label: 'Oil Source 2' } },
+        ],
       },
       {
-        name: 'test-layer-two',
-        metadata: {
-          label: 'test-layer-two-label',
-          description: 'test-layer-two-description',
-        },
+        category: 'Gas',
+        sources: [
+          { source_id: 'gas/source/1', metadata: { label: 'Gas Source 1' } },
+          { source_id: 'gas/source/2', metadata: { label: 'Gas Source 2' } },
+        ],
       },
     ],
-  };
-  const handleAddLayers = jest.fn();
-  const handleRemoveLayer = jest.fn();
-  const close = jest.fn();
+  },
+];
+
+const renderComponent = ({
+  orbSources = ORB_SOURCES,
+  hasMadeChanges = false,
+  selectedSources = [],
+} = {}) => {
+  const onSourceChange = jest.fn();
+  const onSourcesChange = jest.fn();
+  const onSubmit = jest.fn();
   const utils = render(
     <LayerSelect
-      domain={domain}
-      onAddLayers={handleAddLayers}
-      onRemoveLayer={handleRemoveLayer}
-      initialSelectedLayers={initialSelectedLayers}
-      close={close}
+      orbSources={orbSources}
+      selectedSources={selectedSources}
+      onSourceChange={onSourceChange}
+      onSourcesChange={onSourcesChange}
+      onSubmit={onSubmit}
+      hasMadeChanges={hasMadeChanges}
     />,
   );
-  return { ...utils, handleAddLayers, layers: domain.layers };
+  return { ...utils, onSourceChange, onSourcesChange };
 };
 
-describe('LayerSelect', () => {
-  it('should show text when no domain is selected', () => {
-    const { getByTestId } = render(<LayerSelect />);
-    expect(getByTestId('layer-select-no-domain-message')).toBeInTheDocument();
+describe('<LayerSelect />', () => {
+  it('shows text when no orb is selected', () => {
+    const { getByText } = renderComponent({ orbSources: null });
+    expect(
+      getByText('Select Your Orb in order to find layers'),
+    ).toBeInTheDocument();
   });
 
-  it('should render the provided layers', () => {
-    const { getAllByTestId, layers } = setup([]);
-    const listItems = getAllByTestId(/^layer-list-item[a-zA-Z-]*$/);
-    expect(listItems).toHaveLength(layers.length);
+  it('disables the button when no changes have been made', () => {
+    const { getByRole } = renderComponent();
+    expect(getByRole('button', { name: SUBMIT_BUTTON })).toBeDisabled();
   });
 
-  it('should have the button disabled if no layers are selected', () => {
-    const { getByText } = setup([]);
-    expect(getByText('Accept')).toHaveProperty('disabled', true);
+  it('shows category headings', () => {
+    const { getByRole } = renderComponent();
+    expect(
+      getByRole('button', { name: new RegExp(ORB_SOURCES[0].category) }),
+    ).toBeInTheDocument();
+    expect(
+      getByRole('button', { name: new RegExp(ORB_SOURCES[1].category) }),
+    ).toBeInTheDocument();
   });
 
-  it('should keep the Accept button enabled after user has made any change', () => {
-    const { getByText, layers } = setup([]);
-    expect(getByText('Accept')).toHaveProperty('disabled', true);
-    userEvent.click(getByText(layers[0].metadata.label));
-    expect(getByText('Accept')).toHaveProperty('disabled', false);
-    userEvent.click(getByText(layers[0].metadata.label));
-    expect(getByText('Accept')).toHaveProperty('disabled', false);
+  it('expands the category headings when clicked', async () => {
+    const { getByRole } = renderComponent();
+    userEvent.click(
+      getByRole('button', {
+        name: new RegExp(ORB_SOURCES[0].category),
+      }),
+    );
+    await waitFor(() =>
+      expect(
+        getByRole('checkbox', {
+          name: ORB_SOURCES[0].sources[0].metadata.label,
+        }),
+      ).toBeInTheDocument(),
+    );
   });
 
-  it('should disable the button when user has made no changes', () => {
-    const { getByText } = setup([]);
-    expect(getByText('Accept')).toHaveProperty('disabled', true);
+  it('hides categories when heading is clicked again', async () => {
+    const { getByRole, queryByRole } = renderComponent();
+    userEvent.click(
+      getByRole('button', { name: new RegExp(ORB_SOURCES[0].category) }),
+    );
+    expect(
+      queryByRole('checkbox', {
+        name: ORB_SOURCES[0].sources[0].metadata.label,
+      }),
+    ).toBeInTheDocument();
+    userEvent.click(
+      getByRole('button', { name: new RegExp(ORB_SOURCES[0].category) }),
+    );
+    await waitFor(() =>
+      expect(
+        queryByRole('checkbox', {
+          name: ORB_SOURCES[0].sources[0].metadata.label,
+        }),
+      ).not.toBeVisible(),
+    );
   });
 
-  it('should call onAddLayers with the selected layers when the button is clicked', () => {
-    const { getByText, layers, handleAddLayers } = setup([]);
-    userEvent.click(getByText(layers[0].metadata.label));
-    userEvent.click(getByText('Accept'));
-    expect(handleAddLayers).toHaveBeenCalled();
-    expect(handleAddLayers).toHaveBeenCalledWith([layers[0]]);
+  it('shows sub-category headings', () => {
+    const { getByRole } = renderComponent({
+      orbSources: ORB_SOURCES_SUB_CATEGORIES,
+    });
+    userEvent.click(
+      getByRole('button', {
+        name: new RegExp(ORB_SOURCES_SUB_CATEGORIES[0].category),
+      }),
+    );
+    expect(
+      getByRole('button', {
+        name: /oil \(/i,
+      }),
+    ).toBeInTheDocument();
   });
 
-  describe('InfoBox', () => {
-    it('should show when the info button is clicked', () => {
-      const { getAllByLabelText, getByText, layers } = setup([]);
-      const infoButtons = getAllByLabelText('Info');
-      userEvent.click(infoButtons[0]);
-      expect(getByText(layers[0].metadata.description)).toBeInTheDocument();
+  it('expands sub-category headings when clicked', async () => {
+    const { getByRole } = renderComponent({
+      orbSources: ORB_SOURCES_SUB_CATEGORIES,
+    });
+    userEvent.click(
+      getByRole('button', {
+        name: new RegExp(ORB_SOURCES_SUB_CATEGORIES[0].category),
+      }),
+    );
+    userEvent.click(
+      getByRole('button', {
+        name: /oil \(/i,
+      }),
+    );
+    const checkbox = getByRole('checkbox', {
+      name: ORB_SOURCES_SUB_CATEGORIES[0].sources[0].sources[0].metadata.label,
+    });
+    await waitFor(() => expect(checkbox).toBeInTheDocument());
+  });
+
+  it('hides sub-categories when heading is clicked again', async () => {
+    const { getByRole, queryByRole } = renderComponent({
+      orbSources: ORB_SOURCES_SUB_CATEGORIES,
+    });
+    const categoryHeading = getByRole('button', {
+      name: new RegExp(ORB_SOURCES_SUB_CATEGORIES[0].category),
     });
 
-    it('should remain visible when a following info button is clicked', () => {
-      const { getAllByLabelText, getByText, layers } = setup([]);
-      const infoButtons = getAllByLabelText('Info');
-      userEvent.click(infoButtons[0]);
-      userEvent.click(infoButtons[1]);
-      expect(getByText(layers[1].metadata.description)).toBeInTheDocument();
+    userEvent.click(categoryHeading);
+    const subCategoryHeading = getByRole('button', {
+      name: /oil \(/i,
+    });
+    userEvent.click(subCategoryHeading);
+    expect(
+      getByRole('checkbox', {
+        name:
+          ORB_SOURCES_SUB_CATEGORIES[0].sources[0].sources[0].metadata.label,
+      }),
+    ).toBeInTheDocument();
+    userEvent.click(subCategoryHeading);
+    await waitFor(() =>
+      expect(
+        queryByRole('checkbox', {
+          name:
+            ORB_SOURCES_SUB_CATEGORIES[0].sources[0].sources[0].metadata.label,
+        }),
+      ).not.toBeVisible(),
+    );
+  });
+
+  it('calls onSourceChange when a source is clicked', async () => {
+    const { getByRole, onSourcesChange } = renderComponent();
+    userEvent.click(
+      getByRole('button', { name: new RegExp(ORB_SOURCES[0].category) }),
+    );
+    userEvent.click(
+      getByRole('checkbox', {
+        name: ORB_SOURCES[0].sources[0].metadata.label,
+      }),
+    );
+    await waitFor(() => expect(onSourcesChange).toHaveBeenCalled());
+  });
+
+  it('enables the submit button when changes have been made', () => {
+    const { getByRole } = renderComponent({ hasMadeChanges: true });
+    expect(getByRole('button', { name: SUBMIT_BUTTON })).not.toBeDisabled();
+  });
+
+  describe('Select All', () => {
+    it('calls onSourcesChange with all sources within a category when "Select All"  is clicked', () => {
+      const { onSourcesChange, getAllByRole } = renderComponent();
+      userEvent.click(getAllByRole('button', { name: SELECT_ALL })[0]);
+      expect(onSourcesChange).toHaveBeenCalledWith({
+        source_ids: ['oil/source/1', 'oil/source/2'],
+        selected: true,
+      });
     });
 
-    it('should disappear when clicked away', () => {
-      const { getAllByLabelText, queryByText, getByText, layers } = setup([]);
-      userEvent.click(getAllByLabelText('Info')[0]);
-      expect(getByText(layers[0].metadata.description)).toBeInTheDocument();
-      userEvent.click(getByText('Select Your Layers'));
-      waitFor(() => {
-        expect(
-          queryByText(layers[0].metadata.description),
-        ).not.toBeInTheDocument();
+    it('calls onSourcesChange with all sources within a sub-category when "Select All" is clicked', () => {
+      const { onSourcesChange, getByRole, getAllByRole } = renderComponent({
+        orbSources: ORB_SOURCES_SUB_CATEGORIES,
+      });
+      userEvent.click(
+        getByRole('button', {
+          name: new RegExp(ORB_SOURCES_SUB_CATEGORIES[0].category),
+        }),
+      );
+      userEvent.click(getAllByRole('button', { name: SELECT_ALL })[1]);
+      expect(onSourcesChange).toHaveBeenCalledWith({
+        source_ids: ['oil/source/1', 'oil/source/2'],
+        selected: true,
+      });
+    });
+
+    it('calls onSourcesChange with all sources within a category when "Unselect All" is clicked', () => {
+      const { onSourcesChange, getAllByRole } = renderComponent({
+        selectedSources: ['oil/source/1', 'oil/source/2'],
+      });
+      userEvent.click(getAllByRole('button', { name: UNSELECT_ALL })[0]);
+      expect(onSourcesChange).toHaveBeenCalledWith({
+        source_ids: ['oil/source/1', 'oil/source/2'],
+        selected: false,
+      });
+    });
+
+    it('calls onSourcesChange with all sources within a sub-category when "Unselect All" is clicked', () => {
+      const { onSourcesChange, getByRole, getAllByRole } = renderComponent({
+        orbSources: ORB_SOURCES_SUB_CATEGORIES,
+        selectedSources: ['oil/source/1', 'oil/source/2'],
+      });
+      userEvent.click(
+        getByRole('button', {
+          name: new RegExp(ORB_SOURCES_SUB_CATEGORIES[0].category),
+        }),
+      );
+      userEvent.click(getAllByRole('button', { name: UNSELECT_ALL })[0]);
+      expect(onSourcesChange).toHaveBeenCalledWith({
+        source_ids: ['oil/source/1', 'oil/source/2'],
+        selected: false,
+      });
+    });
+
+    it('calls onSourcesChange with only the sources which have changed', () => {
+      const { onSourcesChange, getAllByRole } = renderComponent({
+        selectedSources: ['oil/source/1'],
+      });
+      userEvent.click(getAllByRole('button', { name: SELECT_ALL })[0]);
+      expect(onSourcesChange).toHaveBeenCalledWith({
+        source_ids: ['oil/source/2'],
+        selected: true,
       });
     });
   });

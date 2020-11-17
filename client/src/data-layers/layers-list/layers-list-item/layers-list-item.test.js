@@ -11,11 +11,6 @@ describe('<LayersListItem />', () => {
     expect(getByText(title)).toBeInTheDocument();
   });
 
-  it('Shows the drag handle icon', () => {
-    const { getByTitle } = render(<LayersListItem title={title} />);
-    expect(getByTitle('Drag')).toBeInTheDocument();
-  });
-
   it("Shows the arrow icon if there's child components", () => {
     const { getByTitle } = render(
       <LayersListItem title={title}>

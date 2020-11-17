@@ -19,7 +19,7 @@ describe('Update User Form Component', () => {
     updateCustomer = jest.fn();
     customer = {
       name: 'cyberdyne',
-      title: 'Cyberdyne Systems',
+      official_name: 'Cyberdyne Systems',
       country: 'United States',
       address: '123 America Street',
       postcode: 'PH7 U16',
@@ -35,7 +35,7 @@ describe('Update User Form Component', () => {
       updateCustomer,
     );
 
-    expect(getByAltText('Cyberdyne Systems Logo')).toBeInTheDocument();
+    expect(getByAltText('cyberdyne Logo')).toBeInTheDocument();
 
     expect(getByDisplayValue(customer.name)).toBeInTheDocument();
     expect(getByDisplayValue(customer.country)).toBeInTheDocument();

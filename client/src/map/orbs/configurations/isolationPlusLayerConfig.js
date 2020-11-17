@@ -1,5 +1,8 @@
+import { DataFilterExtension } from '@deck.gl/extensions';
 import chroma from 'chroma-js';
+
 import {
+  filterRangeSelector,
   propertySelector,
   setPickedInfo,
 } from '../slices/isolation-plus.slice';
@@ -17,11 +20,13 @@ const configuration = ({
   const selectedPropertyMetadata = source?.metadata?.properties?.find(
     property => property.name === selectedProperty.name,
   );
+  const filterRange = filterRangeSelector(orbState);
   const colorScale =
     selectedPropertyMetadata &&
     chroma
       .scale(selectedPropertyMetadata?.application?.orbis?.display?.color)
       .domain([selectedProperty?.min, selectedProperty?.max]);
+
   return {
     id,
     data,
@@ -41,9 +46,16 @@ const configuration = ({
         : [0, 0, 0]),
       150,
     ],
+    getFilterValue: d => Math.round(d.properties[selectedProperty.name]),
+    filterRange: filterRange || [
+      selectedPropertyMetadata?.min,
+      selectedPropertyMetadata?.max,
+    ],
     updateTriggers: {
-      getFillColor: [selectedProperty],
+      getFillColor: [selectedProperty, filterRange],
+      getFilterValue: [selectedProperty],
     },
+    extensions: [new DataFilterExtension({ filterSize: 1 })],
   };
 };
 

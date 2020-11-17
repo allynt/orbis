@@ -26,14 +26,14 @@ const OrganisationMenu = ({ customer, setVisiblePanel, onCreateUserClick }) => (
           <img
             className={styles.logo}
             src={customer?.logo}
-            alt={`${customer?.title} Logo`}
+            alt={`${customer?.name} Logo`}
           />
         </div>
       ) : (
         <DefaultCustomerLogo />
       )}
 
-      <h2 className={styles.organisationTitle}>{customer?.title}</h2>
+      <h2 className={styles.organisationTitle}>{customer?.name}</h2>
     </div>
     <Button size="small" onClick={onCreateUserClick}>
       Create User

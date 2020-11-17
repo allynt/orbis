@@ -1,5 +1,6 @@
-import React, { useRef, useState } from 'react';
-import ReactDOM from 'react-dom';
+import React, { useEffect, useRef, useState } from 'react';
+
+import { isEqual } from 'lodash';
 
 import { CloseButton } from '@astrosat/astrosat-ui';
 
@@ -8,54 +9,76 @@ import { LayerSelect } from './layer-select/layer-select.component';
 
 import styles from './data-layers-dialog.module.css';
 
-const DataLayersDialog = (
-  { domains, isVisible, close, selectedLayers, onAddLayers, onRemoveLayer },
-  ref,
-) => {
+/**
+ * @param {{
+ *   orbs: OrbWithCategorisedSources[]
+ *   initialSelectedSources?: Source['source_id'][]
+ *   close: () => void
+ *   onSubmit: (sources: Source['source_id'][]) => void
+ * }} props
+ */
+const DataLayersDialog = ({
+  orbs,
+  initialSelectedSources = [],
+  close,
+  onSubmit,
+}) => {
   const overlayRef = useRef(null);
-  const [selectedDomain, setSelectedDomain] = useState(null);
+  /** @type {[string, React.Dispatch<string>]} */
+  const [selectedOrbName, setSelectedOrbName] = useState();
+  const [selectedSources, setSelectedSources] = useState(
+    initialSelectedSources,
+  );
+  const [hasMadeChanges, setHasMadeChanges] = useState(false);
 
-  return isVisible && ref.current
-    ? ReactDOM.createPortal(
-        <div
-          className={styles.modal}
-          onClick={event => {
-            if (overlayRef.current === event.target) {
-              close();
-            }
-          }}
-          ref={overlayRef}
-        >
-          <div
-            className={styles.dialog}
-            tabIndex={-1}
-            role="dialog"
-            aria-label="Data Layer dialog"
-          >
-            <CloseButton
-              className={styles.closeButton}
-              onClick={close}
-              ariaLabel="Close"
-            />
-            <div className={styles.content}>
-              <OrbSelect
-                domains={domains}
-                onDomainClick={setSelectedDomain}
-                selectedDomain={selectedDomain}
-              />
-              <LayerSelect
-                domain={selectedDomain}
-                initialSelectedLayers={selectedLayers}
-                onAddLayers={onAddLayers}
-                onRemoveLayer={onRemoveLayer}
-                close={close}
-              />
-            </div>
-          </div>
-        </div>,
-        document.body,
-      )
-    : null;
+  useEffect(() => {
+    setHasMadeChanges(!isEqual(initialSelectedSources, selectedSources));
+  }, [initialSelectedSources, selectedSources]);
+
+  /** @param {{source_ids: Source['source_id'][], selected: boolean}} params */
+  const handleSourcesChange = ({ source_ids, selected }) => {
+    selected
+      ? setSelectedSources(current => [...current, ...source_ids])
+      : setSelectedSources(current =>
+          current.filter(v => !source_ids.includes(v)),
+        );
+  };
+
+  const handleSubmit = () => onSubmit && onSubmit(selectedSources);
+
+  return (
+    <div
+      ref={overlayRef}
+      className={styles.overlay}
+      onClick={event => {
+        if (overlayRef.current === event.target) {
+          close();
+        }
+      }}
+      data-testid="overlay"
+    >
+      <div
+        className={styles.dialog}
+        tabIndex={-1}
+        role="dialog"
+        aria-label="Data Layers dialog"
+      >
+        <CloseButton className={styles.closeButton} onClick={close} />
+        <OrbSelect
+          orbs={orbs}
+          onOrbClick={setSelectedOrbName}
+          selectedOrbName={selectedOrbName}
+        />
+        <LayerSelect
+          orbSources={orbs?.find(orb => orb.name === selectedOrbName)?.sources}
+          selectedSources={selectedSources}
+          onSourcesChange={handleSourcesChange}
+          onSubmit={handleSubmit}
+          hasMadeChanges={hasMadeChanges}
+        />
+      </div>
+    </div>
+  );
 };
 
-export default React.memo(React.forwardRef(DataLayersDialog));
+export default DataLayersDialog;

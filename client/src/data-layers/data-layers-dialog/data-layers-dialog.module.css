@@ -1,4 +1,4 @@
-.modal {
+.overlay {
   position: fixed;
   top: 0;
   display: flex;
@@ -10,46 +10,47 @@
   z-index: 100;
 }
 
-.modal .closeButton {
-  position: absolute;
-  align-self: flex-end;
-}
-
-.modal .dialog {
+.dialog {
+  position: relative;
   display: flex;
-  flex-direction: column;
-  background: white;
+  background: #fff;
   border-radius: 1rem;
-  height: auto;
+  height: 70%;
+  max-height: 700px;
+  min-width: 500px;
+  width: 50%;
+  max-width: 900px;
 }
 
-.dialog .header {
+.section {
+  display: grid;
+  grid-template-rows: max-content 1fr max-content;
+}
+
+.header {
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 1.875em 7.125em 1.375em 7.125em;
+  padding-top: 1.875em;
+  padding-bottom: 1.375em;
   border-bottom: 1px solid #e6e6e6;
   font-size: 1.125rem;
-  font-weight: bold;
-  color: #333f48;
+  font-weight: 700;
+  color: var(--color--text--dark);
 }
 
-.dialog .content {
-  display: flex;
-  height: inherit;
+.list {
+  padding: 1.375rem;
+  overflow-y: auto;
+  height: 100%;
 }
 
-.noOrbSelected {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 30rem;
-  font-size: 1rem;
-  font-weight: bold;
+.list:first-child {
+  margin-top: 0;
 }
 
-.dialog .buttons {
-  display: flex;
-  justify-content: flex-end;
-  width: 100%;
+.closeButton {
+  position: absolute;
+  top: 0;
+  right: 0;
 }

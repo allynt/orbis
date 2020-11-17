@@ -5,28 +5,19 @@ import ReactTooltip from 'react-tooltip';
 
 import { Radio, InfoIcon } from '@astrosat/astrosat-ui';
 
+import ColorMapRangeSlider from 'components/colormap-range-slider/colormap-range-slider.component';
 import {
   propertySelector,
   setProperty,
+  setFilterRange,
 } from '../../slices/isolation-plus.slice';
+
 import styles from './radio-picker.module.css';
-import ColorScale from 'components/color-scale/color-scale.component';
+import { createCategorisationPath } from 'data-layers/categorisation.utils';
 
 /**
  * @param {{
- *   selectedLayer: ({
- *     source_id: string
- *     metadata: {
- *       properties: {
- *         name: string
- *         description: string
- *         min: number
- *         max: number
- *         type: 'percentage' | 'decile' | 'continuous' | 'discrete'
- *         application: any
- *       }[]
- *     }
- *   })
+ *   selectedLayer: Source
  *   dispatch: import('redux').Dispatch
  * }} props
  */
@@ -37,6 +28,9 @@ export const RadioPicker = ({ selectedLayer, dispatch }) => {
   );
   const colorScheme =
     selectedPropertyMetadata?.application?.orbis?.display?.color;
+  const categoryPath = createCategorisationPath({
+    categories: selectedLayer?.metadata?.application?.orbis?.categories,
+  }).replace('.', ' > ');
 
   if (!selectedLayer?.metadata?.properties) return null;
   return (
@@ -45,7 +39,7 @@ export const RadioPicker = ({ selectedLayer, dispatch }) => {
         <div key={property.name} className={styles.property}>
           <Radio
             className={styles.radio}
-            label={property.name}
+            label={property?.application?.orbis?.label || property.name}
             name="isolationPlus"
             value={property.name}
             checked={property.name === selectedProperty?.name}
@@ -80,15 +74,16 @@ export const RadioPicker = ({ selectedLayer, dispatch }) => {
               backgroundColor="var(--color-primary)"
               textColor="var(--color--text--dark)"
             >
-              <p>{property.description}</p>
+              <p className={styles.categoryPath}>{categoryPath}</p>
+              <p className={styles.description}>{property.description}</p>
             </ReactTooltip>
           </div>
           {property.name === selectedProperty?.name && (
-            <ColorScale
-              className={styles.colorScale}
+            <ColorMapRangeSlider
               type={property.type}
-              scheme={colorScheme}
+              color={colorScheme}
               domain={[property.min, property.max]}
+              onChange={domain => dispatch(setFilterRange(domain))}
             />
           )}
         </div>

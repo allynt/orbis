@@ -1,8 +1,6 @@
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import reducer, {
-  addLayers,
-  removeLayer,
   fetchSourcesFailure,
   fetchSourcesSuccess,
   fetchSources,
@@ -13,6 +11,9 @@ import reducer, {
   selectDataToken,
   activeLayersSelector,
   setLayers,
+  categorisedOrbsAndSourcesSelector,
+  activeCategorisedOrbsAndSourcesSelector,
+  activeCategorisedSourcesSelector,
 } from './data-layers.slice';
 
 const mockStore = configureMockStore([thunk]);
@@ -105,30 +106,6 @@ describe('Data Slice', () => {
       expect(actualState).toEqual(beforeState);
     });
 
-    describe('addLayers', () => {
-      it('adds a layer', () => {
-        const layers = ['test/layer/1'];
-        const actualState = reducer(beforeState, addLayers(layers));
-        expect(actualState.layers).toContain(layers[0]);
-      });
-
-      it('adds a layer when the payload is an object', () => {
-        const layer = { source_id: 'test/layer/1' };
-        const actualState = reducer(beforeState, addLayers([layer]));
-        expect(actualState.layers).toContain(layer.source_id);
-      });
-
-      it('adds layers alongside previously selected layers', () => {
-        const state = {
-          layers: ['test/layer/1', 'test/layer/2'],
-        };
-        const layers = ['test/layer/4', 'test/layer/3'];
-        const expected = [...state.layers, 'test/layer/3', 'test/layer/4'];
-        const result = reducer(state, addLayers(layers));
-        expect([...result.layers].sort()).toEqual(expected.sort());
-      });
-    });
-
     describe('setLayers', () => {
       it("sets the layers in state if it doesn't exist", () => {
         const state = {};
@@ -171,37 +148,6 @@ describe('Data Slice', () => {
         const state = { layers: ['test/id/1', 'test/id/2'] };
         const result = reducer(state, setLayers([]));
         expect(result.layers).toEqual([]);
-      });
-    });
-
-    describe('removeLayer', () => {
-      it('does nothing if the layer being removed does not exist', () => {
-        const state = {
-          layers: [],
-        };
-        const layer = 'test/layer/1';
-        const actualState = reducer(state, removeLayer(layer));
-        expect(actualState).toEqual(state);
-      });
-
-      it('removes a layer', () => {
-        const state = {
-          layers: ['test/layer/1'],
-        };
-        const expected = [];
-        const layer = 'test/layer/1';
-        const result = reducer(state, removeLayer(layer));
-        expect(result.layers).toEqual(expected);
-      });
-
-      it('should remove layers when an object is received', () => {
-        const state = {
-          layers: ['test/layer/1', 'test/layer/2'],
-        };
-        const layer = { source_id: 'test/layer/2' };
-        const expected = ['test/layer/1'];
-        const result = reducer(state, removeLayer(layer));
-        expect(result.layers).toEqual(expected);
       });
     });
 
@@ -312,7 +258,7 @@ describe('Data Slice', () => {
       });
     });
 
-    describe('selectDataSources', () => {
+    describe('dataSourcesSelector', () => {
       it('should return the list of data sources', () => {
         const state = {
           data: {
@@ -367,7 +313,7 @@ describe('Data Slice', () => {
       });
     });
 
-    describe('selectActiveSources', () => {
+    describe('activeDataSourcesSelector', () => {
       it('returns only data sources which are loaded and visible', () => {
         const state = {
           data: {
@@ -550,6 +496,126 @@ describe('Data Slice', () => {
         };
         const result = selectDomainList(state);
         expect(result).toEqual([]);
+      });
+    });
+
+    describe('categorised selectors', () => {
+      const sources = [
+        {
+          source_id: 'orb/1/cat/1/source/1',
+          metadata: {
+            application: {
+              orbis: {
+                orbs: [{ name: 'Orb1' }],
+                categories: { name: 'Cat1' },
+              },
+            },
+          },
+        },
+        {
+          source_id: 'orb/2/cat/1/source/1',
+          metadata: {
+            application: {
+              orbis: {
+                orbs: [{ name: 'Orb2' }],
+                categories: { name: 'Cat1' },
+              },
+            },
+          },
+        },
+      ];
+      describe('categorisedOrbsAndSourcesSelector', () => {
+        it('returns all sources organised by orb and category', () => {
+          const state = {
+            data: {
+              sources,
+            },
+          };
+          const expected = [
+            {
+              name: 'Orb1',
+              sources: [
+                {
+                  category: 'Cat1',
+                  sources: [
+                    expect.objectContaining({
+                      source_id: 'orb/1/cat/1/source/1',
+                    }),
+                  ],
+                },
+              ],
+            },
+            {
+              name: 'Orb2',
+              sources: [
+                {
+                  category: 'Cat1',
+                  sources: [
+                    expect.objectContaining({
+                      source_id: 'orb/2/cat/1/source/1',
+                    }),
+                  ],
+                },
+              ],
+            },
+          ];
+
+          const result = categorisedOrbsAndSourcesSelector()(state);
+          expect(result).toEqual(expected);
+        });
+      });
+
+      describe('activeCategorisedOrbsAndSourcesSelector', () => {
+        it('returns sources organised by orb and category if active', () => {
+          const state = {
+            data: {
+              layers: ['orb/1/cat/1/source/1'],
+              sources,
+            },
+          };
+          const expected = [
+            {
+              name: 'Orb1',
+              sources: [
+                {
+                  category: 'Cat1',
+                  sources: [
+                    expect.objectContaining({
+                      source_id: 'orb/1/cat/1/source/1',
+                    }),
+                  ],
+                },
+              ],
+            },
+          ];
+
+          const result = activeCategorisedOrbsAndSourcesSelector()(state);
+          expect(result).toEqual(expected);
+        });
+      });
+
+      describe('activeCategorisedSourcesSelector', () => {
+        it('returns only active categories and sources', () => {
+          const state = {
+            data: {
+              layers: ['orb/1/cat/1/source/1'],
+              sources,
+            },
+          };
+          const expected = [
+            {
+              category: 'Cat1',
+              sources: [
+                expect.objectContaining({
+                  source_id: 'orb/1/cat/1/source/1',
+                }),
+              ],
+            },
+          ];
+
+          const result = activeCategorisedSourcesSelector()(state);
+          expect(result).toEqual(expected);
+        });
       });
     });
   });

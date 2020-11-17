@@ -1,28 +1,32 @@
+import clsx from 'clsx';
 import React from 'react';
 
 import dialogStyles from '../data-layers-dialog.module.css';
 import styles from './orb-select.module.css';
 
-export const OrbSelect = ({ domains, selectedDomain, onDomainClick }) => (
+/**
+ * @param {{
+ *   orbs: Orb[]
+ *   selectedOrbName?: Orb['name']
+ *   onOrbClick: (orb: Orb['name']) => void
+ * }} props
+ */
+export const OrbSelect = ({ orbs, selectedOrbName, onOrbClick }) => (
   <div className={styles.categories}>
-    <div className={dialogStyles.header}>
-      <h3>Select Your Orb</h3>
-    </div>
-    <div className={dialogStyles.content}>
-      <ul className={styles.orbList}>
-        {domains.map(domain => (
-          <li
-            className={`${
-              domain.label === selectedDomain?.label && styles.selected
-            }`}
-            key={domain.label}
-            onClick={() => onDomainClick(domain)}
-            data-testid={`orb-select-${domain.label}`}
-          >
-            {domain.label}
-          </li>
-        ))}
-      </ul>
-    </div>
+    <h3 className={dialogStyles.header}>Select Your Orb</h3>
+    <ul className={dialogStyles.list}>
+      {orbs?.map(orb => (
+        <li
+          className={clsx(styles.orb, {
+            [styles.selected]: orb.name === selectedOrbName,
+          })}
+          key={orb.name}
+          role="button"
+          onClick={() => onOrbClick(orb.name)}
+        >
+          {orb.name}
+        </li>
+      ))}
+    </ul>
   </div>
 );

@@ -9,18 +9,27 @@ const isolationPlusSlice = createSlice({
       name: undefined,
     },
     pickedInfo: undefined,
+    filterRange: undefined,
   },
   reducers: {
     setProperty: (state, { payload }) => {
+      state.filterRange = [payload.min, payload.max];
       state.property = payload;
     },
     setPickedInfo: (state, { payload }) => {
       state.pickedInfo = payload;
     },
+    setFilterRange: (state, { payload }) => {
+      state.filterRange = payload.map(Math.round);
+    },
   },
 });
 
-export const { setProperty, setPickedInfo } = isolationPlusSlice.actions;
+export const {
+  setProperty,
+  setPickedInfo,
+  setFilterRange,
+} = isolationPlusSlice.actions;
 
 const baseSelector = orbs => orbs?.[isolationPlusSlice.name];
 
@@ -43,6 +52,11 @@ export const propertySelector = createSelector(
 export const pickedInfoSelector = createSelector(
   baseSelector,
   orb => orb?.pickedInfo,
+);
+
+export const filterRangeSelector = createSelector(
+  baseSelector,
+  orb => orb?.filterRange,
 );
 
 export default isolationPlusSlice.reducer;

@@ -14,6 +14,12 @@
 
       {{ password_reset_url }}
 
+    {% elif login_url %}
+
+      Please follow the link below to login.
+
+      {{ login_url }}
+
     {% endif %}
 
     {% if username %}
