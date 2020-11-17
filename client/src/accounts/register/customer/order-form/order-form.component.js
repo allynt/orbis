@@ -1,16 +1,13 @@
 import React from 'react';
 
 import {
-  Box,
   Button,
   Checkbox,
   CircularProgress,
-  FormControl,
   FormControlLabel,
   Grid,
-  Input,
-  InputLabel,
   Paper,
+  styled,
   TextField,
   Typography,
 } from '@astrosat/astrosat-ui';
@@ -19,13 +16,15 @@ import { format } from 'date-fns';
 import { useForm } from 'react-hook-form';
 
 import { ErrorWell } from 'accounts/error-well.component';
-import { Field } from 'components/field/field.component';
-import { LoadingSpinner } from 'components/loading-spinner/loading-spinner.component';
 import { DATE_FORMAT, TRIAL_PERIOD_END_DATE } from '../customer.constants';
 import Order from './order.component';
 
-import formStyles from 'forms.module.css';
-import styles from './order-form.module.css';
+const OrderWrapper = styled(Paper)(({ theme }) => ({
+  maxHeight: '14ch',
+  overflowX: 'auto',
+  padding: '1.5em',
+  fontSize: theme.typography.pxToRem(8),
+}));
 
 /**
  * @typedef {{
@@ -77,12 +76,12 @@ const OrderForm = ({ serverErrors, isLoading, onSubmit }) => {
       onSubmit={handleSubmit(() => onSubmit(transformValues()))}
     >
       <Grid item xs={12}>
-        <Typography variant="h2" component="h1" gutterBottom>
+        <Typography align="center" variant="h2" component="h1" gutterBottom>
           Order Form
         </Typography>
       </Grid>
       <Grid item xs={12}>
-        <Typography paragraph>
+        <Typography align="center" paragraph>
           Please confirm that the following form contains the information that
           you want to sign up for the final contract with ORBIS.
         </Typography>
@@ -133,8 +132,10 @@ const OrderForm = ({ serverErrors, isLoading, onSubmit }) => {
           InputProps={{ readOnly: true }}
         />
       </Grid>
-      <Grid item xs={12} component={Paper}>
-        <Order />
+      <Grid item xs={12}>
+        <OrderWrapper>
+          <Order />
+        </OrderWrapper>
       </Grid>
       <Grid item xs={12} container justify="center">
         <FormControlLabel
