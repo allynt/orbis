@@ -23,7 +23,7 @@ const PASSWORD_CONFIRMATION_PLACEHOLDER_TEXT = 'Password Confirmation';
 const SIGN_UP_BUTTON_TEXT = 'Sign Up';
 const PASSWORD_TEXT = 'newpassword';
 const EMAIL_TEXT = 'test@test.com';
-const I_AGREE_TEXT = 'I agree with';
+const I_AGREE_TEXT = /I agree with/i;
 
 const testAppConfig = {
   passwordMinLength: 8,
@@ -66,17 +66,19 @@ describe('Register Form Component', () => {
   });
 
   it('should render a form', () => {
-    const { getByRole, getByText, getByPlaceholderText } = renderComponent(
+    const { getByRole, getByText, getByLabelText } = renderComponent(
       history,
       store,
       registerUser,
       error,
     );
 
-    expect(getByPlaceholderText(EMAIL_PLACEHOLDER_TEXT)).toBeInTheDocument();
-    expect(getByPlaceholderText(PASSWORD_PLACEHOLDER_TEXT)).toBeInTheDocument();
     expect(
-      getByPlaceholderText(PASSWORD_CONFIRMATION_PLACEHOLDER_TEXT),
+      getByRole('textbox', { name: EMAIL_PLACEHOLDER_TEXT }),
+    ).toBeInTheDocument();
+    expect(getByLabelText(PASSWORD_PLACEHOLDER_TEXT)).toBeInTheDocument();
+    expect(
+      getByLabelText(PASSWORD_CONFIRMATION_PLACEHOLDER_TEXT),
     ).toBeInTheDocument();
     // Check password strength component exists
     expect(getByText(I_AGREE_TEXT)).toBeInTheDocument();
@@ -94,43 +96,39 @@ describe('Register Form Component', () => {
   });
 
   it('should disable `Sign Up` button when form is invalid', () => {
-    const { getByText, getByPlaceholderText } = renderComponent(
-      history,
-      store,
-      registerUser,
-      error,
-    );
+    const { getByRole } = renderComponent(history, store, registerUser, error);
 
-    const email = getByPlaceholderText(EMAIL_PLACEHOLDER_TEXT);
+    const email = getByRole('textbox', { name: EMAIL_PLACEHOLDER_TEXT });
     expect(email.value).toEqual('');
     userEvent.type(email, EMAIL_TEXT);
     expect(email.value).toEqual(EMAIL_TEXT);
 
-    expect(getByText(SIGN_UP_BUTTON_TEXT)).toHaveAttribute('disabled');
+    expect(getByRole('button', { name: SIGN_UP_BUTTON_TEXT })).toBeDisabled();
   });
 
   it('should enable `Sign Up` button when form is valid', () => {
-    const { getByText, getByPlaceholderText } = renderComponent(
+    const { getByLabelText, getByRole } = renderComponent(
       history,
       store,
       registerUser,
       error,
     );
 
-    userEvent.type(getByPlaceholderText(EMAIL_PLACEHOLDER_TEXT), EMAIL_TEXT);
     userEvent.type(
-      getByPlaceholderText(PASSWORD_PLACEHOLDER_TEXT),
-      PASSWORD_TEXT,
+      getByRole('textbox', { name: EMAIL_PLACEHOLDER_TEXT }),
+      EMAIL_TEXT,
     );
+    userEvent.type(getByLabelText(PASSWORD_PLACEHOLDER_TEXT), PASSWORD_TEXT);
     userEvent.type(
-      getByPlaceholderText(PASSWORD_CONFIRMATION_PLACEHOLDER_TEXT),
+      getByLabelText(PASSWORD_CONFIRMATION_PLACEHOLDER_TEXT),
       PASSWORD_TEXT,
     );
 
-    waitFor(() => getByText(I_AGREE_TEXT));
-    expect(getByText(SIGN_UP_BUTTON_TEXT)).toHaveAttribute('disabled');
-    userEvent.click(getByText(I_AGREE_TEXT));
-    expect(getByText(SIGN_UP_BUTTON_TEXT)).not.toHaveAttribute('disabled');
+    expect(getByRole('button', { name: SIGN_UP_BUTTON_TEXT })).toBeDisabled();
+    userEvent.click(getByRole('checkbox', { name: I_AGREE_TEXT }));
+    expect(
+      getByRole('button', { name: SIGN_UP_BUTTON_TEXT }),
+    ).not.toBeDisabled();
   });
 
   it('should keep `Sign Up` button disabled when registration is disabled', () => {
@@ -139,24 +137,24 @@ describe('Register Form Component', () => {
       app: { config: { ...testAppConfig, isRegistrationOpen: false } },
     });
 
-    const { getByText, getByPlaceholderText } = renderComponent(
+    const { getByLabelText, getByRole } = renderComponent(
       history,
       store,
       registerUser,
       error,
     );
 
-    userEvent.type(getByPlaceholderText(EMAIL_PLACEHOLDER_TEXT), EMAIL_TEXT);
     userEvent.type(
-      getByPlaceholderText(PASSWORD_PLACEHOLDER_TEXT),
-      PASSWORD_TEXT,
+      getByRole('textbox', { name: EMAIL_PLACEHOLDER_TEXT }),
+      EMAIL_TEXT,
     );
+    userEvent.type(getByLabelText(PASSWORD_PLACEHOLDER_TEXT), PASSWORD_TEXT);
     userEvent.type(
-      getByPlaceholderText(PASSWORD_CONFIRMATION_PLACEHOLDER_TEXT),
+      getByLabelText(PASSWORD_CONFIRMATION_PLACEHOLDER_TEXT),
       PASSWORD_TEXT,
     );
 
-    expect(getByText(SIGN_UP_BUTTON_TEXT)).toHaveAttribute('disabled');
+    expect(getByRole('button', { name: SIGN_UP_BUTTON_TEXT })).toBeDisabled();
   });
 
   it('should not call register function when form is invalid and `Sign Up` button clicked', () => {
@@ -169,24 +167,24 @@ describe('Register Form Component', () => {
   });
 
   it('should call register function when form is valid and `Sign Up` button clicked', async () => {
-    const { getByRole, getByText, getByPlaceholderText } = renderComponent(
+    const { getByRole, getByLabelText } = renderComponent(
       history,
       store,
       registerUser,
       error,
     );
 
-    userEvent.type(getByPlaceholderText(EMAIL_PLACEHOLDER_TEXT), EMAIL_TEXT);
     userEvent.type(
-      getByPlaceholderText(PASSWORD_PLACEHOLDER_TEXT),
-      PASSWORD_TEXT,
+      getByRole('textbox', { name: EMAIL_PLACEHOLDER_TEXT }),
+      EMAIL_TEXT,
     );
+    userEvent.type(getByLabelText(PASSWORD_PLACEHOLDER_TEXT), PASSWORD_TEXT);
     userEvent.type(
-      getByPlaceholderText(PASSWORD_CONFIRMATION_PLACEHOLDER_TEXT),
+      getByLabelText(PASSWORD_CONFIRMATION_PLACEHOLDER_TEXT),
       PASSWORD_TEXT,
     );
 
-    userEvent.click(getByText(I_AGREE_TEXT));
+    userEvent.click(getByRole('checkbox', { name: I_AGREE_TEXT }));
 
     expect(registerUser).not.toHaveBeenCalled();
     userEvent.click(getByRole('button', { name: SIGN_UP_BUTTON_TEXT }));
