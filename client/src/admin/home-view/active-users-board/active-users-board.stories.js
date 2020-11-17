@@ -51,11 +51,6 @@ export const NoLicenceData = () => (
       customer={customer}
       licenceData={null}
     />
-    <ActiveUsersBoard
-      activeUsers={activeUsers}
-      customer={customer}
-      licenceData={null}
-    />
   </div>
 );
 

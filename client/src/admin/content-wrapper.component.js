@@ -8,4 +8,5 @@ const ContentWrapper = ({ children, title }) => (
     {children}
   </div>
 );
+
 export default ContentWrapper;

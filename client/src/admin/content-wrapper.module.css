@@ -4,7 +4,7 @@
   justify-content: flex-start;
   width: 100%;
   height: fit-content;
-  height: 90%;
+  height: calc(100vh - calc(2 * var(--margin)));
   padding: 1.875rem;
   margin: 1.875rem;
   border-radius: 1rem;

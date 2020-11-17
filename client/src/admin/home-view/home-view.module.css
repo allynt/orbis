@@ -1,4 +1,3 @@
 .home {
   composes: parentView from '../admin.module.css';
 }
-
