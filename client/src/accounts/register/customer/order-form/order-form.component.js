@@ -1,6 +1,19 @@
 import React from 'react';
 
-import { Button, Checkbox } from '@astrosat/astrosat-ui';
+import {
+  Box,
+  Button,
+  Checkbox,
+  CircularProgress,
+  FormControl,
+  FormControlLabel,
+  Grid,
+  Input,
+  InputLabel,
+  Paper,
+  TextField,
+  Typography,
+} from '@astrosat/astrosat-ui';
 
 import { format } from 'date-fns';
 import { useForm } from 'react-hook-form';
@@ -57,65 +70,88 @@ const OrderForm = ({ serverErrors, isLoading, onSubmit }) => {
   });
 
   return (
-    <form onSubmit={handleSubmit(() => onSubmit(transformValues()))}>
-      <h1 className={styles.heading}>Order Form</h1>
-      <p className={styles.paragraph}>
-        Please confirm that the following form contains the information that you
-        want to sign up for the final contract with ORBIS.
-      </p>
+    <Grid
+      container
+      spacing={2}
+      component="form"
+      onSubmit={handleSubmit(() => onSubmit(transformValues()))}
+    >
+      <Grid item xs={12}>
+        <Typography variant="h2" component="h1" gutterBottom>
+          Order Form
+        </Typography>
+      </Grid>
+      <Grid item xs={12}>
+        <Typography paragraph>
+          Please confirm that the following form contains the information that
+          you want to sign up for the final contract with ORBIS.
+        </Typography>
+      </Grid>
       <ErrorWell errors={serverErrors} />
-      <Field
-        register={register}
-        label="Selected Licence Subscription"
-        name="subscription"
-        readOnly
-        inline
-      />
-      <Field
-        register={register}
-        label="Payment Type"
-        name="paymentType"
-        readOnly
-        inline
-      />
-      <Field
-        register={register}
-        label="Amount to be paid"
-        name="amount"
-        readOnly
-        inline
-      />
-      <Field
-        register={register}
-        label="Number of Licences"
-        name="licences"
-        readOnly
-        inline
-      />
-      <Field
-        register={register}
-        label="Subscription Period Ends"
-        name="period"
-        readOnly
-        inline
-      />
-      <div className={styles.order}>
+      <Grid item xs={12}>
+        <TextField
+          inputRef={register}
+          label="Selected Licence Subscription"
+          id="subscription"
+          name="subscription"
+          InputProps={{ readOnly: true }}
+        />
+      </Grid>
+      <Grid item xs={12}>
+        <TextField
+          inputRef={register}
+          label="Payment Type"
+          id="paymentType"
+          name="paymentType"
+          InputProps={{ readOnly: true }}
+        />
+      </Grid>
+      <Grid item xs={12}>
+        <TextField
+          inputRef={register}
+          label="Amount to be paid"
+          id="amount"
+          name="amount"
+          InputProps={{ readOnly: true }}
+        />
+      </Grid>
+      <Grid item xs={12}>
+        <TextField
+          inputRef={register}
+          label="Number of Licences"
+          id="licences"
+          name="licences"
+          InputProps={{ readOnly: true }}
+        />
+      </Grid>
+      <Grid item xs={12}>
+        <TextField
+          inputRef={register}
+          label="Subscription Period Ends"
+          id="period"
+          name="period"
+          InputProps={{ readOnly: true }}
+        />
+      </Grid>
+      <Grid item xs={12} component={Paper}>
         <Order />
-      </div>
-      <Checkbox
-        className={`${formStyles.row} ${styles.centered}`}
-        ref={register}
-        name="confirm"
-        label="I confirm the information above is correct"
-      />
-      <Button
-        className={styles.centered}
-        type="submit"
-        disabled={!watch('confirm')}
-      >
-        {isLoading ? <LoadingSpinner /> : 'Confirm'}
-      </Button>
-    </form>
+      </Grid>
+      <Grid item xs={12} container justify="center">
+        <FormControlLabel
+          label="I confirm the information above is correct"
+          control={<Checkbox ref={register} name="confirm" />}
+        />
+      </Grid>
+      <Grid item xs={12} container justify="center">
+        <Button type="submit" disabled={!watch('confirm')}>
+          {isLoading ? (
+            <CircularProgress color="inherit" size={24} />
+          ) : (
+            'Confirm'
+          )}
+        </Button>
+      </Grid>
+    </Grid>
   );
 };
 
