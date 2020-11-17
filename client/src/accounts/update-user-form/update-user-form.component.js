@@ -1,16 +1,38 @@
 import React from 'react';
 
-import { Button, Textfield } from '@astrosat/astrosat-ui';
+import {
+  Button,
+  TextField,
+  Typography,
+  makeStyles,
+  Box,
+} from '@astrosat/astrosat-ui';
 
 import { useForm } from 'react-hook-form';
 
-import styles from './update-user-form.module.css';
-import formStyles from '../../forms.module.css';
+import { Form } from 'components';
 
 const EMAIL_FIELD_ID = 'email-field';
 const NAME_FIELD_ID = 'name-field';
 
+const useStyles = makeStyles(theme => ({
+  form: {
+    marginBottom: theme.spacing(2),
+  },
+}));
+
+/**
+ *
+ * @param {{
+ *  user?: User
+ *  updateUser?: (values: {
+ *    email: string
+ *    name: string
+ * }) => void
+ * }} props
+ */
 const UpdateUserForm = ({ user, updateUser }) => {
+  const styles = useStyles();
   const { handleSubmit, register } = useForm({
     defaultValues: { email: user?.email, name: user?.name },
   });
@@ -20,35 +42,33 @@ const UpdateUserForm = ({ user, updateUser }) => {
   };
 
   return (
-    <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
-      <p className={formStyles.paragraph}>Personal Details</p>
-      <div className={formStyles.row}>
-        <label className={formStyles.hiddenLabel} htmlFor={EMAIL_FIELD_ID}>
-          Email
-        </label>
-        <Textfield
-          id={EMAIL_FIELD_ID}
-          name="email"
-          ref={register}
-          placeholder="Email"
-          readOnly
-        />
-      </div>
-      <div className={formStyles.row}>
-        <label className={formStyles.hiddenLabel} htmlFor={NAME_FIELD_ID}>
-          Name
-        </label>
-        <Textfield
-          id={NAME_FIELD_ID}
-          name="name"
-          ref={register}
-          placeholder="Name"
-        />
-      </div>
-      <Button className={styles.submit} type="submit">
-        Update Account
-      </Button>
-    </form>
+    <Box display="flex" flexDirection="column" height="100%">
+      <Form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
+        <Typography variant="h4" component="h1">
+          Personal Details
+        </Typography>
+        <Form.Row>
+          <TextField
+            id={EMAIL_FIELD_ID}
+            name="email"
+            inputRef={register}
+            label="Email"
+            InputProps={{ readOnly: true }}
+          />
+        </Form.Row>
+        <Form.Row>
+          <TextField
+            id={NAME_FIELD_ID}
+            name="name"
+            inputRef={register}
+            label="Name"
+          />
+        </Form.Row>
+      </Form>
+      <Box mt="auto" mx="auto">
+        <Button type="submit">Update Account</Button>
+      </Box>
+    </Box>
   );
 };
 

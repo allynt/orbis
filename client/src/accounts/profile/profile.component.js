@@ -2,15 +2,12 @@ import React from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
 
-import { Button } from '@astrosat/astrosat-ui';
+import { Box, Button, Link, Typography } from '@astrosat/astrosat-ui';
 
 import UpdateUserForm from '../update-user-form/update-user-form.component';
 import { updateUser, logout } from '../accounts.slice';
 import { userSelector } from '../accounts.selectors';
-
 import { TERMS } from 'legal-documents/legal-documents-constants';
-
-import styles from './profile.module.css';
 
 const LINKS = [
   {
@@ -32,34 +29,32 @@ const Profile = () => {
   const updateUserProfile = user => dispatch(updateUser(user));
 
   return (
-    <div className={styles.profile}>
+    <Box
+      width="100%"
+      height="100%"
+      display="flex"
+      flexDirection="column"
+      alignItems="center"
+      p={2}
+    >
       <UpdateUserForm user={user} updateUser={updateUserProfile} />
-      <Button
-        className={styles.logout}
-        theme="tertiary"
-        onClick={() => dispatch(logout())}
-        data-testid="logout"
-      >
-        Logout
-      </Button>
-
-      {LINKS.map(link => (
-        <p key={link.text} className={styles.p}>
-          {link.prefix}
-          <Button
-            className={styles.link}
-            href={link.url}
-            rel="noopener noreferrer"
-            target="_blank"
-          >
-            {link.text}
-          </Button>
-        </p>
-      ))}
-    </div>
+      <Box mt={2}>
+        <Button color="secondary" onClick={() => dispatch(logout())}>
+          Logout
+        </Button>
+      </Box>
+      <Box mt={2}>
+        {LINKS.map(link => (
+          <Typography key={link.text} paragraph>
+            {link.prefix}&nbsp;
+            <Link href={link.url} rel="noopener noreferrer" target="_blank">
+              {link.text}
+            </Link>
+          </Typography>
+        ))}
+      </Box>
+    </Box>
   );
 };
-
-Profile.propTypes = {};
 
 export default Profile;

@@ -1,6 +1,12 @@
 import React from 'react';
 
-import { Button, Select } from '@astrosat/astrosat-ui';
+import {
+  Button,
+  CircularProgress,
+  MenuItem,
+  TextField,
+  Typography,
+} from '@astrosat/astrosat-ui';
 
 import { yupResolver } from '@hookform/resolvers/yup';
 import { format } from 'date-fns';
@@ -8,13 +14,9 @@ import { Controller, useForm } from 'react-hook-form';
 import { object as yupObject } from 'yup';
 
 import { ErrorWell } from 'accounts/error-well.component';
-import { FieldError } from 'components/field-error/field-error.component';
-import { Field } from 'components/field/field.component';
-import { LoadingSpinner } from 'components/loading-spinner/loading-spinner.component';
+import { Form } from 'components';
 import { customerName, FIELD_NAMES } from 'utils/validators';
 import { DATE_FORMAT, TRIAL_PERIOD_END_DATE } from '../customer.constants';
-
-import styles from './customer-registration.module.css';
 
 const ORGANISATION_TYPES = [
   { name: 'None', value: undefined },
@@ -62,9 +64,10 @@ const CustomerRegistration = ({
   serverErrors,
   onSubmit,
 }) => {
-  const { control, errors, formState, handleSubmit, register } = useForm({
+  const { errors, formState, handleSubmit, register, control } = useForm({
     defaultValues: {
       email,
+      customerType: undefined,
       licence: 'ORBIS Core',
       numberOfLicences: 10,
       subscriptionPeriod: format(TRIAL_PERIOD_END_DATE, DATE_FORMAT),
@@ -82,92 +85,118 @@ const CustomerRegistration = ({
   };
 
   return (
-    <form onSubmit={handleSubmit(transformValues)}>
-      <p className={styles.paragraph}>
+    <Form noValidate onSubmit={handleSubmit(transformValues)}>
+      <Typography style={{ textAlign: 'center' }} paragraph>
         <b>Welcome to Orbis.</b> Please complete your account details to
         continue on your path to explore Orbis data. The form below will
         complete your account and allow you to subscribe to your first Orb.
         Additional Orbs will be available through the in-application store when
         it goes live in a future release.
-      </p>
-      {serverErrors && <ErrorWell errors={serverErrors} />}
-      <Field
-        register={register}
-        name={FIELD_NAMES.email}
-        label="Work Email Address"
-        readOnly
-        errors={errors}
-        helpText="You will become the ADMIN for this Team Account. The email address and
-        password you have provided will also serve as your ADMIN account. You
-        will be able to access the Admin Console. Don’t worry, we will help you
-        find it!"
-      />
-      <Field
-        register={register}
-        name={FIELD_NAMES.customerName}
-        label="Organisation Name*"
-        errors={errors}
-        autoFocus
-      />
-      <Field
-        register={register}
-        name={FIELD_NAMES.customerNameOfficial}
-        label="Organisation Official Name"
-        errors={errors}
-      />
-      <Controller
-        control={control}
-        name={FIELD_NAMES.customerType}
-        render={({ onChange, ...rest }) => (
-          <div className={styles.field}>
-            <label className={styles.label} htmlFor={FIELD_NAMES.customerType}>
-              Type of Organisation
-            </label>
-            <Select
+      </Typography>
+      <ErrorWell errors={serverErrors} />
+      <Form.Row>
+        <TextField
+          id={FIELD_NAMES.email}
+          name={FIELD_NAMES.email}
+          label="Work Email Address"
+          inputRef={register}
+          InputProps={{ readOnly: true }}
+          error={!!errors[FIELD_NAMES.email]}
+          helperText={
+            errors[FIELD_NAMES.email]?.message ??
+            'You will become the ADMIN for this Team Account. The email address and password you have provided will also serve as your ADMIN account. You will be able to access the Admin Console. Don’t worry, we will help you find it!'
+          }
+        />
+      </Form.Row>
+      <Form.Row>
+        <TextField
+          id={FIELD_NAMES.customerName}
+          name={FIELD_NAMES.customerName}
+          label="Organisation Name"
+          inputRef={register}
+          error={!!errors[FIELD_NAMES.customerName]}
+          helperText={errors[FIELD_NAMES.customerName]?.message}
+          required
+          autoFocus
+        />
+      </Form.Row>
+      <Form.Row>
+        <TextField
+          id={FIELD_NAMES.customerNameOfficial}
+          name={FIELD_NAMES.customerNameOfficial}
+          label="Organisation Official Name"
+          inputRef={register}
+          error={!!errors[FIELD_NAMES.customerNameOfficial]}
+          helperText={errors[FIELD_NAMES.customerNameOfficial]?.message}
+        />
+      </Form.Row>
+      <Form.Row>
+        <Controller
+          control={control}
+          name={FIELD_NAMES.customerType}
+          as={
+            <TextField
               id={FIELD_NAMES.customerType}
-              options={ORGANISATION_TYPES}
-              onChange={e => onChange(e.target.value)}
-              {...rest}
-            />
-            <FieldError message={errors?.[FIELD_NAMES.customerType]?.message} />
-          </div>
-        )}
-      />
-      <Field
-        register={register}
-        name={FIELD_NAMES.registeredNumber}
-        label="Registered Number"
-        errors={errors}
-      />
-      <Field
-        register={register}
-        name="licence"
-        label="Licence"
-        errors={errors}
-        readOnly
-      />
-      <Field
-        register={register}
-        name="numberOfLicences"
-        label="Number of Licences"
-        errors={errors}
-        readOnly
-      />
-      <Field
-        register={register}
-        name="subscriptionPeriod"
-        label="Free Trial Subscription Period Ends"
-        errors={errors}
-        readOnly
-      />
-      <Button
-        className={styles.submit}
-        type="submit"
-        disabled={!formState.isDirty || Object.keys(errors).length}
-      >
-        {isLoading ? <LoadingSpinner /> : 'Next'}
-      </Button>
-    </form>
+              select
+              label="Type of Organisation"
+              error={!!errors[FIELD_NAMES.customerType]}
+              helperText={errors[FIELD_NAMES.customerType]?.message}
+            >
+              {ORGANISATION_TYPES.map(({ name, value }) => (
+                <MenuItem key={value} value={value}>
+                  {name}
+                </MenuItem>
+              ))}
+            </TextField>
+          }
+        />
+      </Form.Row>
+      <Form.Row>
+        <TextField
+          id={FIELD_NAMES.registeredNumber}
+          name={FIELD_NAMES.registeredNumber}
+          label="Registered Number"
+          inputRef={register}
+          error={!!errors[FIELD_NAMES.registeredNumber]}
+          helperText={errors[FIELD_NAMES.registeredNumber]?.message}
+        />
+      </Form.Row>
+      <Form.Row>
+        <TextField
+          id="licence"
+          name="licence"
+          label="Licence"
+          inputRef={register}
+          InputProps={{ readOnly: true }}
+        />
+      </Form.Row>
+      <Form.Row>
+        <TextField
+          id="numberOfLicences"
+          name="numberOfLicences"
+          label="Number of Licences"
+          inputRef={register}
+          InputProps={{ readOnly: true }}
+        />
+      </Form.Row>
+      <Form.Row>
+        <TextField
+          id="subscriptionPeriod"
+          name="subscriptionPeriod"
+          label="Free Trial Subscription Period Ends"
+          inputRef={register}
+          InputProps={{ readOnly: true }}
+        />
+      </Form.Row>
+      <Form.Row centered>
+        <Button
+          type="submit"
+          disabled={!formState.isDirty || !!Object.keys(errors).length}
+        >
+          {isLoading ? <CircularProgress color="inherit" size={24} /> : 'Next'}
+        </Button>
+      </Form.Row>
+    </Form>
   );
 };
 
