@@ -82,7 +82,7 @@ describe('<RadioPicker />', () => {
 
     const { queryByText } = renderComponent(noPairs, {
       property: {
-        source_id: '123',
+        source_id: noPairs.source_id,
         name: 'Test Name 1',
       },
     });
@@ -91,10 +91,15 @@ describe('<RadioPicker />', () => {
     expect(queryByText('Number')).not.toBeInTheDocument();
   });
 
-  xit('reveals number/percentage toggle buttons when Radio is checked', () => {
-    const { getByText, getAllByRole } = renderComponent();
-
-    userEvent.click(getAllByRole('radio')[0]);
+  it('reveals number/percentage toggle buttons when Radio is checked', () => {
+    const { getByText, getAllByRole } = renderComponent(defaultSelectedLayer, {
+      isolationPlus: {
+        property: {
+          source_id: defaultSelectedLayer.source_id,
+          name: 'Census 2011: % of people in the age band 40 - 64',
+        },
+      },
+    });
 
     expect(getAllByRole('radio')[0]).toHaveProperty('checked', true);
 
@@ -120,11 +125,13 @@ describe('<RadioPicker />', () => {
     expect(dispatch).toHaveBeenCalledWith(expected);
   });
 
-  xit('dispatches selected property when toggle buttons are clicked', () => {
-    const { getByText } = renderComponent(undefined, {
-      property: {
-        source_id: '123',
-        name: 'Test Name 1',
+  it('dispatches selected property when toggle buttons are clicked', () => {
+    const { getByText } = renderComponent(defaultSelectedLayer, {
+      isolationPlus: {
+        property: {
+          source_id: defaultSelectedLayer.source_id,
+          name: 'Census 2011: % of people in the age band 40 - 64',
+        },
       },
     });
 
@@ -139,30 +146,7 @@ describe('<RadioPicker />', () => {
       },
     };
 
-    expect(dispatch).toHaveBeenCalledTimes(2);
-    expect(dispatch).toHaveBeenCalledWith(expected);
-  });
-
-  xit('removes currently selected property from map when sidebar component dropdown is removed from DOM', () => {
-    let isVisible = true;
-    const { getByText } = render(
-      <Provider store={mockStore({})}>
-        {isVisible && (
-          <RadioPicker
-            selectedLayer={defaultSelectedLayer}
-            dispatch={dispatch}
-          />
-        )}
-        <button onClick={() => (isVisible = false)}>Show/Hide Radios</button>
-      </Provider>,
-    );
-
-    const expected = {
-      type: 'isolationPlus/setProperty',
-      payload: {},
-    };
-
-    userEvent.click(getByText('Show/Hide Radios'));
+    expect(dispatch).toHaveBeenCalledTimes(1);
     expect(dispatch).toHaveBeenCalledWith(expected);
   });
 

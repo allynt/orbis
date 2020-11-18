@@ -26,7 +26,7 @@ const RadioProperty = ({
     ? data.some(p => p.name === selectedProperty?.name)
     : data.name === selectedProperty?.name;
 
-  const getProperty = type => data.find(d => d.type === type);
+  const findPropertyByType = type => data.find(d => d.type === type);
 
   return (
     <div className={styles.property}>
@@ -40,7 +40,7 @@ const RadioProperty = ({
         checked={propertyMatch}
         onClick={() =>
           propertyMatch && selectedProperty?.type === FORMAT.number
-            ? onRadioClick(getProperty(FORMAT.number))
+            ? onRadioClick(findPropertyByType(FORMAT.number))
             : onRadioClick(initialProperty)
         }
       />
@@ -75,7 +75,9 @@ const RadioProperty = ({
               <label className={styles.label}>Select display type: </label>
               <div className={styles.buttons}>
                 <Button
-                  onClick={() => onToggleClick(getProperty(FORMAT.percentage))}
+                  onClick={() =>
+                    onToggleClick(findPropertyByType(FORMAT.percentage))
+                  }
                   className={`${styles.button} ${
                     selectedProperty.type === FORMAT.percentage && styles.active
                   }`}
@@ -83,7 +85,9 @@ const RadioProperty = ({
                   Percentage
                 </Button>
                 <Button
-                  onClick={() => onToggleClick(getProperty(FORMAT.number))}
+                  onClick={() =>
+                    onToggleClick(findPropertyByType(FORMAT.number))
+                  }
                   className={`${styles.button} ${
                     selectedProperty.type === FORMAT.number && styles.active
                   }`}

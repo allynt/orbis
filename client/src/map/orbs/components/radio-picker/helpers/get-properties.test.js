@@ -170,38 +170,4 @@ describe('getProperties', () => {
 
     expect(result).toEqual(expected);
   });
-
-  xit('allows for grouping properties of same type, if they have shared `property_group`', () => {
-    const result = getProperties(layerTemplate(sameTypeObjects));
-
-    const expected = [
-      [
-        {
-          name: 'test name 1',
-          type: 'percentage',
-          property_group: '1',
-        },
-        {
-          name: 'test name 3',
-          type: 'percentage',
-          property_group: '1',
-        },
-      ],
-      [
-        {
-          name: 'test name 2',
-          type: 'percentage',
-          property_group: '2',
-        },
-
-        {
-          name: 'test name 4',
-          type: 'percentage',
-          property_group: '2',
-        },
-      ],
-    ];
-
-    expect(result).toEqual(expected);
-  });
 });
