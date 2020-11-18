@@ -2,12 +2,18 @@
   list-style: none;
   color: #fff;
   font-size: 14px;
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: 0.571em;
+}
+
+.icon {
+  width: 1.429em;
+  height: 1.429em;
+  grid-row: 1 / span 2;
+  place-self: center;
 }
 
 .name {
   font-weight: 600;
-  margin-bottom: 8px;
-}
-
-.address {
 }

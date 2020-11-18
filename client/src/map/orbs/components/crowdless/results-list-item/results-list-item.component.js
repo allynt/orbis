@@ -30,8 +30,11 @@ const ResultsListItem = ({ isLoading = false, result }) => {
   const Icon = getIcon(result?.properties?.crowdednessCategory);
 
   return (
-    <li className={styles.listItem} tabIndex={0}>
-      <Icon title={result?.properties?.crowdednessCategory} />
+    <li className={styles.listItem}>
+      <Icon
+        className={styles.icon}
+        title={result?.properties?.crowdednessCategory}
+      />
       <p className={styles.name}>{result?.properties?.name}</p>
       <p className={styles.address}>{result?.properties?.address}</p>
     </li>
