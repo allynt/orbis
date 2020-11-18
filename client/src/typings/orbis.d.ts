@@ -95,6 +95,7 @@ type SourceMetadata = {
   domain?: string;
   properties: Property[];
   tiles?: string | string[];
+  url?: string;
   application?: {
     orbis: OrbisApplicationMetadata;
   };
