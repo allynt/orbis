@@ -74,5 +74,6 @@ Categories.args = {
 
 export const IsLoading = Template.bind({});
 IsLoading.args = {
+  ...Result.args,
   isLoading: true,
 };

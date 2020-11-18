@@ -2,8 +2,8 @@ import { render } from '@testing-library/react';
 import * as React from 'react';
 import ResultsListItem from './results-list-item.component';
 
-const renderComponent = ({ result }) =>
-  render(<ResultsListItem result={result} />);
+const renderComponent = ({ result = undefined, isLoading = false }) =>
+  render(<ResultsListItem result={result} isLoading={isLoading} />);
 
 describe('<ResultsListItem />', () => {
   it.each(['not busy', 'busy', 'very busy'])(
@@ -28,7 +28,7 @@ describe('<ResultsListItem />', () => {
   });
 
   it('Shows a skeleton if loading', () => {
-    const { getByRole } = renderComponent({ isLoading: true });
-    expect(getByRole('progressbar')).toBeInTheDocument();
+    const { getAllByRole } = renderComponent({ isLoading: true });
+    expect(getAllByRole('progressbar')).toHaveLength(3);
   });
 });
