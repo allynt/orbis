@@ -10,7 +10,7 @@ import {
 
 import { createCategorisationPath } from 'data-layers/categorisation.utils';
 
-import RadioProperty from './radio-property.component';
+import RadioProperty from './radio-property/radio-property.component';
 
 import { getProperties } from './helpers/get-properties.js';
 

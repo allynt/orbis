@@ -91,22 +91,6 @@ describe('<RadioPicker />', () => {
     expect(queryByText('Number')).not.toBeInTheDocument();
   });
 
-  it('reveals number/percentage toggle buttons when Radio is checked', () => {
-    const { getByText, getAllByRole } = renderComponent(defaultSelectedLayer, {
-      isolationPlus: {
-        property: {
-          source_id: defaultSelectedLayer.source_id,
-          name: 'Census 2011: % of people in the age band 40 - 64',
-        },
-      },
-    });
-
-    expect(getAllByRole('radio')[0]).toHaveProperty('checked', true);
-
-    expect(getByText('Percentage')).toBeInTheDocument();
-    expect(getByText('Number')).toBeInTheDocument();
-  });
-
   it('selects percentage property by default when Radio is checked', () => {
     const { getAllByRole } = renderComponent();
 
@@ -122,31 +106,6 @@ describe('<RadioPicker />', () => {
       },
     };
 
-    expect(dispatch).toHaveBeenCalledWith(expected);
-  });
-
-  it('dispatches selected property when toggle buttons are clicked', () => {
-    const { getByText } = renderComponent(defaultSelectedLayer, {
-      isolationPlus: {
-        property: {
-          source_id: defaultSelectedLayer.source_id,
-          name: 'Census 2011: % of people in the age band 40 - 64',
-        },
-      },
-    });
-
-    userEvent.click(getByText('Number'));
-
-    const expected = {
-      type: 'isolationPlus/setProperty',
-      payload: {
-        source_id: defaultSelectedLayer.source_id,
-        name: 'Census 2011: number of people in the age band 40 - 64',
-        type: 'continuous',
-      },
-    };
-
-    expect(dispatch).toHaveBeenCalledTimes(1);
     expect(dispatch).toHaveBeenCalledWith(expected);
   });
 

@@ -6,9 +6,9 @@ import { Radio, InfoIcon, Button } from '@astrosat/astrosat-ui';
 
 import ColorMapRangeSlider from 'components/colormap-range-slider/colormap-range-slider.component';
 
-import { FORMAT } from './radio-picker-constants';
+import { FORMAT } from '../radio-picker-constants';
 
-import styles from './radio-picker.module.css';
+import styles from '../radio-picker.module.css';
 
 const RadioProperty = ({
   data,
@@ -39,9 +39,11 @@ const RadioProperty = ({
         value={initialProperty.name}
         checked={propertyMatch}
         onClick={() =>
-          propertyMatch && selectedProperty?.type === FORMAT.number
-            ? onRadioClick(findPropertyByType(FORMAT.number))
-            : onRadioClick(initialProperty)
+          onRadioClick(
+            propertyMatch && isArray && selectedProperty?.type === FORMAT.number
+              ? findPropertyByType(FORMAT.number)
+              : initialProperty,
+          )
         }
       />
       <div className={styles.info}>
