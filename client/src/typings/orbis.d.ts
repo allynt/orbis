@@ -94,6 +94,7 @@ type SourceMetadata = {
   description?: string;
   domain?: string;
   properties: Property[];
+  tiles?: string | string[];
   application?: {
     orbis: OrbisApplicationMetadata;
   };
@@ -107,6 +108,7 @@ type Source = {
   source_id: string;
   domain?: string;
   metadata: SourceMetadata;
+  manual?: boolean;
 };
 
 type CategoryHierarchy = {
