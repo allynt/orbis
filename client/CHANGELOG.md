@@ -1,3 +1,10 @@
+## [2.5.1](https://github.com/astrosat/orbis/compare/v2.5.0...v2.5.1) (2020-11-18)
+
+
+### Bug Fixes
+
+* **backend:** ignore blank customer serializer fields ([727e843](https://github.com/astrosat/orbis/commit/727e84317afec6982638ec1216b067c38924b31a))
+
 # [2.5.0](https://github.com/astrosat/orbis/compare/v2.4.0...v2.5.0) (2020-11-03)
 
 
