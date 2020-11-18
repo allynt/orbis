@@ -14,6 +14,11 @@ export const Results = Template.bind({});
 Results.args = {
   results: new Array(10).fill(undefined).map(() => ({
     properties: {
+      crowdednessCategory: faker.random.arrayElement([
+        'not busy',
+        'busy',
+        'very busy',
+      ]),
       name: faker.company.companyName(),
       address: [
         faker.address.streetAddress(),
@@ -22,4 +27,9 @@ Results.args = {
       ].join(', '),
     },
   })),
+};
+
+export const IsLoading = Template.bind({});
+IsLoading.args = {
+  isLoading: true,
 };

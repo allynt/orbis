@@ -8,8 +8,8 @@ import styles from './results-list-item.module.css';
 const ResultsListItemSkeleton = () => (
   <>
     <Skeleton className={styles.icon} width="1.429em" height="1.429em" />
-    <Skeleton width="10ch" height="1em" />
-    <Skeleton width="30ch" height="1em" />
+    <Skeleton width="10ch" height="1.15em" />
+    <Skeleton width="30ch" height="1.15em" />
   </>
 );
 
@@ -32,7 +32,7 @@ const getIcon = crowdednessCategory => {
 /**
  * @param {{
  *   isLoading?: boolean
- *   result: CrowdlessFeature
+ *   result?: CrowdlessFeature
  * }} props
  */
 const ResultsListItem = ({ isLoading = false, result }) => {
