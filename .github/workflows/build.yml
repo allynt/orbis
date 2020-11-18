@@ -97,7 +97,7 @@ jobs:
       - name: Build Docker Image
         run: |
           export GIT_SHA=${GITHUB_SHA:0:7}
-          DOCKER_BUILDKIT=1 docker build . -t ${AWS_REGISTRY}/${AWS_CLIENT_REPOSITORY}:${GIT_SHA} --build-arg TOKEN=${{ secrets.GITHUB_REGISTRY_TOKEN }} -f ./Dockerfile.client.deployment
+          DOCKER_BUILDKIT=1 docker build . -t ${AWS_REGISTRY}/${AWS_CLIENT_REPOSITORY}:${GIT_SHA} --build-arg COMMIT_SHA=${GIT_SHA} --build-arg TOKEN=${{ secrets.GITHUB_REGISTRY_TOKEN }} -f ./Dockerfile.client.deployment
 
       - name: Push image to AWS Docker Registry
         run: |
@@ -121,7 +121,7 @@ jobs:
       - name: Build Docker Image
         run: |
           export GIT_SHA=${GITHUB_SHA:0:7}
-          DOCKER_BUILDKIT=1 docker build . -t ${AWS_REGISTRY}/${AWS_SERVER_REPOSITORY}:${GIT_SHA} --build-arg TOKEN=${{ secrets.GITHUB_REGISTRY_TOKEN }} -f ./Dockerfile.server.deployment
+          DOCKER_BUILDKIT=1 docker build . -t ${AWS_REGISTRY}/${AWS_SERVER_REPOSITORY}:${GIT_SHA} --build-arg COMMIT_SHA=${GIT_SHA} --build-arg TOKEN=${{ secrets.GITHUB_REGISTRY_TOKEN }} -f ./Dockerfile.server.deployment
 
       - name: Push image to AWS Docker Registry
         run: |
