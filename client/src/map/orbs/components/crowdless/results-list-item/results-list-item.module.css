@@ -1,0 +1,13 @@
+.listItem {
+  list-style: none;
+  color: #fff;
+  font-size: 14px;
+}
+
+.name {
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.address {
+}

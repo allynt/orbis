@@ -6,22 +6,29 @@ const renderComponent = ({ result }) =>
   render(<ResultsListItem result={result} />);
 
 describe('<ResultsListItem />', () => {
-  // it.each(['not busy', 'busy', 'very busy'])(
-  //   'Shows the %s icon for a result',
-  //   category => {
-  //     const result = { properties: { crowdednessCategory: category } };
-  //     const { getByTitle } = renderComponent({ result });
-  //     expect(getByTitle(category)).toBeInTheDocument();
-  //   },
-  // );
+  it.each(['not busy', 'busy', 'very busy'])(
+    'Shows the %s icon for a result',
+    category => {
+      const result = { properties: { crowdednessCategory: category } };
+      const { getByTitle } = renderComponent({ result });
+      expect(getByTitle(category)).toBeInTheDocument();
+    },
+  );
 
-  it.todo('Shows the result name');
+  it('Shows the result name', () => {
+    const result = { properties: { name: 'Test Shop' } };
+    const { getByText } = renderComponent({ result });
+    expect(getByText(result.properties.name)).toBeInTheDocument();
+  });
 
-  it.todo('Shows the result address');
+  it('Shows the result address', () => {
+    const result = { properties: { address: '1 Test Street' } };
+    const { getByText } = renderComponent({ result });
+    expect(getByText(result.properties.address)).toBeInTheDocument();
+  });
 
-  it.todo('Shows all results as highlighted when no result is selected');
-
-  it.todo('Shows the selected result as highlighted');
-
-  it.todo('Calls the click handler with the clicked result');
+  it('Shows a skeleton if loading', () => {
+    const { getByRole } = renderComponent({ isLoading: true });
+    expect(getByRole('progressbar')).toBeInTheDocument();
+  });
 });
