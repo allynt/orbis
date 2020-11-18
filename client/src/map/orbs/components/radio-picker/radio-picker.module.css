@@ -76,11 +76,13 @@
   padding: 0.625rem;
   width: 50%;
   font-size: 0.875rem;
+  cursor: pointer;
 }
 
 .buttons .active {
   color: #171819;
   background-color: var(--color-yellow);
+  cursor: not-allowed;
 }
 
 .button:first-child {

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import ReactTooltip from 'react-tooltip';
 
@@ -11,70 +11,77 @@ import { FORMAT } from './radio-picker-constants';
 import styles from './radio-picker.module.css';
 
 const RadioProperty = ({
-  key,
-  property,
-  pairedProperties,
+  data,
   onRadioClick,
   onToggleClick,
   onSliderChange,
   selectedProperty,
-  selectedBand,
-  selectedUnit,
   colorScheme,
 }) => {
-  const bandProperty = property ? property : pairedProperties[0];
+  const isArray = Array.isArray(data);
+  const initialProperty = isArray ? data[0] : data;
+
+  const [selectedBand, setSelectedBand] = useState(initialProperty);
+
   return (
-    <div key={key} className={styles.property}>
+    <div className={styles.property}>
       <Radio
         className={styles.radio}
-        label={bandProperty?.application?.orbis?.label || bandProperty.name}
+        label={
+          initialProperty?.application?.orbis?.label || initialProperty.name
+        }
         name="isolationPlus"
-        value={bandProperty.name}
-        // Percentage property is used to toggle the Radio on/off, as only one  // property can be dispatched.
-        checked={selectedBand === bandProperty}
-        onClick={() => onRadioClick(bandProperty)}
+        value={initialProperty.name}
+        checked={selectedProperty?.name === selectedBand.name}
+        onClick={() => onRadioClick(initialProperty)}
       />
       <div className={styles.info}>
         <div
           data-tip
-          data-for={`${bandProperty.name}-tooltip`}
+          data-for={`${initialProperty.name}-tooltip`}
           role="tooltip"
           className={styles.infoButton}
           aria-label="tooltip"
           data-scroll-hide="false"
         >
-          <InfoIcon classes={styles.infoIcon} title={bandProperty.name} />
+          <InfoIcon classes={styles.infoIcon} title={initialProperty.name} />
         </div>
         <ReactTooltip
           className={styles.tooltip}
-          id={`${bandProperty.name}-tooltip`}
+          id={`${initialProperty.name}-tooltip`}
           place="right"
           effect="solid"
           arrowColor="var(--color-primary)"
           backgroundColor="var(--color-primary)"
           textColor="var(--color--text--dark)"
         >
-          <p>{bandProperty.name}</p>
+          <p>{initialProperty.name}</p>
         </ReactTooltip>
       </div>
-      {selectedBand === bandProperty && (
+      {selectedProperty?.name === selectedBand.name && (
         <div className={styles.displayMenu}>
-          {pairedProperties && (
+          {isArray && (
             <>
               <label className={styles.label}>Select display type: </label>
               <div className={styles.buttons}>
                 <Button
-                  onClick={() => onToggleClick(pairedProperties[0])}
+                  onClick={() => {
+                    setSelectedBand(data[0]);
+                    onToggleClick(data[0]);
+                  }}
                   className={`${styles.button} ${
-                    selectedUnit === FORMAT.percentage && styles.active
+                    selectedProperty.type === FORMAT.percentage && styles.active
                   }`}
                 >
                   Percentage
                 </Button>
                 <Button
-                  onClick={() => onToggleClick(pairedProperties[1])}
+                  onClick={() => {
+                    setSelectedBand(data[1]);
+                    onToggleClick(data[1]);
+                  }}
                   className={`${styles.button} ${
-                    selectedUnit === FORMAT.number && styles.active
+                    selectedProperty.type === FORMAT.number && styles.active
                   }`}
                 >
                   Number
