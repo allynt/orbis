@@ -17,6 +17,7 @@ const RadioProperty = ({
   onSliderChange,
   selectedProperty,
   colorScheme,
+  categoryPath,
 }) => {
   const isArray = Array.isArray(data);
   const initialProperty = isArray ? data[0] : data;
@@ -55,7 +56,8 @@ const RadioProperty = ({
           backgroundColor="var(--color-primary)"
           textColor="var(--color--text--dark)"
         >
-          <p>{initialProperty.name}</p>
+          <p className={styles.categoryPath}>{categoryPath}</p>
+          <p className={styles.description}>{initialProperty.description}</p>
         </ReactTooltip>
       </div>
       {selectedProperty?.name === selectedBand.name && (

@@ -8,6 +8,8 @@ import {
   setFilterRange,
 } from '../../slices/isolation-plus.slice';
 
+import { createCategorisationPath } from 'data-layers/categorisation.utils';
+
 import RadioProperty from './radio-property.component';
 
 import { getProperties } from './helpers/get-properties.js';
@@ -65,6 +67,7 @@ export const RadioPicker = ({ selectedLayer, dispatch }) => {
           onSliderChange={domain => dispatch(setFilterRange(domain))}
           selectedProperty={selectedProperty}
           colorScheme={colorScheme}
+          categoryPath={categoryPath}
         />
       ))}
     </>
