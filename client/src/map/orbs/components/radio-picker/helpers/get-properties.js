@@ -4,7 +4,11 @@ export const getProperties = selectedLayer => {
   const sortedProperties = properties.reduce((acc, cur) => {
     if (!acc.flat().includes(cur)) {
       const twinIndex = properties.findIndex(
-        p => p.property_group === cur.property_group && p.type !== cur.type,
+        p =>
+          p.property_group &&
+          cur.property_group &&
+          p.property_group === cur.property_group &&
+          p.type !== cur.type,
       );
 
       if (twinIndex !== -1) {

@@ -27,22 +27,18 @@ const singleObjects = [
   {
     name: 'test name 1',
     type: 'percentage',
-    property_group: '1',
   },
   {
     name: 'test name 2',
     type: 'percentage',
-    property_group: '2',
   },
   {
     name: 'test name 3',
     type: 'continuous',
-    property_group: '3',
   },
   {
     name: 'test name 4',
     type: 'continuous',
-    property_group: '4',
   },
 ];
 
@@ -175,7 +171,7 @@ describe('getProperties', () => {
     expect(result).toEqual(expected);
   });
 
-  it('allows for grouping properties of same type, if they have shared `property_group`', () => {
+  xit('allows for grouping properties of same type, if they have shared `property_group`', () => {
     const result = getProperties(layerTemplate(sameTypeObjects));
 
     const expected = [

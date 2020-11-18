@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 import ReactTooltip from 'react-tooltip';
 
@@ -22,7 +22,9 @@ const RadioProperty = ({
   const isArray = Array.isArray(data);
   const initialProperty = isArray ? data[0] : data;
 
-  const [selectedBand, setSelectedBand] = useState(initialProperty);
+  const propertyMatch = isArray
+    ? data.some(p => p.name === selectedProperty?.name)
+    : data.name === selectedProperty?.name;
 
   return (
     <div className={styles.property}>
@@ -33,7 +35,7 @@ const RadioProperty = ({
         }
         name="isolationPlus"
         value={initialProperty.name}
-        checked={selectedProperty?.name === selectedBand.name}
+        checked={propertyMatch}
         onClick={() => onRadioClick(initialProperty)}
       />
       <div className={styles.info}>
@@ -60,7 +62,7 @@ const RadioProperty = ({
           <p className={styles.description}>{initialProperty.description}</p>
         </ReactTooltip>
       </div>
-      {selectedProperty?.name === selectedBand.name && (
+      {propertyMatch && (
         <div className={styles.displayMenu}>
           {isArray && (
             <>
@@ -68,7 +70,6 @@ const RadioProperty = ({
               <div className={styles.buttons}>
                 <Button
                   onClick={() => {
-                    setSelectedBand(data[0]);
                     onToggleClick(data[0]);
                   }}
                   className={`${styles.button} ${
@@ -79,7 +80,6 @@ const RadioProperty = ({
                 </Button>
                 <Button
                   onClick={() => {
-                    setSelectedBand(data[1]);
                     onToggleClick(data[1]);
                   }}
                   className={`${styles.button} ${
