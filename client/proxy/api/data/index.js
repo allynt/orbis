@@ -19,10 +19,7 @@ dataRouter.route('/sources').get(getSources);
 
 dataRouter.route('/crowdedness').get((req, res) => {
   const { latitude, longitude, radius } = req.query;
-  const northBound = (radius / 2) * 0.00001 + Number(latitude);
-  const southBound = (radius / 2) * 0.00001 - latitude;
-  const eastBound = (radius / 2) * 0.00001 + Number(longitude);
-  const westBound = (radius / 2) * 0.00001 - longitude;
+  const radiusInDegrees = +radius * 0.001;
 
   const features = Array(10)
     .fill(undefined)
@@ -38,8 +35,14 @@ dataRouter.route('/crowdedness').get((req, res) => {
         geometry: {
           type: 'Point',
           coordinates: [
-            faker.address.latitude(northBound, southBound),
-            faker.address.longitude(eastBound, westBound),
+            +faker.address.longitude(
+              +longitude + radiusInDegrees,
+              +longitude - radiusInDegrees,
+            ),
+            +faker.address.latitude(
+              +latitude + radiusInDegrees,
+              +latitude - radiusInDegrees,
+            ),
           ],
         },
         properties: {

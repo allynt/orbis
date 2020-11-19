@@ -1,0 +1,26 @@
+{
+  "not busy": {
+    "x": 0,
+    "y": 0,
+    "width": 24,
+    "height": 24
+  },
+  "busy": {
+    "x": 24,
+    "y": 0,
+    "width": 24,
+    "height": 24
+  },
+  "very busy": {
+    "x": 48,
+    "y": 0,
+    "width": 24,
+    "height": 24
+  },
+  "cluster": {
+    "x": 72,
+    "y": 0,
+    "width": 24,
+    "height": 24
+  }
+}

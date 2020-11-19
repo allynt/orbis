@@ -8,7 +8,7 @@ import { orbsSelector } from '../orbsSelectors';
 
 /**
  * @typedef CrowdlessState
- * @property {CrowdlessFeature[]} [results]
+ * @property {CrowdlessResponse} [results]
  * @property {boolean} isLoading
  */
 
@@ -20,14 +20,14 @@ const initialState = { isLoading: false };
 const name = 'crowdless';
 
 /**
- * @type {import('@reduxjs/toolkit').AsyncThunk<CrowdlessFeature[], string, any>}
+ * @type {import('@reduxjs/toolkit').AsyncThunk<CrowdlessResponse, string, {}>}
  */
 export const fetchResults = createAsyncThunk(
   `${name}/fetchResults`,
   async url => {
     const response = await getData(url);
     const data = await response.json();
-    return data.features;
+    return data;
   },
 );
 
@@ -40,7 +40,7 @@ const crowdlessSlice = createSlice({
       state.isLoading = true;
     },
     /**
-     * @param {import('@reduxjs/toolkit').PayloadAction<CrowdlessFeature[]>} action
+     * @param {import('@reduxjs/toolkit').PayloadAction<CrowdlessResponse>} action
      */
     [fetchResults.fulfilled.type]: (state, action) => {
       state.isLoading = false;

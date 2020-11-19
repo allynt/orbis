@@ -19,7 +19,8 @@ const ConnectedWrapper = ({ selectedLayer, dispatch }) => {
   const isLoading = useSelector(isLoadingSelector);
   const results = useSelector(resultsSelector);
 
-  const handleFindClick = () =>
+  const handleFindClick = () => {
+    console.log(viewState);
     dispatch(
       fetchResults(
         selectedLayer.metadata.url
@@ -28,12 +29,13 @@ const ConnectedWrapper = ({ selectedLayer, dispatch }) => {
           .replace('{r}', '30'),
       ),
     );
+  };
 
   return (
     <CrowdlessSidebarComponent
       onFindClick={handleFindClick}
       isLoading={isLoading}
-      results={results}
+      results={results?.features}
     />
   );
 };

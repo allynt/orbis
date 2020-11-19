@@ -13,12 +13,12 @@ module.exports = {
     domain: 'ORBIS Core Datasets',
     application: {
       orbis: {
-        // layer: {
-        //   name: 'GeoJsonClusteredIconLayer',
-        //   props: {
-        //     config: 'crowdlessConfig',
-        //   },
-        // },
+        layer: {
+          name: 'GeoJsonClusteredIconLayer',
+          props: {
+            config: 'crowdlessConfig',
+          },
+        },
         orbs: [{ name: 'ORBIS Core Datasets' }],
         categories: {
           name: 'Live Data',
