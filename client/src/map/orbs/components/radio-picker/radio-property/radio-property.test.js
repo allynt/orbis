@@ -30,14 +30,14 @@ const pairObjectData = [
   },
 ];
 
-const colorScheme = 'RdBu';
-const categoryPath = 'Test Path';
-
-const onRadioClick = jest.fn();
-const onToggleClick = jest.fn();
-const onSliderChange = jest.fn();
+let onRadioClick = null;
+let onToggleClick = null;
+let onSliderChange = null;
 
 const renderComponent = (data, selectedProperty) => {
+  onRadioClick = jest.fn();
+  onToggleClick = jest.fn();
+  onSliderChange = jest.fn();
   return render(
     <RadioProperty
       data={data}
@@ -45,21 +45,17 @@ const renderComponent = (data, selectedProperty) => {
       onToggleClick={onToggleClick}
       onSliderChange={onSliderChange}
       selectedProperty={selectedProperty}
-      colorScheme={colorScheme}
-      categoryPath={categoryPath}
     />,
   );
 };
 
 describe('RadioProperty', () => {
   it('renders a RadioProperty', () => {
-    const { getByText } = renderComponent(pairObjectData, {});
+    const { getByRole } = renderComponent(pairObjectData, {});
 
-    expect(getByText(pairObjectData[0].name)).toBeInTheDocument();
-
-    // [pairObjectData[0].min, pairObjectData[0].max].forEach(n => {
-    //   expect(getByDisplayValue(n)).toBeInTheDocument();
-    // });
+    expect(
+      getByRole('radio', { name: pairObjectData[0].name }),
+    ).toBeInTheDocument();
   });
 
   it('shows display dropdown when property is selected', () => {
@@ -77,32 +73,24 @@ describe('RadioProperty', () => {
   });
 
   it('calls click handler with single property if Radio is clicked', () => {
-    const { getByText } = renderComponent(singleObjectData, singleObjectData);
+    const { getByRole } = renderComponent(singleObjectData, singleObjectData);
 
-    userEvent.click(getByText(singleObjectData.name));
+    userEvent.click(getByRole('radio', { name: singleObjectData.name }));
     expect(onRadioClick).toHaveBeenCalledWith(singleObjectData);
   });
 
   it('calls click handler with percentage property of pair by default if Radio is clicked', () => {
-    const { getByText } = renderComponent(pairObjectData, pairObjectData[0]);
+    const { getByRole } = renderComponent(pairObjectData, {});
 
-    userEvent.click(getByText(pairObjectData[0].name));
+    userEvent.click(getByRole('radio', { name: pairObjectData[0].name }));
     expect(onRadioClick).toHaveBeenCalledWith(pairObjectData[0]);
   });
 
   it('calls click handler with number property if number toggle is clicked', () => {
-    const { getByText } = renderComponent(pairObjectData, pairObjectData[0]);
+    const { getByRole } = renderComponent(pairObjectData, pairObjectData[0]);
 
-    expect(onRadioClick).toHaveBeenCalledWith(pairObjectData[0]);
-
-    userEvent.click(getByText('Number'));
+    userEvent.click(getByRole('button', { name: 'Number' }));
 
     expect(onToggleClick).toHaveBeenCalledWith(pairObjectData[1]);
-  });
-
-  xit('calls click handler with slider data if slider is changed', () => {
-    const { getByText } = renderComponent(singleObjectData, singleObjectData);
-
-    expect();
   });
 });

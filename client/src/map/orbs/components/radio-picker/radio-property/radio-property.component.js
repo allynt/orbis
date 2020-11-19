@@ -8,7 +8,7 @@ import ColorMapRangeSlider from 'components/colormap-range-slider/colormap-range
 
 import { FORMAT } from '../radio-picker-constants';
 
-import styles from '../radio-picker.module.css';
+import styles from './radio-property.module.css';
 
 const RadioProperty = ({
   data,

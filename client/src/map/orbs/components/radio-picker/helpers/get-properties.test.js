@@ -56,35 +56,10 @@ const mixedObjects = [
   {
     name: 'test name 3',
     type: 'continuous',
-    property_group: '3',
   },
   {
     name: 'test name 4',
     type: 'percentage',
-    property_group: '4',
-  },
-];
-
-const sameTypeObjects = [
-  {
-    name: 'test name 1',
-    type: 'percentage',
-    property_group: '1',
-  },
-  {
-    name: 'test name 2',
-    type: 'percentage',
-    property_group: '2',
-  },
-  {
-    name: 'test name 3',
-    type: 'percentage',
-    property_group: '1',
-  },
-  {
-    name: 'test name 4',
-    type: 'percentage',
-    property_group: '2',
   },
 ];
 
@@ -159,12 +134,10 @@ describe('getProperties', () => {
       {
         name: 'test name 3',
         type: 'continuous',
-        property_group: '3',
       },
       {
         name: 'test name 4',
         type: 'percentage',
-        property_group: '4',
       },
     ];
 
