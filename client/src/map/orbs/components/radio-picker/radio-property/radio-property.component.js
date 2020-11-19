@@ -18,6 +18,7 @@ const RadioProperty = ({
   onSliderChange,
   selectedProperty,
   colorScheme,
+  filterRange,
   categoryPath,
 }) => {
   const isArray = Array.isArray(data);
@@ -87,6 +88,8 @@ const RadioProperty = ({
             type={selectedProperty?.type}
             color={colorScheme}
             domain={[selectedProperty?.min, selectedProperty?.max]}
+            filterRange={filterRange}
+            selectedProperty={selectedProperty}
             onChange={domain => onSliderChange(domain)}
           />
         </div>

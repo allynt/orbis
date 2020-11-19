@@ -5,6 +5,7 @@ import { useSelector } from 'react-redux';
 import {
   propertySelector,
   setProperty,
+  filterRangeSelector,
   setFilterRange,
 } from '../../slices/isolation-plus.slice';
 
@@ -22,6 +23,7 @@ import { getProperties } from './helpers/get-properties.js';
  */
 export const RadioPicker = ({ selectedLayer, dispatch }) => {
   const selectedProperty = useSelector(state => propertySelector(state?.orbs));
+  const filterRange = useSelector(state => filterRangeSelector(state?.orbs));
 
   const selectedPropertyMetadata = selectedLayer?.metadata?.properties?.find(
     property => property.name === selectedProperty?.name,
@@ -67,6 +69,7 @@ export const RadioPicker = ({ selectedLayer, dispatch }) => {
           onSliderChange={domain => dispatch(setFilterRange(domain))}
           selectedProperty={selectedProperty}
           colorScheme={colorScheme}
+          filterRange={filterRange}
           categoryPath={categoryPath}
         />
       ))}
