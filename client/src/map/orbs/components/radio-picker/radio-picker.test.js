@@ -57,9 +57,9 @@ const renderComponent = (
 
 describe('<RadioPicker />', () => {
   it('displays a radio for each selectable property in the source', () => {
-    const { getByLabelText } = renderComponent();
+    const { getByRole } = renderComponent();
     getProperties(defaultSelectedLayer).forEach(pair => {
-      expect(getByLabelText(pair[0].name)).toBeInTheDocument();
+      expect(getByRole('radio', { name: pair[0].name })).toBeInTheDocument();
     });
   });
 
@@ -80,21 +80,27 @@ describe('<RadioPicker />', () => {
       },
     };
 
-    const { queryByText } = renderComponent(noPairs, {
+    const { queryByRole } = renderComponent(noPairs, {
       property: {
         source_id: noPairs.source_id,
         name: 'Test Name 1',
       },
     });
 
-    expect(queryByText('Percentage')).not.toBeInTheDocument();
-    expect(queryByText('Number')).not.toBeInTheDocument();
+    expect(
+      queryByRole('button', { name: 'Percentage' }),
+    ).not.toBeInTheDocument();
+    expect(queryByRole('button', { name: 'Number' })).not.toBeInTheDocument();
   });
 
   it('selects percentage property by default when Radio is checked', () => {
-    const { getAllByRole } = renderComponent();
+    const { getByRole } = renderComponent();
 
-    userEvent.click(getAllByRole('radio')[0]);
+    userEvent.click(
+      getByRole('radio', {
+        name: 'Census 2011: % of people in the age band 40 - 64',
+      }),
+    );
 
     const expected = {
       type: 'isolationPlus/setProperty',

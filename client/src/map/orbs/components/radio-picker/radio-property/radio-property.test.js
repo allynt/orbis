@@ -59,17 +59,19 @@ describe('RadioProperty', () => {
   });
 
   it('shows display dropdown when property is selected', () => {
-    const { getByText } = renderComponent(pairObjectData, pairObjectData[0]);
+    const { getByRole } = renderComponent(pairObjectData, pairObjectData[0]);
 
-    expect(getByText('Percentage')).toBeInTheDocument();
-    expect(getByText('Number')).toBeInTheDocument();
+    expect(getByRole('button', { name: 'Percentage' })).toBeInTheDocument();
+    expect(getByRole('button', { name: 'Number' })).toBeInTheDocument();
   });
 
   it('does not show toggles for single properties', () => {
-    const { queryByText } = renderComponent(singleObjectData, singleObjectData);
+    const { queryByRole } = renderComponent(singleObjectData, singleObjectData);
 
-    expect(queryByText('Percentage')).not.toBeInTheDocument();
-    expect(queryByText('Number')).not.toBeInTheDocument();
+    expect(
+      queryByRole('button', { name: 'Percentage' }),
+    ).not.toBeInTheDocument();
+    expect(queryByRole('button', { name: 'Number' })).not.toBeInTheDocument();
   });
 
   it('calls click handler with single property if Radio is clicked', () => {
