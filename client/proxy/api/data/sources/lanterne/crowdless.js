@@ -5,8 +5,8 @@ module.exports = {
   name: 'crowdless',
   version: 'v1',
   type: 'vector',
-  manual: true,
   metadata: {
+    request_strategy: 'manual',
     url: '/api/data/crowdedness?latitude={x}&longitude={y}&radius={r}',
     name: 'crowdless',
     label: 'Crowdless Live Data',
