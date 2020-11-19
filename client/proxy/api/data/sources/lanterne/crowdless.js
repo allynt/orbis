@@ -34,6 +34,9 @@ module.exports = {
         },
         sidebar_component: {
           name: 'CrowdlessSidebarComponent',
+          props: {
+            searchRadius: 3000,
+          },
         },
       },
     },

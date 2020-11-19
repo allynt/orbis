@@ -25,7 +25,11 @@ const ConnectedWrapper = ({ selectedLayer, dispatch }) => {
         selectedLayer.metadata.url
           .replace('{x}', viewState.latitude.toString())
           .replace('{y}', viewState.longitude.toString())
-          .replace('{r}', '3000'),
+          .replace(
+            '{r}',
+            selectedLayer?.metadata?.application?.orbis?.sidebar_component
+              ?.props?.searchRadius,
+          ),
       ),
     );
 
