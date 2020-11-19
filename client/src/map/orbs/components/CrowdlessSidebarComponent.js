@@ -25,7 +25,7 @@ const ConnectedWrapper = ({ selectedLayer, dispatch }) => {
         selectedLayer.metadata.url
           .replace('{x}', viewState.latitude.toString())
           .replace('{y}', viewState.longitude.toString())
-          .replace('{r}', '30'),
+          .replace('{r}', '3000'),
       ),
     );
 

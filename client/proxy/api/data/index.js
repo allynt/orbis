@@ -19,7 +19,7 @@ dataRouter.route('/sources').get(getSources);
 
 dataRouter.route('/crowdedness').get((req, res) => {
   const { latitude, longitude, radius } = req.query;
-  const radiusInDegrees = +radius * 0.001;
+  const radiusInDegrees = +radius * 0.00001;
 
   const features = Array(10)
     .fill(undefined)
