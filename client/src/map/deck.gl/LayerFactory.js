@@ -1,4 +1,4 @@
-import { GeoJsonLayer } from '@deck.gl/layers';
+import { GeoJsonLayer, IconLayer } from '@deck.gl/layers';
 import * as CustomLayers from './custom-layers';
 
 /**
@@ -6,6 +6,7 @@ import * as CustomLayers from './custom-layers';
  */
 const LAYER_CLASSES = {
   GeoJsonLayer,
+  IconLayer,
   ...CustomLayers,
 };
 

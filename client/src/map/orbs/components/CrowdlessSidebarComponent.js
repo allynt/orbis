@@ -16,11 +16,10 @@ import { CrowdlessSidebarComponent } from './crowdless/sidebar.component';
  */
 const ConnectedWrapper = ({ selectedLayer, dispatch }) => {
   const { viewState } = useMap();
-  const isLoading = useSelector(isLoadingSelector);
-  const results = useSelector(resultsSelector);
+  const isLoading = useSelector(state => isLoadingSelector(state?.orbs));
+  const results = useSelector(state => resultsSelector(state?.orbs));
 
-  const handleFindClick = () => {
-    console.log(viewState);
+  const handleFindClick = () =>
     dispatch(
       fetchResults(
         selectedLayer.metadata.url
@@ -29,7 +28,6 @@ const ConnectedWrapper = ({ selectedLayer, dispatch }) => {
           .replace('{r}', '30'),
       ),
     );
-  };
 
   return (
     <CrowdlessSidebarComponent

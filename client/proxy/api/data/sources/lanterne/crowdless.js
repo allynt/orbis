@@ -14,7 +14,7 @@ module.exports = {
     application: {
       orbis: {
         layer: {
-          name: 'GeoJsonClusteredIconLayer',
+          name: 'IconLayer',
           props: {
             config: 'crowdlessConfig',
           },

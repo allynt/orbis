@@ -53,10 +53,7 @@ const crowdlessSlice = createSlice({
 });
 
 /** @type {import('@reduxjs/toolkit').Selector<any, CrowdlessState>} */
-const baseSelector = createSelector(
-  orbsSelector,
-  orbs => orbs[crowdlessSlice.name],
-);
+const baseSelector = orbs => orbs[crowdlessSlice.name];
 
 export const isLoadingSelector = createSelector(
   baseSelector,

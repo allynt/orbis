@@ -2,7 +2,8 @@ type LayerName =
   | 'ClusteredIconLayer'
   | 'CustomMVTLayer'
   | 'GeoJsonClusteredIconLayer'
-  | 'GeoJsonLayer';
+  | 'GeoJsonLayer'
+  | 'IconLayer';
 
 type ColorMap =
   | 'OrRd'
