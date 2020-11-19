@@ -7,10 +7,12 @@ const configuration = ({ id, orbState }) => {
   return {
     id,
     data: results?.features,
-    getPosition: d => d.geometry.coordinates,
+    /** @param {CrowdlessFeature} feature */
+    getPosition: feature => feature.geometry.coordinates,
     iconAtlas,
     iconMapping,
-    getIcon: d => d.properties.crowdednessCategory,
+    /** @param {CrowdlessFeature} feature */
+    getIcon: feature => feature.properties.crowdednessCategory,
     getSize: 60,
   };
 };

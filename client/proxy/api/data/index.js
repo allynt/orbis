@@ -1,6 +1,6 @@
 const express = require('express');
 const sources = require('./sources');
-const faker = require('faker');
+const faker = require('faker/locale/en_GB');
 
 const allSources = {
   token: 'sdfasdfasf',
