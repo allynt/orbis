@@ -27,8 +27,7 @@ export const fetchResults = createAsyncThunk(
   async url => {
     const response = await getData(url);
     const data = await response.json();
-    console.log(data);
-    return data;
+    return data.features;
   },
 );
 

@@ -7,8 +7,7 @@ module.exports = {
   type: 'vector',
   manual: true,
   metadata: {
-    url:
-      'https://258636rmyd.execute-api.eu-west-1.amazonaws.com/staging/crowdedness/live/places?latitude={x}&longitude={y}&radius={r}',
+    url: '/api/data/crowdedness?latitude={x}&longitude={y}&radius={r}',
     name: 'crowdless',
     label: 'Crowdless Live Data',
     domain: 'ORBIS Core Datasets',
