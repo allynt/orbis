@@ -2,19 +2,19 @@
   "not busy": {
     "x": 0,
     "y": 0,
-    "width": 24,
-    "height": 24
+    "width": 60,
+    "height": 60
   },
   "busy": {
-    "x": 24,
+    "x": 60,
     "y": 0,
-    "width": 24,
-    "height": 24
+    "width": 60,
+    "height": 60
   },
   "very busy": {
-    "x": 48,
+    "x": 120,
     "y": 0,
-    "width": 24,
-    "height": 24
+    "width": 60,
+    "height": 60
   }
 }

@@ -26,7 +26,11 @@ export const CrowdlessSidebarComponent = ({
       at the top right of the map in order to get most accurate results. Then
       click the button “Find Supermarkets” below.
     </p>
-    <Button className={styles.findButton} size="small" onClick={onFindClick}>
+    <Button
+      className={styles.findButton}
+      size="small"
+      onClick={() => !isLoading && onFindClick()}
+    >
       {isLoading ? <LoadingSpinner /> : 'Find Supermarkets'}
     </Button>
     {((isLoading && !results) || results?.length) && (
