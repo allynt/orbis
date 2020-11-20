@@ -36,9 +36,11 @@ export const CrowdlessSidebarComponent = ({
           !results &&
           Array(10)
             .fill(undefined)
-            .map(() => <ResultsListItem isLoading />)}
+            .map((_, i) => <ResultsListItem key={i} isLoading />)}
         {results?.length &&
-          results.map(result => <ResultsListItem result={result} />)}
+          results.map(result => (
+            <ResultsListItem key={result.properties.placeID} result={result} />
+          ))}
       </ul>
     )}
   </>

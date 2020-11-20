@@ -24,10 +24,14 @@ const name = 'crowdless';
  */
 export const fetchResults = createAsyncThunk(
   `${name}/fetchResults`,
-  async url => {
-    const response = await getData(url);
-    const data = await response.json();
-    return data;
+  async (url, { rejectWithValue }) => {
+    try {
+      const response = await getData(url);
+      const data = await response.json();
+      return data;
+    } catch (e) {
+      return rejectWithValue(e);
+    }
   },
 );
 
@@ -35,20 +39,17 @@ const crowdlessSlice = createSlice({
   name,
   initialState,
   reducers: {},
-  extraReducers: {
-    [fetchResults.pending.type]: state => {
+  extraReducers: builder => {
+    builder.addCase(fetchResults.pending, state => {
       state.isLoading = true;
-    },
-    /**
-     * @param {import('@reduxjs/toolkit').PayloadAction<CrowdlessResponse>} action
-     */
-    [fetchResults.fulfilled.type]: (state, action) => {
+    });
+    builder.addCase(fetchResults.fulfilled, (state, { payload }) => {
       state.isLoading = false;
-      state.results = action.payload;
-    },
-    [fetchResults.rejected.type]: state => {
+      state.results = payload;
+    });
+    builder.addCase(fetchResults.rejected, state => {
       state.isLoading = false;
-    },
+    });
   },
 });
 
