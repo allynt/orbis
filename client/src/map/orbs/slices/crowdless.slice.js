@@ -3,7 +3,6 @@ import {
   createSelector,
   createSlice,
 } from '@reduxjs/toolkit';
-import { getData } from 'utils/http';
 
 /**
  * @typedef CrowdlessState
