@@ -58,18 +58,18 @@
         },
         "boto3": {
             "hashes": [
-                "sha256:0a4c72ef591fd4291efb9767a6a94f625afccc1e0fc7843968cd39eb6289c3e4",
-                "sha256:6c5d952f97e13997b1c7463038d96469355595cd37f87b43451759cc03756322"
+                "sha256:066b9dfd466e42c206dbbd282da030a6d5cade4ef7e9f1c90a79ebde1310b217",
+                "sha256:bb8ecadd1c8dc8b27c72642567adcd910b2fc3c2fe95b5df3796b647dc47abb9"
             ],
             "index": "pypi",
-            "version": "==1.16.20"
+            "version": "==1.16.22"
         },
         "botocore": {
             "hashes": [
-                "sha256:00a69a507e8b817d0703c612131e6cb3a3260579d0353c56d005bd9effd92ec0",
-                "sha256:4576ca751264c65420daae07e244beafdfea493b4fbb815d37215c0736dc4633"
+                "sha256:5cee9d02d335a0c43d225da6595e6f95970a01ecaebeba757ac22130f2d31495",
+                "sha256:87d77925ea8d35898ff1627f6f97d396bed44d37fff960daae181a76ba413546"
             ],
-            "version": "==1.19.20"
+            "version": "==1.19.22"
         },
         "brotli": {
             "hashes": [
@@ -249,10 +249,10 @@
                 "with_social"
             ],
             "hashes": [
-                "sha256:2312c1d722a12c453a5bd1678dc1d93e87eba3562bb2711a11547abaa134926c"
+                "sha256:c0d3495d3629f54644966da31611ca4619b8470978ae8bdc03f6b87e04cb562c"
             ],
             "index": "pypi",
-            "version": "==2.0.1"
+            "version": "==2.1.1"
         },
         "django": {
             "hashes": [
@@ -271,12 +271,12 @@
         "django-astrosat-core": {
             "editable": true,
             "git": "https://github.com/astrosat/django-astrosat-core.git",
-            "ref": "a8303fa2381cbf9cae714a6e617a4a946804c65c"
+            "ref": "ffb8c126fe077eba8a7f606ae1a62106285e4193"
         },
         "django-astrosat-users": {
             "editable": true,
             "git": "https://github.com/astrosat/django-astrosat-users.git",
-            "ref": "db9e7b9fc5bb397c971ba251c66995e39b548a49"
+            "ref": "6fc24527bcf2288047600630bb2a6f15ac23ed9d"
         },
         "django-cors-headers": {
             "hashes": [
@@ -1058,11 +1058,11 @@
         },
         "faker": {
             "hashes": [
-                "sha256:4d038ba51ae5e0a956d79cadd684d856e5750bfd608b61dad1807f8f08b1da49",
-                "sha256:f260f0375a44cd1e1a735c9b8c9b914304f607b5eef431d20e098c7c2f5b50a6"
+                "sha256:5398268e1d751ffdb3ed36b8a790ed98659200599b368eec38a02eed15bce997",
+                "sha256:d4183b8f57316de3be27cd6c3b40e9f9343d27c95c96179f027316c58c2c239e"
             ],
             "markers": "python_version >= '3.5'",
-            "version": "==4.16.0"
+            "version": "==4.17.1"
         },
         "idna": {
             "hashes": [
