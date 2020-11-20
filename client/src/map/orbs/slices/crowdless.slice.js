@@ -4,7 +4,6 @@ import {
   createSlice,
 } from '@reduxjs/toolkit';
 import { getData } from 'utils/http';
-import { orbsSelector } from '../orbsSelectors';
 
 /**
  * @typedef CrowdlessState
@@ -26,7 +25,7 @@ export const fetchResults = createAsyncThunk(
   `${name}/fetchResults`,
   async (url, { rejectWithValue }) => {
     try {
-      const response = await getData(url);
+      const response = await fetch(url);
       const data = await response.json();
       return data;
     } catch (e) {
