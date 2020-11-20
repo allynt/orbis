@@ -39,18 +39,18 @@ const crowdlessSlice = createSlice({
   name,
   initialState,
   reducers: {},
-  extraReducers: builder => {
-    builder.addCase(fetchResults.pending, state => {
-      state.isLoading = true;
-    });
-    builder.addCase(fetchResults.fulfilled, (state, { payload }) => {
-      state.isLoading = false;
-      state.results = payload;
-    });
-    builder.addCase(fetchResults.rejected, state => {
-      state.isLoading = false;
-    });
-  },
+  extraReducers: builder =>
+    builder
+      .addCase(fetchResults.pending, state => {
+        state.isLoading = true;
+      })
+      .addCase(fetchResults.fulfilled, (state, { payload }) => {
+        state.isLoading = false;
+        state.results = payload;
+      })
+      .addCase(fetchResults.rejected, state => {
+        state.isLoading = false;
+      }),
 });
 
 /** @type {import('@reduxjs/toolkit').Selector<any, CrowdlessState>} */
