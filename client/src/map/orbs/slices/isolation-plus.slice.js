@@ -1,5 +1,10 @@
 import { createSlice, createSelector } from '@reduxjs/toolkit';
 
+const DEFAULT_CLIP_POSITION = {
+  translateX: 0,
+  clipWidth: 400,
+};
+
 const isolationPlusSlice = createSlice({
   name: 'isolationPlus',
   initialState: {
@@ -10,6 +15,8 @@ const isolationPlusSlice = createSlice({
     },
     pickedInfo: undefined,
     filterRange: undefined,
+    brushDomain: { y: [undefined, undefined] },
+    clipPosition: DEFAULT_CLIP_POSITION,
   },
   reducers: {
     setProperty: (state, { payload }) => {
@@ -22,6 +29,12 @@ const isolationPlusSlice = createSlice({
     setFilterRange: (state, { payload }) => {
       state.filterRange = payload.map(Math.round);
     },
+    setBrushDomain: (state, { payload }) => {
+      state.brushDomain = payload;
+    },
+    setClipPosition: (state, { payload }) => {
+      state.clipPosition = payload;
+    },
   },
 });
 
@@ -29,6 +42,8 @@ export const {
   setProperty,
   setPickedInfo,
   setFilterRange,
+  setBrushDomain,
+  setClipPosition,
 } = isolationPlusSlice.actions;
 
 const baseSelector = orbs => orbs?.[isolationPlusSlice.name];
@@ -57,6 +72,16 @@ export const pickedInfoSelector = createSelector(
 export const filterRangeSelector = createSelector(
   baseSelector,
   orb => orb?.filterRange,
+);
+
+export const brushDomainSelector = createSelector(
+  baseSelector,
+  orb => orb?.brushDomain,
+);
+
+export const clipPositionSelector = createSelector(
+  baseSelector,
+  orb => orb?.clipPosition,
 );
 
 export default isolationPlusSlice.reducer;

@@ -18,17 +18,27 @@ const RadioProperty = ({
   onSliderChange,
   selectedProperty,
   colorScheme,
-  filterRange,
+  brushDomain,
+  setBrushDomain,
+  clipPosition,
+  setClipPosition,
   categoryPath,
 }) => {
   const isArray = Array.isArray(data);
   const initialProperty = isArray ? data[0] : data;
+
+  const DEFAULT_CLIP_POSITION = {
+    translateX: 0,
+    clipWidth: 400,
+  };
 
   const propertyMatch = isArray
     ? data.some(p => p.name === selectedProperty?.name)
     : data.name === selectedProperty?.name;
 
   const findPropertyByType = type => data.find(d => d.type === type);
+
+  const brushMoved = clipPosition !== DEFAULT_CLIP_POSITION;
 
   return (
     <div className={styles.property}>
@@ -88,8 +98,11 @@ const RadioProperty = ({
             type={selectedProperty?.type}
             color={colorScheme}
             domain={[selectedProperty?.min, selectedProperty?.max]}
-            filterRange={filterRange}
-            selectedProperty={selectedProperty}
+            brushDomain={brushDomain}
+            setBrushDomain={setBrushDomain}
+            clipPosition={clipPosition}
+            setClipPosition={setClipPosition}
+            brushMoved={brushMoved}
             onChange={domain => onSliderChange(domain)}
           />
         </div>

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import chroma from 'chroma-js';
 import {
   VictoryAxis,
@@ -23,10 +23,13 @@ const DEFAULT_CLIP_POSITION = {
 const ContinuousColorMapRangeSlider = ({
   brushStyle,
   color,
-  filterRange,
-  selectedProperty,
   domain = [0, 1],
   handleStyle,
+  brushDomain,
+  setBrushDomain,
+  brushMoved,
+  clipPosition,
+  setClipPosition,
   height,
   padding,
   tickLabelStyle,
@@ -34,17 +37,6 @@ const ContinuousColorMapRangeSlider = ({
 }) => {
   const scaleColors = chroma.scale(color).colors();
   const data = [{ x: 0.5, y: domain[1] }];
-  const [clipPosition, setClipPosition] = useState(DEFAULT_CLIP_POSITION);
-  const brushMoved = clipPosition !== DEFAULT_CLIP_POSITION;
-  const [brushDomain, setBrushDomain] = useState({
-    y: filterRange,
-  });
-
-  useEffect(() => {
-    setBrushDomain({
-      y: [selectedProperty.min, selectedProperty.max],
-    });
-  }, [selectedProperty]);
 
   console.log('brushDomain: ', brushDomain);
 
@@ -60,8 +52,6 @@ const ContinuousColorMapRangeSlider = ({
       },
     },
   };
-  console.log('brushDomain: ', brushDomain);
-
   /** @type {import('victory').VictoryAxisProps} */
   const axisProps = {
     dependentAxis: true,
