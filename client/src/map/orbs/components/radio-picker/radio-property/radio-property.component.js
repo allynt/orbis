@@ -67,7 +67,10 @@ const RadioProperty = ({
           textColor="var(--color--text--dark)"
         >
           <p className={styles.categoryPath}>{categoryPath}</p>
-          <p className={styles.description}>{initialProperty.description}</p>
+          <p className={styles.description}>
+            {initialProperty?.application?.orbis?.description ||
+              initialProperty.description}
+          </p>
         </ReactTooltip>
       </div>
       {propertyMatch && (
