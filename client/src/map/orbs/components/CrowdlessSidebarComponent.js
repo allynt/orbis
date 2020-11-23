@@ -6,7 +6,7 @@ import {
   isLoadingSelector,
   resultsSelector,
 } from '../slices/crowdless.slice';
-import { CrowdlessSidebarComponent } from './crowdless/sidebar.component';
+import { CrowdlessSidebarComponent } from './crowdless/sidebar/sidebar.component';
 
 /**
  * @param {{
