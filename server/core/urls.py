@@ -3,8 +3,7 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import include, path, re_path
 
-from rest_framework.routers import SimpleRouter
-
+from astrosat.routers import SlashlessSimpleRouter
 from astrosat.views import api_schema_views, remove_urlpatterns
 
 from astrosat.urls import (
@@ -51,7 +50,7 @@ astrosat_users_api_urlpatterns = remove_urlpatterns(
     ["customers-list", "customers-detail", "customer-users-list", "customer-users-detail", "customer-users-invite", "customer-users-onboard"],
 )
 
-api_router = SimpleRouter()
+api_router = SlashlessSimpleRouter()
 api_urlpatterns = [
     path("", include(api_router.urls)),
     path("", include(api_schema_views)),
