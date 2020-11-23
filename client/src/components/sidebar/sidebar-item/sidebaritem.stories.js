@@ -11,12 +11,14 @@ import { SidebarLinkItem } from './sidebar-link-item.component';
 export default { title: 'Components/Sidebar/SidebarItem' };
 
 export const Icon = () => (
-  <SidebarItem
-    icon={<ProfileIcon style={{ width: '100%' }} />}
-    selected={boolean('Selected', false)}
-    tooltip="only icon"
-    onClick={action('onClick')}
-  />
+  <>
+    <SidebarItem
+      icon={<ProfileIcon />}
+      selected={boolean('Selected', false)}
+      tooltip="only icon"
+      onClick={action('onClick')}
+    />
+  </>
 );
 
 export const Label = () => (
@@ -30,7 +32,7 @@ export const Label = () => (
 
 export const IconAndLabel = () => (
   <SidebarItem
-    icon={<ProfileIcon style={{ width: '100%' }} />}
+    icon={<ProfileIcon />}
     selected={boolean('Selected', false)}
     onClick={action('onClick')}
   >
