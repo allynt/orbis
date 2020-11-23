@@ -43,7 +43,10 @@ export const useOrbs = () => {
 
   useEffect(() => {
     for (let source of activeSources) {
-      if (!data[source.source_id]) {
+      if (
+        !data[source.source_id] &&
+        source.metadata.request_strategy !== 'manual'
+      ) {
         if (source.metadata.tiles)
           setData({ ...data, [source.source_id]: source.metadata.tiles });
         else fetchData(source);

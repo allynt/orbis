@@ -1,0 +1,26 @@
+.listItem {
+  --border: 1px solid rgba(255, 255, 255, 0.2);
+  list-style: none;
+  color: #fff;
+  font-size: 14px;
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: 0.571em;
+  padding: 10px 0;
+  border-bottom: var(--border);
+}
+
+.listItem:first-of-type {
+  border-top: var(--border);
+}
+
+.icon {
+  width: 1.429em;
+  height: 1.429em;
+  grid-row: 1 / span 2;
+  place-self: center;
+}
+
+.name {
+  font-weight: 600;
+}

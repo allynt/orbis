@@ -2,6 +2,14 @@ import React from 'react';
 
 import styles from './skeleton.module.css';
 
+/**
+ * @param {{
+ *  className?: string
+ *  width?: string | number
+ *  height?: string | number
+ *  style?:React.CSSProperties
+ * }} props
+ */
 export const Skeleton = ({
   className,
   width = '100%',
@@ -9,6 +17,7 @@ export const Skeleton = ({
   style,
 }) => (
   <div
+    role="progressbar"
     className={`${styles.skeleton} ${className}`}
     style={{ width, height, ...style }}
   />
