@@ -28,6 +28,7 @@ const ConnectedWrapper = ({ selectedLayer, dispatch }) => {
 
   const handleFindClick = () =>
     dispatch(
+      // @ts-ignore
       fetchResults(
         selectedLayer.metadata.url
           .replace('{x}', viewState.latitude.toString())
