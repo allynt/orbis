@@ -1,3 +1,4 @@
+import { Button } from '@astrosat/astrosat-ui';
 import React from 'react';
 import FeatureDetail from './feature-detail.component';
 
@@ -210,4 +211,12 @@ export const Paragraphs = () => (
       },
     ]}
   />
+);
+
+export const Children = () => (
+  <FeatureDetail title="I have children">
+    <p>Hello</p>
+    <p>There</p>
+    <Button>Do Stuff</Button>
+  </FeatureDetail>
 );

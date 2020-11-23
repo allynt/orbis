@@ -1,20 +1,21 @@
 .feature {
   color: #fff;
+  padding: 1rem 1.25rem;
 }
 
 .categories {
   display: flex;
-  margin-bottom: 8px;
+  margin-bottom: 0.5rem;
 }
 
 .category {
-  width: 44px;
-  height: 44px;
-  border-radius: 5px;
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: 0.3125rem;
 }
 
 .category + .category {
-  margin-left: 12px;
+  margin-left: 0.75rem;
 }
 
 .category.notBusy {
@@ -42,10 +43,10 @@
 }
 
 .score {
-  margin-bottom: 12px;
+  margin-bottom: 0.75rem;
 }
 
 .name {
   font-weight: 700;
-  margin-bottom: 8px;
+  margin-bottom: 0.5rem;
 }

@@ -1,3 +1,4 @@
+import { FeatureDetail } from 'components';
 import * as React from 'react';
 import { Popup } from 'react-map-gl';
 import { useDispatch, useSelector } from 'react-redux';
@@ -20,7 +21,9 @@ const ConnectedWrapper = () => {
       onClose={() => dispatch(setSelectedResult(undefined))}
       captureClick
     >
-      <CrowdlessMapComponent feature={selectedResult} />
+      <FeatureDetail>
+        <CrowdlessMapComponent feature={selectedResult} />
+      </FeatureDetail>
     </Popup>
   ) : null;
 };
