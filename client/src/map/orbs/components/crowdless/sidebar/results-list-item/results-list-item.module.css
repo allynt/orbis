@@ -15,7 +15,7 @@
   opacity: 0.5;
 }
 
-.listItem.active > * {
+.listItem.selected > * {
   opacity: 1;
 }
 

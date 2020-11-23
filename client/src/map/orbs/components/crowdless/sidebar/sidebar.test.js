@@ -8,7 +8,7 @@ import { CrowdlessSidebarComponent } from './sidebar.component';
 const renderComponent = ({
   results = undefined,
   isLoading = false,
-  activeResult = undefined,
+  selectedResult = undefined,
 } = {}) => {
   const onFindClick = jest.fn();
   const utils = render(
@@ -16,7 +16,7 @@ const renderComponent = ({
       onFindClick={onFindClick}
       results={results}
       isLoading={isLoading}
-      activeResult={activeResult}
+      selectedResult={selectedResult}
     />,
   );
   return { ...utils, onFindClick };
@@ -58,7 +58,7 @@ describe('<CrowdlessSidebarComponent />', () => {
     ];
     const { getAllByRole } = renderComponent({ results });
     getAllByRole('listitem').forEach(element =>
-      expect(element).toHaveClass('active'),
+      expect(element).toHaveClass('selected'),
     );
   });
 
@@ -71,9 +71,9 @@ describe('<CrowdlessSidebarComponent />', () => {
     ];
     const { getByText } = renderComponent({
       results,
-      activeResult: { properties: { placeID: 0 } },
+      selectedResult: { properties: { placeID: 0 } },
     });
-    expect(getByText('Tesco').parentElement).toHaveClass('active');
-    expect(getByText('Sainsburys').parentElement).not.toHaveClass('active');
+    expect(getByText('Tesco').parentElement).toHaveClass('selected');
+    expect(getByText('Sainsburys').parentElement).not.toHaveClass('selected');
   });
 });

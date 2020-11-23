@@ -13,14 +13,14 @@ import styles from './sidebar.module.css';
  *   results?: CrowdlessFeature[]
  *   isLoading?: boolean
  *   onFindClick: () => void
- *   activeResult: CrowdlessFeature
+ *   selectedResult: CrowdlessFeature
  * }} props
  */
 export const CrowdlessSidebarComponent = ({
   results,
   isLoading,
   onFindClick,
-  activeResult,
+  selectedResult,
 }) => (
   <>
     <p className={styles.text}>
@@ -51,9 +51,10 @@ export const CrowdlessSidebarComponent = ({
             <ResultsListItem
               key={result.properties.placeID}
               result={result}
-              active={
-                activeResult === undefined ||
-                result.properties.placeID === activeResult?.properties?.placeID
+              selected={
+                selectedResult === undefined ||
+                result.properties.placeID ===
+                  selectedResult?.properties?.placeID
               }
             />
           ))}

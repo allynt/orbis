@@ -35,14 +35,14 @@ const getIcon = crowdednessCategory => {
  * @param {{
  *   isLoading?: boolean
  *   result?: CrowdlessFeature
- *   active?: boolean
+ *   selected?: boolean
  * }} props
  */
-const ResultsListItem = ({ isLoading = false, result, active = true }) => {
+const ResultsListItem = ({ isLoading = false, result, selected = true }) => {
   const Icon = getIcon(result?.properties?.crowdednessCategory);
 
   return (
-    <li className={clsx(styles.listItem, { [styles.active]: active })}>
+    <li className={clsx(styles.listItem, { [styles.selected]: selected })}>
       {isLoading ? (
         <ResultsListItemSkeleton />
       ) : (
