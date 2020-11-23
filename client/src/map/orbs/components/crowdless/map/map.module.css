@@ -1,0 +1,51 @@
+.feature {
+  color: #fff;
+}
+
+.categories {
+  display: flex;
+  margin-bottom: 8px;
+}
+
+.category {
+  width: 44px;
+  height: 44px;
+  border-radius: 5px;
+}
+
+.category + .category {
+  margin-left: 12px;
+}
+
+.category.notBusy {
+  background-color: #ccfae3;
+}
+
+.category.notBusy.image {
+  background-image: url('./icons/not-busy.svg');
+}
+
+.category.busy {
+  background-color: #feeccc;
+}
+
+.category.busy.image {
+  background-image: url('./icons/busy.svg');
+}
+
+.category.veryBusy {
+  background-color: #fad2df;
+}
+
+.category.veryBusy.image {
+  background-image: url('./icons/very-busy.svg');
+}
+
+.score {
+  margin-bottom: 12px;
+}
+
+.name {
+  font-weight: 700;
+  margin-bottom: 8px;
+}
