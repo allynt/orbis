@@ -5,9 +5,8 @@ import { useSelector } from 'react-redux';
 import {
   propertySelector,
   setProperty,
+  filterRangeSelector,
   setFilterRange,
-  brushDomainSelector,
-  setBrushDomain,
   clipPositionSelector,
   setClipPosition,
 } from '../../slices/isolation-plus.slice';
@@ -28,7 +27,7 @@ import { getProperties } from './helpers/get-properties.js';
  */
 export const RadioPicker = ({ selectedLayer, dispatch }) => {
   const selectedProperty = useSelector(state => propertySelector(state?.orbs));
-  const brushDomain = useSelector(state => brushDomainSelector(state?.orbs));
+  const filterRange = useSelector(state => filterRangeSelector(state?.orbs));
   const clipPosition = useSelector(state => clipPositionSelector(state?.orbs));
 
   const selectedPropertyMetadata = selectedLayer?.metadata?.properties?.find(
@@ -41,13 +40,14 @@ export const RadioPicker = ({ selectedLayer, dispatch }) => {
   }).replace('.', ' > ');
 
   useEffect(() => {
-    dispatch(setClipPosition(DEFAULT_CLIP_POSITION));
-    dispatch(
-      setBrushDomain({ y: [selectedProperty.min, selectedProperty.max] }),
-    );
-  }, [selectedProperty, dispatch]);
+    if (filterRange.some(n => n === undefined)) {
+      dispatch(setFilterRange([selectedProperty.min, selectedProperty.max]));
+    }
+  }, [selectedProperty, filterRange, dispatch]);
 
   const onRadioClick = property => {
+    dispatch(setClipPosition(DEFAULT_CLIP_POSITION));
+
     dispatch(
       setProperty(
         selectedProperty?.name === property.name
@@ -62,6 +62,8 @@ export const RadioPicker = ({ selectedLayer, dispatch }) => {
 
   const onToggleClick = property => {
     if (property.name === selectedProperty?.name) return;
+
+    dispatch(setClipPosition(DEFAULT_CLIP_POSITION));
 
     dispatch(
       setProperty({
@@ -82,8 +84,7 @@ export const RadioPicker = ({ selectedLayer, dispatch }) => {
           onSliderChange={domain => dispatch(setFilterRange(domain))}
           selectedProperty={selectedProperty}
           colorScheme={colorScheme}
-          brushDomain={brushDomain}
-          setBrushDomain={domain => dispatch(setBrushDomain(domain))}
+          filterRange={filterRange}
           clipPosition={clipPosition}
           setClipPosition={position => dispatch(setClipPosition(position))}
           categoryPath={categoryPath}

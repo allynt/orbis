@@ -9,11 +9,10 @@ const isolationPlusSlice = createSlice({
       name: undefined,
     },
     pickedInfo: undefined,
-    filterRange: undefined,
-    brushDomain: { y: [undefined, undefined] },
+    filterRange: [undefined, undefined],
     clipPosition: {
-      translateX: undefined,
-      clipWidth: undefined,
+      translateX: 0,
+      clipWidth: 400,
     },
   },
   reducers: {
@@ -27,9 +26,6 @@ const isolationPlusSlice = createSlice({
     setFilterRange: (state, { payload }) => {
       state.filterRange = payload.map(Math.round);
     },
-    setBrushDomain: (state, { payload }) => {
-      state.brushDomain = payload;
-    },
     setClipPosition: (state, { payload }) => {
       state.clipPosition = payload;
     },
@@ -40,7 +36,6 @@ export const {
   setProperty,
   setPickedInfo,
   setFilterRange,
-  setBrushDomain,
   setClipPosition,
 } = isolationPlusSlice.actions;
 
@@ -70,11 +65,6 @@ export const pickedInfoSelector = createSelector(
 export const filterRangeSelector = createSelector(
   baseSelector,
   orb => orb?.filterRange,
-);
-
-export const brushDomainSelector = createSelector(
-  baseSelector,
-  orb => orb?.brushDomain,
 );
 
 export const clipPositionSelector = createSelector(
