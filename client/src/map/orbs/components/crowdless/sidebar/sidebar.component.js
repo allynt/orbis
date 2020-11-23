@@ -13,6 +13,7 @@ import styles from './sidebar.module.css';
  *   results?: CrowdlessFeature[]
  *   isLoading?: boolean
  *   onFindClick: () => void
+ *   onResultClick?: (result: CrowdlessFeature) => void
  *   selectedResult: CrowdlessFeature
  * }} props
  */
@@ -20,6 +21,7 @@ export const CrowdlessSidebarComponent = ({
   results,
   isLoading,
   onFindClick,
+  onResultClick,
   selectedResult,
 }) => (
   <>
@@ -56,6 +58,7 @@ export const CrowdlessSidebarComponent = ({
                 result.properties.placeID ===
                   selectedResult?.properties?.placeID
               }
+              onClick={onResultClick}
             />
           ))}
       </ul>

@@ -36,13 +36,27 @@ const getIcon = crowdednessCategory => {
  *   isLoading?: boolean
  *   result?: CrowdlessFeature
  *   selected?: boolean
+ *   onClick?: (result: CrowdlessFeature) => void
  * }} props
  */
-const ResultsListItem = ({ isLoading = false, result, selected = true }) => {
+const ResultsListItem = ({
+  isLoading = false,
+  result,
+  selected = true,
+  onClick,
+}) => {
   const Icon = getIcon(result?.properties?.crowdednessCategory);
 
+  const handleClick = () => onClick && onClick(result);
+
   return (
-    <li className={clsx(styles.listItem, { [styles.selected]: selected })}>
+    <li
+      className={clsx(styles.listItem, { [styles.selected]: selected })}
+      onClick={handleClick}
+      onKeyPress={handleClick}
+      tabIndex={0}
+      aria-label={result?.properties?.name}
+    >
       {isLoading ? (
         <ResultsListItemSkeleton />
       ) : (

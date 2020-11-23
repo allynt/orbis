@@ -6,6 +6,7 @@ import {
   isLoadingSelector,
   resultsSelector,
   selectedResultSelector,
+  setSelectedResult,
 } from '../slices/crowdless.slice';
 import { CrowdlessSidebarComponent } from './crowdless/sidebar/sidebar.component';
 
@@ -37,12 +38,16 @@ const ConnectedWrapper = ({ selectedLayer, dispatch }) => {
       ),
     );
 
+  /** @param {CrowdlessFeature} result */
+  const handleResultClick = result => dispatch(setSelectedResult(result));
+
   return (
     <CrowdlessSidebarComponent
       onFindClick={handleFindClick}
       isLoading={isLoading}
       results={results?.features}
       selectedResult={selectedResult}
+      onResultClick={handleResultClick}
     />
   );
 };

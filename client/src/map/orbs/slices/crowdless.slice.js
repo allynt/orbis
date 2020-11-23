@@ -51,6 +51,7 @@ const crowdlessSlice = createSlice({
       .addCase(fetchResults.fulfilled, (state, { payload }) => {
         state.isLoading = false;
         state.results = payload;
+        if (state.selectedResult) state.selectedResult = undefined;
       })
       .addCase(fetchResults.rejected, state => {
         state.isLoading = false;

@@ -4,6 +4,9 @@ import ResultsListItem from './results-list-item.component';
 
 export default {
   title: 'Orbs/IsolationPlus/Crowdless/ResultsListItem',
+  argTypes: {
+    onClick: { action: 'onClick' },
+  },
 };
 
 const Template = args => <ResultsListItem {...args} />;
