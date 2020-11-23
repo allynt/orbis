@@ -8,10 +8,7 @@ const configuration = ({ id, orbState }) => {
     id,
     data: results?.features,
     /** @param {CrowdlessFeature} feature */
-    getPosition: feature => [
-      feature.geometry.coordinates[1],
-      feature.geometry.coordinates[0],
-    ],
+    getPosition: feature => feature.geometry.coordinates,
     iconAtlas,
     iconMapping,
     /** @param {CrowdlessFeature} feature */
