@@ -83,7 +83,7 @@ LOGGING = {
         }
     },
     "filters": {
-        "restrict_geopandas_filter": {"()": "core.utils.RestrictGeopandasFilter",},
+        "restrict_geopandas_filter": {"()": "core.utils.RestrictGeopandasFilter", },
     },
     "handlers": {
         "console": {
@@ -95,8 +95,11 @@ LOGGING = {
             "level": "ERROR",
             "class": "django.utils.log.AdminEmailHandler",
         },
+        "db": {
+            "class": "astrosat.utils.DatabaseLogHandler",
+        },
     },
-    "root": {"handlers": ["console", "mail_admins"], "level": "DEBUG",},
+    "root": {"handlers": ["console", "mail_admins"], "level": "DEBUG", },
     "loggers": {
         # when DEBUG is True, these loggers spit out _way_ too much information
         # so I'm increasing their levels
@@ -105,7 +108,8 @@ LOGGING = {
         "environ.environ": {"level": "INFO"},
         "faker": {"level": "INFO"},
         "factory": {"level": "INFO"},
-    },
+        "db": {"handlers": ["db"], "level": "DEBUG"},
+    }
 }
 
 #########
