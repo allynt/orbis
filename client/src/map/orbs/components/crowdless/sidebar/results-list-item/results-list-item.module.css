@@ -10,6 +10,15 @@
   border-bottom: var(--border);
 }
 
+.listItem > * {
+  transition: opacity 250ms ease;
+  opacity: 0.5;
+}
+
+.listItem.active > * {
+  opacity: 1;
+}
+
 .listItem:first-of-type {
   border-top: var(--border);
 }

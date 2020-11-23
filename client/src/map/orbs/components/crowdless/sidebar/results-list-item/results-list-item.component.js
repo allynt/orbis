@@ -1,6 +1,8 @@
-import { Skeleton } from 'components';
 import * as React from 'react';
 
+import clsx from 'clsx';
+
+import { Skeleton } from 'components';
 import { Busy, NotBusy, VeryBusy } from './icons';
 
 import styles from './results-list-item.module.css';
@@ -33,13 +35,14 @@ const getIcon = crowdednessCategory => {
  * @param {{
  *   isLoading?: boolean
  *   result?: CrowdlessFeature
+ *   active?: boolean
  * }} props
  */
-const ResultsListItem = ({ isLoading = false, result }) => {
+const ResultsListItem = ({ isLoading = false, result, active = true }) => {
   const Icon = getIcon(result?.properties?.crowdednessCategory);
 
   return (
-    <li className={styles.listItem}>
+    <li className={clsx(styles.listItem, { [styles.active]: active })}>
       {isLoading ? (
         <ResultsListItemSkeleton />
       ) : (

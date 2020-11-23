@@ -1,8 +1,11 @@
-import { Button } from '@astrosat/astrosat-ui';
-import { LoadingSpinner } from 'components';
 import * as React from 'react';
+
+import { Button } from '@astrosat/astrosat-ui';
+
+import { LoadingSpinner } from 'components';
 import ResultsListItem from './results-list-item/results-list-item.component';
 import { ReactComponent as SearchIcon } from './search.svg';
+
 import styles from './sidebar.module.css';
 
 /**
@@ -10,12 +13,14 @@ import styles from './sidebar.module.css';
  *   results?: CrowdlessFeature[]
  *   isLoading?: boolean
  *   onFindClick: () => void
+ *   activeResult: CrowdlessFeature
  * }} props
  */
 export const CrowdlessSidebarComponent = ({
   results,
   isLoading,
   onFindClick,
+  activeResult,
 }) => (
   <>
     <p className={styles.text}>
@@ -43,7 +48,14 @@ export const CrowdlessSidebarComponent = ({
             .map((_, i) => <ResultsListItem key={i} isLoading />)}
         {results?.length &&
           results.map(result => (
-            <ResultsListItem key={result.properties.placeID} result={result} />
+            <ResultsListItem
+              key={result.properties.placeID}
+              result={result}
+              active={
+                activeResult === undefined ||
+                result.properties.placeID === activeResult?.properties?.placeID
+              }
+            />
           ))}
       </ul>
     )}

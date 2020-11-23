@@ -1,15 +1,22 @@
+import * as React from 'react';
+
 import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import * as React from 'react';
+
 import { CrowdlessSidebarComponent } from './sidebar.component';
 
-const renderComponent = ({ results = undefined, isLoading = false } = {}) => {
+const renderComponent = ({
+  results = undefined,
+  isLoading = false,
+  activeResult = undefined,
+} = {}) => {
   const onFindClick = jest.fn();
   const utils = render(
     <CrowdlessSidebarComponent
       onFindClick={onFindClick}
       results={results}
       isLoading={isLoading}
+      activeResult={activeResult}
     />,
   );
   return { ...utils, onFindClick };
@@ -42,5 +49,31 @@ describe('<CrowdlessSidebarComponent />', () => {
   it("Shows a skeleton results list if loading and there aren't already results", () => {
     const { getAllByRole } = renderComponent({ isLoading: true });
     expect(getAllByRole('progressbar').length).toBeGreaterThanOrEqual(1);
+  });
+
+  it("shows items as active if there's no active result", () => {
+    const results = [
+      { properties: { name: 'Tesco', address: '1 Test Street' } },
+      { properties: { name: 'Sainsburys', address: '2 Fake Road' } },
+    ];
+    const { getAllByRole } = renderComponent({ results });
+    getAllByRole('listitem').forEach(element =>
+      expect(element).toHaveClass('active'),
+    );
+  });
+
+  it('shows the active result as active', () => {
+    const results = [
+      { properties: { name: 'Tesco', address: '1 Test Street', placeID: 0 } },
+      {
+        properties: { name: 'Sainsburys', address: '2 Fake Road', placeID: 1 },
+      },
+    ];
+    const { getByText } = renderComponent({
+      results,
+      activeResult: { properties: { placeID: 0 } },
+    });
+    expect(getByText('Tesco').parentElement).toHaveClass('active');
+    expect(getByText('Sainsburys').parentElement).not.toHaveClass('active');
   });
 });
