@@ -353,7 +353,7 @@ export const placeOrder = form => async (dispatch, getState) => {
     return dispatch(placeOrderFailure({ errors: errorTransformer(body) }));
   }
   const fetchCustomerResponse = await getData(
-    `/api/customers/${currentCustomerId}`,
+    `/api/customers/${currentCustomerId}/`,
     headers,
   );
   if (!fetchCustomerResponse.ok) {
