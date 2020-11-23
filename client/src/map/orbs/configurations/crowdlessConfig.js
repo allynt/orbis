@@ -1,8 +1,8 @@
-import { resultsSelector } from '../slices/crowdless.slice';
+import { resultsSelector, setSelectedResult } from '../slices/crowdless.slice';
 import iconAtlas from './crowdlessConfig.iconAtlas.svg';
 import iconMapping from './crowdlessConfig.iconMapping.json';
 
-const configuration = ({ id, orbState }) => {
+const configuration = ({ id, orbState, dispatch }) => {
   const results = resultsSelector(orbState);
   return {
     id,
@@ -14,6 +14,8 @@ const configuration = ({ id, orbState }) => {
     /** @param {CrowdlessFeature} feature */
     getIcon: feature => feature.properties.crowdednessCategory,
     getSize: 60,
+    pickable: true,
+    onClick: pickedInfo => dispatch(setSelectedResult(pickedInfo.object)),
   };
 };
 

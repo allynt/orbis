@@ -4,16 +4,16 @@ import styles from './map.module.css';
 
 /**
  * @param {{
- *   feature: CrowdlessFeature
+ *   feature?: CrowdlessFeature
  * }} props
  */
 const CrowdlessMapComponent = ({ feature }) => {
   const {
-    address,
-    name,
-    crowdednessCategory,
-    crowdednessScore,
-  } = feature.properties;
+    address = undefined,
+    name = undefined,
+    crowdednessCategory = undefined,
+    crowdednessScore = undefined,
+  } = feature?.properties || {};
 
   return (
     <div className={styles.feature}>

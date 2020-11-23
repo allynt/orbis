@@ -5,6 +5,7 @@ import {
   fetchResults,
   isLoadingSelector,
   resultsSelector,
+  selectedResultSelector,
 } from '../slices/crowdless.slice';
 import { CrowdlessSidebarComponent } from './crowdless/sidebar/sidebar.component';
 
@@ -18,6 +19,9 @@ const ConnectedWrapper = ({ selectedLayer, dispatch }) => {
   const { viewState } = useMap();
   const isLoading = useSelector(state => isLoadingSelector(state?.orbs));
   const results = useSelector(state => resultsSelector(state?.orbs));
+  const selectedResult = useSelector(state =>
+    selectedResultSelector(state?.orbs),
+  );
 
   const handleFindClick = () =>
     dispatch(
@@ -38,6 +42,7 @@ const ConnectedWrapper = ({ selectedLayer, dispatch }) => {
       onFindClick={handleFindClick}
       isLoading={isLoading}
       results={results?.features}
+      selectedResult={selectedResult}
     />
   );
 };

@@ -30,7 +30,7 @@ module.exports = {
           },
         },
         map_component: {
-          name: 'ActionForHelpMapComponent',
+          name: 'CrowdlessMapComponent',
         },
         sidebar_component: {
           name: 'CrowdlessSidebarComponent',

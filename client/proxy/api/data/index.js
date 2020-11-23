@@ -23,7 +23,7 @@ dataRouter.route('/crowdedness').get((req, res) => {
 
   const features = Array(10)
     .fill(undefined)
-    .map(() => {
+    .map((_, placeID) => {
       const crowdednessScore = faker.random.number({ min: 1, max: 100 });
       let crowdednessCategory = 'very busy';
       if (crowdednessScore <= 35) crowdednessCategory = 'not busy';
@@ -46,6 +46,7 @@ dataRouter.route('/crowdedness').get((req, res) => {
           ],
         },
         properties: {
+          placeID,
           name: faker.company.companyName(),
           type: 'supermarket',
           crowdednessScore,
