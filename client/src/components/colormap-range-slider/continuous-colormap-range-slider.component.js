@@ -38,8 +38,6 @@ const ContinuousColorMapRangeSlider = ({
   const scaleColors = chroma.scale(color).colors();
   const data = [{ x: 0.5, y: domain[1] }];
 
-  console.log('brushDomain: ', brushDomain);
-
   /** @type {import('victory').VictoryBarProps} */
   const barProps = {
     // @ts-ignore

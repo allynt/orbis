@@ -5,7 +5,6 @@ import { useSelector } from 'react-redux';
 import {
   propertySelector,
   setProperty,
-  filterRangeSelector,
   setFilterRange,
   brushDomainSelector,
   setBrushDomain,
@@ -17,6 +16,8 @@ import { createCategorisationPath } from 'data-layers/categorisation.utils';
 
 import RadioProperty from './radio-property/radio-property.component';
 
+import { DEFAULT_CLIP_POSITION } from './radio-picker-constants';
+
 import { getProperties } from './helpers/get-properties.js';
 
 /**
@@ -27,7 +28,6 @@ import { getProperties } from './helpers/get-properties.js';
  */
 export const RadioPicker = ({ selectedLayer, dispatch }) => {
   const selectedProperty = useSelector(state => propertySelector(state?.orbs));
-  const filterRange = useSelector(state => filterRangeSelector(state?.orbs));
   const brushDomain = useSelector(state => brushDomainSelector(state?.orbs));
   const clipPosition = useSelector(state => clipPositionSelector(state?.orbs));
 
@@ -41,12 +41,11 @@ export const RadioPicker = ({ selectedLayer, dispatch }) => {
   }).replace('.', ' > ');
 
   useEffect(() => {
-    if (selectedProperty.source_id) {
-      dispatch(
-        setBrushDomain({ y: [selectedProperty.min, selectedProperty.max] }),
-      );
-    }
-  }, []);
+    dispatch(setClipPosition(DEFAULT_CLIP_POSITION));
+    dispatch(
+      setBrushDomain({ y: [selectedProperty.min, selectedProperty.max] }),
+    );
+  }, [selectedProperty, dispatch]);
 
   const onRadioClick = property => {
     dispatch(
@@ -83,7 +82,6 @@ export const RadioPicker = ({ selectedLayer, dispatch }) => {
           onSliderChange={domain => dispatch(setFilterRange(domain))}
           selectedProperty={selectedProperty}
           colorScheme={colorScheme}
-          filterRange={filterRange}
           brushDomain={brushDomain}
           setBrushDomain={domain => dispatch(setBrushDomain(domain))}
           clipPosition={clipPosition}

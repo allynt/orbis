@@ -1,10 +1,5 @@
 import { createSlice, createSelector } from '@reduxjs/toolkit';
 
-const DEFAULT_CLIP_POSITION = {
-  translateX: 0,
-  clipWidth: 400,
-};
-
 const isolationPlusSlice = createSlice({
   name: 'isolationPlus',
   initialState: {
@@ -16,7 +11,10 @@ const isolationPlusSlice = createSlice({
     pickedInfo: undefined,
     filterRange: undefined,
     brushDomain: { y: [undefined, undefined] },
-    clipPosition: DEFAULT_CLIP_POSITION,
+    clipPosition: {
+      translateX: undefined,
+      clipWidth: undefined,
+    },
   },
   reducers: {
     setProperty: (state, { payload }) => {
