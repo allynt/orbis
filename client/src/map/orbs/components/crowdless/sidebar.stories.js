@@ -1,9 +1,13 @@
 import * as React from 'react';
 import faker from 'faker/locale/en_GB';
 import { CrowdlessSidebarComponent } from './sidebar.component';
+import { Description } from './description.component';
 
 export default {
   title: 'Orbs/IsolationPlus/Crowdless/CrowdlessSidebarComponent',
+  args: {
+    visible: true,
+  },
 };
 
 const Template = args => <CrowdlessSidebarComponent {...args} />;
@@ -33,3 +37,5 @@ export const IsLoading = Template.bind({});
 IsLoading.args = {
   isLoading: true,
 };
+
+export const DescriptionContent = () => <Description />;

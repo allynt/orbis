@@ -1,5 +1,10 @@
-.radio {
+.radioWrapper {
   margin-bottom: 1.5rem;
+  display: flex;
+}
+
+.infoIcon {
+  margin-left: auto;
 }
 
 .text {

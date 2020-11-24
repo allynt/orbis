@@ -1,6 +1,10 @@
-import { Button, Radio } from '@astrosat/astrosat-ui';
-import { LoadingSpinner } from 'components';
 import * as React from 'react';
+
+import { Button, Radio } from '@astrosat/astrosat-ui';
+
+import { LoadingSpinner } from 'components';
+import { InfoIconTooltip } from 'components/info-icon-tooltip/info-icon-tooltip.component';
+import { Description } from './description.component';
 import ResultsListItem from './results-list-item/results-list-item.component';
 import { ReactComponent as SearchIcon } from './search.svg';
 import styles from './sidebar.module.css';
@@ -22,12 +26,16 @@ export const CrowdlessSidebarComponent = ({
   visible,
 }) => (
   <>
-    <Radio
-      className={styles.radio}
-      onClick={onRadioChange}
-      checked={visible}
-      label="Supermarket Crowdedness"
-    />
+    <div className={styles.radioWrapper}>
+      <Radio
+        onClick={onRadioChange}
+        checked={visible}
+        label="Supermarket Crowdedness"
+      />
+      <InfoIconTooltip className={styles.infoIcon} place="right">
+        <Description />
+      </InfoIconTooltip>
+    </div>
     {visible && (
       <>
         <p className={styles.text}>

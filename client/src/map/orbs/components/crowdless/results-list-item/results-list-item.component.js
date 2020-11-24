@@ -1,7 +1,7 @@
 import { Skeleton } from 'components';
 import * as React from 'react';
 
-import { Busy, NotBusy, VeryBusy } from './icons';
+import { Busy, NotBusy, VeryBusy } from '../icons';
 
 import styles from './results-list-item.module.css';
 
