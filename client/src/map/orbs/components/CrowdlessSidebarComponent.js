@@ -47,8 +47,9 @@ const ConnectedWrapper = ({ selectedLayer, dispatch }) => {
     );
 
   const handleRadioChange = () => dispatch(setVisibility(!visible));
-   
-   const handleResultClick = result => {
+
+  const handleResultClick = result => {
+    dispatch(setSelectedResult(result));
     setViewState({
       ...viewState,
       longitude: result.geometry.coordinates[0],
@@ -70,3 +71,7 @@ const ConnectedWrapper = ({ selectedLayer, dispatch }) => {
       selectedResult={selectedResult}
       onResultClick={handleResultClick}
     />
+  );
+};
+
+export default ConnectedWrapper;

@@ -12,6 +12,8 @@ const configuration = ({ id, orbState, dispatch }) => {
   const visible = visibilitySelector(orbState);
   const selectedResult = selectedResultSelector(orbState);
   return {
+    id,
+    visible,
     data: results?.features,
     /** @param {CrowdlessFeature} feature */
     getPosition: feature => feature.geometry.coordinates,
