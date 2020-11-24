@@ -7,6 +7,7 @@ import {
 /**
  * @typedef CrowdlessState
  * @property {CrowdlessResponse} [results]
+ * @property {CrowdlessFeature} [selectedResult]
  * @property {boolean} isLoading
  * @property {boolean} visible
  */
@@ -42,6 +43,10 @@ const crowdlessSlice = createSlice({
     setVisibility: (state, action) => {
       state.visible = action.payload;
     },
+    /** @param {import('@reduxjs/toolkit').PayloadAction<CrowdlessFeature>} action */
+    setSelectedResult: (state, action) => {
+      state.selectedResult = action.payload;
+    },
   },
   extraReducers: builder =>
     builder
@@ -51,15 +56,15 @@ const crowdlessSlice = createSlice({
       .addCase(fetchResults.fulfilled, (state, { payload }) => {
         state.isLoading = false;
         state.results = payload;
+        if (state.selectedResult) state.selectedResult = undefined;
       })
       .addCase(fetchResults.rejected, state => {
         state.isLoading = false;
       }),
 });
 
-export const { setVisibility } = crowdlessSlice.actions;
+export const { setSelectedResult, setVisibility } = crowdlessSlice.actions;
 
-/** @type {import('@reduxjs/toolkit').Selector<any, CrowdlessState>} */
 const baseSelector = orbs => orbs[crowdlessSlice.name];
 
 export const isLoadingSelector = createSelector(
@@ -75,6 +80,11 @@ export const visibilitySelector = createSelector(
 export const resultsSelector = createSelector(
   baseSelector,
   state => state?.results,
+);
+
+export const selectedResultSelector = createSelector(
+  baseSelector,
+  state => state?.selectedResult,
 );
 
 export default crowdlessSlice.reducer;

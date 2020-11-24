@@ -1,12 +1,15 @@
+import * as React from 'react';
+
 import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import * as React from 'react';
+
 import { CrowdlessSidebarComponent } from './sidebar.component';
 
 const renderComponent = ({
   results = undefined,
   isLoading = false,
   visible = true,
+  selectedResult = undefined,
 } = {}) => {
   const onFindClick = jest.fn();
   const onRadioChange = jest.fn();
@@ -17,6 +20,7 @@ const renderComponent = ({
       onRadioChange={onRadioChange}
       results={results}
       isLoading={isLoading}
+      selectedResult={selectedResult}
     />,
   );
   return { ...utils, onFindClick, onRadioChange };
@@ -61,5 +65,34 @@ describe('<CrowdlessSidebarComponent />', () => {
     const { queryByRole } = renderComponent({ visible: false });
     expect(queryByRole('button')).not.toBeInTheDocument();
     expect(queryByRole('list')).not.toBeInTheDocument();
+    it("shows items as active if there's no active result", () => {
+      const results = [
+        { properties: { name: 'Tesco', address: '1 Test Street' } },
+        { properties: { name: 'Sainsburys', address: '2 Fake Road' } },
+      ];
+      const { getAllByRole } = renderComponent({ results });
+      getAllByRole('listitem').forEach(element =>
+        expect(element).toHaveClass('selected'),
+      );
+    });
+
+    it('shows the active result as active', () => {
+      const results = [
+        { properties: { name: 'Tesco', address: '1 Test Street', placeId: 0 } },
+        {
+          properties: {
+            name: 'Sainsburys',
+            address: '2 Fake Road',
+            placeId: 1,
+          },
+        },
+      ];
+      const { getByText } = renderComponent({
+        results,
+        selectedResult: { properties: { placeId: 0 } },
+      });
+      expect(getByText('Tesco').parentElement).toHaveClass('selected');
+      expect(getByText('Sainsburys').parentElement).not.toHaveClass('selected');
+    });
   });
 });

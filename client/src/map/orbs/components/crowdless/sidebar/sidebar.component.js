@@ -7,6 +7,7 @@ import { InfoIconTooltip } from 'components/info-icon-tooltip/info-icon-tooltip.
 import { Description } from './description.component';
 import ResultsListItem from './results-list-item/results-list-item.component';
 import { ReactComponent as SearchIcon } from './search.svg';
+
 import styles from './sidebar.module.css';
 
 /**
@@ -16,8 +17,11 @@ import styles from './sidebar.module.css';
  *   onFindClick: () => void
  *   onRadioChange: () => void
  *   visible?: boolean
+ *   onResultClick?: (result: CrowdlessFeature) => void
+ *   selectedResult: CrowdlessFeature
  * }} props
  */
+
 export const CrowdlessSidebarComponent = ({
   results,
   isLoading,
