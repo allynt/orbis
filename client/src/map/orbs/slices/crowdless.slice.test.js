@@ -150,8 +150,9 @@ describe('crowdless slice', () => {
 
         it('sets results to the payload', () => {
           const payload = [{ id: 1 }, { id: 2 }];
+          action = { ...action, payload };
           const expected = expect.objectContaining({ results: payload });
-          const result = reducer({ isLoading: true }, action);
+          const result = reducer({}, action);
           expect(result).toEqual(expected);
         });
 

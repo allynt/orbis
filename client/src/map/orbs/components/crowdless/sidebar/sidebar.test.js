@@ -65,34 +65,34 @@ describe('<CrowdlessSidebarComponent />', () => {
     const { queryByRole } = renderComponent({ visible: false });
     expect(queryByRole('button')).not.toBeInTheDocument();
     expect(queryByRole('list')).not.toBeInTheDocument();
-    it("shows items as active if there's no active result", () => {
-      const results = [
-        { properties: { name: 'Tesco', address: '1 Test Street' } },
-        { properties: { name: 'Sainsburys', address: '2 Fake Road' } },
-      ];
-      const { getAllByRole } = renderComponent({ results });
-      getAllByRole('listitem').forEach(element =>
-        expect(element).toHaveClass('selected'),
-      );
-    });
+  });
+  it("shows items as active if there's no active result", () => {
+    const results = [
+      { properties: { name: 'Tesco', address: '1 Test Street' } },
+      { properties: { name: 'Sainsburys', address: '2 Fake Road' } },
+    ];
+    const { getAllByRole } = renderComponent({ results });
+    getAllByRole('listitem').forEach(element =>
+      expect(element).toHaveClass('selected'),
+    );
+  });
 
-    it('shows the active result as active', () => {
-      const results = [
-        { properties: { name: 'Tesco', address: '1 Test Street', placeId: 0 } },
-        {
-          properties: {
-            name: 'Sainsburys',
-            address: '2 Fake Road',
-            placeId: 1,
-          },
+  it('shows the active result as active', () => {
+    const results = [
+      { properties: { name: 'Tesco', address: '1 Test Street', placeId: 0 } },
+      {
+        properties: {
+          name: 'Sainsburys',
+          address: '2 Fake Road',
+          placeId: 1,
         },
-      ];
-      const { getByText } = renderComponent({
-        results,
-        selectedResult: { properties: { placeId: 0 } },
-      });
-      expect(getByText('Tesco').parentElement).toHaveClass('selected');
-      expect(getByText('Sainsburys').parentElement).not.toHaveClass('selected');
+      },
+    ];
+    const { getByText } = renderComponent({
+      results,
+      selectedResult: { properties: { placeId: 0 } },
     });
+    expect(getByText('Tesco').parentElement).toHaveClass('selected');
+    expect(getByText('Sainsburys').parentElement).not.toHaveClass('selected');
   });
 });

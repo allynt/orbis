@@ -16,9 +16,9 @@ import styles from './sidebar.module.css';
  *   isLoading?: boolean
  *   onFindClick: () => void
  *   onRadioChange: () => void
- *   visible?: boolean
  *   onResultClick?: (result: CrowdlessFeature) => void
  *   selectedResult: CrowdlessFeature
+ *   visible?: boolean
  * }} props
  */
 
@@ -27,6 +27,8 @@ export const CrowdlessSidebarComponent = ({
   isLoading,
   onFindClick,
   onRadioChange,
+  onResultClick,
+  selectedResult,
   visible,
 }) => (
   <>
@@ -66,8 +68,14 @@ export const CrowdlessSidebarComponent = ({
             {results?.length &&
               results.map(result => (
                 <ResultsListItem
-                  key={result.properties.placeID}
+                  key={result.properties.placeId}
                   result={result}
+                  selected={
+                    selectedResult === undefined ||
+                    result.properties.placeId ===
+                      selectedResult?.properties?.placeId
+                  }
+                  onClick={onResultClick}
                 />
               ))}
           </ul>
