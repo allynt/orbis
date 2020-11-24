@@ -188,7 +188,6 @@ describe('injectSource', () => {
         {
           category: 'Cat 1',
           sources: [
-            { source_id: 'cat/1/source/1' },
             {
               category: 'Cat 2',
               sources: [
@@ -198,6 +197,7 @@ describe('injectSource', () => {
                 },
               ],
             },
+            { source_id: 'cat/1/source/1' },
           ],
         },
       ];
@@ -542,12 +542,12 @@ describe('createOrbsWithCategorisedSources', () => {
     expect(result).toEqual(expected);
   });
 
-  describe('puts sources without a category into the Other category', () => {
+  describe('puts sources without a category into the root level', () => {
     it.each`
-      tag              | value
-      ${'undefined'}   | ${undefined}
-      ${'empty objet'} | ${{}}
-    `('$tag', value => {
+      tag               | value
+      ${'undefined'}    | ${undefined}
+      ${'empty object'} | ${{}}
+    `('$tag', ({ value }) => {
       const sources = [
         {
           source_id: 'orb/1/source/1',
@@ -563,14 +563,41 @@ describe('createOrbsWithCategorisedSources', () => {
         {
           name: 'Orb 1',
           sources: expect.arrayContaining([
-            {
-              category: 'Other',
-              sources: [
-                expect.objectContaining({
-                  source_id: 'orb/1/source/1',
-                }),
-              ],
+            expect.objectContaining({
+              source_id: 'orb/1/source/1',
+            }),
+          ]),
+        },
+      ];
+      const result = createOrbsWithCategorisedSources(sources);
+      expect(result).toEqual(expected);
+    });
+
+    it('injected', () => {
+      const sources = [
+        {
+          source_id: 'orb/1/source/2',
+          metadata: {
+            application: {
+              orbis: {
+                orbs: [{ name: 'Orb 1' }],
+                categories: { name: 'Cat1' },
+              },
             },
+          },
+        },
+        {
+          source_id: 'orb/1/source/1',
+          metadata: {
+            application: { orbis: { orbs: [{ name: 'Orb 1' }] } },
+          },
+        },
+      ];
+      const expected = [
+        {
+          name: 'Orb 1',
+          sources: expect.arrayContaining([
+            expect.objectContaining({ source_id: 'orb/1/source/1' }),
           ]),
         },
       ];
