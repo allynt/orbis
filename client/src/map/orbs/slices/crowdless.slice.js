@@ -42,6 +42,7 @@ const crowdlessSlice = createSlice({
     /** @param {import('@reduxjs/toolkit').PayloadAction<boolean>} action */
     setVisibility: (state, action) => {
       state.visible = action.payload;
+      if (state.selectedResult !== undefined) state.selectedResult = undefined;
     },
     /** @param {import('@reduxjs/toolkit').PayloadAction<CrowdlessFeature>} action */
     setSelectedResult: (state, action) => {

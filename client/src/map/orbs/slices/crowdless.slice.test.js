@@ -27,6 +27,14 @@ describe('crowdless slice', () => {
         const result = reducer({ visible: true }, setVisibility(false));
         expect(result).toEqual(expect.objectContaining({ visible: false }));
       });
+
+      it("sets selectedResult to undefined if it isn't", () => {
+        const result = reducer(
+          { selectedResult: { id: 1 } },
+          setVisibility(false),
+        );
+        expect(result.selectedResult).toBeUndefined();
+      });
     });
   });
 
