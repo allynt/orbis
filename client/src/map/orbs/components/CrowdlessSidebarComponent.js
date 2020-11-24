@@ -12,6 +12,7 @@ import {
   selectedResultSelector,
   setSelectedResult,
 } from '../slices/crowdless.slice';
+import { logDataset } from 'data-layers/data-layers.slice';
 import { CrowdlessSidebarComponent } from './crowdless/sidebar/sidebar.component';
 
 /**
@@ -28,11 +29,13 @@ const ConnectedWrapper = ({ selectedLayer, dispatch }) => {
     selectedResultSelector(state?.orbs),
   );
 
-  const handleFindClick = () =>
+  const handleFindClick = () => {
+    console.log('SELECTED LAYER: ', selectedLayer);
     dispatch(
       // @ts-ignore
-      fetchResults(
-        selectedLayer.metadata.url
+      fetchResults({
+        sourceId: selectedLayer.source_id,
+        url: selectedLayer.metadata.url
           .replace('{x}', viewState.latitude.toString())
           .replace('{y}', viewState.longitude.toString())
           .replace(
@@ -40,8 +43,11 @@ const ConnectedWrapper = ({ selectedLayer, dispatch }) => {
             selectedLayer?.metadata?.application?.orbis?.sidebar_component
               ?.props?.searchRadius,
           ),
-      ),
+      }),
     );
+
+    dispatch(logDataset(selectedLayer));
+  };
 
   /** @param {CrowdlessFeature} result */
   const handleResultClick = result => {

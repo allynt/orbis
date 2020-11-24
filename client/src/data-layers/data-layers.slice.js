@@ -64,6 +64,7 @@ export const fetchSources = () => async (dispatch, getState) => {
 export const calculateLayersToLog = sources => async (dispatch, getState) => {
   const user = userSelector(getState());
   const activeLayers = activeLayersSelector(getState());
+  const dataSources = dataSourcesSelector(getState());
 
   const sourcesToLog =
     activeLayers.length === 0
@@ -71,17 +72,41 @@ export const calculateLayersToLog = sources => async (dispatch, getState) => {
       : sources.filter(source => !activeLayers.includes(source));
 
   sourcesToLog.forEach(source => {
-    dispatch(
-      addLogItem({
-        content: {
-          userId: user.id,
-          customerId: user.customers[0].id,
-          dataset: source,
-        },
-        tags: ['LOAD_LAYER', source],
-      }),
+    const matchedDataSource = dataSources.find(dataSource =>
+      dataSource.source_id === source ? true : false,
     );
+
+    if (
+      !matchedDataSource.metadata.request_strategy &&
+      matchedDataSource.metadata.request_strategy !== 'manual'
+    ) {
+      dispatch(
+        addLogItem({
+          content: {
+            userId: user.id,
+            customerId: user.customers[0].id,
+            dataset: source,
+          },
+          tags: ['LOAD_LAYER', source],
+        }),
+      );
+    }
   });
+};
+
+export const logDataset = source => async (dispatch, getState) => {
+  const user = userSelector(getState());
+
+  dispatch(
+    addLogItem({
+      content: {
+        userId: user.id,
+        customerId: user.customers[0].id,
+        dataset: source.source_id,
+      },
+      tags: ['LOAD_LAYER', source.source_id],
+    }),
+  );
 };
 
 export const logError = source => async (dispatch, getState) => {

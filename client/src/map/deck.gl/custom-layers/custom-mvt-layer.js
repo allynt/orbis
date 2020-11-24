@@ -3,8 +3,6 @@ import { MVTLoader } from '@loaders.gl/mvt';
 import { MVTLayer } from '@deck.gl/geo-layers';
 import { gunzipSync } from 'zlib';
 
-import { useDispatch } from 'react-redux';
-
 import { logError } from 'data-layers/data-layers.slice';
 
 /**
