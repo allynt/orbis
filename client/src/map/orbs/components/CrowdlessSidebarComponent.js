@@ -1,7 +1,9 @@
-import { FlyToInterpolator } from '@deck.gl/core';
-import { useMap } from 'MapContext';
 import * as React from 'react';
+
+import { FlyToInterpolator } from '@deck.gl/core';
 import { useSelector } from 'react-redux';
+
+import { useMap } from 'MapContext';
 import { easeInOutCubic } from 'utils/easingFunctions';
 import {
   fetchResults,

@@ -12,6 +12,7 @@
   width: 2.75rem;
   height: 2.75rem;
   border-radius: 0.3125rem;
+  box-shadow: 0 2px 4px 0 rgba(34, 34, 34, 0.5);
 }
 
 .category + .category {
