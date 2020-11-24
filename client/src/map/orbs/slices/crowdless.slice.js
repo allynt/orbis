@@ -7,6 +7,7 @@ import {
 /**
  * @typedef CrowdlessState
  * @property {CrowdlessResponse} [results]
+ * @property {CrowdlessFeature} [selectedResult]
  * @property {boolean} isLoading
  */
 
@@ -36,7 +37,12 @@ export const fetchResults = createAsyncThunk(
 const crowdlessSlice = createSlice({
   name,
   initialState,
-  reducers: {},
+  reducers: {
+    /** @param {import('@reduxjs/toolkit').PayloadAction<CrowdlessFeature>} action */
+    setSelectedResult: (state, action) => {
+      state.selectedResult = action.payload;
+    },
+  },
   extraReducers: builder =>
     builder
       .addCase(fetchResults.pending, state => {
@@ -45,11 +51,14 @@ const crowdlessSlice = createSlice({
       .addCase(fetchResults.fulfilled, (state, { payload }) => {
         state.isLoading = false;
         state.results = payload;
+        if (state.selectedResult) state.selectedResult = undefined;
       })
       .addCase(fetchResults.rejected, state => {
         state.isLoading = false;
       }),
 });
+
+export const { setSelectedResult } = crowdlessSlice.actions;
 
 /** @type {import('@reduxjs/toolkit').Selector<any, CrowdlessState>} */
 const baseSelector = orbs => orbs[crowdlessSlice.name];
@@ -62,6 +71,11 @@ export const isLoadingSelector = createSelector(
 export const resultsSelector = createSelector(
   baseSelector,
   state => state?.results,
+);
+
+export const selectedResultSelector = createSelector(
+  baseSelector,
+  state => state?.selectedResult,
 );
 
 export default crowdlessSlice.reducer;

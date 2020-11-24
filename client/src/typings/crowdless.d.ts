@@ -1,5 +1,5 @@
 type CrowdlessFeatureProperties = {
-  placeID: string;
+  placeId: string;
   name: string;
   address: string;
   type: 'supermarket';
