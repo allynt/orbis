@@ -5,17 +5,13 @@ import { useSelector } from 'react-redux';
 import {
   propertySelector,
   setProperty,
-  filterRangeSelector,
-  setFilterRange,
-  clipPositionSelector,
-  setClipPosition,
+  filterDataSelector,
+  setFilterData,
 } from '../../slices/isolation-plus.slice';
 
 import { createCategorisationPath } from 'data-layers/categorisation.utils';
 
 import RadioProperty from './radio-property/radio-property.component';
-
-import { DEFAULT_CLIP_POSITION } from './radio-picker-constants';
 
 import { getProperties } from './helpers/get-properties.js';
 
@@ -27,8 +23,7 @@ import { getProperties } from './helpers/get-properties.js';
  */
 export const RadioPicker = ({ selectedLayer, dispatch }) => {
   const selectedProperty = useSelector(state => propertySelector(state?.orbs));
-  const filterRange = useSelector(state => filterRangeSelector(state?.orbs));
-  const clipPosition = useSelector(state => clipPositionSelector(state?.orbs));
+  const filterData = useSelector(state => filterDataSelector(state?.orbs));
 
   const selectedPropertyMetadata = selectedLayer?.metadata?.properties?.find(
     property => property.name === selectedProperty?.name,
@@ -40,14 +35,16 @@ export const RadioPicker = ({ selectedLayer, dispatch }) => {
   }).replace('.', ' > ');
 
   useEffect(() => {
-    if (filterRange.some(n => n === undefined)) {
-      dispatch(setFilterRange([selectedProperty.min, selectedProperty.max]));
+    if (filterData.filterRange.some(n => n === undefined)) {
+      dispatch(
+        setFilterData({
+          filterRange: [selectedProperty.min, selectedProperty.max],
+        }),
+      );
     }
-  }, [selectedProperty, filterRange, dispatch]);
+  }, [selectedProperty, filterData, dispatch]);
 
   const onRadioClick = property => {
-    dispatch(setClipPosition(DEFAULT_CLIP_POSITION));
-
     dispatch(
       setProperty(
         selectedProperty?.name === property.name
@@ -62,9 +59,6 @@ export const RadioPicker = ({ selectedLayer, dispatch }) => {
 
   const onToggleClick = property => {
     if (property.name === selectedProperty?.name) return;
-
-    dispatch(setClipPosition(DEFAULT_CLIP_POSITION));
-
     dispatch(
       setProperty({
         source_id: selectedLayer.source_id,
@@ -81,12 +75,10 @@ export const RadioPicker = ({ selectedLayer, dispatch }) => {
           data={data}
           onRadioClick={onRadioClick}
           onToggleClick={onToggleClick}
-          onSliderChange={domain => dispatch(setFilterRange(domain))}
+          onSliderChange={data => dispatch(setFilterData(data))}
           selectedProperty={selectedProperty}
           colorScheme={colorScheme}
-          filterRange={filterRange}
-          clipPosition={clipPosition}
-          setClipPosition={position => dispatch(setClipPosition(position))}
+          filterData={filterData}
           categoryPath={categoryPath}
         />
       ))}

@@ -1,5 +1,10 @@
 import { createSlice, createSelector } from '@reduxjs/toolkit';
 
+const DEFAULT_CLIP_POSITION = {
+  translateX: 0,
+  clipWidth: 400,
+};
+
 const isolationPlusSlice = createSlice({
   name: 'isolationPlus',
   initialState: {
@@ -9,25 +14,29 @@ const isolationPlusSlice = createSlice({
       name: undefined,
     },
     pickedInfo: undefined,
-    filterRange: [undefined, undefined],
-    clipPosition: {
-      translateX: 0,
-      clipWidth: 400,
+    filterData: {
+      filterRange: [undefined, undefined],
+      clipPosition: {},
     },
   },
   reducers: {
     setProperty: (state, { payload }) => {
-      state.filterRange = [payload.min, payload.max];
       state.property = payload;
+      state.filterData = {
+        filterRange: [payload.min, payload.max],
+        clipPosition: DEFAULT_CLIP_POSITION,
+      };
     },
     setPickedInfo: (state, { payload }) => {
       state.pickedInfo = payload;
     },
-    setFilterRange: (state, { payload }) => {
-      state.filterRange = payload.map(Math.round);
-    },
-    setClipPosition: (state, { payload }) => {
-      state.clipPosition = payload;
+    setFilterData: (state, { payload }) => {
+      state.filterData = {
+        filterRange: payload.filterRange.map(Math.round),
+        clipPosition: payload.clipPosition
+          ? payload.clipPosition
+          : DEFAULT_CLIP_POSITION,
+      };
     },
   },
 });
@@ -35,8 +44,7 @@ const isolationPlusSlice = createSlice({
 export const {
   setProperty,
   setPickedInfo,
-  setFilterRange,
-  setClipPosition,
+  setFilterData,
 } = isolationPlusSlice.actions;
 
 const baseSelector = orbs => orbs?.[isolationPlusSlice.name];
@@ -62,14 +70,9 @@ export const pickedInfoSelector = createSelector(
   orb => orb?.pickedInfo,
 );
 
-export const filterRangeSelector = createSelector(
+export const filterDataSelector = createSelector(
   baseSelector,
-  orb => orb?.filterRange,
-);
-
-export const clipPositionSelector = createSelector(
-  baseSelector,
-  orb => orb?.clipPosition,
+  orb => orb?.filterData,
 );
 
 export default isolationPlusSlice.reducer;

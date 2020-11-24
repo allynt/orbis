@@ -18,9 +18,7 @@ const RadioProperty = ({
   onSliderChange,
   selectedProperty,
   colorScheme,
-  filterRange,
-  clipPosition,
-  setClipPosition,
+  filterData,
   categoryPath,
 }) => {
   const isArray = Array.isArray(data);
@@ -89,11 +87,10 @@ const RadioProperty = ({
           <ColorMapRangeSlider
             type={selectedProperty?.type}
             color={colorScheme}
-            domain={[selectedProperty?.min, selectedProperty?.max]}
-            brushDomain={{ y: filterRange }}
-            clipPosition={clipPosition}
-            setClipPosition={setClipPosition}
-            onChange={domain => onSliderChange(domain)}
+            domain={[selectedProperty.min, selectedProperty.max]}
+            value={filterData}
+            property={selectedProperty}
+            onChange={data => onSliderChange(data)}
           />
         </div>
       )}
