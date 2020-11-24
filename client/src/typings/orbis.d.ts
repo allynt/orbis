@@ -2,7 +2,8 @@ type LayerName =
   | 'ClusteredIconLayer'
   | 'CustomMVTLayer'
   | 'GeoJsonClusteredIconLayer'
-  | 'GeoJsonLayer';
+  | 'GeoJsonLayer'
+  | 'IconLayer';
 
 type ColorMap =
   | 'OrRd'
@@ -94,6 +95,9 @@ type SourceMetadata = {
   description?: string;
   domain?: string;
   properties: Property[];
+  tiles?: string | string[];
+  url?: string;
+  request_strategy?: 'manual' | 'automatic' | 'lazy' | 'normal';
   application?: {
     orbis: OrbisApplicationMetadata;
   };

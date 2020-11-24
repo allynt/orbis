@@ -126,22 +126,25 @@ const mapObject = feature => {
 
 /**
  * @typedef FeatureDetailProps
- * @property {{[key: string]: any}[]} features
+ * @property {{[key: string]: any}[]} [features]
+ * @property {React.ReactNode} [children]
  * @property {string} [title]
  */
 
 /**
  * @param {FeatureDetailProps} props
  */
-const FeatureDetail = ({ features, title = DEFAULT_TITLE }) => (
+const FeatureDetail = ({ children, features, title = DEFAULT_TITLE }) => (
   <div className={styles.featureDetail}>
     <h1 className={styles.header}>{title}</h1>
     <div className={styles.content}>
-      {features?.map(feature => (
-        <ul key={feature.id} className={styles.list}>
-          {mapObject(feature)}
-        </ul>
-      ))}
+      {features &&
+        features?.map(feature => (
+          <ul key={feature.id} className={styles.list}>
+            {mapObject(feature)}
+          </ul>
+        ))}
+      {children && children}
     </div>
   </div>
 );

@@ -1,0 +1,20 @@
+.text {
+  color: #fff;
+  font-size: 12px;
+  margin-bottom: 20px;
+}
+
+.listHeader {
+  font-size: 14px;
+  color: #d6d6d6;
+}
+
+.findButton,
+.listHeader {
+  margin-bottom: 12px;
+}
+
+.findButton {
+  margin-left: auto;
+  margin-right: auto;
+}

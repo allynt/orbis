@@ -39,9 +39,9 @@
 }
 
 .selectAll {
-  margin-left: auto;
-  margin-right: 1em;
-  padding: 0;
+  margin-left: auto !important;
+  margin-right: 1em !important;
+  padding: 0 !important;
 }
 
 .accordionHeaderRoot .selectAll {
