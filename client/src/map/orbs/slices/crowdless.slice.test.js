@@ -6,7 +6,7 @@ import reducer, {
   fetchResults,
 } from './crowdless.slice';
 
-describe.only('crowdless slice', () => {
+describe('crowdless slice', () => {
   describe('actions', () => {
     describe('setSelectedResult', () => {
       it('sets the result in state', () => {
