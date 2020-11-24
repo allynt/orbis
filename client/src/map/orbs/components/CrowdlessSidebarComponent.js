@@ -30,7 +30,6 @@ const ConnectedWrapper = ({ selectedLayer, dispatch }) => {
   );
 
   const handleFindClick = () => {
-    console.log('SELECTED LAYER: ', selectedLayer);
     dispatch(
       // @ts-ignore
       fetchResults({

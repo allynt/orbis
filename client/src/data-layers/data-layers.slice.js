@@ -61,35 +61,25 @@ export const fetchSources = () => async (dispatch, getState) => {
   return dispatch(fetchSourcesSuccess(data));
 };
 
-export const calculateLayersToLog = sources => async (dispatch, getState) => {
-  const user = userSelector(getState());
+export const calculateLayersToLog = sourceIds => async (dispatch, getState) => {
   const activeLayers = activeLayersSelector(getState());
   const dataSources = dataSourcesSelector(getState());
 
-  const sourcesToLog =
+  const sourceIdsToLog =
     activeLayers.length === 0
-      ? sources
-      : sources.filter(source => !activeLayers.includes(source));
+      ? sourceIds
+      : sourceIds.filter(sourceId => !activeLayers.includes(sourceId));
 
-  sourcesToLog.forEach(source => {
+  sourceIdsToLog.forEach(sourceId => {
     const matchedDataSource = dataSources.find(dataSource =>
-      dataSource.source_id === source ? true : false,
+      dataSource.source_id === sourceId ? true : false,
     );
 
     if (
       !matchedDataSource.metadata.request_strategy &&
       matchedDataSource.metadata.request_strategy !== 'manual'
     ) {
-      dispatch(
-        addLogItem({
-          content: {
-            userId: user.id,
-            customerId: user.customers[0].id,
-            dataset: source,
-          },
-          tags: ['LOAD_LAYER', source],
-        }),
-      );
+      dispatch(logDataset({ source: sourceId }));
     }
   });
 };
