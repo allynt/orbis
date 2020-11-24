@@ -8,12 +8,13 @@ import {
  * @typedef CrowdlessState
  * @property {CrowdlessResponse} [results]
  * @property {boolean} isLoading
+ * @property {boolean} visible
  */
 
 /**
  * @type {CrowdlessState}
  */
-const initialState = { isLoading: false };
+const initialState = { isLoading: false, visible: true };
 
 const name = 'crowdless';
 
@@ -36,7 +37,12 @@ export const fetchResults = createAsyncThunk(
 const crowdlessSlice = createSlice({
   name,
   initialState,
-  reducers: {},
+  reducers: {
+    /** @param {import('@reduxjs/toolkit').PayloadAction<boolean>} action */
+    setVisibility: (state, action) => {
+      state.visible = action.payload;
+    },
+  },
   extraReducers: builder =>
     builder
       .addCase(fetchResults.pending, state => {
@@ -51,12 +57,19 @@ const crowdlessSlice = createSlice({
       }),
 });
 
+export const { setVisibility } = crowdlessSlice.actions;
+
 /** @type {import('@reduxjs/toolkit').Selector<any, CrowdlessState>} */
 const baseSelector = orbs => orbs[crowdlessSlice.name];
 
 export const isLoadingSelector = createSelector(
   baseSelector,
   state => state?.isLoading,
+);
+
+export const visibilitySelector = createSelector(
+  baseSelector,
+  state => !!state?.visible,
 );
 
 export const resultsSelector = createSelector(
