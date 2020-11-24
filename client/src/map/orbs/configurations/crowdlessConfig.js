@@ -19,12 +19,13 @@ const configuration = ({ id, orbState, dispatch }) => {
     /** @param {CrowdlessFeature} feature */
     getIcon: feature =>
       `${feature.properties.crowdednessCategory}${
-        feature.properties.placeID === selectedResult?.properties?.placeID
+        feature.properties.placeId === selectedResult?.properties?.placeId
           ? '-selected'
           : ''
       }`,
+    /** @param {CrowdlessFeature} feature */
     getSize: feature =>
-      feature.properties.placeID === selectedResult?.properties?.placeID
+      feature.properties.placeId === selectedResult?.properties?.placeId
         ? 60 * 1.4
         : 60,
     pickable: true,

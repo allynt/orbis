@@ -51,12 +51,12 @@ export const CrowdlessSidebarComponent = ({
         {results?.length &&
           results.map(result => (
             <ResultsListItem
-              key={result.properties.placeID}
+              key={result.properties.placeId}
               result={result}
               selected={
                 selectedResult === undefined ||
-                result.properties.placeID ===
-                  selectedResult?.properties?.placeID
+                result.properties.placeId ===
+                  selectedResult?.properties?.placeId
               }
               onClick={onResultClick}
             />

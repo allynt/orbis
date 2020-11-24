@@ -64,14 +64,14 @@ describe('<CrowdlessSidebarComponent />', () => {
 
   it('shows the active result as active', () => {
     const results = [
-      { properties: { name: 'Tesco', address: '1 Test Street', placeID: 0 } },
+      { properties: { name: 'Tesco', address: '1 Test Street', placeId: 0 } },
       {
-        properties: { name: 'Sainsburys', address: '2 Fake Road', placeID: 1 },
+        properties: { name: 'Sainsburys', address: '2 Fake Road', placeId: 1 },
       },
     ];
     const { getByText } = renderComponent({
       results,
-      selectedResult: { properties: { placeID: 0 } },
+      selectedResult: { properties: { placeId: 0 } },
     });
     expect(getByText('Tesco').parentElement).toHaveClass('selected');
     expect(getByText('Sainsburys').parentElement).not.toHaveClass('selected');
