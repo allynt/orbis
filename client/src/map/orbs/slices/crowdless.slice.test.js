@@ -81,7 +81,7 @@ describe('crowdless slice', () => {
       it('calls fulfilled with the response', async () => {
         const result = { features: [{ id: 1 }, { id: 2 }] };
         fetch.once(JSON.stringify(result));
-        await fetchResults('')(dispatch, undefined, undefined);
+        await fetchResults({ url: '' })(dispatch, undefined, undefined);
         expect(dispatch).toHaveBeenCalledWith(
           expect.objectContaining({
             type: fetchResults.fulfilled.type,

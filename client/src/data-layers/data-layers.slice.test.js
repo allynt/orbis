@@ -97,6 +97,7 @@ describe('Data Slice', () => {
         sources: null,
         token: null,
         pollingPeriod: 30000,
+        error: null,
       };
     });
 

@@ -84,6 +84,7 @@ describe('App Slice', () => {
         config: {},
         error: null,
         notYetImplementedDescription: null,
+        tracking: [],
       };
     });
 
