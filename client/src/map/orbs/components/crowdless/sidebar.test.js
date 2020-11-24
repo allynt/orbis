@@ -3,16 +3,23 @@ import userEvent from '@testing-library/user-event';
 import * as React from 'react';
 import { CrowdlessSidebarComponent } from './sidebar.component';
 
-const renderComponent = ({ results = undefined, isLoading = false } = {}) => {
+const renderComponent = ({
+  results = undefined,
+  isLoading = false,
+  visible = true,
+} = {}) => {
   const onFindClick = jest.fn();
+  const onRadioChange = jest.fn();
   const utils = render(
     <CrowdlessSidebarComponent
+      visible={visible}
       onFindClick={onFindClick}
+      onRadioChange={onRadioChange}
       results={results}
       isLoading={isLoading}
     />,
   );
-  return { ...utils, onFindClick };
+  return { ...utils, onFindClick, onRadioChange };
 };
 
 describe('<CrowdlessSidebarComponent />', () => {
@@ -42,5 +49,17 @@ describe('<CrowdlessSidebarComponent />', () => {
   it("Shows a skeleton results list if loading and there aren't already results", () => {
     const { getAllByRole } = renderComponent({ isLoading: true });
     expect(getAllByRole('progressbar').length).toBeGreaterThanOrEqual(1);
+  });
+
+  it('calls onRadioChange when the radio is clicked', () => {
+    const { getByRole, onRadioChange } = renderComponent();
+    userEvent.click(getByRole('radio'));
+    expect(onRadioChange).toHaveBeenCalled();
+  });
+
+  it('hides the button and results when not visible', () => {
+    const { queryByRole } = renderComponent({ visible: false });
+    expect(queryByRole('button')).not.toBeInTheDocument();
+    expect(queryByRole('list')).not.toBeInTheDocument();
   });
 });
