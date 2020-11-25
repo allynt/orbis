@@ -86,7 +86,7 @@ const ContinuousColorMapRangeSlider = ({
   };
 
   return (
-    <>
+    <div>
       <svg style={{ height: 0, width: 0, position: 'absolute' }}>
         <defs>
           <linearGradient id="colorMapGradient">
@@ -169,7 +169,7 @@ const ContinuousColorMapRangeSlider = ({
           }
         />
       </VictoryGroup>
-    </>
+    </div>
   );
 };
 
