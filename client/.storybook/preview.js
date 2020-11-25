@@ -16,6 +16,10 @@ export const parameters = {
         name: 'light',
         value: '#f8f8f8',
       },
+      {
+        name: 'yellow',
+        value: '#f6be00',
+      },
     ],
   },
 };

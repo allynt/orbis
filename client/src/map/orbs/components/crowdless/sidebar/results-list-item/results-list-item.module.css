@@ -5,8 +5,8 @@
   font-size: 14px;
   display: grid;
   grid-template-columns: max-content 1fr;
-  gap: 0.571em;
-  padding: 10px 0;
+  gap: 0.5em;
+  padding: 0.625rem 0.5em;
   border-bottom: var(--border);
   transition: background-color 150ms ease-in-out;
 }

@@ -42,7 +42,7 @@ export const ActiveResult = Template.bind({});
 ActiveResult.args = {
   results: new Array(10).fill(undefined).map((_, i) => ({
     properties: {
-      placeID: i,
+      placeId: i,
       crowdednessCategory: faker.random.arrayElement([
         'not busy',
         'busy',
@@ -56,7 +56,7 @@ ActiveResult.args = {
       ].join(', '),
     },
   })),
-  activeResult: { properties: { placeID: 2 } },
+  selectedResult: { properties: { placeId: 2 } },
 };
 
 export const DescriptionContent = () => <Description />;
