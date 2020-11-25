@@ -2,7 +2,7 @@ import { createSelector, createSlice, current } from '@reduxjs/toolkit';
 import { pick } from 'lodash';
 import { NotificationManager } from 'react-notifications';
 
-import { getJsonAuthHeaders, sendData } from 'utils/http';
+import { getJsonAuthHeaders } from 'utils/http';
 
 export const DEFAULT_MAP_STYLE = 3;
 
@@ -10,7 +10,7 @@ const initialState = {
   config: {},
   error: null,
   notYetImplementedDescription: null,
-  tracking: [],
+  trackingQueue: [],
 };
 
 const appSlice = createSlice({
@@ -28,10 +28,10 @@ const appSlice = createSlice({
       state.notYetImplementedDescription = payload;
     },
     addLogItem: (state, { payload }) => {
-      state.tracking = [...state.tracking, payload];
+      state.trackingQueue = [...state.trackingQueue, payload];
     },
     removeLogItems: (state, { payload }) => {
-      state.tracking = state.tracking.filter(
+      state.trackingQueue = state.trackingQueue.filter(
         item => !payload.includes(current(item)),
       );
     },
@@ -71,6 +71,29 @@ export const fetchAppConfig = () => async dispatch => {
   return dispatch(appConfigSuccess(config));
 };
 
+export const logUserTracking = () => async (dispatch, getState) => {
+  const headers = getJsonAuthHeaders(getState());
+  const {
+    app: { trackingQueue },
+  } = getState();
+  if (trackingQueue.length > 0) {
+    const response = await fetch(`/api/logs/tracking`, {
+      credentials: 'include',
+      method: 'POST',
+      headers,
+      body: JSON.stringify(trackingQueue),
+    });
+
+    if (!response.ok) {
+      // Leave items in state, so we can retry later.
+      return;
+    }
+
+    // Remove items from state
+    return dispatch(removeLogItems(trackingQueue));
+  }
+};
+
 const baseSelector = state => state?.app;
 
 export const configSelector = createSelector(baseSelector, app => app?.config);
@@ -86,32 +109,14 @@ export const passwordConfigSelector = createSelector(
     ]),
 );
 
-export const logUserTracking = () => async (dispatch, getState) => {
-  const headers = getJsonAuthHeaders(getState());
-  const {
-    app: { tracking },
-  } = getState();
-  if (tracking.length > 0) {
-    const response = await fetch(`/api/logs/tracking`, {
-      credentials: 'include',
-      method: 'POST',
-      headers,
-      body: JSON.stringify(tracking),
-    });
-
-    if (!response.ok) {
-      // Leave items in state, so we can retry later.
-      return;
-    }
-
-    // Remove items from state
-    return dispatch(removeLogItems(tracking));
-  }
-};
-
 export const mapboxTokenSelector = createSelector(
   configSelector,
   config => config?.mapbox_token,
+);
+
+export const userTrackingIntervalSelector = createSelector(
+  configSelector,
+  config => config?.userTrackingInterval,
 );
 
 export default appSlice.reducer;

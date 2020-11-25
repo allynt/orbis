@@ -11,14 +11,32 @@ import reducer, {
   DEFAULT_MAP_STYLE,
   mapboxTokenSelector,
   mapStylesSelector,
+  addLogItem,
+  removeLogItems,
+  logUserTracking,
 } from './app.slice';
 
 const mockStore = configureMockStore([thunk]);
 
 describe('App Slice', () => {
   describe('App Actions', () => {
+    let store = null;
+    const trackingQueue = [
+      {
+        content: { id: 'Test ID 1' },
+        tags: ['tag 1', 'tag 2'],
+      },
+    ];
+
     beforeEach(() => {
       fetch.resetMocks();
+
+      store = mockStore({
+        accounts: { userKey: 'Test-User-Key' },
+        app: {
+          trackingQueue,
+        },
+      });
     });
 
     it('should dispatch fetch app config failure action.', async () => {
@@ -36,8 +54,6 @@ describe('App Slice', () => {
       const expectedActions = [
         { type: appConfigFailure.type, payload: { message: '401 Test Error' } },
       ];
-
-      const store = mockStore({});
 
       await store.dispatch(fetchAppConfig());
 
@@ -68,9 +84,19 @@ describe('App Slice', () => {
         { type: appConfigSuccess.type, payload: config },
       ];
 
-      const store = mockStore({});
-
       await store.dispatch(fetchAppConfig());
+
+      expect(store.getActions()).toEqual(expectedActions);
+    });
+
+    it('should dispatch logUserTracking action.', async () => {
+      fetch.mockResponse(JSON.stringify(trackingQueue));
+
+      const expectedActions = [
+        { type: removeLogItems.type, payload: trackingQueue },
+      ];
+
+      await store.dispatch(logUserTracking());
 
       expect(store.getActions()).toEqual(expectedActions);
     });
@@ -84,7 +110,7 @@ describe('App Slice', () => {
         config: {},
         error: null,
         notYetImplementedDescription: null,
-        tracking: [],
+        trackingQueue: [],
       };
     });
 
@@ -125,6 +151,35 @@ describe('App Slice', () => {
       });
 
       expect(actualState.notYetImplementedDescription).toEqual(message);
+    });
+
+    it('should add a log item to state', () => {
+      const payload = { content: { id: 'Test id' }, tags: ['tag1', 'tag2'] };
+
+      const actualState = reducer(beforeState, {
+        type: addLogItem.type,
+        payload,
+      });
+
+      expect(actualState.trackingQueue).toEqual([payload]);
+    });
+
+    it('should remove a subset of log items fro,=m state', () => {
+      const payload = [
+        { content: { id: 'Test id 2' }, tags: ['tag3', 'tag4'] },
+      ];
+
+      beforeState.trackingQueue = [
+        { content: { id: 'Test id 1' }, tags: ['tag1', 'tag2'] },
+        payload[0],
+      ];
+
+      const actualState = reducer(beforeState, {
+        type: removeLogItems.type,
+        payload,
+      });
+
+      expect(actualState.trackingQueue).toEqual([beforeState.trackingQueue[0]]);
     });
   });
 
