@@ -7,10 +7,6 @@ import {
 } from '@astrosat/astrosat-ui';
 import React from 'react';
 
-import { SidebarItemInner } from './sidebar-item-inner.component';
-
-import styles from './sidebar-item.module.css';
-
 const useStyles = makeStyles(theme => ({
   root: {
     borderRadius: `${theme.typography.pxToRem(
@@ -30,32 +26,48 @@ const iconStyles = makeStyles({
   },
 });
 
-export const SidebarItem = ({ children, icon, selected, tooltip, onClick }) => {
+/**
+ * @param {{
+ *  children?: React.ReactNode
+ *  icon?: JSX.Element
+ *  selected?: boolean
+ *  tooltip?: string
+ *  onClick?: (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void
+ *  href?: string
+ * } & Partial<Omit<HTMLAnchorElement, 'children'>>} props
+ */
+export const SidebarItem = ({
+  children,
+  icon,
+  selected,
+  tooltip,
+  href,
+  onClick,
+  ...rest
+}) => {
   const classes = useStyles();
   const iconClasses = iconStyles();
 
-  return (
-    <>
-      <Tooltip arrow title={tooltip}>
-        <ListItem classes={classes} button selected={selected}>
-          {icon && <ListItemIcon classes={iconClasses}>{icon}</ListItemIcon>}
-          {children && <ListItemText>{children}</ListItemText>}
-        </ListItem>
-      </Tooltip>
-      <li
-        tabIndex="1"
-        className={`${styles.sidebarItem} ${children && styles.withLabel} ${
-          selected && styles.selected
-        }`}
-        onClick={onClick}
-        onKeyUp={e =>
-          (e.keyCode === 32 || e.keyCode === 13) && onClick && onClick(e)
-        }
-        data-tip
-        data-for={`toolbar-item-${tooltip}-tooltip`}
-      >
-        <SidebarItemInner children={children} icon={icon} tooltip={tooltip} />
-      </li>
-    </>
+  const Content = (
+    <ListItem
+      classes={classes}
+      button
+      component={href ? 'a' : undefined}
+      selected={selected}
+      onClick={onClick}
+      href={href}
+      {...rest}
+    >
+      {icon && <ListItemIcon classes={iconClasses}>{icon}</ListItemIcon>}
+      {children && <ListItemText>{children}</ListItemText>}
+    </ListItem>
+  );
+
+  return tooltip ? (
+    <Tooltip arrow title={tooltip}>
+      {Content}
+    </Tooltip>
+  ) : (
+    Content
   );
 };

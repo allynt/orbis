@@ -4,6 +4,9 @@ import { SidebarItemInner } from './sidebar-item-inner.component';
 
 import styles from './sidebar-item.module.css';
 
+/**
+ * @deprecated
+ */
 export const SidebarLinkItem = ({
   children,
   href,
