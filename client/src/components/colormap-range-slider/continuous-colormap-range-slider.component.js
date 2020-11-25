@@ -65,8 +65,12 @@ const ContinuousColorMapRangeSlider = ({
   };
 
   const handleBrushCleared = () => {
-    setClipPosition(DEFAULT_CLIP_POSITION);
-    if (onChange) onChange(value);
+    const data = {
+      filterRange: domain,
+      clipPosition: DEFAULT_CLIP_POSITION,
+    };
+
+    if (onChange) onChange(data);
   };
 
   const handleBrushDomainChange = (domain, { x1, x2 }) => {
