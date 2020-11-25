@@ -13,4 +13,7 @@
 
 .icon {
   width: 1rem;
+  height: 1rem;
+  border-radius: 50%;
+  box-shadow: 2px 4px 4px rgba(119, 119, 119, 0.5);
 }
