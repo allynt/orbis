@@ -1,9 +1,13 @@
 import * as React from 'react';
 import faker from 'faker/locale/en_GB';
 import { CrowdlessSidebarComponent } from './sidebar.component';
+import { Description } from './description.component';
 
 export default {
   title: 'Orbs/IsolationPlus/Crowdless/CrowdlessSidebarComponent',
+  args: {
+    visible: true,
+  },
 };
 
 const Template = args => <CrowdlessSidebarComponent {...args} />;
@@ -54,3 +58,5 @@ ActiveResult.args = {
   })),
   activeResult: { properties: { placeID: 2 } },
 };
+
+export const DescriptionContent = () => <Description />;

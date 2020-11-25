@@ -9,6 +9,8 @@ import {
   fetchResults,
   isLoadingSelector,
   resultsSelector,
+  setVisibility,
+  visibilitySelector,
   selectedResultSelector,
   setSelectedResult,
 } from '../slices/crowdless.slice';
@@ -23,6 +25,7 @@ import { CrowdlessSidebarComponent } from './crowdless/sidebar/sidebar.component
 const ConnectedWrapper = ({ selectedLayer, dispatch }) => {
   const { viewState, setViewState } = useMap();
   const isLoading = useSelector(state => isLoadingSelector(state?.orbs));
+  const visible = useSelector(state => visibilitySelector(state?.orbs));
   const results = useSelector(state => resultsSelector(state?.orbs));
   const selectedResult = useSelector(state =>
     selectedResultSelector(state?.orbs),
@@ -43,7 +46,8 @@ const ConnectedWrapper = ({ selectedLayer, dispatch }) => {
       ),
     );
 
-  /** @param {CrowdlessFeature} result */
+  const handleRadioChange = () => dispatch(setVisibility(!visible));
+
   const handleResultClick = result => {
     dispatch(setSelectedResult(result));
     setViewState({
@@ -60,8 +64,10 @@ const ConnectedWrapper = ({ selectedLayer, dispatch }) => {
   return (
     <CrowdlessSidebarComponent
       onFindClick={handleFindClick}
+      onRadioChange={handleRadioChange}
       isLoading={isLoading}
       results={results?.features}
+      visible={visible}
       selectedResult={selectedResult}
       onResultClick={handleResultClick}
     />

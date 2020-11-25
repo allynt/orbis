@@ -2,15 +2,18 @@ import {
   resultsSelector,
   selectedResultSelector,
   setSelectedResult,
+  visibilitySelector,
 } from '../slices/crowdless.slice';
 import iconAtlas from './crowdlessConfig.iconAtlas.svg';
 import iconMapping from './crowdlessConfig.iconMapping.json';
 
 const configuration = ({ id, orbState, dispatch }) => {
   const results = resultsSelector(orbState);
+  const visible = visibilitySelector(orbState);
   const selectedResult = selectedResultSelector(orbState);
   return {
     id,
+    visible,
     data: results?.features,
     /** @param {CrowdlessFeature} feature */
     getPosition: feature => feature.geometry.coordinates,
