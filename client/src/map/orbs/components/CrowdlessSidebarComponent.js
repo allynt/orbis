@@ -12,7 +12,6 @@ import {
   selectedResultSelector,
   setSelectedResult,
 } from '../slices/crowdless.slice';
-import { logDataset } from 'data-layers/data-layers.slice';
 import { CrowdlessSidebarComponent } from './crowdless/sidebar/sidebar.component';
 
 /**
@@ -44,8 +43,6 @@ const ConnectedWrapper = ({ selectedLayer, dispatch }) => {
           ),
       }),
     );
-
-    dispatch(logDataset(selectedLayer));
   };
 
   /** @param {CrowdlessFeature} result */

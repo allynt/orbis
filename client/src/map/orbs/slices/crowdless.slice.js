@@ -4,7 +4,7 @@ import {
   createSlice,
 } from '@reduxjs/toolkit';
 
-import { logError } from 'data-layers/data-layers.slice';
+import { logDataset, logError } from 'data-layers/data-layers.slice';
 
 /**
  * @typedef CrowdlessState
@@ -21,7 +21,7 @@ const initialState = { isLoading: false };
 const name = 'crowdless';
 
 /**
- * @type {import('@reduxjs/toolkit').AsyncThunk<CrowdlessResponse, {}, {}>}
+ * @type {import('@reduxjs/toolkit').AsyncThunk<CrowdlessResponse, string, {}>}
  */
 export const fetchResults = createAsyncThunk(
   `${name}/fetchResults`,
@@ -32,6 +32,9 @@ export const fetchResults = createAsyncThunk(
       if (!response.ok) {
         return dispatch(logError({ source_id: sourceId }));
       }
+
+      dispatch(logDataset({ source_id: sourceId }));
+
       const data = await response.json();
       return data;
     } catch (e) {
