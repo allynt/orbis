@@ -13,7 +13,6 @@ import {
   activeLayersSelector,
   categorisedOrbsAndSourcesSelector,
   setLayers,
-  calculateLayersToLog,
 } from './data-layers.slice';
 import { LayersList } from './layers-list/layers-list.component';
 
@@ -34,7 +33,6 @@ const DataLayers = () => {
   );
 
   const handleDialogSubmit = sources => {
-    dispatch(calculateLayersToLog(sources));
     dispatch(setLayers(sources));
     toggle();
   };

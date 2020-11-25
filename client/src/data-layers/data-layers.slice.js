@@ -16,13 +16,14 @@ const dataSlice = createSlice({
   name: 'data',
   initialState,
   reducers: {
-    setLayers: (state, { payload }) => {
+    updateLayers: (state, { payload }) => {
       if (!payload) return;
       const layers =
         typeof payload[0] === 'object'
           ? payload.map(source => source.source_id)
           : payload;
       if (layers.some(layer => layer === undefined)) return;
+
       state.layers = layers;
     },
     fetchSourcesSuccess: (state, { payload }) => {
@@ -41,7 +42,7 @@ const dataSlice = createSlice({
 });
 
 export const {
-  setLayers,
+  updateLayers,
   fetchSourcesFailure,
   fetchSourcesSuccess,
 } = dataSlice.actions;
@@ -61,27 +62,30 @@ export const fetchSources = () => async (dispatch, getState) => {
   return dispatch(fetchSourcesSuccess(data));
 };
 
-export const calculateLayersToLog = sourceIds => async (dispatch, getState) => {
+export const setLayers = sourceIds => async (dispatch, getState) => {
+  if (!sourceIds) return;
+
   const activeLayers = activeLayersSelector(getState());
   const dataSources = dataSourcesSelector(getState());
 
-  const sourceIdsToLog =
-    activeLayers.length === 0
-      ? sourceIds
-      : sourceIds.filter(sourceId => !activeLayers.includes(sourceId));
+  const sourceIdsToLog = sourceIds.filter(
+    sourceId => !activeLayers.includes(sourceId),
+  );
 
   sourceIdsToLog.forEach(sourceId => {
-    const matchedDataSource = dataSources.find(dataSource =>
-      dataSource.source_id === sourceId ? true : false,
+    const matchedDataSource = dataSources.find(
+      dataSource => dataSource.source_id === sourceId,
     );
 
     if (
       !matchedDataSource.metadata.request_strategy &&
       matchedDataSource.metadata.request_strategy !== 'manual'
     ) {
-      dispatch(logDataset({ source: sourceId }));
+      dispatch(logDataset({ source_id: sourceId }));
     }
   });
+
+  dispatch(updateLayers(sourceIds));
 };
 
 export const logDataset = source => async (dispatch, getState) => {
@@ -90,8 +94,8 @@ export const logDataset = source => async (dispatch, getState) => {
   dispatch(
     addLogItem({
       content: {
-        userId: user.id,
-        customerId: user.customers[0].id,
+        userId: user?.id,
+        customerId: user?.customers[0]?.id,
         dataset: source.source_id,
       },
       tags: ['LOAD_LAYER', source.source_id],
