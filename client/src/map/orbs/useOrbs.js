@@ -32,21 +32,20 @@ export const useOrbs = () => {
 
   const fetchData = useCallback(
     async source => {
-      let response = null;
       try {
-        response = await getData(dataUrlFromId(source), {
+        const response = await getData(dataUrlFromId(source), {
           Authorization: `Bearer ${authToken}`,
         });
+
+        if (!response.ok) {
+          return dispatch(logError(source));
+        }
+
+        const dataSet = await response.json();
+        setData({ ...data, [source.source_id]: dataSet });
       } catch (ex) {
         return dispatch(logError(source));
       }
-
-      if (!response.ok) {
-        return dispatch(logError(source));
-      }
-
-      const dataSet = await response.json();
-      setData({ ...data, [source.source_id]: dataSet });
     },
     [authToken, data, dispatch],
   );

@@ -57,20 +57,19 @@ export class CustomMVTLayer extends MVTLayer {
       return Promise.reject('Invalid URL');
     }
 
-    let response = null;
     try {
-      response = await fetch(url, {
+      const response = await fetch(url, {
         headers: {
           Authorization: `Bearer ${this.props.authToken}`,
         },
       });
+
+      if (!response.ok) return null;
+      const arrayBuffer = await response.arrayBuffer();
+      if (arrayBuffer)
+        return load(gunzipSync(Buffer.from(arrayBuffer)), MVTLoader);
     } catch (ex) {
       return this.props.dispatch(logError({ source_id: this.props.id }));
     }
-
-    if (!response.ok) return null;
-    const arrayBuffer = await response.arrayBuffer();
-    if (arrayBuffer)
-      return load(gunzipSync(Buffer.from(arrayBuffer)), MVTLoader);
   }
 }
