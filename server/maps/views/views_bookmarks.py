@@ -10,6 +10,8 @@ from rest_framework.permissions import IsAuthenticated, BasePermission
 
 from botocore.exceptions import BotoCoreError
 
+from astrosat.decorators import swagger_fake
+
 from maps.models import Bookmark
 from maps.serializers import BookmarkSerializer
 
@@ -33,18 +35,12 @@ def check_storage_access(view_fn):
 @method_decorator(check_storage_access, name="dispatch")
 class BookmarkViewSet(viewsets.ModelViewSet):
 
+    parser_classes = [MultiPartParser, FormParser]  # the client sends data as multipart/form data
     permission_classes = [IsAuthenticated]
-    # the client sends data as multipart/form data
-    parser_classes = [MultiPartParser, FormParser]
-
     serializer_class = BookmarkSerializer
 
+    @swagger_fake(Bookmark.objects.none())
     def get_queryset(self):
-        if getattr(self, "swagger_fake_view", False):
-            # queryset just for schema generation metadata
-            # as per https://github.com/axnsan12/drf-yasg/issues/333#issuecomment-474883875
-            return Bookmark.objects.none()
-
         # restrict the queryset to those bookmarks owned by the current user
         user = self.request.user
         return user.bookmarks.all().order_by("-created")

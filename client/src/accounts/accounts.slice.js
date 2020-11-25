@@ -310,7 +310,7 @@ export const registerCustomer = form => async (dispatch, getState) => {
   }
   const customerUser = await createCustomerUserResponse.json();
   dispatch(createCustomerUserSuccess({ user: customerUser }));
-  const getUserRequest = await getData(`${API.user}current`, headers);
+  const getUserRequest = await getData(`${API.user}current/`, headers);
   if (!getUserRequest.ok) {
     const errors = await getUserRequest.json();
     return dispatch(registerCustomerFailure(errorTransformer(errors)));
@@ -353,7 +353,7 @@ export const placeOrder = form => async (dispatch, getState) => {
     return dispatch(placeOrderFailure({ errors: errorTransformer(body) }));
   }
   const fetchCustomerResponse = await getData(
-    `/api/customers/${currentCustomerId}`,
+    `/api/customers/${currentCustomerId}/`,
     headers,
   );
   if (!fetchCustomerResponse.ok) {

@@ -1,6 +1,6 @@
 from django.urls import include, path
 
-from rest_framework.routers import SimpleRouter
+from astrosat.routers import SlashlessSimpleRouter
 
 from .views import (
     OrbListView,
@@ -24,7 +24,7 @@ from .views import (
 # api routes #
 ##############
 
-api_router = SimpleRouter()
+api_router = SlashlessSimpleRouter()
 api_router.register(r"satellites/searches", SatelliteSearchViewSet, basename="satellite-search")
 api_router.register(r"satellites/results", SatelliteResultViewSet, basename="satellite-result")
 api_router.register(r"satellites", SatelliteViewSet, basename="satellite")

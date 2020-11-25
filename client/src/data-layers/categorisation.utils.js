@@ -1,6 +1,17 @@
-const OTHER_CATEGORY_NAME = 'Other';
+import { isEmpty } from 'lodash';
+
 const NO_ORB_NAME = 'No Orb';
 const PATH_DELIMITER = '.';
+
+/**
+ * @param {CategoryHierarchy | Source} a
+ * @param {CategoryHierarchy | Source} b
+ */
+const sortCategories = (a, b) => {
+  if (a.category && b.category) return 0;
+  if (a.category && !b.category) return -1;
+  return 1;
+};
 
 /**
  * Recursively creates a . delimited categorisation path from a source's categories
@@ -16,8 +27,8 @@ export const createCategorisationPath = ({
   currentPath = undefined,
   depth = undefined,
 }) => {
+  if (categories === undefined || isEmpty(categories)) return '';
   let _categories = categories;
-  if (!_categories?.name) _categories = { name: OTHER_CATEGORY_NAME };
   if (_categories.child && (depth > 1 || depth === undefined))
     return createCategorisationPath({
       categories: _categories.child,
@@ -88,14 +99,14 @@ export const injectSource = (categorisedSources, source, categoryPath) => {
     let newCategorisedSources = [...categorisedSources];
     newCategorisedSources[existingCategoryIndex] = {
       ...existingCategory,
-      sources: newSources,
+      sources: newSources.sort(sortCategories),
     };
     return newCategorisedSources;
   }
   return [
     ...categorisedSources,
     createHierarchy(source, [...categoryPath].reverse()),
-  ];
+  ].sort(sortCategories);
 };
 
 /**
@@ -107,6 +118,11 @@ export const injectSource = (categorisedSources, source, categoryPath) => {
  */
 const addSourceToExistingOrb = (existingOrb, source, depth) => {
   const { categories } = orbisMetadataSelector(source);
+  if (!categories || isEmpty(categories))
+    return {
+      ...existingOrb,
+      sources: [...existingOrb.sources, source],
+    };
   const categorisationPath = createCategorisationPath({
     categories,
     currentPath: existingOrb.name,
@@ -133,6 +149,7 @@ const addSourceToExistingOrb = (existingOrb, source, depth) => {
  */
 const createNewCategorisedOrb = (orb, source, depth) => {
   const { categories } = orbisMetadataSelector(source);
+  if (!categories || isEmpty(categories)) return { ...orb, sources: [source] };
   const categorisationPath = createCategorisationPath({
     categories,
     currentPath: orb.name,

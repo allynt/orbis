@@ -20,6 +20,8 @@ PROJECT_NAME = "orbis"
 PROJECT_SLUG = slugify(PROJECT_NAME)
 PROJECT_EMAIL = "{role}@astrosat.net"
 
+COMMIT_SHA = env("COMMIT_SHA", default="")
+
 ROOT_DIR = environ.Path(__file__) - 4
 SERVER_DIR = ROOT_DIR.path("server")
 

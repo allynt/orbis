@@ -17,6 +17,8 @@ from rest_framework.response import Response
 from drf_yasg2 import openapi
 from drf_yasg2.utils import swagger_auto_schema
 
+from astrosat.decorators import swagger_fake
+
 from orbis.adapters import SATELLITE_ADAPTER_REGISTRY
 from orbis.models import Satellite, SatelliteSearch, SatelliteResult
 from orbis.serializers import (
@@ -81,13 +83,8 @@ class SatelliteSearchViewSet(
     permission_classes = [IsAuthenticated]
     serializer_class = SatelliteSearchSerializer
 
+    @swagger_fake(SatelliteSearch.objects.none())
     def get_queryset(self):
-
-        if getattr(self, "swagger_fake_view", False):
-            # queryset just for schema generation metadata
-            # as per https://github.com/axnsan12/drf-yasg/issues/333#issuecomment-474883875
-            return SatelliteSearch.objects.none()
-
         user = self.request.user
         return user.satellite_searches.all()
 
@@ -157,13 +154,8 @@ class SatelliteResultViewSet(
     permission_classes = [IsAuthenticated]
     serializer_class = SatelliteResultSerializer
 
+    @swagger_fake(SatelliteResult.objects.none())
     def get_queryset(self):
-
-        if getattr(self, "swagger_fake_view", False):
-            # queryset just for schema generation metadata
-            # as per https://github.com/axnsan12/drf-yasg/issues/333#issuecomment-474883875
-            return SatelliteResult.objects.none()
-
         user = self.request.user
         return user.satellite_results.all()
 
