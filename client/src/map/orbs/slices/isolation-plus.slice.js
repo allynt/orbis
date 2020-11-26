@@ -1,9 +1,6 @@
 import { createSlice, createSelector } from '@reduxjs/toolkit';
 
-const DEFAULT_CLIP_POSITION = {
-  translateX: 0,
-  clipWidth: 400,
-};
+import { DEFAULT_CLIP_POSITION } from './isolation-plus-constants';
 
 const isolationPlusSlice = createSlice({
   name: 'isolationPlus',

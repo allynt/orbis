@@ -35,7 +35,7 @@ export const RadioPicker = ({ selectedLayer, dispatch }) => {
   }).replace('.', ' > ');
 
   useEffect(() => {
-    if (filterData.filterRange.some(n => n === undefined)) {
+    if (filterData?.filterRange.some(n => n === undefined)) {
       dispatch(
         setFilterData({
           filterRange: [selectedProperty.min, selectedProperty.max],

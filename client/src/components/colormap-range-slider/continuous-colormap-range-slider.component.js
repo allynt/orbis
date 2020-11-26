@@ -9,10 +9,7 @@ import {
   VictoryLabel,
 } from 'victory';
 
-const DEFAULT_CLIP_POSITION = {
-  translateX: 0,
-  clipWidth: 400,
-};
+import { DEFAULT_CLIP_POSITION } from 'map/orbs/slices/isolation-plus-constants';
 
 /**
  * @param {{
@@ -34,14 +31,14 @@ const ContinuousColorMapRangeSlider = ({
   const scaleColors = chroma.scale(color).colors();
   const data = [{ x: 0.5, y: domain[1] }];
 
-  const [clipPosition, setClipPosition] = useState(value.clipPosition);
-  const [brushDomain, setBrushDomain] = useState({ y: value.filterRange });
+  const [clipPosition, setClipPosition] = useState(value?.clipPosition);
+  const [brushDomain, setBrushDomain] = useState({ y: value?.filterRange });
 
   const brushMoved = clipPosition !== DEFAULT_CLIP_POSITION;
 
   useEffect(() => {
-    setClipPosition(value.clipPosition);
-    setBrushDomain({ y: value.filterRange });
+    setClipPosition(value?.clipPosition);
+    setBrushDomain({ y: value?.filterRange });
   }, [value]);
 
   /** @type {import('victory').VictoryBarProps} */
@@ -127,9 +124,9 @@ const ContinuousColorMapRangeSlider = ({
             <VictoryClipContainer
               clipHeight={height}
               translateX={
-                clipPosition.clipWidth === 0 ? 0 : clipPosition.translateX
+                clipPosition?.clipWidth === 0 ? 0 : clipPosition?.translateX
               }
-              clipWidth={clipPosition.clipWidth || 350}
+              clipWidth={clipPosition?.clipWidth || 350}
             />
           }
         />
