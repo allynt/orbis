@@ -15,15 +15,15 @@ const singleObjectData = {
 
 const pairObjectData = [
   {
-    name: 'Census 2011: % of people in the age band 40 - 64',
-    type: 'percentage',
+    name: 'Census 2011: number of people in the age band 40 - 64',
+    type: 'continuous',
     property_group: '1',
     min: 0,
     max: 100,
   },
   {
-    name: 'Census 2011: number of people in the age band 40 - 64',
-    type: 'continuous',
+    name: 'Census 2011: % of people in the age band 40 - 64',
+    type: 'percentage',
     property_group: '1',
     min: 0,
     max: 100,
@@ -54,7 +54,7 @@ describe('RadioProperty', () => {
     const { getByRole } = renderComponent(pairObjectData, {});
 
     expect(
-      getByRole('radio', { name: pairObjectData[0].name }),
+      getByRole('radio', { name: pairObjectData[1].name }),
     ).toBeInTheDocument();
   });
 
@@ -84,15 +84,15 @@ describe('RadioProperty', () => {
   it('calls click handler with percentage property of pair by default if Radio is clicked', () => {
     const { getByRole } = renderComponent(pairObjectData, {});
 
-    userEvent.click(getByRole('radio', { name: pairObjectData[0].name }));
-    expect(onRadioClick).toHaveBeenCalledWith(pairObjectData[0]);
+    userEvent.click(getByRole('radio', { name: pairObjectData[1].name }));
+    expect(onRadioClick).toHaveBeenCalledWith(pairObjectData[1]);
   });
 
   it('calls click handler with number property if number toggle is clicked', () => {
-    const { getByRole } = renderComponent(pairObjectData, pairObjectData[0]);
+    const { getByRole } = renderComponent(pairObjectData, pairObjectData[1]);
 
     userEvent.click(getByRole('button', { name: 'Number' }));
 
-    expect(onToggleClick).toHaveBeenCalledWith(pairObjectData[1]);
+    expect(onToggleClick).toHaveBeenCalledWith(pairObjectData[0]);
   });
 });
