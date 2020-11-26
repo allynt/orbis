@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import chroma from 'chroma-js';
 import {
   VictoryAxis,
@@ -9,10 +9,7 @@ import {
   VictoryLabel,
 } from 'victory';
 
-const DEFAULT_CLIP_POSITION = {
-  translateX: 0,
-  clipWidth: 400,
-};
+import { DEFAULT_CLIP_POSITION } from 'map/orbs/slices/isolation-plus-constants';
 
 /**
  * @param {{
@@ -24,6 +21,7 @@ const ContinuousColorMapRangeSlider = ({
   brushStyle,
   color,
   domain = [0, 1],
+  value,
   handleStyle,
   height,
   padding,
@@ -32,9 +30,16 @@ const ContinuousColorMapRangeSlider = ({
 }) => {
   const scaleColors = chroma.scale(color).colors();
   const data = [{ x: 0.5, y: domain[1] }];
-  const [clipPosition, setClipPosition] = useState(DEFAULT_CLIP_POSITION);
+
+  const [clipPosition, setClipPosition] = useState(value?.clipPosition);
+  const [brushDomain, setBrushDomain] = useState({ y: value?.filterRange });
+
   const brushMoved = clipPosition !== DEFAULT_CLIP_POSITION;
-  const [brushDomain, setBrushDomain] = useState({ y: domain });
+
+  useEffect(() => {
+    setClipPosition(value?.clipPosition);
+    setBrushDomain({ y: value?.filterRange });
+  }, [value]);
 
   /** @type {import('victory').VictoryBarProps} */
   const barProps = {
@@ -48,7 +53,6 @@ const ContinuousColorMapRangeSlider = ({
       },
     },
   };
-
   /** @type {import('victory').VictoryAxisProps} */
   const axisProps = {
     dependentAxis: true,
@@ -58,8 +62,12 @@ const ContinuousColorMapRangeSlider = ({
   };
 
   const handleBrushCleared = () => {
-    setClipPosition(DEFAULT_CLIP_POSITION);
-    if (onChange) onChange(domain);
+    const data = {
+      filterRange: domain,
+      clipPosition: DEFAULT_CLIP_POSITION,
+    };
+
+    if (onChange) onChange(data);
   };
 
   const handleBrushDomainChange = (domain, { x1, x2 }) => {
@@ -71,11 +79,15 @@ const ContinuousColorMapRangeSlider = ({
   };
 
   const handleBrushDomainChangeEnd = () => {
-    if (onChange) onChange(brushDomain.y.map(v => +v.toFixed(1)));
+    const data = {
+      filterRange: brushDomain.y.map(v => +v.toFixed(1)),
+      clipPosition: clipPosition,
+    };
+    if (onChange) onChange(data);
   };
 
   return (
-    <>
+    <div>
       <svg style={{ height: 0, width: 0, position: 'absolute' }}>
         <defs>
           <linearGradient id="colorMapGradient">
@@ -97,6 +109,7 @@ const ContinuousColorMapRangeSlider = ({
             title="Continuous ColorMap Range Slider"
             height={height}
             brushDimension="y"
+            brushDomain={brushDomain}
             brushStyle={brushStyle}
             handleStyle={handleStyle}
             onBrushCleared={handleBrushCleared}
@@ -111,9 +124,9 @@ const ContinuousColorMapRangeSlider = ({
             <VictoryClipContainer
               clipHeight={height}
               translateX={
-                clipPosition.clipWidth === 0 ? 0 : clipPosition.translateX
+                clipPosition?.clipWidth === 0 ? 0 : clipPosition?.translateX
               }
-              clipWidth={clipPosition.clipWidth || 350}
+              clipWidth={clipPosition?.clipWidth || 350}
             />
           }
         />
@@ -157,7 +170,7 @@ const ContinuousColorMapRangeSlider = ({
           }
         />
       </VictoryGroup>
-    </>
+    </div>
   );
 };
 

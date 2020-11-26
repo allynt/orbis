@@ -42,7 +42,17 @@ const defaultSelectedLayer = {
 
 const renderComponent = (
   selectedLayer = defaultSelectedLayer,
-  initialState = {},
+  initialState = {
+    property: {
+      source_id: undefined,
+      name: undefined,
+    },
+    pickedInfo: undefined,
+    filterData: {
+      filterRange: [undefined, undefined],
+      clipPosition: {},
+    },
+  },
 ) => {
   dispatch = jest.fn();
   return render(
