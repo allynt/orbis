@@ -31,11 +31,12 @@ const ConnectedWrapper = ({ selectedLayer, dispatch }) => {
     selectedResultSelector(state?.orbs),
   );
 
-  const handleFindClick = () =>
+  const handleFindClick = () => {
     dispatch(
       // @ts-ignore
-      fetchResults(
-        selectedLayer.metadata.url
+      fetchResults({
+        sourceId: selectedLayer.source_id,
+        url: selectedLayer.metadata.url
           .replace('{x}', viewState.latitude.toString())
           .replace('{y}', viewState.longitude.toString())
           .replace(
@@ -43,8 +44,9 @@ const ConnectedWrapper = ({ selectedLayer, dispatch }) => {
             selectedLayer?.metadata?.application?.orbis?.sidebar_component
               ?.props?.searchRadius,
           ),
-      ),
+      }),
     );
+  };
 
   const handleRadioChange = () => dispatch(setVisibility(!visible));
 

@@ -55,6 +55,7 @@ class AppConfigView(APIView):
             "mapStyles": settings.MAPBOX_STYLES,
             "maximumAoiArea": settings.MAXIMUM_AOI_AREA,
             "commitSha": settings.COMMIT_SHA,
+            "userTrackingInterval": settings.USER_TRACKING_INTERVAL,
         }
 
         return Response(config)

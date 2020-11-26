@@ -14,7 +14,11 @@ import reducer, {
   categorisedOrbsAndSourcesSelector,
   activeCategorisedOrbsAndSourcesSelector,
   activeCategorisedSourcesSelector,
+  logDataset,
+  logError,
+  updateLayers,
 } from './data-layers.slice';
+import { addLogItem } from 'app.slice';
 
 const mockStore = configureMockStore([thunk]);
 
@@ -27,7 +31,27 @@ describe('Data Slice', () => {
         fetch.resetMocks();
 
         store = mockStore({
-          accounts: { userKey: 'Test-User-Key' },
+          accounts: {
+            userKey: 'Test-User-Key',
+            user: {
+              id: 'Test User ID',
+              customers: [{ id: 'Test Customer ID' }],
+            },
+          },
+          data: {
+            sources: [
+              {
+                source_id: 'test/id/1',
+                metadata: {
+                  request_strategy: 'manual',
+                },
+              },
+              {
+                source_id: 'test/id/2',
+                metadata: {},
+              },
+            ],
+          },
         });
       });
 
@@ -85,6 +109,70 @@ describe('Data Slice', () => {
 
         expect(store.getActions()).toEqual(expectedActions);
       });
+
+      it('should dispatch logDataset action.', async () => {
+        const source = {
+          source_id: 'Test Dataset',
+        };
+
+        const expected = {
+          content: {
+            userId: 'Test User ID',
+            customerId: 'Test Customer ID',
+            dataset: source.source_id,
+          },
+          tags: ['LOAD_LAYER', source.source_id],
+        };
+
+        const expectedActions = [{ type: addLogItem.type, payload: expected }];
+
+        await store.dispatch(logDataset(source));
+
+        expect(store.getActions()).toEqual(expectedActions);
+      });
+
+      it('should dispatch logError action.', async () => {
+        const source = {
+          source_id: 'Test Dataset',
+        };
+
+        const expected = {
+          content: {
+            userId: 'Test User ID',
+            customerId: 'Test Customer ID',
+            dataset: source.source_id,
+          },
+          tags: ['LOAD_LAYER_ERROR', source.source_id],
+        };
+
+        const expectedActions = [{ type: addLogItem.type, payload: expected }];
+
+        await store.dispatch(logError(source));
+
+        expect(store.getActions()).toEqual(expectedActions);
+      });
+
+      it('should dispatch setLayers action to update the layer loaded and log it.', async () => {
+        const layers = ['test/id/1', 'test/id/2'];
+
+        const expected = {
+          content: {
+            userId: 'Test User ID',
+            customerId: 'Test Customer ID',
+            dataset: layers[1],
+          },
+          tags: ['LOAD_LAYER', layers[1]],
+        };
+
+        const expectedActions = [
+          { type: addLogItem.type, payload: expected },
+          { type: updateLayers.type, payload: layers },
+        ];
+
+        await store.dispatch(setLayers(layers));
+
+        expect(store.getActions()).toEqual(expectedActions);
+      });
     });
   });
 
@@ -97,6 +185,7 @@ describe('Data Slice', () => {
         sources: null,
         token: null,
         pollingPeriod: 30000,
+        error: null,
       };
     });
 
@@ -106,11 +195,11 @@ describe('Data Slice', () => {
       expect(actualState).toEqual(beforeState);
     });
 
-    describe('setLayers', () => {
+    describe('updateLayers', () => {
       it("sets the layers in state if it doesn't exist", () => {
         const state = {};
         const layers = ['test/id/1', 'test/id/2'];
-        const result = reducer(state, setLayers(layers));
+        const result = reducer(state, updateLayers(layers));
         expect(result.layers).toEqual(layers);
       });
 
@@ -119,7 +208,7 @@ describe('Data Slice', () => {
           layers: ['test/id/1', 'test/id/2'],
         };
         const layers = ['test/id/3', 'test/id/4'];
-        const result = reducer(state, setLayers(layers));
+        const result = reducer(state, updateLayers(layers));
         expect(result.layers).toEqual(layers);
       });
 
@@ -127,7 +216,8 @@ describe('Data Slice', () => {
         const state = { layers: ['test/id/1', 'test/id/2'] };
         const layers = [{ source_id: 'test/id/3' }, { source_id: 'test/id/4' }];
         const expected = ['test/id/3', 'test/id/4'];
-        const result = reducer(state, setLayers(layers));
+        const result = reducer(state, updateLayers(layers));
+
         expect(result.layers).toEqual(expected);
       });
 
@@ -140,13 +230,13 @@ describe('Data Slice', () => {
 
       it('does nothing if the payload is undefined', () => {
         const state = { layers: ['test/id/1', 'test/id/2'] };
-        const result = reducer(state, setLayers(undefined));
+        const result = reducer(state, updateLayers(undefined));
         expect(result.layers).toEqual(state.layers);
       });
 
       it('removes all layers if set to an empty array', () => {
         const state = { layers: ['test/id/1', 'test/id/2'] };
-        const result = reducer(state, setLayers([]));
+        const result = reducer(state, updateLayers([]));
         expect(result.layers).toEqual([]);
       });
     });

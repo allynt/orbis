@@ -8,7 +8,11 @@ import { Dialog, useModal } from '@astrosat/astrosat-ui';
 
 import PrivateRoute from './utils/private-route.component';
 
-import { fetchAppConfig } from './app.slice';
+import {
+  fetchAppConfig,
+  logUserTracking,
+  userTrackingIntervalSelector,
+} from './app.slice';
 import { fetchUser } from './accounts/accounts.slice';
 import { userSelector } from './accounts/accounts.selectors';
 
@@ -28,6 +32,7 @@ const App = () => {
   const trackingId = useSelector(state =>
     state && state.app && state.app.config ? state.app.config.trackingId : null,
   );
+  const userTrackingInterval = useSelector(userTrackingIntervalSelector);
 
   const user = useSelector(userSelector);
   const userKey = useSelector(state => state.accounts.userKey);
@@ -68,6 +73,16 @@ const App = () => {
       ReactGA.pageview('/', null, 'ORBIS App');
     }
   }, [dispatch, trackingId]);
+
+  useEffect(() => {
+    if (userTrackingInterval) {
+      const userTracking = setInterval(() => {
+        dispatch(logUserTracking());
+      }, userTrackingInterval);
+
+      return () => clearInterval(userTracking);
+    }
+  }, [dispatch, userTrackingInterval]);
 
   return (
     <div className={styles.app} ref={ref}>
