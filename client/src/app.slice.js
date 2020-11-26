@@ -77,12 +77,15 @@ export const logUserTracking = () => async (dispatch, getState) => {
     app: { trackingQueue },
   } = getState();
   if (trackingQueue.length > 0) {
-    const response = await fetch(`/api/logs/tracking`, {
-      credentials: 'include',
-      method: 'POST',
-      headers,
-      body: JSON.stringify(trackingQueue),
-    });
+    const response = await fetch(
+      `${window.orbis.getEnv().REACT_APP_API_HOST}/api/logs/tracking`,
+      {
+        credentials: 'include',
+        method: 'POST',
+        headers,
+        body: JSON.stringify(trackingQueue),
+      },
+    );
 
     if (!response.ok) {
       // Leave items in state, so we can retry later.
