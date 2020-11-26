@@ -70,17 +70,19 @@ export const RadioPicker = ({ selectedLayer, dispatch }) => {
   if (!selectedLayer?.metadata?.properties) return null;
   return (
     <>
-      {getProperties(selectedLayer).map(data => (
-        <RadioProperty
-          data={data}
-          onRadioClick={onRadioClick}
-          onToggleClick={onToggleClick}
-          onSliderChange={data => dispatch(setFilterData(data))}
-          selectedProperty={selectedProperty}
-          colorScheme={colorScheme}
-          filterData={filterData}
-          categoryPath={categoryPath}
-        />
+      {getProperties(selectedLayer).map((data, i) => (
+        <React.Fragment key={i}>
+          <RadioProperty
+            data={data}
+            onRadioClick={onRadioClick}
+            onToggleClick={onToggleClick}
+            onSliderChange={data => dispatch(setFilterData(data))}
+            selectedProperty={selectedProperty}
+            colorScheme={colorScheme}
+            filterData={filterData}
+            categoryPath={categoryPath}
+          />
+        </React.Fragment>
       ))}
     </>
   );
