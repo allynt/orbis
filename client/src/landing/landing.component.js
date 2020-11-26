@@ -1,6 +1,6 @@
 import React, { useRef, useEffect, useState, forwardRef } from 'react';
 
-import { Redirect } from 'react-router-dom';
+import { Redirect, Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { format } from 'date-fns';
@@ -72,7 +72,7 @@ const Items = ({ items, chooseItem, toggle }) => {
   );
 };
 
-const NewUserLanding = ({ setRedirect }) => (
+const NewUserLanding = () => (
   <div className={styles.splash}>
     <div className={styles.splashHeader}>
       <OrbisLogoLight className={styles.logo} />
@@ -88,13 +88,11 @@ const NewUserLanding = ({ setRedirect }) => (
         </div>
 
         <div>
-          <Button
-            theme="tertiary"
-            onClick={() => setRedirect('/map')}
-            data-testid="browse-map"
-          >
-            Browse Map
-          </Button>
+          <Link to="/map">
+            <Button theme="tertiary" data-testid="browse-map">
+              Browse Map
+            </Button>
+          </Link>
         </div>
       </div>
     </div>
@@ -102,18 +100,7 @@ const NewUserLanding = ({ setRedirect }) => (
 );
 
 const ExistingUserLanding = forwardRef(
-  (
-    {
-      bookmarks,
-      chooseBookmark,
-      setRedirect,
-      isVisible,
-      toggle,
-      regions,
-      domains,
-    },
-    ref,
-  ) => {
+  ({ bookmarks, chooseBookmark, isVisible, toggle, regions, domains }, ref) => {
     const recentItems = bookmarks.slice(0, 4);
     const [viewAllItems, setViewAllItems] = useState(false);
 
@@ -147,9 +134,9 @@ const ExistingUserLanding = forwardRef(
         )}
 
         <div className={styles.buttonContainer}>
-          <Button theme="tertiary" onClick={() => setRedirect('/map')}>
-            Browse Map
-          </Button>
+          <Link to="/map">
+            <Button theme="tertiary">Browse Map</Button>
+          </Link>
         </div>
 
         <Dialog
@@ -173,7 +160,6 @@ const Landing = () => {
   const dispatch = useDispatch();
   const bookmarks = useSelector(state => state.bookmarks.bookmarks);
   const [isVisible, toggle] = useModal(false);
-  const [redirect, setRedirect] = useState(null);
   const ref = useRef(null);
 
   const chooseBookmark = bookmark => dispatch(selectBookmark(bookmark));
@@ -185,16 +171,12 @@ const Landing = () => {
     }
   }, [bookmarks, dispatch]);
 
-  if (redirect) {
-    return <Redirect to={redirect} />;
-  }
   return (
     <div className={styles.landing}>
-      {bookmarks && bookmarks.length > 0 ? (
+      {bookmarks?.length > 0 ? (
         <ExistingUserLanding
           bookmarks={bookmarks}
           chooseBookmark={chooseBookmark}
-          setRedirect={setRedirect}
           toggle={toggle}
           isVisible={isVisible}
           regions={regions}
@@ -202,7 +184,7 @@ const Landing = () => {
           ref={ref}
         />
       ) : (
-        <NewUserLanding setRedirect={setRedirect} />
+        <NewUserLanding />
       )}
     </div>
   );

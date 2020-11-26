@@ -4,7 +4,7 @@ import { Provider } from 'react-redux';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 
-import { render, cleanup, fireEvent, within } from '@testing-library/react';
+import { render, fireEvent, within } from '@testing-library/react';
 
 import { Router } from 'react-router-dom';
 import { createMemoryHistory } from 'history';
@@ -18,57 +18,48 @@ const bookmarkText = 'Your Maps';
 
 const mockStore = configureMockStore([thunk]);
 
-describe('Landing Component', () => {
-  const bookmarks = [
-    {
-      id: 1,
-      title: 'Bookmark Title 1',
-      created: '2000-01-01T00:00:00Z',
-      thumbnail: 'Bookmark Thumbnail 1',
+const renderComponent = newUser => {
+  const history = createMemoryHistory({ initialEntries: ['/'] });
+  const bookmarks = newUser
+    ? []
+    : [
+        {
+          id: 1,
+          title: 'Bookmark Title 1',
+          created: '2000-01-01T00:00:00Z',
+          thumbnail: 'Bookmark Thumbnail 1',
+        },
+        {
+          id: 2,
+          title: 'Bookmark Title 2',
+          created: '2000-01-02T00:00:00Z',
+          thumbnail: 'Bookmark Thumbnail 2',
+        },
+      ];
+
+  const store = mockStore({
+    bookmarks: {
+      bookmarks,
     },
-    {
-      id: 2,
-      title: 'Bookmark Title 2',
-      created: '2000-01-02T00:00:00Z',
-      thumbnail: 'Bookmark Thumbnail 2',
+    map: {
+      regions,
     },
-  ];
-
-  let store = null;
-  let history = null;
-
-  beforeEach(cleanup);
-
-  beforeEach(() => {
-    store = mockStore({
-      bookmarks: {
-        bookmarks,
-      },
-      map: {
-        regions,
-      },
-    });
-
-    history = createMemoryHistory({ initialEntries: ['/'] });
-
-    fetch.resetMocks();
   });
 
-  it('should render the New User Landing view', () => {
-    store = mockStore({
-      bookmarks: {
-        bookmarks: [],
-      },
-      map: {
-        regions,
-      },
-    });
-
-    const { getByText, queryByText } = render(
+  const utils = render(
+    <Router history={history}>
       <Provider store={store}>
         <Landing />
-      </Provider>,
-    );
+      </Provider>
+    </Router>,
+  );
+  return { ...utils, history };
+};
+
+describe('Landing Component', () => {
+  it('should render the New User Landing view', () => {
+    const newUser = true;
+    const { getByText, queryByText } = renderComponent(newUser);
 
     expect(
       getByText('Your Earth Observation journey starts here'),
@@ -80,11 +71,7 @@ describe('Landing Component', () => {
   });
 
   it('should render the Existing Landing view', () => {
-    const { getByText, queryByText } = render(
-      <Provider store={store}>
-        <Landing />
-      </Provider>,
-    );
+    const { getByText, queryByText } = renderComponent();
 
     expect(getByText(bookmarkText)).toBeInTheDocument();
     // expect(getByText(storiesText)).toBeInTheDocument();
@@ -96,11 +83,7 @@ describe('Landing Component', () => {
   });
 
   it('should show all bookmarked maps when Bookmarks View all button clicked', () => {
-    const { getByText, queryByText } = render(
-      <Provider store={store}>
-        <Landing />
-      </Provider>,
-    );
+    const { getByText, queryByText } = renderComponent();
     const yourMapsHeader = getByText(bookmarkText).parentElement;
     fireEvent.click(within(yourMapsHeader).getByText('View all'));
 
@@ -112,11 +95,7 @@ describe('Landing Component', () => {
   });
 
   it('should return to menu View when `Back to menu` button clicked', () => {
-    const { getByText, queryByText } = render(
-      <Provider store={store}>
-        <Landing />
-      </Provider>,
-    );
+    const { getByText, queryByText } = renderComponent();
 
     const yourMapsHeader = getByText(bookmarkText).parentElement;
     fireEvent.click(within(yourMapsHeader).getByText('View all'));
@@ -134,13 +113,7 @@ describe('Landing Component', () => {
   });
 
   it('should transition to map when bookmarked map is clicked', () => {
-    const { container } = render(
-      <Router history={history}>
-        <Provider store={store}>
-          <Landing />
-        </Provider>
-      </Router>,
-    );
+    const { container, history } = renderComponent();
 
     const bookmarkedMaps = container.querySelectorAll('.items')[0];
 
