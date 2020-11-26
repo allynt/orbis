@@ -159,7 +159,8 @@ export const deleteBookmark = bookmark => async (dispatch, getState) => {
   return dispatch(deleteBookmarkSuccess(bookmark));
 };
 
-const baseSelector = state => state?.bookmarks;
+export const baseSelector = state => state?.bookmarks;
+
 export const selectedBookmarkSelector = createSelector(
   baseSelector,
   bookmarks => bookmarks?.selectedBookmark,

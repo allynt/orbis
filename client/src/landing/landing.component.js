@@ -7,7 +7,11 @@ import { format } from 'date-fns';
 
 import { regions } from '../map/map.constants';
 import { selectDomainList } from '../data-layers/data-layers.slice';
-import { fetchBookmarks, selectBookmark } from '../bookmarks/bookmark.slice';
+import {
+  baseSelector,
+  fetchBookmarks,
+  selectBookmark,
+} from '../bookmarks/bookmark.slice';
 
 import { Button, Dialog, useModal } from '@astrosat/astrosat-ui';
 
@@ -158,7 +162,7 @@ const ExistingUserLanding = forwardRef(
 
 const Landing = () => {
   const dispatch = useDispatch();
-  const bookmarks = useSelector(state => state.bookmarks.bookmarks);
+  const bookmarks = useSelector(baseSelector)?.bookmarks;
   const [isVisible, toggle] = useModal(false);
   const ref = useRef(null);
 
