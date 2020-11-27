@@ -1,2 +1,2 @@
 export const DATE_FORMAT = ['MMMM do Y'];
-export const MAX_BOOKMARKS = 4;
+export const MAX_VISIBLE_BOOKMARKS = 4;

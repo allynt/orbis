@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { format } from 'date-fns';
 
 import { regions } from '../map/map.constants';
-import { DATE_FORMAT, MAX_BOOKMARKS } from './landing-constants';
+import { DATE_FORMAT, MAX_VISIBLE_BOOKMARKS } from './landing-constants';
 
 import { selectDomainList } from '../data-layers/data-layers.slice';
 import {
@@ -105,7 +105,7 @@ const NewUserLanding = () => (
 
 const ExistingUserLanding = forwardRef(
   ({ bookmarks, chooseBookmark, isVisible, toggle, regions, domains }, ref) => {
-    const recentItems = bookmarks.slice(0, MAX_BOOKMARKS);
+    const recentItems = bookmarks.slice(0, MAX_VISIBLE_BOOKMARKS);
     const [viewAllItems, setViewAllItems] = useState(false);
 
     return (
@@ -125,7 +125,7 @@ const ExistingUserLanding = forwardRef(
           <div className={styles.content}>
             <div className={styles.header}>
               <h1>Your Maps</h1>
-              {bookmarks.length > MAX_BOOKMARKS && (
+              {bookmarks.length > MAX_VISIBLE_BOOKMARKS && (
                 <Button theme="link" onClick={() => setViewAllItems(true)}>
                   View all
                 </Button>
