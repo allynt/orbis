@@ -35,7 +35,7 @@ describe('Data Slice', () => {
             userKey: 'Test-User-Key',
             user: {
               id: 'Test User ID',
-              customers: [{ id: 'Test Customer ID' }],
+              customers: [{ name: 'Test Customer Name' }],
             },
           },
           data: {
@@ -118,7 +118,7 @@ describe('Data Slice', () => {
         const expected = {
           content: {
             userId: 'Test User ID',
-            customerId: 'Test Customer ID',
+            customerName: 'Test Customer Name',
             dataset: source.source_id,
           },
           tags: ['LOAD_LAYER', source.source_id],
@@ -139,7 +139,7 @@ describe('Data Slice', () => {
         const expected = {
           content: {
             userId: 'Test User ID',
-            customerId: 'Test Customer ID',
+            customerName: 'Test Customer Name',
             dataset: source.source_id,
           },
           tags: ['LOAD_LAYER_ERROR', source.source_id],
@@ -158,7 +158,7 @@ describe('Data Slice', () => {
         const expected = {
           content: {
             userId: 'Test User ID',
-            customerId: 'Test Customer ID',
+            customerName: 'Test Customer Name',
             dataset: layers[1],
           },
           tags: ['LOAD_LAYER', layers[1]],

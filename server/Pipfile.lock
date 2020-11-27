@@ -268,12 +268,12 @@
         "django-astrosat-core": {
             "editable": true,
             "git": "https://github.com/astrosat/django-astrosat-core.git",
-            "ref": "afb7dfde9c9f846ec79a5af739d831d93aa39094"
+            "ref": "805196f82c7b527ad748a3788b218565439afdd2"
         },
         "django-astrosat-users": {
             "editable": true,
             "git": "https://github.com/astrosat/django-astrosat-users.git",
-            "ref": "6fc24527bcf2288047600630bb2a6f15ac23ed9d"
+            "ref": "3afe8ea2af0956448a8060c268e087dd285db96e"
         },
         "django-cors-headers": {
             "hashes": [
@@ -364,6 +364,7 @@
         },
         "fiona": {
             "hashes": [
+                "sha256:1c26f38bfbcd51e710c361f26db605ccf2b5f2a7967e0f4a88683cac3845c947",
                 "sha256:67df21101e185bbb611846138a3094ee3196b746aa336be3db3a64d7971b8fed",
                 "sha256:8891d25bcb795eec2294390b56426fded566bcc8ed3730dac7e7a61cde71f1b5",
                 "sha256:8a818fa6cd1ae7ef3b3061ca8f52b694557d2fcf303d7c5431dd961ea09a5ccf",
