@@ -22,13 +22,16 @@ const RadioProperty = ({
   categoryPath,
 }) => {
   const isArray = Array.isArray(data);
-  const initialProperty = isArray ? data[0] : data;
+
+  const findPropertyByType = type => data.find(d => d.type === type);
+
+  const initialProperty = isArray
+    ? findPropertyByType(FORMAT.percentage)
+    : data;
 
   const propertyMatch = isArray
     ? data.some(p => p.name === selectedProperty?.name)
     : data.name === selectedProperty?.name;
-
-  const findPropertyByType = type => data.find(d => d.type === type);
 
   return (
     <div className={styles.property}>
