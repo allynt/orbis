@@ -95,7 +95,7 @@ export const logDataset = source => async (dispatch, getState) => {
     addLogItem({
       content: {
         userId: user?.id,
-        customerId: user?.customers[0]?.id,
+        customerName: user?.customers[0]?.name,
         dataset: source.source_id,
       },
       tags: ['LOAD_LAYER', source.source_id],
@@ -110,7 +110,7 @@ export const logError = source => async (dispatch, getState) => {
     addLogItem({
       content: {
         userId: user.id,
-        customerId: user.customers[0].id,
+        customerName: user.customers[0].name,
         dataset: source.source_id,
       },
       tags: ['LOAD_LAYER_ERROR', source.source_id],
