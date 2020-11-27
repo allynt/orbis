@@ -18,24 +18,19 @@ const bookmarkText = 'Your Maps';
 
 const mockStore = configureMockStore([thunk]);
 
-const renderComponent = newUser => {
+const renderComponent = (newUser, n = 10) => {
   const history = createMemoryHistory({ initialEntries: ['/'] });
   const bookmarks = newUser
     ? []
-    : [
-        {
-          id: 1,
-          title: 'Bookmark Title 1',
-          created: '2000-01-01T00:00:00Z',
-          thumbnail: 'Bookmark Thumbnail 1',
-        },
-        {
-          id: 2,
-          title: 'Bookmark Title 2',
-          created: '2000-01-02T00:00:00Z',
-          thumbnail: 'Bookmark Thumbnail 2',
-        },
-      ];
+    : new Array(n).fill(undefined).map((_, i) => ({
+        id: i,
+        owner: `${i}e5ac533-0245-4031-ab65-b1eff4d30a1f`,
+        title: `Bookmark Title ${i}`,
+        description:
+          'This is a description paragraph that describes the contents of this bookmark.',
+        created: '2020-01-31T12:01:22.640053Z',
+        thumbnail: 'test-image-URL',
+      }));
 
   const store = mockStore({
     bookmarks: {
@@ -76,10 +71,17 @@ describe('Landing Component', () => {
     expect(getByText(bookmarkText)).toBeInTheDocument();
     // expect(getByText(storiesText)).toBeInTheDocument();
     expect(getByText('Browse Map')).toBeInTheDocument();
+    expect(getByText('View all')).toBeInTheDocument();
 
     expect(
       queryByText('your Earth exploration journey starts here'),
     ).not.toBeInTheDocument();
+  });
+
+  it('does not render the `View all` button if the number of bookmarks is 4 or less', () => {
+    const { queryByText } = renderComponent(false, 4);
+
+    expect(queryByText('View all')).not.toBeInTheDocument();
   });
 
   it('should show all bookmarked maps when Bookmarks View all button clicked', () => {

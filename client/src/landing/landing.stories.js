@@ -17,12 +17,12 @@ export default {
   title: 'Landing Pages',
 };
 
-const getStore = bookmarks =>
+const getStore = (bookmarks, n = 30) =>
   mockStore({
     bookmarks: {
       bookmarks: !bookmarks
         ? []
-        : new Array(10).fill(undefined).map((_, i) => ({
+        : new Array(n).fill(undefined).map((_, i) => ({
             id: i,
             owner: `${i}e5ac533-0245-4031-ab65-b1eff4d30a1f`,
             title: `Bookmark ${i}`,
@@ -38,8 +38,8 @@ const getStore = bookmarks =>
     },
   });
 
-const Template = ({ bookmarks }) => (
-  <Provider store={getStore(bookmarks)}>
+const Template = ({ bookmarks, n }) => (
+  <Provider store={getStore(bookmarks, n)}>
     <Router history={history}>
       <Landing />
     </Router>
@@ -51,7 +51,13 @@ NoBookmarks.args = {
   bookmarks: false,
 };
 
-export const Bookmarks = Template.bind({});
-Bookmarks.args = {
+export const OnlyTwoBookmarks = Template.bind({});
+OnlyTwoBookmarks.args = {
+  bookmarks: true,
+  n: 2,
+};
+
+export const LotsOfBookmarks = Template.bind({});
+LotsOfBookmarks.args = {
   bookmarks: true,
 };

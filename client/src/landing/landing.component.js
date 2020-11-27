@@ -6,6 +6,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { format } from 'date-fns';
 
 import { regions } from '../map/map.constants';
+import { DATE_FORMAT, MAX_BOOKMARKS } from './landing-constants';
+
 import { selectDomainList } from '../data-layers/data-layers.slice';
 import {
   baseSelector,
@@ -21,8 +23,6 @@ import { ReactComponent as OrbisLogoLight } from '../orbis-light.svg';
 import { ReactComponent as OrbisLogoDark } from '../orbis-dark.svg';
 
 import styles from './landing.module.css';
-
-const DATE_FORMAT = ['MMMM do Y'];
 
 const ViewAllItems = ({ items, chooseBookmark, toggle, setViewAllItems }) => (
   <div className={styles.content}>
@@ -105,7 +105,7 @@ const NewUserLanding = () => (
 
 const ExistingUserLanding = forwardRef(
   ({ bookmarks, chooseBookmark, isVisible, toggle, regions, domains }, ref) => {
-    const recentItems = bookmarks.slice(0, 4);
+    const recentItems = bookmarks.slice(0, MAX_BOOKMARKS);
     const [viewAllItems, setViewAllItems] = useState(false);
 
     return (
@@ -125,9 +125,11 @@ const ExistingUserLanding = forwardRef(
           <div className={styles.content}>
             <div className={styles.header}>
               <h1>Your Maps</h1>
-              <Button theme="link" onClick={() => setViewAllItems(true)}>
-                View all
-              </Button>
+              {bookmarks.length > MAX_BOOKMARKS && (
+                <Button theme="link" onClick={() => setViewAllItems(true)}>
+                  View all
+                </Button>
+              )}
             </div>
             <Items
               items={recentItems}
