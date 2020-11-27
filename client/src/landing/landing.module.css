@@ -26,6 +26,10 @@
   padding: 0 2.5rem;
 }
 
+.content {
+  margin: 1rem 0;
+}
+
 .banner,
 .items {
   display: flex;
@@ -51,9 +55,12 @@
   cursor: pointer;
 }
 
-.logo {
-  /* HEIGHT MUST BE SAME AS BUTTON CONTAINER */
+.logo,
+.buttonContainer {
   height: 5rem;
+}
+
+.logo {
   color: var(--color-secondary);
 }
 
@@ -63,7 +70,7 @@
 }
 
 .header {
-  margin: 1rem 0;
+  margin-bottom: 1rem;
 }
 
 .header h1 {
@@ -150,8 +157,6 @@
   display: flex;
   justify-content: center;
   align-items: flex-start;
-  /* HEIGHT MUST BE SAME AS LOGO */
-  height: 5rem;
 }
 
 .button {

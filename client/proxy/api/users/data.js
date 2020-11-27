@@ -2,7 +2,7 @@ const { v4: uuidv4 } = require('uuid');
 
 let users = [
   {
-    id: '6e5ac533-0245-4031-ab65-b1eff4d30a1f',
+    id: '5edd4615-34a7-4c55-9243-0092671ef9d8',
     username: 'user@test.com',
     email: 'user@test.com',
     password: 'pandaconcretespoon',
@@ -15,7 +15,7 @@ let users = [
     customers: [],
   },
   {
-    id: '5edd4615-34a7-4c55-9243-0092671ef9d8',
+    id: '6e5ac533-0245-4031-ab65-b1eff4d30a1f',
     email: 'admin@test.com',
     password: 'pandaconcretespoon',
     phone: '123456789',

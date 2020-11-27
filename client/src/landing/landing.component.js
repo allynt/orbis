@@ -1,13 +1,19 @@
 import React, { useRef, useEffect, useState, forwardRef } from 'react';
 
-import { Redirect } from 'react-router-dom';
+import { Redirect, Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { format } from 'date-fns';
 
 import { regions } from '../map/map.constants';
+import { DATE_FORMAT, MAX_VISIBLE_BOOKMARKS } from './landing-constants';
+
 import { selectDomainList } from '../data-layers/data-layers.slice';
-import { fetchBookmarks, selectBookmark } from '../bookmarks/bookmark.slice';
+import {
+  baseSelector,
+  fetchBookmarks,
+  selectBookmark,
+} from '../bookmarks/bookmark.slice';
 
 import { Button, Dialog, useModal } from '@astrosat/astrosat-ui';
 
@@ -17,8 +23,6 @@ import { ReactComponent as OrbisLogoLight } from '../orbis-light.svg';
 import { ReactComponent as OrbisLogoDark } from '../orbis-dark.svg';
 
 import styles from './landing.module.css';
-
-const DATE_FORMAT = ['MMMM do Y'];
 
 const ViewAllItems = ({ items, chooseBookmark, toggle, setViewAllItems }) => (
   <div className={styles.content}>
@@ -72,7 +76,7 @@ const Items = ({ items, chooseItem, toggle }) => {
   );
 };
 
-const NewUserLanding = ({ setRedirect }) => (
+const NewUserLanding = () => (
   <div className={styles.splash}>
     <div className={styles.splashHeader}>
       <OrbisLogoLight className={styles.logo} />
@@ -88,13 +92,11 @@ const NewUserLanding = ({ setRedirect }) => (
         </div>
 
         <div>
-          <Button
-            theme="tertiary"
-            onClick={() => setRedirect('/map')}
-            data-testid="browse-map"
-          >
-            Browse Map
-          </Button>
+          <Link to="/map">
+            <Button theme="tertiary" data-testid="browse-map">
+              Browse Map
+            </Button>
+          </Link>
         </div>
       </div>
     </div>
@@ -102,19 +104,8 @@ const NewUserLanding = ({ setRedirect }) => (
 );
 
 const ExistingUserLanding = forwardRef(
-  (
-    {
-      bookmarks,
-      chooseBookmark,
-      setRedirect,
-      isVisible,
-      toggle,
-      regions,
-      domains,
-    },
-    ref,
-  ) => {
-    const recentItems = bookmarks.slice(0, 4);
+  ({ bookmarks, chooseBookmark, isVisible, toggle, regions, domains }, ref) => {
+    const recentItems = bookmarks.slice(0, MAX_VISIBLE_BOOKMARKS);
     const [viewAllItems, setViewAllItems] = useState(false);
 
     return (
@@ -134,9 +125,11 @@ const ExistingUserLanding = forwardRef(
           <div className={styles.content}>
             <div className={styles.header}>
               <h1>Your Maps</h1>
-              <Button theme="link" onClick={() => setViewAllItems(true)}>
-                View all
-              </Button>
+              {bookmarks.length > MAX_VISIBLE_BOOKMARKS && (
+                <Button theme="link" onClick={() => setViewAllItems(true)}>
+                  View all
+                </Button>
+              )}
             </div>
             <Items
               items={recentItems}
@@ -147,9 +140,9 @@ const ExistingUserLanding = forwardRef(
         )}
 
         <div className={styles.buttonContainer}>
-          <Button theme="tertiary" onClick={() => setRedirect('/map')}>
-            Browse Map
-          </Button>
+          <Link to="/map">
+            <Button theme="tertiary">Browse Map</Button>
+          </Link>
         </div>
 
         <Dialog
@@ -171,9 +164,8 @@ const ExistingUserLanding = forwardRef(
 
 const Landing = () => {
   const dispatch = useDispatch();
-  const bookmarks = useSelector(state => state.bookmarks.bookmarks);
+  const bookmarks = useSelector(baseSelector)?.bookmarks;
   const [isVisible, toggle] = useModal(false);
-  const [redirect, setRedirect] = useState(null);
   const ref = useRef(null);
 
   const chooseBookmark = bookmark => dispatch(selectBookmark(bookmark));
@@ -185,16 +177,12 @@ const Landing = () => {
     }
   }, [bookmarks, dispatch]);
 
-  if (redirect) {
-    return <Redirect to={redirect} />;
-  }
   return (
     <div className={styles.landing}>
-      {bookmarks && bookmarks.length > 0 ? (
+      {bookmarks?.length > 0 ? (
         <ExistingUserLanding
           bookmarks={bookmarks}
           chooseBookmark={chooseBookmark}
-          setRedirect={setRedirect}
           toggle={toggle}
           isVisible={isVisible}
           regions={regions}
@@ -202,7 +190,7 @@ const Landing = () => {
           ref={ref}
         />
       ) : (
-        <NewUserLanding setRedirect={setRedirect} />
+        <NewUserLanding />
       )}
     </div>
   );
