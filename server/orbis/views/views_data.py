@@ -167,7 +167,7 @@ class DataSourceView(APIView):
             is_active=True, licences__customer_user__in=user.customer_users.values_list("pk", flat=True)
         ).prefetch_related(
             Prefetch("data_scopes", queryset=DataScope.objects.filter(is_active=True), to_attr="filtered_data_scopes")
-        )
+        ).distinct()
         # create a mapping from data_scopes to those orbs...
         data_scopes_to_orb_mapping = defaultdict(list)
         for orb in orbs:

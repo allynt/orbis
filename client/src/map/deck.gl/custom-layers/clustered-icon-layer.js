@@ -42,7 +42,7 @@ export class ClusteredIconLayer extends CompositeLayer {
       this.setState({ index });
     }
 
-    const zoom = Math.floor(this.context.viewport.zoom);
+    const zoom = Math.ceil(this.context.viewport.zoom);
     if (rebuildIndex || zoom !== this.state.zoom) {
       this.setState({
         data: this.state.index.getClusters([-180, -85, 180, 85], zoom),

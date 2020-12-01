@@ -1,0 +1,38 @@
+{
+  "not busy": {
+    "x": 0,
+    "y": 0,
+    "width": 60,
+    "height": 60
+  },
+  "not busy-selected": {
+    "x": 180,
+    "y": 0,
+    "width": 85,
+    "height": 85
+  },
+  "busy": {
+    "x": 60,
+    "y": 0,
+    "width": 60,
+    "height": 60
+  },
+  "busy-selected": {
+    "x": 265,
+    "y": 0,
+    "width": 85,
+    "height": 85
+  },
+  "very busy": {
+    "x": 120,
+    "y": 0,
+    "width": 60,
+    "height": 60
+  },
+  "very busy-selected": {
+    "x": 350,
+    "y": 0,
+    "width": 85,
+    "height": 85
+  }
+}

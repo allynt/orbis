@@ -20,6 +20,8 @@ PROJECT_NAME = "orbis"
 PROJECT_SLUG = slugify(PROJECT_NAME)
 PROJECT_EMAIL = "{role}@astrosat.net"
 
+COMMIT_SHA = env("COMMIT_SHA", default="")
+
 ROOT_DIR = environ.Path(__file__) - 4
 SERVER_DIR = ROOT_DIR.path("server")
 
@@ -117,6 +119,8 @@ MAPBOX_TOKEN = env("DJANGO_MAPBOX_TOKEN", default="")
 
 # (note that DJANGO_MAPBOX_STYLES is stringified JSON)
 MAPBOX_STYLES = json.loads(env("DJANGO_MAPBOX_STYLES", default='[]'))
+
+USER_TRACKING_INTERVAL = env("DJANGO_USER_TRACKING_INTERVAL", default=60000)
 
 COPERNICUS_USERNAME = env("DJANGO_COPERNICUS_USERNAME", default="")
 COPERNICUS_PASSWORD = env("DJANGO_COPERNICUS_PASSWORD", default="")

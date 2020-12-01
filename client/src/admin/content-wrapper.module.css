@@ -1,12 +1,12 @@
 .contentPanel {
+  --margin: 1.875rem;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   width: 100%;
-  height: fit-content;
-  max-height: 70%;
-  padding: 1.875rem;
-  margin: 1.875rem;
+  height: calc(100vh - calc(2 * var(--margin)));
+  margin: var(--margin);
+  padding: var(--margin);
   border-radius: 1rem;
   box-shadow: 0 1rem 1.5rem 0 rgba(213, 213, 213, 0.5);
   background-color: #fff;

@@ -1,4 +1,8 @@
+from django.utils.decorators import method_decorator
+
 from allauth.account.adapter import get_adapter
+
+from astrosat.decorators import swagger_fake
 
 from astrosat_users.models.models_users import UserRegistrationStageType
 from astrosat_users.serializers import (
@@ -14,6 +18,7 @@ from astrosat_users.views import (
     CustomerUserOnboardView as AstrosatUsersCustomerUserOnboardView,
 )
 
+from orbis.models import LicencedCustomer as Customer
 from orbis.serializers import CustomerSerializer, CustomerUserSerializer
 
 
@@ -43,6 +48,7 @@ class LicenceNotifyingMixIn(object):
         return message
 
 
+@method_decorator(swagger_fake(Customer.objects.none()), name="get_queryset")
 class CustomerCreateView(AstrosatUsersCustomerCreateView):
     # notice that I am not using the licence-aware (orbis) CustomerSerializer here
     # but rather the standard AstrosatUsersCustomerSerializer; this is b/c the only
@@ -50,7 +56,10 @@ class CustomerCreateView(AstrosatUsersCustomerCreateView):
     serializer_class = AstrosatUsersCustomerSerializer
 
 
+@method_decorator(swagger_fake(None), name="get_object")
+@method_decorator(swagger_fake(Customer.objects.none()), name="get_queryset")
 class CustomerUpdateView(AstrosatUsersCustomerUpdateView):
+
     serializer_class = CustomerSerializer
 
     def get_serializer_context(self):

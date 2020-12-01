@@ -51,3 +51,44 @@
 .description {
   font-weight: 600;
 }
+
+.displayMenu {
+  grid-column: 1 / span 2;
+}
+
+.label {
+  color: #dcdcdc;
+  font-size: 0.75rem;
+}
+
+.buttons {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 0.3125rem;
+  margin-bottom: 1.25rem;
+  width: 100%;
+}
+
+.button {
+  color: #fff;
+  background-color: #171819;
+  padding: 0.625rem;
+  width: 50%;
+  font-size: 0.875rem;
+  cursor: pointer;
+}
+
+.buttons .active {
+  color: #171819;
+  background-color: var(--color-yellow);
+  cursor: not-allowed;
+}
+
+.button:first-child {
+  border-radius: 0.5rem 0 0 0.5rem;
+}
+
+.button:last-child {
+  border-radius: 0 0.5rem 0.5rem 0;
+}
