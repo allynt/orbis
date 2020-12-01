@@ -10,6 +10,7 @@ export class ClusteredIconLayer extends CompositeLayer {
       feature.properties.cluster_id,
     );
   }
+
   _injectExpansionZoom(feature) {
     return {
       ...feature,

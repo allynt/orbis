@@ -42,6 +42,7 @@ const configuration = ({
       };
     }
   };
+
   const handleLayerClick = info => {
     if (info?.object?.properties?.cluster) {
       if (info.object.properties.expansion_zoom <= MAX_ZOOM)
