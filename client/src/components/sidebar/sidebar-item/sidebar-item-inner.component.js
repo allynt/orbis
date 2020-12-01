@@ -4,6 +4,10 @@ import ReactTooltip from 'react-tooltip';
 
 import styles from './sidebar-item.module.css';
 
+/**
+ * Delete once SidebarLinkItem is no longer used
+ * @deprecated
+ */
 export const SidebarItemInner = ({ children, icon, tooltip }) => (
   <>
     {icon && <div className={styles.icon}>{icon}</div>}
