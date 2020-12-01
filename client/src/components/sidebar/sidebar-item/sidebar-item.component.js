@@ -1,4 +1,5 @@
 import {
+  fade,
   ListItem,
   ListItemIcon,
   ListItemText,
@@ -12,9 +13,15 @@ const useStyles = makeStyles(theme => ({
     borderRadius: `${theme.typography.pxToRem(
       theme.shape.borderRadius,
     )} 0 0 ${theme.typography.pxToRem(theme.shape.borderRadius)}`,
+    '&:hover': {
+      backgroundColor: fade(theme.palette.grey[400], 0.3),
+    },
     '&$selected': {
       backgroundColor: theme.palette.primary.main,
       color: theme.palette.text.secondary,
+      '&:hover': {
+        backgroundColor: fade(theme.palette.grey[400], 0.3),
+      },
     },
   },
   selected: {},

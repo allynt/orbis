@@ -1,11 +1,7 @@
 import { List, styled } from '@astrosat/astrosat-ui';
 import React from 'react';
 
-import styles from './sidebar.module.css';
-
-export const SidebarBottomItems = ({ children }) => (
-  <div className={styles.bottomItems}>{children}</div>
-);
+export const SidebarBottomItems = styled('div')({ marginTop: 'auto' });
 
 const Nav = styled('nav')(({ theme }) => ({
   height: '100vh',
@@ -20,6 +16,28 @@ const Nav = styled('nav')(({ theme }) => ({
   overflowX: 'hidden',
 }));
 
+const Logo = styled('div')(({ theme }) => ({
+  padding: theme.spacing(1),
+  display: 'flex',
+  justifyContent: 'center',
+}));
+
+const Header = styled('header')(({ theme }) => ({
+  marginBottom: theme.spacing(3),
+  borderTop: `solid 1px ${theme.palette.primary.main}`,
+}));
+
+const Items = styled(List)({
+  display: 'flex',
+  flexDirection: 'column',
+  height: '100%',
+});
+
+const Footer = styled('footer')(({ theme }) => ({
+  marginTop: 'auto',
+  padding: `${theme.spacing(2)} ${theme.spacing(1)} 0`,
+}));
+
 /**
  * @param {{
  *  children?: React.ReactNode
@@ -31,9 +49,9 @@ const Nav = styled('nav')(({ theme }) => ({
  */
 export const Sidebar = ({ children, className, footer, header, logo }) => (
   <Nav className={className}>
-    {logo && <div className={styles.logo}>{logo}</div>}
-    {header && <header className={styles.header}>{header}</header>}
-    <List className={styles.items}>{children}</List>
-    {footer && <footer className={styles.footer}>{footer}</footer>}
+    {logo && <Logo>{logo}</Logo>}
+    {header && <Header>{header}</Header>}
+    <Items>{children}</Items>
+    {footer && <Footer>{footer}</Footer>}
   </Nav>
 );
