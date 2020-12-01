@@ -1,0 +1,30 @@
+.info {
+  position: relative;
+}
+
+.infoButton {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 0.625em;
+  padding: 0.4em;
+  width: max-content;
+  height: auto;
+  background-color: #fff;
+  border-radius: 50%;
+  transition: opacity 250ms ease;
+}
+
+.infoButton:hover {
+  opacity: 0.5;
+}
+
+.infoIcon {
+  color: var(--color-secondary);
+  width: 1em;
+  height: auto;
+}
+
+.tooltip {
+  max-width: 50ch;
+}

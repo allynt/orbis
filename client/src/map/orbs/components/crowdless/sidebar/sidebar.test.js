@@ -8,18 +8,22 @@ import { CrowdlessSidebarComponent } from './sidebar.component';
 const renderComponent = ({
   results = undefined,
   isLoading = false,
+  visible = true,
   selectedResult = undefined,
 } = {}) => {
   const onFindClick = jest.fn();
+  const onRadioChange = jest.fn();
   const utils = render(
     <CrowdlessSidebarComponent
+      visible={visible}
       onFindClick={onFindClick}
+      onRadioChange={onRadioChange}
       results={results}
       isLoading={isLoading}
       selectedResult={selectedResult}
     />,
   );
-  return { ...utils, onFindClick };
+  return { ...utils, onFindClick, onRadioChange };
 };
 
 describe('<CrowdlessSidebarComponent />', () => {
@@ -51,6 +55,17 @@ describe('<CrowdlessSidebarComponent />', () => {
     expect(getAllByRole('progressbar').length).toBeGreaterThanOrEqual(1);
   });
 
+  it('calls onRadioChange when the radio is clicked', () => {
+    const { getByRole, onRadioChange } = renderComponent();
+    userEvent.click(getByRole('radio'));
+    expect(onRadioChange).toHaveBeenCalled();
+  });
+
+  it('hides the button and results when not visible', () => {
+    const { queryByRole } = renderComponent({ visible: false });
+    expect(queryByRole('button')).not.toBeInTheDocument();
+    expect(queryByRole('list')).not.toBeInTheDocument();
+  });
   it("shows items as active if there's no active result", () => {
     const results = [
       { properties: { name: 'Tesco', address: '1 Test Street' } },
@@ -66,7 +81,11 @@ describe('<CrowdlessSidebarComponent />', () => {
     const results = [
       { properties: { name: 'Tesco', address: '1 Test Street', placeId: 0 } },
       {
-        properties: { name: 'Sainsburys', address: '2 Fake Road', placeId: 1 },
+        properties: {
+          name: 'Sainsburys',
+          address: '2 Fake Road',
+          placeId: 1,
+        },
       },
     ];
     const { getByText } = renderComponent({

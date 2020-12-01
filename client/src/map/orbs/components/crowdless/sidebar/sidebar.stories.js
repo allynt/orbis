@@ -1,9 +1,13 @@
 import * as React from 'react';
 import faker from 'faker/locale/en_GB';
 import { CrowdlessSidebarComponent } from './sidebar.component';
+import { Description } from './description.component';
 
 export default {
   title: 'Orbs/IsolationPlus/Crowdless/CrowdlessSidebarComponent',
+  args: {
+    visible: true,
+  },
 };
 
 const Template = args => <CrowdlessSidebarComponent {...args} />;
@@ -38,7 +42,7 @@ export const ActiveResult = Template.bind({});
 ActiveResult.args = {
   results: new Array(10).fill(undefined).map((_, i) => ({
     properties: {
-      placeID: i,
+      placeId: i,
       crowdednessCategory: faker.random.arrayElement([
         'not busy',
         'busy',
@@ -52,5 +56,7 @@ ActiveResult.args = {
       ].join(', '),
     },
   })),
-  activeResult: { properties: { placeID: 2 } },
+  selectedResult: { properties: { placeId: 2 } },
 };
+
+export const DescriptionContent = () => <Description />;

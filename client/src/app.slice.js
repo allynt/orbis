@@ -1,6 +1,8 @@
-import { createSelector, createSlice } from '@reduxjs/toolkit';
+import { createSelector, createSlice, current } from '@reduxjs/toolkit';
 import { pick } from 'lodash';
 import { NotificationManager } from 'react-notifications';
+
+import { getJsonAuthHeaders } from 'utils/http';
 
 export const DEFAULT_MAP_STYLE = 3;
 
@@ -8,6 +10,7 @@ const initialState = {
   config: {},
   error: null,
   notYetImplementedDescription: null,
+  trackingQueue: [],
 };
 
 const appSlice = createSlice({
@@ -24,6 +27,14 @@ const appSlice = createSlice({
     notYetImplemented: (state, { payload }) => {
       state.notYetImplementedDescription = payload;
     },
+    addLogItem: (state, { payload }) => {
+      state.trackingQueue = [...state.trackingQueue, payload];
+    },
+    removeLogItems: (state, { payload }) => {
+      state.trackingQueue = state.trackingQueue.filter(
+        item => !payload.includes(current(item)),
+      );
+    },
   },
 });
 
@@ -31,6 +42,8 @@ export const {
   appConfigSuccess,
   appConfigFailure,
   notYetImplemented,
+  addLogItem,
+  removeLogItems,
 } = appSlice.actions;
 
 export const fetchAppConfig = () => async dispatch => {
@@ -58,6 +71,32 @@ export const fetchAppConfig = () => async dispatch => {
   return dispatch(appConfigSuccess(config));
 };
 
+export const logUserTracking = () => async (dispatch, getState) => {
+  const headers = getJsonAuthHeaders(getState());
+  const {
+    app: { trackingQueue },
+  } = getState();
+  if (trackingQueue.length > 0) {
+    const response = await fetch(
+      `${window.orbis.getEnv().REACT_APP_API_HOST}/api/logs/tracking`,
+      {
+        credentials: 'include',
+        method: 'POST',
+        headers,
+        body: JSON.stringify(trackingQueue),
+      },
+    );
+
+    if (!response.ok) {
+      // Leave items in state, so we can retry later.
+      return;
+    }
+
+    // Remove items from state
+    return dispatch(removeLogItems(trackingQueue));
+  }
+};
+
 const baseSelector = state => state?.app;
 
 export const configSelector = createSelector(baseSelector, app => app?.config);
@@ -76,6 +115,11 @@ export const passwordConfigSelector = createSelector(
 export const mapboxTokenSelector = createSelector(
   configSelector,
   config => config?.mapbox_token,
+);
+
+export const userTrackingIntervalSelector = createSelector(
+  configSelector,
+  config => config?.userTrackingInterval,
 );
 
 export default appSlice.reducer;

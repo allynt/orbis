@@ -9,6 +9,7 @@ import ColorMapRangeSlider from 'components/colormap-range-slider/colormap-range
 import { FORMAT } from '../radio-picker-constants';
 
 import styles from './radio-property.module.css';
+import { InfoIconTooltip } from 'components/info-icon-tooltip/info-icon-tooltip.component';
 
 const RadioProperty = ({
   data,
@@ -17,16 +18,20 @@ const RadioProperty = ({
   onSliderChange,
   selectedProperty,
   colorScheme,
+  filterData,
   categoryPath,
 }) => {
   const isArray = Array.isArray(data);
-  const initialProperty = isArray ? data[0] : data;
+
+  const findPropertyByType = type => data.find(d => d.type === type);
+
+  const initialProperty = isArray
+    ? findPropertyByType(FORMAT.percentage)
+    : data;
 
   const propertyMatch = isArray
     ? data.some(p => p.name === selectedProperty?.name)
     : data.name === selectedProperty?.name;
-
-  const findPropertyByType = type => data.find(d => d.type === type);
 
   return (
     <div className={styles.property}>
@@ -46,33 +51,13 @@ const RadioProperty = ({
           )
         }
       />
-      <div className={styles.info}>
-        <div
-          data-tip
-          data-for={`${initialProperty.name}-tooltip`}
-          role="tooltip"
-          className={styles.infoButton}
-          aria-label="tooltip"
-          data-scroll-hide="false"
-        >
-          <InfoIcon classes={styles.infoIcon} title={initialProperty.name} />
-        </div>
-        <ReactTooltip
-          className={styles.tooltip}
-          id={`${initialProperty.name}-tooltip`}
-          place="right"
-          effect="solid"
-          arrowColor="var(--color-primary)"
-          backgroundColor="var(--color-primary)"
-          textColor="var(--color--text--dark)"
-        >
-          <p className={styles.categoryPath}>{categoryPath}</p>
-          <p className={styles.description}>
-            {initialProperty?.application?.orbis?.description ||
-              initialProperty.description}
-          </p>
-        </ReactTooltip>
-      </div>
+      <InfoIconTooltip>
+        <p className={styles.categoryPath}>{categoryPath}</p>
+        <p className={styles.description}>
+          {initialProperty?.application?.orbis?.description ||
+            initialProperty.description}
+        </p>
+      </InfoIconTooltip>
       {propertyMatch && (
         <div className={styles.displayMenu}>
           {isArray && (
@@ -105,8 +90,10 @@ const RadioProperty = ({
           <ColorMapRangeSlider
             type={selectedProperty?.type}
             color={colorScheme}
-            domain={[selectedProperty?.min, selectedProperty?.max]}
-            onChange={domain => onSliderChange(domain)}
+            domain={[selectedProperty.min, selectedProperty.max]}
+            value={filterData}
+            property={selectedProperty}
+            onChange={data => onSliderChange(data)}
           />
         </div>
       )}

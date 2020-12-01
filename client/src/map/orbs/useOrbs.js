@@ -5,6 +5,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import {
   activeDataSourcesSelector,
   selectDataToken,
+  logError,
 } from 'data-layers/data-layers.slice';
 import { getData } from 'utils/http';
 import { useMap } from 'MapContext';
@@ -31,14 +32,22 @@ export const useOrbs = () => {
 
   const fetchData = useCallback(
     async source => {
-      const response = await getData(dataUrlFromId(source), {
-        Authorization: `Bearer ${authToken}`,
-      });
-      if (!response.ok) console.error(response.status);
-      const dataSet = await response.json();
-      setData({ ...data, [source.source_id]: dataSet });
+      try {
+        const response = await getData(dataUrlFromId(source), {
+          Authorization: `Bearer ${authToken}`,
+        });
+
+        if (!response.ok) {
+          return dispatch(logError(source));
+        }
+
+        const dataSet = await response.json();
+        setData({ ...data, [source.source_id]: dataSet });
+      } catch (ex) {
+        return dispatch(logError(source));
+      }
     },
-    [authToken, data],
+    [authToken, data, dispatch],
   );
 
   useEffect(() => {
@@ -118,7 +127,11 @@ export const useOrbs = () => {
           authToken,
         });
       }
-      const layer = LayerFactory(name, { ...loadedConfig, ...metadataConfig });
+      const layer = LayerFactory(name, {
+        ...loadedConfig,
+        ...metadataConfig,
+        dispatch,
+      });
       return layer;
     };
     const layerPromises = activeSources.map(createLayer);

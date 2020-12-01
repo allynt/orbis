@@ -60,6 +60,9 @@ LOGGING = {
             "class": "django.utils.log.AdminEmailHandler",
             "formatter": "standard",
         },
+        "db": {
+            "class": "astrosat.utils.DatabaseLogHandler",
+        },
     },
     "root": {"handlers": ["default"], "level": "INFO"},
     "loggers": {
@@ -67,6 +70,10 @@ LOGGING = {
             "handlers": ["request_handler", "mail_admins_handler"],
             "level": "INFO",
             "propagate": False,
-        }
+        },
+        "db": {
+            "handlers": ["db"],
+            "level": "DEBUG"
+        },
     },
 }

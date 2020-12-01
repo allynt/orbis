@@ -3,7 +3,7 @@ import * as React from 'react';
 import clsx from 'clsx';
 
 import { Skeleton } from 'components';
-import { Busy, NotBusy, VeryBusy } from './icons';
+import { Busy, NotBusy, VeryBusy } from '../icons';
 
 import styles from './results-list-item.module.css';
 

@@ -1,11 +1,12 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import { useSelector } from 'react-redux';
 
 import {
   propertySelector,
   setProperty,
-  setFilterRange,
+  filterDataSelector,
+  setFilterData,
 } from '../../slices/isolation-plus.slice';
 
 import { createCategorisationPath } from 'data-layers/categorisation.utils';
@@ -22,6 +23,7 @@ import { getProperties } from './helpers/get-properties.js';
  */
 export const RadioPicker = ({ selectedLayer, dispatch }) => {
   const selectedProperty = useSelector(state => propertySelector(state?.orbs));
+  const filterData = useSelector(state => filterDataSelector(state?.orbs));
 
   const selectedPropertyMetadata = selectedLayer?.metadata?.properties?.find(
     property => property.name === selectedProperty?.name,
@@ -31,6 +33,16 @@ export const RadioPicker = ({ selectedLayer, dispatch }) => {
   const categoryPath = createCategorisationPath({
     categories: selectedLayer?.metadata?.application?.orbis?.categories,
   }).replace('.', ' > ');
+
+  useEffect(() => {
+    if (filterData?.filterRange.some(n => n === undefined)) {
+      dispatch(
+        setFilterData({
+          filterRange: [selectedProperty.min, selectedProperty.max],
+        }),
+      );
+    }
+  }, [selectedProperty, filterData, dispatch]);
 
   const onRadioClick = property => {
     dispatch(
@@ -47,7 +59,6 @@ export const RadioPicker = ({ selectedLayer, dispatch }) => {
 
   const onToggleClick = property => {
     if (property.name === selectedProperty?.name) return;
-
     dispatch(
       setProperty({
         source_id: selectedLayer.source_id,
@@ -59,16 +70,19 @@ export const RadioPicker = ({ selectedLayer, dispatch }) => {
   if (!selectedLayer?.metadata?.properties) return null;
   return (
     <>
-      {getProperties(selectedLayer).map(data => (
-        <RadioProperty
-          data={data}
-          onRadioClick={onRadioClick}
-          onToggleClick={onToggleClick}
-          onSliderChange={domain => dispatch(setFilterRange(domain))}
-          selectedProperty={selectedProperty}
-          colorScheme={colorScheme}
-          categoryPath={categoryPath}
-        />
+      {getProperties(selectedLayer).map((data, i) => (
+        <React.Fragment key={i}>
+          <RadioProperty
+            data={data}
+            onRadioClick={onRadioClick}
+            onToggleClick={onToggleClick}
+            onSliderChange={data => dispatch(setFilterData(data))}
+            selectedProperty={selectedProperty}
+            colorScheme={colorScheme}
+            filterData={filterData}
+            categoryPath={categoryPath}
+          />
+        </React.Fragment>
       ))}
     </>
   );

@@ -55,8 +55,9 @@ const DecileColorMapRangeSlider = ({
 
   useEffect(() => {
     // @ts-ignore
-    if (onChange) onChange([brushDomain.x[0] + 1, brushDomain.x[1]]);
-  }, [brushDomain, onChange]);
+    if (onChange)
+      onChange({ filterRange: [brushDomain.x[0] + 1, brushDomain.x[1]] });
+  }, [brushDomain]);
 
   /** @type {import('victory').VictoryBrushContainerProps['onBrushDomainChangeEnd']} */
   const handleBrushDomainChangeEnd = domain =>

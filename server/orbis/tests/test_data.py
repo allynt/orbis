@@ -158,6 +158,33 @@ class TestDataSourceView:
         assert sorted_orb_content[1]["name"] == orb_2.name
         assert sorted_orb_content[1]["description"] == orb_2.description
 
+    def test_no_duplicate_orb_info(self, user, api_client, mock_data_sources, mock_storage):
+        """
+        Tests that if a user has multiple licences to the same orb
+        (b/c of being a member of multiple customers)
+        only a single instance of that orb is injected into the metadata
+        """
+        source_id = "test/test/test/test"
+        mock_data_sources([source_id])
+        data_scope = DataScopeFactory(**{part: "test" for part in self.SOURCE_ID_PARTS})
+        orb = OrbFactory(data_scopes=[data_scope])
+
+        customer_1 = CustomerFactory(logo=None)
+        customer_1.add_user(user)
+        customer_1.assign_licences(orb, customer_1.customer_users.all())
+        customer_2 = CustomerFactory(logo=None)
+        customer_2.add_user(user)
+        customer_2.assign_licences(orb, customer_2.customer_users.all())
+
+        client = api_client(user)
+        url = reverse("datasources")
+
+        response = client.get(url, {}, format="json")
+        content = response.json()
+
+        source_orbis_metadata = content["sources"][0]["metadata"]["application"]["orbis"]
+        assert len(source_orbis_metadata["orbs"]) == 1
+
     def test_num_queries(self, user, api_client, mock_data_sources, mock_storage, django_assert_num_queries):
         """
         Tests that a minimal number of queries is run;
