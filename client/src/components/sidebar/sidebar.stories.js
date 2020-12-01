@@ -1,6 +1,14 @@
 import React from 'react';
 
-import { ProfileIcon, SatelliteIcon, DataIcon } from '@astrosat/astrosat-ui';
+import {
+  ProfileIcon,
+  SatelliteIcon,
+  DataIcon,
+  Typography,
+  ListItem,
+  ListItemText,
+  ListItemIcon,
+} from '@astrosat/astrosat-ui';
 
 import { Sidebar, SidebarItem, SidebarBottomItems } from '.';
 
@@ -10,24 +18,15 @@ import { ReactComponent as OrbisAdminLogo } from '../../admin/orbis-admin-logo.s
 const logoStyle = { height: '33px', color: '#fff' };
 
 const AdminHeader = () => (
-  <div style={{ display: 'flex', alignItems: 'center' }}>
-    <ProfileIcon style={{ width: '3.125rem' }} />
-    <div
-      style={{ display: 'flex', flexDirection: 'column', marginLeft: '8px' }}
-    >
-      <h2
-        style={{
-          fontSize: '1.25rem',
-          whiteSpace: 'nowrap',
-          marginTop: 0,
-          marginBottom: '0.25rem',
-        }}
-      >
-        Adam Raymond
-      </h2>
-      <h5 style={{ margin: 0, color: '#b9bed3' }}>Administrator</h5>
-    </div>
-  </div>
+  <ListItem>
+    <ListItemIcon>
+      <ProfileIcon />
+    </ListItemIcon>
+    <ListItemText
+      primary={<Typography variant="h2">Adam Raymond</Typography>}
+      secondary={<Typography variant="h5">Administrator</Typography>}
+    />
+  </ListItem>
 );
 
 export default { title: 'Components/Sidebar', component: Sidebar };
@@ -71,13 +70,15 @@ export const ItemPosition = () => (
   </Sidebar>
 );
 
-export const Footer = () => <Sidebar footer={<h3>This is the footer</h3>} />;
+export const Footer = () => (
+  <Sidebar footer={<Typography variant="h3">This is the footer</Typography>} />
+);
 
 export const KitchenSink = () => (
   <Sidebar
     logo={<OrbisAdminLogo style={{ height: '70px', color: '#fff' }} />}
     header={<AdminHeader />}
-    footer={<h3>This is the footer</h3>}
+    footer={<Typography variant="h3">This is the footer</Typography>}
   >
     <SidebarItem icon={<ProfileIcon />} selected>
       Item one
