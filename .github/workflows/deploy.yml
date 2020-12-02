@@ -8,6 +8,60 @@ on:
 # using the `runs-on: ...` key
 
 jobs:
+  deploy-experimentation:
+    name: Deploy Experimentation
+    if: startsWith(github.event.deployment.environment, 'experimentation')
+    runs-on: [self-hosted, eu-west-1-experimentation-deployer]
+    steps:
+      - name: Set the Deployment Status to Pending
+        uses: "deliverybot/deployment-status@v1"
+        with:
+          state: "pending"
+          token: "${{ github.token }}"
+
+      - name: Checkout
+        uses: actions/checkout@v1
+
+      - name: Deploy the app
+        run: |
+          ENVIRONMENT="${{ github.event.deployment.environment }}"
+          TAG="${GITHUB_SHA:0:7}"
+          ./scripts/deploy.sh "${ENVIRONMENT}" "${TAG}"
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
+      - name: Set the Deployment Status on Success
+        if: success()
+        run: |
+          export GITHUB_TOKEN="${{ github.token }}"
+          cd scripts/create-deployment-status
+          yarn install
+
+          REPO_OWNER="$(dirname "$GITHUB_REPOSITORY")"
+          REPO_NAME="$(basename "$GITHUB_REPOSITORY")"
+
+          node createDeploymentStatus.js \
+            --repo-owner $REPO_OWNER --repo-name $REPO_NAME \
+            --environment ${{ github.event.deployment.environment }} \
+            --status success \
+            --auto-inactive
+
+      - name: Set the Deployment Status on Failure
+        if: failure()
+        run: |
+          export GITHUB_TOKEN="${{ github.token }}"
+          cd scripts/create-deployment-status
+          yarn install
+
+          REPO_OWNER="$(dirname "$GITHUB_REPOSITORY")"
+          REPO_NAME="$(basename "$GITHUB_REPOSITORY")"
+
+          node createDeploymentStatus.js \
+            --repo-owner $REPO_OWNER --repo-name $REPO_NAME \
+            --environment ${{ github.event.deployment.environment }} \
+            --status failure
+
   deploy-testing:
     name: Deploy Testing
     if: startsWith(github.event.deployment.environment, 'testing')
