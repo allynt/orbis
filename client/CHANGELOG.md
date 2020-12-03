@@ -1,3 +1,18 @@
+# [2.7.0](https://github.com/astrosat/orbis/compare/v2.6.0...v2.7.0) (2020-12-03)
+
+
+### Bug Fixes
+
+* **devops:** Add `experimentation` environment to deploys ([12241b1](https://github.com/astrosat/orbis/commit/12241b15cbf7ec5d8104285b5bdf862ea62cc5df)), closes [#1005](https://github.com/astrosat/orbis/issues/1005)
+* **frontend:** Change Math.floor to Math.ceil in clastered-icon-layer.js file to fix the issue IssueID [#760](https://github.com/astrosat/orbis/issues/760) ([31e3c68](https://github.com/astrosat/orbis/commit/31e3c68e77a5cdca8a203b39acd6911ea6ee87a8))
+* **frontend:** Removed the .vscode folder from the client directory, added blank lines the code IssueID [#760](https://github.com/astrosat/orbis/issues/760) ([13cfbf8](https://github.com/astrosat/orbis/commit/13cfbf831da3122f7fc2c4ccc4334df19afbbfcd))
+* **frontend:** Set dark as default basemap IssueID [#983](https://github.com/astrosat/orbis/issues/983) ([0a11244](https://github.com/astrosat/orbis/commit/0a11244e20302f7a34b3e5ee1bf7a29c008b77e0))
+
+
+### Features
+
+* **frontend:** Add inclusion of api key to fetch ([d97a639](https://github.com/astrosat/orbis/commit/d97a63999fd56e8f0d4ed7abd938214634f59028))
+
 # [2.6.0](https://github.com/astrosat/orbis/compare/v2.5.0...v2.6.0) (2020-11-30)
 
 
