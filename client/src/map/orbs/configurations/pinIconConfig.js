@@ -18,7 +18,7 @@ const configuration = ({
   dispatch,
   setViewState,
   orbState,
-  pinColor = 'red',
+  pinColor = 'purple',
 }) => {
   const categoryFilters = categoryFiltersSelector(orbState);
   const popupFeatures = popupFeaturesSelector(orbState);
