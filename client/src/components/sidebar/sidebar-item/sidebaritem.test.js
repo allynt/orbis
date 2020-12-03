@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { render, fireEvent } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
 import { SidebarItem } from './sidebar-item.component';
@@ -23,41 +23,5 @@ describe('SidebarItem', () => {
     );
     userEvent.click(getByText('Hello'));
     expect(onClick).toHaveBeenCalled();
-  });
-
-  it('Calls the onClick function when Enter is pressed', () => {
-    const onClick = jest.fn();
-    const { getByText } = render(
-      <SidebarItem onClick={onClick}>Hello</SidebarItem>,
-    );
-    fireEvent.keyUp(getByText('Hello'), {
-      key: 'Enter',
-      code: 13,
-      keyCode: 13,
-    });
-    expect(onClick).toHaveBeenCalled();
-  });
-
-  it('Calls the onClick function when Space is pressed', () => {
-    const onClick = jest.fn();
-    const { getByText } = render(
-      <SidebarItem onClick={onClick}>Hello</SidebarItem>,
-    );
-    fireEvent.keyUp(getByText('Hello'), {
-      key: 'Space',
-      code: 32,
-      keyCode: 32,
-    });
-    expect(onClick).toHaveBeenCalled();
-  });
-
-  it('Has the selected style when selected', () => {
-    const { container } = render(<SidebarItem selected />);
-    expect(container.firstChild.classList).toContain('selected');
-  });
-
-  it('has a tooltip if given', () => {
-    const { getByText } = render(<SidebarItem tooltip="test" />);
-    expect(getByText('test')).toBeInTheDocument();
   });
 });

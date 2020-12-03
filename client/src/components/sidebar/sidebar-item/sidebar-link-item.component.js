@@ -4,6 +4,10 @@ import { SidebarItemInner } from './sidebar-item-inner.component';
 
 import styles from './sidebar-item.module.css';
 
+/**
+ * This should be replaced by using the SidebarItem and href prop
+ * @deprecated
+ */
 export const SidebarLinkItem = ({
   children,
   href,
