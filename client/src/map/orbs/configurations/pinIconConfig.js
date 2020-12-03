@@ -8,8 +8,8 @@ import {
   setPopupFeatures,
   toggleDialog,
 } from '../slices/mysupplylynk.slice';
-import iconMapping from './mySupplyLynkConfig.iconMapping.json';
-import iconAtlas from './mySupplyLynkConfig.iconAtlas.svg';
+import iconMapping from './pinIconConfig.iconMapping.json';
+import iconAtlas from './pinIconConfig.iconAtlas.svg';
 
 const configuration = ({
   id,
@@ -18,6 +18,7 @@ const configuration = ({
   dispatch,
   setViewState,
   orbState,
+  pinColor = 'red',
 }) => {
   const categoryFilters = categoryFiltersSelector(orbState);
   const popupFeatures = popupFeaturesSelector(orbState);
@@ -80,7 +81,7 @@ const configuration = ({
     visible: !!activeSources?.find(source => source.source_id === id),
     iconMapping,
     iconAtlas,
-    getIcon: 'pin',
+    getIcon: `pin-${pinColor}`,
     onClick: handleLayerClick,
     onHover: handleHover,
   };
