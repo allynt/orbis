@@ -1,19 +1,19 @@
 const authority = 'astrosat',
   namespace = 'mysupplylynk',
-  name = 'suppliers',
+  name = 'more-suppliers',
   version = 'latest';
 
 module.exports = {
-  source_id: 'astrosat/mysupplylynk/suppliers/latest',
+  source_id: 'astrosat/mysupplylynk/more-suppliers/latest',
   authority,
   namespace,
   name,
   version,
   type: 'vector',
   status: 'published',
-  data: `static-data/${authority}/${namespace}/${name}/${version}/suppliers.json`,
+  data: `static-data/${authority}/${namespace}/${name}/${version}/more-suppliers.js`,
   metadata: {
-    label: 'MySupplyLynk',
+    label: 'Additional Suppliers',
     range: 'false',
     domain: 'MySupplyLynk',
     description: 'Suppliers who can provide items',
