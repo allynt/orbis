@@ -38,12 +38,13 @@ module.exports = {
       City: faker.address.city(),
       County: faker.address.county(),
       URL: faker.internet.url(),
-      Items: new Array(faker.random.number(10)).fill(undefined).map(() => ({
-        Name: faker.commerce.productName(),
-        Category: faker.random.arrayElement([
-          CATEGORIES[Math.floor(Math.random() * CATEGORIES.length)],
-        ]),
-      })),
+      Items: new Array(faker.random.number(10)).fill(undefined).map(() => {
+        const Category = faker.random.arrayElement(CATEGORIES);
+        return {
+          Name: faker.commerce.productName(),
+          Category: Category,
+        };
+      }),
     },
   })),
 };
