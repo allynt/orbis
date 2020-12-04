@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import chroma from 'chroma-js';
 import {
   VictoryAxis,
@@ -15,11 +15,7 @@ const DEFAULT_CLIP_POSITION = {
 };
 
 /**
- * @param {{
- *   units?: string
- *   domain?: [number, number]
- *   precision?: number
- * } & import('./colormap-range-slider.component').SharedProps} props
+ * @param {import('./colormap-range-slider.component').ContinuousColorMapRangeSliderProps} props
  */
 const ContinuousColorMapRangeSlider = ({
   brushStyle,

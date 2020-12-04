@@ -20,9 +20,7 @@ const isInRange = (value, domain) =>
   value >= Math.floor(domain[0]) && value < domain[1];
 
 /**
- * @param {{
- *   snap?: boolean
- * } & import('./colormap-range-slider.component').SharedProps} props
+ * @param {import('./colormap-range-slider.component').DecileColorMapRangeSliderProps} props
  */
 const DecileColorMapRangeSlider = ({
   brushStyle,
