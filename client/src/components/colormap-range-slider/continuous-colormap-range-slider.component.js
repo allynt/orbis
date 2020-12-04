@@ -18,6 +18,7 @@ const DEFAULT_CLIP_POSITION = {
  * @param {{
  *   units?: string
  *   domain?: [number, number]
+ *   precision?: number
  * } & import('./colormap-range-slider.component').SharedProps} props
  */
 const ContinuousColorMapRangeSlider = ({
@@ -29,10 +30,11 @@ const ContinuousColorMapRangeSlider = ({
   height,
   padding,
   tickLabelStyle,
+  precision = 0,
   onChange,
 }) => {
   const scaleColors = chroma.scale(color).colors();
-  const data = [{ x: 0.5, y: domain[1] }];
+  const data = [{ x: 0.5, y: domain[1], y0: domain[0] }];
   const [brushDomain, setBrushDomain] = useState({ y: domain });
   const [clipPosition, setClipPosition] = useState(DEFAULT_CLIP_POSITION);
 
@@ -55,7 +57,7 @@ const ContinuousColorMapRangeSlider = ({
     dependentAxis: true,
     orientation: 'top',
     axisComponent: <></>,
-    tickFormat: t => t.toFixed(0),
+    tickFormat: t => t.toFixed(precision),
   };
 
   const handleBrushCleared = domain => {
@@ -74,7 +76,7 @@ const ContinuousColorMapRangeSlider = ({
 
   const handleBrushDomainChangeEnd = domain => {
     setBrushDomain(domain);
-    if (onChange) onChange(brushDomain.y.map(v => +v.toFixed(1)));
+    if (onChange) onChange(brushDomain.y.map(v => +v.toFixed(precision)));
   };
 
   return (

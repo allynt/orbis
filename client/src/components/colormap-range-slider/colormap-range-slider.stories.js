@@ -85,6 +85,7 @@ export const Controlled = () => {
         type="continuous"
         onChange={handleChange}
         color="Spectral"
+        precision={1}
         value={value}
       />
       <button onClick={() => setValue([0, 1])}>Reset value</button>
