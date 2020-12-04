@@ -9,7 +9,10 @@ import {
   VictoryLabel,
 } from 'victory';
 
-import { DEFAULT_CLIP_POSITION } from 'map/orbs/slices/isolation-plus-constants';
+const DEFAULT_CLIP_POSITION = {
+  translateX: 0,
+  clipWidth: 400,
+};
 
 /**
  * @param {{
@@ -30,16 +33,10 @@ const ContinuousColorMapRangeSlider = ({
 }) => {
   const scaleColors = chroma.scale(color).colors();
   const data = [{ x: 0.5, y: domain[1] }];
+  const [brushDomain, setBrushDomain] = useState({ y: domain });
+  const [clipPosition, setClipPosition] = useState(DEFAULT_CLIP_POSITION);
 
-  const [clipPosition, setClipPosition] = useState(value?.clipPosition);
-  const [brushDomain, setBrushDomain] = useState({ y: value?.filterRange });
-
-  const brushMoved = clipPosition !== DEFAULT_CLIP_POSITION;
-
-  useEffect(() => {
-    setClipPosition(value?.clipPosition);
-    setBrushDomain({ y: value?.filterRange });
-  }, [value]);
+  const brushMoved = brushDomain.y !== domain;
 
   /** @type {import('victory').VictoryBarProps} */
   const barProps = {
@@ -61,13 +58,9 @@ const ContinuousColorMapRangeSlider = ({
     tickFormat: t => t.toFixed(0),
   };
 
-  const handleBrushCleared = () => {
-    const data = {
-      filterRange: domain,
-      clipPosition: DEFAULT_CLIP_POSITION,
-    };
-
-    if (onChange) onChange(data);
+  const handleBrushCleared = domain => {
+    setBrushDomain(domain);
+    if (onChange) onChange(domain.y);
   };
 
   const handleBrushDomainChange = (domain, { x1, x2 }) => {
@@ -78,12 +71,9 @@ const ContinuousColorMapRangeSlider = ({
     });
   };
 
-  const handleBrushDomainChangeEnd = () => {
-    const data = {
-      filterRange: brushDomain.y.map(v => +v.toFixed(1)),
-      clipPosition: clipPosition,
-    };
-    if (onChange) onChange(data);
+  const handleBrushDomainChangeEnd = domain => {
+    setBrushDomain(domain);
+    if (onChange) onChange(brushDomain.y.map(v => +v.toFixed(1)));
   };
 
   return (

@@ -48,6 +48,7 @@ export default {
         type: 'select',
         options: COLOR_MAPS,
       },
+      defaultValue: 'Spectral',
     },
   },
 };
@@ -69,3 +70,25 @@ Decile.args = {
 
 export const Continuous = Template.bind({});
 Continuous.args = { type: 'continuous', domain: [300, 1000] };
+
+export const NegativeDomain = Template.bind({});
+NegativeDomain.args = { type: 'continuous', domain: [-100, 100] };
+
+export const Controlled = () => {
+  const [value, setValue] = React.useState(undefined);
+
+  const handleChange = domain => setValue(domain);
+
+  return (
+    <>
+      <ColorMapRangeSlider
+        type="continuous"
+        onChange={handleChange}
+        color="Spectral"
+        value={value}
+      />
+      <button onClick={() => setValue([0, 1])}>Reset value</button>
+      <pre>{JSON.stringify(value)}</pre>
+    </>
+  );
+};
