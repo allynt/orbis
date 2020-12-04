@@ -111,7 +111,12 @@ export const useOrbs = () => {
      */
     const createLayer = async source => {
       if (!source?.metadata?.application?.orbis?.layer?.name) return undefined;
-      const { props, name } = source.metadata.application.orbis.layer;
+      const {
+        props,
+        name,
+        click,
+        hover,
+      } = source.metadata.application.orbis.layer;
       const { config, ...metadataConfig } = props;
 
       let loadedConfig = {};
@@ -126,6 +131,8 @@ export const useOrbs = () => {
           setViewState,
           orbState,
           authToken,
+          click,
+          hover,
           ...metadataConfig,
         });
       }
