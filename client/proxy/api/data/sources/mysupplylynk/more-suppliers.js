@@ -27,7 +27,7 @@ module.exports = {
         },
         layer: {
           name: 'GeoJsonClusteredIconLayer',
-          props: { config: 'pinIconConfig' },
+          props: { config: 'pinIconConfig', pinColor: 'green' },
         },
       },
     },
