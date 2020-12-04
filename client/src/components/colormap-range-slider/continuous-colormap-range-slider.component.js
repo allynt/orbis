@@ -60,6 +60,7 @@ const ContinuousColorMapRangeSlider = ({
 
   const handleBrushCleared = domain => {
     setBrushDomain(domain);
+    setClipPosition(DEFAULT_CLIP_POSITION);
     if (onChange) onChange(domain.y);
   };
 
