@@ -18,8 +18,8 @@ const configuration = ({
   dispatch,
   setViewState,
   orbState,
-  click,
-  hover,
+  onClick,
+  onHover,
   pinColor = 'purple',
 }) => {
   const categoryFilters = categoryFiltersSelector(orbState);
@@ -62,7 +62,7 @@ const configuration = ({
         });
       else dispatch(setPopupFeatures(info.objects));
     } else {
-      if (click) {
+      if (onClick) {
         dispatch(setDialogFeatures([info.object.properties]));
         dispatch(setPopupFeatures([]));
         dispatch(toggleDialog());
@@ -87,7 +87,7 @@ const configuration = ({
     iconAtlas,
     getIcon: `pin-${pinColor}`,
     onClick: handleLayerClick,
-    onHover: hover && handleHover,
+    onHover: onHover && handleHover,
   };
 };
 
