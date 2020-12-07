@@ -3,7 +3,6 @@ import clsx from 'clsx';
 import * as React from 'react';
 import ReactTooltip from 'react-tooltip';
 import styles from './info-icon-tooltip.module.css';
-import background from '../../accounts/background.png';
 
 /**
  * @param {{
