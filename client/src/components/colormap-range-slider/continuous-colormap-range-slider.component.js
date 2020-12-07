@@ -28,11 +28,11 @@ const ContinuousColorMapRangeSlider = ({
   padding,
   tickLabelStyle,
   precision = 0,
-  reverse,
+  reversed,
   onChange,
 }) => {
   const brushRef = useRef();
-  const scaleColors = createColorScale({ color, reverse }).colors();
+  const scaleColors = createColorScale({ color, reversed }).colors();
   const data = [{ x: 0.5, y: domain[1], y0: domain[0] }];
   const [brushDomain, setBrushDomain] = useState({ y: domain });
   const [clipPosition, setClipPosition] = useState(DEFAULT_CLIP_POSITION);

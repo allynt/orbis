@@ -90,7 +90,7 @@ const RadioProperty = ({
             domain={[selectedProperty.min, selectedProperty.max]}
             value={filterData}
             onChange={data => onSliderChange(data)}
-            reverse={
+            reversed={
               !!selectedProperty?.application?.orbis?.display?.colormap_reversed
             }
           />

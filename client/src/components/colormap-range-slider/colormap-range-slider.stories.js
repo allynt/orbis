@@ -77,12 +77,12 @@ NegativeDomain.args = { type: 'continuous', domain: [-100, 100] };
 
 export const Reversed = Template.bind({});
 Reversed.args = {
-  reverse: true,
+  reversed: true,
 };
 
 export const ReversedDecile = Template.bind({});
 ReversedDecile.args = {
-  reverse: true,
+  reversed: true,
   type: 'decile',
 };
 

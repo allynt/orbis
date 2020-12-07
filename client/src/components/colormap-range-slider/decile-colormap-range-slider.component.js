@@ -30,14 +30,14 @@ const DecileColorMapRangeSlider = ({
   padding,
   snap = true,
   tickLabelStyle,
-  reverse,
+  reversed,
   onChange,
 }) => {
   /** @type {[number, number]} */
   const domain = [0, 10];
   /** @type {[BrushDomain, React.Dispatch<BrushDomain>]} */
   const [brushDomain, setBrushDomain] = useState({ x: domain, y: undefined });
-  const colorScale = createColorScale({ color, domain, reverse });
+  const colorScale = createColorScale({ color, domain, reversed });
 
   /** @type {import('victory').VictoryHistogramProps['style']} */
   const histogramStyle = {

@@ -26,7 +26,7 @@ const configuration = ({
     createColorScale({
       color: selectedPropertyMetadata?.application?.orbis?.display?.color,
       domain: [selectedProperty?.min, selectedProperty?.max],
-      reverse:
+      reversed:
         selectedPropertyMetadata?.application?.orbis?.display
           ?.colormap_reversed,
     });

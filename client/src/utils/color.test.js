@@ -22,7 +22,7 @@ describe('createColorScale', () => {
   it('reverses the scale', () => {
     const scale = createColorScale({
       color: [WHITE, BLACK],
-      reverse: true,
+      reversed: true,
     });
     expect(scale(0).hex()).toEqual(BLACK);
     expect(scale(1).hex()).toEqual(WHITE);

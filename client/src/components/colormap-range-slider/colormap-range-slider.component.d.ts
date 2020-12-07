@@ -10,7 +10,7 @@ type SharedProps = {
   padding?: import('victory').VictoryChartProps['padding'];
   value?: [number, number];
   onChange?: (domain: [number, number]) => void;
-  reverse?: boolean;
+  reversed?: boolean;
 } & StyleProps;
 
 export type ContinuousColorMapRangeSliderProps = {
