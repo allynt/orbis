@@ -1,3 +1,4 @@
+import { isEqual } from 'lodash';
 import * as React from 'react';
 import ColorMapRangeSlider from './colormap-range-slider.component';
 
@@ -75,9 +76,18 @@ export const NegativeDomain = Template.bind({});
 NegativeDomain.args = { type: 'continuous', domain: [-100, 100] };
 
 export const Controlled = () => {
+  const domain1 = [0, 10],
+    domain2 = [100, 1000];
+  const [domain, setDomain] = React.useState(domain1);
   const [value, setValue] = React.useState(undefined);
 
   const handleChange = domain => setValue(domain);
+
+  const handleClick = () => {
+    const newDomain = isEqual(domain, domain1) ? domain2 : domain1;
+    setDomain(newDomain);
+    setValue(undefined);
+  };
 
   return (
     <>
@@ -87,8 +97,9 @@ export const Controlled = () => {
         color="Spectral"
         precision={1}
         value={value}
+        domain={domain}
       />
-      <button onClick={() => setValue([0, 1])}>Reset value</button>
+      <button onClick={handleClick}>Switch Domain</button>
       <pre>{JSON.stringify(value)}</pre>
     </>
   );

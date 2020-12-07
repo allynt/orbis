@@ -8,6 +8,7 @@ type SharedProps = {
   color?: ColorMap;
   height: number;
   padding: import('victory').VictoryChartProps['padding'];
+  value?: [number, number];
   onChange?: (domain: [number, number]) => void;
 } & StyleProps;
 

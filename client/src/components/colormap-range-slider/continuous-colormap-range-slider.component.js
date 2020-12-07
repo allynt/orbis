@@ -39,15 +39,21 @@ const ContinuousColorMapRangeSlider = ({
   const brushMoved = !isEqual(brushDomain.y, domain);
 
   useEffect(() => {
-    setBrushDomain({ y: value });
-    if (brushRef.current && value) {
+    const newValue =
+      value === undefined || value?.some(v => v === undefined) ? domain : value;
+    setBrushDomain({ y: newValue });
+    if (brushRef.current) {
       const scaleY = brushRef?.current?.props.scale.y;
-      setClipPosition({
-        clipWidth: scaleY(value[1]) - scaleY(value[0]),
-        translateX: scaleY(value[0]),
-      });
+      setClipPosition(
+        isEqual(newValue, domain)
+          ? DEFAULT_CLIP_POSITION
+          : {
+              clipWidth: scaleY(newValue[1]) - scaleY(newValue[0]),
+              translateX: scaleY(newValue[0]),
+            },
+      );
     }
-  }, [value]);
+  }, [domain, value]);
 
   /** @type {import('victory').VictoryBarProps} */
   const barProps = {
@@ -90,7 +96,6 @@ const ContinuousColorMapRangeSlider = ({
 
   return (
     <div>
-      <pre>{JSON.stringify(brushDomain.y)}</pre>
       <svg style={{ height: 0, width: 0, position: 'absolute' }}>
         <defs>
           <linearGradient id="colorMapGradient">
