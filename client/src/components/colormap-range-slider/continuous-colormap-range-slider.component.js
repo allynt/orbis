@@ -1,5 +1,4 @@
 import React, { useEffect, useRef, useState } from 'react';
-import chroma from 'chroma-js';
 import {
   VictoryAxis,
   VictoryBar,
@@ -9,6 +8,7 @@ import {
   VictoryLabel,
 } from 'victory';
 import { isEqual } from 'lodash';
+import { createColorScale } from 'utils/color';
 
 const DEFAULT_CLIP_POSITION = {
   translateX: 0,
@@ -28,10 +28,11 @@ const ContinuousColorMapRangeSlider = ({
   padding,
   tickLabelStyle,
   precision = 0,
+  reverse,
   onChange,
 }) => {
   const brushRef = useRef();
-  const scaleColors = chroma.scale(color).colors();
+  const scaleColors = createColorScale({ color, reverse }).colors();
   const data = [{ x: 0.5, y: domain[1], y0: domain[0] }];
   const [brushDomain, setBrushDomain] = useState({ y: domain });
   const [clipPosition, setClipPosition] = useState(DEFAULT_CLIP_POSITION);
