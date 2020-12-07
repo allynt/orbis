@@ -62,7 +62,7 @@ const configuration = ({
         });
       else dispatch(setPopupFeatures(info.objects));
     } else {
-      if (onClick) {
+      if (onClick !== false) {
         dispatch(setDialogFeatures([info.object.properties]));
         dispatch(setPopupFeatures([]));
         dispatch(toggleDialog());
@@ -87,7 +87,7 @@ const configuration = ({
     iconAtlas,
     getIcon: `pin-${pinColor}`,
     onClick: handleLayerClick,
-    onHover: onHover && handleHover,
+    onHover: onHover !== false && handleHover,
   };
 };
 

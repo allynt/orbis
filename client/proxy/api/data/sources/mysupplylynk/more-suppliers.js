@@ -30,8 +30,8 @@ module.exports = {
           props: {
             config: 'pinIconConfig',
             pinColor: 'cyan',
-            onClick: true,
-            onHover: true,
+            onClick: false,
+            onHover: false,
           },
         },
       },
