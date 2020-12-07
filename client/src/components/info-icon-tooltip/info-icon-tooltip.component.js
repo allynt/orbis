@@ -3,6 +3,7 @@ import clsx from 'clsx';
 import * as React from 'react';
 import ReactTooltip from 'react-tooltip';
 import styles from './info-icon-tooltip.module.css';
+import background from '../../accounts/background.png';
 
 /**
  * @param {{
@@ -11,7 +12,7 @@ import styles from './info-icon-tooltip.module.css';
  *  place?: import('react-tooltip').Place
  * }} props
  */
-export const InfoIconTooltip = ({ children, className, place = 'left' }) => (
+export const InfoIconTooltip = ({ children, className, place = 'right' }) => (
   <div className={clsx(styles.info, className)}>
     <div
       data-tip
