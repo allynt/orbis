@@ -1,7 +1,5 @@
 import { createSlice, createSelector } from '@reduxjs/toolkit';
 
-import { DEFAULT_CLIP_POSITION } from './isolation-plus-constants';
-
 const isolationPlusSlice = createSlice({
   name: 'isolationPlus',
   initialState: {
@@ -11,29 +9,18 @@ const isolationPlusSlice = createSlice({
       name: undefined,
     },
     pickedInfo: undefined,
-    filterData: {
-      filterRange: [undefined, undefined],
-      clipPosition: {},
-    },
+    filterRange: [undefined, undefined],
   },
   reducers: {
     setProperty: (state, { payload }) => {
       state.property = payload;
-      state.filterData = {
-        filterRange: [payload.min, payload.max],
-        clipPosition: DEFAULT_CLIP_POSITION,
-      };
+      state.filterRange = [payload.min, payload.max];
     },
     setPickedInfo: (state, { payload }) => {
       state.pickedInfo = payload;
     },
-    setFilterData: (state, { payload }) => {
-      state.filterData = {
-        filterRange: payload.filterRange.map(Math.round),
-        clipPosition: payload.clipPosition
-          ? payload.clipPosition
-          : DEFAULT_CLIP_POSITION,
-      };
+    setFilterRange: (state, { payload }) => {
+      state.filterRange = payload;
     },
   },
 });
@@ -41,7 +28,7 @@ const isolationPlusSlice = createSlice({
 export const {
   setProperty,
   setPickedInfo,
-  setFilterData,
+  setFilterRange,
 } = isolationPlusSlice.actions;
 
 const baseSelector = orbs => orbs?.[isolationPlusSlice.name];
@@ -67,9 +54,9 @@ export const pickedInfoSelector = createSelector(
   orb => orb?.pickedInfo,
 );
 
-export const filterDataSelector = createSelector(
+export const filterRangeSelector = createSelector(
   baseSelector,
-  orb => orb?.filterData,
+  orb => orb?.filterRange,
 );
 
 export default isolationPlusSlice.reducer;
