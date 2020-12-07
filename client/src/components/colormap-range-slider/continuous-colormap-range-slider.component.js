@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import chroma from 'chroma-js';
 import {
   VictoryAxis,
@@ -8,6 +8,7 @@ import {
   VictoryGroup,
   VictoryLabel,
 } from 'victory';
+import { isEqual } from 'lodash';
 
 const DEFAULT_CLIP_POSITION = {
   translateX: 0,
@@ -29,12 +30,24 @@ const ContinuousColorMapRangeSlider = ({
   precision = 0,
   onChange,
 }) => {
+  const brushRef = useRef();
   const scaleColors = chroma.scale(color).colors();
   const data = [{ x: 0.5, y: domain[1], y0: domain[0] }];
   const [brushDomain, setBrushDomain] = useState({ y: domain });
   const [clipPosition, setClipPosition] = useState(DEFAULT_CLIP_POSITION);
 
-  const brushMoved = brushDomain.y !== domain;
+  const brushMoved = !isEqual(brushDomain.y, domain);
+
+  useEffect(() => {
+    setBrushDomain({ y: value });
+    if (brushRef.current && value) {
+      const scaleY = brushRef?.current?.props.scale.y;
+      setClipPosition({
+        clipWidth: scaleY(value[1]) - scaleY(value[0]),
+        translateX: scaleY(value[0]),
+      });
+    }
+  }, [value]);
 
   /** @type {import('victory').VictoryBarProps} */
   const barProps = {
@@ -72,11 +85,12 @@ const ContinuousColorMapRangeSlider = ({
 
   const handleBrushDomainChangeEnd = domain => {
     setBrushDomain(domain);
-    if (onChange) onChange(brushDomain.y.map(v => +v.toFixed(precision)));
+    if (onChange) onChange(brushDomain.y);
   };
 
   return (
     <div>
+      <pre>{JSON.stringify(brushDomain.y)}</pre>
       <svg style={{ height: 0, width: 0, position: 'absolute' }}>
         <defs>
           <linearGradient id="colorMapGradient">
@@ -95,6 +109,7 @@ const ContinuousColorMapRangeSlider = ({
         padding={padding}
         containerComponent={
           <VictoryBrushContainer
+            ref={brushRef}
             title="Continuous ColorMap Range Slider"
             height={height}
             brushDimension="y"
@@ -112,9 +127,7 @@ const ContinuousColorMapRangeSlider = ({
           groupComponent={
             <VictoryClipContainer
               clipHeight={height}
-              translateX={
-                clipPosition?.clipWidth === 0 ? 0 : clipPosition?.translateX
-              }
+              translateX={clipPosition?.translateX}
               clipWidth={clipPosition?.clipWidth || 350}
             />
           }
