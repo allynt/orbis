@@ -21,37 +21,76 @@ const SingleSupplierContent = ({
   Postcode,
   URL,
   Items,
-}) => (
-  <ul className={styles.list}>
-    <li className={styles.listItem}>
-      <span className={styles.label}>Address Line 1: </span>
-      <span className={styles.value}>{AddressLine1 || NOT_AVAILABLE}</span>
-    </li>
-    <li className={styles.listItem}>
-      <span className={styles.label}>Address Line 2: </span>
-      <span className={styles.value}>{AddressLine2 || NOT_AVAILABLE}</span>
-    </li>
-    <li className={styles.listItem}>
-      <span className={styles.label}>Postcode: </span>
-      <span className={styles.value}>{Postcode || NOT_AVAILABLE}</span>
-    </li>
-    <li className={styles.listItem}>
-      <span className={styles.label}>Website: </span>
-      <span className={styles.value}>{URL || NOT_AVAILABLE}</span>
-    </li>
-    <li className={styles.listItem}>
-      <span>
-        <span className={styles.label}>Supply Categories:</span>
-        {Items && getCategoriesString(Items)}
-      </span>
-    </li>
-    <li className={styles.listItem}>
-      <span className={styles.label}>Click for details!</span>
-    </li>
-  </ul>
-);
+  name,
+}) => {
+  if (name === 'supplier') {
+    console.log('SUPPLIER!');
+    return (
+      <ul className={styles.list}>
+        <li className={styles.listItem}>
+          <span className={styles.label}>Address Line 1: </span>
+          <span className={styles.value}>{AddressLine1 || NOT_AVAILABLE}</span>
+        </li>
+        <li className={styles.listItem}>
+          <span className={styles.label}>Address Line 2: </span>
+          <span className={styles.value}>{AddressLine2 || NOT_AVAILABLE}</span>
+        </li>
+        <li className={styles.listItem}>
+          <span className={styles.label}>Postcode: </span>
+          <span className={styles.value}>{Postcode || NOT_AVAILABLE}</span>
+        </li>
+        <li className={styles.listItem}>
+          <span className={styles.label}>Website: </span>
+          <span className={styles.value}>{URL || NOT_AVAILABLE}</span>
+        </li>
+        <li className={styles.listItem}>
+          <span>
+            <span className={styles.label}>Supply Categories:</span>
+            {Items && getCategoriesString(Items)}
+          </span>
+        </li>
+        <li className={styles.listItem}>
+          <span className={styles.label}>Click for details!</span>
+        </li>
+      </ul>
+    );
+  } else if (name === 'moreSuppliers') {
+    console.log('MORE SUPPLIERS');
+    return (
+      <ul className={styles.list}>
+        <li className={styles.listItem}>
+          <span className={styles.label}>Address Line 1: </span>
+          <span className={styles.value}>{AddressLine1 || NOT_AVAILABLE}</span>
+        </li>
+        <li className={styles.listItem}>
+          <span className={styles.label}>Address Line 2: </span>
+          <span className={styles.value}>{AddressLine2 || NOT_AVAILABLE}</span>
+        </li>
+        <li className={styles.listItem}>
+          <span className={styles.label}>Postcode: </span>
+          <span className={styles.value}>{Postcode || NOT_AVAILABLE}</span>
+        </li>
+        <li className={styles.listItem}>
+          <span className={styles.label}>Website: </span>
+          <span className={styles.value}>{URL || NOT_AVAILABLE}</span>
+        </li>
+        <li className={styles.listItem}>
+          <span>
+            <span className={styles.label}>Supply Categories:</span>
+            {Items && getCategoriesString(Items)}
+          </span>
+        </li>
+        <li className={styles.listItem}>
+          <span className={styles.label}>Click for details!</span>
+        </li>
+      </ul>
+    );
+  } else {
+    return <h1>Boaby</h1>;
+  }
+};
 
-const MultipleSupplierContent = ({ suppliers, onSupplierClick }) => (
+const MultipleSupplierContent = ({ name, suppliers, onSupplierClick }) => (
   <ul className={styles.list}>
     {suppliers.map(supplier => (
       <li
@@ -71,7 +110,7 @@ const MultipleSupplierContent = ({ suppliers, onSupplierClick }) => (
   </ul>
 );
 
-const MySupplyLynkFeatureDetail = ({ data, onSupplierClick }) => (
+const MySupplyLynkFeatureDetail = ({ name, data, onSupplierClick }) => (
   <div className={styles.featureDetail}>
     <h1 className={styles.header}>
       {data?.length === 1 ? data[0]?.Name : DEFAULT_TITLE}
@@ -81,9 +120,10 @@ const MySupplyLynkFeatureDetail = ({ data, onSupplierClick }) => (
         <MultipleSupplierContent
           suppliers={data}
           onSupplierClick={onSupplierClick}
+          name={name}
         />
       ) : (
-        <SingleSupplierContent {...data[0]} />
+        <SingleSupplierContent name={name} {...data[0]} />
       )}
     </div>
   </div>

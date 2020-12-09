@@ -12,7 +12,7 @@ import {
 import { Dialog } from './mysupplylynk-dialog/dialog.component';
 import MySupplyLynkFeatureDetail from './mysupplylynk-feature-detail/mysupplylynk-feature-detail.component';
 
-const MySupplyLynkMapComponent = () => {
+const MySupplyLynkMapComponent = ({ name }) => {
   const dispatch = useDispatch();
   const popupFeatures = useSelector(state => popupFeaturesSelector(state.orbs));
   const dialogFeatures = useSelector(state =>
@@ -41,6 +41,7 @@ const MySupplyLynkMapComponent = () => {
               dispatch(setDialogFeatures([supplier]));
               dispatch(toggleDialog());
             }}
+            name={name}
           />
         </Popup>
       )}

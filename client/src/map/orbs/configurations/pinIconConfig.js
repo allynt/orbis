@@ -30,7 +30,7 @@ const configuration = ({
 
     const hasCategory = feat =>
       feat.properties.Items.some(item =>
-        categoryFilters.includes(item.Category),
+        categoryFilters?.[id].includes(item.Category),
       );
 
     let filteredFeatures;
@@ -81,7 +81,7 @@ const configuration = ({
 
   return {
     id,
-    data: categoryFilters?.length && getFeatures(),
+    data: categoryFilters?.[id].length && getFeatures(),
     visible: !!activeSources?.find(source => source.source_id === id),
     iconMapping,
     iconAtlas,

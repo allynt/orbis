@@ -138,6 +138,7 @@ export const useOrbs = () => {
 
       return layer;
     };
+
     const layerPromises = activeSources.map(createLayer);
     Promise.all(layerPromises).then(setLayers);
   }, [activeSources, data, dispatch, setViewState, orbState, authToken]);

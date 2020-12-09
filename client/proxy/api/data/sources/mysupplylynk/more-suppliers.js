@@ -24,6 +24,7 @@ module.exports = {
         },
         map_component: {
           name: 'MySupplyLynkMapComponent',
+          props: { name: 'moreSuppliers' },
         },
         layer: {
           name: 'GeoJsonClusteredIconLayer',
@@ -31,7 +32,7 @@ module.exports = {
             config: 'pinIconConfig',
             pinColor: 'cyan',
             onClick: false,
-            onHover: false,
+            onHover: true,
           },
         },
       },

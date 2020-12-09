@@ -5,14 +5,17 @@ import { CATEGORIES } from './mysupplylynk.constants';
 const mySupplyLynkSlice = createSlice({
   name: 'mySupplyLynk',
   initialState: {
-    categoryFilters: CATEGORIES,
+    categoryFilters: {
+      'astrosat/mysupplylynk/suppliers/latest': CATEGORIES,
+      'astrosat/mysupplylynk/more-suppliers/latest': CATEGORIES,
+    },
     popupFeatures: [],
     dialogFeatures: [],
     dialogVisible: false,
   },
   reducers: {
     setSelectedFeatures: (state, { payload }) => {
-      state.categoryFilters = payload;
+      state.categoryFilters[payload.type] = payload.value;
     },
     setPopupFeatures: (state, { payload }) => {
       state.popupFeatures = payload;
