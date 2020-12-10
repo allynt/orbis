@@ -6,7 +6,7 @@ import {
   VictoryHistogram,
   VictoryLabel,
 } from 'victory';
-import chroma from 'chroma-js';
+import { createColorScale } from 'utils/color';
 
 /** @typedef {{x: [any, any], y: [any, any]}} BrushDomain */
 
@@ -30,13 +30,14 @@ const DecileColorMapRangeSlider = ({
   padding,
   snap = true,
   tickLabelStyle,
+  reversed,
   onChange,
 }) => {
   /** @type {[number, number]} */
   const domain = [0, 10];
   /** @type {[BrushDomain, React.Dispatch<BrushDomain>]} */
   const [brushDomain, setBrushDomain] = useState({ x: domain, y: undefined });
-  const colorScale = chroma.scale(color).domain(domain);
+  const colorScale = createColorScale({ color, domain, reversed });
 
   /** @type {import('victory').VictoryHistogramProps['style']} */
   const histogramStyle = {

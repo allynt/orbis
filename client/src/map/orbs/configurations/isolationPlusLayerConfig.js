@@ -1,5 +1,5 @@
 import { DataFilterExtension } from '@deck.gl/extensions';
-import chroma from 'chroma-js';
+import { createColorScale } from 'utils/color';
 
 import {
   filterRangeSelector,
@@ -23,9 +23,13 @@ const configuration = ({
   const filterRange = filterRangeSelector(orbState);
   const colorScale =
     selectedPropertyMetadata &&
-    chroma
-      .scale(selectedPropertyMetadata?.application?.orbis?.display?.color)
-      .domain([selectedProperty?.min, selectedProperty?.max]);
+    createColorScale({
+      color: selectedPropertyMetadata?.application?.orbis?.display?.color,
+      domain: [selectedProperty?.min, selectedProperty?.max],
+      reversed:
+        selectedPropertyMetadata?.application?.orbis?.display
+          ?.colormap_reversed,
+    });
 
   return {
     id,
