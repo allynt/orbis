@@ -115,3 +115,9 @@ export const Controlled = () => {
     </>
   );
 };
+
+export const Clipped = Template.bind({});
+Clipped.args = {
+  domain: [0, 100],
+  clip: [20, 70],
+};

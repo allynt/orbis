@@ -22,6 +22,7 @@ const ContinuousColorMapRangeSlider = ({
   brushStyle,
   color,
   domain = [0, 1],
+  clip,
   value,
   handleStyle,
   height,
@@ -32,7 +33,7 @@ const ContinuousColorMapRangeSlider = ({
   onChange,
 }) => {
   const brushRef = useRef();
-  const scaleColors = createColorScale({ color, reversed }).colors();
+  const colorScale = createColorScale({ color, domain, reversed, clip });
   const data = [{ x: 0.5, y: domain[1], y0: domain[0] }];
   const [brushDomain, setBrushDomain] = useState({ y: domain });
   const [clipPosition, setClipPosition] = useState(DEFAULT_CLIP_POSITION);
@@ -100,13 +101,15 @@ const ContinuousColorMapRangeSlider = ({
       <svg style={{ height: 0, width: 0, position: 'absolute' }}>
         <defs>
           <linearGradient id="colorMapGradient">
-            {scaleColors.map((color, i) => (
-              <stop
-                key={color.toString()}
-                offset={`${(i / scaleColors.length) * 100}%`}
-                stopColor={color.toString()}
-              />
-            ))}
+            {Array(domain[1] - domain[0])
+              .fill(undefined)
+              .map((_, i) => (
+                <stop
+                  key={i}
+                  offset={`${(i / (domain[1] - domain[0])) * 100}%`}
+                  stopColor={colorScale(domain[0] + i).toString()}
+                />
+              ))}
           </linearGradient>
         </defs>
       </svg>
