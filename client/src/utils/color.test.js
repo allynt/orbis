@@ -192,4 +192,100 @@ describe('ColorScale', () => {
       });
     });
   });
+
+  describe('getGradient', () => {
+    it('returns an array of colors and stops', () => {
+      const scale = new ColorScale();
+      const gradient = scale.getGradient();
+      expect(gradient).toEqual(
+        expect.arrayContaining([
+          { stop: 0, color: HEX_WHITE },
+          { stop: 100, color: HEX_BLACK },
+        ]),
+      );
+    });
+
+    it('works with clipped data', () => {
+      const scale = new ColorScale({ clip: [0.2, 0.7] });
+      const gradient = scale.getGradient();
+      expect(gradient).toEqual(
+        expect.arrayContaining([
+          { stop: 0, color: HEX_WHITE },
+          { stop: 20, color: HEX_WHITE },
+          { stop: 70, color: HEX_BLACK },
+          { stop: 100, color: HEX_BLACK },
+        ]),
+      );
+    });
+
+    it('works with custom domains', () => {
+      const scale = new ColorScale({ domain: [100, 1000] });
+      const gradient = scale.getGradient();
+      expect(gradient).toEqual(
+        expect.arrayContaining([
+          { stop: 0, color: HEX_WHITE },
+          { stop: 100, color: HEX_BLACK },
+        ]),
+      );
+    });
+
+    it('works with clipped custom domains', () => {
+      const scale = new ColorScale({ domain: [0, 1000], clip: [200, 700] });
+      const gradient = scale.getGradient();
+      expect(gradient).toEqual(
+        expect.arrayContaining([
+          { stop: 0, color: HEX_WHITE },
+          { stop: 20, color: HEX_WHITE },
+          { stop: 70, color: HEX_BLACK },
+          { stop: 100, color: HEX_BLACK },
+        ]),
+      );
+    });
+
+    it('works on tiny numbers', () => {
+      const scale = new ColorScale({ domain: [0, 0.01] });
+      const gradient = scale.getGradient();
+      expect(gradient).toEqual(
+        expect.arrayContaining([
+          { stop: 0, color: HEX_WHITE },
+          { stop: 100, color: HEX_BLACK },
+        ]),
+      );
+    });
+
+    it('works with reversed', () => {
+      const scale = new ColorScale({ reversed: true });
+      const gradient = scale.getGradient();
+      expect(gradient).toEqual(
+        expect.arrayContaining([
+          { stop: 0, color: HEX_BLACK },
+          { stop: 100, color: HEX_WHITE },
+        ]),
+      );
+    });
+
+    describe('returns color based on format', () => {
+      it('when specified in the constructor', () => {
+        const scale = new ColorScale({ format: 'rgb' });
+        const gradient = scale.getGradient();
+        expect(gradient).toEqual(
+          expect.arrayContaining([
+            { stop: 0, color: RGB_WHITE },
+            { stop: 100, color: RGB_BLACK },
+          ]),
+        );
+      });
+
+      it('when specified in the function call', () => {
+        const scale = new ColorScale();
+        const gradient = scale.getGradient('array');
+        expect(gradient).toEqual(
+          expect.arrayContaining([
+            { stop: 0, color: ARRAY_WHITE },
+            { stop: 100, color: ARRAY_BLACK },
+          ]),
+        );
+      });
+    });
+  });
 });

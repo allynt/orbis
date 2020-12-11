@@ -3,6 +3,12 @@ import { color } from 'd3-color';
 import * as chromatic from 'd3-scale-chromatic';
 
 /** @typedef {'hex' | 'rgb' | 'array'} ColorFormat */
+/**
+ * @typedef {{
+ *   color: string | number[]
+ *   stop: number
+ * }} ColorStop
+ */
 
 export class ColorScale {
   /** @type {import('d3-scale').ScaleSequential<string, never>} */
@@ -110,5 +116,19 @@ export class ColorScale {
       default:
         return colorValue.formatHex();
     }
+  }
+
+  /**
+   * @param {ColorFormat} [format]
+   * @returns {ColorStop[]}
+   */
+  getGradient(format) {
+    const samples = 100 + 1;
+    const [min, max] = this.#domain;
+    return new Array(samples).fill(undefined).map((_, i) => {
+      const stopValue = (i / 100) * (max - min) + min;
+      const color = this.get(stopValue, format);
+      return { color, stop: i };
+    });
   }
 }
