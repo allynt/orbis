@@ -1,7 +1,7 @@
 import { ColorScale, createColorScale } from './color';
 
-const WHITE = 'rgb(255, 255, 255)',
-  BLACK = 'rgb(0, 0, 0)';
+const WHITE = '#ffffff',
+  BLACK = '#000000';
 
 describe('createColorScale', () => {
   it('returns a scale of the given color', () => {
@@ -104,8 +104,8 @@ describe.only('ColorScale', () => {
 
   describe('reverses the scale if provided', () => {
     afterEach(() => {
-      expect(scale.get(0)).toBe(WHITE);
-      expect(scale.get(1)).toBe(BLACK);
+      expect(scale.get(0)).toBe(BLACK);
+      expect(scale.get(1)).toBe(WHITE);
     });
 
     it('constructor', () => {
@@ -114,7 +114,7 @@ describe.only('ColorScale', () => {
 
     it('setter', () => {
       scale = new ColorScale();
-      scale.reversed(true);
+      scale.reversed = true;
     });
   });
 
