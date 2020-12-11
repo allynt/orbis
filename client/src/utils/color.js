@@ -3,31 +3,26 @@ import * as chromatic from 'd3-scale-chromatic';
 
 /**
  * @param {{
- *  color: string | string[]
+ *  clip?: number[]
+ *  color?: string | string[]
  *  domain?: number[]
  *  reversed?: boolean
- * clip?: number[]
  * }} parameters
  */
 export const createColorScale = ({
+  clip,
   color = 'Greys',
   domain = [0, 1],
-  clip,
   reversed = false,
 }) => {
-  let scale;
-  if (reversed) {
-    let scheme;
-    if (typeof color === 'string') scheme = chromatic[`scheme${color}`][10];
-    else scheme = color;
-    scale = scaleSequential(scheme.reverse());
-  } else {
-    scale = scaleSequential(
-      typeof color === 'string' ? chromatic[`interpolate${color}`] : color,
-    );
-  }
+  const scale = scaleSequential(
+    typeof color === 'string' ? chromatic[`interpolate${color}`] : color,
+  );
 
-  if (domain || clip) scale.domain(clip || domain);
+  if (clip || domain) {
+    const _domain = clip ?? domain;
+    scale.domain(reversed ? [_domain[1], _domain[0]] : _domain);
+  }
 
   return scale;
 };

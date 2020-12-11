@@ -27,4 +27,10 @@ describe('createColorScale', () => {
     expect(scale(0)).toEqual(BLACK);
     expect(scale(1)).toEqual(WHITE);
   });
+
+  it('reverses the scale with named colors', () => {
+    const scale = createColorScale({ reversed: true });
+    expect(scale(0)).toBe(BLACK);
+    expect(scale(1)).toBe(WHITE);
+  });
 });

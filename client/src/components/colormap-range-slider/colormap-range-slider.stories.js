@@ -75,6 +75,9 @@ Continuous.args = { type: 'continuous', domain: [300, 1000] };
 export const NegativeDomain = Template.bind({});
 NegativeDomain.args = { type: 'continuous', domain: [-100, 100] };
 
+export const SmallDomain = Template.bind({});
+SmallDomain.args = { domain: [0.1, 0.9] };
+
 export const Reversed = Template.bind({});
 Reversed.args = {
   reversed: true,
