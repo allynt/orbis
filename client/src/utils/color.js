@@ -29,6 +29,17 @@ export const createColorScale = ({
 };
 
 export class ColorScale {
+  /** @type {import('d3-scale').ScaleSequential<string, never>} */
+  #scale;
+  /** @type {[number, number]} */
+  #domain;
+  /** @type {[number, number] | false | undefined} */
+  #clip;
+  /** @type {ColorMap | string[]} */
+  #color;
+  /** @type {boolean} */
+  #reversed;
+
   /**
    * @param {{
    *   color?: ColorMap | string[]
@@ -43,8 +54,7 @@ export class ColorScale {
     reversed = false,
     clip,
   } = {}) {
-    /** @type {import('d3-scale').ScaleSequential<string, never>} */
-    this._scale = scaleSequential();
+    this.#scale = scaleSequential();
     this.color = color;
     this.domain = domain;
     this.clip = clip;
@@ -52,59 +62,53 @@ export class ColorScale {
   }
 
   get domain() {
-    return this._scale.domain();
+    return this.#scale.domain();
   }
 
   set domain(domain) {
-    this._domain = domain;
-    this._scale.domain(domain);
+    this.#domain = domain;
+    this.#scale.domain(domain);
   }
 
-  /**
-   * @type {ColorMap | string[]}
-   */
   get color() {
-    return this._color;
+    return this.#color;
   }
 
   set color(color) {
-    this._color = color;
+    this.#color = color;
     if (typeof color === 'string')
-      this._scale.interpolator(chromatic[`interpolate${this._color}`]);
-    else this._scale.range(color);
+      this.#scale.interpolator(chromatic[`interpolate${this.#color}`]);
+    else this.#scale.range(color);
   }
 
   get reversed() {
-    return this._reversed;
+    return this.#reversed;
   }
 
   set reversed(reversed) {
-    this._reversed = reversed;
-    if (this._reversed) this._scale.domain([this.domain[1], this.domain[0]]);
-    else this._scale.domain(this.domain);
+    this.#reversed = reversed;
+    if (this.#reversed) this.#scale.domain([this.domain[1], this.domain[0]]);
+    else this.#scale.domain(this.domain);
   }
 
-  /**
-   * @type {[number, number] | false | undefined}
-   */
   get clip() {
-    return this._clip;
+    return this.#clip;
   }
 
   set clip(clip) {
-    this._clip = clip;
+    this.#clip = clip;
     if (!clip) {
-      this._scale.domain(this._domain);
+      this.#scale.domain(this.#domain);
       return;
     }
     // @ts-ignore
-    this._scale.domain(this._clip);
+    this.#scale.domain(this.#clip);
   }
 
   /**
    * @param  {number} value
    */
   get(value) {
-    return color(this._scale(value)).formatHex();
+    return color(this.#scale(value)).formatHex();
   }
 }
