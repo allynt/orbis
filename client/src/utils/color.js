@@ -28,6 +28,8 @@ export const createColorScale = ({
   return scale;
 };
 
+/** @typedef {'hex' | 'rgb' | 'array'} ColorFormat */
+
 export class ColorScale {
   /** @type {import('d3-scale').ScaleSequential<string, never>} */
   #scale;
@@ -39,6 +41,8 @@ export class ColorScale {
   #color;
   /** @type {boolean} */
   #reversed;
+  /** @type {ColorFormat} */
+  #format;
 
   /**
    * @param {{
@@ -46,6 +50,7 @@ export class ColorScale {
    *   domain?: [number, number]
    *   reversed?: boolean
    *   clip?: [number, number]
+   *   format?: ColorFormat
    * }} [parameters]
    */
   constructor({
@@ -53,12 +58,14 @@ export class ColorScale {
     domain = [0, 1],
     reversed = false,
     clip,
+    format = 'hex',
   } = {}) {
     this.#scale = scaleSequential();
     this.color = color;
     this.domain = domain;
     this.clip = clip;
     this.reversed = reversed;
+    this.format = format;
   }
 
   get domain() {
@@ -105,10 +112,29 @@ export class ColorScale {
     this.#scale.domain(this.#clip);
   }
 
+  get format() {
+    return this.#format;
+  }
+
+  set format(format) {
+    this.#format = format;
+  }
+
   /**
    * @param  {number} value
+   * @param {ColorFormat} [format]
    */
-  get(value) {
-    return color(this.#scale(value)).formatHex();
+  get(value, format = this.#format) {
+    const colorValue = color(this.#scale(value));
+    switch (format) {
+      case 'array':
+        const { r, g, b } = colorValue.rgb();
+        return [r, g, b];
+      case 'rgb':
+        return colorValue.formatRgb();
+      case 'hex':
+      default:
+        return colorValue.formatHex();
+    }
   }
 }
