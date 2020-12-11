@@ -1,4 +1,5 @@
 import { DataFilterExtension } from '@deck.gl/extensions';
+import hexRgb from 'hex-rgb';
 import { createColorScale } from 'utils/color';
 
 import {
@@ -6,6 +7,12 @@ import {
   propertySelector,
   setPickedInfo,
 } from '../slices/isolation-plus.slice';
+
+const toRgbArray = rgbString =>
+  rgbString
+    .replace(/[^\d,]/g, '')
+    .split(',')
+    .map(Number);
 
 const configuration = ({
   id,
@@ -21,15 +28,12 @@ const configuration = ({
     property => property.name === selectedProperty.name,
   );
   const filterRange = filterRangeSelector(orbState);
-  const colorScale =
-    selectedPropertyMetadata &&
-    createColorScale({
-      color: selectedPropertyMetadata?.application?.orbis?.display?.color,
-      domain: [selectedProperty?.min, selectedProperty?.max],
-      reversed:
-        selectedPropertyMetadata?.application?.orbis?.display
-          ?.colormap_reversed,
-    });
+  const colorScale = createColorScale({
+    color: selectedPropertyMetadata?.application?.orbis?.display?.color,
+    domain: [selectedProperty?.min, selectedProperty?.max],
+    reversed:
+      selectedPropertyMetadata?.application?.orbis?.display?.colormap_reversed,
+  });
 
   return {
     id,
@@ -43,13 +47,18 @@ const configuration = ({
     autoHighlight: true,
     onClick: info => dispatch(setPickedInfo(info)),
     filled: true,
-    getFillColor: d => [
-      // @ts-ignore
-      ...(colorScale
-        ? colorScale(d.properties[selectedProperty.name]).rgb()
-        : [0, 0, 0]),
-      150,
-    ],
+    getFillColor: d => {
+      let color =
+        typeof colorScale === 'function'
+          ? colorScale(d.properties[selectedProperty.name])
+          : [0, 0, 0];
+      if (typeof color === 'string') {
+        if (color.includes('#')) color = hexRgb(color, { format: 'array' });
+        else color = toRgbArray(color);
+      }
+      if (!color) color = [0, 0, 0];
+      return [...color.slice(0, 3), 150];
+    },
     getFilterValue: d => Math.round(d.properties[selectedProperty.name]),
     filterRange: filterRange || [
       selectedPropertyMetadata?.min,
