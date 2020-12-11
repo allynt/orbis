@@ -101,15 +101,9 @@ const ContinuousColorMapRangeSlider = ({
       <svg style={{ height: 0, width: 0, position: 'absolute' }}>
         <defs>
           <linearGradient id="colorMapGradient">
-            {Array(10)
-              .fill(undefined)
-              .map((_, i) => (
-                <stop
-                  key={i}
-                  offset={`${(i / (domain[1] - domain[0])) * 100}%`}
-                  stopColor={colorScale.get(domain[0] + i)}
-                />
-              ))}
+            {colorScale.getGradient().map(({ color, stop }, i) => (
+              <stop key={i} offset={`${stop}%`} stopColor={color} />
+            ))}
           </linearGradient>
         </defs>
       </svg>
