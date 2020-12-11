@@ -36,11 +36,11 @@ const configuration = ({
       reversed:
         selectedPropertyMetadata?.application?.orbis?.display
           ?.colormap_reversed,
-      clip: selectedPropertyMetadata?.clip_min &&
-        selectedPropertyMetadata?.clip_max && [
-          selectedPropertyMetadata.clip_min,
-          selectedPropertyMetadata.clip_max,
-        ],
+      clip: (selectedPropertyMetadata?.clip_min ||
+        selectedPropertyMetadata?.clip_max) && [
+        selectedPropertyMetadata.clip_min || selectedPropertyMetadata.min,
+        selectedPropertyMetadata.clip_max || selectedPropertyMetadata.max,
+      ],
       format: 'array',
     });
 

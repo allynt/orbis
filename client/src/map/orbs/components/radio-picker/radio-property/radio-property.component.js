@@ -88,6 +88,12 @@ const RadioProperty = ({
             type={selectedProperty?.type}
             color={colorScheme}
             domain={[selectedProperty.min, selectedProperty.max]}
+            clip={
+              (selectedProperty.clip_min || selectedProperty.clip_max) && [
+                selectedProperty.clip_min || selectedProperty.min,
+                selectedProperty.clip_max || selectedProperty.max,
+              ]
+            }
             value={filterData}
             onChange={data => onSliderChange(data)}
             reversed={

@@ -63,9 +63,12 @@ export class ColorScale {
 
   set color(color) {
     this.#color = color;
-    if (typeof color === 'string')
-      this.#scale.interpolator(chromatic[`interpolate${this.#color}`]);
-    else this.#scale.range(color);
+    if (typeof color === 'string') {
+      const interpolatorKey = Object.keys(chromatic).find(
+        key => key.toLowerCase() === `interpolate${this.#color}`.toLowerCase(),
+      );
+      this.#scale.interpolator(chromatic[interpolatorKey]);
+    } else this.#scale.range(color);
   }
 
   get reversed() {
