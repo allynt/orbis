@@ -3,7 +3,8 @@
     "baseUrl": "src",
     "checkJs": true,
     "jsx": "react",
-    "resolveJsonModule": true
+    "resolveJsonModule": true,
+    "target": "es2015"
   },
   "include": ["src"]
 }

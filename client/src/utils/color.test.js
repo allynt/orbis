@@ -1,4 +1,4 @@
-import { createColorScale } from './color';
+import { ColorScale, createColorScale } from './color';
 
 const WHITE = 'rgb(255, 255, 255)',
   BLACK = 'rgb(0, 0, 0)';
@@ -32,5 +32,155 @@ describe('createColorScale', () => {
     const scale = createColorScale({ reversed: true });
     expect(scale(0)).toBe(BLACK);
     expect(scale(1)).toBe(WHITE);
+  });
+});
+
+describe.only('ColorScale', () => {
+  let scale;
+
+  beforeEach(() => {
+    scale = undefined;
+  });
+
+  it('Returns a color for the given value using defaults', () => {
+    const scale = new ColorScale();
+    expect(scale.get(0)).toBe(WHITE);
+    expect(scale.get(1)).toBe(BLACK);
+  });
+
+  describe('returns a color for a custom domain', () => {
+    afterEach(() => {
+      expect(scale.get(10)).toBe(WHITE);
+      expect(scale.get(100)).toBe(BLACK);
+    });
+
+    it('constructor', () => {
+      scale = new ColorScale({ domain: [10, 100] });
+    });
+
+    it('setter', () => {
+      scale = new ColorScale();
+      scale.domain = [10, 100];
+    });
+  });
+
+  describe('allows different colors', () => {
+    describe('named', () => {
+      const color = 'OrRd';
+
+      afterEach(() => {
+        expect(scale.get(0)).toBe('#fff7ec');
+        expect(scale.get(1)).toBe('#7f0000');
+      });
+
+      it('constructor', () => {
+        scale = new ColorScale({ color });
+      });
+
+      it('setter', () => {
+        scale = new ColorScale();
+        scale.color = color;
+      });
+    });
+
+    describe('custom', () => {
+      const color = ['#333f48', '#f6be00'];
+
+      afterEach(() => {
+        expect(scale.get(0)).toBe(color[0]);
+        expect(scale.get(1)).toBe(color[1]);
+      });
+
+      it('constructor', () => {
+        scale = new ColorScale({ color });
+      });
+
+      it('setter', () => {
+        scale = new ColorScale();
+        scale.color = color;
+      });
+    });
+  });
+
+  describe('reverses the scale if provided', () => {
+    afterEach(() => {
+      expect(scale.get(0)).toBe(WHITE);
+      expect(scale.get(1)).toBe(BLACK);
+    });
+
+    it('constructor', () => {
+      scale = new ColorScale({ reversed: true });
+    });
+
+    it('setter', () => {
+      scale = new ColorScale();
+      scale.reversed(true);
+    });
+  });
+
+  describe('clips the scale if provided', () => {
+    afterEach(() => {
+      expect(scale.get(10)).toBe(WHITE);
+      expect(scale.get(90)).toBe(BLACK);
+    });
+
+    it('constructor', () => {
+      scale = new ColorScale({ domain: [0, 100], clip: [10, 90] });
+    });
+
+    it('setter', () => {
+      scale = new ColorScale({ domain: [0, 100] });
+      scale.clip([10, 90]);
+    });
+  });
+
+  describe('returns colors in different formats', () => {
+    describe('hex', () => {
+      afterEach(() => {
+        expect(scale.get(0)).toBe('#000000');
+        expect(scale.get(1)).toBe('#ffffff');
+      });
+
+      it('constructor', () => {
+        scale = new ColorScale({ format: 'hex' });
+      });
+
+      it('setter', () => {
+        scale = new ColorScale();
+        scale.format('hex');
+      });
+    });
+
+    describe('rgb', () => {
+      afterEach(() => {
+        expect(scale.get(0)).toBe('rgb(0, 0, 0)');
+        expect(scale.get(1)).toBe('rgb(255, 255, 255)');
+      });
+
+      it('constructor', () => {
+        scale = new ColorScale({ format: 'rgb' });
+      });
+
+      it('setter', () => {
+        scale = new ColorScale();
+        scale.format('rgb');
+      });
+    });
+
+    describe('array', () => {
+      afterEach(() => {
+        expect(scale.get(0)).toEqual([0, 0, 0]);
+        expect(scale.get(1)).toBe([255, 255, 255]);
+      });
+
+      it('constructor', () => {
+        scale = new ColorScale({ format: 'array' });
+      });
+
+      it('setter', () => {
+        scale = new ColorScale();
+        scale.format('array');
+      });
+    });
   });
 });
