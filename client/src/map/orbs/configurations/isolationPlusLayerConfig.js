@@ -1,5 +1,4 @@
 import { DataFilterExtension } from '@deck.gl/extensions';
-import hexRgb from 'hex-rgb';
 import { ColorScale } from 'utils/color';
 
 import {
@@ -7,12 +6,6 @@ import {
   propertySelector,
   setPickedInfo,
 } from '../slices/isolation-plus.slice';
-
-const toRgbArray = rgbString =>
-  rgbString
-    .replace(/[^\d,]/g, '')
-    .split(',')
-    .map(Number);
 
 const configuration = ({
   id,

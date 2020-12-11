@@ -5,6 +5,7 @@
     "jsx": "react",
     "resolveJsonModule": true,
     "target": "es2015",
+    "module": "esnext",
     "moduleResolution": "node"
   },
   "include": ["src"]
