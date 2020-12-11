@@ -6,7 +6,7 @@ import {
   VictoryHistogram,
   VictoryLabel,
 } from 'victory';
-import chroma from 'chroma-js';
+import { createColorScale } from 'utils/color';
 
 /** @typedef {{x: [any, any], y: [any, any]}} BrushDomain */
 
@@ -20,9 +20,7 @@ const isInRange = (value, domain) =>
   value >= Math.floor(domain[0]) && value < domain[1];
 
 /**
- * @param {{
- *   snap?: boolean
- * } & import('./colormap-range-slider.component').SharedProps} props
+ * @param {import('./colormap-range-slider.component').DecileColorMapRangeSliderProps} props
  */
 const DecileColorMapRangeSlider = ({
   brushStyle,
@@ -32,13 +30,14 @@ const DecileColorMapRangeSlider = ({
   padding,
   snap = true,
   tickLabelStyle,
+  reversed,
   onChange,
 }) => {
   /** @type {[number, number]} */
   const domain = [0, 10];
   /** @type {[BrushDomain, React.Dispatch<BrushDomain>]} */
   const [brushDomain, setBrushDomain] = useState({ x: domain, y: undefined });
-  const colorScale = chroma.scale(color).domain(domain);
+  const colorScale = createColorScale({ color, domain, reversed });
 
   /** @type {import('victory').VictoryHistogramProps['style']} */
   const histogramStyle = {
@@ -55,8 +54,7 @@ const DecileColorMapRangeSlider = ({
 
   useEffect(() => {
     // @ts-ignore
-    if (onChange)
-      onChange({ filterRange: [brushDomain.x[0] + 1, brushDomain.x[1]] });
+    if (onChange) onChange([brushDomain.x[0] + 1, brushDomain.x[1]]);
   }, [brushDomain]);
 
   /** @type {import('victory').VictoryBrushContainerProps['onBrushDomainChangeEnd']} */

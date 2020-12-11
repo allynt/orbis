@@ -97,6 +97,7 @@ type SourceMetadata = {
   properties: Property[];
   tiles?: string | string[];
   url?: string;
+  api_key?: string;
   request_strategy?: 'manual' | 'automatic' | 'lazy' | 'normal';
   application?: {
     orbis: OrbisApplicationMetadata;

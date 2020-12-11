@@ -22,24 +22,28 @@ const initialState = { isLoading: false, visible: true };
 const name = 'crowdless';
 
 /**
- * @type {import('@reduxjs/toolkit').AsyncThunk<CrowdlessResponse, string, {}>}
+ * @type {import('@reduxjs/toolkit').AsyncThunk<CrowdlessResponse, {source: Source, url: string}, {}>}
  */
 export const fetchResults = createAsyncThunk(
   `${name}/fetchResults`,
-  async ({ sourceId, url }, { dispatch, rejectWithValue }) => {
+  async ({ source, url }, { dispatch, rejectWithValue }) => {
+    const {
+      source_id,
+      metadata: { api_key },
+    } = source;
     try {
-      const response = await fetch(url);
+      const response = await fetch(url, { headers: { 'X-Api-Key': api_key } });
 
       if (!response.ok) {
-        return dispatch(logError({ source_id: sourceId }));
+        return dispatch(logError({ source_id }));
       }
 
-      dispatch(logDataset({ source_id: sourceId }));
+      dispatch(logDataset({ source_id }));
 
       const data = await response.json();
       return data;
     } catch (e) {
-      dispatch(logError({ source_id: sourceId }));
+      dispatch(logError({ source_id }));
       return rejectWithValue(e);
     }
   },

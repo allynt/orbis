@@ -19,7 +19,7 @@ import { styles as mapStyles } from 'map-style/styles';
  * @type {MapState}
  */
 export const initialState = {
-  selectedMapStyle: 'satellite',
+  selectedMapStyle: 'dark',
   // @ts-ignore
   mapStyles,
   topMapLayerGroups: ['label'],

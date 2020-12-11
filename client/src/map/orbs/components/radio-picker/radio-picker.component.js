@@ -5,8 +5,8 @@ import { useSelector } from 'react-redux';
 import {
   propertySelector,
   setProperty,
-  filterDataSelector,
-  setFilterData,
+  filterRangeSelector,
+  setFilterRange,
 } from '../../slices/isolation-plus.slice';
 
 import { createCategorisationPath } from 'data-layers/categorisation.utils';
@@ -23,7 +23,7 @@ import { getProperties } from './helpers/get-properties.js';
  */
 export const RadioPicker = ({ selectedLayer, dispatch }) => {
   const selectedProperty = useSelector(state => propertySelector(state?.orbs));
-  const filterData = useSelector(state => filterDataSelector(state?.orbs));
+  const filterRange = useSelector(state => filterRangeSelector(state?.orbs));
 
   const selectedPropertyMetadata = selectedLayer?.metadata?.properties?.find(
     property => property.name === selectedProperty?.name,
@@ -33,16 +33,6 @@ export const RadioPicker = ({ selectedLayer, dispatch }) => {
   const categoryPath = createCategorisationPath({
     categories: selectedLayer?.metadata?.application?.orbis?.categories,
   }).replace('.', ' > ');
-
-  useEffect(() => {
-    if (filterData?.filterRange.some(n => n === undefined)) {
-      dispatch(
-        setFilterData({
-          filterRange: [selectedProperty.min, selectedProperty.max],
-        }),
-      );
-    }
-  }, [selectedProperty, filterData, dispatch]);
 
   const onRadioClick = property => {
     dispatch(
@@ -76,10 +66,10 @@ export const RadioPicker = ({ selectedLayer, dispatch }) => {
             data={data}
             onRadioClick={onRadioClick}
             onToggleClick={onToggleClick}
-            onSliderChange={data => dispatch(setFilterData(data))}
+            onSliderChange={data => dispatch(setFilterRange(data))}
             selectedProperty={selectedProperty}
             colorScheme={colorScheme}
-            filterData={filterData}
+            filterData={filterRange}
             categoryPath={categoryPath}
           />
         </React.Fragment>

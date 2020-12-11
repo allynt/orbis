@@ -1,15 +1,12 @@
 import React from 'react';
 
-import ReactTooltip from 'react-tooltip';
-
-import { Radio, InfoIcon, Button } from '@astrosat/astrosat-ui';
+import { Radio, Button } from '@astrosat/astrosat-ui';
 
 import ColorMapRangeSlider from 'components/colormap-range-slider/colormap-range-slider.component';
-
+import { InfoIconTooltip } from 'components/info-icon-tooltip/info-icon-tooltip.component';
 import { FORMAT } from '../radio-picker-constants';
 
 import styles from './radio-property.module.css';
-import { InfoIconTooltip } from 'components/info-icon-tooltip/info-icon-tooltip.component';
 
 const RadioProperty = ({
   data,
@@ -92,8 +89,10 @@ const RadioProperty = ({
             color={colorScheme}
             domain={[selectedProperty.min, selectedProperty.max]}
             value={filterData}
-            property={selectedProperty}
             onChange={data => onSliderChange(data)}
+            reversed={
+              !!selectedProperty?.application?.orbis?.display?.colormap_reversed
+            }
           />
         </div>
       )}

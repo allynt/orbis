@@ -1,11 +1,9 @@
 import reducer, {
   propertySelector,
   setProperty,
-  filterDataSelector,
-  setFilterData,
+  filterRangeSelector,
+  setFilterRange,
 } from './isolation-plus.slice';
-
-import { DEFAULT_CLIP_POSITION } from './isolation-plus-constants';
 
 describe('isolationPlusSlice', () => {
   describe('reducer', () => {
@@ -49,38 +47,18 @@ describe('isolationPlusSlice', () => {
           max: 200,
         };
 
-        const expected = {
-          filterRange: [0, 200],
-          clipPosition: DEFAULT_CLIP_POSITION,
-        };
+        const expected = [0, 200];
 
         const result = reducer(state, setProperty(payload));
-        expect(result.filterData).toEqual(expected);
+        expect(result.filterRange).toEqual(expected);
       });
     });
 
     describe('setFilterData', () => {
       it('sets the filter data in state', () => {
-        const payload = {
-          filterRange: [1, 2],
-          clipPosition: { translateX: 1, clipWidth: 2 },
-        };
-        const result = reducer({}, setFilterData(payload));
-        expect(result).toEqual({ filterData: payload });
-      });
-
-      it('rounds the values', () => {
-        const payload = {
-          filterRange: [1.1, 2.9],
-          clipPosition: { translateX: 1, clipWidth: 2 },
-        };
-        const result = reducer({}, setFilterData(payload));
-        expect(result).toEqual({
-          filterData: {
-            filterRange: [1, 3],
-            clipPosition: { translateX: 1, clipWidth: 2 },
-          },
-        });
+        const payload = [1, 2];
+        const result = reducer({}, setFilterRange(payload));
+        expect(result).toEqual({ filterRange: payload });
       });
     });
   });
@@ -128,21 +106,18 @@ describe('isolationPlusSlice', () => {
       });
     });
 
-    describe('filterDataSelector', () => {
+    describe('filterRangeSelector', () => {
       it('returns undefined if isolationPlus state is undefined', () => {
         const state = {};
-        const result = filterDataSelector(state);
+        const result = filterRangeSelector(state);
         expect(result).toBeUndefined();
       });
 
-      it('returns filterData from state', () => {
-        const filterData = {
-          filterData: [1, 2],
-          clipPosition: { translateX: 1, clipwidth: 2 },
-        };
-        const state = { isolationPlus: { filterData } };
-        const result = filterDataSelector(state);
-        expect(result).toEqual(filterData);
+      it('returns filterRange from state', () => {
+        const filterRange = [1, 2];
+        const state = { isolationPlus: { filterRange } };
+        const result = filterRangeSelector(state);
+        expect(result).toEqual(filterRange);
       });
     });
   });

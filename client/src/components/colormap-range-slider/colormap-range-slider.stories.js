@@ -1,3 +1,4 @@
+import { isEqual } from 'lodash';
 import * as React from 'react';
 import ColorMapRangeSlider from './colormap-range-slider.component';
 
@@ -42,12 +43,13 @@ const COLOR_MAPS = [
 export default {
   title: 'Components/ColorMapRangeSlider',
   argTypes: {
-    onChange: { action: 'onChange', disable: true },
+    onChange: { action: 'onChange' },
     color: {
       control: {
         type: 'select',
         options: COLOR_MAPS,
       },
+      defaultValue: 'Spectral',
     },
   },
 };
@@ -69,3 +71,47 @@ Decile.args = {
 
 export const Continuous = Template.bind({});
 Continuous.args = { type: 'continuous', domain: [300, 1000] };
+
+export const NegativeDomain = Template.bind({});
+NegativeDomain.args = { type: 'continuous', domain: [-100, 100] };
+
+export const Reversed = Template.bind({});
+Reversed.args = {
+  reversed: true,
+};
+
+export const ReversedDecile = Template.bind({});
+ReversedDecile.args = {
+  reversed: true,
+  type: 'decile',
+};
+
+export const Controlled = () => {
+  const domain1 = [0, 10],
+    domain2 = [100, 1000];
+  const [domain, setDomain] = React.useState(domain1);
+  const [value, setValue] = React.useState(undefined);
+
+  const handleChange = domain => setValue(domain);
+
+  const handleClick = () => {
+    const newDomain = isEqual(domain, domain1) ? domain2 : domain1;
+    setDomain(newDomain);
+    setValue(undefined);
+  };
+
+  return (
+    <>
+      <ColorMapRangeSlider
+        type="continuous"
+        onChange={handleChange}
+        color="Spectral"
+        precision={1}
+        value={value}
+        domain={domain}
+      />
+      <button onClick={handleClick}>Switch Domain</button>
+      <pre>{JSON.stringify(value)}</pre>
+    </>
+  );
+};

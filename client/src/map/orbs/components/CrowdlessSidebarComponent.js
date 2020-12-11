@@ -35,7 +35,7 @@ const ConnectedWrapper = ({ selectedLayer, dispatch }) => {
     dispatch(
       // @ts-ignore
       fetchResults({
-        sourceId: selectedLayer.source_id,
+        source: selectedLayer,
         url: selectedLayer.metadata.url
           .replace('{x}', viewState.latitude.toString())
           .replace('{y}', viewState.longitude.toString())
