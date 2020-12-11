@@ -1,6 +1,6 @@
 import { DataFilterExtension } from '@deck.gl/extensions';
 import hexRgb from 'hex-rgb';
-import { createColorScale } from 'utils/color';
+import { ColorScale } from 'utils/color';
 
 import {
   filterRangeSelector,
@@ -28,12 +28,21 @@ const configuration = ({
     property => property.name === selectedProperty.name,
   );
   const filterRange = filterRangeSelector(orbState);
-  const colorScale = createColorScale({
-    color: selectedPropertyMetadata?.application?.orbis?.display?.color,
-    domain: [selectedProperty?.min, selectedProperty?.max],
-    reversed:
-      selectedPropertyMetadata?.application?.orbis?.display?.colormap_reversed,
-  });
+  const colorScale =
+    selectedPropertyMetadata &&
+    new ColorScale({
+      color: selectedPropertyMetadata?.application?.orbis?.display?.color,
+      domain: [selectedProperty?.min, selectedProperty?.max],
+      reversed:
+        selectedPropertyMetadata?.application?.orbis?.display
+          ?.colormap_reversed,
+      clip: selectedPropertyMetadata?.clip_min &&
+        selectedPropertyMetadata?.clip_max && [
+          selectedPropertyMetadata.clip_min,
+          selectedPropertyMetadata.clip_max,
+        ],
+      format: 'array',
+    });
 
   return {
     id,
@@ -49,15 +58,10 @@ const configuration = ({
     filled: true,
     getFillColor: d => {
       let color =
-        typeof colorScale === 'function'
-          ? colorScale(d.properties[selectedProperty.name])
+        colorScale && d.properties[selectedProperty.name]
+          ? colorScale.get(d.properties[selectedProperty.name])
           : [0, 0, 0];
-      if (typeof color === 'string') {
-        if (color.includes('#')) color = hexRgb(color, { format: 'array' });
-        else color = toRgbArray(color);
-      }
-      if (!color) color = [0, 0, 0];
-      return [...color.slice(0, 3), 150];
+      return [...color, 150];
     },
     getFilterValue: d => Math.round(d.properties[selectedProperty.name]),
     filterRange: filterRange || [

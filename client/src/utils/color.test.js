@@ -1,4 +1,4 @@
-import { ColorScale, createColorScale } from './color';
+import { ColorScale } from './color';
 
 const HEX_WHITE = '#ffffff',
   HEX_BLACK = '#000000',
@@ -6,38 +6,6 @@ const HEX_WHITE = '#ffffff',
   RGB_BLACK = 'rgb(0, 0, 0)',
   ARRAY_WHITE = [255, 255, 255],
   ARRAY_BLACK = [0, 0, 0];
-
-describe.skip('createColorScale', () => {
-  it('returns a scale of the given color', () => {
-    const scale = createColorScale({ color: [HEX_WHITE, HEX_BLACK] });
-    expect(scale(0)).toEqual(HEX_WHITE);
-    expect(scale(1)).toEqual(HEX_BLACK);
-  });
-
-  it('accepts custom domains', () => {
-    const scale = createColorScale({
-      color: [HEX_WHITE, HEX_BLACK],
-      domain: [10, 100],
-    });
-    expect(scale(10)).toEqual(HEX_WHITE);
-    expect(scale(100)).toEqual(HEX_BLACK);
-  });
-
-  it('reverses the scale', () => {
-    const scale = createColorScale({
-      color: [HEX_WHITE, HEX_BLACK],
-      reversed: true,
-    });
-    expect(scale(0)).toEqual(HEX_BLACK);
-    expect(scale(1)).toEqual(HEX_WHITE);
-  });
-
-  it('reverses the scale with named colors', () => {
-    const scale = createColorScale({ reversed: true });
-    expect(scale(0)).toBe(HEX_BLACK);
-    expect(scale(1)).toBe(HEX_WHITE);
-  });
-});
 
 describe('ColorScale', () => {
   let scale;

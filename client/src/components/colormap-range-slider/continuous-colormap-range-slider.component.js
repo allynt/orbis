@@ -8,7 +8,7 @@ import {
   VictoryLabel,
 } from 'victory';
 import { isEqual } from 'lodash';
-import { createColorScale } from 'utils/color';
+import { ColorScale } from 'utils/color';
 
 const DEFAULT_CLIP_POSITION = {
   translateX: 0,
@@ -33,7 +33,7 @@ const ContinuousColorMapRangeSlider = ({
   onChange,
 }) => {
   const brushRef = useRef();
-  const colorScale = createColorScale({ color, domain, reversed, clip });
+  const colorScale = new ColorScale({ color, domain, reversed, clip });
   const data = [{ x: 0.5, y: domain[1], y0: domain[0] }];
   const [brushDomain, setBrushDomain] = useState({ y: domain });
   const [clipPosition, setClipPosition] = useState(DEFAULT_CLIP_POSITION);
@@ -107,7 +107,7 @@ const ContinuousColorMapRangeSlider = ({
                 <stop
                   key={i}
                   offset={`${(i / (domain[1] - domain[0])) * 100}%`}
-                  stopColor={colorScale(domain[0] + i).toString()}
+                  stopColor={colorScale.get(domain[0] + i)}
                 />
               ))}
           </linearGradient>
