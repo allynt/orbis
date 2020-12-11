@@ -34,13 +34,20 @@ export class ColorScale {
    *   color?: ColorMap | string[]
    *   domain?: [number, number]
    *   reversed?: boolean
+   *   clip?: [number, number]
    * }} [parameters]
    */
-  constructor({ color = 'Greys', domain = [0, 1], reversed = false } = {}) {
+  constructor({
+    color = 'Greys',
+    domain = [0, 1],
+    reversed = false,
+    clip,
+  } = {}) {
     /** @type {import('d3-scale').ScaleSequential<string, never>} */
     this._scale = scaleSequential();
     this.color = color;
     this.domain = domain;
+    this.clip = clip;
     this.reversed = reversed;
   }
 
@@ -48,8 +55,9 @@ export class ColorScale {
     return this._scale.domain();
   }
 
-  set domain(newDomain) {
-    this._scale.domain(newDomain);
+  set domain(domain) {
+    this._domain = domain;
+    this._scale.domain(domain);
   }
 
   /**
@@ -74,6 +82,23 @@ export class ColorScale {
     this._reversed = reversed;
     if (this._reversed) this._scale.domain([this.domain[1], this.domain[0]]);
     else this._scale.domain(this.domain);
+  }
+
+  /**
+   * @type {[number, number] | false | undefined}
+   */
+  get clip() {
+    return this._clip;
+  }
+
+  set clip(clip) {
+    this._clip = clip;
+    if (!clip) {
+      this._scale.domain(this._domain);
+      return;
+    }
+    // @ts-ignore
+    this._scale.domain(this._clip);
   }
 
   /**

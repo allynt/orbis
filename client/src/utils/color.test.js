@@ -130,15 +130,28 @@ describe.only('ColorScale', () => {
 
     it('setter', () => {
       scale = new ColorScale({ domain: [0, 100] });
-      scale.clip([10, 90]);
+      scale.clip = [10, 90];
     });
+  });
+
+  it('can unset clipping', () => {
+    const scale = new ColorScale({ domain: [0, 100], clip: [10, 90] });
+    expect(scale.get(0)).toBe(WHITE);
+    expect(scale.get(10)).toBe(WHITE);
+    expect(scale.get(100)).toBe(BLACK);
+    expect(scale.get(90)).toBe(BLACK);
+    scale.clip = false;
+    expect(scale.get(0)).toBe(WHITE);
+    expect(scale.get(10)).not.toBe(WHITE);
+    expect(scale.get(100)).toBe(BLACK);
+    expect(scale.get(90)).not.toBe(BLACK);
   });
 
   describe('returns colors in different formats', () => {
     describe('hex', () => {
       afterEach(() => {
-        expect(scale.get(0)).toBe('#000000');
-        expect(scale.get(1)).toBe('#ffffff');
+        expect(scale.get(0)).toBe('#ffffff');
+        expect(scale.get(1)).toBe('#000000');
       });
 
       it('constructor', () => {
@@ -147,7 +160,7 @@ describe.only('ColorScale', () => {
 
       it('setter', () => {
         scale = new ColorScale();
-        scale.format('hex');
+        scale.format = 'hex';
       });
     });
 
@@ -163,7 +176,7 @@ describe.only('ColorScale', () => {
 
       it('setter', () => {
         scale = new ColorScale();
-        scale.format('rgb');
+        scale.format = 'rgb';
       });
     });
 
@@ -179,7 +192,7 @@ describe.only('ColorScale', () => {
 
       it('setter', () => {
         scale = new ColorScale();
-        scale.format('array');
+        scale.format = 'array';
       });
     });
   });
