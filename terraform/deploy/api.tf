@@ -10,10 +10,6 @@ resource "kubernetes_deployment" "api_deployment" {
   metadata {
     name   = local.api_name
     labels = local.api_labels
-
-    annotations = {
-      "linkerd.io/inject" = "enabled"
-    }
   }
 
   timeouts {
@@ -33,10 +29,6 @@ resource "kubernetes_deployment" "api_deployment" {
     template {
       metadata {
         labels = local.api_labels
-
-        annotations = {
-          "linkerd.io/inject" = "enabled"
-        }
       }
 
       spec {
