@@ -1,19 +1,19 @@
 const authority = 'astrosat',
   namespace = 'mysupplylynk',
-  name = 'orbis',
-  version = 'latest';
+  name = 'non-registered',
+  version = 'v1';
 
 module.exports = {
-  source_id: 'astrosat/mysupplylynk/orbis/latest',
+  source_id: 'astrosat/mysupplylynk/non-registered/v1',
   authority,
   namespace,
   name,
   version,
   type: 'vector',
   status: 'published',
-  data: `static-data/${authority}/${namespace}/${name}/${version}/suppliers.js`,
+  data: `static-data/${authority}/${namespace}/${name}/${version}/non-registered.js`,
   metadata: {
-    label: 'MySupplyLynk',
+    label: 'Non-registered Suppliers',
     range: 'false',
     domain: 'MySupplyLynk',
     description: 'Suppliers who can provide items',
@@ -29,8 +29,8 @@ module.exports = {
           name: 'GeoJsonClusteredIconLayer',
           props: {
             config: 'pinIconConfig',
-            pinColor: 'purple',
-            onClick: true,
+            pinColor: 'cyan',
+            onClick: false,
             onHover: true,
           },
         },

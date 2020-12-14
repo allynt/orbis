@@ -1,4 +1,5 @@
 const suppliers = require('./suppliers');
-const moreSuppliers = require('./more-suppliers');
+const nonRegistered = require('./non-registered');
+const cqc = require('./cqc');
 
-module.exports = [suppliers, moreSuppliers];
+module.exports = [suppliers, nonRegistered, cqc];

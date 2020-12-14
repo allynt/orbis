@@ -28,10 +28,13 @@ const configuration = ({
   const getFeatures = () => {
     const obj = data;
 
-    const hasCategory = feat =>
-      feat.properties.Items.some(item =>
-        categoryFilters?.[id].includes(item.Category),
-      );
+    const hasCategory = feat => {
+      return feat.properties.Items
+        ? feat.properties.Items.some(item =>
+            categoryFilters?.[id].includes(item.Category),
+          )
+        : categoryFilters?.[id].includes(feat?.properties?.Category);
+    };
 
     let filteredFeatures;
     if (obj) {
@@ -64,17 +67,22 @@ const configuration = ({
     } else {
       if (onClick !== false) {
         dispatch(setDialogFeatures([info.object.properties]));
-        dispatch(setPopupFeatures([]));
+        dispatch(setPopupFeatures({ id: undefined, features: [] }));
         dispatch(toggleDialog());
       }
     }
   };
 
   const handleHover = info => {
-    if (popupFeatures.length > 1) return;
+    if (popupFeatures.features.length > 1) return;
     if (!info?.object?.properties?.cluster) {
       dispatch(
-        info.object ? setPopupFeatures([info.object]) : setPopupFeatures([]),
+        info.object
+          ? setPopupFeatures({
+              id: info.layer.props.id,
+              features: [info.object],
+            })
+          : setPopupFeatures({ id: undefined, features: [] }),
       );
     }
   };

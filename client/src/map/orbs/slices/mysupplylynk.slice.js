@@ -1,21 +1,22 @@
 import { createSlice, createSelector } from '@reduxjs/toolkit';
 
-import { CATEGORIES } from './mysupplylynk.constants';
+import { CATEGORIES, LAYERS } from './mysupplylynk.constants';
 
 const mySupplyLynkSlice = createSlice({
   name: 'mySupplyLynk',
   initialState: {
     categoryFilters: {
-      'astrosat/mysupplylynk/suppliers/latest': CATEGORIES,
-      'astrosat/mysupplylynk/more-suppliers/latest': CATEGORIES,
+      [LAYERS.suppliers]: CATEGORIES,
+      [LAYERS.nonRegistered]: CATEGORIES,
+      [LAYERS.cqc]: CATEGORIES,
     },
-    popupFeatures: [],
+    popupFeatures: { id: undefined, features: [] },
     dialogFeatures: [],
     dialogVisible: false,
   },
   reducers: {
     setSelectedFeatures: (state, { payload }) => {
-      state.categoryFilters[payload.type] = payload.value;
+      state.categoryFilters[payload.layer] = payload.value;
     },
     setPopupFeatures: (state, { payload }) => {
       state.popupFeatures = payload;

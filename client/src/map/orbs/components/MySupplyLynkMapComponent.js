@@ -1,4 +1,5 @@
 import React, { useRef } from 'react';
+import { pickBy } from 'lodash';
 import { Popup } from 'react-map-gl';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -10,6 +11,9 @@ import {
   dialogVisibleSelector,
 } from '../slices/mysupplylynk.slice';
 import { Dialog } from './mysupplylynk-dialog/dialog.component';
+
+import FeatureDetail from 'components/feature-detail/feature-detail.component';
+
 import MySupplyLynkFeatureDetail from './mysupplylynk-feature-detail/mysupplylynk-feature-detail.component';
 
 const MySupplyLynkMapComponent = ({ name }) => {
@@ -21,28 +25,47 @@ const MySupplyLynkMapComponent = ({ name }) => {
   const ref = useRef(null);
   const dialogVisible = useSelector(state => dialogVisibleSelector(state.orbs));
 
+  // console.log('popupFeatures: ', popupFeatures);
+
+  const test = pickBy(popupFeatures?.features[0]?.properties, (_, key) => {
+    return [
+      'Company',
+      'Postcode',
+      'Email Address',
+      'Telephone',
+      'Website',
+      'Category',
+    ].includes(key);
+  });
+
   return (
     <>
-      {popupFeatures?.length && (
+      {popupFeatures?.features?.length && (
         <Popup
           key="popup"
-          longitude={popupFeatures[0]?.geometry.coordinates[0]}
-          latitude={popupFeatures[0]?.geometry.coordinates[1]}
-          closeButton={popupFeatures.length > 1}
+          longitude={popupFeatures?.features[0]?.geometry.coordinates[0]}
+          latitude={popupFeatures?.features[0]?.geometry.coordinates[1]}
+          closeButton={popupFeatures?.features.length > 1}
           onClose={() => dispatch(setPopupFeatures([]))}
           closeOnClick={false}
           offsetTop={-37}
           captureClick
           captureScroll
         >
-          <MySupplyLynkFeatureDetail
-            data={popupFeatures.map(feature => feature.properties)}
-            onSupplierClick={supplier => {
-              dispatch(setDialogFeatures([supplier]));
-              dispatch(toggleDialog());
-            }}
-            name={name}
-          />
+          {popupFeatures.id === 'astrosat/mysupplylynk/orbis/latest' && (
+            <MySupplyLynkFeatureDetail
+              id={popupFeatures.id}
+              data={popupFeatures.features.map(feature => feature.properties)}
+              onSupplierClick={supplier => {
+                dispatch(setDialogFeatures([supplier]));
+                dispatch(toggleDialog());
+              }}
+              name={name}
+            />
+          )}
+          {popupFeatures.id === 'astrosat/mysupplylynk/non-registered/v1' && (
+            <FeatureDetail title={name} features={[test]} />
+          )}
         </Popup>
       )}
       {dialogFeatures?.length && (

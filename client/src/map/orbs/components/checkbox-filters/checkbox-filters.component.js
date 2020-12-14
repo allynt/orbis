@@ -40,13 +40,13 @@ export const CheckboxFilters = ({ selectedLayer, dispatch }) => {
     checked
       ? dispatch(
           setSelectedFeatures({
-            type: selectedLayer.source_id,
+            layer: selectedLayer.source_id,
             value: [...sourceCategories, value],
           }),
         )
       : dispatch(
           setSelectedFeatures({
-            type: selectedLayer.source_id,
+            layer: selectedLayer.source_id,
             value: sourceCategories.filter(feat => feat !== value),
           }),
         );
@@ -59,7 +59,7 @@ export const CheckboxFilters = ({ selectedLayer, dispatch }) => {
         return (
           <Checkbox
             key={name}
-            id={name}
+            id={`${selectedLayer.source_id}-${name}`}
             className={styles.checkbox}
             checked={checked}
             name="msl-filter-checkbox"
