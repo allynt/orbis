@@ -1,4 +1,5 @@
 .panel {
+  --toolbar-width: 6.875em;
   --checkbox--label--color: #fff;
   --checkbox--border-color: #fff;
   position: absolute;

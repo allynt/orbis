@@ -1,6 +1,4 @@
 .layout {
-  /* display: grid; */
-  --toolbar-width: 6.875em;
   display: flex;
   position: absolute;
   top: 0;
