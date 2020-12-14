@@ -3,7 +3,7 @@ import { render } from '@testing-library/react';
 import { Provider } from 'react-redux';
 import configureMockStore from 'redux-mock-store';
 
-import { CATEGORIES } from '../../slices/mysupplylynk.constants';
+import { CATEGORIES, LAYERS } from '../../slices/mysupplylynk.constants';
 
 import { CheckboxFilters } from './checkbox-filters.component';
 
@@ -12,7 +12,11 @@ const wrapper = ({ children }) => (
     store={configureMockStore()({
       orbs: {
         mySupplyLynk: {
-          categoryFilters: CATEGORIES,
+          categoryFilters: {
+            [LAYERS.suppliers]: CATEGORIES,
+            [LAYERS.nonRegistered]: CATEGORIES,
+            [LAYERS.cqc]: CATEGORIES,
+          },
         },
       },
     })}
@@ -22,9 +26,12 @@ const wrapper = ({ children }) => (
 
 describe('Checkbox Filters', () => {
   it('renders pre-checked checkboxes for all of the category types', () => {
-    const { getByText, getByLabelText } = render(<CheckboxFilters />, {
-      wrapper,
-    });
+    const { getByText, getByLabelText } = render(
+      <CheckboxFilters selectedLayer={{ source_id: LAYERS.suppliers }} />,
+      {
+        wrapper,
+      },
+    );
 
     CATEGORIES.forEach(cat => {
       expect(getByText(cat)).toBeInTheDocument();

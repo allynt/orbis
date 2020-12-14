@@ -22,7 +22,7 @@ export const CheckboxFilters = ({ selectedLayer, dispatch }) => {
     categoryFiltersSelector(state.orbs),
   );
 
-  const sourceCategories = selectedFeatures?.[selectedLayer.source_id];
+  const sourceCategories = selectedFeatures?.[selectedLayer?.source_id];
 
   const CATEGORY_NAME_AND_ICON = CATEGORIES.map(name => ({
     name,
@@ -55,11 +55,11 @@ export const CheckboxFilters = ({ selectedLayer, dispatch }) => {
   return (
     <>
       {CATEGORY_NAME_AND_ICON.map(({ name, Icon }) => {
-        const checked = sourceCategories.includes(name);
+        const checked = sourceCategories?.includes(name);
         return (
           <Checkbox
             key={name}
-            id={`${selectedLayer.source_id}-${name}`}
+            id={`${selectedLayer?.source_id}-${name}`}
             className={styles.checkbox}
             checked={checked}
             name="msl-filter-checkbox"

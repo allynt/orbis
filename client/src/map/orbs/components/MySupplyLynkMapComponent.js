@@ -28,7 +28,7 @@ const MySupplyLynkMapComponent = ({ name }) => {
   const dialogVisible = useSelector(state => dialogVisibleSelector(state.orbs));
 
   const nonRegisteredFooter = {
-    label: 'Register now at ',
+    label: 'Register now at',
     content: 'www.MySupplyLynk.net',
   };
 
@@ -48,13 +48,11 @@ const MySupplyLynkMapComponent = ({ name }) => {
         >
           {popupFeatures.id === LAYERS.suppliers && (
             <MySupplyLynkFeatureDetail
-              id={popupFeatures.id}
               data={popupFeatures.features.map(feature => feature.properties)}
               onSupplierClick={supplier => {
                 dispatch(setDialogFeatures([supplier]));
                 dispatch(toggleDialog());
               }}
-              name={name}
             />
           )}
           {popupFeatures.id === LAYERS.nonRegistered && (
