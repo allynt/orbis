@@ -1,0 +1,19 @@
+.sidePanel {
+  background-color: var(--color-secondary);
+  color: #ffffff;
+  height: 100%;
+  width: 20rem;
+}
+
+.left {
+  border-radius: 0 1rem 1rem 0;
+}
+
+.right {
+  border-radius: 1rem 0 0 1rem;
+}
+
+.header {
+  padding: 1em 18px;
+  border-bottom: 1px solid var(--color-primary);
+}
