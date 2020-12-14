@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import Measure from 'react-measure';
 import { useDispatch, useSelector } from 'react-redux';
 
-import SideMenu from '../control-panel/control-panel.component';
+import ControlPanel from '../control-panel/control-panel.component';
 import Toolbar from '../toolbar/toolbar.component';
 import { getToolbarItems } from '../toolbar/toolbar-config';
 
@@ -101,7 +101,7 @@ const MapLayout = () => {
           {user && (
             <>
               <Toolbar user={user} items={toolbarItems} />
-              <SideMenu />
+              <ControlPanel />
             </>
           )}
           {times(mapCount, i => (

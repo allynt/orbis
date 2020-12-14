@@ -30,7 +30,7 @@ import SatellitesPanel from '../satellites/satellites-panel.component';
 
 import styles from './control-panel.module.css';
 
-const SideMenu = () => {
+const ControlPanel = () => {
   const dispatch = useDispatch();
   const isMenuVisible = useSelector(selectIsMenuVisible);
   const heading = useSelector(selectHeading);
@@ -67,4 +67,4 @@ const SideMenu = () => {
   );
 };
 
-export default SideMenu;
+export default ControlPanel;
