@@ -1,24 +1,3 @@
-.panel {
-  --toolbar-width: 6.875em;
-  --checkbox--label--color: #fff;
-  --checkbox--border-color: #fff;
-  position: absolute;
-  top: 0;
-  left: calc(-25rem + var(--toolbar-width));
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  visibility: hidden;
-  transition: visibility 500ms, left 500ms ease-in-out;
-  z-index: 3;
-  border-left: 2px solid transparent;
-}
-
-.show {
-  left: calc(var(--toolbar-width) - 0.6875rem);
-  visibility: visible;
-}
-
 .header {
   display: flex;
   justify-content: space-between;

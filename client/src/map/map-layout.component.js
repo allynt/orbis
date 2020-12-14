@@ -14,6 +14,7 @@ import { selectedPinnedScenesSelector } from 'satellites/satellites.slice';
 import Map from './map.component';
 import styles from './map-layout.module.css';
 import { isCompareModeSelector } from './map.slice';
+import { SidePanel } from 'components/side-panel/side-panel.component';
 
 const times = (n, fn) => {
   const result = [];
@@ -93,38 +94,12 @@ const MapLayout = () => {
           }`}
         >
           <ControlPanel />
-          {times(mapCount, i => (
-            <div
-              key={i}
-              style={
-                i === 0
-                  ? {
-                      position: 'absolute',
-                      width: '100%',
-                      height: '100%',
-                      top: 0,
-                      left: 0,
-                    }
-                  : {
-                      position: 'absolute',
-                      width: '100%',
-                      height: '100%',
-                      top: 0,
-                      left: 0,
-                      clip: `rect(0px, 999em, 100vh, ${
-                        compareRatio * bounds.width
-                      }px)`,
-                    }
-              }
-            >
-              <Map
-                compareRatio={compareRatio}
-                compare={isCompareMode}
-                selectedPinnedScenes={selectedPinnedScenes}
-                comparisonScene={selectedPinnedScenes[i]}
-              />
-            </div>
-          ))}
+          <Map
+            compareRatio={compareRatio}
+            compare={isCompareMode}
+            selectedPinnedScenes={selectedPinnedScenes}
+          />
+          <SidePanel orientation="right" open />
           {isCompareMode && (
             <div
               className={styles.compare}

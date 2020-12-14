@@ -89,7 +89,7 @@ const Map = () => {
   };
 
   return (
-    <>
+    <div style={{ position: 'relative', width: '100%', height: '100%' }}>
       {bookmarksLoading && (
         <div className={styles.loadMask} data-testid="load-mask">
           <LoadMask />
@@ -132,7 +132,7 @@ const Map = () => {
           className={styles.scaleControl}
           style={{
             right:
-              selectedMapStyle?.id === 'satellite' ? '20.25rem' : '17.25rem',
+              selectedMapStyle?.id === 'satellite' ? '22.25rem' : '19.25rem',
           }}
         >
           <ScaleControl unit="metric" />
@@ -156,7 +156,7 @@ const Map = () => {
           {mapComponents}
         </React.Suspense>
       </ReactMapGl>
-    </>
+    </div>
   );
 };
 

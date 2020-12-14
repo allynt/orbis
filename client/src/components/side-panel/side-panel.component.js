@@ -9,6 +9,7 @@ import styles from './side-panel.module.css';
  *  className?: string
  *  contentClassName?: string
  *  header?: React.ReactNode
+ *  open?: boolean
  *  orientation?: 'left' | 'right'
  * }} props
  */
@@ -17,9 +18,14 @@ export const SidePanel = ({
   className,
   contentClassName,
   header,
+  open = false,
   orientation = 'left',
 }) => (
-  <div className={clsx(styles.sidePanel, styles[orientation], className)}>
+  <div
+    className={clsx(className, styles.sidePanel, styles[orientation], {
+      [styles.open]: open,
+    })}
+  >
     {header && <div className={styles.header}>{header}</div>}
     <div className={clsx(styles.content, contentClassName)}>{children}</div>
   </div>

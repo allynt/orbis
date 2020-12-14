@@ -30,7 +30,6 @@ import SatellitesPanel from '../satellites/satellites-panel.component';
 
 import styles from './control-panel.module.css';
 import { SidePanel } from 'components/side-panel/side-panel.component';
-import clsx from 'clsx';
 import Toolbar from './toolbar.component';
 import { getToolbarItems } from './toolbar-config';
 import { userSelector } from 'accounts/accounts.selectors';
@@ -48,7 +47,7 @@ const ControlPanel = () => {
     <>
       <Toolbar user={user} items={toolbarItems} />
       <SidePanel
-        className={clsx(styles.panel, { [styles.show]: isMenuVisible })}
+        open={isMenuVisible}
         contentClassName={styles.content}
         header={
           <div className={styles.header}>

@@ -1,16 +1,41 @@
 .sidePanel {
+  --width: 20rem;
+  --width-negative: calc(-1 * var(--width));
+  --border-radius: 1rem;
+  --border-radius-negative: calc(-1 * var(--border-radius));
   background-color: var(--color-secondary);
   color: #ffffff;
   height: 100%;
-  width: 20rem;
+  width: var(--width);
+  flex-shrink: 0;
+  transition: transform 250ms ease-in-out, margin 300ms ease-in-out;
+  z-index: 3;
 }
 
 .left {
-  border-radius: 0 1rem 1rem 0;
+  border-top-right-radius: var(--border-radius);
+  border-bottom-right-radius: var(--border-radius);
+  transform: translateX(var(--width-negative));
+  margin-right: var(--width-negative);
 }
 
 .right {
-  border-radius: 1rem 0 0 1rem;
+  border-top-left-radius: var(--border-radius);
+  border-bottom-left-radius: var(--border-radius);
+  transform: translateX(var(--width));
+  margin-left: var(--width-negative);
+}
+
+.open {
+  transform: translateX(0);
+}
+
+.left.open {
+  margin-right: var(--border-radius-negative);
+}
+
+.right.open {
+  margin-left: var(--border-radius-negative);
 }
 
 .header {
