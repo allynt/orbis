@@ -16,6 +16,7 @@ type SharedProps = {
 export type ContinuousColorMapRangeSliderProps = {
   units?: string;
   domain?: [number, number];
+  clip?: [number, number];
   precision?: number;
 } & SharedProps;
 
