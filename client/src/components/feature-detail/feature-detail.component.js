@@ -40,7 +40,7 @@ const ObjectItem = ({ jsonKey, value }) => (
   <li className={styles.groupedListItem}>
     <ul className={styles.table}>
       {jsonKey && <h1 className={styles.listTitle}>{jsonKey}</h1>}
-      {mapObject(value)}
+      {mapObject(value, undefined)}
     </ul>
   </li>
 );
@@ -93,34 +93,42 @@ const ArrayItem = ({ jsonKey, value }) => (
   </li>
 );
 
-const mapObject = feature => {
+const mapObject = (feature, footer) => {
   return (
-    feature &&
-    Object.entries(feature).map(([jsonKey, value], i) => {
-      switch (getTypeForValue(value)) {
-        case VALUE_TYPE.array:
-          return (
-            <ArrayItem
-              key={`${jsonKey}-${i}`}
-              jsonKey={jsonKey}
-              value={value}
-            />
-          );
-        case VALUE_TYPE.object:
-          return (
-            <ObjectItem
-              key={`${jsonKey}-${i}`}
-              jsonKey={jsonKey}
-              value={value}
-            />
-          );
-        case VALUE_TYPE.item:
-        default:
-          return (
-            <Item key={`${jsonKey}-${i}`} jsonKey={jsonKey} value={value} />
-          );
-      }
-    })
+    <>
+      {feature &&
+        Object.entries(feature).map(([jsonKey, value], i) => {
+          switch (getTypeForValue(value)) {
+            case VALUE_TYPE.array:
+              return (
+                <ArrayItem
+                  key={`${jsonKey}-${i}`}
+                  jsonKey={jsonKey}
+                  value={value}
+                />
+              );
+            case VALUE_TYPE.object:
+              return (
+                <ObjectItem
+                  key={`${jsonKey}-${i}`}
+                  jsonKey={jsonKey}
+                  value={value}
+                />
+              );
+            case VALUE_TYPE.item:
+            default:
+              return (
+                <Item key={`${jsonKey}-${i}`} jsonKey={jsonKey} value={value} />
+              );
+          }
+        })}
+      {footer && (
+        <li className={styles.listItem}>
+          {<span className={styles.label}>{footer.label}</span>}
+          <span className={styles.value}>{footer.content}</span>
+        </li>
+      )}
+    </>
   );
 };
 
@@ -129,19 +137,25 @@ const mapObject = feature => {
  * @property {{[key: string]: any}[]} [features]
  * @property {React.ReactNode} [children]
  * @property {string} [title]
+ * @property {object} [footer]
  */
 
 /**
  * @param {FeatureDetailProps} props
  */
-const FeatureDetail = ({ children, features, title = DEFAULT_TITLE }) => (
+const FeatureDetail = ({
+  children,
+  features,
+  title = DEFAULT_TITLE,
+  footer,
+}) => (
   <div className={styles.featureDetail}>
     <h1 className={styles.header}>{title}</h1>
     <div className={styles.content}>
       {features &&
         features?.map(feature => (
           <ul key={feature.id} className={styles.list}>
-            {mapObject(feature)}
+            {mapObject(feature, footer)}
           </ul>
         ))}
       {children && children}

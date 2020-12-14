@@ -12,6 +12,8 @@ import {
 } from '../slices/mysupplylynk.slice';
 import { Dialog } from './mysupplylynk-dialog/dialog.component';
 
+import { LAYERS } from '../slices/mysupplylynk.constants';
+
 import FeatureDetail from 'components/feature-detail/feature-detail.component';
 
 import MySupplyLynkFeatureDetail from './mysupplylynk-feature-detail/mysupplylynk-feature-detail.component';
@@ -25,18 +27,10 @@ const MySupplyLynkMapComponent = ({ name }) => {
   const ref = useRef(null);
   const dialogVisible = useSelector(state => dialogVisibleSelector(state.orbs));
 
-  // console.log('popupFeatures: ', popupFeatures);
-
-  const test = pickBy(popupFeatures?.features[0]?.properties, (_, key) => {
-    return [
-      'Company',
-      'Postcode',
-      'Email Address',
-      'Telephone',
-      'Website',
-      'Category',
-    ].includes(key);
-  });
+  const nonRegisteredFooter = {
+    label: 'Register now at ',
+    content: 'www.MySupplyLynk.net',
+  };
 
   return (
     <>
@@ -52,7 +46,7 @@ const MySupplyLynkMapComponent = ({ name }) => {
           captureClick
           captureScroll
         >
-          {popupFeatures.id === 'astrosat/mysupplylynk/orbis/latest' && (
+          {popupFeatures.id === LAYERS.suppliers && (
             <MySupplyLynkFeatureDetail
               id={popupFeatures.id}
               data={popupFeatures.features.map(feature => feature.properties)}
@@ -63,8 +57,23 @@ const MySupplyLynkMapComponent = ({ name }) => {
               name={name}
             />
           )}
-          {popupFeatures.id === 'astrosat/mysupplylynk/non-registered/v1' && (
-            <FeatureDetail title={name} features={[test]} />
+          {popupFeatures.id === LAYERS.nonRegistered && (
+            <FeatureDetail
+              title={name}
+              features={[
+                pickBy(popupFeatures?.features[0]?.properties, (_, key) => {
+                  return [
+                    'Company',
+                    'Postcode',
+                    'Email Address',
+                    'Telephone',
+                    'Website',
+                    'Category',
+                  ].includes(key);
+                }),
+              ]}
+              footer={nonRegisteredFooter}
+            />
           )}
         </Popup>
       )}

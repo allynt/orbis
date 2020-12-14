@@ -1,7 +1,6 @@
 import React from 'react';
 
 import styles from './mysupplylynk-feature-detail.module.css';
-import { LAYERS } from '../../slices/mysupplylynk.constants';
 
 const DEFAULT_TITLE = 'Feature Details';
 const NOT_AVAILABLE = 'Not Available';
@@ -16,41 +15,43 @@ const getCategoriesString = items => {
     : [NOT_AVAILABLE];
 };
 
-const SingleSupplierContent = ({ id, data }) => (
+const SingleSupplierContent = ({
+  'Address Line 1': AddressLine1,
+  'Address Line 2': AddressLine2,
+  Postcode,
+  URL,
+  Items,
+}) => (
   <ul className={styles.list}>
-    {Object.keys(data).map(key => {
-      if (Array.isArray(data[key])) {
-        return (
-          <li className={styles.listItem}>
-            <span className={styles.label}>{key}: </span>
-            <span className={styles.value}>
-              {getCategoriesString(data[key])}
-            </span>
-          </li>
-        );
-      } else {
-        return (
-          <li className={styles.listItem}>
-            <span className={styles.label}>{key}</span>
-            <span className={styles.value}>{data[key] || NOT_AVAILABLE}</span>
-          </li>
-        );
-      }
-    })}
     <li className={styles.listItem}>
-      {id === LAYERS.suppliers || id === LAYERS.cqc ? (
-        <span className={styles.label}>Click for details!</span>
-      ) : (
-        <>
-          <span className={styles.value}>Register now at </span>
-          <span className={styles.label}>www.MySupplyLynk.net</span>
-        </>
-      )}
+      <span className={styles.label}>Address Line 1: </span>
+      <span className={styles.value}>{AddressLine1 || NOT_AVAILABLE}</span>
+    </li>
+    <li className={styles.listItem}>
+      <span className={styles.label}>Address Line 2: </span>
+      <span className={styles.value}>{AddressLine2 || NOT_AVAILABLE}</span>
+    </li>
+    <li className={styles.listItem}>
+      <span className={styles.label}>Postcode: </span>
+      <span className={styles.value}>{Postcode || NOT_AVAILABLE}</span>
+    </li>
+    <li className={styles.listItem}>
+      <span className={styles.label}>Website: </span>
+      <span className={styles.value}>{URL || NOT_AVAILABLE}</span>
+    </li>
+    <li className={styles.listItem}>
+      <span>
+        <span className={styles.label}>Supply Categories:</span>
+        {Items && getCategoriesString(Items)}
+      </span>
+    </li>
+    <li className={styles.listItem}>
+      <span className={styles.label}>Click for details!</span>
     </li>
   </ul>
 );
 
-const MultipleSupplierContent = ({ id, suppliers, onSupplierClick }) => (
+const MultipleSupplierContent = ({ suppliers, onSupplierClick }) => (
   <ul className={styles.list}>
     {suppliers.map(supplier => (
       <li
@@ -70,25 +71,22 @@ const MultipleSupplierContent = ({ id, suppliers, onSupplierClick }) => (
   </ul>
 );
 
-const MySupplyLynkFeatureDetail = ({ id, data, onSupplierClick }) => {
-  return (
-    <div className={styles.featureDetail}>
-      <h1 className={styles.header}>
-        {data?.length === 1 ? data[0]?.Company || DEFAULT_TITLE : DEFAULT_TITLE}
-      </h1>
-      <div className={styles.content}>
-        {data.length > 1 ? (
-          <MultipleSupplierContent
-            id={id}
-            suppliers={data}
-            onSupplierClick={onSupplierClick}
-          />
-        ) : (
-          <SingleSupplierContent id={id} data={data[0]} />
-        )}
-      </div>
+const MySupplyLynkFeatureDetail = ({ data, onSupplierClick }) => (
+  <div className={styles.featureDetail}>
+    <h1 className={styles.header}>
+      {data?.length === 1 ? data[0]?.Name : DEFAULT_TITLE}
+    </h1>
+    <div className={styles.content}>
+      {data.length > 1 ? (
+        <MultipleSupplierContent
+          suppliers={data}
+          onSupplierClick={onSupplierClick}
+        />
+      ) : (
+        <SingleSupplierContent {...data[0]} />
+      )}
     </div>
-  );
-};
+  </div>
+);
 
 export default MySupplyLynkFeatureDetail;
