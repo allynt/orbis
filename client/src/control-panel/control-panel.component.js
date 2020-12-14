@@ -29,6 +29,8 @@ import DataLayers from '../data-layers/data-layers.component';
 import SatellitesPanel from '../satellites/satellites-panel.component';
 
 import styles from './control-panel.module.css';
+import { SidePanel } from 'components/side-panel/side-panel.component';
+import clsx from 'clsx';
 
 const ControlPanel = () => {
   const dispatch = useDispatch();
@@ -38,32 +40,30 @@ const ControlPanel = () => {
   const visibleMenuItem = useSelector(selectVisibleMenuItem);
 
   return (
-    <div
-      className={`${styles['side-menu-container']} ${
-        isMenuVisible ? styles.show : ''
-      }`}
-    >
-      <div className={styles.header}>
-        <div className={styles.headings}>
-          <h3 className={styles.heading}>{heading}</h3>
-          <p className={styles.strapline}>{strapline}</p>
+    <SidePanel
+      className={clsx(styles.panel, { [styles.show]: isMenuVisible })}
+      contentClassName={styles.content}
+      header={
+        <div className={styles.header}>
+          <div className={styles.headings}>
+            <h3 className={styles.heading}>{heading}</h3>
+            <p className={styles.strapline}>{strapline}</p>
+          </div>
+          <CloseButton
+            className={styles.closeButton}
+            onClick={() => dispatch(closeMenu())}
+          />
         </div>
-        <CloseButton
-          className={styles.closeButton}
-          onClick={() => dispatch(closeMenu())}
-        />
-      </div>
-
-      <div className={styles.sidebar}>
-        {visibleMenuItem === DATA_LAYERS && <DataLayers />}
-        {visibleMenuItem === SATELLITE_LAYERS && <SatellitesPanel />}
-        {visibleMenuItem === ANNOTATIONS && <AnnotationsPanel />}
-        {visibleMenuItem === BOOKMARKS && <BookmarksPanel />}
-        {visibleMenuItem === STORIES && <StoriesPanel />}
-        {visibleMenuItem === PROFILE && <Profile />}
-        {visibleMenuItem === CHANGE_PASSWORD && <PasswordChangeForm />}
-      </div>
-    </div>
+      }
+    >
+      {visibleMenuItem === DATA_LAYERS && <DataLayers />}
+      {visibleMenuItem === SATELLITE_LAYERS && <SatellitesPanel />}
+      {visibleMenuItem === ANNOTATIONS && <AnnotationsPanel />}
+      {visibleMenuItem === BOOKMARKS && <BookmarksPanel />}
+      {visibleMenuItem === STORIES && <StoriesPanel />}
+      {visibleMenuItem === PROFILE && <Profile />}
+      {visibleMenuItem === CHANGE_PASSWORD && <PasswordChangeForm />}
+    </SidePanel>
   );
 };
 

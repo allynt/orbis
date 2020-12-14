@@ -1,4 +1,4 @@
-.side-menu-container {
+.panel {
   --checkbox--label--color: #fff;
   --checkbox--border-color: #fff;
   position: absolute;
@@ -7,23 +7,49 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 20rem;
-  height: 100%;
-  background-color: var(--color-secondary);
-  border-left: 2px solid var(--color-primary);
-  color: #fff;
   visibility: hidden;
   transition: visibility 500ms, left 500ms ease-in-out;
   z-index: 3;
-  border-radius: 0 0.3rem 0.3rem 0;
+  border-left: 2px solid transparent;
 }
 
 .show {
   left: calc(var(--toolbar-width) - 0.6875rem);
   visibility: visible;
-  border-top-right-radius: 1rem;
-  border-bottom-right-radius: 1rem;
 }
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.headings {
+  display: flex;
+  flex-direction: column;
+}
+
+.headings .heading {
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  margin-bottom: 5px;
+}
+
+.headings .strapline {
+  color: lightgray;
+  font-size: 0.75rem;
+}
+
+.content {
+  height: 100%;
+  width: 100%;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+/* External */
 
 .container {
   padding: 1rem;
@@ -59,45 +85,4 @@
 
 .fields > * {
   margin-bottom: 1rem;
-}
-
-.sidebar {
-  height: 100%;
-  width: 100%;
-  overflow-x: hidden;
-  overflow-y: auto;
-}
-
-.header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 100%;
-  border-bottom: 2px solid var(--color-primary);
-}
-
-.headings,
-.headings .heading,
-.headings .strapline {
-  padding: 0.3rem;
-}
-
-.headings {
-  display: flex;
-  flex-direction: column;
-}
-
-.headings .heading {
-  font-size: 0.875rem;
-  font-weight: 600;
-  text-transform: uppercase;
-}
-
-.headings .strapline {
-  color: lightgray;
-  font-size: 0.75rem;
-}
-
-.closeButton {
-  align-self: flex-start;
 }
