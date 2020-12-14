@@ -12,7 +12,7 @@ import accounts from './accounts/accounts.slice';
 import theming from './theming/theming.slice';
 import admin from './admin/admin.slice';
 import bookmarks from './bookmarks/bookmark.slice';
-import sideMenu from './side-menu/control-panel.slice';
+import sideMenu from './control-panel/control-panel.slice';
 import stories from './stories/stories.slice';
 import orbs from './map/orbs/orbReducer';
 
