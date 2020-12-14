@@ -12,7 +12,7 @@ import {
   PROFILE,
   SATELLITE_LAYERS,
   STORIES,
-} from '../toolbar/toolbar-constants';
+} from './toolbar-constants';
 import {
   closeMenu,
   selectIsMenuVisible,
@@ -31,6 +31,9 @@ import SatellitesPanel from '../satellites/satellites-panel.component';
 import styles from './control-panel.module.css';
 import { SidePanel } from 'components/side-panel/side-panel.component';
 import clsx from 'clsx';
+import Toolbar from './toolbar.component';
+import { getToolbarItems } from './toolbar-config';
+import { userSelector } from 'accounts/accounts.selectors';
 
 const ControlPanel = () => {
   const dispatch = useDispatch();
@@ -38,32 +41,37 @@ const ControlPanel = () => {
   const heading = useSelector(selectHeading);
   const strapline = useSelector(selectStrapline);
   const visibleMenuItem = useSelector(selectVisibleMenuItem);
+  const user = useSelector(userSelector);
+  const toolbarItems = getToolbarItems(dispatch, user);
 
   return (
-    <SidePanel
-      className={clsx(styles.panel, { [styles.show]: isMenuVisible })}
-      contentClassName={styles.content}
-      header={
-        <div className={styles.header}>
-          <div className={styles.headings}>
-            <h3 className={styles.heading}>{heading}</h3>
-            <p className={styles.strapline}>{strapline}</p>
+    <>
+      <Toolbar user={user} items={toolbarItems} />
+      <SidePanel
+        className={clsx(styles.panel, { [styles.show]: isMenuVisible })}
+        contentClassName={styles.content}
+        header={
+          <div className={styles.header}>
+            <div className={styles.headings}>
+              <h3 className={styles.heading}>{heading}</h3>
+              <p className={styles.strapline}>{strapline}</p>
+            </div>
+            <CloseButton
+              className={styles.closeButton}
+              onClick={() => dispatch(closeMenu())}
+            />
           </div>
-          <CloseButton
-            className={styles.closeButton}
-            onClick={() => dispatch(closeMenu())}
-          />
-        </div>
-      }
-    >
-      {visibleMenuItem === DATA_LAYERS && <DataLayers />}
-      {visibleMenuItem === SATELLITE_LAYERS && <SatellitesPanel />}
-      {visibleMenuItem === ANNOTATIONS && <AnnotationsPanel />}
-      {visibleMenuItem === BOOKMARKS && <BookmarksPanel />}
-      {visibleMenuItem === STORIES && <StoriesPanel />}
-      {visibleMenuItem === PROFILE && <Profile />}
-      {visibleMenuItem === CHANGE_PASSWORD && <PasswordChangeForm />}
-    </SidePanel>
+        }
+      >
+        {visibleMenuItem === DATA_LAYERS && <DataLayers />}
+        {visibleMenuItem === SATELLITE_LAYERS && <SatellitesPanel />}
+        {visibleMenuItem === ANNOTATIONS && <AnnotationsPanel />}
+        {visibleMenuItem === BOOKMARKS && <BookmarksPanel />}
+        {visibleMenuItem === STORIES && <StoriesPanel />}
+        {visibleMenuItem === PROFILE && <Profile />}
+        {visibleMenuItem === CHANGE_PASSWORD && <PasswordChangeForm />}
+      </SidePanel>
+    </>
   );
 };
 

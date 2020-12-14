@@ -4,10 +4,6 @@ import Measure from 'react-measure';
 import { useDispatch, useSelector } from 'react-redux';
 
 import ControlPanel from '../control-panel/control-panel.component';
-import Toolbar from '../toolbar/toolbar.component';
-import { getToolbarItems } from '../toolbar/toolbar-config';
-
-import { userSelector } from 'accounts/accounts.selectors';
 import {
   fetchSources,
   selectPollingPeriod,
@@ -29,11 +25,9 @@ const times = (n, fn) => {
 
 const MapLayout = () => {
   const dispatch = useDispatch();
-  const user = useSelector(userSelector);
   const pollingPeriod = useSelector(selectPollingPeriod);
   const isCompareMode = useSelector(isCompareModeSelector);
   const selectedPinnedScenes = useSelector(selectedPinnedScenesSelector);
-  const toolbarItems = getToolbarItems(dispatch, user);
 
   const mapCount = isCompareMode ? 2 : 1;
 
@@ -98,12 +92,7 @@ const MapLayout = () => {
             isCompareMode ? styles.compareMode : styles[`layout-${mapCount}`]
           }`}
         >
-          {user && (
-            <>
-              <Toolbar user={user} items={toolbarItems} />
-              <ControlPanel />
-            </>
-          )}
+          <ControlPanel />
           {times(mapCount, i => (
             <div
               key={i}
