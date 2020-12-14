@@ -19,7 +19,7 @@ import {
   selectHeading,
   selectStrapline,
   selectVisibleMenuItem,
-} from '../side-menu/side-menu.slice';
+} from './control-panel.slice';
 import StoriesPanel from '../stories/stories-panel.component';
 import PasswordChangeForm from '../accounts/password/change/password-change-form.component';
 import Profile from '../accounts/profile/profile.component';
@@ -28,7 +28,7 @@ import BookmarksPanel from '../bookmarks/bookmarks-panel.component';
 import DataLayers from '../data-layers/data-layers.component';
 import SatellitesPanel from '../satellites/satellites-panel.component';
 
-import styles from './side-menu.module.css';
+import styles from './control-panel.module.css';
 
 const SideMenu = () => {
   const dispatch = useDispatch();

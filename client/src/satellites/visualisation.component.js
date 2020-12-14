@@ -5,7 +5,7 @@ import { Button } from '@astrosat/astrosat-ui';
 import { SEARCH } from './satellites-panel.component';
 
 import styles from './visualisation.module.css';
-import sideMenuStyles from '../side-menu/side-menu.module.css';
+import sideMenuStyles from '../side-menu/control-panel.module.css';
 
 const Visualisation = ({
   visualisations,

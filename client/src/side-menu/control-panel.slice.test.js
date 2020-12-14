@@ -6,7 +6,7 @@ import reducer, {
   selectVisibleMenuItem,
   selectHeading,
   selectStrapline,
-} from './side-menu.slice';
+} from './control-panel.slice';
 
 describe('Side Menu Slice', () => {
   describe('Side Menu Reducer', () => {

@@ -1,5 +1,5 @@
 .profile {
-  composes: container from '../../side-menu/side-menu.module.css';
+  composes: container from '../../side-menu/control-panel.module.css';
   display: flex;
   flex-direction: column;
   height: 100%;

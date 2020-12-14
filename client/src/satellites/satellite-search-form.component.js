@@ -24,7 +24,7 @@ import { RESULTS, SATELLITE, TIER } from './satellites-panel.component';
 import { getGeometryAreaKmSquared } from 'utils/geometry';
 
 import styles from './satellite-search-form.module.css';
-import sideMenuStyles from '../side-menu/side-menu.module.css';
+import sideMenuStyles from '../side-menu/control-panel.module.css';
 
 const DATE_FORMAT = 'yyy-MM-dd';
 const DAYS_IN_PAST = 7;

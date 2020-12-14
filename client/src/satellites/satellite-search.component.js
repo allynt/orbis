@@ -15,7 +15,7 @@ import SavedSearchList from './saved-search-list.component';
 import { getGeometryAreaKmSquared } from 'utils/geometry';
 
 import styles from './satellite-search.module.css';
-import sideMenuStyles from '../side-menu/side-menu.module.css';
+import sideMenuStyles from '../side-menu/control-panel.module.css';
 
 const AOI_DRAW_MODE = 'RectangleMode';
 const BBOX_NO_OF_POINTS = 5;

@@ -7,7 +7,7 @@ import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 
 import formStyles from '../forms.module.css';
-import bookmarkStyles from '../side-menu/side-menu.module.css';
+import bookmarkStyles from '../side-menu/control-panel.module.css';
 import { bookmarkTitle, CONTEXT_KEYS, FIELD_NAMES } from 'utils/validators';
 import { FieldError } from 'components/field-error/field-error.component';
 

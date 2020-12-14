@@ -17,7 +17,7 @@ import {
   PROFILE,
 } from './toolbar-constants';
 import featureToggles from '../feature-toggles';
-import { toggleMenu, setMenuHeadings } from '../side-menu/side-menu.slice';
+import { toggleMenu, setMenuHeadings } from '../side-menu/control-panel.slice';
 
 import styles from './toolbar.module.css';
 
