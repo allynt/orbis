@@ -99,7 +99,7 @@ export const useOrbs = () => {
         ),
       );
       const props = source.metadata.application.orbis.map_component.props;
-      return <Component {...props} />;
+      return <Component source={source} {...props} />;
     });
     setMapComponents(components);
   }, [activeSources, dispatch]);
