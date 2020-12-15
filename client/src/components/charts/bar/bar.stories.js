@@ -1,12 +1,13 @@
 import * as React from 'react';
 import { BarChart } from './bar.component';
 
-export default { title: 'Components/Charts/Bar' };
+export default { title: 'Components/Charts/Bar', args: { color: 'Spectral' } };
 
 const Template = args => <BarChart {...args} />;
 
 export const DecileData = Template.bind({});
 DecileData.args = {
+  domain: [1, 10],
   data: [
     {
       x: 1.0,
@@ -53,6 +54,7 @@ DecileData.args = {
 
 export const ContinuousData = Template.bind({});
 ContinuousData.args = {
+  domain: [134, 2546],
   data: [
     {
       x: 134.0,
