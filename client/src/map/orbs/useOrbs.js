@@ -22,7 +22,6 @@ export const useOrbs = () => {
   const { setViewState } = useMap();
   const dispatch = useDispatch();
   const authToken = useSelector(selectDataToken);
-  /** @type {Source[]} */
   const activeSources = useSelector(activeDataSourcesSelector);
   const [data, setData] = useState({});
   const [layers, setLayers] = useState([]);
