@@ -32,6 +32,7 @@ export const AnalysisPanel = () => {
         !!selectedProperty?.application?.orbis?.data_visualisation_components &&
         !!pickedInfo
       }
+      contentClassName={styles.data}
       header={
         <div className={styles.header}>
           <CloseButton
@@ -42,14 +43,12 @@ export const AnalysisPanel = () => {
         </div>
       }
     >
-      <div className={styles.data}>
-        {Object.entries(values).map(([key, value]) => (
-          <div className={styles.dataItem}>
-            <p className={styles.dataKey}>{key}:</p>
-            <p>{value}</p>
-          </div>
-        ))}
-      </div>
+      {Object.entries(values).map(([key, value]) => (
+        <div className={styles.dataItem}>
+          <p className={styles.dataKey}>{key}:</p>
+          <p>{value}</p>
+        </div>
+      ))}
     </SidePanel>
   );
 };
