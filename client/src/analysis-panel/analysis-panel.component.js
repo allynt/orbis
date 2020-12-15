@@ -20,7 +20,10 @@ export const AnalysisPanel = () => {
   return (
     <SidePanel
       orientation="right"
-      open={!!pickedInfo}
+      open={
+        !!selectedProperty?.application?.orbis?.data_visualisation_components &&
+        !!pickedInfo
+      }
       header={<h1>Data Analysis</h1>}
     >
       {Object.entries(values).map(([key, value]) => (
