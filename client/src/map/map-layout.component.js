@@ -14,7 +14,7 @@ import { selectedPinnedScenesSelector } from 'satellites/satellites.slice';
 import Map from './map.component';
 import styles from './map-layout.module.css';
 import { isCompareModeSelector } from './map.slice';
-import { SidePanel } from 'components/side-panel/side-panel.component';
+import { AnalysisPanel } from 'analysis-panel/analysis-panel.component';
 
 const times = (n, fn) => {
   const result = [];
@@ -99,7 +99,7 @@ const MapLayout = () => {
             compare={isCompareMode}
             selectedPinnedScenes={selectedPinnedScenes}
           />
-          <SidePanel orientation="right" open />
+          <AnalysisPanel />
           {isCompareMode && (
             <div
               className={styles.compare}
