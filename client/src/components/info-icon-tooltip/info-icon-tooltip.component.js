@@ -7,15 +7,21 @@ import styles from './info-icon-tooltip.module.css';
 /**
  * @param {{
  *  children?: React.ReactNode
+ *  name?: string
  *  className?: string
  *  place?: import('react-tooltip').Place
  * }} props
  */
-export const InfoIconTooltip = ({ children, className, place = 'right' }) => (
+export const InfoIconTooltip = ({
+  children,
+  name,
+  className,
+  place = 'right',
+}) => (
   <div className={clsx(styles.info, className)}>
     <div
       data-tip
-      data-for="tooltip"
+      data-for={name ? `${name}-tooltip` : 'tooltip'}
       role="tooltip"
       className={styles.infoButton}
       aria-label="tooltip"
@@ -25,7 +31,7 @@ export const InfoIconTooltip = ({ children, className, place = 'right' }) => (
     </div>
     <ReactTooltip
       className={styles.tooltip}
-      id="tooltip"
+      id={name ? `${name}-tooltip` : 'tooltip'}
       place={place}
       effect="solid"
       arrowColor="var(--color-primary)"
