@@ -1,13 +1,21 @@
-import { SidePanel } from 'components/side-panel/side-panel.component';
+import * as React from 'react';
+
 import { omitBy } from 'lodash';
+import { useDispatch, useSelector } from 'react-redux';
+
+import { CloseButton } from '@astrosat/astrosat-ui';
+
+import { SidePanel } from 'components/side-panel/side-panel.component';
 import {
   pickedInfoSelector,
   propertySelector,
+  setPickedInfo,
 } from 'map/orbs/slices/isolation-plus.slice';
-import * as React from 'react';
-import { useSelector } from 'react-redux';
+
+import styles from './analysis-panel.module.css';
 
 export const AnalysisPanel = () => {
+  const dispatch = useDispatch();
   const pickedInfo = useSelector(state => pickedInfoSelector(state?.orbs));
   const selectedProperty = useSelector(state => propertySelector(state?.orbs));
 
@@ -24,14 +32,24 @@ export const AnalysisPanel = () => {
         !!selectedProperty?.application?.orbis?.data_visualisation_components &&
         !!pickedInfo
       }
-      header={<h1>Data Analysis</h1>}
+      header={
+        <div className={styles.header}>
+          <CloseButton
+            className={styles.close}
+            onClick={() => dispatch(setPickedInfo(undefined))}
+          />
+          <h1 className={styles.heading}>Data Analysis</h1>
+        </div>
+      }
     >
-      {Object.entries(values).map(([key, value]) => (
-        <>
-          <p>{key}:</p>
-          <p>{value}</p>
-        </>
-      ))}
+      <div className={styles.data}>
+        {Object.entries(values).map(([key, value]) => (
+          <div className={styles.dataItem}>
+            <p className={styles.dataKey}>{key}:</p>
+            <p>{value}</p>
+          </div>
+        ))}
+      </div>
     </SidePanel>
   );
 };
