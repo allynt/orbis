@@ -1,5 +1,5 @@
 import { DataFilterExtension } from '@deck.gl/extensions';
-import { createColorScale } from 'utils/color';
+import { ColorScale } from 'utils/color';
 
 import {
   filterRangeSelector,
@@ -23,12 +23,18 @@ const configuration = ({
   const filterRange = filterRangeSelector(orbState);
   const colorScale =
     selectedPropertyMetadata &&
-    createColorScale({
+    new ColorScale({
       color: selectedPropertyMetadata?.application?.orbis?.display?.color,
       domain: [selectedProperty?.min, selectedProperty?.max],
       reversed:
         selectedPropertyMetadata?.application?.orbis?.display
           ?.colormap_reversed,
+      clip: (selectedPropertyMetadata?.clip_min ||
+        selectedPropertyMetadata?.clip_max) && [
+        selectedPropertyMetadata.clip_min || selectedPropertyMetadata.min,
+        selectedPropertyMetadata.clip_max || selectedPropertyMetadata.max,
+      ],
+      format: 'array',
     });
 
   return {
@@ -43,13 +49,13 @@ const configuration = ({
     autoHighlight: true,
     onClick: info => dispatch(setPickedInfo(info)),
     filled: true,
-    getFillColor: d => [
-      // @ts-ignore
-      ...(colorScale
-        ? colorScale(d.properties[selectedProperty.name]).rgb()
-        : [0, 0, 0]),
-      150,
-    ],
+    getFillColor: d => {
+      let color =
+        colorScale && d.properties[selectedProperty.name]
+          ? colorScale.get(d.properties[selectedProperty.name])
+          : [0, 0, 0];
+      return [...color, 150];
+    },
     getFilterValue: d => Math.round(d.properties[selectedProperty.name]),
     filterRange: filterRange || [
       selectedPropertyMetadata?.min,

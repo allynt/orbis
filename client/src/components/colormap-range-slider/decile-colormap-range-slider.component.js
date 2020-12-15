@@ -6,7 +6,7 @@ import {
   VictoryHistogram,
   VictoryLabel,
 } from 'victory';
-import { createColorScale } from 'utils/color';
+import { ColorScale } from 'utils/color';
 
 /** @typedef {{x: [any, any], y: [any, any]}} BrushDomain */
 
@@ -37,17 +37,16 @@ const DecileColorMapRangeSlider = ({
   const domain = [0, 10];
   /** @type {[BrushDomain, React.Dispatch<BrushDomain>]} */
   const [brushDomain, setBrushDomain] = useState({ x: domain, y: undefined });
-  const colorScale = createColorScale({ color, domain, reversed });
+  const colorScale = new ColorScale({ color, domain, reversed });
 
   /** @type {import('victory').VictoryHistogramProps['style']} */
   const histogramStyle = {
     data: {
       fill: ({ index }) =>
         isInRange(+index, brushDomain.x)
-          ? colorScale(+index).toString()
-          : colorScale(+index)
-              .alpha(0.3)
-              .toString(),
+          ? colorScale.get(+index)
+          : colorScale.get(+index),
+      opacity: ({ index }) => (isInRange(+index, brushDomain.x) ? 1 : 0.3),
       stroke: 'none',
     },
   };
