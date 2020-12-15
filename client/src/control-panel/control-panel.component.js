@@ -7,7 +7,6 @@ import { CloseButton } from '@astrosat/astrosat-ui';
 import {
   ANNOTATIONS,
   BOOKMARKS,
-  CHANGE_PASSWORD,
   DATA_LAYERS,
   PROFILE,
   SATELLITE_LAYERS,
@@ -21,7 +20,6 @@ import {
   selectVisibleMenuItem,
 } from './control-panel.slice';
 import StoriesPanel from '../stories/stories-panel.component';
-import PasswordChangeForm from '../accounts/password/change/password-change-form.component';
 import Profile from '../accounts/profile/profile.component';
 import AnnotationsPanel from '../annotations/annotations-panel.component';
 import BookmarksPanel from '../bookmarks/bookmarks-panel.component';
@@ -45,7 +43,7 @@ const ControlPanel = () => {
 
   return (
     <>
-      <Toolbar user={user} items={toolbarItems} />
+      <Toolbar items={toolbarItems} />
       <SidePanel
         open={isMenuVisible}
         contentClassName={styles.content}
@@ -68,7 +66,6 @@ const ControlPanel = () => {
         {visibleMenuItem === BOOKMARKS && <BookmarksPanel />}
         {visibleMenuItem === STORIES && <StoriesPanel />}
         {visibleMenuItem === PROFILE && <Profile />}
-        {visibleMenuItem === CHANGE_PASSWORD && <PasswordChangeForm />}
       </SidePanel>
     </>
   );

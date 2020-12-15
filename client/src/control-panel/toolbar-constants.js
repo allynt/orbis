@@ -10,4 +10,3 @@ export const SHARE = 'Share';
 
 export const FAQ = 'FAQ';
 export const PROFILE = 'Account';
-export const CHANGE_PASSWORD = 'Change Password';
