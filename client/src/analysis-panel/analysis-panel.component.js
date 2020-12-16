@@ -20,6 +20,8 @@ export const AnalysisPanel = () => {
   const pickedInfo = useSelector(state => pickedInfoSelector(state?.orbs));
   const selectedProperty = useSelector(state => propertySelector(state?.orbs));
 
+  const areaValue = pickedInfo?.object?.properties?.[selectedProperty?.name];
+
   const values = omitBy(
     pickedInfo?.object?.properties,
     (_, key) =>
@@ -62,8 +64,39 @@ export const AnalysisPanel = () => {
             selectedProperty?.application?.orbis?.data_visualisation_components
               ?.props?.data || []
           }
-          line={pickedInfo?.object?.properties?.[selectedProperty?.name]}
+          line={areaValue}
         />
+        <div
+          style={{
+            fontSize: 14,
+            marginTop: '.5rem',
+            display: 'grid',
+            gridTemplateColumns: '3fr 1fr',
+          }}
+        >
+          <p
+            style={{
+              color: 'var(--color-primary)',
+              fontStyle: 'italic',
+              fontWeight: 600,
+            }}
+          >
+            Value of selected area:
+          </p>
+          <p
+            style={{
+              color: 'var(--color-primary)',
+              fontStyle: 'italic',
+            }}
+          >
+            {areaValue}
+          </p>
+          <p style={{ fontWeight: 600 }}>
+            {selectedProperty?.aggregation === 'sum' ? 'Sum' : 'Average'} of all
+            areas in GB:
+          </p>
+          <p> {selectedProperty?.aggregates?.GB}</p>
+        </div>
       </LayersListItem>
       {Object.entries(values).map(([key, value]) => (
         <div className={styles.dataItem}>
