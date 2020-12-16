@@ -106,7 +106,7 @@ const theme = {
         data: {
           fill: 'transparent',
           stroke: primary,
-          strokeWidth: 3,
+          strokeWidth: 5,
         },
         labels: baseLabelStyles,
       },

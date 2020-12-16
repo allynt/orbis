@@ -26,11 +26,7 @@ export const BarChart = ({
   const colorScale = new ColorScale({ color, domain, clip });
   const yValues = data?.map(d => d.y);
   return (
-    <VictoryChart
-      domainPadding={{ x: 20 }}
-      domain={{ x: domain }}
-      theme={orbisChartTheme}
-    >
+    <VictoryChart domainPadding={{ x: 20 }} theme={orbisChartTheme}>
       <VictoryAxis label={labelX} />
       <VictoryAxis
         dependentAxis

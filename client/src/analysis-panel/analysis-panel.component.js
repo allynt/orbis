@@ -13,6 +13,7 @@ import {
 } from 'map/orbs/slices/isolation-plus.slice';
 
 import styles from './analysis-panel.module.css';
+import { LayersListItem } from 'data-layers/layers-list/layers-list-item/layers-list-item.component';
 
 export const AnalysisPanel = () => {
   const dispatch = useDispatch();
@@ -43,18 +44,27 @@ export const AnalysisPanel = () => {
         </div>
       }
     >
-      <BarChart
-        color={selectedProperty?.application?.orbis?.display?.color}
-        domain={[selectedProperty?.min, selectedProperty?.max]}
-        clip={[selectedProperty?.clip_min, selectedProperty?.clip_max]}
-        labelX={selectedProperty?.label}
-        labelY="Number of Areas"
-        data={
-          selectedProperty?.application?.orbis?.data_visualisation_components
-            ?.props?.data || []
+      <LayersListItem
+        defaultExpanded
+        title={
+          <span style={{ fontWeight: 600, fontSize: '1rem' }}>
+            Selected Data Layer
+          </span>
         }
-        line={pickedInfo?.object?.properties?.[selectedProperty?.name]}
-      />
+      >
+        <BarChart
+          color={selectedProperty?.application?.orbis?.display?.color}
+          domain={[selectedProperty?.min, selectedProperty?.max]}
+          clip={[selectedProperty?.clip_min, selectedProperty?.clip_max]}
+          labelX={selectedProperty?.label}
+          labelY="Number of Areas"
+          data={
+            selectedProperty?.application?.orbis?.data_visualisation_components
+              ?.props?.data || []
+          }
+          line={pickedInfo?.object?.properties?.[selectedProperty?.name]}
+        />
+      </LayersListItem>
       {Object.entries(values).map(([key, value]) => (
         <div className={styles.dataItem}>
           <p className={styles.dataKey}>{key}:</p>
