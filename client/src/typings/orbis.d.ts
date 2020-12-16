@@ -84,9 +84,16 @@ type Property = {
   units?: 'string';
   min: number;
   max: number;
+  clip_min?: number;
+  clip_max?: number;
+  aggregation?: 'sum' | 'mean';
+  aggregates?: {
+    GB: number;
+  };
   application: {
     orbis?: {
       label?: string;
+      data_visualisation_components?: any;
       display?: {
         colormap_reversed?: boolean;
         color: ColorMap;
