@@ -35,7 +35,7 @@ const RadioProperty = ({
       <Radio
         className={styles.radio}
         label={
-          initialProperty?.application?.orbis?.label || initialProperty.name
+          initialProperty?.application?.orbis?.label || initialProperty.label
         }
         name="isolationPlus"
         value={initialProperty.name}
@@ -48,7 +48,7 @@ const RadioProperty = ({
           )
         }
       />
-      <InfoIconTooltip>
+      <InfoIconTooltip name={initialProperty.name}>
         <p className={styles.categoryPath}>{categoryPath}</p>
         <p className={styles.description}>
           {initialProperty?.application?.orbis?.description ||
