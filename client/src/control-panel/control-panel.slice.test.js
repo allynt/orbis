@@ -6,7 +6,7 @@ import reducer, {
   selectVisibleMenuItem,
   selectHeading,
   selectStrapline,
-} from './side-menu.slice';
+} from './control-panel.slice';
 
 describe('Side Menu Slice', () => {
   describe('Side Menu Reducer', () => {
@@ -101,82 +101,82 @@ describe('Side Menu Slice', () => {
 
   describe('selectors', () => {
     describe('selectIsMenuVisible', () => {
-      it('returns false if sideMenu is undefined', () => {
+      it('returns false if controlPanel is undefined', () => {
         const state = {};
         const result = selectIsMenuVisible(state);
         expect(result).toBe(false);
       });
 
       it('returns false if undefined', () => {
-        const state = { sideMenu: {} };
+        const state = { controlPanel: {} };
         const result = selectIsMenuVisible(state);
         expect(result).toBe(false);
       });
 
       it('returns the actual value', () => {
-        const state = { sideMenu: { isMenuVisible: true } };
+        const state = { controlPanel: { isMenuVisible: true } };
         const result = selectIsMenuVisible(state);
-        expect(result).toBe(state.sideMenu.isMenuVisible);
+        expect(result).toBe(state.controlPanel.isMenuVisible);
       });
     });
 
     describe('selectVisibleMenuItem', () => {
-      it('returns empty string if sideMenu is undefined', () => {
+      it('returns empty string if controlPanel is undefined', () => {
         const state = {};
         const result = selectVisibleMenuItem(state);
         expect(result).toBe('');
       });
 
       it('returns empty string if undefined', () => {
-        const state = { sideMenu: {} };
+        const state = { controlPanel: {} };
         const result = selectVisibleMenuItem(state);
         expect(result).toBe('');
       });
 
       it('returns the actual value', () => {
-        const state = { sideMenu: { visibleMenuItem: 'hello' } };
+        const state = { controlPanel: { visibleMenuItem: 'hello' } };
         const result = selectVisibleMenuItem(state);
-        expect(result).toBe(state.sideMenu.visibleMenuItem);
+        expect(result).toBe(state.controlPanel.visibleMenuItem);
       });
     });
 
     describe('selectHeading', () => {
-      it('returns empty string if sideMenu is undefined', () => {
+      it('returns empty string if controlPanel is undefined', () => {
         const state = {};
         const result = selectHeading(state);
         expect(result).toBe('');
       });
 
       it('returns empty string if undefined', () => {
-        const state = { sideMenu: {} };
+        const state = { controlPanel: {} };
         const result = selectHeading(state);
         expect(result).toBe('');
       });
 
       it('returns the actual value', () => {
-        const state = { sideMenu: { heading: 'hello' } };
+        const state = { controlPanel: { heading: 'hello' } };
         const result = selectHeading(state);
-        expect(result).toBe(state.sideMenu.heading);
+        expect(result).toBe(state.controlPanel.heading);
       });
     });
 
     describe('selectStrapline', () => {
-      it('returns empty string if sideMenu is undefined', () => {
+      it('returns empty string if controlPanel is undefined', () => {
         const state = {};
         const result = selectStrapline(state);
         expect(result).toBe('');
       });
 
       it('returns empty string if undefined', () => {
-        const state = { sideMenu: {} };
+        const state = { controlPanel: {} };
         const result = selectStrapline(state);
         expect(result).toBe('');
       });
 
       it('returns the actual value', () => {
-        const state = { sideMenu: { strapline: 'hello' } };
+        const state = { controlPanel: { strapline: 'hello' } };
         const result = selectStrapline(state);
-        expect(result).toBe(state.sideMenu.strapline);
+        expect(result).toBe(state.controlPanel.strapline);
       });
     });
   });

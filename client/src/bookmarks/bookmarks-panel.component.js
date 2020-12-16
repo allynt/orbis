@@ -3,7 +3,7 @@ import { activeLayersSelector } from 'data-layers/data-layers.slice';
 import { useMap } from 'MapContext';
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import styles from '../side-menu/side-menu.module.css';
+import styles from '../control-panel/control-panel.module.css';
 import BookmarkForm from './bookmark-form.component';
 import {
   addBookmark,

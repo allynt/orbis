@@ -22,7 +22,6 @@ export const useOrbs = () => {
   const { setViewState } = useMap();
   const dispatch = useDispatch();
   const authToken = useSelector(selectDataToken);
-  /** @type {Source[]} */
   const activeSources = useSelector(activeDataSourcesSelector);
   const [data, setData] = useState({});
   const [layers, setLayers] = useState([]);
@@ -100,7 +99,7 @@ export const useOrbs = () => {
         ),
       );
       const props = source.metadata.application.orbis.map_component.props;
-      return <Component {...props} />;
+      return <Component source={source} {...props} />;
     });
     setMapComponents(components);
   }, [activeSources, dispatch]);

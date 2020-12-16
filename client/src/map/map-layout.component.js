@@ -3,11 +3,7 @@ import React, { useEffect, useState } from 'react';
 import Measure from 'react-measure';
 import { useDispatch, useSelector } from 'react-redux';
 
-import SideMenu from '../side-menu/side-menu.component';
-import Toolbar from '../toolbar/toolbar.component';
-import { getToolbarItems } from '../toolbar/toolbar-config';
-
-import { userSelector } from 'accounts/accounts.selectors';
+import ControlPanel from '../control-panel/control-panel.component';
 import {
   fetchSources,
   selectPollingPeriod,
@@ -18,6 +14,7 @@ import { selectedPinnedScenesSelector } from 'satellites/satellites.slice';
 import Map from './map.component';
 import styles from './map-layout.module.css';
 import { isCompareModeSelector } from './map.slice';
+import { AnalysisPanel } from 'analysis-panel/analysis-panel.component';
 
 const times = (n, fn) => {
   const result = [];
@@ -29,11 +26,9 @@ const times = (n, fn) => {
 
 const MapLayout = () => {
   const dispatch = useDispatch();
-  const user = useSelector(userSelector);
   const pollingPeriod = useSelector(selectPollingPeriod);
   const isCompareMode = useSelector(isCompareModeSelector);
   const selectedPinnedScenes = useSelector(selectedPinnedScenesSelector);
-  const toolbarItems = getToolbarItems(dispatch, user);
 
   const mapCount = isCompareMode ? 2 : 1;
 
@@ -98,44 +93,13 @@ const MapLayout = () => {
             isCompareMode ? styles.compareMode : styles[`layout-${mapCount}`]
           }`}
         >
-          {user && (
-            <>
-              <Toolbar user={user} items={toolbarItems} />
-              <SideMenu />
-            </>
-          )}
-          {times(mapCount, i => (
-            <div
-              key={i}
-              style={
-                i === 0
-                  ? {
-                      position: 'absolute',
-                      width: '100%',
-                      height: '100%',
-                      top: 0,
-                      left: 0,
-                    }
-                  : {
-                      position: 'absolute',
-                      width: '100%',
-                      height: '100%',
-                      top: 0,
-                      left: 0,
-                      clip: `rect(0px, 999em, 100vh, ${
-                        compareRatio * bounds.width
-                      }px)`,
-                    }
-              }
-            >
-              <Map
-                compareRatio={compareRatio}
-                compare={isCompareMode}
-                selectedPinnedScenes={selectedPinnedScenes}
-                comparisonScene={selectedPinnedScenes[i]}
-              />
-            </div>
-          ))}
+          <ControlPanel />
+          <Map
+            compareRatio={compareRatio}
+            compare={isCompareMode}
+            selectedPinnedScenes={selectedPinnedScenes}
+          />
+          <AnalysisPanel />
           {isCompareMode && (
             <div
               className={styles.compare}

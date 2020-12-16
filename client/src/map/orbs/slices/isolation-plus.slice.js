@@ -13,6 +13,8 @@ const isolationPlusSlice = createSlice({
   },
   reducers: {
     setProperty: (state, { payload }) => {
+      if (state.pickedInfo?.layer?.id !== payload.source_id)
+        state.pickedInfo = undefined;
       state.property = payload;
       state.filterRange = [payload.min, payload.max];
     },

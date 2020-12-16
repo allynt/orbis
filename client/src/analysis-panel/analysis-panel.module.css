@@ -1,0 +1,27 @@
+.header {
+  display: flex;
+  align-items: center;
+}
+
+.close {
+  position: absolute !important;
+}
+
+.heading {
+  font-size: 14px;
+  font-weight: 600;
+  margin: 0 auto;
+}
+
+.data {
+  padding: 1rem;
+}
+
+.dataItem {
+  margin-bottom: 0.5rem;
+}
+
+.dataKey {
+  font-weight: 600;
+  margin-bottom: 0.2rem;
+}

@@ -9,12 +9,21 @@ import {
   setPickedInfo,
 } from '../slices/isolation-plus.slice';
 
-const IsolationPlusMapComponent = () => {
+/**
+ * @param {{
+ *  source?: Source
+ * }} props
+ */
+const IsolationPlusMapComponent = ({ source }) => {
   const dispatch = useDispatch();
   const pickedInfo = useSelector(state => pickedInfoSelector(state.orbs));
   const selectedProperty = useSelector(state => propertySelector(state.orbs));
 
-  if (!pickedInfo || pickedInfo.layer.id !== selectedProperty.source_id)
+  if (
+    !pickedInfo ||
+    pickedInfo.layer.id !== selectedProperty.source_id ||
+    source?.source_id !== pickedInfo.layer.id
+  )
     return null;
 
   return (

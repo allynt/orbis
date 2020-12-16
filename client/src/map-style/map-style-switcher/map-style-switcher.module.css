@@ -1,7 +1,7 @@
 .mapstyle-switcher-container {
   position: absolute;
   bottom: 7.5rem;
-  right: 3rem;
+  right: 4rem;
   z-index: 10;
   display: flex;
   padding: 0;
