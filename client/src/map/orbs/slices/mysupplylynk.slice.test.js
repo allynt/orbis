@@ -3,25 +3,21 @@ import reducer, {
   setSelectedFeatures,
 } from './mysupplylynk.slice';
 
-import { LAYERS, CATEGORIES } from './mysupplylynk.constants';
+import { CATEGORIES } from './mysupplylynk.constants';
 
 describe('MySupplyLynk slice', () => {
   describe('reducer', () => {
     describe('setSelectedFeatures', () => {
       it('sets the selected features in state', () => {
         const state = {
-          categoryFilters: {
-            [LAYERS.suppliers]: CATEGORIES,
-            [LAYERS.nonRegistered]: CATEGORIES,
-            [LAYERS.cqc]: CATEGORIES,
-          },
+          categoryFilters: {},
         };
         const payload = {
-          layer: LAYERS.suppliers,
+          layer: 'test_layer',
           value: ['PPE, Miscellaneous'],
         };
         const result = reducer(state, setSelectedFeatures(payload));
-        expect(result.categoryFilters[LAYERS.suppliers]).toEqual(payload.value);
+        expect(result.categoryFilters['test_layer']).toEqual(payload.value);
       });
     });
 
@@ -30,11 +26,7 @@ describe('MySupplyLynk slice', () => {
         it('returns selected features', () => {
           const state = {
             mySupplyLynk: {
-              categoryFilters: {
-                layer1: CATEGORIES,
-                layer2: CATEGORIES,
-                layer3: CATEGORIES,
-              },
+              categoryFilters: {},
             },
           };
           const results = categoryFiltersSelector(state);
