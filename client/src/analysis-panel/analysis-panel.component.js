@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { CloseButton } from '@astrosat/astrosat-ui';
 
-import { SidePanel } from 'components/side-panel/side-panel.component';
+import { BarChart, SidePanel } from 'components';
 import {
   pickedInfoSelector,
   propertySelector,
@@ -43,6 +43,18 @@ export const AnalysisPanel = () => {
         </div>
       }
     >
+      <BarChart
+        color={selectedProperty?.application?.orbis?.display?.color}
+        domain={[selectedProperty?.min, selectedProperty?.max]}
+        clip={[selectedProperty?.clip_min, selectedProperty?.clip_max]}
+        labelX={selectedProperty?.label}
+        labelY="Number of Areas"
+        data={
+          selectedProperty?.application?.orbis?.data_visualisation_components
+            ?.props?.data || []
+        }
+        line={pickedInfo?.object?.properties?.[selectedProperty?.name]}
+      />
       {Object.entries(values).map(([key, value]) => (
         <div className={styles.dataItem}>
           <p className={styles.dataKey}>{key}:</p>
