@@ -17,28 +17,31 @@ export const InfoIconTooltip = ({
   name,
   className,
   place = 'right',
-}) => (
-  <div className={clsx(styles.info, className)}>
-    <div
-      data-tip
-      data-for={name ? `${name}-tooltip` : 'tooltip'}
-      role="tooltip"
-      className={styles.infoButton}
-      aria-label="tooltip"
-      data-scroll-hide="false"
-    >
-      <InfoIcon classes={styles.infoIcon} />
+}) => {
+  const id = name ? `${name}-tooltip` : 'tooltip';
+  return (
+    <div className={clsx(styles.info, className)}>
+      <div
+        data-tip
+        data-for={id}
+        role="tooltip"
+        className={styles.infoButton}
+        aria-label="tooltip"
+        data-scroll-hide="false"
+      >
+        <InfoIcon classes={styles.infoIcon} />
+      </div>
+      <ReactTooltip
+        className={styles.tooltip}
+        id={id}
+        place={place}
+        effect="solid"
+        arrowColor="var(--color-primary)"
+        backgroundColor="var(--color-primary)"
+        textColor="var(--color--text--dark)"
+      >
+        {children}
+      </ReactTooltip>
     </div>
-    <ReactTooltip
-      className={styles.tooltip}
-      id={name ? `${name}-tooltip` : 'tooltip'}
-      place={place}
-      effect="solid"
-      arrowColor="var(--color-primary)"
-      backgroundColor="var(--color-primary)"
-      textColor="var(--color--text--dark)"
-    >
-      {children}
-    </ReactTooltip>
-  </div>
-);
+  );
+};
