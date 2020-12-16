@@ -89,7 +89,7 @@ const configuration = ({
 
   return {
     id,
-    data: categoryFilters?.[id].length && getFeatures(),
+    data: categoryFilters?.[id]?.length && getFeatures(),
     visible: !!activeSources?.find(source => source.source_id === id),
     iconMapping,
     iconAtlas,

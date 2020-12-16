@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import { Checkbox } from '@astrosat/astrosat-ui';
 
@@ -21,6 +21,18 @@ export const CheckboxFilters = ({ selectedLayer, dispatch }) => {
   const selectedFeatures = useSelector(state =>
     categoryFiltersSelector(state.orbs),
   );
+
+  useEffect(() => {
+    if (!Object.keys(selectedFeatures).includes(selectedLayer.source_id)) {
+      dispatch(
+        setSelectedFeatures({
+          ...selectedFeatures,
+          layer: selectedLayer.source_id,
+          value: CATEGORIES,
+        }),
+      );
+    }
+  }, [selectedFeatures, selectedLayer, dispatch]);
 
   const sourceCategories = selectedFeatures?.[selectedLayer?.source_id];
 

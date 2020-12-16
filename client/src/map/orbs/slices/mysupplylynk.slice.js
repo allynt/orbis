@@ -1,15 +1,9 @@
 import { createSlice, createSelector } from '@reduxjs/toolkit';
 
-import { CATEGORIES, LAYERS } from './mysupplylynk.constants';
-
 const mySupplyLynkSlice = createSlice({
   name: 'mySupplyLynk',
   initialState: {
-    categoryFilters: {
-      [LAYERS.suppliers]: CATEGORIES,
-      [LAYERS.nonRegistered]: CATEGORIES,
-      [LAYERS.cqc]: CATEGORIES,
-    },
+    categoryFilters: {},
     popupFeatures: { id: undefined, features: [] },
     dialogFeatures: [],
     dialogVisible: false,
