@@ -93,7 +93,7 @@ const ArrayItem = ({ jsonKey, value }) => (
   </li>
 );
 
-const mapObject = (feature, footer) => {
+const mapObject = feature => {
   return (
     <>
       {feature &&
@@ -122,12 +122,6 @@ const mapObject = (feature, footer) => {
               );
           }
         })}
-      {footer && (
-        <li className={styles.listItem}>
-          {<span className={styles.label}>{footer.label}</span>}
-          <span className={styles.value}>{footer.content}</span>
-        </li>
-      )}
     </>
   );
 };
@@ -136,8 +130,8 @@ const mapObject = (feature, footer) => {
  * @typedef FeatureDetailProps
  * @property {{[key: string]: any}[]} [features]
  * @property {React.ReactNode} [children]
+ * @property {React.ReactNode} [footer]
  * @property {string} [title]
- * @property {object} [footer]
  */
 
 /**
@@ -155,7 +149,13 @@ const FeatureDetail = ({
       {features &&
         features?.map(feature => (
           <ul key={feature.id} className={styles.list}>
-            {mapObject(feature, footer)}
+            {mapObject(feature)}
+            {footer && (
+              <li className={styles.listItem}>
+                <span className={styles.label}>{footer.label}</span>
+                <span className={styles.value}>{footer.content}</span>
+              </li>
+            )}
           </ul>
         ))}
       {children && children}
