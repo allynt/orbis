@@ -1,7 +1,10 @@
 import * as React from 'react';
 import { BarChart } from './bar.component';
 
-export default { title: 'Components/Charts/Bar', args: { color: 'Spectral' } };
+export default {
+  title: 'Components/Charts/Bar',
+  args: { color: 'Spectral', labelX: 'Stuff', labelY: 'Things' },
+};
 
 const Template = args => <BarChart {...args} />;
 

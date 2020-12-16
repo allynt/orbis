@@ -13,24 +13,27 @@ const colors = [
   '#f0f0f0',
 ];
 
-const charcoal = '#bbc1d6';
-const grey = '#969696';
+const primary = '#f6be00';
+const white = '#ffffff';
+const grey = '#d8d8d8';
 // *
 // * Typography
 // *
 const sansSerif = "'Open Sans', sans-serif";
 const letterSpacing = 'normal';
 const fontSize = 16;
+
 // *
 // * Layout
 // *
 const baseProps = {
-  width: 450,
-  height: 300,
-  padding: 50,
+  width: 500,
+  height: 360,
+  padding: { left: 80, bottom: 60 },
   colorScale: colors,
   animate: true,
 };
+
 // *
 // * Labels
 // *
@@ -39,7 +42,7 @@ const baseLabelStyles = {
   fontSize,
   letterSpacing,
   padding: 10,
-  fill: charcoal,
+  fill: primary,
   stroke: 'transparent',
 };
 
@@ -56,7 +59,7 @@ const theme = {
     {
       style: {
         data: {
-          fill: charcoal,
+          fill: white,
         },
         labels: baseLabelStyles,
       },
@@ -68,17 +71,20 @@ const theme = {
       style: {
         axis: {
           fill: 'transparent',
-          stroke: charcoal,
+          stroke: white,
           strokeWidth: 1,
           strokeLinecap,
           strokeLinejoin,
         },
         axisLabel: assign({}, centeredLabelStyles, {
-          padding: 25,
+          fontStyle: 'italic',
+          padding: 35,
         }),
         grid: {
           fill: 'none',
-          stroke: 'none',
+          stroke: grey,
+          opacity: 0.13,
+          strokeDasharray: 5,
           pointerEvents: 'painted',
         },
         ticks: {
@@ -86,7 +92,7 @@ const theme = {
           size: 1,
           stroke: 'transparent',
         },
-        tickLabels: baseLabelStyles,
+        tickLabels: assign(baseLabelStyles, { fill: white }),
       },
       fixLabelOverlap: true,
     },
@@ -96,10 +102,10 @@ const theme = {
     {
       style: {
         data: {
-          fill: charcoal,
+          fill: white,
           padding: 8,
           strokeWidth: 1,
-          stroke: charcoal,
+          stroke: white,
         },
         labels: baseLabelStyles,
       },
@@ -111,11 +117,11 @@ const theme = {
   boxplot: assign(
     {
       style: {
-        max: { padding: 8, stroke: charcoal, strokeWidth: 1 },
+        max: { padding: 8, stroke: white, strokeWidth: 1 },
         maxLabels: assign({}, baseLabelStyles, { padding: 3 }),
-        median: { padding: 8, stroke: charcoal, strokeWidth: 1 },
+        median: { padding: 8, stroke: white, strokeWidth: 1 },
         medianLabels: assign({}, baseLabelStyles, { padding: 3 }),
-        min: { padding: 8, stroke: charcoal, strokeWidth: 1 },
+        min: { padding: 8, stroke: white, strokeWidth: 1 },
         minLabels: assign({}, baseLabelStyles, { padding: 3 }),
         q1: { padding: 8, fill: grey },
         q1Labels: assign({}, baseLabelStyles, { padding: 3 }),
@@ -130,14 +136,14 @@ const theme = {
     {
       style: {
         data: {
-          stroke: charcoal,
+          stroke: white,
           strokeWidth: 1,
         },
         labels: assign({}, baseLabelStyles, { padding: 5 }),
       },
       candleColors: {
         positive: '#ffffff',
-        negative: charcoal,
+        negative: white,
       },
     },
     baseProps,
@@ -149,7 +155,7 @@ const theme = {
       style: {
         data: {
           fill: 'transparent',
-          stroke: charcoal,
+          stroke: white,
           strokeWidth: 2,
         },
         labels: baseLabelStyles,
@@ -168,7 +174,7 @@ const theme = {
       style: {
         data: {
           fill: grey,
-          stroke: charcoal,
+          stroke: white,
           strokeWidth: 2,
         },
         labels: baseLabelStyles,
@@ -194,7 +200,7 @@ const theme = {
       style: {
         data: {
           fill: 'transparent',
-          stroke: charcoal,
+          stroke: white,
           strokeWidth: 2,
         },
         labels: baseLabelStyles,
@@ -220,7 +226,7 @@ const theme = {
     {
       style: {
         data: {
-          fill: charcoal,
+          fill: white,
           stroke: 'transparent',
           strokeWidth: 0,
         },
@@ -238,7 +244,7 @@ const theme = {
   tooltip: {
     style: assign({}, baseLabelStyles, { padding: 0, pointerEvents: 'none' }),
     flyoutStyle: {
-      stroke: charcoal,
+      stroke: white,
       strokeWidth: 1,
       fill: '#f0f0f0',
       pointerEvents: 'none',
@@ -260,7 +266,7 @@ const theme = {
           pointerEvents: 'none',
         }),
         flyout: {
-          stroke: charcoal,
+          stroke: white,
           strokeWidth: 1,
           fill: '#f0f0f0',
           pointerEvents: 'none',
