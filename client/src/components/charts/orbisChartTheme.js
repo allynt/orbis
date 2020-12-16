@@ -29,7 +29,7 @@ const fontSize = 16;
 const baseProps = {
   width: 500,
   height: 360,
-  padding: { left: 80, bottom: 60 },
+  padding: { left: 80, bottom: 60, top: 10 },
   colorScale: colors,
   animate: true,
 };
@@ -105,7 +105,7 @@ const theme = {
       style: {
         data: {
           fill: 'transparent',
-          stroke: white,
+          stroke: primary,
           strokeWidth: 2,
         },
         labels: baseLabelStyles,

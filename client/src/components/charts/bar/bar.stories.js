@@ -101,3 +101,9 @@ ContinuousData.args = {
     },
   ],
 };
+
+export const WithLine = Template.bind({});
+WithLine.args = {
+  ...ContinuousData.args,
+  line: 1000,
+};
