@@ -1,4 +1,9 @@
+import json
+import logging
+
 from django.utils.decorators import method_decorator
+
+from rest_framework.utils import encoders
 
 from allauth.account.adapter import get_adapter
 
@@ -22,12 +27,17 @@ from orbis.models import LicencedCustomer as Customer
 from orbis.serializers import CustomerSerializer, CustomerUserSerializer
 
 
+db_logger = logging.getLogger("db")
+
+
 # overloading the customer views from astrosat_users
 # b/c orbis adds the concept of (licences to) orbs
 
 
 class LicenceNotifyingMixIn(object):
-    def notify_licences_changed(self, customer, customer_user, old_licences=set(), new_licences=set()):
+    def notify_licences_changed(
+        self, customer, customer_user, old_licences=set(), new_licences=set()
+    ):
 
         context = {
             "customer": customer,
@@ -42,7 +52,7 @@ class LicenceNotifyingMixIn(object):
 
         adapter = get_adapter(self.request)
         message = adapter.send_mail(
-            "orbis/emails/update_licences", customer_user.user.email, context,
+            "orbis/emails/update_licences", customer_user.user.email, context
         )
 
         return message
@@ -54,6 +64,19 @@ class CustomerCreateView(AstrosatUsersCustomerCreateView):
     # but rather the standard AstrosatUsersCustomerSerializer; this is b/c the only
     # way to add licences to a customer should be by creating an order
     serializer_class = AstrosatUsersCustomerSerializer
+
+    def perform_create(self, serializer):
+        customer = super().perform_create(serializer)
+
+        # log this event in the db...
+        customer_data = AstrosatUsersCustomerSerializer(instance=customer).data
+        customer_data["created"] = customer.created
+        db_logger.info(
+            json.dumps(customer_data, cls=encoders.JSONEncoder),
+            extra={"tags": [customer.name, "CUSTOMER_CREATE"]},
+        )
+
+        return customer
 
 
 @method_decorator(swagger_fake(None), name="get_object")
@@ -82,7 +105,10 @@ class CustomerUserListView(LicenceNotifyingMixIn, AstrosatUsersCustomerUserListV
         created_user = customer_user.user
 
         if user == created_user:
-            if created_user.registration_stage == UserRegistrationStageType.CUSTOMER_USER:
+            if (
+                created_user.registration_stage
+                == UserRegistrationStageType.CUSTOMER_USER
+            ):
                 # if we are adding ourselves to a customer as part of the "team" registration
                 # then make sure the next thing we do is create an order
                 created_user.registration_stage = UserRegistrationStageType.ORDER
@@ -112,7 +138,9 @@ class CustomerUserListView(LicenceNotifyingMixIn, AstrosatUsersCustomerUserListV
         return customer_user
 
 
-class CustomerUserDetailView(LicenceNotifyingMixIn, AstrosatUsersCustomerUserDetailView):
+class CustomerUserDetailView(
+    LicenceNotifyingMixIn, AstrosatUsersCustomerUserDetailView
+):
     serializer_class = CustomerUserSerializer
 
     def perform_update(self, serializer):
@@ -147,14 +175,22 @@ class CustomerUserDetailView(LicenceNotifyingMixIn, AstrosatUsersCustomerUserDet
         uninvitation_context = {
             "licences": instance.licences.visible().values_list("orb__name", flat=True)
         }
-        destroyed_value = instance.uninvite(adapter=get_adapter(self.request), context=uninvitation_context, force_deletion=True)
+        destroyed_value = instance.uninvite(
+            adapter=get_adapter(self.request),
+            context=uninvitation_context,
+            force_deletion=True,
+        )
         user.delete()
         return destroyed_value
 
 
-class CustomerUserInviteView(LicenceNotifyingMixIn, AstrosatUsersCustomerUserInviteView):
+class CustomerUserInviteView(
+    LicenceNotifyingMixIn, AstrosatUsersCustomerUserInviteView
+):
     serializer_class = CustomerUserSerializer
 
 
-class CustomerUserOnboardView(LicenceNotifyingMixIn, AstrosatUsersCustomerUserOnboardView):
+class CustomerUserOnboardView(
+    LicenceNotifyingMixIn, AstrosatUsersCustomerUserOnboardView
+):
     serializer_class = CustomerUserSerializer

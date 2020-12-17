@@ -9,3 +9,13 @@ export const CATEGORIES = [
   'Staff',
   'Other',
 ];
+
+export const LAYERS = {
+  suppliers: 'astrosat/mysupplylynk/orbis/latest',
+  nonRegistered: 'astrosat/mysupplylynk/non-registered/v1',
+  cqc: 'astrosat/mysupplylynk/cqc/v1',
+};
+
+export const DATA_TYPES = {
+  nonRegistered: 'nonRegistered',
+};

@@ -1,0 +1,72 @@
+{
+  "pin-purple": {
+    "x": 0,
+    "y": 0,
+    "width": 29,
+    "height": 40,
+    "anchorY": 37,
+    "mask": false
+  },
+  "group-purple": {
+    "x": 29,
+    "y": 0,
+    "width": 29,
+    "height": 40,
+    "anchorY": 37,
+    "mask": false
+  },
+  "pin-cyan": {
+    "x": 58,
+    "y": 0,
+    "width": 29,
+    "height": 40,
+    "anchorY": 37,
+    "mask": false
+  },
+  "group-cyan": {
+    "x": 87,
+    "y": 0,
+    "width": 29,
+    "height": 40,
+    "anchorY": 37,
+    "mask": false
+  },
+  "pin-red": {
+    "x": 116,
+    "y": 0,
+    "width": 29,
+    "height": 40,
+    "anchorY": 37,
+    "mask": false
+  },
+  "group-red": {
+    "x": 145,
+    "y": 0,
+    "width": 29,
+    "height": 40,
+    "anchorY": 37,
+    "mask": false
+  },
+  "pin-green": {
+    "x": 174,
+    "y": 0,
+    "width": 29,
+    "height": 40,
+    "anchorY": 37,
+    "mask": false
+  },
+  "group-green": {
+    "x": 203,
+    "y": 0,
+    "width": 29,
+    "height": 40,
+    "anchorY": 37,
+    "mask": false
+  },
+  "cluster": {
+    "x": 232,
+    "y": 0,
+    "width": 88,
+    "height": 88
+  }
+}
