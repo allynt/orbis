@@ -1,10 +1,8 @@
 import { DataFilterExtension } from '@deck.gl/extensions';
-import { isEqual } from 'lodash';
 import { ColorScale } from 'utils/color';
 
 import {
   filterRangeSelector,
-  pickedInfoSelector,
   propertySelector,
   setPickedInfo,
 } from '../slices/isolation-plus.slice';
@@ -22,7 +20,6 @@ const configuration = ({
   const selectedPropertyMetadata = source?.metadata?.properties?.find(
     property => property.name === selectedProperty.name,
   );
-  const pickedInfo = pickedInfoSelector(orbState);
   const filterRange = filterRangeSelector(orbState);
   const colorScale =
     selectedPropertyMetadata &&
@@ -60,21 +57,13 @@ const configuration = ({
       return [...color, 150];
     },
     getFilterValue: d => Math.round(d.properties[selectedProperty.name]),
-    stroked: true,
-    getLineColor: [246, 190, 0, 255],
-    getLineWidth: d => (isEqual(pickedInfo?.object, d) ? 3 : 0),
-    lineWidthUnits: 'pixels',
     filterRange: filterRange || [
       selectedPropertyMetadata?.min,
       selectedPropertyMetadata?.max,
     ],
     updateTriggers: {
-      getLineWidth: [pickedInfo],
       getFillColor: [selectedProperty, filterRange],
       getFilterValue: [selectedProperty],
-    },
-    transitions: {
-      getLineWidth: 150,
     },
     extensions: [new DataFilterExtension({ filterSize: 1 })],
   };
