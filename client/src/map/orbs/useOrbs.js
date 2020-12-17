@@ -113,6 +113,7 @@ export const useOrbs = () => {
       if (!source?.metadata?.application?.orbis?.layer?.name) return undefined;
       const { props, name } = source.metadata.application.orbis.layer;
       const { config, ...metadataConfig } = props;
+
       let loadedConfig = {};
       if (config) {
         const imported = await import(`./configurations/${config}`);
@@ -125,15 +126,19 @@ export const useOrbs = () => {
           setViewState,
           orbState,
           authToken,
+          ...metadataConfig,
         });
       }
+
       const layer = LayerFactory(name, {
-        ...loadedConfig,
         ...metadataConfig,
+        ...loadedConfig,
         dispatch,
       });
+
       return layer;
     };
+
     const layerPromises = activeSources.map(createLayer);
     Promise.all(layerPromises).then(setLayers);
   }, [activeSources, data, dispatch, setViewState, orbState, authToken]);

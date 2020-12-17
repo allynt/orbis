@@ -1,36 +1,34 @@
 const authority = 'astrosat',
   namespace = 'mysupplylynk',
-  name = 'orbis',
-  version = 'latest';
+  name = 'cqc',
+  version = 'v1';
 
 module.exports = {
-  source_id: 'astrosat/mysupplylynk/orbis/latest',
+  source_id: 'astrosat/mysupplylynk/cqc/v1',
   authority,
   namespace,
   name,
   version,
   type: 'vector',
   status: 'published',
-  data: `static-data/${authority}/${namespace}/${name}/${version}/suppliers.js`,
+  data: `static-data/${authority}/${namespace}/${name}/${version}/cqc.js`,
   metadata: {
-    label: 'MySupplyLynk',
+    label: 'CQC Suppliers',
     range: 'false',
     domain: 'MySupplyLynk',
     description: 'Suppliers who can provide items',
     application: {
       orbis: {
-        sidebar_component: {
-          name: 'CheckboxFilters',
-        },
         map_component: {
           name: 'MySupplyLynkMapComponent',
+          props: { name: 'cqcSuppliers' },
         },
         layer: {
           name: 'GeoJsonClusteredIconLayer',
           props: {
             config: 'pinIconConfig',
-            pinColor: 'purple',
-            onClick: true,
+            pinColor: 'red',
+            onClick: false,
             onHover: true,
           },
         },
