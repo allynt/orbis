@@ -4,13 +4,12 @@ import { assign } from 'lodash';
 // * Colors
 // *
 const colors = [
-  '#252525',
-  '#525252',
-  '#737373',
-  '#969696',
-  '#bdbdbd',
-  '#d9d9d9',
-  '#f0f0f0',
+  '#FABC31',
+  '#42DC6E',
+  '#F5170B',
+  '#1F3EF0',
+  '#F620C6',
+  '#43CDF4',
 ];
 
 const primary = '#f6be00';
@@ -124,6 +123,29 @@ const theme = {
     flyoutPadding: 5,
     cornerRadius: 5,
     pointerLength: 10,
+  },
+  pie: {
+    ...baseProps,
+    style: {
+      data: {},
+      labels: {
+        fontSize: 24,
+        fill: '#333f48',
+      },
+    },
+  },
+  legend: {
+    ...baseProps,
+    height: 460,
+    orientation: 'horizontal',
+    y: 400 - 70,
+    itemsPerRow: 4,
+    gutter: 20,
+    style: {
+      labels: {
+        ...baseLabelStyles,
+      },
+    },
   },
 };
 
