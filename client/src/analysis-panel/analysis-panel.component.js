@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useMemo } from 'react';
 
 import { omitBy } from 'lodash';
 import { useDispatch, useSelector } from 'react-redux';
@@ -21,7 +21,16 @@ export const AnalysisPanel = () => {
   const pickedInfo = useSelector(state => pickedInfoSelector(state?.orbs));
   const selectedProperty = useSelector(state => propertySelector(state?.orbs));
 
-  const areaValue = pickedInfo?.object?.properties?.[selectedProperty?.name];
+  const areaValue = +pickedInfo?.object?.properties?.[selectedProperty?.name];
+
+  const pieData = useMemo(
+    () =>
+      selectedProperty?.breakdown?.map(breakdownProperty => ({
+        value: Number(pickedInfo?.object?.properties[breakdownProperty]),
+        name: breakdownProperty,
+      })),
+    [selectedProperty, pickedInfo],
+  );
 
   return (
     <SidePanel
@@ -48,19 +57,20 @@ export const AnalysisPanel = () => {
         areaValue={areaValue}
         selectedProperty={selectedProperty}
       />
-      <div
-        style={{
-          margin: '0 auto',
-          width: '90%',
-          height: 1,
-          opacity: 0.39,
-          backgroundColor: 'var(--color-primary)',
-        }}
-      />
-      <PropertyBreakdownChart
-        selectedProperty={selectedProperty}
-        pickedFeature={pickedInfo?.object}
-      />
+      {!!selectedProperty?.breakdown && !pieData.some(v => !v.value) && (
+        <>
+          <div
+            style={{
+              margin: '0 auto',
+              width: '90%',
+              height: 1,
+              opacity: 0.39,
+              backgroundColor: 'var(--color-primary)',
+            }}
+          />
+          <PropertyBreakdownChart data={pieData} />
+        </>
+      )}
     </SidePanel>
   );
 };

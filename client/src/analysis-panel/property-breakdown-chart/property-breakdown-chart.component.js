@@ -1,6 +1,6 @@
 import { PieChart } from 'components/charts/pie/pie.component';
 import { LayersListItem } from 'data-layers/layers-list/layers-list-item/layers-list-item.component';
-import React, { useMemo } from 'react';
+import * as React from 'react';
 
 /**
  * @param {{
@@ -8,15 +8,7 @@ import React, { useMemo } from 'react';
  *   pickedFeature?: any
  * }} props
  */
-export const PropertyBreakdownChart = ({ selectedProperty, pickedFeature }) => {
-  const data = useMemo(
-    () =>
-      selectedProperty?.breakdown?.map(breakdownProperty => ({
-        value: Number(pickedFeature?.properties[breakdownProperty]),
-        name: breakdownProperty,
-      })),
-    [selectedProperty, pickedFeature],
-  );
+export const PropertyBreakdownChart = ({ data }) => {
   return (
     <LayersListItem
       title={
@@ -24,9 +16,7 @@ export const PropertyBreakdownChart = ({ selectedProperty, pickedFeature }) => {
       }
       defaultExpanded
     >
-      <div style={{ display: 'grid', placeItems: 'center' }}>
-        <PieChart data={data || []} />
-      </div>
+      <PieChart data={data || []} />
     </LayersListItem>
   );
 };
