@@ -30,9 +30,9 @@ describe('MySupplyLynk slice', () => {
               categoryFilters: {},
             },
           };
-          const results = categoryFiltersSelectorFactory(id);
+          const results = categoryFiltersSelectorFactory(state)(id);
 
-          expect(results).toEqual(state.mySupplyLynk.categoryFilters[id]);
+          expect(results).toEqual(CATEGORIES);
         });
       });
     });
