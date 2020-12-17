@@ -13,6 +13,7 @@ import {
 } from 'map/orbs/slices/isolation-plus.slice';
 
 import styles from './analysis-panel.module.css';
+import { MoreInformation } from './more-information/more-information.component';
 
 export const AnalysisPanel = () => {
   const dispatch = useDispatch();
@@ -49,6 +50,10 @@ export const AnalysisPanel = () => {
           <p>{value}</p>
         </div>
       ))}
+      <MoreInformation
+        details={selectedProperty?.details}
+        source={selectedProperty?.source}
+      />
     </SidePanel>
   );
 };

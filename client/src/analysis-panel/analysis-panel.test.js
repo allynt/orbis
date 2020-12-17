@@ -56,7 +56,7 @@ describe('<AnalysisPanel />', () => {
       property: { name: 'test' },
       pickedInfo: { object: { properties: { code: 'hello' } } },
     });
-    userEvent.click(getByRole('button'));
+    userEvent.click(getByRole('button', { name: 'Close' }));
     expect(store.getActions()).toEqual(
       expect.arrayContaining([
         expect.objectContaining({
