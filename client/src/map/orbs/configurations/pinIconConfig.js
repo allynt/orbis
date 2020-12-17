@@ -31,9 +31,9 @@ const configuration = ({
     const hasCategory = feat => {
       return feat.properties.Items
         ? feat.properties.Items.some(item =>
-            categoryFilters?.[id].includes(item.Category),
+            categoryFilters?.[id]?.includes(item.Category),
           )
-        : categoryFilters?.[id].includes(feat?.properties?.Category);
+        : categoryFilters?.[id]?.includes(feat?.properties?.Category);
     };
 
     let filteredFeatures;

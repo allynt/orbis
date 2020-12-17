@@ -38,6 +38,9 @@ export const categoryFiltersSelector = createSelector(
   orb => orb?.categoryFilters,
 );
 
+export const categoryFiltersSelectorFactory = id =>
+  createSelector(categoryFiltersSelector, filters => filters?.[id]);
+
 export const popupFeaturesSelector = createSelector(
   baseSelector,
   orb => orb?.popupFeatures,

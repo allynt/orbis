@@ -9,6 +9,7 @@ import { CATEGORIES } from '../../slices/mysupplylynk.constants';
 import { useSelector } from 'react-redux';
 import {
   categoryFiltersSelector,
+  categoryFiltersSelectorFactory,
   setSelectedFeatures,
 } from '../../slices/mysupplylynk.slice';
 
@@ -21,6 +22,12 @@ export const CheckboxFilters = ({ selectedLayer, dispatch }) => {
   const selectedFeatures = useSelector(state =>
     categoryFiltersSelector(state.orbs),
   );
+
+  const selectedFilters = useSelector(
+    categoryFiltersSelectorFactory(selectedLayer?.source_id),
+  );
+
+  console.log('selectedFilters: ', selectedFilters);
 
   useEffect(() => {
     if (!Object.keys(selectedFeatures).includes(selectedLayer.source_id)) {
@@ -66,29 +73,26 @@ export const CheckboxFilters = ({ selectedLayer, dispatch }) => {
 
   return (
     <>
-      {CATEGORY_NAME_AND_ICON.map(({ name, Icon }) => {
-        const checked = sourceCategories?.includes(name);
-        return (
-          <Checkbox
-            key={name}
-            id={`${selectedLayer?.source_id}-${name}`}
-            className={styles.checkbox}
-            checked={checked}
-            name="msl-filter-checkbox"
-            value={name}
-            onChange={handleChange}
-            ariaLabel={name}
-            label={
-              <span className={styles.label}>
-                <div className={styles.iconWrapper}>
-                  <Icon className={styles.icon} title={name} />
-                </div>
-                {name}
-              </span>
-            }
-          />
-        );
-      })}
+      {CATEGORY_NAME_AND_ICON.map(({ name, Icon }) => (
+        <Checkbox
+          key={name}
+          id={`${selectedLayer?.source_id}-${name}`}
+          className={styles.checkbox}
+          checked={sourceCategories?.includes(name)}
+          name="msl-filter-checkbox"
+          value={name}
+          onChange={handleChange}
+          ariaLabel={name}
+          label={
+            <span className={styles.label}>
+              <div className={styles.iconWrapper}>
+                <Icon className={styles.icon} title={name} />
+              </div>
+              {name}
+            </span>
+          }
+        />
+      ))}
     </>
   );
 };
