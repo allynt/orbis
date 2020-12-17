@@ -12,7 +12,11 @@ const wrapper = ({ children }) => (
     store={configureMockStore()({
       orbs: {
         mySupplyLynk: {
-          categoryFilters: CATEGORIES,
+          categoryFilters: {
+            'test-layer-1': CATEGORIES,
+            'test-layer-2': CATEGORIES,
+            'test-layer-3': CATEGORIES,
+          },
         },
       },
     })}
@@ -22,9 +26,12 @@ const wrapper = ({ children }) => (
 
 describe('Checkbox Filters', () => {
   it('renders pre-checked checkboxes for all of the category types', () => {
-    const { getByText, getByLabelText } = render(<CheckboxFilters />, {
-      wrapper,
-    });
+    const { getByText, getByLabelText } = render(
+      <CheckboxFilters selectedLayer={{ source_id: 'test-layer-1' }} />,
+      {
+        wrapper,
+      },
+    );
 
     CATEGORIES.forEach(cat => {
       expect(getByText(cat)).toBeInTheDocument();

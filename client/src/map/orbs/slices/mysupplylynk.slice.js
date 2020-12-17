@@ -5,14 +5,14 @@ import { CATEGORIES } from './mysupplylynk.constants';
 const mySupplyLynkSlice = createSlice({
   name: 'mySupplyLynk',
   initialState: {
-    categoryFilters: CATEGORIES,
-    popupFeatures: [],
+    categoryFilters: {},
+    popupFeatures: { id: undefined, features: [] },
     dialogFeatures: [],
     dialogVisible: false,
   },
   reducers: {
     setSelectedFeatures: (state, { payload }) => {
-      state.categoryFilters = payload;
+      state.categoryFilters[payload.layer] = payload.value;
     },
     setPopupFeatures: (state, { payload }) => {
       state.popupFeatures = payload;
@@ -39,6 +39,12 @@ export const categoryFiltersSelector = createSelector(
   baseSelector,
   orb => orb?.categoryFilters,
 );
+
+export const categoryFiltersSelectorFactory = id =>
+  createSelector(
+    categoryFiltersSelector,
+    filters => filters?.[id] || CATEGORIES,
+  );
 
 export const popupFeaturesSelector = createSelector(
   baseSelector,

@@ -1,3 +1,61 @@
+# [2.8.0](https://github.com/astrosat/orbis/compare/v2.7.0...v2.8.0) (2020-12-17)
+
+
+### Bug Fixes
+
+* **backend:** Use SES for emails ([#1026](https://github.com/astrosat/orbis/issues/1026)) ([b73e36d](https://github.com/astrosat/orbis/commit/b73e36dd50925838055e5f55bb6b6b94e292ff1a))
+* **devops:** Remove linkerd ([c6e4338](https://github.com/astrosat/orbis/commit/c6e4338c6ba0be243c5e29d5d0cbb68639094d96)), closes [#1020](https://github.com/astrosat/orbis/issues/1020)
+* **frontend:** Add click/hover fields to metadata ([c50c481](https://github.com/astrosat/orbis/commit/c50c4814b7908597b086443127561d8d14f3a676))
+* **frontend:** Add iconAtlas and iconMapping, test in proxy ([8eab116](https://github.com/astrosat/orbis/commit/8eab1164d82efa01ef303a5d2954d1abf34f7a80))
+* **frontend:** Add ID to multiple features, re-add constants ([088069a](https://github.com/astrosat/orbis/commit/088069ac6b4432552b1a226c327e502051b6c04c))
+* **frontend:** Add layer selector factory ([80a67e3](https://github.com/astrosat/orbis/commit/80a67e3f54f869f2589ad585d7b3fb30c83b67f6))
+* **frontend:** Add unique property to tooltip, add label ([f4dd3df](https://github.com/astrosat/orbis/commit/f4dd3dff0a8e24a82050653bbb82189e804389ff))
+* **frontend:** Change names of booleans, extract explicitly ([e4aa6ac](https://github.com/astrosat/orbis/commit/e4aa6ac1ba499a1796f7cc70052f70bc0ae93075))
+* **frontend:** clean up ([21f0630](https://github.com/astrosat/orbis/commit/21f0630240173666cad7c97a7d2755c5be54715e)), closes [#1010](https://github.com/astrosat/orbis/issues/1010)
+* **frontend:** Clean up code ([67f9328](https://github.com/astrosat/orbis/commit/67f93282f83f5570782f62202c14c05630f10f34))
+* **frontend:** Clip position on clear ([03bba22](https://github.com/astrosat/orbis/commit/03bba2281423dc73d97bc2ed1d2141cb7e84aceb))
+* **frontend:** completed layer config, added faker data ([40180df](https://github.com/astrosat/orbis/commit/40180df53a71b7a31b3de0b6dbbe446048a92732))
+* **frontend:** Convert class memebers into private ([e67c6ac](https://github.com/astrosat/orbis/commit/e67c6acfef48462b5833e6a351639b13d3b37b92)), closes [#1010](https://github.com/astrosat/orbis/issues/1010)
+* **frontend:** Correctly implement clipping ([010767c](https://github.com/astrosat/orbis/commit/010767c84555a29bfe9741d33d320ebc55853209)), closes [#1010](https://github.com/astrosat/orbis/issues/1010)
+* **frontend:** Create pinColor ([20b5810](https://github.com/astrosat/orbis/commit/20b5810169b1c19c4e78370083ef9650b8fb6249))
+* **frontend:** Create pinIconConfig ([e61c179](https://github.com/astrosat/orbis/commit/e61c1793f7514ea07e6024536349cb6c1f019b60))
+* **frontend:** I've changed the property value from left to right in the InfoIconTooltip component to the fix popup issue. IssueId [#1000](https://github.com/astrosat/orbis/issues/1000) ([e55a2c4](https://github.com/astrosat/orbis/commit/e55a2c47bb95a50ebe7d73b42a33cf427ea8d4a6))
+* **frontend:** Implement reversing color schemes ([83552a5](https://github.com/astrosat/orbis/commit/83552a5a1a2fe2d2379a06fee37114664b17b540)), closes [#1010](https://github.com/astrosat/orbis/issues/1010)
+* **frontend:** Improve slider in controlled state ([019d663](https://github.com/astrosat/orbis/commit/019d663fb0a8011d7eaaf585bbe8867bbbdf84b6))
+* **frontend:** Make layers work with d3 scales ([697bbfe](https://github.com/astrosat/orbis/commit/697bbfe3176f8a3ba9576eacb7699ad71af8e643)), closes [#1010](https://github.com/astrosat/orbis/issues/1010)
+* **frontend:** Make updates to state/config/constants ([41fcbb9](https://github.com/astrosat/orbis/commit/41fcbb980866b1b1d843db990d5cdd351635389e))
+* **frontend:** Move footer to bottom of table ([041dece](https://github.com/astrosat/orbis/commit/041dece6b9cd071c6bd256d0c81a1a3f9e23b6ae))
+* **frontend:** Organise color util, improve reversing ([cbc5205](https://github.com/astrosat/orbis/commit/cbc5205809411e995674e8249024f4a3dff428c2)), closes [#1010](https://github.com/astrosat/orbis/issues/1010)
+* **frontend:** Refactor sidebar and map components ([7108fc0](https://github.com/astrosat/orbis/commit/7108fc0e0a0548533cb062fa8e8b2c935d04bc6a))
+* **frontend:** Refactoring ([c150253](https://github.com/astrosat/orbis/commit/c15025381e52e0c27461c6281dab9b28dc43d66d))
+* **frontend:** Remove hardcoded layer IDs ([a5004d9](https://github.com/astrosat/orbis/commit/a5004d9bd8d56f3273443529d2b1cbc3637ac027))
+* **frontend:** Remove unncessary props, update tests. ([5aaaf67](https://github.com/astrosat/orbis/commit/5aaaf676c5a6a1ef75c9f1d0afdf63555edbcb7e))
+* **frontend:** Removed unwanted the aws folder and unneeded changes in files. IsueeID [#1000](https://github.com/astrosat/orbis/issues/1000) ([cf2bdf7](https://github.com/astrosat/orbis/commit/cf2bdf7ff6d4a60bf33d7ad17d1e98aeb1c0cb3f))
+* **frontend:** reverse -> reversed ([ece0455](https://github.com/astrosat/orbis/commit/ece04557d577aec34b351e0d9aa3ac3143a233a6)), closes [#1011](https://github.com/astrosat/orbis/issues/1011)
+* **frontend:** Revert MSL feature detail, update generic feature detail ([0c41246](https://github.com/astrosat/orbis/commit/0c41246055ad94304ebeb912e25f59156fd66e14))
+* **frontend:** Setup broken stories, remove controlledness ([fc22835](https://github.com/astrosat/orbis/commit/fc228354a4e53b6a2737bbe1ed7d0f28974e80b1))
+* **frontend:** Update arrayElement function ([9683337](https://github.com/astrosat/orbis/commit/968333707e48a2accfcceac6fc3d357485a7e3d5))
+* **frontend:** Update logic and global state ([5b348b7](https://github.com/astrosat/orbis/commit/5b348b717102f1cc9fc56c0e7280cba7128d89a8))
+* **frontend:** Update slider to only take array value ([63434b7](https://github.com/astrosat/orbis/commit/63434b7327c3625873f10439422fed9803885cd9))
+* **frontend:** Update tests ([daebda9](https://github.com/astrosat/orbis/commit/daebda9e85b43b1f4d3386bfe0263f63239cec65))
+* **frontend:** Update tests ([44c6b8b](https://github.com/astrosat/orbis/commit/44c6b8be72ef3894c0b7436859e4caa51915ec62))
+* **frontend:** Update tests. ([a0acd06](https://github.com/astrosat/orbis/commit/a0acd06d87b38afbcac7f34a63aa18653274a989))
+
+
+### Features
+
+* **backend:** added logging of customer creation ([12808fc](https://github.com/astrosat/orbis/commit/12808fc99b1ec78eede89a9aa653549031d3e5ed))
+* **frontend:** Add formatting to color scale ([bed9918](https://github.com/astrosat/orbis/commit/bed991815901137d400fcbc844719973823574d5)), closes [#1010](https://github.com/astrosat/orbis/issues/1010)
+* **frontend:** Add precision, fix negative domain ([d359233](https://github.com/astrosat/orbis/commit/d35923341585745ae593b4b6f7e92890dd9e6a1c))
+* **frontend:** Convert color schemes to use d3 and do clipping ([ad7ca27](https://github.com/astrosat/orbis/commit/ad7ca27eee98954080cad491a137975074aa94f3)), closes [#1010](https://github.com/astrosat/orbis/issues/1010)
+* **frontend:** create getGradient function ([25aedd2](https://github.com/astrosat/orbis/commit/25aedd25b12dd21def736b1a469afe7447a91525)), closes [#1010](https://github.com/astrosat/orbis/issues/1010)
+* **frontend:** Create util for making color scales ([48aa9e6](https://github.com/astrosat/orbis/commit/48aa9e6456e9a1d99e12aa01d64cbaba978ab163)), closes [#1011](https://github.com/astrosat/orbis/issues/1011)
+* **frontend:** Good start on the ColorScale class ([349b2e0](https://github.com/astrosat/orbis/commit/349b2e007f77bed2f203c18fbf19d04522d087d8)), closes [#1010](https://github.com/astrosat/orbis/issues/1010)
+* **frontend:** Implement clipping ([8b98f31](https://github.com/astrosat/orbis/commit/8b98f31bb396ad93fa929a9c9eed05f3a4ab91b9)), closes [#1010](https://github.com/astrosat/orbis/issues/1010)
+* **frontend:** Implement gradient ([a8b1ae5](https://github.com/astrosat/orbis/commit/a8b1ae54da53616595e3cb87c3712b9937134c60)), closes [#1010](https://github.com/astrosat/orbis/issues/1010)
+* **frontend:** Implement new ColorScale class ([9802901](https://github.com/astrosat/orbis/commit/98029013aaaa1e1b6729bad6b9c3f77e794c628c)), closes [#1010](https://github.com/astrosat/orbis/issues/1010)
+* **frontend:** Implement reversed colormaps ([18c2338](https://github.com/astrosat/orbis/commit/18c23384c06643730970e6c6ff923eccc3764c8e)), closes [#1011](https://github.com/astrosat/orbis/issues/1011)
+
 # [2.7.0](https://github.com/astrosat/orbis/compare/v2.6.0...v2.7.0) (2020-12-03)
 
 

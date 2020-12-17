@@ -18,7 +18,7 @@ env = environ.Env()
 
 PROJECT_NAME = "orbis"
 PROJECT_SLUG = slugify(PROJECT_NAME)
-PROJECT_EMAIL = "{role}@astrosat.net"
+PROJECT_EMAIL = "{role}@" + env("DJANGO_EMAIL_DOMAIN", default="astrosat.net")
 
 COMMIT_SHA = env("COMMIT_SHA", default="")
 
