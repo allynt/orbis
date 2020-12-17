@@ -175,8 +175,8 @@ resource "kubernetes_deployment" "api_deployment" {
             name = "DJANGO_EMAIL_HOST"
             value_from {
               secret_key_ref {
-                name = local.app_deployment_secret_name
-                key  = "email_host"
+                name = local.app_environment_secret_name
+                key  = "mail_smtp_endpoint"
               }
             }
           }
@@ -185,8 +185,8 @@ resource "kubernetes_deployment" "api_deployment" {
             name = "DJANGO_EMAIL_PORT"
             value_from {
               secret_key_ref {
-                name = local.app_deployment_secret_name
-                key  = "email_port"
+                name = local.app_environment_secret_name
+                key  = "mail_smtp_port"
               }
             }
           }
@@ -195,8 +195,8 @@ resource "kubernetes_deployment" "api_deployment" {
             name = "DJANGO_EMAIL_USER"
             value_from {
               secret_key_ref {
-                name = local.app_deployment_secret_name
-                key  = "email_user"
+                name = local.app_environment_secret_name
+                key  = "mail_smtp_user"
               }
             }
           }
@@ -205,8 +205,18 @@ resource "kubernetes_deployment" "api_deployment" {
             name = "DJANGO_EMAIL_PASSWORD"
             value_from {
               secret_key_ref {
-                name = local.app_deployment_secret_name
-                key  = "email_password"
+                name = local.app_environment_secret_name
+                key  = "mail_smtp_password"
+              }
+            }
+          }
+
+          env {
+            name = "DJANGO_EMAIL_DOMAIN"
+            value_from {
+              secret_key_ref {
+                name = local.app_environment_secret_name
+                key  = "mail_domain"
               }
             }
           }

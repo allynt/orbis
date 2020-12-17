@@ -26,7 +26,14 @@ MEDIA_URL = f"https://{MEDIA_STORAGE_BUCKET}/"
 #########
 
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
-EMAIL_USE_TLS = True
+
+# These two SMTP TLS settings are poorly named
+# EMAIL_USE_TLS means to use a non-TLS connection but then upgrade it using STARTTLS, on port 587.
+# EMAIL_USE_SSL mean to use TLS from the start i.e. implicit/wrapper TLS connection, on port 465.
+# With AWS SES we use implicit/wrapper TLS on port 465
+# See: https://docs.djangoproject.com/en/3.1/ref/settings/#email-use-tls
+EMAIL_USE_TLS = False
+EMAIL_USE_SSL = True
 
 EMAIL_HOST = env("DJANGO_EMAIL_HOST")
 EMAIL_PORT = env("DJANGO_EMAIL_PORT")
