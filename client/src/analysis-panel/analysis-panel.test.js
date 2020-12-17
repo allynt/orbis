@@ -31,32 +31,12 @@ describe('<AnalysisPanel />', () => {
     expect(queryByText(/test/i)).not.toBeInTheDocument();
   });
 
-  it('shows the code property for the selected area', () => {
-    const { getByText } = renderComponent({
-      property: { name: 'test' },
-      pickedInfo: { object: { properties: { code: 'hello' } } },
-    });
-
-    expect(getByText(/code/i)).toBeInTheDocument();
-    expect(getByText('hello')).toBeInTheDocument();
-  });
-
-  it('shows the key and value of the selected property and selected area', () => {
-    const { getByText } = renderComponent({
-      property: { name: 'test' },
-      pickedInfo: { object: { properties: { test: 123 } } },
-    });
-
-    expect(getByText('test:')).toBeInTheDocument();
-    expect(getByText('123')).toBeInTheDocument();
-  });
-
   it('sets the pickedInfo to undefined if close is clicked', () => {
     const { getByRole, store } = renderComponent({
       property: { name: 'test' },
       pickedInfo: { object: { properties: { code: 'hello' } } },
     });
-    userEvent.click(getByRole('button'));
+    userEvent.click(getByRole('button', { name: 'Close' }));
     expect(store.getActions()).toEqual(
       expect.arrayContaining([
         expect.objectContaining({
