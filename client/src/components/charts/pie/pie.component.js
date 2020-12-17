@@ -1,5 +1,12 @@
 import * as React from 'react';
-import { VictoryAxis, VictoryChart, VictoryLegend, VictoryPie } from 'victory';
+import {
+  VictoryAxis,
+  VictoryChart,
+  VictoryContainer,
+  VictoryGroup,
+  VictoryLegend,
+  VictoryPie,
+} from 'victory';
 import orbisChartTheme from '../orbisChartTheme';
 
 /**
@@ -9,34 +16,29 @@ import orbisChartTheme from '../orbisChartTheme';
  */
 export const PieChart = ({ data }) => {
   return (
-    <VictoryChart
-      theme={orbisChartTheme}
-      height={400}
-      padding={{ left: 0, top: 0, right: 0, bottom: 100 }}
-    >
-      <VictoryAxis
-        axisComponent={<></>}
-        axisLabelComponent={<></>}
-        gridComponent={<></>}
-        tickComponent={<></>}
-        tickLabelComponent={<></>}
-        dependentAxis
-      />
-      <VictoryAxis
-        axisComponent={<></>}
-        axisLabelComponent={<></>}
-        gridComponent={<></>}
-        tickComponent={<></>}
-        tickLabelComponent={<></>}
-      />
+    <svg viewBox="0 0 500 500">
       <VictoryPie
+        theme={orbisChartTheme}
+        padding={{ left: 20 }}
+        // animate
+        standalone={false}
         innerRadius={90}
+        // radius={200}
         data={data}
         x={d => d.value}
         y={d => d.value}
+        origin={{ x: 500 / 2 }}
+        padAngle={2}
         labelRadius={({ innerRadius }) => Number(innerRadius) + 25}
       />
-      <VictoryLegend data={data} />
-    </VictoryChart>
+      <VictoryLegend
+        theme={orbisChartTheme}
+        standalone={false}
+        data={data}
+        itemsPerRow={2}
+        gutter={30}
+        orientation="horizontal"
+      />
+    </svg>
   );
 };

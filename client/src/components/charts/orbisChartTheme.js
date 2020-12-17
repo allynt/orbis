@@ -125,7 +125,8 @@ const theme = {
     pointerLength: 10,
   },
   pie: {
-    ...baseProps,
+    // ...baseProps,
+    colorScale: colors,
     style: {
       data: {},
       labels: {
@@ -138,7 +139,7 @@ const theme = {
     ...baseProps,
     height: 460,
     orientation: 'horizontal',
-    y: 400 - 70,
+    y: 400,
     itemsPerRow: 4,
     gutter: 20,
     style: {

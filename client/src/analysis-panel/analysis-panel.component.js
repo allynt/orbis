@@ -14,6 +14,7 @@ import {
 
 import styles from './analysis-panel.module.css';
 import { NationalDeviationHistogram } from './national-deviation-histogram/national-deviation-histogram.component';
+import { PropertyBreakdownChart } from './property-breakdown-chart/property-breakdown-chart.component';
 
 export const AnalysisPanel = () => {
   const dispatch = useDispatch();
@@ -46,6 +47,19 @@ export const AnalysisPanel = () => {
       <NationalDeviationHistogram
         areaValue={areaValue}
         selectedProperty={selectedProperty}
+      />
+      <div
+        style={{
+          margin: '0 auto',
+          width: '90%',
+          height: 1,
+          opacity: 0.39,
+          backgroundColor: 'var(--color-primary)',
+        }}
+      />
+      <PropertyBreakdownChart
+        selectedProperty={selectedProperty}
+        pickedFeature={pickedInfo?.object}
       />
     </SidePanel>
   );
