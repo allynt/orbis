@@ -6,10 +6,15 @@ import styles from './layers-list-item.module.css';
  * @param {{
  *  children?: React.ReactNode
  *  title: string
+ *  defaultExpanded?: boolean
  * }} props
  */
-export const LayersListItem = ({ children, title }) => {
-  const [expanded, setExpanded] = useState(false);
+export const LayersListItem = ({
+  children,
+  title,
+  defaultExpanded = false,
+}) => {
+  const [expanded, setExpanded] = useState(defaultExpanded);
 
   return (
     <div className={styles.layersListItem}>
