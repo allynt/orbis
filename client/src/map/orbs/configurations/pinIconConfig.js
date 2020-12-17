@@ -2,7 +2,7 @@ import { FlyToInterpolator } from '@deck.gl/core';
 import { MAX_ZOOM } from 'map/map.constants';
 import { easeInOutCubic } from 'utils/easingFunctions';
 import {
-  categoryFiltersSelector,
+  categoryFiltersSelectorFactory,
   popupFeaturesSelector,
   setDialogFeatures,
   setPopupFeatures,
@@ -22,7 +22,7 @@ const configuration = ({
   onHover,
   pinColor = 'purple',
 }) => {
-  const categoryFilters = categoryFiltersSelector(orbState);
+  const categoryFilters = categoryFiltersSelectorFactory(id)(orbState);
   const popupFeatures = popupFeaturesSelector(orbState);
 
   const getFeatures = () => {
@@ -31,9 +31,9 @@ const configuration = ({
     const hasCategory = feat => {
       return feat.properties.Items
         ? feat.properties.Items.some(item =>
-            categoryFilters?.[id]?.includes(item.Category),
+            categoryFilters?.includes(item.Category),
           )
-        : categoryFilters?.[id]?.includes(feat?.properties?.Category);
+        : categoryFilters?.includes(feat?.properties?.Category);
     };
 
     let filteredFeatures;
@@ -63,9 +63,9 @@ const configuration = ({
           transitionEasing: easeInOutCubic,
           transitionInterpolator: new FlyToInterpolator(),
         });
-      else dispatch(setPopupFeatures(info.objects));
+      else dispatch(setPopupFeatures({ features: info.objects }));
     } else {
-      if (onClick !== false) {
+      if (onClick !== 'false') {
         dispatch(setDialogFeatures([info.object.properties]));
         dispatch(setPopupFeatures({ id: undefined, features: [] }));
         dispatch(toggleDialog());
@@ -74,7 +74,7 @@ const configuration = ({
   };
 
   const handleHover = info => {
-    if (popupFeatures.features.length > 1) return;
+    if (popupFeatures?.features?.length > 1) return;
     if (!info?.object?.properties?.cluster) {
       dispatch(
         info.object
@@ -89,11 +89,12 @@ const configuration = ({
 
   return {
     id,
-    data: categoryFilters?.[id]?.length && getFeatures(),
+    data: categoryFilters?.length && getFeatures(),
     visible: !!activeSources?.find(source => source.source_id === id),
     iconMapping,
     iconAtlas,
     getIcon: `pin-${pinColor}`,
+    groupIconName: `group-${pinColor}`,
     onClick: handleLayerClick,
     onHover: onHover !== false && handleHover,
   };

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 
 import { Checkbox } from '@astrosat/astrosat-ui';
 
@@ -8,7 +8,6 @@ import styles from './checkbox-filters.module.css';
 import { CATEGORIES } from '../../slices/mysupplylynk.constants';
 import { useSelector } from 'react-redux';
 import {
-  categoryFiltersSelector,
   categoryFiltersSelectorFactory,
   setSelectedFeatures,
 } from '../../slices/mysupplylynk.slice';
@@ -19,29 +18,9 @@ import {
  * }} props
  */
 export const CheckboxFilters = ({ selectedLayer, dispatch }) => {
-  const selectedFeatures = useSelector(state =>
-    categoryFiltersSelector(state.orbs),
+  const selectedFilters = useSelector(state =>
+    categoryFiltersSelectorFactory(selectedLayer?.source_id)(state.orbs),
   );
-
-  const selectedFilters = useSelector(
-    categoryFiltersSelectorFactory(selectedLayer?.source_id),
-  );
-
-  console.log('selectedFilters: ', selectedFilters);
-
-  useEffect(() => {
-    if (!Object.keys(selectedFeatures).includes(selectedLayer.source_id)) {
-      dispatch(
-        setSelectedFeatures({
-          ...selectedFeatures,
-          layer: selectedLayer.source_id,
-          value: CATEGORIES,
-        }),
-      );
-    }
-  }, [selectedFeatures, selectedLayer, dispatch]);
-
-  const sourceCategories = selectedFeatures?.[selectedLayer?.source_id];
 
   const CATEGORY_NAME_AND_ICON = CATEGORIES.map(name => ({
     name,
@@ -60,13 +39,13 @@ export const CheckboxFilters = ({ selectedLayer, dispatch }) => {
       ? dispatch(
           setSelectedFeatures({
             layer: selectedLayer.source_id,
-            value: [...sourceCategories, value],
+            value: [...selectedFilters, value],
           }),
         )
       : dispatch(
           setSelectedFeatures({
             layer: selectedLayer.source_id,
-            value: sourceCategories.filter(feat => feat !== value),
+            value: selectedFilters.filter(feat => feat !== value),
           }),
         );
   };
@@ -78,7 +57,7 @@ export const CheckboxFilters = ({ selectedLayer, dispatch }) => {
           key={name}
           id={`${selectedLayer?.source_id}-${name}`}
           className={styles.checkbox}
-          checked={sourceCategories?.includes(name)}
+          checked={selectedFilters?.includes(name)}
           name="msl-filter-checkbox"
           value={name}
           onChange={handleChange}

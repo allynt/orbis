@@ -12,13 +12,13 @@ import {
 } from '../slices/mysupplylynk.slice';
 import { Dialog } from './mysupplylynk-dialog/dialog.component';
 
-import { LAYERS } from '../slices/mysupplylynk.constants';
+import { DATA_TYPES } from '../slices/mysupplylynk.constants';
 
 import FeatureDetail from 'components/feature-detail/feature-detail.component';
 
 import MySupplyLynkFeatureDetail from './mysupplylynk-feature-detail/mysupplylynk-feature-detail.component';
 
-const MySupplyLynkMapComponent = ({ name }) => {
+const MySupplyLynkMapComponent = ({ name, type }) => {
   const dispatch = useDispatch();
   const popupFeatures = useSelector(state => popupFeaturesSelector(state.orbs));
   const dialogFeatures = useSelector(state =>
@@ -31,6 +31,8 @@ const MySupplyLynkMapComponent = ({ name }) => {
     label: 'Register now at',
     content: 'www.MySupplyLynk.net',
   };
+
+  type === DATA_TYPES.nonRegistered ? console.log('yes') : console.log('no');
 
   return (
     <>
@@ -46,16 +48,7 @@ const MySupplyLynkMapComponent = ({ name }) => {
           captureClick
           captureScroll
         >
-          {popupFeatures.id === LAYERS.suppliers && (
-            <MySupplyLynkFeatureDetail
-              data={popupFeatures.features.map(feature => feature.properties)}
-              onSupplierClick={supplier => {
-                dispatch(setDialogFeatures([supplier]));
-                dispatch(toggleDialog());
-              }}
-            />
-          )}
-          {popupFeatures.id === LAYERS.nonRegistered && (
+          {type === DATA_TYPES.nonRegistered ? (
             <FeatureDetail
               title={name}
               features={[
@@ -71,6 +64,14 @@ const MySupplyLynkMapComponent = ({ name }) => {
                 }),
               ]}
               footer={nonRegisteredFooter}
+            />
+          ) : (
+            <MySupplyLynkFeatureDetail
+              data={popupFeatures.features.map(feature => feature.properties)}
+              onSupplierClick={supplier => {
+                dispatch(setDialogFeatures([supplier]));
+                dispatch(toggleDialog());
+              }}
             />
           )}
         </Popup>

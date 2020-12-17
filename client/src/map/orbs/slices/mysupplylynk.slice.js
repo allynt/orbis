@@ -1,5 +1,7 @@
 import { createSlice, createSelector } from '@reduxjs/toolkit';
 
+import { CATEGORIES } from './mysupplylynk.constants';
+
 const mySupplyLynkSlice = createSlice({
   name: 'mySupplyLynk',
   initialState: {
@@ -39,7 +41,10 @@ export const categoryFiltersSelector = createSelector(
 );
 
 export const categoryFiltersSelectorFactory = id =>
-  createSelector(categoryFiltersSelector, filters => filters?.[id]);
+  createSelector(
+    categoryFiltersSelector,
+    filters => filters?.[id] || CATEGORIES,
+  );
 
 export const popupFeaturesSelector = createSelector(
   baseSelector,
