@@ -7,8 +7,8 @@ const initialState = {
   strapline: '',
 };
 
-const sideMenuSlice = createSlice({
-  name: 'sideMenu',
+const controlPanelSlice = createSlice({
+  name: 'controlPanel',
   initialState,
   reducers: {
     toggleMenu: (state, { payload }) => {
@@ -36,9 +36,13 @@ const sideMenuSlice = createSlice({
   },
 });
 
-export const { toggleMenu, setMenuHeadings, closeMenu } = sideMenuSlice.actions;
+export const {
+  toggleMenu,
+  setMenuHeadings,
+  closeMenu,
+} = controlPanelSlice.actions;
 
-const baseSelector = state => state.sideMenu || {};
+const baseSelector = state => state.controlPanel || {};
 export const selectIsMenuVisible = createSelector(
   baseSelector,
   ({ isMenuVisible }) => isMenuVisible || false,
@@ -56,4 +60,4 @@ export const selectStrapline = createSelector(
   ({ strapline }) => strapline || '',
 );
 
-export default sideMenuSlice.reducer;
+export default controlPanelSlice.reducer;

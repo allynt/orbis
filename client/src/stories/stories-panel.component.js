@@ -5,7 +5,7 @@ import StoriesList from './stories-list.component';
 
 import { fetchStories, selectStory } from './stories.slice';
 
-import styles from '../side-menu/side-menu.module.css';
+import styles from '../control-panel/control-panel.module.css';
 
 const StoriesPanel = ({ map }) => {
   const dispatch = useDispatch();

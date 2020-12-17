@@ -1,0 +1,45 @@
+.sidePanel {
+  --width: 20rem;
+  --width-negative: calc(-1 * var(--width));
+  --border-radius: 1rem;
+  --border-radius-negative: calc(-1 * var(--border-radius));
+  background-color: var(--color-secondary);
+  color: #ffffff;
+  height: 100%;
+  width: var(--width);
+  flex-shrink: 0;
+  transition: transform 250ms ease-in-out, margin 300ms ease-in-out;
+  z-index: 3;
+}
+
+.left {
+  border-top-right-radius: var(--border-radius);
+  border-bottom-right-radius: var(--border-radius);
+  transform: translateX(var(--width-negative));
+  margin-right: var(--width-negative);
+}
+
+.right {
+  border-top-left-radius: var(--border-radius);
+  border-bottom-left-radius: var(--border-radius);
+  transform: translateX(var(--width));
+  margin-left: var(--width-negative);
+}
+
+.open {
+  transform: translateX(0);
+}
+
+.left.open {
+  margin-right: var(--border-radius-negative);
+}
+
+.right.open {
+  margin-left: var(--border-radius-negative);
+}
+
+.header {
+  width: 100%;
+  padding: 1em 18px;
+  border-bottom: 2px solid var(--color-primary);
+}
