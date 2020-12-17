@@ -7,3 +7,5 @@ export { default as InfoButton } from './info-button/info-button.component';
 export { LoadingSpinner } from './loading-spinner/loading-spinner.component';
 export * from './sidebar';
 export { Skeleton } from './skeleton/skeleton.component';
+export { BarChart } from './charts/bar/bar.component';
+export { SidePanel } from './side-panel/side-panel.component';

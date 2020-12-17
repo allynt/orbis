@@ -14,14 +14,12 @@
 }
 
 .data {
-  padding: 1rem;
+  padding: 1rem 0;
 }
 
-.dataItem {
-  margin-bottom: 0.5rem;
-}
-
-.dataKey {
-  font-weight: 600;
-  margin-bottom: 0.2rem;
+.strapline {
+  font-size: 0.75rem;
+  color: var(--color-primary);
+  padding: 0 1rem 1rem;
+  font-style: italic;
 }

@@ -1,11 +1,10 @@
 import * as React from 'react';
 
-import { omitBy } from 'lodash';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { CloseButton } from '@astrosat/astrosat-ui';
 
-import { SidePanel } from 'components/side-panel/side-panel.component';
+import { SidePanel } from 'components';
 import {
   pickedInfoSelector,
   propertySelector,
@@ -14,17 +13,14 @@ import {
 
 import styles from './analysis-panel.module.css';
 import { MoreInformation } from './more-information/more-information.component';
+import { NationalDeviationHistogram } from './national-deviation-histogram/national-deviation-histogram.component';
 
 export const AnalysisPanel = () => {
   const dispatch = useDispatch();
   const pickedInfo = useSelector(state => pickedInfoSelector(state?.orbs));
   const selectedProperty = useSelector(state => propertySelector(state?.orbs));
 
-  const values = omitBy(
-    pickedInfo?.object?.properties,
-    (_, key) =>
-      key !== selectedProperty.name && !key.toLowerCase().includes('code'),
-  );
+  const areaValue = pickedInfo?.object?.properties?.[selectedProperty?.name];
 
   return (
     <SidePanel
@@ -44,12 +40,13 @@ export const AnalysisPanel = () => {
         </div>
       }
     >
-      {Object.entries(values).map(([key, value]) => (
-        <div className={styles.dataItem}>
-          <p className={styles.dataKey}>{key}:</p>
-          <p>{value}</p>
-        </div>
-      ))}
+      <p className={styles.strapline}>
+        The information below relates to the areas selected on the map.
+      </p>
+      <NationalDeviationHistogram
+        areaValue={areaValue}
+        selectedProperty={selectedProperty}
+      />
       <MoreInformation
         details={selectedProperty?.details}
         source={selectedProperty?.source}
