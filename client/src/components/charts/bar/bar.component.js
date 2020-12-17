@@ -29,7 +29,7 @@ export const BarChart = ({
     <VictoryChart
       domainPadding={{ x: 20 }}
       theme={orbisChartTheme}
-      domain={{ x: domain }}
+      domain={{ x: domain.map(Number) }}
     >
       <VictoryAxis label={labelX} />
       <VictoryAxis
