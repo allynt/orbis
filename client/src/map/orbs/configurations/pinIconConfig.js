@@ -63,7 +63,10 @@ const configuration = ({
           transitionEasing: easeInOutCubic,
           transitionInterpolator: new FlyToInterpolator(),
         });
-      else dispatch(setPopupFeatures({ features: info.objects }));
+      else
+        dispatch(
+          setPopupFeatures({ id: info.layer.props.id, features: info.objects }),
+        );
     } else {
       if (onClick !== 'false') {
         dispatch(setDialogFeatures([info.object.properties]));

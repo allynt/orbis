@@ -12,13 +12,13 @@ import {
 } from '../slices/mysupplylynk.slice';
 import { Dialog } from './mysupplylynk-dialog/dialog.component';
 
-import { DATA_TYPES } from '../slices/mysupplylynk.constants';
+import { LAYERS } from '../slices/mysupplylynk.constants';
 
 import FeatureDetail from 'components/feature-detail/feature-detail.component';
 
 import MySupplyLynkFeatureDetail from './mysupplylynk-feature-detail/mysupplylynk-feature-detail.component';
 
-const MySupplyLynkMapComponent = ({ name, type }) => {
+const MySupplyLynkMapComponent = ({ name }) => {
   const dispatch = useDispatch();
   const popupFeatures = useSelector(state => popupFeaturesSelector(state.orbs));
   const dialogFeatures = useSelector(state =>
@@ -31,8 +31,6 @@ const MySupplyLynkMapComponent = ({ name, type }) => {
     label: 'Register now at',
     content: 'www.MySupplyLynk.net',
   };
-
-  type === DATA_TYPES.nonRegistered ? console.log('yes') : console.log('no');
 
   return (
     <>
@@ -48,7 +46,7 @@ const MySupplyLynkMapComponent = ({ name, type }) => {
           captureClick
           captureScroll
         >
-          {type === DATA_TYPES.nonRegistered ? (
+          {popupFeatures.id === LAYERS.nonRegistered && (
             <FeatureDetail
               title={name}
               features={[
@@ -65,7 +63,8 @@ const MySupplyLynkMapComponent = ({ name, type }) => {
               ]}
               footer={nonRegisteredFooter}
             />
-          ) : (
+          )}
+          {popupFeatures.id === LAYERS.suppliers && (
             <MySupplyLynkFeatureDetail
               data={popupFeatures.features.map(feature => feature.properties)}
               onSupplierClick={supplier => {
