@@ -24,23 +24,3 @@ export const globalTypes = {
     },
   },
 };
-
-export const parameters = {
-  backgrounds: {
-    default: 'light',
-    values: [
-      {
-        name: 'dark',
-        value: '#333f48',
-      },
-      {
-        name: 'light',
-        value: '#f8f8f8',
-      },
-      {
-        name: 'yellow',
-        value: '#f6be00',
-      },
-    ],
-  },
-};
