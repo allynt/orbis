@@ -43,7 +43,7 @@ const COLOR_MAPS = [
 export default {
   title: 'Components/ColorMapRangeSlider',
   argTypes: {
-    onChange: { action: 'onChange', disable: true },
+    onChange: { action: 'onChange' },
     color: {
       control: {
         type: 'select',
@@ -75,6 +75,20 @@ Continuous.args = { type: 'continuous', domain: [300, 1000] };
 export const NegativeDomain = Template.bind({});
 NegativeDomain.args = { type: 'continuous', domain: [-100, 100] };
 
+export const SmallDomain = Template.bind({});
+SmallDomain.args = { domain: [0.1, 0.9] };
+
+export const Reversed = Template.bind({});
+Reversed.args = {
+  reversed: true,
+};
+
+export const ReversedDecile = Template.bind({});
+ReversedDecile.args = {
+  reversed: true,
+  type: 'decile',
+};
+
 export const Controlled = () => {
   const domain1 = [0, 10],
     domain2 = [100, 1000];
@@ -103,4 +117,10 @@ export const Controlled = () => {
       <pre>{JSON.stringify(value)}</pre>
     </>
   );
+};
+
+export const Clipped = Template.bind({});
+Clipped.args = {
+  domain: [0, 100],
+  clip: [20, 70],
 };

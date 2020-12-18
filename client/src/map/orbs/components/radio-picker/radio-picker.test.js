@@ -18,21 +18,25 @@ const defaultSelectedLayer = {
     properties: [
       {
         name: 'Census 2011: % of people in the age band 40 - 64',
+        label: 'People in the age band 40 - 64',
         type: 'percentage',
         property_group: '1',
       },
       {
         name: 'Census 2011: number of people in the age band 40 - 64',
+        label: 'People in the age band 40 - 64',
         type: 'continuous',
         property_group: '1',
       },
       {
         name: 'Census 2011: % of people in the age band 65+',
+        label: 'People in the age band 65+',
         type: 'percentage',
         property_group: '2',
       },
       {
         name: 'Census 2011: number of people in the age band 65+',
+        label: 'People in the age band 65+',
         type: 'continuous',
         property_group: '2',
       },
@@ -69,7 +73,7 @@ describe('<RadioPicker />', () => {
   it('displays a radio for each selectable property in the source', () => {
     const { getByRole } = renderComponent();
     getProperties(defaultSelectedLayer).forEach(pair => {
-      expect(getByRole('radio', { name: pair[0].name })).toBeInTheDocument();
+      expect(getByRole('radio', { name: pair[0].label })).toBeInTheDocument();
     });
   });
 
@@ -108,7 +112,7 @@ describe('<RadioPicker />', () => {
 
     userEvent.click(
       getByRole('radio', {
-        name: 'Census 2011: % of people in the age band 40 - 64',
+        name: 'People in the age band 40 - 64',
       }),
     );
 
@@ -117,6 +121,7 @@ describe('<RadioPicker />', () => {
       payload: {
         source_id: defaultSelectedLayer.source_id,
         name: 'Census 2011: % of people in the age band 40 - 64',
+        label: 'People in the age band 40 - 64',
         type: 'percentage',
         property_group: '1',
       },

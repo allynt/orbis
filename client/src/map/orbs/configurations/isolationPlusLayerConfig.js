@@ -1,10 +1,12 @@
 import { DataFilterExtension } from '@deck.gl/extensions';
-import chroma from 'chroma-js';
+import { ColorScale } from 'utils/color';
+import isEqual from 'lodash/isEqual';
 
 import {
-  filterRangeSelector,
   propertySelector,
   setPickedInfo,
+  pickedInfoSelector,
+  filterRangeSelector,
 } from '../slices/isolation-plus.slice';
 
 const configuration = ({
@@ -14,19 +16,29 @@ const configuration = ({
   dispatch,
   orbState,
   authToken,
-  pickedInfo,
 }) => {
   const source = activeSources?.find(source => source.source_id === id);
   const selectedProperty = propertySelector(orbState);
+  const filterRange = filterRangeSelector(orbState);
+  const pickedInfo = pickedInfoSelector(orbState);
   const selectedPropertyMetadata = source?.metadata?.properties?.find(
     property => property.name === selectedProperty.name,
   );
-  const filterRange = filterRangeSelector(orbState);
   const colorScale =
     selectedPropertyMetadata &&
-    chroma
-      .scale(selectedPropertyMetadata?.application?.orbis?.display?.color)
-      .domain([selectedProperty?.min, selectedProperty?.max]);
+    new ColorScale({
+      color: selectedPropertyMetadata?.application?.orbis?.display?.color,
+      domain: [selectedProperty?.min, selectedProperty?.max],
+      reversed:
+        selectedPropertyMetadata?.application?.orbis?.display
+          ?.colormap_reversed,
+      clip: (selectedPropertyMetadata?.clip_min ||
+        selectedPropertyMetadata?.clip_max) && [
+        selectedPropertyMetadata.clip_min || selectedPropertyMetadata.min,
+        selectedPropertyMetadata.clip_max || selectedPropertyMetadata.max,
+      ],
+      format: 'array',
+    });
 
   return {
     id,
@@ -38,21 +50,20 @@ const configuration = ({
     uniqueIdProperty: source.metadata.uniqueIdProperty,
     pickable: true,
     autoHighlight: true,
-    highlightColor: [0, 0, 0, 65],
     onClick: info => dispatch(setPickedInfo(info)),
     getLineColor: [246, 190, 0, 255],
     getLineWidth: d => (isEqual(pickedInfo?.object, d) ? 3 : 0),
-    filled: true,
-    getFillColor: d => [
-      // @ts-ignore
-      ...(colorScale
-        ? colorScale(d.properties[selectedProperty.name]).rgb()
-        : [0, 0, 0]),
-      150,
-    ],
-    stroked: true,
-    // getLineWidth: 1,
     lineWidthUnits: 'pixels',
+    getFillColor: d => {
+      let color =
+        colorScale && d.properties[selectedProperty.name]
+          ? colorScale.get(d.properties[selectedProperty.name])
+          : [0, 0, 0];
+      return [...color, 150];
+    },
+    transitions: {
+      getLineWidth: 150,
+    },
     getFilterValue: d => Math.round(d.properties[selectedProperty.name]),
     filterRange: filterRange || [
       selectedPropertyMetadata?.min,

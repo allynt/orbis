@@ -25,7 +25,7 @@ import ReactTooltip from 'react-tooltip';
 import ImageForm from './image-form.component';
 
 import styles from './annotations-panel.module.css';
-import sideMenuStyles from '../side-menu/side-menu.module.css';
+import sideMenuStyles from '../control-panel/control-panel.module.css';
 
 const lineWidthOptions = [
   {

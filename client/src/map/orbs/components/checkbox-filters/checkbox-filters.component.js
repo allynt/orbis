@@ -8,19 +8,20 @@ import styles from './checkbox-filters.module.css';
 import { CATEGORIES } from '../../slices/mysupplylynk.constants';
 import { useSelector } from 'react-redux';
 import {
-  categoryFiltersSelector,
+  categoryFiltersSelectorFactory,
   setSelectedFeatures,
 } from '../../slices/mysupplylynk.slice';
 
 /** @param {{
- *   source?: any
+ *   selectedLayer?: any
  *   dispatch?: any
  * }} props
  */
-export const CheckboxFilters = ({ dispatch }) => {
-  const selectedFeatures = useSelector(state =>
-    categoryFiltersSelector(state.orbs),
+export const CheckboxFilters = ({ selectedLayer, dispatch }) => {
+  const selectedFilters = useSelector(state =>
+    categoryFiltersSelectorFactory(selectedLayer?.source_id)(state.orbs),
   );
+
   const CATEGORY_NAME_AND_ICON = CATEGORIES.map(name => ({
     name,
     Icon: Icons[name],
@@ -35,9 +36,17 @@ export const CheckboxFilters = ({ dispatch }) => {
     } = event;
 
     checked
-      ? dispatch(setSelectedFeatures([...selectedFeatures, value]))
+      ? dispatch(
+          setSelectedFeatures({
+            layer: selectedLayer.source_id,
+            value: [...selectedFilters, value],
+          }),
+        )
       : dispatch(
-          setSelectedFeatures(selectedFeatures.filter(feat => feat !== value)),
+          setSelectedFeatures({
+            layer: selectedLayer.source_id,
+            value: selectedFilters.filter(feat => feat !== value),
+          }),
         );
   };
 
@@ -46,9 +55,9 @@ export const CheckboxFilters = ({ dispatch }) => {
       {CATEGORY_NAME_AND_ICON.map(({ name, Icon }) => (
         <Checkbox
           key={name}
-          id={name}
+          id={`${selectedLayer?.source_id}-${name}`}
           className={styles.checkbox}
-          checked={selectedFeatures?.includes(name)}
+          checked={selectedFilters?.includes(name)}
           name="msl-filter-checkbox"
           value={name}
           onChange={handleChange}

@@ -1,20 +1,22 @@
 export type StyleProps = {
-  brushStyle: React.CSSProperties;
-  handleStyle: React.CSSProperties;
-  tickLabelStyle: React.CSSProperties;
+  brushStyle?: React.CSSProperties;
+  handleStyle?: React.CSSProperties;
+  tickLabelStyle?: React.CSSProperties;
 };
 
 type SharedProps = {
   color?: ColorMap;
-  height: number;
-  padding: import('victory').VictoryChartProps['padding'];
+  height?: number;
+  padding?: import('victory').VictoryChartProps['padding'];
   value?: [number, number];
   onChange?: (domain: [number, number]) => void;
+  reversed?: boolean;
 } & StyleProps;
 
 export type ContinuousColorMapRangeSliderProps = {
   units?: string;
   domain?: [number, number];
+  clip?: [number, number];
   precision?: number;
 } & SharedProps;
 
