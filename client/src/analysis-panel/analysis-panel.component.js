@@ -14,6 +14,7 @@ import { NationalDeviationHistogram } from './national-deviation-histogram/natio
 import { PropertyBreakdownChart } from './property-breakdown-chart/property-breakdown-chart.component';
 
 import styles from './analysis-panel.module.css';
+import { MoreInformation } from './more-information/more-information.component';
 
 export const AnalysisPanel = () => {
   const dispatch = useDispatch();
@@ -52,9 +53,7 @@ export const AnalysisPanel = () => {
       </p>
       {!!areaValue && (
         <NationalDeviationHistogram
-          areaValue={
-            typeof areaValue !== 'number' ? Number(areaValue) : areaValue
-          }
+          areaValue={areaValue}
           selectedProperty={selectedProperty}
         />
       )}
@@ -72,6 +71,10 @@ export const AnalysisPanel = () => {
           <PropertyBreakdownChart data={pieData} />
         </>
       )}
+      <MoreInformation
+        details={selectedProperty?.details}
+        source={selectedProperty?.source}
+      />
     </SidePanel>
   );
 };
