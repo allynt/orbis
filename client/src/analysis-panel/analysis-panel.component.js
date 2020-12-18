@@ -1,6 +1,5 @@
 import * as React from 'react';
 
-import { omitBy } from 'lodash';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { CloseButton } from '@astrosat/astrosat-ui';
@@ -13,6 +12,7 @@ import {
 } from 'map/orbs/slices/isolation-plus.slice';
 
 import styles from './analysis-panel.module.css';
+import { MoreInformation } from './more-information/more-information.component';
 import { NationalDeviationHistogram } from './national-deviation-histogram/national-deviation-histogram.component';
 
 export const AnalysisPanel = () => {
@@ -46,6 +46,10 @@ export const AnalysisPanel = () => {
       <NationalDeviationHistogram
         areaValue={areaValue}
         selectedProperty={selectedProperty}
+      />
+      <MoreInformation
+        details={selectedProperty?.details}
+        source={selectedProperty?.source}
       />
     </SidePanel>
   );
