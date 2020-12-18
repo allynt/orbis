@@ -40,7 +40,7 @@ const ObjectItem = ({ jsonKey, value }) => (
   <li className={styles.groupedListItem}>
     <ul className={styles.table}>
       {jsonKey && <h1 className={styles.listTitle}>{jsonKey}</h1>}
-      {mapObject(value)}
+      {mapObject(value, undefined)}
     </ul>
   </li>
 );
@@ -95,32 +95,34 @@ const ArrayItem = ({ jsonKey, value }) => (
 
 const mapObject = feature => {
   return (
-    feature &&
-    Object.entries(feature).map(([jsonKey, value], i) => {
-      switch (getTypeForValue(value)) {
-        case VALUE_TYPE.array:
-          return (
-            <ArrayItem
-              key={`${jsonKey}-${i}`}
-              jsonKey={jsonKey}
-              value={value}
-            />
-          );
-        case VALUE_TYPE.object:
-          return (
-            <ObjectItem
-              key={`${jsonKey}-${i}`}
-              jsonKey={jsonKey}
-              value={value}
-            />
-          );
-        case VALUE_TYPE.item:
-        default:
-          return (
-            <Item key={`${jsonKey}-${i}`} jsonKey={jsonKey} value={value} />
-          );
-      }
-    })
+    <>
+      {feature &&
+        Object.entries(feature).map(([jsonKey, value], i) => {
+          switch (getTypeForValue(value)) {
+            case VALUE_TYPE.array:
+              return (
+                <ArrayItem
+                  key={`${jsonKey}-${i}`}
+                  jsonKey={jsonKey}
+                  value={value}
+                />
+              );
+            case VALUE_TYPE.object:
+              return (
+                <ObjectItem
+                  key={`${jsonKey}-${i}`}
+                  jsonKey={jsonKey}
+                  value={value}
+                />
+              );
+            case VALUE_TYPE.item:
+            default:
+              return (
+                <Item key={`${jsonKey}-${i}`} jsonKey={jsonKey} value={value} />
+              );
+          }
+        })}
+    </>
   );
 };
 
@@ -128,13 +130,19 @@ const mapObject = feature => {
  * @typedef FeatureDetailProps
  * @property {{[key: string]: any}[]} [features]
  * @property {React.ReactNode} [children]
+ * @property {React.ReactNode} [footer]
  * @property {string} [title]
  */
 
 /**
  * @param {FeatureDetailProps} props
  */
-const FeatureDetail = ({ children, features, title = DEFAULT_TITLE }) => (
+const FeatureDetail = ({
+  children,
+  features,
+  title = DEFAULT_TITLE,
+  footer,
+}) => (
   <div className={styles.featureDetail}>
     <h1 className={styles.header}>{title}</h1>
     <div className={styles.content}>
@@ -142,6 +150,12 @@ const FeatureDetail = ({ children, features, title = DEFAULT_TITLE }) => (
         features?.map(feature => (
           <ul key={feature.id} className={styles.list}>
             {mapObject(feature)}
+            {footer && (
+              <li className={styles.listItem}>
+                <span className={styles.label}>{footer.label}</span>
+                <span className={styles.value}>{footer.content}</span>
+              </li>
+            )}
           </ul>
         ))}
       {children && children}

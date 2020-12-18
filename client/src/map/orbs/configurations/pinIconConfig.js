@@ -2,14 +2,14 @@ import { FlyToInterpolator } from '@deck.gl/core';
 import { MAX_ZOOM } from 'map/map.constants';
 import { easeInOutCubic } from 'utils/easingFunctions';
 import {
-  categoryFiltersSelector,
+  categoryFiltersSelectorFactory,
   popupFeaturesSelector,
   setDialogFeatures,
   setPopupFeatures,
   toggleDialog,
 } from '../slices/mysupplylynk.slice';
-import iconMapping from './mySupplyLynkConfig.iconMapping.json';
-import iconAtlas from './mySupplyLynkConfig.iconAtlas.svg';
+import iconMapping from './pinIconConfig.iconMapping.json';
+import iconAtlas from './pinIconConfig.iconAtlas.svg';
 
 const configuration = ({
   id,
@@ -18,17 +18,23 @@ const configuration = ({
   dispatch,
   setViewState,
   orbState,
+  onClick,
+  onHover,
+  pinColor = 'purple',
 }) => {
-  const categoryFilters = categoryFiltersSelector(orbState);
+  const categoryFilters = categoryFiltersSelectorFactory(id)(orbState);
   const popupFeatures = popupFeaturesSelector(orbState);
 
   const getFeatures = () => {
     const obj = data;
 
-    const hasCategory = feat =>
-      feat.properties.Items.some(item =>
-        categoryFilters.includes(item.Category),
-      );
+    const hasCategory = feat => {
+      return feat.properties.Items
+        ? feat.properties.Items.some(item =>
+            categoryFilters?.includes(item.Category),
+          )
+        : categoryFilters?.includes(feat?.properties?.Category);
+    };
 
     let filteredFeatures;
     if (obj) {
@@ -57,19 +63,29 @@ const configuration = ({
           transitionEasing: easeInOutCubic,
           transitionInterpolator: new FlyToInterpolator(),
         });
-      else dispatch(setPopupFeatures(info.objects));
+      else
+        dispatch(
+          setPopupFeatures({ id: info.layer.props.id, features: info.objects }),
+        );
     } else {
-      dispatch(setDialogFeatures([info.object.properties]));
-      dispatch(setPopupFeatures([]));
-      dispatch(toggleDialog());
+      if (onClick !== 'false') {
+        dispatch(setDialogFeatures([info.object.properties]));
+        dispatch(setPopupFeatures({ id: undefined, features: [] }));
+        dispatch(toggleDialog());
+      }
     }
   };
 
   const handleHover = info => {
-    if (popupFeatures.length > 1) return;
+    if (popupFeatures?.features?.length > 1) return;
     if (!info?.object?.properties?.cluster) {
       dispatch(
-        info.object ? setPopupFeatures([info.object]) : setPopupFeatures([]),
+        info.object
+          ? setPopupFeatures({
+              id: info.layer.props.id,
+              features: [info.object],
+            })
+          : setPopupFeatures({ id: undefined, features: [] }),
       );
     }
   };
@@ -80,9 +96,10 @@ const configuration = ({
     visible: !!activeSources?.find(source => source.source_id === id),
     iconMapping,
     iconAtlas,
-    getIcon: 'pin',
+    getIcon: `pin-${pinColor}`,
+    groupIconName: `group-${pinColor}`,
     onClick: handleLayerClick,
-    onHover: handleHover,
+    onHover: onHover !== false && handleHover,
   };
 };
 

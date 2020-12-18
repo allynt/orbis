@@ -11,7 +11,7 @@ module.exports = {
   version,
   type: 'vector',
   status: 'published',
-  data: `static-data/${authority}/${namespace}/${name}/${version}/suppliers.json`,
+  data: `static-data/${authority}/${namespace}/${name}/${version}/suppliers.js`,
   metadata: {
     label: 'MySupplyLynk',
     range: 'false',
@@ -27,7 +27,12 @@ module.exports = {
         },
         layer: {
           name: 'GeoJsonClusteredIconLayer',
-          props: { config: 'mySupplyLynkConfig' },
+          props: {
+            config: 'pinIconConfig',
+            pinColor: 'purple',
+            onClick: true,
+            onHover: true,
+          },
         },
       },
     },

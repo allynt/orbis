@@ -1,0 +1,68 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.headings {
+  display: flex;
+  flex-direction: column;
+}
+
+.headings .heading {
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  margin-bottom: 5px;
+}
+
+.headings .strapline {
+  color: lightgray;
+  font-size: 0.75rem;
+}
+
+.content {
+  height: 100%;
+  width: 100%;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+/* External */
+
+.container {
+  padding: 1rem;
+}
+
+.form {
+  background-color: transparent;
+  height: 100%;
+}
+
+.buttons {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.button {
+  --padding-y: 0.532rem;
+  padding-top: var(--padding-y);
+  padding-bottom: var(--padding-y);
+  width: 70%;
+  margin: 0.5rem 0;
+}
+
+.row {
+  width: 100%;
+}
+
+.fields {
+  width: 100% !important;
+}
+
+.fields > * {
+  margin-bottom: 1rem;
+}

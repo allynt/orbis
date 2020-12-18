@@ -1,3 +1,5 @@
+import {} from 'd3-scale-chromatic';
+
 type LayerName =
   | 'ClusteredIconLayer'
   | 'CustomMVTLayer'
@@ -6,41 +8,44 @@ type LayerName =
   | 'IconLayer';
 
 type ColorMap =
-  | 'OrRd'
-  | 'PuBu'
-  | 'BuPu'
-  | 'Oranges'
-  | 'BuGn'
-  | 'YlOrBr'
-  | 'YlGn'
-  | 'Reds'
-  | 'RdPu'
-  | 'Greens'
-  | 'YlGnBu'
-  | 'Purples'
-  | 'GnBu'
-  | 'Greys'
-  | 'YlOrRd'
-  | 'PuRd'
-  | 'Blues'
-  | 'PuBuGn'
-  | 'Spectral'
-  | 'RdYlGn'
-  | 'RdBu'
-  | 'PiYG'
-  | 'PRGn'
-  | 'RdYlBu'
   | 'BrBG'
-  | 'RdGy'
+  | 'PRGn'
+  | 'PiYG'
   | 'PuOr'
-  | 'Set2'
-  | 'Accent'
-  | 'Set1'
-  | 'Set3'
-  | 'Dark2'
-  | 'Paired'
-  | 'Pastel2'
-  | 'Pastel1';
+  | 'RdBu'
+  | 'RdGy'
+  | 'RdYlBu'
+  | 'RdYlGn'
+  | 'Spectral'
+  | 'Blues'
+  | 'Greens'
+  | 'Greys'
+  | 'Oranges'
+  | 'Purples'
+  | 'Reds'
+  | 'Turbo'
+  | 'Viridis'
+  | 'Inferno'
+  | 'Magma'
+  | 'Plasma'
+  | 'Cividis'
+  | 'Warm'
+  | 'Cool'
+  | 'Rainbow'
+  | 'Sinebow'
+  | 'CubehelixDefault'
+  | 'BuGn'
+  | 'BuPu'
+  | 'GnBu'
+  | 'PuBuGn'
+  | 'PuBu'
+  | 'OrRd'
+  | 'PuRd'
+  | 'RdPu'
+  | 'YlGnBu'
+  | 'YlGn'
+  | 'YlOrBr'
+  | 'YlOrRd';
 
 type PropertyType = 'continuous' | 'decile' | 'discrete';
 
@@ -79,9 +84,16 @@ type Property = {
   units?: 'string';
   min: number;
   max: number;
+  clip_min?: number;
+  clip_max?: number;
+  aggregation?: 'sum' | 'mean';
+  aggregates?: {
+    GB: number;
+  };
   application: {
     orbis?: {
       label?: string;
+      data_visualisation_components?: any;
       display?: {
         colormap_reversed?: boolean;
         color: ColorMap;

@@ -17,7 +17,7 @@ import { DEFAULT_CLOUD_COVER } from './satellite.constants';
 
 import styles from './results.module.css';
 import sceneStyles from './scene-list-item.module.css';
-import sideMenuStyles from '../side-menu/side-menu.module.css';
+import sideMenuStyles from '../control-panel/control-panel.module.css';
 
 const Results = (
   {

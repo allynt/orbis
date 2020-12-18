@@ -35,7 +35,7 @@ const RadioProperty = ({
       <Radio
         className={styles.radio}
         label={
-          initialProperty?.application?.orbis?.label || initialProperty.name
+          initialProperty?.application?.orbis?.label || initialProperty.label
         }
         name="isolationPlus"
         value={initialProperty.name}
@@ -48,7 +48,7 @@ const RadioProperty = ({
           )
         }
       />
-      <InfoIconTooltip>
+      <InfoIconTooltip name={initialProperty.name}>
         <p className={styles.categoryPath}>{categoryPath}</p>
         <p className={styles.description}>
           {initialProperty?.application?.orbis?.description ||
@@ -88,6 +88,12 @@ const RadioProperty = ({
             type={selectedProperty?.type}
             color={colorScheme}
             domain={[selectedProperty.min, selectedProperty.max]}
+            clip={
+              (selectedProperty.clip_min || selectedProperty.clip_max) && [
+                selectedProperty.clip_min || selectedProperty.min,
+                selectedProperty.clip_max || selectedProperty.max,
+              ]
+            }
             value={filterData}
             onChange={data => onSliderChange(data)}
             reversed={
