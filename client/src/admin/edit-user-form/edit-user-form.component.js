@@ -1,17 +1,23 @@
-import React from 'react';
-
-import { Button, Checkbox, Radio, Textfield } from '@astrosat/astrosat-ui';
-
+import {
+  Button,
+  Checkbox,
+  FormControl,
+  FormControlLabel,
+  FormGroup,
+  FormLabel,
+  Radio,
+  RadioGroup,
+  TextField,
+  Typography,
+} from '@astrosat/astrosat-ui';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { Form } from 'components';
+import React from 'react';
 import { useForm } from 'react-hook-form';
-import * as yup from 'yup';
-
-import { FieldError } from 'components/field-error/field-error.component';
 import { FIELD_NAMES, name } from 'utils/validators';
+import * as yup from 'yup';
 import { ADMIN_STATUS } from '../admin.constants';
 import { getCheckboxLicences, getUpdatedLicenceIds } from '../licence-utils';
-
-import styles from './edit-user-form.module.css';
 
 const validationSchema = yup.object({
   [FIELD_NAMES.name]: name,
@@ -33,8 +39,8 @@ export const EditUserForm = ({
 
   const getDefaults = () => {
     const defaults = {
-      name: user.user.name,
-      type: user.type,
+      name: user?.user.name,
+      type: user?.type,
     };
 
     for (let licence of checkboxLicences) {
@@ -55,7 +61,7 @@ export const EditUserForm = ({
       type: values.type,
       licences: getUpdatedLicenceIds(customer, user, values),
       user: {
-        ...user.user,
+        ...user?.user,
         name: values.name,
       },
     };
@@ -65,54 +71,76 @@ export const EditUserForm = ({
   };
 
   return (
-    <form className={styles.editForm} onSubmit={handleSubmit(onSubmit)}>
-      <Textfield name={FIELD_NAMES.name} ref={register} placeholder="Name" />
-
-      {errors[FIELD_NAMES.name] && (
-        <FieldError message={errors[FIELD_NAMES.name].message} />
-      )}
-
-      <Textfield name="email" value={user.user.email} readOnly />
-
-      <h2 className={styles.title}>Project Access</h2>
-      <div className={styles.checkboxes}>
-        {checkboxLicences.map(l => (
-          <Checkbox
-            id={l.id}
-            key={l.id}
-            name={l.orb}
-            label={l.orb}
-            ref={register}
-          />
-        ))}
-      </div>
-
-      <h2 className={styles.title}>Admin Rights</h2>
-      <div className={styles.radios}>
-        <Radio
-          label="Yes"
-          id="yes"
-          name="type"
-          value={ADMIN_STATUS.manager}
-          ref={register}
+    <Form onSubmit={handleSubmit(onSubmit)}>
+      <Form.Row>
+        <TextField
+          name={FIELD_NAMES.name}
+          id={FIELD_NAMES.name}
+          inputRef={register}
+          label="Name"
+          error={!!errors[FIELD_NAMES.name]}
+          helperText={errors[FIELD_NAMES.name]?.message}
         />
-        <Radio
-          label="No"
-          id="No"
-          name="type"
-          value={ADMIN_STATUS.member}
-          ref={register}
-          disabled={oneAdminRemaining}
+      </Form.Row>
+      <Form.Row>
+        <TextField
+          name="email"
+          label="Email"
+          value={user?.user.email}
+          InputProps={{ readOnly: true }}
         />
-      </div>
-
-      <Button
-        type="submit"
-        className={styles.button}
-        disabled={!formState.isDirty || Object.keys(errors).length > 0}
-      >
-        Save Changes
-      </Button>
-    </form>
+      </Form.Row>
+      <Form.Row>
+        <FormControl component="fieldset">
+          <FormLabel component="legend">
+            <Typography variant="h2">Project Access</Typography>
+          </FormLabel>
+          <FormGroup>
+            {checkboxLicences.map(l => (
+              <FormControlLabel
+                label={l.orb}
+                control={
+                  <Checkbox id={l.id} key={l.id} name={l.orb} ref={register} />
+                }
+              />
+            ))}
+          </FormGroup>
+        </FormControl>
+      </Form.Row>
+      <Form.Row>
+        <FormControl component="fieldset">
+          <FormLabel component="legend">
+            <Typography variant="h2">Admin Rights</Typography>
+          </FormLabel>
+          <RadioGroup name="type" row>
+            <FormControlLabel
+              label="Yes"
+              control={
+                <Radio id="yes" value={ADMIN_STATUS.manager} ref={register} />
+              }
+            />
+            <FormControlLabel
+              label="No"
+              control={
+                <Radio
+                  id="No"
+                  value={ADMIN_STATUS.member}
+                  ref={register}
+                  disabled={oneAdminRemaining}
+                />
+              }
+            />
+          </RadioGroup>
+        </FormControl>
+      </Form.Row>
+      <Form.Row centered>
+        <Button
+          type="submit"
+          disabled={!formState.isDirty || Object.keys(errors).length > 0}
+        >
+          Save Changes
+        </Button>
+      </Form.Row>
+    </Form>
   );
 };
