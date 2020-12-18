@@ -9,10 +9,9 @@ export const getLicenceInfo = licences => {
   if (licences.length > 0) return licences.slice().sort().join(', ');
 };
 
-export const getCheckboxLicences = (customer, user, availableLicences) => {
-  const userLicences = customer.licences.filter(
-    l => l.customer_user === user.id,
-  );
+export const getCheckboxLicences = (customer, user, availableLicences = []) => {
+  const userLicences =
+    customer?.licences.filter(l => l.customer_user === user.id) || [];
 
   let allLicences = [...userLicences];
 
