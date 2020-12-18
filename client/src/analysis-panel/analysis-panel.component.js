@@ -10,11 +10,23 @@ import {
   propertySelector,
   setPickedInfo,
 } from 'map/orbs/slices/isolation-plus.slice';
+import { MoreInformation } from './more-information/more-information.component';
 import { NationalDeviationHistogram } from './national-deviation-histogram/national-deviation-histogram.component';
 import { PropertyBreakdownChart } from './property-breakdown-chart/property-breakdown-chart.component';
 
 import styles from './analysis-panel.module.css';
-import { MoreInformation } from './more-information/more-information.component';
+
+const Spacer = () => (
+  <div
+    style={{
+      margin: '0 auto',
+      width: '90%',
+      height: 1,
+      opacity: 0.39,
+      backgroundColor: 'var(--color-primary)',
+    }}
+  />
+);
 
 export const AnalysisPanel = () => {
   const dispatch = useDispatch();
@@ -52,23 +64,18 @@ export const AnalysisPanel = () => {
         The information below relates to the areas selected on the map.
       </p>
       {!!areaValue && (
-        <NationalDeviationHistogram
-          areaValue={areaValue}
-          selectedProperty={selectedProperty}
-        />
+        <>
+          <NationalDeviationHistogram
+            areaValue={areaValue}
+            selectedProperty={selectedProperty}
+          />
+          <Spacer />
+        </>
       )}
       {!!selectedProperty?.breakdown && !pieData.some(v => !v.value) && (
         <>
-          <div
-            style={{
-              margin: '0 auto',
-              width: '90%',
-              height: 1,
-              opacity: 0.39,
-              backgroundColor: 'var(--color-primary)',
-            }}
-          />
           <PropertyBreakdownChart data={pieData} />
+          <Spacer />
         </>
       )}
       <MoreInformation
