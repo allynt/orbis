@@ -37,63 +37,42 @@ const useStyles = makeStyles({
   },
 });
 
+const Value = ({ children, className }) => {
+  const styles = useStyles();
+  return (
+    <Typography
+      className={clsx(className, styles.value)}
+      children={children}
+      align="center"
+      component="p"
+      gutterBottom
+      variant="h1"
+    />
+  );
+};
+
+const Label = ({ children, className }) => (
+  <Typography
+    children={children}
+    className={className}
+    align="center"
+    component="p"
+    variant="h2"
+  />
+);
+
 const QuickView = ({ data }) => {
   const styles = useStyles();
   return (
     <Wrapper>
-      <Typography
-        className={clsx(styles.active, styles.value)}
-        align="center"
-        component="p"
-        gutterBottom
-        variant="h1"
-      >
-        {data?.active ?? '-'}
-      </Typography>
-      <Typography
-        className={styles.active}
-        align="center"
-        component="p"
-        variant="h2"
-      >
-        Active Users
-      </Typography>
+      <Value className={styles.active}>{data?.active ?? '-'}</Value>
+      <Label className={styles.active}>Active Users</Label>
       <Divider orientation="vertical" />
-      <Typography
-        className={clsx(styles.pending, styles.value)}
-        align="center"
-        component="p"
-        gutterBottom
-        variant="h1"
-      >
-        {data?.pending ?? '-'}
-      </Typography>
-      <Typography
-        className={styles.pending}
-        align="center"
-        component="p"
-        variant="h2"
-      >
-        Pending Invitations
-      </Typography>
+      <Value className={styles.pending}>{data?.pending ?? '-'}</Value>
+      <Label className={styles.pending}>Pending Invitations</Label>
       <Divider orientation="vertical" />
-      <Typography
-        className={clsx(styles.available, styles.value)}
-        align="center"
-        component="p"
-        gutterBottom
-        variant="h1"
-      >
-        {data?.available ?? '-'}
-      </Typography>
-      <Typography
-        className={styles.available}
-        align="center"
-        component="p"
-        variant="h2"
-      >
-        Licences Available
-      </Typography>
+      <Value className={styles.available}>{data?.available ?? '-'}</Value>
+      <Label className={styles.available}>Licences Available</Label>
     </Wrapper>
   );
 };
