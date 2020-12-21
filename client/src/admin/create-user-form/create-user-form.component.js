@@ -97,17 +97,13 @@ export const CreateUserForm = ({
             {licenceInformation && Object.keys(licenceInformation)?.length ? (
               Object.keys(licenceInformation).map(orb => (
                 <FormControlLabel
+                  key={orb}
                   label={orb}
-                  control={
-                    <Checkbox
-                      id={orb}
-                      key={orb}
-                      ref={register}
-                      name="licences"
-                      value={orb}
-                      disabled={licenceInformation[orb].available <= 0}
-                    />
-                  }
+                  name="licences"
+                  value={orb}
+                  inputRef={register}
+                  disabled={licenceInformation[orb].available <= 0}
+                  control={<Checkbox />}
                 />
               ))
             ) : (
