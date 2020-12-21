@@ -47,6 +47,13 @@ export const EditUserForm = ({
     availableLicences,
   );
 
+  /**
+   * @returns {{
+   *   name: string
+   *   type: string
+   *   [key:string]: any
+   * }}
+   */
   const getDefaults = () => {
     const defaults = {
       name: user?.user.name,
@@ -107,12 +114,21 @@ export const EditUserForm = ({
           </FormLabel>
           <FormGroup row>
             {checkboxLicences.map(l => (
-              <FormControlLabel
-                label={l.orb}
-                value={l.id}
-                name="licences"
-                inputRef={register}
-                control={<Checkbox />}
+              <Controller
+                key={l.id}
+                name={l.orb}
+                control={control}
+                render={props => (
+                  <FormControlLabel
+                    label={l.orb}
+                    control={
+                      <Checkbox
+                        onChange={e => props.onChange(e.target.checked)}
+                        checked={props.value}
+                      />
+                    }
+                  />
+                )}
               />
             ))}
           </FormGroup>

@@ -30,6 +30,11 @@ export const getCheckboxLicences = (customer, user, availableLicences = []) => {
   return allLicences;
 };
 
+/**
+ * @param {import("typings/orbis").Customer} customer
+ * @param {import("typings/orbis").CustomerUser} user
+ * @param {any} values
+ */
 export const getUpdatedLicenceIds = (customer, user, values) => {
   let newIds = [];
   Object.keys(values).forEach(key => {
@@ -44,7 +49,6 @@ export const getUpdatedLicenceIds = (customer, user, values) => {
         licence = customer.licences.find(
           l => l.orb === key && l.customer_user === null,
         );
-
       newIds = [...newIds, licence.id];
     }
   });
