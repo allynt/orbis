@@ -14,7 +14,6 @@ describe('EditUserForm', () => {
   let userCheckboxes = null;
   let oneAdminRemaining = null;
   let editUser = null;
-  let close = null;
 
   beforeEach(() => {
     user = {
@@ -40,7 +39,6 @@ describe('EditUserForm', () => {
 
     oneAdminRemaining = true;
     editUser = jest.fn();
-    close = jest.fn();
   });
 
   const renderComponent = () =>
@@ -51,7 +49,6 @@ describe('EditUserForm', () => {
         availableLicences={availableLicences}
         oneAdminRemaining={oneAdminRemaining}
         editUser={editUser}
-        close={close}
       />,
     );
 
@@ -136,7 +133,6 @@ describe('EditUserForm', () => {
         customer={testCustomer}
         availableLicences={availableLicences}
         editUser={editUser}
-        close={close}
       />,
     );
 
@@ -176,7 +172,6 @@ describe('EditUserForm', () => {
         customer={testCustomer}
         availableLicences={availableLicences}
         editUser={editUser}
-        close={close}
       />,
     );
 
@@ -246,14 +241,5 @@ describe('EditUserForm', () => {
     const { getByLabelText } = renderComponent();
 
     expect(getByLabelText('No')).toHaveAttribute('disabled');
-  });
-
-  it('closes the dialog when the `Save Changes` button is clicked', async () => {
-    const { getByText, getByLabelText } = renderComponent();
-
-    userEvent.click(getByLabelText('Steel'));
-    userEvent.click(getByText('Save Changes'));
-
-    await waitFor(() => expect(close).toHaveBeenCalled());
   });
 });

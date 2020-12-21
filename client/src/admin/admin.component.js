@@ -145,8 +145,10 @@ const Admin = ({ user }) => {
             customer={currentCustomer}
             availableLicences={availableLicences}
             oneAdminRemaining={oneAdminRemaining}
-            editUser={editedUser => dispatch(updateCustomerUser(editedUser))}
-            close={() => setDialogForm(null)}
+            editUser={editedUser => {
+              dispatch(updateCustomerUser(editedUser));
+              setDialogForm(null);
+            }}
           />
         );
       case DIALOG_VIEW.deleteUser:
