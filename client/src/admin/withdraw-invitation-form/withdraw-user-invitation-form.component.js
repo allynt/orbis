@@ -1,31 +1,38 @@
 import React from 'react';
 
-import { Button } from '@astrosat/astrosat-ui';
+import { Button, Link, Typography } from '@astrosat/astrosat-ui';
 
-import styles from './withdraw-user-invitation-form.module.css';
+import { Form } from 'components';
 
+/**
+ * @param {{
+ *   user?: import('typings/orbis').CustomerUser
+ *   withdrawInvitation: (user: import('typings/orbis').CustomerUser) => void
+ *   onCancelClick: () => void
+ * }} props
+ */
 export const WithdrawUserInvitationForm = ({
   user,
   withdrawInvitation,
-  close,
-}) => {
-  const handleClick = () => {
-    withdrawInvitation(user);
-    close();
-  };
-  return (
-    <div className={styles.form}>
-      <p className={styles.message}>
-        Do you really want to withdraw the pending{' '}
-        <strong>{user.user.name}</strong> license and send email to the address
-        about the act of withdrawal?
-      </p>
-      <div className={styles.buttons}>
-        <Button onClick={handleClick}>Yes</Button>
-        <Button theme="link" onClick={() => close()}>
-          Cancel
-        </Button>
-      </div>
-    </div>
-  );
-};
+  onCancelClick,
+}) => (
+  <Form>
+    <Form.Row component={Typography}>
+      Do you really want to withdraw the pending invitation{' '}
+      {!!user && (
+        <>
+          for <b>{user?.user.name}</b>
+        </>
+      )}{' '}
+      and send email to the address about the act of withdrawal?
+    </Form.Row>
+    <Form.Row centered>
+      <Button onClick={() => withdrawInvitation(user)}>Yes</Button>
+    </Form.Row>
+    <Form.Row centered>
+      <Link component="button" onClick={() => onCancelClick()}>
+        Cancel
+      </Link>
+    </Form.Row>
+  </Form>
+);

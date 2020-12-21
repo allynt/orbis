@@ -134,8 +134,11 @@ const Admin = ({ user }) => {
         return (
           <WithdrawUserInvitationForm
             user={dialogForm.user}
-            withdrawInvitation={user => dispatch(deleteCustomerUser(user))}
-            close={() => setDialogForm(null)}
+            withdrawInvitation={user => {
+              dispatch(deleteCustomerUser(user));
+              setDialogForm(null);
+            }}
+            onCancelClick={() => setDialogForm(null)}
           />
         );
       case DIALOG_VIEW.editUser:
