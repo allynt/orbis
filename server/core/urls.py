@@ -28,26 +28,32 @@ from orbis.urls import (
 
 from .views import app_config_view
 
-
 admin.site.site_header = settings.ADMIN_SITE_HEADER
 admin.site.site_title = settings.ADMIN_SITE_TITLE
 admin.site.index_title = settings.ADMIN_INDEX_TITLE
-
 
 handler400 = "astrosat.views.handler400"
 handler403 = "astrosat.views.handler403"
 handler404 = "astrosat.views.handler404"
 handler500 = "astrosat.views.handler500"
 
-
 ##############
 # api routes #
 ##############
 
 # orbis replaces the default customer & customer_user views (to include licenses)
+# it also replaces the default login view to support db logging
 astrosat_users_api_urlpatterns = remove_urlpatterns(
     astrosat_users_api_urlpatterns,
-    ["customers-list", "customers-detail", "customer-users-list", "customer-users-detail", "customer-users-invite", "customer-users-onboard"],
+    [
+        "customers-list",
+        "customers-detail",
+        "customer-users-list",
+        "customer-users-detail",
+        "customer-users-invite",
+        "customer-users-onboard",
+        "rest_login",
+    ],
 )
 
 api_router = SlashlessSimpleRouter()
@@ -60,7 +66,6 @@ api_urlpatterns += astrosat_api_urlpatterns
 api_urlpatterns += astrosat_users_api_urlpatterns
 api_urlpatterns += maps_api_urlpatterns
 api_urlpatterns += orbis_api_urlpatterns
-
 
 #################
 # normal routes #
@@ -85,10 +90,8 @@ urlpatterns = [
     # note: index_view is added at the very end of this module!
 ]
 
-
 # media files...
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-
 
 if settings.DEBUG:
 
@@ -116,4 +119,6 @@ if settings.DEBUG:
     if "debug_toolbar" in settings.INSTALLED_APPS:
         import debug_toolbar
 
-        urlpatterns = [path("__debug__/", include(debug_toolbar.urls))] + urlpatterns
+        urlpatterns = [
+            path("__debug__/", include(debug_toolbar.urls))
+        ] + urlpatterns
