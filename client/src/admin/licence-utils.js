@@ -9,6 +9,11 @@ export const getLicenceInfo = licences => {
   if (licences.length > 0) return licences.slice().sort().join(', ');
 };
 
+/**
+ * @param {import("typings/orbis").Customer} customer
+ * @param {import("typings/orbis").CustomerUser} user
+ * @param {import("typings/orbis").Licence[]} availableLicences
+ */
 export const getCheckboxLicences = (customer, user, availableLicences = []) => {
   const userLicences =
     customer?.licences.filter(l => l.customer_user === user.id) || [];
