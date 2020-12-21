@@ -13,7 +13,7 @@ import {
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Form } from 'components';
 import React from 'react';
-import { useForm } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 import { FIELD_NAMES, name } from 'utils/validators';
 import * as yup from 'yup';
 import { ADMIN_STATUS } from '../admin.constants';
@@ -23,6 +23,16 @@ const validationSchema = yup.object({
   [FIELD_NAMES.name]: name,
 });
 
+/**
+ * @param {{
+ *   user: import('typings/orbis').CustomerUser
+ *   customer: import('typings/orbis').Customer
+ *   availableLicences: import('typings/orbis').Licence[]
+ *   oneAdminRemaining?: boolean
+ *   editUser: (user: import('typings/orbis').CustomerUser) => void
+ *   close: () => void
+ * }} props
+ */
 export const EditUserForm = ({
   user,
   customer,
@@ -50,7 +60,7 @@ export const EditUserForm = ({
     return defaults;
   };
 
-  const { register, handleSubmit, errors, formState } = useForm({
+  const { register, handleSubmit, errors, formState, control } = useForm({
     defaultValues: getDefaults(),
     resolver: yupResolver(validationSchema),
   });
@@ -95,13 +105,14 @@ export const EditUserForm = ({
           <FormLabel component="legend">
             <Typography variant="h2">Project Access</Typography>
           </FormLabel>
-          <FormGroup>
+          <FormGroup row>
             {checkboxLicences.map(l => (
               <FormControlLabel
                 label={l.orb}
-                control={
-                  <Checkbox id={l.id} key={l.id} name={l.orb} ref={register} />
-                }
+                value={l.id}
+                name="licences"
+                inputRef={register}
+                control={<Checkbox />}
               />
             ))}
           </FormGroup>
@@ -112,25 +123,25 @@ export const EditUserForm = ({
           <FormLabel component="legend">
             <Typography variant="h2">Admin Rights</Typography>
           </FormLabel>
-          <RadioGroup name="type" row>
-            <FormControlLabel
-              label="Yes"
-              control={
-                <Radio id="yes" value={ADMIN_STATUS.manager} ref={register} />
-              }
-            />
-            <FormControlLabel
-              label="No"
-              control={
-                <Radio
-                  id="No"
-                  value={ADMIN_STATUS.member}
-                  ref={register}
-                  disabled={oneAdminRemaining}
+          <Controller
+            name="type"
+            control={control}
+            as={
+              <RadioGroup row>
+                <FormControlLabel
+                  label="Yes"
+                  value={ADMIN_STATUS.manager}
+                  control={<Radio />}
                 />
-              }
-            />
-          </RadioGroup>
+                <FormControlLabel
+                  label="No"
+                  value={ADMIN_STATUS.member}
+                  disabled={oneAdminRemaining}
+                  control={<Radio />}
+                />
+              </RadioGroup>
+            }
+          />
         </FormControl>
       </Form.Row>
       <Form.Row centered>
