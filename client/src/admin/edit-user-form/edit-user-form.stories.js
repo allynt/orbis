@@ -29,13 +29,10 @@ WithUserAndLicences.args = {
   customer: {
     licences: [
       { id: '1', orb: 'Forestry', customer_user: 1 },
-      { id: '2', orb: 'Health' },
+      { id: '2', orb: 'Health', customer_user: null },
     ],
   },
-  availableLicences: [
-    { id: '1', orb: 'Forestry' },
-    { id: '2', orb: 'Health' },
-  ],
+  availableLicences: [{ id: '2', orb: 'Health' }],
 };
 
 export const OneAdminRemaining = Template.bind({});
