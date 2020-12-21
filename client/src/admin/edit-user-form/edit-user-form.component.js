@@ -30,7 +30,6 @@ const validationSchema = yup.object({
  *   availableLicences: import('typings/orbis').Licence[]
  *   oneAdminRemaining?: boolean
  *   editUser: (user: import('typings/orbis').CustomerUser) => void
- *   close: () => void
  * }} props
  */
 export const EditUserForm = ({
@@ -39,7 +38,6 @@ export const EditUserForm = ({
   availableLicences,
   oneAdminRemaining,
   editUser,
-  close,
 }) => {
   const checkboxLicences = getCheckboxLicences(
     customer,
@@ -84,7 +82,6 @@ export const EditUserForm = ({
     };
 
     editUser(editedUser);
-    close();
   };
 
   return (
