@@ -3,6 +3,7 @@ from django.urls import include, path
 from astrosat.routers import SlashlessSimpleRouter
 
 from .views import (
+    LoginView,
     OrbListView,
     CustomerCreateView,
     CustomerUpdateView,
@@ -19,7 +20,6 @@ from .views import (
     run_satellite_query,
 )
 
-
 ##############
 # api routes #
 ##############
@@ -29,6 +29,8 @@ api_router.register(r"satellites/searches", SatelliteSearchViewSet, basename="sa
 api_router.register(r"satellites/results", SatelliteResultViewSet, basename="satellite-result")
 api_router.register(r"satellites", SatelliteViewSet, basename="satellite")
 api_urlpatterns = [
+    # using custom login view to enable db logging
+    path("authentication/login/", LoginView.as_view(), name="rest_login"),
     path("orbs/", OrbListView.as_view(), name="orbs-list"),
     path("customers/", CustomerCreateView.as_view(), name="customers-list"),
     path("customers/<slug:customer_id>/", CustomerUpdateView.as_view(), name="customers-detail"),
@@ -42,7 +44,6 @@ api_urlpatterns = [
     path("satellites/run_query/", run_satellite_query, name="satellite-run-query"),
     path("", include(api_router.urls)),
 ]
-
 
 #################
 # normal routes #
