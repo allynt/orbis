@@ -1,9 +1,9 @@
 import React from 'react';
 
+import { Box, Paper, styled, Typography } from '@astrosat/astrosat-ui';
+
 import CorporateAccount from './corporate-account/corporate-account.component';
 import AdministratorProfile from './adminstrator-profile/administrator-profile.component';
-
-import { Box, Paper, styled, Typography } from '@astrosat/astrosat-ui';
 
 const Title = styled(Typography)(({ theme }) => ({
   borderBottom: `1px solid ${theme.palette.grey[400]}`,
@@ -25,7 +25,7 @@ const CorporateView = ({
   updateCustomer,
   updateAdministrator,
 }) => (
-  <>
+  <Box display="flex" flexDirection="column">
     <Wrapper title="Corporate Account">
       <CorporateAccount customer={customer} updateCustomer={updateCustomer} />
     </Wrapper>
@@ -35,7 +35,7 @@ const CorporateView = ({
         updateAdministrator={updateAdministrator}
       />
     </Wrapper>
-  </>
+  </Box>
 );
 
 export default CorporateView;
