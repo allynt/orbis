@@ -17,7 +17,10 @@ describe('ActiveUsersBoard', () => {
 
   it.each(cases)("Displays all active user's %s", (_, text) => {
     const { getByText } = render(
-      <ActiveUsersBoard activeUsers={activeUsers} customer={customer} />,
+      <ActiveUsersBoard
+        activeCustomerUsers={activeUsers}
+        customer={customer}
+      />,
     );
     activeUsers.forEach(user =>
       expect(getByText(user.user[text])).toBeInTheDocument(),
@@ -26,7 +29,10 @@ describe('ActiveUsersBoard', () => {
 
   it('Displays user Orb licence names', () => {
     const { getAllByText } = render(
-      <ActiveUsersBoard activeUsers={activeUsers} customer={customer} />,
+      <ActiveUsersBoard
+        activeCustomerUsers={activeUsers}
+        customer={customer}
+      />,
     );
 
     expect(getAllByText('Oil, Rice')[0]).toBeInTheDocument();
@@ -35,7 +41,7 @@ describe('ActiveUsersBoard', () => {
   it('Displays a placeholder when customer is present but has no licences', () => {
     const { getAllByText, queryByText } = render(
       <ActiveUsersBoard
-        activeUsers={activeUsers}
+        activeCustomerUsers={activeUsers}
         customer={{ name: 'Customer Name' }}
       />,
     );
@@ -54,7 +60,10 @@ describe('ActiveUsersBoard', () => {
     };
 
     const { getByText, queryByText } = render(
-      <ActiveUsersBoard activeUsers={[TEST_USER]} customer={customer} />,
+      <ActiveUsersBoard
+        activeCustomerUsers={[TEST_USER]}
+        customer={customer}
+      />,
     );
 
     expect(queryByText('Not currently available')).not.toBeInTheDocument();
@@ -64,7 +73,7 @@ describe('ActiveUsersBoard', () => {
   it('Disables `Change Role` button when only 1 admin remains', () => {
     const { getByRole } = render(
       <ActiveUsersBoard
-        activeUsers={[
+        activeCustomerUsers={[
           { type: 'MANAGER', user: { name: 'John Smith' } },
           { type: 'MEMBER', user: { name: 'Steve Brown' } },
         ]}
@@ -80,7 +89,7 @@ describe('ActiveUsersBoard', () => {
 
     const { getByText, getAllByText } = render(
       <ActiveUsersBoard
-        activeUsers={[
+        activeCustomerUsers={[
           { type: 'MANAGER', user: { name: 'John Smith' } },
           MEMBER,
         ]}
@@ -103,7 +112,10 @@ describe('ActiveUsersBoard', () => {
     const { getByText, getAllByTestId } = render(
       <ActiveUsersBoard
         currentUser={{ id: '456' }}
-        activeUsers={[{ type: 'MANAGER', user: { name: 'John Smith' } }, USER]}
+        activeCustomerUsers={[
+          { type: 'MANAGER', user: { name: 'John Smith' } },
+          USER,
+        ]}
         customer={{ name: 'Customer Name' }}
         onEditUserClick={onEditUserClick}
       />,
@@ -120,7 +132,7 @@ describe('ActiveUsersBoard', () => {
     const { queryByText, getByText, getAllByTestId } = render(
       <ActiveUsersBoard
         currentUser={{ id: '123' }}
-        activeUsers={[
+        activeCustomerUsers={[
           { type: 'MANAGER', user: { id: '123', name: 'John Smith' } },
           { type: 'MEMBER', user: { id: '456', name: 'Steve Brown' } },
         ]}
@@ -140,7 +152,10 @@ describe('ActiveUsersBoard', () => {
     const { getByText, getAllByTestId } = render(
       <ActiveUsersBoard
         currentUser={{ id: '456' }}
-        activeUsers={[{ type: 'MANAGER', user: { name: 'John Smith' } }, USER]}
+        activeCustomerUsers={[
+          { type: 'MANAGER', user: { name: 'John Smith' } },
+          USER,
+        ]}
         customer={{ name: 'Customer Name' }}
         onDeleteUserClick={onDeleteUserClick}
       />,
@@ -162,7 +177,7 @@ describe('ActiveUsersBoard', () => {
 
     it.each(cases)('%s', (_, value) => {
       const { getByText } = render(
-        <ActiveUsersBoard activeUsers={value} customer={customer} />,
+        <ActiveUsersBoard activeCustomerUsers={value} customer={customer} />,
       );
       expect(getByText('No Active Users')).toBeInTheDocument();
     });

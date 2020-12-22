@@ -21,7 +21,7 @@ const HomeView = ({
   <div className={styles.home}>
     <ActiveUsersBoard
       currentUser={currentUser}
-      activeUsers={activeUsers}
+      activeCustomerUsers={activeUsers}
       oneAdminRemaining={oneAdminRemaining}
       customer={customer}
       quickViewData={quickViewData}

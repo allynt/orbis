@@ -33,13 +33,13 @@ NoUsers.args = {
 
 export const NoCustomer = Template.bind({});
 NoCustomer.args = {
-  activeUsers,
+  activeCustomerUsers: activeUsers,
   quickViewData,
 };
 
 export const CustomerButNoLicences = Template.bind({});
 CustomerButNoLicences.args = {
-  activeUsers,
+  activeCustomerUsers: activeUsers,
   customer: { name: 'Company Name' },
   quickViewData: {
     active: activeUsers?.length,
@@ -50,13 +50,13 @@ CustomerButNoLicences.args = {
 
 export const NoLicenceData = Template.bind({});
 NoLicenceData.args = {
-  activeUsers,
+  activeCustomerUsers: activeUsers,
   customer,
 };
 
 export const Default = Template.bind({});
 Default.args = {
-  activeUsers,
+  activeCustomerUsers: activeUsers,
   customer,
   quickViewData,
 };

@@ -161,11 +161,23 @@ const UserRow = ({
   );
 };
 
+/**
+ * @param {{
+ *   activeCustomerUsers: import('typings/orbis').CustomerUser[]
+ *   currentUser: import('typings/orbis').User
+ *   customer?: import('typings/orbis').Customer
+ *   oneAdminRemaining?: boolean
+ *   quickViewData?: import('./quick-view/quick-view.component').QuickViewData
+ *   onChangeRoleClick?: (customerUser: import('typings/orbis').CustomerUser) => void
+ *   onEditUserClick?: (customerUser: import('typings/orbis').CustomerUser) => void
+ *   onDeleteUserClick?: (customerUser: import('typings/orbis').CustomerUser) => void
+ * }} props
+ */
 export const ActiveUsersBoard = ({
+  activeCustomerUsers,
   currentUser,
-  activeUsers,
-  oneAdminRemaining,
   customer,
+  oneAdminRemaining,
   quickViewData,
   onChangeRoleClick,
   onEditUserClick,
@@ -198,22 +210,22 @@ export const ActiveUsersBoard = ({
       <Table>
         <TableHeader />
         <TableBody>
-          {activeUsers?.length > 0 ? (
-            activeUsers.map(user => {
+          {activeCustomerUsers?.length > 0 ? (
+            activeCustomerUsers.map(customerUser => {
               let licences = null;
               if (customer && customer.licences) {
-                licences = getUserLicences(user, customer);
+                licences = getUserLicences(customerUser, customer);
               }
               return (
                 <UserRow
-                  key={user.id}
-                  customerUser={user}
+                  key={customerUser.id}
+                  customerUser={customerUser}
                   currentUser={currentUser}
                   licences={licences}
                   oneAdminRemaining={oneAdminRemaining}
-                  onDeleteUserClick={() => handleDeleteClick(user)}
-                  onEditUserClick={() => handleEditClick(user)}
-                  onRoleClick={() => handleRoleClick(user)}
+                  onDeleteUserClick={() => handleDeleteClick(customerUser)}
+                  onEditUserClick={() => handleEditClick(customerUser)}
+                  onRoleClick={() => handleRoleClick(customerUser)}
                 />
               );
             })
