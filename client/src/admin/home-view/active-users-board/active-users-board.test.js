@@ -62,7 +62,7 @@ describe('ActiveUsersBoard', () => {
   });
 
   it('Disables `Change Role` button when only 1 admin remains', () => {
-    const { getByText } = render(
+    const { getByRole } = render(
       <ActiveUsersBoard
         activeUsers={[
           { type: 'MANAGER', user: { name: 'John Smith' } },
@@ -72,9 +72,7 @@ describe('ActiveUsersBoard', () => {
         customer={{ name: 'Customer Name' }}
       />,
     );
-
-    const button = getByText('Admin');
-    expect(button).toHaveAttribute('disabled');
+    expect(getByRole('button', { name: 'Admin' })).toBeDisabled();
   });
 
   it('Calls `changeRole` function with user when buttons are clicked', () => {
