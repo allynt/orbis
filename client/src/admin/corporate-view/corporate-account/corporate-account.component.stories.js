@@ -34,3 +34,5 @@ const customer = {
 };
 
 export const Default = () => <CorporateAccount customer={customer} />;
+
+export const NoCustomer = () => <CorporateAccount />;

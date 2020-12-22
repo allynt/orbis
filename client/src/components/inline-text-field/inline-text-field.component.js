@@ -49,12 +49,12 @@ export const InlineTextField = ({
       container
       spacing={2}
     >
-      <Grid item xs={2}>
+      <Grid item xs={3}>
         <InputLabel className={inlineStyles.label} htmlFor={id} shrink={false}>
           {label}
         </InputLabel>
       </Grid>
-      <Grid item xs={10}>
+      <Grid item xs={9}>
         <Input
           id={id}
           name={name}
