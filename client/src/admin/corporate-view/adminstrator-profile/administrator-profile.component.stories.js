@@ -3,7 +3,7 @@ import React from 'react';
 import AdministratorProfile from './administrator-profile.component';
 
 export default {
-  title: 'Admin/Administrator Profile',
+  title: 'Admin/Corporate View/Administrator Profile',
   component: AdministratorProfile,
 };
 
@@ -22,3 +22,5 @@ const user = {
 };
 
 export const Default = () => <AdministratorProfile user={user} />;
+
+export const NoUser = () => <AdministratorProfile />;

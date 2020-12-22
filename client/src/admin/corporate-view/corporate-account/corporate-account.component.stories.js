@@ -2,7 +2,10 @@ import React from 'react';
 
 import CorporateAccount from './corporate-account.component';
 
-export default { title: 'Admin/Corporate', component: CorporateAccount };
+export default {
+  title: 'Admin/Corporate View/Corporate Account',
+  component: CorporateAccount,
+};
 
 const customer = {
   type: 'MULTIPLE',
