@@ -4,7 +4,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 
-import { Avatar, Button, Grid } from '@astrosat/astrosat-ui';
+import { Avatar, Button, Grid, styled } from '@astrosat/astrosat-ui';
 
 import { Form, InlineTextField } from 'components';
 import { email, FIELD_NAMES } from 'utils/validators';
@@ -13,6 +13,11 @@ import ContentWrapper from '../../content-wrapper.component';
 const AdministratorProfileSchema = yup.object({
   [FIELD_NAMES.email]: email,
 });
+
+const BigAvatar = styled(Avatar)(({ theme }) => ({
+  width: theme.typography.pxToRem(78),
+  height: theme.typography.pxToRem(78),
+}));
 
 /**
  * @param {{
@@ -35,12 +40,7 @@ const AdministratorProfile = ({ user, updateAdministrator }) => {
     <ContentWrapper title="Administrator">
       <Form onSubmit={handleSubmit(onSubmit)}>
         <Grid item xs={12}>
-          <Avatar
-            style={{ width: 78, height: 78 }}
-            alt="Admin Avatar"
-            src={user.avatar}
-            variant="rounded"
-          />
+          <BigAvatar alt="Admin Avatar" src={user.avatar} variant="rounded" />
         </Grid>
         <Grid item xs={4}>
           <InlineTextField
