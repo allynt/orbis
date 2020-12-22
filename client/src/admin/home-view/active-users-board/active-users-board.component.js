@@ -1,6 +1,13 @@
 import React, { useState } from 'react';
 
-import { Button, OptionsIcon } from '@astrosat/astrosat-ui';
+import {
+  Button,
+  OptionsIcon,
+  Table,
+  TableBody,
+  TableHead,
+  TableRow,
+} from '@astrosat/astrosat-ui';
 
 import OptionsDropdown from '../options-dropdown/options-dropdown.component';
 
@@ -11,6 +18,7 @@ import QuickView from '../active-users-board/quick-view/quick-view.component';
 
 import styles from './active-users-board.module.css';
 import tableStyles from '../../table.module.css';
+import { AdminTableCell } from 'admin/admin-table/admin-table-cell.component';
 
 const CHANGE_ROLE = 'Change Role';
 const OPTIONS = 'Options';
@@ -20,23 +28,15 @@ const USER_LABELS = {
 };
 
 const TableHeader = () => (
-  <thead className={tableStyles.thead}>
-    <tr className={tableStyles.theadr}>
-      <th align="left" className={tableStyles.th}>
-        User
-      </th>
-      <th align="left" className={tableStyles.th}>
-        Activated Licences
-      </th>
-      <th align="left" className={tableStyles.th}>
-        Email
-      </th>
-      <th align="left" className={tableStyles.th}>
-        Type
-      </th>
-      <th align="left" className={tableStyles.th}></th>
-    </tr>
-  </thead>
+  <TableHead>
+    <TableRow>
+      <AdminTableCell align="left">User</AdminTableCell>
+      <AdminTableCell align="left">Activated Licences</AdminTableCell>
+      <AdminTableCell align="left">Email</AdminTableCell>
+      <AdminTableCell align="left">Type</AdminTableCell>
+      <AdminTableCell align="left" />
+    </TableRow>
+  </TableHead>
 );
 
 const UserRow = ({
@@ -52,11 +52,11 @@ const UserRow = ({
   onEditUserClick,
   onDeleteUserClick,
 }) => (
-  <tr className={tableStyles.tr}>
-    <td className={tableStyles.td}>{user.user.name}</td>
-    <td className={tableStyles.td}>{getLicenceInfo(licences)}</td>
-    <td className={tableStyles.td}>{user.user.email}</td>
-    <td className={`${tableStyles.td} ${tableStyles.optionsColumn}`}>
+  <TableRow>
+    <AdminTableCell>{user.user.name}</AdminTableCell>
+    <AdminTableCell>{getLicenceInfo(licences)}</AdminTableCell>
+    <AdminTableCell>{user.user.email}</AdminTableCell>
+    <AdminTableCell>
       <Button
         color="secondary"
         className={styles.optionsRoleButton}
@@ -92,8 +92,8 @@ const UserRow = ({
           </button>
         </OptionsDropdown>
       )}
-    </td>
-    <td className={`${tableStyles.td} ${tableStyles.optionsColumn}`}>
+    </AdminTableCell>
+    <AdminTableCell>
       <OptionsIcon
         data-testid="options-icon"
         classes={`${tableStyles.optionsIcon} ${
@@ -124,8 +124,8 @@ const UserRow = ({
           )}
         </OptionsDropdown>
       )}
-    </td>
-  </tr>
+    </AdminTableCell>
+  </TableRow>
 );
 
 export const ActiveUsersBoard = ({
@@ -149,9 +149,9 @@ export const ActiveUsersBoard = ({
     <>
       <QuickView data={quickViewData} />
       <div className={tableStyles.scroll}>
-        <table className={tableStyles.table}>
+        <Table>
           <TableHeader />
-          <tbody>
+          <TableBody>
             {activeUsers && activeUsers.length > 0 ? (
               activeUsers.map(user => {
                 const optionsSelected =
@@ -182,14 +182,14 @@ export const ActiveUsersBoard = ({
                 );
               })
             ) : (
-              <tr className={tableStyles.tr}>
-                <td align="center" colSpan={5} className={tableStyles.td}>
+              <TableRow>
+                <AdminTableCell align="center" colSpan={5}>
                   No Active Users
-                </td>
-              </tr>
+                </AdminTableCell>
+              </TableRow>
             )}
-          </tbody>
-        </table>
+          </TableBody>
+        </Table>
       </div>
     </>
   );
