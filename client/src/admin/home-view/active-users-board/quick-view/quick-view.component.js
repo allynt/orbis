@@ -9,12 +9,14 @@ import React from 'react';
 
 const Wrapper = styled('div')(({ theme }) => ({
   maxWidth: theme.typography.pxToRem(700),
+  width: '70%',
   display: 'grid',
   gridTemplateColumns: 'max-content 1fr max-content 1fr max-content',
   gridTemplateRows: '1fr 1fr',
   justifyContent: 'center',
   alignItems: 'center',
   padding: `0 ${theme.spacing(5)}px`,
+  marginBottom: theme.spacing(5),
 }));
 
 const Divider = styled(DefaultDivider)({

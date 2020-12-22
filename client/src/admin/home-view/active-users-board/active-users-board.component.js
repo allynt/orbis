@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 
 import {
+  Box,
   Button,
   OptionsIcon,
   Table,
@@ -146,51 +147,49 @@ export const ActiveUsersBoard = ({
   };
 
   return (
-    <>
+    <Box display="flex" flexDirection="column" alignItems="center">
       <QuickView data={quickViewData} />
-      <div className={tableStyles.scroll}>
-        <Table>
-          <TableHeader />
-          <TableBody>
-            {activeUsers && activeUsers.length > 0 ? (
-              activeUsers.map(user => {
-                const optionsSelected =
-                  dropdown?.type === OPTIONS && dropdown.user === user;
+      <Table>
+        <TableHeader />
+        <TableBody>
+          {activeUsers && activeUsers.length > 0 ? (
+            activeUsers.map(user => {
+              const optionsSelected =
+                dropdown?.type === OPTIONS && dropdown.user === user;
 
-                const changeRoleSelected =
-                  dropdown?.type === CHANGE_ROLE && dropdown.user === user;
+              const changeRoleSelected =
+                dropdown?.type === CHANGE_ROLE && dropdown.user === user;
 
-                let licences = null;
-                if (customer && customer.licences) {
-                  licences = getUserLicences(user, customer);
-                }
-                return (
-                  <UserRow
-                    key={user.id}
-                    user={user}
-                    changeRoleSelected={changeRoleSelected}
-                    currentUser={currentUser}
-                    handleClick={handleClick}
-                    licences={licences}
-                    onChangeRoleClick={onChangeRoleClick}
-                    onDeleteUserClick={onDeleteUserClick}
-                    onEditUserClick={onEditUserClick}
-                    oneAdminRemaining={oneAdminRemaining}
-                    optionsSelected={optionsSelected}
-                    setDropdown={setDropdown}
-                  />
-                );
-              })
-            ) : (
-              <TableRow>
-                <AdminTableCell align="center" colSpan={5}>
-                  No Active Users
-                </AdminTableCell>
-              </TableRow>
-            )}
-          </TableBody>
-        </Table>
-      </div>
-    </>
+              let licences = null;
+              if (customer && customer.licences) {
+                licences = getUserLicences(user, customer);
+              }
+              return (
+                <UserRow
+                  key={user.id}
+                  user={user}
+                  changeRoleSelected={changeRoleSelected}
+                  currentUser={currentUser}
+                  handleClick={handleClick}
+                  licences={licences}
+                  onChangeRoleClick={onChangeRoleClick}
+                  onDeleteUserClick={onDeleteUserClick}
+                  onEditUserClick={onEditUserClick}
+                  oneAdminRemaining={oneAdminRemaining}
+                  optionsSelected={optionsSelected}
+                  setDropdown={setDropdown}
+                />
+              );
+            })
+          ) : (
+            <TableRow>
+              <AdminTableCell align="center" colSpan={5}>
+                No Active Users
+              </AdminTableCell>
+            </TableRow>
+          )}
+        </TableBody>
+      </Table>
+    </Box>
   );
 };
