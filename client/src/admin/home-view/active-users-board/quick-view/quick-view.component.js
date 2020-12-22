@@ -63,6 +63,18 @@ const Label = ({ children, className }) => (
   />
 );
 
+/**
+ * @typedef QuickViewData
+ * @property {number} [active]
+ * @property {number} [pending]
+ * @property {number} [available]
+ */
+
+/**
+ * @param {{
+ *  data?: QuickViewData
+ * }} props
+ */
 const QuickView = ({ data }) => {
   const styles = useStyles();
   return (
