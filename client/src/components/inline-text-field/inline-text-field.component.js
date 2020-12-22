@@ -50,7 +50,7 @@ export const InlineTextField = ({
       spacing={2}
     >
       <Grid item xs={3}>
-        <InputLabel className={inlineStyles.label} htmlFor={id} shrink={false}>
+        <InputLabel className={inlineStyles.label} htmlFor={id} shrink>
           {label}
         </InputLabel>
       </Grid>
