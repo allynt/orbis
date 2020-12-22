@@ -3,7 +3,7 @@ import React from 'react';
 import QuickView from './quick-view.component';
 
 export default {
-  title: 'Admin/Active Users Board/QuickView',
+  title: 'Admin/Home View/Active Users Board/QuickView',
   component: QuickView,
 };
 
