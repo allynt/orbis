@@ -4,10 +4,7 @@ import { format } from 'date-fns';
 
 import {
   Button,
-  IconButton,
-  Menu,
   MenuItem,
-  OptionsIcon,
   Table,
   TableBody,
   TableHead,
@@ -16,6 +13,7 @@ import {
 
 import { getUserLicences, getLicenceInfo } from '../../licence-utils';
 import { AdminTableCell } from 'admin/admin-table/admin-table-cell.component';
+import { OptionsMenu } from '../options-menu/options-menu.component';
 
 const DATE_FORMAT = 'k:mm d MMMM yyyy';
 
@@ -77,19 +75,13 @@ const PendingUserRow = ({
         </Button>
       </AdminTableCell>
       <AdminTableCell>
-        <IconButton aria-label="Options" onClick={handleOptionsButtonClick}>
-          <OptionsIcon
-            style={{ transform: 'rotate(90deg)' }}
-            data-testid="options-icon"
-          />
-        </IconButton>
-        <Menu
+        <OptionsMenu
           anchorEl={optionsAnchorEl}
-          open={!!optionsAnchorEl}
+          onButtonClick={handleOptionsButtonClick}
           onClose={handleOptionsMenuClose}
         >
           <MenuItem onClick={handleWithdrawClick}>Withdraw</MenuItem>
-        </Menu>
+        </OptionsMenu>
       </AdminTableCell>
     </TableRow>
   );
@@ -108,10 +100,10 @@ export const PendingInvitationsBoard = ({
         pendingUsers.map(user => (
           <PendingUserRow
             key={user.id}
+            user={user}
             customer={customer}
             onResendInvitationClick={() => onResendInvitationClick(user)}
             onWithdrawInvitationClick={() => onWithdrawInvitationClick(user)}
-            user={user}
           />
         ))
       ) : (
