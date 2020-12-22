@@ -40,29 +40,27 @@ const TableHeader = () => (
 
 /**
  * @param {{
- *   user: import('typings/orbis').CustomerUser
+ *   customerUser: import('typings/orbis').CustomerUser
  *   licences: import('typings/orbis').Licence[]
  *   setDropdown: React.Dispatch<{type: string, user: import('typings/orbis').CustomerUser}>
- *   changeRoleSelected?: boolean
- *   optionsSelected?: boolean
+ *   changeRoleOpen?: boolean
+ *   optionsOpen?: boolean
  *   oneAdminRemaining?: boolean
- *   handleClick: (fn: any, user: any) => void
- *   onEditUserClick: () => void
  *   onDeleteUserClick: () => void
- *   onChangeRoleClick: () => void
+ *   onEditUserClick: () => void
+ *   onRoleClick: () => void
  *   currentUser: import('typings/orbis').User
  * }} props
  */
 const UserRow = ({
-  user,
+  customerUser,
   licences,
-  setDropdown,
-  changeRoleSelected,
+  changeRoleOpen,
+  optionsOpen,
   oneAdminRemaining,
-  handleClick,
-  onChangeRoleClick,
-  optionsSelected,
   currentUser,
+  setDropdown,
+  onRoleClick,
   onEditUserClick,
   onDeleteUserClick,
 }) => {
@@ -71,20 +69,22 @@ const UserRow = ({
 
   return (
     <TableRow>
-      <AdminTableCell>{user.user.name}</AdminTableCell>
+      <AdminTableCell>{customerUser.user.name}</AdminTableCell>
       <AdminTableCell>{getLicenceInfo(licences)}</AdminTableCell>
-      <AdminTableCell>{user.user.email}</AdminTableCell>
+      <AdminTableCell>{customerUser.user.email}</AdminTableCell>
       <AdminTableCell>
         <Button
           aria-controls="role-menu"
           ref={roleButtonRef}
           color="secondary"
-          onClick={() => setDropdown({ type: CHANGE_ROLE, user })}
-          disabled={user.type === ADMIN_STATUS.manager && oneAdminRemaining}
+          onClick={() => setDropdown({ type: CHANGE_ROLE, user: customerUser })}
+          disabled={
+            customerUser.type === ADMIN_STATUS.manager && oneAdminRemaining
+          }
           size="small"
           endIcon={<TriangleIcon style={{ transform: 'rotate(180deg)' }} />}
         >
-          {user.type === ADMIN_STATUS.manager
+          {customerUser.type === ADMIN_STATUS.manager
             ? USER_LABELS.admin
             : USER_LABELS.standard}
         </Button>
@@ -95,11 +95,11 @@ const UserRow = ({
             vertical: 'bottom',
             horizontal: 'center',
           }}
-          open={changeRoleSelected}
+          open={changeRoleOpen}
           onClose={() => setDropdown(null)}
         >
-          <MenuItem onClick={() => handleClick(onChangeRoleClick, user)}>
-            {user.type === ADMIN_STATUS.manager
+          <MenuItem onClick={() => onRoleClick()}>
+            {customerUser.type === ADMIN_STATUS.manager
               ? USER_LABELS.standard
               : USER_LABELS.admin}
           </MenuItem>
@@ -110,8 +110,8 @@ const UserRow = ({
           aria-label="Options"
           aria-controls="options-menu"
           ref={optionsButtonRef}
-          color={optionsSelected ? 'primary' : 'default'}
-          onClick={() => setDropdown({ type: OPTIONS, user })}
+          color={optionsOpen ? 'primary' : 'default'}
+          onClick={() => setDropdown({ type: OPTIONS, user: customerUser })}
         >
           <OptionsIcon
             style={{ transform: 'rotate(90deg)' }}
@@ -121,16 +121,12 @@ const UserRow = ({
         <Menu
           id="options-menu"
           anchorEl={optionsButtonRef.current}
-          open={optionsSelected}
+          open={optionsOpen}
           onClose={() => setDropdown(null)}
         >
-          <MenuItem onClick={() => handleClick(onEditUserClick, user)}>
-            Edit
-          </MenuItem>
-          {user?.user?.id !== currentUser?.id && (
-            <MenuItem onClick={() => handleClick(onDeleteUserClick, user)}>
-              Delete User
-            </MenuItem>
+          <MenuItem onClick={() => onEditUserClick()}>Edit</MenuItem>
+          {customerUser?.user?.id !== currentUser?.id && (
+            <MenuItem onClick={() => onDeleteUserClick()}>Delete User</MenuItem>
           )}
         </Menu>
       </AdminTableCell>
@@ -150,8 +146,27 @@ export const ActiveUsersBoard = ({
 }) => {
   const [dropdown, setDropdown] = useState(null);
 
-  const handleClick = (fn, user) => {
-    fn(user);
+  /**
+   * @param {import('typings/orbis').CustomerUser} customerUser
+   */
+  const handleRoleClick = customerUser => {
+    onChangeRoleClick(customerUser);
+    setDropdown(null);
+  };
+
+  /**
+   * @param {import('typings/orbis').CustomerUser} customerUser
+   */
+  const handleEditClick = customerUser => {
+    onEditUserClick(customerUser);
+    setDropdown(null);
+  };
+
+  /**
+   * @param {import('typings/orbis').CustomerUser} customerUser
+   */
+  const handleDeleteClick = customerUser => {
+    onDeleteUserClick(customerUser);
     setDropdown(null);
   };
 
@@ -161,7 +176,7 @@ export const ActiveUsersBoard = ({
       <Table>
         <TableHeader />
         <TableBody>
-          {activeUsers && activeUsers.length > 0 ? (
+          {activeUsers?.length > 0 ? (
             activeUsers.map(user => {
               const optionsSelected =
                 dropdown?.type === OPTIONS && dropdown.user === user;
@@ -176,17 +191,16 @@ export const ActiveUsersBoard = ({
               return (
                 <UserRow
                   key={user.id}
-                  user={user}
-                  changeRoleSelected={changeRoleSelected}
+                  customerUser={user}
                   currentUser={currentUser}
-                  handleClick={handleClick}
                   licences={licences}
-                  onChangeRoleClick={onChangeRoleClick}
-                  onDeleteUserClick={onDeleteUserClick}
-                  onEditUserClick={onEditUserClick}
                   oneAdminRemaining={oneAdminRemaining}
-                  optionsSelected={optionsSelected}
+                  changeRoleOpen={changeRoleSelected}
+                  optionsOpen={optionsSelected}
                   setDropdown={setDropdown}
+                  onDeleteUserClick={() => handleDeleteClick(user)}
+                  onEditUserClick={() => handleEditClick(user)}
+                  onRoleClick={() => handleRoleClick(user)}
                 />
               );
             })
