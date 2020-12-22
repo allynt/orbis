@@ -4,7 +4,7 @@ import { ActiveUsersBoard } from './active-users-board.component';
 
 import { customer, activeUsers, pendingUsers } from '../../test-story-data';
 
-export default { title: 'Admin/Active Users Board' };
+export default { title: 'Admin/Home View/Active Users Board' };
 
 const availableLicences = customer?.licences.filter(
   licence => !licence.customer_user,
