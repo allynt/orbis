@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useState } from 'react';
 
 import {
   Box,
@@ -19,8 +19,6 @@ import { ADMIN_STATUS } from '../../admin.constants';
 import { getLicenceInfo, getUserLicences } from '../../licence-utils';
 import QuickView from './quick-view/quick-view.component';
 
-const CHANGE_ROLE = 'Change Role';
-const OPTIONS = 'Options';
 const USER_LABELS = {
   standard: 'Standard',
   admin: 'Admin',
@@ -40,32 +38,63 @@ const TableHeader = () => (
 
 /**
  * @param {{
+ *   currentUser: import('typings/orbis').User
  *   customerUser: import('typings/orbis').CustomerUser
  *   licences: import('typings/orbis').Licence[]
- *   setDropdown: React.Dispatch<{type: string, user: import('typings/orbis').CustomerUser}>
- *   changeRoleOpen?: boolean
- *   optionsOpen?: boolean
  *   oneAdminRemaining?: boolean
  *   onDeleteUserClick: () => void
  *   onEditUserClick: () => void
  *   onRoleClick: () => void
- *   currentUser: import('typings/orbis').User
  * }} props
  */
 const UserRow = ({
+  currentUser,
   customerUser,
   licences,
-  changeRoleOpen,
-  optionsOpen,
   oneAdminRemaining,
-  currentUser,
-  setDropdown,
-  onRoleClick,
-  onEditUserClick,
   onDeleteUserClick,
+  onEditUserClick,
+  onRoleClick,
 }) => {
-  const roleButtonRef = useRef();
-  const optionsButtonRef = useRef();
+  const [roleAnchorEl, setRoleAnchorEl] = useState(null);
+  const [optionsAnchorEl, setOptionsAnchorEl] = useState(null);
+
+  /**
+   * @param {React.MouseEvent<HTMLButtonElement, MouseEvent>} e
+   */
+  const handleRoleButtonClick = e => {
+    setRoleAnchorEl(e.currentTarget);
+  };
+
+  const handleRoleClick = () => {
+    onRoleClick();
+    setRoleAnchorEl(null);
+  };
+
+  const handleRoleMenuClose = () => {
+    setRoleAnchorEl(null);
+  };
+
+  /**
+   * @param {React.MouseEvent<HTMLButtonElement, MouseEvent>} e
+   */
+  const handleOptionsButtonClick = e => {
+    setOptionsAnchorEl(e.currentTarget);
+  };
+
+  const handleOptionsMenuClose = () => {
+    setOptionsAnchorEl(null);
+  };
+
+  const handleEditClick = () => {
+    onEditUserClick();
+    setOptionsAnchorEl(null);
+  };
+
+  const handleDeleteClick = () => {
+    onDeleteUserClick();
+    setOptionsAnchorEl(null);
+  };
 
   return (
     <TableRow>
@@ -75,9 +104,8 @@ const UserRow = ({
       <AdminTableCell>
         <Button
           aria-controls="role-menu"
-          ref={roleButtonRef}
           color="secondary"
-          onClick={() => setDropdown({ type: CHANGE_ROLE, user: customerUser })}
+          onClick={handleRoleButtonClick}
           disabled={
             customerUser.type === ADMIN_STATUS.manager && oneAdminRemaining
           }
@@ -90,15 +118,15 @@ const UserRow = ({
         </Button>
         <Menu
           id="role-menu"
-          anchorEl={roleButtonRef.current}
+          anchorEl={roleAnchorEl}
           anchorOrigin={{
             vertical: 'bottom',
             horizontal: 'center',
           }}
-          open={changeRoleOpen}
-          onClose={() => setDropdown(null)}
+          open={!!roleAnchorEl}
+          onClose={handleRoleMenuClose}
         >
-          <MenuItem onClick={() => onRoleClick()}>
+          <MenuItem onClick={handleRoleClick}>
             {customerUser.type === ADMIN_STATUS.manager
               ? USER_LABELS.standard
               : USER_LABELS.admin}
@@ -109,9 +137,8 @@ const UserRow = ({
         <IconButton
           aria-label="Options"
           aria-controls="options-menu"
-          ref={optionsButtonRef}
-          color={optionsOpen ? 'primary' : 'default'}
-          onClick={() => setDropdown({ type: OPTIONS, user: customerUser })}
+          color={!!optionsAnchorEl ? 'primary' : 'default'}
+          onClick={handleOptionsButtonClick}
         >
           <OptionsIcon
             style={{ transform: 'rotate(90deg)' }}
@@ -120,13 +147,13 @@ const UserRow = ({
         </IconButton>
         <Menu
           id="options-menu"
-          anchorEl={optionsButtonRef.current}
-          open={optionsOpen}
-          onClose={() => setDropdown(null)}
+          anchorEl={optionsAnchorEl}
+          open={!!optionsAnchorEl}
+          onClose={handleOptionsMenuClose}
         >
-          <MenuItem onClick={() => onEditUserClick()}>Edit</MenuItem>
+          <MenuItem onClick={handleEditClick}>Edit</MenuItem>
           {customerUser?.user?.id !== currentUser?.id && (
-            <MenuItem onClick={() => onDeleteUserClick()}>Delete User</MenuItem>
+            <MenuItem onClick={handleDeleteClick}>Delete User</MenuItem>
           )}
         </Menu>
       </AdminTableCell>
@@ -144,14 +171,11 @@ export const ActiveUsersBoard = ({
   onEditUserClick,
   onDeleteUserClick,
 }) => {
-  const [dropdown, setDropdown] = useState(null);
-
   /**
    * @param {import('typings/orbis').CustomerUser} customerUser
    */
   const handleRoleClick = customerUser => {
     onChangeRoleClick(customerUser);
-    setDropdown(null);
   };
 
   /**
@@ -159,7 +183,6 @@ export const ActiveUsersBoard = ({
    */
   const handleEditClick = customerUser => {
     onEditUserClick(customerUser);
-    setDropdown(null);
   };
 
   /**
@@ -167,7 +190,6 @@ export const ActiveUsersBoard = ({
    */
   const handleDeleteClick = customerUser => {
     onDeleteUserClick(customerUser);
-    setDropdown(null);
   };
 
   return (
@@ -178,12 +200,6 @@ export const ActiveUsersBoard = ({
         <TableBody>
           {activeUsers?.length > 0 ? (
             activeUsers.map(user => {
-              const optionsSelected =
-                dropdown?.type === OPTIONS && dropdown.user === user;
-
-              const changeRoleSelected =
-                dropdown?.type === CHANGE_ROLE && dropdown.user === user;
-
               let licences = null;
               if (customer && customer.licences) {
                 licences = getUserLicences(user, customer);
@@ -195,9 +211,6 @@ export const ActiveUsersBoard = ({
                   currentUser={currentUser}
                   licences={licences}
                   oneAdminRemaining={oneAdminRemaining}
-                  changeRoleOpen={changeRoleSelected}
-                  optionsOpen={optionsSelected}
-                  setDropdown={setDropdown}
                   onDeleteUserClick={() => handleDeleteClick(user)}
                   onEditUserClick={() => handleEditClick(user)}
                   onRoleClick={() => handleRoleClick(user)}
