@@ -3,10 +3,8 @@ import React, { useState } from 'react';
 import {
   Box,
   Button,
-  IconButton,
   Menu,
   MenuItem,
-  OptionsIcon,
   Table,
   TableBody,
   TableHead,
@@ -18,6 +16,7 @@ import { AdminTableCell } from 'admin/admin-table/admin-table-cell.component';
 import { ADMIN_STATUS } from '../../admin.constants';
 import { getLicenceInfo, getUserLicences } from '../../licence-utils';
 import QuickView from './quick-view/quick-view.component';
+import { OptionsMenu } from '../options-menu/options-menu.component';
 
 const USER_LABELS = {
   standard: 'Standard',
@@ -134,28 +133,16 @@ const UserRow = ({
         </Menu>
       </AdminTableCell>
       <AdminTableCell>
-        <IconButton
-          aria-label="Options"
-          aria-controls="options-menu"
-          color={!!optionsAnchorEl ? 'primary' : 'default'}
-          onClick={handleOptionsButtonClick}
-        >
-          <OptionsIcon
-            style={{ transform: 'rotate(90deg)' }}
-            data-testid="options-icon"
-          />
-        </IconButton>
-        <Menu
-          id="options-menu"
+        <OptionsMenu
           anchorEl={optionsAnchorEl}
-          open={!!optionsAnchorEl}
+          onButtonClick={handleOptionsButtonClick}
           onClose={handleOptionsMenuClose}
         >
           <MenuItem onClick={handleEditClick}>Edit</MenuItem>
           {customerUser?.user?.id !== currentUser?.id && (
             <MenuItem onClick={handleDeleteClick}>Delete User</MenuItem>
           )}
-        </Menu>
+        </OptionsMenu>
       </AdminTableCell>
     </TableRow>
   );
