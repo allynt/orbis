@@ -30,17 +30,25 @@ const TableHeader = () => (
   </TableHead>
 );
 
+/**
+ * @param {{
+ *   customerUser?: import('typings/orbis').CustomerUser
+ *   customer?: import('typings/orbis').Customer
+ *   onResendInvitationClick?: () => void
+ *   onWithdrawInvitationClick?: () => void
+ * }} param0
+ */
 const PendingUserRow = ({
-  user,
+  customerUser,
   customer,
   onResendInvitationClick,
   onWithdrawInvitationClick,
 }) => {
   const [optionsAnchorEl, setOptionsAnchorEl] = useState(null);
-  const date = format(new Date(user.invitation_date), DATE_FORMAT);
+  const date = format(new Date(customerUser.invitation_date), DATE_FORMAT);
   let licences = null;
   if (customer && customer.licences) {
-    licences = getUserLicences(user, customer);
+    licences = getUserLicences(customerUser, customer);
   }
 
   const handleResendClick = () => {
@@ -65,8 +73,8 @@ const PendingUserRow = ({
 
   return (
     <TableRow>
-      <AdminTableCell>{user.user.name}</AdminTableCell>
-      <AdminTableCell>{user.user.email}</AdminTableCell>
+      <AdminTableCell>{customerUser.user.name}</AdminTableCell>
+      <AdminTableCell>{customerUser.user.email}</AdminTableCell>
       <AdminTableCell>{getLicenceInfo(licences)}</AdminTableCell>
       <AdminTableCell>{date}</AdminTableCell>
       <AdminTableCell>
@@ -87,6 +95,14 @@ const PendingUserRow = ({
   );
 };
 
+/**
+ * @param {{
+ *   pendingUsers?: import('typings/orbis').CustomerUser[]
+ *   customer?: import('typings/orbis').Customer
+ *   onResendInvitationClick?: (customerUser: import('typings/orbis').CustomerUser) => void
+ *   onWithdrawInvitationClick?: (customerUser: import('typings/orbis').CustomerUser) => void
+ * }} props
+ */
 export const PendingInvitationsBoard = ({
   pendingUsers,
   customer,
@@ -100,7 +116,7 @@ export const PendingInvitationsBoard = ({
         pendingUsers.map(user => (
           <PendingUserRow
             key={user.id}
-            user={user}
+            customerUser={user}
             customer={customer}
             onResendInvitationClick={() => onResendInvitationClick(user)}
             onWithdrawInvitationClick={() => onWithdrawInvitationClick(user)}
