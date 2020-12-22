@@ -1,13 +1,16 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 
 import {
   Box,
   Button,
+  Menu,
+  MenuItem,
   OptionsIcon,
   Table,
   TableBody,
   TableHead,
   TableRow,
+  TriangleIcon,
 } from '@astrosat/astrosat-ui';
 
 import OptionsDropdown from '../options-dropdown/options-dropdown.component';
@@ -52,82 +55,80 @@ const UserRow = ({
   currentUser,
   onEditUserClick,
   onDeleteUserClick,
-}) => (
-  <TableRow>
-    <AdminTableCell>{user.user.name}</AdminTableCell>
-    <AdminTableCell>{getLicenceInfo(licences)}</AdminTableCell>
-    <AdminTableCell>{user.user.email}</AdminTableCell>
-    <AdminTableCell>
-      <Button
-        color="secondary"
-        className={styles.optionsRoleButton}
-        onClick={() =>
-          setDropdown(changeRoleSelected ? null : { type: CHANGE_ROLE, user })
-        }
-        disabled={user.type === ADMIN_STATUS.manager && oneAdminRemaining}
-        endIcon={
-          <span
-            className={`${styles.arrow} ${
-              changeRoleSelected && styles.selected
-            }`}
-          ></span>
-        }
-      >
-        {user.type === ADMIN_STATUS.manager
-          ? USER_LABELS.admin
-          : USER_LABELS.standard}
-      </Button>
+}) => {
+  const roleButtonRef = useRef();
 
-      {changeRoleSelected && (
-        <OptionsDropdown
-          className={styles.roleDropdown}
-          onClickAway={() => setDropdown(null)}
+  return (
+    <TableRow>
+      <AdminTableCell>{user.user.name}</AdminTableCell>
+      <AdminTableCell>{getLicenceInfo(licences)}</AdminTableCell>
+      <AdminTableCell>{user.user.email}</AdminTableCell>
+      <AdminTableCell>
+        <Button
+          ref={roleButtonRef}
+          color="secondary"
+          onClick={() =>
+            setDropdown(changeRoleSelected ? null : { type: CHANGE_ROLE, user })
+          }
+          disabled={user.type === ADMIN_STATUS.manager && oneAdminRemaining}
+          size="small"
+          endIcon={<TriangleIcon style={{ transform: 'rotate(180deg)' }} />}
         >
-          <button
-            className={tableStyles.optionsButton}
-            onClick={() => handleClick(onChangeRoleClick, user)}
-          >
+          {user.type === ADMIN_STATUS.manager
+            ? USER_LABELS.admin
+            : USER_LABELS.standard}
+        </Button>
+        <Menu
+          anchorEl={roleButtonRef.current}
+          anchorOrigin={{
+            vertical: 'bottom',
+            horizontal: 'center',
+          }}
+          open={changeRoleSelected}
+          onClose={() => setDropdown(null)}
+        >
+          <MenuItem onClick={() => handleClick(onChangeRoleClick, user)}>
             {user.type === ADMIN_STATUS.manager
               ? USER_LABELS.standard
               : USER_LABELS.admin}
-          </button>
-        </OptionsDropdown>
-      )}
-    </AdminTableCell>
-    <AdminTableCell>
-      <OptionsIcon
-        data-testid="options-icon"
-        classes={`${tableStyles.optionsIcon} ${
-          optionsSelected && tableStyles.optionsIconSelected
-        }`}
-        onClick={() =>
-          setDropdown(optionsSelected ? null : { type: OPTIONS, user })
-        }
-      />
-      {optionsSelected && (
-        <OptionsDropdown
-          className={styles.editDropdown}
-          onClickAway={() => setDropdown(null)}
-        >
-          <button
-            className={tableStyles.optionsButton}
-            onClick={() => handleClick(onEditUserClick, user)}
+          </MenuItem>
+        </Menu>
+      </AdminTableCell>
+      <AdminTableCell>
+        <OptionsIcon
+          data-testid="options-icon"
+          classes={`${tableStyles.optionsIcon} ${
+            optionsSelected && tableStyles.optionsIconSelected
+          }`}
+          onClick={() =>
+            setDropdown(optionsSelected ? null : { type: OPTIONS, user })
+          }
+        />
+        {optionsSelected && (
+          <OptionsDropdown
+            className={styles.editDropdown}
+            onClickAway={() => setDropdown(null)}
           >
-            Edit
-          </button>
-          {user.user.id !== currentUser.id && (
             <button
               className={tableStyles.optionsButton}
-              onClick={() => handleClick(onDeleteUserClick, user)}
+              onClick={() => handleClick(onEditUserClick, user)}
             >
-              Delete User
+              Edit
             </button>
-          )}
-        </OptionsDropdown>
-      )}
-    </AdminTableCell>
-  </TableRow>
-);
+            {user?.user?.id !== currentUser?.id && (
+              <button
+                className={tableStyles.optionsButton}
+                onClick={() => handleClick(onDeleteUserClick, user)}
+              >
+                Delete User
+              </button>
+            )}
+          </OptionsDropdown>
+        )}
+      </AdminTableCell>
+    </TableRow>
+  );
+};
 
 export const ActiveUsersBoard = ({
   currentUser,
