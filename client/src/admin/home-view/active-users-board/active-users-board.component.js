@@ -3,10 +3,12 @@ import React, { useState } from 'react';
 import {
   Box,
   Button,
+  makeStyles,
   Menu,
   MenuItem,
   Table,
   TableBody,
+  TableContainer,
   TableHead,
   TableRow,
   TriangleIcon,
@@ -97,9 +99,9 @@ const UserRow = ({
 
   return (
     <TableRow>
-      <AdminTableCell>{customerUser.user.name}</AdminTableCell>
+      <AdminTableCell>{customerUser?.user?.name}</AdminTableCell>
       <AdminTableCell>{getLicenceInfo(licences)}</AdminTableCell>
-      <AdminTableCell>{customerUser.user.email}</AdminTableCell>
+      <AdminTableCell>{customerUser?.user?.email}</AdminTableCell>
       <AdminTableCell>
         <Button
           aria-controls="role-menu"
@@ -148,6 +150,12 @@ const UserRow = ({
   );
 };
 
+const useStyles = makeStyles(theme => ({
+  box: {
+    maxHeight: `calc(100% - ${theme.typography.pxToRem(theme.spacing(10))})`,
+  },
+}));
+
 /**
  * @param {{
  *   activeCustomerUsers: import('typings/orbis').CustomerUser[]
@@ -191,40 +199,50 @@ export const ActiveUsersBoard = ({
     onDeleteUserClick(customerUser);
   };
 
+  const styles = useStyles();
+
   return (
-    <Box display="flex" flexDirection="column" alignItems="center">
+    <Box
+      className={styles.box}
+      display="flex"
+      flexDirection="column"
+      alignItems="center"
+      width="100%"
+    >
       <QuickView data={quickViewData} />
-      <Table>
-        <TableHeader />
-        <TableBody>
-          {activeCustomerUsers?.length > 0 ? (
-            activeCustomerUsers.map(customerUser => {
-              let licences = null;
-              if (customer && customer.licences) {
-                licences = getUserLicences(customerUser, customer);
-              }
-              return (
-                <UserRow
-                  key={customerUser.id}
-                  customerUser={customerUser}
-                  currentUser={currentUser}
-                  licences={licences}
-                  oneAdminRemaining={oneAdminRemaining}
-                  onDeleteUserClick={() => handleDeleteClick(customerUser)}
-                  onEditUserClick={() => handleEditClick(customerUser)}
-                  onRoleClick={() => handleRoleClick(customerUser)}
-                />
-              );
-            })
-          ) : (
-            <TableRow>
-              <AdminTableCell align="center" colSpan={5}>
-                No Active Users
-              </AdminTableCell>
-            </TableRow>
-          )}
-        </TableBody>
-      </Table>
+      <TableContainer>
+        <Table stickyHeader>
+          <TableHeader />
+          <TableBody>
+            {activeCustomerUsers?.length > 0 ? (
+              activeCustomerUsers.map(customerUser => {
+                let licences = null;
+                if (customer && customer.licences) {
+                  licences = getUserLicences(customerUser, customer);
+                }
+                return (
+                  <UserRow
+                    key={customerUser.id}
+                    customerUser={customerUser}
+                    currentUser={currentUser}
+                    licences={licences}
+                    oneAdminRemaining={oneAdminRemaining}
+                    onDeleteUserClick={() => handleDeleteClick(customerUser)}
+                    onEditUserClick={() => handleEditClick(customerUser)}
+                    onRoleClick={() => handleRoleClick(customerUser)}
+                  />
+                );
+              })
+            ) : (
+              <TableRow>
+                <AdminTableCell align="center" colSpan={5}>
+                  No Active Users
+                </AdminTableCell>
+              </TableRow>
+            )}
+          </TableBody>
+        </Table>
+      </TableContainer>
     </Box>
   );
 };

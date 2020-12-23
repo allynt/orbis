@@ -4,9 +4,11 @@ import { format } from 'date-fns';
 
 import {
   Button,
+  makeStyles,
   MenuItem,
   Table,
   TableBody,
+  TableContainer,
   TableHead,
   TableRow,
 } from '@astrosat/astrosat-ui';
@@ -95,6 +97,12 @@ const PendingUserRow = ({
   );
 };
 
+const useStyles = makeStyles(theme => ({
+  container: {
+    maxHeight: `calc(100% - ${theme.typography.pxToRem(theme.spacing(10))})`,
+  },
+}));
+
 /**
  * @param {{
  *   pendingUsers?: import('typings/orbis').CustomerUser[]
@@ -108,27 +116,34 @@ export const PendingInvitationsBoard = ({
   customer,
   onResendInvitationClick,
   onWithdrawInvitationClick,
-}) => (
-  <Table>
-    <TableHeader />
-    <TableBody>
-      {pendingUsers && pendingUsers.length > 0 ? (
-        pendingUsers.map(user => (
-          <PendingUserRow
-            key={user.id}
-            customerUser={user}
-            customer={customer}
-            onResendInvitationClick={() => onResendInvitationClick(user)}
-            onWithdrawInvitationClick={() => onWithdrawInvitationClick(user)}
-          />
-        ))
-      ) : (
-        <TableRow>
-          <AdminTableCell align="center" colSpan={6}>
-            No Pending Users
-          </AdminTableCell>
-        </TableRow>
-      )}
-    </TableBody>
-  </Table>
-);
+}) => {
+  const styles = useStyles();
+  return (
+    <TableContainer className={styles.container}>
+      <Table stickyHeader>
+        <TableHeader />
+        <TableBody>
+          {pendingUsers && pendingUsers.length > 0 ? (
+            pendingUsers.map(user => (
+              <PendingUserRow
+                key={user.id}
+                customerUser={user}
+                customer={customer}
+                onResendInvitationClick={() => onResendInvitationClick(user)}
+                onWithdrawInvitationClick={() =>
+                  onWithdrawInvitationClick(user)
+                }
+              />
+            ))
+          ) : (
+            <TableRow>
+              <AdminTableCell align="center" colSpan={6}>
+                No Pending Users
+              </AdminTableCell>
+            </TableRow>
+          )}
+        </TableBody>
+      </Table>
+    </TableContainer>
+  );
+};
