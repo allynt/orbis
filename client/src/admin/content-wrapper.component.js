@@ -12,7 +12,6 @@ const useStyles = makeStyles(theme => ({
   wrapper: {
     padding: theme.spacing(4),
     width: '100%',
-    marginBottom: theme.spacing(3),
     overflowY: 'auto',
     height: props =>
       props.fullHeight &&
@@ -20,8 +19,8 @@ const useStyles = makeStyles(theme => ({
     maxHeight: props =>
       props.fullHeight &&
       `calc(100vh - calc(2 * ${theme.typography.pxToRem(theme.spacing(3))}))`,
-    '&:last-of-type': {
-      marginBottom: 0,
+    '& + &': {
+      marginTop: theme.spacing(3),
     },
   },
 }));

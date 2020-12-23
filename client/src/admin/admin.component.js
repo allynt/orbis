@@ -79,11 +79,7 @@ const Admin = ({ user }) => {
           />
         );
       case ADMIN_VIEW.licenceDashboard:
-        return (
-          <ContentWrapper title="Licence Dashboard">
-            <LicenceDashboard licenceInformation={licenceInformation} />
-          </ContentWrapper>
-        );
+        return <LicenceDashboard licenceInformation={licenceInformation} />;
       case ADMIN_VIEW.home:
       default:
         return (
