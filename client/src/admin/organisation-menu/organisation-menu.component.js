@@ -35,16 +35,21 @@ const useStyles = makeStyles(theme => ({
  *   onCreateUserClick?: () => void
  * }} props
  */
-const OrganisationMenu = ({ customer, setVisiblePanel, onCreateUserClick }) => {
+const OrganisationMenu = (
+  { customer, setVisiblePanel, onCreateUserClick },
+  ref,
+) => {
   const styles = useStyles();
   return (
     <Box
+      ref={ref}
       display="flex"
       flexDirection="column"
       flexShrink={0}
       mt="4.375rem"
+      mx={2}
       alignItems="center"
-      maxWidth="18.625rem"
+      width="max-content"
     >
       <Paper
         className={styles.logo}
@@ -67,4 +72,4 @@ const OrganisationMenu = ({ customer, setVisiblePanel, onCreateUserClick }) => {
   );
 };
 
-export default OrganisationMenu;
+export default React.forwardRef(OrganisationMenu);
