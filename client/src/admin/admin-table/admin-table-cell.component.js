@@ -12,4 +12,7 @@ export const AdminTableCell = withStyles(theme => ({
   body: {
     ...theme.typography.body1,
   },
+  stickyHeader: {
+    backgroundColor: theme.palette.common.white,
+  },
 }))(TableCell);
