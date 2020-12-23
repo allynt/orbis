@@ -1,35 +1,34 @@
-import { Dialog, ThemeProvider } from '@astrosat/astrosat-ui';
 import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { ADMIN_VIEW, DIALOG_VIEW, ADMIN_STATUS } from './admin.constants';
-import styles from './admin.module.css';
+import { Box, Dialog, Slide, ThemeProvider } from '@astrosat/astrosat-ui';
+
+import { updateUser } from '../accounts/accounts.slice';
+import { ADMIN_STATUS, ADMIN_VIEW, DIALOG_VIEW } from './admin.constants';
 import {
   createCustomerUser,
+  deleteCustomerUser,
   fetchCustomer,
-  updateCustomer,
   fetchCustomerUsers,
+  inviteCustomerUser,
+  selectActiveUsers,
+  selectAvailableLicences,
   selectCurrentCustomer,
   selectCustomerUsers,
   selectLicenceInformation,
-  updateCustomerUser,
-  deleteCustomerUser,
-  inviteCustomerUser,
-  selectActiveUsers,
-  selectPendingUsers,
-  selectAvailableLicences,
   selectOneAdminRemaining,
+  selectPendingUsers,
+  updateCustomer,
+  updateCustomerUser,
 } from './admin.slice';
-import { updateUser } from '../accounts/accounts.slice';
-import HomeView from './home-view/home-view.component';
 import CorporateView from './corporate-view/corporate-view.component';
 import { CreateUserForm } from './create-user-form/create-user-form.component';
-import { EditUserForm } from './edit-user-form/edit-user-form.component';
 import { DeleteUserForm } from './delete-user-form/delete-user-form.component';
-import { WithdrawUserInvitationForm } from './withdraw-invitation-form/withdraw-user-invitation-form.component';
+import { EditUserForm } from './edit-user-form/edit-user-form.component';
+import HomeView from './home-view/home-view.component';
 import LeftSidebar from './left-sidebar/left-sidebar.component';
 import { LicenceDashboard } from './licence-dashboard/licence-dashboard.component';
 import OrganisationMenu from './organisation-menu/organisation-menu.component';
-import ContentWrapper from './content-wrapper.component';
+import { WithdrawUserInvitationForm } from './withdraw-invitation-form/withdraw-user-invitation-form.component';
 
 const Admin = ({ user }) => {
   const dispatch = useDispatch();
@@ -164,7 +163,7 @@ const Admin = ({ user }) => {
   };
 
   return (
-    <div className={styles.adminConsole}>
+    <Box display="flex" height="100vh" overflow="hidden">
       <ThemeProvider theme="dark">
         <LeftSidebar
           user={user}
@@ -172,14 +171,22 @@ const Admin = ({ user }) => {
           visiblePanel={visiblePanel}
         />
       </ThemeProvider>
-      {getMainView()}
-      <OrganisationMenu
-        customer={currentCustomer}
-        setVisiblePanel={setVisiblePanel}
-        onCreateUserClick={() =>
-          setDialogForm({ type: DIALOG_VIEW.createUser })
-        }
-      />
+      <Box width="100%" overflow="auto" p={3}>
+        {getMainView()}
+      </Box>
+      <Slide
+        direction="left"
+        in={visiblePanel !== ADMIN_VIEW.corporateAccount}
+        unmountOnExit
+      >
+        <OrganisationMenu
+          customer={currentCustomer}
+          setVisiblePanel={setVisiblePanel}
+          onCreateUserClick={() =>
+            setDialogForm({ type: DIALOG_VIEW.createUser })
+          }
+        />
+      </Slide>
       <Dialog
         title={dialogForm?.type}
         isVisible={dialogForm}
@@ -188,7 +195,7 @@ const Admin = ({ user }) => {
       >
         {getDialogForm()}
       </Dialog>
-    </div>
+    </Box>
   );
 };
 
