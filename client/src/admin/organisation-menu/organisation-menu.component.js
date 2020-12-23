@@ -21,6 +21,7 @@ const useStyles = makeStyles(theme => ({
     objectFit: 'cover',
   },
   name: {
+    maxWidth: '20ch',
     cursor: 'pointer',
     margin: `${theme.typography.pxToRem(
       theme.spacing(4),
@@ -42,6 +43,7 @@ const OrganisationMenu = (
   const styles = useStyles();
   return (
     <Box
+      // @ts-ignore
       ref={ref}
       display="flex"
       flexDirection="column"
