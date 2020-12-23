@@ -1,6 +1,18 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
+
 import { useDispatch, useSelector } from 'react-redux';
-import { Box, Dialog, Slide, ThemeProvider } from '@astrosat/astrosat-ui';
+
+import {
+  Box,
+  CloseIcon,
+  Dialog,
+  DialogContent,
+  DialogTitle,
+  IconButton,
+  Slide,
+  styled,
+  ThemeProvider,
+} from '@astrosat/astrosat-ui';
 
 import { updateUser } from '../accounts/accounts.slice';
 import { ADMIN_STATUS, ADMIN_VIEW, DIALOG_VIEW } from './admin.constants';
@@ -30,6 +42,11 @@ import { LicenceDashboard } from './licence-dashboard/licence-dashboard.componen
 import OrganisationMenu from './organisation-menu/organisation-menu.component';
 import { WithdrawUserInvitationForm } from './withdraw-invitation-form/withdraw-user-invitation-form.component';
 
+const DialogCloseButton = styled(IconButton)({
+  position: 'absolute',
+  right: 0,
+});
+
 const Admin = ({ user }) => {
   const dispatch = useDispatch();
   const currentCustomer = useSelector(selectCurrentCustomer);
@@ -40,7 +57,6 @@ const Admin = ({ user }) => {
   const pendingUsers = useSelector(selectPendingUsers);
   const oneAdminRemaining = useSelector(selectOneAdminRemaining);
   const [visiblePanel, setVisiblePanel] = useState(ADMIN_VIEW.home);
-  const createDialogRef = useRef(document.body);
   const [dialogForm, setDialogForm] = useState(null);
 
   useEffect(() => {
@@ -188,12 +204,18 @@ const Admin = ({ user }) => {
         />
       </Slide>
       <Dialog
-        title={dialogForm?.type}
-        isVisible={dialogForm}
-        ref={createDialogRef}
-        close={() => setDialogForm(null)}
+        open={!!dialogForm}
+        onClose={() => setDialogForm(null)}
+        maxWidth="md"
       >
-        {getDialogForm()}
+        <DialogCloseButton
+          onClick={() => setDialogForm(null)}
+          aria-label="Close"
+        >
+          <CloseIcon />
+        </DialogCloseButton>
+        <DialogTitle>{dialogForm?.type}</DialogTitle>
+        <DialogContent>{getDialogForm()}</DialogContent>
       </Dialog>
     </Box>
   );

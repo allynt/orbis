@@ -41,12 +41,14 @@ describe('<Admin />', () => {
       expect(dialog).toHaveTextContent('Create New User');
     });
 
-    it('Closes the Create User Dialog when the close button is clicked', () => {
+    it('Closes the Create User Dialog when the close button is clicked', async () => {
       const { getAllByText, getByRole, getByLabelText, queryByRole } = setup();
       userEvent.click(getAllByText('Create User')[0]);
       expect(getByRole('dialog')).toBeInTheDocument();
       userEvent.click(getByLabelText('Close'));
-      expect(queryByRole('dialog')).not.toBeInTheDocument();
+      await waitFor(() =>
+        expect(queryByRole('dialog')).not.toBeInTheDocument(),
+      );
     });
 
     it('Closes the Create User Dialog when the form is successfully submitted', () => {

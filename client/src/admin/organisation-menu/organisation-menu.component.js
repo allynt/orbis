@@ -8,7 +8,7 @@ import {
   Typography,
 } from '@astrosat/astrosat-ui';
 
-import OrbisAdminIcon from '../../orbis-admin-icon.svg';
+import OrbisAdminIcon from '../orbis-admin-icon.svg';
 import { ADMIN_VIEW } from '../admin.constants';
 
 const useStyles = makeStyles(theme => ({

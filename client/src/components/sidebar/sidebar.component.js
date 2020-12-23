@@ -27,11 +27,12 @@ const Header = styled('header')(({ theme }) => ({
   borderTop: `solid 1px ${theme.palette.primary.main}`,
 }));
 
-const Items = styled(List)({
+const Items = styled(List)(({ theme }) => ({
   display: 'flex',
   flexDirection: 'column',
   height: '100%',
-});
+  paddingLeft: theme.spacing(2),
+}));
 
 const Footer = styled('footer')(({ theme }) => ({
   marginTop: 'auto',

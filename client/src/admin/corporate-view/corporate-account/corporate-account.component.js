@@ -9,7 +9,7 @@ import {
 } from '@astrosat/astrosat-ui';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Form, InlineTextField } from 'components';
-import OrbisAdminIcon from 'orbis-admin-icon.svg';
+import OrbisAdminIcon from '../../orbis-admin-icon.svg';
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { customerName, FIELD_NAMES } from 'utils/validators';
