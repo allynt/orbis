@@ -1,35 +1,51 @@
-import { Dialog } from '@astrosat/astrosat-ui';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
+
 import { useDispatch, useSelector } from 'react-redux';
-import { ADMIN_VIEW, DIALOG_VIEW, ADMIN_STATUS } from './admin.constants';
-import styles from './admin.module.css';
+
+import {
+  Box,
+  CloseIcon,
+  Dialog,
+  DialogContent,
+  DialogTitle,
+  IconButton,
+  Slide,
+  styled,
+  ThemeProvider,
+} from '@astrosat/astrosat-ui';
+
+import { updateUser } from '../accounts/accounts.slice';
+import { ADMIN_STATUS, ADMIN_VIEW, DIALOG_VIEW } from './admin.constants';
 import {
   createCustomerUser,
+  deleteCustomerUser,
   fetchCustomer,
-  updateCustomer,
   fetchCustomerUsers,
+  inviteCustomerUser,
+  selectActiveUsers,
+  selectAvailableLicences,
   selectCurrentCustomer,
   selectCustomerUsers,
   selectLicenceInformation,
-  updateCustomerUser,
-  deleteCustomerUser,
-  inviteCustomerUser,
-  selectActiveUsers,
-  selectPendingUsers,
-  selectAvailableLicences,
   selectOneAdminRemaining,
+  selectPendingUsers,
+  updateCustomer,
+  updateCustomerUser,
 } from './admin.slice';
-import { updateUser } from '../accounts/accounts.slice';
-import HomeView from './home-view/home-view.component';
 import CorporateView from './corporate-view/corporate-view.component';
 import { CreateUserForm } from './create-user-form/create-user-form.component';
-import { EditUserForm } from './edit-user-form/edit-user-form.component';
 import { DeleteUserForm } from './delete-user-form/delete-user-form.component';
-import { WithdrawUserInvitationForm } from './withdraw-invitation-form/withdraw-user-invitation-form.component';
+import { EditUserForm } from './edit-user-form/edit-user-form.component';
+import HomeView from './home-view/home-view.component';
 import LeftSidebar from './left-sidebar/left-sidebar.component';
 import { LicenceDashboard } from './licence-dashboard/licence-dashboard.component';
 import OrganisationMenu from './organisation-menu/organisation-menu.component';
-import ContentWrapper from './content-wrapper.component';
+import { WithdrawUserInvitationForm } from './withdraw-invitation-form/withdraw-user-invitation-form.component';
+
+const DialogCloseButton = styled(IconButton)({
+  position: 'absolute',
+  right: 0,
+});
 
 const Admin = ({ user }) => {
   const dispatch = useDispatch();
@@ -41,7 +57,6 @@ const Admin = ({ user }) => {
   const pendingUsers = useSelector(selectPendingUsers);
   const oneAdminRemaining = useSelector(selectOneAdminRemaining);
   const [visiblePanel, setVisiblePanel] = useState(ADMIN_VIEW.home);
-  const createDialogRef = useRef(document.body);
   const [dialogForm, setDialogForm] = useState(null);
 
   useEffect(() => {
@@ -79,11 +94,7 @@ const Admin = ({ user }) => {
           />
         );
       case ADMIN_VIEW.licenceDashboard:
-        return (
-          <ContentWrapper title="Licence Dashboard">
-            <LicenceDashboard licenceInformation={licenceInformation} />
-          </ContentWrapper>
-        );
+        return <LicenceDashboard licenceInformation={licenceInformation} />;
       case ADMIN_VIEW.home:
       default:
         return (
@@ -134,8 +145,11 @@ const Admin = ({ user }) => {
         return (
           <WithdrawUserInvitationForm
             user={dialogForm.user}
-            withdrawInvitation={user => dispatch(deleteCustomerUser(user))}
-            close={() => setDialogForm(null)}
+            withdrawInvitation={user => {
+              dispatch(deleteCustomerUser(user));
+              setDialogForm(null);
+            }}
+            onCancelClick={() => setDialogForm(null)}
           />
         );
       case DIALOG_VIEW.editUser:
@@ -145,8 +159,10 @@ const Admin = ({ user }) => {
             customer={currentCustomer}
             availableLicences={availableLicences}
             oneAdminRemaining={oneAdminRemaining}
-            editUser={editedUser => dispatch(updateCustomerUser(editedUser))}
-            close={() => setDialogForm(null)}
+            editUser={editedUser => {
+              dispatch(updateCustomerUser(editedUser));
+              setDialogForm(null);
+            }}
           />
         );
       case DIALOG_VIEW.deleteUser:
@@ -163,29 +179,45 @@ const Admin = ({ user }) => {
   };
 
   return (
-    <div className={styles.adminConsole}>
-      <LeftSidebar
-        user={user}
-        setVisiblePanel={setVisiblePanel}
-        visiblePanel={visiblePanel}
-      />
-      {getMainView()}
-      <OrganisationMenu
-        customer={currentCustomer}
-        setVisiblePanel={setVisiblePanel}
-        onCreateUserClick={() =>
-          setDialogForm({ type: DIALOG_VIEW.createUser })
-        }
-      />
-      <Dialog
-        title={dialogForm?.type}
-        isVisible={dialogForm}
-        ref={createDialogRef}
-        close={() => setDialogForm(null)}
+    <Box display="flex" height="100vh" overflow="hidden">
+      <ThemeProvider theme="dark">
+        <LeftSidebar
+          user={user}
+          setVisiblePanel={setVisiblePanel}
+          visiblePanel={visiblePanel}
+        />
+      </ThemeProvider>
+      <Box width="100%" overflow="auto" p={3}>
+        {getMainView()}
+      </Box>
+      <Slide
+        direction="left"
+        in={visiblePanel !== ADMIN_VIEW.corporateAccount}
+        unmountOnExit
       >
-        {getDialogForm()}
+        <OrganisationMenu
+          customer={currentCustomer}
+          setVisiblePanel={setVisiblePanel}
+          onCreateUserClick={() =>
+            setDialogForm({ type: DIALOG_VIEW.createUser })
+          }
+        />
+      </Slide>
+      <Dialog
+        open={!!dialogForm}
+        onClose={() => setDialogForm(null)}
+        maxWidth="md"
+      >
+        <DialogCloseButton
+          onClick={() => setDialogForm(null)}
+          aria-label="Close"
+        >
+          <CloseIcon />
+        </DialogCloseButton>
+        <DialogTitle>{dialogForm?.type}</DialogTitle>
+        <DialogContent>{getDialogForm()}</DialogContent>
       </Dialog>
-    </div>
+    </Box>
   );
 };
 

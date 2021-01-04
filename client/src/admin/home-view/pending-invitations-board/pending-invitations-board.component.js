@@ -2,123 +2,148 @@ import React, { useState } from 'react';
 
 import { format } from 'date-fns';
 
-import { Button, OptionsIcon } from '@astrosat/astrosat-ui';
-
-import ContentWrapper from '../../content-wrapper.component';
-import OptionsDropdown from '../options-dropdown/options-dropdown.component';
+import {
+  Button,
+  makeStyles,
+  MenuItem,
+  Table,
+  TableBody,
+  TableContainer,
+  TableHead,
+  TableRow,
+} from '@astrosat/astrosat-ui';
 
 import { getUserLicences, getLicenceInfo } from '../../licence-utils';
-
-import styles from './pending-invitations.module.css';
-import tableStyles from '../../table.module.css';
+import { AdminTableCell } from 'admin/admin-table/admin-table-cell.component';
+import { OptionsMenu } from '../options-menu.component';
 
 const DATE_FORMAT = 'k:mm d MMMM yyyy';
 
+const TableHeader = () => (
+  <TableHead>
+    <TableRow>
+      <AdminTableCell align="left">Pending Invitations</AdminTableCell>
+      <AdminTableCell align="left">Email</AdminTableCell>
+      <AdminTableCell align="left">Licence Type</AdminTableCell>
+      <AdminTableCell align="left">Invitation Sent</AdminTableCell>
+      <AdminTableCell align="left">Invited</AdminTableCell>
+      <AdminTableCell align="left" />
+    </TableRow>
+  </TableHead>
+);
+
+/**
+ * @param {{
+ *   customerUser?: import('typings/orbis').CustomerUser
+ *   customer?: import('typings/orbis').Customer
+ *   onResendInvitationClick?: () => void
+ *   onWithdrawInvitationClick?: () => void
+ * }} param0
+ */
+const PendingUserRow = ({
+  customerUser,
+  customer,
+  onResendInvitationClick,
+  onWithdrawInvitationClick,
+}) => {
+  const [optionsAnchorEl, setOptionsAnchorEl] = useState(null);
+  const date = format(new Date(customerUser.invitation_date), DATE_FORMAT);
+  let licences = null;
+  if (customer && customer.licences) {
+    licences = getUserLicences(customerUser, customer);
+  }
+
+  const handleResendClick = () => {
+    onResendInvitationClick();
+  };
+
+  /**
+   * @param {React.MouseEvent<HTMLButtonElement, MouseEvent>} e
+   */
+  const handleOptionsButtonClick = e => {
+    setOptionsAnchorEl(e.currentTarget);
+  };
+
+  const handleOptionsMenuClose = () => {
+    setOptionsAnchorEl(null);
+  };
+
+  const handleWithdrawClick = () => {
+    onWithdrawInvitationClick();
+    setOptionsAnchorEl(null);
+  };
+
+  return (
+    <TableRow>
+      <AdminTableCell>{customerUser.user.name}</AdminTableCell>
+      <AdminTableCell>{customerUser.user.email}</AdminTableCell>
+      <AdminTableCell>{getLicenceInfo(licences)}</AdminTableCell>
+      <AdminTableCell>{date}</AdminTableCell>
+      <AdminTableCell>
+        <Button size="small" onClick={handleResendClick}>
+          Resend Invitation
+        </Button>
+      </AdminTableCell>
+      <AdminTableCell>
+        <OptionsMenu
+          anchorEl={optionsAnchorEl}
+          onButtonClick={handleOptionsButtonClick}
+          onClose={handleOptionsMenuClose}
+        >
+          <MenuItem onClick={handleWithdrawClick}>Withdraw</MenuItem>
+        </OptionsMenu>
+      </AdminTableCell>
+    </TableRow>
+  );
+};
+
+const useStyles = makeStyles(theme => ({
+  container: {
+    maxHeight: `calc(100% - ${theme.typography.pxToRem(theme.spacing(10))})`,
+  },
+}));
+
+/**
+ * @param {{
+ *   pendingUsers?: import('typings/orbis').CustomerUser[]
+ *   customer?: import('typings/orbis').Customer
+ *   onResendInvitationClick?: (customerUser: import('typings/orbis').CustomerUser) => void
+ *   onWithdrawInvitationClick?: (customerUser: import('typings/orbis').CustomerUser) => void
+ * }} props
+ */
 export const PendingInvitationsBoard = ({
   pendingUsers,
   customer,
   onResendInvitationClick,
   onWithdrawInvitationClick,
 }) => {
-  const [dropdown, setDropdown] = useState(null);
-
+  const styles = useStyles();
   return (
-    <ContentWrapper title="Pending Invitations">
-      <div className={tableStyles.scroll}>
-        <table className={tableStyles.table}>
-          <thead className={tableStyles.thead}>
-            <tr className={tableStyles.theadr}>
-              <th align="left" className={tableStyles.th}>
-                Pending Invitations
-              </th>
-              <th align="left" className={tableStyles.th}>
-                Email
-              </th>
-              <th align="left" className={tableStyles.th}>
-                Licence Type
-              </th>
-              <th align="left" className={tableStyles.th}>
-                Invitation Sent
-              </th>
-              <th align="left" className={tableStyles.th}>
-                Invited
-              </th>
-              <th align="left" className={tableStyles.th}>
-                &nbsp;
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {pendingUsers && pendingUsers.length > 0 ? (
-              pendingUsers.map(user => {
-                const selected = dropdown === user;
-                const date = format(
-                  new Date(user.invitation_date),
-                  DATE_FORMAT,
-                );
-                let licences = null;
-                if (customer && customer.licences) {
-                  licences = getUserLicences(user, customer);
+    <TableContainer className={styles.container}>
+      <Table stickyHeader>
+        <TableHeader />
+        <TableBody>
+          {pendingUsers && pendingUsers.length > 0 ? (
+            pendingUsers.map(user => (
+              <PendingUserRow
+                key={user.id}
+                customerUser={user}
+                customer={customer}
+                onResendInvitationClick={() => onResendInvitationClick(user)}
+                onWithdrawInvitationClick={() =>
+                  onWithdrawInvitationClick(user)
                 }
-                return (
-                  <tr key={user.id} className={tableStyles.tr}>
-                    <td className={tableStyles.td}>{user.user.name}</td>
-                    <td className={tableStyles.td}>{user.user.email}</td>
-                    <td className={tableStyles.td}>
-                      {getLicenceInfo(licences)}
-                    </td>
-                    <td className={tableStyles.td}>{date}</td>
-                    <td className={tableStyles.td}>
-                      <Button
-                        className={styles.resendInvitation}
-                        size="small"
-                        onClick={() => {
-                          onResendInvitationClick(user);
-                        }}
-                      >
-                        Resend Invitation
-                      </Button>
-                    </td>
-                    <td
-                      className={`${tableStyles.td} ${tableStyles.optionsColumn}`}
-                    >
-                      <OptionsIcon
-                        data-testid="options-icon"
-                        classes={`${tableStyles.optionsIcon} ${
-                          selected && tableStyles.optionsIconSelected
-                        }`}
-                        onClick={() => setDropdown(selected ? null : user)}
-                      />
-                      {selected && (
-                        <OptionsDropdown
-                          className={styles.withdrawDropdown}
-                          onClickAway={() => setDropdown(null)}
-                        >
-                          <button
-                            className={tableStyles.optionsButton}
-                            onClick={() => {
-                              onWithdrawInvitationClick(user);
-                              setDropdown(null);
-                            }}
-                          >
-                            Withdraw
-                          </button>
-                        </OptionsDropdown>
-                      )}
-                    </td>
-                  </tr>
-                );
-              })
-            ) : (
-              <tr className={tableStyles.tr}>
-                <td align="center" colSpan={5} className={tableStyles.td}>
-                  No Pending Users
-                </td>
-              </tr>
-            )}
-          </tbody>
-        </table>
-      </div>
-    </ContentWrapper>
+              />
+            ))
+          ) : (
+            <TableRow>
+              <AdminTableCell align="center" colSpan={6}>
+                No Pending Users
+              </AdminTableCell>
+            </TableRow>
+          )}
+        </TableBody>
+      </Table>
+    </TableContainer>
   );
 };

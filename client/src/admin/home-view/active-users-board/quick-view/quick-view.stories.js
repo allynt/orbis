@@ -2,7 +2,10 @@ import React from 'react';
 
 import QuickView from './quick-view.component';
 
-export default { title: 'Admin/QuickView', component: QuickView };
+export default {
+  title: 'Admin/Home View/Active Users Board/QuickView',
+  component: QuickView,
+};
 
 const data = {
   active: 3,

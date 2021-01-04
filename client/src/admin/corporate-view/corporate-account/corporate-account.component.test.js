@@ -44,17 +44,14 @@ describe('Update User Form Component', () => {
   });
 
   it('should dispatch new values when `Update Changes` button is clicked', () => {
-    const { getByRole, getByDisplayValue } = renderComponent(
-      customer,
-      updateCustomer,
-    );
+    const { getByRole } = renderComponent(customer, updateCustomer);
 
     const newCustomer = {
       ...customer,
       name: 'Reynolm Industries',
     };
 
-    const nameField = getByDisplayValue(customer.name);
+    const nameField = getByRole('textbox', { name: /name/i });
     const button = getByRole('button', { name: 'Update Changes' });
 
     userEvent.clear(nameField);
@@ -65,16 +62,10 @@ describe('Update User Form Component', () => {
   });
 
   it('should disable `Update Changes` button unless changes have been made', () => {
-    const { getByRole, getByDisplayValue } = renderComponent(
-      customer,
-      updateCustomer,
-    );
+    const { getByRole } = renderComponent(customer, updateCustomer);
 
-    const nameField = getByDisplayValue(customer.name);
-    const button = getByRole('button', { name: 'Update Changes' });
-
-    expect(button).toHaveAttribute('disabled');
-    userEvent.type(nameField, 'aaa');
-    expect(button).not.toHaveAttribute('disabled');
+    expect(getByRole('button', { name: 'Update Changes' })).toBeDisabled();
+    userEvent.type(getByRole('textbox', { name: /name/i }), 'aaa');
+    expect(getByRole('button', { name: 'Update Changes' })).not.toBeDisabled();
   });
 });

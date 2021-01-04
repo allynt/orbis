@@ -8,7 +8,11 @@ export default {
 
 const customer = {
   name: 'Cyberdyne Systems',
-  logo: 'https://ichef.bbci.co.uk/images/ic/1200x675/p03t1sm8.jpg',
+  logo: 'https://www.logodesignlove.com/images/monograms/tesla-logo-01.jpg',
 };
+
+export const NoLogo = () => (
+  <OrganisationMenu customer={{ name: customer.name }} />
+);
 
 export const Default = () => <OrganisationMenu customer={customer} />;

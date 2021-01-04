@@ -10,7 +10,7 @@ const renderComponent = (user, withdrawInvitation, close) =>
     <WithdrawUserInvitationForm
       user={user}
       withdrawInvitation={withdrawInvitation}
-      close={close}
+      onCancelClick={close}
     />,
   );
 
@@ -31,18 +31,16 @@ describe('WithdrawUserInvitationForm', () => {
     expect(getByText(user.user.name)).toBeInTheDocument();
   });
 
+  it('calls withdrawInvitation when the yes button is clicked', () => {
+    const { getByRole } = renderComponent(user, withdrawInvitation, close);
+    userEvent.click(getByRole('button', { name: /yes/i }));
+    expect(withdrawInvitation).toHaveBeenCalledWith(user);
+  });
+
   it('closes when `cancel` button is clicked', () => {
     const { getByText } = renderComponent(user, withdrawInvitation, close);
 
     userEvent.click(getByText('Cancel'));
-    expect(close).toHaveBeenCalled();
-  });
-
-  it('calls dispatch function with user and closes the dialog when `Yes` button is clicked', () => {
-    const { getByText } = renderComponent(user, withdrawInvitation, close);
-
-    userEvent.click(getByText('Yes'));
-    expect(withdrawInvitation).toHaveBeenCalledWith(user);
     expect(close).toHaveBeenCalled();
   });
 });
