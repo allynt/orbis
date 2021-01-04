@@ -1,54 +1,73 @@
 import React, { useState } from 'react';
 
-import { Checkbox } from '@astrosat/astrosat-ui';
+import {
+  Checkbox,
+  ClickAwayListener,
+  IconButton,
+  InfoIcon,
+  ListItem,
+  ListItemIcon,
+  ListItemSecondaryAction,
+  ListItemText,
+  Tooltip,
+  styled,
+} from '@astrosat/astrosat-ui';
 
-import clsx from 'clsx';
-
-import { InfoBox, InfoButton } from 'components';
-import { useClickaway } from 'hooks/useClickaway';
-
-import styles from './layer-select-item.module.css';
+const BaseLayerSelectItem = styled(ListItem)(({ theme }) => ({
+  borderLeft: `1px solid ${theme.palette.primary.main}`,
+  paddingLeft: theme.spacing(1),
+}));
 
 /**
  * @param {{
  *   className?: string
  *   selected?: boolean
- *   source: Source
- *   onChange: (params: {source_ids: Source['source_id'][]; selected: boolean}) => void
+ *   source: import('typings/orbis').Source
+ *   onChange: (params: {source_ids: import('typings/orbis').Source['source_id'][]; selected: boolean}) => void
  * }} props
  */
 const LayerSelectItem = ({ className, selected, source, onChange }) => {
   const [isInfoVisible, setIsInfoVisible] = useState(false);
-  const [infoRef] = useClickaway(() => setIsInfoVisible(false));
 
   const buttonClick = () => {
     setIsInfoVisible(c => !c);
   };
 
   return (
-    <li className={clsx(styles.li, className)}>
-      <Checkbox
-        id={source.source_id}
-        label={source.metadata.label}
-        checked={selected}
-        onChange={e =>
-          onChange({
-            source_ids: [source.source_id],
-            selected: e.target.checked,
-          })
-        }
-      />
+    <BaseLayerSelectItem
+      className={className}
+      button
+      onClick={() =>
+        onChange({
+          source_ids: [source.source_id],
+          selected: !selected,
+        })
+      }
+    >
+      <ListItemIcon>
+        <Checkbox id={source.source_id} checked={selected} />
+      </ListItemIcon>
+      <ListItemText primary={source.metadata.label} />
       {source?.metadata?.description && (
-        <div className={styles.info} ref={infoRef}>
-          {isInfoVisible && (
-            <InfoBox className={styles.infoBox} arrow="right">
-              {source.metadata.description}
-            </InfoBox>
-          )}
-          <InfoButton className={styles.infoButton} onClick={buttonClick} />
-        </div>
+        <ListItemSecondaryAction>
+          <ClickAwayListener onClickAway={() => setIsInfoVisible(false)}>
+            <Tooltip
+              arrow
+              placement="left"
+              disableHoverListener
+              disableFocusListener
+              disableTouchListener
+              open={isInfoVisible}
+              title={source.metadata.description}
+            >
+              <IconButton aria-label="Info" size="small" onClick={buttonClick}>
+                <InfoIcon fontSize="inherit" />
+              </IconButton>
+            </Tooltip>
+          </ClickAwayListener>
+        </ListItemSecondaryAction>
       )}
-    </li>
+    </BaseLayerSelectItem>
   );
 };
 
