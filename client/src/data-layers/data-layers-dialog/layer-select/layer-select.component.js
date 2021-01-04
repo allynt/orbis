@@ -1,6 +1,6 @@
 import React, { useMemo, useState } from 'react';
 
-import { Button } from '@astrosat/astrosat-ui';
+import { Box, Button, List, Typography } from '@astrosat/astrosat-ui';
 
 import clsx from 'clsx';
 import { difference, isEmpty } from 'lodash';
@@ -13,13 +13,13 @@ import styles from './layer-select.module.css';
 
 /**
  * @param {{
- *  sources: CategorisedSources
+ *  sources: import('typings/orbis').CategorisedSources
  *  level: number
  *  onSourcesChange: (params: {
- *    source_ids: Source['source_id'][]
+ *    source_ids: import('typings/orbis').Source['source_id'][]
  *    selected: boolean
  *  }) => void
- *  selectedSources: Source['source_id'][]
+ *  selectedSources: import('typings/orbis').Source['source_id'][]
  * }} params
  */
 const renderCategories = ({
@@ -125,29 +125,59 @@ export const LayerSelect = ({
   onSubmit,
 }) => {
   return (
-    <div className={styles.layerSelect}>
-      <h1 className={dialogStyles.header}>Select Your Layers</h1>
+    <Box
+      style={{
+        display: 'grid',
+        gridTemplateRows: 'max-content 1fr max-content',
+        width: '60%',
+        borderTopRightRadius: '1rem',
+        borderBottomRightRadius: '1rem',
+      }}
+    >
+      <Box
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+        pt={3}
+        pb={2}
+        borderBottom="1px solid #e6e6e6"
+        component={Typography}
+        variant="h2"
+      >
+        Select Your Layers
+      </Box>
       {orbSources ? (
-        <ul className={dialogStyles.list}>
+        <List
+          dense
+          style={{
+            padding: '1.375rem',
+            overflowY: 'auto',
+            height: '100%',
+          }}
+        >
           {renderCategories({
             sources: orbSources,
             level: 0,
             onSourcesChange,
             selectedSources,
           })}
-        </ul>
+        </List>
       ) : (
-        <p className={styles.noOrbMessage}>
+        <Typography style={{ placeSelf: 'center' }}>
           Select Your Orb in order to find layers
-        </p>
+        </Typography>
       )}
-      <Button
-        className={styles.button}
-        disabled={!hasMadeChanges}
-        onClick={onSubmit}
+      <Box
+        display="flex"
+        justifyContent="flex-end"
+        alignItems="flex-end"
+        py={2}
+        px={4}
       >
-        Confirm
-      </Button>
-    </div>
+        <Button disabled={!hasMadeChanges} onClick={onSubmit}>
+          Confirm
+        </Button>
+      </Box>
+    </Box>
   );
 };
