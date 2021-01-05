@@ -44,15 +44,27 @@ SubCategories.args = {
         {
           category: 'Oil',
           sources: [
-            { source_id: 'oil/source/1', metadata: { label: 'Oil Source 1' } },
-            { source_id: 'oil/source/2', metadata: { label: 'Oil Source 2' } },
+            {
+              source_id: 'oil/source/1',
+              metadata: { label: 'Oil Source 1', description: 'Oil Source 1' },
+            },
+            {
+              source_id: 'oil/source/2',
+              metadata: { label: 'Oil Source 2', description: 'Oil Source 2' },
+            },
           ],
         },
         {
           category: 'Gas',
           sources: [
-            { source_id: 'gas/source/1', metadata: { label: 'Gas Source 1' } },
-            { source_id: 'gas/source/2', metadata: { label: 'Gas Source 2' } },
+            {
+              source_id: 'gas/source/1',
+              metadata: { label: 'Gas Source 1', description: 'Gas Source 1' },
+            },
+            {
+              source_id: 'gas/source/2',
+              metadata: { label: 'Gas Source 2', description: 'Gas Source 2' },
+            },
           ],
         },
       ],
