@@ -46,7 +46,6 @@ const renderCategories = ({
       />
     ) : (
       <LayerSelectItem
-        // className={styles.listItem}
         key={source.source_id}
         source={source}
         onChange={onSourcesChange}
@@ -56,22 +55,22 @@ const renderCategories = ({
   );
 
 const useAccordionStyles = makeStyles(theme => ({
-  header: {
+  header: props => ({
     width: '100%',
     padding: `${theme.spacing(1)}px ${theme.spacing(2)}px`,
-    marginBottom: props => (props.level === 0 ? theme.spacing(1) : 0),
+    marginBottom: props.level === 0 ? theme.spacing(1) : 0,
     display: 'flex',
     alignItems: 'center',
-    backgroundColor: props =>
+    backgroundColor:
       props.level === 0 ? theme.palette.secondary.main : 'transparent',
-    color: props =>
+    color:
       props.level === 0
         ? theme.palette.getContrastText(theme.palette.secondary.main)
         : theme.palette.text.primary,
     borderRadius: theme.shape.borderRadius,
     justifyContent: 'flex-start',
     fontWeight: 600,
-  },
+  }),
   selectAll: {
     marginLeft: 'auto',
     padding: 0,
@@ -107,7 +106,9 @@ const Accordion = ({ source, level, onSourcesChange, selectedSources }) => {
   );
   const allSelected = isEmpty(notYetSelected);
 
-  const handleSelectAllClick = () => {
+  /** @param {React.MouseEvent<HTMLAnchorElement, MouseEvent>} e */
+  const handleSelectAllClick = e => {
+    e.stopPropagation();
     if (allSelected)
       onSourcesChange({ source_ids: allSourceIds, selected: false });
     else onSourcesChange({ source_ids: notYetSelected, selected: true });
@@ -117,7 +118,7 @@ const Accordion = ({ source, level, onSourcesChange, selectedSources }) => {
     <React.Fragment key={source.category}>
       <ButtonBase className={styles.header} onClick={() => setOpen(c => !c)}>
         <TriangleIcon className={clsx(styles.icon, { [styles.open]: open })} />
-        {source.category}{' '}
+        {source.category}
         <span className={styles.sourceCount}>({allSourceIds.length})</span>
         <Link
           variant="body2"
@@ -128,15 +129,13 @@ const Accordion = ({ source, level, onSourcesChange, selectedSources }) => {
           {allSelected ? 'unselect' : 'select'} all
         </Link>
       </ButtonBase>
-      <Collapse in={open}>
-        <Box pl={level + 1} mb={1} aria-expanded={open}>
-          {renderCategories({
-            sources: source.sources,
-            level: level + 1,
-            onSourcesChange,
-            selectedSources,
-          })}
-        </Box>
+      <Collapse in={open} component={Box} pl={level + 1} mb={1}>
+        {renderCategories({
+          sources: source.sources,
+          level: level + 1,
+          onSourcesChange,
+          selectedSources,
+        })}
       </Collapse>
     </React.Fragment>
   );
