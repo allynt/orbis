@@ -1,22 +1,17 @@
 import {
-  Box,
-  List,
   ListItem,
   ListItemIcon,
   ListItemText,
   makeStyles,
-  Typography,
 } from '@astrosat/astrosat-ui';
 import clsx from 'clsx';
 import React from 'react';
+import { Header } from '../components/header.component';
+import { List } from '../components/list.component';
+import { Section } from '../components/section.component';
 
 const useStyles = makeStyles(theme => ({
   categories: {
-    display: 'grid',
-    gridTemplateRows: 'max-content 1fr max-content',
-    width: '40%',
-    borderTopLeftRadius: '1rem',
-    borderBottomLeftRadius: '1rem',
     backgroundColor: theme.palette.primary.main,
   },
   icon: {
@@ -56,21 +51,9 @@ const useStyles = makeStyles(theme => ({
 export const OrbSelect = ({ orbs, selectedOrbName, onOrbClick }) => {
   const styles = useStyles();
   return (
-    <div className={styles.categories}>
-      <Box
-        display="flex"
-        justifyContent="center"
-        alignItems="center"
-        pt={3}
-        pb={2}
-        borderBottom={1}
-        borderColor="grey.500"
-        component={Typography}
-        variant="h2"
-      >
-        Select Your Orb
-      </Box>
-      <List className={styles.list}>
+    <Section orientation="left" className={styles.categories}>
+      <Header>Select Your Orb</Header>
+      <List>
         {orbs?.map(orb => (
           <ListItem
             button
@@ -94,6 +77,6 @@ export const OrbSelect = ({ orbs, selectedOrbName, onOrbClick }) => {
           </ListItem>
         ))}
       </List>
-    </div>
+    </Section>
   );
 };
