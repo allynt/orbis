@@ -4,6 +4,7 @@ import DataLayersDialog from './data-layers-dialog.component';
 
 export default {
   title: 'Data Layers/DataLayersDialog',
+  args: { open: true },
   argTypes: { close: { action: 'close' }, onSubmit: { action: 'onSubmit' } },
 };
 
