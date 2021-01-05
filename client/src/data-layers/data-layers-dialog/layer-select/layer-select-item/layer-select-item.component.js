@@ -17,6 +17,13 @@ const BaseLayerSelectItem = styled(ListItem)(({ theme }) => ({
   borderLeft: `1px solid ${theme.palette.primary.main}`,
 }));
 
+const InfoIconButton = styled(IconButton)(({ theme }) => ({
+  fontSize: theme.typography.pxToRem(8),
+  padding: theme.typography.pxToRem(2),
+  backgroundColor: theme.palette.grey[300],
+  color: theme.palette.getContrastText(theme.palette.grey[300]),
+}));
+
 /**
  * @param {{
  *   className?: string
@@ -59,9 +66,9 @@ const LayerSelectItem = ({ className, selected, source, onChange }) => {
               open={isInfoVisible}
               title={source.metadata.description}
             >
-              <IconButton aria-label="Info" size="small" onClick={buttonClick}>
+              <InfoIconButton aria-label="Info" onClick={buttonClick}>
                 <InfoIcon fontSize="inherit" />
-              </IconButton>
+              </InfoIconButton>
             </Tooltip>
           </ClickAwayListener>
         </ListItemSecondaryAction>
