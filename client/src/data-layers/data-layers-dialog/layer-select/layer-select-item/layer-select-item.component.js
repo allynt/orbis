@@ -15,7 +15,7 @@ import {
 
 const BaseLayerSelectItem = styled(ListItem)(({ theme }) => ({
   borderLeft: `1px solid ${theme.palette.primary.main}`,
-  paddingLeft: theme.spacing(1),
+  // paddingLeft: theme.spacing(1),
 }));
 
 /**

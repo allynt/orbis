@@ -1,15 +1,22 @@
 import React, { useMemo, useState } from 'react';
 
-import { Box, Button, List, Typography } from '@astrosat/astrosat-ui';
+import {
+  Box,
+  Button,
+  ButtonBase,
+  Collapse,
+  Link,
+  List,
+  makeStyles,
+  Typography,
+  TriangleIcon,
+} from '@astrosat/astrosat-ui';
 
 import clsx from 'clsx';
 import { difference, isEmpty } from 'lodash';
 
 import { collectSourceIds } from 'data-layers/categorisation.utils';
-import { ReactComponent as ExpandIcon } from '../../triangle.svg';
-import dialogStyles from '../data-layers-dialog.module.css';
 import LayerSelectItem from './layer-select-item/layer-select-item.component';
-import styles from './layer-select.module.css';
 
 /**
  * @param {{
@@ -39,7 +46,7 @@ const renderCategories = ({
       />
     ) : (
       <LayerSelectItem
-        className={styles.listItem}
+        // className={styles.listItem}
         key={source.source_id}
         source={source}
         onChange={onSourcesChange}
@@ -48,7 +55,48 @@ const renderCategories = ({
     ),
   );
 
+const useAccordionStyles = makeStyles(theme => ({
+  header: {
+    width: '100%',
+    padding: `${theme.spacing(1)}px ${theme.spacing(2)}px`,
+    marginBottom: props => (props.level === 0 ? theme.spacing(1) : 0),
+    display: 'flex',
+    alignItems: 'center',
+    backgroundColor: props =>
+      props.level === 0 ? theme.palette.secondary.main : 'transparent',
+    color: props =>
+      props.level === 0
+        ? theme.palette.getContrastText(theme.palette.secondary.main)
+        : theme.palette.text.primary,
+    borderRadius: theme.shape.borderRadius,
+    justifyContent: 'flex-start',
+    fontWeight: 600,
+  },
+  selectAll: {
+    marginLeft: 'auto',
+    padding: 0,
+  },
+  sourceCount: {
+    fontWeight: 'normal',
+    marginLeft: theme.spacing(1),
+  },
+  icon: {
+    fontSize: 'inherit',
+    marginRight: theme.spacing(1),
+    transform: 'rotate(90deg)',
+    transition: theme.transitions.create('transform', {
+      duration: theme.transitions.duration.shorter,
+      easing: theme.transitions.easing.sharp,
+    }),
+    '&$open': {
+      transform: 'rotate(180deg)',
+    },
+  },
+  open: {},
+}));
+
 const Accordion = ({ source, level, onSourcesChange, selectedSources }) => {
+  const styles = useAccordionStyles({ level });
   const [open, setOpen] = useState(false);
   const allSourceIds = useMemo(() => collectSourceIds(source.sources), [
     source,
@@ -67,52 +115,40 @@ const Accordion = ({ source, level, onSourcesChange, selectedSources }) => {
 
   return (
     <React.Fragment key={source.category}>
-      <div
-        className={clsx(styles.accordionHeader, {
-          [styles.accordionHeaderRoot]: level === 0,
-        })}
-      >
-        <button
-          className={styles.accordionButton}
-          onClick={() => setOpen(c => !c)}
-        >
-          <ExpandIcon className={clsx(styles.arrow, { [styles.open]: open })} />
-          {source.category}{' '}
-          <span className={styles.sourceCount}>({allSourceIds.length})</span>
-        </button>
-        <Button
+      <ButtonBase className={styles.header} onClick={() => setOpen(c => !c)}>
+        <TriangleIcon className={clsx(styles.icon, { [styles.open]: open })} />
+        {source.category}{' '}
+        <span className={styles.sourceCount}>({allSourceIds.length})</span>
+        <Link
+          variant="body2"
+          component="button"
           className={styles.selectAll}
-          theme="link"
           onClick={handleSelectAllClick}
         >
           {allSelected ? 'unselect' : 'select'} all
-        </Button>
-      </div>
-      <div
-        className={clsx(styles.accordionContent, { [styles.open]: open })}
-        style={{
-          paddingLeft: `${0.5 * (level + 1)}rem`,
-        }}
-        aria-expanded={open}
-      >
-        {renderCategories({
-          sources: source.sources,
-          level: level + 1,
-          onSourcesChange,
-          selectedSources,
-        })}
-      </div>
+        </Link>
+      </ButtonBase>
+      <Collapse in={open}>
+        <Box pl={level + 1} mb={1} aria-expanded={open}>
+          {renderCategories({
+            sources: source.sources,
+            level: level + 1,
+            onSourcesChange,
+            selectedSources,
+          })}
+        </Box>
+      </Collapse>
     </React.Fragment>
   );
 };
 
 /**
  * @param {{
- *   orbSources: CategorisedSources
- *   selectedSources?: Source['source_id'][]
+ *   orbSources: import('typings/orbis').CategorisedSources
+ *   selectedSources?: import('typings/orbis').Source['source_id'][]
  *   hasMadeChanges?: boolean
  *   onSourcesChange: (params: {
- *     source_ids: Source['source_id'][]
+ *     source_ids: import('typings/orbis').Source['source_id'][]
  *     selected: boolean}) => void
  *   onSubmit: () => void
  * }} props
@@ -140,7 +176,8 @@ export const LayerSelect = ({
         alignItems="center"
         pt={3}
         pb={2}
-        borderBottom="1px solid #e6e6e6"
+        borderBottom={1}
+        borderColor="grey.500"
         component={Typography}
         variant="h2"
       >
@@ -163,7 +200,9 @@ export const LayerSelect = ({
           })}
         </List>
       ) : (
-        <Typography style={{ placeSelf: 'center' }}>
+        <Typography
+          style={{ placeSelf: 'center', padding: '1.375rem', height: '100%' }}
+        >
           Select Your Orb in order to find layers
         </Typography>
       )}
