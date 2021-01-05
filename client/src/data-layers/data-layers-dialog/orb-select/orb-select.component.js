@@ -12,9 +12,11 @@ import React from 'react';
 
 const useStyles = makeStyles(theme => ({
   categories: {
+    display: 'grid',
+    gridTemplateRows: 'max-content 1fr max-content',
     width: '40%',
-    borderTopLeftRadius: theme.shape.borderRadius,
-    borderBottomLeftRadius: theme.shape.borderRadius,
+    borderTopLeftRadius: '1rem',
+    borderBottomLeftRadius: '1rem',
     backgroundColor: theme.palette.primary.main,
   },
   icon: {
@@ -30,7 +32,9 @@ const useStyles = makeStyles(theme => ({
   },
   listItem: {
     opacity: 0.55,
-    transition: theme.transitions.create('opacity'),
+    transition: theme.transitions.create('opacity', {
+      duration: theme.transitions.duration.shortest,
+    }),
     '&$selected': {
       opacity: 1,
       background: 'none',
