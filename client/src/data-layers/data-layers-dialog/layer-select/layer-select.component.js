@@ -6,7 +6,6 @@ import {
   ButtonBase,
   Collapse,
   Link,
-  List,
   makeStyles,
   Typography,
   TriangleIcon,
@@ -17,6 +16,9 @@ import { difference, isEmpty } from 'lodash';
 
 import { collectSourceIds } from 'data-layers/categorisation.utils';
 import LayerSelectItem from './layer-select-item/layer-select-item.component';
+import { Header } from '../components/header.component';
+import { List } from '../components/list.component';
+import { Section } from '../components/section.component';
 
 /**
  * @param {{
@@ -142,6 +144,22 @@ const Accordion = ({ source, level, onSourcesChange, selectedSources }) => {
   );
 };
 
+const useStyles = makeStyles(theme => ({
+  noOrbMessage: {
+    placeSelf: 'center',
+    padding: theme.spacing(4),
+    height: '100%',
+  },
+  buttonContainer: {
+    display: 'flex',
+    justifyContent: 'flex-end',
+    alignItems: 'flex-end',
+    padding: `${theme.typography.pxToRem(
+      theme.spacing(2),
+    )} ${theme.typography.pxToRem(theme.spacing(4))}`,
+  },
+}));
+
 /**
  * @param {{
  *   orbSources: import('typings/orbis').CategorisedSources
@@ -160,38 +178,13 @@ export const LayerSelect = ({
   onSourcesChange,
   onSubmit,
 }) => {
+  const styles = useStyles();
+
   return (
-    <Box
-      style={{
-        display: 'grid',
-        gridTemplateRows: 'max-content 1fr max-content',
-        width: '60%',
-        borderTopRightRadius: '1rem',
-        borderBottomRightRadius: '1rem',
-      }}
-    >
-      <Box
-        display="flex"
-        justifyContent="center"
-        alignItems="center"
-        pt={3}
-        pb={2}
-        borderBottom={1}
-        borderColor="grey.500"
-        component={Typography}
-        variant="h2"
-      >
-        Select Your Layers
-      </Box>
+    <Section orientation="right">
+      <Header>Select Your Layers</Header>
       {orbSources ? (
-        <List
-          dense
-          style={{
-            padding: '1.375rem',
-            overflowY: 'auto',
-            height: '100%',
-          }}
-        >
+        <List dense>
           {renderCategories({
             sources: orbSources,
             level: 0,
@@ -200,23 +193,15 @@ export const LayerSelect = ({
           })}
         </List>
       ) : (
-        <Typography
-          style={{ placeSelf: 'center', padding: '1.375rem', height: '100%' }}
-        >
+        <Typography className={styles.noOrbMessage}>
           Select Your Orb in order to find layers
         </Typography>
       )}
-      <Box
-        display="flex"
-        justifyContent="flex-end"
-        alignItems="flex-end"
-        py={2}
-        px={4}
-      >
+      <div className={styles.buttonContainer}>
         <Button disabled={!hasMadeChanges} onClick={onSubmit}>
           Confirm
         </Button>
-      </Box>
-    </Box>
+      </div>
+    </Section>
   );
 };
