@@ -58,6 +58,7 @@ const useAccordionStyles = makeStyles(theme => ({
   header: props => ({
     width: '100%',
     padding: `${theme.spacing(1)}px ${theme.spacing(2)}px`,
+    paddingLeft: theme.spacing(props.level + 1),
     marginBottom: props.level === 0 ? theme.spacing(1) : 0,
     display: 'flex',
     alignItems: 'center',
@@ -129,7 +130,7 @@ const Accordion = ({ source, level, onSourcesChange, selectedSources }) => {
           {allSelected ? 'unselect' : 'select'} all
         </Link>
       </ButtonBase>
-      <Collapse in={open} component={Box} pl={level + 1} mb={1}>
+      <Collapse in={open} component={Box} pl={level + 1.6} mb={1}>
         {renderCategories({
           sources: source.sources,
           level: level + 1,
