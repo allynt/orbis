@@ -1,9 +1,8 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 
-import ReactDom from 'react-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { Button, useModal } from '@astrosat/astrosat-ui';
+import { Button } from '@astrosat/astrosat-ui';
 
 import { useOrbs } from 'map/orbs/useOrbs';
 import { ReactComponent as AddNewCategoryIcon } from './add-more-categories.svg';
@@ -19,7 +18,7 @@ import { LayersList } from './layers-list/layers-list.component';
 import styles from './data-layers.module.css';
 
 const DataLayers = () => {
-  const [isVisible, toggle] = useModal(false);
+  const [isVisible, toggle] = useState(false);
   const ref = useRef(null);
   const { sidebarComponents } = useOrbs();
 
@@ -34,7 +33,7 @@ const DataLayers = () => {
 
   const handleDialogSubmit = sources => {
     dispatch(setLayers(sources));
-    toggle();
+    toggle(false);
   };
 
   return (
@@ -49,22 +48,21 @@ const DataLayers = () => {
           className={styles.addNewCategoryIcon}
           onClick={toggle}
         />
-        <Button theme="link" className={styles.addOrbButton} onClick={toggle}>
+        <Button
+          theme="link"
+          className={styles.addOrbButton}
+          onClick={() => toggle(true)}
+        >
           Add/Remove Orbs and Data Layers
         </Button>
       </div>
-
-      {isVisible && ref.current
-        ? ReactDom.createPortal(
-            <DataLayersDialog
-              orbs={categorisedOrbsAndSources}
-              initialSelectedSources={selectedLayers}
-              onSubmit={handleDialogSubmit}
-              close={toggle}
-            />,
-            document.body,
-          )
-        : null}
+      <DataLayersDialog
+        orbs={categorisedOrbsAndSources}
+        initialSelectedSources={selectedLayers}
+        onSubmit={handleDialogSubmit}
+        close={() => toggle(false)}
+        open={isVisible}
+      />
     </div>
   );
 };

@@ -92,20 +92,18 @@ describe('<LayerSelect />', () => {
     ).toBeInTheDocument();
   });
 
-  it('expands the category headings when clicked', async () => {
+  it('expands the category headings when clicked', () => {
     const { getByRole } = renderComponent();
     userEvent.click(
       getByRole('button', {
         name: new RegExp(ORB_SOURCES[0].category),
       }),
     );
-    await waitFor(() =>
-      expect(
-        getByRole('checkbox', {
-          name: ORB_SOURCES[0].sources[0].metadata.label,
-        }),
-      ).toBeInTheDocument(),
-    );
+    expect(
+      getByRole('button', {
+        name: ORB_SOURCES[0].sources[0].metadata.label,
+      }),
+    ).toBeInTheDocument();
   });
 
   it('hides categories when heading is clicked again', async () => {
@@ -114,19 +112,17 @@ describe('<LayerSelect />', () => {
       getByRole('button', { name: new RegExp(ORB_SOURCES[0].category) }),
     );
     expect(
-      queryByRole('checkbox', {
+      queryByRole('button', {
         name: ORB_SOURCES[0].sources[0].metadata.label,
       }),
     ).toBeInTheDocument();
-    userEvent.click(
-      getByRole('button', { name: new RegExp(ORB_SOURCES[0].category) }),
-    );
+    userEvent.click(getByRole('button', { name: /oil \(/i }));
     await waitFor(() =>
       expect(
-        queryByRole('checkbox', {
+        queryByRole('button', {
           name: ORB_SOURCES[0].sources[0].metadata.label,
         }),
-      ).not.toBeVisible(),
+      ).not.toBeInTheDocument(),
     );
   });
 
@@ -160,7 +156,7 @@ describe('<LayerSelect />', () => {
         name: /oil \(/i,
       }),
     );
-    const checkbox = getByRole('checkbox', {
+    const checkbox = getByRole('button', {
       name: ORB_SOURCES_SUB_CATEGORIES[0].sources[0].sources[0].metadata.label,
     });
     await waitFor(() => expect(checkbox).toBeInTheDocument());
@@ -180,7 +176,7 @@ describe('<LayerSelect />', () => {
     });
     userEvent.click(subCategoryHeading);
     expect(
-      getByRole('checkbox', {
+      getByRole('button', {
         name:
           ORB_SOURCES_SUB_CATEGORIES[0].sources[0].sources[0].metadata.label,
       }),
@@ -188,11 +184,11 @@ describe('<LayerSelect />', () => {
     userEvent.click(subCategoryHeading);
     await waitFor(() =>
       expect(
-        queryByRole('checkbox', {
+        queryByRole('button', {
           name:
             ORB_SOURCES_SUB_CATEGORIES[0].sources[0].sources[0].metadata.label,
         }),
-      ).not.toBeVisible(),
+      ).not.toBeInTheDocument(),
     );
   });
 
@@ -202,7 +198,7 @@ describe('<LayerSelect />', () => {
       getByRole('button', { name: new RegExp(ORB_SOURCES[0].category) }),
     );
     userEvent.click(
-      getByRole('checkbox', {
+      getByRole('button', {
         name: ORB_SOURCES[0].sources[0].metadata.label,
       }),
     );
@@ -244,7 +240,7 @@ describe('<LayerSelect />', () => {
       const { onSourcesChange, getAllByRole } = renderComponent({
         selectedSources: ['oil/source/1', 'oil/source/2'],
       });
-      userEvent.click(getAllByRole('button', { name: UNSELECT_ALL })[0]);
+      userEvent.click(getAllByRole('button', { name: UNSELECT_ALL })[1]);
       expect(onSourcesChange).toHaveBeenCalledWith({
         source_ids: ['oil/source/1', 'oil/source/2'],
         selected: false,
@@ -261,7 +257,7 @@ describe('<LayerSelect />', () => {
           name: new RegExp(ORB_SOURCES_SUB_CATEGORIES[0].category),
         }),
       );
-      userEvent.click(getAllByRole('button', { name: UNSELECT_ALL })[0]);
+      userEvent.click(getAllByRole('button', { name: UNSELECT_ALL })[1]);
       expect(onSourcesChange).toHaveBeenCalledWith({
         source_ids: ['oil/source/1', 'oil/source/2'],
         selected: false,
