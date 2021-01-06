@@ -11,7 +11,7 @@ import {
   fetchBookmarks,
   selectBookmark,
 } from './bookmark.slice';
-import BookmarkList from './bookmarks-list.component';
+import BookmarkList from './bookmarks-list/bookmarks-list.component';
 
 const BookmarksPanel = () => {
   const { createScreenshot, viewState } = useMap();

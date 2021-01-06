@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import { Button } from '@astrosat/astrosat-ui';
 
-import styles from './bookmarks-panel.module.css';
+import styles from '../bookmarks-panel.module.css';
 
 const BookmarkList = ({ bookmarks, selectBookmark, deleteBookmark }) => (
   <div>

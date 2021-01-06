@@ -4,7 +4,7 @@ import { useHistory } from 'react-router-dom';
 
 import { Button, Textfield, Select } from '@astrosat/astrosat-ui';
 
-import validate from '../bookmarks/bookmark-form.validator';
+import validate from '../bookmarks/bookmark-form/bookmark-form.validator';
 
 import formStyles from '../forms.module.css';
 

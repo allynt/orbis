@@ -6,8 +6,8 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 
-import formStyles from '../forms.module.css';
-import bookmarkStyles from '../control-panel/control-panel.module.css';
+import formStyles from '../../forms.module.css';
+import bookmarkStyles from '../../control-panel/control-panel.module.css';
 import { bookmarkTitle, CONTEXT_KEYS, FIELD_NAMES } from 'utils/validators';
 import { FieldError } from 'components/field-error/field-error.component';
 
