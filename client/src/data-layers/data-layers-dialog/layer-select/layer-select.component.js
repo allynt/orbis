@@ -132,7 +132,7 @@ const Accordion = ({ source, level, onSourcesChange, selectedSources }) => {
           {allSelected ? 'unselect' : 'select'} all
         </Link>
       </ButtonBase>
-      <Collapse in={open} component={Box} pl={level + 1.6} mb={1}>
+      <Collapse unmountOnExit in={open} component={Box} pl={level + 1.6} mb={1}>
         {renderCategories({
           sources: source.sources,
           level: level + 1,
