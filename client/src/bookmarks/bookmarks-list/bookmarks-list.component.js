@@ -4,7 +4,14 @@ import { Box, List, Typography } from '@astrosat/astrosat-ui';
 
 import { BookmarksListItem } from './bookmarks-list-item/bookmarks-list-item.component';
 
-const BookmarkList = ({ bookmarks, selectBookmark, deleteBookmark }) => (
+/**
+ * @param {{
+ *   bookmarks?: import('typings/orbis').Bookmark[]
+ *   onSelectBookmark: (bookmark: import('typings/orbis').Bookmark) => void
+ *   onDeleteBookmark: (bookmark: import('typings/orbis').Bookmark) => void
+ * }} props
+ */
+const BookmarkList = ({ bookmarks, onSelectBookmark, onDeleteBookmark }) => (
   <>
     <Typography variant="h3" component="p" gutterBottom>
       Select an Existing Map
@@ -15,8 +22,8 @@ const BookmarkList = ({ bookmarks, selectBookmark, deleteBookmark }) => (
           <BookmarksListItem
             key={bookmark.id}
             bookmark={bookmark}
-            onSelect={selectBookmark}
-            onDelete={deleteBookmark}
+            onSelect={onSelectBookmark}
+            onDelete={onDeleteBookmark}
           />
         ))}
       </List>

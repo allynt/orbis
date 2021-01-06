@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import BookmarkForm from './bookmark-form/bookmark-form.component';
 import {
   addBookmark,
+  bookmarksSelector,
   deleteBookmark,
   fetchBookmarks,
   selectBookmark,
@@ -19,9 +20,16 @@ const PrimaryDivider = styled(Divider)(({ theme }) => ({
 
 const BookmarksPanel = () => {
   const { createScreenshot, viewState } = useMap();
-  const layers = useSelector(activeLayersSelector);
   const dispatch = useDispatch();
+  const layers = useSelector(activeLayersSelector);
   const user = useSelector(userSelector);
+  const bookmarks = useSelector(bookmarksSelector);
+
+  useEffect(() => {
+    if (!bookmarks) {
+      dispatch(fetchBookmarks());
+    }
+  }, [bookmarks, dispatch]);
 
   const submit = form => {
     createScreenshot(thumbnail => {
@@ -38,14 +46,6 @@ const BookmarksPanel = () => {
     });
   };
 
-  const bookmarks = useSelector(state => state?.bookmarks?.bookmarks);
-
-  useEffect(() => {
-    if (!bookmarks) {
-      dispatch(fetchBookmarks());
-    }
-  }, [bookmarks, dispatch]);
-
   return (
     <>
       <Box py={3} px={1}>
@@ -58,8 +58,8 @@ const BookmarksPanel = () => {
       <Box py={3} px={1}>
         <BookmarkList
           bookmarks={bookmarks}
-          selectBookmark={bookmark => dispatch(selectBookmark(bookmark))}
-          deleteBookmark={bookmark => dispatch(deleteBookmark(bookmark))}
+          onSelectBookmark={bookmark => dispatch(selectBookmark(bookmark))}
+          onDeleteBookmark={bookmark => dispatch(deleteBookmark(bookmark))}
         />
       </Box>
     </>
