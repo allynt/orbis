@@ -141,11 +141,15 @@ const LoginForm = ({
       <Form.Row centered>
         <Button
           type="submit"
+<<<<<<< HEAD
           disabled={
             Object.keys(errors).length > 0 ||
             !formState.isDirty ||
             (isOnboardingTeamMember && !termsAgreed)
           }
+=======
+          disabled={Object.keys(errors).length > 0 || !formState.isDirty}
+>>>>>>> astrosat-ui-upgrade
         >
           {isLoading ? <CircularProgress size={22} color="inherit" /> : 'Login'}
         </Button>

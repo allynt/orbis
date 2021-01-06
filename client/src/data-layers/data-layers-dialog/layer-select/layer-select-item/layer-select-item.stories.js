@@ -1,3 +1,4 @@
+import { List } from '@astrosat/astrosat-ui';
 import * as React from 'react';
 import LayerSelectItem from './layer-select-item.component';
 
@@ -6,27 +7,31 @@ export default {
   argTypes: { onChange: { action: 'onChange' } },
 };
 
-export const Default = () => (
-  <LayerSelectItem
-    source={{
-      source_id: 'test/source/123',
-      // @ts-ignore
-      metadata: {
-        description: 'This is the description',
-        label: 'Test Source',
-      },
-    }}
-  />
+const Template = args => (
+  <List>
+    <LayerSelectItem {...args} />
+  </List>
 );
 
-export const NoDescription = () => (
-  <LayerSelectItem
-    source={{
-      source_id: 'test/source/123',
-      // @ts-ignore
-      metadata: {
-        label: 'Test Source',
-      },
-    }}
-  />
-);
+export const Default = Template.bind({});
+Default.args = {
+  source: {
+    source_id: 'test/source/123',
+    // @ts-ignore
+    metadata: {
+      description: 'This is the description',
+      label: 'Test Source',
+    },
+  },
+};
+
+export const NoDescription = Template.bind({});
+NoDescription.args = {
+  source: {
+    source_id: 'test/source/123',
+    // @ts-ignore
+    metadata: {
+      label: 'Test Source',
+    },
+  },
+};

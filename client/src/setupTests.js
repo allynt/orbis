@@ -21,3 +21,12 @@ global.orbis = {};
 global.orbis.getEnv = () => ({
   REACT_APP_API_HOST: 'http://test.local',
 });
+
+global.document.createRange = () => ({
+  setStart: () => {},
+  setEnd: () => {},
+  commonAncestorContainer: {
+    nodeName: 'BODY',
+    ownerDocument: document,
+  },
+});
