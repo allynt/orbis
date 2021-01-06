@@ -3,7 +3,6 @@ import { activeLayersSelector } from 'data-layers/data-layers.slice';
 import { useMap } from 'MapContext';
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import styles from '../control-panel/control-panel.module.css';
 import BookmarkForm from './bookmark-form/bookmark-form.component';
 import {
   addBookmark,
@@ -12,6 +11,11 @@ import {
   selectBookmark,
 } from './bookmarks.slice';
 import BookmarkList from './bookmarks-list/bookmarks-list.component';
+import { Box, Divider, styled } from '@astrosat/astrosat-ui';
+
+const PrimaryDivider = styled(Divider)(({ theme }) => ({
+  backgroundColor: theme.palette.primary.main,
+}));
 
 const BookmarksPanel = () => {
   const { createScreenshot, viewState } = useMap();
@@ -34,9 +38,6 @@ const BookmarksPanel = () => {
     });
   };
 
-  const chooseBookmark = bookmark => dispatch(selectBookmark(bookmark));
-  const deleteBookmarkItem = bookmark => dispatch(deleteBookmark(bookmark));
-
   const bookmarks = useSelector(state => state?.bookmarks?.bookmarks);
 
   useEffect(() => {
@@ -46,17 +47,22 @@ const BookmarksPanel = () => {
   }, [bookmarks, dispatch]);
 
   return (
-    <div className={styles.container}>
-      <BookmarkForm
-        bookmarkTitles={bookmarks?.map(b => b?.title?.toLowerCase())}
-        onSubmit={submit}
-      />
-      <BookmarkList
-        bookmarks={bookmarks}
-        selectBookmark={chooseBookmark}
-        deleteBookmark={deleteBookmarkItem}
-      />
-    </div>
+    <>
+      <Box py={3} px={1}>
+        <BookmarkForm
+          bookmarkTitles={bookmarks?.map(b => b?.title?.toLowerCase())}
+          onSubmit={submit}
+        />
+      </Box>
+      <PrimaryDivider />
+      <Box py={3} px={1}>
+        <BookmarkList
+          bookmarks={bookmarks}
+          selectBookmark={bookmark => dispatch(selectBookmark(bookmark))}
+          deleteBookmark={bookmark => dispatch(deleteBookmark(bookmark))}
+        />
+      </Box>
+    </>
   );
 };
 
