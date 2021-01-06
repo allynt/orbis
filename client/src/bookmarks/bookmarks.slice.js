@@ -15,6 +15,15 @@ const API = {
   delete: '/api/bookmarks/',
 };
 
+/**
+ * @typedef BookmarksState
+ * @property {import('typings/orbis').Bookmark[]} [bookmarks]
+ * @property {import('typings/orbis').Bookmark} [selectedBookmark]
+ * @property {any} [error]
+ * @property {boolean} isLoading
+ */
+
+/** @type {BookmarksState} */
 const initialState = {
   bookmarks: null,
   selectedBookmark: null,
@@ -159,6 +168,9 @@ export const deleteBookmark = bookmark => async (dispatch, getState) => {
   return dispatch(deleteBookmarkSuccess(bookmark));
 };
 
+/**
+ * @returns {BookmarksState}
+ */
 export const baseSelector = state => state?.bookmarks;
 
 export const bookmarksSelector = createSelector(
