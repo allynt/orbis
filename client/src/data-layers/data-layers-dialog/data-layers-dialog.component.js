@@ -70,9 +70,13 @@ const DataLayersDialog = ({
       fullWidth
       PaperProps={{ className: styles.dialog }}
       open={open}
-      onClose={close}
+      onClose={() => close()}
     >
-      <IconButton size="small" className={styles.closeButton} onClick={close}>
+      <IconButton
+        size="small"
+        className={styles.closeButton}
+        onClick={() => close()}
+      >
         <CloseIcon fontSize="inherit" />
       </IconButton>
       <div className={styles.content}>

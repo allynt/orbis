@@ -31,14 +31,6 @@ describe('OrbSelect', () => {
     }
   });
 
-  it('should only give on item the selected class when an orb is selected', () => {
-    const { getAllByRole } = setup('domain-one');
-    const selectedListItems = getAllByRole('button').filter(item =>
-      item.classList.contains('selected'),
-    );
-    expect(selectedListItems).toHaveLength(1);
-  });
-
   it('should call the handler function with the clicked domain on click', () => {
     const { handleOrbClick, getByRole, domains } = setup();
     fireEvent.click(getByRole('button', { name: 'domain-one' }));
