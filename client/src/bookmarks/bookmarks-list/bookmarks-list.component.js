@@ -1,58 +1,27 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 
-import { Button } from '@astrosat/astrosat-ui';
+import { Box, List, Typography } from '@astrosat/astrosat-ui';
 
-import styles from '../bookmarks-panel.module.css';
+import { BookmarksListItem } from './bookmarks-list-item/bookmarks-list-item.component';
 
-const BookmarkList = ({ bookmarks, selectBookmark, deleteBookmark }) => (
-  <div>
-    {bookmarks && bookmarks.length > 0 ? (
-      <ul className={styles.bookmarkList}>
-        {bookmarks.map(bookmark => {
-          return (
-            <li key={bookmark.title} className={styles.bookmark}>
-              <div className={styles.bookmarkThumbnail}>
-                <picture>
-                  <source srcSet={bookmark.thumbnail} />
-                  <img src={bookmark.thumbnail} alt={bookmark.title} />
-                </picture>
-              </div>
-              <div className={styles.bookmarkContent}>
-                <h3 className={styles.bookmarkTitle}>{bookmark.title}</h3>
-                <p className={styles.bookmarkDescription}>
-                  {bookmark.description || ''}
-                </p>
-                <div className={styles.bookmarkButtons}>
-                  <Button
-                    classNames={[styles.bookmarkButton]}
-                    onClick={() => selectBookmark(bookmark)}
-                  >
-                    Load
-                  </Button>
-                  <Button
-                    theme="tertiary"
-                    classNames={[styles.bookmarkButton]}
-                    onClick={() => deleteBookmark(bookmark)}
-                  >
-                    Delete
-                  </Button>
-                </div>
-              </div>
-            </li>
-          );
-        })}
-      </ul>
-    ) : (
-      <p className={styles.noBookmarks}>No Saved Maps</p>
-    )}
-  </div>
-);
-
-BookmarkList.propTypes = {
-  bookmarks: PropTypes.array,
-  selectBookmark: PropTypes.func.isRequired,
-  deleteBookmark: PropTypes.func.isRequired,
-};
+const BookmarkList = ({ bookmarks, selectBookmark, deleteBookmark }) =>
+  bookmarks?.length > 0 ? (
+    <List>
+      {bookmarks.map(bookmark => (
+        <BookmarksListItem
+          key={bookmark.id}
+          bookmark={bookmark}
+          onSelect={selectBookmark}
+          onDelete={deleteBookmark}
+        />
+      ))}
+    </List>
+  ) : (
+    <Box component={List} display="flex" justifyContent="center">
+      <Typography variant="h3" component="li">
+        No Saved Maps
+      </Typography>
+    </Box>
+  );
 
 export default BookmarkList;
