@@ -1,68 +1,62 @@
-import React from 'react';
+import * as React from 'react';
 
-import { render, cleanup, fireEvent, waitFor } from '@testing-library/react';
+import { render, waitFor } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 
+import { FIELD_NAMES } from 'utils/validators';
 import BookmarkForm from './bookmark-form.component';
 
-describe('Bookmark Form Component', () => {
-  let bookmarkTitles = null;
-  let submit = null;
+const TITLE = new RegExp(FIELD_NAMES.bookmarkTitle, 'i');
+const DESCRIPTION = new RegExp(FIELD_NAMES.bookmarkDescription, 'i');
+const SUBMIT = /save\snew\smap/i;
 
-  beforeEach(cleanup);
+const renderComponent = () => {
+  const onSubmit = jest.fn();
+  const utils = render(<BookmarkForm onSubmit={onSubmit} />);
+  return { onSubmit, ...utils };
+};
 
-  beforeEach(() => {
-    bookmarkTitles = ['Title 1', 'Title 2', 'Title 3'];
-    submit = jest.fn();
-  });
-
+describe('<BookmarkForm />', () => {
   it('should render the Save Bookmark Form', () => {
-    const { getByPlaceholderText, getByText } = render(
-      <BookmarkForm bookmarkTitles={bookmarkTitles} submit={submit} />,
-    );
+    const { getByRole } = renderComponent();
 
-    expect(getByPlaceholderText('Title')).toBeInTheDocument();
-    expect(getByPlaceholderText('Description')).toBeInTheDocument();
-    expect(getByText('Save Map')).toBeInTheDocument();
+    expect(getByRole('textbox', { name: TITLE })).toBeInTheDocument();
+    expect(getByRole('textbox', { name: DESCRIPTION })).toBeInTheDocument();
+    expect(getByRole('button', { name: SUBMIT })).toBeInTheDocument();
   });
 
   it('should disable the submit button when form is invalid', () => {
-    const { getByText } = render(<BookmarkForm submit={submit} />);
-
-    expect(getByText('Save Map')).toHaveAttribute('disabled');
+    const { getByRole } = renderComponent();
+    expect(getByRole('button', { name: SUBMIT })).toBeDisabled();
   });
 
-  it('should enable the submit button when form is valid', () => {
-    const { getByPlaceholderText, getByText } = render(
-      <BookmarkForm bookmarkTitles={bookmarkTitles} submit={submit} />,
-    );
+  it('should enable the submit button when form is valid', async () => {
+    const { getByRole } = renderComponent();
 
-    const submitButton = getByText('Save Map');
-    expect(submitButton).toHaveAttribute('disabled');
-    fireEvent.change(getByPlaceholderText('Title'), {
-      target: { value: 'New Bookmark Title' },
-    });
-    fireEvent.change(getByPlaceholderText('Description'), {
-      target: { value: 'New Bookmark Description' },
-    });
-    waitFor(() => expect(submitButton).not.toHaveAttribute('disabled'));
+    expect(getByRole('button', { name: SUBMIT })).toBeDisabled();
+    userEvent.type(getByRole('textbox', { name: TITLE }), 'New Bookmark Title');
+    userEvent.type(
+      getByRole('textbox', { name: DESCRIPTION }),
+      'New Bookmark Description',
+    );
+    await waitFor(() =>
+      expect(getByRole('button', { name: SUBMIT })).not.toBeDisabled(),
+    );
   });
 
   it('should call submit function when form is valid and submit button clicked', () => {
-    const { getByPlaceholderText, getByText } = render(
-      <BookmarkForm bookmarkTitles={bookmarkTitles} submit={submit} />,
+    const { getByRole, onSubmit } = renderComponent();
+
+    userEvent.type(getByRole('textbox', { name: TITLE }), 'New Bookmark Title');
+    userEvent.type(
+      getByRole('textbox', { name: DESCRIPTION }),
+      'New Bookmark Description',
     );
 
-    fireEvent.change(getByPlaceholderText('Title'), {
-      target: { value: 'New Bookmark Title' },
-    });
-    fireEvent.change(getByPlaceholderText('Description'), {
-      target: { value: 'New Bookmark Description' },
-    });
-
-    expect(submit).not.toHaveBeenCalled();
-    fireEvent.click(getByText('Save Map'));
+    expect(onSubmit).not.toHaveBeenCalled();
+    userEvent.click(getByRole('button', { name: SUBMIT }));
     waitFor(() =>
-      expect(submit).toHaveBeenCalledWith({
+      expect(onSubmit).toHaveBeenCalledWith({
         title: 'New Bookmark Title',
         description: 'New Bookmark Description',
       }),

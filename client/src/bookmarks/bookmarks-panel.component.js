@@ -49,7 +49,7 @@ const BookmarksPanel = () => {
     <div className={styles.container}>
       <BookmarkForm
         bookmarkTitles={bookmarks?.map(b => b?.title?.toLowerCase())}
-        submit={submit}
+        onSubmit={submit}
       />
       <BookmarkList
         bookmarks={bookmarks}

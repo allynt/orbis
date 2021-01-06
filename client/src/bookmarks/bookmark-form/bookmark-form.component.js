@@ -1,75 +1,76 @@
 import React from 'react';
 
-import { Button, Textfield } from '@astrosat/astrosat-ui';
+import { Button, TextField, Typography } from '@astrosat/astrosat-ui';
 
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 
-import formStyles from '../../forms.module.css';
-import bookmarkStyles from '../../control-panel/control-panel.module.css';
+import { Form } from 'components';
 import { bookmarkTitle, CONTEXT_KEYS, FIELD_NAMES } from 'utils/validators';
-import { FieldError } from 'components/field-error/field-error.component';
 
 const validationSchema = yup.object({
   [FIELD_NAMES.bookmarkTitle]: bookmarkTitle,
   [FIELD_NAMES.bookmarkDescription]: yup.string(),
 });
 
-const BookmarkForm = ({ bookmarkTitles, submit }) => {
+/**
+ * @param {{
+ *   bookmarkTitles?: string[]
+ *   onSubmit: (values: {title: string, description: string}) => void
+ * }} props
+ */
+const BookmarkForm = ({ bookmarkTitles = [], onSubmit }) => {
   const { register, handleSubmit, errors, formState } = useForm({
     resolver: yupResolver(validationSchema),
     context: { [CONTEXT_KEYS.bookmarkTitles]: bookmarkTitles },
   });
 
-  const onSubmit = values => {
-    submit(values);
-  };
-
   return (
-    <form
-      className={`${formStyles.form} ${bookmarkStyles.form}`}
-      onSubmit={handleSubmit(onSubmit)}
-    >
-      <div className={`${formStyles.fields} ${bookmarkStyles.fields}`}>
-        <label
-          className={formStyles.hiddenLabel}
-          htmlFor={FIELD_NAMES.bookmarkTitle}
-        >
-          Title
-        </label>
-        <Textfield
+    <Form onSubmit={handleSubmit(onSubmit)}>
+      <Form.Row>
+        <Typography variant="h3" component="p">
+          Create a New Map
+        </Typography>
+      </Form.Row>
+      <Form.Row>
+        <TextField
           id={FIELD_NAMES.bookmarkTitle}
           name={FIELD_NAMES.bookmarkTitle}
-          ref={register}
-          placeholder="Title"
-          autoFocus
+          inputRef={register}
+          label="Title"
+          error={!!errors[FIELD_NAMES.bookmarkTitle]}
+          helperText={errors[FIELD_NAMES.bookmarkTitle]?.message}
+          valid={
+            !errors[FIELD_NAMES.bookmarkTitle] &&
+            formState.touched[FIELD_NAMES.bookmarkTitle]
+          }
+          required
         />
-        {errors[FIELD_NAMES.bookmarkTitle] && (
-          <FieldError message={errors[FIELD_NAMES.bookmarkTitle].message} />
-        )}
-
-        <label
-          className={formStyles.hiddenLabel}
-          htmlFor={FIELD_NAMES.bookmarkDescription}
-        >
-          Description
-        </label>
-        <Textfield
+      </Form.Row>
+      <Form.Row>
+        <TextField
           id={FIELD_NAMES.bookmarkDescription}
           name={FIELD_NAMES.bookmarkDescription}
-          ref={register}
-          placeholder="Description"
+          inputRef={register}
+          label="Description"
+          error={!!errors[FIELD_NAMES.bookmarkDescription]}
+          helperText={errors[FIELD_NAMES.bookmarkDescription]?.message}
+          valid={
+            !errors[FIELD_NAMES.bookmarkDescription] &&
+            formState.touched[FIELD_NAMES.bookmarkDescription]
+          }
         />
-      </div>
-
-      <Button
-        type="submit"
-        disabled={Object.keys(errors).length > 0 || !formState.isDirty}
-      >
-        Save Map
-      </Button>
-    </form>
+      </Form.Row>
+      <Form.Row centered>
+        <Button
+          type="submit"
+          disabled={Object.keys(errors).length > 0 || !formState.isDirty}
+        >
+          Save New Map
+        </Button>
+      </Form.Row>
+    </Form>
   );
 };
 
