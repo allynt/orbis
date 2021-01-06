@@ -69,7 +69,7 @@ const renderComponent = ({
   return { ...utils, onSourceChange, onSourcesChange };
 };
 
-describe.only('<LayerSelect />', () => {
+describe('<LayerSelect />', () => {
   it('shows text when no orb is selected', () => {
     const { getByText } = renderComponent({ orbSources: null });
     expect(
