@@ -30,6 +30,7 @@ const renderComponent = ({ selectedSources = [] } = {}) => {
       orbs={ORBS}
       onSubmit={onSubmit}
       close={close}
+      open
       initialSelectedSources={selectedSources}
     />,
   );
@@ -38,8 +39,8 @@ const renderComponent = ({ selectedSources = [] } = {}) => {
 
 describe('<DataLayersDialog />', () => {
   it('calls close when the background is clicked', () => {
-    const { getByTestId, close } = renderComponent();
-    userEvent.click(getByTestId('overlay'));
+    const { getByRole, close } = renderComponent();
+    userEvent.click(getByRole('none'));
     expect(close).toHaveBeenCalled();
   });
 
@@ -48,7 +49,7 @@ describe('<DataLayersDialog />', () => {
     userEvent.click(getByRole('button', { name: ORBS[0].name }));
     for (let source of ORBS[0].sources) {
       expect(
-        getByRole('checkbox', { name: source.metadata.label }),
+        getByRole('button', { name: source.metadata.label }),
       ).toBeInTheDocument();
     }
   });
@@ -57,11 +58,11 @@ describe('<DataLayersDialog />', () => {
     const { getByRole, onSubmit } = renderComponent();
     userEvent.click(getByRole('button', { name: ORBS[0].name }));
     userEvent.click(
-      getByRole('checkbox', { name: ORBS[0].sources[0].metadata.label }),
+      getByRole('button', { name: ORBS[0].sources[0].metadata.label }),
     );
     userEvent.click(getByRole('button', { name: ORBS[1].name }));
     userEvent.click(
-      getByRole('checkbox', { name: ORBS[1].sources[1].metadata.label }),
+      getByRole('button', { name: ORBS[1].sources[1].metadata.label }),
     );
     userEvent.click(getByRole('button', { name: /confirm/i }));
     expect(onSubmit).toHaveBeenCalledWith([
@@ -76,11 +77,11 @@ describe('<DataLayersDialog />', () => {
     });
     userEvent.click(getByRole('button', { name: ORBS[0].name }));
     userEvent.click(
-      getByRole('checkbox', { name: ORBS[0].sources[0].metadata.label }),
+      getByRole('button', { name: ORBS[0].sources[0].metadata.label }),
     );
     userEvent.click(getByRole('button', { name: ORBS[1].name }));
     userEvent.click(
-      getByRole('checkbox', { name: ORBS[1].sources[1].metadata.label }),
+      getByRole('button', { name: ORBS[1].sources[1].metadata.label }),
     );
     userEvent.click(getByRole('button', { name: /confirm/i }));
     expect(onSubmit).toHaveBeenCalledWith([ORBS[1].sources[1].source_id]);
@@ -92,7 +93,7 @@ describe('<DataLayersDialog />', () => {
     });
     userEvent.click(getByRole('button', { name: ORBS[1].name }));
     userEvent.click(
-      getByRole('checkbox', { name: ORBS[1].sources[1].metadata.label }),
+      getByRole('button', { name: ORBS[1].sources[1].metadata.label }),
     );
     userEvent.click(getByRole('button', { name: /confirm/i }));
     await waitFor(() =>
