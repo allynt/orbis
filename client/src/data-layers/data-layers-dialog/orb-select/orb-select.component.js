@@ -12,6 +12,7 @@ import { Section } from '../components/section.component';
 
 const useStyles = makeStyles(theme => ({
   categories: {
+    width: '40%',
     backgroundColor: theme.palette.primary.main,
   },
   icon: {
