@@ -11,28 +11,49 @@ import {
   ListItemText,
   Tooltip,
   styled,
+  makeStyles,
 } from '@astrosat/astrosat-ui';
 
-const BaseLayerSelectItem = styled(ListItem)(({ theme }) => ({
-  borderLeft: `1px solid ${theme.palette.primary.main}`,
-}));
+const BaseLayerSelectItem = styled(ListItem)(({ theme }) => ({}));
 
-const InfoIconButton = styled(IconButton)(({ theme }) => ({
-  fontSize: theme.typography.pxToRem(8),
-  padding: theme.typography.pxToRem(2),
-  backgroundColor: theme.palette.grey[300],
-  color: theme.palette.getContrastText(theme.palette.grey[300]),
+const InfoIconButton = styled(IconButton)(({ theme }) => ({}));
+
+const useStyles = makeStyles(theme => ({
+  listItem: {
+    paddingTop: 0,
+    paddingBottom: 0,
+    borderLeft: `1px solid ${theme.palette.primary.main}`,
+    '&:not(:first-child)': {
+      marginTop: theme.spacing(1),
+    },
+  },
+  checkbox: {
+    minWidth: '2rem',
+  },
+  infoButton: {
+    fontSize: theme.typography.pxToRem(8),
+    padding: theme.typography.pxToRem(2),
+    backgroundColor: theme.palette.grey[600],
+    color: theme.palette.getContrastText(theme.palette.grey[600]),
+  },
+  text: {
+    margin: 0,
+  },
+  info: {
+    display: 'flex',
+    alignItems: 'center',
+  },
 }));
 
 /**
  * @param {{
- *   className?: string
  *   selected?: boolean
  *   source: import('typings/orbis').Source
  *   onChange: (params: {source_ids: import('typings/orbis').Source['source_id'][]; selected: boolean}) => void
  * }} props
  */
-const LayerSelectItem = ({ className, selected, source, onChange }) => {
+const LayerSelectItem = ({ selected, source, onChange }) => {
+  const styles = useStyles();
   const [isInfoVisible, setIsInfoVisible] = useState(false);
 
   const buttonClick = () => {
@@ -40,8 +61,8 @@ const LayerSelectItem = ({ className, selected, source, onChange }) => {
   };
 
   return (
-    <BaseLayerSelectItem
-      className={className}
+    <ListItem
+      className={styles.listItem}
       button
       onClick={() =>
         onChange({
@@ -50,12 +71,16 @@ const LayerSelectItem = ({ className, selected, source, onChange }) => {
         })
       }
     >
-      <ListItemIcon>
+      <ListItemIcon className={styles.checkbox}>
         <Checkbox id={source.source_id} checked={selected} />
       </ListItemIcon>
-      <ListItemText primary={source.metadata.label} />
+      <ListItemText
+        className={styles.text}
+        primaryTypographyProps={{ variant: 'body1' }}
+        primary={source.metadata.label}
+      />
       {source?.metadata?.description && (
-        <ListItemSecondaryAction>
+        <ListItemSecondaryAction className={styles.info}>
           <ClickAwayListener onClickAway={() => setIsInfoVisible(false)}>
             <Tooltip
               arrow
@@ -66,14 +91,18 @@ const LayerSelectItem = ({ className, selected, source, onChange }) => {
               open={isInfoVisible}
               title={source.metadata.description}
             >
-              <InfoIconButton aria-label="Info" onClick={buttonClick}>
+              <IconButton
+                className={styles.infoButton}
+                aria-label="Info"
+                onClick={buttonClick}
+              >
                 <InfoIcon fontSize="inherit" />
-              </InfoIconButton>
+              </IconButton>
             </Tooltip>
           </ClickAwayListener>
         </ListItemSecondaryAction>
       )}
-    </BaseLayerSelectItem>
+    </ListItem>
   );
 };
 

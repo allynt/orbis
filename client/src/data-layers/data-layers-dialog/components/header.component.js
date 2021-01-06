@@ -5,7 +5,7 @@ export const Header = styled('div')(({ theme }) => ({
   display: 'flex',
   justifyContent: 'center',
   alignItems: 'center',
-  paddingTop: theme.spacing(3),
-  paddingBottom: theme.spacing(2),
-  borderBottom: `1px solid ${theme.palette.grey[500]}`,
+  paddingTop: theme.spacing(4),
+  paddingBottom: theme.spacing(3),
+  borderBottom: `1px solid ${theme.palette.grey[400]}`,
 }));

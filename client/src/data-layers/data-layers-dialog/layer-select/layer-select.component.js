@@ -58,6 +58,7 @@ const renderCategories = ({
 
 const useAccordionStyles = makeStyles(theme => ({
   header: props => ({
+    ...theme.typography.body1,
     width: '100%',
     padding: `${theme.spacing(1)}px ${theme.spacing(2)}px`,
     paddingLeft: theme.spacing(props.level + 1),
@@ -77,6 +78,10 @@ const useAccordionStyles = makeStyles(theme => ({
   selectAll: {
     marginLeft: 'auto',
     padding: 0,
+    color: props =>
+      props.level === 0
+        ? theme.palette.getContrastText(theme.palette.secondary.main)
+        : theme.palette.text.primary,
   },
   sourceCount: {
     fontWeight: 'normal',
@@ -132,7 +137,13 @@ const Accordion = ({ source, level, onSourcesChange, selectedSources }) => {
           {allSelected ? 'unselect' : 'select'} all
         </Link>
       </ButtonBase>
-      <Collapse unmountOnExit in={open} component={Box} pl={level + 1.6} mb={1}>
+      <Collapse
+        unmountOnExit
+        in={open}
+        component={Box}
+        pl={level + 1.65}
+        mb={1}
+      >
         {renderCategories({
           sources: source.sources,
           level: level + 1,
@@ -182,7 +193,7 @@ export const LayerSelect = ({
 
   return (
     <Section orientation="right">
-      <Header>Select Your Layers</Header>
+      <Header>Add Data Layers</Header>
       {orbSources ? (
         <List dense>
           {renderCategories({
