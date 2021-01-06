@@ -19,7 +19,7 @@ import {
   isLoaded as onBookmarkLoaded,
   isLoadingSelector as bookmarksLoadingSelector,
   selectedBookmarkSelector,
-} from 'bookmarks/bookmark.slice';
+} from 'bookmarks/bookmarks.slice';
 import { setLayers } from 'data-layers/data-layers.slice';
 import MapStyleSwitcher from 'map-style/map-style-switcher/map-style-switcher.component';
 import { useMap } from 'MapContext';

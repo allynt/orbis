@@ -15,7 +15,7 @@ import reducer, {
   isLoaded,
   selectedBookmarkSelector,
   isLoadingSelector,
-} from './bookmark.slice';
+} from './bookmarks.slice';
 
 const mockStore = configureMockStore([thunk]);
 

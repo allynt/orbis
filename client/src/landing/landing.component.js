@@ -13,7 +13,7 @@ import {
   baseSelector,
   fetchBookmarks,
   selectBookmark,
-} from '../bookmarks/bookmark.slice';
+} from '../bookmarks/bookmarks.slice';
 
 import { Button, Dialog, useModal } from '@astrosat/astrosat-ui';
 

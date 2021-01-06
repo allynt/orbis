@@ -5,7 +5,7 @@ import { MapProvider } from 'MapContext';
 import { Provider } from 'react-redux';
 import createMockStore from 'redux-mock-store';
 import userEvent from '@testing-library/user-event';
-import { selectBookmark } from './bookmark.slice';
+import { selectBookmark } from './bookmarks.slice';
 
 const mockStore = createMockStore();
 
