@@ -15,7 +15,7 @@ import {
   selectBookmark,
 } from '../bookmarks/bookmark.slice';
 
-import { Button, Dialog, useModal } from '@astrosat/astrosat-ui';
+import { Button, useModal, Dialog, DialogTitle } from '@astrosat/astrosat-ui';
 
 import NewMapForm from './new-map-form.component';
 
@@ -28,9 +28,7 @@ const ViewAllItems = ({ items, chooseBookmark, toggle, setViewAllItems }) => (
   <div className={styles.content}>
     <div className={styles.header}>
       <h1>View All</h1>
-      <Button theme="link" onClick={() => setViewAllItems(false)}>
-        Back to menu
-      </Button>
+      <Button onClick={() => setViewAllItems(false)}>Back to menu</Button>
     </div>
     <Items items={items} chooseItem={chooseBookmark} toggle={toggle} />
   </div>
@@ -93,9 +91,7 @@ const NewUserLanding = () => (
 
         <div>
           <Link to="/map">
-            <Button theme="tertiary" data-testid="browse-map">
-              Browse Map
-            </Button>
+            <Button data-testid="browse-map">Browse Map</Button>
           </Link>
         </div>
       </div>
@@ -126,7 +122,7 @@ const ExistingUserLanding = forwardRef(
             <div className={styles.header}>
               <h1>Your Maps</h1>
               {bookmarks.length > MAX_VISIBLE_BOOKMARKS && (
-                <Button theme="link" onClick={() => setViewAllItems(true)}>
+                <Button size="small" onClick={() => setViewAllItems(true)}>
                   View all
                 </Button>
               )}
@@ -141,16 +137,12 @@ const ExistingUserLanding = forwardRef(
 
         <div className={styles.buttonContainer}>
           <Link to="/map">
-            <Button theme="tertiary">Browse Map</Button>
+            <Button>Browse Map</Button>
           </Link>
         </div>
 
-        <Dialog
-          isVisible={isVisible}
-          title="Create New Map"
-          close={toggle}
-          ref={ref}
-        >
+        <Dialog open={isVisible} onBackdropClick={toggle} ref={ref}>
+          <DialogTitle>Create New Map</DialogTitle>
           <NewMapForm
             regions={regions}
             domains={domains}
