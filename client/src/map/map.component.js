@@ -10,10 +10,10 @@ import {
 import { FlyToInterpolator } from '@deck.gl/core';
 import DeckGL from '@deck.gl/react';
 import ReactMapGl, {
-  NavigationControl,
   ScaleControl,
   _MapContext as MapContext,
 } from 'react-map-gl';
+import { NavigationControl } from './controls/navigation-control.component';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import Geocoder from 'react-map-gl-geocoder';
 import 'react-map-gl-geocoder/dist/mapbox-gl-geocoder.css';
@@ -34,9 +34,6 @@ import {
   selectMapStyle,
 } from './map.slice';
 import { useOrbs } from './orbs/useOrbs';
-import plus from './plus.svg';
-import minus from './minus.svg';
-import compass from './compass.svg';
 
 /** @type {React.CSSProperties} */
 const TOP_MAP_CSS = {
@@ -102,45 +99,6 @@ const useStyles = makeStyles(theme => ({
     minWidth: 'unset',
     '&:hover': {
       backgroundColor: theme.palette.background.default,
-    },
-  },
-  navigationControl: {
-    position: 'absolute',
-    right: '2rem',
-    zIndex: 1,
-    bottom: '2rem',
-    backgroundColor: 'transparent',
-    '& > button': {
-      backgroundColor: theme.palette.background.default,
-      transition: theme.transitions.create('opacity', {
-        duration: theme.transitions.duration.short,
-      }),
-      '& + button': {
-        borderColor: theme.palette.primary.main,
-      },
-      '&:first-of-type': {
-        borderTopLeftRadius: theme.shape.borderRadius,
-        borderTopRightRadius: theme.shape.borderRadius,
-        '& > span': {
-          backgroundImage: `url(${plus}) !important`,
-          backgroundSize: '100%',
-        },
-      },
-      '&:not(:first-of-type):not(:last-of-type) > span': {
-        backgroundImage: `url(${minus}) !important`,
-        backgroundSize: '100%',
-      },
-      '&:last-of-type': {
-        borderBottomLeftRadius: theme.shape.borderRadius,
-        borderBottomRightRadius: theme.shape.borderRadius,
-        '& > span': {
-          backgroundImage: `url(${compass}) !important`,
-        },
-      },
-      '&:not(:disabled):hover': {
-        backgroundColor: theme.palette.background.default,
-        opacity: `0.5 !important`,
-      },
     },
   },
   scaleControl: {
@@ -235,7 +193,7 @@ const Map = () => {
             preserveDrawingBuffer: true,
           }}
         />
-        <NavigationControl className={styles.navigationControl} />
+        <NavigationControl />
         <div
           className={styles.scaleControl}
           style={{
