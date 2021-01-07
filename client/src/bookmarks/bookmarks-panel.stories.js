@@ -1,10 +1,12 @@
-import { MapProvider } from 'MapContext';
 import * as React from 'react';
+
+import faker from 'faker/locale/en_GB';
 import { Provider } from 'react-redux';
-import BookmarksPanel from './bookmarks-panel.component';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
-import faker from 'faker/locale/en_GB';
+
+import { MapProvider } from 'MapContext';
+import BookmarksPanel from './bookmarks-panel.component';
 
 const mockStore = configureMockStore([thunk]);
 

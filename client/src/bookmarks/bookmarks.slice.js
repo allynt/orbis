@@ -1,16 +1,15 @@
+import {
+  createAsyncThunk,
+  createSelector,
+  createSlice,
+} from '@reduxjs/toolkit';
 import { NotificationManager } from 'react-notifications';
 
 import {
-  createSlice,
-  createSelector,
-  createAsyncThunk,
-} from '@reduxjs/toolkit';
-
-import {
   getData,
-  sendData,
-  getJsonAuthHeaders,
   getFormAuthHeaders,
+  getJsonAuthHeaders,
+  sendData,
 } from '../utils/http';
 
 const API = {

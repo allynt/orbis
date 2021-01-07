@@ -1,6 +1,7 @@
+import * as React from 'react';
+
 import {
   Avatar,
-  Box,
   Button,
   Grid,
   ImageIcon,
@@ -11,7 +12,6 @@ import {
   Paper,
   Typography,
 } from '@astrosat/astrosat-ui';
-import * as React from 'react';
 
 const useStyles = makeStyles(theme => ({
   avatar: {

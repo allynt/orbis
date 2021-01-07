@@ -1,5 +1,7 @@
-import faker from 'faker/locale/en_GB';
 import * as React from 'react';
+
+import faker from 'faker/locale/en_GB';
+
 import BookmarkList from './bookmarks-list.component';
 
 export default {

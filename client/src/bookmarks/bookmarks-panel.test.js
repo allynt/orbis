@@ -1,10 +1,12 @@
-import React from 'react';
+import * as React from 'react';
+
 import { render } from '@testing-library/react';
-import BookmarksPanel from './bookmarks-panel.component';
-import { MapProvider } from 'MapContext';
+import userEvent from '@testing-library/user-event';
 import { Provider } from 'react-redux';
 import createMockStore from 'redux-mock-store';
-import userEvent from '@testing-library/user-event';
+
+import { MapProvider } from 'MapContext';
+import BookmarksPanel from './bookmarks-panel.component';
 import { selectBookmark } from './bookmarks.slice';
 
 const mockStore = createMockStore();

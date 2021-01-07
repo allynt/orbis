@@ -2,19 +2,13 @@ import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 
 import reducer, {
-  fetchBookmarksSuccess,
-  fetchBookmarksFailure,
-  fetchBookmarks,
-  addBookmarkSuccess,
-  addBookmarkFailure,
   addBookmark,
-  deleteBookmarkSuccess,
-  deleteBookmarkFailure,
   deleteBookmark,
-  selectBookmark,
+  fetchBookmarks,
   isLoaded,
-  selectedBookmarkSelector,
   isLoadingSelector,
+  selectBookmark,
+  selectedBookmarkSelector,
 } from './bookmarks.slice';
 
 const mockStore = configureMockStore([thunk]);

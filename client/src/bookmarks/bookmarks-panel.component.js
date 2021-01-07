@@ -1,9 +1,14 @@
+import React, { useEffect } from 'react';
+
+import { useDispatch, useSelector } from 'react-redux';
+
+import { Box, Divider, styled } from '@astrosat/astrosat-ui';
+
 import { userSelector } from 'accounts/accounts.selectors';
 import { activeLayersSelector } from 'data-layers/data-layers.slice';
 import { useMap } from 'MapContext';
-import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import BookmarkForm from './bookmark-form/bookmark-form.component';
+import BookmarkList from './bookmarks-list/bookmarks-list.component';
 import {
   addBookmark,
   bookmarksSelector,
@@ -11,8 +16,6 @@ import {
   fetchBookmarks,
   selectBookmark,
 } from './bookmarks.slice';
-import BookmarkList from './bookmarks-list/bookmarks-list.component';
-import { Box, Divider, styled } from '@astrosat/astrosat-ui';
 
 const PrimaryDivider = styled(Divider)(({ theme }) => ({
   backgroundColor: theme.palette.primary.main,
