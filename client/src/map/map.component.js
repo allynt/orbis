@@ -9,12 +9,11 @@ import {
 
 import { FlyToInterpolator } from '@deck.gl/core';
 import DeckGL from '@deck.gl/react';
+import 'mapbox-gl/dist/mapbox-gl.css';
 import ReactMapGl, {
   ScaleControl,
   _MapContext as MapContext,
 } from 'react-map-gl';
-import { NavigationControl } from './controls/navigation-control.component';
-import 'mapbox-gl/dist/mapbox-gl.css';
 import Geocoder from 'react-map-gl-geocoder';
 import 'react-map-gl-geocoder/dist/mapbox-gl-geocoder.css';
 import { useDispatch, useSelector } from 'react-redux';
@@ -28,6 +27,7 @@ import {
 import { setLayers } from 'data-layers/data-layers.slice';
 import MapStyleSwitcher from 'map-style/map-style-switcher/map-style-switcher.component';
 import { useMap } from 'MapContext';
+import { NavigationControl } from './controls/navigation-control.component';
 import {
   mapStylesSelector,
   selectedMapStyleSelector,
@@ -103,14 +103,14 @@ const useStyles = makeStyles(theme => ({
   },
   scaleControl: {
     position: 'absolute',
-    right: '2rem',
+    right: props =>
+      props.selectedMapStyle?.id === 'satellite' ? '22.25rem' : '19.25rem',
     zIndex: 1,
     bottom: '0.25em',
   },
 }));
 
 const Map = () => {
-  const styles = useStyles();
   const { mapRef, deckRef, viewState, setViewState } = useMap();
   const dispatch = useDispatch();
   const accessToken = useSelector(mapboxTokenSelector);
@@ -120,6 +120,7 @@ const Map = () => {
   const selectedMapStyle = useSelector(selectedMapStyleSelector);
   const { layers, mapComponents } = useOrbs();
   const [mapStyleSwitcherVisible, setMapStyleSwitcherVisible] = useState(false);
+  const styles = useStyles({ selectedMapStyle });
 
   useEffect(() => {
     if (selectedBookmark) {
@@ -194,13 +195,7 @@ const Map = () => {
           }}
         />
         <NavigationControl />
-        <div
-          className={styles.scaleControl}
-          style={{
-            right:
-              selectedMapStyle?.id === 'satellite' ? '22.25rem' : '19.25rem',
-          }}
-        >
+        <div className={styles.scaleControl}>
           <ScaleControl unit="metric" />
         </div>
       </ReactMapGl>
