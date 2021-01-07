@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 
 import {
   Button,
+  ClickAwayListener,
   LayersIcon,
   LoadMask,
   makeStyles,
@@ -163,19 +164,22 @@ const Map = () => {
   return (
     <div className={styles.map}>
       <LoadMask className={styles.loadMask} open={bookmarksLoading} />
-      <Button
-        className={styles.mapStyleButton}
-        onClick={() => setMapStyleSwitcherVisible(cur => !cur)}
-      >
-        <LayersIcon fontSize="inherit" />
-      </Button>
-      {mapStyleSwitcherVisible && (
-        <MapStyleSwitcher
-          mapStyles={mapStyles}
-          selectedMapStyle={selectedMapStyle.id}
-          selectMapStyle={handleMapStyleSelect}
-        />
-      )}
+      <ClickAwayListener onClickAway={() => setMapStyleSwitcherVisible(false)}>
+        <div>
+          <Button
+            className={styles.mapStyleButton}
+            onClick={() => setMapStyleSwitcherVisible(cur => !cur)}
+          >
+            <LayersIcon fontSize="inherit" />
+          </Button>
+          <MapStyleSwitcher
+            open={mapStyleSwitcherVisible}
+            mapStyles={mapStyles}
+            selectedMapStyle={selectedMapStyle?.id}
+            selectMapStyle={handleMapStyleSelect}
+          />
+        </div>
+      </ClickAwayListener>
       <ReactMapGl
         key="bottom"
         ref={mapRef}
