@@ -80,6 +80,12 @@ const useStyles = makeStyles(theme => ({
         color: theme.palette.text.primary,
       },
     },
+    '& .mapboxgl-ctrl-bottom-left, & .mapboxgl-ctrl-top-left': {
+      paddingLeft: '2rem',
+    },
+    '& .mapboxgl-ctrl-bottom-right, & .mapboxgl-ctrl-top-right': {
+      paddingRight: '2rem',
+    },
   },
   loadMask: {
     zIndex: 1000,

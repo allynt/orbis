@@ -1,7 +1,6 @@
-import FeatureDetail from 'components/feature-detail/feature-detail.component';
+import { FeatureDetail, Popup } from 'components';
 import { omitBy } from 'lodash';
 import React from 'react';
-import { Popup } from 'react-map-gl';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   pickedInfoSelector,
