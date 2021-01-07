@@ -1,6 +1,11 @@
 import React, { useCallback, useEffect, useState } from 'react';
 
-import { Button, LayersIcon, LoadMask } from '@astrosat/astrosat-ui';
+import {
+  Button,
+  LayersIcon,
+  LoadMask,
+  makeStyles,
+} from '@astrosat/astrosat-ui';
 
 import { FlyToInterpolator } from '@deck.gl/core';
 import DeckGL from '@deck.gl/react';
@@ -29,8 +34,9 @@ import {
   selectMapStyle,
 } from './map.slice';
 import { useOrbs } from './orbs/useOrbs';
-
-import styles from './map.module.css';
+import plus from './plus.svg';
+import minus from './minus.svg';
+import compass from './compass.svg';
 
 /** @type {React.CSSProperties} */
 const TOP_MAP_CSS = {
@@ -39,7 +45,108 @@ const TOP_MAP_CSS = {
   pointerEvents: 'none',
 };
 
+const useStyles = makeStyles(theme => ({
+  map: {
+    position: 'relative',
+    width: '100%',
+    height: '100%',
+    '& .mapboxgl-ctrl-geocoder': {
+      position: 'absolute',
+      right: '2rem',
+      zIndex: 1,
+      top: '2rem',
+      backgroundColor: theme.palette.background.default,
+      boxShadow: theme.shadows[2],
+      '&--icon': {
+        fill: theme.palette.primary.main,
+      },
+      '&--button': {
+        backgroundColor: 'transparent',
+      },
+      '&--input': {
+        outline: 'none',
+        color: theme.palette.text.primary,
+      },
+      '& .suggestions': {
+        backgroundColor: theme.palette.background.default,
+        '& > .active > a': {
+          backgroundColor: theme.palette.secondary.light,
+        },
+        '& > li > a:hover': {
+          backgroundColor: theme.palette.secondary.light,
+        },
+      },
+      '&--suggestion': {
+        color: theme.palette.text.primary,
+      },
+    },
+  },
+  loadMask: {
+    zIndex: 1000,
+  },
+  mapStyleButton: {
+    position: 'absolute',
+    padding: '0.5rem',
+    bottom: '8rem',
+    right: '2rem',
+    zIndex: 10,
+    backgroundColor: theme.palette.background.default,
+    color: theme.palette.primary.main,
+    fontSize: '0.875rem',
+    minWidth: 'unset',
+    '&:hover': {
+      backgroundColor: theme.palette.background.default,
+    },
+  },
+  navigationControl: {
+    position: 'absolute',
+    right: '2rem',
+    zIndex: 1,
+    bottom: '2rem',
+    backgroundColor: 'transparent',
+    '& > button': {
+      backgroundColor: theme.palette.background.default,
+      transition: theme.transitions.create('opacity', {
+        duration: theme.transitions.duration.short,
+      }),
+      '& + button': {
+        borderColor: theme.palette.primary.main,
+      },
+      '&:first-of-type': {
+        borderTopLeftRadius: theme.shape.borderRadius,
+        borderTopRightRadius: theme.shape.borderRadius,
+        '& > span': {
+          backgroundImage: `url(${plus}) !important`,
+          backgroundSize: '100%',
+        },
+      },
+      '&:not(:first-of-type):not(:last-of-type) > span': {
+        backgroundImage: `url(${minus}) !important`,
+        backgroundSize: '100%',
+      },
+      '&:last-of-type': {
+        borderBottomLeftRadius: theme.shape.borderRadius,
+        borderBottomRightRadius: theme.shape.borderRadius,
+        '& > span': {
+          backgroundImage: `url(${compass}) !important`,
+        },
+      },
+      '&:not(:disabled):hover': {
+        backgroundColor: theme.palette.background.default,
+        opacity: `0.5 !important`,
+      },
+    },
+  },
+  scaleControl: {
+    position: 'absolute',
+    right: '2rem',
+    zIndex: 1,
+    bottom: '0.25em',
+  },
+}));
+
 const Map = () => {
+  const styles = useStyles();
   const { mapRef, deckRef, viewState, setViewState } = useMap();
   const dispatch = useDispatch();
   const accessToken = useSelector(mapboxTokenSelector);
@@ -90,17 +197,12 @@ const Map = () => {
 
   return (
     <div className={styles.map}>
-      {bookmarksLoading && (
-        <div className={styles.loadMask} data-testid="load-mask">
-          <LoadMask />
-        </div>
-      )}
+      <LoadMask className={styles.loadMask} open={bookmarksLoading} />
       <Button
-        theme="secondary"
         className={styles.mapStyleButton}
         onClick={() => setMapStyleSwitcherVisible(cur => !cur)}
       >
-        <LayersIcon classes={styles.icon} />
+        <LayersIcon fontSize="inherit" />
       </Button>
       {mapStyleSwitcherVisible && (
         <MapStyleSwitcher
