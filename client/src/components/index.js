@@ -8,6 +8,7 @@ export { default as InfoBox } from './info-box/info-box.component';
 export { default as InfoButton } from './info-button/info-button.component';
 export { InlineTextField } from './inline-text-field/inline-text-field.component';
 export { LoadingSpinner } from './loading-spinner/loading-spinner.component';
+export { Popup } from './popup/popup.component';
 export { SidePanel } from './side-panel/side-panel.component';
 export * from './sidebar';
 export { Skeleton } from './skeleton/skeleton.component';
