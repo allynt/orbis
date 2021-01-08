@@ -6,8 +6,7 @@
   background-color: #fff;
 }
 
-.header,
-.itemLayout {
+.header {
   display: flex;
   justify-content: space-between;
 }
@@ -28,18 +27,20 @@
 
 .content {
   margin: 1rem 0;
+  width: inherit;
 }
 
 .banner,
 .items {
   display: flex;
-  justify-content: flex-start;
+  justify-content: space-between;
   width: 100%;
 }
 
 .items {
   flex-wrap: wrap;
   overflow: overlay;
+  gap: 1rem;
   max-height: 35rem;
 }
 
@@ -79,7 +80,6 @@
 
 .item {
   width: 17rem;
-  margin-right: 1rem;
 }
 
 .image {
