@@ -10,7 +10,7 @@ import {
   baseSelector,
   fetchBookmarks,
   selectBookmark,
-} from '../bookmarks/bookmark.slice';
+} from '../bookmarks/bookmarks.slice';
 
 const useStyles = makeStyles(() => ({
   container: {
