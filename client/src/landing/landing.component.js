@@ -4,6 +4,8 @@ import {
   Box,
   Button,
   Link,
+  Paper,
+  Avatar,
   Typography,
   makeStyles,
   styled,
@@ -51,6 +53,10 @@ const useStyles = makeStyles(theme => ({
       opacity: 1,
     },
   },
+  itemAvatar: {
+    width: '100%',
+    height: '100%',
+  },
   creationDate: {
     opacity: '0.5',
     fontSize: theme.typography.pxToRem(12),
@@ -61,6 +67,9 @@ const useStyles = makeStyles(theme => ({
     width: '100%',
     textAlign: 'center',
     fontSize: theme.typography.pxToRem(20),
+  },
+  existingUserbutton: {
+    marginBottom: '1rem',
   },
 }));
 
@@ -111,9 +120,13 @@ const Items = ({ items, chooseItem }) => {
         return (
           <Box key={item.title} width="17rem">
             <Box className={styles.itemImage} onClick={() => setItem(item)}>
-              <picture>
-                <img src={item.thumbnail} alt={item.title}></img>
-              </picture>
+              <Avatar
+                component={Paper}
+                variant="square"
+                className={styles.itemAvatar}
+                src={item.thumbnail}
+                alt={item.title}
+              />
             </Box>
             <Box
               display="flex"
@@ -196,9 +209,11 @@ const NewUserLanding = () => {
             </Typography>
           </Box>
 
-          <Link href="/map">
-            <Button data-testid="browse-map">Browse Map</Button>
-          </Link>
+          <RouterLink to="/map">
+            <Button color="secondary" data-testid="browse-map">
+              Browse Map
+            </Button>
+          </RouterLink>
         </Box>
       </Box>
     </Box>
@@ -261,7 +276,9 @@ const ExistingUserLanding = ({ bookmarks, chooseBookmark }) => {
         height="5rem"
       >
         <RouterLink to="/map">
-          <Button>Browse Map</Button>
+          <Button className={styles.existingUserbutton} color="secondary">
+            Browse Map
+          </Button>
         </RouterLink>
       </Box>
     </Box>
