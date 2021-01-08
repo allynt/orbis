@@ -9,7 +9,7 @@ import {
   styled,
 } from '@astrosat/astrosat-ui';
 
-import { Redirect } from 'react-router-dom';
+import { Redirect, Link as RouterLink } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { format } from 'date-fns';
@@ -27,7 +27,7 @@ import newUserBackgroundImage from './landing-image.png';
 import { ReactComponent as OrbisLogoLight } from '../orbis-light.svg';
 import { ReactComponent as OrbisLogoDark } from '../orbis-dark.svg';
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles(({ theme }) => ({
   container: {
     backgroundColor: '#fff',
   },
@@ -53,14 +53,14 @@ const useStyles = makeStyles(() => ({
   },
   creationDate: {
     opacity: '0.5',
-    fontSize: '0.75rem',
+    fontSize: theme.typography.pxToRem(12),
     padding: '0.3rem 0',
     margin: '0',
   },
   paragraph: {
     width: '100%',
     textAlign: 'center',
-    fontSize: '1.25rem',
+    fontSize: theme.typography.pxToRem(20),
   },
 }));
 
@@ -260,9 +260,9 @@ const ExistingUserLanding = ({ bookmarks, chooseBookmark }) => {
         align-items="flex-start"
         height="5rem"
       >
-        <Link href="/map">
+        <RouterLink to="/map">
           <Button>Browse Map</Button>
-        </Link>
+        </RouterLink>
       </Box>
     </Box>
   );
