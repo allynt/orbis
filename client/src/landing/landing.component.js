@@ -11,7 +11,7 @@ import {
   baseSelector,
   fetchBookmarks,
   selectBookmark,
-} from '../bookmarks/bookmark.slice';
+} from '../bookmarks/bookmarks.slice';
 
 import { Button } from '@astrosat/astrosat-ui';
 
