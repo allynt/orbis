@@ -27,7 +27,7 @@ import newUserBackgroundImage from './landing-image.png';
 import { ReactComponent as OrbisLogoLight } from '../orbis-light.svg';
 import { ReactComponent as OrbisLogoDark } from '../orbis-dark.svg';
 
-const useStyles = makeStyles(({ theme }) => ({
+const useStyles = makeStyles(theme => ({
   container: {
     backgroundColor: '#fff',
   },
