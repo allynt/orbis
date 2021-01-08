@@ -1,8 +1,8 @@
-import React, { useRef, useState } from 'react';
+import React, { useState } from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
 
-import { Button } from '@astrosat/astrosat-ui';
+import { Button, Link, makeStyles, ThemeProvider } from '@astrosat/astrosat-ui';
 
 import { useOrbs } from 'map/orbs/useOrbs';
 import { ReactComponent as AddNewCategoryIcon } from './add-more-categories.svg';
@@ -15,11 +15,26 @@ import {
 } from './data-layers.slice';
 import { LayersList } from './layers-list/layers-list.component';
 
-import styles from './data-layers.module.css';
+const useStyles = makeStyles(theme => ({
+  wrapper: {
+    display: 'flex',
+    flexDirection: 'column',
+  },
+  link: {
+    '&:hover': {
+      borderBottomColor: theme.palette.primary.main,
+    },
+  },
+  button: {
+    paddingLeft: theme.spacing(2),
+    paddingRight: theme.spacing(2),
+    margin: '0 auto',
+  },
+}));
 
 const DataLayers = () => {
+  const styles = useStyles();
   const [isVisible, toggle] = useState(false);
-  const ref = useRef(null);
   const { sidebarComponents } = useOrbs();
 
   const dispatch = useDispatch();
@@ -37,32 +52,32 @@ const DataLayers = () => {
   };
 
   return (
-    <div ref={ref}>
+    <div className={styles.wrapper}>
       <LayersList
         dispatch={dispatch}
         selectedLayers={activeCategorisedSources}
         sidebarComponents={sidebarComponents}
       />
-      <div className={styles.buttons}>
-        <AddNewCategoryIcon
-          className={styles.addNewCategoryIcon}
-          onClick={toggle}
-        />
-        <Button
-          theme="link"
-          className={styles.addOrbButton}
-          onClick={() => toggle(true)}
-        >
+      <Button
+        className={styles.button}
+        variant="text"
+        size="small"
+        onClick={() => toggle(true)}
+        startIcon={<AddNewCategoryIcon />}
+      >
+        <Link className={styles.link} color="textPrimary" component="span">
           Add/Remove Orbs and Data Layers
-        </Button>
-      </div>
-      <DataLayersDialog
-        orbs={categorisedOrbsAndSources}
-        initialSelectedSources={selectedLayers}
-        onSubmit={handleDialogSubmit}
-        close={() => toggle(false)}
-        open={isVisible}
-      />
+        </Link>
+      </Button>
+      <ThemeProvider theme="light">
+        <DataLayersDialog
+          orbs={categorisedOrbsAndSources}
+          initialSelectedSources={selectedLayers}
+          onSubmit={handleDialogSubmit}
+          close={() => toggle(false)}
+          open={isVisible}
+        />
+      </ThemeProvider>
     </div>
   );
 };

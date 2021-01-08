@@ -5,7 +5,7 @@ import { styled, Typography, fade } from '@astrosat/astrosat-ui';
 import { LayersListItem } from './layers-list-item/layers-list-item.component';
 
 const CategoryHeader = styled(Typography)(({ theme }) => ({
-  ...theme.typography.h1,
+  ...theme.typography.h3,
   backgroundColor: fade(theme.palette.common.white, 0.17),
   padding: '0.75rem 1rem',
 }));
