@@ -49,6 +49,7 @@ const useListItemClasses = makeStyles(theme => ({
  *   result?: CrowdlessFeature
  *   selected?: boolean
  *   onClick?: (result: CrowdlessFeature) => void
+ *   divider?: boolean
  * }} props
  */
 const ResultsListItem = ({
@@ -56,6 +57,7 @@ const ResultsListItem = ({
   result,
   selected = true,
   onClick,
+  divider,
 }) => {
   const listItemClasses = useListItemClasses();
   const Icon = getIcon(result?.properties?.crowdednessCategory);
@@ -70,6 +72,7 @@ const ResultsListItem = ({
       onClick={handleClick}
       onKeyPress={handleClick}
       selected={selected}
+      divider={divider}
     >
       <ListItemIcon>
         {isLoading ? (
