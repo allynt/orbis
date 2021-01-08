@@ -3,7 +3,7 @@ import * as React from 'react';
 import ResultsListItem from './results-list-item.component';
 
 export default {
-  title: 'Orbs/IsolationPlus/Crowdless/ResultsListItem',
+  title: 'Orbs/Crowdless/ResultsListItem',
   argTypes: {
     onClick: { action: 'onClick' },
   },
@@ -15,6 +15,7 @@ export const NoResult = Template.bind({});
 
 export const Result = Template.bind({});
 Result.args = {
+  selected: true,
   result: {
     properties: {
       name: faker.company.companyName(),

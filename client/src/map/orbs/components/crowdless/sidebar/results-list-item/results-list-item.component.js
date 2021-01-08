@@ -1,19 +1,14 @@
 import * as React from 'react';
 
-import clsx from 'clsx';
+import {
+  ListItem,
+  ListItemIcon,
+  ListItemText,
+  makeStyles,
+  Skeleton,
+} from '@astrosat/astrosat-ui';
 
-import { Skeleton } from 'components';
 import { Busy, NotBusy, VeryBusy } from '../icons';
-
-import styles from './results-list-item.module.css';
-
-const ResultsListItemSkeleton = () => (
-  <>
-    <Skeleton className={styles.icon} width="1.429em" height="1.429em" />
-    <Skeleton width="10ch" height="1.15em" />
-    <Skeleton width="30ch" height="1.15em" />
-  </>
-);
 
 /**
  * @param {CrowdlessFeatureProperties['crowdednessCategory']} crowdednessCategory
@@ -31,6 +26,23 @@ const getIcon = crowdednessCategory => {
   }
 };
 
+const useListItemClasses = makeStyles(theme => ({
+  root: {
+    opacity: 0.5,
+    '&:hover': {
+      backgroundColor: theme.palette.secondary.light,
+    },
+    '&$selected': {
+      opacity: 1,
+      backgroundColor: theme.palette.background.default,
+      '&:hover': {
+        backgroundColor: theme.palette.secondary.light,
+      },
+    },
+  },
+  selected: {},
+}));
+
 /**
  * @param {{
  *   isLoading?: boolean
@@ -45,31 +57,48 @@ const ResultsListItem = ({
   selected = true,
   onClick,
 }) => {
+  const listItemClasses = useListItemClasses();
   const Icon = getIcon(result?.properties?.crowdednessCategory);
 
   const handleClick = () => onClick && onClick(result);
 
   return (
-    <li
-      className={clsx(styles.listItem, { [styles.selected]: selected })}
+    <ListItem
+      classes={listItemClasses}
+      button
       onClick={handleClick}
       onKeyPress={handleClick}
-      tabIndex={0}
-      aria-label={result?.properties?.name}
+      selected={selected}
     >
-      {isLoading ? (
-        <ResultsListItemSkeleton />
-      ) : (
-        <>
-          <Icon
-            className={styles.icon}
-            title={result?.properties?.crowdednessCategory}
+      <ListItemIcon>
+        {isLoading ? (
+          <Skeleton
+            role="progressbar"
+            variant="circle"
+            width="1.429em"
+            height="1.429em"
           />
-          <p className={styles.name}>{result?.properties?.name}</p>
-          <p className={styles.address}>{result?.properties?.address}</p>
-        </>
-      )}
-    </li>
+        ) : (
+          <Icon title={result?.properties?.crowdednessCategory} />
+        )}
+      </ListItemIcon>
+      <ListItemText
+        primary={
+          isLoading ? (
+            <Skeleton role="progressbar" variant="text" width="20ch" />
+          ) : (
+            <span style={{ fontWeight: 600 }}>{result?.properties?.name}</span>
+          )
+        }
+        secondary={
+          isLoading ? (
+            <Skeleton role="progressbar" variant="text" width="40ch" />
+          ) : (
+            result?.properties?.address
+          )
+        }
+      />
+    </ListItem>
   );
 };
 

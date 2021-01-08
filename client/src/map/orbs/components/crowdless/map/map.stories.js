@@ -3,7 +3,7 @@ import * as React from 'react';
 import CrowdlessMapComponent from './map.component';
 
 export default {
-  title: 'Orbs/IsolationPlus/Crowdless/CrowdlessMapComponent',
+  title: 'Orbs/Crowdless/CrowdlessMapComponent',
 };
 
 const Template = args => (

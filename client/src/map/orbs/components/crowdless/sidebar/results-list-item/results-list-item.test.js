@@ -43,7 +43,7 @@ describe('<ResultsListItem />', () => {
     const { onClick, getByRole } = renderComponent({
       result,
     });
-    userEvent.click(getByRole('listitem'));
+    userEvent.click(getByRole('button'));
     expect(onClick).toHaveBeenCalledWith(result);
   });
 });
