@@ -1,13 +1,19 @@
-import React from 'react';
+import * as React from 'react';
+
+import { styled, Typography, fade } from '@astrosat/astrosat-ui';
 
 import { LayersListItem } from './layers-list-item/layers-list-item.component';
 
-import styles from './layers-list.module.css';
+const CategoryHeader = styled(Typography)(({ theme }) => ({
+  ...theme.typography.h1,
+  backgroundColor: fade(theme.palette.common.white, 0.17),
+  padding: '0.75rem 1rem',
+}));
 
 /**
  * @param {{
  *   dispatch: import('redux').Dispatch
- *   selectedLayers: CategorisedSources
+ *   selectedLayers: import('typings/orbis').CategorisedSources
  *   sidebarComponents: {[key: string]: React.LazyExoticComponent<React.ComponentType<any>>}
  * }} props
  */
@@ -17,7 +23,7 @@ export const LayersList = ({ dispatch, selectedLayers, sidebarComponents }) => (
       if (selectedLayer.category)
         return (
           <>
-            <h1 className={styles.category}>{selectedLayer.category}</h1>
+            <CategoryHeader>{selectedLayer.category}</CategoryHeader>
             <LayersList
               dispatch={dispatch}
               sidebarComponents={sidebarComponents}
