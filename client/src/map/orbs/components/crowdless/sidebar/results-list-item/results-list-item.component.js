@@ -29,13 +29,13 @@ const getIcon = crowdednessCategory => {
 const useListItemClasses = makeStyles(theme => ({
   root: {
     opacity: 0.5,
-    '&:hover': {
+    '&:hover:not(:disabled)': {
       backgroundColor: theme.palette.secondary.light,
     },
     '&$selected': {
       opacity: 1,
       backgroundColor: theme.palette.background.default,
-      '&:hover': {
+      '&:hover:not(:disabled)': {
         backgroundColor: theme.palette.secondary.light,
       },
     },
@@ -64,6 +64,7 @@ const ResultsListItem = ({
 
   return (
     <ListItem
+      disabled={isLoading}
       classes={listItemClasses}
       button
       onClick={handleClick}
