@@ -1,7 +1,8 @@
-import React from 'react';
+import * as React from 'react';
+
 import { render } from '@testing-library/react';
+
 import { LayersListItem } from './layers-list-item.component';
-import userEvent from '@testing-library/user-event';
 
 const title = 'Test title';
 
@@ -23,27 +24,5 @@ describe('<LayersListItem />', () => {
   it("Does not show the arrow icon if there aren't child components", () => {
     const { queryByTitle } = render(<LayersListItem title={title} />);
     expect(queryByTitle('Expand')).not.toBeInTheDocument();
-  });
-
-  it('Expands on click when collapsed', () => {
-    const { getByText } = render(
-      <LayersListItem title={title}>
-        <div>Child</div>
-      </LayersListItem>,
-    );
-    userEvent.click(getByText(title));
-    expect(getByText('Child')).toBeInTheDocument();
-  });
-
-  it('Collapses on click when expanded', () => {
-    const { getByText, queryByText } = render(
-      <LayersListItem title={title}>
-        <div>Child</div>
-      </LayersListItem>,
-    );
-    userEvent.click(getByText(title));
-    expect(getByText('Child')).toBeInTheDocument();
-    userEvent.click(getByText(title));
-    expect(queryByText('Child')).not.toBeInTheDocument();
   });
 });
