@@ -163,7 +163,11 @@ const Map = () => {
 
   return (
     <div className={styles.map}>
-      <LoadMask className={styles.loadMask} open={bookmarksLoading} />
+      <LoadMask
+        data-testid="load-mask"
+        className={styles.loadMask}
+        open={bookmarksLoading}
+      />
       <ClickAwayListener onClickAway={() => setMapStyleSwitcherVisible(false)}>
         <div>
           <Button
