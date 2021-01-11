@@ -1,8 +1,14 @@
-import React from 'react';
+import * as React from 'react';
+
+import {
+  Box,
+  List,
+  ListItem,
+  ListItemIcon,
+  ListItemText,
+} from '@astrosat/astrosat-ui';
 
 import { toTitleCase } from 'utils/text';
-
-import styles from './population-information.module.css';
 
 const personTypes = [
   {
@@ -13,34 +19,28 @@ const personTypes = [
     name: 'RECIPIENT',
     color: '#f6e800',
   },
-  // Removed for hourglass
-  /* {
-    name: 'REPORTER',
-    color: 'yellow',
-  }, */
+  {
+    name: 'GROUP',
+    color: '#8031A7',
+  },
 ];
 
 export const PopulationInformation = () => (
-  <ul>
+  <List>
     {personTypes.map(personType => (
-      <li key={personType.name} className={styles.listItem}>
-        <div
-          className={styles.colorBox}
-          style={{
-            backgroundColor: personType.color,
-          }}
-        />
-        {toTitleCase(personType.name)}
-      </li>
+      <ListItem key={personType.name}>
+        <ListItemIcon>
+          <Box
+            width="1rem"
+            height="1rem"
+            borderRadius="borderRadius"
+            style={{
+              backgroundColor: personType.color,
+            }}
+          />
+        </ListItemIcon>
+        <ListItemText primary={toTitleCase(personType.name)} />
+      </ListItem>
     ))}
-    <li className={styles.listItem}>
-      <div
-        className={styles.colorBox}
-        style={{
-          backgroundColor: '#8031A7',
-        }}
-      />
-      Group
-    </li>
-  </ul>
+  </List>
 );
