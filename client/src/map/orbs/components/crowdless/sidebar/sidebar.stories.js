@@ -4,7 +4,7 @@ import { CrowdlessSidebarComponent } from './sidebar.component';
 import { Description } from './description.component';
 
 export default {
-  title: 'Orbs/IsolationPlus/Crowdless/CrowdlessSidebarComponent',
+  title: 'Orbs/Crowdless/CrowdlessSidebarComponent',
   args: {
     visible: true,
   },

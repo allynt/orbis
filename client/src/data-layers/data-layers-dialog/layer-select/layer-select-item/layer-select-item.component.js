@@ -1,22 +1,15 @@
-import React, { useState } from 'react';
+import * as React from 'react';
 
 import {
   Checkbox,
-  ClickAwayListener,
-  IconButton,
-  InfoIcon,
   ListItem,
   ListItemIcon,
   ListItemSecondaryAction,
   ListItemText,
-  Tooltip,
-  styled,
   makeStyles,
 } from '@astrosat/astrosat-ui';
 
-const BaseLayerSelectItem = styled(ListItem)(({ theme }) => ({}));
-
-const InfoIconButton = styled(IconButton)(({ theme }) => ({}));
+import { InfoButtonTooltip } from 'components';
 
 const useStyles = makeStyles(theme => ({
   listItem: {
@@ -31,8 +24,6 @@ const useStyles = makeStyles(theme => ({
     minWidth: '2rem',
   },
   infoButton: {
-    fontSize: theme.typography.pxToRem(8),
-    padding: theme.typography.pxToRem(2),
     backgroundColor: theme.palette.grey[600],
     color: theme.palette.getContrastText(theme.palette.grey[600]),
   },
@@ -54,11 +45,6 @@ const useStyles = makeStyles(theme => ({
  */
 const LayerSelectItem = ({ selected, source, onChange }) => {
   const styles = useStyles();
-  const [isInfoVisible, setIsInfoVisible] = useState(false);
-
-  const buttonClick = () => {
-    setIsInfoVisible(c => !c);
-  };
 
   return (
     <ListItem
@@ -81,25 +67,10 @@ const LayerSelectItem = ({ selected, source, onChange }) => {
       />
       {source?.metadata?.description && (
         <ListItemSecondaryAction className={styles.info}>
-          <ClickAwayListener onClickAway={() => setIsInfoVisible(false)}>
-            <Tooltip
-              arrow
-              placement="left"
-              disableHoverListener
-              disableFocusListener
-              disableTouchListener
-              open={isInfoVisible}
-              title={source.metadata.description}
-            >
-              <IconButton
-                className={styles.infoButton}
-                aria-label="Info"
-                onClick={buttonClick}
-              >
-                <InfoIcon fontSize="inherit" />
-              </IconButton>
-            </Tooltip>
-          </ClickAwayListener>
+          <InfoButtonTooltip
+            iconButtonClassName={styles.infoButton}
+            tooltipContent={source?.metadata?.description}
+          />
         </ListItemSecondaryAction>
       )}
     </ListItem>
