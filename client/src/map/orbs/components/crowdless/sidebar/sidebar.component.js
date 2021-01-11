@@ -11,6 +11,7 @@ import {
   CircularProgress,
   List,
   ListSubheader,
+  Fade,
 } from '@astrosat/astrosat-ui';
 
 import { InfoButtonTooltip } from 'components';
@@ -60,58 +61,57 @@ export const CrowdlessSidebarComponent = ({
             tooltipContent={<Description />}
           />
         </Grid>
-
-        {visible && (
-          <>
-            <Grid item xs={12} component={Typography}>
-              Please zoom in to the desired area or add area in the search box{' '}
-              <MagnifierIcon color="primary" fontSize="inherit" /> at the top
-              right of the map in order to get most accurate results. Then click
-              the button “Find Supermarkets” below.
-            </Grid>
-            <Grid item xs={12} container justify="center">
-              <Button size="small" onClick={() => !isLoading && onFindClick()}>
-                {isLoading ? (
-                  <CircularProgress color="inherit" size={20} />
-                ) : (
-                  'Find Supermarkets'
-                )}
-              </Button>
-            </Grid>
-            {((isLoading && !results) || results?.length) && (
-              <List
-                subheader={
-                  <ListSubheader disableSticky>
-                    Places close to you
-                  </ListSubheader>
-                }
-              >
-                {isLoading &&
-                  !results &&
-                  Array(10)
-                    .fill(undefined)
-                    .map((_, i) => <ResultsListItem key={i} isLoading />)}
-                {results?.length &&
-                  results.map((result, i) => (
-                    <>
-                      <ResultsListItem
-                        key={result.properties.placeId}
-                        result={result}
-                        selected={
-                          selectedResult === undefined ||
-                          result.properties.placeId ===
-                            selectedResult?.properties?.placeId
-                        }
-                        onClick={onResultClick}
-                        divider={i + 1 !== results.length}
-                      />
-                    </>
-                  ))}
-              </List>
-            )}
-          </>
-        )}
       </Grid>
+      <Fade in={visible} unmountOnExit>
+        <Grid container spacing={2}>
+          <Grid item xs={12} component={Typography}>
+            Please zoom in to the desired area or add area in the search box{' '}
+            <MagnifierIcon color="primary" fontSize="inherit" /> at the top
+            right of the map in order to get most accurate results. Then click
+            the button “Find Supermarkets” below.
+          </Grid>
+          <Grid item xs={12} container justify="center">
+            <Button size="small" onClick={() => !isLoading && onFindClick()}>
+              {isLoading ? (
+                <CircularProgress
+                  data-testid="button-progress"
+                  color="inherit"
+                  size={20}
+                />
+              ) : (
+                'Find Supermarkets'
+              )}
+            </Button>
+          </Grid>
+          {((isLoading && !results) || results?.length) && (
+            <List
+              subheader={
+                <ListSubheader disableSticky>Places close to you</ListSubheader>
+              }
+            >
+              {isLoading &&
+                !results &&
+                Array(10)
+                  .fill(undefined)
+                  .map((_, i) => <ResultsListItem key={i} isLoading />)}
+              {results?.length &&
+                results.map((result, i) => (
+                  <ResultsListItem
+                    key={result.properties.placeId}
+                    result={result}
+                    selected={
+                      selectedResult === undefined ||
+                      result.properties.placeId ===
+                        selectedResult?.properties?.placeId
+                    }
+                    onClick={onResultClick}
+                    divider={i + 1 !== results.length}
+                  />
+                ))}
+            </List>
+          )}
+        </Grid>
+      </Fade>
     </>
   );
 };
