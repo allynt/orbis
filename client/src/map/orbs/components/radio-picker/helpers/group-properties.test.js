@@ -1,4 +1,4 @@
-import { getProperties } from './get-properties';
+import { groupProperties } from './group-properties';
 
 const pairedObjects = [
   {
@@ -61,20 +61,16 @@ const mixedObjects = [
     name: 'test name 4',
     type: 'percentage',
   },
+  {
+    name: 'test name 5',
+    type: 'something else',
+    property_group: '1',
+  },
 ];
 
-const layerTemplate = properties => {
-  return {
-    source_id: 'test/layer',
-    metadata: {
-      properties,
-    },
-  };
-};
-
-describe('getProperties', () => {
+describe('groupProperties', () => {
   it('sorts an array of `percentage` and `continuous` objects into an array of sub-arrays, each containing a percentage/number pair', () => {
-    const result = getProperties(layerTemplate(pairedObjects));
+    const result = groupProperties(pairedObjects);
 
     const expected = [
       [
@@ -107,16 +103,13 @@ describe('getProperties', () => {
   });
 
   it('returns only individual objects if no pairs present', () => {
-    const result = getProperties(layerTemplate(singleObjects));
+    const result = groupProperties(singleObjects);
 
-    // Will just return a duplicate array if only single objects
-    const expected = singleObjects;
-
-    expect(result).toEqual(expected);
+    expect(result).toEqual(singleObjects);
   });
 
   it('returns a combination of single objects and sub-arrays, if a combination of singles/pairs are present', () => {
-    const result = getProperties(layerTemplate(mixedObjects));
+    const result = groupProperties(mixedObjects);
 
     const expected = [
       [
@@ -128,6 +121,11 @@ describe('getProperties', () => {
         {
           name: 'test name 2',
           type: 'continuous',
+          property_group: '1',
+        },
+        {
+          name: 'test name 5',
+          type: 'something else',
           property_group: '1',
         },
       ],
