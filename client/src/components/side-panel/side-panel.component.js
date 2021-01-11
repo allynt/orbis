@@ -14,10 +14,10 @@ const useStyles = makeStyles(theme => ({
   },
   open: {
     transform: 'translateX(0)',
-    '& .left': {
+    '&$left': {
       marginRight: 'calc(-1 * 20rem)',
     },
-    '& .right': {
+    '&$right': {
       marginLeft: 'calc(-1 * 20rem)',
     },
   },
