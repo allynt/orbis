@@ -1,6 +1,49 @@
-import React, { useState } from 'react';
-import { ReactComponent as ExpandIcon } from '../../triangle.svg';
-import styles from './layers-list-item.module.css';
+import * as React from 'react';
+
+import {
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
+  makeStyles,
+  TriangleIcon,
+  Typography,
+} from '@astrosat/astrosat-ui';
+
+const useAccordionStyles = makeStyles({
+  root: {
+    overflowX: 'hidden',
+    background: 'none',
+    boxShadow: 'none',
+    '&$expanded': {
+      margin: 0,
+    },
+  },
+  expanded: {},
+});
+
+const useSummaryClasses = makeStyles({
+  root: {
+    '&$expanded': {
+      minHeight: 8 * 6,
+    },
+  },
+  content: {
+    '&$expanded': {
+      margin: '12px 0',
+    },
+  },
+  expanded: {},
+});
+
+const useStyles = makeStyles({
+  fakeSummary: {
+    cursor: 'default !important',
+  },
+  icon: {
+    width: '0.875rem',
+    height: '0.875rem',
+  },
+});
 
 /**
  * @param {{
@@ -14,28 +57,31 @@ export const LayersListItem = ({
   title,
   defaultExpanded = false,
 }) => {
-  const [expanded, setExpanded] = useState(defaultExpanded);
+  const accordionClasses = useAccordionStyles();
+  const summaryClasses = useSummaryClasses();
+  const styles = useStyles();
 
-  return (
-    <div className={styles.layersListItem}>
-      <button
-        className={`${styles.button} ${expanded && styles.expanded}`}
-        disabled={!children}
-        onClick={() => setExpanded(e => !e)}
+  return !!children ? (
+    <Accordion classes={accordionClasses} defaultExpanded={defaultExpanded}>
+      <AccordionSummary
+        classes={summaryClasses}
+        expandIcon={
+          <TriangleIcon titleAccess="Expand" className={styles.icon} />
+        }
       >
-        {title}
-        {children && (
-          <ExpandIcon
-            className={`${styles.icon} ${styles.expandIcon} ${
-              expanded && styles.expanded
-            }`}
-            title="Expand"
-          />
-        )}
-      </button>
-      <div className={`${styles.children} ${expanded && styles.expanded}`}>
-        {expanded && children}
-      </div>
-    </div>
+        <Typography variant="h4" component="span">
+          {title}
+        </Typography>
+      </AccordionSummary>
+      <AccordionDetails>{children}</AccordionDetails>
+    </Accordion>
+  ) : (
+    <Typography
+      className={styles.fakeSummary}
+      variant="h4"
+      component={AccordionSummary}
+    >
+      {title}
+    </Typography>
   );
 };
