@@ -29,7 +29,6 @@ class IsAuthenticatedOrAdmin(BasePermission):
     A custom permission; any authenticated user can generate a token,
     but only the admin can consume a token.
     """
-
     def has_permission(self, request, view):
         user = request.user
         if request.method in SAFE_METHODS:
@@ -43,57 +42,49 @@ class IsAuthenticatedOrAdmin(BasePermission):
 
 _encoded_token_schema = openapi.Schema(
     type=openapi.TYPE_OBJECT,
-    properties=OrderedDict((
-        ("token", openapi.Schema(type=openapi.TYPE_STRING)),
-    ))
+    properties=OrderedDict((  # yapf: disable
+        ("token", openapi.Schema(type=openapi.TYPE_STRING)), # yapf: disable
+    ))  # yapf: disable
 )
-
 
 _decoded_token_schema = openapi.Schema(
     type=openapi.TYPE_OBJECT,
-    properties=OrderedDict((
-        ("iss", openapi.Schema(type=openapi.TYPE_STRING, example="domain.com")),
-        ("sub", openapi.Schema(type=openapi.TYPE_STRING, example="user")),
-        ("name", openapi.Schema(type=openapi.TYPE_STRING, example="orbis token")),
-        ("iat", openapi.Schema(type=openapi.TYPE_STRING, format=openapi.FORMAT_DATETIME)),
-        ("exp", openapi.Schema(type=openapi.TYPE_STRING, format=openapi.FORMAT_DATETIME)),
-        ("scopes", openapi.Schema(type=openapi.TYPE_OBJECT, properties=OrderedDict((
-            ("data", openapi.Schema(type=openapi.TYPE_OBJECT, properties=OrderedDict((
-                ("read", openapi.Schema(type=openapi.TYPE_ARRAY, items=openapi.Schema(type=openapi.TYPE_STRING, example="authority/namespace/name/version"))),
-                ("create", openapi.Schema(type=openapi.TYPE_ARRAY, items=openapi.Schema(type=openapi.TYPE_STRING, example="authority/namespace/name/version"))),
-                ("delete", openapi.Schema(type=openapi.TYPE_ARRAY, items=openapi.Schema(type=openapi.TYPE_STRING, example="authority/namespace/name/version"))),
-            )))),
-        )))),
-    ))
+    properties=OrderedDict((  # yapf: disable
+        ("iss", openapi.Schema(type=openapi.TYPE_STRING, example="domain.com")),  # yapf: disable
+        ("sub", openapi.Schema(type=openapi.TYPE_STRING, example="user")),  # yapf: disable
+        ("name", openapi.Schema(type=openapi.TYPE_STRING, example="orbis token")),  # yapf: disable
+        ("iat", openapi.Schema(type=openapi.TYPE_STRING, format=openapi.FORMAT_DATETIME)),  # yapf: disable
+        ("exp", openapi.Schema(type=openapi.TYPE_STRING, format=openapi.FORMAT_DATETIME)),  # yapf: disable
+        ("scopes", openapi.Schema(type=openapi.TYPE_OBJECT, properties=OrderedDict((  # yapf: disable
+            ("data", openapi.Schema(type=openapi.TYPE_OBJECT, properties=OrderedDict((  # yapf: disable
+                ("read", openapi.Schema(type=openapi.TYPE_ARRAY, items=openapi.Schema(type=openapi.TYPE_STRING, example="authority/namespace/name/version"))),  # yapf: disable
+                ("create", openapi.Schema(type=openapi.TYPE_ARRAY, items=openapi.Schema(type=openapi.TYPE_STRING, example="authority/namespace/name/version"))),  # yapf: disable
+                ("delete", openapi.Schema(type=openapi.TYPE_ARRAY, items=openapi.Schema(type=openapi.TYPE_STRING, example="authority/namespace/name/version"))),  # yapf: disable
+            )))),  # yapf: disable
+        )))),  # yapf: disable
+    ))  # yapf: disable
 )
-
 
 _data_sources_schema = openapi.Schema(
     type=openapi.TYPE_OBJECT,
-    properties=OrderedDict((
-        ("token", openapi.Schema(type=openapi.TYPE_STRING)),
-        ("timeout", openapi.Schema(type=openapi.TYPE_NUMBER, example=60)),
-        ("sources", openapi.Schema(type=openapi.TYPE_ARRAY,items=openapi.Schema(
-            type=openapi.TYPE_OBJECT,
-            properties=OrderedDict((
-                ("source_id", openapi.Schema(type=openapi.TYPE_STRING, example="astrosat/core/infrastructure/2020")),
-                ("authority", openapi.Schema(type=openapi.TYPE_STRING, example="astrosat")),
-                ("namespace", openapi.Schema(type=openapi.TYPE_STRING, example="core")),
-                ("name", openapi.Schema(type=openapi.TYPE_STRING, example="infrastructure")),
-                ("version", openapi.Schema(type=openapi.TYPE_STRING, example="2020")),
-                ("type", openapi.Schema(type=openapi.TYPE_STRING, example="vector")),
-                ("status", openapi.Schema(type=openapi.TYPE_STRING, example="published")),
-                ("orbs", openapi.Schema(type=openapi.TYPE_ARRAY, items=openapi.Schema(
-                    type=openapi.TYPE_OBJECT,
-                    properties=OrderedDict((
-                        ("name", openapi.Schema(type=openapi.TYPE_STRING)),
-                        ("description", openapi.Schema(type=openapi.TYPE_STRING)),
-                    ))
-                ))),
-                ("metadata", openapi.Schema(type=openapi.TYPE_OBJECT)),
-            ))
-        ))),
-    ))
+    properties=OrderedDict((  # yapf: disable
+        ("token", openapi.Schema(type=openapi.TYPE_STRING)),  # yapf: disable
+        ("timeout", openapi.Schema(type=openapi.TYPE_NUMBER, example=60)),  # yapf: disable
+        ("sources", openapi.Schema(type=openapi.TYPE_ARRAY, items=openapi.Schema(type=openapi.TYPE_OBJECT, properties=OrderedDict((  # yapf: disable
+            ("source_id", openapi.Schema(type=openapi.TYPE_STRING, example="astrosat/core/infrastructure/2020")),  # yapf: disable
+            ("authority", openapi.Schema(type=openapi.TYPE_STRING, example="astrosat")),  # yapf: disable
+            ("namespace", openapi.Schema(type=openapi.TYPE_STRING, example="core")),  # yapf: disable
+            ("name", openapi.Schema(type=openapi.TYPE_STRING, example="infrastructure")),  # yapf: disable
+            ("version", openapi.Schema(type=openapi.TYPE_STRING, example="2020")),  # yapf: disable
+            ("type", openapi.Schema(type=openapi.TYPE_STRING, example="vector")),  # yapf: disable
+            ("status", openapi.Schema(type=openapi.TYPE_STRING, example="published")),  # yapf: disable
+            ("orbs", openapi.Schema(type=openapi.TYPE_ARRAY, items=openapi.Schema(type=openapi.TYPE_OBJECT, properties=OrderedDict((  # yapf: disable
+                ("name", openapi.Schema(type=openapi.TYPE_STRING)),  # yapf: disable
+                ("description", openapi.Schema(type=openapi.TYPE_STRING)),  # yapf: disable
+            ))))),  # yapf: disable
+            ("metadata", openapi.Schema(type=openapi.TYPE_OBJECT)),  # yapf: disable
+        ))))),  # yapf: disable
+    ))  # yapf: disable
 )
 
 
@@ -147,50 +138,73 @@ class DataSourceView(APIView):
         data_token = generate_data_token(user)
         data_token_timeout = settings.DATA_TOKEN_TIMEOUT
 
-        url = urljoin(settings.DATA_SOURCES_DIRECTORY_URL, "/api/data-sources/v1/")
-        headers = {
-            "Authorization": f"Bearer {data_token.decode('utf-8')}"
-        }
+        url = urljoin(
+            settings.DATA_SOURCES_DIRECTORY_URL, "/api/data-sources/v1/"
+        )
+        headers = {"Authorization": f"Bearer {data_token}"}
 
         try:
             response = requests.get(url, headers=headers, timeout=2.5)
             if not status.is_success(response.status_code):
                 raise APIException("Error retrieving data sources")
         except Timeout as e:
-            raise APIException(f"Request {url} timed out, exception was: {str(e)}")
+            raise APIException(
+                f"Request {url} timed out, exception was: {str(e)}"
+            )
         except Exception as e:
-            raise APIException(f"Unable to retrieve data sources at '{url}': {str(e)}")
+            raise APIException(
+                f"Unable to retrieve data sources at '{url}': {str(e)}"
+            )
         sources = response.json()["results"]
 
         # find all orbs that this user has a licence to...
         orbs = Orb.objects.filter(
-            is_active=True, licences__customer_user__in=user.customer_users.values_list("pk", flat=True)
+            is_active=True,
+            licences__customer_user__in=user.customer_users.values_list(
+                "pk", flat=True
+            )
         ).prefetch_related(
-            Prefetch("data_scopes", queryset=DataScope.objects.filter(is_active=True), to_attr="filtered_data_scopes")
+            Prefetch(
+                "data_scopes",
+                queryset=DataScope.objects.filter(is_active=True),
+                to_attr="filtered_data_scopes"
+            )
         ).distinct()
         # create a mapping from data_scopes to those orbs...
         data_scopes_to_orb_mapping = defaultdict(list)
         for orb in orbs:
             for data_scope in orb.filtered_data_scopes:
                 data_scopes_to_orb_mapping[data_scope.source_id_pattern] += [
-                    {"name": orb.name, "description": orb.description}
+                    {
+                        "name": orb.name,
+                        "description": orb.description
+                    }
                 ]
 
         for source in sources:
             # find all of the above orbs w/ a data_scope that matches the source_id...
-            matching_orbs = dict(filter(
-                lambda item: DataScope.matches_source_id(item[0], source["source_id"]),
-                data_scopes_to_orb_mapping.items()
-            )).values()
+            matching_orbs = dict(
+                filter(
+                    lambda item: DataScope.
+                    matches_source_id(item[0], source["source_id"]),
+                    data_scopes_to_orb_mapping.items()
+                )
+            ).values()
 
             # add them all as a single list (inserting missing metadata elements as needed)...
             source_orbis_metadata = source
             for key in ["metadata", "application", "orbis"]:
-                source_orbis_metadata = source_orbis_metadata.setdefault(key, {})
-            source_orbis_metadata["orbs"] = reduce(lambda orb1, orb2: orb1 + orb2, matching_orbs)
+                source_orbis_metadata = source_orbis_metadata.setdefault(
+                    key, {}
+                )
+            source_orbis_metadata["orbs"] = reduce(
+                lambda orb1, orb2: orb1 + orb2, matching_orbs
+            )
 
-        return Response({
-            "token": data_token,
-            "timeout": data_token_timeout,
-            "sources": sources,
-        })
+        return Response(
+            {
+                "token": data_token,
+                "timeout": data_token_timeout,
+                "sources": sources,
+            }
+        )
