@@ -21,7 +21,7 @@ const STYLE = {
 };
 
 /** @param {import('./colormap-range-slider.component').ColorMapRangeSliderProps} props */
-const ColorMapRangeSlider = ({ type, ...rest }) => {
+export const ColorMapRangeSlider = ({ type, ...rest }) => {
   const height = 130;
   const padding = { top: 40, bottom: 175, left: 55, right: 55 };
   switch (type) {
@@ -45,5 +45,3 @@ const ColorMapRangeSlider = ({ type, ...rest }) => {
       );
   }
 };
-
-export default ColorMapRangeSlider;
