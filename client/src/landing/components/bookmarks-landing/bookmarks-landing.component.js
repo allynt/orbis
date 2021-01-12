@@ -37,7 +37,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export const ExistingUserLanding = ({ bookmarks, chooseBookmark }) => {
+export const BookmarksLanding = ({ bookmarks, chooseBookmark }) => {
   const recentItems = bookmarks.slice(0, MAX_VISIBLE_BOOKMARKS);
   const [viewAllItems, setViewAllItems] = useState(false);
   const styles = useStyles();
