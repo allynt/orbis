@@ -81,10 +81,10 @@ const RadioProperty = ({
   return (
     <div className={styles.property}>
       <FormControlLabel
-        value={initialProperty.name}
+        value={initialProperty?.name}
         checked={propertyMatch}
         label={
-          initialProperty?.application?.orbis?.label || initialProperty.label
+          initialProperty?.application?.orbis?.label || initialProperty?.label
         }
         control={<Radio onClick={handleRadioClick} name="isolationPlus" />}
       />
@@ -97,7 +97,7 @@ const RadioProperty = ({
             </Typography>
             <Typography className={styles.description}>
               {initialProperty?.application?.orbis?.description ||
-                initialProperty.description}
+                initialProperty?.description}
             </Typography>
           </>
         }

@@ -132,7 +132,7 @@ describe('<RadioPicker />', () => {
 
   it('has an info icon for each radio', () => {
     const { getAllByRole } = renderComponent();
-    expect(getAllByRole('tooltip')).toHaveLength(
+    expect(getAllByRole('button', { name: 'Info' })).toHaveLength(
       groupProperties(defaultSelectedLayer.metadata.properties).length,
     );
   });
