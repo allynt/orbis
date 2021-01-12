@@ -1,10 +1,10 @@
 import { createBrowserHistory } from 'history';
 import * as React from 'react';
 import { Router } from 'react-router-dom';
-import { NewUserLanding } from './new-user-landing.component';
+import { NoBookmarksLanding } from './no-bookmarks-landing.component';
 
 export default {
-  title: 'Landing/New User Landing',
+  title: 'Landing/No Bookmarks Landing',
   decorators: [
     Story => (
       <Router history={createBrowserHistory()}>
@@ -14,4 +14,4 @@ export default {
   ],
 };
 
-export const Default = () => <NewUserLanding />;
+export const Default = () => <NoBookmarksLanding />;

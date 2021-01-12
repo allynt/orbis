@@ -46,7 +46,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export const NewUserLanding = () => {
+export const NoBookmarksLanding = () => {
   const styles = useStyles();
   return (
     <Box className={styles.background}>

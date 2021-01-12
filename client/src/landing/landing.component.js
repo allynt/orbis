@@ -4,7 +4,7 @@ import { Box, makeStyles } from '@astrosat/astrosat-ui';
 
 import { useDispatch, useSelector } from 'react-redux';
 
-import { NewUserLanding, ExistingUserLanding } from './components';
+import { NoBookmarksLanding, ExistingUserLanding } from './components';
 
 import {
   baseSelector,
@@ -45,7 +45,7 @@ const Landing = () => {
           chooseBookmark={chooseBookmark}
         />
       ) : (
-        <NewUserLanding />
+        <NoBookmarksLanding />
       )}
     </Box>
   );

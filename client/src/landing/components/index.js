@@ -1,4 +1,4 @@
-import { NewUserLanding } from './new-user-landing/new-user-landing.component';
+import { NoBookmarksLanding } from './no-bookmarks-landing/no-bookmarks-landing.component';
 import { ExistingUserLanding } from './existing-user-landing/existing-user-landing.component';
 
-export { NewUserLanding, ExistingUserLanding };
+export { NoBookmarksLanding, ExistingUserLanding };
