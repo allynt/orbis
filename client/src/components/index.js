@@ -1,14 +1,10 @@
 export { BarChart } from './charts/bar/bar.component';
 export { default as ColorScale } from './color-scale/color-scale.component';
 export { default as FeatureDetail } from './feature-detail/feature-detail.component';
-export { FieldError } from './field-error/field-error.component';
-export { Field } from './field/field.component';
 export { default as Form } from './form/form.component';
-export { default as InfoBox } from './info-box/info-box.component';
-export { default as InfoButton } from './info-button/info-button.component';
 export { InlineTextField } from './inline-text-field/inline-text-field.component';
-export { LoadingSpinner } from './loading-spinner/loading-spinner.component';
 export { Popup } from './popup/popup.component';
 export { SidePanel } from './side-panel/side-panel.component';
 export * from './sidebar';
 export { Skeleton } from './skeleton/skeleton.component';
+export { InfoButtonTooltip } from './info-button-tooltip/info-button-tooltip.component';

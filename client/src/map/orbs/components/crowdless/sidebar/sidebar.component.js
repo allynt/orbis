@@ -1,14 +1,29 @@
 import * as React from 'react';
 
-import { Button, Radio } from '@astrosat/astrosat-ui';
+import {
+  Button,
+  FormControlLabel,
+  Grid,
+  makeStyles,
+  Radio,
+  Typography,
+  MagnifierIcon,
+  CircularProgress,
+  List,
+  ListSubheader,
+  Fade,
+} from '@astrosat/astrosat-ui';
 
-import { LoadingSpinner } from 'components';
-import { InfoIconTooltip } from 'components/info-icon-tooltip/info-icon-tooltip.component';
+import { InfoButtonTooltip } from 'components';
 import { Description } from './description.component';
 import ResultsListItem from './results-list-item/results-list-item.component';
-import { ReactComponent as SearchIcon } from './search.svg';
 
-import styles from './sidebar.module.css';
+const useStyles = makeStyles(theme => ({
+  infoButton: {
+    backgroundColor: theme.palette.text.primary,
+    color: theme.palette.background.default,
+  },
+}));
 
 /**
  * @param {{
@@ -21,7 +36,6 @@ import styles from './sidebar.module.css';
  *   visible?: boolean
  * }} props
  */
-
 export const CrowdlessSidebarComponent = ({
   results,
   isLoading,
@@ -30,57 +44,74 @@ export const CrowdlessSidebarComponent = ({
   onResultClick,
   selectedResult,
   visible,
-}) => (
-  <>
-    <div className={styles.radioWrapper}>
-      <Radio
-        onClick={onRadioChange}
-        checked={visible}
-        label="Supermarket Crowdedness"
-      />
-      <InfoIconTooltip className={styles.infoIcon} place="right">
-        <Description />
-      </InfoIconTooltip>
-    </div>
-    {visible && (
-      <>
-        <p className={styles.text}>
-          Please zoom in to the desired area or add area in the search box{' '}
-          <SearchIcon className={styles.searchIcon} /> at the top right of the
-          map in order to get most accurate results. Then click the button “Find
-          Supermarkets” below.
-        </p>
-        <Button
-          className={styles.findButton}
-          size="small"
-          onClick={() => !isLoading && onFindClick()}
-        >
-          {isLoading ? <LoadingSpinner /> : 'Find Supermarkets'}
-        </Button>
-        {((isLoading && !results) || results?.length) && (
-          <ul className={styles.list}>
-            <p className={styles.listHeader}>Places close to you</p>
-            {isLoading &&
-              !results &&
-              Array(10)
-                .fill(undefined)
-                .map((_, i) => <ResultsListItem key={i} isLoading />)}
-            {results?.length &&
-              results.map(result => (
-                <ResultsListItem
-                  key={result.properties.placeId}
-                  result={result}
-                  selected={
-                    selectedResult === undefined ||
-                    result.properties.placeId ===
-                      selectedResult?.properties?.placeId
-                  }
-                  onClick={onResultClick}
+}) => {
+  const styles = useStyles();
+  return (
+    <>
+      <Grid container spacing={2}>
+        <Grid item xs={11}>
+          <FormControlLabel
+            label="Supermarket Crowdedness"
+            control={<Radio onClick={onRadioChange} checked={visible} />}
+          />
+        </Grid>
+        <Grid item xs={1} container justify="center" alignItems="center">
+          <InfoButtonTooltip
+            iconButtonClassName={styles.infoButton}
+            tooltipContent={<Description />}
+          />
+        </Grid>
+      </Grid>
+      <Fade in={visible} unmountOnExit>
+        <Grid container spacing={2}>
+          <Grid item xs={12} component={Typography}>
+            Please zoom in to the desired area or add area in the search box{' '}
+            <MagnifierIcon color="primary" fontSize="inherit" /> at the top
+            right of the map in order to get most accurate results. Then click
+            the button “Find Supermarkets” below.
+          </Grid>
+          <Grid item xs={12} container justify="center">
+            <Button size="small" onClick={() => !isLoading && onFindClick()}>
+              {isLoading ? (
+                <CircularProgress
+                  data-testid="button-progress"
+                  color="inherit"
+                  size={20}
                 />
-              ))}
-          </ul>
-        )}
-      </>
-    )}
-  </>
-);
+              ) : (
+                'Find Supermarkets'
+              )}
+            </Button>
+          </Grid>
+          {((isLoading && !results) || results?.length) && (
+            <List
+              subheader={
+                <ListSubheader disableSticky>Places close to you</ListSubheader>
+              }
+            >
+              {isLoading &&
+                !results &&
+                Array(10)
+                  .fill(undefined)
+                  .map((_, i) => <ResultsListItem key={i} isLoading />)}
+              {results?.length &&
+                results.map((result, i) => (
+                  <ResultsListItem
+                    key={result.properties.placeId}
+                    result={result}
+                    selected={
+                      selectedResult === undefined ||
+                      result.properties.placeId ===
+                        selectedResult?.properties?.placeId
+                    }
+                    onClick={onResultClick}
+                    divider={i + 1 !== results.length}
+                  />
+                ))}
+            </List>
+          )}
+        </Grid>
+      </Fade>
+    </>
+  );
+};

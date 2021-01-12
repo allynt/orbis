@@ -1,8 +1,15 @@
-import React from 'react';
+import * as React from 'react';
+
+import {
+  List,
+  ListItem,
+  ListItemText,
+  ListSubheader,
+  makeStyles,
+  Typography,
+} from '@astrosat/astrosat-ui';
 
 import { DEFAULT_TITLE, VALUE_TYPE } from './feature-detail.constants';
-
-import styles from './feature-detail.module.css';
 
 const NO_DATA = 'Not available';
 
@@ -37,12 +44,16 @@ const renderItemValue = value => {
  * }} props
  */
 const ObjectItem = ({ jsonKey, value }) => (
-  <li className={styles.groupedListItem}>
-    <ul className={styles.table}>
-      {jsonKey && <h1 className={styles.listTitle}>{jsonKey}</h1>}
-      {mapObject(value, undefined)}
-    </ul>
-  </li>
+  <List disablePadding component="div">
+    {jsonKey && (
+      <ListSubheader disableSticky>
+        <Typography variant="h3" component="span">
+          {jsonKey}
+        </Typography>
+      </ListSubheader>
+    )}
+    {mapObject(value)}
+  </List>
 );
 
 /**
@@ -53,10 +64,16 @@ const ObjectItem = ({ jsonKey, value }) => (
  */
 const Item = ({ jsonKey, value }) => {
   return (
-    <li className={styles.listItem}>
-      {jsonKey && <span className={styles.label}>{jsonKey}: </span>}
-      <span className={styles.value}>{renderItemValue(value)}</span>
-    </li>
+    <ListItem>
+      <ListItemText
+        primary={
+          <>
+            <b>{jsonKey} </b>
+            {renderItemValue(value)}
+          </>
+        }
+      />
+    </ListItem>
   );
 };
 
@@ -67,30 +84,30 @@ const Item = ({ jsonKey, value }) => {
  * }} props
  */
 const ArrayItem = ({ jsonKey, value }) => (
-  <li className={styles.listItem}>
-    <ul className={styles.table}>
-      {jsonKey && <h2 className={styles.label}>{jsonKey}: </h2>}
-      {value.length > 0 ? (
-        value.map((item, i) => {
-          switch (getTypeForValue(item)) {
-            case VALUE_TYPE.array:
-              return <ArrayItem key={`${jsonKey}-${i}`} value={item} />;
-            case VALUE_TYPE.object:
-              return <ObjectItem key={`${jsonKey}-${i}`} value={item} />;
-            case VALUE_TYPE.item:
-            default:
-              return (
-                <li key={i} className={`${styles.value} ${styles.listItem}`}>
-                  {renderItemValue(item)}
-                </li>
-              );
-          }
-        })
-      ) : (
-        <li className={`${styles.value} ${styles.listItem}`}>{NO_DATA}</li>
-      )}
-    </ul>
-  </li>
+  <List disablePadding>
+    {jsonKey && (
+      <ListSubheader disableSticky>
+        <Typography variant="h3" component="span">
+          {jsonKey}:
+        </Typography>
+      </ListSubheader>
+    )}
+    {value.length > 0 ? (
+      value.map((item, i) => {
+        switch (getTypeForValue(item)) {
+          case VALUE_TYPE.array:
+            return <ArrayItem key={`${jsonKey}-${i}`} value={item} />;
+          case VALUE_TYPE.object:
+            return <ObjectItem key={`${jsonKey}-${i}`} value={item} />;
+          case VALUE_TYPE.item:
+          default:
+            return <ListItem key={i}>{renderItemValue(item)}</ListItem>;
+        }
+      })
+    ) : (
+      <ListItem>{NO_DATA}</ListItem>
+    )}
+  </List>
 );
 
 const mapObject = feature => {
@@ -118,7 +135,11 @@ const mapObject = feature => {
             case VALUE_TYPE.item:
             default:
               return (
-                <Item key={`${jsonKey}-${i}`} jsonKey={jsonKey} value={value} />
+                <Item
+                  key={`${jsonKey}-${i}`}
+                  jsonKey={`${jsonKey}:`}
+                  value={value}
+                />
               );
           }
         })}
@@ -130,9 +151,30 @@ const mapObject = feature => {
  * @typedef FeatureDetailProps
  * @property {{[key: string]: any}[]} [features]
  * @property {React.ReactNode} [children]
- * @property {React.ReactNode} [footer]
+ * @property {{label: string, content: string}} [footer]
  * @property {string} [title]
  */
+
+const useStyles = makeStyles(theme => ({
+  header: {
+    ...theme.typography.h3,
+    borderBottom: `1px solid ${theme.palette.primary.main}`,
+    padding: `
+    ${theme.typography.pxToRem(theme.spacing(1))} 
+    ${theme.typography.pxToRem(theme.spacing(1))} 
+    ${theme.typography.pxToRem(theme.spacing(3))}`,
+    textAlign: 'center',
+  },
+  content: {
+    maxHeight: '20rem',
+    overflowY: 'auto',
+  },
+  list: {
+    '& + &': {
+      borderTop: `1px solid ${theme.palette.primary.main}`,
+    },
+  },
+}));
 
 /**
  * @param {FeatureDetailProps} props
@@ -142,25 +184,26 @@ const FeatureDetail = ({
   features,
   title = DEFAULT_TITLE,
   footer,
-}) => (
-  <div className={styles.featureDetail}>
-    <h1 className={styles.header}>{title}</h1>
-    <div className={styles.content}>
-      {features &&
-        features?.map(feature => (
-          <ul key={feature.id} className={styles.list}>
-            {mapObject(feature)}
-            {footer && (
-              <li className={styles.listItem}>
-                <span className={styles.label}>{footer.label}</span>
-                <span className={styles.value}>{footer.content}</span>
-              </li>
-            )}
-          </ul>
-        ))}
-      {children && children}
-    </div>
-  </div>
-);
+}) => {
+  const styles = useStyles();
+
+  return (
+    <>
+      <Typography className={styles.header} component="h1">
+        {title}
+      </Typography>
+      <div className={styles.content}>
+        {features &&
+          features?.map(feature => (
+            <List key={feature.id} className={styles.list}>
+              {mapObject(feature)}
+              {footer && <Item jsonKey={footer.label} value={footer.content} />}
+            </List>
+          ))}
+        {children && children}
+      </div>
+    </>
+  );
+};
 
 export default FeatureDetail;

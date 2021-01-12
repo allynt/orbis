@@ -1,6 +1,60 @@
-import clsx from 'clsx';
 import * as React from 'react';
-import styles from './map.module.css';
+
+import clsx from 'clsx';
+
+import { Avatar, Grid, makeStyles, Typography } from '@astrosat/astrosat-ui';
+
+import busy from './icons/busy.svg';
+import notBusy from './icons/not-busy.svg';
+import veryBusy from './icons/very-busy.svg';
+
+const useStyles = makeStyles(theme => ({
+  wrapper: {
+    paddingTop: theme.spacing(2),
+    paddingBottom: theme.spacing(2),
+    paddingLeft: theme.spacing(3),
+    paddingRight: theme.spacing(3),
+  },
+  icon: {
+    width: '2.75rem',
+    height: '2.75rem',
+    boxShadow: theme.shadows[3],
+  },
+  blank: {
+    width: '100%',
+    height: '100%',
+    '&$notBusy': {
+      backgroundColor: '#ccfae3',
+    },
+    '&$busy': {
+      backgroundColor: '#feeccc',
+    },
+    '&$veryBusy': {
+      backgroundColor: '#fad2df',
+    },
+  },
+  notBusy: {},
+  busy: {},
+  veryBusy: {},
+}));
+
+const icons = [
+  {
+    category: 'not busy',
+    className: 'notBusy',
+    icon: notBusy,
+  },
+  {
+    category: 'busy',
+    className: 'busy',
+    icon: busy,
+  },
+  {
+    category: 'very busy',
+    className: 'veryBusy',
+    icon: veryBusy,
+  },
+];
 
 /**
  * @param {{
@@ -14,30 +68,34 @@ const CrowdlessMapComponent = ({ feature }) => {
     crowdednessCategory = undefined,
     crowdednessScore = undefined,
   } = feature?.properties || {};
+  const styles = useStyles();
 
   return (
-    <div className={styles.feature}>
-      <div className={styles.categories}>
-        <div
-          className={clsx(styles.category, styles.notBusy, {
-            [styles.image]: crowdednessCategory === 'not busy',
-          })}
-        />
-        <div
-          className={clsx(styles.category, styles.busy, {
-            [styles.image]: crowdednessCategory === 'busy',
-          })}
-        />
-        <div
-          className={clsx(styles.category, styles.veryBusy, {
-            [styles.image]: crowdednessCategory === 'very busy',
-          })}
-        />
-      </div>
-      <p className={styles.score}>Estimated crowdedness: {crowdednessScore}%</p>
-      <h2 className={styles.name}>{name}</h2>
-      <p>{address}</p>
-    </div>
+    <Grid className={styles.wrapper} container spacing={2}>
+      {icons.map(({ category, className, icon }) => (
+        <Grid item xs={3}>
+          <Avatar
+            key={category}
+            className={styles.icon}
+            variant="rounded"
+            src={crowdednessCategory === category && icon}
+          >
+            <div className={clsx(styles.blank, styles[className])} />
+          </Avatar>
+        </Grid>
+      ))}
+      <Grid item xs={12}>
+        <Typography gutterBottom>
+          Estimated crowdedness: {crowdednessScore}%
+        </Typography>
+      </Grid>
+      <Grid item xs={12}>
+        <Typography variant="h2" component="h2" gutterBottom>
+          {name}
+        </Typography>
+        <Typography>{address}</Typography>
+      </Grid>
+    </Grid>
   );
 };
 
