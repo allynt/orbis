@@ -13,6 +13,7 @@ import { createLogo } from '../create-logo-helper';
 
 import backgroundImage from '../landing-image.png';
 import { ReactComponent as OrbisLogoLight } from '../../../orbis-light.svg';
+import { OrbisLogo } from 'components';
 
 const useStyles = makeStyles(theme => ({
   background: {
@@ -40,6 +41,9 @@ const useStyles = makeStyles(theme => ({
   link: {
     marginTop: theme.spacing(4.5),
   },
+  logo: {
+    height: theme.typography.pxToRem(80),
+  },
 }));
 
 export const NewUserLanding = () => {
@@ -47,7 +51,7 @@ export const NewUserLanding = () => {
   return (
     <Box className={styles.background}>
       <Container className={styles.container} maxWidth="lg">
-        {createLogo(OrbisLogoLight)}
+        <OrbisLogo className={styles.logo} />
         <Box justifySelf="end" alignSelf="center" textAlign="center">
           <Typography variant="h1" className={styles.title}>
             ORBIS JOURNEY
