@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 
 import {
-  Box,
   Button,
   Container,
   makeStyles,
@@ -24,12 +23,13 @@ const useStyles = makeStyles(theme => ({
   background: {
     width: '100vw',
     height: '100vh',
-    background: props =>
-      props.hasBookmarks
-        ? theme.palette.common.white
-        : `url(${backgroundImage})`,
+    backgroundImage: props =>
+      props.hasBookmarks ? '' : `url(${backgroundImage})`,
+    backgroundColor: props =>
+      props.hasBookmarks ? theme.palette.common.white : '',
     backgroundSize: 'cover',
     backgroundPosition: 'center right',
+    overflow: 'hidden',
   },
   container: {
     paddingTop: theme.spacing(4),
@@ -37,9 +37,11 @@ const useStyles = makeStyles(theme => ({
     height: '100%',
     display: 'grid',
     gridTemplateRows: 'min-content 1fr',
+    overflowY: 'auto',
   },
   content: {
-    justifySelf: props => (props.hasBookmarks ? 'center' : 'end'),
+    width: props => (props.hasBookmarks ? '100%' : 'max-content'),
+    justifySelf: 'end',
     alignSelf: 'center',
     textAlign: 'center',
   },
@@ -67,10 +69,10 @@ const Landing = () => {
 
   return (
     <ThemeProvider theme={hasBookmarks ? 'light' : 'dark'}>
-      <Box className={styles.background}>
+      <div className={styles.background}>
         <Container className={styles.container} maxWidth="lg">
           <OrbisLogo className={styles.logo} />
-          <Box className={styles.content}>
+          <div className={styles.content}>
             {hasBookmarks ? (
               <BookmarksLanding
                 bookmarks={bookmarks}
@@ -87,9 +89,9 @@ const Landing = () => {
             >
               Browse Map
             </Link>
-          </Box>
+          </div>
         </Container>
-      </Box>
+      </div>
     </ThemeProvider>
   );
 };

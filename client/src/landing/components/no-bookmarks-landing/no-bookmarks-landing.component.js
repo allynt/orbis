@@ -17,13 +17,18 @@ export const NoBookmarksLanding = () => {
   const styles = useStyles();
   return (
     <>
-      <Typography variant="h1" className={styles.title}>
+      <Typography variant="h1" color="textPrimary" className={styles.title}>
         ORBIS JOURNEY
       </Typography>
-      <Typography variant="h2" className={styles.subtitle} paragraph>
+      <Typography
+        variant="h2"
+        color="textPrimary"
+        className={styles.subtitle}
+        paragraph
+      >
         Your Earth Observation journey starts here
       </Typography>
-      <Typography variant="h2" className={styles.subtitle}>
+      <Typography variant="h2" color="textPrimary" className={styles.subtitle}>
         Click Browse Map below to start
       </Typography>
     </>
