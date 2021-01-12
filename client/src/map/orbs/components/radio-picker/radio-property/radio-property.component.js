@@ -18,84 +18,34 @@ import { FORMAT } from '../radio-picker-constants';
 const useStyles = makeStyles(theme => ({
   property: {
     display: 'grid',
-    gridTemplateColumns: '1fr 2rem',
-    marginBottom: '1.25rem',
-    rowGap: '1.25rem',
-  },
-  radio: {
-    width: '100% !important',
-    gridColumn: '1 / 2',
-  },
-  info: {
-    position: 'relative',
+    gridTemplateColumns: `1fr ${theme.typography.pxToRem(theme.spacing(4))}`,
+    marginBottom: theme.spacing(2),
+    rowGap: theme.typography.pxToRem(theme.spacing(2)),
   },
   infoButton: {
-    gridColumn: 3,
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    fontSize: '0.625em',
-    padding: '0.4em',
-    width: 'max-content',
-    height: 'auto',
-    marginLeft: '1em',
-    backgroundColor: '#fff',
-    borderRadius: '50%',
-    transition: 'opacity 250ms ease',
-    '&:hover': {
-      opacity: 0.5,
-    },
-  },
-  infoIcon: {
-    color: '#333f48',
-    width: '1em',
-    height: 'auto',
-  },
-  tooltip: {
-    maxWidth: '50ch',
+    placeSelf: 'center',
+    backgroundColor: theme.palette.common.white,
+    color: theme.palette.background.default,
   },
   categoryPath: {
     fontStyle: 'italic',
-    marginBottom: '8px',
   },
   description: {
     fontWeight: 600,
   },
-  displayMenu: {
-    gridColumn: '1 / span 2',
-  },
-  label: {
-    color: '#dcdcdc',
-    fontSize: '0.75rem',
-  },
-  buttons: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginTop: '0.3125rem',
-    marginBottom: '1.25rem',
-    width: '100%',
+  fullGrid: {
+    gridColumn: '1 / -1',
   },
   button: {
-    color: '#fff',
-    backgroundColor: '#171819',
-    padding: '0.625rem',
     width: '50%',
-    fontSize: '0.875rem',
-    cursor: 'pointer',
-    '&$active': {
-      color: '#171819',
-      backgroundColor: '#f6be00',
-      cursor: 'not-allowed',
-    },
-    '&:first-child': {
-      borderRadius: '0.5rem 0 0 0.5rem',
-    },
-    '&:last-child': {
-      borderRadius: '0 0.5rem 0.5rem 0',
+    cursor: 'not-allowed',
+    '&$notActive': {
+      color: theme.palette.secondary.contrastText,
+      backgroundColor: theme.palette.secondary.dark,
+      cursor: 'pointer',
     },
   },
-  active: {},
+  notActive: {},
 }));
 
 const RadioProperty = ({
@@ -139,9 +89,10 @@ const RadioProperty = ({
         control={<Radio onClick={handleRadioClick} name="isolationPlus" />}
       />
       <InfoButtonTooltip
+        iconButtonClassName={styles.infoButton}
         tooltipContent={
           <>
-            <Typography className={styles.categoryPath}>
+            <Typography className={styles.categoryPath} paragraph>
               {categoryPath}
             </Typography>
             <Typography className={styles.description}>
@@ -152,18 +103,20 @@ const RadioProperty = ({
         }
       />
       {propertyMatch && (
-        <div className={styles.displayMenu}>
+        <>
           {isArray && (
             <>
-              <FormLabel>Select display type: </FormLabel>
-              <ButtonGroup>
+              <FormLabel className={styles.fullGrid}>
+                Select display type:
+              </FormLabel>
+              <ButtonGroup size="small" className={styles.fullGrid}>
                 <Button
                   onClick={() =>
                     onToggleClick(findPropertyByType(FORMAT.percentage))
                   }
                   className={clsx(styles.button, {
-                    [styles.active]:
-                      selectedProperty.type === FORMAT.percentage,
+                    [styles.notActive]:
+                      selectedProperty.type !== FORMAT.percentage,
                   })}
                 >
                   Percentage
@@ -173,7 +126,7 @@ const RadioProperty = ({
                     onToggleClick(findPropertyByType(FORMAT.number))
                   }
                   className={clsx(styles.button, {
-                    [styles.active]: selectedProperty.type === FORMAT.number,
+                    [styles.notActive]: selectedProperty.type !== FORMAT.number,
                   })}
                 >
                   Number
@@ -181,23 +134,26 @@ const RadioProperty = ({
               </ButtonGroup>
             </>
           )}
-          <ColorMapRangeSlider
-            type={selectedProperty?.type}
-            color={colorScheme}
-            domain={[selectedProperty.min, selectedProperty.max]}
-            clip={
-              (selectedProperty.clip_min || selectedProperty.clip_max) && [
-                selectedProperty.clip_min || selectedProperty.min,
-                selectedProperty.clip_max || selectedProperty.max,
-              ]
-            }
-            value={filterData}
-            onChange={data => onSliderChange(data)}
-            reversed={
-              !!selectedProperty?.application?.orbis?.display?.colormap_reversed
-            }
-          />
-        </div>
+          <div className={styles.fullGrid}>
+            <ColorMapRangeSlider
+              type={selectedProperty?.type}
+              color={colorScheme}
+              domain={[selectedProperty.min, selectedProperty.max]}
+              clip={
+                (selectedProperty.clip_min || selectedProperty.clip_max) && [
+                  selectedProperty.clip_min || selectedProperty.min,
+                  selectedProperty.clip_max || selectedProperty.max,
+                ]
+              }
+              value={filterData}
+              onChange={data => onSliderChange(data)}
+              reversed={
+                !!selectedProperty?.application?.orbis?.display
+                  ?.colormap_reversed
+              }
+            />
+          </div>
+        </>
       )}
     </div>
   );

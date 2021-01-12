@@ -1,19 +1,16 @@
-import React, { useEffect } from 'react';
+import * as React from 'react';
 
 import { useSelector } from 'react-redux';
 
-import {
-  propertySelector,
-  setProperty,
-  filterRangeSelector,
-  setFilterRange,
-} from '../../slices/isolation-plus.slice';
-
 import { createCategorisationPath } from 'data-layers/categorisation.utils';
-
-import RadioProperty from './radio-property/radio-property.component';
-
+import {
+  filterRangeSelector,
+  propertySelector,
+  setFilterRange,
+  setProperty,
+} from '../../slices/isolation-plus.slice';
 import { groupProperties } from './helpers/group-properties.js';
+import RadioProperty from './radio-property/radio-property.component';
 
 /**
  * @param {{
