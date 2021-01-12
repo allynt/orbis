@@ -13,11 +13,11 @@ import { createCategorisationPath } from 'data-layers/categorisation.utils';
 
 import RadioProperty from './radio-property/radio-property.component';
 
-import { getProperties } from './helpers/get-properties.js';
+import { groupProperties } from './helpers/group-properties.js';
 
 /**
  * @param {{
- *   selectedLayer: Source
+ *   selectedLayer: import('typings/orbis').Source
  *   dispatch: import('redux').Dispatch
  * }} props
  */
@@ -60,7 +60,7 @@ export const RadioPicker = ({ selectedLayer, dispatch }) => {
   if (!selectedLayer?.metadata?.properties) return null;
   return (
     <>
-      {getProperties(selectedLayer).map((data, i) => (
+      {groupProperties(selectedLayer.metadata.properties).map((data, i) => (
         <React.Fragment key={i}>
           <RadioProperty
             data={data}

@@ -6,7 +6,7 @@ import store from 'store';
 import { RadioPicker } from './radio-picker.component';
 
 export default {
-  title: 'Map/Radio Picker',
+  title: 'Orbs/Isolation Plus/Radio Picker',
   decorators: [
     Story => (
       <Provider store={store}>
