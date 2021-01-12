@@ -1,80 +1,73 @@
 import React from 'react';
-import { Link as RouterLink } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
-import { Box, Button, Typography, makeStyles } from '@astrosat/astrosat-ui';
+import {
+  Box,
+  Button,
+  Typography,
+  makeStyles,
+  Container,
+} from '@astrosat/astrosat-ui';
 
 import { createLogo } from '../create-logo-helper';
 
 import backgroundImage from '../landing-image.png';
 import { ReactComponent as OrbisLogoLight } from '../../../orbis-light.svg';
 
-const useStyles = makeStyles(() => ({
-  imageContainer: {
-    backgroundColor: '#fff',
+const useStyles = makeStyles(theme => ({
+  background: {
+    width: '100vw',
+    height: '100vh',
     backgroundImage: `url(${backgroundImage})`,
+    backgroundSize: 'cover',
+    backgroundPosition: 'center right',
+  },
+  container: {
+    paddingTop: theme.spacing(4),
+    paddingBottom: theme.spacing(4),
+    height: '100%',
+    display: 'grid',
+    gridTemplateRows: 'min-content 1fr',
+  },
+  title: {
+    fontSize: theme.typography.pxToRem(58),
+    fontWeight: 600,
+    marginBottom: theme.spacing(4.5),
+  },
+  subtitle: {
+    fontWeight: 500,
+  },
+  link: {
+    marginTop: theme.spacing(4.5),
   },
 }));
 
 export const NewUserLanding = () => {
   const styles = useStyles();
   return (
-    <Box
-      className={styles.imageContainer}
-      position="relative"
-      height="100vh"
-      width="100vw"
-    >
-      <Box position="absolute" top="1rem" left="8rem">
+    <Box className={styles.background}>
+      <Container className={styles.container} maxWidth="lg">
         {createLogo(OrbisLogoLight)}
-      </Box>
-
-      <Box
-        display="flex"
-        justifyContent="flex-end"
-        alignItems="center"
-        height="100%"
-        width="100%"
-      >
-        <Box
-          display="flex"
-          flexDirection="column"
-          justifyContent="flex-end"
-          alignItems="center"
-          marginRight="15rem"
-          color="#fff"
-        >
-          <Box
-            component="h1"
-            fontSize="3.5rem"
-            fontWeight="bold"
-            marginBottom="2rem"
-          >
+        <Box justifySelf="end" alignSelf="center" textAlign="center">
+          <Typography variant="h1" className={styles.title}>
             ORBIS JOURNEY
-          </Box>
-
-          <Box
-            display="flex"
-            flexDirection="column"
-            justifyContent="space-between"
-            alignItems="center"
-            minHeight="4rem"
-            marginBottom="2rem"
+          </Typography>
+          <Typography variant="h2" className={styles.subtitle} paragraph>
+            Your Earth Observation journey starts here
+          </Typography>
+          <Typography variant="h2" className={styles.subtitle}>
+            Click Browse Map below to start
+          </Typography>
+          <Link
+            className={styles.link}
+            to="/map"
+            component={Button}
+            color="secondary"
           >
-            <Typography variant="subtitle1" className={styles.paragraph}>
-              Your Earth Observation journey starts here
-            </Typography>
-            <Typography variant="subtitle1" className={styles.paragraph}>
-              Click Browse Map below to start
-            </Typography>
-          </Box>
-
-          <RouterLink to="/map">
-            <Button color="secondary" data-testid="browse-map">
-              Browse Map
-            </Button>
-          </RouterLink>
+            Browse Map
+          </Link>
         </Box>
-      </Box>
+      </Container>
     </Box>
   );
 };
