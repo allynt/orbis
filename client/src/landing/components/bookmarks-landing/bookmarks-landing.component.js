@@ -45,59 +45,55 @@ export const BookmarksLanding = ({ bookmarks, chooseBookmark }) => {
   const toggle = () => setViewAllItems(!viewAllItems);
 
   return (
-    <Box
-      className={styles.container}
-      display="flex"
-      flexDirection="column"
-      justifyContent="space-around"
-      alignItems="center"
-      position="relative"
-      minHeight="100%"
-      width="100%"
-      maxWidth="86rem"
-      color="#101010"
-      padding="0 2.5rem"
-    >
-      <Box display="flex" width="100%">
-        {createLogo(OrbisLogoDark)}
-      </Box>
+    // <Box
+    //   className={styles.container}
+    //   display="flex"
+    //   flexDirection="column"
+    //   justifyContent="space-around"
+    //   alignItems="center"
+    //   position="relative"
+    //   minHeight="100%"
+    //   width="100%"
+    //   maxWidth="86rem"
+    //   color="#101010"
+    //   padding="0 2.5rem"
+    // >
+    //   <Box display="flex" width="100%">
+    //     {createLogo(OrbisLogoDark)}
+    //   </Box>
 
-      {viewAllItems ? (
-        <ViewAllItems
-          items={bookmarks}
-          chooseBookmark={chooseBookmark}
-          toggle={toggle}
-        />
-      ) : (
-        <Box margin="1rem 0" width="100%">
-          <Box
-            display="flex"
-            justifyContent="space-between"
-            marginBottom="1rem"
-          >
-            <Typography variant="h2" gutterBottom>
-              Your Maps
-            </Typography>
-            {bookmarks.length > MAX_VISIBLE_BOOKMARKS && (
-              <Link onClick={toggle}>View all</Link>
-            )}
-          </Box>
-          <Items items={recentItems} chooseItem={chooseBookmark} />
+    viewAllItems ? (
+      <ViewAllItems
+        items={bookmarks}
+        chooseBookmark={chooseBookmark}
+        toggle={toggle}
+      />
+    ) : (
+      <Box margin="1rem 0" width="100%">
+        <Box display="flex" justifyContent="space-between" marginBottom="1rem">
+          <Typography variant="h2" gutterBottom>
+            Your Maps
+          </Typography>
+          {bookmarks.length > MAX_VISIBLE_BOOKMARKS && (
+            <Link onClick={toggle}>View all</Link>
+          )}
         </Box>
-      )}
-
-      <Box
-        display="flex"
-        justifyContent="center"
-        align-items="flex-start"
-        height="5rem"
-      >
-        <RouterLink to="/map">
-          <Button className={styles.button} color="secondary">
-            Browse Map
-          </Button>
-        </RouterLink>
+        <Items items={recentItems} chooseItem={chooseBookmark} />
       </Box>
-    </Box>
+    )
+
+    // <Box
+    //   display="flex"
+    //   justifyContent="center"
+    //   align-items="flex-start"
+    //   height="5rem"
+    // >
+    //   <RouterLink to="/map">
+    //     <Button className={styles.button} color="secondary">
+    //       Browse Map
+    //     </Button>
+    //   </RouterLink>
+    // </Box>
+    // </Box>
   );
 };
