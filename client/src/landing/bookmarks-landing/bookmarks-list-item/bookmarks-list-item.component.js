@@ -7,7 +7,7 @@ import {
   Typography,
 } from '@astrosat/astrosat-ui';
 import { format } from 'date-fns';
-import { DATE_FORMAT } from 'landing/components/landing-constants';
+import { DATE_FORMAT } from '../landing-constants';
 import * as React from 'react';
 
 const useStyles = makeStyles(theme => ({

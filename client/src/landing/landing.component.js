@@ -5,6 +5,7 @@ import {
   Container,
   makeStyles,
   ThemeProvider,
+  useMediaQuery,
 } from '@astrosat/astrosat-ui';
 
 import { useDispatch, useSelector } from 'react-redux';
@@ -16,8 +17,9 @@ import {
   fetchBookmarks,
   selectBookmark,
 } from '../bookmarks/bookmarks.slice';
-import { BookmarksLanding, NoBookmarksLanding } from './components';
-import backgroundImage from './components/landing-image.png';
+import { BookmarksLanding } from './bookmarks-landing/bookmarks-landing.component';
+import { NoBookmarksLanding } from './no-bookmarks-landing/no-bookmarks-landing.component';
+import backgroundImage from './landing-image.png';
 
 const useStyles = makeStyles(theme => ({
   background: {
@@ -55,10 +57,14 @@ const useStyles = makeStyles(theme => ({
 
 const Landing = () => {
   const dispatch = useDispatch();
+  const greaterThan1920 = useMediaQuery(theme => theme?.breakpoints?.up(1921));
   const bookmarks = useSelector(bookmarksSelector);
   const hasBookmarks = bookmarks?.length > 0;
   const styles = useStyles({ hasBookmarks });
 
+  /**
+   * @param {import('typings/orbis').Bookmark} bookmark
+   */
   const chooseBookmark = bookmark => dispatch(selectBookmark(bookmark));
 
   useEffect(() => {
@@ -70,7 +76,10 @@ const Landing = () => {
   return (
     <ThemeProvider theme={hasBookmarks ? 'light' : 'dark'}>
       <div className={styles.background}>
-        <Container className={styles.container} maxWidth="lg">
+        <Container
+          className={styles.container}
+          maxWidth={greaterThan1920 ? 'xl' : 'lg'}
+        >
           <OrbisLogo className={styles.logo} />
           <div className={styles.content}>
             {hasBookmarks ? (
