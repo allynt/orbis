@@ -117,17 +117,20 @@ export const useChartTheme = () => {
       cornerRadius: 5,
       pointerLength: 10,
     },
-    pie: {
-      colorScale: colors,
-      style: {
-        data: {},
-        labels: {
-          fontFamily: astrosatUiTheme.typography.fontFamily,
-          fontSize: 24,
-          fill: astrosatUiTheme.palette.secondary.main,
+    pie: assign(
+      {
+        colorScale: colors,
+        style: {
+          data: {},
+          labels: {
+            fontFamily: astrosatUiTheme.typography.fontFamily,
+            fontSize: 24,
+            fill: astrosatUiTheme.palette.secondary.main,
+          },
         },
       },
-    },
+      baseProps,
+    ),
     legend: {
       ...baseProps,
       height: 460,

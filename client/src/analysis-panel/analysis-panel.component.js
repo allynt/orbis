@@ -2,7 +2,14 @@ import * as React from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
 
-import { CloseButton } from '@astrosat/astrosat-ui';
+import {
+  CloseIcon,
+  Divider,
+  IconButton,
+  makeStyles,
+  styled,
+  Typography,
+} from '@astrosat/astrosat-ui';
 
 import { SidePanel } from 'components';
 import {
@@ -14,21 +21,27 @@ import { MoreInformation } from './more-information/more-information.component';
 import { NationalDeviationHistogram } from './national-deviation-histogram/national-deviation-histogram.component';
 import { PropertyBreakdownChart } from './property-breakdown-chart/property-breakdown-chart.component';
 
-import styles from './analysis-panel.module.css';
+const PrimaryDivider = styled(Divider)(({ theme }) => ({
+  backgroundColor: theme.palette.primary.dark,
+}));
 
-const Spacer = () => (
-  <div
-    style={{
-      margin: '0 auto',
-      width: '90%',
-      height: 1,
-      opacity: 0.39,
-      backgroundColor: 'var(--color-primary)',
-    }}
-  />
-);
+const useStyles = makeStyles(theme => ({
+  header: {
+    display: 'grid',
+    placeItems: 'center',
+  },
+  close: {
+    position: 'absolute',
+  },
+  strapline: {
+    padding: theme.spacing(2),
+    paddingBottom: 0,
+    fontStyle: 'italic',
+  },
+}));
 
 export const AnalysisPanel = () => {
+  const styles = useStyles();
   const dispatch = useDispatch();
   const pickedInfo = useSelector(state => pickedInfoSelector(state?.orbs));
   const selectedProperty = useSelector(state => propertySelector(state?.orbs));
@@ -49,33 +62,37 @@ export const AnalysisPanel = () => {
         !!selectedProperty?.application?.orbis?.data_visualisation_components &&
         !!pickedInfo
       }
-      contentClassName={styles.data}
       header={
         <div className={styles.header}>
-          <CloseButton
+          <IconButton
             className={styles.close}
+            size="small"
             onClick={() => dispatch(setPickedInfo(undefined))}
-          />
-          <h1 className={styles.heading}>Data Analysis</h1>
+          >
+            <CloseIcon fontSize="inherit" />
+          </IconButton>
+          <Typography variant="h2" component="h1">
+            Data Analysis
+          </Typography>
         </div>
       }
     >
-      <p className={styles.strapline}>
+      <Typography color="primary" className={styles.strapline}>
         The information below relates to the areas selected on the map.
-      </p>
+      </Typography>
       {!!areaValue && (
         <>
           <NationalDeviationHistogram
             areaValue={areaValue}
             selectedProperty={selectedProperty}
           />
-          <Spacer />
+          <PrimaryDivider />
         </>
       )}
       {!!selectedProperty?.breakdown && !pieData.some(v => !v.value) && (
         <>
           <PropertyBreakdownChart data={pieData} />
-          <Spacer />
+          <PrimaryDivider />
         </>
       )}
       <MoreInformation

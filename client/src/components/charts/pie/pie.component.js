@@ -1,12 +1,5 @@
 import * as React from 'react';
-import {
-  VictoryAxis,
-  VictoryChart,
-  VictoryContainer,
-  VictoryGroup,
-  VictoryLegend,
-  VictoryPie,
-} from 'victory';
+import { VictoryLegend, VictoryPie } from 'victory';
 import { useChartTheme } from '../useChartTheme';
 
 /**
@@ -17,11 +10,10 @@ import { useChartTheme } from '../useChartTheme';
 export const PieChart = ({ data }) => {
   const orbisChartTheme = useChartTheme();
   return (
-    <svg viewBox="0 0 500 500">
+    <svg width="500" height="260" viewBox="0 0 500 500">
       <VictoryPie
         theme={orbisChartTheme}
         padding={{ left: 20 }}
-        // animate
         standalone={false}
         innerRadius={90}
         // radius={200}
