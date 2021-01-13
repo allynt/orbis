@@ -1,12 +1,14 @@
 export { BarChart } from './charts/bar/bar.component';
+export { PieChart } from './charts/pie/pie.component';
 export { default as ColorScale } from './color-scale/color-scale.component';
+export { ColorMapRangeSlider } from './colormap-range-slider/colormap-range-slider.component';
 export { default as FeatureDetail } from './feature-detail/feature-detail.component';
 export { default as Form } from './form/form.component';
+export { InfoButtonTooltip } from './info-button-tooltip/info-button-tooltip.component';
 export { InlineTextField } from './inline-text-field/inline-text-field.component';
+export { OrbisLogo } from './orbis-logo/orbis-logo.component';
 export { Popup } from './popup/popup.component';
+export { SidePanelSection } from './side-panel-section/side-panel-section.component';
 export { SidePanel } from './side-panel/side-panel.component';
 export * from './sidebar';
 export { Skeleton } from './skeleton/skeleton.component';
-export { InfoButtonTooltip } from './info-button-tooltip/info-button-tooltip.component';
-export { OrbisLogo } from './orbis-logo/orbis-logo.component';
-export { ColorMapRangeSlider } from './colormap-range-slider/colormap-range-slider.component';

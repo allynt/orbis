@@ -1,12 +1,12 @@
 import * as React from 'react';
 import { ColorScale } from 'utils/color';
 import { VictoryChart, VictoryBar, VictoryAxis, VictoryLine } from 'victory';
-import orbisChartTheme from '../orbisChartTheme';
+import { useChartTheme } from '../useChartTheme';
 
 /**
  * @param {{
  *   data: {x: number, y: number}[]
- *   color: ColorMap | string[]
+ *   color: import('typings/orbis').ColorMap | string[]
  *   domain: [number, number]
  *   clip?: [number, number]
  *   labelX?: string
@@ -23,6 +23,7 @@ export const BarChart = ({
   labelY,
   line,
 }) => {
+  const orbisChartTheme = useChartTheme();
   const colorScale = new ColorScale({ color, domain, clip });
   const yValues = data?.map(d => d.y);
   return (
