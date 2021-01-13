@@ -1,6 +1,6 @@
 import { isEqual } from 'lodash';
 import * as React from 'react';
-import ColorMapRangeSlider from './colormap-range-slider.component';
+import { ColorMapRangeSlider } from './colormap-range-slider.component';
 
 const COLOR_MAPS = [
   'OrRd',

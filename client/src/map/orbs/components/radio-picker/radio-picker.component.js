@@ -1,23 +1,20 @@
-import React, { useEffect } from 'react';
+import * as React from 'react';
 
 import { useSelector } from 'react-redux';
 
-import {
-  propertySelector,
-  setProperty,
-  filterRangeSelector,
-  setFilterRange,
-} from '../../slices/isolation-plus.slice';
-
 import { createCategorisationPath } from 'data-layers/categorisation.utils';
-
+import {
+  filterRangeSelector,
+  propertySelector,
+  setFilterRange,
+  setProperty,
+} from '../../slices/isolation-plus.slice';
+import { groupProperties } from './helpers/group-properties.js';
 import RadioProperty from './radio-property/radio-property.component';
-
-import { getProperties } from './helpers/get-properties.js';
 
 /**
  * @param {{
- *   selectedLayer: Source
+ *   selectedLayer: import('typings/orbis').Source
  *   dispatch: import('redux').Dispatch
  * }} props
  */
@@ -60,7 +57,7 @@ export const RadioPicker = ({ selectedLayer, dispatch }) => {
   if (!selectedLayer?.metadata?.properties) return null;
   return (
     <>
-      {getProperties(selectedLayer).map((data, i) => (
+      {groupProperties(selectedLayer.metadata.properties).map((data, i) => (
         <React.Fragment key={i}>
           <RadioProperty
             data={data}

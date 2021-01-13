@@ -8,3 +8,4 @@ export { SidePanel } from './side-panel/side-panel.component';
 export * from './sidebar';
 export { Skeleton } from './skeleton/skeleton.component';
 export { InfoButtonTooltip } from './info-button-tooltip/info-button-tooltip.component';
+export { ColorMapRangeSlider } from './colormap-range-slider/colormap-range-slider.component';

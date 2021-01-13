@@ -6,7 +6,7 @@ import { Provider } from 'react-redux';
 import configureStore from 'redux-mock-store';
 
 import { RadioPicker } from './radio-picker.component';
-import { getProperties } from './helpers/get-properties.js';
+import { groupProperties } from './helpers/group-properties.js';
 
 const mockStore = configureStore();
 
@@ -72,7 +72,7 @@ const renderComponent = (
 describe('<RadioPicker />', () => {
   it('displays a radio for each selectable property in the source', () => {
     const { getByRole } = renderComponent();
-    getProperties(defaultSelectedLayer).forEach(pair => {
+    groupProperties(defaultSelectedLayer.metadata.properties).forEach(pair => {
       expect(getByRole('radio', { name: pair[0].label })).toBeInTheDocument();
     });
   });
@@ -132,8 +132,8 @@ describe('<RadioPicker />', () => {
 
   it('has an info icon for each radio', () => {
     const { getAllByRole } = renderComponent();
-    expect(getAllByRole('tooltip')).toHaveLength(
-      getProperties(defaultSelectedLayer).length,
+    expect(getAllByRole('button', { name: 'Info' })).toHaveLength(
+      groupProperties(defaultSelectedLayer.metadata.properties).length,
     );
   });
 });
