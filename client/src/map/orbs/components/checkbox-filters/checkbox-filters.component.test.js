@@ -26,7 +26,7 @@ const wrapper = ({ children }) => (
 
 describe('Checkbox Filters', () => {
   it('renders pre-checked checkboxes for all of the category types', () => {
-    const { getByText, getByLabelText } = render(
+    const { getByRole } = render(
       <CheckboxFilters selectedLayer={{ source_id: 'test-layer-1' }} />,
       {
         wrapper,
@@ -34,8 +34,8 @@ describe('Checkbox Filters', () => {
     );
 
     CATEGORIES.forEach(cat => {
-      expect(getByText(cat)).toBeInTheDocument();
-      expect(getByLabelText(cat)).toHaveAttribute('checked');
+      expect(getByRole('checkbox', { name: cat })).toBeInTheDocument();
+      expect(getByRole('checkbox', { name: cat })).toHaveAttribute('checked');
     });
   });
 });
