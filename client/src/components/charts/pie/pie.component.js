@@ -7,7 +7,7 @@ import {
   VictoryLegend,
   VictoryPie,
 } from 'victory';
-import orbisChartTheme from '../orbisChartTheme';
+import { useChartTheme } from '../useChartTheme';
 
 /**
  * @param {{
@@ -15,6 +15,7 @@ import orbisChartTheme from '../orbisChartTheme';
  * }} props
  */
 export const PieChart = ({ data }) => {
+  const orbisChartTheme = useChartTheme();
   return (
     <svg viewBox="0 0 500 500">
       <VictoryPie
