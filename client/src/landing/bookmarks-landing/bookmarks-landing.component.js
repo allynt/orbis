@@ -14,9 +14,13 @@ import { BookmarksListItem } from './bookmarks-list-item/bookmarks-list-item.com
 
 const useStyles = makeStyles(theme => ({
   controls: {
+    width: '100%',
     display: 'flex',
     justifyContent: 'space-between',
     marginBottom: theme.spacing(2),
+  },
+  collapse: {
+    width: '100%',
   },
   bookmarks: {
     overflowY: props => (props.viewAllItems ? 'auto' : 'hidden'),
@@ -52,7 +56,11 @@ export const BookmarksLanding = ({ bookmarks, chooseBookmark }) => {
           </Link>
         )}
       </div>
-      <Collapse collapsedHeight={258} in={viewAllItems}>
+      <Collapse
+        className={styles.collapse}
+        collapsedHeight={258}
+        in={viewAllItems}
+      >
         <GridList
           ref={gridRef}
           className={styles.bookmarks}

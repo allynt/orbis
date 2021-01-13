@@ -45,7 +45,9 @@ const useStyles = makeStyles(theme => ({
     width: props => (props.hasBookmarks ? '100%' : 'max-content'),
     justifySelf: 'end',
     alignSelf: 'center',
-    textAlign: 'center',
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
   },
   logo: {
     height: theme.typography.pxToRem(80),
