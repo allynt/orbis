@@ -1,7 +1,6 @@
 import * as React from 'react';
 
-import { BarChart } from 'components';
-import { LayersListItem } from 'data-layers/layers-list/layers-list-item/layers-list-item.component';
+import { BarChart, SidePanelSection } from 'components';
 
 import styles from './national-deviation-histogram.module.css';
 
@@ -13,7 +12,7 @@ import styles from './national-deviation-histogram.module.css';
  */
 export const NationalDeviationHistogram = ({ areaValue, selectedProperty }) => {
   return (
-    <LayersListItem
+    <SidePanelSection
       defaultExpanded
       title={<span className={styles.sectionTitle}>Selected Data Layer</span>}
     >
@@ -41,6 +40,6 @@ export const NationalDeviationHistogram = ({ areaValue, selectedProperty }) => {
         </p>
         <p> {selectedProperty?.aggregates?.GB}</p>
       </div>
-    </LayersListItem>
+    </SidePanelSection>
   );
 };

@@ -1,5 +1,4 @@
-import { PieChart } from 'components/charts/pie/pie.component';
-import { LayersListItem } from 'data-layers/layers-list/layers-list-item/layers-list-item.component';
+import { PieChart, SidePanelSection } from 'components';
 import * as React from 'react';
 
 /**
@@ -10,13 +9,13 @@ import * as React from 'react';
  */
 export const PropertyBreakdownChart = ({ data }) => {
   return (
-    <LayersListItem
+    <SidePanelSection
       title={
         <span style={{ fontSize: '1rem', fontWeight: 600 }}>Breakdown</span>
       }
       defaultExpanded
     >
       <PieChart data={data || []} />
-    </LayersListItem>
+    </SidePanelSection>
   );
 };

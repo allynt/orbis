@@ -52,7 +52,7 @@ const useStyles = makeStyles({
  *  defaultExpanded?: boolean
  * }} props
  */
-export const LayersListItem = ({
+export const SidePanelSection = ({
   children,
   title,
   defaultExpanded = false,

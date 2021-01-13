@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import { styled, Typography, fade } from '@astrosat/astrosat-ui';
 
-import { LayersListItem } from './layers-list-item/layers-list-item.component';
+import { SidePanelSection } from 'components';
 
 const CategoryHeader = styled(Typography)(({ theme }) => ({
   ...theme.typography.h3,
@@ -34,7 +34,7 @@ export const LayersList = ({ dispatch, selectedLayers, sidebarComponents }) => (
 
       const Component = sidebarComponents?.[selectedLayer.source_id];
       return (
-        <LayersListItem
+        <SidePanelSection
           key={selectedLayer.source_id}
           title={selectedLayer.metadata.label}
         >
@@ -47,7 +47,7 @@ export const LayersList = ({ dispatch, selectedLayers, sidebarComponents }) => (
               )}
             </React.Suspense>
           )}
-        </LayersListItem>
+        </SidePanelSection>
       );
     })}
   </>
