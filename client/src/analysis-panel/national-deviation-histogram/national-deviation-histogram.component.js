@@ -1,6 +1,8 @@
-import { Box, Grid, makeStyles, Typography } from '@astrosat/astrosat-ui';
-import { BarChart, SidePanelSection } from 'components';
 import * as React from 'react';
+
+import { Box, Grid, makeStyles, Typography } from '@astrosat/astrosat-ui';
+
+import { BarChart, SidePanelSection } from 'components';
 
 const useStyles = makeStyles(theme => ({
   italic: {
