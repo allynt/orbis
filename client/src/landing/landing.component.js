@@ -9,7 +9,7 @@ import {
 } from '@astrosat/astrosat-ui';
 
 import { useDispatch, useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 
 import { OrbisLogo } from 'components';
 import {
@@ -20,6 +20,7 @@ import {
 import { BookmarksLanding } from './bookmarks-landing/bookmarks-landing.component';
 import { NoBookmarksLanding } from './no-bookmarks-landing/no-bookmarks-landing.component';
 import backgroundImage from './landing-image.png';
+import { push } from 'connected-react-router';
 
 const useStyles = makeStyles(theme => ({
   background: {
@@ -59,6 +60,7 @@ const useStyles = makeStyles(theme => ({
 
 const Landing = () => {
   const dispatch = useDispatch();
+  const history = useHistory();
   const greaterThan1920 = useMediaQuery(theme => theme?.breakpoints?.up(1921));
   const bookmarks = useSelector(bookmarksSelector);
   const hasBookmarks = bookmarks?.length > 0;
@@ -67,7 +69,10 @@ const Landing = () => {
   /**
    * @param {import('typings/orbis').Bookmark} bookmark
    */
-  const chooseBookmark = bookmark => dispatch(selectBookmark(bookmark));
+  const chooseBookmark = bookmark => {
+    dispatch(selectBookmark(bookmark));
+    history.push('/map');
+  };
 
   useEffect(() => {
     if (!bookmarks) {
@@ -82,7 +87,7 @@ const Landing = () => {
           className={styles.container}
           maxWidth={greaterThan1920 ? 'xl' : 'lg'}
         >
-          <OrbisLogo className={styles.logo} />
+          <OrbisLogo className={styles.logo} titleAccess="Orbis Logo" />
           <div className={styles.content}>
             {hasBookmarks ? (
               <BookmarksLanding

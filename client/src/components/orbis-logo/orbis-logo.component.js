@@ -21,6 +21,7 @@ const useStyles = makeStyles(theme => ({
  *  color?: "inherit" | "disabled" | "action" | "primary" | "secondary" | "error"
  *  htmlColor?: string
  *  className?: string
+ *  titleAccess?: string
  * }} props
  */
 export const OrbisLogo = ({ className, color = 'primary', ...props }) => {

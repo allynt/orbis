@@ -47,7 +47,8 @@ export const BookmarksLanding = ({ bookmarks, chooseBookmark }) => {
   const toggle = () => setViewAllItems(!viewAllItems);
 
   useEffect(() => {
-    if (!viewAllItems) gridRef.current.scrollTo(0, 0);
+    if (!viewAllItems && gridRef?.current?.scrollTo)
+      gridRef.current.scrollTo(0, 0);
   }, [viewAllItems]);
 
   return (
