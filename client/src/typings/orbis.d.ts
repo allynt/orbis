@@ -90,6 +90,7 @@ type Property = {
   aggregates?: {
     GB: number;
   };
+  property_group?: string;
   application: {
     orbis?: {
       label?: string;

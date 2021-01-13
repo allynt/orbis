@@ -14,6 +14,7 @@ const useStyles = makeStyles(theme => ({
     fontSize: theme.typography.pxToRem(8),
     padding: theme.typography.pxToRem(2),
     height: 'min-content',
+    width: 'min-content',
   },
 }));
 
