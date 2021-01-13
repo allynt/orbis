@@ -69,7 +69,7 @@ export const AnalysisPanel = () => {
             size="small"
             onClick={() => dispatch(setPickedInfo(undefined))}
           >
-            <CloseIcon fontSize="inherit" />
+            <CloseIcon titleAccess="Close" fontSize="inherit" />
           </IconButton>
           <Typography variant="h2" component="h1">
             Data Analysis
