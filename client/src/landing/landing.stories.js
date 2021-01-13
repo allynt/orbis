@@ -14,7 +14,7 @@ const mockStore = configureMockStore([thunk]);
 const history = createMemoryHistory({ initialEntries: ['/'] });
 
 export default {
-  title: 'Landing Pages',
+  title: 'Landing/Landing Pages',
 };
 
 const getStore = (bookmarks, n = 30) =>

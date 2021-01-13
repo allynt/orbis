@@ -6,6 +6,7 @@ export { default as FeatureDetail } from './feature-detail/feature-detail.compon
 export { default as Form } from './form/form.component';
 export { InfoButtonTooltip } from './info-button-tooltip/info-button-tooltip.component';
 export { InlineTextField } from './inline-text-field/inline-text-field.component';
+export { OrbisLogo } from './orbis-logo/orbis-logo.component';
 export { Popup } from './popup/popup.component';
 export { SidePanelSection } from './side-panel-section/side-panel-section.component';
 export { SidePanel } from './side-panel/side-panel.component';
