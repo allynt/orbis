@@ -35,6 +35,12 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
+/**
+ * @param {{
+ *   bookmark: import('typings/orbis').Bookmark
+ *   onClick?: (bookmark: import('typings/orbis').Bookmark) => void
+ * }} props
+ */
 export const BookmarksListItem = ({ bookmark, onClick }) => {
   const styles = useStyles();
   const date = !!bookmark && format(new Date(bookmark?.created), DATE_FORMAT);

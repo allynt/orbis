@@ -32,6 +32,12 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
+/**
+ * @param {{
+ *   bookmarks: import('typings/orbis').Bookmark[]
+ *   chooseBookmark?: (bookmark: import('typings/orbis').Bookmark) => void
+ * }} props
+ */
 export const BookmarksLanding = ({ bookmarks, chooseBookmark }) => {
   const [viewAllItems, setViewAllItems] = useState(false);
   /** @type {React.Ref<HTMLUListElement>} */
