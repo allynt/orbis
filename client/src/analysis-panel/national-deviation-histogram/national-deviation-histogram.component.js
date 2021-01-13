@@ -1,8 +1,15 @@
+import { Box, Grid, makeStyles, Typography } from '@astrosat/astrosat-ui';
+import { BarChart, SidePanelSection } from 'components';
 import * as React from 'react';
 
-import { BarChart, SidePanelSection } from 'components';
-
-import styles from './national-deviation-histogram.module.css';
+const useStyles = makeStyles(theme => ({
+  italic: {
+    fontStyle: 'italic',
+  },
+  data: {
+    marginTop: theme.spacing(1),
+  },
+}));
 
 /**
  * @param {{
@@ -11,35 +18,50 @@ import styles from './national-deviation-histogram.module.css';
  * }} props
  */
 export const NationalDeviationHistogram = ({ areaValue, selectedProperty }) => {
+  const styles = useStyles();
   return (
-    <SidePanelSection
-      defaultExpanded
-      title={<span className={styles.sectionTitle}>Selected Data Layer</span>}
-    >
-      <p className={styles.propertyLabel}>{selectedProperty?.label}</p>
-      <BarChart
-        color={selectedProperty?.application?.orbis?.display?.color}
-        domain={[selectedProperty?.min, selectedProperty?.max]}
-        clip={[selectedProperty?.clip_min, selectedProperty?.clip_max]}
-        labelX={selectedProperty?.label}
-        labelY="Number of Areas"
-        data={
-          selectedProperty?.application?.orbis?.data_visualisation_components
-            ?.props?.data || []
-        }
-        line={areaValue}
-      />
-      <div className={styles.values}>
-        <p className={`${styles.areaValue} ${styles.valueLabel}`}>
-          Value of selected area:
-        </p>
-        <p className={styles.areaValue}>{areaValue}</p>
-        <p className={styles.valueLabel}>
-          {selectedProperty?.aggregation === 'sum' ? 'Sum' : 'Average'} of all
-          areas in GB:
-        </p>
-        <p> {selectedProperty?.aggregates?.GB}</p>
-      </div>
+    <SidePanelSection defaultExpanded title="Selected Data Layer">
+      <Box display="flex" flexDirection="column">
+        <Typography paragraph>{selectedProperty?.label}</Typography>
+        <BarChart
+          color={selectedProperty?.application?.orbis?.display?.color}
+          domain={[selectedProperty?.min, selectedProperty?.max]}
+          clip={[selectedProperty?.clip_min, selectedProperty?.clip_max]}
+          labelX={selectedProperty?.label}
+          labelY="Number of Areas"
+          data={
+            selectedProperty?.application?.orbis?.data_visualisation_components
+              ?.props?.data || []
+          }
+          line={areaValue}
+        />
+        <Grid className={styles.data} container spacing={1}>
+          <Grid item xs={8}>
+            <Typography
+              className={styles.italic}
+              variant="h4"
+              component="p"
+              color="primary"
+            >
+              Value of selected area:
+            </Typography>
+          </Grid>
+          <Grid item>
+            <Typography className={styles.italic} color="primary">
+              {areaValue}
+            </Typography>
+          </Grid>
+          <Grid item xs={8}>
+            <Typography variant="h4" component="p">
+              {selectedProperty?.aggregation === 'sum' ? 'Sum' : 'Average'} of
+              all areas in GB:
+            </Typography>
+          </Grid>
+          <Grid item>
+            <Typography> {selectedProperty?.aggregates?.GB}</Typography>
+          </Grid>
+        </Grid>
+      </Box>
     </SidePanelSection>
   );
 };
