@@ -108,9 +108,7 @@ export default { title: 'Analysis Panel/Main' };
 
 const Template = ({ state, ...args }) => (
   <Provider store={mockStore(state)}>
-    <ThemeProvider>
-      <AnalysisPanel />
-    </ThemeProvider>
+    <AnalysisPanel />
   </Provider>
 );
 
