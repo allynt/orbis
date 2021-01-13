@@ -2,7 +2,7 @@ import React from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
 
-import { CloseButton } from '@astrosat/astrosat-ui';
+import { CloseButton, makeStyles } from '@astrosat/astrosat-ui';
 
 import {
   ANNOTATIONS,
@@ -26,7 +26,6 @@ import BookmarksPanel from '../bookmarks/bookmarks-panel.component';
 import DataLayers from '../data-layers/data-layers.component';
 import SatellitesPanel from '../satellites/satellites-panel.component';
 
-import styles from './control-panel.module.css';
 import { SidePanel } from 'components/side-panel/side-panel.component';
 import Toolbar from './toolbar.component';
 import { getToolbarItems } from './toolbar-config';
@@ -41,6 +40,58 @@ const ControlPanel = () => {
   const user = useSelector(userSelector);
   const toolbarItems = getToolbarItems(dispatch, user);
 
+  const useStyles = makeStyles({
+    header: {
+      display: 'flex',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      width: '100%',
+    },
+    headings: {
+      display: 'flex',
+      flexDirection: 'column',
+      '&$heading': {
+        fontSize: '0.875rem',
+        fontWeight: 600,
+        textTransform: 'uppercase',
+        marginBottom: '5px',
+      },
+      '&$strapline': {
+        color: 'lightgray',
+        fontSize: '0.75rem',
+      },
+    },
+    content: {
+      height: '100%',
+      width: '100%',
+      overflowX: 'hidden',
+      overflowY: 'auto',
+    },
+    buttons: {
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      width: '100%',
+    },
+    button: {
+      paddingTop: '0.532rem',
+      paddingBottom: '0.532rem',
+      width: '70%',
+      margin: '0.5rem 0',
+    },
+    row: {
+      width: '100%',
+    },
+    fields: {
+      width: '100% !important',
+    },
+
+    //I don't know how to write code correctly: lines 91-92 inside makeStyles hook.
+    // .fields > * {
+    //   margin-bottom: 1rem;
+    // }
+  });
+  const styles = useStyles({});
   return (
     <>
       <Toolbar items={toolbarItems} />
