@@ -9,7 +9,7 @@ import {
   toggleDialog,
   dialogVisibleSelector,
 } from '../slices/mysupplylynk.slice';
-import { Dialog } from './mysupplylynk-dialog/dialog.component';
+import { MySupplyLynkDialog } from './mysupplylynk-dialog/dialog.component';
 
 import { LAYERS } from '../slices/mysupplylynk.constants';
 
@@ -75,12 +75,11 @@ const MySupplyLynkMapComponent = ({ name }) => {
         </Popup>
       )}
       {dialogFeatures?.length && (
-        <Dialog
+        <MySupplyLynkDialog
           key="dialog"
           supplier={dialogFeatures[0]}
           onCloseClick={() => dispatch(toggleDialog())}
           isVisible={dialogVisible}
-          ref={ref}
         />
       )}
     </>
