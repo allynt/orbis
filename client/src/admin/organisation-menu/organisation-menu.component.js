@@ -21,6 +21,7 @@ const useStyles = makeStyles(theme => ({
     objectFit: 'cover',
   },
   name: {
+    color: theme.palette.text.primary,
     maxWidth: '20ch',
     cursor: 'pointer',
     margin: theme.spacing(4, 3),

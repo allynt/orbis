@@ -179,44 +179,44 @@ const Admin = ({ user }) => {
   };
 
   return (
-    <Box display="flex" height="100vh" overflow="hidden">
-      <ThemeProvider theme="dark">
-        <LeftSidebar
-          user={user}
-          setVisiblePanel={setVisiblePanel}
-          visiblePanel={visiblePanel}
-        />
-      </ThemeProvider>
-      <Box width="100%" overflow="auto" p={3}>
-        {getMainView()}
-      </Box>
-      <Slide
-        direction="left"
-        in={visiblePanel !== ADMIN_VIEW.corporateAccount}
-        unmountOnExit
-      >
-        <OrganisationMenu
-          customer={currentCustomer}
-          setVisiblePanel={setVisiblePanel}
-          onCreateUserClick={() =>
-            setDialogForm({ type: DIALOG_VIEW.createUser })
-          }
-        />
-      </Slide>
-      <Dialog
-        open={!!dialogForm}
-        onClose={() => setDialogForm(null)}
-        maxWidth="md"
-      >
-        <DialogCloseButton
-          onClick={() => setDialogForm(null)}
-          aria-label="Close"
+    <Box display="flex" height="100vh" width="100%" overflow="hidden">
+      <LeftSidebar
+        user={user}
+        setVisiblePanel={setVisiblePanel}
+        visiblePanel={visiblePanel}
+      />
+      <ThemeProvider theme="light">
+        <Box width="100%" overflow="auto" p={3}>
+          {getMainView()}
+        </Box>
+        <Slide
+          direction="left"
+          in={visiblePanel !== ADMIN_VIEW.corporateAccount}
+          unmountOnExit
         >
-          <CloseIcon />
-        </DialogCloseButton>
-        <DialogTitle>{dialogForm?.type}</DialogTitle>
-        <DialogContent>{getDialogForm()}</DialogContent>
-      </Dialog>
+          <OrganisationMenu
+            customer={currentCustomer}
+            setVisiblePanel={setVisiblePanel}
+            onCreateUserClick={() =>
+              setDialogForm({ type: DIALOG_VIEW.createUser })
+            }
+          />
+        </Slide>
+        <Dialog
+          open={!!dialogForm}
+          onClose={() => setDialogForm(null)}
+          maxWidth="md"
+        >
+          <DialogCloseButton
+            onClick={() => setDialogForm(null)}
+            aria-label="Close"
+          >
+            <CloseIcon />
+          </DialogCloseButton>
+          <DialogTitle>{dialogForm?.type}</DialogTitle>
+          <DialogContent>{getDialogForm()}</DialogContent>
+        </Dialog>
+      </ThemeProvider>
     </Box>
   );
 };
