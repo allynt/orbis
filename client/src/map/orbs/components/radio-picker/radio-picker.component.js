@@ -11,6 +11,7 @@ import {
 } from '../../slices/isolation-plus.slice';
 import { groupProperties } from './helpers/group-properties.js';
 import RadioProperty from './radio-property/radio-property.component';
+import { Box } from '@astrosat/astrosat-ui';
 
 /**
  * @param {{
@@ -56,7 +57,7 @@ export const RadioPicker = ({ selectedLayer, dispatch }) => {
 
   if (!selectedLayer?.metadata?.properties) return null;
   return (
-    <>
+    <Box display="flex" flexDirection="column">
       {groupProperties(selectedLayer.metadata.properties).map((data, i) => (
         <React.Fragment key={i}>
           <RadioProperty
@@ -71,6 +72,6 @@ export const RadioPicker = ({ selectedLayer, dispatch }) => {
           />
         </React.Fragment>
       ))}
-    </>
+    </Box>
   );
 };

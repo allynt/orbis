@@ -65,6 +65,7 @@ export const AnalysisPanel = () => {
       header={
         <div className={styles.header}>
           <IconButton
+            aria-label="Close"
             className={styles.close}
             size="small"
             onClick={() => dispatch(setPickedInfo(undefined))}
