@@ -12,7 +12,9 @@ const supplier1 = {
   Items: [{ Category: 'Test' }, { Category: 'Icicle' }],
 };
 
-export const OneSupplier = () => <MySupplyLynkFeatureDetail data={supplier1} />;
+export const OneSupplier = () => (
+  <MySupplyLynkFeatureDetail data={[supplier1]} />
+);
 
 export const MultipleSuppliers = () => (
   <MySupplyLynkFeatureDetail
@@ -26,6 +28,11 @@ export const MultipleSuppliers = () => (
         URL: 'www.other.com',
         Items: [
           { Category: 'Other' },
+          { Category: 'Clover' },
+          { Category: 'Clover' },
+          { Category: 'Clover' },
+          { Category: 'Clover' },
+          { Category: 'Clover' },
           { Category: 'Clover' },
           { Category: 'Clover' },
         ],

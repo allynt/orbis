@@ -2,7 +2,7 @@ import React from 'react';
 import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
-import { Dialog } from './dialog.component';
+import { MySupplyLynkDialog } from './dialog.component';
 
 describe('Dialog', () => {
   let onCloseClick = jest.fn();
@@ -41,7 +41,7 @@ describe('Dialog', () => {
 
   it('renders a dialog with data about supplier', () => {
     const { getAllByText } = render(
-      <Dialog
+      <MySupplyLynkDialog
         supplier={supplier}
         onCloseClick={onCloseClick}
         isVisible={isVisible}
@@ -75,7 +75,7 @@ describe('Dialog', () => {
 
   it('displays `Not available` fallback when data is not present', () => {
     const { getAllByText } = render(
-      <Dialog
+      <MySupplyLynkDialog
         onCloseClick={onCloseClick}
         isVisible={isVisible}
         supplier={{
@@ -99,7 +99,7 @@ describe('Dialog', () => {
       Items: [],
     };
     const { findByTestId } = render(
-      <Dialog
+      <MySupplyLynkDialog
         onCloseClick={onCloseClick}
         isVisible={isVisible}
         supplier={testSupplier}
@@ -112,15 +112,15 @@ describe('Dialog', () => {
   });
 
   it('closes dialog when `close` button clicked', () => {
-    const { getByLabelText } = render(
-      <Dialog
+    const { getByRole } = render(
+      <MySupplyLynkDialog
         supplier={supplier}
         onCloseClick={onCloseClick}
         isVisible={isVisible}
       />,
     );
 
-    userEvent.click(getByLabelText('Close'));
+    userEvent.click(getByRole('button', { name: 'Close' }));
     expect(onCloseClick).toHaveBeenCalled();
   });
 });

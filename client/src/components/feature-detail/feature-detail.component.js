@@ -195,7 +195,7 @@ const FeatureDetail = ({
       <div className={styles.content}>
         {features &&
           features?.map(feature => (
-            <List key={feature.id} className={styles.list}>
+            <List key={feature?.id} className={styles.list}>
               {mapObject(feature)}
               {footer && <Item jsonKey={footer.label} value={footer.content} />}
             </List>
