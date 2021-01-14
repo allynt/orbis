@@ -553,7 +553,7 @@ const selectedScene = {
   satellite: 'sentinel-2',
 };
 
-describe('SatellitesPanel', () => {
+describe.skip('SatellitesPanel', () => {
   let fetchPinnedScenes = null;
 
   beforeEach(() => {

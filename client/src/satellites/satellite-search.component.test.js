@@ -22,7 +22,7 @@ const mockStore = configureMockStore([thunk]);
 
 const DATE_FORMAT = 'yyy-MM-dd';
 
-describe('Satellite Search Component', () => {
+describe.skip('Satellite Search Component', () => {
   let store = null;
 
   let map = null;

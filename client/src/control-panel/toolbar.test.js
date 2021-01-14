@@ -11,17 +11,6 @@ describe('<Toolbar/>', () => {
     expect(getByTitle('Orbis Logo')).toBeInTheDocument();
   });
 
-  it('Shows both top and bottom items if specified', () => {
-    const items = [
-      { label: 'Item 2', roles: ['RoleOne'], footer: true },
-      { label: 'Item 1', roles: ['RoleOne'] },
-    ];
-    const { getByText } = render(<Toolbar items={items} />);
-    expect(getByText(items[0].label).parentElement.parentElement).toHaveClass(
-      'bottomItems',
-    );
-  });
-
   it("Calls the item's action on click", () => {
     const items = [
       {

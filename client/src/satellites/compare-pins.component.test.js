@@ -66,7 +66,7 @@ const renderComponent = (store, args) => {
   return { ...attributes, ...testee };
 };
 
-describe('Compare Pins Component', () => {
+describe.skip('Compare Pins Component', () => {
   let store = null;
 
   beforeEach(() => {
