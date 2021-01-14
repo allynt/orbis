@@ -1,13 +1,35 @@
 import clsx from 'clsx';
 import * as React from 'react';
 
-import { makeStyles } from '@astrosat/astrosat-ui';
+import { makeStyles, useTheme } from '@astrosat/astrosat-ui';
 
 import { Slide } from '@astrosat/astrosat-ui/src/proxies';
 
+const WIDTH = '20rem',
+  BORDER_RADIUS = '1rem',
+  WIDTH_NEGATIVE = `-${WIDTH}`,
+  BORDER_RADIUS_NEGATIVE = `-${BORDER_RADIUS}`;
+
+const useSlideStyles = ({ open, orientation }) => {
+  const theme = useTheme();
+  const orientationStyle = {
+    [`margin${orientation === 'left' ? 'Right' : 'Left'}`]: open
+      ? BORDER_RADIUS_NEGATIVE
+      : WIDTH_NEGATIVE,
+  };
+  return {
+    ...orientationStyle,
+    zIndex: 3,
+    transition: theme.transitions.create(['margin-left', 'margin-right'], {
+      duration: theme.transitions.duration.enteringScreen,
+      easing: theme.transitions.easing.easeInOut,
+    }),
+  };
+};
+
 const useStyles = makeStyles(theme => ({
   sidePanel: {
-    width: '20rem',
+    width: WIDTH,
     height: '100%',
     backgroundColor: theme.palette.background.default,
     flexShrink: 0,
@@ -19,14 +41,12 @@ const useStyles = makeStyles(theme => ({
     borderBottom: `2px solid ${theme.palette.primary.main}`,
   },
   left: {
-    borderTopRightRadius: '1rem',
-    borderBottomRightRadius: '1rem',
-    marginRight: '-1rem',
+    borderTopRightRadius: BORDER_RADIUS,
+    borderBottomRightRadius: BORDER_RADIUS,
   },
   right: {
-    borderTopLeftRadius: '1rem',
-    borderBottomLeftRadius: '1rem',
-    marginLeft: '-1rem',
+    borderTopLeftRadius: BORDER_RADIUS,
+    borderBottomLeftRadius: BORDER_RADIUS,
   },
 }));
 /**
@@ -47,11 +67,16 @@ export const SidePanel = ({
   open = false,
   orientation = 'left',
 }) => {
-  const style = useStyles({});
+  const styles = useStyles();
+  const slideStyle = useSlideStyles({ open, orientation });
   return (
-    <Slide direction={orientation === 'left' ? 'right' : 'left'} in={open}>
-      <div className={clsx(className, style.sidePanel, style[orientation])}>
-        {header && <div className={style.header}>{header}</div>}
+    <Slide
+      style={slideStyle}
+      direction={orientation === 'left' ? 'right' : 'left'}
+      in={open}
+    >
+      <div className={clsx(className, styles.sidePanel, styles[orientation])}>
+        {header && <div className={styles.header}>{header}</div>}
         <div className={contentClassName}>{children}</div>
       </div>
     </Slide>
