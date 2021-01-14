@@ -4,7 +4,7 @@ import { SidePanel } from './side-panel.component';
 
 describe('<SidePanel />', () => {
   it('shows header content if provided', () => {
-    const { getByText } = render(<SidePanel header="Hello" />);
+    const { getByText } = render(<SidePanel header="Hello" open />);
     expect(getByText('Hello')).toBeInTheDocument();
   });
 
