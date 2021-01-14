@@ -9,7 +9,7 @@ import {
 } from '@astrosat/astrosat-ui';
 
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, useHistory } from 'react-router-dom';
+import { Link as RouterLink, useHistory } from 'react-router-dom';
 
 import { OrbisLogo } from 'components';
 import {
@@ -18,9 +18,8 @@ import {
   selectBookmark,
 } from '../bookmarks/bookmarks.slice';
 import { BookmarksLanding } from './bookmarks-landing/bookmarks-landing.component';
-import { NoBookmarksLanding } from './no-bookmarks-landing/no-bookmarks-landing.component';
 import backgroundImage from './landing-image.png';
-import { push } from 'connected-react-router';
+import { NoBookmarksLanding } from './no-bookmarks-landing/no-bookmarks-landing.component';
 
 const useStyles = makeStyles(theme => ({
   background: {
@@ -97,21 +96,14 @@ const Landing = () => {
             ) : (
               <NoBookmarksLanding />
             )}
-            <Link
-              className={styles.link}
-              to="/map"
-              component={Button}
-              color="secondary"
-            >
-              Browse Map
-            </Link>
+            <RouterLink className={styles.link} to="/map">
+              <Button color="secondary">Browse Map</Button>
+            </RouterLink>
           </div>
         </Container>
       </div>
     </ThemeProvider>
   );
 };
-
-Landing.propTypes = {};
 
 export default Landing;
