@@ -21,7 +21,7 @@
     "proxy": "nodemon -w proxy ./proxy/proxy.js"
   },
   "dependencies": {
-    "@astrosat/astrosat-ui": "^1.15.0",
+    "@astrosat/astrosat-ui": "^2.0.0",
     "@deck.gl/core": "^8.3.6",
     "@deck.gl/extensions": "^8.3.6",
     "@deck.gl/geo-layers": "^8.3.6",
