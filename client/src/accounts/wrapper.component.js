@@ -1,8 +1,6 @@
 import React from 'react';
 
 import { OrbisLogo } from 'components';
-
-import styles from './wrapper.module.css';
 import {
   Container,
   makeStyles,
