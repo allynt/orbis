@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 
 import {
-  Slider,
+  // Slider,
   Button,
-  useModal,
+  // useModal,
   Dialog,
   PinIcon,
 } from '@astrosat/astrosat-ui';
@@ -17,7 +17,7 @@ import { DEFAULT_CLOUD_COVER } from './satellite.constants';
 
 import styles from './results.module.css';
 import sceneStyles from './scene-list-item.module.css';
-import sideMenuStyles from '../control-panel/control-panel.module.css';
+// import sideMenuStyles from '../control-panel/control-panel.module.css';
 
 const Results = (
   {
@@ -38,7 +38,7 @@ const Results = (
     DEFAULT_CLOUD_COVER,
   ]);
 
-  const [isSaveDialogVisible, toggleSaveDialog] = useModal(false);
+  // const [isSaveDialogVisible, toggleSaveDialog] = useModal(false);
 
   const resultCountText = scenes
     ? `Showing ${
@@ -51,13 +51,13 @@ const Results = (
     <div className={styles.options} ref={ref}>
       <div>
         <h3>CLOUD COVER %:</h3>
-        <Slider
+        {/* <Slider
           min={0}
           max={100}
           values={cloudCoverPercentage}
           onChange={value => setCloudCoverPercentage(value)}
           disabled={!scenes}
-        />
+        /> */}
       </div>
       <div className={styles.results}>
         <h3>RESULTS</h3>
@@ -100,7 +100,7 @@ const Results = (
                 .map((num, i) => <SceneListItemSkeleton key={i} />)}
         </ul>
       </div>
-      <div className={sideMenuStyles.buttons}>
+      {/* <div className={sideMenuStyles.buttons}>
         <Button
           classNames={[sideMenuStyles.button]}
           theme="primary"
@@ -108,8 +108,8 @@ const Results = (
         >
           Save Search
         </Button>
-      </div>
-      <Dialog
+      </div> */}
+      {/* <Dialog
         isVisible={isSaveDialogVisible}
         title="Name Search"
         close={toggleSaveDialog}
@@ -120,7 +120,7 @@ const Results = (
           close={toggleSaveDialog}
           saveSearch={saveSatelliteSearch}
         />
-      </Dialog>
+      </Dialog> */}
     </div>
   );
 };

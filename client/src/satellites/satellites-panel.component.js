@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
 
-import { Button, Dialog, useModal } from '@astrosat/astrosat-ui';
+import { Button, Dialog /*useModal*/ } from '@astrosat/astrosat-ui';
 
 import {
   fetchSatellites,
@@ -53,7 +53,7 @@ const SatellitesPanel = ({ map }) => {
     data: null,
   });
 
-  const [isMoreInfoDialogVisible, toggleMoreInfoDialog] = useModal(false);
+  // const [isMoreInfoDialogVisible, toggleMoreInfoDialog] = useModal(false);
 
   const satellites = useSelector(state => state.satellites.satellites);
   const scenes = useSelector(state => state.satellites.scenes);
@@ -145,7 +145,7 @@ const SatellitesPanel = ({ map }) => {
             satellites={satellites}
             setVisiblePanel={setVisiblePanel}
             setSelectedMoreInfo={setSelectedMoreInfo}
-            toggleMoreInfoDialog={toggleMoreInfoDialog}
+            // toggleMoreInfoDialog={toggleMoreInfoDialog}
             ref={dialogRef}
           />
         )}
@@ -155,7 +155,7 @@ const SatellitesPanel = ({ map }) => {
             scenes={scenes}
             selectScene={scene => dispatch(selectScene(scene))}
             setSelectedMoreInfo={setSelectedMoreInfo}
-            toggleMoreInfoDialog={toggleMoreInfoDialog}
+            // toggleMoreInfoDialog={toggleMoreInfoDialog}
             pinnedScenes={pinnedScenes}
             pinScene={scene => dispatch(pinScene(scene))}
             deletePinnedScene={id => dispatch(deletePinnedScene(id))}
@@ -177,7 +177,7 @@ const SatellitesPanel = ({ map }) => {
         {visiblePanel === PINS && (
           <ComparePins
             setSelectedMoreInfo={setSelectedMoreInfo}
-            toggleMoreInfoDialog={toggleMoreInfoDialog}
+            // toggleMoreInfoDialog={toggleMoreInfoDialog}
             selectPinnedScene={scene => dispatch(selectPinnedScene(scene))}
             deselectPinnedScene={scene => dispatch(deselectPinnedScene(scene))}
             clearSelectedPinnedScenes={() =>
@@ -193,9 +193,9 @@ const SatellitesPanel = ({ map }) => {
         )}
       </div>
       <Dialog
-        isVisible={isMoreInfoDialogVisible}
+        // isVisible={isMoreInfoDialogVisible}
         title="More Information"
-        close={toggleMoreInfoDialog}
+        // close={toggleMoreInfoDialog}
         ref={dialogRef}
       >
         {!selectedMoreInfo && (

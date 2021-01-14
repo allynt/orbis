@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Route, Switch } from 'react-router-dom';
 import ReactTooltip from 'react-tooltip';
 
-import { Dialog, useModal } from '@astrosat/astrosat-ui';
+import { Dialog /*useModal*/ } from '@astrosat/astrosat-ui';
 
 import PrivateRoute from './utils/private-route.component';
 
@@ -40,15 +40,15 @@ const App = () => {
     state => state.app.notYetImplementedDescription,
   );
   const ref = useRef(null);
-  const [isVisible, toggle] = useModal(
-    notYetImplementedDescription !== null ? true : false,
-  );
+  // const [isVisible, toggle] = useModal(
+  //   notYetImplementedDescription !== null ? true : false,
+  // );
 
-  useEffect(() => {
-    if (notYetImplementedDescription !== null) {
-      toggle();
-    }
-  }, [notYetImplementedDescription, toggle]);
+  // useEffect(() => {
+  //   if (notYetImplementedDescription !== null) {
+  //     toggle();
+  //   }
+  // }, [notYetImplementedDescription, toggle]);
 
   // Always fetch app config regardless of logged in status
   useEffect(() => {
@@ -89,7 +89,7 @@ const App = () => {
       <ReactTooltip />
 
       <main>
-        <Dialog
+        {/* <Dialog
           isVisible={isVisible}
           title="Sorry, Not Ready Yet!"
           close={toggle}
@@ -99,7 +99,7 @@ const App = () => {
             Sorry for the inconvenience, but this feature is not available yet!
             Do not worry, we will let you know when it will be ready.
           </p>
-        </Dialog>
+        </Dialog> */}
 
         <Switch>
           <PrivateRoute exact path="/" user={user} component={LandingView} />

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Button, Textfield, useForm } from '@astrosat/astrosat-ui';
+import { Button, TextField, useForm } from '@astrosat/astrosat-ui';
 
 import validate from './save-search-form.validator';
 
@@ -27,7 +27,7 @@ const SaveSearchForm = ({ query, close, saveSearch }) => {
         </p>
         <div className={formStyles.fields}>
           <div className={formStyles.row}>
-            <Textfield
+            <TextField
               name="name"
               value={values.name || ''}
               placeholder="Name"
