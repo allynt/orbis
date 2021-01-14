@@ -54,7 +54,7 @@ export const BookmarksLanding = ({ bookmarks, chooseBookmark }) => {
   return (
     <>
       <div className={styles.controls}>
-        <Typography variant="h2">
+        <Typography variant="h2" color="textPrimary">
           {viewAllItems ? 'View All' : 'Your Maps'}
         </Typography>
         {bookmarks.length > MAX_VISIBLE_BOOKMARKS && (

@@ -54,6 +54,7 @@ const useStyles = makeStyles(theme => ({
   },
   link: {
     marginTop: theme.spacing(4.5),
+    textDecoration: 'none',
   },
 }));
 
