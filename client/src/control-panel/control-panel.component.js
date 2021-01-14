@@ -2,7 +2,12 @@ import React from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
 
-import { /*CloseButton,*/ makeStyles } from '@astrosat/astrosat-ui';
+import {
+  /*CloseButton,*/ CloseIcon,
+  IconButton,
+  makeStyles,
+  Typography,
+} from '@astrosat/astrosat-ui';
 
 import {
   ANNOTATIONS,
@@ -31,57 +36,21 @@ import Toolbar from './toolbar.component';
 import { getToolbarItems } from './toolbar-config';
 import { userSelector } from 'accounts/accounts.selectors';
 
-const useStyles = makeStyles({
-  header: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    width: '100%',
-  },
-  headings: {
-    display: 'flex',
-    flexDirection: 'column',
-    '&$heading': {
-      fontSize: '0.875rem',
-      fontWeight: 600,
-      textTransform: 'uppercase',
-      marginBottom: '5px',
-    },
-    '&$strapline': {
-      color: 'lightgray',
-      fontSize: '0.75rem',
-    },
-  },
+const useStyles = makeStyles(theme => ({
   content: {
-    height: '100%',
-    width: '100%',
+    height: `calc(100vh - ${theme.typography.pxToRem(80)})`,
     overflowX: 'hidden',
     overflowY: 'auto',
   },
-  buttons: {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    width: '100%',
+  header: {
+    position: 'relative',
   },
-  button: {
-    paddingTop: '0.532rem',
-    paddingBottom: '0.532rem',
-    width: '70%',
-    margin: '0.5rem 0',
+  closeButton: {
+    position: 'absolute',
+    top: 0,
+    right: 0,
   },
-  row: {
-    width: '100%',
-  },
-  fields: {
-    width: '100% !important',
-  },
-
-  //I don't know how to write code correctly: lines 91-92 inside makeStyles hook.
-  // .fields > * {
-  //   margin-bottom: 1rem;
-  // }
-});
+}));
 
 const ControlPanel = () => {
   const dispatch = useDispatch();
@@ -101,14 +70,17 @@ const ControlPanel = () => {
         contentClassName={styles.content}
         header={
           <div className={styles.header}>
-            <div className={styles.headings}>
-              <h3 className={styles.heading}>{heading}</h3>
-              <p className={styles.strapline}>{strapline}</p>
-            </div>
-            {/* <CloseButton
+            <Typography variant="h3" component="h1" gutterBottom>
+              {heading}
+            </Typography>
+            <Typography variant="subtitle2">{strapline}</Typography>
+            <IconButton
+              size="small"
               className={styles.closeButton}
               onClick={() => dispatch(closeMenu())}
-            /> */}
+            >
+              <CloseIcon fontSize="inherit" />
+            </IconButton>
           </div>
         }
       >

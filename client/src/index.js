@@ -16,11 +16,7 @@ import { history } from './root.reducer';
 
 import './polyfills/flat-map';
 import './polyfills/object-fromEntries';
-
-import './normalize.css';
-import './reset.css';
-import './typography.css';
-import { ThemeProvider } from '@astrosat/astrosat-ui';
+import { CssBaseline, ThemeProvider } from '@astrosat/astrosat-ui';
 
 import installDevTools from './dev-tools/load';
 import { MapProvider } from 'MapContext';
@@ -58,6 +54,7 @@ const render = () => {
           <StrictMode>
             <MapProvider>
               <ThemeProvider>
+                <CssBaseline />
                 <App />
               </ThemeProvider>
             </MapProvider>
