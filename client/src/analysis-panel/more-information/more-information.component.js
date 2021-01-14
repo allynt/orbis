@@ -8,8 +8,8 @@ const useStyles = makeStyles(theme => ({
   information: {
     display: 'grid',
     gridTemplateColumns: 'max-content 1fr',
-    columnGap: theme.typography.pxToRem(theme.spacing(1)),
-    rowGap: theme.typography.pxToRem(theme.spacing(2)),
+    columnGap: theme.spacing(1),
+    rowGap: theme.spacing(2),
   },
   details: {
     gridColumn: '1 / -1',

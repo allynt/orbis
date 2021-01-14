@@ -18,9 +18,9 @@ import { FORMAT } from '../radio-picker-constants';
 const useStyles = makeStyles(theme => ({
   property: {
     display: 'grid',
-    gridTemplateColumns: `1fr ${theme.typography.pxToRem(theme.spacing(4))}`,
+    gridTemplateColumns: `1fr ${theme.spacing(4)}`,
     marginBottom: theme.spacing(2),
-    rowGap: theme.typography.pxToRem(theme.spacing(2)),
+    rowGap: theme.spacing(2),
   },
   infoButton: {
     placeSelf: 'center',

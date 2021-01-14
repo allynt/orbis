@@ -15,7 +15,7 @@ const Wrapper = styled('div')(({ theme }) => ({
   gridTemplateRows: '1fr 1fr',
   justifyContent: 'center',
   alignItems: 'center',
-  padding: `0 ${theme.spacing(5)}px`,
+  padding: theme.spacing(0, 5),
   marginBottom: theme.spacing(5),
 }));
 

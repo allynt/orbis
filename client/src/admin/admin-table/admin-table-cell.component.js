@@ -2,9 +2,7 @@ import { TableCell, withStyles } from '@astrosat/astrosat-ui';
 
 export const AdminTableCell = withStyles(theme => ({
   root: {
-    padding: `${theme.typography.pxToRem(
-      theme.spacing(5),
-    )} ${theme.typography.pxToRem(theme.spacing(3))}`,
+    padding: theme.spacing(5, 3),
   },
   head: {
     ...theme.typography.h2,

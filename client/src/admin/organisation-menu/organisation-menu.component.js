@@ -23,9 +23,7 @@ const useStyles = makeStyles(theme => ({
   name: {
     maxWidth: '20ch',
     cursor: 'pointer',
-    margin: `${theme.typography.pxToRem(
-      theme.spacing(4),
-    )} 0 ${theme.typography.pxToRem(theme.spacing(3))}`,
+    margin: theme.spacing(4, 3),
   },
 }));
 

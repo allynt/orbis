@@ -99,7 +99,7 @@ const PendingUserRow = ({
 
 const useStyles = makeStyles(theme => ({
   container: {
-    maxHeight: `calc(100% - ${theme.typography.pxToRem(theme.spacing(10))})`,
+    maxHeight: `calc(100% - ${theme.spacing(10)})`,
   },
 }));
 

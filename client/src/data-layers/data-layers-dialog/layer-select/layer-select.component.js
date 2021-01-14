@@ -60,7 +60,7 @@ const useAccordionStyles = makeStyles(theme => ({
   header: props => ({
     ...theme.typography.body1,
     width: '100%',
-    padding: `${theme.spacing(1)}px ${theme.spacing(2)}px`,
+    padding: theme.spacing(1, 2),
     paddingLeft: theme.spacing(props.level + 1),
     marginBottom: props.level === 0 ? theme.spacing(1) : 0,
     display: 'flex',
@@ -165,9 +165,7 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     justifyContent: 'flex-end',
     alignItems: 'flex-end',
-    padding: `${theme.typography.pxToRem(
-      theme.spacing(2),
-    )} ${theme.typography.pxToRem(theme.spacing(4))}`,
+    padding: theme.spacing(2, 4),
   },
 }));
 

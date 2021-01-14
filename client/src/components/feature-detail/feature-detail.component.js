@@ -159,10 +159,7 @@ const useStyles = makeStyles(theme => ({
   header: {
     ...theme.typography.h3,
     borderBottom: `1px solid ${theme.palette.primary.main}`,
-    padding: `
-    ${theme.typography.pxToRem(theme.spacing(1))} 
-    ${theme.typography.pxToRem(theme.spacing(1))} 
-    ${theme.typography.pxToRem(theme.spacing(3))}`,
+    padding: theme.spacing(1, 1, 3),
     textAlign: 'center',
   },
   content: {

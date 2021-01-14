@@ -14,11 +14,9 @@ const useStyles = makeStyles(theme => ({
     width: '100%',
     overflowY: 'auto',
     height: props =>
-      props.fullHeight &&
-      `calc(100vh - calc(2 * ${theme.typography.pxToRem(theme.spacing(3))}))`,
+      props.fullHeight && `calc(100vh - calc(2 * ${theme.spacing(3)}))`,
     maxHeight: props =>
-      props.fullHeight &&
-      `calc(100vh - calc(2 * ${theme.typography.pxToRem(theme.spacing(3))}))`,
+      props.fullHeight && `calc(100vh - calc(2 * ${theme.spacing(3)}))`,
     '& + &': {
       marginTop: theme.spacing(3),
     },
