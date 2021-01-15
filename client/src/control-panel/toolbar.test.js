@@ -15,13 +15,13 @@ describe('<Toolbar/>', () => {
     const items = [
       {
         label: 'Item 1',
-        icon: 'Icon 1',
+        icon: <div aria-label="Item 1" />,
         roles: ['RoleOne'],
         action: jest.fn(),
       },
     ];
-    const { getByText } = render(<Toolbar items={items} />);
-    userEvent.click(getByText(items[0].icon));
+    const { getByLabelText } = render(<Toolbar items={items} />);
+    userEvent.click(getByLabelText(items[0].label));
     expect(items[0].action).toHaveBeenCalled();
   });
 

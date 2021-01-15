@@ -68,14 +68,25 @@ const MultipleSupplierContent = ({ suppliers, onSupplierClick }) => {
   );
 };
 
+const WHITELIST = [
+  'URL',
+  'Items',
+  'Address Line 1',
+  'Address Line 2',
+  'Postcode',
+];
+
 const MySupplyLynkFeatureDetail = ({ data, onSupplierClick }) => {
   const styles = useStyles();
   if (data.length === 1) {
-    const feature = Object.entries(data[0]).reduce((acc, [key, value]) => {
-      if (key === 'URL') return { ...acc, Website: value };
-      if (key === 'Items') return { ...acc, [key]: value.map(i => i.Category) };
-      return { ...acc, [key]: value };
-    }, {});
+    const feature = Object.entries(data[0])
+      .filter(([key]) => WHITELIST.includes(key))
+      .reduce((acc, [key, value]) => {
+        if (key === 'URL') return { ...acc, Website: value };
+        if (key === 'Items')
+          return { ...acc, [key]: value.map(i => i.Category) };
+        return { ...acc, [key]: value };
+      }, {});
     return (
       <FeatureDetail title={data[0]?.Name} features={[feature]}>
         <Typography className={styles.clickMessage}>
