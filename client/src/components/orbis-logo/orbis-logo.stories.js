@@ -16,3 +16,10 @@ export const Colors = () => (
     <OrbisLogo color="error" />
   </Box>
 );
+
+export const Variants = () => (
+  <Box display="flex" flexDirection="column">
+    <OrbisLogo />
+    <OrbisLogo variant="admin" />
+  </Box>
+);
