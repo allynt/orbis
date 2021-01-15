@@ -96,7 +96,7 @@ const ResultsListItem = ({
         }
         secondary={
           isLoading ? (
-            <Skeleton role="progressbar" variant="text" width="40ch" />
+            <Skeleton role="progressbar" variant="text" width="30ch" />
           ) : (
             result?.properties?.address
           )

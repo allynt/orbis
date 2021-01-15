@@ -19,6 +19,12 @@ import { Description } from './description.component';
 import ResultsListItem from './results-list-item/results-list-item.component';
 
 const useStyles = makeStyles(theme => ({
+  wrapper: {
+    display: 'flex',
+    flexDirection: 'column',
+    height: '100%',
+    width: '100%',
+  },
   infoButton: {
     backgroundColor: theme.palette.text.primary,
     color: theme.palette.background.default,
@@ -47,7 +53,7 @@ export const CrowdlessSidebarComponent = ({
 }) => {
   const styles = useStyles();
   return (
-    <>
+    <div className={styles.wrapper}>
       <Grid container spacing={2}>
         <Grid item xs={11}>
           <FormControlLabel
@@ -112,6 +118,6 @@ export const CrowdlessSidebarComponent = ({
           )}
         </Grid>
       </Fade>
-    </>
+    </div>
   );
 };
