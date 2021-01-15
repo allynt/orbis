@@ -35,11 +35,15 @@ const useStyles = makeStyles(theme => ({
  *   onCreateUserClick?: () => void
  * }} props
  */
-const OrganisationMenu = ({ customer, setVisiblePanel, onCreateUserClick }) => {
+const OrganisationMenu = (
+  { customer, setVisiblePanel, onCreateUserClick },
+  ref,
+) => {
   const styles = useStyles();
   return (
     <Box
       // @ts-ignore
+      ref={ref}
       display="flex"
       flexDirection="column"
       flexShrink={0}
@@ -69,4 +73,4 @@ const OrganisationMenu = ({ customer, setVisiblePanel, onCreateUserClick }) => {
   );
 };
 
-export default OrganisationMenu;
+export default React.forwardRef(OrganisationMenu);

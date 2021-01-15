@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
 
-import { Box } from '@astrosat/astrosat-ui';
+import { Box, ThemeProvider } from '@astrosat/astrosat-ui';
 
 import { AnalysisPanel } from 'analysis-panel/analysis-panel.component';
 import {

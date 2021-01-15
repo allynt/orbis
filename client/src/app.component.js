@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Route, Switch } from 'react-router-dom';
 import ReactTooltip from 'react-tooltip';
 
-import { Dialog /*useModal*/ } from '@astrosat/astrosat-ui';
+import { Box, Dialog /*useModal*/, ThemeProvider } from '@astrosat/astrosat-ui';
 
 import PrivateRoute from './utils/private-route.component';
 
@@ -85,11 +85,14 @@ const App = () => {
   }, [dispatch, userTrackingInterval]);
 
   return (
-    <div className={styles.app} ref={ref}>
+    <Box
+      width="100vw"
+      height="100vh"
+      style={{ backgroundColor: '#ffffff' }}
+      ref={ref}
+    >
       <ReactTooltip />
-
-      <main>
-        {/* <Dialog
+      {/* <Dialog
           isVisible={isVisible}
           title="Sorry, Not Ready Yet!"
           close={toggle}
@@ -101,22 +104,21 @@ const App = () => {
           </p>
         </Dialog> */}
 
-        <Switch>
-          <PrivateRoute exact path="/" user={user} component={LandingView} />
-          <Route path="/accounts" component={Accounts} />
-          <PrivateRoute path="/map" user={user} component={MapLayout} />
-          <Route exact path={['/terms', '/eula']} component={LegalDocuments} />
-          <Suspense fallback={<h3>Loading...</h3>}>
-            <PrivateRoute
-              exact
-              path="/admin-console"
-              user={user}
-              component={Admin}
-            />
-          </Suspense>
-        </Switch>
-      </main>
-    </div>
+      <Switch>
+        <PrivateRoute exact path="/" user={user} component={LandingView} />
+        <Route path="/accounts" component={Accounts} />
+        <PrivateRoute path="/map" user={user} component={MapLayout} />
+        <Route exact path={['/terms', '/eula']} component={LegalDocuments} />
+        <Suspense fallback={<h3>Loading...</h3>}>
+          <PrivateRoute
+            exact
+            path="/admin-console"
+            user={user}
+            component={Admin}
+          />
+        </Suspense>
+      </Switch>
+    </Box>
   );
 };
 

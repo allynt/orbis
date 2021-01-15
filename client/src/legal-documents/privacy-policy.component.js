@@ -1,11 +1,12 @@
+import { Typography } from '@astrosat/astrosat-ui';
 import React from 'react';
 
 import styles from './legal-documents.module.css';
 
 export const PrivacyPolicy = () => {
   return (
-    <div className={styles.text}>
-      <h1 className={styles.textHeader}>Privacy Policy</h1>
+    <div>
+      <Typography variant="h1">Privacy Policy</Typography>
       <div className={styles.description}>
         <span className={styles.emphasis}>STEVENSON ASTROSAT LIMITED</span> a
         company incorporated in Scotland (Number SC423073) and whose Registered
