@@ -1,6 +1,6 @@
 import React from 'react';
+
 import { useDocumentStyles } from './useDocumentStyles';
-import styles from './legal-documents.module.css';
 
 const Terms = ({ onClick }) => {
   const styles = useDocumentStyles();
@@ -292,183 +292,179 @@ const Terms = ({ onClick }) => {
           </li>
         </ul>
       </div>
-      <div className={styles.section}>
-        <h2 className={styles.textSectionHeader}>4: Acceptable Usage Policy</h2>
-        <div className={styles.description}>
-          <ul className={styles.list}>
-            <li className={styles.listItem}>
-              <span>4.1.</span>
-              <div>
-                Without prejudice to the generality of Clause 2.7, when using
-                the Subscription Services; Users should do so in accordance with
-                the following rules:
-                <ul className={styles.list}>
-                  <li className={styles.listItem}>
-                    <span>4.1.1.</span>
-                    <div>Users must not use obscene or vulgar language;</div>
-                  </li>
-                  <li className={styles.listItem}>
-                    <span>4.1.2.</span>
-                    <div>
-                      User Sites may not contain any material that is unlawful
-                      or otherwise objectionable (including that which may be in
-                      breach of rules, regulations or legislation in force in
-                      the United Kingdom or any other jurisdiction in which the
-                      Customer’s User Site can be lawfully accessed. This does
-                      not extend to material which may be automatically blocked
-                      in certain jurisdictions but that is lawful in the
-                      Customer’s home country);
-                    </div>
-                  </li>
-                  <li className={styles.listItem}>
-                    <span>4.1.3.</span>
-                    <div>
-                      User Sites may not contain any material that is intended
-                      to promote or incite violence or any other unlawful
-                      conduct against any group, individual or animal. This
-                      includes, but is not limited to, the provision of
-                      instructions on how to assemble weapons of any kind,
-                      bombs, grenades or other explosive devices;
-                    </div>
-                  </li>
-                  <li className={styles.listItem}>
-                    <span>4.1.4.</span>
-                    <div>
-                      User Sites may not infringe the Intellectual Property
-                      rights of any third party including, but not limited to,
-                      copyright, trademarks, patents and designs;
-                    </div>
-                  </li>
-                  <li className={styles.listItem}>
-                    <span>4.1.5.</span>
-                    <div>
-                      User Sites may not contain any material that may contain
-                      viruses or other software or instructions that may damage
-                      or disrupt other software, computer hardware or
-                      communications networks; and
-                    </div>
-                  </li>
-                  <li className={styles.listItem}>
-                    <span>4.1.6.</span>
-                    <div>
-                      User Sites may not be used for unauthorised
-                      mass-communications such as “spam” or “junk mail”.
-                    </div>
-                  </li>
-                </ul>
-              </div>
-            </li>
-            <li className={styles.listItem}>
-              <span>4.2.</span>
-              <div>
-                Astrosat does not screen or pre-approve any User Site or User
-                Content (although Users acknowledge that Astrosat may do so if
-                it wishes).
-              </div>
-            </li>
-            <li className={styles.listItem}>
-              <span>4.3.</span>
-              <div>
-                Astrosat may edit a User Site to comply with the provisions of
-                sub-Clause 4.1 without prior consultation. In cases of severe
-                breaches of the provisions of sub-Clause 4.1, a User Site may be
-                taken down and the relevant account may be suspended or
-                terminated. The Customer will not be informed in writing of the
-                reasons for such alterations or take downs.
-              </div>
-            </li>
-            <li className={styles.listItem}>
-              <span>4.4.</span>
-              <div>
-                Astrosat accepts no responsibility or liability for any
-                infringement of third-party rights by User Sites.
-              </div>
-            </li>
-            <li className={styles.listItem}>
-              <span>4.5.</span>
-              <div>
-                Astrosat will not be liable in any way or under any
-                circumstances for any loss or damage that any User may incur as
-                a result of such User Sites, or Astrosat exercising its rights
-                under this Agreement, nor for any errors or omissions in User
-                Sites. Use of and reliance upon User Sites is entirely at the
-                Customer’s own risk.
-              </div>
-            </li>
-            <li className={styles.listItem}>
-              <span>4.6.</span>
-              <div>
-                The Customer acknowledges that Astrosat may retain copies of any
-                and all communications, information, User Content and User Sites
-                sent to Astrosat.
-              </div>
-            </li>
-            <li className={styles.listItem}>
-              <span>4.7.</span>
-              <div>
-                Users must comply with the terms of the Privacy Legislation at
-                all times.
-              </div>
-            </li>
-            <li className={styles.listItem}>
-              <span>4.8.</span>
-              <div>
-                Users who are your employees and consultants and other third
-                parties must enter into the EULA.
-              </div>
-            </li>
-          </ul>
-        </div>
+      <h2 className={styles.textSectionHeader}>4: Acceptable Usage Policy</h2>
+      <div className={styles.description}>
+        <ul className={styles.list}>
+          <li className={styles.listItem}>
+            <span>4.1.</span>
+            <div>
+              Without prejudice to the generality of Clause 2.7, when using the
+              Subscription Services; Users should do so in accordance with the
+              following rules:
+              <ul className={styles.list}>
+                <li className={styles.listItem}>
+                  <span>4.1.1.</span>
+                  <div>Users must not use obscene or vulgar language;</div>
+                </li>
+                <li className={styles.listItem}>
+                  <span>4.1.2.</span>
+                  <div>
+                    User Sites may not contain any material that is unlawful or
+                    otherwise objectionable (including that which may be in
+                    breach of rules, regulations or legislation in force in the
+                    United Kingdom or any other jurisdiction in which the
+                    Customer’s User Site can be lawfully accessed. This does not
+                    extend to material which may be automatically blocked in
+                    certain jurisdictions but that is lawful in the Customer’s
+                    home country);
+                  </div>
+                </li>
+                <li className={styles.listItem}>
+                  <span>4.1.3.</span>
+                  <div>
+                    User Sites may not contain any material that is intended to
+                    promote or incite violence or any other unlawful conduct
+                    against any group, individual or animal. This includes, but
+                    is not limited to, the provision of instructions on how to
+                    assemble weapons of any kind, bombs, grenades or other
+                    explosive devices;
+                  </div>
+                </li>
+                <li className={styles.listItem}>
+                  <span>4.1.4.</span>
+                  <div>
+                    User Sites may not infringe the Intellectual Property rights
+                    of any third party including, but not limited to, copyright,
+                    trademarks, patents and designs;
+                  </div>
+                </li>
+                <li className={styles.listItem}>
+                  <span>4.1.5.</span>
+                  <div>
+                    User Sites may not contain any material that may contain
+                    viruses or other software or instructions that may damage or
+                    disrupt other software, computer hardware or communications
+                    networks; and
+                  </div>
+                </li>
+                <li className={styles.listItem}>
+                  <span>4.1.6.</span>
+                  <div>
+                    User Sites may not be used for unauthorised
+                    mass-communications such as “spam” or “junk mail”.
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </li>
+          <li className={styles.listItem}>
+            <span>4.2.</span>
+            <div>
+              Astrosat does not screen or pre-approve any User Site or User
+              Content (although Users acknowledge that Astrosat may do so if it
+              wishes).
+            </div>
+          </li>
+          <li className={styles.listItem}>
+            <span>4.3.</span>
+            <div>
+              Astrosat may edit a User Site to comply with the provisions of
+              sub-Clause 4.1 without prior consultation. In cases of severe
+              breaches of the provisions of sub-Clause 4.1, a User Site may be
+              taken down and the relevant account may be suspended or
+              terminated. The Customer will not be informed in writing of the
+              reasons for such alterations or take downs.
+            </div>
+          </li>
+          <li className={styles.listItem}>
+            <span>4.4.</span>
+            <div>
+              Astrosat accepts no responsibility or liability for any
+              infringement of third-party rights by User Sites.
+            </div>
+          </li>
+          <li className={styles.listItem}>
+            <span>4.5.</span>
+            <div>
+              Astrosat will not be liable in any way or under any circumstances
+              for any loss or damage that any User may incur as a result of such
+              User Sites, or Astrosat exercising its rights under this
+              Agreement, nor for any errors or omissions in User Sites. Use of
+              and reliance upon User Sites is entirely at the Customer’s own
+              risk.
+            </div>
+          </li>
+          <li className={styles.listItem}>
+            <span>4.6.</span>
+            <div>
+              The Customer acknowledges that Astrosat may retain copies of any
+              and all communications, information, User Content and User Sites
+              sent to Astrosat.
+            </div>
+          </li>
+          <li className={styles.listItem}>
+            <span>4.7.</span>
+            <div>
+              Users must comply with the terms of the Privacy Legislation at all
+              times.
+            </div>
+          </li>
+          <li className={styles.listItem}>
+            <span>4.8.</span>
+            <div>
+              Users who are your employees and consultants and other third
+              parties must enter into the EULA.
+            </div>
+          </li>
+        </ul>
       </div>
-      <div className={styles.section}>
-        <h2 className={styles.textSectionHeader}>5: Intellectual Property</h2>
-        <div className={styles.description}>
-          <ul className={styles.list}>
-            <li className={styles.listItem}>
-              <span>5.1.</span>
-              <div>
-                Subject to the exceptions in Clause 6 of this Agreement, all
-                Content, that is not User Content, and the Database and the
-                Software and the Documentation are the property of Astrosat, or
-                Astrosat’s Affiliates or licensors. By continuing to use the
-                Subscription Services the Customer acknowledges that such
-                material is protected by applicable United Kingdom and
-                international Intellectual Property and other laws.
-              </div>
-            </li>
-            <li className={styles.listItem}>
-              <span>5.2.</span>
-              <div>
-                The Customer may print, reproduce, copy, distribute, store or in
-                any other fashion re-use Content from the Subscription Services
-                for personal or educational purposes only unless otherwise given
-                Astrosat’s express written permission to do so. Specifically,
-                the Customer agrees that it will not systematically copy Content
-                from the Subscription Services with a view to creating or
-                compiling any form of comprehensive collection, compilation,
-                directory or database unless given Astrosat’s express written
-                permission to do so.
-              </div>
-            </li>
-            <li className={styles.listItem}>
-              <span>5.3.</span>
-              <div>
-                In the event that new inventions, designs or processes evolve in
-                performance of or as a result of this Agreement, the Customer
-                acknowledges that the same shall be the property of Astrosat
-                unless otherwise agreed in writing by Astrosat.
-              </div>
-            </li>
-            <li className={styles.listItem}>
-              <span>5.4.</span>
-              <div>
-                Any trade mark, trade name or logo such as “Powered by Astrosat”
-                appearing on or in the Software is the property of Astrosat and
-                must not be copied, obscured or removed from the Software.
-              </div>
-            </li>
-          </ul>
-        </div>
+      <h2 className={styles.textSectionHeader}>5: Intellectual Property</h2>
+      <div className={styles.description}>
+        <ul className={styles.list}>
+          <li className={styles.listItem}>
+            <span>5.1.</span>
+            <div>
+              Subject to the exceptions in Clause 6 of this Agreement, all
+              Content, that is not User Content, and the Database and the
+              Software and the Documentation are the property of Astrosat, or
+              Astrosat’s Affiliates or licensors. By continuing to use the
+              Subscription Services the Customer acknowledges that such material
+              is protected by applicable United Kingdom and international
+              Intellectual Property and other laws.
+            </div>
+          </li>
+          <li className={styles.listItem}>
+            <span>5.2.</span>
+            <div>
+              The Customer may print, reproduce, copy, distribute, store or in
+              any other fashion re-use Content from the Subscription Services
+              for personal or educational purposes only unless otherwise given
+              Astrosat’s express written permission to do so. Specifically, the
+              Customer agrees that it will not systematically copy Content from
+              the Subscription Services with a view to creating or compiling any
+              form of comprehensive collection, compilation, directory or
+              database unless given Astrosat’s express written permission to do
+              so.
+            </div>
+          </li>
+          <li className={styles.listItem}>
+            <span>5.3.</span>
+            <div>
+              In the event that new inventions, designs or processes evolve in
+              performance of or as a result of this Agreement, the Customer
+              acknowledges that the same shall be the property of Astrosat
+              unless otherwise agreed in writing by Astrosat.
+            </div>
+          </li>
+          <li className={styles.listItem}>
+            <span>5.4.</span>
+            <div>
+              Any trade mark, trade name or logo such as “Powered by Astrosat”
+              appearing on or in the Software is the property of Astrosat and
+              must not be copied, obscured or removed from the Software.
+            </div>
+          </li>
+        </ul>
       </div>
       <div className={styles.section}>
         <h2 className={styles.textSectionHeader}>

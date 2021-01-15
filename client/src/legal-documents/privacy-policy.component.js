@@ -1,6 +1,5 @@
 import React from 'react';
 
-import styles from './legal-documents.module.css';
 import { useDocumentStyles } from './useDocumentStyles';
 
 export const PrivacyPolicy = () => {
