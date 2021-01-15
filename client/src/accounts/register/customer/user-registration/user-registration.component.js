@@ -170,7 +170,11 @@ const UserRegistration = ({
 
       <Form.Row centered>
         <Button type="submit" disabled={!watch(FIELD_NAMES.acceptedTerms)}>
-          {isLoading ? <CircularProgress size={24} /> : 'Sign Up'}
+          {isLoading ? (
+            <CircularProgress color="inherit" size={24} />
+          ) : (
+            'Sign Up'
+          )}
         </Button>
       </Form.Row>
       <Form.Row component={Typography} align="center">
