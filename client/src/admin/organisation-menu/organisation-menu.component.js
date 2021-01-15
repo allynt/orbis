@@ -18,7 +18,7 @@ const useStyles = makeStyles(theme => ({
     height: theme.typography.pxToRem(152),
     display: 'grid',
     placeItems: 'center',
-    objectFit: 'cover',
+    objectFit: 'contain',
   },
   name: {
     color: theme.palette.text.primary,
@@ -35,15 +35,11 @@ const useStyles = makeStyles(theme => ({
  *   onCreateUserClick?: () => void
  * }} props
  */
-const OrganisationMenu = (
-  { customer, setVisiblePanel, onCreateUserClick },
-  ref,
-) => {
+const OrganisationMenu = ({ customer, setVisiblePanel, onCreateUserClick }) => {
   const styles = useStyles();
   return (
     <Box
       // @ts-ignore
-      ref={ref}
       display="flex"
       flexDirection="column"
       flexShrink={0}
@@ -73,4 +69,4 @@ const OrganisationMenu = (
   );
 };
 
-export default React.forwardRef(OrganisationMenu);
+export default OrganisationMenu;

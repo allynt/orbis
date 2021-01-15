@@ -18,6 +18,7 @@ import * as yup from 'yup';
 const BigAvatar = styled(Avatar)(({ theme }) => ({
   width: theme.typography.pxToRem(78),
   height: theme.typography.pxToRem(78),
+  boxShadow: theme.shadows[3],
 }));
 
 const corporateAccountSchema = yup.object({
