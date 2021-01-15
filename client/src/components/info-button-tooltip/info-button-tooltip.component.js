@@ -15,6 +15,9 @@ const useStyles = makeStyles(theme => ({
     padding: theme.typography.pxToRem(2),
     height: 'min-content',
     width: 'min-content',
+    '&:hover, &:active, &:focus': {
+      backgroundColor: theme.palette.primary.main,
+    },
   },
 }));
 
