@@ -36,17 +36,19 @@ const useStyles = makeStyles(theme => ({
 const Wrapper = ({ children }) => {
   const styles = useStyles();
   return (
-    <div className={styles.page}>
-      <Paper
-        elevation={20}
-        component={Container}
-        maxWidth="sm"
-        className={styles.container}
-      >
-        <OrbisLogo className={styles.logo} />
-        {children}
-      </Paper>
-    </div>
+    <ThemeProvider theme="light">
+      <div className={styles.page}>
+        <Paper
+          elevation={20}
+          component={Container}
+          maxWidth="sm"
+          className={styles.container}
+        >
+          <OrbisLogo className={styles.logo} />
+          {children}
+        </Paper>
+      </div>
+    </ThemeProvider>
   );
 };
 
