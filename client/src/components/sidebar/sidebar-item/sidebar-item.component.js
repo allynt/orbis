@@ -68,7 +68,11 @@ export const SidebarItem = ({
       href={href}
       {...rest}
     >
-      {icon && <ListItemIcon classes={iconClasses}>{icon}</ListItemIcon>}
+      {icon && (
+        <ListItemIcon classes={iconClasses}>
+          {React.cloneElement(icon, { fontSize: 'large' })}
+        </ListItemIcon>
+      )}
       {children && <ListItemText>{children}</ListItemText>}
     </ListItem>
   );
