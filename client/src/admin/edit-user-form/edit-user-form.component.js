@@ -107,7 +107,9 @@ export const EditUserForm = ({
       <Form.Row>
         <FormControl component="fieldset">
           <FormLabel component="legend">
-            <Typography variant="h2">Project Access</Typography>
+            <Typography variant="h2" gutterBottom>
+              Project Access
+            </Typography>
           </FormLabel>
           <FormGroup row>
             {checkboxLicences.map(l => (
@@ -134,7 +136,9 @@ export const EditUserForm = ({
       <Form.Row>
         <FormControl component="fieldset">
           <FormLabel component="legend">
-            <Typography variant="h2">Admin Rights</Typography>
+            <Typography variant="h2" gutterBottom>
+              Admin Rights
+            </Typography>
           </FormLabel>
           <Controller
             name="type"
