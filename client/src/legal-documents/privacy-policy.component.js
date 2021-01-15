@@ -1,23 +1,24 @@
 import React from 'react';
 
-import styles from './legal-documents.module.css';
+import { useDocumentStyles } from './useDocumentStyles';
 
 export const PrivacyPolicy = () => {
+  const styles = useDocumentStyles();
   return (
-    <div className={styles.text}>
+    <>
       <h1 className={styles.textHeader}>Privacy Policy</h1>
       <div className={styles.description}>
-        <span className={styles.emphasis}>STEVENSON ASTROSAT LIMITED</span> a
-        company incorporated in Scotland (Number SC423073) and whose Registered
-        Office is at Copernicus Kirk, 200 High Street, Musselburgh EH21 7DX
-        trading as ORBIS&trade; understands that your privacy is important to
-        you and that you care about how your personal data is used and shared
-        online. We respect and value the privacy of Customers and will only
-        collect and use personal data in ways that are described here, and in a
-        manner that is consistent with Our obligations and your rights under the
-        law.Please read this Privacy Policy carefully and ensure that you
-        understand it. If you do not accept and agree with thisPrivacy Policy,
-        you must stop using Our Subscription Services immediately.
+        <b>STEVENSON ASTROSAT LIMITED</b> a company incorporated in Scotland
+        (Number SC423073) and whose Registered Office is at Copernicus Kirk, 200
+        High Street, Musselburgh EH21 7DX trading as ORBIS&trade; understands
+        that your privacy is important to you and that you care about how your
+        personal data is used and shared online. We respect and value the
+        privacy of Customers and will only collect and use personal data in ways
+        that are described here, and in a manner that is consistent with Our
+        obligations and your rights under the law.Please read this Privacy
+        Policy carefully and ensure that you understand it. If you do not accept
+        and agree with thisPrivacy Policy, you must stop using Our Subscription
+        Services immediately.
       </div>
       <div className={styles.section}>
         <h2 className={styles.textSectionHeader}>
@@ -500,6 +501,6 @@ export const PrivacyPolicy = () => {
           page regularly to keep up-to-date.
         </div>
       </div>
-    </div>
+    </>
   );
 };

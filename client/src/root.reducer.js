@@ -11,7 +11,7 @@ import satellites from './satellites/satellites.slice';
 import accounts from './accounts/accounts.slice';
 import theming from './theming/theming.slice';
 import admin from './admin/admin.slice';
-import bookmarks from './bookmarks/bookmark.slice';
+import bookmarks from './bookmarks/bookmarks.slice';
 import controlPanel from './control-panel/control-panel.slice';
 import stories from './stories/stories.slice';
 import orbs from './map/orbs/orbReducer';

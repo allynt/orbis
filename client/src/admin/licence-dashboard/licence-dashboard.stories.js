@@ -1,3 +1,4 @@
+import faker from 'faker/locale/en_GB';
 import React from 'react';
 import { LicenceDashboard } from './licence-dashboard.component';
 
@@ -6,14 +7,32 @@ export default {
   component: LicenceDashboard,
 };
 
-export const NoLicences = () => <LicenceDashboard />;
+const Template = args => <LicenceDashboard {...args} />;
 
-export const Licences = () => (
-  <LicenceDashboard
-    licenceInformation={{
-      Rice: { purchased: 5, available: 3, pending: 1, active: 1 },
-      Oil: { purchased: 2, available: 1, pending: 1, active: 0 },
-      Health: { purchased: 10, available: 5, pending: 2, active: 3 },
-    }}
-  />
-);
+const makeLicence = () => ({
+  key: faker.commerce.department(),
+  purchased: faker.random.number(10),
+  available: faker.random.number(10),
+  pending: faker.random.number(10),
+  active: faker.random.number(10),
+});
+
+const reducer = (acc, { key, ...rest }) => ({ ...acc, [key]: { ...rest } });
+
+export const NoLicences = Template.bind({});
+
+export const Licences = Template.bind({});
+Licences.args = {
+  licenceInformation: Array(3)
+    .fill(undefined)
+    .map(makeLicence)
+    .reduce(reducer, {}),
+};
+
+export const LotsOfLicences = Template.bind({});
+LotsOfLicences.args = {
+  licenceInformation: Array(50)
+    .fill(undefined)
+    .map(makeLicence)
+    .reduce(reducer, {}),
+};

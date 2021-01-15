@@ -1,27 +1,31 @@
+import { useTheme } from '@astrosat/astrosat-ui';
 import * as React from 'react';
 import ContinuousColorMapRangeSlider from './continuous-colormap-range-slider.component';
 import DecileColorMapRangeSlider from './decile-colormap-range-slider.component';
 
 /** @type {import('./colormap-range-slider.component').StyleProps} */
-const STYLE = {
-  brushStyle: { fill: 'transparent' },
-  handleStyle: {
-    fill: '#f6be00',
-    width: 5,
-    rx: 3,
-    height: 95,
-    transform: 'translateY(-5px)',
-  },
-  tickLabelStyle: {
-    fontFamily: '"Open Sans", sans-serif',
-    fontSize: 24,
-    fill: '#fff',
-    transition: 'opacity 150ms ease',
-  },
-};
 
 /** @param {import('./colormap-range-slider.component').ColorMapRangeSliderProps} props */
-const ColorMapRangeSlider = ({ type, ...rest }) => {
+export const ColorMapRangeSlider = ({ type, ...rest }) => {
+  const theme = useTheme();
+  const style = {
+    brushStyle: { fill: 'transparent' },
+    handleStyle: {
+      fill: theme.palette.primary.main,
+      width: 5,
+      rx: 3,
+      height: 95,
+      transform: 'translateY(-5px)',
+    },
+    tickLabelStyle: {
+      fontFamily: theme.typography.fontFamily,
+      fontSize: 24,
+      fill: theme.palette.text.primary,
+      transition: theme.transitions.create('opacity', {
+        duration: theme.transitions.duration.shortest,
+      }),
+    },
+  };
   const height = 130;
   const padding = { top: 40, bottom: 175, left: 55, right: 55 };
   switch (type) {
@@ -30,7 +34,7 @@ const ColorMapRangeSlider = ({ type, ...rest }) => {
         <DecileColorMapRangeSlider
           height={height}
           padding={padding}
-          {...STYLE}
+          {...style}
           {...rest}
         />
       );
@@ -39,11 +43,9 @@ const ColorMapRangeSlider = ({ type, ...rest }) => {
         <ContinuousColorMapRangeSlider
           height={height}
           padding={padding}
-          {...STYLE}
+          {...style}
           {...rest}
         />
       );
   }
 };
-
-export default ColorMapRangeSlider;

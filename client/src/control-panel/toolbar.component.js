@@ -5,11 +5,28 @@ import { useHistory } from 'react-router-dom';
 import { ReactComponent as OrbisLogo } from '../orbis-light.svg';
 import { Sidebar, SidebarItem, SidebarBottomItems } from 'components/sidebar';
 
-import styles from './toolbar.module.css';
+import { makeStyles } from '@astrosat/astrosat-ui';
+
+const useStyles = makeStyles({
+  toolbar: {
+    top: '0',
+    left: '0',
+    zIndex: 4,
+  },
+  logo: {
+    height: '3rem',
+    color: '#ffffff',
+    cursor: 'pointer',
+  },
+  icon: {
+    width: '100%',
+  },
+});
 
 const Toolbar = ({ items }) => {
   const [selected, setSelected] = useState();
   const history = useHistory();
+  const styles = useStyles({});
 
   const select = item => {
     setSelected(item);

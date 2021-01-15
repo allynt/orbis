@@ -2,7 +2,12 @@ import React from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
 
-import { CloseButton } from '@astrosat/astrosat-ui';
+import {
+  /*CloseButton,*/ CloseIcon,
+  IconButton,
+  makeStyles,
+  Typography,
+} from '@astrosat/astrosat-ui';
 
 import {
   ANNOTATIONS,
@@ -26,11 +31,26 @@ import BookmarksPanel from '../bookmarks/bookmarks-panel.component';
 import DataLayers from '../data-layers/data-layers.component';
 import SatellitesPanel from '../satellites/satellites-panel.component';
 
-import styles from './control-panel.module.css';
 import { SidePanel } from 'components/side-panel/side-panel.component';
 import Toolbar from './toolbar.component';
 import { getToolbarItems } from './toolbar-config';
 import { userSelector } from 'accounts/accounts.selectors';
+
+const useStyles = makeStyles(theme => ({
+  content: {
+    height: `calc(100vh - ${theme.typography.pxToRem(80)})`,
+    overflowX: 'hidden',
+    overflowY: 'auto',
+  },
+  header: {
+    position: 'relative',
+  },
+  closeButton: {
+    position: 'absolute',
+    top: 0,
+    right: 0,
+  },
+}));
 
 const ControlPanel = () => {
   const dispatch = useDispatch();
@@ -40,6 +60,7 @@ const ControlPanel = () => {
   const visibleMenuItem = useSelector(selectVisibleMenuItem);
   const user = useSelector(userSelector);
   const toolbarItems = getToolbarItems(dispatch, user);
+  const styles = useStyles({});
 
   return (
     <>
@@ -49,14 +70,17 @@ const ControlPanel = () => {
         contentClassName={styles.content}
         header={
           <div className={styles.header}>
-            <div className={styles.headings}>
-              <h3 className={styles.heading}>{heading}</h3>
-              <p className={styles.strapline}>{strapline}</p>
-            </div>
-            <CloseButton
+            <Typography variant="h3" component="h1" gutterBottom>
+              {heading}
+            </Typography>
+            <Typography variant="subtitle2">{strapline}</Typography>
+            <IconButton
+              size="small"
               className={styles.closeButton}
               onClick={() => dispatch(closeMenu())}
-            />
+            >
+              <CloseIcon fontSize="inherit" />
+            </IconButton>
           </div>
         }
       >

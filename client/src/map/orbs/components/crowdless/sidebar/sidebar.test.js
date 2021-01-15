@@ -46,8 +46,8 @@ describe('<CrowdlessSidebarComponent />', () => {
   });
 
   it('Shows a loading spinner in the button if loading', () => {
-    const { getByRole } = renderComponent({ isLoading: true });
-    expect(getByRole('alert')).toBeInTheDocument();
+    const { getByTestId } = renderComponent({ isLoading: true });
+    expect(getByTestId('button-progress')).toBeInTheDocument();
   });
 
   it("Shows a skeleton results list if loading and there aren't already results", () => {
@@ -63,7 +63,9 @@ describe('<CrowdlessSidebarComponent />', () => {
 
   it('hides the button and results when not visible', () => {
     const { queryByRole } = renderComponent({ visible: false });
-    expect(queryByRole('button')).not.toBeInTheDocument();
+    expect(
+      queryByRole('button', { name: 'Find Supermarkets' }),
+    ).not.toBeInTheDocument();
     expect(queryByRole('list')).not.toBeInTheDocument();
   });
   it("shows items as active if there's no active result", () => {
@@ -72,9 +74,8 @@ describe('<CrowdlessSidebarComponent />', () => {
       { properties: { name: 'Sainsburys', address: '2 Fake Road' } },
     ];
     const { getAllByRole } = renderComponent({ results });
-    getAllByRole('listitem').forEach(element =>
-      expect(element).toHaveClass('selected'),
-    );
+    const [_, ...items] = getAllByRole('listitem');
+    items.forEach(element => expect(element).toHaveClass('Mui-selected'));
   });
 
   it('shows the active result as active', () => {
@@ -88,11 +89,13 @@ describe('<CrowdlessSidebarComponent />', () => {
         },
       },
     ];
-    const { getByText } = renderComponent({
+    const { getByRole } = renderComponent({
       results,
       selectedResult: { properties: { placeId: 0 } },
     });
-    expect(getByText('Tesco').parentElement).toHaveClass('selected');
-    expect(getByText('Sainsburys').parentElement).not.toHaveClass('selected');
+    expect(getByRole('button', { name: /tesco/i })).toHaveClass('Mui-selected');
+    expect(getByRole('button', { name: /sainsburys/i })).not.toHaveClass(
+      'selected',
+    );
   });
 });

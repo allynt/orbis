@@ -1,5 +1,5 @@
 import React from 'react';
-import { Well } from '@astrosat/astrosat-ui';
+import { Box, Well } from '@astrosat/astrosat-ui';
 
 /**
  * @param {{
@@ -9,8 +9,8 @@ import { Well } from '@astrosat/astrosat-ui';
  */
 export const ErrorWell = ({ errors, children }) =>
   errors || children ? (
-    <div style={{ marginBottom: '.75em' }}>
-      <Well type="error">
+    <Box width="100%">
+      <Well severity="error" role="alert">
         <ul data-testid="error-well">
           {errors?.map(error => (
             <li key={error}>{error}</li>
@@ -18,5 +18,5 @@ export const ErrorWell = ({ errors, children }) =>
           {children}
         </ul>
       </Well>
-    </div>
+    </Box>
   ) : null;

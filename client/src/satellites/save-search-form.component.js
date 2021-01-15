@@ -1,10 +1,10 @@
 import React from 'react';
 
-import { Button, Textfield, useForm } from '@astrosat/astrosat-ui';
+import { Button, TextField, useForm } from '@astrosat/astrosat-ui';
 
 import validate from './save-search-form.validator';
 
-import formStyles from '../forms.module.css';
+// import formStyles from '../forms.module.css';
 import styles from './save-search-form.module.css';
 
 const SaveSearchForm = ({ query, close, saveSearch }) => {
@@ -20,14 +20,14 @@ const SaveSearchForm = ({ query, close, saveSearch }) => {
 
   return (
     <div className={styles.saveSearchForm}>
-      <form className={formStyles.form} onSubmit={handleSubmit}>
+      <form /* className={formStyles.form} */ onSubmit={handleSubmit}>
         <p>
           Please name your search. Find your saved searches alongside your saved
           AOIs under "Saved Searches"
         </p>
-        <div className={formStyles.fields}>
-          <div className={formStyles.row}>
-            <Textfield
+        <div /* className={formStyles.fields} */>
+          <div /* className={formStyles.row} */>
+            <TextField
               name="name"
               value={values.name || ''}
               placeholder="Name"
@@ -37,11 +37,11 @@ const SaveSearchForm = ({ query, close, saveSearch }) => {
             />
           </div>
           {errors.name && (
-            <p className={formStyles.errorMessage}>{errors.name}</p>
+            <p /* className={formStyles.errorMessage} */>{errors.name}</p>
           )}
         </div>
 
-        <div className={formStyles.buttons}>
+        <div /* className={formStyles.buttons} */>
           <Button
             type="submit"
             theme="primary"

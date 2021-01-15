@@ -1,6 +1,5 @@
-import { FeatureDetail } from 'components';
+import { FeatureDetail, Popup } from 'components';
 import * as React from 'react';
-import { Popup } from 'react-map-gl';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   selectedResultSelector,

@@ -24,7 +24,7 @@ import { RESULTS, SATELLITE, TIER } from './satellites-panel.component';
 import { getGeometryAreaKmSquared } from 'utils/geometry';
 
 import styles from './satellite-search-form.module.css';
-import sideMenuStyles from '../control-panel/control-panel.module.css';
+// import sideMenuStyles from '../control-panel/control-panel.module.css';
 
 const DATE_FORMAT = 'yyy-MM-dd';
 const DAYS_IN_PAST = 7;
@@ -223,7 +223,7 @@ const SatelliteSearchForm = ({
           </ul>
         </FormSection>
       </div>
-      <div className={sideMenuStyles.buttons}>
+      {/* <div className={sideMenuStyles.buttons}>
         {geometryTooLarge && (
           <div className={styles.errorContainerBackground}>
             <div className={styles.errorContainer}>
@@ -241,7 +241,7 @@ const SatelliteSearchForm = ({
         >
           Search
         </Button>
-      </div>
+      </div> */}
     </form>
   );
 };

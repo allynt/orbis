@@ -1,23 +1,38 @@
+import React, { useEffect } from 'react';
+
+import { useDispatch, useSelector } from 'react-redux';
+
+import { Box, Divider, styled } from '@astrosat/astrosat-ui';
+
 import { userSelector } from 'accounts/accounts.selectors';
 import { activeLayersSelector } from 'data-layers/data-layers.slice';
 import { useMap } from 'MapContext';
-import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import styles from '../control-panel/control-panel.module.css';
-import BookmarkForm from './bookmark-form.component';
+import BookmarkForm from './bookmark-form/bookmark-form.component';
+import BookmarkList from './bookmarks-list/bookmarks-list.component';
 import {
   addBookmark,
+  bookmarksSelector,
   deleteBookmark,
   fetchBookmarks,
   selectBookmark,
-} from './bookmark.slice';
-import BookmarkList from './bookmarks-list.component';
+} from './bookmarks.slice';
+
+const PrimaryDivider = styled(Divider)(({ theme }) => ({
+  backgroundColor: theme.palette.primary.main,
+}));
 
 const BookmarksPanel = () => {
   const { createScreenshot, viewState } = useMap();
-  const layers = useSelector(activeLayersSelector);
   const dispatch = useDispatch();
+  const layers = useSelector(activeLayersSelector);
   const user = useSelector(userSelector);
+  const bookmarks = useSelector(bookmarksSelector);
+
+  useEffect(() => {
+    if (!bookmarks) {
+      dispatch(fetchBookmarks());
+    }
+  }, [bookmarks, dispatch]);
 
   const submit = form => {
     createScreenshot(thumbnail => {
@@ -34,29 +49,23 @@ const BookmarksPanel = () => {
     });
   };
 
-  const chooseBookmark = bookmark => dispatch(selectBookmark(bookmark));
-  const deleteBookmarkItem = bookmark => dispatch(deleteBookmark(bookmark));
-
-  const bookmarks = useSelector(state => state?.bookmarks?.bookmarks);
-
-  useEffect(() => {
-    if (!bookmarks) {
-      dispatch(fetchBookmarks());
-    }
-  }, [bookmarks, dispatch]);
-
   return (
-    <div className={styles.container}>
-      <BookmarkForm
-        bookmarkTitles={bookmarks?.map(b => b?.title?.toLowerCase())}
-        submit={submit}
-      />
-      <BookmarkList
-        bookmarks={bookmarks}
-        selectBookmark={chooseBookmark}
-        deleteBookmark={deleteBookmarkItem}
-      />
-    </div>
+    <>
+      <Box py={3} px={1}>
+        <BookmarkForm
+          bookmarkTitles={bookmarks?.map(b => b?.title?.toLowerCase())}
+          onSubmit={submit}
+        />
+      </Box>
+      <PrimaryDivider />
+      <Box py={3} px={1}>
+        <BookmarkList
+          bookmarks={bookmarks}
+          onSelectBookmark={bookmark => dispatch(selectBookmark(bookmark))}
+          onDeleteBookmark={bookmark => dispatch(deleteBookmark(bookmark))}
+        />
+      </Box>
+    </>
   );
 };
 

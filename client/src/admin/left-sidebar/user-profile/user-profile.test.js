@@ -19,11 +19,6 @@ describe('UserProfile', () => {
   it('Shows the provided user profile image', () => {
     const image = 'test.png';
     const { getByAltText } = render(<UserProfile avatar={image} />);
-    expect(getByAltText('User Profile').getAttribute('src')).toBe(image);
-  });
-
-  it("Shows the default profile image if the user doesn't have one", () => {
-    const { getByTitle } = render(<UserProfile />);
-    expect(getByTitle('Profile Icon')).toBeInTheDocument();
+    expect(getByAltText('User Avatar').getAttribute('src')).toBe(image);
   });
 });

@@ -12,7 +12,7 @@ import Visualisation from './visualisation.component';
 
 const mockStore = configureMockStore([thunk]);
 
-describe('Satellite Visualisation Component', () => {
+describe.skip('Satellite Visualisation Component', () => {
   const store = mockStore({});
   let visualisations = null;
   let setVisiblePanel = null;

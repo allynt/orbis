@@ -28,6 +28,4 @@ export type ColorMapRangeSliderProps = {
   type: PropertyType;
 } & (ContinuousColorMapRangeSliderProps | DecileColorMapRangeSliderProps);
 
-declare const ColorMapRangeSlider: React.FunctionComponent<ColorMapRangeSliderProps>;
-
-export default ColorMapRangeSlider;
+export const ColorMapRangeSlider: React.FunctionComponent<ColorMapRangeSliderProps>;

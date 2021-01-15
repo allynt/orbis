@@ -1,12 +1,52 @@
 import React from 'react';
 
-import { Radio, Button } from '@astrosat/astrosat-ui';
+import {
+  Radio,
+  Button,
+  makeStyles,
+  FormControlLabel,
+  Typography,
+  ButtonGroup,
+  FormLabel,
+} from '@astrosat/astrosat-ui';
 
-import ColorMapRangeSlider from 'components/colormap-range-slider/colormap-range-slider.component';
-import { InfoIconTooltip } from 'components/info-icon-tooltip/info-icon-tooltip.component';
+import clsx from 'clsx';
+
+import { InfoButtonTooltip, ColorMapRangeSlider } from 'components';
 import { FORMAT } from '../radio-picker-constants';
 
-import styles from './radio-property.module.css';
+const useStyles = makeStyles(theme => ({
+  property: {
+    display: 'grid',
+    gridTemplateColumns: `1fr ${theme.spacing(4)}`,
+    marginBottom: theme.spacing(2),
+    rowGap: theme.spacing(2),
+  },
+  infoButton: {
+    placeSelf: 'center',
+    backgroundColor: theme.palette.common.white,
+    color: theme.palette.background.default,
+  },
+  categoryPath: {
+    fontStyle: 'italic',
+  },
+  description: {
+    fontWeight: 600,
+  },
+  fullGrid: {
+    gridColumn: '1 / -1',
+  },
+  button: {
+    width: '50%',
+    cursor: 'not-allowed',
+    '&$notActive': {
+      color: theme.palette.secondary.contrastText,
+      backgroundColor: theme.palette.secondary.dark,
+      cursor: 'pointer',
+    },
+  },
+  notActive: {},
+}));
 
 const RadioProperty = ({
   data,
@@ -18,6 +58,7 @@ const RadioProperty = ({
   filterData,
   categoryPath,
 }) => {
+  const styles = useStyles();
   const isArray = Array.isArray(data);
 
   const findPropertyByType = type => data.find(d => d.type === type);
@@ -30,44 +71,53 @@ const RadioProperty = ({
     ? data.some(p => p.name === selectedProperty?.name)
     : data.name === selectedProperty?.name;
 
+  const handleRadioClick = () =>
+    onRadioClick(
+      propertyMatch && isArray && selectedProperty?.type === FORMAT.number
+        ? findPropertyByType(FORMAT.number)
+        : initialProperty,
+    );
+
   return (
     <div className={styles.property}>
-      <Radio
-        className={styles.radio}
-        label={
-          initialProperty?.application?.orbis?.label || initialProperty.label
-        }
-        name="isolationPlus"
-        value={initialProperty.name}
+      <FormControlLabel
+        value={initialProperty?.name}
         checked={propertyMatch}
-        onClick={() =>
-          onRadioClick(
-            propertyMatch && isArray && selectedProperty?.type === FORMAT.number
-              ? findPropertyByType(FORMAT.number)
-              : initialProperty,
-          )
+        label={
+          initialProperty?.application?.orbis?.label || initialProperty?.label
+        }
+        control={<Radio onClick={handleRadioClick} name="isolationPlus" />}
+      />
+      <InfoButtonTooltip
+        iconButtonClassName={styles.infoButton}
+        tooltipContent={
+          <>
+            <Typography className={styles.categoryPath} paragraph>
+              {categoryPath}
+            </Typography>
+            <Typography className={styles.description}>
+              {initialProperty?.application?.orbis?.description ||
+                initialProperty?.description}
+            </Typography>
+          </>
         }
       />
-      <InfoIconTooltip name={initialProperty.name}>
-        <p className={styles.categoryPath}>{categoryPath}</p>
-        <p className={styles.description}>
-          {initialProperty?.application?.orbis?.description ||
-            initialProperty.description}
-        </p>
-      </InfoIconTooltip>
       {propertyMatch && (
-        <div className={styles.displayMenu}>
+        <>
           {isArray && (
             <>
-              <label className={styles.label}>Select display type: </label>
-              <div className={styles.buttons}>
+              <FormLabel className={styles.fullGrid}>
+                Select display type:
+              </FormLabel>
+              <ButtonGroup size="small" className={styles.fullGrid}>
                 <Button
                   onClick={() =>
                     onToggleClick(findPropertyByType(FORMAT.percentage))
                   }
-                  className={`${styles.button} ${
-                    selectedProperty.type === FORMAT.percentage && styles.active
-                  }`}
+                  className={clsx(styles.button, {
+                    [styles.notActive]:
+                      selectedProperty.type !== FORMAT.percentage,
+                  })}
                 >
                   Percentage
                 </Button>
@@ -75,32 +125,35 @@ const RadioProperty = ({
                   onClick={() =>
                     onToggleClick(findPropertyByType(FORMAT.number))
                   }
-                  className={`${styles.button} ${
-                    selectedProperty.type === FORMAT.number && styles.active
-                  }`}
+                  className={clsx(styles.button, {
+                    [styles.notActive]: selectedProperty.type !== FORMAT.number,
+                  })}
                 >
                   Number
                 </Button>
-              </div>
+              </ButtonGroup>
             </>
           )}
-          <ColorMapRangeSlider
-            type={selectedProperty?.type}
-            color={colorScheme}
-            domain={[selectedProperty.min, selectedProperty.max]}
-            clip={
-              (selectedProperty.clip_min || selectedProperty.clip_max) && [
-                selectedProperty.clip_min || selectedProperty.min,
-                selectedProperty.clip_max || selectedProperty.max,
-              ]
-            }
-            value={filterData}
-            onChange={data => onSliderChange(data)}
-            reversed={
-              !!selectedProperty?.application?.orbis?.display?.colormap_reversed
-            }
-          />
-        </div>
+          <div className={styles.fullGrid}>
+            <ColorMapRangeSlider
+              type={selectedProperty?.type}
+              color={colorScheme}
+              domain={[selectedProperty.min, selectedProperty.max]}
+              clip={
+                (selectedProperty.clip_min || selectedProperty.clip_max) && [
+                  selectedProperty.clip_min || selectedProperty.min,
+                  selectedProperty.clip_max || selectedProperty.max,
+                ]
+              }
+              value={filterData}
+              onChange={data => onSliderChange(data)}
+              reversed={
+                !!selectedProperty?.application?.orbis?.display
+                  ?.colormap_reversed
+              }
+            />
+          </div>
+        </>
       )}
     </div>
   );

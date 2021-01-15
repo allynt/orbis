@@ -27,7 +27,7 @@ describe('<CustomerRegistration />', () => {
     expect(getByRole('textbox', { name: EMAIL })).toBeInTheDocument();
     expect(getByRole('textbox', { name: NAME })).toBeInTheDocument();
     expect(getByRole('textbox', { name: OFFICIAL_NAME })).toBeInTheDocument();
-    expect(getByRole('textbox', { name: TYPE })).toBeInTheDocument();
+    expect(getByRole('button', { name: TYPE })).toBeInTheDocument();
     expect(
       getByRole('textbox', { name: REGISTERED_NUMBER }),
     ).toBeInTheDocument();
@@ -88,7 +88,7 @@ describe('<CustomerRegistration />', () => {
       getByRole('textbox', { name: OFFICIAL_NAME }),
       values.customerNameOfficial,
     );
-    userEvent.click(getByRole('textbox', { name: TYPE }));
+    userEvent.click(getByRole('button', { name: TYPE }));
     userEvent.click(getByText('Government & Executive Agencies'));
     userEvent.type(
       getByRole('textbox', { name: REGISTERED_NUMBER }),

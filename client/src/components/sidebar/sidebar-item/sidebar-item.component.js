@@ -1,22 +1,87 @@
+import {
+  fade,
+  ListItem,
+  ListItemIcon,
+  ListItemText,
+  makeStyles,
+  Tooltip,
+} from '@astrosat/astrosat-ui';
 import React from 'react';
 
-import { SidebarItemInner } from './sidebar-item-inner.component';
+const useStyles = makeStyles(theme => ({
+  root: {
+    justifyContent: 'center',
+    borderRadius: `${theme.typography.pxToRem(
+      theme.shape.borderRadius,
+    )} 0 0 ${theme.typography.pxToRem(theme.shape.borderRadius)}`,
+    '&:hover': {
+      backgroundColor: fade(theme.palette.grey[400], 0.3),
+    },
+    '&$selected': {
+      backgroundColor: theme.palette.primary.main,
+      color: theme.palette.text.secondary,
+      '&:hover': {
+        backgroundColor: fade(theme.palette.grey[400], 0.3),
+      },
+    },
+  },
+  selected: {},
+}));
 
-import styles from './sidebar-item.module.css';
+const iconStyles = makeStyles(theme => ({
+  root: {
+    color: 'inherit',
+    minWidth: 24,
+    marginRight: theme.spacing(2),
+  },
+}));
 
-export const SidebarItem = ({ children, icon, selected, tooltip, onClick }) => (
-  <li
-    tabIndex="1"
-    className={`${styles.sidebarItem} ${children && styles.withLabel} ${
-      selected && styles.selected
-    }`}
-    onClick={onClick}
-    onKeyUp={e =>
-      (e.keyCode === 32 || e.keyCode === 13) && onClick && onClick(e)
-    }
-    data-tip
-    data-for={`toolbar-item-${tooltip}-tooltip`}
-  >
-    <SidebarItemInner children={children} icon={icon} tooltip={tooltip} />
-  </li>
-);
+/**
+ * @param {{
+ *  children?: React.ReactNode
+ *  icon?: JSX.Element
+ *  selected?: boolean
+ *  tooltip?: string
+ *  onClick?: (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void
+ *  href?: string
+ * } & Partial<Omit<HTMLAnchorElement, 'children'>>} props
+ */
+export const SidebarItem = ({
+  children,
+  icon,
+  selected,
+  tooltip,
+  href,
+  onClick,
+  ...rest
+}) => {
+  const classes = useStyles();
+  const iconClasses = iconStyles();
+
+  const Content = (
+    <ListItem
+      classes={classes}
+      button
+      component={href ? 'a' : undefined}
+      selected={selected}
+      onClick={onClick}
+      href={href}
+      {...rest}
+    >
+      {icon && (
+        <ListItemIcon classes={iconClasses}>
+          {React.cloneElement(icon, { fontSize: 'large' })}
+        </ListItemIcon>
+      )}
+      {children && <ListItemText>{children}</ListItemText>}
+    </ListItem>
+  );
+
+  return tooltip ? (
+    <Tooltip arrow title={tooltip}>
+      {Content}
+    </Tooltip>
+  ) : (
+    Content
+  );
+};

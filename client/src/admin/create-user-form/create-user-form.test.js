@@ -52,8 +52,8 @@ describe('<CreateUserForm />', () => {
   });
 
   it('Has a Create User submit button', () => {
-    const { getByText } = render(<CreateUserForm />);
-    const button = getByText('Create User');
+    const { getByRole } = render(<CreateUserForm />);
+    const button = getByRole('button', { name: 'Create User' });
     expect(button).toBeInTheDocument();
     expect(button).toHaveProperty('type', 'submit');
   });

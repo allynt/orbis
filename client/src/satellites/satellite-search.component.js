@@ -2,7 +2,7 @@ import React, { useEffect, useState, useCallback } from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
 
-import { Button, Detail, DrawAoiIcon } from '@astrosat/astrosat-ui';
+import { Button, /* Detail, */ DrawAoiIcon } from '@astrosat/astrosat-ui';
 
 import {
   fetchSavedSatelliteSearches,
@@ -15,7 +15,7 @@ import SavedSearchList from './saved-search-list.component';
 import { getGeometryAreaKmSquared } from 'utils/geometry';
 
 import styles from './satellite-search.module.css';
-import sideMenuStyles from '../control-panel/control-panel.module.css';
+// import sideMenuStyles from '../control-panel/control-panel.module.css';
 
 const AOI_DRAW_MODE = 'RectangleMode';
 const BBOX_NO_OF_POINTS = 5;
@@ -135,13 +135,13 @@ const SatelliteSearch = (
     <div className={styles.search} ref={ref}>
       {savedSearches && savedSearches.length > 0 ? (
         <div>
-          <Detail title="Saved Searches">
+          {/* <Detail title="Saved Searches">
             <SavedSearchList
               savedSearches={savedSearches}
               setCurrentSearchQuery={chooseSearchQuery}
               deleteSavedSatelliteSearch={deleteSavedSearchQuery}
             />
-          </Detail>
+          </Detail> */}
         </div>
       ) : (
         <p>There are no saved AOI yet</p>
@@ -160,15 +160,15 @@ const SatelliteSearch = (
         setSelectedMoreInfo={setSelectedMoreInfo}
         toggleMoreInfoDialog={toggleMoreInfoDialog}
       />
-      <div className={sideMenuStyles.buttons}>
-        <Button
-          classNames={[sideMenuStyles.button]}
-          theme="tertiary"
-          onClick={() => console.log('Task Satellite Button Clicked')}
-        >
-          Task Satellite
-        </Button>
-      </div>
+      {/* <div className={sideMenuStyles.buttons}> */}
+      <Button
+        // classNames={[sideMenuStyles.button]}
+        theme="tertiary"
+        onClick={() => console.log('Task Satellite Button Clicked')}
+      >
+        Task Satellite
+      </Button>
+      {/* </div> */}
     </div>
   );
 };

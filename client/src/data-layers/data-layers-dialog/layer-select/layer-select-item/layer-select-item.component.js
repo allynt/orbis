@@ -1,54 +1,79 @@
-import React, { useState } from 'react';
+import * as React from 'react';
 
-import { Checkbox } from '@astrosat/astrosat-ui';
+import {
+  Checkbox,
+  ListItem,
+  ListItemIcon,
+  ListItemSecondaryAction,
+  ListItemText,
+  makeStyles,
+} from '@astrosat/astrosat-ui';
 
-import clsx from 'clsx';
+import { InfoButtonTooltip } from 'components';
 
-import { InfoBox, InfoButton } from 'components';
-import { useClickaway } from 'hooks/useClickaway';
-
-import styles from './layer-select-item.module.css';
+const useStyles = makeStyles(theme => ({
+  listItem: {
+    paddingTop: 0,
+    paddingBottom: 0,
+    borderLeft: `1px solid ${theme.palette.primary.main}`,
+    '&:not(:first-child)': {
+      marginTop: theme.spacing(1),
+    },
+  },
+  checkbox: {
+    minWidth: '2rem',
+  },
+  infoButton: {
+    backgroundColor: theme.palette.grey[600],
+    color: theme.palette.getContrastText(theme.palette.grey[600]),
+  },
+  text: {
+    margin: 0,
+  },
+  info: {
+    display: 'flex',
+    alignItems: 'center',
+  },
+}));
 
 /**
  * @param {{
- *   className?: string
  *   selected?: boolean
- *   source: Source
- *   onChange: (params: {source_ids: Source['source_id'][]; selected: boolean}) => void
+ *   source: import('typings/orbis').Source
+ *   onChange: (params: {source_ids: import('typings/orbis').Source['source_id'][]; selected: boolean}) => void
  * }} props
  */
-const LayerSelectItem = ({ className, selected, source, onChange }) => {
-  const [isInfoVisible, setIsInfoVisible] = useState(false);
-  const [infoRef] = useClickaway(() => setIsInfoVisible(false));
-
-  const buttonClick = () => {
-    setIsInfoVisible(c => !c);
-  };
+const LayerSelectItem = ({ selected, source, onChange }) => {
+  const styles = useStyles();
 
   return (
-    <li className={clsx(styles.li, className)}>
-      <Checkbox
-        id={source.source_id}
-        label={source.metadata.label}
-        checked={selected}
-        onChange={e =>
-          onChange({
-            source_ids: [source.source_id],
-            selected: e.target.checked,
-          })
-        }
+    <ListItem
+      className={styles.listItem}
+      button
+      onClick={() =>
+        onChange({
+          source_ids: [source.source_id],
+          selected: !selected,
+        })
+      }
+    >
+      <ListItemIcon className={styles.checkbox}>
+        <Checkbox id={source.source_id} checked={selected} />
+      </ListItemIcon>
+      <ListItemText
+        className={styles.text}
+        primaryTypographyProps={{ variant: 'body1' }}
+        primary={source.metadata.label}
       />
       {source?.metadata?.description && (
-        <div className={styles.info} ref={infoRef}>
-          {isInfoVisible && (
-            <InfoBox className={styles.infoBox} arrow="right">
-              {source.metadata.description}
-            </InfoBox>
-          )}
-          <InfoButton className={styles.infoButton} onClick={buttonClick} />
-        </div>
+        <ListItemSecondaryAction className={styles.info}>
+          <InfoButtonTooltip
+            iconButtonClassName={styles.infoButton}
+            tooltipContent={source?.metadata?.description}
+          />
+        </ListItemSecondaryAction>
       )}
-    </li>
+    </ListItem>
   );
 };
 

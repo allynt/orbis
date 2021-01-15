@@ -14,7 +14,6 @@ describe('EditUserForm', () => {
   let userCheckboxes = null;
   let oneAdminRemaining = null;
   let editUser = null;
-  let close = null;
 
   beforeEach(() => {
     user = {
@@ -40,7 +39,6 @@ describe('EditUserForm', () => {
 
     oneAdminRemaining = true;
     editUser = jest.fn();
-    close = jest.fn();
   });
 
   const renderComponent = () =>
@@ -51,7 +49,6 @@ describe('EditUserForm', () => {
         availableLicences={availableLicences}
         oneAdminRemaining={oneAdminRemaining}
         editUser={editUser}
-        close={close}
       />,
     );
 
@@ -136,7 +133,6 @@ describe('EditUserForm', () => {
         customer={testCustomer}
         availableLicences={availableLicences}
         editUser={editUser}
-        close={close}
       />,
     );
 
@@ -176,7 +172,6 @@ describe('EditUserForm', () => {
         customer={testCustomer}
         availableLicences={availableLicences}
         editUser={editUser}
-        close={close}
       />,
     );
 
@@ -222,8 +217,8 @@ describe('EditUserForm', () => {
   });
 
   it('disables the `Save Changes` button when no changes have been made', () => {
-    const { getByText } = renderComponent();
-    expect(getByText('Save Changes')).toHaveAttribute('disabled');
+    const { getByRole } = renderComponent();
+    expect(getByRole('button', { name: 'Save Changes' })).toBeDisabled();
   });
 
   it('enables the `Save Changes` button when changes have been made', () => {
@@ -234,39 +229,17 @@ describe('EditUserForm', () => {
   });
 
   it('re-disables the `Save Changes` button if changes are reverted', () => {
-    const { getByText, getByLabelText } = renderComponent();
+    const { getByRole, getByLabelText } = renderComponent();
 
     userEvent.click(getByLabelText('Steel'));
-    expect(getByText('Save Changes')).not.toHaveAttribute('disabled');
+    expect(getByRole('button', { name: 'Save Changes' })).not.toBeDisabled();
     userEvent.click(getByLabelText('Steel'));
-    expect(getByText('Save Changes')).toHaveAttribute('disabled');
+    expect(getByRole('button', { name: 'Save Changes' })).toBeDisabled();
   });
 
   it('disables the `No` button (admin status) when only one admin remains', () => {
     const { getByLabelText } = renderComponent();
 
     expect(getByLabelText('No')).toHaveAttribute('disabled');
-  });
-
-  it('displays error message if `Name` field is empty', async () => {
-    const { getByText, getByDisplayValue } = renderComponent();
-
-    userEvent.clear(getByDisplayValue(user.user.name));
-
-    userEvent.click(getByText('Save Changes'));
-
-    await waitFor(() => {
-      expect(getByText('Name is required')).toBeInTheDocument();
-      expect(getByText('Save Changes')).toHaveAttribute('disabled');
-    });
-  });
-
-  it('closes the dialog when the `Save Changes` button is clicked', async () => {
-    const { getByText, getByLabelText } = renderComponent();
-
-    userEvent.click(getByLabelText('Steel'));
-    userEvent.click(getByText('Save Changes'));
-
-    await waitFor(() => expect(close).toHaveBeenCalled());
   });
 });

@@ -5,7 +5,7 @@ import { Button } from '@astrosat/astrosat-ui';
 import { SEARCH } from './satellites-panel.component';
 
 import styles from './visualisation.module.css';
-import sideMenuStyles from '../control-panel/control-panel.module.css';
+// import sideMenuStyles from '../control-panel/control-panel.module.css';
 
 const Visualisation = ({
   visualisations,
@@ -41,7 +41,7 @@ const Visualisation = ({
         ))}
       </ul>
 
-      <div className={sideMenuStyles.buttons}>
+      {/* <div className={sideMenuStyles.buttons}>
         <Button
           theme="primary"
           classNames={[sideMenuStyles.button]}
@@ -52,7 +52,7 @@ const Visualisation = ({
         >
           Return to Search
         </Button>
-      </div>
+      </div> */}
     </div>
   );
 

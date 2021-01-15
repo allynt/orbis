@@ -1,20 +1,26 @@
 import React, { useState } from 'react';
 
 import {
+  Box,
   Button,
-  PasswordField,
-  PasswordStrengthMeter,
   Checkbox,
+  FormControlLabel,
+  Link,
+  PasswordStrengthMeter,
+  TextField,
+  Typography,
 } from '@astrosat/astrosat-ui';
 
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
+import { Link as RouterLink } from 'react-router-dom';
 import { object } from 'yup';
 
-import { status } from 'accounts/accounts.slice';
-import { TERMS } from 'legal-documents/legal-documents-constants';
 import { LOGIN } from 'accounts/accounts.constants';
-import { FieldError } from 'components/field-error/field-error.component';
+import { status } from 'accounts/accounts.slice';
+import { ErrorWell } from 'accounts/error-well.component';
+import { Form } from 'components';
+import { TERMS } from 'legal-documents/legal-documents-constants';
 import {
   FIELD_NAMES,
   newPassword,
@@ -22,28 +28,20 @@ import {
   oldPassword,
 } from 'utils/validators';
 
-import formStyles from 'forms.module.css';
-import { Link } from 'react-router-dom';
-import { ErrorWell } from 'accounts/error-well.component';
-
 const ChangePasswordSuccessView = () => (
-  <div className={formStyles.form}>
-    <div className={formStyles.textContent}>
-      <p className={formStyles.paragraph}>
-        Thank you! Your password has been changed.
-      </p>
-      <p className={formStyles.paragraph}>
-        You have completed your ORBIS account. Click the button in order to
-        continue.
-      </p>
-    </div>
+  <>
+    <Typography>Thank you! Your password has been changed.</Typography>
+    <Typography>
+      You have completed your ORBIS account. Click the button in order to
+      continue.
+    </Typography>
 
-    <div className={formStyles.buttons}>
-      <Link to={LOGIN}>
-        <Button theme="link">Continue</Button>
-      </Link>
-    </div>
-  </div>
+    <Box mt={2} width="100%" display="flex" justifyContent="center">
+      <RouterLink to={LOGIN} component={Button}>
+        Continue
+      </RouterLink>
+    </Box>
+  </>
 );
 
 const validationSchema = object({
@@ -78,78 +76,79 @@ const PasswordChangeForm = ({
   };
 
   return (
-    <form className={formStyles.form} onSubmit={handleSubmit(onSubmit)}>
+    <Form onSubmit={handleSubmit(onSubmit)}>
       <ErrorWell errors={error} />
-
-      <div className={formStyles.fields}>
-        <div className={formStyles.row}>
-          <PasswordField
-            name={FIELD_NAMES.oldPassword}
-            ref={register}
-            placeholder="Old Password"
-            autoFocus
-          />
-        </div>
-        {errors[FIELD_NAMES.oldPassword] && (
-          <FieldError message={errors[FIELD_NAMES.oldPassword].message} />
-        )}
-
-        <div className={formStyles.row}>
-          <PasswordField
-            name={FIELD_NAMES.newPassword}
-            ref={register}
-            placeholder="New Password"
-          />
-        </div>
-        {errors[FIELD_NAMES.newPassword] && (
-          <FieldError message={errors[FIELD_NAMES.newPassword].message} />
-        )}
-
-        <div className={formStyles.row}>
-          <PasswordField
-            name={FIELD_NAMES.newPasswordConfirm}
-            ref={register}
-            placeholder="New Password Confirmation"
-          />
-        </div>
-        {errors[FIELD_NAMES.newPasswordConfirm] && (
-          <FieldError
-            message={errors[FIELD_NAMES.newPasswordConfirm].message}
-          />
-        )}
-
+      <Form.Row>
+        <TextField
+          type="password"
+          id={FIELD_NAMES.oldPassword}
+          name={FIELD_NAMES.oldPassword}
+          inputRef={register}
+          label="Old Password"
+          error={!!errors[FIELD_NAMES.oldPassword]}
+          helperText={errors[FIELD_NAMES.oldPassword]?.message}
+          autoFocus
+        />
+      </Form.Row>
+      <Form.Row>
+        <TextField
+          type="password"
+          id={FIELD_NAMES.newPassword}
+          name={FIELD_NAMES.newPassword}
+          inputRef={register}
+          label="New Password"
+          error={!!errors[FIELD_NAMES.newPassword]}
+          helperText={errors[FIELD_NAMES.newPassword]?.message}
+        />
         <PasswordStrengthMeter password={watch(FIELD_NAMES.newPassword)} />
+      </Form.Row>
+      <Form.Row>
+        <TextField
+          type="password"
+          id={FIELD_NAMES.newPasswordConfirm}
+          name={FIELD_NAMES.newPasswordConfirm}
+          inputRef={register}
+          label="New Password Confirmation"
+          error={!!errors[FIELD_NAMES.newPasswordConfirm]}
+          helperText={errors[FIELD_NAMES.newPasswordConfirm]?.message}
+        />
+      </Form.Row>
+      <Form.Row>
+        <FormControlLabel
+          label={
+            <>
+              I agree with&nbsp;
+              <Link target="_blank" rel="noopener noreferrer" href={TERMS}>
+                Terms &amp; Conditions
+              </Link>
+            </>
+          }
+          control={
+            <Checkbox
+              name="loggedIn"
+              onChange={() => setTermsAgreed(!termsAgreed)}
+            />
+          }
+        />
+      </Form.Row>
 
-        <div className={formStyles.row}>
-          <Checkbox
-            name="loggedIn"
-            value="true"
-            label="I agree with"
-            onChange={() => setTermsAgreed(!termsAgreed)}
-          />
-          &nbsp;
-          <Button target="_blank" rel="noopener noreferrer" href={TERMS}>
-            Terms &amp; Conditions
-          </Button>
-        </div>
-      </div>
-
-      <div className={formStyles.buttons}>
+      <Form.Row centered>
         <Button
           type="submit"
           disabled={!termsAgreed || Object.keys(errors).length > 0}
         >
           Change Password
         </Button>
-      </div>
-
-      <p className={formStyles.footer}>
-        Do you have an account?&nbsp;
-        <Link to={LOGIN}>
-          <Button theme="link">Login</Button>
-        </Link>
-      </p>
-    </form>
+      </Form.Row>
+      <Form.Row centered>
+        <Typography>
+          Do you have an account?&nbsp;
+          <RouterLink to={LOGIN} component={Link}>
+            Login
+          </RouterLink>
+        </Typography>
+      </Form.Row>
+    </Form>
   );
 };
 

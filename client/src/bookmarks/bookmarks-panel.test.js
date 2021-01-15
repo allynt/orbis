@@ -1,11 +1,13 @@
-import React from 'react';
+import * as React from 'react';
+
 import { render } from '@testing-library/react';
-import BookmarksPanel from './bookmarks-panel.component';
-import { MapProvider } from 'MapContext';
+import userEvent from '@testing-library/user-event';
 import { Provider } from 'react-redux';
 import createMockStore from 'redux-mock-store';
-import userEvent from '@testing-library/user-event';
-import { selectBookmark } from './bookmark.slice';
+
+import { MapProvider } from 'MapContext';
+import BookmarksPanel from './bookmarks-panel.component';
+import { selectBookmark } from './bookmarks.slice';
 
 const mockStore = createMockStore();
 
@@ -23,12 +25,12 @@ const setup = (initialState = {}) => {
 
 describe('<BookmarksPanel />', () => {
   it('shows the new bookmark form', () => {
-    const { getByLabelText } = setup({
+    const { getByRole } = setup({
       accounts: { userKey: '' },
       bookmarks: { bookmarks: [] },
     });
-    expect(getByLabelText('Title')).toBeInTheDocument();
-    expect(getByLabelText('Description')).toBeInTheDocument();
+    expect(getByRole('textbox', { name: 'Title' })).toBeInTheDocument();
+    expect(getByRole('textbox', { name: 'Description' })).toBeInTheDocument();
   });
 
   it('shows a list of the bookmarks in state', () => {
@@ -56,8 +58,8 @@ describe('<BookmarksPanel />', () => {
       type: selectBookmark.type,
       payload: { title: initialState.bookmarks.bookmarks[0].title },
     };
-    const { getByText, store } = setup(initialState);
-    userEvent.click(getByText('Load'));
+    const { getByRole, store } = setup(initialState);
+    userEvent.click(getByRole('button', { name: 'Load' }));
     expect(store.getActions()).toContainEqual(action);
   });
 });

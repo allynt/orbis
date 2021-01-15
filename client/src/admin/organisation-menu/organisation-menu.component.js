@@ -1,44 +1,76 @@
 import React from 'react';
 
-import { Button } from '@astrosat/astrosat-ui';
+import {
+  Box,
+  Button,
+  makeStyles,
+  Paper,
+  Typography,
+} from '@astrosat/astrosat-ui';
 
+import OrbisAdminIcon from '../orbis-admin-icon.svg';
 import { ADMIN_VIEW } from '../admin.constants';
 
-import { DefaultCustomerLogo } from '../default-customer-logo.component';
-
-import styles from './organisation-menu.module.css';
+const useStyles = makeStyles(theme => ({
+  logo: {
+    cursor: 'pointer',
+    width: theme.typography.pxToRem(168),
+    height: theme.typography.pxToRem(152),
+    display: 'grid',
+    placeItems: 'center',
+    objectFit: 'contain',
+  },
+  name: {
+    color: theme.palette.text.primary,
+    maxWidth: '20ch',
+    cursor: 'pointer',
+    margin: theme.spacing(4, 3),
+  },
+}));
 
 /**
- *
- * @param {{ customer: { logo?: string, name?: string },
- *           setVisiblePanel(panel: string): void,
- *           onCreateUserClick(): void
- *        }} props
+ * @param {{
+ *   customer?: { logo?: string, name?: string },
+ *   setVisiblePanel?: (panel: string) => void,
+ *   onCreateUserClick?: () => void
+ * }} props
  */
-const OrganisationMenu = ({ customer, setVisiblePanel, onCreateUserClick }) => (
-  <div className={styles.organisationMenu}>
-    <div
-      className={styles.organisationInfo}
-      onClick={() => setVisiblePanel(ADMIN_VIEW.corporateAccount)}
+const OrganisationMenu = (
+  { customer, setVisiblePanel, onCreateUserClick },
+  ref,
+) => {
+  const styles = useStyles();
+  return (
+    <Box
+      // @ts-ignore
+      ref={ref}
+      display="flex"
+      flexDirection="column"
+      flexShrink={0}
+      mt="4.375rem"
+      mx={2}
+      alignItems="center"
+      width="max-content"
     >
-      {customer?.logo ? (
-        <div className={styles.organisationLogo}>
-          <img
-            className={styles.logo}
-            src={customer?.logo}
-            alt={`${customer?.name} Logo`}
-          />
-        </div>
-      ) : (
-        <DefaultCustomerLogo />
-      )}
+      <Paper
+        className={styles.logo}
+        onClick={() => setVisiblePanel(ADMIN_VIEW.corporateAccount)}
+        component="img"
+        src={customer?.logo || OrbisAdminIcon}
+        alt={customer?.logo ? `${customer?.name} Logo` : 'The Orbis Icon'}
+      />
+      <Typography
+        className={styles.name}
+        variant="h2"
+        onClick={() => setVisiblePanel(ADMIN_VIEW.corporateAccount)}
+      >
+        {customer?.name}
+      </Typography>
+      <Button size="small" onClick={onCreateUserClick}>
+        Create User
+      </Button>
+    </Box>
+  );
+};
 
-      <h2 className={styles.organisationTitle}>{customer?.name}</h2>
-    </div>
-    <Button size="small" onClick={onCreateUserClick}>
-      Create User
-    </Button>
-  </div>
-);
-
-export default OrganisationMenu;
+export default React.forwardRef(OrganisationMenu);

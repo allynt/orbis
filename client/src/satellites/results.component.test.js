@@ -70,7 +70,7 @@ const renderComponent = (store, args) => {
   return { ...attributes, ...testee };
 };
 
-describe('Satellite Results Component', () => {
+describe.skip('Satellite Results Component', () => {
   let store = null;
 
   beforeEach(() => {

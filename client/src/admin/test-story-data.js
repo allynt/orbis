@@ -57,6 +57,7 @@ export const activeUsers = [
   {
     id: '1',
     licences: ['1', '2'],
+    status: 'ADMIN',
     invitation_date: '2020-01-31T11:46:12.618090Z',
     user: { name: 'Test One', email: 'test1@test.com' },
   },

@@ -3,20 +3,24 @@ import React from 'react';
 import {
   Button,
   Checkbox,
-  PasswordField,
+  FormControlLabel,
   PasswordStrengthMeter,
+  TextField,
+  Link,
+  Typography,
+  CircularProgress,
+  Grid,
 } from '@astrosat/astrosat-ui';
 
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
-import { Link } from 'react-router-dom';
+import { Link as RouterLink } from 'react-router-dom';
 import { object as yupObject } from 'yup';
 
-import { TERMS } from 'legal-documents/legal-documents-constants';
 import { LOGIN } from 'accounts/accounts.constants';
 import { ErrorWell } from 'accounts/error-well.component';
-import { Field } from 'components/field/field.component';
-import { LoadingSpinner } from 'components/loading-spinner/loading-spinner.component';
+import { Form } from 'components';
+import { TERMS } from 'legal-documents/legal-documents-constants';
 import {
   acceptedTerms,
   email,
@@ -26,9 +30,6 @@ import {
   newPassword,
   newPasswordConfirm,
 } from 'utils/validators';
-
-import formStyles from 'forms.module.css';
-import styles from './user-registration.module.css';
 
 /**
  * @typedef {{
@@ -82,8 +83,8 @@ const UserRegistration = ({
   });
 
   return (
-    <form
-      className={formStyles.form}
+    <Form
+      noValidate
       onSubmit={handleSubmit(
         ({ firstName, lastName, ...rest }) =>
           onSubmit &&
@@ -94,74 +95,95 @@ const UserRegistration = ({
           }),
       )}
     >
-      <div className={styles.errorWell}>
-        <ErrorWell errors={serverErrors} />
-      </div>
-      <div className={formStyles.fields}>
-        <Field
-          register={register}
+      <ErrorWell errors={serverErrors} />
+      <Form.Row>
+        <TextField
+          id={FIELD_NAMES.email}
           name={FIELD_NAMES.email}
-          label="Work Email Address*"
-          errors={errors}
+          label="Work Email Address"
+          inputRef={register}
+          error={!!errors[FIELD_NAMES.email]}
+          helperText={errors[FIELD_NAMES.email]?.message}
+          required
         />
-        <Field
-          register={register}
+      </Form.Row>
+      <Form.Row>
+        <TextField
+          id={FIELD_NAMES.firstName}
           name={FIELD_NAMES.firstName}
-          label="First Name*"
-          errors={errors}
+          label="First Name"
+          inputRef={register}
+          error={!!errors[FIELD_NAMES.firstName]}
+          helperText={errors[FIELD_NAMES.firstName]?.message}
+          required
         />
-        <Field
-          register={register}
+      </Form.Row>
+      <Form.Row>
+        <TextField
+          id={FIELD_NAMES.lastName}
           name={FIELD_NAMES.lastName}
-          label="Last Name*"
-          errors={errors}
+          label="Last Name"
+          inputRef={register}
+          error={!!errors[FIELD_NAMES.lastName]}
+          helperText={errors[FIELD_NAMES.lastName]?.message}
+          required
         />
-        <Field
-          register={register}
+      </Form.Row>
+      <Form.Row>
+        <TextField
+          id={FIELD_NAMES.newPassword}
           name={FIELD_NAMES.newPassword}
-          label="Password*"
-          Component={PasswordField}
-          errors={errors}
+          label="Password"
+          inputRef={register}
+          error={!!errors[FIELD_NAMES.newPassword]}
+          helperText={errors[FIELD_NAMES.newPassword]?.message}
+          type="password"
+          required
         />
-        <div className={formStyles.row}>
-          <PasswordStrengthMeter password={watch(FIELD_NAMES.newPassword)} />
-        </div>
-        <Field
-          register={register}
+        <PasswordStrengthMeter password={watch(FIELD_NAMES.newPassword)} />
+      </Form.Row>
+      <Form.Row>
+        <TextField
+          id={FIELD_NAMES.newPasswordConfirm}
           name={FIELD_NAMES.newPasswordConfirm}
-          label="Password Confirmation*"
-          Component={PasswordField}
-          errors={errors}
+          label="Password Confirmation"
+          inputRef={register}
+          error={!!errors[FIELD_NAMES.newPasswordConfirm]}
+          helperText={errors[FIELD_NAMES.newPasswordConfirm]?.message}
+          type="password"
+          required
         />
-      </div>
-      <Checkbox
-        className={styles.terms}
-        name={FIELD_NAMES.acceptedTerms}
-        ref={register}
-        label={
-          <div className={styles.label}>
-            I agree with
-            <Button
-              className={styles.link}
-              href={TERMS}
-              rel="noreferrer noopener"
-              target="_blank"
-            >
-              Terms &amp; Conditions
-            </Button>
-          </div>
-        }
-      />
-      <Button type="submit" disabled={!watch(FIELD_NAMES.acceptedTerms)}>
-        {isLoading ? <LoadingSpinner /> : 'Sign Up'}
-      </Button>
-      <p className={styles.footer}>
-        Do you have an account?{' '}
-        <Link className={styles.link} to={LOGIN}>
-          <Button theme="link">Login</Button>
-        </Link>
-      </p>
-    </form>
+      </Form.Row>
+      <Form.Row>
+        <FormControlLabel
+          label={
+            <Typography>
+              I agree with&nbsp;
+              <Link href={TERMS} rel="noreferrer noopener" target="_blank">
+                Terms &amp; Conditions
+              </Link>
+            </Typography>
+          }
+          control={<Checkbox name={FIELD_NAMES.acceptedTerms} ref={register} />}
+        />
+      </Form.Row>
+
+      <Form.Row centered>
+        <Button type="submit" disabled={!watch(FIELD_NAMES.acceptedTerms)}>
+          {isLoading ? (
+            <CircularProgress color="inherit" size={24} />
+          ) : (
+            'Sign Up'
+          )}
+        </Button>
+      </Form.Row>
+      <Form.Row component={Typography} align="center">
+        Do you have an account?&nbsp;
+        <RouterLink to={LOGIN} component={Link}>
+          Login
+        </RouterLink>
+      </Form.Row>
+    </Form>
   );
 };
 

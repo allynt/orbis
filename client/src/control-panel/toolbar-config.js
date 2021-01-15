@@ -6,6 +6,7 @@ import {
   SatelliteIcon,
   StoryIcon,
   ProfileIcon,
+  SvgIcon,
 } from '@astrosat/astrosat-ui';
 
 import { ReactComponent as AdminIcon } from './admin.svg';
@@ -22,13 +23,13 @@ import {
   setMenuHeadings,
 } from '../control-panel/control-panel.slice';
 
-import styles from './toolbar.module.css';
+// import styles from './toolbar.module.css';
 
 export const getToolbarItems = (dispatch, user) => {
   let items = [
     {
       label: DATA_LAYERS,
-      icon: <DataIcon title="data" classes={styles.icon} />,
+      icon: <DataIcon title="data" />,
       action: () => {
         dispatch(toggleMenu(DATA_LAYERS));
         dispatch(
@@ -44,7 +45,7 @@ export const getToolbarItems = (dispatch, user) => {
     },
     {
       label: BOOKMARKS,
-      icon: <MapIcon classes={styles.icon} />,
+      icon: <MapIcon />,
       action: () => {
         dispatch(toggleMenu(BOOKMARKS));
         dispatch(
@@ -60,7 +61,7 @@ export const getToolbarItems = (dispatch, user) => {
     },
     {
       label: PROFILE,
-      icon: <ProfileIcon classes={styles.icon} />,
+      icon: <ProfileIcon />,
       action: () => {
         dispatch(toggleMenu(PROFILE));
         dispatch(
@@ -80,7 +81,7 @@ export const getToolbarItems = (dispatch, user) => {
   if (featureToggles.satellites) {
     items.push({
       label: SATELLITE_LAYERS,
-      icon: <SatelliteIcon classes={styles.icon} />,
+      icon: <SatelliteIcon />,
       action: () => {
         dispatch(toggleMenu(SATELLITE_LAYERS));
         dispatch(
@@ -99,7 +100,7 @@ export const getToolbarItems = (dispatch, user) => {
   if (featureToggles.stories) {
     items.push({
       label: STORIES,
-      icon: <StoryIcon classes={styles.icon} />,
+      icon: <StoryIcon />,
       action: () => {
         dispatch(toggleMenu(STORIES));
         dispatch(
@@ -118,7 +119,11 @@ export const getToolbarItems = (dispatch, user) => {
   if (user?.customers?.some(customer => customer.type === 'MANAGER')) {
     items.push({
       label: 'Admin',
-      icon: <AdminIcon className={styles.icon} />,
+      icon: (
+        <SvgIcon>
+          <AdminIcon />
+        </SvgIcon>
+      ),
       action: history => {
         history.push('/admin-console');
       },

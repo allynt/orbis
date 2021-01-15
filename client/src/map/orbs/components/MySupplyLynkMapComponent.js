@@ -1,6 +1,5 @@
 import React, { useRef } from 'react';
 import { pickBy } from 'lodash';
-import { Popup } from 'react-map-gl';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   dialogFeaturesSelector,
@@ -10,11 +9,11 @@ import {
   toggleDialog,
   dialogVisibleSelector,
 } from '../slices/mysupplylynk.slice';
-import { Dialog } from './mysupplylynk-dialog/dialog.component';
+import { MySupplyLynkDialog } from './mysupplylynk-dialog/dialog.component';
 
 import { LAYERS } from '../slices/mysupplylynk.constants';
 
-import FeatureDetail from 'components/feature-detail/feature-detail.component';
+import { FeatureDetail, Popup } from 'components';
 
 import MySupplyLynkFeatureDetail from './mysupplylynk-feature-detail/mysupplylynk-feature-detail.component';
 
@@ -76,12 +75,11 @@ const MySupplyLynkMapComponent = ({ name }) => {
         </Popup>
       )}
       {dialogFeatures?.length && (
-        <Dialog
+        <MySupplyLynkDialog
           key="dialog"
           supplier={dialogFeatures[0]}
           onCloseClick={() => dispatch(toggleDialog())}
           isVisible={dialogVisible}
-          ref={ref}
         />
       )}
     </>

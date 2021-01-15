@@ -1,6 +1,14 @@
-import React from 'react';
+import * as React from 'react';
 
-import styles from './mysupplylynk-feature-detail.module.css';
+import {
+  List,
+  ListItem,
+  ListItemText,
+  makeStyles,
+  Typography,
+} from '@astrosat/astrosat-ui';
+
+import { FeatureDetail } from 'components';
 
 const DEFAULT_TITLE = 'Feature Details';
 const NOT_AVAILABLE = 'Not Available';
@@ -15,78 +23,87 @@ const getCategoriesString = items => {
     : [NOT_AVAILABLE];
 };
 
-const SingleSupplierContent = ({
-  'Address Line 1': AddressLine1,
-  'Address Line 2': AddressLine2,
-  Postcode,
-  URL,
-  Items,
-}) => (
-  <ul className={styles.list}>
-    <li className={styles.listItem}>
-      <span className={styles.label}>Address Line 1: </span>
-      <span className={styles.value}>{AddressLine1 || NOT_AVAILABLE}</span>
-    </li>
-    <li className={styles.listItem}>
-      <span className={styles.label}>Address Line 2: </span>
-      <span className={styles.value}>{AddressLine2 || NOT_AVAILABLE}</span>
-    </li>
-    <li className={styles.listItem}>
-      <span className={styles.label}>Postcode: </span>
-      <span className={styles.value}>{Postcode || NOT_AVAILABLE}</span>
-    </li>
-    <li className={styles.listItem}>
-      <span className={styles.label}>Website: </span>
-      <span className={styles.value}>{URL || NOT_AVAILABLE}</span>
-    </li>
-    <li className={styles.listItem}>
-      <span>
-        <span className={styles.label}>Supply Categories:</span>
-        {Items && getCategoriesString(Items)}
-      </span>
-    </li>
-    <li className={styles.listItem}>
-      <span className={styles.label}>Click for details!</span>
-    </li>
-  </ul>
-);
+const useStyles = makeStyles(theme => ({
+  secondaryText: {
+    ...theme.typography.body1,
+    overflow: 'hidden',
+    whiteSpace: 'nowrap',
+    textOverflow: 'ellipsis',
+  },
+  clickMessage: {
+    ...theme.typography.body1,
+    paddingLeft: theme.spacing(2),
+  },
+  divider: {
+    borderColor: theme.palette.primary.dark,
+  },
+}));
 
-const MultipleSupplierContent = ({ suppliers, onSupplierClick }) => (
-  <ul className={styles.list}>
-    {suppliers.map(supplier => (
-      <li
-        key={`${supplier.Name}${supplier.Postcode}`}
-        className={styles.suppliersListItem}
-        onClick={e => onSupplierClick(supplier, e)}
-      >
-        {supplier.Name}
-        <p className={styles['suppliersListItem__items']}>
-          <span className={styles['suppliersListItem__label']}>
-            I can provide:{' '}
-          </span>
-          {getCategoriesString(supplier.Items)}
-        </p>
-      </li>
-    ))}
-  </ul>
-);
+const MultipleSupplierContent = ({ suppliers, onSupplierClick }) => {
+  const styles = useStyles();
 
-const MySupplyLynkFeatureDetail = ({ data, onSupplierClick }) => (
-  <div className={styles.featureDetail}>
-    <h1 className={styles.header}>
-      {data?.length === 1 ? data[0]?.Name : DEFAULT_TITLE}
-    </h1>
-    <div className={styles.content}>
-      {data.length > 1 ? (
-        <MultipleSupplierContent
-          suppliers={data}
-          onSupplierClick={onSupplierClick}
-        />
-      ) : (
-        <SingleSupplierContent {...data[0]} />
-      )}
-    </div>
-  </div>
-);
+  return (
+    <List dense>
+      {suppliers.map(supplier => (
+        <ListItem
+          classes={{ divider: styles.divider }}
+          divider
+          key={`${supplier.Name}${supplier.Postcode}`}
+          button
+          onClick={e => onSupplierClick(supplier, e)}
+        >
+          <ListItemText
+            disableTypography
+            primary={<Typography variant="body1">{supplier.Name}</Typography>}
+            secondary={
+              <Typography className={styles.secondaryText}>
+                <b>I can provide: </b>
+                {getCategoriesString(supplier.Items)}
+              </Typography>
+            }
+          />
+        </ListItem>
+      ))}
+    </List>
+  );
+};
+
+const WHITELIST = [
+  'URL',
+  'Items',
+  'Address Line 1',
+  'Address Line 2',
+  'Postcode',
+];
+
+const MySupplyLynkFeatureDetail = ({ data, onSupplierClick }) => {
+  const styles = useStyles();
+  if (data.length === 1) {
+    const feature = Object.entries(data[0])
+      .filter(([key]) => WHITELIST.includes(key))
+      .reduce((acc, [key, value]) => {
+        if (key === 'URL') return { ...acc, Website: value };
+        if (key === 'Items')
+          return { ...acc, [key]: value.map(i => i.Category) };
+        return { ...acc, [key]: value };
+      }, {});
+    return (
+      <FeatureDetail title={data[0]?.Name} features={[feature]}>
+        <Typography className={styles.clickMessage}>
+          Click for details!
+        </Typography>
+      </FeatureDetail>
+    );
+  }
+
+  return (
+    <FeatureDetail title={DEFAULT_TITLE}>
+      <MultipleSupplierContent
+        suppliers={data}
+        onSupplierClick={onSupplierClick}
+      />
+    </FeatureDetail>
+  );
+};
 
 export default MySupplyLynkFeatureDetail;

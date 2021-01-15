@@ -1,20 +1,57 @@
-import React from 'react';
+import * as React from 'react';
 
-import { Checkbox } from '@astrosat/astrosat-ui';
+import {
+  Checkbox,
+  CleaningIcon,
+  ClothingIcon,
+  FoodIcon,
+  List,
+  ListItem,
+  ListItemIcon,
+  ListItemText,
+  OptionsAltIcon,
+  PpeIcon,
+  ServiceIcon,
+  StaffingIcon,
+  StationeryIcon,
+  StethoscopeIcon,
+  styled,
+} from '@astrosat/astrosat-ui';
 
-import Icons from './icons';
-
-import styles from './checkbox-filters.module.css';
-import { CATEGORIES } from '../../slices/mysupplylynk.constants';
 import { useSelector } from 'react-redux';
+
+import { CATEGORIES } from '../../slices/mysupplylynk.constants';
 import {
   categoryFiltersSelectorFactory,
   setSelectedFeatures,
 } from '../../slices/mysupplylynk.slice';
 
-/** @param {{
- *   selectedLayer?: any
- *   dispatch?: any
+const Icons = {
+  PPE: PpeIcon,
+  Cleaning: CleaningIcon,
+  'Medical Equipment & Aids': StethoscopeIcon,
+  Food: FoodIcon,
+  Stationery: StationeryIcon,
+  Clothing: ClothingIcon,
+  Services: ServiceIcon,
+  Staff: StaffingIcon,
+  Other: OptionsAltIcon,
+};
+
+const IconWrapper = styled('div')(({ theme }) => ({
+  color: theme.palette.secondary.main,
+  backgroundColor: theme.palette.primary.main,
+  width: theme.typography.pxToRem(32),
+  height: theme.typography.pxToRem(32),
+  borderRadius: '50%',
+  display: 'grid',
+  placeItems: 'center',
+}));
+
+/**
+ *  @param {{
+ *   selectedLayer?: import('typings/orbis').Source
+ *   dispatch?: import('redux').Dispatch
  * }} props
  */
 export const CheckboxFilters = ({ selectedLayer, dispatch }) => {
@@ -28,14 +65,10 @@ export const CheckboxFilters = ({ selectedLayer, dispatch }) => {
   }));
 
   /**
-   * @param {React.ChangeEvent<HTMLInputElement>} event
+   * @param {string} value
    */
-  const handleChange = event => {
-    const {
-      target: { value, checked },
-    } = event;
-
-    checked
+  const handleChange = value => () => {
+    !selectedFilters?.includes(value)
       ? dispatch(
           setSelectedFeatures({
             layer: selectedLayer.source_id,
@@ -51,27 +84,32 @@ export const CheckboxFilters = ({ selectedLayer, dispatch }) => {
   };
 
   return (
-    <>
-      {CATEGORY_NAME_AND_ICON.map(({ name, Icon }) => (
-        <Checkbox
-          key={name}
-          id={`${selectedLayer?.source_id}-${name}`}
-          className={styles.checkbox}
-          checked={selectedFilters?.includes(name)}
-          name="msl-filter-checkbox"
-          value={name}
-          onChange={handleChange}
-          ariaLabel={name}
-          label={
-            <span className={styles.label}>
-              <div className={styles.iconWrapper}>
-                <Icon className={styles.icon} title={name} />
-              </div>
-              {name}
-            </span>
-          }
-        />
-      ))}
-    </>
+    <List>
+      {CATEGORY_NAME_AND_ICON.map(({ name, Icon }) => {
+        const labelId = `checkbox-label-${name.replace(/\s/g, '-')}`;
+        return (
+          <ListItem
+            key={name}
+            role={undefined}
+            button
+            onClick={handleChange(name)}
+          >
+            <ListItemIcon>
+              <Checkbox
+                tabIndex={-1}
+                checked={selectedFilters?.includes(name)}
+                inputProps={{ 'aria-labelledby': labelId }}
+              />
+            </ListItemIcon>
+            <ListItemIcon>
+              <IconWrapper>
+                <Icon fontSize="small" titleAccess={name} />
+              </IconWrapper>
+            </ListItemIcon>
+            <ListItemText id={labelId} primary={name} />
+          </ListItem>
+        );
+      })}
+    </List>
   );
 };

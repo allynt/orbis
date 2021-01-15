@@ -90,6 +90,7 @@ type Property = {
   aggregates?: {
     GB: number;
   };
+  property_group?: string;
   application: {
     orbis?: {
       label?: string;
@@ -135,11 +136,21 @@ type CategorisedSources = (CategoryHierarchy | Source)[];
 
 type OrbWithCategorisedSources = Orb & { sources: CategorisedSources };
 
+enum CustomerUserType {
+  MANAGER = 'MANAGER',
+  MEMBER = 'MEMBER',
+}
+
+enum CustomerUserStatus {
+  ACTIVE = 'ACTIVE',
+  PENDING = 'PENDING',
+}
+
 type User = {
   accepted_terms: boolean;
   avatar?: string;
   change_password: boolean;
-  customers?: { type: 'MANAGER' | 'MEMBER'; status: 'ACTIVE' | 'PENDING' }[];
+  customers?: { type: CustomerUserType; status: CustomerUserStatus }[];
   description?: string;
   email: string;
   id: string;
@@ -150,4 +161,49 @@ type User = {
   registration_stage?: 'USER' | 'CUSTOMER' | 'CUSTOMER_USER' | 'ORDER';
   roles?: string[];
   username: string;
+};
+
+type Licence = {
+  id: string;
+  orb: string;
+  customer: string;
+  customer_user?: number;
+  access?: number;
+};
+
+type CustomerUser = {
+  id: number;
+  type: CustomerUserType;
+  status: CustomerUserStatus;
+  invitation_date?: string;
+  user?: User;
+  licences?: Licence['id'][];
+};
+
+type Customer = {
+  id: string;
+  type?: 'MULTIPLE' | 'INDIVIDUAL';
+  name: string;
+  official_name?: string;
+  company_type?: string;
+  registered_id?: string;
+  description?: string;
+  logo?: string;
+  url?: string;
+  country?: string;
+  address?: string;
+  postcode?: string;
+  licences?: Licence[];
+};
+
+type Bookmark = {
+  id: number;
+  owner: User['id'];
+  title: string;
+  description?: string;
+  created: string;
+  zoom: number;
+  center: [number, number];
+  layers: Source['source_id'][];
+  thumbnail?: string;
 };

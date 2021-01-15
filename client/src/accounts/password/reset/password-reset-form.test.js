@@ -71,7 +71,7 @@ describe('Password Reset Form Component', () => {
   });
 
   it('should render a form', () => {
-    const { getByText, getByPlaceholderText } = renderComponent(
+    const { getByText, getByLabelText, getByPlaceholderText } = renderComponent(
       store,
       confirmResetPassword,
       resetStatus,
@@ -79,9 +79,9 @@ describe('Password Reset Form Component', () => {
       error,
     );
 
-    expect(getByPlaceholderText(PASSWORD_PLACEHOLDER_TEXT)).toBeInTheDocument();
+    expect(getByLabelText(PASSWORD_PLACEHOLDER_TEXT)).toBeInTheDocument();
     expect(
-      getByPlaceholderText(PASSWORD_CONFIRMATION_PLACEHOLDER_TEXT),
+      getByLabelText(PASSWORD_CONFIRMATION_PLACEHOLDER_TEXT),
     ).toBeInTheDocument();
     // Check form submit button
     expect(getByText(RESET_BUTTON_TEXT)).toBeInTheDocument();
@@ -90,36 +90,31 @@ describe('Password Reset Form Component', () => {
   });
 
   it('should disable `Reset Password` button when form is invalid', async () => {
-    const { getByRole, getByPlaceholderText } = renderComponent(
+    const { getByRole, getByLabelText } = renderComponent(
       store,
       confirmResetPassword,
       resetStatus,
       match,
       error,
     );
-    userEvent.click(getByPlaceholderText(PASSWORD_PLACEHOLDER_TEXT));
+    userEvent.click(getByLabelText(PASSWORD_PLACEHOLDER_TEXT));
     await waitFor(() =>
-      userEvent.click(
-        getByPlaceholderText(PASSWORD_CONFIRMATION_PLACEHOLDER_TEXT),
-      ),
+      userEvent.click(getByLabelText(PASSWORD_CONFIRMATION_PLACEHOLDER_TEXT)),
     );
     expect(getByRole('button', { name: RESET_BUTTON_TEXT })).toBeDisabled();
   });
 
   it('should enable `Reset Password` button when form is valid', async () => {
-    const { getByRole, getByPlaceholderText } = renderComponent(
+    const { getByRole, getByLabelText } = renderComponent(
       store,
       confirmResetPassword,
       resetStatus,
       match,
       error,
     );
+    userEvent.type(getByLabelText(PASSWORD_PLACEHOLDER_TEXT), PASSWORD_TEXT);
     userEvent.type(
-      getByPlaceholderText(PASSWORD_PLACEHOLDER_TEXT),
-      PASSWORD_TEXT,
-    );
-    userEvent.type(
-      getByPlaceholderText(PASSWORD_CONFIRMATION_PLACEHOLDER_TEXT),
+      getByLabelText(PASSWORD_CONFIRMATION_PLACEHOLDER_TEXT),
       PASSWORD_TEXT,
     );
     await waitFor(() =>
@@ -130,7 +125,7 @@ describe('Password Reset Form Component', () => {
   });
 
   it('should not call `confirmResetPassword` function when form is invalid and `Reset Password` button clicked', async () => {
-    const { getByText, getByPlaceholderText } = renderComponent(
+    const { getByText, getByLabelText } = renderComponent(
       store,
       confirmResetPassword,
       resetStatus,
@@ -138,7 +133,7 @@ describe('Password Reset Form Component', () => {
       error,
     );
 
-    userEvent.type(getByPlaceholderText(PASSWORD_PLACEHOLDER_TEXT), 'te');
+    userEvent.type(getByLabelText(PASSWORD_PLACEHOLDER_TEXT), 'te');
 
     waitFor(async () => await userEvent.tab());
 
@@ -147,7 +142,7 @@ describe('Password Reset Form Component', () => {
   });
 
   it('should call `confirmResetPassword` function when form is valid and `Reset Password` button clicked', async () => {
-    const { getByRole, getByPlaceholderText } = renderComponent(
+    const { getByRole, getByLabelText } = renderComponent(
       store,
       confirmResetPassword,
       resetStatus,
@@ -155,12 +150,9 @@ describe('Password Reset Form Component', () => {
       error,
     );
 
+    userEvent.type(getByLabelText(PASSWORD_PLACEHOLDER_TEXT), PASSWORD_TEXT);
     userEvent.type(
-      getByPlaceholderText(PASSWORD_PLACEHOLDER_TEXT),
-      PASSWORD_TEXT,
-    );
-    userEvent.type(
-      getByPlaceholderText(PASSWORD_CONFIRMATION_PLACEHOLDER_TEXT),
+      getByLabelText(PASSWORD_CONFIRMATION_PLACEHOLDER_TEXT),
       PASSWORD_TEXT,
     );
 

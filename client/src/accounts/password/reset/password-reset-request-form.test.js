@@ -34,13 +34,13 @@ describe('Password Reset Request Form Component', () => {
   });
 
   it('should render a form', () => {
-    const { getByText, getByPlaceholderText, getByRole } = renderComponent(
+    const { getByText, getByRole } = renderComponent(
       resetPassword,
       resetStatus,
       error,
     );
 
-    expect(getByPlaceholderText('Email')).toBeInTheDocument();
+    expect(getByRole('textbox', { name: 'Email' })).toBeInTheDocument();
     const resetButton = getByRole('button', { name: RESET_BUTTON_TEXT });
     expect(resetButton).toBeInTheDocument();
     expect(resetButton).toHaveAttribute('disabled');
@@ -49,15 +49,11 @@ describe('Password Reset Request Form Component', () => {
   });
 
   it('should disable `Reset Password` button when Email too short', async () => {
-    const { getByPlaceholderText, getByRole } = renderComponent(
-      resetPassword,
-      resetStatus,
-      error,
-    );
+    const { getByRole } = renderComponent(resetPassword, resetStatus, error);
 
     const resetButton = getByRole('button', { name: RESET_BUTTON_TEXT });
     expect(resetButton).toHaveAttribute('disabled');
-    userEvent.type(getByPlaceholderText('Email'), 't');
+    userEvent.type(getByRole('textbox', { name: 'Email' }), 't');
 
     userEvent.tab();
 
@@ -67,15 +63,11 @@ describe('Password Reset Request Form Component', () => {
   });
 
   it('should disable `Reset Password` button when Email invalid', async () => {
-    const { getByPlaceholderText, getByRole } = renderComponent(
-      resetPassword,
-      resetStatus,
-      error,
-    );
+    const { getByRole } = renderComponent(resetPassword, resetStatus, error);
 
     const resetButton = getByRole('button', { name: RESET_BUTTON_TEXT });
     expect(resetButton).toHaveAttribute('disabled');
-    userEvent.type(getByPlaceholderText('Email'), 'testtest.com');
+    userEvent.type(getByRole('textbox', { name: 'Email' }), 'testtest.com');
 
     userEvent.tab();
 
@@ -84,30 +76,25 @@ describe('Password Reset Request Form Component', () => {
     });
   });
 
-  it('should enable `Reset Password` button when form is valid', () => {
-    const { getByPlaceholderText, getByRole } = renderComponent(
-      resetPassword,
-      resetStatus,
-      error,
+  it('should enable `Reset Password` button when form is valid', async () => {
+    const { getByRole } = renderComponent(resetPassword, resetStatus, error);
+
+    expect(getByRole('button', { name: RESET_BUTTON_TEXT })).toBeDisabled();
+    userEvent.type(getByRole('textbox', { name: 'Email' }), 'test@test.com');
+
+    await waitFor(() =>
+      expect(
+        getByRole('button', { name: RESET_BUTTON_TEXT }),
+      ).not.toBeDisabled(),
     );
-
-    const resetButton = getByRole('button', { name: RESET_BUTTON_TEXT });
-    expect(resetButton).toHaveAttribute('disabled');
-    userEvent.type(getByPlaceholderText('Email'), 'test@test.com');
-
-    expect(resetButton).not.toHaveAttribute('disabled');
   });
 
   it.each(['', 't', 'testtest.com', 'test@test.'])(
     'should not call resetPassword function when email is %s and `Reset Password` button clicked',
     email => {
-      const { getByRole, getByPlaceholderText } = renderComponent(
-        resetPassword,
-        resetStatus,
-        error,
-      );
+      const { getByRole } = renderComponent(resetPassword, resetStatus, error);
 
-      userEvent.type(getByPlaceholderText('Email'), email);
+      userEvent.type(getByRole('textbox', { name: 'Email' }), email);
 
       userEvent.tab();
 
@@ -118,18 +105,10 @@ describe('Password Reset Request Form Component', () => {
   );
 
   it('should call resetPassword function when form is valid and `Reset Password` button clicked', async () => {
-    const { getByRole, getByPlaceholderText } = renderComponent(
-      resetPassword,
-      resetStatus,
-      error,
-    );
+    const { getByRole } = renderComponent(resetPassword, resetStatus, error);
 
     const EMAIL_TEXT = 'test@test.com';
-    userEvent.type(getByPlaceholderText('Email'), EMAIL_TEXT);
-
-    expect(resetPassword).not.toHaveBeenCalled();
-
-    userEvent.tab();
+    userEvent.type(getByRole('textbox', { name: 'Email' }), EMAIL_TEXT);
 
     userEvent.click(getByRole('button', { name: RESET_BUTTON_TEXT }));
 

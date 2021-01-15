@@ -64,17 +64,18 @@ describe('Update User Form Component', () => {
     waitFor(() => expect(updateAdministrator).toHaveBeenCalledWith(newUser));
   });
 
-  it('should disable `Update Changes` button unless changes have been made', () => {
+  it('should disable `Update Changes` button unless changes have been made', async () => {
     const { getByRole, getByDisplayValue } = renderComponent(
       user,
       updateAdministrator,
     );
 
-    const nameField = getByDisplayValue(user.name);
-    const button = getByRole('button', { name: 'Update Changes' });
-
-    expect(button).toHaveAttribute('disabled');
-    userEvent.type(nameField, 'aaa');
-    expect(button).not.toHaveAttribute('disabled');
+    expect(getByRole('button', { name: 'Update Changes' })).toBeDisabled();
+    userEvent.type(getByDisplayValue(user.name), 'aaa');
+    await waitFor(() =>
+      expect(
+        getByRole('button', { name: 'Update Changes' }),
+      ).not.toBeDisabled(),
+    );
   });
 });

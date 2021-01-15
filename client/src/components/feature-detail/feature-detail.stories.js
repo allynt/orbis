@@ -220,3 +220,10 @@ export const Children = () => (
     <Button>Do Stuff</Button>
   </FeatureDetail>
 );
+
+export const Footer = () => (
+  <FeatureDetail
+    features={[{ test: '1' }]}
+    footer={{ label: 'footer', content: 'content' }}
+  />
+);

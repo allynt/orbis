@@ -1,10 +1,15 @@
+import {
+  Box,
+  Button,
+  Grid,
+  Link,
+  makeStyles,
+  ThemeProvider,
+  Typography,
+} from '@astrosat/astrosat-ui';
 import React, { useState } from 'react';
-
-import { Button } from '@astrosat/astrosat-ui';
-
-import { Link } from 'react-router-dom';
-
-import { ReactComponent as OrbisLogo } from '../orbis-light.svg';
+import { Link as RouterLink } from 'react-router-dom';
+import { OrbisLogo } from 'components';
 import Eula from './end-user-licence-agreement.component';
 import { DOCUMENT, EULA, PRIVACY_POLICY } from './legal-documents-constants';
 import styles from './legal-documents.module.css';
@@ -15,56 +20,90 @@ const eulaHeaderText = `In the event that your company has a pre-existing wet si
 
 const termsHeaderText = `In the event that your company has a pre-existing wet signature contract with Astrosat that conflicts with these Terms and Conditions, then the conditions of that contract shall be deemed to prevail.`;
 
+const useStyles = makeStyles(theme => ({
+  container: {
+    display: 'flex',
+    flexDirection: 'column',
+    height: '100%',
+    overflowY: 'auto',
+    overflowX: 'hidden',
+    color: theme.palette.secondary.main,
+  },
+  content: {
+    padding: theme.spacing(2),
+    margin: 0,
+  },
+  logo: {
+    width: '10rem',
+  },
+  button: {
+    fontSize: '1.75rem',
+    '&$unselected': {
+      borderColor: 'transparent',
+    },
+  },
+  header: {
+    width: '100%',
+    backgroundColor: theme.palette.secondary.main,
+    gridColumn: '1 / -1',
+  },
+  preamble: {
+    gridColumn: '1 / -1',
+  },
+  unselected: {},
+}));
+
 const LegalDocuments = ({ match }) => {
+  const styles = useStyles();
   const Component = match.path === EULA ? Eula : TermsAndConditions;
   const buttonText =
     match.path === EULA ? 'End User License Agreement' : 'Terms and Conditions';
 
   const [info, setInfo] = useState(DOCUMENT);
   return (
-    <div className={styles.content}>
+    <div className={styles.container}>
       <div className={styles.header}>
-        <Link to="/">
-          <OrbisLogo className={styles.logo} />
-        </Link>
+        <ThemeProvider theme="dark">
+          <RouterLink to="/">
+            <OrbisLogo className={styles.logo} />
+          </RouterLink>
+        </ThemeProvider>
       </div>
-      <p className={styles.headerText}>
-        {match.path === EULA ? eulaHeaderText : termsHeaderText}
-      </p>
-      <div className={styles.body}>
-        <div className={styles.buttons}>
-          <div>
-            <Button
-              theme="link"
-              classNames={`${styles.button} ${
-                info === PRIVACY_POLICY && styles.unselected
-              }`}
-              onClick={() => setInfo(DOCUMENT)}
-            >
-              {buttonText}
-            </Button>
-          </div>
-          <div>
-            <Button
-              theme="link"
-              classNames={`${styles.button} ${
-                info !== PRIVACY_POLICY && styles.unselected
-              }`}
-              onClick={() => {
-                setInfo(PRIVACY_POLICY);
-              }}
-            >
-              Privacy Policy
-            </Button>
-          </div>
-        </div>
-        <div className={styles.infoContainer}>
+      <Grid className={styles.content} container spacing={2}>
+        <Grid item xs={12}>
+          <Typography color="inherit" paragraph className={styles.preamble}>
+            {match.path === EULA ? eulaHeaderText : termsHeaderText}
+          </Typography>
+        </Grid>
+        <Grid item xs={3}>
+          <Link
+            component="button"
+            className={`${styles.button} ${
+              info === PRIVACY_POLICY && styles.unselected
+            }`}
+            onClick={() => setInfo(DOCUMENT)}
+          >
+            {buttonText}
+          </Link>
+          <Link
+            component="button"
+            className={`${styles.button} ${
+              info !== PRIVACY_POLICY && styles.unselected
+            }`}
+            onClick={() => {
+              setInfo(PRIVACY_POLICY);
+            }}
+          >
+            Privacy Policy
+          </Link>
+        </Grid>
+        <Grid item xs={9}>
           {info === PRIVACY_POLICY && <PrivacyPolicy />}
           {info === DOCUMENT && (
             <Component onClick={() => setInfo(PRIVACY_POLICY)} />
           )}
-        </div>
-      </div>
+        </Grid>
+      </Grid>
     </div>
   );
 };

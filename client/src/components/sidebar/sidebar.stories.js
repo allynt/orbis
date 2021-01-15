@@ -1,117 +1,100 @@
 import React from 'react';
 
-import { ProfileIcon, SatelliteIcon, DataIcon } from '@astrosat/astrosat-ui';
+import {
+  ProfileIcon,
+  SatelliteIcon,
+  DataIcon,
+  Typography,
+  ListItem,
+  ListItemText,
+  ListItemIcon,
+} from '@astrosat/astrosat-ui';
 
 import { Sidebar, SidebarItem, SidebarBottomItems } from '.';
 
-import { ReactComponent as OrbisLogo } from '../../orbis-light.svg';
-import { ReactComponent as OrbisAdminLogo } from '../../admin/orbis-admin-logo.svg';
+import { OrbisLogo } from 'components';
 
-const logoStyle = { height: '33px', color: '#fff' };
+const logoStyle = { height: '54px' };
 
 const AdminHeader = () => (
-  <div style={{ display: 'flex', alignItems: 'center' }}>
-    <ProfileIcon style={{ width: '3.125rem' }} />
-    <div
-      style={{ display: 'flex', flexDirection: 'column', marginLeft: '8px' }}
-    >
-      <h2
-        style={{
-          fontSize: '1.25rem',
-          whiteSpace: 'nowrap',
-          marginTop: 0,
-          marginBottom: '0.25rem',
-        }}
-      >
-        Adam Raymond
-      </h2>
-      <h5 style={{ margin: 0, color: '#b9bed3' }}>Administrator</h5>
-    </div>
-  </div>
+  <ListItem>
+    <ListItemIcon>
+      <ProfileIcon />
+    </ListItemIcon>
+    <ListItemText
+      primary={<Typography variant="h2">Adam Raymond</Typography>}
+      secondary={<Typography variant="h5">Administrator</Typography>}
+    />
+  </ListItem>
 );
 
 export default { title: 'Components/Sidebar', component: Sidebar };
 
-export const Nothing = () => <Sidebar />;
+const Template = args => <Sidebar {...args} />;
 
-export const Logo = () => <Sidebar logo={<OrbisLogo style={logoStyle} />} />;
+export const Nothing = Template.bind({});
 
-export const Header = () => <Sidebar header={<AdminHeader />} />;
+export const Logo = Template.bind({});
+Logo.args = {
+  logo: <OrbisLogo style={logoStyle} />,
+};
 
-export const Items = () => (
-  <Sidebar>
-    <SidebarItem icon={<ProfileIcon style={{ width: '100%' }} />} selected />
-    <SidebarItem icon={<SatelliteIcon style={{ width: '100%' }} />} />
-    <SidebarItem icon={<DataIcon style={{ width: '100%' }} />} />
-  </Sidebar>
-);
+export const Header = Template.bind({});
+Header.args = {
+  header: <AdminHeader />,
+};
 
-export const ItemsWithLabels = () => (
-  <Sidebar>
-    <SidebarItem icon={<ProfileIcon style={{ width: '100%' }} />} selected>
-      Item one
-    </SidebarItem>
-    <SidebarItem icon={<SatelliteIcon style={{ width: '100%' }} />}>
-      Item two
-    </SidebarItem>
-    <SidebarItem icon={<DataIcon style={{ width: '100%' }} />}>
-      Item three
-    </SidebarItem>
-  </Sidebar>
-);
+export const Items = Template.bind({});
+Items.args = {
+  children: (
+    <>
+      <SidebarItem icon={<ProfileIcon />} selected />
+      <SidebarItem icon={<SatelliteIcon />} />
+      <SidebarItem icon={<DataIcon />} />
+    </>
+  ),
+};
 
-export const ItemPosition = () => (
-  <Sidebar>
-    <SidebarItem icon={<ProfileIcon style={{ width: '100%' }} />} selected>
-      Item one
-    </SidebarItem>
-    <SidebarItem icon={<SatelliteIcon style={{ width: '100%' }} />}>
-      Item two
-    </SidebarItem>
-    <SidebarItem icon={<DataIcon style={{ width: '100%' }} />}>
-      Item three
-    </SidebarItem>
-    <SidebarBottomItems>
-      <SidebarItem icon={<ProfileIcon style={{ width: '100%' }} />}>
-        Item four
+export const ItemsWithLabels = Template.bind({});
+ItemsWithLabels.args = {
+  children: (
+    <>
+      <SidebarItem icon={<ProfileIcon />} selected>
+        Item one
       </SidebarItem>
-      <SidebarItem icon={<SatelliteIcon style={{ width: '100%' }} />}>
-        Item five
-      </SidebarItem>
-      <SidebarItem icon={<DataIcon style={{ width: '100%' }} />}>
-        Item six
-      </SidebarItem>
-    </SidebarBottomItems>
-  </Sidebar>
-);
+      <SidebarItem icon={<SatelliteIcon />}>Item two</SidebarItem>
+      <SidebarItem icon={<DataIcon />}>Item three</SidebarItem>
+    </>
+  ),
+};
 
-export const Footer = () => <Sidebar footer={<h3>This is the footer</h3>} />;
+export const ItemPosition = Template.bind({});
+ItemPosition.args = {
+  children: (
+    <>
+      <SidebarItem icon={<ProfileIcon />} selected>
+        Item one
+      </SidebarItem>
+      <SidebarItem icon={<SatelliteIcon />}>Item two</SidebarItem>
+      <SidebarItem icon={<DataIcon />}>Item three</SidebarItem>
+      <SidebarBottomItems>
+        <SidebarItem icon={<ProfileIcon />}>Item four</SidebarItem>
+        <SidebarItem icon={<SatelliteIcon />}>Item five</SidebarItem>
+        <SidebarItem icon={<DataIcon />}>Item six</SidebarItem>
+      </SidebarBottomItems>
+    </>
+  ),
+};
 
-export const KitchenSink = () => (
-  <Sidebar
-    logo={<OrbisAdminLogo style={{ height: '70px', color: '#fff' }} />}
-    header={<AdminHeader />}
-    footer={<h3>This is the footer</h3>}
-  >
-    <SidebarItem icon={<ProfileIcon style={{ width: '100%' }} />} selected>
-      Item one
-    </SidebarItem>
-    <SidebarItem icon={<SatelliteIcon style={{ width: '100%' }} />}>
-      Item two
-    </SidebarItem>
-    <SidebarItem icon={<DataIcon style={{ width: '100%' }} />}>
-      Item three
-    </SidebarItem>
-    <SidebarBottomItems>
-      <SidebarItem icon={<ProfileIcon style={{ width: '100%' }} />}>
-        Item four
-      </SidebarItem>
-      <SidebarItem icon={<SatelliteIcon style={{ width: '100%' }} />}>
-        Item five
-      </SidebarItem>
-      <SidebarItem icon={<DataIcon style={{ width: '100%' }} />}>
-        Item six
-      </SidebarItem>
-    </SidebarBottomItems>
-  </Sidebar>
-);
+export const Footer = Template.bind({});
+Footer.args = {
+  footer: <Typography variant="h3">This is the footer</Typography>,
+};
+
+export const KitchenSink = Template.bind({});
+KitchenSink.args = {
+  ...Logo.args,
+  ...Header.args,
+  ...Footer.args,
+  ...ItemPosition.args,
+};

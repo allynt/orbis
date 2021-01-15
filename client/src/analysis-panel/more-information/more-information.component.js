@@ -1,8 +1,23 @@
 import * as React from 'react';
 
-import { LayersListItem } from 'data-layers/layers-list/layers-list-item/layers-list-item.component';
+import { makeStyles, Typography } from '@astrosat/astrosat-ui';
 
-import styles from './more-information.module.css';
+import { SidePanelSection } from 'components';
+
+const useStyles = makeStyles(theme => ({
+  information: {
+    display: 'grid',
+    gridTemplateColumns: 'max-content 1fr',
+    columnGap: theme.spacing(1),
+    rowGap: theme.spacing(2),
+  },
+  details: {
+    gridColumn: '1 / -1',
+  },
+  sourceLabel: {
+    lineHeight: 'normal',
+  },
+}));
 
 /**
  * @param {{
@@ -10,19 +25,27 @@ import styles from './more-information.module.css';
  *  source?: string
  * }} props
  */
-export const MoreInformation = ({ details, source }) => (
-  <LayersListItem
-    title={<span className={styles.title}>More Information</span>}
-    defaultExpanded
-  >
-    <div className={styles.information}>
-      {details && <p className={styles.details}>{details}</p>}
-      {source && (
-        <>
-          <p className={styles.sourceLabel}>Source:</p>
-          <p className={styles.source}>{source}</p>
-        </>
-      )}
-    </div>
-  </LayersListItem>
-);
+export const MoreInformation = ({ details, source }) => {
+  const styles = useStyles();
+  return (
+    <SidePanelSection title="More Information" defaultExpanded>
+      <div className={styles.information}>
+        {details && (
+          <Typography className={styles.details}>{details}</Typography>
+        )}
+        {source && (
+          <>
+            <Typography
+              variant="h4"
+              component="p"
+              className={styles.sourceLabel}
+            >
+              Source:
+            </Typography>
+            <Typography>{source}</Typography>
+          </>
+        )}
+      </div>
+    </SidePanelSection>
+  );
+};
