@@ -57,7 +57,7 @@ export const RadioPicker = ({ selectedLayer, dispatch }) => {
 
   if (!selectedLayer?.metadata?.properties) return null;
   return (
-    <Box display="flex" flexDirection="column">
+    <Box display="flex" flexDirection="column" width="100%">
       {groupProperties(selectedLayer.metadata.properties).map((data, i) => (
         <React.Fragment key={i}>
           <RadioProperty
