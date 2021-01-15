@@ -10,6 +10,7 @@ import veryBusy from './icons/very-busy.svg';
 
 const useStyles = makeStyles(theme => ({
   wrapper: {
+    margin: 0,
     paddingTop: theme.spacing(2),
     paddingBottom: theme.spacing(2),
     paddingLeft: theme.spacing(3),

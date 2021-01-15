@@ -163,8 +163,10 @@ const useStyles = makeStyles(theme => ({
     textAlign: 'center',
   },
   content: {
-    maxHeight: '20rem',
+    maxHeight: '30rem',
+    maxWidth: '25rem',
     overflowY: 'auto',
+    overflowX: 'hidden',
   },
   list: {
     '& + &': {
