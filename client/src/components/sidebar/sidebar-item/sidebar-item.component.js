@@ -10,6 +10,7 @@ import React from 'react';
 
 const useStyles = makeStyles(theme => ({
   root: {
+    justifyContent: 'center',
     borderRadius: `${theme.typography.pxToRem(
       theme.shape.borderRadius,
     )} 0 0 ${theme.typography.pxToRem(theme.shape.borderRadius)}`,
@@ -27,11 +28,13 @@ const useStyles = makeStyles(theme => ({
   selected: {},
 }));
 
-const iconStyles = makeStyles({
+const iconStyles = makeStyles(theme => ({
   root: {
     color: 'inherit',
+    minWidth: 24,
+    marginRight: theme.spacing(2),
   },
-});
+}));
 
 /**
  * @param {{

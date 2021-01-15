@@ -12,10 +12,9 @@ import {
 
 import { Sidebar, SidebarItem, SidebarBottomItems } from '.';
 
-import { ReactComponent as OrbisLogo } from '../../orbis-light.svg';
-import { ReactComponent as OrbisAdminLogo } from '../../admin/orbis-admin-logo.svg';
+import { OrbisLogo } from 'components';
 
-const logoStyle = { height: '33px', color: '#fff' };
+const logoStyle = { height: '54px' };
 
 const AdminHeader = () => (
   <ListItem>
@@ -31,64 +30,71 @@ const AdminHeader = () => (
 
 export default { title: 'Components/Sidebar', component: Sidebar };
 
-export const Nothing = () => <Sidebar />;
+const Template = args => <Sidebar {...args} />;
 
-export const Logo = () => <Sidebar logo={<OrbisLogo style={logoStyle} />} />;
+export const Nothing = Template.bind({});
 
-export const Header = () => <Sidebar header={<AdminHeader />} />;
+export const Logo = Template.bind({});
+Logo.args = {
+  logo: <OrbisLogo style={logoStyle} />,
+};
 
-export const Items = () => (
-  <Sidebar>
-    <SidebarItem icon={<ProfileIcon />} selected />
-    <SidebarItem icon={<SatelliteIcon />} />
-    <SidebarItem icon={<DataIcon />} />
-  </Sidebar>
-);
+export const Header = Template.bind({});
+Header.args = {
+  header: <AdminHeader />,
+};
 
-export const ItemsWithLabels = () => (
-  <Sidebar>
-    <SidebarItem icon={<ProfileIcon />} selected>
-      Item one
-    </SidebarItem>
-    <SidebarItem icon={<SatelliteIcon />}>Item two</SidebarItem>
-    <SidebarItem icon={<DataIcon />}>Item three</SidebarItem>
-  </Sidebar>
-);
+export const Items = Template.bind({});
+Items.args = {
+  children: (
+    <>
+      <SidebarItem icon={<ProfileIcon />} selected />
+      <SidebarItem icon={<SatelliteIcon />} />
+      <SidebarItem icon={<DataIcon />} />
+    </>
+  ),
+};
 
-export const ItemPosition = () => (
-  <Sidebar>
-    <SidebarItem icon={<ProfileIcon />} selected>
-      Item one
-    </SidebarItem>
-    <SidebarItem icon={<SatelliteIcon />}>Item two</SidebarItem>
-    <SidebarItem icon={<DataIcon />}>Item three</SidebarItem>
-    <SidebarBottomItems>
-      <SidebarItem icon={<ProfileIcon />}>Item four</SidebarItem>
-      <SidebarItem icon={<SatelliteIcon />}>Item five</SidebarItem>
-      <SidebarItem icon={<DataIcon />}>Item six</SidebarItem>
-    </SidebarBottomItems>
-  </Sidebar>
-);
+export const ItemsWithLabels = Template.bind({});
+ItemsWithLabels.args = {
+  children: (
+    <>
+      <SidebarItem icon={<ProfileIcon />} selected>
+        Item one
+      </SidebarItem>
+      <SidebarItem icon={<SatelliteIcon />}>Item two</SidebarItem>
+      <SidebarItem icon={<DataIcon />}>Item three</SidebarItem>
+    </>
+  ),
+};
 
-export const Footer = () => (
-  <Sidebar footer={<Typography variant="h3">This is the footer</Typography>} />
-);
+export const ItemPosition = Template.bind({});
+ItemPosition.args = {
+  children: (
+    <>
+      <SidebarItem icon={<ProfileIcon />} selected>
+        Item one
+      </SidebarItem>
+      <SidebarItem icon={<SatelliteIcon />}>Item two</SidebarItem>
+      <SidebarItem icon={<DataIcon />}>Item three</SidebarItem>
+      <SidebarBottomItems>
+        <SidebarItem icon={<ProfileIcon />}>Item four</SidebarItem>
+        <SidebarItem icon={<SatelliteIcon />}>Item five</SidebarItem>
+        <SidebarItem icon={<DataIcon />}>Item six</SidebarItem>
+      </SidebarBottomItems>
+    </>
+  ),
+};
 
-export const KitchenSink = () => (
-  <Sidebar
-    logo={<OrbisAdminLogo style={{ height: '70px', color: '#fff' }} />}
-    header={<AdminHeader />}
-    footer={<Typography variant="h3">This is the footer</Typography>}
-  >
-    <SidebarItem icon={<ProfileIcon />} selected>
-      Item one
-    </SidebarItem>
-    <SidebarItem icon={<SatelliteIcon />}>Item two</SidebarItem>
-    <SidebarItem icon={<DataIcon />}>Item three</SidebarItem>
-    <SidebarBottomItems>
-      <SidebarItem icon={<ProfileIcon />}>Item four</SidebarItem>
-      <SidebarItem icon={<SatelliteIcon />}>Item five</SidebarItem>
-      <SidebarItem icon={<DataIcon />}>Item six</SidebarItem>
-    </SidebarBottomItems>
-  </Sidebar>
-);
+export const Footer = Template.bind({});
+Footer.args = {
+  footer: <Typography variant="h3">This is the footer</Typography>,
+};
+
+export const KitchenSink = Template.bind({});
+KitchenSink.args = {
+  ...Logo.args,
+  ...Header.args,
+  ...Footer.args,
+  ...ItemPosition.args,
+};

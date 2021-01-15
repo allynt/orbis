@@ -19,6 +19,7 @@ const useStyles = makeStyles(theme => ({
  *
  * @param {{
  *  color?: "inherit" | "disabled" | "action" | "primary" | "secondary" | "error"
+ *  style?: React.CSSProperties
  *  htmlColor?: string
  *  className?: string
  *  titleAccess?: string

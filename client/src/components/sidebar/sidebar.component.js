@@ -31,12 +31,12 @@ const Items = styled(List)(({ theme }) => ({
   display: 'flex',
   flexDirection: 'column',
   height: '100%',
-  paddingLeft: theme.spacing(2),
+  paddingLeft: '20%',
 }));
 
 const Footer = styled('footer')(({ theme }) => ({
   marginTop: 'auto',
-  padding: `${theme.spacing(2)} ${theme.spacing(1)} 0`,
+  padding: theme.spacing(2, 1, 0),
 }));
 
 /**
