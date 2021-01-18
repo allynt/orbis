@@ -89,6 +89,9 @@ type Property = {
   aggregation?: 'sum' | 'mean';
   aggregates?: {
     GB: number;
+    Scotland: number;
+    England: number;
+    Wales: number;
   };
   property_group?: string;
   application: {

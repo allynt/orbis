@@ -1,6 +1,13 @@
-import * as React from 'react';
+import React, { useState } from 'react';
 
-import { Box, Grid, makeStyles, Typography } from '@astrosat/astrosat-ui';
+import {
+  Box,
+  Grid,
+  makeStyles,
+  MenuItem,
+  Select,
+  Typography,
+} from '@astrosat/astrosat-ui';
 
 import { BarChart, SidePanelSection } from 'components';
 
@@ -20,6 +27,7 @@ const useStyles = makeStyles(theme => ({
  * }} props
  */
 export const NationalDeviationHistogram = ({ areaValue, selectedProperty }) => {
+  const [selectedAggregateArea, setSelectedAggregateArea] = useState('GB');
   const styles = useStyles();
   return (
     <SidePanelSection defaultExpanded title="Selected Data Layer">
@@ -38,7 +46,22 @@ export const NationalDeviationHistogram = ({ areaValue, selectedProperty }) => {
           line={areaValue}
         />
         <Grid className={styles.data} container spacing={1}>
-          <Grid item xs={8}>
+          {!!selectedProperty?.aggregates && (
+            <Grid item xs={12}>
+              <Select
+                inputProps={{ 'aria-label': 'Aggregation Area' }}
+                value={selectedAggregateArea}
+                onChange={e => setSelectedAggregateArea(e.target.value)}
+              >
+                {Object.keys(selectedProperty.aggregates).map(area => (
+                  <MenuItem key={area} value={area}>
+                    {area}
+                  </MenuItem>
+                ))}
+              </Select>
+            </Grid>
+          )}
+          <Grid item xs={9}>
             <Typography
               className={styles.italic}
               variant="h4"
@@ -53,15 +76,21 @@ export const NationalDeviationHistogram = ({ areaValue, selectedProperty }) => {
               {areaValue}
             </Typography>
           </Grid>
-          <Grid item xs={8}>
-            <Typography variant="h4" component="p">
-              {selectedProperty?.aggregation === 'sum' ? 'Sum' : 'Average'} of
-              all areas in GB:
-            </Typography>
-          </Grid>
-          <Grid item>
-            <Typography> {selectedProperty?.aggregates?.GB}</Typography>
-          </Grid>
+          {!!selectedProperty?.aggregates && (
+            <>
+              <Grid item xs={9}>
+                <Typography variant="h4" component="p">
+                  {selectedProperty?.aggregation === 'sum' ? 'Sum' : 'Average'}{' '}
+                  of all areas in {selectedAggregateArea}:
+                </Typography>
+              </Grid>
+              <Grid item>
+                <Typography>
+                  {selectedProperty?.aggregates?.[selectedAggregateArea]}
+                </Typography>
+              </Grid>
+            </>
+          )}
         </Grid>
       </Box>
     </SidePanelSection>

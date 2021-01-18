@@ -1,3 +1,4 @@
+import { omit } from 'lodash';
 import * as React from 'react';
 import { NationalDeviationHistogram } from './national-deviation-histogram.component';
 
@@ -75,9 +76,16 @@ const selectedProperty = {
 
 export default { title: 'Analysis Panel/National Deviation Histogram' };
 
-export const Default = () => (
-  <NationalDeviationHistogram
-    areaValue={1000}
-    selectedProperty={selectedProperty}
-  />
-);
+const Template = args => <NationalDeviationHistogram {...args} />;
+
+export const Default = Template.bind({});
+Default.args = {
+  areaValue: 1000,
+  selectedProperty,
+};
+
+export const NoAggregates = Template.bind({});
+NoAggregates.args = {
+  ...Default.args,
+  selectedProperty: omit(selectedProperty, 'aggregates'),
+};
