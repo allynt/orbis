@@ -42,9 +42,19 @@ const configuration = ({
 
   /**
    * @param {*} info
-   * @param {{srcEvent: MouseEvent}} event
+   * @param {{srcEvent: PointerEvent}} event
    */
   const onClick = (info, event) => {
+    if (event.srcEvent.ctrlKey || event.srcEvent.metaKey) {
+      if (clickedFeatures.find(f => f.index === info.index)) {
+        return dispatch(
+          setClickedFeatures(
+            clickedFeatures.filter(f => f.index !== info.index),
+          ),
+        );
+      }
+      return dispatch(setClickedFeatures([...clickedFeatures, info]));
+    }
     dispatch(setClickedFeatures([info]));
   };
 
@@ -61,7 +71,11 @@ const configuration = ({
     onClick,
     getLineColor: [246, 190, 0, 255],
     getLineWidth: d =>
-      clickedFeatures?.map(f => f.object).includes(d) ? 3 : 0,
+      clickedFeatures
+        ?.map(f => f.object.properties.index)
+        .includes(d.properties.index)
+        ? 3
+        : 0,
     lineWidthUnits: 'pixels',
     getFillColor: d => {
       let color =
