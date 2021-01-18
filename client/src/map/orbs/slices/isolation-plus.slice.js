@@ -3,7 +3,6 @@ import { createSlice, createSelector } from '@reduxjs/toolkit';
 const isolationPlusSlice = createSlice({
   name: 'isolationPlus',
   initialState: {
-    colorSchemes: {},
     property: {
       source_id: undefined,
       name: undefined,
@@ -34,17 +33,6 @@ export const {
 } = isolationPlusSlice.actions;
 
 const baseSelector = orbs => orbs?.[isolationPlusSlice.name];
-
-export const colorSchemesSelector = createSelector(
-  baseSelector,
-  orb => orb?.colorSchemes,
-);
-
-export const colorSchemeSelector = createSelector(
-  baseSelector,
-  (_, source_id) => source_id,
-  (orb, source_id) => orb?.colorSchemes?.[source_id],
-);
 
 export const propertySelector = createSelector(
   baseSelector,
