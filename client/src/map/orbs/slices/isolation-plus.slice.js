@@ -1,24 +1,34 @@
 import { createSlice, createSelector } from '@reduxjs/toolkit';
 
+/**
+ * @typedef IsolationPlusState
+ * @property {any[]} [clickedFeatures]
+ * @property {import('typings/orbis').Property & {source_id: string}} [property]
+ * @property {[number, number]} [filterRange]
+ */
+
+/** @type {IsolationPlusState} */
+const initialState = {
+  property: {
+    source_id: undefined,
+    name: undefined,
+  },
+  pickedInfo: undefined,
+  filterRange: [undefined, undefined],
+};
+
 const isolationPlusSlice = createSlice({
   name: 'isolationPlus',
-  initialState: {
-    property: {
-      source_id: undefined,
-      name: undefined,
-    },
-    pickedInfo: undefined,
-    filterRange: [undefined, undefined],
-  },
+  initialState,
   reducers: {
     setProperty: (state, { payload }) => {
-      if (state.pickedInfo?.layer?.id !== payload.source_id)
-        state.pickedInfo = undefined;
+      if (state.clickedFeatures?.[0]?.layer?.id !== payload.source_id)
+        state.clickedFeatures = undefined;
       state.property = payload;
       state.filterRange = [payload.min, payload.max];
     },
-    setPickedInfo: (state, { payload }) => {
-      state.pickedInfo = payload;
+    setClickedFeatures: (state, { payload }) => {
+      state.clickedFeatures = payload;
     },
     setFilterRange: (state, { payload }) => {
       state.filterRange = payload;
@@ -28,10 +38,11 @@ const isolationPlusSlice = createSlice({
 
 export const {
   setProperty,
-  setPickedInfo,
+  setClickedFeatures,
   setFilterRange,
 } = isolationPlusSlice.actions;
 
+/** @returns {IsolationPlusState} */
 const baseSelector = orbs => orbs?.[isolationPlusSlice.name];
 
 export const propertySelector = createSelector(
@@ -39,9 +50,9 @@ export const propertySelector = createSelector(
   orb => orb?.property,
 );
 
-export const pickedInfoSelector = createSelector(
+export const clickedFeaturesSelector = createSelector(
   baseSelector,
-  orb => orb?.pickedInfo,
+  orb => orb?.clickedFeatures,
 );
 
 export const filterRangeSelector = createSelector(

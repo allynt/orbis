@@ -5,8 +5,8 @@ import isEqual from 'lodash/isEqual';
 import {
   filterRangeSelector,
   propertySelector,
-  setPickedInfo,
-  pickedInfoSelector,
+  setClickedFeatures,
+  clickedFeaturesSelector,
 } from '../slices/isolation-plus.slice';
 
 const configuration = ({
@@ -20,7 +20,7 @@ const configuration = ({
   const source = activeSources?.find(source => source.source_id === id);
   const selectedProperty = propertySelector(orbState);
   const filterRange = filterRangeSelector(orbState);
-  const pickedInfo = pickedInfoSelector(orbState);
+  const clickedFeatures = clickedFeaturesSelector(orbState);
   const selectedPropertyMetadata = source?.metadata?.properties?.find(
     property => property.name === selectedProperty.name,
   );
@@ -40,6 +40,14 @@ const configuration = ({
       format: 'array',
     });
 
+  /**
+   * @param {*} info
+   * @param {{srcEvent: MouseEvent}} event
+   */
+  const onClick = (info, event) => {
+    dispatch(setClickedFeatures([info]));
+  };
+
   return {
     id,
     data,
@@ -50,9 +58,10 @@ const configuration = ({
     uniqueIdProperty: source.metadata.uniqueIdProperty,
     pickable: true,
     autoHighlight: true,
-    onClick: info => dispatch(setPickedInfo(info)),
+    onClick,
     getLineColor: [246, 190, 0, 255],
-    getLineWidth: d => (isEqual(pickedInfo?.object, d) ? 3 : 0),
+    getLineWidth: d =>
+      clickedFeatures?.map(f => f.object).includes(d) ? 3 : 0,
     lineWidthUnits: 'pixels',
     getFillColor: d => {
       let color =
@@ -72,7 +81,7 @@ const configuration = ({
     updateTriggers: {
       getFillColor: [selectedProperty, filterRange],
       getFilterValue: [selectedProperty],
-      getLineWidth: [pickedInfo],
+      getLineWidth: [clickedFeatures],
     },
     extensions: [new DataFilterExtension({ filterSize: 1 })],
   };

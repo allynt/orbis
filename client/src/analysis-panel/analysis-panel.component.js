@@ -13,9 +13,9 @@ import {
 
 import { SidePanel } from 'components';
 import {
-  pickedInfoSelector,
+  clickedFeaturesSelector,
   propertySelector,
-  setPickedInfo,
+  setClickedFeatures,
 } from 'map/orbs/slices/isolation-plus.slice';
 import { MoreInformation } from './more-information/more-information.component';
 import { NationalDeviationHistogram } from './national-deviation-histogram/national-deviation-histogram.component';
@@ -43,15 +43,16 @@ const useStyles = makeStyles(theme => ({
 export const AnalysisPanel = () => {
   const styles = useStyles();
   const dispatch = useDispatch();
-  const pickedInfo = useSelector(state => pickedInfoSelector(state?.orbs));
+  const pickedInfo = useSelector(state => clickedFeaturesSelector(state?.orbs));
   const selectedProperty = useSelector(state => propertySelector(state?.orbs));
 
   if (!selectedProperty) return null;
 
-  const areaValue = pickedInfo?.object?.properties?.[selectedProperty?.name];
+  const areaValue =
+    pickedInfo?.[0]?.object?.properties?.[selectedProperty?.name];
 
   const pieData = selectedProperty?.breakdown?.map(breakdownProperty => ({
-    value: Number(pickedInfo?.object?.properties[breakdownProperty]),
+    value: Number(pickedInfo?.[0]?.object?.properties[breakdownProperty]),
     name: breakdownProperty,
   }));
 
@@ -68,7 +69,7 @@ export const AnalysisPanel = () => {
             aria-label="Close"
             className={styles.close}
             size="small"
-            onClick={() => dispatch(setPickedInfo(undefined))}
+            onClick={() => dispatch(setClickedFeatures(undefined))}
           >
             <CloseIcon titleAccess="Close" fontSize="inherit" />
           </IconButton>
