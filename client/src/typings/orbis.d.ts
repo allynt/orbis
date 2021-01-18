@@ -210,3 +210,10 @@ type Bookmark = {
   layers: Source['source_id'][];
   thumbnail?: string;
 };
+
+type AnalysisPanelComponent<P = {}> = (
+  props: {
+    selectedProperty: Property;
+    clickedFeatures: any[];
+  } & P,
+) => JSX.Element;

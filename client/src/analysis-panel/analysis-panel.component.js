@@ -50,9 +50,6 @@ export const AnalysisPanel = () => {
 
   if (!selectedProperty) return null;
 
-  const areaValue =
-    clickedFeatures?.[0]?.object?.properties?.[selectedProperty?.name];
-
   const pieData = selectedProperty?.breakdown?.map(breakdownProperty => ({
     value: Number(clickedFeatures?.[0]?.object?.properties[breakdownProperty]),
     name: breakdownProperty,
@@ -84,15 +81,13 @@ export const AnalysisPanel = () => {
       <Typography color="primary" className={styles.strapline}>
         The information below relates to the areas selected on the map.
       </Typography>
-      {!!areaValue && (
-        <>
-          <NationalDeviationHistogram
-            areaValue={areaValue}
-            selectedProperty={selectedProperty}
-          />
-          <PrimaryDivider />
-        </>
-      )}
+      <NationalDeviationHistogram
+        selectedProperty={selectedProperty}
+        clickedFeatures={clickedFeatures}
+        {...selectedProperty?.application?.orbis?.data_visualisation_components
+          ?.props}
+      />
+      <PrimaryDivider />
       {!!selectedProperty?.breakdown && !pieData.some(v => !v.value) && (
         <>
           <PropertyBreakdownChart data={pieData} />

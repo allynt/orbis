@@ -10,6 +10,7 @@ import {
 } from '@astrosat/astrosat-ui';
 
 import { BarChart, SidePanelSection } from 'components';
+import { sumBy } from 'lodash';
 
 const useStyles = makeStyles(theme => ({
   italic: {
@@ -21,14 +22,41 @@ const useStyles = makeStyles(theme => ({
 }));
 
 /**
- * @param {{
- *  areaValue: number
- *  selectedProperty: import('typings/orbis').Property
- * }} props
+ *
+ * @param {any[]} clickedFeatures
+ * @param {import('typings/orbis').Property} selectedProperty
  */
-export const NationalDeviationHistogram = ({ areaValue, selectedProperty }) => {
+const aggregateValues = (clickedFeatures, selectedProperty) => {
+  const sumValue = sumBy(
+    clickedFeatures,
+    `object.properties.${selectedProperty?.name}`,
+  );
+  if (selectedProperty.aggregation === 'mean')
+    return sumValue / clickedFeatures.length;
+  return sumValue;
+};
+
+/**
+ * @typedef {{
+ *  data: {x: number, y: number}[]
+ * }} NationalDeviationHistogramProps
+ */
+
+/**
+ *
+ * @type {import('typings/orbis').AnalysisPanelComponent<NationalDeviationHistogramProps>}
+ */
+export const NationalDeviationHistogram = ({
+  selectedProperty,
+  clickedFeatures,
+  data = [],
+}) => {
   const [selectedAggregateArea, setSelectedAggregateArea] = useState('GB');
   const styles = useStyles();
+  const areaValue =
+    clickedFeatures && aggregateValues(clickedFeatures, selectedProperty);
+  const aggregationLabel =
+    selectedProperty?.aggregation === 'sum' ? 'Sum' : 'Average';
   return (
     <SidePanelSection defaultExpanded title="Selected Data Layer">
       <Box display="flex" flexDirection="column">
@@ -39,10 +67,7 @@ export const NationalDeviationHistogram = ({ areaValue, selectedProperty }) => {
           clip={[selectedProperty?.clip_min, selectedProperty?.clip_max]}
           labelX={selectedProperty?.label}
           labelY="Number of Areas"
-          data={
-            selectedProperty?.application?.orbis?.data_visualisation_components
-              ?.props?.data || []
-          }
+          data={data}
           line={areaValue}
         />
         <Grid className={styles.data} container spacing={1}>
@@ -61,27 +86,31 @@ export const NationalDeviationHistogram = ({ areaValue, selectedProperty }) => {
               </Select>
             </Grid>
           )}
-          <Grid item xs={9}>
-            <Typography
-              className={styles.italic}
-              variant="h4"
-              component="p"
-              color="primary"
-            >
-              Value of selected area:
-            </Typography>
-          </Grid>
-          <Grid item>
-            <Typography className={styles.italic} color="primary">
-              {areaValue}
-            </Typography>
-          </Grid>
+          {clickedFeatures?.length && (
+            <>
+              <Grid item xs={9}>
+                <Typography
+                  className={styles.italic}
+                  variant="h4"
+                  component="p"
+                  color="primary"
+                >
+                  {clickedFeatures?.length > 1 ? aggregationLabel : 'Value'} of
+                  selected area{clickedFeatures?.length > 1 ? 's' : ''}:
+                </Typography>
+              </Grid>
+              <Grid item>
+                <Typography className={styles.italic} color="primary">
+                  {areaValue}
+                </Typography>
+              </Grid>
+            </>
+          )}
           {!!selectedProperty?.aggregates && (
             <>
               <Grid item xs={9}>
                 <Typography variant="h4" component="p">
-                  {selectedProperty?.aggregation === 'sum' ? 'Sum' : 'Average'}{' '}
-                  of all areas in {selectedAggregateArea}:
+                  {aggregationLabel} of all areas in {selectedAggregateArea}:
                 </Typography>
               </Grid>
               <Grid item>
