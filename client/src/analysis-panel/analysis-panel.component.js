@@ -50,11 +50,6 @@ export const AnalysisPanel = () => {
 
   if (!selectedProperty) return null;
 
-  const pieData = selectedProperty?.breakdown?.map(breakdownProperty => ({
-    value: Number(clickedFeatures?.[0]?.object?.properties[breakdownProperty]),
-    name: breakdownProperty,
-  }));
-
   return (
     <SidePanel
       orientation="right"
@@ -88,9 +83,12 @@ export const AnalysisPanel = () => {
           ?.props}
       />
       <PrimaryDivider />
-      {!!selectedProperty?.breakdown && !pieData.some(v => !v.value) && (
+      {!!selectedProperty?.breakdown && (
         <>
-          <PropertyBreakdownChart data={pieData} />
+          <PropertyBreakdownChart
+            selectedProperty={selectedProperty}
+            clickedFeatures={clickedFeatures}
+          />
           <PrimaryDivider />
         </>
       )}

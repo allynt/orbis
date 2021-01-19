@@ -77,23 +77,13 @@ type OrbisApplicationMetadata = {
 };
 
 type Property = {
-  name: string;
-  label?: string;
-  description?: string;
-  type: PropertyType;
-  units?: 'string';
-  min: number;
-  max: number;
-  clip_min?: number;
-  clip_max?: number;
-  aggregation?: 'sum' | 'mean';
   aggregates?: {
     GB: number;
     Scotland: number;
     England: number;
     Wales: number;
   };
-  property_group?: string;
+  aggregation?: 'sum' | 'mean';
   application: {
     orbis?: {
       label?: string;
@@ -104,6 +94,20 @@ type Property = {
       };
     };
   };
+  breakdown?: string[];
+  clip_min?: number;
+  clip_max?: number;
+  description?: string;
+  details?: string;
+  label?: string;
+  max: number;
+  min: number;
+  name: string;
+  precision?: number;
+  property_group?: string;
+  source?: string;
+  type: PropertyType;
+  units?: string;
 };
 
 type SourceMetadata = {

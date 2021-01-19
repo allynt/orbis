@@ -10,7 +10,7 @@ import {
 } from '@astrosat/astrosat-ui';
 
 import { BarChart, SidePanelSection } from 'components';
-import { sumBy } from 'lodash';
+import { aggregateValues } from 'analysis-panel/aggregateValues';
 
 const useStyles = makeStyles(theme => ({
   italic: {
@@ -20,21 +20,6 @@ const useStyles = makeStyles(theme => ({
     marginTop: theme.spacing(1),
   },
 }));
-
-/**
- *
- * @param {any[]} clickedFeatures
- * @param {import('typings/orbis').Property} selectedProperty
- */
-const aggregateValues = (clickedFeatures, selectedProperty) => {
-  const sumValue = sumBy(
-    clickedFeatures,
-    `object.properties.${selectedProperty?.name}`,
-  );
-  if (selectedProperty.aggregation === 'mean')
-    return sumValue / clickedFeatures.length;
-  return sumValue;
-};
 
 /**
  * @typedef {{
