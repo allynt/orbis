@@ -3,11 +3,13 @@ import * as React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import {
+  ButtonBase,
   CloseIcon,
   Divider,
   IconButton,
   makeStyles,
   styled,
+  TriangleIcon,
   Typography,
 } from '@astrosat/astrosat-ui';
 
@@ -20,6 +22,7 @@ import {
 import { MoreInformation } from './more-information/more-information.component';
 import { NationalDeviationHistogram } from './national-deviation-histogram/national-deviation-histogram.component';
 import { PropertyBreakdownChart } from './property-breakdown-chart/property-breakdown-chart.component';
+import clsx from 'clsx';
 
 const PrimaryDivider = styled(Divider)(({ theme }) => ({
   backgroundColor: theme.palette.primary.dark,
@@ -27,10 +30,12 @@ const PrimaryDivider = styled(Divider)(({ theme }) => ({
 
 const useStyles = makeStyles(theme => ({
   header: {
+    position: 'relative',
     display: 'grid',
     placeItems: 'center',
   },
   close: {
+    left: 0,
     position: 'absolute',
   },
   strapline: {
@@ -38,9 +43,41 @@ const useStyles = makeStyles(theme => ({
     paddingBottom: 0,
     fontStyle: 'italic',
   },
+  minimize: {
+    position: 'absolute',
+    top: `-${theme.typography.pxToRem(1)}`,
+    left: `-${theme.typography.pxToRem(36)}`,
+    height: theme.typography.pxToRem(40),
+    width: theme.typography.pxToRem(20),
+    fontSize: theme.typography.pxToRem(12),
+    backgroundColor: theme.palette.background.default,
+    visibility: 'visible',
+    borderTopLeftRadius: theme.shape.borderRadius,
+    borderBottomLeftRadius: theme.shape.borderRadius,
+    transition: theme.transitions.create('background-color'),
+    '&:hover, &:focus': {
+      backgroundColor: theme.palette.secondary.dark,
+    },
+  },
+  icon: {
+    transform: 'rotate(90deg)',
+    transition: theme.transitions.create('transform', {
+      duration: theme.transitions.duration.leavingScreen,
+      easing: theme.transitions.easing.easeInOut,
+    }),
+    '&$minimized': {
+      transform: 'rotate(-90deg)',
+      transitionDuration: theme.transitions.duration.enteringScreen,
+    },
+  },
+  hidden: {
+    visibility: 'hidden',
+  },
+  minimized: {},
 }));
 
 export const AnalysisPanel = () => {
+  const [minimized, setMinimized] = React.useState(false);
   const styles = useStyles();
   const dispatch = useDispatch();
   const pickedInfo = useSelector(state => pickedInfoSelector(state?.orbs));
@@ -60,10 +97,23 @@ export const AnalysisPanel = () => {
       orientation="right"
       open={
         !!selectedProperty?.application?.orbis?.data_visualisation_components &&
-        !!pickedInfo
+        !!pickedInfo &&
+        !minimized
       }
       header={
         <div className={styles.header}>
+          <ButtonBase
+            aria-label="minimize"
+            className={clsx(styles.minimize, {
+              [styles.hidden]: !pickedInfo,
+            })}
+            onClick={() => setMinimized(c => !c)}
+          >
+            <TriangleIcon
+              className={clsx(styles.icon, { [styles.minimized]: minimized })}
+              fontSize="inherit"
+            />
+          </ButtonBase>
           <IconButton
             aria-label="Close"
             className={styles.close}

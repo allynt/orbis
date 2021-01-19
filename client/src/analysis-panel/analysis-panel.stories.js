@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { ThemeProvider } from '@astrosat/astrosat-ui';
 import { Provider } from 'react-redux';
 import { AnalysisPanel } from './analysis-panel.component';
 import thunk from 'redux-thunk';
@@ -108,7 +107,9 @@ export default { title: 'Analysis Panel/Main' };
 
 const Template = ({ state, ...args }) => (
   <Provider store={mockStore(state)}>
-    <AnalysisPanel />
+    <div style={{ marginLeft: 'calc(100% - 20rem)' }}>
+      <AnalysisPanel />
+    </div>
   </Provider>
 );
 
