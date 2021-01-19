@@ -28,7 +28,6 @@ const useStyles = makeStyles(theme => ({
  */
 
 /**
- *
  * @type {import('typings/orbis').AnalysisPanelComponent<NationalDeviationHistogramProps>}
  */
 export const NationalDeviationHistogram = ({
@@ -46,15 +45,17 @@ export const NationalDeviationHistogram = ({
     <SidePanelSection defaultExpanded title="Selected Data Layer">
       <Box display="flex" flexDirection="column">
         <Typography paragraph>{selectedProperty?.label}</Typography>
-        <BarChart
-          color={selectedProperty?.application?.orbis?.display?.color}
-          domain={[selectedProperty?.min, selectedProperty?.max]}
-          clip={[selectedProperty?.clip_min, selectedProperty?.clip_max]}
-          labelX={selectedProperty?.label}
-          labelY="Number of Areas"
-          data={data}
-          line={areaValue}
-        />
+        {data?.length && (
+          <BarChart
+            color={selectedProperty?.application?.orbis?.display?.color}
+            domain={[selectedProperty?.min, selectedProperty?.max]}
+            clip={[selectedProperty?.clip_min, selectedProperty?.clip_max]}
+            labelX={selectedProperty?.label}
+            labelY="Number of Areas"
+            data={data}
+            line={areaValue}
+          />
+        )}
         <Grid className={styles.data} container spacing={1}>
           {!!selectedProperty?.aggregates && (
             <Grid item xs={12}>
