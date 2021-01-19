@@ -31,9 +31,25 @@ describe('<AnalysisPanel />', () => {
     expect(queryByText(/test/i)).not.toBeInTheDocument();
   });
 
-  it.skip('sets the pickedInfo to undefined if close is clicked', async () => {
+  it('hides the panel when the minimize button is clicked', async () => {
+    const { getByRole, getByText } = renderComponent({
+      property: {
+        name: 'test',
+        application: { orbis: { data_visualisation_components: {} } },
+      },
+      pickedInfo: { object: { test: 1 } },
+    });
+    expect(getByText('Data Analysis')).toBeVisible();
+    userEvent.click(getByRole('button', { name: 'minimize' }));
+    await waitFor(() => expect(getByText('Data Analysis')).not.toBeVisible());
+  });
+
+  it('sets the pickedInfo to undefined if close is clicked', async () => {
     const { getByRole, store } = renderComponent({
-      property: { name: 'test' },
+      property: {
+        name: 'test',
+        application: { orbis: { data_visualisation_components: {} } },
+      },
       pickedInfo: { object: { properties: { code: 'hello' } } },
     });
     await waitFor(() =>
