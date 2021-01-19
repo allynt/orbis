@@ -13,6 +13,7 @@ export const PropertyBreakdownChart = ({
         const value = aggregateValues(clickedFeatures, {
           name,
           aggregation: selectedProperty.aggregation,
+          precision: selectedProperty.precision,
         });
 
         return {
