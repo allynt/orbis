@@ -1,6 +1,6 @@
 import { aggregateValues } from './aggregateValues';
 
-describe.only('aggregateValues', () => {
+describe('aggregateValues', () => {
   it('returns 0 if all params are undefined', () => {
     const result = aggregateValues(undefined, undefined);
     expect(result).toBe(0);
