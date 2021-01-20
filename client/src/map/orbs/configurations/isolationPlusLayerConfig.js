@@ -64,7 +64,6 @@ const configuration = ({
     if (event.srcEvent.ctrlKey || event.srcEvent.metaKey) {
       return dispatch(removeClickedFeatures([info]));
     }
-    // return dispatch(setClickedFeatures([...clickedFeatures, info]));
 
     return dispatch(setClickedFeatures([info]));
   };
