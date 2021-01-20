@@ -75,23 +75,13 @@ type OrbisApplicationMetadata = {
 };
 
 type Property = {
-  name: string;
-  label?: string;
-  description?: string;
-  type: PropertyType;
-  units?: 'string';
-  min: number;
-  max: number;
-  clip_min?: number;
-  clip_max?: number;
-  aggregation?: 'sum' | 'mean';
   aggregates?: {
     GB: number;
     Scotland: number;
     England: number;
     Wales: number;
   };
-  property_group?: string;
+  aggregation?: 'sum' | 'mean';
   application: {
     orbis?: {
       label?: string;
@@ -102,6 +92,20 @@ type Property = {
       };
     };
   };
+  breakdown?: string[];
+  clip_min?: number;
+  clip_max?: number;
+  description?: string;
+  details?: string;
+  label?: string;
+  max: number;
+  min: number;
+  name: string;
+  precision?: number;
+  property_group?: string;
+  source?: string;
+  type: PropertyType;
+  units?: string;
 };
 
 type SourceMetadata = {
@@ -137,74 +141,21 @@ type CategorisedSources = (CategoryHierarchy | Source)[];
 
 type OrbWithCategorisedSources = Orb & { sources: CategorisedSources };
 
-enum CustomerUserType {
-  MANAGER = 'MANAGER',
-  MEMBER = 'MEMBER',
-}
+type AnalysisPanelComponent<P = {}> = (
+  props: {
+    selectedProperty: Property;
+    clickedFeatures: any[];
+  } & P,
+) => JSX.Element;
 
-enum CustomerUserStatus {
-  ACTIVE = 'ACTIVE',
-  PENDING = 'PENDING',
-}
-
-type User = {
-  accepted_terms: boolean;
-  avatar?: string;
-  change_password: boolean;
-  customers?: { type: CustomerUserType; status: CustomerUserStatus }[];
-  description?: string;
-  email: string;
-  id: string;
-  is_approved: boolean;
-  is_verified: boolean;
-  name?: string;
-  permissions?: string[];
-  registration_stage?: 'USER' | 'CUSTOMER' | 'CUSTOMER_USER' | 'ORDER';
-  roles?: string[];
-  username: string;
+type PickedMapFeature<P = {}> = {
+  layer: {
+    id: string;
+  };
+  index: number;
+  object: { properties: {} & P };
 };
 
-type Licence = {
-  id: string;
-  orb: string;
-  customer: string;
-  customer_user?: number;
-  access?: number;
-};
-
-type CustomerUser = {
-  id: number;
-  type: CustomerUserType;
-  status: CustomerUserStatus;
-  invitation_date?: string;
-  user?: User;
-  licences?: Licence['id'][];
-};
-
-type Customer = {
-  id: string;
-  type?: 'MULTIPLE' | 'INDIVIDUAL';
-  name: string;
-  official_name?: string;
-  company_type?: string;
-  registered_id?: string;
-  description?: string;
-  logo?: string;
-  url?: string;
-  country?: string;
-  address?: string;
-  postcode?: string;
-  licences?: Licence[];
-};
-
-type Bookmark = {
-  id: number;
-  owner: User['id'];
-  title: string;
-  description?: string;
-  created: string;
-  zoom: number;
-  center: [number, number];
-  layers: Source['source_id'][];
-  thumbnail?: string;
-};
+type PolygonPickedMapFeature = PickedMapFeature<{
+  index: string;
+}>;

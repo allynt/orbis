@@ -123,9 +123,13 @@ export const useChartTheme = () => {
         style: {
           data: {},
           labels: {
+            fontWeight: astrosatUiTheme.typography.fontWeightBold,
             fontFamily: astrosatUiTheme.typography.fontFamily,
             fontSize: 24,
-            fill: astrosatUiTheme.palette.secondary.main,
+            fill: ({ index }) =>
+              astrosatUiTheme.palette.getContrastText(
+                colors[index % colors.length],
+              ),
           },
         },
       },

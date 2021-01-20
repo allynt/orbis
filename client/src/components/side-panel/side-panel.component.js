@@ -32,6 +32,7 @@ const useStyles = makeStyles(theme => ({
     backgroundColor: theme.palette.background.default,
     flexShrink: 0,
     zIndex: 3,
+    boxShadow: theme.shadows[5],
   },
   header: {
     width: '100%',
