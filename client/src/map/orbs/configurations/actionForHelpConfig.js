@@ -5,7 +5,19 @@ import iconAtlas from './actionForHelpConfig.iconAtlas.svg';
 import { setPickedObjects } from 'map/orbs/slices/action-for-help.slice';
 import { easeInOutCubic } from 'utils/easingFunctions';
 
-const configuration = ({ id, data, activeSources, dispatch, setViewState }) => {
+const configuration = ({
+  id,
+  data,
+  pinColor,
+  orbState,
+  activeSources,
+  dispatch,
+  setViewState,
+}) => {
+  const layersVisibility = orbState['actionForHelp'].layersVisibility[id];
+
+  console.log('layersVisibility: ', layersVisibility);
+
   const handleLayerClick = info => {
     if (info.object.properties.cluster) {
       if (info.object.properties.expansion_zoom <= MAX_ZOOM)
@@ -29,9 +41,12 @@ const configuration = ({ id, data, activeSources, dispatch, setViewState }) => {
     iconMapping,
     iconAtlas,
     data,
-    visible: !!activeSources?.find(source => source.source_id === id),
+    visible:
+      layersVisibility &&
+      !!activeSources?.find(source => source.source_id === id),
     onClick: handleLayerClick,
-    getIcon: feature => feature.properties.type || feature.properties.Type,
+    getIcon: `pin-${pinColor}`,
+    groupIconName: `group-${pinColor}`,
     getIconSize: feature => (feature.properties.Type ? 15 : 60),
   };
 };
