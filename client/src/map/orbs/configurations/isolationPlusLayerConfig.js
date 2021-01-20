@@ -10,6 +10,8 @@ import {
   removeClickedFeatures,
 } from '../slices/isolation-plus.slice';
 
+const PRIMARY_COLOR_RGB = [246, 190, 0, 255];
+
 const configuration = ({
   id,
   data,
@@ -76,7 +78,7 @@ const configuration = ({
     pickable: true,
     autoHighlight: true,
     onClick,
-    getLineColor: [246, 190, 0, 255],
+    getLineColor: PRIMARY_COLOR_RGB,
     getLineWidth: d =>
       clickedFeatures
         ?.map(f => f.object.properties.index)
