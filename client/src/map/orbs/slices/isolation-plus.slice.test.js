@@ -3,6 +3,8 @@ import reducer, {
   setProperty,
   filterRangeSelector,
   setFilterRange,
+  addClickedFeatures,
+  removeClickedFeatures,
 } from './isolation-plus.slice';
 
 describe('isolationPlusSlice', () => {
@@ -59,6 +61,154 @@ describe('isolationPlusSlice', () => {
         const payload = [1, 2];
         const result = reducer({}, setFilterRange(payload));
         expect(result).toEqual({ filterRange: payload });
+      });
+    });
+
+    describe('addClickedFeatures', () => {
+      it("Sets clickedFeatures in state if it's undefined", () => {
+        const payload = [
+          {
+            object: {
+              properties: {
+                index: 1,
+              },
+            },
+          },
+          {
+            object: {
+              properties: {
+                index: 2,
+              },
+            },
+          },
+          {
+            object: {
+              properties: {
+                index: 3,
+              },
+            },
+          },
+        ];
+        const result = reducer({}, addClickedFeatures(payload));
+        expect(result).toEqual(
+          expect.objectContaining({ clickedFeatures: payload }),
+        );
+      });
+
+      it('Combines existing clicked features with the new ones', () => {
+        const payload = [
+          {
+            object: {
+              properties: {
+                index: 4,
+              },
+            },
+          },
+          {
+            object: {
+              properties: {
+                index: 5,
+              },
+            },
+          },
+          {
+            object: {
+              properties: {
+                index: 6,
+              },
+            },
+          },
+        ];
+        const state = {
+          clickedFeatures: [
+            {
+              object: {
+                properties: {
+                  index: 1,
+                },
+              },
+            },
+            {
+              object: {
+                properties: {
+                  index: 2,
+                },
+              },
+            },
+            {
+              object: {
+                properties: {
+                  index: 3,
+                },
+              },
+            },
+          ],
+        };
+        const result = reducer(state, addClickedFeatures(payload));
+        expect(result).toEqual(
+          expect.objectContaining({
+            clickedFeatures: expect.arrayContaining([
+              ...state.clickedFeatures,
+              ...payload,
+            ]),
+          }),
+        );
+      });
+
+      it('Does not duplicate features base on their index property', () => {
+        const payload = [
+          {
+            object: {
+              properties: {
+                index: 1,
+              },
+            },
+          },
+        ];
+        const state = {
+          clickedFeatures: [{ object: { properties: { index: 1 } } }],
+        };
+        const result = reducer(state, addClickedFeatures(payload));
+        expect(result).toEqual(state);
+      });
+    });
+
+    describe('removeClickedFeatures', () => {
+      it('Removes all clickedFeatures from state', () => {
+        const payload = [
+          {
+            object: {
+              properties: {
+                index: 2,
+              },
+            },
+          },
+          {
+            object: {
+              properties: {
+                index: 3,
+              },
+            },
+          },
+        ];
+        const state = {
+          clickedFeatures: [
+            {
+              object: {
+                properties: {
+                  index: 1,
+                },
+              },
+            },
+            ...payload,
+          ],
+        };
+        const result = reducer(state, removeClickedFeatures(payload));
+        expect(result).toEqual(
+          expect.objectContaining({
+            clickedFeatures: [{ object: { properties: { index: 1 } } }],
+          }),
+        );
       });
     });
   });

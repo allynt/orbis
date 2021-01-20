@@ -1,9 +1,10 @@
 import { createSlice, createSelector } from '@reduxjs/toolkit';
+import { differenceBy, unionBy } from 'lodash';
 
 /**
  * @typedef IsolationPlusState
  * @property {any[]} [clickedFeatures]
- * @property {import('typings/orbis').Property & {source_id: string}} [property]
+ * @property {Property & {source_id: string}} [property]
  * @property {[number, number]} [filterRange]
  */
 
@@ -13,7 +14,6 @@ const initialState = {
     source_id: undefined,
     name: undefined,
   },
-  pickedInfo: undefined,
   filterRange: [undefined, undefined],
 };
 
@@ -30,6 +30,22 @@ const isolationPlusSlice = createSlice({
     setClickedFeatures: (state, { payload }) => {
       state.clickedFeatures = payload;
     },
+    /** @type {import('@reduxjs/toolkit').CaseReducer<IsolationPlusState, import('@reduxjs/toolkit').PayloadAction<any[]>>} */
+    addClickedFeatures: (state, { payload }) => {
+      state.clickedFeatures = unionBy(
+        state.clickedFeatures,
+        payload,
+        'object.properties.index',
+      );
+    },
+    /** @type {import('@reduxjs/toolkit').CaseReducer<IsolationPlusState, import('@reduxjs/toolkit').PayloadAction<any[]>>} */
+    removeClickedFeatures: (state, { payload }) => {
+      state.clickedFeatures = differenceBy(
+        state.clickedFeatures,
+        payload,
+        'object.properties.index',
+      );
+    },
     setFilterRange: (state, { payload }) => {
       state.filterRange = payload;
     },
@@ -39,6 +55,8 @@ const isolationPlusSlice = createSlice({
 export const {
   setProperty,
   setClickedFeatures,
+  addClickedFeatures,
+  removeClickedFeatures,
   setFilterRange,
 } = isolationPlusSlice.actions;
 
