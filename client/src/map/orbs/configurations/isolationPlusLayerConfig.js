@@ -1,6 +1,5 @@
 import { DataFilterExtension } from '@deck.gl/extensions';
 import { ColorScale } from 'utils/color';
-import isEqual from 'lodash/isEqual';
 
 import {
   filterRangeSelector,
@@ -48,13 +47,11 @@ const configuration = ({
    */
   const onClick = (info, event) => {
     const hasModifier = event.srcEvent.ctrlKey || event.srcEvent.metaKey;
-    // If it's not been clicked already
     if (
       !clickedFeatures?.find(
         f => f.object.properties.index === info.object.properties.index,
       )
     ) {
-      // If we're ctrl clicking
       if (hasModifier) {
         return dispatch(addClickedFeatures([info]));
       }
