@@ -3,9 +3,9 @@ import { omitBy } from 'lodash';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
-  pickedInfoSelector,
+  clickedFeaturesSelector,
   propertySelector,
-  setPickedInfo,
+  setClickedFeatures,
 } from '../slices/isolation-plus.slice';
 
 /**
@@ -15,28 +15,30 @@ import {
  */
 const IsolationPlusMapComponent = ({ source }) => {
   const dispatch = useDispatch();
-  const pickedInfo = useSelector(state => pickedInfoSelector(state.orbs));
+  const clickedFeatures = useSelector(state =>
+    clickedFeaturesSelector(state.orbs),
+  );
   const selectedProperty = useSelector(state => propertySelector(state.orbs));
 
   if (
-    !pickedInfo ||
-    pickedInfo.layer.id !== selectedProperty.source_id ||
-    source?.source_id !== pickedInfo.layer.id
+    !clickedFeatures ||
+    clickedFeatures?.[0]?.layer.id !== selectedProperty.source_id ||
+    source?.source_id !== clickedFeatures?.[0]?.layer.id
   )
     return null;
 
   return (
     <Popup
       key="isolationPlusPopup"
-      longitude={pickedInfo.lngLat[0]}
-      latitude={pickedInfo.lngLat[1]}
-      onClose={() => dispatch(setPickedInfo(undefined))}
+      longitude={clickedFeatures?.[0]?.lngLat[0]}
+      latitude={clickedFeatures?.[0]?.lngLat[1]}
+      onClose={() => dispatch(setClickedFeatures(undefined))}
       captureScroll
     >
       <FeatureDetail
         features={[
           omitBy(
-            pickedInfo?.object?.properties,
+            clickedFeatures?.[0]?.object?.properties,
             (_, key) =>
               key !== selectedProperty.name &&
               !key.toLowerCase().includes('code'),

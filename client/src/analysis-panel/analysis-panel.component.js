@@ -15,9 +15,9 @@ import {
 
 import { SidePanel } from 'components';
 import {
-  pickedInfoSelector,
+  clickedFeaturesSelector,
   propertySelector,
-  setPickedInfo,
+  setClickedFeatures,
 } from 'map/orbs/slices/isolation-plus.slice';
 import { MoreInformation } from './more-information/more-information.component';
 import { NationalDeviationHistogram } from './national-deviation-histogram/national-deviation-histogram.component';
@@ -80,24 +80,19 @@ export const AnalysisPanel = () => {
   const [minimized, setMinimized] = React.useState(false);
   const styles = useStyles();
   const dispatch = useDispatch();
-  const pickedInfo = useSelector(state => pickedInfoSelector(state?.orbs));
+  const clickedFeatures = useSelector(state =>
+    clickedFeaturesSelector(state?.orbs),
+  );
   const selectedProperty = useSelector(state => propertySelector(state?.orbs));
 
   if (!selectedProperty) return null;
-
-  const areaValue = pickedInfo?.object?.properties?.[selectedProperty?.name];
-
-  const pieData = selectedProperty?.breakdown?.map(breakdownProperty => ({
-    value: Number(pickedInfo?.object?.properties[breakdownProperty]),
-    name: breakdownProperty,
-  }));
 
   return (
     <SidePanel
       orientation="right"
       open={
         !!selectedProperty?.application?.orbis?.data_visualisation_components &&
-        !!pickedInfo &&
+        !!clickedFeatures?.length &&
         !minimized
       }
       header={
@@ -105,7 +100,7 @@ export const AnalysisPanel = () => {
           <ButtonBase
             aria-label="minimize"
             className={clsx(styles.minimize, {
-              [styles.hidden]: !pickedInfo,
+              [styles.hidden]: !clickedFeatures?.length,
             })}
             onClick={() => setMinimized(c => !c)}
           >
@@ -118,7 +113,7 @@ export const AnalysisPanel = () => {
             aria-label="Close"
             className={styles.close}
             size="small"
-            onClick={() => dispatch(setPickedInfo(undefined))}
+            onClick={() => dispatch(setClickedFeatures(undefined))}
           >
             <CloseIcon titleAccess="Close" fontSize="inherit" />
           </IconButton>
@@ -131,18 +126,19 @@ export const AnalysisPanel = () => {
       <Typography color="primary" className={styles.strapline}>
         The information below relates to the areas selected on the map.
       </Typography>
-      {!!areaValue && (
+      <NationalDeviationHistogram
+        selectedProperty={selectedProperty}
+        clickedFeatures={clickedFeatures}
+        {...selectedProperty?.application?.orbis?.data_visualisation_components
+          ?.props}
+      />
+      <PrimaryDivider />
+      {!!selectedProperty?.breakdown && (
         <>
-          <NationalDeviationHistogram
-            areaValue={areaValue}
+          <PropertyBreakdownChart
             selectedProperty={selectedProperty}
+            clickedFeatures={clickedFeatures}
           />
-          <PrimaryDivider />
-        </>
-      )}
-      {!!selectedProperty?.breakdown && !pieData.some(v => !v.value) && (
-        <>
-          <PropertyBreakdownChart data={pieData} />
           <PrimaryDivider />
         </>
       )}

@@ -4,7 +4,7 @@ import { AnalysisPanel } from './analysis-panel.component';
 import { Provider } from 'react-redux';
 import configureMockStore from 'redux-mock-store';
 import userEvent from '@testing-library/user-event';
-import { setPickedInfo } from 'map/orbs/slices/isolation-plus.slice';
+import { setClickedFeatures } from 'map/orbs/slices/isolation-plus.slice';
 
 const mockStore = configureMockStore();
 
@@ -59,7 +59,7 @@ describe('<AnalysisPanel />', () => {
     expect(store.getActions()).toEqual(
       expect.arrayContaining([
         expect.objectContaining({
-          type: setPickedInfo.type,
+          type: setClickedFeatures.type,
           payload: undefined,
         }),
       ]),
