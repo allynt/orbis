@@ -1,5 +1,3 @@
-import {} from 'd3-scale-chromatic';
-
 type LayerName =
   | 'ClusteredIconLayer'
   | 'CustomMVTLayer'
