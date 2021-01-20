@@ -51,11 +51,12 @@ const isolationPlusSlice = createSlice({
      * >}
      * */
     removeClickedFeatures: (state, { payload }) => {
-      state.clickedFeatures = differenceBy(
+      const newFeatures = differenceBy(
         state.clickedFeatures,
         payload,
         'object.properties.index',
       );
+      state.clickedFeatures = newFeatures.length ? newFeatures : undefined;
     },
     setFilterRange: (state, { payload }) => {
       state.filterRange = payload;

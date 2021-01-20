@@ -154,6 +154,7 @@ type PickedMapFeature<P = {}> = {
   layer: {
     id: string;
   };
+  index: number;
   object: { properties: {} & P };
 };
 

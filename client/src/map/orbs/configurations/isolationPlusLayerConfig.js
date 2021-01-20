@@ -7,6 +7,8 @@ import {
   propertySelector,
   setClickedFeatures,
   clickedFeaturesSelector,
+  addClickedFeatures,
+  removeClickedFeatures,
 } from '../slices/isolation-plus.slice';
 
 const configuration = ({
@@ -41,21 +43,30 @@ const configuration = ({
     });
 
   /**
-   * @param {*} info
+   * @param {import('typings/orbis').PolygonPickedMapFeature} info
    * @param {{srcEvent: PointerEvent}} event
    */
   const onClick = (info, event) => {
-    if (event.srcEvent.ctrlKey || event.srcEvent.metaKey) {
-      if (clickedFeatures.find(f => f.index === info.index)) {
-        return dispatch(
-          setClickedFeatures(
-            clickedFeatures.filter(f => f.index !== info.index),
-          ),
-        );
+    const hasModifier = event.srcEvent.ctrlKey || event.srcEvent.metaKey;
+    // If it's not been clicked already
+    if (
+      !clickedFeatures?.find(
+        f => f.object.properties.index === info.object.properties.index,
+      )
+    ) {
+      // If we're ctrl clicking
+      if (hasModifier) {
+        return dispatch(addClickedFeatures([info]));
       }
-      return dispatch(setClickedFeatures([...clickedFeatures, info]));
+      return dispatch(setClickedFeatures([info]));
     }
-    dispatch(setClickedFeatures([info]));
+
+    if (event.srcEvent.ctrlKey || event.srcEvent.metaKey) {
+      return dispatch(removeClickedFeatures([info]));
+    }
+    // return dispatch(setClickedFeatures([...clickedFeatures, info]));
+
+    return dispatch(setClickedFeatures([info]));
   };
 
   return {

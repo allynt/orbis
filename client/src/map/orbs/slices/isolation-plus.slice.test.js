@@ -210,6 +210,17 @@ describe('isolationPlusSlice', () => {
           }),
         );
       });
+
+      it('Sets clickedFeatures to undefined if all features are removed', () => {
+        const feature = [{ object: { properties: { index: 1 } } }];
+        const result = reducer(
+          { clickedFeatures: feature },
+          removeClickedFeatures(feature),
+        );
+        expect(result).toEqual(
+          expect.objectContaining({ clickedFeatures: undefined }),
+        );
+      });
     });
   });
 
