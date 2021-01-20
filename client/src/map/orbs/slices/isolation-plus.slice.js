@@ -2,10 +2,11 @@ import { createSlice, createSelector } from '@reduxjs/toolkit';
 import { differenceBy, unionBy } from 'lodash';
 
 /**
- * @typedef IsolationPlusState
- * @property {any[]} [clickedFeatures]
- * @property {Property & {source_id: string}} [property]
- * @property {[number, number]} [filterRange]
+ * @typedef {{
+ *   clickedFeatures?: import('typings/orbis').PolygonPickedMapFeature[]
+ *   property?: import('typings/orbis').Property & {source_id: string}
+ *   filterRange?: [number, number]
+ * }} IsolationPlusState
  */
 
 /** @type {IsolationPlusState} */
@@ -30,7 +31,12 @@ const isolationPlusSlice = createSlice({
     setClickedFeatures: (state, { payload }) => {
       state.clickedFeatures = payload;
     },
-    /** @type {import('@reduxjs/toolkit').CaseReducer<IsolationPlusState, import('@reduxjs/toolkit').PayloadAction<any[]>>} */
+    /**
+     * @type {import('@reduxjs/toolkit').CaseReducer<
+     *   IsolationPlusState,
+     *   import('@reduxjs/toolkit').PayloadAction<import('typings/orbis').PolygonPickedMapFeature[]>
+     * >}
+     */
     addClickedFeatures: (state, { payload }) => {
       state.clickedFeatures = unionBy(
         state.clickedFeatures,
@@ -38,7 +44,12 @@ const isolationPlusSlice = createSlice({
         'object.properties.index',
       );
     },
-    /** @type {import('@reduxjs/toolkit').CaseReducer<IsolationPlusState, import('@reduxjs/toolkit').PayloadAction<any[]>>} */
+    /**
+     * @type {import('@reduxjs/toolkit').CaseReducer<
+     *   IsolationPlusState,
+     *   import('@reduxjs/toolkit').PayloadAction<import('typings/orbis').PolygonPickedMapFeature[]>
+     * >}
+     * */
     removeClickedFeatures: (state, { payload }) => {
       state.clickedFeatures = differenceBy(
         state.clickedFeatures,
