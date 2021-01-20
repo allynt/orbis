@@ -20,6 +20,7 @@ const clickedFeatures = new Array(3).fill(undefined).map((_, i) => ({
     properties: {
       area_name: `Test Area ${i}`,
       population: i + 1,
+      households: i + 10,
     },
   },
 }));
@@ -129,16 +130,40 @@ describe('<ClickedFeaturesSummary />', () => {
   });
 
   describe('Population', () => {
-    it.todo('Shows the total population for a single clicked area');
+    it('Shows the total population for a single clicked area', () => {
+      const feature = { object: { properties: { population: 1000 } } };
+      const { getByText } = renderComponent({ clickedFeatures: [feature] });
+      expect(
+        getByText(feature.object.properties.population.toString()),
+      ).toBeInTheDocument();
+    });
 
-    it.todo('Shows the sum of the population for multiple clicked areas');
+    it('Shows the sum of the population for multiple clicked areas', () => {
+      const { getByText } = renderComponent({ clickedFeatures });
+      expect(getByText('6')).toBeInTheDocument();
+    });
 
-    it.todo('Shows the population year');
+    it('Shows the population year', () => {
+      const feature = { object: { properties: { population_year: 2077 } } };
+      const { getByText } = renderComponent({ clickedFeatures: [feature] });
+      expect(
+        getByText(feature.object.properties.population_year.toString()),
+      ).toBeInTheDocument();
+    });
   });
 
   describe('Households', () => {
-    it.todo('Shows the households for a single clicked area');
+    it('Shows the households for a single clicked area', () => {
+      const feature = { object: { properties: { households: 1985 } } };
+      const { getByText } = renderComponent({ clickedFeatures: [feature] });
+      expect(
+        getByText(feature.object.properties.households.toString()),
+      ).toBeInTheDocument();
+    });
 
-    it.todo('Shows the sum of the households for multiple clicked areas');
+    it('Shows the sum of the households for multiple clicked areas', () => {
+      const { getByText } = renderComponent({ clickedFeatures });
+      expect(getByText('33')).toBeInTheDocument();
+    });
   });
 });
