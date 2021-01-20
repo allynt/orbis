@@ -37,20 +37,20 @@ describe('<AnalysisPanel />', () => {
         name: 'test',
         application: { orbis: { data_visualisation_components: {} } },
       },
-      pickedInfo: { object: { test: 1 } },
+      clickedFeatures: [{ object: { test: 1 } }],
     });
     expect(getByText('Data Analysis')).toBeVisible();
     userEvent.click(getByRole('button', { name: 'minimize' }));
     await waitFor(() => expect(getByText('Data Analysis')).not.toBeVisible());
   });
 
-  it('sets the pickedInfo to undefined if close is clicked', async () => {
+  it('sets the clickedFeatures to undefined if close is clicked', async () => {
     const { getByRole, store } = renderComponent({
       property: {
         name: 'test',
         application: { orbis: { data_visualisation_components: {} } },
       },
-      pickedInfo: { object: { properties: { code: 'hello' } } },
+      clickedFeatures: [{ object: { properties: { code: 'hello' } } }],
     });
     await waitFor(() =>
       userEvent.click(getByRole('button', { name: 'Close' })),
