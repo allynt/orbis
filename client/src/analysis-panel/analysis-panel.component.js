@@ -20,6 +20,7 @@ import {
 import { MoreInformation } from './more-information/more-information.component';
 import { NationalDeviationHistogram } from './national-deviation-histogram/national-deviation-histogram.component';
 import { PropertyBreakdownChart } from './property-breakdown-chart/property-breakdown-chart.component';
+import { ClickedFeaturesSummary } from './clicked-features-summary/clicked-features-summary.component';
 
 const PrimaryDivider = styled(Divider)(({ theme }) => ({
   backgroundColor: theme.palette.primary.dark,
@@ -76,6 +77,11 @@ export const AnalysisPanel = () => {
       <Typography color="primary" className={styles.strapline}>
         The information below relates to the areas selected on the map.
       </Typography>
+      <ClickedFeaturesSummary
+        clickedFeatures={clickedFeatures}
+        dispatch={dispatch}
+      />
+      <PrimaryDivider />
       <NationalDeviationHistogram
         selectedProperty={selectedProperty}
         clickedFeatures={clickedFeatures}

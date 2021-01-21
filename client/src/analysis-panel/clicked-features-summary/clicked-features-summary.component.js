@@ -52,6 +52,7 @@ const TooltipChip = ({ onDelete, feature }) => {
   const styles = useStyles();
 
   const { index, area_name } = feature.object.properties;
+  const areaIdentifier = area_name || index;
 
   const ChipElement = (
     <Chip
@@ -59,20 +60,22 @@ const TooltipChip = ({ onDelete, feature }) => {
       classes={{ label: styles.chip }}
       size="small"
       key={index}
-      label={area_name || index}
+      label={areaIdentifier}
       onDelete={onDelete}
       deleteIcon={
         <CloseIcon
           className={styles.closeIcon}
-          titleAccess={`Remove ${area_name}`}
+          titleAccess={`Remove ${areaIdentifier}`}
           role="button"
         />
       }
     />
   );
 
-  return area_name?.length + 2 >= MAX_CHARS ? (
+  return areaIdentifier?.length + 2 >= MAX_CHARS ? (
     <Tooltip
+      role="tooltip"
+      id={areaIdentifier}
       classes={{
         tooltip: styles.tooltip,
       }}
@@ -101,7 +104,7 @@ export const ClickedFeaturesSummary = ({ clickedFeatures, dispatch }) => {
     <SidePanelSection title="Selected Areas of Interest" defaultExpanded>
       <Grid container spacing={2} className={styles.chips}>
         <Grid item xs={12}>
-          <Collapse in={open} collapsedHeight="1.5rem">
+          <Collapse in={open} collapsedHeight="1.6rem">
             <Grid container spacing={1}>
               {clickedFeatures?.map(feature => (
                 <TooltipChip
@@ -129,30 +132,34 @@ export const ClickedFeaturesSummary = ({ clickedFeatures, dispatch }) => {
             </Button>
           </ButtonGroup>
         </Grid>
-        <Grid item xs={12}>
-          <Typography>
-            Total population (
-            {clickedFeatures?.[0].object.properties.population_year}
-            ):{' '}
-            <span className={styles.value}>
-              {sumBy(
-                clickedFeatures,
-                'object.properties.population',
-              )?.toLocaleString()}
-            </span>
-          </Typography>
-        </Grid>
-        <Grid item xs={12}>
-          <Typography>
-            Total households:{' '}
-            <span className={styles.value}>
-              {sumBy(
-                clickedFeatures,
-                'object.properties.households',
-              )?.toLocaleString()}
-            </span>
-          </Typography>
-        </Grid>
+        {!clickedFeatures?.some(f => !f.object.properties.population) && (
+          <Grid item xs={12}>
+            <Typography>
+              Total population (
+              {clickedFeatures?.[0].object.properties.population_year}
+              ):{' '}
+              <span className={styles.value}>
+                {sumBy(
+                  clickedFeatures,
+                  'object.properties.population',
+                )?.toLocaleString()}
+              </span>
+            </Typography>
+          </Grid>
+        )}
+        {!clickedFeatures?.some(f => !f.object.properties.households) && (
+          <Grid item xs={12}>
+            <Typography>
+              Total households:{' '}
+              <span className={styles.value}>
+                {sumBy(
+                  clickedFeatures,
+                  'object.properties.households',
+                )?.toLocaleString()}
+              </span>
+            </Typography>
+          </Grid>
+        )}
       </Grid>
     </SidePanelSection>
   );

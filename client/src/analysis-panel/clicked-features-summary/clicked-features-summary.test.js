@@ -65,6 +65,22 @@ describe('<ClickedFeaturesSummary />', () => {
         removeClickedFeatures(clickedFeatures),
       );
     });
+
+    it('Has a tooltip for long area names', () => {
+      const long = "This is a long name, oh my it's so long, like good grief";
+      const { getByRole } = renderComponent({
+        clickedFeatures: [
+          {
+            object: {
+              properties: {
+                area_name: long,
+              },
+            },
+          },
+        ],
+      });
+      expect(getByRole('tooltip', { name: long })).toBeInTheDocument();
+    });
   });
 
   describe('Population', () => {
@@ -84,7 +100,9 @@ describe('<ClickedFeaturesSummary />', () => {
     });
 
     it('Shows the population year', () => {
-      const feature = { object: { properties: { population_year: 2077 } } };
+      const feature = {
+        object: { properties: { population: 1, population_year: 2077 } },
+      };
       const { getByText } = renderComponent({ clickedFeatures: [feature] });
       expect(
         getByText(feature.object.properties.population_year.toString(), {
