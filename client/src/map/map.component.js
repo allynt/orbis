@@ -52,7 +52,7 @@ const useStyles = makeStyles(theme => ({
       position: 'absolute',
       right: '2rem',
       zIndex: 1,
-      top: '2rem',
+      top: '0.5rem',
       backgroundColor: theme.palette.background.default,
       boxShadow: theme.shadows[2],
       '&--icon': {
