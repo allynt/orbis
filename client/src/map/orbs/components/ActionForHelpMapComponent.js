@@ -9,7 +9,6 @@ import {
 
 const ActionForHelpMapComponent = () => {
   const pickedObjects = useSelector(pickedObjectsSelector);
-
   const dispatch = useDispatch();
   if (!pickedObjects.length) return null;
   return (

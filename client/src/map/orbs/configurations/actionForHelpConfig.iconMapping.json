@@ -1,41 +1,79 @@
 {
-  "pin-red": {
+  "care-homes": {
     "x": 0,
-    "y": 0,
-    "width": 29,
-    "height": 40,
-    "anchorY": 37,
-    "mask": false
-  },
-  "group-red": {
-    "x": 29,
-    "y": 0,
-    "width": 29,
-    "height": 40,
-    "anchorY": 37,
-    "mask": false
-  },
-  "pin-green": {
-    "x": 58,
-    "y": 0,
-    "width": 29,
-    "height": 40,
-    "anchorY": 37,
-    "mask": false
-  },
-  "group-green": {
-    "x": 87,
-    "y": 0,
-    "width": 29,
-    "height": 40,
-    "anchorY": 37,
-    "mask": false
-  },
-  "cluster": {
-    "x": 116,
     "y": 0,
     "width": 88,
     "height": 88,
+    "mask": false
+  },
+  "gp-surgeries": {
+    "x": 88,
+    "y": 0,
+    "width": 88,
+    "height": 88,
+    "mask": false
+  },
+  "hospitals": {
+    "x": 176,
+    "y": 0,
+    "width": 88,
+    "height": 88,
+    "mask": false
+  },
+  "health-and-social-care-trust": {
+    "x": 264,
+    "y": 0,
+    "width": 88,
+    "height": 88,
+    "mask": false
+  },
+  "local-authority-agency": {
+    "x": 352,
+    "y": 0,
+    "width": 88,
+    "height": 88,
+    "mask": false
+  },
+  "nhs": {
+    "x": 440,
+    "y": 0,
+    "width": 88,
+    "height": 88,
+    "mask": false
+  },
+  "pharmacies": {
+    "x": 528,
+    "y": 0,
+    "width": 88,
+    "height": 88,
+    "mask": false
+  },
+  "group": {
+    "x": 616,
+    "y": 0,
+    "width": 88,
+    "height": 88,
+    "mask": false
+  },
+  "cluster": {
+    "x": 704,
+    "y": 0,
+    "width": 88,
+    "height": 88,
+    "mask": false
+  },
+  "VOLUNTEER": {
+    "x": 792,
+    "y": 0,
+    "width": 15,
+    "height": 15,
+    "mask": false
+  },
+  "RECIPIENT": {
+    "x": 807,
+    "y": 0,
+    "width": 15,
+    "height": 15,
     "mask": false
   }
 }
