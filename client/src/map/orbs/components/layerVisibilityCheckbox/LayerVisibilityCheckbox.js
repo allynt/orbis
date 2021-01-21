@@ -1,11 +1,6 @@
 import React from 'react';
 
-import {
-  Checkbox,
-  FormControlLabel,
-  styled,
-  makeStyles,
-} from '@astrosat/astrosat-ui';
+import { Checkbox, FormControlLabel, makeStyles } from '@astrosat/astrosat-ui';
 
 import { useSelector } from 'react-redux';
 
@@ -32,7 +27,7 @@ const useStyles = makeStyles(theme => ({
  *   dispatch?: import('redux').Dispatch
  * }} props
  */
-export const ActionForHelpCheckbox = ({ selectedLayer, dispatch }) => {
+export const LayerVisibilityCheckbox = ({ selectedLayer, dispatch }) => {
   const pinColor =
     selectedLayer?.metadata?.application?.orbis?.layer?.props?.pinColor ||
     'hotpink';
