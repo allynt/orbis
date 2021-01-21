@@ -7,6 +7,9 @@ const createFeature = (_, i) => ({
     properties: {
       index: faker.random.alphaNumeric(5),
       area_name: faker.address.county(),
+      population: faker.random.number(10000),
+      population_year: '2011',
+      households: faker.random.number(1000),
     },
   },
 });
@@ -23,4 +26,9 @@ export const NoClickedFeatures = Template.bind({});
 export const ClickedFeatures = Template.bind({});
 ClickedFeatures.args = {
   clickedFeatures: Array(3).fill(undefined).map(createFeature),
+};
+
+export const LotsOfFeatures = Template.bind({});
+LotsOfFeatures.args = {
+  clickedFeatures: Array(50).fill(undefined).map(createFeature),
 };

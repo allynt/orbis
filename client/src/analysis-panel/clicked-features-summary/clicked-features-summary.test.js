@@ -72,7 +72,7 @@ describe('<ClickedFeaturesSummary />', () => {
       const feature = { object: { properties: { population: 1000 } } };
       const { getByText } = renderComponent({ clickedFeatures: [feature] });
       expect(
-        getByText(feature.object.properties.population.toString(), {
+        getByText(feature.object.properties.population.toLocaleString(), {
           exact: false,
         }),
       ).toBeInTheDocument();
@@ -99,7 +99,7 @@ describe('<ClickedFeaturesSummary />', () => {
       const feature = { object: { properties: { households: 1985 } } };
       const { getByText } = renderComponent({ clickedFeatures: [feature] });
       expect(
-        getByText(feature.object.properties.households.toString(), {
+        getByText(feature.object.properties.households.toLocaleString(), {
           exact: false,
         }),
       ).toBeInTheDocument();
