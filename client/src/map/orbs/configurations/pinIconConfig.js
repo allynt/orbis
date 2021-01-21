@@ -42,13 +42,17 @@ const configuration = ({
       else {
         if (typeof onClick === 'function') onClick(info);
         if (onClick === true) {
-          dispatch(setClickedFeatures([info]));
+          dispatch(
+            setClickedFeatures({ source_id: id, clickedFeatures: [info] }),
+          );
         }
       }
     } else {
       if (typeof onClick === 'function') onClick(info);
       if (onClick === true) {
-        dispatch(setClickedFeatures([info]));
+        dispatch(
+          setClickedFeatures({ source_id: id, clickedFeatures: [info] }),
+        );
       }
     }
   };

@@ -16,6 +16,16 @@ import { orbsSelector } from '../orbs/orbsSelectors';
  * }> } LayersState
  */
 
+/**
+ * @typedef {import('@reduxjs/toolkit').CaseReducer<
+ *   LayersState,
+ *   import('@reduxjs/toolkit').PayloadAction<{
+ *     source_id: import('typings/orbis').Source['source_id'],
+ *     clickedFeatures?: import('typings/orbis').PickedMapFeature[]
+ *   }>
+ * >} SetClickedFeaturesAction
+ */
+
 /** @type {LayersState} */
 const initialState = {};
 
@@ -23,14 +33,10 @@ const layersSlice = createSlice({
   name: 'layers',
   initialState,
   reducers: {
-    /**
-     * @type {import('@reduxjs/toolkit').CaseReducer<LayersState,
-     *   import('@reduxjs/toolkit').PayloadAction<import('typings/orbis').PickedMapFeature[]>
-     * >}
-     */
+    /** @type {SetClickedFeaturesAction} */
     setClickedFeatures: (state, { payload }) => {
-      const layerId = payload[0].layer.id;
-      state[layerId] = { ...state[layerId], clickedFeatures: payload };
+      const { source_id, clickedFeatures } = payload;
+      state[source_id] = { ...state[source_id], clickedFeatures };
     },
   },
 });
