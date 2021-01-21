@@ -1,10 +1,12 @@
 import { combineReducers } from 'redux';
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, createSelector } from '@reduxjs/toolkit';
 import rice from './rice/rice.slice';
 import isolationPlus from './slices/isolation-plus.slice';
 import mySupplyLynk from './slices/mysupplylynk.slice';
 import actionForHelp from './slices/action-for-help.slice';
 import crowdless from './slices/crowdless.slice';
+
+import { orbsSelector } from '../orbs/orbsSelectors';
 
 /**
  * @typedef {Object<string, {
@@ -34,6 +36,14 @@ const layersSlice = createSlice({
 });
 
 export const { setClickedFeatures } = layersSlice.actions;
+
+const baseSelector = createSelector(
+  orbsSelector,
+  orbs => orbs[layersSlice.name] || {},
+);
+
+export const clickedFeaturesSelector = id =>
+  createSelector(baseSelector, state => state[id]?.clickedFeatures);
 
 const orbReducer = combineReducers({
   layers: layersSlice.reducer,
