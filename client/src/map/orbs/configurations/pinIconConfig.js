@@ -2,14 +2,9 @@ import { FlyToInterpolator } from '@deck.gl/core';
 import { MAX_ZOOM } from 'map/map.constants';
 import { easeInOutCubic } from 'utils/easingFunctions';
 
-import {
-  popupFeaturesSelector,
-  setDialogFeatures,
-  setPopupFeatures,
-  toggleDialog,
-} from '../slices/mysupplylynk.slice';
-
 import { layersVisibilitySelector } from '../slices/action-for-help.slice';
+
+import { setClickedFeatures } from '../orbReducer';
 
 import iconMapping from './pinIconConfig.iconMapping.json';
 import iconAtlas from './pinIconConfig.iconAtlas.svg';
@@ -27,6 +22,9 @@ const configuration = ({
 }) => {
   const isVisible = layersVisibilitySelector(id)(orbState);
 
+  /**
+   * @param {import('typings/orbis').PickedMapFeature} info
+   */
   const handleClick = info => {
     if (info?.object?.properties?.cluster) {
       if (info.object.properties.expansion_zoom <= MAX_ZOOM)
@@ -43,9 +41,15 @@ const configuration = ({
         });
       else {
         if (typeof onClick === 'function') onClick(info);
+        if (onClick === true) {
+          dispatch(setClickedFeatures([info]));
+        }
       }
     } else {
       if (typeof onClick === 'function') onClick(info);
+      if (onClick === true) {
+        dispatch(setClickedFeatures([info]));
+      }
     }
   };
 

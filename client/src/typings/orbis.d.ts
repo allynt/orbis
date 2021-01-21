@@ -156,6 +156,11 @@ type AnalysisPanelComponent<P = {}, F extends PickedMapFeature = {}> = (
   } & P,
 ) => JSX.Element;
 
+type GeoJsonFeature<P = {}> = {
+  geometry: { coordinates?: number[] };
+  properties: { cluster?: boolean; expansion_zoom?: number } & P;
+};
+
 /** A feature which has been picked from the map by onHover or onClick */
 type PickedMapFeature<P = {}> = {
   layer: {
@@ -163,7 +168,8 @@ type PickedMapFeature<P = {}> = {
   };
   index: number;
   /** The underlying GeoJson object */
-  object: { properties: {} & P };
+  object: GeoJsonFeature<P>;
+  objects?: GeoJsonFeature<P>[];
 };
 
 type PolygonPickedMapFeature = PickedMapFeature<{
