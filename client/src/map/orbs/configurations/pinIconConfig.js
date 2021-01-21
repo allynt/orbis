@@ -43,7 +43,10 @@ const configuration = ({
         if (typeof onClick === 'function') onClick(info);
         if (onClick === true) {
           dispatch(
-            setClickedFeatures({ source_id: id, clickedFeatures: [info] }),
+            setClickedFeatures({
+              source_id: id,
+              clickedFeatures: info?.objects,
+            }),
           );
         }
       }
@@ -51,7 +54,10 @@ const configuration = ({
       if (typeof onClick === 'function') onClick(info);
       if (onClick === true) {
         dispatch(
-          setClickedFeatures({ source_id: id, clickedFeatures: [info] }),
+          setClickedFeatures({
+            source_id: id,
+            clickedFeatures: [info?.object],
+          }),
         );
       }
     }

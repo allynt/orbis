@@ -11,7 +11,7 @@ import { orbsSelector } from '../orbs/orbsSelectors';
 /**
  * @typedef {Object<string, {
  *    visible?: boolean,
- *    clickedFeatures?: import('typings/orbis').PickedMapFeature[],
+ *    clickedFeatures?: import('typings/orbis').GeoJsonFeature
  *    hoveredFeatures?: any[],
  * }> } LayersState
  */
@@ -21,7 +21,7 @@ import { orbsSelector } from '../orbs/orbsSelectors';
  *   LayersState,
  *   import('@reduxjs/toolkit').PayloadAction<{
  *     source_id: import('typings/orbis').Source['source_id'],
- *     clickedFeatures?: import('typings/orbis').PickedMapFeature[]
+ *     clickedFeatures?: import('typings/orbis').GeoJsonFeature[]
  *   }>
  * >} SetClickedFeaturesAction
  */
