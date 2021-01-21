@@ -14,14 +14,6 @@ const clickedFeatures = new Array(3).fill(undefined).map((_, i) => ({
   },
 }));
 
-const longClickedFeatures = new Array(20).fill(undefined).map((_, i) => ({
-  object: {
-    properties: {
-      area_name: `Test Area ${i}`,
-    },
-  },
-}));
-
 const renderComponent = ({ clickedFeatures = [] }) => {
   const dispatch = jest.fn();
   const utils = render(
