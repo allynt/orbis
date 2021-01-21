@@ -2,6 +2,7 @@
   "name": "orbis",
   "version": "2.8.0",
   "private": true,
+  "types": "./src/typings",
   "scripts": {
     "start:dev": "concurrently --raw 'nodemon -w proxy ./proxy/proxy.js' ' react-scripts start'",
     "start": "FORCE_COLOR=true react-scripts start | cat",

@@ -37,7 +37,7 @@ describe('<AnalysisPanel />', () => {
         name: 'test',
         application: { orbis: { data_visualisation_components: {} } },
       },
-      clickedFeatures: [{ object: { test: 1 } }],
+      clickedFeatures: [{ object: { properties: { test: 1 } } }],
     });
     expect(getByText('Data Analysis')).toBeVisible();
     userEvent.click(getByRole('button', { name: 'minimize' }));
