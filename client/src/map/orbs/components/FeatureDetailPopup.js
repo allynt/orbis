@@ -15,8 +15,8 @@ const FeatureDetailPopup = ({ source }) => {
   const dispatch = useDispatch();
 
   /** @type {import('typings/orbis').GeoJsonFeature[]} */
-  const clickedFeatures = useSelector(
-    clickedFeaturesSelector(source?.source_id),
+  const clickedFeatures = useSelector(state =>
+    clickedFeaturesSelector(source?.source_id)(state?.orbs),
   );
 
   if (!clickedFeatures?.length) return null;

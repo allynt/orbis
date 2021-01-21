@@ -1,13 +1,30 @@
 import React from 'react';
 
-import { Checkbox, FormControlLabel } from '@astrosat/astrosat-ui';
+import {
+  Checkbox,
+  FormControlLabel,
+  styled,
+  makeStyles,
+} from '@astrosat/astrosat-ui';
 
 import { useSelector } from 'react-redux';
 
-import {
-  layersVisibilitySelector,
-  setVisibility,
-} from '../../slices/action-for-help.slice';
+import { layersVisibilitySelector, setVisibility } from '../../orbReducer.js';
+
+const useStyles = makeStyles(theme => ({
+  label: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  icon: {
+    borderRadius: '50%',
+    backgroundColor: props => props.pinColor,
+    height: '1rem',
+    width: '1rem',
+    margin: theme.spacing(0, 1),
+  },
+}));
 
 /**
  *  @param {{
@@ -16,8 +33,14 @@ import {
  * }} props
  */
 export const ActionForHelpCheckbox = ({ selectedLayer, dispatch }) => {
+  const pinColor =
+    selectedLayer?.metadata?.application?.orbis?.layer?.props?.pinColor ||
+    'hotpink';
+
+  const classes = useStyles({ pinColor });
+
   const isVisible = useSelector(state =>
-    layersVisibilitySelector(selectedLayer?.source_id)(state),
+    layersVisibilitySelector(selectedLayer?.source_id)(state?.orbs),
   );
 
   /**
@@ -26,14 +49,19 @@ export const ActionForHelpCheckbox = ({ selectedLayer, dispatch }) => {
   const handleChange = () =>
     dispatch(
       setVisibility({
-        id: selectedLayer.source_id,
-        value: !isVisible,
+        source_id: selectedLayer?.source_id,
+        visible: !isVisible,
       }),
     );
 
   return (
     <FormControlLabel
-      label={selectedLayer.metadata.label}
+      classes={{ label: classes.label }}
+      label={
+        <>
+          <div className={classes.icon} /> {selectedLayer.metadata.label}
+        </>
+      }
       control={
         <Checkbox
           tabIndex={-1}

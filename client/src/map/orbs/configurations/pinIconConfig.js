@@ -2,9 +2,7 @@ import { FlyToInterpolator } from '@deck.gl/core';
 import { MAX_ZOOM } from 'map/map.constants';
 import { easeInOutCubic } from 'utils/easingFunctions';
 
-import { layersVisibilitySelector } from '../slices/action-for-help.slice';
-
-import { setClickedFeatures } from '../orbReducer';
+import { setClickedFeatures, layersVisibilitySelector } from '../orbReducer';
 
 import iconMapping from './pinIconConfig.iconMapping.json';
 import iconAtlas from './pinIconConfig.iconAtlas.svg';

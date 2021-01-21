@@ -11,7 +11,7 @@ import { orbsSelector } from '../orbs/orbsSelectors';
 /**
  * @typedef {Object<string, {
  *    visible?: boolean,
- *    clickedFeatures?: import('typings/orbis').GeoJsonFeature
+ *    clickedFeatures?: import('typings/orbis').GeoJsonFeature[]
  *    hoveredFeatures?: any[],
  * }> } LayersState
  */
@@ -26,6 +26,16 @@ import { orbsSelector } from '../orbs/orbsSelectors';
  * >} SetClickedFeaturesAction
  */
 
+/**
+ * @typedef {import('@reduxjs/toolkit').CaseReducer<
+ *   LayersState,
+ *   import('@reduxjs/toolkit').PayloadAction<{
+ *     source_id: import('typings/orbis').Source['source_id'],
+ *     visible?: boolean
+ *   }>
+ * >} SetVisibilityAction
+ */
+
 /** @type {LayersState} */
 const initialState = {};
 
@@ -38,18 +48,23 @@ const layersSlice = createSlice({
       const { source_id, clickedFeatures } = payload;
       state[source_id] = { ...state[source_id], clickedFeatures };
     },
+    /** @type {SetVisibilityAction} */
+    setVisibility: (state, { payload }) => {
+      const { source_id, visible } = payload;
+      state[source_id] = { ...state[source_id], visible };
+    },
   },
 });
 
-export const { setClickedFeatures } = layersSlice.actions;
+export const { setClickedFeatures, setVisibility } = layersSlice.actions;
 
-const baseSelector = createSelector(
-  orbsSelector,
-  orbs => orbs[layersSlice.name] || {},
-);
+const baseSelector = orbs => orbs[layersSlice.name] || {};
 
 export const clickedFeaturesSelector = id =>
   createSelector(baseSelector, state => state[id]?.clickedFeatures);
+
+export const layersVisibilitySelector = id =>
+  createSelector(baseSelector, state => state[id]?.visible ?? true);
 
 const orbReducer = combineReducers({
   layers: layersSlice.reducer,
