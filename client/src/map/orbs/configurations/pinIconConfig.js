@@ -1,13 +1,9 @@
 import { FlyToInterpolator } from '@deck.gl/core';
 import { MAX_ZOOM } from 'map/map.constants';
 import { easeInOutCubic } from 'utils/easingFunctions';
-import {
-  categoryFiltersSelectorFactory,
-  popupFeaturesSelector,
-  setDialogFeatures,
-  setPopupFeatures,
-  toggleDialog,
-} from '../slices/mysupplylynk.slice';
+
+import { setClickedFeatures, layersVisibilitySelector } from '../orbReducer';
+
 import iconMapping from './pinIconConfig.iconMapping.json';
 import iconAtlas from './pinIconConfig.iconAtlas.svg';
 
@@ -22,34 +18,12 @@ const configuration = ({
   onHover,
   pinColor = 'purple',
 }) => {
-  const categoryFilters = categoryFiltersSelectorFactory(id)(orbState);
-  const popupFeatures = popupFeaturesSelector(orbState);
+  const isVisible = layersVisibilitySelector(id)(orbState);
 
-  const getFeatures = () => {
-    const obj = data;
-
-    const hasCategory = feat => {
-      return feat.properties.Items
-        ? feat.properties.Items.some(item =>
-            categoryFilters?.includes(item.Category),
-          )
-        : categoryFilters?.includes(feat?.properties?.Category);
-    };
-
-    let filteredFeatures;
-    if (obj) {
-      filteredFeatures = obj.features.filter(feat => hasCategory(feat));
-    }
-
-    if (filteredFeatures) {
-      return {
-        type: 'FeatureCollection',
-        features: filteredFeatures,
-      };
-    }
-  };
-
-  const handleLayerClick = info => {
+  /**
+   * @param {import('typings/orbis').PickedMapFeature} info
+   */
+  const handleClick = info => {
     if (info?.object?.properties?.cluster) {
       if (info.object.properties.expansion_zoom <= MAX_ZOOM)
         setViewState({
@@ -63,43 +37,45 @@ const configuration = ({
           transitionEasing: easeInOutCubic,
           transitionInterpolator: new FlyToInterpolator(),
         });
-      else
-        dispatch(
-          setPopupFeatures({ id: info.layer.props.id, features: info.objects }),
-        );
+      else {
+        if (typeof onClick === 'function') onClick(info);
+        if (onClick === true) {
+          dispatch(
+            setClickedFeatures({
+              source_id: id,
+              clickedFeatures: info?.objects,
+            }),
+          );
+        }
+      }
     } else {
-      if (onClick !== 'false') {
-        dispatch(setDialogFeatures([info.object.properties]));
-        dispatch(setPopupFeatures({ id: undefined, features: [] }));
-        dispatch(toggleDialog());
+      if (typeof onClick === 'function') onClick(info);
+      if (onClick === true) {
+        dispatch(
+          setClickedFeatures({
+            source_id: id,
+            clickedFeatures: [info?.object],
+          }),
+        );
       }
     }
   };
 
   const handleHover = info => {
-    if (popupFeatures?.features?.length > 1) return;
-    if (!info?.object?.properties?.cluster) {
-      dispatch(
-        info.object
-          ? setPopupFeatures({
-              id: info.layer.props.id,
-              features: [info.object],
-            })
-          : setPopupFeatures({ id: undefined, features: [] }),
-      );
-    }
+    if (typeof onHover === 'function') onHover(info);
   };
 
   return {
     id,
-    data: categoryFilters?.length && getFeatures(),
-    visible: !!activeSources?.find(source => source.source_id === id),
+    data: data,
+    visible:
+      isVisible && !!activeSources?.find(source => source.source_id === id),
     iconMapping,
     iconAtlas,
     getIcon: `pin-${pinColor}`,
     groupIconName: `group-${pinColor}`,
-    onClick: handleLayerClick,
-    onHover: onHover !== false && handleHover,
+    onClick: handleClick,
+    onHover: handleHover,
   };
 };
 

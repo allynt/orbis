@@ -1,4 +1,5 @@
 import { createSelector, createSlice } from '@reduxjs/toolkit';
+
 import { orbsSelector } from '../orbsSelectors';
 
 const actionForHelpSlice = createSlice({
@@ -22,7 +23,7 @@ const baseSelector = createSelector(
 
 export const pickedObjectsSelector = createSelector(
   baseSelector,
-  state => state.pickedObjects,
+  state => state?.pickedObjects,
 );
 
 export default actionForHelpSlice.reducer;

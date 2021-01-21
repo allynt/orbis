@@ -56,7 +56,7 @@ const IconWrapper = styled('div')(({ theme }) => ({
  */
 export const CheckboxFilters = ({ selectedLayer, dispatch }) => {
   const selectedFilters = useSelector(state =>
-    categoryFiltersSelectorFactory(selectedLayer?.source_id)(state.orbs),
+    categoryFiltersSelectorFactory(selectedLayer?.source_id)(state?.orbs),
   );
 
   const CATEGORY_NAME_AND_ICON = CATEGORIES.map(name => ({
