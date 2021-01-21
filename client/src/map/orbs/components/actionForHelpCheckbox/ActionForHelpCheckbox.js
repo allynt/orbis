@@ -17,7 +17,7 @@ import {
  */
 export const ActionForHelpCheckbox = ({ selectedLayer, dispatch }) => {
   const isVisible = useSelector(state =>
-    layersVisibilitySelector(selectedLayer?.source_id)(state?.layersVisibility),
+    layersVisibilitySelector(selectedLayer?.source_id)(state),
   );
 
   /**

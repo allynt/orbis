@@ -25,12 +25,9 @@ const configuration = ({
   onHover,
   pinColor = 'purple',
 }) => {
-  const popupFeatures = popupFeaturesSelector(orbState);
+  const isVisible = layersVisibilitySelector(id)(orbState);
 
-  // must only apply to AFH slice
-  // const isVisible = layersVisibilitySelector(id)();
-
-  const handleLayerClick = info => {
+  const handleClick = info => {
     if (info?.object?.properties?.cluster) {
       if (info.object.properties.expansion_zoom <= MAX_ZOOM)
         setViewState({
@@ -44,43 +41,29 @@ const configuration = ({
           transitionEasing: easeInOutCubic,
           transitionInterpolator: new FlyToInterpolator(),
         });
-      else
-        dispatch(
-          setPopupFeatures({ id: info.layer.props.id, features: info.objects }),
-        );
-    } else {
-      if (onClick !== 'false') {
-        dispatch(setDialogFeatures([info.object.properties]));
-        dispatch(setPopupFeatures({ id: undefined, features: [] }));
-        dispatch(toggleDialog());
+      else {
+        if (typeof onClick === 'function') onClick(info);
       }
+    } else {
+      if (typeof onClick === 'function') onClick(info);
     }
   };
 
   const handleHover = info => {
-    if (popupFeatures?.features?.length > 1) return;
-    if (!info?.object?.properties?.cluster) {
-      dispatch(
-        info.object
-          ? setPopupFeatures({
-              id: info.layer.props.id,
-              features: [info.object],
-            })
-          : setPopupFeatures({ id: undefined, features: [] }),
-      );
-    }
+    if (typeof onHover === 'function') onHover(info);
   };
 
   return {
     id,
     data: data,
-    visible: !!activeSources?.find(source => source.source_id === id),
+    visible:
+      isVisible && !!activeSources?.find(source => source.source_id === id),
     iconMapping,
     iconAtlas,
     getIcon: `pin-${pinColor}`,
     groupIconName: `group-${pinColor}`,
-    onClick: handleLayerClick,
-    onHover: onHover !== false && handleHover,
+    onClick: handleClick,
+    onHover: handleHover,
   };
 };
 
