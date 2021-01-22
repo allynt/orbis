@@ -29,9 +29,10 @@ module.exports = {
         layer: {
           name: 'GeoJsonClusteredIconLayer',
           props: {
-            config: 'cqcConfig',
-            pinColor: 'red',
-            onClick: false,
+            config: 'pinIconConfig',
+            pinColor: 'purple',
+            onPointClick: false,
+            onGroupClick: true,
             onHover: true,
           },
         },

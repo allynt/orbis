@@ -13,18 +13,18 @@ module.exports = {
       ],
     },
     properties: {
-      'Address Line 1': faker.address.streetName(),
+      'Address Line 1': faker.address.streetAddress(),
       'Address Line 2': '',
-      'Address Line 3': faker.address.city(),
+      'Address Line 3': faker.address.county(),
       'Bed Capacity': faker.random.number(100),
       'Location Inspection Directorate': 'Adult social care',
-      'Location Local Authority': faker.address.city(),
+      'Location Local Authority': faker.address.state(),
       'Name of Business': faker.company.companyName(),
       Postcode: faker.address.zipCode(),
       'Service Type': new Array(faker.random.number(5))
         .fill(undefined)
-        .map(() => faker.commerce.productName()),
-      Website: faker.internet.email(),
+        .map(() => faker.commerce.Category()),
+      Website: faker.internet.url(),
     },
   })),
 };
