@@ -44,6 +44,11 @@ const useStyles = makeStyles(theme => ({
     paddingBottom: 0,
     fontStyle: 'italic',
   },
+  content: {
+    height: `calc(100vh - ${theme.typography.pxToRem(80)})`,
+    overflowX: 'hidden',
+    overflowY: 'auto',
+  },
   minimize: {
     position: 'absolute',
     top: `-${theme.typography.pxToRem(1)}`,
@@ -97,6 +102,7 @@ export const AnalysisPanel = () => {
   return (
     <SidePanel
       orientation="right"
+      contentClassName={styles.content}
       open={
         !!selectedProperty?.application?.orbis?.data_visualisation_components &&
         !!clickedFeatures?.length &&
