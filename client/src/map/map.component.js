@@ -1,12 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
 
-import {
-  Button,
-  ClickAwayListener,
-  LayersIcon,
-  LoadMask,
-  makeStyles,
-} from '@astrosat/astrosat-ui';
+import { ClickAwayListener, LoadMask, makeStyles } from '@astrosat/astrosat-ui';
 
 import { FlyToInterpolator } from '@deck.gl/core';
 import DeckGL from '@deck.gl/react';
@@ -35,6 +29,7 @@ import {
   selectMapStyle,
 } from './map.slice';
 import { useOrbs } from './orbs/useOrbs';
+import { MapStyleSwitcherButton } from './controls/map-style-switcher-button/map-style-switcher-button.component';
 
 /** @type {React.CSSProperties} */
 const TOP_MAP_CSS = {
@@ -87,20 +82,6 @@ const useStyles = makeStyles(theme => ({
   },
   loadMask: {
     zIndex: 1000,
-  },
-  mapStyleButton: {
-    position: 'absolute',
-    padding: '0.5rem',
-    bottom: '8rem',
-    right: '2rem',
-    zIndex: 10,
-    backgroundColor: theme.palette.background.default,
-    color: theme.palette.primary.main,
-    fontSize: '0.875rem',
-    minWidth: 'unset',
-    '&:hover': {
-      backgroundColor: theme.palette.background.default,
-    },
   },
   scaleControl: {
     position: 'absolute',
@@ -170,12 +151,9 @@ const Map = () => {
       />
       <ClickAwayListener onClickAway={() => setMapStyleSwitcherVisible(false)}>
         <div>
-          <Button
-            className={styles.mapStyleButton}
+          <MapStyleSwitcherButton
             onClick={() => setMapStyleSwitcherVisible(cur => !cur)}
-          >
-            <LayersIcon fontSize="inherit" />
-          </Button>
+          />
           <MapStyleSwitcher
             open={mapStyleSwitcherVisible}
             mapStyles={mapStyles}
