@@ -33,7 +33,7 @@ const MySupplyLynkMapComponent = ({ name }) => {
 
   return (
     <>
-      {popupFeatures?.features?.length && (
+      {popupFeatures?.features?.length ? (
         <Popup
           key="popup"
           longitude={popupFeatures?.features[0]?.geometry.coordinates[0]}
@@ -73,15 +73,15 @@ const MySupplyLynkMapComponent = ({ name }) => {
             />
           )}
         </Popup>
-      )}
-      {dialogFeatures?.length && (
+      ) : null}
+      {dialogFeatures?.length ? (
         <MySupplyLynkDialog
           key="dialog"
           supplier={dialogFeatures[0]}
           onCloseClick={() => dispatch(toggleDialog())}
           isVisible={dialogVisible}
         />
-      )}
+      ) : null}
     </>
   );
 };
