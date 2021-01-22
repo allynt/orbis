@@ -14,7 +14,8 @@ const categoryFilterPinIconConfig = ({
   id,
   data,
   orbState,
-  onClick,
+  onPointClick,
+  onGroupClick,
   dispatch,
   ...rest
 }) => {
@@ -61,13 +62,16 @@ const categoryFilterPinIconConfig = ({
   };
 
   const handleClick = info => {
-    if (info?.object?.properties?.cluster) {
-      if (info.object.properties.expansion_zoom > MAX_ZOOM)
-        dispatch(
-          setPopupFeatures({ id: info.layer.props.id, features: info.objects }),
-        );
-    } else {
-      if (onClick !== false) {
+    if (
+      info?.object?.properties?.cluster &&
+      info.object.properties.expansion_zoom > MAX_ZOOM &&
+      onGroupClick !== false
+    )
+      dispatch(
+        setPopupFeatures({ id: info.layer.props.id, features: info.objects }),
+      );
+    else {
+      if (onPointClick !== false) {
         dispatch(setDialogFeatures([info.object.properties]));
         dispatch(setPopupFeatures({ id: undefined, features: [] }));
         dispatch(toggleDialog());
