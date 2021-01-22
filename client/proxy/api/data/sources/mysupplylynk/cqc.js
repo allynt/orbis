@@ -23,6 +23,9 @@ module.exports = {
           name: 'MySupplyLynkMapComponent',
           props: { name: 'cqcSuppliers' },
         },
+        sidebar_component: {
+          name: 'LayerVisibilityCheckbox',
+        },
         layer: {
           name: 'GeoJsonClusteredIconLayer',
           props: {

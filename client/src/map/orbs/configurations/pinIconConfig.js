@@ -2,7 +2,11 @@ import { FlyToInterpolator } from '@deck.gl/core';
 import { MAX_ZOOM } from 'map/map.constants';
 import { easeInOutCubic } from 'utils/easingFunctions';
 
-import { setClickedFeatures, layersVisibilitySelector } from '../orbReducer';
+import {
+  setClickedFeatures,
+  clickedFeaturesSelector,
+  layersVisibilitySelector,
+} from '../orbReducer';
 
 import iconMapping from './pinIconConfig.iconMapping.json';
 import iconAtlas from './pinIconConfig.iconAtlas.svg';
@@ -14,11 +18,14 @@ const configuration = ({
   dispatch,
   setViewState,
   orbState,
-  onClick,
+  onPointClick,
+  onGroupClick,
   onHover,
   pinColor = 'purple',
 }) => {
   const isVisible = layersVisibilitySelector(id)(orbState);
+
+  const clickedFeatures = clickedFeaturesSelector(id)(orbState);
 
   /**
    * @param {import('typings/orbis').PickedMapFeature} info
@@ -38,8 +45,8 @@ const configuration = ({
           transitionInterpolator: new FlyToInterpolator(),
         });
       else {
-        if (typeof onClick === 'function') onClick(info);
-        if (onClick === true) {
+        if (typeof onGroupClick === 'function') onGroupClick(info);
+        if (onGroupClick === true) {
           dispatch(
             setClickedFeatures({
               source_id: id,
@@ -49,8 +56,8 @@ const configuration = ({
         }
       }
     } else {
-      if (typeof onClick === 'function') onClick(info);
-      if (onClick === true) {
+      if (typeof onPointClick === 'function') onPointClick(info);
+      if (onPointClick === true) {
         dispatch(
           setClickedFeatures({
             source_id: id,
@@ -63,6 +70,19 @@ const configuration = ({
 
   const handleHover = info => {
     if (typeof onHover === 'function') onHover(info);
+    if (onHover === true) {
+      if (clickedFeatures?.length > 1) return;
+      if (!info?.object?.properties?.cluster) {
+        dispatch(
+          info.object
+            ? setClickedFeatures({
+                source_id: id,
+                clickedFeatures: [info.object],
+              })
+            : setClickedFeatures({ source_id: undefined, clickedFeatures: [] }),
+        );
+      }
+    }
   };
 
   return {

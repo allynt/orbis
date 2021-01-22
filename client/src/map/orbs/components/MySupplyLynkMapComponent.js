@@ -30,41 +30,6 @@ const MySupplyLynkMapComponent = ({ name }) => {
     content: 'www.MySupplyLynk.net',
   };
 
-  const nonRegisteredFields = [
-    'Company',
-    'Postcode',
-    'Email Address',
-    'Telephone',
-    'Website',
-    'Category',
-  ];
-
-  const cqcFields = [
-    'Address Line 1',
-    'Bed Capacity',
-    'Location Inspection Directorate',
-    'Location Local Authority',
-    'Name of Business',
-    'Postcode',
-    'Website',
-    'Service Type',
-  ];
-
-  const getDetail = layer => {
-    const fields = layer === LAYERS.cqc ? cqcFields : nonRegisteredFields;
-    return (
-      <FeatureDetail
-        title={name}
-        features={[
-          pickBy(popupFeatures?.features[0]?.properties, (_, key) =>
-            fields.includes(key),
-          ),
-        ]}
-        footer={nonRegisteredFooter}
-      />
-    );
-  };
-
   return (
     <>
       {popupFeatures?.features?.length ? (
@@ -79,8 +44,6 @@ const MySupplyLynkMapComponent = ({ name }) => {
           captureClick
           captureScroll
         >
-          {popupFeatures.id === (LAYERS.cqc || LAYERS.nonRegistered) &&
-            getDetail(popupFeatures.id)}
           {popupFeatures.id === LAYERS.nonRegistered && (
             <FeatureDetail
               title={name}

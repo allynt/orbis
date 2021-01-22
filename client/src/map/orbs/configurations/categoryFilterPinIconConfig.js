@@ -84,7 +84,8 @@ const categoryFilterPinIconConfig = ({
     data: getFeatures(),
     orbState,
     dispatch,
-    onClick: handleClick,
+    onPointClick: handleClick,
+    onGroupClick: handleClick,
     onHover: handleHover,
     ...rest,
   });
