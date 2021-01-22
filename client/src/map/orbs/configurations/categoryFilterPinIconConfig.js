@@ -67,7 +67,7 @@ const categoryFilterPinIconConfig = ({
           setPopupFeatures({ id: info.layer.props.id, features: info.objects }),
         );
     } else {
-      if (onClick !== 'false') {
+      if (onClick !== false) {
         dispatch(setDialogFeatures([info.object.properties]));
         dispatch(setPopupFeatures({ id: undefined, features: [] }));
         dispatch(toggleDialog());
