@@ -92,10 +92,10 @@ export const AnalysisPanel = () => {
   const selectedProperty = useSelector(state => propertySelector(state?.orbs));
 
   if (!selectedProperty) return null;
-
+  console.log(NationalDeviationHistogram.name);
   const histogramProps =
     selectedProperty?.application?.orbis?.data_visualisation_components?.find(
-      c => c.name === NationalDeviationHistogram.name,
+      c => c.name === 'NationalDeviationHistogram',
     )?.props ||
     selectedProperty?.application?.orbis?.data_visualisation_components?.props;
 
