@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import * as React from 'react';
 import { pickBy } from 'lodash';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -23,7 +23,6 @@ const MySupplyLynkMapComponent = ({ name }) => {
   const dialogFeatures = useSelector(state =>
     dialogFeaturesSelector(state.orbs),
   );
-  const ref = useRef(null);
   const dialogVisible = useSelector(state => dialogVisibleSelector(state.orbs));
 
   const nonRegisteredFooter = {
@@ -33,7 +32,7 @@ const MySupplyLynkMapComponent = ({ name }) => {
 
   return (
     <>
-      {popupFeatures?.features?.length && (
+      {popupFeatures?.features?.length ? (
         <Popup
           key="popup"
           longitude={popupFeatures?.features[0]?.geometry.coordinates[0]}
@@ -48,8 +47,8 @@ const MySupplyLynkMapComponent = ({ name }) => {
           {popupFeatures.id === LAYERS.nonRegistered && (
             <FeatureDetail
               title={name}
-              features={[
-                pickBy(popupFeatures?.features[0]?.properties, (_, key) => {
+              features={popupFeatures?.features?.map(f =>
+                pickBy(f?.properties, (_, key) => {
                   return [
                     'Company',
                     'Postcode',
@@ -59,7 +58,7 @@ const MySupplyLynkMapComponent = ({ name }) => {
                     'Category',
                   ].includes(key);
                 }),
-              ]}
+              )}
               footer={nonRegisteredFooter}
             />
           )}
@@ -73,15 +72,15 @@ const MySupplyLynkMapComponent = ({ name }) => {
             />
           )}
         </Popup>
-      )}
-      {dialogFeatures?.length && (
+      ) : null}
+      {dialogFeatures?.length ? (
         <MySupplyLynkDialog
           key="dialog"
           supplier={dialogFeatures[0]}
           onCloseClick={() => dispatch(toggleDialog())}
           isVisible={dialogVisible}
         />
-      )}
+      ) : null}
     </>
   );
 };
