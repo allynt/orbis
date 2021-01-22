@@ -88,6 +88,12 @@ export const AnalysisPanel = () => {
 
   if (!selectedProperty) return null;
 
+  const histogramProps =
+    selectedProperty?.application?.orbis?.data_visualisation_components?.find(
+      c => c.name === NationalDeviationHistogram.name,
+    )?.props ||
+    selectedProperty?.application?.orbis?.data_visualisation_components?.props;
+
   return (
     <SidePanel
       orientation="right"
@@ -135,8 +141,7 @@ export const AnalysisPanel = () => {
       <NationalDeviationHistogram
         selectedProperty={selectedProperty}
         clickedFeatures={clickedFeatures}
-        {...selectedProperty?.application?.orbis?.data_visualisation_components
-          ?.props}
+        {...histogramProps}
       />
       <PrimaryDivider />
       {!!selectedProperty?.breakdown && (
