@@ -73,14 +73,8 @@ const configuration = ({
     if (onHover === true) {
       if (clickedFeatures?.length > 1) return;
       if (!info?.object?.properties?.cluster) {
-        dispatch(
-          info.object
-            ? setClickedFeatures({
-                source_id: id,
-                clickedFeatures: [info.object],
-              })
-            : setClickedFeatures({ source_id: undefined, clickedFeatures: [] }),
-        );
+        const data = info.object ? [info.object] : [];
+        dispatch(setClickedFeatures({ source_id: id, clickedFeatures: data }));
       }
     }
   };
