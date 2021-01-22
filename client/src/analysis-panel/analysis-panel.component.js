@@ -44,6 +44,11 @@ const useStyles = makeStyles(theme => ({
     paddingBottom: 0,
     fontStyle: 'italic',
   },
+  content: {
+    height: `calc(100vh - ${theme.typography.pxToRem(80)})`,
+    overflowX: 'hidden',
+    overflowY: 'auto',
+  },
   minimize: {
     position: 'absolute',
     top: `-${theme.typography.pxToRem(1)}`,
@@ -88,9 +93,16 @@ export const AnalysisPanel = () => {
 
   if (!selectedProperty) return null;
 
+  const histogramProps =
+    selectedProperty?.application?.orbis?.data_visualisation_components?.find(
+      c => c.name === NationalDeviationHistogram.name,
+    )?.props ||
+    selectedProperty?.application?.orbis?.data_visualisation_components?.props;
+
   return (
     <SidePanel
       orientation="right"
+      contentClassName={styles.content}
       open={
         !!selectedProperty?.application?.orbis?.data_visualisation_components &&
         !!clickedFeatures?.length &&
@@ -135,8 +147,7 @@ export const AnalysisPanel = () => {
       <NationalDeviationHistogram
         selectedProperty={selectedProperty}
         clickedFeatures={clickedFeatures}
-        {...selectedProperty?.application?.orbis?.data_visualisation_components
-          ?.props}
+        {...histogramProps}
       />
       <PrimaryDivider />
       {!!selectedProperty?.breakdown && (

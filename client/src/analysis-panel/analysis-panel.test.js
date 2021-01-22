@@ -35,7 +35,7 @@ describe('<AnalysisPanel />', () => {
     const { getByRole, getByText } = renderComponent({
       property: {
         name: 'test',
-        application: { orbis: { data_visualisation_components: {} } },
+        application: { orbis: { data_visualisation_components: [] } },
       },
       clickedFeatures: [{ object: { properties: { test: 1 } } }],
     });
@@ -48,7 +48,7 @@ describe('<AnalysisPanel />', () => {
     const { getByRole, store } = renderComponent({
       property: {
         name: 'test',
-        application: { orbis: { data_visualisation_components: {} } },
+        application: { orbis: { data_visualisation_components: [] } },
       },
       clickedFeatures: [{ object: { properties: { code: 'hello' } } }],
     });
