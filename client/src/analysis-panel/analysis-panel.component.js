@@ -24,6 +24,7 @@ import { NationalDeviationHistogram } from './national-deviation-histogram/natio
 import { PropertyBreakdownChart } from './property-breakdown-chart/property-breakdown-chart.component';
 import { ClickedFeaturesSummary } from './clicked-features-summary/clicked-features-summary.component';
 import clsx from 'clsx';
+import { isArray } from 'lodash';
 
 const PrimaryDivider = styled(Divider)(({ theme }) => ({
   backgroundColor: theme.palette.primary.dark,
@@ -93,11 +94,14 @@ export const AnalysisPanel = () => {
 
   if (!selectedProperty) return null;
 
-  const histogramProps =
-    selectedProperty?.application?.orbis?.data_visualisation_components?.find(
-      c => c.name === NationalDeviationHistogram.name,
-    )?.props ||
-    selectedProperty?.application?.orbis?.data_visualisation_components?.props;
+  const histogramProps = isArray(
+    selectedProperty?.application?.orbis?.data_visualisation_components,
+  )
+    ? selectedProperty?.application?.orbis?.data_visualisation_components?.find(
+        c => c.name === 'NationalDeviationHistogram',
+      )?.props
+    : selectedProperty?.application?.orbis?.data_visualisation_components
+        ?.props;
 
   return (
     <SidePanel
