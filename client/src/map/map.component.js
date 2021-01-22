@@ -28,7 +28,7 @@ import {
 import { setLayers } from 'data-layers/data-layers.slice';
 import MapStyleSwitcher from 'map-style/map-style-switcher/map-style-switcher.component';
 import { useMap } from 'MapContext';
-import { NavigationControl } from './controls/navigation-control.component';
+import { NavigationControl } from './controls/navigation-control/navigation-control.component';
 import {
   mapStylesSelector,
   selectedMapStyleSelector,
