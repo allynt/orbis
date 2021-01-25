@@ -1,6 +1,12 @@
 import React, { useCallback, useEffect, useState } from 'react';
 
-import { ClickAwayListener, LoadMask, makeStyles } from '@astrosat/astrosat-ui';
+import {
+  ButtonGroup,
+  ClickAwayListener,
+  LayersIcon,
+  LoadMask,
+  makeStyles,
+} from '@astrosat/astrosat-ui';
 
 import { FlyToInterpolator } from '@deck.gl/core';
 import DeckGL from '@deck.gl/react';
@@ -29,14 +35,16 @@ import {
   selectMapStyle,
 } from './map.slice';
 import { useOrbs } from './orbs/useOrbs';
-import { MapStyleSwitcherButton } from './controls/map-style-switcher-button/map-style-switcher-button.component';
+import { MapControlButton } from './controls/map-control-button.component';
+import { extrudedModeSelector, toggleExtrudedMode } from './orbs/orbReducer';
 
 /** @type {React.CSSProperties} */
 const TOP_MAP_CSS = {
-  position: 'absolute',
-  top: 0,
-  pointerEvents: 'none',
-};
+    position: 'absolute',
+    top: 0,
+    pointerEvents: 'none',
+  },
+  ISOMETRIC_PITCH = 35;
 
 const useStyles = makeStyles(theme => ({
   map: {
@@ -94,6 +102,7 @@ const useStyles = makeStyles(theme => ({
 
 const Map = () => {
   const { mapRef, deckRef, viewState, setViewState } = useMap();
+  const extrudedMode = useSelector(state => extrudedModeSelector(state?.orbs));
   const dispatch = useDispatch();
   const accessToken = useSelector(mapboxTokenSelector);
   const selectedBookmark = useSelector(selectedBookmarkSelector);
@@ -133,6 +142,17 @@ const Map = () => {
     [dispatch],
   );
 
+  const handleExtrudedModeButtonClick = () => {
+    if (!extrudedMode)
+      setViewState({
+        ...viewState,
+        pitch: ISOMETRIC_PITCH,
+        transitionDuration: 750,
+        transitionInterpolator: new FlyToInterpolator(),
+      });
+    dispatch(toggleExtrudedMode());
+  };
+
   const mapProps = {
     ...viewState,
     width: '100%',
@@ -151,9 +171,22 @@ const Map = () => {
       />
       <ClickAwayListener onClickAway={() => setMapStyleSwitcherVisible(false)}>
         <div>
-          <MapStyleSwitcherButton
-            onClick={() => setMapStyleSwitcherVisible(cur => !cur)}
-          />
+          <ButtonGroup
+            style={{ position: 'absolute', right: '2rem', bottom: '8rem' }}
+            orientation="vertical"
+          >
+            <MapControlButton
+              style={{ backgroundColor: extrudedMode && 'hotpink' }}
+              onClick={handleExtrudedModeButtonClick}
+            >
+              3D
+            </MapControlButton>
+            <MapControlButton
+              onClick={() => setMapStyleSwitcherVisible(cur => !cur)}
+            >
+              <LayersIcon fontSize="inherit" />
+            </MapControlButton>
+          </ButtonGroup>
           <MapStyleSwitcher
             open={mapStyleSwitcherVisible}
             mapStyles={mapStyles}

@@ -6,14 +6,15 @@ import mySupplyLynk from './slices/mysupplylynk.slice';
 import actionForHelp from './slices/action-for-help.slice';
 import crowdless from './slices/crowdless.slice';
 
-import { orbsSelector } from '../orbs/orbsSelectors';
-
 /**
- * @typedef {Object<string, {
- *    visible?: boolean,
- *    clickedFeatures?: import('typings/orbis').GeoJsonFeature[]
- *    hoveredFeatures?: any[],
- * }> } LayersState
+ * @typedef {{
+ *   [key: string]: {
+ *     visible?: boolean,
+ *     clickedFeatures?: import('typings/orbis').GeoJsonFeature[]
+ *     hoveredFeatures?: any[],
+ *   },
+ *   extrudedMode: boolean
+ * }} LayersState
  */
 
 /**
@@ -37,7 +38,9 @@ import { orbsSelector } from '../orbs/orbsSelectors';
  */
 
 /** @type {LayersState} */
-const initialState = {};
+const initialState = {
+  extrudedMode: false,
+};
 
 const layersSlice = createSlice({
   name: 'layers',
@@ -53,10 +56,17 @@ const layersSlice = createSlice({
       const { source_id, visible } = payload;
       state[source_id] = { ...state[source_id], visible };
     },
+    toggleExtrudedMode: state => {
+      state.extrudedMode = !state.extrudedMode;
+    },
   },
 });
 
-export const { setClickedFeatures, setVisibility } = layersSlice.actions;
+export const {
+  setClickedFeatures,
+  setVisibility,
+  toggleExtrudedMode,
+} = layersSlice.actions;
 
 const baseSelector = orbs => orbs[layersSlice.name] || {};
 
@@ -65,6 +75,11 @@ export const clickedFeaturesSelector = id =>
 
 export const layersVisibilitySelector = id =>
   createSelector(baseSelector, state => state[id]?.visible ?? true);
+
+export const extrudedModeSelector = createSelector(
+  baseSelector,
+  state => state.extrudedMode,
+);
 
 const orbReducer = combineReducers({
   layers: layersSlice.reducer,
