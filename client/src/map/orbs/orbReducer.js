@@ -68,7 +68,7 @@ export const {
   toggleExtrudedMode,
 } = layersSlice.actions;
 
-const baseSelector = orbs => orbs[layersSlice.name] || {};
+const baseSelector = orbs => orbs?.[layersSlice.name] || {};
 
 export const clickedFeaturesSelector = id =>
   createSelector(baseSelector, state => state[id]?.clickedFeatures);
