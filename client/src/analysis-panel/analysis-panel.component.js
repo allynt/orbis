@@ -24,6 +24,7 @@ import { NationalDeviationHistogram } from './national-deviation-histogram/natio
 import { PropertyBreakdownChart } from './property-breakdown-chart/property-breakdown-chart.component';
 import { ClickedFeaturesSummary } from './clicked-features-summary/clicked-features-summary.component';
 import clsx from 'clsx';
+import { isArray } from 'lodash';
 
 const PrimaryDivider = styled(Divider)(({ theme }) => ({
   backgroundColor: theme.palette.primary.dark,
@@ -43,6 +44,11 @@ const useStyles = makeStyles(theme => ({
     padding: theme.spacing(2),
     paddingBottom: 0,
     fontStyle: 'italic',
+  },
+  content: {
+    height: `calc(100vh - ${theme.typography.pxToRem(80)})`,
+    overflowX: 'hidden',
+    overflowY: 'auto',
   },
   minimize: {
     position: 'absolute',
@@ -88,9 +94,19 @@ export const AnalysisPanel = () => {
 
   if (!selectedProperty) return null;
 
+  const histogramProps = isArray(
+    selectedProperty?.application?.orbis?.data_visualisation_components,
+  )
+    ? selectedProperty?.application?.orbis?.data_visualisation_components?.find(
+        c => c.name === 'NationalDeviationHistogram',
+      )?.props
+    : selectedProperty?.application?.orbis?.data_visualisation_components
+        ?.props;
+
   return (
     <SidePanel
       orientation="right"
+      contentClassName={styles.content}
       open={
         !!selectedProperty?.application?.orbis?.data_visualisation_components &&
         !!clickedFeatures?.length &&
@@ -135,8 +151,7 @@ export const AnalysisPanel = () => {
       <NationalDeviationHistogram
         selectedProperty={selectedProperty}
         clickedFeatures={clickedFeatures}
-        {...selectedProperty?.application?.orbis?.data_visualisation_components
-          ?.props}
+        {...histogramProps}
       />
       <PrimaryDivider />
       {!!selectedProperty?.breakdown && (

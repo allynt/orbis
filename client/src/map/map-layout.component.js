@@ -38,7 +38,7 @@ const MapLayout = () => {
     >
       <ControlPanel />
       <Map />
-      <AnalysisPanel />
+      {/* <AnalysisPanel /> */}
     </Box>
   );
 };

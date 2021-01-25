@@ -45,7 +45,7 @@ export const NationalDeviationHistogram = ({
     <SidePanelSection defaultExpanded title="Selected Data Layer">
       <Box display="flex" flexDirection="column">
         <Typography paragraph>{selectedProperty?.label}</Typography>
-        {data?.length && (
+        {data?.length ? (
           <BarChart
             color={selectedProperty?.application?.orbis?.display?.color}
             domain={[selectedProperty?.min, selectedProperty?.max]}
@@ -55,7 +55,7 @@ export const NationalDeviationHistogram = ({
             data={data}
             line={areaValue}
           />
-        )}
+        ) : null}
         <Grid className={styles.data} container spacing={1}>
           {!!selectedProperty?.aggregates && (
             <Grid item xs={12}>
