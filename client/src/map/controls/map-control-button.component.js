@@ -5,7 +5,7 @@ export const MapControlButton = styled(Button)(({ theme }) => ({
   zIndex: 10,
   backgroundColor: theme.palette.background.default,
   color: theme.palette.primary.main,
-  fontSize: '0.875rem',
+  fontSize: '0.74rem',
   minWidth: 'unset',
   '&:hover': {
     backgroundColor: theme.palette.background.default,

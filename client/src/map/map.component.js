@@ -37,6 +37,7 @@ import {
 import { useOrbs } from './orbs/useOrbs';
 import { MapControlButton } from './controls/map-control-button.component';
 import { extrudedModeSelector, toggleExtrudedMode } from './orbs/orbReducer';
+import clsx from 'clsx';
 
 /** @type {React.CSSProperties} */
 const TOP_MAP_CSS = {
@@ -90,6 +91,14 @@ const useStyles = makeStyles(theme => ({
   },
   loadMask: {
     zIndex: 1000,
+  },
+  buttonControls: { position: 'absolute', right: '2rem', bottom: '8rem' },
+  selected: {
+    color: theme.palette.secondary.main,
+    backgroundColor: theme.palette.primary.main,
+    '&:hover, &:focus': {
+      backgroundColor: theme.palette.primary.main,
+    },
   },
   scaleControl: {
     position: 'absolute',
@@ -171,12 +180,10 @@ const Map = () => {
       />
       <ClickAwayListener onClickAway={() => setMapStyleSwitcherVisible(false)}>
         <div>
-          <ButtonGroup
-            style={{ position: 'absolute', right: '2rem', bottom: '8rem' }}
-            orientation="vertical"
-          >
+          <ButtonGroup className={styles.buttonControls} orientation="vertical">
             <MapControlButton
-              style={{ backgroundColor: extrudedMode && 'hotpink' }}
+              className={clsx({ [styles.selected]: extrudedMode })}
+              aria-selected={extrudedMode}
               onClick={handleExtrudedModeButtonClick}
             >
               3D
