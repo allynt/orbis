@@ -8,6 +8,8 @@ const INITIAL_VIEW_STATE = {
   bearing: 0,
 };
 
+const ISOMETRIC_PITCH = 35;
+
 const MapContext = createContext(undefined);
 MapContext.displayName = 'MapContext';
 
@@ -29,16 +31,19 @@ MapContext.displayName = 'MapContext';
  * @property {React.MutableRefObject<import('@deck.gl/core').Deck>} deckRef
  * @property {ViewState} viewState
  * @property {React.Dispatch<ViewState>} setViewState
+ * @property {boolean} extrudedMode
+ * @property {React.Dispatch<boolean|undefined>} setExtrudedMode
  */
 
 /**
- * @param {React.ClassAttributes<React.Provider<MapContextType>>} props
+ * @param {{children?: React.ReactNode}} props
  * @returns {JSX.Element} MapContextProvider
  */
 export const MapProvider = props => {
   const mapRef = useRef(null);
   const deckRef = useRef(null);
   const [viewState, setViewState] = useState(INITIAL_VIEW_STATE);
+  const [extrudedMode, setExtrudedMode] = useState(false);
 
   return (
     <MapContext.Provider
@@ -47,6 +52,8 @@ export const MapProvider = props => {
         deckRef,
         viewState,
         setViewState,
+        extrudedMode,
+        setExtrudedMode,
       }}
       {...props}
     />
@@ -59,6 +66,8 @@ export const MapProvider = props => {
  *   deckRef: React.MutableRefObject<import('@deck.gl/core').Deck>
  *   viewState: ViewState
  *   setViewState: React.Dispatch<ViewState>
+ *   extrudedMode: boolean
+ *   toggleExtrudedMode: () => void
  *   createScreenshot: (callback: BlobCallback) => void
  * }}
  */
@@ -69,6 +78,14 @@ export const useMap = () => {
   const context = useContext(MapContext);
 
   if (context === undefined) throw Error('Wrap your app with <MapProvider />');
+
+  const toggleExtrudedMode = () => {
+    const { extrudedMode, setExtrudedMode, viewState, setViewState } = context;
+    const newExtrudedMode = !extrudedMode;
+    if (newExtrudedMode === true)
+      setViewState({ ...viewState, pitch: ISOMETRIC_PITCH });
+    setExtrudedMode(newExtrudedMode);
+  };
 
   /**
    * @param {BlobCallback} callback
@@ -90,5 +107,5 @@ export const useMap = () => {
     merged.toBlob(callback);
   };
 
-  return { ...context, createScreenshot };
+  return { ...context, toggleExtrudedMode, createScreenshot };
 };

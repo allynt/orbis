@@ -99,7 +99,7 @@
     "@storybook/react": "^6.1.11",
     "@testing-library/cypress": "^6.0.0",
     "@testing-library/dom": "^7.20.0",
-    "@testing-library/react-hooks": "^3.2.1",
+    "@testing-library/react-hooks": "^5.0.3",
     "@turf/centroid": "^6.0.2",
     "@types/chroma-js": "^2.0.0",
     "@types/d3-color": "^2.0.1",
