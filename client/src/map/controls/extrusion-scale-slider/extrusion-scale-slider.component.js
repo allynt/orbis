@@ -15,12 +15,10 @@ import * as yup from 'yup';
 const MIN = 1,
   MAX = 100,
   MARKS = [
-    { value: 10, label: '10' },
     { value: 20, label: '20' },
     { value: 40, label: '40' },
     { value: 60, label: '60' },
     { value: 80, label: '80' },
-    { value: 100, label: '100' },
   ];
 
 const useStyles = makeStyles(theme => ({
