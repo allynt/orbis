@@ -5,7 +5,6 @@ import {
   Grid,
   makeStyles,
   Slider,
-  styled,
   Tooltip,
   Typography,
 } from '@astrosat/astrosat-ui';
