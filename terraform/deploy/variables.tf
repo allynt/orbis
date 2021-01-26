@@ -63,4 +63,6 @@ locals {
   # data directory URL is the internal URL used by the backend
   # this is the internal hostname for direct communication between services within the kubernetes cluster
   data_sources_directory_url = "http://data-sources-directory-${var.environment}.default.svc.cluster.local/"
+
+  redis_password = "myredispassword"
 }
