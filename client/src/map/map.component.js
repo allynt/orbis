@@ -118,7 +118,8 @@ const useStyles = makeStyles(theme => ({
     position: 'absolute',
     zIndex: 1,
     width: '25%',
-    bottom: 0,
+    maxWidth: theme.typography.pxToRem(500),
+    bottom: `calc(0px + ${theme.spacing(4)})`,
     left: '50%',
     transform: 'translateX(-50%)',
   },
@@ -204,6 +205,7 @@ const Map = () => {
           <ExtrusionScaleSlider
             value={extrusionScale}
             onChange={handleExtrusionScaleChange}
+            mapStyle={selectedMapStyle.id}
           />
         </Slide>
       </div>

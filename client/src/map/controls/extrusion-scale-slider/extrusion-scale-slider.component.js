@@ -3,6 +3,7 @@ import * as React from 'react';
 import {
   fade,
   Grid,
+  makeStyles,
   Slider,
   styled,
   Tooltip,
@@ -23,15 +24,38 @@ const MIN = 1,
     { value: 100, label: '100' },
   ];
 
-const Input = styled('input')(({ theme }) => ({
-  ...theme.typography.body1,
-  padding: theme.spacing(0.5, 1),
-  maxWidth: '6ch',
-  border: 'none',
-  borderRadius: theme.shape.borderRadius,
-  color: theme.palette.text.primary,
-  backgroundColor: fade(theme.palette.background.paper, 0.5),
-  textAlign: 'center',
+const useStyles = makeStyles(theme => ({
+  input: {
+    ...theme.typography.body1,
+    padding: theme.spacing(0.5, 1),
+    maxWidth: '6ch',
+    border: 'none',
+    borderRadius: theme.shape.borderRadius,
+    color: theme.palette.text.primary,
+    backgroundColor: props =>
+      fade(
+        props.lightMapStyle
+          ? theme.palette.background.default
+          : theme.palette.background.paper,
+        0.5,
+      ),
+    textAlign: 'center',
+  },
+  markLabel: {
+    color: props =>
+      fade(
+        props.lightMapStyle
+          ? theme.palette.secondary.main
+          : theme.palette.text.primary,
+        0.7,
+      ),
+  },
+  markLabelActive: {
+    color: props =>
+      props.lightMapStyle
+        ? theme.palette.secondary.main
+        : theme.palette.text.primary,
+  },
 }));
 
 const schema = yup.object({
@@ -49,15 +73,18 @@ const schema = yup.object({
 });
 
 /**
- * @param {{
+ * @typedef {{
  *   value?: number
  *   onChange: (value: number) => void
- * }} props
+ *   mapStyle: import('map-style/styles').MapStyleKey
+ * }} ExtrusionScaleSliderProps
  */
 
-/** @type {React.ForwardRefExoticComponent<{value?: number, onChange: (value: number) => void}>} */
+/** @type {React.ForwardRefExoticComponent<ExtrusionScaleSliderProps>} */
 export const ExtrusionScaleSlider = React.forwardRef(
-  ({ value, onChange }, ref) => {
+  ({ value, onChange, mapStyle }, ref) => {
+    const lightMapStyle = mapStyle === 'light' || mapStyle === 'streets';
+    const styles = useStyles({ lightMapStyle });
     const { register, handleSubmit, errors, setValue } = useForm({
       mode: 'all',
       defaultValues: {
@@ -82,10 +109,16 @@ export const ExtrusionScaleSlider = React.forwardRef(
         onChange={handleSubmit(v => onChange(v.text))}
       >
         <Grid item>
-          <Typography>3D Scale : </Typography>
+          <Typography color={lightMapStyle ? 'secondary' : 'textPrimary'}>
+            3D Scale :{' '}
+          </Typography>
         </Grid>
         <Grid item xs>
           <Slider
+            classes={{
+              markLabel: styles.markLabel,
+              markLabelActive: styles.markLabelActive,
+            }}
             marks={MARKS}
             min={MIN}
             value={value}
@@ -100,7 +133,7 @@ export const ExtrusionScaleSlider = React.forwardRef(
             open={!!errors.text}
             title={errors.text?.message}
           >
-            <Input name="text" ref={register} />
+            <input className={styles.input} name="text" ref={register} />
           </Tooltip>
         </Grid>
       </Grid>
