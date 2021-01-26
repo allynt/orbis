@@ -1,6 +1,6 @@
 import { DataFilterExtension } from '@deck.gl/extensions';
 import { ColorScale } from 'utils/color';
-import { extrudedModeSelector } from '../orbReducer';
+import { extrudedModeSelector, extrusionScaleSelector } from '../orbReducer';
 
 import {
   filterRangeSelector,
@@ -34,6 +34,7 @@ const configuration = ({
   const selectedProperty = propertySelector(orbState);
   const filterRange = filterRangeSelector(orbState);
   const extrudedMode = extrudedModeSelector(orbState);
+  const extrusionScale = extrusionScaleSelector(orbState);
   const clickedFeatures = clickedFeaturesSelector(orbState);
   const selectedPropertyMetadata = source?.metadata?.properties?.find(
     property => property.name === selectedProperty.name,
@@ -139,7 +140,7 @@ const configuration = ({
     onClick,
     extruded: extrudedMode,
     getElevation: getElevation,
-    elevationScale: 100,
+    elevationScale: extrusionScale,
     getLineColor: COLOR_PRIMARY,
     getLineWidth: getLineWidth,
     lineWidthUnits: 'pixels',

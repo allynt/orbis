@@ -30,7 +30,7 @@ const Input = styled('input')(({ theme }) => ({
   border: 'none',
   borderRadius: theme.shape.borderRadius,
   color: theme.palette.text.primary,
-  backgroundColor: fade(theme.palette.background.paper, 0.3),
+  backgroundColor: fade(theme.palette.background.paper, 0.5),
   textAlign: 'center',
 }));
 
@@ -70,7 +70,7 @@ export const ExtrusionScaleSlider = React.forwardRef(
     const handleSliderChange = (_, v) => {
       const value = /** @type {number} */ (v);
       setValue('text', value, { shouldValidate: true });
-      onChange(value);
+      onChange && onChange(value);
     };
 
     return (

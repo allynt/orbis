@@ -22,6 +22,9 @@ const defaultState = {
   map: {
     ...initialState,
   },
+  layers: {
+    extrudedMode: false,
+  },
 };
 
 const Template = args => (

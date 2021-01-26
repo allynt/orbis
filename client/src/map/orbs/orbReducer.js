@@ -14,6 +14,7 @@ import crowdless from './slices/crowdless.slice';
  *     hoveredFeatures?: any[],
  *   },
  *   extrudedMode: boolean
+ *   extrusionScale: number
  * }} LayersState
  */
 
@@ -37,9 +38,17 @@ import crowdless from './slices/crowdless.slice';
  * >} SetVisibilityAction
  */
 
+/**
+ * @typedef {import('@reduxjs/toolkit').CaseReducer<
+ *   LayersState,
+ *   import('@reduxjs/toolkit').PayloadAction<number>
+ * >} SetExtrusionScaleAction
+ */
+
 /** @type {LayersState} */
 const initialState = {
   extrudedMode: false,
+  extrusionScale: 50,
 };
 
 const layersSlice = createSlice({
@@ -59,6 +68,10 @@ const layersSlice = createSlice({
     toggleExtrudedMode: state => {
       state.extrudedMode = !state.extrudedMode;
     },
+    /** @type {SetExtrusionScaleAction} */
+    setExtrusionScale: (state, { payload }) => {
+      state.extrusionScale = payload;
+    },
   },
 });
 
@@ -66,8 +79,10 @@ export const {
   setClickedFeatures,
   setVisibility,
   toggleExtrudedMode,
+  setExtrusionScale,
 } = layersSlice.actions;
 
+/** @returns {LayersState} */
 const baseSelector = orbs => orbs?.[layersSlice.name] || {};
 
 export const clickedFeaturesSelector = id =>
@@ -79,6 +94,11 @@ export const layersVisibilitySelector = id =>
 export const extrudedModeSelector = createSelector(
   baseSelector,
   state => state.extrudedMode,
+);
+
+export const extrusionScaleSelector = createSelector(
+  baseSelector,
+  state => state?.extrusionScale,
 );
 
 const orbReducer = combineReducers({

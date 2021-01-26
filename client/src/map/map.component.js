@@ -6,6 +6,7 @@ import {
   LayersIcon,
   LoadMask,
   makeStyles,
+  Slide,
 } from '@astrosat/astrosat-ui';
 
 import { FlyToInterpolator } from '@deck.gl/core';
@@ -36,8 +37,14 @@ import {
 } from './map.slice';
 import { useOrbs } from './orbs/useOrbs';
 import { MapControlButton } from './controls/map-control-button.component';
-import { extrudedModeSelector, toggleExtrudedMode } from './orbs/orbReducer';
+import {
+  extrudedModeSelector,
+  extrusionScaleSelector,
+  setExtrusionScale,
+  toggleExtrudedMode,
+} from './orbs/orbReducer';
 import clsx from 'clsx';
+import { ExtrusionScaleSlider } from './controls/extrusion-scale-slider/extrusion-scale-slider.component';
 
 /** @type {React.CSSProperties} */
 const TOP_MAP_CSS = {
@@ -107,11 +114,22 @@ const useStyles = makeStyles(theme => ({
     zIndex: 1,
     bottom: '0.25em',
   },
+  extrusionSlider: {
+    position: 'absolute',
+    zIndex: 1,
+    width: '25%',
+    bottom: 0,
+    left: '50%',
+    transform: 'translateX(-50%)',
+  },
 }));
 
 const Map = () => {
   const { mapRef, deckRef, viewState, setViewState } = useMap();
   const extrudedMode = useSelector(state => extrudedModeSelector(state?.orbs));
+  const extrusionScale = useSelector(state =>
+    extrusionScaleSelector(state?.orbs),
+  );
   const dispatch = useDispatch();
   const accessToken = useSelector(mapboxTokenSelector);
   const selectedBookmark = useSelector(selectedBookmarkSelector);
@@ -162,6 +180,9 @@ const Map = () => {
     dispatch(toggleExtrudedMode());
   };
 
+  const handleExtrusionScaleChange = value =>
+    dispatch(setExtrusionScale(value));
+
   const mapProps = {
     ...viewState,
     width: '100%',
@@ -178,6 +199,14 @@ const Map = () => {
         className={styles.loadMask}
         open={bookmarksLoading}
       />
+      <div className={styles.extrusionSlider}>
+        <Slide in={extrudedMode} direction="up">
+          <ExtrusionScaleSlider
+            value={extrusionScale}
+            onChange={handleExtrusionScaleChange}
+          />
+        </Slide>
+      </div>
       <ClickAwayListener onClickAway={() => setMapStyleSwitcherVisible(false)}>
         <div>
           <ButtonGroup className={styles.buttonControls} orientation="vertical">
