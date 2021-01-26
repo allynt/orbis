@@ -110,7 +110,7 @@ const useStyles = makeStyles(theme => ({
   scaleControl: {
     position: 'absolute',
     right: props =>
-      props.selectedMapStyle?.id === 'satellite' ? '22.25rem' : '19.25rem',
+      props?.selectedMapStyle?.id === 'satellite' ? '22.25rem' : '19.25rem',
     zIndex: 1,
     bottom: '0.25em',
   },
@@ -205,7 +205,7 @@ const Map = () => {
           <ExtrusionScaleSlider
             value={extrusionScale}
             onChange={handleExtrusionScaleChange}
-            mapStyle={selectedMapStyle.id}
+            mapStyle={selectedMapStyle?.id}
           />
         </Slide>
       </div>
