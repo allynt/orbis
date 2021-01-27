@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { ColorScale } from 'utils/color';
+import { isRealValue } from 'utils/isRealValue';
 import { VictoryChart, VictoryBar, VictoryAxis, VictoryLine } from 'victory';
 import { useChartTheme } from '../useChartTheme';
 
@@ -46,14 +47,14 @@ export const BarChart = ({
           },
         }}
       />
-      {line && (
+      {isRealValue(line) ? (
         <VictoryLine
           data={[
             { x: line, y: Math.min(...yValues) },
             { x: line, y: Math.max(...yValues) },
           ]}
         />
-      )}
+      ) : null}
     </VictoryChart>
   );
 };
