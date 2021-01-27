@@ -93,15 +93,6 @@ export const AnalysisPanel = () => {
 
   if (!selectedProperty) return null;
 
-  const histogramProps = isArray(
-    selectedProperty?.application?.orbis?.data_visualisation_components,
-  )
-    ? selectedProperty?.application?.orbis?.data_visualisation_components?.find(
-        c => c.name === 'NationalDeviationHistogram',
-      )?.props
-    : selectedProperty?.application?.orbis?.data_visualisation_components
-        ?.props;
-
   return (
     <SidePanel
       orientation="right"
