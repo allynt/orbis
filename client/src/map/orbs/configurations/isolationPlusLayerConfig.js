@@ -1,5 +1,6 @@
 import { DataFilterExtension } from '@deck.gl/extensions';
 import { ColorScale } from 'utils/color';
+import { isRealValue } from 'utils/isRealValue';
 
 import {
   filterRangeSelector,
@@ -88,7 +89,7 @@ const configuration = ({
     lineWidthUnits: 'pixels',
     getFillColor: d => {
       let color =
-        colorScale && d.properties[selectedProperty.name]
+        colorScale && isRealValue(d.properties[selectedProperty.name])
           ? colorScale.get(d.properties[selectedProperty.name])
           : [0, 0, 0];
       return [...color, 150];

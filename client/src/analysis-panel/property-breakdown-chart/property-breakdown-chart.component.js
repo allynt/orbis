@@ -2,6 +2,7 @@ import * as React from 'react';
 
 import { PieChart, SidePanelSection } from 'components';
 import { aggregateValues } from 'analysis-panel/aggregateValues';
+import { isRealValue } from 'utils/isRealValue';
 
 /** @type {import('typings/orbis').AnalysisPanelComponent} */
 export const PropertyBreakdownChart = ({
@@ -22,7 +23,7 @@ export const PropertyBreakdownChart = ({
         };
       })
     : [];
-  if (data?.some(v => !v.value)) return null;
+  if (data?.some(v => !isRealValue(v.value))) return null;
   return (
     <SidePanelSection title="Breakdown" defaultExpanded>
       <PieChart data={data} precision={selectedProperty?.precision} />
