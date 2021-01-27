@@ -1,7 +1,5 @@
 import * as React from 'react';
 
-import { useDispatch, useSelector } from 'react-redux';
-
 import {
   ButtonBase,
   CloseIcon,
@@ -13,18 +11,19 @@ import {
   Typography,
 } from '@astrosat/astrosat-ui';
 
+import clsx from 'clsx';
+import { isArray } from 'lodash';
+import { useDispatch, useSelector } from 'react-redux';
+
 import { SidePanel } from 'components';
 import {
   clickedFeaturesSelector,
   propertySelector,
   setClickedFeatures,
 } from 'map/orbs/slices/isolation-plus.slice';
-import { MoreInformation } from './more-information/more-information.component';
-import { NationalDeviationHistogram } from './national-deviation-histogram/national-deviation-histogram.component';
-import { PropertyBreakdownChart } from './property-breakdown-chart/property-breakdown-chart.component';
 import { ClickedFeaturesSummary } from './clicked-features-summary/clicked-features-summary.component';
-import clsx from 'clsx';
-import { isArray } from 'lodash';
+import { COMPONENT_MAP } from './component-map';
+import { MoreInformation } from './more-information/more-information.component';
 
 const PrimaryDivider = styled(Divider)(({ theme }) => ({
   backgroundColor: theme.palette.primary.dark,
@@ -94,15 +93,6 @@ export const AnalysisPanel = () => {
 
   if (!selectedProperty) return null;
 
-  const histogramProps = isArray(
-    selectedProperty?.application?.orbis?.data_visualisation_components,
-  )
-    ? selectedProperty?.application?.orbis?.data_visualisation_components?.find(
-        c => c.name === 'NationalDeviationHistogram',
-      )?.props
-    : selectedProperty?.application?.orbis?.data_visualisation_components
-        ?.props;
-
   return (
     <SidePanel
       orientation="right"
@@ -148,20 +138,21 @@ export const AnalysisPanel = () => {
         dispatch={dispatch}
       />
       <PrimaryDivider />
-      <NationalDeviationHistogram
-        selectedProperty={selectedProperty}
-        clickedFeatures={clickedFeatures}
-        {...histogramProps}
-      />
-      <PrimaryDivider />
-      {!!selectedProperty?.breakdown && (
-        <>
-          <PropertyBreakdownChart
-            selectedProperty={selectedProperty}
-            clickedFeatures={clickedFeatures}
-          />
-          <PrimaryDivider />
-        </>
+      {selectedProperty?.application?.orbis?.data_visualisation_components?.map(
+        componentDefinition => {
+          const Component = COMPONENT_MAP[componentDefinition.name];
+          return (
+            <>
+              <Component
+                selectedProperty={selectedProperty}
+                clickedFeatures={clickedFeatures}
+                dispatch={dispatch}
+                {...componentDefinition.props}
+              />
+              <PrimaryDivider />
+            </>
+          );
+        },
       )}
       <MoreInformation
         details={selectedProperty?.details}

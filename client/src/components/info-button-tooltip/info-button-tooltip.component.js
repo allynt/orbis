@@ -15,6 +15,8 @@ const useStyles = makeStyles(theme => ({
     padding: theme.typography.pxToRem(2),
     height: 'min-content',
     width: 'min-content',
+    backgroundColor: theme.palette.text.primary,
+    color: theme.palette.background.default,
     '&:hover, &:active, &:focus': {
       backgroundColor: theme.palette.primary.main,
     },
@@ -36,6 +38,14 @@ export const InfoButtonTooltip = ({
   const [isInfoVisible, setIsInfoVisible] = useState(false);
   const styles = useStyles();
 
+  /**
+   * @param {React.MouseEvent<HTMLButtonElement, MouseEvent>} e
+   */
+  const handleIconClick = e => {
+    e.stopPropagation();
+    setIsInfoVisible(c => !c);
+  };
+
   return (
     <ClickAwayListener onClickAway={() => setIsInfoVisible(false)}>
       <Tooltip
@@ -51,9 +61,9 @@ export const InfoButtonTooltip = ({
           color="inherit"
           className={clsx(iconButtonClassName, styles.infoButton)}
           aria-label="Info"
-          onClick={() => setIsInfoVisible(c => !c)}
+          onClick={handleIconClick}
         >
-          <InfoIcon fontSize="inherit" />
+          <InfoIcon titleAccess="Info" fontSize="inherit" />
         </IconButton>
       </Tooltip>
     </ClickAwayListener>

@@ -25,4 +25,11 @@ describe('<SidePanelSection />', () => {
     const { queryByTitle } = render(<SidePanelSection title={title} />);
     expect(queryByTitle('Expand')).not.toBeInTheDocument();
   });
+
+  it('Shows an info icon and a popup with content if info is supplied', () => {
+    const { getByRole } = render(
+      <SidePanelSection title={title} info={'Hello there'} />,
+    );
+    expect(getByRole('button', { name: 'Info' })).toBeInTheDocument();
+  });
 });
