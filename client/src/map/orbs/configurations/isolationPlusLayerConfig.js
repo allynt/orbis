@@ -1,14 +1,14 @@
 import { DataFilterExtension } from '@deck.gl/extensions';
 import { ColorScale } from 'utils/color';
+import { isRealValue } from 'utils/isRealValue';
 import { extrudedModeSelector, extrusionScaleSelector } from '../orbReducer';
-
 import {
+  addClickedFeatures,
+  clickedFeaturesSelector,
   filterRangeSelector,
   propertySelector,
-  setClickedFeatures,
-  clickedFeaturesSelector,
-  addClickedFeatures,
   removeClickedFeatures,
+  setClickedFeatures,
 } from '../slices/isolation-plus.slice';
 
 /** @typedef {import('typings/orbis').GeoJsonFeature<import('typings/orbis').IsoPlusCommonProperties>} AccessorFeature */
@@ -97,7 +97,8 @@ const configuration = ({
    * @returns {[r:number, g:number, b:number, a?: number]}
    */
   const getFillColor = d => {
-    if (!d.properties[selectedProperty.name]) return COLOR_TRANSPARENT;
+    if (!isRealValue(d.properties[selectedProperty.name]))
+      return COLOR_TRANSPARENT;
     const color = /** @type {[number,number,number]} */ (colorScale &&
       colorScale.get(d.properties[selectedProperty.name]));
     return [...color, getFillOpacity(d)];
