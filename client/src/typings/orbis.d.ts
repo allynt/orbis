@@ -56,6 +56,11 @@ type SourceCategories = {
   child?: SourceCategories;
 };
 
+type ComponentDefinition<P = {}> = {
+  name: string;
+  props?: P;
+};
+
 type OrbisApplicationMetadata = {
   orbs?: Orb[];
   categories: SourceCategories;
@@ -66,14 +71,8 @@ type OrbisApplicationMetadata = {
       [key: string]: any;
     };
   };
-  map_component?: {
-    name: string;
-    props?: any;
-  };
-  sidebar_component?: {
-    name: string;
-    props?: any;
-  };
+  map_component?: ComponentDefinition;
+  sidebar_component?: ComponentDefinition;
 };
 
 type Property = {
@@ -87,7 +86,7 @@ type Property = {
   application: {
     orbis?: {
       label?: string;
-      data_visualisation_components?: any;
+      data_visualisation_components?: ComponentDefinition<any>[];
       display?: {
         colormap_reversed?: boolean;
         color: ColorMap;
@@ -144,7 +143,6 @@ type CategorisedSources = (CategoryHierarchy | Source)[];
 type OrbWithCategorisedSources = Orb & { sources: CategorisedSources };
 
 /**
- * Thing
  * @typeParam P - Extra props which are available on the component
  * @typeParam F - The type of the picked features
  */
