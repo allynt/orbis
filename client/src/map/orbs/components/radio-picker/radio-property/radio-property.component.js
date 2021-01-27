@@ -69,9 +69,13 @@ const RadioProperty = ({
     ? findPropertyByType(FORMAT.percentage)
     : data;
 
-  const propertyMatch = isArray
-    ? data.some(p => p.name === selectedProperty?.name)
-    : data.name === selectedProperty?.name;
+  const propertyMatch = (() => {
+    const match = property =>
+      property.name === selectedProperty?.name &&
+      property.source === selectedProperty?.source;
+
+    return isArray ? data.some(property => match(property)) : match(data);
+  })();
 
   const handleRadioClick = () =>
     onRadioClick(
