@@ -1,3 +1,9 @@
+resource "random_password" "password" {
+  length = 16
+  special = true
+  override_special = "_%@"
+}
+
 //
 // Stateful Set
 //
@@ -52,7 +58,8 @@ resource "kubernetes_stateful_set" "redis_server" {
 
           env {
             name  = "REDIS_PASSWORD"
-            value = local.redis_password
+            # value = local.redis_password
+            value = random_password.password.result
 
             # value_from {
             #   secret_key_ref {

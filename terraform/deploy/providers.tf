@@ -9,6 +9,13 @@ terraform {
     key            = "deployment-state/orbis"
     region         = "eu-west-1"
   }
+
+  required_providers {
+    random = {
+      source = "hashicorp/random"
+      version = "3.0.1"
+    }
+  }
 }
 
 //
@@ -38,6 +45,10 @@ provider "aws" {
     role_arn = local.aws_role_arns[var.environment]
   }
 
+}
+
+provider "random" {
+  # Configuration options
 }
 
 data "aws_eks_cluster" "cluster" {
