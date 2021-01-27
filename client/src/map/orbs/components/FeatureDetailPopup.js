@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { FeatureDetail, Popup } from 'components';
 
-import { clickedFeaturesSelector, setClickedFeatures } from '../orbReducer';
+import { popupFeaturesSelector, setPopupFeatures } from '../orbReducer';
 
 /**
  * @param {{
@@ -15,26 +15,26 @@ const FeatureDetailPopup = ({ source }) => {
   const dispatch = useDispatch();
 
   /** @type {import('typings/orbis').GeoJsonFeature[]} */
-  const clickedFeatures = useSelector(state =>
-    clickedFeaturesSelector(source?.source_id)(state?.orbs),
+  const popupFeatures = useSelector(state =>
+    popupFeaturesSelector(source?.source_id)(state?.orbs),
   );
 
-  if (!clickedFeatures?.length) return null;
+  if (!popupFeatures?.length) return null;
 
   return (
     <Popup
-      latitude={clickedFeatures?.[0]?.geometry.coordinates[1]}
-      longitude={clickedFeatures?.[0]?.geometry.coordinates[0]}
+      latitude={popupFeatures?.[0]?.geometry.coordinates[1]}
+      longitude={popupFeatures?.[0]?.geometry.coordinates[0]}
       onClose={() =>
         dispatch(
-          setClickedFeatures({
+          setPopupFeatures({
             source_id: source?.source_id,
-            clickedFeatures: undefined,
+            popupFeatures: [],
           }),
         )
       }
     >
-      <FeatureDetail features={clickedFeatures?.map(obj => obj?.properties)} />
+      <FeatureDetail features={popupFeatures?.map(obj => obj?.properties)} />
     </Popup>
   );
 };

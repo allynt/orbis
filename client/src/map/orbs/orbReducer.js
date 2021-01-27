@@ -23,9 +23,9 @@ import crowdless from './slices/crowdless.slice';
  *   LayersState,
  *   import('@reduxjs/toolkit').PayloadAction<{
  *     source_id: import('typings/orbis').Source['source_id'],
- *     clickedFeatures?: import('typings/orbis').GeoJsonFeature[]
+ *     popupFeatures?: import('typings/orbis').GeoJsonFeature[]
  *   }>
- * >} SetClickedFeaturesAction
+ * >} SetPopupFeaturesAction
  */
 
 /**
@@ -55,10 +55,10 @@ const layersSlice = createSlice({
   name: 'layers',
   initialState,
   reducers: {
-    /** @type {SetClickedFeaturesAction} */
-    setClickedFeatures: (state, { payload }) => {
-      const { source_id, clickedFeatures } = payload;
-      state[source_id] = { ...state[source_id], clickedFeatures };
+    /** @type {SetPopupFeaturesAction} */
+    setPopupFeatures: (state, { payload }) => {
+      const { source_id, popupFeatures } = payload;
+      state[source_id] = { ...state[source_id], popupFeatures };
     },
     /** @type {SetVisibilityAction} */
     setVisibility: (state, { payload }) => {
@@ -85,8 +85,8 @@ export const {
 /** @returns {LayersState} */
 const baseSelector = orbs => orbs?.[layersSlice.name] || {};
 
-export const clickedFeaturesSelector = id =>
-  createSelector(baseSelector, state => state[id]?.clickedFeatures);
+export const popupFeaturesSelector = id =>
+  createSelector(baseSelector, state => state[id]?.popupFeatures);
 
 export const layersVisibilitySelector = id =>
   createSelector(baseSelector, state => state[id]?.visible ?? true);

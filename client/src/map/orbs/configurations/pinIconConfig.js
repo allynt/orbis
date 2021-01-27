@@ -3,9 +3,9 @@ import { MAX_ZOOM } from 'map/map.constants';
 import { easeInOutCubic } from 'utils/easingFunctions';
 
 import {
-  setClickedFeatures,
-  clickedFeaturesSelector,
+  setPopupFeatures,
   layersVisibilitySelector,
+  popupFeaturesSelector,
 } from '../orbReducer';
 
 import iconMapping from './pinIconConfig.iconMapping.json';
@@ -24,8 +24,22 @@ const configuration = ({
   pinColor = 'purple',
 }) => {
   const isVisible = layersVisibilitySelector(id)(orbState);
+  const popupFeatures = popupFeaturesSelector(id)(orbState);
 
-  const clickedFeatures = clickedFeaturesSelector(id)(orbState);
+  const handleHover = info => {
+    if (typeof onHover === 'function') onHover(info);
+    if (onHover === true) {
+      if (!info?.object?.properties?.cluster) {
+        const data = info.object ? [info.object] : [];
+        dispatch(
+          setPopupFeatures({
+            source_id: info.layer.props.id,
+            popupFeatures: data,
+          }),
+        );
+      }
+    }
+  };
 
   /**
    * @param {import('typings/orbis').PickedMapFeature} info
@@ -48,9 +62,9 @@ const configuration = ({
         if (typeof onGroupClick === 'function') onGroupClick(info);
         if (onGroupClick === true) {
           dispatch(
-            setClickedFeatures({
+            setPopupFeatures({
               source_id: id,
-              clickedFeatures: info?.objects,
+              popupFeatures: info?.objects,
             }),
           );
         }
@@ -59,22 +73,11 @@ const configuration = ({
       if (typeof onPointClick === 'function') onPointClick(info);
       if (onPointClick === true) {
         dispatch(
-          setClickedFeatures({
+          setPopupFeatures({
             source_id: id,
-            clickedFeatures: [info?.object],
+            popupFeatures: [info?.object],
           }),
         );
-      }
-    }
-  };
-
-  const handleHover = info => {
-    if (typeof onHover === 'function') onHover(info);
-    if (onHover === true) {
-      if (clickedFeatures?.length > 1) return;
-      if (!info?.object?.properties?.cluster) {
-        const data = info.object ? [info.object] : [];
-        dispatch(setClickedFeatures({ source_id: id, clickedFeatures: data }));
       }
     }
   };
