@@ -24,6 +24,7 @@ const useStyles = makeStyles(theme => ({
 /**
  * @typedef {{
  *  data: {x: number, y: number}[]
+ *  info?: string
  * }} NationalDeviationHistogramProps
  */
 
@@ -34,6 +35,7 @@ export const NationalDeviationHistogram = ({
   selectedProperty,
   clickedFeatures,
   data = [],
+  info,
 }) => {
   const [selectedAggregateArea, setSelectedAggregateArea] = useState('GB');
   const styles = useStyles();
@@ -42,7 +44,7 @@ export const NationalDeviationHistogram = ({
   const aggregationLabel =
     selectedProperty?.aggregation === 'sum' ? 'Sum' : 'Average';
   return (
-    <SidePanelSection defaultExpanded title="Selected Data Layer">
+    <SidePanelSection defaultExpanded title="Selected Data Layer" info={info}>
       <Box display="flex" flexDirection="column">
         <Typography paragraph>{selectedProperty?.label}</Typography>
         {data?.length ? (

@@ -4,10 +4,18 @@ import { PieChart, SidePanelSection } from 'components';
 import { aggregateValues } from 'analysis-panel/aggregateValues';
 import { isRealValue } from 'utils/isRealValue';
 
-/** @type {import('typings/orbis').AnalysisPanelComponent} */
+/**
+ *
+ * @typedef {{
+ *   info?: string
+ * }} PropertyBreakdownChartProps
+ */
+
+/** @type {import('typings/orbis').AnalysisPanelComponent<PropertyBreakdownChartProps} */
 export const PropertyBreakdownChart = ({
   clickedFeatures,
   selectedProperty,
+  info,
 }) => {
   const data = clickedFeatures
     ? selectedProperty?.breakdown?.map(name => {
@@ -25,7 +33,7 @@ export const PropertyBreakdownChart = ({
     : [];
   if (data?.some(v => !isRealValue(v.value))) return null;
   return (
-    <SidePanelSection title="Breakdown" defaultExpanded>
+    <SidePanelSection title="Breakdown" defaultExpanded info={info}>
       <PieChart data={data} precision={selectedProperty?.precision} />
     </SidePanelSection>
   );
