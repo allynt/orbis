@@ -1,17 +1,26 @@
 import { DataFilterExtension } from '@deck.gl/extensions';
 import { ColorScale } from 'utils/color';
 import { isRealValue } from 'utils/isRealValue';
-
+import { extrudedModeSelector, extrusionScaleSelector } from '../orbReducer';
 import {
+  addClickedFeatures,
+  clickedFeaturesSelector,
   filterRangeSelector,
   propertySelector,
-  setClickedFeatures,
-  clickedFeaturesSelector,
-  addClickedFeatures,
   removeClickedFeatures,
+  setClickedFeatures,
 } from '../slices/isolation-plus.slice';
 
-const PRIMARY_COLOR_RGB = [246, 190, 0, 255];
+/** @typedef {import('typings/orbis').GeoJsonFeature<import('typings/orbis').IsoPlusCommonProperties>} AccessorFeature */
+
+const COLOR_PRIMARY = [246, 190, 0, 255],
+  COLOR_TRANSPARENT = [0, 0, 0, 0],
+  OPACITY_FLAT = 150,
+  OPACITY_EXTRUDED = OPACITY_FLAT,
+  OPACITY_EXTRUDED_SELECTED = 255,
+  LINE_WIDTH = 0,
+  LINE_WIDTH_SELECTED = 3,
+  TRANSITION_DURATION = 150;
 
 const configuration = ({
   id,
@@ -24,6 +33,8 @@ const configuration = ({
   const source = activeSources?.find(source => source.source_id === id);
   const selectedProperty = propertySelector(orbState);
   const filterRange = filterRangeSelector(orbState);
+  const extrudedMode = extrudedModeSelector(orbState);
+  const extrusionScale = extrusionScaleSelector(orbState);
   const clickedFeatures = clickedFeaturesSelector(orbState);
   const selectedPropertyMetadata = source?.metadata?.properties?.find(
     property => property.name === selectedProperty.name,
@@ -43,6 +54,55 @@ const configuration = ({
       ],
       format: 'array',
     });
+
+  const clickedFeatureIds = clickedFeatures?.map(
+    f => f.object.properties.index,
+  );
+  const anySelected = !!clickedFeatureIds?.length;
+
+  /**
+   * @param {AccessorFeature} d
+   */
+  const isSelected = d => !!clickedFeatureIds?.includes(d.properties.index);
+
+  /**
+   * @param {AccessorFeature} d
+   * @returns {number}
+   */
+  const getElevation = d => {
+    if (!anySelected || (anySelected && isSelected(d)))
+      return d.properties[selectedProperty.name];
+    return 0;
+  };
+
+  /**
+   * @param {AccessorFeature} d
+   * @returns {number}
+   */
+  const getLineWidth = d => (isSelected(d) ? LINE_WIDTH_SELECTED : LINE_WIDTH);
+
+  /**
+   * @param {AccessorFeature} d
+   * @returns {number}
+   */
+  const getFillOpacity = d => {
+    if (!extrudedMode) return OPACITY_FLAT;
+    if (!anySelected || (anySelected && isSelected(d)))
+      return OPACITY_EXTRUDED_SELECTED;
+    return OPACITY_EXTRUDED;
+  };
+
+  /**
+   * @param {AccessorFeature} d
+   * @returns {[r:number, g:number, b:number, a?: number]}
+   */
+  const getFillColor = d => {
+    if (!isRealValue(d.properties[selectedProperty.name]))
+      return COLOR_TRANSPARENT;
+    const color = /** @type {[number,number,number]} */ (colorScale &&
+      colorScale.get(d.properties[selectedProperty.name]));
+    return [...color, getFillOpacity(d)];
+  };
 
   /**
    * @param {import('typings/orbis').PolygonPickedMapFeature} info
@@ -79,33 +139,28 @@ const configuration = ({
     pickable: true,
     autoHighlight: true,
     onClick,
-    getLineColor: PRIMARY_COLOR_RGB,
-    getLineWidth: d =>
-      clickedFeatures
-        ?.map(f => f.object.properties.index)
-        .includes(d.properties.index)
-        ? 3
-        : 0,
+    extruded: extrudedMode,
+    getElevation: getElevation,
+    elevationScale: extrusionScale,
+    getLineColor: COLOR_PRIMARY,
+    getLineWidth: getLineWidth,
     lineWidthUnits: 'pixels',
-    getFillColor: d => {
-      let color =
-        colorScale && isRealValue(d.properties[selectedProperty.name])
-          ? colorScale.get(d.properties[selectedProperty.name])
-          : [0, 0, 0];
-      return [...color, 150];
-    },
-    transitions: {
-      getLineWidth: 150,
-    },
+    getFillColor: getFillColor,
     getFilterValue: d => Math.round(d.properties[selectedProperty.name]),
     filterRange: filterRange || [
       selectedPropertyMetadata?.min,
       selectedPropertyMetadata?.max,
     ],
+    transitions: {
+      getFillColor: TRANSITION_DURATION,
+      getLineWidth: TRANSITION_DURATION,
+      getElevation: TRANSITION_DURATION,
+    },
     updateTriggers: {
-      getFillColor: [selectedProperty, filterRange],
+      getFillColor: [extrudedMode, selectedProperty, clickedFeatures],
       getFilterValue: [selectedProperty],
       getLineWidth: [clickedFeatures],
+      getElevation: [extrudedMode, clickedFeatures, selectedProperty],
     },
     extensions: [new DataFilterExtension({ filterSize: 1 })],
   };

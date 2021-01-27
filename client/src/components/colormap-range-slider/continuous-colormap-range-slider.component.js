@@ -89,10 +89,6 @@ const ContinuousColorMapRangeSlider = ({
       translateX: x2 > x1 ? x1 : x2,
       clipWidth: x2 > x1 ? x2 - x1 : x1 - x2,
     });
-  };
-
-  const handleBrushDomainChangeEnd = domain => {
-    setBrushDomain(domain);
     if (onChange) onChange(brushDomain.y);
   };
 
@@ -121,7 +117,6 @@ const ContinuousColorMapRangeSlider = ({
             handleStyle={handleStyle}
             onBrushCleared={handleBrushCleared}
             onBrushDomainChange={handleBrushDomainChange}
-            onBrushDomainChangeEnd={handleBrushDomainChangeEnd}
           />
         }
       >

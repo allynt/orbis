@@ -172,7 +172,7 @@ type PickedMapFeature<P = {}> = {
   objects?: GeoJsonFeature<P>[];
 };
 
-type PolygonPickedMapFeature = PickedMapFeature<{
+type IsoPlusCommonProperties = {
   /** Human readable name for the area */
   area_name?: string;
   /** Number of households within the area */
@@ -187,4 +187,6 @@ type PolygonPickedMapFeature = PickedMapFeature<{
   within_msoa?: any;
   /** Typically the OA/LAD/LSOA/MSOA Area code */
   index: string;
-}>;
+};
+
+type PolygonPickedMapFeature = PickedMapFeature<IsoPlusCommonProperties>;

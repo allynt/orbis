@@ -1,11 +1,12 @@
 import React, { useCallback, useEffect, useState } from 'react';
 
 import {
-  Button,
+  ButtonGroup,
   ClickAwayListener,
   LayersIcon,
   LoadMask,
   makeStyles,
+  Slide,
 } from '@astrosat/astrosat-ui';
 
 import { FlyToInterpolator } from '@deck.gl/core';
@@ -28,20 +29,30 @@ import {
 import { setLayers } from 'data-layers/data-layers.slice';
 import MapStyleSwitcher from 'map-style/map-style-switcher/map-style-switcher.component';
 import { useMap } from 'MapContext';
-import { NavigationControl } from './controls/navigation-control.component';
+import { NavigationControl } from './controls/navigation-control/navigation-control.component';
 import {
   mapStylesSelector,
   selectedMapStyleSelector,
   selectMapStyle,
 } from './map.slice';
 import { useOrbs } from './orbs/useOrbs';
+import { MapControlButton } from './controls/map-control-button.component';
+import {
+  extrudedModeSelector,
+  extrusionScaleSelector,
+  setExtrusionScale,
+  toggleExtrudedMode,
+} from './orbs/orbReducer';
+import clsx from 'clsx';
+import { ExtrusionScaleSlider } from './controls/extrusion-scale-slider/extrusion-scale-slider.component';
 
 /** @type {React.CSSProperties} */
 const TOP_MAP_CSS = {
-  position: 'absolute',
-  top: 0,
-  pointerEvents: 'none',
-};
+    position: 'absolute',
+    top: 0,
+    pointerEvents: 'none',
+  },
+  ISOMETRIC_PITCH = 35;
 
 const useStyles = makeStyles(theme => ({
   map: {
@@ -88,31 +99,38 @@ const useStyles = makeStyles(theme => ({
   loadMask: {
     zIndex: 1000,
   },
-  mapStyleButton: {
-    position: 'absolute',
-    padding: '0.5rem',
-    bottom: '8rem',
-    right: '2rem',
-    zIndex: 10,
-    backgroundColor: theme.palette.background.default,
-    color: theme.palette.primary.main,
-    fontSize: '0.875rem',
-    minWidth: 'unset',
-    '&:hover': {
-      backgroundColor: theme.palette.background.default,
+  buttonControls: { position: 'absolute', right: '2rem', bottom: '8rem' },
+  selected: {
+    color: theme.palette.secondary.main,
+    backgroundColor: theme.palette.primary.main,
+    '&:hover, &:focus': {
+      backgroundColor: theme.palette.primary.main,
     },
   },
   scaleControl: {
     position: 'absolute',
     right: props =>
-      props.selectedMapStyle?.id === 'satellite' ? '22.25rem' : '19.25rem',
+      props?.selectedMapStyle?.id === 'satellite' ? '22.25rem' : '19.25rem',
     zIndex: 1,
     bottom: '0.25em',
+  },
+  extrusionSlider: {
+    position: 'absolute',
+    zIndex: 1,
+    width: '25%',
+    maxWidth: theme.typography.pxToRem(500),
+    bottom: `calc(0px + ${theme.spacing(4)})`,
+    left: '50%',
+    transform: 'translateX(-50%)',
   },
 }));
 
 const Map = () => {
   const { mapRef, deckRef, viewState, setViewState } = useMap();
+  const extrudedMode = useSelector(state => extrudedModeSelector(state?.orbs));
+  const extrusionScale = useSelector(state =>
+    extrusionScaleSelector(state?.orbs),
+  );
   const dispatch = useDispatch();
   const accessToken = useSelector(mapboxTokenSelector);
   const selectedBookmark = useSelector(selectedBookmarkSelector);
@@ -152,6 +170,19 @@ const Map = () => {
     [dispatch],
   );
 
+  const handleExtrudedModeButtonClick = () => {
+    setViewState({
+      ...viewState,
+      pitch: !extrudedMode ? ISOMETRIC_PITCH : 0,
+      transitionDuration: 750,
+      transitionInterpolator: new FlyToInterpolator(),
+    });
+    dispatch(toggleExtrudedMode());
+  };
+
+  const handleExtrusionScaleChange = value =>
+    dispatch(setExtrusionScale(value));
+
   const mapProps = {
     ...viewState,
     width: '100%',
@@ -168,14 +199,31 @@ const Map = () => {
         className={styles.loadMask}
         open={bookmarksLoading}
       />
+      <div className={styles.extrusionSlider}>
+        <Slide in={extrudedMode} direction="up">
+          <ExtrusionScaleSlider
+            value={extrusionScale}
+            onChange={handleExtrusionScaleChange}
+            mapStyle={selectedMapStyle?.id}
+          />
+        </Slide>
+      </div>
       <ClickAwayListener onClickAway={() => setMapStyleSwitcherVisible(false)}>
         <div>
-          <Button
-            className={styles.mapStyleButton}
-            onClick={() => setMapStyleSwitcherVisible(cur => !cur)}
-          >
-            <LayersIcon fontSize="inherit" />
-          </Button>
+          <ButtonGroup className={styles.buttonControls} orientation="vertical">
+            <MapControlButton
+              className={clsx({ [styles.selected]: extrudedMode })}
+              aria-selected={extrudedMode}
+              onClick={handleExtrudedModeButtonClick}
+            >
+              3D
+            </MapControlButton>
+            <MapControlButton
+              onClick={() => setMapStyleSwitcherVisible(cur => !cur)}
+            >
+              <LayersIcon fontSize="inherit" />
+            </MapControlButton>
+          </ButtonGroup>
           <MapStyleSwitcher
             open={mapStyleSwitcherVisible}
             mapStyles={mapStyles}

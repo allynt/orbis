@@ -6,14 +6,16 @@ import mySupplyLynk from './slices/mysupplylynk.slice';
 import actionForHelp from './slices/action-for-help.slice';
 import crowdless from './slices/crowdless.slice';
 
-import { orbsSelector } from '../orbs/orbsSelectors';
-
 /**
- * @typedef {Object<string, {
- *    visible?: boolean,
- *    clickedFeatures?: import('typings/orbis').GeoJsonFeature[]
- *    hoveredFeatures?: any[],
- * }> } LayersState
+ * @typedef {{
+ *   [key: string]: {
+ *     visible?: boolean,
+ *     clickedFeatures?: import('typings/orbis').GeoJsonFeature[]
+ *     hoveredFeatures?: any[],
+ *   },
+ *   extrudedMode: boolean
+ *   extrusionScale: number
+ * }} LayersState
  */
 
 /**
@@ -36,8 +38,18 @@ import { orbsSelector } from '../orbs/orbsSelectors';
  * >} SetVisibilityAction
  */
 
+/**
+ * @typedef {import('@reduxjs/toolkit').CaseReducer<
+ *   LayersState,
+ *   import('@reduxjs/toolkit').PayloadAction<number>
+ * >} SetExtrusionScaleAction
+ */
+
 /** @type {LayersState} */
-const initialState = {};
+const initialState = {
+  extrudedMode: false,
+  extrusionScale: 50,
+};
 
 const layersSlice = createSlice({
   name: 'layers',
@@ -53,18 +65,41 @@ const layersSlice = createSlice({
       const { source_id, visible } = payload;
       state[source_id] = { ...state[source_id], visible };
     },
+    toggleExtrudedMode: state => {
+      state.extrudedMode = !state.extrudedMode;
+    },
+    /** @type {SetExtrusionScaleAction} */
+    setExtrusionScale: (state, { payload }) => {
+      state.extrusionScale = payload;
+    },
   },
 });
 
-export const { setClickedFeatures, setVisibility } = layersSlice.actions;
+export const {
+  setClickedFeatures,
+  setVisibility,
+  toggleExtrudedMode,
+  setExtrusionScale,
+} = layersSlice.actions;
 
-const baseSelector = orbs => orbs[layersSlice.name] || {};
+/** @returns {LayersState} */
+const baseSelector = orbs => orbs?.[layersSlice.name] || {};
 
 export const clickedFeaturesSelector = id =>
   createSelector(baseSelector, state => state[id]?.clickedFeatures);
 
 export const layersVisibilitySelector = id =>
   createSelector(baseSelector, state => state[id]?.visible ?? true);
+
+export const extrudedModeSelector = createSelector(
+  baseSelector,
+  state => state.extrudedMode,
+);
+
+export const extrusionScaleSelector = createSelector(
+  baseSelector,
+  state => state?.extrusionScale,
+);
 
 const orbReducer = combineReducers({
   layers: layersSlice.reducer,
