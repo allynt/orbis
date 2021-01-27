@@ -150,7 +150,6 @@ resource "kubernetes_service" "redis_server" {
   spec {
     selector   = local.redis_labels
     type       = "ClusterIP"
-    cluster_ip = "None"
 
     port {
       name        = "redis"
