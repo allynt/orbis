@@ -32,7 +32,7 @@ describe('<ExtrusionScaleSlider />', () => {
     );
   });
 
-  it('Shows a message if less than min is entered in the input', async () => {
+  it('Shows a message if greater than max is entered in the input', async () => {
     const { getByRole, getByText } = renderComponent();
     userEvent.type(getByRole('textbox'), '1234');
     await waitFor(() =>
