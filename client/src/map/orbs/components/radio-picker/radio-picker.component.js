@@ -61,6 +61,7 @@ export const RadioPicker = ({ selectedLayer, dispatch }) => {
       {groupProperties(selectedLayer.metadata.properties).map((data, i) => (
         <React.Fragment key={i}>
           <RadioProperty
+            layerSourceId={selectedLayer?.source_id}
             data={data}
             onRadioClick={onRadioClick}
             onToggleClick={onToggleClick}

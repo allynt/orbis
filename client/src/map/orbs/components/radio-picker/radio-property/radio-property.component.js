@@ -51,6 +51,7 @@ const useStyles = makeStyles(theme => ({
  * @param {{selectedProperty: import('typings/orbis').Property}} props
  */
 const RadioProperty = ({
+  layerSourceId,
   data,
   onRadioClick,
   onToggleClick,
@@ -71,8 +72,8 @@ const RadioProperty = ({
 
   const propertyMatch = (() => {
     const match = property =>
-      property.name === selectedProperty?.name &&
-      property.source === selectedProperty?.source;
+      selectedProperty?.name === property.name &&
+      selectedProperty?.source_id === layerSourceId;
 
     return isArray ? data.some(property => match(property)) : match(data);
   })();
