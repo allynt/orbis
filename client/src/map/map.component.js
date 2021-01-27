@@ -171,13 +171,12 @@ const Map = () => {
   );
 
   const handleExtrudedModeButtonClick = () => {
-    if (!extrudedMode)
-      setViewState({
-        ...viewState,
-        pitch: ISOMETRIC_PITCH,
-        transitionDuration: 750,
-        transitionInterpolator: new FlyToInterpolator(),
-      });
+    setViewState({
+      ...viewState,
+      pitch: !extrudedMode ? ISOMETRIC_PITCH : 0,
+      transitionDuration: 750,
+      transitionInterpolator: new FlyToInterpolator(),
+    });
     dispatch(toggleExtrudedMode());
   };
 
