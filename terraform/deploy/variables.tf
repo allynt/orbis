@@ -24,6 +24,7 @@ locals {
 
   api_name   = "${local.app}-api-${var.environment}-${var.instance}"
   app_name   = "${local.app}-app-${var.environment}-${var.instance}"
+  redis_name   = "${local.app}-redis-${var.environment}-${var.instance}"
 
   api_domain = (var.environment == "production") ? "api.orbis.astrosat.net" : "${local.api_instance_hostname}.${var.environment}.orbis.astrosat.net"
   api_image  = "339570402237.dkr.ecr.eu-west-1.amazonaws.com/company/orbis/django:${var.tag}"
@@ -43,6 +44,13 @@ locals {
     environment = var.environment
     instance    = var.instance
     role        = "client"
+  }
+
+  redis_labels = {
+    app         = "${local.app}-redis"
+    environment = var.environment
+    instance    = var.instance
+    role        = "redis"
   }
 
   # Deployment secrets are created by the deployment (this module)

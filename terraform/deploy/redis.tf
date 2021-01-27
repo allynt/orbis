@@ -3,8 +3,8 @@
 //
 resource "kubernetes_stateful_set" "redis_server" {
   metadata {
-    name   = "${local.app}-${var.environment}-${var.instance}-redis"
-    labels = local.app_labels
+    name   = local.redis_name
+    labels = local.redis_labels
   }
 
   spec {
@@ -12,7 +12,7 @@ resource "kubernetes_stateful_set" "redis_server" {
     replicas              = 1
 
     selector {
-      match_labels = local.app_labels
+      match_labels = local.redis_labels
     }
 
     service_name = "${local.app}-redis"
@@ -27,8 +27,7 @@ resource "kubernetes_stateful_set" "redis_server" {
 
     template {
       metadata {
-        name   = "${local.app}-redis-template"
-        labels = local.app_labels
+        labels = local.redis_labels
 
         annotations = {}
       }
@@ -42,8 +41,7 @@ resource "kubernetes_stateful_set" "redis_server" {
         # node_selector = "${var.kubernetes_node_selector}"
 
         container {
-          name = "${local.app}-redis-container"
-          # image             = var.redis_image
+          name              = local.redis_name
           image             = "docker.io/redis:6.0.10"
           image_pull_policy = "IfNotPresent"
 
@@ -90,7 +88,6 @@ resource "kubernetes_stateful_set" "redis_server" {
           }
 
           port {
-            name           = "${local.app}-redis"
             container_port = 6379
           }
 
@@ -146,12 +143,12 @@ resource "kubernetes_stateful_set" "redis_server" {
 //
 resource "kubernetes_service" "redis_server" {
   metadata {
-    name   = local.app
-    labels = local.app_labels
+    name   = local.redis_name
+    labels = local.redis_labels
   }
 
   spec {
-    selector   = local.app_labels
+    selector   = local.redis_labels
     type       = "ClusterIP"
     cluster_ip = "None"
 
