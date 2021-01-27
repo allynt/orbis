@@ -26,21 +26,25 @@ const configuration = ({
 }) => {
   const isVisible = layersVisibilitySelector(id)(orbState);
 
-  const chooseHandler = (handler, data) => {
-    if (typeof handler === 'function') handler(data);
-    if (handler === true) {
-      dispatch(setHoveredFeatures({ source_id: id, hoveredFeatures: data }));
-    }
-  };
-
   const handleHover = info => {
     const data = info?.object ? [info.object] : [];
 
+    const defaultHover = () =>
+      dispatch(
+        setHoveredFeatures({
+          source_id: id,
+          hoveredFeatures: data,
+        }),
+      );
+
     if (info?.object?.properties?.cluster) {
-      if (info.object.properties.expansion_zoom >= MAX_ZOOM)
-        chooseHandler(onGroupHover, data);
+      if (info.object.properties.expansion_zoom >= MAX_ZOOM) {
+        if (typeof onGroupHover === 'function') return onGroupHover(data);
+        if (onGroupHover === true) return defaultHover();
+      }
     } else {
-      chooseHandler(onPointHover, data);
+      if (typeof onPointHover === 'function') return onPointHover(data);
+      if (onPointHover === true) return defaultHover();
     }
   };
 
@@ -48,6 +52,14 @@ const configuration = ({
    * @param {import('typings/orbis').PickedMapFeature} info
    */
   const handleClick = info => {
+    const defaultClick = () =>
+      dispatch(
+        setClickedFeatures({
+          source_id: id,
+          clickedFeatures: info?.objects,
+        }),
+      );
+
     if (info?.object?.properties?.cluster) {
       if (info.object.properties.expansion_zoom <= MAX_ZOOM)
         setViewState({
@@ -62,26 +74,12 @@ const configuration = ({
           transitionInterpolator: new FlyToInterpolator(),
         });
       else {
-        if (typeof onGroupClick === 'function') onGroupClick(info);
-        if (onGroupClick === true) {
-          dispatch(
-            setClickedFeatures({
-              source_id: id,
-              clickedFeatures: info?.objects,
-            }),
-          );
-        }
+        if (typeof onGroupClick === 'function') return onGroupClick(info);
+        if (onGroupClick === true) return defaultClick();
       }
     } else {
-      if (typeof onPointClick === 'function') onPointClick(info);
-      if (onPointClick === true) {
-        dispatch(
-          setClickedFeatures({
-            source_id: id,
-            clickedFeatures: [info?.object],
-          }),
-        );
-      }
+      if (typeof onPointClick === 'function') return onPointClick(info);
+      if (onPointClick === true) return defaultClick();
     }
   };
 
