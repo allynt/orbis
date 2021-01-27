@@ -3,9 +3,9 @@ import { MAX_ZOOM } from 'map/map.constants';
 import { easeInOutCubic } from 'utils/easingFunctions';
 
 import {
-  setPopupFeatures,
+  setClickedFeatures,
+  setHoveredFeatures,
   layersVisibilitySelector,
-  popupFeaturesSelector,
 } from '../orbReducer';
 
 import iconMapping from './pinIconConfig.iconMapping.json';
@@ -20,24 +20,27 @@ const configuration = ({
   orbState,
   onPointClick,
   onGroupClick,
-  onHover,
+  onPointHover,
+  onGroupHover,
   pinColor = 'purple',
 }) => {
   const isVisible = layersVisibilitySelector(id)(orbState);
-  const popupFeatures = popupFeaturesSelector(id)(orbState);
+
+  const chooseHandler = (handler, data) => {
+    if (typeof handler === 'function') handler(data);
+    if (handler === true) {
+      dispatch(setHoveredFeatures({ source_id: id, hoveredFeatures: data }));
+    }
+  };
 
   const handleHover = info => {
-    if (typeof onHover === 'function') onHover(info);
-    if (onHover === true) {
-      if (!info?.object?.properties?.cluster) {
-        const data = info.object ? [info.object] : [];
-        dispatch(
-          setPopupFeatures({
-            source_id: info.layer.props.id,
-            popupFeatures: data,
-          }),
-        );
-      }
+    const data = info?.object ? [info.object] : [];
+
+    if (info?.object?.properties?.cluster) {
+      if (info.object.properties.expansion_zoom >= MAX_ZOOM)
+        chooseHandler(onGroupHover, data);
+    } else {
+      chooseHandler(onPointHover, data);
     }
   };
 
@@ -62,9 +65,9 @@ const configuration = ({
         if (typeof onGroupClick === 'function') onGroupClick(info);
         if (onGroupClick === true) {
           dispatch(
-            setPopupFeatures({
+            setClickedFeatures({
               source_id: id,
-              popupFeatures: info?.objects,
+              clickedFeatures: info?.objects,
             }),
           );
         }
@@ -73,9 +76,9 @@ const configuration = ({
       if (typeof onPointClick === 'function') onPointClick(info);
       if (onPointClick === true) {
         dispatch(
-          setPopupFeatures({
+          setClickedFeatures({
             source_id: id,
-            popupFeatures: [info?.object],
+            clickedFeatures: [info?.object],
           }),
         );
       }

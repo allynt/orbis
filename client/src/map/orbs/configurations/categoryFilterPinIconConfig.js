@@ -86,7 +86,8 @@ const categoryFilterPinIconConfig = ({
     dispatch,
     onPointClick: handleClick,
     onGroupClick: handleClick,
-    onHover: handleHover,
+    onPointHover: handleHover,
+    onGroupHover: handleHover,
     ...rest,
   });
 };
