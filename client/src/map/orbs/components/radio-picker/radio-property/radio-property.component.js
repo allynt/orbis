@@ -24,8 +24,6 @@ const useStyles = makeStyles(theme => ({
   },
   infoButton: {
     placeSelf: 'center',
-    backgroundColor: theme.palette.common.white,
-    color: theme.palette.background.default,
   },
   categoryPath: {
     fontStyle: 'italic',

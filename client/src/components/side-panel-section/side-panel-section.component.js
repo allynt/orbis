@@ -8,6 +8,7 @@ import {
   TriangleIcon,
   Typography,
 } from '@astrosat/astrosat-ui';
+import { InfoButtonTooltip } from 'components/info-button-tooltip/info-button-tooltip.component';
 
 const useAccordionStyles = makeStyles({
   root: {
@@ -28,6 +29,7 @@ const useSummaryClasses = makeStyles({
     },
   },
   content: {
+    alignItems: 'center',
     '&$expanded': {
       margin: '12px 0',
     },
@@ -35,7 +37,7 @@ const useSummaryClasses = makeStyles({
   expanded: {},
 });
 
-const useStyles = makeStyles({
+const useStyles = makeStyles(theme => ({
   fakeSummary: {
     cursor: 'default !important',
   },
@@ -43,23 +45,36 @@ const useStyles = makeStyles({
     width: '0.875rem',
     height: '0.875rem',
   },
-});
+  info: {
+    marginLeft: theme.spacing(1),
+  },
+}));
 
 /**
  * @param {{
  *  children?: React.ReactNode
  *  title: string
  *  defaultExpanded?: boolean
+ *  info?: React.ReactNode
  * }} props
  */
 export const SidePanelSection = ({
   children,
   title,
   defaultExpanded = false,
+  info,
 }) => {
   const accordionClasses = useAccordionStyles();
   const summaryClasses = useSummaryClasses();
   const styles = useStyles();
+
+  const Info = info && (
+    <InfoButtonTooltip
+      iconButtonClassName={styles.info}
+      placement="right"
+      tooltipContent={info}
+    />
+  );
 
   return !!children ? (
     <Accordion classes={accordionClasses} defaultExpanded={defaultExpanded}>
@@ -72,6 +87,7 @@ export const SidePanelSection = ({
         <Typography variant="h4" component="span">
           {title}
         </Typography>
+        {Info}
       </AccordionSummary>
       <AccordionDetails>{children}</AccordionDetails>
     </Accordion>
@@ -80,8 +96,10 @@ export const SidePanelSection = ({
       className={styles.fakeSummary}
       variant="h4"
       component={AccordionSummary}
+      role="presentation"
     >
       {title}
+      {Info}
     </Typography>
   );
 };
