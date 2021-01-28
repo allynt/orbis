@@ -23,12 +23,16 @@ module.exports = {
           name: 'MySupplyLynkMapComponent',
           props: { name: 'cqcSuppliers' },
         },
+        sidebar_component: {
+          name: 'LayerVisibilityCheckbox',
+        },
         layer: {
           name: 'GeoJsonClusteredIconLayer',
           props: {
             config: 'pinIconConfig',
-            pinColor: 'red',
-            onClick: false,
+            pinColor: 'purple',
+            onPointClick: false,
+            onGroupClick: true,
             onHover: true,
           },
         },

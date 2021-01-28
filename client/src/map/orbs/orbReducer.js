@@ -33,6 +33,16 @@ import crowdless from './slices/crowdless.slice';
  *   LayersState,
  *   import('@reduxjs/toolkit').PayloadAction<{
  *     source_id: import('typings/orbis').Source['source_id'],
+ *     hoveredFeatures?: import('typings/orbis').GeoJsonFeature[]
+ *   }>
+ * >} SetHoveredFeaturesAction
+ */
+
+/**
+ * @typedef {import('@reduxjs/toolkit').CaseReducer<
+ *   LayersState,
+ *   import('@reduxjs/toolkit').PayloadAction<{
+ *     source_id: import('typings/orbis').Source['source_id'],
  *     visible?: boolean
  *   }>
  * >} SetVisibilityAction
@@ -59,6 +69,11 @@ const layersSlice = createSlice({
     setClickedFeatures: (state, { payload }) => {
       const { source_id, clickedFeatures } = payload;
       state[source_id] = { ...state[source_id], clickedFeatures };
+    },
+    /** @type {SetHoveredFeaturesAction} */
+    setHoveredFeatures: (state, { payload }) => {
+      const { source_id, hoveredFeatures } = payload;
+      state[source_id] = { ...state[source_id], hoveredFeatures };
     },
     /** @type {SetVisibilityAction} */
     setVisibility: (state, { payload }) => {
@@ -87,6 +102,9 @@ const baseSelector = orbs => orbs?.[layersSlice.name] || {};
 
 export const clickedFeaturesSelector = id =>
   createSelector(baseSelector, state => state[id]?.clickedFeatures);
+
+export const hoveredFeaturesSelector = id =>
+  createSelector(baseSelector, state => state[id]?.hoveredFeatures);
 
 export const layersVisibilitySelector = id =>
   createSelector(baseSelector, state => state[id]?.visible ?? true);

@@ -4,7 +4,12 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { FeatureDetail, Popup } from 'components';
 
-import { clickedFeaturesSelector, setClickedFeatures } from '../orbReducer';
+import {
+  clickedFeaturesSelector,
+  setClickedFeatures,
+  setHoveredFeatures,
+  hoveredFeaturesSelector,
+} from '../orbReducer';
 
 /**
  * @param {{
@@ -19,22 +24,46 @@ const FeatureDetailPopup = ({ source }) => {
     clickedFeaturesSelector(source?.source_id)(state?.orbs),
   );
 
-  if (!clickedFeatures?.length) return null;
+  /** @type {import('typings/orbis').GeoJsonFeature[]} */
+  const hoveredFeatures = useSelector(state =>
+    hoveredFeaturesSelector(source?.source_id)(state?.orbs),
+  );
 
-  return (
-    <Popup
-      latitude={clickedFeatures?.[0]?.geometry.coordinates[1]}
-      longitude={clickedFeatures?.[0]?.geometry.coordinates[0]}
-      onClose={() =>
-        dispatch(
+  const getDetailContent = () => {
+    if (clickedFeatures?.length) {
+      return {
+        features: clickedFeatures,
+        action: () =>
           setClickedFeatures({
             source_id: source?.source_id,
-            clickedFeatures: undefined,
+            clickedFeatures: [],
           }),
-        )
-      }
+      };
+    }
+
+    if (hoveredFeatures?.length) {
+      return {
+        features: hoveredFeatures,
+        action: () =>
+          setHoveredFeatures({
+            source_id: source?.source_id,
+            hoveredFeatures: [],
+          }),
+      };
+    }
+  };
+
+  if (!clickedFeatures?.length && !hoveredFeatures?.length) return null;
+
+  const { features, action } = getDetailContent();
+  return (
+    <Popup
+      latitude={features?.[0]?.geometry.coordinates[1]}
+      longitude={features?.[0]?.geometry.coordinates[0]}
+      offsetTop={-37}
+      onClose={() => dispatch(action())}
     >
-      <FeatureDetail features={clickedFeatures?.map(obj => obj?.properties)} />
+      <FeatureDetail features={features?.map(obj => obj?.properties)} />
     </Popup>
   );
 };
