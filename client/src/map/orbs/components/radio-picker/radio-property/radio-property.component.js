@@ -71,11 +71,10 @@ const RadioProperty = ({
     : data;
 
   const propertyMatch = (() => {
-    const match = property =>
-      selectedProperty?.name === property.name &&
-      selectedProperty?.source_id === layerSourceId;
-
-    return isArray ? data.some(property => match(property)) : match(data);
+    const layerMatch = selectedProperty?.source_id === layerSourceId;
+    return isArray
+      ? data.some(p => selectedProperty?.name === p.name && layerMatch)
+      : selectedProperty?.name === data.name && layerMatch;
   })();
 
   const handleRadioClick = () =>
