@@ -92,6 +92,7 @@ const layersSlice = createSlice({
 
 export const {
   setClickedFeatures,
+  setHoveredFeatures,
   setVisibility,
   toggleExtrudedMode,
   setExtrusionScale,
