@@ -16,7 +16,7 @@ import iconAtlas from './pinIconConfig.iconAtlas.svg';
  */
 
 /**
- * @typedef {import('typings/orbis').GeoJsonFeature[]} GeoJsonFeature
+ * @typedef {import('typings/orbis').GeoJsonFeature} GeoJsonFeature
  */
 
 const configuration = ({
@@ -35,7 +35,7 @@ const configuration = ({
   const isVisible = layersVisibilitySelector(id)(orbState);
 
   /**
-   * @param {GeoJsonFeature} data
+   * @param {GeoJsonFeature[]} data
    */
   const defaultClick = data =>
     dispatch(
@@ -46,7 +46,7 @@ const configuration = ({
     );
 
   /**
-   * @param {GeoJsonFeature} data
+   * @param {GeoJsonFeature[]} data
    */
   const defaultHover = data =>
     dispatch(
