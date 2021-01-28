@@ -10,12 +10,18 @@ import {
 
 import { MAX_ZOOM } from 'map/map.constants';
 
+/**
+ * @typedef {import('typings/orbis').GeoJsonFeature} GeoJsonFeature
+ */
+
 const categoryFilterPinIconConfig = ({
   id,
   data,
   orbState,
   onPointClick,
   onGroupClick,
+  onPointHover,
+  onGroupHover,
   dispatch,
   ...rest
 }) => {
@@ -47,35 +53,25 @@ const categoryFilterPinIconConfig = ({
     }
   };
 
-  const handleHover = info => {
+  /**
+   * @param {GeoJsonFeature[]} data
+   */
+  const handleHover = data => {
     if (popupFeatures?.features?.length > 1) return;
-    if (!info?.object?.properties?.cluster) {
-      dispatch(
-        info.object
-          ? setPopupFeatures({
-              id: info.layer.props.id,
-              features: [info.object],
-            })
-          : setPopupFeatures({ id: undefined, features: [] }),
-      );
-    }
+    if (onPointHover)
+      return dispatch(setPopupFeatures({ id: id, features: data }));
   };
 
-  const handleClick = info => {
-    if (
-      info?.object?.properties?.cluster &&
-      info.object.properties.expansion_zoom > MAX_ZOOM &&
-      onGroupClick !== false
-    )
-      dispatch(
-        setPopupFeatures({ id: info.layer.props.id, features: info.objects }),
-      );
-    else {
-      if (onPointClick !== false) {
-        dispatch(setDialogFeatures([info.object.properties]));
-        dispatch(setPopupFeatures({ id: undefined, features: [] }));
-        dispatch(toggleDialog());
-      }
+  /**
+   * @param {GeoJsonFeature[]} data
+   */
+  const handleClick = data => {
+    if (onGroupClick === true && data.length > 1)
+      return dispatch(setPopupFeatures({ id: id, features: data }));
+    if (onPointClick === true) {
+      dispatch(setDialogFeatures([data[0].properties]));
+      dispatch(setPopupFeatures({ id: undefined, features: [] }));
+      dispatch(toggleDialog());
     }
   };
 

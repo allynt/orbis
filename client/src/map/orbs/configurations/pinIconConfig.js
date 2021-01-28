@@ -62,18 +62,14 @@ const configuration = ({
   const handleHover = info => {
     if (info?.object?.properties?.cluster) {
       if (info.object.properties.expansion_zoom >= MAX_ZOOM) {
+        const data = info.objects ? info.objects : [];
         if (typeof onGroupHover === 'function') return onGroupHover(data);
-        if (onGroupHover === true) {
-          const data = info.objects ? info.objects : [];
-          return defaultHover(data);
-        }
+        if (onGroupHover === true) return defaultHover(data);
       }
     } else {
+      const data = info.object ? [info.object] : [];
       if (typeof onPointHover === 'function') return onPointHover(data);
-      if (onPointHover === true) {
-        const data = info.object ? [info.object] : [];
-        return defaultHover(data);
-      }
+      if (onPointHover === true) return defaultHover(data);
     }
   };
 
@@ -95,11 +91,13 @@ const configuration = ({
           transitionInterpolator: new FlyToInterpolator(),
         });
       else {
-        if (typeof onGroupClick === 'function') return onGroupClick(info);
+        if (typeof onGroupClick === 'function')
+          return onGroupClick(info.objects);
         if (onGroupClick === true) return defaultClick(info.objects);
       }
     } else {
-      if (typeof onPointClick === 'function') return onPointClick(info);
+      if (typeof onPointClick === 'function')
+        return onPointClick([info.object]);
       if (onPointClick === true) return defaultClick([info.object]);
     }
   };
