@@ -26,40 +26,57 @@ const configuration = ({
 }) => {
   const isVisible = layersVisibilitySelector(id)(orbState);
 
+  /**
+   * @typedef {import('typings/orbis').PickedMapFeature} mapFeature
+   */
+
+  /**
+   * @param {Object[]} data
+   */
+  const defaultClick = data =>
+    dispatch(
+      setClickedFeatures({
+        source_id: id,
+        clickedFeatures: data,
+      }),
+    );
+
+  /**
+   * @param {Object[]} data
+   */
+  const defaultHover = data =>
+    dispatch(
+      setHoveredFeatures({
+        source_id: id,
+        hoveredFeatures: data,
+      }),
+    );
+
+  /**
+   * @param {mapFeature} info
+   */
   const handleHover = info => {
-    const data = info?.object ? [info.object] : [];
-
-    const defaultHover = () =>
-      dispatch(
-        setHoveredFeatures({
-          source_id: id,
-          hoveredFeatures: data,
-        }),
-      );
-
     if (info?.object?.properties?.cluster) {
       if (info.object.properties.expansion_zoom >= MAX_ZOOM) {
         if (typeof onGroupHover === 'function') return onGroupHover(data);
-        if (onGroupHover === true) return defaultHover();
+        if (onGroupHover === true) {
+          const data = info.objects ? info.objects : [];
+          return defaultHover(data);
+        }
       }
     } else {
       if (typeof onPointHover === 'function') return onPointHover(data);
-      if (onPointHover === true) return defaultHover();
+      if (onPointHover === true) {
+        const data = info.object ? [info.object] : [];
+        return defaultHover(data);
+      }
     }
   };
 
   /**
-   * @param {import('typings/orbis').PickedMapFeature} info
+   * @param {mapFeature} info
    */
   const handleClick = info => {
-    const defaultClick = () =>
-      dispatch(
-        setClickedFeatures({
-          source_id: id,
-          clickedFeatures: info?.objects,
-        }),
-      );
-
     if (info?.object?.properties?.cluster) {
       if (info.object.properties.expansion_zoom <= MAX_ZOOM)
         setViewState({
@@ -75,11 +92,11 @@ const configuration = ({
         });
       else {
         if (typeof onGroupClick === 'function') return onGroupClick(info);
-        if (onGroupClick === true) return defaultClick();
+        if (onGroupClick === true) return defaultClick(info.objects);
       }
     } else {
       if (typeof onPointClick === 'function') return onPointClick(info);
-      if (onPointClick === true) return defaultClick();
+      if (onPointClick === true) return defaultClick([info.object]);
     }
   };
 
