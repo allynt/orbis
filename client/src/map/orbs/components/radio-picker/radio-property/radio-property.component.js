@@ -149,6 +149,7 @@ const RadioProperty = ({
                 !!selectedProperty?.application?.orbis?.display
                   ?.colormap_reversed
               }
+              precision={selectedProperty?.precision}
             />
           </div>
         </>
