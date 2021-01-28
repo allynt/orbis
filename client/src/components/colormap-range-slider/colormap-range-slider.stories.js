@@ -76,7 +76,7 @@ export const NegativeDomain = Template.bind({});
 NegativeDomain.args = { type: 'continuous', domain: [-100, 100] };
 
 export const SmallDomain = Template.bind({});
-SmallDomain.args = { domain: [0.1, 0.9] };
+SmallDomain.args = { domain: [0.1, 0.9], precision: 2 };
 
 export const Reversed = Template.bind({});
 Reversed.args = {
@@ -123,4 +123,9 @@ export const Clipped = Template.bind({});
 Clipped.args = {
   domain: [0, 100],
   clip: [20, 70],
+};
+
+export const LongValues = Template.bind({});
+LongValues.args = {
+  domain: [-1000000, 1000000],
 };
