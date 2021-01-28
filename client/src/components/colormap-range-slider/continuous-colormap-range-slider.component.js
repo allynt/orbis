@@ -142,6 +142,8 @@ const ContinuousColorMapRangeSlider = ({
         />
         <VictoryAxis
           {...axisProps}
+          range={domain}
+          tickCount={3}
           tickLabelComponent={
             <VictoryLabel
               style={{
