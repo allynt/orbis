@@ -11,6 +11,14 @@ import {
 import iconMapping from './pinIconConfig.iconMapping.json';
 import iconAtlas from './pinIconConfig.iconAtlas.svg';
 
+/**
+ * @typedef {import('typings/orbis').PickedMapFeature} PickedMapFeature
+ */
+
+/**
+ * @typedef {import('typings/orbis').GeoJsonFeature[]} GeoJsonFeature
+ */
+
 const configuration = ({
   id,
   data,
@@ -27,11 +35,7 @@ const configuration = ({
   const isVisible = layersVisibilitySelector(id)(orbState);
 
   /**
-   * @typedef {import('typings/orbis').PickedMapFeature} mapFeature
-   */
-
-  /**
-   * @param {Object[]} data
+   * @param {GeoJsonFeature} data
    */
   const defaultClick = data =>
     dispatch(
@@ -42,7 +46,7 @@ const configuration = ({
     );
 
   /**
-   * @param {Object[]} data
+   * @param {GeoJsonFeature} data
    */
   const defaultHover = data =>
     dispatch(
@@ -53,7 +57,7 @@ const configuration = ({
     );
 
   /**
-   * @param {mapFeature} info
+   * @param {PickedMapFeature} info
    */
   const handleHover = info => {
     if (info?.object?.properties?.cluster) {
@@ -74,7 +78,7 @@ const configuration = ({
   };
 
   /**
-   * @param {mapFeature} info
+   * @param {PickedMapFeature} info
    */
   const handleClick = info => {
     if (info?.object?.properties?.cluster) {
