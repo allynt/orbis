@@ -1,3 +1,42 @@
+# [2.10.0](https://github.com/astrosat/orbis/compare/v2.9.0...v2.10.0) (2021-01-29)
+
+
+### Bug Fixes
+
+* **frontend:** Add extrudedMode to layers state ([724cc58](https://github.com/astrosat/orbis/commit/724cc585e98459848c6681c0119f02666dcfee45))
+* **frontend:** Add extrusionMode to MapContext ([922cebb](https://github.com/astrosat/orbis/commit/922cebb457a8db6e8e008c3ce601ddf4708de143))
+* **frontend:** Add info icon popup to side panel section ([e30df18](https://github.com/astrosat/orbis/commit/e30df1801fbe386486b044067b97db0038f3788e))
+* **frontend:** Add offset to FeatureDetailPopup ([efcdd00](https://github.com/astrosat/orbis/commit/efcdd00156d92716556c391b6fb3911039fa0cba))
+* **frontend:** Allow precision to get to ColorMapRangeSlider ([5537017](https://github.com/astrosat/orbis/commit/5537017d62133e56c88478197572f5c30aa67030))
+* **frontend:** Another small typing tweak ([70f9302](https://github.com/astrosat/orbis/commit/70f930213fd5f5038119028e18f17f63238a78d3))
+* **frontend:** Begin CQC data layer ([5b553ad](https://github.com/astrosat/orbis/commit/5b553ad4c2dc4377cca5c79049e78998844c4be2))
+* **frontend:** Clean up config and detail code ([8644855](https://github.com/astrosat/orbis/commit/86448551f7e454b31676e28991fa4e9a3479455f))
+* **frontend:** Design improvements of ExtrusionScaleSlider ([2f4987e](https://github.com/astrosat/orbis/commit/2f4987e84f87fff21ee62f5a487b8b513b5d78a9))
+* **frontend:** Merge master, update configs and components ([1e80277](https://github.com/astrosat/orbis/commit/1e802777921886c271757230f2570f0f9ef9c155))
+* **frontend:** Re-add setHoverFeatures ([9287985](https://github.com/astrosat/orbis/commit/9287985bcaa4c7c7392f073109912f38b2493280))
+* **frontend:** Remove ends from marks ([14c725a](https://github.com/astrosat/orbis/commit/14c725aec48f775c875f91a43a200e30c966c970))
+* **frontend:** Remove extrudedMode from MapContext ([571b2dc](https://github.com/astrosat/orbis/commit/571b2dc04f4dd3e9d7aca19e19fbeb49c6d75c8d))
+* **frontend:** Rest map pitch when 3d is turned off ([2f3e2bc](https://github.com/astrosat/orbis/commit/2f3e2bc062ad04de4bf7ed9556c0d74ee6018bf4))
+* **frontend:** Solve instabilities where data is a falsy value ([c5bcb72](https://github.com/astrosat/orbis/commit/c5bcb72ef01de69f00bbfa831bcf917f0c315461))
+* **frontend:** Specify an approximate limit on the ticks ([d358574](https://github.com/astrosat/orbis/commit/d358574511d041c1a5c6c691ec261a986df33e52))
+* **frontend:** Split events, update config, map component and reducer ([855d32d](https://github.com/astrosat/orbis/commit/855d32df9d3bdad74da3e41a37deca321711eebc))
+* **frontend:** Style map control buttons ([42c5b0e](https://github.com/astrosat/orbis/commit/42c5b0efb3f7a811806379fea56b265b20055220))
+* **frontend:** Update cateforyFilterPinIconConfig ([4b31b06](https://github.com/astrosat/orbis/commit/4b31b06bd5344ef75845a5ef7f04eda1b27e3986))
+* **frontend:** Update config, reducer and components ([eaca3a3](https://github.com/astrosat/orbis/commit/eaca3a3789ef2911befc872a7ff96736e42a0d13))
+* **frontend:** Update hover functionality ([300b16b](https://github.com/astrosat/orbis/commit/300b16b9d32cd1e20436d404b9aef573c954ce47))
+* **frontend:** Update proxy data ([916ef6f](https://github.com/astrosat/orbis/commit/916ef6fea4310eed8e52b0142db6bcadd2ad7d50))
+* **frontend:** Update typings ([0577ab2](https://github.com/astrosat/orbis/commit/0577ab207c650e4d06c05d73a0ce7554a29d1907))
+* **frontend:** Updated code, added typings ([ad6748a](https://github.com/astrosat/orbis/commit/ad6748a314a0b1d39149732b42e0897c2adee1cd))
+
+
+### Features
+
+* **frontend:** Come up with good solution for text and slider ([226bc66](https://github.com/astrosat/orbis/commit/226bc66ac669751e7a01afd253115ad173909e6f))
+* **frontend:** Implement AnalysisPanel info icons ([7df4462](https://github.com/astrosat/orbis/commit/7df44624c710fcc5efab8fc9469af425d01aabbf))
+* **frontend:** Implement extrusion scale slider ([62af528](https://github.com/astrosat/orbis/commit/62af5289f8fe8fa1167eaadef51027c948e6fb75))
+* **frontend:** Make analysis panel components dynamic ([a16b964](https://github.com/astrosat/orbis/commit/a16b96438cdddde1ea3ac4383337b19cd3f1456a))
+* **frontend:** Setup iso plus layer to use extruded mode ([707f8dc](https://github.com/astrosat/orbis/commit/707f8dcc9a12efd4df0698665035282af9fc1f87))
+
 # [2.9.0](https://github.com/astrosat/orbis/compare/v2.8.0...v2.9.0) (2021-01-22)
 
 
