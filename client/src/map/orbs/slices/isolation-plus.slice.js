@@ -72,7 +72,10 @@ export const {
   setFilterRange,
 } = isolationPlusSlice.actions;
 
-/** @returns {IsolationPlusState} */
+/**
+ * @param {import('../orbReducer').OrbState} orbs
+ * @returns {IsolationPlusState}
+ */
 const baseSelector = orbs => orbs?.[isolationPlusSlice.name];
 
 export const propertySelector = createSelector(

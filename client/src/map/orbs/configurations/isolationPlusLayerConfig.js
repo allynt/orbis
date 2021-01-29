@@ -13,7 +13,7 @@ import {
 
 /** @typedef {import('typings/orbis').GeoJsonFeature<import('typings/orbis').IsoPlusCommonProperties>} AccessorFeature */
 
-const COLOR_PRIMARY = [246, 190, 0, 255],
+export const COLOR_PRIMARY = [246, 190, 0, 255],
   COLOR_TRANSPARENT = [0, 0, 0, 0],
   OPACITY_FLAT = 150,
   OPACITY_EXTRUDED = OPACITY_FLAT,
@@ -22,6 +22,16 @@ const COLOR_PRIMARY = [246, 190, 0, 255],
   LINE_WIDTH_SELECTED = 3,
   TRANSITION_DURATION = 150;
 
+/**
+ * @param {{
+ *   id: string
+ *   data: GeoJSON.FeatureCollection
+ *   activeSources?: import('typings/orbis').Source[]
+ *   dispatch: import('redux').Dispatch
+ *   orbState: import('../orbReducer').OrbState
+ *   authToken?: string
+ * }} parameters
+ */
 const configuration = ({
   id,
   data,
@@ -128,25 +138,30 @@ const configuration = ({
     return dispatch(setClickedFeatures([info]));
   };
 
+  /**
+   * @param {AccessorFeature} d
+   */
+  const getFilterValue = d => Math.round(d.properties[selectedProperty.name]);
+
   return {
     id,
     data,
     authToken,
     visible: !!source && selectedProperty.source_id === id,
-    minZoom: source.metadata.minZoom,
-    maxZoom: source.metadata.maxZoom,
-    uniqueIdProperty: source.metadata.uniqueIdProperty,
+    minZoom: source?.metadata?.minZoom,
+    maxZoom: source?.metadata?.maxZoom,
+    uniqueIdProperty: source?.metadata?.uniqueIdProperty,
     pickable: true,
     autoHighlight: true,
     onClick,
     extruded: extrudedMode,
-    getElevation: getElevation,
+    getElevation,
     elevationScale: extrusionScale,
     getLineColor: COLOR_PRIMARY,
-    getLineWidth: getLineWidth,
+    getLineWidth,
     lineWidthUnits: 'pixels',
-    getFillColor: getFillColor,
-    getFilterValue: d => Math.round(d.properties[selectedProperty.name]),
+    getFillColor,
+    getFilterValue,
     filterRange: filterRange || [
       selectedPropertyMetadata?.min,
       selectedPropertyMetadata?.max,

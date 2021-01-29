@@ -7,6 +7,10 @@ import actionForHelp from './slices/action-for-help.slice';
 import crowdless from './slices/crowdless.slice';
 
 /**
+ * @typedef {ReturnType<orbReducer>} OrbState
+ */
+
+/**
  * @typedef {{
  *   [key: string]: {
  *     visible?: boolean,
