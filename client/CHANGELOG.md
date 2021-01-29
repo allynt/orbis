@@ -1,3 +1,10 @@
+## [2.10.1](https://github.com/astrosat/orbis/compare/v2.10.0...v2.10.1) (2021-01-29)
+
+
+### Bug Fixes
+
+* **frontend:** Apply a scaling to the filter values rather than round ([3ddcb8e](https://github.com/astrosat/orbis/commit/3ddcb8efe8ad8f91ef3edebf328863d2d12ec68d))
+
 # [2.10.0](https://github.com/astrosat/orbis/compare/v2.9.0...v2.10.0) (2021-01-29)
 
 
