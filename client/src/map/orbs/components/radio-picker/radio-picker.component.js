@@ -32,15 +32,12 @@ export const RadioPicker = ({ selectedLayer, dispatch }) => {
     categories: selectedLayer?.metadata?.application?.orbis?.categories,
   }).replace('.', ' > ');
 
-  const onRadioClick = property => {
+  const onRadioClick = (propertyMatch, property) => {
     dispatch(
       setProperty(
-        selectedProperty?.name === property.name
+        propertyMatch
           ? {}
-          : {
-              source_id: selectedLayer.source_id,
-              ...property,
-            },
+          : { source_id: selectedLayer?.source_id, ...property },
       ),
     );
   };

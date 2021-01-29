@@ -77,12 +77,14 @@ const RadioProperty = ({
       : selectedProperty?.name === data.name && layerMatch;
   })();
 
-  const handleRadioClick = () =>
-    onRadioClick(
+  const handleRadioClick = () => {
+    const property =
       propertyMatch && isArray && selectedProperty?.type === FORMAT.number
         ? findPropertyByType(FORMAT.number)
-        : initialProperty,
-    );
+        : initialProperty;
+
+    onRadioClick(propertyMatch, property);
+  };
 
   return (
     <div className={styles.property}>
