@@ -20,7 +20,11 @@ const COLOR_PRIMARY = [246, 190, 0, 255],
   OPACITY_EXTRUDED_SELECTED = 255,
   LINE_WIDTH = 0,
   LINE_WIDTH_SELECTED = 3,
-  TRANSITION_DURATION = 150;
+  TRANSITION_DURATION = 150,
+  // This is used to convert property values from floats to ints
+  // to avoid rounding problems. Ints are needed as filtering occurs
+  // on the GPU
+  FILTER_SCALING_VALUE = 1000;
 
 const configuration = ({
   id,
@@ -146,11 +150,14 @@ const configuration = ({
     getLineWidth: getLineWidth,
     lineWidthUnits: 'pixels',
     getFillColor: getFillColor,
-    getFilterValue: d => Math.round(d.properties[selectedProperty.name]),
-    filterRange: filterRange || [
-      selectedPropertyMetadata?.min,
-      selectedPropertyMetadata?.max,
-    ],
+    getFilterValue: d =>
+      d.properties[selectedProperty.name] * FILTER_SCALING_VALUE,
+    filterRange: (
+      filterRange || [
+        selectedPropertyMetadata?.min,
+        selectedPropertyMetadata?.max,
+      ]
+    ).map(f => f * FILTER_SCALING_VALUE),
     transitions: {
       getFillColor: TRANSITION_DURATION,
       getLineWidth: TRANSITION_DURATION,
