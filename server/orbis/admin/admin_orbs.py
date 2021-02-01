@@ -154,7 +154,6 @@ class LicenceAdmin(admin.ModelAdmin):
         "id",
         "orb__name",
         "customer__name",
-        "customer__title",
         "customer_user__user__name",
         "customer_user__user__email",
         "customer_user__user__username",
