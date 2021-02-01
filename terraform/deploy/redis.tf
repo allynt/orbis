@@ -1,6 +1,6 @@
 resource "random_password" "password" {
-  length = 16
-  special = true
+  length           = 16
+  special          = true
   override_special = "_%@"
 }
 
@@ -44,8 +44,6 @@ resource "kubernetes_stateful_set" "redis_server" {
         #   run_as_user = "${var.master_security_context["run_as_user"]}"
         # }
 
-        # node_selector = "${var.kubernetes_node_selector}"
-
         container {
           name              = local.redis_name
           image             = "docker.io/redis:6.0.10"
@@ -58,15 +56,7 @@ resource "kubernetes_stateful_set" "redis_server" {
 
           env {
             name  = "REDIS_PASSWORD"
-            # value = local.redis_password
             value = random_password.password.result
-
-            # value_from {
-            #   secret_key_ref {
-            #     name = local.redis_password
-            #     key  = "redis_password"
-            #   }
-            # }
           }
 
           env {
@@ -82,11 +72,6 @@ resource "kubernetes_stateful_set" "redis_server" {
           env {
             name  = "REDIS_DISABLE_COMMANDS"
             value = "FLUSHALL"
-
-            # value = [
-            #   "FLUSHDB",
-            #   "FLUSHALL",
-            # ]
           }
 
           env {
@@ -155,8 +140,8 @@ resource "kubernetes_service" "redis_server" {
   }
 
   spec {
-    selector   = local.redis_labels
-    type       = "ClusterIP"
+    selector = local.redis_labels
+    type     = "ClusterIP"
 
     port {
       name        = "redis"
