@@ -198,9 +198,9 @@ describe('isolationPlusLayerConfig', () => {
   });
 
   describe('getFilterValue', () => {
-    it("Returns the feature's value rounded", () => {
+    it("Returns the feature's value multiplied by a scaling factor", () => {
       const { getFilterValue } = setup();
-      expect(getFilterValue({ properties: { testProperty: 0.5 } })).toBe(1);
+      expect(getFilterValue({ properties: { testProperty: 0.5 } })).toBe(500);
     });
   });
 });
