@@ -39,10 +39,10 @@ resource "kubernetes_stateful_set" "redis_server" {
       }
 
       spec {
-        # security_context {
-        #   fs_group    = "${var.master_security_context["fs_group"]}"
-        #   run_as_user = "${var.master_security_context["run_as_user"]}"
-        # }
+        security_context {
+          fs_group    = 1001
+          run_as_user = 1001
+        }
 
         container {
           name              = local.redis_name
