@@ -110,7 +110,7 @@ export const logError = source => async (dispatch, getState) => {
   dispatch(
     addLogItem({
       content: {
-        userId: user.id,
+        userId: user?.id,
         customerId: user?.customers[0]?.id,
         customerName: user?.customers[0]?.name,
         dataset: source.source_id,
