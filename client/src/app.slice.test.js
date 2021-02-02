@@ -111,6 +111,7 @@ describe('App Slice', () => {
         error: null,
         notYetImplementedDescription: null,
         trackingQueue: [],
+        apiUrl: '',
       };
     });
 

@@ -5,6 +5,7 @@ import {
   setCurrentCustomer,
 } from 'admin/admin.slice';
 import { push } from 'connected-react-router';
+
 import { NotificationManager } from 'react-notifications';
 import { persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage'; // defaults to localStorage for web
@@ -14,6 +15,7 @@ import {
   getJsonAuthHeaders,
   JSON_HEADERS,
   sendData,
+  getApiUrl,
 } from 'utils/http';
 import { FIELD_NAMES } from 'utils/validators';
 import {
@@ -253,11 +255,15 @@ export const {
   fetchRequested,
 } = accountsSlice.actions;
 
-export const registerUser = form => async dispatch => {
+export const registerUser = form => async (dispatch, getState) => {
   dispatch(fetchRequested());
   const data = mapData(form, FIELD_MAPPING.registerUser);
 
-  const response = await sendData(API.registerUser, data, JSON_HEADERS);
+  const response = await sendData(
+    `${getApiUrl(getState())}${API.registerUser}`,
+    data,
+    JSON_HEADERS,
+  );
 
   if (!response.ok) {
     const errorObject = await response.json();
@@ -277,12 +283,13 @@ export const registerUser = form => async dispatch => {
 export const registerCustomer = form => async (dispatch, getState) => {
   dispatch(fetchRequested());
   const headers = getJsonAuthHeaders(getState());
+  const apiUrl = getApiUrl(getState());
   const data = {
     ...mapData(form, FIELD_MAPPING.registerCustomer),
     type: 'MULTIPLE',
   };
   const createCustomerResponse = await sendData(
-    API.registerCustomer,
+    `${apiUrl}${API.registerCustomer}`,
     data,
     headers,
   );
@@ -293,7 +300,7 @@ export const registerCustomer = form => async (dispatch, getState) => {
   const customer = await createCustomerResponse.json();
   dispatch(setCurrentCustomer(customer));
   const createCustomerUserResponse = await sendData(
-    `/api/customers/${customer.id}/users/`,
+    `${apiUrl}/api/customers/${customer.id}/users/`,
     {
       type: 'MANAGER',
       status: 'ACTIVE',
@@ -310,7 +317,7 @@ export const registerCustomer = form => async (dispatch, getState) => {
   }
   const customerUser = await createCustomerUserResponse.json();
   dispatch(createCustomerUserSuccess({ user: customerUser }));
-  const getUserRequest = await getData(`${API.user}current/`, headers);
+  const getUserRequest = await getData(`${apiUrl}${API.user}current/`, headers);
   if (!getUserRequest.ok) {
     const errors = await getUserRequest.json();
     return dispatch(registerCustomerFailure(errorTransformer(errors)));
@@ -328,6 +335,7 @@ export const registerCustomer = form => async (dispatch, getState) => {
 export const placeOrder = form => async (dispatch, getState) => {
   dispatch(fetchRequested());
   const headers = getJsonAuthHeaders(getState());
+  const apiUrl = getApiUrl(getState());
   let data = mapData(form, FIELD_MAPPING.placeOrder);
   data = {
     order_type: data.order_type,
@@ -344,7 +352,7 @@ export const placeOrder = form => async (dispatch, getState) => {
     selectCurrentCustomer(getState())?.id ||
     userSelector(getState())?.customers[0]?.id;
   const response = await sendData(
-    `/api/customers/${currentCustomerId}/orders/`,
+    `${apiUrl}/api/customers/${currentCustomerId}/orders/`,
     data,
     headers,
   );
@@ -353,7 +361,7 @@ export const placeOrder = form => async (dispatch, getState) => {
     return dispatch(placeOrderFailure({ errors: errorTransformer(body) }));
   }
   const fetchCustomerResponse = await getData(
-    `/api/customers/${currentCustomerId}/`,
+    `${apiUrl}/api/customers/${currentCustomerId}/`,
     headers,
   );
   if (!fetchCustomerResponse.ok) {
@@ -366,9 +374,13 @@ export const placeOrder = form => async (dispatch, getState) => {
   dispatch(push('/'));
 };
 
-export const activateAccount = form => async dispatch => {
+export const activateAccount = form => async (dispatch, getState) => {
   dispatch(fetchRequested());
-  const response = await sendData(API.activate, form, JSON_HEADERS);
+  const response = await sendData(
+    `${getApiUrl(getState())}${API.activate}`,
+    form,
+    JSON_HEADERS,
+  );
 
   if (!response.ok) {
     const errorObject = await response.json();
@@ -382,7 +394,10 @@ export const fetchUser = (email = 'current') => async (dispatch, getState) => {
   dispatch(fetchRequested());
   const headers = getJsonAuthHeaders(getState());
 
-  const response = await getData(`${API.user}${email}/`, headers);
+  const response = await getData(
+    `${getApiUrl(getState())}${API.user}${email}/`,
+    headers,
+  );
 
   if (!response.ok) {
     const errorObject = await response.json();
@@ -394,9 +409,10 @@ export const fetchUser = (email = 'current') => async (dispatch, getState) => {
   return dispatch(fetchUserSuccess(user));
 };
 
-export const login = form => async dispatch => {
+export const login = form => async (dispatch, getState) => {
   dispatch(fetchRequested());
-  const response = await sendData(API.login, form, JSON_HEADERS);
+  const apiUrl = getApiUrl(getState());
+  const response = await sendData(`${apiUrl}${API.login}`, form, JSON_HEADERS);
   if (!response.ok) {
     const responseObject = await response.json();
     if (responseObject.user?.is_verified === false) dispatch(push(RESEND));
@@ -409,7 +425,11 @@ export const login = form => async dispatch => {
   }
   const userKey = (await response.json()).token;
   const headers = getJsonAuthHeaders({ accounts: { userKey } });
-  const fetchUserResponse = await getData(`${API.user}current/`, headers);
+
+  const fetchUserResponse = await getData(
+    `${apiUrl}${API.user}current/`,
+    headers,
+  );
   if (!fetchUserResponse.ok) {
     const responseObject = await fetchUserResponse.json();
     return dispatch(
@@ -432,11 +452,11 @@ export const login = form => async dispatch => {
   }
 };
 
-export const resendVerificationEmail = email => async dispatch => {
+export const resendVerificationEmail = email => async (dispatch, getState) => {
   dispatch(fetchRequested());
   const emailObj = { email };
   const response = await sendData(
-    API.resendVerificationEmail,
+    `${getApiUrl(getState())}${API.resendVerificationEmail}`,
     emailObj,
     JSON_HEADERS,
   );
@@ -453,7 +473,11 @@ export const logout = () => async (dispatch, getState) => {
   dispatch(fetchRequested());
   const headers = getJsonAuthHeaders(getState());
 
-  const response = await sendData(API.logout, {}, headers);
+  const response = await sendData(
+    `${getApiUrl(getState())}${API.logout}`,
+    {},
+    headers,
+  );
 
   if (!response.ok) {
     const errorObject = await response.json();
@@ -467,7 +491,11 @@ export const changePassword = form => async (dispatch, getState) => {
   const data = mapData(form, FIELD_MAPPING.changePassword);
   const headers = getJsonAuthHeaders(getState());
 
-  const response = await sendData(API.changePassword, data, headers);
+  const response = await sendData(
+    `${getApiUrl(getState())}${API.changePassword}`,
+    data,
+    headers,
+  );
 
   if (!response.ok) {
     const errorObject = await response.json();
@@ -477,7 +505,10 @@ export const changePassword = form => async (dispatch, getState) => {
   return dispatch(changePasswordSuccess());
 };
 
-export const confirmResetPassword = (form, params) => async dispatch => {
+export const confirmResetPassword = (form, params) => async (
+  dispatch,
+  getState,
+) => {
   const { uid, token } = params;
   const data = {
     ...mapData(form, FIELD_MAPPING.confirmResetPassword),
@@ -485,7 +516,11 @@ export const confirmResetPassword = (form, params) => async dispatch => {
     uid,
   };
 
-  const response = await sendData(API.verifyResetPassword, data, JSON_HEADERS);
+  const response = await sendData(
+    `${getApiUrl(getState())}${API.verifyResetPassword}`,
+    data,
+    JSON_HEADERS,
+  );
 
   if (!response.ok) {
     const errorObject = await response.json();
@@ -498,8 +533,12 @@ export const confirmResetPassword = (form, params) => async dispatch => {
   return dispatch(passwordResetRequestedSuccess(user));
 };
 
-export const resetPassword = form => async dispatch => {
-  const response = await sendData(API.resetPassword, form, JSON_HEADERS);
+export const resetPassword = form => async (dispatch, getState) => {
+  const response = await sendData(
+    `${getApiUrl(getState())}${API.resetPassword}`,
+    form,
+    JSON_HEADERS,
+  );
 
   if (!response.ok) {
     const errorObject = await response.json();
@@ -522,7 +561,7 @@ export const updateUser = form => async (dispatch, getState) => {
   };
 
   const response = await sendData(
-    `${API.user}${user.id}/`,
+    `${getApiUrl(getState())}${API.user}${user.id}/`,
     data,
     headers,
     'PUT',

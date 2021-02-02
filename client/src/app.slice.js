@@ -2,7 +2,7 @@ import { createSelector, createSlice, current } from '@reduxjs/toolkit';
 import { pick } from 'lodash';
 import { NotificationManager } from 'react-notifications';
 
-import { getJsonAuthHeaders } from 'utils/http';
+import { getJsonAuthHeaders, getApiUrl } from 'utils/http';
 
 export const DEFAULT_MAP_STYLE = 3;
 
@@ -11,6 +11,7 @@ const initialState = {
   error: null,
   notYetImplementedDescription: null,
   trackingQueue: [],
+  apiUrl: '',
 };
 
 const appSlice = createSlice({
@@ -35,6 +36,9 @@ const appSlice = createSlice({
         item => !payload.includes(current(item)),
       );
     },
+    setApiUrl: (state, { payload }) => {
+      state.apiUrl = payload;
+    },
   },
 });
 
@@ -44,15 +48,17 @@ export const {
   notYetImplemented,
   addLogItem,
   removeLogItems,
+  setApiUrl,
 } = appSlice.actions;
 
-export const fetchAppConfig = () => async dispatch => {
-  const response = await fetch(
-    `${window.orbis.getEnv().REACT_APP_API_HOST}/api/app/config`,
-    {
-      credentials: 'include',
-    },
-  );
+export const updateApiUrl = url => async dispatch => {
+  dispatch(setApiUrl(url));
+};
+
+export const fetchAppConfig = () => async (dispatch, getState) => {
+  const response = await fetch(`${getApiUrl(getState())}/api/app/config`, {
+    credentials: 'include',
+  });
 
   if (!response.ok) {
     const message = `${response.status} ${response.statusText}`;
@@ -77,15 +83,12 @@ export const logUserTracking = () => async (dispatch, getState) => {
     app: { trackingQueue },
   } = getState();
   if (trackingQueue.length > 0) {
-    const response = await fetch(
-      `${window.orbis.getEnv().REACT_APP_API_HOST}/api/logs/tracking`,
-      {
-        credentials: 'include',
-        method: 'POST',
-        headers,
-        body: JSON.stringify(trackingQueue),
-      },
-    );
+    const response = await fetch(`${getApiUrl(getState())}/api/logs/tracking`, {
+      credentials: 'include',
+      method: 'POST',
+      headers,
+      body: JSON.stringify(trackingQueue),
+    });
 
     if (!response.ok) {
       // Leave items in state, so we can retry later.

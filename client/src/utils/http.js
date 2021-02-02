@@ -29,22 +29,22 @@ export const getFormAuthHeaders = state => {
   };
 };
 
+export const getApiUrl = state => {
+  const {
+    app: { apiUrl },
+  } = state;
+
+  return apiUrl;
+};
+
 export const getData = (url, headers = {}) => {
-  return url.startsWith('/api')
-    ? fetch(`${window.orbis.getEnv().REACT_APP_API_HOST}${url}`, {
-        credentials: 'include',
-        method: 'GET',
-        headers: headers,
-      })
-        .then(response => response)
-        .catch(error => error)
-    : fetch(url, {
-        credentials: 'include',
-        method: 'GET',
-        headers: headers,
-      })
-        .then(response => response)
-        .catch(error => error);
+  return fetch(url, {
+    credentials: 'include',
+    method: 'GET',
+    headers: headers,
+  })
+    .then(response => response)
+    .catch(error => error);
 };
 
 /**
@@ -64,7 +64,7 @@ export const sendData = (url, data = '', headers = {}, method = 'POST') => {
   }
 
   if (method === 'DELETE') {
-    return fetch(`${window.orbis.getEnv().REACT_APP_API_HOST}${url}${data}/`, {
+    return fetch(`${url}${data}/`, {
       credentials: 'include',
       method,
       headers: headers,
@@ -72,7 +72,7 @@ export const sendData = (url, data = '', headers = {}, method = 'POST') => {
       .then(response => response)
       .catch(error => error);
   } else if (method === 'PUT') {
-    return fetch(`${window.orbis.getEnv().REACT_APP_API_HOST}${url}`, {
+    return fetch(`${url}`, {
       credentials: 'include',
       method,
       headers: headers,
@@ -81,7 +81,7 @@ export const sendData = (url, data = '', headers = {}, method = 'POST') => {
       .then(response => response)
       .catch(error => error);
   } else {
-    return fetch(`${window.orbis.getEnv().REACT_APP_API_HOST}${url}`, {
+    return fetch(`${url}`, {
       credentials: 'include',
       method,
       headers: headers,

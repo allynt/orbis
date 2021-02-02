@@ -22,6 +22,7 @@ const setup = () => {
           },
           customerUsers: [],
         },
+        app: { apiUrl: 'http://test.com' },
       })}
     >
       <Admin

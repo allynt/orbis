@@ -1,7 +1,7 @@
 import { NotificationManager } from 'react-notifications';
 import { createSlice, createSelector } from '@reduxjs/toolkit';
 
-import { getData, sendData, getJsonAuthHeaders } from 'utils/http';
+import { getData, sendData, getJsonAuthHeaders, getApiUrl } from 'utils/http';
 import { USER_STATUS } from './admin.constants';
 
 const API = '/api/customers/';
@@ -182,7 +182,10 @@ export const fetchCustomer = user => async (dispatch, getState) => {
   const customerId = user.customers.find(
     customer => customer.type === 'MANAGER',
   ).id;
-  const response = await getData(`${API}${customerId}`, headers);
+  const response = await getData(
+    `${getApiUrl(getState())}${API}${customerId}`,
+    headers,
+  );
 
   if (!response.ok)
     return handleFailure(
@@ -201,7 +204,7 @@ export const updateCustomer = newCustomer => async (dispatch, getState) => {
   dispatch(updateCustomerRequested());
 
   const response = await sendData(
-    `${API}${newCustomer.id}/`,
+    `${getApiUrl(getState())}${API}${newCustomer.id}/`,
     newCustomer,
     headers,
     'PUT',
@@ -231,7 +234,10 @@ export const fetchCustomerUsers = customer => async (dispatch, getState) => {
 
   dispatch(fetchCustomerUsersRequested());
 
-  const response = await getData(`${API}${customer.id}/users/`, headers);
+  const response = await getData(
+    `${getApiUrl(getState())}${API}${customer.id}/users/`,
+    headers,
+  );
 
   if (!response.ok)
     return handleFailure(
@@ -271,7 +277,7 @@ export const createCustomerUser = fields => async (dispatch, getState) => {
   };
 
   const createUserResponse = await sendData(
-    `${API}${currentCustomer.id}/users/`,
+    `${getApiUrl(getState())}${API}${currentCustomer.id}/users/`,
     data,
     headers,
   );
@@ -285,7 +291,7 @@ export const createCustomerUser = fields => async (dispatch, getState) => {
     );
 
   const fetchCustomerResponse = await getData(
-    `${API}${currentCustomer.id}`,
+    `${getApiUrl(getState())}${API}${currentCustomer.id}`,
     headers,
   );
   if (!fetchCustomerResponse.ok)
@@ -314,7 +320,9 @@ export const updateCustomerUser = customerUser => async (
   dispatch(updateCustomerUserRequested());
 
   const updateCustomerUserResponse = await sendData(
-    `${API}${currentCustomer.id}/users/${customerUser.user.id}/`,
+    `${getApiUrl(getState())}${API}${currentCustomer.id}/users/${
+      customerUser.user.id
+    }/`,
     customerUser,
     headers,
     'PUT',
@@ -329,7 +337,7 @@ export const updateCustomerUser = customerUser => async (
     );
 
   const fetchCustomerResponse = await getData(
-    `${API}${currentCustomer.id}`,
+    `${getApiUrl(getState())}${API}${currentCustomer.id}`,
     headers,
   );
   if (!fetchCustomerResponse.ok)
@@ -356,10 +364,11 @@ export const deleteCustomerUser = customerUser => async (
 ) => {
   const headers = getJsonAuthHeaders(getState());
   const currentCustomer = selectCurrentCustomer(getState());
+
   dispatch(deleteCustomerUserRequested());
 
   const deleteUserResponse = await sendData(
-    `${API}${currentCustomer.id}/users/`,
+    `${getApiUrl(getState())}${API}${currentCustomer.id}/users/`,
     customerUser.user.id,
     headers,
     'DELETE',
@@ -374,7 +383,7 @@ export const deleteCustomerUser = customerUser => async (
     );
 
   const fetchCustomerResponse = await getData(
-    `${API}${currentCustomer.id}`,
+    `${getApiUrl(getState())}${API}${currentCustomer.id}`,
     headers,
   );
   if (!fetchCustomerResponse.ok)
@@ -402,7 +411,9 @@ export const inviteCustomerUser = customerUser => async (
   dispatch(inviteCustomerUserRequested());
 
   const inviteCustomerUserResponse = await sendData(
-    `${API}${currentCustomer.id}/users/${customerUser.user.id}/invite/`,
+    `${getApiUrl(getState())}${API}${currentCustomer.id}/users/${
+      customerUser.user.id
+    }/invite/`,
     {},
     headers,
   );
