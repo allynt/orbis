@@ -74,9 +74,8 @@ const CrowdlessMapComponent = ({ feature }) => {
   return (
     <Grid className={styles.wrapper} container spacing={2}>
       {icons.map(({ category, className, icon }) => (
-        <Grid item xs={3}>
+        <Grid key={category} item xs={3}>
           <Avatar
-            key={category}
             className={styles.icon}
             variant="rounded"
             src={crowdednessCategory === category && icon}

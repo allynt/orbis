@@ -153,7 +153,7 @@ describe('ActiveUsersBoard', () => {
       <ActiveUsersBoard
         currentUser={{ id: '456' }}
         activeCustomerUsers={[
-          { type: 'MANAGER', user: { id: '123', name: 'John Smith' } },
+          { type: 'MANAGER', user: { id: '456', name: 'John Smith' } },
           USER,
         ]}
         customer={{ name: 'Customer Name' }}

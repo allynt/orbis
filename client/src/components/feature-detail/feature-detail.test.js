@@ -18,6 +18,7 @@ describe('<FeatureDetail />', () => {
 
   it('shows the keys and values for a given feature', () => {
     const feature = {
+      id: '1',
       'Key 1': 'Value 1',
       'Key 2': 'Value 2',
       'Key 3': 'Value 3',
@@ -38,6 +39,7 @@ describe('<FeatureDetail />', () => {
     const { getByText } = render(<FeatureDetail features={features} />);
     features.forEach(feature =>
       Object.entries(feature).forEach(([key, value]) => {
+        if (key === 'id') return;
         expect(getByText(key, { exact: false })).toBeInTheDocument();
         expect(getByText(value)).toBeInTheDocument();
       }),
@@ -46,6 +48,7 @@ describe('<FeatureDetail />', () => {
 
   it('renders nested objects', () => {
     const feature = {
+      id: '1',
       'key 1': {
         'subkey 1': 'value 1',
         'subkey 2': 'value 2',
@@ -61,6 +64,7 @@ describe('<FeatureDetail />', () => {
 
   it('renders arrays of basic values', () => {
     const feature = {
+      id: '1',
       'key 1': ['value 1', 'value 2', 'value 3'],
     };
     const { getByText } = render(<FeatureDetail features={[feature]} />);

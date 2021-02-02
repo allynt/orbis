@@ -36,7 +36,10 @@ describe('<BookmarksPanel />', () => {
   it('shows a list of the bookmarks in state', () => {
     const initialState = {
       bookmarks: {
-        bookmarks: [{ title: 'Bookmark 1' }, { title: 'Bookmark 2' }],
+        bookmarks: [
+          { id: '1', title: 'Bookmark 1' },
+          { id: '2', title: 'Bookmark 2' },
+        ],
       },
     };
     const { getByText } = setup(initialState);
@@ -51,12 +54,14 @@ describe('<BookmarksPanel />', () => {
   it('calls the selectBookmark action', () => {
     const initialState = {
       bookmarks: {
-        bookmarks: [{ title: 'Bookmark 1' }],
+        bookmarks: [{ id: '1', title: 'Bookmark 1' }],
       },
     };
+
+    const testBookmark = initialState.bookmarks.bookmarks[0];
     const action = {
       type: selectBookmark.type,
-      payload: { title: initialState.bookmarks.bookmarks[0].title },
+      payload: { id: testBookmark.id, title: testBookmark.title },
     };
     const { getByRole, store } = setup(initialState);
     userEvent.click(getByRole('button', { name: 'Load' }));
