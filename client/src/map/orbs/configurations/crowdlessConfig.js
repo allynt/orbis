@@ -11,28 +11,38 @@ const configuration = ({ id, orbState, dispatch }) => {
   const results = resultsSelector(orbState);
   const visible = visibilitySelector(orbState);
   const selectedResult = selectedResultSelector(orbState);
+
+  /** @param {CrowdlessFeature} feature */
+  const getPosition = feature => feature.geometry.coordinates;
+
+  /** @param {CrowdlessFeature} feature */
+  const getIcon = feature =>
+    `${feature.properties.crowdednessCategory}${
+      feature.properties.placeId === selectedResult?.properties?.placeId
+        ? '-selected'
+        : ''
+    }`;
+
+  /** @param {CrowdlessFeature} feature */
+  const getSize = feature =>
+    feature.properties.placeId === selectedResult?.properties?.placeId
+      ? 60 * 1.4
+      : 60;
+
+  /** @param {{object: CrowdlessFeature}} pickedInfo */
+  const onClick = pickedInfo => dispatch(setSelectedResult(pickedInfo.object));
+
   return {
     id,
     visible,
     data: results?.features,
-    /** @param {CrowdlessFeature} feature */
-    getPosition: feature => feature.geometry.coordinates,
+    getPosition,
     iconAtlas,
     iconMapping,
-    /** @param {CrowdlessFeature} feature */
-    getIcon: feature =>
-      `${feature.properties.crowdednessCategory}${
-        feature.properties.placeId === selectedResult?.properties?.placeId
-          ? '-selected'
-          : ''
-      }`,
-    /** @param {CrowdlessFeature} feature */
-    getSize: feature =>
-      feature.properties.placeId === selectedResult?.properties?.placeId
-        ? 60 * 1.4
-        : 60,
+    getIcon,
+    getSize,
     pickable: true,
-    onClick: pickedInfo => dispatch(setSelectedResult(pickedInfo.object)),
+    onClick,
     updateTriggers: {
       getIcon: [selectedResult],
       getSize: [selectedResult],
