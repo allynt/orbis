@@ -35,15 +35,10 @@ export const {
 
 const baseSelector = orbs => orbs?.[mySupplyLynkSlice.name];
 
-export const categoryFiltersSelector = createSelector(
-  baseSelector,
-  orb => orb?.categoryFilters,
-);
-
 export const categoryFiltersSelectorFactory = id =>
   createSelector(
-    categoryFiltersSelector,
-    filters => filters?.[id] || CATEGORIES,
+    baseSelector,
+    state => state?.categoryFilters?.[id] || CATEGORIES,
   );
 
 export const popupFeaturesSelector = createSelector(
@@ -58,7 +53,7 @@ export const dialogFeaturesSelector = createSelector(
 
 export const dialogVisibleSelector = createSelector(
   baseSelector,
-  orb => orb?.dialogVisible,
+  orb => !!orb?.dialogVisible,
 );
 
 export default mySupplyLynkSlice.reducer;
