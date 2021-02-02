@@ -1,7 +1,7 @@
 // @ts-nocheck
 
 import { MAX_ZOOM } from 'map/map.constants';
-import { setPickedObjects } from '../slices/action-for-help.slice';
+import { setClickedFeatures } from '../orbReducer';
 import configFn from './actionForHelpConfig';
 
 const PERSON = {
@@ -82,21 +82,29 @@ describe('actionForHelpConfig', () => {
       );
     });
 
-    it(`Dispatches the ${setPickedObjects.type} action if the feature is a cluster and expansion zoom is greater than ${MAX_ZOOM}`, () => {
+    it(`Dispatches the ${setClickedFeatures.type} action if the feature is a cluster and expansion zoom is greater than ${MAX_ZOOM}`, () => {
       const objects = ['hello', 'there'];
       const { onClick, dispatch } = setup();
       onClick({
         object: { properties: { cluster: true, expansion_zoom: MAX_ZOOM + 2 } },
         objects,
       });
-      expect(dispatch).toHaveBeenCalledWith(setPickedObjects(objects));
+      expect(dispatch).toHaveBeenCalledWith(
+        setClickedFeatures(
+          expect.objectContaining({ clickedFeatures: objects }),
+        ),
+      );
     });
 
-    it(`Dispatches the ${setPickedObjects.type} action if the feature is not a cluster`, () => {
+    it(`Dispatches the ${setClickedFeatures.type} action if the feature is not a cluster`, () => {
       const object = { properties: { cluster: false, test: 'hello' } };
       const { onClick, dispatch } = setup();
       onClick({ object });
-      expect(dispatch).toHaveBeenCalledWith(setPickedObjects([object]));
+      expect(dispatch).toHaveBeenCalledWith(
+        setClickedFeatures(
+          expect.objectContaining({ clickedFeatures: [object] }),
+        ),
+      );
     });
   });
 });
