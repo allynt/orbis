@@ -31,8 +31,8 @@ describe('<FeatureDetail />', () => {
 
   it('shows the keys and values for multiple features', () => {
     const features = [
-      { 'Key 1': 'Value 1', 'Key 2': 'Value 2', 'Key 3': 'Value 3' },
-      { 'Key 4': 'Value 4', 'Key 5': 'Value 5', 'Key 6': 'Value 6' },
+      { id: '1', 'Key 1': 'Value 1', 'Key 2': 'Value 2', 'Key 3': 'Value 3' },
+      { id: '2', 'Key 4': 'Value 4', 'Key 5': 'Value 5', 'Key 6': 'Value 6' },
     ];
 
     const { getByText } = render(<FeatureDetail features={features} />);
