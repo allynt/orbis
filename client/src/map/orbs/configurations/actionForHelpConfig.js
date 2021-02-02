@@ -2,8 +2,8 @@ import { FlyToInterpolator } from '@deck.gl/core';
 import { MAX_ZOOM } from 'map/map.constants';
 import iconMapping from './actionForHelpConfig.iconMapping.json';
 import iconAtlas from './actionForHelpConfig.iconAtlas.svg';
-import { setPickedObjects } from 'map/orbs/slices/action-for-help.slice';
 import { easeInOutCubic } from 'utils/easingFunctions';
+import { setClickedFeatures } from '../orbReducer';
 
 const configuration = ({ id, data, activeSources, dispatch, setViewState }) => {
   const handleLayerClick = info => {
@@ -20,8 +20,14 @@ const configuration = ({ id, data, activeSources, dispatch, setViewState }) => {
           transitionEasing: easeInOutCubic,
           transitionInterpolator: new FlyToInterpolator(),
         });
-      else dispatch(setPickedObjects(info.objects));
-    } else dispatch(setPickedObjects([info.object]));
+      else
+        dispatch(
+          setClickedFeatures({ source_id: id, clickedFeatures: info.objects }),
+        );
+    } else
+      dispatch(
+        setClickedFeatures({ source_id: id, clickedFeatures: [info.object] }),
+      );
   };
 
   return {
