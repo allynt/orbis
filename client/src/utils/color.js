@@ -1,4 +1,4 @@
-import { scaleSequential } from 'd3-scale';
+import { scaleOrdinal, scaleSequential } from 'd3-scale';
 import { color } from 'd3-color';
 import * as chromatic from 'd3-scale-chromatic';
 
@@ -10,10 +10,15 @@ import * as chromatic from 'd3-scale-chromatic';
  * }} ColorStop
  */
 
+/**
+ * @typedef { import('d3-scale').ScaleSequential<string, never>
+ * | import('d3-scale').ScaleOrdinal} ScaleType
+ */
+
 export class ColorScale {
-  /** @type {import('d3-scale').ScaleSequential<string, never>} */
+  /** @type {ScaleType} */
   #scale;
-  /** @type {[number, number]} */
+  /** @type {[number, number] | string[]} */
   #domain;
   /** @type {[number, number] | false | undefined} */
   #clip;
@@ -23,14 +28,17 @@ export class ColorScale {
   #reversed;
   /** @type {ColorFormat} */
   #format;
+  /** @type {number} */
+  #classes;
 
   /**
    * @param {{
    *   color?: import('typings/orbis').ColorMap | string[]
-   *   domain?: [number, number]
+   *   domain?: [number, number] | string[]
    *   reversed?: boolean
    *   clip?: [number, number]
    *   format?: ColorFormat
+   *   classes?: number
    * }} [parameters]
    */
   constructor({
@@ -39,13 +47,19 @@ export class ColorScale {
     reversed = false,
     clip,
     format = 'hex',
+    classes = 9,
   } = {}) {
-    this.#scale = scaleSequential();
-    this.color = color;
+    this.#scale = this.isDiscrete(domain) ? scaleOrdinal() : scaleSequential();
+    this.#classes = classes;
     this.domain = domain;
+    this.color = color;
     this.clip = clip;
     this.reversed = reversed;
     this.format = format;
+  }
+
+  isDiscrete(domain = this.#domain) {
+    return typeof domain[0] === 'string';
   }
 
   get domain() {
@@ -64,10 +78,27 @@ export class ColorScale {
   set color(color) {
     this.#color = color;
     if (typeof color === 'string') {
-      const interpolatorKey = Object.keys(chromatic).find(
-        key => key.toLowerCase() === `interpolate${this.#color}`.toLowerCase(),
-      );
-      this.#scale.interpolator(chromatic[interpolatorKey]);
+      if (this.isDiscrete()) {
+        const schemeKey = Object.keys(chromatic).find(
+          key => key.toLowerCase() === `scheme${this.#color}`.toLowerCase(),
+        );
+        /** @type {string[] | string[][]} */
+        const scheme = chromatic[schemeKey];
+        this.#scale.range(
+          scheme.some(
+            /** @param {string | string[]} s */
+            s => typeof s === 'string',
+          )
+            ? scheme
+            : scheme[this.#classes],
+        );
+      } else {
+        const interpolatorKey = Object.keys(chromatic).find(
+          key =>
+            key.toLowerCase() === `interpolate${this.#color}`.toLowerCase(),
+        );
+        this.#scale.interpolator(chromatic[interpolatorKey]);
+      }
     } else this.#scale.range(color);
   }
 
@@ -104,7 +135,7 @@ export class ColorScale {
   }
 
   /**
-   * @param  {number} value
+   * @param  {number | string} value
    * @param {ColorFormat} [format]
    */
   get(value, format = this.#format) {

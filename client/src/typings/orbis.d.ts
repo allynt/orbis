@@ -7,7 +7,19 @@ type LayerName =
   | 'GeoJsonLayer'
   | 'IconLayer';
 
-type ColorMap =
+type CategoricalColorMaps =
+  | 'Category10'
+  | 'Accent'
+  | 'Dark2'
+  | 'Paired'
+  | 'Pastel1'
+  | 'Pastel2'
+  | 'Set1'
+  | 'Set2'
+  | 'Set3'
+  | 'Tableau10';
+
+type ContinuousColorMaps =
   | 'BrBG'
   | 'PRGn'
   | 'PiYG'
@@ -46,6 +58,8 @@ type ColorMap =
   | 'YlGn'
   | 'YlOrBr'
   | 'YlOrRd';
+
+type ColorMap = CategoricalColorMaps | ContinuousColorMaps;
 
 type PropertyType = 'continuous' | 'decile' | 'discrete';
 
