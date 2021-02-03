@@ -1,4 +1,4 @@
-import { ColorScale } from './color';
+import { ColorScale } from './ColorScale';
 
 const HEX_WHITE = '#ffffff',
   HEX_BLACK = '#000000',

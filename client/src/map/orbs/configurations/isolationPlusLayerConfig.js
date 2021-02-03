@@ -1,5 +1,5 @@
 import { DataFilterExtension } from '@deck.gl/extensions';
-import { ColorScale } from 'utils/color';
+import { ColorScale } from 'utils/ColorScale';
 import { isRealValue } from 'utils/isRealValue';
 import { extrudedModeSelector, extrusionScaleSelector } from '../orbReducer';
 import {

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ColorScale } from 'utils/color';
+import { ColorScale } from 'utils/ColorScale';
 import { isRealValue } from 'utils/isRealValue';
 import { VictoryChart, VictoryBar, VictoryAxis, VictoryLine } from 'victory';
 import { useChartTheme } from '../useChartTheme';

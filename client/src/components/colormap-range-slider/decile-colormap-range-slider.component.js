@@ -6,7 +6,7 @@ import {
   VictoryHistogram,
   VictoryLabel,
 } from 'victory';
-import { ColorScale } from 'utils/color';
+import { ColorScale } from 'utils/ColorScale';
 
 /** @typedef {{x: [any, any], y: [any, any]}} BrushDomain */
 
