@@ -76,7 +76,7 @@ export const BookmarksLanding = ({ bookmarks, chooseBookmark }) => {
           spacing={4}
         >
           {bookmarks.map(bookmark => (
-            <GridListTile className={styles.bookmark}>
+            <GridListTile key={bookmark.id} className={styles.bookmark}>
               <BookmarksListItem bookmark={bookmark} onClick={chooseBookmark} />
             </GridListTile>
           ))}

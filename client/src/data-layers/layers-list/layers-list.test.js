@@ -8,7 +8,8 @@ describe('<LayersList />', () => {
     const layerNames = ['Layer 1', 'Layer 2'];
     const { getByText } = render(
       <LayersList
-        selectedLayers={layerNames.map(layerName => ({
+        selectedLayers={layerNames.map((layerName, i) => ({
+          source_id: `layer-${i}`,
           metadata: { label: layerName },
         }))}
       />,
@@ -20,8 +21,14 @@ describe('<LayersList />', () => {
 
   it('shows top level categories for layers', () => {
     const selectedLayers = [
-      { category: 'Forests', sources: [{ metadata: { label: 'Trees 1' } }] },
-      { category: 'Health', sources: [{ metadata: { label: 'Hospitals' } }] },
+      {
+        category: 'Forests',
+        sources: [{ source_id: '123', metadata: { label: 'Trees 1' } }],
+      },
+      {
+        category: 'Health',
+        sources: [{ source_id: '456', metadata: { label: 'Hospitals' } }],
+      },
     ];
     const { getByText } = render(
       <LayersList selectedLayers={selectedLayers} />,
