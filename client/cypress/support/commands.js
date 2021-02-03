@@ -20,11 +20,9 @@ const password = Cypress.env('password');
 
 // -- This is a parent command --
 Cypress.Commands.add('login', () => {
-  if (Cypress.config('baseUrl') !== 'http://localhost:3000') {
-    cy.visit(loginUrl);
+  cy.visit(loginUrl);
 
-    cy.window().its('store').invoke('dispatch', login({ email, password }));
-  }
+  cy.window().its('store').invoke('dispatch', login({ email, password }));
 });
 
 Cypress.Commands.add('getMap', (id, timeout = 10000) => {

@@ -2,7 +2,12 @@ import { NotificationManager } from 'react-notifications';
 
 import { createSlice, createSelector } from '@reduxjs/toolkit';
 
-import { getData, sendData, getJsonAuthHeaders } from '../utils/http';
+import {
+  getData,
+  sendData,
+  getJsonAuthHeaders,
+  getApiUrl,
+} from '../utils/http';
 
 const API = {
   sources: '/api/satellites/',
@@ -141,7 +146,10 @@ export const {
 export const fetchSatellites = () => async (dispatch, getState) => {
   const headers = getJsonAuthHeaders(getState());
 
-  const response = await getData(API.sources, headers);
+  const response = await getData(
+    `${getApiUrl(getState())}${API.sources}`,
+    headers,
+  );
 
   if (!response.ok) {
     const message = `${response.status} ${response.statusText}`;
@@ -167,8 +175,11 @@ export const fetchSatelliteScenes = query => async (dispatch, getState) => {
   const headers = getJsonAuthHeaders(getState());
 
   // satellite selection is hard-coded for now
-  const url = `${API.scenes}`;
-  const response = await sendData(url, query, headers);
+  const response = await sendData(
+    `${getApiUrl(getState())}${API.scenes}`,
+    query,
+    headers,
+  );
 
   if (!response.ok) {
     const message = `${response.status} ${response.statusText}`;
@@ -192,7 +203,10 @@ export const fetchSavedSatelliteSearches = () => async (dispatch, getState) => {
   const headers = getJsonAuthHeaders(getState());
 
   // satellite selection is hard-coded for now
-  const response = await getData(API.savedSearches, headers);
+  const response = await getData(
+    `${getApiUrl(getState())}${API.savedSearches}`,
+    headers,
+  );
 
   if (!response.ok) {
     const message = `${response.status} ${response.statusText}`;
@@ -215,7 +229,12 @@ export const fetchSavedSatelliteSearches = () => async (dispatch, getState) => {
 export const deleteSavedSatelliteSearch = id => async (dispatch, getState) => {
   const headers = getJsonAuthHeaders(getState());
 
-  const response = await sendData(API.savedSearches, id, headers, 'DELETE');
+  const response = await sendData(
+    `${getApiUrl(getState())}${API.savedSearches}`,
+    id,
+    headers,
+    'DELETE',
+  );
 
   if (!response.ok) {
     const message = `${response.status} ${response.statusText}`;
@@ -236,7 +255,11 @@ export const deleteSavedSatelliteSearch = id => async (dispatch, getState) => {
 export const saveSatelliteSearch = form => async (dispatch, getState) => {
   const headers = getJsonAuthHeaders(getState());
 
-  const response = await sendData(API.savedSearches, form, headers);
+  const response = await sendData(
+    `${getApiUrl(getState())}${API.savedSearches}`,
+    form,
+    headers,
+  );
 
   if (!response.ok) {
     const message = `${response.status} ${response.statusText}`;
@@ -267,7 +290,10 @@ export const fetchPinnedScenes = () => async (dispatch, getState) => {
   const headers = getJsonAuthHeaders(getState());
 
   // satellite selection is hard-coded for now
-  const response = await getData(API.pinScene, headers);
+  const response = await getData(
+    `${getApiUrl(getState())}${API.pinScene}`,
+    headers,
+  );
 
   if (!response.ok) {
     const message = `${response.status} ${response.statusText}`;
@@ -290,7 +316,11 @@ export const fetchPinnedScenes = () => async (dispatch, getState) => {
 export const pinScene = form => async (dispatch, getState) => {
   const headers = getJsonAuthHeaders(getState());
 
-  const response = await sendData(API.pinScene, form, headers);
+  const response = await sendData(
+    `${getApiUrl(getState())}${API.pinScene}`,
+    form,
+    headers,
+  );
 
   if (!response.ok) {
     const message = `${response.status} ${response.statusText}`;
@@ -313,7 +343,12 @@ export const pinScene = form => async (dispatch, getState) => {
 export const deletePinnedScene = id => async (dispatch, getState) => {
   const headers = getJsonAuthHeaders(getState());
 
-  const response = await sendData(API.pinScene, id, headers, 'DELETE');
+  const response = await sendData(
+    `${getApiUrl(getState())}${API.pinScene}`,
+    id,
+    headers,
+    'DELETE',
+  );
 
   if (!response.ok) {
     const message = `${response.status} ${response.statusText}`;

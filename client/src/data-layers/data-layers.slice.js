@@ -1,5 +1,5 @@
 import { createSlice, createSelector } from '@reduxjs/toolkit';
-import { getJsonAuthHeaders, getData } from 'utils/http';
+import { getJsonAuthHeaders, getData, getApiUrl } from 'utils/http';
 import { createOrbsWithCategorisedSources } from './categorisation.utils';
 import { addLogItem } from 'app.slice';
 import { userSelector } from 'accounts/accounts.selectors';
@@ -50,7 +50,10 @@ export const {
 export const fetchSources = () => async (dispatch, getState) => {
   const headers = getJsonAuthHeaders(getState());
 
-  const response = await getData('/api/data/sources/', headers);
+  const response = await getData(
+    `${getApiUrl(getState())}/api/data/sources/`,
+    headers,
+  );
   const data = await response.json();
 
   if (!response.ok) {

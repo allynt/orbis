@@ -52,6 +52,7 @@ describe('Data Slice', () => {
               },
             ],
           },
+          app: { apiUrl: 'http://test.com' },
         });
       });
 
