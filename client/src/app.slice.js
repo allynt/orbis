@@ -51,10 +51,6 @@ export const {
   setApiUrl,
 } = appSlice.actions;
 
-export const updateApiUrl = url => async dispatch => {
-  dispatch(setApiUrl(url));
-};
-
 export const fetchAppConfig = () => async (dispatch, getState) => {
   const response = await fetch(`${getApiUrl(getState())}/api/app/config`, {
     credentials: 'include',

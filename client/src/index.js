@@ -21,7 +21,7 @@ import { CssBaseline, ThemeProvider } from '@astrosat/astrosat-ui';
 import installDevTools from './dev-tools/load';
 import { MapProvider } from 'MapContext';
 
-import { updateApiUrl } from './app.slice';
+import { setApiUrl } from './app.slice';
 
 window.onerror = (msg, url, line, col, error) => {
   // Note that col & error are new to the HTML 5 spec and may not be
@@ -46,8 +46,8 @@ window.onerror = (msg, url, line, col, error) => {
 };
 
 process.env.NODE_ENV === 'development'
-  ? store.dispatch(updateApiUrl(process.env.REACT_APP_API_HOST))
-  : store.dispatch(updateApiUrl(window._env_.REACT_APP_API_HOST));
+  ? store.dispatch(setApiUrl(process.env.REACT_APP_API_HOST))
+  : store.dispatch(setApiUrl(window._env_.REACT_APP_API_HOST));
 
 const render = () => {
   const App = require('./app.component').default;
