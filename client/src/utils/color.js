@@ -82,16 +82,26 @@ export class ColorScale {
         const schemeKey = Object.keys(chromatic).find(
           key => key.toLowerCase() === `scheme${this.#color}`.toLowerCase(),
         );
+
         /** @type {string[] | string[][]} */
         const scheme = chromatic[schemeKey];
-        this.#scale.range(
+
+        if (
           scheme.some(
             /** @param {string | string[]} s */
             s => typeof s === 'string',
           )
-            ? scheme
-            : scheme[this.#classes],
-        );
+        ) {
+          this.#scale.range(scheme);
+        } else {
+          if (!scheme[this.#classes]) {
+            console.warn(
+              `${this.#color} colormap does not have ${this.#classes} classes`,
+            );
+            const maxClasses = [...scheme.reverse()].find(s => !!s);
+            this.#scale.range(maxClasses);
+          } else this.#scale.range(scheme[this.#classes]);
+        }
       } else {
         const interpolatorKey = Object.keys(chromatic).find(
           key =>

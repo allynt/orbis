@@ -316,6 +316,12 @@ describe('ColorScale', () => {
       expect(scale.get('tomato')).toBe('#7570b3');
     });
 
+    it('Warns if the selected color map does not have the specified number of classes', () => {
+      console.warn = jest.fn();
+      new ColorScale({ domain: DISCRETE_DOMAIN, color: 'Blues', classes: 20 });
+      expect(console.warn).toHaveBeenCalled();
+    });
+
     it('Allows for returning different formats', () => {
       scale = new ColorScale({
         domain: DISCRETE_DOMAIN,
