@@ -22,7 +22,7 @@ export const LayersList = ({ dispatch, selectedLayers, sidebarComponents }) => (
     {selectedLayers?.map((selectedLayer, i) => {
       if (selectedLayer.category)
         return (
-          <React.Fragment key={`category-${i}`}>
+          <React.Fragment key={`${selectedLayer.category}-${i}`}>
             <CategoryHeader>{selectedLayer.category}</CategoryHeader>
             <LayersList
               dispatch={dispatch}
