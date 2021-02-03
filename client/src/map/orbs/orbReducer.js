@@ -64,25 +64,30 @@ const initialState = {
   extrusionScale: 50,
 };
 
+const handleMissingSourceId = () => {
+  console.error('payload.source_id does not exist');
+  return;
+};
+
 const layersSlice = createSlice({
   name: 'layers',
   initialState,
   reducers: {
     /** @type {SetClickedFeaturesAction} */
     setClickedFeatures: (state, { payload }) => {
-      if (!payload.source_id) return;
+      if (!payload.source_id) return handleMissingSourceId();
       const { source_id, clickedFeatures } = payload;
       state[source_id] = { ...state[source_id], clickedFeatures };
     },
     /** @type {SetHoveredFeaturesAction} */
     setHoveredFeatures: (state, { payload }) => {
-      if (!payload.source_id) return;
+      if (!payload.source_id) return handleMissingSourceId();
       const { source_id, hoveredFeatures } = payload;
       state[source_id] = { ...state[source_id], hoveredFeatures };
     },
     /** @type {SetVisibilityAction} */
     setVisibility: (state, { payload }) => {
-      if (!payload.source_id) return;
+      if (!payload.source_id) return handleMissingSourceId();
       const { source_id, visible } = payload;
       state[source_id] = { ...state[source_id], visible };
     },

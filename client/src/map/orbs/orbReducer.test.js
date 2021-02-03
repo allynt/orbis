@@ -72,7 +72,7 @@ describe('orbReducer', () => {
         expect(result).toEqual(expect.objectContaining(expected));
       });
 
-      it('Does nothing if source_id is undefined', () => {
+      it('Prints and error to the console and does nothing if source_id is undefined', () => {
         const state = {
           layers: {
             [LAYER_ID]: {
@@ -80,12 +80,16 @@ describe('orbReducer', () => {
             },
           },
         };
+        console.error = jest.fn();
         const result = reducer(
           state,
           action({
             source_id: undefined,
-            [stateKey]: [4, 5, 6],
+            [stateKey]: newValue,
           }),
+        );
+        expect(console.error).toHaveBeenCalledWith(
+          'payload.source_id does not exist',
         );
         expect(result).toEqual(expect.objectContaining(state));
       });
