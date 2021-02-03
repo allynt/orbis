@@ -1,6 +1,5 @@
 // @ts-nocheck
 
-import { filter } from 'lodash';
 import {
   addClickedFeatures,
   removeClickedFeatures,
@@ -15,7 +14,19 @@ import configFn, {
   OPACITY_EXTRUDED,
 } from './isolationPlusLayerConfig';
 
-const setup = ({ clickedFeatures, extrudedMode = false, filterRange } = {}) => {
+const setup = ({
+  clickedFeatures,
+  extrudedMode = false,
+  filterRange,
+  property = {
+    name: 'testProperty',
+    min: 0,
+    max: 1,
+    clip_min: 0.5,
+    type: 'continuous',
+    application: { orbis: { display: { color: 'Spectral' } } },
+  },
+} = {}) => {
   const dispatch = jest.fn();
   const fns = configFn({
     dispatch,
@@ -24,15 +35,7 @@ const setup = ({ clickedFeatures, extrudedMode = false, filterRange } = {}) => {
       {
         source_id: 'source/1',
         metadata: {
-          properties: [
-            {
-              name: 'testProperty',
-              min: 0,
-              max: 1,
-              clip_min: 0.5,
-              application: { orbis: { display: { color: 'Spectral' } } },
-            },
-          ],
+          properties: [property],
         },
       },
     ],
@@ -139,6 +142,26 @@ describe('isolationPlusLayerConfig', () => {
       });
       expect(getFillColor(FEATURE)).toEqual(
         expect.arrayContaining([OPACITY_EXTRUDED]),
+      );
+    });
+
+    it('Returns the given color for a discrete value', () => {
+      const { getFillColor } = setup({
+        property: {
+          name: 'testProperty',
+          type: 'discrete',
+          categories: {
+            banana: {
+              color: 'yellow',
+            },
+            carrot: {
+              color: 'orange',
+            },
+          },
+        },
+      });
+      expect(getFillColor({ properties: { testProperty: 'carrot' } })).toEqual(
+        expect.objectContaining([255, 165, 0]),
       );
     });
   });

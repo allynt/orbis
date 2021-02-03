@@ -1,5 +1,5 @@
 import { DataFilterExtension } from '@deck.gl/extensions';
-import { ColorScale } from 'utils/ColorScale';
+import { getColorScaleForProperty } from 'utils/color';
 import { isRealValue } from 'utils/isRealValue';
 import { extrudedModeSelector, extrusionScaleSelector } from '../orbReducer';
 import {
@@ -55,19 +55,7 @@ const configuration = ({
   );
   const colorScale =
     selectedPropertyMetadata &&
-    new ColorScale({
-      color: selectedPropertyMetadata?.application?.orbis?.display?.color,
-      domain: [selectedProperty?.min, selectedProperty?.max],
-      reversed:
-        selectedPropertyMetadata?.application?.orbis?.display
-          ?.colormap_reversed,
-      clip: (selectedPropertyMetadata?.clip_min ||
-        selectedPropertyMetadata?.clip_max) && [
-        selectedPropertyMetadata.clip_min || selectedPropertyMetadata.min,
-        selectedPropertyMetadata.clip_max || selectedPropertyMetadata.max,
-      ],
-      format: 'array',
-    });
+    getColorScaleForProperty(selectedPropertyMetadata, 'array');
 
   const clickedFeatureIds = clickedFeatures?.map(
     f => f.object.properties.index,
