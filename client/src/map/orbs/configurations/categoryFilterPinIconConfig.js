@@ -8,8 +8,6 @@ import {
   categoryFiltersSelectorFactory,
 } from '../slices/mysupplylynk.slice';
 
-import { MAX_ZOOM } from 'map/map.constants';
-
 /**
  * @typedef {import('typings/orbis').GeoJsonFeature} GeoJsonFeature
  */
@@ -29,20 +27,20 @@ const categoryFilterPinIconConfig = ({
 
   const popupFeatures = popupFeaturesSelector(orbState);
 
+  const hasCategory = feat => {
+    return feat.properties.Items
+      ? feat.properties.Items.some(item =>
+          categoryFilters?.includes(item.Category),
+        )
+      : categoryFilters?.includes(feat?.properties?.Category);
+  };
+
   const getFeatures = () => {
     const obj = data;
 
-    const hasCategory = feat => {
-      return feat.properties.Items
-        ? feat.properties.Items.some(item =>
-            categoryFilters?.includes(item.Category),
-          )
-        : categoryFilters?.includes(feat?.properties?.Category);
-    };
-
     let filteredFeatures;
     if (obj) {
-      filteredFeatures = obj.features.filter(feat => hasCategory(feat));
+      filteredFeatures = obj.features.filter(hasCategory);
     }
 
     if (filteredFeatures) {

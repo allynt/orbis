@@ -6,6 +6,10 @@ import mySupplyLynk from './slices/mysupplylynk.slice';
 import crowdless from './slices/crowdless.slice';
 
 /**
+ * @typedef {ReturnType<orbReducer>} OrbState
+ */
+
+/**
  * @typedef {{
  *   [key: string]: {
  *     visible?: boolean,
@@ -60,22 +64,30 @@ const initialState = {
   extrusionScale: 50,
 };
 
+const handleMissingSourceId = () => {
+  console.error('payload.source_id does not exist');
+  return;
+};
+
 const layersSlice = createSlice({
   name: 'layers',
   initialState,
   reducers: {
     /** @type {SetClickedFeaturesAction} */
     setClickedFeatures: (state, { payload }) => {
+      if (!payload.source_id) return handleMissingSourceId();
       const { source_id, clickedFeatures } = payload;
       state[source_id] = { ...state[source_id], clickedFeatures };
     },
     /** @type {SetHoveredFeaturesAction} */
     setHoveredFeatures: (state, { payload }) => {
+      if (!payload.source_id) return handleMissingSourceId();
       const { source_id, hoveredFeatures } = payload;
       state[source_id] = { ...state[source_id], hoveredFeatures };
     },
     /** @type {SetVisibilityAction} */
     setVisibility: (state, { payload }) => {
+      if (!payload.source_id) return handleMissingSourceId();
       const { source_id, visible } = payload;
       state[source_id] = { ...state[source_id], visible };
     },
@@ -97,21 +109,27 @@ export const {
   setExtrusionScale,
 } = layersSlice.actions;
 
-/** @returns {LayersState} */
-const baseSelector = orbs => orbs?.[layersSlice.name] || {};
+/**
+ * @param {OrbState} orbs
+ * @returns {LayersState}
+ */
+const baseSelector = orbs => orbs?.[layersSlice.name];
 
+/** @param {string} id */
 export const clickedFeaturesSelector = id =>
   createSelector(baseSelector, state => state[id]?.clickedFeatures);
 
+/** @param {string} id */
 export const hoveredFeaturesSelector = id =>
   createSelector(baseSelector, state => state[id]?.hoveredFeatures);
 
+/** @param {string} id */
 export const layersVisibilitySelector = id =>
-  createSelector(baseSelector, state => state[id]?.visible ?? true);
+  createSelector(baseSelector, state => state?.[id]?.visible ?? true);
 
 export const extrudedModeSelector = createSelector(
   baseSelector,
-  state => state.extrudedMode,
+  state => state?.extrudedMode,
 );
 
 export const extrusionScaleSelector = createSelector(

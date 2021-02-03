@@ -82,10 +82,7 @@ const configuration = ({
         setViewState({
           longitude: info.object.geometry.coordinates[0],
           latitude: info.object.geometry.coordinates[1],
-          zoom:
-            info.object.properties.expansion_zoom >= MAX_ZOOM
-              ? MAX_ZOOM
-              : info.object.properties.expansion_zoom,
+          zoom: info.object.properties.expansion_zoom,
           transitionDuration: 1000,
           transitionEasing: easeInOutCubic,
           transitionInterpolator: new FlyToInterpolator(),
