@@ -53,8 +53,7 @@ const useStyles = makeStyles(theme => ({
 const RadioProperty = ({
   layerSourceId,
   data,
-  onRadioClick,
-  onToggleClick,
+  onClick,
   onSliderChange,
   selectedProperty,
   colorScheme,
@@ -78,12 +77,21 @@ const RadioProperty = ({
   })();
 
   const handleRadioClick = () => {
-    const property =
-      propertyMatch && isArray && selectedProperty?.type === FORMAT.number
-        ? findPropertyByType(FORMAT.number)
-        : initialProperty;
+    if (propertyMatch) onClick({});
+    else {
+      const property =
+        propertyMatch && isArray && selectedProperty?.type === FORMAT.number
+          ? findPropertyByType(FORMAT.number)
+          : initialProperty;
 
-    onRadioClick(propertyMatch, property);
+      onClick(property);
+    }
+  };
+
+  const handleToggleClick = type => {
+    const property = findPropertyByType(type);
+    if (property.name === selectedProperty?.name) return;
+    else onClick(property);
   };
 
   return (
@@ -119,9 +127,7 @@ const RadioProperty = ({
               </FormLabel>
               <ButtonGroup size="small" className={styles.fullGrid}>
                 <Button
-                  onClick={() =>
-                    onToggleClick(findPropertyByType(FORMAT.percentage))
-                  }
+                  onClick={() => handleToggleClick(FORMAT.percentage)}
                   className={clsx(styles.button, {
                     [styles.notActive]:
                       selectedProperty.type !== FORMAT.percentage,
@@ -130,9 +136,7 @@ const RadioProperty = ({
                   Percentage
                 </Button>
                 <Button
-                  onClick={() =>
-                    onToggleClick(findPropertyByType(FORMAT.number))
-                  }
+                  onClick={() => handleToggleClick(FORMAT.number)}
                   className={clsx(styles.button, {
                     [styles.notActive]: selectedProperty.type !== FORMAT.number,
                   })}

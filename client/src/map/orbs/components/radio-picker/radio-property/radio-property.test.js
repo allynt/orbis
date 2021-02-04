@@ -33,19 +33,16 @@ const pairObjectData = [
   },
 ];
 
-let onRadioClick = null;
-let onToggleClick = null;
+let onClick = null;
 let onSliderChange = null;
 
 const renderComponent = (data, selectedProperty) => {
-  onRadioClick = jest.fn();
-  onToggleClick = jest.fn();
+  onClick = jest.fn();
   onSliderChange = jest.fn();
   return render(
     <RadioProperty
       data={data}
-      onRadioClick={onRadioClick}
-      onToggleClick={onToggleClick}
+      onClick={onClick}
       onSliderChange={onSliderChange}
       selectedProperty={selectedProperty}
     />,
@@ -81,14 +78,14 @@ describe('RadioProperty', () => {
     const { getByRole } = renderComponent(singleObjectData, singleObjectData);
 
     userEvent.click(getByRole('radio', { name: singleObjectData.label }));
-    expect(onRadioClick).toHaveBeenCalledWith(true, singleObjectData);
+    expect(onClick).toHaveBeenCalledWith({});
   });
 
   it('calls click handler with percentage property of pair by default if Radio is clicked', () => {
     const { getByRole } = renderComponent(pairObjectData, {});
 
     userEvent.click(getByRole('radio', { name: pairObjectData[1].label }));
-    expect(onRadioClick).toHaveBeenCalledWith(false, pairObjectData[1]);
+    expect(onClick).toHaveBeenCalledWith(pairObjectData[1]);
   });
 
   it('calls click handler with number property if number toggle is clicked', () => {
@@ -96,7 +93,7 @@ describe('RadioProperty', () => {
 
     userEvent.click(getByRole('button', { name: 'Number' }));
 
-    expect(onToggleClick).toHaveBeenCalledWith(pairObjectData[0]);
+    expect(onClick).toHaveBeenCalledWith(pairObjectData[0]);
   });
 
   it('Shows a legend for discrete properties', () => {

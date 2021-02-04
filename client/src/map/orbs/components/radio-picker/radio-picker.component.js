@@ -32,25 +32,11 @@ export const RadioPicker = ({ selectedLayer, dispatch }) => {
     categories: selectedLayer?.metadata?.application?.orbis?.categories,
   }).replace('.', ' > ');
 
-  const onRadioClick = (propertyMatch, property) => {
-    dispatch(
-      setProperty(
-        propertyMatch
-          ? {}
-          : { source_id: selectedLayer?.source_id, ...property },
-      ),
-    );
-  };
-
-  const onToggleClick = property => {
-    if (property.name === selectedProperty?.name) return;
-    dispatch(
-      setProperty({
-        source_id: selectedLayer.source_id,
-        ...property,
-      }),
-    );
-  };
+  /**
+   * @param {Object} data
+   */
+  const selectProperty = data =>
+    dispatch(setProperty({ source_id: selectedLayer?.source_id, ...data }));
 
   if (!selectedLayer?.metadata?.properties) return null;
   return (
@@ -60,8 +46,7 @@ export const RadioPicker = ({ selectedLayer, dispatch }) => {
           <RadioProperty
             layerSourceId={selectedLayer?.source_id}
             data={data}
-            onRadioClick={onRadioClick}
-            onToggleClick={onToggleClick}
+            onClick={selectProperty}
             onSliderChange={data => dispatch(setFilterRange(data))}
             selectedProperty={selectedProperty}
             colorScheme={colorScheme}
