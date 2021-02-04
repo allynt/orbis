@@ -81,14 +81,14 @@ describe('RadioProperty', () => {
     const { getByRole } = renderComponent(singleObjectData, singleObjectData);
 
     userEvent.click(getByRole('radio', { name: singleObjectData.label }));
-    expect(onRadioClick).toHaveBeenCalledWith(singleObjectData);
+    expect(onRadioClick).toHaveBeenCalledWith(true, singleObjectData);
   });
 
   it('calls click handler with percentage property of pair by default if Radio is clicked', () => {
     const { getByRole } = renderComponent(pairObjectData, {});
 
     userEvent.click(getByRole('radio', { name: pairObjectData[1].label }));
-    expect(onRadioClick).toHaveBeenCalledWith(pairObjectData[1]);
+    expect(onRadioClick).toHaveBeenCalledWith(false, pairObjectData[1]);
   });
 
   it('calls click handler with number property if number toggle is clicked', () => {
