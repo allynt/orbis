@@ -67,4 +67,36 @@ describe('aggregateValues', () => {
     const result = aggregateValues(clickedFeatures, selectedProperty);
     expect(result).toBe(456.533);
   });
+
+  it('fixes `mean` decimals to 1 place', () => {
+    const clickedFeatures = [
+      { object: { properties: { test: 123.565486 } } },
+      { object: { properties: { test: 456.331257 } } },
+      { object: { properties: { test: 789.878962 } } },
+    ];
+
+    const selectedProperty = {
+      name: 'test',
+      aggregation: 'mean',
+    };
+
+    const result = aggregateValues(clickedFeatures, selectedProperty);
+    expect(result).toBe(456.6);
+  });
+
+  it('fixes `sum` decimals to 1 place', () => {
+    const clickedFeatures = [
+      { object: { properties: { test: 123.565486 } } },
+      { object: { properties: { test: 456.331257 } } },
+      { object: { properties: { test: 789.878962 } } },
+    ];
+
+    const selectedProperty = {
+      name: 'test',
+      aggregation: 'sum',
+    };
+
+    const result = aggregateValues(clickedFeatures, selectedProperty);
+    expect(result).toBe(1369.8);
+  });
 });

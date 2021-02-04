@@ -9,15 +9,18 @@ import { sumBy } from 'lodash';
  */
 export const aggregateValues = (clickedFeatures, selectedProperty) => {
   if (!clickedFeatures || !selectedProperty) return 0;
+
   const sumValue = sumBy(
     clickedFeatures,
     `object.properties.${selectedProperty?.name}`,
   );
+
   if (selectedProperty?.aggregation === 'mean') {
     const meanValue = sumValue / clickedFeatures?.length;
     if (selectedProperty.precision)
       return Number(meanValue.toFixed(selectedProperty.precision));
-    return meanValue;
+    return Number(meanValue.toFixed(1));
   }
-  return sumValue;
+
+  return Number(sumValue.toFixed(1));
 };
