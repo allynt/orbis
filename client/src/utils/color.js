@@ -9,6 +9,7 @@ import { isRealValue } from './isRealValue';
 export const getColorScaleForProperty = (property, format) => {
   switch (property.type) {
     case 'decile':
+    case 'percentage':
     case 'continuous':
       const {
         min,

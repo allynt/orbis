@@ -61,7 +61,7 @@ type ContinuousColorMaps =
 
 type ColorMap = CategoricalColorMaps | ContinuousColorMaps;
 
-type PropertyType = 'continuous' | 'decile' | 'discrete';
+type PropertyType = 'continuous' | 'decile' | 'discrete' | 'percentage';
 
 type Orb = { name: string; description?: string };
 
