@@ -45,6 +45,7 @@ const setup = ({
       },
       isolationPlus: {
         property: {
+          source_id: 'source/1',
           name: 'testProperty',
         },
         filterRange,
