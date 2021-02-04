@@ -90,7 +90,8 @@ const configuration = ({
    * @returns {number}
    */
   const getFillOpacity = d => {
-    if (!extrudedMode) return OPACITY_FLAT;
+    if (!extrudedMode || selectedProperty.type === 'discrete')
+      return OPACITY_FLAT;
     if (!anySelected || (anySelected && isSelected(d)))
       return OPACITY_EXTRUDED_SELECTED;
     return OPACITY_EXTRUDED;

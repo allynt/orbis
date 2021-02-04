@@ -46,7 +46,7 @@ const setup = ({
       isolationPlus: {
         property: {
           source_id: 'source/1',
-          name: 'testProperty',
+          ...property,
         },
         filterRange,
         clickedFeatures: clickedFeatures?.map(object => ({ object })),
@@ -77,6 +77,11 @@ describe('isolationPlusLayerConfig', () => {
         clickedFeatures: [{ properties: { index: 'NotYours' } }],
       });
       expect(getElevation(FEATURE)).toBe(LINE_WIDTH);
+    });
+
+    it('Does not include getElevation if the property is discrete', () => {
+      const { getElevation } = setup({ property: { type: 'discrete' } });
+      expect(getElevation).toBe(undefined);
     });
   });
 

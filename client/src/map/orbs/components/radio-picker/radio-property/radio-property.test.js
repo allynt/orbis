@@ -98,4 +98,37 @@ describe('RadioProperty', () => {
 
     expect(onToggleClick).toHaveBeenCalledWith(pairObjectData[0]);
   });
+
+  it('Shows a legend for discrete properties', () => {
+    const { getByRole } = render(
+      <RadioProperty
+        data={[
+          {
+            name: 'testProperty',
+            categories: {
+              apple: {
+                color: 'green',
+              },
+              orange: {
+                color: 'orange',
+              },
+            },
+          },
+        ]}
+        selectedProperty={{
+          name: 'testProperty',
+          type: 'discrete',
+          categories: {
+            apple: {
+              color: 'green',
+            },
+            orange: {
+              color: 'orange',
+            },
+          },
+        }}
+      />,
+    );
+    expect(getByRole('list')).toBeInTheDocument();
+  });
 });
