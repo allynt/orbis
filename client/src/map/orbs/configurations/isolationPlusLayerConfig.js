@@ -44,8 +44,10 @@ const configuration = ({
   orbState,
   authToken,
 }) => {
-  const source = activeSources?.find(source => source.source_id === id);
   const selectedProperty = propertySelector(orbState);
+  if (selectedProperty.source_id !== id) return undefined;
+
+  const source = activeSources?.find(source => source.source_id === id);
   const filterRange = filterRangeSelector(orbState);
   const extrudedMode = extrudedModeSelector(orbState);
   const extrusionScale = extrusionScaleSelector(orbState);
@@ -136,6 +138,45 @@ const configuration = ({
   const getFilterValue = d =>
     d.properties[selectedProperty.name] * FILTER_SCALING_VALUE;
 
+  const transitions = {
+      getFillColor: TRANSITION_DURATION,
+      getLineWidth: TRANSITION_DURATION,
+    },
+    updateTriggers = {
+      getFillColor: [selectedProperty, clickedFeatures],
+      getLineWidth: [clickedFeatures],
+    };
+
+  const typedProps =
+    selectedProperty.type === 'discrete'
+      ? {
+          transitions,
+          updateTriggers,
+        }
+      : {
+          extruded: extrudedMode,
+          getElevation,
+          elevationScale: extrusionScale,
+          extensions: [new DataFilterExtension({ filterSize: 1 })],
+          getFilterValue,
+          filterRange: (
+            filterRange || [
+              selectedPropertyMetadata?.min,
+              selectedPropertyMetadata?.max,
+            ]
+          ).map(f => f * FILTER_SCALING_VALUE),
+          transitions: {
+            ...transitions,
+            getElevation: TRANSITION_DURATION,
+          },
+          updateTriggers: {
+            ...updateTriggers,
+            getFillColor: [...updateTriggers.getFillColor, extrudedMode],
+            getFilterValue: [selectedProperty],
+            getElevation: [extrudedMode, clickedFeatures, selectedProperty],
+          },
+        };
+
   return {
     id,
     data,
@@ -147,32 +188,11 @@ const configuration = ({
     pickable: true,
     autoHighlight: true,
     onClick,
-    extruded: extrudedMode,
-    getElevation,
-    elevationScale: extrusionScale,
     getLineColor: COLOR_PRIMARY,
     getLineWidth,
     lineWidthUnits: 'pixels',
     getFillColor,
-    getFilterValue,
-    filterRange: (
-      filterRange || [
-        selectedPropertyMetadata?.min,
-        selectedPropertyMetadata?.max,
-      ]
-    ).map(f => f * FILTER_SCALING_VALUE),
-    transitions: {
-      getFillColor: TRANSITION_DURATION,
-      getLineWidth: TRANSITION_DURATION,
-      getElevation: TRANSITION_DURATION,
-    },
-    updateTriggers: {
-      getFillColor: [extrudedMode, selectedProperty, clickedFeatures],
-      getFilterValue: [selectedProperty],
-      getLineWidth: [clickedFeatures],
-      getElevation: [extrudedMode, clickedFeatures, selectedProperty],
-    },
-    extensions: [new DataFilterExtension({ filterSize: 1 })],
+    ...typedProps,
   };
 };
 
