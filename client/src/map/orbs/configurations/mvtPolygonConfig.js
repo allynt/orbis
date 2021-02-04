@@ -23,6 +23,7 @@ const configuration = ({
   dispatch,
   orbState,
   authToken,
+  ...rest
 }) => {
   const source = activeSources?.find(source => source.source_id === id);
   const selectedProperty = propertySelector(orbState);
