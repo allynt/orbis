@@ -4,15 +4,52 @@ import {
   ListItem,
   ListItemIcon,
   ListItemText,
+  makeStyles,
   Typography,
   useTheme,
 } from '@astrosat/astrosat-ui';
 import { SidePanelSection } from 'components';
 import { useChartTheme } from 'components/charts/useChartTheme';
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { VictoryLabel, VictoryPie } from 'victory';
 
-/** @type {import('typings/orbis').AnalysisPanelComponent<{info?: string}>} */
+const WIDTH = 400,
+  HEIGHT = 400;
+
+const useStyles = makeStyles(theme => ({
+  listItemIcon: {
+    marginRight: theme.spacing(1),
+    minWidth: 'max-content',
+  },
+  colorCircle: {
+    width: '1rem',
+    height: '1rem',
+    borderRadius: '50%',
+  },
+}));
+
+const LegendItem = ({ categoryInfo, selected }) => {
+  const styles = useStyles();
+  return (
+    <Fade in>
+      <Grid item xs>
+        <ListItem dense selected={selected}>
+          <ListItemIcon className={styles.listItemIcon}>
+            <span
+              className={styles.colorCircle}
+              style={{
+                backgroundColor: categoryInfo.color,
+              }}
+            />
+          </ListItemIcon>
+          <ListItemText primary={categoryInfo.category} />
+        </ListItem>
+      </Grid>
+    </Fade>
+  );
+};
+
+/** @type {import('typings/orbis').AnalysisPanelComponent<{info?: string}, import('typings/orbis').PickedMapFeature>} */
 export const CategoryBreakdownChart = ({
   clickedFeatures,
   info,
@@ -20,8 +57,10 @@ export const CategoryBreakdownChart = ({
 }) => {
   const chartTheme = useChartTheme();
   const theme = useTheme();
-  const [selectedCategory, setSelectedCategory] = useState();
+  /** @type {[{category: string, count:number} | undefined, React.Dispatch<{category:string, count:number} | undefined>]} */
+  const [selectedDatum, setSelectedDatum] = useState();
   const selectedProperty = /** @type {import('typings/orbis').DiscreteProperty} */ (selectedPropertyProp);
+
   const categoryList = useMemo(
     () =>
       Object.entries(selectedProperty.categories)
@@ -40,16 +79,56 @@ export const CategoryBreakdownChart = ({
         .sort((a, b) => a.category.localeCompare(b.category)),
     [clickedFeatures, selectedProperty.categories, selectedProperty.name],
   );
+
+  const isSelected = useCallback(
+    ({ category }) => selectedDatum?.category === category,
+    [selectedDatum],
+  );
+
   useEffect(() => {
     if (
-      !!selectedCategory &&
-      (!categoryList.find(c => c.category === selectedCategory?.category) ||
-        categoryList.length === 1)
+      !!selectedDatum &&
+      (!categoryList.find(isSelected) || categoryList.length === 1)
     )
-      setSelectedCategory(undefined);
-  }, [categoryList, selectedCategory]);
+      setSelectedDatum(undefined);
+  }, [categoryList, selectedDatum, isSelected]);
 
   if (!clickedFeatures?.length) return null;
+
+  /** @type {import('victory-core').VictoryStyleInterface} */
+  const pieStyle = {
+    data: {
+      fill: ({ datum }) => datum.color,
+      cursor: categoryList.length > 1 ? 'pointer' : 'default',
+    },
+    labels: {
+      textAnchor: 'middle',
+      /** @type {import('victory-core').VictoryStringCallback} */
+      fill: ({ datum }) => theme.palette.getContrastText(datum.color),
+    },
+  };
+
+  /** @type {import('victory-core').VictoryNumberCallback} */
+  const getRadius = ({ datum }) => (isSelected(datum) ? 200 : 180);
+
+  /** @type {import('victory-core').VictoryStringCallback} */
+  const getLabels = ({ datum }) => `${datum.percent.toFixed(2)}%`;
+
+  /** @param {import('victory').SliceProps} props */
+  const getLabelRadius = ({ innerRadius, datum }) =>
+    isSelected(datum) ? (WIDTH - Number(innerRadius)) / 2 : 140;
+
+  const labelText = `${!!selectedDatum ? `${selectedDatum?.count} / ` : ''}${
+    clickedFeatures.length
+  }\nArea${clickedFeatures.length > 1 ? 's' : ''}`;
+
+  /** @type {import('victory-core').VictoryLabelStyleObject} */
+  const labelStyle = {
+    fontSize: 24,
+    fill: theme.palette.text.primary,
+    fontFamily: theme.typography.fontFamily,
+    textAnchor: 'middle',
+  };
 
   return (
     <SidePanelSection title="Selected Data Layer" info={info} defaultExpanded>
@@ -65,9 +144,7 @@ export const CategoryBreakdownChart = ({
                 eventHandlers: {
                   onClick: (_, { datum }) => {
                     categoryList.length > 1 &&
-                      setSelectedCategory(c =>
-                        c?.category === datum.category ? undefined : datum,
-                      );
+                      setSelectedDatum(isSelected(datum) ? undefined : datum);
                     return [];
                   },
                 },
@@ -77,77 +154,32 @@ export const CategoryBreakdownChart = ({
             theme={chartTheme}
             animate
             padding={0}
-            height={400}
-            width={400}
+            width={WIDTH}
+            height={HEIGHT}
             data={categoryList}
             y="percent"
             x="percent"
-            style={{
-              data: {
-                fill: ({ datum }) => datum.color,
-                cursor: categoryList.length > 1 ? 'pointer' : 'default',
-              },
-              labels: {
-                textAnchor: 'middle',
-                fill: ({ datum }) => theme.palette.getContrastText(datum.color),
-              },
-            }}
+            style={pieStyle}
             padAngle={2}
             innerRadius={100}
-            radius={({ datum }) =>
-              selectedCategory?.category === datum.category ? 200 : 180
-            }
-            labels={({ datum }) => `${datum.percent.toFixed(2)}%`}
-            labelRadius={({ innerRadius, datum }) =>
-              datum.category === selectedCategory?.category
-                ? (400 - Number(innerRadius)) / 2
-                : 140
-            }
+            radius={getRadius}
+            labels={getLabels}
+            labelRadius={getLabelRadius}
           />
           <VictoryLabel
-            textAnchor="middle"
-            style={{
-              fontSize: 24,
-              fill: theme.palette.text.primary,
-              fontFamily: theme.typography.fontFamily,
-            }}
-            x={200}
-            y={200}
-            text={`${
-              !!selectedCategory ? `${selectedCategory?.count} / ` : ''
-            }${clickedFeatures.length}\nArea${
-              clickedFeatures.length > 1 ? 's' : ''
-            }`}
+            style={labelStyle}
+            x={WIDTH / 2}
+            y={HEIGHT / 2}
+            text={labelText}
           />
         </Grid>
         <Grid item xs={12} container spacing={0}>
           {categoryList.map(categoryInfo => (
-            <Fade in key={categoryInfo.category}>
-              <Grid item xs>
-                <ListItem
-                  selected={
-                    categoryInfo.category === selectedCategory?.category
-                  }
-                >
-                  <ListItemIcon
-                    style={{
-                      marginRight: theme.spacing(1),
-                      minWidth: 'max-content',
-                    }}
-                  >
-                    <span
-                      style={{
-                        width: '1rem',
-                        height: '1rem',
-                        backgroundColor: categoryInfo.color,
-                        borderRadius: '50%',
-                      }}
-                    />
-                  </ListItemIcon>
-                  <ListItemText primary={categoryInfo.category} />
-                </ListItem>
-              </Grid>
-            </Fade>
+            <LegendItem
+              key={categoryInfo.category}
+              categoryInfo={categoryInfo}
+              selected={isSelected(categoryInfo)}
+            />
           ))}
         </Grid>
       </Grid>
