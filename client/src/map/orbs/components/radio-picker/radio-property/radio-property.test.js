@@ -133,6 +133,8 @@ describe('RadioProperty', () => {
       />,
     );
     expect(getByRole('list')).toBeInTheDocument();
+  });
+
   it('calls click handler with empty object if property matches selectedProperty (single)', () => {
     const { getByRole } = renderComponent(
       singleObjectData,
