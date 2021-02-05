@@ -8,7 +8,7 @@ import {
 } from '@astrosat/astrosat-ui';
 import { SidePanelSection } from 'components';
 import { useChartTheme } from 'components/charts/useChartTheme';
-import React, { useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 import { VictoryLabel, VictoryPie } from 'victory';
 
 /** @type {import('typings/orbis').AnalysisPanelComponent<{info?: string}>} */
@@ -19,6 +19,7 @@ export const CategoryBreakdownChart = ({
 }) => {
   const chartTheme = useChartTheme();
   const theme = useTheme();
+  const [selectedCategory, setSelectedCategory] = useState();
   const selectedProperty = /** @type {import('typings/orbis').DiscreteProperty} */ (selectedPropertyProp);
   const categoryList = useMemo(
     () =>
@@ -49,6 +50,20 @@ export const CategoryBreakdownChart = ({
         </Grid>
         <Grid item xs={12} component="svg" viewBox="0 0 400 400">
           <VictoryPie
+            events={[
+              {
+                target: 'data',
+                eventHandlers: {
+                  onClick: (_, { datum }) => {
+                    categoryList.length > 1 &&
+                      setSelectedCategory(c =>
+                        c?.category === datum.category ? undefined : datum,
+                      );
+                    return [];
+                  },
+                },
+              },
+            ]}
             standalone={false}
             theme={chartTheme}
             animate
@@ -59,7 +74,10 @@ export const CategoryBreakdownChart = ({
             y="percent"
             x="percent"
             style={{
-              data: { fill: ({ datum }) => datum.color },
+              data: {
+                fill: ({ datum }) => datum.color,
+                cursor: categoryList.length > 1 ? 'pointer' : 'default',
+              },
               labels: {
                 textAnchor: 'middle',
                 fill: ({ datum }) => theme.palette.getContrastText(datum.color),
@@ -67,8 +85,15 @@ export const CategoryBreakdownChart = ({
             }}
             padAngle={2}
             innerRadius={100}
+            radius={({ datum }) =>
+              selectedCategory?.category === datum.category ? 200 : 180
+            }
             labels={({ datum }) => `${datum.percent.toFixed(2)}%`}
-            labelRadius={({ innerRadius }) => (400 - Number(innerRadius)) / 2}
+            labelRadius={({ innerRadius, datum }) =>
+              datum.category === selectedCategory?.category
+                ? (400 - Number(innerRadius)) / 2
+                : 140
+            }
           />
           <VictoryLabel
             textAnchor="middle"
@@ -79,26 +104,35 @@ export const CategoryBreakdownChart = ({
             }}
             x={200}
             y={200}
-            text={`${clickedFeatures.length}\nArea${
+            text={`${
+              !!selectedCategory ? `${selectedCategory?.count} / ` : ''
+            }${clickedFeatures.length}\nArea${
               clickedFeatures.length > 1 ? 's' : ''
             }`}
           />
         </Grid>
         {categoryList.map(categoryInfo => (
-          <Grid item xs component={ListItem} key={categoryInfo.category}>
-            <ListItemIcon
-              style={{ marginRight: theme.spacing(1), minWidth: 'max-content' }}
+          <Grid item xs key={categoryInfo.category}>
+            <ListItem
+              selected={categoryInfo.category === selectedCategory?.category}
             >
-              <span
+              <ListItemIcon
                 style={{
-                  width: '1rem',
-                  height: '1rem',
-                  backgroundColor: categoryInfo.color,
-                  borderRadius: '50%',
+                  marginRight: theme.spacing(1),
+                  minWidth: 'max-content',
                 }}
-              />
-            </ListItemIcon>
-            <ListItemText primary={categoryInfo.category} />
+              >
+                <span
+                  style={{
+                    width: '1rem',
+                    height: '1rem',
+                    backgroundColor: categoryInfo.color,
+                    borderRadius: '50%',
+                  }}
+                />
+              </ListItemIcon>
+              <ListItemText primary={categoryInfo.category} />
+            </ListItem>
           </Grid>
         ))}
       </Grid>

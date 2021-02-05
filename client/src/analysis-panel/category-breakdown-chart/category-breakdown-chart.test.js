@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { render } from '@testing-library/react';
 import { CategoryBreakdownChart } from './category-breakdown-chart.component';
+import userEvent from '@testing-library/user-event';
 
 const PROPERTY = {
     type: 'discrete',
@@ -71,5 +72,9 @@ describe('<CategoryBreakdownChart />', () => {
     expect(getByText('3')).toBeInTheDocument();
   });
 
-  it.todo('Shows the count of areas in a segment when that segment is clicked');
+  it('Shows the count of areas in a segment when that segment is clicked', () => {
+    const { getAllByRole, getByText } = renderComponent();
+    userEvent.click(getAllByRole('presentation')[0]);
+    expect(getByText('1 / 3')).toBeInTheDocument();
+  });
 });
