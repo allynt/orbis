@@ -60,7 +60,7 @@ const FeatureDetailPopup = ({ source }) => {
     <Popup
       latitude={features?.[0]?.geometry.coordinates[1]}
       longitude={features?.[0]?.geometry.coordinates[0]}
-      offsetTop={-37}
+      offsetTop={-25}
       onClose={() => dispatch(action())}
     >
       <FeatureDetail features={features?.map(obj => obj?.properties)} />

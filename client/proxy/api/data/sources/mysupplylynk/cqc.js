@@ -19,22 +19,22 @@ module.exports = {
     description: 'Suppliers who can provide items',
     application: {
       orbis: {
-        map_component: {
-          name: 'MySupplyLynkMapComponent',
-          props: { name: 'cqcSuppliers' },
-        },
-        sidebar_component: {
-          name: 'LayerVisibilityCheckbox',
-        },
         layer: {
-          name: 'GeoJsonClusteredIconLayer',
+          name: 'GeoJsonPinLayer',
           props: {
             config: 'pinIconConfig',
             pinColor: 'purple',
-            onPointClick: false,
             onGroupClick: true,
-            onHover: true,
+            onGroupHover: false,
+            onPointClick: false,
+            onPointHover: true,
           },
+        },
+        map_component: {
+          name: 'FeatureDetailPopup',
+        },
+        sidebar_component: {
+          name: 'LayerVisibilityCheckbox',
         },
       },
     },

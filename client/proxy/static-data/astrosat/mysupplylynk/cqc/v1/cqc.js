@@ -23,7 +23,7 @@ module.exports = {
       Postcode: faker.address.zipCode(),
       'Service Type': new Array(faker.random.number(5))
         .fill(undefined)
-        .map(() => faker.commerce.Category()),
+        .map(() => faker.commerce.department()),
       Website: faker.internet.url(),
     },
   })),

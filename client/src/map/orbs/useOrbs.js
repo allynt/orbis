@@ -37,6 +37,7 @@ export const useOrbs = () => {
         });
 
         if (!response.ok) {
+          console.log(source.source_id);
           return dispatch(logError(source));
         }
 
