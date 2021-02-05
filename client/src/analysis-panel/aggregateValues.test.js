@@ -53,7 +53,7 @@ describe('aggregateValues', () => {
     expect(result).toBe((123 + 456 + 789) / 3);
   });
 
-  it('returns the value to the precision specified in the property if available', () => {
+  it('returns the mean value to the precision specified in the property if available', () => {
     const selectedProperty = {
         name: 'test',
         aggregation: 'mean',
@@ -66,5 +66,52 @@ describe('aggregateValues', () => {
       ];
     const result = aggregateValues(clickedFeatures, selectedProperty);
     expect(result).toBe(456.533);
+  });
+
+  it('returns the sum value to the precision specified in the property if available', () => {
+    const selectedProperty = {
+        name: 'test',
+        aggregation: 'sum',
+        precision: 3,
+      },
+      clickedFeatures = [
+        { object: { properties: { test: 123.565464 } } },
+        { object: { properties: { test: 456.367456 } } },
+        { object: { properties: { test: 789.874688 } } },
+      ];
+    const result = aggregateValues(clickedFeatures, selectedProperty);
+    expect(result).toBe(1369.808);
+  });
+
+  it('fixes mean decimals to 1 place', () => {
+    const clickedFeatures = [
+      { object: { properties: { test: 123.565486 } } },
+      { object: { properties: { test: 456.331257 } } },
+      { object: { properties: { test: 789.878962 } } },
+    ];
+
+    const selectedProperty = {
+      name: 'test',
+      aggregation: 'mean',
+    };
+
+    const result = aggregateValues(clickedFeatures, selectedProperty);
+    expect(result).toBe(456.59);
+  });
+
+  it('fixes sum decimals to 1 place', () => {
+    const clickedFeatures = [
+      { object: { properties: { test: 123.565486 } } },
+      { object: { properties: { test: 456.331257 } } },
+      { object: { properties: { test: 789.878962 } } },
+    ];
+
+    const selectedProperty = {
+      name: 'test',
+      aggregation: 'sum',
+    };
+
+    const result = aggregateValues(clickedFeatures, selectedProperty);
+    expect(result).toBe(1369.78);
   });
 });

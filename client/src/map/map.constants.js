@@ -1,6 +1,7 @@
 export const VECTOR = 'vector';
 export const RASTER = 'raster';
 export const MAX_ZOOM = 20;
+export const DEFAULT_DECIMAL_PRECISION = 2;
 
 export const regions = [
   {
