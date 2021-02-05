@@ -50,6 +50,7 @@ describe('Admin Slice', () => {
           },
           customerUsers: [],
         },
+        app: { apiUrl: 'http://test.com' },
       });
     });
 
@@ -258,6 +259,7 @@ describe('Admin Slice', () => {
             },
             customerUsers: [{ id: '1', licences: ['2'] }],
           },
+          app: { apiUrl: 'http://test.com' },
         });
         const request = {
           name: 'Test User',

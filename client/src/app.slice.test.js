@@ -14,6 +14,7 @@ import reducer, {
   addLogItem,
   removeLogItems,
   logUserTracking,
+  setApiUrl,
 } from './app.slice';
 
 const mockStore = configureMockStore([thunk]);
@@ -111,6 +112,7 @@ describe('App Slice', () => {
         error: null,
         notYetImplementedDescription: null,
         trackingQueue: [],
+        apiUrl: '',
       };
     });
 
@@ -180,6 +182,17 @@ describe('App Slice', () => {
       });
 
       expect(actualState.trackingQueue).toEqual([beforeState.trackingQueue[0]]);
+    });
+
+    it('should set the API hostname in state', () => {
+      const host = 'https://mytesthost.com';
+
+      const actualState = reducer(beforeState, {
+        type: setApiUrl.type,
+        payload: host,
+      });
+
+      expect(actualState.apiUrl).toEqual(host);
     });
   });
 

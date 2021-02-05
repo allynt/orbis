@@ -143,7 +143,7 @@ const CustomerRegistration = ({
               helperText={errors[FIELD_NAMES.customerType]?.message}
             >
               {ORGANISATION_TYPES.map(({ name, value }) => (
-                <MenuItem key={value} value={value}>
+                <MenuItem key={name} value={value}>
                   {name}
                 </MenuItem>
               ))}

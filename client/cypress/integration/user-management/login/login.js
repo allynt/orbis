@@ -9,11 +9,10 @@ Then(`I see the "Login" page`, () => {
   cy.url().should('include', LOGIN);
 
   // Verify form
-  cy.findByPlaceholderText('Email');
-  cy.findByPlaceholderText('Password');
-  cy.contains('Keep me logged in');
-  cy.contains('Forgotten your');
-  cy.contains('password?');
+  cy.findByLabelText(/Email */i, { timeout: 7000 }).should('exist');
+  cy.findByLabelText(/Password */i, { timeout: 7000 }).should('exist');
+  // cy.contains('Keep me logged in');
+  cy.contains('Forgot password?');
   cy.contains('Login');
 
   // Verify links.

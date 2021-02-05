@@ -3,11 +3,12 @@ import { Then } from 'cypress-cucumber-preprocessor/steps';
 const MAP = '/map';
 
 // View My Account panel
-Then(`I see the "My Account" panel`, () => {
+Then(`I see the {string} panel`, header => {
+  cy.contains(header);
+
   // Verify form
   cy.findByPlaceholderText('Email');
-  cy.findByPlaceholderText('First Name');
-  cy.findByPlaceholderText('Last Name');
+  cy.findByPlaceholderText('Name');
   cy.contains('Update Account');
   cy.contains('Logout');
 

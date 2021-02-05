@@ -222,7 +222,7 @@ export const ActiveUsersBoard = ({
                 }
                 return (
                   <UserRow
-                    key={customerUser.id}
+                    key={customerUser.user.id}
                     customerUser={customerUser}
                     currentUser={currentUser}
                     licences={licences}

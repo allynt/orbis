@@ -48,7 +48,7 @@ describe('ActiveUsersBoard', () => {
 
     expect(queryByText('No licences')).not.toBeInTheDocument();
 
-    activeUsers.forEach((user, i) =>
+    activeUsers.forEach((_, i) =>
       expect(getAllByText('Not currently available')[i]).toBeInTheDocument(),
     );
   });
@@ -74,8 +74,8 @@ describe('ActiveUsersBoard', () => {
     const { getByRole } = render(
       <ActiveUsersBoard
         activeCustomerUsers={[
-          { type: 'MANAGER', user: { name: 'John Smith' } },
-          { type: 'MEMBER', user: { name: 'Steve Brown' } },
+          { type: 'MANAGER', user: { id: '123', name: 'John Smith' } },
+          { type: 'MEMBER', user: { id: '456', name: 'Steve Brown' } },
         ]}
         oneAdminRemaining={true}
         customer={{ name: 'Customer Name' }}
@@ -85,12 +85,12 @@ describe('ActiveUsersBoard', () => {
   });
 
   it('Calls `changeRole` function with user when buttons are clicked', () => {
-    const MEMBER = { type: 'MEMBER', user: { name: 'Steve Brown' } };
+    const MEMBER = { type: 'MEMBER', user: { id: '123', name: 'Steve Brown' } };
 
     const { getByText, getAllByText } = render(
       <ActiveUsersBoard
         activeCustomerUsers={[
-          { type: 'MANAGER', user: { name: 'John Smith' } },
+          { type: 'MANAGER', user: { id: '456', name: 'John Smith' } },
           MEMBER,
         ]}
         customer={{ name: 'Customer Name' }}
@@ -113,7 +113,7 @@ describe('ActiveUsersBoard', () => {
       <ActiveUsersBoard
         currentUser={{ id: '456' }}
         activeCustomerUsers={[
-          { type: 'MANAGER', user: { name: 'John Smith' } },
+          { type: 'MANAGER', user: { id: '456', name: 'John Smith' } },
           USER,
         ]}
         customer={{ name: 'Customer Name' }}
@@ -153,7 +153,7 @@ describe('ActiveUsersBoard', () => {
       <ActiveUsersBoard
         currentUser={{ id: '456' }}
         activeCustomerUsers={[
-          { type: 'MANAGER', user: { name: 'John Smith' } },
+          { type: 'MANAGER', user: { id: '456', name: 'John Smith' } },
           USER,
         ]}
         customer={{ name: 'Customer Name' }}

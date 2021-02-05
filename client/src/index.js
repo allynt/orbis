@@ -21,6 +21,8 @@ import { CssBaseline, ThemeProvider } from '@astrosat/astrosat-ui';
 import installDevTools from './dev-tools/load';
 import { MapProvider } from 'MapContext';
 
+import { setApiUrl } from './app.slice';
+
 window.onerror = (msg, url, line, col, error) => {
   // Note that col & error are new to the HTML 5 spec and may not be
   // supported in every browser.  It worked for me in Chrome.
@@ -42,6 +44,10 @@ window.onerror = (msg, url, line, col, error) => {
   // Internet Explorer) will be suppressed.
   return suppressErrorAlert;
 };
+
+process.env.NODE_ENV === 'development'
+  ? store.dispatch(setApiUrl(process.env.REACT_APP_API_HOST))
+  : store.dispatch(setApiUrl(window._env_.REACT_APP_API_HOST));
 
 const render = () => {
   const App = require('./app.component').default;
@@ -73,11 +79,6 @@ installDevTools(() => {
 if (process.env.NODE_ENV === 'development' && module.hot) {
   module.hot.accept('./app.component', render);
 }
-
-window.orbis = {};
-process.env.NODE_ENV === 'development'
-  ? (window.orbis.getEnv = () => process.env)
-  : (window.orbis.getEnv = () => window._env_);
 
 if (window.Cypress) {
   window.store = store;
