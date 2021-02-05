@@ -7,7 +7,19 @@ type LayerName =
   | 'GeoJsonLayer'
   | 'IconLayer';
 
-type ColorMap =
+type CategoricalColorMaps =
+  | 'Category10'
+  | 'Accent'
+  | 'Dark2'
+  | 'Paired'
+  | 'Pastel1'
+  | 'Pastel2'
+  | 'Set1'
+  | 'Set2'
+  | 'Set3'
+  | 'Tableau10';
+
+type ContinuousColorMaps =
   | 'BrBG'
   | 'PRGn'
   | 'PiYG'
@@ -47,7 +59,9 @@ type ColorMap =
   | 'YlOrBr'
   | 'YlOrRd';
 
-type PropertyType = 'continuous' | 'decile' | 'discrete';
+type ColorMap = CategoricalColorMaps | ContinuousColorMaps;
+
+type PropertyType = 'continuous' | 'decile' | 'discrete' | 'percentage';
 
 type Orb = { name: string; description?: string };
 
@@ -76,13 +90,6 @@ type OrbisApplicationMetadata = {
 };
 
 type Property = {
-  aggregates?: {
-    GB: number;
-    Scotland: number;
-    England: number;
-    Wales: number;
-  };
-  aggregation?: 'sum' | 'mean';
   application: {
     orbis?: {
       label?: string;
@@ -93,21 +100,40 @@ type Property = {
       };
     };
   };
-  breakdown?: string[];
-  clip_min?: number;
-  clip_max?: number;
   description?: string;
   details?: string;
   label?: string;
-  max: number;
-  min: number;
   name: string;
-  precision?: number;
   property_group?: string;
   source?: string;
   type: PropertyType;
-  units?: string;
 };
+
+type ContinuousProperty = {
+  aggregates?: {
+    GB: number;
+    Scotland: number;
+    England: number;
+    Wales: number;
+  };
+  aggregation?: 'sum' | 'mean';
+  breakdown?: string[];
+  clip_min?: number;
+  clip_max?: number;
+  max: number;
+  min: number;
+  precision?: number;
+  units?: string;
+} & Property;
+
+type DiscreteProperty = {
+  categories: {
+    [category: string]: {
+      color: string;
+      description?: string;
+    };
+  };
+} & Property;
 
 type SourceMetadata = {
   label: string;

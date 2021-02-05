@@ -1,5 +1,5 @@
 import { DataFilterExtension } from '@deck.gl/extensions';
-import { ColorScale } from 'utils/color';
+import { getColorScaleForProperty } from 'utils/color';
 import { isRealValue } from 'utils/isRealValue';
 import { extrudedModeSelector, extrusionScaleSelector } from '../orbReducer';
 import {
@@ -44,8 +44,10 @@ const configuration = ({
   orbState,
   authToken,
 }) => {
-  const source = activeSources?.find(source => source.source_id === id);
   const selectedProperty = propertySelector(orbState);
+  if (selectedProperty.source_id !== id) return undefined;
+
+  const source = activeSources?.find(source => source.source_id === id);
   const filterRange = filterRangeSelector(orbState);
   const extrudedMode = extrudedModeSelector(orbState);
   const extrusionScale = extrusionScaleSelector(orbState);
@@ -55,19 +57,7 @@ const configuration = ({
   );
   const colorScale =
     selectedPropertyMetadata &&
-    new ColorScale({
-      color: selectedPropertyMetadata?.application?.orbis?.display?.color,
-      domain: [selectedProperty?.min, selectedProperty?.max],
-      reversed:
-        selectedPropertyMetadata?.application?.orbis?.display
-          ?.colormap_reversed,
-      clip: (selectedPropertyMetadata?.clip_min ||
-        selectedPropertyMetadata?.clip_max) && [
-        selectedPropertyMetadata.clip_min || selectedPropertyMetadata.min,
-        selectedPropertyMetadata.clip_max || selectedPropertyMetadata.max,
-      ],
-      format: 'array',
-    });
+    getColorScaleForProperty(selectedPropertyMetadata, 'array');
 
   const clickedFeatureIds = clickedFeatures?.map(
     f => f.object.properties.index,
@@ -100,7 +90,8 @@ const configuration = ({
    * @returns {number}
    */
   const getFillOpacity = d => {
-    if (!extrudedMode) return OPACITY_FLAT;
+    if (!extrudedMode || selectedProperty.type === 'discrete')
+      return OPACITY_FLAT;
     if (!anySelected || (anySelected && isSelected(d)))
       return OPACITY_EXTRUDED_SELECTED;
     return OPACITY_EXTRUDED;
@@ -148,6 +139,45 @@ const configuration = ({
   const getFilterValue = d =>
     d.properties[selectedProperty.name] * FILTER_SCALING_VALUE;
 
+  const transitions = {
+      getFillColor: TRANSITION_DURATION,
+      getLineWidth: TRANSITION_DURATION,
+    },
+    updateTriggers = {
+      getFillColor: [selectedProperty, clickedFeatures],
+      getLineWidth: [clickedFeatures],
+    };
+
+  const typedProps =
+    selectedProperty.type === 'discrete'
+      ? {
+          transitions,
+          updateTriggers,
+        }
+      : {
+          extruded: extrudedMode,
+          getElevation,
+          elevationScale: extrusionScale,
+          extensions: [new DataFilterExtension({ filterSize: 1 })],
+          getFilterValue,
+          filterRange: (
+            filterRange || [
+              selectedPropertyMetadata?.min,
+              selectedPropertyMetadata?.max,
+            ]
+          ).map(f => f * FILTER_SCALING_VALUE),
+          transitions: {
+            ...transitions,
+            getElevation: TRANSITION_DURATION,
+          },
+          updateTriggers: {
+            ...updateTriggers,
+            getFillColor: [...updateTriggers.getFillColor, extrudedMode],
+            getFilterValue: [selectedProperty],
+            getElevation: [extrudedMode, clickedFeatures, selectedProperty],
+          },
+        };
+
   return {
     id,
     data,
@@ -159,32 +189,11 @@ const configuration = ({
     pickable: true,
     autoHighlight: true,
     onClick,
-    extruded: extrudedMode,
-    getElevation,
-    elevationScale: extrusionScale,
     getLineColor: COLOR_PRIMARY,
     getLineWidth,
     lineWidthUnits: 'pixels',
     getFillColor,
-    getFilterValue,
-    filterRange: (
-      filterRange || [
-        selectedPropertyMetadata?.min,
-        selectedPropertyMetadata?.max,
-      ]
-    ).map(f => f * FILTER_SCALING_VALUE),
-    transitions: {
-      getFillColor: TRANSITION_DURATION,
-      getLineWidth: TRANSITION_DURATION,
-      getElevation: TRANSITION_DURATION,
-    },
-    updateTriggers: {
-      getFillColor: [extrudedMode, selectedProperty, clickedFeatures],
-      getFilterValue: [selectedProperty],
-      getLineWidth: [clickedFeatures],
-      getElevation: [extrudedMode, clickedFeatures, selectedProperty],
-    },
-    extensions: [new DataFilterExtension({ filterSize: 1 })],
+    ...typedProps,
   };
 };
 

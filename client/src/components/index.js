@@ -1,6 +1,5 @@
 export { BarChart } from './charts/bar/bar.component';
 export { PieChart } from './charts/pie/pie.component';
-export { default as ColorScale } from './color-scale/color-scale.component';
 export { ColorMapRangeSlider } from './colormap-range-slider/colormap-range-slider.component';
 export { default as FeatureDetail } from './feature-detail/feature-detail.component';
 export { default as Form } from './form/form.component';

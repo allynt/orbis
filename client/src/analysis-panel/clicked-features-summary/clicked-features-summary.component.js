@@ -8,6 +8,7 @@ import {
   makeStyles,
   Tooltip,
   Typography,
+  Fade,
 } from '@astrosat/astrosat-ui';
 import { SidePanelSection } from 'components';
 import { sumBy } from 'lodash';
@@ -107,10 +108,12 @@ export const ClickedFeaturesSummary = ({ clickedFeatures, dispatch }) => {
           <Collapse in={open} collapsedHeight="1.6rem">
             <Grid container spacing={1}>
               {clickedFeatures?.map(feature => (
-                <TooltipChip
-                  feature={feature}
-                  onDelete={() => dispatch(removeClickedFeatures([feature]))}
-                />
+                <Fade in key={feature.index}>
+                  <TooltipChip
+                    feature={feature}
+                    onDelete={() => dispatch(removeClickedFeatures([feature]))}
+                  />
+                </Fade>
               ))}
             </Grid>
           </Collapse>

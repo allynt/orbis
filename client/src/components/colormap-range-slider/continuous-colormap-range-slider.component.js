@@ -8,7 +8,7 @@ import {
   VictoryLabel,
 } from 'victory';
 import { isEqual } from 'lodash';
-import { ColorScale } from 'utils/color';
+import { ColorScale } from 'utils/ColorScale';
 
 const DEFAULT_CLIP_POSITION = {
   translateX: 0,

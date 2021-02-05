@@ -1,137 +1,53 @@
-import { scaleSequential } from 'd3-scale';
-import { color } from 'd3-color';
-import * as chromatic from 'd3-scale-chromatic';
+import { toPairs } from 'lodash';
+import { ColorScale } from './ColorScale';
+import { isRealValue } from './isRealValue';
 
-/** @typedef {'hex' | 'rgb' | 'array'} ColorFormat */
 /**
- * @typedef {{
- *   color: string | number[]
- *   stop: number
- * }} ColorStop
+ * @param {import("typings/orbis").Property} property
+ * @param {import('./ColorScale').ColorFormat} format
  */
+export const getColorScaleForProperty = (property, format) => {
+  switch (property.type) {
+    case 'decile':
+    case 'percentage':
+    case 'continuous':
+      const {
+        min,
+        max,
+        clip_min,
+        clip_max,
+        application: {
+          orbis: {
+            display: { color, colormap_reversed },
+          },
+        },
+      } = /** @type {import('typings/orbis').ContinuousProperty} */ (property);
 
-export class ColorScale {
-  /** @type {import('d3-scale').ScaleSequential<string, never>} */
-  #scale;
-  /** @type {[number, number]} */
-  #domain;
-  /** @type {[number, number] | false | undefined} */
-  #clip;
-  /** @type {ColorMap | string[]} */
-  #color;
-  /** @type {boolean} */
-  #reversed;
-  /** @type {ColorFormat} */
-  #format;
+      return new ColorScale({
+        color: color,
+        domain: [min, max],
+        reversed: colormap_reversed,
+        clip: (isRealValue(clip_min) || isRealValue(clip_max)) && [
+          clip_min ?? min,
+          clip_max ?? max,
+        ],
+        format,
+      });
+    case 'discrete':
+      const {
+        categories,
+      } = /** @type {import('typings/orbis').DiscreteProperty} */ (property);
+      const pairs = toPairs(categories).map(([category, obj]) => [
+        category,
+        obj.color,
+      ]);
 
-  /**
-   * @param {{
-   *   color?: ColorMap | string[]
-   *   domain?: [number, number]
-   *   reversed?: boolean
-   *   clip?: [number, number]
-   *   format?: ColorFormat
-   * }} [parameters]
-   */
-  constructor({
-    color = 'Greys',
-    domain = [0, 1],
-    reversed = false,
-    clip,
-    format = 'hex',
-  } = {}) {
-    this.#scale = scaleSequential();
-    this.color = color;
-    this.domain = domain;
-    this.clip = clip;
-    this.reversed = reversed;
-    this.format = format;
+      return new ColorScale({
+        domain: pairs.map(p => p[0]),
+        color: pairs.map(p => p[1]),
+        format,
+      });
+    default:
+      return new ColorScale({ format });
   }
-
-  get domain() {
-    return this.#scale.domain();
-  }
-
-  set domain(domain) {
-    this.#domain = domain;
-    this.#scale.domain(domain);
-  }
-
-  get color() {
-    return this.#color;
-  }
-
-  set color(color) {
-    this.#color = color;
-    if (typeof color === 'string') {
-      const interpolatorKey = Object.keys(chromatic).find(
-        key => key.toLowerCase() === `interpolate${this.#color}`.toLowerCase(),
-      );
-      this.#scale.interpolator(chromatic[interpolatorKey]);
-    } else this.#scale.range(color);
-  }
-
-  get reversed() {
-    return this.#reversed;
-  }
-
-  set reversed(reversed) {
-    this.#reversed = reversed;
-    if (this.#reversed) this.#scale.domain([this.domain[1], this.domain[0]]);
-    else this.#scale.domain(this.domain);
-  }
-
-  get clip() {
-    return this.#clip;
-  }
-
-  set clip(clip) {
-    this.#clip = clip;
-    if (!clip) {
-      this.#scale.domain(this.#domain);
-      return;
-    }
-    // @ts-ignore
-    this.#scale.domain(this.#clip);
-  }
-
-  get format() {
-    return this.#format;
-  }
-
-  set format(format) {
-    this.#format = format;
-  }
-
-  /**
-   * @param  {number} value
-   * @param {ColorFormat} [format]
-   */
-  get(value, format = this.#format) {
-    const colorValue = color(this.#scale(value));
-    switch (format) {
-      case 'array':
-        const { r, g, b } = colorValue.rgb();
-        return [r, g, b];
-      case 'rgb':
-        return colorValue.formatRgb();
-      case 'hex':
-      default:
-        return colorValue.formatHex();
-    }
-  }
-
-  /**
-   * @param {ColorFormat} [format]
-   * @returns {ColorStop[]}
-   */
-  getGradient(format) {
-    const samples = 100 + 1;
-    const [min, max] = this.#domain;
-    return new Array(samples).fill(undefined).map((_, i) => {
-      const stopValue = (i / 100) * (max - min) + min;
-      const color = this.get(stopValue, format);
-      return { color, stop: i };
-    });
-  }
-}
+};

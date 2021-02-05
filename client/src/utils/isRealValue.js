@@ -5,4 +5,8 @@
  * @param {any} v - the value to test
  * @returns {boolean}
  */
-export const isRealValue = v => v !== undefined && v !== null && !isNaN(v);
+export const isRealValue = v => {
+  if (v === undefined || v === null) return false;
+  if (typeof v === 'number' && isNaN(v)) return false;
+  return true;
+};

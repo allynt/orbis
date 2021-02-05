@@ -14,6 +14,7 @@ import clsx from 'clsx';
 
 import { InfoButtonTooltip, ColorMapRangeSlider } from 'components';
 import { FORMAT } from '../radio-picker-constants';
+import { DiscretePropertyLegend } from '../discrete-property-legend/discrete-property-legend.component';
 
 const useStyles = makeStyles(theme => ({
   property: {
@@ -46,6 +47,9 @@ const useStyles = makeStyles(theme => ({
   notActive: {},
 }));
 
+/**
+ * @param {{selectedProperty: import('typings/orbis').Property}} props
+ */
 const RadioProperty = ({
   data,
   onRadioClick,
@@ -133,24 +137,28 @@ const RadioProperty = ({
             </>
           )}
           <div className={styles.fullGrid}>
-            <ColorMapRangeSlider
-              type={selectedProperty?.type}
-              color={colorScheme}
-              domain={[selectedProperty.min, selectedProperty.max]}
-              clip={
-                (selectedProperty.clip_min || selectedProperty.clip_max) && [
-                  selectedProperty.clip_min || selectedProperty.min,
-                  selectedProperty.clip_max || selectedProperty.max,
-                ]
-              }
-              value={filterData}
-              onChange={data => onSliderChange(data)}
-              reversed={
-                !!selectedProperty?.application?.orbis?.display
-                  ?.colormap_reversed
-              }
-              precision={selectedProperty?.precision}
-            />
+            {selectedProperty.type === 'discrete' ? (
+              <DiscretePropertyLegend property={selectedProperty} />
+            ) : (
+              <ColorMapRangeSlider
+                type={selectedProperty?.type}
+                color={colorScheme}
+                domain={[selectedProperty.min, selectedProperty.max]}
+                clip={
+                  (selectedProperty.clip_min || selectedProperty.clip_max) && [
+                    selectedProperty.clip_min || selectedProperty.min,
+                    selectedProperty.clip_max || selectedProperty.max,
+                  ]
+                }
+                value={filterData}
+                onChange={data => onSliderChange(data)}
+                reversed={
+                  !!selectedProperty?.application?.orbis?.display
+                    ?.colormap_reversed
+                }
+                precision={selectedProperty?.precision}
+              />
+            )}
           </div>
         </>
       )}
