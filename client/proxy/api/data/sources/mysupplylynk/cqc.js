@@ -23,7 +23,7 @@ module.exports = {
           name: 'GeoJsonPinLayer',
           props: {
             config: 'pinIconConfig',
-            pinColor: 'purple',
+            pinColor: '#a851c1',
             onGroupClick: true,
             onGroupHover: false,
             onPointClick: false,

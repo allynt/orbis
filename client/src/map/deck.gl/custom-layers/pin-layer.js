@@ -3,6 +3,8 @@ import { IconLayer, TextLayer } from '@deck.gl/layers';
 import Supercluster from 'supercluster';
 import iconMapping from './pin-layer.iconMapping.json';
 import iconAtlas from './pin-layer.iconAtlas.svg';
+import { isArray } from 'lodash';
+import { color } from 'd3-color';
 
 const TEXT_COLOR_TRANSPARENT = [0, 0, 0, 0];
 
@@ -93,6 +95,16 @@ export class PinLayer extends CompositeLayer {
       : this.props.getPinSize;
   }
 
+  _getPinColor(feature) {
+    if (feature.properties.cluster) return [246, 190, 0, 255];
+    if (typeof this.props.getPinColor === 'function')
+      return this.props.getPinColor(feature);
+    if (isArray(this.props.pinColor)) return this.props.pinColor;
+    const colorInstance = color(this.props.pinColor);
+    const { r, g, b } = colorInstance.rgb();
+    return [r, g, b];
+  }
+
   // ===== Text Layer Functions =====
 
   _getTextColor(feature) {
@@ -119,7 +131,7 @@ export class PinLayer extends CompositeLayer {
           getPosition: this.props.getPosition,
           getIcon: d => this._getPinIcon(d),
           getSize: d => this._getPinLayerIconSize(d),
-          getColor: [246, 190, 0, 255],
+          getColor: d => this._getPinColor(d),
           updateTriggers: {
             getPosition: this.props.updateTriggers.getPosition,
             getIcon: this.props.updateTriggers.getIcon,
@@ -161,7 +173,7 @@ PinLayer.defaultProps = {
   // ===== Pin/Cluster Layer Props =====
   // accessors
   getPinSize: { type: 'accessor', value: 70 },
-  getIconColor: { type: 'accessor', value: [0, 0, 0, 255] },
+  pinColor: { type: 'accessor', value: [246, 190, 0, 255] },
   // ===== Icon Layer Props =====
   getIcon: { type: 'accessor', value: x => x.icon },
   getIconSize: { type: 'accessor', value: 70 },

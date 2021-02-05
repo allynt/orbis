@@ -101,7 +101,6 @@ const configuration = ({
     visible:
       isVisible && !!activeSources?.find(source => source.source_id === id),
     getIcon: `pin`,
-    groupIconName: `group-${pinColor}`,
     onClick: handleClick,
     onHover: handleHover,
   };
