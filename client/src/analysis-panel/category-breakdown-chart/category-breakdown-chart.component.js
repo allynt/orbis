@@ -78,7 +78,7 @@ export const CategoryBreakdownChart = ({
 
   /** @param {import('victory').SliceProps} props */
   const getLabelRadius = ({ innerRadius, datum }) =>
-    isSelected(datum) ? (WIDTH - Number(innerRadius)) / 2 : 140;
+    isSelected(datum) ? (WIDTH - Number(innerRadius) - 15) / 2 : 135;
 
   const labelText = `${!!selectedDatum ? `${selectedDatum?.count} / ` : ''}${
     clickedFeatures.length
@@ -123,7 +123,7 @@ export const CategoryBreakdownChart = ({
             x="percent"
             style={pieStyle}
             padAngle={2}
-            innerRadius={100}
+            innerRadius={90}
             radius={getRadius}
             labels={getLabels}
             labelRadius={getLabelRadius}
