@@ -61,35 +61,23 @@ const RadioProperty = ({
   categoryPath,
 }) => {
   const styles = useStyles();
-  const isArray = Array.isArray(data);
 
-  const findPropertyByType = type => data.find(d => d.type === type);
+  const initialProperty = data[0];
 
-  const initialProperty = isArray
-    ? findPropertyByType(FORMAT.percentage)
-    : data;
-
-  const propertyMatch = (() => {
-    const layerMatch = selectedProperty?.source_id === layerSourceId;
-    return isArray
-      ? data.some(p => selectedProperty?.name === p.name && layerMatch)
-      : selectedProperty?.name === data.name && layerMatch;
-  })();
+  const propertyMatch = data.some(p => {
+    return (
+      selectedProperty?.name === p.name &&
+      selectedProperty?.source_id === layerSourceId
+    );
+  });
 
   const handleRadioClick = () => {
-    if (propertyMatch) onClick({});
-    else {
-      const property =
-        propertyMatch && isArray && selectedProperty?.type === FORMAT.number
-          ? findPropertyByType(FORMAT.number)
-          : initialProperty;
-
-      onClick(property);
-    }
+    const payload = propertyMatch ? {} : initialProperty;
+    return onClick(payload);
   };
 
   const handleToggleClick = type => {
-    const property = findPropertyByType(type);
+    const property = data.find(d => d.type === type);
     if (property.name === selectedProperty?.name) return;
     else onClick(property);
   };
@@ -120,12 +108,20 @@ const RadioProperty = ({
       />
       {propertyMatch && (
         <>
-          {isArray && (
+          {data?.length > 1 && (
             <>
               <FormLabel className={styles.fullGrid}>
                 Select display type:
               </FormLabel>
               <ButtonGroup size="small" className={styles.fullGrid}>
+                <Button
+                  onClick={() => handleToggleClick(FORMAT.number)}
+                  className={clsx(styles.button, {
+                    [styles.notActive]: selectedProperty.type !== FORMAT.number,
+                  })}
+                >
+                  Number
+                </Button>
                 <Button
                   onClick={() => handleToggleClick(FORMAT.percentage)}
                   className={clsx(styles.button, {
@@ -134,14 +130,6 @@ const RadioProperty = ({
                   })}
                 >
                   Percentage
-                </Button>
-                <Button
-                  onClick={() => handleToggleClick(FORMAT.number)}
-                  className={clsx(styles.button, {
-                    [styles.notActive]: selectedProperty.type !== FORMAT.number,
-                  })}
-                >
-                  Number
                 </Button>
               </ButtonGroup>
             </>
