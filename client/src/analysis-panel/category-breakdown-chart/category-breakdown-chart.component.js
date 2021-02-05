@@ -9,7 +9,13 @@ import { useChartTheme } from 'components/charts/useChartTheme';
 import { LegendItem } from './legend-item.component';
 
 const WIDTH = 400,
-  HEIGHT = 400;
+  HEIGHT = 400,
+  RADIUS_MODIFIER = 20,
+  RADIUS_SELECTED = WIDTH / 2,
+  RADIUS = RADIUS_SELECTED - RADIUS_MODIFIER,
+  RADIUS_INNER = 90,
+  RADIUS_LABEL = 134,
+  RADIUS_LABEL_SELECTED = (WIDTH - RADIUS_INNER - 16) / 2;
 
 /** @type {import('typings/orbis').AnalysisPanelComponent<{info?: string}, import('typings/orbis').PickedMapFeature>} */
 export const CategoryBreakdownChart = ({
@@ -71,14 +77,15 @@ export const CategoryBreakdownChart = ({
   };
 
   /** @type {import('victory-core').VictoryNumberCallback} */
-  const getRadius = ({ datum }) => (isSelected(datum) ? 200 : 180);
+  const getRadius = ({ datum }) =>
+    isSelected(datum) ? RADIUS_SELECTED : RADIUS;
 
   /** @type {import('victory-core').VictoryStringCallback} */
   const getLabels = ({ datum }) => `${datum.percent.toFixed(2)}%`;
 
   /** @param {import('victory').SliceProps} props */
-  const getLabelRadius = ({ innerRadius, datum }) =>
-    isSelected(datum) ? (WIDTH - Number(innerRadius) - 15) / 2 : 135;
+  const getLabelRadius = ({ datum }) =>
+    isSelected(datum) ? RADIUS_LABEL_SELECTED : RADIUS_LABEL;
 
   const labelText = `${!!selectedDatum ? `${selectedDatum?.count} / ` : ''}${
     clickedFeatures.length
@@ -98,7 +105,7 @@ export const CategoryBreakdownChart = ({
         <Grid item xs={12}>
           <Typography paragraph>{selectedProperty?.label}</Typography>
         </Grid>
-        <Grid item xs={12} component="svg" viewBox="0 0 400 400">
+        <Grid item xs={12} component="svg" viewBox={`0 0 ${WIDTH} ${HEIGHT}`}>
           <VictoryPie
             events={[
               {
@@ -123,7 +130,7 @@ export const CategoryBreakdownChart = ({
             x="percent"
             style={pieStyle}
             padAngle={2}
-            innerRadius={90}
+            innerRadius={RADIUS_INNER}
             radius={getRadius}
             labels={getLabels}
             labelRadius={getLabelRadius}
