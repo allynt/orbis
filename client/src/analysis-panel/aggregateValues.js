@@ -1,5 +1,5 @@
 import { sumBy } from 'lodash';
-import { defaultDecimalPrecision } from '../map/map.constants';
+import { DEFAULT_DECIMAL_PRECISION } from '../map/map.constants';
 
 /**
  * Aggregates the values for a certain property of all clicked features
@@ -19,11 +19,11 @@ export const aggregateValues = (clickedFeatures, selectedProperty) => {
   if (selectedProperty?.aggregation === 'mean') {
     const meanValue = sumValue / clickedFeatures?.length;
     return +meanValue.toFixed(
-      selectedProperty.precision || defaultDecimalPrecision,
+      selectedProperty.precision || DEFAULT_DECIMAL_PRECISION,
     );
   }
 
   return +sumValue.toFixed(
-    selectedProperty.precision || defaultDecimalPrecision,
+    selectedProperty.precision || DEFAULT_DECIMAL_PRECISION,
   );
 };
