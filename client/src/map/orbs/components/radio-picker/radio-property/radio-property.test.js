@@ -6,13 +6,15 @@ import userEvent from '@testing-library/user-event';
 
 import RadioProperty from './radio-property.component';
 
-const singleObjectData = {
-  name: 'Census 2011: % of people in the age band 65+',
-  label: 'People in the age band 65+',
-  type: 'percentage',
-  min: 0,
-  max: 100,
-};
+const singleObjectData = [
+  {
+    name: 'Census 2011: % of people in the age band 65+',
+    label: 'People in the age band 65+',
+    type: 'percentage',
+    min: 0,
+    max: 100,
+  },
+];
 
 const pairObjectData = [
   {
@@ -39,12 +41,14 @@ let onSliderChange = null;
 const renderComponent = (data, selectedProperty) => {
   onClick = jest.fn();
   onSliderChange = jest.fn();
+  const testLayerId = 'test_layer_id';
   return render(
     <RadioProperty
+      layerSourceId={testLayerId}
       data={data}
       onClick={onClick}
       onSliderChange={onSliderChange}
-      selectedProperty={selectedProperty}
+      selectedProperty={{ source_id: testLayerId, ...selectedProperty }}
     />,
   );
 };
@@ -66,8 +70,10 @@ describe('RadioProperty', () => {
   });
 
   it('does not show toggles for single properties', () => {
-    const { queryByRole } = renderComponent(singleObjectData, singleObjectData);
-
+    const { queryByRole } = renderComponent(
+      singleObjectData,
+      singleObjectData[0],
+    );
     expect(
       queryByRole('button', { name: 'Percentage' }),
     ).not.toBeInTheDocument();
@@ -75,17 +81,17 @@ describe('RadioProperty', () => {
   });
 
   it('calls click handler with single property if Radio is clicked', () => {
-    const { getByRole } = renderComponent(singleObjectData, singleObjectData);
+    const { getByRole } = renderComponent(singleObjectData, {});
 
     userEvent.click(getByRole('radio', { name: singleObjectData.label }));
-    expect(onClick).toHaveBeenCalledWith({});
+    expect(onClick).toHaveBeenCalledWith(singleObjectData[0]);
   });
 
-  it('calls click handler with percentage property of pair by default if Radio is clicked', () => {
+  it('calls click handler with first property of pair by default if Radio is clicked', () => {
     const { getByRole } = renderComponent(pairObjectData, {});
 
-    userEvent.click(getByRole('radio', { name: pairObjectData[1].label }));
-    expect(onClick).toHaveBeenCalledWith(pairObjectData[1]);
+    userEvent.click(getByRole('radio', { name: pairObjectData[0].label }));
+    expect(onClick).toHaveBeenCalledWith(pairObjectData[0]);
   });
 
   it('calls click handler with number property if number toggle is clicked', () => {
@@ -127,5 +133,20 @@ describe('RadioProperty', () => {
       />,
     );
     expect(getByRole('list')).toBeInTheDocument();
+  it('calls click handler with empty object if property matches selectedProperty (single)', () => {
+    const { getByRole } = renderComponent(
+      singleObjectData,
+      singleObjectData[0],
+    );
+
+    userEvent.click(getByRole('radio', { name: singleObjectData.label }));
+    expect(onClick).toHaveBeenCalledWith({});
+  });
+
+  it('calls click handler with empty object if property matches selectedProperty (group)', () => {
+    const { getByRole } = renderComponent(pairObjectData, pairObjectData[0]);
+
+    userEvent.click(getByRole('radio', { name: pairObjectData[0].label }));
+    expect(onClick).toHaveBeenCalledWith({});
   });
 });
