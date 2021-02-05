@@ -17,10 +17,8 @@ export const aggregateValues = (clickedFeatures, selectedProperty) => {
 
   if (selectedProperty?.aggregation === 'mean') {
     const meanValue = sumValue / clickedFeatures?.length;
-    if (selectedProperty.precision)
-      return Number(meanValue.toFixed(selectedProperty.precision));
-    return Number(meanValue.toFixed(1));
+    return +meanValue.toFixed(selectedProperty.precision || 2);
   }
 
-  return Number(sumValue.toFixed(1));
+  return +sumValue.toFixed(selectedProperty.precision || 2);
 };
