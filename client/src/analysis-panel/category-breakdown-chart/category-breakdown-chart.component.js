@@ -1,53 +1,15 @@
-import {
-  Fade,
-  Grid,
-  ListItem,
-  ListItemIcon,
-  ListItemText,
-  makeStyles,
-  Typography,
-  useTheme,
-} from '@astrosat/astrosat-ui';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
+
+import { Grid, Typography, useTheme } from '@astrosat/astrosat-ui';
+
+import { VictoryLabel, VictoryPie } from 'victory';
+
 import { SidePanelSection } from 'components';
 import { useChartTheme } from 'components/charts/useChartTheme';
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { VictoryLabel, VictoryPie } from 'victory';
+import { LegendItem } from './legend-item.component';
 
 const WIDTH = 400,
   HEIGHT = 400;
-
-const useStyles = makeStyles(theme => ({
-  listItemIcon: {
-    marginRight: theme.spacing(1),
-    minWidth: 'max-content',
-  },
-  colorCircle: {
-    width: '1rem',
-    height: '1rem',
-    borderRadius: '50%',
-  },
-}));
-
-const LegendItem = ({ categoryInfo, selected }) => {
-  const styles = useStyles();
-  return (
-    <Fade in>
-      <Grid item xs>
-        <ListItem dense selected={selected}>
-          <ListItemIcon className={styles.listItemIcon}>
-            <span
-              className={styles.colorCircle}
-              style={{
-                backgroundColor: categoryInfo.color,
-              }}
-            />
-          </ListItemIcon>
-          <ListItemText primary={categoryInfo.category} />
-        </ListItem>
-      </Grid>
-    </Fade>
-  );
-};
 
 /** @type {import('typings/orbis').AnalysisPanelComponent<{info?: string}, import('typings/orbis').PickedMapFeature>} */
 export const CategoryBreakdownChart = ({
@@ -55,11 +17,11 @@ export const CategoryBreakdownChart = ({
   info,
   selectedProperty: selectedPropertyProp,
 }) => {
+  const selectedProperty = /** @type {import('typings/orbis').DiscreteProperty} */ (selectedPropertyProp);
   const chartTheme = useChartTheme();
   const theme = useTheme();
   /** @type {[{category: string, count:number} | undefined, React.Dispatch<{category:string, count:number} | undefined>]} */
   const [selectedDatum, setSelectedDatum] = useState();
-  const selectedProperty = /** @type {import('typings/orbis').DiscreteProperty} */ (selectedPropertyProp);
 
   const categoryList = useMemo(
     () =>
