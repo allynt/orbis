@@ -1,4 +1,5 @@
 import {
+  Fade,
   Grid,
   ListItem,
   ListItemIcon,
@@ -8,7 +9,7 @@ import {
 } from '@astrosat/astrosat-ui';
 import { SidePanelSection } from 'components';
 import { useChartTheme } from 'components/charts/useChartTheme';
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { VictoryLabel, VictoryPie } from 'victory';
 
 /** @type {import('typings/orbis').AnalysisPanelComponent<{info?: string}>} */
@@ -39,6 +40,14 @@ export const CategoryBreakdownChart = ({
         .sort((a, b) => a.category.localeCompare(b.category)),
     [clickedFeatures, selectedProperty.categories, selectedProperty.name],
   );
+  useEffect(() => {
+    if (
+      !!selectedCategory &&
+      (!categoryList.find(c => c.category === selectedCategory?.category) ||
+        categoryList.length === 1)
+    )
+      setSelectedCategory(undefined);
+  }, [categoryList, selectedCategory]);
 
   if (!clickedFeatures?.length) return null;
 
@@ -111,30 +120,36 @@ export const CategoryBreakdownChart = ({
             }`}
           />
         </Grid>
-        {categoryList.map(categoryInfo => (
-          <Grid item xs key={categoryInfo.category}>
-            <ListItem
-              selected={categoryInfo.category === selectedCategory?.category}
-            >
-              <ListItemIcon
-                style={{
-                  marginRight: theme.spacing(1),
-                  minWidth: 'max-content',
-                }}
-              >
-                <span
-                  style={{
-                    width: '1rem',
-                    height: '1rem',
-                    backgroundColor: categoryInfo.color,
-                    borderRadius: '50%',
-                  }}
-                />
-              </ListItemIcon>
-              <ListItemText primary={categoryInfo.category} />
-            </ListItem>
-          </Grid>
-        ))}
+        <Grid item xs={12} container spacing={0}>
+          {categoryList.map(categoryInfo => (
+            <Fade in key={categoryInfo.category}>
+              <Grid item xs>
+                <ListItem
+                  selected={
+                    categoryInfo.category === selectedCategory?.category
+                  }
+                >
+                  <ListItemIcon
+                    style={{
+                      marginRight: theme.spacing(1),
+                      minWidth: 'max-content',
+                    }}
+                  >
+                    <span
+                      style={{
+                        width: '1rem',
+                        height: '1rem',
+                        backgroundColor: categoryInfo.color,
+                        borderRadius: '50%',
+                      }}
+                    />
+                  </ListItemIcon>
+                  <ListItemText primary={categoryInfo.category} />
+                </ListItem>
+              </Grid>
+            </Fade>
+          ))}
+        </Grid>
       </Grid>
     </SidePanelSection>
   );
