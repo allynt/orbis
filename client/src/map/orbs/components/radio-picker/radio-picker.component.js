@@ -35,8 +35,9 @@ export const RadioPicker = ({ selectedLayer, dispatch }) => {
   /**
    * @param {Object} data
    */
-  const selectProperty = data =>
+  const selectProperty = data => {
     dispatch(setProperty({ source_id: selectedLayer?.source_id, ...data }));
+  };
 
   if (!selectedLayer?.metadata?.properties) return null;
   return (
