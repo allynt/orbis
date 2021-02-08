@@ -1,0 +1,227 @@
+{
+  "cafe": {
+    "x": 0,
+    "y": 0,
+    "width": 24,
+    "height": 24,
+    "mask": true
+  },
+  "care-home": {
+    "x": 25,
+    "y": 0,
+    "width": 24,
+    "height": 24,
+    "mask": true
+  },
+  "charity": {
+    "x": 50,
+    "y": 0,
+    "width": 24,
+    "height": 24,
+    "mask": true
+  },
+  "cleaning": {
+    "x": 75,
+    "y": 0,
+    "width": 24,
+    "height": 24,
+    "mask": true
+  },
+  "clothing": {
+    "x": 100,
+    "y": 0,
+    "width": 24,
+    "height": 24,
+    "mask": true
+  },
+  "community-centre": {
+    "x": 125,
+    "y": 0,
+    "width": 24,
+    "height": 24,
+    "mask": true
+  },
+  "food": {
+    "x": 150,
+    "y": 0,
+    "width": 24,
+    "height": 24,
+    "mask": true
+  },
+  "food-bank": {
+    "x": 175,
+    "y": 0,
+    "width": 24,
+    "height": 24,
+    "mask": true
+  },
+  "gp": {
+    "x": 200,
+    "y": 0,
+    "width": 24,
+    "height": 24,
+    "mask": true
+  },
+  "group": {
+    "x": 225,
+    "y": 0,
+    "width": 24,
+    "height": 24,
+    "anchorY": 15,
+    "mask": true
+  },
+  "hospital": {
+    "x": 250,
+    "y": 0,
+    "width": 24,
+    "height": 24,
+    "mask": true
+  },
+  "hsc": {
+    "x": 275,
+    "y": 0,
+    "width": 24,
+    "height": 24,
+    "mask": true
+  },
+  "library": {
+    "x": 300,
+    "y": 0,
+    "width": 24,
+    "height": 24,
+    "mask": true
+  },
+  "local-authority-agency": {
+    "x": 325,
+    "y": 0,
+    "width": 24,
+    "height": 24,
+    "mask": true
+  },
+  "nhs": {
+    "x": 350,
+    "y": 0,
+    "width": 24,
+    "height": 24,
+    "mask": true
+  },
+  "other": {
+    "x": 375,
+    "y": 0,
+    "width": 24,
+    "height": 24,
+    "mask": true
+  },
+  "park": {
+    "x": 400,
+    "y": 0,
+    "width": 24,
+    "height": 24,
+    "mask": true
+  },
+  "pharmacy": {
+    "x": 425,
+    "y": 0,
+    "width": 24,
+    "height": 24,
+    "mask": true
+  },
+  "picnic-site": {
+    "x": 450,
+    "y": 0,
+    "width": 24,
+    "height": 24,
+    "mask": true
+  },
+  "place-of-worship": {
+    "x": 475,
+    "y": 0,
+    "width": 24,
+    "height": 24,
+    "mask": true
+  },
+  "playground": {
+    "x": 500,
+    "y": 0,
+    "width": 24,
+    "height": 24,
+    "mask": true
+  },
+  "ppe": {
+    "x": 525,
+    "y": 0,
+    "width": 24,
+    "height": 24,
+    "mask": true
+  },
+  "public-building": {
+    "x": 550,
+    "y": 0,
+    "width": 24,
+    "height": 24,
+    "mask": true
+  },
+  "pub": {
+    "x": 575,
+    "y": 0,
+    "width": 24,
+    "height": 24,
+    "mask": true
+  },
+  "service": {
+    "x": 600,
+    "y": 0,
+    "width": 24,
+    "height": 24,
+    "mask": true
+  },
+  "shopping-mall": {
+    "x": 625,
+    "y": 0,
+    "width": 24,
+    "height": 24,
+    "mask": true
+  },
+  "sports-centre": {
+    "x": 650,
+    "y": 0,
+    "width": 24,
+    "height": 24,
+    "mask": true
+  },
+  "sports-pitch": {
+    "x": 675,
+    "y": 0,
+    "width": 24,
+    "height": 24,
+    "mask": true
+  },
+  "staffing": {
+    "x": 700,
+    "y": 0,
+    "width": 24,
+    "height": 24,
+    "mask": true
+  },
+  "stationery": {
+    "x": 725,
+    "y": 0,
+    "width": 24,
+    "height": 24,
+    "mask": true
+  },
+  "stethoscope": {
+    "x": 750,
+    "y": 0,
+    "width": 24,
+    "height": 24,
+    "mask": true
+  },
+  "swimming-pool": {
+    "x": 775,
+    "y": 0,
+    "width": 24,
+    "height": 24,
+    "mask": true
+  }
+}

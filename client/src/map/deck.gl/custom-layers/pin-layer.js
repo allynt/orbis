@@ -1,12 +1,14 @@
 import { CompositeLayer } from '@deck.gl/core';
 import { IconLayer, TextLayer } from '@deck.gl/layers';
 import Supercluster from 'supercluster';
-import iconMapping from './pin-layer.iconMapping.json';
-import iconAtlas from './pin-layer.iconAtlas.svg';
+import backgroundsIconMapping from './pin-layer-backgrounds.iconMapping.json';
+import backgroundsIconAtlas from './pin-layer-backgrounds.iconAtlas.svg';
+import iconAtlas from './pin-layer-icons.iconAtlas.svg';
+import iconMapping from './pin-layer-icons.iconMapping.json';
 import { isArray } from 'lodash';
 import { color } from 'd3-color';
 
-const TEXT_COLOR_TRANSPARENT = [0, 0, 0, 0];
+const COLOR_TRANSPARENT = [0, 0, 0, 0];
 
 export class PinLayer extends CompositeLayer {
   _getExpansionZoom(feature) {
@@ -105,18 +107,38 @@ export class PinLayer extends CompositeLayer {
     return [r, g, b];
   }
 
+  // ===== Icon Layer Functions =====
+  _getIcon(feature) {
+    if (
+      feature.properties.cluster &&
+      this._getExpansionZoom(feature) > this.props.maxZoom
+    )
+      return 'group';
+    if (typeof this.props.getIcon === 'function')
+      return this.props.getIcon(feature);
+    return this.props.getIcon;
+  }
+
+  _getIconColor(feature) {
+    if (
+      feature.properties.cluster &&
+      this._getExpansionZoom(feature) <= this.props.maxZoom
+    ) {
+      return COLOR_TRANSPARENT;
+    }
+    return [255, 255, 255, 255];
+  }
+
   // ===== Text Layer Functions =====
 
   _getTextColor(feature) {
-    if (feature.properties.cluster && this.props.hideTextOnGroup) {
-      if (this._getExpansionZoom(feature) > this.props.maxZoom)
-        return TEXT_COLOR_TRANSPARENT;
-    }
-    if (typeof this.props.getTextColor === 'function')
-      return feature.properties.cluster
-        ? this.props.getTextColor(this._injectExpansionZoom(feature))
-        : this.props.getTextColor(feature);
-    return this.props.getTextColor;
+    if (
+      feature.properties.cluster &&
+      this._getExpansionZoom(feature) > this.props.maxZoom
+    )
+      return COLOR_TRANSPARENT;
+
+    return [51, 63, 72];
   }
 
   renderLayers() {
@@ -126,12 +148,30 @@ export class PinLayer extends CompositeLayer {
         this.getSubLayerProps({
           id: `${this.props.id}-pin`,
           data,
-          iconAtlas,
-          iconMapping,
+          iconAtlas: backgroundsIconAtlas,
+          iconMapping: backgroundsIconMapping,
           getPosition: this.props.getPosition,
           getIcon: d => this._getPinIcon(d),
           getSize: d => this._getPinLayerIconSize(d),
           getColor: d => this._getPinColor(d),
+          updateTriggers: {
+            getPosition: this.props.updateTriggers.getPosition,
+            getIcon: this.props.updateTriggers.getIcon,
+            getSize: this.props.updateTriggers.getIconSize,
+            getColor: this.props.updateTriggers.getIconColor,
+          },
+        }),
+      ),
+      new IconLayer(
+        this.getSubLayerProps({
+          id: `${this.props.id}-icon`,
+          data,
+          iconAtlas,
+          iconMapping,
+          getPosition: this.props.getPosition,
+          getIcon: d => this._getIcon(d),
+          getColor: d => this._getIconColor(d),
+          getSize: d => this._getPinLayerIconSize(d) / 2,
           updateTriggers: {
             getPosition: this.props.updateTriggers.getPosition,
             getIcon: this.props.updateTriggers.getIcon,
@@ -176,14 +216,12 @@ PinLayer.defaultProps = {
   pinColor: { type: 'accessor', value: [246, 190, 0, 255] },
   // ===== Icon Layer Props =====
   getIcon: { type: 'accessor', value: x => x.icon },
-  getIconSize: { type: 'accessor', value: 70 },
   // ===== Text Layer Props =====
   // properties
   fontFamily: 'Open Sans',
   fontWeight: 600,
   // accessors
   getTextSize: { type: 'accessor', value: 32 },
-  getTextColor: { type: 'accessor', value: [51, 63, 72] },
   // ===== Clustering properties =====
   maxZoom: 20,
   clusterRadius: 40,
