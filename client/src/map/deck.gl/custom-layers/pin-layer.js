@@ -9,6 +9,7 @@ import { get, isArray } from 'lodash';
 import { color } from 'd3-color';
 
 const COLOR_TRANSPARENT = [0, 0, 0, 0],
+  COLOR_PRIMARY = [246, 190, 0, 255],
   COLOR_SECONDARY = [51, 63, 72, 255];
 
 export class PinLayer extends CompositeLayer {
@@ -99,7 +100,11 @@ export class PinLayer extends CompositeLayer {
   }
 
   _getPinColor(feature) {
-    if (feature.properties.cluster) return [246, 190, 0, 255];
+    if (
+      feature.properties.cluster &&
+      this._getExpansionZoom(feature) <= this.props.maxZoom
+    )
+      return [246, 190, 0, 255];
     if (typeof this.props.getPinColor === 'function')
       return this.props.getPinColor(feature);
     if (isArray(this.props.pinColor)) return this.props.pinColor;
@@ -115,8 +120,11 @@ export class PinLayer extends CompositeLayer {
       this._getExpansionZoom(feature) > this.props.maxZoom
     )
       return 'group';
+    if (this.props.icon) return this.props.icon;
     if (this.props.iconProperty)
-      return get(feature.properties, this.props.iconProperty);
+      return get(feature.properties, this.props.iconProperty)
+        ?.toLowerCase()
+        .replace(' ', '-');
     return undefined;
   }
 
@@ -127,7 +135,13 @@ export class PinLayer extends CompositeLayer {
     ) {
       return COLOR_TRANSPARENT;
     }
-    return COLOR_SECONDARY;
+    if (isArray(this.props.iconColor)) return this.props.iconColor;
+    if (typeof this.props.iconColor === 'string') {
+      const colorInstance = color(this.props.iconColor);
+      const { r, g, b } = colorInstance.rgb();
+      return [r, g, b];
+    }
+    return [255, 255, 255, 255];
   }
 
   // ===== Text Layer Functions =====
@@ -214,9 +228,11 @@ PinLayer.defaultProps = {
   // ===== Pin/Cluster Layer Props =====
   // accessors
   getPinSize: { type: 'accessor', value: 80 },
-  pinColor: { type: 'accessor', value: [246, 190, 0, 255] },
+  pinColor: { type: 'accessor', value: COLOR_PRIMARY },
   // ===== Icon Layer Props =====
+  icon: { type: 'accessor', value: null },
   iconProperty: { type: 'accessor', value: 'icon' },
+  iconColor: { type: 'accessor', value: COLOR_SECONDARY },
   // ===== Text Layer Props =====
   // properties
   fontFamily: 'Open Sans',
@@ -225,6 +241,6 @@ PinLayer.defaultProps = {
   getTextSize: { type: 'accessor', value: 32 },
   // ===== Clustering properties =====
   maxZoom: 20,
-  clusterRadius: 40,
+  clusterRadius: 70,
   clusterIconSize: 80,
 };

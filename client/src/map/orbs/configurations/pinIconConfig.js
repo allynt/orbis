@@ -27,7 +27,6 @@ const configuration = ({
   onGroupClick,
   onPointHover,
   onGroupHover,
-  pinColor = 'purple',
 }) => {
   const isVisible = layersVisibilitySelector(id)(orbState);
   /**
@@ -100,7 +99,6 @@ const configuration = ({
     data: data,
     visible:
       isVisible && !!activeSources?.find(source => source.source_id === id),
-    getIcon: `pin`,
     onClick: handleClick,
     onHover: handleHover,
   };

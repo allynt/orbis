@@ -135,6 +135,14 @@
     "anchorY": 17,
     "mask": true
   },
+  "gp-practice": {
+    "x": 200,
+    "y": 0,
+    "width": 24,
+    "height": 24,
+    "anchorY": 17,
+    "mask": true
+  },
   "group": {
     "x": 225,
     "y": 0,
@@ -160,6 +168,14 @@
     "mask": true
   },
   "hsc": {
+    "x": 275,
+    "y": 0,
+    "width": 24,
+    "height": 24,
+    "anchorY": 17,
+    "mask": true
+  },
+  "health-and-social-care-trust": {
     "x": 275,
     "y": 0,
     "width": 24,

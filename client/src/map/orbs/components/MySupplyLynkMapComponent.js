@@ -44,7 +44,7 @@ const MySupplyLynkMapComponent = ({ name }) => {
           captureClick
           captureScroll
         >
-          {popupFeatures.id === LAYERS.nonRegistered && (
+          {popupFeatures.id.includes(LAYERS.nonRegistered) && (
             <FeatureDetail
               title={name}
               features={popupFeatures?.features?.map(f =>
@@ -62,7 +62,7 @@ const MySupplyLynkMapComponent = ({ name }) => {
               footer={nonRegisteredFooter}
             />
           )}
-          {popupFeatures.id === LAYERS.suppliers && (
+          {popupFeatures.id.includes(LAYERS.suppliers) && (
             <MySupplyLynkFeatureDetail
               data={popupFeatures.features.map(feature => feature.properties)}
               onSupplierClick={supplier => {
