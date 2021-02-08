@@ -13,7 +13,7 @@ module.exports = {
         sidebar_component: { name: 'InfrastructureLegend' },
         map_component: { name: 'ActionForHelpMapComponent' },
         layer: {
-          name: 'GeoJsonClusteredIconLayer',
+          name: 'GeoJsonPinLayer',
           props: { config: 'actionForHelpConfig' },
         },
       },

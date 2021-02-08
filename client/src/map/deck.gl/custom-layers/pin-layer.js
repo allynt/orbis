@@ -8,7 +8,8 @@ import iconMapping from './pin-layer-icons.iconMapping.json';
 import { isArray } from 'lodash';
 import { color } from 'd3-color';
 
-const COLOR_TRANSPARENT = [0, 0, 0, 0];
+const COLOR_TRANSPARENT = [0, 0, 0, 0],
+  COLOR_SECONDARY = [51, 63, 72, 255];
 
 export class PinLayer extends CompositeLayer {
   _getExpansionZoom(feature) {
@@ -126,7 +127,7 @@ export class PinLayer extends CompositeLayer {
     ) {
       return COLOR_TRANSPARENT;
     }
-    return [255, 255, 255, 255];
+    return COLOR_SECONDARY;
   }
 
   // ===== Text Layer Functions =====
@@ -138,7 +139,7 @@ export class PinLayer extends CompositeLayer {
     )
       return COLOR_TRANSPARENT;
 
-    return [51, 63, 72];
+    return COLOR_SECONDARY;
   }
 
   renderLayers() {
@@ -212,7 +213,7 @@ PinLayer.defaultProps = {
   getPosition: { type: 'accessor', value: x => x.position },
   // ===== Pin/Cluster Layer Props =====
   // accessors
-  getPinSize: { type: 'accessor', value: 70 },
+  getPinSize: { type: 'accessor', value: 80 },
   pinColor: { type: 'accessor', value: [246, 190, 0, 255] },
   // ===== Icon Layer Props =====
   getIcon: { type: 'accessor', value: x => x.icon },
@@ -225,9 +226,5 @@ PinLayer.defaultProps = {
   // ===== Clustering properties =====
   maxZoom: 20,
   clusterRadius: 40,
-  hideTextOnGroup: true,
-  clusterIconName: 'cluster',
   clusterIconSize: 80,
-  groupIconName: 'group',
-  groupIconSize: 70,
 };
