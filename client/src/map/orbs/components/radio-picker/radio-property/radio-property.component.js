@@ -148,7 +148,9 @@ const RadioProperty = ({
               <DiscretePropertyLegend property={selectedProperty} />
             ) : (
               <ColorMapRangeSlider
-                type={selectedProperty?.type}
+                layerSourceId={layerSourceId}
+                label={selectedProperty.application.orbis.label}
+                dataType={selectedProperty?.type}
                 color={colorScheme}
                 domain={[selectedProperty.min, selectedProperty.max]}
                 clip={
@@ -157,8 +159,8 @@ const RadioProperty = ({
                     selectedProperty.clip_max || selectedProperty.max,
                   ]
                 }
-                value={filterData}
-                onChange={data => onSliderChange(data)}
+                value={filterData[selectedProperty?.type]}
+                onChange={onSliderChange}
                 reversed={
                   !!selectedProperty?.application?.orbis?.display
                     ?.colormap_reversed

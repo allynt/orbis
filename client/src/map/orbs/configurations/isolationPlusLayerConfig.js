@@ -191,7 +191,7 @@ const configuration = ({
           extensions: [new DataFilterExtension({ filterSize: 1 })],
           getFilterValue,
           filterRange: (
-            filterRange || [
+            Array.isArray(filterRange) || [
               selectedPropertyMetadata?.min,
               selectedPropertyMetadata?.max,
             ]

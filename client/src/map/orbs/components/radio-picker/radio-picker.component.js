@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 
 import { createCategorisationPath } from 'data-layers/categorisation.utils';
 import {
-  filterRangeSelector,
+  propertyFilterRangeSelector,
   propertySelector,
   setFilterRange,
   setProperty,
@@ -21,7 +21,10 @@ import { Box } from '@astrosat/astrosat-ui';
  */
 export const RadioPicker = ({ selectedLayer, dispatch }) => {
   const selectedProperty = useSelector(state => propertySelector(state?.orbs));
-  const filterRange = useSelector(state => filterRangeSelector(state?.orbs));
+
+  const filterRange = useSelector(state => {
+    return propertyFilterRangeSelector(selectedLayer?.source_id)(state?.orbs);
+  });
 
   const selectedPropertyMetadata = selectedLayer?.metadata?.properties?.find(
     property => property.name === selectedProperty?.name,
@@ -36,8 +39,14 @@ export const RadioPicker = ({ selectedLayer, dispatch }) => {
    * @param {Object} data
    */
   const selectProperty = data => {
-    dispatch(setProperty({ source_id: selectedLayer?.source_id, ...data }));
+    dispatch(
+      setProperty(data ? { source_id: selectedLayer?.source_id, ...data } : {}),
+    );
   };
+
+  const filterData = selectedProperty
+    ? filterRange[selectedProperty?.application?.orbis?.label]
+    : filterRange;
 
   if (!selectedLayer?.metadata?.properties) return null;
   return (
@@ -51,7 +60,7 @@ export const RadioPicker = ({ selectedLayer, dispatch }) => {
             onSliderChange={data => dispatch(setFilterRange(data))}
             selectedProperty={selectedProperty}
             colorScheme={colorScheme}
-            filterData={filterRange}
+            filterData={filterData}
             categoryPath={categoryPath}
           />
         </React.Fragment>

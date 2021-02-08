@@ -19,6 +19,9 @@ const DEFAULT_CLIP_POSITION = {
  * @param {import('./colormap-range-slider.component').ContinuousColorMapRangeSliderProps} props
  */
 const ContinuousColorMapRangeSlider = ({
+  layerSourceId,
+  dataType,
+  label,
   brushStyle,
   color,
   domain = [0, 1],
@@ -80,7 +83,13 @@ const ContinuousColorMapRangeSlider = ({
   const handleBrushCleared = domain => {
     setBrushDomain(domain);
     setClipPosition(DEFAULT_CLIP_POSITION);
-    if (onChange) onChange(domain.y);
+    if (onChange)
+      onChange({
+        source_id: layerSourceId,
+        type: dataType,
+        label,
+        data: domain.y,
+      });
   };
 
   const handleBrushDomainChange = (domain, { x1, x2 }) => {
@@ -89,7 +98,13 @@ const ContinuousColorMapRangeSlider = ({
       translateX: x2 > x1 ? x1 : x2,
       clipWidth: x2 > x1 ? x2 - x1 : x1 - x2,
     });
-    if (onChange) onChange(brushDomain.y);
+    if (onChange)
+      onChange({
+        source_id: layerSourceId,
+        type: dataType,
+        label,
+        data: brushDomain.y,
+      });
   };
 
   return (
