@@ -35,18 +35,18 @@ const pairObjectData = [
   },
 ];
 
-let onClick = null;
+let onPropertyChange = null;
 let onSliderChange = null;
 
 const renderComponent = (data, selectedProperty) => {
-  onClick = jest.fn();
+  onPropertyChange = jest.fn();
   onSliderChange = jest.fn();
   const testLayerId = 'test_layer_id';
   return render(
     <RadioProperty
       layerSourceId={testLayerId}
       data={data}
-      onClick={onClick}
+      onPropertyChange={onPropertyChange}
       onSliderChange={onSliderChange}
       selectedProperty={{ source_id: testLayerId, ...selectedProperty }}
     />,
@@ -84,14 +84,14 @@ describe('RadioProperty', () => {
     const { getByRole } = renderComponent(singleObjectData, {});
 
     userEvent.click(getByRole('radio', { name: singleObjectData.label }));
-    expect(onClick).toHaveBeenCalledWith(singleObjectData[0]);
+    expect(onPropertyChange).toHaveBeenCalledWith(singleObjectData[0]);
   });
 
   it('calls click handler with first property of pair by default if Radio is clicked', () => {
     const { getByRole } = renderComponent(pairObjectData, {});
 
     userEvent.click(getByRole('radio', { name: pairObjectData[0].label }));
-    expect(onClick).toHaveBeenCalledWith(pairObjectData[0]);
+    expect(onPropertyChange).toHaveBeenCalledWith(pairObjectData[0]);
   });
 
   it('calls click handler with number property if number toggle is clicked', () => {
@@ -99,7 +99,7 @@ describe('RadioProperty', () => {
 
     userEvent.click(getByRole('button', { name: 'Number' }));
 
-    expect(onClick).toHaveBeenCalledWith(pairObjectData[0]);
+    expect(onPropertyChange).toHaveBeenCalledWith(pairObjectData[0]);
   });
 
   it('Shows a legend for discrete properties', () => {
@@ -142,13 +142,13 @@ describe('RadioProperty', () => {
     );
 
     userEvent.click(getByRole('radio', { name: singleObjectData.label }));
-    expect(onClick).toHaveBeenCalledWith({});
+    expect(onPropertyChange).toHaveBeenCalledWith({});
   });
 
   it('calls click handler with empty object if property matches selectedProperty (group)', () => {
     const { getByRole } = renderComponent(pairObjectData, pairObjectData[0]);
 
     userEvent.click(getByRole('radio', { name: pairObjectData[0].label }));
-    expect(onClick).toHaveBeenCalledWith({});
+    expect(onPropertyChange).toHaveBeenCalledWith({});
   });
 });

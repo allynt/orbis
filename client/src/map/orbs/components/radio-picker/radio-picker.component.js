@@ -47,7 +47,7 @@ export const RadioPicker = ({ selectedLayer, dispatch }) => {
           <RadioProperty
             layerSourceId={selectedLayer?.source_id}
             data={data}
-            onClick={selectProperty}
+            onPropertyChange={selectProperty}
             onSliderChange={data => dispatch(setFilterRange(data))}
             selectedProperty={selectedProperty}
             colorScheme={colorScheme}
