@@ -5,7 +5,7 @@ import backgroundsIconMapping from './pin-layer-backgrounds.iconMapping.json';
 import backgroundsIconAtlas from './pin-layer-backgrounds.iconAtlas.svg';
 import iconAtlas from './pin-layer-icons.iconAtlas.svg';
 import iconMapping from './pin-layer-icons.iconMapping.json';
-import { isArray } from 'lodash';
+import { get, isArray } from 'lodash';
 import { color } from 'd3-color';
 
 const COLOR_TRANSPARENT = [0, 0, 0, 0],
@@ -115,9 +115,9 @@ export class PinLayer extends CompositeLayer {
       this._getExpansionZoom(feature) > this.props.maxZoom
     )
       return 'group';
-    if (typeof this.props.getIcon === 'function')
-      return this.props.getIcon(feature);
-    return this.props.getIcon;
+    if (this.props.iconProperty)
+      return get(feature.properties, this.props.iconProperty);
+    return undefined;
   }
 
   _getIconColor(feature) {
@@ -216,7 +216,7 @@ PinLayer.defaultProps = {
   getPinSize: { type: 'accessor', value: 80 },
   pinColor: { type: 'accessor', value: [246, 190, 0, 255] },
   // ===== Icon Layer Props =====
-  getIcon: { type: 'accessor', value: x => x.icon },
+  iconProperty: { type: 'accessor', value: 'icon' },
   // ===== Text Layer Props =====
   // properties
   fontFamily: 'Open Sans',

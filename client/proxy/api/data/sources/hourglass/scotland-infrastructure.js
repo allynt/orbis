@@ -14,7 +14,7 @@ module.exports = {
         map_component: { name: 'ActionForHelpMapComponent' },
         layer: {
           name: 'GeoJsonPinLayer',
-          props: { config: 'actionForHelpConfig' },
+          props: { config: 'pinIconConfig', iconProperty: 'type' },
         },
       },
     },
