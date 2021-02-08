@@ -62,7 +62,12 @@ const RadioProperty = ({
 }) => {
   const styles = useStyles();
 
-  const initialProperty = data[0];
+  /**
+   * @param {string} type
+   */
+  const findPropertyByType = type => data.find(d => d.type === type);
+
+  const initialProperty = findPropertyByType(FORMAT.percentage);
 
   const propertyMatch = data.some(p => {
     return (
@@ -76,8 +81,11 @@ const RadioProperty = ({
     return onPropertyChange(payload);
   };
 
+  /**
+   * @param {string} type
+   */
   const handleToggleClick = type => {
-    const property = data.find(d => d.type === type);
+    const property = findPropertyByType(type);
     if (property.name === selectedProperty?.name) return;
     else onPropertyChange(property);
   };
