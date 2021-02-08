@@ -1,6 +1,11 @@
 import React from 'react';
 
-import { Checkbox, FormControlLabel, makeStyles } from '@astrosat/astrosat-ui';
+import {
+  Checkbox,
+  FormControlLabel,
+  makeStyles,
+  iconMap,
+} from '@astrosat/astrosat-ui';
 
 import { useSelector } from 'react-redux';
 
@@ -14,9 +19,15 @@ const useStyles = makeStyles(theme => ({
   },
   icon: {
     borderRadius: '50%',
-    backgroundColor: props => props.pinColor,
-    height: '1rem',
-    width: '1rem',
+    backgroundColor: props => props.color || theme.palette.primary.main,
+    color: props =>
+      props.color
+        ? theme.palette.getContrastText(props.color)
+        : theme.palette.secondary.main,
+    display: 'grid',
+    placeItems: 'center',
+    height: '2rem',
+    width: '2rem',
     margin: theme.spacing(0, 1),
   },
 }));
@@ -25,22 +36,22 @@ const useStyles = makeStyles(theme => ({
  *  @param {{
  *   selectedLayer?: import('typings/orbis').Source
  *   dispatch?: import('redux').Dispatch
+ *   color?: string
+ *   icon?: string
  * }} props
  */
-export const LayerVisibilityCheckbox = ({ selectedLayer, dispatch }) => {
-  const pinColor =
-    selectedLayer?.metadata?.application?.orbis?.layer?.props?.pinColor ||
-    'hotpink';
-
-  const classes = useStyles({ pinColor });
+export const LayerVisibilityCheckbox = ({
+  selectedLayer,
+  dispatch,
+  color,
+  icon,
+}) => {
+  const classes = useStyles({ color });
 
   const isVisible = useSelector(state =>
     layersVisibilitySelector(selectedLayer?.source_id)(state?.orbs),
   );
 
-  /**
-   * @param {string} value
-   */
   const handleChange = () =>
     dispatch(
       setVisibility({
@@ -49,19 +60,27 @@ export const LayerVisibilityCheckbox = ({ selectedLayer, dispatch }) => {
       }),
     );
 
+  const Icon = icon ? iconMap[`${icon}Icon`] : null;
+
   return (
     <FormControlLabel
+      id="label"
       classes={{ label: classes.label }}
       label={
         <>
-          <div className={classes.icon} /> {selectedLayer.metadata.label}
+          {!!color || !!icon ? (
+            <div className={classes.icon} role="presentation">
+              {Icon && <Icon fontSize="small" titleAccess={icon} />}
+            </div>
+          ) : null}
+          {selectedLayer?.metadata.label}
         </>
       }
       control={
         <Checkbox
           tabIndex={-1}
           checked={isVisible}
-          inputProps={{ 'aria-labelledby': selectedLayer.metadata.label }}
+          inputProps={{ 'aria-labelledby': 'label' }}
           onChange={handleChange}
         />
       }
