@@ -51,9 +51,9 @@ const useStyles = makeStyles(theme => ({
  * @param {{selectedProperty: import('typings/orbis').Property}} props
  */
 const RadioProperty = ({
+  layerSourceId,
   data,
-  onRadioClick,
-  onToggleClick,
+  onPropertyChange,
   onSliderChange,
   selectedProperty,
   colorScheme,
@@ -61,24 +61,34 @@ const RadioProperty = ({
   categoryPath,
 }) => {
   const styles = useStyles();
-  const isArray = Array.isArray(data);
 
+  /**
+   * @param {string} type
+   */
   const findPropertyByType = type => data.find(d => d.type === type);
 
-  const initialProperty = isArray
-    ? findPropertyByType(FORMAT.percentage)
-    : data;
+  const initialProperty = findPropertyByType(FORMAT.percentage) || data[0];
 
-  const propertyMatch = isArray
-    ? data.some(p => p.name === selectedProperty?.name)
-    : data.name === selectedProperty?.name;
-
-  const handleRadioClick = () =>
-    onRadioClick(
-      propertyMatch && isArray && selectedProperty?.type === FORMAT.number
-        ? findPropertyByType(FORMAT.number)
-        : initialProperty,
+  const propertyMatch = data.some(p => {
+    return (
+      selectedProperty?.name === p.name &&
+      selectedProperty?.source_id === layerSourceId
     );
+  });
+
+  const handleRadioClick = () => {
+    const payload = propertyMatch ? {} : initialProperty;
+    return onPropertyChange(payload);
+  };
+
+  /**
+   * @param {string} type
+   */
+  const handleToggleClick = type => {
+    const property = findPropertyByType(type);
+    if (property.name === selectedProperty?.name) return;
+    else onPropertyChange(property);
+  };
 
   return (
     <div className={styles.property}>
@@ -106,16 +116,14 @@ const RadioProperty = ({
       />
       {propertyMatch && (
         <>
-          {isArray && (
+          {data?.length > 1 && (
             <>
               <FormLabel className={styles.fullGrid}>
                 Select display type:
               </FormLabel>
               <ButtonGroup size="small" className={styles.fullGrid}>
                 <Button
-                  onClick={() =>
-                    onToggleClick(findPropertyByType(FORMAT.percentage))
-                  }
+                  onClick={() => handleToggleClick(FORMAT.percentage)}
                   className={clsx(styles.button, {
                     [styles.notActive]:
                       selectedProperty.type !== FORMAT.percentage,
@@ -124,9 +132,7 @@ const RadioProperty = ({
                   Percentage
                 </Button>
                 <Button
-                  onClick={() =>
-                    onToggleClick(findPropertyByType(FORMAT.number))
-                  }
+                  onClick={() => handleToggleClick(FORMAT.number)}
                   className={clsx(styles.button, {
                     [styles.notActive]: selectedProperty.type !== FORMAT.number,
                   })}

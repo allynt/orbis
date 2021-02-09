@@ -6,13 +6,15 @@ import userEvent from '@testing-library/user-event';
 
 import RadioProperty from './radio-property.component';
 
-const singleObjectData = {
-  name: 'Census 2011: % of people in the age band 65+',
-  label: 'People in the age band 65+',
-  type: 'percentage',
-  min: 0,
-  max: 100,
-};
+const singleObjectData = [
+  {
+    name: 'Census 2011: % of people in the age band 65+',
+    label: 'People in the age band 65+',
+    type: 'percentage',
+    min: 0,
+    max: 100,
+  },
+];
 
 const pairObjectData = [
   {
@@ -33,21 +35,20 @@ const pairObjectData = [
   },
 ];
 
-let onRadioClick = null;
-let onToggleClick = null;
+let onPropertyChange = null;
 let onSliderChange = null;
 
 const renderComponent = (data, selectedProperty) => {
-  onRadioClick = jest.fn();
-  onToggleClick = jest.fn();
+  onPropertyChange = jest.fn();
   onSliderChange = jest.fn();
+  const testLayerId = 'test_layer_id';
   return render(
     <RadioProperty
+      layerSourceId={testLayerId}
       data={data}
-      onRadioClick={onRadioClick}
-      onToggleClick={onToggleClick}
+      onPropertyChange={onPropertyChange}
       onSliderChange={onSliderChange}
-      selectedProperty={selectedProperty}
+      selectedProperty={{ source_id: testLayerId, ...selectedProperty }}
     />,
   );
 };
@@ -69,8 +70,10 @@ describe('RadioProperty', () => {
   });
 
   it('does not show toggles for single properties', () => {
-    const { queryByRole } = renderComponent(singleObjectData, singleObjectData);
-
+    const { queryByRole } = renderComponent(
+      singleObjectData,
+      singleObjectData[0],
+    );
     expect(
       queryByRole('button', { name: 'Percentage' }),
     ).not.toBeInTheDocument();
@@ -78,17 +81,17 @@ describe('RadioProperty', () => {
   });
 
   it('calls click handler with single property if Radio is clicked', () => {
-    const { getByRole } = renderComponent(singleObjectData, singleObjectData);
+    const { getByRole } = renderComponent(singleObjectData, {});
 
     userEvent.click(getByRole('radio', { name: singleObjectData.label }));
-    expect(onRadioClick).toHaveBeenCalledWith(singleObjectData);
+    expect(onPropertyChange).toHaveBeenCalledWith(singleObjectData[0]);
   });
 
   it('calls click handler with percentage property of pair by default if Radio is clicked', () => {
     const { getByRole } = renderComponent(pairObjectData, {});
 
     userEvent.click(getByRole('radio', { name: pairObjectData[1].label }));
-    expect(onRadioClick).toHaveBeenCalledWith(pairObjectData[1]);
+    expect(onPropertyChange).toHaveBeenCalledWith(pairObjectData[1]);
   });
 
   it('calls click handler with number property if number toggle is clicked', () => {
@@ -96,7 +99,7 @@ describe('RadioProperty', () => {
 
     userEvent.click(getByRole('button', { name: 'Number' }));
 
-    expect(onToggleClick).toHaveBeenCalledWith(pairObjectData[0]);
+    expect(onPropertyChange).toHaveBeenCalledWith(pairObjectData[0]);
   });
 
   it('Shows a legend for discrete properties', () => {
@@ -130,5 +133,36 @@ describe('RadioProperty', () => {
       />,
     );
     expect(getByRole('list')).toBeInTheDocument();
+  });
+
+  it('calls click handler with empty object if property matches selectedProperty (single)', () => {
+    const { getByRole } = renderComponent(
+      singleObjectData,
+      singleObjectData[0],
+    );
+
+    userEvent.click(getByRole('radio', { name: singleObjectData.label }));
+    expect(onPropertyChange).toHaveBeenCalledWith({});
+  });
+
+  it('calls click handler with empty object if property matches selectedProperty (group)', () => {
+    const { getByRole } = renderComponent(pairObjectData, pairObjectData[0]);
+
+    userEvent.click(getByRole('radio', { name: pairObjectData[0].label }));
+    expect(onPropertyChange).toHaveBeenCalledWith({});
+  });
+
+  it('uses first available property if no `percentage` available', () => {
+    const data = [
+      {
+        name: 'Test decile property',
+        label: 'Test decile label',
+        type: 'decile',
+      },
+    ];
+
+    const { getByRole } = renderComponent(data);
+
+    expect(getByRole('radio', { name: data[0].label })).toBeInTheDocument();
   });
 });

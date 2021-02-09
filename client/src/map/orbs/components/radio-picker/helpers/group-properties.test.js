@@ -102,10 +102,9 @@ describe('groupProperties', () => {
     expect(result).toEqual(expected);
   });
 
-  it('returns only individual objects if no pairs present', () => {
+  it('returns array of individual objects if no pairs present', () => {
     const result = groupProperties(singleObjects);
-
-    expect(result).toEqual(singleObjects);
+    expect(result).toEqual(singleObjects.map(obj => [obj]));
   });
 
   it('returns a combination of single objects and sub-arrays, if a combination of singles/pairs are present', () => {
@@ -129,14 +128,18 @@ describe('groupProperties', () => {
           property_group: '1',
         },
       ],
-      {
-        name: 'test name 3',
-        type: 'continuous',
-      },
-      {
-        name: 'test name 4',
-        type: 'percentage',
-      },
+      [
+        {
+          name: 'test name 3',
+          type: 'continuous',
+        },
+      ],
+      [
+        {
+          name: 'test name 4',
+          type: 'percentage',
+        },
+      ],
     ];
 
     expect(result).toEqual(expected);
