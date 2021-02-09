@@ -97,6 +97,12 @@ const layersSlice = createSlice({
       const { source_id, visible } = payload;
       state[source_id] = { ...state[source_id], visible };
     },
+    /** @type {SetFilterValueAction} */
+    setFilterValue: (state, { payload }) => {
+      if (!payload.source_id) return handleMissingSourceId();
+      const { source_id, filterValue } = payload;
+      state[source_id] = { ...state[source_id], filterValue };
+    },
     toggleExtrudedMode: state => {
       state.extrudedMode = !state.extrudedMode;
     },
@@ -111,6 +117,7 @@ export const {
   setClickedFeatures,
   setHoveredFeatures,
   setVisibility,
+  setFilterValue,
   toggleExtrudedMode,
   setExtrusionScale,
 } = layersSlice.actions;
@@ -132,6 +139,10 @@ export const hoveredFeaturesSelector = id =>
 /** @param {string} id */
 export const layersVisibilitySelector = id =>
   createSelector(baseSelector, state => state?.[id]?.visible ?? true);
+
+/** @param {string} id */
+export const filterValueSelector = id =>
+  createSelector(baseSelector, state => state[id]?.filterValue);
 
 export const extrudedModeSelector = createSelector(
   baseSelector,

@@ -4,10 +4,12 @@ import reducer, {
   clickedFeaturesSelector,
   extrudedModeSelector,
   extrusionScaleSelector,
+  filterValueSelector,
   hoveredFeaturesSelector,
   layersVisibilitySelector,
   setClickedFeatures,
   setExtrusionScale,
+  setFilterValue,
   setHoveredFeatures,
   setVisibility,
   toggleExtrudedMode,
@@ -22,6 +24,7 @@ describe('orbReducer', () => {
       ${setClickedFeatures} | ${'clickedFeatures'} | ${[4, 5, 6]}
       ${setHoveredFeatures} | ${'hoveredFeatures'} | ${[4, 5, 6]}
       ${setVisibility}      | ${'visible'}         | ${true}
+      ${setFilterValue}     | ${'filterValue'}     | ${['this', 'is', 'the', 'way']}
     `('$action.type', ({ action, stateKey, newValue }) => {
       const expected = {
           layers: { [LAYER_ID]: { [stateKey]: newValue } },
@@ -133,6 +136,7 @@ describe('orbReducer', () => {
       ${clickedFeaturesSelector}  | ${'clickedFeatures'} | ${undefined}
       ${hoveredFeaturesSelector}  | ${'hoveredFeatures'} | ${undefined}
       ${layersVisibilitySelector} | ${'visible'}         | ${true}
+      ${filterValueSelector}      | ${'filterValue'}     | ${undefined}
     `('$selector.name', ({ selector, stateKey, undefinedReturn }) => {
       it(`Returns ${stateKey} for the given layer`, () => {
         const value = [1, 2, 3];
