@@ -151,4 +151,18 @@ describe('RadioProperty', () => {
     userEvent.click(getByRole('radio', { name: pairObjectData[0].label }));
     expect(onPropertyChange).toHaveBeenCalledWith({});
   });
+
+  it('uses first available property if no `percentage` available', () => {
+    const data = [
+      {
+        name: 'Test decile property',
+        label: 'Test decile label',
+        type: 'decile',
+      },
+    ];
+
+    const { getByRole } = renderComponent(data);
+
+    expect(getByRole('radio', { name: data[0].label })).toBeInTheDocument();
+  });
 });
