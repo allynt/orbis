@@ -67,7 +67,7 @@ const RadioProperty = ({
    */
   const findPropertyByType = type => data.find(d => d.type === type);
 
-  const initialProperty = findPropertyByType(FORMAT.percentage);
+  const initialProperty = findPropertyByType(FORMAT.percentage) || data[0];
 
   const propertyMatch = data.some(p => {
     return (
