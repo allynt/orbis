@@ -12,6 +12,7 @@ import { useSelector } from 'react-redux';
 import { layersVisibilitySelector, setVisibility } from '../../orbReducer.js';
 
 const useStyles = makeStyles(theme => ({
+  root: { margin: 0, padding: theme.spacing(0, 2) },
   label: {
     display: 'flex',
     flexDirection: 'row',
@@ -29,6 +30,7 @@ const useStyles = makeStyles(theme => ({
     height: '2rem',
     width: '2rem',
     margin: theme.spacing(0, 1),
+    flexShrink: 0,
   },
 }));
 
@@ -63,7 +65,7 @@ export const LayerVisibilityCheckbox = ({
   return (
     <FormControlLabel
       id="label"
-      classes={{ label: classes.label }}
+      classes={{ root: classes.root, label: classes.label }}
       label={
         <>
           {!!color || !!icon ? (

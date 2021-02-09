@@ -15,11 +15,16 @@ const useStyles = makeStyles(theme => ({
   iconWrapper: {
     color: props => props.iconColor || theme.palette.secondary.main,
     backgroundColor: props => props.color || theme.palette.primary.main,
-    width: theme.typography.pxToRem(32),
-    height: theme.typography.pxToRem(32),
+    width: '2rem',
+    height: '2rem',
+    minWidth: '2rem',
     borderRadius: '50%',
     display: 'grid',
     placeItems: 'center',
+    margin: theme.spacing(0, 1),
+  },
+  checkboxWrapper: {
+    minWidth: 'max-content',
   },
 }));
 
@@ -37,6 +42,8 @@ export const CheckboxFilters = ({
   color,
   iconColor,
 }) => {
+  if (!filters) console.error('No `filters` prop supplied to CheckboxFilters');
+
   const filterValue = useSelector(state =>
     filterValueSelector(selectedLayer?.source_id)(state?.orbs),
   );
@@ -57,9 +64,9 @@ export const CheckboxFilters = ({
     return dispatch(setFilterValue({ source_id, filterValue: newFilterValue }));
   };
 
-  return (
-    <List>
-      {filters?.map(({ value, icon, label }) => {
+  return filters ? (
+    <List disablePadding>
+      {filters.map(({ value, icon, label }) => {
         const labelId = `checkbox-label-${value
           .toString()
           .replace(/\s/g, '-')}`;
@@ -75,7 +82,7 @@ export const CheckboxFilters = ({
             button
             onClick={handleChange(value)}
           >
-            <ListItemIcon>
+            <ListItemIcon style={{ minWidth: 'max-content' }}>
               <Checkbox
                 tabIndex={-1}
                 checked={checked}
@@ -83,10 +90,8 @@ export const CheckboxFilters = ({
               />
             </ListItemIcon>
             {Icon && (
-              <ListItemIcon>
-                <div className={styles.iconWrapper}>
-                  <Icon fontSize="small" titleAccess={icon} />
-                </div>
+              <ListItemIcon className={styles.iconWrapper}>
+                <Icon fontSize="small" titleAccess={icon} />
               </ListItemIcon>
             )}
             <ListItemText id={labelId} primary={label || value.toString()} />
@@ -94,5 +99,5 @@ export const CheckboxFilters = ({
         );
       })}
     </List>
-  );
+  ) : null;
 };
