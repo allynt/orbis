@@ -7,14 +7,16 @@ import crowdless from './slices/crowdless.slice';
 
 /**
  * @typedef {ReturnType<orbReducer>} OrbState
+ * @typedef {import('typings/orbis').GeoJsonFeature} GeoJsonFeature
  */
 
 /**
  * @typedef {{
  *   [key: string]: {
  *     visible?: boolean,
- *     clickedFeatures?: import('typings/orbis').GeoJsonFeature[]
+ *     clickedFeatures?: GeoJsonFeature[]
  *     hoveredFeatures?: any[],
+ *     filterValue?: any
  *   },
  *   extrudedMode: boolean
  *   extrusionScale: number
@@ -22,33 +24,37 @@ import crowdless from './slices/crowdless.slice';
  */
 
 /**
+ * @template P
  * @typedef {import('@reduxjs/toolkit').CaseReducer<
  *   LayersState,
  *   import('@reduxjs/toolkit').PayloadAction<{
  *     source_id: import('typings/orbis').Source['source_id'],
- *     clickedFeatures?: import('typings/orbis').GeoJsonFeature[]
- *   }>
- * >} SetClickedFeaturesAction
+ *   } & P>
+ * >} GenericOrbAction
  */
 
 /**
- * @typedef {import('@reduxjs/toolkit').CaseReducer<
- *   LayersState,
- *   import('@reduxjs/toolkit').PayloadAction<{
- *     source_id: import('typings/orbis').Source['source_id'],
- *     hoveredFeatures?: import('typings/orbis').GeoJsonFeature[]
- *   }>
- * >} SetHoveredFeaturesAction
+ * @typedef {GenericOrbAction<{
+ *     clickedFeatures?: GeoJsonFeature[]
+ *   }>} SetClickedFeaturesAction
  */
 
 /**
- * @typedef {import('@reduxjs/toolkit').CaseReducer<
- *   LayersState,
- *   import('@reduxjs/toolkit').PayloadAction<{
- *     source_id: import('typings/orbis').Source['source_id'],
+ * @typedef {GenericOrbAction<{
+ *     hoveredFeatures?: GeoJsonFeature[]
+ *   }>} SetHoveredFeaturesAction
+ */
+
+/**
+ * @typedef {GenericOrbAction<{
  *     visible?: boolean
- *   }>
- * >} SetVisibilityAction
+ *   }>} SetVisibilityAction
+ */
+
+/**
+ * @typedef {GenericOrbAction<{
+ *     filterValue?: any
+ *   }>} SetFilterValueAction
  */
 
 /**
