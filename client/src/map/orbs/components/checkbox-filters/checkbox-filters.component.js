@@ -6,21 +6,10 @@ import {
   ListItemIcon,
   ListItemText,
   makeStyles,
-  styled,
 } from '@astrosat/astrosat-ui';
 import { filterValueSelector, setFilterValue } from 'map/orbs/orbReducer';
 import * as React from 'react';
 import { useSelector } from 'react-redux';
-
-const IconWrapper = styled('div')(({ theme }) => ({
-  color: theme.palette.secondary.main,
-  backgroundColor: theme.palette.primary.main,
-  width: theme.typography.pxToRem(32),
-  height: theme.typography.pxToRem(32),
-  borderRadius: '50%',
-  display: 'grid',
-  placeItems: 'center',
-}));
 
 const useStyles = makeStyles(theme => ({
   iconWrapper: {
