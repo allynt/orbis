@@ -48,12 +48,7 @@ const IconWrapper = styled('div')(({ theme }) => ({
   placeItems: 'center',
 }));
 
-/**
- *  @param {{
- *   selectedLayer?: import('typings/orbis').Source
- *   dispatch?: import('redux').Dispatch
- * }} props
- */
+/** @type {import('typings/orbis').SidebarComponent} */
 export const CheckboxFilters = ({ selectedLayer, dispatch }) => {
   const selectedFilters = useSelector(state =>
     categoryFiltersSelectorFactory(selectedLayer?.source_id)(state?.orbs),

@@ -33,12 +33,10 @@ const useStyles = makeStyles(theme => ({
 }));
 
 /**
- *  @param {{
- *   selectedLayer?: import('typings/orbis').Source
- *   dispatch?: import('redux').Dispatch
+ *  @type {import('typings/orbis.js').SidebarComponent<{
  *   color?: string
  *   icon?: string
- * }} props
+ * }>}
  */
 export const LayerVisibilityCheckbox = ({
   selectedLayer,
