@@ -85,9 +85,9 @@ const ContinuousColorMapRangeSlider = ({
     setClipPosition(DEFAULT_CLIP_POSITION);
     if (onChange)
       onChange({
+        label,
         source_id: layerSourceId,
         type: dataType,
-        label,
         data: domain.y,
       });
   };
@@ -100,9 +100,9 @@ const ContinuousColorMapRangeSlider = ({
     });
     if (onChange)
       onChange({
+        label,
         source_id: layerSourceId,
         type: dataType,
-        label,
         data: brushDomain.y,
       });
   };

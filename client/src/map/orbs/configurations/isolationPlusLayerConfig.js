@@ -6,7 +6,7 @@ import { extrudedModeSelector, extrusionScaleSelector } from '../orbReducer';
 import {
   addClickedFeatures,
   clickedFeaturesSelector,
-  filterRangeSelector,
+  propertyFilterRangeSelector,
   propertySelector,
   removeClickedFeatures,
   setClickedFeatures,
@@ -61,7 +61,9 @@ const configuration = ({
   if (selectedProperty.source_id !== id) return undefined;
 
   const source = activeSources?.find(source => source.source_id === id);
-  const filterRange = filterRangeSelector(orbState);
+  const filterRange = propertyFilterRangeSelector(selectedProperty.source_id)(
+    orbState,
+  );
   const extrudedMode = extrudedModeSelector(orbState);
   const extrusionScale = extrusionScaleSelector(orbState);
   const clickedFeatures = clickedFeaturesSelector(orbState);
@@ -76,6 +78,11 @@ const configuration = ({
     get(f.object.properties, source?.metadata?.index),
   );
   const anySelected = !!clickedFeatureIds?.length;
+
+  const selectedPropertyFilterRange =
+    filterRange[selectedProperty?.application?.orbis?.label]?.[
+      selectedProperty?.type
+    ];
 
   /**
    * @param {AccessorFeature} d
@@ -191,7 +198,7 @@ const configuration = ({
           extensions: [new DataFilterExtension({ filterSize: 1 })],
           getFilterValue,
           filterRange: (
-            Array.isArray(filterRange) || [
+            selectedPropertyFilterRange || [
               selectedPropertyMetadata?.min,
               selectedPropertyMetadata?.max,
             ]
