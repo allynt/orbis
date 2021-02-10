@@ -55,8 +55,13 @@ resource "kubernetes_stateful_set" "redis_server" {
           }
 
           env {
-            name  = "REDIS_PASSWORD"
-            value = random_password.password.result
+            name = "DJANGO_REDIS_PASSWORD"
+            value_from {
+              secret_key_ref {
+                name = local.app_deployment_secret_name
+                key  = "redis_password"
+              }
+            }
           }
 
           env {

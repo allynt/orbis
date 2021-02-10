@@ -223,6 +223,16 @@ resource "kubernetes_deployment" "api_deployment" {
 
           // Other Services
           env {
+            name = "DJANGO_REDIS_PASSWORD"
+            value_from {
+              secret_key_ref {
+                name = local.app_deployment_secret_name
+                key  = "redis_password"
+              }
+            }
+          }
+
+          env {
             name = "DJANGO_MAPBOX_TOKEN"
             value_from {
               secret_key_ref {
