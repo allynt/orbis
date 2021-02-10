@@ -15,7 +15,7 @@ import crowdless from './slices/crowdless.slice';
  *   [key: string]: {
  *     visible?: boolean,
  *     clickedFeatures?: GeoJsonFeature[]
- *     hoveredFeatures?: any[],
+ *     hoveredFeatures?: GeoJsonFeature[],
  *     filterValue?: any
  *   },
  *   extrudedMode: boolean

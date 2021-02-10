@@ -190,6 +190,15 @@ type SidebarComponent<P = {}> = (
   } & P,
 ) => JSX.Element;
 
+/**
+ * @typeParam P - Extra props which are available on the component
+ */
+type MapComponent<P = {}> = (
+  props: {
+    source: Source;
+  } & P,
+) => JSX.Element;
+
 type GeoJsonFeature<P = {}> = {
   geometry: { coordinates?: number[] };
   properties: { cluster?: boolean; expansion_zoom?: number } & P;

@@ -35,15 +35,20 @@ const useStyles = makeStyles(theme => ({
 }));
 
 /**
+ * @typedef {{
+ *   titleProperty?: string
+ *   blacklist?: string[]
+ *   whitelist?: string[]
+ * }} MetadataFeatureDialogProps
+ */
+
+/**
  * @template P
  * @param {{
  *   feature: import('typings/orbis').GeoJsonFeature<P>
  *   open?: boolean
- *   titleProperty?: keyof P
- *   blacklist?: (keyof P)[]
- *   whitelist?: (keyof P)[]
  *   onClose?: () => void
- * }} param0
+ * } & MetadataFeatureDialogProps} param0
  */
 export const FeatureDialog = ({
   feature,
@@ -60,7 +65,9 @@ export const FeatureDialog = ({
 
   const styles = useStyles();
 
-  const title = !!titleProperty ? feature.properties[titleProperty] : 'Feature';
+  const title = !!titleProperty
+    ? feature?.properties[titleProperty]
+    : 'Feature';
 
   const renderableProperties = React.useMemo(() => {
     let properties = feature?.properties;
