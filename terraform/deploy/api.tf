@@ -233,6 +233,11 @@ resource "kubernetes_deployment" "api_deployment" {
           }
 
           env {
+            name  = "DJANGO_REDIS_SERVICE"
+            value = kubernetes_service.redis_server.metadata.0.name
+          }
+
+          env {
             name = "DJANGO_MAPBOX_TOKEN"
             value_from {
               secret_key_ref {
