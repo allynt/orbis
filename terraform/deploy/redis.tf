@@ -120,13 +120,13 @@ resource "kubernetes_stateful_set" "redis_server" {
 
           resources {
             limits {
-              cpu    = "200m"
-              memory = "1000Mi"
+              cpu    = "10m"
+              memory = "10Mi"
             }
 
             requests {
-              cpu    = "200m"
-              memory = "1000Mi"
+              cpu    = "10m"
+              memory = "10Mi"
             }
           }
         }
