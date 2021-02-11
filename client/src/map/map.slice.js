@@ -11,6 +11,7 @@ import { styles as mapStyles } from 'map-style/styles';
  *   mapStyles: import('map-style/styles').MapStyles
  *   topMapLayerGroups: import('map-style/constants').LayerGroupSlug[]
  *   isCompareMode: boolean
+ *   isLoading: boolean
  *   saveMap: boolean
  * }} MapState
  */
@@ -25,6 +26,7 @@ export const initialState = {
   topMapLayerGroups: ['label'],
   isCompareMode: false,
   saveMap: false,
+  isLoading: false,
 };
 
 const mapSlice = createSlice({
@@ -42,13 +44,21 @@ const mapSlice = createSlice({
     toggleCompareMode: state => {
       state.isCompareMode = !state.isCompareMode;
     },
+    setIsLoading: (state, { payload }) => {
+      state.isLoading = payload;
+    },
     saveMap: state => {
       state.saveMap = !state.saveMap;
     },
   },
 });
 
-export const { selectMapStyle, toggleCompareMode, saveMap } = mapSlice.actions;
+export const {
+  selectMapStyle,
+  toggleCompareMode,
+  saveMap,
+  setIsLoading,
+} = mapSlice.actions;
 
 /**
  * @param {any} state
@@ -58,6 +68,11 @@ const baseSelector = state => state?.map;
 export const isCompareModeSelector = createSelector(
   baseSelector,
   map => map?.isCompareMode || false,
+);
+
+export const isLoadingSelector = createSelector(
+  baseSelector,
+  state => state?.isLoading,
 );
 
 export const mapStylesSelector = createSelector(

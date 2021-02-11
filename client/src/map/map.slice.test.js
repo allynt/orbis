@@ -6,6 +6,8 @@ import reducer, {
   selectedMapStyleSelector,
   initialState,
   topMapLayerGroupsSelector,
+  setIsLoading,
+  isLoadingSelector,
 } from './map.slice';
 
 describe('Map Slice', () => {
@@ -55,6 +57,11 @@ describe('Map Slice', () => {
       });
 
       expect(actualState.saveMap).toEqual(true);
+    });
+
+    it('Updates isLoading in state', () => {
+      const actualState = reducer(beforeState, setIsLoading(true));
+      expect(actualState.isLoading).toBe(true);
     });
   });
 
@@ -119,6 +126,17 @@ describe('Map Slice', () => {
         };
         const result = selectedMapStyleSelector(state);
         expect(result).toEqual(expected);
+      });
+    });
+
+    describe('isLoadingSelector', () => {
+      it('returns isLoading from state', () => {
+        const result = isLoadingSelector({
+          map: {
+            isLoading: 'yes',
+          },
+        });
+        expect(result).toBe('yes');
       });
     });
 

@@ -11,6 +11,7 @@ import { getData } from 'utils/http';
 import { useMap } from 'MapContext';
 import { LayerFactory } from '../deck.gl/LayerFactory';
 import { orbsSelector } from './orbsSelectors';
+import { setIsLoading } from 'map/map.slice';
 
 const dataUrlFromId = source => {
   return source.data && typeof source.data === 'string'
@@ -32,16 +33,20 @@ export const useOrbs = () => {
   const fetchData = useCallback(
     async source => {
       try {
+        dispatch(setIsLoading(true));
         const response = await getData(dataUrlFromId(source), {
           Authorization: `Bearer ${authToken}`,
         });
+        dispatch(setIsLoading(false));
 
         if (!response.ok) {
           console.log(source.source_id);
           return dispatch(logError(source));
         }
 
+        dispatch(setIsLoading(true));
         const dataSet = await response.json();
+        dispatch(setIsLoading(false));
         setData({ ...data, [source.source_id]: dataSet });
       } catch (ex) {
         return dispatch(logError(source));
