@@ -3,16 +3,17 @@ import {
   ListItem,
   ListItemText,
   ThemeProvider,
-  Typography,
 } from '@astrosat/astrosat-ui';
 import { FeatureDetail, Popup } from 'components';
 import { FeatureDialog } from 'components/feature-dialog/feature-dialog.component';
+import { MultipleFeaturesList } from 'components/multiple-features-list/multiple-features-list.component';
 import { omit, pick } from 'lodash';
 import React, { useState, useEffect, useMemo } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   clickedFeaturesSelector,
   hoveredFeaturesSelector,
+  setClickedFeatures,
 } from '../orbReducer';
 
 /**
@@ -22,10 +23,17 @@ import {
  *     whitelist?: string[]
  *     footerText?: string
  *   }
+ *   groupPopupProps?: import('components/multiple-features-list/multiple-features-list.component').MultipleFeaturesListMetadataProps
  *   dialogProps: import('components/feature-dialog/feature-dialog.component').MetadataFeatureDialogProps
  * }>}
  */
-const GenericPopupAndDialog = ({ source, dialogProps, hoverPopupProps }) => {
+const GenericPopupAndDialog = ({
+  source,
+  dialogProps,
+  hoverPopupProps,
+  groupPopupProps,
+}) => {
+  const dispatch = useDispatch();
   const { source_id } = source;
   const hoveredFeatures = useSelector(state =>
     hoveredFeaturesSelector(source_id)(state?.orbs),
@@ -55,6 +63,8 @@ const GenericPopupAndDialog = ({ source, dialogProps, hoverPopupProps }) => {
         <Popup
           longitude={hoveredFeatures[0].geometry.coordinates[0]}
           latitude={hoveredFeatures[0].geometry.coordinates[1]}
+          closeButton={false}
+          offsetTop={-26}
         >
           <FeatureDetail
             title={hoveredFeatures[0].properties[hoverPopupProps.titleProperty]}
@@ -66,6 +76,28 @@ const GenericPopupAndDialog = ({ source, dialogProps, hoverPopupProps }) => {
               </ListItem>
             </List>
           </FeatureDetail>
+        </Popup>
+      ) : null}
+      {clickedFeatures?.length > 1 ? (
+        <Popup
+          longitude={clickedFeatures[0].geometry.coordinates[0]}
+          latitude={clickedFeatures[0].geometry.coordinates[1]}
+          closeOnClick={false}
+          offsetTop={-26}
+          onClose={() =>
+            dispatch(
+              setClickedFeatures({
+                source_id: source.source_id,
+                clickedFeatures: undefined,
+              }),
+            )
+          }
+        >
+          <MultipleFeaturesList
+            features={clickedFeatures}
+            onMoreDetailsClick={f => setDialogFeature(f)}
+            {...groupPopupProps}
+          />
         </Popup>
       ) : null}
       <ThemeProvider theme="light">

@@ -57,6 +57,9 @@ export const MultipleFeaturesList = ({
       <List disablePadding>
         {features?.map((feature, i) => (
           <ListItem
+            component={Grid}
+            container
+            spacing={1}
             classes={{ divider: styles.divider }}
             alignItems="center"
             divider={i < features.length - 1}
