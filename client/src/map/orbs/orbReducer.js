@@ -142,7 +142,7 @@ export const layersVisibilitySelector = id =>
 
 /** @param {string} id */
 export const filterValueSelector = id =>
-  createSelector(baseSelector, state => state[id]?.filterValue);
+  createSelector(baseSelector, state => state?.[id]?.filterValue);
 
 export const extrudedModeSelector = createSelector(
   baseSelector,

@@ -56,7 +56,7 @@ const setup = ({ state = {}, data = DATA } = {}) => {
   const dispatch = jest.fn();
   const fns = configFn({
     id: 'test/layer',
-    orbState: { mySupplyLynk: state },
+    orbState: state,
     data,
     onPointHover: true,
     onGroupClick: true,
@@ -68,10 +68,12 @@ const setup = ({ state = {}, data = DATA } = {}) => {
 
 describe('categoryFilterPinIconConfig', () => {
   describe('getFeatures', () => {
-    const categoryFilters = { 'test/layer': ['Category 2'] };
+    const filterState = {
+      layers: { 'test/layer': { filterValue: ['Category 1'] } },
+    };
     it('filters the data based on the Category property and filters in state', () => {
       const { data } = setup({
-        state: { categoryFilters },
+        state: filterState,
       });
       expect(data).toEqual(
         expect.objectContaining({ features: [DATA.features[2]] }),
@@ -81,7 +83,7 @@ describe('categoryFilterPinIconConfig', () => {
     it("filters data by Category if Items doesn't exist", () => {
       const { data } = setup({
         data: CATEGORY_DATA,
-        state: { categoryFilters },
+        state: filterState,
       });
 
       expect(data).toEqual(
@@ -93,7 +95,9 @@ describe('categoryFilterPinIconConfig', () => {
   describe('onHover', () => {
     it('Does not call dispatch if popupFeatures has length > 1', () => {
       const { onHover, dispatch } = setup({
-        state: { popupFeatures: { features: ['hi', 'hello'] } },
+        state: {
+          mySupplyLynk: { popupFeatures: { features: ['hi', 'hello'] } },
+        },
       });
       onHover({});
       expect(dispatch).not.toBeCalled();

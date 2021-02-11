@@ -5,8 +5,8 @@ import {
   setDialogFeatures,
   setPopupFeatures,
   toggleDialog,
-  categoryFiltersSelectorFactory,
 } from '../slices/mysupplylynk.slice';
+import { filterValueSelector } from '../orbReducer';
 
 /**
  * @typedef {import('typings/orbis').GeoJsonFeature} GeoJsonFeature
@@ -23,16 +23,16 @@ const categoryFilterPinIconConfig = ({
   dispatch,
   ...rest
 }) => {
-  const categoryFilters = categoryFiltersSelectorFactory(id)(orbState);
+  const categoryFilters = filterValueSelector(id)(orbState);
 
   const popupFeatures = popupFeaturesSelector(orbState);
 
   const hasCategory = feat => {
     return feat.properties.Items
-      ? feat.properties.Items.some(item =>
-          categoryFilters?.includes(item.Category),
+      ? feat.properties.Items.some(
+          item => !categoryFilters?.includes(item.Category),
         )
-      : categoryFilters?.includes(feat?.properties?.Category);
+      : !categoryFilters?.includes(feat?.properties?.Category);
   };
 
   const getFeatures = () => {
