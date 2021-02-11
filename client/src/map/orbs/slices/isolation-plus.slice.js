@@ -16,6 +16,7 @@ const initialState = {
     name: undefined,
   },
   filterRange: [undefined, undefined],
+  screenshot: undefined,
 };
 
 const isolationPlusSlice = createSlice({
@@ -69,6 +70,9 @@ const isolationPlusSlice = createSlice({
     setFilterRange: (state, { payload }) => {
       state.filterRange = payload;
     },
+    setScreenshot: (state, { payload }) => {
+      state.screenshot = payload;
+    },
   },
 });
 
@@ -79,6 +83,7 @@ export const {
   addClickedFeatures,
   removeClickedFeatures,
   setFilterRange,
+  setScreenshot,
 } = isolationPlusSlice.actions;
 
 /**
@@ -100,6 +105,11 @@ export const clickedFeaturesSelector = createSelector(
 export const filterRangeSelector = createSelector(
   baseSelector,
   orb => orb?.filterRange,
+);
+
+export const screenshotSelector = createSelector(
+  baseSelector,
+  orb => orb?.screenshot,
 );
 
 export default isolationPlusSlice.reducer;

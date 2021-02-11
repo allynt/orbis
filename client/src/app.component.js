@@ -20,6 +20,8 @@ import Accounts from './accounts';
 
 import LandingView from './landing/landing.component';
 
+import PDF from './analysis-panel/pdf-export/pdf-export.component';
+
 import MapLayout from './map';
 
 import styles from './app.module.css';
@@ -105,6 +107,7 @@ const App = () => {
         </Dialog> */}
 
       <Switch>
+        <Route exact path="/pdf-export" render={() => <PDF user={user} />} />
         <PrivateRoute exact path="/" user={user} component={LandingView} />
         <Route path="/accounts" component={Accounts} />
         <PrivateRoute path="/map" user={user} component={MapLayout} />

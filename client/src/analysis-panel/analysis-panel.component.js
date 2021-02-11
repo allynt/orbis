@@ -1,6 +1,7 @@
 import * as React from 'react';
 
 import {
+  Button,
   ButtonBase,
   CloseIcon,
   Divider,
@@ -10,6 +11,8 @@ import {
   TriangleIcon,
   Typography,
 } from '@astrosat/astrosat-ui';
+
+import { useMap } from 'MapContext';
 
 import clsx from 'clsx';
 import { find } from 'lodash';
@@ -21,6 +24,7 @@ import {
   clickedFeaturesSelector,
   propertySelector,
   setClickedFeatures,
+  setScreenshot,
 } from 'map/orbs/slices/isolation-plus.slice';
 import { ClickedFeaturesSummary } from './clicked-features-summary/clicked-features-summary.component';
 import { COMPONENT_MAP } from './component-map';
@@ -83,7 +87,7 @@ const useStyles = makeStyles(theme => ({
   minimized: {},
 }));
 
-export const AnalysisPanel = () => {
+export const AnalysisPanel = ({ history }) => {
   const [minimized, setMinimized] = React.useState(false);
   const styles = useStyles();
   const dispatch = useDispatch();
@@ -99,6 +103,8 @@ export const AnalysisPanel = () => {
       }),
     [selectedProperty, sources],
   );
+
+  const { createScreenshot } = useMap();
 
   if (!selectedProperty) return null;
 
@@ -139,6 +145,17 @@ export const AnalysisPanel = () => {
         </div>
       }
     >
+      <Button
+        onClick={() => {
+          createScreenshot(thumbnail => {
+            dispatch(setScreenshot(thumbnail));
+          });
+          return history.push('/pdf-export');
+        }}
+      >
+        Export PDF
+      </Button>
+
       <Typography color="primary" className={styles.strapline}>
         The information below relates to the areas selected on the map.
       </Typography>
