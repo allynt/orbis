@@ -33,11 +33,9 @@ export const useOrbs = () => {
   const fetchData = useCallback(
     async source => {
       try {
-        dispatch(setIsLoading(true));
         const response = await getData(dataUrlFromId(source), {
           Authorization: `Bearer ${authToken}`,
         });
-        dispatch(setIsLoading(false));
 
         if (!response.ok) {
           console.log(source.source_id);
