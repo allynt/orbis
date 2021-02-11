@@ -40,7 +40,7 @@ const MySupplyLynkMapComponent = ({ name }) => {
           closeButton={popupFeatures?.features.length > 1}
           onClose={() => dispatch(setPopupFeatures([]))}
           closeOnClick={false}
-          offsetTop={-37}
+          offsetTop={-26}
           captureClick
           captureScroll
         >
