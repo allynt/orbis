@@ -4,28 +4,9 @@ import { render } from '@testing-library/react';
 import { Provider } from 'react-redux';
 import configureMockStore from 'redux-mock-store';
 
-import { CATEGORIES } from '../../slices/mysupplylynk.constants';
-
 import { CheckboxFilters } from './checkbox-filters.component';
 import { setFilterValue } from 'map/orbs/orbReducer';
 import userEvent from '@testing-library/user-event';
-
-const wrapper = ({ children }) => (
-  <Provider
-    store={configureMockStore()({
-      orbs: {
-        mySupplyLynk: {
-          categoryFilters: {
-            'test-layer-1': CATEGORIES,
-            'test-layer-2': CATEGORIES,
-            'test-layer-3': CATEGORIES,
-          },
-        },
-      },
-    })}
-    children={children}
-  />
-);
 
 const LAYER = {
     source_id: 'test/layer/1',

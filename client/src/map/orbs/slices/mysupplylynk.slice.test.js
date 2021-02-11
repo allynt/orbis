@@ -1,34 +1,16 @@
 // @ts-nocheck
 
 import reducer, {
-  categoryFiltersSelectorFactory,
   dialogFeaturesSelector,
   dialogVisibleSelector,
   popupFeaturesSelector,
   setDialogFeatures,
   setPopupFeatures,
-  setSelectedFeatures,
   toggleDialog,
 } from './mysupplylynk.slice';
 
-import { CATEGORIES } from './mysupplylynk.constants';
-
 describe('MySupplyLynk slice', () => {
   describe('reducer', () => {
-    describe('setSelectedFeatures', () => {
-      it('sets the selected features in state', () => {
-        const state = {
-          categoryFilters: {},
-        };
-        const payload = {
-          layer: 'test_layer',
-          value: ['PPE, Miscellaneous'],
-        };
-        const result = reducer(state, setSelectedFeatures(payload));
-        expect(result.categoryFilters['test_layer']).toEqual(payload.value);
-      });
-    });
-
     describe('setPopupFeatures', () => {
       it('sets popupFeatures', () => {
         const result = reducer({}, setPopupFeatures('hello'));
@@ -57,27 +39,6 @@ describe('MySupplyLynk slice', () => {
   });
 
   describe('selectors', () => {
-    describe('categoryFiltersSelector', () => {
-      it('Returns the filters array from state for the layer id', () => {
-        const expected = [1, 2, 4];
-        const layerId = 'test/layer';
-        const state = {
-          mySupplyLynk: {
-            categoryFilters: {
-              [layerId]: expected,
-            },
-          },
-        };
-        const result = categoryFiltersSelectorFactory(layerId)(state);
-        expect(result).toEqual(expected);
-      });
-
-      it('Returns the default categories array if undefined in state', () => {
-        const result = categoryFiltersSelectorFactory('test/layer')({});
-        expect(result).toEqual(CATEGORIES);
-      });
-    });
-
     describe('popupFeaturesSelector', () => {
       it('Returns popupFeatures from state', () => {
         const expected = [1, 2, 4];
