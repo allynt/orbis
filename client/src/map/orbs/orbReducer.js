@@ -2,7 +2,6 @@ import { combineReducers } from 'redux';
 import { createSlice, createSelector } from '@reduxjs/toolkit';
 import rice from './rice/rice.slice';
 import isolationPlus from './slices/isolation-plus.slice';
-import mySupplyLynk from './slices/mysupplylynk.slice';
 import crowdless from './slices/crowdless.slice';
 
 /**
@@ -158,7 +157,6 @@ const orbReducer = combineReducers({
   layers: layersSlice.reducer,
   rice,
   isolationPlus,
-  mySupplyLynk,
   crowdless,
 });
 
