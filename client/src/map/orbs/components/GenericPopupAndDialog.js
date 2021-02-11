@@ -7,7 +7,7 @@ import {
 import { FeatureDetail, Popup } from 'components';
 import { FeatureDialog } from 'components/feature-dialog/feature-dialog.component';
 import { MultipleFeaturesList } from 'components/multiple-features-list/multiple-features-list.component';
-import { omit, pick } from 'lodash';
+import { get, omit, pick } from 'lodash';
 import React, { useState, useEffect, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -67,7 +67,10 @@ const GenericPopupAndDialog = ({
           offsetTop={-26}
         >
           <FeatureDetail
-            title={hoveredFeatures[0].properties[hoverPopupProps.titleProperty]}
+            title={get(
+              hoveredFeatures[0].properties,
+              hoverPopupProps.titleProperty,
+            )}
             features={[hoverPopupProperties]}
           >
             <List disablePadding>

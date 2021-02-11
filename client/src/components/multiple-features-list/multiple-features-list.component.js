@@ -7,6 +7,7 @@ import {
   makeStyles,
   fade,
 } from '@astrosat/astrosat-ui';
+import { get } from 'lodash';
 import * as React from 'react';
 
 const useStyles = makeStyles(theme => ({
@@ -67,14 +68,16 @@ export const MultipleFeaturesList = ({
           >
             {!!primaryProperty ? (
               <Grid item xs>
-                <Typography>{feature.properties[primaryProperty]}</Typography>
+                <Typography>
+                  {get(feature.properties, primaryProperty)}
+                </Typography>
               </Grid>
             ) : null}
             {!!secondaryProperty ? (
               <Grid item xs>
                 <Typography className={styles.secondaryProperty}>
                   <span>{secondaryProperty}: </span>
-                  {feature.properties[secondaryProperty]}
+                  {get(feature.properties, secondaryProperty)}
                 </Typography>
               </Grid>
             ) : null}
