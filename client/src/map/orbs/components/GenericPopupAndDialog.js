@@ -4,9 +4,12 @@ import {
   ListItemText,
   ThemeProvider,
 } from '@astrosat/astrosat-ui';
-import { FeatureDetail, Popup } from 'components';
-import { FeatureDialog } from 'components/feature-dialog/feature-dialog.component';
-import { MultipleFeaturesList } from 'components/multiple-features-list/multiple-features-list.component';
+import {
+  FeatureDetail,
+  Popup,
+  FeatureDialog,
+  MultipleFeaturesList,
+} from 'components';
 import { get, omit, pick } from 'lodash';
 import React, { useState, useEffect, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -21,6 +24,7 @@ import {
  *   hoverPopupProps?: {
  *     titleProperty?: string
  *     whitelist?: string[]
+ *     blacklist?: string[]
  *     footerText?: string
  *   }
  *   groupPopupProps?: import('components/multiple-features-list/multiple-features-list.component').MultipleFeaturesListMetadataProps
@@ -49,10 +53,11 @@ const GenericPopupAndDialog = ({
   }, [clickedFeatures]);
 
   const hoverPopupProperties = useMemo(() => {
-    const { titleProperty, whitelist } = hoverPopupProps;
+    const { titleProperty, whitelist, blacklist } = hoverPopupProps;
     let properties = hoveredFeatures?.[0]?.properties;
     if (hoverPopupProps.titleProperty)
       properties = omit(properties, titleProperty);
+    if (blacklist) properties = omit(properties, blacklist);
     if (whitelist) properties = pick(properties, whitelist);
     return properties;
   }, [hoverPopupProps, hoveredFeatures]);
