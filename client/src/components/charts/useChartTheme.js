@@ -98,7 +98,9 @@ export const useChartTheme = () => {
           data: {
             fill: 'transparent',
             stroke: astrosatUiTheme.palette.primary.main,
-            strokeWidth: 5,
+            strokeWidth: 3,
+            strokeLinecap: 'round',
+            strokeLinejoin: 'round',
           },
           labels: baseLabelStyles,
         },
@@ -106,15 +108,21 @@ export const useChartTheme = () => {
       baseProps,
     ),
     tooltip: {
-      style: assign({}, baseLabelStyles, { padding: 0, pointerEvents: 'none' }),
+      style: assign({}, baseLabelStyles, {
+        padding: 0,
+        pointerEvents: 'none',
+        fontWeight: astrosatUiTheme.typography.fontWeightBold,
+        fontStyle: 'italic',
+        fontSize: 24,
+        fill: astrosatUiTheme.palette.secondary.main,
+      }),
       flyoutStyle: {
-        stroke: astrosatUiTheme.palette.text.primary,
-        strokeWidth: 1,
-        fill: '#f0f0f0',
+        strokeWidth: 0,
+        fill: astrosatUiTheme.palette.primary.main,
         pointerEvents: 'none',
       },
-      flyoutPadding: 5,
-      cornerRadius: 5,
+      flyoutPadding: 10,
+      cornerRadius: astrosatUiTheme.shape.borderRadius,
       pointerLength: 10,
     },
     pie: assign(
