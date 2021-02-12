@@ -6,6 +6,7 @@ import { VictoryLabel, VictoryPie } from 'victory';
 
 import { SidePanelSection } from 'components';
 import { useChartTheme } from 'components/charts/useChartTheme';
+import { DEFAULT_DECIMAL_PRECISION } from 'map/map.constants';
 import { LegendItem } from './legend-item.component';
 
 const WIDTH = 400,
@@ -81,7 +82,10 @@ export const CategoryBreakdownChart = ({
     isSelected(datum) ? RADIUS_SELECTED : RADIUS;
 
   /** @type {import('victory-core').VictoryStringCallback} */
-  const getLabels = ({ datum }) => `${datum.percent.toFixed(2)}%`;
+  const getLabels = ({ datum }) =>
+    `${datum.percent.toFixed(
+      selectedProperty.precision ?? DEFAULT_DECIMAL_PRECISION,
+    )}%`;
 
   /** @param {import('victory').SliceProps} props */
   const getLabelRadius = ({ datum }) =>
