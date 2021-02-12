@@ -104,6 +104,7 @@ type Property = {
   details?: string;
   label?: string;
   name: string;
+  precision?: number;
   property_group?: string;
   source?: string;
   type: PropertyType;
@@ -122,7 +123,7 @@ type ContinuousProperty = {
   clip_max?: number;
   max: number;
   min: number;
-  precision?: number;
+
   units?: string;
 } & Property;
 
