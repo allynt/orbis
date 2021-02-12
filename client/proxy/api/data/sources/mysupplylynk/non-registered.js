@@ -19,8 +19,16 @@ module.exports = {
     description: 'Suppliers who can provide items',
     application: {
       orbis: {
-        sidebar_component: {
-          name: 'CheckboxFilters',
+        layer: {
+          name: 'GeoJsonPinLayer',
+          props: {
+            config: 'categoryFilterPinIconConfig',
+            pinColor: '#46aac4',
+            onGroupClick: true,
+            onGroupHover: false,
+            onPointClick: false,
+            onPointHover: true,
+          },
         },
         map_component: {
           name: 'MySupplyLynkMapComponent',
@@ -28,13 +36,8 @@ module.exports = {
             type: 'nonRegistered',
           },
         },
-        layer: {
-          name: 'GeoJsonClusteredIconLayer',
-          props: {
-            config: 'pinIconConfig',
-            pinColor: 'cyan',
-            onClick: false,
-          },
+        sidebar_component: {
+          name: 'CheckboxFilters',
         },
       },
     },

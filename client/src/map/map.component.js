@@ -31,6 +31,7 @@ import MapStyleSwitcher from 'map-style/map-style-switcher/map-style-switcher.co
 import { useMap } from 'MapContext';
 import { NavigationControl } from './controls/navigation-control/navigation-control.component';
 import {
+  isLoadingSelector,
   mapStylesSelector,
   selectedMapStyleSelector,
   selectMapStyle,
@@ -135,6 +136,7 @@ const Map = () => {
   const accessToken = useSelector(mapboxTokenSelector);
   const selectedBookmark = useSelector(selectedBookmarkSelector);
   const bookmarksLoading = useSelector(bookmarksLoadingSelector);
+  const mapLoading = useSelector(isLoadingSelector);
   const mapStyles = useSelector(mapStylesSelector);
   const selectedMapStyle = useSelector(selectedMapStyleSelector);
   const { layers, mapComponents } = useOrbs();
@@ -197,7 +199,7 @@ const Map = () => {
       <LoadMask
         data-testid="load-mask"
         className={styles.loadMask}
-        open={bookmarksLoading}
+        open={bookmarksLoading || mapLoading}
       />
       <div className={styles.extrusionSlider}>
         <Slide in={extrudedMode} direction="up">

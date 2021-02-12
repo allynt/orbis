@@ -8,9 +8,6 @@ import {
   layersVisibilitySelector,
 } from '../orbReducer';
 
-import iconMapping from './pinIconConfig.iconMapping.json';
-import iconAtlas from './pinIconConfig.iconAtlas.svg';
-
 /**
  * @typedef {import('typings/orbis').PickedMapFeature} PickedMapFeature
  */
@@ -30,10 +27,8 @@ const configuration = ({
   onGroupClick,
   onPointHover,
   onGroupHover,
-  pinColor = 'purple',
 }) => {
   const isVisible = layersVisibilitySelector(id)(orbState);
-
   /**
    * @param {GeoJsonFeature[]} data
    */
@@ -104,10 +99,6 @@ const configuration = ({
     data: data,
     visible:
       isVisible && !!activeSources?.find(source => source.source_id === id),
-    iconMapping,
-    iconAtlas,
-    getIcon: `pin-${pinColor}`,
-    groupIconName: `group-${pinColor}`,
     onClick: handleClick,
     onHover: handleHover,
   };

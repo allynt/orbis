@@ -2,19 +2,20 @@ import { combineReducers } from 'redux';
 import { createSlice, createSelector } from '@reduxjs/toolkit';
 import rice from './rice/rice.slice';
 import isolationPlus from './slices/isolation-plus.slice';
-import mySupplyLynk from './slices/mysupplylynk.slice';
 import crowdless from './slices/crowdless.slice';
 
 /**
  * @typedef {ReturnType<orbReducer>} OrbState
+ * @typedef {import('typings/orbis').GeoJsonFeature} GeoJsonFeature
  */
 
 /**
  * @typedef {{
  *   [key: string]: {
  *     visible?: boolean,
- *     clickedFeatures?: import('typings/orbis').GeoJsonFeature[]
- *     hoveredFeatures?: any[],
+ *     clickedFeatures?: GeoJsonFeature[]
+ *     hoveredFeatures?: GeoJsonFeature[],
+ *     filterValue?: any
  *   },
  *   extrudedMode: boolean
  *   extrusionScale: number
@@ -22,33 +23,37 @@ import crowdless from './slices/crowdless.slice';
  */
 
 /**
+ * @template P
  * @typedef {import('@reduxjs/toolkit').CaseReducer<
  *   LayersState,
  *   import('@reduxjs/toolkit').PayloadAction<{
  *     source_id: import('typings/orbis').Source['source_id'],
- *     clickedFeatures?: import('typings/orbis').GeoJsonFeature[]
- *   }>
- * >} SetClickedFeaturesAction
+ *   } & P>
+ * >} GenericOrbAction
  */
 
 /**
- * @typedef {import('@reduxjs/toolkit').CaseReducer<
- *   LayersState,
- *   import('@reduxjs/toolkit').PayloadAction<{
- *     source_id: import('typings/orbis').Source['source_id'],
- *     hoveredFeatures?: import('typings/orbis').GeoJsonFeature[]
- *   }>
- * >} SetHoveredFeaturesAction
+ * @typedef {GenericOrbAction<{
+ *     clickedFeatures?: GeoJsonFeature[]
+ *   }>} SetClickedFeaturesAction
  */
 
 /**
- * @typedef {import('@reduxjs/toolkit').CaseReducer<
- *   LayersState,
- *   import('@reduxjs/toolkit').PayloadAction<{
- *     source_id: import('typings/orbis').Source['source_id'],
+ * @typedef {GenericOrbAction<{
+ *     hoveredFeatures?: GeoJsonFeature[]
+ *   }>} SetHoveredFeaturesAction
+ */
+
+/**
+ * @typedef {GenericOrbAction<{
  *     visible?: boolean
- *   }>
- * >} SetVisibilityAction
+ *   }>} SetVisibilityAction
+ */
+
+/**
+ * @typedef {GenericOrbAction<{
+ *     filterValue?: any
+ *   }>} SetFilterValueAction
  */
 
 /**
@@ -91,6 +96,12 @@ const layersSlice = createSlice({
       const { source_id, visible } = payload;
       state[source_id] = { ...state[source_id], visible };
     },
+    /** @type {SetFilterValueAction} */
+    setFilterValue: (state, { payload }) => {
+      if (!payload.source_id) return handleMissingSourceId();
+      const { source_id, filterValue } = payload;
+      state[source_id] = { ...state[source_id], filterValue };
+    },
     toggleExtrudedMode: state => {
       state.extrudedMode = !state.extrudedMode;
     },
@@ -105,6 +116,7 @@ export const {
   setClickedFeatures,
   setHoveredFeatures,
   setVisibility,
+  setFilterValue,
   toggleExtrudedMode,
   setExtrusionScale,
 } = layersSlice.actions;
@@ -127,6 +139,10 @@ export const hoveredFeaturesSelector = id =>
 export const layersVisibilitySelector = id =>
   createSelector(baseSelector, state => state?.[id]?.visible ?? true);
 
+/** @param {string} id */
+export const filterValueSelector = id =>
+  createSelector(baseSelector, state => state?.[id]?.filterValue);
+
 export const extrudedModeSelector = createSelector(
   baseSelector,
   state => state?.extrudedMode,
@@ -141,7 +157,6 @@ const orbReducer = combineReducers({
   layers: layersSlice.reducer,
   rice,
   isolationPlus,
-  mySupplyLynk,
   crowdless,
 });
 

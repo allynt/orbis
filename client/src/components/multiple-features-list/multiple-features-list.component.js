@@ -1,0 +1,98 @@
+import {
+  Grid,
+  Link,
+  List,
+  ListItem,
+  Typography,
+  makeStyles,
+  fade,
+} from '@astrosat/astrosat-ui';
+import { get } from 'lodash';
+import * as React from 'react';
+
+const useStyles = makeStyles(theme => ({
+  header: {
+    padding: theme.spacing(2, 0),
+    borderBottom: `solid 1px ${theme.palette.primary.main}`,
+    textAlign: 'center',
+  },
+  divider: {
+    borderBottomColor: fade(theme.palette.primary.main, 0.55),
+  },
+  secondaryProperty: {
+    '& > span': {
+      fontWeight: theme.typography.fontWeightBold,
+    },
+  },
+  link: {
+    color: theme.palette.text.primary,
+  },
+}));
+
+/**
+ * @typedef {{
+ *   primaryProperty?: string
+ *   secondaryProperty?: string
+ * }} MultipleFeaturesListMetadataProps
+ */
+
+/**
+ * @param {{
+ *   features: import('typings/orbis').GeoJsonFeature[]
+ *   onMoreDetailsClick: (feature: import('typings/orbis').GeoJsonFeature) => void
+ * } & MultipleFeaturesListMetadataProps} props
+ */
+export const MultipleFeaturesList = ({
+  features,
+  primaryProperty,
+  secondaryProperty,
+  onMoreDetailsClick,
+}) => {
+  const styles = useStyles();
+
+  return (
+    <>
+      <Typography className={styles.header} variant="h3">
+        More Details
+      </Typography>
+      <List disablePadding>
+        {features?.map((feature, i) => (
+          <ListItem
+            component={Grid}
+            container
+            spacing={1}
+            classes={{ divider: styles.divider }}
+            alignItems="center"
+            divider={i < features.length - 1}
+            key={`feature-${i}`}
+          >
+            {!!primaryProperty ? (
+              <Grid item xs>
+                <Typography>
+                  {get(feature.properties, primaryProperty)}
+                </Typography>
+              </Grid>
+            ) : null}
+            {!!secondaryProperty ? (
+              <Grid item xs>
+                <Typography className={styles.secondaryProperty}>
+                  <span>{secondaryProperty}: </span>
+                  {get(feature.properties, secondaryProperty)}
+                </Typography>
+              </Grid>
+            ) : null}
+            <Grid item xs container justify="flex-end">
+              <Link
+                className={styles.link}
+                component="button"
+                onClick={() => onMoreDetailsClick(feature)}
+              >
+                More details
+              </Link>
+            </Grid>
+          </ListItem>
+        ))}
+      </List>
+    </>
+  );
+};

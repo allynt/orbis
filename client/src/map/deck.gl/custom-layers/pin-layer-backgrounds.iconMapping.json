@@ -1,0 +1,17 @@
+{
+  "pin": {
+    "x": 0,
+    "y": 0,
+    "width": 40,
+    "height": 50,
+    "anchorY": 25,
+    "mask": true
+  },
+  "cluster": {
+    "x": 41,
+    "y": 0,
+    "width": 60,
+    "height": 60,
+    "mask": true
+  }
+}

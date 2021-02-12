@@ -180,6 +180,25 @@ type AnalysisPanelComponent<P = {}, F extends PickedMapFeature = {}> = (
   } & P,
 ) => JSX.Element;
 
+/**
+ * @typeParam P - Extra props which are available on the component
+ */
+type SidebarComponent<P = {}> = (
+  props: {
+    selectedLayer?: Source;
+    dispatch?: Dispatch;
+  } & P,
+) => JSX.Element;
+
+/**
+ * @typeParam P - Extra props which are available on the component
+ */
+type MapComponent<P = {}> = (
+  props: {
+    source: Source;
+  } & P,
+) => JSX.Element;
+
 type GeoJsonFeature<P = {}> = {
   geometry: { coordinates?: number[] };
   properties: { cluster?: boolean; expansion_zoom?: number } & P;

@@ -1,115 +1,103 @@
-import * as React from 'react';
-
 import {
   Checkbox,
-  CleaningIcon,
-  ClothingIcon,
-  FoodIcon,
+  iconMap,
   List,
   ListItem,
   ListItemIcon,
   ListItemText,
-  OptionsAltIcon,
-  PpeIcon,
-  ServiceIcon,
-  StaffingIcon,
-  StationeryIcon,
-  StethoscopeIcon,
-  styled,
+  makeStyles,
 } from '@astrosat/astrosat-ui';
-
+import { filterValueSelector, setFilterValue } from 'map/orbs/orbReducer';
+import * as React from 'react';
 import { useSelector } from 'react-redux';
 
-import { CATEGORIES } from '../../slices/mysupplylynk.constants';
-import {
-  categoryFiltersSelectorFactory,
-  setSelectedFeatures,
-} from '../../slices/mysupplylynk.slice';
-
-const Icons = {
-  PPE: PpeIcon,
-  Cleaning: CleaningIcon,
-  'Medical Equipment & Aids': StethoscopeIcon,
-  Food: FoodIcon,
-  Stationery: StationeryIcon,
-  Clothing: ClothingIcon,
-  Services: ServiceIcon,
-  Staff: StaffingIcon,
-  Other: OptionsAltIcon,
-};
-
-const IconWrapper = styled('div')(({ theme }) => ({
-  color: theme.palette.secondary.main,
-  backgroundColor: theme.palette.primary.main,
-  width: theme.typography.pxToRem(32),
-  height: theme.typography.pxToRem(32),
-  borderRadius: '50%',
-  display: 'grid',
-  placeItems: 'center',
+const useStyles = makeStyles(theme => ({
+  iconWrapper: {
+    color: props => props.iconColor || theme.palette.secondary.main,
+    backgroundColor: props => props.color || theme.palette.primary.main,
+    width: '2rem',
+    height: '2rem',
+    minWidth: '2rem',
+    borderRadius: '50%',
+    display: 'grid',
+    placeItems: 'center',
+    margin: theme.spacing(0, 1),
+  },
+  checkboxWrapper: {
+    minWidth: 'max-content',
+  },
 }));
 
 /**
- *  @param {{
- *   selectedLayer?: import('typings/orbis').Source
- *   dispatch?: import('redux').Dispatch
- * }} props
+ * @type {import('typings/orbis').SidebarComponent<{
+ *   filters: {value: any, label?: string, icon?: string}[]
+ *   color?: string
+ *   iconColor?: string
+ * >}
  */
-export const CheckboxFilters = ({ selectedLayer, dispatch }) => {
-  const selectedFilters = useSelector(state =>
-    categoryFiltersSelectorFactory(selectedLayer?.source_id)(state?.orbs),
-  );
+export const CheckboxFilters = ({
+  selectedLayer,
+  dispatch,
+  filters,
+  color,
+  iconColor,
+}) => {
+  if (!filters) console.error('No `filters` prop supplied to CheckboxFilters');
 
-  const CATEGORY_NAME_AND_ICON = CATEGORIES.map(name => ({
-    name,
-    Icon: Icons[name],
-  }));
+  const filterValue = useSelector(state =>
+    filterValueSelector(selectedLayer?.source_id)(state?.orbs),
+  );
+  const styles = useStyles({ color, iconColor });
 
   /**
-   * @param {string} value
+   * @param {any} value
    */
   const handleChange = value => () => {
-    !selectedFilters?.includes(value)
-      ? dispatch(
-          setSelectedFeatures({
-            layer: selectedLayer.source_id,
-            value: [...selectedFilters, value],
-          }),
-        )
-      : dispatch(
-          setSelectedFeatures({
-            layer: selectedLayer.source_id,
-            value: selectedFilters.filter(feat => feat !== value),
-          }),
-        );
+    const { source_id } = selectedLayer;
+    let newFilterValue;
+    if (filterValue === undefined || filterValue === null)
+      newFilterValue = [value];
+    else if (filterValue.includes(value))
+      newFilterValue = filterValue.filter(v => v !== value);
+    else newFilterValue = [...filterValue, value];
+
+    return dispatch(setFilterValue({ source_id, filterValue: newFilterValue }));
   };
 
-  return (
-    <List>
-      {CATEGORY_NAME_AND_ICON.map(({ name, Icon }) => {
-        const labelId = `checkbox-label-${name.replace(/\s/g, '-')}`;
+  return filters ? (
+    <List disablePadding>
+      {filters.map(({ value, icon, label }) => {
+        const labelId = `checkbox-label-${value
+          .toString()
+          .replace(/\s/g, '-')}`;
+        const Icon = icon && iconMap[`${icon}Icon`];
+        const checked =
+          filterValue === undefined ||
+          filterValue === null ||
+          !filterValue.includes(value);
         return (
           <ListItem
-            key={name}
+            key={value}
             role={undefined}
             button
-            onClick={handleChange(name)}
+            onClick={handleChange(value)}
           >
-            <ListItemIcon>
+            <ListItemIcon style={{ minWidth: 'max-content' }}>
               <Checkbox
                 tabIndex={-1}
-                checked={selectedFilters?.includes(name)}
+                checked={checked}
                 inputProps={{ 'aria-labelledby': labelId }}
               />
             </ListItemIcon>
-            <ListItemIcon>
-              <IconWrapper>
-                <Icon fontSize="small" titleAccess={name} />
-              </IconWrapper>
-            </ListItemIcon>
-            <ListItemText id={labelId} primary={name} />
+            {Icon && (
+              <ListItemIcon className={styles.iconWrapper}>
+                <Icon fontSize="small" titleAccess={icon} />
+              </ListItemIcon>
+            )}
+            <ListItemText id={labelId} primary={label || value.toString()} />
           </ListItem>
         );
       })}
     </List>
-  );
+  ) : null;
 };

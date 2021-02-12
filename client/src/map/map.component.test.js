@@ -30,4 +30,9 @@ describe('<Map />', () => {
     const { getByTestId } = setup({ bookmarks: { isLoading: true } });
     expect(getByTestId('load-mask')).toBeInTheDocument();
   });
+
+  it('Displays the load mask when the map is loading', () => {
+    const { getByTestId } = setup({ map: { isLoading: true } });
+    expect(getByTestId('load-mask')).toBeInTheDocument();
+  });
 });
