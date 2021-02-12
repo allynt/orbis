@@ -46,3 +46,12 @@ MultipleFeatures.args = {
       },
     })),
 };
+
+export const Averaged = Template.bind({});
+Averaged.args = {
+  ...MultipleFeatures.args,
+  selectedProperty: {
+    name: 'Dogs',
+    aggregation: 'mean',
+  },
+};
