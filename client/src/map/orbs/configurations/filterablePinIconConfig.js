@@ -1,3 +1,4 @@
+import { get } from 'lodash';
 import { filterValueSelector } from '../orbReducer';
 import pinIconConfig from './pinIconConfig';
 
@@ -24,13 +25,15 @@ const filterablePinIconConfig = ({
     if (!filterValue || !data) return data;
     let newFeatures;
     if (filterType === 'blacklist')
-      newFeatures = data.features.filter(
-        f => !filterValue.includes(f.properties[filterProperty]),
-      );
+      newFeatures = data.features.filter(f => {
+        const filterPropertyValue = get(f.properties, filterProperty);
+        return !filterValue.some(v => filterPropertyValue.includes(v));
+      });
     if (filterType === 'whitelist')
-      newFeatures = data.features.filter(f =>
-        filterValue.includes(f.properties[filterProperty]),
-      );
+      newFeatures = data.features.filter(f => {
+        const filterPropertyValue = get(f.properties, filterProperty);
+        return filterValue.some(v => filterPropertyValue.includes(v));
+      });
     return {
       ...data,
       features: newFeatures,
