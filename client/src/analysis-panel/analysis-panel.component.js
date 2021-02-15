@@ -145,17 +145,6 @@ export const AnalysisPanel = ({ history }) => {
         </div>
       }
     >
-      <Button
-        onClick={() => {
-          createScreenshot(thumbnail => {
-            dispatch(setScreenshot(thumbnail));
-          });
-          return history.push('/pdf-export');
-        }}
-      >
-        Export PDF
-      </Button>
-
       <Typography color="primary" className={styles.strapline}>
         The information below relates to the areas selected on the map.
       </Typography>
@@ -185,6 +174,14 @@ export const AnalysisPanel = ({ history }) => {
         details={selectedProperty?.details}
         source={selectedProperty?.source}
       />
+      <Button
+        onClick={() => {
+          createScreenshot(image => dispatch(setScreenshot(image)));
+          return history.push('/pdf-export');
+        }}
+      >
+        Export PDF
+      </Button>
     </SidePanel>
   );
 };
