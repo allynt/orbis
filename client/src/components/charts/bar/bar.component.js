@@ -28,11 +28,7 @@ export const BarChart = ({
   const colorScale = new ColorScale({ color, domain, clip });
   const yValues = data?.map(d => d.y);
   return (
-    <VictoryChart
-      domainPadding={{ x: 20 }}
-      theme={orbisChartTheme}
-      domain={{ x: domain.map(Number) }}
-    >
+    <VictoryChart theme={orbisChartTheme} domain={{ x: domain.map(Number) }}>
       <VictoryAxis
         fixLabelOverlap
         label={labelX}
