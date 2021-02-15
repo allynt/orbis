@@ -4,10 +4,9 @@ import { Grid, Typography, useTheme } from '@astrosat/astrosat-ui';
 
 import { VictoryLabel, VictoryPie } from 'victory';
 
-import { SidePanelSection } from 'components';
+import { SidePanelSection, LegendItem } from 'components';
 import { useChartTheme } from 'components/charts/useChartTheme';
 import { DEFAULT_DECIMAL_PRECISION } from 'map/map.constants';
-import { LegendItem } from './legend-item.component';
 
 const WIDTH = 400,
   HEIGHT = 400,
@@ -71,7 +70,6 @@ export const CategoryBreakdownChart = ({
       cursor: categoryList.length > 1 ? 'pointer' : 'default',
     },
     labels: {
-      textAnchor: 'middle',
       /** @type {import('victory-core').VictoryStringCallback} */
       fill: ({ datum }) => theme.palette.getContrastText(datum.color),
     },
@@ -125,10 +123,6 @@ export const CategoryBreakdownChart = ({
             ]}
             standalone={false}
             theme={chartTheme}
-            animate
-            padding={0}
-            width={WIDTH}
-            height={HEIGHT}
             data={categoryList}
             y="percent"
             x="percent"
@@ -150,7 +144,8 @@ export const CategoryBreakdownChart = ({
           {categoryList.map(categoryInfo => (
             <LegendItem
               key={categoryInfo.category}
-              categoryInfo={categoryInfo}
+              text={categoryInfo.category}
+              color={categoryInfo?.color}
               selected={isSelected(categoryInfo)}
             />
           ))}

@@ -1,5 +1,4 @@
 export { BarChart } from './charts/bar/bar.component';
-export { PieChart } from './charts/pie/pie.component';
 export { ColorMapRangeSlider } from './colormap-range-slider/colormap-range-slider.component';
 export { default as FeatureDetail } from './feature-detail/feature-detail.component';
 export { FeatureDialog } from './feature-dialog/feature-dialog.component';
@@ -13,3 +12,4 @@ export { SidePanelSection } from './side-panel-section/side-panel-section.compon
 export { SidePanel } from './side-panel/side-panel.component';
 export * from './sidebar';
 export { Skeleton } from './skeleton/skeleton.component';
+export { LegendItem } from './legend-item/legend-item.component';

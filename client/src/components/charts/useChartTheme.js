@@ -46,6 +46,7 @@ export const useChartTheme = () => {
   const centeredLabelStyles = assign({ textAnchor: 'middle' }, baseLabelStyles);
 
   return {
+    colors,
     axis: {
       style: {
         axis: {
@@ -117,24 +118,25 @@ export const useChartTheme = () => {
       cornerRadius: 5,
       pointerLength: 10,
     },
-    pie: assign(
-      {
-        colorScale: colors,
-        style: {
-          data: {},
-          labels: {
-            fontWeight: astrosatUiTheme.typography.fontWeightBold,
-            fontFamily: astrosatUiTheme.typography.fontFamily,
-            fontSize: 24,
-            fill: ({ index }) =>
-              astrosatUiTheme.palette.getContrastText(
-                colors[index % colors.length],
-              ),
-          },
+    pie: assign(baseProps, {
+      width: 400,
+      height: 400,
+      padding: 0,
+      colorScale: colors,
+      style: {
+        data: {},
+        labels: {
+          textAnchor: 'middle',
+          fontWeight: astrosatUiTheme.typography.fontWeightBold,
+          fontFamily: astrosatUiTheme.typography.fontFamily,
+          fontSize: 24,
+          fill: ({ index }) =>
+            astrosatUiTheme.palette.getContrastText(
+              colors[index % colors.length],
+            ),
         },
       },
-      baseProps,
-    ),
+    }),
     legend: {
       ...baseProps,
       height: 460,
