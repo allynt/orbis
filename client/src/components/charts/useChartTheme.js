@@ -19,7 +19,7 @@ const colors = [
 const baseProps = {
   width: 500,
   height: 360,
-  padding: { left: 80, bottom: 60, top: 10, right: 20 },
+  padding: { left: 120, bottom: 100, top: 10, right: 40 },
   colorScale: colors,
   animate: true,
 };
@@ -36,10 +36,10 @@ export const useChartTheme = () => {
 
   const baseLabelStyles = {
     fontFamily: astrosatUiTheme.typography.fontFamily,
-    fontSize: astrosatUiTheme.typography.fontSize,
+    fontSize: 24,
     letterSpacing: 'normal',
     padding: 10,
-    fill: astrosatUiTheme.palette.primary.main,
+    fill: astrosatUiTheme.palette.text.primary,
     stroke: 'transparent',
   };
 
@@ -71,7 +71,7 @@ export const useChartTheme = () => {
           size: 1,
           stroke: 'transparent',
         },
-        tickLabels: assign(baseLabelStyles, {
+        tickLabels: assign({}, baseLabelStyles, {
           fill: astrosatUiTheme.palette.text.primary,
         }),
       },
@@ -118,7 +118,8 @@ export const useChartTheme = () => {
       cornerRadius: 5,
       pointerLength: 10,
     },
-    pie: assign(baseProps, {
+    pie: assign({}, baseProps, {
+      animate: true,
       width: 400,
       height: 400,
       padding: 0,

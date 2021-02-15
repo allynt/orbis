@@ -44,6 +44,7 @@ export const PropertyBreakdownChart = ({
       <Grid container spacing={2}>
         <Grid item xs={12} component="svg" viewBox="0 0 400 400">
           <VictoryPie
+            animate
             standalone={false}
             theme={chartTheme}
             data={data}

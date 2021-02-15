@@ -123,6 +123,7 @@ export const CategoryBreakdownChart = ({
             ]}
             standalone={false}
             theme={chartTheme}
+            animate
             data={categoryList}
             y="percent"
             x="percent"

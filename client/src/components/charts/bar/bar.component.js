@@ -33,11 +33,18 @@ export const BarChart = ({
       theme={orbisChartTheme}
       domain={{ x: domain.map(Number) }}
     >
-      <VictoryAxis label={labelX} />
+      <VictoryAxis
+        fixLabelOverlap
+        label={labelX}
+        tickCount={3}
+        style={{ axisLabel: { padding: 50 } }}
+      />
       <VictoryAxis
         dependentAxis
+        fixLabelOverlap
         label={labelY}
-        style={{ axisLabel: { padding: 65 } }}
+        offsetX={120}
+        style={{ axisLabel: { padding: 100 } }}
       />
       <VictoryBar
         data={data}
