@@ -33,11 +33,13 @@ export const BarChart = ({
         fixLabelOverlap
         label={labelX}
         tickCount={3}
+        crossAxis={false}
         style={{ axisLabel: { padding: 50 } }}
       />
       <VictoryAxis
         dependentAxis
         fixLabelOverlap
+        crossAxis={false}
         label={labelY}
         offsetX={120}
         style={{ axisLabel: { padding: 100 } }}
