@@ -1,8 +1,7 @@
 // @ts-nocheck
+import { render } from '@testing-library/react';
 import * as React from 'react';
-import { render, waitFor } from '@testing-library/react';
 import { PropertyTimeSeriesChart } from './property-time-series-chart.component';
-import userEvent from '@testing-library/user-event';
 
 describe('<PropertyTimeSeriesChart />', () => {
   it('Renders just the title if there are no clicked features', () => {
