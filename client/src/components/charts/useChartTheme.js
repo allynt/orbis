@@ -128,9 +128,9 @@ export const useChartTheme = () => {
         data: {},
         labels: {
           textAnchor: 'middle',
-          fontWeight: astrosatUiTheme.typography.fontWeightBold,
+          fontWeight: astrosatUiTheme.typography.fontWeightRegular,
           fontFamily: astrosatUiTheme.typography.fontFamily,
-          fontSize: 24,
+          fontSize: 20,
           fill: ({ index }) =>
             astrosatUiTheme.palette.getContrastText(
               colors[index % colors.length],
