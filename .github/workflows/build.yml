@@ -2,6 +2,9 @@ name: BUILD
 
 on:
   push: {}
+  workflow_dispatch:
+    branches:
+      - master
 
 env:
   AWS_REGISTRY: 339570402237.dkr.ecr.eu-west-1.amazonaws.com
