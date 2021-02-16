@@ -2,17 +2,17 @@ import * as React from 'react';
 
 import {
   Button,
+  CircularProgress,
+  Fade,
   FormControlLabel,
   Grid,
-  makeStyles,
-  Radio,
-  Typography,
-  MagnifierIcon,
-  CircularProgress,
   List,
   ListSubheader,
-  Fade,
+  MagnifierIcon,
+  makeStyles,
   Pagination,
+  Radio,
+  Typography,
 } from '@astrosat/astrosat-ui';
 
 import { InfoButtonTooltip } from 'components';
@@ -98,40 +98,46 @@ export const CrowdlessSidebarComponent = ({
           </Grid>
           {((isLoading && !results) || results?.length) && (
             <>
-              <List
-                subheader={
-                  <ListSubheader disableSticky>
-                    Places close to you
-                  </ListSubheader>
-                }
-              >
-                {isLoading &&
-                  !results &&
-                  Array(10)
-                    .fill(undefined)
-                    .map((_, i) => <ResultsListItem key={i} isLoading />)}
-                {results?.length
-                  ? results.map((result, i) => (
-                      <ResultsListItem
-                        key={result.properties.placeId}
-                        result={result}
-                        selected={
-                          selectedResult === undefined ||
-                          result.properties.placeId ===
-                            selectedResult?.properties?.placeId
-                        }
-                        onClick={onResultClick}
-                        divider={i + 1 !== results.length}
-                      />
-                    ))
-                  : null}
-              </List>
+              <Grid item xs={12}>
+                <List
+                  subheader={
+                    <ListSubheader disableSticky>
+                      Places close to you
+                    </ListSubheader>
+                  }
+                >
+                  {isLoading &&
+                    !results &&
+                    Array(10)
+                      .fill(undefined)
+                      .map((_, i) => <ResultsListItem key={i} isLoading />)}
+                  {results?.length
+                    ? results.map((result, i) => (
+                        <ResultsListItem
+                          key={result.properties.placeId}
+                          result={result}
+                          selected={
+                            selectedResult === undefined ||
+                            result.properties.placeId ===
+                              selectedResult?.properties?.placeId
+                          }
+                          onClick={onResultClick}
+                          divider={i + 1 !== results.length}
+                        />
+                      ))
+                    : null}
+                </List>
+              </Grid>
               {pages > 1 ? (
-                <Pagination
-                  page={currentPage}
-                  count={pages}
-                  onChange={(_, page) => onPageClick(page)}
-                />
+                <Grid item xs={12}>
+                  <Pagination
+                    shape="rounded"
+                    color="primary"
+                    page={currentPage}
+                    count={pages}
+                    onChange={(_, page) => onPageClick(page)}
+                  />
+                </Grid>
               ) : null}
             </>
           )}
