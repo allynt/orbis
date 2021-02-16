@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useMemo } from 'react';
 
 import {
   Button,
@@ -12,6 +12,8 @@ import {
   Typography,
 } from '@astrosat/astrosat-ui';
 
+import { sumBy } from 'lodash';
+
 import { useMap } from 'MapContext';
 
 import clsx from 'clsx';
@@ -24,10 +26,11 @@ import {
   clickedFeaturesSelector,
   propertySelector,
   setClickedFeatures,
-  setScreenshot,
+  setPdfData,
 } from 'map/orbs/slices/isolation-plus.slice';
 import { ClickedFeaturesSummary } from './clicked-features-summary/clicked-features-summary.component';
 import { COMPONENT_MAP } from './component-map';
+import { aggregateValues } from './aggregateValues';
 import { MoreInformation } from './more-information/more-information.component';
 
 const PrimaryDivider = styled(Divider)(({ theme }) => ({
@@ -104,7 +107,55 @@ export const AnalysisPanel = ({ history }) => {
     [selectedProperty, sources],
   );
 
+  const analysisData = useMemo(() => {
+    const areasOfInterest = clickedFeatures?.map(feat => {
+      const { within_LAD_name, area_name, index } = feat.object.properties;
+      return { within_LAD_name, identifier: area_name || index };
+    });
+
+    const populationTotal = sumBy(
+      clickedFeatures,
+      'object.properties.population',
+    )?.toLocaleString();
+
+    const householdTotal = sumBy(
+      clickedFeatures,
+      'object.properties.households',
+    )?.toLocaleString();
+
+    const aggregationLabel =
+      selectedProperty?.aggregation === 'sum' ? 'Sum' : 'Average';
+
+    const areaValue =
+      clickedFeatures && aggregateValues(clickedFeatures, selectedProperty);
+
+    const moreInformation = selectedProperty?.details;
+
+    return {
+      areasOfInterest,
+      populationTotal,
+      householdTotal,
+      aggregation: {
+        aggregationLabel,
+        areaValue,
+      },
+      moreInformation,
+    };
+  }, [selectedProperty, clickedFeatures]);
+
   const { createScreenshot } = useMap();
+
+  const handleExportClick = () => {
+    createScreenshot(screenshot =>
+      dispatch(
+        setPdfData({
+          ...analysisData,
+          screenshot,
+        }),
+      ),
+    );
+    return history.push('/pdf-export');
+  };
 
   if (!selectedProperty) return null;
 
@@ -174,14 +225,7 @@ export const AnalysisPanel = ({ history }) => {
         details={selectedProperty?.details}
         source={selectedProperty?.source}
       />
-      <Button
-        onClick={() => {
-          createScreenshot(image => dispatch(setScreenshot(image)));
-          return history.push('/pdf-export');
-        }}
-      >
-        Export PDF
-      </Button>
+      <Button onClick={handleExportClick}>Export as PDF</Button>
     </SidePanel>
   );
 };

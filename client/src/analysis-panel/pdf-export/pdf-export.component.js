@@ -7,34 +7,36 @@ import html2canvas from 'html2canvas';
 
 import { format } from 'date-fns';
 
+import { Button } from '@astrosat/astrosat-ui';
+
 import { useSelector } from 'react-redux';
 
 import {
-  clickedFeaturesSelector,
   propertySelector,
-  screenshotSelector,
+  pdfDataSelector,
 } from 'map/orbs/slices/isolation-plus.slice';
 
-import { OrbisLogo } from 'components';
+import OrbisLogo from './orbis-logo.png';
 
 import styles from './pdf-export.module.css';
 
 const PDF = ({ user }) => {
-  const clickedFeatures = useSelector(state =>
-    clickedFeaturesSelector(state?.orbs),
-  );
   const selectedProperty = useSelector(state => propertySelector(state?.orbs));
-  const screenshot = useSelector(state => screenshotSelector(state?.orbs));
+
+  const pdfData = useSelector(state => pdfDataSelector(state?.orbs));
+
+  const {
+    screenshot,
+    areasOfInterest,
+    populationTotal,
+    householdTotal,
+    aggregation,
+    moreInformation,
+  } = pdfData;
 
   const creationDate = format(new Date(), ['MMMM do Y']);
 
   const [image, setImage] = useState(undefined);
-
-  const calcTotal = input =>
-    clickedFeatures?.reduce(
-      (acc, cur) => acc + cur.object.properties[input],
-      0,
-    );
 
   const handleClick = () => {
     const div = document.getElementById('pdf-form');
@@ -49,35 +51,45 @@ const PDF = ({ user }) => {
       const width = doc.internal.pageSize.getWidth(),
         height = doc.internal.pageSize.getHeight();
 
-      doc.addImage(canvas, 'PNG', 0, 0, width, height);
+      doc.addImage({
+        imageData: canvas,
+        format: 'JPEG',
+        x: 0,
+        y: 0,
+        width,
+        height,
+        compression: 'NONE',
+      });
 
       doc.save('orbis-data-analysis.pdf');
     });
   };
 
-  const getImage = screenshot => {
+  (screenshot => {
     const reader = new FileReader();
     reader.onload = event => {
       const result = event.target.result;
       setImage(result);
     };
-    reader.readAsDataURL(screenshot);
-  };
-
-  if (screenshot) getImage(screenshot);
+    if (screenshot) reader.readAsDataURL(screenshot);
+  })(screenshot);
 
   // prohibits direct linking to '.pdf-export'
   if (!selectedProperty?.source_id) return <Redirect to="/" />;
   return (
     <div className={styles.container}>
-      <button className={styles.button} onClick={handleClick}>
-        Download PDF
-      </button>
+      <Button className={styles.button} onClick={handleClick}>
+        Download as PDF
+      </Button>
       <div className={styles.pdf} id="pdf-form">
-        <img
-          className={styles.screenshot}
-          src={image}
-          alt="Screenshot of map"
+        {/* the below styling is inline because jsPDF does not recognise 'object-fit', yet the image displaying as 'cover' is essential */}
+        <div
+          style={{
+            backgroundImage: `url(${image})`,
+            backgroundSize: 'cover',
+            height: '40%',
+            width: '100%',
+          }}
         />
         <div className={styles.pdfForm}>
           <div className={styles.detailsGrid}>
@@ -85,27 +97,27 @@ const PDF = ({ user }) => {
               <div className={styles.gridElement}>
                 <h3>Selected Areas of interest:</h3>
                 <ul>
-                  {clickedFeatures?.map(feat => (
-                    <li>{feat.object.properties.within_LAD_name}</li>
+                  {areasOfInterest?.map(({ within_LAD_name, identifier }) => (
+                    <li>{within_LAD_name || identifier}</li>
                   ))}
                 </ul>
               </div>
               <div className={styles.gridElement}>
-                <h4>Total population: {calcTotal('population')}</h4>
-                <h4>Total households: {calcTotal('households')}</h4>
+                <h4>Total population: {populationTotal}</h4>
+                <h4>Total households: {householdTotal}</h4>
               </div>
             </div>
             <div className={styles.gridColumn}>
-              <div className={styles.gridElement}>
+              <div className={`${styles.gridElement} ${styles.centered}`}>
                 <h3>Selected Data Layer:</h3>
-                <span>{clickedFeatures?.[0].layer.id}</span>
+                <span>
+                  {selectedProperty?.application?.orbis?.label ||
+                    selectedProperty?.label}
+                </span>
               </div>
-              <div className={styles.gridElement}>
-                <h3>Value/Average of selected areas:</h3>
-                <p>GB: asdfa</p>
-                <p>Wales: asdfa</p>
-                <p>England: asdfa</p>
-                <p>Scotland: asfdg</p>
+              <div className={`${styles.gridElement} ${styles.centered}`}>
+                <h3>{aggregation?.aggregationLabel} of selected areas:</h3>
+                <h1>{aggregation?.areaValue}</h1>
               </div>
               <div className={styles.gridElement}>
                 <h3>
@@ -121,18 +133,9 @@ const PDF = ({ user }) => {
               <div className={styles.gridElement}>
                 The information relates to the areas selected on the map.
               </div>
-              <div className={styles.gridElement}>
+              <div className={`${styles.gridElement} ${styles.moreInfo}`}>
                 <h3>More Information:</h3>
-                <p>
-                  Lorem, ipsum dolor sit amet consectetur adipisicing elit. Fuga
-                  quidem est dolore voluptatibus, impedit praesentium placeat,
-                  beatae tempore eveniet ad perspiciatis? Ex dolor veniam
-                  laudantium facilis perspiciatis sint accusamus delectus.
-                  Lorem, ipsum dolor sit amet consectetur adipisicing elit.
-                  Animi dolores odit excepturi omnis maiores, assumenda minus
-                  vero ipsam voluptas perferendis obcaecati sequi ab quae atque
-                  sint quo iusto qui consequatur?
-                </p>
+                <p>{moreInformation}</p>
               </div>
             </div>
           </div>
@@ -141,11 +144,12 @@ const PDF = ({ user }) => {
               <span>Data Analysis Report</span>
               <span>ORBIS by ASTROSAT</span>
             </div>
-            <h2>ORBIS LOGO</h2>
+            {/* jsPDF cannot render SVG components, hence the PNG image */}
+            <img className={styles.logo} src={OrbisLogo} alt="Orbis logo" />
             <div className={styles.userDetails}>
               {user?.name && <span>Report run by: {user.name}</span>}
-              <span>user name: {user?.email}</span>
-              <span>Date of the report: {creationDate}</span>
+              <span>User Name: {user?.email}</span>
+              <span>Date of the Report: {creationDate}</span>
             </div>
           </footer>
         </div>
