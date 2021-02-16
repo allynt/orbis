@@ -74,7 +74,7 @@ const configuration = ({
    * @returns {number}
    */
   const getElevation = d => {
-    if (!anySelected || (anySelected && isSelected(d)))
+    if (extrudedMode && (!anySelected || (anySelected && isSelected(d))))
       return d.properties[selectedProperty.name];
     return 0;
   };
