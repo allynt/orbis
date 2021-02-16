@@ -100,20 +100,21 @@ export const CrowdlessSidebarComponent = ({
                 Array(10)
                   .fill(undefined)
                   .map((_, i) => <ResultsListItem key={i} isLoading />)}
-              {results?.length &&
-                results.map((result, i) => (
-                  <ResultsListItem
-                    key={result.properties.placeId}
-                    result={result}
-                    selected={
-                      selectedResult === undefined ||
-                      result.properties.placeId ===
-                        selectedResult?.properties?.placeId
-                    }
-                    onClick={onResultClick}
-                    divider={i + 1 !== results.length}
-                  />
-                ))}
+              {results?.length
+                ? results.map((result, i) => (
+                    <ResultsListItem
+                      key={result.properties.placeId}
+                      result={result}
+                      selected={
+                        selectedResult === undefined ||
+                        result.properties.placeId ===
+                          selectedResult?.properties?.placeId
+                      }
+                      onClick={onResultClick}
+                      divider={i + 1 !== results.length}
+                    />
+                  ))
+                : null}
             </List>
           )}
         </Grid>
