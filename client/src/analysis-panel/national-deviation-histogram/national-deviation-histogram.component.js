@@ -16,8 +16,8 @@ const useStyles = makeStyles(theme => ({
   italic: {
     fontStyle: 'italic',
   },
-  data: {
-    marginTop: theme.spacing(1),
+  select: {
+    padding: theme.spacing(1),
   },
 }));
 
@@ -61,10 +61,10 @@ export const NationalDeviationHistogram = ({
             line={areaValue}
           />
         ) : null}
-        <Grid className={styles.data} container spacing={1}>
+        <Grid container spacing={1} alignItems="center">
           {clickedFeatures?.length && (
             <>
-              <Grid item xs={9}>
+              <Grid item>
                 <Typography
                   className={styles.italic}
                   variant="h4"
@@ -75,6 +75,7 @@ export const NationalDeviationHistogram = ({
                   selected area{clickedFeatures?.length > 1 ? 's' : ''}:
                 </Typography>
               </Grid>
+
               <Grid item>
                 <Typography className={styles.italic} color="primary">
                   {areaValue}
@@ -84,18 +85,18 @@ export const NationalDeviationHistogram = ({
           )}
           {!!selectedProperty?.aggregates && (
             <>
-              <Grid item xs={9}>
-                <Typography variant="h4" component="p">
-                  {aggregationLabel} of all areas in {selectedAggregateArea}:
-                </Typography>
-              </Grid>
               <Grid item>
-                <Typography>
-                  {selectedProperty?.aggregates?.[selectedAggregateArea]}
+                <Typography variant="h4" component="p">
+                  {aggregationLabel} of all areas in
                 </Typography>
               </Grid>
-              <Grid item xs={12}>
+
+              <Grid item>
                 <Select
+                  classes={{
+                    select: styles.select,
+                  }}
+                  fullWidth={false}
                   inputProps={{ 'aria-label': 'Aggregation Area' }}
                   value={selectedAggregateArea}
                   onChange={e => setSelectedAggregateArea(e.target.value)}
@@ -106,6 +107,16 @@ export const NationalDeviationHistogram = ({
                     </MenuItem>
                   ))}
                 </Select>
+              </Grid>
+
+              <Grid item>
+                <Typography>:</Typography>
+              </Grid>
+
+              <Grid item>
+                <Typography>
+                  {selectedProperty?.aggregates?.[selectedAggregateArea]}
+                </Typography>
               </Grid>
             </>
           )}
