@@ -16,8 +16,8 @@ const useStyles = makeStyles(theme => ({
   italic: {
     fontStyle: 'italic',
   },
-  data: {
-    marginTop: theme.spacing(1),
+  select: {
+    padding: theme.spacing(1),
   },
 }));
 
@@ -53,30 +53,18 @@ export const NationalDeviationHistogram = ({
             domain={[selectedProperty?.min, selectedProperty?.max]}
             clip={[selectedProperty?.clip_min, selectedProperty?.clip_max]}
             labelX={selectedProperty?.label}
-            labelY="Number of Areas"
+            reversed={
+              selectedProperty?.application?.orbis?.display?.colormap_reversed
+            }
+            labelY="Number of Areas in GB"
             data={data}
             line={areaValue}
           />
         ) : null}
-        <Grid className={styles.data} container spacing={1}>
-          {!!selectedProperty?.aggregates && (
-            <Grid item xs={12}>
-              <Select
-                inputProps={{ 'aria-label': 'Aggregation Area' }}
-                value={selectedAggregateArea}
-                onChange={e => setSelectedAggregateArea(e.target.value)}
-              >
-                {Object.keys(selectedProperty.aggregates).map(area => (
-                  <MenuItem key={area} value={area}>
-                    {area}
-                  </MenuItem>
-                ))}
-              </Select>
-            </Grid>
-          )}
+        <Grid container spacing={1} alignItems="center">
           {clickedFeatures?.length && (
             <>
-              <Grid item xs={9}>
+              <Grid item>
                 <Typography
                   className={styles.italic}
                   variant="h4"
@@ -87,6 +75,7 @@ export const NationalDeviationHistogram = ({
                   selected area{clickedFeatures?.length > 1 ? 's' : ''}:
                 </Typography>
               </Grid>
+
               <Grid item>
                 <Typography className={styles.italic} color="primary">
                   {areaValue}
@@ -96,11 +85,34 @@ export const NationalDeviationHistogram = ({
           )}
           {!!selectedProperty?.aggregates && (
             <>
-              <Grid item xs={9}>
+              <Grid item>
                 <Typography variant="h4" component="p">
-                  {aggregationLabel} of all areas in {selectedAggregateArea}:
+                  {aggregationLabel} of all areas in
                 </Typography>
               </Grid>
+
+              <Grid item>
+                <Select
+                  classes={{
+                    select: styles.select,
+                  }}
+                  fullWidth={false}
+                  inputProps={{ 'aria-label': 'Aggregation Area' }}
+                  value={selectedAggregateArea}
+                  onChange={e => setSelectedAggregateArea(e.target.value)}
+                >
+                  {Object.keys(selectedProperty.aggregates).map(area => (
+                    <MenuItem key={area} value={area}>
+                      {area}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </Grid>
+
+              <Grid item>
+                <Typography>:</Typography>
+              </Grid>
+
               <Grid item>
                 <Typography>
                   {selectedProperty?.aggregates?.[selectedAggregateArea]}
