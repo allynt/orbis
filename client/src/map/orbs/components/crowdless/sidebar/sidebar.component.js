@@ -39,10 +39,10 @@ const useStyles = makeStyles(theme => ({
  *   onFindClick: () => void
  *   pages?: number
  *   currentPage?: number
- *   onPageClick: (page: string) => void
- *   onRadioChange: () => void
+ *   onPageClick: (page: number) => void
  *   onResultClick?: (result: CrowdlessFeature) => void
  *   selectedResult: CrowdlessFeature
+ *   onRadioChange: () => void
  *   visible?: boolean
  * }} props
  */
@@ -53,9 +53,9 @@ export const CrowdlessSidebarComponent = ({
   pages,
   currentPage,
   onPageClick,
-  onRadioChange,
   onResultClick,
   selectedResult,
+  onRadioChange,
   visible,
 }) => {
   const styles = useStyles();
@@ -76,7 +76,7 @@ export const CrowdlessSidebarComponent = ({
         </Grid>
       </Grid>
       <Fade in={visible} unmountOnExit>
-        <Grid container spacing={2}>
+        <Grid container spacing={2} alignItems="center">
           <Grid item xs={12} component={Typography}>
             Please zoom in to the desired area or add area in the search box{' '}
             <MagnifierIcon color="primary" fontSize="inherit" /> at the top
@@ -96,7 +96,7 @@ export const CrowdlessSidebarComponent = ({
               )}
             </Button>
           </Grid>
-          {((isLoading && !results) || results?.length) && (
+          {(isLoading && !results) || results?.length ? (
             <>
               <Grid item xs={12}>
                 <List
@@ -129,8 +129,10 @@ export const CrowdlessSidebarComponent = ({
                 </List>
               </Grid>
               {pages > 1 ? (
-                <Grid item xs={12}>
+                <Grid item xs={12} container justify="center">
                   <Pagination
+                    hideNextButton
+                    hidePrevButton
                     shape="rounded"
                     color="primary"
                     page={currentPage}
@@ -140,7 +142,7 @@ export const CrowdlessSidebarComponent = ({
                 </Grid>
               ) : null}
             </>
-          )}
+          ) : null}
         </Grid>
       </Fade>
     </div>

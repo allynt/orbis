@@ -18,12 +18,12 @@ type CrowdlessFeature = {
 
 type CrowdlessResponseMetadata = {
   nPages?: number;
-  radius: number;
+  radius: string;
   types: string[];
   timestamp: string;
   center: {
-    latitude: number;
-    longitude: number;
+    latitude: string;
+    longitude: string;
   };
 };
 
