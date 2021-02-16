@@ -55,7 +55,7 @@ export const BarChart = ({
       {isRealValue(line) ? (
         <VictoryLine
           data={[
-            { x: line, y: Math.min(...yValues) },
+            { x: line, y: 0 },
             { x: line, y: Math.max(...yValues) },
           ]}
         />
