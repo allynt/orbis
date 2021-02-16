@@ -6,6 +6,7 @@ import {
   InfoIcon,
   makeStyles,
   Tooltip,
+  Typography,
 } from '@astrosat/astrosat-ui';
 import clsx from 'clsx';
 
@@ -55,7 +56,13 @@ export const InfoButtonTooltip = ({
         disableFocusListener
         disableTouchListener
         open={isInfoVisible}
-        title={tooltipContent}
+        title={
+          typeof tooltipContent === 'string' ? (
+            <Typography>{tooltipContent}</Typography>
+          ) : (
+            tooltipContent
+          )
+        }
       >
         <IconButton
           color="inherit"
