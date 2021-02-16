@@ -53,27 +53,12 @@ export const NationalDeviationHistogram = ({
             domain={[selectedProperty?.min, selectedProperty?.max]}
             clip={[selectedProperty?.clip_min, selectedProperty?.clip_max]}
             labelX={selectedProperty?.label}
-            labelY="Number of Areas"
+            labelY="Number of Areas in GB"
             data={data}
             line={areaValue}
           />
         ) : null}
         <Grid className={styles.data} container spacing={1}>
-          {!!selectedProperty?.aggregates && (
-            <Grid item xs={12}>
-              <Select
-                inputProps={{ 'aria-label': 'Aggregation Area' }}
-                value={selectedAggregateArea}
-                onChange={e => setSelectedAggregateArea(e.target.value)}
-              >
-                {Object.keys(selectedProperty.aggregates).map(area => (
-                  <MenuItem key={area} value={area}>
-                    {area}
-                  </MenuItem>
-                ))}
-              </Select>
-            </Grid>
-          )}
           {clickedFeatures?.length && (
             <>
               <Grid item xs={9}>
@@ -105,6 +90,19 @@ export const NationalDeviationHistogram = ({
                 <Typography>
                   {selectedProperty?.aggregates?.[selectedAggregateArea]}
                 </Typography>
+              </Grid>
+              <Grid item xs={12}>
+                <Select
+                  inputProps={{ 'aria-label': 'Aggregation Area' }}
+                  value={selectedAggregateArea}
+                  onChange={e => setSelectedAggregateArea(e.target.value)}
+                >
+                  {Object.keys(selectedProperty.aggregates).map(area => (
+                    <MenuItem key={area} value={area}>
+                      {area}
+                    </MenuItem>
+                  ))}
+                </Select>
               </Grid>
             </>
           )}

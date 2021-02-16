@@ -72,7 +72,7 @@ export const useChartTheme = () => {
           stroke: 'transparent',
         },
         tickLabels: assign({}, baseLabelStyles, {
-          fill: astrosatUiTheme.palette.text.primary,
+          fill: fade(astrosatUiTheme.palette.text.primary, 0.75),
         }),
       },
     },
