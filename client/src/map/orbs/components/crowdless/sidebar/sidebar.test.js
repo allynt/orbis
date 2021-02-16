@@ -62,8 +62,18 @@ describe('<CrowdlessSidebarComponent />', () => {
   });
 
   it("Shows a skeleton results list if loading and there aren't already results", () => {
-    const { getAllByRole } = renderComponent({ isLoading: true });
+    const { getAllByRole } = renderComponent({
+      isLoading: true,
+      results: null,
+    });
     expect(getAllByRole('progressbar').length).toBeGreaterThanOrEqual(1);
+  });
+
+  it("Doesn't show anything if not loading, no results", () => {
+    const { queryByText } = renderComponent({
+      results: null,
+    });
+    expect(queryByText('Places close to you')).not.toBeInTheDocument();
   });
 
   it('calls onRadioChange when the radio is clicked', () => {
