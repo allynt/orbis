@@ -10,6 +10,7 @@ const useStyles = makeStyles(theme => ({
     gridTemplateColumns: 'max-content 1fr',
     columnGap: theme.spacing(1),
     rowGap: theme.spacing(2),
+    paddingBottom: theme.spacing(2),
   },
   details: {
     gridColumn: '1 / -1',
