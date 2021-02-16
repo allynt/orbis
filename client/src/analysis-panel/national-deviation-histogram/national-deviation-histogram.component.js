@@ -53,6 +53,9 @@ export const NationalDeviationHistogram = ({
             domain={[selectedProperty?.min, selectedProperty?.max]}
             clip={[selectedProperty?.clip_min, selectedProperty?.clip_max]}
             labelX={selectedProperty?.label}
+            reversed={
+              selectedProperty?.application?.orbis?.display?.colormap_reversed
+            }
             labelY="Number of Areas in GB"
             data={data}
             line={areaValue}

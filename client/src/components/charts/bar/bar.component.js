@@ -13,6 +13,7 @@ import { useChartTheme } from '../useChartTheme';
  *   labelX?: string
  *   labelY?: string
  *   line?: number
+ *   reversed?: boolean
  * }} props
  */
 export const BarChart = ({
@@ -23,12 +24,17 @@ export const BarChart = ({
   labelX,
   labelY,
   line,
+  reversed = false,
 }) => {
   const orbisChartTheme = useChartTheme();
-  const colorScale = new ColorScale({ color, domain, clip });
+  const colorScale = new ColorScale({ color, domain, clip, reversed });
   const yValues = data?.map(d => d.y);
   return (
-    <VictoryChart theme={orbisChartTheme} domain={{ x: domain.map(Number) }}>
+    <VictoryChart
+      theme={orbisChartTheme}
+      domain={{ x: domain.map(Number) }}
+      domainPadding={{ x: 20 }}
+    >
       <VictoryAxis
         fixLabelOverlap
         label={labelX}
