@@ -17,6 +17,7 @@ type CrowdlessFeature = {
 };
 
 type CrowdlessResponseMetadata = {
+  nPages?: number;
   radius: number;
   types: string[];
   timestamp: string;
