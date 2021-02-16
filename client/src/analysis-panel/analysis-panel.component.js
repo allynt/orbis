@@ -45,7 +45,7 @@ const useStyles = makeStyles(theme => ({
     fontStyle: 'italic',
   },
   content: {
-    height: `calc(100vh - ${theme.typography.pxToRem(80)})`,
+    maxHeight: `calc(100vh - ${theme.typography.pxToRem(55)})`,
     overflowX: 'hidden',
     overflowY: 'auto',
   },

@@ -19,7 +19,7 @@ const colors = [
 const baseProps = {
   width: 500,
   height: 360,
-  padding: { left: 80, bottom: 60, top: 10, right: 20 },
+  padding: { left: 120, bottom: 100, top: 10, right: 40 },
   colorScale: colors,
   animate: true,
 };
@@ -36,16 +36,17 @@ export const useChartTheme = () => {
 
   const baseLabelStyles = {
     fontFamily: astrosatUiTheme.typography.fontFamily,
-    fontSize: astrosatUiTheme.typography.fontSize,
+    fontSize: 24,
     letterSpacing: 'normal',
     padding: 10,
-    fill: astrosatUiTheme.palette.primary.main,
+    fill: astrosatUiTheme.palette.text.primary,
     stroke: 'transparent',
   };
 
   const centeredLabelStyles = assign({ textAnchor: 'middle' }, baseLabelStyles);
 
   return {
+    colors,
     axis: {
       style: {
         axis: {
@@ -70,8 +71,8 @@ export const useChartTheme = () => {
           size: 1,
           stroke: 'transparent',
         },
-        tickLabels: assign(baseLabelStyles, {
-          fill: astrosatUiTheme.palette.text.primary,
+        tickLabels: assign({}, baseLabelStyles, {
+          fill: fade(astrosatUiTheme.palette.text.primary, 0.75),
         }),
       },
     },
@@ -125,24 +126,26 @@ export const useChartTheme = () => {
       cornerRadius: astrosatUiTheme.shape.borderRadius,
       pointerLength: 10,
     },
-    pie: assign(
-      {
-        colorScale: colors,
-        style: {
-          data: {},
-          labels: {
-            fontWeight: astrosatUiTheme.typography.fontWeightBold,
-            fontFamily: astrosatUiTheme.typography.fontFamily,
-            fontSize: 24,
-            fill: ({ index }) =>
-              astrosatUiTheme.palette.getContrastText(
-                colors[index % colors.length],
-              ),
-          },
+    pie: assign({}, baseProps, {
+      animate: true,
+      width: 400,
+      height: 400,
+      padding: 0,
+      colorScale: colors,
+      style: {
+        data: {},
+        labels: {
+          textAnchor: 'middle',
+          fontWeight: astrosatUiTheme.typography.fontWeightRegular,
+          fontFamily: astrosatUiTheme.typography.fontFamily,
+          fontSize: 20,
+          fill: ({ index }) =>
+            astrosatUiTheme.palette.getContrastText(
+              colors[index % colors.length],
+            ),
         },
       },
-      baseProps,
-    ),
+    }),
     legend: {
       ...baseProps,
       height: 460,
