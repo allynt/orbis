@@ -22,6 +22,9 @@ const useStyles = makeStyles(theme => ({
       backgroundColor: theme.palette.primary.main,
     },
   },
+  content: {
+    fontWeight: 600,
+  },
 }));
 
 /**
@@ -58,7 +61,7 @@ export const InfoButtonTooltip = ({
         open={isInfoVisible}
         title={
           typeof tooltipContent === 'string' ? (
-            <Typography>{tooltipContent}</Typography>
+            <Typography className={styles.content}>{tooltipContent}</Typography>
           ) : (
             tooltipContent
           )
