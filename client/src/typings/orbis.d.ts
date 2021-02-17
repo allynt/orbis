@@ -89,7 +89,7 @@ type OrbisApplicationMetadata = {
   sidebar_component?: ComponentDefinition;
 };
 
-type Property = {
+type BaseProperty = {
   application: {
     orbis?: {
       label?: string;
@@ -108,6 +108,8 @@ type Property = {
   property_group?: string;
   source?: string;
   type: PropertyType;
+  timeseries?: boolean;
+  timeseries_latest_timestamp?: string;
 };
 
 type ContinuousProperty = {
@@ -125,7 +127,7 @@ type ContinuousProperty = {
   min: number;
 
   units?: string;
-} & Property;
+} & BaseProperty;
 
 type DiscreteProperty = {
   categories: {
@@ -134,7 +136,9 @@ type DiscreteProperty = {
       description?: string;
     };
   };
-} & Property;
+} & BaseProperty;
+
+type Property = ContinuousProperty | DiscreteProperty;
 
 type SourceMetadata = {
   label: string;

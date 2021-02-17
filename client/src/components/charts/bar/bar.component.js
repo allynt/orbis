@@ -47,8 +47,8 @@ export const BarChart = ({
         fixLabelOverlap
         crossAxis={false}
         label={labelY}
-        offsetX={120}
-        style={{ axisLabel: { padding: 100 } }}
+        offsetX={150}
+        style={{ axisLabel: { padding: 120 } }}
       />
       <VictoryBar
         data={data}

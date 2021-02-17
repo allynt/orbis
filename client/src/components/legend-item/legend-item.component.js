@@ -25,7 +25,7 @@ export const LegendItem = ({ color, text, selected = false }) => {
   const styles = useStyles({ color });
   return (
     <Fade in>
-      <Grid item xs={6}>
+      <Grid item xs={6} container alignItems="center">
         <ListItem dense selected={selected}>
           <ListItemIcon className={styles.listItemIcon}>
             <span className={styles.colorCircle} />

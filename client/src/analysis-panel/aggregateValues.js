@@ -1,4 +1,4 @@
-import { sumBy } from 'lodash';
+import { find, sumBy } from 'lodash';
 import { DEFAULT_DECIMAL_PRECISION } from '../map/map.constants';
 
 /**
@@ -6,18 +6,24 @@ import { DEFAULT_DECIMAL_PRECISION } from '../map/map.constants';
  * using the aggregation method as specified by the property
  *
  * @param {any[]} clickedFeatures
- * @param {Partial<import('typings/orbis').Property>} selectedProperty
+ * @param {Partial<import('typings/orbis').ContinuousProperty>} selectedProperty
  */
 export const aggregateValues = (clickedFeatures, selectedProperty) => {
   if (!clickedFeatures || !selectedProperty) return 0;
 
   const sumValue = sumBy(
     clickedFeatures,
-    `object.properties.${selectedProperty?.name}`,
+    selectedProperty.timeseries
+      ? clickedFeature =>
+          find(clickedFeature.object.properties[selectedProperty.name], [
+            'timestamp',
+            selectedProperty.timeseries_latest_timestamp,
+          ]).value
+      : `object.properties.${selectedProperty.name}`,
   );
 
-  if (selectedProperty?.aggregation === 'mean') {
-    const meanValue = sumValue / clickedFeatures?.length;
+  if (selectedProperty.aggregation === 'mean') {
+    const meanValue = sumValue / clickedFeatures.length;
     return +meanValue.toFixed(
       selectedProperty.precision || DEFAULT_DECIMAL_PRECISION,
     );

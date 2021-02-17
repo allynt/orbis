@@ -1,4 +1,5 @@
 import { DataFilterExtension } from '@deck.gl/extensions';
+import { find, get } from 'lodash';
 import { getColorScaleForProperty } from 'utils/color';
 import { isRealValue } from 'utils/isRealValue';
 import { extrudedModeSelector, extrusionScaleSelector } from '../orbReducer';
@@ -25,6 +26,18 @@ export const COLOR_PRIMARY = [246, 190, 0, 255],
   // to avoid rounding problems. Ints are needed as filtering occurs
   // on the GPU
   FILTER_SCALING_VALUE = 1000;
+
+/**
+ * @param {import('typings/orbis').GeoJsonFeature} feature
+ * @param {import('typings/orbis').Property} selectedProperty
+ */
+export const getValue = (feature, selectedProperty) =>
+  selectedProperty.timeseries
+    ? find(feature.properties[selectedProperty.name], [
+        'timestamp',
+        selectedProperty.timeseries_latest_timestamp,
+      ]).value
+    : get(feature.properties, selectedProperty.name);
 
 /**
  * @param {{
@@ -74,8 +87,8 @@ const configuration = ({
    * @returns {number}
    */
   const getElevation = d => {
-    if (!anySelected || (anySelected && isSelected(d)))
-      return d.properties[selectedProperty.name];
+    if (extrudedMode && (!anySelected || (anySelected && isSelected(d))))
+      return getValue(d, selectedProperty);
     return 0;
   };
 
@@ -105,7 +118,7 @@ const configuration = ({
     if (!isRealValue(d.properties[selectedProperty.name]))
       return COLOR_TRANSPARENT;
     const color = /** @type {[number,number,number]} */ (colorScale &&
-      colorScale.get(d.properties[selectedProperty.name]));
+      colorScale.get(getValue(d, selectedProperty)));
     return [...color, getFillOpacity(d)];
   };
 
@@ -137,7 +150,7 @@ const configuration = ({
    * @param {AccessorFeature} d
    */
   const getFilterValue = d =>
-    d.properties[selectedProperty.name] * FILTER_SCALING_VALUE;
+    getValue(d, selectedProperty) * FILTER_SCALING_VALUE;
 
   const transitions = {
       getFillColor: TRANSITION_DURATION,
@@ -182,6 +195,7 @@ const configuration = ({
     id,
     data,
     authToken,
+    binary: true,
     visible: !!source && selectedProperty.source_id === id,
     minZoom: source?.metadata?.minZoom,
     maxZoom: source?.metadata?.maxZoom,

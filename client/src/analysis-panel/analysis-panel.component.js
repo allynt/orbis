@@ -12,7 +12,6 @@ import {
 } from '@astrosat/astrosat-ui';
 
 import clsx from 'clsx';
-import { isArray } from 'lodash';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { SidePanel } from 'components';
