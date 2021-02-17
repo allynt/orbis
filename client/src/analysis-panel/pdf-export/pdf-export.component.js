@@ -81,6 +81,9 @@ const useStyles = makeStyles(theme => {
       flexDirection: 'column',
       width: '100%',
     },
+    list: {
+      padding: '0',
+    },
     gridElement: {
       display: 'flex',
       flexDirection: 'column',
@@ -209,21 +212,23 @@ const PDF = ({ user }) => {
                 <Typography variant="h2">
                   Selected Areas of interest:
                 </Typography>
-                <List>
+                <List className={materialStyles.list}>
                   {areasOfInterest?.map(
                     ({ within_LAD_name, identifier }, i) => (
                       <ListItem>
-                        {i + 1}. {within_LAD_name || identifier}
+                        <Typography variant="h4">
+                          {i + 1}. {within_LAD_name || identifier}
+                        </Typography>
                       </ListItem>
                     ),
                   )}
                 </List>
               </Box>
               <Box className={materialStyles.gridElement}>
-                <Typography variant="h4">
+                <Typography variant="h3">
                   Total population: {populationTotal}
                 </Typography>
-                <Typography variant="h4">
+                <Typography variant="h3">
                   Total households: {householdTotal}
                 </Typography>
               </Box>
@@ -256,12 +261,17 @@ const PDF = ({ user }) => {
                 <Typography variant="h3">
                   {aggregation?.aggregationLabel} of all areas:
                 </Typography>
-                <List className={materialStyles.aggregationData}>
+                <List
+                  className={clsx(
+                    materialStyles.aggregationData,
+                    materialStyles.list,
+                  )}
+                >
                   {Object.entries(selectedProperty?.aggregates)?.map(
                     ([key, value]) => (
                       <ListItem className={materialStyles.regionValues}>
-                        <Typography variant="h3">{key}:</Typography>
-                        <Typography variant="h3">{value}</Typography>
+                        <Typography variant="h4">{key}:</Typography>
+                        <Typography variant="h4">{value}</Typography>
                       </ListItem>
                     ),
                   )}
