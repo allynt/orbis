@@ -20,10 +20,11 @@ locals {
   api_instance_hostname = (var.instance == "primary") ? "api" : "${var.instance}-api"
   app_instance_hostname = (var.instance == "primary") ? "app" : "${var.instance}-app"
 
-  app_instance_db_name  = (var.instance == "primary") ? data.kubernetes_secret.environment_secret.data["db_name"] : "${data.kubernetes_secret.environment_secret.data["db_name"]}-${var.instance}"
+  app_instance_db_name = (var.instance == "primary") ? data.kubernetes_secret.environment_secret.data["db_name"] : "${data.kubernetes_secret.environment_secret.data["db_name"]}-${var.instance}"
 
   api_name   = "${local.app}-api-${var.environment}-${var.instance}"
   app_name   = "${local.app}-app-${var.environment}-${var.instance}"
+  redis_name = "${local.app}-redis-${var.environment}-${var.instance}"
 
   api_domain = (var.environment == "production") ? "api.orbis.astrosat.net" : "${local.api_instance_hostname}.${var.environment}.orbis.astrosat.net"
   api_image  = "339570402237.dkr.ecr.eu-west-1.amazonaws.com/company/orbis/django:${var.tag}"
@@ -45,6 +46,13 @@ locals {
     role        = "client"
   }
 
+  redis_labels = {
+    app         = local.app
+    environment = var.environment
+    instance    = var.instance
+    role        = "redis"
+  }
+
   # Deployment secrets are created by the deployment (this module)
   app_deployment_secret_name = "${local.app}-${var.environment}-${var.instance}-deployment-secrets"
 
@@ -59,7 +67,7 @@ locals {
 
   # Other Services
   # staticdata URL is the external URL used by the frontend
-  staticdata_url             = (var.environment == "production") ? "https://staticdata.astrosat.net/" : "https://staticdata.${var.environment}.astrosat.net/"
+  staticdata_url = (var.environment == "production") ? "https://staticdata.astrosat.net/" : "https://staticdata.${var.environment}.astrosat.net/"
   # data directory URL is the internal URL used by the backend
   # this is the internal hostname for direct communication between services within the kubernetes cluster
   data_sources_directory_url = "http://data-sources-directory-${var.environment}.default.svc.cluster.local/"
