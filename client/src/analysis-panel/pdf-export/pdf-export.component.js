@@ -27,113 +27,110 @@ import {
 
 import OrbisLogo from './orbis-logo.png';
 
-const useStyles = makeStyles(theme => {
-  console.log('Theme: ', theme);
-  return {
-    container: {
-      display: 'flex',
-      flexDirection: 'column',
-      alignItems: 'center',
-      height: '100%',
-      backgroundColor: theme.palette.grey[100],
+const useStyles = makeStyles(theme => ({
+  container: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    height: '100%',
+    backgroundColor: theme.palette.grey[100],
+  },
+  button: {
+    position: 'absolute',
+    top: theme.typography.pxToRem(16),
+    left: theme.typography.pxToRem(496),
+    zIndex: 10,
+    width: 'fit-content',
+    padding: theme.typography.pxToRem(16),
+    fontSize: theme.typography.pxToRem(16),
+  },
+  pdf: {
+    position: 'relative',
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    color: theme.palette.common.white,
+    backgroundColor: theme.palette.background.default,
+    height: '100%',
+    width: '50%',
+  },
+  screenshot: {
+    backgroundSize: 'cover',
+    height: '50%',
+    width: '100%',
+  },
+  pdfForm: {
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+    width: '100%',
+    height: '50%',
+    padding: theme.typography.pxToRem(16),
+  },
+  detailsGrid: {
+    display: 'flex',
+    gap: theme.spacing(1),
+    height: '100%',
+    width: '100%',
+  },
+  gridColumn: {
+    display: 'flex',
+    flexDirection: 'column',
+    width: '100%',
+  },
+  list: {
+    padding: '0',
+  },
+  gridElement: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: theme.spacing(1),
+    padding: theme.typography.pxToRem(8),
+    width: '100%',
+    border: ' 3px dashed #4e78a0',
+    borderRadius: theme.typography.pxToRem(5),
+    '&:first-child': {
+      marginBottom: theme.spacing(1),
     },
-    button: {
-      position: 'absolute',
-      top: theme.typography.pxToRem(16),
-      left: theme.typography.pxToRem(496),
-      zIndex: 10,
-      width: 'fit-content',
-      padding: theme.typography.pxToRem(16),
-      fontSize: theme.typography.pxToRem(16),
+  },
+  centered: {
+    alignItems: 'center',
+  },
+  aggregationData: {
+    alignSelf: 'flex-start',
+    width: '50%',
+  },
+  bigValue: {
+    fontSize: theme.typography.pxToRem(48),
+    fontWeight: 'bold',
+  },
+  regionValues: {
+    justifyContent: 'space-between',
+  },
+  moreInfo: {
+    textAlign: 'justify',
+  },
+  footer: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  footerElement: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: theme.spacing(1),
+    width: '100%',
+    padding: theme.spacing(0, 4),
+    fontStyle: 'italic',
+    '&:first-child': {
+      alignItems: 'flex-end',
     },
-    pdf: {
-      position: 'relative',
-      display: 'flex',
-      flexDirection: 'column',
-      justifyContent: 'space-between',
-      alignItems: 'center',
-      color: theme.palette.common.white,
-      backgroundColor: theme.palette.background.default,
-      height: '100%',
-      width: '50%',
-    },
-    screenshot: {
-      backgroundSize: 'cover',
-      height: '50%',
-      width: '100%',
-    },
-    pdfForm: {
-      display: 'flex',
-      flexDirection: 'column',
-      justifyContent: 'space-between',
-      width: '100%',
-      height: '50%',
-      padding: theme.typography.pxToRem(16),
-    },
-    detailsGrid: {
-      display: 'flex',
-      gap: theme.spacing(1),
-      height: '100%',
-      width: '100%',
-    },
-    gridColumn: {
-      display: 'flex',
-      flexDirection: 'column',
-      width: '100%',
-    },
-    list: {
-      padding: '0',
-    },
-    gridElement: {
-      display: 'flex',
-      flexDirection: 'column',
-      gap: theme.spacing(1),
-      padding: theme.typography.pxToRem(8),
-      width: '100%',
-      border: ' 3px dashed #4e78a0',
-      borderRadius: theme.typography.pxToRem(5),
-      '&:first-child': {
-        marginBottom: theme.spacing(1),
-      },
-    },
-    centered: {
-      alignItems: 'center',
-    },
-    aggregationData: {
-      alignSelf: 'flex-start',
-      width: '50%',
-    },
-    bigValue: {
-      fontSize: theme.typography.pxToRem(48),
-      fontWeight: 'bold',
-    },
-    regionValues: {
-      justifyContent: 'space-between',
-    },
-    moreInfo: {
-      textAlign: 'justify',
-    },
-    footer: {
-      display: 'flex',
-      justifyContent: 'space-between',
-      alignItems: 'center',
-    },
-    footerElement: {
-      display: 'flex',
-      flexDirection: 'column',
-      gap: theme.spacing(1),
-      width: '100%',
-      padding: theme.spacing(0, 4),
-      fontStyle: 'italic',
-      '&:first-child': {
-        alignItems: 'flex-end',
-      },
-    },
-    logo: {
-      height: `${theme.typography.pxToRem(80)} !important`,
-    },
-  };
-});
+  },
+  logo: {
+    height: `${theme.typography.pxToRem(80)} !important`,
+  },
+}));
 
 const PDF = ({ user }) => {
   const materialStyles = useStyles();
@@ -148,6 +145,25 @@ const PDF = ({ user }) => {
     aggregation,
     moreInformation,
   } = useSelector(state => pdfDataSelector(state?.orbs));
+
+  // console.log(console.log('selectedProperty: ', selectedProperty));
+
+  // console.log(
+  //   'selectedProperty: ',
+  //   selectedProperty,
+  //   'screenshot: ',
+  //   screenshot,
+  //   'areasOfInterest: ',
+  //   areasOfInterest,
+  //   'populationTotal: ',
+  //   populationTotal,
+  //   'householdTotal: ',
+  //   householdTotal,
+  //   'aggregation: ',
+  //   aggregation,
+  //   'moreInformation: ',
+  //   moreInformation,
+  // );
 
   const creationDate = format(new Date(), ['MMMM do Y']);
 
@@ -200,10 +216,11 @@ const PDF = ({ user }) => {
       <Box className={materialStyles.pdf} id="pdf-form">
         {/* the below styling is inline because jsPDF does not recognise 'object-fit', yet the image displaying as 'cover' is required */}
         <div
+          className={materialStyles.screenshot}
           style={{
             backgroundImage: `url(${image})`,
           }}
-          className={materialStyles.screenshot}
+          data-testid="screenshot"
         />
         <Box className={materialStyles.pdfForm}>
           <Box className={materialStyles.detailsGrid}>
@@ -213,15 +230,13 @@ const PDF = ({ user }) => {
                   Selected Areas of interest:
                 </Typography>
                 <List className={materialStyles.list}>
-                  {areasOfInterest?.map(
-                    ({ within_LAD_name, identifier }, i) => (
-                      <ListItem>
-                        <Typography variant="h4">
-                          {i + 1}. {within_LAD_name || identifier}
-                        </Typography>
-                      </ListItem>
-                    ),
-                  )}
+                  {areasOfInterest?.map(({ within_LAD_name, identifier }) => (
+                    <ListItem>
+                      <Typography variant="h4">
+                        {within_LAD_name || identifier}
+                      </Typography>
+                    </ListItem>
+                  ))}
                 </List>
               </Box>
               <Box className={materialStyles.gridElement}>
@@ -305,7 +320,9 @@ const PDF = ({ user }) => {
               alt="Orbis logo"
             />
             <Box className={materialStyles.footerElement}>
-              {user?.name && <span>Report run by: {user.name}</span>}
+              {user?.name && (
+                <span data-testid="user-name">Report run by: {user.name}</span>
+              )}
               <Box component="span">User Name: {user?.email}</Box>
               <Box component="span">Date of the Report: {creationDate}</Box>
             </Box>
