@@ -27,99 +27,110 @@ import {
 
 import OrbisLogo from './orbis-logo.png';
 
-const useStyles = makeStyles(theme => ({
-  container: {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    height: '100%',
-    backgroundColor: '#f4f4f4',
-  },
-  button: {
-    position: 'absolute',
-    top: '1rem',
-    left: '31rem',
-    zIndex: 10,
-    width: 'fit-content',
-    padding: '1rem',
-    fontSize: '1rem',
-  },
-  pdf: {
-    position: 'relative',
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    color: '#fff',
-    backgroundColor: '#333f48',
-    height: '100%',
-    width: '50%',
-  },
-  screenshot: {
-    backgroundSize: 'cover',
-    height: '50%',
-    width: '100%',
-  },
-  pdfForm: {
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'space-between',
-    width: '100%',
-    height: '50%',
-    padding: '1rem',
-  },
-  detailsGrid: {
-    display: 'flex',
-    height: '100%',
-    width: '100%',
-  },
-  gridColumn: {
-    display: 'flex',
-    flexDirection: 'column',
-    width: '33.33%',
-  },
-  gridElement: {
-    display: 'flex',
-    flexDirection: 'column',
-    height: 'fit-content',
-    width: '98%',
-    border: ' 3px dashed #4e78a0',
-    borderRadius: '0.25px',
-    padding: '0.5rem',
-    marginBottom: '2%',
-  },
-  centered: {
-    alignItems: 'center',
-  },
-  aggregationData: {
-    alignSelf: 'flex-start',
-    width: '50%',
-  },
-  aggregateValue: {
-    display: 'flex',
-    justifyContent: 'space-between',
-  },
-  moreInfo: {
-    textAlign: 'justify',
-  },
-  footer: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-  footerElement: {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    gap: '0.5rem',
-    width: '100%',
-    padding: '0 1rem',
-    fontStyle: 'italic',
-  },
-  logo: {
-    height: '5rem !important',
-  },
-}));
+const useStyles = makeStyles(theme => {
+  console.log('Theme: ', theme);
+  return {
+    container: {
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      height: '100%',
+      backgroundColor: theme.palette.grey[100],
+    },
+    button: {
+      position: 'absolute',
+      top: theme.typography.pxToRem(16),
+      left: theme.typography.pxToRem(496),
+      zIndex: 10,
+      width: 'fit-content',
+      padding: theme.typography.pxToRem(16),
+      fontSize: theme.typography.pxToRem(16),
+    },
+    pdf: {
+      position: 'relative',
+      display: 'flex',
+      flexDirection: 'column',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      color: theme.palette.common.white,
+      backgroundColor: theme.palette.background.default,
+      height: '100%',
+      width: '50%',
+    },
+    screenshot: {
+      backgroundSize: 'cover',
+      height: '50%',
+      width: '100%',
+    },
+    pdfForm: {
+      display: 'flex',
+      flexDirection: 'column',
+      justifyContent: 'space-between',
+      width: '100%',
+      height: '50%',
+      padding: theme.typography.pxToRem(16),
+    },
+    detailsGrid: {
+      display: 'flex',
+      gap: theme.spacing(1),
+      height: '100%',
+      width: '100%',
+    },
+    gridColumn: {
+      display: 'flex',
+      flexDirection: 'column',
+      width: '100%',
+    },
+    gridElement: {
+      display: 'flex',
+      flexDirection: 'column',
+      gap: theme.spacing(1),
+      padding: theme.typography.pxToRem(8),
+      width: '100%',
+      border: ' 3px dashed #4e78a0',
+      borderRadius: theme.typography.pxToRem(5),
+      '&:first-child': {
+        marginBottom: theme.spacing(1),
+      },
+    },
+    centered: {
+      alignItems: 'center',
+    },
+    aggregationData: {
+      alignSelf: 'flex-start',
+      width: '50%',
+    },
+    bigValue: {
+      fontSize: theme.typography.pxToRem(48),
+      fontWeight: 'bold',
+    },
+    regionValues: {
+      justifyContent: 'space-between',
+    },
+    moreInfo: {
+      textAlign: 'justify',
+    },
+    footer: {
+      display: 'flex',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+    },
+    footerElement: {
+      display: 'flex',
+      flexDirection: 'column',
+      gap: theme.spacing(1),
+      width: '100%',
+      padding: theme.spacing(0, 4),
+      fontStyle: 'italic',
+      '&:first-child': {
+        alignItems: 'flex-end',
+      },
+    },
+    logo: {
+      height: `${theme.typography.pxToRem(80)} !important`,
+    },
+  };
+});
 
 const PDF = ({ user }) => {
   const materialStyles = useStyles();
@@ -195,7 +206,7 @@ const PDF = ({ user }) => {
           <Box className={materialStyles.detailsGrid}>
             <Box className={materialStyles.gridColumn}>
               <Box className={materialStyles.gridElement}>
-                <Typography variant="h3">
+                <Typography variant="h2">
                   Selected Areas of interest:
                 </Typography>
                 <List>
@@ -224,7 +235,7 @@ const PDF = ({ user }) => {
                   materialStyles.centered,
                 )}
               >
-                <Typography variant="h3">Selected Data Layer:</Typography>
+                <Typography variant="h2">Selected Data Layer:</Typography>
                 <Box component="span">
                   {selectedProperty?.application?.orbis?.label ||
                     selectedProperty?.label}
@@ -236,17 +247,19 @@ const PDF = ({ user }) => {
                   materialStyles.centered,
                 )}
               >
-                <Typography variant="h3">
+                <Typography variant="h2">
                   {aggregation?.aggregationLabel} of selected areas:
                 </Typography>
-                <Typography variant="h1">{aggregation?.areaValue}</Typography>
+                <Box component="span" className={materialStyles.bigValue}>
+                  {aggregation?.areaValue}
+                </Box>
                 <Typography variant="h3">
                   {aggregation?.aggregationLabel} of all areas:
                 </Typography>
                 <List className={materialStyles.aggregationData}>
                   {Object.entries(selectedProperty?.aggregates)?.map(
                     ([key, value]) => (
-                      <ListItem className={materialStyles.aggregateValue}>
+                      <ListItem className={materialStyles.regionValues}>
                         <Typography variant="h3">{key}:</Typography>
                         <Typography variant="h3">{value}</Typography>
                       </ListItem>

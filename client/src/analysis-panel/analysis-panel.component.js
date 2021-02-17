@@ -237,9 +237,9 @@ export const AnalysisPanel = ({ history }) => {
         details={selectedProperty?.details}
         source={selectedProperty?.source}
       />
-      <div style={{ textAlign: 'center' }}>
+      <ButtonBase>
         <Button onClick={handleExportClick}>Export PDF Report</Button>
-      </div>
+      </ButtonBase>
     </SidePanel>
   );
 };

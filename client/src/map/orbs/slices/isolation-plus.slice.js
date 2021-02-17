@@ -71,7 +71,6 @@ const isolationPlusSlice = createSlice({
       state.filterRange = payload;
     },
     setPdfData: (state, { payload }) => {
-      console.log('payload: ', payload);
       state.pdfData = payload;
     },
   },
