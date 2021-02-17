@@ -3,6 +3,7 @@ import { SidePanelSection } from 'components';
 import { useChartTheme } from 'components/charts/useChartTheme';
 import { format } from 'date-fns';
 import { get } from 'lodash';
+import { DEFAULT_DECIMAL_PRECISION } from 'map/map.constants';
 import * as React from 'react';
 import {
   VictoryAxis,
@@ -39,20 +40,32 @@ export const PropertyTimeSeriesChart = ({
   return (
     <SidePanelSection title="Time Series" defaultExpanded info={info}>
       {!!clickedFeatures ? (
-        <VictoryChart theme={chartTheme} domainPadding={10}>
+        <VictoryChart
+          theme={chartTheme}
+          padding={{ top: 10, right: 10, bottom: 100, left: 100 }}
+          domainPadding={10}
+        >
           <VictoryAxis
             fixLabelOverlap
-            tickLabelComponent={<VictoryLabel angle={-90} dx={-25} />}
+            tickLabelComponent={<VictoryLabel angle={-90} dx={-30} />}
             tickFormat={timestamp =>
               format(new Date(timestamp), timestampFormat)
             }
           />
-          <VictoryAxis dependentAxis />
+          <VictoryAxis
+            dependentAxis
+            tickFormat={v =>
+              v.toFixed(selectedProperty.precision ?? DEFAULT_DECIMAL_PRECISION)
+            }
+          />
           <VictoryLine {...sharedProps} />
           <VictoryScatter
             {...sharedProps}
             labelComponent={<VictoryTooltip />}
-            labels={({ datum }) => datum.value}
+            labels={({ datum }) => [
+              format(new Date(datum.timestamp), timestampFormat),
+              datum.value,
+            ]}
             size={5}
           />
         </VictoryChart>
