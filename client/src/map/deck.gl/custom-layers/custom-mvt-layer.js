@@ -2,6 +2,7 @@ import { load } from '@loaders.gl/core';
 import { MVTLoader } from '@loaders.gl/mvt';
 import { MVTLayer } from '@deck.gl/geo-layers';
 import { gunzipSync } from 'zlib';
+import parse from 'fast-json-parse';
 
 import { logError } from 'data-layers/data-layers.slice';
 
@@ -66,8 +67,25 @@ export class CustomMVTLayer extends MVTLayer {
 
       if (!response.ok) return null;
       const arrayBuffer = await response.arrayBuffer();
-      if (arrayBuffer)
-        return load(gunzipSync(Buffer.from(arrayBuffer)), MVTLoader);
+      if (arrayBuffer) {
+        let features = await load(
+          gunzipSync(Buffer.from(arrayBuffer)),
+          MVTLoader,
+        );
+        features = features.map(feature => {
+          return {
+            ...feature,
+            properties: Object.entries(feature.properties).reduce(
+              (prev, [key, value]) => ({
+                ...prev,
+                [key]: parse(value).value ?? value,
+              }),
+              {},
+            ),
+          };
+        });
+        return features;
+      }
     } catch (ex) {
       return this.props.dispatch(logError({ source_id: this.props.id }));
     }

@@ -1,4 +1,5 @@
 import { DataFilterExtension } from '@deck.gl/extensions';
+import { isArray } from 'lodash';
 import { getColorScaleForProperty } from 'utils/color';
 import { isRealValue } from 'utils/isRealValue';
 import { extrudedModeSelector, extrusionScaleSelector } from '../orbReducer';
@@ -102,10 +103,17 @@ const configuration = ({
    * @returns {[r:number, g:number, b:number, a?: number]}
    */
   const getFillColor = d => {
+    // console.log(d.properties[selectedProperty.name]);
     if (!isRealValue(d.properties[selectedProperty.name]))
       return COLOR_TRANSPARENT;
+    const value = isArray(d.properties[selectedProperty.name])
+      ? d.properties[selectedProperty.name].find(
+          ({ timestamp }) =>
+            selectedProperty.timeseries_latest_timestamp === timestamp,
+        ).value
+      : d.properties[selectedProperty.name];
     const color = /** @type {[number,number,number]} */ (colorScale &&
-      colorScale.get(d.properties[selectedProperty.name]));
+      colorScale.get(value));
     return [...color, getFillOpacity(d)];
   };
 
@@ -182,6 +190,7 @@ const configuration = ({
     id,
     data,
     authToken,
+    binary: true,
     visible: !!source && selectedProperty.source_id === id,
     minZoom: source?.metadata?.minZoom,
     maxZoom: source?.metadata?.maxZoom,
