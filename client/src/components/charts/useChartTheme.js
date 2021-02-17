@@ -19,7 +19,7 @@ const colors = [
 const baseProps = {
   width: 500,
   height: 360,
-  padding: { left: 120, bottom: 100, top: 10, right: 40 },
+  padding: { left: 150, bottom: 100, top: 10, right: 40 },
   colorScale: colors,
   animate: true,
 };
