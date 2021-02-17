@@ -159,17 +159,14 @@ export const useChartTheme = () => {
         },
       },
     },
-    scatter: assign(
-      {
-        style: {
-          data: {
-            fill: astrosatUiTheme.palette.common.white,
-            stroke: astrosatUiTheme.palette.primary.main,
-            strokeWidth: 2,
-          },
+    scatter: assign({}, baseProps, {
+      style: {
+        data: {
+          fill: astrosatUiTheme.palette.common.white,
+          stroke: astrosatUiTheme.palette.primary.main,
+          strokeWidth: 2,
         },
       },
-      baseProps,
-    ),
+    }),
   };
 };
