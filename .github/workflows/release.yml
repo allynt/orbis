@@ -28,7 +28,7 @@ jobs:
       - name: Build Release
         env:
           CI: true
-          GITHUB_TOKEN: ${{ secrets.ORBIS_GITHUB_RELEASE_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.ASTROSAT_GITHUB_RELEASE_TOKEN }}
           GITHUB_REGISTRY_TOKEN: ${{ secrets.ASTROSAT_GITHUB_REGISTRY_TOKEN }}
         working-directory: client
         run: |
