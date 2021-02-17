@@ -12,6 +12,7 @@ import configFn, {
   OPACITY_FLAT,
   OPACITY_EXTRUDED_SELECTED,
   OPACITY_EXTRUDED,
+  getValue,
 } from './isolationPlusLayerConfig';
 
 const setup = ({
@@ -61,12 +62,13 @@ describe('isolationPlusLayerConfig', () => {
 
   describe('getElevation', () => {
     it('returns the value of the selected property from the feature if no features are selected', () => {
-      const { getElevation } = setup();
+      const { getElevation } = setup({ extrudedMode: true });
       expect(getElevation(FEATURE)).toBe(123);
     });
 
     it("returns the value of the selected property from the feature if some are selected and it's one of them", () => {
       const { getElevation } = setup({
+        extrudedMode: true,
         clickedFeatures: [FEATURE],
       });
       expect(getElevation(FEATURE)).toBe(123);
@@ -244,6 +246,31 @@ describe('isolationPlusLayerConfig', () => {
     it("Is set to the property's min and max if filter range is not present", () => {
       const { filterRange } = setup();
       expect(filterRange).toEqual([0, 1000]);
+    });
+  });
+
+  describe('getValue', () => {
+    it('returns the value if the property is not timeseries', () => {
+      const result = getValue(
+        { properties: { test: 'banana' } },
+        { name: 'test', timeseries: false },
+      );
+      expect(result).toBe('banana');
+    });
+
+    it('returns the value of the latest timestamp if property is timeseries', () => {
+      const result = getValue(
+        {
+          properties: {
+            test: [
+              { timestamp: '123', value: 'hi' },
+              { timestamp: '456', value: 'nope' },
+            ],
+          },
+        },
+        { name: 'test', timeseries: true, timeseries_latest_timestamp: '123' },
+      );
+      expect(result).toBe('hi');
     });
   });
 });

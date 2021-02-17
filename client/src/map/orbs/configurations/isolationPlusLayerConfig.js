@@ -1,5 +1,5 @@
 import { DataFilterExtension } from '@deck.gl/extensions';
-import { find } from 'lodash';
+import { find, get } from 'lodash';
 import { getColorScaleForProperty } from 'utils/color';
 import { isRealValue } from 'utils/isRealValue';
 import { extrudedModeSelector, extrusionScaleSelector } from '../orbReducer';
@@ -31,13 +31,13 @@ export const COLOR_PRIMARY = [246, 190, 0, 255],
  * @param {import('typings/orbis').GeoJsonFeature} feature
  * @param {import('typings/orbis').Property} selectedProperty
  */
-const getValue = (feature, selectedProperty) =>
+export const getValue = (feature, selectedProperty) =>
   selectedProperty.timeseries
     ? find(feature.properties[selectedProperty.name], [
         'timestamp',
         selectedProperty.timeseries_latest_timestamp,
       ]).value
-    : feature.properties[selectedProperty.name];
+    : get(feature.properties, selectedProperty.name);
 
 /**
  * @param {{
