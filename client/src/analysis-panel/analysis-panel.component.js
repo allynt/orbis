@@ -47,6 +47,10 @@ const useStyles = makeStyles(theme => ({
     left: 0,
     position: 'absolute',
   },
+  pdfButton: {
+    right: 0,
+    position: 'absolute',
+  },
   strapline: {
     padding: theme.spacing(2),
     paddingBottom: 0,
@@ -193,6 +197,14 @@ export const AnalysisPanel = ({ history }) => {
           <Typography variant="h2" component="h1">
             Data Analysis
           </Typography>
+          <IconButton
+            aria-label="PDF export"
+            className={styles.pdfButton}
+            size="small"
+            onClick={handleExportClick}
+          >
+            PDF
+          </IconButton>
         </div>
       }
     >
@@ -225,7 +237,9 @@ export const AnalysisPanel = ({ history }) => {
         details={selectedProperty?.details}
         source={selectedProperty?.source}
       />
-      <Button onClick={handleExportClick}>Export as PDF</Button>
+      <div style={{ textAlign: 'center' }}>
+        <Button onClick={handleExportClick}>Export PDF Report</Button>
+      </div>
     </SidePanel>
   );
 };

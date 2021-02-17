@@ -7,7 +7,16 @@ import html2canvas from 'html2canvas';
 
 import { format } from 'date-fns';
 
-import { Button } from '@astrosat/astrosat-ui';
+import clsx from 'clsx';
+
+import {
+  Button,
+  Box,
+  List,
+  ListItem,
+  makeStyles,
+  Typography,
+} from '@astrosat/astrosat-ui';
 
 import { useSelector } from 'react-redux';
 
@@ -18,12 +27,104 @@ import {
 
 import OrbisLogo from './orbis-logo.png';
 
-import styles from './pdf-export.module.css';
+const useStyles = makeStyles(theme => ({
+  container: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    height: '100%',
+    backgroundColor: '#f4f4f4',
+  },
+  button: {
+    position: 'absolute',
+    top: '1rem',
+    left: '31rem',
+    zIndex: 10,
+    width: 'fit-content',
+    padding: '1rem',
+    fontSize: '1rem',
+  },
+  pdf: {
+    position: 'relative',
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    color: '#fff',
+    backgroundColor: '#333f48',
+    height: '100%',
+    width: '50%',
+  },
+  screenshot: {
+    backgroundSize: 'cover',
+    height: '50%',
+    width: '100%',
+  },
+  pdfForm: {
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+    width: '100%',
+    height: '50%',
+    padding: '1rem',
+  },
+  detailsGrid: {
+    display: 'flex',
+    height: '100%',
+    width: '100%',
+  },
+  gridColumn: {
+    display: 'flex',
+    flexDirection: 'column',
+    width: '33.33%',
+  },
+  gridElement: {
+    display: 'flex',
+    flexDirection: 'column',
+    height: 'fit-content',
+    width: '98%',
+    border: ' 3px dashed #4e78a0',
+    borderRadius: '0.25px',
+    padding: '0.5rem',
+    marginBottom: '2%',
+  },
+  centered: {
+    alignItems: 'center',
+  },
+  aggregationData: {
+    alignSelf: 'flex-start',
+    width: '50%',
+  },
+  aggregateValue: {
+    display: 'flex',
+    justifyContent: 'space-between',
+  },
+  moreInfo: {
+    textAlign: 'justify',
+  },
+  footer: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  footerElement: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    gap: '0.5rem',
+    width: '100%',
+    padding: '0 1rem',
+    fontStyle: 'italic',
+  },
+  logo: {
+    height: '5rem !important',
+  },
+}));
 
 const PDF = ({ user }) => {
-  const selectedProperty = useSelector(state => propertySelector(state?.orbs));
+  const materialStyles = useStyles();
 
-  const pdfData = useSelector(state => pdfDataSelector(state?.orbs));
+  const selectedProperty = useSelector(state => propertySelector(state?.orbs));
 
   const {
     screenshot,
@@ -32,7 +133,7 @@ const PDF = ({ user }) => {
     householdTotal,
     aggregation,
     moreInformation,
-  } = pdfData;
+  } = useSelector(state => pdfDataSelector(state?.orbs));
 
   const creationDate = format(new Date(), ['MMMM do Y']);
 
@@ -65,6 +166,7 @@ const PDF = ({ user }) => {
     });
   };
 
+  // process screenshot immediately
   (screenshot => {
     const reader = new FileReader();
     reader.onload = event => {
@@ -74,87 +176,120 @@ const PDF = ({ user }) => {
     if (screenshot) reader.readAsDataURL(screenshot);
   })(screenshot);
 
-  // prohibits direct linking to '.pdf-export'
+  // prohibits direct linking to '/pdf-export'
   if (!selectedProperty?.source_id) return <Redirect to="/" />;
   return (
-    <div className={styles.container}>
-      <Button className={styles.button} onClick={handleClick}>
-        Download as PDF
+    <Box className={materialStyles.container}>
+      <Button className={materialStyles.button} onClick={handleClick}>
+        Download PDF Report
       </Button>
-      <div className={styles.pdf} id="pdf-form">
-        {/* the below styling is inline because jsPDF does not recognise 'object-fit', yet the image displaying as 'cover' is essential */}
+      <Box className={materialStyles.pdf} id="pdf-form">
+        {/* the below styling is inline because jsPDF does not recognise 'object-fit', yet the image displaying as 'cover' is required */}
         <div
           style={{
             backgroundImage: `url(${image})`,
-            backgroundSize: 'cover',
-            height: '40%',
-            width: '100%',
           }}
+          className={materialStyles.screenshot}
         />
-        <div className={styles.pdfForm}>
-          <div className={styles.detailsGrid}>
-            <div className={styles.gridColumn}>
-              <div className={styles.gridElement}>
-                <h3>Selected Areas of interest:</h3>
-                <ul>
-                  {areasOfInterest?.map(({ within_LAD_name, identifier }) => (
-                    <li>{within_LAD_name || identifier}</li>
-                  ))}
-                </ul>
-              </div>
-              <div className={styles.gridElement}>
-                <h4>Total population: {populationTotal}</h4>
-                <h4>Total households: {householdTotal}</h4>
-              </div>
-            </div>
-            <div className={styles.gridColumn}>
-              <div className={`${styles.gridElement} ${styles.centered}`}>
-                <h3>Selected Data Layer:</h3>
-                <span>
+        <Box className={materialStyles.pdfForm}>
+          <Box className={materialStyles.detailsGrid}>
+            <Box className={materialStyles.gridColumn}>
+              <Box className={materialStyles.gridElement}>
+                <Typography variant="h3">
+                  Selected Areas of interest:
+                </Typography>
+                <List>
+                  {areasOfInterest?.map(
+                    ({ within_LAD_name, identifier }, i) => (
+                      <ListItem>
+                        {i + 1}. {within_LAD_name || identifier}
+                      </ListItem>
+                    ),
+                  )}
+                </List>
+              </Box>
+              <Box className={materialStyles.gridElement}>
+                <Typography variant="h4">
+                  Total population: {populationTotal}
+                </Typography>
+                <Typography variant="h4">
+                  Total households: {householdTotal}
+                </Typography>
+              </Box>
+            </Box>
+            <Box className={materialStyles.gridColumn}>
+              <Box
+                className={clsx(
+                  materialStyles.gridElement,
+                  materialStyles.centered,
+                )}
+              >
+                <Typography variant="h3">Selected Data Layer:</Typography>
+                <Box component="span">
                   {selectedProperty?.application?.orbis?.label ||
                     selectedProperty?.label}
-                </span>
-              </div>
-              <div className={`${styles.gridElement} ${styles.centered}`}>
-                <h3>{aggregation?.aggregationLabel} of selected areas:</h3>
-                <h1>{aggregation?.areaValue}</h1>
-              </div>
-              <div className={styles.gridElement}>
-                <h3>
-                  Breakdown of the data summed over all of the selected areas:
-                </h3>
-                <p>Value 1: asdf</p>
-                <p>Value 2: asdf</p>
-                <p>Value 3: asdf</p>
-                <p>Value 4: asdf</p>
-              </div>
-            </div>
-            <div className={styles.gridColumn}>
-              <div className={styles.gridElement}>
+                </Box>
+              </Box>
+              <Box
+                className={clsx(
+                  materialStyles.gridElement,
+                  materialStyles.centered,
+                )}
+              >
+                <Typography variant="h3">
+                  {aggregation?.aggregationLabel} of selected areas:
+                </Typography>
+                <Typography variant="h1">{aggregation?.areaValue}</Typography>
+                <Typography variant="h3">
+                  {aggregation?.aggregationLabel} of all areas:
+                </Typography>
+                <List className={materialStyles.aggregationData}>
+                  {Object.entries(selectedProperty?.aggregates)?.map(
+                    ([key, value]) => (
+                      <ListItem className={materialStyles.aggregateValue}>
+                        <Typography variant="h3">{key}:</Typography>
+                        <Typography variant="h3">{value}</Typography>
+                      </ListItem>
+                    ),
+                  )}
+                </List>
+              </Box>
+            </Box>
+            <Box className={materialStyles.gridColumn}>
+              <Box className={materialStyles.gridElement}>
                 The information relates to the areas selected on the map.
-              </div>
-              <div className={`${styles.gridElement} ${styles.moreInfo}`}>
-                <h3>More Information:</h3>
-                <p>{moreInformation}</p>
-              </div>
-            </div>
-          </div>
-          <footer className={styles.footer}>
-            <div className={styles.watermark}>
-              <span>Data Analysis Report</span>
-              <span>ORBIS by ASTROSAT</span>
-            </div>
+              </Box>
+              <Box
+                className={clsx(
+                  materialStyles.gridElement,
+                  materialStyles.moreInfo,
+                )}
+              >
+                <Typography variant="h3">More Information:</Typography>
+                <Typography component="p">{moreInformation}</Typography>
+              </Box>
+            </Box>
+          </Box>
+          <footer className={materialStyles.footer}>
+            <Box className={materialStyles.footerElement}>
+              <Box component="span">Data Analysis Report</Box>
+              <Box component="span">ORBIS by ASTROSAT</Box>
+            </Box>
             {/* jsPDF cannot render SVG components, hence the PNG image */}
-            <img className={styles.logo} src={OrbisLogo} alt="Orbis logo" />
-            <div className={styles.userDetails}>
+            <img
+              className={materialStyles.logo}
+              src={OrbisLogo}
+              alt="Orbis logo"
+            />
+            <Box className={materialStyles.footerElement}>
               {user?.name && <span>Report run by: {user.name}</span>}
-              <span>User Name: {user?.email}</span>
-              <span>Date of the Report: {creationDate}</span>
-            </div>
+              <Box component="span">User Name: {user?.email}</Box>
+              <Box component="span">Date of the Report: {creationDate}</Box>
+            </Box>
           </footer>
-        </div>
-      </div>
-    </div>
+        </Box>
+      </Box>
+    </Box>
   );
 };
 
