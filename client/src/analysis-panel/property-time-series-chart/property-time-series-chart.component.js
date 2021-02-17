@@ -42,12 +42,12 @@ export const PropertyTimeSeriesChart = ({
       {!!clickedFeatures ? (
         <VictoryChart
           theme={chartTheme}
-          padding={{ top: 10, right: 10, bottom: 100, left: 100 }}
+          padding={{ top: 10, right: 10, bottom: 110, left: 100 }}
           domainPadding={10}
         >
           <VictoryAxis
             fixLabelOverlap
-            tickLabelComponent={<VictoryLabel angle={-90} dx={-30} />}
+            tickLabelComponent={<VictoryLabel angle={-90} dx={-40} />}
             tickFormat={timestamp =>
               format(new Date(timestamp), timestampFormat)
             }
