@@ -65,8 +65,10 @@ const UpdateUserForm = ({ user, updateUser }) => {
           />
         </Form.Row>
       </Form>
-      <Box mt="auto" mx="auto">
-        <Button type="submit">Update Account</Button>
+      <Box mt="auto" mx="auto" width="100%">
+        <Button fullWidth type="submit">
+          Update Account
+        </Button>
       </Box>
     </Box>
   );

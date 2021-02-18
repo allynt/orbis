@@ -38,8 +38,8 @@ const Profile = () => {
       p={2}
     >
       <UpdateUserForm user={user} updateUser={updateUserProfile} />
-      <Box mt={2}>
-        <Button color="secondary" onClick={() => dispatch(logout())}>
+      <Box mt={2} width="100%">
+        <Button fullWidth color="secondary" onClick={() => dispatch(logout())}>
           Logout
         </Button>
       </Box>
