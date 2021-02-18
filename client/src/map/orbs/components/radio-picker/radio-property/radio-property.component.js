@@ -24,7 +24,8 @@ const useStyles = makeStyles(theme => ({
     rowGap: theme.spacing(2),
   },
   infoButton: {
-    placeSelf: 'center',
+    justifySelf: 'flex-end',
+    alignSelf: 'center',
   },
   categoryPath: {
     fontStyle: 'italic',
