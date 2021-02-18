@@ -10,7 +10,7 @@ const mockStore = configureMockStore();
 
 const LAYER = { source_id: 'test/layer/1', metadata: { label: 'Test Layer' } };
 
-const renderComponent = icon => {
+const renderComponent = ({ icon, info } = {}) => {
   const dispatch = jest.fn();
   const utils = render(
     <Provider store={mockStore()}>
@@ -18,6 +18,7 @@ const renderComponent = icon => {
         selectedLayer={LAYER}
         dispatch={dispatch}
         icon={icon}
+        info={info}
       />
     </Provider>,
   );
@@ -41,7 +42,12 @@ describe('<LayerVisibilityCheckbox />', () => {
   });
 
   it('Shows an icon if provided', () => {
-    const { getByRole } = renderComponent('PicnicSite');
+    const { getByRole } = renderComponent({ icon: 'PicnicSite' });
     expect(getByRole('img', { name: 'PicnicSite' })).toBeInTheDocument();
+  });
+
+  it('Shows an info icon if info prop is supplied', () => {
+    const { getByRole } = renderComponent({ info: 'hello' });
+    expect(getByRole('button', { name: 'Info' })).toBeInTheDocument();
   });
 });

@@ -44,3 +44,9 @@ Both.args = {
   ...Color.args,
   ...Icon.args,
 };
+
+export const Info = Template.bind({});
+Info.args = {
+  ...Both.args,
+  info: 'This is some test info',
+};
