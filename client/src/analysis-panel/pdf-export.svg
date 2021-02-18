@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg"
+  xmlns:xlink="http://www.w3.org/1999/xlink" width="15" height="20">
+  <defs>
+    <path id="a" d="M0 0h13.5v16.5H0z"/>
+  </defs>
+  <g fill="none" fill-rule="evenodd">
+    <g transform="translate(.2 .5)">
+      <mask id="b" fill="#fff">
+        <use xlink:href="#a"/>
+      </mask>
+      <path fill="#FFF" d="M13.5 14.44V4.09a.454.454 0 00-.12-.308L10.02.147A.46.46 0 009.682 0H1.069C.479 0 0 .476 0 1.06v13.38a1 1 0 001 1h11.5a1 1 0 001-1z" mask="url(#b)"/>
+      <path fill="#333F48" stroke="#FFF" stroke-width=".5" d="M9.88 0l3.62 3.802h-3.12a.5.5 0 01-.5-.5V0h0z" mask="url(#b)"/>
+    </g>
+    <path d="M9.179 16.094a.282.282 0 00-.26-.19h-.844v-3.096c0-.168-.126-.308-.281-.308H6.106c-.155 0-.281.139-.281.31v3.093h-.844a.284.284 0 00-.26.191.332.332 0 00.061.337l1.97 2.166c.109.12.287.12.397 0l1.969-2.167a.331.331 0 00.06-.337z" fill="#333F48" fill-rule="nonzero" stroke="#FFF" stroke-width=".5"/>
+    <text fill="#333F48" font-family="OpenSans-Semibold, Open Sans" font-size="5" font-weight="500" transform="translate(.2 .5)">
+      <tspan x="2.497" y="10.1">PDF</tspan>
+    </text>
+  </g>
+</svg>

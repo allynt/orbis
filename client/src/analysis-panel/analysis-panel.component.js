@@ -1,6 +1,7 @@
 import React, { useMemo } from 'react';
 
 import {
+  Box,
   Button,
   ButtonBase,
   CloseIcon,
@@ -11,6 +12,8 @@ import {
   TriangleIcon,
   Typography,
 } from '@astrosat/astrosat-ui';
+
+import { ReactComponent as PdfExportIcon } from './pdf-export.svg';
 
 import { sumBy } from 'lodash';
 
@@ -92,6 +95,15 @@ const useStyles = makeStyles(theme => ({
     visibility: 'hidden',
   },
   minimized: {},
+  buttonContainer: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: '2rem',
+  },
+  button: {
+    padding: '0.5rem 1rem',
+  },
 }));
 
 export const AnalysisPanel = ({ history }) => {
@@ -110,6 +122,8 @@ export const AnalysisPanel = ({ history }) => {
       }),
     [selectedProperty, sources],
   );
+
+  const MAX_PDF_AOI = 5;
 
   const analysisData = useMemo(() => {
     const areasOfInterest = clickedFeatures?.map(feat => {
@@ -150,6 +164,11 @@ export const AnalysisPanel = ({ history }) => {
   const { createScreenshot } = useMap();
 
   const handleExportClick = () => {
+    if (analysisData.areasOfInterest.length > MAX_PDF_AOI)
+      return alert(
+        `A maximum of ${MAX_PDF_AOI} areas can be selected for PDF export.`,
+      );
+
     createScreenshot(screenshot =>
       dispatch(
         setPdfData({
@@ -158,6 +177,7 @@ export const AnalysisPanel = ({ history }) => {
         }),
       ),
     );
+
     return history.push('/pdf-export');
   };
 
@@ -203,7 +223,7 @@ export const AnalysisPanel = ({ history }) => {
             size="small"
             onClick={handleExportClick}
           >
-            PDF
+            <PdfExportIcon />
           </IconButton>
         </div>
       }
@@ -237,9 +257,11 @@ export const AnalysisPanel = ({ history }) => {
         details={selectedProperty?.details}
         source={selectedProperty?.source}
       />
-      <ButtonBase>
-        <Button onClick={handleExportClick}>Export PDF Report</Button>
-      </ButtonBase>
+      <Box className={styles.buttonContainer}>
+        <Button className={styles.button} onClick={handleExportClick}>
+          Export PDF Report
+        </Button>
+      </Box>
     </SidePanel>
   );
 };
