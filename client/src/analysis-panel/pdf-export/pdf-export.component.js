@@ -146,25 +146,6 @@ const PDF = ({ user }) => {
     moreInformation,
   } = useSelector(state => pdfDataSelector(state?.orbs));
 
-  // console.log(console.log('selectedProperty: ', selectedProperty));
-
-  // console.log(
-  //   'selectedProperty: ',
-  //   selectedProperty,
-  //   'screenshot: ',
-  //   screenshot,
-  //   'areasOfInterest: ',
-  //   areasOfInterest,
-  //   'populationTotal: ',
-  //   populationTotal,
-  //   'householdTotal: ',
-  //   householdTotal,
-  //   'aggregation: ',
-  //   aggregation,
-  //   'moreInformation: ',
-  //   moreInformation,
-  // );
-
   const creationDate = format(new Date(), ['MMMM do Y']);
 
   const [image, setImage] = useState(undefined);

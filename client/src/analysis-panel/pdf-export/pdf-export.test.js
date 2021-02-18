@@ -6,8 +6,6 @@ import configureMockStore from 'redux-mock-store';
 import { createMemoryHistory } from 'history';
 import { Router } from 'react-router-dom';
 
-import userEvent from '@testing-library/user-event';
-
 import { format } from 'date-fns';
 
 import PDF from './pdf-export.component';
@@ -118,7 +116,7 @@ describe('PDF', () => {
     ).toBeInTheDocument();
   });
 
-  it('redirects to home screen if no property loaded top the map', () => {
+  it('redirects to home screen if no property loaded in state', () => {
     const { history } = renderComponent({ pdfData: {} });
 
     expect(history.location.pathname).toEqual('/');
@@ -157,6 +155,10 @@ describe('PDF', () => {
       getByText(
         `${state.pdfData.aggregation.aggregationLabel} of selected areas:`,
       ),
+    ).toBeInTheDocument();
+
+    expect(
+      getByText(`${state.pdfData.aggregation.areaValue}`),
     ).toBeInTheDocument();
   });
 
