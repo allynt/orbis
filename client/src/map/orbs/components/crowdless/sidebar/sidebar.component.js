@@ -26,10 +26,6 @@ const useStyles = makeStyles(theme => ({
     height: '100%',
     width: '100%',
   },
-  infoButton: {
-    backgroundColor: theme.palette.text.primary,
-    color: theme.palette.background.default,
-  },
 }));
 
 /**
@@ -68,11 +64,8 @@ export const CrowdlessSidebarComponent = ({
             control={<Radio onClick={onRadioChange} checked={visible} />}
           />
         </Grid>
-        <Grid item xs={1} container justify="center" alignItems="center">
-          <InfoButtonTooltip
-            iconButtonClassName={styles.infoButton}
-            tooltipContent={<Description />}
-          />
+        <Grid item xs={1}>
+          <InfoButtonTooltip tooltipContent={<Description />} />
         </Grid>
       </Grid>
       <Fade in={visible} unmountOnExit>
