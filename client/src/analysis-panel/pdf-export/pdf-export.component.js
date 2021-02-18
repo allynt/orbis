@@ -180,10 +180,7 @@ const PDF = ({ user }) => {
   // process screenshot immediately
   (screenshot => {
     const reader = new FileReader();
-    reader.onload = event => {
-      const result = event.target.result;
-      setImage(result);
-    };
+    reader.onload = event => setImage(event.target.result);
     if (screenshot) reader.readAsDataURL(screenshot);
   })(screenshot);
 
