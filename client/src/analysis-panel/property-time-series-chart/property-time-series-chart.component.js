@@ -62,10 +62,11 @@ export const PropertyTimeSeriesChart = ({
           <VictoryScatter
             {...sharedProps}
             labelComponent={<VictoryTooltip />}
-            labels={({ datum }) => [
-              format(new Date(datum.timestamp), timestampFormat),
-              datum.value,
-            ]}
+            labels={({ datum }) =>
+              `${format(new Date(datum.timestamp), timestampFormat)}: ${
+                datum.value
+              }`
+            }
             size={5}
           />
         </VictoryChart>
