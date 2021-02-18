@@ -1,3 +1,45 @@
+# [2.12.0](https://github.com/astrosat/orbis/compare/v2.11.0...v2.12.0) (2021-02-18)
+
+
+### Bug Fixes
+
+* **frontend:** Add a check for extruded mode before returning extrusion ([cb11f82](https://github.com/astrosat/orbis/commit/cb11f82f8f0f4237d8a9d1ed4d3a8ba63c46d4f2))
+* **frontend:** Add cross axis to show 0s ([7259f0a](https://github.com/astrosat/orbis/commit/7259f0aec8844233d66c9d34daca87b3320e394a))
+* **frontend:** Add JSON parsing to tile load ([37fa2eb](https://github.com/astrosat/orbis/commit/37fa2eb103abd042137c3a0f594343fe2cc879c1))
+* **frontend:** Add padding to more info to make it always visible ([05d7669](https://github.com/astrosat/orbis/commit/05d7669cd5b4c4a5d7973e28e975c45bb9725430))
+* **frontend:** Adjust analysis panel height ([8848f80](https://github.com/astrosat/orbis/commit/8848f8061a6b41c04797068c92d5dc6bd0130fd3))
+* **frontend:** Adjust time series chart padding ([6ccd581](https://github.com/astrosat/orbis/commit/6ccd581b4be7f76ae478ef986f81d08ad6132245))
+* **frontend:** Clean up pie charts ([ff1d782](https://github.com/astrosat/orbis/commit/ff1d782920bb618f0b2be9f4896653d0e6c2d098))
+* **frontend:** Data overflowing chart ([a534dd1](https://github.com/astrosat/orbis/commit/a534dd108231209e74ccc53f72a0f9c9a29a7609))
+* **frontend:** Get timeseries layer loading with 3d ([97a09b5](https://github.com/astrosat/orbis/commit/97a09b57402e7f66c0bc4067a87a0264c37e5691))
+* **frontend:** Improve histogram ([0c593e1](https://github.com/astrosat/orbis/commit/0c593e1885e2676dd42fbcec8ed75e29a887e39c))
+* **frontend:** Move aggregates select inline ([4b96e67](https://github.com/astrosat/orbis/commit/4b96e675975ea8c0cadac86aedffeb95a77cb7cc))
+* **frontend:** Normalise font weight in tooltip ([de29dc0](https://github.com/astrosat/orbis/commit/de29dc0ef3698cc43e566a7a3e0ee03c528cd633))
+* **frontend:** Normalise fontsize in tooltips ([d5bd76f](https://github.com/astrosat/orbis/commit/d5bd76f1e4194a1ddf89973325291862d0c30dd6))
+* **frontend:** Propagate reversed to histogram colormap ([98692d6](https://github.com/astrosat/orbis/commit/98692d6c73eb54b7bd072c40b98e7f029159c5dd))
+* **frontend:** Sort line on barchart floating ([c3362b1](https://github.com/astrosat/orbis/commit/c3362b11d9db29fcb0b74865a414fcc96580743e))
+* **frontend:** Tweak barchart spacing and sizes ([12054bf](https://github.com/astrosat/orbis/commit/12054bfe3dc49e170bf5452396e5c2e058fa5ad2))
+* **frontend:** Tweaks to timeseries chart ([74510e8](https://github.com/astrosat/orbis/commit/74510e851f8e30eecc13bba85e93b52099e2f778))
+* **frontend:** Update pie segment label size and weight ([55c81e5](https://github.com/astrosat/orbis/commit/55c81e5dcf7f9c5ce3d83489159376aedc72d0ae))
+* **infrastructure:** Add ability to manually trigger workflow ([508facc](https://github.com/astrosat/orbis/commit/508facc30f650255ddc061168b7448171ee8b903))
+* **infrastructure:** Allow triggering build workflows ([9fce28b](https://github.com/astrosat/orbis/commit/9fce28b08bfd4f936cc1877b15e282615cc70f38))
+* **infrastructure:** Fix name of env variable ([b580e50](https://github.com/astrosat/orbis/commit/b580e508b49cd22e20a622cf2edfd0669ae9662f))
+* **infrastructure:** Generate random password ([b3815ea](https://github.com/astrosat/orbis/commit/b3815ea72147d925ee9d68eecf55443b0e75fe0e))
+* **infrastructure:** Make names/labels in terraform clearer ([cdbff76](https://github.com/astrosat/orbis/commit/cdbff76a6ede53376ecf791b975c406e2fa4a1b0))
+* **infrastructure:** Make random password a secret ([306bd9f](https://github.com/astrosat/orbis/commit/306bd9f9fadc5d8ce6cf562e03d44c0140e0c4fc))
+* **infrastructure:** Pass redis server name to backend API ([fc87708](https://github.com/astrosat/orbis/commit/fc87708974b3e5fe5c02a21fa02ee247e1e90125))
+* **infrastructure:** Reduces CPU and MEM resources used ([f0c4073](https://github.com/astrosat/orbis/commit/f0c40737a9c76c0e44f3b91fdc97c9d0da0b63e2))
+* **infrastructure:** Remove setting cluster ip to none ([36f0358](https://github.com/astrosat/orbis/commit/36f03582ce8ca3770eb48df8565b51752613e627))
+* **infrastructure:** Remove unused setting ([6374b0c](https://github.com/astrosat/orbis/commit/6374b0c3e3de8de94e99db18d99de21cb8342aa8))
+* **infrastructure:** Run as non-root user ([1737b11](https://github.com/astrosat/orbis/commit/1737b117dd1f63e7f609583687a0d8026c72d27b))
+* **infrastructure:** Update settings for pod resources ([ec48846](https://github.com/astrosat/orbis/commit/ec48846560870ce55d81900a8ef0cee6a616678e))
+* **Infrastructure:** Use shared secret for token ([cb56ff7](https://github.com/astrosat/orbis/commit/cb56ff72cf262b2fdd76c504a92b85f7e5b093dc))
+
+
+### Features
+
+* **infrastructure:** Add Redis server ([f92fe07](https://github.com/astrosat/orbis/commit/f92fe07cf7f34908d2b0bec2becdd9bfba6dd07e))
+
 # [2.11.0](https://github.com/astrosat/orbis/compare/v2.10.1...v2.11.0) (2021-02-15)
 
 
