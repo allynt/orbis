@@ -5,11 +5,13 @@ import {
   FormControlLabel,
   makeStyles,
   iconMap,
+  Grid,
 } from '@astrosat/astrosat-ui';
 
 import { useSelector } from 'react-redux';
 
 import { layersVisibilitySelector, setVisibility } from '../../orbReducer.js';
+import { InfoButtonTooltip } from 'components/index.js';
 
 const useStyles = makeStyles(theme => ({
   root: { margin: 0, padding: theme.spacing(0, 2) },
@@ -32,12 +34,16 @@ const useStyles = makeStyles(theme => ({
     margin: theme.spacing(0, 1),
     flexShrink: 0,
   },
+  infoIcon: {
+    justifySelf: 'flex-end',
+  },
 }));
 
 /**
  *  @type {import('typings/orbis.js').SidebarComponent<{
  *   color?: string
  *   icon?: string
+ *   info?: string
  * }>}
  */
 export const LayerVisibilityCheckbox = ({
@@ -45,6 +51,7 @@ export const LayerVisibilityCheckbox = ({
   dispatch,
   color,
   icon,
+  info,
 }) => {
   const classes = useStyles({ color });
 
@@ -63,27 +70,39 @@ export const LayerVisibilityCheckbox = ({
   const Icon = icon ? iconMap[`${icon}Icon`] : null;
 
   return (
-    <FormControlLabel
-      id="label"
-      classes={{ root: classes.root, label: classes.label }}
-      label={
-        <>
-          {!!color || !!icon ? (
-            <div className={classes.icon} role="presentation">
-              {Icon && <Icon fontSize="small" titleAccess={icon} />}
-            </div>
-          ) : null}
-          {selectedLayer?.metadata.label}
-        </>
-      }
-      control={
-        <Checkbox
-          tabIndex={-1}
-          checked={isVisible}
-          inputProps={{ 'aria-labelledby': 'label' }}
-          onChange={handleChange}
+    <Grid container spacing={2} alignItems="center">
+      <Grid item xs>
+        <FormControlLabel
+          id="label"
+          classes={{ root: classes.root, label: classes.label }}
+          label={
+            <>
+              {!!color || !!icon ? (
+                <div className={classes.icon} role="presentation">
+                  {Icon && <Icon fontSize="small" titleAccess={icon} />}
+                </div>
+              ) : null}
+              {selectedLayer?.metadata.label}
+            </>
+          }
+          control={
+            <Checkbox
+              tabIndex={-1}
+              checked={isVisible}
+              inputProps={{ 'aria-labelledby': 'label' }}
+              onChange={handleChange}
+            />
+          }
         />
-      }
-    />
+      </Grid>
+      {!!info ? (
+        <Grid item xs={1}>
+          <InfoButtonTooltip
+            iconButtonClassName={classes.infoIcon}
+            tooltipContent={info}
+          />
+        </Grid>
+      ) : null}
+    </Grid>
   );
 };
