@@ -9,7 +9,12 @@ import {
   Slide,
 } from '@astrosat/astrosat-ui';
 
-import { FlyToInterpolator } from '@deck.gl/core';
+import {
+  AmbientLight,
+  _SunLight as SunLight,
+  FlyToInterpolator,
+  LightingEffect,
+} from '@deck.gl/core';
 import DeckGL from '@deck.gl/react';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import ReactMapGl, {
@@ -125,6 +130,21 @@ const useStyles = makeStyles(theme => ({
     transform: 'translateX(-50%)',
   },
 }));
+
+const ambientLight = new AmbientLight({
+  color: [255, 255, 255],
+  intensity: 1.0,
+});
+
+const dirLight = new SunLight({
+  timestamp: Date.UTC(2019, 7, 1, 10),
+  color: [255, 255, 255],
+  intensity: 1.0,
+  _shadow: true,
+});
+
+const lightingEffect = new LightingEffect({ ambientLight, dirLight });
+lightingEffect.shadowColor = [0, 0, 0, 0.5];
 
 const Map = () => {
   const { mapRef, deckRef, viewState, setViewState } = useMap();
@@ -247,6 +267,7 @@ const Map = () => {
           ref={deckRef}
           viewState={viewState}
           layers={layers}
+          effects={[lightingEffect]}
           ContextProvider={MapContext.Provider}
           glOptions={{
             preserveDrawingBuffer: true,
