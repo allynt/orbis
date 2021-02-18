@@ -289,7 +289,7 @@ const PDF = ({ user }) => {
               </Box>
             </Box>
           </Box>
-          <footer className={materialStyles.footer}>
+          <Box component="footer" className={materialStyles.footer}>
             <Box className={materialStyles.footerElement}>
               <Box component="span">Data Analysis Report</Box>
               <Box component="span">ORBIS by ASTROSAT</Box>
@@ -302,12 +302,14 @@ const PDF = ({ user }) => {
             />
             <Box className={materialStyles.footerElement}>
               {user?.name && (
-                <span data-testid="user-name">Report run by: {user.name}</span>
+                <Box component="span" data-testid="user-name">
+                  Report run by: {user.name}
+                </Box>
               )}
               <Box component="span">User Name: {user?.email}</Box>
               <Box component="span">Date of the Report: {creationDate}</Box>
             </Box>
-          </footer>
+          </Box>
         </Box>
       </Box>
     </Box>
