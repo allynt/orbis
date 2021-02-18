@@ -80,6 +80,9 @@ const crowdlessSlice = createSlice({
 
 export const { setSelectedResult, setVisibility } = crowdlessSlice.actions;
 
+/**
+ * @param {import('../orbReducer').OrbState} orbs
+ */
 const baseSelector = orbs => orbs[crowdlessSlice.name];
 
 export const isLoadingSelector = createSelector(

@@ -3,9 +3,9 @@
 
 
 "@astrosat/astrosat-ui@^2.0.0":
-  version "2.1.2"
-  resolved "https://npm.pkg.github.com/download/@astrosat/astrosat-ui/2.1.2/6f0c5aea396e95e0c5a3a9e7963d2d31ea022528455a573611581e28d193b758#752d6501344dedff65a188107121c92dc494f59b"
-  integrity sha512-WbtaHt5IDXHuV9KYLNOW4yYmmSzWK+ui9uJedzCoSR2o6vEcfn7I70Moje1gJ8L/Z0KqkWznarTIpzqSooslTQ==
+  version "2.2.0"
+  resolved "https://npm.pkg.github.com/download/@astrosat/astrosat-ui/2.2.0/bb614bfe8e8ff40847da359f19b609d3f7def9d73d6be5cf07cd1bb7d3f8c0ac#4a72ddaf939bb91bca01db011bdcde8c6aff473b"
+  integrity sha512-W/FisPFfndtCiQjFGvw8qUx/68m85QKTbVWpcJgHhgmymx0sOBh5gv0hLhEcvqffqPO/zvK1Qy9Kodv90uJO+w==
   dependencies:
     "@material-ui/core" "^4.11.0"
     "@material-ui/lab" "^4.0.0-alpha.56"
@@ -5937,9 +5937,9 @@
     "@types/react" "*"
 
 "@types/react@*":
-  version "17.0.1"
-  resolved "https://registry.yarnpkg.com/@types/react/-/react-17.0.1.tgz#eb1f1407dea8da3bc741879c1192aa703ab9975b"
-  integrity sha512-w8t9f53B2ei4jeOqf/gxtc2Sswnc3LBK5s0DyJcg5xd10tMHXts2N31cKjWfH9IC/JvEPa/YF1U4YeP1t4R6HQ==
+  version "17.0.2"
+  resolved "https://registry.yarnpkg.com/@types/react/-/react-17.0.2.tgz#3de24c4efef902dd9795a49c75f760cbe4f7a5a8"
+  integrity sha512-Xt40xQsrkdvjn1EyWe1Bc0dJLcil/9x2vAuW7ya+PuQip4UYUaXyhzWmAbwRsdMgwOFHpfp7/FFZebDU6Y8VHA==
   dependencies:
     "@types/prop-types" "*"
     csstype "^3.0.2"
@@ -9624,9 +9624,9 @@ cssstyle@^2.2.0:
     cssom "~0.3.6"
 
 csstype@^2.5.2:
-  version "2.6.14"
-  resolved "https://registry.yarnpkg.com/csstype/-/csstype-2.6.14.tgz#004822a4050345b55ad4dcc00be1d9cf2f4296de"
-  integrity sha512-2mSc+VEpGPblzAxyeR+vZhJKgYg0Og0nnRi7pmRXFYYxSfnOnW8A5wwQb4n4cE2nIOzqKOAzLCaEX6aBmNEv8A==
+  version "2.6.15"
+  resolved "https://registry.yarnpkg.com/csstype/-/csstype-2.6.15.tgz#655901663db1d652f10cb57ac6af5a05972aea1f"
+  integrity sha512-FNeiVKudquehtR3t9TRRnsHL+lJhuHF5Zn9dt01jpojlurLEPDhhEtUkWmAUJ7/fOLaLG4dCDEnUsR0N1rZSsg==
 
 csstype@^2.5.7:
   version "2.6.11"

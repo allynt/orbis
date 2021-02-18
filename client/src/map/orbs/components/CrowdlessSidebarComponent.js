@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useState } from 'react';
 
 import { FlyToInterpolator } from '@deck.gl/core';
 import { useSelector } from 'react-redux';
@@ -17,6 +17,20 @@ import {
 import { CrowdlessSidebarComponent } from './crowdless/sidebar/sidebar.component';
 
 /**
+ * @param {string} baseUrl
+ * @param {string} x
+ * @param {string} y
+ * @param {string} r
+ * @param {number} p
+ */
+const makeUrl = (baseUrl, x, y, r, p = 1) =>
+  baseUrl
+    .replace('{x}', x)
+    .replace('{y}', y)
+    .replace('{r}', r)
+    .replace('{p}', p.toString());
+
+/**
  * @param {{
  *   selectedLayer: Source
  *   dispatch: import('redux').Dispatch
@@ -24,6 +38,7 @@ import { CrowdlessSidebarComponent } from './crowdless/sidebar/sidebar.component
  */
 const ConnectedWrapper = ({ selectedLayer, dispatch }) => {
   const { viewState, setViewState } = useMap();
+  const [currentPage, setCurrentPage] = useState(1);
   const isLoading = useSelector(state => isLoadingSelector(state?.orbs));
   const visible = useSelector(state => visibilitySelector(state?.orbs));
   const results = useSelector(state => resultsSelector(state?.orbs));
@@ -32,18 +47,35 @@ const ConnectedWrapper = ({ selectedLayer, dispatch }) => {
   );
 
   const handleFindClick = () => {
+    setCurrentPage(1);
     dispatch(
       // @ts-ignore
       fetchResults({
         source: selectedLayer,
-        url: selectedLayer.metadata.url
-          .replace('{x}', viewState.latitude.toString())
-          .replace('{y}', viewState.longitude.toString())
-          .replace(
-            '{r}',
-            selectedLayer?.metadata?.application?.orbis?.sidebar_component
-              ?.props?.searchRadius,
-          ),
+        url: makeUrl(
+          selectedLayer.metadata.url,
+          viewState.latitude.toString(),
+          viewState.longitude.toString(),
+          selectedLayer?.metadata?.application?.orbis?.sidebar_component?.props
+            ?.searchRadius,
+        ),
+      }),
+    );
+  };
+
+  const handlePageClick = page => {
+    setCurrentPage(page);
+    dispatch(
+      // @ts-ignore
+      fetchResults({
+        source: selectedLayer,
+        url: makeUrl(
+          selectedLayer.metadata.url,
+          results.requestMetadata.center.latitude,
+          results.requestMetadata.center.longitude,
+          results.requestMetadata.radius,
+          page,
+        ),
       }),
     );
   };
@@ -69,6 +101,9 @@ const ConnectedWrapper = ({ selectedLayer, dispatch }) => {
       onRadioChange={handleRadioChange}
       isLoading={isLoading}
       results={results?.features}
+      onPageClick={handlePageClick}
+      currentPage={currentPage}
+      pages={results?.requestMetadata?.nPages}
       visible={visible}
       selectedResult={selectedResult}
       onResultClick={handleResultClick}

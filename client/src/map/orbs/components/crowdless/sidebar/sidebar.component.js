@@ -2,16 +2,17 @@ import * as React from 'react';
 
 import {
   Button,
+  CircularProgress,
+  Fade,
   FormControlLabel,
   Grid,
-  makeStyles,
-  Radio,
-  Typography,
-  MagnifierIcon,
-  CircularProgress,
   List,
   ListSubheader,
-  Fade,
+  MagnifierIcon,
+  makeStyles,
+  Pagination,
+  Radio,
+  Typography,
 } from '@astrosat/astrosat-ui';
 
 import { InfoButtonTooltip } from 'components';
@@ -36,9 +37,12 @@ const useStyles = makeStyles(theme => ({
  *   results?: CrowdlessFeature[]
  *   isLoading?: boolean
  *   onFindClick: () => void
- *   onRadioChange: () => void
+ *   pages?: number
+ *   currentPage?: number
+ *   onPageClick: (page: number) => void
  *   onResultClick?: (result: CrowdlessFeature) => void
  *   selectedResult: CrowdlessFeature
+ *   onRadioChange: () => void
  *   visible?: boolean
  * }} props
  */
@@ -46,9 +50,12 @@ export const CrowdlessSidebarComponent = ({
   results,
   isLoading,
   onFindClick,
-  onRadioChange,
+  pages,
+  currentPage,
+  onPageClick,
   onResultClick,
   selectedResult,
+  onRadioChange,
   visible,
 }) => {
   const styles = useStyles();
@@ -69,7 +76,7 @@ export const CrowdlessSidebarComponent = ({
         </Grid>
       </Grid>
       <Fade in={visible} unmountOnExit>
-        <Grid container spacing={2}>
+        <Grid container spacing={2} alignItems="center">
           <Grid item xs={12} component={Typography}>
             Please zoom in to the desired area or add area in the search box{' '}
             <MagnifierIcon color="primary" fontSize="inherit" /> at the top
@@ -89,33 +96,53 @@ export const CrowdlessSidebarComponent = ({
               )}
             </Button>
           </Grid>
-          {((isLoading && !results) || results?.length) && (
-            <List
-              subheader={
-                <ListSubheader disableSticky>Places close to you</ListSubheader>
-              }
-            >
-              {isLoading &&
-                !results &&
-                Array(10)
-                  .fill(undefined)
-                  .map((_, i) => <ResultsListItem key={i} isLoading />)}
-              {results?.length &&
-                results.map((result, i) => (
-                  <ResultsListItem
-                    key={result.properties.placeId}
-                    result={result}
-                    selected={
-                      selectedResult === undefined ||
-                      result.properties.placeId ===
-                        selectedResult?.properties?.placeId
-                    }
-                    onClick={onResultClick}
-                    divider={i + 1 !== results.length}
+          {(isLoading && !results) || results?.length ? (
+            <>
+              <Grid item xs={12}>
+                <List
+                  subheader={
+                    <ListSubheader disableSticky>
+                      Places close to you
+                    </ListSubheader>
+                  }
+                >
+                  {isLoading &&
+                    !results &&
+                    Array(10)
+                      .fill(undefined)
+                      .map((_, i) => <ResultsListItem key={i} isLoading />)}
+                  {results?.length
+                    ? results.map((result, i) => (
+                        <ResultsListItem
+                          key={result.properties.placeId}
+                          result={result}
+                          selected={
+                            selectedResult === undefined ||
+                            result.properties.placeId ===
+                              selectedResult?.properties?.placeId
+                          }
+                          onClick={onResultClick}
+                          divider={i + 1 !== results.length}
+                        />
+                      ))
+                    : null}
+                </List>
+              </Grid>
+              {pages > 1 ? (
+                <Grid item xs={12} container justify="center">
+                  <Pagination
+                    hideNextButton
+                    hidePrevButton
+                    shape="rounded"
+                    color="primary"
+                    page={currentPage}
+                    count={pages}
+                    onChange={(_, page) => onPageClick(page)}
                   />
-                ))}
-            </List>
-          )}
+                </Grid>
+              ) : null}
+            </>
+          ) : null}
         </Grid>
       </Fade>
     </div>

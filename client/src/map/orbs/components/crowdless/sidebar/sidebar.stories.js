@@ -8,6 +8,9 @@ export default {
   args: {
     visible: true,
   },
+  argTypes: {
+    onPageClick: { action: true },
+  },
 };
 
 const Template = args => <CrowdlessSidebarComponent {...args} />;
@@ -57,6 +60,13 @@ ActiveResult.args = {
     },
   })),
   selectedResult: { properties: { placeId: 2 } },
+};
+
+export const WithPages = Template.bind({});
+WithPages.args = {
+  ...ActiveResult.args,
+  pages: 10,
+  currentPage: 1,
 };
 
 export const DescriptionContent = () => <Description />;
