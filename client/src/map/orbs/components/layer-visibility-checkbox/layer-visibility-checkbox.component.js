@@ -34,6 +34,9 @@ const useStyles = makeStyles(theme => ({
     margin: theme.spacing(0, 1),
     flexShrink: 0,
   },
+  infoIcon: {
+    justifySelf: 'flex-end',
+  },
 }));
 
 /**
@@ -94,7 +97,10 @@ export const LayerVisibilityCheckbox = ({
       </Grid>
       {!!info ? (
         <Grid item xs={1}>
-          <InfoButtonTooltip tooltipContent={info} />
+          <InfoButtonTooltip
+            iconButtonClassName={classes.infoIcon}
+            tooltipContent={info}
+          />
         </Grid>
       ) : null}
     </Grid>
