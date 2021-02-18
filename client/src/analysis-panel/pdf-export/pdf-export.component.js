@@ -133,7 +133,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const PDF = ({ user }) => {
-  const materialStyles = useStyles();
+  const styles = useStyles();
 
   const selectedProperty = useSelector(state => propertySelector(state?.orbs));
 
@@ -187,27 +187,27 @@ const PDF = ({ user }) => {
   // prohibits direct linking to '/pdf-export'
   if (!selectedProperty?.source_id) return <Redirect to="/" />;
   return (
-    <Box className={materialStyles.container}>
-      <Button className={materialStyles.button} onClick={handleClick}>
+    <Box className={styles.container}>
+      <Button className={styles.button} onClick={handleClick}>
         Download PDF Report
       </Button>
-      <Box className={materialStyles.pdf} id="pdf-form">
+      <Box className={styles.pdf} id="pdf-form">
         {/* the below styling is inline because jsPDF does not recognise 'object-fit', yet the image displaying as 'cover' is required */}
         <div
-          className={materialStyles.screenshot}
+          className={styles.screenshot}
           style={{
             backgroundImage: `url(${image})`,
           }}
           data-testid="screenshot"
         />
-        <Box className={materialStyles.pdfForm}>
-          <Box className={materialStyles.detailsGrid}>
-            <Box className={materialStyles.gridColumn}>
-              <Box className={materialStyles.gridElement}>
+        <Box className={styles.pdfForm}>
+          <Box className={styles.detailsGrid}>
+            <Box className={styles.gridColumn}>
+              <Box className={styles.gridElement}>
                 <Typography variant="h2">
                   Selected Areas of interest:
                 </Typography>
-                <List className={materialStyles.list}>
+                <List className={styles.list}>
                   {areasOfInterest?.map(({ within_LAD_name, identifier }) => (
                     <ListItem>
                       <Typography variant="h4">
@@ -217,7 +217,7 @@ const PDF = ({ user }) => {
                   ))}
                 </List>
               </Box>
-              <Box className={materialStyles.gridElement}>
+              <Box className={styles.gridElement}>
                 <Typography variant="h3">
                   Total population: {populationTotal}
                 </Typography>
@@ -226,43 +226,28 @@ const PDF = ({ user }) => {
                 </Typography>
               </Box>
             </Box>
-            <Box className={materialStyles.gridColumn}>
-              <Box
-                className={clsx(
-                  materialStyles.gridElement,
-                  materialStyles.centered,
-                )}
-              >
+            <Box className={styles.gridColumn}>
+              <Box className={clsx(styles.gridElement, styles.centered)}>
                 <Typography variant="h2">Selected Data Layer:</Typography>
                 <Box component="span">
                   {selectedProperty?.application?.orbis?.label ||
                     selectedProperty?.label}
                 </Box>
               </Box>
-              <Box
-                className={clsx(
-                  materialStyles.gridElement,
-                  materialStyles.centered,
-                )}
-              >
+              <Box className={clsx(styles.gridElement, styles.centered)}>
                 <Typography variant="h2">
                   {aggregation?.aggregationLabel} of selected areas:
                 </Typography>
-                <Box component="span" className={materialStyles.bigValue}>
+                <Box component="span" className={styles.bigValue}>
                   {aggregation?.areaValue}
                 </Box>
                 <Typography variant="h3">
                   {aggregation?.aggregationLabel} of all areas:
                 </Typography>
-                <List
-                  className={clsx(
-                    materialStyles.aggregationData,
-                    materialStyles.list,
-                  )}
-                >
+                <List className={clsx(styles.aggregationData, styles.list)}>
                   {Object.entries(selectedProperty?.aggregates)?.map(
                     ([key, value]) => (
-                      <ListItem className={materialStyles.regionValues}>
+                      <ListItem className={styles.regionValues}>
                         <Typography variant="h4">{key}:</Typography>
                         <Typography variant="h4">{value}</Typography>
                       </ListItem>
@@ -271,33 +256,24 @@ const PDF = ({ user }) => {
                 </List>
               </Box>
             </Box>
-            <Box className={materialStyles.gridColumn}>
-              <Box className={materialStyles.gridElement}>
+            <Box className={styles.gridColumn}>
+              <Box className={styles.gridElement}>
                 The information relates to the areas selected on the map.
               </Box>
-              <Box
-                className={clsx(
-                  materialStyles.gridElement,
-                  materialStyles.moreInfo,
-                )}
-              >
+              <Box className={clsx(styles.gridElement, styles.moreInfo)}>
                 <Typography variant="h3">More Information:</Typography>
                 <Typography component="p">{moreInformation}</Typography>
               </Box>
             </Box>
           </Box>
-          <Box component="footer" className={materialStyles.footer}>
-            <Box className={materialStyles.footerElement}>
+          <Box component="footer" className={styles.footer}>
+            <Box className={styles.footerElement}>
               <Box component="span">Data Analysis Report</Box>
               <Box component="span">ORBIS by ASTROSAT</Box>
             </Box>
             {/* jsPDF cannot render SVG components, hence the PNG image */}
-            <img
-              className={materialStyles.logo}
-              src={OrbisLogo}
-              alt="Orbis logo"
-            />
-            <Box className={materialStyles.footerElement}>
+            <img className={styles.logo} src={OrbisLogo} alt="Orbis logo" />
+            <Box className={styles.footerElement}>
               {user?.name && (
                 <Box component="span" data-testid="user-name">
                   Report run by: {user.name}
