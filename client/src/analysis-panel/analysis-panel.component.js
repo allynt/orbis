@@ -12,9 +12,11 @@ import {
 } from '@astrosat/astrosat-ui';
 
 import clsx from 'clsx';
+import { find } from 'lodash';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { SidePanel } from 'components';
+import { activeDataSourcesSelector } from 'data-layers/data-layers.slice';
 import {
   clickedFeaturesSelector,
   propertySelector,
@@ -89,6 +91,14 @@ export const AnalysisPanel = () => {
     clickedFeaturesSelector(state?.orbs),
   );
   const selectedProperty = useSelector(state => propertySelector(state?.orbs));
+  const sources = useSelector(activeDataSourcesSelector);
+  const currentSource = React.useMemo(
+    () =>
+      find(sources, {
+        source_id: selectedProperty?.source_id,
+      }),
+    [selectedProperty, sources],
+  );
 
   if (!selectedProperty) return null;
 
@@ -135,6 +145,7 @@ export const AnalysisPanel = () => {
       <ClickedFeaturesSummary
         clickedFeatures={clickedFeatures}
         dispatch={dispatch}
+        fallbackProperty={currentSource?.metadata?.index}
       />
       <PrimaryDivider />
       {selectedProperty?.application?.orbis?.data_visualisation_components?.map(
