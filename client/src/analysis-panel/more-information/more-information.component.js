@@ -18,6 +18,9 @@ const useStyles = makeStyles(theme => ({
   sourceLabel: {
     lineHeight: 'normal',
   },
+  sourceValue: {
+    wordBreak: 'break-word',
+  },
 }));
 
 /**
@@ -43,7 +46,7 @@ export const MoreInformation = ({ details, source }) => {
             >
               Source:
             </Typography>
-            <Typography>{source}</Typography>
+            <Typography className={styles.sourceValue}>{source}</Typography>
           </>
         )}
       </div>
