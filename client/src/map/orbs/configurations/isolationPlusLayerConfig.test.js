@@ -36,6 +36,7 @@ const setup = ({
       {
         source_id: 'source/1',
         metadata: {
+          index: 'index',
           properties: [property],
         },
       },
