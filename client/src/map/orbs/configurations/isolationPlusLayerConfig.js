@@ -72,15 +72,16 @@ const configuration = ({
     selectedPropertyMetadata &&
     getColorScaleForProperty(selectedPropertyMetadata, 'array');
 
-  const clickedFeatureIds = clickedFeatures?.map(
-    f => f.object.properties.index,
+  const clickedFeatureIds = clickedFeatures?.map(f =>
+    get(f.object.properties, source?.metadata?.index),
   );
   const anySelected = !!clickedFeatureIds?.length;
 
   /**
    * @param {AccessorFeature} d
    */
-  const isSelected = d => !!clickedFeatureIds?.includes(d.properties.index);
+  const isSelected = d =>
+    !!clickedFeatureIds?.includes(get(d.properties, source?.metadata?.index));
 
   /**
    * @param {AccessorFeature} d
@@ -130,7 +131,9 @@ const configuration = ({
     const hasModifier = event.srcEvent.ctrlKey || event.srcEvent.metaKey;
     if (
       !clickedFeatures?.find(
-        f => f.object.properties.index === info.object.properties.index,
+        f =>
+          f.object.properties[source.metadata.index] ===
+          info.object.properties[source.metadata.index],
       )
     ) {
       if (hasModifier) {
@@ -199,7 +202,7 @@ const configuration = ({
     visible: !!source && selectedProperty.source_id === id,
     minZoom: source?.metadata?.minZoom,
     maxZoom: source?.metadata?.maxZoom,
-    uniqueIdProperty: source?.metadata?.uniqueIdProperty,
+    uniqueIdProperty: source?.metadata?.index,
     pickable: true,
     autoHighlight: true,
     onClick,
