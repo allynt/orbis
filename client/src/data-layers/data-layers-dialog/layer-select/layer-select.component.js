@@ -112,6 +112,7 @@ const Accordion = ({ source, level, onSourcesChange, selectedSources }) => {
     () => difference(allSourceIds, selectedSources),
     [allSourceIds, selectedSources],
   );
+  const selectedCount = allSourceIds.length - notYetSelected.length;
   const allSelected = isEmpty(notYetSelected);
 
   /** @param {React.MouseEvent<HTMLAnchorElement, MouseEvent>} e */
@@ -127,7 +128,10 @@ const Accordion = ({ source, level, onSourcesChange, selectedSources }) => {
       <ButtonBase className={styles.header} onClick={() => setOpen(c => !c)}>
         <TriangleIcon className={clsx(styles.icon, { [styles.open]: open })} />
         {source.category}
-        <span className={styles.sourceCount}>({allSourceIds.length})</span>
+        <span className={styles.sourceCount}>
+          ({selectedCount <= 0 ? '' : `${selectedCount}/`}
+          {allSourceIds.length})
+        </span>
         <Link
           variant="body2"
           component="button"

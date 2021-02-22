@@ -64,18 +64,24 @@ const DataLayersDialog = ({
 
   const handleSubmit = () => onSubmit && onSubmit(selectedSources);
 
+  const handleClose = () => {
+    setSelectedOrbName(undefined);
+    setSelectedSources(initialSelectedSources);
+    close();
+  };
+
   return (
     <Dialog
       maxWidth="md"
       fullWidth
       PaperProps={{ className: styles.dialog }}
       open={open}
-      onClose={() => close()}
+      onClose={handleClose}
     >
       <IconButton
         size="small"
         className={styles.closeButton}
-        onClick={() => close()}
+        onClick={handleClose}
       >
         <CloseIcon fontSize="inherit" />
       </IconButton>
