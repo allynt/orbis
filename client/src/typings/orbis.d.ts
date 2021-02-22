@@ -148,6 +148,9 @@ type SourceMetadata = {
   tiles?: string | string[];
   url?: string;
   api_key?: string;
+  index?: string;
+  minZoom?: number;
+  maxZoom?: number;
   request_strategy?: 'manual' | 'automatic' | 'lazy' | 'normal';
   application?: {
     orbis: OrbisApplicationMetadata;

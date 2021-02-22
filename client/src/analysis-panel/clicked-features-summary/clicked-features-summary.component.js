@@ -11,7 +11,7 @@ import {
   Fade,
 } from '@astrosat/astrosat-ui';
 import { SidePanelSection } from 'components';
-import { sumBy } from 'lodash';
+import { get, sumBy } from 'lodash';
 import { removeClickedFeatures } from 'map/orbs/slices/isolation-plus.slice';
 import React, { useState } from 'react';
 
@@ -47,20 +47,21 @@ const useStyles = makeStyles(theme => ({
  * @param {{
  *   onDelete: (event: any) => void
  *   feature: import('typings/orbis').PolygonPickedMapFeature
+ * fallbackProperty?: string
  * }} props
  */
-const TooltipChip = ({ onDelete, feature }) => {
+const TooltipChip = ({ onDelete, feature, fallbackProperty }) => {
   const styles = useStyles();
 
-  const { index, area_name } = feature.object.properties;
-  const areaIdentifier = area_name || index;
+  const areaIdentifier =
+    get(feature.object.properties, 'area_name') ??
+    get(feature.object.properties, fallbackProperty);
 
   const ChipElement = (
     <Chip
       tabIndex={-1}
       classes={{ label: styles.chip }}
       size="small"
-      key={index}
       label={areaIdentifier}
       onDelete={onDelete}
       deleteIcon={
@@ -82,7 +83,7 @@ const TooltipChip = ({ onDelete, feature }) => {
       }}
       arrow
       placement="bottom"
-      title={area_name}
+      title={areaIdentifier}
     >
       <Grid item>{ChipElement}</Grid>
     </Tooltip>
@@ -93,11 +94,15 @@ const TooltipChip = ({ onDelete, feature }) => {
 
 /**
  * @type {import('typings/orbis').AnalysisPanelComponent<
- *   {},
+ *   {fallbackProperty?: string},
  *   import('typings/orbis').PolygonPickedMapFeature
  * >}
  * */
-export const ClickedFeaturesSummary = ({ clickedFeatures, dispatch }) => {
+export const ClickedFeaturesSummary = ({
+  clickedFeatures,
+  dispatch,
+  fallbackProperty,
+}) => {
   const [open, setOpen] = useState(false);
   const styles = useStyles();
 
@@ -111,6 +116,7 @@ export const ClickedFeaturesSummary = ({ clickedFeatures, dispatch }) => {
                 <Fade in key={feature.index}>
                   <TooltipChip
                     feature={feature}
+                    fallbackProperty={fallbackProperty}
                     onDelete={() => dispatch(removeClickedFeatures([feature]))}
                   />
                 </Fade>
