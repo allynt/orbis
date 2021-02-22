@@ -210,6 +210,13 @@ describe('<LayerSelect />', () => {
     expect(getByRole('button', { name: SUBMIT_BUTTON })).not.toBeDisabled();
   });
 
+  it('shows the count of selected layers in a category', () => {
+    const { getAllByText } = renderComponent({
+      selectedSources: ['oil/source/1'],
+    });
+    expect(getAllByText('(1/2)')).toHaveLength(1);
+  });
+
   describe('Select All', () => {
     it('calls onSourcesChange with all sources within a category when "Select All"  is clicked', () => {
       const { onSourcesChange, getAllByRole } = renderComponent();
