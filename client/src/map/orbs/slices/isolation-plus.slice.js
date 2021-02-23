@@ -38,7 +38,6 @@ const isolationPlusSlice = createSlice({
      * >}
      */
     addClickedFeatures: (state, { payload }) => {
-      console.log(payload);
       state.clickedFeatures = unionBy(
         state.clickedFeatures,
         payload,
