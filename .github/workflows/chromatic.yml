@@ -21,4 +21,4 @@ jobs:
         with:
           workingDir: client
           token: ${{ github.token }}
-          projectToken: ee7d59d7c137
+          projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
