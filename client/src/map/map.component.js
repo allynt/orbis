@@ -148,7 +148,13 @@ const lightingEffect = new LightingEffect({ ambientLight, dirLight });
 lightingEffect.shadowColor = [0, 0, 0, 0.5];
 
 const Map = () => {
-  const { mapRef, deckRef, viewState, setViewState } = useMap();
+  const {
+    topMapRef,
+    bottomMapRef,
+    deckRef,
+    viewState,
+    setViewState,
+  } = useMap();
   const extrudedMode = useSelector(state => extrudedModeSelector(state?.orbs));
   const extrusionScale = useSelector(state =>
     extrusionScaleSelector(state?.orbs),
@@ -259,7 +265,7 @@ const Map = () => {
       </ClickAwayListener>
       <ReactMapGl
         key="bottom"
-        ref={mapRef}
+        ref={bottomMapRef}
         onViewStateChange={({ viewState: { width, height, ...rest } }) => {
           setViewState(rest);
         }}
@@ -283,13 +289,14 @@ const Map = () => {
       </ReactMapGl>
       <ReactMapGl
         key="top"
+        ref={topMapRef}
         style={TOP_MAP_CSS}
         mapStyle={selectedMapStyle?.topMapStyle}
         attributionControl={false}
         {...mapProps}
       >
         <Geocoder
-          mapRef={mapRef}
+          mapRef={topMapRef}
           mapboxApiAccessToken={accessToken}
           position="top-right"
           marker={false}
