@@ -68,6 +68,11 @@ describe('isolationPlusSlice', () => {
       it("Sets clickedFeatures in state if it's undefined", () => {
         const payload = [
           {
+            layer: {
+              props: {
+                uniqueIdProperty: 'index',
+              },
+            },
             object: {
               properties: {
                 index: 1,
@@ -75,6 +80,11 @@ describe('isolationPlusSlice', () => {
             },
           },
           {
+            layer: {
+              props: {
+                uniqueIdProperty: 'index',
+              },
+            },
             object: {
               properties: {
                 index: 2,
@@ -82,6 +92,11 @@ describe('isolationPlusSlice', () => {
             },
           },
           {
+            layer: {
+              props: {
+                uniqueIdProperty: 'index',
+              },
+            },
             object: {
               properties: {
                 index: 3,
@@ -98,6 +113,11 @@ describe('isolationPlusSlice', () => {
       it('Combines existing clicked features with the new ones', () => {
         const payload = [
           {
+            layer: {
+              props: {
+                uniqueIdProperty: 'index',
+              },
+            },
             object: {
               properties: {
                 index: 4,
@@ -105,6 +125,11 @@ describe('isolationPlusSlice', () => {
             },
           },
           {
+            layer: {
+              props: {
+                uniqueIdProperty: 'index',
+              },
+            },
             object: {
               properties: {
                 index: 5,
@@ -112,6 +137,11 @@ describe('isolationPlusSlice', () => {
             },
           },
           {
+            layer: {
+              props: {
+                uniqueIdProperty: 'index',
+              },
+            },
             object: {
               properties: {
                 index: 6,
@@ -122,6 +152,11 @@ describe('isolationPlusSlice', () => {
         const state = {
           clickedFeatures: [
             {
+              layer: {
+                props: {
+                  uniqueIdProperty: 'index',
+                },
+              },
               object: {
                 properties: {
                   index: 1,
@@ -129,6 +164,11 @@ describe('isolationPlusSlice', () => {
               },
             },
             {
+              layer: {
+                props: {
+                  uniqueIdProperty: 'index',
+                },
+              },
               object: {
                 properties: {
                   index: 2,
@@ -136,6 +176,11 @@ describe('isolationPlusSlice', () => {
               },
             },
             {
+              layer: {
+                props: {
+                  uniqueIdProperty: 'index',
+                },
+              },
               object: {
                 properties: {
                   index: 3,
@@ -158,6 +203,11 @@ describe('isolationPlusSlice', () => {
       it('Does not duplicate features base on their index property', () => {
         const payload = [
           {
+            layer: {
+              props: {
+                uniqueIdProperty: 'index',
+              },
+            },
             object: {
               properties: {
                 index: 1,
@@ -177,6 +227,11 @@ describe('isolationPlusSlice', () => {
       it('Removes all clickedFeatures from state', () => {
         const payload = [
           {
+            layer: {
+              props: {
+                uniqueIdProperty: 'index',
+              },
+            },
             object: {
               properties: {
                 index: 2,
@@ -184,6 +239,11 @@ describe('isolationPlusSlice', () => {
             },
           },
           {
+            layer: {
+              props: {
+                uniqueIdProperty: 'index',
+              },
+            },
             object: {
               properties: {
                 index: 3,
@@ -194,6 +254,11 @@ describe('isolationPlusSlice', () => {
         const state = {
           clickedFeatures: [
             {
+              layer: {
+                props: {
+                  uniqueIdProperty: 'index',
+                },
+              },
               object: {
                 properties: {
                   index: 1,
@@ -206,13 +271,31 @@ describe('isolationPlusSlice', () => {
         const result = reducer(state, removeClickedFeatures(payload));
         expect(result).toEqual(
           expect.objectContaining({
-            clickedFeatures: [{ object: { properties: { index: 1 } } }],
+            clickedFeatures: [
+              {
+                layer: {
+                  props: {
+                    uniqueIdProperty: 'index',
+                  },
+                },
+                object: { properties: { index: 1 } },
+              },
+            ],
           }),
         );
       });
 
       it('Sets clickedFeatures to undefined if all features are removed', () => {
-        const feature = [{ object: { properties: { index: 1 } } }];
+        const feature = [
+          {
+            layer: {
+              props: {
+                uniqueIdProperty: 'index',
+              },
+            },
+            object: { properties: { index: 1 } },
+          },
+        ];
         const result = reducer(
           { clickedFeatures: feature },
           removeClickedFeatures(feature),
