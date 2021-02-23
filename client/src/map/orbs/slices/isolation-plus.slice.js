@@ -38,10 +38,11 @@ const isolationPlusSlice = createSlice({
      * >}
      */
     addClickedFeatures: (state, { payload }) => {
+      console.log(payload);
       state.clickedFeatures = unionBy(
         state.clickedFeatures,
         payload,
-        'object.properties.index',
+        `object.properties.${payload[0].layer.props.uniqueIdProperty}`,
       );
     },
     /**
@@ -54,7 +55,7 @@ const isolationPlusSlice = createSlice({
       const newFeatures = differenceBy(
         state.clickedFeatures,
         payload,
-        'object.properties.index',
+        `object.properties.${payload[0].layer.props.uniqueIdProperty}`,
       );
       state.clickedFeatures = newFeatures.length ? newFeatures : undefined;
     },

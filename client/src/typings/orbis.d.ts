@@ -216,6 +216,9 @@ type GeoJsonFeature<P = {}> = {
 type PickedMapFeature<P = {}> = {
   layer: {
     id: string;
+    props?: {
+      uniqueIdProperty?: string;
+    };
   };
   index: number;
   /** The underlying GeoJson object */
@@ -236,8 +239,6 @@ type IsoPlusCommonProperties = {
   within_lad_name?: any;
   within_lsoa?: any;
   within_msoa?: any;
-  /** Typically the OA/LAD/LSOA/MSOA Area code */
-  index: string;
 };
 
 type PolygonPickedMapFeature = PickedMapFeature<IsoPlusCommonProperties>;
