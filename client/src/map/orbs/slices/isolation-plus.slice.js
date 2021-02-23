@@ -16,7 +16,7 @@ const initialState = {
     name: undefined,
   },
   filterRange: [undefined, undefined],
-  pdfData: {},
+  analysisData: {},
 };
 
 const isolationPlusSlice = createSlice({
@@ -70,8 +70,11 @@ const isolationPlusSlice = createSlice({
     setFilterRange: (state, { payload }) => {
       state.filterRange = payload;
     },
-    setPdfData: (state, { payload }) => {
-      state.pdfData = payload;
+    setScreenshot: (state, { payload }) => {
+      state.analysisData.screenshot = payload;
+    },
+    setAnalysisData: (state, { payload }) => {
+      state.analysisData = payload;
     },
   },
 });
@@ -83,7 +86,8 @@ export const {
   addClickedFeatures,
   removeClickedFeatures,
   setFilterRange,
-  setPdfData,
+  setScreenshot,
+  setAnalysisData,
 } = isolationPlusSlice.actions;
 
 /**
@@ -107,9 +111,9 @@ export const filterRangeSelector = createSelector(
   orb => orb?.filterRange,
 );
 
-export const pdfDataSelector = createSelector(
+export const analysisDataSelector = createSelector(
   baseSelector,
-  orb => orb?.pdfData,
+  orb => orb?.analysisData,
 );
 
 export default isolationPlusSlice.reducer;

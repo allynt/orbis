@@ -10,7 +10,6 @@ import {
 } from '@astrosat/astrosat-ui';
 
 import { BarChart, SidePanelSection } from 'components';
-import { aggregateValues } from 'analysis-panel/aggregateValues';
 
 const useStyles = makeStyles(theme => ({
   italic: {
@@ -35,14 +34,17 @@ export const NationalDeviationHistogram = ({
   selectedProperty,
   clickedFeatures,
   data = [],
+  analysisData,
   info,
 }) => {
   const [selectedAggregateArea, setSelectedAggregateArea] = useState('GB');
   const styles = useStyles();
-  const areaValue =
-    clickedFeatures && aggregateValues(clickedFeatures, selectedProperty);
-  const aggregationLabel =
-    selectedProperty?.aggregation === 'sum' ? 'Sum' : 'Average';
+
+  const {
+    aggregation: { aggregationLabel, areaValue },
+  } = analysisData;
+
+  console.log('NationalDeviationHistogram', analysisData);
   return (
     <SidePanelSection defaultExpanded title="Selected Data Layer" info={info}>
       <Box display="flex" flexDirection="column">

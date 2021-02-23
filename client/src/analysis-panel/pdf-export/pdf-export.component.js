@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import { Redirect } from 'react-router-dom';
 
@@ -14,6 +14,7 @@ import {
   Box,
   List,
   ListItem,
+  ListItemText,
   makeStyles,
   Typography,
 } from '@astrosat/astrosat-ui';
@@ -22,7 +23,7 @@ import { useSelector } from 'react-redux';
 
 import {
   propertySelector,
-  pdfDataSelector,
+  analysisDataSelector,
 } from 'map/orbs/slices/isolation-plus.slice';
 
 import OrbisLogo from './orbis-logo.png';
@@ -40,9 +41,7 @@ const useStyles = makeStyles(theme => ({
     top: theme.typography.pxToRem(16),
     left: theme.typography.pxToRem(496),
     zIndex: 10,
-    width: 'fit-content',
-    padding: theme.typography.pxToRem(16),
-    fontSize: theme.typography.pxToRem(16),
+    padding: theme.spacing(2),
   },
   pdf: {
     position: 'relative',
@@ -50,7 +49,7 @@ const useStyles = makeStyles(theme => ({
     flexDirection: 'column',
     justifyContent: 'space-between',
     alignItems: 'center',
-    color: theme.palette.common.white,
+    color: theme.palette.text.primary,
     backgroundColor: theme.palette.background.default,
     height: '100%',
     width: '50%',
@@ -66,7 +65,7 @@ const useStyles = makeStyles(theme => ({
     justifyContent: 'space-between',
     width: '100%',
     height: '50%',
-    padding: theme.typography.pxToRem(16),
+    padding: theme.spacing(2),
   },
   detailsGrid: {
     display: 'flex',
@@ -86,7 +85,7 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     flexDirection: 'column',
     gap: theme.spacing(1),
-    padding: theme.typography.pxToRem(8),
+    padding: theme.spacing(1),
     width: '100%',
     border: ' 3px dashed #4e78a0',
     borderRadius: theme.typography.pxToRem(5),
@@ -144,11 +143,19 @@ const PDF = ({ user }) => {
     householdTotal,
     aggregation,
     moreInformation,
-  } = useSelector(state => pdfDataSelector(state?.orbs));
-
-  const creationDate = format(new Date(), ['MMMM do Y']);
+  } = useSelector(state => analysisDataSelector(state?.orbs));
 
   const [image, setImage] = useState(undefined);
+
+  useEffect(() => {
+    const reader = new FileReader();
+    reader.onload = event => setImage(event.target.result);
+    if (screenshot) {
+      reader.readAsDataURL(screenshot);
+    }
+  }, [screenshot]);
+
+  const creationDate = format(new Date(), 'MMMM do Y');
 
   const handleClick = () => {
     const div = document.getElementById('pdf-form');
@@ -177,22 +184,13 @@ const PDF = ({ user }) => {
     });
   };
 
-  // process screenshot immediately
-  (screenshot => {
-    const reader = new FileReader();
-    reader.onload = event => setImage(event.target.result);
-    if (screenshot) reader.readAsDataURL(screenshot);
-  })(screenshot);
-
-  // prohibits direct linking to '/pdf-export'
   if (!selectedProperty?.source_id) return <Redirect to="/" />;
   return (
-    <Box className={styles.container}>
+    <div className={styles.container}>
       <Button className={styles.button} onClick={handleClick}>
         Download PDF Report
       </Button>
       <Box className={styles.pdf} id="pdf-form">
-        {/* the below styling is inline because jsPDF does not recognise 'object-fit', yet the image displaying as 'cover' is required */}
         <div
           className={styles.screenshot}
           style={{
@@ -208,12 +206,8 @@ const PDF = ({ user }) => {
                   Selected Areas of interest:
                 </Typography>
                 <List className={styles.list}>
-                  {areasOfInterest?.map(({ within_LAD_name, identifier }) => (
-                    <ListItem>
-                      <Typography variant="h4">
-                        {within_LAD_name || identifier}
-                      </Typography>
-                    </ListItem>
+                  {areasOfInterest?.map(area_name => (
+                    <ListItemText primary={area_name} />
                   ))}
                 </List>
               </Box>
@@ -247,10 +241,10 @@ const PDF = ({ user }) => {
                 <List className={clsx(styles.aggregationData, styles.list)}>
                   {Object.entries(selectedProperty?.aggregates)?.map(
                     ([key, value]) => (
-                      <ListItem className={styles.regionValues}>
-                        <Typography variant="h4">{key}:</Typography>
-                        <Typography variant="h4">{value}</Typography>
-                      </ListItem>
+                      <ListItemText
+                        className={styles.regionValues}
+                        primary={`${key}: ${value}`}
+                      />
                     ),
                   )}
                 </List>
@@ -262,7 +256,12 @@ const PDF = ({ user }) => {
               </Box>
               <Box className={clsx(styles.gridElement, styles.moreInfo)}>
                 <Typography variant="h3">More Information:</Typography>
-                <Typography component="p">{moreInformation}</Typography>
+                <Typography component="h4">
+                  Source: {moreInformation?.source}
+                </Typography>
+                <Typography component="p">
+                  {moreInformation?.details}
+                </Typography>
               </Box>
             </Box>
           </Box>
@@ -271,21 +270,22 @@ const PDF = ({ user }) => {
               <Box component="span">Data Analysis Report</Box>
               <Box component="span">ORBIS by ASTROSAT</Box>
             </Box>
-            {/* jsPDF cannot render SVG components, hence the PNG image */}
             <img className={styles.logo} src={OrbisLogo} alt="Orbis logo" />
             <Box className={styles.footerElement}>
               {user?.name && (
-                <Box component="span" data-testid="user-name">
+                <Typography component="p" data-testid="user-name">
                   Report run by: {user.name}
-                </Box>
+                </Typography>
               )}
-              <Box component="span">User Name: {user?.email}</Box>
-              <Box component="span">Date of the Report: {creationDate}</Box>
+              <Typography component="p">User Name: {user?.email}</Typography>
+              <Typography component="p">
+                Date of the Report: {creationDate}
+              </Typography>
             </Box>
           </Box>
         </Box>
       </Box>
-    </Box>
+    </div>
   );
 };
 

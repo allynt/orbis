@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useEffect, useMemo } from 'react';
 
 import {
   Box,
@@ -29,7 +29,8 @@ import {
   clickedFeaturesSelector,
   propertySelector,
   setClickedFeatures,
-  setPdfData,
+  setScreenshot,
+  setAnalysisData,
 } from 'map/orbs/slices/isolation-plus.slice';
 import { ClickedFeaturesSummary } from './clicked-features-summary/clicked-features-summary.component';
 import { COMPONENT_MAP } from './component-map';
@@ -123,12 +124,9 @@ export const AnalysisPanel = ({ history }) => {
     [selectedProperty, sources],
   );
 
-  const MAX_PDF_AOI = 5;
-
   const analysisData = useMemo(() => {
     const areasOfInterest = clickedFeatures?.map(feat => {
-      const { within_LAD_name, area_name, index } = feat.object.properties;
-      return { within_LAD_name, identifier: area_name || index };
+      return feat.object.properties.area_name;
     });
 
     const populationTotal = sumBy(
@@ -147,7 +145,10 @@ export const AnalysisPanel = ({ history }) => {
     const areaValue =
       clickedFeatures && aggregateValues(clickedFeatures, selectedProperty);
 
-    const moreInformation = selectedProperty?.details;
+    const moreInformation = {
+      source: selectedProperty?.source,
+      details: selectedProperty?.details,
+    };
 
     return {
       areasOfInterest,
@@ -159,25 +160,16 @@ export const AnalysisPanel = ({ history }) => {
       },
       moreInformation,
     };
-  }, [selectedProperty, clickedFeatures]);
+  }, [clickedFeatures, selectedProperty]);
+
+  useEffect(() => {
+    dispatch(setAnalysisData(analysisData));
+  }, [dispatch, analysisData]);
 
   const { createScreenshot } = useMap();
 
   const handleExportClick = () => {
-    if (analysisData.areasOfInterest.length > MAX_PDF_AOI)
-      return alert(
-        `A maximum of ${MAX_PDF_AOI} areas can be selected for PDF export.`,
-      );
-
-    createScreenshot(screenshot =>
-      dispatch(
-        setPdfData({
-          ...analysisData,
-          screenshot,
-        }),
-      ),
-    );
-
+    createScreenshot(screenshot => dispatch(setScreenshot(screenshot)));
     return history.push('/pdf-export');
   };
 
@@ -246,6 +238,7 @@ export const AnalysisPanel = ({ history }) => {
                 selectedProperty={selectedProperty}
                 clickedFeatures={clickedFeatures}
                 dispatch={dispatch}
+                analysisData={analysisData}
                 {...componentDefinition.props}
               />
               <PrimaryDivider />
