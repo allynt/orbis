@@ -78,7 +78,7 @@ const RadioProperty = ({
   });
 
   const handleRadioClick = () => {
-    const payload = propertyMatch ? {} : initialProperty;
+    const payload = propertyMatch ? { source_id: undefined } : initialProperty;
     return onPropertyChange(payload);
   };
 
