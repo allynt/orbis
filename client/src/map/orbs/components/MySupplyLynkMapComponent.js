@@ -28,8 +28,17 @@ const MySupplyLynkMapComponent = ({ source, type }) => {
   const [dialogFeature, setDialogFeature] = React.useState();
 
   React.useEffect(() => {
-    if (clickedFeatures?.length === 1) setDialogFeature(clickedFeatures[0]);
-  }, [clickedFeatures]);
+    if (clickedFeatures?.length === 1) {
+      setDialogFeature(clickedFeatures[0]);
+      if (!dialogFeature)
+        dispatch(
+          setClickedFeatures({
+            source_id: source.source_id,
+            clickedFeatures: undefined,
+          }),
+        );
+    }
+  }, [clickedFeatures, dialogFeature, source.source_id, dispatch]);
 
   const nonRegisteredFooter = {
     label: 'Register now at',
