@@ -17,5 +17,5 @@ jobs:
         uses: chromaui/action@v1
         with:
           workingDir: client
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ github.token }}
           projectToken: ee7d59d7c137
