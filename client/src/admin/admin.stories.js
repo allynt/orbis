@@ -4,8 +4,11 @@ import { Provider } from 'react-redux';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import Admin from './admin.component';
+import isChromatic from 'chromatic/isChromatic';
 
 export default { title: 'Admin/Main' };
+
+faker.seed(isChromatic() ? 1 : undefined);
 
 const mockStore = configureMockStore([thunk]);
 
@@ -48,7 +51,9 @@ const customerUsers = [
     licences: licences.filter(l => l.customer_user === 0),
     user: {
       id: faker.random.uuid(),
-      avatar: faker.image.people(),
+      avatar: isChromatic()
+        ? 'http://placeimg.com/640/480/people'
+        : faker.image.people(),
       email: faker.internet.email(),
       name: `${faker.name.firstName()} ${faker.name.lastName()}`,
     },
@@ -63,7 +68,9 @@ const customerUsers = [
       licences: licences.filter(l => l.customer_user === i),
       user: {
         id: faker.random.uuid(),
-        avatar: faker.image.people(),
+        avatar: isChromatic()
+          ? 'http://placeimg.com/640/480/people'
+          : faker.image.people(),
         email: faker.internet.email(),
         name: `${faker.name.firstName()} ${faker.name.lastName()}`,
       },
@@ -77,7 +84,9 @@ WithInfo.args = {
       country: faker.address.country(),
       address: faker.address.streetAddress(),
       postcode: faker.address.zipCode(),
-      logo: faker.image.abstract(),
+      logo: isChromatic()
+        ? 'http://placeimg.com/640/480/abstract'
+        : faker.image.abstract(),
       licences,
     },
     customerUsers,
