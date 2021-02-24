@@ -22,7 +22,7 @@ OneFeature.args = {
           Dogs: Array(20)
             .fill(undefined)
             .map((_, i) => ({
-              timestamp: addDays(new Date(), i).toISOString(),
+              timestamp: addDays(new Date(2077, 10, 24), i).toISOString(),
               value: faker.random.number(100),
             })),
         },
@@ -42,7 +42,7 @@ MultipleFeatures.args = {
           Dogs: Array(20)
             .fill(undefined)
             .map((_, i) => ({
-              timestamp: addDays(new Date(), i).toISOString(),
+              timestamp: addDays(new Date(2077, 10, 24), i).toISOString(),
               value: faker.random.number(100),
             })),
         },

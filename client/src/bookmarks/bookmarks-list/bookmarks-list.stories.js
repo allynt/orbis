@@ -15,12 +15,12 @@ export default {
 
 if (isChromatic()) faker.seed(1);
 
-const iShouldDoIt = () => Math.random() > 0.5;
+const iShouldDoIt = () => isChromatic() || Math.random() > 0.5;
 
 const createBookmark = (_, id) => ({
   id,
   owner: faker.random.uuid(),
-  thumbnail: iShouldDoIt() && (isChromatic() ? undefined : faker.image.image()),
+  thumbnail: iShouldDoIt() ? undefined : faker.image.image(),
   title: faker.lorem.words(faker.random.number(9) + 1),
   description: iShouldDoIt() && faker.lorem.lines(2),
 });
