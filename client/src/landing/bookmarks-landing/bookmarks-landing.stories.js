@@ -12,7 +12,9 @@ export default { title: 'Landing/Bookmarks Landing' };
 const makeBookmark = () => ({
   id: faker.random.uuid(),
   title: faker.commerce.product(),
-  thumbnail: faker.image.image(),
+  thumbnail: isChromatic()
+    ? 'http://placeimg.com/640/480/business'
+    : faker.image.image(),
   created: faker.date.past().toISOString(),
 });
 
