@@ -6,7 +6,10 @@ import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import { initialState } from './map.slice';
 
-export default { title: 'Map/Map' };
+export default {
+  title: 'Map/Map',
+  parameters: { chromatic: { disable: true } },
+};
 
 const MAPBOX_TOKEN =
   'pk.eyJ1IjoidGhlcm1jZXJ0IiwiYSI6ImNqbmN5N2F6NzBnODYza3A2anVqYWExOW8ifQ.10y0sH8cDQp9AfZNg1-M3Q';
