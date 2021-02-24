@@ -11,13 +11,13 @@ jobs:
         working-directory: client
         env:
           CI: "true"
-          GITHUB_REGISTRY_TOKEN: ${{ secrets.GITHUB_REGISTRY_TOKEN }}
+          GITHUB_REGISTRY_TOKEN: ${{ secrets.ASTROSAT_GITHUB_REGISTRY_TOKEN }}
         run: yarn
       - name: Publish to Chromatic
         uses: chromaui/action@v1
         env:
           CI: "true"
-          GITHUB_REGISTRY_TOKEN: ${{ secrets.GITHUB_REGISTRY_TOKEN }}
+          GITHUB_REGISTRY_TOKEN: ${{ secrets.ASTROSAT_GITHUB_REGISTRY_TOKEN }}
         with:
           workingDir: client
           token: ${{ github.token }}
