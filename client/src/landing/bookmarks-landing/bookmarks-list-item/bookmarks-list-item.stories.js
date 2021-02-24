@@ -20,9 +20,7 @@ export const NoBookmark = Template.bind({});
 const bookmark = {
   id: faker.random.uuid(),
   title: faker.commerce.product(),
-  thumbnail: isChromatic()
-    ? 'http://placeimg.com/640/480/people'
-    : faker.image.image(),
+  thumbnail: isChromatic() ? undefined : faker.image.image(),
   created: faker.date.past().toISOString(),
 };
 

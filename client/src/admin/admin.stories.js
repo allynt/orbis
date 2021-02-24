@@ -51,9 +51,7 @@ const customerUsers = [
     licences: licences.filter(l => l.customer_user === 0),
     user: {
       id: faker.random.uuid(),
-      avatar: isChromatic()
-        ? 'http://placeimg.com/640/480/people'
-        : faker.image.people(),
+      avatar: isChromatic() ? undefined : faker.image.imageUrl(),
       email: faker.internet.email(),
       name: `${faker.name.firstName()} ${faker.name.lastName()}`,
     },
@@ -68,9 +66,7 @@ const customerUsers = [
       licences: licences.filter(l => l.customer_user === i),
       user: {
         id: faker.random.uuid(),
-        avatar: isChromatic()
-          ? 'http://placeimg.com/640/480/people'
-          : faker.image.people(),
+        avatar: isChromatic() ? undefined : faker.image.people(),
         email: faker.internet.email(),
         name: `${faker.name.firstName()} ${faker.name.lastName()}`,
       },
@@ -84,9 +80,7 @@ WithInfo.args = {
       country: faker.address.country(),
       address: faker.address.streetAddress(),
       postcode: faker.address.zipCode(),
-      logo: isChromatic()
-        ? 'http://placeimg.com/640/480/abstract'
-        : faker.image.abstract(),
+      logo: isChromatic() ? undefined : faker.image.abstract(),
       licences,
     },
     customerUsers,

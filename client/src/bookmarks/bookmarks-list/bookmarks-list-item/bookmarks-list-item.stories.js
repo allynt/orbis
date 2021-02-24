@@ -19,9 +19,7 @@ if (isChromatic()) faker.seed(1);
 const bookmark = {
   id: faker.random.number(),
   owner: faker.random.uuid(),
-  thumbnail: isChromatic()
-    ? 'http://placeimg.com/640/480/nature'
-    : faker.image.nature(),
+  thumbnail: isChromatic() ? undefined : faker.image.nature(),
   title: faker.lorem.words(faker.random.number(9) + 1),
   description: faker.lorem.lines(2),
 };

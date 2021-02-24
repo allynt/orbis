@@ -20,11 +20,7 @@ const iShouldDoIt = () => Math.random() > 0.5;
 const createBookmark = (_, id) => ({
   id,
   owner: faker.random.uuid(),
-  thumbnail:
-    iShouldDoIt() &&
-    (isChromatic()
-      ? 'http://placeimg.com/640/480/transport'
-      : faker.image.image()),
+  thumbnail: iShouldDoIt() && (isChromatic() ? undefined : faker.image.image()),
   title: faker.lorem.words(faker.random.number(9) + 1),
   description: iShouldDoIt() && faker.lorem.lines(2),
 });
