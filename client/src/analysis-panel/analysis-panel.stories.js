@@ -39,53 +39,55 @@ const selectedProperty = {
         colormap_type: 'neutral_sequential',
         colormap_reversed: false,
       },
-      data_visualisation_components: {
-        name: 'Bar',
-        props: {
-          data: [
-            {
-              x: 134,
-              y: 15015,
-            },
-            {
-              x: 402,
-              y: 23278,
-            },
-            {
-              x: 670,
-              y: 2953,
-            },
-            {
-              x: 938,
-              y: 383,
-            },
-            {
-              x: 1206,
-              y: 70,
-            },
-            {
-              x: 1474,
-              y: 18,
-            },
-            {
-              x: 1742,
-              y: 8,
-            },
-            {
-              x: 2010,
-              y: 2,
-            },
-            {
-              x: 2278,
-              y: 1,
-            },
-            {
-              x: 2546,
-              y: 1,
-            },
-          ],
+      data_visualisation_components: [
+        {
+          name: 'NationalDeviationHistogram',
+          props: {
+            data: [
+              {
+                x: 134,
+                y: 15015,
+              },
+              {
+                x: 402,
+                y: 23278,
+              },
+              {
+                x: 670,
+                y: 2953,
+              },
+              {
+                x: 938,
+                y: 383,
+              },
+              {
+                x: 1206,
+                y: 70,
+              },
+              {
+                x: 1474,
+                y: 18,
+              },
+              {
+                x: 1742,
+                y: 8,
+              },
+              {
+                x: 2010,
+                y: 2,
+              },
+              {
+                x: 2278,
+                y: 1,
+              },
+              {
+                x: 2546,
+                y: 1,
+              },
+            ],
+          },
         },
-      },
+      ],
     },
   },
   description: 'Total number of people aged 17 and under.',

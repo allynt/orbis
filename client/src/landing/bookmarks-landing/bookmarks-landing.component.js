@@ -57,7 +57,7 @@ export const BookmarksLanding = ({ bookmarks, chooseBookmark }) => {
         <Typography variant="h2" color="textPrimary">
           {viewAllItems ? 'View All' : 'Your Maps'}
         </Typography>
-        {bookmarks.length > MAX_VISIBLE_BOOKMARKS && (
+        {bookmarks?.length > MAX_VISIBLE_BOOKMARKS && (
           <Link component="button" onClick={toggle}>
             {viewAllItems ? 'Hide all' : 'View all'}
           </Link>
@@ -75,7 +75,7 @@ export const BookmarksLanding = ({ bookmarks, chooseBookmark }) => {
           cols={MAX_VISIBLE_BOOKMARKS}
           spacing={4}
         >
-          {bookmarks.map(bookmark => (
+          {bookmarks?.map(bookmark => (
             <GridListTile key={bookmark.id} className={styles.bookmark}>
               <BookmarksListItem bookmark={bookmark} onClick={chooseBookmark} />
             </GridListTile>

@@ -3,13 +3,16 @@ import { createBrowserHistory } from 'history';
 import * as React from 'react';
 import { Router } from 'react-router-dom';
 import { BookmarksLanding } from './bookmarks-landing.component';
+import isChromatic from 'chromatic/isChromatic';
+
+if (isChromatic()) faker.seed(1);
 
 export default { title: 'Landing/Bookmarks Landing' };
 
 const makeBookmark = () => ({
   id: faker.random.uuid(),
   title: faker.commerce.product(),
-  thumbnail: faker.image.image(),
+  thumbnail: isChromatic() ? undefined : faker.image.image(),
   created: faker.date.past().toISOString(),
 });
 

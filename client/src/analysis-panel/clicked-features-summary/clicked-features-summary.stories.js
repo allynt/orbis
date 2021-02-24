@@ -1,6 +1,9 @@
 import faker from 'faker/locale/en_GB';
 import * as React from 'react';
 import { ClickedFeaturesSummary } from './clicked-features-summary.component';
+import isChromatic from 'chromatic/isChromatic';
+
+if (isChromatic()) faker.seed(1);
 
 const createFeature = (_, i) => ({
   object: {

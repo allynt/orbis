@@ -4,20 +4,23 @@ import faker from 'faker/locale/en_GB';
 import { Provider } from 'react-redux';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
+import isChromatic from 'chromatic/isChromatic';
 
 import { MapProvider } from 'MapContext';
 import BookmarksPanel from './bookmarks-panel.component';
+
+if (isChromatic()) faker.seed(1);
 
 const mockStore = configureMockStore([thunk]);
 
 export default { title: 'Bookmarks/Bookmarks Panel' };
 
-const iShouldDoIt = () => Math.random() > 0.5;
+const iShouldDoIt = () => isChromatic() || Math.random() > 0.5;
 
 const createBookmark = (_, id) => ({
   id,
   owner: faker.random.uuid(),
-  thumbnail: iShouldDoIt() && faker.image.image(),
+  thumbnail: iShouldDoIt() ? undefined : faker.image.image(),
   title: faker.lorem.words(faker.random.number(9) + 1),
   description: iShouldDoIt() && faker.lorem.lines(2),
 });

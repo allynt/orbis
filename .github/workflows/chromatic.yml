@@ -1,0 +1,24 @@
+name: "Visual Regression Testing"
+
+on: pull_request
+
+jobs:
+  chromatic-deployment:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - name: Install dependencies
+        working-directory: client
+        env:
+          CI: "true"
+          GITHUB_REGISTRY_TOKEN: ${{ secrets.ASTROSAT_GITHUB_REGISTRY_TOKEN }}
+        run: yarn
+      - name: Publish to Chromatic
+        uses: chromaui/action@v1
+        env:
+          CI: "true"
+          GITHUB_REGISTRY_TOKEN: ${{ secrets.ASTROSAT_GITHUB_REGISTRY_TOKEN }}
+        with:
+          workingDir: client
+          token: ${{ github.token }}
+          projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}

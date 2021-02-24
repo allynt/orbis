@@ -1,6 +1,7 @@
 import * as React from 'react';
 
 import faker from 'faker/locale/en_GB';
+import isChromatic from 'chromatic/isChromatic';
 
 import BookmarkList from './bookmarks-list.component';
 
@@ -12,12 +13,14 @@ export default {
   },
 };
 
-const iShouldDoIt = () => Math.random() > 0.5;
+if (isChromatic()) faker.seed(1);
+
+const iShouldDoIt = () => isChromatic() || Math.random() > 0.5;
 
 const createBookmark = (_, id) => ({
   id,
   owner: faker.random.uuid(),
-  thumbnail: iShouldDoIt() && faker.image.image(),
+  thumbnail: iShouldDoIt() ? undefined : faker.image.image(),
   title: faker.lorem.words(faker.random.number(9) + 1),
   description: iShouldDoIt() && faker.lorem.lines(2),
 });
