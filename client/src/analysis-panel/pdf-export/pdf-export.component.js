@@ -38,8 +38,8 @@ const useStyles = makeStyles(theme => ({
   },
   button: {
     position: 'absolute',
-    top: theme.typography.pxToRem(16),
-    left: theme.typography.pxToRem(496),
+    top: theme.typography.pxToRem(8),
+    left: theme.typography.pxToRem(624),
     zIndex: 10,
     padding: theme.spacing(2),
   },
@@ -52,11 +52,12 @@ const useStyles = makeStyles(theme => ({
     color: theme.palette.text.primary,
     backgroundColor: theme.palette.background.default,
     height: '100%',
-    width: '50%',
+    // A4 paper width/height ratio
+    width: '70.5vh',
   },
   screenshot: {
     backgroundSize: 'cover',
-    height: '40%',
+    height: '100%',
     width: '100%',
   },
   pdfForm: {
@@ -64,13 +65,13 @@ const useStyles = makeStyles(theme => ({
     flexDirection: 'column',
     justifyContent: 'space-between',
     width: '100%',
-    height: '60%',
-    padding: theme.spacing(2),
+    padding: theme.spacing(1),
   },
   detailsGrid: {
     display: 'flex',
     height: '100%',
     width: '100%',
+    gap: theme.spacing(0.5),
   },
   gridColumn: {
     display: 'flex',
@@ -83,27 +84,28 @@ const useStyles = makeStyles(theme => ({
   gridElement: {
     display: 'flex',
     flexDirection: 'column',
-    gap: theme.spacing(1),
-    padding: theme.spacing(1),
+    padding: theme.spacing(0.5),
     width: '100%',
-    border: ' 3px dashed #4e78a0',
+    border: ' 2px dashed #4e78a0',
     borderRadius: theme.typography.pxToRem(5),
     '&:first-child': {
       marginBottom: theme.spacing(1),
     },
   },
   centered: {
+    textAlign: 'center',
     alignItems: 'center',
   },
   aggregationData: {
     alignSelf: 'flex-start',
-    width: '50%',
+    minWidth: '75%',
   },
   bigValue: {
-    fontSize: theme.typography.pxToRem(48),
+    fontSize: theme.typography.pxToRem(32),
     fontWeight: 'bold',
   },
-  regionValues: {
+  listData: {
+    display: 'flex',
     justifyContent: 'space-between',
   },
   moreInfo: {
@@ -113,10 +115,13 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     gap: theme.spacing(1),
     width: '100%',
-    padding: theme.spacing(0, 4),
     fontStyle: 'italic',
     '&:first-child': {
       alignItems: 'flex-end',
+      padding: theme.spacing(0, 2, 0, 0),
+    },
+    '&:last-child': {
+      padding: theme.spacing(0, 0, 0, 2),
     },
   },
   logo: {
@@ -156,11 +161,7 @@ const PDF = ({ user }) => {
     const div = document.getElementById('pdf-form');
 
     html2canvas(div).then(canvas => {
-      const doc = new jsPDF({
-        orientation: 'portrait',
-        unit: 'pc',
-        format: [100, 100],
-      });
+      const doc = new jsPDF();
 
       const width = doc.internal.pageSize.getWidth(),
         height = doc.internal.pageSize.getHeight();
@@ -197,12 +198,10 @@ const PDF = ({ user }) => {
           data-testid="screenshot"
         />
         <Box className={styles.pdfForm}>
-          <Grid direction="row" spacing={5} className={styles.detailsGrid}>
+          <Grid direction="row" className={styles.detailsGrid}>
             <Grid item container className={styles.gridColumn}>
               <Grid item className={styles.gridElement}>
-                <Typography variant="h2">
-                  Selected Areas of interest:
-                </Typography>
+                <Typography>Selected Areas of interest:</Typography>
                 <List className={styles.list}>
                   {areasOfInterest?.map(area_name => (
                     <ListItemText key={area_name} primary={area_name} />
@@ -210,30 +209,26 @@ const PDF = ({ user }) => {
                 </List>
               </Grid>
               <Grid item className={styles.gridElement}>
-                <Typography variant="h3">
-                  Total population: {populationTotal}
-                </Typography>
-                <Typography variant="h3">
-                  Total households: {householdTotal}
-                </Typography>
+                <Typography>Total population: {populationTotal}</Typography>
+                <Typography>Total households: {householdTotal}</Typography>
               </Grid>
             </Grid>
             <Grid item className={styles.gridColumn}>
               <Grid item className={clsx(styles.gridElement, styles.centered)}>
-                <Typography variant="h2">Selected Data Layer:</Typography>
+                <Typography>Selected Data Layer:</Typography>
                 <span>
                   {selectedProperty?.application?.orbis?.label ||
                     selectedProperty?.label}
                 </span>
               </Grid>
               <Grid item className={clsx(styles.gridElement, styles.centered)}>
-                <Typography variant="h2">
+                <Typography>
                   {aggregation?.aggregationLabel} of selected areas:
                 </Typography>
                 <span className={styles.bigValue}>
                   {aggregation?.areaValue}
                 </span>
-                <Typography variant="h3">
+                <Typography>
                   {aggregation?.aggregationLabel} of all areas:
                 </Typography>
                 <List className={clsx(styles.aggregationData, styles.list)}>
@@ -241,11 +236,27 @@ const PDF = ({ user }) => {
                     ([key, value]) => (
                       <ListItemText
                         key={key}
-                        className={styles.regionValues}
-                        primary={`${key}: ${value}`}
+                        className={styles.listData}
+                        primary={<span>{key}: </span>}
+                        secondary={<span>{value}</span>}
                       />
                     ),
                   )}
+                </List>
+              </Grid>
+              <Grid item className={clsx(styles.gridElement, styles.centered)}>
+                <Typography>
+                  Breakdown of the data summed over all the selected areas:
+                </Typography>
+                <List className={clsx(styles.aggregationData, styles.list)}>
+                  {breakdownAggregation?.map(({ name, value }) => (
+                    <ListItemText
+                      key={name}
+                      className={styles.listData}
+                      primary={<span>{name}: </span>}
+                      secondary={<span>{value}</span>}
+                    />
+                  ))}
                 </List>
               </Grid>
             </Grid>
@@ -254,10 +265,8 @@ const PDF = ({ user }) => {
                 The information relates to the areas selected on the map.
               </Grid>
               <Grid item className={clsx(styles.gridElement, styles.moreInfo)}>
-                <Typography variant="h3">More Information:</Typography>
-                <Typography component="h4">
-                  Source: {moreInformation?.source}
-                </Typography>
+                <Typography>More Information:</Typography>
+                <Typography>Source: {moreInformation?.source}</Typography>
                 <Typography component="p">
                   {moreInformation?.details}
                 </Typography>
