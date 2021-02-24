@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from 'react';
+import React from 'react';
 
 import {
   Box,
@@ -15,13 +15,13 @@ import {
 
 import { ReactComponent as PdfExportIcon } from './pdf-export.svg';
 
-import { sumBy } from 'lodash';
-
 import { useMap } from 'MapContext';
 
 import clsx from 'clsx';
 import { find } from 'lodash';
 import { useDispatch, useSelector } from 'react-redux';
+
+import { push } from 'connected-react-router';
 
 import { SidePanel } from 'components';
 import { activeDataSourcesSelector } from 'data-layers/data-layers.slice';
@@ -30,11 +30,9 @@ import {
   propertySelector,
   setClickedFeatures,
   setScreenshot,
-  setAnalysisData,
 } from 'map/orbs/slices/isolation-plus.slice';
 import { ClickedFeaturesSummary } from './clicked-features-summary/clicked-features-summary.component';
 import { COMPONENT_MAP } from './component-map';
-import { aggregateValues } from './aggregateValues';
 import { MoreInformation } from './more-information/more-information.component';
 
 const PrimaryDivider = styled(Divider)(({ theme }) => ({
@@ -107,7 +105,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export const AnalysisPanel = ({ history }) => {
+export const AnalysisPanel = () => {
   const [minimized, setMinimized] = React.useState(false);
   const styles = useStyles();
   const dispatch = useDispatch();
@@ -124,53 +122,11 @@ export const AnalysisPanel = ({ history }) => {
     [selectedProperty, sources],
   );
 
-  const analysisData = useMemo(() => {
-    const areasOfInterest = clickedFeatures?.map(feat => {
-      return feat.object.properties.area_name;
-    });
-
-    const populationTotal = sumBy(
-      clickedFeatures,
-      'object.properties.population',
-    )?.toLocaleString();
-
-    const householdTotal = sumBy(
-      clickedFeatures,
-      'object.properties.households',
-    )?.toLocaleString();
-
-    const aggregationLabel =
-      selectedProperty?.aggregation === 'sum' ? 'Sum' : 'Average';
-
-    const areaValue =
-      clickedFeatures && aggregateValues(clickedFeatures, selectedProperty);
-
-    const moreInformation = {
-      source: selectedProperty?.source,
-      details: selectedProperty?.details,
-    };
-
-    return {
-      areasOfInterest,
-      populationTotal,
-      householdTotal,
-      aggregation: {
-        aggregationLabel,
-        areaValue,
-      },
-      moreInformation,
-    };
-  }, [clickedFeatures, selectedProperty]);
-
-  useEffect(() => {
-    dispatch(setAnalysisData(analysisData));
-  }, [dispatch, analysisData]);
-
   const { createScreenshot } = useMap();
 
   const handleExportClick = () => {
     createScreenshot(screenshot => dispatch(setScreenshot(screenshot)));
-    return history.push('/pdf-export');
+    return dispatch(push('/pdf-export'));
   };
 
   if (!selectedProperty) return null;
@@ -238,7 +194,6 @@ export const AnalysisPanel = ({ history }) => {
                 selectedProperty={selectedProperty}
                 clickedFeatures={clickedFeatures}
                 dispatch={dispatch}
-                analysisData={analysisData}
                 {...componentDefinition.props}
               />
               <PrimaryDivider />

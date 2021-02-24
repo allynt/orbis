@@ -37,9 +37,9 @@ const initialState = {
       { type: 'image/png' },
     ),
     areasOfInterest: [
-      { within_LAD_name: 'Moray', identifier: 'S00121202' },
-      { within_LAD_name: 'Highland', identifier: 'S00119201' },
-      { within_LAD_name: 'Perthshire', identifier: 'S00126290' },
+      { area_name: 'S00121202' },
+      { area_name: 'S00119201' },
+      { area_name: 'S00126290' },
     ],
     populationTotal: 264,
     householdTotal: 122,
@@ -76,7 +76,7 @@ describe('PDF', () => {
     const { getByText } = renderComponent();
 
     initialState.pdfData.areasOfInterest.forEach(aoi => {
-      expect(getByText(`${aoi.within_LAD_name}`)).toBeInTheDocument();
+      expect(getByText(`${aoi.area_name}`)).toBeInTheDocument();
     });
 
     expect(
@@ -160,26 +160,6 @@ describe('PDF', () => {
     expect(
       getByText(`${state.pdfData.aggregation.areaValue}`),
     ).toBeInTheDocument();
-  });
-
-  it('uses code identifier if no LAD name available', () => {
-    const state = {
-      ...initialState,
-      pdfData: {
-        ...initialState.pdfData,
-        areasOfInterest: [
-          { identifier: 'S00121202' },
-          { identifier: 'S00119201' },
-          { identifier: 'S00126290' },
-        ],
-      },
-    };
-
-    const { getByText } = renderComponent(state);
-
-    state.pdfData.areasOfInterest.forEach(aoi => {
-      expect(getByText(`${aoi.identifier}`)).toBeInTheDocument();
-    });
   });
 
   it('does not display username section if username is undefined', () => {

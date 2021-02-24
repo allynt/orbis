@@ -1,5 +1,7 @@
 import { createSlice, createSelector } from '@reduxjs/toolkit';
-import { differenceBy, unionBy } from 'lodash';
+import { differenceBy, unionBy, sumBy } from 'lodash';
+
+import { aggregateValues } from '../../../analysis-panel/aggregateValues';
 
 /**
  * @typedef {{
@@ -16,7 +18,7 @@ const initialState = {
     name: undefined,
   },
   filterRange: [undefined, undefined],
-  analysisData: {},
+  screenshot: undefined,
 };
 
 const isolationPlusSlice = createSlice({
@@ -71,10 +73,7 @@ const isolationPlusSlice = createSlice({
       state.filterRange = payload;
     },
     setScreenshot: (state, { payload }) => {
-      state.analysisData.screenshot = payload;
-    },
-    setAnalysisData: (state, { payload }) => {
-      state.analysisData = payload;
+      state.screenshot = payload;
     },
   },
 });
@@ -87,7 +86,6 @@ export const {
   removeClickedFeatures,
   setFilterRange,
   setScreenshot,
-  setAnalysisData,
 } = isolationPlusSlice.actions;
 
 /**
@@ -111,9 +109,41 @@ export const filterRangeSelector = createSelector(
   orb => orb?.filterRange,
 );
 
-export const analysisDataSelector = createSelector(
-  baseSelector,
-  orb => orb?.analysisData,
-);
+export const clickedFeaturesDataSelector = createSelector(baseSelector, orb => {
+  return {
+    screenshot: orb?.screenshot,
+    areasOfInterest: orb?.clickedFeatures?.map(
+      feat => feat.object.properties.area_name,
+    ),
+    populationTotal: sumBy(
+      orb?.clickedFeatures,
+      'object.properties.population',
+    )?.toLocaleString(),
+    householdTotal: sumBy(
+      orb?.clickedFeatures,
+      'object.properties.households',
+    )?.toLocaleString(),
+    aggregation: {
+      aggregationLabel:
+        orb?.property?.aggregation === 'sum' ? 'Sum' : 'Average',
+      areaValue: aggregateValues(orb?.clickedFeatures, orb?.property),
+    },
+    breakdownAggregation: orb?.property?.breakdown?.map(name => {
+      const value = aggregateValues(orb?.clickedFeatures, {
+        name,
+        aggregation: orb?.property.aggregation,
+        precision: orb?.property.precision,
+      });
+      return {
+        value,
+        name,
+      };
+    }),
+    moreInformation: {
+      source: orb?.property?.source,
+      details: orb?.property?.details,
+    },
+  };
+});
 
 export default isolationPlusSlice.reducer;

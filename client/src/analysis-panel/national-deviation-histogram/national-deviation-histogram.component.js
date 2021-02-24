@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 
+import { useSelector } from 'react-redux';
+
 import {
   Box,
   Grid,
@@ -8,6 +10,8 @@ import {
   Select,
   Typography,
 } from '@astrosat/astrosat-ui';
+
+import { clickedFeaturesDataSelector } from 'map/orbs/slices/isolation-plus.slice';
 
 import { BarChart, SidePanelSection } from 'components';
 
@@ -34,7 +38,6 @@ export const NationalDeviationHistogram = ({
   selectedProperty,
   clickedFeatures,
   data = [],
-  analysisData,
   info,
 }) => {
   const [selectedAggregateArea, setSelectedAggregateArea] = useState('GB');
@@ -42,9 +45,8 @@ export const NationalDeviationHistogram = ({
 
   const {
     aggregation: { aggregationLabel, areaValue },
-  } = analysisData;
+  } = useSelector(state => clickedFeaturesDataSelector(state?.orbs));
 
-  console.log('NationalDeviationHistogram', analysisData);
   return (
     <SidePanelSection defaultExpanded title="Selected Data Layer" info={info}>
       <Box display="flex" flexDirection="column">

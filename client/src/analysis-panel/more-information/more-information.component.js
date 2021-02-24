@@ -31,6 +31,7 @@ const useStyles = makeStyles(theme => ({
  */
 export const MoreInformation = ({ details, source }) => {
   const styles = useStyles();
+
   return (
     <SidePanelSection title="More Information" defaultExpanded>
       <div className={styles.information}>

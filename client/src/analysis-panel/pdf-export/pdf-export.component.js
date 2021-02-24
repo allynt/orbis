@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 
-import { Redirect } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+
+import { push } from 'connected-react-router';
 
 import { jsPDF } from 'jspdf';
 import html2canvas from 'html2canvas';
@@ -13,17 +15,15 @@ import {
   Button,
   Box,
   List,
-  ListItem,
+  Grid,
   ListItemText,
   makeStyles,
   Typography,
 } from '@astrosat/astrosat-ui';
 
-import { useSelector } from 'react-redux';
-
 import {
   propertySelector,
-  analysisDataSelector,
+  clickedFeaturesDataSelector,
 } from 'map/orbs/slices/isolation-plus.slice';
 
 import OrbisLogo from './orbis-logo.png';
@@ -56,7 +56,7 @@ const useStyles = makeStyles(theme => ({
   },
   screenshot: {
     backgroundSize: 'cover',
-    height: '50%',
+    height: '40%',
     width: '100%',
   },
   pdfForm: {
@@ -64,12 +64,11 @@ const useStyles = makeStyles(theme => ({
     flexDirection: 'column',
     justifyContent: 'space-between',
     width: '100%',
-    height: '50%',
+    height: '60%',
     padding: theme.spacing(2),
   },
   detailsGrid: {
     display: 'flex',
-    gap: theme.spacing(1),
     height: '100%',
     width: '100%',
   },
@@ -110,14 +109,8 @@ const useStyles = makeStyles(theme => ({
   moreInfo: {
     textAlign: 'justify',
   },
-  footer: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
   footerElement: {
     display: 'flex',
-    flexDirection: 'column',
     gap: theme.spacing(1),
     width: '100%',
     padding: theme.spacing(0, 4),
@@ -132,6 +125,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const PDF = ({ user }) => {
+  const dispatch = useDispatch();
   const styles = useStyles();
 
   const selectedProperty = useSelector(state => propertySelector(state?.orbs));
@@ -142,8 +136,9 @@ const PDF = ({ user }) => {
     populationTotal,
     householdTotal,
     aggregation,
+    breakdownAggregation,
     moreInformation,
-  } = useSelector(state => analysisDataSelector(state?.orbs));
+  } = useSelector(state => clickedFeaturesDataSelector(state?.orbs));
 
   const [image, setImage] = useState(undefined);
 
@@ -184,7 +179,10 @@ const PDF = ({ user }) => {
     });
   };
 
-  if (!selectedProperty?.source_id) return <Redirect to="/" />;
+  if (!selectedProperty?.source_id) {
+    dispatch(push('/'));
+    return null;
+  }
   return (
     <div className={styles.container}>
       <Button className={styles.button} onClick={handleClick}>
@@ -199,42 +197,42 @@ const PDF = ({ user }) => {
           data-testid="screenshot"
         />
         <Box className={styles.pdfForm}>
-          <Box className={styles.detailsGrid}>
-            <Box className={styles.gridColumn}>
-              <Box className={styles.gridElement}>
+          <Grid direction="row" spacing={5} className={styles.detailsGrid}>
+            <Grid item container className={styles.gridColumn}>
+              <Grid item className={styles.gridElement}>
                 <Typography variant="h2">
                   Selected Areas of interest:
                 </Typography>
                 <List className={styles.list}>
                   {areasOfInterest?.map(area_name => (
-                    <ListItemText primary={area_name} />
+                    <ListItemText key={area_name} primary={area_name} />
                   ))}
                 </List>
-              </Box>
-              <Box className={styles.gridElement}>
+              </Grid>
+              <Grid item className={styles.gridElement}>
                 <Typography variant="h3">
                   Total population: {populationTotal}
                 </Typography>
                 <Typography variant="h3">
                   Total households: {householdTotal}
                 </Typography>
-              </Box>
-            </Box>
-            <Box className={styles.gridColumn}>
-              <Box className={clsx(styles.gridElement, styles.centered)}>
+              </Grid>
+            </Grid>
+            <Grid item className={styles.gridColumn}>
+              <Grid item className={clsx(styles.gridElement, styles.centered)}>
                 <Typography variant="h2">Selected Data Layer:</Typography>
-                <Box component="span">
+                <span>
                   {selectedProperty?.application?.orbis?.label ||
                     selectedProperty?.label}
-                </Box>
-              </Box>
-              <Box className={clsx(styles.gridElement, styles.centered)}>
+                </span>
+              </Grid>
+              <Grid item className={clsx(styles.gridElement, styles.centered)}>
                 <Typography variant="h2">
                   {aggregation?.aggregationLabel} of selected areas:
                 </Typography>
-                <Box component="span" className={styles.bigValue}>
+                <span className={styles.bigValue}>
                   {aggregation?.areaValue}
-                </Box>
+                </span>
                 <Typography variant="h3">
                   {aggregation?.aggregationLabel} of all areas:
                 </Typography>
@@ -242,19 +240,20 @@ const PDF = ({ user }) => {
                   {Object.entries(selectedProperty?.aggregates)?.map(
                     ([key, value]) => (
                       <ListItemText
+                        key={key}
                         className={styles.regionValues}
                         primary={`${key}: ${value}`}
                       />
                     ),
                   )}
                 </List>
-              </Box>
-            </Box>
-            <Box className={styles.gridColumn}>
-              <Box className={styles.gridElement}>
+              </Grid>
+            </Grid>
+            <Grid item className={styles.gridColumn}>
+              <Grid item className={styles.gridElement}>
                 The information relates to the areas selected on the map.
-              </Box>
-              <Box className={clsx(styles.gridElement, styles.moreInfo)}>
+              </Grid>
+              <Grid item className={clsx(styles.gridElement, styles.moreInfo)}>
                 <Typography variant="h3">More Information:</Typography>
                 <Typography component="h4">
                   Source: {moreInformation?.source}
@@ -262,16 +261,22 @@ const PDF = ({ user }) => {
                 <Typography component="p">
                   {moreInformation?.details}
                 </Typography>
-              </Box>
-            </Box>
-          </Box>
-          <Box component="footer" className={styles.footer}>
-            <Box className={styles.footerElement}>
-              <Box component="span">Data Analysis Report</Box>
-              <Box component="span">ORBIS by ASTROSAT</Box>
-            </Box>
+              </Grid>
+            </Grid>
+          </Grid>
+          <Grid
+            container
+            wrap="nowrap"
+            justify="space-between"
+            alignItems="center"
+            component="footer"
+          >
+            <Grid item direction="column" className={styles.footerElement}>
+              <span>Data Analysis Report</span>
+              <span>ORBIS by ASTROSAT</span>
+            </Grid>
             <img className={styles.logo} src={OrbisLogo} alt="Orbis logo" />
-            <Box className={styles.footerElement}>
+            <Grid item direction="column" className={styles.footerElement}>
               {user?.name && (
                 <Typography component="p" data-testid="user-name">
                   Report run by: {user.name}
@@ -281,8 +286,8 @@ const PDF = ({ user }) => {
               <Typography component="p">
                 Date of the Report: {creationDate}
               </Typography>
-            </Box>
-          </Box>
+            </Grid>
+          </Grid>
         </Box>
       </Box>
     </div>
