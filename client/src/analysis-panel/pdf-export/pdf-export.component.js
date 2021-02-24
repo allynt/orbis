@@ -216,10 +216,10 @@ const PDF = ({ user }) => {
             <Grid item className={styles.gridColumn}>
               <Grid item className={clsx(styles.gridElement, styles.centered)}>
                 <Typography>Selected Data Layer:</Typography>
-                <span>
+                <Typography>
                   {selectedProperty?.application?.orbis?.label ||
                     selectedProperty?.label}
-                </span>
+                </Typography>
               </Grid>
               <Grid item className={clsx(styles.gridElement, styles.centered)}>
                 <Typography>
@@ -262,7 +262,9 @@ const PDF = ({ user }) => {
             </Grid>
             <Grid item className={styles.gridColumn}>
               <Grid item className={styles.gridElement}>
-                The information relates to the areas selected on the map.
+                <Typography>
+                  The information relates to the areas selected on the map.
+                </Typography>
               </Grid>
               <Grid item className={clsx(styles.gridElement, styles.moreInfo)}>
                 <Typography>More Information:</Typography>
