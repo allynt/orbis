@@ -2,6 +2,9 @@ import * as React from 'react';
 import faker from 'faker/locale/en_GB';
 import { CrowdlessSidebarComponent } from './sidebar.component';
 import { Description } from './description.component';
+import isChromatic from 'chromatic/isChromatic';
+
+if (isChromatic()) faker.seed(1);
 
 export default {
   title: 'Orbs/Crowdless/CrowdlessSidebarComponent',

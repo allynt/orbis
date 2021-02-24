@@ -1,6 +1,9 @@
 import faker from 'faker/locale/en_GB';
 import React from 'react';
 import { LicenceDashboard } from './licence-dashboard.component';
+import isChromatic from 'chromatic/isChromatic';
+
+if (isChromatic()) faker.seed(1);
 
 export default {
   title: 'Admin/Licence Dashboard',

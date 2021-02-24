@@ -1,6 +1,9 @@
 import faker from 'faker/locale/en_GB';
 import * as React from 'react';
 import { DiscretePropertyLegend } from './discrete-property-legend.component';
+import isChromatic from 'chromatic/isChromatic';
+
+if (isChromatic()) faker.seed(1);
 
 export default {
   title: 'Orbs/Isolation Plus/Radio Picker/Discrete Property Legend',
@@ -15,7 +18,6 @@ Basic.args = {
       .fill(undefined)
       .map(() => ({
         category: faker.commerce.department(),
-        // color: faker.commerce.color(),
       }))
       .reduce((prev, { category }) => ({ ...prev, [category]: {} }), {}),
   },

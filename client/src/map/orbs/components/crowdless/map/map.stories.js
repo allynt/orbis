@@ -1,6 +1,9 @@
 import faker from 'faker/locale/en_GB';
 import * as React from 'react';
 import CrowdlessMapComponent from './map.component';
+import isChromatic from 'chromatic/isChromatic';
+
+if (isChromatic()) faker.seed(1);
 
 export default {
   title: 'Orbs/Crowdless/CrowdlessMapComponent',

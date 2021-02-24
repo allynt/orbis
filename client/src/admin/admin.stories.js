@@ -8,7 +8,7 @@ import isChromatic from 'chromatic/isChromatic';
 
 export default { title: 'Admin/Main' };
 
-faker.seed(isChromatic() ? 1 : undefined);
+if (isChromatic()) faker.seed(1);
 
 const mockStore = configureMockStore([thunk]);
 

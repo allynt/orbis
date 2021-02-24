@@ -1,6 +1,7 @@
 import * as React from 'react';
 
 import faker from 'faker/locale/en_GB';
+import isChromatic from 'chromatic/isChromatic';
 
 import { BookmarksListItem } from './bookmarks-list-item.component';
 
@@ -12,11 +13,15 @@ export default {
   },
 };
 
-/** @type {Partial<import('typings/orbis').Bookmark>} */
+if (isChromatic()) faker.seed(1);
+
+/** @type {Partial<Bookmark>} */
 const bookmark = {
   id: faker.random.number(),
   owner: faker.random.uuid(),
-  thumbnail: faker.image.nature(),
+  thumbnail: isChromatic()
+    ? 'http://placeimg.com/640/480/nature'
+    : faker.image.nature(),
   title: faker.lorem.words(faker.random.number(9) + 1),
   description: faker.lorem.lines(2),
 };

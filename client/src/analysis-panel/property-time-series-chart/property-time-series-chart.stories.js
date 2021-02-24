@@ -2,6 +2,9 @@ import faker from 'faker';
 import * as React from 'react';
 import { PropertyTimeSeriesChart } from './property-time-series-chart.component';
 import addDays from 'date-fns/addDays';
+import isChromatic from 'chromatic/isChromatic';
+
+if (isChromatic()) faker.seed(1);
 
 export default { title: 'Analysis Panel/Property Time Series Chart' };
 
