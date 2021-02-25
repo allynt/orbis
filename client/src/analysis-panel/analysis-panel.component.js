@@ -5,6 +5,7 @@ import {
   Button,
   ButtonBase,
   CloseIcon,
+  SvgIcon,
   Divider,
   IconButton,
   makeStyles,
@@ -98,10 +99,10 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    marginBottom: '2rem',
+    marginBottom: theme.spacing(4),
   },
   button: {
-    padding: '0.5rem 1rem',
+    padding: theme.spacing(1, 2),
   },
 }));
 
@@ -171,7 +172,9 @@ export const AnalysisPanel = () => {
             size="small"
             onClick={handleExportClick}
           >
-            <PdfExportIcon />
+            <SvgIcon>
+              <PdfExportIcon />
+            </SvgIcon>
           </IconButton>
         </div>
       }

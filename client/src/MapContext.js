@@ -89,8 +89,8 @@ export const useMap = () => {
     merged.height = deckCanvas.height;
     const mergedContext = merged.getContext('2d');
     mergedContext.globalAlpha = 1.0;
-    mergedContext.drawImage(bottomMap.getCanvas(), 0, 0);
     mergedContext.drawImage(topMap.getCanvas(), 0, 0);
+    mergedContext.drawImage(bottomMap.getCanvas(), 0, 0);
     mergedContext.globalAlpha = 1.0;
     mergedContext.drawImage(deckCanvas, 0, 0);
     merged.toBlob(callback);

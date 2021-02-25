@@ -11,7 +11,7 @@ import {
   Typography,
 } from '@astrosat/astrosat-ui';
 
-import { clickedFeaturesDataSelector } from 'map/orbs/slices/isolation-plus.slice';
+import { aggregationSelector } from 'map/orbs/slices/isolation-plus.slice';
 
 import { BarChart, SidePanelSection } from 'components';
 
@@ -43,9 +43,9 @@ export const NationalDeviationHistogram = ({
   const [selectedAggregateArea, setSelectedAggregateArea] = useState('GB');
   const styles = useStyles();
 
-  const {
-    aggregation: { aggregationLabel, areaValue },
-  } = useSelector(state => clickedFeaturesDataSelector(state?.orbs));
+  const { aggregationLabel, areaValue } = useSelector(state =>
+    aggregationSelector(state?.orbs),
+  );
 
   return (
     <SidePanelSection defaultExpanded title="Selected Data Layer" info={info}>

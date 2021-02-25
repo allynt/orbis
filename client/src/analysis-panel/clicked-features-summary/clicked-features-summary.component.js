@@ -16,7 +16,7 @@ import { SidePanelSection } from 'components';
 import { get } from 'lodash';
 import {
   removeClickedFeatures,
-  clickedFeaturesDataSelector,
+  populationAndHouseholdSelector,
 } from 'map/orbs/slices/isolation-plus.slice';
 import React, { useState } from 'react';
 
@@ -112,7 +112,7 @@ export const ClickedFeaturesSummary = ({
   const styles = useStyles();
 
   const { populationTotal, householdTotal } = useSelector(state =>
-    clickedFeaturesDataSelector(state?.orbs),
+    populationAndHouseholdSelector(state?.orbs),
   );
 
   return (

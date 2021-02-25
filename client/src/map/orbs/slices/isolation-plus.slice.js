@@ -35,12 +35,14 @@ const isolationPlusSlice = createSlice({
       state.clickedFeatures = payload?.clickedFeatures;
     },
     setProperty: (state, { payload }) => {
+      console.log('selectedProperty: ', payload);
       if (state.clickedFeatures?.[0]?.layer?.id !== payload.source_id)
         state.clickedFeatures = undefined;
       state.property = payload;
       state.filterRange = [payload.min, payload.max];
     },
     setClickedFeatures: (state, { payload }) => {
+      console.log('ClickedFeatures: ', payload);
       state.clickedFeatures = payload;
     },
     /**
@@ -115,40 +117,45 @@ export const screenshotSelector = createSelector(
   orb => orb?.screenshot,
 );
 
-export const clickedFeaturesDataSelector = createSelector(baseSelector, orb => {
+export const areasOfInterestSelector = createSelector(baseSelector, orb =>
+  orb?.clickedFeatures?.map(feat => feat.object.properties.area_name),
+);
+
+export const populationAndHouseholdSelector = createSelector(
+  baseSelector,
+  orb => {
+    return {
+      populationTotal: sumBy(
+        orb?.clickedFeatures,
+        'object.properties.population',
+      )?.toLocaleString(),
+      householdTotal: sumBy(
+        orb?.clickedFeatures,
+        'object.properties.households',
+      )?.toLocaleString(),
+    };
+  },
+);
+
+export const aggregationSelector = createSelector(baseSelector, orb => {
   return {
-    areasOfInterest: orb?.clickedFeatures?.map(
-      feat => feat.object.properties.area_name,
-    ),
-    populationTotal: sumBy(
-      orb?.clickedFeatures,
-      'object.properties.population',
-    )?.toLocaleString(),
-    householdTotal: sumBy(
-      orb?.clickedFeatures,
-      'object.properties.households',
-    )?.toLocaleString(),
-    aggregation: {
-      aggregationLabel:
-        orb?.property?.aggregation === 'sum' ? 'Sum' : 'Average',
-      areaValue: aggregateValues(orb?.clickedFeatures, orb?.property),
-    },
-    breakdownAggregation: orb?.property?.breakdown?.map(name => {
-      const value = aggregateValues(orb?.clickedFeatures, {
-        name,
-        aggregation: orb?.property.aggregation,
-        precision: orb?.property.precision,
-      });
-      return {
-        value,
-        name,
-      };
-    }),
-    moreInformation: {
-      source: orb?.property?.source,
-      details: orb?.property?.details,
-    },
+    aggregationLabel: orb?.property?.aggregation === 'sum' ? 'Sum' : 'Average',
+    areaValue: aggregateValues(orb?.clickedFeatures, orb?.property),
   };
 });
+
+export const breakdownAggregationSelector = createSelector(baseSelector, orb =>
+  orb?.property?.breakdown?.map(name => {
+    const value = aggregateValues(orb?.clickedFeatures, {
+      name,
+      aggregation: orb?.property.aggregation,
+      precision: orb?.property.precision,
+    });
+    return {
+      value,
+      name,
+    };
+  }),
+);
 
 export default isolationPlusSlice.reducer;

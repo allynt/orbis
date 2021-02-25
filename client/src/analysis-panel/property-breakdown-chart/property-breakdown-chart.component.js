@@ -11,7 +11,7 @@ import { useChartTheme } from 'components/charts/useChartTheme';
 import { DEFAULT_DECIMAL_PRECISION } from 'map/map.constants';
 import { isRealValue } from 'utils/isRealValue';
 
-import { clickedFeaturesDataSelector } from 'map/orbs/slices/isolation-plus.slice';
+import { breakdownAggregationSelector } from 'map/orbs/slices/isolation-plus.slice';
 
 /**
  *
@@ -24,8 +24,8 @@ import { clickedFeaturesDataSelector } from 'map/orbs/slices/isolation-plus.slic
 export const PropertyBreakdownChart = ({ selectedProperty, info }) => {
   const { colors, ...chartTheme } = useChartTheme();
 
-  const {breakdownAggregation} = useSelector(state =>
-    clickedFeaturesDataSelector(state?.orbs),
+  const breakdownAggregation = useSelector(state =>
+    breakdownAggregationSelector(state?.orbs),
   );
 
   if (breakdownAggregation?.some(v => !isRealValue(v.value))) return null;

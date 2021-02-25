@@ -24,7 +24,10 @@ import {
 import {
   propertySelector,
   screenshotSelector,
-  clickedFeaturesDataSelector,
+  areasOfInterestSelector,
+  populationAndHouseholdSelector,
+  aggregationSelector,
+  breakdownAggregationSelector,
 } from 'map/orbs/slices/isolation-plus.slice';
 
 import OrbisLogo from './orbis-logo.png';
@@ -89,7 +92,7 @@ const useStyles = makeStyles(theme => ({
     width: '100%',
     border: ' 2px dashed #4e78a0',
     borderRadius: theme.typography.pxToRem(5),
-    '&:first-child': {
+    '&:not(:last-child)': {
       marginBottom: theme.spacing(1),
     },
   },
@@ -126,7 +129,7 @@ const useStyles = makeStyles(theme => ({
     },
   },
   logo: {
-    height: `${theme.typography.pxToRem(80)} !important`,
+    height: `${theme.typography.pxToRem(40)} !important`,
   },
 }));
 
@@ -137,14 +140,21 @@ const PDF = ({ user }) => {
   const selectedProperty = useSelector(state => propertySelector(state?.orbs));
   const screenshot = useSelector(state => screenshotSelector(state?.orbs));
 
-  const {
-    areasOfInterest,
-    populationTotal,
-    householdTotal,
-    aggregation,
-    breakdownAggregation,
-    moreInformation,
-  } = useSelector(state => clickedFeaturesDataSelector(state?.orbs));
+  const areasOfInterest = useSelector(state =>
+    areasOfInterestSelector(state?.orbs),
+  );
+
+  const { populationTotal, householdTotal } = useSelector(state =>
+    populationAndHouseholdSelector(state?.orbs),
+  );
+
+  const { aggregationLabel, areaValue } = useSelector(state =>
+    aggregationSelector(state?.orbs),
+  );
+
+  const breakdownAggregation = useSelector(state =>
+    breakdownAggregationSelector(state?.orbs),
+  );
 
   const [image, setImage] = useState(undefined);
   const creationDate = format(new Date(), 'MMMM do Y');
@@ -197,8 +207,8 @@ const PDF = ({ user }) => {
           }}
           data-testid="screenshot"
         />
-        <Box className={styles.pdfForm}>
-          <Grid direction="row" className={styles.detailsGrid}>
+        <Grid container className={styles.pdfForm}>
+          <Grid container item className={styles.detailsGrid}>
             <Grid item container className={styles.gridColumn}>
               <Grid item className={styles.gridElement}>
                 <Typography>Selected Areas of interest:</Typography>
@@ -222,15 +232,9 @@ const PDF = ({ user }) => {
                 </Typography>
               </Grid>
               <Grid item className={clsx(styles.gridElement, styles.centered)}>
-                <Typography>
-                  {aggregation?.aggregationLabel} of selected areas:
-                </Typography>
-                <span className={styles.bigValue}>
-                  {aggregation?.areaValue}
-                </span>
-                <Typography>
-                  {aggregation?.aggregationLabel} of all areas:
-                </Typography>
+                <Typography>{aggregationLabel} of selected areas:</Typography>
+                <span className={styles.bigValue}>{areaValue}</span>
+                <Typography>{aggregationLabel} of all areas:</Typography>
                 <List className={clsx(styles.aggregationData, styles.list)}>
                   {Object.entries(selectedProperty?.aggregates)?.map(
                     ([key, value]) => (
@@ -244,21 +248,26 @@ const PDF = ({ user }) => {
                   )}
                 </List>
               </Grid>
-              <Grid item className={clsx(styles.gridElement, styles.centered)}>
-                <Typography>
-                  Breakdown of the data summed over all the selected areas:
-                </Typography>
-                <List className={clsx(styles.aggregationData, styles.list)}>
-                  {breakdownAggregation?.map(({ name, value }) => (
-                    <ListItemText
-                      key={name}
-                      className={styles.listData}
-                      primary={<span>{name}: </span>}
-                      secondary={<span>{value}</span>}
-                    />
-                  ))}
-                </List>
-              </Grid>
+              {breakdownAggregation && (
+                <Grid
+                  item
+                  className={clsx(styles.gridElement, styles.centered)}
+                >
+                  <Typography>
+                    Breakdown of the data summed over all the selected areas:
+                  </Typography>
+                  <List className={clsx(styles.aggregationData, styles.list)}>
+                    {breakdownAggregation?.map(({ name, value }) => (
+                      <ListItemText
+                        key={name}
+                        className={styles.listData}
+                        primary={<span>{name}: </span>}
+                        secondary={<span>{value}</span>}
+                      />
+                    ))}
+                  </List>
+                </Grid>
+              )}
             </Grid>
             <Grid item className={styles.gridColumn}>
               <Grid item className={styles.gridElement}>
@@ -268,15 +277,16 @@ const PDF = ({ user }) => {
               </Grid>
               <Grid item className={clsx(styles.gridElement, styles.moreInfo)}>
                 <Typography>More Information:</Typography>
-                <Typography>Source: {moreInformation?.source}</Typography>
+                <Typography>Source: {selectedProperty?.source}</Typography>
                 <Typography component="p">
-                  {moreInformation?.details}
+                  {selectedProperty?.details}
                 </Typography>
               </Grid>
             </Grid>
           </Grid>
           <Grid
             container
+            item
             wrap="nowrap"
             justify="space-between"
             alignItems="center"
@@ -289,17 +299,15 @@ const PDF = ({ user }) => {
             <img className={styles.logo} src={OrbisLogo} alt="Orbis logo" />
             <Grid item direction="column" className={styles.footerElement}>
               {user?.name && (
-                <Typography component="p" data-testid="user-name">
+                <Typography data-testid="user-name">
                   Report run by: {user.name}
                 </Typography>
               )}
-              <Typography component="p">User Name: {user?.email}</Typography>
-              <Typography component="p">
-                Date of the Report: {creationDate}
-              </Typography>
+              <Typography>User Name: {user?.email}</Typography>
+              <Typography>Date of the Report: {creationDate}</Typography>
             </Grid>
           </Grid>
-        </Box>
+        </Grid>
       </Box>
     </div>
   );
