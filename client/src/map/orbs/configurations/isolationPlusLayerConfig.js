@@ -128,6 +128,20 @@ const configuration = ({
    * @param {{srcEvent: PointerEvent}} event
    */
   const onClick = (info, event) => {
+    /* recreating info as a pure JSON object */
+    /* rather than an object w/ nested classes */
+    const payload = [
+      {
+        index: info.index,
+        object: info.object,
+        layer: {
+          id: info.layer.id,
+          props: {
+            uniqueIdProperty: info.layer.props.uniqueIdProperty,
+          },
+        },
+      },
+    ];
     const hasModifier = event.srcEvent.ctrlKey || event.srcEvent.metaKey;
     if (
       !clickedFeatures?.find(
@@ -137,16 +151,16 @@ const configuration = ({
       )
     ) {
       if (hasModifier) {
-        return dispatch(addClickedFeatures([info]));
+        return dispatch(addClickedFeatures(payload));
       }
-      return dispatch(setClickedFeatures([info]));
+      return dispatch(setClickedFeatures(payload));
     }
 
     if (event.srcEvent.ctrlKey || event.srcEvent.metaKey) {
-      return dispatch(removeClickedFeatures([info]));
+      return dispatch(removeClickedFeatures(payload));
     }
 
-    return dispatch(setClickedFeatures([info]));
+    return dispatch(setClickedFeatures(payload));
   };
 
   /**

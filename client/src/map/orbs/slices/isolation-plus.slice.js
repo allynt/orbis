@@ -22,6 +22,14 @@ const isolationPlusSlice = createSlice({
   name: 'isolationPlus',
   initialState,
   reducers: {
+    setState: (state, { payload }) => {
+      state.property = payload?.property || {};
+      state.filterRange = payload?.filterRange || [
+        payload?.property?.min,
+        payload?.property.max,
+      ];
+      state.clickedFeatures = payload?.clickedFeatures;
+    },
     setProperty: (state, { payload }) => {
       if (state.clickedFeatures?.[0]?.layer?.id !== payload.source_id)
         state.clickedFeatures = undefined;
@@ -65,6 +73,7 @@ const isolationPlusSlice = createSlice({
 });
 
 export const {
+  setState,
   setProperty,
   setClickedFeatures,
   addClickedFeatures,

@@ -7,25 +7,39 @@ from django.utils.translation import gettext as _
 from astrosat.utils import validate_schema
 from astrosat_users.models import get_sentinel_user
 
-
 FEATURE_COLLECTION_SCHEMA = {
     # defines the schema of the feature_collection JSONField below
     "type": "object",
-    "properties": {
-        "type": {"type": "string", "pattern": "^FeatureCollection$"},
-        "features": {
-            "type": "array",
-            "items": {
-                "type": "object",
-                "properties": {
-                    "type": {"type": "string", "pattern": "^Feature$"},
-                    "geometry": {"type": "object"},
-                    "properties": {"type": "object"},
-                },
-                "required": ["geometry", "properties"],
+    "properties":
+        {
+            "type": {
+                "type": "string",
+                "pattern": "^FeatureCollection$"
             },
+            "features":
+                {
+                    "type": "array",
+                    "items":
+                        {
+                            "type": "object",
+                            "properties":
+                                {
+                                    "type":
+                                        {
+                                            "type": "string",
+                                            "pattern": "^Feature$"
+                                        },
+                                    "geometry": {
+                                        "type": "object"
+                                    },
+                                    "properties": {
+                                        "type": "object"
+                                    },
+                                },
+                            "required": ["geometry", "properties"],
+                        },
+                },
         },
-    },
     "required": ["features"],
 }
 
@@ -48,7 +62,6 @@ def bookmark_thumbnail_path(instance, filename):
 
 
 class BookmarkManager(models.Manager):
-
     def delete(self):
         """
         Ensures that Deleting bookmarks via a QuerySet calls the custom delete method.
@@ -66,8 +79,12 @@ class Bookmark(gis_models.Model):
 
     PRECISION = 6
 
-    created = models.DateTimeField(auto_now_add=True, help_text=_("When the bookmark was first created."))
-    modified = models.DateTimeField(auto_now=True, help_text=_("When the bookmark was last modified."))
+    created = models.DateTimeField(
+        auto_now_add=True, help_text=_("When the bookmark was first created.")
+    )
+    modified = models.DateTimeField(
+        auto_now=True, help_text=_("When the bookmark was last modified.")
+    )
 
     title = models.CharField(
         max_length=128,
@@ -93,7 +110,14 @@ class Bookmark(gis_models.Model):
         blank=True,
         null=True,
         validators=[validate_layers],
-        help_text=_("A list of all the source_ids of the data layers loaded on the map.")
+        help_text=_(
+            "A list of all the source_ids of the data layers loaded on the map."
+        )
+    )
+
+    orbs = models.JSONField(
+        blank=True,
+        null=True,
     )
 
     center = gis_models.PointField(

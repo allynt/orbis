@@ -42,6 +42,7 @@ import {
   selectMapStyle,
 } from './map.slice';
 import { useOrbs } from './orbs/useOrbs';
+import { setState as setIsolationPlusState } from './orbs/slices/isolation-plus.slice';
 import { MapControlButton } from './controls/map-control-button.component';
 import {
   extrudedModeSelector,
@@ -169,6 +170,7 @@ const Map = () => {
         center: [longitude, latitude],
         zoom,
         layers,
+        orbs,
       } = selectedBookmark;
       setViewState({
         ...viewState,
@@ -179,6 +181,7 @@ const Map = () => {
         transitionInterpolator: new FlyToInterpolator(),
       });
       dispatch(setLayers(layers || []));
+      dispatch(setIsolationPlusState(orbs?.isolationPlus || {}));
       dispatch(onBookmarkLoaded());
     }
   }, [selectedBookmark, viewState, setViewState, dispatch]);

@@ -1,4 +1,5 @@
 import reducer, {
+  setState,
   propertySelector,
   setProperty,
   filterRangeSelector,
@@ -9,6 +10,54 @@ import reducer, {
 
 describe('isolationPlusSlice', () => {
   describe('reducer', () => {
+    describe('setState', () => {
+      it('sets the state', () => {
+        const state = { property: {} };
+        const expected = expect.objectContaining({
+          property: { min: 1, max: 2 },
+          filterRange: [10, 20],
+          clickedFeatures: {},
+        });
+        const payload = {
+          property: { min: 1, max: 2 },
+          filterRange: [10, 20],
+          clickedFeatures: {},
+        };
+
+        const result = reducer(state, setState(payload));
+        expect(result).toEqual(expected);
+      });
+      it('sets the state using the default filterRange', () => {
+        const state = { property: {} };
+        const expected = expect.objectContaining({
+          property: { min: 1, max: 2 },
+          filterRange: [1, 2],
+          clickedFeatures: {},
+        });
+        const payload = {
+          property: { min: 1, max: 2 },
+          clickedFeatures: {},
+        };
+
+        const result = reducer(state, setState(payload));
+        expect(result).toEqual(expected);
+      });
+
+      it('sets the state without clickedFeatures', () => {
+        const state = { property: {} };
+        const expected = expect.objectContaining({
+          property: {},
+          clickedFeatures: undefined,
+        });
+        const payload = {
+          property: {},
+        };
+
+        const result = reducer(state, setState(payload));
+        expect(result).toEqual(expected);
+      });
+    });
+
     describe('setProperty', () => {
       it('sets the property for a source in state if not yet defined', () => {
         const state = { property: {} };

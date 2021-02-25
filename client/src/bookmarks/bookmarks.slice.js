@@ -68,6 +68,7 @@ export const addBookmark = createAsyncThunk(
     // nested JSON should be stringified prior to passing to backend
     formData.set('center', JSON.stringify(bookmark['center']));
     formData.set('layers', JSON.stringify(bookmark['layers']));
+    formData.set('orbs', JSON.stringify(bookmark['orbs']));
 
     const headers = getFormAuthHeaders(getState());
 

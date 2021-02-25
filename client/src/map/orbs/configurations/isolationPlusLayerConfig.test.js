@@ -59,7 +59,9 @@ const setup = ({
 };
 
 describe('isolationPlusLayerConfig', () => {
-  const FEATURE = { properties: { index: 'S0123', testProperty: 123 } };
+  const FEATURE = {
+    properties: { index: 'S0123', testProperty: 123 },
+  };
 
   describe('getElevation', () => {
     it('returns the value of the selected property from the feature if no features are selected', () => {
@@ -183,7 +185,7 @@ describe('isolationPlusLayerConfig', () => {
     `(
       `Dispatches the ${addClickedFeatures.type} action if the clicked area is new and $key is held`,
       ({ eventObject }) => {
-        const info = { object: FEATURE };
+        const info = { layer: { id: 'source/1', props: {} }, object: FEATURE };
         const { onClick, dispatch } = setup({
           clickedFeatures: [{ properties: { index: 'whatever' } }],
         });
@@ -195,7 +197,7 @@ describe('isolationPlusLayerConfig', () => {
     );
 
     it(`Dispatches the ${setClickedFeatures.type} action if the clicked area is new and no modifier key is held`, () => {
-      const info = { object: FEATURE };
+      const info = { layer: { id: 'source/1', props: {} }, object: FEATURE };
       const { onClick, dispatch } = setup({
         clickedFeatures: [{ properties: { index: 'whatever' } }],
       });
@@ -212,7 +214,7 @@ describe('isolationPlusLayerConfig', () => {
     `(
       `Dispatches the ${removeClickedFeatures.type} action if the clicked area is present and $key is held`,
       ({ eventObject }) => {
-        const info = { object: FEATURE };
+        const info = { layer: { id: 'source/1', props: {} }, object: FEATURE };
         const { onClick, dispatch } = setup({
           clickedFeatures: [FEATURE],
         });
@@ -222,7 +224,7 @@ describe('isolationPlusLayerConfig', () => {
     );
 
     it(`Dispatches the ${setClickedFeatures.type} action clicked area is present and no modifier key is held`, () => {
-      const info = { object: FEATURE };
+      const info = { layer: { id: 'source/1', props: {} }, object: FEATURE };
       const { onClick, dispatch } = setup({
         clickedFeatures: [FEATURE],
       });

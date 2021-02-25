@@ -6,6 +6,7 @@ import { Box, Divider, styled } from '@astrosat/astrosat-ui';
 
 import { userSelector } from 'accounts/accounts.selectors';
 import { activeLayersSelector } from 'data-layers/data-layers.slice';
+import { orbsSelector } from 'map/orbs/orbsSelectors';
 import { useMap } from 'MapContext';
 import BookmarkForm from './bookmark-form/bookmark-form.component';
 import BookmarkList from './bookmarks-list/bookmarks-list.component';
@@ -25,6 +26,7 @@ const BookmarksPanel = () => {
   const { createScreenshot, viewState } = useMap();
   const dispatch = useDispatch();
   const layers = useSelector(activeLayersSelector);
+  const orbs = useSelector(orbsSelector);
   const user = useSelector(userSelector);
   const bookmarks = useSelector(bookmarksSelector);
 
@@ -44,6 +46,7 @@ const BookmarksPanel = () => {
           owner: user.id,
           thumbnail,
           layers,
+          orbs,
         }),
       );
     });

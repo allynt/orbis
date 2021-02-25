@@ -7,5 +7,6 @@ type Bookmark = {
   zoom: number;
   center: [number, number];
   layers: Source['source_id'][];
+  orbs: any;
   thumbnail?: string;
 };

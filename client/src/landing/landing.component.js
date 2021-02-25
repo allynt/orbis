@@ -18,6 +18,10 @@ import {
   selectBookmark,
 } from '../bookmarks/bookmarks.slice';
 import { BookmarksLanding } from './bookmarks-landing/bookmarks-landing.component';
+import {
+  fetchSources,
+  selectPollingPeriod,
+} from 'data-layers/data-layers.slice';
 import backgroundImage from './landing-image.png';
 import { NoBookmarksLanding } from './no-bookmarks-landing/no-bookmarks-landing.component';
 
@@ -60,11 +64,26 @@ const useStyles = makeStyles(theme => ({
 
 const Landing = () => {
   const dispatch = useDispatch();
+  const pollingPeriod = useSelector(selectPollingPeriod);
   const history = useHistory();
   const greaterThan1920 = useMediaQuery(theme => theme?.breakpoints?.up(1921));
   const bookmarks = useSelector(bookmarksSelector);
   const hasBookmarks = bookmarks?.length > 0;
   const styles = useStyles({ hasBookmarks });
+
+  useEffect(() => {
+    // Poll API to get new Data token (expires every X seconds/mins etc)
+    // this also fetches the list of data sources the user has access to.
+    dispatch(fetchSources());
+    const interval = setInterval(() => {
+      dispatch(fetchSources());
+    }, pollingPeriod);
+    return () => {
+      // note this is cleared when the Landing component is unloaded
+      // but the MapLayout component starts its own interval for fetchSources
+      clearInterval(interval);
+    };
+  }, [pollingPeriod, dispatch]);
 
   /**
    * @param {import('typings/orbis').Bookmark} bookmark

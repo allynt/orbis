@@ -41,6 +41,10 @@ const renderComponent = (newUser, n = 10) => {
     map: {
       regions,
     },
+    accounts: { user: { userKey: 'test' } },
+    app: { apiUrl: 'http://test.com' },
+    pollingPeriod: 3000,
+    sources: null,
   });
 
   const utils = render(
@@ -56,6 +60,8 @@ const renderComponent = (newUser, n = 10) => {
 };
 
 describe('<Landing />', () => {
+  beforeEach(() => fetch.mockResponse(JSON.stringify({})));
+
   it('should render the No Bookmarks Landing view if the user has no bookmarks', () => {
     const { getByText, getByRole, queryByText } = renderComponent(true);
 
