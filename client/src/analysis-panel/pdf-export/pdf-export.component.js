@@ -23,6 +23,7 @@ import {
 
 import {
   propertySelector,
+  screenshotSelector,
   clickedFeaturesDataSelector,
 } from 'map/orbs/slices/isolation-plus.slice';
 
@@ -134,9 +135,9 @@ const PDF = ({ user }) => {
   const styles = useStyles();
 
   const selectedProperty = useSelector(state => propertySelector(state?.orbs));
+  const screenshot = useSelector(screenshotSelector);
 
   const {
-    screenshot,
     areasOfInterest,
     populationTotal,
     householdTotal,
@@ -146,6 +147,7 @@ const PDF = ({ user }) => {
   } = useSelector(state => clickedFeaturesDataSelector(state?.orbs));
 
   const [image, setImage] = useState(undefined);
+  const creationDate = format(new Date(), 'MMMM do Y');
 
   useEffect(() => {
     const reader = new FileReader();
@@ -154,8 +156,6 @@ const PDF = ({ user }) => {
       reader.readAsDataURL(screenshot);
     }
   }, [screenshot]);
-
-  const creationDate = format(new Date(), 'MMMM do Y');
 
   const handleClick = () => {
     const div = document.getElementById('pdf-form');
@@ -283,8 +283,8 @@ const PDF = ({ user }) => {
             component="footer"
           >
             <Grid item direction="column" className={styles.footerElement}>
-              <span>Data Analysis Report</span>
-              <span>ORBIS by ASTROSAT</span>
+              <Typography>Data Analysis Report</Typography>
+              <Typography>ORBIS by ASTROSAT</Typography>
             </Grid>
             <img className={styles.logo} src={OrbisLogo} alt="Orbis logo" />
             <Grid item direction="column" className={styles.footerElement}>

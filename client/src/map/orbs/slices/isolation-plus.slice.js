@@ -8,6 +8,7 @@ import { aggregateValues } from '../../../analysis-panel/aggregateValues';
  *   clickedFeatures?: import('typings/orbis').PolygonPickedMapFeature[]
  *   property?: import('typings/orbis').Property & {source_id: string}
  *   filterRange?: [number, number]
+ *   screenshot?: Blob
  * }} IsolationPlusState
  */
 
@@ -109,9 +110,13 @@ export const filterRangeSelector = createSelector(
   orb => orb?.filterRange,
 );
 
+export const screenshotSelector = createSelector(
+  baseSelector,
+  orb => orb?.screenshot,
+);
+
 export const clickedFeaturesDataSelector = createSelector(baseSelector, orb => {
   return {
-    screenshot: orb?.screenshot,
     areasOfInterest: orb?.clickedFeatures?.map(
       feat => feat.object.properties.area_name,
     ),
