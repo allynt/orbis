@@ -21,7 +21,7 @@ const bookmark = {
   id: faker.random.uuid(),
   title: faker.commerce.product(),
   thumbnail: isChromatic() ? undefined : faker.image.image(),
-  created: faker.date.past().toISOString(),
+  created: faker.date.past(undefined, new Date(2077, 10, 24)).toISOString(),
 };
 
 export const Bookmark = Template.bind({});
