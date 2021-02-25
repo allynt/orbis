@@ -135,7 +135,7 @@ const PDF = ({ user }) => {
   const styles = useStyles();
 
   const selectedProperty = useSelector(state => propertySelector(state?.orbs));
-  const screenshot = useSelector(screenshotSelector);
+  const screenshot = useSelector(state => screenshotSelector(state?.orbs));
 
   const {
     areasOfInterest,
