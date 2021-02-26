@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React from 'react';
 
 import { render, waitFor } from '@testing-library/react';
@@ -123,6 +124,25 @@ describe('Login Form Component', () => {
     );
   });
 
+  it('calls login with accepted terms if not accepted', async () => {
+    const { login, getByRole, getByLabelText } = renderComponent({
+      user: { accepted_terms: false },
+    });
+
+    userEvent.type(
+      getByRole('textbox', { name: EMAIL_PLACEHOLDER_TEXT }),
+      EMAIL_TEXT,
+    );
+    userEvent.type(getByLabelText(PASSWORD_PLACEHOLDER_TEXT), PASSWORD_TEXT);
+    userEvent.click(getByRole('checkbox'));
+    userEvent.click(getByRole('button', { name: LOGIN_BUTTON_TEXT }));
+    await waitFor(() =>
+      expect(login).toHaveBeenCalledWith(
+        expect.objectContaining({ accepted_terms: true }),
+      ),
+    );
+  });
+
   it('should display error well if login is unsuccessful', () => {
     const serverErrors = ['Test Error 1', 'Test Error 2', 'Test Error 3'];
 
@@ -131,14 +151,30 @@ describe('Login Form Component', () => {
     expect(getByTestId('error-well')).toBeInTheDocument();
   });
 
-  it('calls activateAccount if the supplied user is not verified and the url has a key', () => {
-    const { activateAccount } = renderComponent({
-      // @ts-ignore
-      user: { is_verified: false },
-      // @ts-ignore
-      match: { params: { key: '123' } },
+  describe('activateAccount', () => {
+    it('calls activateAccount if the supplied user is not verified and the url has a key', () => {
+      const { activateAccount } = renderComponent({
+        user: { is_verified: false },
+        match: { params: { key: '123' } },
+      });
+      expect(activateAccount).toBeCalledWith({ key: '123' });
     });
-    expect(activateAccount).toBeCalledWith({ key: '123' });
+
+    it('calls activateAccount if is_verified is a false string', () => {
+      const { activateAccount } = renderComponent({
+        user: { is_verified: 'False' },
+        match: { params: { key: '123' } },
+      });
+      expect(activateAccount).toBeCalledWith({ key: '123' });
+    });
+
+    it('Does not call activate account if user is undefined', () => {
+      const { activateAccount } = renderComponent({
+        user: undefined,
+        match: { params: { key: '123' } },
+      });
+      expect(activateAccount).not.toBeCalled();
+    });
   });
 
   it('shows a loading spinner if loading', () => {
