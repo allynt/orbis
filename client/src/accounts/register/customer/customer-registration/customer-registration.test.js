@@ -8,38 +8,24 @@ const NAME = /organisation\sname/i;
 const OFFICIAL_NAME = /organisation\sofficial\sname/i;
 const TYPE = /type\sof\sorganisation/i;
 const REGISTERED_NUMBER = /registered\snumber/i;
-const LICENCE = /^licence$/i;
-const NUMBER_OF_LICENCES = /number\sof\slicences/i;
-const FREE_TRIAL_PERIOD = /free\strial\ssubscription\speriod\sends/i;
 const SUBMIT = /next/i;
 
-const renderComponent = ({ email = 'test@test.com' } = {}) => {
+const renderComponent = ({
+  email = 'test@test.com',
+  isLoading = false,
+} = {}) => {
   const onSubmit = jest.fn();
   const utils = render(
-    <CustomerRegistration email={email} onSubmit={onSubmit} />,
+    <CustomerRegistration
+      email={email}
+      onSubmit={onSubmit}
+      isLoading={isLoading}
+    />,
   );
   return { ...utils, onSubmit, email };
 };
 
 describe('<CustomerRegistration />', () => {
-  it('displays the customer registration form', () => {
-    const { getByRole } = renderComponent();
-    expect(getByRole('textbox', { name: EMAIL })).toBeInTheDocument();
-    expect(getByRole('textbox', { name: NAME })).toBeInTheDocument();
-    expect(getByRole('textbox', { name: OFFICIAL_NAME })).toBeInTheDocument();
-    expect(getByRole('button', { name: TYPE })).toBeInTheDocument();
-    expect(
-      getByRole('textbox', { name: REGISTERED_NUMBER }),
-    ).toBeInTheDocument();
-    expect(getByRole('textbox', { name: LICENCE })).toBeInTheDocument();
-    expect(
-      getByRole('textbox', { name: NUMBER_OF_LICENCES }),
-    ).toBeInTheDocument();
-    expect(
-      getByRole('textbox', { name: FREE_TRIAL_PERIOD }),
-    ).toBeInTheDocument();
-  });
-
   it('pre-populates the email field with the supplied email address', () => {
     const { email, getByRole } = renderComponent();
     expect(getByRole('textbox', { name: EMAIL })).toHaveValue(email);
@@ -96,5 +82,10 @@ describe('<CustomerRegistration />', () => {
     );
     userEvent.click(getByRole('button', { name: SUBMIT }));
     await waitFor(() => expect(onSubmit).toHaveBeenCalledWith(values));
+  });
+
+  it('shows a spinner if loading', () => {
+    const { getByRole } = renderComponent({ isLoading: true });
+    expect(getByRole('progressbar')).toBeInTheDocument();
   });
 });
