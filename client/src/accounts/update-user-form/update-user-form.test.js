@@ -1,31 +1,39 @@
+//@ts-nocheck
 import React from 'react';
 
-import { cleanup, render } from '@testing-library/react';
+import { render, waitFor } from '@testing-library/react';
 
 import UpdateUserForm from './update-user-form.component';
+import userEvent from '@testing-library/user-event';
+
+const renderComponent = (user = {}) => {
+  const updateUser = jest.fn();
+  const utils = render(<UpdateUserForm user={user} updateUser={updateUser} />);
+  return { updateUser, ...utils };
+};
 
 describe('Update User Form Component', () => {
-  afterEach(cleanup);
-
-  it('should render a form', () => {
-    const user = {};
-    const updateUser = jest.fn();
-    const { getByRole } = render(
-      <UpdateUserForm user={user} updateUser={updateUser} />,
-    );
-
-    expect(getByRole('textbox', { name: 'Email' })).toBeInTheDocument();
-    expect(getByRole('textbox', { name: 'Name' })).toBeInTheDocument();
-    expect(getByRole('button', { name: 'Update Account' })).toBeInTheDocument();
+  it('Shows the user email if provided', () => {
+    const email = 'test@test.com';
+    const { getByRole } = renderComponent({ email });
+    expect(getByRole('textbox', { name: /email/i })).toHaveValue(email);
   });
 
-  it('should have `Update User` button enabled', () => {
-    const user = {};
-    const updateUser = jest.fn();
-    const { getByRole } = render(
-      <UpdateUserForm user={user} updateUser={updateUser} />,
-    );
+  it('Shows the user name if provided', () => {
+    const name = 'Test name';
+    const { getByRole } = renderComponent({ name });
+    expect(getByRole('textbox', { name: /name/i })).toHaveValue(name);
+  });
 
-    expect(getByRole('button', { name: 'Update Account' })).not.toBeDisabled();
+  it('calls updateUser with updated values when submitted', async () => {
+    const name = 'John Smith';
+    const { getByRole, updateUser } = renderComponent();
+    userEvent.type(getByRole('textbox', { name: /name/i }), name);
+    userEvent.click(getByRole('button'));
+    await waitFor(() =>
+      expect(updateUser).toHaveBeenCalledWith(
+        expect.objectContaining({ name }),
+      ),
+    );
   });
 });
