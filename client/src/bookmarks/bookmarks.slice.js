@@ -9,6 +9,7 @@ import {
   getData,
   getFormAuthHeaders,
   getJsonAuthHeaders,
+  getApiUrl,
   sendData,
 } from '../utils/http';
 
@@ -35,8 +36,9 @@ export const fetchBookmarks = createAsyncThunk(
   `${name}/fetchBookmarks`,
   async (_, { getState, rejectWithValue }) => {
     const headers = getJsonAuthHeaders(getState());
+    const url = `${getApiUrl(getState())}${API.fetch}`;
 
-    const response = await getData(API.fetch, headers);
+    const response = await getData(url, headers);
 
     if (!response.ok) {
       const message = `${response.status} ${response.statusText}`;
@@ -71,8 +73,9 @@ export const addBookmark = createAsyncThunk(
     formData.set('orbs', JSON.stringify(bookmark['orbs']));
 
     const headers = getFormAuthHeaders(getState());
+    const url = `${getApiUrl(getState())}${API.add}`;
 
-    const response = await sendData(API.add, formData, headers);
+    const response = await sendData(url, formData, headers);
 
     if (!response.ok) {
       const message = `${response.status} ${response.statusText}`;
@@ -101,8 +104,9 @@ export const deleteBookmark = createAsyncThunk(
   `${name}/deleteBookmark`,
   async (bookmark, { getState, rejectWithValue }) => {
     const headers = getJsonAuthHeaders(getState());
+    const url = `${getApiUrl(getState())}${API.delete}`;
 
-    const response = await sendData(API.delete, bookmark.id, headers, 'DELETE');
+    const response = await sendData(url, bookmark.id, headers, 'DELETE');
 
     if (!response.ok) {
       const message = `${response.status} ${response.statusText}`;
