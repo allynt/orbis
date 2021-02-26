@@ -155,5 +155,10 @@
   ],
   "cypress-cucumber-preprocessor": {
     "nonGlobalStepDefinitions": true
+  },
+  "jest": {
+    "coveragePathIgnorePatterns": [
+      ".stories.js"
+    ]
   }
 }
