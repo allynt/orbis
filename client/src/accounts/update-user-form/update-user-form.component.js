@@ -5,21 +5,19 @@ import {
   TextField,
   Typography,
   makeStyles,
-  Box,
+  Grid,
 } from '@astrosat/astrosat-ui';
 
 import { useForm } from 'react-hook-form';
 
-import { Form } from 'components';
-
 const EMAIL_FIELD_ID = 'email-field';
 const NAME_FIELD_ID = 'name-field';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles({
   form: {
-    marginBottom: theme.spacing(2),
+    height: '100%',
   },
-}));
+});
 
 /**
  *
@@ -34,7 +32,7 @@ const useStyles = makeStyles(theme => ({
 const UpdateUserForm = ({ user, updateUser }) => {
   const styles = useStyles();
   const { handleSubmit, register } = useForm({
-    defaultValues: { email: user?.email, name: user?.name },
+    defaultValues: { ...user },
   });
 
   const onSubmit = values => {
@@ -42,12 +40,22 @@ const UpdateUserForm = ({ user, updateUser }) => {
   };
 
   return (
-    <Box display="flex" flexDirection="column" height="100%">
-      <Form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
-        <Typography variant="h4" component="h1">
-          Personal Details
-        </Typography>
-        <Form.Row>
+    <Grid
+      className={styles.form}
+      container
+      spacing={2}
+      component="form"
+      onSubmit={handleSubmit(onSubmit)}
+      justify="space-between"
+      direction="column"
+    >
+      <Grid item container direction="column" spacing={2}>
+        <Grid item>
+          <Typography variant="h4" component="h1">
+            Personal Details
+          </Typography>
+        </Grid>
+        <Grid item>
           <TextField
             id={EMAIL_FIELD_ID}
             name="email"
@@ -55,22 +63,22 @@ const UpdateUserForm = ({ user, updateUser }) => {
             label="Email"
             InputProps={{ readOnly: true }}
           />
-        </Form.Row>
-        <Form.Row>
+        </Grid>
+        <Grid item>
           <TextField
             id={NAME_FIELD_ID}
             name="name"
             inputRef={register}
             label="Name"
           />
-        </Form.Row>
-      </Form>
-      <Box mt="auto" mx="auto" width="100%">
+        </Grid>
+      </Grid>
+      <Grid item>
         <Button fullWidth type="submit">
           Update Account
         </Button>
-      </Box>
-    </Box>
+      </Grid>
+    </Grid>
   );
 };
 
