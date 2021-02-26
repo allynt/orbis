@@ -1,34 +1,49 @@
-import { isLoggedInSelector, userSelector } from './accounts.selectors';
+import {
+  errorSelector,
+  isLoadingSelector,
+  isLoggedInSelector,
+  passwordChangeStatusSelector,
+  passwordResetStatusSelector,
+  userKeySelector,
+  userSelector,
+} from './accounts.selectors';
 
 describe('accounts selectors', () => {
-  describe('userSelector', () => {
+  describe.each`
+    selectorName                      | selector                        | stateKey          | value
+    ${'errorSelector'}                | ${errorSelector}                | ${'error'}        | ${{ error: 'yup' }}
+    ${'passwordResetStatusSelector'}  | ${passwordResetStatusSelector}  | ${'resetStatus'}  | ${'reset'}
+    ${'passwordChangeStatusSelector'} | ${passwordChangeStatusSelector} | ${'changeStatus'} | ${'changed'}
+    ${'userSelector'}                 | ${userSelector}                 | ${'user'}         | ${{ name: 'John Smith' }}
+    ${'userKeySelector'}              | ${userKeySelector}              | ${'userKey'}      | ${'1234'}
+    ${'isLoadingSelector'}            | ${isLoadingSelector}            | ${'isLoading'}    | ${true}
+  `('$selectorName', ({ selector, stateKey, value }) => {
     it('returns undefined if state is undefined', () => {
-      const result = userSelector(undefined);
+      const result = selector(undefined);
       expect(result).toBeUndefined();
     });
 
     it('returns undefined if accounts is undefined', () => {
       const state = {};
-      const result = userSelector(state);
+      const result = selector(state);
       expect(result).toBeUndefined();
     });
 
-    it('returns undefined if user is undefined', () => {
-      const state = {
-        accounts: {},
-      };
-      const result = userSelector(state);
-      expect(result).toBeUndefined();
-    });
-
-    it('returns the user value', () => {
+    it(`returns undefined if ${stateKey} is undefined`, () => {
       const state = {
         accounts: {
-          user: 'hello',
+          [stateKey]: undefined,
         },
       };
-      const result = userSelector(state);
-      expect(result).toEqual(state.accounts.user);
+      const result = selector(state);
+      expect(result).toBeUndefined();
+    });
+
+    it('returns the value', () => {
+      const state = {
+        accounts: { [stateKey]: value },
+      };
+      expect(selector(state)).toEqual(value);
     });
   });
 

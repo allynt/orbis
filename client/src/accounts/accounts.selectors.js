@@ -28,8 +28,8 @@ export const userKeySelector = createSelector(
 );
 
 export const isLoggedInSelector = createSelector(
-  baseSelector,
-  accounts => !!accounts.userKey && !!accounts.user,
+  [userSelector, userKeySelector],
+  (user, userKey) => !!user && !!userKey,
 );
 
 export const isLoadingSelector = createSelector(
