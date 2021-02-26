@@ -5,7 +5,7 @@ import { Provider } from 'react-redux';
 import configureMockStore from 'redux-mock-store';
 
 import { createMemoryHistory } from 'history';
-import { ConnectedRouter, connectRouter } from 'connected-react-router';
+import { Router } from 'react-router-dom';
 
 import { format } from 'date-fns';
 
@@ -82,7 +82,6 @@ const renderComponent = (state = initialState, user = initialUser) => {
   const history = createMemoryHistory({ initialEntries: ['/pdf-export'] });
 
   const store = mockStore({
-    router: connectRouter(history),
     orbs: {
       isolationPlus: {
         ...state,
@@ -91,9 +90,9 @@ const renderComponent = (state = initialState, user = initialUser) => {
   });
   const utils = render(
     <Provider store={store}>
-      <ConnectedRouter history={history}>
+      <Router history={history}>
         <PDF user={user} />
-      </ConnectedRouter>
+      </Router>
     </Provider>,
   );
   return { ...utils, history, store };
@@ -101,7 +100,7 @@ const renderComponent = (state = initialState, user = initialUser) => {
 
 describe('PDF', () => {
   it('renders a PDF preview', () => {
-    const { getByText } = renderComponent();
+    const { getByText, getAllByText } = renderComponent();
 
     initialState.clickedFeatures.forEach(feat => {
       expect(
@@ -121,22 +120,22 @@ describe('PDF', () => {
       getByText(initialState.property.application.orbis.label),
     ).toBeInTheDocument();
 
-    // expect(
-    //   getByText(
-    //     `${
-    //       initialState.property.aggregation === 'sum' ? 'Sum' : 'Average'
-    //     } of selected areas:`,
-    //   ),
-    // ).toBeInTheDocument();
+    expect(
+      getByText(
+        `${
+          initialState.property.aggregation === 'sum' ? 'Sum' : 'Average'
+        } of selected areas:`,
+      ),
+    ).toBeInTheDocument();
 
-    // expect(
-    //   getByText(
-    //     `${
-    //       getTotals(initialState.property.name) /
-    //       initialState.clickedFeatures.length
-    //     }`,
-    //   ),
-    // ).toBeInTheDocument();
+    expect(
+      getAllByText(
+        `${
+          getTotals(initialState.property.name) /
+          initialState.clickedFeatures.length
+        }`,
+      ).length,
+    ).toEqual(2);
 
     Object.entries(initialState.property.aggregates).forEach(([key, value]) => {
       expect(getByText(`${key}:`)).toBeInTheDocument();
@@ -154,14 +153,6 @@ describe('PDF', () => {
     expect(
       getByText(`Date of the Report: ${format(new Date(), ['MMMM do Y'])}`),
     ).toBeInTheDocument();
-  });
-
-  it('redirects to home screen if no property loaded in state', () => {
-    const { history } = renderComponent({});
-
-    console.log('History: ', history);
-
-    expect(history.location.pathname).toEqual('/');
   });
 
   it('renders the screenshot as image on screen', () => {
@@ -182,35 +173,25 @@ describe('PDF', () => {
   it('shows data based on `Average/Sum` aggregation type', () => {
     const state = {
       ...initialState,
-      pdfData: {
-        ...initialState.pdfData,
-        aggregation: {
-          aggregationLabel: 'Sum',
-          areaValue: 365,
-        },
+      property: {
+        ...initialState.property,
+        aggregation: 'sum',
       },
     };
 
     const { getByText } = renderComponent(state);
 
-    expect(
-      getByText(
-        `${state.pdfData.aggregation.aggregationLabel} of selected areas:`,
-      ),
-    ).toBeInTheDocument();
-
-    expect(
-      getByText(`${state.pdfData.aggregation.areaValue}`),
-    ).toBeInTheDocument();
+    expect(getByText(`Sum of selected areas:`)).toBeInTheDocument();
   });
+
   it('does not show `breakdownAggregation` if no data for it exists', () => {
-    const { getByText } = renderComponent({
+    const { queryByText } = renderComponent({
       ...initialState,
       property: { ...initialState.property, breakdown: undefined },
     });
 
     expect(
-      getByText('Breakdown of the data summed over all the selected areas:'),
+      queryByText('Breakdown of the data summed over all the selected areas:'),
     ).not.toBeInTheDocument();
   });
 
