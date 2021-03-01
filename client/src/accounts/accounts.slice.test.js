@@ -11,6 +11,7 @@ import {
   RESEND,
 } from './accounts.constants';
 import reducer, {
+  activateAccount,
   activateAccountFailure,
   activateAccountSuccess,
   changePasswordFailure,
@@ -788,6 +789,36 @@ describe('Accounts Slice', () => {
           .once(JSON.stringify(getUserOrderResponse));
         await login(formValues)(dispatch, getState);
         expect(dispatch).toHaveBeenCalledWith(push(REGISTER_CUSTOMER_ORDER));
+      });
+    });
+
+    describe('activateAccount', () => {
+      it('dispatches fetchRequested action', async () => {
+        fetch.once(JSON.stringify({}));
+        await activateAccount({})(dispatch, getState);
+        expect(dispatch).toHaveBeenCalledWith(fetchRequested());
+      });
+
+      it(`dispatches ${activateAccountFailure} if the response is not ok`, async () => {
+        fetch.once(
+          JSON.stringify({
+            errors: {
+              test: ['¿problema?'],
+            },
+          }),
+          { ok: false, status: 401, statusText: 'Test Error' },
+        );
+        await activateAccount({})(dispatch, getState);
+        expect(dispatch).toHaveBeenCalledWith(
+          activateAccountFailure(['¿problema?']),
+        );
+      });
+
+      it(`dispatches ${activateAccountSuccess} on successful activation`, async () => {
+        const user = { name: 'Test User' };
+        fetch.once(JSON.stringify({ user }));
+        await activateAccount({})(dispatch, getState);
+        expect(dispatch).toHaveBeenCalledWith(activateAccountSuccess({ user }));
       });
     });
   });
