@@ -1,8 +1,9 @@
 import { render, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { createMemoryHistory } from 'history';
 import React from 'react';
 import { Provider } from 'react-redux';
-import { MemoryRouter } from 'react-router-dom';
+import { MemoryRouter, Router } from 'react-router-dom';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import Accounts from '.';
@@ -27,8 +28,14 @@ import {
   registerCustomerSuccess,
   resendVerificationEmail,
   resendVerificationEmailSuccess,
+  registerUser,
+  registerUserSuccess,
   resetPassword,
   resetPasswordSuccess,
+  placeOrder,
+  placeOrderSuccess,
+  login,
+  loginUserSuccess,
 } from './accounts.slice';
 
 const mockStore = configureMockStore([thunk]);
@@ -43,7 +50,8 @@ const renderComponent = (initialEntries = ['']) => {
         passwordStrength: 1,
       },
     },
-    accounts: { user: { email: 'test@test.com' } },
+    accounts: { user: { email: 'test@test.com', customers: [] } },
+    admin: {},
   });
   const utils = render(<Accounts />, {
     wrapper: ({ children }) => (
@@ -55,7 +63,7 @@ const renderComponent = (initialEntries = ['']) => {
   return { store, ...utils };
 };
 
-describe.only('Accounts index', () => {
+describe('Accounts index', () => {
   it(`Shows journey selection when route is ${REGISTER}`, async () => {
     const { getAllByRole } = renderComponent([REGISTER]);
     await waitFor(() =>
@@ -87,30 +95,97 @@ describe.only('Accounts index', () => {
     });
   });
 
-  it(`Shows UserRegistration when route is ${REGISTER_CUSTOMER_USER}`, async () => {
-    const { getAllByRole } = renderComponent([REGISTER_CUSTOMER_USER]);
-    await waitFor(() =>
-      expect(getAllByRole('textbox').length).toBeGreaterThanOrEqual(1),
-    );
-  });
-
-  it(`Shows OrderForm when route is ${REGISTER_CUSTOMER_ORDER}`, async () => {
-    const { getAllByRole } = renderComponent([REGISTER_CUSTOMER_ORDER]);
-    await waitFor(() =>
-      expect(getAllByRole('textbox').length).toBeGreaterThanOrEqual(1),
-    );
-  });
-
-  it.each([LOGIN, CONFIRM_EMAIL])(
-    `Shows LoginForm when route is %s`,
-    async path => {
-      fetch.once(JSON.stringify({}));
-      const { getAllByRole } = renderComponent([path]);
+  describe(`${REGISTER_CUSTOMER_USER}`, () => {
+    it(`Shows UserRegistration when route is ${REGISTER_CUSTOMER_USER}`, async () => {
+      const { getAllByRole } = renderComponent([REGISTER_CUSTOMER_USER]);
       await waitFor(() =>
         expect(getAllByRole('textbox').length).toBeGreaterThanOrEqual(1),
       );
-    },
-  );
+    });
+
+    it(`dispatches ${registerUser.name} action when submitted`, async () => {
+      const { getByRole, getByLabelText, store } = renderComponent([
+        REGISTER_CUSTOMER_USER,
+      ]);
+      userEvent.type(getByRole('textbox', { name: /email/i }), 'test@test.com');
+      userEvent.type(getByRole('textbox', { name: /first/i }), 'John');
+      userEvent.type(getByRole('textbox', { name: /last/i }), 'Smith');
+      userEvent.type(getByLabelText(/password(?!\sc)/i), 'pandaconcretespoon');
+      userEvent.type(
+        getByLabelText(/password\sconfirmation/i),
+        'pandaconcretespoon',
+      );
+      userEvent.click(getByRole('checkbox'));
+      userEvent.click(getByRole('button', { name: /sign\sup/i }));
+      await waitFor(() =>
+        expect(store.getActions()).toEqual(
+          expect.arrayContaining([registerUserSuccess({})]),
+        ),
+      );
+    });
+  });
+
+  describe(`${REGISTER_CUSTOMER_ORDER}`, () => {
+    it(`Shows OrderForm when route is ${REGISTER_CUSTOMER_ORDER}`, async () => {
+      const { getAllByRole } = renderComponent([REGISTER_CUSTOMER_ORDER]);
+      await waitFor(() =>
+        expect(getAllByRole('textbox').length).toBeGreaterThanOrEqual(1),
+      );
+    });
+
+    it(`dispatches ${placeOrder.name} action when submitted`, async () => {
+      const { getByRole, store } = renderComponent([REGISTER_CUSTOMER_ORDER]);
+      userEvent.click(getByRole('checkbox'));
+      userEvent.click(getByRole('button'));
+      await waitFor(() => {
+        expect(store.getActions()).toEqual(
+          expect.arrayContaining([placeOrderSuccess()]),
+        );
+      });
+    });
+  });
+
+  describe(`${LOGIN}`, () => {
+    it.each([LOGIN, CONFIRM_EMAIL])(
+      `Shows LoginForm when route is %s`,
+      async path => {
+        fetch.once(JSON.stringify({}));
+        const { getAllByRole } = renderComponent([path]);
+        await waitFor(() =>
+          expect(getAllByRole('textbox').length).toBeGreaterThanOrEqual(1),
+        );
+      },
+    );
+
+    it('Redirects to root if user is logged in, is verified, and registration stage is falsy', () => {
+      const store = mockStore({
+        accounts: { user: { is_verified: true }, userKey: '123' },
+      });
+      const history = createMemoryHistory({ initialEntries: [LOGIN] });
+      render(<Accounts />, {
+        wrapper: ({ children }) => (
+          <Provider store={store}>
+            <Router history={history}>{children}</Router>
+          </Provider>
+        ),
+      });
+      expect(history.location.pathname).toBe('/');
+    });
+
+    it(`dispatches ${login.name} action when submitted`, async () => {
+      const { getByRole, getByLabelText, store } = renderComponent([LOGIN]);
+      userEvent.type(getByRole('textbox', { name: /email/i }), 'test@test.com');
+      userEvent.type(getByLabelText(/password/i), 'pandaconcretespoon');
+      userEvent.click(getByRole('button', { name: /login/i }));
+      await waitFor(() =>
+        expect(store.getActions()).toEqual(
+          expect.arrayContaining([
+            loginUserSuccess(expect.objectContaining({})),
+          ]),
+        ),
+      );
+    });
+  });
 
   describe(`${PASSWORD_CHANGE}`, () => {
     it(`dispatches ${changePassword.name} action when submitted`, async () => {
