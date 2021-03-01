@@ -11,6 +11,8 @@ import {
   RESEND,
 } from './accounts.constants';
 import reducer, {
+  activateAccountSuccess,
+  activateAccountFailure,
   registerUserFailure,
   registerUserSuccess,
   registerUser,
@@ -34,9 +36,19 @@ import reducer, {
   placeOrder,
   placeOrderSuccess,
   placeOrderFailure,
+  resendVerificationEmailSuccess,
+  resendVerificationEmailFailure,
 } from './accounts.slice';
 
 const mockStore = configureMockStore([thunk]);
+
+const setsIsLoadingToFalse = action => {
+  it('sets isLoading to false', () => {
+    expect(reducer({ isLoading: true }, action({}))).toEqual(
+      expect.objectContaining({ isLoading: false }),
+    );
+  });
+};
 
 describe('Accounts Slice', () => {
   describe('Accounts Actions', () => {
@@ -258,140 +270,343 @@ describe('Accounts Slice', () => {
   });
 
   describe('Accounts Reducer', () => {
-    let beforeState;
+    // let beforeState;
 
-    beforeEach(() => {
-      beforeState = {
-        userKey: null,
-        user: null,
-        error: null,
-        isLoading: false,
-        resetStatus: status.NONE,
-        changeStatus: status.NONE,
-      };
+    // beforeEach(() => {
+    //   beforeState = {
+    //     userKey: null,
+    //     user: null,
+    //     error: null,
+    //     isLoading: false,
+    //     resetStatus: status.NONE,
+    //     changeStatus: status.NONE,
+    //   };
+    // });
+
+    // it('should return the initial state', () => {
+    //   const actualState = reducer(undefined, {});
+
+    //   expect(actualState).toEqual(beforeState);
+    // });
+
+    // it('should update the error state, on successful `register`', () => {
+    //   const userKey = { token: 'Test Register Error' };
+
+    //   const actualState = reducer(beforeState, {
+    //     type: registerUserSuccess.type,
+    //     payload: userKey,
+    //   });
+
+    //   expect(actualState.error).toEqual(null);
+    // });
+
+    // it('should update the error state, when failed to `register`', () => {
+    //   const error = 'Test Register Error';
+
+    //   const actualState = reducer(beforeState, {
+    //     type: registerUserFailure.type,
+    //     payload: error,
+    //   });
+
+    //   expect(actualState.error).toEqual(error);
+    // });
+
+    // it('should update the user and key state, on successful login', () => {
+    //   const userKey = { token: 'Test Login Error' };
+    //   const user = { name: 'Test spammington' };
+
+    //   const actualState = reducer(beforeState, {
+    //     type: loginUserSuccess.type,
+    //     payload: { userKey, user },
+    //   });
+
+    //   expect(actualState.userKey).toEqual(userKey);
+    //   expect(actualState.user).toEqual(user);
+    // });
+
+    // it('should update the error state, when failed to `login`', () => {
+    //   const error = 'Test Login Error';
+
+    //   const actualState = reducer(beforeState, {
+    //     type: loginUserFailure.type,
+    //     payload: { errors: error },
+    //   });
+
+    //   expect(actualState.error).toEqual(error);
+    // });
+
+    // it('should update the user state, when successfully fetched user', () => {
+    //   const user = { id: 1, name: 'Test Fetch User Name' };
+
+    //   const actualState = reducer(beforeState, {
+    //     type: fetchUserSuccess.type,
+    //     payload: user,
+    //   });
+
+    //   expect(actualState.user).toEqual(user);
+    // });
+
+    // it('should update the error state, when failed to fetch user', () => {
+    //   const error = 'Test Fetch User Error';
+
+    //   const actualState = reducer(beforeState, {
+    //     type: fetchUserFailure.type,
+    //     payload: error,
+    //   });
+
+    //   expect(actualState.error).toEqual(error);
+    // });
+
+    // it('should update the user state, when successfully updated user', () => {
+    //   const user = { id: 1, name: 'Test Update User' };
+
+    //   expect(beforeState.user).not.toEqual(user);
+
+    //   const actualState = reducer(beforeState, {
+    //     type: updateUserSuccess.type,
+    //     payload: user,
+    //   });
+
+    //   expect(actualState.user).toEqual(user);
+    // });
+
+    // it('should update the error state, when failed to update user', () => {
+    //   const error = 'Test Update User Error';
+
+    //   const actualState = reducer(beforeState, {
+    //     type: updateUserFailure.type,
+    //     payload: error,
+    //   });
+
+    //   expect(actualState.error).toEqual(error);
+    // });
+
+    // it('should update the user state, on successful logout', () => {
+    //   const user = { id: 1, name: 'Test Update User' };
+
+    //   expect(beforeState.user).not.toEqual(user);
+
+    //   const actualState = reducer(beforeState, {
+    //     type: logoutUserSuccess.type,
+    //   });
+
+    //   expect(actualState.user).toEqual(null);
+    //   expect(actualState.userKey).toEqual(null);
+    // });
+
+    // it('should update the error state, when failed to logout', () => {
+    //   const error = 'Test Update User Error';
+
+    //   const actualState = reducer(beforeState, {
+    //     type: logoutUserFailure.type,
+    //     payload: error,
+    //   });
+
+    //   expect(actualState.error).toEqual(error);
+    // });
+
+    describe(`${fetchRequested}`, () => {
+      it('sets isLoading to true', () => {
+        const result = reducer({}, fetchRequested());
+        expect(result.isLoading).toBe(true);
+      });
     });
 
-    it('should return the initial state', () => {
-      const actualState = reducer(undefined, {});
+    describe.each`
+      action                            | setsIsLoadingToFalse | setsErrorToNull | setsUserToPayload | setsUserToPayloadUser | setsErrorToPayload
+      ${registerUserSuccess}            | ${true}              | ${true}         | ${true}           | ${false}              | ${false}
+      ${registerUserFailure}            | ${true}              | ${false}        | ${false}          | ${false}              | ${true}
+      ${registerCustomerSuccess}        | ${true}              | ${true}         | ${false}          | ${false}              | ${false}
+      ${registerCustomerFailure}        | ${true}              | ${false}        | ${false}          | ${false}              | ${true}
+      ${placeOrderSuccess}              | ${true}              | ${true}         | ${false}          | ${false}              | ${false}
+      ${placeOrderFailure}              | ${true}              | ${false}        | ${false}          | ${false}              | ${true}
+      ${loginUserSuccess}               | ${true}              | ${true}         | ${false}          | ${true}               | ${false}
+      ${loginUserFailure}               | ${true}              | ${false}        | ${false}          | ${true}               | ${false}
+      ${resendVerificationEmailSuccess} | ${true}              | ${true}         | ${false}          | ${false}              | ${false}
+      ${resendVerificationEmailFailure} | ${true}              | ${false}        | ${false}          | ${false}              | ${true}
+      ${fetchUserSuccess}               | ${true}              | ${true}         | ${true}           | ${false}              | ${false}
+      ${fetchUserFailure}               | ${true}              | ${false}        | ${false}          | ${false}              | ${true}
+      ${updateUserSuccess}              | ${true}              | ${true}         | ${true}           | ${false}              | ${false}
+      ${updateUserFailure}              | ${true}              | ${false}        | ${false}          | ${false}              | ${true}
+    `(
+      '$action.type',
+      ({
+        action,
+        setsIsLoadingToFalse,
+        setsErrorToNull,
+        setsUserToPayload,
+        setsUserToPayloadUser,
+        setsErrorToPayload,
+      }) => {
+        if (setsIsLoadingToFalse) {
+          it('sets isLoading to false', () => {
+            expect(reducer({ isLoading: true }, action({}))).toEqual(
+              expect.objectContaining({ isLoading: false }),
+            );
+          });
+        }
 
-      expect(actualState).toEqual(beforeState);
+        if (setsErrorToNull) {
+          it('sets error to null', () => {
+            expect(reducer({ error: '123' }, action({})).error).toBeNull();
+          });
+        }
+
+        if (setsUserToPayload) {
+          it('sets user to payload', () => {
+            const user = { name: 'Test User' };
+            expect(reducer({}, action(user)).user).toEqual(user);
+          });
+        }
+
+        if (setsUserToPayloadUser) {
+          it('sets user to payload.user', () => {
+            const user = { name: 'Test User' };
+            expect(reducer({}, action({ user })).user).toEqual(user);
+          });
+        }
+
+        if (setsErrorToPayload) {
+          it('sets error to payload', () => {
+            expect(reducer({}, action('123')).error).toBe('123');
+          });
+        }
+      },
+    );
+
+    describe(`${loginUserSuccess}`, () => {
+      it('sets userKey to payload.userKey', () => {
+        expect(
+          reducer({}, loginUserSuccess({ userKey: '123' })).userKey,
+        ).toEqual('123');
+      });
     });
 
-    it('should update the error state, on successful `register`', () => {
-      const userKey = { token: 'Test Register Error' };
-
-      const actualState = reducer(beforeState, {
-        type: registerUserSuccess.type,
-        payload: userKey,
+    describe(`${loginUserFailure}`, () => {
+      it('sets userKey to null', () => {
+        expect(
+          reducer({ userKey: '123' }, loginUserFailure({})).userKey,
+        ).toBeNull();
       });
 
-      expect(actualState.error).toEqual(null);
-    });
-
-    it('should update the error state, when failed to `register`', () => {
-      const error = 'Test Register Error';
-
-      const actualState = reducer(beforeState, {
-        type: registerUserFailure.type,
-        payload: error,
+      it('sets error to payload.errors', () => {
+        const error = 'This is an error';
+        expect(reducer({}, loginUserFailure({ errors: error })).error).toEqual(
+          error,
+        );
       });
-
-      expect(actualState.error).toEqual(error);
     });
 
-    it('should update the user and key state, on successful login', () => {
-      const userKey = { token: 'Test Login Error' };
-      const user = { name: 'Test spammington' };
+    // describe(`${registerCustomerSuccess}`, () => {
+    //   it('Sets error to null', () => {
+    //     const result = reducer(
+    //       { error: 'something' },
+    //       registerCustomerSuccess(),
+    //     );
+    //     expect(result).toEqual(expect.objectContaining({ error: null }));
+    //   });
 
-      const actualState = reducer(beforeState, {
-        type: loginUserSuccess.type,
-        payload: { userKey, user },
-      });
+    //   setsIsLoadingToFalse(registerCustomerSuccess);
+    // });
 
-      expect(actualState.userKey).toEqual(userKey);
-      expect(actualState.user).toEqual(user);
-    });
+    // describe(`${registerCustomerFailure}`, () => {
+    //   setsIsLoadingToFalse(registerCustomerFailure);
 
-    it('should update the error state, when failed to `login`', () => {
-      const error = 'Test Login Error';
+    //   it('sets error to payload', () => {
+    //     const error = 'this is an error';
+    //     const result = reducer({}, registerCustomerFailure(error));
+    //     expect(result).toEqual(expect.objectContaining({ error }));
+    //   });
+    // });
 
-      const actualState = reducer(beforeState, {
-        type: loginUserFailure.type,
-        payload: { errors: error },
-      });
+    // describe(`${placeOrderSuccess}`, () => {
+    //   it('Sets error to null', () => {
+    //     const result = reducer({ error: 'something' }, placeOrderSuccess());
+    //     expect(result).toEqual(expect.objectContaining({ error: null }));
+    //   });
 
-      expect(actualState.error).toEqual(error);
-    });
+    //   setsIsLoadingToFalse(placeOrderSuccess);
 
-    it('should update the user state, when successfully fetched user', () => {
-      const user = { id: 1, name: 'Test Fetch User Name' };
+    //   it('Sets isLoading to false', () => {
+    //     const result = reducer({ isLoading: true }, placeOrderSuccess());
+    //     expect(result).toEqual(expect.objectContaining({ isLoading: false }));
+    //   });
+    // });
 
-      const actualState = reducer(beforeState, {
-        type: fetchUserSuccess.type,
-        payload: user,
-      });
+    // describe(`${placeOrderFailure}`, () => {
+    //   it('sets error to payload.errors', () => {
+    //     const error = 'This is an error';
+    //     const result = reducer({}, placeOrderFailure({ errors: error }));
+    //     expect(result).toEqual(expect.objectContaining({ error }));
+    //   });
 
-      expect(actualState.user).toEqual(user);
-    });
+    //   it('sets isLoading to false', () => {
+    //     expect(reducer({ isLoading: true }, placeOrderFailure({}))).toEqual(
+    //       expect.objectContaining({ isLoading: false }),
+    //     );
+    //   });
+    // });
 
-    it('should update the error state, when failed to fetch user', () => {
-      const error = 'Test Fetch User Error';
+    // describe(`${resendVerificationEmailSuccess}`, () => {
+    //   it('Sets error to null', () => {
+    //     const result = reducer(
+    //       { error: 'something' },
+    //       resendVerificationEmailSuccess(),
+    //     );
+    //     expect(result).toEqual(expect.objectContaining({ error: null }));
+    //   });
 
-      const actualState = reducer(beforeState, {
-        type: fetchUserFailure.type,
-        payload: error,
-      });
+    //   it('Sets isLoading to false', () => {
+    //     const result = reducer(
+    //       { isLoading: true },
+    //       resendVerificationEmailSuccess(),
+    //     );
+    //     expect(result).toEqual(expect.objectContaining({ isLoading: false }));
+    //   });
+    // });
 
-      expect(actualState.error).toEqual(error);
-    });
+    // describe(`${resendVerificationEmailFailure}`, () => {
+    //   it('sets isLoading to false', () => {
+    //     const result = reducer(
+    //       { isLoading: true },
+    //       resendVerificationEmailFailure(),
+    //     );
+    //     expect(result).toEqual(expect.objectContaining({ isLoading: false }));
+    //   });
 
-    it('should update the user state, when successfully updated user', () => {
-      const user = { id: 1, name: 'Test Update User' };
+    //   it('sets error to payload', () => {
+    //     const error = 'this is an error';
+    //     const result = reducer({}, resendVerificationEmailFailure(error));
+    //     expect(result).toEqual(expect.objectContaining({ error }));
+    //   });
+    // });
 
-      expect(beforeState.user).not.toEqual(user);
+    // describe(`${activateAccountSuccess}`, () => {
+    //   it('sets user to payload.user', () => {
+    //     const user = { name: 'Test User' };
+    //     expect(reducer({}, activateAccountSuccess({ user }))).toEqual(
+    //       expect.objectContaining({ user }),
+    //     );
+    //   });
 
-      const actualState = reducer(beforeState, {
-        type: updateUserSuccess.type,
-        payload: user,
-      });
+    //   it('sets userKey to null', () => {
+    //     expect(reducer({ userKey: '123' }, activateAccountSuccess({}))).toEqual(
+    //       expect.objectContaining({ userKey: null }),
+    //     );
+    //   });
 
-      expect(actualState.user).toEqual(user);
-    });
+    //   it('sets error to null', () => {
+    //     expect(reducer({ error: '123' }, activateAccountSuccess({}))).toEqual(
+    //       expect.objectContaining({ error: null }),
+    //     );
+    //   });
 
-    it('should update the error state, when failed to update user', () => {
-      const error = 'Test Update User Error';
-
-      const actualState = reducer(beforeState, {
-        type: updateUserFailure.type,
-        payload: error,
-      });
-
-      expect(actualState.error).toEqual(error);
-    });
-
-    it('should update the user state, on successful logout', () => {
-      const user = { id: 1, name: 'Test Update User' };
-
-      expect(beforeState.user).not.toEqual(user);
-
-      const actualState = reducer(beforeState, {
-        type: logoutUserSuccess.type,
-      });
-
-      expect(actualState.user).toEqual(null);
-      expect(actualState.userKey).toEqual(null);
-    });
-
-    it('should update the error state, when failed to logout', () => {
-      const error = 'Test Update User Error';
-
-      const actualState = reducer(beforeState, {
-        type: logoutUserFailure.type,
-        payload: error,
-      });
-
-      expect(actualState.error).toEqual(error);
-    });
+    //   it('sets isLoading to false', () => {
+    //     expect(
+    //       reducer({ isLoading: true }, activateAccountSuccess({})),
+    //     ).toEqual(expect.objectContaining({ isLoading: false }));
+    //   });
+    // });
   });
 
   describe('Thunks', () => {
@@ -599,7 +814,7 @@ describe('Accounts Slice', () => {
         });
         await placeOrder(formValues)(dispatch, getState, undefined);
         expect(dispatch).toHaveBeenCalledWith(
-          placeOrderFailure({ errors: failureResponseBody.errors.test }),
+          placeOrderFailure(failureResponseBody.errors.test),
         );
       });
 
@@ -623,7 +838,7 @@ describe('Accounts Slice', () => {
           });
         await placeOrder(formValues)(dispatch, getState, undefined);
         expect(dispatch).toHaveBeenCalledWith(
-          placeOrderFailure({ errors: failureResponseBody.errors.test }),
+          placeOrderFailure(failureResponseBody.errors.test),
         );
       });
     });
