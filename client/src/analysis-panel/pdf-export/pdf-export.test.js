@@ -108,13 +108,9 @@ describe('PDF', () => {
       ).toBeInTheDocument();
     });
 
-    expect(
-      getByText(`Total population: ${getTotals('population')}`),
-    ).toBeInTheDocument();
+    expect(getByText(`${getTotals('population')}`)).toBeInTheDocument();
 
-    expect(
-      getByText(`Total households: ${getTotals('households')}`),
-    ).toBeInTheDocument();
+    expect(getByText(`${getTotals('households')}`)).toBeInTheDocument();
 
     expect(
       getByText(initialState.property.application.orbis.label),

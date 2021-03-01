@@ -63,7 +63,6 @@ const useStyles = makeStyles(theme => ({
     padding: theme.spacing(1),
   },
   detailsGrid: {
-    height: '100%',
     width: '100%',
     gap: theme.spacing(1),
   },
@@ -251,6 +250,29 @@ const PDF = ({ user }) => {
                   />
                 </List>
               </Grid>
+
+              {Array.isArray(timeSeriesAggregation) && (
+                <Grid
+                  item
+                  className={clsx(styles.gridElement, styles.centered)}
+                >
+                  <Typography variant="h3">
+                    Time series of the data over all the selected areas:
+                  </Typography>
+                  <List>
+                    {timeSeriesAggregation?.map(({ timestamp, value }) => (
+                      <ListItemText
+                        key={timestamp}
+                        className={styles.listData}
+                        primary={
+                          <Typography variant="h4">{timestamp}: </Typography>
+                        }
+                        secondary={<span>{value}: </span>}
+                      />
+                    ))}
+                  </List>
+                </Grid>
+              )}
             </Grid>
             <Grid
               item
@@ -301,28 +323,6 @@ const PDF = ({ user }) => {
                         className={styles.listData}
                         primary={<Typography variant="h4">{name}: </Typography>}
                         secondary={<span>{value}</span>}
-                      />
-                    ))}
-                  </List>
-                </Grid>
-              )}
-              {Array.isArray(timeSeriesAggregation) && (
-                <Grid
-                  item
-                  className={clsx(styles.gridElement, styles.centered)}
-                >
-                  <Typography variant="h3">
-                    Time series of the data over all the selected areas:
-                  </Typography>
-                  <List>
-                    {timeSeriesAggregation?.map(({ timestamp, value }) => (
-                      <ListItemText
-                        key={timestamp}
-                        className={styles.listData}
-                        primary={
-                          <Typography variant="h4">{timestamp}: </Typography>
-                        }
-                        secondary={<span>{value}: </span>}
                       />
                     ))}
                   </List>
