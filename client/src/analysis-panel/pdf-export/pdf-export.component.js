@@ -13,7 +13,6 @@ import clsx from 'clsx';
 
 import {
   Button,
-  Box,
   List,
   Grid,
   ListItemText,
@@ -34,9 +33,6 @@ import OrbisLogo from './orbis-logo.png';
 
 const useStyles = makeStyles(theme => ({
   container: {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
     height: '100%',
     backgroundColor: theme.palette.grey[100],
   },
@@ -49,10 +45,6 @@ const useStyles = makeStyles(theme => ({
   },
   pdf: {
     position: 'relative',
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'space-between',
-    alignItems: 'center',
     color: theme.palette.text.primary,
     backgroundColor: theme.palette.background.default,
     height: '100%',
@@ -61,18 +53,15 @@ const useStyles = makeStyles(theme => ({
   },
   screenshot: {
     backgroundSize: 'cover',
-    height: '100%',
+    height: '33.3%',
     width: '100%',
   },
-  pdfForm: {
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'space-between',
+  pdfDocument: {
+    height: '66.6%',
     width: '100%',
     padding: theme.spacing(1),
   },
   detailsGrid: {
-    display: 'flex',
     height: '100%',
     width: '100%',
     gap: theme.spacing(0.5),
@@ -86,8 +75,6 @@ const useStyles = makeStyles(theme => ({
     padding: '0',
   },
   gridElement: {
-    display: 'flex',
-    flexDirection: 'column',
     padding: theme.spacing(0.5),
     width: '100%',
     border: ' 2px dashed #4e78a0',
@@ -115,13 +102,13 @@ const useStyles = makeStyles(theme => ({
   moreInfo: {
     textAlign: 'justify',
   },
+  footer: {
+    height: '100%',
+  },
   footerElement: {
-    display: 'flex',
-    gap: theme.spacing(1),
     width: '100%',
     fontStyle: 'italic',
     '&:first-child': {
-      alignItems: 'flex-end',
       padding: theme.spacing(0, 2, 0, 0),
     },
     '&:last-child': {
@@ -179,6 +166,7 @@ const PDF = ({ user }) => {
       doc.addImage({
         imageData: canvas,
         format: 'JPEG',
+        // ^^^ Do something about this
         x: 0,
         y: 0,
         width,
@@ -195,11 +183,25 @@ const PDF = ({ user }) => {
     return null;
   }
   return (
-    <div className={styles.container}>
+    // whole page
+    <Grid
+      container
+      justify="center"
+      alignItems="center"
+      className={styles.container}
+    >
       <Button className={styles.button} onClick={handleClick}>
         Download PDF Report
       </Button>
-      <Box className={styles.pdf} id="pdf-form">
+
+      {/* whole PDF, screenshot and data */}
+      <Grid
+        item
+        container
+        direction="column"
+        className={styles.pdf}
+        id="pdf-form"
+      >
         <div
           className={styles.screenshot}
           style={{
@@ -207,8 +209,18 @@ const PDF = ({ user }) => {
           }}
           data-testid="screenshot"
         />
-        <Grid container className={styles.pdfForm}>
-          <Grid container item className={styles.detailsGrid}>
+
+        {/* data section, body and footer */}
+        <Grid
+          item
+          container
+          direction="column"
+          wrap="nowrap"
+          justify="space-between"
+          className={styles.pdfDocument}
+        >
+          {/* body, columns with analysis data */}
+          <Grid item container wrap="nowrap" className={styles.detailsGrid}>
             <Grid item container className={styles.gridColumn}>
               <Grid item className={styles.gridElement}>
                 <Typography>Selected Areas of interest:</Typography>
@@ -284,20 +296,35 @@ const PDF = ({ user }) => {
               </Grid>
             </Grid>
           </Grid>
+
+          {/* footer */}
           <Grid
-            container
             item
-            wrap="nowrap"
+            container
+            direction="row"
             justify="space-between"
-            alignItems="center"
-            component="footer"
+            alignItems="flex-end"
+            className={styles.footer}
           >
-            <Grid item direction="column" className={styles.footerElement}>
+            <Grid
+              item
+              container
+              direction="column"
+              alignItems="flex-end"
+              spacing={2}
+              className={styles.footerElement}
+            >
               <Typography>Data Analysis Report</Typography>
               <Typography>ORBIS by ASTROSAT</Typography>
             </Grid>
             <img className={styles.logo} src={OrbisLogo} alt="Orbis logo" />
-            <Grid item direction="column" className={styles.footerElement}>
+            <Grid
+              item
+              container
+              direction="column"
+              spacing={2}
+              className={styles.footerElement}
+            >
               {user?.name && (
                 <Typography data-testid="user-name">
                   Report run by: {user.name}
@@ -308,8 +335,8 @@ const PDF = ({ user }) => {
             </Grid>
           </Grid>
         </Grid>
-      </Box>
-    </div>
+      </Grid>
+    </Grid>
   );
 };
 
