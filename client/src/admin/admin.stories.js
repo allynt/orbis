@@ -47,7 +47,9 @@ const customerUsers = [
     id: 0,
     status: 'ACTIVE',
     type: 'MANAGER',
-    invitation_date: faker.date.recent().toISOString(),
+    invitation_date: faker.date
+      .recent(undefined, new Date(2077, 10, 24))
+      .toISOString(),
     licences: licences.filter(l => l.customer_user === 0),
     user: {
       id: faker.random.uuid(),
@@ -62,7 +64,9 @@ const customerUsers = [
       id: i + 1,
       status: faker.random.arrayElement(['ACTIVE', 'PENDING']),
       type: faker.random.arrayElement(['MANAGER', 'MEMBER']),
-      invitation_date: faker.date.recent().toISOString(),
+      invitation_date: faker.date
+        .recent(undefined, new Date(2077, 10, 24))
+        .toISOString(),
       licences: licences.filter(l => l.customer_user === i),
       user: {
         id: faker.random.uuid(),

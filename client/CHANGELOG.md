@@ -1,3 +1,32 @@
+# [2.13.0](https://github.com/astrosat/orbis/compare/v2.12.0...v2.13.0) (2021-02-26)
+
+
+### Bug Fixes
+
+* **frontend:** Add pagination control ([134b6aa](https://github.com/astrosat/orbis/commit/134b6aadb36c087bf3e05e3853576a1fc348abf4))
+* **frontend:** Add wrapping to url ([39720bf](https://github.com/astrosat/orbis/commit/39720bffe925520aa426057caa6e32a6cb25c480))
+* **frontend:** Adjust the formatting of the timeseries tooltip ([807f52e](https://github.com/astrosat/orbis/commit/807f52e7c21369bb970792d81db62c6ad6b18cfd))
+* **frontend:** Align info icon and expand icon ([51a3f8d](https://github.com/astrosat/orbis/commit/51a3f8d53d8db6fcc2b4adb56238761c797995e0))
+* **frontend:** Align RadioPicker icon ([5a97574](https://github.com/astrosat/orbis/commit/5a97574fba8d3418be9593a9d7d80df2af72e879))
+* **frontend:** Fix another instance of feature.properties.index ([a55d997](https://github.com/astrosat/orbis/commit/a55d9971211ca95734ae5dea925115ecd423c17f))
+* **frontend:** Got data to return after hiding ([1e3f733](https://github.com/astrosat/orbis/commit/1e3f7335300e84ff4b139f5e0d8a5b72c72100d9))
+* **frontend:** Integrate Pagination ([522f6d2](https://github.com/astrosat/orbis/commit/522f6d2a69ed4d4c8a829c2f99911f6200e23e08))
+* **frontend:** Make buttons in My Account same width ([dade916](https://github.com/astrosat/orbis/commit/dade916061d0ab07307f359198024e65ddd50c21))
+* **frontend:** Make dialog state reset on close ([18f37ac](https://github.com/astrosat/orbis/commit/18f37ac1725b51a4467f38dd4914adcbcb4d1493))
+* **frontend:** Remove use of index feature property ([d2987c5](https://github.com/astrosat/orbis/commit/d2987c5a7f97701219cd95b1406b85a57f66a353))
+* **frontend:** Remove use of index feature property ([812a314](https://github.com/astrosat/orbis/commit/812a31493337035a447944cfd01f3074e7eecf40))
+* **frontend:** Stop 0 showing in sidebar component ([28c44f9](https://github.com/astrosat/orbis/commit/28c44f900704f79c94890d83d4c180418614f5d0))
+* **frontend:** Stop MSL dialog showing up on layers change ([73f66f8](https://github.com/astrosat/orbis/commit/73f66f8e6afd28faa3faa77b409194e856c7bbb4))
+* **frontend:** Style pagination ([5f84f1a](https://github.com/astrosat/orbis/commit/5f84f1a32badcc42b248b86e71e25dc6f6446277))
+* **frontend:** Upgrade Astrosat-UI for Pagination ([f2ed4a2](https://github.com/astrosat/orbis/commit/f2ed4a28dac3480bd4de3ffd1ad34050b9e39ac0))
+
+
+### Features
+
+* **frontend:** Add a custom lighting effect to the map ([8daae4c](https://github.com/astrosat/orbis/commit/8daae4c0b085d7693204df33c833dc2fcf239ff2))
+* **frontend:** Add info icon prop to LayerVisibilityCheckbox ([620f28a](https://github.com/astrosat/orbis/commit/620f28af47105a36b02c444be2b8d442d2cce08d))
+* **frontend:** Added selected layer count to dialog ([ab41c0b](https://github.com/astrosat/orbis/commit/ab41c0b59ee16042fd25182c6e8a6dd22d130e70))
+
 # [2.12.0](https://github.com/astrosat/orbis/compare/v2.11.0...v2.12.0) (2021-02-18)
 
 
