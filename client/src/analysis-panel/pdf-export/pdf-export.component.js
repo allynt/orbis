@@ -27,6 +27,7 @@ import {
   populationAndHouseholdSelector,
   aggregationSelector,
   breakdownAggregationSelector,
+  timeSeriesAggregationSelector,
 } from 'map/orbs/slices/isolation-plus.slice';
 
 import OrbisLogo from './orbis-logo.png';
@@ -121,8 +122,8 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const PDF = ({ user }) => {
-  const dispatch = useDispatch();
   const styles = useStyles();
+  const dispatch = useDispatch();
 
   const selectedProperty = useSelector(state => propertySelector(state?.orbs));
   const screenshot = useSelector(state => screenshotSelector(state?.orbs));
@@ -141,6 +142,10 @@ const PDF = ({ user }) => {
 
   const breakdownAggregation = useSelector(state =>
     breakdownAggregationSelector(state?.orbs),
+  );
+
+  const timeSeriesAggregation = useSelector(state =>
+    timeSeriesAggregationSelector(state?.orbs),
   );
 
   const [image, setImage] = useState(undefined);
@@ -183,7 +188,6 @@ const PDF = ({ user }) => {
     return null;
   }
   return (
-    // whole page
     <Grid
       container
       justify="center"
@@ -193,8 +197,6 @@ const PDF = ({ user }) => {
       <Button className={styles.button} onClick={handleClick}>
         Download PDF Report
       </Button>
-
-      {/* whole PDF, screenshot and data */}
       <Grid
         item
         container
@@ -209,8 +211,6 @@ const PDF = ({ user }) => {
           }}
           data-testid="screenshot"
         />
-
-        {/* data section, body and footer */}
         <Grid
           item
           container
@@ -219,7 +219,6 @@ const PDF = ({ user }) => {
           justify="space-between"
           className={styles.pdfDocument}
         >
-          {/* body, columns with analysis data */}
           <Grid item container wrap="nowrap" className={styles.detailsGrid}>
             <Grid item container className={styles.gridColumn}>
               <Grid item className={styles.gridElement}>
@@ -280,6 +279,28 @@ const PDF = ({ user }) => {
                   </List>
                 </Grid>
               )}
+              {timeSeriesAggregation && (
+                <Grid
+                  item
+                  className={clsx(styles.gridElement, styles.centered)}
+                >
+                  <Typography>
+                    Time series of the data over all the selected areas:
+                  </Typography>
+                  <List>
+                    {timeSeriesAggregation.map(({ timestamp, value }) => {
+                      return (
+                        <ListItemText
+                          key={timestamp}
+                          className={styles.listData}
+                          primary={<span>{timestamp}: </span>}
+                          secondary={<span>{value}: </span>}
+                        />
+                      );
+                    })}
+                  </List>
+                </Grid>
+              )}
             </Grid>
             <Grid item className={styles.gridColumn}>
               <Grid item className={styles.gridElement}>
@@ -296,8 +317,6 @@ const PDF = ({ user }) => {
               </Grid>
             </Grid>
           </Grid>
-
-          {/* footer */}
           <Grid
             item
             container

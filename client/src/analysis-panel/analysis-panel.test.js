@@ -2,6 +2,7 @@ import * as React from 'react';
 import { render, waitFor } from '@testing-library/react';
 import { AnalysisPanel } from './analysis-panel.component';
 import { Provider } from 'react-redux';
+import { MapProvider } from 'MapContext';
 import configureMockStore from 'redux-mock-store';
 import userEvent from '@testing-library/user-event';
 import { setClickedFeatures } from 'map/orbs/slices/isolation-plus.slice';
@@ -16,9 +17,14 @@ const renderComponent = (state = {}) => {
       },
     },
   });
-  const utils = render(<AnalysisPanel />, {
-    wrapper: props => <Provider store={store} {...props} />,
-  });
+
+  const utils = render(
+    <Provider store={store}>
+      <MapProvider>
+        <AnalysisPanel />
+      </MapProvider>
+    </Provider>,
+  );
   return { ...utils, store };
 };
 

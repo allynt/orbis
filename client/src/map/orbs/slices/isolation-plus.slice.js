@@ -1,7 +1,8 @@
 import { createSlice, createSelector } from '@reduxjs/toolkit';
-import { differenceBy, unionBy, sumBy } from 'lodash';
+import { differenceBy, unionBy, sumBy, get } from 'lodash';
 
-import { aggregateValues } from '../../../analysis-panel/aggregateValues';
+import { aggregateValues } from 'analysis-panel/aggregateValues';
+import { aggregateTimeSeries } from 'analysis-panel/aggregateTimeSeries';
 
 /**
  * @typedef {{
@@ -35,14 +36,12 @@ const isolationPlusSlice = createSlice({
       state.clickedFeatures = payload?.clickedFeatures;
     },
     setProperty: (state, { payload }) => {
-      console.log('selectedProperty: ', payload);
       if (state.clickedFeatures?.[0]?.layer?.id !== payload.source_id)
         state.clickedFeatures = undefined;
       state.property = payload;
       state.filterRange = [payload.min, payload.max];
     },
     setClickedFeatures: (state, { payload }) => {
-      console.log('ClickedFeatures: ', payload);
       state.clickedFeatures = payload;
     },
     /**
@@ -156,6 +155,15 @@ export const breakdownAggregationSelector = createSelector(baseSelector, orb =>
       name,
     };
   }),
+);
+
+export const timeSeriesAggregationSelector = createSelector(baseSelector, orb =>
+  orb?.clickedFeatures?.length > 1
+    ? aggregateTimeSeries(orb?.clickedFeatures, orb?.property)
+    : get(
+        orb?.clickedFeatures?.[0],
+        `object.properties.${orb?.property?.name}`,
+      ),
 );
 
 export default isolationPlusSlice.reducer;
