@@ -68,8 +68,6 @@ const useStyles = makeStyles(theme => ({
     gap: theme.spacing(1),
   },
   gridColumn: {
-    display: 'flex',
-    flexDirection: 'column',
     width: '100%',
   },
   list: {
@@ -118,7 +116,7 @@ const useStyles = makeStyles(theme => ({
     },
   },
   logo: {
-    height: `${theme.typography.pxToRem(40)} !important`,
+    height: theme.typography.pxToRem(40),
   },
 }));
 
@@ -219,7 +217,12 @@ const PDF = ({ user }) => {
           className={styles.pdfDocument}
         >
           <Grid item container wrap="nowrap" className={styles.detailsGrid}>
-            <Grid item container className={styles.gridColumn}>
+            <Grid
+              item
+              container
+              direction="column"
+              className={styles.gridColumn}
+            >
               <Grid item className={styles.gridElement}>
                 <Typography variant="h3">
                   Selected Areas of interest:
@@ -249,7 +252,12 @@ const PDF = ({ user }) => {
                 </List>
               </Grid>
             </Grid>
-            <Grid item className={styles.gridColumn}>
+            <Grid
+              item
+              container
+              direction="column"
+              className={styles.gridColumn}
+            >
               <Grid item className={clsx(styles.gridElement, styles.centered)}>
                 <Typography variant="h3">Selected Data Layer:</Typography>
                 <Typography>
@@ -321,7 +329,12 @@ const PDF = ({ user }) => {
                 </Grid>
               )}
             </Grid>
-            <Grid item className={styles.gridColumn}>
+            <Grid
+              item
+              container
+              direction="column"
+              className={styles.gridColumn}
+            >
               <Grid item className={styles.gridElement}>
                 <Typography>
                   The information relates to the areas selected on the map.
