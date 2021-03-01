@@ -411,117 +411,6 @@ describe('Accounts Slice', () => {
         );
       });
     });
-
-    // describe(`${registerCustomerSuccess}`, () => {
-    //   it('Sets error to null', () => {
-    //     const result = reducer(
-    //       { error: 'something' },
-    //       registerCustomerSuccess(),
-    //     );
-    //     expect(result).toEqual(expect.objectContaining({ error: null }));
-    //   });
-
-    //   setsIsLoadingToFalse(registerCustomerSuccess);
-    // });
-
-    // describe(`${registerCustomerFailure}`, () => {
-    //   setsIsLoadingToFalse(registerCustomerFailure);
-
-    //   it('sets error to payload', () => {
-    //     const error = 'this is an error';
-    //     const result = reducer({}, registerCustomerFailure(error));
-    //     expect(result).toEqual(expect.objectContaining({ error }));
-    //   });
-    // });
-
-    // describe(`${placeOrderSuccess}`, () => {
-    //   it('Sets error to null', () => {
-    //     const result = reducer({ error: 'something' }, placeOrderSuccess());
-    //     expect(result).toEqual(expect.objectContaining({ error: null }));
-    //   });
-
-    //   setsIsLoadingToFalse(placeOrderSuccess);
-
-    //   it('Sets isLoading to false', () => {
-    //     const result = reducer({ isLoading: true }, placeOrderSuccess());
-    //     expect(result).toEqual(expect.objectContaining({ isLoading: false }));
-    //   });
-    // });
-
-    // describe(`${placeOrderFailure}`, () => {
-    //   it('sets error to payload.errors', () => {
-    //     const error = 'This is an error';
-    //     const result = reducer({}, placeOrderFailure({ errors: error }));
-    //     expect(result).toEqual(expect.objectContaining({ error }));
-    //   });
-
-    //   it('sets isLoading to false', () => {
-    //     expect(reducer({ isLoading: true }, placeOrderFailure({}))).toEqual(
-    //       expect.objectContaining({ isLoading: false }),
-    //     );
-    //   });
-    // });
-
-    // describe(`${resendVerificationEmailSuccess}`, () => {
-    //   it('Sets error to null', () => {
-    //     const result = reducer(
-    //       { error: 'something' },
-    //       resendVerificationEmailSuccess(),
-    //     );
-    //     expect(result).toEqual(expect.objectContaining({ error: null }));
-    //   });
-
-    //   it('Sets isLoading to false', () => {
-    //     const result = reducer(
-    //       { isLoading: true },
-    //       resendVerificationEmailSuccess(),
-    //     );
-    //     expect(result).toEqual(expect.objectContaining({ isLoading: false }));
-    //   });
-    // });
-
-    // describe(`${resendVerificationEmailFailure}`, () => {
-    //   it('sets isLoading to false', () => {
-    //     const result = reducer(
-    //       { isLoading: true },
-    //       resendVerificationEmailFailure(),
-    //     );
-    //     expect(result).toEqual(expect.objectContaining({ isLoading: false }));
-    //   });
-
-    //   it('sets error to payload', () => {
-    //     const error = 'this is an error';
-    //     const result = reducer({}, resendVerificationEmailFailure(error));
-    //     expect(result).toEqual(expect.objectContaining({ error }));
-    //   });
-    // });
-
-    // describe(`${activateAccountSuccess}`, () => {
-    //   it('sets user to payload.user', () => {
-    //     const user = { name: 'Test User' };
-    //     expect(reducer({}, activateAccountSuccess({ user }))).toEqual(
-    //       expect.objectContaining({ user }),
-    //     );
-    //   });
-
-    //   it('sets userKey to null', () => {
-    //     expect(reducer({ userKey: '123' }, activateAccountSuccess({}))).toEqual(
-    //       expect.objectContaining({ userKey: null }),
-    //     );
-    //   });
-
-    //   it('sets error to null', () => {
-    //     expect(reducer({ error: '123' }, activateAccountSuccess({}))).toEqual(
-    //       expect.objectContaining({ error: null }),
-    //     );
-    //   });
-
-    //   it('sets isLoading to false', () => {
-    //     expect(
-    //       reducer({ isLoading: true }, activateAccountSuccess({})),
-    //     ).toEqual(expect.objectContaining({ isLoading: false }));
-    //   });
-    // });
   });
 
   describe('Thunks', () => {
@@ -529,6 +418,7 @@ describe('Accounts Slice', () => {
     let getState;
 
     beforeEach(() => {
+      fetch.resetMocks();
       dispatch = jest.fn();
       getState = jest.fn(() => ({
         accounts: { userKey: '123' },
@@ -573,12 +463,16 @@ describe('Accounts Slice', () => {
       const errorResponse = { errors: { test: ['problem'] } };
 
       it('starts the request', async () => {
+        fetch.mockResponse(JSON.stringify({}));
         await registerCustomer(formValues)(dispatch, getState, undefined);
         expect(dispatch).toHaveBeenCalledWith(fetchRequested());
       });
 
       it('creates new customer and sets in state', async () => {
-        fetchMock.once(JSON.stringify(createCustomerResponse));
+        fetch
+          .once(JSON.stringify(createCustomerResponse))
+          .once(JSON.stringify(createCustomerUserResponse))
+          .once(JSON.stringify(fetchUserResponse));
         await registerCustomer(formValues)(dispatch, getState, undefined);
         expect(dispatch).toHaveBeenCalledWith(
           setCurrentCustomer(createCustomerResponse),
@@ -600,7 +494,8 @@ describe('Accounts Slice', () => {
       it('creates a customer user and sets in state', async () => {
         fetch
           .once(JSON.stringify(createCustomerResponse))
-          .once(JSON.stringify(createCustomerUserResponse));
+          .once(JSON.stringify(createCustomerUserResponse))
+          .once(JSON.stringify(fetchUserResponse));
         await registerCustomer(formValues)(dispatch, getState, undefined);
         expect(dispatch).toHaveBeenCalledWith(
           createCustomerUserSuccess({ user: createCustomerUserResponse }),
@@ -705,18 +600,21 @@ describe('Accounts Slice', () => {
       };
 
       it('starts the request', async () => {
+        fetch.mockResponse(JSON.stringify({}));
         await placeOrder(formValues)(dispatch, getState, undefined);
         expect(dispatch).toHaveBeenCalledWith(fetchRequested());
       });
 
       it('calls the success action on successful request', async () => {
         fetch.once(JSON.stringify(placeOrderResponseBody));
+        fetch.once(JSON.stringify(fetchCustomerResponseBody));
         await placeOrder(formValues)(dispatch, getState, undefined);
         expect(dispatch).toHaveBeenCalledWith(placeOrderSuccess());
       });
 
       it('navigates to landing on success', async () => {
         fetch.once(JSON.stringify(placeOrderResponseBody));
+        fetch.once(JSON.stringify(fetchCustomerResponseBody));
         await placeOrder(formValues)(dispatch, getState, undefined);
         expect(dispatch).toHaveBeenCalledWith(push('/'));
       });
@@ -754,6 +652,22 @@ describe('Accounts Slice', () => {
         await placeOrder(formValues)(dispatch, getState, undefined);
         expect(dispatch).toHaveBeenCalledWith(
           placeOrderFailure(failureResponseBody.errors.test),
+        );
+      });
+
+      it('Uses the customer id from the user if current customer is undefined', async () => {
+        fetch.once(JSON.stringify(placeOrderResponseBody));
+        fetch.once(JSON.stringify(fetchCustomerResponseBody));
+        jest.spyOn(window, 'fetch');
+        await placeOrder(formValues)(dispatch, () => ({
+          app: { apiUrl: '' },
+          admin: {},
+          accounts: { user: { customers: [{ id: 'testcustomerId' }] } },
+        }));
+        expect(fetch).toHaveBeenNthCalledWith(
+          1,
+          '/api/customers/testcustomerId/orders/',
+          expect.objectContaining({}),
         );
       });
     });
@@ -797,6 +711,9 @@ describe('Accounts Slice', () => {
       };
 
       it('starts the request', async () => {
+        fetch
+          .once(JSON.stringify(loginResponse))
+          .once(JSON.stringify(getUserResponse));
         await login(formValues)(dispatch, getState);
         expect(dispatch).toHaveBeenCalledWith(fetchRequested());
       });
