@@ -42,7 +42,7 @@ const useStyles = makeStyles(theme => ({
     top: theme.typography.pxToRem(8),
     left: theme.typography.pxToRem(624),
     zIndex: 10,
-    padding: theme.spacing(2),
+    padding: theme.spacing(1),
   },
   pdf: {
     position: 'relative',
@@ -65,7 +65,7 @@ const useStyles = makeStyles(theme => ({
   detailsGrid: {
     height: '100%',
     width: '100%',
-    gap: theme.spacing(0.5),
+    gap: theme.spacing(1),
   },
   gridColumn: {
     display: 'flex',
@@ -76,11 +76,14 @@ const useStyles = makeStyles(theme => ({
     padding: '0',
   },
   gridElement: {
-    padding: theme.spacing(0.5),
+    padding: theme.spacing(1),
     width: '100%',
     border: ' 2px dashed #4e78a0',
     borderRadius: theme.typography.pxToRem(5),
     '&:not(:last-child)': {
+      marginBottom: theme.spacing(1),
+    },
+    '& > *:not(:last-child)': {
       marginBottom: theme.spacing(1),
     },
   },
@@ -99,12 +102,10 @@ const useStyles = makeStyles(theme => ({
   listData: {
     display: 'flex',
     justifyContent: 'space-between',
+    margin: theme.spacing(1, 0),
   },
   moreInfo: {
     textAlign: 'justify',
-  },
-  footer: {
-    height: '100%',
   },
   footerElement: {
     width: '100%',
@@ -170,8 +171,6 @@ const PDF = ({ user }) => {
 
       doc.addImage({
         imageData: canvas,
-        format: 'JPEG',
-        // ^^^ Do something about this
         x: 0,
         y: 0,
         width,
@@ -222,7 +221,9 @@ const PDF = ({ user }) => {
           <Grid item container wrap="nowrap" className={styles.detailsGrid}>
             <Grid item container className={styles.gridColumn}>
               <Grid item className={styles.gridElement}>
-                <Typography>Selected Areas of interest:</Typography>
+                <Typography variant="h3">
+                  Selected Areas of interest:
+                </Typography>
                 <List className={styles.list}>
                   {areasOfInterest?.map(area_name => (
                     <ListItemText key={area_name} primary={area_name} />
@@ -230,29 +231,47 @@ const PDF = ({ user }) => {
                 </List>
               </Grid>
               <Grid item className={styles.gridElement}>
-                <Typography>Total population: {populationTotal}</Typography>
-                <Typography>Total households: {householdTotal}</Typography>
+                <List className={clsx(styles.aggregationData, styles.list)}>
+                  <ListItemText
+                    className={styles.listData}
+                    primary={
+                      <Typography variant="h4">Total population: </Typography>
+                    }
+                    secondary={<span>{populationTotal}</span>}
+                  />
+                  <ListItemText
+                    className={styles.listData}
+                    primary={
+                      <Typography variant="h4">Total households: </Typography>
+                    }
+                    secondary={<span>{householdTotal}</span>}
+                  />
+                </List>
               </Grid>
             </Grid>
             <Grid item className={styles.gridColumn}>
               <Grid item className={clsx(styles.gridElement, styles.centered)}>
-                <Typography>Selected Data Layer:</Typography>
+                <Typography variant="h3">Selected Data Layer:</Typography>
                 <Typography>
                   {selectedProperty?.application?.orbis?.label ||
                     selectedProperty?.label}
                 </Typography>
               </Grid>
               <Grid item className={clsx(styles.gridElement, styles.centered)}>
-                <Typography>{aggregationLabel} of selected areas:</Typography>
-                <span className={styles.bigValue}>{areaValue}</span>
-                <Typography>{aggregationLabel} of all areas:</Typography>
+                <Typography variant="h3">
+                  {aggregationLabel} of selected areas:
+                </Typography>
+                <div className={styles.bigValue}>{areaValue}</div>
+                <Typography variant="h3">
+                  {aggregationLabel} of all areas:
+                </Typography>
                 <List className={clsx(styles.aggregationData, styles.list)}>
                   {Object.entries(selectedProperty?.aggregates)?.map(
                     ([key, value]) => (
                       <ListItemText
                         key={key}
                         className={styles.listData}
-                        primary={<span>{key}: </span>}
+                        primary={<Typography variant="h4">{key}: </Typography>}
                         secondary={<span>{value}</span>}
                       />
                     ),
@@ -264,7 +283,7 @@ const PDF = ({ user }) => {
                   item
                   className={clsx(styles.gridElement, styles.centered)}
                 >
-                  <Typography>
+                  <Typography variant="h3">
                     Breakdown of the data summed over all the selected areas:
                   </Typography>
                   <List className={clsx(styles.aggregationData, styles.list)}>
@@ -272,32 +291,32 @@ const PDF = ({ user }) => {
                       <ListItemText
                         key={name}
                         className={styles.listData}
-                        primary={<span>{name}: </span>}
+                        primary={<Typography variant="h4">{name}: </Typography>}
                         secondary={<span>{value}</span>}
                       />
                     ))}
                   </List>
                 </Grid>
               )}
-              {timeSeriesAggregation && (
+              {Array.isArray(timeSeriesAggregation) && (
                 <Grid
                   item
                   className={clsx(styles.gridElement, styles.centered)}
                 >
-                  <Typography>
+                  <Typography variant="h3">
                     Time series of the data over all the selected areas:
                   </Typography>
                   <List>
-                    {timeSeriesAggregation.map(({ timestamp, value }) => {
-                      return (
-                        <ListItemText
-                          key={timestamp}
-                          className={styles.listData}
-                          primary={<span>{timestamp}: </span>}
-                          secondary={<span>{value}: </span>}
-                        />
-                      );
-                    })}
+                    {timeSeriesAggregation?.map(({ timestamp, value }) => (
+                      <ListItemText
+                        key={timestamp}
+                        className={styles.listData}
+                        primary={
+                          <Typography variant="h4">{timestamp}: </Typography>
+                        }
+                        secondary={<span>{value}: </span>}
+                      />
+                    ))}
                   </List>
                 </Grid>
               )}
@@ -309,7 +328,7 @@ const PDF = ({ user }) => {
                 </Typography>
               </Grid>
               <Grid item className={clsx(styles.gridElement, styles.moreInfo)}>
-                <Typography>More Information:</Typography>
+                <Typography variant="h3">More Information:</Typography>
                 <Typography>Source: {selectedProperty?.source}</Typography>
                 <Typography component="p">
                   {selectedProperty?.details}
@@ -320,17 +339,16 @@ const PDF = ({ user }) => {
           <Grid
             item
             container
-            direction="row"
+            component="footer"
+            wrap="nowrap"
             justify="space-between"
-            alignItems="flex-end"
-            className={styles.footer}
+            alignItems="center"
           >
             <Grid
               item
               container
               direction="column"
               alignItems="flex-end"
-              spacing={2}
               className={styles.footerElement}
             >
               <Typography>Data Analysis Report</Typography>
@@ -341,7 +359,6 @@ const PDF = ({ user }) => {
               item
               container
               direction="column"
-              spacing={2}
               className={styles.footerElement}
             >
               {user?.name && (
