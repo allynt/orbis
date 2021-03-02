@@ -80,9 +80,8 @@ const JourneySelection = ({
         history.push(REGISTER_CUSTOMER_USER);
         break;
       case 'individual':
-        history.push(REGISTER);
-        break;
       default:
+        history.push(REGISTER);
         break;
     }
   };

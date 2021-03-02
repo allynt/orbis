@@ -12,7 +12,6 @@ import { Router } from 'react-router-dom';
 import { createMemoryHistory } from 'history';
 
 import RegisterForm from './register-form.component';
-import { status } from 'accounts/accounts.slice';
 import { FIELD_NAMES } from 'utils/validators';
 
 const mockStore = configureMockStore([thunk]);
@@ -34,11 +33,18 @@ const testAppConfig = {
   isApprovalRequired: false,
 };
 
-const renderComponent = (history, store, registerUser, error) =>
+const renderComponent = (
+  history,
+  store,
+  registerUser,
+  error,
+  isLoading = false,
+) =>
   render(
     <RegisterForm
       registerUser={registerUser}
       serverErrors={error}
+      isLoading={isLoading}
       {...testAppConfig}
     />,
     {
@@ -95,7 +101,7 @@ describe('Register Form Component', () => {
     expect(signUpButton).toHaveAttribute('disabled');
   });
 
-  it('should disable `Sign Up` button when form is invalid', () => {
+  it('should disable `Sign Up` button when form is invalid and show text', () => {
     const { getByRole } = renderComponent(history, store, registerUser, error);
 
     const email = getByRole('textbox', { name: EMAIL_PLACEHOLDER_TEXT });
@@ -210,5 +216,16 @@ describe('Register Form Component', () => {
     );
 
     expect(getByTestId('error-well')).toBeInTheDocument();
+  });
+
+  it('shows a loading spinner when loading', () => {
+    const { getAllByRole } = renderComponent(
+      history,
+      store,
+      registerUser,
+      error,
+      true,
+    );
+    expect(getAllByRole('progressbar').length).toBe(2);
   });
 });
