@@ -14,8 +14,10 @@ import reducer, {
   activateAccount,
   activateAccountFailure,
   activateAccountSuccess,
+  changePassword,
   changePasswordFailure,
   changePasswordSuccess,
+  confirmResetPassword,
   fetchRequested,
   fetchUser,
   fetchUserFailure,
@@ -37,8 +39,10 @@ import reducer, {
   registerUser,
   registerUserFailure,
   registerUserSuccess,
+  resendVerificationEmail,
   resendVerificationEmailFailure,
   resendVerificationEmailSuccess,
+  resetPassword,
   resetPasswordFailure,
   resetPasswordSuccess,
   status,
@@ -417,6 +421,11 @@ describe('Accounts Slice', () => {
   describe('Thunks', () => {
     let dispatch;
     let getState;
+    const errorResponse = {
+      errors: {
+        test: ['¿problema?'],
+      },
+    };
 
     beforeEach(() => {
       fetch.resetMocks();
@@ -819,6 +828,94 @@ describe('Accounts Slice', () => {
         fetch.once(JSON.stringify({ user }));
         await activateAccount({})(dispatch, getState);
         expect(dispatch).toHaveBeenCalledWith(activateAccountSuccess({ user }));
+      });
+    });
+
+    describe('resendVerificationEmail', () => {
+      it(`dispatches ${fetchRequested}`, async () => {
+        await resendVerificationEmail()(dispatch, getState);
+        expect(dispatch).toHaveBeenCalledWith(fetchRequested());
+      });
+
+      it(`dispatches ${resendVerificationEmailFailure} on failed request`, async () => {
+        fetch.once(JSON.stringify(errorResponse), {
+          ok: false,
+          status: 401,
+          statusText: 'Wrong',
+        });
+        await resendVerificationEmail()(dispatch, getState);
+        expect(dispatch).toHaveBeenCalledWith(
+          resendVerificationEmailFailure(errorResponse),
+        );
+      });
+
+      it(`dispatches ${resendVerificationEmailSuccess} on success`, async () => {
+        fetch.once();
+        await resendVerificationEmail()(dispatch, getState);
+        expect(dispatch).toBeCalledWith(resendVerificationEmailSuccess());
+      });
+    });
+
+    describe('changePassword', () => {
+      it(`dispatches ${changePasswordFailure} on failed request`, async () => {
+        fetch.once(JSON.stringify(errorResponse), {
+          ok: false,
+          status: 401,
+          statusText: 'Wrong',
+        });
+        await changePassword({})(dispatch, getState);
+        expect(dispatch).toHaveBeenCalledWith(
+          changePasswordFailure(errorResponse.errors.test),
+        );
+      });
+
+      it(`dispatches ${changePasswordSuccess} on success`, async () => {
+        fetch.once();
+        await changePassword({})(dispatch, getState);
+        expect(dispatch).toBeCalledWith(changePasswordSuccess());
+      });
+    });
+
+    describe('confirmResetPassword', () => {
+      it(`dispatches ${passwordResetRequestedFailure} on failed request`, async () => {
+        fetch.once(JSON.stringify(errorResponse), {
+          ok: false,
+          status: 401,
+          statusText: 'Wrong',
+        });
+        await confirmResetPassword({}, {})(dispatch, getState);
+        expect(dispatch).toHaveBeenCalledWith(
+          passwordResetRequestedFailure(errorResponse.errors.test),
+        );
+      });
+
+      it(`dispatches ${passwordResetRequestedSuccess} with user on success`, async () => {
+        const user = { name: 'Test user' };
+        fetch.once(JSON.stringify({ user }));
+        await confirmResetPassword({}, {})(dispatch, getState);
+        expect(dispatch).toHaveBeenCalledWith(
+          passwordResetRequestedSuccess(user),
+        );
+      });
+    });
+
+    describe('resetPassword', () => {
+      it(`dispatches ${resetPasswordFailure} on failed request`, async () => {
+        fetch.once(JSON.stringify(errorResponse), {
+          ok: false,
+          status: 401,
+          statusText: 'Wrong',
+        });
+        await resetPassword({})(dispatch, getState);
+        expect(dispatch).toHaveBeenCalledWith(
+          resetPasswordFailure(errorResponse.errors.test),
+        );
+      });
+
+      it(`dispatches ${resetPasswordSuccess} on success`, async () => {
+        fetch.once();
+        await resetPassword({})(dispatch, getState);
+        expect(dispatch).toBeCalledWith(resetPasswordSuccess());
       });
     });
   });
