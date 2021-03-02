@@ -133,14 +133,11 @@ export default () => {
           exact
           path={PASSWORD_CHANGE}
           user={user}
-          render={() => (
-            <PasswordChangeForm
-              changePassword={form => dispatch(changePassword(form))}
-              changeStatus={changeStatus}
-              error={error}
-              {...passwordConfig}
-            />
-          )}
+          component={PasswordChangeForm}
+          changePassword={form => dispatch(changePassword(form))}
+          changeStatus={changeStatus}
+          error={error}
+          {...passwordConfig}
         />
         <Route
           exact

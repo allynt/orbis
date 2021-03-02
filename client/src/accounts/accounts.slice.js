@@ -140,7 +140,7 @@ const accountsSlice = createSlice({
       state.isLoading = false;
     },
     placeOrderFailure: (state, { payload }) => {
-      state.error = payload.errors;
+      state.error = payload;
       state.isLoading = false;
     },
     loginUserSuccess: (state, { payload }) => {
@@ -159,7 +159,7 @@ const accountsSlice = createSlice({
       state.error = null;
       state.isLoading = false;
     },
-    resendVerificationEmailFailure: (state, payload) => {
+    resendVerificationEmailFailure: (state, { payload }) => {
       state.error = payload;
       state.isLoading = false;
     },
@@ -358,7 +358,7 @@ export const placeOrder = form => async (dispatch, getState) => {
   );
   if (!response.ok) {
     const body = await response.json();
-    return dispatch(placeOrderFailure({ errors: errorTransformer(body) }));
+    return dispatch(placeOrderFailure(errorTransformer(body)));
   }
   const fetchCustomerResponse = await getData(
     `${apiUrl}/api/customers/${currentCustomerId}/`,
@@ -366,7 +366,7 @@ export const placeOrder = form => async (dispatch, getState) => {
   );
   if (!fetchCustomerResponse.ok) {
     const errors = await fetchCustomerResponse.json();
-    return dispatch(placeOrderFailure({ errors: errorTransformer(errors) }));
+    return dispatch(placeOrderFailure(errorTransformer(errors)));
   }
   const customer = await fetchCustomerResponse.json();
   dispatch(setCurrentCustomer(customer));

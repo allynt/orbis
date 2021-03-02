@@ -17,7 +17,7 @@ type User = {
   email: string;
   id: string;
   is_approved: boolean;
-  is_verified: boolean;
+  is_verified: boolean | 'False' | 'True';
   name?: string;
   permissions?: string[];
   registration_stage?: 'USER' | 'CUSTOMER' | 'CUSTOMER_USER' | 'ORDER';

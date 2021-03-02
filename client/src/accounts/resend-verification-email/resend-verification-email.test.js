@@ -27,4 +27,11 @@ describe('<UserRegistrationSuccess />', () => {
     userEvent.click(getByRole('button', { name: /resend\semail/i }));
     expect(onResend).toBeCalled();
   });
+
+  it('shows a spinner if loading', () => {
+    const { getByRole } = render(<ResendVerificationEmail isLoading />, {
+      wrapper,
+    });
+    expect(getByRole('progressbar')).toBeInTheDocument();
+  });
 });

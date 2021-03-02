@@ -103,7 +103,6 @@ const CustomerRegistration = ({
           InputProps={{ readOnly: true }}
           error={!!errors[FIELD_NAMES.email]}
           helperText={
-            errors[FIELD_NAMES.email]?.message ??
             'You will become the ADMIN for this Team Account. The email address and password you have provided will also serve as your ADMIN account. You will be able to access the Admin Console. Don’t worry, we will help you find it!'
           }
         />
