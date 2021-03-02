@@ -116,54 +116,60 @@ export const screenshotSelector = createSelector(
   orb => orb?.screenshot,
 );
 
-export const areasOfInterestSelector = createSelector(baseSelector, orb =>
-  orb?.clickedFeatures?.map(feat => feat.object.properties.area_name),
+export const areasOfInterestSelector = createSelector(
+  clickedFeaturesSelector,
+  clickedFeatures =>
+    clickedFeatures?.map(feat => feat.object.properties.area_name),
 );
 
 export const populationAndHouseholdSelector = createSelector(
-  baseSelector,
-  orb => {
+  clickedFeaturesSelector,
+  clickedFeatures => {
     return {
       populationTotal: sumBy(
-        orb?.clickedFeatures,
+        clickedFeatures,
         'object.properties.population',
       )?.toLocaleString(),
       householdTotal: sumBy(
-        orb?.clickedFeatures,
+        clickedFeatures,
         'object.properties.households',
       )?.toLocaleString(),
     };
   },
 );
 
-export const aggregationSelector = createSelector(baseSelector, orb => {
-  return {
-    aggregationLabel: orb?.property?.aggregation === 'sum' ? 'Sum' : 'Average',
-    areaValue: aggregateValues(orb?.clickedFeatures, orb?.property),
-  };
-});
-
-export const breakdownAggregationSelector = createSelector(baseSelector, orb =>
-  orb?.property?.breakdown?.map(name => {
-    const value = aggregateValues(orb?.clickedFeatures, {
-      name,
-      aggregation: orb?.property.aggregation,
-      precision: orb?.property.precision,
-    });
+export const aggregationSelector = createSelector(
+  [propertySelector, clickedFeaturesSelector],
+  (property, clickedFeatures) => {
     return {
-      value,
-      name,
+      aggregationLabel: property?.aggregation === 'sum' ? 'Sum' : 'Average',
+      areaValue: aggregateValues(clickedFeatures, property),
     };
-  }),
+  },
 );
 
-export const timeSeriesAggregationSelector = createSelector(baseSelector, orb =>
-  orb?.clickedFeatures?.length > 1
-    ? aggregateTimeSeries(orb?.clickedFeatures, orb?.property)
-    : get(
-        orb?.clickedFeatures?.[0],
-        `object.properties.${orb?.property?.name}`,
-      ),
+export const breakdownAggregationSelector = createSelector(
+  [propertySelector, clickedFeaturesSelector],
+  (property, clickedFeatures) =>
+    property?.breakdown?.map(name => {
+      const value = aggregateValues(clickedFeatures, {
+        name,
+        aggregation: property.aggregation,
+        precision: property.precision,
+      });
+      return {
+        value,
+        name,
+      };
+    }),
+);
+
+export const timeSeriesAggregationSelector = createSelector(
+  [propertySelector, clickedFeaturesSelector],
+  (property, clickedFeatures) =>
+    clickedFeatures?.length > 1
+      ? aggregateTimeSeries(clickedFeatures, property)
+      : get(clickedFeatures?.[0], `object.properties.${property?.name}`),
 );
 
 export default isolationPlusSlice.reducer;
