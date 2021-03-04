@@ -53,7 +53,7 @@ export const CheckboxFilters = ({
   const styles = useStyles({
     color,
     iconColor,
-    hasIcon: filters.some(f => !!f.icon),
+    hasIcon: filters?.some(f => !!f.icon),
   });
 
   /**
