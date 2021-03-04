@@ -29,8 +29,14 @@ const useStyles = makeStyles(theme => ({
  *  selectedProperty: import('typings/orbis').Property
  * }} props
  */
-export const MoreInformation = ({ currentSource, selectedProperty }) => {
+export const MoreInformation = ({
+  currentSource = { metadata: {} },
+  selectedProperty = {},
+}) => {
   const styles = useStyles();
+  const {
+    metadata: { licence },
+  } = currentSource;
   const { details, source } = selectedProperty;
   return (
     <SidePanelSection title="More Information" defaultExpanded>
@@ -48,6 +54,18 @@ export const MoreInformation = ({ currentSource, selectedProperty }) => {
               Source:
             </Typography>
             <Typography className={styles.sourceValue}>{source}</Typography>
+          </>
+        )}
+        {licence && (
+          <>
+            <Typography
+              variant="h4"
+              component="p"
+              className={styles.sourceLabel}
+            >
+              Licence:
+            </Typography>
+            <Typography className={styles.sourceValue}>{licence}</Typography>
           </>
         )}
       </div>

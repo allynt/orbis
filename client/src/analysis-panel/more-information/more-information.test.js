@@ -17,4 +17,11 @@ describe('<MoreInformation />', () => {
     );
     expect(getByText('Hello')).toBeInTheDocument();
   });
+
+  it('Shows the licence for the source', () => {
+    const { getByText } = render(
+      <MoreInformation currentSource={{ metadata: { licence: "driver's" } }} />,
+    );
+    expect(getByText("driver's")).toBeInTheDocument();
+  });
 });

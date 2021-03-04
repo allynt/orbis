@@ -152,6 +152,12 @@ type SourceMetadata = {
   minZoom?: number;
   maxZoom?: number;
   request_strategy?: 'manual' | 'automatic' | 'lazy' | 'normal';
+  licence?: string;
+  provenance?: {
+    sources?: (string | { text: string; src: string })[];
+    creators?: string[];
+    documentation?: string[];
+  };
   application?: {
     orbis: OrbisApplicationMetadata;
   };
