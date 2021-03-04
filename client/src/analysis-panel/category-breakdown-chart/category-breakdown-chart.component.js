@@ -33,7 +33,8 @@ export const CategoryBreakdownChart = ({
   /** @type {[{category: string, count:number} | undefined, React.Dispatch<{category:string, count:number} | undefined>]} */
   const [selectedDatum, setSelectedDatum] = useState();
 
-  const categoryList = useSelector(state => categoryListSelector(state?.orbs));
+  const categoryList =
+    useSelector(state => categoryListSelector(state?.orbs)) || [];
 
   const isSelected = useCallback(
     ({ category }) => selectedDatum?.category === category,

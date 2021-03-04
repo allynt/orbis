@@ -24,7 +24,8 @@ import {
   propertySelector,
   screenshotSelector,
   areasOfInterestSelector,
-  populationAndHouseholdSelector,
+  populationTotalSelector,
+  householdTotalSelector,
   aggregationSelector,
   breakdownAggregationSelector,
   timeSeriesAggregationSelector,
@@ -60,7 +61,6 @@ const useStyles = makeStyles(theme => ({
   pdfDocument: {
     height: '66.6%',
     width: '100%',
-    padding: theme.spacing(1),
   },
   detailsGrid: {
     width: '100%',
@@ -127,13 +127,15 @@ const PDF = ({ user }) => {
     areasOfInterestSelector(state?.orbs),
   );
 
-  const { populationTotal, householdTotal } = useSelector(state =>
-    populationAndHouseholdSelector(state?.orbs),
+  const populationTotal = useSelector(state =>
+    populationTotalSelector(state?.orbs),
   );
 
-  const { aggregationLabel, areaValue } = useSelector(state =>
-    aggregationSelector(state?.orbs),
+  const householdTotal = useSelector(state =>
+    householdTotalSelector(state?.orbs),
   );
+
+  const areaValue = useSelector(state => aggregationSelector(state?.orbs));
 
   const breakdownAggregation = useSelector(state =>
     breakdownAggregationSelector(state?.orbs),
@@ -143,8 +145,13 @@ const PDF = ({ user }) => {
     timeSeriesAggregationSelector(state?.orbs),
   );
 
+  console.log('timeSeriesAggregation: ', timeSeriesAggregation);
+
   const [image, setImage] = useState(undefined);
   const creationDate = format(new Date(), 'MMMM do Y');
+
+  const aggregationLabel =
+    selectedProperty?.aggregation === 'sum' ? 'Sum' : 'Average';
 
   useEffect(() => {
     const reader = new FileReader();
@@ -210,6 +217,7 @@ const PDF = ({ user }) => {
           direction="column"
           wrap="nowrap"
           justify="space-between"
+          spacing={6}
           className={styles.pdfDocument}
         >
           <Grid item container wrap="nowrap" className={styles.detailsGrid}>

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { render, waitFor } from '@testing-library/react';
+import { render, waitFor, within } from '@testing-library/react';
 import { AnalysisPanel } from './analysis-panel.component';
 import { Provider } from 'react-redux';
 import { MapProvider } from 'MapContext';
@@ -70,5 +70,13 @@ describe('<AnalysisPanel />', () => {
         }),
       ]),
     );
+  });
+
+  it('dispatches screenshot and redirects to PDF route when button is clicked', () => {
+    const { getByRole, store } = renderComponent();
+
+    userEvent.click(getByRole('button', { name: 'Export PDF Report' }));
+
+    console.log('state: ', store.getState());
   });
 });

@@ -43,9 +43,10 @@ export const NationalDeviationHistogram = ({
   const [selectedAggregateArea, setSelectedAggregateArea] = useState('GB');
   const styles = useStyles();
 
-  const { aggregationLabel, areaValue } = useSelector(state =>
-    aggregationSelector(state?.orbs),
-  );
+  const aggregationLabel =
+    selectedProperty?.aggregation === 'sum' ? 'Sum' : 'Average';
+
+  const areaValue = useSelector(state => aggregationSelector(state?.orbs));
 
   return (
     <SidePanelSection defaultExpanded title="Selected Data Layer" info={info}>

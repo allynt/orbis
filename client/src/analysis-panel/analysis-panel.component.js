@@ -5,7 +5,6 @@ import {
   Button,
   ButtonBase,
   CloseIcon,
-  SvgIcon,
   Divider,
   IconButton,
   makeStyles,
@@ -172,9 +171,7 @@ export const AnalysisPanel = () => {
             size="small"
             onClick={handleExportClick}
           >
-            <SvgIcon>
-              <PdfExportIcon />
-            </SvgIcon>
+            <PdfExportIcon />
           </IconButton>
         </div>
       }

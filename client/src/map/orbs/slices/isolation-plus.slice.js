@@ -122,71 +122,81 @@ export const areasOfInterestSelector = createSelector(
     clickedFeatures?.map(feat => feat.object.properties.area_name),
 );
 
-export const populationAndHouseholdSelector = createSelector(
+export const populationTotalSelector = createSelector(
   clickedFeaturesSelector,
-  clickedFeatures => {
-    return {
-      populationTotal: sumBy(
-        clickedFeatures,
-        'object.properties.population',
-      )?.toLocaleString(),
-      householdTotal: sumBy(
-        clickedFeatures,
-        'object.properties.households',
-      )?.toLocaleString(),
-    };
-  },
+  clickedFeatures =>
+    !clickedFeatures
+      ? undefined
+      : sumBy(
+          clickedFeatures,
+          'object.properties.population',
+        )?.toLocaleString(),
+);
+
+export const householdTotalSelector = createSelector(
+  clickedFeaturesSelector,
+  clickedFeatures =>
+    !clickedFeatures
+      ? undefined
+      : sumBy(
+          clickedFeatures,
+          'object.properties.households',
+        )?.toLocaleString(),
 );
 
 export const categoryListSelector = createSelector(
   [propertySelector, clickedFeaturesSelector],
   (property, clickedFeatures) =>
-    Object.entries(property.categories)
-      .map(([category, rest]) => {
-        const count = clickedFeatures?.reduce(
-          (prev, curr) =>
-            curr.object.properties[property.name] === category
-              ? prev + 1
-              : prev,
-          0,
-        );
-        const percent = (count / clickedFeatures?.length) * 100;
-        return { category, count, percent, ...rest };
-      })
-      .filter(c => c.count > 0)
-      .sort((a, b) => a.category.localeCompare(b.category)),
+    !property || !clickedFeatures
+      ? undefined
+      : Object.entries(property.categories)
+          .map(([category, rest]) => {
+            const count = clickedFeatures?.reduce(
+              (prev, curr) =>
+                curr.object.properties[property.name] === category
+                  ? prev + 1
+                  : prev,
+              0,
+            );
+            const percent = (count / clickedFeatures?.length) * 100;
+            return { category, count, percent, ...rest };
+          })
+          .filter(c => c.count > 0)
+          .sort((a, b) => a.category.localeCompare(b.category)),
 );
 
 export const aggregationSelector = createSelector(
   [propertySelector, clickedFeaturesSelector],
-  (property, clickedFeatures) => {
-    return {
-      aggregationLabel: property?.aggregation === 'sum' ? 'Sum' : 'Average',
-      areaValue: aggregateValues(clickedFeatures, property),
-    };
-  },
+  (property, clickedFeatures) =>
+    !property || !clickedFeatures
+      ? undefined
+      : aggregateValues(clickedFeatures, property),
 );
 
 export const breakdownAggregationSelector = createSelector(
   [propertySelector, clickedFeaturesSelector],
   (property, clickedFeatures) =>
-    property?.breakdown?.map(name => {
-      const value = aggregateValues(clickedFeatures, {
-        name,
-        aggregation: property.aggregation,
-        precision: property.precision,
-      });
-      return {
-        value,
-        name,
-      };
-    }),
+    !property || !clickedFeatures
+      ? undefined
+      : property?.breakdown?.map(name => {
+          const value = aggregateValues(clickedFeatures, {
+            name,
+            aggregation: property.aggregation,
+            precision: property.precision,
+          });
+          return {
+            value,
+            name,
+          };
+        }),
 );
 
 export const timeSeriesAggregationSelector = createSelector(
   [propertySelector, clickedFeaturesSelector],
   (property, clickedFeatures) =>
-    clickedFeatures?.length > 1
+    !property || !clickedFeatures
+      ? undefined
+      : clickedFeatures?.length > 1
       ? aggregateTimeSeries(clickedFeatures, property)
       : get(clickedFeatures?.[0], `object.properties.${property?.name}`),
 );
