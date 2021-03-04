@@ -107,3 +107,9 @@ WithLine.args = {
   ...ContinuousData.args,
   line: 1000,
 };
+
+export const DecileWithLine = Template.bind({});
+DecileWithLine.args = {
+  ...DecileData.args,
+  line: 4,
+};

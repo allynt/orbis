@@ -1,13 +1,28 @@
 import * as React from 'react';
 import { ColorScale } from 'utils/ColorScale';
 import { isRealValue } from 'utils/isRealValue';
-import { VictoryChart, VictoryBar, VictoryAxis, VictoryLine } from 'victory';
+import {
+  VictoryChart,
+  VictoryBar,
+  VictoryAxis,
+  VictoryLine,
+  Point,
+  VictoryScatter,
+  VictoryGroup,
+} from 'victory';
 import { useChartTheme } from '../useChartTheme';
+
+/**
+ * @param {import('victory').PointProps} props
+ */
+const OffsetPoint = props => {
+  return <Point {...props} y={props.y - +props.size} />;
+};
 
 /**
  * @param {{
  *   data: {x: number, y: number}[]
- *   color: import('typings/orbis').ColorMap | string[]
+ *   color?: import('typings/orbis').ColorMap | string[]
  *   domain: [number, number]
  *   clip?: [number, number]
  *   labelX?: string
@@ -33,7 +48,7 @@ export const BarChart = ({
     <VictoryChart
       theme={orbisChartTheme}
       domain={{ x: domain.map(Number) }}
-      domainPadding={{ x: 20 }}
+      domainPadding={{ x: 20, y: 10 }}
     >
       <VictoryAxis
         fixLabelOverlap
@@ -59,12 +74,26 @@ export const BarChart = ({
         }}
       />
       {isRealValue(line) ? (
-        <VictoryLine
-          data={[
-            { x: line, y: 0 },
-            { x: line, y: Math.max(...yValues) },
-          ]}
-        />
+        <VictoryGroup groupComponent={<g data-testid="line" />}>
+          <VictoryLine
+            data={[
+              { x: line, y: 0 },
+              { x: line, y: Math.max(...yValues) },
+            ]}
+          />
+          <VictoryScatter
+            dataComponent={<OffsetPoint />}
+            size={5}
+            style={{
+              data: {
+                fill: orbisChartTheme.scatter.style.data.stroke,
+              },
+            }}
+            data={[
+              { x: line, y: Math.max(...yValues), symbol: 'triangleDown' },
+            ]}
+          />
+        </VictoryGroup>
       ) : null}
     </VictoryChart>
   );
