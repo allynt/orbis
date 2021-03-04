@@ -160,7 +160,7 @@ describe('Login Form Component', () => {
       expect(activateAccount).toBeCalledWith({ key: '123' });
     });
 
-    it('calls activateAccount if is_verified is a false string', () => {
+    it('calls activateAccount if is_verified is a false string and the url has a key', () => {
       const { activateAccount } = renderComponent({
         user: { is_verified: 'False' },
         match: { params: { key: '123' } },
@@ -168,12 +168,12 @@ describe('Login Form Component', () => {
       expect(activateAccount).toBeCalledWith({ key: '123' });
     });
 
-    it('Does not call activate account if user is undefined', () => {
+    it('calls activate account if user is undefined and the url has a key', () => {
       const { activateAccount } = renderComponent({
         user: undefined,
         match: { params: { key: '123' } },
       });
-      expect(activateAccount).not.toBeCalled();
+      expect(activateAccount).toBeCalled();
     });
   });
 
