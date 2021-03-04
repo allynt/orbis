@@ -25,12 +25,13 @@ const useStyles = makeStyles(theme => ({
 
 /**
  * @param {{
- *  details?: string
- *  source?: string
+ *  currentSource: import('typings/orbis').Source
+ *  selectedProperty: import('typings/orbis').Property
  * }} props
  */
-export const MoreInformation = ({ details, source }) => {
+export const MoreInformation = ({ currentSource, selectedProperty }) => {
   const styles = useStyles();
+  const { details, source } = selectedProperty;
   return (
     <SidePanelSection title="More Information" defaultExpanded>
       <div className={styles.information}>
