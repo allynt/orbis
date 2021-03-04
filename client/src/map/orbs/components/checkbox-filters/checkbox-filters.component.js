@@ -21,10 +21,13 @@ const useStyles = makeStyles(theme => ({
     borderRadius: '50%',
     display: 'grid',
     placeItems: 'center',
-    margin: theme.spacing(0, 1),
+    margin: theme.spacing(0, 2),
   },
   checkboxWrapper: {
     minWidth: 'max-content',
+  },
+  label: {
+    marginLeft: props => !props.hasIcon && theme.spacing(2),
   },
 }));
 
@@ -47,7 +50,11 @@ export const CheckboxFilters = ({
   const filterValue = useSelector(state =>
     filterValueSelector(selectedLayer?.source_id)(state?.orbs),
   );
-  const styles = useStyles({ color, iconColor });
+  const styles = useStyles({
+    color,
+    iconColor,
+    hasIcon: filters?.some(f => !!f.icon),
+  });
 
   /**
    * @param {any} value
@@ -94,7 +101,11 @@ export const CheckboxFilters = ({
                 <Icon fontSize="small" titleAccess={icon} />
               </ListItemIcon>
             )}
-            <ListItemText id={labelId} primary={label || value.toString()} />
+            <ListItemText
+              className={styles.label}
+              id={labelId}
+              primary={label || value.toString()}
+            />
           </ListItem>
         );
       })}

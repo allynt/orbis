@@ -31,7 +31,7 @@ const useStyles = makeStyles(theme => ({
     placeItems: 'center',
     height: '2rem',
     width: '2rem',
-    margin: theme.spacing(0, 1),
+    marginRight: theme.spacing(2),
     flexShrink: 0,
   },
   infoIcon: {
