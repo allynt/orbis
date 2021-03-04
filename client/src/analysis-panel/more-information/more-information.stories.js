@@ -1,3 +1,4 @@
+import { assign } from 'lodash';
 import * as React from 'react';
 import { MoreInformation } from './more-information.component';
 
@@ -24,6 +25,21 @@ Licence.args = {
   },
 };
 
+export const Sources = Template.bind({});
+Sources.args = {
+  currentSource: {
+    metadata: {
+      provenance: {
+        sources: [
+          'Normal Text',
+          'http://link.source',
+          { text: 'Custom Link', src: 'http://google.com' },
+        ],
+      },
+    },
+  },
+};
+
 export const All = Template.bind({});
 All.args = {
   selectedProperty: {
@@ -31,7 +47,11 @@ All.args = {
     ...Source.args.selectedProperty,
   },
   currentSource: {
-    ...Licence.args.currentSource,
+    metadata: assign(
+      {},
+      Licence.args.currentSource.metadata,
+      Sources.args.currentSource.metadata,
+    ),
   },
 };
 

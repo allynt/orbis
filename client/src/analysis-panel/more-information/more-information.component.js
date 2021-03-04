@@ -1,8 +1,16 @@
 import * as React from 'react';
 
-import { makeStyles, Typography } from '@astrosat/astrosat-ui';
+import {
+  makeStyles,
+  Typography,
+  Link,
+  List,
+  ListItem,
+} from '@astrosat/astrosat-ui';
 
 import { SidePanelSection } from 'components';
+import { get, isObject } from 'lodash';
+import { isUrl } from 'utils/text';
 
 const useStyles = makeStyles(theme => ({
   information: {
@@ -15,13 +23,24 @@ const useStyles = makeStyles(theme => ({
   details: {
     gridColumn: '1 / -1',
   },
-  sourceLabel: {
+  label: {
     lineHeight: 'normal',
   },
-  sourceValue: {
+  value: {
     wordBreak: 'break-word',
+    gridColumn: '2 / -1',
+  },
+  listItem: {
+    '&:first-of-type': {
+      paddingTop: 0,
+    },
   },
 }));
+
+const LINK_PROPS = {
+  target: '_blank',
+  rel: 'noopener noreferrer',
+};
 
 /**
  * @param {{
@@ -29,15 +48,13 @@ const useStyles = makeStyles(theme => ({
  *  selectedProperty: import('typings/orbis').Property
  * }} props
  */
-export const MoreInformation = ({
-  currentSource = { metadata: {} },
-  selectedProperty = {},
-}) => {
+export const MoreInformation = ({ currentSource, selectedProperty }) => {
   const styles = useStyles();
-  const {
-    metadata: { licence },
-  } = currentSource;
-  const { details, source } = selectedProperty;
+  const details = get(selectedProperty, 'details'),
+    source = get(selectedProperty, 'source'),
+    licence = get(currentSource, ['metadata', 'licence']),
+    sources = get(currentSource, ['metadata', 'provenance', 'sources']);
+
   return (
     <SidePanelSection title="More Information" defaultExpanded>
       <div className={styles.information}>
@@ -46,26 +63,47 @@ export const MoreInformation = ({
         )}
         {source && (
           <>
-            <Typography
-              variant="h4"
-              component="p"
-              className={styles.sourceLabel}
-            >
+            <Typography variant="h4" component="p" className={styles.label}>
               Source:
             </Typography>
-            <Typography className={styles.sourceValue}>{source}</Typography>
+            <Typography className={styles.value}>{source}</Typography>
+          </>
+        )}
+        {sources && (
+          <>
+            <Typography variant="h4" component="p" className={styles.label}>
+              Links:
+            </Typography>
+            <List className={styles.value} dense disablePadding>
+              {sources.map(source => {
+                let content = <Typography>{source}</Typography>;
+                if (isObject(source))
+                  content = (
+                    <Link {...LINK_PROPS} href={source.src}>
+                      {source.text}
+                    </Link>
+                  );
+                if (isUrl(source))
+                  content = (
+                    <Link {...LINK_PROPS} href={source}>
+                      {source}
+                    </Link>
+                  );
+                return (
+                  <ListItem className={styles.listItem} disableGutters>
+                    {content}
+                  </ListItem>
+                );
+              })}
+            </List>
           </>
         )}
         {licence && (
           <>
-            <Typography
-              variant="h4"
-              component="p"
-              className={styles.sourceLabel}
-            >
+            <Typography variant="h4" component="p" className={styles.label}>
               Licence:
             </Typography>
-            <Typography className={styles.sourceValue}>{licence}</Typography>
+            <Typography className={styles.value}>{licence}</Typography>
           </>
         )}
       </div>
