@@ -17,7 +17,7 @@ import { isRealValue } from 'utils/isRealValue';
  * }} PropertyBreakdownChartProps
  */
 
-/** @type {import('typings/orbis').AnalysisPanelComponent<PropertyBreakdownChartProps} */
+/** @type {import('typings/orbis').AnalysisPanelComponent<PropertyBreakdownChartProps>} */
 export const PropertyBreakdownChart = ({
   clickedFeatures,
   selectedProperty,
@@ -25,18 +25,20 @@ export const PropertyBreakdownChart = ({
 }) => {
   const { colors, ...chartTheme } = useChartTheme();
   const data = clickedFeatures
-    ? selectedProperty?.breakdown?.map(name => {
-        const value = aggregateValues(clickedFeatures, {
-          name,
-          aggregation: selectedProperty.aggregation,
-          precision: selectedProperty.precision,
-        });
+    ? selectedProperty?.breakdown
+        ?.map(name => {
+          const value = aggregateValues(clickedFeatures, {
+            name,
+            aggregation: selectedProperty.aggregation,
+            precision: selectedProperty.precision,
+          });
 
-        return {
-          value,
-          name,
-        };
-      })
+          return {
+            value,
+            name,
+          };
+        })
+        .filter(v => v.value > 0)
     : [];
   if (data?.some(v => !isRealValue(v.value))) return null;
   return (
