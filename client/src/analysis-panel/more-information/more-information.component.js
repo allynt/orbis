@@ -75,14 +75,17 @@ export const MoreInformation = ({ currentSource, selectedProperty }) => {
               Links:
             </Typography>
             <List className={styles.value} dense disablePadding>
-              {sources.map(source => {
+              {sources.map((source, i) => {
+                let itemKey = source;
                 let content = <Typography>{source}</Typography>;
-                if (isObject(source))
+                if (isObject(source)) {
                   content = (
                     <Link {...LINK_PROPS} href={source.src}>
                       {source.text}
                     </Link>
                   );
+                  itemKey = source.src;
+                }
                 if (isUrl(source))
                   content = (
                     <Link {...LINK_PROPS} href={source}>
@@ -90,7 +93,11 @@ export const MoreInformation = ({ currentSource, selectedProperty }) => {
                     </Link>
                   );
                 return (
-                  <ListItem className={styles.listItem} disableGutters>
+                  <ListItem
+                    key={`${itemKey}`}
+                    className={styles.listItem}
+                    disableGutters
+                  >
                     {content}
                   </ListItem>
                 );
