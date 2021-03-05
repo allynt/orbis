@@ -74,7 +74,12 @@ export const useOrbs = () => {
       );
       const props = componentDefinition.props;
       return (
-        <Component selectedLayer={source} dispatch={dispatch} {...props} />
+        <Component
+          key={`${source.source_id}-${componentDefinition.name}`}
+          selectedLayer={source}
+          dispatch={dispatch}
+          {...props}
+        />
       );
     },
     [dispatch],
