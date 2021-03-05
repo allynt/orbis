@@ -2,7 +2,6 @@ import React from 'react';
 import { render } from '@testing-library/react';
 import { default as FeatureDetail } from './feature-detail.component';
 import { DEFAULT_TITLE } from './feature-detail.constants';
-import * as yup from 'yup';
 
 describe('<FeatureDetail />', () => {
   it('shows the given title', () => {
