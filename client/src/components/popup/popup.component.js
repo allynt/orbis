@@ -68,6 +68,8 @@ export const Popup = props => {
     <ReactMapGlPopup
       className={styles.popup}
       dynamicPosition={false}
+      closeOnClick={false}
+      captureClick
       {...props}
     />
   );

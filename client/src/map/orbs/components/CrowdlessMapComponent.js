@@ -18,7 +18,6 @@ const ConnectedWrapper = () => {
       longitude={selectedResult?.geometry?.coordinates[0]}
       latitude={selectedResult?.geometry?.coordinates[1]}
       onClose={() => dispatch(setSelectedResult(undefined))}
-      captureClick
     >
       <FeatureDetail>
         <CrowdlessMapComponent feature={selectedResult} />
