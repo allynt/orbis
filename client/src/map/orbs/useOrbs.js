@@ -12,6 +12,7 @@ import { useMap } from 'MapContext';
 import { LayerFactory } from '../deck.gl/LayerFactory';
 import { orbsSelector } from './orbsSelectors';
 import { setIsLoading } from 'map/map.slice';
+import { isArray } from 'lodash';
 
 const dataUrlFromId = source => {
   return source.data && typeof source.data === 'string'
@@ -65,20 +66,37 @@ export const useOrbs = () => {
     }
   }, [activeSources, data, fetchData]);
 
+  const makeComponent = useCallback(
+    (componentDefinition, source) => {
+      if (!componentDefinition?.name) return null;
+      const Component = lazy(() =>
+        import(`./components/${componentDefinition.name}`),
+      );
+      const props = componentDefinition.props;
+      return (
+        <Component selectedLayer={source} dispatch={dispatch} {...props} />
+      );
+    },
+    [dispatch],
+  );
+
   useEffect(() => {
     /** @type {[string, JSX.Element][]} */
     const components = activeSources.map(source => {
-      if (!source?.metadata?.application?.orbis?.sidebar_component?.name)
-        return [source.source_id, null];
-      const Component = lazy(() =>
-        import(
-          `./components/${source.metadata.application.orbis.sidebar_component.name}`
-        ),
-      );
-      const props = source.metadata.application.orbis.sidebar_component.props;
+      if (isArray(source?.metadata?.application?.orbis?.sidebar_component)) {
+        return [
+          source.source_id,
+          source?.metadata?.application?.orbis?.sidebar_component.map(
+            makeComponent,
+          ),
+        ];
+      }
       return [
         source.source_id,
-        <Component selectedLayer={source} dispatch={dispatch} {...props} />,
+        makeComponent(
+          source?.metadata?.application?.orbis?.sidebar_component,
+          source,
+        ),
       ];
     });
     setSidebarComponents(
@@ -90,7 +108,7 @@ export const useOrbs = () => {
         {},
       ),
     );
-  }, [activeSources, dispatch]);
+  }, [activeSources, dispatch, makeComponent]);
 
   useEffect(() => {
     const components = activeSources.map(source => {
@@ -109,7 +127,7 @@ export const useOrbs = () => {
 
   useEffect(() => {
     /**
-     * @param {Source} source
+     * @param {import('typings/orbis').Source} source
      */
     const createLayer = async source => {
       if (!source?.metadata?.application?.orbis?.layer?.name) return undefined;
