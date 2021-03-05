@@ -165,8 +165,8 @@ export const AnalysisPanel = () => {
         },
       )}
       <MoreInformation
-        details={selectedProperty?.details}
-        source={selectedProperty?.source}
+        currentSource={currentSource}
+        selectedProperty={selectedProperty}
       />
     </SidePanel>
   );

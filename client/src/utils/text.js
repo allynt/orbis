@@ -19,3 +19,10 @@ const emailSchema = yupString().email();
  * @returns true if valid email address
  */
 export const isEmail = string => emailSchema.isValidSync(string);
+
+const URL_REGEX = /(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/;
+
+/**
+ * @param {string} string
+ */
+export const isUrl = string => URL_REGEX.test(string);
