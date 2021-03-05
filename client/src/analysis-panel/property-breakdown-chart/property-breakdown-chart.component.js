@@ -8,7 +8,6 @@ import { aggregateValues } from 'analysis-panel/aggregateValues';
 import { LegendItem, SidePanelSection } from 'components';
 import { useChartTheme } from 'components/charts/useChartTheme';
 import { DEFAULT_DECIMAL_PRECISION } from 'map/map.constants';
-import { isRealValue } from 'utils/isRealValue';
 
 /**
  *
@@ -40,7 +39,8 @@ export const PropertyBreakdownChart = ({
         })
         .filter(v => v.value > 0)
     : [];
-  if (data?.some(v => !isRealValue(v.value))) return null;
+
+  if (!data?.length) return null;
   return (
     <SidePanelSection title="Breakdown" defaultExpanded info={info}>
       <Grid container spacing={2}>
