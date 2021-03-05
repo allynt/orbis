@@ -9,3 +9,10 @@ export const toTitleCase = text => {
   const words = text.split(/_|\s|-/);
   return words.map(word => wordToTitleCase(word)).join(' ');
 };
+
+const URL_REGEX = /(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/;
+
+/**
+ * @param {string} string
+ */
+export const isUrl = string => URL_REGEX.test(string);
