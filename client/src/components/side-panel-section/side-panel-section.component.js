@@ -48,6 +48,9 @@ const useStyles = makeStyles(theme => ({
   info: {
     marginLeft: theme.spacing(1),
   },
+  details: {
+    flexDirection: 'column',
+  },
 }));
 
 /**
@@ -89,7 +92,9 @@ export const SidePanelSection = ({
         </Typography>
         {Info}
       </AccordionSummary>
-      <AccordionDetails>{children}</AccordionDetails>
+      <AccordionDetails classes={{ root: styles.details }}>
+        {children}
+      </AccordionDetails>
     </Accordion>
   ) : (
     <Typography
