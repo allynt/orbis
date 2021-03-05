@@ -2,6 +2,7 @@ import React from 'react';
 import { render } from '@testing-library/react';
 import { default as FeatureDetail } from './feature-detail.component';
 import { DEFAULT_TITLE } from './feature-detail.constants';
+import * as yup from 'yup';
 
 describe('<FeatureDetail />', () => {
   it('shows the given title', () => {
@@ -90,7 +91,11 @@ describe('<FeatureDetail />', () => {
     );
   });
 
-  it.todo('does not include keys which match the exclude regex');
-
-  it.todo('only includes keys which match the include regex');
+  it('Renders email addresses as links', () => {
+    const feature = {
+      email: 'test@test.com',
+    };
+    const { getByRole } = render(<FeatureDetail features={[feature]} />);
+    expect(getByRole('link', { name: 'test@test.com' })).toBeInTheDocument();
+  });
 });
