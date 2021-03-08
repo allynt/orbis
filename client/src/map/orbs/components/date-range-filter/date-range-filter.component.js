@@ -2,40 +2,12 @@ import { TextField } from '@astrosat/astrosat-ui';
 import { yupResolver } from '@hookform/resolvers/yup';
 import React from 'react';
 import { useForm } from 'react-hook-form';
+import { date } from 'utils/validators';
 import * as yup from 'yup';
 
-const dateSeparator = '\\/|-|\\.';
-
-const dateSchema = yup.lazy(v =>
-  !v
-    ? yup.string()
-    : yup
-        .string()
-        .matches(
-          new RegExp(
-            `\\d{1,2}${dateSeparator}\\d{1,2}${dateSeparator}(\\d{2}){1,2}`,
-          ),
-        )
-        .test({
-          name: 'Valid date',
-          message: 'Please enter a valid date',
-          test: value => {
-            let [d, m, y] = value.split(new RegExp(dateSeparator)).map(Number);
-            m = m - 1; // Months are 0 indexed
-            const date = new Date(y, m, d);
-            if (
-              date.getUTCFullYear() === y &&
-              date.getUTCMonth() === m &&
-              date.getUTCDate() === d
-            ) {
-              return true;
-            } else return false;
-          },
-        }),
-);
 const schema = yup.object({
-  startDate: dateSchema,
-  endDate: dateSchema,
+  startDate: date,
+  endDate: date,
 });
 /**
  * @param {{

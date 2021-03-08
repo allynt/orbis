@@ -13,6 +13,7 @@ import {
   lastName,
   acceptedTerms,
   customerName,
+  date,
 } from './validators';
 
 describe('field validators', () => {
@@ -255,13 +256,41 @@ describe('field validators', () => {
   });
 
   describe('customer name', () => {
-    describe('happy path', () => {
+    it('happy path', () => {
       expect(customerName.validate('Test Name')).resolves.toBe('Test Name');
     });
 
-    describe('is required', () => {
+    it('is required', () => {
       expect(customerName.validate('')).rejects.toThrowError(
         MESSAGES.customerName.required,
+      );
+    });
+  });
+
+  describe('date', () => {
+    it('allows empty strings', () => {
+      expect(date.validate('')).resolves.toBe('');
+    });
+
+    it('Allows / separation', () => {
+      expect(date.validate('1/1/2020')).resolves.toBe('1/1/2020');
+    });
+
+    it('Allows . separation', () => {
+      expect(date.validate('1.1.2020')).resolves.toBe('1.1.2020');
+    });
+
+    it('Allows - separation', () => {
+      expect(date.validate('1-1-2020')).resolves.toBe('1-1-2020');
+    });
+
+    it('Allows 2 digit years', () => {
+      expect(date.validate('1/1/20')).resolves.toBe('1/1/20');
+    });
+
+    it('rejects invalid dates', () => {
+      expect(date.validate('50/20/1234')).rejects.toThrowError(
+        'Please enter a valid date',
       );
     });
   });

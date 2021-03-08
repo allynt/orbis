@@ -1,3 +1,4 @@
+import { isValid } from 'utils/dates';
 import * as yup from 'yup';
 import zxcvbn from 'zxcvbn';
 import { MESSAGES, CONTEXT_KEYS, FIELD_NAMES } from './constants';
@@ -70,3 +71,22 @@ export const bookmarkTitle = yup
 export const customerName = yup
   .string()
   .required(MESSAGES.customerName.required);
+
+const DATE_SEPARATOR = '\\/|-|\\.';
+export const date = yup.lazy(v =>
+  !v
+    ? yup.string()
+    : yup
+        .string()
+        .matches(new RegExp(`^(\\d{1,2}(${DATE_SEPARATOR})){2}(\\d{2}){1,2}$`))
+        .test({
+          name: 'Valid date',
+          message: 'Please enter a valid date',
+          test: value => {
+            const [d, m, y] = value
+              .split(new RegExp(DATE_SEPARATOR))
+              .map(Number);
+            return isValid(d, m, y);
+          },
+        }),
+);
