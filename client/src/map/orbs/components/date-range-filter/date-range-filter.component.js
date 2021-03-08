@@ -4,19 +4,23 @@ import React from 'react';
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 
-const dateSeparator = /\/-\./;
+const dateSeparator = '\\/|-|\\.';
 
 const dateSchema = yup.lazy(v =>
   !v
     ? yup.string()
     : yup
         .string()
-        .matches(/^\d{1,2}(\/|-)\d{1,2}(\/|-)(\d{2}){1,2}$/)
+        .matches(
+          new RegExp(
+            `\\d{1,2}${dateSeparator}\\d{1,2}${dateSeparator}(\\d{2}){1,2}`,
+          ),
+        )
         .test({
           name: 'Valid date',
           message: 'Please enter a valid date',
           test: value => {
-            let [d, m, y] = value.split(/\/|-/).map(Number);
+            let [d, m, y] = value.split(new RegExp(dateSeparator)).map(Number);
             m = m - 1; // Months are 0 indexed
             const date = new Date(y, m, d);
             if (
