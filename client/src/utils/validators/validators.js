@@ -1,5 +1,5 @@
 import { compareAsc, compareDesc, format } from 'date-fns';
-import { isValid } from 'utils/dates';
+import { DATE_SEPARATOR, isValid, toDMY } from 'utils/dates';
 import * as yup from 'yup';
 import zxcvbn from 'zxcvbn';
 import { MESSAGES, CONTEXT_KEYS, FIELD_NAMES } from './constants';
@@ -72,16 +72,6 @@ export const bookmarkTitle = yup
 export const customerName = yup
   .string()
   .required(MESSAGES.customerName.required);
-
-const DATE_SEPARATOR = '\\/|-|\\.';
-
-/**
- *
- * @param {string} dateString
- * @returns {[d: number, m: number, y: number]}
- */
-const toDMY = dateString =>
-  dateString.split(new RegExp(DATE_SEPARATOR)).map(Number);
 
 const compareDate = (comparisonFunction, contextKey, message) =>
   function (value) {

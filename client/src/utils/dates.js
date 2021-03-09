@@ -22,3 +22,13 @@ export const isValid = (d, m, y) => {
     date.getFullYear() === _y && date.getMonth() === _m && date.getDate() === _d
   );
 };
+
+export const DATE_SEPARATOR = '\\/|-|\\.';
+
+/**
+ *
+ * @param {string} dateString
+ * @returns {[d: number, m: number, y: number]}
+ */
+export const toDMY = dateString =>
+  dateString.split(new RegExp(DATE_SEPARATOR)).map(Number);
