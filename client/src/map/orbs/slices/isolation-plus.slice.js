@@ -182,17 +182,19 @@ export const breakdownAggregationSelector = createSelector(
   (property, clickedFeatures) =>
     !property || !clickedFeatures
       ? undefined
-      : property?.breakdown?.map(name => {
-          const value = aggregateValues(clickedFeatures, {
-            name,
-            aggregation: property.aggregation,
-            precision: property.precision,
-          });
-          return {
-            value,
-            name,
-          };
-        }),
+      : property?.breakdown
+          ?.map(name => {
+            const value = aggregateValues(clickedFeatures, {
+              name,
+              aggregation: property.aggregation,
+              precision: property.precision,
+            });
+            return {
+              value,
+              name,
+            };
+          })
+          .filter(v => v.value > 0),
 );
 
 export const timeSeriesAggregationSelector = createSelector(

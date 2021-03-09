@@ -209,8 +209,8 @@ export const AnalysisPanel = () => {
         );
       })}
       <MoreInformation
-        details={selectedProperty?.details}
-        source={selectedProperty?.source}
+        currentSource={currentSource}
+        selectedProperty={selectedProperty}
       />
       {!pdfIncompatible && (
         <Box className={styles.buttonContainer}>

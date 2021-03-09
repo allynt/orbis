@@ -9,7 +9,6 @@ import { VictoryPie } from 'victory';
 import { LegendItem, SidePanelSection } from 'components';
 import { useChartTheme } from 'components/charts/useChartTheme';
 import { DEFAULT_DECIMAL_PRECISION } from 'map/map.constants';
-import { isRealValue } from 'utils/isRealValue';
 
 import { breakdownAggregationSelector } from 'map/orbs/slices/isolation-plus.slice';
 
@@ -27,7 +26,7 @@ export const PropertyBreakdownChart = ({ selectedProperty, info }) => {
   const breakdownAggregation =
     useSelector(state => breakdownAggregationSelector(state?.orbs)) || [];
 
-  if (breakdownAggregation?.some(v => !isRealValue(v.value))) return null;
+  if (!breakdownAggregation?.length) return null;
   return (
     <SidePanelSection title="Breakdown" defaultExpanded info={info}>
       <Grid container spacing={2}>
