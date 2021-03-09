@@ -1,5 +1,7 @@
 import { TextField } from '@astrosat/astrosat-ui';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { DateRangePicker } from 'components/date-range-picker/date-range-picker.component';
+import { format } from 'date-fns';
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { toDMY } from 'utils/dates';
@@ -22,7 +24,7 @@ export const DateRangeFilter = ({
   minDate,
   maxDate,
 }) => {
-  const { register, handleSubmit, errors } = useForm({
+  const { register, handleSubmit, setValue, errors } = useForm({
     mode: 'onChange',
     context: { minDate, maxDate },
     resolver: yupResolver(schema),
@@ -41,6 +43,20 @@ export const DateRangeFilter = ({
     );
   };
 
+  const handleDateRangePickerApply = range => {
+    setValue(
+      FIELD_NAMES.startDate,
+      format(range[FIELD_NAMES.startDate], 'dd/MM/yyyy'),
+      { shouldValidate: true },
+    );
+    setValue(
+      FIELD_NAMES.endDate,
+      format(range[FIELD_NAMES.endDate], 'dd/MM/yyyy'),
+      { shouldValidate: true },
+    );
+    handleSubmit(onSubmit)();
+  };
+
   return (
     <form onChange={handleSubmit(onSubmit)}>
       <TextField
@@ -49,6 +65,7 @@ export const DateRangeFilter = ({
         label="Start Date"
         placeholder="DD/MM/YYYY"
         inputRef={register}
+        InputLabelProps={{ shrink: true }}
         error={!!errors.startDate}
         helperText={errors.startDate?.message}
       />
@@ -58,9 +75,11 @@ export const DateRangeFilter = ({
         label="End Date"
         placeholder="DD/MM/YYYY"
         inputRef={register}
+        InputLabelProps={{ shrink: true }}
         error={!!errors.endDate}
         helperText={errors.endDate?.message}
       />
+      <DateRangePicker onApply={handleDateRangePickerApply} />
     </form>
   );
 };
