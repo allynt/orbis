@@ -267,7 +267,7 @@ describe('field validators', () => {
     });
   });
 
-  describe.only('date', () => {
+  describe('date', () => {
     describe('pattern', () => {
       it('allows empty strings', () => {
         expect(date.validate('')).resolves.toBe('');
