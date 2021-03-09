@@ -1,3 +1,4 @@
+import { compareAsc, compareDesc, format } from 'date-fns';
 import { isValid } from 'utils/dates';
 import * as yup from 'yup';
 import zxcvbn from 'zxcvbn';
@@ -73,6 +74,15 @@ export const customerName = yup
   .required(MESSAGES.customerName.required);
 
 const DATE_SEPARATOR = '\\/|-|\\.';
+
+/**
+ *
+ * @param {string} dateString
+ * @returns {[d: number,m:number,y:number]}
+ */
+const toDMY = dateString =>
+  dateString.split(new RegExp(DATE_SEPARATOR)).map(Number);
+
 export const date = yup.lazy(v =>
   !v
     ? yup.string()
@@ -83,10 +93,25 @@ export const date = yup.lazy(v =>
           name: 'Valid date',
           message: 'Please enter a valid date',
           test: value => {
-            const [d, m, y] = value
-              .split(new RegExp(DATE_SEPARATOR))
-              .map(Number);
-            return isValid(d, m, y);
+            return isValid(...toDMY(value));
+          },
+        })
+        .test({
+          name: 'Min Date',
+          test: function (value) {
+            if (!this.options.context?.[CONTEXT_KEYS.minDate]) return true;
+            const [d, m, y] = toDMY(value);
+            const comparator = new Date(
+              this.options.context[CONTEXT_KEYS.minDate],
+            );
+            if (compareDesc(comparator, new Date(y, m - 1, d)) === -1)
+              return this.createError({
+                message: `Date must not be before ${format(
+                  comparator,
+                  'dd/MM/yyyy',
+                )}`,
+              });
+            return true;
           },
         }),
 );

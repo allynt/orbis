@@ -267,7 +267,7 @@ describe('field validators', () => {
     });
   });
 
-  describe('date', () => {
+  describe.only('date', () => {
     it('allows empty strings', () => {
       expect(date.validate('')).resolves.toBe('');
     });
@@ -292,6 +292,36 @@ describe('field validators', () => {
       expect(date.validate('50/20/1234')).rejects.toThrowError(
         'Please enter a valid date',
       );
+    });
+
+    it('Passes dates later than min', () => {
+      expect(
+        date.validateSync('1/2/2020', {
+          context: {
+            [CONTEXT_KEYS.minDate]: new Date(2020, 0, 1).toISOString(),
+          },
+        }),
+      ).toBe('1/2/2020');
+    });
+
+    it('Passes dates equal to min', () => {
+      expect(
+        date.validateSync('1/2/2020', {
+          context: {
+            [CONTEXT_KEYS.minDate]: new Date(2020, 1, 1).toISOString(),
+          },
+        }),
+      ).toBe('1/2/2020');
+    });
+
+    it('does not accept dates less than min', () => {
+      expect(
+        date.validate('31/12/2019', {
+          context: {
+            [CONTEXT_KEYS.minDate]: new Date(2020, 0, 1).toISOString(),
+          },
+        }),
+      ).rejects.toThrowError('Date must not be before 01/01/2020');
     });
   });
 });

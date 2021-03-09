@@ -48,6 +48,7 @@ export const CONTEXT_KEYS = {
   passwordStrength: 'passwordStrength',
   existingEmails: 'existingEmails',
   bookmarkTitles: 'bookmarkTitles',
+  minDate: 'minDate',
 };
 
 export const FIELD_NAMES = {
