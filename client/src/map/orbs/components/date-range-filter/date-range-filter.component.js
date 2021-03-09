@@ -2,7 +2,7 @@ import { TextField } from '@astrosat/astrosat-ui';
 import { yupResolver } from '@hookform/resolvers/yup';
 import React from 'react';
 import { useForm } from 'react-hook-form';
-import { date } from 'utils/validators';
+import { date, FIELD_NAMES } from 'utils/validators';
 import * as yup from 'yup';
 
 const schema = yup.object({
@@ -43,8 +43,8 @@ export const DateRangeFilter = ({
   return (
     <form onChange={handleSubmit(onSubmit)}>
       <TextField
-        id="startDate"
-        name="startDate"
+        id={FIELD_NAMES.startDate}
+        name={FIELD_NAMES.startDate}
         label="Start Date"
         inputRef={register}
         error={!!errors.startDate}

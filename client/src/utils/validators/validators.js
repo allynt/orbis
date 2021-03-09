@@ -83,6 +83,21 @@ const DATE_SEPARATOR = '\\/|-|\\.';
 const toDMY = dateString =>
   dateString.split(new RegExp(DATE_SEPARATOR)).map(Number);
 
+const compareDate = (comparisonFunction, contextKey, message) =>
+  function (value) {
+    if (!this.options.context?.[contextKey]) return true;
+    const [d, m, y] = toDMY(value);
+    const comparator = new Date(this.options.context[contextKey]);
+    if (comparisonFunction(comparator, new Date(y, m - 1, d)) === -1)
+      return this.createError({
+        message: message.replace(
+          `{{${contextKey}}}`,
+          format(comparator, 'dd/MM/yyyy'),
+        ),
+      });
+    return true;
+  };
+
 export const date = yup.lazy(v =>
   !v
     ? yup.string()
@@ -90,49 +105,29 @@ export const date = yup.lazy(v =>
         .string()
         .matches(
           new RegExp(`^(\\d{1,2}(${DATE_SEPARATOR})){2}(\\d{2}){1,2}$`),
-          'Please use the format DD/MM/YYYY',
+          MESSAGES.date.matches,
         )
         .test({
           name: 'Valid date',
-          message: 'Please enter a valid date',
+          message: MESSAGES.date.valid,
           test: value => {
             return isValid(...toDMY(value));
           },
         })
         .test({
           name: 'Min Date',
-          test: function (value) {
-            if (!this.options.context?.[CONTEXT_KEYS.minDate]) return true;
-            const [d, m, y] = toDMY(value);
-            const comparator = new Date(
-              this.options.context[CONTEXT_KEYS.minDate],
-            );
-            if (compareDesc(comparator, new Date(y, m - 1, d)) === -1)
-              return this.createError({
-                message: `Date must not be before ${format(
-                  comparator,
-                  'dd/MM/yyyy',
-                )}`,
-              });
-            return true;
-          },
+          test: compareDate(
+            compareDesc,
+            CONTEXT_KEYS.minDate,
+            MESSAGES.date.min,
+          ),
         })
         .test({
           name: 'Max Date',
-          test: function (value) {
-            if (!this.options.context?.[CONTEXT_KEYS.maxDate]) return true;
-            const [d, m, y] = toDMY(value);
-            const comparator = new Date(
-              this.options.context[CONTEXT_KEYS.maxDate],
-            );
-            if (compareAsc(comparator, new Date(y, m - 1, d)) === -1)
-              return this.createError({
-                message: `Date must not be after ${format(
-                  comparator,
-                  'dd/MM/yyyy',
-                )}`,
-              });
-            return true;
-          },
+          test: compareDate(
+            compareAsc,
+            CONTEXT_KEYS.maxDate,
+            MESSAGES.date.max,
+          ),
         }),
 );
