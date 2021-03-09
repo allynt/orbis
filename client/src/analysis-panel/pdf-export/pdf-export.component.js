@@ -29,7 +29,6 @@ import {
   aggregationSelector,
   breakdownAggregationSelector,
   categoryListSelector,
-  timeSeriesAggregationSelector,
 } from 'map/orbs/slices/isolation-plus.slice';
 
 import OrbisLogo from './orbis-logo.png';
@@ -67,6 +66,7 @@ const useStyles = makeStyles(theme => ({
   detailsGrid: {
     width: '100%',
     gap: theme.spacing(1),
+    wordBreak: 'break-all',
   },
   gridColumn: {
     maxWidth: '33.3%',

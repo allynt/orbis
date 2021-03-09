@@ -1,7 +1,5 @@
 import React from 'react';
 
-import faker from 'faker';
-
 import { Provider } from 'react-redux';
 import configureMockStore from 'redux-mock-store';
 
@@ -33,7 +31,7 @@ const defaultState = {
   screenshot: undefined,
   property: {
     source_id: 'astrosat/isolation_plus/age_census/r4v1',
-    source: 'testsourcenameasdfadfasdfasdfasdfasdfasdfasdfasdfasdfasdf',
+    source: 'testsourcename',
     details: 'This is a test description',
     name: '% of people aged 0-17',
     label: 'Test label',
@@ -77,11 +75,52 @@ LotsOfFeatures.args = {
   },
 };
 
-export const TimeSeriesData = Template.bind({});
-TimeSeriesData.args = {
+export const LongText = Template.bind({});
+LongText.args = {
   state: {
-    ...defaultState,
-    timeseries: true,
-    timeseries_latest_timestamp: 396,
+    property: {
+      source_id: 'astrosat/isolation_plus/age_census/r4v1',
+      source: 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
+      details: 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
+      name: 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
+      label: 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
+      aggregation: 'mean',
+      aggregates: { GB: 20.4, England: 20.8, Scotland: 18.8, Wales: 20.3 },
+      precision: 1,
+      breakdown: [
+        '% of people aged 0-17',
+        '% of people aged 18-39',
+        '% of people aged 40-64',
+        '% of people aged 65+',
+      ],
+    },
+    clickedFeatures: [
+      {
+        object: {
+          properties: {
+            area_name: 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
+            population: 1200,
+            households: 260,
+            '% of people aged 0-17': 13.6,
+            '% of people aged 18-39': 11.6,
+            '% of people aged 40-64': 44.7,
+            '% of people aged 65+': 30.1,
+          },
+        },
+      },
+      {
+        object: {
+          properties: {
+            area_name: 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
+            population: 1200,
+            households: 260,
+            '% of people aged 0-17': 13.6,
+            '% of people aged 18-39': 11.6,
+            '% of people aged 40-64': 44.7,
+            '% of people aged 65+': 30.1,
+          },
+        },
+      },
+    ],
   },
 };
