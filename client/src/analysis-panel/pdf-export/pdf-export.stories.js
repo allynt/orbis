@@ -67,6 +67,14 @@ NoUserName.args = {
   user: { email: 'johnsmith@gmail.com' },
 };
 
+export const OneFeature = Template.bind({});
+OneFeature.args = {
+  state: {
+    ...defaultState,
+    clickedFeatures: generateFeatures(1),
+  },
+};
+
 export const LotsOfFeatures = Template.bind({});
 LotsOfFeatures.args = {
   state: {

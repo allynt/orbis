@@ -180,6 +180,27 @@ describe('PDF', () => {
     expect(getByText(`Sum of selected areas:`)).toBeInTheDocument();
   });
 
+  it('shows `Value` as aggregationLabel if only one clickedFeature', () => {
+    const state = {
+      ...initialState,
+      clickedFeatures: [
+        {
+          object: {
+            properties: {
+              '% of people aged 0-17': 23,
+              area_name: 'S00117638',
+              population: 178,
+              households: 12,
+            },
+          },
+        },
+      ],
+    };
+
+    const { getByText } = renderComponent(state);
+    expect(getByText('Value of selected area:')).toBeInTheDocument();
+  });
+
   it('does not show `breakdownAggregation` if no data for it exists', () => {
     const { queryByText } = renderComponent({
       ...initialState,
@@ -204,6 +225,4 @@ describe('PDF', () => {
 
     expect(history.location.pathname).toEqual('/');
   });
-
-  it;
 });

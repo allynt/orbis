@@ -273,7 +273,10 @@ const PDF = ({ user }) => {
                   className={clsx(styles.gridElement, styles.centered)}
                 >
                   <Typography variant="h3">
-                    {aggregationLabel} of selected areas:
+                    {areasOfInterest?.length > 1
+                      ? `${aggregationLabel} of
+                      selected areas:`
+                      : 'Value of selected area:'}
                   </Typography>
                   <div className={styles.bigValue}>{areaValue}</div>
                   <Typography variant="h3">
