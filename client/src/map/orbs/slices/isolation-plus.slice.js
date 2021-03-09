@@ -118,8 +118,12 @@ export const screenshotSelector = createSelector(
 
 export const areasOfInterestSelector = createSelector(
   clickedFeaturesSelector,
-  clickedFeatures =>
-    clickedFeatures?.map(feat => feat.object.properties.area_name),
+  clickedFeatures => {
+    const areas = clickedFeatures?.map(
+      feat => feat.object.properties.area_name,
+    );
+    return areas?.some(a => a !== undefined) ? areas : undefined;
+  },
 );
 
 export const populationTotalSelector = createSelector(
@@ -147,7 +151,7 @@ export const householdTotalSelector = createSelector(
 export const categoryListSelector = createSelector(
   [propertySelector, clickedFeaturesSelector],
   (property, clickedFeatures) =>
-    !property || !clickedFeatures
+    !property || !property.categories || !clickedFeatures
       ? undefined
       : Object.entries(property.categories)
           .map(([category, rest]) => {

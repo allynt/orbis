@@ -28,6 +28,7 @@ import {
   householdTotalSelector,
   aggregationSelector,
   breakdownAggregationSelector,
+  categoryListSelector,
   timeSeriesAggregationSelector,
 } from 'map/orbs/slices/isolation-plus.slice';
 
@@ -61,6 +62,7 @@ const useStyles = makeStyles(theme => ({
   pdfDocument: {
     height: '66.6%',
     width: '100%',
+    padding: theme.spacing(1),
   },
   detailsGrid: {
     width: '100%',
@@ -141,11 +143,7 @@ const PDF = ({ user }) => {
     breakdownAggregationSelector(state?.orbs),
   );
 
-  const timeSeriesAggregation = useSelector(state =>
-    timeSeriesAggregationSelector(state?.orbs),
-  );
-
-  console.log('timeSeriesAggregation: ', timeSeriesAggregation);
+  const categoryList = useSelector(state => categoryListSelector(state?.orbs));
 
   const [image, setImage] = useState(undefined);
   const creationDate = format(new Date(), 'MMMM do Y');
@@ -217,7 +215,6 @@ const PDF = ({ user }) => {
           direction="column"
           wrap="nowrap"
           justify="space-between"
-          spacing={6}
           className={styles.pdfDocument}
         >
           <Grid item container wrap="nowrap" className={styles.detailsGrid}>
@@ -234,34 +231,38 @@ const PDF = ({ user }) => {
                     selectedProperty?.label}
                 </Typography>
               </Grid>
-              <Grid item className={styles.gridElement}>
-                <Typography variant="h3">
-                  Selected Areas of interest:
-                </Typography>
-                <List className={styles.list}>
-                  {areasOfInterest?.map(area_name => (
-                    <ListItemText key={area_name} primary={area_name} />
-                  ))}
-                </List>
-              </Grid>
-              <Grid item className={styles.gridElement}>
-                <List className={clsx(styles.aggregationData, styles.list)}>
-                  <ListItemText
-                    className={styles.listData}
-                    primary={
-                      <Typography variant="h4">Total population: </Typography>
-                    }
-                    secondary={<span>{populationTotal}</span>}
-                  />
-                  <ListItemText
-                    className={styles.listData}
-                    primary={
-                      <Typography variant="h4">Total households: </Typography>
-                    }
-                    secondary={<span>{householdTotal}</span>}
-                  />
-                </List>
-              </Grid>
+              {areasOfInterest && (
+                <Grid item className={styles.gridElement}>
+                  <Typography variant="h3">
+                    Selected Areas of interest:
+                  </Typography>
+                  <List className={styles.list}>
+                    {areasOfInterest?.map(area_name => (
+                      <ListItemText key={area_name} primary={area_name} />
+                    ))}
+                  </List>
+                </Grid>
+              )}
+              {(populationTotal || householdTotal) && (
+                <Grid item className={styles.gridElement}>
+                  <List className={clsx(styles.aggregationData, styles.list)}>
+                    <ListItemText
+                      className={styles.listData}
+                      primary={
+                        <Typography variant="h4">Total population: </Typography>
+                      }
+                      secondary={<span>{populationTotal}</span>}
+                    />
+                    <ListItemText
+                      className={styles.listData}
+                      primary={
+                        <Typography variant="h4">Total households: </Typography>
+                      }
+                      secondary={<span>{householdTotal}</span>}
+                    />
+                  </List>
+                </Grid>
+              )}
             </Grid>
             <Grid
               item
@@ -269,31 +270,37 @@ const PDF = ({ user }) => {
               direction="column"
               className={styles.gridColumn}
             >
-              <Grid item className={clsx(styles.gridElement, styles.centered)}>
-                <Typography variant="h3">
-                  {aggregationLabel} of selected areas:
-                </Typography>
-                <div className={styles.bigValue}>{areaValue}</div>
-                <Typography variant="h3">
-                  {aggregationLabel} of all areas:
-                </Typography>
-                <List className={clsx(styles.aggregationData, styles.list)}>
-                  {Object.entries(selectedProperty?.aggregates)?.map(
-                    ([key, value]) => (
-                      <ListItemText
-                        key={key}
-                        className={styles.listData}
-                        primary={
-                          <Typography variant="h4" align="left">
-                            {key}:{' '}
-                          </Typography>
-                        }
-                        secondary={<span>{value}</span>}
-                      />
-                    ),
-                  )}
-                </List>
-              </Grid>
+              {areaValue && selectedProperty?.aggregates && (
+                <Grid
+                  item
+                  className={clsx(styles.gridElement, styles.centered)}
+                >
+                  <Typography variant="h3">
+                    {aggregationLabel} of selected areas:
+                  </Typography>
+                  <div className={styles.bigValue}>{areaValue}</div>
+                  <Typography variant="h3">
+                    {aggregationLabel} of all areas:
+                  </Typography>
+                  <List className={clsx(styles.aggregationData, styles.list)}>
+                    {selectedProperty?.aggregates &&
+                      Object.entries(selectedProperty?.aggregates)?.map(
+                        ([key, value]) => (
+                          <ListItemText
+                            key={key}
+                            className={styles.listData}
+                            primary={
+                              <Typography variant="h4" align="left">
+                                {key}:{' '}
+                              </Typography>
+                            }
+                            secondary={<span>{value}</span>}
+                          />
+                        ),
+                      )}
+                  </List>
+                </Grid>
+              )}
               {breakdownAggregation && (
                 <Grid
                   item
@@ -318,26 +325,38 @@ const PDF = ({ user }) => {
                   </List>
                 </Grid>
               )}
-              {Array.isArray(timeSeriesAggregation) && (
+              {categoryList && (
                 <Grid
                   item
                   className={clsx(styles.gridElement, styles.centered)}
                 >
                   <Typography variant="h3">
-                    Time series of the data over all the selected areas:
+                    {aggregationLabel} of selected categories:
                   </Typography>
-                  <List>
-                    {timeSeriesAggregation?.map(({ timestamp, value }) => (
+                  {categoryList?.map((cat, i) => (
+                    <List key={`${cat}-${i}`}>
                       <ListItemText
-                        key={timestamp}
                         className={styles.listData}
                         primary={
-                          <Typography variant="h4">{timestamp}: </Typography>
+                          <Typography variant="h4">Category:</Typography>
                         }
-                        secondary={<span>{value}: </span>}
+                        secondary={<span>{cat.category}: </span>}
                       />
-                    ))}
-                  </List>
+
+                      <ListItemText
+                        className={styles.listData}
+                        primary={<Typography variant="h4">Count:</Typography>}
+                        secondary={<span>{cat.count}: </span>}
+                      />
+                      <ListItemText
+                        className={styles.listData}
+                        primary={
+                          <Typography variant="h4">Percentage:</Typography>
+                        }
+                        secondary={<span>{cat.percent.toFixed(1)}: </span>}
+                      />
+                    </List>
+                  ))}
                 </Grid>
               )}
             </Grid>

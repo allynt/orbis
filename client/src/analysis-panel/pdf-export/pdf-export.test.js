@@ -198,4 +198,12 @@ describe('PDF', () => {
 
     expect(queryByTestId('user-name')).not.toBeInTheDocument();
   });
+
+  it('redirects to landing page if no property source_id in state', () => {
+    const { history } = renderComponent({ property: {} }, { name: 'john' });
+
+    expect(history.location.pathname).toEqual('/');
+  });
+
+  it;
 });

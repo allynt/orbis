@@ -122,6 +122,15 @@ export const AnalysisPanel = () => {
     [selectedProperty, sources],
   );
 
+  const COMPONENT_BLACKLIST = ['CategoryBreakdownChart'];
+
+  const dataVisualisationComponents =
+    selectedProperty?.application?.orbis?.data_visualisation_components;
+
+  const pdfIncompatible = dataVisualisationComponents?.some(c =>
+    COMPONENT_BLACKLIST.includes(c.name),
+  );
+
   const { createScreenshot } = useMap();
 
   const handleExportClick = () => {
@@ -136,9 +145,7 @@ export const AnalysisPanel = () => {
       orientation="right"
       contentClassName={styles.content}
       open={
-        !!selectedProperty?.application?.orbis?.data_visualisation_components &&
-        !!clickedFeatures?.length &&
-        !minimized
+        !!dataVisualisationComponents && !!clickedFeatures?.length && !minimized
       }
       header={
         <div className={styles.header}>
@@ -165,14 +172,16 @@ export const AnalysisPanel = () => {
           <Typography variant="h2" component="h1">
             Data Analysis
           </Typography>
-          <IconButton
-            aria-label="PDF export"
-            className={styles.pdfButton}
-            size="small"
-            onClick={handleExportClick}
-          >
-            <PdfExportIcon />
-          </IconButton>
+          {!pdfIncompatible && (
+            <IconButton
+              aria-label="PDF export"
+              className={styles.pdfButton}
+              size="small"
+              onClick={handleExportClick}
+            >
+              <PdfExportIcon />
+            </IconButton>
+          )}
         </div>
       }
     >
@@ -185,31 +194,31 @@ export const AnalysisPanel = () => {
         fallbackProperty={currentSource?.metadata?.index}
       />
       <PrimaryDivider />
-      {selectedProperty?.application?.orbis?.data_visualisation_components?.map(
-        componentDefinition => {
-          const Component = COMPONENT_MAP[componentDefinition.name];
-          return (
-            <>
-              <Component
-                selectedProperty={selectedProperty}
-                clickedFeatures={clickedFeatures}
-                dispatch={dispatch}
-                {...componentDefinition.props}
-              />
-              <PrimaryDivider />
-            </>
-          );
-        },
-      )}
+      {dataVisualisationComponents?.map(componentDefinition => {
+        const Component = COMPONENT_MAP[componentDefinition.name];
+        return (
+          <>
+            <Component
+              selectedProperty={selectedProperty}
+              clickedFeatures={clickedFeatures}
+              dispatch={dispatch}
+              {...componentDefinition.props}
+            />
+            <PrimaryDivider />
+          </>
+        );
+      })}
       <MoreInformation
         details={selectedProperty?.details}
         source={selectedProperty?.source}
       />
-      <Box className={styles.buttonContainer}>
-        <Button className={styles.button} onClick={handleExportClick}>
-          Export PDF Report
-        </Button>
-      </Box>
+      {!pdfIncompatible && (
+        <Box className={styles.buttonContainer}>
+          <Button className={styles.button} onClick={handleExportClick}>
+            Export PDF Report
+          </Button>
+        </Box>
+      )}
     </SidePanel>
   );
 };

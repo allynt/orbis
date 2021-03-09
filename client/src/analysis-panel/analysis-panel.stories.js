@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { Provider } from 'react-redux';
 import { AnalysisPanel } from './analysis-panel.component';
+import { MapProvider } from 'MapContext';
 import thunk from 'redux-thunk';
 import configureMockStore from 'redux-mock-store';
 
@@ -94,24 +95,29 @@ const selectedProperty = {
   property_group: 'age_demographics_ons.age_band_0_17',
 };
 
-const pickedInfo = {
-  object: {
-    properties: {
-      'people aged 0-17': 20,
-      'people aged 18-39': 20,
-      'people aged 40-64': 20,
-      'people aged 65+': 20,
+const clickedFeatures = [
+  {
+    object: {
+      properties: {
+        area_name: 'test-name',
+        'people aged 0-17': 20,
+        'people aged 18-39': 20,
+        'people aged 40-64': 20,
+        'people aged 65+': 20,
+      },
     },
   },
-};
+];
 
 export default { title: 'Analysis Panel/Main' };
 
 const Template = ({ state, ...args }) => (
   <Provider store={mockStore(state)}>
-    <div style={{ marginLeft: 'calc(100% - 20rem)' }}>
-      <AnalysisPanel />
-    </div>
+    <MapProvider>
+      <div style={{ marginLeft: 'calc(100% - 20rem)' }}>
+        <AnalysisPanel />
+      </div>
+    </MapProvider>
   </Provider>
 );
 
@@ -121,7 +127,52 @@ Default.args = {
     orbs: {
       isolationPlus: {
         property: selectedProperty,
-        pickedInfo,
+        clickedFeatures,
+      },
+    },
+  },
+};
+
+export const NoPdfExport = Template.bind({});
+NoPdfExport.args = {
+  state: {
+    orbs: {
+      isolationPlus: {
+        property: {
+          ...selectedProperty,
+          name: 'fruit',
+          application: {
+            ...selectedProperty.application,
+            orbis: {
+              ...selectedProperty.application.orbis,
+              data_visualisation_components: [
+                { name: 'CategoryBreakdownChart' },
+              ],
+            },
+          },
+          categories: {
+            '0-17': { color: '#8db600' },
+            '65+': { color: '#ffff00' },
+          },
+        },
+        clickedFeatures: [
+          {
+            object: {
+              properties: {
+                area_name: 'Highland',
+                fruit: '0-17',
+              },
+            },
+          },
+          {
+            object: {
+              properties: {
+                area_name: 'Lothian',
+                fruit: '65+',
+              },
+            },
+          },
+        ],
       },
     },
   },

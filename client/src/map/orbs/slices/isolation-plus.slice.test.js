@@ -452,6 +452,28 @@ describe('isolationPlusSlice', () => {
         expect(result).toBeUndefined();
       });
 
+      it('returns undefined if no properties have an `area_name` property', () => {
+        const state = {
+          isolationPlus: {
+            clickedFeatures: [
+              {
+                object: {
+                  properties: {},
+                },
+              },
+              {
+                object: {
+                  properties: {},
+                },
+              },
+            ],
+          },
+        };
+
+        const result = areasOfInterestSelector(state);
+        expect(result).toBeUndefined();
+      });
+
       it('returns mapped `area_name` properties from all of the `clickedFeatures`', () => {
         const clickedFeatures = [
           { object: { properties: { area_name: 'area name 1' } } },
