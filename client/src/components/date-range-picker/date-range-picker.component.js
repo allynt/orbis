@@ -1,12 +1,10 @@
 import { Button, Grid, makeStyles, Typography } from '@astrosat/astrosat-ui';
 import { endOfDay, format, startOfDay, subDays } from 'date-fns';
 import React, { useState } from 'react';
-import {
-  DateRangePicker as ReactDateRange,
-  createStaticRanges,
-} from 'react-date-range';
+import { createStaticRanges } from 'react-date-range';
 import 'react-date-range/dist/styles.css'; // main style file
 import 'react-date-range/dist/theme/default.css';
+import { StyledDateRangePicker } from './styled-date-range-picker.component';
 
 const DATE_FORMAT = 'dd/MM/yyyy';
 
@@ -78,7 +76,7 @@ export const DateRangePicker = ({
       alignItems="center"
     >
       <Grid item xs>
-        <ReactDateRange
+        <StyledDateRangePicker
           ranges={[range]}
           onChange={handleRangeChange}
           showSelectionPreview={true}
