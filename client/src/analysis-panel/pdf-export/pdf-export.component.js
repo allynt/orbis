@@ -28,7 +28,6 @@ import {
   householdTotalSelector,
   aggregationSelector,
   breakdownAggregationSelector,
-  categoryListSelector,
 } from 'map/orbs/slices/isolation-plus.slice';
 
 import OrbisLogo from './orbis-logo.png';
@@ -66,7 +65,7 @@ const useStyles = makeStyles(theme => ({
   detailsGrid: {
     width: '100%',
     gap: theme.spacing(1),
-    wordBreak: 'break-all',
+    wordBreak: 'break-word',
   },
   gridColumn: {
     maxWidth: '33.3%',
@@ -142,8 +141,6 @@ const PDF = ({ user }) => {
   const breakdownAggregation = useSelector(state =>
     breakdownAggregationSelector(state?.orbs),
   );
-
-  const categoryList = useSelector(state => categoryListSelector(state?.orbs));
 
   const [image, setImage] = useState(undefined);
   const creationDate = format(new Date(), 'MMMM do Y');
@@ -224,13 +221,6 @@ const PDF = ({ user }) => {
               direction="column"
               className={styles.gridColumn}
             >
-              <Grid item className={clsx(styles.gridElement, styles.centered)}>
-                <Typography variant="h3">Selected Data Layer:</Typography>
-                <Typography>
-                  {selectedProperty?.application?.orbis?.label ||
-                    selectedProperty?.label}
-                </Typography>
-              </Grid>
               {areasOfInterest && (
                 <Grid item className={styles.gridElement}>
                   <Typography variant="h3">
@@ -270,6 +260,13 @@ const PDF = ({ user }) => {
               direction="column"
               className={styles.gridColumn}
             >
+              <Grid item className={clsx(styles.gridElement, styles.centered)}>
+                <Typography variant="h3">Selected Data Layer:</Typography>
+                <Typography>
+                  {selectedProperty?.application?.orbis?.label ||
+                    selectedProperty?.label}
+                </Typography>
+              </Grid>
               {areaValue && selectedProperty?.aggregates && (
                 <Grid
                   item
@@ -323,40 +320,6 @@ const PDF = ({ user }) => {
                       />
                     ))}
                   </List>
-                </Grid>
-              )}
-              {categoryList && (
-                <Grid
-                  item
-                  className={clsx(styles.gridElement, styles.centered)}
-                >
-                  <Typography variant="h3">
-                    {aggregationLabel} of selected categories:
-                  </Typography>
-                  {categoryList?.map((cat, i) => (
-                    <List key={`${cat}-${i}`}>
-                      <ListItemText
-                        className={styles.listData}
-                        primary={
-                          <Typography variant="h4">Category:</Typography>
-                        }
-                        secondary={<span>{cat.category}: </span>}
-                      />
-
-                      <ListItemText
-                        className={styles.listData}
-                        primary={<Typography variant="h4">Count:</Typography>}
-                        secondary={<span>{cat.count}: </span>}
-                      />
-                      <ListItemText
-                        className={styles.listData}
-                        primary={
-                          <Typography variant="h4">Percentage:</Typography>
-                        }
-                        secondary={<span>{cat.percent.toFixed(1)}: </span>}
-                      />
-                    </List>
-                  ))}
                 </Grid>
               )}
             </Grid>
