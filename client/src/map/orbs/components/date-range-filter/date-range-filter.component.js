@@ -23,6 +23,7 @@ export const DateRangeFilter = ({
 }) => {
   const { register, handleSubmit, errors } = useForm({
     mode: 'onChange',
+    context: { minDate, maxDate },
     resolver: yupResolver(schema),
   });
 

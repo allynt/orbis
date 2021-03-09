@@ -55,11 +55,15 @@ describe('<DateRangeFilter />', () => {
     expect(getByText('Something')).toBeInTheDocument();
   });
 
-  it('Shows an error message when the endDate entered is greater than maxDate', () => {
+  it('Shows an error message when the endDate entered is greater than maxDate', async () => {
     const { getByRole, getByText } = renderComponent({
       maxDate: new Date(2000, 1, 1).toISOString(),
     });
-    userEvent.type(getByRole('textbox', { name: 'Start Date' }), '02/01/2000');
-    expect(getByText('Something')).toBeInTheDocument();
+    userEvent.type(getByRole('textbox', { name: 'End Date' }), '03/02/2000');
+    await waitFor(() =>
+      expect(
+        getByText('Date must not be after 01/02/2000'),
+      ).toBeInTheDocument(),
+    );
   });
 });

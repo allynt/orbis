@@ -88,7 +88,10 @@ export const date = yup.lazy(v =>
     ? yup.string()
     : yup
         .string()
-        .matches(new RegExp(`^(\\d{1,2}(${DATE_SEPARATOR})){2}(\\d{2}){1,2}$`))
+        .matches(
+          new RegExp(`^(\\d{1,2}(${DATE_SEPARATOR})){2}(\\d{2}){1,2}$`),
+          'Please use the format DD/MM/YYYY',
+        )
         .test({
           name: 'Valid date',
           message: 'Please enter a valid date',
