@@ -78,7 +78,7 @@ const DATE_SEPARATOR = '\\/|-|\\.';
 /**
  *
  * @param {string} dateString
- * @returns {[d: number,m:number,y:number]}
+ * @returns {[d: number, m: number, y: number]}
  */
 const toDMY = dateString =>
   dateString.split(new RegExp(DATE_SEPARATOR)).map(Number);
@@ -107,6 +107,24 @@ export const date = yup.lazy(v =>
             if (compareDesc(comparator, new Date(y, m - 1, d)) === -1)
               return this.createError({
                 message: `Date must not be before ${format(
+                  comparator,
+                  'dd/MM/yyyy',
+                )}`,
+              });
+            return true;
+          },
+        })
+        .test({
+          name: 'Max Date',
+          test: function (value) {
+            if (!this.options.context?.[CONTEXT_KEYS.maxDate]) return true;
+            const [d, m, y] = toDMY(value);
+            const comparator = new Date(
+              this.options.context[CONTEXT_KEYS.maxDate],
+            );
+            if (compareAsc(comparator, new Date(y, m - 1, d)) === -1)
+              return this.createError({
+                message: `Date must not be after ${format(
                   comparator,
                   'dd/MM/yyyy',
                 )}`,

@@ -49,6 +49,7 @@ export const CONTEXT_KEYS = {
   existingEmails: 'existingEmails',
   bookmarkTitles: 'bookmarkTitles',
   minDate: 'minDate',
+  maxDate: 'maxDate',
 };
 
 export const FIELD_NAMES = {

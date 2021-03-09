@@ -268,60 +268,80 @@ describe('field validators', () => {
   });
 
   describe.only('date', () => {
-    it('allows empty strings', () => {
-      expect(date.validate('')).resolves.toBe('');
+    describe('pattern', () => {
+      it('allows empty strings', () => {
+        expect(date.validate('')).resolves.toBe('');
+      });
+
+      it('Allows / separation', () => {
+        expect(date.validate('1/1/2020')).resolves.toBe('1/1/2020');
+      });
+
+      it('Allows . separation', () => {
+        expect(date.validate('1.1.2020')).resolves.toBe('1.1.2020');
+      });
+
+      it('Allows - separation', () => {
+        expect(date.validate('1-1-2020')).resolves.toBe('1-1-2020');
+      });
+
+      it('Allows 2 digit years', () => {
+        expect(date.validate('1/1/20')).resolves.toBe('1/1/20');
+      });
     });
 
-    it('Allows / separation', () => {
-      expect(date.validate('1/1/2020')).resolves.toBe('1/1/2020');
+    describe('valid', () => {
+      it('rejects invalid dates', () => {
+        expect(date.validate('50/20/1234')).rejects.toThrowError(
+          'Please enter a valid date',
+        );
+      });
     });
 
-    it('Allows . separation', () => {
-      expect(date.validate('1.1.2020')).resolves.toBe('1.1.2020');
+    describe('min', () => {
+      const options = {
+        context: {
+          [CONTEXT_KEYS.minDate]: new Date(2020, 0, 1).toISOString(),
+        },
+      };
+      it('Passes dates later than min', () => {
+        expect(date.validateSync('1/2/2020', options)).toBe('1/2/2020');
+      });
+
+      it('Passes dates equal to min', () => {
+        expect(date.validateSync('1/1/2020', options)).toBe('1/1/2020');
+      });
+
+      it('does not accept dates less than min', () => {
+        expect(date.validate('31/12/2019', options)).rejects.toThrowError(
+          'Date must not be before 01/01/2020',
+        );
+      });
     });
 
-    it('Allows - separation', () => {
-      expect(date.validate('1-1-2020')).resolves.toBe('1-1-2020');
-    });
+    describe('max', () => {
+      const options = {
+        context: {
+          [CONTEXT_KEYS.maxDate]: new Date(2020, 11, 31).toISOString(),
+        },
+      };
+      it('Does not accept dates greater than max', () => {
+        expect(date.validate('24/10/2077', options)).rejects.toThrowError(
+          'Date must not be after 31/12/2020',
+        );
+      });
 
-    it('Allows 2 digit years', () => {
-      expect(date.validate('1/1/20')).resolves.toBe('1/1/20');
-    });
+      it('Allows dates equal to max', () => {
+        expect(date.validate('31/12/2020', options)).resolves.toBe(
+          '31/12/2020',
+        );
+      });
 
-    it('rejects invalid dates', () => {
-      expect(date.validate('50/20/1234')).rejects.toThrowError(
-        'Please enter a valid date',
-      );
-    });
-
-    it('Passes dates later than min', () => {
-      expect(
-        date.validateSync('1/2/2020', {
-          context: {
-            [CONTEXT_KEYS.minDate]: new Date(2020, 0, 1).toISOString(),
-          },
-        }),
-      ).toBe('1/2/2020');
-    });
-
-    it('Passes dates equal to min', () => {
-      expect(
-        date.validateSync('1/2/2020', {
-          context: {
-            [CONTEXT_KEYS.minDate]: new Date(2020, 1, 1).toISOString(),
-          },
-        }),
-      ).toBe('1/2/2020');
-    });
-
-    it('does not accept dates less than min', () => {
-      expect(
-        date.validate('31/12/2019', {
-          context: {
-            [CONTEXT_KEYS.minDate]: new Date(2020, 0, 1).toISOString(),
-          },
-        }),
-      ).rejects.toThrowError('Date must not be before 01/01/2020');
+      it('Allows dates less than max', () => {
+        expect(date.validate('30/12/2020', options)).resolves.toBe(
+          '30/12/2020',
+        );
+      });
     });
   });
 });
