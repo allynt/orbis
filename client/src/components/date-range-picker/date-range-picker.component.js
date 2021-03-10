@@ -1,6 +1,6 @@
 import { Button, Grid, makeStyles, Typography } from '@astrosat/astrosat-ui';
 import { endOfDay, format, startOfDay, subDays } from 'date-fns';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { createStaticRanges } from 'react-date-range';
 import 'react-date-range/dist/styles.css'; // main style file
 import 'react-date-range/dist/theme/default.css';
