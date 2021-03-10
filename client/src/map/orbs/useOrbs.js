@@ -92,7 +92,7 @@ export const useOrbs = () => {
         return [
           source.source_id,
           source?.metadata?.application?.orbis?.sidebar_component.map(
-            makeComponent,
+            componentDefinition => makeComponent(componentDefinition, source),
           ),
         ];
       }
