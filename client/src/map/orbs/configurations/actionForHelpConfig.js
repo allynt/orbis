@@ -4,12 +4,34 @@ import iconMapping from './actionForHelpConfig.iconMapping.json';
 import iconAtlas from './actionForHelpConfig.iconAtlas.svg';
 import { easeInOutCubic } from 'utils/easingFunctions';
 import { setClickedFeatures } from '../orbReducer';
+import { filter } from 'lodash';
+
+export const filterFeatures = (oldData, startDate, endDate) =>
+  !oldData || (!startDate && !endDate)
+    ? oldData
+    : {
+        ...oldData,
+        features: filter(oldData.features, feature => {
+          const submissionDateTimestamp = new Date(
+            feature.properties['Submission Date'],
+          ).getTime();
+          return (
+            (!startDate || submissionDateTimestamp >= startDate.getTime()) &&
+            (!endDate || submissionDateTimestamp <= endDate.getTime())
+          );
+        }),
+      };
 
 /**
  * @typedef {import('typings/orbis').GeoJsonFeature<{type?: string, Type?: string}>} ActionForHelpFeature
  */
 
 const configuration = ({ id, data, activeSources, dispatch, setViewState }) => {
+  const filterRange = [
+    new Date(2020, 4, 7).toISOString(),
+    new Date(2020, 4, 9).toISOString(),
+  ];
+
   /** @param {import('typings/orbis').PickedMapFeature} info */
   const handleLayerClick = info => {
     if (info.object.properties.cluster) {
@@ -42,7 +64,7 @@ const configuration = ({ id, data, activeSources, dispatch, setViewState }) => {
     id,
     iconMapping,
     iconAtlas,
-    data,
+    data: filterFeatures(data, ...filterRange.map(d => new Date(d))),
     visible: !!activeSources?.find(source => source.source_id === id),
     onClick: handleLayerClick,
     getIcon,
