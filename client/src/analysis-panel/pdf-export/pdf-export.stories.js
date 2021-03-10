@@ -83,14 +83,68 @@ LotsOfFeatures.args = {
   },
 };
 
+export const ZeroValues = Template.bind({});
+ZeroValues.args = {
+  state: {
+    property: {
+      source_id: 'astrosat/isolation_plus/age_census/r4v1',
+      source: 'testsourcename',
+      details: 'This is a test description',
+      name: '% of people aged 0-17',
+      label: 'Test label',
+      aggregation: 'mean',
+      aggregates: { GB: 0, England: 0, Scotland: 0, Wales: 0 },
+      precision: 1,
+      breakdown: [
+        '% of people aged 0-17',
+        '% of people aged 18-39',
+        '% of people aged 40-64',
+        '% of people aged 65+',
+      ],
+    },
+    clickedFeatures: [
+      {
+        object: {
+          properties: {
+            area_name: 'test-name-1',
+            population: 0,
+            households: 0,
+            '% of people aged 0-17': 0,
+            '% of people aged 18-39': 0,
+            '% of people aged 40-64': 0,
+            '% of people aged 65+': 0,
+          },
+        },
+      },
+      {
+        object: {
+          properties: {
+            area_name: 'test-name-2',
+            population: 0,
+            households: 0,
+            '% of people aged 0-17': 0,
+            '% of people aged 18-39': 0,
+            '% of people aged 40-64': 0,
+            '% of people aged 65+': 0,
+          },
+        },
+      },
+    ],
+  },
+};
+
 export const LongText = Template.bind({});
 LongText.args = {
+  user: {
+    name: 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
+    email: 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa@gmail.com',
+  },
   state: {
     property: {
       source_id: 'astrosat/isolation_plus/age_census/r4v1',
       source: 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
       details: 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
-      name: 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
+      name: '% of people aged 0-17',
       label: 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
       aggregation: 'mean',
       aggregates: { GB: 20.4, England: 20.8, Scotland: 18.8, Wales: 20.3 },

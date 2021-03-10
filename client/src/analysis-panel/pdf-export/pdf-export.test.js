@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { render, waitFor } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import { Provider } from 'react-redux';
 import configureMockStore from 'redux-mock-store';
 
@@ -212,6 +212,90 @@ describe('PDF', () => {
     expect(
       queryByText('Breakdown of the data summed over all the selected areas:'),
     ).not.toBeInTheDocument();
+  });
+
+  it('does not show `breakdownAggregation` if array is empty', () => {
+    const state = {
+      state: {
+        ...initialState,
+        clickedFeatures: [
+          {
+            object: {
+              properties: {
+                area_name: 'test-name-1',
+                population: 0,
+                households: 0,
+                '% of people aged 0-17': 0,
+                '% of people aged 18-39': 0,
+                '% of people aged 40-64': 0,
+                '% of people aged 65+': 0,
+              },
+            },
+          },
+          {
+            object: {
+              properties: {
+                area_name: 'test-name-2',
+                population: 0,
+                households: 0,
+                '% of people aged 0-17': 0,
+                '% of people aged 18-39': 0,
+                '% of people aged 40-64': 0,
+                '% of people aged 65+': 0,
+              },
+            },
+          },
+        ],
+      },
+    };
+
+    const { queryByText } = renderComponent({ state });
+
+    expect(
+      queryByText('Breakdown of the data summed over all the selected areas:'),
+    ).not.toBeInTheDocument();
+  });
+
+  it('shows 0 values in aggregation section', () => {
+    const state = {
+      ...initialState,
+      property: {
+        ...initialState.property,
+        aggregates: { GB: 0, England: 0, Scotland: 0, Wales: 0 },
+      },
+      clickedFeatures: [
+        {
+          object: {
+            properties: {
+              area_name: 'test-name-1',
+              population: 0,
+              households: 0,
+              '% of people aged 0-17': 0,
+              '% of people aged 18-39': 0,
+              '% of people aged 40-64': 0,
+              '% of people aged 65+': 0,
+            },
+          },
+        },
+        {
+          object: {
+            properties: {
+              area_name: 'test-name-2',
+              population: 0,
+              households: 0,
+              '% of people aged 0-17': 0,
+              '% of people aged 18-39': 0,
+              '% of people aged 40-64': 0,
+              '% of people aged 65+': 0,
+            },
+          },
+        },
+      ],
+    };
+
+    const { getAllByText } = renderComponent({ state });
+
+    expect(getAllByText('0').length).toEqual(7);
   });
 
   it('does not display username section if username is undefined', () => {

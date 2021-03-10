@@ -61,11 +61,11 @@ const useStyles = makeStyles(theme => ({
     height: '66.6%',
     width: '100%',
     padding: theme.spacing(1),
+    wordBreak: 'break-word',
   },
   detailsGrid: {
     width: '100%',
     gap: theme.spacing(1),
-    wordBreak: 'break-word',
   },
   gridColumn: {
     maxWidth: '33.3%',
@@ -267,7 +267,7 @@ const PDF = ({ user }) => {
                     selectedProperty?.label}
                 </Typography>
               </Grid>
-              {areaValue && selectedProperty?.aggregates && (
+              {areaValue !== undefined && selectedProperty?.aggregates ? (
                 <Grid
                   item
                   className={clsx(styles.gridElement, styles.centered)}
@@ -300,8 +300,8 @@ const PDF = ({ user }) => {
                       )}
                   </List>
                 </Grid>
-              )}
-              {breakdownAggregation && (
+              ) : null}
+              {breakdownAggregation?.length ? (
                 <Grid
                   item
                   className={clsx(styles.gridElement, styles.centered)}
@@ -324,7 +324,7 @@ const PDF = ({ user }) => {
                     ))}
                   </List>
                 </Grid>
-              )}
+              ) : null}
             </Grid>
             <Grid
               item
