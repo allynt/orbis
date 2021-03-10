@@ -121,15 +121,10 @@ export const AnalysisPanel = () => {
       }),
     [selectedProperty, sources],
   );
-
-  const COMPONENT_BLACKLIST = ['CategoryBreakdownChart'];
-
   const dataVisualisationComponents =
     selectedProperty?.application?.orbis?.data_visualisation_components;
 
-  const pdfIncompatible = dataVisualisationComponents?.some(c =>
-    COMPONENT_BLACKLIST.includes(c.name),
-  );
+  const pdfIncompatible = selectedProperty?.type === 'discrete';
 
   const { createScreenshot } = useMap();
 

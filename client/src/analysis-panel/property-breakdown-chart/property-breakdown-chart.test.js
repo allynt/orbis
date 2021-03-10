@@ -1,26 +1,47 @@
 import { render } from '@testing-library/react';
 import React from 'react';
+
+import { Provider } from 'react-redux';
+import configureMockStore from 'redux-mock-store';
+
 import { PropertyBreakdownChart } from './property-breakdown-chart.component';
 
-const renderComponent = ({ clickedFeatures, selectedProperty = {} }) =>
-  render(
-    <PropertyBreakdownChart
-      clickedFeatures={clickedFeatures?.map(properties => ({
-        object: { properties },
-      }))}
-      selectedProperty={selectedProperty}
-    />,
+const mockStore = configureMockStore();
+
+const renderComponent = ({ features, property = {} }) => {
+  const clickedFeatures = features?.map(properties => ({
+    object: { properties },
+  }));
+
+  const store = mockStore({
+    orbs: {
+      isolationPlus: {
+        property,
+        clickedFeatures,
+      },
+    },
+  });
+
+  const utils = render(
+    <Provider store={store}>
+      <PropertyBreakdownChart
+        clickedFeatures={clickedFeatures}
+        selectedProperty={property}
+      />
+    </Provider>,
   );
+  return { ...utils };
+};
 
 describe('<PropertyBreakdownChart />', () => {
   it("Shows nothing if there's no clickedFeatures", () => {
-    const { queryByText } = renderComponent({ clickedFeatures: undefined });
+    const { queryByText } = renderComponent({ features: undefined });
     expect(queryByText('Breakdown')).not.toBeInTheDocument();
   });
 
   it("Shows nothing if there's no data", () => {
     const { queryByText } = renderComponent({
-      clickedFeatures: [
+      features: [
         {
           fruit: NaN,
         },
@@ -28,7 +49,7 @@ describe('<PropertyBreakdownChart />', () => {
           fruit: NaN,
         },
       ],
-      selectedProperty: {
+      property: {
         breakdown: ['fruit'],
       },
     });
@@ -37,13 +58,13 @@ describe('<PropertyBreakdownChart />', () => {
 
   it('Shows a legend item for each value in the breakdown', () => {
     const { getByText } = renderComponent({
-      clickedFeatures: [
+      features: [
         {
           fruit: 1,
           trees: 9,
         },
       ],
-      selectedProperty: {
+      property: {
         breakdown: ['fruit', 'trees'],
       },
     });
@@ -54,7 +75,7 @@ describe('<PropertyBreakdownChart />', () => {
 
   it('Shows segment labels fixed to precision in the selected property', () => {
     const { getByText } = renderComponent({
-      clickedFeatures: [
+      features: [
         {
           fruit: 4.91655,
         },
@@ -62,7 +83,7 @@ describe('<PropertyBreakdownChart />', () => {
           fruit: 9.32467238,
         },
       ],
-      selectedProperty: {
+      property: {
         breakdown: ['fruit'],
         precision: 4,
         aggregation: 'mean',
@@ -73,7 +94,7 @@ describe('<PropertyBreakdownChart />', () => {
 
   it('Shows segment labels fixed to default precision if not specified in the property', () => {
     const { getByText } = renderComponent({
-      clickedFeatures: [
+      features: [
         {
           fruit: 4.91655,
         },
@@ -82,7 +103,7 @@ describe('<PropertyBreakdownChart />', () => {
           fruit: 9.32467238,
         },
       ],
-      selectedProperty: {
+      property: {
         breakdown: ['fruit'],
         aggregation: 'mean',
       },
@@ -92,10 +113,10 @@ describe('<PropertyBreakdownChart />', () => {
 
   it('Does not show values <= 0', () => {
     const { queryByText } = renderComponent({
-      selectedProperty: {
+      property: {
         breakdown: ['fruit', 'trees'],
       },
-      clickedFeatures: [
+      features: [
         {
           fruit: 1,
           trees: -5,

@@ -141,6 +141,7 @@ NoPdfExport.args = {
         property: {
           ...selectedProperty,
           name: 'fruit',
+          type: 'discrete',
           application: {
             ...selectedProperty.application,
             orbis: {

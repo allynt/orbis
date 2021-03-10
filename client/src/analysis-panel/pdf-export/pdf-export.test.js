@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { render } from '@testing-library/react';
+import { render, waitFor } from '@testing-library/react';
 import { Provider } from 'react-redux';
 import configureMockStore from 'redux-mock-store';
 
@@ -78,7 +78,7 @@ const getTotals = property => {
   );
 };
 
-const renderComponent = (state = initialState, user = initialUser) => {
+const renderComponent = ({ state = initialState, user = initialUser }) => {
   const history = createMemoryHistory({ initialEntries: ['/pdf-export'] });
 
   const store = mockStore({
@@ -100,7 +100,7 @@ const renderComponent = (state = initialState, user = initialUser) => {
 
 describe('PDF', () => {
   it('renders a PDF preview', () => {
-    const { getByText, getAllByText } = renderComponent();
+    const { getByText, getAllByText } = renderComponent({});
 
     initialState.clickedFeatures.forEach(feat => {
       expect(
@@ -152,12 +152,12 @@ describe('PDF', () => {
   });
 
   it('renders the screenshot as image on screen', () => {
-    const { getByTestId } = renderComponent();
+    const { getByTestId } = renderComponent({});
 
     const covertedImage =
       'data:image/png;base64,aHR0cHM6Ly9jLmZpbGVzLmJiY2kuY28udWsvMTJBOUIvcHJvZHVjdGlvbi9fMTExNDM0NDY3X2dldHR5aW1hZ2VzLTExNDM0ODk3NjMuanBn';
 
-    // Need a few ms pause to let image finish processing
+    // Requires a few ms pause to let image finish processing
     setTimeout(() => {
       expect(getByTestId('screenshot')).toHaveAttribute(
         'background-image',
@@ -175,7 +175,7 @@ describe('PDF', () => {
       },
     };
 
-    const { getByText } = renderComponent(state);
+    const { getByText } = renderComponent({ state });
 
     expect(getByText(`Sum of selected areas:`)).toBeInTheDocument();
   });
@@ -197,14 +197,16 @@ describe('PDF', () => {
       ],
     };
 
-    const { getByText } = renderComponent(state);
+    const { getByText } = renderComponent({ state });
     expect(getByText('Value of selected area:')).toBeInTheDocument();
   });
 
   it('does not show `breakdownAggregation` if no data for it exists', () => {
     const { queryByText } = renderComponent({
-      ...initialState,
-      property: { ...initialState.property, breakdown: undefined },
+      state: {
+        ...initialState,
+        property: { ...initialState.property, breakdown: undefined },
+      },
     });
 
     expect(
@@ -213,16 +215,19 @@ describe('PDF', () => {
   });
 
   it('does not display username section if username is undefined', () => {
-    const { queryByTestId } = renderComponent(initialState, {
-      email: 'johnsmith@gmail.com',
+    const { queryByTestId } = renderComponent({
+      user: { email: 'johnsmith@gmail.com' },
     });
 
     expect(queryByTestId('user-name')).not.toBeInTheDocument();
   });
 
   it('redirects to landing page if no property source_id in state', () => {
-    const { history } = renderComponent({ property: {} }, { name: 'john' });
+    const { history } = renderComponent({ state: {}, user: { name: 'john' } });
 
-    expect(history.location.pathname).toEqual('/');
+    // Requires a few ms pause to allow action to occur
+    setTimeout(() => {
+      expect(history.location.pathname).toEqual('/');
+    }, 500);
   });
 });
