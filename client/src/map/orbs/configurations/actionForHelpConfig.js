@@ -3,7 +3,7 @@ import { MAX_ZOOM } from 'map/map.constants';
 import iconMapping from './actionForHelpConfig.iconMapping.json';
 import iconAtlas from './actionForHelpConfig.iconAtlas.svg';
 import { easeInOutCubic } from 'utils/easingFunctions';
-import { setClickedFeatures } from '../orbReducer';
+import { filterValueSelector, setClickedFeatures } from '../orbReducer';
 import { filter } from 'lodash';
 
 export const filterFeatures = (oldData, startDate, endDate) =>
@@ -26,11 +26,15 @@ export const filterFeatures = (oldData, startDate, endDate) =>
  * @typedef {import('typings/orbis').GeoJsonFeature<{type?: string, Type?: string}>} ActionForHelpFeature
  */
 
-const configuration = ({ id, data, activeSources, dispatch, setViewState }) => {
-  const filterRange = [
-    new Date(2020, 4, 7).toISOString(),
-    new Date(2020, 4, 9).toISOString(),
-  ];
+const configuration = ({
+  id,
+  data,
+  activeSources,
+  dispatch,
+  setViewState,
+  orbState,
+}) => {
+  const filterRange = filterValueSelector(id)(orbState);
 
   /** @param {import('typings/orbis').PickedMapFeature} info */
   const handleLayerClick = info => {
@@ -64,7 +68,11 @@ const configuration = ({ id, data, activeSources, dispatch, setViewState }) => {
     id,
     iconMapping,
     iconAtlas,
-    data: filterFeatures(data, ...filterRange.map(d => new Date(d))),
+    data: filterFeatures(
+      data,
+      filterRange?.[0] && new Date(filterRange[0]),
+      filterRange?.[1] && new Date(filterRange[1]),
+    ),
     visible: !!activeSources?.find(source => source.source_id === id),
     onClick: handleLayerClick,
     getIcon,
