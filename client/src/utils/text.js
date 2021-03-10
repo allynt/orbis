@@ -12,7 +12,7 @@ export const toTitleCase = text => {
   return words.map(word => wordToTitleCase(word)).join(' ');
 };
 
-const emailSchema = yupString().email();
+const emailSchema = yupString().required().email();
 
 /**
  * @param {string} string
