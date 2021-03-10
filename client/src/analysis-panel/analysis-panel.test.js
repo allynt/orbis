@@ -77,35 +77,6 @@ describe('<AnalysisPanel />', () => {
     );
   });
 
-  xit('dispatches screenshot and redirects to PDF route when button is clicked', () => {
-    const { getByRole, store } = renderComponent({
-      property: {
-        name: 'test',
-        application: { orbis: { data_visualisation_components: [] } },
-      },
-      clickedFeatures: [{ object: { properties: { code: 'hello' } } }],
-    });
-
-    userEvent.click(getByRole('button', { name: 'Export PDF Report' }));
-
-    console.log('state: ', store.getState());
-  });
-
-  xit('redirects to PDF route when button is clicked', () => {
-    const { getByRole, history } = renderComponent({
-      property: {
-        source_id: 'test_id',
-        name: 'test',
-        application: { orbis: { data_visualisation_components: [] } },
-      },
-      clickedFeatures: [{ object: { properties: { code: 'hello' } } }],
-    });
-
-    userEvent.click(getByRole('button', { name: 'Export PDF Report' }));
-
-    expect(history.location.pathname).toEqual('/pdf-export');
-  });
-
   it('hides PDF button/icon for layers with no compatible components', () => {
     const state = {
       property: {

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { render } from '@testing-library/react';
+import { render, waitFor } from '@testing-library/react';
 import { Provider } from 'react-redux';
 import configureMockStore from 'redux-mock-store';
 
@@ -157,13 +157,12 @@ describe('PDF', () => {
     const covertedImage =
       'data:image/png;base64,aHR0cHM6Ly9jLmZpbGVzLmJiY2kuY28udWsvMTJBOUIvcHJvZHVjdGlvbi9fMTExNDM0NDY3X2dldHR5aW1hZ2VzLTExNDM0ODk3NjMuanBn';
 
-    // Requires a few ms pause to let image finish processing
-    setTimeout(() => {
+    waitFor(() => {
       expect(getByTestId('screenshot')).toHaveAttribute(
         'background-image',
         `url(${covertedImage})`,
       );
-    }, 500);
+    });
   });
 
   it('shows data based on `Average/Sum` aggregation type', () => {
@@ -309,9 +308,8 @@ describe('PDF', () => {
   it('redirects to landing page if no property source_id in state', () => {
     const { history } = renderComponent({ state: {}, user: { name: 'john' } });
 
-    // Requires a few ms pause to allow action to occur
-    setTimeout(() => {
+    waitFor(() => {
       expect(history.location.pathname).toEqual('/');
-    }, 500);
+    });
   });
 });
