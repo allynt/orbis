@@ -1,5 +1,7 @@
 import { styled } from '@material-ui/core';
 import { DateRangePicker } from 'react-date-range';
+import 'react-date-range/dist/styles.css'; // main style file
+import 'react-date-range/dist/theme/default.css';
 
 export const StyledDateRangePicker = styled(DateRangePicker)(({ theme }) => ({
   fontFamily: `${theme.typography.fontFamily} !important`,
