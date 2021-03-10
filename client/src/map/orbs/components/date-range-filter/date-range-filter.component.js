@@ -1,12 +1,37 @@
 import { TextField } from '@astrosat/astrosat-ui';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { DateRangePicker } from 'components/date-range-picker/date-range-picker.component';
-import { endOfDay, format, startOfDay } from 'date-fns';
-import React from 'react';
+import { addDays, endOfDay, format, startOfDay, subDays } from 'date-fns';
+import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toDMY } from 'utils/dates';
 import { date, FIELD_NAMES } from 'utils/validators';
 import * as yup from 'yup';
+
+/**
+ * @param {{startDate?: string, endDate?: string}} range
+ * @returns {{startDate: Date, endDate: Date}}
+ */
+const toDates = range => {
+  let dateRep = {};
+  const { startDate, endDate } = range;
+  if (!startDate && !endDate) return undefined;
+  if (startDate) {
+    const [d, m, y] = toDMY(startDate);
+    dateRep.startDate = new Date(y, m - 1, d);
+  }
+  if (endDate) {
+    const [d, m, y] = toDMY(endDate);
+    dateRep.endDate = new Date(y, m - 1, d);
+  }
+  if (!startDate && endDate) {
+    dateRep.startDate = subDays(dateRep.endDate, 30);
+  }
+  if (!endDate && startDate) {
+    dateRep.endDate = addDays(dateRep.startDate, 30);
+  }
+  return dateRep;
+};
 
 const schema = yup.object({
   startDate: date,
@@ -29,8 +54,11 @@ export const DateRangeFilter = ({
     context: { minDate, maxDate },
     resolver: yupResolver(schema),
   });
+  /** @type {[{startDate: Date, endDate: Date} | undefined, React.Dispatch<{startDate: Date, endDate: Date}>]} */
+  const [dateRepresentation, setDateRepresentation] = useState();
 
   const onSubmit = ({ startDate, endDate }) => {
+    setDateRepresentation(toDates({ startDate, endDate }));
     const [startD, startM, startY] = toDMY(startDate);
     const [endD, endM, endY] = toDMY(endDate);
     onSubmitProp({
@@ -79,7 +107,10 @@ export const DateRangeFilter = ({
         error={!!errors.endDate}
         helperText={errors.endDate?.message}
       />
-      <DateRangePicker onApply={handleDateRangePickerApply} />
+      <DateRangePicker
+        onApply={handleDateRangePickerApply}
+        initialRange={dateRepresentation}
+      />
     </form>
   );
 };

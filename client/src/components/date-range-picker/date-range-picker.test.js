@@ -23,4 +23,40 @@ describe('<DateRangePicker />', () => {
       endDate: new Date(2020, 1, 2),
     });
   });
+
+  it('uses the initial range if supplied', () => {
+    const { getByText } = render(
+      <DateRangePicker
+        onApply={jest.fn()}
+        initialRange={{
+          startDate: new Date(2020, 0, 5),
+          endDate: new Date(2020, 0, 10),
+        }}
+      />,
+    );
+    expect(getByText('05/01/2020 - 10/01/2020')).toBeInTheDocument();
+  });
+
+  it('rerenders with the updated range', () => {
+    const { getByText, rerender } = render(
+      <DateRangePicker
+        onApply={jest.fn()}
+        initialRange={{
+          startDate: new Date(2020, 0, 5),
+          endDate: new Date(2020, 0, 10),
+        }}
+      />,
+    );
+    expect(getByText('05/01/2020 - 10/01/2020')).toBeInTheDocument();
+    rerender(
+      <DateRangePicker
+        onApply={jest.fn()}
+        initialRange={{
+          startDate: new Date(2020, 0, 5),
+          endDate: new Date(2020, 0, 20),
+        }}
+      />,
+    );
+    expect(getByText('05/01/2020 - 20/01/2020')).toBeInTheDocument();
+  });
 });
