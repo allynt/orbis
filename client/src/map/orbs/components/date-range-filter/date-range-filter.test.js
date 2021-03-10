@@ -19,7 +19,7 @@ describe('<DateRangeFilter />', () => {
     userEvent.type(getByRole('textbox', { name: 'Start Date' }), '01/01/2020');
     await waitFor(() =>
       expect(onSubmit).toHaveBeenCalledWith({
-        startDate: new Date(2020, 1, 1).toISOString(),
+        startDate: startOfDay(new Date(2020, 0, 1)).toISOString(),
         endDate: undefined,
       }),
     );
@@ -31,7 +31,7 @@ describe('<DateRangeFilter />', () => {
     await waitFor(() =>
       expect(onSubmit).toHaveBeenCalledWith({
         startDate: undefined,
-        endDate: new Date(2020, 1, 1).toISOString(),
+        endDate: endOfDay(new Date(2020, 0, 1)).toISOString(),
       }),
     );
   });
@@ -73,7 +73,7 @@ describe('<DateRangeFilter />', () => {
     const { getByRole, getAllByRole, onSubmit } = renderComponent();
     const today = startOfDay(new Date());
     userEvent.click(
-      getAllByRole('button', { name: today.getDate().toString() })[0],
+      getAllByRole('button', { name: today.getDate().toString() })[1],
     );
     userEvent.click(
       getAllByRole('button', { name: (today.getDate() + 1).toString() })[0],
@@ -81,7 +81,7 @@ describe('<DateRangeFilter />', () => {
     userEvent.click(getByRole('button', { name: 'Apply' }));
     await waitFor(() =>
       expect(onSubmit).toHaveBeenCalledWith({
-        endDate: addDays(today, 1).toISOString(),
+        endDate: endOfDay(addDays(today, 1)).toISOString(),
         startDate: today.toISOString(),
       }),
     );

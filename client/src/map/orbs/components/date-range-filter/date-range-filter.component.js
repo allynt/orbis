@@ -1,7 +1,7 @@
 import { TextField } from '@astrosat/astrosat-ui';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { DateRangePicker } from 'components/date-range-picker/date-range-picker.component';
-import { format } from 'date-fns';
+import { endOfDay, format, startOfDay } from 'date-fns';
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { toDMY } from 'utils/dates';
@@ -30,17 +30,17 @@ export const DateRangeFilter = ({
     resolver: yupResolver(schema),
   });
 
-  const onSubmit = v => {
-    onSubmitProp(
-      Object.entries(v).reduce((acc, [key, value]) => {
-        if (!value) return acc;
-        const [d, m, y] = toDMY(value);
-        return {
-          ...acc,
-          [key]: new Date(y, m, d).toISOString(),
-        };
-      }, {}),
-    );
+  const onSubmit = ({ startDate, endDate }) => {
+    const [startD, startM, startY] = toDMY(startDate);
+    const [endD, endM, endY] = toDMY(endDate);
+    onSubmitProp({
+      startDate: !!startDate
+        ? startOfDay(new Date(startY, startM - 1, startD)).toISOString()
+        : undefined,
+      endDate: !!endDate
+        ? endOfDay(new Date(endY, endM - 1, endD)).toISOString()
+        : undefined,
+    });
   };
 
   const handleDateRangePickerApply = range => {
