@@ -14,7 +14,7 @@ module.exports = {
     application: {
       orbis: {
         sidebar_component: [
-          { name: 'DateRangeFilter' },
+          { name: 'DateRangeFilter', props: { maxDate: 'today' } },
           { name: 'PopulationLegend' },
         ],
         map_component: { name: 'ActionForHelpMapComponent' },

@@ -49,6 +49,8 @@ const staticRanges = createStaticRanges([
 
 export const DateRangePicker = ({
   onApply,
+  minDate,
+  maxDate,
   initialRange = {
     startDate: subDays(new Date(), 30),
     endDate: new Date(),
@@ -77,6 +79,8 @@ export const DateRangePicker = ({
     >
       <Grid item xs>
         <StyledDateRangePicker
+          minDate={minDate && new Date(minDate)}
+          maxDate={maxDate && new Date(maxDate)}
           ranges={[range]}
           onChange={handleRangeChange}
           showSelectionPreview={true}

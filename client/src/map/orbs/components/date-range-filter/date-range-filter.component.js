@@ -101,10 +101,13 @@ const useStyles = makeStyles(theme => ({
  */
 export const DateRangeFilter = ({
   onSubmit: onSubmitProp,
-  minDate,
-  maxDate,
+  minDate: minDateProp,
+  maxDate: maxDateProp,
   range,
 }) => {
+  const minDate =
+      minDateProp === 'today' ? new Date().toISOString() : minDateProp,
+    maxDate = maxDateProp === 'today' ? new Date().toISOString() : maxDateProp;
   const styles = useStyles();
   const { register, handleSubmit, setValue, errors } = useForm({
     mode: 'onChange',
@@ -116,7 +119,10 @@ export const DateRangeFilter = ({
         ? format(new Date(range.endDate), 'dd/MM/yyyy')
         : undefined,
     },
-    context: { minDate, maxDate },
+    context: {
+      minDate,
+      maxDate,
+    },
     resolver: yupResolver(schema),
   });
   /** @type {[{startDate: Date, endDate: Date} | undefined, React.Dispatch<{startDate: Date, endDate: Date}>]} */
@@ -190,6 +196,8 @@ export const DateRangeFilter = ({
       }}
       title={
         <DateRangePicker
+          minDate={minDate}
+          maxDate={maxDate}
           onApply={handleDateRangePickerApply}
           initialRange={dateRepresentation}
         />

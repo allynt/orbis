@@ -2,7 +2,7 @@ import React from 'react';
 import { render, waitFor } from '@testing-library/react';
 import { DateRangeFilter } from './date-range-filter.component';
 import userEvent from '@testing-library/user-event';
-import { addDays, endOfDay, startOfDay } from 'date-fns';
+import { addDays, endOfDay, format, startOfDay } from 'date-fns';
 
 const renderComponent = ({
   minDate = undefined,
@@ -78,6 +78,34 @@ describe('<DateRangeFilter />', () => {
     await waitFor(() =>
       expect(
         getByText('Date must not be after 01/02/2000'),
+      ).toBeInTheDocument(),
+    );
+  });
+
+  it("Uses today's date as minDate if value is 'today'", async () => {
+    const today = new Date();
+    const { getByRole, getByText } = renderComponent({ minDate: 'today' });
+    userEvent.type(
+      getByRole('textbox', { name: 'Start Date' }),
+      format(addDays(today, -1), 'dd/MM/yyyy'),
+    );
+    await waitFor(() =>
+      expect(
+        getByText(`Date must not be before ${format(today, 'dd/MM/yyyy')}`),
+      ).toBeInTheDocument(),
+    );
+  });
+
+  it("Uses today's date as maxDate if value is 'today'", async () => {
+    const today = new Date();
+    const { getByRole, getByText } = renderComponent({ maxDate: 'today' });
+    userEvent.type(
+      getByRole('textbox', { name: 'End Date' }),
+      format(addDays(today, 1), 'dd/MM/yyyy'),
+    );
+    await waitFor(() =>
+      expect(
+        getByText(`Date must not be after ${format(today, 'dd/MM/yyyy')}`),
       ).toBeInTheDocument(),
     );
   });

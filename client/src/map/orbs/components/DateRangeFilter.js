@@ -3,8 +3,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { filterValueSelector, setFilterValue } from '../orbReducer';
 import { DateRangeFilter } from './date-range-filter/date-range-filter.component';
 
-/** @type {import('typings/orbis').SidebarComponent} */
-export default ({ selectedLayer }) => {
+/** @type {import('typings/orbis').SidebarComponent<{minDate?: string, maxDate?: string}>} */
+export default ({ selectedLayer, minDate, maxDate }) => {
   const dispatch = useDispatch();
   const filterValue = useSelector(state =>
     filterValueSelector(selectedLayer.source_id)(state?.orbs),
@@ -22,7 +22,9 @@ export default ({ selectedLayer }) => {
   return (
     <DateRangeFilter
       onSubmit={handleSubmit}
-      range={filterValue ? filterValue : undefined}
+      minDate={minDate}
+      maxDate={maxDate}
+      range={filterValue}
     />
   );
 };
