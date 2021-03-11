@@ -44,18 +44,15 @@ fi
 # do stuff #
 ############
 
-echo "ENVIRONMENT=$ENVIRONMENT"
-echo "INSTANCE=$INSTANCE"
+source "$(dirname "$0")/deploy-common.sh"
 
 set -x
 
-TERRAFORM_WORKSPACE="environment-${ENVIRONMENT}-${INSTANCE}"
-
 cd ./terraform/deploy/
 
-terraform init
-terraform workspace select "${TERRAFORM_WORKSPACE}"
-terraform init
-terraform destroy -auto-approve -var "environment=${ENVIRONMENT}" -var "instance=${INSTANCE}" -var "tag=dummy"
-terraform workspace select default
-terraform workspace delete "${TERRAFORM_WORKSPACE}"
+$TERRAFORM_BINARY init
+$TERRAFORM_BINARY workspace select "${TERRAFORM_WORKSPACE}"
+$TERRAFORM_BINARY init
+$TERRAFORM_BINARY destroy -auto-approve -var "environment=${ENVIRONMENT}" -var "instance=${INSTANCE}" -var "tag=dummy"
+$TERRAFORM_BINARY workspace select default
+$TERRAFORM_BINARY workspace delete "${TERRAFORM_WORKSPACE}"

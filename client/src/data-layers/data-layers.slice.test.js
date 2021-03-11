@@ -118,9 +118,15 @@ describe('Data Slice', () => {
 
         const expected = {
           content: {
-            userId: 'Test User ID',
-            customerName: 'Test Customer Name',
-            dataset: source.source_id,
+            type: 'orbisUserAction',
+            orbisUserAction: {
+              action: 'loadLayer',
+              userId: 'Test User ID',
+              customerName: 'Test Customer Name',
+              loadLayer: {
+                dataset: source.source_id,
+              }
+            }
           },
           tags: ['LOAD_LAYER', source.source_id],
         };
@@ -139,9 +145,15 @@ describe('Data Slice', () => {
 
         const expected = {
           content: {
-            userId: 'Test User ID',
-            customerName: 'Test Customer Name',
-            dataset: source.source_id,
+            type: 'orbisClientError',
+            orbisClientError: {
+              error: 'loadLayerError',
+              userId: 'Test User ID',
+              customerName: 'Test Customer Name',
+              loadLayerError: {
+                dataset: source.source_id,
+              }
+            }
           },
           tags: ['LOAD_LAYER_ERROR', source.source_id],
         };
@@ -158,9 +170,15 @@ describe('Data Slice', () => {
 
         const expected = {
           content: {
-            userId: 'Test User ID',
-            customerName: 'Test Customer Name',
-            dataset: layers[1],
+            type: 'orbisUserAction',
+            orbisUserAction: {
+              action: 'loadLayer',
+              userId: 'Test User ID',
+              customerName: 'Test Customer Name',
+              loadLayer: {
+                dataset: layers[1],
+              }
+            }
           },
           tags: ['LOAD_LAYER', layers[1]],
         };

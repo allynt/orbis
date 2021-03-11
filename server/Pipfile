@@ -22,6 +22,8 @@ django-environ = "*"
 django-filter = "*"
 # docker health-checking
 django-health-check = "*"
+# provides logging handler for logstash
+python-logstash = "~=0.4.6"
 # secure tokens
 django-rest-knox = "*"
 # external file storage

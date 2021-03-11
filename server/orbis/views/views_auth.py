@@ -13,16 +13,22 @@ class LoginView(AstrosatUsersLoginView):
 
         response = super().get_success_response()
 
-        # log this event in the db...
+        # log this event in the db & analytics elasticsearch
         user = self.user
         customer = user.customers.first()
-        user_data = {
-            "userId": user.uuid,
-            "customerId": customer.id if customer else None,
-            "customerName": customer.name if customer else None,
+
+        event = {
+            "type": "orbisUserAction",
+            "orbisUserAction": {
+                "action": "userLogin",
+                "userId": user.uuid,
+                "customerId": customer.id if customer else None,
+                "customerName": customer.name if customer else None,
+            }
         }
+
         db_logger.info(
-            json.dumps(user_data, cls=encoders.JSONEncoder),
+            json.dumps(event, cls=encoders.JSONEncoder),
             extra={"tags": ["USER_LOGIN"]},
         )
 

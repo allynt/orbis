@@ -26,6 +26,8 @@ from astrosat_users.views import (
 from orbis.models import LicencedCustomer as Customer
 from orbis.serializers import CustomerSerializer, CustomerUserSerializer
 
+from core.analytics import format_elasticsearch_timestamp
+
 
 db_logger = logging.getLogger("db")
 
@@ -67,12 +69,25 @@ class CustomerCreateView(AstrosatUsersCustomerCreateView):
 
     def perform_create(self, serializer):
         customer = super().perform_create(serializer)
+        user = self.request.user
 
         # log this event in the db...
         customer_data = AstrosatUsersCustomerSerializer(instance=customer).data
         customer_data["created"] = customer.created
+
+        event = {
+            "type": "orbisUserAction",
+            "action": "customerCreated",
+            "customerId": customer_data["id"],
+            "customerName": customer_data["name"],
+            "userId": user.uuid,
+            "customerCreated": {
+                "customerCreatedAt": format_elasticsearch_timestamp(customer.created),
+            },
+        }
+
         db_logger.info(
-            json.dumps(customer_data, cls=encoders.JSONEncoder),
+            json.dumps(event, cls=encoders.JSONEncoder),
             extra={"tags": [customer.name, "CUSTOMER_CREATE"]},
         )
 

@@ -97,10 +97,16 @@ export const logDataset = source => async (dispatch, getState) => {
   dispatch(
     addLogItem({
       content: {
-        userId: user?.id,
-        customerId: user?.customers[0]?.id,
-        customerName: user?.customers[0]?.name,
-        dataset: source.source_id,
+        type: 'orbisUserAction',
+        orbisUserAction: {
+          action: 'loadLayer',
+          userId: user?.id,
+          customerId: user?.customers[0]?.id,
+          customerName: user?.customers[0]?.name,
+          loadLayer: {
+            dataset: source.source_id,
+          },
+        },
       },
       tags: ['LOAD_LAYER', source.source_id],
     }),
@@ -113,10 +119,16 @@ export const logError = source => async (dispatch, getState) => {
   dispatch(
     addLogItem({
       content: {
-        userId: user?.id,
-        customerId: user?.customers[0]?.id,
-        customerName: user?.customers[0]?.name,
-        dataset: source.source_id,
+        type: 'orbisClientError',
+        orbisClientError: {
+          error: 'loadLayerError',
+          userId: user?.id,
+          customerId: user?.customers[0]?.id,
+          customerName: user?.customers[0]?.name,
+          loadLayerError: {
+            dataset: source.source_id,
+          },
+        },
       },
       tags: ['LOAD_LAYER_ERROR', source.source_id],
     }),

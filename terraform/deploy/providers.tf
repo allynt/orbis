@@ -3,6 +3,9 @@
 //
 
 terraform {
+
+  required_version = "~> 0.13.6"
+
   backend "s3" {
     bucket         = "astrosat-terraform-state"
     dynamodb_table = "astrosat-terraform-state-lock"
@@ -11,11 +14,32 @@ terraform {
   }
 
   required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = "~> 2.34"
+    }
+
+    kubernetes = {
+      source  = "hashicorp/kubernetes"
+      version = "1.11.1"
+    }
+
+    elasticsearch = {
+      source  = "phillbaker/elasticsearch",
+      version = "~> 1.5.2"
+    }
+
+    postgresql = {
+      source  = "cyrilgdn/postgresql"
+      version = "~> 1.11.2"
+    }
+
     random = {
       source = "hashicorp/random"
       version = "3.0.1"
     }
   }
+
 }
 
 //
@@ -31,15 +55,15 @@ locals {
   }
 }
 
+// AWS
+
 provider "aws" {
-  alias   = "common"
-  version = "~> 2.34"
-  region  = "eu-west-1"
+  alias  = "common"
+  region = "eu-west-1"
 }
 
 provider "aws" {
-  version = "~> 2.34"
-  region  = "eu-west-1"
+  region = "eu-west-1"
 
   assume_role {
     role_arn = local.aws_role_arns[var.environment]
@@ -47,9 +71,7 @@ provider "aws" {
 
 }
 
-provider "random" {
-  # Configuration options
-}
+// Kubernetes
 
 data "aws_eks_cluster" "cluster" {
   name = local.eks_cluster_name
@@ -60,13 +82,13 @@ data "aws_eks_cluster_auth" "cluster" {
 }
 
 provider "kubernetes" {
-  version = "1.11.1"
-
   host                   = data.aws_eks_cluster.cluster.endpoint
   cluster_ca_certificate = base64decode(data.aws_eks_cluster.cluster.certificate_authority[0].data)
   token                  = data.aws_eks_cluster_auth.cluster.token
   load_config_file       = false
 }
+
+// Postgres
 
 data "kubernetes_secret" "environment_secret" {
   metadata {
@@ -74,10 +96,31 @@ data "kubernetes_secret" "environment_secret" {
   }
 }
 
+locals {
+  env_secrets = data.kubernetes_secret.environment_secret.data
+}
+
 provider "postgresql" {
-  host     = data.kubernetes_secret.environment_secret.data["db_host"]
-  port     = data.kubernetes_secret.environment_secret.data["db_port"]
-  database = data.kubernetes_secret.environment_secret.data["db_name"]
-  username = data.kubernetes_secret.environment_secret.data["db_user"]
-  password = data.kubernetes_secret.environment_secret.data["db_password"]
+  host     = local.env_secrets["db_host"]
+  port     = local.env_secrets["db_port"]
+  database = local.env_secrets["db_name"]
+  username = local.env_secrets["db_user"]
+  password = local.env_secrets["db_password"]
+}
+
+// Elasticsearch
+data "aws_region" "current" {}
+
+provider "elasticsearch" {
+  url                 = "https://${local.env_secrets["elasticsearch_endpoint"]}"
+  sign_aws_requests   = true
+  aws_region          = data.aws_region.current.name
+  aws_assume_role_arn = local.aws_role_arns[var.environment]
+  healthcheck         = false
+}
+
+// Random
+
+provider "random" {
+  # Configuration options
 }

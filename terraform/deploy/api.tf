@@ -77,6 +77,21 @@ resource "kubernetes_deployment" "api_deployment" {
             value = local.app_domain
           }
 
+          env {
+            name  = "DJANGO_APP"
+            value = local.app
+          }
+
+          env {
+            name  = "DJANGO_INSTANCE"
+            value = var.instance
+          }
+
+          env {
+            name  = "DJANGO_ENVIRONMENT"
+            value = var.environment
+          }
+
           // Media Bucket/AWS Parameters
           env {
             name = "DJANGO_MEDIA_BUCKET"
@@ -221,7 +236,20 @@ resource "kubernetes_deployment" "api_deployment" {
             }
           }
 
+          // Logstash for App Analytics
+
+          env {
+            name = "DJANGO_LOGSTASH_ENDPOINT"
+            value_from {
+              secret_key_ref {
+                name = local.app_environment_secret_name
+                key  = "logstash_service"
+              }
+            }
+          }
+
           // Other Services
+
           env {
             name = "DJANGO_REDIS_PASSWORD"
             value_from {
