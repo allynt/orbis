@@ -1,6 +1,7 @@
 import * as React from 'react';
 
 import {
+  Link,
   List,
   ListItem,
   ListItemText,
@@ -10,6 +11,7 @@ import {
 } from '@astrosat/astrosat-ui';
 
 import { DEFAULT_TITLE, VALUE_TYPE } from './feature-detail.constants';
+import { isEmail } from 'utils/text';
 
 const NO_DATA = 'Not available';
 
@@ -34,6 +36,7 @@ const renderItemValue = value => {
   if (value === 'null') toRender = JSON.parse(value);
   if (typeof value === 'boolean') toRender = JSON.stringify(value);
   if (value === 0) toRender = '0';
+  if (isEmail(value)) toRender = <Link href={`mailto: ${value}`}>{value}</Link>;
   return toRender || NO_DATA;
 };
 
