@@ -1,12 +1,12 @@
-import { darken, fade, lighten, styled } from '@material-ui/core';
+import { fade, styled } from '@material-ui/core';
 import { DateRangePicker } from 'react-date-range';
-import 'react-date-range/dist/styles.css'; // main style file
+import 'react-date-range/dist/styles.css';
 import 'react-date-range/dist/theme/default.css';
 
 const important = string => `${string} !important`;
 
 export const StyledDateRangePicker = styled(DateRangePicker)(
-  ({ theme: { palette, typography, transitions, spacing, shape } }) => ({
+  ({ theme: { palette, typography, spacing, shape } }) => ({
     '& .rdrCalendarWrapper': {
       color: palette.text.primary,
       backgroundColor: palette.background.default,
