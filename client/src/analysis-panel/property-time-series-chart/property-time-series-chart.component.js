@@ -1,10 +1,10 @@
-import { aggregateTimeSeries } from 'analysis-panel/aggregateTimeSeries';
+import { useSelector } from 'react-redux';
 import { SidePanelSection } from 'components';
 import { useChartTheme } from 'components/charts/useChartTheme';
 import { format } from 'date-fns';
-import { get } from 'lodash';
 import { DEFAULT_DECIMAL_PRECISION } from 'map/map.constants';
 import * as React from 'react';
+import { timeSeriesAggregationSelector } from 'map/orbs/slices/isolation-plus.slice';
 import {
   VictoryAxis,
   VictoryChart,
@@ -23,13 +23,7 @@ export const PropertyTimeSeriesChart = ({
 }) => {
   const chartTheme = useChartTheme();
 
-  const data =
-    clickedFeatures?.length > 1
-      ? aggregateTimeSeries(clickedFeatures, selectedProperty)
-      : get(
-          clickedFeatures?.[0],
-          `object.properties.${selectedProperty?.name}`,
-        );
+  const data = useSelector(state => timeSeriesAggregationSelector(state?.orbs));
 
   const sharedProps = {
     data,

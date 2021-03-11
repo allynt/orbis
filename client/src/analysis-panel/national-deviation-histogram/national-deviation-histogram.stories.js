@@ -1,6 +1,12 @@
-import { omit } from 'lodash';
 import * as React from 'react';
+import { Provider } from 'react-redux';
+import configureMockStore from 'redux-mock-store';
+
+import { omit } from 'lodash';
+
 import { NationalDeviationHistogram } from './national-deviation-histogram.component';
+
+const mockStore = configureMockStore();
 
 const props = {
   data: [
@@ -75,54 +81,79 @@ const selectedProperty = {
 
 export default { title: 'Analysis Panel/National Deviation Histogram' };
 
-const Template = args => <NationalDeviationHistogram {...args} />;
+const Template = args => (
+  <Provider
+    store={mockStore({
+      orbs: {
+        isolationPlus: {
+          property: selectedProperty,
+          ...args.orbState,
+        },
+      },
+    })}
+  >
+    <NationalDeviationHistogram {...args} />
+  </Provider>
+);
 
 export const NoClickedFeatures = Template.bind({});
 NoClickedFeatures.args = {
-  ...props,
   selectedProperty,
+  ...props,
 };
 
 export const OneClickedFeature = Template.bind({});
-OneClickedFeature.args = {
-  ...NoClickedFeatures.args,
-  clickedFeatures: [
-    {
-      object: {
-        properties: {
-          'People in the age band 0-17': 1000,
-        },
+
+const oneFeature = [
+  {
+    object: {
+      properties: {
+        'People in the age band 0-17': 1000,
       },
     },
-  ],
+  },
+];
+
+OneClickedFeature.args = {
+  ...NoClickedFeatures.args,
+  orbState: {
+    clickedFeatures: oneFeature,
+  },
+  clickedFeatures: oneFeature,
 };
 
 export const MultipleClickedFeaturesSum = Template.bind({});
+
+const multipleFeatures = [
+  {
+    object: {
+      properties: {
+        'People in the age band 0-17': 1000,
+      },
+    },
+  },
+  {
+    object: {
+      properties: {
+        'People in the age band 0-17': 500,
+      },
+    },
+  },
+  {
+    object: {
+      properties: {
+        'People in the age band 0-17': 250,
+      },
+    },
+  },
+];
+
 MultipleClickedFeaturesSum.args = {
   ...NoClickedFeatures.args,
-  clickedFeatures: [
-    {
-      object: {
-        properties: {
-          'People in the age band 0-17': 1000,
-        },
-      },
-    },
-    {
-      object: {
-        properties: {
-          'People in the age band 0-17': 500,
-        },
-      },
-    },
-    {
-      object: {
-        properties: {
-          'People in the age band 0-17': 250,
-        },
-      },
-    },
-  ],
+  orbState: {
+    clickedFeatures: multipleFeatures,
+  },
+  clickedFeatures: multipleFeatures,
 };
 
 export const MultipleClickedFeaturesAverage = Template.bind({});

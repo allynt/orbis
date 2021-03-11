@@ -90,7 +90,6 @@ const GenericPopupAndDialog = ({
         <Popup
           longitude={clickedFeatures[0].geometry.coordinates[0]}
           latitude={clickedFeatures[0].geometry.coordinates[1]}
-          closeOnClick={false}
           offsetTop={-26}
           onClose={() =>
             dispatch(

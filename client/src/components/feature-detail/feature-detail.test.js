@@ -90,7 +90,11 @@ describe('<FeatureDetail />', () => {
     );
   });
 
-  it.todo('does not include keys which match the exclude regex');
-
-  it.todo('only includes keys which match the include regex');
+  it('Renders email addresses as links', () => {
+    const feature = {
+      email: 'test@test.com',
+    };
+    const { getByRole } = render(<FeatureDetail features={[feature]} />);
+    expect(getByRole('link', { name: 'test@test.com' })).toBeInTheDocument();
+  });
 });

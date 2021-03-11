@@ -1,3 +1,5 @@
+import { useSelector } from 'react-redux';
+
 import {
   Button,
   ButtonGroup,
@@ -11,8 +13,12 @@ import {
   Fade,
 } from '@astrosat/astrosat-ui';
 import { SidePanelSection } from 'components';
-import { get, sumBy } from 'lodash';
-import { removeClickedFeatures } from 'map/orbs/slices/isolation-plus.slice';
+import { get } from 'lodash';
+import {
+  removeClickedFeatures,
+  populationTotalSelector,
+  householdTotalSelector,
+} from 'map/orbs/slices/isolation-plus.slice';
 import React, { useState } from 'react';
 
 const MAX_CHARS = 15;
@@ -106,6 +112,14 @@ export const ClickedFeaturesSummary = ({
   const [open, setOpen] = useState(false);
   const styles = useStyles();
 
+  const populationTotal = useSelector(state =>
+    populationTotalSelector(state?.orbs),
+  );
+
+  const householdTotal = useSelector(state =>
+    householdTotalSelector(state?.orbs),
+  );
+
   return (
     <SidePanelSection title="Selected Areas of Interest" defaultExpanded>
       <Grid container spacing={2} className={styles.chips}>
@@ -146,13 +160,7 @@ export const ClickedFeaturesSummary = ({
             <Typography>
               Total population (
               {clickedFeatures?.[0].object.properties.population_year}
-              ):{' '}
-              <span className={styles.value}>
-                {sumBy(
-                  clickedFeatures,
-                  'object.properties.population',
-                )?.toLocaleString()}
-              </span>
+              ): <span className={styles.value}>{populationTotal}</span>
             </Typography>
           </Grid>
         )}
@@ -160,12 +168,7 @@ export const ClickedFeaturesSummary = ({
           <Grid item xs={12}>
             <Typography>
               Total households:{' '}
-              <span className={styles.value}>
-                {sumBy(
-                  clickedFeatures,
-                  'object.properties.households',
-                )?.toLocaleString()}
-              </span>
+              <span className={styles.value}>{householdTotal}</span>
             </Typography>
           </Grid>
         )}

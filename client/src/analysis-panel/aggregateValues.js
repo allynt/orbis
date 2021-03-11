@@ -10,7 +10,6 @@ import { DEFAULT_DECIMAL_PRECISION } from '../map/map.constants';
  */
 export const aggregateValues = (clickedFeatures, selectedProperty) => {
   if (!clickedFeatures || !selectedProperty) return 0;
-
   const sumValue = sumBy(
     clickedFeatures,
     selectedProperty.timeseries
@@ -29,7 +28,7 @@ export const aggregateValues = (clickedFeatures, selectedProperty) => {
     );
   }
 
-  return +sumValue.toFixed(
+  return +sumValue?.toFixed(
     selectedProperty.precision || DEFAULT_DECIMAL_PRECISION,
   );
 };

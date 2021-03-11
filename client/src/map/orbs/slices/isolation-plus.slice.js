@@ -1,11 +1,15 @@
 import { createSlice, createSelector } from '@reduxjs/toolkit';
-import { differenceBy, unionBy } from 'lodash';
+import { differenceBy, unionBy, sumBy, get } from 'lodash';
+
+import { aggregateValues } from 'analysis-panel/aggregateValues';
+import { aggregateTimeSeries } from 'analysis-panel/aggregateTimeSeries';
 
 /**
  * @typedef {{
  *   clickedFeatures?: import('typings/orbis').PolygonPickedMapFeature[]
  *   property?: import('typings/orbis').Property & {source_id: string}
  *   filterRange?: [number, number]
+ *   screenshot?: Blob
  * }} IsolationPlusState
  */
 
@@ -16,6 +20,7 @@ const initialState = {
     name: undefined,
   },
   filterRange: [undefined, undefined],
+  screenshot: undefined,
 };
 
 const isolationPlusSlice = createSlice({
@@ -69,6 +74,9 @@ const isolationPlusSlice = createSlice({
     setFilterRange: (state, { payload }) => {
       state.filterRange = payload;
     },
+    setScreenshot: (state, { payload }) => {
+      state.screenshot = payload;
+    },
   },
 });
 
@@ -79,6 +87,7 @@ export const {
   addClickedFeatures,
   removeClickedFeatures,
   setFilterRange,
+  setScreenshot,
 } = isolationPlusSlice.actions;
 
 /**
@@ -100,6 +109,102 @@ export const clickedFeaturesSelector = createSelector(
 export const filterRangeSelector = createSelector(
   baseSelector,
   orb => orb?.filterRange,
+);
+
+export const screenshotSelector = createSelector(
+  baseSelector,
+  orb => orb?.screenshot,
+);
+
+export const areasOfInterestSelector = createSelector(
+  clickedFeaturesSelector,
+  clickedFeatures => {
+    const areas = clickedFeatures?.map(
+      feat => feat.object.properties.area_name,
+    );
+    return areas?.some(a => a !== undefined) ? areas : undefined;
+  },
+);
+
+export const populationTotalSelector = createSelector(
+  clickedFeaturesSelector,
+  clickedFeatures =>
+    !clickedFeatures
+      ? undefined
+      : sumBy(
+          clickedFeatures,
+          'object.properties.population',
+        )?.toLocaleString(),
+);
+
+export const householdTotalSelector = createSelector(
+  clickedFeaturesSelector,
+  clickedFeatures =>
+    !clickedFeatures
+      ? undefined
+      : sumBy(
+          clickedFeatures,
+          'object.properties.households',
+        )?.toLocaleString(),
+);
+
+export const categoryListSelector = createSelector(
+  [propertySelector, clickedFeaturesSelector],
+  (property, clickedFeatures) =>
+    !property || !property.categories || !clickedFeatures
+      ? undefined
+      : Object.entries(property.categories)
+          .map(([category, rest]) => {
+            const count = clickedFeatures?.reduce(
+              (prev, curr) =>
+                curr.object.properties[property.name] === category
+                  ? prev + 1
+                  : prev,
+              0,
+            );
+            const percent = (count / clickedFeatures?.length) * 100;
+            return { category, count, percent, ...rest };
+          })
+          .filter(c => c.count > 0)
+          .sort((a, b) => a.category.localeCompare(b.category)),
+);
+
+export const aggregationSelector = createSelector(
+  [propertySelector, clickedFeaturesSelector],
+  (property, clickedFeatures) =>
+    !property || !clickedFeatures
+      ? undefined
+      : aggregateValues(clickedFeatures, property),
+);
+
+export const breakdownAggregationSelector = createSelector(
+  [propertySelector, clickedFeaturesSelector],
+  (property, clickedFeatures) =>
+    !property || !clickedFeatures
+      ? undefined
+      : property?.breakdown
+          ?.map(name => {
+            const value = aggregateValues(clickedFeatures, {
+              name,
+              aggregation: property.aggregation,
+              precision: property.precision,
+            });
+            return {
+              value,
+              name,
+            };
+          })
+          .filter(v => v.value > 0),
+);
+
+export const timeSeriesAggregationSelector = createSelector(
+  [propertySelector, clickedFeaturesSelector],
+  (property, clickedFeatures) =>
+    !property || !clickedFeatures
+      ? undefined
+      : clickedFeatures?.length > 1
+      ? aggregateTimeSeries(clickedFeatures, property)
+      : get(clickedFeatures?.[0], `object.properties.${property?.name}`),
 );
 
 export default isolationPlusSlice.reducer;

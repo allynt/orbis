@@ -2,10 +2,15 @@
 
 import * as React from 'react';
 
+import { Provider } from 'react-redux';
+import configureMockStore from 'redux-mock-store';
+
 import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
 import { CategoryBreakdownChart } from './category-breakdown-chart.component';
+
+const mockStore = configureMockStore();
 
 const PROPERTY = {
     type: 'discrete',
@@ -52,10 +57,21 @@ const PROPERTY = {
 
 const renderComponent = ({ clickedFeatures = CLICKED_FEATURES } = {}) =>
   render(
-    <CategoryBreakdownChart
-      selectedProperty={PROPERTY}
-      clickedFeatures={clickedFeatures}
-    />,
+    <Provider
+      store={mockStore({
+        orbs: {
+          isolationPlus: {
+            property: PROPERTY,
+            clickedFeatures,
+          },
+        },
+      })}
+    >
+      <CategoryBreakdownChart
+        selectedProperty={PROPERTY}
+        clickedFeatures={clickedFeatures}
+      />
+    </Provider>,
   );
 
 describe('<CategoryBreakdownChart />', () => {
@@ -110,10 +126,21 @@ describe('<CategoryBreakdownChart />', () => {
     expect(getByText('1 / 3')).toBeInTheDocument();
     const [, ...rest] = CLICKED_FEATURES;
     rerender(
-      <CategoryBreakdownChart
-        selectedProperty={PROPERTY}
-        clickedFeatures={rest}
-      />,
+      <Provider
+        store={mockStore({
+          orbs: {
+            isolationPlus: {
+              property: PROPERTY,
+              clickedFeatures: rest,
+            },
+          },
+        })}
+      >
+        <CategoryBreakdownChart
+          selectedProperty={PROPERTY}
+          clickedFeatures={rest}
+        />
+      </Provider>,
     );
     expect(getByText('2')).toBeInTheDocument();
   });

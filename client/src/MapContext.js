@@ -25,7 +25,8 @@ MapContext.displayName = 'MapContext';
 
 /**
  * @typedef {Object} MapContextType
- * @property {React.MutableRefObject<import('react-map-gl').StaticMap>} mapRef
+ * @property {React.MutableRefObject<import('react-map-gl').StaticMap>} topMapRef
+ * @property {React.MutableRefObject<import('react-map-gl').StaticMap>} bottomMapRef
  * @property {React.MutableRefObject<import('@deck.gl/core').Deck>} deckRef
  * @property {ViewState} viewState
  * @property {React.Dispatch<ViewState>} setViewState
@@ -36,14 +37,16 @@ MapContext.displayName = 'MapContext';
  * @returns {JSX.Element} MapContextProvider
  */
 export const MapProvider = props => {
-  const mapRef = useRef(null);
+  const topMapRef = useRef(null);
+  const bottomMapRef = useRef(null);
   const deckRef = useRef(null);
   const [viewState, setViewState] = useState(INITIAL_VIEW_STATE);
 
   return (
     <MapContext.Provider
       value={{
-        mapRef,
+        topMapRef,
+        bottomMapRef,
         deckRef,
         viewState,
         setViewState,
@@ -55,7 +58,8 @@ export const MapProvider = props => {
 
 /**
  * @returns {{
- *   mapRef: React.MutableRefObject<import('react-map-gl').StaticMap>
+ *   topMapRef: React.MutableRefObject<import('react-map-gl').StaticMap>
+ *   bottomMapRef: React.MutableRefObject<import('react-map-gl').StaticMap>
  *   deckRef: React.MutableRefObject<import('@deck.gl/core').Deck>
  *   viewState: ViewState
  *   setViewState: React.Dispatch<ViewState>
@@ -74,19 +78,19 @@ export const useMap = () => {
    * @param {BlobCallback} callback
    */
   const createScreenshot = callback => {
-    const { deckRef, mapRef } = context;
+    const { deckRef, topMapRef, bottomMapRef } = context;
     const deck = deckRef.current.deck,
-      map = mapRef.current.getMap();
+      topMap = topMapRef.current.getMap(),
+      bottomMap = bottomMapRef.current.getMap();
     deck.redraw(true);
     const deckCanvas = deck.canvas;
     const merged = document.createElement('canvas');
     merged.width = deckCanvas.width;
     merged.height = deckCanvas.height;
     const mergedContext = merged.getContext('2d');
-    mergedContext.globalAlpha = 1.0;
-    mergedContext.drawImage(map.getCanvas(), 0, 0);
-    mergedContext.globalAlpha = 1.0;
+    mergedContext.drawImage(bottomMap.getCanvas(), 0, 0);
     mergedContext.drawImage(deckCanvas, 0, 0);
+    mergedContext.drawImage(topMap.getCanvas(), 0, 0);
     merged.toBlob(callback);
   };
 

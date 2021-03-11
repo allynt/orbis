@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 
+import { useSelector } from 'react-redux';
+
 import {
   Box,
   Grid,
@@ -9,8 +11,9 @@ import {
   Typography,
 } from '@astrosat/astrosat-ui';
 
+import { aggregationSelector } from 'map/orbs/slices/isolation-plus.slice';
+
 import { BarChart, SidePanelSection } from 'components';
-import { aggregateValues } from 'analysis-panel/aggregateValues';
 
 const useStyles = makeStyles(theme => ({
   italic: {
@@ -39,10 +42,12 @@ export const NationalDeviationHistogram = ({
 }) => {
   const [selectedAggregateArea, setSelectedAggregateArea] = useState('GB');
   const styles = useStyles();
-  const areaValue =
-    clickedFeatures && aggregateValues(clickedFeatures, selectedProperty);
+
   const aggregationLabel =
     selectedProperty?.aggregation === 'sum' ? 'Sum' : 'Average';
+
+  const areaValue = useSelector(state => aggregationSelector(state?.orbs));
+
   return (
     <SidePanelSection defaultExpanded title="Selected Data Layer" info={info}>
       <Box display="flex" flexDirection="column">

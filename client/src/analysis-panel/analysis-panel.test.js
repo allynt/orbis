@@ -2,11 +2,15 @@ import * as React from 'react';
 import { render, waitFor } from '@testing-library/react';
 import { AnalysisPanel } from './analysis-panel.component';
 import { Provider } from 'react-redux';
+import { Router } from 'react-router-dom';
+import { MapProvider } from 'MapContext';
+import { createMemoryHistory } from 'history';
 import configureMockStore from 'redux-mock-store';
 import userEvent from '@testing-library/user-event';
 import { setClickedFeatures } from 'map/orbs/slices/isolation-plus.slice';
 
 const mockStore = configureMockStore();
+const history = createMemoryHistory({ initialEntries: ['/map'] });
 
 const renderComponent = (state = {}) => {
   const store = mockStore({
@@ -16,10 +20,17 @@ const renderComponent = (state = {}) => {
       },
     },
   });
-  const utils = render(<AnalysisPanel />, {
-    wrapper: props => <Provider store={store} {...props} />,
-  });
-  return { ...utils, store };
+
+  const utils = render(
+    <Provider store={store}>
+      <Router history={history}>
+        <MapProvider>
+          <AnalysisPanel />
+        </MapProvider>
+      </Router>
+    </Provider>,
+  );
+  return { ...utils, history, store };
 };
 
 describe('<AnalysisPanel />', () => {
@@ -64,5 +75,29 @@ describe('<AnalysisPanel />', () => {
         }),
       ]),
     );
+  });
+
+  it('hides PDF button/icon for layers with no compatible components', () => {
+    const state = {
+      property: {
+        type: 'discrete',
+        name: 'test',
+        application: {
+          orbis: {
+            data_visualisation_components: [{ name: 'CategoryBreakdownChart' }],
+          },
+        },
+        categories: [{ 'Digital Seniors': {} }],
+      },
+      clickedFeatures: [
+        { object: { properties: { test: 'Digital Seniors' } } },
+      ],
+    };
+
+    const { queryByText, queryByLabelText } = renderComponent(state);
+
+    expect(queryByText('Export PDF Report')).not.toBeInTheDocument();
+
+    expect(queryByLabelText('PDF export')).not.toBeInTheDocument();
   });
 });
