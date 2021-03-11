@@ -1,7 +1,13 @@
 import * as React from 'react';
+
+import { Provider } from 'react-redux';
+import configureMockStore from 'redux-mock-store';
+
 import { PropertyBreakdownChart } from './property-breakdown-chart.component';
 
 export default { title: 'Analysis Panel/Property Breakdown Chart' };
+
+const mockStore = configureMockStore();
 
 const selectedProperty = {
   aggregation: 'sum',
@@ -13,54 +19,82 @@ const selectedProperty = {
   ],
 };
 
-const Template = args => <PropertyBreakdownChart {...args} />;
+const Template = args => {
+  return (
+    <Provider
+      store={mockStore({
+        orbs: {
+          isolationPlus: {
+            property: selectedProperty,
+            clickedFeatures: args.orbState.clickedFeatures,
+          },
+        },
+      })}
+    >
+      <PropertyBreakdownChart {...args} />
+    </Provider>
+  );
+};
 
 export const NoClickedFeatures = Template.bind({});
 NoClickedFeatures.args = {
   selectedProperty,
+  orbState: {},
 };
 
 export const OneClickedFeature = Template.bind({});
-OneClickedFeature.args = {
-  ...NoClickedFeatures.args,
-  clickedFeatures: [
-    {
-      object: {
-        properties: {
-          'people aged 0-17': 1,
-          'people aged 18-39': 2,
-          'people aged 40-64': 3,
-          'people aged 65+': 4,
-        },
+
+const oneClickedFeature = [
+  {
+    object: {
+      properties: {
+        'people aged 0-17': 1,
+        'people aged 18-39': 2,
+        'people aged 40-64': 3,
+        'people aged 65+': 4,
       },
     },
-  ],
+  },
+];
+
+OneClickedFeature.args = {
+  ...NoClickedFeatures.args,
+  clickedFeatures: oneClickedFeature,
+  orbState: {
+    clickedFeatures: oneClickedFeature,
+  },
 };
 
 export const MultipleClickedFeatures = Template.bind({});
+
+const multipleClickedFeatures = [
+  ...OneClickedFeature.args.clickedFeatures,
+  {
+    object: {
+      properties: {
+        'people aged 0-17': 5,
+        'people aged 18-39': 6,
+        'people aged 40-64': 7,
+        'people aged 65+': 8,
+      },
+    },
+  },
+  {
+    object: {
+      properties: {
+        'people aged 0-17': 1,
+        'people aged 18-39': 2,
+        'people aged 40-64': 7,
+        'people aged 65+': 8,
+      },
+    },
+  },
+];
+
 MultipleClickedFeatures.args = {
   ...NoClickedFeatures.args,
-  clickedFeatures: [
-    ...OneClickedFeature.args.clickedFeatures,
-    {
-      object: {
-        properties: {
-          'people aged 0-17': 5,
-          'people aged 18-39': 6,
-          'people aged 40-64': 7,
-          'people aged 65+': 8,
-        },
-      },
-    },
-    {
-      object: {
-        properties: {
-          'people aged 0-17': 1,
-          'people aged 18-39': 2,
-          'people aged 40-64': 7,
-          'people aged 65+': 8,
-        },
-      },
-    },
-  ],
+  clickedFeatures: multipleClickedFeatures,
+  orbState: {
+    clickedFeatures: multipleClickedFeatures,
+  },
 };

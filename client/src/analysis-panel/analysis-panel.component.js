@@ -1,6 +1,8 @@
-import * as React from 'react';
+import React from 'react';
 
 import {
+  Box,
+  Button,
   ButtonBase,
   CloseIcon,
   Divider,
@@ -11,9 +13,15 @@ import {
   Typography,
 } from '@astrosat/astrosat-ui';
 
+import { ReactComponent as PdfExportIcon } from './pdf-export.svg';
+
+import { useMap } from 'MapContext';
+
 import clsx from 'clsx';
 import { find } from 'lodash';
 import { useDispatch, useSelector } from 'react-redux';
+
+import { push } from 'connected-react-router';
 
 import { SidePanel } from 'components';
 import { activeDataSourcesSelector } from 'data-layers/data-layers.slice';
@@ -21,6 +29,7 @@ import {
   clickedFeaturesSelector,
   propertySelector,
   setClickedFeatures,
+  setScreenshot,
 } from 'map/orbs/slices/isolation-plus.slice';
 import { ClickedFeaturesSummary } from './clicked-features-summary/clicked-features-summary.component';
 import { COMPONENT_MAP } from './component-map';
@@ -38,6 +47,10 @@ const useStyles = makeStyles(theme => ({
   },
   close: {
     left: 0,
+    position: 'absolute',
+  },
+  pdfButton: {
+    right: 0,
     position: 'absolute',
   },
   strapline: {
@@ -81,6 +94,15 @@ const useStyles = makeStyles(theme => ({
     visibility: 'hidden',
   },
   minimized: {},
+  buttonContainer: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: theme.spacing(4),
+  },
+  button: {
+    padding: theme.spacing(1, 2),
+  },
 }));
 
 export const AnalysisPanel = () => {
@@ -99,6 +121,17 @@ export const AnalysisPanel = () => {
       }),
     [selectedProperty, sources],
   );
+  const dataVisualisationComponents =
+    selectedProperty?.application?.orbis?.data_visualisation_components;
+
+  const pdfIncompatible = selectedProperty?.type === 'discrete';
+
+  const { createScreenshot } = useMap();
+
+  const handleExportClick = () => {
+    createScreenshot(screenshot => dispatch(setScreenshot(screenshot)));
+    return dispatch(push('/pdf-export'));
+  };
 
   if (!selectedProperty) return null;
 
@@ -107,9 +140,7 @@ export const AnalysisPanel = () => {
       orientation="right"
       contentClassName={styles.content}
       open={
-        !!selectedProperty?.application?.orbis?.data_visualisation_components &&
-        !!clickedFeatures?.length &&
-        !minimized
+        !!dataVisualisationComponents && !!clickedFeatures?.length && !minimized
       }
       header={
         <div className={styles.header}>
@@ -136,6 +167,16 @@ export const AnalysisPanel = () => {
           <Typography variant="h2" component="h1">
             Data Analysis
           </Typography>
+          {!pdfIncompatible && (
+            <IconButton
+              aria-label="PDF export"
+              className={styles.pdfButton}
+              size="small"
+              onClick={handleExportClick}
+            >
+              <PdfExportIcon />
+            </IconButton>
+          )}
         </div>
       }
     >
@@ -148,26 +189,31 @@ export const AnalysisPanel = () => {
         fallbackProperty={currentSource?.metadata?.index}
       />
       <PrimaryDivider />
-      {selectedProperty?.application?.orbis?.data_visualisation_components?.map(
-        componentDefinition => {
-          const Component = COMPONENT_MAP[componentDefinition.name];
-          return (
-            <>
-              <Component
-                selectedProperty={selectedProperty}
-                clickedFeatures={clickedFeatures}
-                dispatch={dispatch}
-                {...componentDefinition.props}
-              />
-              <PrimaryDivider />
-            </>
-          );
-        },
-      )}
+      {dataVisualisationComponents?.map(componentDefinition => {
+        const Component = COMPONENT_MAP[componentDefinition.name];
+        return (
+          <>
+            <Component
+              selectedProperty={selectedProperty}
+              clickedFeatures={clickedFeatures}
+              dispatch={dispatch}
+              {...componentDefinition.props}
+            />
+            <PrimaryDivider />
+          </>
+        );
+      })}
       <MoreInformation
         currentSource={currentSource}
         selectedProperty={selectedProperty}
       />
+      {!pdfIncompatible && (
+        <Box className={styles.buttonContainer}>
+          <Button className={styles.button} onClick={handleExportClick}>
+            Export PDF Report
+          </Button>
+        </Box>
+      )}
     </SidePanel>
   );
 };

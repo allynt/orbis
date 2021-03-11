@@ -1,9 +1,15 @@
 import * as React from 'react';
+
+import { Provider } from 'react-redux';
+import configureMockStore from 'redux-mock-store';
+
 import { CategoryBreakdownChart } from './category-breakdown-chart.component';
 
 export default { title: 'Analysis Panel/Category Breakdown Chart' };
 
-const PROPERTY = {
+const mockStore = configureMockStore();
+
+const property = {
   type: 'discrete',
   name: 'fruit',
   label: 'Fruit',
@@ -23,46 +29,71 @@ const PROPERTY = {
   },
 };
 
-const Template = args => (
-  <CategoryBreakdownChart selectedProperty={PROPERTY} {...args} />
-);
+const Template = args => {
+  return (
+    <Provider
+      store={mockStore({
+        orbs: {
+          isolationPlus: {
+            property,
+            ...args.orbState,
+          },
+        },
+      })}
+    >
+      <CategoryBreakdownChart selectedProperty={property} {...args} />
+    </Provider>
+  );
+};
 
 export const OneArea = Template.bind({});
-OneArea.args = {
-  clickedFeatures: [
-    {
-      object: {
-        properties: {
-          fruit: 'Apples',
-        },
+
+const oneArea = [
+  {
+    object: {
+      properties: {
+        fruit: 'Apples',
       },
     },
-  ],
+  },
+];
+
+OneArea.args = {
+  clickedFeatures: oneArea,
+  orbState: {
+    clickedFeatures: oneArea,
+  },
 };
 
 export const Default = Template.bind({});
+
+const multipleFeatures = [
+  {
+    object: {
+      properties: {
+        fruit: 'Apples',
+      },
+    },
+  },
+  {
+    object: {
+      properties: {
+        fruit: 'Lemons',
+      },
+    },
+  },
+  {
+    object: {
+      properties: {
+        fruit: 'Limes',
+      },
+    },
+  },
+];
+
 Default.args = {
-  clickedFeatures: [
-    {
-      object: {
-        properties: {
-          fruit: 'Apples',
-        },
-      },
-    },
-    {
-      object: {
-        properties: {
-          fruit: 'Lemons',
-        },
-      },
-    },
-    {
-      object: {
-        properties: {
-          fruit: 'Limes',
-        },
-      },
-    },
-  ],
+  clickedFeatures: multipleFeatures,
+  orbState: {
+    clickedFeatures: multipleFeatures,
+  },
 };

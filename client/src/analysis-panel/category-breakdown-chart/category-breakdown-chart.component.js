@@ -1,8 +1,12 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
+
+import { useSelector } from 'react-redux';
 
 import { Grid, Typography, useTheme } from '@astrosat/astrosat-ui';
 
 import { VictoryLabel, VictoryPie } from 'victory';
+
+import { categoryListSelector } from 'map/orbs/slices/isolation-plus.slice';
 
 import { SidePanelSection, LegendItem } from 'components';
 import { useChartTheme } from 'components/charts/useChartTheme';
@@ -29,24 +33,7 @@ export const CategoryBreakdownChart = ({
   /** @type {[{category: string, count:number} | undefined, React.Dispatch<{category:string, count:number} | undefined>]} */
   const [selectedDatum, setSelectedDatum] = useState();
 
-  const categoryList = useMemo(
-    () =>
-      Object.entries(selectedProperty.categories)
-        .map(([category, rest]) => {
-          const count = clickedFeatures?.reduce(
-            (prev, curr) =>
-              curr.object.properties[selectedProperty.name] === category
-                ? prev + 1
-                : prev,
-            0,
-          );
-          const percent = (count / clickedFeatures?.length) * 100;
-          return { category, count, percent, ...rest };
-        })
-        .filter(c => c.count > 0)
-        .sort((a, b) => a.category.localeCompare(b.category)),
-    [clickedFeatures, selectedProperty.categories, selectedProperty.name],
-  );
+  const categoryList = useSelector(state => categoryListSelector(state?.orbs));
 
   const isSelected = useCallback(
     ({ category }) => selectedDatum?.category === category,
