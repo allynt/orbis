@@ -83,9 +83,7 @@ const MySupplyLynkMapComponent = ({ source, type }) => {
           longitude={hoveredFeatures[0].geometry.coordinates[0]}
           latitude={hoveredFeatures[0].geometry.coordinates[1]}
           closeButton={false}
-          closeOnClick={false}
           offsetTop={-26}
-          captureClick
           captureScroll
         >
           {makePopupContent(hoveredFeatures)}
@@ -97,7 +95,6 @@ const MySupplyLynkMapComponent = ({ source, type }) => {
           longitude={clickedFeatures[0].geometry.coordinates[0]}
           latitude={clickedFeatures[0].geometry.coordinates[1]}
           closeButton
-          closeOnClick={false}
           onClose={() =>
             dispatch(
               setClickedFeatures({
@@ -107,7 +104,6 @@ const MySupplyLynkMapComponent = ({ source, type }) => {
             )
           }
           offsetTop={-26}
-          captureClick
           captureScroll
         >
           {makePopupContent(clickedFeatures)}
