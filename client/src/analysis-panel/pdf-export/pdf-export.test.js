@@ -151,20 +151,6 @@ describe('PDF', () => {
     ).toBeInTheDocument();
   });
 
-  it('renders the screenshot as image on screen', () => {
-    const { getByTestId } = renderComponent({});
-
-    const covertedImage =
-      'data:image/png;base64,aHR0cHM6Ly9jLmZpbGVzLmJiY2kuY28udWsvMTJBOUIvcHJvZHVjdGlvbi9fMTExNDM0NDY3X2dldHR5aW1hZ2VzLTExNDM0ODk3NjMuanBn';
-
-    waitFor(() => {
-      expect(getByTestId('screenshot')).toHaveAttribute(
-        'background-image',
-        `url(${covertedImage})`,
-      );
-    });
-  });
-
   it('shows data based on `Average/Sum` aggregation type', () => {
     const state = {
       ...initialState,
@@ -303,13 +289,5 @@ describe('PDF', () => {
     });
 
     expect(queryByTestId('user-name')).not.toBeInTheDocument();
-  });
-
-  it('redirects to landing page if no property source_id in state', () => {
-    const { history } = renderComponent({ state: {}, user: { name: 'john' } });
-
-    waitFor(() => {
-      expect(history.location.pathname).toEqual('/');
-    });
   });
 });

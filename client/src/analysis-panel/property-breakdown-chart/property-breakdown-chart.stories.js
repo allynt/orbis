@@ -11,7 +11,6 @@ const mockStore = configureMockStore();
 
 const selectedProperty = {
   aggregation: 'sum',
-  precision: 1,
   breakdown: [
     'people aged 0-17',
     'people aged 18-39',
