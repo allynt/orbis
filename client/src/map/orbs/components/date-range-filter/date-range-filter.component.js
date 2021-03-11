@@ -10,7 +10,7 @@ import {
 } from '@astrosat/astrosat-ui';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { DateRange, Replay } from '@material-ui/icons';
-import { DateRangePicker } from 'components/date-range-picker/date-range-picker.component';
+import { DateRangePicker } from 'components';
 import { addDays, endOfDay, format, startOfDay, subDays } from 'date-fns';
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
