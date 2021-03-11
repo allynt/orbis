@@ -46,7 +46,7 @@ aws configure set --profile production role_arn arn:aws:iam::987534643960:role/O
 aws configure set --profile production source_profile default
 
 # Login to ECR
-eval $(aws ecr get-login --no-include-email --region eu-west-1)
+aws ecr get-login-password --region eu-west-1 | docker login 339570402237.dkr.ecr.eu-west-1.amazonaws.com --username AWS --password-stdin
 
 # Test terraform version
 terraform version
