@@ -1,4 +1,13 @@
-import { Grid, IconButton, makeStyles, Paper } from '@astrosat/astrosat-ui';
+import {
+  Fade,
+  Grid,
+  IconButton,
+  makeStyles,
+  Paper,
+  Slide,
+  Typography,
+  Well,
+} from '@astrosat/astrosat-ui';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { DateRange, Replay } from '@material-ui/icons';
 import { DateRangePicker } from 'components/date-range-picker/date-range-picker.component';
@@ -46,8 +55,15 @@ const placeholder = theme => ({
 });
 
 const useStyles = makeStyles(theme => ({
+  well: {
+    marginBottom: theme.spacing(2),
+  },
   paper: {
     color: theme.palette.text.secondary,
+    boxShadow: 'none',
+  },
+  separator: {
+    textAlign: 'center',
   },
   input: {
     margin: '0 auto',
@@ -116,6 +132,16 @@ export const DateRangeFilter = ({
 
   return (
     <form onChange={handleSubmit(onSubmit)}>
+      {!!errors[FIELD_NAMES.startDate] || !!errors[FIELD_NAMES.endDate] ? (
+        <Fade in>
+          <Well className={styles.well} severity="error">
+            <Typography>
+              {errors[FIELD_NAMES.startDate]?.message ||
+                errors[FIELD_NAMES.endDate]?.message}
+            </Typography>
+          </Well>
+        </Fade>
+      ) : null}
       <Grid
         container
         justify="center"
@@ -124,7 +150,7 @@ export const DateRangeFilter = ({
         className={styles.paper}
       >
         <Grid item xs>
-          <IconButton color="inherit">
+          <IconButton color="inherit" size="small">
             <DateRange />
           </IconButton>
         </Grid>
@@ -137,7 +163,7 @@ export const DateRangeFilter = ({
             aria-label="Start Date"
           />
         </Grid>
-        <Grid item xs>
+        <Grid item xs className={styles.separator}>
           -
         </Grid>
         <Grid item xs={4} container justify="center">
@@ -149,32 +175,12 @@ export const DateRangeFilter = ({
             aria-label="End Date"
           />
         </Grid>
-        <Grid item xs>
-          <IconButton color="inherit">
+        <Grid item xs container justify="flex-end">
+          <IconButton color="inherit" size="small">
             <Replay />
           </IconButton>
         </Grid>
       </Grid>
-      {/* <TextField
-        id={FIELD_NAMES.startDate}
-        name={FIELD_NAMES.startDate}
-        label="Start Date"
-        placeholder="DD/MM/YYYY"
-        inputRef={register}
-        InputLabelProps={{ shrink: true }}
-        error={!!errors.startDate}
-        helperText={errors.startDate?.message}
-      />
-      <TextField
-        id={FIELD_NAMES.endDate}
-        name={FIELD_NAMES.endDate}
-        label="End Date"
-        placeholder="DD/MM/YYYY"
-        inputRef={register}
-        InputLabelProps={{ shrink: true }}
-        error={!!errors.endDate}
-        helperText={errors.endDate?.message}
-      /> */}
       <DateRangePicker
         onApply={handleDateRangePickerApply}
         initialRange={dateRepresentation}
