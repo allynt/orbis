@@ -43,19 +43,24 @@ describe('<DateRangeFilter />', () => {
     expect(getByText('Please enter a valid date')).toBeInTheDocument();
   });
 
-  // it('Shows the date picker when the range button is clicked', () => {
-  //   const { getByRole } = renderComponent();
-  //   userEvent.click(getByRole('button', { name: 'Show date picker' }));
-  //   expect(getByRole('button', { name: 'Today' })).toBeInTheDocument();
-  // });
+  it('Shows the date picker when the range button is clicked', () => {
+    const { getByRole, queryByRole } = renderComponent();
+    expect(queryByRole('button', { name: 'Today' })).not.toBeInTheDocument();
+    userEvent.click(getByRole('button', { name: 'Show date picker' }));
+    expect(getByRole('button', { name: 'Today' })).toBeInTheDocument();
+  });
 
-  // it('Shows and error message when the startDate entered is less than minDate', () => {
-  //   const { getByRole, getByText } = renderComponent({
-  //     minDate: new Date(2000, 1, 1).toISOString(),
-  //   });
-  //   userEvent.type(getByRole('textbox', { name: 'Start Date' }), '31/12/1999');
-  //   expect(getByText('Something')).toBeInTheDocument();
-  // });
+  it('Shows and error message when the startDate entered is less than minDate', async () => {
+    const { getByRole, getByText } = renderComponent({
+      minDate: new Date(2000, 0, 1).toISOString(),
+    });
+    userEvent.type(getByRole('textbox', { name: 'Start Date' }), '31/12/1999');
+    await waitFor(() =>
+      expect(
+        getByText('Date must not be before 01/01/2000'),
+      ).toBeInTheDocument(),
+    );
+  });
 
   it('Shows an error message when the endDate entered is greater than maxDate', async () => {
     const { getByRole, getByText } = renderComponent({
@@ -72,6 +77,7 @@ describe('<DateRangeFilter />', () => {
   it('Calls onSubmit when dates are selected using the picker and apply is clicked', async () => {
     const { getByRole, getAllByRole, onSubmit } = renderComponent();
     const today = startOfDay(new Date());
+    userEvent.click(getByRole('button', { name: 'Show date picker' }));
     userEvent.click(
       getAllByRole('button', { name: today.getDate().toString() })[1],
     );

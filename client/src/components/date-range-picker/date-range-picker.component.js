@@ -89,7 +89,7 @@ export const DateRangePicker = ({
         />
       </Grid>
       <Grid item xs>
-        <Typography align="right">
+        <Typography align="right" color="textPrimary">
           {`${format(range.startDate, DATE_FORMAT)} - ${format(
             range.endDate,
             DATE_FORMAT,

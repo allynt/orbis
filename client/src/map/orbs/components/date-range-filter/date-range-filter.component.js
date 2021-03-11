@@ -4,7 +4,7 @@ import {
   IconButton,
   makeStyles,
   Paper,
-  Slide,
+  Tooltip,
   Typography,
   Well,
 } from '@astrosat/astrosat-ui';
@@ -81,6 +81,14 @@ const useStyles = makeStyles(theme => ({
       outline: 0,
     },
   },
+  tooltip: {
+    maxWidth: '900px',
+    padding: theme.spacing(1),
+    backgroundColor: theme.palette.background.default,
+  },
+  arrow: {
+    color: theme.palette.background.default,
+  },
 }));
 
 /**
@@ -103,6 +111,7 @@ export const DateRangeFilter = ({
   });
   /** @type {[{startDate: Date, endDate: Date} | undefined, React.Dispatch<{startDate: Date, endDate: Date}>]} */
   const [dateRepresentation, setDateRepresentation] = useState();
+  const [pickerOpen, setPickerOpen] = useState(false);
 
   const onSubmit = ({ startDate, endDate }) => {
     setDateRepresentation(toDates({ startDate, endDate }));
@@ -128,63 +137,94 @@ export const DateRangeFilter = ({
       { shouldValidate: true },
     );
     handleSubmit(onSubmit)();
+    setPickerOpen(false);
   };
 
+  const handleDateRangeClick = () => setPickerOpen(open => !open);
+
   return (
-    <form onChange={handleSubmit(onSubmit)}>
-      {!!errors[FIELD_NAMES.startDate] || !!errors[FIELD_NAMES.endDate] ? (
-        <Fade in>
-          <Well className={styles.well} severity="error">
-            <Typography>
-              {errors[FIELD_NAMES.startDate]?.message ||
-                errors[FIELD_NAMES.endDate]?.message}
-            </Typography>
-          </Well>
-        </Fade>
-      ) : null}
-      <Grid
-        container
-        justify="center"
-        alignItems="center"
-        component={Paper}
-        className={styles.paper}
-      >
-        <Grid item xs>
-          <IconButton color="inherit" size="small">
-            <DateRange />
-          </IconButton>
+    <Tooltip
+      classes={{
+        tooltip: styles.tooltip,
+        arrow: styles.arrow,
+      }}
+      interactive
+      arrow
+      placement="right"
+      open={pickerOpen}
+      PopperProps={{
+        popperOptions: {
+          modifiers: {
+            offset: {
+              enabled: true,
+              offset: '0px, 8px',
+            },
+          },
+        },
+      }}
+      title={
+        <DateRangePicker
+          onApply={handleDateRangePickerApply}
+          initialRange={dateRepresentation}
+        />
+      }
+    >
+      <form onChange={handleSubmit(onSubmit)}>
+        {!!errors[FIELD_NAMES.startDate] || !!errors[FIELD_NAMES.endDate] ? (
+          <Fade in>
+            <Well className={styles.well} severity="error">
+              <Typography>
+                {errors[FIELD_NAMES.startDate]?.message ||
+                  errors[FIELD_NAMES.endDate]?.message}
+              </Typography>
+            </Well>
+          </Fade>
+        ) : null}
+
+        <Grid
+          container
+          justify="center"
+          alignItems="center"
+          component={Paper}
+          className={styles.paper}
+        >
+          <Grid item xs>
+            <IconButton
+              color="inherit"
+              size="small"
+              onClick={handleDateRangeClick}
+            >
+              <DateRange titleAccess="Show date picker" />
+            </IconButton>
+          </Grid>
+          <Grid item xs={4} container justify="center">
+            <input
+              ref={register}
+              name={FIELD_NAMES.startDate}
+              className={styles.input}
+              placeholder="DD/MM/YYYY"
+              aria-label="Start Date"
+            />
+          </Grid>
+          <Grid item xs className={styles.separator}>
+            -
+          </Grid>
+          <Grid item xs={4} container justify="center">
+            <input
+              ref={register}
+              name={FIELD_NAMES.endDate}
+              className={styles.input}
+              placeholder="DD/MM/YYYY"
+              aria-label="End Date"
+            />
+          </Grid>
+          <Grid item xs container justify="flex-end">
+            <IconButton color="inherit" size="small">
+              <Replay />
+            </IconButton>
+          </Grid>
         </Grid>
-        <Grid item xs={4} container justify="center">
-          <input
-            ref={register}
-            name={FIELD_NAMES.startDate}
-            className={styles.input}
-            placeholder="DD/MM/YYYY"
-            aria-label="Start Date"
-          />
-        </Grid>
-        <Grid item xs className={styles.separator}>
-          -
-        </Grid>
-        <Grid item xs={4} container justify="center">
-          <input
-            ref={register}
-            name={FIELD_NAMES.endDate}
-            className={styles.input}
-            placeholder="DD/MM/YYYY"
-            aria-label="End Date"
-          />
-        </Grid>
-        <Grid item xs container justify="flex-end">
-          <IconButton color="inherit" size="small">
-            <Replay />
-          </IconButton>
-        </Grid>
-      </Grid>
-      <DateRangePicker
-        onApply={handleDateRangePickerApply}
-        initialRange={dateRepresentation}
-      />
-    </form>
+      </form>
+    </Tooltip>
   );
 };
