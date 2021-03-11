@@ -96,21 +96,38 @@ const useStyles = makeStyles(theme => ({
  *  onSubmit: (values: {startDate?: string, endDate?: string}) => void
  *  minDate?: string
  *  maxDate?: string
+ *  range?: {startDate: string, endDate: string}
  * }} props
  */
 export const DateRangeFilter = ({
   onSubmit: onSubmitProp,
   minDate,
   maxDate,
+  range,
 }) => {
   const styles = useStyles();
   const { register, handleSubmit, setValue, errors } = useForm({
     mode: 'onChange',
+    defaultValues: {
+      [FIELD_NAMES.startDate]: range?.startDate
+        ? format(new Date(range.startDate), 'dd/MM/yyyy')
+        : undefined,
+      [FIELD_NAMES.endDate]: range?.endDate
+        ? format(new Date(range.endDate), 'dd/MM/yyyy')
+        : undefined,
+    },
     context: { minDate, maxDate },
     resolver: yupResolver(schema),
   });
   /** @type {[{startDate: Date, endDate: Date} | undefined, React.Dispatch<{startDate: Date, endDate: Date}>]} */
-  const [dateRepresentation, setDateRepresentation] = useState();
+  const [dateRepresentation, setDateRepresentation] = useState(
+    range
+      ? toDates({
+          startDate: format(new Date(range.startDate), 'dd/MM/yyyy'),
+          endDate: format(new Date(range.endDate), 'dd/MM/yyyy'),
+        })
+      : undefined,
+  );
   const [pickerOpen, setPickerOpen] = useState(false);
 
   const onSubmit = ({ startDate, endDate }) => {

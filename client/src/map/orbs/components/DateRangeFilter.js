@@ -1,11 +1,14 @@
 import React from 'react';
-import { useDispatch } from 'react-redux';
-import { setFilterValue } from '../orbReducer';
+import { useDispatch, useSelector } from 'react-redux';
+import { filterValueSelector, setFilterValue } from '../orbReducer';
 import { DateRangeFilter } from './date-range-filter/date-range-filter.component';
 
 /** @type {import('typings/orbis').SidebarComponent} */
 export default ({ selectedLayer }) => {
   const dispatch = useDispatch();
+  const filterValue = useSelector(state =>
+    filterValueSelector(selectedLayer.source_id)(state?.orbs),
+  );
 
   const handleSubmit = range => {
     dispatch(
@@ -16,5 +19,14 @@ export default ({ selectedLayer }) => {
     );
   };
 
-  return <DateRangeFilter onSubmit={handleSubmit} />;
+  return (
+    <DateRangeFilter
+      onSubmit={handleSubmit}
+      range={
+        filterValue
+          ? { startDate: filterValue[0], endDate: filterValue[1] }
+          : undefined
+      }
+    />
+  );
 };

@@ -2,13 +2,21 @@ import React from 'react';
 import { render, waitFor } from '@testing-library/react';
 import { DateRangeFilter } from './date-range-filter.component';
 import userEvent from '@testing-library/user-event';
-import { addDays, endOfDay } from 'date-fns';
-import { startOfDay } from 'date-fns';
+import { addDays, endOfDay, startOfDay } from 'date-fns';
 
-const renderComponent = ({ minDate = undefined, maxDate = undefined } = {}) => {
+const renderComponent = ({
+  minDate = undefined,
+  maxDate = undefined,
+  range = undefined,
+} = {}) => {
   const onSubmit = jest.fn();
   const utils = render(
-    <DateRangeFilter onSubmit={onSubmit} minDate={minDate} maxDate={maxDate} />,
+    <DateRangeFilter
+      onSubmit={onSubmit}
+      minDate={minDate}
+      maxDate={maxDate}
+      range={range}
+    />,
   );
   return { onSubmit, ...utils };
 };
@@ -91,5 +99,22 @@ describe('<DateRangeFilter />', () => {
         startDate: today.toISOString(),
       }),
     );
+  });
+
+  it('uses existing values if provided', () => {
+    const { getByRole, getByText } = renderComponent({
+      range: {
+        startDate: new Date(2020, 0, 1).toISOString(),
+        endDate: new Date(2020, 0, 31),
+      },
+    });
+    expect(getByRole('textbox', { name: 'Start Date' })).toHaveValue(
+      '01/01/2020',
+    );
+    expect(getByRole('textbox', { name: 'End Date' })).toHaveValue(
+      '31/01/2020',
+    );
+    userEvent.click(getByRole('button', { name: 'Show date picker' }));
+    expect(getByText('01/01/2020 - 31/01/2020')).toBeInTheDocument();
   });
 });
