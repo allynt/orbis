@@ -56,7 +56,7 @@ const Template = ({ user = defaultUser, state = defaultState }) => (
       },
     })}
   >
-    <PDF user={user} />
+    <PDF user={user} creationDate={'March 12th 2021'} />
   </Provider>
 );
 

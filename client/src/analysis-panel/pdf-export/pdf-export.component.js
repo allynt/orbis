@@ -117,7 +117,9 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const PDF = ({ user }) => {
+const date = format(new Date(), 'MMMM do Y');
+
+const PDF = ({ user, creationDate = date }) => {
   const styles = useStyles();
   const dispatch = useDispatch();
 
@@ -143,7 +145,6 @@ const PDF = ({ user }) => {
   );
 
   const [image, setImage] = useState(undefined);
-  const creationDate = format(new Date(), 'MMMM do Y');
 
   const aggregationLabel =
     selectedProperty?.aggregation === 'sum' ? 'Sum' : 'Average';
