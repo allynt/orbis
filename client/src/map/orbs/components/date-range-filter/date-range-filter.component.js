@@ -4,7 +4,7 @@ import { DateRangePicker } from 'components/date-range-picker/date-range-picker.
 import { addDays, endOfDay, format, startOfDay, subDays } from 'date-fns';
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { toDMY } from 'utils/dates';
+import { dateStringToDate } from 'utils/dates';
 import { date, FIELD_NAMES } from 'utils/validators';
 import * as yup from 'yup';
 
@@ -17,12 +17,10 @@ const toDates = range => {
   const { startDate, endDate } = range;
   if (!startDate && !endDate) return undefined;
   if (startDate) {
-    const [d, m, y] = toDMY(startDate);
-    dateRep.startDate = new Date(y, m - 1, d);
+    dateRep.startDate = dateStringToDate(startDate);
   }
   if (endDate) {
-    const [d, m, y] = toDMY(endDate);
-    dateRep.endDate = new Date(y, m - 1, d);
+    dateRep.endDate = dateStringToDate(endDate);
   }
   if (!startDate && endDate) {
     dateRep.startDate = subDays(dateRep.endDate, 30);
@@ -59,14 +57,12 @@ export const DateRangeFilter = ({
 
   const onSubmit = ({ startDate, endDate }) => {
     setDateRepresentation(toDates({ startDate, endDate }));
-    const [startD, startM, startY] = toDMY(startDate);
-    const [endD, endM, endY] = toDMY(endDate);
     onSubmitProp({
       startDate: !!startDate
-        ? startOfDay(new Date(startY, startM - 1, startD)).toISOString()
+        ? startOfDay(dateStringToDate(startDate)).toISOString()
         : undefined,
       endDate: !!endDate
-        ? endOfDay(new Date(endY, endM - 1, endD)).toISOString()
+        ? endOfDay(dateStringToDate(endDate)).toISOString()
         : undefined,
     });
   };

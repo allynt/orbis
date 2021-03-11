@@ -32,3 +32,8 @@ export const DATE_SEPARATOR = '\\/|-|\\.';
  */
 export const toDMY = dateString =>
   dateString.split(new RegExp(DATE_SEPARATOR)).map(Number);
+
+export const dateStringToDate = dateString => {
+  const [d, m, y] = toDMY(dateString);
+  return new Date(y, m - 1, d);
+};

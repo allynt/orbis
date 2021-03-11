@@ -1,5 +1,5 @@
 import { compareAsc, compareDesc, format } from 'date-fns';
-import { DATE_SEPARATOR, isValid, toDMY } from 'utils/dates';
+import { dateStringToDate, DATE_SEPARATOR, isValid, toDMY } from 'utils/dates';
 import * as yup from 'yup';
 import zxcvbn from 'zxcvbn';
 import { MESSAGES, CONTEXT_KEYS, FIELD_NAMES } from './constants';
@@ -76,9 +76,8 @@ export const customerName = yup
 const compareDate = (comparisonFunction, contextKey, message) =>
   function (value) {
     if (!this.options.context?.[contextKey]) return true;
-    const [d, m, y] = toDMY(value);
     const comparator = new Date(this.options.context[contextKey]);
-    if (comparisonFunction(comparator, new Date(y, m - 1, d)) === -1)
+    if (comparisonFunction(comparator, dateStringToDate(value)) === -1)
       return this.createError({
         message: message.replace(
           `{{${contextKey}}}`,

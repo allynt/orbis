@@ -1,4 +1,4 @@
-import { isValid } from './dates';
+import { dateStringToDate, isValid } from './dates';
 
 describe('isValid', () => {
   it('validates dates', () => {
@@ -20,5 +20,15 @@ describe('isValid', () => {
 
   it('Works for two digit years', () => {
     expect(isValid(29, 2, 20)).toBe(true);
+  });
+});
+
+describe('dateStringToDate', () => {
+  it('converts dd/MM/yyyy to a date object', () => {
+    expect(dateStringToDate('01/01/2020')).toEqual(new Date(2020, 0, 1));
+  });
+
+  it('converts d/M/yy to a date object', () => {
+    expect(dateStringToDate('1/1/20')).toEqual(new Date(1920, 0, 1));
   });
 });
