@@ -70,8 +70,8 @@ const configuration = ({
     iconAtlas,
     data: filterFeatures(
       data,
-      filterRange?.[0] && new Date(filterRange[0]),
-      filterRange?.[1] && new Date(filterRange[1]),
+      filterRange?.startDate && new Date(filterRange.startDate),
+      filterRange?.endDate && new Date(filterRange.endDate),
     ),
     visible: !!activeSources?.find(source => source.source_id === id),
     onClick: handleLayerClick,

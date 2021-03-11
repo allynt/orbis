@@ -14,7 +14,7 @@ export default ({ selectedLayer }) => {
     dispatch(
       setFilterValue({
         source_id: selectedLayer.source_id,
-        filterValue: [range.startDate, range.endDate],
+        filterValue: range,
       }),
     );
   };
@@ -22,11 +22,7 @@ export default ({ selectedLayer }) => {
   return (
     <DateRangeFilter
       onSubmit={handleSubmit}
-      range={
-        filterValue
-          ? { startDate: filterValue[0], endDate: filterValue[1] }
-          : undefined
-      }
+      range={filterValue ? filterValue : undefined}
     />
   );
 };

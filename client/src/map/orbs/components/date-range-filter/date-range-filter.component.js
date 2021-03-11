@@ -123,8 +123,10 @@ export const DateRangeFilter = ({
   const [dateRepresentation, setDateRepresentation] = useState(
     range
       ? toDates({
-          startDate: format(new Date(range.startDate), 'dd/MM/yyyy'),
-          endDate: format(new Date(range.endDate), 'dd/MM/yyyy'),
+          startDate:
+            range.startDate && format(new Date(range.startDate), 'dd/MM/yyyy'),
+          endDate:
+            range.endDate && format(new Date(range.endDate), 'dd/MM/yyyy'),
         })
       : undefined,
   );
@@ -158,6 +160,13 @@ export const DateRangeFilter = ({
   };
 
   const handleDateRangeClick = () => setPickerOpen(open => !open);
+
+  const handleResetClick = () => {
+    setDateRepresentation(undefined);
+    setValue(FIELD_NAMES.startDate, undefined);
+    setValue(FIELD_NAMES.endDate, undefined);
+    onSubmitProp({ startDate: undefined, endDate: undefined });
+  };
 
   return (
     <Tooltip
@@ -236,8 +245,8 @@ export const DateRangeFilter = ({
             />
           </Grid>
           <Grid item xs container justify="flex-end">
-            <IconButton color="inherit" size="small">
-              <Replay />
+            <IconButton color="inherit" size="small" onClick={handleResetClick}>
+              <Replay titleAccess="Reset" />
             </IconButton>
           </Grid>
         </Grid>

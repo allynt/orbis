@@ -117,4 +117,13 @@ describe('<DateRangeFilter />', () => {
     userEvent.click(getByRole('button', { name: 'Show date picker' }));
     expect(getByText('01/01/2020 - 31/01/2020')).toBeInTheDocument();
   });
+
+  it('Calls onSubmit with empty values when reset is clicked', () => {
+    const { getByRole, onSubmit } = renderComponent();
+    userEvent.click(getByRole('button', { name: 'Reset' }));
+    expect(onSubmit).toHaveBeenCalledWith({
+      startDate: undefined,
+      endDate: undefined,
+    });
+  });
 });
