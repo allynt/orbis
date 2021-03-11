@@ -3,34 +3,64 @@ import { DateRangePicker } from 'react-date-range';
 import 'react-date-range/dist/styles.css'; // main style file
 import 'react-date-range/dist/theme/default.css';
 
-export const StyledDateRangePicker = styled(DateRangePicker)(({ theme }) => ({
-  fontFamily: `${theme.typography.fontFamily} !important`,
-  color: theme.palette.text.primary,
-  '& .rdrDefinedRangesWrapper': {
-    backgroundColor: theme.palette.background.default,
-    '& .rdrStaticRanges': {
+const important = string => `${string} !important`;
+
+export const StyledDateRangePicker = styled(DateRangePicker)(
+  ({ theme: { palette, typography, transitions } }) => ({
+    fontFamily: important(typography.fontFamily),
+    color: palette.text.primary,
+    '& .rdrDefinedRangesWrapper': {
+      backgroundColor: palette.background.default,
+      borderColor: palette.divider,
       '& .rdrStaticRange': {
-        color: theme.palette.text.primary,
-        backgroundColor: theme.palette.background.default,
-        borderColor: theme.palette.divider,
-        transition: theme.transitions.create(['color'], {
-          duration: theme.transitions.duration.short,
+        color: palette.text.primary,
+        backgroundColor: palette.background.default,
+        borderColor: palette.divider,
+        transition: transitions.create(['color'], {
+          duration: transitions.duration.short,
         }),
         '& .rdrStaticRangeLabel': {
-          transition: theme.transitions.create(['background-color'], {
-            duration: theme.transitions.duration.short,
+          transition: transitions.create(['background-color'], {
+            duration: transitions.duration.short,
           }),
-          ...theme.typography.body1,
+          ...typography.body1,
         },
         '&:hover': {
           '& .rdrStaticRangeLabel': {
-            backgroundColor: theme.palette.secondary.light,
+            backgroundColor: palette.action.hover,
           },
         },
         '&.rdrStaticRangeSelected': {
-          color: `${theme.palette.primary.main} !important`,
+          color: `${palette.primary.main} !important`,
         },
       },
     },
-  },
-}));
+    '& .rdrCalendarWrapper': {
+      backgroundColor: palette.background.default,
+    },
+    '& .rdrDay': {
+      '& .rdrSelected, & .rdrInRange, & .rdrStartEdge, & .rdrEndEdge': {
+        backgroundColor: palette.primary.main,
+        '& ~ .rdrDayNumber': {
+          '& span': {
+            color: palette.secondary.main,
+            '&::after': {
+              backgroundColor: palette.secondary.main,
+            },
+          },
+        },
+      },
+      '& .rdrDayNumber': {
+        '& span': {
+          color: palette.text.primary,
+          '&::after': {
+            backgroundColor: palette.primary.main,
+          },
+        },
+      },
+      '&.rdrDayPassive': {
+        opacity: 0,
+      },
+    },
+  }),
+);
