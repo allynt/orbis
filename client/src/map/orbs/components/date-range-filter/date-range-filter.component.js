@@ -1,15 +1,11 @@
 import {
   Fade,
-  Grid,
-  IconButton,
   makeStyles,
-  Paper,
   Tooltip,
   Typography,
   Well,
 } from '@astrosat/astrosat-ui';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { DateRange, Replay } from '@material-ui/icons';
 import { DateRangePicker } from 'components';
 import { addDays, endOfDay, format, startOfDay, subDays } from 'date-fns';
 import React, { useState } from 'react';
@@ -17,6 +13,7 @@ import { useForm } from 'react-hook-form';
 import { dateStringToDate } from 'utils/dates';
 import { date, FIELD_NAMES } from 'utils/validators';
 import * as yup from 'yup';
+import { DateRangeInput } from './date-range-input.component';
 
 /**
  * @param {{startDate?: string, endDate?: string}} range
@@ -46,40 +43,9 @@ const schema = yup.object({
   endDate: date,
 });
 
-const placeholder = theme => ({
-  color: 'currentColor',
-  opacity: theme.palette.type === 'light' ? 0.42 : 0.5,
-  transition: theme.transitions.create('opacity', {
-    duration: theme.transitions.duration.shorter,
-  }),
-});
-
 const useStyles = makeStyles(theme => ({
   well: {
     marginBottom: theme.spacing(2),
-  },
-  paper: {
-    color: theme.palette.text.secondary,
-    boxShadow: 'none',
-  },
-  separator: {
-    textAlign: 'center',
-  },
-  input: {
-    margin: '0 auto',
-    fontSize: theme.typography.fontSize,
-    font: 'inherit',
-    color: 'currentColor',
-    border: 0,
-    padding: theme.spacing(2, 1),
-    width: '100%',
-    '&::-webkit-input-placeholder': placeholder(theme),
-    '&::-moz-placeholder': placeholder(theme), // Firefox 19+
-    '&:-ms-input-placeholder': placeholder(theme), // IE 11
-    '&::-ms-input-placeholder': placeholder(theme), // Edge
-    '&:focus': {
-      outline: 0,
-    },
   },
   tooltip: {
     maxWidth: '900px',
@@ -214,50 +180,11 @@ export const DateRangeFilter = ({
             </Well>
           </Fade>
         ) : null}
-
-        <Grid
-          container
-          justify="center"
-          alignItems="center"
-          component={Paper}
-          className={styles.paper}
-        >
-          <Grid item xs>
-            <IconButton
-              color="inherit"
-              size="small"
-              onClick={handleDateRangeClick}
-            >
-              <DateRange titleAccess="Show date picker" />
-            </IconButton>
-          </Grid>
-          <Grid item xs={4} container justify="center">
-            <input
-              ref={register}
-              name={FIELD_NAMES.startDate}
-              className={styles.input}
-              placeholder="DD/MM/YYYY"
-              aria-label="Start Date"
-            />
-          </Grid>
-          <Grid item xs className={styles.separator}>
-            -
-          </Grid>
-          <Grid item xs={4} container justify="center">
-            <input
-              ref={register}
-              name={FIELD_NAMES.endDate}
-              className={styles.input}
-              placeholder="DD/MM/YYYY"
-              aria-label="End Date"
-            />
-          </Grid>
-          <Grid item xs container justify="flex-end">
-            <IconButton color="inherit" size="small" onClick={handleResetClick}>
-              <Replay titleAccess="Reset" />
-            </IconButton>
-          </Grid>
-        </Grid>
+        <DateRangeInput
+          register={register}
+          onDateRangeClick={handleDateRangeClick}
+          onResetClick={handleResetClick}
+        />
       </form>
     </Tooltip>
   );
