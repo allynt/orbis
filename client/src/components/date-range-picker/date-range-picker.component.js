@@ -1,15 +1,14 @@
 import { Button, Grid, makeStyles, Typography } from '@astrosat/astrosat-ui';
-import { endOfDay, format, startOfDay, subDays } from 'date-fns';
+import { endOfDay, startOfDay, subDays } from 'date-fns';
 import React, { useState } from 'react';
 import { createStaticRanges } from 'react-date-range';
+import { formatDate } from 'utils/dates';
 import { StyledDateRangePicker } from './styled-date-range-picker.component';
 
 /**
  * @template T
  * @typedef {import('typings/orbis').DateRange<T>} DateRange
  */
-
-const DATE_FORMAT = 'dd/MM/yyyy';
 
 const useStyles = makeStyles(theme => ({
   container: {
@@ -106,10 +105,7 @@ export const DateRangePicker = ({
       </Grid>
       <Grid item xs>
         <Typography align="right" color="textPrimary">
-          {`${format(range.startDate, DATE_FORMAT)} - ${format(
-            range.endDate,
-            DATE_FORMAT,
-          )}`}
+          {`${formatDate(range.startDate)} - ${formatDate(range.endDate)}`}
         </Typography>
       </Grid>
       <Grid item>

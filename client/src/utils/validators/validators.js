@@ -1,5 +1,11 @@
 import { compareAsc, compareDesc, format } from 'date-fns';
-import { dateStringToDate, DATE_SEPARATOR, isValid, toDMY } from 'utils/dates';
+import {
+  dateStringToDate,
+  DATE_SEPARATOR,
+  formatDate,
+  isValid,
+  toDMY,
+} from 'utils/dates';
 import * as yup from 'yup';
 import zxcvbn from 'zxcvbn';
 import { MESSAGES, CONTEXT_KEYS, FIELD_NAMES } from './constants';
@@ -79,10 +85,7 @@ const compareDate = (comparisonFunction, contextKey, message) =>
     const comparator = new Date(this.options.context[contextKey]);
     if (comparisonFunction(comparator, dateStringToDate(value)) === -1)
       return this.createError({
-        message: message.replace(
-          `{{${contextKey}}}`,
-          format(comparator, 'dd/MM/yyyy'),
-        ),
+        message: message.replace(`{{${contextKey}}}`, formatDate(comparator)),
       });
     return true;
   };
