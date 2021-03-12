@@ -2,12 +2,10 @@ import React from 'react';
 import { DateRangeFilter } from './date-range-filter.component';
 
 export default {
-  title: 'DateRangeFilter',
+  title: 'Sidebar Components/Date Range Filter',
   argTypes: { onSubmit: { action: true } },
 };
 
-const Template = args => (
-  <DateRangeFilter {...args} maxDate={new Date(2077, 9, 24).toISOString()} />
-);
+const Template = args => <DateRangeFilter {...args} />;
 
 export const Test = Template.bind({});

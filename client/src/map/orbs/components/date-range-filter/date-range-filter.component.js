@@ -83,9 +83,7 @@ export const DateRangeFilter = ({
   );
   const [pickerOpen, setPickerOpen] = useState(false);
 
-  /**
-   * @param {DateRange<string>} values
-   */
+  /** @param {DateRange<string>} values */
   const onSubmit = values => {
     setDateRepresentation(stringDateRangeToDateRange(values));
     const { startDate, endDate } = values;

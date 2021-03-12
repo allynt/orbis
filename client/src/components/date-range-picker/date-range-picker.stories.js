@@ -11,3 +11,12 @@ export default {
 const Template = args => <DateRangePicker {...args} />;
 
 export const Default = Template.bind({});
+
+export const MaxDate = Template.bind({});
+MaxDate.args = {
+  initialRange: {
+    startDate: new Date(2020, 0, 1),
+    endDate: new Date(2020, 0, 2),
+  },
+  maxDate: new Date(2020, 0, 31),
+};
