@@ -52,6 +52,12 @@ export const DateRangeInput = ({
 }) => {
   const styles = useStyles();
 
+  const inputProps = {
+    ref: register,
+    className: styles.input,
+    placeholder: 'DD/MM/YYYY',
+  };
+
   return (
     <Grid
       container
@@ -67,10 +73,8 @@ export const DateRangeInput = ({
       </Grid>
       <Grid item xs={4} container justify="center">
         <input
-          ref={register}
+          {...inputProps}
           name={FIELD_NAMES.startDate}
-          className={styles.input}
-          placeholder="DD/MM/YYYY"
           aria-label="Start Date"
         />
       </Grid>
@@ -79,10 +83,8 @@ export const DateRangeInput = ({
       </Grid>
       <Grid item xs={4} container justify="center">
         <input
-          ref={register}
+          {...inputProps}
           name={FIELD_NAMES.endDate}
-          className={styles.input}
-          placeholder="DD/MM/YYYY"
           aria-label="End Date"
         />
       </Grid>

@@ -4,6 +4,11 @@ import React, { useState } from 'react';
 import { createStaticRanges } from 'react-date-range';
 import { StyledDateRangePicker } from './styled-date-range-picker.component';
 
+/**
+ * @template T
+ * @typedef {import('typings/orbis').DateRange<T>} DateRange
+ */
+
 const DATE_FORMAT = 'dd/MM/yyyy';
 
 const useStyles = makeStyles(theme => ({
@@ -47,6 +52,14 @@ const staticRanges = createStaticRanges([
   },
 ]);
 
+/**
+ * @param {{
+ *  onApply: (range: DateRange<Date>) => void
+ *  minDate?: Date
+ *  maxDate?: Date
+ *  initialRange?: DateRange<Date>
+ * }} props
+ */
 export const DateRangePicker = ({
   onApply,
   minDate,
@@ -57,12 +70,11 @@ export const DateRangePicker = ({
   },
 }) => {
   const styles = useStyles();
-  const [preparedRange, setRange] = useState();
+  /** @type {[DateRange<Date> | undefined, React.Dispatch<DateRange<Date>>]} */
+  const [preparedRange, setPreparedRange] = useState();
 
-  /**
-   * @param {import('react-date-range').OnChangeProps} item
-   */
-  const handleRangeChange = item => setRange(item['range1']);
+  /** @param {import('react-date-range').OnChangeProps} item */
+  const handleRangeChange = item => setPreparedRange(item['range1']);
 
   const range = preparedRange || initialRange;
 
@@ -79,8 +91,8 @@ export const DateRangePicker = ({
     >
       <Grid item xs>
         <StyledDateRangePicker
-          minDate={minDate && new Date(minDate)}
-          maxDate={maxDate && new Date(maxDate)}
+          minDate={minDate}
+          maxDate={maxDate}
           ranges={[range]}
           onChange={handleRangeChange}
           showSelectionPreview={true}

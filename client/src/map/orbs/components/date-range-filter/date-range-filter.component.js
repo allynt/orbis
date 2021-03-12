@@ -7,7 +7,13 @@ import {
 } from '@astrosat/astrosat-ui';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { DateRangePicker } from 'components';
-import { addDays, endOfDay, format, startOfDay, subDays } from 'date-fns';
+import {
+  addDays,
+  endOfDay,
+  format as dateFnsFormat,
+  startOfDay,
+  subDays,
+} from 'date-fns';
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { dateStringToDate } from 'utils/dates';
@@ -16,8 +22,16 @@ import * as yup from 'yup';
 import { DateRangeInput } from './date-range-input.component';
 
 /**
- * @param {{startDate?: string, endDate?: string}} range
- * @returns {{startDate: Date, endDate: Date}}
+ * @template T
+ * @typedef {import('typings/orbis').DateRange<T>} DateRange
+ */
+
+/** @param {Date} date */
+const format = date => dateFnsFormat(date, 'dd/MM/yyyy');
+
+/**
+ * @param {Partial<DateRange<string>>} range
+ * @returns {DateRange<Date>}
  */
 const toDates = range => {
   let dateRep = {};
@@ -59,10 +73,10 @@ const useStyles = makeStyles(theme => ({
 
 /**
  * @param {{
- *  onSubmit: (values: {startDate?: string, endDate?: string}) => void
+ *  onSubmit: (values: Partial<DateRange<string>>) => void
  *  minDate?: string
  *  maxDate?: string
- *  range?: {startDate: string, endDate: string}
+ *  range?: DateRange<string>
  * }} props
  */
 export const DateRangeFilter = ({
@@ -79,10 +93,10 @@ export const DateRangeFilter = ({
     mode: 'onChange',
     defaultValues: {
       [FIELD_NAMES.startDate]: range?.startDate
-        ? format(new Date(range.startDate), 'dd/MM/yyyy')
+        ? format(new Date(range.startDate))
         : undefined,
       [FIELD_NAMES.endDate]: range?.endDate
-        ? format(new Date(range.endDate), 'dd/MM/yyyy')
+        ? format(new Date(range.endDate))
         : undefined,
     },
     context: {
@@ -91,19 +105,20 @@ export const DateRangeFilter = ({
     },
     resolver: yupResolver(schema),
   });
-  /** @type {[{startDate: Date, endDate: Date} | undefined, React.Dispatch<{startDate: Date, endDate: Date}>]} */
+  /** @type {[DateRange<Date> | undefined, React.Dispatch<DateRange<Date>>]} */
   const [dateRepresentation, setDateRepresentation] = useState(
     range
       ? toDates({
-          startDate:
-            range.startDate && format(new Date(range.startDate), 'dd/MM/yyyy'),
-          endDate:
-            range.endDate && format(new Date(range.endDate), 'dd/MM/yyyy'),
+          startDate: range.startDate && format(new Date(range.startDate)),
+          endDate: range.endDate && format(new Date(range.endDate)),
         })
       : undefined,
   );
   const [pickerOpen, setPickerOpen] = useState(false);
 
+  /**
+   * @param {DateRange<string>} values
+   */
   const onSubmit = ({ startDate, endDate }) => {
     setDateRepresentation(toDates({ startDate, endDate }));
     onSubmitProp({
@@ -116,17 +131,14 @@ export const DateRangeFilter = ({
     });
   };
 
+  /** @param {DateRange<Date>} range */
   const handleDateRangePickerApply = range => {
-    setValue(
-      FIELD_NAMES.startDate,
-      format(range[FIELD_NAMES.startDate], 'dd/MM/yyyy'),
-      { shouldValidate: true },
-    );
-    setValue(
-      FIELD_NAMES.endDate,
-      format(range[FIELD_NAMES.endDate], 'dd/MM/yyyy'),
-      { shouldValidate: true },
-    );
+    setValue(FIELD_NAMES.startDate, format(range[FIELD_NAMES.startDate]), {
+      shouldValidate: true,
+    });
+    setValue(FIELD_NAMES.endDate, format(range[FIELD_NAMES.endDate]), {
+      shouldValidate: true,
+    });
     handleSubmit(onSubmit)();
     setPickerOpen(false);
   };
@@ -162,8 +174,8 @@ export const DateRangeFilter = ({
       }}
       title={
         <DateRangePicker
-          minDate={minDate}
-          maxDate={maxDate}
+          minDate={minDate && new Date(minDate)}
+          maxDate={maxDate && new Date(minDate)}
           onApply={handleDateRangePickerApply}
           initialRange={dateRepresentation}
         />
