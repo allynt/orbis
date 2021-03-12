@@ -1,11 +1,17 @@
 import { addDays, subDays } from 'date-fns';
 import format from 'date-fns/format';
 
-/** @param {Date} date */
+/**
+ * Wrapper for date-fns format using dd/MM/yyyy as the default
+ * @param {Date} date
+ */
 export const formatDate = (date, formatString = 'dd/MM/yyyy') =>
   format(date, formatString);
 
 /**
+ * Calculates if the provided d, m, y combination is a valid date.
+ *
+ * Works on 1 indexed months
  * @param {number} d
  * @param {number} m
  * @param {number} y
@@ -27,6 +33,7 @@ export const isValid = (d, m, y) => {
 export const DATE_SEPARATOR = '\\/|-|\\.';
 
 /**
+ * Converts a dd/mm/(yy|yyyy) date string to [d,m,y] number array
  * @param {string} dateString
  * @returns {[d: number, m: number, y: number]}
  */
@@ -36,17 +43,29 @@ export const toDMY = dateString =>
 
 const ISO_DATE_REG_EXP = /(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.\d+([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))/;
 
-/** @param {string} dateString */
+/**
+ * Returns true if the date string is a valid ISO date string
+ * @param {string} dateString
+ */
 export const isIsoDate = dateString => ISO_DATE_REG_EXP.test(dateString);
 
-/** @param {string} dateString */
+/**
+ * Converts a dd/mm/(yy|yyyy) or ISO date string to a Date object
+ * @param {string} dateString
+ */
 export const dateStringToDate = dateString => {
   if (isIsoDate(dateString)) return new Date(dateString);
   const [d, m, y] = toDMY(dateString);
   return new Date(y, m - 1, d);
 };
 
-/** @param {Partial<import('typings/orbis').DateRange<string>>} range */
+/**
+ * Converts a date range of strings into a date range of Date objects
+ *
+ * If either startDate or endDate are not provided it will set it respective to
+ * whichever is provided using daysDifference
+ * @param {Partial<import('typings/orbis').DateRange<string>>} range
+ */
 export const stringDateRangeToDateRange = (range, daysDifference = 30) => {
   /** @type {import('typings/orbis').DateRange<Date>} */
   let dateRep = {};
