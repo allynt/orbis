@@ -79,12 +79,7 @@ export const DateRangeFilter = ({
   });
   /** @type {[DateRange<Date> | undefined, React.Dispatch<DateRange<Date>>]} */
   const [dateRepresentation, setDateRepresentation] = useState(
-    range
-      ? stringDateRangeToDateRange({
-          startDate: range.startDate && formatDate(new Date(range.startDate)),
-          endDate: range.endDate && formatDate(new Date(range.endDate)),
-        })
-      : undefined,
+    range ? stringDateRangeToDateRange(range) : undefined,
   );
   const [pickerOpen, setPickerOpen] = useState(false);
 

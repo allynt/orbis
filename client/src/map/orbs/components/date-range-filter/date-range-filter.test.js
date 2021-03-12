@@ -133,7 +133,7 @@ describe('<DateRangeFilter />', () => {
     const { getByRole, getByText } = renderComponent({
       range: {
         startDate: new Date(2020, 0, 1).toISOString(),
-        endDate: new Date(2020, 0, 31),
+        endDate: new Date(2020, 0, 31).toISOString(),
       },
     });
     expect(getByRole('textbox', { name: 'Start Date' })).toHaveValue(

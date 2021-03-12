@@ -34,8 +34,14 @@ export const toDMY = dateString =>
   // @ts-ignore
   dateString.split(new RegExp(DATE_SEPARATOR)).map(Number);
 
+const ISO_DATE_REG_EXP = /(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.\d+([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))/;
+
+/** @param {string} dateString */
+export const isIsoDate = dateString => ISO_DATE_REG_EXP.test(dateString);
+
 /** @param {string} dateString */
 export const dateStringToDate = dateString => {
+  if (isIsoDate(dateString)) return new Date(dateString);
   const [d, m, y] = toDMY(dateString);
   return new Date(y, m - 1, d);
 };
