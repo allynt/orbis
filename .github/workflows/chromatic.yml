@@ -1,6 +1,10 @@
 name: "Visual Regression Testing"
 
-on: pull_request
+on:
+  pull_request:
+  push:
+    branches:
+      - master
 
 jobs:
   chromatic-deployment:
@@ -14,6 +18,7 @@ jobs:
           GITHUB_REGISTRY_TOKEN: ${{ secrets.ASTROSAT_GITHUB_REGISTRY_TOKEN }}
         run: yarn
       - name: Publish to Chromatic
+        if: github.ref != 'refs/heads/master'
         uses: chromaui/action@v1
         env:
           CI: "true"
@@ -22,3 +27,14 @@ jobs:
           workingDir: client
           token: ${{ github.token }}
           projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
+      - name: Update UI Test Baselines
+        if: github.ref == 'refs/heads/master'
+        uses: chromaui/action@v1
+        env:
+          CI: "true"
+          GITHUB_REGISTRY_TOKEN: ${{ secrets.ASTROSAT_GITHUB_REGISTRY_TOKEN }}
+        with:
+          workingDir: client
+          token: ${{ github.token }}
+          projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
+          autoAcceptChanges: true
