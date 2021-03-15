@@ -10,7 +10,7 @@ import {
 } from 'data-layers/data-layers.slice';
 import Map from './map.component';
 
-const MapLayout = () => {
+const MapLayout = ({ user }) => {
   const dispatch = useDispatch();
   const pollingPeriod = useSelector(selectPollingPeriod);
 
@@ -36,7 +36,7 @@ const MapLayout = () => {
     >
       <ControlPanel />
       <Map />
-      <AnalysisPanel />
+      <AnalysisPanel user={user} />
     </Box>
   );
 };

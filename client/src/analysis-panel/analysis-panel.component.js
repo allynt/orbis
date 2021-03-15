@@ -1,4 +1,5 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 
 import {
   Box,
@@ -21,8 +22,6 @@ import clsx from 'clsx';
 import { find } from 'lodash';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { push } from 'connected-react-router';
-
 import { SidePanel } from 'components';
 import { activeDataSourcesSelector } from 'data-layers/data-layers.slice';
 import {
@@ -34,6 +33,7 @@ import {
 import { ClickedFeaturesSummary } from './clicked-features-summary/clicked-features-summary.component';
 import { COMPONENT_MAP } from './component-map';
 import { MoreInformation } from './more-information/more-information.component';
+import PDF from './pdf-export/pdf-export.component';
 
 const PrimaryDivider = styled(Divider)(({ theme }) => ({
   backgroundColor: theme.palette.primary.dark,
@@ -105,8 +105,10 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export const AnalysisPanel = () => {
+export const AnalysisPanel = ({ user }) => {
   const [minimized, setMinimized] = React.useState(false);
+  const [pdfOpen, setPdfOpen] = React.useState(false);
+
   const styles = useStyles();
   const dispatch = useDispatch();
   const clickedFeatures = useSelector(state =>
@@ -128,9 +130,11 @@ export const AnalysisPanel = () => {
 
   const { createScreenshot } = useMap();
 
+  const togglePdf = () => setPdfOpen(!pdfOpen);
+
   const handleExportClick = () => {
     createScreenshot(screenshot => dispatch(setScreenshot(screenshot)));
-    return dispatch(push('/pdf-export'));
+    return togglePdf();
   };
 
   if (!selectedProperty) return null;
@@ -214,6 +218,12 @@ export const AnalysisPanel = () => {
           </Button>
         </Box>
       )}
+
+      {pdfOpen &&
+        ReactDOM.createPortal(
+          <PDF close={togglePdf} user={user} />,
+          document.body,
+        )}
     </SidePanel>
   );
 };

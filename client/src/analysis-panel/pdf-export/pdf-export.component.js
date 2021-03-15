@@ -34,8 +34,13 @@ import OrbisLogo from './orbis-logo.png';
 
 const useStyles = makeStyles(theme => ({
   container: {
-    height: '100%',
-    backgroundColor: theme.palette.grey[100],
+    height: '100vh',
+    width: '100vw',
+    backgroundColor: 'rgba(0, 0, 0, 0.75)',
+    position: 'fixed',
+    top: '0',
+    left: '0',
+    zIndex: 1000,
   },
   button: {
     position: 'absolute',
@@ -119,7 +124,7 @@ const useStyles = makeStyles(theme => ({
 
 const date = format(new Date(), 'MMMM do Y');
 
-const PDF = ({ user, creationDate = date }) => {
+const PDF = ({ user, close, creationDate = date }) => {
   const styles = useStyles();
   const dispatch = useDispatch();
 
@@ -189,6 +194,7 @@ const PDF = ({ user, creationDate = date }) => {
       justify="center"
       alignItems="center"
       className={styles.container}
+      onClick={close}
     >
       <Button className={styles.button} onClick={handleClick}>
         Download PDF Report
