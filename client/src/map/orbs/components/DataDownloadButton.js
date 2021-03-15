@@ -1,8 +1,11 @@
 import { Button, CircularProgress, makeStyles } from '@astrosat/astrosat-ui';
-import React, { useState } from 'react';
 import { GetApp } from '@material-ui/icons';
-import { useSelector } from 'react-redux';
+import { userSelector } from 'accounts/accounts.selectors';
+import { ADMIN_STATUS } from 'admin/admin.constants';
 import { selectDataToken } from 'data-layers/data-layers.slice';
+import { format } from 'date-fns';
+import React, { useState } from 'react';
+import { useSelector } from 'react-redux';
 import { getData } from 'utils/http';
 
 const useStyles = makeStyles({
@@ -11,18 +14,34 @@ const useStyles = makeStyles({
   },
 });
 
+/**
+ * @type {import('typings/orbis').SidebarComponent<{
+ *  url: string
+ *  fileName?: string
+ *  fileExtension?: string
+ *  buttonText?: string
+ *  adminOnly?: boolean
+ * }>}
+ */
 export default ({
   url,
   fileName = 'orbis-download',
   fileExtension = 'csv',
   buttonText = 'Export Data',
+  adminOnly = true,
 }) => {
   const [isLoading, setIsLoading] = useState(false);
   const styles = useStyles();
   const dataToken = useSelector(selectDataToken);
+  const user = useSelector(userSelector);
 
-  if (!url) {
-    console.warn('`url` prop must be specified on DataDownloadButton');
+  if (
+    !url ||
+    (adminOnly && !user.customers.some(c => c.type === ADMIN_STATUS.manager))
+  ) {
+    if (!url) {
+      console.warn('`url` prop must be specified on DataDownloadButton');
+    }
     return null;
   }
 
@@ -35,7 +54,10 @@ export default ({
     const objectUrl = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = objectUrl;
-    a.download = `${fileName}.${fileExtension}`;
+    a.download = `${fileName}-${format(
+      new Date(),
+      'yyyyMMdd',
+    )}.${fileExtension}`;
     const clickHandler = function () {
       setTimeout(() => {
         URL.revokeObjectURL(objectUrl);
