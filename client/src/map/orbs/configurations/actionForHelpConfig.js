@@ -3,13 +3,39 @@ import { MAX_ZOOM } from 'map/map.constants';
 import iconMapping from './actionForHelpConfig.iconMapping.json';
 import iconAtlas from './actionForHelpConfig.iconAtlas.svg';
 import { easeInOutCubic } from 'utils/easingFunctions';
-import { setClickedFeatures } from '../orbReducer';
+import { filterValueSelector, setClickedFeatures } from '../orbReducer';
+import { filter } from 'lodash';
+
+export const filterFeatures = (oldData, startDate, endDate) =>
+  !oldData || (!startDate && !endDate)
+    ? oldData
+    : {
+        ...oldData,
+        features: filter(oldData.features, feature => {
+          const submissionDateTimestamp = new Date(
+            feature.properties['Submission Date'],
+          ).getTime();
+          return (
+            (!startDate || submissionDateTimestamp >= startDate.getTime()) &&
+            (!endDate || submissionDateTimestamp <= endDate.getTime())
+          );
+        }),
+      };
 
 /**
  * @typedef {import('typings/orbis').GeoJsonFeature<{type?: string, Type?: string}>} ActionForHelpFeature
  */
 
-const configuration = ({ id, data, activeSources, dispatch, setViewState }) => {
+const configuration = ({
+  id,
+  data,
+  activeSources,
+  dispatch,
+  setViewState,
+  orbState,
+}) => {
+  const filterRange = filterValueSelector(id)(orbState);
+
   /** @param {import('typings/orbis').PickedMapFeature} info */
   const handleLayerClick = info => {
     if (info.object.properties.cluster) {
@@ -42,7 +68,11 @@ const configuration = ({ id, data, activeSources, dispatch, setViewState }) => {
     id,
     iconMapping,
     iconAtlas,
-    data,
+    data: filterFeatures(
+      data,
+      filterRange?.startDate && new Date(filterRange.startDate),
+      filterRange?.endDate && new Date(filterRange.endDate),
+    ),
     visible: !!activeSources?.find(source => source.source_id === id),
     onClick: handleLayerClick,
     getIcon,

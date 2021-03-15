@@ -1,3 +1,11 @@
+import { compareAsc, compareDesc, format } from 'date-fns';
+import {
+  dateStringToDate,
+  DATE_SEPARATOR,
+  formatDate,
+  isValid,
+  toDMY,
+} from 'utils/dates';
 import * as yup from 'yup';
 import zxcvbn from 'zxcvbn';
 import { MESSAGES, CONTEXT_KEYS, FIELD_NAMES } from './constants';
@@ -70,3 +78,48 @@ export const bookmarkTitle = yup
 export const customerName = yup
   .string()
   .required(MESSAGES.customerName.required);
+
+const compareDate = (comparisonFunction, contextKey, message) =>
+  function (value) {
+    if (!this.options.context?.[contextKey]) return true;
+    const comparator = new Date(this.options.context[contextKey]);
+    if (comparisonFunction(comparator, dateStringToDate(value)) === -1)
+      return this.createError({
+        message: message.replace(`{{${contextKey}}}`, formatDate(comparator)),
+      });
+    return true;
+  };
+
+export const date = yup.lazy(v =>
+  !v
+    ? yup.string()
+    : yup
+        .string()
+        .matches(
+          new RegExp(`^(\\d{1,2}(${DATE_SEPARATOR})){2}(\\d{2}){1,2}$`),
+          MESSAGES.date.matches,
+        )
+        .test({
+          name: 'Valid date',
+          message: MESSAGES.date.valid,
+          test: value => {
+            return isValid(...toDMY(value));
+          },
+        })
+        .test({
+          name: 'Min Date',
+          test: compareDate(
+            compareDesc,
+            CONTEXT_KEYS.minDate,
+            MESSAGES.date.min,
+          ),
+        })
+        .test({
+          name: 'Max Date',
+          test: compareDate(
+            compareAsc,
+            CONTEXT_KEYS.maxDate,
+            MESSAGES.date.max,
+          ),
+        }),
+);

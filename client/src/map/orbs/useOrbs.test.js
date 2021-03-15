@@ -85,6 +85,44 @@ describe('useOrbs', () => {
         ),
       );
     });
+
+    it('Provides an array if sidebar_components is an array', () => {
+      const source = {
+        source_id: 'test/layer',
+        metadata: {
+          application: {
+            orbis: {
+              sidebar_component: [
+                {
+                  name: 'CheckboxFilters',
+                  props: {
+                    testProp: 'prop1',
+                  },
+                },
+                {
+                  name: 'PopulationLegend',
+                  props: {
+                    testProp: 'prop2',
+                  },
+                },
+              ],
+            },
+          },
+        },
+      };
+      const { result } = setup(source);
+      expect(result.current.sidebarComponents['test/layer'].length).toBe(2);
+      expect(result.current.sidebarComponents['test/layer'][0].props).toEqual(
+        expect.objectContaining(
+          source.metadata.application.orbis.sidebar_component[0].props,
+        ),
+      );
+      expect(result.current.sidebarComponents['test/layer'][1].props).toEqual(
+        expect.objectContaining(
+          source.metadata.application.orbis.sidebar_component[1].props,
+        ),
+      );
+    });
   });
 
   describe('mapComponents', () => {

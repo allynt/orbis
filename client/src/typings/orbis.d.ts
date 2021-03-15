@@ -248,3 +248,8 @@ type IsoPlusCommonProperties = {
 };
 
 type PolygonPickedMapFeature = PickedMapFeature<IsoPlusCommonProperties>;
+
+type DateRange<T> = {
+  startDate: T;
+  endDate: T;
+};

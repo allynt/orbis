@@ -13,7 +13,10 @@ module.exports = {
     description: 'Description of Population information layer.',
     application: {
       orbis: {
-        sidebar_component: { name: 'PopulationLegend' },
+        sidebar_component: [
+          { name: 'DateRangeFilter', props: { maxDate: 'today' } },
+          { name: 'PopulationLegend' },
+        ],
         map_component: { name: 'ActionForHelpMapComponent' },
         layer: {
           name: 'GeoJsonClusteredIconLayer',

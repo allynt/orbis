@@ -1,10 +1,12 @@
 export { BarChart } from './charts/bar/bar.component';
 export { ColorMapRangeSlider } from './colormap-range-slider/colormap-range-slider.component';
+export { DateRangePicker } from './date-range-picker/date-range-picker.component';
 export { default as FeatureDetail } from './feature-detail/feature-detail.component';
 export { FeatureDialog } from './feature-dialog/feature-dialog.component';
 export { default as Form } from './form/form.component';
 export { InfoButtonTooltip } from './info-button-tooltip/info-button-tooltip.component';
 export { InlineTextField } from './inline-text-field/inline-text-field.component';
+export { LegendItem } from './legend-item/legend-item.component';
 export { MultipleFeaturesList } from './multiple-features-list/multiple-features-list.component';
 export { OrbisLogo } from './orbis-logo/orbis-logo.component';
 export { Popup } from './popup/popup.component';
@@ -12,4 +14,3 @@ export { SidePanelSection } from './side-panel-section/side-panel-section.compon
 export { SidePanel } from './side-panel/side-panel.component';
 export * from './sidebar';
 export { Skeleton } from './skeleton/skeleton.component';
-export { LegendItem } from './legend-item/legend-item.component';

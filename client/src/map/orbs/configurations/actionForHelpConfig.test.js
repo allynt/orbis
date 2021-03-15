@@ -2,7 +2,7 @@
 
 import { MAX_ZOOM } from 'map/map.constants';
 import { setClickedFeatures } from '../orbReducer';
-import configFn from './actionForHelpConfig';
+import configFn, { filterFeatures } from './actionForHelpConfig';
 
 const PERSON = {
     properties: {
@@ -33,6 +33,68 @@ const setup = (activeSources = [source]) => {
 };
 
 describe('actionForHelpConfig', () => {
+  const TEST_DATA = {
+    features: [
+      { properties: { 'Submission Date': '1 January 2020' } },
+      { properties: { 'Submission Date': '23 October 2077' } },
+      { properties: { 'Submission Date': '13 July 2258' } },
+    ],
+  };
+  describe('filterFeatures', () => {
+    it("returns all data if it's undefined", () => {
+      const result = filterFeatures(undefined);
+      expect(result).toBeUndefined();
+    });
+
+    it('returns all data if startDate and endDate are undefined', () => {
+      const data = { features: [{ id: 1 }, { id: 2 }] };
+      const result = filterFeatures(data);
+      expect(result).toEqual(data);
+    });
+
+    it('returns all features after startDate if endDate is undefined', () => {
+      const result = filterFeatures(TEST_DATA, new Date(2077, 9, 23));
+      expect(result).toEqual({
+        features: [
+          { properties: { 'Submission Date': '23 October 2077' } },
+          { properties: { 'Submission Date': '13 July 2258' } },
+        ],
+      });
+    });
+
+    it('returns all features before endDate if startDate is undefined', () => {
+      const result = filterFeatures(
+        TEST_DATA,
+        undefined,
+        new Date(2077, 9, 23),
+      );
+      expect(result).toEqual({
+        features: [
+          { properties: { 'Submission Date': '1 January 2020' } },
+          { properties: { 'Submission Date': '23 October 2077' } },
+        ],
+      });
+    });
+
+    it('returns features filtered on Submission Date', () => {
+      const data = {
+        features: [
+          { properties: { 'Submission Date': '1 January 2020' } },
+          { properties: { 'Submission Date': '23 October 2077' } },
+          { properties: { 'Submission Date': '13 July 2258' } },
+        ],
+      };
+      const result = filterFeatures(
+        data,
+        new Date(2077, 9, 23),
+        new Date(2077, 9, 23),
+      );
+      expect(result).toEqual({
+        features: [{ properties: { 'Submission Date': '23 October 2077' } }],
+      });
+    });
+  });
+
   describe('visible', () => {
     it('is true if activeSources includes the layer source', () => {
       const { visible } = setup();

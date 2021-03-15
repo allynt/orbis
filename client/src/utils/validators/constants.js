@@ -40,6 +40,12 @@ export const MESSAGES = {
   customerName: {
     required: 'Customer name is required',
   },
+  date: {
+    matches: 'Please use the format DD/MM/YYYY',
+    valid: 'Please enter a valid date',
+    min: 'Date must not be before {{minDate}}',
+    max: 'Date must not be after {{maxDate}}',
+  },
 };
 
 export const CONTEXT_KEYS = {
@@ -48,6 +54,8 @@ export const CONTEXT_KEYS = {
   passwordStrength: 'passwordStrength',
   existingEmails: 'existingEmails',
   bookmarkTitles: 'bookmarkTitles',
+  minDate: 'minDate',
+  maxDate: 'maxDate',
 };
 
 export const FIELD_NAMES = {
@@ -70,4 +78,6 @@ export const FIELD_NAMES = {
   customerNameOfficial: 'customerNameOfficial',
   customerType: 'customerType',
   registeredNumber: 'registeredNumber',
+  startDate: 'startDate',
+  endDate: 'endDate',
 };
