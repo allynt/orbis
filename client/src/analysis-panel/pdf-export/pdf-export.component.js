@@ -4,6 +4,8 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { push } from 'connected-react-router';
 
+import { useMap } from 'MapContext';
+
 import { jsPDF } from 'jspdf';
 import html2canvas from 'html2canvas';
 
@@ -22,7 +24,6 @@ import {
 
 import {
   propertySelector,
-  screenshotSelector,
   areasOfInterestSelector,
   populationTotalSelector,
   householdTotalSelector,
@@ -30,27 +31,20 @@ import {
   breakdownAggregationSelector,
 } from 'map/orbs/slices/isolation-plus.slice';
 
+import { userSelector } from '../../accounts/accounts.selectors';
+
 import OrbisLogo from './orbis-logo.png';
 
 const useStyles = makeStyles(theme => ({
-  container: {
-    height: '100vh',
-    width: '100vw',
-    backgroundColor: 'rgba(0, 0, 0, 0.75)',
-    position: 'fixed',
-    top: '0',
-    left: '0',
-    zIndex: 1000,
-  },
   button: {
     position: 'absolute',
-    top: theme.typography.pxToRem(8),
-    left: theme.typography.pxToRem(624),
+    top: theme.typography.pxToRem(16),
+    left: theme.typography.pxToRem(16),
     zIndex: 10,
     padding: theme.spacing(1),
   },
   pdf: {
-    position: 'relative',
+    alignSelf: 'center',
     color: theme.palette.text.primary,
     backgroundColor: theme.palette.background.default,
     height: '100%',
@@ -124,12 +118,12 @@ const useStyles = makeStyles(theme => ({
 
 const date = format(new Date(), 'MMMM do Y');
 
-const PDF = ({ user, close, creationDate = date }) => {
+const PDF = ({ creationDate = date }) => {
   const styles = useStyles();
   const dispatch = useDispatch();
 
   const selectedProperty = useSelector(state => propertySelector(state?.orbs));
-  const screenshot = useSelector(state => screenshotSelector(state?.orbs));
+  const user = useSelector(userSelector);
 
   const areasOfInterest = useSelector(state =>
     areasOfInterestSelector(state?.orbs),
@@ -149,18 +143,19 @@ const PDF = ({ user, close, creationDate = date }) => {
     breakdownAggregationSelector(state?.orbs),
   );
 
+  const { createScreenshot } = useMap();
   const [image, setImage] = useState(undefined);
 
   const aggregationLabel =
     selectedProperty?.aggregation === 'sum' ? 'Sum' : 'Average';
 
   useEffect(() => {
-    const reader = new FileReader();
-    reader.onload = event => setImage(event.target.result);
-    if (screenshot) {
+    createScreenshot(screenshot => {
+      const reader = new FileReader();
+      reader.onload = event => setImage(event.target.result);
       reader.readAsDataURL(screenshot);
-    }
-  }, [screenshot]);
+    });
+  }, [createScreenshot]);
 
   const handleClick = () => {
     const div = document.getElementById('pdf-form');
@@ -189,13 +184,7 @@ const PDF = ({ user, close, creationDate = date }) => {
     return null;
   }
   return (
-    <Grid
-      container
-      justify="center"
-      alignItems="center"
-      className={styles.container}
-      onClick={close}
-    >
+    <>
       <Button className={styles.button} onClick={handleClick}>
         Download PDF Report
       </Button>
@@ -389,7 +378,7 @@ const PDF = ({ user, close, creationDate = date }) => {
           </Grid>
         </Grid>
       </Grid>
-    </Grid>
+    </>
   );
 };
 

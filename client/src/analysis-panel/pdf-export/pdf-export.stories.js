@@ -28,7 +28,6 @@ const generateFeatures = n => {
 };
 
 const defaultState = {
-  screenshot: undefined,
   property: {
     source_id: 'astrosat/isolation_plus/age_census/r4v1',
     source: 'testsourcename',
@@ -51,12 +50,13 @@ const defaultState = {
 const Template = ({ user = defaultUser, state = defaultState }) => (
   <Provider
     store={mockStore({
+      accounts: { user },
       orbs: {
         isolationPlus: state,
       },
     })}
   >
-    <PDF user={user} creationDate={'March 12th 2021'} />
+    <PDF creationDate={'March 12th 2021'} />
   </Provider>
 );
 

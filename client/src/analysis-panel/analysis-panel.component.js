@@ -1,11 +1,11 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 
 import {
   Box,
   Button,
   ButtonBase,
   CloseIcon,
+  Dialog,
   Divider,
   IconButton,
   makeStyles,
@@ -15,8 +15,6 @@ import {
 } from '@astrosat/astrosat-ui';
 
 import { ReactComponent as PdfExportIcon } from './pdf-export.svg';
-
-import { useMap } from 'MapContext';
 
 import clsx from 'clsx';
 import { find } from 'lodash';
@@ -28,7 +26,6 @@ import {
   clickedFeaturesSelector,
   propertySelector,
   setClickedFeatures,
-  setScreenshot,
 } from 'map/orbs/slices/isolation-plus.slice';
 import { ClickedFeaturesSummary } from './clicked-features-summary/clicked-features-summary.component';
 import { COMPONENT_MAP } from './component-map';
@@ -105,11 +102,23 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export const AnalysisPanel = ({ user }) => {
+const useDialogStyles = makeStyles(theme => ({
+  root: {
+    height: '100%',
+  },
+  paper: {
+    height: '100%',
+    borderRadius: theme.shape.borderRadius,
+  },
+}));
+
+export const AnalysisPanel = () => {
   const [minimized, setMinimized] = React.useState(false);
   const [pdfOpen, setPdfOpen] = React.useState(false);
 
   const styles = useStyles();
+  const dialogStyles = useDialogStyles();
+
   const dispatch = useDispatch();
   const clickedFeatures = useSelector(state =>
     clickedFeaturesSelector(state?.orbs),
@@ -127,15 +136,6 @@ export const AnalysisPanel = ({ user }) => {
     selectedProperty?.application?.orbis?.data_visualisation_components;
 
   const pdfIncompatible = selectedProperty?.type === 'discrete';
-
-  const { createScreenshot } = useMap();
-
-  const togglePdf = () => setPdfOpen(!pdfOpen);
-
-  const handleExportClick = () => {
-    createScreenshot(screenshot => dispatch(setScreenshot(screenshot)));
-    return togglePdf();
-  };
 
   if (!selectedProperty) return null;
 
@@ -176,7 +176,7 @@ export const AnalysisPanel = ({ user }) => {
               aria-label="PDF export"
               className={styles.pdfButton}
               size="small"
-              onClick={handleExportClick}
+              onClick={() => setPdfOpen(true)}
             >
               <PdfExportIcon />
             </IconButton>
@@ -213,17 +213,21 @@ export const AnalysisPanel = ({ user }) => {
       />
       {!pdfIncompatible && (
         <Box className={styles.buttonContainer}>
-          <Button className={styles.button} onClick={handleExportClick}>
+          <Button className={styles.button} onClick={() => setPdfOpen(true)}>
             Export PDF Report
           </Button>
         </Box>
       )}
 
-      {pdfOpen &&
-        ReactDOM.createPortal(
-          <PDF close={togglePdf} user={user} />,
-          document.body,
-        )}
+      <Dialog
+        classes={dialogStyles}
+        maxWidth="lg"
+        open={pdfOpen}
+        onClose={() => setPdfOpen(false)}
+        aria-labelledby="pdf-export-dialog"
+      >
+        <PDF />
+      </Dialog>
     </SidePanel>
   );
 };
