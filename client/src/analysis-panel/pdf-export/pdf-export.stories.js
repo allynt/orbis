@@ -1,6 +1,12 @@
 import React from 'react';
 
 import { Provider } from 'react-redux';
+import { MapProvider, useMap } from 'MapContext';
+
+import DeckGL from '@deck.gl/react';
+
+import ReactMapGl from 'react-map-gl';
+
 import configureMockStore from 'redux-mock-store';
 
 import PDF from './pdf-export.component';
@@ -47,18 +53,34 @@ const defaultState = {
   clickedFeatures: generateFeatures(3),
 };
 
-const Template = ({ user = defaultUser, state = defaultState }) => (
-  <Provider
-    store={mockStore({
-      accounts: { user },
-      orbs: {
-        isolationPlus: state,
-      },
-    })}
-  >
-    <PDF creationDate={'March 12th 2021'} />
-  </Provider>
-);
+const Refs = () => {
+  const { topMapRef, deckRef, bottomMapRef } = useMap();
+  return (
+    <>
+      <ReactMapGl ref={topMapRef} />
+      <DeckGL ref={deckRef} />
+      <ReactMapGl ref={bottomMapRef} />
+    </>
+  );
+};
+
+const Template = ({ user = defaultUser, state = defaultState }) => {
+  return (
+    <Provider
+      store={mockStore({
+        accounts: { user },
+        orbs: {
+          isolationPlus: state,
+        },
+      })}
+    >
+      <MapProvider>
+        <Refs />
+        <PDF creationDate={'March 12th 2021'} />
+      </MapProvider>
+    </Provider>
+  );
+};
 
 export const Default = Template.bind({});
 
