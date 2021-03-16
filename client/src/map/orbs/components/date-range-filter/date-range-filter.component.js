@@ -141,7 +141,7 @@ export const DateRangeFilter = ({
       title={
         <DateRangePicker
           minDate={minDate && new Date(minDate)}
-          maxDate={maxDate && new Date(minDate)}
+          maxDate={maxDate && new Date(maxDate)}
           onApply={handleDateRangePickerApply}
           initialRange={dateRepresentation}
         />
