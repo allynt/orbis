@@ -1,11 +1,7 @@
 import React from 'react';
 
 import { Provider } from 'react-redux';
-import { MapProvider, useMap } from 'MapContext';
-
-import DeckGL from '@deck.gl/react';
-
-import ReactMapGl from 'react-map-gl';
+import { MapProvider } from 'MapContext';
 
 import configureMockStore from 'redux-mock-store';
 
@@ -53,17 +49,6 @@ const defaultState = {
   clickedFeatures: generateFeatures(3),
 };
 
-const Refs = () => {
-  const { topMapRef, deckRef, bottomMapRef } = useMap();
-  return (
-    <>
-      <ReactMapGl ref={topMapRef} />
-      <DeckGL ref={deckRef} />
-      <ReactMapGl ref={bottomMapRef} />
-    </>
-  );
-};
-
 const Template = ({ user = defaultUser, state = defaultState }) => {
   return (
     <Provider
@@ -75,7 +60,6 @@ const Template = ({ user = defaultUser, state = defaultState }) => {
       })}
     >
       <MapProvider>
-        <Refs />
         <PDF creationDate={'March 12th 2021'} />
       </MapProvider>
     </Provider>

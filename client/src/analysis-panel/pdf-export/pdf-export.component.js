@@ -143,19 +143,23 @@ const PDF = ({ creationDate = date }) => {
     breakdownAggregationSelector(state?.orbs),
   );
 
-  const { createScreenshot } = useMap();
+  const { createScreenshot, topMapRef, deckRef, bottomMapRef } = useMap();
   const [image, setImage] = useState(undefined);
 
   const aggregationLabel =
     selectedProperty?.aggregation === 'sum' ? 'Sum' : 'Average';
 
   useEffect(() => {
-    createScreenshot(screenshot => {
-      const reader = new FileReader();
-      reader.onload = event => setImage(event.target.result);
-      reader.readAsDataURL(screenshot);
-    });
-  }, [createScreenshot]);
+    if (!topMapRef.current || !deckRef.current || !bottomMapRef.current) {
+      return null;
+    } else {
+      createScreenshot(screenshot => {
+        const reader = new FileReader();
+        reader.onload = event => setImage(event.target.result);
+        reader.readAsDataURL(screenshot);
+      });
+    }
+  }, [createScreenshot, topMapRef, deckRef, bottomMapRef]);
 
   const handleClick = () => {
     const div = document.getElementById('pdf-form');
