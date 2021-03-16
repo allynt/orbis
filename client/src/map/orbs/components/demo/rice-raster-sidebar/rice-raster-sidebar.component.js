@@ -10,18 +10,32 @@ const marks = [
 
 export const RiceRasterSidebarComponent = ({
   dateValue = marks[0].value,
+  column = 'rgb',
   onDateChange,
+  onColumnClick,
 }) => {
   return (
     <>
       <List>
-        <ListItem>
+        <ListItem
+          button
+          onClick={() => onColumnClick('rgb')}
+          selected={column === 'rgb'}
+        >
           <ListItemText primary="RGB" />
         </ListItem>
-        <ListItem>
+        <ListItem
+          button
+          onClick={() => onColumnClick('ndvi')}
+          selected={column === 'ndvi'}
+        >
           <ListItemText primary="NDVI" />
         </ListItem>
-        <ListItem>
+        <ListItem
+          button
+          onClick={() => onColumnClick('ndmi')}
+          selected={column === 'ndmi'}
+        >
           <ListItemText primary="NDWI" />
         </ListItem>
       </List>

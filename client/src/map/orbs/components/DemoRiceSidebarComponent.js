@@ -12,11 +12,20 @@ export default ({ selectedLayer }) => {
   return (
     <RiceRasterSidebarComponent
       dateValue={other?.date}
-      onDateChange={(_, value) =>
+      onDateChange={(_, date) =>
         dispatch(
           setOther({
             source_id: selectedLayer.source_id,
-            other: { ...other, date: value },
+            other: { ...other, date },
+          }),
+        )
+      }
+      column={other?.column}
+      onColumnClick={column =>
+        dispatch(
+          setOther({
+            source_id: selectedLayer.source_id,
+            other: { ...other, column },
           }),
         )
       }

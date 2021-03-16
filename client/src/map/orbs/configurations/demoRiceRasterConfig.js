@@ -9,7 +9,7 @@ export default ({ id, data, activeSources, authToken, orbState }) => {
   const other = otherSelector(id)(orbState);
   return {
     id,
-    image: `${data}/${defaultColumn}_${
+    image: `${data}/${other?.column ? other.column : defaultColumn}_${
       other?.date ? format(new Date(other.date), 'yyyyMMdd') : defaultDate
     }.png`,
     bounds: find(source.metadata.properties, { name: defaultColumn }).bounds,
