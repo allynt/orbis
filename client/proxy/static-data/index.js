@@ -6,8 +6,13 @@ staticDataRouter
   .route('/:authority/:namespace/:name/:version/:file')
   .get((req, res) => {
     const { authority, namespace, name, version, file } = req.params;
-    const data = require(`./${authority}/${namespace}/${name}/${version}/${file}`);
-    res.send(data);
+    const path = `${authority}/${namespace}/${name}/${version}/${file}`;
+    if (file.includes('png')) {
+      res.sendFile(path, { root: __dirname });
+    } else {
+      const data = require(`./${path}`);
+      res.send(data);
+    }
   });
 
 module.exports = staticDataRouter;

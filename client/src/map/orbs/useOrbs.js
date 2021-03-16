@@ -61,6 +61,8 @@ export const useOrbs = () => {
       ) {
         if (source.metadata.tiles)
           setData({ ...data, [source.source_id]: source.metadata.tiles });
+        else if (source.type === 'raster')
+          setData({ ...data, [source.source_id]: source.metadata.url });
         else fetchData(source);
       }
     }

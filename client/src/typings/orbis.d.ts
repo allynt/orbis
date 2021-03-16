@@ -5,7 +5,8 @@ type LayerName =
   | 'CustomMVTLayer'
   | 'GeoJsonClusteredIconLayer'
   | 'GeoJsonLayer'
-  | 'IconLayer';
+  | 'IconLayer'
+  | 'BitmapLayer';
 
 type CategoricalColorMaps =
   | 'Category10'
