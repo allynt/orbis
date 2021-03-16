@@ -16,6 +16,7 @@ import crowdless from './slices/crowdless.slice';
  *     clickedFeatures?: GeoJsonFeature[]
  *     hoveredFeatures?: GeoJsonFeature[],
  *     filterValue?: any
+ *     other?: any
  *   },
  *   extrudedMode: boolean
  *   extrusionScale: number
@@ -102,6 +103,11 @@ const layersSlice = createSlice({
       const { source_id, filterValue } = payload;
       state[source_id] = { ...state[source_id], filterValue };
     },
+    setOther: (state, { payload }) => {
+      if (!payload.source_id) return handleMissingSourceId();
+      const { source_id, other } = payload;
+      state[source_id] = { ...state[source_id], other };
+    },
     toggleExtrudedMode: state => {
       state.extrudedMode = !state.extrudedMode;
     },
@@ -117,6 +123,7 @@ export const {
   setHoveredFeatures,
   setVisibility,
   setFilterValue,
+  setOther,
   toggleExtrudedMode,
   setExtrusionScale,
 } = layersSlice.actions;
@@ -142,6 +149,10 @@ export const layersVisibilitySelector = id =>
 /** @param {string} id */
 export const filterValueSelector = id =>
   createSelector(baseSelector, state => state?.[id]?.filterValue);
+
+/** @param {string} id */
+export const otherSelector = id =>
+  createSelector(baseSelector, state => state?.[id]?.other);
 
 export const extrudedModeSelector = createSelector(
   baseSelector,
