@@ -151,7 +151,7 @@ const PDF = ({ creationDate = date }) => {
 
   useEffect(() => {
     if (!topMapRef.current || !deckRef.current || !bottomMapRef.current) {
-      return null;
+      return;
     } else {
       createScreenshot(screenshot => {
         const reader = new FileReader();

@@ -1,7 +1,8 @@
 import React from 'react';
 
-import { render, waitFor } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import { Provider } from 'react-redux';
+import { MapProvider } from 'MapContext';
 import configureMockStore from 'redux-mock-store';
 
 import { createMemoryHistory } from 'history';
@@ -82,6 +83,7 @@ const renderComponent = ({ state = initialState, user = initialUser }) => {
   const history = createMemoryHistory({ initialEntries: ['/pdf-export'] });
 
   const store = mockStore({
+    accounts: { user },
     orbs: {
       isolationPlus: {
         ...state,
@@ -91,7 +93,9 @@ const renderComponent = ({ state = initialState, user = initialUser }) => {
   const utils = render(
     <Provider store={store}>
       <Router history={history}>
-        <PDF user={user} />
+        <MapProvider>
+          <PDF />
+        </MapProvider>
       </Router>
     </Provider>,
   );
