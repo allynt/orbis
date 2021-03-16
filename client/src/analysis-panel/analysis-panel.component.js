@@ -5,6 +5,7 @@ import {
   Button,
   ButtonBase,
   CloseIcon,
+  Dialog,
   Divider,
   IconButton,
   makeStyles,
@@ -15,13 +16,9 @@ import {
 
 import { ReactComponent as PdfExportIcon } from './pdf-export.svg';
 
-import { useMap } from 'MapContext';
-
 import clsx from 'clsx';
 import { find } from 'lodash';
 import { useDispatch, useSelector } from 'react-redux';
-
-import { push } from 'connected-react-router';
 
 import { SidePanel } from 'components';
 import { activeDataSourcesSelector } from 'data-layers/data-layers.slice';
@@ -29,11 +26,11 @@ import {
   clickedFeaturesSelector,
   propertySelector,
   setClickedFeatures,
-  setScreenshot,
 } from 'map/orbs/slices/isolation-plus.slice';
 import { ClickedFeaturesSummary } from './clicked-features-summary/clicked-features-summary.component';
 import { COMPONENT_MAP } from './component-map';
 import { MoreInformation } from './more-information/more-information.component';
+import PDF from './pdf-export/pdf-export.component';
 
 const PrimaryDivider = styled(Divider)(({ theme }) => ({
   backgroundColor: theme.palette.primary.dark,
@@ -105,9 +102,23 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
+const useDialogStyles = makeStyles(theme => ({
+  root: {
+    height: '100%',
+  },
+  paper: {
+    height: '100%',
+    borderRadius: theme.shape.borderRadius,
+  },
+}));
+
 export const AnalysisPanel = () => {
   const [minimized, setMinimized] = React.useState(false);
+  const [pdfOpen, setPdfOpen] = React.useState(false);
+
   const styles = useStyles();
+  const dialogStyles = useDialogStyles();
+
   const dispatch = useDispatch();
   const clickedFeatures = useSelector(state =>
     clickedFeaturesSelector(state?.orbs),
@@ -125,13 +136,6 @@ export const AnalysisPanel = () => {
     selectedProperty?.application?.orbis?.data_visualisation_components;
 
   const pdfIncompatible = selectedProperty?.type === 'discrete';
-
-  const { createScreenshot } = useMap();
-
-  const handleExportClick = () => {
-    createScreenshot(screenshot => dispatch(setScreenshot(screenshot)));
-    return dispatch(push('/pdf-export'));
-  };
 
   if (!selectedProperty) return null;
 
@@ -172,7 +176,7 @@ export const AnalysisPanel = () => {
               aria-label="PDF export"
               className={styles.pdfButton}
               size="small"
-              onClick={handleExportClick}
+              onClick={() => setPdfOpen(true)}
             >
               <PdfExportIcon />
             </IconButton>
@@ -209,11 +213,21 @@ export const AnalysisPanel = () => {
       />
       {!pdfIncompatible && (
         <Box className={styles.buttonContainer}>
-          <Button className={styles.button} onClick={handleExportClick}>
+          <Button className={styles.button} onClick={() => setPdfOpen(true)}>
             Export PDF Report
           </Button>
         </Box>
       )}
+
+      <Dialog
+        classes={dialogStyles}
+        maxWidth="lg"
+        open={pdfOpen}
+        onClose={() => setPdfOpen(false)}
+        aria-labelledby="pdf-export-dialog"
+      >
+        <PDF />
+      </Dialog>
     </SidePanel>
   );
 };
