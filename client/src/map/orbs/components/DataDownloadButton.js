@@ -48,15 +48,17 @@ export default ({
 
   const handleClick = async () => {
     setIsLoading(true);
-    const response = await getData(url, {
-      Authorization: `Bearer ${dataToken}`,
+    const response = await fetch(url, {
+      headers: {
+        Authorization: `Bearer ${dataToken}`,
+      },
     });
     const blob = await response.blob();
     if (!!blob) {
-    saveAs(
-      blob,
-      `${fileName}-${format(new Date(), 'yyyyMMdd')}.${fileExtension}`,
-    );
+      saveAs(
+        blob,
+        `${fileName}-${format(new Date(), 'yyyyMMdd')}.${fileExtension}`,
+      );
     }
     setIsLoading(false);
   };
