@@ -1,6 +1,22 @@
-import { List, ListItem, ListItemText, Slider } from '@astrosat/astrosat-ui';
+import {
+  Avatar,
+  List,
+  ListItem,
+  ListItemAvatar,
+  ListItemIcon,
+  ListItemText,
+  makeStyles,
+  Radio,
+  Slider,
+  Typography,
+} from '@astrosat/astrosat-ui';
 import { format, startOfYear, endOfYear } from 'date-fns';
 import React from 'react';
+
+const useStyles = makeStyles(theme => ({
+  icon: { minWidth: '0' },
+  avatar: { minWidth: '0', margin: theme.spacing(0, 2) },
+}));
 
 const marks = [
   new Date(2020, 2, 12),
@@ -8,37 +24,56 @@ const marks = [
   new Date(2020, 6, 25),
 ].map(date => ({ value: date.getTime(), label: format(date, 'yyyy-MM') }));
 
+const COLUMNS = [
+  {
+    value: 'rgb',
+    label: 'RGB',
+    image:
+      'https://apps.sentinel-hub.com/eo-browser/previews/DEFAULT-THEME-bd86bc-1_TRUE_COLOR.png',
+  },
+  {
+    value: 'ndvi',
+    label: 'NDVI',
+    image:
+      'https://apps.sentinel-hub.com/eo-browser/previews/DEFAULT-THEME-bd86bc-3_NDVI.png',
+  },
+  {
+    value: 'ndmi',
+    label: 'NDMI',
+    image:
+      'https://apps.sentinel-hub.com/eo-browser/previews/DEFAULT-THEME-bd86bc-5-MOISTURE-INDEX1.png',
+  },
+];
+
 export const RiceRasterSidebarComponent = ({
   dateValue = marks[0].value,
   column = 'rgb',
   onDateChange,
   onColumnClick,
 }) => {
+  const styles = useStyles();
   return (
     <>
+      <Typography>Column</Typography>
       <List>
-        <ListItem
-          button
-          onClick={() => onColumnClick('rgb')}
-          selected={column === 'rgb'}
-        >
-          <ListItemText primary="RGB" />
-        </ListItem>
-        <ListItem
-          button
-          onClick={() => onColumnClick('ndvi')}
-          selected={column === 'ndvi'}
-        >
-          <ListItemText primary="NDVI" />
-        </ListItem>
-        <ListItem
-          button
-          onClick={() => onColumnClick('ndmi')}
-          selected={column === 'ndmi'}
-        >
-          <ListItemText primary="NDWI" />
-        </ListItem>
+        {COLUMNS.map(({ value, label, image }) => (
+          <ListItem
+            key={value}
+            button
+            onClick={() => onColumnClick(value)}
+            selected={column === value}
+          >
+            <ListItemIcon className={styles.icon}>
+              <Radio tabIndex={-1} checked={column === value} />
+            </ListItemIcon>
+            <ListItemAvatar className={styles.avatar}>
+              <Avatar src={image} />
+            </ListItemAvatar>
+            <ListItemText primary={label} />
+          </ListItem>
+        ))}
       </List>
+      <Typography>Date</Typography>
       <Slider
         value={dateValue}
         onChange={onDateChange}
