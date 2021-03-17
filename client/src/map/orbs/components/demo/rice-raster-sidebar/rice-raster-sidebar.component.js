@@ -1,5 +1,9 @@
 import {
   Avatar,
+  Box,
+  Button,
+  Grid,
+  IconButton,
   List,
   ListItem,
   ListItemAvatar,
@@ -10,6 +14,7 @@ import {
   Slider,
   Typography,
 } from '@astrosat/astrosat-ui';
+import { Visibility, VisibilityOff } from '@material-ui/icons';
 import { format, startOfYear, endOfYear } from 'date-fns';
 import React from 'react';
 
@@ -50,38 +55,57 @@ export const RiceRasterSidebarComponent = ({
   column = 'rgb',
   onDateChange,
   onColumnClick,
+  visible = true,
+  onVisibilityClick,
 }) => {
   const styles = useStyles();
   return (
-    <>
-      <Typography>Column</Typography>
-      <List>
-        {COLUMNS.map(({ value, label, image }) => (
-          <ListItem
-            key={value}
-            button
-            onClick={() => onColumnClick(value)}
-            selected={column === value}
-          >
-            <ListItemIcon className={styles.icon}>
-              <Radio tabIndex={-1} checked={column === value} />
-            </ListItemIcon>
-            <ListItemAvatar className={styles.avatar}>
-              <Avatar src={image} />
-            </ListItemAvatar>
-            <ListItemText primary={label} />
-          </ListItem>
-        ))}
-      </List>
-      <Typography>Date</Typography>
-      <Slider
-        value={dateValue}
-        onChange={onDateChange}
-        min={startOfYear(new Date(2020, 0, 1)).getTime()}
-        max={endOfYear(new Date(2020, 0, 1)).getTime()}
-        marks={marks}
-        step={null}
-      />
-    </>
+    <Grid container spacing={2}>
+      <Grid item xs={12}>
+        <Typography variant="h5" component="p">
+          Column
+        </Typography>
+        <List>
+          {COLUMNS.map(({ value, label, image }) => (
+            <ListItem
+              key={value}
+              button
+              onClick={() => onColumnClick(value)}
+              selected={column === value}
+            >
+              <ListItemIcon className={styles.icon}>
+                <Radio tabIndex={-1} checked={column === value} />
+              </ListItemIcon>
+              <ListItemAvatar className={styles.avatar}>
+                <Avatar src={image} />
+              </ListItemAvatar>
+              <ListItemText primary={label} />
+            </ListItem>
+          ))}
+        </List>
+      </Grid>
+      <Grid item xs={12}>
+        <Typography variant="h5" component="p">
+          Date
+        </Typography>
+        <Slider
+          value={dateValue}
+          onChange={onDateChange}
+          min={startOfYear(new Date(2020, 0, 1)).getTime()}
+          max={endOfYear(new Date(2020, 0, 1)).getTime()}
+          marks={marks}
+          step={null}
+        />
+      </Grid>
+      <Grid item container justify="center">
+        <Button size="small" onClick={onVisibilityClick}>
+          {visible ? (
+            <Visibility titleAccess="hide" />
+          ) : (
+            <VisibilityOff titleAccess="show" />
+          )}
+        </Button>
+      </Grid>
+    </Grid>
   );
 };
