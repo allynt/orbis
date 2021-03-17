@@ -1,6 +1,8 @@
 import React from 'react';
 import { render, waitFor } from '@testing-library/react';
-import DataDownloadButton from './DataDownloadButton';
+import DataDownloadButton, {
+  getFilenameFromHeader,
+} from './DataDownloadButton';
 import { Provider } from 'react-redux';
 import configureMockStore from 'redux-mock-store';
 import userEvent from '@testing-library/user-event';
@@ -68,5 +70,33 @@ describe('<DataDownloadButton />', () => {
     const { getByRole } = renderComponent();
     userEvent.click(getByRole('button'));
     await waitFor(() => expect(fetch).toHaveBeenCalled());
+  });
+
+  describe('getFilenameFromHeader', () => {
+    it('returns the filename', () => {
+      expect(getFilenameFromHeader('attachment; filename=test-file.txt')).toBe(
+        'test-file.txt',
+      );
+    });
+
+    it('returns undefined if attachment is not in the header', () => {
+      expect(
+        getFilenameFromHeader('thisis something reallyodd'),
+      ).toBeUndefined();
+    });
+
+    it('returns undefined if filename is not in the header', () => {
+      expect(
+        getFilenameFromHeader('attachment; something=somethingelse'),
+      ).toBeUndefined();
+    });
+
+    it('returns filename from the middle of stuff', () => {
+      expect(
+        getFilenameFromHeader(
+          'attachment; randomcrap=useless; filename=test-file.txt; something=somethingelse',
+        ),
+      ).toBe('test-file.txt');
+    });
   });
 });

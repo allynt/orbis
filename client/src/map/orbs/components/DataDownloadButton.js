@@ -10,6 +10,16 @@ import { saveAs } from 'file-saver';
 
 const FILENAME_REGEX = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/;
 
+export const getFilenameFromHeader = headerString => {
+  if (headerString && headerString.indexOf('attachment') !== -1) {
+    const matches = FILENAME_REGEX.exec(headerString);
+    if (matches !== null && matches[1]) {
+      return matches[1].replace(/['"]/g, '');
+    }
+  }
+  return undefined;
+};
+
 const useStyles = makeStyles({
   button: {
     margin: '0 auto',
@@ -54,17 +64,10 @@ export default ({
         Authorization: `Bearer ${dataToken}`,
       },
     });
-    const contentDisposition = response.headers.get('content-disposition');
-    let filename = `${fileName}-${format(
-      new Date(),
-      'yyyyMMdd',
-    )}.${fileExtension}`;
-    if (contentDisposition && contentDisposition.indexOf('attachment') !== -1) {
-      const matches = FILENAME_REGEX.exec(contentDisposition);
-      if (matches !== null && matches[1]) {
-        filename = matches[1].replace(/['"]/g, '');
-      }
-    }
+    const filename =
+      getFilenameFromHeader(response.headers.get('content-disposition')) ||
+      `${fileName}-${format(new Date(), 'yyyyMMdd')}.${fileExtension}`;
+
     const blob = await response.blob();
     if (!!blob) {
       saveAs(blob, filename);
