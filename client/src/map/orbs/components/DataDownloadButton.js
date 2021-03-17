@@ -7,6 +7,7 @@ import { format } from 'date-fns';
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { getData } from 'utils/http';
+import { saveAs } from 'file-saver';
 
 const useStyles = makeStyles({
   button: {
@@ -51,24 +52,11 @@ export default ({
       Authorization: `Bearer ${dataToken}`,
     });
     const blob = await response.blob();
-    const objectUrl = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = objectUrl;
-    a.download = `${fileName}-${format(
-      new Date(),
-      'yyyyMMdd',
-    )}.${fileExtension}`;
-    const clickHandler = function () {
-      setTimeout(() => {
-        URL.revokeObjectURL(objectUrl);
-        this.removeEventListener('click', clickHandler);
-        (this.remove && (this.remove(), 1)) ||
-          (this.parentNode && this.parentNode.removeChild(this));
-        setIsLoading(false);
-      }, 150);
-    };
-    a.addEventListener('click', clickHandler, false);
-    a.click();
+    saveAs(
+      blob,
+      `${fileName}-${format(new Date(), 'yyyyMMdd')}.${fileExtension}`,
+    );
+    setIsLoading(false);
   };
 
   return (

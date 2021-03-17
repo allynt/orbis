@@ -64,12 +64,9 @@ describe('<DataDownloadButton />', () => {
     expect(getByRole('button')).toBeInTheDocument();
   });
 
-  it('creates a fake link to download the file', async () => {
-    jest.spyOn(document, 'createElement');
+  it('fetches the file when the button is clicked', async () => {
     const { getByRole } = renderComponent();
     userEvent.click(getByRole('button'));
-    await waitFor(() =>
-      expect(document.createElement).toHaveBeenCalledWith('a'),
-    );
+    await waitFor(() => expect(fetch).toHaveBeenCalled());
   });
 });
