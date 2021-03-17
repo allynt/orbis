@@ -137,8 +137,6 @@ export const AnalysisPanel = () => {
 
   const pdfIncompatible = selectedProperty?.type === 'discrete';
 
-  const togglePdf = () => setPdfOpen(!pdfOpen);
-
   if (!selectedProperty) return null;
 
   return (
@@ -178,7 +176,7 @@ export const AnalysisPanel = () => {
               aria-label="PDF export"
               className={styles.pdfButton}
               size="small"
-              onClick={togglePdf}
+              onClick={() => setPdfOpen(true)}
             >
               <PdfExportIcon />
             </IconButton>
@@ -215,7 +213,7 @@ export const AnalysisPanel = () => {
       />
       {!pdfIncompatible && (
         <Box className={styles.buttonContainer}>
-          <Button className={styles.button} onClick={togglePdf}>
+          <Button className={styles.button} onClick={() => setPdfOpen(true)}>
             Export PDF Report
           </Button>
         </Box>
@@ -225,10 +223,10 @@ export const AnalysisPanel = () => {
         classes={dialogStyles}
         maxWidth="lg"
         open={pdfOpen}
-        onClose={togglePdf}
+        onClose={() => setPdfOpen(false)}
         aria-labelledby="pdf-export-dialog"
       >
-        <PDF close={togglePdf} />
+        <PDF close={() => setPdfOpen(false)} />
       </Dialog>
     </SidePanel>
   );
