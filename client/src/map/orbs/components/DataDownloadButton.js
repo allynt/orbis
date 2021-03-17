@@ -52,10 +52,12 @@ export default ({
       Authorization: `Bearer ${dataToken}`,
     });
     const blob = await response.blob();
+    if (!!blob) {
     saveAs(
       blob,
       `${fileName}-${format(new Date(), 'yyyyMMdd')}.${fileExtension}`,
     );
+    }
     setIsLoading(false);
   };
 
