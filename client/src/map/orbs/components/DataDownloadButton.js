@@ -7,6 +7,7 @@ import { format } from 'date-fns';
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { saveAs } from 'file-saver';
+import { getData } from 'utils/http';
 
 const FILENAME_REGEX = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/;
 
@@ -37,8 +38,8 @@ const useStyles = makeStyles({
  */
 export default ({
   url,
-  fileName = 'orbis-download',
-  fileExtension = 'csv',
+  fileName: defaultFileName = 'orbis-download',
+  fileExtension: defaultFileExtension = 'csv',
   buttonText = 'Export Data',
   adminOnly = true,
 }) => {
@@ -59,14 +60,15 @@ export default ({
 
   const handleClick = async () => {
     setIsLoading(true);
-    const response = await fetch(url, {
-      headers: {
-        Authorization: `Bearer ${dataToken}`,
-      },
+    const response = await getData(url, {
+      Authorization: `Bearer ${dataToken}`,
     });
     const filename =
       getFilenameFromHeader(response.headers.get('content-disposition')) ||
-      `${fileName}-${format(new Date(), 'yyyyMMdd')}.${fileExtension}`;
+      `${defaultFileName}-${format(
+        new Date(),
+        'yyyyMMdd',
+      )}.${defaultFileExtension}`;
 
     const blob = await response.blob();
     if (!!blob) {
