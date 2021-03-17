@@ -6,8 +6,9 @@ import { selectDataToken } from 'data-layers/data-layers.slice';
 import { format } from 'date-fns';
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
-import { getData } from 'utils/http';
 import { saveAs } from 'file-saver';
+
+const FILENAME_REGEX = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/;
 
 const useStyles = makeStyles({
   button: {
@@ -53,12 +54,20 @@ export default ({
         Authorization: `Bearer ${dataToken}`,
       },
     });
+    const contentDisposition = response.headers.get('content-disposition');
+    let filename = `${fileName}-${format(
+      new Date(),
+      'yyyyMMdd',
+    )}.${fileExtension}`;
+    if (contentDisposition && contentDisposition.indexOf('attachment') !== -1) {
+      const matches = FILENAME_REGEX.exec(contentDisposition);
+      if (matches !== null && matches[1]) {
+        filename = matches[1].replace(/['"]/g, '');
+      }
+    }
     const blob = await response.blob();
     if (!!blob) {
-      saveAs(
-        blob,
-        `${fileName}-${format(new Date(), 'yyyyMMdd')}.${fileExtension}`,
-      );
+      saveAs(blob, filename);
     }
     setIsLoading(false);
   };
