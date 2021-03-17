@@ -15,6 +15,8 @@ import clsx from 'clsx';
 
 import {
   Button,
+  IconButton,
+  CloseIcon,
   List,
   Grid,
   ListItemText,
@@ -36,11 +38,15 @@ import { userSelector } from '../../accounts/accounts.selectors';
 import OrbisLogo from './orbis-logo.png';
 
 const useStyles = makeStyles(theme => ({
-  button: {
+  buttons: {
     position: 'absolute',
-    top: theme.typography.pxToRem(16),
-    left: theme.typography.pxToRem(16),
+    top: theme.typography.pxToRem(0),
+    left: theme.typography.pxToRem(0),
+    padding: theme.spacing(1.5),
+    width: 'inherit',
     zIndex: 10,
+  },
+  button: {
     padding: theme.spacing(1),
   },
   pdf: {
@@ -118,7 +124,7 @@ const useStyles = makeStyles(theme => ({
 
 const date = format(new Date(), 'MMMM do Y');
 
-const PDF = ({ creationDate = date }) => {
+const PDF = ({ close, creationDate = date }) => {
   const styles = useStyles();
   const dispatch = useDispatch();
 
@@ -181,6 +187,7 @@ const PDF = ({ creationDate = date }) => {
 
       doc.save('orbis-data-analysis.pdf');
     });
+    close();
   };
 
   if (!selectedProperty?.source_id) {
@@ -188,201 +195,188 @@ const PDF = ({ creationDate = date }) => {
     return null;
   }
   return (
-    <>
-      <Button className={styles.button} onClick={handleClick}>
-        Download PDF Report
-      </Button>
+    <Grid
+      item
+      container
+      direction="column"
+      className={styles.pdf}
+      id="pdf-form"
+    >
+      <Grid
+        container
+        justify="space-between"
+        alignItems="center"
+        className={styles.buttons}
+      >
+        <Button onClick={handleClick} className={styles.button}>
+          Download PDF Report
+        </Button>
+        <IconButton aria-label="Close" size="small" onClick={close}>
+          <CloseIcon titleAccess="Close" fontSize="inherit" />
+        </IconButton>
+      </Grid>
+      <div
+        className={styles.screenshot}
+        style={{
+          backgroundImage: `url(${image})`,
+        }}
+        data-testid="screenshot"
+      />
       <Grid
         item
         container
         direction="column"
-        className={styles.pdf}
-        id="pdf-form"
+        wrap="nowrap"
+        justify="space-between"
+        className={styles.pdfDocument}
       >
-        <div
-          className={styles.screenshot}
-          style={{
-            backgroundImage: `url(${image})`,
-          }}
-          data-testid="screenshot"
-        />
-        <Grid
-          item
-          container
-          direction="column"
-          wrap="nowrap"
-          justify="space-between"
-          className={styles.pdfDocument}
-        >
-          <Grid item container wrap="nowrap" className={styles.detailsGrid}>
-            <Grid
-              item
-              container
-              direction="column"
-              className={styles.gridColumn}
-            >
-              {areasOfInterest && (
-                <Grid item className={styles.gridElement}>
-                  <Typography variant="h3">
-                    Selected Areas of interest:
-                  </Typography>
-                  <List className={styles.list}>
-                    {areasOfInterest?.map(area_name => (
-                      <ListItemText key={area_name} primary={area_name} />
-                    ))}
-                  </List>
-                </Grid>
-              )}
-              {(populationTotal || householdTotal) && (
-                <Grid item className={styles.gridElement}>
-                  <List className={clsx(styles.aggregationData, styles.list)}>
-                    <ListItemText
-                      className={styles.listData}
-                      primary={
-                        <Typography variant="h4">Total population: </Typography>
-                      }
-                      secondary={<span>{populationTotal}</span>}
-                    />
-                    <ListItemText
-                      className={styles.listData}
-                      primary={
-                        <Typography variant="h4">Total households: </Typography>
-                      }
-                      secondary={<span>{householdTotal}</span>}
-                    />
-                  </List>
-                </Grid>
-              )}
-            </Grid>
-            <Grid
-              item
-              container
-              direction="column"
-              className={styles.gridColumn}
-            >
-              <Grid item className={clsx(styles.gridElement, styles.centered)}>
-                <Typography variant="h3">Selected Data Layer:</Typography>
-                <Typography>
-                  {selectedProperty?.application?.orbis?.label ||
-                    selectedProperty?.label}
-                </Typography>
-              </Grid>
-              {areaValue !== undefined && selectedProperty?.aggregates ? (
-                <Grid
-                  item
-                  className={clsx(styles.gridElement, styles.centered)}
-                >
-                  <Typography variant="h3">
-                    {areasOfInterest?.length > 1
-                      ? `${aggregationLabel} of
-                      selected areas:`
-                      : 'Value of selected area:'}
-                  </Typography>
-                  <div className={styles.bigValue}>{areaValue}</div>
-                  <Typography variant="h3">
-                    {aggregationLabel} of all areas:
-                  </Typography>
-                  <List className={clsx(styles.aggregationData, styles.list)}>
-                    {selectedProperty?.aggregates &&
-                      Object.entries(selectedProperty?.aggregates)?.map(
-                        ([key, value]) => (
-                          <ListItemText
-                            key={key}
-                            className={styles.listData}
-                            primary={
-                              <Typography variant="h4" align="left">
-                                {key}:{' '}
-                              </Typography>
-                            }
-                            secondary={<span>{value}</span>}
-                          />
-                        ),
-                      )}
-                  </List>
-                </Grid>
-              ) : null}
-              {breakdownAggregation?.length ? (
-                <Grid
-                  item
-                  className={clsx(styles.gridElement, styles.centered)}
-                >
-                  <Typography variant="h3">
-                    Breakdown of the data summed over all the selected areas:
-                  </Typography>
-                  <List className={clsx(styles.aggregationData, styles.list)}>
-                    {breakdownAggregation?.map(({ name, value }) => (
-                      <ListItemText
-                        key={name}
-                        className={styles.listData}
-                        primary={
-                          <Typography variant="h4" align="left">
-                            {name}:{' '}
-                          </Typography>
-                        }
-                        secondary={<span>{value}</span>}
-                      />
-                    ))}
-                  </List>
-                </Grid>
-              ) : null}
-            </Grid>
-            <Grid
-              item
-              container
-              direction="column"
-              className={styles.gridColumn}
-            >
+        <Grid item container wrap="nowrap" className={styles.detailsGrid}>
+          <Grid item container direction="column" className={styles.gridColumn}>
+            {areasOfInterest && (
               <Grid item className={styles.gridElement}>
-                <Typography>
-                  The information relates to the areas selected on the map.
+                <Typography variant="h3">
+                  Selected Areas of interest:
                 </Typography>
+                <List className={styles.list}>
+                  {areasOfInterest?.map(area_name => (
+                    <ListItemText key={area_name} primary={area_name} />
+                  ))}
+                </List>
               </Grid>
+            )}
+            {(populationTotal || householdTotal) && (
               <Grid item className={styles.gridElement}>
-                <Typography variant="h3">More Information:</Typography>
-                <Typography>Source: {selectedProperty?.source}</Typography>
-                <Typography component="p" align="justify">
-                  {selectedProperty?.details}
-                </Typography>
+                <List className={clsx(styles.aggregationData, styles.list)}>
+                  <ListItemText
+                    className={styles.listData}
+                    primary={
+                      <Typography variant="h4">Total population: </Typography>
+                    }
+                    secondary={<span>{populationTotal}</span>}
+                  />
+                  <ListItemText
+                    className={styles.listData}
+                    primary={
+                      <Typography variant="h4">Total households: </Typography>
+                    }
+                    secondary={<span>{householdTotal}</span>}
+                  />
+                </List>
               </Grid>
-            </Grid>
+            )}
           </Grid>
-          <Grid
-            item
-            container
-            component="footer"
-            wrap="nowrap"
-            justify="space-between"
-            alignItems="center"
-          >
-            <Grid
-              item
-              container
-              direction="column"
-              alignItems="flex-end"
-              className={styles.footerElement}
-            >
-              <Typography>Data Analysis Report</Typography>
-              <Typography>ORBIS by ASTROSAT</Typography>
+          <Grid item container direction="column" className={styles.gridColumn}>
+            <Grid item className={clsx(styles.gridElement, styles.centered)}>
+              <Typography variant="h3">Selected Data Layer:</Typography>
+              <Typography>
+                {selectedProperty?.application?.orbis?.label ||
+                  selectedProperty?.label}
+              </Typography>
             </Grid>
-            <img className={styles.logo} src={OrbisLogo} alt="Orbis logo" />
-            <Grid
-              item
-              container
-              direction="column"
-              className={styles.footerElement}
-            >
-              {user?.name && (
-                <Typography data-testid="user-name">
-                  Report run by: {user.name}
+            {areaValue !== undefined && selectedProperty?.aggregates ? (
+              <Grid item className={clsx(styles.gridElement, styles.centered)}>
+                <Typography variant="h3">
+                  {areasOfInterest?.length > 1
+                    ? `${aggregationLabel} of
+                      selected areas:`
+                    : 'Value of selected area:'}
                 </Typography>
-              )}
-              <Typography>User Name: {user?.email}</Typography>
-              <Typography>Date of the Report: {creationDate}</Typography>
+                <div className={styles.bigValue}>{areaValue}</div>
+                <Typography variant="h3">
+                  {aggregationLabel} of all areas:
+                </Typography>
+                <List className={clsx(styles.aggregationData, styles.list)}>
+                  {selectedProperty?.aggregates &&
+                    Object.entries(selectedProperty?.aggregates)?.map(
+                      ([key, value]) => (
+                        <ListItemText
+                          key={key}
+                          className={styles.listData}
+                          primary={
+                            <Typography variant="h4" align="left">
+                              {key}:{' '}
+                            </Typography>
+                          }
+                          secondary={<span>{value}</span>}
+                        />
+                      ),
+                    )}
+                </List>
+              </Grid>
+            ) : null}
+            {breakdownAggregation?.length ? (
+              <Grid item className={clsx(styles.gridElement, styles.centered)}>
+                <Typography variant="h3">
+                  Breakdown of the data summed over all the selected areas:
+                </Typography>
+                <List className={clsx(styles.aggregationData, styles.list)}>
+                  {breakdownAggregation?.map(({ name, value }) => (
+                    <ListItemText
+                      key={name}
+                      className={styles.listData}
+                      primary={
+                        <Typography variant="h4" align="left">
+                          {name}:{' '}
+                        </Typography>
+                      }
+                      secondary={<span>{value}</span>}
+                    />
+                  ))}
+                </List>
+              </Grid>
+            ) : null}
+          </Grid>
+          <Grid item container direction="column" className={styles.gridColumn}>
+            <Grid item className={styles.gridElement}>
+              <Typography>
+                The information relates to the areas selected on the map.
+              </Typography>
+            </Grid>
+            <Grid item className={styles.gridElement}>
+              <Typography variant="h3">More Information:</Typography>
+              <Typography>Source: {selectedProperty?.source}</Typography>
+              <Typography component="p" align="justify">
+                {selectedProperty?.details}
+              </Typography>
             </Grid>
           </Grid>
         </Grid>
+        <Grid
+          item
+          container
+          component="footer"
+          wrap="nowrap"
+          justify="space-between"
+          alignItems="center"
+        >
+          <Grid
+            item
+            container
+            direction="column"
+            alignItems="flex-end"
+            className={styles.footerElement}
+          >
+            <Typography>Data Analysis Report</Typography>
+            <Typography>ORBIS by ASTROSAT</Typography>
+          </Grid>
+          <img className={styles.logo} src={OrbisLogo} alt="Orbis logo" />
+          <Grid
+            item
+            container
+            direction="column"
+            className={styles.footerElement}
+          >
+            {user?.name && (
+              <Typography data-testid="user-name">
+                Report run by: {user.name}
+              </Typography>
+            )}
+            <Typography>User Name: {user?.email}</Typography>
+            <Typography>Date of the Report: {creationDate}</Typography>
+          </Grid>
+        </Grid>
       </Grid>
-    </>
+    </Grid>
   );
 };
 

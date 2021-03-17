@@ -1,5 +1,7 @@
 import React from 'react';
 
+import { action } from '@storybook/addon-actions';
+
 import { Provider } from 'react-redux';
 import { MapProvider } from 'MapContext';
 
@@ -60,7 +62,7 @@ const Template = ({ user = defaultUser, state = defaultState }) => {
       })}
     >
       <MapProvider>
-        <PDF creationDate={'March 12th 2021'} />
+        <PDF close={action('close')} creationDate={'March 12th 2021'} />
       </MapProvider>
     </Provider>
   );
