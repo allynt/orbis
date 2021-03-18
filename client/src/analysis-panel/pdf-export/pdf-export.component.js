@@ -44,8 +44,8 @@ const useStyles = makeStyles(theme => ({
   },
   buttons: {
     position: 'absolute',
-    top: theme.typography.pxToRem(0),
-    left: theme.typography.pxToRem(0),
+    top: '0',
+    left: '0',
     padding: theme.spacing(1.5),
     width: 'inherit',
     zIndex: 10,
@@ -98,6 +98,13 @@ const useStyles = makeStyles(theme => ({
     textAlign: 'center',
     alignItems: 'center',
   },
+  limitHeight: {
+    maxHeight: '18rem',
+    '& > *': {
+      maxHeight: '6rem',
+      overflow: 'hidden',
+    },
+  },
   aggregationData: {
     alignSelf: 'flex-start',
     minWidth: '75%',
@@ -110,6 +117,10 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     justifyContent: 'space-between',
     margin: theme.spacing(1, 0),
+  },
+  details: {
+    maxHeight: 'inherit',
+    overflow: 'hidden',
   },
   footerElement: {
     width: '100%',
@@ -128,7 +139,7 @@ const useStyles = makeStyles(theme => ({
 
 const date = format(new Date(), 'MMMM do Y');
 
-const PDF = ({ close, creationDate = date }) => {
+const PDF = ({ close, licence, creationDate = date }) => {
   const styles = useStyles();
   const dispatch = useDispatch();
 
@@ -359,11 +370,19 @@ const PDF = ({ close, creationDate = date }) => {
                   The information relates to the areas selected on the map.
                 </Typography>
               </Grid>
-              <Grid item className={styles.gridElement}>
+              <Grid
+                item
+                className={clsx(styles.gridElement, styles.limitHeight)}
+              >
                 <Typography variant="h3">More Information:</Typography>
-                <Typography>Source: {selectedProperty?.source}</Typography>
                 <Typography component="p" align="justify">
-                  {selectedProperty?.details}
+                  <strong>Details:</strong> {selectedProperty?.details}
+                </Typography>
+                <Typography>
+                  <strong>Source:</strong> {selectedProperty?.source}
+                </Typography>
+                <Typography>
+                  <strong>Licence:</strong> {licence}
                 </Typography>
               </Grid>
             </Grid>
