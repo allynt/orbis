@@ -14,16 +14,16 @@ export default ({ selectedLayer }) => {
   const visible = useSelector(state =>
     layersVisibilitySelector(selectedLayer.source_id)(state.orbs),
   );
-  const other = useSelector(state =>
-    otherSelector(selectedLayer.source_id)(state.orbs),
-  );
+  const namespaceId = `${selectedLayer.authority}/${selectedLayer.namespace}/*/*`;
+  const other = useSelector(state => otherSelector(namespaceId)(state.orbs));
+
   return (
     <RiceRasterSidebarComponent
       dateValue={other?.date}
       onDateChange={(_, date) =>
         dispatch(
           setOther({
-            source_id: selectedLayer.source_id,
+            source_id: namespaceId,
             other: { ...other, date },
           }),
         )
@@ -32,7 +32,7 @@ export default ({ selectedLayer }) => {
       onColumnClick={column =>
         dispatch(
           setOther({
-            source_id: selectedLayer.source_id,
+            source_id: namespaceId,
             other: { ...other, column },
           }),
         )
