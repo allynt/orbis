@@ -14,9 +14,15 @@ import {
   Slider,
   Typography,
 } from '@astrosat/astrosat-ui';
-import { Visibility, VisibilityOff } from '@material-ui/icons';
+import {
+  Pause,
+  PlayArrow,
+  Visibility,
+  VisibilityOff,
+} from '@material-ui/icons';
 import { format, startOfYear, endOfYear } from 'date-fns';
-import React from 'react';
+import { findIndex, indexOf } from 'lodash';
+import React, { useEffect, useState } from 'react';
 
 const useStyles = makeStyles(theme => ({
   icon: { minWidth: '0' },
@@ -27,7 +33,7 @@ const marks = [
   new Date(2020, 2, 12),
   new Date(2020, 4, 6),
   new Date(2020, 6, 25),
-].map(date => ({ value: date.getTime(), label: format(date, 'yyyy-MM') }));
+].map(date => ({ value: date.getTime(), label: format(date, 'yy-MM') }));
 
 const COLUMNS = [
   {
@@ -59,6 +65,19 @@ export const RiceRasterSidebarComponent = ({
   onVisibilityClick,
 }) => {
   const styles = useStyles();
+  const [isPlaying, setIsPlaying] = useState(false);
+
+  useEffect(() => {
+    if (isPlaying) {
+      const next =
+        marks[findIndex(marks, { value: dateValue }) + 1]?.value ||
+        marks[0].value;
+      setTimeout(() => {
+        onDateChange({}, next);
+      }, 1000);
+    }
+  }, [dateValue, isPlaying, onDateChange]);
+
   return (
     <Grid container spacing={2}>
       <Grid item xs={12}>
@@ -70,6 +89,7 @@ export const RiceRasterSidebarComponent = ({
             <ListItem
               key={value}
               button
+              disabled={isPlaying}
               onClick={() => onColumnClick(value)}
               selected={column === value}
             >
@@ -88,14 +108,23 @@ export const RiceRasterSidebarComponent = ({
         <Typography variant="h5" component="p">
           Date
         </Typography>
-        <Slider
-          value={dateValue}
-          onChange={onDateChange}
-          min={startOfYear(new Date(2020, 0, 1)).getTime()}
-          max={endOfYear(new Date(2020, 0, 1)).getTime()}
-          marks={marks}
-          step={null}
-        />
+        <Grid container alignItems="center">
+          <Grid item xs={2}>
+            <IconButton onClick={() => setIsPlaying(c => !c)}>
+              {isPlaying ? <Pause /> : <PlayArrow />}
+            </IconButton>
+          </Grid>
+          <Grid item xs>
+            <Slider
+              value={dateValue}
+              onChange={onDateChange}
+              min={startOfYear(new Date(2020, 0, 1)).getTime()}
+              max={endOfYear(new Date(2020, 0, 1)).getTime()}
+              marks={marks}
+              step={null}
+            />
+          </Grid>
+        </Grid>
       </Grid>
       <Grid item container justify="center">
         <Button size="small" onClick={onVisibilityClick}>
