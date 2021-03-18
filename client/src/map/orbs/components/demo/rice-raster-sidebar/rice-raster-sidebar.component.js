@@ -1,7 +1,5 @@
 import {
   Avatar,
-  Box,
-  Button,
   Grid,
   IconButton,
   List,
@@ -14,17 +12,15 @@ import {
   Slider,
   Typography,
 } from '@astrosat/astrosat-ui';
-import {
-  Pause,
-  PlayArrow,
-  Visibility,
-  VisibilityOff,
-} from '@material-ui/icons';
+import { Pause, PlayArrow } from '@material-ui/icons';
 import { format, startOfYear, endOfYear } from 'date-fns';
 import { findIndex } from 'lodash';
 import React, { useEffect, useState } from 'react';
 
 const useStyles = makeStyles(theme => ({
+  grid: {
+    marginBottom: theme.spacing(2),
+  },
   icon: { minWidth: '0' },
   avatar: { minWidth: '0', margin: theme.spacing(0, 2) },
 }));
@@ -61,8 +57,6 @@ export const RiceRasterSidebarComponent = ({
   column = 'rgb',
   onDateChange,
   onColumnClick,
-  visible = true,
-  onVisibilityClick,
 }) => {
   const styles = useStyles();
   const [isPlaying, setIsPlaying] = useState(false);
@@ -74,13 +68,13 @@ export const RiceRasterSidebarComponent = ({
         marks[0].value;
       const timeout = setTimeout(() => {
         onDateChange({}, next);
-      }, 1000);
+      }, 1300);
       return () => clearTimeout(timeout);
     }
   }, [dateValue, isPlaying, onDateChange]);
 
   return (
-    <Grid container spacing={2}>
+    <Grid className={styles.grid} container spacing={2}>
       <Grid item xs={12}>
         <Typography variant="h5" component="p">
           Column
@@ -127,15 +121,6 @@ export const RiceRasterSidebarComponent = ({
             />
           </Grid>
         </Grid>
-      </Grid>
-      <Grid item container justify="center">
-        <Button size="small" onClick={onVisibilityClick}>
-          {visible ? (
-            <Visibility titleAccess="hide" />
-          ) : (
-            <VisibilityOff titleAccess="show" />
-          )}
-        </Button>
       </Grid>
     </Grid>
   );

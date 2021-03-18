@@ -4,6 +4,7 @@ import { ColorScale } from 'utils/ColorScale';
 import {
   extrudedModeSelector,
   extrusionScaleSelector,
+  layersVisibilitySelector,
   otherSelector,
 } from '../orbReducer';
 
@@ -14,6 +15,7 @@ const DEFAULT_COLUMN = 'rgb',
 export default ({ id, data, orbState, activeSources }) => {
   const extruded = extrudedModeSelector(orbState);
   const elevationScale = extrusionScaleSelector(orbState);
+  const visible = layersVisibilitySelector(id)(orbState);
   const source = find(activeSources, { source_id: id });
   const other = otherSelector(`${source.authority}/${source.namespace}/*/*`)(
     orbState,
@@ -47,6 +49,7 @@ export default ({ id, data, orbState, activeSources }) => {
 
   return {
     id,
+    visible,
     data,
     extruded,
     elevationScale: 100 * elevationScale,
