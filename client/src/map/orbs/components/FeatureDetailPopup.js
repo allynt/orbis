@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
+import { centerOfMass } from '@turf/turf';
 
 import { FeatureDetail, Popup } from 'components';
 
@@ -56,11 +57,15 @@ const FeatureDetailPopup = ({ source }) => {
   if (!clickedFeatures?.length && !hoveredFeatures?.length) return null;
 
   const { features, action } = getDetailContent();
+  const center =
+    features[0].geometry.type === 'Polygon'
+      ? centerOfMass({ type: 'Feature', ...features?.[0] })
+      : features[0];
   return (
     <Popup
-      latitude={features?.[0]?.geometry.coordinates[1]}
-      longitude={features?.[0]?.geometry.coordinates[0]}
-      offsetTop={-25}
+      longitude={center.geometry.coordinates[0]}
+      latitude={center.geometry.coordinates[1]}
+      offsetTop={features[0].geometry.type === 'Polygon' ? 0 : -25}
       onClose={() => dispatch(action())}
     >
       <FeatureDetail features={features?.map(obj => obj?.properties)} />

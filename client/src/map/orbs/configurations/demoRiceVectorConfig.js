@@ -6,13 +6,14 @@ import {
   extrusionScaleSelector,
   layersVisibilitySelector,
   otherSelector,
+  setClickedFeatures,
 } from '../orbReducer';
 
 const DEFAULT_COLUMN = 'rgb',
   DEFAULT_DATE = 1583971200000;
 
 /** @type {import("typings/orbis").LayerConfiguration} */
-export default ({ id, data, orbState, activeSources }) => {
+export default ({ id, data, orbState, activeSources, dispatch }) => {
   const extruded = extrudedModeSelector(orbState);
   const elevationScale = extrusionScaleSelector(orbState);
   const visible = layersVisibilitySelector(id)(orbState);
@@ -51,6 +52,12 @@ export default ({ id, data, orbState, activeSources }) => {
     id,
     visible,
     data,
+    pickable: true,
+    autoHighlight: true,
+    onClick: f =>
+      dispatch(
+        setClickedFeatures({ source_id: id, clickedFeatures: [f.object] }),
+      ),
     extruded,
     elevationScale: 100 * elevationScale,
     getElevation,
