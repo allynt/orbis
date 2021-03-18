@@ -226,6 +226,7 @@ type LayerConfiguration = (props: {
   orbState: OrbState;
   authToken: string;
   activeSources: Source[];
+  dispatch: Dispatch;
 }) => any;
 
 /** A feature which has been picked from the map by onHover or onClick */
