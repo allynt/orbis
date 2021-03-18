@@ -1,4 +1,5 @@
-export default ({ id, data }) => {
+/** @type {import("typings/orbis").LayerConfiguration} */
+export default ({ id, data, orbState }) => {
   return {
     id,
     data,

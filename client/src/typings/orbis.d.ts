@@ -1,4 +1,5 @@
 import { Dispatch } from 'redux';
+import { OrbState } from '../map/orbs/orbReducer'; // eslint-disable-line
 
 type LayerName =
   | 'ClusteredIconLayer'
@@ -218,6 +219,14 @@ type GeoJsonFeature<P = {}> = {
   geometry: { coordinates?: number[] };
   properties: { cluster?: boolean; expansion_zoom?: number } & P;
 };
+
+type LayerConfiguration = (props: {
+  id: string;
+  data: any;
+  orbState: OrbState;
+  authToken: string;
+  activeSources: Source[];
+}) => any;
 
 /** A feature which has been picked from the map by onHover or onClick */
 type PickedMapFeature<P = {}> = {

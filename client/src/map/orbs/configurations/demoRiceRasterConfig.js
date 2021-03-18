@@ -2,6 +2,7 @@ import { format } from 'date-fns';
 import { find } from 'lodash';
 import { layersVisibilitySelector, otherSelector } from '../orbReducer';
 
+/** @type {import('typings/orbis').LayerConfiguration} */
 export default ({ id, data, activeSources, authToken, orbState }) => {
   const defaultColumn = 'rgb';
   const defaultDate = '20200312';
