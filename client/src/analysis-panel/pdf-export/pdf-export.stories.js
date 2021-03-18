@@ -9,12 +9,15 @@ import PDF from './pdf-export.component';
 
 const mockStore = configureMockStore();
 
-export default { title: 'Analysis Panel/PDF Export' };
+export default {
+  title: 'Analysis Panel/PDF Export',
+  argTypes: { close: { action: 'close' } },
+};
 
 const defaultUser = { name: 'John Smith', email: 'johnsmith@gmail.com' };
 
 const generateFeatures = n => {
-  return new Array(n).fill(undefined).map(feat => ({
+  return new Array(n).fill(undefined).map(() => ({
     object: {
       properties: {
         area_name: 'test_area_name',
@@ -49,7 +52,7 @@ const defaultState = {
   clickedFeatures: generateFeatures(3),
 };
 
-const Template = ({ user = defaultUser, state = defaultState }) => {
+const Template = ({ user = defaultUser, state = defaultState, ...args }) => {
   return (
     <Provider
       store={mockStore({
@@ -60,7 +63,7 @@ const Template = ({ user = defaultUser, state = defaultState }) => {
       })}
     >
       <MapProvider>
-        <PDF creationDate={'March 12th 2021'} />
+        <PDF creationDate={'March 12th 2021'} {...args} />
       </MapProvider>
     </Provider>
   );

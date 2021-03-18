@@ -226,7 +226,7 @@ export const AnalysisPanel = () => {
         onClose={() => setPdfOpen(false)}
         aria-labelledby="pdf-export-dialog"
       >
-        <PDF />
+        <PDF close={() => setPdfOpen(false)} />
       </Dialog>
     </SidePanel>
   );

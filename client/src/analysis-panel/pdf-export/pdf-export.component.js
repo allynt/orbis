@@ -15,6 +15,8 @@ import clsx from 'clsx';
 
 import {
   Button,
+  IconButton,
+  CloseIcon,
   List,
   Grid,
   ListItemText,
@@ -36,20 +38,28 @@ import { userSelector } from '../../accounts/accounts.selectors';
 import OrbisLogo from './orbis-logo.png';
 
 const useStyles = makeStyles(theme => ({
-  button: {
+  container: {
+    height: '100%',
+    width: '70.5vh',
+  },
+  buttons: {
     position: 'absolute',
-    top: theme.typography.pxToRem(16),
-    left: theme.typography.pxToRem(16),
+    top: theme.typography.pxToRem(0),
+    left: theme.typography.pxToRem(0),
+    padding: theme.spacing(1.5),
+    width: 'inherit',
     zIndex: 10,
+  },
+  button: {
     padding: theme.spacing(1),
   },
   pdf: {
     alignSelf: 'center',
     color: theme.palette.text.primary,
     backgroundColor: theme.palette.background.default,
-    height: '100%',
     // A4 paper width/height ratio
-    width: '70.5vh',
+    height: 'inherit',
+    width: 'inherit',
   },
   screenshot: {
     backgroundSize: 'cover',
@@ -118,7 +128,7 @@ const useStyles = makeStyles(theme => ({
 
 const date = format(new Date(), 'MMMM do Y');
 
-const PDF = ({ creationDate = date }) => {
+const PDF = ({ close, creationDate = date }) => {
   const styles = useStyles();
   const dispatch = useDispatch();
 
@@ -181,6 +191,7 @@ const PDF = ({ creationDate = date }) => {
 
       doc.save('orbis-data-analysis.pdf');
     });
+    close();
   };
 
   if (!selectedProperty?.source_id) {
@@ -188,10 +199,21 @@ const PDF = ({ creationDate = date }) => {
     return null;
   }
   return (
-    <>
-      <Button className={styles.button} onClick={handleClick}>
-        Download PDF Report
-      </Button>
+    <Grid container direction="column" className={styles.container}>
+      <Grid
+        container
+        item
+        justify="space-between"
+        alignItems="center"
+        className={styles.buttons}
+      >
+        <Button onClick={handleClick} className={styles.button}>
+          Download PDF Report
+        </Button>
+        <IconButton aria-label="Close" size="small" onClick={close}>
+          <CloseIcon titleAccess="Close" fontSize="inherit" />
+        </IconButton>
+      </Grid>
       <Grid
         item
         container
@@ -382,7 +404,7 @@ const PDF = ({ creationDate = date }) => {
           </Grid>
         </Grid>
       </Grid>
-    </>
+    </Grid>
   );
 };
 
