@@ -21,7 +21,7 @@ import {
   VisibilityOff,
 } from '@material-ui/icons';
 import { format, startOfYear, endOfYear } from 'date-fns';
-import { findIndex, indexOf } from 'lodash';
+import { findIndex } from 'lodash';
 import React, { useEffect, useState } from 'react';
 
 const useStyles = makeStyles(theme => ({
@@ -33,7 +33,7 @@ const marks = [
   new Date(2020, 2, 12),
   new Date(2020, 4, 6),
   new Date(2020, 6, 25),
-].map(date => ({ value: date.getTime(), label: format(date, 'yy-MM') }));
+].map(date => ({ value: date.getTime(), label: format(date, 'MM/yy') }));
 
 const COLUMNS = [
   {
@@ -72,9 +72,10 @@ export const RiceRasterSidebarComponent = ({
       const next =
         marks[findIndex(marks, { value: dateValue }) + 1]?.value ||
         marks[0].value;
-      setTimeout(() => {
+      const timeout = setTimeout(() => {
         onDateChange({}, next);
       }, 1000);
+      return () => clearTimeout(timeout);
     }
   }, [dateValue, isPlaying, onDateChange]);
 
@@ -110,12 +111,13 @@ export const RiceRasterSidebarComponent = ({
         </Typography>
         <Grid container alignItems="center">
           <Grid item xs={2}>
-            <IconButton onClick={() => setIsPlaying(c => !c)}>
+            <IconButton color="primary" onClick={() => setIsPlaying(c => !c)}>
               {isPlaying ? <Pause /> : <PlayArrow />}
             </IconButton>
           </Grid>
           <Grid item xs>
             <Slider
+              style={{ marginTop: '20px' }}
               value={dateValue}
               onChange={onDateChange}
               min={startOfYear(new Date(2020, 0, 1)).getTime()}
