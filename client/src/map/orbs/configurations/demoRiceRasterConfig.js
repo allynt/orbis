@@ -7,7 +7,7 @@ export default ({ id, data, activeSources, authToken, orbState }) => {
   const defaultColumn = 'rgb';
   const defaultDate = '20200312';
   const source = activeSources.find(s => s.source_id === id);
-  const other = otherSelector(`${source.authority}/${source.namespace}/*/*`)(
+  const other = otherSelector(`${source.authority}/${source.namespace}/rice/*`)(
     orbState,
   );
   const visible = layersVisibilitySelector(id)(orbState);

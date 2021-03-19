@@ -18,7 +18,7 @@ export default ({ id, data, orbState, activeSources, dispatch }) => {
   const elevationScale = extrusionScaleSelector(orbState);
   const visible = layersVisibilitySelector(id)(orbState);
   const source = find(activeSources, { source_id: id });
-  const other = otherSelector(`${source.authority}/${source.namespace}/*/*`)(
+  const other = otherSelector(`${source.authority}/${source.namespace}/rice/*`)(
     orbState,
   );
   const column = get(other, 'column', DEFAULT_COLUMN),
