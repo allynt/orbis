@@ -26,7 +26,7 @@ from astrosat_users.views import (
 from orbis.models import LicencedCustomer as Customer
 from orbis.serializers import CustomerSerializer, CustomerUserSerializer
 
-from core.analytics import format_elasticsearch_timestamp
+from astrosat.utils import format_elasticsearch_timestamp
 
 
 db_logger = logging.getLogger("db")

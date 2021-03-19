@@ -77,15 +77,16 @@ LOGGING = {
         "db": {
             "class": "astrosat.utils.DatabaseLogHandler",
         },
-        "orbis_analytics": {
+        "analytics": {
             "level": "INFO",
-            "class": "core.analytics.OrbisAnalyticsTCPLogstashHandler",
+            "class": "astrosat.utils.AstrosatAppTCPLogstashLogHandler",
             "host": LOGSTASH_ENDPOINT,
             "port": 5959,
-            # app/instance/environment are used by logstash to route messages into indexes
+            # app/instance/environment/stream are used by logstash to route messages into indexes
             "app": DEPLOYMENT_APP,
             "instance": DEPLOYMENT_INSTANCE,
             "environment": DEPLOYMENT_ENVIRONMENT,
+            "stream": "events",
         },
     },
     "root": {"handlers": ["default"], "level": "INFO"},
@@ -96,7 +97,7 @@ LOGGING = {
             "propagate": False,
         },
         "db": {
-            "handlers": ["db", "orbis_analytics"],
+            "handlers": ["db", "analytics"],
             "level": "DEBUG",
         },
     },
