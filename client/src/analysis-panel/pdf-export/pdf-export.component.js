@@ -40,7 +40,8 @@ import OrbisLogo from './orbis-logo.png';
 const useStyles = makeStyles(theme => ({
   container: {
     height: '100%',
-    width: '70.5vh',
+    // A4 paper width/height ratio minus margin on dialog
+    width: `calc(70vh - ${theme.typography.pxToRem(64)})`,
   },
   buttons: {
     position: 'absolute',
@@ -57,7 +58,6 @@ const useStyles = makeStyles(theme => ({
     alignSelf: 'center',
     color: theme.palette.text.primary,
     backgroundColor: theme.palette.background.default,
-    // A4 paper width/height ratio
     height: 'inherit',
     width: 'inherit',
   },
@@ -99,11 +99,11 @@ const useStyles = makeStyles(theme => ({
     alignItems: 'center',
   },
   limitHeight: {
-    maxHeight: '18rem',
-    '& > *': {
-      maxHeight: '6rem',
-      overflow: 'hidden',
-    },
+    position: 'relative',
+    height: '100%',
+    maxHeight: ({ MAX_DETAILS_HEIGHT }) =>
+      theme.typography.pxToRem(MAX_DETAILS_HEIGHT),
+    overflow: 'hidden',
   },
   aggregationData: {
     alignSelf: 'flex-start',
@@ -119,8 +119,15 @@ const useStyles = makeStyles(theme => ({
     margin: theme.spacing(1, 0),
   },
   details: {
-    maxHeight: 'inherit',
     overflow: 'hidden',
+  },
+  fade: {
+    position: 'absolute',
+    bottom: '0',
+    width: '100%',
+    height: '2rem',
+    background:
+      'linear-gradient(rgba(51, 63, 72, 0), rgba(51, 63, 72, 0.5), rgb(51, 63, 72))',
   },
   footerElement: {
     width: '100%',
@@ -132,6 +139,11 @@ const useStyles = makeStyles(theme => ({
       padding: theme.spacing(0, 0, 0, 2),
     },
   },
+  userDetails: {
+    '& > *': {
+      fontSize: theme.typography.pxToRem(12),
+    },
+  },
   logo: {
     height: theme.typography.pxToRem(40),
   },
@@ -140,7 +152,9 @@ const useStyles = makeStyles(theme => ({
 const date = format(new Date(), 'MMMM do Y');
 
 const PDF = ({ close, licence, creationDate = date }) => {
-  const styles = useStyles();
+  const MAX_DETAILS_HEIGHT = 240;
+
+  const styles = useStyles({ MAX_DETAILS_HEIGHT });
   const dispatch = useDispatch();
 
   const selectedProperty = useSelector(state => propertySelector(state?.orbs));
@@ -166,6 +180,7 @@ const PDF = ({ close, licence, creationDate = date }) => {
 
   const { createScreenshot, topMapRef, deckRef, bottomMapRef } = useMap();
   const [image, setImage] = useState(undefined);
+  const [overflow, setOverflow] = useState(false);
 
   const aggregationLabel =
     selectedProperty?.aggregation === 'sum' ? 'Sum' : 'Average';
@@ -181,6 +196,14 @@ const PDF = ({ close, licence, creationDate = date }) => {
       });
     }
   }, [createScreenshot, topMapRef, deckRef, bottomMapRef]);
+
+  useEffect(() => {
+    const details = document.getElementById('details');
+    if (details) {
+      const detailsHeight = window.getComputedStyle(details).height;
+      if (detailsHeight === `${MAX_DETAILS_HEIGHT}px`) setOverflow(true);
+    }
+  }, []);
 
   const handleClick = () => {
     const div = document.getElementById('pdf-form');
@@ -254,6 +277,13 @@ const PDF = ({ close, licence, creationDate = date }) => {
               direction="column"
               className={styles.gridColumn}
             >
+              <Grid item className={clsx(styles.gridElement, styles.centered)}>
+                <Typography variant="h3">Selected Data Layer:</Typography>
+                <Typography>
+                  {selectedProperty?.application?.orbis?.label ||
+                    selectedProperty?.label}
+                </Typography>
+              </Grid>
               {areasOfInterest && (
                 <Grid item className={styles.gridElement}>
                   <Typography variant="h3">
@@ -293,13 +323,6 @@ const PDF = ({ close, licence, creationDate = date }) => {
               direction="column"
               className={styles.gridColumn}
             >
-              <Grid item className={clsx(styles.gridElement, styles.centered)}>
-                <Typography variant="h3">Selected Data Layer:</Typography>
-                <Typography>
-                  {selectedProperty?.application?.orbis?.label ||
-                    selectedProperty?.label}
-                </Typography>
-              </Grid>
               {areaValue !== undefined && selectedProperty?.aggregates ? (
                 <Grid
                   item
@@ -370,20 +393,25 @@ const PDF = ({ close, licence, creationDate = date }) => {
                   The information relates to the areas selected on the map.
                 </Typography>
               </Grid>
-              <Grid
-                item
-                className={clsx(styles.gridElement, styles.limitHeight)}
-              >
-                <Typography variant="h3">More Information:</Typography>
-                <Typography component="p" align="justify">
-                  <strong>Details:</strong> {selectedProperty?.details}
-                </Typography>
+
+              <Grid item className={styles.gridElement}>
                 <Typography>
                   <strong>Source:</strong> {selectedProperty?.source}
                 </Typography>
                 <Typography>
                   <strong>Licence:</strong> {licence}
                 </Typography>
+              </Grid>
+
+              <Grid
+                item
+                className={clsx(styles.gridElement, styles.limitHeight)}
+                id="details"
+              >
+                <Typography component="p" align="justify">
+                  <strong>Details:</strong> {selectedProperty?.details}
+                </Typography>
+                {overflow && <div className={styles.fade} />}
               </Grid>
             </Grid>
           </Grid>
@@ -410,7 +438,7 @@ const PDF = ({ close, licence, creationDate = date }) => {
               item
               container
               direction="column"
-              className={styles.footerElement}
+              className={clsx(styles.footerElement, styles.userDetails)}
             >
               {user?.name && (
                 <Typography data-testid="user-name">
