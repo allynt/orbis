@@ -114,3 +114,6 @@ client/proxy/**/*.png
 # Temporary env files
 client/public/env-config.js
 client/env-config.js
+
+# Dev's copy of okteto.yml
+okteto.yml

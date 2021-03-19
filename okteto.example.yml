@@ -1,0 +1,50 @@
+# Okteto config
+#
+# How to use:
+#
+# Prep:
+# * Copy this file to "okteto.yml"
+# * Replace !NUMBER! with your PR number
+# * Ensure that your PR has *already finished deploying* - we can't hijack a non-existent instance!
+#
+# Usage:
+# * To start, run: okteto up
+# * The first time takes aaaagggess, but deps will be cached after that
+# * Develop as usual, use the tmux session if you need to (re-)run any commands
+# * Access the instance on localhost:3000 or localhost:8000 as usual
+# (* Or you can use the normal PR env URL, but that will only use the dev backend, not dev frontend)
+# * If you lose connection, just run `okteto up` again
+#
+# When done:
+# * Run: okteto down --volumes
+# * IMPORTANT: Okteto allocates a virtual disk (that costs some $) to store the cached deps on. The `--volumes` flag deletes this virtual disk.
+#               So be sure to remember to run this command, or else we'll be left with orphan disks racking up the bills!
+
+# UPDATE ME: replace !NUMBER! with your PR number
+name: orbis-okteto-dev-pr-!NUMBER!
+labels:
+  # UPDATE ME: replace !NUMBER! with your PR number
+  instance: pr-!NUMBER!
+  role: server
+  app: orbis
+image: "339570402237.dkr.ecr.eu-west-1.amazonaws.com/company/astrosat/base:python36-node12"
+workdir: "/home/app/"
+command:
+  - "/bin/bash"
+  - "-i"
+  - "-c"
+  - "tmux attach -t dev || tmux new-session -s dev 'cd client && yarn && yarn start' ';' split-window 'cd server && pipenv sync --dev && while true; do pipenv run ./manage.py runserver 0.0.0.0:8000; sleep 1; done' ';' split-window bash"
+environment:
+  - GITHUB_REGISTRY_TOKEN=$GITHUB_REGISTRY_TOKEN
+volumes:
+  - /home/app/server/.venv/
+  - /home/app/client/node_modules/
+sync:
+  - ./client:/home/app/client
+  - ./server:/home/app/server
+forward:
+  - 3000:3000
+  - 8000:8000
+persistentVolume:
+  enabled: true
+  size: "16Gi"
