@@ -1,7 +1,13 @@
+import { endOfYear, format, startOfYear } from 'date-fns';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { otherSelector, setOther } from '../orbReducer';
-import { PollutionRasterDateSlider } from './demo/pollution-raster-sidebar/pollution-raster-date-slider.component';
+import { DateStepper } from './date-stepper/date-stepper.component';
+
+const DATES = [new Date(2020, 5), new Date(2020, 8)].map(date => ({
+  value: date.getTime(),
+  label: format(date, 'MM/yy'),
+}));
 
 /** @type {import("typings/orbis").SidebarComponent} */
 export default ({ selectedLayer }) => {
@@ -10,9 +16,11 @@ export default ({ selectedLayer }) => {
   const other = useSelector(state => otherSelector(namespaceId)(state.orbs));
 
   return (
-    <PollutionRasterDateSlider
-      dateValue={other?.date}
-      onDateChange={(_, date) =>
+    <DateStepper
+      dates={DATES}
+      defaultValue={DATES[0].value}
+      value={other?.date}
+      onChange={(_, date) =>
         dispatch(
           setOther({
             source_id: namespaceId,
@@ -20,6 +28,8 @@ export default ({ selectedLayer }) => {
           }),
         )
       }
+      min={startOfYear(new Date(2020, 0, 1)).getTime()}
+      max={endOfYear(new Date(2020, 0, 1)).getTime()}
     />
   );
 };
