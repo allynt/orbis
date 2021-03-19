@@ -1,7 +1,10 @@
 import React from 'react';
 
-import { render, waitFor } from '@testing-library/react';
+import { render } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+
 import { Provider } from 'react-redux';
+import { MapProvider } from 'MapContext';
 import configureMockStore from 'redux-mock-store';
 
 import { createMemoryHistory } from 'history';
@@ -81,26 +84,36 @@ const getTotals = property => {
 const renderComponent = ({ state = initialState, user = initialUser }) => {
   const history = createMemoryHistory({ initialEntries: ['/pdf-export'] });
 
+  const close = jest.fn();
+
   const store = mockStore({
+    accounts: { user },
     orbs: {
       isolationPlus: {
         ...state,
       },
     },
   });
+
   const utils = render(
     <Provider store={store}>
       <Router history={history}>
-        <PDF user={user} />
+        <MapProvider>
+          <PDF close={close} />
+        </MapProvider>
       </Router>
     </Provider>,
   );
-  return { ...utils, history, store };
+  return { ...utils, close, history, store };
 };
 
 describe('PDF', () => {
   it('renders a PDF preview', () => {
-    const { getByText, getAllByText } = renderComponent({});
+    const { getByText, getAllByText, getByLabelText } = renderComponent({});
+
+    expect(getByText('Download PDF Report')).toBeInTheDocument();
+
+    expect(getByLabelText('Close')).toBeInTheDocument();
 
     initialState.clickedFeatures.forEach(feat => {
       expect(
@@ -289,5 +302,13 @@ describe('PDF', () => {
     });
 
     expect(queryByTestId('user-name')).not.toBeInTheDocument();
+  });
+
+  it('closes dialog when PDF download button is clicked', () => {
+    const { getByRole, close } = renderComponent({});
+
+    userEvent.click(getByRole('button', { name: 'Download PDF Report' }));
+
+    expect(close).toHaveBeenCalled();
   });
 });

@@ -14,7 +14,6 @@ import reducer, {
   aggregationSelector,
   breakdownAggregationSelector,
   timeSeriesAggregationSelector,
-  screenshotSelector,
 } from './isolation-plus.slice';
 
 describe('isolationPlusSlice', () => {
@@ -800,28 +799,6 @@ describe('isolationPlusSlice', () => {
 
         const result = timeSeriesAggregationSelector(state);
         expect(result).toEqual(expected);
-      });
-    });
-
-    describe('screenshotSelector', () => {
-      it('returns undefined if isolationPlus state is undefined', () => {
-        const state = {};
-
-        const result = screenshotSelector(state);
-        expect(result).toBeUndefined();
-      });
-
-      it('returns screenshot from state', () => {
-        const screenshot = new Blob();
-
-        const state = {
-          isolationPlus: {
-            screenshot,
-          },
-        };
-
-        const result = screenshotSelector(state);
-        expect(result).toEqual(screenshot);
       });
     });
   });

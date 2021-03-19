@@ -4,6 +4,8 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { push } from 'connected-react-router';
 
+import { useMap } from 'MapContext';
+
 import { jsPDF } from 'jspdf';
 import html2canvas from 'html2canvas';
 
@@ -13,6 +15,8 @@ import clsx from 'clsx';
 
 import {
   Button,
+  IconButton,
+  CloseIcon,
   List,
   Grid,
   ListItemText,
@@ -22,7 +26,6 @@ import {
 
 import {
   propertySelector,
-  screenshotSelector,
   areasOfInterestSelector,
   populationTotalSelector,
   householdTotalSelector,
@@ -30,27 +33,33 @@ import {
   breakdownAggregationSelector,
 } from 'map/orbs/slices/isolation-plus.slice';
 
+import { userSelector } from '../../accounts/accounts.selectors';
+
 import OrbisLogo from './orbis-logo.png';
 
 const useStyles = makeStyles(theme => ({
   container: {
     height: '100%',
-    backgroundColor: theme.palette.grey[100],
+    width: '70.5vh',
+  },
+  buttons: {
+    position: 'absolute',
+    top: theme.typography.pxToRem(0),
+    left: theme.typography.pxToRem(0),
+    padding: theme.spacing(1.5),
+    width: 'inherit',
+    zIndex: 10,
   },
   button: {
-    position: 'absolute',
-    top: theme.typography.pxToRem(8),
-    left: theme.typography.pxToRem(624),
-    zIndex: 10,
     padding: theme.spacing(1),
   },
   pdf: {
-    position: 'relative',
+    alignSelf: 'center',
     color: theme.palette.text.primary,
     backgroundColor: theme.palette.background.default,
-    height: '100%',
     // A4 paper width/height ratio
-    width: '70.5vh',
+    height: 'inherit',
+    width: 'inherit',
   },
   screenshot: {
     backgroundSize: 'cover',
@@ -119,12 +128,12 @@ const useStyles = makeStyles(theme => ({
 
 const date = format(new Date(), 'MMMM do Y');
 
-const PDF = ({ user, creationDate = date }) => {
+const PDF = ({ close, creationDate = date }) => {
   const styles = useStyles();
   const dispatch = useDispatch();
 
   const selectedProperty = useSelector(state => propertySelector(state?.orbs));
-  const screenshot = useSelector(state => screenshotSelector(state?.orbs));
+  const user = useSelector(userSelector);
 
   const areasOfInterest = useSelector(state =>
     areasOfInterestSelector(state?.orbs),
@@ -144,18 +153,23 @@ const PDF = ({ user, creationDate = date }) => {
     breakdownAggregationSelector(state?.orbs),
   );
 
+  const { createScreenshot, topMapRef, deckRef, bottomMapRef } = useMap();
   const [image, setImage] = useState(undefined);
 
   const aggregationLabel =
     selectedProperty?.aggregation === 'sum' ? 'Sum' : 'Average';
 
   useEffect(() => {
-    const reader = new FileReader();
-    reader.onload = event => setImage(event.target.result);
-    if (screenshot) {
-      reader.readAsDataURL(screenshot);
+    if (!topMapRef.current || !deckRef.current || !bottomMapRef.current) {
+      return;
+    } else {
+      createScreenshot(screenshot => {
+        const reader = new FileReader();
+        reader.onload = event => setImage(event.target.result);
+        reader.readAsDataURL(screenshot);
+      });
     }
-  }, [screenshot]);
+  }, [createScreenshot, topMapRef, deckRef, bottomMapRef]);
 
   const handleClick = () => {
     const div = document.getElementById('pdf-form');
@@ -177,6 +191,7 @@ const PDF = ({ user, creationDate = date }) => {
 
       doc.save('orbis-data-analysis.pdf');
     });
+    close();
   };
 
   if (!selectedProperty?.source_id) {
@@ -184,15 +199,21 @@ const PDF = ({ user, creationDate = date }) => {
     return null;
   }
   return (
-    <Grid
-      container
-      justify="center"
-      alignItems="center"
-      className={styles.container}
-    >
-      <Button className={styles.button} onClick={handleClick}>
-        Download PDF Report
-      </Button>
+    <Grid container direction="column" className={styles.container}>
+      <Grid
+        container
+        item
+        justify="space-between"
+        alignItems="center"
+        className={styles.buttons}
+      >
+        <Button onClick={handleClick} className={styles.button}>
+          Download PDF Report
+        </Button>
+        <IconButton aria-label="Close" size="small" onClick={close}>
+          <CloseIcon titleAccess="Close" fontSize="inherit" />
+        </IconButton>
+      </Grid>
       <Grid
         item
         container

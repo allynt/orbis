@@ -1,18 +1,23 @@
 import React from 'react';
 
 import { Provider } from 'react-redux';
+import { MapProvider } from 'MapContext';
+
 import configureMockStore from 'redux-mock-store';
 
 import PDF from './pdf-export.component';
 
 const mockStore = configureMockStore();
 
-export default { title: 'Analysis Panel/PDF Export' };
+export default {
+  title: 'Analysis Panel/PDF Export',
+  argTypes: { close: { action: 'close' } },
+};
 
 const defaultUser = { name: 'John Smith', email: 'johnsmith@gmail.com' };
 
 const generateFeatures = n => {
-  return new Array(n).fill(undefined).map(feat => ({
+  return new Array(n).fill(undefined).map(() => ({
     object: {
       properties: {
         area_name: 'test_area_name',
@@ -28,7 +33,6 @@ const generateFeatures = n => {
 };
 
 const defaultState = {
-  screenshot: undefined,
   property: {
     source_id: 'astrosat/isolation_plus/age_census/r4v1',
     source: 'testsourcename',
@@ -48,17 +52,22 @@ const defaultState = {
   clickedFeatures: generateFeatures(3),
 };
 
-const Template = ({ user = defaultUser, state = defaultState }) => (
-  <Provider
-    store={mockStore({
-      orbs: {
-        isolationPlus: state,
-      },
-    })}
-  >
-    <PDF user={user} creationDate={'March 12th 2021'} />
-  </Provider>
-);
+const Template = ({ user = defaultUser, state = defaultState, ...args }) => {
+  return (
+    <Provider
+      store={mockStore({
+        accounts: { user },
+        orbs: {
+          isolationPlus: state,
+        },
+      })}
+    >
+      <MapProvider>
+        <PDF creationDate={'March 12th 2021'} {...args} />
+      </MapProvider>
+    </Provider>
+  );
+};
 
 export const Default = Template.bind({});
 
