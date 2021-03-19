@@ -11,12 +11,12 @@ import {
 
 import {
   AmbientLight,
-  _SunLight as SunLight,
   FlyToInterpolator,
   LightingEffect,
+  _SunLight as SunLight,
 } from '@deck.gl/core';
 import DeckGL from '@deck.gl/react';
-import 'mapbox-gl/dist/mapbox-gl.css';
+import clsx from 'clsx';
 import ReactMapGl, {
   ScaleControl,
   _MapContext as MapContext,
@@ -34,6 +34,8 @@ import {
 import { setLayers } from 'data-layers/data-layers.slice';
 import MapStyleSwitcher from 'map-style/map-style-switcher/map-style-switcher.component';
 import { useMap } from 'MapContext';
+import { ExtrusionScaleSlider } from './controls/extrusion-scale-slider/extrusion-scale-slider.component';
+import { MapControlButton } from './controls/map-control-button.component';
 import { NavigationControl } from './controls/navigation-control/navigation-control.component';
 import {
   isLoadingSelector,
@@ -41,17 +43,16 @@ import {
   selectedMapStyleSelector,
   selectMapStyle,
 } from './map.slice';
-import { useOrbs } from './orbs/useOrbs';
-import { setState as setIsolationPlusState } from './orbs/slices/isolation-plus.slice';
-import { MapControlButton } from './controls/map-control-button.component';
 import {
   extrudedModeSelector,
   extrusionScaleSelector,
   setExtrusionScale,
   toggleExtrudedMode,
 } from './orbs/orbReducer';
-import clsx from 'clsx';
-import { ExtrusionScaleSlider } from './controls/extrusion-scale-slider/extrusion-scale-slider.component';
+import { setState as setIsolationPlusState } from './orbs/slices/isolation-plus.slice';
+import { useOrbs } from './orbs/useOrbs';
+
+import 'mapbox-gl/dist/mapbox-gl.css';
 
 /** @type {React.CSSProperties} */
 const TOP_MAP_CSS = {
@@ -141,7 +142,6 @@ const dirLight = new SunLight({
   timestamp: Date.UTC(2019, 7, 1, 10),
   color: [255, 255, 255],
   intensity: 1.0,
-  _shadow: true,
 });
 
 const lightingEffect = new LightingEffect({ ambientLight, dirLight });
