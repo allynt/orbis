@@ -6,7 +6,6 @@ import {
   Typography,
 } from '@astrosat/astrosat-ui';
 import { Pause, PlayArrow } from '@material-ui/icons';
-import { endOfYear, format, startOfYear } from 'date-fns';
 import { findIndex } from 'lodash';
 import React, { useEffect, useState } from 'react';
 
@@ -16,15 +15,23 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const marks = [
-  new Date(2020, 2, 12),
-  new Date(2020, 4, 6),
-  new Date(2020, 6, 25),
-].map(date => ({ value: date.getTime(), label: format(date, 'MM/yy') }));
-
-export const RiceRasterDateSlider = ({
-  dateValue = marks[0].value,
-  onDateChange,
+/**
+ * @param {{
+ *  dates: {value: number, label: string}[]
+ *  defaultValue: number,
+ *  value: number,
+ *  onChange: (event: React.ChangeEvent<{}>, date: number) => void
+ *  min?: number
+ *  max?: number
+ * }} props
+ */
+export const DateStepper = ({
+  dates,
+  defaultValue,
+  value,
+  onChange,
+  min,
+  max,
 }) => {
   const styles = useStyles();
   const [isPlaying, setIsPlaying] = useState(false);
@@ -32,14 +39,13 @@ export const RiceRasterDateSlider = ({
   useEffect(() => {
     if (isPlaying) {
       const next =
-        marks[findIndex(marks, { value: dateValue }) + 1]?.value ||
-        marks[0].value;
+        dates[findIndex(dates, { value }) + 1]?.value || dates[0].value;
       const timeout = setTimeout(() => {
-        onDateChange({}, next);
+        onChange(undefined, next);
       }, 1300);
       return () => clearTimeout(timeout);
     }
-  }, [dateValue, isPlaying, onDateChange]);
+  }, [value, isPlaying, onChange, dates]);
 
   return (
     <Grid className={styles.grid} container spacing={2}>
@@ -56,11 +62,11 @@ export const RiceRasterDateSlider = ({
           <Grid item xs>
             <Slider
               style={{ marginTop: '20px' }}
-              value={dateValue}
-              onChange={onDateChange}
-              min={startOfYear(new Date(2020, 0, 1)).getTime()}
-              max={endOfYear(new Date(2020, 0, 1)).getTime()}
-              marks={marks}
+              value={value || defaultValue}
+              onChange={onChange}
+              min={min}
+              max={max}
+              marks={dates}
               step={null}
             />
           </Grid>
