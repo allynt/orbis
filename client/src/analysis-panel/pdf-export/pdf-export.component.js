@@ -41,7 +41,7 @@ const useStyles = makeStyles(theme => ({
   container: {
     height: '100%',
     // A4 paper width/height ratio minus margin on dialog
-    width: `calc(70vh - ${theme.typography.pxToRem(64)})`,
+    width: '70vh',
   },
   buttons: {
     position: 'absolute',
@@ -372,16 +372,18 @@ const PDF = ({ close, licence, creationDate = date }) => {
 
               <Grid item className={styles.gridElement}>
                 <Typography>
-                  <strong>Source: </strong> {selectedProperty?.source}
+                  <strong>Source: </strong>
+                  {selectedProperty?.source}
                 </Typography>
                 <Typography>
-                  <strong>Licence: </strong> {handleLongText(licence)}
+                  <strong>Licence: </strong>
+                  {handleLongText(licence)}
                 </Typography>
               </Grid>
 
               <Grid item className={styles.gridElement} id="details">
                 <Typography component="p" align="justify">
-                  <strong>Details: </strong>{' '}
+                  <strong>Details: </strong>
                   {handleLongText(selectedProperty?.details)}
                 </Typography>
               </Grid>
