@@ -111,9 +111,6 @@ const useStyles = makeStyles(theme => ({
     justifyContent: 'space-between',
     margin: theme.spacing(1, 0),
   },
-  details: {
-    overflow: 'hidden',
-  },
   footerElement: {
     width: '100%',
     fontStyle: 'italic',
