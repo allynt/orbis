@@ -62,6 +62,10 @@ export default ({ id, data, orbState, activeSources, dispatch }) => {
     elevationScale: 100 * elevationScale,
     getElevation,
     getFillColor,
+    stroked: true,
+    lineWidthUnits: 'pixels',
+    getLineWidth: 2,
+    getLineColor: [255, 255, 255, 255],
     updateTriggers: {
       getElevation: [column, date],
       getFillColor: [column, date],
