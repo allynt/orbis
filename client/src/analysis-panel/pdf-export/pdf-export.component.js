@@ -98,13 +98,6 @@ const useStyles = makeStyles(theme => ({
     textAlign: 'center',
     alignItems: 'center',
   },
-  limitHeight: {
-    position: 'relative',
-    height: '100%',
-    maxHeight: ({ MAX_DETAILS_HEIGHT }) =>
-      theme.typography.pxToRem(MAX_DETAILS_HEIGHT),
-    overflow: 'hidden',
-  },
   aggregationData: {
     alignSelf: 'flex-start',
     minWidth: '75%',
@@ -120,14 +113,6 @@ const useStyles = makeStyles(theme => ({
   },
   details: {
     overflow: 'hidden',
-  },
-  fade: {
-    position: 'absolute',
-    bottom: '0',
-    width: '100%',
-    height: '2rem',
-    background:
-      'linear-gradient(rgba(51, 63, 72, 0), rgba(51, 63, 72, 0.5), rgb(51, 63, 72))',
   },
   footerElement: {
     width: '100%',
@@ -149,12 +134,11 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
+export const CHAR_MAX = 150;
 const date = format(new Date(), 'MMMM do Y');
 
 const PDF = ({ close, licence, creationDate = date }) => {
-  const MAX_DETAILS_HEIGHT = 240;
-
-  const styles = useStyles({ MAX_DETAILS_HEIGHT });
+  const styles = useStyles();
   const dispatch = useDispatch();
 
   const selectedProperty = useSelector(state => propertySelector(state?.orbs));
@@ -180,7 +164,6 @@ const PDF = ({ close, licence, creationDate = date }) => {
 
   const { createScreenshot, topMapRef, deckRef, bottomMapRef } = useMap();
   const [image, setImage] = useState(undefined);
-  const [overflow, setOverflow] = useState(false);
 
   const aggregationLabel =
     selectedProperty?.aggregation === 'sum' ? 'Sum' : 'Average';
@@ -197,13 +180,9 @@ const PDF = ({ close, licence, creationDate = date }) => {
     }
   }, [createScreenshot, topMapRef, deckRef, bottomMapRef]);
 
-  useEffect(() => {
-    const details = document.getElementById('details');
-    if (details) {
-      const detailsHeight = window.getComputedStyle(details).height;
-      if (detailsHeight === `${MAX_DETAILS_HEIGHT}px`) setOverflow(true);
-    }
-  }, []);
+  const handleLongText = text => {
+    return text?.length > CHAR_MAX ? `${text.slice(0, CHAR_MAX)}...` : text;
+  };
 
   const handleClick = () => {
     const div = document.getElementById('pdf-form');
@@ -396,22 +375,18 @@ const PDF = ({ close, licence, creationDate = date }) => {
 
               <Grid item className={styles.gridElement}>
                 <Typography>
-                  <strong>Source:</strong> {selectedProperty?.source}
+                  <strong>Source: </strong> {selectedProperty?.source}
                 </Typography>
                 <Typography>
-                  <strong>Licence:</strong> {licence}
+                  <strong>Licence: </strong> {handleLongText(licence)}
                 </Typography>
               </Grid>
 
-              <Grid
-                item
-                className={clsx(styles.gridElement, styles.limitHeight)}
-                id="details"
-              >
+              <Grid item className={styles.gridElement} id="details">
                 <Typography component="p" align="justify">
-                  <strong>Details:</strong> {selectedProperty?.details}
+                  <strong>Details: </strong>{' '}
+                  {handleLongText(selectedProperty?.details)}
                 </Typography>
-                {overflow && <div className={styles.fade} />}
               </Grid>
             </Grid>
           </Grid>
