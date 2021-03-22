@@ -40,8 +40,8 @@ import OrbisLogo from './orbis-logo.png';
 const useStyles = makeStyles(theme => ({
   container: {
     height: '100%',
-    // A4 paper width/height ratio minus margin on dialog
-    width: '70vh',
+    // A4 paper width/height ratio
+    width: '71vh',
   },
   buttons: {
     position: 'absolute',
