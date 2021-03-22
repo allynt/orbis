@@ -1,11 +1,34 @@
 {
-  "eslint.validate": [
-    "javascript",
-    "javascriptreact"
-  ],
+  "editor.formatOnPaste": true,
+  "editor.formatOnSave": true,
+  "eslint.validate": ["javascript", "javascriptreact"],
   "eslint.workingDirectories": [
     {
       "mode": "auto"
     }
-  ]
+  ],
+  "files.exclude": {
+    "**/.git": true,
+    "**/.svn": true,
+    "**/.hg": true,
+    "**/CVS": true,
+    "**/.DS_Store": true,
+    "**/*.pyc": true,
+    "**/__pycache__": true
+  },
+  "python.autoComplete.extraPaths": ["./server/"],
+  "python.formatting.provider": "yapf",
+  "python.formatting.yapfArgs": [
+    "--style={based_on_style: facebook, coalesce_brackets: 1, dedent_closing_brackets: 1, indent_width: 4, split_all_top_level_comma_separated_values: 1, split_before_dict_set_generator: 1}"
+  ],
+  "python.formatting.yapfPath": "./server/.venv/bin/yapf",
+  "python.linting.enabled": true,
+  "python.linting.lintOnSave": true,
+  "python.linting.pylintEnabled": true,
+  "python.linting.pylintPath": "./server/.venv/bin/pylint",
+  "python.linting.pylintUseMinimalCheckers": false,
+  "python.pythonPath": "/home/allyn.treshansky/Dropbox/WORK/ASTROSAT/ORBIS/orbis/server/.venv/bin/python",
+  "[python]": {
+    "editor.tabSize": 4
+  }
 }

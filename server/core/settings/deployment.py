@@ -54,11 +54,15 @@ LOGGING = {
     "version": 1,
     "disable_existing_loggers": False,
     "formatters": {
-        "standard": {"format": "%(asctime)s [%(levelname)s] %(name)s: %(message)s"},
+        "standard": {
+            "format": "%(asctime)s [%(levelname)s] %(name)s: %(message)s"
+        },
         "orbis_analytics": {}
     },
     "handlers": {
-        "null": {"class": "logging.NullHandler"},
+        "null": {
+            "class": "logging.NullHandler"
+        },
         "default": {
             "level": "DEBUG",
             "class": "logging.StreamHandler",
@@ -89,7 +93,9 @@ LOGGING = {
             "stream": "events",
         },
     },
-    "root": {"handlers": ["default"], "level": "INFO"},
+    "root": {
+        "handlers": ["default"], "level": "INFO"
+    },
     "loggers": {
         "django.request": {
             "handlers": ["request_handler", "mail_admins_handler"],
