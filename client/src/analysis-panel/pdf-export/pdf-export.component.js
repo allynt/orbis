@@ -40,12 +40,13 @@ import OrbisLogo from './orbis-logo.png';
 const useStyles = makeStyles(theme => ({
   container: {
     height: '100%',
-    width: '70.5vh',
+    // A4 paper width/height ratio
+    width: '71vh',
   },
   buttons: {
     position: 'absolute',
-    top: theme.typography.pxToRem(0),
-    left: theme.typography.pxToRem(0),
+    top: '0',
+    left: '0',
     padding: theme.spacing(1.5),
     width: 'inherit',
     zIndex: 10,
@@ -57,7 +58,6 @@ const useStyles = makeStyles(theme => ({
     alignSelf: 'center',
     color: theme.palette.text.primary,
     backgroundColor: theme.palette.background.default,
-    // A4 paper width/height ratio
     height: 'inherit',
     width: 'inherit',
   },
@@ -121,14 +121,20 @@ const useStyles = makeStyles(theme => ({
       padding: theme.spacing(0, 0, 0, 2),
     },
   },
+  userDetails: {
+    '& > *': {
+      fontSize: theme.typography.pxToRem(12),
+    },
+  },
   logo: {
     height: theme.typography.pxToRem(40),
   },
 }));
 
+export const CHAR_MAX = 150;
 const date = format(new Date(), 'MMMM do Y');
 
-const PDF = ({ close, creationDate = date }) => {
+const PDF = ({ close, licence, creationDate = date }) => {
   const styles = useStyles();
   const dispatch = useDispatch();
 
@@ -170,6 +176,10 @@ const PDF = ({ close, creationDate = date }) => {
       });
     }
   }, [createScreenshot, topMapRef, deckRef, bottomMapRef]);
+
+  const handleLongText = text => {
+    return text?.length > CHAR_MAX ? `${text.slice(0, CHAR_MAX)}...` : text;
+  };
 
   const handleClick = () => {
     const div = document.getElementById('pdf-form');
@@ -243,6 +253,13 @@ const PDF = ({ close, creationDate = date }) => {
               direction="column"
               className={styles.gridColumn}
             >
+              <Grid item className={clsx(styles.gridElement, styles.centered)}>
+                <Typography variant="h3">Selected Data Layer:</Typography>
+                <Typography>
+                  {selectedProperty?.application?.orbis?.label ||
+                    selectedProperty?.label}
+                </Typography>
+              </Grid>
               {areasOfInterest && (
                 <Grid item className={styles.gridElement}>
                   <Typography variant="h3">
@@ -282,13 +299,6 @@ const PDF = ({ close, creationDate = date }) => {
               direction="column"
               className={styles.gridColumn}
             >
-              <Grid item className={clsx(styles.gridElement, styles.centered)}>
-                <Typography variant="h3">Selected Data Layer:</Typography>
-                <Typography>
-                  {selectedProperty?.application?.orbis?.label ||
-                    selectedProperty?.label}
-                </Typography>
-              </Grid>
               {areaValue !== undefined && selectedProperty?.aggregates ? (
                 <Grid
                   item
@@ -359,11 +369,22 @@ const PDF = ({ close, creationDate = date }) => {
                   The information relates to the areas selected on the map.
                 </Typography>
               </Grid>
+
               <Grid item className={styles.gridElement}>
-                <Typography variant="h3">More Information:</Typography>
-                <Typography>Source: {selectedProperty?.source}</Typography>
+                <Typography>
+                  <strong>Source: </strong>
+                  {selectedProperty?.source}
+                </Typography>
+                <Typography>
+                  <strong>Licence: </strong>
+                  {handleLongText(licence)}
+                </Typography>
+              </Grid>
+
+              <Grid item className={styles.gridElement} id="details">
                 <Typography component="p" align="justify">
-                  {selectedProperty?.details}
+                  <strong>Details: </strong>
+                  {handleLongText(selectedProperty?.details)}
                 </Typography>
               </Grid>
             </Grid>
@@ -391,7 +412,7 @@ const PDF = ({ close, creationDate = date }) => {
               item
               container
               direction="column"
-              className={styles.footerElement}
+              className={clsx(styles.footerElement, styles.userDetails)}
             >
               {user?.name && (
                 <Typography data-testid="user-name">

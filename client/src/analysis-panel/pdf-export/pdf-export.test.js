@@ -18,6 +18,8 @@ const mockStore = configureMockStore();
 
 const initialUser = { name: 'John Smith', email: 'johnsmith@gmail.com' };
 
+const initialLicence = 'Crown Copyright (2020) released under OGL v3.0';
+
 const initialState = {
   property: {
     source_id: 'astrosat/isolation_plus/age_census/r4v1',
@@ -81,7 +83,11 @@ const getTotals = property => {
   );
 };
 
-const renderComponent = ({ state = initialState, user = initialUser }) => {
+const renderComponent = ({
+  state = initialState,
+  licence = initialLicence,
+  user = initialUser,
+}) => {
   const history = createMemoryHistory({ initialEntries: ['/pdf-export'] });
 
   const close = jest.fn();
@@ -99,7 +105,7 @@ const renderComponent = ({ state = initialState, user = initialUser }) => {
     <Provider store={store}>
       <Router history={history}>
         <MapProvider>
-          <PDF close={close} />
+          <PDF licence={licence} close={close} />
         </MapProvider>
       </Router>
     </Provider>,
@@ -151,10 +157,11 @@ describe('PDF', () => {
       expect(getByText(`${value}`)).toBeInTheDocument();
     });
 
-    expect(
-      getByText(`Source: ${initialState.property.source}`),
-    ).toBeInTheDocument();
+    expect(getByText(initialState.property.source)).toBeInTheDocument();
+
     expect(getByText(initialState.property.details)).toBeInTheDocument();
+
+    expect(getByText(initialLicence)).toBeInTheDocument();
 
     expect(getByText(`Report run by: ${initialUser.name}`)).toBeInTheDocument();
     expect(getByText(`User Name: ${initialUser.email}`)).toBeInTheDocument();

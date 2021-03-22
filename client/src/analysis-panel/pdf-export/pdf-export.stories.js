@@ -52,7 +52,12 @@ const defaultState = {
   clickedFeatures: generateFeatures(3),
 };
 
-const Template = ({ user = defaultUser, state = defaultState, ...args }) => {
+const Template = ({
+  user = defaultUser,
+  licence = 'test-licence',
+  state = defaultState,
+  ...args
+}) => {
   return (
     <Provider
       store={mockStore({
@@ -63,7 +68,7 @@ const Template = ({ user = defaultUser, state = defaultState, ...args }) => {
       })}
     >
       <MapProvider>
-        <PDF creationDate={'March 12th 2021'} {...args} />
+        <PDF licence={licence} creationDate={'March 12th 2021'} {...args} />
       </MapProvider>
     </Provider>
   );
@@ -193,5 +198,21 @@ LongText.args = {
         },
       },
     ],
+  },
+};
+
+export const LongTextBodies = Template.bind({});
+
+const longText =
+  'Lorem ipsum dolor sit amet consectetur, adipisicing elit. Hic, quas iure. Quia, nobis harum inventore velit blanditiis explicabo reiciendis quam debitis ex vero error consectetur eveniet sequi cumque voluptas ea.';
+
+LongTextBodies.args = {
+  licence: longText,
+  state: {
+    ...defaultState,
+    property: {
+      ...defaultState.property,
+      details: longText,
+    },
   },
 };
