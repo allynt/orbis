@@ -5,6 +5,8 @@ import { MapProvider } from 'MapContext';
 
 import configureMockStore from 'redux-mock-store';
 
+import { Dialog } from '@astrosat/astrosat-ui';
+
 import PDF from './pdf-export.component';
 
 const mockStore = configureMockStore();
@@ -68,7 +70,9 @@ const Template = ({
       })}
     >
       <MapProvider>
-        <PDF licence={licence} creationDate={'March 12th 2021'} {...args} />
+        <Dialog open maxWidth="lg" aria-labelledby="pdf-export-dialog">
+          <PDF licence={licence} creationDate={'March 12th 2021'} {...args} />
+        </Dialog>
       </MapProvider>
     </Provider>
   );
@@ -212,6 +216,7 @@ LongTextBodies.args = {
     ...defaultState,
     property: {
       ...defaultState.property,
+      source: longText,
       details: longText,
     },
   },
