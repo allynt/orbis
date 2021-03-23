@@ -7,10 +7,12 @@ import reducer, {
   filterValueSelector,
   hoveredFeaturesSelector,
   layersVisibilitySelector,
+  otherSelector,
   setClickedFeatures,
   setExtrusionScale,
   setFilterValue,
   setHoveredFeatures,
+  setOther,
   setVisibility,
   toggleExtrudedMode,
 } from './orbReducer';
@@ -25,6 +27,7 @@ describe('orbReducer', () => {
       ${setHoveredFeatures} | ${'hoveredFeatures'} | ${[4, 5, 6]}
       ${setVisibility}      | ${'visible'}         | ${true}
       ${setFilterValue}     | ${'filterValue'}     | ${['this', 'is', 'the', 'way']}
+      ${setOther}           | ${'other'}           | ${{ this: 'is something', andThis: 'is something else' }}
     `('$action.type', ({ action, stateKey, newValue }) => {
       const expected = {
           layers: { [LAYER_ID]: { [stateKey]: newValue } },
@@ -137,6 +140,7 @@ describe('orbReducer', () => {
       ${hoveredFeaturesSelector}  | ${'hoveredFeatures'} | ${undefined}
       ${layersVisibilitySelector} | ${'visible'}         | ${true}
       ${filterValueSelector}      | ${'filterValue'}     | ${undefined}
+      ${otherSelector}            | ${'other'}           | ${undefined}
     `('$selector.name', ({ selector, stateKey, undefinedReturn }) => {
       it(`Returns ${stateKey} for the given layer`, () => {
         const value = [1, 2, 3];

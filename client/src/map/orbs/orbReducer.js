@@ -58,6 +58,12 @@ import crowdless from './slices/crowdless.slice';
  */
 
 /**
+ * @typedef {GenericOrbAction<{
+ *    other?: any
+ * }>} SetOtherAction
+ */
+
+/**
  * @typedef {import('@reduxjs/toolkit').CaseReducer<
  *   LayersState,
  *   import('@reduxjs/toolkit').PayloadAction<number>
@@ -103,6 +109,7 @@ const layersSlice = createSlice({
       const { source_id, filterValue } = payload;
       state[source_id] = { ...state[source_id], filterValue };
     },
+    /** @type {SetOtherAction} */
     setOther: (state, { payload }) => {
       if (!payload.source_id) return handleMissingSourceId();
       const { source_id, other } = payload;
