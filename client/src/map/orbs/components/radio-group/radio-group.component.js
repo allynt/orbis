@@ -18,6 +18,15 @@ const useStyles = makeStyles(theme => ({
   avatar: { margin: theme.spacing(0, 2) },
 }));
 
+/**
+ * @template V
+ * @param {{
+ *   defaultValue?: V
+ *   value?: V
+ *   onChange: (value: V) => void
+ *   options: {value: V, label?: string, image?: string, info?: string}[]
+ * }} props
+ */
 export const RadioGroup = ({
   defaultValue,
   value: valueProp = defaultValue,
