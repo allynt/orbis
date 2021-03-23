@@ -1,4 +1,3 @@
-import { Today } from '@material-ui/icons';
 import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { addDays, startOfDay } from 'date-fns';
