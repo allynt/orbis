@@ -371,10 +371,10 @@ const PDF = ({ close, licence, creationDate = date }) => {
               </Grid>
 
               <Grid item className={styles.gridElement}>
-                <Typography variant="h3">More Information</Typography>
+                <Typography variant="h3">More Information:</Typography>
                 <Typography>
                   <strong>Source: </strong>
-                  {selectedProperty?.source}
+                  {handleLongText(selectedProperty?.source)}
                 </Typography>
                 <Typography>
                   <strong>Licence: </strong>

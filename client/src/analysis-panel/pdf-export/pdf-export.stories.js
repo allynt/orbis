@@ -1,9 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import { Provider } from 'react-redux';
 import { MapProvider } from 'MapContext';
 
 import configureMockStore from 'redux-mock-store';
+
+import { Button, Dialog } from '@astrosat/astrosat-ui';
 
 import PDF from './pdf-export.component';
 
@@ -11,7 +13,6 @@ const mockStore = configureMockStore();
 
 export default {
   title: 'Analysis Panel/PDF Export',
-  argTypes: { close: { action: 'close' } },
 };
 
 const defaultUser = { name: 'John Smith', email: 'johnsmith@gmail.com' };
@@ -58,6 +59,7 @@ const Template = ({
   state = defaultState,
   ...args
 }) => {
+  const [pdfOpen, setPdfOpen] = useState(false);
   return (
     <Provider
       store={mockStore({
@@ -68,7 +70,29 @@ const Template = ({
       })}
     >
       <MapProvider>
-        <PDF licence={licence} creationDate={'March 12th 2021'} {...args} />
+        <>
+          <Button
+            onClick={() => setPdfOpen(true)}
+            style={{ margin: '1rem 0 0 1rem' }}
+          >
+            Open PDF
+          </Button>
+          {pdfOpen && (
+            <Dialog
+              maxWidth="lg"
+              open={pdfOpen}
+              onClose={() => setPdfOpen(false)}
+              aria-labelledby="pdf-export-dialog"
+            >
+              <PDF
+                close={() => setPdfOpen(false)}
+                licence={licence}
+                creationDate={'March 12th 2021'}
+                {...args}
+              />
+            </Dialog>
+          )}
+        </>
       </MapProvider>
     </Provider>
   );
@@ -212,6 +236,7 @@ LongTextBodies.args = {
     ...defaultState,
     property: {
       ...defaultState.property,
+      source: longText,
       details: longText,
     },
   },
