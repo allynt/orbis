@@ -13,7 +13,6 @@ from django.utils.translation import gettext_lazy as _
 
 from astrosat.utils import DynamicSetting
 
-
 env = environ.Env()
 
 PROJECT_NAME = "orbis"
@@ -65,12 +64,9 @@ DJANGO_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.sites",
-    "django.contrib.staticfiles",
-    # gis...
-    "django.contrib.gis",
-    # admin...
-    "django.contrib.admin",
-    # cors...
+    "django.contrib.staticfiles",  # gis...
+    "django.contrib.gis",  # admin...
+    "django.contrib.admin",  # cors...
     "corsheaders",
 ]
 
@@ -79,15 +75,13 @@ THIRD_PARTY_APPS = [
     "rest_framework",
     "rest_framework_gis",
     "drf_yasg2",
-    "django_filters",
-    # users...,
+    "django_filters",  # users...,
     "allauth",
     "allauth.account",
     "allauth.socialaccount",
     "dj_rest_auth",
     "dj_rest_auth.registration",
-    "knox",
-    # healthchecks...
+    "knox",  # healthchecks...
     "health_check",
     "health_check.db",
 ]
@@ -127,7 +121,10 @@ COPERNICUS_PASSWORD = env("DJANGO_COPERNICUS_PASSWORD", default="")
 
 DATA_TOKEN_SECRET = env("DJANGO_DATA_TOKEN_SECRET", default="itsasecret")
 DATA_TOKEN_ALGORITHM = env("DJANGO_DATA_TOKEN_ALGORITHM", default="HS256")
-DATA_SOURCES_DIRECTORY_URL = env("DJANGO_DATA_SOURCES_DIRECTORY_URL", default="https://data-sources-directory.testing.astrosat.net")
+DATA_SOURCES_DIRECTORY_URL = env(
+    "DJANGO_DATA_SOURCES_DIRECTORY_URL",
+    default="https://data-sources-directory.testing.astrosat.net"
+)
 
 # On-Line Scene Processor for satellite imagery
 OLSP_URL = env("DJANGO_OLSP_URL", default="http://www.olsp.com")
@@ -138,9 +135,7 @@ DATA_TOKEN_TIMEOUT = DynamicSetting(
 )
 
 # the maximum aoi area that can be passed to a query
-MAXIMUM_AOI_AREA = DynamicSetting(
-    "orbis.OrbisSettings.maximum_aoi_area", 500
-)
+MAXIMUM_AOI_AREA = DynamicSetting("orbis.OrbisSettings.maximum_aoi_area", 500)
 
 ##############
 # Middleware #
@@ -162,38 +157,37 @@ MIDDLEWARE = [
 # Templates #
 #############
 
-TEMPLATES = [
-    {
-        "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [
-            # override some default templates...
-            str(SERVER_DIR.path("core/templates")),
-            # and override some default templates from an imported app (rest_framework, allauth, & rest_auth)...
-            os.path.join(
-                os.path.dirname(importlib.import_module("astrosat_users").__file__),
-                "templates",
-            ),
+TEMPLATES = [{
+    "BACKEND": "django.template.backends.django.DjangoTemplates",
+    "DIRS": [
+        # override some default templates...
+        str(SERVER_DIR.path("core/templates")),
+        # and override some default templates from an imported app (rest_framework, allauth, & rest_auth)...
+        os.path.join(
+            os.path.dirname(importlib.import_module("astrosat_users").__file__),
+            "templates",
+        ),
+    ],
+    "OPTIONS": {
+        "debug":
+            DEBUG,
+        "loaders": [
+            # first look at templates in DIRS, then look in the standard place for each INSTALLED_APP
+            "django.template.loaders.filesystem.Loader",
+            "django.template.loaders.app_directories.Loader",
         ],
-        "OPTIONS": {
-            "debug": DEBUG,
-            "loaders": [
-                # first look at templates in DIRS, then look in the standard place for each INSTALLED_APP
-                "django.template.loaders.filesystem.Loader",
-                "django.template.loaders.app_directories.Loader",
-            ],
-            "context_processors": [
-                "django.template.context_processors.debug",
-                "django.template.context_processors.request",
-                "django.contrib.auth.context_processors.auth",
-                "django.contrib.messages.context_processors.messages",
-                "django.template.context_processors.i18n",
-                "django.template.context_processors.media",
-                "django.template.context_processors.static",
-                "django.template.context_processors.tz",
-            ],
-        },
-    }
-]
+        "context_processors": [
+            "django.template.context_processors.debug",
+            "django.template.context_processors.request",
+            "django.contrib.auth.context_processors.auth",
+            "django.contrib.messages.context_processors.messages",
+            "django.template.context_processors.i18n",
+            "django.template.context_processors.media",
+            "django.template.context_processors.static",
+            "django.template.context_processors.tz",
+        ],
+    },
+}]
 
 ################
 # Static files #
@@ -308,7 +302,6 @@ CORS_ORIGIN_REGEX_WHITELIST = [rf"^{CLIENT_HOST}$"]
 if DEBUG:
     CORS_ORIGIN_REGEX_WHITELIST += [r"^https?://localhost(:\d+)?$"]
 
-
 # (only using cors on the API)
 CORS_URLS_REGEX = r"^/api/.*$"
 
@@ -356,11 +349,16 @@ ACCOUNT_FORMS = {
 # custom serializers...
 REST_AUTH_SERIALIZERS = {
     # customize serializers for astrosat_users
-    "TOKEN_SERIALIZER": "astrosat_users.serializers.KnoxTokenSerializer",
-    "LOGIN_SERIALIZER": "astrosat_users.serializers.LoginSerializer",
-    "PASSWORD_CHANGE_SERIALIZER": "astrosat_users.serializers.PasswordChangeSerializer",
-    "PASSWORD_RESET_SERIALIZER": "astrosat_users.serializers.PasswordResetSerializer",
-    "PASSWORD_RESET_CONFIRM_SERIALIZER": "astrosat_users.serializers.PasswordResetConfirmSerializer",
+    "TOKEN_SERIALIZER":
+        "astrosat_users.serializers.KnoxTokenSerializer",
+    "LOGIN_SERIALIZER":
+        "astrosat_users.serializers.LoginSerializer",
+    "PASSWORD_CHANGE_SERIALIZER":
+        "astrosat_users.serializers.PasswordChangeSerializer",
+    "PASSWORD_RESET_SERIALIZER":
+        "astrosat_users.serializers.PasswordResetSerializer",
+    "PASSWORD_RESET_CONFIRM_SERIALIZER":
+        "astrosat_users.serializers.PasswordResetConfirmSerializer",
 }
 
 # more custom serializers...
@@ -386,11 +384,12 @@ PASSWORD_HASHERS = [
     "django.contrib.auth.hashers.BCryptPasswordHasher",
 ]
 
-PASSWORD_RESET_TIMEOUT = 604800 # (7 days in seconds); default is 259200 (3 days in seconds)
+PASSWORD_RESET_TIMEOUT = 604800  # (7 days in seconds); default is 259200 (3 days in seconds)
 
 AUTH_PASSWORD_VALIDATORS = [
     {
-        "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator"
+        "NAME":
+            "django.contrib.auth.password_validation.UserAttributeSimilarityValidator"
     },
     {
         "NAME": "astrosat_users.validators.LengthPasswordValidator"

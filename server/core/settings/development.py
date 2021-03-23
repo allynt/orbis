@@ -63,7 +63,6 @@ DEBUG_TOOLBAR_PANELS = [
     "debug_toolbar.panels.redirects.RedirectsPanel",
 ]
 
-
 INTERNAL_IPS = ["127.0.0.1", "10.0.2.2"]
 INTERNAL_IPS += [ip[:-1] + "1" for ip in ips]
 
@@ -79,11 +78,14 @@ LOGGING = {
     "disable_existing_loggers": False,
     "formatters": {
         "standard": {
-            "format": "[develop] %(asctime)s [%(levelname)s] %(name)s: %(message)s"
+            "format":
+                "[develop] %(asctime)s [%(levelname)s] %(name)s: %(message)s"
         }
     },
     "filters": {
-        "restrict_geopandas_filter": {"()": "core.utils.RestrictGeopandasFilter", },
+        "restrict_geopandas_filter": {
+            "()": "core.utils.RestrictGeopandasFilter",
+        },
     },
     "handlers": {
         "console": {
@@ -99,16 +101,31 @@ LOGGING = {
             "class": "astrosat.utils.DatabaseLogHandler",
         },
     },
-    "root": {"handlers": ["console", "mail_admins"], "level": "DEBUG", },
+    "root": {
+        "handlers": ["console", "mail_admins"],
+        "level": "DEBUG",
+    },
     "loggers": {
         # when DEBUG is True, these loggers spit out _way_ too much information
         # so I'm increasing their levels
-        "django.db.backends": {"level": "WARNING"},
-        "django.utils.autoreload": {"level": "INFO"},
-        "environ.environ": {"level": "INFO"},
-        "faker": {"level": "INFO"},
-        "factory": {"level": "INFO"},
-        "db": {"handlers": ["db"], "level": "DEBUG"},
+        "django.db.backends": {
+            "level": "WARNING"
+        },
+        "django.utils.autoreload": {
+            "level": "INFO"
+        },
+        "environ.environ": {
+            "level": "INFO"
+        },
+        "faker": {
+            "level": "INFO"
+        },
+        "factory": {
+            "level": "INFO"
+        },
+        "db": {
+            "handlers": ["db"], "level": "DEBUG"
+        },
     }
 }
 

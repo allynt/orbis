@@ -1,10 +1,17 @@
 locals {
   es_index_template = {
-    "template" = "app-analytics-${local.app}-${var.instance}-${var.environment}-*",
+
+    # Which indices should this template apply to
+    # here we only apply to the template created by this instance
+    "index_patterns" = [
+      "app-analytics-${local.app}-${var.instance}-${var.environment}-*",
+    ],
 
     "settings" = {
-      "number_of_shards"   = 1,
-      "number_of_replicas" = 0,
+      "index" = {
+        "number_of_shards"   = "1",
+        "number_of_replicas" = "0",
+      },
     },
 
     "mappings" = {
@@ -12,7 +19,14 @@ locals {
         "enabled" = true
       },
 
+      // For the data types available and when to use them
+      // See: https://www.elastic.co/guide/en/elasticsearch/reference/7.9/mapping-types.html
+
       "properties" = {
+
+        // Every document must have a timestamp of when it was created
+        "@timestamp" = { "type" = "date" }
+
         // "app", "instance" and "environment" are required for index routing
         // e.g. app = "orbis", instance = "primary", environment = "testing"
         "app"         = { "type" = "keyword" },
@@ -35,14 +49,26 @@ locals {
             // "action" field says which action was performed
             "action"       = { "type" = "keyword" },
 
-            // The user session where the action was performed
+            // Possible user actions:
+            //
+            // userLogin       - When a user successfully logs in (backend)
+            // loadLayer       - When a user adds a layer from the add/remove data panel (frontend)
+            // customerCreated - When a new users signs up to create a customer (backend)
+
+            // The user session where the action was performed, relevent to every user action
             "sessionId"    = { "type" = "keyword" },
             "userId"       = { "type" = "keyword" },
             "customerId"   = { "type" = "keyword" },
             "customerName" = { "type" = "keyword" },
 
-            // Possible user actions
-            // loadLayer - they used the data picker to load a dataset
+            // Properties specific to each kind of user action
+            "userLogin" = {
+              "type" = "object",
+              "properties" = {
+                /* no specific properties */
+              }
+            }
+
             "loadLayer" = {
               "type" = "object",
               "properties" = {
@@ -50,6 +76,12 @@ locals {
               }
             }
 
+            "customerCreated" = {
+              "type" = "object",
+              "properties" = {
+                "customerCreatedAt" = { "type" = "date" }
+              }
+            }
 
           }
         },

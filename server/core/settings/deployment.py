@@ -54,11 +54,15 @@ LOGGING = {
     "version": 1,
     "disable_existing_loggers": False,
     "formatters": {
-        "standard": {"format": "%(asctime)s [%(levelname)s] %(name)s: %(message)s"},
+        "standard": {
+            "format": "%(asctime)s [%(levelname)s] %(name)s: %(message)s"
+        },
         "orbis_analytics": {}
     },
     "handlers": {
-        "null": {"class": "logging.NullHandler"},
+        "null": {
+            "class": "logging.NullHandler"
+        },
         "default": {
             "level": "DEBUG",
             "class": "logging.StreamHandler",
@@ -77,18 +81,21 @@ LOGGING = {
         "db": {
             "class": "astrosat.utils.DatabaseLogHandler",
         },
-        "orbis_analytics": {
+        "analytics": {
             "level": "INFO",
-            "class": "core.analytics.OrbisAnalyticsTCPLogstashHandler",
+            "class": "astrosat.utils.AstrosatAppTCPLogstashLogHandler",
             "host": LOGSTASH_ENDPOINT,
             "port": 5959,
-            # app/instance/environment are used by logstash to route messages into indexes
+            # app/instance/environment/stream are used by logstash to route messages into indexes
             "app": DEPLOYMENT_APP,
             "instance": DEPLOYMENT_INSTANCE,
             "environment": DEPLOYMENT_ENVIRONMENT,
+            "stream": "events",
         },
     },
-    "root": {"handlers": ["default"], "level": "INFO"},
+    "root": {
+        "handlers": ["default"], "level": "INFO"
+    },
     "loggers": {
         "django.request": {
             "handlers": ["request_handler", "mail_admins_handler"],
@@ -96,7 +103,7 @@ LOGGING = {
             "propagate": False,
         },
         "db": {
-            "handlers": ["db", "orbis_analytics"],
+            "handlers": ["db", "analytics"],
             "level": "DEBUG",
         },
     },

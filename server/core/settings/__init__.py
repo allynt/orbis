@@ -28,7 +28,6 @@ else:
     # otherwise, they are dynamically created on the server
     pass
 
-
 ###############################
 # import appropriate settings #
 ###############################
