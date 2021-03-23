@@ -13,12 +13,15 @@ const useStyles = makeStyles(theme => ({
   grid: {
     marginBottom: theme.spacing(2),
   },
+  slider: {
+    marginTop: theme.typography.pxToRem(20),
+  },
 }));
 
 /**
  * @param {{
  *  dates: {value: number, label: string}[]
- *  defaultValue: number,
+ *  defaultValue?: number,
  *  value: number,
  *  onChange: (event: React.ChangeEvent<{}>, date: number) => void
  *  min?: number
@@ -56,12 +59,16 @@ export const DateStepper = ({
         <Grid container alignItems="center">
           <Grid item xs={2}>
             <IconButton color="primary" onClick={() => setIsPlaying(c => !c)}>
-              {isPlaying ? <Pause /> : <PlayArrow />}
+              {isPlaying ? (
+                <Pause titleAccess="pause" />
+              ) : (
+                <PlayArrow titleAccess="play" />
+              )}
             </IconButton>
           </Grid>
           <Grid item xs>
             <Slider
-              style={{ marginTop: '20px' }}
+              className={styles.slider}
               value={value || defaultValue}
               onChange={onChange}
               min={min}
