@@ -220,14 +220,16 @@ type GeoJsonFeature<P = {}> = {
   properties: { cluster?: boolean; expansion_zoom?: number } & P;
 };
 
-type LayerConfiguration = (props: {
-  id: string;
-  data: any;
-  orbState: OrbState;
-  authToken: string;
-  activeSources: Source[];
-  dispatch: Dispatch;
-}) => any;
+type LayerConfiguration<P = {}> = (
+  props: {
+    id: string;
+    data: any;
+    orbState: OrbState;
+    authToken: string;
+    activeSources: Source[];
+    dispatch: Dispatch;
+  } & P,
+) => any;
 
 /** A feature which has been picked from the map by onHover or onClick */
 type PickedMapFeature<P = {}> = {
