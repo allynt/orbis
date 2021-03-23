@@ -1,6 +1,5 @@
 import { combineReducers } from 'redux';
 import { createSlice, createSelector } from '@reduxjs/toolkit';
-import rice from './rice/rice.slice';
 import isolationPlus from './slices/isolation-plus.slice';
 import crowdless from './slices/crowdless.slice';
 
@@ -173,7 +172,6 @@ export const extrusionScaleSelector = createSelector(
 
 const orbReducer = combineReducers({
   layers: layersSlice.reducer,
-  rice,
   isolationPlus,
   crowdless,
 });
