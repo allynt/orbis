@@ -82,7 +82,7 @@ class CustomerCreateView(AstrosatUsersCustomerCreateView):
             "customerName": customer_data["name"],
             "userId": user.uuid,
             "customerCreated": {
-                "customerCreatedAt": format_elasticsearch_timestamp(customer.created),
+                "customerCreatedAt": format_elasticsearch_timestamp(customer.created.timestamp()),
             },
         }
 
