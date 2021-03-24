@@ -77,6 +77,7 @@ export default () => {
           render={() => (
             <JourneySelection
               termsUrl={termsUrl}
+              privacyUrl={privacyUrl}
               customerRegistrationIsOpen
               individualRegistrationIsOpen={false}
             />
