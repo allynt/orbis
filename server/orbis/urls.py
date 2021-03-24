@@ -12,6 +12,7 @@ from .views import (
     CustomerUserInviteView,
     CustomerUserOnboardView,
     DataSourceView,
+    DocumentView,
     TokenView,
     OrderListCreateView,
     SatelliteViewSet,
@@ -25,8 +26,12 @@ from .views import (
 ##############
 
 api_router = SlashlessSimpleRouter()
-api_router.register(r"satellites/searches", SatelliteSearchViewSet, basename="satellite-search")
-api_router.register(r"satellites/results", SatelliteResultViewSet, basename="satellite-result")
+api_router.register(
+    r"satellites/searches", SatelliteSearchViewSet, basename="satellite-search"
+)
+api_router.register(
+    r"satellites/results", SatelliteResultViewSet, basename="satellite-result"
+)
 api_router.register(r"satellites", SatelliteViewSet, basename="satellite")
 api_urlpatterns = [
     # using custom login view to enable db logging
@@ -40,10 +45,11 @@ api_urlpatterns = [
     path("customers/<slug:customer_id>/users/<slug:user_id>/onboard/", CustomerUserOnboardView.as_view(), name="customer-users-onboard"),
     path("customers/<slug:customer_id>/orders/", OrderListCreateView.as_view(), name="orders-list"),
     path("data/sources/", DataSourceView.as_view(), name="datasources"),
+    path("documents/<str:document_type>/", DocumentView.as_view(), name="documents"),
     path("data/token/", TokenView.as_view(), name="token"),
     path("satellites/run_query/", run_satellite_query, name="satellite-run-query"),
     path("", include(api_router.urls)),
-]
+]  # yapf: disable
 
 #################
 # normal routes #
