@@ -40,7 +40,7 @@ const SMALL_PRINT = (termsUrl, privacyUrl) => {
       >
         Privacy Policy
       </Link>
-      .  We will then verify your email address [by sending you a verification
+      . We will then verify your email address [by sending you a verification
       email to which you must reply], you can then proceed to create your company
       profile and order Subscription Services and Professional Services. We will
       send you an Order Form showing what you have ordered with relevant pricing

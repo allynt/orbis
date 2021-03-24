@@ -16,18 +16,22 @@ const CONTINUE_REGEX = /continue/i;
 const TERMS_URL = "www.terms.com";
 const PRIVACY_URL = "www.privacy.com";
 
-const renderComponent = (
-  args = {
-    termsURL: TERMS_URL,
-    privacyURL: PRIVACY_URL,
-    individualRegistrationIsOpen: true,
-    customerRegistrationIsOpen: true,
-  },
-) => {
+const renderComponent = ({
+  individualRegistrationIsOpen = true,
+  customerRegistrationIsOpen = true,
+} = {}) => {
   const history = createMemoryHistory();
-  const utils = render(<JourneySelection {...args} />, {
-    wrapper: ({ children }) => <Router history={history}>{children}</Router>,
-  });
+  const utils = render(
+    <JourneySelection
+      termsUrl={TERMS_URL}
+      privacyUrl={PRIVACY_URL}
+      individualRegistrationIsOpen={individualRegistrationIsOpen}
+      customerRegistrationIsOpen={customerRegistrationIsOpen}
+    />,
+    {
+      wrapper: ({ children }) => <Router history={history}>{children}</Router>,
+    },
+  );
   return { ...utils, history };
 };
 
@@ -90,6 +94,12 @@ describe('<JourneySelection />', () => {
 
   it('Has a terms and conditions link', () => {
     const { getByRole } = renderComponent();
-    expect(getByRole('link', { name: /here/i })).toHaveAttribute('href', TERMS_URL);
+    expect(getByRole('link', { name: /Terms and Conditions/i })).toHaveAttribute('href', TERMS_URL);
   });
+
+  it('Has a privacy link', () => {
+    const { getByRole } = renderComponent();
+    expect(getByRole('link', { name: /Privacy Policy/i })).toHaveAttribute('href', PRIVACY_URL);
+  });
+
 });
