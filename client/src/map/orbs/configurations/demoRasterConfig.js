@@ -20,7 +20,7 @@ export default ({
   otherStateKey,
   valueKey,
   defaultValue,
-  dateFormat,
+  dateFormat = 'yyyyMMdd',
   defaultDate,
 }) => {
   const source = find(activeSources, { source_id: id });
@@ -35,7 +35,7 @@ export default ({
     }.png`,
     bounds: find(source.metadata.properties, {
       name: other?.[valueKey] || defaultValue,
-    }).bounds,
+    })?.bounds,
     loadOptions: {
       fetch: {
         headers: {
