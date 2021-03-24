@@ -49,8 +49,8 @@ import OrderForm from './register/customer/order-form/order-form.component';
 import Wrapper from './wrapper.component';
 
 const DOCUMENTS_API = {
-  terms: '/api/documents/terms/?is_active=True',
-  privacy: '/api/documents/privacy/?is_active=True',
+  terms: '/api/documents/terms/',
+  privacy: '/api/documents/privacy/',
 };
 
 export default () => {

@@ -55,7 +55,7 @@ class DocumentView(GenericAPIView):
             document_qs, self.request.query_params.get("version", None)
         )
         document_qs = document_is_active_filter.filter(
-            document_qs, self.request.query_params.get("is_active", None)
+            document_qs, self.request.query_params.get("is_active", True)
         )
 
         if document_qs.count() != 1:
