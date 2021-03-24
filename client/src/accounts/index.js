@@ -3,7 +3,7 @@ import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Redirect, Route, Switch } from 'react-router-dom';
 
-import { passwordConfigSelector } from 'app.slice';
+import { apiUrlSelector, passwordConfigSelector } from 'app.slice';
 import PrivateRoute from 'utils/private-route.component';
 
 import {
@@ -48,6 +48,11 @@ import CustomerRegistration from './register/customer/customer-registration/cust
 import OrderForm from './register/customer/order-form/order-form.component';
 import Wrapper from './wrapper.component';
 
+const DOCUMENTS_API = {
+  terms: '/api/documents/terms/?is_active=True',
+  privacy: '/api/documents/privacy/?is_active=True',
+};
+
 export default () => {
   const dispatch = useDispatch();
   const error = useSelector(errorSelector);
@@ -58,6 +63,10 @@ export default () => {
   /** @type {User} */
   const user = useSelector(userSelector);
   const passwordConfig = useSelector(passwordConfigSelector);
+  const apiUrl = useSelector(apiUrlSelector);
+
+  const termsUrl = `${apiUrl}${DOCUMENTS_API.terms}`;
+  const privacyUrl = `${apiUrl}${DOCUMENTS_API.privacy}`;
 
   return (
     <Wrapper>
@@ -67,6 +76,7 @@ export default () => {
           path={REGISTER}
           render={() => (
             <JourneySelection
+              termsUrl={termsUrl}
               customerRegistrationIsOpen
               individualRegistrationIsOpen={false}
             />
@@ -89,6 +99,7 @@ export default () => {
           path={REGISTER_CUSTOMER_USER}
           render={() => (
             <UserRegistration
+              termsUrl={termsUrl}
               serverErrors={error}
               isLoading={isLoading}
               onSubmit={values => dispatch(registerUser(values))}
