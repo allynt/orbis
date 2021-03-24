@@ -11,10 +11,10 @@ export default ({ id, data, orbState }) => {
     id,
     visible,
     data: other?.date
-      ? filter(data?.features, {
+      ? filter(data.features, {
           properties: {
             timestamp: format(
-              subHours(new Date(other?.date), 1),
+              subHours(new Date(other.date), 1),
               'yyyy-MM-dd HH:mm:ss',
             ),
           },
