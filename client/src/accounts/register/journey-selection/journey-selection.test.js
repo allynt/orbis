@@ -13,8 +13,13 @@ const TEAM_REGEX = /team/i;
 const INDIVIDUAL_REGEX = /individual/i;
 const CONTINUE_REGEX = /continue/i;
 
+const TERMS_URL = "www.terms.com";
+const PRIVACY_URL = "www.privacy.com";
+
 const renderComponent = (
   args = {
+    termsURL: TERMS_URL,
+    privacyURL: PRIVACY_URL,
     individualRegistrationIsOpen: true,
     customerRegistrationIsOpen: true,
   },
@@ -85,6 +90,6 @@ describe('<JourneySelection />', () => {
 
   it('Has a terms and conditions link', () => {
     const { getByRole } = renderComponent();
-    expect(getByRole('link', { name: /here/i })).toHaveAttribute('href', TERMS);
+    expect(getByRole('link', { name: /here/i })).toHaveAttribute('href', TERMS_URL);
   });
 });
