@@ -1,4 +1,3 @@
-import { format } from 'date-fns';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { otherSelector, setOther } from '../orbReducer';
@@ -24,7 +23,7 @@ export default ({
   const dispatch = useDispatch();
   const dates = datesProp.map(dateString => {
     const date = new Date(dateString);
-    return { value: date.getTime(), label: format(date, 'MM/yy') };
+    return { value: date.getTime() };
   });
   const other = useSelector(state => otherSelector(stateKey)(state.orbs));
 

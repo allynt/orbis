@@ -4,8 +4,10 @@ import {
   makeStyles,
   Slider,
   Typography,
+  Tooltip,
 } from '@astrosat/astrosat-ui';
 import { Pause, PlayArrow } from '@material-ui/icons';
+import { format } from 'date-fns';
 import { findIndex } from 'lodash';
 import React, { useEffect, useState } from 'react';
 
@@ -14,13 +16,23 @@ const useStyles = makeStyles(theme => ({
     marginBottom: theme.spacing(2),
   },
   slider: {
-    marginTop: theme.typography.pxToRem(20),
+    marginTop: theme.spacing(1),
   },
 }));
 
+const ValueLabelComponent = props => {
+  const { children, open, value } = props;
+
+  return (
+    <Tooltip open={open} enterTouchDelay={0} placement="top" title={value}>
+      {children}
+    </Tooltip>
+  );
+};
+
 /**
  * @param {{
- *  dates: {value: number, label: string}[]
+ *  dates: {value: number, label?: string}[]
  *  defaultValue?: number,
  *  value: number,
  *  onChange: (event: React.ChangeEvent<{}>, date: number) => void
@@ -68,6 +80,9 @@ export const DateStepper = ({
           </Grid>
           <Grid item xs>
             <Slider
+              ValueLabelComponent={ValueLabelComponent}
+              valueLabelDisplay={isPlaying ? 'on' : 'auto'}
+              valueLabelFormat={v => format(new Date(v), 'dd/MM/yy')}
               className={styles.slider}
               value={value || defaultValue}
               onChange={onChange}
