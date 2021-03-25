@@ -52,7 +52,12 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const ControlPanel = () => {
+/**
+ * @param {{
+ *   sidebarComponents: Record<string, JSX.Element | JSX.Element[]>
+ * }} props
+ */
+const ControlPanel = ({ sidebarComponents }) => {
   const dispatch = useDispatch();
   const isMenuVisible = useSelector(selectIsMenuVisible);
   const heading = useSelector(selectHeading);
@@ -84,7 +89,9 @@ const ControlPanel = () => {
           </div>
         }
       >
-        {visibleMenuItem === DATA_LAYERS && <DataLayers />}
+        {visibleMenuItem === DATA_LAYERS && (
+          <DataLayers sidebarComponents={sidebarComponents} />
+        )}
         {visibleMenuItem === SATELLITE_LAYERS && <SatellitesPanel />}
         {visibleMenuItem === ANNOTATIONS && <AnnotationsPanel />}
         {visibleMenuItem === BOOKMARKS && <BookmarksPanel />}

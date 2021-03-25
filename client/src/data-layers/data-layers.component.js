@@ -32,10 +32,14 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const DataLayers = () => {
+/**
+ * @param {{
+ *   sidebarComponents: Record<string, JSX.Element | JSX.Element[]>
+ * }} props
+ */
+const DataLayers = ({ sidebarComponents }) => {
   const styles = useStyles();
   const [isVisible, toggle] = useState(false);
-  const { sidebarComponents } = useOrbs();
 
   const dispatch = useDispatch();
   const activeCategorisedSources = useSelector(
