@@ -9,6 +9,6 @@ class AppConfig(AppConfig):
 
         # register any signals...
         try:
-            import orbis.signals  # noqa F401
+            import orbis.signals  # noqa
         except ImportError:
             pass

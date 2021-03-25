@@ -8,16 +8,29 @@ ENV COMMIT_SHA=$COMMIT_SHA
 ENV PIPENV_VENV_IN_PROJECT=1
 ENV PIPENV_DONT_LOAD_ENV=1
 
+# All services default off, must be enabled at runtime
+ENV ENABLE_CELERY=0
+ENV ENABLE_DJANGO=0
+ENV ENABLE_UWSGI=0
+
 WORKDIR $APP_HOME
 
 COPY --chown=app:app server $APP_HOME/server
 
 RUN cd $APP_HOME/server && pipenv install --dev && pipenv run ./manage.py collectstatic --no-input --link
 
+COPY --chown=root:root run-celery.sh $APP_HOME/
+COPY --chown=root:root run-uwsgi.sh $APP_HOME/
+
 COPY --chown=root:root server-nginx.conf /etc/nginx/nginx.conf
-COPY --chown=root:root run-uwsgi.sh /etc/service/uwsgi/run
 
 EXPOSE 80
+
+USER root
+
+# run startup script as per https://github.com/phusion/baseimage-docker#running_startup_scripts
+RUN mkdir -p /etc/my_init.d
+COPY startup.sh /etc/my_init.d/startup.sh
 
 # The baseimage requires ultimately running as root
 USER root

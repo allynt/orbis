@@ -1,34 +1,33 @@
 //
-// Deployment
+// Task Worker Deployment
 //
 
-resource "kubernetes_deployment" "api_deployment" {
+resource "kubernetes_deployment" "worker" {
+
   depends_on = [
     kubernetes_secret.deployment_secret
   ]
 
   metadata {
-    name   = local.api_name
-    labels = local.api_labels
-  }
-
-  timeouts {
-    create = "30m"
-    delete = "30m"
+    name   = local.worker_name
+    labels = local.worker_labels
   }
 
   spec {
-    progress_deadline_seconds = 60 * 15 // 15 minutes
-
     selector {
-      match_labels = local.api_labels
+      match_labels = local.worker_labels
     }
 
-    replicas = local.num_replicas
+    // WARNING
+    //  Before increasing replicas beyond 1
+    //  it is neccessary to split out the celery worker and celery scheduler
+    //  as only one scheduler can be run at a time.
+    replicas = 1
+    // WARNING
 
     template {
       metadata {
-        labels = local.api_labels
+        labels = local.worker_labels
       }
 
       spec {
@@ -36,35 +35,8 @@ resource "kubernetes_deployment" "api_deployment" {
         automount_service_account_token = true
 
         container {
-          name  = local.app_name
-          image = local.api_image
-
-          port {
-            container_port = 80
-          }
-
-          // Readiness probe detects when the app is ready to recieve traffic (i.e. after startup)
-          readiness_probe {
-            initial_delay_seconds = 10
-            period_seconds        = 10
-
-            http_get {
-              path = local.healthcheck_api_path
-              port = 80
-            }
-          }
-
-          // Liveness probe restarts the container if health checks fail for a long time
-          liveness_probe {
-            initial_delay_seconds = 900
-            period_seconds        = 60
-            failure_threshold     = 15
-
-            http_get {
-              path = local.healthcheck_api_path
-              port = 80
-            }
-          }
+          name  = local.worker_name
+          image = local.api_image # the celery resource uses the api image
 
           // Environment Variables
           env {
@@ -73,7 +45,7 @@ resource "kubernetes_deployment" "api_deployment" {
           }
 
           env {
-            name  = "ENABLE_UWSGI"
+            name  = "ENABLE_CELERY"
             value = 1
           }
 
@@ -96,6 +68,7 @@ resource "kubernetes_deployment" "api_deployment" {
 
           env {
             // This is required to allow running manual celery commands
+            //  and the healthchecks.
             name  = "DJANGO_SETTINGS_MODULE"
             value = "core.settings"
           }
@@ -289,6 +262,7 @@ resource "kubernetes_deployment" "api_deployment" {
             }
           }
 
+
           // Other Services
 
           env {
@@ -371,61 +345,37 @@ resource "kubernetes_deployment" "api_deployment" {
             value = "https://${local.app_domain}"
           }
 
-        }
-      }
-    }
-  }
-}
+          // Healthcheck Probes
+          liveness_probe {
+            initial_delay_seconds = 30
+            period_seconds        = 10
+            timeout_seconds       = 5
+            success_threshold     = 1
+            failure_threshold     = 5
 
-//
-// Service
-//
-
-resource "kubernetes_service" "api_service" {
-  metadata {
-    name   = local.api_name
-    labels = local.api_labels
-  }
-
-  spec {
-    type = "ClusterIP"
-
-    selector = local.api_labels
-
-    port {
-      name        = "http"
-      port        = 80
-      target_port = 80
-    }
-  }
-}
-
-//
-// Ingress
-//
-
-resource "kubernetes_ingress" "api_ingress" {
-  metadata {
-    name = local.api_name
-    labels = {
-      traefik = (var.environment == "staging" || var.environment == "production") ? "external" : "internal"
-    }
-  }
-
-  spec {
-    rule {
-      host = local.api_domain
-
-      http {
-        path {
-          path = "/"
-
-          backend {
-            service_name = local.api_name
-            service_port = "http"
+            exec {
+              command = local.healthcheck_worker_command
+            }
           }
+
+          readiness_probe {
+            initial_delay_seconds = 30
+            period_seconds        = 10
+            timeout_seconds       = 5
+            success_threshold     = 1
+            failure_threshold     = 5
+
+            exec {
+              command = local.healthcheck_worker_command
+            }
+          }
+
         }
+
       }
+
     }
+
   }
+
 }

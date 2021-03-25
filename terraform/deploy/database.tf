@@ -12,7 +12,7 @@ resource "postgresql_database" "branch_db" {
     ]
   }
 
-  name       = local.app_instance_db_name
+  name       = local.instance_db_name
   owner      = data.kubernetes_secret.environment_secret.data["db_user"]
   template   = data.kubernetes_secret.environment_secret.data["db_name"]
   lc_ctype   = "DEFAULT"

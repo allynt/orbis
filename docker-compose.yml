@@ -1,6 +1,7 @@
 version: "3.5"
 
 services:
+
   db:
     image: kartoza/postgis:11.0-2.5
     environment:
@@ -16,19 +17,15 @@ services:
   server:
     build:
       context: .
-      args:
-        TOKEN: "${GITHUB_REGISTRY_TOKEN}"
     tty: true
     environment:
-      PIPENV_NOSPIN: 1
-      PIPENV_DONT_LOAD_ENV: 1
-      DJANGO_SETTINGS_MODULE: core.settings
-      GITHUB_REGISTRY_TOKEN: "${GITHUB_REGISTRY_TOKEN}"
-      DOCKER_BUILDKIT: 1
+      SYS_ENV: development
+      ENABLE_DJANGO: 1
       DJANGO_CLIENT_HOST: http://localhost:3000
+      DJANGO_SETTINGS_MODULE: core.settings
+      DOCKER_BUILDKIT: 1
     volumes:
       - ./server:/home/app/server
-      - ./client:/home/app/client
     ports:
       - "8000:8000"
     networks:
@@ -49,6 +46,28 @@ services:
     ports:
       - "3000:3000"
       - "35729:35729"
+    networks:
+      - orbis
+
+  broker:
+    image: redis:6.2
+    command: ["redis-server"]
+    ports:
+      - 6379:6379
+    networks:
+      - orbis
+
+  runner:
+    build: .
+    environment:
+      SYS_ENV: development
+      ENABLE_CELERY: 1
+      PIPENV_PIPFILE: /home/app/Pipfile
+    volumes:
+      - ./server:/home/app/server
+    depends_on:
+      - server
+      - broker
     networks:
       - orbis
 

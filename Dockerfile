@@ -11,8 +11,14 @@ USER app
 ARG TOKEN
 ENV GITHUB_REGISTRY_TOKEN=$TOKEN
 
-ENV PIPENV_VENV_IN_PROJECT=1
 ENV PIPENV_DONT_LOAD_ENV=1
+ENV PIPENV_NO_SPIN=1
+ENV PIPENV_VENV_IN_PROJECT=1
+
+# All services default off, must be enabled at runtime
+ENV ENABLE_CELERY=0
+ENV ENABLE_DJANGO=0
+ENV ENABLE_UWSGI=0
 
 WORKDIR $APP_HOME
 
@@ -24,10 +30,17 @@ WORKDIR $APP_HOME
 COPY --chown=app:app ./server/Pipfile* $APP_HOME/
 RUN cd $APP_HOME && pipenv install --dev
 
-COPY --chown=root:root run-server.sh /etc/service/server/run
+COPY --chown=root:root run-django.sh $APP_HOME/
+COPY --chown=root:root run-celery.sh $APP_HOME/
+COPY --chown=root:root run-uwsgi.sh $APP_HOME/
 
-# necessary to have permission to remove nginx support
 USER root
+
+# run startup script as per https://github.com/phusion/baseimage-docker#running_startup_scripts
+RUN mkdir -p /etc/my_init.d
+COPY startup.sh /etc/my_init.d/startup.sh
+
+# remove nginx support
 RUN rm -rf /etc/service/nginx
 
 # The baseimage requires ultimately running as root
