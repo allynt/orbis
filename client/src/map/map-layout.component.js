@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Box, ThemeProvider } from '@astrosat/astrosat-ui';
+import { Box } from '@astrosat/astrosat-ui';
 
 import { AnalysisPanel } from 'analysis-panel/analysis-panel.component';
 import ControlPanel from '../control-panel/control-panel.component';
@@ -9,9 +9,11 @@ import {
   selectPollingPeriod,
 } from 'data-layers/data-layers.slice';
 import Map from './map.component';
+import { useOrbs } from './orbs/useOrbs';
 
 const MapLayout = () => {
   const dispatch = useDispatch();
+  const { layers, mapComponents, sidebarComponents } = useOrbs();
   const pollingPeriod = useSelector(selectPollingPeriod);
 
   useEffect(() => {
@@ -34,8 +36,8 @@ const MapLayout = () => {
       overflow="hidden"
       bgcolor="#242424"
     >
-      <ControlPanel />
-      <Map />
+      <ControlPanel sidebarComponents={sidebarComponents} />
+      <Map layers={layers} mapComponents={mapComponents} />
       <AnalysisPanel />
     </Box>
   );

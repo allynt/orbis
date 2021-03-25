@@ -26,8 +26,11 @@ export const useOrbs = () => {
   const authToken = useSelector(selectDataToken);
   const activeSources = useSelector(activeDataSourcesSelector);
   const [data, setData] = useState({});
+  /** @type {[any[], React.Dispatch<any[]>]} */
   const [layers, setLayers] = useState([]);
+  /** @type {[JSX.Element[], React.Dispatch<JSX.Element[]>]} */
   const [mapComponents, setMapComponents] = useState([]);
+  /** @type {[Record<string, JSX.Element | JSX.Element[]>, React.Dispatch<Record<string, JSX.Element | JSX.Element[]>>]} */
   const [sidebarComponents, setSidebarComponents] = useState({});
   const orbState = useSelector(orbsSelector);
 
@@ -45,7 +48,10 @@ export const useOrbs = () => {
         dispatch(setIsLoading(true));
         const dataSet = await response.json();
         dispatch(setIsLoading(false));
-        setData({ ...data, [source.source_id]: dataSet });
+        setData({
+          ...data,
+          [source.source_id]: dataSet,
+        });
       } catch (ex) {
         return dispatch(logError(source));
       }
@@ -127,7 +133,13 @@ export const useOrbs = () => {
         ),
       );
       const props = source.metadata.application.orbis.map_component.props;
-      return <Component source={source} {...props} />;
+      return (
+        <Component
+          key={`${source.source_id}-${source.metadata.application.orbis.map_component.name}`}
+          source={source}
+          {...props}
+        />
+      );
     });
     setMapComponents(components);
   }, [activeSources, dispatch]);

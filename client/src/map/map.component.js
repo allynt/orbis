@@ -147,7 +147,13 @@ const dirLight = new SunLight({
 const lightingEffect = new LightingEffect({ ambientLight, dirLight });
 lightingEffect.shadowColor = [0, 0, 0, 0.5];
 
-const Map = () => {
+/**
+ * @param {{
+ *   mapComponents: JSX.Element[]
+ *   layers: any[]
+ * }} props
+ */
+const Map = ({ mapComponents, layers }) => {
   const {
     topMapRef,
     bottomMapRef,
@@ -166,7 +172,6 @@ const Map = () => {
   const mapLoading = useSelector(isLoadingSelector);
   const mapStyles = useSelector(mapStylesSelector);
   const selectedMapStyle = useSelector(selectedMapStyleSelector);
-  const { layers, mapComponents } = useOrbs();
   const [mapStyleSwitcherVisible, setMapStyleSwitcherVisible] = useState(false);
   const styles = useStyles({ selectedMapStyle });
 
