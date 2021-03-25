@@ -77,13 +77,15 @@ class CustomerCreateView(AstrosatUsersCustomerCreateView):
 
         event = {
             "type": "orbisUserAction",
-            "action": "customerCreated",
-            "customerId": customer_data["id"],
-            "customerName": customer_data["name"],
-            "userId": user.uuid,
-            "customerCreated": {
-                "customerCreatedAt": format_elasticsearch_timestamp(customer.created.timestamp()),
-            },
+            "orbisUserAction": {
+                "action": "customerCreated",
+                "customerId": customer_data["id"],
+                "customerName": customer_data["name"],
+                "userId": user.uuid,
+                "customerCreated": {
+                    "customerCreatedAt": format_elasticsearch_timestamp(customer.created.timestamp()),
+                 },
+            }
         }
 
         db_logger.info(
