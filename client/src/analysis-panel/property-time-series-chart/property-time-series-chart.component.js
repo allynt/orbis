@@ -19,7 +19,7 @@ export const PropertyTimeSeriesChart = ({
   clickedFeatures,
   selectedProperty,
   info,
-  timestampFormat = 'MMM - yy',
+  timestampFormat = 'MMM yy',
 }) => {
   const chartTheme = useChartTheme();
 
@@ -45,8 +45,10 @@ export const PropertyTimeSeriesChart = ({
             tickFormat={timestamp =>
               format(new Date(timestamp), timestampFormat)
             }
+            offsetY={110}
           />
           <VictoryAxis
+            crossAxis={false}
             dependentAxis
             tickFormat={v =>
               v.toFixed(selectedProperty.precision ?? DEFAULT_DECIMAL_PRECISION)
