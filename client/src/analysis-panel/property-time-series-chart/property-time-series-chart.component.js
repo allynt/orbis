@@ -19,7 +19,7 @@ export const PropertyTimeSeriesChart = ({
   clickedFeatures,
   selectedProperty,
   info,
-  timestampFormat = 'MMM - yy',
+  timestampFormat = 'MMM yy',
 }) => {
   const chartTheme = useChartTheme();
 
