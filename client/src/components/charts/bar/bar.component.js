@@ -13,7 +13,7 @@ import {
 } from 'victory';
 import { useChartTheme } from '../useChartTheme';
 
-const CustomLabel = props => (
+const WrappingLabel = props => (
   <Text width={400} {...props}>
     {props.text}
   </Text>
@@ -60,7 +60,7 @@ export const BarChart = ({
       <VictoryAxis
         fixLabelOverlap
         label={labelX}
-        axisLabelComponent={<CustomLabel />}
+        axisLabelComponent={<WrappingLabel />}
         tickCount={3}
         crossAxis={false}
         style={{ axisLabel: { padding: 50 } }}
