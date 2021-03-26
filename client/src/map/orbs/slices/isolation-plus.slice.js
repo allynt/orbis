@@ -173,10 +173,10 @@ export const breakdownAggregationSelector = createSelector(
       ? undefined
       : property?.breakdown
           ?.map(name => {
+            const { name: _, ...rest } = property;
             const value = aggregateValues(clickedFeatures, {
               name,
-              aggregation: property.aggregation,
-              precision: property.precision,
+              ...rest,
             });
             return {
               value,
