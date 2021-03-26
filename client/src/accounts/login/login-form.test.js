@@ -17,6 +17,7 @@ const SIGN_UP = /sign\sup/i;
 const KEEP_LOGGED_IN = /keep\sme\slogged\sin/i;
 const WORK_EMAIL = /work\semail\saddress/i;
 const I_AGREE_TEXT = 'I agree with Terms & Conditions';
+const TERMS_URL = 'www.terms.com';
 
 /**
  * @param {Partial<Pick<import('./login-form.component').LoginProps,
@@ -33,6 +34,7 @@ const renderComponent = props => {
   const utils = render(
     // @ts-ignore
     <LoginForm
+      termsUrl={TERMS_URL}
       passwordMinLength={2}
       passwordMaxLength={255}
       activateAccount={activateAccount}

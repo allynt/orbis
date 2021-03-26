@@ -45,7 +45,7 @@ const Profile = () => {
         <Typography>
           Read our&nbsp;
           <Link
-            href={apiUrl + '/api/documents/terms/'}
+            href={`${apiUrl}/api/documents/terms/`}
             rel="noopener noreferrer"
             target="_blank"
           >

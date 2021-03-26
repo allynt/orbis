@@ -130,6 +130,7 @@ export default () => {
               <Redirect to="/" />
             ) : (
               <LoginForm
+                termsUrl={termsUrl}
                 user={user}
                 login={values => dispatch(login(values))}
                 serverErrors={error}
@@ -149,6 +150,7 @@ export default () => {
           changePassword={form => dispatch(changePassword(form))}
           changeStatus={changeStatus}
           error={error}
+          termsUrl={termsUrl}
           {...passwordConfig}
         />
         <Route

@@ -24,10 +24,12 @@ const OLD_PASSWORD_TEXT = 'oldpassword';
 const NEW_PASSWORD_TEXT = 'newpassword';
 const CHANGE_PASSWORD_BUTTON_LABEL = 'Change Password';
 const I_AGREE_TEXT = 'I agree with Terms & Conditions';
+const TERMS_URL = 'www.terms.com';
 
 const renderComponent = (store, changePassword, changeStatus, error) =>
   render(
     <PasswordChangeForm
+      termsUrl={TERMS_URL}
       changePassword={changePassword}
       changeStatus={changeStatus}
       error={error}

@@ -19,7 +19,6 @@ import * as yup from 'yup';
 import { PASSWORD_RESET_REQUEST, REGISTER } from 'accounts/accounts.constants';
 import { ErrorWell } from 'accounts/error-well.component';
 import { Form } from 'components';
-import { TERMS } from 'legal-documents/legal-documents-constants';
 import { email, FIELD_NAMES, password } from 'utils/validators';
 
 const loginSchema = yup.object({
@@ -29,6 +28,7 @@ const loginSchema = yup.object({
 
 /**
  * @typedef {{
+ *   termsUrl?: string
  *   isLoading?: boolean
  *   passwordMinLength: number
  *   passwordMaxLength: number
@@ -43,6 +43,7 @@ const loginSchema = yup.object({
  * @param {LoginProps} props
  */
 const LoginForm = ({
+  termsUrl,
   isLoading = false,
   match,
   passwordMinLength,
@@ -116,7 +117,11 @@ const LoginForm = ({
               label={
                 <>
                   I agree with&nbsp;
-                  <Link target="_blank" href={TERMS} rel="noopener noreferrer">
+                  <Link
+                    target="_blank"
+                    href={termsUrl}
+                    rel="noopener noreferrer"
+                  >
                     Terms &amp; Conditions
                   </Link>
                 </>

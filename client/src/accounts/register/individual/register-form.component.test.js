@@ -23,8 +23,10 @@ const SIGN_UP_BUTTON_TEXT = 'Sign Up';
 const PASSWORD_TEXT = 'newpassword';
 const EMAIL_TEXT = 'test@test.com';
 const I_AGREE_TEXT = /I agree with/i;
+const TERMS_URL = 'www.terms.com';
 
 const testAppConfig = {
+  termsUrl: TERMS_URL,
   passwordMinLength: 8,
   passwordMaxLength: 255,
   passwordStrength: 0,
@@ -92,7 +94,7 @@ describe('Register Form Component', () => {
     //Check the I agree with button is in the document and has the correct href
     const termsCheckbox = getByText('Terms & Conditions');
     expect(termsCheckbox).toBeInTheDocument();
-    expect(termsCheckbox.href).toContain('/terms');
+    expect(termsCheckbox.href).toContain(TERMS_URL);
     // Check form submit button
     const signUpButton = getByRole('button', { name: SIGN_UP_BUTTON_TEXT });
     expect(signUpButton).toBeInTheDocument();
