@@ -35,7 +35,7 @@ const Profile = () => {
         <Typography>
           Need help? Contact us&nbsp;
           <Link
-            href='https://share.hsforms.com/1U1g8jQnFQ2ej1lyaDcncfA4cctf'
+            href="https://share.hsforms.com/1U1g8jQnFQ2ej1lyaDcncfA4cctf"
             rel="noopener noreferrer"
             target="_blank"
           >

@@ -5,7 +5,6 @@ import userEvent from '@testing-library/user-event';
 import { createMemoryHistory } from 'history';
 import { Router } from 'react-router-dom';
 
-import { TERMS } from 'legal-documents/legal-documents-constants';
 import { REGISTER_CUSTOMER_USER, REGISTER } from 'accounts/accounts.constants';
 import JourneySelection from './journey-selection.component';
 

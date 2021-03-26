@@ -17,12 +17,11 @@ import { useHistory } from 'react-router-dom';
 import { REGISTER_CUSTOMER_USER, REGISTER } from 'accounts/accounts.constants';
 import { Form } from 'components';
 
-
-const SMALL_PRINT = (termsUrl, privacyUrl) => {
+const SmallPrint = (termsUrl, privacyUrl) => {
   return (
-  <>
+    <>
       A contract will be created between Astrosat and You "The Customer”. Before
-      you proceed, you need to accept our {' '}
+      you proceed, you need to accept our{' '}
       <Link
         variant="inherit"
         href={termsUrl}
@@ -30,8 +29,8 @@ const SMALL_PRINT = (termsUrl, privacyUrl) => {
         rel="noreferrer noopener"
       >
         Terms and Conditions
-      </Link>
-      {' '} and our {' '}
+      </Link>{' '}
+      and our{' '}
       <Link
         variant="inherit"
         href={privacyUrl}
@@ -41,15 +40,15 @@ const SMALL_PRINT = (termsUrl, privacyUrl) => {
         Privacy Policy
       </Link>
       . We will then verify your email address [by sending you a verification
-      email to which you must reply], you can then proceed to create your company
-      profile and order Subscription Services and Professional Services. We will
-      send you an Order Form showing what you have ordered with relevant pricing
-      and any other relevant information. No contract will be created between
-      Astrosat and the Customer until you have checked and accepted the Order
-      Form. If the order form is incorrect, you must get in touch with us as soon
-      as possible and no later than 14 days
+      email to which you must reply], you can then proceed to create your
+      company profile and order Subscription Services and Professional Services.
+      We will send you an Order Form showing what you have ordered with relevant
+      pricing and any other relevant information. No contract will be created
+      between Astrosat and the Customer until you have checked and accepted the
+      Order Form. If the order form is incorrect, you must get in touch with us
+      as soon as possible and no later than 14 days
     </>
-    )
+  );
 };
 
 const useStyles = makeStyles(theme => ({
@@ -129,7 +128,7 @@ const JourneySelection = ({
         </FormControl>
       </Form.Row>
       <Form.Row component={Typography} className={styles.smallPrint}>
-        {SMALL_PRINT(termsUrl, privacyUrl)}
+        <SmallPrint termsUrl={termsUrl} privacyUrl={privacyUrl} />
       </Form.Row>
       <Form.Row centered>
         <Button onClick={handleClick} disabled={!selection}>
