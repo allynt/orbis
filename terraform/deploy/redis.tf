@@ -40,10 +40,10 @@ resource "kubernetes_deployment" "redis_server" {
 
         container {
           name              = local.redis_name
-          image             = "docker.io/redis:6.2"
-          image_pull_policy = "Always"
 
-          command = ["sh", "-c", "redis-server --requirepass \"$REDIS_PASSWORD\" --appendonly no --save \"\" "]
+          # For image docs see: https://gallery.ecr.aws/bitnami/redis
+          image             = "public.ecr.aws/bitnami/redis:6.2"
+          image_pull_policy = "Always"
 
           env {
             name = "REDIS_PASSWORD"
@@ -53,6 +53,26 @@ resource "kubernetes_deployment" "redis_server" {
                 key  = "redis_password"
               }
             }
+          }
+
+          env {
+            name  = "ALLOW_EMPTY_PASSWORD"
+            value = "no"
+          }
+
+          env {
+            name  = "REDIS_AOF_ENABLED"
+            value = "no"
+          }
+
+          env {
+            name  = "REDIS_EXTRA_FLAGS"
+            value = "--appendonly no --save \"\""
+          }
+
+          env {
+            name  = "REDIS_DISABLE_COMMANDS"
+            value = "FLUSHALL"
           }
 
           port {
