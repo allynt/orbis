@@ -22,7 +22,7 @@ const initialLicence = 'Crown Copyright (2020) released under OGL v3.0';
 
 const initialState = {
   property: {
-    source_id: 'astrosat/isolation_plus/age_census/r4v1',
+    source_id: 'test/source',
     name: '% of people aged 0-17',
     application: {
       orbis: {
@@ -68,12 +68,6 @@ const initialState = {
       },
     },
   ],
-  screenshot: new Blob(
-    [
-      'https://c.files.bbci.co.uk/12A9B/production/_111434467_gettyimages-1143489763.jpg',
-    ],
-    { type: 'image/png' },
-  ),
 };
 
 const getTotals = property => {
@@ -93,6 +87,19 @@ const renderComponent = ({
   const close = jest.fn();
 
   const store = mockStore({
+    data: {
+      sources: [
+        {
+          source_id: 'test/source',
+          metadata: {
+            properties: [
+              { name: '% of people aged 0-17', aggregation: 'mean' },
+            ],
+          },
+        },
+      ],
+      layers: ['test/source'],
+    },
     accounts: { user },
     orbs: {
       isolationPlus: {

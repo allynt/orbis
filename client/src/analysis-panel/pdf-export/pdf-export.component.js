@@ -155,9 +155,7 @@ const PDF = ({ close, licence, creationDate = date }) => {
 
   const areaValue = useSelector(state => aggregationSelector(state?.orbs));
 
-  const breakdownAggregation = useSelector(state =>
-    breakdownAggregationSelector(state?.orbs),
-  );
+  const breakdownAggregation = useSelector(breakdownAggregationSelector);
 
   const { createScreenshot, topMapRef, deckRef, bottomMapRef } = useMap();
   const [image, setImage] = useState(undefined);

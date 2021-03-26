@@ -23,9 +23,7 @@ import { breakdownAggregationSelector } from 'map/orbs/slices/isolation-plus.sli
 export const PropertyBreakdownChart = ({ selectedProperty, info }) => {
   const { colors, ...chartTheme } = useChartTheme();
 
-  const breakdownAggregation = useSelector(state =>
-    breakdownAggregationSelector(state?.orbs),
-  );
+  const breakdownAggregation = useSelector(breakdownAggregationSelector);
 
   if (!breakdownAggregation?.length) return null;
   return (
