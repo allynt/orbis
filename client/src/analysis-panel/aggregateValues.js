@@ -10,6 +10,17 @@ import { DEFAULT_DECIMAL_PRECISION } from '../map/map.constants';
  */
 export const aggregateValues = (clickedFeatures, selectedProperty) => {
   if (!clickedFeatures || !selectedProperty) return 0;
+  if (
+    clickedFeatures.some(
+      feature => !(`${selectedProperty.name}` in feature.object.properties),
+    )
+  )
+    console.error(
+      `Could not find property ${selectedProperty.name} in clickedFeatures during ${aggregateValues.name}.
+      This may be due to a spelling or formatting mistake
+      `,
+    );
+
   const sumValue = sumBy(
     clickedFeatures,
     selectedProperty.timeseries
