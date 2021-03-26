@@ -17,7 +17,7 @@ import { useHistory } from 'react-router-dom';
 import { REGISTER_CUSTOMER_USER, REGISTER } from 'accounts/accounts.constants';
 import { Form } from 'components';
 
-const SmallPrint = (termsUrl, privacyUrl) => {
+const SmallPrint = ({ termsUrl, privacyUrl }) => {
   return (
     <>
       A contract will be created between Astrosat and You "The Customer”. Before
