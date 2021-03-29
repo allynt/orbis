@@ -18,7 +18,7 @@ describe('demoPollutionFlaringConfig', () => {
 
     it('returns features with the matching timestamp if other.data exists', () => {
       const features = [
-        { properties: { id: 1, timestamp: '2020-01-01 00:00:00' } },
+        { properties: { id: 1, timestamp: '2020-02-01 00:00:00' } },
         { properties: { id: 2, timestamp: '2020-01-01 23:00:00' } },
       ];
       const { data } = configFn({
