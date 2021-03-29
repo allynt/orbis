@@ -1,24 +1,21 @@
-import { format, subHours } from 'date-fns';
+import { format } from 'date-fns';
 import { filter, find } from 'lodash';
 import { layersVisibilitySelector, otherSelector } from '../orbReducer';
 
-/** @type {import("typings/orbis").LayerConfiguration} */
-export default ({ id, data, orbState, activeSources }) => {
+/** @type {import("typings/orbis").LayerConfiguration<{otherStateKey?: string}>} */
+export default ({ id, data, orbState, activeSources, otherStateKey = id }) => {
   const visible = layersVisibilitySelector(id)(orbState);
-  const other = otherSelector(id)(orbState);
+  const other = otherSelector(otherStateKey)(orbState);
+
+  const otherDate = new Date(other?.date);
 
   return {
     id,
     visible: visible && find(activeSources, { source_id: id }),
     data: other?.date
-      ? filter(data.features, {
-          properties: {
-            timestamp: format(
-              subHours(new Date(other.date), 1),
-              'yyyy-MM-dd HH:mm:ss',
-            ),
-          },
-        })
+      ? filter(data.features, feature =>
+          feature.properties.timestamp.includes(format(otherDate, 'yyyy-MM')),
+        )
       : data?.features,
     getPosition: d => d.geometry.coordinates,
   };
