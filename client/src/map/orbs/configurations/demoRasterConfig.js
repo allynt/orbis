@@ -29,7 +29,7 @@ export default ({
 
   return {
     id,
-    visible,
+    visible: visible && !!source,
     image: `${data}/${other?.[valueKey] ? other[valueKey] : defaultValue}_${
       other?.date ? format(new Date(other.date), dateFormat) : defaultDate
     }.png`,

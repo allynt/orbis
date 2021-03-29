@@ -1,15 +1,15 @@
 import { format, subHours } from 'date-fns';
-import { filter } from 'lodash';
+import { filter, find } from 'lodash';
 import { layersVisibilitySelector, otherSelector } from '../orbReducer';
 
 /** @type {import("typings/orbis").LayerConfiguration} */
-export default ({ id, data, orbState }) => {
+export default ({ id, data, orbState, activeSources }) => {
   const visible = layersVisibilitySelector(id)(orbState);
   const other = otherSelector(id)(orbState);
 
   return {
     id,
-    visible,
+    visible: visible && find(activeSources, { source_id: id }),
     data: other?.date
       ? filter(data.features, {
           properties: {

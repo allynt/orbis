@@ -50,7 +50,7 @@ export default ({ id, data, orbState, activeSources, dispatch }) => {
 
   return {
     id,
-    visible,
+    visible: visible && !!source,
     data,
     pickable: true,
     autoHighlight: true,
