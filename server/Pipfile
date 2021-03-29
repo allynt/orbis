@@ -10,10 +10,16 @@ argon2-cffi = "*"
 boto3 = "*"
 # plain-text content zipping (files & responses)
 brotli = "*"
+# tasks
+celery = "*"
 # django... duh
 django = "~=3.0"
 # users
 dj-rest-auth = {extras = ["with_social"],version = "*"}
+# task scheduler
+django-celery-beat = "*"
+# task db access
+django-celery-results = "*"
 # cross-origin resource sharing
 django-cors-headers = "*"
 # access environment variables
@@ -47,6 +53,8 @@ psycopg2-binary = "*"
 # data tokens
 pyjwt = "*"
 djangorestframework-simplejwt = "*"
+# task broker
+redis = "*"
 # sentinel data
 sentinelsat = "*"
 # astrosat-specific code
@@ -60,13 +68,17 @@ codecov = "*"
 django-debug-toolbar = "*"
 # test fixtures replacement
 factory-boy = "==3.0.1"
+# linting
+pylint = "*"
 # test library
 pytest = "*"
-# pytest django plugin
+# test library plugins
 pytest-django = "*"
 pytest-html = "*"
-# pytest look-and-feel plugin
 pytest-sugar = "*"
+pytest-watch = "*"
+# linting
+yapf = "*"
 
 [requires]
 python_version = "3.6"

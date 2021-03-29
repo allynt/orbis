@@ -5,13 +5,13 @@ data "aws_secretsmanager_secret_version" "deployment_secret" {
 
 locals {
   deployment_secrets = merge(jsondecode(data.aws_secretsmanager_secret_version.deployment_secret.secret_string), {
-    redis_password = random_password.password.result
+    redis_password = random_password.redis_password.result
   })
 }
 
 resource "kubernetes_secret" "deployment_secret" {
   metadata {
-    name = local.app_deployment_secret_name
+    name = local.deployment_secret_name
   }
 
   data = local.deployment_secrets

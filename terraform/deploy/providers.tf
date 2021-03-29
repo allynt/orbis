@@ -92,7 +92,7 @@ provider "kubernetes" {
 
 data "kubernetes_secret" "environment_secret" {
   metadata {
-    name = local.app_environment_secret_name
+    name = local.environment_secret_name
   }
 }
 

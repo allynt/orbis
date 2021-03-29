@@ -1,6 +1,7 @@
 {
   "editor.formatOnPaste": true,
   "editor.formatOnSave": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
   "eslint.validate": ["javascript", "javascriptreact"],
   "eslint.workingDirectories": [
     {
@@ -27,7 +28,7 @@
   "python.linting.pylintEnabled": true,
   "python.linting.pylintPath": "./server/.venv/bin/pylint",
   "python.linting.pylintUseMinimalCheckers": false,
-  "python.pythonPath": "/home/allyn.treshansky/Dropbox/WORK/ASTROSAT/ORBIS/orbis/server/.venv/bin/python",
+  "python.pythonPath": "./server/.venv/bin/python",
   "[python]": {
     "editor.tabSize": 4
   }

@@ -2,10 +2,12 @@
 Django settings for orbis project.
 """
 
-import environ
 import importlib
 import json
 import os
+from urllib.parse import quote_plus
+
+import environ
 
 from django.utils.html import escape
 from django.utils.text import slugify
@@ -64,33 +66,42 @@ DJANGO_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.sites",
-    "django.contrib.staticfiles",  # gis...
-    "django.contrib.gis",  # admin...
-    "django.contrib.admin",  # cors...
+    "django.contrib.staticfiles",
+    # gis...
+    "django.contrib.gis",
+    # admin...
+    "django.contrib.admin",
+    # cors...
     "corsheaders",
-]
+]  # yapf: disable
 
 THIRD_PARTY_APPS = [
     # apis...
     "rest_framework",
     "rest_framework_gis",
     "drf_yasg2",
-    "django_filters",  # users...,
+    "django_filters",
+    # users...,
     "allauth",
     "allauth.account",
     "allauth.socialaccount",
     "dj_rest_auth",
     "dj_rest_auth.registration",
-    "knox",  # healthchecks...
+    "knox",
+    # tasks...
+    "django_celery_beat",
+    "django_celery_results",
+    # healthchecks...
     "health_check",
     "health_check.db",
-]
+]  # yapf: disable
 
 LOCAL_APPS = [
     "astrosat",  # (dependencies)
     "astrosat_users",  # (users)
     "core",  # (shared stuff)
     "maps",  # (mapping tools)
+    "tasks",  # (task management)
     "orbis",  # (this app)
 ]
 
@@ -162,7 +173,7 @@ TEMPLATES = [{
     "DIRS": [
         # override some default templates...
         str(SERVER_DIR.path("core/templates")),
-        # and override some default templates from an imported app (rest_framework, allauth, & rest_auth)...
+        # and override some default templates from imported apps...
         os.path.join(
             os.path.dirname(importlib.import_module("astrosat_users").__file__),
             "templates",
@@ -172,8 +183,9 @@ TEMPLATES = [{
         "debug":
             DEBUG,
         "loaders": [
-            # first look at templates in DIRS, then look in the standard place for each INSTALLED_APP
+            # first look at templates in DIRS...
             "django.template.loaders.filesystem.Loader",
+            # then look in the standard place for each INSTALLED_APP...
             "django.template.loaders.app_directories.Loader",
         ],
         "context_processors": [
@@ -237,6 +249,27 @@ ADMIN_SITE_TITLE = f"{PROJECT_NAME} administration console"
 ADMIN_INDEX_TITLE = f"Welcome to the {PROJECT_NAME} administration console"
 
 #########
+# Tasks #
+#########
+
+CELERY_ACCEPT_CONTENT = ["json"]
+CELERY_RESULT_SERIALIZER = "json"
+CELERY_TASK_SERIALIZER = "json"
+CELERY_TASK_SOFT_TIME_LIMIT = 60 * 5  # 5 minutes until SoftTimeLimitExceeded
+CELERY_TASK_TIME_LIMIT = 60 * 25  # 25 minutes until worker is killed & replace
+
+CELERY_BROKER_URL = "{protocol}://:{password}@{host}:{port}/{dbnum}".format(
+    protocol=quote_plus(env("DJANGO_CELERY_BROKER_PROTOCOL", default="redis")),
+    host=quote_plus(env("DJANGO_CELERY_BROKER_HOST", default="localhost")),
+    port=quote_plus(env("DJANGO_CELERY_BROKER_PORT", default="6379")),
+    password=quote_plus(env("DJANGO_CELERY_BROKER_REDIS_PASSWORD", default="")),
+    dbnum=quote_plus(env("DJANGO_CELERY_BROKER_REDIS_DB", default="0")),
+)
+
+CELERY_RESULT_BACKEND = "django-db"  # django-celery-results
+CELERY_BEAT_SCHEDULER = "django_celery_beat.schedulers.DatabaseScheduler"  # django-celery-beat
+
+#########
 # Email #
 #########
 
@@ -297,10 +330,10 @@ SWAGGER_SETTINGS = {
 CLIENT_HOST = env("DJANGO_CLIENT_HOST", default="")
 CORS_ALLOW_CREDENTIALS = True
 
-CORS_ORIGIN_REGEX_WHITELIST = [rf"^{CLIENT_HOST}$"]
+CORS_ALLOWED_ORIGIN_REGEXES = [rf"^{CLIENT_HOST}$"]
 
 if DEBUG:
-    CORS_ORIGIN_REGEX_WHITELIST += [r"^https?://localhost(:\d+)?$"]
+    CORS_ALLOWED_ORIGIN_REGEXES += [r"^https?://localhost(:\d+)?$"]
 
 # (only using cors on the API)
 CORS_URLS_REGEX = r"^/api/.*$"

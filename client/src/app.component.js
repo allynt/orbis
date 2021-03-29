@@ -23,7 +23,6 @@ import LandingView from './landing/landing.component';
 import MapLayout from './map';
 
 import styles from './app.module.css';
-import LegalDocuments from 'legal-documents/legal-documents.component';
 
 const Admin = lazy(() => import('./admin/admin.component'));
 
@@ -108,7 +107,6 @@ const App = () => {
         <PrivateRoute exact path="/" user={user} component={LandingView} />
         <Route path="/accounts" component={Accounts} />
         <PrivateRoute path="/map" user={user} component={MapLayout} />
-        <Route exact path={['/terms', '/eula']} component={LegalDocuments} />
         <Suspense fallback={<h3>Loading...</h3>}>
           <PrivateRoute
             exact

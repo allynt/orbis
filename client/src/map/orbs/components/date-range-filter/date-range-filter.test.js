@@ -111,11 +111,16 @@ describe('<DateRangeFilter />', () => {
   });
 
   it('Calls onSubmit when dates are selected using the picker and apply is clicked', async () => {
-    const { getByRole, getAllByRole, onSubmit } = renderComponent();
-    const today = startOfDay(new Date());
+    const { getByRole, getAllByRole, onSubmit } = renderComponent({
+      range: {
+        startDate: new Date(2020, 0, 1).toISOString(),
+        endDate: new Date(2020, 0, 31).toISOString(),
+      },
+    });
+    const today = startOfDay(new Date(2020, 0, 2));
     userEvent.click(getByRole('button', { name: 'Show date picker' }));
     userEvent.click(
-      getAllByRole('button', { name: today.getDate().toString() })[1],
+      getAllByRole('button', { name: today.getDate().toString() })[0],
     );
     userEvent.click(
       getAllByRole('button', { name: (today.getDate() + 1).toString() })[0],

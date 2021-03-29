@@ -20,7 +20,6 @@ import { LOGIN } from 'accounts/accounts.constants';
 import { status } from 'accounts/accounts.slice';
 import { ErrorWell } from 'accounts/error-well.component';
 import { Form } from 'components';
-import { TERMS } from 'legal-documents/legal-documents-constants';
 import {
   FIELD_NAMES,
   newPassword,
@@ -51,6 +50,7 @@ const validationSchema = object({
 });
 
 const PasswordChangeForm = ({
+  termsUrl,
   changePassword,
   changeStatus,
   error,
@@ -118,7 +118,7 @@ const PasswordChangeForm = ({
           label={
             <>
               I agree with&nbsp;
-              <Link target="_blank" rel="noopener noreferrer" href={TERMS}>
+              <Link target="_blank" rel="noopener noreferrer" href={termsUrl}>
                 Terms &amp; Conditions
               </Link>
             </>

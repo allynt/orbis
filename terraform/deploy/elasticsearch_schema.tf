@@ -4,7 +4,7 @@ locals {
     # Which indices should this template apply to
     # here we only apply to the template created by this instance
     "index_patterns" = [
-      "app-analytics-${local.app}-${var.instance}-${var.environment}-*",
+      "app-analytics-${local.app}-${var.instance}-${var.environment}-application-*",
     ],
 
     "settings" = {
@@ -38,10 +38,11 @@ locals {
 
         // Possible types:
         //
-        // orbisUserAction   - when the user does something in the orbis app frontend
-        // orbisClientError  - the orbis app frontend has an error that we need to keep track of
-        // orbisServerError  - the orbis app backend has an error that we need to keep track of
-        // dailyMetrics      - an event generated once per day with the most recent values of
+        // orbisUserAction      - when the user does something in the orbis app frontend
+        // orbisClientError     - the orbis app frontend has an error that we need to keep track of
+        // orbisServerError     - the orbis app backend has an error that we need to keep track of
+        // orbisGlobalMetrics   - contains metrics global to the whole application
+        // orbisCustomerMetrics - contains metrics relevent to an individual customer
         //
         "orbisUserAction" = {
           "type" = "object",
@@ -119,12 +120,24 @@ locals {
           }
         },
 
-        "dailyMetrics" = {
+        "orbisGlobalMetrics" = {
           "type" = "object",
           "properties" = {
-            /* TODO */
-          },
-        }
+            "totalUserCount"        = { "type" = "long" },
+            "totalCustomerCount"    = { "type" = "long" },
+            "activeCustomerCount"   = { "type" = "long" },
+            "inactiveCustomerCount" = { "type" = "long" },
+          }
+        },
+
+        "orbisCustomerMetrics" = {
+          "type" = "object",
+          "properties" = {
+            "customerId"     = { "type" = "keyword" },
+            "customerName"   = { "type" = "keyword" },
+            "totalUserCount" = { "type" = "long" }
+          }
+        },
 
       }
 

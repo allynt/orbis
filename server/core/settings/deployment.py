@@ -90,7 +90,7 @@ LOGGING = {
             "app": DEPLOYMENT_APP,
             "instance": DEPLOYMENT_INSTANCE,
             "environment": DEPLOYMENT_ENVIRONMENT,
-            "stream": "events",
+            "stream": "application",
         },
     },
     "root": {
@@ -105,6 +105,15 @@ LOGGING = {
         "db": {
             "handlers": ["db", "analytics"],
             "level": "DEBUG",
+        },
+        # This metrics logger is seperate from the db logger because it mostly
+        # just records counts of things already in the database... so there's
+        # not much point storing it in the database again. Also it has the
+        # potential to be a lot of data.
+        "metrics": {
+            "handlers": ["analytics"],
+            "level": "INFO",
+
         },
     },
 }

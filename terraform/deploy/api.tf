@@ -73,6 +73,34 @@ resource "kubernetes_deployment" "api_deployment" {
           }
 
           env {
+            name  = "ENABLE_UWSGI"
+            value = 1
+          }
+
+
+          // Django Parameters
+          env {
+            name  = "DJANGO_DEBUG"
+            value = local.is_production ? false : true
+          }
+
+          env {
+            name = "DJANGO_SECRET_KEY"
+            value_from {
+              secret_key_ref {
+                name = local.deployment_secret_name
+                key  = "secret_key"
+              }
+            }
+          }
+
+          env {
+            // This is required to allow running manual celery commands
+            name  = "DJANGO_SETTINGS_MODULE"
+            value = "core.settings"
+          }
+
+          env {
             name  = "DJANGO_SITE_DOMAIN"
             value = local.app_domain
           }
@@ -92,12 +120,13 @@ resource "kubernetes_deployment" "api_deployment" {
             value = var.environment
           }
 
+
           // Media Bucket/AWS Parameters
           env {
             name = "DJANGO_MEDIA_BUCKET"
             value_from {
               secret_key_ref {
-                name = local.app_environment_secret_name
+                name = local.environment_secret_name
                 key  = "media_bucket"
               }
             }
@@ -107,7 +136,7 @@ resource "kubernetes_deployment" "api_deployment" {
             name = "DJANGO_AWS_ACCESS_KEY_ID"
             value_from {
               secret_key_ref {
-                name = local.app_environment_secret_name
+                name = local.environment_secret_name
                 key  = "aws_access_key_id"
               }
             }
@@ -117,34 +146,19 @@ resource "kubernetes_deployment" "api_deployment" {
             name = "DJANGO_AWS_SECRET_ACCESS_KEY"
             value_from {
               secret_key_ref {
-                name = local.app_environment_secret_name
+                name = local.environment_secret_name
                 key  = "aws_secret_access_key"
               }
             }
           }
 
-          // Django Parameters
-          env {
-            name  = "DJANGO_DEBUG"
-            value = local.is_production ? false : true
-          }
-
-          env {
-            name = "DJANGO_SECRET_KEY"
-            value_from {
-              secret_key_ref {
-                name = local.app_deployment_secret_name
-                key  = "secret_key"
-              }
-            }
-          }
 
           // Database Parameters
           env {
             name = "DJANGO_DB_HOST"
             value_from {
               secret_key_ref {
-                name = local.app_environment_secret_name
+                name = local.environment_secret_name
                 key  = "db_host"
               }
             }
@@ -154,7 +168,7 @@ resource "kubernetes_deployment" "api_deployment" {
             name = "DJANGO_DB_PORT"
             value_from {
               secret_key_ref {
-                name = local.app_environment_secret_name
+                name = local.environment_secret_name
                 key  = "db_port"
               }
             }
@@ -162,14 +176,14 @@ resource "kubernetes_deployment" "api_deployment" {
 
           env {
             name  = "DJANGO_DB_NAME"
-            value = local.app_instance_db_name
+            value = local.instance_db_name
           }
 
           env {
             name = "DJANGO_DB_USER"
             value_from {
               secret_key_ref {
-                name = local.app_environment_secret_name
+                name = local.environment_secret_name
                 key  = "db_user"
               }
             }
@@ -179,7 +193,7 @@ resource "kubernetes_deployment" "api_deployment" {
             name = "DJANGO_DB_PASSWORD"
             value_from {
               secret_key_ref {
-                name = local.app_environment_secret_name
+                name = local.environment_secret_name
                 key  = "db_password"
               }
             }
@@ -190,7 +204,7 @@ resource "kubernetes_deployment" "api_deployment" {
             name = "DJANGO_EMAIL_HOST"
             value_from {
               secret_key_ref {
-                name = local.app_environment_secret_name
+                name = local.environment_secret_name
                 key  = "mail_smtp_endpoint"
               }
             }
@@ -200,7 +214,7 @@ resource "kubernetes_deployment" "api_deployment" {
             name = "DJANGO_EMAIL_PORT"
             value_from {
               secret_key_ref {
-                name = local.app_environment_secret_name
+                name = local.environment_secret_name
                 key  = "mail_smtp_port"
               }
             }
@@ -210,7 +224,7 @@ resource "kubernetes_deployment" "api_deployment" {
             name = "DJANGO_EMAIL_USER"
             value_from {
               secret_key_ref {
-                name = local.app_environment_secret_name
+                name = local.environment_secret_name
                 key  = "mail_smtp_user"
               }
             }
@@ -220,7 +234,7 @@ resource "kubernetes_deployment" "api_deployment" {
             name = "DJANGO_EMAIL_PASSWORD"
             value_from {
               secret_key_ref {
-                name = local.app_environment_secret_name
+                name = local.environment_secret_name
                 key  = "mail_smtp_password"
               }
             }
@@ -230,7 +244,7 @@ resource "kubernetes_deployment" "api_deployment" {
             name = "DJANGO_EMAIL_DOMAIN"
             value_from {
               secret_key_ref {
-                name = local.app_environment_secret_name
+                name = local.environment_secret_name
                 key  = "mail_domain"
               }
             }
@@ -242,8 +256,35 @@ resource "kubernetes_deployment" "api_deployment" {
             name = "DJANGO_LOGSTASH_ENDPOINT"
             value_from {
               secret_key_ref {
-                name = local.app_environment_secret_name
+                name = local.environment_secret_name
                 key  = "logstash_service"
+              }
+            }
+          }
+
+          // Celery Broker Config
+
+          env {
+            name  = "DJANGO_CELERY_BROKER_PROTOCOL"
+            value = "redis"
+          }
+
+          env {
+            name  = "DJANGO_CELERY_BROKER_HOST"
+            value = kubernetes_service.redis_server.metadata.0.name
+          }
+
+          env {
+            name  = "DJANGO_CELERY_BROKER_PORT"
+            value = "6379"
+          }
+
+          env {
+            name = "DJANGO_CELERY_BROKER_REDIS_PASSWORD"
+            value_from {
+              secret_key_ref {
+                name = local.deployment_secret_name
+                key  = "redis_password"
               }
             }
           }
@@ -251,25 +292,10 @@ resource "kubernetes_deployment" "api_deployment" {
           // Other Services
 
           env {
-            name = "DJANGO_REDIS_PASSWORD"
-            value_from {
-              secret_key_ref {
-                name = local.app_deployment_secret_name
-                key  = "redis_password"
-              }
-            }
-          }
-
-          env {
-            name  = "DJANGO_REDIS_SERVICE"
-            value = kubernetes_service.redis_server.metadata.0.name
-          }
-
-          env {
             name = "DJANGO_MAPBOX_TOKEN"
             value_from {
               secret_key_ref {
-                name = local.app_deployment_secret_name
+                name = local.deployment_secret_name
                 key  = "mapbox_token"
               }
             }
@@ -279,7 +305,7 @@ resource "kubernetes_deployment" "api_deployment" {
             name = "DJANGO_TRACKING_ID"
             value_from {
               secret_key_ref {
-                name = local.app_deployment_secret_name
+                name = local.deployment_secret_name
                 key  = "tracking_id"
               }
             }
@@ -294,7 +320,7 @@ resource "kubernetes_deployment" "api_deployment" {
             name = "DJANGO_DATA_TOKEN_SECRET"
             value_from {
               secret_key_ref {
-                name = local.app_environment_secret_name
+                name = local.environment_secret_name
                 key  = "data_token_secret"
               }
             }
@@ -304,7 +330,7 @@ resource "kubernetes_deployment" "api_deployment" {
             name = "DJANGO_COPERNICUS_USERNAME"
             value_from {
               secret_key_ref {
-                name = local.app_deployment_secret_name
+                name = local.deployment_secret_name
                 key  = "copernicus_username"
               }
             }
@@ -314,7 +340,7 @@ resource "kubernetes_deployment" "api_deployment" {
             name = "DJANGO_COPERNICUS_PASSWORD"
             value_from {
               secret_key_ref {
-                name = local.app_deployment_secret_name
+                name = local.deployment_secret_name
                 key  = "copernicus_password"
               }
             }
@@ -324,7 +350,7 @@ resource "kubernetes_deployment" "api_deployment" {
             name = "DJANGO_OLSP_URL"
             value_from {
               secret_key_ref {
-                name = local.app_deployment_secret_name
+                name = local.deployment_secret_name
                 key  = "olsp_url"
               }
             }
@@ -334,7 +360,7 @@ resource "kubernetes_deployment" "api_deployment" {
             name = "DJANGO_MAPBOX_STYLES"
             value_from {
               secret_key_ref {
-                name = local.app_deployment_secret_name
+                name = local.deployment_secret_name
                 key  = "mapbox_styles"
               }
             }

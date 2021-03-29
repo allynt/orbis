@@ -6,6 +6,8 @@ import configureMockStore from 'redux-mock-store';
 
 import { PropertyBreakdownChart } from './property-breakdown-chart.component';
 
+const source_id = 'test/source';
+
 const mockStore = configureMockStore();
 
 const renderComponent = ({ features, property = {} }) => {
@@ -14,6 +16,25 @@ const renderComponent = ({ features, property = {} }) => {
   }));
 
   const store = mockStore({
+    data: {
+      sources: [
+        {
+          source_id,
+          metadata: {
+            properties: [
+              {
+                name: 'fruit',
+                breakdown: ['fruit'],
+                precision: 4,
+                aggregation: 'mean',
+              },
+              { name: 'trees' },
+            ],
+          },
+        },
+      ],
+      layers: [source_id],
+    },
     orbs: {
       isolationPlus: {
         property,
@@ -65,6 +86,7 @@ describe('<PropertyBreakdownChart />', () => {
         },
       ],
       property: {
+        source_id,
         breakdown: ['fruit', 'trees'],
       },
     });
@@ -84,6 +106,7 @@ describe('<PropertyBreakdownChart />', () => {
         },
       ],
       property: {
+        source_id,
         breakdown: ['fruit'],
         precision: 4,
         aggregation: 'mean',
@@ -104,6 +127,7 @@ describe('<PropertyBreakdownChart />', () => {
         },
       ],
       property: {
+        source_id,
         breakdown: ['fruit'],
         aggregation: 'mean',
       },
@@ -114,6 +138,7 @@ describe('<PropertyBreakdownChart />', () => {
   it('Does not show values <= 0', () => {
     const { queryByText } = renderComponent({
       property: {
+        source_id,
         breakdown: ['fruit', 'trees'],
       },
       features: [

@@ -5,26 +5,14 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Box, Button, Link, Typography } from '@astrosat/astrosat-ui';
 
 import UpdateUserForm from '../update-user-form/update-user-form.component';
+import { apiUrlSelector } from 'app.slice';
 import { updateUser, logout } from '../accounts.slice';
 import { userSelector } from '../accounts.selectors';
-import { TERMS } from 'legal-documents/legal-documents-constants';
-
-const LINKS = [
-  {
-    prefix: 'Need help? Contact us',
-    url: 'https://share.hsforms.com/1U1g8jQnFQ2ej1lyaDcncfA4cctf',
-    text: 'here',
-  },
-  {
-    prefix: 'Read our',
-    url: TERMS,
-    text: 'Terms & Conditions',
-  },
-];
 
 const Profile = () => {
   const dispatch = useDispatch();
   const user = useSelector(userSelector);
+  const apiUrl = useSelector(apiUrlSelector);
 
   const updateUserProfile = user => dispatch(updateUser(user));
 
@@ -44,14 +32,26 @@ const Profile = () => {
         </Button>
       </Box>
       <Box mt={2}>
-        {LINKS.map(link => (
-          <Typography key={link.text} paragraph>
-            {link.prefix}&nbsp;
-            <Link href={link.url} rel="noopener noreferrer" target="_blank">
-              {link.text}
-            </Link>
-          </Typography>
-        ))}
+        <Typography>
+          Need help? Contact us&nbsp;
+          <Link
+            href="https://share.hsforms.com/1U1g8jQnFQ2ej1lyaDcncfA4cctf"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            here
+          </Link>
+        </Typography>
+        <Typography>
+          Read our&nbsp;
+          <Link
+            href={`${apiUrl}/api/documents/terms/`}
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            Terms &amp; Conditions
+          </Link>
+        </Typography>
       </Box>
     </Box>
   );

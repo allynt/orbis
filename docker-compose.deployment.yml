@@ -22,6 +22,10 @@ services:
         TYPE: server
     tty: true
     environment:
+      DJANGO_APP: orbis
+      DJANGO_ENVIRONMENT: local
+      DJANGO_INSTANCE: local
+      ENABLE_UWSGI: 1
       DJANGO_SETTINGS_MODULE: core.settings
       PIPENV_NOSPIN: 1
       PIPENV_DONT_LOAD_ENV: 1
