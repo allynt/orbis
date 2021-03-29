@@ -39,7 +39,7 @@ export default ({ id, data, orbState, activeSources, dispatch }) => {
             return tv.timestamp.includes(format(new Date(date), 'yyyy-MM-dd'));
           })?.value,
         )
-      : [255, 255, 255, 255];
+      : [255, 255, 255, 0];
 
   const getElevation = feature =>
     property
