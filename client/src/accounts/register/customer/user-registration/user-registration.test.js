@@ -5,7 +5,6 @@ import UserRegistration from './user-registration.component';
 import userEvent from '@testing-library/user-event';
 import { createMemoryHistory } from 'history';
 import { Router } from 'react-router-dom';
-import { TERMS } from 'legal-documents/legal-documents-constants';
 import { LOGIN } from 'accounts/accounts.constants';
 
 const EMAIL_REGEX = /work\semail\saddress/i;
@@ -17,11 +16,14 @@ const AGREE_CHECKBOX_REGEX = /i\sagree\swith/i;
 const SIGN_UP_REGEX = /sign\sup/i;
 const LOGIN_REGEX = /login/i;
 
+const TERMS_URL = "www.terms.com";
+
 const renderComponent = ({ serverErrors = [], isLoading = false } = {}) => {
   const onSubmit = jest.fn();
   const history = createMemoryHistory();
   const utils = render(
     <UserRegistration
+      termsUrl={TERMS_URL}
       onSubmit={onSubmit}
       serverErrors={serverErrors}
       isLoading={isLoading}
@@ -52,7 +54,7 @@ describe('<UserRegistration />', () => {
     const { getByRole } = renderComponent();
     expect(
       getByRole('link', { name: /terms\s&\sconditions/i }),
-    ).toHaveAttribute('href', TERMS);
+    ).toHaveAttribute('href', TERMS_URL);
   });
 
   it('enables the Sign Up button when the terms and conditions are agreed', () => {

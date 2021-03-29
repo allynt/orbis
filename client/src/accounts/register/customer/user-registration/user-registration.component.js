@@ -19,7 +19,7 @@ import { object as yupObject } from 'yup';
 import { LOGIN } from 'accounts/accounts.constants';
 import { ErrorWell } from 'accounts/error-well.component';
 import { Form } from 'components';
-import { TERMS } from 'legal-documents/legal-documents-constants';
+
 import {
   acceptedTerms,
   email,
@@ -52,6 +52,7 @@ const validationSchema = yupObject({
 
 /**
  * @param {{
+ *   termsUrl?: string,
  *   serverErrors?: string[]
  *   isLoading?: boolean
  *   onSubmit?:(values: FormValues) => void
@@ -61,6 +62,7 @@ const validationSchema = yupObject({
  * }} props
  */
 const UserRegistration = ({
+  termsUrl,
   serverErrors,
   isLoading = false,
   onSubmit,
@@ -158,7 +160,7 @@ const UserRegistration = ({
           label={
             <Typography>
               I agree with&nbsp;
-              <Link href={TERMS} rel="noreferrer noopener" target="_blank">
+              <Link href={termsUrl} rel="noreferrer noopener" target="_blank">
                 Terms &amp; Conditions
               </Link>
             </Typography>

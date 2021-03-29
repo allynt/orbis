@@ -5,7 +5,6 @@ import userEvent from '@testing-library/user-event';
 import { createMemoryHistory } from 'history';
 import { Router } from 'react-router-dom';
 
-import { TERMS } from 'legal-documents/legal-documents-constants';
 import { REGISTER_CUSTOMER_USER, REGISTER } from 'accounts/accounts.constants';
 import JourneySelection from './journey-selection.component';
 
@@ -13,16 +12,25 @@ const TEAM_REGEX = /team/i;
 const INDIVIDUAL_REGEX = /individual/i;
 const CONTINUE_REGEX = /continue/i;
 
-const renderComponent = (
-  args = {
-    individualRegistrationIsOpen: true,
-    customerRegistrationIsOpen: true,
-  },
-) => {
+const TERMS_URL = 'www.terms.com';
+const PRIVACY_URL = 'www.privacy.com';
+
+const renderComponent = ({
+  individualRegistrationIsOpen = true,
+  customerRegistrationIsOpen = true,
+} = {}) => {
   const history = createMemoryHistory();
-  const utils = render(<JourneySelection {...args} />, {
-    wrapper: ({ children }) => <Router history={history}>{children}</Router>,
-  });
+  const utils = render(
+    <JourneySelection
+      termsUrl={TERMS_URL}
+      privacyUrl={PRIVACY_URL}
+      individualRegistrationIsOpen={individualRegistrationIsOpen}
+      customerRegistrationIsOpen={customerRegistrationIsOpen}
+    />,
+    {
+      wrapper: ({ children }) => <Router history={history}>{children}</Router>,
+    },
+  );
   return { ...utils, history };
 };
 
@@ -85,6 +93,16 @@ describe('<JourneySelection />', () => {
 
   it('Has a terms and conditions link', () => {
     const { getByRole } = renderComponent();
-    expect(getByRole('link', { name: /here/i })).toHaveAttribute('href', TERMS);
+    expect(
+      getByRole('link', { name: /Terms and Conditions/i }),
+    ).toHaveAttribute('href', TERMS_URL);
+  });
+
+  it('Has a privacy link', () => {
+    const { getByRole } = renderComponent();
+    expect(getByRole('link', { name: /Privacy Policy/i })).toHaveAttribute(
+      'href',
+      PRIVACY_URL,
+    );
   });
 });

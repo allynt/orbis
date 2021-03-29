@@ -19,7 +19,6 @@ import { object as objectSchema } from 'yup';
 import { LOGIN } from 'accounts/accounts.constants';
 import { ErrorWell } from 'accounts/error-well.component';
 import { Form } from 'components';
-import { TERMS } from 'legal-documents/legal-documents-constants';
 import {
   FIELD_NAMES,
   email,
@@ -43,6 +42,7 @@ const validationSchema = objectSchema({
 
 /**
  * @param {{
+ *   termsUrl?: string,
  *   registerUser: (form: FormData) => void
  *   serverErrors?: string[]
  *   isRegistrationOpen?: boolean
@@ -53,6 +53,7 @@ const validationSchema = objectSchema({
  * }} props
  */
 const RegisterForm = ({
+  termsUrl,
   registerUser,
   serverErrors,
   isRegistrationOpen = true,
@@ -119,7 +120,7 @@ const RegisterForm = ({
           label={
             <>
               I agree with{' '}
-              <Link target="_blank" href={TERMS} rel="noopener noreferrer">
+              <Link target="_blank" href={termsUrl} rel="noopener noreferrer">
                 Terms &amp; Conditions
               </Link>
             </>
