@@ -25,7 +25,9 @@ const setup = ({
     max: 1,
     clip_min: 0.5,
     type: 'continuous',
-    application: { orbis: { display: { color: 'Spectral' } } },
+    application: {
+      orbis: { display: { color: 'Spectral' }, label: 'test-label' },
+    },
   },
 } = {}) => {
   const dispatch = jest.fn();
@@ -50,7 +52,13 @@ const setup = ({
           source_id: 'source/1',
           ...property,
         },
-        filterRange,
+        filterRange: {
+          'source/1': {
+            'test-label': {
+              continuous: filterRange,
+            },
+          },
+        },
         clickedFeatures: clickedFeatures?.map(object => ({ object })),
       },
     },
@@ -242,13 +250,7 @@ describe('isolationPlusLayerConfig', () => {
 
   describe('filterRange', () => {
     it('Is set to the filter range from state and scaled if present', () => {
-      const { filterRange } = setup({
-        'source/1': {
-          testProperty: {
-            continuous: [0.1, 0.2],
-          },
-        },
-      });
+      const { filterRange } = setup({ filterRange: [0.1, 0.2] });
       expect(filterRange).toEqual([100, 200]);
     });
 

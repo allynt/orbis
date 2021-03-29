@@ -25,7 +25,7 @@ export const RadioPicker = ({ selectedLayer, dispatch }) => {
   const filterRange = useSelector(state =>
     propertyFilterRangeSelector({
       source_id: selectedProperty?.source_id,
-      name: selectedProperty?.application?.orbis?.label,
+      label: selectedProperty?.application?.orbis?.label,
       type: selectedProperty?.type,
     })(state?.orbs),
   );
@@ -50,7 +50,7 @@ export const RadioPicker = ({ selectedLayer, dispatch }) => {
 
   const filterRangeData = {
     source_id: selectedProperty?.source_id,
-    name: selectedProperty?.application?.orbis?.label,
+    label: selectedProperty?.application?.orbis?.label,
     type: selectedProperty?.type,
   };
 

@@ -30,10 +30,10 @@ const isolationPlusSlice = createSlice({
       const { property = {}, filterRange, clickedFeatures } = payload;
 
       const { source_id, type, min, max } = property,
-        name = property?.application?.orbis?.label,
+        label = property?.application?.orbis?.label,
         defaultFilterRange = {
           [source_id]: {
-            [name]: {
+            [label]: {
               [type]: [min, max],
             },
           },
@@ -52,12 +52,12 @@ const isolationPlusSlice = createSlice({
         state.clickedFeatures = undefined;
       }
 
-      const name = payload?.application?.orbis?.label;
-      if (!state.filterRange?.[source_id]?.[name]?.[type]) {
+      const label = payload?.application?.orbis?.label;
+      if (!state.filterRange?.[source_id]?.[label]?.[type]) {
         state.filterRange[source_id] = {
           ...state.filterRange?.[source_id],
-          [name]: {
-            ...state.filterRange?.[source_id]?.[name],
+          [label]: {
+            ...state.filterRange?.[source_id]?.[label],
             [type]: [min, max],
           },
         };
@@ -94,8 +94,8 @@ const isolationPlusSlice = createSlice({
       state.clickedFeatures = newFeatures.length ? newFeatures : undefined;
     },
     setFilterRange: (state, { payload }) => {
-      const { source_id, type, name, data } = payload;
-      state.filterRange[source_id][name][type] = data;
+      const { source_id, type, label, data } = payload;
+      state.filterRange[source_id][label][type] = data;
     },
   },
 });
@@ -130,12 +130,11 @@ export const clickedFeaturesSelector = createSelector(
  * @property {string} [label]
  * @property {string} [type]
  */
-export const propertyFilterRangeSelector = ({ source_id, name, type }) => {
-  return createSelector(
+export const propertyFilterRangeSelector = ({ source_id, label, type }) =>
+  createSelector(
     baseSelector,
-    state => state?.filterRange?.[source_id]?.[name]?.[type] || undefined,
+    state => state?.filterRange?.[source_id]?.[label]?.[type] || undefined,
   );
-};
 
 export const filterRangeSelector = createSelector(
   baseSelector,
