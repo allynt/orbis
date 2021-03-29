@@ -193,7 +193,7 @@ describe('isolationPlusSlice', () => {
             source_id: 'test/layer',
             application: {
               orbis: {
-                label: 'test-name',
+                label: 'test-label',
               },
             },
             min: 0,
@@ -201,7 +201,7 @@ describe('isolationPlusSlice', () => {
           },
           filterRange: {
             'test/layer': {
-              'test-name': {
+              'test-label': {
                 percentage: [0, 100],
               },
             },
@@ -210,14 +210,14 @@ describe('isolationPlusSlice', () => {
 
         const payload = {
           source_id: 'test/layer',
-          name: 'test-name',
+          label: 'test-label',
           type: 'percentage',
           data: [1, 2],
         };
 
         const expected = {
           'test/layer': {
-            'test-name': {
+            'test-label': {
               percentage: [1, 2],
             },
           },
@@ -248,7 +248,7 @@ describe('isolationPlusSlice', () => {
         const payload = {
           source_id: 'test/layer',
           type: 'continuous',
-          name: 'test-property-1',
+          label: 'test-property-1',
           data: [23, 42],
         };
 
