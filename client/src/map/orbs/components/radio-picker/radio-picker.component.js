@@ -22,9 +22,13 @@ import { Box } from '@astrosat/astrosat-ui';
 export const RadioPicker = ({ selectedLayer, dispatch }) => {
   const selectedProperty = useSelector(state => propertySelector(state?.orbs));
 
-  const filterRange = useSelector(state => {
-    return propertyFilterRangeSelector(selectedLayer?.source_id)(state?.orbs);
-  });
+  const filterRange = useSelector(state =>
+    propertyFilterRangeSelector({
+      source_id: selectedProperty?.source_id,
+      name: selectedProperty?.application?.orbis?.label,
+      type: selectedProperty?.type,
+    })(state?.orbs),
+  );
 
   const selectedPropertyMetadata = selectedLayer?.metadata?.properties?.find(
     property => property.name === selectedProperty?.name,
@@ -44,9 +48,11 @@ export const RadioPicker = ({ selectedLayer, dispatch }) => {
     );
   };
 
-  const filterData = selectedProperty
-    ? filterRange[selectedProperty?.application?.orbis?.label]
-    : filterRange;
+  const filterRangeData = {
+    source_id: selectedProperty?.source_id,
+    name: selectedProperty?.application?.orbis?.label,
+    type: selectedProperty?.type,
+  };
 
   if (!selectedLayer?.metadata?.properties) return null;
   return (
@@ -57,10 +63,12 @@ export const RadioPicker = ({ selectedLayer, dispatch }) => {
             layerSourceId={selectedLayer?.source_id}
             data={data}
             onPropertyChange={selectProperty}
-            onSliderChange={data => dispatch(setFilterRange(data))}
+            onSliderChange={data =>
+              dispatch(setFilterRange({ ...filterRangeData, data }))
+            }
             selectedProperty={selectedProperty}
             colorScheme={colorScheme}
-            filterData={filterData}
+            filterRange={filterRange}
             categoryPath={categoryPath}
           />
         </React.Fragment>

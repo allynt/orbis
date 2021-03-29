@@ -242,7 +242,13 @@ describe('isolationPlusLayerConfig', () => {
 
   describe('filterRange', () => {
     it('Is set to the filter range from state and scaled if present', () => {
-      const { filterRange } = setup({ filterRange: [0.1, 0.2] });
+      const { filterRange } = setup({
+        'source/1': {
+          testProperty: {
+            continuous: [0.1, 0.2],
+          },
+        },
+      });
       expect(filterRange).toEqual([100, 200]);
     });
 

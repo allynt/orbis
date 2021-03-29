@@ -36,14 +36,51 @@ describe('isolationPlusSlice', () => {
         expect(result).toEqual(expected);
       });
       it('sets the state using the default filterRange', () => {
-        const state = { property: {} };
+        const state = {
+          property: {
+            source_id: 'test/layer',
+            application: {
+              orbis: {
+                label: 'test-name',
+              },
+            },
+            type: 'percentage',
+          },
+        };
         const expected = expect.objectContaining({
-          property: { min: 1, max: 2 },
-          filterRange: [1, 2],
+          property: {
+            source_id: 'test/layer',
+            application: {
+              orbis: {
+                label: 'test-name',
+              },
+            },
+            type: 'percentage',
+            min: 1,
+            max: 2,
+          },
+          filterRange: {
+            'test/layer': {
+              'test-name': {
+                percentage: [1, 2],
+              },
+            },
+          },
           clickedFeatures: {},
         });
+
         const payload = {
-          property: { min: 1, max: 2 },
+          property: {
+            source_id: 'test/layer',
+            application: {
+              orbis: {
+                label: 'test-name',
+              },
+            },
+            type: 'percentage',
+            min: 1,
+            max: 2,
+          },
           clickedFeatures: {},
         };
 
@@ -68,7 +105,7 @@ describe('isolationPlusSlice', () => {
 
     describe('setProperty', () => {
       it('sets the property for a source in state if not yet defined', () => {
-        const state = { property: {} };
+        const state = { property: {}, filterRange: {} };
         const expected = expect.objectContaining({
           property: { source_id: 'test/layer', name: 'hello' },
         });
@@ -79,34 +116,70 @@ describe('isolationPlusSlice', () => {
 
       it('overwrites the property for a source in state if it exists', () => {
         const state = {
-          property: { source_id: 'test/layer', name: 'no thanks' },
+          property: {
+            source_id: 'test/layer',
+            name: 'test-name-1',
+          },
+          filterRange: {},
         };
         const expected = expect.objectContaining({
-          property: { source_id: 'test/layer', name: 'hello' },
+          property: {
+            source_id: 'test/layer',
+            name: 'test-name-2',
+            label: 'test-label-2',
+            type: 'percentage',
+          },
         });
-        const payload = { source_id: 'test/layer', name: 'hello' };
+        const payload = {
+          source_id: 'test/layer',
+          name: 'test-name-2',
+          label: 'test-label-2',
+          type: 'percentage',
+        };
         const result = reducer(state, setProperty(payload));
         expect(result).toEqual(expected);
       });
 
-      it('resets `filterData` when new property is selected', () => {
+      it('retains previous filter range data in state when new property is selected', () => {
         const state = {
           property: {
             source_id: 'test/layer',
-            name: 'old filter data',
+            name: 'test-property-1',
             min: 0,
             max: 100,
+            type: 'continuous',
+          },
+          filterRange: {
+            'test/layer': {
+              'test-property-1': {
+                continuous: [15, 16],
+              },
+            },
           },
         };
 
         const payload = {
           source_id: 'test/layer',
-          name: 'new filter data',
+          application: {
+            orbis: {
+              label: 'test-property-2',
+            },
+          },
           min: 0,
-          max: 200,
+          max: 100,
+          type: 'percentage',
         };
 
-        const expected = [0, 200];
+        const expected = {
+          'test/layer': {
+            'test-property-1': {
+              continuous: [15, 16],
+            },
+            'test-property-2': {
+              percentage: [0, 100],
+            },
+          },
+        };
 
         const result = reducer(state, setProperty(payload));
         expect(result.filterRange).toEqual(expected);
@@ -115,9 +188,80 @@ describe('isolationPlusSlice', () => {
 
     describe('setFilterData', () => {
       it('sets the filter data in state', () => {
-        const payload = [1, 2];
-        const result = reducer({}, setFilterRange(payload));
-        expect(result).toEqual({ filterRange: payload });
+        const state = {
+          property: {
+            source_id: 'test/layer',
+            application: {
+              orbis: {
+                label: 'test-name',
+              },
+            },
+            min: 0,
+            max: 100,
+          },
+          filterRange: {
+            'test/layer': {
+              'test-name': {
+                percentage: [0, 100],
+              },
+            },
+          },
+        };
+
+        const payload = {
+          source_id: 'test/layer',
+          name: 'test-name',
+          type: 'percentage',
+          data: [1, 2],
+        };
+
+        const expected = {
+          'test/layer': {
+            'test-name': {
+              percentage: [1, 2],
+            },
+          },
+        };
+
+        const result = reducer(state, setFilterRange(payload));
+        expect(result.filterRange).toEqual(expected);
+      });
+
+      it('updates filter range if already in state', () => {
+        const state = {
+          property: {
+            source_id: 'test/layer',
+            name: 'test-property-1',
+            min: 0,
+            max: 100,
+            type: 'continuous',
+          },
+          filterRange: {
+            'test/layer': {
+              'test-property-1': {
+                continuous: [15, 16],
+              },
+            },
+          },
+        };
+
+        const payload = {
+          source_id: 'test/layer',
+          type: 'continuous',
+          name: 'test-property-1',
+          data: [23, 42],
+        };
+
+        const expected = {
+          'test/layer': {
+            'test-property-1': {
+              continuous: [23, 42],
+            },
+          },
+        };
+
+        const result = reducer(state, setFilterRange(payload));
+        expect(result.filterRange).toEqual(expected);
       });
     });
 

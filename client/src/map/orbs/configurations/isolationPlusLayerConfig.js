@@ -61,9 +61,13 @@ const configuration = ({
   if (selectedProperty.source_id !== id) return undefined;
 
   const source = activeSources?.find(source => source.source_id === id);
-  const filterRange = propertyFilterRangeSelector(selectedProperty.source_id)(
-    orbState,
-  );
+
+  const filterRange = propertyFilterRangeSelector({
+    source_id: selectedProperty.source_id,
+    name: selectedProperty?.label,
+    type: selectedProperty?.type,
+  })(orbState);
+
   const extrudedMode = extrudedModeSelector(orbState);
   const extrusionScale = extrusionScaleSelector(orbState);
   const clickedFeatures = clickedFeaturesSelector(orbState);
@@ -78,11 +82,6 @@ const configuration = ({
     get(f.object.properties, source?.metadata?.index),
   );
   const anySelected = !!clickedFeatureIds?.length;
-
-  const selectedPropertyFilterRange =
-    filterRange[selectedProperty?.application?.orbis?.label]?.[
-      selectedProperty?.type
-    ];
 
   /**
    * @param {AccessorFeature} d
@@ -198,7 +197,7 @@ const configuration = ({
           extensions: [new DataFilterExtension({ filterSize: 1 })],
           getFilterValue,
           filterRange: (
-            selectedPropertyFilterRange || [
+            filterRange || [
               selectedPropertyMetadata?.min,
               selectedPropertyMetadata?.max,
             ]

@@ -58,7 +58,7 @@ const RadioProperty = ({
   onSliderChange,
   selectedProperty,
   colorScheme,
-  filterData,
+  filterRange,
   categoryPath,
 }) => {
   const styles = useStyles();
@@ -78,7 +78,7 @@ const RadioProperty = ({
   });
 
   const handleRadioClick = () => {
-    const payload = propertyMatch ? { source_id: undefined } : initialProperty;
+    const payload = propertyMatch ? null : initialProperty;
     return onPropertyChange(payload);
   };
 
@@ -148,9 +148,6 @@ const RadioProperty = ({
               <DiscretePropertyLegend property={selectedProperty} />
             ) : (
               <ColorMapRangeSlider
-                layerSourceId={layerSourceId}
-                label={selectedProperty.application.orbis.label}
-                dataType={selectedProperty?.type}
                 color={colorScheme}
                 domain={[selectedProperty.min, selectedProperty.max]}
                 clip={
@@ -159,7 +156,7 @@ const RadioProperty = ({
                     selectedProperty.clip_max || selectedProperty.max,
                   ]
                 }
-                value={filterData[selectedProperty?.type]}
+                value={filterRange}
                 onChange={onSliderChange}
                 reversed={
                   !!selectedProperty?.application?.orbis?.display

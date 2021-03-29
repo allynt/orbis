@@ -9,7 +9,7 @@ import { activeDataSourcesSelector } from 'data-layers/data-layers.slice';
  * @typedef {{
  *   clickedFeatures?: import('typings/orbis').PolygonPickedMapFeature[]
  *   property?: import('typings/orbis').Property & {source_id: string}
- *   filterRange?: [number, number]
+ *   filterRange?: Object
  * }} IsolationPlusState
  */
 
@@ -27,28 +27,37 @@ const isolationPlusSlice = createSlice({
   initialState,
   reducers: {
     setState: (state, { payload }) => {
-      state.property = payload?.property || {};
-      state.filterRange = payload?.filterRange || [
-        payload?.property?.min,
-        payload?.property.max,
-      ];
-      state.clickedFeatures = payload?.clickedFeatures;
+      const { property = {}, filterRange, clickedFeatures } = payload;
+
+      const { source_id, type, min, max } = property,
+        name = property?.application?.orbis?.label,
+        defaultFilterRange = {
+          [source_id]: {
+            [name]: {
+              [type]: [min, max],
+            },
+          },
+        };
+
+      state.property = property;
+      state.filterRange = filterRange || defaultFilterRange;
+      state.clickedFeatures = clickedFeatures;
     },
     setProperty: (state, { payload }) => {
-      const { source_id, type, min, max, application } = payload;
+      const { source_id, type, min, max } = payload;
 
       state.property = payload;
 
-      if (state.clickedFeatures?.[0]?.layer?.id !== source_id) {
+      if (state.clickedFeatures?.[0]?.layer?.id !== payload.source_id) {
         state.clickedFeatures = undefined;
       }
 
-      const label = application?.orbis?.label;
-      if (source_id && !state.filterRange?.[source_id]?.[label]?.[type]) {
+      const name = payload?.application?.orbis?.label;
+      if (!state.filterRange?.[source_id]?.[name]?.[type]) {
         state.filterRange[source_id] = {
-          ...state.filterRange[source_id],
-          [label]: {
-            ...state.filterRange[source_id]?.[label],
+          ...state.filterRange?.[source_id],
+          [name]: {
+            ...state.filterRange?.[source_id]?.[name],
             [type]: [min, max],
           },
         };
@@ -85,14 +94,8 @@ const isolationPlusSlice = createSlice({
       state.clickedFeatures = newFeatures.length ? newFeatures : undefined;
     },
     setFilterRange: (state, { payload }) => {
-      const { source_id, type, label, data } = payload;
-      state.filterRange[source_id] = {
-        ...state.filterRange[source_id],
-        [label]: {
-          ...state.filterRange[source_id]?.[label],
-          [type]: data,
-        },
-      };
+      const { source_id, type, name, data } = payload;
+      state.filterRange[source_id][name][type] = data;
     },
   },
 });
@@ -123,12 +126,14 @@ export const clickedFeaturesSelector = createSelector(
 );
 
 /**
- * @param {string} source_id
+ * @property {string} [source_id]
+ * @property {string} [label]
+ * @property {string} [type]
  */
-export const propertyFilterRangeSelector = source_id => {
+export const propertyFilterRangeSelector = ({ source_id, name, type }) => {
   return createSelector(
     baseSelector,
-    state => state?.filterRange?.[source_id] || [undefined, undefined],
+    state => state?.filterRange?.[source_id]?.[name]?.[type] || undefined,
   );
 };
 
