@@ -199,4 +199,18 @@ describe('aggregateValues', () => {
     const result = aggregateValues(clickedFeatures, selectedProperty);
     expect(result).toBe((123 + 456 + 789) / 3);
   });
+
+  it('errors if a feature does not have the property to aggregate by', () => {
+    console.error = jest.fn();
+    aggregateValues(
+      [
+        { object: { properties: { test: 1, doesNotExist: 2 } } },
+        { object: { properties: { test: 3 } } },
+      ],
+      { name: 'doesNotExist' },
+    );
+    expect(console.error).toHaveBeenCalledWith(
+      expect.stringContaining('doesNotExist'),
+    );
+  });
 });
