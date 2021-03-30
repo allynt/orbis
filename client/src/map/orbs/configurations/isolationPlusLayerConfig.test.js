@@ -44,13 +44,13 @@ const setup = ({
     orbState: {
       layers: {
         extrudedMode,
+        testProperty: { filterValue: filterRange },
       },
       isolationPlus: {
         property: {
           source_id: 'source/1',
           ...property,
         },
-        filterRange,
         clickedFeatures: clickedFeatures?.map(object => ({ object })),
       },
     },
