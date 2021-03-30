@@ -28,17 +28,12 @@ const isolationPlusSlice = createSlice({
   reducers: {
     setState: (state, { payload }) => {
       state.property = payload?.property || {};
-      state.filterRange = payload?.filterRange || [
-        payload?.property?.min,
-        payload?.property.max,
-      ];
       state.clickedFeatures = payload?.clickedFeatures;
     },
     setProperty: (state, { payload }) => {
       if (state.clickedFeatures?.[0]?.layer?.id !== payload.source_id)
         state.clickedFeatures = undefined;
       state.property = payload;
-      state.filterRange = [payload.min, payload.max];
     },
     setClickedFeatures: (state, { payload }) => {
       state.clickedFeatures = payload;
@@ -70,9 +65,6 @@ const isolationPlusSlice = createSlice({
       );
       state.clickedFeatures = newFeatures.length ? newFeatures : undefined;
     },
-    setFilterRange: (state, { payload }) => {
-      state.filterRange = payload;
-    },
   },
 });
 
@@ -82,7 +74,6 @@ export const {
   setClickedFeatures,
   addClickedFeatures,
   removeClickedFeatures,
-  setFilterRange,
 } = isolationPlusSlice.actions;
 
 /**
@@ -99,11 +90,6 @@ export const propertySelector = createSelector(
 export const clickedFeaturesSelector = createSelector(
   baseSelector,
   orb => orb?.clickedFeatures,
-);
-
-export const filterRangeSelector = createSelector(
-  baseSelector,
-  orb => orb?.filterRange,
 );
 
 export const areasOfInterestSelector = createSelector(

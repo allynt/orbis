@@ -1,11 +1,9 @@
 import reducer, {
   setState,
   setProperty,
-  setFilterRange,
   addClickedFeatures,
   removeClickedFeatures,
   propertySelector,
-  filterRangeSelector,
   clickedFeaturesSelector,
   areasOfInterestSelector,
   populationTotalSelector,
@@ -23,26 +21,8 @@ describe('isolationPlusSlice', () => {
         const state = { property: {} };
         const expected = expect.objectContaining({
           property: { min: 1, max: 2 },
-          filterRange: [10, 20],
           clickedFeatures: {},
         });
-        const payload = {
-          property: { min: 1, max: 2 },
-          filterRange: [10, 20],
-          clickedFeatures: {},
-        };
-
-        const result = reducer(state, setState(payload));
-        expect(result).toEqual(expected);
-      });
-      it('sets the state using the default filterRange', () => {
-        const state = { property: {} };
-        const expected = expect.objectContaining({
-          property: { min: 1, max: 2 },
-          filterRange: [1, 2],
-          clickedFeatures: {},
-        });
-
         const payload = {
           property: { min: 1, max: 2 },
           clickedFeatures: {},
@@ -89,37 +69,6 @@ describe('isolationPlusSlice', () => {
 
         const result = reducer(state, setProperty(payload));
         expect(result).toEqual(expected);
-      });
-
-      it('resets `filterData` when new property is selected', () => {
-        const state = {
-          property: {
-            source_id: 'test/layer',
-            name: 'old filter data',
-            min: 0,
-            max: 100,
-          },
-        };
-
-        const payload = {
-          source_id: 'test/layer',
-          name: 'new filter data',
-          min: 0,
-          max: 200,
-        };
-
-        const expected = [0, 200];
-
-        const result = reducer(state, setProperty(payload));
-        expect(result.filterRange).toEqual(expected);
-      });
-    });
-
-    describe('setFilterData', () => {
-      it('sets the filter data in state', () => {
-        const payload = [1, 2];
-        const result = reducer({}, setFilterRange(payload));
-        expect(result).toEqual({ filterRange: payload });
       });
     });
 
@@ -406,21 +355,6 @@ describe('isolationPlusSlice', () => {
           orbs: { isolationPlus: { 'test/layer': 'hello' } },
         });
         expect(result).toBeUndefined();
-      });
-    });
-
-    describe('filterRangeSelector', () => {
-      it('returns undefined if isolationPlus state is undefined', () => {
-        const state = {};
-        const result = filterRangeSelector(state);
-        expect(result).toBeUndefined();
-      });
-
-      it('returns filterRange from state', () => {
-        const filterRange = [1, 2];
-        const state = { isolationPlus: { filterRange } };
-        const result = filterRangeSelector(state);
-        expect(result).toEqual(filterRange);
       });
     });
 
