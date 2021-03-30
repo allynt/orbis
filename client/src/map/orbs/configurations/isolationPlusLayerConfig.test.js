@@ -25,9 +25,7 @@ const setup = ({
     max: 1,
     clip_min: 0.5,
     type: 'continuous',
-    application: {
-      orbis: { display: { color: 'Spectral' }, label: 'test-label' },
-    },
+    application: { orbis: { display: { color: 'Spectral' } } },
   },
 } = {}) => {
   const dispatch = jest.fn();
@@ -52,13 +50,7 @@ const setup = ({
           source_id: 'source/1',
           ...property,
         },
-        filterRange: {
-          'source/1': {
-            'test-label': {
-              continuous: filterRange,
-            },
-          },
-        },
+        filterRange,
         clickedFeatures: clickedFeatures?.map(object => ({ object })),
       },
     },

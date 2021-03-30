@@ -6,7 +6,7 @@ import { extrudedModeSelector, extrusionScaleSelector } from '../orbReducer';
 import {
   addClickedFeatures,
   clickedFeaturesSelector,
-  propertyFilterRangeSelector,
+  filterRangeSelector,
   propertySelector,
   removeClickedFeatures,
   setClickedFeatures,
@@ -62,11 +62,7 @@ const configuration = ({
 
   const source = activeSources?.find(source => source.source_id === id);
 
-  const filterRange = propertyFilterRangeSelector({
-    source_id: selectedProperty.source_id,
-    name: selectedProperty?.label,
-    type: selectedProperty?.type,
-  })(orbState);
+  const filterRange = filterRangeSelector(orbState);
 
   const extrudedMode = extrudedModeSelector(orbState);
   const extrusionScale = extrusionScaleSelector(orbState);

@@ -9,7 +9,7 @@ import { activeDataSourcesSelector } from 'data-layers/data-layers.slice';
  * @typedef {{
  *   clickedFeatures?: import('typings/orbis').PolygonPickedMapFeature[]
  *   property?: import('typings/orbis').Property & {source_id: string}
- *   filterRange?: Object
+ *   filterRange?: [number, number]
  * }} IsolationPlusState
  */
 
@@ -19,7 +19,7 @@ const initialState = {
     source_id: undefined,
     name: undefined,
   },
-  filterRange: {},
+  filterRange: [undefined, undefined],
 };
 
 const isolationPlusSlice = createSlice({
@@ -27,41 +27,18 @@ const isolationPlusSlice = createSlice({
   initialState,
   reducers: {
     setState: (state, { payload }) => {
-      const { property = {}, filterRange, clickedFeatures } = payload;
-
-      const { source_id, type, min, max } = property,
-        label = property?.application?.orbis?.label,
-        defaultFilterRange = {
-          [source_id]: {
-            [label]: {
-              [type]: [min, max],
-            },
-          },
-        };
-
-      state.property = property;
-      state.filterRange = filterRange || defaultFilterRange;
-      state.clickedFeatures = clickedFeatures;
+      state.property = payload?.property || {};
+      state.filterRange = payload?.filterRange || [
+        payload?.property?.min,
+        payload?.property.max,
+      ];
+      state.clickedFeatures = payload?.clickedFeatures;
     },
     setProperty: (state, { payload }) => {
-      const { source_id, type, min, max } = payload;
-
-      state.property = payload;
-
-      if (state.clickedFeatures?.[0]?.layer?.id !== payload.source_id) {
+      if (state.clickedFeatures?.[0]?.layer?.id !== payload.source_id)
         state.clickedFeatures = undefined;
-      }
-
-      const label = payload?.application?.orbis?.label;
-      if (!state.filterRange?.[source_id]?.[label]?.[type]) {
-        state.filterRange[source_id] = {
-          ...state.filterRange?.[source_id],
-          [label]: {
-            ...state.filterRange?.[source_id]?.[label],
-            [type]: [min, max],
-          },
-        };
-      }
+      state.property = payload;
+      state.filterRange = [payload.min, payload.max];
     },
     setClickedFeatures: (state, { payload }) => {
       state.clickedFeatures = payload;
@@ -94,8 +71,7 @@ const isolationPlusSlice = createSlice({
       state.clickedFeatures = newFeatures.length ? newFeatures : undefined;
     },
     setFilterRange: (state, { payload }) => {
-      const { source_id, type, label, data } = payload;
-      state.filterRange[source_id][label][type] = data;
+      state.filterRange = payload;
     },
   },
 });
@@ -124,17 +100,6 @@ export const clickedFeaturesSelector = createSelector(
   baseSelector,
   orb => orb?.clickedFeatures,
 );
-
-/**
- * @property {string} [source_id]
- * @property {string} [label]
- * @property {string} [type]
- */
-export const propertyFilterRangeSelector = ({ source_id, label, type }) =>
-  createSelector(
-    baseSelector,
-    state => state?.filterRange?.[source_id]?.[label]?.[type] || undefined,
-  );
 
 export const filterRangeSelector = createSelector(
   baseSelector,

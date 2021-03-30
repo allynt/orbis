@@ -4,11 +4,12 @@ import { useSelector } from 'react-redux';
 
 import { createCategorisationPath } from 'data-layers/categorisation.utils';
 import {
-  propertyFilterRangeSelector,
   propertySelector,
-  setFilterRange,
   setProperty,
 } from '../../slices/isolation-plus.slice';
+
+import { filterValueSelector, setFilterValue } from '../../orbReducer';
+
 import { groupProperties } from './helpers/group-properties.js';
 import RadioProperty from './radio-property/radio-property.component';
 import { Box } from '@astrosat/astrosat-ui';
@@ -23,11 +24,7 @@ export const RadioPicker = ({ selectedLayer, dispatch }) => {
   const selectedProperty = useSelector(state => propertySelector(state?.orbs));
 
   const filterRange = useSelector(state =>
-    propertyFilterRangeSelector({
-      source_id: selectedProperty?.source_id,
-      label: selectedProperty?.application?.orbis?.label,
-      type: selectedProperty?.type,
-    })(state?.orbs),
+    filterValueSelector(selectedProperty?.name)(state?.orbs),
   );
 
   const selectedPropertyMetadata = selectedLayer?.metadata?.properties?.find(
@@ -48,12 +45,6 @@ export const RadioPicker = ({ selectedLayer, dispatch }) => {
     );
   };
 
-  const filterRangeData = {
-    source_id: selectedProperty?.source_id,
-    label: selectedProperty?.application?.orbis?.label,
-    type: selectedProperty?.type,
-  };
-
   if (!selectedLayer?.metadata?.properties) return null;
   return (
     <Box display="flex" flexDirection="column" width="100%">
@@ -63,8 +54,13 @@ export const RadioPicker = ({ selectedLayer, dispatch }) => {
             layerSourceId={selectedLayer?.source_id}
             data={data}
             onPropertyChange={selectProperty}
-            onSliderChange={data =>
-              dispatch(setFilterRange({ ...filterRangeData, data }))
+            onSliderChange={filterValue =>
+              dispatch(
+                setFilterValue({
+                  source_id: selectedProperty?.name,
+                  filterValue,
+                }),
+              )
             }
             selectedProperty={selectedProperty}
             colorScheme={colorScheme}
