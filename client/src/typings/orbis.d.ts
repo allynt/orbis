@@ -1,11 +1,13 @@
 import { Dispatch } from 'redux';
+import { OrbState } from '../map/orbs/orbReducer'; // eslint-disable-line
 
 type LayerName =
   | 'ClusteredIconLayer'
   | 'CustomMVTLayer'
   | 'GeoJsonClusteredIconLayer'
   | 'GeoJsonLayer'
-  | 'IconLayer';
+  | 'IconLayer'
+  | 'BitmapLayer';
 
 type CategoricalColorMaps =
   | 'Category10'
@@ -217,6 +219,17 @@ type GeoJsonFeature<P = {}> = {
   geometry: { coordinates?: number[] };
   properties: { cluster?: boolean; expansion_zoom?: number } & P;
 };
+
+type LayerConfiguration<P = {}> = (
+  props: {
+    id: string;
+    data: any;
+    orbState: OrbState;
+    authToken: string;
+    activeSources: Source[];
+    dispatch: Dispatch;
+  } & P,
+) => any;
 
 /** A feature which has been picked from the map by onHover or onClick */
 type PickedMapFeature<P = {}> = {
