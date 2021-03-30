@@ -57,6 +57,8 @@ djangorestframework-simplejwt = "*"
 redis = "*"
 # sentinel data
 sentinelsat = "*"
+# pdf reports
+xhtml2pdf = "*"
 # astrosat-specific code
 django-astrosat-core = {editable = true,git = "https://github.com/astrosat/django-astrosat-core.git",ref = "master"}
 django-astrosat-users = {editable = true,git = "https://github.com/astrosat/django-astrosat-users.git",ref = "master"}

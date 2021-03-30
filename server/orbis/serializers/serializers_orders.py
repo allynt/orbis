@@ -63,9 +63,11 @@ class OrderItemSerializer(serializers.ModelSerializer):
 class OrderSerializer(serializers.ModelSerializer):
     class Meta:
         model = Order
-        fields = ("id", "user", "customer", "created", "order_type", "cost", "items")
+        fields = ("id", "report", "user", "customer", "created", "order_type", "cost", "items")
 
     id = serializers.UUIDField(source="uuid", read_only=True)
+
+    report = serializers.FileField(read_only=True)
 
     user = serializers.SlugRelatedField(
         default=SwaggerCurrentUserDefault(),
@@ -107,5 +109,8 @@ class OrderSerializer(serializers.ModelSerializer):
         if not cost_data:
             # if cost was not supplied then compute it here...
             order.recalculate_cost()
+
+        # once all the creation has finished, generate the report...
+        order.generate_report()
 
         return order

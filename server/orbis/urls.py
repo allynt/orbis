@@ -15,7 +15,7 @@ from .views import (
     DataSourceView,
     DocumentView,
     TokenView,
-    OrderListCreateView,
+    OrderViewSet,
     SatelliteViewSet,
     SatelliteSearchViewSet,
     SatelliteResultViewSet,
@@ -27,6 +27,9 @@ from .views import (
 ##############
 
 api_router = SlashlessSimpleRouter()
+api_router.register(
+    r"customers/(?P<customer_id>[^/.]+)/orders", OrderViewSet, basename="orders"
+)
 api_router.register(
     r"satellites/searches", SatelliteSearchViewSet, basename="satellite-search"
 )
@@ -46,7 +49,6 @@ api_urlpatterns = [
     path("customers/<slug:customer_id>/users/<slug:user_id>/", CustomerUserDetailView.as_view(), name="customer-users-detail"),
     path("customers/<slug:customer_id>/users/<slug:user_id>/invite/", CustomerUserInviteView.as_view(), name="customer-users-invite"),
     path("customers/<slug:customer_id>/users/<slug:user_id>/onboard/", CustomerUserOnboardView.as_view(), name="customer-users-onboard"),
-    path("customers/<slug:customer_id>/orders/", OrderListCreateView.as_view(), name="orders-list"),
     path("data/sources/", DataSourceView.as_view(), name="datasources"),
     path("documents/<str:document_type>/", DocumentView.as_view(), name="documents"),
     path("data/token/", TokenView.as_view(), name="token"),

@@ -1,16 +1,24 @@
 from datetime import datetime, timedelta
+from io import BytesIO
 import uuid
 
 from django.conf import settings
 from django.core.exceptions import ValidationError
+from django.core.files.base import ContentFile
 from django.core.validators import MinValueValidator
 from django.db import models
 from django.db.models import ExpressionWrapper, F
 from django.db.models import Sum
+from django.template.loader import get_template
 from django.utils import timezone
+from django.utils.text import slugify
 from django.utils.translation import gettext as _
 
+from xhtml2pdf import pisa
+
 from astrosat_users.models import Customer, CustomerUser, get_sentinel_user
+
+from core.utils import html_to_pdf, html_to_pdf_link_callback
 
 from orbis.models import Licence
 
@@ -26,7 +34,7 @@ It can probably be factored-out into its own reusable app.
 ###########
 
 
-def order_form_path(instance, filename):
+def order_report_path(instance, filename):
     return f"customers/{instance.customer}/orders/{filename}"
 
 
@@ -124,7 +132,7 @@ class Order(models.Model):
         default=0, help_text=_("The cost at the time of purchase.")
     )
     # TODO: status = PENDING|PURCHASED|ERROR|ETC
-    order_form = models.FileField(upload_to=order_form_path, blank=True, null=True)
+    report = models.FileField(upload_to=order_report_path, blank=True, null=True)
 
     @property
     def order_number(self):
@@ -134,13 +142,34 @@ class Order(models.Model):
     def __str__(self):
         return f"{self.customer}: {self.order_number}"
 
+    def natural_key(self):
+        return (self.uuid,)
+
     def recalculate_cost(self):
         subtotal = self.items.aggregate(Sum("cost"))["cost__sum"]
         self.cost = subtotal * self.order_type.cost_modifier
         self.save()
 
-    def natural_key(self):
-        return (self.uuid,)
+    def generate_report(self, report_filename=None):
+        if report_filename is None:
+            report_filename = f"{slugify(str(self))}_report.pdf"
+
+        report_template = get_template("orbis/order.html")
+        report_html_content = report_template.render({"order": self})
+
+        buffer = BytesIO()
+        pisa_status = pisa.CreatePDF(
+            report_html_content,
+            dest=buffer,
+            link_callback=html_to_pdf_link_callback,
+        )
+        if pisa_status.err:
+            raise Exception(f"Error generating report: {pisa_status.err}")
+
+        buffer.seek(0)
+        report = ContentFile(buffer.read(), report_filename)
+        self.report = report
+        self.save()
 
 
 class OrderItem(models.Model):
