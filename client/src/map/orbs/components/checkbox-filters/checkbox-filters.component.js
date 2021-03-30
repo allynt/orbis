@@ -33,6 +33,12 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
+const isPropertyOff = (filters, property) => {
+  return (
+    filters === undefined || filters === null || !filters.includes(property)
+  );
+};
+
 /**
  * @type {import('typings/orbis').SidebarComponent<{
  *   filters: {value: any, label?: string, icon?: string}[]
@@ -62,8 +68,6 @@ export const CheckboxFilters = ({
    * @param {any} value
    */
   const handleChange = value => () => {
-    dispatch(logProperty(selectedLayer, value));
-
     const { source_id } = selectedLayer;
     let newFilterValue;
     if (filterValue === undefined || filterValue === null)
@@ -72,7 +76,10 @@ export const CheckboxFilters = ({
       newFilterValue = filterValue.filter(v => v !== value);
     else newFilterValue = [...filterValue, value];
 
-    return dispatch(setFilterValue({ source_id, filterValue: newFilterValue }));
+    dispatch(setFilterValue({ source_id, filterValue: newFilterValue }));
+    return dispatch(
+      logProperty(selectedLayer, value, !isPropertyOff(filterValue, value)),
+    );
   };
 
   return filters ? (
@@ -82,10 +89,7 @@ export const CheckboxFilters = ({
           .toString()
           .replace(/\s/g, '-')}`;
         const Icon = icon && iconMap[`${icon}Icon`];
-        const checked =
-          filterValue === undefined ||
-          filterValue === null ||
-          !filterValue.includes(value);
+        const checked = isPropertyOff(filterValue, value);
         return (
           <ListItem
             key={value}

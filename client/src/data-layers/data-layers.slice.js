@@ -91,7 +91,10 @@ export const setLayers = sourceIds => async (dispatch, getState) => {
   dispatch(updateLayers(sourceIds));
 };
 
-export const logProperty = (source, property) => async (dispatch, getState) => {
+export const logProperty = (source, property, isOn) => async (
+  dispatch,
+  getState,
+) => {
   const user = userSelector(getState());
 
   dispatch(
@@ -105,6 +108,7 @@ export const logProperty = (source, property) => async (dispatch, getState) => {
           customerName: user?.customers[0]?.name,
           layer: source.source_id,
           property: property,
+          state: isOn,
         },
       },
       tags: ['TOGGLE_PROPERTY', source.source_id, property],
