@@ -1,3 +1,4 @@
+import { ParentSize } from '@visx/responsive';
 import { Text } from '@visx/text';
 import * as React from 'react';
 import { ColorScale } from 'utils/ColorScale';
@@ -14,7 +15,7 @@ import {
 import { useChartTheme } from '../useChartTheme';
 
 const WrappingLabel = props => (
-  <Text width={400} {...props}>
+  <Text width={props.width} fontSize={14} {...props}>
     {props.text}
   </Text>
 );
@@ -52,57 +53,78 @@ export const BarChart = ({
   const colorScale = new ColorScale({ color, domain, clip, reversed });
   const yValues = data?.map(d => d.y);
   return (
-    <VictoryChart
-      theme={orbisChartTheme}
-      domain={{ x: domain.map(Number) }}
-      domainPadding={{ x: 20, y: 10 }}
-    >
-      <VictoryAxis
-        fixLabelOverlap
-        label={labelX}
-        axisLabelComponent={<WrappingLabel />}
-        tickCount={3}
-        crossAxis={false}
-        style={{ axisLabel: { padding: 50 } }}
-      />
-      <VictoryAxis
-        dependentAxis
-        fixLabelOverlap
-        crossAxis={false}
-        label={labelY}
-        offsetX={150}
-        style={{ axisLabel: { padding: 120 } }}
-      />
-      <VictoryBar
-        data={data}
-        style={{
-          data: {
-            fill: ({ datum }) => colorScale.get(datum.x),
-          },
-        }}
-      />
-      {isRealValue(line) ? (
-        <VictoryGroup groupComponent={<g data-testid="line" />}>
-          <VictoryLine
-            data={[
-              { x: line, y: 0 },
-              { x: line, y: Math.max(...yValues) },
-            ]}
-          />
-          <VictoryScatter
-            dataComponent={<OffsetPoint />}
-            size={5}
-            style={{
-              data: {
-                fill: orbisChartTheme.scatter.style.data.stroke,
-              },
-            }}
-            data={[
-              { x: line, y: Math.max(...yValues), symbol: 'triangleDown' },
-            ]}
-          />
-        </VictoryGroup>
-      ) : null}
-    </VictoryChart>
+    <ParentSize>
+      {({ width }) => {
+        const padding = { left: 80, top: 20, bottom: 60, right: 0 },
+          paddingY = padding.top + padding.bottom;
+
+        return (
+          <VictoryChart
+            width={width}
+            height={width * 0.7}
+            theme={orbisChartTheme}
+            padding={padding}
+            domainPadding={{ x: width / data.length }}
+          >
+            <VictoryAxis
+              fixLabelOverlap
+              label={labelX}
+              axisLabelComponent={<WrappingLabel width={width - paddingY} />}
+              tickCount={3}
+              crossAxis={false}
+              style={{
+                axisLabel: { padding: padding.bottom - 28 },
+                tickLabels: { padding: 10 },
+              }}
+            />
+            <VictoryAxis
+              dependentAxis
+              fixLabelOverlap
+              crossAxis={false}
+              label={labelY}
+              offsetX={padding.left}
+              style={{
+                axisLabel: { padding: padding.left - 14 },
+                tickLabels: { padding: 10 },
+              }}
+            />
+            <VictoryBar
+              data={data}
+              style={{
+                data: {
+                  fill: ({ datum }) => colorScale.get(datum.x),
+                },
+              }}
+            />
+            {isRealValue(line) ? (
+              <VictoryGroup groupComponent={<g data-testid="line" />}>
+                <VictoryLine
+                  data={[
+                    { x: line, y: 0 },
+                    { x: line, y: Math.max(...yValues) },
+                  ]}
+                />
+                <VictoryScatter
+                  dataComponent={<OffsetPoint />}
+                  size={5}
+                  style={{
+                    data: {
+                      fill: orbisChartTheme.scatter.style.data.stroke,
+                    },
+                  }}
+                  data={[
+                    {
+                      x: line,
+                      y: Math.max(...yValues),
+                      symbol: 'triangleDown',
+                    },
+                  ]}
+                />
+              </VictoryGroup>
+            ) : null}
+          </VictoryChart>
+        );
+      }}
+    </ParentSize>
   );
 };

@@ -17,9 +17,6 @@ const colors = [
 // * Layout
 // *
 const baseProps = {
-  width: 500,
-  height: 360,
-  padding: { left: 150, bottom: 100, top: 10, right: 40 },
   colorScale: colors,
   animate: true,
 };
@@ -35,10 +32,7 @@ export const useChartTheme = () => {
   const astrosatUiTheme = useTheme();
 
   const baseLabelStyles = {
-    fontFamily: astrosatUiTheme.typography.fontFamily,
-    fontSize: 24,
-    letterSpacing: 'normal',
-    padding: 10,
+    ...astrosatUiTheme.typography.body1,
     fill: astrosatUiTheme.palette.text.primary,
     stroke: 'transparent',
   };
@@ -58,7 +52,6 @@ export const useChartTheme = () => {
         },
         axisLabel: assign({}, centeredLabelStyles, {
           fontStyle: 'italic',
-          padding: 35,
         }),
         grid: {
           fill: 'none',
@@ -81,7 +74,6 @@ export const useChartTheme = () => {
         style: {
           data: {
             fill: astrosatUiTheme.palette.text.primary,
-            padding: 8,
             strokeWidth: 1,
             stroke: astrosatUiTheme.palette.text.primary,
           },
@@ -114,7 +106,6 @@ export const useChartTheme = () => {
         pointerEvents: 'none',
         fontWeight: astrosatUiTheme.typography.fontWeightBold,
         fontStyle: 'italic',
-        fontSize: 24,
         fill: astrosatUiTheme.palette.secondary.main,
       }),
       flyoutStyle: {
@@ -146,19 +137,6 @@ export const useChartTheme = () => {
         },
       },
     }),
-    legend: {
-      ...baseProps,
-      height: 460,
-      orientation: 'horizontal',
-      y: 400,
-      itemsPerRow: 4,
-      gutter: 20,
-      style: {
-        labels: {
-          ...baseLabelStyles,
-        },
-      },
-    },
     scatter: assign({}, baseProps, {
       style: {
         data: {
