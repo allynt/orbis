@@ -11,6 +11,8 @@ import { filterValueSelector, setFilterValue } from 'map/orbs/orbReducer';
 import * as React from 'react';
 import { useSelector } from 'react-redux';
 
+import { logProperty } from 'data-layers/data-layers.slice';
+
 const useStyles = makeStyles(theme => ({
   iconWrapper: {
     color: props => props.iconColor || theme.palette.secondary.main,
@@ -60,6 +62,8 @@ export const CheckboxFilters = ({
    * @param {any} value
    */
   const handleChange = value => () => {
+    dispatch(logProperty(selectedLayer, value));
+
     const { source_id } = selectedLayer;
     let newFilterValue;
     if (filterValue === undefined || filterValue === null)

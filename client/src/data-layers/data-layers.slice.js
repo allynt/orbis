@@ -91,6 +91,27 @@ export const setLayers = sourceIds => async (dispatch, getState) => {
   dispatch(updateLayers(sourceIds));
 };
 
+export const logProperty = (source, property) => async (dispatch, getState) => {
+  const user = userSelector(getState());
+
+  dispatch(
+    addLogItem({
+      content: {
+        type: 'orbisUserAction',
+        orbisUserAction: {
+          action: 'toggleProperty',
+          userId: user?.id,
+          customerId: user?.customers[0]?.id,
+          customerName: user?.customers[0]?.name,
+          layer: source.source_id,
+          property: property,
+        },
+      },
+      tags: ['TOGGLE_PROPERTY', source.source_id, property],
+    }),
+  );
+};
+
 export const logDataset = source => async (dispatch, getState) => {
   const user = userSelector(getState());
 
