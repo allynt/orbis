@@ -4,4 +4,4 @@ from .views_documents import DocumentView
 from .views_orbs import OrbListView
 from .views_orders import OrderListCreateView
 from .views_satellites import SatelliteViewSet, SatelliteSearchViewSet, SatelliteResultViewSet, run_satellite_query
-from .views_auth import LoginView
+from .views_auth import LoginView, RegisterView

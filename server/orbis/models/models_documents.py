@@ -1,5 +1,6 @@
 import os
 
+from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.db import models
 
@@ -22,14 +23,27 @@ def validate_pdf_extension(value):
         raise ValidationError("Unsupported file extension.")
 
 
+class DocumentManager(models.Manager):
+
+    def get_active(self):
+        try:
+            return self.get(is_active=True)
+        except self.model.DoesNotExist:
+            raise ValidationError(f"No active {self.model._meta.verbose_name} found.")
+
+
+
 ##########
 # models #
 ##########
 
 
+
 class Document(models.Model):
     class Meta:
         abstract = True
+
+    objects = DocumentManager()
 
     version = models.SlugField(unique=True)
     is_active = models.BooleanField(
@@ -43,6 +57,17 @@ class Document(models.Model):
         return f"{self.version}"
 
 
+class PrivacyDocument(Document):
+    class Meta:
+        app_label = "orbis"
+        verbose_name = "Privacy Document"
+        verbose_name_plural = "Documents: Privacy"
+
+    file = models.FileField(
+        upload_to=privacy_media_path, validators=[validate_pdf_extension]
+    )
+
+
 class TermsDocument(Document):
     class Meta:
         app_label = "orbis"
@@ -53,13 +78,41 @@ class TermsDocument(Document):
         upload_to=terms_media_path, validators=[validate_pdf_extension]
     )
 
+    users = models.ManyToManyField(
+        settings.AUTH_USER_MODEL,
+        related_name="terms",
+        through="TermsDocumentAgreement",
+    )
 
-class PrivacyDocument(Document):
-    class Meta:
-        app_label = "orbis"
-        verbose_name = "Privacy Document"
-        verbose_name_plural = "Documents: Privacy"
+    @property
+    def has_agreements(self):
+        return self.n_agreements > 0
 
-    file = models.FileField(
-        upload_to=privacy_media_path, validators=[validate_pdf_extension]
+    @property
+    def n_agreements(self):
+        return self.terms_agreements.count()
+
+
+class TermsDocumentAgreement(models.Model):
+    # a "through" model for the relationship between TermsDocument & users
+
+    terms = models.ForeignKey(
+        TermsDocument,
+        on_delete=models.PROTECT,
+        related_name="terms_agreements"
+    )
+
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name="terms_agreements",
+    )
+
+    timestamp = models.DateTimeField(auto_now_add=True)
+
+
+def agree_terms(terms, user):
+    TermsDocumentAgreement.objects.get_or_create(
+        terms=terms,
+        user=user,
     )

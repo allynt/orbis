@@ -4,6 +4,7 @@ from astrosat.routers import SlashlessSimpleRouter
 
 from .views import (
     LoginView,
+    RegisterView,
     OrbListView,
     CustomerCreateView,
     CustomerUpdateView,
@@ -34,8 +35,10 @@ api_router.register(
 )
 api_router.register(r"satellites", SatelliteViewSet, basename="satellite")
 api_urlpatterns = [
-    # using custom login view to enable db logging
+    # using custom login view to enable db logging...
     path("authentication/login/", LoginView.as_view(), name="rest_login"),
+    # using custom register view to enable terms agreement...
+    path("authentication/registration/", RegisterView.as_view(), name="rest_register"),
     path("orbs/", OrbListView.as_view(), name="orbs-list"),
     path("customers/", CustomerCreateView.as_view(), name="customers-list"),
     path("customers/<slug:customer_id>/", CustomerUpdateView.as_view(), name="customers-detail"),
