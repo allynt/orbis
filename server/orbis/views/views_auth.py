@@ -42,8 +42,8 @@ class RegisterView(AstrosatUserRegisterView):
     def perform_create(self, serializer):
         user = super().perform_create(serializer)
 
-        if user.agreed_terms:
-            # if the user agreed the terms during registration
+        if user.accepted_terms:
+            # if the user accepted the terms during registration
             # then create a record of that agreement...
             agree_terms(
                 user=user,

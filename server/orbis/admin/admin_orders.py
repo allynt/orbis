@@ -52,7 +52,7 @@ class OrderAdmin(admin.ModelAdmin):
         "user",
         "order_type",
         "cost",
-        "order_form",
+        "report",
     )
     inlines = (OrderItemAdminInline,)
     list_filter = ("customer", "created", "order_type")
