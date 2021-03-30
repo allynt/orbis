@@ -1,3 +1,4 @@
+import { Text } from '@visx/text';
 import * as React from 'react';
 import { ColorScale } from 'utils/ColorScale';
 import { isRealValue } from 'utils/isRealValue';
@@ -11,6 +12,12 @@ import {
   VictoryGroup,
 } from 'victory';
 import { useChartTheme } from '../useChartTheme';
+
+const WrappingLabel = props => (
+  <Text width={400} {...props}>
+    {props.text}
+  </Text>
+);
 
 /**
  * @param {import('victory').PointProps} props
@@ -53,6 +60,7 @@ export const BarChart = ({
       <VictoryAxis
         fixLabelOverlap
         label={labelX}
+        axisLabelComponent={<WrappingLabel />}
         tickCount={3}
         crossAxis={false}
         style={{ axisLabel: { padding: 50 } }}

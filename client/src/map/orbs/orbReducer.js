@@ -1,6 +1,5 @@
 import { combineReducers } from 'redux';
 import { createSlice, createSelector } from '@reduxjs/toolkit';
-import rice from './rice/rice.slice';
 import isolationPlus from './slices/isolation-plus.slice';
 import crowdless from './slices/crowdless.slice';
 
@@ -16,6 +15,7 @@ import crowdless from './slices/crowdless.slice';
  *     clickedFeatures?: GeoJsonFeature[]
  *     hoveredFeatures?: GeoJsonFeature[],
  *     filterValue?: any
+ *     other?: any
  *   },
  *   extrudedMode: boolean
  *   extrusionScale: number
@@ -54,6 +54,12 @@ import crowdless from './slices/crowdless.slice';
  * @typedef {GenericOrbAction<{
  *     filterValue?: any
  *   }>} SetFilterValueAction
+ */
+
+/**
+ * @typedef {GenericOrbAction<{
+ *    other?: any
+ * }>} SetOtherAction
  */
 
 /**
@@ -102,6 +108,12 @@ const layersSlice = createSlice({
       const { source_id, filterValue } = payload;
       state[source_id] = { ...state[source_id], filterValue };
     },
+    /** @type {SetOtherAction} */
+    setOther: (state, { payload }) => {
+      if (!payload.source_id) return handleMissingSourceId();
+      const { source_id, other } = payload;
+      state[source_id] = { ...state[source_id], other };
+    },
     toggleExtrudedMode: state => {
       state.extrudedMode = !state.extrudedMode;
     },
@@ -117,6 +129,7 @@ export const {
   setHoveredFeatures,
   setVisibility,
   setFilterValue,
+  setOther,
   toggleExtrudedMode,
   setExtrusionScale,
 } = layersSlice.actions;
@@ -143,6 +156,10 @@ export const layersVisibilitySelector = id =>
 export const filterValueSelector = id =>
   createSelector(baseSelector, state => state?.[id]?.filterValue);
 
+/** @param {string} id */
+export const otherSelector = id =>
+  createSelector(baseSelector, state => state?.[id]?.other);
+
 export const extrudedModeSelector = createSelector(
   baseSelector,
   state => state?.extrudedMode,
@@ -155,7 +172,6 @@ export const extrusionScaleSelector = createSelector(
 
 const orbReducer = combineReducers({
   layers: layersSlice.reducer,
-  rice,
   isolationPlus,
   crowdless,
 });
