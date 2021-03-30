@@ -84,6 +84,15 @@ locals {
               }
             }
 
+            "toggleProperty" = {
+              "type" = "object",
+              "properties" = {
+                "layer"    = { "type" = "keyword" },
+                "property" = { "type" = "keyword" },
+                "state"    = { "type" = "boolean" },
+              }
+            }
+
           }
         },
 
