@@ -22,7 +22,9 @@ class OrderItemSerializer(serializers.ModelSerializer):
             "expiration",
         )
 
-    orb = serializers.SlugRelatedField(queryset=Orb.objects.all(), slug_field="name")
+    orb = serializers.SlugRelatedField(
+        queryset=Orb.objects.all(), slug_field="name"
+    )
     cost = serializers.FloatField(required=False)
     subscription_period = serializers.DurationField(required=False)
     expiration = serializers.DateTimeField(required=False)
@@ -42,12 +44,17 @@ class OrderItemSerializer(serializers.ModelSerializer):
             order_item.recalculate_cost()
 
         customer = order_item.order.customer
-        customer_user = customer.customer_users.filter(user=order_item.order.user)
+        customer_user = customer.customer_users.filter(
+            user=order_item.order.user
+        )
         customer.add_licences(
             order_item.orb, order_item.n_licences, order_item=order_item
         )
         customer.assign_licences(
-            order_item.orb, customer_user, add_missing=False, ignore_existing=True
+            order_item.orb,
+            customer_user,
+            add_missing=False,
+            ignore_existing=True
         )
 
         return order_item
@@ -63,7 +70,16 @@ class OrderItemSerializer(serializers.ModelSerializer):
 class OrderSerializer(serializers.ModelSerializer):
     class Meta:
         model = Order
-        fields = ("id", "report", "user", "customer", "created", "order_type", "cost", "items")
+        fields = (
+            "id",
+            "report",
+            "user",
+            "customer",
+            "created",
+            "order_type",
+            "cost",
+            "items"
+        )
 
     id = serializers.UUIDField(source="uuid", read_only=True)
 
@@ -109,8 +125,5 @@ class OrderSerializer(serializers.ModelSerializer):
         if not cost_data:
             # if cost was not supplied then compute it here...
             order.recalculate_cost()
-
-        # once all the creation has finished, generate the report...
-        order.generate_report()
 
         return order

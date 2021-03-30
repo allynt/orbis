@@ -12,6 +12,7 @@ from orbis.models import OrbisUserProfile
 class OrbisUserProfileAdmin(CannotAddModelAdminBase, admin.ModelAdmin):
     pass
 
+
 class TermsDocumentAgreementInline(ReadOnlyModelAdminBase, admin.TabularInline):
     model = AstrosatUser.terms.through
 
@@ -25,7 +26,8 @@ class UserAdmin(AstrosatUserAdmin):
     Just like the standard UserAdmin, but adds an entry for each time
     the user has agreed terms
     """
-    inlines = (TermsDocumentAgreementInline,)
+    inlines = (TermsDocumentAgreementInline, )
+
 
 try:
     admin.site.unregister(AstrosatUser)

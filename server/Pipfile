@@ -48,6 +48,8 @@ geopandas = "*"
 mapbox = "*"
 # data processing
 pandas = "*"
+# pdf reports
+pypdf3 = "*"
 # postgresql support
 psycopg2-binary = "*"
 # data tokens
@@ -57,7 +59,7 @@ djangorestframework-simplejwt = "*"
 redis = "*"
 # sentinel data
 sentinelsat = "*"
-# pdf reports
+# more pdf reports
 xhtml2pdf = "*"
 # astrosat-specific code
 django-astrosat-core = {editable = true,git = "https://github.com/astrosat/django-astrosat-core.git",ref = "master"}

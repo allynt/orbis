@@ -1,5 +1,7 @@
 from datetime import datetime, timedelta
 from io import BytesIO
+from PyPDF2 import PdfFileMerger
+from xhtml2pdf import pisa
 import uuid
 
 from django.conf import settings
@@ -14,20 +16,17 @@ from django.utils import timezone
 from django.utils.text import slugify
 from django.utils.translation import gettext as _
 
-from xhtml2pdf import pisa
-
 from astrosat_users.models import Customer, CustomerUser, get_sentinel_user
 
 from core.utils import html_to_pdf, html_to_pdf_link_callback
 
-from orbis.models import Licence
+from orbis.models import Licence, TermsDocument
 
 
 """
 This is basically implementing a shopping cart model.
 It can probably be factored-out into its own reusable app.
 """
-
 
 ###########
 # helpers #
@@ -39,7 +38,6 @@ def order_report_path(instance, filename):
 
 
 DURATION_FORMAT = "[DD] [HH:[MM:]]ss[.uuuuuu]"
-
 
 ########################
 # managers & querysets #
@@ -67,7 +65,12 @@ class OrderItemQuerySet(models.QuerySet):
         """
         if date is None:
             date = timezone.now()
-        qs = self.annotate(expiration=ExpressionWrapper(F("created") + F("subscription_period"), output_field=models.DateTimeField()))
+        qs = self.annotate(
+            expiration=ExpressionWrapper(
+                F("created") + F("subscription_period"),
+                output_field=models.DateTimeField()
+            )
+        )
         return qs.filter(expiration__lt=date)
 
 
@@ -81,7 +84,6 @@ class OrderType(models.Model):
     This classifies the order as being part of a free trial, etc.
     In the future it may have a "coupon code".
     """
-
     class Meta:
         app_label = "orbis"
         verbose_name = "Order Type"
@@ -132,27 +134,48 @@ class Order(models.Model):
         default=0, help_text=_("The cost at the time of purchase.")
     )
     # TODO: status = PENDING|PURCHASED|ERROR|ETC
-    report = models.FileField(upload_to=order_report_path, blank=True, null=True)
+    report = models.FileField(
+        upload_to=order_report_path, blank=True, null=True
+    )
+
+    terms = models.ForeignKey(
+        TermsDocument,
+        blank=True,
+        null=True,
+        on_delete=models.PROTECT,
+        related_name="orders"
+    )
 
     @property
     def order_number(self):
-        prefix = ""  # TODO
-        return f"{prefix}{self.id}"
+        if self.uuid:
+            return self.uuid.hex[:7]
 
     def __str__(self):
         return f"{self.customer}: {self.order_number}"
 
     def natural_key(self):
-        return (self.uuid,)
+        return (self.uuid, )
+
+    def save(self, *args, **kwargs):
+        if not self.pk:
+            self.generate_report(force_save=False)
+            terms_agreement = self.user.terms_agreements.first()
+            if terms_agreement:
+                self.terms = terms_agreement.terms
+        super().save(*args, **kwargs)
 
     def recalculate_cost(self):
         subtotal = self.items.aggregate(Sum("cost"))["cost__sum"]
         self.cost = subtotal * self.order_type.cost_modifier
         self.save()
 
-    def generate_report(self, report_filename=None):
+    def generate_report(self, report_filename=None, force_save=False):
+        """
+        Generates a PDF file corresponding to the Order
+        """
         if report_filename is None:
-            report_filename = f"{slugify(str(self))}_report.pdf"
+            report_filename = f"{slugify(str(self))}-report.pdf"
 
         report_template = get_template("orbis/order.html")
         report_html_content = report_template.render({"order": self})
@@ -166,10 +189,20 @@ class Order(models.Model):
         if pisa_status.err:
             raise Exception(f"Error generating report: {pisa_status.err}")
 
+        if self.terms:
+            # if there are agreed terms, append them to the template
+            merger = PdfFileMerger()
+            merger.append(buffer)
+            merger.append(self.terms.file)
+            merger.write(buffer)
+
         buffer.seek(0)
+
         report = ContentFile(buffer.read(), report_filename)
         self.report = report
-        self.save()
+
+        if force_save:
+            self.save()
 
 
 class OrderItem(models.Model):
@@ -181,7 +214,11 @@ class OrderItem(models.Model):
     objects = OrderItemManager.from_queryset(OrderItemQuerySet)()
 
     order = models.ForeignKey(
-        Order, blank=False, null=False, on_delete=models.CASCADE, related_name="items"
+        Order,
+        blank=False,
+        null=False,
+        on_delete=models.CASCADE,
+        related_name="items"
     )
 
     created = models.DateTimeField(auto_now_add=True)

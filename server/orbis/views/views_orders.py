@@ -16,8 +16,12 @@ from orbis.models import Order, LicencedCustomer as Customer
 from orbis.serializers import OrderSerializer
 
 
-class OrderViewSet(mixins.CreateModelMixin, mixins.ListModelMixin,
-                   mixins.RetrieveModelMixin, viewsets.GenericViewSet):
+class OrderViewSet(
+    mixins.CreateModelMixin,
+    mixins.ListModelMixin,
+    mixins.RetrieveModelMixin,
+    viewsets.GenericViewSet
+):
     """
     viewset that provides 'create', 'list', 'retrieve' action by default; but not
     'update' nor 'delete' actions

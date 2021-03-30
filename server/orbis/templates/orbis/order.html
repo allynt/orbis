@@ -1,1 +1,70 @@
-I am an order
+{# a simple report for an order #}
+
+<html>
+    <head>
+        <style>
+            table#items th { text-align: left; }
+        </style>
+    </head>
+
+    <body>
+
+        <hr/>
+
+        <table>
+            <tr>
+                <td>Order Number:</td>
+                <td>{{ order.order_number }}</td>
+            </tr>
+            <tr>
+                <td>Customer Name:</td>
+                <td>{{ order.customer.name }}</td>
+            </tr>
+            <tr>
+                <td>User Email:</td>
+                <td>{{ order.user.email }}</td>
+            </tr>
+            <tr>
+                <td>Order Date:</td>
+                <td>{{ order.created }}</td>
+            </tr>
+            <tr>
+                <td>Order Type:</td>
+                <td>{{ order.order_type }}</td>
+            </tr>
+        </table>
+
+        <hr/>
+
+        <table id="items">
+            <tr>
+                <th>orb</th>
+                <th>number of licences</th>
+                <th>licence expiry</th>
+                <th>cost per licence</th>
+                <th>cost</th>
+            </tr>
+            {% for order_item in order.items.all %}
+            <tr>
+                <td>{{ order_item.orb }}</td>
+                <td>{{ order_item.n_licences }}</td>
+                <td>{{ order_item.expiration }}</td>
+                <td>&pound;{{ order_item.orb.licence_cost }}</td>
+                <td>&pound;{{ order_item.cost }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+
+        <hr/>
+
+        <table>
+            <tr>
+                <td colspan="4"><em>Total Cost:</em></td>
+                <td>&pound;{{ order.cost }}</td>
+            </tr>
+        </table>
+
+        <hr/>
+
+    </body>
+</html>

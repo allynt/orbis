@@ -24,19 +24,18 @@ def validate_pdf_extension(value):
 
 
 class DocumentManager(models.Manager):
-
     def get_active(self):
         try:
             return self.get(is_active=True)
         except self.model.DoesNotExist:
-            raise ValidationError(f"No active {self.model._meta.verbose_name} found.")
-
+            raise ValidationError(
+                f"No active {self.model._meta.verbose_name} found."
+            )
 
 
 ##########
 # models #
 ##########
-
 
 
 class Document(models.Model):
@@ -95,6 +94,8 @@ class TermsDocument(Document):
 
 class TermsDocumentAgreement(models.Model):
     # a "through" model for the relationship between TermsDocument & users
+    class Meta:
+        ordering = ["-timestamp"]
 
     terms = models.ForeignKey(
         TermsDocument,

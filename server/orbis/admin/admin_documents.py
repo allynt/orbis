@@ -38,9 +38,10 @@ class TermsDocumentAdmin(DocumentAdmin):
             return qs
 
     # add some extra fields...
-    fields = DocumentAdmin.fields + ("n_agreements",)
+    fields = DocumentAdmin.fields + ("n_agreements", )
     list_display = DocumentAdmin.list_display + (
-        "get_has_agreements_for_list_display", )
+        "get_has_agreements_for_list_display",
+    )
     list_filter = DocumentAdmin.list_filter + (HasAgreementsFilter, )
     readonly_fields = DocumentAdmin.readonly_fields + ("n_agreements", )
 
