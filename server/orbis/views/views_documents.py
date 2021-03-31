@@ -1,4 +1,4 @@
-from django.http import FileResponse
+from django.http import FileResponse, HttpResponseNotFound
 
 from rest_framework import status
 from rest_framework.exceptions import APIException
@@ -69,6 +69,9 @@ class DocumentView(GenericAPIView):
     )
     def get(self, request, document_type):
 
-        document_obj = self.get_object()
+        try:
+            document_obj = self.get_object()
+        except NoMatchingDocumentException as e:
+            return HttpResponseNotFound(e.detail)
 
         return FileResponse(document_obj.file)
