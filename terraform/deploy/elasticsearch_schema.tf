@@ -55,6 +55,7 @@ locals {
             // userLogin       - When a user successfully logs in (backend)
             // loadLayer       - When a user adds a layer from the add/remove data panel (frontend)
             // customerCreated - When a new users signs up to create a customer (backend)
+            // toggleProperty  - When a user toggles a data layer that uses checkbox filters on/off
 
             // The user session where the action was performed, relevent to every user action
             "sessionId"    = { "type" = "keyword" },
@@ -81,6 +82,15 @@ locals {
               "type" = "object",
               "properties" = {
                 "customerCreatedAt" = { "type" = "date" }
+              }
+            }
+
+            "toggleProperty" = {
+              "type" = "object",
+              "properties" = {
+                "layer"    = { "type" = "keyword" },
+                "property" = { "type" = "keyword" },
+                "state"    = { "type" = "boolean" },
               }
             }
 
