@@ -93,9 +93,15 @@ class TermsDocument(Document):
 
 
 class TermsDocumentAgreement(models.Model):
-    # a "through" model for the relationship between TermsDocument & users
+    """
+    A "through" model for the relationship between TermsDocument & Users
+    """
     class Meta:
         ordering = ["-timestamp"]
+
+    # b/c the extra fields on this through model have default values
+    # (auto_add_now), I can just do `user.terms.add(term)` instead of
+    # bothering w/ `TermsDocumentAgreement.objects.get_or_create(...)`
 
     terms = models.ForeignKey(
         TermsDocument,
@@ -110,10 +116,3 @@ class TermsDocumentAgreement(models.Model):
     )
 
     timestamp = models.DateTimeField(auto_now_add=True)
-
-
-def agree_terms(terms, user):
-    TermsDocumentAgreement.objects.get_or_create(
-        terms=terms,
-        user=user,
-    )
