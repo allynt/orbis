@@ -4,12 +4,15 @@ import re
 
 from jsonschema import validate
 from io import BytesIO
+from xhtml2pdf import pisa
 from zipfile import ZipFile
 
 import pandas as pd
 import geopandas as gpd
 
+from django.conf import settings
 from django.contrib.gis.geos import GEOSGeometry
+from django.contrib.staticfiles.storage import staticfiles_storage
 from django.http import HttpResponse
 
 import logging
@@ -53,6 +56,40 @@ def responses_to_archive(responses, filename="report"):
     archive_response.write(buffer.read())
 
     return archive_response
+
+
+def html_to_pdf_link_callback(uri, rel):
+    """
+    Convert HTML URIs to absolute system paths so xhtml2pdf
+    can access those resources
+    """
+
+    media_root = settings.MEDIA_ROOT
+    media_url = settings.MEDIA_URL
+    static_root = settings.STATIC_ROOT
+    static_url = settings.STATIC_URL
+
+    if uri.startswith(media_url):
+        path = staticfiles_storage.path(uri.replace(media_url, ""))
+    elif uri.startswith(static_url):
+        path = staticfiles_storage.path(uri.replace(static_url, ""))
+    return path
+
+
+def html_to_pdf(html_content, filename="report"):
+
+    pdf_response = HttpResponse(content_type="application/pdf")
+    pdf_response["Content-Disposition"] = f"attachment; filename={filename}.pdf"
+
+    pisa_status = pisa.CreatePDF(
+        html_content,
+        dest=pdf_response,
+        link_callback=html_to_pdf_link_callback,
+    )
+    if pisa_status.err:
+        raise Exception(f"Error generating report: {pisa_status.err}")
+
+    return pdf_response
 
 
 #############

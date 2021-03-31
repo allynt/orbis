@@ -26,7 +26,7 @@ class Migration(migrations.Migration):
                 ('uuid', models.UUIDField(default=uuid.uuid4, editable=False)),
                 ('created', models.DateTimeField(auto_now_add=True)),
                 ('cost', models.FloatField(default=0, help_text='The cost at the time of purchase.')),
-                ('order_form', models.FileField(blank=True, null=True, upload_to=orbis.models.models_orders.order_form_path)),
+                ('order_form', models.FileField(blank=True, null=True, upload_to=orbis.models.models_orders.order_report_path)),
                 ('customer', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='orders', to='astrosat_users.customer')),
             ],
             options={
