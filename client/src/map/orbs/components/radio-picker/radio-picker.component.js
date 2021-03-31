@@ -24,7 +24,9 @@ export const RadioPicker = ({ selectedLayer, dispatch }) => {
   const selectedProperty = useSelector(state => propertySelector(state?.orbs));
 
   const filterRange = useSelector(state =>
-    filterValueSelector(selectedProperty?.name)(state?.orbs),
+    filterValueSelector(
+      `${selectedProperty?.source_id}/${selectedProperty?.name}`,
+    )(state?.orbs),
   );
 
   const selectedPropertyMetadata = selectedLayer?.metadata?.properties?.find(

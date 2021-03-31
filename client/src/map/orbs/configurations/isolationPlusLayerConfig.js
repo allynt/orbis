@@ -65,7 +65,9 @@ const configuration = ({
 
   const source = activeSources?.find(source => source.source_id === id);
 
-  const filterRange = filterValueSelector(selectedProperty?.name)(orbState);
+  const filterRange = filterValueSelector(
+    `${selectedProperty?.source_id}/${selectedProperty?.name}`,
+  )(orbState);
 
   const extrudedMode = extrudedModeSelector(orbState);
   const extrusionScale = extrusionScaleSelector(orbState);
