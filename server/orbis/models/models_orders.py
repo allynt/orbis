@@ -159,7 +159,6 @@ class Order(models.Model):
 
     def save(self, *args, **kwargs):
         if not self.pk:
-            self.generate_report(force_save=False)
             terms_agreement = self.user.terms_agreements.first()
             if terms_agreement:
                 self.terms = terms_agreement.terms
