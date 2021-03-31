@@ -127,6 +127,6 @@ class OrderSerializer(serializers.ModelSerializer):
             order.recalculate_cost()
 
         # once all the creation has finished, generate the report...
-        order.gnerate_report(force_save=True)
+        order.generate_report(force_save=True)
 
         return order
