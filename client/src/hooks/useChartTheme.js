@@ -65,6 +65,7 @@ export const useChartTheme = () => {
           stroke: 'transparent',
         },
         tickLabels: assign({}, baseLabelStyles, {
+          padding: 10,
           fill: fade(astrosatUiTheme.palette.text.primary, 0.75),
         }),
       },
@@ -113,9 +114,9 @@ export const useChartTheme = () => {
         fill: astrosatUiTheme.palette.primary.main,
         pointerEvents: 'none',
       },
-      flyoutPadding: 10,
+      flyoutPadding: 4,
       cornerRadius: astrosatUiTheme.shape.borderRadius,
-      pointerLength: 10,
+      pointerLength: 8,
     },
     pie: assign({}, baseProps, {
       animate: true,
