@@ -81,7 +81,7 @@ export const Pie = ({
         standalone={false}
         theme={chartTheme}
         animate={{
-          duration: 500,
+          onLoad: { duration: 500 },
           // @ts-ignore
           animationWhitelist: [
             'style',
