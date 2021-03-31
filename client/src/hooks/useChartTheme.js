@@ -119,9 +119,9 @@ export const useChartTheme = () => {
     },
     pie: assign({}, baseProps, {
       animate: true,
-      width: 400,
-      height: 400,
-      padding: 0,
+      // width: 400,
+      // height: 400,
+      // padding: 0,
       colorScale: colors,
       style: {
         data: {},
@@ -129,7 +129,7 @@ export const useChartTheme = () => {
           textAnchor: 'middle',
           fontWeight: astrosatUiTheme.typography.fontWeightRegular,
           fontFamily: astrosatUiTheme.typography.fontFamily,
-          fontSize: 20,
+          // fontSize: 20,
           fill: ({ index }) =>
             astrosatUiTheme.palette.getContrastText(
               colors[index % colors.length],
