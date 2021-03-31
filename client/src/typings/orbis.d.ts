@@ -103,7 +103,7 @@ type BaseProperty = {
     };
   };
   description?: string;
-  details?: string;
+  details?: string | string[];
   label?: string;
   name: string;
   precision?: number;

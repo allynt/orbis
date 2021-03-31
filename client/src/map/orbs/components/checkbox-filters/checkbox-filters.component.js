@@ -11,6 +11,8 @@ import { filterValueSelector, setFilterValue } from 'map/orbs/orbReducer';
 import * as React from 'react';
 import { useSelector } from 'react-redux';
 
+import { logProperty } from 'data-layers/data-layers.slice';
+
 const useStyles = makeStyles(theme => ({
   iconWrapper: {
     color: props => props.iconColor || theme.palette.secondary.main,
@@ -30,6 +32,12 @@ const useStyles = makeStyles(theme => ({
     marginLeft: props => !props.hasIcon && theme.spacing(2),
   },
 }));
+
+const isPropertyOff = (filters, property) => {
+  return (
+    filters === undefined || filters === null || !filters.includes(property)
+  );
+};
 
 /**
  * @type {import('typings/orbis').SidebarComponent<{
@@ -68,7 +76,10 @@ export const CheckboxFilters = ({
       newFilterValue = filterValue.filter(v => v !== value);
     else newFilterValue = [...filterValue, value];
 
-    return dispatch(setFilterValue({ source_id, filterValue: newFilterValue }));
+    dispatch(setFilterValue({ source_id, filterValue: newFilterValue }));
+    return dispatch(
+      logProperty(selectedLayer, value, !isPropertyOff(filterValue, value)),
+    );
   };
 
   return filters ? (
@@ -78,10 +89,7 @@ export const CheckboxFilters = ({
           .toString()
           .replace(/\s/g, '-')}`;
         const Icon = icon && iconMap[`${icon}Icon`];
-        const checked =
-          filterValue === undefined ||
-          filterValue === null ||
-          !filterValue.includes(value);
+        const checked = isPropertyOff(filterValue, value);
         return (
           <ListItem
             key={value}
