@@ -148,6 +148,7 @@ const RadioProperty = ({
               <DiscretePropertyLegend property={selectedProperty} />
             ) : (
               <ColorMapRangeSlider
+                type={selectedProperty?.type}
                 color={colorScheme}
                 domain={[selectedProperty.min, selectedProperty.max]}
                 clip={
