@@ -1,4 +1,3 @@
-export { BarChart } from './charts/bar/bar.component';
 export { ColorMapRangeSlider } from './colormap-range-slider/colormap-range-slider.component';
 export { DateRangePicker } from './date-range-picker/date-range-picker.component';
 export { default as FeatureDetail } from './feature-detail/feature-detail.component';

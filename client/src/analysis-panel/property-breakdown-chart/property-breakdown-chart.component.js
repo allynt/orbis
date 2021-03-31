@@ -1,15 +1,13 @@
 import * as React from 'react';
 
-import { useSelector } from 'react-redux';
-
 import { Grid } from '@astrosat/astrosat-ui';
 
+import { useSelector } from 'react-redux';
 import { VictoryPie } from 'victory';
 
 import { LegendItem, SidePanelSection } from 'components';
-import { useChartTheme } from 'components/charts/useChartTheme';
+import { useChartTheme } from 'hooks/useChartTheme';
 import { DEFAULT_DECIMAL_PRECISION } from 'map/map.constants';
-
 import { breakdownAggregationSelector } from 'map/orbs/slices/isolation-plus.slice';
 
 /**

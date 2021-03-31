@@ -1,18 +1,20 @@
+import * as React from 'react';
+
 import { ParentSize } from '@visx/responsive';
 import { Text } from '@visx/text';
-import * as React from 'react';
+import {
+  Point,
+  VictoryAxis,
+  VictoryBar,
+  VictoryChart,
+  VictoryGroup,
+  VictoryLine,
+  VictoryScatter,
+} from 'victory';
+
+import { useChartTheme } from 'hooks/useChartTheme';
 import { ColorScale } from 'utils/ColorScale';
 import { isRealValue } from 'utils/isRealValue';
-import {
-  VictoryChart,
-  VictoryBar,
-  VictoryAxis,
-  VictoryLine,
-  Point,
-  VictoryScatter,
-  VictoryGroup,
-} from 'victory';
-import { useChartTheme } from '../useChartTheme';
 
 const WrappingLabel = props => (
   <Text width={props.width} fontSize={14} {...props}>
@@ -39,7 +41,7 @@ const OffsetPoint = props => {
  *   reversed?: boolean
  * }} props
  */
-export const BarChart = ({
+export const Histogram = ({
   data,
   color,
   domain,

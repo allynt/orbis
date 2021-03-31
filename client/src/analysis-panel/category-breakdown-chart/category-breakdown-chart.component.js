@@ -1,16 +1,14 @@
 import React, { useCallback, useEffect, useState } from 'react';
 
-import { useSelector } from 'react-redux';
-
 import { Grid, Typography, useTheme } from '@astrosat/astrosat-ui';
 
+import { useSelector } from 'react-redux';
 import { VictoryLabel, VictoryPie } from 'victory';
 
-import { categoryListSelector } from 'map/orbs/slices/isolation-plus.slice';
-
-import { SidePanelSection, LegendItem } from 'components';
-import { useChartTheme } from 'components/charts/useChartTheme';
+import { LegendItem, SidePanelSection } from 'components';
+import { useChartTheme } from 'hooks/useChartTheme';
 import { DEFAULT_DECIMAL_PRECISION } from 'map/map.constants';
+import { categoryListSelector } from 'map/orbs/slices/isolation-plus.slice';
 
 const WIDTH = 400,
   HEIGHT = 400,

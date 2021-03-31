@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
 
-import { useSelector } from 'react-redux';
-
 import {
   Box,
   Grid,
@@ -11,9 +9,11 @@ import {
   Typography,
 } from '@astrosat/astrosat-ui';
 
-import { aggregationSelector } from 'map/orbs/slices/isolation-plus.slice';
+import { useSelector } from 'react-redux';
 
-import { BarChart, SidePanelSection } from 'components';
+import { SidePanelSection } from 'components';
+import { aggregationSelector } from 'map/orbs/slices/isolation-plus.slice';
+import { Histogram } from './histogram.component';
 
 const useStyles = makeStyles(theme => ({
   italic: {
@@ -53,7 +53,7 @@ export const NationalDeviationHistogram = ({
       <Box display="flex" flexDirection="column">
         <Typography paragraph>{selectedProperty?.label}</Typography>
         {data?.length ? (
-          <BarChart
+          <Histogram
             color={selectedProperty?.application?.orbis?.display?.color}
             domain={[selectedProperty?.min, selectedProperty?.max]}
             clip={[selectedProperty?.clip_min, selectedProperty?.clip_max]}
