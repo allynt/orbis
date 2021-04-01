@@ -23,6 +23,7 @@ const isInRange = (value, domain) =>
  * @param {import('./colormap-range-slider.component').DecileColorMapRangeSliderProps} props
  */
 const DecileColorMapRangeSlider = ({
+  value,
   brushStyle,
   color,
   handleStyle,
@@ -33,8 +34,8 @@ const DecileColorMapRangeSlider = ({
   reversed,
   onChange,
 }) => {
-  /** @type {[number, number]} */
-  const domain = [0, 10];
+  /** @type {[number, number] | undefined} */
+  const domain = value || [0, 10];
   /** @type {[BrushDomain, React.Dispatch<BrushDomain>]} */
   const [brushDomain, setBrushDomain] = useState({ x: domain, y: undefined });
   const colorScale = new ColorScale({ color, domain, reversed });

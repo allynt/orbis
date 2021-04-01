@@ -9,7 +9,6 @@ import { activeDataSourcesSelector } from 'data-layers/data-layers.slice';
  * @typedef {{
  *   clickedFeatures?: import('typings/orbis').PolygonPickedMapFeature[]
  *   property?: import('typings/orbis').Property & {source_id: string}
- *   filterRange?: [number, number]
  * }} IsolationPlusState
  */
 
@@ -19,7 +18,6 @@ const initialState = {
     source_id: undefined,
     name: undefined,
   },
-  filterRange: [undefined, undefined],
 };
 
 const isolationPlusSlice = createSlice({
