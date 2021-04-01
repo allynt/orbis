@@ -1,6 +1,6 @@
 import { format } from 'date-fns';
 import { find } from 'lodash';
-import { layersVisibilitySelector, otherSelector } from '../orbReducer';
+import { layersVisibilitySelector, otherSelector } from '../layers.slice';
 
 /**
  * @type {import('typings/orbis').LayerConfiguration<{

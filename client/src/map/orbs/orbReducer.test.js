@@ -15,11 +15,11 @@ import reducer, {
   setOther,
   setVisibility,
   toggleExtrudedMode,
-} from './orbReducer';
+} from './layers.slice';
 
 const LAYER_ID = 'test/layer';
 
-describe('orbReducer', () => {
+describe('layers slice', () => {
   describe('actions', () => {
     describe.each`
       action                | stateKey             | newValue
@@ -29,9 +29,7 @@ describe('orbReducer', () => {
       ${setFilterValue}     | ${'filterValue'}     | ${['this', 'is', 'the', 'way']}
       ${setOther}           | ${'other'}           | ${{ this: 'is something', andThis: 'is something else' }}
     `('$action.type', ({ action, stateKey, newValue }) => {
-      const expected = {
-          layers: { [LAYER_ID]: { [stateKey]: newValue } },
-        },
+      const expected = { [LAYER_ID]: { [stateKey]: newValue } },
         payload = {
           key: LAYER_ID,
           [stateKey]: newValue,
@@ -61,12 +59,10 @@ describe('orbReducer', () => {
 
       it(`Sets ${stateKey} even if it's undefined in payload`, () => {
         const state = {
-          layers: { [LAYER_ID]: { [stateKey]: [1, 2, 3] } },
+          [LAYER_ID]: { [stateKey]: [1, 2, 3] },
         };
         const expected = {
-          layers: {
-            [LAYER_ID]: { [stateKey]: undefined },
-          },
+          [LAYER_ID]: { [stateKey]: undefined },
         };
         const result = reducer(
           state,
@@ -108,8 +104,8 @@ describe('orbReducer', () => {
         ${true}      | ${false}
         ${undefined} | ${true}
       `('Sets extrudedMode to $result if $original', ({ result, original }) => {
-        const state = { layers: { extrudedMode: original } },
-          expected = { layers: { extrudedMode: result } };
+        const state = { extrudedMode: original },
+          expected = { extrudedMode: result };
         expect(reducer(state, toggleExtrudedMode())).toEqual(
           expect.objectContaining(expected),
         );
@@ -118,15 +114,15 @@ describe('orbReducer', () => {
 
     describe('setExtrusionScale', () => {
       it('Sets extrusionScale in state', () => {
-        const state = { layers: { extrusionScale: 50 } },
-          expected = { layers: { extrusionScale: 100 } };
+        const state = { extrusionScale: 50 },
+          expected = { extrusionScale: 100 };
         const result = reducer(state, setExtrusionScale(100));
         expect(result).toEqual(expect.objectContaining(expected));
       });
 
       it('Sets extrusionScale if undefined', () => {
-        const state = { layers: {} },
-          expected = { layers: { extrusionScale: 50 } };
+        const state = {},
+          expected = { extrusionScale: 50 };
         const result = reducer(state, setExtrusionScale(50));
         expect(result).toEqual(expect.objectContaining(expected));
       });

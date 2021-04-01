@@ -2,7 +2,7 @@ import { DataFilterExtension } from '@deck.gl/extensions';
 import { find, get } from 'lodash';
 import { getColorScaleForProperty } from 'utils/color';
 import { isRealValue } from 'utils/isRealValue';
-import { extrudedModeSelector, extrusionScaleSelector } from '../orbReducer';
+import { extrudedModeSelector, extrusionScaleSelector } from '../layers.slice';
 import {
   addClickedFeatures,
   clickedFeaturesSelector,

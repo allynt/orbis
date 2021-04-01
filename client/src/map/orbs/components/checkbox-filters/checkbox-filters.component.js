@@ -7,7 +7,7 @@ import {
   ListItemText,
   makeStyles,
 } from '@astrosat/astrosat-ui';
-import { filterValueSelector, setFilterValue } from 'map/orbs/orbReducer';
+import { filterValueSelector, setFilterValue } from 'map/orbs/layers.slice';
 import * as React from 'react';
 import { useSelector } from 'react-redux';
 

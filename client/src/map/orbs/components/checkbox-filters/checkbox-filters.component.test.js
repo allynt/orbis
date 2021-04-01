@@ -5,7 +5,7 @@ import { Provider } from 'react-redux';
 import configureMockStore from 'redux-mock-store';
 
 import { CheckboxFilters } from './checkbox-filters.component';
-import { setFilterValue } from 'map/orbs/orbReducer';
+import { setFilterValue } from 'map/orbs/layers.slice';
 import userEvent from '@testing-library/user-event';
 
 const LAYER = {

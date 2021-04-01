@@ -48,9 +48,8 @@ import {
   extrusionScaleSelector,
   setExtrusionScale,
   toggleExtrudedMode,
-} from './orbs/orbReducer';
+} from './orbs/layers.slice';
 import { setState as setIsolationPlusState } from './orbs/slices/isolation-plus.slice';
-import { useOrbs } from './orbs/useOrbs';
 
 import 'mapbox-gl/dist/mapbox-gl.css';
 

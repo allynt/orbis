@@ -3,7 +3,7 @@ import { MAX_ZOOM } from 'map/map.constants';
 import iconMapping from './actionForHelpConfig.iconMapping.json';
 import iconAtlas from './actionForHelpConfig.iconAtlas.svg';
 import { easeInOutCubic } from 'utils/easingFunctions';
-import { filterValueSelector, setClickedFeatures } from '../orbReducer';
+import { filterValueSelector, setClickedFeatures } from '../layers.slice';
 import { filter } from 'lodash';
 
 export const filterFeatures = (oldData, startDate, endDate) =>

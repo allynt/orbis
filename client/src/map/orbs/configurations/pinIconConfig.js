@@ -6,7 +6,7 @@ import {
   setClickedFeatures,
   setHoveredFeatures,
   layersVisibilitySelector,
-} from '../orbReducer';
+} from '../layers.slice';
 
 /**
  * @typedef {import('typings/orbis').PickedMapFeature} PickedMapFeature

@@ -10,7 +10,7 @@ import {
 
 import { useSelector } from 'react-redux';
 
-import { layersVisibilitySelector, setVisibility } from '../../orbReducer.js';
+import { layersVisibilitySelector, setVisibility } from '../../layers.slice';
 import { InfoButtonTooltip } from 'components/index.js';
 
 const useStyles = makeStyles(theme => ({

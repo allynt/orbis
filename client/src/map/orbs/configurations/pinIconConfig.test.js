@@ -1,7 +1,7 @@
 // @ts-nocheck
 
 import { MAX_ZOOM } from 'map/map.constants';
-import { setClickedFeatures, setHoveredFeatures } from '../orbReducer';
+import { setClickedFeatures, setHoveredFeatures } from '../layers.slice';
 import configFn from './pinIconConfig';
 
 const setup = ({

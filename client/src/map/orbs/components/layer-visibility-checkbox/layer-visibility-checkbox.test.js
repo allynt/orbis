@@ -3,7 +3,7 @@ import * as React from 'react';
 import { Provider } from 'react-redux';
 import { LayerVisibilityCheckbox } from './layer-visibility-checkbox.component';
 import configureMockStore from 'redux-mock-store';
-import { setVisibility } from 'map/orbs/orbReducer';
+import { setVisibility } from 'map/orbs/layers.slice';
 import userEvent from '@testing-library/user-event';
 
 const mockStore = configureMockStore();
