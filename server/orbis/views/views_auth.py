@@ -5,8 +5,7 @@ from rest_framework.utils import encoders
 
 from astrosat_users.views import LoginView as AstrosatUsersLoginView, RegisterView as AstrosatUserRegisterView
 
-from orbis.models import TermsDocument, agree_terms
-
+from orbis.models import TermsDocument
 
 db_logger = logging.getLogger("db")
 
@@ -37,17 +36,14 @@ class LoginView(AstrosatUsersLoginView):
 
         return response
 
-class RegisterView(AstrosatUserRegisterView):
 
+class RegisterView(AstrosatUserRegisterView):
     def perform_create(self, serializer):
         user = super().perform_create(serializer)
 
         if user.accepted_terms:
             # if the user accepted the terms during registration
             # then create a record of that agreement...
-            agree_terms(
-                user=user,
-                terms=TermsDocument.objects.get_active(),
-            )
+            user.terms.add(TermsDocument.objects.get_active())
 
         return user
