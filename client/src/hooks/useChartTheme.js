@@ -27,7 +27,7 @@ const baseProps = {
 const strokeLinecap = 'round';
 const strokeLinejoin = 'round';
 
-/** @returns {import('victory').VictoryThemeDefinition} */
+/** @returns {import('victory').VictoryThemeDefinition & {colors: string[]}} */
 export const useChartTheme = () => {
   const astrosatUiTheme = useTheme();
 
@@ -120,22 +120,16 @@ export const useChartTheme = () => {
     },
     pie: assign({}, baseProps, {
       animate: true,
-      // width: 400,
-      // height: 400,
-      // padding: 0,
       colorScale: colors,
       style: {
         data: {},
-        labels: {
+        labels: assign({}, baseLabelStyles, {
           textAnchor: 'middle',
-          fontWeight: astrosatUiTheme.typography.fontWeightRegular,
-          fontFamily: astrosatUiTheme.typography.fontFamily,
-          // fontSize: 20,
           fill: ({ index }) =>
             astrosatUiTheme.palette.getContrastText(
               colors[index % colors.length],
             ),
-        },
+        }),
       },
     }),
     scatter: assign({}, baseProps, {
