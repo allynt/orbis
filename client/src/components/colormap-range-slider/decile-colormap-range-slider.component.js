@@ -34,7 +34,8 @@ const DecileColorMapRangeSlider = ({
   reversed,
   onChange,
 }) => {
-  const domain = value || [0, 10];
+  /** @type {[number, number]} */
+  const domain = value ? [value[0] - 1, value[1]] : [0, 10];
   const brushDomain = { x: domain, y: undefined };
   const colorScale = new ColorScale({ color, domain, reversed });
 
