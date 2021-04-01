@@ -8,7 +8,7 @@ import {
   setProperty,
 } from '../../slices/isolation-plus.slice';
 
-import { filterValueSelector, setFilterValue } from '../../orbReducer';
+import { filterValueSelector, setFilterValue } from '../../layers.slice';
 
 import { groupProperties } from './helpers/group-properties.js';
 import RadioProperty from './radio-property/radio-property.component';
