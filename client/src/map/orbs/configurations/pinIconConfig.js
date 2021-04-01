@@ -5,7 +5,7 @@ import { easeInOutCubic } from 'utils/easingFunctions';
 import {
   setClickedFeatures,
   setHoveredFeatures,
-  layersVisibilitySelector,
+  visibilitySelector,
 } from '../layers.slice';
 
 /**
@@ -28,7 +28,7 @@ const configuration = ({
   onPointHover,
   onGroupHover,
 }) => {
-  const isVisible = layersVisibilitySelector(id)(orbState);
+  const isVisible = visibilitySelector(id)(orbState);
   /**
    * @param {GeoJsonFeature[]} data
    */

@@ -6,7 +6,7 @@ import reducer, {
   extrusionScaleSelector,
   filterValueSelector,
   hoveredFeaturesSelector,
-  layersVisibilitySelector,
+  visibilitySelector,
   otherSelector,
   setClickedFeatures,
   setExtrusionScale,
@@ -131,12 +131,12 @@ describe('layers slice', () => {
 
   describe('selectors', () => {
     describe.each`
-      selector                    | stateKey             | undefinedReturn
-      ${clickedFeaturesSelector}  | ${'clickedFeatures'} | ${undefined}
-      ${hoveredFeaturesSelector}  | ${'hoveredFeatures'} | ${undefined}
-      ${layersVisibilitySelector} | ${'visible'}         | ${true}
-      ${filterValueSelector}      | ${'filterValue'}     | ${undefined}
-      ${otherSelector}            | ${'other'}           | ${undefined}
+      selector                   | stateKey             | undefinedReturn
+      ${clickedFeaturesSelector} | ${'clickedFeatures'} | ${undefined}
+      ${hoveredFeaturesSelector} | ${'hoveredFeatures'} | ${undefined}
+      ${visibilitySelector}      | ${'visible'}         | ${true}
+      ${filterValueSelector}     | ${'filterValue'}     | ${undefined}
+      ${otherSelector}           | ${'other'}           | ${undefined}
     `('$selector.name', ({ selector, stateKey, undefinedReturn }) => {
       it(`Returns ${stateKey} for the given layer`, () => {
         const value = [1, 2, 3];

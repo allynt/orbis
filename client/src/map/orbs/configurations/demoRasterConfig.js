@@ -1,6 +1,6 @@
 import { format } from 'date-fns';
 import { find } from 'lodash';
-import { layersVisibilitySelector, otherSelector } from '../layers.slice';
+import { visibilitySelector, otherSelector } from '../layers.slice';
 
 /**
  * @type {import('typings/orbis').LayerConfiguration<{
@@ -24,7 +24,7 @@ export default ({
   defaultDate,
 }) => {
   const source = find(activeSources, { source_id: id });
-  const visible = layersVisibilitySelector(id)(orbState);
+  const visible = visibilitySelector(id)(orbState);
   const other = otherSelector(otherStateKey)(orbState);
 
   return {

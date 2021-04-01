@@ -147,7 +147,7 @@ export const hoveredFeaturesSelector = id =>
   createSelector(baseSelector, state => state[id]?.hoveredFeatures);
 
 /** @param {string} id */
-export const layersVisibilitySelector = id =>
+export const visibilitySelector = id =>
   createSelector(baseSelector, state => state?.[id]?.visible ?? true);
 
 /** @param {string} id */
