@@ -13,7 +13,7 @@ export default ({ selectedLayer, minDate, maxDate }) => {
   const handleSubmit = range => {
     dispatch(
       setFilterValue({
-        source_id: selectedLayer.source_id,
+        key: selectedLayer.source_id,
         filterValue: range,
       }),
     );

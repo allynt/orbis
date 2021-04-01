@@ -62,7 +62,7 @@ export const LayerVisibilityCheckbox = ({
   const handleChange = () =>
     dispatch(
       setVisibility({
-        source_id: selectedLayer?.source_id,
+        key: selectedLayer?.source_id,
         visible: !isVisible,
       }),
     );

@@ -37,7 +37,7 @@ describe('<LayerVisibilityCheckbox />', () => {
     const { dispatch, getByRole } = renderComponent();
     userEvent.click(getByRole('checkbox'));
     expect(dispatch).toHaveBeenCalledWith(
-      setVisibility(expect.objectContaining({ source_id: LAYER.source_id })),
+      setVisibility(expect.objectContaining({ key: LAYER.source_id })),
     );
   });
 

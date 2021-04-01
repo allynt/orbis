@@ -13,7 +13,7 @@ export default ({ selectedLayer }) => {
 
   const handleClick = () => {
     dispatch(
-      setVisibility({ source_id: selectedLayer.source_id, visible: !visible }),
+      setVisibility({ key: selectedLayer.source_id, visible: !visible }),
     );
   };
 

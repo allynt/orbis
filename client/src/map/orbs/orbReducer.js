@@ -27,7 +27,7 @@ import crowdless from './slices/crowdless.slice';
  * @typedef {import('@reduxjs/toolkit').CaseReducer<
  *   LayersState,
  *   import('@reduxjs/toolkit').PayloadAction<{
- *     source_id: import('typings/orbis').Source['source_id'],
+ *   key: string,
  *   } & P>
  * >} GenericOrbAction
  */
@@ -75,8 +75,10 @@ const initialState = {
   extrusionScale: 50,
 };
 
-const handleMissingSourceId = () => {
-  console.error('payload.source_id does not exist');
+const handleMissingKey = () => {
+  console.error(
+    'payload.key does not exist. Key must be provided to set state',
+  );
   return;
 };
 
@@ -86,32 +88,32 @@ const layersSlice = createSlice({
   reducers: {
     /** @type {SetClickedFeaturesAction} */
     setClickedFeatures: (state, { payload }) => {
-      if (!payload.source_id) return handleMissingSourceId();
-      const { source_id, clickedFeatures } = payload;
+      if (!payload.key) return handleMissingKey();
+      const { key: source_id, clickedFeatures } = payload;
       state[source_id] = { ...state[source_id], clickedFeatures };
     },
     /** @type {SetHoveredFeaturesAction} */
     setHoveredFeatures: (state, { payload }) => {
-      if (!payload.source_id) return handleMissingSourceId();
-      const { source_id, hoveredFeatures } = payload;
+      if (!payload.key) return handleMissingKey();
+      const { key: source_id, hoveredFeatures } = payload;
       state[source_id] = { ...state[source_id], hoveredFeatures };
     },
     /** @type {SetVisibilityAction} */
     setVisibility: (state, { payload }) => {
-      if (!payload.source_id) return handleMissingSourceId();
-      const { source_id, visible } = payload;
+      if (!payload.key) return handleMissingKey();
+      const { key: source_id, visible } = payload;
       state[source_id] = { ...state[source_id], visible };
     },
     /** @type {SetFilterValueAction} */
     setFilterValue: (state, { payload }) => {
-      if (!payload.source_id) return handleMissingSourceId();
-      const { source_id, filterValue } = payload;
+      if (!payload.key) return handleMissingKey();
+      const { key: source_id, filterValue } = payload;
       state[source_id] = { ...state[source_id], filterValue };
     },
     /** @type {SetOtherAction} */
     setOther: (state, { payload }) => {
-      if (!payload.source_id) return handleMissingSourceId();
-      const { source_id, other } = payload;
+      if (!payload.key) return handleMissingKey();
+      const { key: source_id, other } = payload;
       state[source_id] = { ...state[source_id], other };
     },
     toggleExtrudedMode: state => {

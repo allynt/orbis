@@ -55,9 +55,7 @@ export default ({ id, data, orbState, activeSources, dispatch }) => {
     pickable: true,
     autoHighlight: true,
     onClick: f =>
-      dispatch(
-        setClickedFeatures({ source_id: id, clickedFeatures: [f.object] }),
-      ),
+      dispatch(setClickedFeatures({ key: id, clickedFeatures: [f.object] })),
     extruded,
     elevationScale: 100 * elevationScale,
     getElevation,

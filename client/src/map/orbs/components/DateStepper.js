@@ -37,7 +37,7 @@ export default ({
       onChange={(_, date) =>
         dispatch(
           setOther({
-            source_id: stateKey,
+            key: stateKey,
             other: { ...other, date },
           }),
         )

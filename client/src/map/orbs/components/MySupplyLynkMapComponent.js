@@ -33,7 +33,7 @@ const MySupplyLynkMapComponent = ({ source, type }) => {
       if (!dialogFeature)
         dispatch(
           setClickedFeatures({
-            source_id: source.source_id,
+            key: source.source_id,
             clickedFeatures: undefined,
           }),
         );
@@ -98,7 +98,7 @@ const MySupplyLynkMapComponent = ({ source, type }) => {
           onClose={() =>
             dispatch(
               setClickedFeatures({
-                source_id: source?.source_id,
+                key: source?.source_id,
                 clickedFeatures: undefined,
               }),
             )

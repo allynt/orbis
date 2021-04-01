@@ -36,7 +36,7 @@ const FeatureDetailPopup = ({ source }) => {
         features: clickedFeatures,
         action: () =>
           setClickedFeatures({
-            source_id: source?.source_id,
+            key: source?.source_id,
             clickedFeatures: [],
           }),
       };
@@ -47,7 +47,7 @@ const FeatureDetailPopup = ({ source }) => {
         features: hoveredFeatures,
         action: () =>
           setHoveredFeatures({
-            source_id: source?.source_id,
+            key: source?.source_id,
             hoveredFeatures: [],
           }),
       };

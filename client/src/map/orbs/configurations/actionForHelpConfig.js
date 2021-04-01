@@ -50,12 +50,10 @@ const configuration = ({
         });
       else
         dispatch(
-          setClickedFeatures({ source_id: id, clickedFeatures: info.objects }),
+          setClickedFeatures({ key: id, clickedFeatures: info.objects }),
         );
     } else
-      dispatch(
-        setClickedFeatures({ source_id: id, clickedFeatures: [info.object] }),
-      );
+      dispatch(setClickedFeatures({ key: id, clickedFeatures: [info.object] }));
   };
 
   /** @param {ActionForHelpFeature} feature */

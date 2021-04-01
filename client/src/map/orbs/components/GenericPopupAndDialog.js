@@ -94,7 +94,7 @@ const GenericPopupAndDialog = ({
           onClose={() =>
             dispatch(
               setClickedFeatures({
-                source_id: source.source_id,
+                key: source.source_id,
                 clickedFeatures: undefined,
               }),
             )

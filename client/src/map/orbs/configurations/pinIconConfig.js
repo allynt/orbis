@@ -35,7 +35,7 @@ const configuration = ({
   const defaultClick = data =>
     dispatch(
       setClickedFeatures({
-        source_id: id,
+        key: id,
         clickedFeatures: data,
       }),
     );
@@ -46,7 +46,7 @@ const configuration = ({
   const defaultHover = data =>
     dispatch(
       setHoveredFeatures({
-        source_id: id,
+        key: id,
         hoveredFeatures: data,
       }),
     );

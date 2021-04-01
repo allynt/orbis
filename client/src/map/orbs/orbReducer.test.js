@@ -33,7 +33,7 @@ describe('orbReducer', () => {
           layers: { [LAYER_ID]: { [stateKey]: newValue } },
         },
         payload = {
-          source_id: LAYER_ID,
+          key: LAYER_ID,
           [stateKey]: newValue,
         };
 
@@ -71,7 +71,7 @@ describe('orbReducer', () => {
         const result = reducer(
           state,
           action({
-            source_id: LAYER_ID,
+            key: LAYER_ID,
             [stateKey]: undefined,
           }),
         );
@@ -95,7 +95,7 @@ describe('orbReducer', () => {
           }),
         );
         expect(console.error).toHaveBeenCalledWith(
-          'payload.source_id does not exist',
+          'payload.key does not exist. Key must be provided to set state',
         );
         expect(result).toEqual(expect.objectContaining(state));
       });
