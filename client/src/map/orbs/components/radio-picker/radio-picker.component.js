@@ -4,11 +4,12 @@ import { useSelector } from 'react-redux';
 
 import { createCategorisationPath } from 'data-layers/categorisation.utils';
 import {
-  filterRangeSelector,
   propertySelector,
-  setFilterRange,
   setProperty,
 } from '../../slices/isolation-plus.slice';
+
+import { filterValueSelector, setFilterValue } from '../../orbReducer';
+
 import { groupProperties } from './helpers/group-properties.js';
 import RadioProperty from './radio-property/radio-property.component';
 import { Box } from '@astrosat/astrosat-ui';
@@ -21,7 +22,12 @@ import { Box } from '@astrosat/astrosat-ui';
  */
 export const RadioPicker = ({ selectedLayer, dispatch }) => {
   const selectedProperty = useSelector(state => propertySelector(state?.orbs));
-  const filterRange = useSelector(state => filterRangeSelector(state?.orbs));
+
+  const filterRange = useSelector(state =>
+    filterValueSelector(
+      `${selectedProperty?.source_id}/${selectedProperty?.name}`,
+    )(state?.orbs),
+  );
 
   const selectedPropertyMetadata = selectedLayer?.metadata?.properties?.find(
     property => property.name === selectedProperty?.name,
@@ -36,7 +42,9 @@ export const RadioPicker = ({ selectedLayer, dispatch }) => {
    * @param {Object} data
    */
   const selectProperty = data => {
-    dispatch(setProperty({ source_id: selectedLayer?.source_id, ...data }));
+    dispatch(
+      setProperty(data ? { source_id: selectedLayer?.source_id, ...data } : {}),
+    );
   };
 
   if (!selectedLayer?.metadata?.properties) return null;
@@ -48,10 +56,17 @@ export const RadioPicker = ({ selectedLayer, dispatch }) => {
             layerSourceId={selectedLayer?.source_id}
             data={data}
             onPropertyChange={selectProperty}
-            onSliderChange={data => dispatch(setFilterRange(data))}
+            onSliderChange={filterValue =>
+              dispatch(
+                setFilterValue({
+                  source_id: `${selectedProperty?.source_id}/${selectedProperty?.name}`,
+                  filterValue,
+                }),
+              )
+            }
             selectedProperty={selectedProperty}
             colorScheme={colorScheme}
-            filterData={filterRange}
+            filterRange={filterRange}
             categoryPath={categoryPath}
           />
         </React.Fragment>

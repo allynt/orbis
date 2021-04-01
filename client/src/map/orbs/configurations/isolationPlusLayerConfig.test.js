@@ -44,13 +44,13 @@ const setup = ({
     orbState: {
       layers: {
         extrudedMode,
+        testProperty: { filterValue: filterRange },
       },
       isolationPlus: {
         property: {
           source_id: 'source/1',
           ...property,
         },
-        filterRange,
         clickedFeatures: clickedFeatures?.map(object => ({ object })),
       },
     },
@@ -237,18 +237,6 @@ describe('isolationPlusLayerConfig', () => {
     it("Returns the feature's value multiplied by a scaling factor", () => {
       const { getFilterValue } = setup();
       expect(getFilterValue({ properties: { testProperty: 0.5 } })).toBe(500);
-    });
-  });
-
-  describe('filterRange', () => {
-    it('Is set to the filter range from state and scaled if present', () => {
-      const { filterRange } = setup({ filterRange: [0.1, 0.2] });
-      expect(filterRange).toEqual([100, 200]);
-    });
-
-    it("Is set to the property's min and max if filter range is not present", () => {
-      const { filterRange } = setup();
-      expect(filterRange).toEqual([0, 1000]);
     });
   });
 
