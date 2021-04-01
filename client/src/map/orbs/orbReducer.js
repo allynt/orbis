@@ -89,32 +89,32 @@ const layersSlice = createSlice({
     /** @type {SetClickedFeaturesAction} */
     setClickedFeatures: (state, { payload }) => {
       if (!payload.key) return handleMissingKey();
-      const { key: source_id, clickedFeatures } = payload;
-      state[source_id] = { ...state[source_id], clickedFeatures };
+      const { key, clickedFeatures } = payload;
+      state[key] = { ...state[key], clickedFeatures };
     },
     /** @type {SetHoveredFeaturesAction} */
     setHoveredFeatures: (state, { payload }) => {
       if (!payload.key) return handleMissingKey();
-      const { key: source_id, hoveredFeatures } = payload;
-      state[source_id] = { ...state[source_id], hoveredFeatures };
+      const { key, hoveredFeatures } = payload;
+      state[key] = { ...state[key], hoveredFeatures };
     },
     /** @type {SetVisibilityAction} */
     setVisibility: (state, { payload }) => {
       if (!payload.key) return handleMissingKey();
-      const { key: source_id, visible } = payload;
-      state[source_id] = { ...state[source_id], visible };
+      const { key, visible } = payload;
+      state[key] = { ...state[key], visible };
     },
     /** @type {SetFilterValueAction} */
     setFilterValue: (state, { payload }) => {
       if (!payload.key) return handleMissingKey();
-      const { key: source_id, filterValue } = payload;
-      state[source_id] = { ...state[source_id], filterValue };
+      const { key, filterValue } = payload;
+      state[key] = { ...state[key], filterValue };
     },
     /** @type {SetOtherAction} */
     setOther: (state, { payload }) => {
       if (!payload.key) return handleMissingKey();
-      const { key: source_id, other } = payload;
-      state[source_id] = { ...state[source_id], other };
+      const { key, other } = payload;
+      state[key] = { ...state[key], other };
     },
     toggleExtrudedMode: state => {
       state.extrudedMode = !state.extrudedMode;
