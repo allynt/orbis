@@ -34,7 +34,6 @@ const DecileColorMapRangeSlider = ({
   reversed,
   onChange,
 }) => {
-  /** @type {[number, number] | undefined} */
   const domain = value || [0, 10];
   const brushDomain = { x: domain, y: undefined };
   const colorScale = new ColorScale({ color, domain, reversed });
@@ -54,7 +53,7 @@ const DecileColorMapRangeSlider = ({
   /** @type {import('victory').VictoryBrushContainerProps['onBrushDomainChangeEnd']} */
   const handleBrushDomainChangeEnd = ({ x }) =>
     snap
-      ? onChange([Math.floor(x[0]), x[1] > 10 ? 10 : Math.ceil(x[1])])
+      ? onChange([Math.floor(x[0] + 1), x[1] > 10 ? 10 : Math.ceil(x[1])])
       : onChange(x);
 
   return (
