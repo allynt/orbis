@@ -2,11 +2,14 @@ import { DataFilterExtension } from '@deck.gl/extensions';
 import { find, get } from 'lodash';
 import { getColorScaleForProperty } from 'utils/color';
 import { isRealValue } from 'utils/isRealValue';
-import { extrudedModeSelector, extrusionScaleSelector } from '../orbReducer';
+import {
+  extrudedModeSelector,
+  extrusionScaleSelector,
+  filterValueSelector,
+} from '../orbReducer';
 import {
   addClickedFeatures,
   clickedFeaturesSelector,
-  filterRangeSelector,
   propertySelector,
   removeClickedFeatures,
   setClickedFeatures,
@@ -61,7 +64,11 @@ const configuration = ({
   if (selectedProperty.source_id !== id) return undefined;
 
   const source = activeSources?.find(source => source.source_id === id);
-  const filterRange = filterRangeSelector(orbState);
+
+  const filterRange = filterValueSelector(
+    `${selectedProperty?.source_id}/${selectedProperty?.name}`,
+  )(orbState);
+
   const extrudedMode = extrudedModeSelector(orbState);
   const extrusionScale = extrusionScaleSelector(orbState);
   const clickedFeatures = clickedFeaturesSelector(orbState);

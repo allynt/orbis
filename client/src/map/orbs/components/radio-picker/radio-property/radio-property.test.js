@@ -135,21 +135,21 @@ describe('RadioProperty', () => {
     expect(getByRole('list')).toBeInTheDocument();
   });
 
-  it('calls click handler with empty object if property matches selectedProperty (single)', () => {
+  it('calls click handler with null if property matches selectedProperty (single)', () => {
     const { getByRole } = renderComponent(
       singleObjectData,
       singleObjectData[0],
     );
 
     userEvent.click(getByRole('radio', { name: singleObjectData.label }));
-    expect(onPropertyChange).toHaveBeenCalledWith({});
+    expect(onPropertyChange).toHaveBeenCalledWith(null);
   });
 
-  it('calls click handler with empty object if property matches selectedProperty (group)', () => {
+  it('calls click handler with null if property matches selectedProperty (grouped properties)', () => {
     const { getByRole } = renderComponent(pairObjectData, pairObjectData[0]);
 
     userEvent.click(getByRole('radio', { name: pairObjectData[0].label }));
-    expect(onPropertyChange).toHaveBeenCalledWith({});
+    expect(onPropertyChange).toHaveBeenCalledWith(null);
   });
 
   it('uses first available property if no `percentage` available', () => {

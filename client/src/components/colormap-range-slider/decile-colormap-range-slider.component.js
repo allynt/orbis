@@ -23,6 +23,7 @@ const isInRange = (value, domain) =>
  * @param {import('./colormap-range-slider.component').DecileColorMapRangeSliderProps} props
  */
 const DecileColorMapRangeSlider = ({
+  value,
   brushStyle,
   color,
   handleStyle,
@@ -34,9 +35,8 @@ const DecileColorMapRangeSlider = ({
   onChange,
 }) => {
   /** @type {[number, number]} */
-  const domain = [0, 10];
-  /** @type {[BrushDomain, React.Dispatch<BrushDomain>]} */
-  const [brushDomain, setBrushDomain] = useState({ x: domain, y: undefined });
+  const domain = value ? [value[0] - 1, value[1]] : [0, 10];
+  const brushDomain = { x: domain, y: undefined };
   const colorScale = new ColorScale({ color, domain, reversed });
 
   /** @type {import('victory').VictoryHistogramProps['style']} */
@@ -51,22 +51,11 @@ const DecileColorMapRangeSlider = ({
     },
   };
 
-  useEffect(() => {
-    // @ts-ignore
-    if (onChange) onChange([brushDomain.x[0] + 1, brushDomain.x[1]]);
-  }, [brushDomain]);
-
   /** @type {import('victory').VictoryBrushContainerProps['onBrushDomainChangeEnd']} */
-  const handleBrushDomainChangeEnd = domain =>
+  const handleBrushDomainChangeEnd = ({ x }) =>
     snap
-      ? setBrushDomain({
-          ...domain,
-          x: [
-            Math.floor(domain.x[0]),
-            domain.x[1] > 10 ? 10 : Math.ceil(domain.x[1]),
-          ],
-        })
-      : setBrushDomain(domain);
+      ? onChange([Math.floor(x[0] + 1), x[1] > 10 ? 10 : Math.ceil(x[1])])
+      : onChange(x);
 
   return (
     <VictoryGroup

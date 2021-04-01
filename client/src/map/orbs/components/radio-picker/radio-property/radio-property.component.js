@@ -58,7 +58,7 @@ const RadioProperty = ({
   onSliderChange,
   selectedProperty,
   colorScheme,
-  filterData,
+  filterRange,
   categoryPath,
 }) => {
   const styles = useStyles();
@@ -78,7 +78,7 @@ const RadioProperty = ({
   });
 
   const handleRadioClick = () => {
-    const payload = propertyMatch ? { source_id: undefined } : initialProperty;
+    const payload = propertyMatch ? null : initialProperty;
     return onPropertyChange(payload);
   };
 
@@ -157,8 +157,8 @@ const RadioProperty = ({
                     selectedProperty.clip_max || selectedProperty.max,
                   ]
                 }
-                value={filterData}
-                onChange={data => onSliderChange(data)}
+                value={filterRange}
+                onChange={onSliderChange}
                 reversed={
                   !!selectedProperty?.application?.orbis?.display
                     ?.colormap_reversed
