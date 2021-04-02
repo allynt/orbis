@@ -9,6 +9,7 @@ import reducer, {
   visibilitySelector,
   otherSelector,
   setClickedFeatures,
+  addClickedFeatures,
   setExtrusionScale,
   setFilterValue,
   setHoveredFeatures,
@@ -92,6 +93,138 @@ describe('layers slice', () => {
           'payload.key does not exist. Key must be provided to set state',
         );
         expect(result).toEqual(expect.objectContaining(state));
+      });
+    });
+
+    describe('addClickedFeatures', () => {
+      it("Sets clickedFeatures in state if it's undefined", () => {
+        const key = 'test/layer',
+          payload = {
+            key,
+            uniquePropertyPath: 'object.properties.index',
+            clickedFeatures: [
+              {
+                object: {
+                  properties: {
+                    index: 1,
+                  },
+                },
+              },
+              {
+                object: {
+                  properties: {
+                    index: 2,
+                  },
+                },
+              },
+              {
+                object: {
+                  properties: {
+                    index: 3,
+                  },
+                },
+              },
+            ],
+          };
+        const result = reducer({}, addClickedFeatures(payload));
+        expect(result).toEqual(
+          expect.objectContaining({
+            [key]: { clickedFeatures: payload.clickedFeatures },
+          }),
+        );
+      });
+
+      it('Combines existing clicked features with the new ones', () => {
+        const key = 'test/layer',
+          payload = {
+            key,
+            uniquePropertyPath: 'object.properties.index',
+            clickedFeatures: [
+              {
+                object: {
+                  properties: {
+                    index: 4,
+                  },
+                },
+              },
+              {
+                object: {
+                  properties: {
+                    index: 5,
+                  },
+                },
+              },
+              {
+                object: {
+                  properties: {
+                    index: 6,
+                  },
+                },
+              },
+            ],
+          };
+        const state = {
+          [key]: {
+            clickedFeatures: [
+              {
+                object: {
+                  properties: {
+                    index: 1,
+                  },
+                },
+              },
+              {
+                object: {
+                  properties: {
+                    index: 2,
+                  },
+                },
+              },
+              {
+                object: {
+                  properties: {
+                    index: 3,
+                  },
+                },
+              },
+            ],
+          },
+        };
+        const result = reducer(state, addClickedFeatures(payload));
+        expect(result).toEqual(
+          expect.objectContaining({
+            [key]: {
+              clickedFeatures: expect.arrayContaining([
+                ...state[key].clickedFeatures,
+                ...payload.clickedFeatures,
+              ]),
+            },
+          }),
+        );
+      });
+
+      it('Does not duplicate features base on their unique property', () => {
+        const key = 'test/layer',
+          payload = {
+            key,
+            uniquePropertyPath: 'object.properties.index',
+            clickedFeatures: [
+              {
+                object: {
+                  properties: {
+                    index: 1,
+                  },
+                },
+              },
+            ],
+          };
+        const state = {
+          [key]: {
+            clickedFeatures: [{ object: { properties: { index: 1 } } }],
+          },
+        };
+        const result = reducer(state, addClickedFeatures(payload));
+        expect(result).toEqual(state);
       });
     });
 
