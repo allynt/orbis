@@ -24,10 +24,7 @@ import {
   Typography,
 } from '@astrosat/astrosat-ui';
 
-import {
-  propertySelector,
-  breakdownAggregationSelector,
-} from 'map/orbs/slices/isolation-plus.slice';
+import { propertySelector } from 'map/orbs/slices/isolation-plus.slice';
 
 import { userSelector } from '../../accounts/accounts.selectors';
 
@@ -143,9 +140,8 @@ const PDF = ({ close, licence, creationDate = date }) => {
     populationTotal,
     householdTotal,
     areaValue,
+    breakdownAggregation,
   } = useContext(AnalysisPanelContext);
-
-  const breakdownAggregation = useSelector(breakdownAggregationSelector);
 
   const { createScreenshot, topMapRef, deckRef, bottomMapRef } = useMap();
   const [image, setImage] = useState(undefined);

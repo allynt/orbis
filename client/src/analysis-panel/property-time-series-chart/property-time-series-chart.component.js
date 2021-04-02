@@ -1,10 +1,8 @@
-import { useSelector } from 'react-redux';
 import { SidePanelSection } from 'components';
 import { useChartTheme } from 'components/charts/useChartTheme';
 import { format } from 'date-fns';
 import { DEFAULT_DECIMAL_PRECISION } from 'map/map.constants';
 import * as React from 'react';
-import { timeSeriesAggregationSelector } from 'map/orbs/slices/isolation-plus.slice';
 import {
   VictoryAxis,
   VictoryChart,
@@ -13,6 +11,8 @@ import {
   VictoryScatter,
   VictoryTooltip,
 } from 'victory';
+import { aggregateTimeSeries } from 'analysis-panel/aggregateTimeSeries';
+import { get } from 'lodash';
 
 /** @type {import("typings/orbis").AnalysisPanelComponent<{info?: string, timestampFormat?: string}, import('typings/orbis').PolygonPickedMapFeature>} */
 export const PropertyTimeSeriesChart = ({
@@ -23,7 +23,13 @@ export const PropertyTimeSeriesChart = ({
 }) => {
   const chartTheme = useChartTheme();
 
-  const data = useSelector(state => timeSeriesAggregationSelector(state?.orbs));
+  const data =
+    clickedFeatures?.length > 1
+      ? aggregateTimeSeries(clickedFeatures, selectedProperty)
+      : get(
+          clickedFeatures?.[0],
+          `object.properties.${selectedProperty?.name}`,
+        );
 
   const sharedProps = {
     data,

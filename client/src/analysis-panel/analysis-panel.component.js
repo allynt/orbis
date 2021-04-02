@@ -187,6 +187,7 @@ export const AnalysisPanel = () => {
     >
       <AnalysisPanelProvider
         clickedFeatures={clickedFeatures}
+        currentSource={currentSource}
         selectedProperty={selectedProperty}
       >
         <Typography color="primary" className={styles.strapline}>

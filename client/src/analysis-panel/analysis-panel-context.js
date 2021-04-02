@@ -1,4 +1,4 @@
-import { sumBy } from 'lodash';
+import { find, sumBy } from 'lodash';
 import React, { createContext, useMemo } from 'react';
 import { aggregateValues } from './aggregateValues';
 
@@ -8,6 +8,7 @@ import { aggregateValues } from './aggregateValues';
  * @property {string} [populationTotal]
  * @property {string} [householdTotal]
  * @property {number} [areaValue]
+ * @property {{name: string, value: number}[]} [breakdownAggregation]
  */
 
 /** @type {React.Context<AnalysisPanelContextType>} */
@@ -17,12 +18,14 @@ AnalysisPanelContext.displayName = 'AnalysisPanelContext';
 /**
  * @param {{
  *  clickedFeatures: import('typings/orbis').PolygonPickedMapFeature[]
+ *  currentSource: import('typings/orbis').Source
  *  selectedProperty: import('typings/orbis').Property & {source_id: string}
  *  children: React.ReactNode
  * }} props
  */
 export const AnalysisPanelProvider = ({
   clickedFeatures,
+  currentSource,
   selectedProperty,
   children,
 }) => {
@@ -50,9 +53,42 @@ export const AnalysisPanelProvider = ({
     [clickedFeatures, selectedProperty],
   );
 
+  const breakdownAggregation = useMemo(
+    () =>
+      selectedProperty?.breakdown
+        ?.map(breakdownPropertyName => {
+          const breakdownProperty = find(currentSource?.metadata?.properties, {
+            name: breakdownPropertyName,
+          });
+          if (
+            selectedProperty.timeseries &&
+            breakdownProperty.timeseries_latest_timestamp !==
+              selectedProperty.timeseries_latest_timestamp
+          ) {
+            console.error(
+              `Latest timestamp for property ${breakdownPropertyName} and ${selectedProperty.name} do not match`,
+            );
+            return { value: 0, name: breakdownPropertyName };
+          }
+          const value = aggregateValues(clickedFeatures, breakdownProperty);
+          return {
+            value,
+            name: breakdownPropertyName,
+          };
+        })
+        .filter(v => v.value > 0),
+    [clickedFeatures, currentSource, selectedProperty],
+  );
+
   return (
     <AnalysisPanelContext.Provider
-      value={{ areasOfInterest, populationTotal, householdTotal, areaValue }}
+      value={{
+        areasOfInterest,
+        populationTotal,
+        householdTotal,
+        areaValue,
+        breakdownAggregation,
+      }}
     >
       {children}
     </AnalysisPanelContext.Provider>
