@@ -6,7 +6,7 @@ import {
   clickedFeaturesSelector,
   hoveredFeaturesSelector,
   setClickedFeatures,
-} from '../orbReducer';
+} from '../layers.slice';
 import { MySupplyLynkDialog } from './mysupplylynk-dialog/dialog.component';
 import MySupplyLynkFeatureDetail from './mysupplylynk-feature-detail/mysupplylynk-feature-detail.component';
 

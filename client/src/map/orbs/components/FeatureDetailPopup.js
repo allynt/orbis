@@ -10,7 +10,7 @@ import {
   setClickedFeatures,
   setHoveredFeatures,
   hoveredFeaturesSelector,
-} from '../orbReducer';
+} from '../layers.slice';
 
 /**
  * @param {{

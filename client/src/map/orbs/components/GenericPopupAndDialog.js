@@ -17,7 +17,7 @@ import {
   clickedFeaturesSelector,
   hoveredFeaturesSelector,
   setClickedFeatures,
-} from '../orbReducer';
+} from '../layers.slice';
 
 /**
  * @type {import('typings/orbis').MapComponent<{

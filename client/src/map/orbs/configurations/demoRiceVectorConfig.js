@@ -4,10 +4,10 @@ import { ColorScale } from 'utils/ColorScale';
 import {
   extrudedModeSelector,
   extrusionScaleSelector,
-  layersVisibilitySelector,
+  visibilitySelector,
   otherSelector,
   setClickedFeatures,
-} from '../orbReducer';
+} from '../layers.slice';
 
 const DEFAULT_COLUMN = 'rgb',
   DEFAULT_DATE = 1583971200000;
@@ -16,7 +16,7 @@ const DEFAULT_COLUMN = 'rgb',
 export default ({ id, data, orbState, activeSources, dispatch }) => {
   const extruded = extrudedModeSelector(orbState);
   const elevationScale = extrusionScaleSelector(orbState);
-  const visible = layersVisibilitySelector(id)(orbState);
+  const visible = visibilitySelector(id)(orbState);
   const source = find(activeSources, { source_id: id });
   const other = otherSelector(`${source.authority}/${source.namespace}/rice/*`)(
     orbState,
