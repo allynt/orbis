@@ -5,7 +5,6 @@ import reducer, {
   removeClickedFeatures,
   propertySelector,
   clickedFeaturesSelector,
-  aggregationSelector,
   breakdownAggregationSelector,
   timeSeriesAggregationSelector,
 } from './isolation-plus.slice';
@@ -372,61 +371,6 @@ describe('isolationPlusSlice', () => {
 
         const result = clickedFeaturesSelector(state);
         expect(result).toEqual(clickedFeatures);
-      });
-    });
-
-    describe('aggregationSelector', () => {
-      it('returns undefined if property is undefined', () => {
-        const state = { isolationPlus: {} };
-
-        const result = aggregationSelector(state);
-        expect(result).toBeUndefined();
-      });
-
-      it('returns undefined if clickedFeatures is undefined', () => {
-        const state = {
-          isolationPlus: {
-            property: {
-              source_id: 'test/layer',
-              name: 'hello',
-            },
-            clickedFeatures: undefined,
-          },
-        };
-
-        const result = aggregationSelector(state);
-        expect(result).toBeUndefined();
-      });
-
-      it('returns areaValue calculated from state', () => {
-        const getState = type => ({
-          isolationPlus: {
-            property: {
-              name: '% of people aged 0-17',
-              aggregation: type,
-              precision: 1,
-            },
-            clickedFeatures: [
-              {
-                object: {
-                  properties: {
-                    '% of people aged 0-17': 12,
-                  },
-                },
-              },
-              {
-                object: {
-                  properties: {
-                    '% of people aged 0-17': 15,
-                  },
-                },
-              },
-            ],
-          },
-        });
-
-        const areaValue = aggregationSelector(getState('sum'));
-        expect(areaValue).toEqual(27);
       });
     });
 

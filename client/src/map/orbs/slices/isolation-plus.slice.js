@@ -90,14 +90,6 @@ export const clickedFeaturesSelector = createSelector(
   orb => orb?.clickedFeatures,
 );
 
-export const aggregationSelector = createSelector(
-  [propertySelector, clickedFeaturesSelector],
-  (property, clickedFeatures) =>
-    !property || !clickedFeatures
-      ? undefined
-      : aggregateValues(clickedFeatures, property),
-);
-
 export const breakdownAggregationSelector = createSelector(
   [
     rootState => propertySelector(rootState?.orbs),

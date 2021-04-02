@@ -84,4 +84,31 @@ describe.only('AnalysisPanelContext', () => {
       expect(result.current.householdTotal).toEqual('29');
     });
   });
+
+  describe('areaValue', () => {
+    it('returns areaValue calculated from property and features', () => {
+      const { result } = renderContext({
+        clickedFeatures: [
+          {
+            object: {
+              properties: {
+                '% of people aged 0-17': 12,
+              },
+            },
+          },
+          {
+            object: {
+              properties: {
+                '% of people aged 0-17': 15,
+              },
+            },
+          },
+        ],
+        selectedProperty: {
+          name: '% of people aged 0-17',
+        },
+      });
+      expect(result.current.areaValue).toEqual(27);
+    });
+  });
 });
