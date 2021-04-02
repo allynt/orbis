@@ -71,4 +71,17 @@ describe.only('AnalysisPanelContext', () => {
       expect(result.current.populationTotal).toEqual('30');
     });
   });
+
+  describe('householdTotal', () => {
+    it('returns total of households for all features', () => {
+      const clickedFeatures = [
+        { object: { properties: { households: 7 } } },
+        { object: { properties: { households: 10 } } },
+        { object: { properties: { households: 12 } } },
+      ];
+
+      const { result } = renderContext({ clickedFeatures });
+      expect(result.current.householdTotal).toEqual('29');
+    });
+  });
 });

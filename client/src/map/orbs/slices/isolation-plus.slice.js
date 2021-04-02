@@ -90,17 +90,6 @@ export const clickedFeaturesSelector = createSelector(
   orb => orb?.clickedFeatures,
 );
 
-export const householdTotalSelector = createSelector(
-  clickedFeaturesSelector,
-  clickedFeatures =>
-    !clickedFeatures
-      ? undefined
-      : sumBy(
-          clickedFeatures,
-          'object.properties.households',
-        )?.toLocaleString(),
-);
-
 export const categoryListSelector = createSelector(
   [propertySelector, clickedFeaturesSelector],
   (property, clickedFeatures) =>
