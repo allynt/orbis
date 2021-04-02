@@ -1,9 +1,5 @@
 import { createSlice, createSelector } from '@reduxjs/toolkit';
-import { differenceBy, unionBy, sumBy, get, find } from 'lodash';
-
-import { aggregateValues } from 'analysis-panel/aggregateValues';
-import { aggregateTimeSeries } from 'analysis-panel/aggregateTimeSeries';
-import { activeDataSourcesSelector } from 'data-layers/data-layers.slice';
+import { differenceBy, unionBy } from 'lodash';
 
 /**
  * @typedef {{
@@ -88,45 +84,6 @@ export const propertySelector = createSelector(
 export const clickedFeaturesSelector = createSelector(
   baseSelector,
   orb => orb?.clickedFeatures,
-);
-
-export const breakdownAggregationSelector = createSelector(
-  [
-    rootState => propertySelector(rootState?.orbs),
-    rootState => clickedFeaturesSelector(rootState?.orbs),
-    activeDataSourcesSelector,
-  ],
-  (selectedProperty, clickedFeatures, activeSources) => {
-    if (!selectedProperty || !clickedFeatures) return undefined;
-    const source = find(activeSources, {
-      source_id: selectedProperty.source_id,
-    });
-
-    if (!source) return undefined;
-
-    return selectedProperty?.breakdown
-      ?.map(breakdownPropertyName => {
-        const breakdownProperty = find(source.metadata.properties, {
-          name: breakdownPropertyName,
-        });
-        if (
-          selectedProperty.timeseries &&
-          breakdownProperty.timeseries_latest_timestamp !==
-            selectedProperty.timeseries_latest_timestamp
-        ) {
-          console.error(
-            `Latest timestamp for property ${breakdownPropertyName} and ${selectedProperty.name} do not match`,
-          );
-          return { value: 0, name: breakdownPropertyName };
-        }
-        const value = aggregateValues(clickedFeatures, breakdownProperty);
-        return {
-          value,
-          name: breakdownPropertyName,
-        };
-      })
-      .filter(v => v.value > 0);
-  },
 );
 
 export default isolationPlusSlice.reducer;
