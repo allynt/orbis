@@ -29,46 +29,10 @@ const isolationPlusSlice = createSlice({
         state.clickedFeatures = undefined;
       state.property = payload;
     },
-    setClickedFeatures: (state, { payload }) => {
-      state.clickedFeatures = payload;
-    },
-    /**
-     * @type {import('@reduxjs/toolkit').CaseReducer<
-     *   IsolationPlusState,
-     *   import('@reduxjs/toolkit').PayloadAction<import('typings/orbis').PolygonPickedMapFeature[]>
-     * >}
-     */
-    addClickedFeatures: (state, { payload }) => {
-      state.clickedFeatures = unionBy(
-        state.clickedFeatures,
-        payload,
-        `object.properties.${payload[0].layer.props.uniqueIdProperty}`,
-      );
-    },
-    /**
-     * @type {import('@reduxjs/toolkit').CaseReducer<
-     *   IsolationPlusState,
-     *   import('@reduxjs/toolkit').PayloadAction<import('typings/orbis').PolygonPickedMapFeature[]>
-     * >}
-     * */
-    removeClickedFeatures: (state, { payload }) => {
-      const newFeatures = differenceBy(
-        state.clickedFeatures,
-        payload,
-        `object.properties.${payload[0].layer.props.uniqueIdProperty}`,
-      );
-      state.clickedFeatures = newFeatures.length ? newFeatures : undefined;
-    },
   },
 });
 
-export const {
-  setState,
-  setProperty,
-  setClickedFeatures,
-  addClickedFeatures,
-  removeClickedFeatures,
-} = isolationPlusSlice.actions;
+export const { setState, setProperty } = isolationPlusSlice.actions;
 
 /**
  * @param {import('../orbReducer').OrbState} orbs
@@ -79,11 +43,6 @@ const baseSelector = orbs => orbs?.[isolationPlusSlice.name];
 export const propertySelector = createSelector(
   baseSelector,
   orb => orb?.property,
-);
-
-export const clickedFeaturesSelector = createSelector(
-  baseSelector,
-  orb => orb?.clickedFeatures,
 );
 
 export default isolationPlusSlice.reducer;
