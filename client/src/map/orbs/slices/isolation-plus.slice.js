@@ -90,16 +90,6 @@ export const clickedFeaturesSelector = createSelector(
   orb => orb?.clickedFeatures,
 );
 
-export const areasOfInterestSelector = createSelector(
-  clickedFeaturesSelector,
-  clickedFeatures => {
-    const areas = clickedFeatures?.map(
-      feat => feat.object.properties.area_name,
-    );
-    return areas?.some(a => a !== undefined) ? areas : undefined;
-  },
-);
-
 export const populationTotalSelector = createSelector(
   clickedFeaturesSelector,
   clickedFeatures =>

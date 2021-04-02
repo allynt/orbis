@@ -5,7 +5,6 @@ import reducer, {
   removeClickedFeatures,
   propertySelector,
   clickedFeaturesSelector,
-  areasOfInterestSelector,
   populationTotalSelector,
   householdTotalSelector,
   categoryListSelector,
@@ -376,52 +375,6 @@ describe('isolationPlusSlice', () => {
 
         const result = clickedFeaturesSelector(state);
         expect(result).toEqual(clickedFeatures);
-      });
-    });
-
-    describe('areasOfInterestSelector', () => {
-      it('returns undefined if clickedFeatures is undefined', () => {
-        const state = { isolationPlus: { clickedFeatures: undefined } };
-
-        const result = areasOfInterestSelector(state);
-        expect(result).toBeUndefined();
-      });
-
-      it('returns undefined if no properties have an `area_name` property', () => {
-        const state = {
-          isolationPlus: {
-            clickedFeatures: [
-              {
-                object: {
-                  properties: {},
-                },
-              },
-              {
-                object: {
-                  properties: {},
-                },
-              },
-            ],
-          },
-        };
-
-        const result = areasOfInterestSelector(state);
-        expect(result).toBeUndefined();
-      });
-
-      it('returns mapped `area_name` properties from all of the `clickedFeatures`', () => {
-        const clickedFeatures = [
-          { object: { properties: { area_name: 'area name 1' } } },
-          { object: { properties: { area_name: 'area name 2' } } },
-          { object: { properties: { area_name: 'area name 3' } } },
-        ];
-
-        const state = { isolationPlus: { clickedFeatures } };
-
-        const expected = ['area name 1', 'area name 2', 'area name 3'];
-
-        const result = areasOfInterestSelector(state);
-        expect(result).toEqual(expected);
       });
     });
 
