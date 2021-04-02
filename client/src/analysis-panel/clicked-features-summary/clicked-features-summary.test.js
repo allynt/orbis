@@ -1,45 +1,32 @@
 import * as React from 'react';
-import { render } from '@testing-library/react';
 
-import { Provider } from 'react-redux';
-import configureMockStore from 'redux-mock-store';
+import { render } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 
 import { ClickedFeaturesSummary } from './clicked-features-summary.component';
-import userEvent from '@testing-library/user-event';
 import { removeClickedFeatures } from 'map/orbs/slices/isolation-plus.slice';
+import { AnalysisPanelProvider } from 'analysis-panel/analysis-panel-context';
 
-const mockStore = configureMockStore();
-
-const initialState = {
-  clickedFeatures: new Array(3).fill(undefined).map((_, i) => ({
-    object: {
-      properties: {
-        area_name: `Test Area ${i}`,
-        population: i + 1,
-        households: i + 10,
-      },
+const initialFeatures = new Array(3).fill(undefined).map((_, i) => ({
+  object: {
+    properties: {
+      area_name: `Test Area ${i}`,
+      population: i + 1,
+      households: i + 10,
     },
-  })),
-};
+  },
+}));
 
-const renderComponent = (state = initialState) => {
+const renderComponent = (clickedFeatures = initialFeatures) => {
   const dispatch = jest.fn();
 
-  const store = mockStore({
-    orbs: {
-      isolationPlus: {
-        ...state,
-      },
-    },
-  });
-
   const utils = render(
-    <Provider store={store}>
+    <AnalysisPanelProvider clickedFeatures={clickedFeatures}>
       <ClickedFeaturesSummary
-        clickedFeatures={state.clickedFeatures}
+        clickedFeatures={clickedFeatures}
         dispatch={dispatch}
       />
-    </Provider>,
+    </AnalysisPanelProvider>,
   );
   return { ...utils, dispatch };
 };
@@ -48,7 +35,7 @@ describe('<ClickedFeaturesSummary />', () => {
   describe('Area Chips', () => {
     it('Shows a chip for each selected area using the area name', () => {
       const { getByText } = renderComponent();
-      initialState.clickedFeatures.forEach(feature =>
+      initialFeatures.forEach(feature =>
         expect(
           getByText(feature.object.properties.area_name),
         ).toBeInTheDocument(),
@@ -65,7 +52,7 @@ describe('<ClickedFeaturesSummary />', () => {
       const { getByRole, dispatch } = renderComponent();
       userEvent.click(getByRole('button', { name: /remove\stest\sarea\s0/i }));
       expect(dispatch).toHaveBeenCalledWith(
-        removeClickedFeatures([initialState.clickedFeatures[0]]),
+        removeClickedFeatures([initialFeatures[0]]),
       );
     });
 
@@ -73,23 +60,21 @@ describe('<ClickedFeaturesSummary />', () => {
       const { getByRole, dispatch } = renderComponent();
       userEvent.click(getByRole('button', { name: /deselect\sall/i }));
       expect(dispatch).toHaveBeenCalledWith(
-        removeClickedFeatures(initialState.clickedFeatures),
+        removeClickedFeatures(initialFeatures),
       );
     });
 
     it('Has a tooltip for long area names', () => {
       const long = "This is a long name, oh my it's so long, like good grief";
-      const { getByRole } = renderComponent({
-        clickedFeatures: [
-          {
-            object: {
-              properties: {
-                area_name: long,
-              },
+      const { getByRole } = renderComponent([
+        {
+          object: {
+            properties: {
+              area_name: long,
             },
           },
-        ],
-      });
+        },
+      ]);
       expect(getByRole('tooltip', { name: long })).toBeInTheDocument();
     });
   });
@@ -97,7 +82,7 @@ describe('<ClickedFeaturesSummary />', () => {
   describe('Population', () => {
     it('Shows the total population for a single clicked area', () => {
       const feature = { object: { properties: { population: 1000 } } };
-      const { getByText } = renderComponent({ clickedFeatures: [feature] });
+      const { getByText } = renderComponent([feature]);
       expect(
         getByText(feature.object.properties.population.toLocaleString(), {
           exact: false,
@@ -114,7 +99,7 @@ describe('<ClickedFeaturesSummary />', () => {
       const feature = {
         object: { properties: { population: 1, population_year: 2077 } },
       };
-      const { getByText } = renderComponent({ clickedFeatures: [feature] });
+      const { getByText } = renderComponent([feature]);
       expect(
         getByText(feature.object.properties.population_year.toString(), {
           exact: false,
@@ -126,7 +111,7 @@ describe('<ClickedFeaturesSummary />', () => {
   describe('Households', () => {
     it('Shows the households for a single clicked area', () => {
       const feature = { object: { properties: { households: 1985 } } };
-      const { getByText } = renderComponent({ clickedFeatures: [feature] });
+      const { getByText } = renderComponent([feature]);
       expect(
         getByText(feature.object.properties.households.toLocaleString(), {
           exact: false,
