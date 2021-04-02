@@ -5,7 +5,6 @@ import reducer, {
   removeClickedFeatures,
   propertySelector,
   clickedFeaturesSelector,
-  categoryListSelector,
   aggregationSelector,
   breakdownAggregationSelector,
   timeSeriesAggregationSelector,
@@ -373,40 +372,6 @@ describe('isolationPlusSlice', () => {
 
         const result = clickedFeaturesSelector(state);
         expect(result).toEqual(clickedFeatures);
-      });
-    });
-
-    describe('categoryListSelector', () => {
-      it('returns undefined if property is undefined', () => {
-        const state = {
-          isolationPlus: { property: undefined, clickedFeatures: [{}, {}] },
-        };
-
-        const result = categoryListSelector(state);
-        expect(result).toBeUndefined();
-      });
-      it('returns undefined if clickedFeatures is undefined', () => {
-        const state = {
-          isolationPlus: {
-            property: {
-              source_id: 'test/layer',
-              name: 'hello',
-            },
-            clickedFeatures: undefined,
-          },
-        };
-
-        const result = categoryListSelector(state);
-        expect(result).toBeUndefined();
-      });
-
-      it('returns categoryList from state', () => {
-        const state = {};
-
-        const expected = undefined;
-
-        const result = categoryListSelector(state);
-        expect(result).toEqual(expected);
       });
     });
 

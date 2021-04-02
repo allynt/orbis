@@ -90,27 +90,6 @@ export const clickedFeaturesSelector = createSelector(
   orb => orb?.clickedFeatures,
 );
 
-export const categoryListSelector = createSelector(
-  [propertySelector, clickedFeaturesSelector],
-  (property, clickedFeatures) =>
-    !property || !property.categories || !clickedFeatures
-      ? undefined
-      : Object.entries(property.categories)
-          .map(([category, rest]) => {
-            const count = clickedFeatures?.reduce(
-              (prev, curr) =>
-                curr.object.properties[property.name] === category
-                  ? prev + 1
-                  : prev,
-              0,
-            );
-            const percent = (count / clickedFeatures?.length) * 100;
-            return { category, count, percent, ...rest };
-          })
-          .filter(c => c.count > 0)
-          .sort((a, b) => a.category.localeCompare(b.category)),
-);
-
 export const aggregationSelector = createSelector(
   [propertySelector, clickedFeaturesSelector],
   (property, clickedFeatures) =>
