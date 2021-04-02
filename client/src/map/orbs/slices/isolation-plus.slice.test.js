@@ -6,7 +6,6 @@ import reducer, {
   propertySelector,
   clickedFeaturesSelector,
   breakdownAggregationSelector,
-  timeSeriesAggregationSelector,
 } from './isolation-plus.slice';
 
 describe('isolationPlusSlice', () => {
@@ -613,98 +612,6 @@ describe('isolationPlusSlice', () => {
         const result = breakdownAggregationSelector(state);
         expect(console.error).toHaveBeenCalled();
         expect(result).toEqual([{ name: name1, value: 23 }]);
-      });
-    });
-
-    describe('timeSeriesAggregationSelector', () => {
-      it('returns undefined if property is undefined', () => {
-        const state = {};
-
-        const result = timeSeriesAggregationSelector(state);
-        expect(result).toBeUndefined();
-      });
-
-      it('returns undefined if clickedFeatures is undefined', () => {
-        const state = { clickedFeatures: undefined };
-
-        const result = timeSeriesAggregationSelector(state);
-        expect(result).toBeUndefined();
-      });
-
-      it('returns most recent value if only one feature', () => {
-        const state = {
-          isolationPlus: {
-            property: {
-              name: 'Alternative Claimant Count: Total',
-              aggregation: 'mean',
-              precision: 1,
-            },
-            clickedFeatures: [
-              {
-                object: {
-                  properties: {
-                    'Alternative Claimant Count: Total': 12,
-                  },
-                },
-              },
-            ],
-          },
-        };
-
-        const result = timeSeriesAggregationSelector(state);
-        expect(result).toEqual(12);
-      });
-
-      it('returns all timeseries values if multiple features', () => {
-        const state = {
-          isolationPlus: {
-            property: {
-              name: 'Alternative Claimant Count: Total',
-              aggregation: 'sum',
-              precision: 1,
-            },
-            clickedFeatures: [
-              {
-                object: {
-                  properties: {
-                    'Alternative Claimant Count: Total': [
-                      {
-                        timestamp: '2019-03-02T00:00:00.000Z',
-                        value: 5,
-                      },
-                    ],
-                  },
-                },
-              },
-              {
-                object: {
-                  properties: {
-                    'Alternative Claimant Count: Total': [
-                      {
-                        timestamp: '2019-03-01T00:00:00.000Z',
-                        value: 3,
-                      },
-                    ],
-                  },
-                },
-              },
-            ],
-          },
-        };
-
-        const expected = [
-          {
-            timestamp: '2019-03-02T00:00:00.000Z',
-            value: 5,
-          },
-          {
-            timestamp: '2019-03-01T00:00:00.000Z',
-            value: 3,
-          },
-        ];
-
-        const result = timeSeriesAggregationSelector(state);
-        expect(result).toEqual(expected);
       });
     });
   });

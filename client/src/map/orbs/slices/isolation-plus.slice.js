@@ -129,14 +129,4 @@ export const breakdownAggregationSelector = createSelector(
   },
 );
 
-export const timeSeriesAggregationSelector = createSelector(
-  [propertySelector, clickedFeaturesSelector],
-  (property, clickedFeatures) =>
-    !property || !clickedFeatures
-      ? undefined
-      : clickedFeatures?.length > 1
-      ? aggregateTimeSeries(clickedFeatures, property)
-      : get(clickedFeatures?.[0], `object.properties.${property?.name}`),
-);
-
 export default isolationPlusSlice.reducer;
