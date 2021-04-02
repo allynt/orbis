@@ -5,7 +5,6 @@ import reducer, {
   removeClickedFeatures,
   propertySelector,
   clickedFeaturesSelector,
-  populationTotalSelector,
   householdTotalSelector,
   categoryListSelector,
   aggregationSelector,
@@ -375,28 +374,6 @@ describe('isolationPlusSlice', () => {
 
         const result = clickedFeaturesSelector(state);
         expect(result).toEqual(clickedFeatures);
-      });
-    });
-
-    describe('populationTotalSelector', () => {
-      it('returns undefined if clickedFeatures is undefined', () => {
-        const state = { isolationPlus: { clickedFeatures: undefined } };
-
-        const result = populationTotalSelector(state);
-        expect(result).toBeUndefined();
-      });
-
-      it('returns populationTotal of all clickedFeatures in state', () => {
-        const clickedFeatures = [
-          { object: { properties: { population: 5 } } },
-          { object: { properties: { population: 10 } } },
-          { object: { properties: { population: 15 } } },
-        ];
-
-        const state = { isolationPlus: { clickedFeatures } };
-
-        const populationTotal = populationTotalSelector(state);
-        expect(populationTotal).toEqual('30');
       });
     });
 

@@ -58,4 +58,17 @@ describe.only('AnalysisPanelContext', () => {
       expect(result.current.areasOfInterest).toBeUndefined();
     });
   });
+
+  describe('populationTotal', () => {
+    it('returns total of population in all features', () => {
+      const clickedFeatures = [
+        { object: { properties: { population: 5 } } },
+        { object: { properties: { population: 10 } } },
+        { object: { properties: { population: 15 } } },
+      ];
+
+      const { result } = renderContext({ clickedFeatures });
+      expect(result.current.populationTotal).toEqual('30');
+    });
+  });
 });
