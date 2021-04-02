@@ -74,19 +74,17 @@ describe('layers slice', () => {
         expect(result).toEqual(expect.objectContaining(expected));
       });
 
-      it('Prints and error to the console and does nothing if source_id is undefined', () => {
+      it('Prints and error to the console and does nothing if key is undefined', () => {
         const state = {
-          layers: {
-            [LAYER_ID]: {
-              [stateKey]: [1, 2, 3],
-            },
+          [LAYER_ID]: {
+            [stateKey]: [1, 2, 3],
           },
         };
         console.error = jest.fn();
         const result = reducer(
           state,
           action({
-            source_id: undefined,
+            key: undefined,
             [stateKey]: newValue,
           }),
         );
