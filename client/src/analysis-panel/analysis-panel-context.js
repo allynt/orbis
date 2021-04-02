@@ -1,5 +1,5 @@
 import { find, sumBy } from 'lodash';
-import React, { createContext, useMemo } from 'react';
+import React, { createContext, useContext, useMemo } from 'react';
 import { aggregateValues } from './aggregateValues';
 
 /**
@@ -93,4 +93,9 @@ export const AnalysisPanelProvider = ({
       {children}
     </AnalysisPanelContext.Provider>
   );
+};
+
+export const useAnalysisPanelContext = () => {
+  const context = useContext(AnalysisPanelContext);
+  return context;
 };

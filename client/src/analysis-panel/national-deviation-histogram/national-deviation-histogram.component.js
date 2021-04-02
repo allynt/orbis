@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 
 import {
   Box,
@@ -9,7 +9,7 @@ import {
   Typography,
 } from '@astrosat/astrosat-ui';
 
-import { AnalysisPanelContext } from 'analysis-panel/analysis-panel-context';
+import { useAnalysisPanelContext } from 'analysis-panel/analysis-panel-context';
 import { BarChart, SidePanelSection } from 'components';
 
 const useStyles = makeStyles(theme => ({
@@ -43,7 +43,7 @@ export const NationalDeviationHistogram = ({
   const aggregationLabel =
     selectedProperty?.aggregation === 'sum' ? 'Sum' : 'Average';
 
-  const { areaValue } = useContext(AnalysisPanelContext);
+  const { areaValue } = useAnalysisPanelContext();
 
   return (
     <SidePanelSection defaultExpanded title="Selected Data Layer" info={info}>

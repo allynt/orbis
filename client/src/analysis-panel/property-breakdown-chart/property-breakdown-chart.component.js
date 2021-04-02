@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React from 'react';
 
 import { Grid } from '@astrosat/astrosat-ui';
 
@@ -7,7 +7,7 @@ import { VictoryPie } from 'victory';
 import { LegendItem, SidePanelSection } from 'components';
 import { useChartTheme } from 'components/charts/useChartTheme';
 import { DEFAULT_DECIMAL_PRECISION } from 'map/map.constants';
-import { AnalysisPanelContext } from 'analysis-panel/analysis-panel-context';
+import { useAnalysisPanelContext } from 'analysis-panel/analysis-panel-context';
 
 /**
  *
@@ -20,7 +20,7 @@ import { AnalysisPanelContext } from 'analysis-panel/analysis-panel-context';
 export const PropertyBreakdownChart = ({ selectedProperty, info }) => {
   const { colors, ...chartTheme } = useChartTheme();
 
-  const { breakdownAggregation } = useContext(AnalysisPanelContext);
+  const { breakdownAggregation } = useAnalysisPanelContext();
 
   if (!breakdownAggregation?.length) return null;
   return (

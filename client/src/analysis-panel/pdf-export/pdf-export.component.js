@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -29,7 +29,7 @@ import { propertySelector } from 'map/orbs/slices/isolation-plus.slice';
 import { userSelector } from '../../accounts/accounts.selectors';
 
 import OrbisLogo from './orbis-logo.png';
-import { AnalysisPanelContext } from 'analysis-panel/analysis-panel-context';
+import { useAnalysisPanelContext } from 'analysis-panel/analysis-panel-context';
 
 const useStyles = makeStyles(theme => ({
   container: {
@@ -141,7 +141,7 @@ const PDF = ({ close, licence, creationDate = date }) => {
     householdTotal,
     areaValue,
     breakdownAggregation,
-  } = useContext(AnalysisPanelContext);
+  } = useAnalysisPanelContext();
 
   const { createScreenshot, topMapRef, deckRef, bottomMapRef } = useMap();
   const [image, setImage] = useState(undefined);
