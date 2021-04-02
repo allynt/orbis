@@ -94,10 +94,14 @@ describe('<AnalysisPanel />', () => {
       ],
     };
 
-    const { queryByText, queryByLabelText } = renderComponent(state);
+    const { queryByRole } = renderComponent(state);
 
-    expect(queryByText('Export PDF Report')).not.toBeInTheDocument();
+    expect(
+      queryByRole('button', { name: 'Export PDF Report' }),
+    ).not.toBeInTheDocument();
 
-    expect(queryByLabelText('PDF export')).not.toBeInTheDocument();
+    expect(
+      queryByRole('button', { name: 'PDF export' }),
+    ).not.toBeInTheDocument();
   });
 });
