@@ -59,7 +59,7 @@ export const RadioPicker = ({ selectedLayer, dispatch }) => {
             onSliderChange={filterValue =>
               dispatch(
                 setFilterValue({
-                  source_id: `${selectedProperty?.source_id}/${selectedProperty?.name}`,
+                  key: `${selectedProperty?.source_id}/${selectedProperty?.name}`,
                   filterValue,
                 }),
               )
