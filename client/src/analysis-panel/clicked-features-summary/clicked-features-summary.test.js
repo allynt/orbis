@@ -4,7 +4,10 @@ import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
 import { ClickedFeaturesSummary } from './clicked-features-summary.component';
-import { removeClickedFeatures } from 'map/orbs/slices/isolation-plus.slice';
+import {
+  removeClickedFeatures,
+  setClickedFeatures,
+} from 'map/orbs/layers.slice';
 import { AnalysisPanelProvider } from 'analysis-panel/analysis-panel-context';
 
 const initialFeatures = new Array(3).fill(undefined).map((_, i) => ({
@@ -52,7 +55,9 @@ describe('<ClickedFeaturesSummary />', () => {
       const { getByRole, dispatch } = renderComponent();
       userEvent.click(getByRole('button', { name: /remove\stest\sarea\s0/i }));
       expect(dispatch).toHaveBeenCalledWith(
-        removeClickedFeatures([initialFeatures[0]]),
+        removeClickedFeatures(
+          expect.objectContaining({ clickedFeatures: [initialFeatures[0]] }),
+        ),
       );
     });
 
@@ -60,7 +65,9 @@ describe('<ClickedFeaturesSummary />', () => {
       const { getByRole, dispatch } = renderComponent();
       userEvent.click(getByRole('button', { name: /deselect\sall/i }));
       expect(dispatch).toHaveBeenCalledWith(
-        removeClickedFeatures(initialFeatures),
+        setClickedFeatures(
+          expect.objectContaining({ clickedFeatures: undefined }),
+        ),
       );
     });
 

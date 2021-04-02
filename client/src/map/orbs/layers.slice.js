@@ -190,7 +190,7 @@ const baseSelector = orbs => orbs?.[layersSlice.name];
 
 /** @param {string} id */
 export const clickedFeaturesSelector = id =>
-  createSelector(baseSelector, state => state[id]?.clickedFeatures);
+  createSelector(baseSelector, state => state?.[id]?.clickedFeatures);
 
 /** @param {string} id */
 export const hoveredFeaturesSelector = id =>

@@ -4,7 +4,7 @@ import {
   addClickedFeatures,
   removeClickedFeatures,
   setClickedFeatures,
-} from '../slices/isolation-plus.slice';
+} from '../layers.slice';
 import configFn, {
   LINE_WIDTH,
   LINE_WIDTH_SELECTED,
@@ -15,6 +15,7 @@ import configFn, {
   getValue,
 } from './isolationPlusLayerConfig';
 
+const source_id = 'source/1';
 const setup = ({
   clickedFeatures,
   extrudedMode = false,
@@ -31,10 +32,10 @@ const setup = ({
   const dispatch = jest.fn();
   const fns = configFn({
     dispatch,
-    id: 'source/1',
+    id: source_id,
     activeSources: [
       {
-        source_id: 'source/1',
+        source_id,
         metadata: {
           index: 'index',
           properties: [property],
@@ -44,14 +45,18 @@ const setup = ({
     orbState: {
       layers: {
         extrudedMode,
-        testProperty: { filterValue: filterRange },
+        testProperty: {
+          filterValue: filterRange,
+        },
+        [source_id]: {
+          clickedFeatures: clickedFeatures?.map(object => ({ object })),
+        },
       },
       isolationPlus: {
         property: {
-          source_id: 'source/1',
+          source_id,
           ...property,
         },
-        clickedFeatures: clickedFeatures?.map(object => ({ object })),
       },
     },
   });
@@ -191,7 +196,11 @@ describe('isolationPlusLayerConfig', () => {
         });
         onClick(info, eventObject);
         expect(dispatch).toHaveBeenCalledWith(
-          addClickedFeatures(expect.arrayContaining([info])),
+          addClickedFeatures(
+            expect.objectContaining({
+              clickedFeatures: expect.arrayContaining([info]),
+            }),
+          ),
         );
       },
     );
@@ -203,7 +212,11 @@ describe('isolationPlusLayerConfig', () => {
       });
       onClick(info, { srcEvent: {} });
       expect(dispatch).toHaveBeenCalledWith(
-        setClickedFeatures(expect.arrayContaining([info])),
+        setClickedFeatures(
+          expect.objectContaining({
+            clickedFeatures: expect.arrayContaining([info]),
+          }),
+        ),
       );
     });
 
@@ -219,7 +232,11 @@ describe('isolationPlusLayerConfig', () => {
           clickedFeatures: [FEATURE],
         });
         onClick(info, eventObject);
-        expect(dispatch).toBeCalledWith(removeClickedFeatures([info]));
+        expect(dispatch).toBeCalledWith(
+          removeClickedFeatures(
+            expect.objectContaining({ clickedFeatures: [info] }),
+          ),
+        );
       },
     );
 
@@ -229,7 +246,11 @@ describe('isolationPlusLayerConfig', () => {
         clickedFeatures: [FEATURE],
       });
       onClick(info, { srcEvent: {} });
-      expect(dispatch).toBeCalledWith(setClickedFeatures([info]));
+      expect(dispatch).toBeCalledWith(
+        setClickedFeatures(
+          expect.objectContaining({ clickedFeatures: [info] }),
+        ),
+      );
     });
   });
 

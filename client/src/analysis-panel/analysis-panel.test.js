@@ -7,16 +7,19 @@ import { MapProvider } from 'MapContext';
 import { createMemoryHistory } from 'history';
 import configureMockStore from 'redux-mock-store';
 import userEvent from '@testing-library/user-event';
-import { setClickedFeatures } from 'map/orbs/slices/isolation-plus.slice';
+import { setClickedFeatures } from 'map/orbs/layers.slice';
 
 const mockStore = configureMockStore();
 const history = createMemoryHistory({ initialEntries: ['/map'] });
 
-const renderComponent = (state = {}) => {
+const source_id = 'test/source';
+
+const renderComponent = ({ property, clickedFeatures }) => {
   const store = mockStore({
     orbs: {
+      layers: { [source_id]: { clickedFeatures } },
       isolationPlus: {
-        ...state,
+        property,
       },
     },
   });
@@ -46,6 +49,7 @@ describe('<AnalysisPanel />', () => {
     const { getByRole, getByText } = renderComponent({
       property: {
         name: 'test',
+        source_id,
         application: { orbis: { data_visualisation_components: [] } },
       },
       clickedFeatures: [{ object: { properties: { test: 1 } } }],
@@ -59,6 +63,7 @@ describe('<AnalysisPanel />', () => {
     const { getByRole, store } = renderComponent({
       property: {
         name: 'test',
+        source_id,
         application: { orbis: { data_visualisation_components: [] } },
       },
       clickedFeatures: [{ object: { properties: { code: 'hello' } } }],
@@ -71,7 +76,7 @@ describe('<AnalysisPanel />', () => {
       expect.arrayContaining([
         expect.objectContaining({
           type: setClickedFeatures.type,
-          payload: undefined,
+          payload: { key: source_id, clickedFeatures: undefined },
         }),
       ]),
     );

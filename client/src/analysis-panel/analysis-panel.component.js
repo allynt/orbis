@@ -22,11 +22,11 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { SidePanel } from 'components';
 import { activeDataSourcesSelector } from 'data-layers/data-layers.slice';
+import { propertySelector } from 'map/orbs/slices/isolation-plus.slice';
 import {
-  clickedFeaturesSelector,
-  propertySelector,
   setClickedFeatures,
-} from 'map/orbs/slices/isolation-plus.slice';
+  clickedFeaturesSelector,
+} from 'map/orbs/layers.slice';
 import { ClickedFeaturesSummary } from './clicked-features-summary/clicked-features-summary.component';
 import { COMPONENT_MAP } from './component-map';
 import { MoreInformation } from './more-information/more-information.component';
@@ -121,10 +121,10 @@ export const AnalysisPanel = () => {
   const dialogStyles = useDialogStyles();
 
   const dispatch = useDispatch();
-  const clickedFeatures = useSelector(state =>
-    clickedFeaturesSelector(state?.orbs),
-  );
   const selectedProperty = useSelector(state => propertySelector(state?.orbs));
+  const clickedFeatures = useSelector(state =>
+    clickedFeaturesSelector(selectedProperty?.source_id)(state?.orbs),
+  );
   const sources = useSelector(activeDataSourcesSelector);
   const currentSource = React.useMemo(
     () =>
@@ -165,7 +165,14 @@ export const AnalysisPanel = () => {
             aria-label="Close"
             className={styles.close}
             size="small"
-            onClick={() => dispatch(setClickedFeatures(undefined))}
+            onClick={() =>
+              dispatch(
+                setClickedFeatures({
+                  key: selectedProperty?.source_id,
+                  clickedFeatures: undefined,
+                }),
+              )
+            }
           >
             <CloseIcon titleAccess="Close" fontSize="inherit" />
           </IconButton>
@@ -195,7 +202,9 @@ export const AnalysisPanel = () => {
         </Typography>
         <ClickedFeaturesSummary
           clickedFeatures={clickedFeatures}
+          selectedProperty={selectedProperty}
           dispatch={dispatch}
+          currentSource={currentSource}
           fallbackProperty={currentSource?.metadata?.index}
         />
         <PrimaryDivider />

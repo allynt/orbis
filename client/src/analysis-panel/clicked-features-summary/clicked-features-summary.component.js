@@ -12,7 +12,10 @@ import {
 } from '@astrosat/astrosat-ui';
 import { SidePanelSection } from 'components';
 import { get } from 'lodash';
-import { removeClickedFeatures } from 'map/orbs/slices/isolation-plus.slice';
+import {
+  removeClickedFeatures,
+  setClickedFeatures,
+} from 'map/orbs/layers.slice';
 import React, { useState } from 'react';
 import { useAnalysisPanelContext } from '../analysis-panel-context';
 
@@ -95,12 +98,14 @@ const TooltipChip = ({ onDelete, feature, fallbackProperty }) => {
 
 /**
  * @type {import('typings/orbis').AnalysisPanelComponent<
- *   {fallbackProperty?: string},
+ *   {fallbackProperty?: string, currentSource?: import('typings/orbis').Source},
  *   import('typings/orbis').PolygonPickedMapFeature
  * >}
  * */
 export const ClickedFeaturesSummary = ({
   clickedFeatures,
+  selectedProperty,
+  currentSource,
   dispatch,
   fallbackProperty,
 }) => {
@@ -119,7 +124,15 @@ export const ClickedFeaturesSummary = ({
                   <TooltipChip
                     feature={feature}
                     fallbackProperty={fallbackProperty}
-                    onDelete={() => dispatch(removeClickedFeatures([feature]))}
+                    onDelete={() =>
+                      dispatch(
+                        removeClickedFeatures({
+                          key: selectedProperty?.source_id,
+                          uniquePropertyPath: `object.properties.${clickedFeatures[0].layer?.props?.uniqueIdProperty}`,
+                          clickedFeatures: [feature],
+                        }),
+                      )
+                    }
                   />
                 </Fade>
               ))}
@@ -130,7 +143,14 @@ export const ClickedFeaturesSummary = ({
           <ButtonGroup className={styles.buttonGroup} size="small">
             <Button
               className={styles.button}
-              onClick={() => dispatch(removeClickedFeatures(clickedFeatures))}
+              onClick={() =>
+                dispatch(
+                  setClickedFeatures({
+                    key: selectedProperty?.source_id,
+                    clickedFeatures: undefined,
+                  }),
+                )
+              }
             >
               Deselect All
             </Button>

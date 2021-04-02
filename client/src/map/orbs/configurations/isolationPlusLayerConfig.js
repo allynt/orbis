@@ -6,14 +6,12 @@ import {
   extrudedModeSelector,
   extrusionScaleSelector,
   filterValueSelector,
-} from '../layers.slice';
-import {
   addClickedFeatures,
-  clickedFeaturesSelector,
-  propertySelector,
   removeClickedFeatures,
   setClickedFeatures,
-} from '../slices/isolation-plus.slice';
+  clickedFeaturesSelector,
+} from '../layers.slice';
+import { propertySelector } from '../slices/isolation-plus.slice';
 
 /** @typedef {import('typings/orbis').GeoJsonFeature<import('typings/orbis').IsoPlusCommonProperties>} AccessorFeature */
 
@@ -71,7 +69,7 @@ const configuration = ({
 
   const extrudedMode = extrudedModeSelector(orbState);
   const extrusionScale = extrusionScaleSelector(orbState);
-  const clickedFeatures = clickedFeaturesSelector(orbState);
+  const clickedFeatures = clickedFeaturesSelector(id)(orbState);
   const selectedPropertyMetadata = source?.metadata?.properties?.find(
     property => property.name === selectedProperty.name,
   );
@@ -137,18 +135,22 @@ const configuration = ({
   const onClick = (info, event) => {
     /* recreating info as a pure JSON object */
     /* rather than an object w/ nested classes */
-    const payload = [
-      {
-        index: info.index,
-        object: info.object,
-        layer: {
-          id: info.layer.id,
-          props: {
-            uniqueIdProperty: info.layer.props.uniqueIdProperty,
+    const payload = {
+      key: id,
+      uniquePropertyPath: `object.properties.${info.layer.props.uniqueIdProperty}`,
+      clickedFeatures: [
+        {
+          index: info.index,
+          object: info.object,
+          layer: {
+            id: info.layer.id,
+            props: {
+              uniqueIdProperty: info.layer.props.uniqueIdProperty,
+            },
           },
         },
-      },
-    ];
+      ],
+    };
     const hasModifier = event.srcEvent.ctrlKey || event.srcEvent.metaKey;
     if (
       !clickedFeatures?.find(
