@@ -1,55 +1,41 @@
-import { render } from '@testing-library/react';
 import React from 'react';
 
-import { Provider } from 'react-redux';
-import configureMockStore from 'redux-mock-store';
+import { render } from '@testing-library/react';
 
+import { AnalysisPanelProvider } from 'analysis-panel/analysis-panel-context';
 import { PropertyBreakdownChart } from './property-breakdown-chart.component';
 
 const source_id = 'test/source';
-
-const mockStore = configureMockStore();
 
 const renderComponent = ({ features, property = {} }) => {
   const clickedFeatures = features?.map(properties => ({
     object: { properties },
   }));
 
-  const store = mockStore({
-    data: {
-      sources: [
-        {
-          source_id,
-          metadata: {
-            properties: [
-              {
-                name: 'fruit',
-                breakdown: ['fruit'],
-                precision: 4,
-                aggregation: 'mean',
-              },
-              { name: 'trees' },
-            ],
-          },
-        },
-      ],
-      layers: [source_id],
-    },
-    orbs: {
-      isolationPlus: {
-        property,
-        clickedFeatures,
-      },
-    },
-  });
-
   const utils = render(
-    <Provider store={store}>
+    <AnalysisPanelProvider
+      clickedFeatures={clickedFeatures}
+      selectedProperty={property}
+      currentSource={{
+        source_id,
+        metadata: {
+          properties: [
+            {
+              name: 'fruit',
+              breakdown: ['fruit'],
+              precision: 4,
+              aggregation: 'mean',
+            },
+            { name: 'trees' },
+          ],
+        },
+      }}
+    >
       <PropertyBreakdownChart
         clickedFeatures={clickedFeatures}
         selectedProperty={property}
       />
-    </Provider>,
+    </AnalysisPanelProvider>,
   );
   return { ...utils };
 };
