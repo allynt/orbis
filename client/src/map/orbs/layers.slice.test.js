@@ -10,6 +10,7 @@ import reducer, {
   otherSelector,
   setClickedFeatures,
   addClickedFeatures,
+  removeClickedFeatures,
   setExtrusionScale,
   setFilterValue,
   setHoveredFeatures,
@@ -97,35 +98,36 @@ describe('layers slice', () => {
     });
 
     describe('addClickedFeatures', () => {
+      const key = 'test/layer',
+        uniquePropertyPath = 'object.properties.index';
       it("Sets clickedFeatures in state if it's undefined", () => {
-        const key = 'test/layer',
-          payload = {
-            key,
-            uniquePropertyPath: 'object.properties.index',
-            clickedFeatures: [
-              {
-                object: {
-                  properties: {
-                    index: 1,
-                  },
+        const payload = {
+          key,
+          uniquePropertyPath,
+          clickedFeatures: [
+            {
+              object: {
+                properties: {
+                  index: 1,
                 },
               },
-              {
-                object: {
-                  properties: {
-                    index: 2,
-                  },
+            },
+            {
+              object: {
+                properties: {
+                  index: 2,
                 },
               },
-              {
-                object: {
-                  properties: {
-                    index: 3,
-                  },
+            },
+            {
+              object: {
+                properties: {
+                  index: 3,
                 },
               },
-            ],
-          };
+            },
+          ],
+        };
         const result = reducer({}, addClickedFeatures(payload));
         expect(result).toEqual(
           expect.objectContaining({
@@ -135,34 +137,33 @@ describe('layers slice', () => {
       });
 
       it('Combines existing clicked features with the new ones', () => {
-        const key = 'test/layer',
-          payload = {
-            key,
-            uniquePropertyPath: 'object.properties.index',
-            clickedFeatures: [
-              {
-                object: {
-                  properties: {
-                    index: 4,
-                  },
+        const payload = {
+          key,
+          uniquePropertyPath,
+          clickedFeatures: [
+            {
+              object: {
+                properties: {
+                  index: 4,
                 },
               },
-              {
-                object: {
-                  properties: {
-                    index: 5,
-                  },
+            },
+            {
+              object: {
+                properties: {
+                  index: 5,
                 },
               },
-              {
-                object: {
-                  properties: {
-                    index: 6,
-                  },
+            },
+            {
+              object: {
+                properties: {
+                  index: 6,
                 },
               },
-            ],
-          };
+            },
+          ],
+        };
         const state = {
           [key]: {
             clickedFeatures: [
@@ -204,10 +205,55 @@ describe('layers slice', () => {
       });
 
       it('Does not duplicate features base on their unique property', () => {
-        const key = 'test/layer',
-          payload = {
-            key,
-            uniquePropertyPath: 'object.properties.index',
+        const payload = {
+          key,
+          uniquePropertyPath,
+          clickedFeatures: [
+            {
+              object: {
+                properties: {
+                  index: 1,
+                },
+              },
+            },
+          ],
+        };
+        const state = {
+          [key]: {
+            clickedFeatures: [{ object: { properties: { index: 1 } } }],
+          },
+        };
+        const result = reducer(state, addClickedFeatures(payload));
+        expect(result).toEqual(state);
+      });
+    });
+
+    describe('removeClickedFeatures', () => {
+      const key = 'test/layer',
+        uniquePropertyPath = 'object.properties.index';
+      it('Removes all clickedFeatures from state', () => {
+        const payload = {
+          key,
+          uniquePropertyPath,
+          clickedFeatures: [
+            {
+              object: {
+                properties: {
+                  index: 2,
+                },
+              },
+            },
+            {
+              object: {
+                properties: {
+                  index: 3,
+                },
+              },
+            },
+          ],
+        };
+        const state = {
+          [key]: {
             clickedFeatures: [
               {
                 object: {
@@ -216,15 +262,41 @@ describe('layers slice', () => {
                   },
                 },
               },
+              ...payload.clickedFeatures,
             ],
-          };
-        const state = {
-          [key]: {
-            clickedFeatures: [{ object: { properties: { index: 1 } } }],
           },
         };
-        const result = reducer(state, addClickedFeatures(payload));
-        expect(result).toEqual(state);
+        const result = reducer(state, removeClickedFeatures(payload));
+        expect(result).toEqual(
+          expect.objectContaining({
+            [key]: {
+              clickedFeatures: [
+                {
+                  object: { properties: { index: 1 } },
+                },
+              ],
+            },
+          }),
+        );
+      });
+
+      it('Sets clickedFeatures to undefined if all features are removed', () => {
+        const feature = {
+          key,
+          uniquePropertyPath,
+          clickedFeatures: [
+            {
+              object: { properties: { index: 1 } },
+            },
+          ],
+        };
+        const result = reducer(
+          { clickedFeatures: feature },
+          removeClickedFeatures(feature),
+        );
+        expect(result).toEqual(
+          expect.objectContaining({ [key]: { clickedFeatures: undefined } }),
+        );
       });
     });
 

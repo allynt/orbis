@@ -3,7 +3,7 @@
  */
 
 import { createSelector, createSlice } from '@reduxjs/toolkit';
-import { unionBy } from 'lodash';
+import { unionBy, differenceBy } from 'lodash';
 
 /**
  * @typedef {{
@@ -40,6 +40,13 @@ import { unionBy } from 'lodash';
  *   uniquePropertyPath: string
  *   clickedFeatures: GeoJsonFeature[]
  * }>} AddClickedFeaturesAction
+ */
+
+/**
+ * @typedef {GenericOrbAction<{
+ *   uniquePropertyPath: string
+ *   clickedFeatures: GeoJsonFeature[]
+ * }>} RemoveClickedFeaturesAction
  */
 
 /**
@@ -110,6 +117,25 @@ const layersSlice = createSlice({
         ),
       };
     },
+    /** @type {RemoveClickedFeaturesAction} */
+    removeClickedFeatures: (state, { payload }) => {
+      if (!payload.key) return handleMissingKey();
+      const {
+        clickedFeatures: removingFeatures,
+        key,
+        uniquePropertyPath,
+      } = payload;
+      const existingFeatures = state[key]?.clickedFeatures;
+      const newFeatures = differenceBy(
+        existingFeatures,
+        removingFeatures,
+        uniquePropertyPath,
+      );
+      state[key] = {
+        ...state[key],
+        clickedFeatures: newFeatures.length ? newFeatures : undefined,
+      };
+    },
     /** @type {SetHoveredFeaturesAction} */
     setHoveredFeatures: (state, { payload }) => {
       if (!payload.key) return handleMissingKey();
@@ -147,6 +173,7 @@ const layersSlice = createSlice({
 export const {
   setClickedFeatures,
   addClickedFeatures,
+  removeClickedFeatures,
   setHoveredFeatures,
   setVisibility,
   setFilterValue,
