@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -26,16 +26,13 @@ import {
 
 import {
   propertySelector,
-  areasOfInterestSelector,
-  populationTotalSelector,
-  householdTotalSelector,
-  aggregationSelector,
   breakdownAggregationSelector,
 } from 'map/orbs/slices/isolation-plus.slice';
 
 import { userSelector } from '../../accounts/accounts.selectors';
 
 import OrbisLogo from './orbis-logo.png';
+import { AnalysisPanelContext } from 'analysis-panel/analysis-panel-context';
 
 const useStyles = makeStyles(theme => ({
   container: {
@@ -141,19 +138,12 @@ const PDF = ({ close, licence, creationDate = date }) => {
   const selectedProperty = useSelector(state => propertySelector(state?.orbs));
   const user = useSelector(userSelector);
 
-  const areasOfInterest = useSelector(state =>
-    areasOfInterestSelector(state?.orbs),
-  );
-
-  const populationTotal = useSelector(state =>
-    populationTotalSelector(state?.orbs),
-  );
-
-  const householdTotal = useSelector(state =>
-    householdTotalSelector(state?.orbs),
-  );
-
-  const areaValue = useSelector(state => aggregationSelector(state?.orbs));
+  const {
+    areasOfInterest,
+    populationTotal,
+    householdTotal,
+    areaValue,
+  } = useContext(AnalysisPanelContext);
 
   const breakdownAggregation = useSelector(breakdownAggregationSelector);
 

@@ -1,5 +1,3 @@
-import { useSelector } from 'react-redux';
-
 import {
   Button,
   ButtonGroup,
@@ -14,12 +12,9 @@ import {
 } from '@astrosat/astrosat-ui';
 import { SidePanelSection } from 'components';
 import { get } from 'lodash';
-import {
-  removeClickedFeatures,
-  populationTotalSelector,
-  householdTotalSelector,
-} from 'map/orbs/slices/isolation-plus.slice';
-import React, { useState } from 'react';
+import { removeClickedFeatures } from 'map/orbs/slices/isolation-plus.slice';
+import React, { useContext, useState } from 'react';
+import { AnalysisPanelContext } from '../analysis-panel-context';
 
 const MAX_CHARS = 15;
 
@@ -111,14 +106,7 @@ export const ClickedFeaturesSummary = ({
 }) => {
   const [open, setOpen] = useState(false);
   const styles = useStyles();
-
-  const populationTotal = useSelector(state =>
-    populationTotalSelector(state?.orbs),
-  );
-
-  const householdTotal = useSelector(state =>
-    householdTotalSelector(state?.orbs),
-  );
+  const { populationTotal, householdTotal } = useContext(AnalysisPanelContext);
 
   return (
     <SidePanelSection title="Selected Areas of Interest" defaultExpanded>

@@ -31,6 +31,7 @@ import { ClickedFeaturesSummary } from './clicked-features-summary/clicked-featu
 import { COMPONENT_MAP } from './component-map';
 import { MoreInformation } from './more-information/more-information.component';
 import PDF from './pdf-export/pdf-export.component';
+import { AnalysisPanelProvider } from './analysis-panel-context';
 
 const PrimaryDivider = styled(Divider)(({ theme }) => ({
   backgroundColor: theme.palette.primary.dark,
@@ -184,53 +185,58 @@ export const AnalysisPanel = () => {
         </div>
       }
     >
-      <Typography color="primary" className={styles.strapline}>
-        The information below relates to the areas selected on the map.
-      </Typography>
-      <ClickedFeaturesSummary
+      <AnalysisPanelProvider
         clickedFeatures={clickedFeatures}
-        dispatch={dispatch}
-        fallbackProperty={currentSource?.metadata?.index}
-      />
-      <PrimaryDivider />
-      {dataVisualisationComponents?.map(componentDefinition => {
-        const Component = COMPONENT_MAP[componentDefinition.name];
-        return (
-          <>
-            <Component
-              selectedProperty={selectedProperty}
-              clickedFeatures={clickedFeatures}
-              dispatch={dispatch}
-              {...componentDefinition.props}
-            />
-            <PrimaryDivider />
-          </>
-        );
-      })}
-      <MoreInformation
-        currentSource={currentSource}
         selectedProperty={selectedProperty}
-      />
-      {!pdfIncompatible && (
-        <Box className={styles.buttonContainer}>
-          <Button className={styles.button} onClick={() => setPdfOpen(true)}>
-            Export PDF Report
-          </Button>
-        </Box>
-      )}
-
-      <Dialog
-        classes={dialogStyles}
-        maxWidth="lg"
-        open={pdfOpen}
-        onClose={() => setPdfOpen(false)}
-        aria-labelledby="pdf-export-dialog"
       >
-        <PDF
-          close={() => setPdfOpen(false)}
-          licence={currentSource?.metadata?.licence}
+        <Typography color="primary" className={styles.strapline}>
+          The information below relates to the areas selected on the map.
+        </Typography>
+        <ClickedFeaturesSummary
+          clickedFeatures={clickedFeatures}
+          dispatch={dispatch}
+          fallbackProperty={currentSource?.metadata?.index}
         />
-      </Dialog>
+        <PrimaryDivider />
+        {dataVisualisationComponents?.map(componentDefinition => {
+          const Component = COMPONENT_MAP[componentDefinition.name];
+          return (
+            <>
+              <Component
+                selectedProperty={selectedProperty}
+                clickedFeatures={clickedFeatures}
+                dispatch={dispatch}
+                {...componentDefinition.props}
+              />
+              <PrimaryDivider />
+            </>
+          );
+        })}
+        <MoreInformation
+          currentSource={currentSource}
+          selectedProperty={selectedProperty}
+        />
+        {!pdfIncompatible && (
+          <Box className={styles.buttonContainer}>
+            <Button className={styles.button} onClick={() => setPdfOpen(true)}>
+              Export PDF Report
+            </Button>
+          </Box>
+        )}
+
+        <Dialog
+          classes={dialogStyles}
+          maxWidth="lg"
+          open={pdfOpen}
+          onClose={() => setPdfOpen(false)}
+          aria-labelledby="pdf-export-dialog"
+        >
+          <PDF
+            close={() => setPdfOpen(false)}
+            licence={currentSource?.metadata?.licence}
+          />
+        </Dialog>
+      </AnalysisPanelProvider>
     </SidePanel>
   );
 };
