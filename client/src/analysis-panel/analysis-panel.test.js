@@ -17,9 +17,9 @@ const source_id = 'test/source';
 const renderComponent = ({ property, clickedFeatures }) => {
   const store = mockStore({
     orbs: {
-      layers: { [source_id]: { clickedFeatures } },
-      isolationPlus: {
-        property,
+      layers: {
+        'astrosat/isolation_plus': { other: { property } },
+        [source_id]: { clickedFeatures },
       },
     },
   });
@@ -40,7 +40,6 @@ describe('<AnalysisPanel />', () => {
   it("doesn't show anything if picked info doesn't have properties", () => {
     const { queryByText } = renderComponent({
       property: { name: 'test' },
-      pickedInfo: { object: {} },
     });
     expect(queryByText(/test/i)).not.toBeInTheDocument();
   });
