@@ -10,6 +10,7 @@ export default { title: 'Analysis Panel/Property Breakdown Chart' };
 const mockStore = configureMockStore();
 
 const selectedProperty = {
+  source_id: 'test/layer',
   aggregation: 'sum',
   breakdown: [
     'people aged 0-17',
@@ -23,6 +24,22 @@ const Template = args => {
   return (
     <Provider
       store={mockStore({
+        data: {
+          sources: [
+            {
+              source_id: 'test/layer',
+              metadata: {
+                properties: [
+                  { name: 'people aged 0-17' },
+                  { name: 'people aged 18-39' },
+                  { name: 'people aged 40-64' },
+                  { name: 'people aged 65+' },
+                ],
+              },
+            },
+          ],
+          layers: ['test/layer'],
+        },
         orbs: {
           isolationPlus: {
             property: selectedProperty,

@@ -17,9 +17,6 @@ const colors = [
 // * Layout
 // *
 const baseProps = {
-  width: 500,
-  height: 360,
-  padding: { left: 150, bottom: 100, top: 10, right: 40 },
   colorScale: colors,
   animate: true,
 };
@@ -30,15 +27,12 @@ const baseProps = {
 const strokeLinecap = 'round';
 const strokeLinejoin = 'round';
 
-/** @returns {import('victory').VictoryThemeDefinition} */
+/** @returns {import('victory').VictoryThemeDefinition & {colors: string[]}} */
 export const useChartTheme = () => {
   const astrosatUiTheme = useTheme();
 
   const baseLabelStyles = {
-    fontFamily: astrosatUiTheme.typography.fontFamily,
-    fontSize: 24,
-    letterSpacing: 'normal',
-    padding: 10,
+    ...astrosatUiTheme.typography.body1,
     fill: astrosatUiTheme.palette.text.primary,
     stroke: 'transparent',
   };
@@ -58,7 +52,6 @@ export const useChartTheme = () => {
         },
         axisLabel: assign({}, centeredLabelStyles, {
           fontStyle: 'italic',
-          padding: 35,
         }),
         grid: {
           fill: 'none',
@@ -72,6 +65,7 @@ export const useChartTheme = () => {
           stroke: 'transparent',
         },
         tickLabels: assign({}, baseLabelStyles, {
+          padding: 10,
           fill: fade(astrosatUiTheme.palette.text.primary, 0.75),
         }),
       },
@@ -81,7 +75,6 @@ export const useChartTheme = () => {
         style: {
           data: {
             fill: astrosatUiTheme.palette.text.primary,
-            padding: 8,
             strokeWidth: 1,
             stroke: astrosatUiTheme.palette.text.primary,
           },
@@ -114,7 +107,6 @@ export const useChartTheme = () => {
         pointerEvents: 'none',
         fontWeight: astrosatUiTheme.typography.fontWeightBold,
         fontStyle: 'italic',
-        fontSize: 24,
         fill: astrosatUiTheme.palette.secondary.main,
       }),
       flyoutStyle: {
@@ -122,43 +114,24 @@ export const useChartTheme = () => {
         fill: astrosatUiTheme.palette.primary.main,
         pointerEvents: 'none',
       },
-      flyoutPadding: 10,
+      flyoutPadding: 4,
       cornerRadius: astrosatUiTheme.shape.borderRadius,
-      pointerLength: 10,
+      pointerLength: 8,
     },
     pie: assign({}, baseProps, {
       animate: true,
-      width: 400,
-      height: 400,
-      padding: 0,
       colorScale: colors,
       style: {
         data: {},
-        labels: {
+        labels: assign({}, baseLabelStyles, {
           textAnchor: 'middle',
-          fontWeight: astrosatUiTheme.typography.fontWeightRegular,
-          fontFamily: astrosatUiTheme.typography.fontFamily,
-          fontSize: 20,
           fill: ({ index }) =>
             astrosatUiTheme.palette.getContrastText(
               colors[index % colors.length],
             ),
-        },
+        }),
       },
     }),
-    legend: {
-      ...baseProps,
-      height: 460,
-      orientation: 'horizontal',
-      y: 400,
-      itemsPerRow: 4,
-      gutter: 20,
-      style: {
-        labels: {
-          ...baseLabelStyles,
-        },
-      },
-    },
     scatter: assign({}, baseProps, {
       style: {
         data: {
