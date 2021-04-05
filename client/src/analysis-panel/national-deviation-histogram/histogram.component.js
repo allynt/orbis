@@ -106,7 +106,7 @@ export const Histogram = ({
               }}
             />
             {isRealValue(line) ? (
-              <VictoryGroup data-testid="line">
+              <VictoryGroup>
                 <VictoryLine
                   data={[
                     { x: line, y: 0 },
