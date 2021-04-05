@@ -2,6 +2,7 @@ import * as React from 'react';
 
 import { ParentSize } from '@visx/responsive';
 import { Text } from '@visx/text';
+import numeral from 'numeral';
 import {
   Point,
   VictoryAxis,
@@ -86,11 +87,17 @@ export const Histogram = ({
               dependentAxis
               fixLabelOverlap
               crossAxis={false}
+              tickCount={dependentScale === 'log' ? 4 : undefined}
               label={labelY}
               offsetX={padding.left}
               style={{
                 axisLabel: { padding: padding.left - 14 },
                 tickLabels: { padding: 10 },
+              }}
+              tickFormat={tick => {
+                return dependentScale === 'log'
+                  ? numeral(Number(tick).toLocaleString()).format('0 a')
+                  : tick;
               }}
             />
             <VictoryBar
@@ -100,12 +107,19 @@ export const Histogram = ({
                   fill: ({ datum }) => colorScale.get(datum.x),
                 },
               }}
+              domain={{
+                x: domain.map(Number),
+                y: [
+                  dependentScale === 'log' ? 0.3 : Math.min(...yValues),
+                  Math.max(...yValues),
+                ],
+              }}
             />
             {isRealValue(line) ? (
               <VictoryGroup groupComponent={<g data-testid="line" />}>
                 <VictoryLine
                   data={[
-                    { x: line, y: 0 },
+                    { x: line, y: dependentScale === 'log' ? 0.3 : 0 },
                     { x: line, y: Math.max(...yValues) },
                   ]}
                 />
