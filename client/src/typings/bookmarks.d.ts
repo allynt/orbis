@@ -1,3 +1,5 @@
+import { OrbState } from 'map/orbs/orbReducer'; // eslint-disable-line
+
 type Bookmark = {
   id: number;
   owner: User['id'];
@@ -7,6 +9,6 @@ type Bookmark = {
   zoom: number;
   center: [number, number];
   layers: Source['source_id'][];
-  orbs: any;
+  orbs: OrbState;
   thumbnail?: string;
 };

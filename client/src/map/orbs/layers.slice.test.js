@@ -17,6 +17,7 @@ import reducer, {
   setOther,
   setVisibility,
   toggleExtrudedMode,
+  setState,
 } from './layers.slice';
 
 const LAYER_ID = 'test/layer';
@@ -328,6 +329,25 @@ describe('layers slice', () => {
           expected = { extrusionScale: 50 };
         const result = reducer(state, setExtrusionScale(50));
         expect(result).toEqual(expect.objectContaining(expected));
+      });
+    });
+
+    describe('setState', () => {
+      it('totally replaces the slice state', () => {
+        const state = {
+            extrusionScale: 1,
+            extrudedMode: true,
+            'test/layer': { stuff: 'things' },
+            anotherKey: { moreThings: 'oh my' },
+          },
+          expected = {
+            extrudedMode: false,
+            extrusionScale: 3,
+            'random/layer': { test: ['lions', 'tigers', 'bears'] },
+            thisWasNotHereBefore: { neitherWasThis: true },
+          };
+        const result = reducer(state, setState(expected));
+        expect(result).toEqual(expected);
       });
     });
   });

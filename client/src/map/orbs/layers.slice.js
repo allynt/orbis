@@ -80,6 +80,13 @@ import { unionBy, differenceBy } from 'lodash';
  * >} SetExtrusionScaleAction
  */
 
+/**
+ * @typedef {import('@reduxjs/toolkit').CaseReducer<
+ *   LayersState,
+ *   import('@reduxjs/toolkit').PayloadAction<LayersState>
+ * >} SetStateAction
+ */
+
 /** @type {LayersState} */
 const initialState = {
   extrudedMode: false,
@@ -167,6 +174,8 @@ const layersSlice = createSlice({
     setExtrusionScale: (state, { payload }) => {
       state.extrusionScale = payload;
     },
+    /** @type {SetStateAction} */
+    setState: (_, { payload }) => payload,
   },
 });
 
@@ -180,6 +189,7 @@ export const {
   setOther,
   toggleExtrudedMode,
   setExtrusionScale,
+  setState,
 } = layersSlice.actions;
 
 /**
