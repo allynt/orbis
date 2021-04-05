@@ -60,7 +60,7 @@ export const Histogram = ({
   return (
     <ParentSize>
       {({ width }) => {
-        const padding = { left: 80, top: 20, bottom: 60, right: 0 },
+        const padding = { left: 80, top: 20, bottom: 60, right: 10 },
           paddingY = padding.top + padding.bottom;
 
         return (

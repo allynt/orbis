@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { render } from '@testing-library/react';
+import { render, waitFor } from '@testing-library/react';
 
 import { Provider } from 'react-redux';
 import configureMockStore from 'redux-mock-store';
@@ -28,7 +28,51 @@ const renderComponent = property => {
 
   const utils = render(
     <Provider store={store}>
-      <NationalDeviationHistogram selectedProperty={property} />
+      <NationalDeviationHistogram
+        selectedProperty={property}
+        data={[
+          {
+            x: 134,
+            y: 15015,
+          },
+          {
+            x: 402,
+            y: 23278,
+          },
+          {
+            x: 670,
+            y: 2953,
+          },
+          {
+            x: 938,
+            y: 383,
+          },
+          {
+            x: 1206,
+            y: 70,
+          },
+          {
+            x: 1474,
+            y: 18,
+          },
+          {
+            x: 1742,
+            y: 8,
+          },
+          {
+            x: 2010,
+            y: 2,
+          },
+          {
+            x: 2278,
+            y: 1,
+          },
+          {
+            x: 2546,
+            y: 1,
+          },
+        ]}
+      />
     </Provider>,
   );
 
@@ -66,5 +110,17 @@ describe('<NationalDeviationHistogram />', () => {
     expect(
       getByText(WITH_AGGREGATES.aggregates.Scotland.toString()),
     ).toBeInTheDocument();
+  });
+
+  it('Sets the scale to log when the log button is clicked', async () => {
+    const { getByText, getByRole } = renderComponent();
+    userEvent.click(getByRole('button', { name: 'Log' }));
+    await waitFor(() => expect(getByText('10 k')).toBeInTheDocument());
+  });
+
+  it('Sets the scale to linear when the linear button is clicked', async () => {
+    const { getByText, getByRole } = renderComponent();
+    userEvent.click(getByRole('button', { name: 'Lin' }));
+    await waitFor(() => expect(getByText('20000')).toBeInTheDocument());
   });
 });

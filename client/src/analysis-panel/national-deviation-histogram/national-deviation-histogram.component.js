@@ -68,13 +68,13 @@ export const NationalDeviationHistogram = ({
         <ButtonGroup className={styles.buttonGroup} size="small">
           <Button
             onClick={() => setScale('linear')}
-            className={clsx({ [styles.notActive]: scale === 'log' })}
+            className={clsx({ [styles.notActive]: scale !== 'linear' })}
           >
             Lin
           </Button>
           <Button
             onClick={() => setScale('log')}
-            className={clsx({ [styles.notActive]: scale === 'linear' })}
+            className={clsx({ [styles.notActive]: scale !== 'log' })}
           >
             Log
           </Button>
