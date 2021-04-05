@@ -1,5 +1,4 @@
 import { combineReducers } from 'redux';
-import isolationPlus from './slices/isolation-plus.slice';
 import crowdless from './slices/crowdless.slice';
 import layers from './layers.slice';
 
@@ -9,7 +8,6 @@ import layers from './layers.slice';
 
 const orbReducer = combineReducers({
   layers,
-  isolationPlus,
   crowdless,
 });
 
