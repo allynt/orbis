@@ -39,6 +39,7 @@ const OffsetPoint = props => {
  *   labelY?: string
  *   line?: number
  *   reversed?: boolean
+ *   dependentScale?: 'linear' | 'log'
  * }} props
  */
 export const Histogram = ({
@@ -50,6 +51,7 @@ export const Histogram = ({
   labelY,
   line,
   reversed = false,
+  dependentScale = 'linear',
 }) => {
   const orbisChartTheme = useChartTheme();
   const colorScale = new ColorScale({ color, domain, clip, reversed });
@@ -67,6 +69,7 @@ export const Histogram = ({
             theme={orbisChartTheme}
             padding={padding}
             domainPadding={{ x: width / data.length }}
+            scale={{ y: dependentScale }}
           >
             <VictoryAxis
               fixLabelOverlap

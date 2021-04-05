@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 
 import {
   Box,
+  Button,
+  ButtonGroup,
   Grid,
   makeStyles,
   MenuItem,
@@ -22,6 +24,10 @@ const useStyles = makeStyles(theme => ({
   select: {
     padding: theme.spacing(1),
   },
+  buttonGroup: {
+    margin: '0 auto',
+    marginBottom: theme.spacing(2),
+  },
 }));
 
 /**
@@ -41,6 +47,7 @@ export const NationalDeviationHistogram = ({
   info,
 }) => {
   const [selectedAggregateArea, setSelectedAggregateArea] = useState('GB');
+  const [scale, setScale] = useState('linear');
   const styles = useStyles();
 
   const aggregationLabel =
@@ -52,6 +59,10 @@ export const NationalDeviationHistogram = ({
     <SidePanelSection defaultExpanded title="Selected Data Layer" info={info}>
       <Box display="flex" flexDirection="column">
         <Typography paragraph>{selectedProperty?.label}</Typography>
+        <ButtonGroup className={styles.buttonGroup} size="small">
+          <Button onClick={() => setScale('linear')}>Lin</Button>
+          <Button onClick={() => setScale('log')}>Log</Button>
+        </ButtonGroup>
         {data?.length ? (
           <Histogram
             color={selectedProperty?.application?.orbis?.display?.color}
@@ -64,6 +75,7 @@ export const NationalDeviationHistogram = ({
             labelY="Number of Areas in GB"
             data={data}
             line={areaValue}
+            dependentScale={scale}
           />
         ) : null}
         <Grid container spacing={1} alignItems="center">
