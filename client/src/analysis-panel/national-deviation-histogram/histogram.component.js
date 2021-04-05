@@ -10,6 +10,7 @@ import {
   VictoryGroup,
   VictoryLine,
   VictoryScatter,
+  VictoryZoomContainer,
 } from 'victory';
 
 import { useChartTheme } from 'hooks/useChartTheme';
@@ -67,6 +68,12 @@ export const Histogram = ({
             theme={orbisChartTheme}
             padding={padding}
             domainPadding={{ x: width / data.length }}
+            containerComponent={
+              <VictoryZoomContainer
+                style={{ cursor: 'grab' }}
+                zoomDimension="x"
+              />
+            }
           >
             <VictoryAxis
               fixLabelOverlap
@@ -99,7 +106,7 @@ export const Histogram = ({
               }}
             />
             {isRealValue(line) ? (
-              <VictoryGroup groupComponent={<g data-testid="line" />}>
+              <VictoryGroup data-testid="line">
                 <VictoryLine
                   data={[
                     { x: line, y: 0 },
