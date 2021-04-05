@@ -36,6 +36,8 @@ const setup = ({
     activeSources: [
       {
         source_id,
+        authority: 'test',
+        namespace: 'layer',
         metadata: {
           index: 'index',
           properties: [property],
@@ -48,14 +50,16 @@ const setup = ({
         testProperty: {
           filterValue: filterRange,
         },
+        'test/layer': {
+          other: {
+            property: {
+              source_id,
+              ...property,
+            },
+          },
+        },
         [source_id]: {
           clickedFeatures: clickedFeatures?.map(object => ({ object })),
-        },
-      },
-      isolationPlus: {
-        property: {
-          source_id,
-          ...property,
         },
       },
     },
