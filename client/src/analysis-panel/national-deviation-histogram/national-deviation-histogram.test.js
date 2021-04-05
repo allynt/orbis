@@ -111,16 +111,4 @@ describe('<NationalDeviationHistogram />', () => {
       getByText(WITH_AGGREGATES.aggregates.Scotland.toString()),
     ).toBeInTheDocument();
   });
-
-  it('Sets the scale to log when the log button is clicked', async () => {
-    const { getByText, getByRole } = renderComponent();
-    userEvent.click(getByRole('button', { name: 'Log' }));
-    await waitFor(() => expect(getByText('10 k')).toBeInTheDocument());
-  });
-
-  it('Sets the scale to linear when the linear button is clicked', async () => {
-    const { getByText, getByRole } = renderComponent();
-    userEvent.click(getByRole('button', { name: 'Lin' }));
-    await waitFor(() => expect(getByText('20000')).toBeInTheDocument());
-  });
 });
