@@ -89,11 +89,6 @@ const renderComponent = ({
 
   const store = mockStore({
     accounts: { user },
-    orbs: {
-      isolationPlus: {
-        ...state,
-      },
-    },
   });
 
   const utils = render(
@@ -112,7 +107,11 @@ const renderComponent = ({
               },
             }}
           >
-            <PDF licence={licence} close={close} />
+            <PDF
+              licence={licence}
+              close={close}
+              selectedProperty={state.property}
+            />
           </AnalysisPanelProvider>
         </MapProvider>
       </Router>
