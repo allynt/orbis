@@ -16,6 +16,7 @@ import { useSelector } from 'react-redux';
 import { SidePanelSection } from 'components';
 import { aggregationSelector } from 'map/orbs/slices/isolation-plus.slice';
 import { Histogram } from './histogram.component';
+import clsx from 'clsx';
 
 const useStyles = makeStyles(theme => ({
   italic: {
@@ -27,6 +28,11 @@ const useStyles = makeStyles(theme => ({
   buttonGroup: {
     margin: '0 auto',
     marginBottom: theme.spacing(2),
+  },
+  notActive: {
+    color: theme.palette.secondary.contrastText,
+    backgroundColor: theme.palette.secondary.dark,
+    cursor: 'pointer',
   },
 }));
 
@@ -60,8 +66,18 @@ export const NationalDeviationHistogram = ({
       <Box display="flex" flexDirection="column">
         <Typography paragraph>{selectedProperty?.label}</Typography>
         <ButtonGroup className={styles.buttonGroup} size="small">
-          <Button onClick={() => setScale('linear')}>Lin</Button>
-          <Button onClick={() => setScale('log')}>Log</Button>
+          <Button
+            onClick={() => setScale('linear')}
+            className={clsx({ [styles.notActive]: scale === 'log' })}
+          >
+            Lin
+          </Button>
+          <Button
+            onClick={() => setScale('log')}
+            className={clsx({ [styles.notActive]: scale === 'linear' })}
+          >
+            Log
+          </Button>
         </ButtonGroup>
         {data?.length ? (
           <Histogram
