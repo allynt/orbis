@@ -1,35 +1,27 @@
-import React, { useState, useEffect } from 'react';
-
-import { useDispatch, useSelector } from 'react-redux';
-
-import { push } from 'connected-react-router';
-
-import { useMap } from 'MapContext';
-
-import { jsPDF } from 'jspdf';
-import html2canvas from 'html2canvas';
-
-import { format } from 'date-fns';
-
-import clsx from 'clsx';
+import React, { useEffect, useState } from 'react';
 
 import {
   Button,
-  IconButton,
   CloseIcon,
-  List,
   Grid,
+  IconButton,
+  List,
   ListItemText,
   makeStyles,
   Typography,
 } from '@astrosat/astrosat-ui';
 
-import { propertySelector } from 'map/orbs/slices/isolation-plus.slice';
+import clsx from 'clsx';
+import { push } from 'connected-react-router';
+import { format } from 'date-fns';
+import html2canvas from 'html2canvas';
+import { jsPDF } from 'jspdf';
+import { useDispatch, useSelector } from 'react-redux';
 
-import { userSelector } from '../../accounts/accounts.selectors';
-
-import OrbisLogo from './orbis-logo.png';
 import { useAnalysisPanelContext } from 'analysis-panel/analysis-panel-context';
+import { useMap } from 'MapContext';
+import { userSelector } from '../../accounts/accounts.selectors';
+import OrbisLogo from './orbis-logo.png';
 
 const useStyles = makeStyles(theme => ({
   container: {
@@ -128,11 +120,10 @@ const useStyles = makeStyles(theme => ({
 export const CHAR_MAX = 150;
 const date = format(new Date(), 'MMMM do Y');
 
-const PDF = ({ close, licence, creationDate = date }) => {
+const PDF = ({ close, licence, creationDate = date, selectedProperty }) => {
   const styles = useStyles();
   const dispatch = useDispatch();
 
-  const selectedProperty = useSelector(state => propertySelector(state?.orbs));
   const user = useSelector(userSelector);
 
   const {

@@ -14,24 +14,23 @@ import {
   Typography,
 } from '@astrosat/astrosat-ui';
 
-import { ReactComponent as PdfExportIcon } from './pdf-export.svg';
-
 import clsx from 'clsx';
-import { find } from 'lodash';
+import { find, get } from 'lodash';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { SidePanel } from 'components';
 import { activeDataSourcesSelector } from 'data-layers/data-layers.slice';
-import { propertySelector } from 'map/orbs/slices/isolation-plus.slice';
 import {
-  setClickedFeatures,
   clickedFeaturesSelector,
+  otherSelector,
+  setClickedFeatures,
 } from 'map/orbs/layers.slice';
+import { AnalysisPanelProvider } from './analysis-panel-context';
 import { ClickedFeaturesSummary } from './clicked-features-summary/clicked-features-summary.component';
 import { COMPONENT_MAP } from './component-map';
 import { MoreInformation } from './more-information/more-information.component';
+import { ReactComponent as PdfExportIcon } from './pdf-export.svg';
 import PDF from './pdf-export/pdf-export.component';
-import { AnalysisPanelProvider } from './analysis-panel-context';
 
 const PrimaryDivider = styled(Divider)(({ theme }) => ({
   backgroundColor: theme.palette.primary.dark,
@@ -121,10 +120,10 @@ export const AnalysisPanel = () => {
   const dialogStyles = useDialogStyles();
 
   const dispatch = useDispatch();
-  const selectedProperty = useSelector(state => propertySelector(state?.orbs));
-  const clickedFeatures = useSelector(state =>
-    clickedFeaturesSelector(selectedProperty?.source_id)(state?.orbs),
+  const other = useSelector(state =>
+    otherSelector('astrosat/isolation_plus')(state?.orbs),
   );
+  const selectedProperty = get(other, 'property');
   const sources = useSelector(activeDataSourcesSelector);
   const currentSource = React.useMemo(
     () =>
@@ -132,6 +131,9 @@ export const AnalysisPanel = () => {
         source_id: selectedProperty?.source_id,
       }),
     [selectedProperty, sources],
+  );
+  const clickedFeatures = useSelector(state =>
+    clickedFeaturesSelector(selectedProperty?.source_id)(state?.orbs),
   );
   const dataVisualisationComponents =
     selectedProperty?.application?.orbis?.data_visualisation_components;
@@ -242,6 +244,7 @@ export const AnalysisPanel = () => {
           aria-labelledby="pdf-export-dialog"
         >
           <PDF
+            selectedProperty={selectedProperty}
             close={() => setPdfOpen(false)}
             licence={currentSource?.metadata?.licence}
           />

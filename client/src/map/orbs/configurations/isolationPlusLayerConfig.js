@@ -1,17 +1,18 @@
 import { DataFilterExtension } from '@deck.gl/extensions';
 import { find, get } from 'lodash';
+
 import { getColorScaleForProperty } from 'utils/color';
 import { isRealValue } from 'utils/isRealValue';
 import {
+  addClickedFeatures,
+  clickedFeaturesSelector,
   extrudedModeSelector,
   extrusionScaleSelector,
   filterValueSelector,
-  addClickedFeatures,
+  otherSelector,
   removeClickedFeatures,
   setClickedFeatures,
-  clickedFeaturesSelector,
 } from '../layers.slice';
-import { propertySelector } from '../slices/isolation-plus.slice';
 
 /** @typedef {import('typings/orbis').GeoJsonFeature<import('typings/orbis').IsoPlusCommonProperties>} AccessorFeature */
 
@@ -58,10 +59,12 @@ const configuration = ({
   orbState,
   authToken,
 }) => {
-  const selectedProperty = propertySelector(orbState);
-  if (selectedProperty.source_id !== id) return undefined;
-
   const source = activeSources?.find(source => source.source_id === id);
+  const other = otherSelector(`${source.authority}/${source.namespace}`)(
+    orbState,
+  );
+  const selectedProperty = get(other, 'property');
+  if (selectedProperty?.source_id !== id) return undefined;
 
   const filterRange = filterValueSelector(
     `${selectedProperty?.source_id}/${selectedProperty?.name}`,

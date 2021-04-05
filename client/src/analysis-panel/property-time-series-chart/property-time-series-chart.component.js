@@ -1,8 +1,7 @@
-import { SidePanelSection } from 'components';
-import { useChartTheme } from 'components/charts/useChartTheme';
-import { format } from 'date-fns';
-import { DEFAULT_DECIMAL_PRECISION } from 'map/map.constants';
 import * as React from 'react';
+
+import { format } from 'date-fns';
+import { get } from 'lodash';
 import {
   VictoryAxis,
   VictoryChart,
@@ -11,8 +10,12 @@ import {
   VictoryScatter,
   VictoryTooltip,
 } from 'victory';
+
 import { aggregateTimeSeries } from 'analysis-panel/aggregateTimeSeries';
-import { get } from 'lodash';
+import { SidePanelSection } from 'components';
+import { useChartTheme } from 'components/charts/useChartTheme';
+import { DEFAULT_DECIMAL_PRECISION } from 'map/map.constants';
+import { isIsoDate } from 'utils/dates';
 
 /** @type {import("typings/orbis").AnalysisPanelComponent<{info?: string, timestampFormat?: string}, import('typings/orbis').PolygonPickedMapFeature>} */
 export const PropertyTimeSeriesChart = ({
@@ -65,9 +68,11 @@ export const PropertyTimeSeriesChart = ({
             {...sharedProps}
             labelComponent={<VictoryTooltip />}
             labels={({ datum }) =>
-              `${format(new Date(datum.timestamp), timestampFormat)}: ${
-                datum.value
-              }`
+              isIsoDate(datum.timestamp)
+                ? `${format(new Date(datum.timestamp), timestampFormat)}: ${
+                    datum.value
+                  }`
+                : ''
             }
             size={5}
           />
