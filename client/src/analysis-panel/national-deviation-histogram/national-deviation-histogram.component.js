@@ -10,7 +10,8 @@ import {
 } from '@astrosat/astrosat-ui';
 
 import { useAnalysisPanelContext } from 'analysis-panel/analysis-panel-context';
-import { BarChart, SidePanelSection } from 'components';
+import { SidePanelSection } from 'components';
+import { Histogram } from './histogram.component';
 
 const useStyles = makeStyles(theme => ({
   italic: {
@@ -50,7 +51,7 @@ export const NationalDeviationHistogram = ({
       <Box display="flex" flexDirection="column">
         <Typography paragraph>{selectedProperty?.label}</Typography>
         {data?.length ? (
-          <BarChart
+          <Histogram
             color={selectedProperty?.application?.orbis?.display?.color}
             domain={[selectedProperty?.min, selectedProperty?.max]}
             clip={[selectedProperty?.clip_min, selectedProperty?.clip_max]}

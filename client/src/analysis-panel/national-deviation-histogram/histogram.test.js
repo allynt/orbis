@@ -1,10 +1,10 @@
 import React from 'react';
 import { render } from '@testing-library/react';
-import { BarChart } from './bar.component';
+import { Histogram } from './histogram.component';
 
 const renderComponent = line =>
   render(
-    <BarChart
+    <Histogram
       domain={[0, 10]}
       line={line}
       data={Array(10)
@@ -13,7 +13,7 @@ const renderComponent = line =>
     />,
   );
 
-describe('<BarChart />', () => {
+describe('<Histogram />', () => {
   it('shows a line if line value is provided', () => {
     const { getByTestId } = renderComponent(5);
     expect(getByTestId('line')).toBeInTheDocument();
