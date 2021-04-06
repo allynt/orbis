@@ -1,6 +1,6 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { otherSelector, setOther } from '../orbReducer';
+import { otherSelector, setOther } from '../layers.slice';
 import { DateStepper } from './date-stepper/date-stepper.component';
 
 /**
@@ -37,7 +37,7 @@ export default ({
       onChange={(_, date) =>
         dispatch(
           setOther({
-            source_id: stateKey,
+            key: stateKey,
             other: { ...other, date },
           }),
         )

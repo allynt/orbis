@@ -2,7 +2,7 @@ import { FeatureDetail, Popup } from 'components';
 import { pickBy } from 'lodash';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { clickedFeaturesSelector, setClickedFeatures } from '../orbReducer';
+import { clickedFeaturesSelector, setClickedFeatures } from '../layers.slice';
 
 const ActionForHelpMapComponent = ({ source }) => {
   const pickedObjects = useSelector(state =>
@@ -17,7 +17,7 @@ const ActionForHelpMapComponent = ({ source }) => {
       onClose={() =>
         dispatch(
           setClickedFeatures({
-            source_id: source.source_id,
+            key: source.source_id,
             clickedFeatures: [],
           }),
         )

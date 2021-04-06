@@ -1,6 +1,6 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { otherSelector, setOther } from '../orbReducer';
+import { otherSelector, setOther } from '../layers.slice';
 import { RadioGroup } from './radio-group/radio-group.component';
 
 /**
@@ -29,7 +29,7 @@ export default ({
       onChange={value =>
         dispatch(
           setOther({
-            source_id: stateKey,
+            key: stateKey,
             other: { ...other, [valueKey]: value },
           }),
         )

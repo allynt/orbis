@@ -1,13 +1,10 @@
-import faker from 'faker/locale/en_GB';
 import * as React from 'react';
 
-import { Provider } from 'react-redux';
-import configureMockStore from 'redux-mock-store';
-
-import { ClickedFeaturesSummary } from './clicked-features-summary.component';
+import faker from 'faker/locale/en_GB';
 import isChromatic from 'chromatic/isChromatic';
 
-const mockStore = configureMockStore();
+import { ClickedFeaturesSummary } from './clicked-features-summary.component';
+import { AnalysisPanelProvider } from 'analysis-panel/analysis-panel-context';
 
 if (isChromatic()) faker.seed(1);
 
@@ -30,9 +27,9 @@ export default {
 
 const Template = args => {
   return (
-    <Provider store={mockStore({ orbs: { isolationPlus: args.orbState } })}>
+    <AnalysisPanelProvider clickedFeatures={args.clickedFeatures}>
       <ClickedFeaturesSummary {...args} />
-    </Provider>
+    </AnalysisPanelProvider>
   );
 };
 
@@ -42,16 +39,10 @@ export const ClickedFeatures = Template.bind({});
 const aFewFeatures = Array(3).fill(undefined).map(createFeature);
 ClickedFeatures.args = {
   clickedFeatures: aFewFeatures,
-  orbState: {
-    clickedFeatures: aFewFeatures,
-  },
 };
 
 export const LotsOfFeatures = Template.bind({});
 const lotsOfFeatures = Array(50).fill(undefined).map(createFeature);
 LotsOfFeatures.args = {
   clickedFeatures: lotsOfFeatures,
-  orbState: {
-    clickedFeatures: lotsOfFeatures,
-  },
 };

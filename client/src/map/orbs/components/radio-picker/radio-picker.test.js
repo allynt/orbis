@@ -7,6 +7,7 @@ import configureStore from 'redux-mock-store';
 
 import { RadioPicker } from './radio-picker.component';
 import { groupProperties } from './helpers/group-properties.js';
+import { setOther } from 'map/orbs/layers.slice';
 
 const mockStore = configureStore();
 
@@ -116,18 +117,21 @@ describe('<RadioPicker />', () => {
       }),
     );
 
-    const expected = {
-      type: 'isolationPlus/setProperty',
-      payload: {
-        source_id: defaultSelectedLayer.source_id,
-        name: 'Census 2011: % of people in the age band 40 - 64',
-        label: 'People in the age band 40 - 64',
-        type: 'percentage',
-        property_group: '1',
-      },
-    };
-
-    expect(dispatch).toHaveBeenCalledWith(expected);
+    expect(dispatch).toHaveBeenCalledWith(
+      setOther(
+        expect.objectContaining({
+          other: {
+            property: {
+              source_id: defaultSelectedLayer.source_id,
+              name: 'Census 2011: % of people in the age band 40 - 64',
+              label: 'People in the age band 40 - 64',
+              type: 'percentage',
+              property_group: '1',
+            },
+          },
+        }),
+      ),
+    );
   });
 
   it('has an info icon for each radio', () => {

@@ -3,7 +3,7 @@ import { MAX_ZOOM } from 'map/map.constants';
 import iconMapping from './actionForHelpConfig.iconMapping.json';
 import iconAtlas from './actionForHelpConfig.iconAtlas.svg';
 import { easeInOutCubic } from 'utils/easingFunctions';
-import { filterValueSelector, setClickedFeatures } from '../orbReducer';
+import { filterValueSelector, setClickedFeatures } from '../layers.slice';
 import { filter } from 'lodash';
 
 export const filterFeatures = (oldData, startDate, endDate) =>
@@ -50,12 +50,10 @@ const configuration = ({
         });
       else
         dispatch(
-          setClickedFeatures({ source_id: id, clickedFeatures: info.objects }),
+          setClickedFeatures({ key: id, clickedFeatures: info.objects }),
         );
     } else
-      dispatch(
-        setClickedFeatures({ source_id: id, clickedFeatures: [info.object] }),
-      );
+      dispatch(setClickedFeatures({ key: id, clickedFeatures: [info.object] }));
   };
 
   /** @param {ActionForHelpFeature} feature */

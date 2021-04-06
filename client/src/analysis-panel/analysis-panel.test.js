@@ -7,16 +7,19 @@ import { MapProvider } from 'MapContext';
 import { createMemoryHistory } from 'history';
 import configureMockStore from 'redux-mock-store';
 import userEvent from '@testing-library/user-event';
-import { setClickedFeatures } from 'map/orbs/slices/isolation-plus.slice';
+import { setClickedFeatures } from 'map/orbs/layers.slice';
 
 const mockStore = configureMockStore();
 const history = createMemoryHistory({ initialEntries: ['/map'] });
 
-const renderComponent = (state = {}) => {
+const source_id = 'test/source';
+
+const renderComponent = ({ property, clickedFeatures }) => {
   const store = mockStore({
     orbs: {
-      isolationPlus: {
-        ...state,
+      layers: {
+        'astrosat/isolation_plus': { other: { property } },
+        [source_id]: { clickedFeatures },
       },
     },
   });
@@ -37,7 +40,6 @@ describe('<AnalysisPanel />', () => {
   it("doesn't show anything if picked info doesn't have properties", () => {
     const { queryByText } = renderComponent({
       property: { name: 'test' },
-      pickedInfo: { object: {} },
     });
     expect(queryByText(/test/i)).not.toBeInTheDocument();
   });
@@ -46,6 +48,7 @@ describe('<AnalysisPanel />', () => {
     const { getByRole, getByText } = renderComponent({
       property: {
         name: 'test',
+        source_id,
         application: { orbis: { data_visualisation_components: [] } },
       },
       clickedFeatures: [{ object: { properties: { test: 1 } } }],
@@ -59,6 +62,7 @@ describe('<AnalysisPanel />', () => {
     const { getByRole, store } = renderComponent({
       property: {
         name: 'test',
+        source_id,
         application: { orbis: { data_visualisation_components: [] } },
       },
       clickedFeatures: [{ object: { properties: { code: 'hello' } } }],
@@ -71,7 +75,7 @@ describe('<AnalysisPanel />', () => {
       expect.arrayContaining([
         expect.objectContaining({
           type: setClickedFeatures.type,
-          payload: undefined,
+          payload: { key: source_id, clickedFeatures: undefined },
         }),
       ]),
     );
@@ -94,10 +98,14 @@ describe('<AnalysisPanel />', () => {
       ],
     };
 
-    const { queryByText, queryByLabelText } = renderComponent(state);
+    const { queryByRole } = renderComponent(state);
 
-    expect(queryByText('Export PDF Report')).not.toBeInTheDocument();
+    expect(
+      queryByRole('button', { name: 'Export PDF Report' }),
+    ).not.toBeInTheDocument();
 
-    expect(queryByLabelText('PDF export')).not.toBeInTheDocument();
+    expect(
+      queryByRole('button', { name: 'PDF export' }),
+    ).not.toBeInTheDocument();
   });
 });

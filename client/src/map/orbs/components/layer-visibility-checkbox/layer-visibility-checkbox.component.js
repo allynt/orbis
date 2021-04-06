@@ -10,7 +10,7 @@ import {
 
 import { useSelector } from 'react-redux';
 
-import { layersVisibilitySelector, setVisibility } from '../../orbReducer.js';
+import { visibilitySelector, setVisibility } from '../../layers.slice';
 import { InfoButtonTooltip } from 'components/index.js';
 
 const useStyles = makeStyles(theme => ({
@@ -56,13 +56,13 @@ export const LayerVisibilityCheckbox = ({
   const classes = useStyles({ color });
 
   const isVisible = useSelector(state =>
-    layersVisibilitySelector(selectedLayer?.source_id)(state?.orbs),
+    visibilitySelector(selectedLayer?.source_id)(state?.orbs),
   );
 
   const handleChange = () =>
     dispatch(
       setVisibility({
-        source_id: selectedLayer?.source_id,
+        key: selectedLayer?.source_id,
         visible: !isVisible,
       }),
     );

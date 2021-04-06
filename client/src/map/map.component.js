@@ -48,9 +48,8 @@ import {
   extrusionScaleSelector,
   setExtrusionScale,
   toggleExtrudedMode,
-} from './orbs/orbReducer';
-import { setState as setIsolationPlusState } from './orbs/slices/isolation-plus.slice';
-import { useOrbs } from './orbs/useOrbs';
+  setState as setLayersState,
+} from './orbs/layers.slice';
 
 import 'mapbox-gl/dist/mapbox-gl.css';
 
@@ -192,7 +191,7 @@ const Map = ({ mapComponents, layers }) => {
         transitionInterpolator: new FlyToInterpolator(),
       });
       dispatch(setLayers(layers || []));
-      dispatch(setIsolationPlusState(orbs?.isolationPlus || {}));
+      dispatch(setLayersState(orbs?.layers));
       dispatch(onBookmarkLoaded());
     }
   }, [selectedBookmark, viewState, setViewState, dispatch]);

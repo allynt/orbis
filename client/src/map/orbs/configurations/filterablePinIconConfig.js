@@ -1,5 +1,5 @@
 import { get } from 'lodash';
-import { filterValueSelector } from '../orbReducer';
+import { filterValueSelector } from '../layers.slice';
 import pinIconConfig from './pinIconConfig';
 
 /**

@@ -5,7 +5,7 @@ import { Provider } from 'react-redux';
 import configureMockStore from 'redux-mock-store';
 
 import { CheckboxFilters } from './checkbox-filters.component';
-import { setFilterValue } from 'map/orbs/orbReducer';
+import { setFilterValue } from 'map/orbs/layers.slice';
 import userEvent from '@testing-library/user-event';
 
 const LAYER = {
@@ -89,7 +89,7 @@ describe('<CheckboxFilters />', () => {
     userEvent.click(getByRole('checkbox', { name: FILTERS[0].label }));
     expect(dispatch).toHaveBeenCalledWith(
       setFilterValue({
-        source_id: LAYER.source_id,
+        key: LAYER.source_id,
         filterValue: [FILTERS[0].value],
       }),
     );
@@ -102,7 +102,7 @@ describe('<CheckboxFilters />', () => {
     userEvent.click(getByRole('checkbox', { name: FILTERS[0].label }));
     expect(dispatch).toHaveBeenCalledWith(
       setFilterValue({
-        source_id: LAYER.source_id,
+        key: LAYER.source_id,
         filterValue: expect.arrayContaining(FILTERS.map(f => f.value)),
       }),
     );
@@ -115,7 +115,7 @@ describe('<CheckboxFilters />', () => {
     userEvent.click(getByRole('checkbox', { name: FILTERS[1].label }));
     expect(dispatch).toHaveBeenCalledWith(
       setFilterValue({
-        source_id: LAYER.source_id,
+        key: LAYER.source_id,
         filterValue: [FILTERS[0].value, FILTERS[2].value],
       }),
     );

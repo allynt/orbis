@@ -866,8 +866,6 @@ const Template = args => (
   </Provider>
 );
 
-export const NoOptions = Template.bind({});
-
 export const Layer = Template.bind({});
 Layer.args = {
   selectedLayer,

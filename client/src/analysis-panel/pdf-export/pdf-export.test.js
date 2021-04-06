@@ -13,6 +13,7 @@ import { Router } from 'react-router-dom';
 import { format } from 'date-fns';
 
 import PDF from './pdf-export.component';
+import { AnalysisPanelProvider } from 'analysis-panel/analysis-panel-context';
 
 const mockStore = configureMockStore();
 
@@ -87,32 +88,31 @@ const renderComponent = ({
   const close = jest.fn();
 
   const store = mockStore({
-    data: {
-      sources: [
-        {
-          source_id: 'test/source',
-          metadata: {
-            properties: [
-              { name: '% of people aged 0-17', aggregation: 'mean' },
-            ],
-          },
-        },
-      ],
-      layers: ['test/source'],
-    },
     accounts: { user },
-    orbs: {
-      isolationPlus: {
-        ...state,
-      },
-    },
   });
 
   const utils = render(
     <Provider store={store}>
       <Router history={history}>
         <MapProvider>
-          <PDF licence={licence} close={close} />
+          <AnalysisPanelProvider
+            clickedFeatures={state.clickedFeatures}
+            selectedProperty={state.property}
+            currentSource={{
+              source_id: 'test/source',
+              metadata: {
+                properties: [
+                  { name: '% of people aged 0-17', aggregation: 'mean' },
+                ],
+              },
+            }}
+          >
+            <PDF
+              licence={licence}
+              close={close}
+              selectedProperty={state.property}
+            />
+          </AnalysisPanelProvider>
         </MapProvider>
       </Router>
     </Provider>,

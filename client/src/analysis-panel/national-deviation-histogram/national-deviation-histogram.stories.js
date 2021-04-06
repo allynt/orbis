@@ -1,12 +1,9 @@
 import * as React from 'react';
-import { Provider } from 'react-redux';
-import configureMockStore from 'redux-mock-store';
 
 import { omit } from 'lodash';
 
 import { NationalDeviationHistogram } from './national-deviation-histogram.component';
-
-const mockStore = configureMockStore();
+import { AnalysisPanelProvider } from 'analysis-panel/analysis-panel-context';
 
 const props = {
   data: [
@@ -82,18 +79,9 @@ const selectedProperty = {
 export default { title: 'Analysis Panel/National Deviation Histogram' };
 
 const Template = args => (
-  <Provider
-    store={mockStore({
-      orbs: {
-        isolationPlus: {
-          property: selectedProperty,
-          ...args.orbState,
-        },
-      },
-    })}
-  >
+  <AnalysisPanelProvider {...args}>
     <NationalDeviationHistogram {...args} />
-  </Provider>
+  </AnalysisPanelProvider>
 );
 
 export const NoClickedFeatures = Template.bind({});
@@ -116,9 +104,6 @@ const oneFeature = [
 
 OneClickedFeature.args = {
   ...NoClickedFeatures.args,
-  orbState: {
-    clickedFeatures: oneFeature,
-  },
   clickedFeatures: oneFeature,
 };
 
@@ -150,9 +135,6 @@ const multipleFeatures = [
 
 MultipleClickedFeaturesSum.args = {
   ...NoClickedFeatures.args,
-  orbState: {
-    clickedFeatures: multipleFeatures,
-  },
   clickedFeatures: multipleFeatures,
 };
 

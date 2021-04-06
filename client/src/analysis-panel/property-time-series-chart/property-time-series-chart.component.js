@@ -1,8 +1,8 @@
 import * as React from 'react';
 
-import { ParentSize } from '@visx/responsive';
 import { format } from 'date-fns';
-import { useSelector } from 'react-redux';
+import { get } from 'lodash';
+import { ParentSize } from '@visx/responsive';
 import {
   VictoryAxis,
   VictoryChart,
@@ -12,10 +12,11 @@ import {
   VictoryTooltip,
 } from 'victory';
 
+import { aggregateTimeSeries } from 'analysis-panel/aggregateTimeSeries';
 import { SidePanelSection } from 'components';
 import { useChartTheme } from 'hooks/useChartTheme';
 import { DEFAULT_DECIMAL_PRECISION } from 'map/map.constants';
-import { timeSeriesAggregationSelector } from 'map/orbs/slices/isolation-plus.slice';
+import { isIsoDate } from 'utils/dates';
 
 /** @type {import("typings/orbis").AnalysisPanelComponent<{info?: string, timestampFormat?: string}, import('typings/orbis').PolygonPickedMapFeature>} */
 export const PropertyTimeSeriesChart = ({
@@ -26,7 +27,13 @@ export const PropertyTimeSeriesChart = ({
 }) => {
   const chartTheme = useChartTheme();
 
-  const data = useSelector(state => timeSeriesAggregationSelector(state?.orbs));
+  const data =
+    clickedFeatures?.length > 1
+      ? aggregateTimeSeries(clickedFeatures, selectedProperty)
+      : get(
+          clickedFeatures?.[0],
+          `object.properties.${selectedProperty?.name}`,
+        );
 
   const sharedProps = {
     data,
@@ -68,9 +75,11 @@ export const PropertyTimeSeriesChart = ({
                 {...sharedProps}
                 labelComponent={<VictoryTooltip constrainToVisibleArea />}
                 labels={({ datum }) =>
-                  `${format(new Date(datum.timestamp), timestampFormat)}: ${
-                    datum.value
-                  }`
+                  isIsoDate(datum.timestamp)
+                    ? `${format(new Date(datum.timestamp), timestampFormat)}: ${
+                        datum.value
+                      }`
+                    : ''
                 }
                 size={3}
               />

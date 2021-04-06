@@ -5,13 +5,7 @@ import { centerOfMass } from '@turf/turf';
 
 import { FeatureDetail, Popup } from 'components';
 
-import {
-  clickedFeaturesSelector,
-  setClickedFeatures,
-  setHoveredFeatures,
-  hoveredFeaturesSelector,
-} from '../orbReducer';
-import { toTitleCase } from 'utils/text';
+import { clickedFeaturesSelector, setClickedFeatures } from '../layers.slice';
 import { format } from 'date-fns';
 
 /**
@@ -37,7 +31,7 @@ const RiceDemoPopup = ({ source }) => {
       onClose={() =>
         dispatch(
           setClickedFeatures({
-            source_id: source?.source_id,
+            key: source?.source_id,
             clickedFeatures: [],
           }),
         )

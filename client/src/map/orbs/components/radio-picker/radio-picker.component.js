@@ -1,18 +1,19 @@
 import * as React from 'react';
 
+import { Box } from '@astrosat/astrosat-ui';
+
+import { get } from 'lodash';
 import { useSelector } from 'react-redux';
 
 import { createCategorisationPath } from 'data-layers/categorisation.utils';
 import {
-  propertySelector,
-  setProperty,
-} from '../../slices/isolation-plus.slice';
-
-import { filterValueSelector, setFilterValue } from '../../orbReducer';
-
+  filterValueSelector,
+  otherSelector,
+  setFilterValue,
+  setOther,
+} from '../../layers.slice';
 import { groupProperties } from './helpers/group-properties.js';
 import RadioProperty from './radio-property/radio-property.component';
-import { Box } from '@astrosat/astrosat-ui';
 
 /**
  * @param {{
@@ -21,7 +22,9 @@ import { Box } from '@astrosat/astrosat-ui';
  * }} props
  */
 export const RadioPicker = ({ selectedLayer, dispatch }) => {
-  const selectedProperty = useSelector(state => propertySelector(state?.orbs));
+  const otherStateKey = `${selectedLayer.authority}/${selectedLayer.namespace}`;
+  const other = useSelector(state => otherSelector(otherStateKey)(state?.orbs));
+  const selectedProperty = get(other, 'property');
 
   const filterRange = useSelector(state =>
     filterValueSelector(
@@ -43,7 +46,16 @@ export const RadioPicker = ({ selectedLayer, dispatch }) => {
    */
   const selectProperty = data => {
     dispatch(
-      setProperty(data ? { source_id: selectedLayer?.source_id, ...data } : {}),
+      // setProperty(data ? { source_id: selectedLayer?.source_id, ...data } : {}),
+      setOther({
+        key: otherStateKey,
+        other: {
+          ...other,
+          property: data
+            ? { source_id: selectedLayer?.source_id, ...data }
+            : {},
+        },
+      }),
     );
   };
 
@@ -59,7 +71,7 @@ export const RadioPicker = ({ selectedLayer, dispatch }) => {
             onSliderChange={filterValue =>
               dispatch(
                 setFilterValue({
-                  source_id: `${selectedProperty?.source_id}/${selectedProperty?.name}`,
+                  key: `${selectedProperty?.source_id}/${selectedProperty?.name}`,
                   filterValue,
                 }),
               )

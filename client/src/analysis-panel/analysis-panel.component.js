@@ -14,22 +14,22 @@ import {
   Typography,
 } from '@astrosat/astrosat-ui';
 
-import { ReactComponent as PdfExportIcon } from './pdf-export.svg';
-
 import clsx from 'clsx';
-import { find } from 'lodash';
+import { find, get } from 'lodash';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { SidePanel } from 'components';
 import { activeDataSourcesSelector } from 'data-layers/data-layers.slice';
 import {
   clickedFeaturesSelector,
-  propertySelector,
+  otherSelector,
   setClickedFeatures,
-} from 'map/orbs/slices/isolation-plus.slice';
+} from 'map/orbs/layers.slice';
+import { AnalysisPanelProvider } from './analysis-panel-context';
 import { ClickedFeaturesSummary } from './clicked-features-summary/clicked-features-summary.component';
 import { COMPONENT_MAP } from './component-map';
 import { MoreInformation } from './more-information/more-information.component';
+import { ReactComponent as PdfExportIcon } from './pdf-export.svg';
 import PDF from './pdf-export/pdf-export.component';
 
 const PrimaryDivider = styled(Divider)(({ theme }) => ({
@@ -120,10 +120,10 @@ export const AnalysisPanel = () => {
   const dialogStyles = useDialogStyles();
 
   const dispatch = useDispatch();
-  const clickedFeatures = useSelector(state =>
-    clickedFeaturesSelector(state?.orbs),
+  const other = useSelector(state =>
+    otherSelector('astrosat/isolation_plus')(state?.orbs),
   );
-  const selectedProperty = useSelector(state => propertySelector(state?.orbs));
+  const selectedProperty = get(other, 'property');
   const sources = useSelector(activeDataSourcesSelector);
   const currentSource = React.useMemo(
     () =>
@@ -131,6 +131,9 @@ export const AnalysisPanel = () => {
         source_id: selectedProperty?.source_id,
       }),
     [selectedProperty, sources],
+  );
+  const clickedFeatures = useSelector(state =>
+    clickedFeaturesSelector(selectedProperty?.source_id)(state?.orbs),
   );
   const dataVisualisationComponents =
     selectedProperty?.application?.orbis?.data_visualisation_components;
@@ -164,7 +167,14 @@ export const AnalysisPanel = () => {
             aria-label="Close"
             className={styles.close}
             size="small"
-            onClick={() => dispatch(setClickedFeatures(undefined))}
+            onClick={() =>
+              dispatch(
+                setClickedFeatures({
+                  key: selectedProperty?.source_id,
+                  clickedFeatures: undefined,
+                }),
+              )
+            }
           >
             <CloseIcon titleAccess="Close" fontSize="inherit" />
           </IconButton>
@@ -184,53 +194,62 @@ export const AnalysisPanel = () => {
         </div>
       }
     >
-      <Typography color="primary" className={styles.strapline}>
-        The information below relates to the areas selected on the map.
-      </Typography>
-      <ClickedFeaturesSummary
+      <AnalysisPanelProvider
         clickedFeatures={clickedFeatures}
-        dispatch={dispatch}
-        fallbackProperty={currentSource?.metadata?.index}
-      />
-      <PrimaryDivider />
-      {dataVisualisationComponents?.map(componentDefinition => {
-        const Component = COMPONENT_MAP[componentDefinition.name];
-        return (
-          <>
-            <Component
-              selectedProperty={selectedProperty}
-              clickedFeatures={clickedFeatures}
-              dispatch={dispatch}
-              {...componentDefinition.props}
-            />
-            <PrimaryDivider />
-          </>
-        );
-      })}
-      <MoreInformation
         currentSource={currentSource}
         selectedProperty={selectedProperty}
-      />
-      {!pdfIncompatible && (
-        <Box className={styles.buttonContainer}>
-          <Button className={styles.button} onClick={() => setPdfOpen(true)}>
-            Export PDF Report
-          </Button>
-        </Box>
-      )}
-
-      <Dialog
-        classes={dialogStyles}
-        maxWidth="lg"
-        open={pdfOpen}
-        onClose={() => setPdfOpen(false)}
-        aria-labelledby="pdf-export-dialog"
       >
-        <PDF
-          close={() => setPdfOpen(false)}
-          licence={currentSource?.metadata?.licence}
+        <Typography color="primary" className={styles.strapline}>
+          The information below relates to the areas selected on the map.
+        </Typography>
+        <ClickedFeaturesSummary
+          clickedFeatures={clickedFeatures}
+          selectedProperty={selectedProperty}
+          dispatch={dispatch}
+          currentSource={currentSource}
+          fallbackProperty={currentSource?.metadata?.index}
         />
-      </Dialog>
+        <PrimaryDivider />
+        {dataVisualisationComponents?.map(componentDefinition => {
+          const Component = COMPONENT_MAP[componentDefinition.name];
+          return (
+            <>
+              <Component
+                selectedProperty={selectedProperty}
+                clickedFeatures={clickedFeatures}
+                dispatch={dispatch}
+                {...componentDefinition.props}
+              />
+              <PrimaryDivider />
+            </>
+          );
+        })}
+        <MoreInformation
+          currentSource={currentSource}
+          selectedProperty={selectedProperty}
+        />
+        {!pdfIncompatible && (
+          <Box className={styles.buttonContainer}>
+            <Button className={styles.button} onClick={() => setPdfOpen(true)}>
+              Export PDF Report
+            </Button>
+          </Box>
+        )}
+
+        <Dialog
+          classes={dialogStyles}
+          maxWidth="lg"
+          open={pdfOpen}
+          onClose={() => setPdfOpen(false)}
+          aria-labelledby="pdf-export-dialog"
+        >
+          <PDF
+            selectedProperty={selectedProperty}
+            close={() => setPdfOpen(false)}
+            licence={currentSource?.metadata?.licence}
+          />
+        </Dialog>
+      </AnalysisPanelProvider>
     </SidePanel>
   );
 };

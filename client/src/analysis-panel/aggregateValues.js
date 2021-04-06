@@ -39,7 +39,7 @@ export const aggregateValues = (clickedFeatures, selectedProperty) => {
     );
   }
 
-  return +sumValue?.toFixed(
+  return +sumValue?.toFixed?.(
     selectedProperty.precision || DEFAULT_DECIMAL_PRECISION,
   );
 };

@@ -7,7 +7,7 @@ import {
   ListItemText,
   makeStyles,
 } from '@astrosat/astrosat-ui';
-import { filterValueSelector, setFilterValue } from 'map/orbs/orbReducer';
+import { filterValueSelector, setFilterValue } from 'map/orbs/layers.slice';
 import * as React from 'react';
 import { useSelector } from 'react-redux';
 
@@ -76,7 +76,7 @@ export const CheckboxFilters = ({
       newFilterValue = filterValue.filter(v => v !== value);
     else newFilterValue = [...filterValue, value];
 
-    dispatch(setFilterValue({ source_id, filterValue: newFilterValue }));
+    dispatch(setFilterValue({ key: source_id, filterValue: newFilterValue }));
     return dispatch(
       logProperty(selectedLayer, value, !isPropertyOff(filterValue, value)),
     );

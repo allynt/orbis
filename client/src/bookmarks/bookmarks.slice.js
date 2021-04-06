@@ -21,8 +21,8 @@ const API = {
 
 /**
  * @typedef BookmarksState
- * @property {import('typings/orbis').Bookmark[]} [bookmarks]
- * @property {import('typings/orbis').Bookmark} [selectedBookmark]
+ * @property {import('typings/bookmarks').Bookmark[]} [bookmarks]
+ * @property {import('typings/bookmarks').Bookmark} [selectedBookmark]
  * @property {any} [error]
  * @property {boolean} isLoading
  */

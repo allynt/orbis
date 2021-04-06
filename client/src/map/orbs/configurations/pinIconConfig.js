@@ -5,8 +5,8 @@ import { easeInOutCubic } from 'utils/easingFunctions';
 import {
   setClickedFeatures,
   setHoveredFeatures,
-  layersVisibilitySelector,
-} from '../orbReducer';
+  visibilitySelector,
+} from '../layers.slice';
 
 /**
  * @typedef {import('typings/orbis').PickedMapFeature} PickedMapFeature
@@ -28,14 +28,14 @@ const configuration = ({
   onPointHover,
   onGroupHover,
 }) => {
-  const isVisible = layersVisibilitySelector(id)(orbState);
+  const isVisible = visibilitySelector(id)(orbState);
   /**
    * @param {GeoJsonFeature[]} data
    */
   const defaultClick = data =>
     dispatch(
       setClickedFeatures({
-        source_id: id,
+        key: id,
         clickedFeatures: data,
       }),
     );
@@ -46,7 +46,7 @@ const configuration = ({
   const defaultHover = data =>
     dispatch(
       setHoveredFeatures({
-        source_id: id,
+        key: id,
         hoveredFeatures: data,
       }),
     );

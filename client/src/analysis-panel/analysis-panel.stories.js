@@ -8,6 +8,7 @@ import configureMockStore from 'redux-mock-store';
 const mockStore = configureMockStore([thunk]);
 
 const selectedProperty = {
+  source_id: 'test/layer',
   max: 2677,
   min: 0,
   name: 'people aged 0-17',
@@ -111,8 +112,23 @@ const clickedFeatures = [
 
 export default { title: 'Analysis Panel/Main' };
 
-const Template = ({ state, ...args }) => (
-  <Provider store={mockStore(state)}>
+const Template = ({ clickedFeatures, selectedProperty }) => (
+  <Provider
+    store={mockStore({
+      orbs: {
+        layers: {
+          'astrosat/isolation_plus': {
+            other: {
+              property: selectedProperty,
+            },
+          },
+          'test/layer': {
+            clickedFeatures,
+          },
+        },
+      },
+    })}
+  >
     <MapProvider>
       <div style={{ marginLeft: 'calc(100% - 20rem)' }}>
         <AnalysisPanel />
@@ -123,58 +139,12 @@ const Template = ({ state, ...args }) => (
 
 export const Default = Template.bind({});
 Default.args = {
-  state: {
-    orbs: {
-      isolationPlus: {
-        property: selectedProperty,
-        clickedFeatures,
-      },
-    },
-  },
+  selectedProperty,
+  clickedFeatures,
 };
 
 export const NoPdfExport = Template.bind({});
 NoPdfExport.args = {
-  state: {
-    orbs: {
-      isolationPlus: {
-        property: {
-          ...selectedProperty,
-          name: 'fruit',
-          type: 'discrete',
-          application: {
-            ...selectedProperty.application,
-            orbis: {
-              ...selectedProperty.application.orbis,
-              data_visualisation_components: [
-                { name: 'CategoryBreakdownChart' },
-              ],
-            },
-          },
-          categories: {
-            '0-17': { color: '#8db600' },
-            '65+': { color: '#ffff00' },
-          },
-        },
-        clickedFeatures: [
-          {
-            object: {
-              properties: {
-                area_name: 'Highland',
-                fruit: '0-17',
-              },
-            },
-          },
-          {
-            object: {
-              properties: {
-                area_name: 'Lothian',
-                fruit: '65+',
-              },
-            },
-          },
-        ],
-      },
-    },
-  },
+  selectedProperty: { ...selectedProperty, type: 'discrete' },
+  clickedFeatures,
 };

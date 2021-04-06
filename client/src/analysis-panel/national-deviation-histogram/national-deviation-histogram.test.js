@@ -1,13 +1,10 @@
 import * as React from 'react';
-import { render, waitFor } from '@testing-library/react';
 
-import { Provider } from 'react-redux';
-import configureMockStore from 'redux-mock-store';
+import { render } from '@testing-library/react';
 
 import { NationalDeviationHistogram } from './national-deviation-histogram.component';
 import userEvent from '@testing-library/user-event';
-
-const mockStore = configureMockStore();
+import { AnalysisPanelProvider } from 'analysis-panel/analysis-panel-context';
 
 const DEFAULT_PROPERTY = {
     label: 'hello',
@@ -17,67 +14,12 @@ const DEFAULT_PROPERTY = {
     aggregates: { GB: 123, Scotland: 456 },
   };
 
-const renderComponent = property => {
-  const store = mockStore({
-    orbs: {
-      isolationPlus: {
-        property,
-      },
-    },
-  });
-
-  const utils = render(
-    <Provider store={store}>
-      <NationalDeviationHistogram
-        selectedProperty={property}
-        data={[
-          {
-            x: 134,
-            y: 15015,
-          },
-          {
-            x: 402,
-            y: 23278,
-          },
-          {
-            x: 670,
-            y: 2953,
-          },
-          {
-            x: 938,
-            y: 383,
-          },
-          {
-            x: 1206,
-            y: 70,
-          },
-          {
-            x: 1474,
-            y: 18,
-          },
-          {
-            x: 1742,
-            y: 8,
-          },
-          {
-            x: 2010,
-            y: 2,
-          },
-          {
-            x: 2278,
-            y: 1,
-          },
-          {
-            x: 2546,
-            y: 1,
-          },
-        ]}
-      />
-    </Provider>,
+const renderComponent = property =>
+  render(
+    <AnalysisPanelProvider>
+      <NationalDeviationHistogram selectedProperty={property} />
+    </AnalysisPanelProvider>,
   );
-
-  return { ...utils };
-};
 
 const AGGREGATION_AREA = ['button', { name: /aggregation\sarea/i }];
 

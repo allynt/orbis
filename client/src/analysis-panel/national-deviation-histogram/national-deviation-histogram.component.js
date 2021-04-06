@@ -2,10 +2,8 @@ import React from 'react';
 
 import { Box, Grid, Typography } from '@astrosat/astrosat-ui';
 
-import { useSelector } from 'react-redux';
-
+import { useAnalysisPanelContext } from 'analysis-panel/analysis-panel-context';
 import { SidePanelSection } from 'components';
-import { aggregationSelector } from 'map/orbs/slices/isolation-plus.slice';
 import { Aggregates } from './aggregates.component';
 import { AreaValue } from './area-value.component';
 import { Histogram } from './histogram.component';
@@ -29,7 +27,7 @@ export const NationalDeviationHistogram = ({
   const aggregationLabel =
     selectedProperty?.aggregation === 'sum' ? 'Sum' : 'Average';
 
-  const areaValue = useSelector(state => aggregationSelector(state?.orbs));
+  const { areaValue } = useAnalysisPanelContext();
 
   return (
     <SidePanelSection defaultExpanded title="Selected Data Layer" info={info}>

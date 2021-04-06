@@ -1,19 +1,18 @@
 import { DataFilterExtension } from '@deck.gl/extensions';
 import { find, get } from 'lodash';
+
 import { getColorScaleForProperty } from 'utils/color';
 import { isRealValue } from 'utils/isRealValue';
 import {
+  addClickedFeatures,
+  clickedFeaturesSelector,
   extrudedModeSelector,
   extrusionScaleSelector,
   filterValueSelector,
-} from '../orbReducer';
-import {
-  addClickedFeatures,
-  clickedFeaturesSelector,
-  propertySelector,
+  otherSelector,
   removeClickedFeatures,
   setClickedFeatures,
-} from '../slices/isolation-plus.slice';
+} from '../layers.slice';
 
 /** @typedef {import('typings/orbis').GeoJsonFeature<import('typings/orbis').IsoPlusCommonProperties>} AccessorFeature */
 
@@ -60,10 +59,12 @@ const configuration = ({
   orbState,
   authToken,
 }) => {
-  const selectedProperty = propertySelector(orbState);
-  if (selectedProperty.source_id !== id) return undefined;
-
   const source = activeSources?.find(source => source.source_id === id);
+  const other = otherSelector(`${source.authority}/${source.namespace}`)(
+    orbState,
+  );
+  const selectedProperty = get(other, 'property');
+  if (selectedProperty?.source_id !== id) return undefined;
 
   const filterRange = filterValueSelector(
     `${selectedProperty?.source_id}/${selectedProperty?.name}`,
@@ -71,7 +72,7 @@ const configuration = ({
 
   const extrudedMode = extrudedModeSelector(orbState);
   const extrusionScale = extrusionScaleSelector(orbState);
-  const clickedFeatures = clickedFeaturesSelector(orbState);
+  const clickedFeatures = clickedFeaturesSelector(id)(orbState);
   const selectedPropertyMetadata = source?.metadata?.properties?.find(
     property => property.name === selectedProperty.name,
   );
@@ -137,18 +138,22 @@ const configuration = ({
   const onClick = (info, event) => {
     /* recreating info as a pure JSON object */
     /* rather than an object w/ nested classes */
-    const payload = [
-      {
-        index: info.index,
-        object: info.object,
-        layer: {
-          id: info.layer.id,
-          props: {
-            uniqueIdProperty: info.layer.props.uniqueIdProperty,
+    const payload = {
+      key: id,
+      uniquePropertyPath: `object.properties.${info.layer.props.uniqueIdProperty}`,
+      clickedFeatures: [
+        {
+          index: info.index,
+          object: info.object,
+          layer: {
+            id: info.layer.id,
+            props: {
+              uniqueIdProperty: info.layer.props.uniqueIdProperty,
+            },
           },
         },
-      },
-    ];
+      ],
+    };
     const hasModifier = event.srcEvent.ctrlKey || event.srcEvent.metaKey;
     if (
       !clickedFeatures?.find(

@@ -6,7 +6,7 @@ import {
   clickedFeaturesSelector,
   hoveredFeaturesSelector,
   setClickedFeatures,
-} from '../orbReducer';
+} from '../layers.slice';
 import { MySupplyLynkDialog } from './mysupplylynk-dialog/dialog.component';
 import MySupplyLynkFeatureDetail from './mysupplylynk-feature-detail/mysupplylynk-feature-detail.component';
 
@@ -33,7 +33,7 @@ const MySupplyLynkMapComponent = ({ source, type }) => {
       if (!dialogFeature)
         dispatch(
           setClickedFeatures({
-            source_id: source.source_id,
+            key: source.source_id,
             clickedFeatures: undefined,
           }),
         );
@@ -98,7 +98,7 @@ const MySupplyLynkMapComponent = ({ source, type }) => {
           onClose={() =>
             dispatch(
               setClickedFeatures({
-                source_id: source?.source_id,
+                key: source?.source_id,
                 clickedFeatures: undefined,
               }),
             )

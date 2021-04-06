@@ -1,15 +1,14 @@
-import * as React from 'react';
+import React from 'react';
 
 import { Grid } from '@astrosat/astrosat-ui';
 
 import { ParentSize } from '@visx/responsive';
-import { useSelector } from 'react-redux';
 import { VictoryPie } from 'victory';
 
 import { LegendItem, SidePanelSection } from 'components';
 import { useChartTheme } from 'hooks/useChartTheme';
 import { DEFAULT_DECIMAL_PRECISION } from 'map/map.constants';
-import { breakdownAggregationSelector } from 'map/orbs/slices/isolation-plus.slice';
+import { useAnalysisPanelContext } from 'analysis-panel/analysis-panel-context';
 
 /**
  *
@@ -22,7 +21,7 @@ import { breakdownAggregationSelector } from 'map/orbs/slices/isolation-plus.sli
 export const PropertyBreakdownChart = ({ selectedProperty, info }) => {
   const { colors, ...chartTheme } = useChartTheme();
 
-  const breakdownAggregation = useSelector(breakdownAggregationSelector);
+  const { breakdownAggregation } = useAnalysisPanelContext();
 
   if (!breakdownAggregation?.length) return null;
   return (

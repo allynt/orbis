@@ -2,18 +2,18 @@ import React from 'react';
 import { Button } from '@astrosat/astrosat-ui';
 import { Visibility, VisibilityOff } from '@material-ui/icons';
 import { useDispatch, useSelector } from 'react-redux';
-import { layersVisibilitySelector, setVisibility } from '../orbReducer';
+import { visibilitySelector, setVisibility } from '../layers.slice';
 
 /** @type {import("typings/orbis").SidebarComponent} */
 export default ({ selectedLayer }) => {
   const dispatch = useDispatch();
   const visible = useSelector(state =>
-    layersVisibilitySelector(selectedLayer.source_id)(state?.orbs),
+    visibilitySelector(selectedLayer.source_id)(state?.orbs),
   );
 
   const handleClick = () => {
     dispatch(
-      setVisibility({ source_id: selectedLayer.source_id, visible: !visible }),
+      setVisibility({ key: selectedLayer.source_id, visible: !visible }),
     );
   };
 
