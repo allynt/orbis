@@ -68,9 +68,14 @@ export const AnalysisPanelProvider = ({
             console.error(
               `Latest timestamp for property ${breakdownPropertyName} and ${selectedProperty.name} do not match`,
             );
-            return { value: 0, name: breakdownPropertyName };
           }
-          const value = aggregateValues(clickedFeatures, breakdownProperty);
+          const value = aggregateValues(
+            clickedFeatures,
+            breakdownProperty ?? {
+              ...selectedProperty,
+              name: breakdownPropertyName,
+            },
+          );
           return {
             value,
             name: breakdownPropertyName,
