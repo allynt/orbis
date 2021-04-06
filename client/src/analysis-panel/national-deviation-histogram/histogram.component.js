@@ -14,7 +14,6 @@ import {
   VictoryGroup,
   VictoryLine,
   VictoryScatter,
-  VictoryZoomContainer,
 } from 'victory';
 
 import { useChartTheme } from 'hooks/useChartTheme';
@@ -103,12 +102,6 @@ export const Histogram = ({
               padding={padding}
               domainPadding={{ x: width / data.length }}
               scale={{ y: scale }}
-              containerComponent={
-                <VictoryZoomContainer
-                  style={{ cursor: 'grab' }}
-                  zoomDimension="x"
-                />
-              }
             >
               <VictoryAxis
                 fixLabelOverlap
@@ -163,7 +156,7 @@ export const Histogram = ({
                   />
                   <VictoryScatter
                     dataComponent={<OffsetPoint />}
-                    size={20}
+                    size={5}
                     style={{
                       data: {
                         fill: orbisChartTheme.scatter.style.data.stroke,
