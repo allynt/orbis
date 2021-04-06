@@ -3,11 +3,13 @@ import React, { useEffect } from 'react';
 import {
   Button,
   Container,
+  Fade,
   makeStyles,
   ThemeProvider,
   useMediaQuery,
 } from '@astrosat/astrosat-ui';
 
+import ProgressiveImage from 'react-progressive-image-loading';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link as RouterLink, useHistory } from 'react-router-dom';
 
@@ -23,21 +25,25 @@ import {
   selectPollingPeriod,
 } from 'data-layers/data-layers.slice';
 import backgroundImage from './landing-image.png';
+import backgroundImagePlaceholder from './landing-image-placeholder.png';
 import { NoBookmarksLanding } from './no-bookmarks-landing/no-bookmarks-landing.component';
 
 const useStyles = makeStyles(theme => ({
-  background: {
+  page: {
     width: '100vw',
     height: '100vh',
-    backgroundImage: props =>
-      props.hasBookmarks ? '' : `url(${backgroundImage})`,
-    backgroundColor: props =>
-      props.hasBookmarks ? theme.palette.common.white : '',
-    backgroundSize: 'cover',
-    backgroundPosition: 'center right',
     overflow: 'hidden',
   },
+  background: {
+    position: 'absolute',
+    width: '100%',
+    height: '100%',
+    zIndex: 0,
+    backgroundSize: 'cover',
+    backgroundPosition: 'center right',
+  },
   container: {
+    zIndex: 1,
     paddingTop: theme.spacing(4),
     paddingBottom: theme.spacing(4),
     height: '100%',
@@ -52,8 +58,10 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
+    zIndex: 2,
   },
   logo: {
+    zIndex: 2,
     height: theme.typography.pxToRem(80),
   },
   link: {
@@ -101,7 +109,23 @@ const Landing = () => {
 
   return (
     <ThemeProvider theme={hasBookmarks ? 'light' : 'dark'}>
-      <div className={styles.background}>
+      <div className={styles.page}>
+        <ProgressiveImage
+          preview={backgroundImagePlaceholder}
+          src={backgroundImage}
+          render={(src, style) => (
+            <Fade in={!hasBookmarks}>
+              <div
+                className={styles.background}
+                style={{
+                  ...style,
+                  backgroundImage: `url(${src})`,
+                }}
+              />
+            </Fade>
+          )}
+        />
+
         <Container
           className={styles.container}
           maxWidth={greaterThan1920 ? 'xl' : 'lg'}
