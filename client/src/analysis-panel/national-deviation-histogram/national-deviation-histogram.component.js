@@ -1,26 +1,12 @@
-import React, { useState } from 'react';
+import React from 'react';
 
-import {
-  Box,
-  Grid,
-  makeStyles,
-  MenuItem,
-  Select,
-  Typography,
-} from '@astrosat/astrosat-ui';
+import { Box, Grid, Typography } from '@astrosat/astrosat-ui';
 
 import { useAnalysisPanelContext } from 'analysis-panel/analysis-panel-context';
 import { SidePanelSection } from 'components';
+import { Aggregates } from './aggregates.component';
+import { AreaValue } from './area-value.component';
 import { Histogram } from './histogram.component';
-
-const useStyles = makeStyles(theme => ({
-  italic: {
-    fontStyle: 'italic',
-  },
-  select: {
-    padding: theme.spacing(1),
-  },
-}));
 
 /**
  * @typedef {{
@@ -38,9 +24,6 @@ export const NationalDeviationHistogram = ({
   data = [],
   info,
 }) => {
-  const [selectedAggregateArea, setSelectedAggregateArea] = useState('GB');
-  const styles = useStyles();
-
   const aggregationLabel =
     selectedProperty?.aggregation === 'sum' ? 'Sum' : 'Average';
 
@@ -66,62 +49,17 @@ export const NationalDeviationHistogram = ({
         ) : null}
         <Grid container spacing={1} alignItems="center">
           {clickedFeatures?.length && (
-            <>
-              <Grid item>
-                <Typography
-                  className={styles.italic}
-                  variant="h4"
-                  component="p"
-                  color="primary"
-                >
-                  {clickedFeatures?.length > 1 ? aggregationLabel : 'Value'} of
-                  selected area{clickedFeatures?.length > 1 ? 's' : ''}:
-                </Typography>
-              </Grid>
-
-              <Grid item>
-                <Typography className={styles.italic} color="primary">
-                  {areaValue}
-                </Typography>
-              </Grid>
-            </>
+            <AreaValue
+              value={areaValue}
+              aggregated={clickedFeatures.length > 1}
+              aggregationLabel={aggregationLabel}
+            />
           )}
           {!!selectedProperty?.aggregates && (
-            <>
-              <Grid item>
-                <Typography variant="h4" component="p">
-                  {aggregationLabel} of all areas in
-                </Typography>
-              </Grid>
-
-              <Grid item>
-                <Select
-                  classes={{
-                    select: styles.select,
-                  }}
-                  fullWidth={false}
-                  inputProps={{ 'aria-label': 'Aggregation Area' }}
-                  value={selectedAggregateArea}
-                  onChange={e => setSelectedAggregateArea(e.target.value)}
-                >
-                  {Object.keys(selectedProperty.aggregates).map(area => (
-                    <MenuItem key={area} value={area}>
-                      {area}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </Grid>
-
-              <Grid item>
-                <Typography>:</Typography>
-              </Grid>
-
-              <Grid item>
-                <Typography>
-                  {selectedProperty?.aggregates?.[selectedAggregateArea]}
-                </Typography>
-              </Grid>
-            </>
+            <Aggregates
+              aggregates={selectedProperty?.aggregates}
+              aggregationLabel={aggregationLabel}
+            />
           )}
         </Grid>
       </Box>

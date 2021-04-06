@@ -16,7 +16,7 @@ const DEFAULT_PROPERTY = {
 
 const renderComponent = property =>
   render(
-    <AnalysisPanelProvider value={property}>
+    <AnalysisPanelProvider>
       <NationalDeviationHistogram selectedProperty={property} />
     </AnalysisPanelProvider>,
   );
