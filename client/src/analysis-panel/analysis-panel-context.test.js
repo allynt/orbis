@@ -297,6 +297,7 @@ describe('AnalysisPanelContext', () => {
       expect(console.error).toHaveBeenCalled();
       expect(result.current.breakdownAggregation).toEqual([
         { name: name1, value: 23 },
+        { name: name2, value: 5 },
       ]);
     });
   });
