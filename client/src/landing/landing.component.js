@@ -3,6 +3,7 @@ import React, { useEffect } from 'react';
 import {
   Button,
   Container,
+  Fade,
   makeStyles,
   ThemeProvider,
   useMediaQuery,
@@ -109,11 +110,11 @@ const Landing = () => {
   return (
     <ThemeProvider theme={hasBookmarks ? 'light' : 'dark'}>
       <div className={styles.page}>
-        {!hasBookmarks ? (
-          <ProgressiveImage
-            preview={backgroundImagePlaceholder}
-            src={backgroundImage}
-            render={(src, style) => (
+        <ProgressiveImage
+          preview={backgroundImagePlaceholder}
+          src={backgroundImage}
+          render={(src, style) => (
+            <Fade in={!hasBookmarks}>
               <div
                 className={styles.background}
                 style={{
@@ -121,9 +122,10 @@ const Landing = () => {
                   backgroundImage: `url(${src})`,
                 }}
               />
-            )}
-          />
-        ) : null}
+            </Fade>
+          )}
+        />
+
         <Container
           className={styles.container}
           maxWidth={greaterThan1920 ? 'xl' : 'lg'}
