@@ -8,6 +8,8 @@ import {
   ThemeProvider,
 } from '@astrosat/astrosat-ui';
 import background from './background.png';
+import placeholder from './background-placeholder.png';
+import ProgressiveImage from 'react-progressive-image-loading';
 
 const useStyles = makeStyles(theme => ({
   page: {
@@ -16,7 +18,14 @@ const useStyles = makeStyles(theme => ({
     width: '100%',
     height: '100vh',
     padding: theme.spacing(4),
-    background: `url(${background})`,
+  },
+  background: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    zIndex: 0,
+    width: '100%',
+    height: '100%',
     backgroundSize: 'cover',
   },
   container: {
@@ -25,6 +34,7 @@ const useStyles = makeStyles(theme => ({
     overflowY: 'auto',
     padding: theme.spacing(4, 12, 4),
     borderRadius: theme.shape.borderRadius * 3,
+    zIndex: 1,
   },
   logo: {
     width: '11.5rem',
@@ -37,6 +47,19 @@ const Wrapper = ({ children }) => {
   const styles = useStyles();
   return (
     <ThemeProvider theme="light">
+      <ProgressiveImage
+        preview={placeholder}
+        src={background}
+        render={(src, style) => (
+          <div
+            className={styles.background}
+            style={{
+              ...style,
+              backgroundImage: `url(${src})`,
+            }}
+          />
+        )}
+      />
       <div className={styles.page}>
         <Paper
           elevation={20}
