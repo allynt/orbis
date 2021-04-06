@@ -31,7 +31,7 @@ const WrappingLabel = props => (
  * @param {import('victory').PointProps} props
  */
 const OffsetPoint = props => {
-  return <Point {...props} y={props.y - +props.size} />;
+  return <Point {...props} y={props.y - +props.size / 2} />;
 };
 
 const useStyles = makeStyles(theme => ({
@@ -163,7 +163,7 @@ export const Histogram = ({
                   />
                   <VictoryScatter
                     dataComponent={<OffsetPoint />}
-                    size={5}
+                    size={20}
                     style={{
                       data: {
                         fill: orbisChartTheme.scatter.style.data.stroke,
