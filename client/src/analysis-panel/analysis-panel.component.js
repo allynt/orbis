@@ -124,6 +124,13 @@ export const AnalysisPanel = () => {
     otherSelector('astrosat/isolation_plus')(state?.orbs),
   );
   const selectedProperty = get(other, 'property');
+  const propertyOther = useSelector(state =>
+    otherSelector(`${selectedProperty?.source_id}/${selectedProperty?.name}`)(
+      state?.orbs,
+    ),
+  );
+  const selectedTimestamp = get(propertyOther, 'timestamp');
+  console.log(selectedTimestamp);
   const sources = useSelector(activeDataSourcesSelector);
   const currentSource = React.useMemo(
     () =>
@@ -198,6 +205,9 @@ export const AnalysisPanel = () => {
         clickedFeatures={clickedFeatures}
         currentSource={currentSource}
         selectedProperty={selectedProperty}
+        selectedTimestamp={
+          selectedTimestamp && new Date(selectedTimestamp).toISOString()
+        }
       >
         <Typography color="primary" className={styles.strapline}>
           The information below relates to the areas selected on the map.

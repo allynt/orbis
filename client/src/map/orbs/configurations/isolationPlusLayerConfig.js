@@ -40,10 +40,11 @@ export const getValue = (
   selectedTimestamp = selectedProperty.timeseries_latest_timestamp,
 ) =>
   selectedProperty.timeseries
-    ? find(feature.properties[selectedProperty.name], [
-        'timestamp',
-        selectedTimestamp,
-      ]).value
+    ? find(
+        feature.properties[selectedProperty.name],
+        ({ timestamp }) =>
+          new Date(timestamp).toISOString() === selectedTimestamp,
+      )?.value
     : get(feature.properties, selectedProperty.name);
 
 /**
@@ -70,6 +71,17 @@ const configuration = ({
   );
   const selectedProperty = get(other, 'property');
   if (selectedProperty?.source_id !== id) return undefined;
+
+  const propertyOther = otherSelector(
+    `${selectedProperty?.source_id}/${selectedProperty?.name}`,
+  )(orbState);
+  const selectedTimestamp = new Date(
+    get(
+      propertyOther,
+      'timestamp',
+      selectedProperty.timeseries_latest_timestamp,
+    ),
+  ).toISOString();
 
   const filterRange = filterValueSelector(
     `${selectedProperty?.source_id}/${selectedProperty?.name}`,
@@ -102,7 +114,7 @@ const configuration = ({
    */
   const getElevation = d => {
     if (extrudedMode && (!anySelected || (anySelected && isSelected(d))))
-      return getValue(d, selectedProperty);
+      return getValue(d, selectedProperty, selectedTimestamp);
     return 0;
   };
 
@@ -132,7 +144,7 @@ const configuration = ({
     if (!isRealValue(d.properties[selectedProperty.name]))
       return COLOR_TRANSPARENT;
     const color = /** @type {[number,number,number]} */ (colorScale &&
-      colorScale.get(getValue(d, selectedProperty)));
+      colorScale.get(getValue(d, selectedProperty, selectedTimestamp)));
     return [...color, getFillOpacity(d)];
   };
 
@@ -184,14 +196,14 @@ const configuration = ({
    * @param {AccessorFeature} d
    */
   const getFilterValue = d =>
-    getValue(d, selectedProperty) * FILTER_SCALING_VALUE;
+    getValue(d, selectedProperty, selectedTimestamp) * FILTER_SCALING_VALUE;
 
   const transitions = {
       getFillColor: TRANSITION_DURATION,
       getLineWidth: TRANSITION_DURATION,
     },
     updateTriggers = {
-      getFillColor: [selectedProperty, clickedFeatures],
+      getFillColor: [selectedProperty, clickedFeatures, selectedTimestamp],
       getLineWidth: [clickedFeatures],
     };
 
@@ -220,8 +232,13 @@ const configuration = ({
           updateTriggers: {
             ...updateTriggers,
             getFillColor: [...updateTriggers.getFillColor, extrudedMode],
-            getFilterValue: [selectedProperty],
-            getElevation: [extrudedMode, clickedFeatures, selectedProperty],
+            getFilterValue: [selectedProperty, selectedTimestamp],
+            getElevation: [
+              extrudedMode,
+              clickedFeatures,
+              selectedProperty,
+              selectedTimestamp,
+            ],
           },
         };
 

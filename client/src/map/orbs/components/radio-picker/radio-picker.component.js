@@ -25,6 +25,12 @@ export const RadioPicker = ({ selectedLayer, dispatch }) => {
   const otherStateKey = `${selectedLayer.authority}/${selectedLayer.namespace}`;
   const other = useSelector(state => otherSelector(otherStateKey)(state?.orbs));
   const selectedProperty = get(other, 'property');
+  const propertyOther = useSelector(state =>
+    otherSelector(`${selectedProperty?.source_id}/${selectedProperty?.name}`)(
+      state?.orbs,
+    ),
+  );
+  const selectedTimestamp = get(propertyOther, 'timestamp');
 
   const filterRange = useSelector(state =>
     filterValueSelector(
@@ -80,6 +86,15 @@ export const RadioPicker = ({ selectedLayer, dispatch }) => {
             colorScheme={colorScheme}
             filterRange={filterRange}
             categoryPath={categoryPath}
+            onDateChange={(_, date) =>
+              dispatch(
+                setOther({
+                  key: `${selectedProperty?.source_id}/${selectedProperty?.name}`,
+                  other: { ...propertyOther, timestamp: date },
+                }),
+              )
+            }
+            selectedTimestamp={selectedTimestamp}
           />
         </React.Fragment>
       ))}

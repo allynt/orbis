@@ -31,6 +31,7 @@ export const AnalysisPanelProvider = ({
   selectedTimestamp,
   children,
 }) => {
+  console.log(selectedTimestamp);
   const areasOfInterest = useMemo(() => {
     const areas = clickedFeatures?.map(
       feat => feat.object.properties.area_name,
@@ -51,8 +52,8 @@ export const AnalysisPanelProvider = ({
   );
 
   const areaValue = useMemo(
-    () => aggregateValues(clickedFeatures, selectedProperty),
-    [clickedFeatures, selectedProperty],
+    () => aggregateValues(clickedFeatures, selectedProperty, selectedTimestamp),
+    [clickedFeatures, selectedProperty, selectedTimestamp],
   );
 
   const breakdownAggregation = useMemo(

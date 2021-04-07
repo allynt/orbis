@@ -12,7 +12,7 @@ import { DEFAULT_DECIMAL_PRECISION } from '../map/map.constants';
 export const aggregateValues = (
   clickedFeatures,
   selectedProperty,
-  selectedTimestamp = selectedProperty?.timeseries_latest_timestamp,
+  selectedTimestamp,
 ) => {
   if (!clickedFeatures || !selectedProperty) return 0;
   if (
@@ -30,10 +30,16 @@ export const aggregateValues = (
     clickedFeatures,
     selectedProperty.timeseries
       ? clickedFeature =>
-          find(clickedFeature.object.properties[selectedProperty.name], [
-            'timestamp',
-            selectedTimestamp,
-          ]).value
+          find(
+            clickedFeature.object.properties[selectedProperty.name],
+            ({ timestamp }) =>
+              !!selectedTimestamp
+                ? new Date(timestamp).toISOString() === selectedTimestamp
+                : new Date(timestamp).toISOString() ===
+                  new Date(
+                    selectedProperty?.timeseries_latest_timestamp,
+                  ).toISOString(),
+          )?.value
       : `object.properties.${selectedProperty.name}`,
   );
 

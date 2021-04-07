@@ -15,6 +15,7 @@ import clsx from 'clsx';
 import { InfoButtonTooltip, ColorMapRangeSlider } from 'components';
 import { FORMAT } from '../radio-picker-constants';
 import { DiscretePropertyLegend } from '../discrete-property-legend/discrete-property-legend.component';
+import { DateStepper } from '../../date-stepper/date-stepper.component';
 
 const useStyles = makeStyles(theme => ({
   property: {
@@ -55,6 +56,8 @@ const RadioProperty = ({
   layerSourceId,
   data,
   onPropertyChange,
+  onDateChange,
+  selectedTimestamp,
   onSliderChange,
   selectedProperty,
   colorScheme,
@@ -144,6 +147,26 @@ const RadioProperty = ({
             </>
           )}
           <div className={styles.fullGrid}>
+            {selectedProperty.timeseries ? (
+              <DateStepper
+                dates={selectedProperty.timeseries_timestamps.map(
+                  timestamp => ({ value: new Date(timestamp).getTime() }),
+                )}
+                defaultValue={new Date(
+                  selectedProperty.timeseries_latest_timestamp,
+                ).getTime()}
+                min={new Date(
+                  selectedProperty.timeseries_timestamps[0],
+                ).getTime()}
+                max={new Date(
+                  selectedProperty.timeseries_timestamps[
+                    selectedProperty.timeseries_timestamps.length - 1
+                  ],
+                ).getTime()}
+                onChange={onDateChange}
+                value={selectedTimestamp}
+              />
+            ) : null}
             {selectedProperty.type === 'discrete' ? (
               <DiscretePropertyLegend property={selectedProperty} />
             ) : (
