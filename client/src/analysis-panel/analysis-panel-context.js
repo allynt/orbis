@@ -20,7 +20,7 @@ AnalysisPanelContext.displayName = 'AnalysisPanelContext';
  *  clickedFeatures: import('typings/orbis').PolygonPickedMapFeature[]
  *  currentSource: import('typings/orbis').Source
  *  selectedProperty: import('typings/orbis').Property & {source_id: string}
- *  selectedTimestamp?: string
+ *  selectedTimestamp?: number
  *  children: React.ReactNode
  * }} props
  */
@@ -31,7 +31,6 @@ export const AnalysisPanelProvider = ({
   selectedTimestamp,
   children,
 }) => {
-  console.log(selectedTimestamp);
   const areasOfInterest = useMemo(() => {
     const areas = clickedFeatures?.map(
       feat => feat.object.properties.area_name,

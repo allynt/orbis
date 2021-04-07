@@ -130,7 +130,6 @@ export const AnalysisPanel = () => {
     ),
   );
   const selectedTimestamp = get(propertyOther, 'timestamp');
-  console.log(selectedTimestamp);
   const sources = useSelector(activeDataSourcesSelector);
   const currentSource = React.useMemo(
     () =>
@@ -205,9 +204,7 @@ export const AnalysisPanel = () => {
         clickedFeatures={clickedFeatures}
         currentSource={currentSource}
         selectedProperty={selectedProperty}
-        selectedTimestamp={
-          selectedTimestamp && new Date(selectedTimestamp).toISOString()
-        }
+        selectedTimestamp={selectedTimestamp}
       >
         <Typography color="primary" className={styles.strapline}>
           The information below relates to the areas selected on the map.

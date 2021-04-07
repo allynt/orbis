@@ -184,7 +184,7 @@ describe('AnalysisPanelContext', () => {
       const name1 = 'people in 0-17',
         name2 = 'people in 18-39',
         timeseries_latest_timestamp = '2020-02-01T00:00:00Z',
-        selectedTimestamp = '2020-02-03T00:00:00Z',
+        selectedTimestamp = new Date('2020-02-03T00:00:00Z').getTime(),
         source_id = 'test/source',
         currentSource = {
           source_id,

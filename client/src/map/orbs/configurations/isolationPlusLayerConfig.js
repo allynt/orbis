@@ -32,19 +32,17 @@ export const COLOR_PRIMARY = [246, 190, 0, 255],
 /**
  * @param {import('typings/orbis').GeoJsonFeature} feature
  * @param {import('typings/orbis').Property} selectedProperty
- * @param {string} selectedTimestamp
+ * @param {number} [selectedTimestamp]
  */
-export const getValue = (
-  feature,
-  selectedProperty,
-  selectedTimestamp = selectedProperty.timeseries_latest_timestamp,
-) =>
+export const getValue = (feature, selectedProperty, selectedTimestamp) =>
   selectedProperty.timeseries
-    ? find(
-        feature.properties[selectedProperty.name],
-        ({ timestamp }) =>
-          new Date(timestamp).toISOString() === selectedTimestamp,
-      )?.value
+    ? find(feature.properties[selectedProperty.name], ({ timestamp }) => {
+        const date = new Date(timestamp).getTime();
+        return !!selectedTimestamp
+          ? date === selectedTimestamp
+          : date ===
+              new Date(selectedProperty.timeseries_latest_timestamp).getTime();
+      })?.value
     : get(feature.properties, selectedProperty.name);
 
 /**
@@ -75,13 +73,7 @@ const configuration = ({
   const propertyOther = otherSelector(
     `${selectedProperty?.source_id}/${selectedProperty?.name}`,
   )(orbState);
-  const selectedTimestamp = new Date(
-    get(
-      propertyOther,
-      'timestamp',
-      selectedProperty.timeseries_latest_timestamp,
-    ),
-  ).toISOString();
+  const selectedTimestamp = get(propertyOther, 'timestamp');
 
   const filterRange = filterValueSelector(
     `${selectedProperty?.source_id}/${selectedProperty?.name}`,

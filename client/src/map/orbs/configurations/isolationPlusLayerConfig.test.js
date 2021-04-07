@@ -295,12 +295,12 @@ describe('isolationPlusLayerConfig', () => {
           properties: {
             test: [
               { timestamp: '123', value: 'nope' },
-              { timestamp: '456', value: 'hi' },
+              { timestamp: new Date(2020, 1, 1).toISOString(), value: 'hi' },
             ],
           },
         },
         { name: 'test', timeseries: true, timeseries_latest_timestamp: '123' },
-        '456',
+        new Date(2020, 1, 1).getTime(),
       );
       expect(result).toBe('hi');
     });

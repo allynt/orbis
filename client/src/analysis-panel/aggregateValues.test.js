@@ -198,7 +198,7 @@ describe('aggregateValues', () => {
     const result = aggregateValues(
       clickedFeatures,
       selectedProperty,
-      '2021-02-18T00:00:00.000Z',
+      new Date('2021-02-18T00:00:00.000Z').getTime(),
     );
     expect(result).toBe(654 + 78 + 35464);
   });
