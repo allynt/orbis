@@ -12,6 +12,7 @@ import {
   otherSelector,
   removeClickedFeatures,
   setClickedFeatures,
+  timestampSelector,
 } from '../layers.slice';
 
 /** @typedef {import('typings/orbis').GeoJsonFeature<import('typings/orbis').IsoPlusCommonProperties>} AccessorFeature */
@@ -70,14 +71,10 @@ const configuration = ({
   const selectedProperty = get(other, 'property');
   if (selectedProperty?.source_id !== id) return undefined;
 
-  const propertyOther = otherSelector(
-    `${selectedProperty?.source_id}/${selectedProperty?.name}`,
-  )(orbState);
-  const selectedTimestamp = get(propertyOther, 'timestamp');
+  const propertyStateKey = `${selectedProperty?.source_id}/${selectedProperty?.name}`;
+  const selectedTimestamp = timestampSelector(propertyStateKey)(orbState);
 
-  const filterRange = filterValueSelector(
-    `${selectedProperty?.source_id}/${selectedProperty?.name}`,
-  )(orbState);
+  const filterRange = filterValueSelector(propertyStateKey)(orbState);
 
   const extrudedMode = extrudedModeSelector(orbState);
   const extrusionScale = extrusionScaleSelector(orbState);

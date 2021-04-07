@@ -24,6 +24,7 @@ import {
   clickedFeaturesSelector,
   otherSelector,
   setClickedFeatures,
+  timestampSelector,
 } from 'map/orbs/layers.slice';
 import { AnalysisPanelProvider } from './analysis-panel-context';
 import { ClickedFeaturesSummary } from './clicked-features-summary/clicked-features-summary.component';
@@ -124,12 +125,11 @@ export const AnalysisPanel = () => {
     otherSelector('astrosat/isolation_plus')(state?.orbs),
   );
   const selectedProperty = get(other, 'property');
-  const propertyOther = useSelector(state =>
-    otherSelector(`${selectedProperty?.source_id}/${selectedProperty?.name}`)(
-      state?.orbs,
-    ),
+  const selectedTimestamp = useSelector(state =>
+    timestampSelector(
+      `${selectedProperty?.source_id}/${selectedProperty?.name}`,
+    )(state?.orbs),
   );
-  const selectedTimestamp = get(propertyOther, 'timestamp');
   const sources = useSelector(activeDataSourcesSelector);
   const currentSource = React.useMemo(
     () =>

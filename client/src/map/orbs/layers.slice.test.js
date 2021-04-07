@@ -15,9 +15,11 @@ import reducer, {
   setFilterValue,
   setHoveredFeatures,
   setOther,
+  setTimestamp,
   setVisibility,
   toggleExtrudedMode,
   setState,
+  timestampSelector,
 } from './layers.slice';
 
 const LAYER_ID = 'test/layer';
@@ -31,6 +33,7 @@ describe('layers slice', () => {
       ${setVisibility}      | ${'visible'}         | ${true}
       ${setFilterValue}     | ${'filterValue'}     | ${['this', 'is', 'the', 'way']}
       ${setOther}           | ${'other'}           | ${{ this: 'is something', andThis: 'is something else' }}
+      ${setTimestamp}       | ${'timestamp'}       | ${54568498465}
     `('$action.type', ({ action, stateKey, newValue }) => {
       const expected = { [LAYER_ID]: { [stateKey]: newValue } },
         payload = {
@@ -360,6 +363,7 @@ describe('layers slice', () => {
       ${visibilitySelector}      | ${'visible'}         | ${true}
       ${filterValueSelector}     | ${'filterValue'}     | ${undefined}
       ${otherSelector}           | ${'other'}           | ${undefined}
+      ${timestampSelector}       | ${'timestamp'}       | ${undefined}
     `('$selector.name', ({ selector, stateKey, undefinedReturn }) => {
       it(`Returns ${stateKey} for the given layer`, () => {
         const value = [1, 2, 3];
