@@ -4,6 +4,8 @@ import {
   Box,
   Button,
   ButtonBase,
+  Input,
+  SearchIcon,
   Collapse,
   Link,
   makeStyles,
@@ -19,6 +21,17 @@ import LayerSelectItem from './layer-select-item/layer-select-item.component';
 import { Header } from '../components/header.component';
 import { List } from '../components/list.component';
 import { Section } from '../components/section.component';
+
+const LayerSearch = ({ className, onChange, noResults }) => (
+  <div className={className}>
+    <Input
+      startAdornment={<SearchIcon />}
+      onChange={onChange}
+      placeholder="Search for data layers"
+    />
+    {noResults && <span>No layers match your search</span>}
+  </div>
+);
 
 /**
  * @param {{
@@ -171,6 +184,10 @@ const useStyles = makeStyles(theme => ({
     alignItems: 'flex-end',
     padding: theme.spacing(2, 4),
   },
+  layerSearch: {
+    height: 'fit-content',
+    padding: theme.spacing(2, 4),
+  },
 }));
 
 /**
@@ -198,9 +215,10 @@ export const LayerSelect = ({
       <Header>Add Data Layers</Header>
       {orbSources ? (
         <>
-          <input
+          <LayerSearch
+            className={styles.layerSearch}
             onChange={onSearchChange}
-            placeholder="Search for Data Layers"
+            noResults={!orbSources?.length}
           />
           <List dense>
             {renderCategories({

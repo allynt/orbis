@@ -74,19 +74,32 @@ const DataLayersDialog = ({
     close();
   };
 
-  const handleSearchChange = e => {
+  const handleSearchChange = ({ target: { value } }) => {
+    if (!value) return setSources(undefined);
+
     const filteredSources = orbs?.filter(source =>
-      source.metadata.label.match(new RegExp(e.target.value, 'i')),
+      source.metadata.label.match(new RegExp(value, 'i')),
     );
 
-    const test = createOrbsWithCategorisedSources(filteredSources)?.find(
-      orb => orb.name === selectedOrbName,
-    )?.sources;
-
-    setSources(test);
+    setSources(createOrbsWithCategorisedSources(filteredSources));
   };
 
   const categorisedOrbs = orbs && createOrbsWithCategorisedSources(orbs);
+
+  const getSources = () => {
+    if (sources) {
+      // [].sources is undefined, so needs empty array
+      // Can's bomb out, because will default to all (categorised) instead of
+      // none (no matches)
+
+      // Can't put `orbSources` as undefined, because will hide searchbar,
+      // making undoing impossible
+      return sources?.find(orb => orb.name === selectedOrbName)?.sources || [];
+    } else {
+      return categorisedOrbs?.find(orb => orb.name === selectedOrbName)
+        ?.sources;
+    }
+  };
 
   return (
     <Dialog
@@ -110,12 +123,7 @@ const DataLayersDialog = ({
           selectedOrbName={selectedOrbName}
         />
         <LayerSelect
-          orbSources={
-            sources
-              ? sources
-              : categorisedOrbs?.find(orb => orb.name === selectedOrbName)
-                  ?.sources
-          }
+          orbSources={getSources()}
           selectedSources={selectedSources}
           onSourcesChange={handleSourcesChange}
           onSearchChange={handleSearchChange}
