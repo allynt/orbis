@@ -120,7 +120,13 @@ const useStyles = makeStyles(theme => ({
 export const CHAR_MAX = 150;
 const date = format(new Date(), 'MMMM do Y');
 
-const PDF = ({ close, licence, creationDate = date, selectedProperty }) => {
+const PDF = ({
+  close,
+  licence,
+  creationDate = date,
+  selectedProperty,
+  selectedTimestamp,
+}) => {
   const styles = useStyles();
   const dispatch = useDispatch();
 
@@ -343,6 +349,17 @@ const PDF = ({ close, licence, creationDate = date, selectedProperty }) => {
                 <Typography>
                   The information relates to the areas selected on the map.
                 </Typography>
+                {!!selectedTimestamp &&
+                new Date(selectedTimestamp).getTime() !==
+                  new Date(
+                    selectedProperty.timeseries_latest_timestamp,
+                  ).getTime() ? (
+                  <Typography>
+                    Historical data is being used to create this report. The
+                    selected date is{' '}
+                    {format(new Date(selectedTimestamp), 'dd-MM-yyyy')}
+                  </Typography>
+                ) : null}
               </Grid>
 
               <Grid item className={styles.gridElement}>

@@ -253,6 +253,7 @@ export const AnalysisPanel = () => {
         >
           <PDF
             selectedProperty={selectedProperty}
+            selectedTimestamp={selectedTimestamp}
             close={() => setPdfOpen(false)}
             licence={currentSource?.metadata?.licence}
           />

@@ -91,7 +91,15 @@ export const PropertyTimeSeriesChart = ({
                   }: ${datum.value}`
                 }
                 size={({ datum }) =>
-                  new Date(datum.timestamp).getTime() === selectedTimestamp
+                  (
+                    !!selectedTimestamp
+                      ? new Date(datum.timestamp).getTime() ===
+                        selectedTimestamp
+                      : new Date(datum.timestamp).getTime() ===
+                        new Date(
+                          selectedProperty.timeseries_latest_timestamp,
+                        ).getTime()
+                  )
                     ? 6
                     : 3
                 }
