@@ -223,6 +223,7 @@ export const AnalysisPanel = () => {
             <>
               <Component
                 selectedProperty={selectedProperty}
+                selectedTimestamp={selectedTimestamp}
                 clickedFeatures={clickedFeatures}
                 dispatch={dispatch}
                 {...componentDefinition.props}
