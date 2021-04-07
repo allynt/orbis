@@ -189,22 +189,28 @@ export const LayerSelect = ({
   selectedSources,
   hasMadeChanges = false,
   onSourcesChange,
+  onSearchChange,
   onSubmit,
 }) => {
   const styles = useStyles();
-
   return (
     <Section orientation="right">
       <Header>Add Data Layers</Header>
       {orbSources ? (
-        <List dense>
-          {renderCategories({
-            sources: orbSources,
-            level: 0,
-            onSourcesChange,
-            selectedSources,
-          })}
-        </List>
+        <>
+          <input
+            onChange={onSearchChange}
+            placeholder="Search for Data Layers"
+          />
+          <List dense>
+            {renderCategories({
+              sources: orbSources,
+              level: 0,
+              onSourcesChange,
+              selectedSources,
+            })}
+          </List>
+        </>
       ) : (
         <Typography className={styles.noOrbMessage}>
           Select Your Orb in order to find layers

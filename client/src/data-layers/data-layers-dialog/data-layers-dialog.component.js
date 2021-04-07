@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 
 import { isEqual } from 'lodash';
 
+import { createOrbsWithCategorisedSources } from 'data-layers/categorisation.utils';
+
 import {
   CloseIcon,
   Dialog,
@@ -49,6 +51,8 @@ const DataLayersDialog = ({
   );
   const [hasMadeChanges, setHasMadeChanges] = useState(false);
 
+  const [sources, setSources] = useState(undefined);
+
   useEffect(() => {
     setHasMadeChanges(!isEqual(initialSelectedSources, selectedSources));
   }, [initialSelectedSources, selectedSources]);
@@ -70,6 +74,20 @@ const DataLayersDialog = ({
     close();
   };
 
+  const handleSearchChange = e => {
+    const filteredSources = orbs?.filter(source =>
+      source.metadata.label.match(new RegExp(e.target.value, 'i')),
+    );
+
+    const test = createOrbsWithCategorisedSources(filteredSources)?.find(
+      orb => orb.name === selectedOrbName,
+    )?.sources;
+
+    setSources(test);
+  };
+
+  const categorisedOrbs = orbs && createOrbsWithCategorisedSources(orbs);
+
   return (
     <Dialog
       maxWidth="md"
@@ -87,14 +105,20 @@ const DataLayersDialog = ({
       </IconButton>
       <div className={styles.content}>
         <OrbSelect
-          orbs={orbs}
+          orbs={categorisedOrbs}
           onOrbClick={setSelectedOrbName}
           selectedOrbName={selectedOrbName}
         />
         <LayerSelect
-          orbSources={orbs?.find(orb => orb.name === selectedOrbName)?.sources}
+          orbSources={
+            sources
+              ? sources
+              : categorisedOrbs?.find(orb => orb.name === selectedOrbName)
+                  ?.sources
+          }
           selectedSources={selectedSources}
           onSourcesChange={handleSourcesChange}
+          onSearchChange={handleSearchChange}
           onSubmit={handleSubmit}
           hasMadeChanges={hasMadeChanges}
         />
