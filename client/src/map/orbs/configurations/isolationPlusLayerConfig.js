@@ -32,12 +32,17 @@ export const COLOR_PRIMARY = [246, 190, 0, 255],
 /**
  * @param {import('typings/orbis').GeoJsonFeature} feature
  * @param {import('typings/orbis').Property} selectedProperty
+ * @param {string} selectedTimestamp
  */
-export const getValue = (feature, selectedProperty) =>
+export const getValue = (
+  feature,
+  selectedProperty,
+  selectedTimestamp = selectedProperty.timeseries_latest_timestamp,
+) =>
   selectedProperty.timeseries
     ? find(feature.properties[selectedProperty.name], [
         'timestamp',
-        selectedProperty.timeseries_latest_timestamp,
+        selectedTimestamp,
       ]).value
     : get(feature.properties, selectedProperty.name);
 
