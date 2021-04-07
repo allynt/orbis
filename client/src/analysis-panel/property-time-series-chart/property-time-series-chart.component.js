@@ -16,7 +16,7 @@ import { aggregateTimeSeries } from 'analysis-panel/aggregateTimeSeries';
 import { SidePanelSection } from 'components';
 import { useChartTheme } from 'hooks/useChartTheme';
 import { DEFAULT_DECIMAL_PRECISION } from 'map/map.constants';
-import { isIsoDate, isValidDateString } from 'utils/dates';
+import { isValidDateString } from 'utils/dates';
 
 /** @type {import("typings/orbis").AnalysisPanelComponent<{info?: string, timestampFormat?: string}, import('typings/orbis').PolygonPickedMapFeature>} */
 export const PropertyTimeSeriesChart = ({
