@@ -16,7 +16,7 @@ import { aggregateTimeSeries } from 'analysis-panel/aggregateTimeSeries';
 import { SidePanelSection } from 'components';
 import { useChartTheme } from 'hooks/useChartTheme';
 import { DEFAULT_DECIMAL_PRECISION } from 'map/map.constants';
-import { isIsoDate } from 'utils/dates';
+import { isValidDateString } from 'utils/dates';
 
 /** @type {import("typings/orbis").AnalysisPanelComponent<{info?: string, timestampFormat?: string}, import('typings/orbis').PolygonPickedMapFeature>} */
 export const PropertyTimeSeriesChart = ({
@@ -75,11 +75,11 @@ export const PropertyTimeSeriesChart = ({
                 {...sharedProps}
                 labelComponent={<VictoryTooltip constrainToVisibleArea />}
                 labels={({ datum }) =>
-                  isIsoDate(datum.timestamp)
-                    ? `${format(new Date(datum.timestamp), timestampFormat)}: ${
-                        datum.value
-                      }`
-                    : ''
+                  `${
+                    isValidDateString(datum.timestamp)
+                      ? format(new Date(datum.timestamp), timestampFormat)
+                      : datum.timestamp
+                  }: ${datum.value}`
                 }
                 size={3}
               />

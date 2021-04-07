@@ -50,6 +50,13 @@ const ISO_DATE_REG_EXP = /(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.\d+([+-
 export const isIsoDate = dateString => ISO_DATE_REG_EXP.test(dateString);
 
 /**
+ * Checks if a string can be used as a JS Date
+ * @param {string} dateString
+ * @returns true if the date string can be used as a JS Date
+ */
+export const isValidDateString = dateString => !!Date.parse(dateString);
+
+/**
  * Converts a dd/mm/(yy|yyyy) or ISO date string to a Date object
  * @param {string} dateString
  */
