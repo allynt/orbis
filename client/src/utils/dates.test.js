@@ -3,6 +3,7 @@ import {
   formatDate,
   isIsoDate,
   isValid,
+  isValidDateString,
   stringDateRangeToDateRange,
   toDMY,
 } from './dates';
@@ -67,6 +68,35 @@ describe('Date utils', () => {
       ${'2015-02-21'}               | ${false}
     `('returns $returns for $value', ({ value, returns }) => {
       expect(isIsoDate(value)).toBe(returns);
+    });
+  });
+
+  describe('isValidDateString', () => {
+    it.each`
+      value                         | returns
+      ${'2020-01-01'}               | ${true}
+      ${'01-01-2020'}               | ${true}
+      ${'2020.01.01'}               | ${true}
+      ${'01.01.2020'}               | ${true}
+      ${'2020/01/01'}               | ${true}
+      ${'01/01/2020'}               | ${true}
+      ${'01'}                       | ${true}
+      ${'01/01'}                    | ${true}
+      ${'01/0'}                     | ${false}
+      ${'01/0'}                     | ${false}
+      ${'2020'}                     | ${true}
+      ${'01/2020'}                  | ${false}
+      ${'2020/01'}                  | ${true}
+      ${'2015-02-21T00:52:43.822Z'} | ${true}
+      ${'2015-02-21T00:52:43.822'}  | ${true}
+      ${'2015-02-21T00:52:43Z'}     | ${true}
+      ${'2015-02-21T00:52:43'}      | ${true}
+      ${'2015-02-21T00:52Z'}        | ${true}
+      ${'2015-02-21T00:52'}         | ${true}
+      ${'2015-02-21T00Z'}           | ${false}
+      ${'2015-02-21'}               | ${true}
+    `('returns $returns for $value', ({ value, returns }) => {
+      expect(isValidDateString(value)).toBe(returns);
     });
   });
 
