@@ -165,4 +165,14 @@ describe('RadioProperty', () => {
 
     expect(getByRole('radio', { name: data[0].label })).toBeInTheDocument();
   });
+
+  it('shows a date stepper if the selected property is timeseries and has a list of timestamps', () => {
+    const { getByText } = renderComponent(singleObjectData, {
+      ...singleObjectData[0],
+      timeseries: true,
+      timeseries_latest_timestamp: new Date(2020, 0, 1).toISOString(),
+      timeseries_timestamps: [new Date(2020, 0, 1).toISOString()],
+    });
+    expect(getByText(/date/i)).toBeInTheDocument();
+  });
 });

@@ -16,6 +16,7 @@ import { InfoButtonTooltip, ColorMapRangeSlider } from 'components';
 import { FORMAT } from '../radio-picker-constants';
 import { DiscretePropertyLegend } from '../discrete-property-legend/discrete-property-legend.component';
 import { DateStepper } from '../../date-stepper/date-stepper.component';
+import { isArray } from 'lodash';
 
 const useStyles = makeStyles(theme => ({
   property: {
@@ -50,7 +51,11 @@ const useStyles = makeStyles(theme => ({
 }));
 
 /**
- * @param {{selectedProperty: import('typings/orbis').Property}} props
+ * @param {{
+ *   selectedProperty: import('typings/orbis').Property
+ *   onDateChange?: (event: React.ChangeEvent<{}>, date: number) => void
+ *   selectedTimestamp?: number
+ * }} props
  */
 const RadioProperty = ({
   layerSourceId,
@@ -147,7 +152,8 @@ const RadioProperty = ({
             </>
           )}
           <div className={styles.fullGrid}>
-            {selectedProperty.timeseries ? (
+            {selectedProperty.timeseries &&
+            isArray(selectedProperty.timeseries_timestamps) ? (
               <DateStepper
                 dates={selectedProperty.timeseries_timestamps.map(
                   timestamp => ({ value: new Date(timestamp).getTime() }),

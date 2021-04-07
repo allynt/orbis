@@ -111,6 +111,7 @@ const renderComponent = ({
               licence={licence}
               close={close}
               selectedProperty={state.property}
+              selectedTimestamp={new Date(2019, 0, 1).getTime()}
             />
           </AnalysisPanelProvider>
         </MapProvider>
@@ -324,5 +325,18 @@ describe('PDF', () => {
     userEvent.click(getByRole('button', { name: 'Download PDF Report' }));
 
     expect(close).toHaveBeenCalled();
+  });
+
+  it('shows a note if the data is based on historical data', () => {
+    const { getByText } = renderComponent({
+      state: {
+        ...initialState,
+        property: {
+          ...initialState.property,
+          timeseries_latest_timestamp: new Date(2020, 0, 1).toISOString(),
+        },
+      },
+    });
+    expect(getByText(/historical/i)).toBeInTheDocument();
   });
 });
