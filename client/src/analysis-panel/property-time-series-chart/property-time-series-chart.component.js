@@ -50,6 +50,17 @@ export const PropertyTimeSeriesChart = ({
     y: 'value',
   };
 
+  const getPointSize = ({ datum }) => {
+    if (
+      new Date(datum.timestamp).getTime() === selectedTimestamp ||
+      (!selectedTimestamp &&
+        new Date(datum.timestamp).getTime() ===
+          new Date(selectedProperty.timeseries_latest_timestamp).getTime())
+    )
+      return 6;
+    return 3;
+  };
+
   return (
     <SidePanelSection title="Time Series" defaultExpanded info={info}>
       {!!clickedFeatures ? (
@@ -90,19 +101,7 @@ export const PropertyTimeSeriesChart = ({
                       : datum.timestamp
                   }: ${datum.value}`
                 }
-                size={({ datum }) =>
-                  (
-                    !!selectedTimestamp
-                      ? new Date(datum.timestamp).getTime() ===
-                        selectedTimestamp
-                      : new Date(datum.timestamp).getTime() ===
-                        new Date(
-                          selectedProperty.timeseries_latest_timestamp,
-                        ).getTime()
-                  )
-                    ? 6
-                    : 3
-                }
+                size={getPointSize}
               />
             </VictoryChart>
           )}
