@@ -98,6 +98,7 @@ const renderComponent = ({
           <AnalysisPanelProvider
             clickedFeatures={state.clickedFeatures}
             selectedProperty={state.property}
+            selectedTimestamp={new Date(2019, 0, 1).getTime()}
             currentSource={{
               source_id: 'test/source',
               metadata: {
@@ -319,14 +320,6 @@ describe('PDF', () => {
     expect(queryByTestId('user-name')).not.toBeInTheDocument();
   });
 
-  it('closes dialog when PDF download button is clicked', () => {
-    const { getByRole, close } = renderComponent({});
-
-    userEvent.click(getByRole('button', { name: 'Download PDF Report' }));
-
-    expect(close).toHaveBeenCalled();
-  });
-
   it('shows a note if the data is based on historical data', () => {
     const { getByText } = renderComponent({
       state: {
@@ -338,5 +331,15 @@ describe('PDF', () => {
       },
     });
     expect(getByText(/historical/i)).toBeInTheDocument();
+  });
+
+  // Don't put more tests below this one. Something in it causes the subsequent tests to fail.
+  // They don't when using Wallaby.js but do when running jest directly.
+  it('closes dialog when PDF download button is clicked', () => {
+    const { getByRole, close } = renderComponent({});
+
+    userEvent.click(getByRole('button', { name: 'Download PDF Report' }));
+
+    expect(close).toHaveBeenCalled();
   });
 });
