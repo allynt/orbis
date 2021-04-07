@@ -7,8 +7,13 @@ import { DEFAULT_DECIMAL_PRECISION } from '../map/map.constants';
  *
  * @param {any[]} clickedFeatures
  * @param {Partial<import('typings/orbis').ContinuousProperty>} selectedProperty
+ * @param {string} selectedTimestamp
  */
-export const aggregateValues = (clickedFeatures, selectedProperty) => {
+export const aggregateValues = (
+  clickedFeatures,
+  selectedProperty,
+  selectedTimestamp = selectedProperty?.timeseries_latest_timestamp,
+) => {
   if (!clickedFeatures || !selectedProperty) return 0;
   if (
     clickedFeatures.some(
@@ -27,7 +32,7 @@ export const aggregateValues = (clickedFeatures, selectedProperty) => {
       ? clickedFeature =>
           find(clickedFeature.object.properties[selectedProperty.name], [
             'timestamp',
-            selectedProperty.timeseries_latest_timestamp,
+            selectedTimestamp,
           ]).value
       : `object.properties.${selectedProperty.name}`,
   );
