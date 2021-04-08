@@ -26,7 +26,6 @@ import {
 } from './control-panel.slice';
 import StoriesPanel from '../stories/stories-panel.component';
 import Profile from '../accounts/profile/profile.component';
-import AnnotationsPanel from '../annotations/annotations-panel.component';
 import BookmarksPanel from '../bookmarks/bookmarks-panel.component';
 import DataLayers from '../data-layers/data-layers.component';
 import SatellitesPanel from '../satellites/satellites-panel.component';
@@ -93,7 +92,6 @@ const ControlPanel = ({ sidebarComponents }) => {
           <DataLayers sidebarComponents={sidebarComponents} />
         )}
         {visibleMenuItem === SATELLITE_LAYERS && <SatellitesPanel />}
-        {visibleMenuItem === ANNOTATIONS && <AnnotationsPanel />}
         {visibleMenuItem === BOOKMARKS && <BookmarksPanel />}
         {visibleMenuItem === STORIES && <StoriesPanel />}
         {visibleMenuItem === PROFILE && <Profile />}
