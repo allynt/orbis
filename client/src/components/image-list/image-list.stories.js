@@ -24,7 +24,11 @@ export const WithImages = args => (
   </ImageList>
 );
 
-const icons = [<CogIcon />, <EyeIcon />, <PinIcon />];
+const icons = [
+  <CogIcon color="primary" />,
+  <EyeIcon color="primary" />,
+  <PinIcon color="primary" />,
+];
 
 export const WithIcons = args => (
   <ImageList {...args} name="test-group">

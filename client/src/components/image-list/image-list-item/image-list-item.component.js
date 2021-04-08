@@ -1,22 +1,24 @@
-import {
-  Avatar as AuiAvatar,
-  Grid,
-  styled,
-  Typography,
-} from '@astrosat/astrosat-ui';
+import { Avatar, Grid, Typography, makeStyles } from '@astrosat/astrosat-ui';
 import React from 'react';
 import { v4 } from 'uuid';
 
-const Avatar = styled(AuiAvatar)(({ theme }) => ({
-  width: theme.spacing(10),
-  height: theme.spacing(10),
+const useStyles = makeStyles(theme => ({
+  container: {
+    cursor: 'pointer',
+    '&:hover': {
+      backgroundColor: 'hotpink',
+    },
+  },
+  avatar: {
+    width: theme.spacing(10),
+    height: theme.spacing(10),
+  },
+  radio: {
+    position: 'absolute',
+    opacity: 0,
+    pointerEvents: 'none',
+  },
 }));
-
-const Input = styled('input')({
-  position: 'absolute',
-  opacity: 0,
-  pointerEvents: 'none',
-});
 
 /**
  * @template T
@@ -41,28 +43,39 @@ export const ImageListItem = ({
   selectedValue,
   onChange,
 }) => {
+  const styles = useStyles();
   const labelId = `image-list-item-${v4()}`;
 
   const handleChange = () => onChange && onChange(value);
 
   return (
     <Grid item xs={3} container spacing={1} direction="column" component="li">
-      <Grid item container justify="center">
-        {!!src ? <Avatar src={src} alt={alt} variant="rounded" /> : null}
-        {icon}
-      </Grid>
-      <Grid item container justify="center">
-        <Input
-          type="radio"
-          aria-labelledby={labelId}
-          onChange={handleChange}
-          checked={selectedValue === value}
-          name={name}
-        />
-        <Typography component="label" id={labelId} align="center">
-          {text}
-        </Typography>
-      </Grid>
+      <label className={styles.container} id={labelId}>
+        <Grid item container justify="center">
+          {!!src ? (
+            <Avatar
+              className={styles.avatar}
+              src={src}
+              alt={alt}
+              variant="rounded"
+            />
+          ) : null}
+          {icon}
+        </Grid>
+        <Grid item container justify="center">
+          <input
+            className={styles.radio}
+            type="radio"
+            aria-labelledby={labelId}
+            onChange={handleChange}
+            checked={selectedValue === value}
+            name={name}
+          />
+          <Typography component="span" align="center">
+            {text}
+          </Typography>
+        </Grid>
+      </label>
     </Grid>
   );
 };

@@ -11,7 +11,7 @@ import React from 'react';
  * }} props
  */
 export const ImageList = ({ children, value, name, onChange }) => (
-  <Grid container spacing={2}>
+  <Grid container spacing={2} component="ul">
     {React.Children.map(children, child =>
       React.cloneElement(child, { name, onChange, selectedValue: value }),
     )}
