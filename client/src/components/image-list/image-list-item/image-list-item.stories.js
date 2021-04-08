@@ -8,6 +8,7 @@ import { ImageListItem } from './image-list-item.component';
 
 export default {
   title: 'Components/Image List/Image List Item',
+  args: { value: 1 },
   argTypes: { onChange: { action: true } },
 };
 
@@ -32,6 +33,5 @@ export const Selected = Template.bind({});
 Selected.args = {
   ...Icon.args,
   text: 'This is selected',
-  value: 1,
   selectedValue: 1,
 };
