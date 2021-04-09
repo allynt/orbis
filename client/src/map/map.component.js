@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 
 import {
+  AnnotationsIcon,
   ButtonGroup,
   ClickAwayListener,
   LayersIcon,
@@ -246,6 +247,9 @@ const Map = ({ mapComponents, layers }) => {
       <ClickAwayListener onClickAway={() => setMapStyleSwitcherVisible(false)}>
         <div>
           <ButtonGroup className={styles.buttonControls} orientation="vertical">
+            <MapControlButton>
+              <AnnotationsIcon fontSize="inherit" />
+            </MapControlButton>
             <MapControlButton
               className={clsx({ [styles.selected]: extrudedMode })}
               aria-selected={extrudedMode}
@@ -253,18 +257,18 @@ const Map = ({ mapComponents, layers }) => {
             >
               3D
             </MapControlButton>
-            <MapControlButton
+            {/* <MapControlButton
               onClick={() => setMapStyleSwitcherVisible(cur => !cur)}
             >
               <LayersIcon fontSize="inherit" />
-            </MapControlButton>
+            </MapControlButton> */}
+            <MapStyleSwitcher
+              open={mapStyleSwitcherVisible}
+              mapStyles={mapStyles}
+              selectedMapStyle={selectedMapStyle?.id}
+              selectMapStyle={handleMapStyleSelect}
+            />
           </ButtonGroup>
-          <MapStyleSwitcher
-            open={mapStyleSwitcherVisible}
-            mapStyles={mapStyles}
-            selectedMapStyle={selectedMapStyle?.id}
-            selectMapStyle={handleMapStyleSelect}
-          />
         </div>
       </ClickAwayListener>
       <ReactMapGl

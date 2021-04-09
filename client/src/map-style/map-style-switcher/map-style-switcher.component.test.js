@@ -31,6 +31,7 @@ describe('MapStyle Switcher Component', () => {
     testee = render(
       <Provider store={store}>
         <MapStyleSwitcher
+          defaultOpen
           mapStyles={MAP_STYLE_DATA}
           selectedMapStyle={selectedMapStyle}
           selectMapStyle={selectMapStyle}

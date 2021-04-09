@@ -15,8 +15,7 @@ const useStyles = makeStyles(theme => ({
     transition: theme.transitions.create('background-color', {
       duration: theme.transitions.duration.shortest,
     }),
-    height: '100%',
-    padding: theme.spacing(1, 2, 2),
+    padding: theme.spacing(1),
     cursor: 'pointer',
     '&:hover': {
       backgroundColor: theme.palette.action.hover,
@@ -95,6 +94,7 @@ export const ImageListItem = ({
           <input
             className={styles.radio}
             type="radio"
+            tabIndex={0}
             aria-labelledby={labelId}
             onChange={handleChange}
             checked={checked}
