@@ -1,10 +1,8 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect } from 'react';
 
 import {
   AnnotationsIcon,
   ButtonGroup,
-  ClickAwayListener,
-  LayersIcon,
   LoadMask,
   makeStyles,
   Slide,
@@ -172,7 +170,6 @@ const Map = ({ mapComponents, layers }) => {
   const mapLoading = useSelector(isLoadingSelector);
   const mapStyles = useSelector(mapStylesSelector);
   const selectedMapStyle = useSelector(selectedMapStyleSelector);
-  const [mapStyleSwitcherVisible, setMapStyleSwitcherVisible] = useState(false);
   const styles = useStyles({ selectedMapStyle });
 
   useEffect(() => {
@@ -244,33 +241,25 @@ const Map = ({ mapComponents, layers }) => {
           />
         </Slide>
       </div>
-      <ClickAwayListener onClickAway={() => setMapStyleSwitcherVisible(false)}>
-        <div>
-          <ButtonGroup className={styles.buttonControls} orientation="vertical">
-            <MapControlButton>
-              <AnnotationsIcon fontSize="inherit" />
-            </MapControlButton>
-            <MapControlButton
-              className={clsx({ [styles.selected]: extrudedMode })}
-              aria-selected={extrudedMode}
-              onClick={handleExtrudedModeButtonClick}
-            >
-              3D
-            </MapControlButton>
-            {/* <MapControlButton
-              onClick={() => setMapStyleSwitcherVisible(cur => !cur)}
-            >
-              <LayersIcon fontSize="inherit" />
-            </MapControlButton> */}
-            <MapStyleSwitcher
-              open={mapStyleSwitcherVisible}
-              mapStyles={mapStyles}
-              selectedMapStyle={selectedMapStyle?.id}
-              selectMapStyle={handleMapStyleSelect}
-            />
-          </ButtonGroup>
-        </div>
-      </ClickAwayListener>
+
+      <ButtonGroup className={styles.buttonControls} orientation="vertical">
+        <MapControlButton>
+          <AnnotationsIcon fontSize="inherit" />
+        </MapControlButton>
+        <MapControlButton
+          className={clsx({ [styles.selected]: extrudedMode })}
+          aria-selected={extrudedMode}
+          onClick={handleExtrudedModeButtonClick}
+        >
+          3D
+        </MapControlButton>
+        <MapStyleSwitcher
+          mapStyles={mapStyles}
+          selectedMapStyle={selectedMapStyle?.id}
+          selectMapStyle={handleMapStyleSelect}
+        />
+      </ButtonGroup>
+
       <ReactMapGl
         key="bottom"
         ref={bottomMapRef}
