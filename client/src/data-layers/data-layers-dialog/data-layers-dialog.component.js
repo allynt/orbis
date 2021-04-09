@@ -29,7 +29,7 @@ const useStyles = makeStyles(theme => ({
 
 /**
  * @param {{
- *   orbs: import('typings/orbis').OrbWithCategorisedSources[]
+ *   orbs: import('typings/orbis').Source['source_id'][]
  *   initialSelectedSources?: import('typings/orbis').Source['source_id'][]
  *   open?: boolean
  *   close: () => void
@@ -78,28 +78,17 @@ const DataLayersDialog = ({
     if (!value) return setSources(undefined);
 
     const filteredSources = orbs?.filter(source =>
-      source.metadata.label.match(new RegExp(value, 'i')),
-    );
+        source.metadata.label.match(new RegExp(value.trim(), 'i')),
+      ),
+      sources =
+        createOrbsWithCategorisedSources(filteredSources)?.find(
+          orb => orb.name === selectedOrbName,
+        )?.sources || [];
 
-    setSources(createOrbsWithCategorisedSources(filteredSources));
+    return setSources(sources);
   };
 
   const categorisedOrbs = orbs && createOrbsWithCategorisedSources(orbs);
-
-  const getSources = () => {
-    if (sources) {
-      // [].sources is undefined, so needs empty array
-      // Can's bomb out, because will default to all (categorised) instead of
-      // none (no matches)
-
-      // Can't put `orbSources` as undefined, because will hide searchbar,
-      // making undoing impossible
-      return sources?.find(orb => orb.name === selectedOrbName)?.sources || [];
-    } else {
-      return categorisedOrbs?.find(orb => orb.name === selectedOrbName)
-        ?.sources;
-    }
-  };
 
   return (
     <Dialog
@@ -123,7 +112,12 @@ const DataLayersDialog = ({
           selectedOrbName={selectedOrbName}
         />
         <LayerSelect
-          orbSources={getSources()}
+          orbSources={
+            sources
+              ? sources
+              : categorisedOrbs?.find(orb => orb.name === selectedOrbName)
+                  ?.sources
+          }
           selectedSources={selectedSources}
           onSourcesChange={handleSourcesChange}
           onSearchChange={handleSearchChange}

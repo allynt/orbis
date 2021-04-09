@@ -198,6 +198,7 @@ const useStyles = makeStyles(theme => ({
  *   onSourcesChange: (params: {
  *     source_ids: import('typings/orbis').Source['source_id'][]
  *     selected: boolean}) => void
+ *   onSearchChange: (params: { target: { value: any } }) => void
  *   onSubmit: () => void
  * }} props
  */
