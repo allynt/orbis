@@ -50,8 +50,7 @@ const DataLayersDialog = ({
     initialSelectedSources,
   );
   const [hasMadeChanges, setHasMadeChanges] = useState(false);
-
-  const [sources, setSources] = useState(undefined);
+  const [filteredSources, setFilteredSources] = useState(undefined);
 
   useEffect(() => {
     setHasMadeChanges(!isEqual(initialSelectedSources, selectedSources));
@@ -66,6 +65,11 @@ const DataLayersDialog = ({
         );
   };
 
+  const handleOrbClick = orbName => {
+    setFilteredSources(undefined);
+    setSelectedOrbName(orbName);
+  };
+
   const handleSubmit = () => onSubmit && onSubmit(selectedSources);
 
   const handleClose = () => {
@@ -75,17 +79,17 @@ const DataLayersDialog = ({
   };
 
   const handleSearchChange = ({ target: { value } }) => {
-    if (!value) return setSources(undefined);
+    if (!value) return setFilteredSources(undefined);
 
     const filteredSources = orbs?.filter(source =>
         source.metadata.label.match(new RegExp(value.trim(), 'i')),
       ),
-      sources =
+      matchedSources =
         createOrbsWithCategorisedSources(filteredSources)?.find(
           orb => orb.name === selectedOrbName,
         )?.sources || [];
 
-    return setSources(sources);
+    return setFilteredSources(matchedSources);
   };
 
   const categorisedOrbs = useMemo(
@@ -111,13 +115,13 @@ const DataLayersDialog = ({
       <div className={styles.content}>
         <OrbSelect
           orbs={categorisedOrbs}
-          onOrbClick={setSelectedOrbName}
+          onOrbClick={handleOrbClick}
           selectedOrbName={selectedOrbName}
         />
         <LayerSelect
           orbSources={
-            sources
-              ? sources
+            filteredSources
+              ? filteredSources
               : categorisedOrbs?.find(orb => orb.name === selectedOrbName)
                   ?.sources
           }
