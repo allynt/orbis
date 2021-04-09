@@ -158,7 +158,7 @@ describe('<DataLayersDialog />', () => {
       'random text',
     );
 
-    expect(getByText('No layers match your search')).toBeInTheDocument();
+    expect(getByText('No results found for this keyword')).toBeInTheDocument();
   });
 
   it('restores sources if search input is cleared', () => {
@@ -170,7 +170,7 @@ describe('<DataLayersDialog />', () => {
       'random text',
     );
 
-    expect(getByText('No layers match your search')).toBeInTheDocument();
+    expect(getByText('No results found for this keyword')).toBeInTheDocument();
 
     userEvent.clear(getByPlaceholderText('Search for data layers'));
 
