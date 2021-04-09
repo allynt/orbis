@@ -24,6 +24,7 @@ import {
   clickedFeaturesSelector,
   otherSelector,
   setClickedFeatures,
+  timestampSelector,
 } from 'map/orbs/layers.slice';
 import { AnalysisPanelProvider } from './analysis-panel-context';
 import { ClickedFeaturesSummary } from './clicked-features-summary/clicked-features-summary.component';
@@ -124,6 +125,11 @@ export const AnalysisPanel = () => {
     otherSelector('astrosat/isolation_plus')(state?.orbs),
   );
   const selectedProperty = get(other, 'property');
+  const selectedTimestamp = useSelector(state =>
+    timestampSelector(
+      `${selectedProperty?.source_id}/${selectedProperty?.name}`,
+    )(state?.orbs),
+  );
   const sources = useSelector(activeDataSourcesSelector);
   const currentSource = React.useMemo(
     () =>
@@ -198,6 +204,7 @@ export const AnalysisPanel = () => {
         clickedFeatures={clickedFeatures}
         currentSource={currentSource}
         selectedProperty={selectedProperty}
+        selectedTimestamp={selectedTimestamp}
       >
         <Typography color="primary" className={styles.strapline}>
           The information below relates to the areas selected on the map.
@@ -216,6 +223,7 @@ export const AnalysisPanel = () => {
             <>
               <Component
                 selectedProperty={selectedProperty}
+                selectedTimestamp={selectedTimestamp}
                 clickedFeatures={clickedFeatures}
                 dispatch={dispatch}
                 {...componentDefinition.props}
@@ -245,6 +253,7 @@ export const AnalysisPanel = () => {
         >
           <PDF
             selectedProperty={selectedProperty}
+            selectedTimestamp={selectedTimestamp}
             close={() => setPdfOpen(false)}
             licence={currentSource?.metadata?.licence}
           />

@@ -288,5 +288,21 @@ describe('isolationPlusLayerConfig', () => {
       );
       expect(result).toBe('hi');
     });
+
+    it('returns the value of the selected timestamp if present', () => {
+      const result = getValue(
+        {
+          properties: {
+            test: [
+              { timestamp: '123', value: 'nope' },
+              { timestamp: new Date(2020, 1, 1).toISOString(), value: 'hi' },
+            ],
+          },
+        },
+        { name: 'test', timeseries: true, timeseries_latest_timestamp: '123' },
+        new Date(2020, 1, 1).getTime(),
+      );
+      expect(result).toBe('hi');
+    });
   });
 });
