@@ -30,7 +30,7 @@ const LayerSearch = ({ className, onChange, noResults }) => (
       placeholder="Search for data layers"
       autoFocus
     />
-    {noResults && <span>No layers match your search</span>}
+    {noResults && <span>No results found for this keyword</span>}
   </div>
 );
 
