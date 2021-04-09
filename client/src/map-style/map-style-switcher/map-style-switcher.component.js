@@ -2,10 +2,8 @@ import React, { useState } from 'react';
 
 import { LayersIcon, Tooltip, makeStyles } from '@astrosat/astrosat-ui';
 
+import { MapControlButton, ImageList, ImageListItem } from 'components';
 import { toTitleCase } from 'utils/text';
-import { MapControlButton } from 'map/controls/map-control-button.component';
-import { ImageList } from 'components/image-list/image-list.component';
-import { ImageListItem } from 'components/image-list/image-list-item/image-list-item.component';
 
 const useStyles = makeStyles(theme => ({
   tooltip: {

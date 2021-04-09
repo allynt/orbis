@@ -34,7 +34,7 @@ import { setLayers } from 'data-layers/data-layers.slice';
 import MapStyleSwitcher from 'map-style/map-style-switcher/map-style-switcher.component';
 import { useMap } from 'MapContext';
 import { ExtrusionScaleSlider } from './controls/extrusion-scale-slider/extrusion-scale-slider.component';
-import { MapControlButton } from './controls/map-control-button.component';
+import { MapControlButton } from '../components';
 import { NavigationControl } from './controls/navigation-control/navigation-control.component';
 import {
   isLoadingSelector,
