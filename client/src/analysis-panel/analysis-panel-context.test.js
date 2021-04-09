@@ -11,6 +11,7 @@ const renderContext = ({
   clickedFeatures = undefined,
   selectedProperty = undefined,
   currentSource = undefined,
+  selectedTimestamp = undefined,
 } = {}) =>
   renderHook(() => useAnalysisPanelContext(), {
     wrapper: ({ children }) => (
@@ -18,6 +19,7 @@ const renderContext = ({
         clickedFeatures={clickedFeatures}
         currentSource={currentSource}
         selectedProperty={selectedProperty}
+        selectedTimestamp={selectedTimestamp}
       >
         {children}
       </AnalysisPanelProvider>
@@ -178,10 +180,11 @@ describe('AnalysisPanelContext', () => {
       expect(result.current.breakdownAggregation).toEqual(expected);
     });
 
-    it('Returns the breakdown aggregated by latest timestamp if the property is timeseries', () => {
+    describe('timeseries', () => {
       const name1 = 'people in 0-17',
         name2 = 'people in 18-39',
-        timestamp = '2020-02-01T00:00:00Z',
+        timeseries_latest_timestamp = '2020-02-01T00:00:00Z',
+        selectedTimestamp = new Date('2020-02-03T00:00:00Z').getTime(),
         source_id = 'test/source',
         currentSource = {
           source_id,
@@ -190,12 +193,12 @@ describe('AnalysisPanelContext', () => {
               {
                 name: name1,
                 timeseries: true,
-                timeseries_latest_timestamp: timestamp,
+                timeseries_latest_timestamp: timeseries_latest_timestamp,
               },
               {
                 name: name2,
                 timeseries: true,
-                timeseries_latest_timestamp: timestamp,
+                timeseries_latest_timestamp: timeseries_latest_timestamp,
               },
             ],
           },
@@ -209,30 +212,56 @@ describe('AnalysisPanelContext', () => {
           {
             object: {
               properties: {
-                [name1]: [{ timestamp, value: 20 }],
-                [name2]: [{ timestamp, value: 4 }],
+                [name1]: [
+                  { timestamp: selectedTimestamp, value: 68745 },
+                  { timestamp: timeseries_latest_timestamp, value: 20 },
+                ],
+                [name2]: [
+                  { timestamp: selectedTimestamp, value: 98784 },
+                  { timestamp: timeseries_latest_timestamp, value: 4 },
+                ],
               },
             },
           },
           {
             object: {
               properties: {
-                [name1]: [{ timestamp, value: 3 }],
-                [name2]: [{ timestamp, value: 1 }],
+                [name1]: [
+                  { timestamp: selectedTimestamp, value: 84354 },
+                  { timestamp: timeseries_latest_timestamp, value: 3 },
+                ],
+                [name2]: [
+                  { timestamp: selectedTimestamp, value: 35456 },
+                  { timestamp: timeseries_latest_timestamp, value: 1 },
+                ],
               },
             },
           },
         ];
-
-      const { result } = renderContext({
-        currentSource,
-        selectedProperty,
-        clickedFeatures,
+      it('Returns the breakdown aggregated by latest timestamp if the property is timeseries', () => {
+        const { result } = renderContext({
+          currentSource,
+          selectedProperty,
+          clickedFeatures,
+        });
+        expect(result.current.breakdownAggregation).toEqual([
+          { value: 23, name: name1 },
+          { value: 5, name: name2 },
+        ]);
       });
-      expect(result.current.breakdownAggregation).toEqual([
-        { value: 23, name: name1 },
-        { value: 5, name: name2 },
-      ]);
+
+      it('Returns the breakdown aggregated by the chosen timestamp if one is selected', () => {
+        const { result } = renderContext({
+          currentSource,
+          selectedProperty,
+          clickedFeatures,
+          selectedTimestamp,
+        });
+        expect(result.current.breakdownAggregation).toEqual([
+          { value: 68745 + 84354, name: name1 },
+          { value: 98784 + 35456, name: name2 },
+        ]);
+      });
     });
 
     it('Errors if latest timestamps are not matching between breakdown properties', () => {

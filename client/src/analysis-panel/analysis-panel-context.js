@@ -20,6 +20,7 @@ AnalysisPanelContext.displayName = 'AnalysisPanelContext';
  *  clickedFeatures: import('typings/orbis').PolygonPickedMapFeature[]
  *  currentSource: import('typings/orbis').Source
  *  selectedProperty: import('typings/orbis').Property & {source_id: string}
+ *  selectedTimestamp?: number
  *  children: React.ReactNode
  * }} props
  */
@@ -27,6 +28,7 @@ export const AnalysisPanelProvider = ({
   clickedFeatures,
   currentSource,
   selectedProperty,
+  selectedTimestamp,
   children,
 }) => {
   const areasOfInterest = useMemo(() => {
@@ -49,8 +51,8 @@ export const AnalysisPanelProvider = ({
   );
 
   const areaValue = useMemo(
-    () => aggregateValues(clickedFeatures, selectedProperty),
-    [clickedFeatures, selectedProperty],
+    () => aggregateValues(clickedFeatures, selectedProperty, selectedTimestamp),
+    [clickedFeatures, selectedProperty, selectedTimestamp],
   );
 
   const breakdownAggregation = useMemo(
@@ -75,6 +77,7 @@ export const AnalysisPanelProvider = ({
               ...selectedProperty,
               name: breakdownPropertyName,
             },
+            selectedTimestamp,
           );
           return {
             value,
@@ -82,7 +85,7 @@ export const AnalysisPanelProvider = ({
           };
         })
         .filter(v => v.value > 0),
-    [clickedFeatures, currentSource, selectedProperty],
+    [clickedFeatures, currentSource, selectedProperty, selectedTimestamp],
   );
 
   return (

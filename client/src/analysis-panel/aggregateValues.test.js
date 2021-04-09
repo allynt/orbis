@@ -115,7 +115,7 @@ describe('aggregateValues', () => {
     expect(result).toBe(1369.78);
   });
 
-  it('works on timeseries data by using the latest timestamp', () => {
+  it('works on timeseries data by using the latest timestamp if a selected timestamp is not provided', () => {
     const clickedFeatures = [
       {
         object: {
@@ -155,6 +155,52 @@ describe('aggregateValues', () => {
     };
     const result = aggregateValues(clickedFeatures, selectedProperty);
     expect(result).toBe(123 + 456 + 789);
+  });
+
+  it('works on timeseries using the selected timestamp if provided', () => {
+    const clickedFeatures = [
+      {
+        object: {
+          properties: {
+            test: [
+              { timestamp: '2021-02-17T00:00:00.000Z', value: 123 },
+              { timestamp: '2021-02-18T00:00:00.000Z', value: 654 },
+            ],
+          },
+        },
+      },
+      {
+        object: {
+          properties: {
+            test: [
+              { timestamp: '2021-02-17T00:00:00.000Z', value: 789 },
+              { timestamp: '2021-02-18T00:00:00.000Z', value: 78 },
+            ],
+          },
+        },
+      },
+      {
+        object: {
+          properties: {
+            test: [
+              { timestamp: '2021-02-17T00:00:00.000Z', value: 456 },
+              { timestamp: '2021-02-18T00:00:00.000Z', value: 35464 },
+            ],
+          },
+        },
+      },
+    ];
+    const selectedProperty = {
+      name: 'test',
+      timeseries: true,
+      timeseries_latest_timestamp: '2021-02-17T00:00:00.000Z',
+    };
+    const result = aggregateValues(
+      clickedFeatures,
+      selectedProperty,
+      new Date('2021-02-18T00:00:00.000Z').getTime(),
+    );
+    expect(result).toBe(654 + 78 + 35464);
   });
 
   it('works on averaging timeseries data', () => {

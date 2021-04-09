@@ -18,10 +18,19 @@ import { useChartTheme } from 'hooks/useChartTheme';
 import { DEFAULT_DECIMAL_PRECISION } from 'map/map.constants';
 import { isValidDateString } from 'utils/dates';
 
-/** @type {import("typings/orbis").AnalysisPanelComponent<{info?: string, timestampFormat?: string}, import('typings/orbis').PolygonPickedMapFeature>} */
+/**
+ * @type {import("typings/orbis").AnalysisPanelComponent<{
+ *    info?: string,
+ *    timestampFormat?: string,
+ *    selectedTimestamp?: number
+ *  },
+ *  import('typings/orbis').PolygonPickedMapFeature
+ * >}
+ */
 export const PropertyTimeSeriesChart = ({
   clickedFeatures,
   selectedProperty,
+  selectedTimestamp,
   info,
   timestampFormat = 'MMM yy',
 }) => {
@@ -39,6 +48,17 @@ export const PropertyTimeSeriesChart = ({
     data,
     x: 'timestamp',
     y: 'value',
+  };
+
+  const getPointSize = ({ datum }) => {
+    if (
+      new Date(datum.timestamp).getTime() === selectedTimestamp ||
+      (!selectedTimestamp &&
+        new Date(datum.timestamp).getTime() ===
+          new Date(selectedProperty.timeseries_latest_timestamp).getTime())
+    )
+      return 6;
+    return 3;
   };
 
   return (
@@ -81,7 +101,7 @@ export const PropertyTimeSeriesChart = ({
                       : datum.timestamp
                   }: ${datum.value}`
                 }
-                size={3}
+                size={getPointSize}
               />
             </VictoryChart>
           )}

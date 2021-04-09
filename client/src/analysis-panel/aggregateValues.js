@@ -1,4 +1,5 @@
-import { find, sumBy } from 'lodash';
+import { sumBy } from 'lodash';
+import { getValueForTimestamp } from 'utils/data';
 import { DEFAULT_DECIMAL_PRECISION } from '../map/map.constants';
 
 /**
@@ -7,8 +8,13 @@ import { DEFAULT_DECIMAL_PRECISION } from '../map/map.constants';
  *
  * @param {any[]} clickedFeatures
  * @param {Partial<import('typings/orbis').ContinuousProperty>} selectedProperty
+ * @param {number} [selectedTimestamp]
  */
-export const aggregateValues = (clickedFeatures, selectedProperty) => {
+export const aggregateValues = (
+  clickedFeatures,
+  selectedProperty,
+  selectedTimestamp,
+) => {
   if (!clickedFeatures || !selectedProperty) return 0;
   if (
     clickedFeatures.some(
@@ -25,10 +31,10 @@ export const aggregateValues = (clickedFeatures, selectedProperty) => {
     clickedFeatures,
     selectedProperty.timeseries
       ? clickedFeature =>
-          find(clickedFeature.object.properties[selectedProperty.name], [
-            'timestamp',
-            selectedProperty.timeseries_latest_timestamp,
-          ]).value
+          getValueForTimestamp(
+            clickedFeature.object.properties[selectedProperty.name],
+            selectedTimestamp ?? selectedProperty?.timeseries_latest_timestamp,
+          )
       : `object.properties.${selectedProperty.name}`,
   );
 

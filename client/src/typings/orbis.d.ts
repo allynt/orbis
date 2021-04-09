@@ -111,6 +111,7 @@ type BaseProperty = {
   source?: string;
   type: PropertyType;
   timeseries?: boolean;
+  timeseries_timestamps?: string[];
   timeseries_latest_timestamp?: string;
 };
 
