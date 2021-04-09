@@ -11,7 +11,6 @@ import {
 } from '@astrosat/astrosat-ui';
 
 import clsx from 'clsx';
-import { isArray } from 'lodash';
 import { format } from 'date-fns';
 
 import { InfoButtonTooltip, ColorMapRangeSlider } from 'components';
@@ -154,7 +153,7 @@ const RadioProperty = ({
           )}
           <div className={styles.fullGrid}>
             {selectedProperty.timeseries &&
-            isArray(selectedProperty.timeseries_timestamps) ? (
+            Array.isArray(selectedProperty.timeseries_timestamps) ? (
               <DateStepper
                 dates={selectedProperty.timeseries_timestamps.map(
                   (timestamp, i) => {
