@@ -11,12 +11,13 @@ import {
 } from '@astrosat/astrosat-ui';
 
 import clsx from 'clsx';
+import { isArray } from 'lodash';
+import { format } from 'date-fns';
 
 import { InfoButtonTooltip, ColorMapRangeSlider } from 'components';
 import { FORMAT } from '../radio-picker-constants';
 import { DiscretePropertyLegend } from '../discrete-property-legend/discrete-property-legend.component';
 import { DateStepper } from '../../date-stepper/date-stepper.component';
-import { isArray } from 'lodash';
 
 const useStyles = makeStyles(theme => ({
   property: {
@@ -156,7 +157,21 @@ const RadioProperty = ({
             isArray(selectedProperty.timeseries_timestamps) ? (
               <DateStepper
                 dates={selectedProperty.timeseries_timestamps.map(
-                  timestamp => ({ value: new Date(timestamp).getTime() }),
+                  (timestamp, i) => {
+                    const date = new Date(timestamp);
+                    const shouldLabel =
+                      i === 0 ||
+                      i === selectedProperty.timeseries_timestamps.length - 1 ||
+                      i ===
+                        Math.floor(
+                          selectedProperty.timeseries_timestamps.length / 2,
+                        );
+
+                    return {
+                      value: date.getTime(),
+                      label: shouldLabel ? format(date, 'dd-MM-yy') : undefined,
+                    };
+                  },
                 )}
                 defaultValue={new Date(
                   selectedProperty.timeseries_latest_timestamp,
