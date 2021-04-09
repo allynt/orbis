@@ -4,6 +4,7 @@ import fnmatch
 import re
 import uuid
 
+from django.contrib.postgres.fields import ArrayField
 from django.core.exceptions import ValidationError
 from django.core.validators import MaxValueValidator
 from django.db import models
@@ -45,9 +46,10 @@ SOURCE_ID_REGEX = re.compile(
 
 
 class Access(IntFlag):
-    READ = 1  # 001
-    CREATE = 2  # 010
-    DELETE = 4  # 100
+    READ = 1  # 0001
+    CREATE = 2  # 0010
+    DELETE = 4  # 0100
+    UPDATE = 8  # 1000
 
     @classmethod
     def choices(cls):
@@ -73,6 +75,10 @@ class AccessModel(models.Model):
     @property
     def can_delete(self):
         return self.has_access_scope(Access.DELETE)
+
+    @property
+    def can_update(self):
+        return self.has_access_scope(Access.UPDATE)
 
     def has_access_scope(self, access_scope):
         return self.access & access_scope
@@ -177,6 +183,9 @@ class LicenceQuerySet(models.QuerySet):
     def can_delete(self):
         return self.has_access_scope(Access.DELETE)
 
+    def can_update(self):
+        return self.has_access_scope(Access.UPDATE)
+
     def has_access_scope(self, access_scope):
         return self.annotate(can_access=F("access").bitand(access_scope)).filter(
             can_access__gte=1
@@ -239,6 +248,12 @@ class DataScope(models.Model):
     description = models.TextField(blank=True, null=True)
 
     orbs = models.ManyToManyField(Orb, blank=True, related_name="data_scopes")
+
+    applications = ArrayField(
+        models.CharField(max_length=128),
+        default=list,
+        help_text="An optional array of applications that this DataScope derives its data from"
+    )
 
     def __str__(self):
         return self.source_id_pattern

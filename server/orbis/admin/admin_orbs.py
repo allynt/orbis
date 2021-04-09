@@ -76,11 +76,13 @@ class DataScopeAdmin(admin.ModelAdmin):
         "name",
         "version",
         "description",
+        "applications",
         "orbs",
     )
     list_display = (
         "source_id_pattern",
         "get_orbs_for_list_display",
+        "applications",
         "is_active",
     )
     list_editable = ("is_active",)
