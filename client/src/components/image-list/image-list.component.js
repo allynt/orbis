@@ -1,4 +1,4 @@
-import { Grid } from '@material-ui/core';
+import { GridList } from '@material-ui/core';
 import React from 'react';
 
 /**
@@ -11,9 +11,9 @@ import React from 'react';
  * }} props
  */
 export const ImageList = ({ children, value, name, onChange }) => (
-  <Grid container spacing={2} component="ul">
+  <GridList>
     {React.Children.map(children, child =>
       React.cloneElement(child, { name, onChange, selectedValue: value }),
     )}
-  </Grid>
+  </GridList>
 );

@@ -1,12 +1,28 @@
-import { Avatar, Grid, Typography, makeStyles } from '@astrosat/astrosat-ui';
+import {
+  Avatar,
+  Grid,
+  Typography,
+  makeStyles,
+  GridListTile,
+} from '@astrosat/astrosat-ui';
+import clsx from 'clsx';
 import React from 'react';
 import { v4 } from 'uuid';
 
 const useStyles = makeStyles(theme => ({
   container: {
+    borderRadius: theme.shape.borderRadius,
+    transition: theme.transitions.create('background-color', {
+      duration: theme.transitions.duration.shortest,
+    }),
+    height: '100%',
+    padding: theme.spacing(1, 2, 2),
     cursor: 'pointer',
     '&:hover': {
-      backgroundColor: 'hotpink',
+      backgroundColor: theme.palette.action.hover,
+    },
+    '&$checked': {
+      backgroundColor: theme.palette.action.selected,
     },
   },
   avatar: {
@@ -18,6 +34,11 @@ const useStyles = makeStyles(theme => ({
     opacity: 0,
     pointerEvents: 'none',
   },
+  text: {
+    maxWidth: '4rem',
+    textAlign: 'center',
+  },
+  checked: {},
 }));
 
 /**
@@ -45,13 +66,21 @@ export const ImageListItem = ({
 }) => {
   const styles = useStyles();
   const labelId = `image-list-item-${v4()}`;
+  const checked = selectedValue === value;
 
   const handleChange = () => onChange && onChange(value);
 
   return (
-    <Grid item xs={3} container spacing={1} direction="column" component="li">
-      <label className={styles.container} id={labelId}>
-        <Grid item container justify="center">
+    <GridListTile>
+      <Grid
+        component="label"
+        container
+        spacing={1}
+        justify="center"
+        className={clsx(styles.container, { [styles.checked]: checked })}
+        id={labelId}
+      >
+        <Grid item xs={12} container justify="center">
           {!!src ? (
             <Avatar
               className={styles.avatar}
@@ -62,20 +91,18 @@ export const ImageListItem = ({
           ) : null}
           {icon}
         </Grid>
-        <Grid item container justify="center">
+        <Grid item>
           <input
             className={styles.radio}
             type="radio"
             aria-labelledby={labelId}
             onChange={handleChange}
-            checked={selectedValue === value}
+            checked={checked}
             name={name}
           />
-          <Typography component="span" align="center">
-            {text}
-          </Typography>
+          <Typography className={styles.text}>{text}</Typography>
         </Grid>
-      </label>
-    </Grid>
+      </Grid>
+    </GridListTile>
   );
 };
