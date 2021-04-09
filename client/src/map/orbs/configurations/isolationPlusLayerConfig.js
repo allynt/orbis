@@ -1,7 +1,8 @@
 import { DataFilterExtension } from '@deck.gl/extensions';
-import { find, get } from 'lodash';
+import { get } from 'lodash';
 
 import { getColorScaleForProperty } from 'utils/color';
+import { getValueForTimestamp } from 'utils/data';
 import { isRealValue } from 'utils/isRealValue';
 import {
   addClickedFeatures,
@@ -37,13 +38,10 @@ export const COLOR_PRIMARY = [246, 190, 0, 255],
  */
 export const getValue = (feature, selectedProperty, selectedTimestamp) =>
   selectedProperty.timeseries
-    ? find(feature.properties[selectedProperty.name], ({ timestamp }) => {
-        const date = new Date(timestamp).getTime();
-        return !!selectedTimestamp
-          ? date === selectedTimestamp
-          : date ===
-              new Date(selectedProperty.timeseries_latest_timestamp).getTime();
-      })?.value
+    ? getValueForTimestamp(
+        feature.properties[selectedProperty.name],
+        selectedTimestamp ?? selectedProperty.timeseries_latest_timestamp,
+      )
     : get(feature.properties, selectedProperty.name);
 
 /**

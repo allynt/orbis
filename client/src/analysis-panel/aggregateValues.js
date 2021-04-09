@@ -1,4 +1,5 @@
-import { find, sumBy } from 'lodash';
+import { sumBy } from 'lodash';
+import { getValueForTimestamp } from 'utils/data';
 import { DEFAULT_DECIMAL_PRECISION } from '../map/map.constants';
 
 /**
@@ -30,18 +31,10 @@ export const aggregateValues = (
     clickedFeatures,
     selectedProperty.timeseries
       ? clickedFeature =>
-          find(
+          getValueForTimestamp(
             clickedFeature.object.properties[selectedProperty.name],
-            ({ timestamp }) => {
-              const date = new Date(timestamp).getTime();
-              return !!selectedTimestamp
-                ? date === selectedTimestamp
-                : date ===
-                    new Date(
-                      selectedProperty?.timeseries_latest_timestamp,
-                    ).getTime();
-            },
-          )?.value
+            selectedTimestamp ?? selectedProperty?.timeseries_latest_timestamp,
+          )
       : `object.properties.${selectedProperty.name}`,
   );
 
