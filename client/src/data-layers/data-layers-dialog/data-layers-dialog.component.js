@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 
 import { isEqual } from 'lodash';
 
@@ -88,7 +88,10 @@ const DataLayersDialog = ({
     return setSources(sources);
   };
 
-  const categorisedOrbs = orbs && createOrbsWithCategorisedSources(orbs);
+  const categorisedOrbs = useMemo(
+    () => orbs && createOrbsWithCategorisedSources(orbs),
+    [orbs],
+  );
 
   return (
     <Dialog

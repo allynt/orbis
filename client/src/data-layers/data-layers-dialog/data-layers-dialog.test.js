@@ -36,6 +36,27 @@ const ORBS = [
     source_id: 'orb/2/source/2',
     metadata: { label: 'Orb 2 Source 2', application },
   },
+  {
+    source_id: 'orb/2/source/1',
+    metadata: {
+      label: 'search me',
+      application: {
+        orbis: {
+          categories: {
+            name: 'Test Parent Name 2',
+            child: {
+              name: 'Test Child Name 2',
+            },
+          },
+          orbs: [
+            {
+              name: 'Test Orb Name',
+            },
+          ],
+        },
+      },
+    },
+  },
 ];
 
 const renderComponent = ({ selectedSources = [] } = {}) => {
@@ -109,5 +130,51 @@ describe('<DataLayersDialog />', () => {
         'orb/1/source/2',
       ]),
     );
+  });
+
+  it('filters by search term', () => {
+    const {
+      getByPlaceholderText,
+      getByRole,
+      getByText,
+      queryByText,
+    } = renderComponent();
+    userEvent.click(getByRole('button', { name: 'Test Orb Name' }));
+
+    expect(getByText('Test Parent Name')).toBeInTheDocument();
+    expect(getByText('Test Parent Name 2')).toBeInTheDocument();
+
+    userEvent.type(getByPlaceholderText('Search for data layers'), 'search me');
+
+    expect(queryByText('Test Parent Name')).not.toBeInTheDocument();
+  });
+
+  it('shows message if no layers match search term', () => {
+    const { getByPlaceholderText, getByRole, getByText } = renderComponent();
+    userEvent.click(getByRole('button', { name: 'Test Orb Name' }));
+
+    userEvent.type(
+      getByPlaceholderText('Search for data layers'),
+      'random text',
+    );
+
+    expect(getByText('No layers match your search')).toBeInTheDocument();
+  });
+
+  it('restores sources if search input is cleared', () => {
+    const { getByPlaceholderText, getByRole, getByText } = renderComponent();
+    userEvent.click(getByRole('button', { name: 'Test Orb Name' }));
+
+    userEvent.type(
+      getByPlaceholderText('Search for data layers'),
+      'random text',
+    );
+
+    expect(getByText('No layers match your search')).toBeInTheDocument();
+
+    userEvent.clear(getByPlaceholderText('Search for data layers'));
+
+    expect(getByText('Test Parent Name')).toBeInTheDocument();
+    expect(getByText('Test Parent Name 2')).toBeInTheDocument();
   });
 });

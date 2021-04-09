@@ -28,6 +28,7 @@ const LayerSearch = ({ className, onChange, noResults }) => (
       startAdornment={<SearchIcon />}
       onChange={onChange}
       placeholder="Search for data layers"
+      autoFocus
     />
     {noResults && <span>No layers match your search</span>}
   </div>

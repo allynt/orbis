@@ -55,6 +55,7 @@ const renderComponent = ({
 } = {}) => {
   const onSourceChange = jest.fn();
   const onSourcesChange = jest.fn();
+  const onSearchChange = jest.fn();
   const onSubmit = jest.fn();
   const utils = render(
     <LayerSelect
@@ -62,11 +63,12 @@ const renderComponent = ({
       selectedSources={selectedSources}
       onSourceChange={onSourceChange}
       onSourcesChange={onSourcesChange}
+      onSearchChange={onSearchChange}
       onSubmit={onSubmit}
       hasMadeChanges={hasMadeChanges}
     />,
   );
-  return { ...utils, onSourceChange, onSourcesChange };
+  return { ...utils, onSourceChange, onSourcesChange, onSearchChange };
 };
 
 describe('<LayerSelect />', () => {
@@ -280,6 +282,14 @@ describe('<LayerSelect />', () => {
         source_ids: ['oil/source/2'],
         selected: true,
       });
+    });
+  });
+
+  describe('Search Input', () => {
+    it('calls search handler on every keystroke', () => {
+      const { getByPlaceholderText, onSearchChange } = renderComponent();
+      userEvent.type(getByPlaceholderText('Search for data layers'), 'Test');
+      expect(onSearchChange).toHaveBeenCalledTimes(4);
     });
   });
 });
