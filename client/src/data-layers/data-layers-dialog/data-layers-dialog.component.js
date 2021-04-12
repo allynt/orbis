@@ -78,12 +78,22 @@ const DataLayersDialog = ({
     close();
   };
 
+  const SEARCHABLE_FIELDS = ['label', 'description'];
+
   const handleSearchChange = ({ target: { value } }) => {
     if (!value) return setFilteredSources(undefined);
 
-    const filteredSources = orbs?.filter(source =>
-        source.metadata.label.match(new RegExp(value.trim(), 'i')),
-      ),
+    const regex = new RegExp(value.trim(), 'i'),
+      filteredSources = orbs?.reduce((acc, source) => {
+        let result = acc;
+        SEARCHABLE_FIELDS.forEach(term => {
+          if (source.metadata[term].match(regex)) {
+            result = [...acc, source];
+            return;
+          }
+        });
+        return result;
+      }, []),
       matchedSources =
         createOrbsWithCategorisedSources(filteredSources)?.find(
           orb => orb.name === selectedOrbName,
