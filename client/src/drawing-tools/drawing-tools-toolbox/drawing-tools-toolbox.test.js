@@ -9,9 +9,7 @@ describe('<DrawingToolsToolbox />', () => {
     const { getByRole } = render(
       <DrawingToolsToolbox open onToolSelect={onToolSelect} />,
     );
-    await waitFor(() =>
-      userEvent.click(getByRole('radio', { name: 'Draw Point' })),
-    );
+    await waitFor(() => userEvent.click(getByRole('radio', { name: 'Point' })));
     expect(onToolSelect).toBeCalledWith('DrawPointMode');
   });
 
@@ -24,7 +22,7 @@ describe('<DrawingToolsToolbox />', () => {
         selectedTool="DrawPointMode"
       />,
     );
-    userEvent.click(getByRole('radio', { name: 'Draw Point' }));
+    userEvent.click(getByRole('radio', { name: 'Point' }));
     await waitFor(() => expect(onToolSelect).toBeCalledWith('ViewMode'));
   });
 });

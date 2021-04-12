@@ -38,7 +38,7 @@ const getColor = (feature, features, alpha) => {
 
 export const useDrawingTools = () => {
   const [drawingToolsEnabled, setDrawingToolsEnabled] = useState(false);
-  const [drawMode, setDrawMode] = useState(EditModes.DrawPointMode.name);
+  const [drawMode, setDrawMode] = useState(EditModes.ViewMode.name);
   const featureCollection = useSelector(drawingToolsFeatureCollectionSelector);
   const dispatch = useDispatch();
 

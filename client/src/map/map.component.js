@@ -1,7 +1,6 @@
 import React, { useCallback, useEffect } from 'react';
 
 import {
-  AnnotationsIcon,
   ButtonGroup,
   LoadMask,
   makeStyles,
@@ -51,7 +50,7 @@ import {
 } from './orbs/layers.slice';
 
 import 'mapbox-gl/dist/mapbox-gl.css';
-import { useDrawingTools } from 'drawing-tools';
+import { DrawingToolsToolbox, useDrawingTools } from 'drawing-tools';
 
 /** @type {React.CSSProperties} */
 const TOP_MAP_CSS = {
@@ -172,7 +171,13 @@ const Map = ({ mapComponents, layers }) => {
   const mapStyles = useSelector(mapStylesSelector);
   const selectedMapStyle = useSelector(selectedMapStyleSelector);
   const styles = useStyles({ selectedMapStyle });
-  const { editableLayer } = useDrawingTools();
+  const {
+    editableLayer,
+    drawingToolsEnabled,
+    setDrawingToolsEnabled,
+    drawMode,
+    setDrawMode,
+  } = useDrawingTools();
 
   useEffect(() => {
     if (selectedBookmark) {
@@ -245,9 +250,12 @@ const Map = ({ mapComponents, layers }) => {
       </div>
 
       <ButtonGroup className={styles.buttonControls} orientation="vertical">
-        <MapControlButton>
-          <AnnotationsIcon fontSize="inherit" />
-        </MapControlButton>
+        <DrawingToolsToolbox
+          open={drawingToolsEnabled}
+          onButtonClick={() => setDrawingToolsEnabled(!drawingToolsEnabled)}
+          onToolSelect={tool => setDrawMode(tool)}
+          selectedTool={drawMode}
+        />
         <MapControlButton
           className={clsx({ [styles.selected]: extrudedMode })}
           aria-selected={extrudedMode}
