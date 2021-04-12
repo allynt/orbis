@@ -1,3 +1,4 @@
+import { featureCollection } from '@turf/helpers';
 import reducer, {
   setFeatures,
   drawingToolsFeatureCollectionSelector,
@@ -6,40 +7,46 @@ import reducer, {
 describe('drawing tools slice', () => {
   describe('actions', () => {
     describe('setFeatures', () => {
+      const features = [{ id: 1 }, { id: 2 }];
       it('Creates a new feature collection and sets features', () => {
-        const features = [{ id: 1 }, { id: 2 }];
-        expect(reducer({}, setFeatures(features))).toEqual({
-          featureCollection: expect.objectContaining({
+        expect(reducer({}, setFeatures(features))).toEqual(
+          expect.objectContaining({
             features,
           }),
-        });
+        );
       });
 
       it('Sets features if featureCollection exists', () => {
-        const features = [{ id: 1 }, { id: 2 }];
         const result = reducer(
-          { featureCollection: { features: [{ id: 3 }, { id: 4 }] } },
+          { features: [{ id: 3 }, { id: 4 }] },
           setFeatures(features),
         );
-        expect(result.featureCollection.features).toEqual(features);
+        expect(result.features).toEqual(features);
+      });
+
+      it('Sets features if payload is a FeatureCollection', () => {
+        const result = reducer({}, setFeatures(featureCollection(features)));
+        expect(result.features).toEqual(features);
       });
     });
   });
 
   describe('selectors', () => {
     describe('drawingToolsFeaturesSelector', () => {
-      it('returns undefined if drawingTools is undefined', () => {
-        expect(drawingToolsFeatureCollectionSelector({})).toBeUndefined();
+      it('returns an empty feature collection if drawingTools is undefined', () => {
+        expect(drawingToolsFeatureCollectionSelector({})).toEqual(
+          featureCollection([]),
+        );
       });
 
-      it('selects features from state', () => {
+      it('returns a feature collection with the features from state', () => {
         const state = {
           drawingTools: {
-            featureCollection: { features: [{ id: 1 }, { id: 2 }] },
+            features: [{ id: 1 }, { id: 2 }],
           },
         };
         expect(drawingToolsFeatureCollectionSelector(state)).toEqual(
-          state.drawingTools.featureCollection,
+          featureCollection(state.drawingTools.features),
         );
       });
     });

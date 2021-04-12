@@ -13,9 +13,8 @@ const drawingToolsSlice = createSlice({
   initialState: {},
   reducers: {
     setFeatures: (state, { payload }) => {
-      if (state.featureCollection == null)
-        state.featureCollection = featureCollection(payload);
-      else state.featureCollection.features = payload;
+      if ('type' in payload) state.features = payload.features;
+      else state.features = payload;
     },
   },
 });
@@ -27,7 +26,7 @@ const baseSelector = state => state.drawingTools;
 
 export const drawingToolsFeatureCollectionSelector = createSelector(
   baseSelector,
-  state => state?.featureCollection,
+  state => featureCollection(state?.features || []),
 );
 
 export default drawingToolsSlice.reducer;
