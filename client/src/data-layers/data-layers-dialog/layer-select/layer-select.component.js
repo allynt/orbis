@@ -22,11 +22,12 @@ import { Header } from '../components/header.component';
 import { List } from '../components/list.component';
 import { Section } from '../components/section.component';
 
-const LayerSearch = ({ className, onChange, noResults }) => (
+const LayerSearch = ({ className, searchTerm = '', onChange, noResults }) => (
   <div className={className}>
     <Input
       startAdornment={<SearchIcon />}
       onChange={onChange}
+      value={searchTerm}
       placeholder="Search for data layers"
       autoFocus
     />
@@ -194,6 +195,7 @@ const useStyles = makeStyles(theme => ({
 /**
  * @param {{
  *   orbSources: import('typings/orbis').CategorisedSources
+ *   searchTerm: string
  *   selectedSources?: import('typings/orbis').Source['source_id'][]
  *   hasMadeChanges?: boolean
  *   onSourcesChange: (params: {
@@ -205,6 +207,7 @@ const useStyles = makeStyles(theme => ({
  */
 export const LayerSelect = ({
   orbSources,
+  searchTerm,
   selectedSources,
   hasMadeChanges = false,
   onSourcesChange,
@@ -216,9 +219,10 @@ export const LayerSelect = ({
     <Section orientation="right">
       <Header>Add Data Layers</Header>
       {orbSources ? (
-        <>
+        <div>
           <LayerSearch
             className={styles.layerSearch}
+            searchTerm={searchTerm}
             onChange={onSearchChange}
             noResults={!orbSources?.length}
           />
@@ -230,7 +234,7 @@ export const LayerSelect = ({
               selectedSources,
             })}
           </List>
-        </>
+        </div>
       ) : (
         <Typography className={styles.noOrbMessage}>
           Select Your Orb in order to find layers

@@ -51,6 +51,7 @@ const DataLayersDialog = ({
   );
   const [hasMadeChanges, setHasMadeChanges] = useState(false);
   const [filteredSources, setFilteredSources] = useState(undefined);
+  const [searchTerm, setSearchTerm] = useState(undefined);
 
   useEffect(() => {
     setHasMadeChanges(!isEqual(initialSelectedSources, selectedSources));
@@ -66,6 +67,7 @@ const DataLayersDialog = ({
   };
 
   const handleOrbClick = orbName => {
+    setSearchTerm(undefined);
     setFilteredSources(undefined);
     setSelectedOrbName(orbName);
   };
@@ -80,10 +82,11 @@ const DataLayersDialog = ({
 
   const SEARCHABLE_FIELDS = ['label', 'description'];
 
-  const handleSearchChange = ({ target: { value } }) => {
-    if (!value) return setFilteredSources(undefined);
+  useEffect(() => {
+    if (searchTerm === undefined) return;
+    if (searchTerm === '') return setFilteredSources(undefined);
 
-    const regex = new RegExp(value.trim(), 'i'),
+    const regex = new RegExp(searchTerm.trim(), 'i'),
       filteredSources = orbs?.reduce((acc, source) => {
         let result = acc;
         SEARCHABLE_FIELDS.forEach(term => {
@@ -100,10 +103,10 @@ const DataLayersDialog = ({
         )?.sources || [];
 
     return setFilteredSources(matchedSources);
-  };
+  }, [searchTerm]);
 
   const categorisedOrbs = useMemo(
-    () => orbs && createOrbsWithCategorisedSources(orbs),
+    () => createOrbsWithCategorisedSources(orbs),
     [orbs],
   );
 
@@ -135,9 +138,10 @@ const DataLayersDialog = ({
               : categorisedOrbs?.find(orb => orb.name === selectedOrbName)
                   ?.sources
           }
+          searchTerm={searchTerm}
           selectedSources={selectedSources}
           onSourcesChange={handleSourcesChange}
-          onSearchChange={handleSearchChange}
+          onSearchChange={e => setSearchTerm(e.target.value)}
           onSubmit={handleSubmit}
           hasMadeChanges={hasMadeChanges}
         />
