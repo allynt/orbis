@@ -2,8 +2,8 @@ import { createSelector, createSlice } from '@reduxjs/toolkit';
 
 /**
  * @type {import('@reduxjs/toolkit').Slice<
- *  import('./drawing-tools.slice').DrawingToolsState,
- *  import('./drawing-tools.slice').DrawingToolsActions,
+ *  import('drawing-tools').DrawingToolsState,
+ *  import('drawing-tools').DrawingToolsActions,
  *  'drawingTools'
  * >}
  */
