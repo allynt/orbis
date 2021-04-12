@@ -21,7 +21,6 @@ class TestTokens:
     testing the data token generation
     (not testing the authentication token system)
     """
-
     def test_generate_token_view(self, user, api_client, mock_storage):
 
         customer = CustomerFactory(logo=None)
@@ -71,14 +70,50 @@ class TestTokens:
         response = client.post(url, {"token": valid_token})
         assert status.is_server_error(response.status_code)
 
-    def test_generate_token_correct_data_access(self, user, api_client, mock_storage):
+    def test_generate_token_correct_application_scope(
+        self, user, api_client, mock_storage
+    ):
+        """
+        if a customer MANAGER has a Licence to an Orb w/ a DataScope w/ the "a4h" application
+        then they should be granted "download" access to that DataScope (regardless of the
+        access in the actual Licence)
+        """
+
+        test_application_name = "a4h"
+        test_application_data_scope_access = "download"
+
+        customer = CustomerFactory(logo=None)
+        (customer_user, _) = customer.add_user(user, status="ACTIVE", type="MEMBER")
+
+        data_scope = DataScopeFactory(applications=[test_application_name])
+        orb = OrbFactory(data_scopes=[data_scope])
+        LicenceFactory(customer=customer, orb=orb, customer_user=customer_user)
+
+        payload = validate_data_token(generate_data_token(user))
+        payload_data_scopes = payload["scopes"]["data"]
+
+        assert test_application_data_scope_access not in payload_data_scopes
+
+        customer_user.customer_user_type = "MANAGER"
+        customer_user.save()
+
+        payload = validate_data_token(generate_data_token(user))
+        payload_data_scopes = payload["scopes"]["data"]
+
+        assert [data_scope.source_id_pattern] == payload_data_scopes[test_application_data_scope_access]
+
+    def test_generate_token_correct_data_access(
+        self, user, api_client, mock_storage
+    ):
 
         access_scopes = [Access.READ, Access.CREATE, Access.DELETE]
 
         customer = CustomerFactory(logo=None)
         (customer_user, _) = customer.add_user(user)
         data_scopes = [DataScopeFactory() for _ in access_scopes]
-        orbs = [OrbFactory(data_scopes=[data_scope]) for data_scope in data_scopes]
+        orbs = [
+            OrbFactory(data_scopes=[data_scope]) for data_scope in data_scopes
+        ]
 
         for i, access_scope in enumerate(access_scopes):
             LicenceFactory(
@@ -98,17 +133,17 @@ class TestTokens:
         payload = validate_data_token(generate_data_token(user))
         payload_data_scopes = payload["scopes"]["data"]
 
-        assert data_scopes[0].source_id_pattern in payload_data_scopes["read"]
-        assert data_scopes[0].source_id_pattern not in payload_data_scopes["create"]
-        assert data_scopes[0].source_id_pattern not in payload_data_scopes["delete"]
-
-        assert data_scopes[1].source_id_pattern not in payload_data_scopes["read"]
-        assert data_scopes[1].source_id_pattern in payload_data_scopes["create"]
-        assert data_scopes[1].source_id_pattern not in payload_data_scopes["delete"]
-
-        assert data_scopes[2].source_id_pattern not in payload_data_scopes["read"]
-        assert data_scopes[2].source_id_pattern not in payload_data_scopes["create"]
-        assert data_scopes[2].source_id_pattern in payload_data_scopes["delete"]
+        assert all((
+            data_scopes[0].source_id_pattern in payload_data_scopes["read"],
+            data_scopes[0].source_id_pattern not in payload_data_scopes["create"],
+            data_scopes[0].source_id_pattern not in payload_data_scopes["delete"],
+            data_scopes[1].source_id_pattern not in payload_data_scopes["read"],
+            data_scopes[1].source_id_pattern in payload_data_scopes["create"],
+            data_scopes[1].source_id_pattern not in payload_data_scopes["delete"],
+            data_scopes[2].source_id_pattern not in payload_data_scopes["read"],
+            data_scopes[2].source_id_pattern not in payload_data_scopes["create"],
+            data_scopes[2].source_id_pattern in payload_data_scopes["delete"],
+        ))  # yapf: disable
 
 
 @pytest.mark.django_db
@@ -116,14 +151,19 @@ class TestDataSourceView:
 
     SOURCE_ID_PARTS = ["authority", "namespace", "name", "version"]
 
-    def test_adds_orb_info(self, user, api_client, mock_data_sources, mock_storage):
+    def test_adds_orb_info(
+        self, user, api_client, mock_data_sources, mock_storage
+    ):
         """
         tests that the correct orbs are associated w/ the returned datasources
         """
 
         source_id = "test/test/test/test"
         mock_data_sources([source_id])
-        data_scope = DataScopeFactory(**{part: "test" for part in self.SOURCE_ID_PARTS})
+        data_scope = DataScopeFactory(
+            **{part: "test"
+               for part in self.SOURCE_ID_PARTS}
+        )
 
         orb_1 = OrbFactory(data_scopes=[data_scope])
         orb_2 = OrbFactory(data_scopes=[data_scope])
@@ -139,8 +179,11 @@ class TestDataSourceView:
         response = client.get(url, {}, format="json")
         content = response.json()
 
-        source_orbis_metadata = content["sources"][0]["metadata"]["application"]["orbis"]
-        sorted_orb_content = sorted(source_orbis_metadata["orbs"], key=lambda x: x["name"])
+        source_orbis_metadata = content["sources"][0]["metadata"]["application"
+                                                                 ]["orbis"]
+        sorted_orb_content = sorted(
+            source_orbis_metadata["orbs"], key=lambda x: x["name"]
+        )
         assert len(source_orbis_metadata["orbs"]) == 1
         assert sorted_orb_content[0]["name"] == orb_1.name
         assert sorted_orb_content[0]["description"] == orb_1.description
@@ -150,15 +193,20 @@ class TestDataSourceView:
         response = client.get(url, {}, format="json")
         content = response.json()
 
-        source_orbis_metadata = content["sources"][0]["metadata"]["application"]["orbis"]
-        sorted_orb_content = sorted(source_orbis_metadata["orbs"], key=lambda x: x["name"])
+        source_orbis_metadata = content["sources"][0]["metadata"]["application"
+                                                                 ]["orbis"]
+        sorted_orb_content = sorted(
+            source_orbis_metadata["orbs"], key=lambda x: x["name"]
+        )
         assert len(source_orbis_metadata["orbs"]) == 2
         assert sorted_orb_content[0]["name"] == orb_1.name
         assert sorted_orb_content[0]["description"] == orb_1.description
         assert sorted_orb_content[1]["name"] == orb_2.name
         assert sorted_orb_content[1]["description"] == orb_2.description
 
-    def test_no_duplicate_orb_info(self, user, api_client, mock_data_sources, mock_storage):
+    def test_no_duplicate_orb_info(
+        self, user, api_client, mock_data_sources, mock_storage
+    ):
         """
         Tests that if a user has multiple licences to the same orb
         (b/c of being a member of multiple customers)
@@ -166,7 +214,10 @@ class TestDataSourceView:
         """
         source_id = "test/test/test/test"
         mock_data_sources([source_id])
-        data_scope = DataScopeFactory(**{part: "test" for part in self.SOURCE_ID_PARTS})
+        data_scope = DataScopeFactory(
+            **{part: "test"
+               for part in self.SOURCE_ID_PARTS}
+        )
         orb = OrbFactory(data_scopes=[data_scope])
 
         customer_1 = CustomerFactory(logo=None)
@@ -182,31 +233,44 @@ class TestDataSourceView:
         response = client.get(url, {}, format="json")
         content = response.json()
 
-        source_orbis_metadata = content["sources"][0]["metadata"]["application"]["orbis"]
+        source_orbis_metadata = content["sources"][0]["metadata"]["application"
+                                                                 ]["orbis"]
         assert len(source_orbis_metadata["orbs"]) == 1
 
-    def test_num_queries(self, user, api_client, mock_data_sources, mock_storage, django_assert_num_queries):
+    def test_num_queries(
+        self,
+        user,
+        api_client,
+        mock_data_sources,
+        mock_storage,
+        django_assert_num_queries
+    ):
         """
         Tests that a minimal number of queries is run;
         Proves complexity of DataSourceView is constant.
         """
 
         N_SOURCES = 100
-        # N_QUERIES = 114
-        N_QUERIES = 16
+        N_QUERIES = (
+            17 + 1
+        )  # 17 to get scope details & 1 to get management details; still a lot better than linear (100+)
 
         source_ids = [
-            f"authority/namespace/name/version{i}"
-            for i in range(N_SOURCES)
+            f"authority/namespace/name/version{i}" for i in range(N_SOURCES)
         ]
 
-        data_scope = DataScopeFactory(authority="authority", namespace="namespace", name="name", version="*")
+        data_scope = DataScopeFactory(
+            authority="authority",
+            namespace="namespace",
+            name="name",
+            version="*"
+        )
 
         # (worst-case-scenario: 1 orb per source)
         orbs = [OrbFactory(data_scopes=[data_scope]) for _ in source_ids]
 
         customer = CustomerFactory(logo=None)
-        customer_user, _ = customer.add_user(user)
+        customer_user, _ = customer.add_user(user, status="ACTIVE", type="MANAGER")
         for orb in orbs:
             customer.assign_licences(orb, [customer_user])
 

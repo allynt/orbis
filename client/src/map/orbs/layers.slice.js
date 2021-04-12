@@ -13,6 +13,7 @@ import { unionBy, differenceBy } from 'lodash';
  *     hoveredFeatures?: GeoJsonFeature[],
  *     filterValue?: any
  *     other?: any
+ *     timestamp?: number
  *   },
  *   extrudedMode: boolean
  *   extrusionScale: number
@@ -71,6 +72,12 @@ import { unionBy, differenceBy } from 'lodash';
  * @typedef {GenericOrbAction<{
  *    other?: any
  * }>} SetOtherAction
+ */
+
+/**
+ * @typedef {GenericOrbAction<{
+ *   timestamp?: number
+ * }>} SetTimestampAction
  */
 
 /**
@@ -167,6 +174,12 @@ const layersSlice = createSlice({
       const { key, other } = payload;
       state[key] = { ...state[key], other };
     },
+    /** @type {SetTimestampAction} */
+    setTimestamp: (state, { payload }) => {
+      if (!payload.key) return handleMissingKey();
+      const { key, timestamp } = payload;
+      state[key] = { ...state[key], timestamp };
+    },
     toggleExtrudedMode: state => {
       state.extrudedMode = !state.extrudedMode;
     },
@@ -187,6 +200,7 @@ export const {
   setVisibility,
   setFilterValue,
   setOther,
+  setTimestamp,
   toggleExtrudedMode,
   setExtrusionScale,
   setState,
@@ -217,6 +231,10 @@ export const filterValueSelector = id =>
 /** @param {string} id */
 export const otherSelector = id =>
   createSelector(baseSelector, state => state?.[id]?.other);
+
+/** @param {string} id */
+export const timestampSelector = id =>
+  createSelector(baseSelector, state => state?.[id]?.timestamp);
 
 export const extrudedModeSelector = createSelector(
   baseSelector,

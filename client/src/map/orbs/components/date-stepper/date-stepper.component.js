@@ -5,6 +5,8 @@ import {
   Slider,
   Typography,
   Tooltip,
+  fade,
+  Box,
 } from '@astrosat/astrosat-ui';
 import { Pause, PlayArrow } from '@material-ui/icons';
 import { format } from 'date-fns';
@@ -13,10 +15,17 @@ import React, { useEffect, useState } from 'react';
 
 const useStyles = makeStyles(theme => ({
   grid: {
-    marginBottom: theme.spacing(2),
+    marginBottom: theme.spacing(4),
   },
   slider: {
-    marginTop: theme.spacing(1),
+    marginTop: theme.spacing(1.5),
+  },
+  markLabel: {
+    color: fade(theme.palette.text.primary, 0.5),
+    transform: 'rotate(-90deg) translate(-1em, -2em)',
+  },
+  markLabelActive: {
+    color: theme.palette.text.primary,
   },
 }));
 
@@ -24,7 +33,13 @@ const ValueLabelComponent = props => {
   const { children, open, value } = props;
 
   return (
-    <Tooltip open={open} enterTouchDelay={0} placement="top" title={value}>
+    <Tooltip
+      open={open}
+      enterTouchDelay={0}
+      placement="top"
+      title={value}
+      arrow
+    >
       {children}
     </Tooltip>
   );
@@ -63,37 +78,39 @@ export const DateStepper = ({
   }, [value, isPlaying, onChange, dates]);
 
   return (
-    <Grid className={styles.grid} container spacing={2}>
-      <Grid item xs={12}>
-        <Typography variant="h5" component="p">
-          Date
-        </Typography>
-        <Grid container alignItems="center">
-          <Grid item xs={2}>
-            <IconButton color="primary" onClick={() => setIsPlaying(c => !c)}>
-              {isPlaying ? (
-                <Pause titleAccess="pause" />
-              ) : (
-                <PlayArrow titleAccess="play" />
-              )}
-            </IconButton>
-          </Grid>
-          <Grid item xs>
-            <Slider
-              ValueLabelComponent={ValueLabelComponent}
-              valueLabelDisplay={isPlaying ? 'on' : 'auto'}
-              valueLabelFormat={v => format(new Date(v), 'dd/MM/yy')}
-              className={styles.slider}
-              value={value || defaultValue}
-              onChange={onChange}
-              min={min}
-              max={max}
-              marks={dates}
-              step={null}
-            />
-          </Grid>
+    <Box className={styles.grid}>
+      <Typography variant="h5" component="p">
+        Date
+      </Typography>
+      <Grid container>
+        <Grid item xs={2}>
+          <IconButton color="primary" onClick={() => setIsPlaying(c => !c)}>
+            {isPlaying ? (
+              <Pause titleAccess="pause" />
+            ) : (
+              <PlayArrow titleAccess="play" />
+            )}
+          </IconButton>
+        </Grid>
+        <Grid item xs>
+          <Slider
+            ValueLabelComponent={ValueLabelComponent}
+            valueLabelDisplay={isPlaying ? 'on' : 'auto'}
+            valueLabelFormat={v => format(new Date(v), 'dd/MM/yy')}
+            className={styles.slider}
+            classes={{
+              markLabel: styles.markLabel,
+              markLabelActive: styles.markLabelActive,
+            }}
+            value={value || defaultValue}
+            onChange={onChange}
+            min={min}
+            max={max}
+            marks={dates}
+            step={null}
+          />
         </Grid>
       </Grid>
-    </Grid>
+    </Box>
   );
 };

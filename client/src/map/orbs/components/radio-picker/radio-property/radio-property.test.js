@@ -165,4 +165,32 @@ describe('RadioProperty', () => {
 
     expect(getByRole('radio', { name: data[0].label })).toBeInTheDocument();
   });
+
+  it('shows a date stepper if the selected property is timeseries and has a list of timestamps', () => {
+    const { getByText } = renderComponent(singleObjectData, {
+      ...singleObjectData[0],
+      timeseries: true,
+      timeseries_latest_timestamp: new Date(2020, 0, 1).toISOString(),
+      timeseries_timestamps: [new Date(2020, 0, 1).toISOString()],
+    });
+    expect(getByText(/date/i)).toBeInTheDocument();
+  });
+
+  it('shows labels for the start, middle, and end dates', () => {
+    const { getByText } = renderComponent(singleObjectData, {
+      ...singleObjectData[0],
+      timeseries: true,
+      timeseries_latest_timestamp: new Date(2020, 0, 1).toISOString(),
+      timeseries_timestamps: [
+        new Date(2016, 0, 1).toISOString(),
+        new Date(2017, 0, 1).toISOString(),
+        new Date(2018, 0, 1).toISOString(),
+        new Date(2019, 0, 1).toISOString(),
+        new Date(2020, 0, 1).toISOString(),
+      ],
+    });
+    expect(getByText('01-01-16')).toBeInTheDocument();
+    expect(getByText('01-01-18')).toBeInTheDocument();
+    expect(getByText('01-01-20')).toBeInTheDocument();
+  });
 });

@@ -11,6 +11,8 @@ import {
   otherSelector,
   setFilterValue,
   setOther,
+  setTimestamp,
+  timestampSelector,
 } from '../../layers.slice';
 import { groupProperties } from './helpers/group-properties.js';
 import RadioProperty from './radio-property/radio-property.component';
@@ -26,10 +28,13 @@ export const RadioPicker = ({ selectedLayer, dispatch }) => {
   const other = useSelector(state => otherSelector(otherStateKey)(state?.orbs));
   const selectedProperty = get(other, 'property');
 
+  const propertyStateKey = `${selectedProperty?.source_id}/${selectedProperty?.name}`;
+  const selectedTimestamp = useSelector(state =>
+    timestampSelector(propertyStateKey)(state?.orbs),
+  );
+
   const filterRange = useSelector(state =>
-    filterValueSelector(
-      `${selectedProperty?.source_id}/${selectedProperty?.name}`,
-    )(state?.orbs),
+    filterValueSelector(propertyStateKey)(state?.orbs),
   );
 
   const selectedPropertyMetadata = selectedLayer?.metadata?.properties?.find(
@@ -71,7 +76,7 @@ export const RadioPicker = ({ selectedLayer, dispatch }) => {
             onSliderChange={filterValue =>
               dispatch(
                 setFilterValue({
-                  key: `${selectedProperty?.source_id}/${selectedProperty?.name}`,
+                  key: propertyStateKey,
                   filterValue,
                 }),
               )
@@ -80,6 +85,15 @@ export const RadioPicker = ({ selectedLayer, dispatch }) => {
             colorScheme={colorScheme}
             filterRange={filterRange}
             categoryPath={categoryPath}
+            onDateChange={(_, timestamp) =>
+              dispatch(
+                setTimestamp({
+                  key: propertyStateKey,
+                  timestamp,
+                }),
+              )
+            }
+            selectedTimestamp={selectedTimestamp}
           />
         </React.Fragment>
       ))}
