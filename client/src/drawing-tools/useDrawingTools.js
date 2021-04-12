@@ -2,6 +2,7 @@ import { useState } from 'react';
 
 import { EditableGeoJsonLayer } from '@nebula.gl/layers';
 import * as EditModes from '@nebula.gl/edit-modes';
+import { findIndex } from 'lodash';
 import { useDispatch, useSelector } from 'react-redux';
 
 import {
@@ -9,7 +10,6 @@ import {
   setFeatures,
 } from './drawing-tools.slice';
 import { hexToRgbArray } from 'utils/color';
-import { findIndex } from 'lodash';
 
 const FEATURE_COLORS = [
   '00AEE4',
@@ -67,7 +67,7 @@ export const useDrawingTools = () => {
   const editableLayer = new EditableGeoJsonLayer({
     id: 'drawing-tools-editable-layer',
     data: featureCollection,
-    mode: EditModes.DrawPointMode,
+    mode: EditModes[drawMode],
     selectedFeatureIndexes: [],
     pointRadiusMinPixels: 5,
     getFillColor,

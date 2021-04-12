@@ -96,8 +96,8 @@ export const ImageListItem = ({
             type="radio"
             tabIndex={0}
             aria-labelledby={labelId}
-            onChange={handleChange}
-            checked={checked}
+            onClick={handleChange}
+            defaultChecked={checked}
             name={name}
           />
           <Typography className={styles.text}>{text}</Typography>
