@@ -1,17 +1,16 @@
 import { createSelector, createSlice } from '@reduxjs/toolkit';
 
+/**
+ * @type {import('@reduxjs/toolkit').Slice<
+ *  import('./drawing-tools.slice').DrawingToolsState,
+ *  import('./drawing-tools.slice').DrawingToolsActions,
+ *  'drawingTools'
+ * >}
+ */
 const drawingToolsSlice = createSlice({
   name: 'drawingTools',
-  /** @type {import('./drawing-tools.slice').DrawingToolsState} */
   initialState: {},
   reducers: {
-    /**
-     * @type {import('@reduxjs/toolkit').CaseReducer<
-     *  import('./drawing-tools.slice').DrawingToolsState,
-     *  import('@reduxjs/toolkit').PayloadAction<
-     *    import('@turf/helpers').Feature[]>
-     * >}
-     */
     setFeatures: (state, { payload }) => {
       state.features = payload;
     },
