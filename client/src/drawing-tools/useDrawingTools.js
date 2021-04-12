@@ -14,6 +14,8 @@ export const useDrawingTools = () => {
   const editableLayer = new EditableGeoJsonLayer({
     id: 'drawing-tools-editable-layer',
     data: featureCollection,
+    mode: EditModes.ViewMode,
+    selectedFeatureIndexes: [],
   });
 
   return {

@@ -1,4 +1,4 @@
-import { DrawingToolsState } from 'drawing-tools'; // eslint-disable-line
+import { DrawingToolsState } from 'drawing-tools/types'; // eslint-disable-line
 import { OrbState } from 'map/orbs/orbReducer'; // eslint-disable-line
 
 declare module 'react-redux' {

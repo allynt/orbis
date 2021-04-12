@@ -1,16 +1,17 @@
 import { createSelector, createSlice } from '@reduxjs/toolkit';
 import { featureCollection } from '@turf/helpers';
+import sampleData from './sample-drawing-data.json';
 
 /**
  * @type {import('@reduxjs/toolkit').Slice<
- *  import('drawing-tools').DrawingToolsState,
- *  import('drawing-tools').DrawingToolsActions,
+ *  import('drawing-tools/types').DrawingToolsState,
+ *  import('drawing-tools/types').DrawingToolsActions,
  *  'drawingTools'
  * >}
  */
 const drawingToolsSlice = createSlice({
   name: 'drawingTools',
-  initialState: {},
+  initialState: { featureCollection: sampleData },
   reducers: {
     setFeatures: (state, { payload }) => {
       if (state.featureCollection == null)

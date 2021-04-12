@@ -51,6 +51,7 @@ import {
 } from './orbs/layers.slice';
 
 import 'mapbox-gl/dist/mapbox-gl.css';
+import { useDrawingTools } from 'drawing-tools';
 
 /** @type {React.CSSProperties} */
 const TOP_MAP_CSS = {
@@ -171,6 +172,7 @@ const Map = ({ mapComponents, layers }) => {
   const mapStyles = useSelector(mapStylesSelector);
   const selectedMapStyle = useSelector(selectedMapStyleSelector);
   const styles = useStyles({ selectedMapStyle });
+  const { editableLayer } = useDrawingTools();
 
   useEffect(() => {
     if (selectedBookmark) {
@@ -272,7 +274,7 @@ const Map = ({ mapComponents, layers }) => {
         <DeckGL
           ref={deckRef}
           viewState={viewState}
-          layers={layers}
+          layers={[...(layers || []), editableLayer]}
           effects={[lightingEffect]}
           ContextProvider={MapContext.Provider}
           glOptions={{

@@ -1,5 +1,5 @@
 import { CaseReducer, PayloadAction } from '@reduxjs/toolkit';
-import { FeatureCollection } from '@turf/helpers';
+import { Feature, FeatureCollection } from '@turf/helpers';
 
 export type DrawingToolsState = {
   featureCollection?: FeatureCollection;

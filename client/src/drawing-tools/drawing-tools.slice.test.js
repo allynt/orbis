@@ -17,16 +17,11 @@ describe('drawing tools slice', () => {
 
       it('Sets features if featureCollection exists', () => {
         const features = [{ id: 1 }, { id: 2 }];
-        expect(
-          reducer(
-            { featureCollection: { features: [{ id: 3 }, { id: 4 }] } },
-            setFeatures(features),
-          ),
-        ).toEqual({
-          featureCollection: expect.objectContaining({
-            features,
-          }),
-        });
+        const result = reducer(
+          { featureCollection: { features: [{ id: 3 }, { id: 4 }] } },
+          setFeatures(features),
+        );
+        expect(result.featureCollection.features).toEqual(features);
       });
     });
   });
