@@ -1,4 +1,5 @@
 import { createSelector, createSlice } from '@reduxjs/toolkit';
+import { featureCollection } from '@turf/helpers';
 
 /**
  * @type {import('@reduxjs/toolkit').Slice<
@@ -12,7 +13,9 @@ const drawingToolsSlice = createSlice({
   initialState: {},
   reducers: {
     setFeatures: (state, { payload }) => {
-      state.features = payload;
+      if (state.featureCollection == null)
+        state.featureCollection = featureCollection(payload);
+      else state.featureCollection.features = payload;
     },
   },
 });
@@ -22,9 +25,9 @@ export const { setFeatures } = drawingToolsSlice.actions;
 /** @param {import('react-redux').DefaultRootState} state */
 const baseSelector = state => state.drawingTools;
 
-export const drawingToolsFeaturesSelector = createSelector(
+export const drawingToolsFeatureCollectionSelector = createSelector(
   baseSelector,
-  state => state?.features,
+  state => state?.featureCollection,
 );
 
 export default drawingToolsSlice.reducer;

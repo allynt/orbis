@@ -18,7 +18,7 @@ const render = () => {
       <Provider
         store={mockStore({
           drawingTools: {
-            features: INITIAL_FEATURES.features,
+            featureCollection: INITIAL_FEATURES,
           },
         })}
       >
