@@ -8,12 +8,51 @@ import {
   drawingToolsFeatureCollectionSelector,
   setFeatures,
 } from './drawing-tools.slice';
+import { hexToRgbArray } from 'utils/color';
+import { findIndex } from 'lodash';
+
+const FEATURE_COLORS = [
+  '00AEE4',
+  'DAF0E3',
+  '9BCC32',
+  '07A35A',
+  'F7DF90',
+  'EA376C',
+  '6A126A',
+  'FCB09B',
+  'B0592D',
+  'C1B5E3',
+  '9C805B',
+  'CCDFE5',
+].map(hexToRgbArray);
+
+/**
+ * @param {import('@turf/helpers').Feature} feature
+ * @param {import('@turf/helpers').Feature[]} features
+ * @param {number} alpha
+ */
+const getColor = (feature, features, alpha) => {
+  const index = findIndex(features, feature);
+  return [...FEATURE_COLORS[index % FEATURE_COLORS.length], alpha * 255];
+};
 
 export const useDrawingTools = () => {
   const [drawingToolsEnabled, setDrawingToolsEnabled] = useState(false);
   const [drawMode, setDrawMode] = useState(EditModes.DrawPointMode.name);
   const featureCollection = useSelector(drawingToolsFeatureCollectionSelector);
   const dispatch = useDispatch();
+
+  /**
+   * @param {import('@turf/helpers').Feature} feature
+   */
+  const getFillColor = feature =>
+    getColor(feature, featureCollection.features, 0.5);
+
+  /**
+   * @param {import('@turf/helpers').Feature} feature
+   */
+  const getLineColor = feature =>
+    getColor(feature, featureCollection.features, 1);
 
   /**
    * @param {{
@@ -30,6 +69,9 @@ export const useDrawingTools = () => {
     data: featureCollection,
     mode: EditModes.DrawPointMode,
     selectedFeatureIndexes: [],
+    pointRadiusMinPixels: 5,
+    getFillColor,
+    getLineColor,
     onEdit,
   });
 

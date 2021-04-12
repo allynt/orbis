@@ -13,10 +13,10 @@ const INITIAL_FEATURES = {
 
 const mockStore = configureMockStore();
 
-const render = () => {
+const render = (features = INITIAL_FEATURES.features) => {
   const store = mockStore({
     drawingTools: {
-      features: INITIAL_FEATURES.features,
+      features,
     },
   });
   const utils = renderHook(() => useDrawingTools(), {
@@ -58,6 +58,38 @@ describe('useDrawingTools', () => {
         expect(store.getActions()).not.toEqual(
           expect.arrayContaining([setFeatures(updatedData)]),
         );
+      });
+    });
+
+    describe('getFillColor', () => {
+      it('returns a color based on index', () => {
+        const { result } = render([{ id: 1 }, { id: 2 }]);
+        const { editableLayer } = result.current;
+        const color = editableLayer.props.getFillColor({ id: 1 });
+        expect(color).toEqual(expect.arrayContaining([0, 174, 228]));
+      });
+
+      it('Uses an alpha of 0.5', () => {
+        const { result } = render([{ id: 1 }, { id: 2 }]);
+        const { editableLayer } = result.current;
+        const color = editableLayer.props.getFillColor({ id: 1 });
+        expect(color).toEqual(expect.arrayContaining([127.5]));
+      });
+    });
+
+    describe('getLineColor', () => {
+      it('returns a color based on index', () => {
+        const { result } = render([{ id: 1 }, { id: 2 }]);
+        const { editableLayer } = result.current;
+        const color = editableLayer.props.getLineColor({ id: 2 });
+        expect(color).toEqual(expect.arrayContaining([218, 240, 227]));
+      });
+
+      it('Uses an alpha of 0.5', () => {
+        const { result } = render([{ id: 1 }, { id: 2 }]);
+        const { editableLayer } = result.current;
+        const color = editableLayer.props.getLineColor({ id: 1 });
+        expect(color).toEqual(expect.arrayContaining([255]));
       });
     });
   });
