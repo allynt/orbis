@@ -308,18 +308,27 @@ class TestLicences:
         ]
 
         # licences should have the following access_rights...
-        # 0 (000): nothing
-        # 1 (001): READ
-        # 2 (010): CREATE
-        # 3 (011): READ, CREATE
-        # 4 (100): DELETE
-        # 5 (101): READ, DELETE
-        # 6 (110): CREATE, DELETE
-        # 7 (111): READ, CREATE, DELETE
+        #  0 (0000): nothing
+        #  1 (0001): READ
+        #  2 (0010): CREATE
+        #  3 (0011): READ, CREATE
+        #  4 (0100): DELETE
+        #  5 (0101): READ, DELETE
+        #  6 (0110): CREATE, DELETE
+        #  7 (0111): READ, CREATE, DELETE
+        #  8 (1000): UPDATE
+        #  9 (1001): READ, UPDATE
+        # 10 (1010): CREATE, UPDATE
+        # 11 (1011): READ, CREATE, UPDATE
+        # 12 (1100): DELETE, UPDATE
+        # 13 (1101): READ, DELETE, UPDATE
+        # 14 (1110): CREATE, DELETE, UPDATE
+        # 15 (1111): READ, CREATE, DELETE, UPDATE
 
-        assert [licences.index(licence) for licence in Licence.objects.can_read()] == [1, 3, 5, 7]
-        assert [licences.index(licence) for licence in Licence.objects.can_create()] == [2, 3, 6, 7]
-        assert [licences.index(licence) for licence in Licence.objects.can_delete()] == [4, 5, 6, 7]
+        assert [licences.index(licence) for licence in Licence.objects.can_read()] == [1, 3, 5, 7, 9, 11, 13, 15]
+        assert [licences.index(licence) for licence in Licence.objects.can_create()] == [2, 3, 6, 7, 10, 11, 14, 15]
+        assert [licences.index(licence) for licence in Licence.objects.can_delete()] == [4, 5, 6, 7, 12, 13, 14, 15]
+        assert [licences.index(licence) for licence in Licence.objects.can_update()] == [8, 9, 10, 11, 12, 13, 14, 15]
 
 
 @pytest.mark.django_db
