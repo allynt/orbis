@@ -29,14 +29,17 @@ const useStyles = makeStyles(theme => ({
 /**
  * @param {import('@material-ui/core').ButtonProps & {selected?: boolean}} props
  */
-export const MapControlButton = ({ className, selected, ...rest }) => {
-  const styles = useStyles();
-  return (
-    <Button
-      className={clsx(styles.button, className, {
-        [styles.selected]: selected,
-      })}
-      {...rest}
-    />
-  );
-};
+export const MapControlButton = React.forwardRef(
+  ({ className, selected, ...rest }, ref) => {
+    const styles = useStyles();
+    return (
+      <Button
+        ref={ref}
+        className={clsx(styles.button, className, {
+          [styles.selected]: selected,
+        })}
+        {...rest}
+      />
+    );
+  },
+);
