@@ -46,19 +46,35 @@ const getColor = (feature, features, alpha, brightness = 1.0) => {
 };
 
 /**
- * @param {number[]} [defaultSelectedFeatureIndexes]
+ * @param {{
+ *  defaultSelectedFeatureIndexes?: number[]
+ *  defaultDrawMode?: keyof EditModes
+ * defaultDrawingToolsEnabled?: boolean
+ * }} params
  */
-export const useDrawingTools = (defaultSelectedFeatureIndexes = []) => {
-  const [drawingToolsEnabled, setDrawingToolsEnabled] = useState(false);
-  /** @type {[keyof EditModes, React.Dispatch<keyof EditModes>]} */
-  const [drawMode, setDrawMode] = useState(
-    /** @type {keyof EditModes} */ (EditModes.ViewMode.name),
+export const useDrawingTools = ({
+  defaultSelectedFeatureIndexes = [],
+  defaultDrawMode = EditModes.ViewMode.name,
+  defaultDrawingToolsEnabled = false,
+} = {}) => {
+  const [drawingToolsEnabled, setDrawingToolsEnabled] = useState(
+    defaultDrawingToolsEnabled,
   );
+  /** @type {[keyof EditModes, React.Dispatch<keyof EditModes>]} */
+  const [drawMode, setDrawMode] = useState(defaultDrawMode);
   const featureCollection = useSelector(drawingToolsFeatureCollectionSelector);
   const dispatch = useDispatch();
   const [selectedFeatureIndexes, setSelectedFeatureIndexes] = useState(
     defaultSelectedFeatureIndexes,
   );
+
+  useEffect(() => {
+    if (drawingToolsEnabled) setDrawMode(EditModes.TranslateMode.name);
+    else {
+      setSelectedFeatureIndexes([]);
+      setDrawMode(EditModes.ViewMode.name);
+    }
+  }, [drawingToolsEnabled]);
 
   const handleDeleteKey = () => {
     dispatch(removeFeaturesByIndex(selectedFeatureIndexes));
@@ -102,11 +118,13 @@ export const useDrawingTools = (defaultSelectedFeatureIndexes = []) => {
    * }} params
    */
   const onEdit = ({ editType, updatedData }) => {
-    if (editType === 'addFeature') dispatch(setFeatures(updatedData));
+    if (['addFeature', 'translating', 'translated'].includes(editType))
+      dispatch(setFeatures(updatedData));
   };
 
   /** @param {{index: number}} params */
   const onClick = ({ index }) => {
+    if (!drawingToolsEnabled) return;
     setSelectedFeatureIndexes([index]);
   };
 

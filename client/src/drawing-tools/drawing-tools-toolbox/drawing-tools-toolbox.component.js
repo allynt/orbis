@@ -45,7 +45,8 @@ export const DrawingToolsToolbox = ({
   /** @param {keyof EditModes} tool */
   const handleToolChange = tool => {
     if (onToolSelect == null) return;
-    if (tool === selectedTool) return onToolSelect(EditModes.ViewMode.name);
+    if (tool === selectedTool)
+      return onToolSelect(EditModes.TranslateMode.name);
     onToolSelect(tool);
   };
 

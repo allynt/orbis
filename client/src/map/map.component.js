@@ -262,30 +262,27 @@ const Map = ({ mapComponents, layers }) => {
         />
       </ButtonGroup>
 
-      <ReactMapGl
-        key="bottom"
-        ref={bottomMapRef}
+      <DeckGL
+        getCursor={editableLayer.getCursor.bind(editableLayer)}
+        ref={deckRef}
+        viewState={viewState}
+        layers={[...(layers || []), editableLayer]}
+        effects={[lightingEffect]}
+        controller
+        glOptions={{
+          preserveDrawingBuffer: true,
+        }}
         onViewStateChange={({ viewState: { width, height, ...rest } }) => {
           setViewState(rest);
         }}
-        mapStyle={selectedMapStyle?.bottomMapStyle}
-        {...mapProps}
       >
-        <DeckGL
-          ref={deckRef}
-          viewState={viewState}
-          layers={[...(layers || []), editableLayer]}
-          effects={[lightingEffect]}
-          ContextProvider={MapContext.Provider}
-          glOptions={{
-            preserveDrawingBuffer: true,
-          }}
+        <ReactMapGl
+          key="bottom"
+          ref={bottomMapRef}
+          mapStyle={selectedMapStyle?.bottomMapStyle}
+          {...mapProps}
         />
-        <NavigationControl />
-        <div className={styles.scaleControl}>
-          <ScaleControl unit="metric" />
-        </div>
-      </ReactMapGl>
+      </DeckGL>
       <ReactMapGl
         key="top"
         ref={topMapRef}
@@ -294,6 +291,14 @@ const Map = ({ mapComponents, layers }) => {
         attributionControl={false}
         {...mapProps}
       >
+        <NavigationControl
+          onViewStateChange={({ viewState: { width, height, ...rest } }) => {
+            setViewState(rest);
+          }}
+        />
+        <div className={styles.scaleControl}>
+          <ScaleControl unit="metric" />
+        </div>
         <Geocoder
           mapRef={topMapRef}
           mapboxApiAccessToken={accessToken}

@@ -17,6 +17,8 @@ const mockStore = configureMockStore();
 const render = ({
   features = INITIAL_FEATURES.features,
   defaultSelectedFeatureIndexes = undefined,
+  defaultDrawMode = undefined,
+  defaultDrawingToolsEnabled = undefined,
 } = {}) => {
   const store = mockStore({
     drawingTools: {
@@ -24,7 +26,12 @@ const render = ({
     },
   });
   const utils = renderHook(
-    () => useDrawingTools(defaultSelectedFeatureIndexes),
+    () =>
+      useDrawingTools({
+        defaultSelectedFeatureIndexes,
+        defaultDrawMode,
+        defaultDrawingToolsEnabled,
+      }),
     {
       wrapper: ({ children }) => <Provider store={store}>{children}</Provider>,
     },
@@ -115,8 +122,18 @@ describe('useDrawingTools', () => {
     });
 
     describe('onClick', () => {
-      it('Sets the clicked feature as selected', () => {
+      it("does not do anything if drawing tools aren't enabled", () => {
         const { result } = render();
+        act(() => {
+          result.current.editableLayer.props.onClick({ index: 0 });
+        });
+        expect(
+          result.current.editableLayer.props.selectedFeatureIndexes,
+        ).toEqual([]);
+      });
+
+      it('Sets the clicked feature as selected', () => {
+        const { result } = render({ defaultDrawingToolsEnabled: true });
         act(() => {
           result.current.editableLayer.props.onClick({ index: 0 });
         });
@@ -129,12 +146,48 @@ describe('useDrawingTools', () => {
 
   describe('Key presses', () => {
     it('Deletes the selected features when Delete is pressed', () => {
-      const { store } = render({ defaultSelectedFeatureIndexes: [0] });
+      const { store } = render({
+        defaultDrawingToolsEnabled: true,
+        defaultSelectedFeatureIndexes: [0],
+      });
       act(() => {
         fireEvent.keyUp(document, { key: 'Delete' });
       });
       expect(store.getActions()).toEqual(
         expect.arrayContaining([removeFeaturesByIndex([0])]),
+      );
+    });
+  });
+
+  describe('Enabling and disabling', () => {
+    it('Is in ViewMode by default', () => {
+      const { result } = render();
+      expect(result.current.drawMode).toBe('ViewMode');
+    });
+
+    it('Changes mode to TranslateMode when enabled', () => {
+      const { result } = render();
+      act(() => result.current.setDrawingToolsEnabled(true));
+      expect(result.current.drawMode).toBe('TranslateMode');
+    });
+
+    it('Changes mode to ViewMode when disabled', () => {
+      const { result } = render({
+        defaultDrawingToolsEnabled: true,
+        defaultDrawMode: 'TranslateMode',
+      });
+      act(() => result.current.setDrawingToolsEnabled(false));
+      expect(result.current.drawMode).toBe('ViewMode');
+    });
+
+    it('Deselects all selected features when disabled', () => {
+      const { result } = render({
+        defaultDrawingToolsEnabled: true,
+      });
+      act(() => result.current.editableLayer.props.onClick({ index: 0 }));
+      act(() => result.current.setDrawingToolsEnabled(false));
+      expect(result.current.editableLayer.props.selectedFeatureIndexes).toEqual(
+        [],
       );
     });
   });

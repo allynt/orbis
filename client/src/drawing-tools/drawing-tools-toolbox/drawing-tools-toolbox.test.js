@@ -13,7 +13,7 @@ describe('<DrawingToolsToolbox />', () => {
     expect(onToolSelect).toBeCalledWith('DrawPointMode');
   });
 
-  it('Calls onToolSelect with view mode when the selected tool is clicked', async () => {
+  it('Calls onToolSelect with translate mode when the selected tool is clicked', async () => {
     const onToolSelect = jest.fn();
     const { getByRole } = render(
       <DrawingToolsToolbox
@@ -23,6 +23,6 @@ describe('<DrawingToolsToolbox />', () => {
       />,
     );
     userEvent.click(getByRole('radio', { name: 'Point' }));
-    await waitFor(() => expect(onToolSelect).toBeCalledWith('ViewMode'));
+    await waitFor(() => expect(onToolSelect).toBeCalledWith('TranslateMode'));
   });
 });
