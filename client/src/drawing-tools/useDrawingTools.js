@@ -4,7 +4,7 @@ import { darken, rgbToHex } from '@astrosat/astrosat-ui';
 
 import { EditableGeoJsonLayer } from '@nebula.gl/layers';
 import * as EditModes from '@nebula.gl/edit-modes';
-import { findIndex } from 'lodash';
+import { filter, findIndex } from 'lodash';
 import { useDispatch, useSelector } from 'react-redux';
 
 import {
@@ -125,6 +125,8 @@ export const useDrawingTools = ({
   /** @param {{index: number}} params */
   const onClick = ({ index }) => {
     if (!drawingToolsEnabled) return;
+    if (selectedFeatureIndexes.includes(index))
+      return setSelectedFeatureIndexes(filter(selectedFeatureIndexes, index));
     setSelectedFeatureIndexes([index]);
   };
 

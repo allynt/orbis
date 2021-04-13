@@ -141,6 +141,19 @@ describe('useDrawingTools', () => {
           result.current.editableLayer.props.selectedFeatureIndexes,
         ).toEqual([0]);
       });
+
+      it('Removes the clicked feature from selected if already selected', () => {
+        const { result } = render({
+          defaultDrawingToolsEnabled: true,
+          defaultSelectedFeatureIndexes: [0],
+        });
+        act(() => {
+          result.current.editableLayer.props.onClick({ index: 0 });
+        });
+        expect(
+          result.current.editableLayer.props.selectedFeatureIndexes,
+        ).toEqual([]);
+      });
     });
   });
 
