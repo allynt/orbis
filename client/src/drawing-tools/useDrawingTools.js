@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { darken, rgbToHex } from '@astrosat/astrosat-ui';
 
@@ -9,9 +9,12 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import {
   drawingToolsFeatureCollectionSelector,
+  removeFeaturesByIndex,
   setFeatures,
 } from './drawing-tools.slice';
 import { hexToRgbArray } from 'utils/color';
+
+const KEY_CODES = { DELETE: 'Delete' };
 
 const FEATURE_COLORS = [
   '#00AEE4',
@@ -51,6 +54,27 @@ export const useDrawingTools = () => {
   const featureCollection = useSelector(drawingToolsFeatureCollectionSelector);
   const dispatch = useDispatch();
   const [selectedFeatureIndexes, setSelectedFeatureIndexes] = useState([]);
+
+  const handleDeleteKey = () => {
+    dispatch(removeFeaturesByIndex(selectedFeatureIndexes));
+    setSelectedFeatureIndexes([]);
+  };
+
+  /** @param {KeyboardEvent} event */
+  const handleKeyPress = event => {
+    switch (event.key) {
+      case KEY_CODES.DELETE:
+        handleDeleteKey();
+        break;
+      default:
+        break;
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener('keyup', handleKeyPress);
+    return () => document.removeEventListener('keyup', handleKeyPress);
+  });
 
   /**
    * @param {import('@turf/helpers').Feature} feature

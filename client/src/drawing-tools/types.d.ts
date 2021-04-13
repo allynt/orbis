@@ -10,4 +10,12 @@ export type SetFeaturesAction = CaseReducer<
   PayloadAction<Feature[] | FeatureCollection>
 >;
 
-export type DrawingToolsActions = { setFeatures: SetFeaturesAction };
+type RemoveFeaturesByIndexAction = CaseReducer<
+  DrawingToolsState,
+  PayloadAction<number[]>
+>;
+
+export type DrawingToolsActions = {
+  removeFeaturesByIndex: RemoveFeaturesByIndexAction;
+  setFeatures: SetFeaturesAction;
+};

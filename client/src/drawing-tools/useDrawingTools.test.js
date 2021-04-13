@@ -1,10 +1,10 @@
+import { fireEvent } from '@testing-library/dom';
+import { act, renderHook } from '@testing-library/react-hooks';
 import React from 'react';
-import { renderHook } from '@testing-library/react-hooks';
 import { Provider } from 'react-redux';
-import { useDrawingTools } from './useDrawingTools';
 import configureMockStore from 'redux-mock-store';
-import { setFeatures } from './drawing-tools.slice';
-import { waitFor } from '@testing-library/dom';
+import { removeFeaturesByIndex, setFeatures } from './drawing-tools.slice';
+import { useDrawingTools } from './useDrawingTools';
 
 /** @type {import('@turf/helpers').FeatureCollection} */
 const INITIAL_FEATURES = {
@@ -108,13 +108,30 @@ describe('useDrawingTools', () => {
       });
     });
 
-    describe('onClick', async () => {
-      const { result } = render();
-      const { editableLayer } = result.current;
-      editableLayer.props.onClick(INITIAL_FEATURES.features[0]);
-      await waitFor(() =>
-        expect(editableLayer.props.selectedFeatureIndexes).toEqual([0]),
-      );
+    describe('onClick', () => {
+      it('Sets the clicked feature as selected', () => {
+        const { result } = render();
+        act(() => {
+          result.current.editableLayer.props.onClick({ index: 0 });
+        });
+        expect(
+          result.current.editableLayer.props.selectedFeatureIndexes,
+        ).toEqual([0]);
+      });
+    });
+
+    describe('Key presses', () => {
+      it('Deletes the selected features when Delete is pressed', () => {
+        const { result, store } = render();
+        const { editableLayer } = result.current;
+        act(() => {
+          editableLayer.props.onClick({ index: 0 });
+        });
+        fireEvent.keyUp(document, { key: 'Delete' });
+        expect(store.getActions()).toEqual(
+          expect.arrayContaining([removeFeaturesByIndex([0])]),
+        );
+      });
     });
   });
 });

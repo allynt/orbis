@@ -1,5 +1,6 @@
 import { createSelector, createSlice } from '@reduxjs/toolkit';
 import { featureCollection } from '@turf/helpers';
+import { pullAt } from 'lodash';
 
 /**
  * @type {import('@reduxjs/toolkit').Slice<
@@ -12,6 +13,9 @@ const drawingToolsSlice = createSlice({
   name: 'drawingTools',
   initialState: {},
   reducers: {
+    removeFeaturesByIndex: (state, { payload }) => {
+      pullAt(state.features, payload);
+    },
     setFeatures: (state, { payload }) => {
       if ('type' in payload) state.features = payload.features;
       else state.features = payload;
@@ -19,7 +23,7 @@ const drawingToolsSlice = createSlice({
   },
 });
 
-export const { setFeatures } = drawingToolsSlice.actions;
+export const { removeFeaturesByIndex, setFeatures } = drawingToolsSlice.actions;
 
 /** @param {import('react-redux').DefaultRootState} state */
 const baseSelector = state => state.drawingTools;
