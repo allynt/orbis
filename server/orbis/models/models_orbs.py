@@ -251,6 +251,7 @@ class DataScope(models.Model):
 
     applications = ArrayField(
         models.CharField(max_length=128),
+        blank=True,
         default=list,
         help_text="An optional array of applications that this DataScope derives its data from"
     )
