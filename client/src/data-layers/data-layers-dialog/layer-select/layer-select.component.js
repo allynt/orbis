@@ -16,11 +16,15 @@ import {
 import clsx from 'clsx';
 import { difference, isEmpty } from 'lodash';
 
-import { collectSourceIds } from 'data-layers/categorisation.utils';
+import {
+  collectSourceIds,
+  createOrbsWithCategorisedSources,
+} from 'data-layers/categorisation.utils';
 import LayerSelectItem from './layer-select-item/layer-select-item.component';
 import { Header } from '../components/header.component';
 import { List } from '../components/list.component';
 import { Section } from '../components/section.component';
+import { layerSearchFilter } from './layer-search-filter';
 
 const LayerSearch = ({ className, searchTerm = '', onChange, noResults }) => (
   <div className={className}>
@@ -194,7 +198,7 @@ const useStyles = makeStyles(theme => ({
 
 /**
  * @param {{
- *   orbSources: import('typings/orbis').CategorisedSources
+ *   orbs: import('typings/orbis').CategorisedSources
  *   searchTerm: string
  *   selectedSources?: import('typings/orbis').Source['source_id'][]
  *   hasMadeChanges?: boolean
@@ -206,29 +210,31 @@ const useStyles = makeStyles(theme => ({
  * }} props
  */
 export const LayerSelect = ({
-  orbSources,
+  orbs,
   searchTerm,
   selectedSources,
+  selectedOrbName,
   hasMadeChanges = false,
   onSourcesChange,
   onSearchChange,
   onSubmit,
 }) => {
   const styles = useStyles();
+  console.log('Orbs: ', orbs);
   return (
     <Section orientation="right">
       <Header>Add Data Layers</Header>
-      {orbSources ? (
+      {orbs ? (
         <div>
           <LayerSearch
             className={styles.layerSearch}
             searchTerm={searchTerm}
             onChange={onSearchChange}
-            noResults={!orbSources?.length}
+            noResults={false}
           />
           <List dense>
             {renderCategories({
-              sources: orbSources,
+              sources: createOrbsWithCategorisedSources(orbs),
               level: 0,
               onSourcesChange,
               selectedSources,

@@ -1,8 +1,6 @@
-import React, { useEffect, useState, useMemo } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { isEqual } from 'lodash';
-
-import { createOrbsWithCategorisedSources } from 'data-layers/categorisation.utils';
 
 import {
   CloseIcon,
@@ -10,6 +8,8 @@ import {
   IconButton,
   makeStyles,
 } from '@astrosat/astrosat-ui';
+
+import { createOrbsWithCategorisedSources } from 'data-layers/categorisation.utils';
 
 import { OrbSelect } from './orb-select/orb-select.component';
 import { LayerSelect } from './layer-select/layer-select.component';
@@ -50,7 +50,6 @@ const DataLayersDialog = ({
     initialSelectedSources,
   );
   const [hasMadeChanges, setHasMadeChanges] = useState(false);
-  const [filteredSources, setFilteredSources] = useState(undefined);
   const [searchTerm, setSearchTerm] = useState(undefined);
 
   useEffect(() => {
@@ -66,12 +65,6 @@ const DataLayersDialog = ({
         );
   };
 
-  const handleOrbClick = orbName => {
-    setSearchTerm(undefined);
-    setFilteredSources(undefined);
-    setSelectedOrbName(orbName);
-  };
-
   const handleSubmit = () => onSubmit && onSubmit(selectedSources);
 
   const handleClose = () => {
@@ -79,36 +72,6 @@ const DataLayersDialog = ({
     setSelectedSources(initialSelectedSources);
     close();
   };
-
-  const SEARCHABLE_FIELDS = ['label', 'description'];
-
-  useEffect(() => {
-    if (searchTerm === undefined) return;
-    if (searchTerm === '') return setFilteredSources(undefined);
-
-    const regex = new RegExp(searchTerm.trim(), 'i'),
-      filteredSources = orbs?.reduce((acc, source) => {
-        let result = acc;
-        SEARCHABLE_FIELDS.forEach(term => {
-          if (source.metadata[term].match(regex)) {
-            result = [...acc, source];
-            return;
-          }
-        });
-        return result;
-      }, []),
-      matchedSources =
-        createOrbsWithCategorisedSources(filteredSources)?.find(
-          orb => orb.name === selectedOrbName,
-        )?.sources || [];
-
-    return setFilteredSources(matchedSources);
-  }, [searchTerm]);
-
-  const categorisedOrbs = useMemo(
-    () => createOrbsWithCategorisedSources(orbs),
-    [orbs],
-  );
 
   return (
     <Dialog
@@ -127,19 +90,15 @@ const DataLayersDialog = ({
       </IconButton>
       <div className={styles.content}>
         <OrbSelect
-          orbs={categorisedOrbs}
-          onOrbClick={handleOrbClick}
+          orbs={createOrbsWithCategorisedSources(orbs)}
+          onOrbClick={orbName => setSelectedOrbName(orbName)}
           selectedOrbName={selectedOrbName}
         />
         <LayerSelect
-          orbSources={
-            filteredSources
-              ? filteredSources
-              : categorisedOrbs?.find(orb => orb.name === selectedOrbName)
-                  ?.sources
-          }
+          orbs={orbs?.find(orb => orb.name === selectedOrbName)}
           searchTerm={searchTerm}
           selectedSources={selectedSources}
+          selectedOrbName={selectedOrbName}
           onSourcesChange={handleSourcesChange}
           onSearchChange={e => setSearchTerm(e.target.value)}
           onSubmit={handleSubmit}
