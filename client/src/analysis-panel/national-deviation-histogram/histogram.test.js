@@ -66,7 +66,7 @@ describe('<Histogram />', () => {
 
   it('Sets the scale to linear when the linear button is clicked', async () => {
     const { getByText, getByRole } = renderComponent();
-    userEvent.click(getByRole('button', { name: 'Lin' }));
+    userEvent.click(getByRole('button', { name: 'Linear' }));
     await waitFor(() => expect(getByText('20000')).toBeInTheDocument());
   });
 });

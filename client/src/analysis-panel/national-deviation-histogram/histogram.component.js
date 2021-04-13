@@ -80,7 +80,7 @@ export const Histogram = ({
           onClick={() => setScale('linear')}
           className={clsx({ [styles.notActive]: scale !== 'linear' })}
         >
-          Lin
+          Linear
         </Button>
         <Button
           onClick={() => setScale('log')}
