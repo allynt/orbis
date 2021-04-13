@@ -14,10 +14,7 @@ import {
   _SunLight as SunLight,
 } from '@deck.gl/core';
 import DeckGL from '@deck.gl/react';
-import ReactMapGl, {
-  ScaleControl,
-  _MapContext as MapContext,
-} from 'react-map-gl';
+import ReactMapGl, { ScaleControl } from 'react-map-gl';
 import Geocoder from 'react-map-gl-geocoder';
 import 'react-map-gl-geocoder/dist/mapbox-gl-geocoder.css';
 import { useDispatch, useSelector } from 'react-redux';
@@ -51,13 +48,7 @@ import {
 import 'mapbox-gl/dist/mapbox-gl.css';
 import { DrawingToolsToolbox, useDrawingTools } from 'drawing-tools';
 
-/** @type {React.CSSProperties} */
-const TOP_MAP_CSS = {
-    position: 'absolute',
-    top: 0,
-    pointerEvents: 'none',
-  },
-  ISOMETRIC_PITCH = 35;
+const ISOMETRIC_PITCH = 35;
 
 const useStyles = makeStyles(theme => ({
   map: {
@@ -215,6 +206,10 @@ const Map = ({ mapComponents, layers }) => {
   const handleExtrusionScaleChange = value =>
     dispatch(setExtrusionScale(value));
 
+  const handleViewStateChange = ({ viewState: { width, height, ...rest } }) => {
+    setViewState(rest);
+  };
+
   const mapProps = {
     ...viewState,
     width: '100%',
@@ -263,53 +258,57 @@ const Map = ({ mapComponents, layers }) => {
       </ButtonGroup>
 
       <DeckGL
-        getCursor={editableLayer.getCursor.bind(editableLayer)}
         ref={deckRef}
+        controller={!drawingToolsEnabled}
         viewState={viewState}
-        layers={[...(layers || []), editableLayer]}
+        onViewStateChange={handleViewStateChange}
+        layers={layers}
         effects={[lightingEffect]}
-        controller
         glOptions={{
           preserveDrawingBuffer: true,
-        }}
-        onViewStateChange={({ viewState: { width, height, ...rest } }) => {
-          setViewState(rest);
         }}
       >
         <ReactMapGl
           key="bottom"
           ref={bottomMapRef}
           mapStyle={selectedMapStyle?.bottomMapStyle}
+          attributionControl={false}
           {...mapProps}
         />
       </DeckGL>
-      <ReactMapGl
-        key="top"
-        ref={topMapRef}
-        style={TOP_MAP_CSS}
-        mapStyle={selectedMapStyle?.topMapStyle}
-        attributionControl={false}
-        {...mapProps}
+      <DeckGL
+        controller={drawingToolsEnabled}
+        viewState={viewState}
+        onViewStateChange={handleViewStateChange}
+        layers={[editableLayer]}
+        getCursor={editableLayer.getCursor.bind(editableLayer)}
+        style={{ pointerEvents: drawingToolsEnabled ? 'all' : 'none' }}
+        glOptions={{
+          preserveDrawingBuffer: true,
+        }}
       >
-        <NavigationControl
-          onViewStateChange={({ viewState: { width, height, ...rest } }) => {
-            setViewState(rest);
-          }}
-        />
-        <div className={styles.scaleControl}>
-          <ScaleControl unit="metric" />
-        </div>
-        <Geocoder
-          mapRef={topMapRef}
-          mapboxApiAccessToken={accessToken}
-          position="top-right"
-          marker={false}
-          onViewportChange={handleGeocoderSelect}
-        />
-        <React.Suspense fallback={<div>Loading...</div>}>
-          {mapComponents}
-        </React.Suspense>
-      </ReactMapGl>
+        <ReactMapGl
+          key="top"
+          ref={topMapRef}
+          mapStyle={selectedMapStyle?.topMapStyle}
+          {...mapProps}
+        >
+          <NavigationControl onViewStateChange={handleViewStateChange} />
+          <div className={styles.scaleControl}>
+            <ScaleControl unit="metric" />
+          </div>
+          <Geocoder
+            mapRef={topMapRef}
+            mapboxApiAccessToken={accessToken}
+            position="top-right"
+            marker={false}
+            onViewportChange={handleGeocoderSelect}
+          />
+          <React.Suspense fallback={<div>Loading...</div>}>
+            {mapComponents}
+          </React.Suspense>
+        </ReactMapGl>
+      </DeckGL>
     </div>
   );
 };
