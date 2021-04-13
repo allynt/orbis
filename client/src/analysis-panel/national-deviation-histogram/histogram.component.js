@@ -20,6 +20,8 @@ import { useChartTheme } from 'hooks/useChartTheme';
 import { ColorScale } from 'utils/ColorScale';
 import { isRealValue } from 'utils/isRealValue';
 
+const LOG_SCALE_MIN_DOMAIN = 0.3;
+
 const WrappingLabel = props => (
   <Text width={props.width} fontSize={14} {...props}>
     {props.text}
@@ -68,6 +70,7 @@ export const Histogram = ({
   reversed = false,
 }) => {
   const [scale, setScale] = useState('linear');
+  const isLogScale = scale === 'log';
   const orbisChartTheme = useChartTheme();
   const styles = useStyles();
   const colorScale = new ColorScale({ color, domain, clip, reversed });
@@ -118,7 +121,7 @@ export const Histogram = ({
                 dependentAxis
                 fixLabelOverlap
                 crossAxis={false}
-                tickCount={scale === 'log' ? 4 : undefined}
+                tickCount={isLogScale ? 4 : undefined}
                 label={labelY}
                 offsetX={padding.left}
                 style={{
@@ -126,13 +129,18 @@ export const Histogram = ({
                   tickLabels: { padding: 10 },
                 }}
                 tickFormat={tick => {
-                  return scale === 'log'
+                  return isLogScale
                     ? numeral(Number(tick).toLocaleString()).format('0 a')
                     : tick;
                 }}
               />
               <VictoryBar
                 data={data}
+                y={datum =>
+                  isLogScale && datum.y < LOG_SCALE_MIN_DOMAIN
+                    ? LOG_SCALE_MIN_DOMAIN
+                    : datum.y
+                }
                 style={{
                   data: {
                     fill: ({ datum }) => colorScale.get(datum.x),
@@ -141,7 +149,7 @@ export const Histogram = ({
                 domain={{
                   x: domain.map(Number),
                   y: [
-                    scale === 'log' ? 0.3 : Math.min(...yValues),
+                    isLogScale ? LOG_SCALE_MIN_DOMAIN : Math.min(...yValues),
                     Math.max(...yValues),
                   ],
                 }}
@@ -150,7 +158,7 @@ export const Histogram = ({
                 <VictoryGroup groupComponent={<g data-testid="line" />}>
                   <VictoryLine
                     data={[
-                      { x: line, y: scale === 'log' ? 0.3 : 0 },
+                      { x: line, y: isLogScale ? LOG_SCALE_MIN_DOMAIN : 0 },
                       { x: line, y: Math.max(...yValues) },
                     ]}
                   />
