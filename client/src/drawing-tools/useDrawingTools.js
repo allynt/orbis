@@ -1,4 +1,5 @@
-import { useState } from 'react';
+
+import { darken, rgbToHex } from '@astrosat/astrosat-ui';
 
 import { EditableGeoJsonLayer } from '@nebula.gl/layers';
 import * as EditModes from '@nebula.gl/edit-modes';
@@ -12,28 +13,32 @@ import {
 import { hexToRgbArray } from 'utils/color';
 
 const FEATURE_COLORS = [
-  '00AEE4',
-  'DAF0E3',
-  '9BCC32',
-  '07A35A',
-  'F7DF90',
-  'EA376C',
-  '6A126A',
-  'FCB09B',
-  'B0592D',
-  'C1B5E3',
-  '9C805B',
-  'CCDFE5',
-].map(hexToRgbArray);
+  '#00AEE4',
+  '#DAF0E3',
+  '#9BCC32',
+  '#07A35A',
+  '#F7DF90',
+  '#EA376C',
+  '#6A126A',
+  '#FCB09B',
+  '#B0592D',
+  '#C1B5E3',
+  '#9C805B',
+  '#CCDFE5',
+];
 
 /**
  * @param {import('@turf/helpers').Feature} feature
  * @param {import('@turf/helpers').Feature[]} features
  * @param {number} alpha
+ * @param {number} [brightness]
  */
-const getColor = (feature, features, alpha) => {
+const getColor = (feature, features, alpha, brightness = 1.0) => {
   const index = findIndex(features, feature);
-  return [...FEATURE_COLORS[index % FEATURE_COLORS.length], alpha * 255];
+  const color = hexToRgbArray(
+    rgbToHex(darken(FEATURE_COLORS[index % FEATURE_COLORS.length], brightness)),
+  );
+  return [...color, alpha * 255];
 };
 
 export const useDrawingTools = () => {
@@ -44,18 +49,21 @@ export const useDrawingTools = () => {
   );
   const featureCollection = useSelector(drawingToolsFeatureCollectionSelector);
   const dispatch = useDispatch();
+  const [selectedFeatureIndexes, setSelectedFeatureIndexes] = useState([]);
 
   /**
    * @param {import('@turf/helpers').Feature} feature
+   * @param {boolean} isSelected
    */
-  const getFillColor = feature =>
-    getColor(feature, featureCollection.features, 0.5);
+  const getFillColor = (feature, isSelected) =>
+    getColor(feature, featureCollection.features, 0.5, isSelected ? 0 : 0.3);
 
   /**
    * @param {import('@turf/helpers').Feature} feature
+   * @param {boolean} isSelected
    */
-  const getLineColor = feature =>
-    getColor(feature, featureCollection.features, 1);
+  const getLineColor = (feature, isSelected) =>
+    getColor(feature, featureCollection.features, 1, isSelected ? 0 : 0.3);
 
   /**
    * @param {{
@@ -67,15 +75,21 @@ export const useDrawingTools = () => {
     if (editType === 'addFeature') dispatch(setFeatures(updatedData));
   };
 
+  /** @param {{index: number}} params */
+  const onClick = ({ index }) => {
+    setSelectedFeatureIndexes([index]);
+  };
+
   const editableLayer = new EditableGeoJsonLayer({
     id: 'drawing-tools-editable-layer',
     data: featureCollection,
     mode: EditModes[drawMode],
-    selectedFeatureIndexes: [],
+    selectedFeatureIndexes,
     pointRadiusMinPixels: 5,
     getFillColor,
     getLineColor,
     onEdit,
+    onClick,
   });
 
   return {
