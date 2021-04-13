@@ -64,7 +64,11 @@ const MapStyleSwitcher = ({
         </ImageList>
       }
     >
-      <MapControlButton className={className} onClick={() => setOpen(!open)}>
+      <MapControlButton
+        className={className}
+        onClick={() => setOpen(!open)}
+        selected={open}
+      >
         <LayersIcon fontSize="inherit" titleAccess="Change map style" />
       </MapControlButton>
     </Tooltip>

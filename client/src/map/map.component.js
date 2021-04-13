@@ -14,7 +14,6 @@ import {
   _SunLight as SunLight,
 } from '@deck.gl/core';
 import DeckGL from '@deck.gl/react';
-import clsx from 'clsx';
 import ReactMapGl, {
   ScaleControl,
   _MapContext as MapContext,
@@ -106,13 +105,6 @@ const useStyles = makeStyles(theme => ({
     zIndex: 1000,
   },
   buttonControls: { position: 'absolute', right: '2rem', bottom: '8rem' },
-  selected: {
-    color: theme.palette.secondary.main,
-    backgroundColor: theme.palette.primary.main,
-    '&:hover, &:focus': {
-      backgroundColor: theme.palette.primary.main,
-    },
-  },
   scaleControl: {
     position: 'absolute',
     right: props =>
@@ -257,7 +249,7 @@ const Map = ({ mapComponents, layers }) => {
           selectedTool={drawMode}
         />
         <MapControlButton
-          className={clsx({ [styles.selected]: extrudedMode })}
+          selected={extrudedMode}
           aria-selected={extrudedMode}
           onClick={handleExtrudedModeButtonClick}
         >

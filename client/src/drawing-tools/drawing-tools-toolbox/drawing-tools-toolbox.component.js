@@ -70,7 +70,11 @@ export const DrawingToolsToolbox = ({
         </ImageList>
       }
     >
-      <MapControlButton className={className} onClick={onButtonClick}>
+      <MapControlButton
+        className={className}
+        onClick={onButtonClick}
+        selected={open}
+      >
         <AnnotationsIcon titleAccess="Drawing Tools" fontSize="inherit" />
       </MapControlButton>
     </Tooltip>
