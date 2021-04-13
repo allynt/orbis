@@ -4,6 +4,7 @@ import { Provider } from 'react-redux';
 import { useDrawingTools } from './useDrawingTools';
 import configureMockStore from 'redux-mock-store';
 import { setFeatures } from './drawing-tools.slice';
+import { waitFor } from '@testing-library/dom';
 
 /** @type {import('@turf/helpers').FeatureCollection} */
 const INITIAL_FEATURES = {
@@ -66,7 +67,7 @@ describe('useDrawingTools', () => {
         const { result } = render([{ id: 1 }, { id: 2 }]);
         const { editableLayer } = result.current;
         const color = editableLayer.props.getFillColor({ id: 1 });
-        expect(color).toEqual(expect.arrayContaining([0, 174, 228]));
+        expect(color).toEqual(expect.arrayContaining([0, 121, 159]));
       });
 
       it('Uses an alpha of 0.5', () => {
@@ -75,6 +76,13 @@ describe('useDrawingTools', () => {
         const color = editableLayer.props.getFillColor({ id: 1 });
         expect(color).toEqual(expect.arrayContaining([127.5]));
       });
+
+      it('Uses full brightness when feature is selected', () => {
+        const { result } = render([{ id: 1 }, { id: 2 }]);
+        const { editableLayer } = result.current;
+        const color = editableLayer.props.getFillColor({ id: 1 }, true);
+        expect(color).toEqual(expect.arrayContaining([0, 174, 228]));
+      });
     });
 
     describe('getLineColor', () => {
@@ -82,15 +90,31 @@ describe('useDrawingTools', () => {
         const { result } = render([{ id: 1 }, { id: 2 }]);
         const { editableLayer } = result.current;
         const color = editableLayer.props.getLineColor({ id: 2 });
-        expect(color).toEqual(expect.arrayContaining([218, 240, 227]));
+        expect(color).toEqual(expect.arrayContaining([152, 168, 158]));
       });
 
       it('Uses an alpha of 0.5', () => {
         const { result } = render([{ id: 1 }, { id: 2 }]);
         const { editableLayer } = result.current;
-        const color = editableLayer.props.getLineColor({ id: 1 });
+        const color = editableLayer.props.getLineColor({ id: 2 });
         expect(color).toEqual(expect.arrayContaining([255]));
       });
+
+      it('Uses full brightness when feature is selected', () => {
+        const { result } = render([{ id: 1 }, { id: 2 }]);
+        const { editableLayer } = result.current;
+        const color = editableLayer.props.getLineColor({ id: 2 }, true);
+        expect(color).toEqual(expect.arrayContaining([218, 240, 227]));
+      });
+    });
+
+    describe('onClick', async () => {
+      const { result } = render();
+      const { editableLayer } = result.current;
+      editableLayer.props.onClick(INITIAL_FEATURES.features[0]);
+      await waitFor(() =>
+        expect(editableLayer.props.selectedFeatureIndexes).toEqual([0]),
+      );
     });
   });
 });
