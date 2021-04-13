@@ -87,7 +87,7 @@ class TestBookmarkViews:
             "description": bookmark.description or "",
             "zoom": bookmark.zoom,
             "center": json.dumps(bookmark.center.coords),
-            "feature_collection": json.dumps(bookmark.feature_collection),
+            "drawn_feature_collection": json.dumps(bookmark.drawn_feature_collection),
             "layers": json.dumps(bookmark.layers),
         }
 
@@ -101,7 +101,7 @@ class TestBookmarkViews:
 
         assert Bookmark.objects.count() == 1
         new_bookmark = Bookmark.objects.first()
-        assert new_bookmark.feature_collection == bookmark.feature_collection
+        assert new_bookmark.drawn_feature_collection == bookmark.drawn_feature_collection
         assert new_bookmark.layers == bookmark.layers
 
     def test_detail_put(self):
@@ -115,7 +115,7 @@ class TestBookmarkViews:
             "description": bookmark.description or "",
             "zoom": bookmark.zoom,
             "center": json.dumps(bookmark.center.coords),
-            "feature_collection": json.dumps(bookmark.feature_collection),
+            "drawn_feature_collection": json.dumps(bookmark.drawn_feature_collection),
             "layers": json.dumps(bookmark.layers),
         }
 
