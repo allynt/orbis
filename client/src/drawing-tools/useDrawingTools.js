@@ -45,7 +45,10 @@ const getColor = (feature, features, alpha, brightness = 1.0) => {
   return [...color, alpha * 255];
 };
 
-export const useDrawingTools = () => {
+/**
+ * @param {number[]} [defaultSelectedFeatureIndexes]
+ */
+export const useDrawingTools = (defaultSelectedFeatureIndexes = []) => {
   const [drawingToolsEnabled, setDrawingToolsEnabled] = useState(false);
   /** @type {[keyof EditModes, React.Dispatch<keyof EditModes>]} */
   const [drawMode, setDrawMode] = useState(
@@ -53,7 +56,9 @@ export const useDrawingTools = () => {
   );
   const featureCollection = useSelector(drawingToolsFeatureCollectionSelector);
   const dispatch = useDispatch();
-  const [selectedFeatureIndexes, setSelectedFeatureIndexes] = useState([]);
+  const [selectedFeatureIndexes, setSelectedFeatureIndexes] = useState(
+    defaultSelectedFeatureIndexes,
+  );
 
   const handleDeleteKey = () => {
     dispatch(removeFeaturesByIndex(selectedFeatureIndexes));
