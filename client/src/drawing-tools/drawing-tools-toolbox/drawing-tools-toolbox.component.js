@@ -28,8 +28,8 @@ const useStyles = makeStyles(theme => ({
  * @param {{
  *  open?: boolean
  *  onButtonClick: (event: React.MouseEventHandler<HTMLButtonElement>) => void
- *  onToolSelect?: (toolName: keyof EditModes) => void
- *  selectedTool?: keyof EditModes
+ *  onToolSelect?: (toolName: import('drawing-tools/types').EditMode) => void
+ *  selectedTool?: import('drawing-tools/types').EditMode
  *  className?: string
  * }} props
  */
@@ -42,7 +42,7 @@ export const DrawingToolsToolbox = ({
 }) => {
   const styles = useStyles();
 
-  /** @param {keyof EditModes} tool */
+  /** @param {import('drawing-tools/types').EditMode} tool */
   const handleToolChange = tool => {
     if (onToolSelect == null) return;
     if (tool === selectedTool)

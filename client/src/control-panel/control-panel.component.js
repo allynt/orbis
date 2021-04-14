@@ -54,9 +54,10 @@ const useStyles = makeStyles(theme => ({
 /**
  * @param {{
  *   sidebarComponents: Record<string, JSX.Element | JSX.Element[]>
+ *   drawingToolsEnabled: import('drawing-tools/types').DrawingToolsProps['drawingToolsEnabled']
  * }} props
  */
-const ControlPanel = ({ sidebarComponents }) => {
+const ControlPanel = ({ sidebarComponents, drawingToolsEnabled }) => {
   const dispatch = useDispatch();
   const isMenuVisible = useSelector(selectIsMenuVisible);
   const heading = useSelector(selectHeading);
@@ -89,7 +90,10 @@ const ControlPanel = ({ sidebarComponents }) => {
         }
       >
         {visibleMenuItem === DATA_LAYERS && (
-          <DataLayers sidebarComponents={sidebarComponents} />
+          <DataLayers
+            sidebarComponents={sidebarComponents}
+            drawingToolsEnabled={drawingToolsEnabled}
+          />
         )}
         {visibleMenuItem === SATELLITE_LAYERS && <SatellitesPanel />}
         {visibleMenuItem === BOOKMARKS && <BookmarksPanel />}

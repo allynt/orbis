@@ -46,22 +46,12 @@ const getColor = (feature, features, alpha, brightness = 1.0) => {
 };
 
 /**
- * @typedef {keyof EditModes} EditMode
- */
-
-/**
  * @param {{
  *  defaultSelectedFeatureIndexes?: number[]
- *  defaultDrawMode?: EditMode
+ *  defaultDrawMode?: import('./types').EditMode
  * defaultDrawingToolsEnabled?: boolean
  * }} params
- * @returns {{
- *   editableLayer: EditableGeoJsonLayer
- *   drawMode: EditMode
- *   setDrawMode: React.Dispatch<EditMode>
- *   drawingToolsEnabled: boolean
- *   setDrawingToolsEnabled: React.Dispatch<boolean>
- * }}
+ * @returns {import('./types').DrawingToolsProps}
  */
 export const useDrawingTools = ({
   defaultSelectedFeatureIndexes = [],
@@ -71,7 +61,7 @@ export const useDrawingTools = ({
   const [drawingToolsEnabled, setDrawingToolsEnabled] = useState(
     defaultDrawingToolsEnabled,
   );
-  /** @type {[EditMode, React.Dispatch<EditMode>]} */
+  /** @type {[import('./types').EditMode, React.Dispatch<import('./types').EditMode>]} */
   const [drawMode, setDrawMode] = useState(defaultDrawMode);
   const featureCollection = useSelector(drawingToolsFeatureCollectionSelector);
   const dispatch = useDispatch();

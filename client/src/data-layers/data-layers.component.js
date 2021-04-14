@@ -48,7 +48,7 @@ const useStyles = makeStyles(theme => ({
 /**
  * @param {{
  *   sidebarComponents: Record<string, JSX.Element | JSX.Element[]>
- *   drawingToolsEnabled?: boolean
+ *   drawingToolsEnabled?: import('drawing-tools/types').DrawingToolsProps['drawingToolsEnabled']
  * }} props
  */
 const DataLayers = ({ sidebarComponents, drawingToolsEnabled }) => {

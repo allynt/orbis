@@ -46,7 +46,7 @@ import {
 } from './orbs/layers.slice';
 
 import 'mapbox-gl/dist/mapbox-gl.css';
-import { DrawingToolsToolbox, useDrawingTools } from 'drawing-tools';
+import { DrawingToolsToolbox } from 'drawing-tools';
 
 const ISOMETRIC_PITCH = 35;
 
@@ -132,9 +132,17 @@ lightingEffect.shadowColor = [0, 0, 0, 0.5];
  * @param {{
  *   mapComponents: JSX.Element[]
  *   layers: any[]
- * }} props
+ * } & import('drawing-tools/types').DrawingToolsProps} props
  */
-const Map = ({ mapComponents, layers }) => {
+const Map = ({
+  mapComponents,
+  layers,
+  editableLayer,
+  drawingToolsEnabled,
+  setDrawingToolsEnabled,
+  drawMode,
+  setDrawMode,
+}) => {
   const {
     topMapRef,
     bottomMapRef,
@@ -154,13 +162,6 @@ const Map = ({ mapComponents, layers }) => {
   const mapStyles = useSelector(mapStylesSelector);
   const selectedMapStyle = useSelector(selectedMapStyleSelector);
   const styles = useStyles({ selectedMapStyle });
-  const {
-    editableLayer,
-    drawingToolsEnabled,
-    setDrawingToolsEnabled,
-    drawMode,
-    setDrawMode,
-  } = useDrawingTools();
 
   useEffect(() => {
     if (selectedBookmark) {
@@ -281,7 +282,7 @@ const Map = ({ mapComponents, layers }) => {
         viewState={viewState}
         onViewStateChange={handleViewStateChange}
         layers={[editableLayer]}
-        getCursor={editableLayer.getCursor.bind(editableLayer)}
+        getCursor={editableLayer?.getCursor.bind(editableLayer)}
         style={{ pointerEvents: drawingToolsEnabled ? 'all' : 'none' }}
         glOptions={{
           preserveDrawingBuffer: true,
