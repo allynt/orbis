@@ -1,6 +1,5 @@
 // @ts-nocheck
-
-import { getColorScaleForProperty } from './color';
+import { getColorScaleForProperty, hexToRgbArray } from './color';
 
 describe('getColorScaleForProperty', () => {
   it('Returns a continuous ColorScale for a continuous property', () => {
@@ -41,5 +40,19 @@ describe('getColorScaleForProperty', () => {
       },
     });
     expect(scale.get('carrot')).toBe('#ffa500');
+  });
+});
+
+describe('hexToRgbArray', () => {
+  it('Returns nothing if hexstring is undefined', () => {
+    expect(hexToRgbArray()).toBeUndefined();
+  });
+
+  it('returns a hex color formatted as RGB array', () => {
+    expect(hexToRgbArray('#ffffff')).toEqual([255, 255, 255]);
+  });
+
+  it("works if there's no #", () => {
+    expect(hexToRgbArray('ffffff')).toEqual([255, 255, 255]);
   });
 });

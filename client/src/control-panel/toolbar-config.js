@@ -154,16 +154,6 @@ export const getToolbarItems = (dispatch, user) => {
 //   roles: ['UserRole'],
 // },
 // {
-//   label: ANNOTATIONS,
-//   icon: <AnnotationsIcon classes={styles.icon} />,
-//   action: () => {
-//     dispatch(toggleMenu(ANNOTATIONS));
-//     dispatch(toggleMenuItem(ANNOTATIONS));
-//     dispatch(setMenuHeadings({ heading: 'ANNOTATIONS', strapline: 'Select Your Drawing Tool Or Saved Areas' }));
-//   },
-//   tooltip: ANNOTATIONS,
-// },
-// {
 //   label: SHARE,
 //   icon: <ShareIcon classes={styles.icon} />,
 //   action: () => dispatch(notYetImplemented('No Share designed yet')),

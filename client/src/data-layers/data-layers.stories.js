@@ -9,7 +9,9 @@ import DataLayers from './data-layers.component';
 
 const mockStore = configureMockStore([thunk]);
 
-export default { title: 'Data Layers/Main' };
+export default {
+  title: 'Data Layers/Main',
+};
 
 const Template = ({ state, ...args }) => (
   <Provider store={mockStore(state)}>
@@ -92,4 +94,10 @@ SelectedLayers.args = {
       error: null,
     },
   },
+};
+
+export const DrawingToolsEnabled = Template.bind({});
+DrawingToolsEnabled.args = {
+  ...SelectedLayers.args,
+  drawingToolsEnabled: true,
 };

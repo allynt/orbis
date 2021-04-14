@@ -140,14 +140,25 @@ const PDF = ({
     breakdownAggregation,
   } = useAnalysisPanelContext();
 
-  const { createScreenshot, topMapRef, deckRef, bottomMapRef } = useMap();
+  const {
+    createScreenshot,
+    topMapRef,
+    bottomMapRef,
+    topDeckRef,
+    bottomDeckRef,
+  } = useMap();
   const [image, setImage] = useState(undefined);
 
   const aggregationLabel =
     selectedProperty?.aggregation === 'sum' ? 'Sum' : 'Average';
 
   useEffect(() => {
-    if (!topMapRef.current || !deckRef.current || !bottomMapRef.current) {
+    if (
+      !topMapRef.current ||
+      !bottomMapRef.current ||
+      !topDeckRef.current ||
+      !bottomDeckRef.current
+    ) {
       return;
     } else {
       createScreenshot(screenshot => {
@@ -156,7 +167,7 @@ const PDF = ({
         reader.readAsDataURL(screenshot);
       });
     }
-  }, [createScreenshot, topMapRef, deckRef, bottomMapRef]);
+  }, [createScreenshot, topMapRef, bottomMapRef, topDeckRef, bottomDeckRef]);
 
   const handleLongText = text => {
     return text?.length > CHAR_MAX ? `${text.slice(0, CHAR_MAX)}...` : text;

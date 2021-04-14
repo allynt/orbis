@@ -27,7 +27,8 @@ MapContext.displayName = 'MapContext';
  * @typedef {Object} MapContextType
  * @property {React.MutableRefObject<import('react-map-gl').StaticMap>} topMapRef
  * @property {React.MutableRefObject<import('react-map-gl').StaticMap>} bottomMapRef
- * @property {React.MutableRefObject<import('@deck.gl/core').Deck>} deckRef
+ * @property {React.MutableRefObject<import('@deck.gl/core').Deck>} topDeckRef
+ * @property {React.MutableRefObject<import('@deck.gl/core').Deck>} bottomDeckRef
  * @property {ViewState} viewState
  * @property {React.Dispatch<ViewState>} setViewState
  */
@@ -39,7 +40,8 @@ MapContext.displayName = 'MapContext';
 export const MapProvider = props => {
   const topMapRef = useRef(null);
   const bottomMapRef = useRef(null);
-  const deckRef = useRef(null);
+  const topDeckRef = useRef(null);
+  const bottomDeckRef = useRef(null);
   const [viewState, setViewState] = useState(INITIAL_VIEW_STATE);
 
   return (
@@ -47,7 +49,8 @@ export const MapProvider = props => {
       value={{
         topMapRef,
         bottomMapRef,
-        deckRef,
+        topDeckRef,
+        bottomDeckRef,
         viewState,
         setViewState,
       }}
@@ -60,7 +63,8 @@ export const MapProvider = props => {
  * @returns {{
  *   topMapRef: React.MutableRefObject<import('react-map-gl').StaticMap>
  *   bottomMapRef: React.MutableRefObject<import('react-map-gl').StaticMap>
- *   deckRef: React.MutableRefObject<import('@deck.gl/core').Deck>
+ *   topDeckRef: React.MutableRefObject<import('@deck.gl/core').Deck>
+ *   bottomDeckRef: React.MutableRefObject<import('@deck.gl/core').Deck>
  *   viewState: ViewState
  *   setViewState: React.Dispatch<ViewState>
  *   createScreenshot: (callback: BlobCallback) => void
@@ -78,19 +82,23 @@ export const useMap = () => {
    * @param {BlobCallback} callback
    */
   const createScreenshot = callback => {
-    const { deckRef, topMapRef, bottomMapRef } = context;
-    const deck = deckRef.current.deck,
+    const { bottomDeckRef, topDeckRef, topMapRef, bottomMapRef } = context;
+    const topDeck = topDeckRef.current.deck,
+      bottomDeck = bottomDeckRef.current.deck,
       topMap = topMapRef.current.getMap(),
       bottomMap = bottomMapRef.current.getMap();
-    deck.redraw(true);
-    const deckCanvas = deck.canvas;
+    topDeck.redraw(true);
+    bottomDeck.redraw(true);
+    const topDeckCanvas = topDeck.canvas;
+    const bottomDeckCanvas = bottomDeck.canvas;
     const merged = document.createElement('canvas');
-    merged.width = deckCanvas.width;
-    merged.height = deckCanvas.height;
+    merged.width = bottomDeckCanvas.width;
+    merged.height = bottomDeckCanvas.height;
     const mergedContext = merged.getContext('2d');
     mergedContext.drawImage(bottomMap.getCanvas(), 0, 0);
-    mergedContext.drawImage(deckCanvas, 0, 0);
+    mergedContext.drawImage(bottomDeckCanvas, 0, 0);
     mergedContext.drawImage(topMap.getCanvas(), 0, 0);
+    mergedContext.drawImage(topDeckCanvas, 0, 0);
     merged.toBlob(callback);
   };
 
