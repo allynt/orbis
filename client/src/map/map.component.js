@@ -47,6 +47,7 @@ import {
 
 import 'mapbox-gl/dist/mapbox-gl.css';
 import { DrawingToolsToolbox } from 'drawing-tools';
+import { setFeatures as setDrawingToolsFeatures } from 'drawing-tools/drawing-tools.slice';
 
 const ISOMETRIC_PITCH = 35;
 
@@ -170,6 +171,7 @@ const Map = ({
         zoom,
         layers,
         orbs,
+        feature_collection,
       } = selectedBookmark;
       setViewState({
         ...viewState,
@@ -181,6 +183,7 @@ const Map = ({
       });
       dispatch(setLayers(layers || []));
       dispatch(setLayersState(orbs?.layers));
+      dispatch(setDrawingToolsFeatures(feature_collection));
       dispatch(onBookmarkLoaded());
     }
   }, [selectedBookmark, viewState, setViewState, dispatch]);

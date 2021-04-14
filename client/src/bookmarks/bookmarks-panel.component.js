@@ -17,6 +17,7 @@ import {
   fetchBookmarks,
   selectBookmark,
 } from './bookmarks.slice';
+import { drawingToolsFeatureCollectionSelector } from 'drawing-tools/drawing-tools.slice';
 
 const PrimaryDivider = styled(Divider)(({ theme }) => ({
   backgroundColor: theme.palette.primary.main,
@@ -26,6 +27,7 @@ const BookmarksPanel = () => {
   const { createScreenshot, viewState } = useMap();
   const dispatch = useDispatch();
   const layers = useSelector(activeLayersSelector);
+  const feature_collection = useSelector(drawingToolsFeatureCollectionSelector);
   const orbs = useSelector(orbsSelector);
   const user = useSelector(userSelector);
   const bookmarks = useSelector(bookmarksSelector);
@@ -47,6 +49,7 @@ const BookmarksPanel = () => {
           thumbnail,
           layers,
           orbs,
+          feature_collection,
         }),
       );
     });
