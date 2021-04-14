@@ -3,7 +3,7 @@ version: "2"
 services:
 
   db:
-    image: kartoza/postgis:11.0-2.5
+    image: kartoza/postgis:12.4
     environment:
       POSTGRES_USER: orbis
       POSTGRES_PASS: orbis
