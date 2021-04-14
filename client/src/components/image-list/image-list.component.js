@@ -1,4 +1,4 @@
-import { GridList } from '@material-ui/core';
+import { GridList } from '@astrosat/astrosat-ui';
 import React from 'react';
 
 /**

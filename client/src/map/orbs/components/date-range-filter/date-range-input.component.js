@@ -1,5 +1,4 @@
-import { IconButton } from '@astrosat/astrosat-ui';
-import { Grid, makeStyles, Paper } from '@material-ui/core';
+import { IconButton, Grid, makeStyles, Paper } from '@astrosat/astrosat-ui';
 import { DateRange, Replay } from '@material-ui/icons';
 import React from 'react';
 import { FIELD_NAMES } from 'utils/validators';
