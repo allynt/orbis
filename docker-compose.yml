@@ -21,11 +21,8 @@ services:
       ENABLE_DJANGO: 1
       DJANGO_CLIENT_HOST: http://localhost:3000
       DJANGO_SETTINGS_MODULE: core.settings
-      DJANGO_CELERY_BROKER_PROTOCOL: "redis"
       DJANGO_CELERY_BROKER_HOST: "broker"
-      DJANGO_CELERY_BROKER_PORT: "6379"
       DJANGO_CELERY_BROKER_REDIS_PASSWORD: "itsasecret"
-      DJANGO_CELERY_BROKER_REDIS_DB: "0"
     volumes:
       - ./server:/home/app/server
     ports:
@@ -59,11 +56,8 @@ services:
     environment:
       SYS_ENV: development
       ENABLE_CELERY: 1
-      DJANGO_CELERY_BROKER_PROTOCOL: "redis"
       DJANGO_CELERY_BROKER_HOST: "broker"
-      DJANGO_CELERY_BROKER_PORT: "6379"
       DJANGO_CELERY_BROKER_REDIS_PASSWORD: "itsasecret"
-      DJANGO_CELERY_BROKER_REDIS_DB: "0"
     volumes:
       - ./server:/home/app/server
     depends_on:
