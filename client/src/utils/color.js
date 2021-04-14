@@ -1,3 +1,4 @@
+import { color as d3Color } from 'd3-color';
 import { toPairs } from 'lodash';
 import { ColorScale } from './ColorScale';
 import { isRealValue } from './isRealValue';
@@ -50,4 +51,15 @@ export const getColorScaleForProperty = (property, format) => {
     default:
       return new ColorScale({ format });
   }
+};
+
+/**
+ * @param {string} hexString
+ */
+export const hexToRgbArray = hexString => {
+  if (hexString == null) return;
+  const { r, g, b } = d3Color(
+    `${hexString[0] !== '#' ? '#' : ''}${hexString}`,
+  ).rgb();
+  return [r, g, b];
 };

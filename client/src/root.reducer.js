@@ -1,37 +1,37 @@
+import { connectRouter } from 'connected-react-router';
+import { createBrowserHistory } from 'history';
 import { combineReducers } from 'redux';
 
-import { createBrowserHistory } from 'history';
-
-import { connectRouter } from 'connected-react-router';
-
-import app from './app.slice';
-import map from './map/map.slice';
-import data from './data-layers/data-layers.slice';
-import satellites from './satellites/satellites.slice';
 import accounts from './accounts/accounts.slice';
-import theming from './theming/theming.slice';
 import admin from './admin/admin.slice';
+import app from './app.slice';
 import bookmarks from './bookmarks/bookmarks.slice';
 import controlPanel from './control-panel/control-panel.slice';
-import stories from './stories/stories.slice';
+import data from './data-layers/data-layers.slice';
+import drawingTools from 'drawing-tools/drawing-tools.slice';
+import map from './map/map.slice';
 import orbs from './map/orbs/orbReducer';
+import satellites from './satellites/satellites.slice';
+import stories from './stories/stories.slice';
+import theming from './theming/theming.slice';
 
 export const history = createBrowserHistory();
 
 const createRootReducer = history =>
   combineReducers({
-    map,
+    accounts,
+    admin,
+    app,
+    bookmarks,
     controlPanel,
     data,
-    satellites,
-    app,
-    accounts,
-    theming,
-    admin,
-    bookmarks,
-    stories,
-    router: connectRouter(history),
+    drawingTools,
+    map,
     orbs,
+    router: connectRouter(history),
+    satellites,
+    stories,
+    theming,
   });
 
 const rootReducer = createRootReducer(history);

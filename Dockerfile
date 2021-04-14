@@ -29,6 +29,7 @@ WORKDIR $APP_HOME
 # of the Pipfile; it is the one in $APP_HOME and _not_ $APP_HOME/server that is used.
 COPY --chown=app:app ./server/Pipfile* $APP_HOME/
 RUN cd $APP_HOME && pipenv install --dev
+ENV PIPENV_PIPFILE=$APP_HOME/Pipfile
 
 COPY --chown=root:root run-django.sh $APP_HOME/
 COPY --chown=root:root run-celery.sh $APP_HOME/

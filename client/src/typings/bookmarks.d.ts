@@ -1,3 +1,4 @@
+import { FeatureCollection } from '@turf/helpers';
 import { OrbState } from 'map/orbs/orbReducer'; // eslint-disable-line
 
 type Bookmark = {
@@ -11,4 +12,5 @@ type Bookmark = {
   layers: Source['source_id'][];
   orbs: OrbState;
   thumbnail?: string;
+  drawn_feature_collection?: FeatureCollection;
 };

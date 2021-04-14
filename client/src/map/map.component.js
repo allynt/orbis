@@ -1,9 +1,7 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect } from 'react';
 
 import {
   ButtonGroup,
-  ClickAwayListener,
-  LayersIcon,
   LoadMask,
   makeStyles,
   Slide,
@@ -16,11 +14,7 @@ import {
   _SunLight as SunLight,
 } from '@deck.gl/core';
 import DeckGL from '@deck.gl/react';
-import clsx from 'clsx';
-import ReactMapGl, {
-  ScaleControl,
-  _MapContext as MapContext,
-} from 'react-map-gl';
+import ReactMapGl, { ScaleControl } from 'react-map-gl';
 import Geocoder from 'react-map-gl-geocoder';
 import 'react-map-gl-geocoder/dist/mapbox-gl-geocoder.css';
 import { useDispatch, useSelector } from 'react-redux';
@@ -35,7 +29,7 @@ import { setLayers } from 'data-layers/data-layers.slice';
 import MapStyleSwitcher from 'map-style/map-style-switcher/map-style-switcher.component';
 import { useMap } from 'MapContext';
 import { ExtrusionScaleSlider } from './controls/extrusion-scale-slider/extrusion-scale-slider.component';
-import { MapControlButton } from './controls/map-control-button.component';
+import { MapControlButton } from '../components';
 import { NavigationControl } from './controls/navigation-control/navigation-control.component';
 import {
   isLoadingSelector,
@@ -52,14 +46,10 @@ import {
 } from './orbs/layers.slice';
 
 import 'mapbox-gl/dist/mapbox-gl.css';
+import { DrawingToolsToolbox } from 'drawing-tools';
+import { setFeatures as setDrawingToolsFeatures } from 'drawing-tools/drawing-tools.slice';
 
-/** @type {React.CSSProperties} */
-const TOP_MAP_CSS = {
-    position: 'absolute',
-    top: 0,
-    pointerEvents: 'none',
-  },
-  ISOMETRIC_PITCH = 35;
+const ISOMETRIC_PITCH = 35;
 
 const useStyles = makeStyles(theme => ({
   map: {
@@ -107,13 +97,6 @@ const useStyles = makeStyles(theme => ({
     zIndex: 1000,
   },
   buttonControls: { position: 'absolute', right: '2rem', bottom: '8rem' },
-  selected: {
-    color: theme.palette.secondary.main,
-    backgroundColor: theme.palette.primary.main,
-    '&:hover, &:focus': {
-      backgroundColor: theme.palette.primary.main,
-    },
-  },
   scaleControl: {
     position: 'absolute',
     right: props =>
@@ -150,13 +133,22 @@ lightingEffect.shadowColor = [0, 0, 0, 0.5];
  * @param {{
  *   mapComponents: JSX.Element[]
  *   layers: any[]
- * }} props
+ * } & import('drawing-tools/types').DrawingToolsProps} props
  */
-const Map = ({ mapComponents, layers }) => {
+const Map = ({
+  mapComponents,
+  layers,
+  editableLayer,
+  drawingToolsEnabled,
+  setDrawingToolsEnabled,
+  drawMode,
+  setDrawMode,
+}) => {
   const {
     topMapRef,
     bottomMapRef,
-    deckRef,
+    topDeckRef,
+    bottomDeckRef,
     viewState,
     setViewState,
   } = useMap();
@@ -171,7 +163,6 @@ const Map = ({ mapComponents, layers }) => {
   const mapLoading = useSelector(isLoadingSelector);
   const mapStyles = useSelector(mapStylesSelector);
   const selectedMapStyle = useSelector(selectedMapStyleSelector);
-  const [mapStyleSwitcherVisible, setMapStyleSwitcherVisible] = useState(false);
   const styles = useStyles({ selectedMapStyle });
 
   useEffect(() => {
@@ -181,6 +172,7 @@ const Map = ({ mapComponents, layers }) => {
         zoom,
         layers,
         orbs,
+        drawn_feature_collection,
       } = selectedBookmark;
       setViewState({
         ...viewState,
@@ -192,6 +184,7 @@ const Map = ({ mapComponents, layers }) => {
       });
       dispatch(setLayers(layers || []));
       dispatch(setLayersState(orbs?.layers));
+      dispatch(setDrawingToolsFeatures(drawn_feature_collection));
       dispatch(onBookmarkLoaded());
     }
   }, [selectedBookmark, viewState, setViewState, dispatch]);
@@ -218,6 +211,10 @@ const Map = ({ mapComponents, layers }) => {
   const handleExtrusionScaleChange = value =>
     dispatch(setExtrusionScale(value));
 
+  const handleViewStateChange = ({ viewState: { width, height, ...rest } }) => {
+    setViewState(rest);
+  };
+
   const mapProps = {
     ...viewState,
     width: '100%',
@@ -243,62 +240,71 @@ const Map = ({ mapComponents, layers }) => {
           />
         </Slide>
       </div>
-      <ClickAwayListener onClickAway={() => setMapStyleSwitcherVisible(false)}>
-        <div>
-          <ButtonGroup className={styles.buttonControls} orientation="vertical">
-            <MapControlButton
-              className={clsx({ [styles.selected]: extrudedMode })}
-              aria-selected={extrudedMode}
-              onClick={handleExtrudedModeButtonClick}
-            >
-              3D
-            </MapControlButton>
-            <MapControlButton
-              onClick={() => setMapStyleSwitcherVisible(cur => !cur)}
-            >
-              <LayersIcon fontSize="inherit" />
-            </MapControlButton>
-          </ButtonGroup>
-          <MapStyleSwitcher
-            open={mapStyleSwitcherVisible}
-            mapStyles={mapStyles}
-            selectedMapStyle={selectedMapStyle?.id}
-            selectMapStyle={handleMapStyleSelect}
-          />
-        </div>
-      </ClickAwayListener>
-      <ReactMapGl
-        key="bottom"
-        ref={bottomMapRef}
-        onViewStateChange={({ viewState: { width, height, ...rest } }) => {
-          setViewState(rest);
+
+      <ButtonGroup className={styles.buttonControls} orientation="vertical">
+        <DrawingToolsToolbox
+          open={drawingToolsEnabled}
+          onButtonClick={() => setDrawingToolsEnabled(!drawingToolsEnabled)}
+          onToolSelect={tool => setDrawMode(tool)}
+          selectedTool={drawMode}
+        />
+        <MapControlButton
+          selected={extrudedMode}
+          aria-selected={extrudedMode}
+          onClick={handleExtrudedModeButtonClick}
+        >
+          3D
+        </MapControlButton>
+        <MapStyleSwitcher
+          mapStyles={mapStyles}
+          selectedMapStyle={selectedMapStyle?.id}
+          selectMapStyle={handleMapStyleSelect}
+        />
+      </ButtonGroup>
+
+      <DeckGL
+        ref={bottomDeckRef}
+        controller={!drawingToolsEnabled}
+        viewState={viewState}
+        onViewStateChange={handleViewStateChange}
+        layers={layers}
+        effects={[lightingEffect]}
+        glOptions={{
+          preserveDrawingBuffer: true,
         }}
-        mapStyle={selectedMapStyle?.bottomMapStyle}
+      >
+        <ReactMapGl
+          key="bottom"
+          ref={bottomMapRef}
+          mapStyle={selectedMapStyle?.bottomMapStyle}
+          attributionControl={false}
+          {...mapProps}
+        />
+      </DeckGL>
+
+      <ReactMapGl
+        key="top"
+        ref={topMapRef}
+        style={{ pointerEvents: 'none' }}
+        mapStyle={selectedMapStyle?.topMapStyle}
         {...mapProps}
       >
         <DeckGL
-          ref={deckRef}
+          ref={topDeckRef}
+          controller={drawingToolsEnabled}
           viewState={viewState}
-          layers={layers}
-          effects={[lightingEffect]}
-          ContextProvider={MapContext.Provider}
+          onViewStateChange={handleViewStateChange}
+          layers={[editableLayer]}
+          getCursor={editableLayer?.getCursor.bind(editableLayer)}
+          style={{ pointerEvents: drawingToolsEnabled ? 'all' : 'none' }}
           glOptions={{
             preserveDrawingBuffer: true,
           }}
         />
-        <NavigationControl />
+        <NavigationControl onViewStateChange={handleViewStateChange} />
         <div className={styles.scaleControl}>
           <ScaleControl unit="metric" />
         </div>
-      </ReactMapGl>
-      <ReactMapGl
-        key="top"
-        ref={topMapRef}
-        style={TOP_MAP_CSS}
-        mapStyle={selectedMapStyle?.topMapStyle}
-        attributionControl={false}
-        {...mapProps}
-      >
         <Geocoder
           mapRef={topMapRef}
           mapboxApiAccessToken={accessToken}

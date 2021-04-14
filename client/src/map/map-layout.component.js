@@ -10,10 +10,12 @@ import {
 } from 'data-layers/data-layers.slice';
 import Map from './map.component';
 import { useOrbs } from './orbs/useOrbs';
+import { useDrawingTools } from 'drawing-tools';
 
 const MapLayout = () => {
   const dispatch = useDispatch();
   const { layers, mapComponents, sidebarComponents } = useOrbs();
+  const drawingToolsProps = useDrawingTools();
   const pollingPeriod = useSelector(selectPollingPeriod);
 
   useEffect(() => {
@@ -36,8 +38,15 @@ const MapLayout = () => {
       overflow="hidden"
       bgcolor="#242424"
     >
-      <ControlPanel sidebarComponents={sidebarComponents} />
-      <Map layers={layers} mapComponents={mapComponents} />
+      <ControlPanel
+        sidebarComponents={sidebarComponents}
+        drawingToolsEnabled={drawingToolsProps.drawingToolsEnabled}
+      />
+      <Map
+        layers={layers}
+        mapComponents={mapComponents}
+        {...drawingToolsProps}
+      />
       <AnalysisPanel />
     </Box>
   );

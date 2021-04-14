@@ -26,7 +26,6 @@ import {
 } from './control-panel.slice';
 import StoriesPanel from '../stories/stories-panel.component';
 import Profile from '../accounts/profile/profile.component';
-import AnnotationsPanel from '../annotations/annotations-panel.component';
 import BookmarksPanel from '../bookmarks/bookmarks-panel.component';
 import DataLayers from '../data-layers/data-layers.component';
 import SatellitesPanel from '../satellites/satellites-panel.component';
@@ -55,9 +54,10 @@ const useStyles = makeStyles(theme => ({
 /**
  * @param {{
  *   sidebarComponents: Record<string, JSX.Element | JSX.Element[]>
+ *   drawingToolsEnabled: import('drawing-tools/types').DrawingToolsProps['drawingToolsEnabled']
  * }} props
  */
-const ControlPanel = ({ sidebarComponents }) => {
+const ControlPanel = ({ sidebarComponents, drawingToolsEnabled }) => {
   const dispatch = useDispatch();
   const isMenuVisible = useSelector(selectIsMenuVisible);
   const heading = useSelector(selectHeading);
@@ -90,10 +90,12 @@ const ControlPanel = ({ sidebarComponents }) => {
         }
       >
         {visibleMenuItem === DATA_LAYERS && (
-          <DataLayers sidebarComponents={sidebarComponents} />
+          <DataLayers
+            sidebarComponents={sidebarComponents}
+            drawingToolsEnabled={drawingToolsEnabled}
+          />
         )}
         {visibleMenuItem === SATELLITE_LAYERS && <SatellitesPanel />}
-        {visibleMenuItem === ANNOTATIONS && <AnnotationsPanel />}
         {visibleMenuItem === BOOKMARKS && <BookmarksPanel />}
         {visibleMenuItem === STORIES && <StoriesPanel />}
         {visibleMenuItem === PROFILE && <Profile />}

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 
+import clsx from 'clsx';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { Button, Link, makeStyles, ThemeProvider } from '@astrosat/astrosat-ui';
@@ -15,9 +16,20 @@ import {
 import { LayersList } from './layers-list/layers-list.component';
 
 const useStyles = makeStyles(theme => ({
+  disablingElement: {
+    transition: theme.transitions.create(['filter', 'opacity']),
+    '&$disabled': {
+      filter: 'grayscale(100%)',
+      opacity: 0.8,
+      cursor: 'not-allowed',
+    },
+  },
   wrapper: {
     display: 'flex',
     flexDirection: 'column',
+    '&$disabled': {
+      pointerEvents: 'none',
+    },
   },
   link: {
     '&:hover': {
@@ -29,14 +41,16 @@ const useStyles = makeStyles(theme => ({
     paddingRight: theme.spacing(2),
     margin: '0 auto',
   },
+  disabled: {},
 }));
 
 /**
  * @param {{
  *   sidebarComponents: Record<string, JSX.Element | JSX.Element[]>
+ *   drawingToolsEnabled?: import('drawing-tools/types').DrawingToolsProps['drawingToolsEnabled']
  * }} props
  */
-const DataLayers = ({ sidebarComponents }) => {
+const DataLayers = ({ sidebarComponents, drawingToolsEnabled }) => {
   const styles = useStyles();
   const [isVisible, toggle] = useState(false);
 
@@ -54,32 +68,42 @@ const DataLayers = ({ sidebarComponents }) => {
   };
 
   return (
-    <div className={styles.wrapper}>
-      <LayersList
-        dispatch={dispatch}
-        selectedLayers={activeCategorisedSources}
-        sidebarComponents={sidebarComponents}
-      />
-      <Button
-        className={styles.button}
-        variant="text"
-        size="small"
-        onClick={() => toggle(true)}
-        startIcon={<AddNewCategoryIcon />}
+    <div
+      className={clsx(styles.disablingElement, {
+        [styles.disabled]: drawingToolsEnabled,
+      })}
+    >
+      <div
+        className={clsx(styles.wrapper, {
+          [styles.disabled]: drawingToolsEnabled,
+        })}
       >
-        <Link className={styles.link} color="textPrimary" component="span">
-          Add/Remove Orbs and Data Layers
-        </Link>
-      </Button>
-      <ThemeProvider theme="light">
-        <DataLayersDialog
-          orbs={dataSources}
-          initialSelectedSources={selectedLayers}
-          onSubmit={handleDialogSubmit}
-          close={() => toggle(false)}
-          open={isVisible}
+        <LayersList
+          dispatch={dispatch}
+          selectedLayers={activeCategorisedSources}
+          sidebarComponents={sidebarComponents}
         />
-      </ThemeProvider>
+        <Button
+          className={styles.button}
+          variant="text"
+          size="small"
+          onClick={() => toggle(true)}
+          startIcon={<AddNewCategoryIcon />}
+        >
+          <Link className={styles.link} color="textPrimary" component="span">
+            Add/Remove Orbs and Data Layers
+          </Link>
+        </Button>
+        <ThemeProvider theme="light">
+          <DataLayersDialog
+            orbs={dataSources}
+            initialSelectedSources={selectedLayers}
+            onSubmit={handleDialogSubmit}
+            close={() => toggle(false)}
+            open={isVisible}
+          />
+        </ThemeProvider>
+      </div>
     </div>
   );
 };

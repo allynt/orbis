@@ -60,7 +60,7 @@ export const fetchBookmarks = createAsyncThunk(
 );
 
 /**
- * @type {import('@reduxjs/toolkit').AsyncThunk<import('typings/orbis').Bookmark, import('typings/orbis').Bookmark, {}>}
+ * @type {import('@reduxjs/toolkit').AsyncThunk<import('typings/bookmarks').Bookmark, import('typings/bookmarks').Bookmark, {}>}
  */
 export const addBookmark = createAsyncThunk(
   `${name}/addBookmark`,
@@ -71,6 +71,10 @@ export const addBookmark = createAsyncThunk(
     formData.set('center', JSON.stringify(bookmark['center']));
     formData.set('layers', JSON.stringify(bookmark['layers']));
     formData.set('orbs', JSON.stringify(bookmark['orbs']));
+    formData.set(
+      'drawn_feature_collection',
+      JSON.stringify(bookmark['drawn_feature_collection']),
+    );
 
     const headers = getFormAuthHeaders(getState());
     const url = `${getApiUrl(getState())}${API.add}`;

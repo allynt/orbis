@@ -99,7 +99,7 @@ class Bookmark(gis_models.Model):
         help_text=_("A description of the bookmark."),
     )
 
-    feature_collection = models.JSONField(
+    drawn_feature_collection = models.JSONField(
         blank=True,
         null=True,
         validators=[validate_feature_collection],

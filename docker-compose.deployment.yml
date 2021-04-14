@@ -1,8 +1,8 @@
-version: "3.5"
+version: "2"
 
 services:
   db:
-    image: kartoza/postgis:11.0-2.5
+    image: kartoza/postgis:12.4
     environment:
       POSTGRES_USER: orbis
       POSTGRES_PASS: orbis
@@ -10,8 +10,6 @@ services:
       ALLOW_IP_RANGE: 0.0.0.0/0
     ports:
       - "5666:5432"
-    networks:
-      - orbis
 
   server:
     build:
@@ -39,8 +37,6 @@ services:
 
     ports:
       - "8000:80"
-    networks:
-      - orbis
 
   client:
     build:
@@ -56,9 +52,3 @@ services:
       GITHUB_REGISTRY_TOKEN: "${GITHUB_REGISTRY_TOKEN}"
     ports:
       - "3000:80"
-    networks:
-      - orbis
-
-networks:
-  orbis:
-    driver: bridge
