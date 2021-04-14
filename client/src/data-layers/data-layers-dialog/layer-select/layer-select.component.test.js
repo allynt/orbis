@@ -9,71 +9,109 @@ const SUBMIT_BUTTON = /confirm/i;
 const SELECT_ALL = /^select\sall/i;
 const UNSELECT_ALL = /unselect\sall/i;
 
-const ORB_SOURCES = [
-  {
-    category: 'Oil',
-    sources: [
-      { source_id: 'oil/source/1', metadata: { label: 'Oil Source 1' } },
-      { source_id: 'oil/source/2', metadata: { label: 'Oil Source 2' } },
-    ],
-  },
-  {
-    category: 'Gas',
-    sources: [
-      { source_id: 'gas/source/1', metadata: { label: 'Gas Source 1' } },
-      { source_id: 'gas/source/2', metadata: { label: 'Gas Source 2' } },
-    ],
-  },
-];
+const OIL_PARENT = 'Oil Parent 1';
+const OIL_CHILD = 'Oil Child 1';
 
-const ORB_SOURCES_SUB_CATEGORIES = [
+const ORBS = [
   {
-    category: 'Oil and Gas',
-    sources: [
-      {
-        category: 'Oil',
-        sources: [
-          { source_id: 'oil/source/1', metadata: { label: 'Oil Source 1' } },
-          { source_id: 'oil/source/2', metadata: { label: 'Oil Source 2' } },
-        ],
+    source_id: 'oil/source/1',
+    name: 'Oil',
+    metadata: {
+      name: 'Oil',
+      label: 'Oil Source 1',
+      application: {
+        orbis: {
+          categories: {
+            name: 'Oil Parent 1',
+            child: { name: 'Oil Child 1' },
+          },
+          orbs: [{ name: 'Oil and Gas', description: 'test' }],
+        },
       },
-      {
-        category: 'Gas',
-        sources: [
-          { source_id: 'gas/source/1', metadata: { label: 'Gas Source 1' } },
-          { source_id: 'gas/source/2', metadata: { label: 'Gas Source 2' } },
-        ],
+    },
+  },
+  {
+    source_id: 'oil/source/2',
+    name: 'Oil',
+    metadata: {
+      name: 'Oil',
+      label: 'Oil Source 2',
+      application: {
+        orbis: {
+          categories: {
+            name: 'Oil Parent 1',
+            child: { name: 'Oil Child 1' },
+          },
+          orbs: [{ name: 'Oil and Gas', description: 'test' }],
+        },
       },
-    ],
+    },
+  },
+  {
+    source_id: 'gas/source/1',
+    name: 'Gas',
+    metadata: {
+      name: 'Gas',
+      label: 'Gas Source 1',
+      application: {
+        orbis: {
+          categories: {
+            name: 'Gas Parent 1',
+            child: { name: 'Gas Child 1' },
+          },
+          orbs: [{ name: 'Oil and Gas', description: 'test' }],
+        },
+      },
+    },
+  },
+  {
+    source_id: 'gas/source/2',
+    name: 'Gas',
+    metadata: {
+      name: 'Gas',
+      label: 'Gas Source 2',
+      application: {
+        orbis: {
+          categories: {
+            name: 'Gas Parent 1',
+            child: { name: 'Gas Child 1' },
+          },
+          orbs: [{ name: 'Oil and Gas', description: 'test' }],
+        },
+      },
+    },
   },
 ];
 
 const renderComponent = ({
-  orbSources = ORB_SOURCES,
+  orbs = ORBS,
   hasMadeChanges = false,
   selectedSources = [],
+  selectedOrbName = 'Oil and Gas',
 } = {}) => {
   const onSourceChange = jest.fn();
   const onSourcesChange = jest.fn();
-  const onSearchChange = jest.fn();
   const onSubmit = jest.fn();
   const utils = render(
     <LayerSelect
-      orbSources={orbSources}
+      orbs={orbs}
       selectedSources={selectedSources}
       onSourceChange={onSourceChange}
       onSourcesChange={onSourcesChange}
-      onSearchChange={onSearchChange}
       onSubmit={onSubmit}
+      selectedOrbName={selectedOrbName}
       hasMadeChanges={hasMadeChanges}
     />,
   );
-  return { ...utils, onSourceChange, onSourcesChange, onSearchChange };
+  return { ...utils, onSourceChange, onSourcesChange };
 };
 
 describe('<LayerSelect />', () => {
   it('shows text when no orb is selected', () => {
-    const { getByText } = renderComponent({ orbSources: null });
+    const { getByText } = renderComponent({
+      orbs: null,
+      selectedOrbName: null,
+    });
     expect(
       getByText('Select Your Orb in order to find layers'),
     ).toBeInTheDocument();
@@ -87,10 +125,14 @@ describe('<LayerSelect />', () => {
   it('shows category headings', () => {
     const { getByRole } = renderComponent();
     expect(
-      getByRole('button', { name: new RegExp(ORB_SOURCES[0].category) }),
+      getByRole('button', {
+        name: new RegExp(OIL_PARENT),
+      }),
     ).toBeInTheDocument();
     expect(
-      getByRole('button', { name: new RegExp(ORB_SOURCES[1].category) }),
+      getByRole('button', {
+        name: new RegExp('Gas Parent 1'),
+      }),
     ).toBeInTheDocument();
   });
 
@@ -98,12 +140,12 @@ describe('<LayerSelect />', () => {
     const { getByRole } = renderComponent();
     userEvent.click(
       getByRole('button', {
-        name: new RegExp(ORB_SOURCES[0].category),
+        name: new RegExp(OIL_PARENT),
       }),
     );
     expect(
       getByRole('button', {
-        name: ORB_SOURCES[0].sources[0].metadata.label,
+        name: new RegExp(OIL_CHILD),
       }),
     ).toBeInTheDocument();
   });
@@ -111,84 +153,94 @@ describe('<LayerSelect />', () => {
   it('hides categories when heading is clicked again', async () => {
     const { getByRole, queryByRole } = renderComponent();
     userEvent.click(
-      getByRole('button', { name: new RegExp(ORB_SOURCES[0].category) }),
+      getByRole('button', {
+        name: new RegExp(OIL_PARENT),
+      }),
     );
     expect(
-      queryByRole('button', {
-        name: ORB_SOURCES[0].sources[0].metadata.label,
+      getByRole('button', {
+        name: new RegExp(OIL_CHILD),
       }),
     ).toBeInTheDocument();
-    userEvent.click(getByRole('button', { name: /oil \(/i }));
+
+    userEvent.click(
+      getByRole('button', {
+        name: new RegExp(OIL_PARENT),
+      }),
+    );
     await waitFor(() =>
       expect(
         queryByRole('button', {
-          name: ORB_SOURCES[0].sources[0].metadata.label,
+          name: new RegExp(OIL_CHILD),
         }),
       ).not.toBeInTheDocument(),
     );
   });
 
   it('shows sub-category headings', () => {
-    const { getByRole } = renderComponent({
-      orbSources: ORB_SOURCES_SUB_CATEGORIES,
-    });
+    const { getByRole } = renderComponent();
+
     userEvent.click(
       getByRole('button', {
-        name: new RegExp(ORB_SOURCES_SUB_CATEGORIES[0].category),
+        name: new RegExp(OIL_PARENT),
       }),
     );
+
     expect(
       getByRole('button', {
-        name: /oil \(/i,
+        name: new RegExp(OIL_CHILD),
       }),
     ).toBeInTheDocument();
   });
 
   it('expands sub-category headings when clicked', async () => {
-    const { getByRole } = renderComponent({
-      orbSources: ORB_SOURCES_SUB_CATEGORIES,
-    });
+    const { getByRole } = renderComponent();
+
     userEvent.click(
       getByRole('button', {
-        name: new RegExp(ORB_SOURCES_SUB_CATEGORIES[0].category),
+        name: new RegExp(OIL_PARENT),
       }),
     );
     userEvent.click(
       getByRole('button', {
-        name: /oil \(/i,
+        name: new RegExp(OIL_CHILD),
       }),
     );
+
     const checkbox = getByRole('button', {
-      name: ORB_SOURCES_SUB_CATEGORIES[0].sources[0].sources[0].metadata.label,
+      name: 'Oil Source 1',
     });
+
     await waitFor(() => expect(checkbox).toBeInTheDocument());
   });
 
   it('hides sub-categories when heading is clicked again', async () => {
-    const { getByRole, queryByRole } = renderComponent({
-      orbSources: ORB_SOURCES_SUB_CATEGORIES,
-    });
+    const { getByRole, queryByRole } = renderComponent();
+
     const categoryHeading = getByRole('button', {
-      name: new RegExp(ORB_SOURCES_SUB_CATEGORIES[0].category),
+      name: new RegExp(OIL_PARENT),
     });
 
     userEvent.click(categoryHeading);
+
     const subCategoryHeading = getByRole('button', {
-      name: /oil \(/i,
+      name: new RegExp(OIL_CHILD),
     });
+
     userEvent.click(subCategoryHeading);
+
     expect(
       getByRole('button', {
-        name:
-          ORB_SOURCES_SUB_CATEGORIES[0].sources[0].sources[0].metadata.label,
+        name: 'Oil Source 1',
       }),
     ).toBeInTheDocument();
+
     userEvent.click(subCategoryHeading);
+
     await waitFor(() =>
       expect(
         queryByRole('button', {
-          name:
-            ORB_SOURCES_SUB_CATEGORIES[0].sources[0].sources[0].metadata.label,
+          name: 'Oil Source 1',
         }),
       ).not.toBeInTheDocument(),
     );
@@ -196,14 +248,17 @@ describe('<LayerSelect />', () => {
 
   it('calls onSourceChange when a source is clicked', async () => {
     const { getByRole, onSourcesChange } = renderComponent();
-    userEvent.click(
-      getByRole('button', { name: new RegExp(ORB_SOURCES[0].category) }),
-    );
+
+    userEvent.click(getByRole('button', { name: new RegExp(OIL_PARENT) }));
+
+    userEvent.click(getByRole('button', { name: new RegExp(OIL_CHILD) }));
+
     userEvent.click(
       getByRole('button', {
-        name: ORB_SOURCES[0].sources[0].metadata.label,
+        name: 'Oil Source 1',
       }),
     );
+
     await waitFor(() => expect(onSourcesChange).toHaveBeenCalled());
   });
 
@@ -230,15 +285,22 @@ describe('<LayerSelect />', () => {
     });
 
     it('calls onSourcesChange with all sources within a sub-category when "Select All" is clicked', () => {
-      const { onSourcesChange, getByRole, getAllByRole } = renderComponent({
-        orbSources: ORB_SOURCES_SUB_CATEGORIES,
-      });
+      const { onSourcesChange, getByRole, getAllByRole } = renderComponent();
+
       userEvent.click(
         getByRole('button', {
-          name: new RegExp(ORB_SOURCES_SUB_CATEGORIES[0].category),
+          name: new RegExp(OIL_PARENT),
         }),
       );
+
+      userEvent.click(
+        getByRole('button', {
+          name: new RegExp(OIL_CHILD),
+        }),
+      );
+
       userEvent.click(getAllByRole('button', { name: SELECT_ALL })[1]);
+
       expect(onSourcesChange).toHaveBeenCalledWith({
         source_ids: ['oil/source/1', 'oil/source/2'],
         selected: true,
@@ -258,14 +320,21 @@ describe('<LayerSelect />', () => {
 
     it('calls onSourcesChange with all sources within a sub-category when "Unselect All" is clicked', () => {
       const { onSourcesChange, getByRole, getAllByRole } = renderComponent({
-        orbSources: ORB_SOURCES_SUB_CATEGORIES,
         selectedSources: ['oil/source/1', 'oil/source/2'],
       });
+
       userEvent.click(
         getByRole('button', {
-          name: new RegExp(ORB_SOURCES_SUB_CATEGORIES[0].category),
+          name: new RegExp(OIL_PARENT),
         }),
       );
+
+      userEvent.click(
+        getByRole('button', {
+          name: new RegExp(OIL_CHILD),
+        }),
+      );
+
       userEvent.click(getAllByRole('button', { name: UNSELECT_ALL })[1]);
       expect(onSourcesChange).toHaveBeenCalledWith({
         source_ids: ['oil/source/1', 'oil/source/2'],
@@ -282,14 +351,6 @@ describe('<LayerSelect />', () => {
         source_ids: ['oil/source/2'],
         selected: true,
       });
-    });
-  });
-
-  describe('Search Input', () => {
-    it('calls search handler on every keystroke', () => {
-      const { getByPlaceholderText, onSearchChange } = renderComponent();
-      userEvent.type(getByPlaceholderText('Search for data layers'), 'Test');
-      expect(onSearchChange).toHaveBeenCalledTimes(4);
     });
   });
 });
