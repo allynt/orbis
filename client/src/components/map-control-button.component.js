@@ -35,7 +35,7 @@ export const MapControlButton = React.forwardRef(
     return (
       <Button
         ref={ref}
-        className={clsx(styles.button, className, {
+        className={clsx(className, styles.button, {
           [styles.selected]: selected,
         })}
         {...rest}
