@@ -21,7 +21,6 @@ services:
       ENABLE_DJANGO: 1
       DJANGO_CLIENT_HOST: http://localhost:3000
       DJANGO_SETTINGS_MODULE: core.settings
-      DOCKER_BUILDKIT: 1
       DJANGO_CELERY_BROKER_PROTOCOL: "redis"
       DJANGO_CELERY_BROKER_HOST: "broker"
       DJANGO_CELERY_BROKER_PORT: "6379"
@@ -39,7 +38,6 @@ services:
       REACT_APP_API_HOST: http://localhost:8000
       REACT_APP_DOCKER: "true"
       GITHUB_REGISTRY_TOKEN: "${GITHUB_REGISTRY_TOKEN}"
-      DOCKER_BUILDKIT: 1
     working_dir: /home/app/client
     volumes:
       - ./client:/home/app/client
