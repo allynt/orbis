@@ -2,15 +2,6 @@ FROM 339570402237.dkr.ecr.eu-west-1.amazonaws.com/company/astrosat/base:python36
 
 USER app
 
-# Some explanation is necessary here I feel.
-# We need a GitHub token here, to install node dependencies, so
-# we pass it in as an `argument`. we then reference the arg as an
-# `environment variable`. When using `docker-compose`, the argument is
-# read in from your local environment and passed to this Dockerfile when
-# building the container.
-ARG TOKEN
-ENV GITHUB_REGISTRY_TOKEN=$TOKEN
-
 ENV PIPENV_DONT_LOAD_ENV=1
 ENV PIPENV_NO_SPIN=1
 ENV PIPENV_VENV_IN_PROJECT=1
