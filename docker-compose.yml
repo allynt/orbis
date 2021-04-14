@@ -11,8 +11,6 @@ services:
       ALLOW_IP_RANGE: 0.0.0.0/0
     ports:
       - "5666:5432"
-    networks:
-      - orbis
 
   server:
     build:
@@ -28,8 +26,6 @@ services:
       - ./server:/home/app/server
     ports:
       - "8000:8000"
-    networks:
-      - orbis
 
   client:
     image: node:12.13.1
@@ -46,16 +42,12 @@ services:
     ports:
       - "3000:3000"
       - "35729:35729"
-    networks:
-      - orbis
 
   broker:
     image: redis:6.2
     command: ["redis-server"]
     ports:
       - 6379:6379
-    networks:
-      - orbis
 
   runner:
     build: .
@@ -68,9 +60,3 @@ services:
     depends_on:
       - server
       - broker
-    networks:
-      - orbis
-
-networks:
-  orbis:
-    driver: bridge
