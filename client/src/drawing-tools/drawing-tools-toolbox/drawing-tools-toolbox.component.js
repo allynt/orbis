@@ -62,7 +62,7 @@ export const DrawingToolsToolbox = ({
           <ImageListItem
             text="Point"
             icon={<MapPinIcon color="primary" />}
-            value={'DrawPointMode'}
+            value="DrawPointMode"
           />
         </ImageList>
       }

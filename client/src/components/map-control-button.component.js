@@ -11,7 +11,7 @@ const useStyles = makeStyles(theme => ({
     backgroundColor: theme.palette.background.default,
     color: theme.palette.primary.main,
     fontSize: '0.74rem',
-    minWidth: 'unset',
+    minWidth: 'unset !important',
     '&:hover': {
       backgroundColor: theme.palette.background.default,
     },
