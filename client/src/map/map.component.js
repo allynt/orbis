@@ -277,39 +277,40 @@ const Map = ({
           {...mapProps}
         />
       </DeckGL>
-      <DeckGL
-        controller={drawingToolsEnabled}
-        viewState={viewState}
-        onViewStateChange={handleViewStateChange}
-        layers={[editableLayer]}
-        getCursor={editableLayer?.getCursor.bind(editableLayer)}
-        style={{ pointerEvents: drawingToolsEnabled ? 'all' : 'none' }}
-        glOptions={{
-          preserveDrawingBuffer: true,
-        }}
+
+      <ReactMapGl
+        key="top"
+        ref={topMapRef}
+        style={{ pointerEvents: 'none' }}
+        mapStyle={selectedMapStyle?.topMapStyle}
+        {...mapProps}
       >
-        <ReactMapGl
-          key="top"
-          ref={topMapRef}
-          mapStyle={selectedMapStyle?.topMapStyle}
-          {...mapProps}
-        >
-          <NavigationControl onViewStateChange={handleViewStateChange} />
-          <div className={styles.scaleControl}>
-            <ScaleControl unit="metric" />
-          </div>
-          <Geocoder
-            mapRef={topMapRef}
-            mapboxApiAccessToken={accessToken}
-            position="top-right"
-            marker={false}
-            onViewportChange={handleGeocoderSelect}
-          />
-          <React.Suspense fallback={<div>Loading...</div>}>
-            {mapComponents}
-          </React.Suspense>
-        </ReactMapGl>
-      </DeckGL>
+        <DeckGL
+          controller={drawingToolsEnabled}
+          viewState={viewState}
+          onViewStateChange={handleViewStateChange}
+          layers={[editableLayer]}
+          getCursor={editableLayer?.getCursor.bind(editableLayer)}
+          style={{ pointerEvents: drawingToolsEnabled ? 'all' : 'none' }}
+          glOptions={{
+            preserveDrawingBuffer: true,
+          }}
+        />
+        <NavigationControl onViewStateChange={handleViewStateChange} />
+        <div className={styles.scaleControl}>
+          <ScaleControl unit="metric" />
+        </div>
+        <Geocoder
+          mapRef={topMapRef}
+          mapboxApiAccessToken={accessToken}
+          position="top-right"
+          marker={false}
+          onViewportChange={handleGeocoderSelect}
+        />
+        <React.Suspense fallback={<div>Loading...</div>}>
+          {mapComponents}
+        </React.Suspense>
+      </ReactMapGl>
     </div>
   );
 };
