@@ -56,7 +56,7 @@ const renderCategories = ({
   onSourcesChange,
   selectedSources,
 }) =>
-  sources.map(source =>
+  sources?.map(source =>
     source.category ? (
       <Accordion
         key={source.category}
@@ -198,43 +198,46 @@ const useStyles = makeStyles(theme => ({
 
 /**
  * @param {{
- *   orbs: import('typings/orbis').CategorisedSources
- *   searchTerm: string
+ *   orbs: import('typings/orbis').Source[]
  *   selectedSources?: import('typings/orbis').Source['source_id'][]
+ *   selectedOrbName?: string
  *   hasMadeChanges?: boolean
  *   onSourcesChange: (params: {
  *     source_ids: import('typings/orbis').Source['source_id'][]
  *     selected: boolean}) => void
- *   onSearchChange: (params: { target: { value: any } }) => void
  *   onSubmit: () => void
  * }} props
  */
 export const LayerSelect = ({
   orbs,
-  searchTerm,
   selectedSources,
   selectedOrbName,
   hasMadeChanges = false,
   onSourcesChange,
-  onSearchChange,
   onSubmit,
 }) => {
   const styles = useStyles();
-  console.log('Orbs: ', orbs);
+  const [searchTerm, setSearchTerm] = useState(undefined);
+
+  const processedOrbs =
+    createOrbsWithCategorisedSources(
+      searchTerm ? layerSearchFilter(orbs, searchTerm) : orbs,
+    )?.find(orb => orb.name === selectedOrbName)?.sources || [];
+
   return (
     <Section orientation="right">
       <Header>Add Data Layers</Header>
-      {orbs ? (
+      {selectedOrbName ? (
         <div>
           <LayerSearch
             className={styles.layerSearch}
             searchTerm={searchTerm}
-            onChange={onSearchChange}
-            noResults={false}
+            onChange={e => setSearchTerm(e.target.value)}
+            noResults={!processedOrbs?.length}
           />
           <List dense>
             {renderCategories({
-              sources: createOrbsWithCategorisedSources(orbs),
+              sources: processedOrbs,
               level: 0,
               onSourcesChange,
               selectedSources,

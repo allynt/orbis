@@ -29,7 +29,7 @@ const useStyles = makeStyles(theme => ({
 
 /**
  * @param {{
- *   orbs: import('typings/orbis').Source['source_id'][]
+ *   orbs: import('typings/orbis').Source[]
  *   initialSelectedSources?: import('typings/orbis').Source['source_id'][]
  *   open?: boolean
  *   close: () => void
@@ -50,7 +50,6 @@ const DataLayersDialog = ({
     initialSelectedSources,
   );
   const [hasMadeChanges, setHasMadeChanges] = useState(false);
-  const [searchTerm, setSearchTerm] = useState(undefined);
 
   useEffect(() => {
     setHasMadeChanges(!isEqual(initialSelectedSources, selectedSources));
@@ -95,12 +94,10 @@ const DataLayersDialog = ({
           selectedOrbName={selectedOrbName}
         />
         <LayerSelect
-          orbs={orbs?.find(orb => orb.name === selectedOrbName)}
-          searchTerm={searchTerm}
+          orbs={orbs}
           selectedSources={selectedSources}
           selectedOrbName={selectedOrbName}
           onSourcesChange={handleSourcesChange}
-          onSearchChange={e => setSearchTerm(e.target.value)}
           onSubmit={handleSubmit}
           hasMadeChanges={hasMadeChanges}
         />

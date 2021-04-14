@@ -1,11 +1,12 @@
 const SEARCHABLE_FIELDS = ['label', 'description'];
 
 export const layerSearchFilter = (orbs, searchTerm) => {
-  const regex = new RegExp(searchTerm.trim(), 'i'),
+  if (!searchTerm) return;
+  const processedTerm = searchTerm?.toLowerCase().trim(),
     filteredSources = orbs?.reduce((acc, source) => {
       let result = acc;
-      SEARCHABLE_FIELDS.forEach(term => {
-        if (source.metadata[term].match(regex)) {
+      SEARCHABLE_FIELDS.forEach(field => {
+        if (source.metadata[field]?.toLowerCase().includes(processedTerm)) {
           result = [...acc, source];
           return;
         }
@@ -13,5 +14,5 @@ export const layerSearchFilter = (orbs, searchTerm) => {
       return result;
     }, []);
 
-  return filteredSources?.sources || [];
+  return filteredSources;
 };
