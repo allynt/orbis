@@ -147,7 +147,8 @@ const Map = ({
   const {
     topMapRef,
     bottomMapRef,
-    deckRef,
+    topDeckRef,
+    bottomDeckRef,
     viewState,
     setViewState,
   } = useMap();
@@ -262,7 +263,7 @@ const Map = ({
       </ButtonGroup>
 
       <DeckGL
-        ref={deckRef}
+        ref={bottomDeckRef}
         controller={!drawingToolsEnabled}
         viewState={viewState}
         onViewStateChange={handleViewStateChange}
@@ -289,6 +290,7 @@ const Map = ({
         {...mapProps}
       >
         <DeckGL
+          ref={topDeckRef}
           controller={drawingToolsEnabled}
           viewState={viewState}
           onViewStateChange={handleViewStateChange}
