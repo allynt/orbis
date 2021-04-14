@@ -51,7 +51,7 @@ class BookmarkFactory(factory.django.DjangoModelFactory):
 
     zoom = FactoryFaker("pyfloat", min_value=0, max_value=10)
 
-    feature_collection = test_annotations
+    drawn_feature_collection = test_annotations
 
     @factory.lazy_attribute
     def layers(self):

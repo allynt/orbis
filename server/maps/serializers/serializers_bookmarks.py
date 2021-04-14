@@ -56,7 +56,7 @@ class BookmarkSerializer(serializers.ModelSerializer):
             "created",
             "zoom",
             "center",
-            "feature_collection",
+            "drawn_feature_collection",
             "layers",
             "orbs",
             "thumbnail",
@@ -73,6 +73,6 @@ class BookmarkSerializer(serializers.ModelSerializer):
         geometry_class=Point, precision=Bookmark.PRECISION
     )
 
-    feature_collection = StringifiedJSONField(required=False)
+    drawn_feature_collection = StringifiedJSONField(required=False)
     layers = StringifiedJSONField(required=False)
     orbs = StringifiedJSONField(required=False)
