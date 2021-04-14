@@ -54,7 +54,6 @@ services:
     environment:
       SYS_ENV: development
       ENABLE_CELERY: 1
-      PIPENV_PIPFILE: /home/app/Pipfile
     volumes:
       - ./server:/home/app/server
     depends_on:
