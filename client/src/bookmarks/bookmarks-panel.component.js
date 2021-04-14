@@ -27,7 +27,9 @@ const BookmarksPanel = () => {
   const { createScreenshot, viewState } = useMap();
   const dispatch = useDispatch();
   const layers = useSelector(activeLayersSelector);
-  const feature_collection = useSelector(drawingToolsFeatureCollectionSelector);
+  const drawn_feature_collection = useSelector(
+    drawingToolsFeatureCollectionSelector,
+  );
   const orbs = useSelector(orbsSelector);
   const user = useSelector(userSelector);
   const bookmarks = useSelector(bookmarksSelector);
@@ -49,7 +51,7 @@ const BookmarksPanel = () => {
           thumbnail,
           layers,
           orbs,
-          feature_collection,
+          drawn_feature_collection,
         }),
       );
     });

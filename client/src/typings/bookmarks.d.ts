@@ -12,5 +12,5 @@ type Bookmark = {
   layers: Source['source_id'][];
   orbs: OrbState;
   thumbnail?: string;
-  feature_collection?: FeatureCollection;
+  drawn_feature_collection?: FeatureCollection;
 };

@@ -72,8 +72,8 @@ export const addBookmark = createAsyncThunk(
     formData.set('layers', JSON.stringify(bookmark['layers']));
     formData.set('orbs', JSON.stringify(bookmark['orbs']));
     formData.set(
-      'feature_collection',
-      JSON.stringify(bookmark['feature_collection']),
+      'drawn_feature_collection',
+      JSON.stringify(bookmark['drawn_feature_collection']),
     );
 
     const headers = getFormAuthHeaders(getState());

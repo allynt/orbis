@@ -171,7 +171,7 @@ const Map = ({
         zoom,
         layers,
         orbs,
-        feature_collection,
+        drawn_feature_collection,
       } = selectedBookmark;
       setViewState({
         ...viewState,
@@ -183,7 +183,7 @@ const Map = ({
       });
       dispatch(setLayers(layers || []));
       dispatch(setLayersState(orbs?.layers));
-      dispatch(setDrawingToolsFeatures(feature_collection));
+      dispatch(setDrawingToolsFeatures(drawn_feature_collection));
       dispatch(onBookmarkLoaded());
     }
   }, [selectedBookmark, viewState, setViewState, dispatch]);
