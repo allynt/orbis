@@ -14,7 +14,7 @@ import {
 } from './drawing-tools.slice';
 import { hexToRgbArray } from 'utils/color';
 
-const KEY_CODES = { DELETE: 'Delete' };
+const KEY_CODES = { DELETE: 'Delete', BACKSPACE: 'Backspace' };
 
 const FEATURE_COLORS = [
   '#00AEE4',
@@ -85,6 +85,7 @@ export const useDrawingTools = ({
   /** @param {KeyboardEvent} event */
   const handleKeyPress = event => {
     switch (event.key) {
+      case KEY_CODES.BACKSPACE:
       case KEY_CODES.DELETE:
         handleDeleteKey();
         break;

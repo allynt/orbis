@@ -158,18 +158,21 @@ describe('useDrawingTools', () => {
   });
 
   describe('Key presses', () => {
-    it('Deletes the selected features when Delete is pressed', () => {
-      const { store } = render({
-        defaultDrawingToolsEnabled: true,
-        defaultSelectedFeatureIndexes: [0],
-      });
-      act(() => {
-        fireEvent.keyUp(document, { key: 'Delete' });
-      });
-      expect(store.getActions()).toEqual(
-        expect.arrayContaining([removeFeaturesByIndex([0])]),
-      );
-    });
+    it.each(['Delete', 'Backspace'])(
+      'Deletes the selected features when %s is pressed',
+      key => {
+        const { store } = render({
+          defaultDrawingToolsEnabled: true,
+          defaultSelectedFeatureIndexes: [0],
+        });
+        act(() => {
+          fireEvent.keyUp(document, { key });
+        });
+        expect(store.getActions()).toEqual(
+          expect.arrayContaining([removeFeaturesByIndex([0])]),
+        );
+      },
+    );
   });
 
   describe('Enabling and disabling', () => {
