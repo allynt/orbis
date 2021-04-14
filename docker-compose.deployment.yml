@@ -8,33 +8,37 @@ services:
       POSTGRES_PASS: orbis
       POSTGRES_DBNAME: orbis
       ALLOW_IP_RANGE: 0.0.0.0/0
-    ports:
-      - "5666:5432"
 
   server:
     build:
       context: .
       dockerfile: Dockerfile.server.deployment
       args:
-        TOKEN: "${GITHUB_REGISTRY_TOKEN}"
-        TYPE: server
+        COMMIT_SHA: "localdev"
     tty: true
     environment:
+      ENABLE_UWSGI: 1
+      DJANGO_SETTINGS_MODULE: core.settings
+      DJANGO_SITE_DOMAIN: "http://localhost:8000"
       DJANGO_APP: orbis
       DJANGO_ENVIRONMENT: local
       DJANGO_INSTANCE: local
-      ENABLE_UWSGI: 1
-      DJANGO_SETTINGS_MODULE: core.settings
-      PIPENV_NOSPIN: 1
-      PIPENV_DONT_LOAD_ENV: 1
-      GITHUB_REGISTRY_TOKEN: "${GITHUB_REGISTRY_TOKEN}"
+      DJANGO_SECRET_KEY: itsasecret
+      MEDIA_STORAGE_BUCKET: "<not available>"
       DJANGO_DB_USER: orbis
       DJANGO_DB_PASSWORD: orbis
       DJANGO_DB_NAME: orbis
       DJANGO_DB_HOST: db
       DJANGO_DB_PORT: 5432
-      DJANGO_CLIENT_HOST: ${CLIENT_HOST}
-
+      DJANGO_CLIENT_HOST: "http://localhost:3000"
+      DJANGO_CELERY_BROKER_HOST: "broker"
+      DJANGO_CELERY_BROKER_REDIS_PASSWORD: "itsasecret"
+      DJANGO_MAPBOX_TOKEN: |
+        pk.eyJ1IjoiYXN0cm9zYXQiLCJhIjoiY2o3YWtjNnJzMGR6ajM3b2FidmNwaDNsaSJ9.lwWi7kOiejlT0RbD7RxtmA
+      DJANGO_MAPBOX_STYLES: |
+        [{"id": "streets", "uri": "mapbox://styles/astrosat/ck8em6n9k08gk1inv9qcc7c59", "title": "Taking It To The Streets"}, {"id": "light", "uri": "mapbox://styles/mapbox/light-v10", "title": "Light My Fire"}, {"id": "dark", "uri": "mapbox://styles/mapbox/dark-v10", "title": "Dark Was The Night"}, {"id": "satellite", "uri": "mapbox://styles/astrosat/ck8em8hzn2cdv1hnvj8e179b8", "title": "Satellite Of Love"}]
+      DJANGO_DATA_TOKEN_SECRET: "itsasecret"
+      DJANGO_DATA_SOURCES_DIRECTORY_URL: "https://testing.data-sources-directory.astrosat.net/"
     ports:
       - "8000:80"
 
@@ -44,11 +48,48 @@ services:
       dockerfile: Dockerfile.client.deployment
       args:
         TOKEN: "${GITHUB_REGISTRY_TOKEN}"
-        TYPE: client
     tty: true
     environment:
       REACT_APP_DOCKER: "true"
-      REACT_APP_API_HOST: ${API_HOST}
+      REACT_APP_API_HOST: "http://localhost:8000"
       GITHUB_REGISTRY_TOKEN: "${GITHUB_REGISTRY_TOKEN}"
     ports:
       - "3000:80"
+
+  broker:
+    image: "public.ecr.aws/bitnami/redis:6.2"
+    environment:
+      REDIS_PASSWORD: "itsasecret"
+      ALLOW_EMPTY_PASSWORD: "no"
+      REDIS_EXTRA_FLAGS: "--appendonly no --save \"\""
+      REDIS_DISABLE_COMMANDS: "FLUSHALL"
+
+  celery:
+    build:
+      context: .
+      dockerfile: Dockerfile.server.deployment
+      args:
+        TOKEN: "${GITHUB_REGISTRY_TOKEN}"
+    tty: true
+    environment:
+      ENABLE_CELERY: 1
+      DJANGO_SETTINGS_MODULE: core.settings
+      DJANGO_APP: orbis
+      DJANGO_ENVIRONMENT: local
+      DJANGO_INSTANCE: local
+      DJANGO_SECRET_KEY: itsasecret
+      MEDIA_STORAGE_BUCKET: "<not available>"
+      DJANGO_DB_USER: orbis
+      DJANGO_DB_PASSWORD: orbis
+      DJANGO_DB_NAME: orbis
+      DJANGO_DB_HOST: db
+      DJANGO_DB_PORT: 5432
+      DJANGO_CLIENT_HOST: "http://localhost:3000"
+      DJANGO_CELERY_BROKER_HOST: "broker"
+      DJANGO_CELERY_BROKER_REDIS_PASSWORD: "itsasecret"
+      DJANGO_MAPBOX_TOKEN: |
+        pk.eyJ1IjoiYXN0cm9zYXQiLCJhIjoiY2o3YWtjNnJzMGR6ajM3b2FidmNwaDNsaSJ9.lwWi7kOiejlT0RbD7RxtmA
+      DJANGO_MAPBOX_STYLES: |
+        [{"id": "streets", "uri": "mapbox://styles/astrosat/ck8em6n9k08gk1inv9qcc7c59", "title": "Taking It To The Streets"}, {"id": "light", "uri": "mapbox://styles/mapbox/light-v10", "title": "Light My Fire"}, {"id": "dark", "uri": "mapbox://styles/mapbox/dark-v10", "title": "Dark Was The Night"}, {"id": "satellite", "uri": "mapbox://styles/astrosat/ck8em8hzn2cdv1hnvj8e179b8", "title": "Satellite Of Love"}]
+      DJANGO_DATA_TOKEN_SECRET: "itsasecret"
+      DJANGO_DATA_SOURCES_DIRECTORY_URL: "https://testing.data-sources-directory.astrosat.net/"
