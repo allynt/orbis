@@ -22,6 +22,11 @@ services:
       DJANGO_CLIENT_HOST: http://localhost:3000
       DJANGO_SETTINGS_MODULE: core.settings
       DOCKER_BUILDKIT: 1
+      DJANGO_CELERY_BROKER_PROTOCOL: "redis"
+      DJANGO_CELERY_BROKER_HOST: "broker"
+      DJANGO_CELERY_BROKER_PORT: "6379"
+      DJANGO_CELERY_BROKER_REDIS_PASSWORD: "itsasecret"
+      DJANGO_CELERY_BROKER_REDIS_DB: "0"
     volumes:
       - ./server:/home/app/server
     ports:
@@ -44,16 +49,23 @@ services:
       - "35729:35729"
 
   broker:
-    image: redis:6.2
-    command: ["redis-server"]
-    ports:
-      - 6379:6379
+    image: "public.ecr.aws/bitnami/redis:6.2"
+    environment:
+      REDIS_PASSWORD: "itsasecret"
+      ALLOW_EMPTY_PASSWORD: "no"
+      REDIS_EXTRA_FLAGS: "--appendonly no --save \"\""
+      REDIS_DISABLE_COMMANDS: "FLUSHALL"
 
   runner:
     build: .
     environment:
       SYS_ENV: development
       ENABLE_CELERY: 1
+      DJANGO_CELERY_BROKER_PROTOCOL: "redis"
+      DJANGO_CELERY_BROKER_HOST: "broker"
+      DJANGO_CELERY_BROKER_PORT: "6379"
+      DJANGO_CELERY_BROKER_REDIS_PASSWORD: "itsasecret"
+      DJANGO_CELERY_BROKER_REDIS_DB: "0"
     volumes:
       - ./server:/home/app/server
     depends_on:
