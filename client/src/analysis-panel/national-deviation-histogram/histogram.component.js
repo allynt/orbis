@@ -3,7 +3,6 @@ import React, { useState } from 'react';
 import { Button, ButtonGroup, makeStyles } from '@astrosat/astrosat-ui';
 
 import { ParentSize } from '@visx/responsive';
-import { Text } from '@visx/text';
 import clsx from 'clsx';
 import numeral from 'numeral';
 import {
@@ -16,17 +15,12 @@ import {
   VictoryScatter,
 } from 'victory';
 
+import { WrappingChartLabel } from 'components';
 import { useChartTheme } from 'hooks/useChartTheme';
 import { ColorScale } from 'utils/ColorScale';
 import { isRealValue } from 'utils/isRealValue';
 
 const LOG_SCALE_MIN_DOMAIN = 0.3;
-
-const WrappingLabel = props => (
-  <Text width={props.width} fontSize={14} {...props}>
-    {props.text}
-  </Text>
-);
 
 /**
  * @param {import('victory').PointProps} props
@@ -109,7 +103,9 @@ export const Histogram = ({
               <VictoryAxis
                 fixLabelOverlap
                 label={labelX}
-                axisLabelComponent={<WrappingLabel width={width - paddingY} />}
+                axisLabelComponent={
+                  <WrappingChartLabel width={width - paddingY} />
+                }
                 tickCount={3}
                 crossAxis={false}
                 style={{
