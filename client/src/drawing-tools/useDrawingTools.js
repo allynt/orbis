@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { darken, rgbToHex } from '@astrosat/astrosat-ui';
 
 import { EditableGeoJsonLayer } from '@nebula.gl/layers';
-import * as EditModes from '@nebula.gl/edit-modes';
+import { ViewMode, DrawPointMode, TranslateMode } from '@nebula.gl/edit-modes';
 import { filter, findIndex } from 'lodash';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -15,6 +15,12 @@ import {
 import { hexToRgbArray } from 'utils/color';
 
 const KEY_CODES = { DELETE: 'Delete', BACKSPACE: 'Backspace' };
+
+const DRAW_MODE_MAP = new Map([
+  ['ViewMode', ViewMode],
+  ['DrawPointMode', DrawPointMode],
+  ['TranslateMode', TranslateMode],
+]);
 
 const FEATURE_COLORS = [
   '#00AEE4',
@@ -55,7 +61,7 @@ const getColor = (feature, features, alpha, brightness = 1.0) => {
  */
 export const useDrawingTools = ({
   defaultSelectedFeatureIndexes = [],
-  defaultDrawMode = EditModes.ViewMode.name,
+  defaultDrawMode = 'ViewMode',
   defaultDrawingToolsEnabled = false,
 } = {}) => {
   const [drawingToolsEnabled, setDrawingToolsEnabled] = useState(
@@ -70,10 +76,10 @@ export const useDrawingTools = ({
   );
 
   useEffect(() => {
-    if (drawingToolsEnabled) setDrawMode(EditModes.TranslateMode.name);
+    if (drawingToolsEnabled) setDrawMode('TranslateMode');
     else {
       setSelectedFeatureIndexes([]);
-      setDrawMode(EditModes.ViewMode.name);
+      setDrawMode('ViewMode');
     }
   }, [drawingToolsEnabled]);
 
@@ -135,7 +141,7 @@ export const useDrawingTools = ({
   const editableLayer = new EditableGeoJsonLayer({
     id: 'drawing-tools-editable-layer',
     data: featureCollection,
-    mode: EditModes[drawMode],
+    mode: DRAW_MODE_MAP.get(drawMode),
     selectedFeatureIndexes,
     pointRadiusMinPixels: 5,
     getFillColor,

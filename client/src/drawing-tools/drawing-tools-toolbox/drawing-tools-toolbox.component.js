@@ -2,13 +2,10 @@ import React from 'react';
 
 import {
   AnnotationsIcon,
-  EyeIcon,
   makeStyles,
   MapPinIcon,
   Tooltip,
 } from '@astrosat/astrosat-ui';
-
-import * as EditModes from '@nebula.gl/edit-modes';
 
 import { ImageList, ImageListItem, MapControlButton } from 'components';
 
@@ -45,8 +42,7 @@ export const DrawingToolsToolbox = ({
   /** @param {import('drawing-tools/types').EditMode} tool */
   const handleToolChange = tool => {
     if (onToolSelect == null) return;
-    if (tool === selectedTool)
-      return onToolSelect(EditModes.TranslateMode.name);
+    if (tool === selectedTool) return onToolSelect('TranslateMode');
     onToolSelect(tool);
   };
 
@@ -66,7 +62,7 @@ export const DrawingToolsToolbox = ({
           <ImageListItem
             text="Point"
             icon={<MapPinIcon color="primary" />}
-            value={EditModes.DrawPointMode.name}
+            value={'DrawPointMode'}
           />
         </ImageList>
       }
