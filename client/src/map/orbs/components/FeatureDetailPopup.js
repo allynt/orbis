@@ -30,6 +30,14 @@ const FeatureDetailPopup = ({ source }) => {
     hoveredFeaturesSelector(source?.source_id)(state?.orbs),
   );
 
+  const onNoteSave = () => {
+    console.log('NOTE SAVE');
+  };
+
+  const onNoteEdit = () => {
+    console.log('NOTE EDIT');
+  };
+
   const getDetailContent = () => {
     if (clickedFeatures?.length) {
       return {
@@ -54,6 +62,11 @@ const FeatureDetailPopup = ({ source }) => {
     }
   };
 
+  const notes = [
+    { id: 1, body: 'this is a test note' },
+    { id: 2, body: 'this is a second test note' },
+  ];
+
   if (!clickedFeatures?.length && !hoveredFeatures?.length) return null;
 
   const { features, action } = getDetailContent();
@@ -68,7 +81,12 @@ const FeatureDetailPopup = ({ source }) => {
       offsetTop={features[0].geometry.type === 'Polygon' ? 0 : -25}
       onClose={() => dispatch(action())}
     >
-      <FeatureDetail features={features?.map(obj => obj?.properties)} />
+      <FeatureDetail
+        features={features?.map(obj => obj?.properties)}
+        notes={notes}
+        onNoteSave={onNoteSave}
+        onNoteEdit={onNoteEdit}
+      />
     </Popup>
   );
 };

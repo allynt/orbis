@@ -10,6 +10,8 @@ import {
   Typography,
 } from '@astrosat/astrosat-ui';
 
+import PopupNote from './popup-note.component';
+
 import { DEFAULT_TITLE, VALUE_TYPE } from './feature-detail.constants';
 import { isEmail } from 'utils/text';
 
@@ -184,10 +186,15 @@ const useStyles = makeStyles(theme => ({
 const FeatureDetail = ({
   children,
   features,
+  notes,
+  onNoteSave,
+  onNoteEdit,
   title = DEFAULT_TITLE,
   footer,
 }) => {
   const styles = useStyles();
+
+  console.log('Notes: ', notes);
 
   return (
     <>
@@ -199,6 +206,15 @@ const FeatureDetail = ({
           features?.map(feature => (
             <List key={feature?.id} className={styles.list}>
               {mapObject(feature)}
+              {notes &&
+                notes.map(note => (
+                  <PopupNote
+                    key={note.id}
+                    note={note}
+                    onNoteSave={onNoteSave}
+                    onNoteEdit={onNoteEdit}
+                  />
+                ))}
               {footer && <Item jsonKey={footer.label} value={footer.content} />}
             </List>
           ))}
