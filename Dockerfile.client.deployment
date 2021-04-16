@@ -8,9 +8,7 @@ USER app
 # `environment variable`. When using `docker-compose`, the argument is
 # read in from your local environment and passed to this Dockerfile when
 # building the container.
-ARG TOKEN
-
-ENV GITHUB_REGISTRY_TOKEN=$TOKEN
+ARG GITHUB_REGISTRY_TOKEN
 
 WORKDIR $APP_HOME
 
