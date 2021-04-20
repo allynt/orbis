@@ -85,6 +85,11 @@ export const topMapLayerGroupsSelector = createSelector(
   map => map?.topMapLayerGroups || [],
 );
 
+export const selectedMapStyleIdSelector = createSelector(
+  baseSelector,
+  map => map?.selectedMapStyle,
+);
+
 export const selectedMapStyleSelector = createSelector(
   baseSelector,
   map =>
