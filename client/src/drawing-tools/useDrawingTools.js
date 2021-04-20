@@ -22,7 +22,11 @@ import {
 import { hexToRgbArray } from 'utils/color';
 import { selectedMapStyleIdSelector } from 'map/map.slice';
 
-const KEY_CODES = { DELETE: 'Delete', BACKSPACE: 'Backspace' };
+const KEY_CODES = {
+  DELETE: 'Delete',
+  BACKSPACE: 'Backspace',
+  ESCAPE: 'Escape',
+};
 
 /** @type {Map<import('./types').EditMode, any>} */
 const DRAW_MODE_MAP = new Map([
@@ -107,12 +111,20 @@ export const useDrawingTools = ({
     setSelectedFeatureIndexes([]);
   };
 
+  const handleEscapeKey = () => {
+    setSelectedFeatureIndexes([]);
+    setDrawMode('ViewMode');
+  };
+
   /** @param {KeyboardEvent} event */
   const handleKeyPress = event => {
     switch (event.key) {
       case KEY_CODES.BACKSPACE:
       case KEY_CODES.DELETE:
         handleDeleteKey();
+        break;
+      case KEY_CODES.ESCAPE:
+        handleEscapeKey();
         break;
       default:
         break;
