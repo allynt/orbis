@@ -11,6 +11,30 @@ import {
 
 import { ImageList, ImageListItem, MapControlButton } from 'components';
 
+/**
+ * @type {{
+ *  text: string,
+ *  Icon(props: import('@material-ui/core').SvgIconProps): JSX.Element,
+ *  value: import('drawing-tools/types').EditMode}[]}
+ */
+const TOOLS = [
+  {
+    text: 'Point',
+    Icon: MapPinIcon,
+    value: 'DrawPointMode',
+  },
+  {
+    text: 'Polygon',
+    Icon: DrawPolygonIcon,
+    value: 'DrawPolygonMode',
+  },
+  {
+    text: 'Measure Distance',
+    Icon: RulerIcon,
+    value: 'MeasureDistanceMode',
+  },
+];
+
 const useStyles = makeStyles(theme => ({
   tooltip: {
     padding: 0,
@@ -61,21 +85,14 @@ export const DrawingToolsToolbox = ({
           onChange={handleToolChange}
           value={selectedTool}
         >
-          <ImageListItem
-            text="Point"
-            icon={<MapPinIcon color="primary" />}
-            value="DrawPointMode"
-          />
-          <ImageListItem
-            text="Polygon"
-            icon={<DrawPolygonIcon color="primary" />}
-            value="DrawPolygonMode"
-          />
-          <ImageListItem
-            text="Measure Distance"
-            icon={<RulerIcon color="primary" />}
-            value="MeasureDistanceMode"
-          />
+          {TOOLS.map(({ text, Icon, value }) => (
+            <ImageListItem
+              key={value}
+              text={text}
+              icon={<Icon color="primary" />}
+              value={value}
+            />
+          ))}
         </ImageList>
       }
     >
