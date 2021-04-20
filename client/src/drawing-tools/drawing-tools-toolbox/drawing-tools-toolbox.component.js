@@ -1,51 +1,9 @@
 import React from 'react';
 
-import {
-  AnnotationsIcon,
-  DrawPolygonIcon,
-  makeStyles,
-  MapPinIcon,
-  RulerIcon,
-  Tooltip,
-} from '@astrosat/astrosat-ui';
-
-import { Edit, Transform } from '@material-ui/icons';
+import { AnnotationsIcon, makeStyles, Tooltip } from '@astrosat/astrosat-ui';
 
 import { ImageList, ImageListItem, MapControlButton } from 'components';
-
-/**
- * @type {{
- *  text: string,
- *  Icon(props: import('@material-ui/core').SvgIconProps): JSX.Element,
- *  value: import('drawing-tools/types').EditMode}[]}
- */
-const TOOLS = [
-  {
-    text: 'Point',
-    Icon: MapPinIcon,
-    value: 'DrawPointMode',
-  },
-  {
-    text: 'Polygon',
-    Icon: DrawPolygonIcon,
-    value: 'DrawPolygonMode',
-  },
-  {
-    text: 'Measure Distance',
-    Icon: RulerIcon,
-    value: 'MeasureDistanceMode',
-  },
-  {
-    text: 'Transform',
-    Icon: Transform,
-    value: 'TransformMode',
-  },
-  {
-    text: 'Edit',
-    Icon: Edit,
-    value: 'ModifyMode',
-  },
-];
+import { TOOLS } from 'drawing-tools/drawing-tools.config';
 
 const useStyles = makeStyles(theme => ({
   tooltip: {

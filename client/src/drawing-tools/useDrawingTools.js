@@ -3,58 +3,27 @@ import { useEffect, useState } from 'react';
 import { darken, rgbToHex } from '@astrosat/astrosat-ui';
 
 import { EditableGeoJsonLayer } from '@nebula.gl/layers';
-import {
-  ViewMode,
-  DrawPointMode,
-  DrawPolygonMode,
-  MeasureDistanceMode,
-  TransformMode,
-  ModifyMode,
-} from '@nebula.gl/edit-modes';
 import { findIndex } from 'lodash';
 import { useDispatch, useSelector } from 'react-redux';
 
+import { selectedMapStyleIdSelector } from 'map/map.slice';
+import { hexToRgbArray } from 'utils/color';
+import {
+  DRAW_MODE_MAP,
+  FEATURE_COLORS,
+  SELECTABLE_MODES,
+} from './drawing-tools.config';
 import {
   drawingToolsFeatureCollectionSelector,
   removeFeaturesByIndex,
   setFeatures,
 } from './drawing-tools.slice';
-import { hexToRgbArray } from 'utils/color';
-import { selectedMapStyleIdSelector } from 'map/map.slice';
 
 const KEY_CODES = {
   DELETE: 'Delete',
   BACKSPACE: 'Backspace',
   ESCAPE: 'Escape',
 };
-
-/** @type {Map<import('./types').EditMode, any>} */
-const DRAW_MODE_MAP = new Map([
-  ['ViewMode', ViewMode],
-  ['DrawPointMode', DrawPointMode],
-  ['DrawPolygonMode', DrawPolygonMode],
-  ['MeasureDistanceMode', MeasureDistanceMode],
-  ['TransformMode', TransformMode],
-  ['ModifyMode', ModifyMode],
-]);
-
-/** @type {import('./types').EditMode[]} */
-const SELECTABLE_MODES = ['TransformMode', 'ModifyMode'];
-
-const FEATURE_COLORS = [
-  '#00AEE4',
-  '#DAF0E3',
-  '#9BCC32',
-  '#07A35A',
-  '#F7DF90',
-  '#EA376C',
-  '#6A126A',
-  '#FCB09B',
-  '#B0592D',
-  '#C1B5E3',
-  '#9C805B',
-  '#CCDFE5',
-];
 
 /**
  * @param {import('@turf/helpers').Feature} feature
