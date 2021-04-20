@@ -9,24 +9,28 @@ import {
   ViewMode,
 } from '@nebula.gl/edit-modes';
 
-/** @type {Map<import('./types').EditMode, any>} */
-export const DRAW_MODE_MAP = new Map([
-  ['ViewMode', ViewMode],
-  ['DrawPointMode', DrawPointMode],
-  ['DrawPolygonMode', DrawPolygonMode],
-  ['MeasureDistanceMode', MeasureDistanceMode],
-  ['TransformMode', TransformMode],
-  ['ModifyMode', ModifyMode],
-]);
+export const DRAW_MODE_MAP = {
+  DrawPointMode,
+  DrawPolygonMode,
+  MeasureDistanceMode,
+  ModifyMode,
+  TransformMode,
+  ViewMode,
+};
 
-/** @type {import('./types').EditMode[]} */
+/**
+ * @typedef {keyof DRAW_MODE_MAP} EditMode
+ */
+
+/** @type {EditMode[]} */
 export const SELECTABLE_MODES = ['TransformMode', 'ModifyMode'];
 
 /**
  * @type {{
  *  text: string,
  *  Icon(props: import('@material-ui/core').SvgIconProps): JSX.Element,
- *  value: import('drawing-tools/types').EditMode}[]}
+ *  value: EditMode
+ * }[]}
  */
 export const TOOLS = [
   {

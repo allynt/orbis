@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { darken, rgbToHex } from '@astrosat/astrosat-ui';
 
 import { EditableGeoJsonLayer } from '@nebula.gl/layers';
-import { findIndex } from 'lodash';
+import { findIndex, get } from 'lodash';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { selectedMapStyleIdSelector } from 'map/map.slice';
@@ -138,7 +138,7 @@ export const useDrawingTools = ({
   const editableLayer = new EditableGeoJsonLayer({
     id: 'drawing-tools-editable-layer',
     data: featureCollection,
-    mode: DRAW_MODE_MAP.get(drawMode),
+    mode: get(DRAW_MODE_MAP, drawMode),
     selectedFeatureIndexes,
     pointRadiusMinPixels: 5,
     getFillColor,
