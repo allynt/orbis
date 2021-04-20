@@ -29,6 +29,9 @@ const DRAW_MODE_MAP = new Map([
   ['MeasureDistanceMode', MeasureDistanceMode],
 ]);
 
+/** @type {import('./types').EditMode[]} */
+const SELECTABLE_MODES = [];
+
 const FEATURE_COLORS = [
   '#00AEE4',
   '#DAF0E3',
@@ -139,7 +142,7 @@ export const useDrawingTools = ({
 
   /** @param {{index: number}} params */
   const onClick = ({ index }) => {
-    if (!drawingToolsEnabled) return;
+    if (!drawingToolsEnabled || !SELECTABLE_MODES.includes(drawMode)) return;
     if (selectedFeatureIndexes.includes(index))
       return setSelectedFeatureIndexes(filter(selectedFeatureIndexes, index));
     setSelectedFeatureIndexes([index]);

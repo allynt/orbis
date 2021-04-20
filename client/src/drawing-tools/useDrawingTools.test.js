@@ -136,7 +136,7 @@ describe('useDrawingTools', () => {
         ).toEqual([]);
       });
 
-      it('Sets the clicked feature as selected', () => {
+      it.skip('Sets the clicked feature as selected', () => {
         const { result } = render({ defaultDrawingToolsEnabled: true });
         act(() => {
           result.current.editableLayer.props.onClick({ index: 0 });
@@ -146,7 +146,7 @@ describe('useDrawingTools', () => {
         ).toEqual([0]);
       });
 
-      it('Removes the clicked feature from selected if already selected', () => {
+      it.skip('Removes the clicked feature from selected if already selected', () => {
         const { result } = render({
           defaultDrawingToolsEnabled: true,
           defaultSelectedFeatureIndexes: [0],
