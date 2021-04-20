@@ -46,7 +46,7 @@ jobs:
     name: Server-side Tests
     runs-on: ubuntu-latest
     container:
-      image: python:3.6.8
+      image: python:3.8.6
       ports:
         - "8000:8000"
       env:

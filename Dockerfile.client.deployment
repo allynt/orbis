@@ -1,4 +1,4 @@
-FROM 339570402237.dkr.ecr.eu-west-1.amazonaws.com/company/astrosat/base:python36-node12
+FROM 339570402237.dkr.ecr.eu-west-1.amazonaws.com/company/astrosat/base:focal-python38-node12
 
 USER app
 
@@ -26,3 +26,4 @@ EXPOSE 80
 
 # The baseimage requires ultimately running as root
 USER root
+RUN rm /etc/service/nginx/down
