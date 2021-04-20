@@ -19,7 +19,7 @@ const application = {
   },
 };
 
-const ORBS = [
+const SOURCES = [
   {
     source_id: 'orb/1/source/1',
     metadata: {
@@ -81,7 +81,7 @@ const renderComponent = ({ selectedSources = [] } = {}) => {
   const close = jest.fn();
   const utils = render(
     <DataLayersDialog
-      orbs={ORBS}
+      sources={SOURCES}
       onSubmit={onSubmit}
       close={close}
       open

@@ -25,7 +25,7 @@ import LayerSearch from './layer-search/layer-search.comopnent';
 import { Header } from '../components/header.component';
 import { List } from '../components/list.component';
 import { Section } from '../components/section.component';
-import { layerSearchFilter } from './layer-search-filter';
+import { layerSearchFilter } from './layer-search/layer-search-filter';
 
 /**
  * @param {{

@@ -12,7 +12,7 @@ const UNSELECT_ALL = /unselect\sall/i;
 const OIL_PARENT = 'Oil Parent 1';
 const OIL_CHILD = 'Oil Child 1';
 
-const ORBS = [
+const SOURCES = [
   {
     source_id: 'oil/source/1',
     name: 'Oil',
@@ -84,7 +84,7 @@ const ORBS = [
 ];
 
 const renderComponent = ({
-  orbs = ORBS,
+  sources = SOURCES,
   hasMadeChanges = false,
   selectedSources = [],
   selectedOrbName = 'Oil and Gas',
@@ -94,7 +94,7 @@ const renderComponent = ({
   const onSubmit = jest.fn();
   const utils = render(
     <LayerSelect
-      orbs={orbs}
+      sources={sources}
       selectedSources={selectedSources}
       onSourceChange={onSourceChange}
       onSourcesChange={onSourcesChange}
