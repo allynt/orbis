@@ -4,6 +4,7 @@ import reducer, {
   saveMap,
   isCompareModeSelector,
   selectedMapStyleSelector,
+  selectedMapStyleIdSelector,
   initialState,
   topMapLayerGroupsSelector,
   setIsLoading,
@@ -88,6 +89,16 @@ describe('Map Slice', () => {
         const state = { map: { isCompareMode: true } };
         const result = isCompareModeSelector(state);
         expect(result).toEqual(state.map.isCompareMode);
+      });
+    });
+
+    describe('selectedMapStyleIdSelector', () => {
+      it('returns the id from state', () => {
+        expect(
+          selectedMapStyleIdSelector({
+            map: { selectedMapStyle: 'something' },
+          }),
+        ).toBe('something');
       });
     });
 
