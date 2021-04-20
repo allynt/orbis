@@ -7,7 +7,6 @@ import {
   ViewMode,
   DrawPointMode,
   DrawPolygonMode,
-  TranslateMode,
   MeasureDistanceMode,
 } from '@nebula.gl/edit-modes';
 import { filter, findIndex } from 'lodash';
@@ -27,7 +26,6 @@ const DRAW_MODE_MAP = new Map([
   ['ViewMode', ViewMode],
   ['DrawPointMode', DrawPointMode],
   ['DrawPolygonMode', DrawPolygonMode],
-  ['TranslateMode', TranslateMode],
   ['MeasureDistanceMode', MeasureDistanceMode],
 ]);
 
@@ -86,8 +84,7 @@ export const useDrawingTools = ({
   );
 
   useEffect(() => {
-    if (drawingToolsEnabled) setDrawMode('TranslateMode');
-    else {
+    if (!drawingToolsEnabled) {
       setSelectedFeatureIndexes([]);
       setDrawMode('ViewMode');
     }

@@ -203,12 +203,6 @@ describe('useDrawingTools', () => {
       expect(result.current.drawMode).toBe('ViewMode');
     });
 
-    it('Changes mode to TranslateMode when enabled', () => {
-      const { result } = render();
-      act(() => result.current.setDrawingToolsEnabled(true));
-      expect(result.current.drawMode).toBe('TranslateMode');
-    });
-
     it('Changes mode to ViewMode when disabled', () => {
       const { result } = render({
         defaultDrawingToolsEnabled: true,
