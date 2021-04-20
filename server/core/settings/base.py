@@ -34,6 +34,8 @@ WSGI_APPLICATION = "wsgi.application"
 
 SITE_ID = 1
 
+DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
 ROOT_URLCONF = "core.urls"
 
 APPEND_SLASH = True
