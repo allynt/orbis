@@ -7,7 +7,8 @@ export type EditMode =
   | 'DrawPointMode'
   | 'DrawPolygonMode'
   | 'MeasureDistanceMode'
-  | 'TransformMode';
+  | 'TransformMode'
+  | 'ModifyMode';
 
 export type DrawingToolsProps = {
   editableLayer: EditableGeoJsonLayer;

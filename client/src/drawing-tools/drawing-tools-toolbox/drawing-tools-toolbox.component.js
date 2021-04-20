@@ -9,7 +9,7 @@ import {
   Tooltip,
 } from '@astrosat/astrosat-ui';
 
-import { Transform } from '@material-ui/icons';
+import { Edit, Transform } from '@material-ui/icons';
 
 import { ImageList, ImageListItem, MapControlButton } from 'components';
 
@@ -40,12 +40,17 @@ const TOOLS = [
     Icon: Transform,
     value: 'TransformMode',
   },
+  {
+    text: 'Edit',
+    Icon: Edit,
+    value: 'ModifyMode',
+  },
 ];
 
 const useStyles = makeStyles(theme => ({
   tooltip: {
     padding: 0,
-    maxWidth: '100%',
+    maxWidth: theme.typography.pxToRem(128 * 3),
     backgroundColor: theme.palette.background.default,
     color: theme.palette.text.primary,
   },

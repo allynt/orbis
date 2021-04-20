@@ -9,8 +9,9 @@ import {
   DrawPolygonMode,
   MeasureDistanceMode,
   TransformMode,
+  ModifyMode,
 } from '@nebula.gl/edit-modes';
-import { filter, findIndex } from 'lodash';
+import { findIndex } from 'lodash';
 import { useDispatch, useSelector } from 'react-redux';
 
 import {
@@ -30,10 +31,11 @@ const DRAW_MODE_MAP = new Map([
   ['DrawPolygonMode', DrawPolygonMode],
   ['MeasureDistanceMode', MeasureDistanceMode],
   ['TransformMode', TransformMode],
+  ['ModifyMode', ModifyMode],
 ]);
 
 /** @type {import('./types').EditMode[]} */
-const SELECTABLE_MODES = ['TransformMode'];
+const SELECTABLE_MODES = ['TransformMode', 'ModifyMode'];
 
 const FEATURE_COLORS = [
   '#00AEE4',
@@ -145,9 +147,10 @@ export const useDrawingTools = ({
     dispatch(setFeatures(updatedData));
   };
 
-  /** @param {{index: number}} params */
-  const onClick = ({ index }) => {
-    if (!drawingToolsEnabled || !SELECTABLE_MODES.includes(drawMode)) return;
+  /** @param {{index: number, isGuide: boolean}} params */
+  const onClick = ({ index, isGuide }) => {
+    if (!drawingToolsEnabled || !SELECTABLE_MODES.includes(drawMode) || isGuide)
+      return;
     setSelectedFeatureIndexes([index]);
   };
 
