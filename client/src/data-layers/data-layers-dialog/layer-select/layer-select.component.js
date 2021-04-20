@@ -4,8 +4,6 @@ import {
   Box,
   Button,
   ButtonBase,
-  Input,
-  SearchIcon,
   Collapse,
   Link,
   makeStyles,
@@ -20,24 +18,14 @@ import {
   collectSourceIds,
   createOrbsWithCategorisedSources,
 } from 'data-layers/categorisation.utils';
+
 import LayerSelectItem from './layer-select-item/layer-select-item.component';
+import LayerSearch from './layer-search/layer-search.comopnent';
+
 import { Header } from '../components/header.component';
 import { List } from '../components/list.component';
 import { Section } from '../components/section.component';
 import { layerSearchFilter } from './layer-search-filter';
-
-const LayerSearch = ({ className, searchTerm = '', onChange, noResults }) => (
-  <div className={className}>
-    <Input
-      startAdornment={<SearchIcon />}
-      onChange={onChange}
-      value={searchTerm}
-      placeholder="Search for data layers"
-      autoFocus
-    />
-    {noResults && <span>No results found for this keyword</span>}
-  </div>
-);
 
 /**
  * @param {{
@@ -190,15 +178,11 @@ const useStyles = makeStyles(theme => ({
     alignItems: 'flex-end',
     padding: theme.spacing(2, 4),
   },
-  layerSearch: {
-    height: 'fit-content',
-    padding: theme.spacing(2, 4),
-  },
 }));
 
 /**
  * @param {{
- *   orbs: import('typings/orbis').Source[]
+ *   sources: import('typings/orbis').Source[]
  *   selectedSources?: import('typings/orbis').Source['source_id'][]
  *   selectedOrbName?: string
  *   hasMadeChanges?: boolean
@@ -209,7 +193,7 @@ const useStyles = makeStyles(theme => ({
  * }} props
  */
 export const LayerSelect = ({
-  orbs,
+  sources,
   selectedSources,
   selectedOrbName,
   hasMadeChanges = false,
@@ -219,9 +203,9 @@ export const LayerSelect = ({
   const styles = useStyles();
   const [searchTerm, setSearchTerm] = useState(undefined);
 
-  const processedOrbs =
+  const categorisedSources =
     createOrbsWithCategorisedSources(
-      searchTerm ? layerSearchFilter(orbs, searchTerm) : orbs,
+      searchTerm ? layerSearchFilter(sources, searchTerm) : sources,
     )?.find(orb => orb.name === selectedOrbName)?.sources || [];
 
   return (
@@ -230,14 +214,13 @@ export const LayerSelect = ({
       {selectedOrbName ? (
         <div>
           <LayerSearch
-            className={styles.layerSearch}
             searchTerm={searchTerm}
             onChange={e => setSearchTerm(e.target.value)}
-            noResults={!processedOrbs?.length}
+            noResults={!categorisedSources?.length}
           />
           <List dense>
             {renderCategories({
-              sources: processedOrbs,
+              sources: categorisedSources,
               level: 0,
               onSourcesChange,
               selectedSources,

@@ -29,7 +29,7 @@ const useStyles = makeStyles(theme => ({
 
 /**
  * @param {{
- *   orbs: import('typings/orbis').Source[]
+ *   sources: import('typings/orbis').Source[]
  *   initialSelectedSources?: import('typings/orbis').Source['source_id'][]
  *   open?: boolean
  *   close: () => void
@@ -37,7 +37,7 @@ const useStyles = makeStyles(theme => ({
  * }} props
  */
 const DataLayersDialog = ({
-  orbs,
+  sources,
   initialSelectedSources = [],
   open = false,
   close,
@@ -89,12 +89,12 @@ const DataLayersDialog = ({
       </IconButton>
       <div className={styles.content}>
         <OrbSelect
-          orbs={createOrbsWithCategorisedSources(orbs)}
+          orbs={createOrbsWithCategorisedSources(sources)}
           onOrbClick={orbName => setSelectedOrbName(orbName)}
           selectedOrbName={selectedOrbName}
         />
         <LayerSelect
-          orbs={orbs}
+          sources={sources}
           selectedSources={selectedSources}
           selectedOrbName={selectedOrbName}
           onSourcesChange={handleSourcesChange}

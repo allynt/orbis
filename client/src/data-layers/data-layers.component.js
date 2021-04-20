@@ -96,7 +96,7 @@ const DataLayers = ({ sidebarComponents, drawingToolsEnabled }) => {
         </Button>
         <ThemeProvider theme="light">
           <DataLayersDialog
-            orbs={dataSources}
+            sources={dataSources}
             initialSelectedSources={selectedLayers}
             onSubmit={handleDialogSubmit}
             close={() => toggle(false)}

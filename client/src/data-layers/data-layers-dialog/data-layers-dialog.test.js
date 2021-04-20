@@ -189,7 +189,7 @@ describe('<DataLayersDialog />', () => {
     );
   });
 
-  it('filters by search term', () => {
+  it('filters sources if names/descriptions are included in search term', () => {
     const { getByPlaceholderText, getByRole, queryByText } = renderComponent();
     userEvent.click(getByRole('button', { name: 'Test Orb Name' }));
 

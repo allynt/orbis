@@ -45,6 +45,7 @@ const useStyles = makeStyles(theme => ({
  */
 const LayerSelectItem = ({ selected, source, onChange }) => {
   const styles = useStyles();
+
   return (
     <ListItem
       className={styles.listItem}
