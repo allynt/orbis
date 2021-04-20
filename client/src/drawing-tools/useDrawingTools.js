@@ -3,7 +3,12 @@ import { useEffect, useState } from 'react';
 import { darken, rgbToHex } from '@astrosat/astrosat-ui';
 
 import { EditableGeoJsonLayer } from '@nebula.gl/layers';
-import { ViewMode, DrawPointMode, TranslateMode } from '@nebula.gl/edit-modes';
+import {
+  ViewMode,
+  DrawPointMode,
+  DrawPolygonMode,
+  TranslateMode,
+} from '@nebula.gl/edit-modes';
 import { filter, findIndex } from 'lodash';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -19,6 +24,7 @@ const KEY_CODES = { DELETE: 'Delete', BACKSPACE: 'Backspace' };
 const DRAW_MODE_MAP = new Map([
   ['ViewMode', ViewMode],
   ['DrawPointMode', DrawPointMode],
+  ['DrawPolygonMode', DrawPolygonMode],
   ['TranslateMode', TranslateMode],
 ]);
 

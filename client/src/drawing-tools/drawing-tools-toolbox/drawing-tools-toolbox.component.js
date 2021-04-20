@@ -2,6 +2,7 @@ import React from 'react';
 
 import {
   AnnotationsIcon,
+  DrawPolygonIcon,
   makeStyles,
   MapPinIcon,
   Tooltip,
@@ -63,6 +64,11 @@ export const DrawingToolsToolbox = ({
             text="Point"
             icon={<MapPinIcon color="primary" />}
             value="DrawPointMode"
+          />
+          <ImageListItem
+            text="Polygon"
+            icon={<DrawPolygonIcon color="primary" />}
+            value="DrawPolygonMode"
           />
         </ImageList>
       }

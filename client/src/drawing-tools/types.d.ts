@@ -2,7 +2,11 @@ import { EditableGeoJsonLayer } from '@nebula.gl/layers';
 import { CaseReducer, PayloadAction } from '@reduxjs/toolkit';
 import { Feature, FeatureCollection } from '@turf/helpers';
 
-export type EditMode = 'ViewMode' | 'DrawPointMode' | 'TranslateMode';
+export type EditMode =
+  | 'ViewMode'
+  | 'DrawPointMode'
+  | 'DrawPolygonMode'
+  | 'TranslateMode';
 
 export type DrawingToolsProps = {
   editableLayer: EditableGeoJsonLayer;
