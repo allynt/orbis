@@ -194,8 +194,6 @@ const FeatureDetail = ({
 }) => {
   const styles = useStyles();
 
-  console.log('Notes: ', notes);
-
   return (
     <>
       <Typography className={styles.header} component="h1">

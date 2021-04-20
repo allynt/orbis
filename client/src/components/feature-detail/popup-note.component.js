@@ -8,38 +8,55 @@ const useStyles = makeStyles(theme => ({
     justifyContent: 'space-between',
     alignItems: 'center',
   },
-  key: {},
+  key: {
+    alignSelf: 'flex-start',
+    margin: '0 1rem 0 0',
+  },
   note: {
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'space-between',
-    alignItems: 'center',
+    alignItems: 'flex-start',
   },
   charLimitMessage: {
     color: 'red',
   },
   charCount: {
-    color: ({ charLimitExceeded }) => (charLimitExceeded ? 'yellow' : 'red'),
+    color: props => (props.charLimitExceeded ? 'red' : 'yellow'),
   },
   buttons: {
     display: 'flex',
-    justifyContent: 'space-evenly',
+    justifyContent: 'space-between',
     alignItems: 'center',
+    width: '100%',
+    gap: '1rem',
+    '& > *': {
+      padding: '0.5rem 3rem',
+    },
   },
 }));
 
 const PopupNote = ({ note, onNoteSave, onNoteEdit }) => {
   const [charCount, setCharCount] = useState(0);
-  const CHAR_LIMIT = 3000;
-  const charLimitExceeded = charCount >= CHAR_LIMIT;
+  const [text, setText] = useState(note?.body);
+
+  const CHAR_LIMIT = 300,
+    charLimitExceeded = charCount >= CHAR_LIMIT,
+    hasMadeChanges = text !== note?.body,
+    disabled = charLimitExceeded || !hasMadeChanges;
+
   const styles = useStyles({ charLimitExceeded });
+
+  const handleChange = e => {
+    setCharCount(e.target.value.length);
+    setText(e.target.value);
+  };
+
   return (
     <ListItem className={styles.container}>
-      <h1 className={styles.key}>Note: </h1>
+      <h4 className={styles.key}>Note:</h4>
       <div className={styles.note}>
-        <Input multiline onChange={e => setCharCount(e.target.value.length)}>
-          {note.body}
-        </Input>
+        <Input multiline onChange={handleChange} value={text} />
         <span className={styles.charCount}>
           {charCount}/{CHAR_LIMIT}
         </span>
@@ -47,10 +64,10 @@ const PopupNote = ({ note, onNoteSave, onNoteEdit }) => {
           <p className={styles.charLimitMessage}>Character limit exceeded</p>
         )}
         <div className={styles.buttons}>
-          <Button onClick={onNoteSave} disabled={charLimitExceeded}>
+          <Button onClick={() => onNoteSave(text)} disabled={disabled}>
             Save
           </Button>
-          <Button onClick={onNoteEdit} disabled={charLimitExceeded}>
+          <Button onClick={() => onNoteEdit(text)} disabled={disabled}>
             Edit
           </Button>
         </div>

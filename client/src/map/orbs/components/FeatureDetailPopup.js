@@ -30,12 +30,12 @@ const FeatureDetailPopup = ({ source }) => {
     hoveredFeaturesSelector(source?.source_id)(state?.orbs),
   );
 
-  const onNoteSave = () => {
-    console.log('NOTE SAVE');
+  const onNoteSave = text => {
+    console.log('NOTE SAVE: ', text);
   };
 
-  const onNoteEdit = () => {
-    console.log('NOTE EDIT');
+  const onNoteEdit = text => {
+    console.log('NOTE EDIT: ', text);
   };
 
   const getDetailContent = () => {
