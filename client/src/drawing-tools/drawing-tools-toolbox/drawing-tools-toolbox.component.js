@@ -4,6 +4,7 @@ import {
   AnnotationsIcon,
   makeStyles,
   MapPinIcon,
+  RulerIcon,
   Tooltip,
 } from '@astrosat/astrosat-ui';
 
@@ -63,6 +64,11 @@ export const DrawingToolsToolbox = ({
             text="Point"
             icon={<MapPinIcon color="primary" />}
             value="DrawPointMode"
+          />
+          <ImageListItem
+            text="Measure Distance"
+            icon={<RulerIcon color="primary" />}
+            value="MeasureDistanceMode"
           />
         </ImageList>
       }
