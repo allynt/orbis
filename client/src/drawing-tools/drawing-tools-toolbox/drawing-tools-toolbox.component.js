@@ -5,6 +5,7 @@ import {
   DrawPolygonIcon,
   makeStyles,
   MapPinIcon,
+  RulerIcon,
   Tooltip,
 } from '@astrosat/astrosat-ui';
 
@@ -69,6 +70,11 @@ export const DrawingToolsToolbox = ({
             text="Polygon"
             icon={<DrawPolygonIcon color="primary" />}
             value="DrawPolygonMode"
+          />
+          <ImageListItem
+            text="Measure Distance"
+            icon={<RulerIcon color="primary" />}
+            value="MeasureDistanceMode"
           />
         </ImageList>
       }

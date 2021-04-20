@@ -12,6 +12,7 @@ import { v4 } from 'uuid';
 const useStyles = makeStyles(theme => ({
   container: {
     borderRadius: theme.shape.borderRadius,
+    height: '100%',
     transition: theme.transitions.create('background-color', {
       duration: theme.transitions.duration.shortest,
     }),

@@ -8,6 +8,7 @@ import {
   DrawPointMode,
   DrawPolygonMode,
   TranslateMode,
+  MeasureDistanceMode,
 } from '@nebula.gl/edit-modes';
 import { filter, findIndex } from 'lodash';
 import { useDispatch, useSelector } from 'react-redux';
@@ -18,6 +19,7 @@ import {
   setFeatures,
 } from './drawing-tools.slice';
 import { hexToRgbArray } from 'utils/color';
+import { selectedMapStyleIdSelector } from 'map/map.slice';
 
 const KEY_CODES = { DELETE: 'Delete', BACKSPACE: 'Backspace' };
 
@@ -26,6 +28,7 @@ const DRAW_MODE_MAP = new Map([
   ['DrawPointMode', DrawPointMode],
   ['DrawPolygonMode', DrawPolygonMode],
   ['TranslateMode', TranslateMode],
+  ['MeasureDistanceMode', MeasureDistanceMode],
 ]);
 
 const FEATURE_COLORS = [
@@ -70,6 +73,7 @@ export const useDrawingTools = ({
   defaultDrawMode = 'ViewMode',
   defaultDrawingToolsEnabled = false,
 } = {}) => {
+  const mapStyle = useSelector(selectedMapStyleIdSelector);
   const [drawingToolsEnabled, setDrawingToolsEnabled] = useState(
     defaultDrawingToolsEnabled,
   );
@@ -154,6 +158,19 @@ export const useDrawingTools = ({
     getLineColor,
     onEdit,
     onClick,
+    modeConfig: {
+      turfOptions: {
+        units: 'miles',
+      },
+    },
+    _subLayerProps: {
+      tooltips: {
+        getColor:
+          mapStyle === 'dark' || mapStyle === 'satellite'
+            ? [255, 255, 255, 255]
+            : [0, 0, 0, 255],
+      },
+    },
   });
 
   return {

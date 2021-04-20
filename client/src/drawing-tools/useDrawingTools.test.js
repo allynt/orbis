@@ -15,12 +15,16 @@ const INITIAL_FEATURES = {
 const mockStore = configureMockStore();
 
 const render = ({
+  mapStyle = undefined,
   features = INITIAL_FEATURES.features,
   defaultSelectedFeatureIndexes = undefined,
   defaultDrawMode = undefined,
   defaultDrawingToolsEnabled = undefined,
 } = {}) => {
   const store = mockStore({
+    map: {
+      selectedMapStyle: mapStyle,
+    },
     drawingTools: {
       features,
     },
@@ -154,6 +158,24 @@ describe('useDrawingTools', () => {
           result.current.editableLayer.props.selectedFeatureIndexes,
         ).toEqual([]);
       });
+    });
+
+    describe('subLayerProps', () => {
+      it.each`
+        color      | style          | expectedArray
+        ${'white'} | ${'dark'}      | ${[255, 255, 255, 255]}
+        ${'white'} | ${'satellite'} | ${[255, 255, 255, 255]}
+        ${'black'} | ${'light'}     | ${[0, 0, 0, 255]}
+        ${'black'} | ${'streets'}   | ${[0, 0, 0, 255]}
+      `(
+        'Renders tooltips $color when map style is $style',
+        ({ style, expectedArray }) => {
+          const { result } = render({ mapStyle: style });
+          expect(
+            result.current.editableLayer.props._subLayerProps.tooltips.getColor,
+          ).toEqual(expectedArray);
+        },
+      );
     });
   });
 
