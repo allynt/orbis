@@ -64,19 +64,6 @@ describe('useDrawingTools', () => {
           expect.arrayContaining([setFeatures(updatedData)]),
         );
       });
-
-      it('does not dispatch the setFeatures action if editType is not addFeature', () => {
-        const updatedData = [{}];
-        const { result, store } = render();
-        const { editableLayer } = result.current;
-        editableLayer.props.onEdit({
-          editType: 'somethingElse',
-          updatedData,
-        });
-        expect(store.getActions()).not.toEqual(
-          expect.arrayContaining([setFeatures(updatedData)]),
-        );
-      });
     });
 
     describe('getFillColor', () => {
@@ -136,27 +123,17 @@ describe('useDrawingTools', () => {
         ).toEqual([]);
       });
 
-      it.skip('Sets the clicked feature as selected', () => {
-        const { result } = render({ defaultDrawingToolsEnabled: true });
+      it('Sets the clicked feature as selected', () => {
+        const { result } = render({
+          defaultDrawingToolsEnabled: true,
+          defaultDrawMode: 'TransformMode',
+        });
         act(() => {
           result.current.editableLayer.props.onClick({ index: 0 });
         });
         expect(
           result.current.editableLayer.props.selectedFeatureIndexes,
         ).toEqual([0]);
-      });
-
-      it.skip('Removes the clicked feature from selected if already selected', () => {
-        const { result } = render({
-          defaultDrawingToolsEnabled: true,
-          defaultSelectedFeatureIndexes: [0],
-        });
-        act(() => {
-          result.current.editableLayer.props.onClick({ index: 0 });
-        });
-        expect(
-          result.current.editableLayer.props.selectedFeatureIndexes,
-        ).toEqual([]);
       });
     });
 
@@ -185,6 +162,7 @@ describe('useDrawingTools', () => {
       key => {
         const { store } = render({
           defaultDrawingToolsEnabled: true,
+          defaultDrawMode: 'TransformMode',
           defaultSelectedFeatureIndexes: [0],
         });
         act(() => {

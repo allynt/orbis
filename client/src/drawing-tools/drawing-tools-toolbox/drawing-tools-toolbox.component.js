@@ -9,6 +9,8 @@ import {
   Tooltip,
 } from '@astrosat/astrosat-ui';
 
+import { Transform } from '@material-ui/icons';
+
 import { ImageList, ImageListItem, MapControlButton } from 'components';
 
 /**
@@ -32,6 +34,11 @@ const TOOLS = [
     text: 'Measure Distance',
     Icon: RulerIcon,
     value: 'MeasureDistanceMode',
+  },
+  {
+    text: 'Transform',
+    Icon: Transform,
+    value: 'TransformMode',
   },
 ];
 

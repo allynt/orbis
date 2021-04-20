@@ -8,6 +8,7 @@ import {
   DrawPointMode,
   DrawPolygonMode,
   MeasureDistanceMode,
+  TransformMode,
 } from '@nebula.gl/edit-modes';
 import { filter, findIndex } from 'lodash';
 import { useDispatch, useSelector } from 'react-redux';
@@ -22,15 +23,17 @@ import { selectedMapStyleIdSelector } from 'map/map.slice';
 
 const KEY_CODES = { DELETE: 'Delete', BACKSPACE: 'Backspace' };
 
+/** @type {Map<import('./types').EditMode, any>} */
 const DRAW_MODE_MAP = new Map([
   ['ViewMode', ViewMode],
   ['DrawPointMode', DrawPointMode],
   ['DrawPolygonMode', DrawPolygonMode],
   ['MeasureDistanceMode', MeasureDistanceMode],
+  ['TransformMode', TransformMode],
 ]);
 
 /** @type {import('./types').EditMode[]} */
-const SELECTABLE_MODES = [];
+const SELECTABLE_MODES = ['TransformMode'];
 
 const FEATURE_COLORS = [
   '#00AEE4',
@@ -93,6 +96,10 @@ export const useDrawingTools = ({
     }
   }, [drawingToolsEnabled]);
 
+  useEffect(() => {
+    if (!SELECTABLE_MODES.includes(drawMode)) setSelectedFeatureIndexes([]);
+  }, [drawMode]);
+
   const handleDeleteKey = () => {
     dispatch(removeFeaturesByIndex(selectedFeatureIndexes));
     setSelectedFeatureIndexes([]);
@@ -131,20 +138,16 @@ export const useDrawingTools = ({
 
   /**
    * @param {{
-   *   editType: string
    *   updatedData: import('@turf/helpers').FeatureCollection
    * }} params
    */
-  const onEdit = ({ editType, updatedData }) => {
-    if (['addFeature', 'translating', 'translated'].includes(editType))
-      dispatch(setFeatures(updatedData));
+  const onEdit = ({ updatedData }) => {
+    dispatch(setFeatures(updatedData));
   };
 
   /** @param {{index: number}} params */
   const onClick = ({ index }) => {
     if (!drawingToolsEnabled || !SELECTABLE_MODES.includes(drawMode)) return;
-    if (selectedFeatureIndexes.includes(index))
-      return setSelectedFeatureIndexes(filter(selectedFeatureIndexes, index));
     setSelectedFeatureIndexes([index]);
   };
 
