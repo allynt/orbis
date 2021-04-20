@@ -173,6 +173,27 @@ describe('useDrawingTools', () => {
         );
       },
     );
+
+    it('Sets mode to ViewMode when escape key is pressed', () => {
+      const { result } = render({ defaultDrawMode: 'ModifyMode' });
+      act(() => {
+        fireEvent.keyUp(document, { key: 'Escape' });
+      });
+      expect(result.current.drawMode).toBe('ViewMode');
+    });
+
+    it('Clears selected features when escape key is pressed', () => {
+      const { result } = render({
+        defaultDrawMode: 'ModifyMode',
+        defaultSelectedFeatureIndexes: [0],
+      });
+      act(() => {
+        fireEvent.keyUp(document, { key: 'Escape' });
+      });
+      expect(
+        result.current.editableLayer.props.selectedFeatureIndexes,
+      ).toHaveLength(0);
+    });
   });
 
   describe('Enabling and disabling', () => {
