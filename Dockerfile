@@ -40,8 +40,5 @@ USER root
 RUN mkdir -p /etc/my_init.d
 COPY startup.sh /etc/my_init.d/startup.sh
 
-# remove nginx support
-RUN rm -rf /etc/service/nginx
-
 # The baseimage requires ultimately running as root
 USER root
