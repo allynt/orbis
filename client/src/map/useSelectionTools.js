@@ -1,9 +1,11 @@
 import { SelectionLayer } from '@nebula.gl/layers';
 import { activeLayersSelector } from 'data-layers/data-layers.slice';
 import { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { setClickedFeatures } from './orbs/layers.slice';
 
 export const useSelectionTools = ({ defaultIsTriggerKeyHeld = false } = {}) => {
+  const dispatch = useDispatch();
   const [isTriggerKeyHeld, setIsTriggerKeyHeld] = useState(
     defaultIsTriggerKeyHeld,
   );
@@ -40,7 +42,12 @@ export const useSelectionTools = ({ defaultIsTriggerKeyHeld = false } = {}) => {
     id: 'selection-layer',
     layerIds,
     onSelect: ({ pickingInfos }) => {
-      console.log(pickingInfos);
+      dispatch(
+        setClickedFeatures({
+          key: pickingInfos[0].layer.id,
+          clickedFeatures: pickingInfos,
+        }),
+      );
     },
   });
   return { selectionLayer: isTriggerKeyHeld && selectionLayer };
