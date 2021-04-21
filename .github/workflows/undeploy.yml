@@ -12,6 +12,7 @@ jobs:
   deploy-testing-pr:
     name: Undeploy Testing PR Instances
     runs-on: [self-hosted, eu-west-1-testing-deployer]
+    timeout-minutes: 40
     steps:
       - name: Checkout
         uses: actions/checkout@v2
