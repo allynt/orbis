@@ -1,4 +1,4 @@
-FROM 339570402237.dkr.ecr.eu-west-1.amazonaws.com/company/astrosat/base:python36-node12
+FROM 339570402237.dkr.ecr.eu-west-1.amazonaws.com/company/astrosat/base:focal-python38-node12
 
 USER app
 
@@ -31,9 +31,3 @@ USER root
 # run startup script as per https://github.com/phusion/baseimage-docker#running_startup_scripts
 RUN mkdir -p /etc/my_init.d
 COPY startup.sh /etc/my_init.d/startup.sh
-
-# remove nginx support
-RUN rm -rf /etc/service/nginx
-
-# The baseimage requires ultimately running as root
-USER root
