@@ -1,10 +1,13 @@
 import { SelectionLayer } from '@nebula.gl/layers';
+import { activeLayersSelector } from 'data-layers/data-layers.slice';
 import { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 
 export const useSelectionTools = ({ defaultIsTriggerKeyHeld = false } = {}) => {
   const [isTriggerKeyHeld, setIsTriggerKeyHeld] = useState(
     defaultIsTriggerKeyHeld,
   );
+  const layerIds = useSelector(activeLayersSelector);
 
   /** @param {KeyboardEvent} event */
   const handleKeyDown = event => {
@@ -33,6 +36,12 @@ export const useSelectionTools = ({ defaultIsTriggerKeyHeld = false } = {}) => {
     };
   }, []);
 
-  const selectionLayer = new SelectionLayer({});
+  const selectionLayer = new SelectionLayer({
+    id: 'selection-layer',
+    layerIds,
+    onSelect: ({ pickingInfos }) => {
+      console.log(pickingInfos);
+    },
+  });
   return { selectionLayer: isTriggerKeyHeld && selectionLayer };
 };
