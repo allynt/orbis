@@ -8,7 +8,7 @@
     "start": "FORCE_COLOR=true react-scripts start | cat",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jest-environment-jsdom-sixteen",
-    "test:ci": "react-scripts test --env=jest-environment-jsdom-sixteen --reporters=default --reporters=jest-html-reporters",
+    "test:ci": "CI=true react-scripts test --env=jest-environment-jsdom-sixteen --reporters=default --reporters=jest-html-reporters --silent",
     "eject": "react-scripts eject",
     "release": "semantic-release",
     "e2e": "NODE_PATH=src cypress open --config defaultCommandTimeout=10000",
