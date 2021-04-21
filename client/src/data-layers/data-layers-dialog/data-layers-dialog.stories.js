@@ -22,7 +22,7 @@ const generateOrbs = (n, parentId) =>
               name: `Test Child Name ${parentId || i}`,
             },
           },
-          orbs: [
+          sources: [
             {
               name: `Test Orb Name ${parentId || i}`,
             },
@@ -38,29 +38,16 @@ export const Empty = Template.bind({});
 
 export const Orbs = Template.bind({});
 Orbs.args = {
-  orbs: generateOrbs(4),
+  sources: generateOrbs(4),
 };
 
 export const LotsOfOrbs = Template.bind({});
 LotsOfOrbs.args = {
-  orbs: new Array(50).fill(undefined).map((_, i) => ({
-    source_id: `test/Source/${i}`,
+  sources: new Array(50).fill(undefined).map((_, i) => ({
     metadata: {
-      label: `test-label-${i}`,
-      description: 'Test description',
       application: {
         orbis: {
-          categories: {
-            name: 'Test Parent Name',
-            child: {
-              name: 'Test Child Name',
-            },
-          },
-          orbs: [
-            {
-              name: 'Test Orb Name',
-            },
-          ],
+          orbs: [{ name: `test-orb-${i}`, description: 'test' }],
         },
       },
     },
@@ -69,16 +56,16 @@ LotsOfOrbs.args = {
 
 export const LotsOfSources = Template.bind({});
 LotsOfSources.args = {
-  orbs: generateOrbs(50),
+  sources: generateOrbs(50),
 };
 
 export const LotsOfBoth = Template.bind({});
 LotsOfBoth.args = {
-  orbs: (() => {
+  sources: (() => {
     const sources = new Array(50).fill(undefined).map((_, i) => i);
     return sources.reduce((acc, cur) => {
-      const orbs = generateOrbs(50, cur);
-      return [...acc, ...orbs];
+      const sources = generateOrbs(50, cur);
+      return [...acc, ...sources];
     }, []);
   })(),
 };
