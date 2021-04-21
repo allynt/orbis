@@ -22,9 +22,7 @@ const useStyles = makeStyles(theme => ({
     backgroundColor: theme.palette.text.primary,
   },
   list: {
-    padding: '1.375rem',
-    overflowY: 'auto',
-    height: '100%',
+    gridRow: '2 / -1',
   },
   listItem: {
     opacity: 0.55,
@@ -54,7 +52,7 @@ export const OrbSelect = ({ orbs, selectedOrbName, onOrbClick }) => {
   return (
     <Section orientation="left" className={styles.categories}>
       <Header>Select Your Orb</Header>
-      <List>
+      <List className={styles.list}>
         {orbs?.map(orb => (
           <ListItem
             button

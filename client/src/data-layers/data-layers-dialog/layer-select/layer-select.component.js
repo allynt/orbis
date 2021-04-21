@@ -20,7 +20,7 @@ import {
 } from 'data-layers/categorisation.utils';
 
 import LayerSelectItem from './layer-select-item/layer-select-item.component';
-import LayerSearch from './layer-search/layer-search.comopnent';
+import LayerSearch from './layer-search/layer-search.component';
 
 import { Header } from '../components/header.component';
 import { List } from '../components/list.component';
@@ -212,7 +212,7 @@ export const LayerSelect = ({
     <Section orientation="right">
       <Header>Add Data Layers</Header>
       {selectedOrbName ? (
-        <div>
+        <>
           <LayerSearch
             searchTerm={searchTerm}
             onChange={e => setSearchTerm(e.target.value)}
@@ -226,7 +226,7 @@ export const LayerSelect = ({
               selectedSources,
             })}
           </List>
-        </div>
+        </>
       ) : (
         <Typography className={styles.noOrbMessage}>
           Select Your Orb in order to find layers
