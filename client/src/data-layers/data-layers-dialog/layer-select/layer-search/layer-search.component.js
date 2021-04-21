@@ -8,11 +8,8 @@ import {
 } from '@astrosat/astrosat-ui';
 
 const useStyles = makeStyles(theme => ({
-  layerSearch: {
-    padding: theme.spacing(2, 4),
-  },
-  icon: {
-    color: theme.palette.primary.light,
+  input: {
+    margin: theme.spacing(2, 4),
   },
   noResultMessage: {
     textAlign: 'center',
@@ -24,20 +21,24 @@ const useStyles = makeStyles(theme => ({
 const LayerSearch = ({ searchTerm = '', onChange, noResults }) => {
   const styles = useStyles();
   return (
-    <div className={styles.layerSearch}>
+    <>
       <Input
-        startAdornment={<MagnifierIcon className={styles.icon} />}
+        className={styles.input}
+        startAdornment={<MagnifierIcon color="primary" />}
         onChange={onChange}
         value={searchTerm}
         placeholder="Search for data layers"
-        autoFocus
+        inputProps={{
+          'aria-label': 'Search for data layers',
+        }}
+        fullWidth={false}
       />
       {noResults && (
         <Typography className={styles.noResultMessage}>
           No results found for this keyword
         </Typography>
       )}
-    </div>
+    </>
   );
 };
 
