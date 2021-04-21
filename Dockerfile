@@ -39,6 +39,3 @@ USER root
 # run startup script as per https://github.com/phusion/baseimage-docker#running_startup_scripts
 RUN mkdir -p /etc/my_init.d
 COPY startup.sh /etc/my_init.d/startup.sh
-
-# The baseimage requires ultimately running as root
-USER root
