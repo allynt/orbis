@@ -1,6 +1,12 @@
 import React, { useState } from 'react';
 
-import { Input, Button, ListItem, makeStyles } from '@astrosat/astrosat-ui';
+import {
+  Input,
+  Button,
+  Typography,
+  ListItem,
+  makeStyles,
+} from '@astrosat/astrosat-ui';
 
 const useStyles = makeStyles(theme => ({
   container: {
@@ -16,31 +22,35 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'space-between',
+    minWidth: '20rem',
     alignItems: 'flex-start',
   },
   charLimitMessage: {
     color: 'red',
+    margin: '0',
   },
   charCount: {
-    color: props => (props.charLimitExceeded ? 'red' : 'yellow'),
+    width: '100%',
+    textAlign: 'end',
+    color: ({ charLimitExceeded }) => (charLimitExceeded ? 'red' : 'yellow'),
   },
   buttons: {
     display: 'flex',
-    justifyContent: 'space-between',
+    justifyContent: 'space-evenly',
     alignItems: 'center',
     width: '100%',
     gap: '1rem',
-    '& > *': {
-      padding: '0.5rem 3rem',
-    },
+  },
+  button: {
+    padding: '0.5rem 3rem',
   },
 }));
 
 const PopupNote = ({ note, onNoteSave, onNoteEdit }) => {
-  const [charCount, setCharCount] = useState(0);
+  const [charCount, setCharCount] = useState(note?.body?.length);
   const [text, setText] = useState(note?.body);
 
-  const CHAR_LIMIT = 300,
+  const CHAR_LIMIT = 3000,
     charLimitExceeded = charCount >= CHAR_LIMIT,
     hasMadeChanges = text !== note?.body,
     disabled = charLimitExceeded || !hasMadeChanges;
@@ -56,18 +66,26 @@ const PopupNote = ({ note, onNoteSave, onNoteEdit }) => {
     <ListItem className={styles.container}>
       <h4 className={styles.key}>Note:</h4>
       <div className={styles.note}>
-        <Input multiline onChange={handleChange} value={text} />
-        <span className={styles.charCount}>
-          {charCount}/{CHAR_LIMIT}
-        </span>
+        <Input multiline onChange={handleChange} value={text || ''} />
+        <Typography className={styles.charCount}>
+          {charCount || '0'}/{CHAR_LIMIT}
+        </Typography>
         {charLimitExceeded && (
           <p className={styles.charLimitMessage}>Character limit exceeded</p>
         )}
         <div className={styles.buttons}>
-          <Button onClick={() => onNoteSave(text)} disabled={disabled}>
+          <Button
+            className={styles.button}
+            onClick={() => onNoteSave(text)}
+            disabled={disabled}
+          >
             Save
           </Button>
-          <Button onClick={() => onNoteEdit(text)} disabled={disabled}>
+          <Button
+            className={styles.button}
+            onClick={() => onNoteEdit(text)}
+            disabled={disabled}
+          >
             Edit
           </Button>
         </div>
