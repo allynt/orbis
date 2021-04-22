@@ -19,7 +19,9 @@ import {
   MeasureAreaMode,
   MeasureDistanceMode,
   ModifyMode,
-  TransformMode,
+  ScaleMode,
+  TranslateMode,
+  CompositeMode,
   ViewMode,
 } from '@nebula.gl/edit-modes';
 
@@ -33,7 +35,7 @@ export const DRAW_MODE_MAP = {
   MeasureAreaMode,
   MeasureDistanceMode,
   ModifyMode,
-  TransformMode,
+  TransformMode: new CompositeMode([new TranslateMode(), new ScaleMode()]),
   ViewMode,
 };
 
