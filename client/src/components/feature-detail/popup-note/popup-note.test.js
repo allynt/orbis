@@ -17,12 +17,9 @@ const longBodyNote = {
 
 const renderComponent = ({ note = defaultNote }) => {
   const onNoteSave = jest.fn();
-  const onNoteEdit = jest.fn();
-  const utils = render(
-    <PopupNote note={note} onNoteSave={onNoteSave} onNoteEdit={onNoteEdit} />,
-  );
+  const utils = render(<PopupNote note={note} onNoteSave={onNoteSave} />);
 
-  return { ...utils, onNoteSave, onNoteEdit };
+  return { ...utils, onNoteSave };
 };
 
 describe('Popup Note', () => {
@@ -39,13 +36,13 @@ describe('Popup Note', () => {
   });
 
   it('displays the note body if a note is present', () => {
-    const { getByText } = renderComponent();
+    const { getByText } = renderComponent({});
 
     expect(getByText(defaultNote.body)).toBeInTheDocument();
   });
 
   it('displays character count of the note if present', () => {
-    const { getByText } = renderComponent();
+    const { getByText } = renderComponent({});
 
     expect(getByText(`${defaultNote.body.length}/3000`)).toBeInTheDocument();
   });
@@ -68,7 +65,7 @@ describe('Popup Note', () => {
   });
 
   it('disables buttons if no changes have been made', () => {
-    const { getByRole } = renderComponent();
+    const { getByRole } = renderComponent({});
     expect(getByRole('button', { name: 'Save' })).toHaveAttribute('disabled');
     expect(getByRole('button', { name: 'Edit' })).toHaveAttribute('disabled');
   });

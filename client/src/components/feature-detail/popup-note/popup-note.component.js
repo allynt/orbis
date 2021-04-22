@@ -46,9 +46,10 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const PopupNote = ({ note, onNoteSave, onNoteEdit }) => {
+const PopupNote = ({ note, onNoteSave }) => {
   const [charCount, setCharCount] = useState(note?.body?.length);
   const [text, setText] = useState(note?.body);
+  const [editMode, setEditMode] = useState(false);
 
   const CHAR_LIMIT = 3000,
     charLimitExceeded = charCount >= CHAR_LIMIT,
@@ -62,11 +63,29 @@ const PopupNote = ({ note, onNoteSave, onNoteEdit }) => {
     setText(e.target.value);
   };
 
+  const handleEditClick = () => {
+    if (!editMode) {
+      return setEditMode(true);
+    } else if (!editMode) {
+      setText(note?.body);
+      return setEditMode(false);
+    }
+  };
+
   return (
     <ListItem className={styles.container}>
       <h4 className={styles.key}>Note:</h4>
       <div className={styles.note}>
-        <Input multiline onChange={handleChange} value={text || ''} />
+        <Input
+          multiline
+          rows={3}
+          onChange={handleChange}
+          value={text || ''}
+          inputProps={{
+            'aria-label': 'Popup Note',
+          }}
+          disabled={!!note && !editMode}
+        />
         <Typography className={styles.charCount}>
           {charCount || '0'}/{CHAR_LIMIT}
         </Typography>
@@ -81,13 +100,15 @@ const PopupNote = ({ note, onNoteSave, onNoteEdit }) => {
           >
             Save
           </Button>
-          <Button
-            className={styles.button}
-            onClick={() => onNoteEdit(text)}
-            disabled={disabled}
-          >
-            Edit
-          </Button>
+          {!!note ? (
+            <Button
+              className={styles.button}
+              onClick={handleEditClick}
+              disabled={disabled || !editMode}
+            >
+              {editMode ? 'Cancel' : 'Edit'}
+            </Button>
+          ) : null}
         </div>
       </div>
     </ListItem>

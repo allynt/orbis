@@ -34,10 +34,6 @@ const FeatureDetailPopup = ({ source }) => {
     console.log('NOTE SAVE: ', text);
   };
 
-  const onNoteEdit = text => {
-    console.log('NOTE EDIT: ', text);
-  };
-
   const getDetailContent = () => {
     if (clickedFeatures?.length) {
       return {
@@ -85,7 +81,6 @@ const FeatureDetailPopup = ({ source }) => {
         features={features?.map(obj => obj?.properties)}
         note={notes[0]}
         onNoteSave={onNoteSave}
-        onNoteEdit={onNoteEdit}
       />
     </Popup>
   );
