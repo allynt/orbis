@@ -4,6 +4,7 @@ import { filter, groupBy } from 'lodash';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { createReduxSafePickedInfo } from 'utils/data';
+import { KEY_CODES } from 'utils/KEY_CODES';
 import { setClickedFeatures } from './orbs/layers.slice';
 
 /**
@@ -20,6 +21,11 @@ export const filterAndSortPickedInfo = pickingInfos => {
   return groupBy(filteredInfos, 'layer.id');
 };
 
+/** @param {KeyboardEvent} event */
+const hasTriggerKey = event =>
+  event.key === KEY_CODES.CONTROL ||
+  (navigator.appVersion.includes('Mac') && event.metaKey);
+
 export const useSelectionTools = ({ defaultIsTriggerKeyHeld = false } = {}) => {
   const dispatch = useDispatch();
   const [isTriggerKeyHeld, setIsTriggerKeyHeld] = useState(
@@ -29,20 +35,12 @@ export const useSelectionTools = ({ defaultIsTriggerKeyHeld = false } = {}) => {
 
   /** @param {KeyboardEvent} event */
   const handleKeyDown = event => {
-    if (
-      event.key === 'Control' ||
-      (navigator.appVersion.includes('Mac') && event.metaKey)
-    )
-      setIsTriggerKeyHeld(true);
+    if (hasTriggerKey(event)) setIsTriggerKeyHeld(true);
   };
 
   /** @param {KeyboardEvent} event */
   const handleKeyUp = event => {
-    if (
-      event.key === 'Control' ||
-      (navigator.appVersion.includes('Mac') && event.metaKey)
-    )
-      setIsTriggerKeyHeld(false);
+    if (hasTriggerKey(event)) setIsTriggerKeyHeld(false);
   };
 
   useEffect(() => {
