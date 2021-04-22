@@ -13,7 +13,7 @@ import {
 } from 'victory';
 
 import { aggregateTimeSeries } from 'analysis-panel/aggregateTimeSeries';
-import { SidePanelSection } from 'components';
+import { SidePanelSection, WrappingChartLabel } from 'components';
 import { useChartTheme } from 'hooks/useChartTheme';
 import { DEFAULT_DECIMAL_PRECISION } from 'map/map.constants';
 import { isValidDateString } from 'utils/dates';
@@ -65,46 +65,60 @@ export const PropertyTimeSeriesChart = ({
     <SidePanelSection title="Time Series" defaultExpanded info={info}>
       {!!clickedFeatures ? (
         <ParentSize>
-          {({ width }) => (
-            <VictoryChart
-              width={width}
-              height={width * 0.7}
-              theme={chartTheme}
-              padding={{ left: 80, top: 20, bottom: 70, right: 10 }}
-              domainPadding={10}
-            >
-              <VictoryAxis
-                fixLabelOverlap
-                tickLabelComponent={<VictoryLabel angle={-90} dx={-25} />}
-                tickFormat={timestamp =>
-                  format(new Date(timestamp), timestampFormat)
-                }
-                offsetY={70}
-              />
-              <VictoryAxis
-                crossAxis={false}
-                dependentAxis
-                tickFormat={v =>
-                  v.toFixed(
-                    selectedProperty.precision ?? DEFAULT_DECIMAL_PRECISION,
-                  )
-                }
-              />
-              <VictoryLine {...sharedProps} />
-              <VictoryScatter
-                {...sharedProps}
-                labelComponent={<VictoryTooltip constrainToVisibleArea />}
-                labels={({ datum }) =>
-                  `${
-                    isValidDateString(datum.timestamp)
-                      ? format(new Date(datum.timestamp), timestampFormat)
-                      : datum.timestamp
-                  }: ${datum.value}`
-                }
-                size={getPointSize}
-              />
-            </VictoryChart>
-          )}
+          {({ width }) => {
+            const height = width * 0.7,
+              padding = { left: 80, top: 20, bottom: 70, right: 10 },
+              paddingY = padding.top + padding.bottom;
+            return (
+              <VictoryChart
+                width={width}
+                height={height}
+                theme={chartTheme}
+                padding={padding}
+                domainPadding={10}
+              >
+                <VictoryAxis
+                  fixLabelOverlap
+                  tickLabelComponent={<VictoryLabel angle={-90} dx={-25} />}
+                  tickFormat={timestamp =>
+                    format(new Date(timestamp), timestampFormat)
+                  }
+                  offsetY={70}
+                />
+                <VictoryAxis
+                  crossAxis={false}
+                  dependentAxis
+                  label={selectedProperty.units}
+                  axisLabelComponent={
+                    <WrappingChartLabel width={height - paddingY} />
+                  }
+                  tickFormat={v =>
+                    v.toFixed(
+                      selectedProperty.precision ?? DEFAULT_DECIMAL_PRECISION,
+                    )
+                  }
+                  style={{
+                    axisLabel: {
+                      padding: padding.left - 28,
+                    },
+                  }}
+                />
+                <VictoryLine {...sharedProps} />
+                <VictoryScatter
+                  {...sharedProps}
+                  labelComponent={<VictoryTooltip constrainToVisibleArea />}
+                  labels={({ datum }) =>
+                    `${
+                      isValidDateString(datum.timestamp)
+                        ? format(new Date(datum.timestamp), timestampFormat)
+                        : datum.timestamp
+                    }: ${datum.value}`
+                  }
+                  size={getPointSize}
+                />
+              </VictoryChart>
+            );
+          }}
         </ParentSize>
       ) : null}
     </SidePanelSection>
