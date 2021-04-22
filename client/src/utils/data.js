@@ -14,3 +14,17 @@ export const getValueForTimestamp = (timeseries, timestamp) => {
     return date === searchTimestamp;
   })?.value;
 };
+
+/**
+ * @param {import('typings/orbis').PickedMapFeature} info
+ */
+export const createReduxSafePickedInfo = info => ({
+  index: info?.index,
+  object: info?.object,
+  layer: {
+    id: info?.layer.id,
+    props: {
+      uniqueIdProperty: info?.layer?.props?.uniqueIdProperty,
+    },
+  },
+});

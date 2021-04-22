@@ -48,6 +48,7 @@ import {
 import 'mapbox-gl/dist/mapbox-gl.css';
 import { DrawingToolsToolbox } from 'drawing-tools';
 import { setFeatures as setDrawingToolsFeatures } from 'drawing-tools/drawing-tools.slice';
+import { useSelectionTools } from './useSelectionTools';
 
 const ISOMETRIC_PITCH = 35;
 
@@ -164,6 +165,7 @@ const Map = ({
   const mapStyles = useSelector(mapStylesSelector);
   const selectedMapStyle = useSelector(selectedMapStyleSelector);
   const styles = useStyles({ selectedMapStyle });
+  const { selectionLayer } = useSelectionTools();
 
   useEffect(() => {
     if (selectedBookmark) {
@@ -267,7 +269,7 @@ const Map = ({
         controller={!drawingToolsEnabled}
         viewState={viewState}
         onViewStateChange={handleViewStateChange}
-        layers={layers}
+        layers={[...(layers ?? []), selectionLayer]}
         effects={[lightingEffect]}
         glOptions={{
           preserveDrawingBuffer: true,
