@@ -3,6 +3,8 @@ import { activeLayersSelector } from 'data-layers/data-layers.slice';
 import { filter, groupBy } from 'lodash';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { createReduxSafePickedInfo } from 'utils/data';
+import { setClickedFeatures } from './orbs/layers.slice';
 
 /**
  * @param {import('typings/orbis').PickedMapFeature[]} pickingInfos
@@ -10,7 +12,9 @@ import { useDispatch, useSelector } from 'react-redux';
 export const sortAndFilterPickedInfo = pickingInfos => {
   const filteredInfos = filter(
     pickingInfos,
-    info => info.object.geometry.type !== 'Point',
+    info =>
+      info.object.geometry.type != null &&
+      info.object.geometry.type !== 'Point',
   );
   return groupBy(filteredInfos, 'layer.id');
 };
@@ -53,7 +57,14 @@ export const useSelectionTools = ({ defaultIsTriggerKeyHeld = false } = {}) => {
     id: 'selection-layer',
     layerIds,
     onSelect: ({ pickingInfos }) => {
-      console.log(sortAndFilterPickedInfo(pickingInfos));
+      const sortedAndFilteredInfo = sortAndFilterPickedInfo(pickingInfos);
+      for (const [key, value] of Object.entries(sortedAndFilteredInfo))
+        dispatch(
+          setClickedFeatures({
+            key,
+            clickedFeatures: value.map(createReduxSafePickedInfo),
+          }),
+        );
     },
   });
   return { selectionLayer: isTriggerKeyHeld && selectionLayer };

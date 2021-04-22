@@ -16,24 +16,15 @@ export const getValueForTimestamp = (timeseries, timestamp) => {
 };
 
 /**
- * @param {{
- *  index: number
- *  object: import('@turf/helpers').Feature
- *  layer: {
- *    id: string
- *    props: {
- *      uniqueIdProperty: string
- *    }
- *  }
- * }} info
+ * @param {import('typings/orbis').PickedMapFeature} info
  */
 export const createReduxSafePickedInfo = info => ({
-  index: info.index,
-  object: info.object,
+  index: info?.index,
+  object: info?.object,
   layer: {
-    id: info.layer.id,
+    id: info?.layer.id,
     props: {
-      uniqueIdProperty: info.layer.props.uniqueIdProperty,
+      uniqueIdProperty: info?.layer?.props?.uniqueIdProperty,
     },
   },
 });

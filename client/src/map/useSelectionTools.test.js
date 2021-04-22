@@ -3,6 +3,7 @@ import { act, renderHook as tlRenderHook } from '@testing-library/react-hooks';
 import React from 'react';
 import { Provider } from 'react-redux';
 import configureMockStore from 'redux-mock-store';
+import { setClickedFeatures } from './orbs/layers.slice';
 import {
   sortAndFilterPickedInfo,
   useSelectionTools,
@@ -10,12 +11,16 @@ import {
 
 const mockStore = configureMockStore();
 
-const renderHook = ({ defaultIsTriggerKeyHeld = undefined } = {}) =>
-  tlRenderHook(() => useSelectionTools({ defaultIsTriggerKeyHeld }), {
-    wrapper: ({ children }) => (
-      <Provider store={mockStore()}>{children}</Provider>
-    ),
-  });
+const renderHook = ({ defaultIsTriggerKeyHeld = undefined } = {}) => {
+  const store = mockStore();
+  const utils = tlRenderHook(
+    () => useSelectionTools({ defaultIsTriggerKeyHeld }),
+    {
+      wrapper: ({ children }) => <Provider store={store}>{children}</Provider>,
+    },
+  );
+  return { ...utils, store };
+};
 
 describe('useSelectionTools', () => {
   it('Does not return a selection layer if a key is not held', () => {
@@ -90,6 +95,53 @@ describe('useSelectionTools', () => {
         'source/2': [info4],
       };
       expect(sortAndFilterPickedInfo(pickingInfos)).toEqual(expected);
+    });
+  });
+
+  describe('onSelect', () => {
+    const info1 = {
+        layer: { id: 'source/1' },
+        object: { id: 1, geometry: { type: 'MultiPolygon' } },
+      },
+      info2 = {
+        layer: { id: 'source/1' },
+        object: { id: 2, geometry: { type: 'Point' } },
+      },
+      info3 = {
+        layer: { id: 'source/2' },
+        object: { id: 1, geometry: { type: 'Point' } },
+      },
+      info4 = {
+        layer: { id: 'source/2' },
+        object: { id: 2, geometry: { type: 'MultiPolygon' } },
+      };
+    const pickingInfos = [info1, info2, info3, info4];
+
+    it(`Calls ${setClickedFeatures} with the selectedFeatures`, () => {
+      const { result, store } = renderHook({ defaultIsTriggerKeyHeld: true });
+      result.current.selectionLayer.props.onSelect({ pickingInfos });
+      expect(store.getActions()).toContainEqual(
+        expect.objectContaining({ type: setClickedFeatures.type }),
+      );
+    });
+
+    it(`Calls ${setClickedFeatures} for each unique layer`, () => {
+      const { result, store } = renderHook({ defaultIsTriggerKeyHeld: true });
+      result.current.selectionLayer.props.onSelect({
+        pickingInfos,
+      });
+      expect(store.getActions()).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            type: setClickedFeatures.type,
+            payload: expect.objectContaining({ key: 'source/1' }),
+          }),
+          expect.objectContaining({
+            type: setClickedFeatures.type,
+            payload: expect.objectContaining({ key: 'source/2' }),
+          }),
+        ]),
+      );
     });
   });
 });
