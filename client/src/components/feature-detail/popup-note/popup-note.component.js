@@ -25,13 +25,17 @@ const useStyles = makeStyles(theme => ({
     minWidth: '20rem',
     alignItems: 'flex-start',
   },
+  displays: {
+    width: '100%',
+    display: 'flex',
+    justifyContent: 'space-between',
+  },
   charLimitMessage: {
     color: 'red',
     margin: '0',
   },
   charCount: {
-    width: '100%',
-    textAlign: 'end',
+    /** @param { charLimitExceeded } boolean */
     color: ({ charLimitExceeded }) => (charLimitExceeded ? 'red' : 'yellow'),
   },
   buttons: {
@@ -86,12 +90,19 @@ const PopupNote = ({ note, onNoteSave }) => {
           }}
           disabled={!!note && !editMode}
         />
-        <Typography className={styles.charCount}>
-          {charCount || '0'}/{CHAR_LIMIT}
-        </Typography>
-        {charLimitExceeded && (
-          <p className={styles.charLimitMessage}>Character limit exceeded</p>
-        )}
+        <div className={styles.displays}>
+          {charLimitExceeded ? (
+            <Typography className={styles.charLimitMessage}>
+              Character limit exceeded
+            </Typography>
+          ) : (
+            <span></span>
+          )}
+          <Typography className={styles.charCount}>
+            {charCount || '0'}/{CHAR_LIMIT}
+          </Typography>
+        </div>
+
         <div className={styles.buttons}>
           <Button
             className={styles.button}
