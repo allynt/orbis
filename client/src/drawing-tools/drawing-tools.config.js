@@ -1,6 +1,7 @@
 import {
   DragPoygonIcon,
   DrawPolygonIcon,
+  DrawRectangleIcon,
   MapPinIcon,
   MeasureAreaIcon,
   RulerIcon,
@@ -10,6 +11,7 @@ import {
   DrawPointMode,
   DrawPolygonMode,
   DrawPolygonByDraggingMode,
+  DrawRectangleMode,
   MeasureAreaMode,
   MeasureDistanceMode,
   ModifyMode,
@@ -21,6 +23,7 @@ export const DRAW_MODE_MAP = {
   DrawPointMode,
   DrawPolygonMode,
   DrawPolygonByDraggingMode,
+  DrawRectangleMode,
   MeasureAreaMode,
   MeasureDistanceMode,
   ModifyMode,
@@ -57,6 +60,11 @@ export const TOOLS = [
     text: 'Drag Polygon',
     Icon: DragPoygonIcon,
     value: 'DrawPolygonByDraggingMode',
+  },
+  {
+    text: 'Rectangle',
+    Icon: DrawRectangleIcon,
+    value: 'DrawRectangleMode',
   },
   {
     text: 'Measure Area',
