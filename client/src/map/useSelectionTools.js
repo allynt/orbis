@@ -1,8 +1,19 @@
 import { SelectionLayer } from '@nebula.gl/layers';
 import { activeLayersSelector } from 'data-layers/data-layers.slice';
+import { filter, groupBy } from 'lodash';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { setClickedFeatures } from './orbs/layers.slice';
+
+/**
+ * @param {import('typings/orbis').PickedMapFeature[]} pickingInfos
+ */
+export const sortAndFilterPickedInfo = pickingInfos => {
+  const filteredInfos = filter(
+    pickingInfos,
+    info => info.object.geometry.type !== 'Point',
+  );
+  return groupBy(filteredInfos, 'layer.id');
+};
 
 export const useSelectionTools = ({ defaultIsTriggerKeyHeld = false } = {}) => {
   const dispatch = useDispatch();
@@ -42,12 +53,7 @@ export const useSelectionTools = ({ defaultIsTriggerKeyHeld = false } = {}) => {
     id: 'selection-layer',
     layerIds,
     onSelect: ({ pickingInfos }) => {
-      dispatch(
-        setClickedFeatures({
-          key: pickingInfos[0].layer.id,
-          clickedFeatures: pickingInfos,
-        }),
-      );
+      console.log(sortAndFilterPickedInfo(pickingInfos));
     },
   });
   return { selectionLayer: isTriggerKeyHeld && selectionLayer };

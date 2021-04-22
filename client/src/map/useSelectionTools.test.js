@@ -1,9 +1,12 @@
-import React from 'react';
 import { fireEvent } from '@testing-library/dom';
 import { act, renderHook as tlRenderHook } from '@testing-library/react-hooks';
-import { useSelectionTools } from './useSelectionTools';
+import React from 'react';
 import { Provider } from 'react-redux';
 import configureMockStore from 'redux-mock-store';
+import {
+  sortAndFilterPickedInfo,
+  useSelectionTools,
+} from './useSelectionTools';
 
 const mockStore = configureMockStore();
 
@@ -52,5 +55,41 @@ describe('useSelectionTools', () => {
       fireEvent.keyUp(document, { metaKey: true });
     });
     expect(result.current.selectionLayer).toBeFalsy();
+  });
+
+  describe('sortAndFilterPickedInfo', () => {
+    const info1 = {
+        layer: { id: 'source/1' },
+        object: { id: 1, geometry: { type: 'MultiPolygon' } },
+      },
+      info2 = {
+        layer: { id: 'source/1' },
+        object: { id: 2, geometry: { type: 'Point' } },
+      },
+      info3 = {
+        layer: { id: 'source/2' },
+        object: { id: 1, geometry: { type: 'Point' } },
+      },
+      info4 = {
+        layer: { id: 'source/2' },
+        object: { id: 2, geometry: { type: 'MultiPolygon' } },
+      };
+    const pickingInfos = [info4, info2, info1, info3];
+
+    it('Organises picked features by layer Id', () => {
+      const expected = expect.objectContaining({
+        'source/1': expect.anything(),
+        'source/2': expect.anything(),
+      });
+      expect(sortAndFilterPickedInfo(pickingInfos)).toEqual(expected);
+    });
+
+    it('Removes features with Point geometry', () => {
+      const expected = {
+        'source/1': [info1],
+        'source/2': [info4],
+      };
+      expect(sortAndFilterPickedInfo(pickingInfos)).toEqual(expected);
+    });
   });
 });

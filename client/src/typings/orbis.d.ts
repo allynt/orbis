@@ -1,5 +1,6 @@
 import { Dispatch } from 'redux';
 import { OrbState } from '../map/orbs/orbReducer'; // eslint-disable-line
+import { GeometryTypes } from '@turf/helpers';
 
 type LayerName =
   | 'ClusteredIconLayer'
@@ -217,7 +218,10 @@ type MapComponent<P = {}> = (
 ) => JSX.Element;
 
 type GeoJsonFeature<P = {}> = {
-  geometry: { coordinates?: number[] };
+  geometry: {
+    type: GeometryTypes;
+    coordinates?: number[];
+  };
   properties: { cluster?: boolean; expansion_zoom?: number } & P;
 };
 
