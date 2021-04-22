@@ -1,6 +1,7 @@
 import {
   CircleIcon,
   DragPoygonIcon,
+  DrawEllipseIcon,
   DrawPolygonIcon,
   DrawRectangleIcon,
   MapPinIcon,
@@ -14,6 +15,7 @@ import {
   DrawPolygonMode,
   DrawPolygonByDraggingMode,
   DrawRectangleMode,
+  DrawEllipseByBoundingBoxMode,
   MeasureAreaMode,
   MeasureDistanceMode,
   ModifyMode,
@@ -27,6 +29,7 @@ export const DRAW_MODE_MAP = {
   DrawPolygonMode,
   DrawPolygonByDraggingMode,
   DrawRectangleMode,
+  DrawEllipseByBoundingBoxMode,
   MeasureAreaMode,
   MeasureDistanceMode,
   ModifyMode,
@@ -73,6 +76,11 @@ export const TOOLS = [
     text: 'Rectangle',
     Icon: DrawRectangleIcon,
     value: 'DrawRectangleMode',
+  },
+  {
+    text: 'Ellipse',
+    Icon: DrawEllipseIcon,
+    value: 'DrawEllipseByBoundingBoxMode',
   },
   {
     text: 'Measure Area',
