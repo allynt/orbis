@@ -5,13 +5,12 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { Button, Link, makeStyles, ThemeProvider } from '@astrosat/astrosat-ui';
 
-import { useOrbs } from 'map/orbs/useOrbs';
 import { ReactComponent as AddNewCategoryIcon } from './add-more-categories.svg';
 import DataLayersDialog from './data-layers-dialog/data-layers-dialog.component';
 import {
+  dataSourcesSelector,
   activeCategorisedSourcesSelector,
   activeLayersSelector,
-  categorisedOrbsAndSourcesSelector,
   setLayers,
 } from './data-layers.slice';
 import { LayersList } from './layers-list/layers-list.component';
@@ -60,9 +59,8 @@ const DataLayers = ({ sidebarComponents, drawingToolsEnabled }) => {
     activeCategorisedSourcesSelector(1),
   );
   const selectedLayers = useSelector(activeLayersSelector);
-  const categorisedOrbsAndSources = useSelector(
-    categorisedOrbsAndSourcesSelector(),
-  );
+
+  const dataSources = useSelector(dataSourcesSelector);
 
   const handleDialogSubmit = sources => {
     dispatch(setLayers(sources));
@@ -98,7 +96,7 @@ const DataLayers = ({ sidebarComponents, drawingToolsEnabled }) => {
         </Button>
         <ThemeProvider theme="light">
           <DataLayersDialog
-            orbs={categorisedOrbsAndSources}
+            sources={dataSources}
             initialSelectedSources={selectedLayers}
             onSubmit={handleDialogSubmit}
             close={() => toggle(false)}

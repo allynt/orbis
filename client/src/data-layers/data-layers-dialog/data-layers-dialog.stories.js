@@ -8,92 +8,64 @@ export default {
   argTypes: { close: { action: 'close' }, onSubmit: { action: 'onSubmit' } },
 };
 
+const generateOrbs = (n, parentId) =>
+  new Array(n).fill(undefined).map((_, i) => ({
+    source_id: `test/Source/${i}`,
+    metadata: {
+      label: `test-label-${i}`,
+      description: 'Test description',
+      application: {
+        orbis: {
+          categories: {
+            name: `Test Parent Name ${parentId || i}`,
+            child: {
+              name: `Test Child Name ${parentId || i}`,
+            },
+          },
+          sources: [
+            {
+              name: `Test Orb Name ${parentId || i}`,
+            },
+          ],
+        },
+      },
+    },
+  }));
+
 const Template = args => <DataLayersDialog {...args} />;
 
 export const Empty = Template.bind({});
 
 export const Orbs = Template.bind({});
 Orbs.args = {
-  orbs: [
-    {
-      name: 'Forestry',
-      sources: [
-        {
-          category: 'Animals',
-          sources: [
-            {
-              source_id: 'forestry/source/2',
-              metadata: { label: 'Bears', description: 'Lions and tigers' },
-            },
-            { source_id: 'forestry/source/3', metadata: { label: 'Deer' } },
-          ],
-        },
-        {
-          category: 'Trees',
-          sources: [
-            {
-              category: 'Evergreen',
-              sources: [
-                { source_id: 'forestry/source/1', metadata: { label: 'Pine' } },
-              ],
-            },
-            {
-              category: 'Deciduous',
-              sources: [
-                {
-                  source_id: 'forestry/source/4',
-                  metadata: { label: 'Birch' },
-                },
-              ],
-            },
-          ],
-        },
-      ],
-    },
-    {
-      name: 'Healthcare',
-      sources: [
-        {
-          category: 'Hospitals',
-          sources: [
-            { source_id: 'healthcare/source/2', metadata: { label: 'Bears' } },
-            { source_id: 'healthcare/source/3', metadata: { label: 'Staff' } },
-          ],
-        },
-        { source_id: 'healthcare/source/1', metadata: { label: 'PPE' } },
-      ],
-    },
-  ],
+  sources: generateOrbs(4),
 };
 
 export const LotsOfOrbs = Template.bind({});
 LotsOfOrbs.args = {
-  orbs: new Array(50).fill(undefined).map((_, i) => ({ name: `Orb ${i}` })),
+  sources: new Array(50).fill(undefined).map((_, i) => ({
+    metadata: {
+      application: {
+        orbis: {
+          orbs: [{ name: `test-orb-${i}`, description: 'test' }],
+        },
+      },
+    },
+  })),
 };
 
 export const LotsOfSources = Template.bind({});
 LotsOfSources.args = {
-  orbs: [
-    {
-      name: 'Oh my',
-      sources: new Array(50).fill(undefined).map((_, i) => ({
-        source_id: `orb/source/${i}`,
-        metadata: { label: `Layer ${i}` },
-      })),
-    },
-  ],
+  sources: generateOrbs(50),
 };
 
 export const LotsOfBoth = Template.bind({});
 LotsOfBoth.args = {
-  orbs: new Array(50).fill(undefined).map((_, orbIndex) => ({
-    name: `Orb ${orbIndex}`,
-    sources: new Array(50).fill(undefined).map((_, layerIndex) => ({
-      source_id: `orb/${orbIndex}/source/${layerIndex}`,
-      metadata: {
-        label: `Orb ${orbIndex} Layer ${layerIndex}`,
-        description: `Orb ${orbIndex} Layer ${layerIndex} description`,
-      },
-    })),
-  })),
+  sources: (() => {
+    const sources = new Array(50).fill(undefined).map((_, i) => i);
+    return sources.reduce((acc, cur) => {
+      const sources = generateOrbs(50, cur);
+      return [...acc, ...sources];
+    }, []);
+  })(),
 };
