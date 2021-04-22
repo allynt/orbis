@@ -10,7 +10,7 @@ if (isChromatic()) faker.seed(1);
 
 export default { title: 'Analysis Panel/Property Time Series Chart' };
 
-const selectedProperty = { name: 'Dogs' };
+const selectedProperty = { name: 'Dogs', units: '%' };
 
 const Template = args => <PropertyTimeSeriesChart {...args} />;
 

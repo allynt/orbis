@@ -16,3 +16,4 @@ export { SidePanelSection } from './side-panel-section/side-panel-section.compon
 export { SidePanel } from './side-panel/side-panel.component';
 export * from './sidebar';
 export { Skeleton } from './skeleton/skeleton.component';
+export { WrappingChartLabel } from './wrapping-chart-label.component';
