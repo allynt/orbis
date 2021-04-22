@@ -68,12 +68,15 @@ const PopupNote = ({ note, onNoteSave }) => {
   };
 
   const handleEditClick = () => {
-    if (!editMode) {
-      return setEditMode(true);
-    } else if (!editMode) {
-      setText(note?.body);
-      return setEditMode(false);
-    }
+    if (!editMode) return setEditMode(true);
+
+    setText(note?.body);
+    return setEditMode(false);
+  };
+
+  const handleSaveClick = () => {
+    setEditMode(false);
+    return onNoteSave(text);
   };
 
   return (
@@ -106,17 +109,13 @@ const PopupNote = ({ note, onNoteSave }) => {
         <div className={styles.buttons}>
           <Button
             className={styles.button}
-            onClick={() => onNoteSave(text)}
-            disabled={disabled}
+            onClick={handleSaveClick}
+            disabled={disabled || !editMode}
           >
             Save
           </Button>
           {!!note ? (
-            <Button
-              className={styles.button}
-              onClick={handleEditClick}
-              disabled={disabled || !editMode}
-            >
+            <Button className={styles.button} onClick={handleEditClick}>
               {editMode ? 'Cancel' : 'Edit'}
             </Button>
           ) : null}

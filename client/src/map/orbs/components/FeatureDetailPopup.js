@@ -79,7 +79,7 @@ const FeatureDetailPopup = ({ source }) => {
     >
       <FeatureDetail
         features={features?.map(obj => obj?.properties)}
-        note={notes[0]}
+        note={null}
         onNoteSave={onNoteSave}
       />
     </Popup>
