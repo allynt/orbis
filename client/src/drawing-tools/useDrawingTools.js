@@ -1,48 +1,22 @@
-import { useEffect, useState } from 'react';
-
 import { darken, rgbToHex } from '@astrosat/astrosat-ui';
-
 import { EditableGeoJsonLayer } from '@nebula.gl/layers';
-import {
-  ViewMode,
-  DrawPointMode,
-  TranslateMode,
-  MeasureDistanceMode,
-} from '@nebula.gl/edit-modes';
-import { filter, findIndex } from 'lodash';
+import { useDocumentEventListener } from 'hooks/useDocumentEventListener';
+import { findIndex, get } from 'lodash';
+import { selectedMapStyleIdSelector } from 'map/map.slice';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-
+import { hexToRgbArray } from 'utils/color';
+import { KEY_CODES } from 'utils/KEY_CODES';
+import {
+  DRAW_MODE_MAP,
+  FEATURE_COLORS,
+  SELECTABLE_MODES,
+} from './drawing-tools.config';
 import {
   drawingToolsFeatureCollectionSelector,
   removeFeaturesByIndex,
   setFeatures,
 } from './drawing-tools.slice';
-import { hexToRgbArray } from 'utils/color';
-import { KEY_CODES } from 'utils/KEY_CODES';
-import { selectedMapStyleIdSelector } from 'map/map.slice';
-import { useDocumentEventListener } from 'hooks/useDocumentEventListener';
-
-const DRAW_MODE_MAP = new Map([
-  ['ViewMode', ViewMode],
-  ['DrawPointMode', DrawPointMode],
-  ['TranslateMode', TranslateMode],
-  ['MeasureDistanceMode', MeasureDistanceMode],
-]);
-
-const FEATURE_COLORS = [
-  '#00AEE4',
-  '#DAF0E3',
-  '#9BCC32',
-  '#07A35A',
-  '#F7DF90',
-  '#EA376C',
-  '#6A126A',
-  '#FCB09B',
-  '#B0592D',
-  '#C1B5E3',
-  '#9C805B',
-  '#CCDFE5',
-];
 
 /**
  * @param {import('@turf/helpers').Feature} feature
@@ -84,16 +58,24 @@ export const useDrawingTools = ({
   );
 
   useEffect(() => {
-    if (drawingToolsEnabled) setDrawMode('TranslateMode');
-    else {
+    if (!drawingToolsEnabled) {
       setSelectedFeatureIndexes([]);
       setDrawMode('ViewMode');
     }
   }, [drawingToolsEnabled]);
 
+  useEffect(() => {
+    if (!SELECTABLE_MODES.includes(drawMode)) setSelectedFeatureIndexes([]);
+  }, [drawMode]);
+
   const handleDeleteKey = () => {
     dispatch(removeFeaturesByIndex(selectedFeatureIndexes));
     setSelectedFeatureIndexes([]);
+  };
+
+  const handleEscapeKey = () => {
+    setSelectedFeatureIndexes([]);
+    setDrawMode('ViewMode');
   };
 
   /** @param {KeyboardEvent} event */
@@ -102,6 +84,9 @@ export const useDrawingTools = ({
       case KEY_CODES.BACKSPACE:
       case KEY_CODES.DELETE:
         handleDeleteKey();
+        break;
+      case KEY_CODES.ESCAPE:
+        handleEscapeKey();
         break;
       default:
         break;
@@ -125,27 +110,24 @@ export const useDrawingTools = ({
 
   /**
    * @param {{
-   *   editType: string
    *   updatedData: import('@turf/helpers').FeatureCollection
    * }} params
    */
-  const onEdit = ({ editType, updatedData }) => {
-    if (['addFeature', 'translating', 'translated'].includes(editType))
-      dispatch(setFeatures(updatedData));
+  const onEdit = ({ updatedData }) => {
+    dispatch(setFeatures(updatedData));
   };
 
-  /** @param {{index: number}} params */
-  const onClick = ({ index }) => {
-    if (!drawingToolsEnabled) return;
-    if (selectedFeatureIndexes.includes(index))
-      return setSelectedFeatureIndexes(filter(selectedFeatureIndexes, index));
+  /** @param {{index: number, isGuide: boolean}} params */
+  const onClick = ({ index, isGuide }) => {
+    if (!drawingToolsEnabled || !SELECTABLE_MODES.includes(drawMode) || isGuide)
+      return;
     setSelectedFeatureIndexes([index]);
   };
 
   const editableLayer = new EditableGeoJsonLayer({
     id: 'drawing-tools-editable-layer',
     data: featureCollection,
-    mode: DRAW_MODE_MAP.get(drawMode),
+    mode: get(DRAW_MODE_MAP, drawMode),
     selectedFeatureIndexes,
     pointRadiusMinPixels: 5,
     getFillColor,

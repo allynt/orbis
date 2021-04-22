@@ -1,19 +1,14 @@
 import React from 'react';
 
-import {
-  AnnotationsIcon,
-  makeStyles,
-  MapPinIcon,
-  RulerIcon,
-  Tooltip,
-} from '@astrosat/astrosat-ui';
+import { AnnotationsIcon, makeStyles, Tooltip } from '@astrosat/astrosat-ui';
 
 import { ImageList, ImageListItem, MapControlButton } from 'components';
+import { TOOLS } from 'drawing-tools/drawing-tools.config';
 
 const useStyles = makeStyles(theme => ({
   tooltip: {
     padding: 0,
-    maxWidth: '100%',
+    maxWidth: theme.typography.pxToRem(128 * 3),
     backgroundColor: theme.palette.background.default,
     color: theme.palette.text.primary,
   },
@@ -43,7 +38,7 @@ export const DrawingToolsToolbox = ({
   /** @param {import('drawing-tools/types').EditMode} tool */
   const handleToolChange = tool => {
     if (onToolSelect == null) return;
-    if (tool === selectedTool) return onToolSelect('TranslateMode');
+    if (tool === selectedTool) return onToolSelect('ViewMode');
     onToolSelect(tool);
   };
 
@@ -60,16 +55,14 @@ export const DrawingToolsToolbox = ({
           onChange={handleToolChange}
           value={selectedTool}
         >
-          <ImageListItem
-            text="Point"
-            icon={<MapPinIcon color="primary" />}
-            value="DrawPointMode"
-          />
-          <ImageListItem
-            text="Measure Distance"
-            icon={<RulerIcon color="primary" />}
-            value="MeasureDistanceMode"
-          />
+          {TOOLS.map(({ text, Icon, value }) => (
+            <ImageListItem
+              key={value}
+              text={text}
+              icon={<Icon color="primary" />}
+              value={value}
+            />
+          ))}
         </ImageList>
       }
     >
