@@ -73,7 +73,7 @@ describe('useSelectionTools', () => {
       },
       info3 = {
         layer: { id: 'source/2' },
-        object: { id: 1, geometry: { type: 'Point' } },
+        object: { id: 1, geometry: { type: 'LineString' } },
       },
       info4 = {
         layer: { id: 'source/2' },
@@ -89,7 +89,7 @@ describe('useSelectionTools', () => {
       expect(sortAndFilterPickedInfo(pickingInfos)).toEqual(expected);
     });
 
-    it('Removes features with Point geometry', () => {
+    it('Only includes features with Polygon like geometry', () => {
       const expected = {
         'source/1': [info1],
         'source/2': [info4],
@@ -121,7 +121,7 @@ describe('useSelectionTools', () => {
       },
       info4 = {
         layer: { id: 'source/2' },
-        object: { id: 2, geometry: { type: 'MultiPolygon' } },
+        object: { id: 2, geometry: { type: 'Polygon' } },
       };
     const pickingInfos = [info1, info2, info3, info4];
 

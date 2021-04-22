@@ -14,7 +14,8 @@ export const sortAndFilterPickedInfo = pickingInfos => {
     pickingInfos,
     info =>
       info.object.geometry.type != null &&
-      info.object.geometry.type !== 'Point',
+      (info.object.geometry.type === 'Polygon' ||
+        info.object.geometry.type === 'MultiPolygon'),
   );
   return groupBy(filteredInfos, 'layer.id');
 };
