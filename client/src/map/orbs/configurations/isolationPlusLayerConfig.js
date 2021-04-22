@@ -2,7 +2,7 @@ import { DataFilterExtension } from '@deck.gl/extensions';
 import { get } from 'lodash';
 
 import { getColorScaleForProperty } from 'utils/color';
-import { getValueForTimestamp } from 'utils/data';
+import { createReduxSafePickedInfo, getValueForTimestamp } from 'utils/data';
 import { isRealValue } from 'utils/isRealValue';
 import {
   addClickedFeatures,
@@ -145,18 +145,7 @@ const configuration = ({
     const payload = {
       key: id,
       uniquePropertyPath: `object.properties.${info.layer.props.uniqueIdProperty}`,
-      clickedFeatures: [
-        {
-          index: info.index,
-          object: info.object,
-          layer: {
-            id: info.layer.id,
-            props: {
-              uniqueIdProperty: info.layer.props.uniqueIdProperty,
-            },
-          },
-        },
-      ],
+      clickedFeatures: [createReduxSafePickedInfo(info)],
     };
     const hasModifier = event.srcEvent.ctrlKey || event.srcEvent.metaKey;
     if (

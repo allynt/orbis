@@ -14,3 +14,26 @@ export const getValueForTimestamp = (timeseries, timestamp) => {
     return date === searchTimestamp;
   })?.value;
 };
+
+/**
+ * @param {{
+ *  index: number
+ *  object: import('@turf/helpers').Feature
+ *  layer: {
+ *    id: string
+ *    props: {
+ *      uniqueIdProperty: string
+ *    }
+ *  }
+ * }} info
+ */
+export const createReduxSafePickedInfo = info => ({
+  index: info.index,
+  object: info.object,
+  layer: {
+    id: info.layer.id,
+    props: {
+      uniqueIdProperty: info.layer.props.uniqueIdProperty,
+    },
+  },
+});
