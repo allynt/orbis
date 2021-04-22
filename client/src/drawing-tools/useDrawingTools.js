@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { darken, rgbToHex } from '@astrosat/astrosat-ui';
 
 import { EditableGeoJsonLayer } from '@nebula.gl/layers';
+import { convertArea } from '@turf/helpers';
 import { findIndex, get } from 'lodash';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -18,7 +19,6 @@ import {
   removeFeaturesByIndex,
   setFeatures,
 } from './drawing-tools.slice';
-import { convertArea } from '@turf/helpers';
 
 const KEY_CODES = {
   DELETE: 'Delete',
@@ -79,6 +79,11 @@ export const useDrawingTools = ({
   const handleDeleteKey = () => {
     dispatch(removeFeaturesByIndex(selectedFeatureIndexes));
     setSelectedFeatureIndexes([]);
+    if (SELECTABLE_MODES.includes(drawMode)) {
+      const oldMode = drawMode;
+      setDrawMode('ViewMode');
+      if (featureCollection.features.length > 1) setDrawMode(oldMode);
+    }
   };
 
   const handleEscapeKey = () => {
