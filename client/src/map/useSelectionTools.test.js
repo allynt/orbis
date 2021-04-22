@@ -96,6 +96,14 @@ describe('useSelectionTools', () => {
       };
       expect(sortAndFilterPickedInfo(pickingInfos)).toEqual(expected);
     });
+
+    it('Removes features with no geometry type', () => {
+      const pickingInfos = [
+        { layer: { id: 'source/1' }, object: { geometry: {} } },
+      ];
+      const expected = {};
+      expect(sortAndFilterPickedInfo(pickingInfos)).toEqual(expected);
+    });
   });
 
   describe('onSelect', () => {
