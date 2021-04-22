@@ -72,11 +72,6 @@ export const useDrawingTools = ({
   const handleDeleteKey = () => {
     dispatch(removeFeaturesByIndex(selectedFeatureIndexes));
     setSelectedFeatureIndexes([]);
-    if (SELECTABLE_MODES.includes(drawMode)) {
-      const oldMode = drawMode;
-      setDrawMode('ViewMode');
-      if (featureCollection.features.length > 1) setDrawMode(oldMode);
-    }
   };
 
   const handleEscapeKey = () => {

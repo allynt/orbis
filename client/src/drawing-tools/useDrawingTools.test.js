@@ -174,32 +174,6 @@ describe('useDrawingTools', () => {
       },
     );
 
-    it('Switches to view mode if the last feature is being deleted', () => {
-      const { result } = render({
-        features: [{ id: 1 }],
-        defaultDrawingToolsEnabled: true,
-        defaultDrawMode: 'TransformMode',
-        defaultSelectedFeatureIndexes: [0],
-      });
-      act(() => {
-        fireEvent.keyUp(document, { key: 'Delete' });
-      });
-      expect(result.current.drawMode).toBe('ViewMode');
-    });
-
-    it('Maintains the current mode if features remain after being deleted', () => {
-      const { result } = render({
-        features: [{ id: 1 }, { id: 2 }],
-        defaultDrawingToolsEnabled: true,
-        defaultDrawMode: 'TransformMode',
-        defaultSelectedFeatureIndexes: [0],
-      });
-      act(() => {
-        fireEvent.keyUp(document, { key: 'Delete' });
-      });
-      expect(result.current.drawMode).toBe('TransformMode');
-    });
-
     it('Sets mode to ViewMode when escape key is pressed', () => {
       const { result } = render({ defaultDrawMode: 'ModifyMode' });
       act(() => {
