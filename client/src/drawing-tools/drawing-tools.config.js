@@ -1,8 +1,14 @@
-import { DrawPolygonIcon, MapPinIcon, RulerIcon } from '@astrosat/astrosat-ui';
+import {
+  DrawPolygonIcon,
+  MapPinIcon,
+  MeasureAreaIcon,
+  RulerIcon,
+} from '@astrosat/astrosat-ui';
 import { Edit, Transform } from '@material-ui/icons';
 import {
   DrawPointMode,
   DrawPolygonMode,
+  MeasureAreaMode,
   MeasureDistanceMode,
   ModifyMode,
   TransformMode,
@@ -12,6 +18,7 @@ import {
 export const DRAW_MODE_MAP = {
   DrawPointMode,
   DrawPolygonMode,
+  MeasureAreaMode,
   MeasureDistanceMode,
   ModifyMode,
   TransformMode,
@@ -42,6 +49,11 @@ export const TOOLS = [
     text: 'Polygon',
     Icon: DrawPolygonIcon,
     value: 'DrawPolygonMode',
+  },
+  {
+    text: 'Measure Area',
+    Icon: MeasureAreaIcon,
+    value: 'MeasureAreaMode',
   },
   {
     text: 'Measure Distance',

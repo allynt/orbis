@@ -18,6 +18,7 @@ import {
   removeFeaturesByIndex,
   setFeatures,
 } from './drawing-tools.slice';
+import { convertArea } from '@turf/helpers';
 
 const KEY_CODES = {
   DELETE: 'Delete',
@@ -149,6 +150,14 @@ export const useDrawingTools = ({
       turfOptions: {
         units: 'miles',
       },
+      ...(drawMode === 'MeasureAreaMode'
+        ? {
+            formatTooltip: distance =>
+              `${Number(
+                convertArea(distance, 'meters', 'miles').toFixed(2),
+              ).toLocaleString()} Sq mi`,
+          }
+        : {}),
     },
     _subLayerProps: {
       tooltips: {
