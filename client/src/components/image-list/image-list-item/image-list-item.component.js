@@ -35,7 +35,7 @@ const useStyles = makeStyles(theme => ({
     pointerEvents: 'none',
   },
   text: {
-    maxWidth: '4rem',
+    width: '10ch',
     textAlign: 'center',
   },
   checked: {},
