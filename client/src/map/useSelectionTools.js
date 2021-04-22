@@ -9,7 +9,7 @@ import { setClickedFeatures } from './orbs/layers.slice';
 /**
  * @param {import('typings/orbis').PickedMapFeature[]} pickingInfos
  */
-export const sortAndFilterPickedInfo = pickingInfos => {
+export const filterAndSortPickedInfo = pickingInfos => {
   const filteredInfos = filter(
     pickingInfos,
     info =>
@@ -58,7 +58,7 @@ export const useSelectionTools = ({ defaultIsTriggerKeyHeld = false } = {}) => {
     id: 'selection-layer',
     layerIds,
     onSelect: ({ pickingInfos }) => {
-      const sortedAndFilteredInfo = sortAndFilterPickedInfo(pickingInfos);
+      const sortedAndFilteredInfo = filterAndSortPickedInfo(pickingInfos);
       for (const [key, value] of Object.entries(sortedAndFilteredInfo))
         dispatch(
           setClickedFeatures({

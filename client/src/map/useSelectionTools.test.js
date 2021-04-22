@@ -5,7 +5,7 @@ import { Provider } from 'react-redux';
 import configureMockStore from 'redux-mock-store';
 import { setClickedFeatures } from './orbs/layers.slice';
 import {
-  sortAndFilterPickedInfo,
+  filterAndSortPickedInfo,
   useSelectionTools,
 } from './useSelectionTools';
 
@@ -62,7 +62,7 @@ describe('useSelectionTools', () => {
     expect(result.current.selectionLayer).toBeFalsy();
   });
 
-  describe('sortAndFilterPickedInfo', () => {
+  describe('filterAndSortPickedInfo', () => {
     const info1 = {
         layer: { id: 'source/1' },
         object: { id: 1, geometry: { type: 'MultiPolygon' } },
@@ -86,7 +86,7 @@ describe('useSelectionTools', () => {
         'source/1': expect.anything(),
         'source/2': expect.anything(),
       });
-      expect(sortAndFilterPickedInfo(pickingInfos)).toEqual(expected);
+      expect(filterAndSortPickedInfo(pickingInfos)).toEqual(expected);
     });
 
     it('Only includes features with Polygon like geometry', () => {
@@ -94,7 +94,7 @@ describe('useSelectionTools', () => {
         'source/1': [info1],
         'source/2': [info4],
       };
-      expect(sortAndFilterPickedInfo(pickingInfos)).toEqual(expected);
+      expect(filterAndSortPickedInfo(pickingInfos)).toEqual(expected);
     });
 
     it('Removes features with no geometry type', () => {
@@ -102,7 +102,7 @@ describe('useSelectionTools', () => {
         { layer: { id: 'source/1' }, object: { geometry: {} } },
       ];
       const expected = {};
-      expect(sortAndFilterPickedInfo(pickingInfos)).toEqual(expected);
+      expect(filterAndSortPickedInfo(pickingInfos)).toEqual(expected);
     });
   });
 
