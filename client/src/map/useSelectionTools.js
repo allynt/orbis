@@ -1,7 +1,8 @@
 import { SelectionLayer } from '@nebula.gl/layers';
 import { activeLayersSelector } from 'data-layers/data-layers.slice';
+import { useDocumentEventListener } from 'hooks/useDocumentEventListener';
 import { filter, groupBy } from 'lodash';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { createReduxSafePickedInfo } from 'utils/data';
 import { KEY_CODES } from 'utils/KEY_CODES';
@@ -43,14 +44,8 @@ export const useSelectionTools = ({ defaultIsTriggerKeyHeld = false } = {}) => {
     if (hasTriggerKey(event)) setIsTriggerKeyHeld(false);
   };
 
-  useEffect(() => {
-    document.addEventListener('keydown', handleKeyDown);
-    document.addEventListener('keyup', handleKeyUp);
-    return () => {
-      document.removeEventListener('keydown', handleKeyDown);
-      document.removeEventListener('keyup', handleKeyUp);
-    };
-  }, []);
+  useDocumentEventListener('keydown', handleKeyDown);
+  useDocumentEventListener('keyup', handleKeyUp);
 
   const selectionLayer = new SelectionLayer({
     id: 'selection-layer',

@@ -20,6 +20,7 @@ import {
 import { hexToRgbArray } from 'utils/color';
 import { KEY_CODES } from 'utils/KEY_CODES';
 import { selectedMapStyleIdSelector } from 'map/map.slice';
+import { useDocumentEventListener } from 'hooks/useDocumentEventListener';
 
 const DRAW_MODE_MAP = new Map([
   ['ViewMode', ViewMode],
@@ -106,11 +107,7 @@ export const useDrawingTools = ({
         break;
     }
   };
-
-  useEffect(() => {
-    document.addEventListener('keyup', handleKeyPress);
-    return () => document.removeEventListener('keyup', handleKeyPress);
-  });
+  useDocumentEventListener('keyup', handleKeyPress);
 
   /**
    * @param {import('@turf/helpers').Feature} feature
