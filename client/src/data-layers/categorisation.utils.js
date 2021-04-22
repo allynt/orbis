@@ -170,7 +170,7 @@ const createNewCategorisedOrb = (orb, source, depth) => {
  * @returns {OrbWithCategorisedSources[]}
  */
 export const createOrbsWithCategorisedSources = (sources, depth) =>
-  sources.reduce(
+  sources?.reduce(
     /**
      * @param {OrbWithCategorisedSources[]} categorisedOrbs
      */

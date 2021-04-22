@@ -14,11 +14,18 @@ import {
 import clsx from 'clsx';
 import { difference, isEmpty } from 'lodash';
 
-import { collectSourceIds } from 'data-layers/categorisation.utils';
+import {
+  collectSourceIds,
+  createOrbsWithCategorisedSources,
+} from 'data-layers/categorisation.utils';
+
 import LayerSelectItem from './layer-select-item/layer-select-item.component';
+import LayerSearch from './layer-search/layer-search.component';
+
 import { Header } from '../components/header.component';
 import { List } from '../components/list.component';
 import { Section } from '../components/section.component';
+import { layerSearchFilter } from './layer-search/layer-search-filter';
 
 /**
  * @param {{
@@ -37,7 +44,7 @@ const renderCategories = ({
   onSourcesChange,
   selectedSources,
 }) =>
-  sources.map(source =>
+  sources?.map(source =>
     source.category ? (
       <Accordion
         key={source.category}
@@ -175,8 +182,9 @@ const useStyles = makeStyles(theme => ({
 
 /**
  * @param {{
- *   orbSources: import('typings/orbis').CategorisedSources
+ *   sources: import('typings/orbis').Source[]
  *   selectedSources?: import('typings/orbis').Source['source_id'][]
+ *   selectedOrbName?: string
  *   hasMadeChanges?: boolean
  *   onSourcesChange: (params: {
  *     source_ids: import('typings/orbis').Source['source_id'][]
@@ -185,26 +193,42 @@ const useStyles = makeStyles(theme => ({
  * }} props
  */
 export const LayerSelect = ({
-  orbSources,
+  sources,
   selectedSources,
+  selectedOrbName,
   hasMadeChanges = false,
   onSourcesChange,
   onSubmit,
 }) => {
   const styles = useStyles();
+  const [searchTerm, setSearchTerm] = useState(undefined);
+
+  const categorisedSources =
+    createOrbsWithCategorisedSources(
+      searchTerm ? layerSearchFilter(sources, searchTerm) : sources,
+    )?.find(orb => orb.name === selectedOrbName)?.sources || [];
+
+  console.log('categorisedSources: ', categorisedSources);
 
   return (
     <Section orientation="right">
       <Header>Add Data Layers</Header>
-      {orbSources ? (
-        <List dense>
-          {renderCategories({
-            sources: orbSources,
-            level: 0,
-            onSourcesChange,
-            selectedSources,
-          })}
-        </List>
+      {selectedOrbName ? (
+        <>
+          <LayerSearch
+            searchTerm={searchTerm}
+            onChange={e => setSearchTerm(e.target.value)}
+            noResults={!categorisedSources?.length}
+          />
+          <List dense>
+            {renderCategories({
+              sources: categorisedSources,
+              level: 0,
+              onSourcesChange,
+              selectedSources,
+            })}
+          </List>
+        </>
       ) : (
         <Typography className={styles.noOrbMessage}>
           Select Your Orb in order to find layers

@@ -64,19 +64,6 @@ describe('useDrawingTools', () => {
           expect.arrayContaining([setFeatures(updatedData)]),
         );
       });
-
-      it('does not dispatch the setFeatures action if editType is not addFeature', () => {
-        const updatedData = [{}];
-        const { result, store } = render();
-        const { editableLayer } = result.current;
-        editableLayer.props.onEdit({
-          editType: 'somethingElse',
-          updatedData,
-        });
-        expect(store.getActions()).not.toEqual(
-          expect.arrayContaining([setFeatures(updatedData)]),
-        );
-      });
     });
 
     describe('getFillColor', () => {
@@ -137,26 +124,16 @@ describe('useDrawingTools', () => {
       });
 
       it('Sets the clicked feature as selected', () => {
-        const { result } = render({ defaultDrawingToolsEnabled: true });
+        const { result } = render({
+          defaultDrawingToolsEnabled: true,
+          defaultDrawMode: 'TransformMode',
+        });
         act(() => {
           result.current.editableLayer.props.onClick({ index: 0 });
         });
         expect(
           result.current.editableLayer.props.selectedFeatureIndexes,
         ).toEqual([0]);
-      });
-
-      it('Removes the clicked feature from selected if already selected', () => {
-        const { result } = render({
-          defaultDrawingToolsEnabled: true,
-          defaultSelectedFeatureIndexes: [0],
-        });
-        act(() => {
-          result.current.editableLayer.props.onClick({ index: 0 });
-        });
-        expect(
-          result.current.editableLayer.props.selectedFeatureIndexes,
-        ).toEqual([]);
       });
     });
 
@@ -185,6 +162,7 @@ describe('useDrawingTools', () => {
       key => {
         const { store } = render({
           defaultDrawingToolsEnabled: true,
+          defaultDrawMode: 'TransformMode',
           defaultSelectedFeatureIndexes: [0],
         });
         act(() => {
@@ -195,18 +173,33 @@ describe('useDrawingTools', () => {
         );
       },
     );
+
+    it('Sets mode to ViewMode when escape key is pressed', () => {
+      const { result } = render({ defaultDrawMode: 'ModifyMode' });
+      act(() => {
+        fireEvent.keyUp(document, { key: 'Escape' });
+      });
+      expect(result.current.drawMode).toBe('ViewMode');
+    });
+
+    it('Clears selected features when escape key is pressed', () => {
+      const { result } = render({
+        defaultDrawMode: 'ModifyMode',
+        defaultSelectedFeatureIndexes: [0],
+      });
+      act(() => {
+        fireEvent.keyUp(document, { key: 'Escape' });
+      });
+      expect(
+        result.current.editableLayer.props.selectedFeatureIndexes,
+      ).toHaveLength(0);
+    });
   });
 
   describe('Enabling and disabling', () => {
     it('Is in ViewMode by default', () => {
       const { result } = render();
       expect(result.current.drawMode).toBe('ViewMode');
-    });
-
-    it('Changes mode to TranslateMode when enabled', () => {
-      const { result } = render();
-      act(() => result.current.setDrawingToolsEnabled(true));
-      expect(result.current.drawMode).toBe('TranslateMode');
     });
 
     it('Changes mode to ViewMode when disabled', () => {

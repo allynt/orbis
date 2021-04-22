@@ -9,6 +9,8 @@ import {
   makeStyles,
 } from '@astrosat/astrosat-ui';
 
+import { createOrbsWithCategorisedSources } from 'data-layers/categorisation.utils';
+
 import { OrbSelect } from './orb-select/orb-select.component';
 import { LayerSelect } from './layer-select/layer-select.component';
 
@@ -27,7 +29,7 @@ const useStyles = makeStyles(theme => ({
 
 /**
  * @param {{
- *   orbs: import('typings/orbis').OrbWithCategorisedSources[]
+ *   sources: import('typings/orbis').Source[]
  *   initialSelectedSources?: import('typings/orbis').Source['source_id'][]
  *   open?: boolean
  *   close: () => void
@@ -35,7 +37,7 @@ const useStyles = makeStyles(theme => ({
  * }} props
  */
 const DataLayersDialog = ({
-  orbs,
+  sources,
   initialSelectedSources = [],
   open = false,
   close,
@@ -87,13 +89,14 @@ const DataLayersDialog = ({
       </IconButton>
       <div className={styles.content}>
         <OrbSelect
-          orbs={orbs}
-          onOrbClick={setSelectedOrbName}
+          orbs={createOrbsWithCategorisedSources(sources)}
+          onOrbClick={orbName => setSelectedOrbName(orbName)}
           selectedOrbName={selectedOrbName}
         />
         <LayerSelect
-          orbSources={orbs?.find(orb => orb.name === selectedOrbName)?.sources}
+          sources={sources}
           selectedSources={selectedSources}
+          selectedOrbName={selectedOrbName}
           onSourcesChange={handleSourcesChange}
           onSubmit={handleSubmit}
           hasMadeChanges={hasMadeChanges}
