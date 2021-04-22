@@ -1,4 +1,5 @@
 import {
+  CircleIcon,
   DragPoygonIcon,
   DrawPolygonIcon,
   DrawRectangleIcon,
@@ -8,6 +9,7 @@ import {
 } from '@astrosat/astrosat-ui';
 import { Edit, Transform } from '@material-ui/icons';
 import {
+  DrawCircleFromCenterMode,
   DrawPointMode,
   DrawPolygonMode,
   DrawPolygonByDraggingMode,
@@ -20,6 +22,7 @@ import {
 } from '@nebula.gl/edit-modes';
 
 export const DRAW_MODE_MAP = {
+  DrawCircleFromCenterMode,
   DrawPointMode,
   DrawPolygonMode,
   DrawPolygonByDraggingMode,
@@ -50,6 +53,11 @@ export const TOOLS = [
     text: 'Point',
     Icon: MapPinIcon,
     value: 'DrawPointMode',
+  },
+  {
+    text: 'Circle',
+    Icon: CircleIcon,
+    value: 'DrawCircleFromCenterMode',
   },
   {
     text: 'Polygon',
