@@ -1,4 +1,5 @@
 import {
+  DragPoygonIcon,
   DrawPolygonIcon,
   MapPinIcon,
   MeasureAreaIcon,
@@ -8,6 +9,7 @@ import { Edit, Transform } from '@material-ui/icons';
 import {
   DrawPointMode,
   DrawPolygonMode,
+  DrawPolygonByDraggingMode,
   MeasureAreaMode,
   MeasureDistanceMode,
   ModifyMode,
@@ -18,6 +20,7 @@ import {
 export const DRAW_MODE_MAP = {
   DrawPointMode,
   DrawPolygonMode,
+  DrawPolygonByDraggingMode,
   MeasureAreaMode,
   MeasureDistanceMode,
   ModifyMode,
@@ -49,6 +52,11 @@ export const TOOLS = [
     text: 'Polygon',
     Icon: DrawPolygonIcon,
     value: 'DrawPolygonMode',
+  },
+  {
+    text: 'Drag Polygon',
+    Icon: DragPoygonIcon,
+    value: 'DrawPolygonByDraggingMode',
   },
   {
     text: 'Measure Area',
