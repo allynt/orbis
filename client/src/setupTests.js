@@ -7,10 +7,6 @@ import './polyfills/object-fromEntries';
 
 import '../public/config';
 
-jest.mock('react-ga', () => ({
-  event: jest.fn(),
-}));
-
 enableFetchMocks();
 global.URL.createObjectURL = jest.fn();
 global.requestIdleCallback = jest
