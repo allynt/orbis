@@ -41,7 +41,8 @@ export const useSelectionTools = ({ defaultIsTriggerKeyHeld = false } = {}) => {
 
   /** @param {KeyboardEvent} event */
   const handleKeyUp = event => {
-    if (hasTriggerKey(event)) setIsTriggerKeyHeld(false);
+    if (event.key === KEY_CODES.CONTROL || navigator.appVersion.includes('Mac'))
+      setIsTriggerKeyHeld(false);
   };
 
   useDocumentEventListener('keydown', handleKeyDown);
