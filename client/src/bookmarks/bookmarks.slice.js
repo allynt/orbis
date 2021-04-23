@@ -3,10 +3,11 @@ import {
   createSelector,
   createSlice,
 } from '@reduxjs/toolkit';
+import { userKeySelector } from 'accounts/accounts.selectors';
+import { BookmarksClient } from 'api-client/BookmarksClient';
 import { NotificationManager } from 'react-notifications';
 
 import {
-  getData,
   getFormAuthHeaders,
   getJsonAuthHeaders,
   getApiUrl,
@@ -30,32 +31,27 @@ const API = {
 const name = 'bookmarks';
 
 /**
- * @type {import('@reduxjs/toolkit').AsyncThunk<import('typings/orbis').Bookmark[], undefined, {}>}
+ * @type {import('@reduxjs/toolkit').AsyncThunk<import('typings/bookmarks').Bookmark[], undefined, {}>}
  */
 export const fetchBookmarks = createAsyncThunk(
   `${name}/fetchBookmarks`,
   async (_, { getState, rejectWithValue }) => {
-    const headers = getJsonAuthHeaders(getState());
-    const url = `${getApiUrl(getState())}${API.fetch}`;
+    const apiClient = new BookmarksClient();
+    apiClient.userKey = userKeySelector(getState());
 
-    const response = await getData(url, headers);
-
-    if (!response.ok) {
-      const message = `${response.status} ${response.statusText}`;
-
+    try {
+      return await apiClient.getBookmarks();
+    } catch (error) {
+      /** @type {import('api-client/BookmarksClient').ResponseError} */
+      const { message, status } = error;
       NotificationManager.error(
-        message,
-        `Fetching Bookmark Error - ${response.statusText}`,
+        `${status} ${message}`,
+        `Fetching Bookmark Error - ${message}`,
         50000,
         () => {},
       );
-
-      return rejectWithValue({ message });
+      return rejectWithValue({ message: `${status} ${message}` });
     }
-
-    const bookmarks = await response.json();
-
-    return bookmarks;
   },
 );
 
