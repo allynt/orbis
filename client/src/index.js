@@ -7,8 +7,6 @@ import { PersistGate } from 'redux-persist/integration/react';
 import { NotificationContainer } from 'react-notifications';
 import 'react-notifications/lib/notifications.css';
 
-// import registerServiceWorker from './registerServiceWorker';
-
 import store, { persistor } from './store';
 import { history } from './root.reducer';
 
@@ -20,22 +18,6 @@ import installDevTools from './dev-tools/load';
 import { MapProvider } from 'MapContext';
 
 import { setApiUrl } from './app.slice';
-
-window.onerror = (msg, url, line, col, error) => {
-  // Note that col & error are new to the HTML 5 spec and may not be
-  // supported in every browser.  It worked for me in Chrome.
-  let extra = !col ? '' : '\ncolumn: ' + col;
-  extra += !error ? '' : '\nerror: ' + error;
-
-  // You can view the information in an alert to see things working like this:
-  const errorMsg =
-    'Error: ' + msg + '\nurl: ' + url + '\nline: ' + line + extra;
-
-  const suppressErrorAlert = true;
-  // If you return true, then error alerts (like in older versions of
-  // Internet Explorer) will be suppressed.
-  return suppressErrorAlert;
-};
 
 process.env.NODE_ENV === 'development'
   ? store.dispatch(setApiUrl(process.env.REACT_APP_API_HOST))
@@ -75,4 +57,3 @@ if (process.env.NODE_ENV === 'development' && module.hot) {
 if (window.Cypress) {
   window.store = store;
 }
-// registerServiceWorker();
