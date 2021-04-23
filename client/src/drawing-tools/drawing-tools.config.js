@@ -1,20 +1,41 @@
-import { DrawPolygonIcon, MapPinIcon, RulerIcon } from '@astrosat/astrosat-ui';
+import {
+  CircleIcon,
+  DragPoygonIcon,
+  DrawEllipseIcon,
+  DrawPolygonIcon,
+  DrawRectangleIcon,
+  MapPinIcon,
+  MeasureAreaIcon,
+  RulerIcon,
+} from '@astrosat/astrosat-ui';
 import { Edit, Transform } from '@material-ui/icons';
 import {
+  DrawCircleFromCenterMode,
   DrawPointMode,
   DrawPolygonMode,
+  DrawPolygonByDraggingMode,
+  DrawRectangleMode,
+  DrawEllipseByBoundingBoxMode,
+  MeasureAreaMode,
   MeasureDistanceMode,
   ModifyMode,
-  TransformMode,
+  ScaleMode,
+  TranslateMode,
+  CompositeMode,
   ViewMode,
 } from '@nebula.gl/edit-modes';
 
 export const DRAW_MODE_MAP = {
+  DrawCircleFromCenterMode,
   DrawPointMode,
   DrawPolygonMode,
+  DrawPolygonByDraggingMode,
+  DrawRectangleMode,
+  DrawEllipseByBoundingBoxMode,
+  MeasureAreaMode,
   MeasureDistanceMode,
   ModifyMode,
-  TransformMode,
+  TransformMode: new CompositeMode([new TranslateMode(), new ScaleMode()]),
   ViewMode,
 };
 
@@ -39,9 +60,34 @@ export const TOOLS = [
     value: 'DrawPointMode',
   },
   {
+    text: 'Circle',
+    Icon: CircleIcon,
+    value: 'DrawCircleFromCenterMode',
+  },
+  {
     text: 'Polygon',
     Icon: DrawPolygonIcon,
     value: 'DrawPolygonMode',
+  },
+  {
+    text: 'Drag Polygon',
+    Icon: DragPoygonIcon,
+    value: 'DrawPolygonByDraggingMode',
+  },
+  {
+    text: 'Rectangle',
+    Icon: DrawRectangleIcon,
+    value: 'DrawRectangleMode',
+  },
+  {
+    text: 'Ellipse',
+    Icon: DrawEllipseIcon,
+    value: 'DrawEllipseByBoundingBoxMode',
+  },
+  {
+    text: 'Measure Area',
+    Icon: MeasureAreaIcon,
+    value: 'MeasureAreaMode',
   },
   {
     text: 'Measure Distance',
