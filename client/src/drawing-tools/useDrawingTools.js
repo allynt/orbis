@@ -1,5 +1,6 @@
 import { darken, rgbToHex } from '@astrosat/astrosat-ui';
 import { EditableGeoJsonLayer } from '@nebula.gl/layers';
+import { convertArea } from '@turf/helpers';
 import { useDocumentEventListener } from 'hooks/useDocumentEventListener';
 import { findIndex, get } from 'lodash';
 import { selectedMapStyleIdSelector } from 'map/map.slice';
@@ -138,6 +139,14 @@ export const useDrawingTools = ({
       turfOptions: {
         units: 'miles',
       },
+      ...(drawMode === 'MeasureAreaMode'
+        ? {
+            formatTooltip: distance =>
+              `${Number(
+                convertArea(distance, 'meters', 'miles').toFixed(2),
+              ).toLocaleString()} Sq mi`,
+          }
+        : {}),
     },
     _subLayerProps: {
       tooltips: {

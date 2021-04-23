@@ -222,4 +222,17 @@ describe('useDrawingTools', () => {
       );
     });
   });
+
+  describe('MeasureAreaMode', () => {
+    it('formats the area in square miles', () => {
+      const { result } = render({
+        defaultDrawingToolsEnabled: true,
+        defaultDrawMode: 'MeasureAreaMode',
+      });
+
+      expect(
+        result.current.editableLayer.props.modeConfig.formatTooltip(10000000),
+      ).toBe('3.86 Sq mi');
+    });
+  });
 });
