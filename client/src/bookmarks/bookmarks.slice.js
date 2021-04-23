@@ -38,7 +38,7 @@ export const fetchBookmarks = createAsyncThunk(
     try {
       return await apiClient.bookmarks.getBookmarks();
     } catch (error) {
-      /** @type {import('api-client/BookmarksClient').ResponseError} */
+      /** @type {import('api-client').ResponseError} */
       const { message, status } = error;
       NotificationManager.error(
         `${status} ${message}`,

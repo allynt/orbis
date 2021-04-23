@@ -1,30 +1,6 @@
 import { SubClient } from './SubClient';
 
-export class ResponseError extends Error {
-  /** @type {number} */
-  status;
-
-  /**
-   * @param {Error['message']} message
-   * @param {number} status
-   */
-  constructor(message, status) {
-    super(message);
-    this.status = status;
-  }
-}
-
 /** @typedef {import('typings/bookmarks').Bookmark} Bookmark */
-
-/**
- * @param {Response} response
- * @returns {Response}
- */
-const handleErrors = response => {
-  if (!response.ok)
-    throw new ResponseError(response.statusText, response.status);
-  return response;
-};
 
 export class BookmarksClient extends SubClient {
   /**
@@ -40,7 +16,7 @@ export class BookmarksClient extends SubClient {
         Authorization: `Token ${this.userKey}`,
       },
     })
-      .then(handleErrors)
+      .then(SubClient.handleErrors)
       .then(response => response.json());
   }
 
