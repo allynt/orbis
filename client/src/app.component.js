@@ -1,36 +1,27 @@
-import React, { useEffect, useRef, lazy, Suspense } from 'react';
-import ReactGA from 'react-ga';
+import React, { lazy, Suspense, useEffect, useRef } from 'react';
+
+import { Box } from '@astrosat/astrosat-ui';
+
 import { useDispatch, useSelector } from 'react-redux';
 import { Route, Switch } from 'react-router-dom';
 import ReactTooltip from 'react-tooltip';
 
-import { Box, Dialog /*useModal*/, ThemeProvider } from '@astrosat/astrosat-ui';
-
-import PrivateRoute from './utils/private-route.component';
-
+import Accounts from './accounts';
+import { userSelector } from './accounts/accounts.selectors';
+import { fetchUser } from './accounts/accounts.slice';
 import {
   fetchAppConfig,
   logUserTracking,
   userTrackingIntervalSelector,
 } from './app.slice';
-import { fetchUser } from './accounts/accounts.slice';
-import { userSelector } from './accounts/accounts.selectors';
-
-import Accounts from './accounts';
-
 import LandingView from './landing/landing.component';
-
 import MapLayout from './map';
-
-import styles from './app.module.css';
+import PrivateRoute from './utils/private-route.component';
 
 const Admin = lazy(() => import('./admin/admin.component'));
 
 const App = () => {
   const dispatch = useDispatch();
-  const trackingId = useSelector(state =>
-    state && state.app && state.app.config ? state.app.config.trackingId : null,
-  );
   const userTrackingInterval = useSelector(userTrackingIntervalSelector);
 
   const user = useSelector(userSelector);
@@ -61,17 +52,6 @@ const App = () => {
       dispatch(fetchUser());
     }
   }, [dispatch, user, userKey]);
-
-  // If the Google Analytics tracking id doesn't exist, fetch it,
-  // then setup analytics. This should only be done once on app
-  // startup.
-  useEffect(() => {
-    if (trackingId) {
-      ReactGA.initialize(trackingId);
-      // ReactGA.initialize(trackingId, { debug: true });
-      ReactGA.pageview('/', null, 'ORBIS App');
-    }
-  }, [dispatch, trackingId]);
 
   useEffect(() => {
     if (userTrackingInterval) {
