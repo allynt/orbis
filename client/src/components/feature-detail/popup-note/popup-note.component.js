@@ -4,6 +4,7 @@ import {
   Input,
   Button,
   Typography,
+  Grid,
   ListItem,
   makeStyles,
 } from '@astrosat/astrosat-ui';
@@ -16,37 +17,36 @@ const useStyles = makeStyles(theme => ({
   },
   key: {
     alignSelf: 'flex-start',
-    margin: '0 1rem 0 0',
+    marginRight: theme.spacing(1),
   },
   note: {
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'space-between',
-    minWidth: '20rem',
+    minWidth: theme.spacing(40),
     alignItems: 'flex-start',
   },
   displays: {
     width: '100%',
     display: 'flex',
     justifyContent: 'space-between',
+    marginBottom: theme.spacing(1),
   },
   charLimitMessage: {
-    color: 'red',
+    color: `${theme.palette.error.main}`,
     margin: '0',
   },
   charCount: {
     /** @param { charLimitExceeded } boolean */
-    color: ({ charLimitExceeded }) => (charLimitExceeded ? 'red' : 'yellow'),
+    color: ({ charLimitExceeded }) =>
+      charLimitExceeded
+        ? `${theme.palette.error.main}`
+        : `${theme.palette.primary.main}`,
   },
   buttons: {
-    display: 'flex',
-    justifyContent: 'space-evenly',
-    alignItems: 'center',
     width: '100%',
-    gap: '1rem',
+    gap: theme.spacing(1),
   },
   button: {
-    padding: '0.5rem 3rem',
+    padding: theme.spacing(0.5, 0),
+    minWidth: theme.spacing(16),
   },
 }));
 
@@ -56,7 +56,7 @@ const PopupNote = ({ note, onNoteSave }) => {
   const [editMode, setEditMode] = useState(false);
 
   const CHAR_LIMIT = 3000,
-    charLimitExceeded = charCount >= CHAR_LIMIT,
+    charLimitExceeded = charCount > CHAR_LIMIT,
     hasMadeChanges = text !== note?.body,
     disabled = charLimitExceeded || !hasMadeChanges;
 
@@ -71,23 +71,32 @@ const PopupNote = ({ note, onNoteSave }) => {
     if (!editMode) return setEditMode(true);
 
     setText(note?.body);
+    setCharCount(note?.body?.length);
     return setEditMode(false);
   };
 
   const handleSaveClick = () => {
     setEditMode(false);
-    return onNoteSave(text);
+    return onNoteSave(text.trim());
   };
 
   return (
     <ListItem className={styles.container}>
-      <h4 className={styles.key}>Note:</h4>
-      <div className={styles.note}>
+      <Typography variant="h4" className={styles.key}>
+        Note:
+      </Typography>
+      <Grid
+        container
+        direction="column"
+        justify="space-between"
+        className={styles.note}
+      >
         <Input
           multiline
           rows={3}
           onChange={handleChange}
           value={text || ''}
+          placeholder="Type here..."
           inputProps={{
             'aria-label': 'Popup Note',
           }}
@@ -105,12 +114,16 @@ const PopupNote = ({ note, onNoteSave }) => {
             {charCount || '0'}/{CHAR_LIMIT}
           </Typography>
         </div>
-
-        <div className={styles.buttons}>
+        <Grid
+          container
+          justify="space-evenly"
+          alignItems="center"
+          className={styles.buttons}
+        >
           <Button
             className={styles.button}
             onClick={handleSaveClick}
-            disabled={disabled || !editMode}
+            disabled={disabled || (!!note && !editMode)}
           >
             Save
           </Button>
@@ -119,8 +132,8 @@ const PopupNote = ({ note, onNoteSave }) => {
               {editMode ? 'Cancel' : 'Edit'}
             </Button>
           ) : null}
-        </div>
-      </div>
+        </Grid>
+      </Grid>
     </ListItem>
   );
 };

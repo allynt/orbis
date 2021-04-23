@@ -58,10 +58,7 @@ const FeatureDetailPopup = ({ source }) => {
     }
   };
 
-  const notes = [
-    { id: 1, body: 'this is a test note' },
-    { id: 2, body: 'this is a second test note' },
-  ];
+  const note = { id: 1, body: 'this is a test note' };
 
   if (!clickedFeatures?.length && !hoveredFeatures?.length) return null;
 
@@ -79,7 +76,7 @@ const FeatureDetailPopup = ({ source }) => {
     >
       <FeatureDetail
         features={features?.map(obj => obj?.properties)}
-        note={null}
+        note={note}
         onNoteSave={onNoteSave}
       />
     </Popup>

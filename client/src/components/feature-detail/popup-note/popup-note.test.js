@@ -32,7 +32,6 @@ describe('Popup Note', () => {
     expect(getByLabelText('Popup Note')).toBeInTheDocument();
     expect(getByText('0/3000')).toBeInTheDocument();
     expect(getByRole('button', { name: 'Save' })).toBeInTheDocument();
-    expect(getByRole('button', { name: 'Edit' })).toBeInTheDocument();
   });
 
   it('displays the note body if a note is present', () => {
@@ -47,6 +46,20 @@ describe('Popup Note', () => {
     expect(getByText(`${defaultNote.body.length}/3000`)).toBeInTheDocument();
   });
 
+  it('enables text area when edit button is clicked', () => {
+    const { getByRole } = renderComponent({});
+
+    expect(getByRole('textbox', { name: 'Popup Note' })).toHaveAttribute(
+      'disabled',
+    );
+
+    userEvent.click(getByRole('button', { name: 'Edit' }));
+
+    expect(getByRole('textbox', { name: 'Popup Note' })).not.toHaveAttribute(
+      'disabled',
+    );
+  });
+
   it('displays error message if character count exceeds limit', () => {
     const { getByText } = renderComponent({
       note: longBodyNote,
@@ -55,19 +68,17 @@ describe('Popup Note', () => {
     expect(getByText('Character limit exceeded')).toBeInTheDocument();
   });
 
-  it('disables buttons if character count exceeds limit', () => {
+  it('disables save button if character count exceeds limit', () => {
     const { getByRole } = renderComponent({
       note: longBodyNote,
     });
 
     expect(getByRole('button', { name: 'Save' })).toHaveAttribute('disabled');
-    expect(getByRole('button', { name: 'Edit' })).toHaveAttribute('disabled');
   });
 
-  it('disables buttons if no changes have been made', () => {
+  it('disables dave button if no changes have been made', () => {
     const { getByRole } = renderComponent({});
     expect(getByRole('button', { name: 'Save' })).toHaveAttribute('disabled');
-    expect(getByRole('button', { name: 'Edit' })).toHaveAttribute('disabled');
   });
 
   it('calls save handler when save button is clicked', () => {
@@ -83,18 +94,16 @@ describe('Popup Note', () => {
     expect(onNoteSave).toHaveBeenCalledWith('some note text');
   });
 
-  it('calls edit handler when edit button is clicked', () => {
-    const { getByRole, onNoteEdit } = renderComponent({ note: null });
+  it('trims trailing whitespace of saved note', () => {
+    const { getByRole, onNoteSave } = renderComponent({ note: null });
 
     userEvent.type(
       getByRole('textbox', { name: 'Popup Note' }),
-      'some note text',
+      'some text with whitespace     ',
     );
 
-    userEvent.click(getByRole('button', { name: 'Edit' }));
+    userEvent.click(getByRole('button', { name: 'Save' }));
 
-    expect(onNoteEdit).toHaveBeenCalledWith('some note text');
+    expect(onNoteSave).toHaveBeenCalledWith('some text with whitespace');
   });
-
-  it('sadfg', () => {});
 });
