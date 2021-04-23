@@ -3,10 +3,9 @@ import {
   createSelector,
   createSlice,
 } from '@reduxjs/toolkit';
-import { userKeySelector } from 'accounts/accounts.selectors';
-import { BookmarksClient } from 'api-client/BookmarksClient';
 import { NotificationManager } from 'react-notifications';
 
+import apiClient from 'api-client';
 import {
   getFormAuthHeaders,
   getJsonAuthHeaders,
@@ -35,12 +34,9 @@ const name = 'bookmarks';
  */
 export const fetchBookmarks = createAsyncThunk(
   `${name}/fetchBookmarks`,
-  async (_, { getState, rejectWithValue }) => {
-    const apiClient = new BookmarksClient();
-    apiClient.userKey = userKeySelector(getState());
-
+  async (_, { rejectWithValue }) => {
     try {
-      return await apiClient.getBookmarks();
+      return await apiClient.bookmarks.getBookmarks();
     } catch (error) {
       /** @type {import('api-client/BookmarksClient').ResponseError} */
       const { message, status } = error;

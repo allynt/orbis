@@ -4,6 +4,7 @@ import {
   selectCurrentCustomer,
   setCurrentCustomer,
 } from 'admin/admin.slice';
+import apiClient from 'api-client';
 import { push } from 'connected-react-router';
 
 import { NotificationManager } from 'react-notifications';
@@ -145,6 +146,7 @@ const accountsSlice = createSlice({
     },
     loginUserSuccess: (state, { payload }) => {
       state.userKey = payload.userKey;
+      apiClient.userKey = payload.userKey;
       state.user = payload.user;
       state.error = null;
       state.isLoading = false;

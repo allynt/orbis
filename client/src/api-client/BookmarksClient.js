@@ -1,3 +1,5 @@
+import { SubClient } from './SubClient';
+
 export class ResponseError extends Error {
   /** @type {number} */
   status;
@@ -24,26 +26,7 @@ const handleErrors = response => {
   return response;
 };
 
-export class BookmarksClient {
-  /** @type {string} */
-  apiHost;
-  /** @type {string} */
-  #userKey;
-
-  constructor() {
-    this.apiHost =
-      process.env.NODE_ENV === 'development'
-        ? process.env.REACT_APP_API_HOST
-        : window?._env_?.REACT_APP_API_HOST;
-  }
-
-  /**
-   * @param {string} userKey
-   */
-  set userKey(userKey) {
-    this.#userKey = userKey;
-  }
-
+export class BookmarksClient extends SubClient {
   /**
    * @returns {Promise<Bookmark[]>}
    * @throws {ResponseError}
@@ -54,7 +37,7 @@ export class BookmarksClient {
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
-        Authorization: `Token ${this.#userKey}`,
+        Authorization: `Token ${this.userKey}`,
       },
     })
       .then(handleErrors)
