@@ -169,6 +169,8 @@ export const useOrbs = () => {
         });
       }
 
+      // This is as far as you got `Uncaught (in promise) TypeError: Class is
+      // not a constructor`
       const layer = LayerFactory(name, {
         ...metadataConfig,
         ...loadedConfig,
