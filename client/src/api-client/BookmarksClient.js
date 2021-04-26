@@ -8,16 +8,16 @@ export class BookmarksClient extends SubClient {
    * @throws {ResponseError}
    */
   async getBookmarks() {
-    return fetch(`${this.apiHost}/api/bookmarks/`, {
+    const response = await fetch(`${this.apiHost}/api/bookmarks/`, {
       credentials: 'include',
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
         Authorization: `Token ${this.userKey}`,
       },
-    })
-      .then(SubClient.handleErrors)
-      .then(response => response.json());
+    });
+    SubClient.handleErrors(response);
+    return response.json();
   }
 
   /**
@@ -36,7 +36,7 @@ export class BookmarksClient extends SubClient {
       'drawn_feature_collection',
       JSON.stringify(bookmark['drawn_feature_collection']),
     );
-    return fetch(`${this.apiHost}/api/bookmarks/`, {
+    const response = await fetch(`${this.apiHost}/api/bookmarks/`, {
       credentials: 'include',
       method: 'POST',
       headers: {
@@ -44,9 +44,9 @@ export class BookmarksClient extends SubClient {
         Authorization: `Token ${this.userKey}`,
       },
       body: formData,
-    })
-      .then(SubClient.handleErrors)
-      .then(response => response.json());
+    });
+    SubClient.handleErrors(response);
+    return response.json();
   }
 
   /**
@@ -54,14 +54,18 @@ export class BookmarksClient extends SubClient {
    * @throws {ResponseError}
    */
   async deleteBookmark(bookmarkId) {
-    await fetch(`${this.apiHost}/api/bookmarks/${bookmarkId}/`, {
-      credentials: 'include',
-      method: 'DELETE',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-        Authorization: `Token ${this.userKey}`,
+    const response = await fetch(
+      `${this.apiHost}/api/bookmarks/${bookmarkId}/`,
+      {
+        credentials: 'include',
+        method: 'DELETE',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+          Authorization: `Token ${this.userKey}`,
+        },
       },
-    }).then(SubClient.handleErrors);
+    );
+    SubClient.handleErrors(response);
   }
 }
