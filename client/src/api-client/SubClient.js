@@ -20,8 +20,8 @@ export class SubClient {
    * @param {RequestInfo} url
    * @param {RequestInit} options
    */
-  makeRequest(url, options = {}) {
-    return fetch(`${this.apiHost}${url}`, {
+  async makeRequest(url, options = {}) {
+    const response = await fetch(`${this.apiHost}${url}`, {
       ...options,
       credentials: 'include',
       headers: {
@@ -29,6 +29,8 @@ export class SubClient {
         Authorization: `Token ${this.userKey}`,
       },
     });
+    SubClient.handleErrors(response);
+    return response;
   }
 
   set apiHost(apiHost) {

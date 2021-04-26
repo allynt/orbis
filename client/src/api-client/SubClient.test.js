@@ -33,14 +33,14 @@ describe('SubClient', () => {
     it('Calls fetch with apiHost prepended to the provided url', async () => {
       const client = new SubClient();
       client.apiHost = 'test-host.com';
-      await client.makeRequest('/api/test/endpoint');
+      client.makeRequest('/api/test/endpoint');
       expect(fetch).toBeCalledWith(
         'test-host.com/api/test/endpoint',
         expect.anything(),
       );
     });
 
-    it('Calls fetch with authentication header containing userKey', () => {
+    it('Calls fetch with authentication header containing userKey', async () => {
       const testOptions = {
         method: 'DELETE',
         headers: { Accept: 'everything' },
@@ -58,6 +58,21 @@ describe('SubClient', () => {
           },
         }),
       );
+    });
+
+    it('Handles errors when response is not ok', async () => {
+      fetch.mockResponse(
+        JSON.stringify({
+          message: 'Test error message',
+        }),
+        {
+          ok: false,
+          status: 401,
+          statusText: 'Test Error',
+        },
+      );
+      const client = new SubClient();
+      await expect(client.makeRequest('/api')).rejects.toThrow();
     });
   });
 });

@@ -14,7 +14,6 @@ export class BookmarksClient extends SubClient {
         'Content-Type': 'application/json',
       },
     });
-    SubClient.handleErrors(response);
     return response.json();
   }
 
@@ -41,7 +40,6 @@ export class BookmarksClient extends SubClient {
       },
       body: formData,
     });
-    SubClient.handleErrors(response);
     return response.json();
   }
 
@@ -50,13 +48,12 @@ export class BookmarksClient extends SubClient {
    * @throws {ResponseError}
    */
   async deleteBookmark(bookmarkId) {
-    const response = await this.makeRequest(`/api/bookmarks/${bookmarkId}/`, {
+    await this.makeRequest(`/api/bookmarks/${bookmarkId}/`, {
       method: 'DELETE',
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
       },
     });
-    SubClient.handleErrors(response);
   }
 }
