@@ -208,8 +208,6 @@ export const LayerSelect = ({
       searchTerm ? layerSearchFilter(sources, searchTerm) : sources,
     )?.find(orb => orb.name === selectedOrbName)?.sources || [];
 
-  console.log('categorisedSources: ', categorisedSources);
-
   return (
     <Section orientation="right">
       <Header>Add Data Layers</Header>
