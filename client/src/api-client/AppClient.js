@@ -10,7 +10,7 @@ export class AppClient extends SubClient {
    * @returns {Promise<any>}
    */
   async getConfig() {
-    const response = await this.makeRequest(`${this.endpoint}/config`);
+    const response = await this.makeRequest('/config');
     return response.json();
   }
 }

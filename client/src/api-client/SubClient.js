@@ -8,6 +8,10 @@ export class SubClient {
   /** @type {string} */
   endpoint;
 
+  constructor(endpoint = '') {
+    this.endpoint = endpoint;
+  }
+
   /**
    * @param {Response} response
    * @returns {Response}
@@ -22,8 +26,8 @@ export class SubClient {
    * @param {RequestInfo} url
    * @param {RequestInit} options
    */
-  async makeRequest(url, options = {}) {
-    const response = await fetch(`${this.apiHost}/api${url}`, {
+  async makeRequest(url = '', options = {}) {
+    const response = await fetch(`${this.apiHost}/api${this.endpoint}${url}`, {
       credentials: 'include',
       ...options,
     });
