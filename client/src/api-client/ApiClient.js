@@ -2,6 +2,7 @@ import { BookmarksClient } from './BookmarksClient';
 
 export class ApiClient {
   bookmarks;
+  /** @private */
   subClients = ['bookmarks'];
 
   constructor() {
@@ -13,6 +14,7 @@ export class ApiClient {
   }
 
   /**
+   * @private
    * @param {'userKey' | 'apiHost'} key
    * @param {string} value
    */
