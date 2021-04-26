@@ -186,7 +186,6 @@ const useStyles = makeStyles(theme => ({
 const FeatureDetail = ({
   children,
   features,
-  note,
   onNoteSave,
   title = DEFAULT_TITLE,
   footer,
@@ -203,7 +202,11 @@ const FeatureDetail = ({
           features?.map(feature => (
             <List key={feature?.id} className={styles.list}>
               {mapObject(feature)}
-              <PopupNote key={note?.id} note={note} onNoteSave={onNoteSave} />
+              <PopupNote
+                key={feature?.note?.id}
+                note={feature?.note}
+                onNoteSave={onNoteSave}
+              />
               {footer && <Item jsonKey={footer.label} value={footer.content} />}
             </List>
           ))}

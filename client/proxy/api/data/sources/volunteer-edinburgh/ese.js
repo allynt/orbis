@@ -7,7 +7,6 @@ module.exports = {
   type: 'vector',
   version: 'latest',
   metadata: {
-    request_strategy: 'manual',
     url: '/api/data/sources/volunteer-edinburgh/ese',
     name: 'Action for Help (VE)',
     label: 'ESE Members',
@@ -15,9 +14,14 @@ module.exports = {
     application: {
       orbis: {
         layer: {
-          name: 'GeoJsonPinLayer"',
+          name: 'GeoJsonPinLayer',
           props: {
             config: 'pinIconConfig',
+            pinColor: '#51c16a',
+            onGroupClick: true,
+            onGroupHover: false,
+            onPointClick: true,
+            onPointHover: false,
           },
         },
         orbs: [{ name: 'Action for Help (VE)' }],
@@ -40,6 +44,5 @@ module.exports = {
     },
     description: 'Test description.',
   },
-  data:
-    '/static-data/astrosat/volunteer-edinburgh/ese/v1.VE_ESE_members.geojson',
+  data: '/static-data/astrosat/volunteer-edinburgh/ese/v1/VE_ESE_members.js',
 };
