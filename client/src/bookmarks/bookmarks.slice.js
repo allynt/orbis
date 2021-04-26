@@ -6,12 +6,7 @@ import {
 import { NotificationManager } from 'react-notifications';
 
 import apiClient from 'api-client';
-import {
-  getFormAuthHeaders,
-  getJsonAuthHeaders,
-  getApiUrl,
-  sendData,
-} from '../utils/http';
+import { getJsonAuthHeaders, getApiUrl, sendData } from '../utils/http';
 
 const API = {
   fetch: '/api/bookmarks/',
@@ -52,44 +47,30 @@ export const fetchBookmarks = createAsyncThunk(
 );
 
 /**
- * @type {import('@reduxjs/toolkit').AsyncThunk<import('typings/bookmarks').Bookmark, import('typings/bookmarks').Bookmark, {}>}
+ * @type {import('@reduxjs/toolkit').AsyncThunk<
+ *  import('typings/bookmarks').Bookmark,
+ *  import('typings/bookmarks').RequestBookmark,
+ *  {}
+ * >}
  */
 export const addBookmark = createAsyncThunk(
   `${name}/addBookmark`,
-  async (bookmark, { getState, rejectWithValue }) => {
-    const formData = new FormData();
-    Object.keys(bookmark).forEach(key => formData.append(key, bookmark[key]));
-    // nested JSON should be stringified prior to passing to backend
-    formData.set('center', JSON.stringify(bookmark['center']));
-    formData.set('layers', JSON.stringify(bookmark['layers']));
-    formData.set('orbs', JSON.stringify(bookmark['orbs']));
-    formData.set(
-      'drawn_feature_collection',
-      JSON.stringify(bookmark['drawn_feature_collection']),
-    );
-
-    const headers = getFormAuthHeaders(getState());
-    const url = `${getApiUrl(getState())}${API.add}`;
-
-    const response = await sendData(url, formData, headers);
-
-    if (!response.ok) {
-      const message = `${response.status} ${response.statusText}`;
-
-      NotificationManager.error(message, `Adding Map Error`, 50000, () => {});
-
-      return rejectWithValue({ message });
+  async (bookmark, { rejectWithValue }) => {
+    try {
+      return await apiClient.bookmarks.addBookmark(bookmark);
+    } catch (error) {
+      /** @type {import('api-client').ResponseError} */
+      const { message, status } = error;
+      NotificationManager.error(
+        `${status} ${message}`,
+        `Adding Map Error`,
+        50000,
+        () => {},
+      );
+      return rejectWithValue({
+        message: `${status} ${message}`,
+      });
     }
-
-    const newBookmark = await response.json();
-    NotificationManager.success(
-      '',
-      `Successfully saved ${bookmark.title}`,
-      5000,
-      () => {},
-    );
-
-    return newBookmark;
   },
 );
 
