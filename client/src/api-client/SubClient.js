@@ -2,16 +2,9 @@ import { ResponseError } from './ResponseError';
 
 export class SubClient {
   /** @type {string} */
-  apiHost;
+  #apiHost;
   /** @type {string} */
   #userKey;
-
-  constructor() {
-    this.apiHost =
-      process.env.NODE_ENV === 'development'
-        ? process.env.REACT_APP_API_HOST
-        : window?._env_?.REACT_APP_API_HOST;
-  }
 
   /**
    * @param {Response} response
@@ -21,6 +14,14 @@ export class SubClient {
     if (!response.ok)
       throw new ResponseError(response.statusText, response.status);
     return response;
+  }
+
+  set apiHost(apiHost) {
+    this.#apiHost = apiHost;
+  }
+
+  get apiHost() {
+    return this.#apiHost;
   }
 
   set userKey(userKey) {

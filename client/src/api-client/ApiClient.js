@@ -6,12 +6,31 @@ export class ApiClient {
 
   constructor() {
     this.bookmarks = new BookmarksClient();
+    this.apiHost =
+      process.env.NODE_ENV === 'development'
+        ? process.env.REACT_APP_API_HOST
+        : window?._env_?.REACT_APP_API_HOST;
+  }
+
+  /**
+   * @param {'userKey' | 'apiHost'} key
+   * @param {string} value
+   */
+  setSubClientMember(key, value) {
+    this.#subClients.forEach(client => (this[client][key] = value));
   }
 
   /**
    * @param {string} userKey
    */
   set userKey(userKey) {
-    this.#subClients.forEach(client => (this[client].userKey = userKey));
+    this.setSubClientMember('userKey', userKey);
+  }
+
+  /**
+   * @param {string} apiHost
+   */
+  set apiHost(apiHost) {
+    this.setSubClientMember('apiHost', apiHost);
   }
 }

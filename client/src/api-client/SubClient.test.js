@@ -10,19 +10,9 @@ describe('SubClient', () => {
   });
 
   describe('apiHost', () => {
-    it('is set to process.env.REACT_APP_API_HOST if env is development', () => {
-      // @ts-ignore
-      process.env.NODE_ENV = 'development';
-      process.env.REACT_APP_API_HOST = 'http://test-host.com';
+    it('gets and sets', () => {
       const subClient = new SubClient();
-      expect(subClient.apiHost).toBe('http://test-host.com');
-    });
-
-    it('is set to window?._env_?.REACT_APP_API_HOST if env is not development', () => {
-      // @ts-ignore
-      process.env.NODE_ENV = 'something else';
-      window._env_ = { REACT_APP_API_HOST: 'http://test-host.com' };
-      const subClient = new SubClient();
+      subClient.apiHost = 'http://test-host.com';
       expect(subClient.apiHost).toBe('http://test-host.com');
     });
   });
