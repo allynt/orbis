@@ -7,7 +7,7 @@ export class UsersClient extends SubClient {
   }
 
   /**
-   * @param {User['email']} userId
+   * @param {User['id']} userId
    * @returns {Promise<User>}
    */
   async getUser(userId) {
