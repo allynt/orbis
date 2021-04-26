@@ -13,7 +13,7 @@ export class BookmarksClient extends SubClient {
    * @throws {ResponseError}
    */
   async getBookmarks() {
-    const response = await this.makeRequest(this.endpoint, {
+    const response = await this.makeAuthenticatedRequest(this.endpoint, {
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
@@ -38,7 +38,7 @@ export class BookmarksClient extends SubClient {
       'drawn_feature_collection',
       JSON.stringify(bookmark['drawn_feature_collection']),
     );
-    const response = await this.makeRequest(`${this.endpoint}/`, {
+    const response = await this.makeAuthenticatedRequest(`${this.endpoint}/`, {
       method: 'POST',
       headers: {
         Accept: 'application/json, application/xml, text/plain, text/html, *.*',
@@ -53,7 +53,7 @@ export class BookmarksClient extends SubClient {
    * @throws {ResponseError}
    */
   async deleteBookmark(bookmarkId) {
-    await this.makeRequest(`${this.endpoint}/${bookmarkId}/`, {
+    await this.makeAuthenticatedRequest(`${this.endpoint}/${bookmarkId}/`, {
       method: 'DELETE',
       headers: {
         Accept: 'application/json',

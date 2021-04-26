@@ -3,6 +3,10 @@ import fetch from 'jest-fetch-mock';
 import { SubClient } from './SubClient';
 
 describe('SubClient', () => {
+  beforeEach(() => {
+    fetch.resetMocks();
+  });
+
   describe.each`
     member
     ${'userKey'}
@@ -37,26 +41,6 @@ describe('SubClient', () => {
       );
     });
 
-    it('Calls fetch with authentication header containing userKey', async () => {
-      const testOptions = {
-        method: 'DELETE',
-        headers: { Accept: 'everything' },
-      };
-      const client = new SubClient();
-      client.userKey = 'test-key-123';
-      client.makeRequest(null, testOptions);
-      expect(fetch).toBeCalledWith(
-        expect.anything(),
-        expect.objectContaining({
-          ...testOptions,
-          headers: {
-            ...testOptions.headers,
-            Authorization: 'Token test-key-123',
-          },
-        }),
-      );
-    });
-
     it('Handles errors when response is not ok', async () => {
       fetch.mockResponse(
         JSON.stringify({
@@ -70,6 +54,28 @@ describe('SubClient', () => {
       );
       const client = new SubClient();
       await expect(client.makeRequest('/api')).rejects.toThrow();
+    });
+  });
+
+  describe('makeAuthenticatedRequest', () => {
+    it('Calls fetch with authentication header containing userKey', async () => {
+      const testOptions = {
+        method: 'DELETE',
+        headers: { Accept: 'everything' },
+      };
+      const client = new SubClient();
+      client.userKey = 'test-key-123';
+      client.makeAuthenticatedRequest(null, testOptions);
+      expect(fetch).toBeCalledWith(
+        expect.anything(),
+        expect.objectContaining({
+          ...testOptions,
+          headers: {
+            ...testOptions.headers,
+            Authorization: 'Token test-key-123',
+          },
+        }),
+      );
     });
   });
 });

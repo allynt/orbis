@@ -24,14 +24,24 @@ export class SubClient {
    */
   async makeRequest(url, options = {}) {
     const response = await fetch(`${this.apiHost}/api${url}`, {
-      ...options,
       credentials: 'include',
+      ...options,
+    });
+    SubClient.handleErrors(response);
+    return response;
+  }
+
+  /**
+   * @param {RequestInfo} url
+   * @param {RequestInit} options
+   */
+  async makeAuthenticatedRequest(url, options = {}) {
+    return this.makeRequest(url, {
+      ...options,
       headers: {
         ...options.headers,
         Authorization: `Token ${this.userKey}`,
       },
     });
-    SubClient.handleErrors(response);
-    return response;
   }
 }
