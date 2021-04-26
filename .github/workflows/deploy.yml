@@ -12,7 +12,6 @@ jobs:
     name: Deploy Experimentation
     if: startsWith(github.event.deployment.environment, 'experimentation')
     runs-on: [self-hosted, eu-west-1-experimentation-deployer]
-    timeout-minutes: 40
     steps:
       - name: Set the Deployment Status to Pending
         uses: "deliverybot/deployment-status@v1"
@@ -67,7 +66,6 @@ jobs:
     name: Deploy Testing
     if: startsWith(github.event.deployment.environment, 'testing')
     runs-on: [self-hosted, eu-west-1-testing-deployer]
-    timeout-minutes: 40
     steps:
       - name: Set the Deployment Status to Pending
         uses: "deliverybot/deployment-status@v1"
@@ -122,7 +120,6 @@ jobs:
     name: Deploy Staging
     if: startsWith(github.event.deployment.environment, 'staging')
     runs-on: [self-hosted, eu-west-1-staging-deployer]
-    timeout-minutes: 40
     steps:
       - name: Set the Deployment Status to Pending
         uses: "deliverybot/deployment-status@v1"
@@ -177,7 +174,6 @@ jobs:
     name: Deploy Production
     if: startsWith(github.event.deployment.environment, 'production')
     runs-on: [self-hosted, eu-west-1-production-deployer]
-    timeout-minutes: 40
     steps:
       - name: Set the Deployment Status to Pending
         uses: "deliverybot/deployment-status@v1"
