@@ -13,12 +13,7 @@ export class BookmarksClient extends SubClient {
    * @throws {ResponseError}
    */
   async getBookmarks() {
-    const response = await this.makeAuthenticatedRequest('/', {
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-    });
+    const response = await this.makeAuthenticatedRequest('/');
     return response.json();
   }
 
@@ -55,10 +50,6 @@ export class BookmarksClient extends SubClient {
   async deleteBookmark(bookmarkId) {
     await this.makeAuthenticatedRequest(`/${bookmarkId}/`, {
       method: 'DELETE',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
     });
   }
 }

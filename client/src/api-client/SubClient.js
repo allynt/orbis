@@ -30,6 +30,10 @@ export class SubClient {
     const response = await fetch(`${this.apiHost}/api${this.endpoint}${url}`, {
       credentials: 'include',
       ...options,
+      headers: {
+        Accept: 'application/json',
+        ...options.headers,
+      },
     });
     SubClient.handleErrors(response);
     return response;
