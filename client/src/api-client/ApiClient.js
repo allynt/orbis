@@ -1,18 +1,21 @@
 import { AppClient } from './AppClient';
 import { BookmarksClient } from './BookmarksClient';
 import { DataClient } from './DataClient';
+import { UsersClient } from './UsersClient';
 
 export class ApiClient {
   app;
   bookmarks;
   data;
+  users;
   /** @private */
-  subClients = ['app', 'bookmarks', 'data'];
+  subClients = ['app', 'bookmarks', 'data', 'users'];
 
   constructor() {
     this.app = new AppClient();
     this.bookmarks = new BookmarksClient();
     this.data = new DataClient();
+    this.users = new UsersClient();
     this.apiHost =
       process.env.NODE_ENV === 'development'
         ? process.env.REACT_APP_API_HOST
