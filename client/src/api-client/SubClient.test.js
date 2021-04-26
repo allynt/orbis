@@ -33,7 +33,7 @@ describe('SubClient', () => {
     it('Calls fetch with apiHost prepended to the provided url', async () => {
       const client = new SubClient();
       client.apiHost = 'test-host.com';
-      client.makeRequest('/api/test/endpoint');
+      client.makeRequest('/test/endpoint');
       expect(fetch).toBeCalledWith(
         'test-host.com/api/test/endpoint',
         expect.anything(),

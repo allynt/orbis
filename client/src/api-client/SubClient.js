@@ -21,7 +21,7 @@ export class SubClient {
    * @param {RequestInit} options
    */
   async makeRequest(url, options = {}) {
-    const response = await fetch(`${this.apiHost}${url}`, {
+    const response = await fetch(`${this.apiHost}/api${url}`, {
       ...options,
       credentials: 'include',
       headers: {

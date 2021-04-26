@@ -8,7 +8,7 @@ export class BookmarksClient extends SubClient {
    * @throws {ResponseError}
    */
   async getBookmarks() {
-    const response = await this.makeRequest('/api/bookmarks/', {
+    const response = await this.makeRequest('/bookmarks/', {
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
@@ -33,7 +33,7 @@ export class BookmarksClient extends SubClient {
       'drawn_feature_collection',
       JSON.stringify(bookmark['drawn_feature_collection']),
     );
-    const response = await this.makeRequest('/api/bookmarks/', {
+    const response = await this.makeRequest('/bookmarks/', {
       method: 'POST',
       headers: {
         Accept: 'application/json, application/xml, text/plain, text/html, *.*',
@@ -48,7 +48,7 @@ export class BookmarksClient extends SubClient {
    * @throws {ResponseError}
    */
   async deleteBookmark(bookmarkId) {
-    await this.makeRequest(`/api/bookmarks/${bookmarkId}/`, {
+    await this.makeRequest(`/bookmarks/${bookmarkId}/`, {
       method: 'DELETE',
       headers: {
         Accept: 'application/json',
