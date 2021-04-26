@@ -202,11 +202,7 @@ const FeatureDetail = ({
           features?.map(feature => (
             <List key={feature?.id} className={styles.list}>
               {mapObject(feature)}
-              <PopupNote
-                key={feature?.note?.id}
-                note={feature?.note}
-                onNoteSave={onNoteSave}
-              />
+              <PopupNote note={feature?.note} onNoteSave={onNoteSave} />
               {footer && <Item jsonKey={footer.label} value={footer.content} />}
             </List>
           ))}

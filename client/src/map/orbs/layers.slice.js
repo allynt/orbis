@@ -206,6 +206,10 @@ export const {
   setState,
 } = layersSlice.actions;
 
+export const saveFeatureNote = note => async (dispatch, getState) => {
+  console.log('Note: ', note);
+};
+
 /**
  * @param {import('./orbReducer').OrbState} orbs
  * @returns {LayersState}

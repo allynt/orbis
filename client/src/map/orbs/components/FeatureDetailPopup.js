@@ -10,6 +10,7 @@ import {
   setClickedFeatures,
   setHoveredFeatures,
   hoveredFeaturesSelector,
+  saveFeatureNote,
 } from '../layers.slice';
 
 /**
@@ -29,10 +30,6 @@ const FeatureDetailPopup = ({ source }) => {
   const hoveredFeatures = useSelector(state =>
     hoveredFeaturesSelector(source?.source_id)(state?.orbs),
   );
-
-  const onNoteSave = text => {
-    console.log('NOTE SAVE: ', text);
-  };
 
   const getDetailContent = () => {
     if (clickedFeatures?.length) {
@@ -74,7 +71,7 @@ const FeatureDetailPopup = ({ source }) => {
     >
       <FeatureDetail
         features={features?.map(obj => obj?.properties)}
-        onNoteSave={onNoteSave}
+        onNoteSave={note => saveFeatureNote(note)}
       />
     </Popup>
   );
