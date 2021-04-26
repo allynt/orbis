@@ -1,9 +1,9 @@
-import { createSlice, createSelector } from '@reduxjs/toolkit';
-import { getJsonAuthHeaders, getData, getApiUrl } from 'utils/http';
-import { createOrbsWithCategorisedSources } from './categorisation.utils';
+import { createSelector, createSlice } from '@reduxjs/toolkit';
+
+import { userSelector } from 'accounts/accounts.selectors';
 import apiClient from 'api-client';
 import { addLogItem } from 'app.slice';
-import { userSelector } from 'accounts/accounts.selectors';
+import { createOrbsWithCategorisedSources } from './categorisation.utils';
 
 const initialState = {
   layers: [],
