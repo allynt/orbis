@@ -2,9 +2,11 @@ import { ResponseError } from './ResponseError';
 
 export class SubClient {
   /** @type {string} */
-  #apiHost;
+  apiHost;
   /** @type {string} */
-  #userKey;
+  userKey;
+  /** @type {string} */
+  endpoint;
 
   /**
    * @param {Response} response
@@ -31,21 +33,5 @@ export class SubClient {
     });
     SubClient.handleErrors(response);
     return response;
-  }
-
-  set apiHost(apiHost) {
-    this.#apiHost = apiHost;
-  }
-
-  get apiHost() {
-    return this.#apiHost;
-  }
-
-  set userKey(userKey) {
-    this.#userKey = userKey;
-  }
-
-  get userKey() {
-    return this.#userKey;
   }
 }

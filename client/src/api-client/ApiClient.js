@@ -2,7 +2,7 @@ import { BookmarksClient } from './BookmarksClient';
 
 export class ApiClient {
   bookmarks;
-  #subClients = ['bookmarks'];
+  subClients = ['bookmarks'];
 
   constructor() {
     this.bookmarks = new BookmarksClient();
@@ -17,7 +17,7 @@ export class ApiClient {
    * @param {string} value
    */
   setSubClientMember(key, value) {
-    this.#subClients.forEach(client => (this[client][key] = value));
+    this.subClients.forEach(client => (this[client][key] = value));
   }
 
   /**

@@ -3,19 +3,16 @@ import fetch from 'jest-fetch-mock';
 import { SubClient } from './SubClient';
 
 describe('SubClient', () => {
-  describe('userKey', () => {
+  describe.each`
+    member
+    ${'userKey'}
+    ${'apiHost'}
+    ${'endpoint'}
+  `('Class members: $member', ({ member }) => {
     it('gets and sets', () => {
       const subClient = new SubClient();
-      subClient.userKey = 'user-key-123';
-      expect(subClient.userKey).toBe('user-key-123');
-    });
-  });
-
-  describe('apiHost', () => {
-    it('gets and sets', () => {
-      const subClient = new SubClient();
-      subClient.apiHost = 'http://test-host.com';
-      expect(subClient.apiHost).toBe('http://test-host.com');
+      subClient[member] = 'test-value';
+      expect(subClient[member]).toBe('test-value');
     });
   });
 

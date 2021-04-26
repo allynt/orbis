@@ -3,12 +3,17 @@ import { SubClient } from './SubClient';
 /** @typedef {import('typings/bookmarks').Bookmark} Bookmark */
 
 export class BookmarksClient extends SubClient {
+  constructor() {
+    super();
+    this.endpoint = '/bookmarks';
+  }
+
   /**
    * @returns {Promise<Bookmark[]>}
    * @throws {ResponseError}
    */
   async getBookmarks() {
-    const response = await this.makeRequest('/bookmarks/', {
+    const response = await this.makeRequest(this.endpoint, {
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
@@ -33,7 +38,7 @@ export class BookmarksClient extends SubClient {
       'drawn_feature_collection',
       JSON.stringify(bookmark['drawn_feature_collection']),
     );
-    const response = await this.makeRequest('/bookmarks/', {
+    const response = await this.makeRequest(this.endpoint, {
       method: 'POST',
       headers: {
         Accept: 'application/json, application/xml, text/plain, text/html, *.*',
@@ -48,7 +53,7 @@ export class BookmarksClient extends SubClient {
    * @throws {ResponseError}
    */
   async deleteBookmark(bookmarkId) {
-    await this.makeRequest(`/bookmarks/${bookmarkId}/`, {
+    await this.makeRequest(`${this.endpoint}/${bookmarkId}/`, {
       method: 'DELETE',
       headers: {
         Accept: 'application/json',
