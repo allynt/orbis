@@ -43,7 +43,7 @@ export class BookmarksClient extends SubClient {
         Accept: 'application/json, application/xml, text/plain, text/html, *.*',
         Authorization: `Token ${this.userKey}`,
       },
-      body: JSON.stringify(formData),
+      body: formData,
     })
       .then(SubClient.handleErrors)
       .then(response => response.json());
