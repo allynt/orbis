@@ -1,11 +1,14 @@
+import { AppClient } from './AppClient';
 import { BookmarksClient } from './BookmarksClient';
 
 export class ApiClient {
+  app;
   bookmarks;
   /** @private */
-  subClients = ['bookmarks'];
+  subClients = ['app', 'bookmarks'];
 
   constructor() {
+    this.app = new AppClient();
     this.bookmarks = new BookmarksClient();
     this.apiHost =
       process.env.NODE_ENV === 'development'
