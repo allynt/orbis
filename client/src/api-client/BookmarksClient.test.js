@@ -37,4 +37,15 @@ describe('BookmarksClient', () => {
       expect(bookmark).toEqual(responseBookmark);
     });
   });
+
+  describe('deleteBookmark', () => {
+    it('deletes the bookmark', async () => {
+      const client = new BookmarksClient();
+      await client.deleteBookmark(1);
+      expect(fetch).toBeCalledWith(
+        expect.stringContaining('/api/bookmarks/1'),
+        expect.objectContaining({ method: 'DELETE' }),
+      );
+    });
+  });
 });

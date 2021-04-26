@@ -6,13 +6,6 @@ import {
 import { NotificationManager } from 'react-notifications';
 
 import apiClient from 'api-client';
-import { getJsonAuthHeaders, getApiUrl, sendData } from '../utils/http';
-
-const API = {
-  fetch: '/api/bookmarks/',
-  add: '/api/bookmarks/',
-  delete: '/api/bookmarks/',
-};
 
 /**
  * @typedef BookmarksState
@@ -90,28 +83,30 @@ export const addBookmark = createAsyncThunk(
  */
 export const deleteBookmark = createAsyncThunk(
   `${name}/deleteBookmark`,
-  async (bookmark, { getState, rejectWithValue }) => {
-    const headers = getJsonAuthHeaders(getState());
-    const url = `${getApiUrl(getState())}${API.delete}`;
+  async (bookmark, { rejectWithValue }) => {
+    try {
+      await apiClient.bookmarks.deleteBookmark(bookmark.id);
+      NotificationManager.success(
+        '',
+        `Successfully deleted ${bookmark.title}`,
+        5000,
+        () => {},
+      );
+      return bookmark;
+    } catch (error) {
+      /** @type {import('api-client').ResponseError} */
+      const { message, status } = error;
+      NotificationManager.error(
+        `${status} ${message}`,
+        `Deleting Map Error`,
+        50000,
+        () => {},
+      );
 
-    const response = await sendData(url, bookmark.id, headers, 'DELETE');
-
-    if (!response.ok) {
-      const message = `${response.status} ${response.statusText}`;
-
-      NotificationManager.error(message, `Deleting Map Error`, 50000, () => {});
-
-      return rejectWithValue({ message });
+      return rejectWithValue({
+        message: `${status} ${message}`,
+      });
     }
-
-    NotificationManager.success(
-      '',
-      `Successfully deleted ${bookmark.title}`,
-      5000,
-      () => {},
-    );
-
-    return bookmark;
   },
 );
 

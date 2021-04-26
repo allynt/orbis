@@ -51,6 +51,17 @@ export class BookmarksClient extends SubClient {
 
   /**
    * @param {Bookmark['id']} bookmarkId
+   * @throws {ResponseError}
    */
-  deleteBookmark(bookmarkId) {}
+  async deleteBookmark(bookmarkId) {
+    await fetch(`${this.apiHost}/api/bookmarks/${bookmarkId}/`, {
+      credentials: 'include',
+      method: 'DELETE',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        Authorization: `Token ${this.userKey}`,
+      },
+    }).then(SubClient.handleErrors);
+  }
 }
