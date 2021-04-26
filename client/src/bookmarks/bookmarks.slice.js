@@ -57,7 +57,14 @@ export const addBookmark = createAsyncThunk(
   `${name}/addBookmark`,
   async (bookmark, { rejectWithValue }) => {
     try {
-      return await apiClient.bookmarks.addBookmark(bookmark);
+      const newBookmark = await apiClient.bookmarks.addBookmark(bookmark);
+      NotificationManager.success(
+        '',
+        `Successfully saved ${bookmark.title}`,
+        5000,
+        () => {},
+      );
+      return newBookmark;
     } catch (error) {
       /** @type {import('api-client').ResponseError} */
       const { message, status } = error;
@@ -75,7 +82,11 @@ export const addBookmark = createAsyncThunk(
 );
 
 /**
- * @type {import('@reduxjs/toolkit').AsyncThunk<import('typings/orbis').Bookmark, import('typings/orbis').Bookmark, {}>}
+ * @type {import('@reduxjs/toolkit').AsyncThunk<
+ *  import('typings/bookmarks').Bookmark,
+ *  import('typings/bookmarks').Bookmark,
+ *  {}
+ * >}
  */
 export const deleteBookmark = createAsyncThunk(
   `${name}/deleteBookmark`,
