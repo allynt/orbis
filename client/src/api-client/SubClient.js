@@ -16,6 +16,21 @@ export class SubClient {
     return response;
   }
 
+  /**
+   * @param {RequestInfo} url
+   * @param {RequestInit} options
+   */
+  makeRequest(url, options = {}) {
+    return fetch(`${this.apiHost}${url}`, {
+      ...options,
+      credentials: 'include',
+      headers: {
+        ...options.headers,
+        Authorization: `Token ${this.userKey}`,
+      },
+    });
+  }
+
   set apiHost(apiHost) {
     this.#apiHost = apiHost;
   }

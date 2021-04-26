@@ -8,12 +8,10 @@ export class BookmarksClient extends SubClient {
    * @throws {ResponseError}
    */
   async getBookmarks() {
-    const response = await fetch(`${this.apiHost}/api/bookmarks/`, {
-      credentials: 'include',
+    const response = await this.makeRequest('/api/bookmarks/', {
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
-        Authorization: `Token ${this.userKey}`,
       },
     });
     SubClient.handleErrors(response);
@@ -36,12 +34,10 @@ export class BookmarksClient extends SubClient {
       'drawn_feature_collection',
       JSON.stringify(bookmark['drawn_feature_collection']),
     );
-    const response = await fetch(`${this.apiHost}/api/bookmarks/`, {
-      credentials: 'include',
+    const response = await this.makeRequest('/api/bookmarks/', {
       method: 'POST',
       headers: {
         Accept: 'application/json, application/xml, text/plain, text/html, *.*',
-        Authorization: `Token ${this.userKey}`,
       },
       body: formData,
     });
@@ -54,18 +50,13 @@ export class BookmarksClient extends SubClient {
    * @throws {ResponseError}
    */
   async deleteBookmark(bookmarkId) {
-    const response = await fetch(
-      `${this.apiHost}/api/bookmarks/${bookmarkId}/`,
-      {
-        credentials: 'include',
-        method: 'DELETE',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-          Authorization: `Token ${this.userKey}`,
-        },
+    const response = await this.makeRequest(`/api/bookmarks/${bookmarkId}/`, {
+      method: 'DELETE',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
       },
-    );
+    });
     SubClient.handleErrors(response);
   }
 }
