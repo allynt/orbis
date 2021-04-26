@@ -319,15 +319,15 @@ export const registerCustomer = form => async (dispatch, getState) => {
   }
   const customerUser = await createCustomerUserResponse.json();
   dispatch(createCustomerUserSuccess({ user: customerUser }));
-  const getUserRequest = await getData(`${apiUrl}${API.user}current/`, headers);
-  if (!getUserRequest.ok) {
-    const errors = await getUserRequest.json();
-    return dispatch(registerCustomerFailure(errorTransformer(errors)));
+  try {
+    const user = await apiClient.users.getCurrentUser();
+    dispatch(fetchUserSuccess(user));
+    dispatch(registerCustomerSuccess());
+    return dispatch(push(REGISTER_CUSTOMER_ORDER));
+  } catch (responseError) {
+    const errors = await responseError.getErrors();
+    return dispatch(registerCustomerFailure(errors));
   }
-  const body = await getUserRequest.json();
-  dispatch(fetchUserSuccess(body));
-  dispatch(registerCustomerSuccess());
-  dispatch(push(REGISTER_CUSTOMER_ORDER));
 };
 
 /**
@@ -392,23 +392,15 @@ export const activateAccount = form => async (dispatch, getState) => {
   return dispatch(activateAccountSuccess({ user }));
 };
 
-export const fetchUser = (email = 'current') => async (dispatch, getState) => {
+export const fetchCurrentUser = () => async dispatch => {
   dispatch(fetchRequested());
-  const headers = getJsonAuthHeaders(getState());
-
-  const response = await getData(
-    `${getApiUrl(getState())}${API.user}${email}/`,
-    headers,
-  );
-
-  if (!response.ok) {
-    const errorObject = await response.json();
-    return dispatch(fetchUserFailure(errorTransformer(errorObject)));
+  try {
+    const user = await apiClient.users.getCurrentUser();
+    return dispatch(fetchUserSuccess(user));
+  } catch (responseError) {
+    const errors = await responseError.getErrors();
+    return dispatch(fetchUserFailure(errors));
   }
-
-  const user = await response.json();
-
-  return dispatch(fetchUserSuccess(user));
 };
 
 export const login = form => async (dispatch, getState) => {
@@ -426,31 +418,26 @@ export const login = form => async (dispatch, getState) => {
     );
   }
   const userKey = (await response.json()).token;
-  const headers = getJsonAuthHeaders({ accounts: { userKey } });
-
-  const fetchUserResponse = await getData(
-    `${apiUrl}${API.user}current/`,
-    headers,
-  );
-  if (!fetchUserResponse.ok) {
-    const responseObject = await fetchUserResponse.json();
+  try {
+    apiClient.userKey = userKey;
+    const user = await apiClient.users.getCurrentUser();
+    dispatch(loginUserSuccess({ userKey, user }));
+    switch (user.registration_stage) {
+      case 'CUSTOMER':
+      case 'CUSTOMER_USER':
+        return dispatch(push(REGISTER_CUSTOMER));
+      case 'ORDER':
+        return dispatch(push(REGISTER_CUSTOMER_ORDER));
+      default:
+        return dispatch(push('/'));
+    }
+  } catch (responseError) {
+    const errors = await responseError.getErrors();
     return dispatch(
       loginUserFailure({
-        errors: errorTransformer(responseObject),
+        errors,
       }),
     );
-  }
-  /** @type {User} */
-  const user = await fetchUserResponse.json();
-  dispatch(loginUserSuccess({ userKey, user }));
-  switch (user.registration_stage) {
-    case 'CUSTOMER':
-    case 'CUSTOMER_USER':
-      return dispatch(push(REGISTER_CUSTOMER));
-    case 'ORDER':
-      return dispatch(push(REGISTER_CUSTOMER_ORDER));
-    default:
-      return dispatch(push('/'));
   }
 };
 

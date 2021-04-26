@@ -9,7 +9,7 @@ import ReactTooltip from 'react-tooltip';
 import apiClient from 'api-client';
 import Accounts from './accounts';
 import { userSelector } from './accounts/accounts.selectors';
-import { fetchUser } from './accounts/accounts.slice';
+import { fetchCurrentUser } from './accounts/accounts.slice';
 import {
   fetchAppConfig,
   logUserTracking,
@@ -51,7 +51,7 @@ const App = () => {
   useEffect(() => {
     if (userKey && !user) {
       apiClient.userKey = userKey;
-      dispatch(fetchUser());
+      dispatch(fetchCurrentUser());
     }
   }, [dispatch, user, userKey]);
 

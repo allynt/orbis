@@ -17,8 +17,7 @@ export class SubClient {
    * @returns {Response}
    */
   static handleErrors(response) {
-    if (!response.ok)
-      throw new ResponseError(response.statusText, response.status, response);
+    if (!response.ok) throw new ResponseError(response);
     return response;
   }
 

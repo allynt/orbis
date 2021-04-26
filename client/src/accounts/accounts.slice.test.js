@@ -19,7 +19,7 @@ import reducer, {
   changePasswordSuccess,
   confirmResetPassword,
   fetchRequested,
-  fetchUser,
+  fetchCurrentUser,
   fetchUserFailure,
   fetchUserSuccess,
   login,
@@ -155,7 +155,7 @@ describe('Accounts Slice', () => {
         },
       ];
 
-      await store.dispatch(fetchUser());
+      await store.dispatch(fetchCurrentUser());
 
       expect(store.getActions()).toEqual(expectedActions);
     });
@@ -168,7 +168,7 @@ describe('Accounts Slice', () => {
         { type: fetchUserSuccess.type, payload: user },
       ];
 
-      await store.dispatch(fetchUser());
+      await store.dispatch(fetchCurrentUser());
       expect(store.getActions()).toEqual(expectedActions);
     });
 
