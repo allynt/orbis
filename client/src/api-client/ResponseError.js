@@ -5,13 +5,11 @@ export class ResponseError extends Error {
   response;
 
   /**
-   * @param {Error['message']} message
-   * @param {number} status
    * @param {Response} [response]
    */
-  constructor(message, status, response) {
-    super(message);
-    this.status = status;
+  constructor(response) {
+    super(response.statusText);
+    this.status = response.status;
     this.response = response;
   }
 
