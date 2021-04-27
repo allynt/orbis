@@ -79,7 +79,7 @@ export const DateStepper = ({
 
   return (
     <Box className={styles.grid}>
-      <Typography id="stepper-label" variant="body2" component="p">
+      <Typography id="stepper-label" variant="body2">
         Timeseries
       </Typography>
       <Grid container>

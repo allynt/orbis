@@ -190,24 +190,30 @@ const RadioProperty = ({
             {selectedProperty.type === 'discrete' ? (
               <DiscretePropertyLegend property={selectedProperty} />
             ) : (
-              <ColorMapRangeSlider
-                type={selectedProperty?.type}
-                color={colorScheme}
-                domain={[selectedProperty.min, selectedProperty.max]}
-                clip={
-                  (selectedProperty.clip_min || selectedProperty.clip_max) && [
-                    selectedProperty.clip_min || selectedProperty.min,
-                    selectedProperty.clip_max || selectedProperty.max,
-                  ]
-                }
-                value={filterRange}
-                onChange={onSliderChange}
-                reversed={
-                  !!selectedProperty?.application?.orbis?.display
-                    ?.colormap_reversed
-                }
-                precision={selectedProperty?.precision}
-              />
+              <>
+                <Typography variant="body2" paragraph>
+                  Range Filter
+                </Typography>
+                <ColorMapRangeSlider
+                  type={selectedProperty?.type}
+                  color={colorScheme}
+                  domain={[selectedProperty.min, selectedProperty.max]}
+                  clip={
+                    (selectedProperty.clip_min ||
+                      selectedProperty.clip_max) && [
+                      selectedProperty.clip_min || selectedProperty.min,
+                      selectedProperty.clip_max || selectedProperty.max,
+                    ]
+                  }
+                  value={filterRange}
+                  onChange={onSliderChange}
+                  reversed={
+                    !!selectedProperty?.application?.orbis?.display
+                      ?.colormap_reversed
+                  }
+                  precision={selectedProperty?.precision}
+                />
+              </>
             )}
           </div>
         </>
