@@ -24,4 +24,8 @@ export class AuthenticationClient extends SubClient {
     });
     return response.json();
   }
+
+  async logout() {
+    await this.makeAuthenticatedRequest('/logout/', { method: 'POST' });
+  }
 }

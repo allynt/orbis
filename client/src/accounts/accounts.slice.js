@@ -448,22 +448,16 @@ export const resendVerificationEmail = email => async (dispatch, getState) => {
   return dispatch(resendVerificationEmailSuccess());
 };
 
-export const logout = () => async (dispatch, getState) => {
+export const logout = () => async dispatch => {
   dispatch(fetchRequested());
-  const headers = getJsonAuthHeaders(getState());
-
-  const response = await sendData(
-    `${getApiUrl(getState())}${API.logout}`,
-    {},
-    headers,
-  );
-
-  if (!response.ok) {
-    const errorObject = await response.json();
-    return dispatch(logoutUserFailure(errorTransformer(errorObject)));
+  try {
+    await apiClient.authentication.logout();
+    apiClient.userKey = '';
+    return dispatch(logoutUserSuccess());
+  } catch (error) {
+    const errors = await /** @type {import('api-client').ResponseError} */ (error).getErrors();
+    return dispatch(logoutUserFailure(errors));
   }
-
-  return dispatch(logoutUserSuccess());
 };
 
 export const changePassword = form => async (dispatch, getState) => {

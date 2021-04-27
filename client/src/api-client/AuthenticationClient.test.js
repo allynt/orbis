@@ -25,4 +25,15 @@ describe('AuthenticationClient', () => {
       expect(response).toEqual(responseBody);
     });
   });
+
+  describe('logout', () => {
+    it('makes the logout call', async () => {
+      fetch.once('', { ok: true, status: 200 });
+      await client.logout();
+      expect(fetch).toBeCalledWith(
+        expect.stringContaining('/logout/'),
+        expect.anything(),
+      );
+    });
+  });
 });
