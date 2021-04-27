@@ -32,7 +32,6 @@ const API = {
   registerCustomer: '/api/customers/',
   activate: API_PREFIX + 'registration/verify-email/',
   resendVerificationEmail: API_PREFIX + 'send-email-verification/',
-  login: API_PREFIX + 'login/',
   changePassword: API_PREFIX + 'password/change/',
   resetPassword: API_PREFIX + 'password/reset/',
   verifyResetPassword: API_PREFIX + 'password/verify-reset/',
