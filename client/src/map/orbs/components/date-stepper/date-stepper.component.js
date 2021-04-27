@@ -79,8 +79,8 @@ export const DateStepper = ({
 
   return (
     <Box className={styles.grid}>
-      <Typography variant="h5" component="p">
-        Date
+      <Typography id="stepper-label" variant="body2" component="p">
+        Timeseries
       </Typography>
       <Grid container>
         <Grid item xs={2}>
@@ -94,6 +94,7 @@ export const DateStepper = ({
         </Grid>
         <Grid item xs>
           <Slider
+            aria-labelledby="stepper-label"
             ValueLabelComponent={ValueLabelComponent}
             valueLabelDisplay={isPlaying ? 'on' : 'auto'}
             valueLabelFormat={v => format(new Date(v), 'dd/MM/yy')}
