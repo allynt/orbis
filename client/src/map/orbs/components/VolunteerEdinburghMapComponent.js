@@ -4,12 +4,14 @@ import { useDispatch, useSelector } from 'react-redux';
 import { centerOfMass } from '@turf/turf';
 
 import { FeatureDetail, Popup } from 'components';
+import PopupNote from './popup-note/popup-note.component';
 
 import {
   clickedFeaturesSelector,
   setClickedFeatures,
   setHoveredFeatures,
   hoveredFeaturesSelector,
+  saveFeatureNote,
 } from '../layers.slice';
 
 /**
@@ -17,7 +19,7 @@ import {
  * source: import('typings/orbis').Source
  * }} props
  */
-const FeatureDetailPopup = ({ source }) => {
+const VolunteerEdinburghMapComponent = ({ source }) => {
   const dispatch = useDispatch();
 
   /** @type {import('typings/orbis').GeoJsonFeature[]} */
@@ -54,6 +56,8 @@ const FeatureDetailPopup = ({ source }) => {
     }
   };
 
+  console.log('HIT VE MAP COMPONENT');
+
   if (!clickedFeatures?.length && !hoveredFeatures?.length) return null;
 
   const { features, action } = getDetailContent();
@@ -68,9 +72,18 @@ const FeatureDetailPopup = ({ source }) => {
       offsetTop={features[0].geometry.type === 'Polygon' ? 0 : -25}
       onClose={() => dispatch(action())}
     >
-      <FeatureDetail features={features?.map(obj => obj?.properties)} />
+      <FeatureDetail features={features?.map(obj => obj?.properties)}>
+        {features?.map(feat => (
+          <PopupNote
+            note={feat?.note}
+            onNoteSave={({ id, data }) =>
+              dispatch(saveFeatureNote({ id, data }))
+            }
+          />
+        ))}
+      </FeatureDetail>
     </Popup>
   );
 };
 
-export default FeatureDetailPopup;
+export default VolunteerEdinburghMapComponent;

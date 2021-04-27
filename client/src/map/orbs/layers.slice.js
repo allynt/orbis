@@ -4,6 +4,7 @@
 
 import { createSelector, createSlice } from '@reduxjs/toolkit';
 import { unionBy, differenceBy } from 'lodash';
+import { getJsonAuthHeaders, sendData } from 'utils/http';
 
 /**
  * @typedef {{
@@ -206,8 +207,12 @@ export const {
   setState,
 } = layersSlice.actions;
 
-export const saveFeatureNote = note => async (dispatch, getState) => {
-  console.log('Note: ', note);
+export const saveFeatureNote = ({ id, data }) => async (dispatch, getState) => {
+  console.log('In Slice: ', id, data);
+  const headers = getJsonAuthHeaders(getState());
+
+  const response = await sendData(`url/${id}/`, data, headers);
+  console.log('Response: ', response);
 };
 
 /**

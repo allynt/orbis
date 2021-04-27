@@ -50,7 +50,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const PopupNote = ({ note, onNoteSave }) => {
+const PopupNote = ({ id, note, onNoteSave }) => {
   const [charCount, setCharCount] = useState(note?.body?.length);
   const [text, setText] = useState(note?.body);
   const [editMode, setEditMode] = useState(false);
@@ -77,7 +77,7 @@ const PopupNote = ({ note, onNoteSave }) => {
 
   const handleSaveClick = () => {
     setEditMode(false);
-    return onNoteSave(text.trim());
+    return onNoteSave({ id, data: text.trim() });
   };
 
   return (
