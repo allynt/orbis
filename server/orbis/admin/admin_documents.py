@@ -1,17 +1,22 @@
 from django.contrib import admin
 
-from orbis.models import TermsDocument, PrivacyDocument
+from orbis.models import TermsDocument, PrivacyDocument, UserGuideDocument
 
 
 class DocumentAdmin(admin.ModelAdmin):
-    fields = ("version", "file", "is_active", "created", "modified")
-    list_display = ("version", "is_active")
+    fields = ("name", "version", "file", "is_active", "created", "modified")
+    list_display = ("name", "version", "is_active")
     list_filter = ("is_active", )
     readonly_fields = ("created", "modified")
 
 
 @admin.register(PrivacyDocument)
 class PrivacyDocumentAdmin(DocumentAdmin):
+    pass
+
+
+@admin.register(UserGuideDocument)
+class UserGuideDocumentAdmin(DocumentAdmin):
     pass
 
 
