@@ -5,6 +5,7 @@ import {
 import { push } from 'connected-react-router';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
+import fetch from 'jest-fetch-mock';
 import {
   REGISTER_CUSTOMER,
   REGISTER_CUSTOMER_ORDER,
@@ -218,7 +219,7 @@ describe('Accounts Slice', () => {
     });
 
     it('should dispatch update user failure action.', async () => {
-      fetch.mockResponse(
+      fetch.once(
         JSON.stringify({
           errors: errorMessages,
         }),

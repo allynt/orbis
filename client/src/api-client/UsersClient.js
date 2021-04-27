@@ -18,4 +18,23 @@ export class UsersClient extends SubClient {
   async getCurrentUser() {
     return this.getUser('current');
   }
+
+  /**
+   * @param {User} userWithUpdates
+   * @returns {Promise<User>}
+   * @throws {import('./ResponseError').ResponseError}
+   */
+  async updateUser(userWithUpdates) {
+    const response = await this.makeAuthenticatedRequest(
+      `/${userWithUpdates.id}`,
+      {
+        method: 'PUT',
+        body: JSON.stringify(userWithUpdates),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      },
+    );
+    return response.json();
+  }
 }

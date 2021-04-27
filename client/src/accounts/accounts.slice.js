@@ -37,7 +37,6 @@ const API = {
   resetPassword: API_PREFIX + 'password/reset/',
   verifyResetPassword: API_PREFIX + 'password/verify-reset/',
   logout: API_PREFIX + 'logout/',
-  user: '/api/users/',
 };
 const FIELD_MAPPING = {
   registerUser: {
@@ -542,31 +541,26 @@ export const updateUser = form => async (dispatch, getState) => {
   const {
     accounts: { user },
   } = getState();
-  const headers = getJsonAuthHeaders(getState());
 
-  const data = {
+  const userWithUpdates = {
     ...user,
     ...form,
   };
 
-  const response = await sendData(
-    `${getApiUrl(getState())}${API.user}${user.id}/`,
-    data,
-    headers,
-    'PUT',
-  );
-
-  if (!response.ok) {
-    const error = await response.json();
-    const errorObject = errorTransformer(error);
+  try {
+    const updatedUser = await apiClient.users.updateUser(userWithUpdates);
+    NotificationManager.success(
+      'Successfully updated user',
+      '',
+      5000,
+      () => {},
+    );
+    return dispatch(updateUserSuccess(updatedUser));
+  } catch (responseError) {
+    const errors = await responseError.getErrors();
     NotificationManager.error('Error updating user', '', 5000, () => {});
-    return dispatch(updateUserFailure(errorObject));
+    return dispatch(updateUserFailure(errors));
   }
-
-  const userObj = await response.json();
-
-  NotificationManager.success('Successfully updated user', '', 5000, () => {});
-  return dispatch(updateUserSuccess(userObj));
 };
 
 const persistConfig = {

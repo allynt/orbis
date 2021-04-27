@@ -3,6 +3,7 @@ import fetch from 'jest-fetch-mock';
 import { UsersClient } from './UsersClient';
 
 describe('UsersClient', () => {
+  /** @type {UsersClient} */
   let client;
 
   beforeEach(() => {
@@ -33,5 +34,14 @@ describe('UsersClient', () => {
     });
   });
 
-  describe('updateUser', () => {});
+  describe('updateUser', () => {
+    it('Returns the updated user', () => {
+      const updatedUser = {
+        name: 'Test User',
+        email: 'test@test.com',
+      };
+      fetch.once(JSON.stringify(updatedUser));
+      expect(client.updateUser(updatedUser)).resolves.toEqual(updatedUser);
+    });
+  });
 });
