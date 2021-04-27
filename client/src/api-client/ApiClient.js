@@ -1,18 +1,21 @@
 import { AppClient } from './AppClient';
+import { AuthenticationClient } from './AuthenticationClient';
 import { BookmarksClient } from './BookmarksClient';
 import { DataClient } from './DataClient';
 import { UsersClient } from './UsersClient';
 
 export class ApiClient {
   app;
+  authentication;
   bookmarks;
   data;
   users;
   /** @private */
-  subClients = ['app', 'bookmarks', 'data', 'users'];
+  subClients = ['app', 'authentication', 'bookmarks', 'data', 'users'];
 
   constructor() {
     this.app = new AppClient();
+    this.authentication = new AuthenticationClient();
     this.bookmarks = new BookmarksClient();
     this.data = new DataClient();
     this.users = new UsersClient();

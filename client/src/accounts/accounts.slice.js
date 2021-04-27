@@ -145,7 +145,6 @@ const accountsSlice = createSlice({
     },
     loginUserSuccess: (state, { payload }) => {
       state.userKey = payload.userKey;
-      apiClient.userKey = payload.userKey;
       state.user = payload.user;
       state.error = null;
       state.isLoading = false;
@@ -402,22 +401,10 @@ export const fetchCurrentUser = () => async dispatch => {
   }
 };
 
-export const login = form => async (dispatch, getState) => {
+export const login = form => async dispatch => {
   dispatch(fetchRequested());
-  const apiUrl = getApiUrl(getState());
-  const response = await sendData(`${apiUrl}${API.login}`, form, JSON_HEADERS);
-  if (!response.ok) {
-    const responseObject = await response.json();
-    if (responseObject.user?.is_verified === false) dispatch(push(RESEND));
-    return dispatch(
-      loginUserFailure({
-        ...responseObject,
-        errors: errorTransformer(responseObject),
-      }),
-    );
-  }
-  const userKey = (await response.json()).token;
   try {
+    const { token: userKey } = await apiClient.authentication.login(form);
     apiClient.userKey = userKey;
     const user = await apiClient.users.getCurrentUser();
     dispatch(loginUserSuccess({ userKey, user }));
@@ -430,10 +417,15 @@ export const login = form => async (dispatch, getState) => {
       default:
         return dispatch(push('/'));
     }
-  } catch (responseError) {
+  } catch (error) {
+    /** @type {import('api-client').ResponseError<{user?: PartialUser}>} */
+    const responseError = error;
+    const responseBody = await responseError.getBody();
+    if (responseBody.user?.is_verified === false) dispatch(push(RESEND));
     const errors = await responseError.getErrors();
     return dispatch(
       loginUserFailure({
+        user: responseBody.user,
         errors,
       }),
     );

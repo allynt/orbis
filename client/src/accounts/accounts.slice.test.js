@@ -725,7 +725,7 @@ describe('Accounts Slice', () => {
         fetch
           .once(JSON.stringify(loginResponse))
           .once(JSON.stringify(getUserResponse));
-        await login(formValues)(dispatch, getState);
+        await login(formValues)(dispatch);
         expect(dispatch).toHaveBeenCalledWith(fetchRequested());
       });
 
@@ -735,7 +735,7 @@ describe('Accounts Slice', () => {
           status: 418,
           statusText: 'Error',
         });
-        await login(formValues)(dispatch, getState);
+        await login(formValues)(dispatch);
         expect(dispatch).toHaveBeenCalledWith(push(RESEND));
       });
 
@@ -745,7 +745,7 @@ describe('Accounts Slice', () => {
           status: 418,
           statusText: 'Error',
         });
-        await login(formValues)(dispatch, getState);
+        await login(formValues)(dispatch);
         expect(dispatch).toHaveBeenCalledWith(
           loginUserFailure({
             ...errorResponse,
@@ -758,7 +758,7 @@ describe('Accounts Slice', () => {
         fetch
           .once(JSON.stringify(loginResponse))
           .once(JSON.stringify(getUserResponse));
-        await login(formValues)(dispatch, getState);
+        await login(formValues)(dispatch);
         expect(dispatch).toHaveBeenCalledWith(
           loginUserSuccess({
             userKey: loginResponse.token,
@@ -771,9 +771,11 @@ describe('Accounts Slice', () => {
         fetch
           .once(JSON.stringify(loginResponse))
           .once(JSON.stringify(errorResponse), { ok: false, status: 418 });
-        await login(formValues)(dispatch, getState);
+        await login(formValues)(dispatch);
         expect(dispatch).toHaveBeenCalledWith(
-          loginUserFailure({ errors: errorResponse.errors.test }),
+          loginUserFailure(
+            expect.objectContaining({ errors: errorResponse.errors.test }),
+          ),
         );
       });
 
@@ -781,7 +783,7 @@ describe('Accounts Slice', () => {
         fetch
           .once(JSON.stringify(loginResponse))
           .once(JSON.stringify(getUserResponse));
-        await login(formValues)(dispatch, getState);
+        await login(formValues)(dispatch);
         expect(dispatch).toHaveBeenCalledWith(push('/'));
       });
 
@@ -789,7 +791,7 @@ describe('Accounts Slice', () => {
         fetch
           .once(JSON.stringify(loginResponse))
           .once(JSON.stringify(getUserCustomerResponse));
-        await login(formValues)(dispatch, getState);
+        await login(formValues)(dispatch);
         expect(dispatch).toHaveBeenCalledWith(push(REGISTER_CUSTOMER));
       });
 
@@ -797,7 +799,7 @@ describe('Accounts Slice', () => {
         fetch
           .once(JSON.stringify(loginResponse))
           .once(JSON.stringify(getUserOrderResponse));
-        await login(formValues)(dispatch, getState);
+        await login(formValues)(dispatch);
         expect(dispatch).toHaveBeenCalledWith(push(REGISTER_CUSTOMER_ORDER));
       });
     });

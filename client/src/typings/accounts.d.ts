@@ -25,6 +25,18 @@ type User = {
   username: string;
 };
 
+type PartialUser = Pick<
+  User,
+  | 'username'
+  | 'email'
+  | 'id'
+  | 'is_verified'
+  | 'is_approved'
+  | 'registration_stage'
+  | 'change_password'
+  | 'accepted_terms'
+>;
+
 type Licence = {
   id: string;
   orb: string;
