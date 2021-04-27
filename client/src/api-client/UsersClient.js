@@ -26,7 +26,7 @@ export class UsersClient extends SubClient {
    */
   async updateUser(userWithUpdates) {
     const response = await this.makeAuthenticatedRequest(
-      `/${userWithUpdates.id}`,
+      `/${userWithUpdates.id}/`,
       {
         method: 'PUT',
         body: JSON.stringify(userWithUpdates),
