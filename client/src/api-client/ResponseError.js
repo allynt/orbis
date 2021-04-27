@@ -7,7 +7,7 @@ export class ResponseError extends Error {
   /** @type {Response} */
   response;
   /**
-   * @type {B}
+   * @type {{errors?: {[key: string]: string[]}, detail?: string} & B}
    * @private
    */
   #body;
