@@ -9,7 +9,7 @@ from django_filters import rest_framework as filters
 from drf_yasg2 import openapi
 from drf_yasg2.utils import swagger_auto_schema
 
-from astrosat.views import BetterBooleanFilter, BetterBooleanFilterField
+from astrosat.views import BetterBooleanFilter
 
 from orbis.models import TermsDocument, PrivacyDocument, UserGuideDocument
 
