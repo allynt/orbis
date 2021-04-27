@@ -28,22 +28,14 @@ import { userSelector } from './accounts.selectors';
 
 const API_PREFIX = '/api/authentication/';
 const API = {
-  registerUser: API_PREFIX + 'registration/',
   registerCustomer: '/api/customers/',
   activate: API_PREFIX + 'registration/verify-email/',
   resendVerificationEmail: API_PREFIX + 'send-email-verification/',
   changePassword: API_PREFIX + 'password/change/',
   resetPassword: API_PREFIX + 'password/reset/',
   verifyResetPassword: API_PREFIX + 'password/verify-reset/',
-  logout: API_PREFIX + 'logout/',
 };
 const FIELD_MAPPING = {
-  registerUser: {
-    [FIELD_NAMES.email]: 'email',
-    [FIELD_NAMES.newPassword]: 'password1',
-    [FIELD_NAMES.newPasswordConfirm]: 'password2',
-    [FIELD_NAMES.acceptedTerms]: 'accepted_terms',
-  },
   registerCustomer: {
     [FIELD_NAMES.customerName]: 'name',
     [FIELD_NAMES.customerNameOfficial]: 'official_name',
@@ -254,23 +246,20 @@ export const {
   fetchRequested,
 } = accountsSlice.actions;
 
-export const registerUser = form => async (dispatch, getState) => {
+/**
+ * @param {import('./register/customer/user-registration/user-registration.component').FormValues} form
+ * @returns {import('redux-thunk').ThunkAction<void, any, any, any>}
+ */
+export const registerUser = form => async dispatch => {
   dispatch(fetchRequested());
-  const data = mapData(form, FIELD_MAPPING.registerUser);
-
-  const response = await sendData(
-    `${getApiUrl(getState())}${API.registerUser}`,
-    data,
-    JSON_HEADERS,
-  );
-
-  if (!response.ok) {
-    const errorObject = await response.json();
-    return dispatch(registerUserFailure(errorTransformer(errorObject)));
+  try {
+    const user = await apiClient.authentication.registerUser(form);
+    dispatch(registerUserSuccess(user));
+    return dispatch(push(RESEND));
+  } catch (error) {
+    const errors = await error.getErrors();
+    return dispatch(registerUserFailure(errors));
   }
-  const user = await response.json();
-  dispatch(registerUserSuccess(user));
-  return dispatch(push(RESEND));
 };
 
 /**

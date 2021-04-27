@@ -36,4 +36,43 @@ describe('AuthenticationClient', () => {
       );
     });
   });
+
+  describe('registerUser', () => {
+    const formValues = {
+        email: 'test@test.com',
+        newPassword: 'pandacon',
+        newPasswordConfirm: 'pandacon',
+        acceptedTerms: true,
+        registration_stage: 'CUSTOMER',
+      },
+      returnedUser = {
+        email: 'test@test.com',
+        name: 'Test User',
+      };
+
+    beforeEach(() => {
+      fetch.once(JSON.stringify(returnedUser));
+    });
+
+    it('Returns the partial user', async () => {
+      const responseUser = await client.registerUser(formValues);
+      expect(responseUser).toEqual(returnedUser);
+    });
+
+    it('Converts the input data to match the api', async () => {
+      await client.registerUser(formValues);
+      expect(fetch).toHaveBeenCalledWith(
+        expect.anything(),
+        expect.objectContaining({
+          body: JSON.stringify({
+            email: formValues.email,
+            password1: formValues.newPassword,
+            password2: formValues.newPasswordConfirm,
+            accepted_terms: formValues.acceptedTerms,
+            registration_stage: formValues.registration_stage,
+          }),
+        }),
+      );
+    });
+  });
 });
