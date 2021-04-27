@@ -45,4 +45,19 @@ describe('ResponseError', () => {
       expect(responseErrors).toEqual(expected);
     });
   });
+
+  describe('getBody', () => {
+    it('only calls response.json() once', async () => {
+      const body = {
+        errors: { test: ['error1'] },
+        otherStuff: { things: 'mazing' },
+      };
+      const json = jest.fn(() => new Promise(resolve => resolve(body)));
+      const response = { json };
+      const error = new ResponseError(response);
+      await error.getBody();
+      await error.getErrors();
+      expect(json).toHaveBeenCalledTimes(1);
+    });
+  });
 });

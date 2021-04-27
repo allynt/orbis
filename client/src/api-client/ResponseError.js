@@ -1,8 +1,16 @@
+/**
+ * @template B
+ */
 export class ResponseError extends Error {
   /** @type {number} */
   status;
   /** @type {Response} */
   response;
+  /**
+   * @type {B}
+   * @private
+   */
+  #body;
 
   /**
    * @param {Response} [response]
@@ -15,12 +23,12 @@ export class ResponseError extends Error {
 
   /** @returns {Promise<string[] | undefined>} */
   async getErrors() {
-    const errorObject = await this.response.json();
-    if (errorObject.detail || !errorObject.errors) {
+    const body = await this.getBody();
+    if (body.detail || !body.errors) {
       return;
     }
 
-    const errors = errorObject.errors;
+    const errors = body.errors;
 
     let errorMessages = [];
     for (const key of Object.keys(errors)) {
@@ -30,5 +38,12 @@ export class ResponseError extends Error {
       }
     }
     return errorMessages;
+  }
+
+  async getBody() {
+    if (this.#body) return this.#body;
+    const body = await this.response.json();
+    this.#body = body;
+    return this.#body;
   }
 }
