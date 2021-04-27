@@ -5,6 +5,7 @@ from factory.faker import (
 )  # note I use FactoryBoy's wrapper of Faker when defining factory fields
 from faker import Faker
 
+from django.core.files.uploadedfile import SimpleUploadedFile
 from django.db.models.signals import post_save
 from django.utils.text import slugify
 
@@ -22,6 +23,9 @@ from astrosat_users.tests.factories import (
 
 from orbis.models import (
     OrbisUserProfile,
+    PrivacyDocument,
+    TermsDocument,
+    UserGuideDocument,
     Orb,
     DataScope,
     Licence,
@@ -37,14 +41,12 @@ from orbis.models import (
     SatelliteResult,
 )
 
-
 json_encoder = JSONEncoder()
 
 fake = Faker()
 
 FactoryFaker.add_provider(GeometryProvider)
 FactoryFaker.add_provider(PrettyLoremProvider)
-
 
 #########
 # users #
@@ -60,12 +62,15 @@ class OrbisUserProfileFactory(factory.django.DjangoModelFactory):
         "random_element", elements=[x[0] for x in OrbisUserProfile.UnitChoices]
     )
     region = FactoryFaker(
-        "random_element", elements=[x[0] for x in OrbisUserProfile.RegionChoices]
+        "random_element",
+        elements=[x[0] for x in OrbisUserProfile.RegionChoices]
     )
 
     # "orbis_profile=None" means that if I create an OrbisUserProfile explicitly, another profile won't be created
     # (it disables the RelatedFactory below)
-    user = factory.SubFactory("orbis.tests.factories.UserFactory", orbis_profile=None)
+    user = factory.SubFactory(
+        "orbis.tests.factories.UserFactory", orbis_profile=None
+    )
 
 
 @factory.django.mute_signals(
@@ -91,6 +96,41 @@ class UserFactory(AstrosatUserFactory):
 class CustomerFactory(AstrosatUserCustomerFactory):
     class Meta:
         model = LicencedCustomer
+
+
+#############
+# documents #
+#############
+
+
+class DocumentFactory(factory.django.DjangoModelFactory):
+
+    name = factory.LazyAttributeSequence(lambda o, n: f"document-{n}")
+    version = optional_declaration(FactoryFaker("slug"), chance=50)
+    is_active = None
+
+    @factory.lazy_attribute
+    def file(self):
+        return SimpleUploadedFile(
+            name=f"{self.name}.pdf",
+            content=b"I am a fake document",
+            content_type="application/pdf",
+        )
+
+
+class PrivacyDocumentFactory(DocumentFactory):
+    class Meta:
+        model = PrivacyDocument
+
+
+class TermsDocumentFactory(DocumentFactory):
+    class Meta:
+        model = TermsDocument
+
+
+class UserGuideDocumentFactory(DocumentFactory):
+    class Meta:
+        model = UserGuideDocument
 
 
 ########
@@ -186,9 +226,10 @@ class OrderItemFactory(factory.django.DjangoModelFactory):
                 self.licences.add(licence)
         else:
             for _ in range(self.n_licences):
-                licence = LicenceFactory(orb=self.orb, customer=self.order.customer)
+                licence = LicenceFactory(
+                    orb=self.orb, customer=self.order.customer
+                )
                 self.licences.add(licence)
-
 
 
 ##############
@@ -200,7 +241,9 @@ class SatelliteFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = Satellite
 
-    satellite_id = factory.LazyAttributeSequence(lambda o, n: f"{slugify(o.title)}-{n}")
+    satellite_id = factory.LazyAttributeSequence(
+        lambda o, n: f"{slugify(o.title)}-{n}"
+    )
     title = FactoryFaker("pretty_sentence", nb_words=3)
     description = optional_declaration(FactoryFaker("text"), chance=50)
 
