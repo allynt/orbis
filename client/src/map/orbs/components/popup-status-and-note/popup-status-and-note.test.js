@@ -1,7 +1,7 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 
-import PopupNote from './popup-note.component';
+import PopupStatusAndNote from './popup-status-and-note.component';
 import userEvent from '@testing-library/user-event';
 
 export const defaultNote = {
@@ -17,13 +17,15 @@ export const longBodyNote = {
 
 const renderComponent = ({ note = defaultNote }) => {
   const onNoteSave = jest.fn();
-  const utils = render(<PopupNote note={note} onNoteSave={onNoteSave} />);
+  const utils = render(
+    <PopupStatusAndNote note={note} onNoteSave={onNoteSave} />,
+  );
 
   return { ...utils, onNoteSave };
 };
 
-describe('Popup Note', () => {
-  it('renders a PopupNote', () => {
+describe('Popup Status And Note', () => {
+  it('renders a PopupStatusAndNote', () => {
     const { getByText, getByLabelText, getByRole } = renderComponent({
       note: null,
     });

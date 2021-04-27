@@ -4,14 +4,16 @@ import { useDispatch, useSelector } from 'react-redux';
 import { centerOfMass } from '@turf/turf';
 
 import { FeatureDetail, Popup } from 'components';
-import PopupNote from './popup-note/popup-note.component';
+
+import PopupStatusAndNote from './popup-status-and-note/popup-status-and-note.component';
 
 import {
   clickedFeaturesSelector,
   setClickedFeatures,
   setHoveredFeatures,
   hoveredFeaturesSelector,
-  saveFeatureNote,
+  updateFeatureNote,
+  updateFeatureStatus,
 } from '../layers.slice';
 
 /**
@@ -56,7 +58,10 @@ const VolunteerEdinburghMapComponent = ({ source }) => {
     }
   };
 
-  console.log('HIT VE MAP COMPONENT');
+  const data = {
+    note: { body: 'this is a note' },
+    status: 'FOLLOWUP',
+  };
 
   if (!clickedFeatures?.length && !hoveredFeatures?.length) return null;
 
@@ -74,10 +79,14 @@ const VolunteerEdinburghMapComponent = ({ source }) => {
     >
       <FeatureDetail features={features?.map(obj => obj?.properties)}>
         {features?.map(feat => (
-          <PopupNote
-            note={feat?.note}
+          <PopupStatusAndNote
+            note={data.note}
+            status={data.status}
             onNoteSave={({ id, data }) =>
-              dispatch(saveFeatureNote({ id, data }))
+              dispatch(updateFeatureNote({ id, data }))
+            }
+            onStatusChange={({ id, data }) =>
+              dispatch(updateFeatureStatus({ id, data }))
             }
           />
         ))}
