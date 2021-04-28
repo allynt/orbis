@@ -677,8 +677,8 @@ describe('Accounts Slice', () => {
         }));
         expect(fetch).toHaveBeenNthCalledWith(
           1,
-          '/api/customers/testcustomerId/orders/',
-          expect.objectContaining({}),
+          expect.stringContaining('/api/customers/testcustomerId/orders/'),
+          expect.anything(),
         );
       });
     });

@@ -11,7 +11,6 @@ import { NotificationManager } from 'react-notifications';
 import { persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage'; // defaults to localStorage for web
 
-import { getJsonAuthHeaders, sendData, getApiUrl } from 'utils/http';
 import {
   REGISTER_CUSTOMER,
   REGISTER_CUSTOMER_ORDER,
@@ -19,48 +18,10 @@ import {
 } from './accounts.constants';
 import { userSelector } from './accounts.selectors';
 
-const FIELD_MAPPING = {
-  placeOrder: {
-    paymentType: 'order_type',
-    amount: 'cost',
-    licences: 'n_licences',
-    period: 'subscription_period',
-  },
-};
-
 export const status = {
   NONE: 'None',
   PENDING: 'Pending',
   COMPLETE: 'Complete',
-};
-
-/**
- * @param {object} data
- * @param {object} mapping
- * @returns {object}
- */
-const mapData = (data, mapping) =>
-  Object.entries(data).reduce(
-    (prev, [key, value]) => ({ ...prev, [mapping[key] || key]: value }),
-    {},
-  );
-
-// Shape error data into a single array of only error strings.
-const errorTransformer = errorObject => {
-  if (errorObject.detail || !errorObject.errors) {
-    return;
-  } else {
-    const errors = errorObject.errors;
-
-    let errorMessages = [];
-    for (const key of Object.keys(errors)) {
-      for (const index in errors[key]) {
-        const array = errors[key];
-        errorMessages = [...errorMessages, array[index]];
-      }
-    }
-    return errorMessages;
-  }
 };
 
 const initialState = {
@@ -274,33 +235,11 @@ export const registerCustomer = form => async dispatch => {
  */
 export const placeOrder = form => async (dispatch, getState) => {
   dispatch(fetchRequested());
-  const headers = getJsonAuthHeaders(getState());
-  const apiUrl = getApiUrl(getState());
-  let data = mapData(form, FIELD_MAPPING.placeOrder);
-  data = {
-    order_type: data.order_type,
-    cost: data.cost,
-    items: [
-      {
-        orb: data.subscription,
-        n_licences: data.n_licences,
-        expiration: data.subscription_period,
-      },
-    ],
-  };
   const currentCustomerId =
     selectCurrentCustomer(getState())?.id ||
     userSelector(getState())?.customers[0]?.id;
-  const response = await sendData(
-    `${apiUrl}/api/customers/${currentCustomerId}/orders/`,
-    data,
-    headers,
-  );
-  if (!response.ok) {
-    const body = await response.json();
-    return dispatch(placeOrderFailure(errorTransformer(body)));
-  }
   try {
+    await apiClient.customers.placeOrder(currentCustomerId, form);
     const customer = await apiClient.customers.getCustomer(currentCustomerId);
     dispatch(setCurrentCustomer(customer));
     dispatch(placeOrderSuccess());

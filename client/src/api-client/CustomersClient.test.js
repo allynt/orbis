@@ -75,4 +75,46 @@ describe('CustomersClient', () => {
       expect(responseBody).toEqual(body);
     });
   });
+
+  describe('placeOrder', () => {
+    it('returns the response body', async () => {
+      const order = { id: '123' };
+      const customerId = 'cust-id-123';
+      const body = { id: '456' };
+      fetch.mockOnceIf(
+        new RegExp(`${customerId}/orders/`),
+        JSON.stringify(body),
+      );
+      const response = await client.placeOrder(customerId, order);
+      expect(response).toEqual(body);
+    });
+
+    it('transforms values to correct structure', () => {
+      const order = {
+        subscription: 'free',
+        paymentType: 'card',
+        amount: 123,
+        licences: 10,
+        period: 'year',
+        confirm: true,
+      };
+      const transformed = {
+        order_type: order.paymentType,
+        cost: order.amount,
+        items: [
+          {
+            orb: order.subscription,
+            n_licences: order.licences,
+            expiration: order.period,
+          },
+        ],
+      };
+      fetch.once(JSON.stringify({}));
+      client.placeOrder('', order);
+      expect(fetch).toBeCalledWith(
+        expect.anything(),
+        expect.objectContaining({ body: JSON.stringify(transformed) }),
+      );
+    });
+  });
 });

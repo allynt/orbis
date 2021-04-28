@@ -63,3 +63,21 @@ type Customer = {
   postcode?: string;
   licences?: Licence[];
 };
+
+type Order = {
+  id: string;
+  report: string;
+  user: string;
+  customer: string;
+  created: string;
+  order_type: string;
+  cost: number;
+  items: {
+    id: number;
+    orb: string;
+    n_licences: number;
+    cost: number;
+    subscription_period: number;
+    expiration: string;
+  }[];
+};

@@ -12,6 +12,12 @@ export class CustomersClient extends SubClient {
         [FIELD_NAMES.customerType]: 'company_type',
         [FIELD_NAMES.registeredNumber]: 'registered_id',
       },
+      placeOrder: {
+        paymentType: 'order_type',
+        amount: 'cost',
+        licences: 'n_licences',
+        period: 'subscription_period',
+      },
     };
   }
 
@@ -66,6 +72,45 @@ export class CustomersClient extends SubClient {
       {
         method: 'POST',
         body: JSON.stringify(params),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      },
+    );
+    return response.json();
+  }
+
+  /**
+   * @param {Customer['id']} customerId
+   * @param {{
+   *  subscription: string;
+   *  paymentType: string;
+   *  amount: number;
+   *  licences: number;
+   *  period: string;
+   *  confirm: boolean;
+   *}} order
+   * @returns {Promise<Order>}
+   */
+  async placeOrder(customerId, order) {
+    /** @type {any} */
+    let body = this.mapParamsToApi(order, 'placeOrder');
+    body = {
+      order_type: body.order_type,
+      cost: body.cost,
+      items: [
+        {
+          orb: body.subscription,
+          n_licences: body.n_licences,
+          expiration: body.subscription_period,
+        },
+      ],
+    };
+    const response = await this.makeAuthenticatedRequest(
+      `/${customerId}/orders/`,
+      {
+        method: 'POST',
+        body: JSON.stringify(body),
         headers: {
           'Content-Type': 'application/json',
         },
