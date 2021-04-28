@@ -217,26 +217,19 @@ export const updateCustomer = newCustomer => async dispatch => {
   }
 };
 
-export const fetchCustomerUsers = customer => async (dispatch, getState) => {
-  const headers = getJsonAuthHeaders(getState());
-
+export const fetchCustomerUsers = customer => async dispatch => {
   dispatch(fetchCustomerUsersRequested());
-
-  const response = await getData(
-    `${getApiUrl(getState())}${API}${customer.id}/users/`,
-    headers,
-  );
-
-  if (!response.ok)
+  try {
+    const users = await apiClient.customers.getCustomerUsers(customer.id);
+    return dispatch(fetchCustomerUsersSuccess(users));
+  } catch (responseError) {
     return handleFailure(
-      response,
+      responseError.response,
       'Fetching Customer Users Error',
       fetchCustomerUsersFailure,
       dispatch,
     );
-
-  const users = await response.json();
-  return dispatch(fetchCustomerUsersSuccess(users));
+  }
 };
 
 /**

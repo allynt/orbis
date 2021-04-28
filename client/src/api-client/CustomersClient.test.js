@@ -68,6 +68,19 @@ describe('CustomersClient', () => {
     });
   });
 
+  describe('getCustomerUsers', () => {
+    it('Returns the customer users from the response', async () => {
+      const customerId = '123',
+        customerUsers = [{ id: 1 }, { id: 2 }];
+      fetch.mockOnceIf(
+        new RegExp(`${customerId}/users`),
+        JSON.stringify(customerUsers),
+      );
+      const response = await client.getCustomerUsers(customerId);
+      expect(response).toEqual(customerUsers);
+    });
+  });
+
   describe('createCustomerUser', () => {
     it('returns the response body', async () => {
       const body = { user: { email: 'test@test.com' } },
