@@ -119,4 +119,13 @@ describe('AuthenticationClient', () => {
       );
     });
   });
+
+  describe('resetPasswordRequest', () => {
+    it('Returns the response body', async () => {
+      const body = { email: 'test@test.com' };
+      fetch.once(JSON.stringify(body));
+      const response = await client.resetPasswordRequest(body);
+      expect(response).toEqual(body);
+    });
+  });
 });

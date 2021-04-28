@@ -917,7 +917,7 @@ describe('Accounts Slice', () => {
       });
 
       it(`dispatches ${resetPasswordSuccess} on success`, async () => {
-        fetch.once();
+        fetch.once(JSON.stringify({}));
         await resetPassword({})(dispatch, getState);
         expect(dispatch).toBeCalledWith(resetPasswordSuccess());
       });

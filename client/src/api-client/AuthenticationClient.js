@@ -109,4 +109,19 @@ export class AuthenticationClient extends SubClient {
     });
     return response.json();
   }
+
+  /**
+   * @param {{email: User['email']}} resetPasswordRequestParams
+   * @returns {Promise<{email: User['email']}>}
+   */
+  async resetPasswordRequest(resetPasswordRequestParams) {
+    const response = await this.makeRequest('/password/reset/', {
+      method: 'POST',
+      body: JSON.stringify(resetPasswordRequestParams),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    return response.json();
+  }
 }
