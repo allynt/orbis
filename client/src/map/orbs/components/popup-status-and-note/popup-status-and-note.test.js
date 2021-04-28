@@ -15,13 +15,13 @@ export const longBodyNote = {
     'Lorem ipsum, dolor sit amet consectetur adipisicing elit. Doloremque nihil impedit, amet similique sequi error tenetur delectus eveniet natus quis animi odio obcaecati praesentium voluptate reiciendis ad, culpa est at? Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ratione iure blanditiis sequi dolor porro similique, repudiandae laborum natus obcaecati ipsam tempora. Distinctio sunt accusamus ipsum totam. Molestias deserunt dignissimos unde! Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quas quis, dolorem est incidunt, sint dicta eum, consectetur natus nostrum facilis officiis voluptates aliquid fuga cupiditate nesciunt aperiam culpa accusamus ea. Lorem, ipsum dolor sit amet consectetur adipisicing elit. Mollitia assumenda doloribus officia perferendis modi totam quos molestiae natus hic quae quisquam nihil omnis consequuntur blanditiis eos, soluta necessitatibus ut cum. Lorem ipsum dolor sit amet consectetur adipisicing elit. Beatae autem animi omnis consequuntur fugit nemo natus, eaque, sint ea maxime quo sunt. Enim magnam illo dolorum aliquam obcaecati eum quia! Lorem ipsum dolor sit amet consectetur adipisicing elit. Quasi, velit ipsam. Adipisci excepturi alias iste provident, est, atque doloribus beatae omnis debitis, mollitia ut quasi architecto ullam voluptas nemo sit. Lorem ipsum dolor sit amet consectetur adipisicing elit. At modi officia fuga, esse dolorem temporibus delectus facere voluptates, provident ad inventore ipsa exercitationem, ullam amet! Optio laudantium explicabo enim culpa? Lorem ipsum, dolor sit amet consectetur adipisicing elit. Doloremque nihil impedit, amet similique sequi error tenetur delectus eveniet natus quis animi odio obcaecati praesentium voluptate reiciendis ad, culpa est at? Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ratione iure blanditiis sequi dolor porro similique, repudiandae laborum natus obcaecati ipsam tempora. Distinctio sunt accusamus ipsum totam. Molestias deserunt dignissimos unde! Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quas quis, dolorem est incidunt, sint dicta eum, consectetur natus nostrum facilis officiis voluptates aliquid fuga cupiditate nesciunt aperiam culpa accusamus ea. Lorem, ipsum dolor sit amet consectetur adipisicing elit. Mollitia assumenda doloribus officia perferendis modi totam quos molestiae natus hic quae quisquam nihil omnis consequuntur blanditiis eos, soluta necessitatibus ut cum. Lorem ipsum dolor sit amet consectetur adipisicing elit. Beatae autem animi omnis consequuntur fugit nemo natus, eaque, sint ea maxime quo sunt. Enim magnam illo dolorum aliquam obcaecati eum quia! Lorem ipsum dolor sit amet consectetur adipisicing elit. Quasi, velit ipsam. Adipisci excepturi alias iste provident, est, atque doloribus beatae omnis debitis, mollitia ut quasi architecto ullam voluptas nemo sit. Lorem ipsum dolor sit amet consectetur adipisicing elit. At modi officia fuga, esse dolorem temporibus delectus facere voluptates, provident ad inventore ipsa exercitationem, ullam amet! Optio laudantium explicabo enim culpa?',
 };
 
-const renderComponent = ({ note = defaultNote }) => {
-  const onNoteSave = jest.fn();
+const renderComponent = ({ id = 123, note = defaultNote, status = 'NEW' }) => {
+  const onSave = jest.fn();
   const utils = render(
-    <PopupStatusAndNote note={note} onNoteSave={onNoteSave} />,
+    <PopupStatusAndNote id={id} note={note} status={status} onSave={onSave} />,
   );
 
-  return { ...utils, onNoteSave };
+  return { ...utils, onSave };
 };
 
 describe('Popup Status And Note', () => {
@@ -84,7 +84,7 @@ describe('Popup Status And Note', () => {
   });
 
   it('calls save handler when save button is clicked', () => {
-    const { getByRole, onNoteSave } = renderComponent({ note: null });
+    const { getByRole, onSave } = renderComponent({ note: null });
 
     userEvent.type(
       getByRole('textbox', { name: 'Popup Note' }),
@@ -93,11 +93,11 @@ describe('Popup Status And Note', () => {
 
     userEvent.click(getByRole('button', { name: 'Save' }));
 
-    expect(onNoteSave).toHaveBeenCalledWith('some note text');
+    expect(onSave).toHaveBeenCalledWith({ id: 123, note: 'some note text' });
   });
 
   it('trims trailing whitespace of saved note', () => {
-    const { getByRole, onNoteSave } = renderComponent({ note: null });
+    const { getByRole, onSave } = renderComponent({ note: null });
 
     userEvent.type(
       getByRole('textbox', { name: 'Popup Note' }),
@@ -106,6 +106,9 @@ describe('Popup Status And Note', () => {
 
     userEvent.click(getByRole('button', { name: 'Save' }));
 
-    expect(onNoteSave).toHaveBeenCalledWith('some text with whitespace');
+    expect(onSave).toHaveBeenCalledWith({
+      id: 123,
+      note: 'some text with whitespace',
+    });
   });
 });

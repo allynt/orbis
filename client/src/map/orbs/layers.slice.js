@@ -207,28 +207,6 @@ export const {
   setState,
 } = layersSlice.actions;
 
-export const updateFeatureNote = ({ id, data }) => async (
-  dispatch,
-  getState,
-) => {
-  console.log('In updateFeatureNote: ', id, data);
-  const headers = getJsonAuthHeaders(getState());
-
-  const response = await sendData(`url/${id}/`, data, headers);
-  console.log('Response: ', response);
-};
-
-export const updateFeatureStatus = ({ id, data }) => async (
-  dispatch,
-  getState,
-) => {
-  console.log('In updateFeatureStatus: ', id, data);
-  const headers = getJsonAuthHeaders(getState());
-
-  const response = await sendData(`url/${id}/`, data, headers);
-  console.log('Response: ', response);
-};
-
 /**
  * @param {import('./orbReducer').OrbState} orbs
  * @returns {LayersState}

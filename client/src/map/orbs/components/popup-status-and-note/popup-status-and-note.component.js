@@ -53,23 +53,17 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const PopupStatusAndNote = ({
-  id,
-  note,
-  onNoteSave,
-  status = 'NEW',
-  onStatusChange,
-}) => {
+const PopupStatusAndNote = ({ id, note, onSave, status = 'NEW' }) => {
   const [text, setText] = useState(note?.body);
-  const [statusOption, setStatusOption] = useState(status);
+  const [selectedStatus, setSelectedStatus] = useState(status);
   const [editMode, setEditMode] = useState(false);
   const [charCount, setCharCount] = useState(note?.body?.length);
 
   const CHAR_LIMIT = 3000,
     charLimitExceeded = charCount > CHAR_LIMIT,
-    hasChangedStatus = statusOption !== status,
+    hasChangedStatus = selectedStatus !== status,
     hasChangedNote = text !== note?.body,
-    disabled = charLimitExceeded || !hasChangedStatus || !hasChangedNote;
+    enabled = hasChangedStatus || hasChangedNote;
 
   const options = {
     NEW: 'New',
@@ -94,9 +88,11 @@ const PopupStatusAndNote = ({
   };
 
   const handleSaveClick = () => {
-    if (hasChangedStatus) onStatusChange({ id, data: statusOption });
-    if (hasChangedNote) onNoteSave({ id, data: text.trim() });
-    return setEditMode(false);
+    let data = { id };
+    if (hasChangedNote) data.note = text.trim();
+    if (hasChangedStatus) data.status = selectedStatus;
+    if (editMode) setEditMode(false);
+    return onSave(data);
   };
 
   return (
@@ -105,7 +101,7 @@ const PopupStatusAndNote = ({
         <Typography variant="h4" className={styles.key}>
           Status:
         </Typography>
-        <RadioGroup onChange={e => setStatusOption(e.target.value)}>
+        <RadioGroup onChange={e => setSelectedStatus(e.target.value)}>
           {Object.entries(options).map(([key, value]) => (
             <FormControlLabel
               key={key}
@@ -114,7 +110,7 @@ const PopupStatusAndNote = ({
                 <Radio
                   name={value}
                   value={key}
-                  checked={value === options[statusOption]}
+                  checked={value === options[selectedStatus]}
                 />
               }
             />
@@ -163,7 +159,7 @@ const PopupStatusAndNote = ({
             <Button
               className={styles.button}
               onClick={handleSaveClick}
-              disabled={disabled || (!hasChangedStatus && !!note && !editMode)}
+              disabled={!enabled || charLimitExceeded}
             >
               Save
             </Button>
