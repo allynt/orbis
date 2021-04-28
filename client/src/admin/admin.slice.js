@@ -248,16 +248,17 @@ export const createCustomerUser = fields => async (dispatch, getState) => {
   const { email, name } = fields;
 
   try {
-    const [user, customer] = await Promise.all([
-      apiClient.customers.createCustomerUser(currentCustomer.id, {
+    const user = await apiClient.customers.createCustomerUser(
+      currentCustomer.id,
+      {
         licences,
         user: {
           email,
           name,
         },
-      }),
-      apiClient.customers.getCustomer(currentCustomer.id),
-    ]);
+      },
+    );
+    const customer = await apiClient.customers.getCustomer(currentCustomer.id);
     return dispatch(createCustomerUserSuccess({ user, customer }));
   } catch (responseError) {
     return handleFailure(
