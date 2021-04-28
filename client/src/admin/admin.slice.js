@@ -3,6 +3,7 @@ import { createSlice, createSelector } from '@reduxjs/toolkit';
 
 import { getData, sendData, getJsonAuthHeaders, getApiUrl } from 'utils/http';
 import { USER_STATUS } from './admin.constants';
+import apiClient from 'api-client';
 
 const API = '/api/customers/';
 
@@ -175,28 +176,22 @@ const handleFailure = (response, title, action, dispatch) => {
   return dispatch(action({ message }));
 };
 
-export const fetchCustomer = user => async (dispatch, getState) => {
-  const headers = getJsonAuthHeaders(getState());
+export const fetchCustomer = user => async dispatch => {
   dispatch(fetchCustomerRequested());
-
   const customerId = user.customers.find(
     customer => customer.type === 'MANAGER',
   ).id;
-  const response = await getData(
-    `${getApiUrl(getState())}${API}${customerId}`,
-    headers,
-  );
-
-  if (!response.ok)
+  try {
+    const currentCustomer = await apiClient.customers.getCustomer(customerId);
+    return dispatch(fetchCustomerSuccess(currentCustomer));
+  } catch (responseError) {
     return handleFailure(
-      response,
+      responseError.response,
       'Fetching Customer Error',
       fetchCustomerFailure,
       dispatch,
     );
-
-  const currentCustomer = await response.json();
-  return dispatch(fetchCustomerSuccess(currentCustomer));
+  }
 };
 
 export const updateCustomer = newCustomer => async (dispatch, getState) => {
