@@ -874,7 +874,7 @@ describe('Accounts Slice', () => {
       });
 
       it(`dispatches ${changePasswordSuccess} on success`, async () => {
-        fetch.once();
+        fetch.once(JSON.stringify({}));
         await changePassword({})(dispatch, getState);
         expect(dispatch).toBeCalledWith(changePasswordSuccess());
       });

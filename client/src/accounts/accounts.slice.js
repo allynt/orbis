@@ -29,7 +29,6 @@ import { userSelector } from './accounts.selectors';
 const API_PREFIX = '/api/authentication/';
 const API = {
   registerCustomer: '/api/customers/',
-  resendVerificationEmail: API_PREFIX + 'send-email-verification/',
   changePassword: API_PREFIX + 'password/change/',
   resetPassword: API_PREFIX + 'password/reset/',
   verifyResetPassword: API_PREFIX + 'password/verify-reset/',
@@ -445,22 +444,18 @@ export const logout = () => async dispatch => {
   }
 };
 
-export const changePassword = form => async (dispatch, getState) => {
-  const data = mapData(form, FIELD_MAPPING.changePassword);
-  const headers = getJsonAuthHeaders(getState());
-
-  const response = await sendData(
-    `${getApiUrl(getState())}${API.changePassword}`,
-    data,
-    headers,
-  );
-
-  if (!response.ok) {
-    const errorObject = await response.json();
-    return dispatch(changePasswordFailure(errorTransformer(errorObject)));
+/**
+ * @param {{newPassword: string, newPasswordConfirm: string}} form
+ * @returns {import('redux-thunk').ThunkAction<void, any, any, any>}
+ */
+export const changePassword = form => async dispatch => {
+  try {
+    await apiClient.authentication.changePassword(form);
+    return dispatch(changePasswordSuccess());
+  } catch (responseError) {
+    const errors = await responseError.getErrors();
+    return dispatch(changePasswordFailure(errors));
   }
-
-  return dispatch(changePasswordSuccess());
 };
 
 export const confirmResetPassword = (form, params) => async (

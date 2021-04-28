@@ -8,6 +8,10 @@ const FIELD_MAPPING = {
     [FIELD_NAMES.newPasswordConfirm]: 'password2',
     [FIELD_NAMES.acceptedTerms]: 'accepted_terms',
   },
+  changePassword: {
+    [FIELD_NAMES.newPassword]: 'new_password1',
+    [FIELD_NAMES.newPasswordConfirm]: 'new_password2',
+  },
 };
 
 export class AuthenticationClient extends SubClient {
@@ -90,6 +94,28 @@ export class AuthenticationClient extends SubClient {
     const response = await this.makeRequest('/send-email-verification/', {
       method: 'POST',
       body: JSON.stringify(sendVerificationEmailParams),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    return response.json();
+  }
+
+  /**
+   * @param {{newPassword: string, newPasswordConfirm: string}} changePasswordParams
+   * @returns {Promise<{new_password1: string, new_password2: string}>}
+   */
+  async changePassword(changePasswordParams) {
+    const body = Object.entries(changePasswordParams).reduce(
+      (prev, [key, value]) => ({
+        ...prev,
+        [FIELD_MAPPING.changePassword[key] || key]: value,
+      }),
+      {},
+    );
+    const response = await this.makeAuthenticatedRequest('/password/change/', {
+      method: 'POST',
+      body: JSON.stringify(body),
       headers: {
         'Content-Type': 'application/json',
       },

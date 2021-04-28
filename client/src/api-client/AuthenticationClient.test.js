@@ -94,4 +94,29 @@ describe('AuthenticationClient', () => {
       expect(response).toEqual({ email: otherEmail });
     });
   });
+
+  describe('changePassword', () => {
+    const params = { newPassword: 'pandacon', newPasswordConfirm: 'pandacon' },
+      responseBody = {
+        new_password1: params.newPassword,
+        new_password2: params.newPasswordConfirm,
+      };
+
+    beforeEach(() => {
+      fetch.once(JSON.stringify(responseBody));
+    });
+
+    it('returns the response body', async () => {
+      const response = await client.changePassword(params);
+      expect(response).toEqual(responseBody);
+    });
+
+    it('maps the form values to api', async () => {
+      await client.changePassword(params);
+      expect(fetch).toHaveBeenCalledWith(
+        expect.anything(),
+        expect.objectContaining({ body: JSON.stringify(responseBody) }),
+      );
+    });
+  });
 });
