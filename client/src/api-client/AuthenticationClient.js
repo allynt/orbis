@@ -66,4 +66,19 @@ export class AuthenticationClient extends SubClient {
     });
     return response.json();
   }
+
+  /**
+   * @param {{key: string}} verifyEmailParams
+   * @returns {Promise<{user: PartialUser}>}
+   */
+  async verifyEmail(verifyEmailParams) {
+    const response = await this.makeRequest('/registration/verify-email/', {
+      method: 'POST',
+      body: JSON.stringify(verifyEmailParams),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    return response.json();
+  }
 }

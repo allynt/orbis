@@ -29,7 +29,6 @@ import { userSelector } from './accounts.selectors';
 const API_PREFIX = '/api/authentication/';
 const API = {
   registerCustomer: '/api/customers/',
-  activate: API_PREFIX + 'registration/verify-email/',
   resendVerificationEmail: API_PREFIX + 'send-email-verification/',
   changePassword: API_PREFIX + 'password/change/',
   resetPassword: API_PREFIX + 'password/reset/',
@@ -362,20 +361,19 @@ export const placeOrder = form => async (dispatch, getState) => {
   dispatch(push('/'));
 };
 
-export const activateAccount = form => async (dispatch, getState) => {
+/**
+ * @param {{key: string}} form
+ * @returns {import('redux-thunk').ThunkAction<void, any, any, any>}
+ */
+export const activateAccount = form => async dispatch => {
   dispatch(fetchRequested());
-  const response = await sendData(
-    `${getApiUrl(getState())}${API.activate}`,
-    form,
-    JSON_HEADERS,
-  );
-
-  if (!response.ok) {
-    const errorObject = await response.json();
-    return dispatch(activateAccountFailure(errorTransformer(errorObject)));
+  try {
+    const { user } = await apiClient.authentication.verifyEmail(form);
+    return dispatch(activateAccountSuccess({ user }));
+  } catch (responseError) {
+    const errors = await responseError.getErrors();
+    return dispatch(activateAccountFailure(errors));
   }
-  const { user } = await response.json();
-  return dispatch(activateAccountSuccess({ user }));
 };
 
 export const fetchCurrentUser = () => async dispatch => {

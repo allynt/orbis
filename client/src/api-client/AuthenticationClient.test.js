@@ -75,4 +75,13 @@ describe('AuthenticationClient', () => {
       );
     });
   });
+
+  describe('verifyEmail', () => {
+    it('Returns the user from the response', async () => {
+      const user = { email: 'test@test.com', name: 'Test User' };
+      fetch.once(JSON.stringify(user));
+      const responseUser = await client.verifyEmail({ key: '123' });
+      expect(responseUser).toEqual(user);
+    });
+  });
 });
