@@ -16,6 +16,15 @@ export class CustomersClient extends SubClient {
   }
 
   /**
+   * @param {Customer['id']} customerId
+   * @returns {Promise<Customer>}
+   */
+  async getCustomer(customerId) {
+    const response = await this.makeAuthenticatedRequest(`/${customerId}`);
+    return response.json();
+  }
+
+  /**
    * @param {{
    *  email: string
    *  customerName: string

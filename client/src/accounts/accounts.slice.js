@@ -11,7 +11,7 @@ import { NotificationManager } from 'react-notifications';
 import { persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage'; // defaults to localStorage for web
 
-import { getData, getJsonAuthHeaders, sendData, getApiUrl } from 'utils/http';
+import { getJsonAuthHeaders, sendData, getApiUrl } from 'utils/http';
 import {
   REGISTER_CUSTOMER,
   REGISTER_CUSTOMER_ORDER,
@@ -300,18 +300,15 @@ export const placeOrder = form => async (dispatch, getState) => {
     const body = await response.json();
     return dispatch(placeOrderFailure(errorTransformer(body)));
   }
-  const fetchCustomerResponse = await getData(
-    `${apiUrl}/api/customers/${currentCustomerId}/`,
-    headers,
-  );
-  if (!fetchCustomerResponse.ok) {
-    const errors = await fetchCustomerResponse.json();
-    return dispatch(placeOrderFailure(errorTransformer(errors)));
+  try {
+    const customer = await apiClient.customers.getCustomer(currentCustomerId);
+    dispatch(setCurrentCustomer(customer));
+    dispatch(placeOrderSuccess());
+    dispatch(push('/'));
+  } catch (responseError) {
+    const errors = await responseError.getErrors();
+    return dispatch(placeOrderFailure(errors));
   }
-  const customer = await fetchCustomerResponse.json();
-  dispatch(setCurrentCustomer(customer));
-  dispatch(placeOrderSuccess());
-  dispatch(push('/'));
 };
 
 /**

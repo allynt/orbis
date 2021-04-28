@@ -9,6 +9,16 @@ describe('CustomersClient', () => {
     client = new CustomersClient();
   });
 
+  describe('getCustomer', () => {
+    it('returns the response body', async () => {
+      const body = { name: 'test_customer' };
+      const customerId = '123';
+      fetch.mockOnceIf(new RegExp(`/${customerId}`), JSON.stringify(body));
+      const responseBody = await client.getCustomer(customerId);
+      expect(responseBody).toEqual(body);
+    });
+  });
+
   describe('createCustomer', () => {
     it('Returns the new customer', async () => {
       const params = {
