@@ -83,7 +83,7 @@ class TestTokens:
         test_application_data_scope_access = "download"
 
         customer = CustomerFactory(logo=None)
-        (customer_user, _) = customer.add_user(user, status="ACTIVE", type="MEMBER")
+        (customer_user, _) = customer.add_user(user, status="ACTIVE", type="MEMBER")  # yapf: disable
 
         data_scope = DataScopeFactory(applications=[test_application_name])
         orb = OrbFactory(data_scopes=[data_scope])
@@ -96,11 +96,13 @@ class TestTokens:
 
         customer_user.customer_user_type = "MANAGER"
         customer_user.save()
+        user.refresh_from_db()
 
         payload = validate_data_token(generate_data_token(user))
         payload_data_scopes = payload["scopes"]["data"]
 
-        assert [data_scope.source_id_pattern] == payload_data_scopes[test_application_data_scope_access]
+        assert [data_scope.source_id_pattern
+               ] == payload_data_scopes[test_application_data_scope_access]
 
     def test_generate_token_correct_data_access(
         self, user, api_client, mock_storage
