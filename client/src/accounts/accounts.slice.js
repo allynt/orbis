@@ -12,7 +12,6 @@ import { persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage'; // defaults to localStorage for web
 
 import { getData, getJsonAuthHeaders, sendData, getApiUrl } from 'utils/http';
-import { FIELD_NAMES } from 'utils/validators';
 import {
   REGISTER_CUSTOMER,
   REGISTER_CUSTOMER_ORDER,
@@ -20,16 +19,7 @@ import {
 } from './accounts.constants';
 import { userSelector } from './accounts.selectors';
 
-const API = {
-  registerCustomer: '/api/customers/',
-};
 const FIELD_MAPPING = {
-  registerCustomer: {
-    [FIELD_NAMES.customerName]: 'name',
-    [FIELD_NAMES.customerNameOfficial]: 'official_name',
-    [FIELD_NAMES.customerType]: 'company_type',
-    [FIELD_NAMES.registeredNumber]: 'registered_id',
-  },
   placeOrder: {
     paymentType: 'order_type',
     amount: 'cost',
@@ -248,27 +238,14 @@ export const registerUser = form => async dispatch => {
  * @param {import('./register/customer/customer-registration/customer-registration.component').FormValues} form
  * @returns {import('redux-thunk').ThunkAction<void, any, any, any>}
  */
-export const registerCustomer = form => async (dispatch, getState) => {
+export const registerCustomer = form => async dispatch => {
   dispatch(fetchRequested());
-  const headers = getJsonAuthHeaders(getState());
-  const apiUrl = getApiUrl(getState());
-  const data = {
-    ...mapData(form, FIELD_MAPPING.registerCustomer),
-    type: 'MULTIPLE',
-  };
-  const createCustomerResponse = await sendData(
-    `${apiUrl}${API.registerCustomer}`,
-    data,
-    headers,
-  );
-  if (!createCustomerResponse.ok) {
-    const errors = await createCustomerResponse.json();
-    return dispatch(registerCustomerFailure(errorTransformer(errors)));
-  }
-  const customer = await createCustomerResponse.json();
-  dispatch(setCurrentCustomer(customer));
-
   try {
+    const customer = await apiClient.customers.createCustomer({
+      ...form,
+      type: 'MULTIPLE',
+    });
+    dispatch(setCurrentCustomer(customer));
     const customerUser = await apiClient.customers.createCustomerUser(
       customer.id,
       {

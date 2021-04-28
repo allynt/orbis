@@ -9,6 +9,43 @@ describe('CustomersClient', () => {
     client = new CustomersClient();
   });
 
+  describe('createCustomer', () => {
+    it('Returns the new customer', async () => {
+      const params = {
+          name: 'New Customer',
+        },
+        body = {
+          ...params,
+          id: 'new-id-123',
+        };
+      fetch.mockOnceIf(/customers/, JSON.stringify(body));
+      const responseBody = await client.createCustomer(params);
+      expect(responseBody).toEqual(body);
+    });
+
+    it('Maps properties to api', () => {
+      const params = {
+        customerName: 'Test Customer',
+        customerNameOfficial: 'Test Customer Ltd',
+        customerType: 'Big',
+        registeredNumber: '123',
+      };
+      fetch.once(JSON.stringify(''));
+      client.createCustomer(params);
+      expect(fetch).toBeCalledWith(
+        expect.anything(),
+        expect.objectContaining({
+          body: JSON.stringify({
+            name: params.customerName,
+            official_name: params.customerNameOfficial,
+            company_type: params.customerType,
+            registered_id: params.registeredNumber,
+          }),
+        }),
+      );
+    });
+  });
+
   describe('createCustomerUser', () => {
     it('returns the response body', async () => {
       const body = { user: { email: 'test@test.com' } },
