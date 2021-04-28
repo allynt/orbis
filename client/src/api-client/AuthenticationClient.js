@@ -16,6 +16,10 @@ export class AuthenticationClient extends SubClient {
         [FIELD_NAMES.newPassword]: 'new_password1',
         [FIELD_NAMES.newPasswordConfirm]: 'new_password2',
       },
+      resetPasswordVerify: {
+        [FIELD_NAMES.newPassword]: 'new_password1',
+        [FIELD_NAMES.newPasswordConfirm]: 'new_password2',
+      },
     };
   }
 
@@ -118,6 +122,32 @@ export class AuthenticationClient extends SubClient {
     const response = await this.makeRequest('/password/reset/', {
       method: 'POST',
       body: JSON.stringify(resetPasswordRequestParams),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    return response.json();
+  }
+
+  /**
+   * @param {{
+   *  newPassword: string
+   *  newPasswordConfirm: string
+   *  uid: string
+   *  token: string
+   * }} resetPasswordVerifyParams
+   * @returns {Promise<{
+   *  user: PartialUser
+   * }>}
+   */
+  async resetPasswordVerify(resetPasswordVerifyParams) {
+    const body = this.mapParamsToApi(
+      resetPasswordVerifyParams,
+      'resetPasswordVerify',
+    );
+    const response = await this.makeRequest('/password/verify-reset/', {
+      method: 'POST',
+      body: JSON.stringify(body),
       headers: {
         'Content-Type': 'application/json',
       },

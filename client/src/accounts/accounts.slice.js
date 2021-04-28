@@ -11,13 +11,7 @@ import { NotificationManager } from 'react-notifications';
 import { persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage'; // defaults to localStorage for web
 
-import {
-  getData,
-  getJsonAuthHeaders,
-  JSON_HEADERS,
-  sendData,
-  getApiUrl,
-} from 'utils/http';
+import { getData, getJsonAuthHeaders, sendData, getApiUrl } from 'utils/http';
 import { FIELD_NAMES } from 'utils/validators';
 import {
   REGISTER_CUSTOMER,
@@ -26,10 +20,8 @@ import {
 } from './accounts.constants';
 import { userSelector } from './accounts.selectors';
 
-const API_PREFIX = '/api/authentication/';
 const API = {
   registerCustomer: '/api/customers/',
-  verifyResetPassword: API_PREFIX + 'password/verify-reset/',
 };
 const FIELD_MAPPING = {
   registerCustomer: {
@@ -43,10 +35,6 @@ const FIELD_MAPPING = {
     amount: 'cost',
     licences: 'n_licences',
     period: 'subscription_period',
-  },
-  confirmResetPassword: {
-    [FIELD_NAMES.newPassword]: 'new_password1',
-    [FIELD_NAMES.newPasswordConfirm]: 'new_password2',
   },
 };
 
@@ -452,32 +440,22 @@ export const changePassword = form => async dispatch => {
   }
 };
 
-export const confirmResetPassword = (form, params) => async (
-  dispatch,
-  getState,
-) => {
-  const { uid, token } = params;
-  const data = {
-    ...mapData(form, FIELD_MAPPING.confirmResetPassword),
-    token,
-    uid,
-  };
-
-  const response = await sendData(
-    `${getApiUrl(getState())}${API.verifyResetPassword}`,
-    data,
-    JSON_HEADERS,
-  );
-
-  if (!response.ok) {
-    const errorObject = await response.json();
-    return dispatch(
-      passwordResetRequestedFailure(errorTransformer(errorObject)),
-    );
+/**
+ * @param {{newPassword: string, newPasswordConfirm: string}} form
+ * @param {{uid: string, token: string}} params
+ * @returns {import('redux-thunk').ThunkAction<void, any, any, any>}
+ */
+export const confirmResetPassword = (form, params) => async dispatch => {
+  try {
+    const { user } = await apiClient.authentication.resetPasswordVerify({
+      ...form,
+      ...params,
+    });
+    return dispatch(passwordResetRequestedSuccess(user));
+  } catch (responseError) {
+    const errors = await responseError.getErrors();
+    return dispatch(passwordResetRequestedFailure(errors));
   }
-
-  const { user } = await response.json();
-  return dispatch(passwordResetRequestedSuccess(user));
 };
 
 /**

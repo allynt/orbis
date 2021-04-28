@@ -128,4 +128,37 @@ describe('AuthenticationClient', () => {
       expect(response).toEqual(body);
     });
   });
+
+  describe('resetPasswordVerify', () => {
+    const params = {
+        newPassword: 'pandacon',
+        newPasswordConfirm: 'pandacon',
+        uid: '123',
+        token: 'wkefnwon',
+      },
+      body = {
+        email: 'test@test.com',
+      };
+    it('Returns the response body', async () => {
+      fetch.doMockIf(/verify-reset/, JSON.stringify(body));
+      const response = await client.resetPasswordVerify(params);
+      expect(response).toEqual(body);
+    });
+
+    it('Maps the params to the api', () => {
+      fetch.once(JSON.stringify(body));
+      client.resetPasswordVerify(params);
+      expect(fetch).toBeCalledWith(
+        expect.anything(),
+        expect.objectContaining({
+          body: JSON.stringify({
+            new_password1: params.newPassword,
+            new_password2: params.newPasswordConfirm,
+            uid: params.uid,
+            token: params.token,
+          }),
+        }),
+      );
+    });
+  });
 });
