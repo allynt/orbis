@@ -15,6 +15,7 @@ jobs:
   client-tests:
     name: Client-side Tests
     runs-on: ubuntu-latest
+    timeout-minutes: 40
     steps:
       - uses: actions/checkout@v1
       - name: Use Node.js 12.x
@@ -45,6 +46,7 @@ jobs:
   server-tests:
     name: Server-side Tests
     runs-on: ubuntu-latest
+    timeout-minutes: 40
     container:
       image: python:3.8.6
       ports:
@@ -87,6 +89,7 @@ jobs:
     needs: [client-tests]
     name: Build, Tag and Push Client Docker Image
     runs-on: ubuntu-latest
+    timeout-minutes: 40
     steps:
       - name: Checkout
         uses: actions/checkout@v1
@@ -111,6 +114,7 @@ jobs:
     needs: [server-tests]
     name: Build, Tag and Push Server Docker Image
     runs-on: ubuntu-latest
+    timeout-minutes: 40
     steps:
       - name: Checkout
         uses: actions/checkout@v1
@@ -135,6 +139,7 @@ jobs:
     needs: [build-client-docker, build-server-docker]
     name: Deploy to Testing
     runs-on: ubuntu-latest
+    timeout-minutes: 40
     steps:
       - name: Checkout
         uses: actions/checkout@v1

@@ -34,6 +34,7 @@ import { SidePanel } from 'components/side-panel/side-panel.component';
 import Toolbar from './toolbar.component';
 import { getToolbarItems } from './toolbar-config';
 import { userSelector } from 'accounts/accounts.selectors';
+import { apiUrlSelector } from 'app.slice';
 
 const useStyles = makeStyles(theme => ({
   content: {
@@ -64,7 +65,8 @@ const ControlPanel = ({ sidebarComponents, drawingToolsEnabled }) => {
   const strapline = useSelector(selectStrapline);
   const visibleMenuItem = useSelector(selectVisibleMenuItem);
   const user = useSelector(userSelector);
-  const toolbarItems = getToolbarItems(dispatch, user);
+  const apiUrl = useSelector(apiUrlSelector);
+  const toolbarItems = getToolbarItems(dispatch, user, apiUrl);
   const styles = useStyles({});
 
   return (
