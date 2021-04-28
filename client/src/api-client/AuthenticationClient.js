@@ -81,4 +81,19 @@ export class AuthenticationClient extends SubClient {
     });
     return response.json();
   }
+
+  /**
+   * @param {{email: User['email']}} sendVerificationEmailParams
+   * @returns {Promise<{email: User['email']}>}
+   */
+  async sendVerificationEmail(sendVerificationEmailParams) {
+    const response = await this.makeRequest('/send-email-verification/', {
+      method: 'POST',
+      body: JSON.stringify(sendVerificationEmailParams),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    return response.json();
+  }
 }

@@ -836,6 +836,7 @@ describe('Accounts Slice', () => {
 
     describe('resendVerificationEmail', () => {
       it(`dispatches ${fetchRequested}`, async () => {
+        fetch.once(JSON.stringify({}));
         await resendVerificationEmail()(dispatch, getState);
         expect(dispatch).toHaveBeenCalledWith(fetchRequested());
       });
@@ -848,12 +849,12 @@ describe('Accounts Slice', () => {
         });
         await resendVerificationEmail()(dispatch, getState);
         expect(dispatch).toHaveBeenCalledWith(
-          resendVerificationEmailFailure(errorResponse),
+          resendVerificationEmailFailure(errorResponse.errors.test),
         );
       });
 
       it(`dispatches ${resendVerificationEmailSuccess} on success`, async () => {
-        fetch.once();
+        fetch.once(JSON.stringify({}));
         await resendVerificationEmail()(dispatch, getState);
         expect(dispatch).toBeCalledWith(resendVerificationEmailSuccess());
       });

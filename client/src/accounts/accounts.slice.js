@@ -418,21 +418,19 @@ export const login = form => async dispatch => {
   }
 };
 
-export const resendVerificationEmail = email => async (dispatch, getState) => {
+/**
+ * @param {User['email']} email
+ * @returns {import('redux-thunk').ThunkAction<void, any, any, any>}
+ */
+export const resendVerificationEmail = email => async dispatch => {
   dispatch(fetchRequested());
-  const emailObj = { email };
-  const response = await sendData(
-    `${getApiUrl(getState())}${API.resendVerificationEmail}`,
-    emailObj,
-    JSON_HEADERS,
-  );
-
-  if (!response.ok) {
-    const errorObject = await response.json();
-    return dispatch(resendVerificationEmailFailure(errorObject));
+  try {
+    await apiClient.authentication.sendVerificationEmail({ email });
+    return dispatch(resendVerificationEmailSuccess());
+  } catch (responseError) {
+    const errors = await responseError.getErrors();
+    return dispatch(resendVerificationEmailFailure(errors));
   }
-
-  return dispatch(resendVerificationEmailSuccess());
 };
 
 export const logout = () => async dispatch => {

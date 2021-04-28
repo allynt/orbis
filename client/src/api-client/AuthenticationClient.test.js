@@ -84,4 +84,14 @@ describe('AuthenticationClient', () => {
       expect(responseUser).toEqual(user);
     });
   });
+
+  describe('sendVerificationEmail', () => {
+    it('Returns the email from the response', async () => {
+      const email = 'test@test.com',
+        otherEmail = 'test@other.com';
+      fetch.once(JSON.stringify({ email: otherEmail }));
+      const response = await client.sendVerificationEmail({ email });
+      expect(response).toEqual({ email: otherEmail });
+    });
+  });
 });
