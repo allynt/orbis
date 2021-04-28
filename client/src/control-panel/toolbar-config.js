@@ -10,6 +10,7 @@ import {
 } from '@astrosat/astrosat-ui';
 
 import { ReactComponent as AdminIcon } from './admin.svg';
+import { ReactComponent as GuideIcon } from './guide.svg';
 import {
   DATA_LAYERS,
   SATELLITE_LAYERS,
@@ -23,9 +24,7 @@ import {
   setMenuHeadings,
 } from '../control-panel/control-panel.slice';
 
-// import styles from './toolbar.module.css';
-
-export const getToolbarItems = (dispatch, user) => {
+export const getToolbarItems = (dispatch, user, apiUrl) => {
   let items = [
     {
       label: DATA_LAYERS,
@@ -75,6 +74,18 @@ export const getToolbarItems = (dispatch, user) => {
       footer: true,
       roles: ['UserRole'],
       order: 5,
+    },
+    {
+      label: 'User Guide',
+      icon: (
+        <SvgIcon>
+          <GuideIcon />
+        </SvgIcon>
+      ),
+      footer: true,
+      tooltip: 'User Guide',
+      order: 3,
+      href: `${apiUrl}/api/documents/guide?name=general`,
     },
   ];
 

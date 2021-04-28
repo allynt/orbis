@@ -37,9 +37,12 @@ const Toolbar = ({ items }) => {
     <SidebarItem
       key={item.label}
       icon={item.icon}
-      onClick={() => select(item)}
+      onClick={() => item.action && select(item)}
       tooltip={item.label}
       selected={selected?.label === item.label}
+      href={item.href}
+      target="_blank"
+      rel="noreferrer noopener"
     />
   );
 
