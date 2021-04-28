@@ -88,8 +88,8 @@ export class CustomersClient extends SubClient {
   /**
    * @param {Customer['id']} customerId
    * @param {{
-   *  type: CustomerUser['type']
-   *  status: CustomerUser['status']
+   *  type?: CustomerUser['type']
+   *  status?: CustomerUser['status']
    *  user: Partial<User>
    *  licences: CustomerUser['licences']
    * }} params

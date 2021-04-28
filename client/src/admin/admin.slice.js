@@ -236,7 +236,6 @@ export const fetchCustomerUsers = customer => async dispatch => {
  * @param {{email: string, name?: string, licences: string[]}} fields
  */
 export const createCustomerUser = fields => async (dispatch, getState) => {
-  const headers = getJsonAuthHeaders(getState());
   const currentCustomer = selectCurrentCustomer(getState());
   dispatch(createCustomerUserRequested());
 
@@ -246,49 +245,28 @@ export const createCustomerUser = fields => async (dispatch, getState) => {
         licence => licence.orb === orb && !licence.customer_user,
       ).id,
   );
-
   const { email, name } = fields;
 
-  const data = {
-    licences,
-    user: {
-      email,
-      name,
-    },
-  };
-
-  const createUserResponse = await sendData(
-    `${getApiUrl(getState())}${API}${currentCustomer.id}/users/`,
-    data,
-    headers,
-  );
-
-  if (!createUserResponse.ok)
+  try {
+    const [user, customer] = await Promise.all([
+      apiClient.customers.createCustomerUser(currentCustomer.id, {
+        licences,
+        user: {
+          email,
+          name,
+        },
+      }),
+      apiClient.customers.getCustomer(currentCustomer.id),
+    ]);
+    return dispatch(createCustomerUserSuccess({ user, customer }));
+  } catch (responseError) {
     return handleFailure(
-      createUserResponse,
+      responseError.response,
       'Creating Customer User Error',
       createCustomerUserFailure,
       dispatch,
     );
-
-  const fetchCustomerResponse = await getData(
-    `${getApiUrl(getState())}${API}${currentCustomer.id}`,
-    headers,
-  );
-  if (!fetchCustomerResponse.ok)
-    return handleFailure(
-      fetchCustomerResponse,
-      'Creating Customer User Error',
-      createCustomerUserFailure,
-      dispatch,
-    );
-
-  const [user, customer] = await Promise.all([
-    createUserResponse.json(),
-    fetchCustomerResponse.json(),
-  ]);
-
-  return dispatch(createCustomerUserSuccess({ user, customer }));
+  }
 };
 
 export const updateCustomerUser = customerUser => async (
