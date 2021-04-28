@@ -78,4 +78,31 @@ describe('SubClient', () => {
       );
     });
   });
+
+  describe('mapParamsToApi', () => {
+    it('Maps provided params to the api using the provided mappings', () => {
+      const client = new SubClient();
+      client.fieldMapping = {
+        test: {
+          test1: 'testA',
+          test2: 'testB',
+        },
+      };
+      expect(
+        client.mapParamsToApi({ test1: 'Hello', test2: 'World' }, 'test'),
+      ).toEqual({ testA: 'Hello', testB: 'World' });
+    });
+
+    it("Uses the param key if an api key can't be found", () => {
+      const client = new SubClient();
+      client.fieldMapping = {
+        test: {
+          test1: 'testA',
+        },
+      };
+      expect(
+        client.mapParamsToApi({ test1: 'Hello', test2: 'World' }, 'test'),
+      ).toEqual({ testA: 'Hello', test2: 'World' });
+    });
+  });
 });

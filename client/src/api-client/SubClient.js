@@ -7,6 +7,8 @@ export class SubClient {
   userKey;
   /** @type {string} */
   endpoint;
+  /** @type {Record<string, Record<string, string>>} */
+  fieldMapping;
 
   constructor(endpoint = '') {
     this.endpoint = endpoint;
@@ -19,6 +21,21 @@ export class SubClient {
   static handleErrors(response) {
     if (!response.ok) throw new ResponseError(response);
     return response;
+  }
+
+  /**
+   * @param {Record<string, any>} params
+   * @param {string} mappingKey
+   */
+  mapParamsToApi(params, mappingKey) {
+    const mapping = this.fieldMapping[mappingKey];
+    return Object.entries(params).reduce(
+      (prev, [key, value]) => ({
+        ...prev,
+        [mapping[key] || key]: value,
+      }),
+      {},
+    );
   }
 
   /**

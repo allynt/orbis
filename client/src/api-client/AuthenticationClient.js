@@ -1,23 +1,22 @@
 import { FIELD_NAMES } from 'utils/validators';
 import { SubClient } from './SubClient';
 
-const FIELD_MAPPING = {
-  registerUser: {
-    [FIELD_NAMES.email]: 'email',
-    [FIELD_NAMES.newPassword]: 'password1',
-    [FIELD_NAMES.newPasswordConfirm]: 'password2',
-    [FIELD_NAMES.acceptedTerms]: 'accepted_terms',
-  },
-  changePassword: {
-    [FIELD_NAMES.newPassword]: 'new_password1',
-    [FIELD_NAMES.newPasswordConfirm]: 'new_password2',
-  },
-};
-
 export class AuthenticationClient extends SubClient {
   constructor() {
     super();
     this.endpoint = '/authentication';
+    this.fieldMapping = {
+      registerUser: {
+        [FIELD_NAMES.email]: 'email',
+        [FIELD_NAMES.newPassword]: 'password1',
+        [FIELD_NAMES.newPasswordConfirm]: 'password2',
+        [FIELD_NAMES.acceptedTerms]: 'accepted_terms',
+      },
+      changePassword: {
+        [FIELD_NAMES.newPassword]: 'new_password1',
+        [FIELD_NAMES.newPasswordConfirm]: 'new_password2',
+      },
+    };
   }
 
   /**
@@ -54,13 +53,7 @@ export class AuthenticationClient extends SubClient {
    * @returns {Promise<PartialUser>}
    */
   async registerUser(registerUserParams) {
-    const body = Object.entries(registerUserParams).reduce(
-      (prev, [key, value]) => ({
-        ...prev,
-        [FIELD_MAPPING.registerUser[key] || key]: value,
-      }),
-      {},
-    );
+    const body = this.mapParamsToApi(registerUserParams, 'registerUser');
     const response = await this.makeRequest('/registration/', {
       method: 'POST',
       body: JSON.stringify(body),
@@ -106,13 +99,7 @@ export class AuthenticationClient extends SubClient {
    * @returns {Promise<{new_password1: string, new_password2: string}>}
    */
   async changePassword(changePasswordParams) {
-    const body = Object.entries(changePasswordParams).reduce(
-      (prev, [key, value]) => ({
-        ...prev,
-        [FIELD_MAPPING.changePassword[key] || key]: value,
-      }),
-      {},
-    );
+    const body = this.mapParamsToApi(changePasswordParams, 'changePassword');
     const response = await this.makeAuthenticatedRequest('/password/change/', {
       method: 'POST',
       body: JSON.stringify(body),
