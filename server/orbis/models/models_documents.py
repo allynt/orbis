@@ -3,10 +3,11 @@ import os
 from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.db import models
+from django.utils.deconstruct import deconstructible
 
-###########
-# helpers #
-###########
+##############
+# validators #
+##############
 
 
 def terms_media_path(instance, filename):
@@ -25,6 +26,37 @@ def validate_pdf_extension(value):
     ext = os.path.splitext(value.name)[1]
     if ext.lower() != ".pdf":
         raise ValidationError("Unsupported file extension.")
+
+
+@deconstructible
+class FileSizeValidator(object):
+    # using a class instead of a fn to allow it to take arguments
+
+    size_units = ["B", "KB", "MB"]
+
+    def __init__(self, max_size, max_size_units="MB"):
+
+        assert max_size_units in self.size_units, f"max_size_units must be one of {', '.join(self.size_units)}"
+
+        self.max_size = max_size
+        self.max_size_units = max_size_units
+
+    def __call__(self, value):
+        file_size = value.size
+        if self.max_size_units == "KB":
+            file_size /= 1000
+        elif self.max_size_units == "MB":
+            file_size /= 1000000
+
+        if file_size > self.max_size:
+            raise ValidationError(
+                f"The maximum file size is {self.max_size} {self.max_size_units}."
+            )
+
+
+############
+# managers #
+############
 
 
 class DocumentManager(models.Manager):
@@ -80,7 +112,8 @@ class UserGuideDocument(Document):
         verbose_name_plural = "Documents: User Guide"
 
     file = models.FileField(
-        upload_to=user_guide_media_path, validators=[validate_pdf_extension]
+        upload_to=user_guide_media_path,
+        validators=[validate_pdf_extension, FileSizeValidator(16)]
     )
 
 
@@ -99,7 +132,8 @@ class PrivacyDocument(Document):
         verbose_name_plural = "Documents: Privacy"
 
     file = models.FileField(
-        upload_to=privacy_media_path, validators=[validate_pdf_extension]
+        upload_to=privacy_media_path,
+        validators=[validate_pdf_extension, FileSizeValidator(16)]
     )
 
 
@@ -119,7 +153,8 @@ class TermsDocument(Document):
         verbose_name_plural = "Documents: Terms"
 
     file = models.FileField(
-        upload_to=terms_media_path, validators=[validate_pdf_extension]
+        upload_to=terms_media_path,
+        validators=[validate_pdf_extension, FileSizeValidator(16)]
     )
 
     users = models.ManyToManyField(
