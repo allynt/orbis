@@ -1,3 +1,4 @@
+import { sendData } from 'utils/http';
 import { FeatureDetail, Popup } from 'components';
 
 import PopupStatusAndNote from './popup-status-and-note/popup-status-and-note.component';
@@ -6,15 +7,25 @@ import { pickBy } from 'lodash';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { clickedFeaturesSelector, setClickedFeatures } from '../layers.slice';
+import { selectDataToken } from 'data-layers/data-layers.slice';
 
 const ActionForHelpMapComponent = ({ source }) => {
   const pickedObjects = useSelector(state =>
     clickedFeaturesSelector(source?.source_id)(state?.orbs),
   );
+  const dataToken = useSelector(selectDataToken);
   const dispatch = useDispatch();
 
-  const updateNoteOrStatus = data => {
-    console.log('data: ', data);
+  const updateNoteOrStatus = async ({ id, ...data }) => {
+    const url = `https://app.testing.actionforhelp.co.uk/api/people/hourglass/${id}/`;
+
+    const response = await sendData(url, data, {
+      Authorization: `Bearer ${dataToken}`,
+    });
+
+    const result = await response.json();
+
+    console.log('result: ', result);
   };
 
   const data = {
@@ -55,8 +66,8 @@ const ActionForHelpMapComponent = ({ source }) => {
       {pickedObjects?.map(feat => (
         <PopupStatusAndNote
           id={feat.properties.pk}
-          note={data.note}
-          status={data.status}
+          note={feat.note}
+          status={feat.status}
           onSave={data => updateNoteOrStatus(data)}
         />
       ))}

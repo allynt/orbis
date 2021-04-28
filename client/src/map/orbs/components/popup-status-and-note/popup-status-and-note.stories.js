@@ -5,7 +5,7 @@ import { defaultNote, longBodyNote } from './popup-status-and-note.test';
 
 export default {
   title: 'Components/Feature Detail/Popup Note',
-  argTypes: { onNoteSave: { action: 'Save note' } },
+  argTypes: { onSave: { action: 'Save note and/or Status' } },
 };
 
 const Template = args => (
@@ -16,12 +16,16 @@ const Template = args => (
 
 export const Default = Template.bind({});
 
-export const Note = Template.bind({});
-Note.args = {
+export const NoteAndStatus = Template.bind({});
+NoteAndStatus.args = {
+  id: 123,
+  status: 'NEW',
   note: defaultNote,
 };
 
 export const TooMuchText = Template.bind({});
 TooMuchText.args = {
+  id: 456,
+  status: 'NEW',
   note: longBodyNote,
 };
