@@ -1,6 +1,7 @@
 import { AppClient } from './AppClient';
 import { AuthenticationClient } from './AuthenticationClient';
 import { BookmarksClient } from './BookmarksClient';
+import { CustomersClient } from './CustomersClient';
 import { DataClient } from './DataClient';
 import { UsersClient } from './UsersClient';
 
@@ -8,15 +9,24 @@ export class ApiClient {
   app;
   authentication;
   bookmarks;
+  customers;
   data;
   users;
   /** @private */
-  subClients = ['app', 'authentication', 'bookmarks', 'data', 'users'];
+  subClients = [
+    'app',
+    'authentication',
+    'bookmarks',
+    'customers',
+    'data',
+    'users',
+  ];
 
   constructor() {
     this.app = new AppClient();
     this.authentication = new AuthenticationClient();
     this.bookmarks = new BookmarksClient();
+    this.customers = new CustomersClient();
     this.data = new DataClient();
     this.users = new UsersClient();
     this.apiHost =

@@ -267,25 +267,20 @@ export const registerCustomer = form => async (dispatch, getState) => {
   }
   const customer = await createCustomerResponse.json();
   dispatch(setCurrentCustomer(customer));
-  const createCustomerUserResponse = await sendData(
-    `${apiUrl}/api/customers/${customer.id}/users/`,
-    {
-      type: 'MANAGER',
-      status: 'ACTIVE',
-      user: {
-        email: form.email,
-      },
-      licences: [],
-    },
-    headers,
-  );
-  if (!createCustomerUserResponse.ok) {
-    const errors = await createCustomerUserResponse.json();
-    return dispatch(registerCustomerFailure(errorTransformer(errors)));
-  }
-  const customerUser = await createCustomerUserResponse.json();
-  dispatch(createCustomerUserSuccess({ user: customerUser }));
+
   try {
+    const customerUser = await apiClient.customers.createCustomerUser(
+      customer.id,
+      {
+        type: 'MANAGER',
+        status: 'ACTIVE',
+        user: {
+          email: form.email,
+        },
+        licences: [],
+      },
+    );
+    dispatch(createCustomerUserSuccess({ user: customerUser }));
     const user = await apiClient.users.getCurrentUser();
     dispatch(fetchUserSuccess(user));
     dispatch(registerCustomerSuccess());

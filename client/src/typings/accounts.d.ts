@@ -1,12 +1,6 @@
-enum CustomerUserType {
-  MANAGER = 'MANAGER',
-  MEMBER = 'MEMBER',
-}
+type CustomerUserType = 'MANAGER' | 'MEMBER';
 
-enum CustomerUserStatus {
-  ACTIVE = 'ACTIVE',
-  PENDING = 'PENDING',
-}
+type CustomerUserStatus = 'ACTIVE' | 'PENDING';
 
 type User = {
   accepted_terms: boolean;
