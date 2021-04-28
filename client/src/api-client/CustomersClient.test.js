@@ -56,6 +56,18 @@ describe('CustomersClient', () => {
     });
   });
 
+  describe('updateCustomer', () => {
+    it('returns the updated customer', async () => {
+      const updatedCustomer = { id: '123', name: 'Test Customer' };
+      fetch.mockOnceIf(
+        new RegExp(`${updatedCustomer.id}`),
+        JSON.stringify(updatedCustomer),
+      );
+      const response = await client.updateCustomer(updatedCustomer);
+      expect(response).toEqual(updatedCustomer);
+    });
+  });
+
   describe('createCustomerUser', () => {
     it('returns the response body', async () => {
       const body = { user: { email: 'test@test.com' } },

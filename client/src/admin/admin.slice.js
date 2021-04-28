@@ -194,34 +194,27 @@ export const fetchCustomer = user => async dispatch => {
   }
 };
 
-export const updateCustomer = newCustomer => async (dispatch, getState) => {
-  const headers = getJsonAuthHeaders(getState());
+export const updateCustomer = newCustomer => async dispatch => {
   dispatch(updateCustomerRequested());
-
-  const response = await sendData(
-    `${getApiUrl(getState())}${API}${newCustomer.id}/`,
-    newCustomer,
-    headers,
-    'PUT',
-  );
-
-  if (!response.ok)
+  try {
+    const updatedCustomer = await apiClient.customers.updateCustomer(
+      newCustomer,
+    );
+    NotificationManager.success(
+      'Successfully updated account',
+      '',
+      5000,
+      () => {},
+    );
+    return dispatch(updateCustomerSuccess(updatedCustomer));
+  } catch (responseError) {
     return handleFailure(
-      response,
+      responseError.response,
       'Updating Customer Error',
       updateCustomerFailure,
       dispatch,
     );
-
-  NotificationManager.success(
-    'Successfully updated account',
-    '',
-    5000,
-    () => {},
-  );
-
-  const updatedCustomer = await response.json();
-  return dispatch(updateCustomerSuccess(updatedCustomer));
+  }
 };
 
 export const fetchCustomerUsers = customer => async (dispatch, getState) => {
