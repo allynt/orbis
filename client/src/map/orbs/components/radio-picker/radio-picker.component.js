@@ -37,11 +37,6 @@ export const RadioPicker = ({ selectedLayer, dispatch }) => {
     filterValueSelector(propertyStateKey)(state?.orbs),
   );
 
-  const selectedPropertyMetadata = selectedLayer?.metadata?.properties?.find(
-    property => property.name === selectedProperty?.name,
-  );
-  const colorScheme =
-    selectedPropertyMetadata?.application?.orbis?.display?.color;
   const categoryPath = createCategorisationPath({
     categories: selectedLayer?.metadata?.application?.orbis?.categories,
   }).replace('.', ' > ');
@@ -82,7 +77,6 @@ export const RadioPicker = ({ selectedLayer, dispatch }) => {
               )
             }
             selectedProperty={selectedProperty}
-            colorScheme={colorScheme}
             filterRange={filterRange}
             categoryPath={categoryPath}
             onDateChange={(_, timestamp) =>
