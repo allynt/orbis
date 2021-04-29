@@ -274,48 +274,29 @@ export const updateCustomerUser = customerUser => async (
   dispatch,
   getState,
 ) => {
-  const headers = getJsonAuthHeaders(getState());
   const currentCustomer = selectCurrentCustomer(getState());
 
   dispatch(updateCustomerUserRequested());
 
-  const updateCustomerUserResponse = await sendData(
-    `${getApiUrl(getState())}${API}${currentCustomer.id}/users/${
-      customerUser.user.id
-    }/`,
-    customerUser,
-    headers,
-    'PUT',
-  );
-
-  if (!updateCustomerUserResponse.ok)
+  try {
+    const updatedCustomerUser = await apiClient.customers.updateCustomerUser(
+      currentCustomer.id,
+      customerUser,
+    );
+    const updatedCustomer = await apiClient.customers.getCustomer(
+      currentCustomer.id,
+    );
+    return dispatch(
+      updateCustomerUserSuccess({ updatedCustomerUser, updatedCustomer }),
+    );
+  } catch (responseError) {
     return handleFailure(
-      updateCustomerUserResponse,
+      responseError.response,
       'Update Customer User Error',
       updateCustomerUserFailure,
       dispatch,
     );
-
-  const fetchCustomerResponse = await getData(
-    `${getApiUrl(getState())}${API}${currentCustomer.id}`,
-    headers,
-  );
-  if (!fetchCustomerResponse.ok)
-    return handleFailure(
-      fetchCustomerResponse,
-      'Update Customer User Error',
-      updateCustomerUserFailure,
-      dispatch,
-    );
-
-  const [updatedCustomerUser, updatedCustomer] = await Promise.all([
-    updateCustomerUserResponse.json(),
-    fetchCustomerResponse.json(),
-  ]);
-
-  return dispatch(
-    updateCustomerUserSuccess({ updatedCustomerUser, updatedCustomer }),
-  );
+  }
 };
 
 export const deleteCustomerUser = customerUser => async (

@@ -111,6 +111,25 @@ export class CustomersClient extends SubClient {
 
   /**
    * @param {Customer['id']} customerId
+   * @param {CustomerUser} userWithUpdates
+   * @returns {Promise<CustomerUser>}
+   */
+  async updateCustomerUser(customerId, userWithUpdates) {
+    const response = await this.makeAuthenticatedRequest(
+      `/${customerId}/users/${userWithUpdates.user.id}/`,
+      {
+        method: 'PUT',
+        body: JSON.stringify(userWithUpdates),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      },
+    );
+    return response.json();
+  }
+
+  /**
+   * @param {Customer['id']} customerId
    * @param {{
    *  subscription: string;
    *  paymentType: string;

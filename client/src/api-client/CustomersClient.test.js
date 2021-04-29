@@ -101,6 +101,26 @@ describe('CustomersClient', () => {
     });
   });
 
+  describe('updateCustomerUser', () => {
+    it('returns the updated customer user from the response', async () => {
+      const userWithUpdates = {
+          id: 1,
+          user: { id: '123' },
+        },
+        customerId = 'cust-id-123',
+        expected = { ...userWithUpdates, customer: customerId };
+      fetch.mockOnceIf(
+        new RegExp(`/${customerId}/users/${userWithUpdates.user.id}`),
+        JSON.stringify({ ...userWithUpdates, customer: customerId }),
+      );
+      const response = await client.updateCustomerUser(
+        customerId,
+        userWithUpdates,
+      );
+      expect(response).toEqual(expected);
+    });
+  });
+
   describe('placeOrder', () => {
     it('returns the response body', async () => {
       const order = { id: '123' };
