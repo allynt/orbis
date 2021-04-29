@@ -61,4 +61,8 @@ export class ApiClient {
   set apiHost(apiHost) {
     this.setSubClientMember('apiHost', apiHost);
   }
+
+  get apiHost() {
+    return this.app.apiHost;
+  }
 }

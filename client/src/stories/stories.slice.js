@@ -2,12 +2,12 @@ import { NotificationManager } from 'react-notifications';
 
 import { createSlice } from '@reduxjs/toolkit';
 
+import apiClient from 'api-client';
 import {
   getData,
   sendData,
   getJsonAuthHeaders,
   getFormAuthHeaders,
-  getApiUrl,
 } from '../utils/http';
 
 export const STORIES = [
@@ -189,7 +189,7 @@ export const {
 export const fetchStories = () => async (dispatch, getState) => {
   const headers = getJsonAuthHeaders(getState());
 
-  const response = await getData(`${getApiUrl(getState())}${API}`, headers);
+  const response = await getData(`${apiClient.apiHost}${API}`, headers);
 
   if (!response.ok) {
     const message = `${response.status} ${response.statusText}`;
@@ -217,7 +217,7 @@ export const addStory = story => async (dispatch, getState) => {
   const headers = getFormAuthHeaders(getState());
 
   const response = await sendData(
-    `${getApiUrl(getState())}${API}`,
+    `${apiClient.apiHost}${API}`,
     formData,
     headers,
   );
@@ -250,7 +250,7 @@ export const deleteStory = story => async (dispatch, getState) => {
   const headers = getJsonAuthHeaders(getState());
 
   const response = await sendData(
-    `${getApiUrl(getState())}${API}`,
+    `${apiClient.apiHost}${API}`,
     story.id,
     headers,
     'DELETE',

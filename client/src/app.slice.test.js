@@ -1,20 +1,15 @@
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 
-import { selectMapStyle } from './map/map.slice';
-
 import reducer, {
   fetchAppConfig,
   appConfigSuccess,
   appConfigFailure,
   notYetImplemented,
-  DEFAULT_MAP_STYLE,
   mapboxTokenSelector,
-  mapStylesSelector,
   addLogItem,
   removeLogItems,
   logUserTracking,
-  setApiUrl,
 } from './app.slice';
 
 const mockStore = configureMockStore([thunk]);
@@ -112,7 +107,6 @@ describe('App Slice', () => {
         error: null,
         notYetImplementedDescription: null,
         trackingQueue: [],
-        apiUrl: '',
       };
     });
 
@@ -182,17 +176,6 @@ describe('App Slice', () => {
       });
 
       expect(actualState.trackingQueue).toEqual([beforeState.trackingQueue[0]]);
-    });
-
-    it('should set the API hostname in state', () => {
-      const host = 'https://mytesthost.com';
-
-      const actualState = reducer(beforeState, {
-        type: setApiUrl.type,
-        payload: host,
-      });
-
-      expect(actualState.apiUrl).toEqual(host);
     });
   });
 

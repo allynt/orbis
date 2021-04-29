@@ -32,5 +32,12 @@ describe('ApiClient', () => {
       const apiClient = new ApiClient();
       expect(apiClient.bookmarks.apiHost).toBe('http://test-host.com');
     });
+
+    it('Returns the set apiHost', () => {
+      process.env.NODE_ENV = 'development';
+      process.env.REACT_APP_API_HOST = 'http://test-host.com';
+      const apiClient = new ApiClient();
+      expect(apiClient.apiHost).toBe('http://test-host.com');
+    });
   });
 });

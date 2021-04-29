@@ -2,12 +2,8 @@ import { NotificationManager } from 'react-notifications';
 
 import { createSlice, createSelector } from '@reduxjs/toolkit';
 
-import {
-  getData,
-  sendData,
-  getJsonAuthHeaders,
-  getApiUrl,
-} from '../utils/http';
+import apiClient from 'api-client';
+import { getData, sendData, getJsonAuthHeaders } from '../utils/http';
 
 const API = {
   sources: '/api/satellites/',
@@ -146,10 +142,7 @@ export const {
 export const fetchSatellites = () => async (dispatch, getState) => {
   const headers = getJsonAuthHeaders(getState());
 
-  const response = await getData(
-    `${getApiUrl(getState())}${API.sources}`,
-    headers,
-  );
+  const response = await getData(`${apiClient.apiHost}${API.sources}`, headers);
 
   if (!response.ok) {
     const message = `${response.status} ${response.statusText}`;
@@ -176,7 +169,7 @@ export const fetchSatelliteScenes = query => async (dispatch, getState) => {
 
   // satellite selection is hard-coded for now
   const response = await sendData(
-    `${getApiUrl(getState())}${API.scenes}`,
+    `${apiClient.apiHost}${API.scenes}`,
     query,
     headers,
   );
@@ -204,7 +197,7 @@ export const fetchSavedSatelliteSearches = () => async (dispatch, getState) => {
 
   // satellite selection is hard-coded for now
   const response = await getData(
-    `${getApiUrl(getState())}${API.savedSearches}`,
+    `${apiClient.apiHost}${API.savedSearches}`,
     headers,
   );
 
@@ -230,7 +223,7 @@ export const deleteSavedSatelliteSearch = id => async (dispatch, getState) => {
   const headers = getJsonAuthHeaders(getState());
 
   const response = await sendData(
-    `${getApiUrl(getState())}${API.savedSearches}`,
+    `${apiClient.apiHost}${API.savedSearches}`,
     id,
     headers,
     'DELETE',
@@ -256,7 +249,7 @@ export const saveSatelliteSearch = form => async (dispatch, getState) => {
   const headers = getJsonAuthHeaders(getState());
 
   const response = await sendData(
-    `${getApiUrl(getState())}${API.savedSearches}`,
+    `${apiClient.apiHost}${API.savedSearches}`,
     form,
     headers,
   );
@@ -291,7 +284,7 @@ export const fetchPinnedScenes = () => async (dispatch, getState) => {
 
   // satellite selection is hard-coded for now
   const response = await getData(
-    `${getApiUrl(getState())}${API.pinScene}`,
+    `${apiClient.apiHost}${API.pinScene}`,
     headers,
   );
 
@@ -317,7 +310,7 @@ export const pinScene = form => async (dispatch, getState) => {
   const headers = getJsonAuthHeaders(getState());
 
   const response = await sendData(
-    `${getApiUrl(getState())}${API.pinScene}`,
+    `${apiClient.apiHost}${API.pinScene}`,
     form,
     headers,
   );
@@ -344,7 +337,7 @@ export const deletePinnedScene = id => async (dispatch, getState) => {
   const headers = getJsonAuthHeaders(getState());
 
   const response = await sendData(
-    `${getApiUrl(getState())}${API.pinScene}`,
+    `${apiClient.apiHost}${API.pinScene}`,
     id,
     headers,
     'DELETE',

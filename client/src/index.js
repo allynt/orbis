@@ -17,12 +17,6 @@ import { CssBaseline, ThemeProvider } from '@astrosat/astrosat-ui';
 import installDevTools from './dev-tools/load';
 import { MapProvider } from 'MapContext';
 
-import { setApiUrl } from './app.slice';
-
-process.env.NODE_ENV === 'development'
-  ? store.dispatch(setApiUrl(process.env.REACT_APP_API_HOST))
-  : store.dispatch(setApiUrl(window._env_.REACT_APP_API_HOST));
-
 const render = () => {
   const App = require('./app.component').default;
 
