@@ -1,3 +1,4 @@
+import { groupBy } from 'lodash';
 /**
  * @typedef {import("typings/orbis").Property} Property
  */
@@ -7,15 +8,10 @@
  * @returns {(Property | Property[])[]}
  */
 export const groupProperties = properties => {
-  return properties.reduce((acc, cur) => {
-    if (!acc.flat().includes(cur)) {
-      if (!cur.property_group) return [...acc, [cur]];
-
-      const group = properties.filter(
-        p => p.property_group === cur.property_group,
-      );
-      return [...acc, group];
-    }
-    return acc;
-  }, []);
+  const group = groupBy(properties, 'property_group');
+  return Object.entries(group).reduce(
+    (acc, [key, group]) =>
+      key === 'undefined' ? [...acc, ...group] : [...acc, group],
+    [],
+  );
 };
