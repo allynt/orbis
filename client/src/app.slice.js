@@ -93,8 +93,6 @@ export const logUserTracking = () => async (dispatch, getState) => {
 
 const baseSelector = state => state?.app;
 
-export const apiUrlSelector = createSelector(baseSelector, app => app?.apiUrl);
-
 export const configSelector = createSelector(baseSelector, app => app?.config);
 
 export const passwordConfigSelector = createSelector(

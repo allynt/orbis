@@ -3,7 +3,7 @@ import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Redirect, Route, Switch } from 'react-router-dom';
 
-import { apiUrlSelector, passwordConfigSelector } from 'app.slice';
+import { passwordConfigSelector } from 'app.slice';
 import PrivateRoute from 'utils/private-route.component';
 
 import {
