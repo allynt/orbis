@@ -19,18 +19,14 @@ const ActionForHelpMapComponent = ({ source }) => {
   const updateNoteOrStatus = async ({ id, ...data }) => {
     const url = `https://app.testing.actionforhelp.co.uk/api/people/hourglass/${id}/`;
 
-    const response = await sendData(url, data, {
+    const headers = {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
       Authorization: `Bearer ${dataToken}`,
-    });
+    };
 
-    const result = await response.json();
-
-    console.log('result: ', result);
-  };
-
-  const data = {
-    note: { body: 'this is a note' },
-    status: 'FOLLOWUP',
+    const response = await sendData(url, data, headers, 'PUT');
+    return response.json();
   };
 
   if (!pickedObjects?.length) return null;
@@ -64,12 +60,14 @@ const ActionForHelpMapComponent = ({ source }) => {
         }
       />
       {pickedObjects?.map(feat => (
-        <PopupStatusAndNote
-          id={feat.properties.pk}
-          note={feat.note}
-          status={feat.status}
-          onSave={data => updateNoteOrStatus(data)}
-        />
+        <React.Fragment key={feat.properties.pk}>
+          <PopupStatusAndNote
+            id={feat.properties.pk}
+            note={feat.properties.notes}
+            status={feat.properties.status}
+            onSave={data => updateNoteOrStatus(data)}
+          />
+        </React.Fragment>
       ))}
     </Popup>
   );

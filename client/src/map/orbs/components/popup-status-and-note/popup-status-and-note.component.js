@@ -54,15 +54,15 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const PopupStatusAndNote = ({ id, note, onSave, status = 'NEW' }) => {
-  const [text, setText] = useState(note?.body);
+  const [text, setText] = useState(note);
   const [selectedStatus, setSelectedStatus] = useState(status);
   const [editMode, setEditMode] = useState(false);
-  const [charCount, setCharCount] = useState(note?.body?.length);
+  const [charCount, setCharCount] = useState(note?.length);
 
   const CHAR_LIMIT = 3000,
     charLimitExceeded = charCount > CHAR_LIMIT,
     hasChangedStatus = selectedStatus !== status,
-    hasChangedNote = text !== note?.body,
+    hasChangedNote = text !== note,
     enabled = hasChangedStatus || hasChangedNote;
 
   const options = {
@@ -82,14 +82,14 @@ const PopupStatusAndNote = ({ id, note, onSave, status = 'NEW' }) => {
   const handleEditClick = () => {
     if (!editMode) return setEditMode(true);
 
-    setText(note?.body);
-    setCharCount(note?.body?.length);
+    setText(note);
+    setCharCount(note?.length);
     return setEditMode(false);
   };
 
   const handleSaveClick = () => {
     let data = { id };
-    if (hasChangedNote) data.note = text.trim();
+    if (hasChangedNote) data.notes = text.trim();
     if (hasChangedStatus) data.status = selectedStatus;
     if (editMode) setEditMode(false);
     return onSave(data);
@@ -108,7 +108,7 @@ const PopupStatusAndNote = ({ id, note, onSave, status = 'NEW' }) => {
               label={value}
               control={
                 <Radio
-                  name={value}
+                  name={key}
                   value={key}
                   checked={value === options[selectedStatus]}
                 />
