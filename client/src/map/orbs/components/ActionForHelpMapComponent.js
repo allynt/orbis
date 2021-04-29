@@ -17,7 +17,7 @@ const ActionForHelpMapComponent = ({ source }) => {
   const dispatch = useDispatch();
 
   const updateNoteOrStatus = async ({ id, ...data }) => {
-    const url = `https://app.testing.actionforhelp.co.uk/api/people/hourglass/${id}/`;
+    const url = `${source.metadata.url}/${id}/`;
 
     const headers = {
       Accept: 'application/json',
@@ -58,17 +58,17 @@ const ActionForHelpMapComponent = ({ source }) => {
             ? 'User Details'
             : 'Infrastructure Details'
         }
-      />
-      {pickedObjects?.map(feat => (
-        <React.Fragment key={feat.properties.pk}>
+      >
+        {pickedObjects?.map(feat => (
           <PopupStatusAndNote
+            key={feat.properties.pk}
             id={feat.properties.pk}
             note={feat.properties.notes}
             status={feat.properties.status}
             onSave={data => updateNoteOrStatus(data)}
           />
-        </React.Fragment>
-      ))}
+        ))}
+      </FeatureDetail>
     </Popup>
   );
 };

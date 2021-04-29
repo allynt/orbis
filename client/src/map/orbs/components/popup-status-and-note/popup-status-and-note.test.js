@@ -6,8 +6,7 @@ import userEvent from '@testing-library/user-event';
 
 export const defaultNote = 'This is a test note';
 
-export const longBodyNote =
-  'Lorem ipsum, dolor sit amet consectetur adipisicing elit. Doloremque nihil impedit, amet similique sequi error tenetur delectus eveniet natus quis animi odio obcaecati praesentium voluptate reiciendis ad, culpa est at? Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ratione iure blanditiis sequi dolor porro similique, repudiandae laborum natus obcaecati ipsam tempora. Distinctio sunt accusamus ipsum totam. Molestias deserunt dignissimos unde! Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quas quis, dolorem est incidunt, sint dicta eum, consectetur natus nostrum facilis officiis voluptates aliquid fuga cupiditate nesciunt aperiam culpa accusamus ea. Lorem, ipsum dolor sit amet consectetur adipisicing elit. Mollitia assumenda doloribus officia perferendis modi totam quos molestiae natus hic quae quisquam nihil omnis consequuntur blanditiis eos, soluta necessitatibus ut cum. Lorem ipsum dolor sit amet consectetur adipisicing elit. Beatae autem animi omnis consequuntur fugit nemo natus, eaque, sint ea maxime quo sunt. Enim magnam illo dolorum aliquam obcaecati eum quia! Lorem ipsum dolor sit amet consectetur adipisicing elit. Quasi, velit ipsam. Adipisci excepturi alias iste provident, est, atque doloribus beatae omnis debitis, mollitia ut quasi architecto ullam voluptas nemo sit. Lorem ipsum dolor sit amet consectetur adipisicing elit. At modi officia fuga, esse dolorem temporibus delectus facere voluptates, provident ad inventore ipsa exercitationem, ullam amet! Optio laudantium explicabo enim culpa? Lorem ipsum, dolor sit amet consectetur adipisicing elit. Doloremque nihil impedit, amet similique sequi error tenetur delectus eveniet natus quis animi odio obcaecati praesentium voluptate reiciendis ad, culpa est at? Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ratione iure blanditiis sequi dolor porro similique, repudiandae laborum natus obcaecati ipsam tempora. Distinctio sunt accusamus ipsum totam. Molestias deserunt dignissimos unde! Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quas quis, dolorem est incidunt, sint dicta eum, consectetur natus nostrum facilis officiis voluptates aliquid fuga cupiditate nesciunt aperiam culpa accusamus ea. Lorem, ipsum dolor sit amet consectetur adipisicing elit. Mollitia assumenda doloribus officia perferendis modi totam quos molestiae natus hic quae quisquam nihil omnis consequuntur blanditiis eos, soluta necessitatibus ut cum. Lorem ipsum dolor sit amet consectetur adipisicing elit. Beatae autem animi omnis consequuntur fugit nemo natus, eaque, sint ea maxime quo sunt. Enim magnam illo dolorum aliquam obcaecati eum quia! Lorem ipsum dolor sit amet consectetur adipisicing elit. Quasi, velit ipsam. Adipisci excepturi alias iste provident, est, atque doloribus beatae omnis debitis, mollitia ut quasi architecto ullam voluptas nemo sit. Lorem ipsum dolor sit amet consectetur adipisicing elit. At modi officia fuga, esse dolorem temporibus delectus facere voluptates, provident ad inventore ipsa exercitationem, ullam amet! Optio laudantium explicabo enim culpa?';
+export const longBodyNote = new Array(3001).fill('0').join('');
 
 const defaultStatus = 'NEW';
 
@@ -56,19 +55,16 @@ describe('Popup Status And Note', () => {
     expect(getByRole('textbox', { name: 'Popup Note' })).toHaveDisplayValue('');
   });
 
-  xit('displays the status if status is present', () => {
-    const status = 'COMPLETED';
-    const { getByRole } = renderComponent({ status });
+  it('displays the status if status is present', () => {
+    const { getByRole } = renderComponent({ status: 'COMPLETE' });
 
-    expect(getByRole('radio', { name: status })).toHaveAttribute('checked');
+    expect(getByRole('radio', { name: 'Complete' })).toHaveAttribute('checked');
   });
 
-  xit('Defaults to `New` if no status is present', () => {
+  it('Defaults to `New` if no status is present', () => {
     const { getByRole } = renderComponent({});
 
-    expect(getByRole('radio', { name: defaultStatus })).toHaveAttribute(
-      'checked',
-    );
+    expect(getByRole('radio', { name: 'New' })).toHaveAttribute('checked');
   });
 
   it('displays character count of the note if present', () => {
@@ -80,15 +76,11 @@ describe('Popup Status And Note', () => {
   it('enables text area when edit button is clicked', () => {
     const { getByRole } = renderComponent({});
 
-    expect(getByRole('textbox', { name: 'Popup Note' })).toHaveAttribute(
-      'disabled',
-    );
+    expect(getByRole('textbox', { name: 'Popup Note' })).not.toBeDisabled();
 
     userEvent.click(getByRole('button', { name: 'Edit' }));
 
-    expect(getByRole('textbox', { name: 'Popup Note' })).not.toHaveAttribute(
-      'disabled',
-    );
+    expect(getByRole('textbox', { name: 'Popup Note' })).not.toBeDisabled();
   });
 
   it('displays error message if character count exceeds limit', () => {
@@ -112,14 +104,12 @@ describe('Popup Status And Note', () => {
     expect(getByRole('button', { name: 'Save' })).toHaveAttribute('disabled');
   });
 
-  xit('enables save button if status has been changed', () => {
+  it('enables save button if status has been changed', () => {
     const { getByRole } = renderComponent({});
 
-    userEvent.click(getByRole('radio', { name: 'FOLLOWUP' }));
+    userEvent.click(getByRole('radio', { name: 'Followup' }));
 
-    expect(getByRole('button', { name: 'Save' })).not.toHaveAttribute(
-      'disabled',
-    );
+    expect(getByRole('button', { name: 'Save' })).not.toBeDisabled();
   });
 
   it('enables save button if text area has been changed', () => {
@@ -128,9 +118,7 @@ describe('Popup Status And Note', () => {
     userEvent.click(getByRole('button', { name: 'Edit' }));
     userEvent.type(getByRole('textbox', { name: 'Popup Note' }), 'some text');
 
-    expect(getByRole('button', { name: 'Save' })).not.toHaveAttribute(
-      'disabled',
-    );
+    expect(getByRole('button', { name: 'Save' })).not.toBeDisabled();
   });
 
   it('calls save handler when save button is clicked', () => {

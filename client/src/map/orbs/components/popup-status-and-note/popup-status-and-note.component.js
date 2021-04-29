@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 
+import { OPTIONS } from './status-constants';
+
 import {
   Input,
   Button,
@@ -22,8 +24,8 @@ const useStyles = makeStyles(theme => ({
     alignSelf: 'flex-start',
     marginRight: theme.spacing(1),
   },
-  note: {
-    minWidth: theme.spacing(40),
+  noteAndButtons: {
+    minWidth: theme.typography.pxToRem(304),
   },
   input: {
     color: `${theme.palette.secondary.main} !important`,
@@ -37,22 +39,23 @@ const useStyles = makeStyles(theme => ({
     margin: '0',
   },
   charCount: {
-    /** @param { charLimitExceeded } boolean */
-    color: ({ charLimitExceeded }) =>
-      charLimitExceeded
-        ? `${theme.palette.error.main}`
-        : `${theme.palette.primary.main}`,
+    marginLeft: 'auto',
+    /** @param { { charLimitExceeded: boolean } } props */
+    color: props =>
+      props.charLimitExceeded
+        ? theme.palette.error.main
+        : theme.palette.primary.main,
   },
   buttons: {
     width: '100%',
-    gap: theme.spacing(1),
   },
   button: {
     padding: theme.spacing(0.5, 0),
-    minWidth: theme.spacing(16),
+    minWidth: theme.typography.pxToRem(128),
   },
 }));
 
+/** @param { { id: number, note: string, onSave: (data: object) => void, status: string } } props */
 const PopupStatusAndNote = ({ id, note, onSave, status = 'NEW' }) => {
   const [text, setText] = useState(note);
   const [selectedStatus, setSelectedStatus] = useState(status);
@@ -64,13 +67,6 @@ const PopupStatusAndNote = ({ id, note, onSave, status = 'NEW' }) => {
     hasChangedStatus = selectedStatus !== status,
     hasChangedNote = text !== note,
     enabled = hasChangedStatus || hasChangedNote;
-
-  const options = {
-    NEW: 'New',
-    PENDING: 'Pending',
-    COMPLETE: 'Complete',
-    FOLLOWUP: 'Followup',
-  };
 
   const styles = useStyles({ charLimitExceeded });
 
@@ -101,18 +97,18 @@ const PopupStatusAndNote = ({ id, note, onSave, status = 'NEW' }) => {
         <Typography variant="h4" className={styles.key}>
           Status:
         </Typography>
-        <RadioGroup onChange={e => setSelectedStatus(e.target.value)}>
-          {Object.entries(options).map(([key, value]) => (
+        <RadioGroup
+          name="Status"
+          aria-label="Status"
+          value={selectedStatus}
+          onChange={e => setSelectedStatus(e.target.value)}
+        >
+          {Object.entries(OPTIONS).map(([key, value]) => (
             <FormControlLabel
               key={key}
+              value={key}
               label={value}
-              control={
-                <Radio
-                  name={key}
-                  value={key}
-                  checked={value === options[selectedStatus]}
-                />
-              }
+              control={<Radio />}
             />
           ))}
         </RadioGroup>
@@ -133,7 +129,7 @@ const PopupStatusAndNote = ({ id, note, onSave, status = 'NEW' }) => {
           direction="column"
           justify="space-between"
           alignItems="flex-start"
-          className={styles.note}
+          className={styles.noteAndButtons}
         >
           <Input
             multiline
@@ -144,7 +140,7 @@ const PopupStatusAndNote = ({ id, note, onSave, status = 'NEW' }) => {
             inputProps={{
               'aria-label': 'Popup Note',
             }}
-            disabled={!!note && !editMode}
+            readOnly={!!note && !editMode}
             className={styles.input}
           />
           <Grid
@@ -157,9 +153,7 @@ const PopupStatusAndNote = ({ id, note, onSave, status = 'NEW' }) => {
               <Typography className={styles.charLimitMessage}>
                 Character limit exceeded
               </Typography>
-            ) : (
-              <span></span>
-            )}
+            ) : null}
             <Typography className={styles.charCount}>
               {charCount || '0'}/{CHAR_LIMIT}
             </Typography>
@@ -178,7 +172,11 @@ const PopupStatusAndNote = ({ id, note, onSave, status = 'NEW' }) => {
               Save
             </Button>
             {!!note ? (
-              <Button className={styles.button} onClick={handleEditClick}>
+              <Button
+                className={styles.button}
+                onClick={handleEditClick}
+                color="secondary"
+              >
                 {editMode ? 'Cancel' : 'Edit'}
               </Button>
             ) : null}
