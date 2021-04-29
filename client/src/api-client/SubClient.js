@@ -1,5 +1,10 @@
 import { ResponseError } from './ResponseError';
 
+const JSON_REQUEST_OPTIONS = {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+};
+
 export class SubClient {
   /** @type {string} */
   apiHost;
@@ -56,6 +61,20 @@ export class SubClient {
   }
 
   /**
+   * @template T
+   * @param {RequestInfo} url
+   * @param {any} body
+   * @returns {Promise<T>}
+   */
+  async makePostRequest(url, body) {
+    const response = await this.makeRequest(url, {
+      ...JSON_REQUEST_OPTIONS,
+      body: JSON.stringify(body),
+    });
+    return response.json();
+  }
+
+  /**
    * @param {RequestInfo} url
    * @param {RequestInit} options
    */
@@ -77,9 +96,8 @@ export class SubClient {
    */
   async makeAuthenticatedPostRequest(url, body) {
     const response = await this.makeAuthenticatedRequest(url, {
-      method: 'POST',
+      ...JSON_REQUEST_OPTIONS,
       body: JSON.stringify(body),
-      headers: { 'Content-Type': 'application/json' },
     });
     return response.json();
   }

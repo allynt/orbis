@@ -78,7 +78,11 @@ describe('SubClient', () => {
     });
   });
 
-  describe('makeAuthenticatedPostRequest', () => {
+  describe.each`
+    fn
+    ${'makeAuthenticatedPostRequest'}
+    ${'makePostRequest'}
+  `('$fn', ({ fn }) => {
     const body = {
       id: 1,
       test: 'yes',
@@ -86,7 +90,7 @@ describe('SubClient', () => {
 
     it('Calls fetch with json headers', () => {
       fetch.once(JSON.stringify({}));
-      subClient.makeAuthenticatedPostRequest('/some/url', body);
+      subClient[fn]('/some/url', body);
       expect(fetch).toBeCalledWith(
         expect.stringContaining('/some/url'),
         expect.objectContaining({
@@ -100,7 +104,7 @@ describe('SubClient', () => {
 
     it('Includes the stringified body', () => {
       fetch.once(JSON.stringify({}));
-      subClient.makeAuthenticatedPostRequest('/some/url', body);
+      subClient[fn]('/some/url', body);
       expect(fetch).toBeCalledWith(
         expect.stringContaining('/some/url'),
         expect.objectContaining({
@@ -112,9 +116,7 @@ describe('SubClient', () => {
     it('Returns the response body', () => {
       const response = { this: 'was returned' };
       fetch.once(JSON.stringify(response));
-      expect(
-        subClient.makeAuthenticatedPostRequest('/some/url', body),
-      ).resolves.toEqual(response);
+      expect(subClient[fn]('/some/url', body)).resolves.toEqual(response);
     });
   });
 
