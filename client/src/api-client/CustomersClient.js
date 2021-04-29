@@ -130,6 +130,16 @@ export class CustomersClient extends SubClient {
 
   /**
    * @param {Customer['id']} customerId
+   * @param {User['id']} userId
+   */
+  async deleteCustomerUser(customerId, userId) {
+    await this.makeAuthenticatedRequest(`/${customerId}/users/${userId}/`, {
+      method: 'DELETE',
+    });
+  }
+
+  /**
+   * @param {Customer['id']} customerId
    * @param {{
    *  subscription: string;
    *  paymentType: string;

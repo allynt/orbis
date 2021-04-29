@@ -303,43 +303,25 @@ export const deleteCustomerUser = customerUser => async (
   dispatch,
   getState,
 ) => {
-  const headers = getJsonAuthHeaders(getState());
-  const currentCustomer = selectCurrentCustomer(getState());
-
   dispatch(deleteCustomerUserRequested());
-
-  const deleteUserResponse = await sendData(
-    `${getApiUrl(getState())}${API}${currentCustomer.id}/users/`,
-    customerUser.user.id,
-    headers,
-    'DELETE',
-  );
-
-  if (!deleteUserResponse.ok)
+  const currentCustomer = selectCurrentCustomer(getState());
+  try {
+    await apiClient.customers.deleteCustomerUser(
+      currentCustomer.id,
+      customerUser.user.id,
+    );
+    const customer = await apiClient.customers.getCustomer(currentCustomer.id);
+    return dispatch(
+      deleteCustomerUserSuccess({ deletedUser: customerUser, customer }),
+    );
+  } catch (responseError) {
     return handleFailure(
-      deleteUserResponse,
+      responseError.response,
       'Deleting Customer User Error',
       deleteCustomerUserFailure,
       dispatch,
     );
-
-  const fetchCustomerResponse = await getData(
-    `${getApiUrl(getState())}${API}${currentCustomer.id}`,
-    headers,
-  );
-  if (!fetchCustomerResponse.ok)
-    return handleFailure(
-      fetchCustomerResponse,
-      'Deleting Customer User Error',
-      deleteCustomerUserFailure,
-      dispatch,
-    );
-
-  const customer = await fetchCustomerResponse.json();
-
-  return dispatch(
-    deleteCustomerUserSuccess({ deletedUser: customerUser, customer }),
-  );
+  }
 };
 
 export const inviteCustomerUser = customerUser => async (

@@ -121,6 +121,19 @@ describe('CustomersClient', () => {
     });
   });
 
+  describe('deleteCustomerUser', () => {
+    it('Makes the delete request', () => {
+      fetch.once(JSON.stringify({}));
+      const customerId = 'cust-id-123',
+        userId = 'user-id-123';
+      client.deleteCustomerUser(customerId, userId);
+      expect(fetch).toBeCalledWith(
+        expect.stringContaining(`/${customerId}/users/${userId}/`),
+        expect.objectContaining({ method: 'DELETE' }),
+      );
+    });
+  });
+
   describe('placeOrder', () => {
     it('returns the response body', async () => {
       const order = { id: '123' };
