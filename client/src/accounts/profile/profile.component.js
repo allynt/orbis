@@ -5,14 +5,13 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Box, Button, Link, Typography } from '@astrosat/astrosat-ui';
 
 import UpdateUserForm from '../update-user-form/update-user-form.component';
-import { apiUrlSelector } from 'app.slice';
+import apiClient from 'api-client';
 import { updateUser, logout } from '../accounts.slice';
 import { userSelector } from '../accounts.selectors';
 
 const Profile = () => {
   const dispatch = useDispatch();
   const user = useSelector(userSelector);
-  const apiUrl = useSelector(apiUrlSelector);
 
   const updateUserProfile = user => dispatch(updateUser(user));
 
@@ -45,7 +44,7 @@ const Profile = () => {
         <Typography>
           Read our&nbsp;
           <Link
-            href={`${apiUrl}/api/documents/terms/`}
+            href={apiClient.documents.termsUrl}
             rel="noopener noreferrer"
             target="_blank"
           >

@@ -23,8 +23,9 @@ import {
   toggleMenu,
   setMenuHeadings,
 } from '../control-panel/control-panel.slice';
+import apiClient from 'api-client';
 
-export const getToolbarItems = (dispatch, user, apiUrl) => {
+export const getToolbarItems = (dispatch, user) => {
   let items = [
     {
       label: DATA_LAYERS,
@@ -85,7 +86,7 @@ export const getToolbarItems = (dispatch, user, apiUrl) => {
       footer: true,
       tooltip: 'User Guide',
       order: 3,
-      href: `${apiUrl}/api/documents/guide?name=general`,
+      href: apiClient.documents.userGuideUrl(),
     },
   ];
 

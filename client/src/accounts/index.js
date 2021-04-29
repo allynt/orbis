@@ -48,11 +48,6 @@ import CustomerRegistration from './register/customer/customer-registration/cust
 import OrderForm from './register/customer/order-form/order-form.component';
 import Wrapper from './wrapper.component';
 
-const DOCUMENTS_API = {
-  terms: '/api/documents/terms/',
-  privacy: '/api/documents/privacy/',
-};
-
 export default () => {
   const dispatch = useDispatch();
   const error = useSelector(errorSelector);
@@ -63,10 +58,6 @@ export default () => {
   /** @type {User} */
   const user = useSelector(userSelector);
   const passwordConfig = useSelector(passwordConfigSelector);
-  const apiUrl = useSelector(apiUrlSelector);
-
-  const termsUrl = `${apiUrl}${DOCUMENTS_API.terms}`;
-  const privacyUrl = `${apiUrl}${DOCUMENTS_API.privacy}`;
 
   return (
     <Wrapper>
@@ -76,8 +67,6 @@ export default () => {
           path={REGISTER}
           render={() => (
             <JourneySelection
-              termsUrl={termsUrl}
-              privacyUrl={privacyUrl}
               customerRegistrationIsOpen
               individualRegistrationIsOpen={false}
             />
@@ -100,7 +89,6 @@ export default () => {
           path={REGISTER_CUSTOMER_USER}
           render={() => (
             <UserRegistration
-              termsUrl={termsUrl}
               serverErrors={error}
               isLoading={isLoading}
               onSubmit={values => dispatch(registerUser(values))}
@@ -130,7 +118,6 @@ export default () => {
               <Redirect to="/" />
             ) : (
               <LoginForm
-                termsUrl={termsUrl}
                 user={user}
                 login={values => dispatch(login(values))}
                 serverErrors={error}
@@ -150,7 +137,6 @@ export default () => {
           changePassword={form => dispatch(changePassword(form))}
           changeStatus={changeStatus}
           error={error}
-          termsUrl={termsUrl}
           {...passwordConfig}
         />
         <Route

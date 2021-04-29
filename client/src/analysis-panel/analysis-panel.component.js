@@ -32,7 +32,6 @@ import { COMPONENT_MAP } from './component-map';
 import { MoreInformation } from './more-information/more-information.component';
 import PDF from './pdf-export/pdf-export.component';
 import { ContextMenu } from './context-menu/context-menu.component';
-import { apiUrlSelector } from 'app.slice';
 
 const PrimaryDivider = styled(Divider)(({ theme }) => ({
   backgroundColor: theme.palette.primary.dark,
@@ -118,7 +117,6 @@ export const AnalysisPanel = () => {
   const dialogStyles = useDialogStyles();
 
   const dispatch = useDispatch();
-  const apiUrl = useSelector(apiUrlSelector);
   const other = useSelector(state =>
     otherSelector('astrosat/isolation_plus')(state?.orbs),
   );
@@ -188,7 +186,6 @@ export const AnalysisPanel = () => {
           <ContextMenu
             pdfIncompatible={pdfIncompatible}
             onDownloadPdfClick={() => setPdfOpen(true)}
-            apiUrl={apiUrl}
           />
         </div>
       }
