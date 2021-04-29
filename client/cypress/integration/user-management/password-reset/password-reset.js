@@ -9,7 +9,7 @@ Then(`I see the "Password Reset" page`, () => {
   cy.url().should('include', PASSWORD_RESET);
 
   // Verify form
-  cy.findByPlaceholderText('Email');
+  cy.findByLabelText('Email');
   cy.contains('Reset Password');
 
   // Verify links.
