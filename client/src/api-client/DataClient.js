@@ -2,8 +2,7 @@ import { SubClient } from './SubClient';
 
 export class DataClient extends SubClient {
   constructor() {
-    super();
-    this.endpoint = '/data';
+    super('/data');
   }
 
   /**

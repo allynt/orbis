@@ -4,8 +4,7 @@ import { SubClient } from './SubClient';
 
 export class BookmarksClient extends SubClient {
   constructor() {
-    super();
-    this.endpoint = '/bookmarks';
+    super('/bookmarks');
   }
 
   /**

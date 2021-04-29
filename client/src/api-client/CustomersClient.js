@@ -3,8 +3,7 @@ import { SubClient } from './SubClient';
 
 export class CustomersClient extends SubClient {
   constructor() {
-    super();
-    this.endpoint = '/customers';
+    super('/customers');
     this.fieldMapping = {
       createCustomer: {
         [FIELD_NAMES.customerName]: 'name',
