@@ -8,15 +8,15 @@ import {
   FormControlLabel,
   Typography,
   Grid,
-  ListItem,
   makeStyles,
 } from '@astrosat/astrosat-ui';
 
 const useStyles = makeStyles(theme => ({
   container: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+    padding: theme.spacing(0, 2),
+  },
+  status: {
+    margin: theme.spacing(2, 0),
   },
   key: {
     alignSelf: 'flex-start',
@@ -24,12 +24,12 @@ const useStyles = makeStyles(theme => ({
   },
   note: {
     minWidth: theme.spacing(40),
-    alignItems: 'flex-start',
+  },
+  input: {
+    color: `${theme.palette.secondary.main} !important`,
   },
   displays: {
     width: '100%',
-    display: 'flex',
-    justifyContent: 'space-between',
     marginBottom: theme.spacing(1),
   },
   charLimitMessage: {
@@ -96,8 +96,8 @@ const PopupStatusAndNote = ({ id, note, onSave, status = 'NEW' }) => {
   };
 
   return (
-    <>
-      <ListItem className={styles.container}>
+    <Grid container direction="column" className={styles.container}>
+      <Grid item container alignItems="center" className={styles.status}>
         <Typography variant="h4" className={styles.key}>
           Status:
         </Typography>
@@ -116,20 +116,28 @@ const PopupStatusAndNote = ({ id, note, onSave, status = 'NEW' }) => {
             />
           ))}
         </RadioGroup>
-      </ListItem>
-      <ListItem className={styles.container}>
+      </Grid>
+      <Grid
+        item
+        container
+        justify="space-between"
+        alignItems="center"
+        wrap="nowrap"
+      >
         <Typography variant="h4" className={styles.key}>
           Note:
         </Typography>
         <Grid
+          item
           container
           direction="column"
           justify="space-between"
+          alignItems="flex-start"
           className={styles.note}
         >
           <Input
             multiline
-            rows={3}
+            rows={4}
             onChange={handleNoteChange}
             value={text || ''}
             placeholder="Type here..."
@@ -137,8 +145,14 @@ const PopupStatusAndNote = ({ id, note, onSave, status = 'NEW' }) => {
               'aria-label': 'Popup Note',
             }}
             disabled={!!note && !editMode}
+            className={styles.input}
           />
-          <div className={styles.displays}>
+          <Grid
+            item
+            container
+            justify="space-between"
+            className={styles.displays}
+          >
             {charLimitExceeded ? (
               <Typography className={styles.charLimitMessage}>
                 Character limit exceeded
@@ -149,7 +163,7 @@ const PopupStatusAndNote = ({ id, note, onSave, status = 'NEW' }) => {
             <Typography className={styles.charCount}>
               {charCount || '0'}/{CHAR_LIMIT}
             </Typography>
-          </div>
+          </Grid>
           <Grid
             container
             justify="space-evenly"
@@ -170,8 +184,8 @@ const PopupStatusAndNote = ({ id, note, onSave, status = 'NEW' }) => {
             ) : null}
           </Grid>
         </Grid>
-      </ListItem>
-    </>
+      </Grid>
+    </Grid>
   );
 };
 
