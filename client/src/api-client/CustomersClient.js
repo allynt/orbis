@@ -141,6 +141,30 @@ export class CustomersClient extends SubClient {
   /**
    * @param {Customer['id']} customerId
    * @param {{
+   *  type?: CustomerUser['type']
+   *  status?: CustomerUser['status']
+   *  user: Partial<User>
+   *  licences: CustomerUser['licences']
+   * }} customerUser
+   * @returns {Promise<CustomerUser>}
+   */
+  async inviteCustomerUser(customerId, customerUser) {
+    const response = await this.makeAuthenticatedRequest(
+      `/${customerId}/users/${customerUser.user.id}/invite/`,
+      {
+        method: 'POST',
+        body: JSON.stringify({}),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      },
+    );
+    return response.json();
+  }
+
+  /**
+   * @param {Customer['id']} customerId
+   * @param {{
    *  subscription: string;
    *  paymentType: string;
    *  amount: number;

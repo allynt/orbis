@@ -1,11 +1,8 @@
 import { NotificationManager } from 'react-notifications';
 import { createSlice, createSelector } from '@reduxjs/toolkit';
 
-import { getData, sendData, getJsonAuthHeaders, getApiUrl } from 'utils/http';
 import { USER_STATUS } from './admin.constants';
 import apiClient from 'api-client';
-
-const API = '/api/customers/';
 
 const initialState = {
   currentCustomer: null,
@@ -328,30 +325,22 @@ export const inviteCustomerUser = customerUser => async (
   dispatch,
   getState,
 ) => {
-  const headers = getJsonAuthHeaders(getState());
-  const currentCustomer = selectCurrentCustomer(getState());
-
   dispatch(inviteCustomerUserRequested());
-
-  const inviteCustomerUserResponse = await sendData(
-    `${getApiUrl(getState())}${API}${currentCustomer.id}/users/${
-      customerUser.user.id
-    }/invite/`,
-    {},
-    headers,
-  );
-
-  if (!inviteCustomerUserResponse.ok)
+  const currentCustomer = selectCurrentCustomer(getState());
+  try {
+    const invitedCustomerUser = await apiClient.customers.inviteCustomerUser(
+      currentCustomer.id,
+      customerUser,
+    );
+    return dispatch(inviteCustomerUserSuccess({ invitedCustomerUser }));
+  } catch (responseError) {
     return handleFailure(
-      inviteCustomerUserResponse,
+      responseError.response,
       'Invite Customer User Error',
       inviteCustomerUserFailure,
       dispatch,
     );
-
-  const invitedCustomerUser = await inviteCustomerUserResponse.json();
-
-  return dispatch(inviteCustomerUserSuccess({ invitedCustomerUser }));
+  }
 };
 
 /* === Selectors === */

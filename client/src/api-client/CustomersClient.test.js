@@ -134,6 +134,21 @@ describe('CustomersClient', () => {
     });
   });
 
+  describe('inviteCustomerUser', () => {
+    it('Returns the invited customer user', async () => {
+      const userId = 'user-id-123',
+        user = { user: { id: userId } },
+        newUser = { id: 1, user: { id: userId } },
+        customerId = 'cust-id-123';
+      fetch.mockOnceIf(
+        new RegExp(`/${customerId}/users/${userId}/invite/`),
+        JSON.stringify(newUser),
+      );
+      const response = await client.inviteCustomerUser(customerId, user);
+      expect(response).toEqual(newUser);
+    });
+  });
+
   describe('placeOrder', () => {
     it('returns the response body', async () => {
       const order = { id: '123' };
