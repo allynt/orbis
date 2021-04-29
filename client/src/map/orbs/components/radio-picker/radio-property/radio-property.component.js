@@ -11,12 +11,10 @@ import {
 } from '@astrosat/astrosat-ui';
 
 import clsx from 'clsx';
-import { format } from 'date-fns';
 
-import { InfoButtonTooltip, ColorMapRangeSlider } from 'components';
+import { InfoButtonTooltip } from 'components';
 import { FORMAT } from '../radio-picker-constants';
-import { DiscretePropertyLegend } from '../discrete-property-legend/discrete-property-legend.component';
-import { DateStepper } from '../../date-stepper/date-stepper.component';
+import { SelectedPropertyControls } from '../selected-property-controls/selected-property-controls.component';
 
 const useStyles = makeStyles(theme => ({
   property: {
@@ -65,7 +63,6 @@ const RadioProperty = ({
   selectedTimestamp,
   onSliderChange,
   selectedProperty,
-  colorScheme,
   filterRange,
   categoryPath,
 }) => {
@@ -152,69 +149,13 @@ const RadioProperty = ({
             </>
           )}
           <div className={styles.fullGrid}>
-            {selectedProperty.timeseries &&
-            Array.isArray(selectedProperty.timeseries_timestamps) ? (
-              <DateStepper
-                dates={selectedProperty.timeseries_timestamps.map(
-                  (timestamp, i) => {
-                    const date = new Date(timestamp);
-                    const shouldLabel =
-                      i === 0 ||
-                      i === selectedProperty.timeseries_timestamps.length - 1 ||
-                      i ===
-                        Math.floor(
-                          selectedProperty.timeseries_timestamps.length / 2,
-                        );
-
-                    return {
-                      value: date.getTime(),
-                      label: shouldLabel ? format(date, 'dd-MM-yy') : undefined,
-                    };
-                  },
-                )}
-                defaultValue={new Date(
-                  selectedProperty.timeseries_latest_timestamp,
-                ).getTime()}
-                min={new Date(
-                  selectedProperty.timeseries_timestamps[0],
-                ).getTime()}
-                max={new Date(
-                  selectedProperty.timeseries_timestamps[
-                    selectedProperty.timeseries_timestamps.length - 1
-                  ],
-                ).getTime()}
-                onChange={onDateChange}
-                value={selectedTimestamp}
-              />
-            ) : null}
-            {selectedProperty.type === 'discrete' ? (
-              <DiscretePropertyLegend property={selectedProperty} />
-            ) : (
-              <>
-                <Typography variant="body2" paragraph>
-                  Range Filter
-                </Typography>
-                <ColorMapRangeSlider
-                  type={selectedProperty?.type}
-                  color={colorScheme}
-                  domain={[selectedProperty.min, selectedProperty.max]}
-                  clip={
-                    (selectedProperty.clip_min ||
-                      selectedProperty.clip_max) && [
-                      selectedProperty.clip_min || selectedProperty.min,
-                      selectedProperty.clip_max || selectedProperty.max,
-                    ]
-                  }
-                  value={filterRange}
-                  onChange={onSliderChange}
-                  reversed={
-                    !!selectedProperty?.application?.orbis?.display
-                      ?.colormap_reversed
-                  }
-                  precision={selectedProperty?.precision}
-                />
-              </>
-            )}
+            <SelectedPropertyControls
+              selectedProperty={selectedProperty}
+              filterRange={filterRange}
+              onRangeFilterChange={onSliderChange}
+              selectedTimestamp={selectedTimestamp}
+              onDateChange={onDateChange}
+            />
           </div>
         </>
       )}
