@@ -4,7 +4,6 @@
 
 import { createSelector, createSlice } from '@reduxjs/toolkit';
 import { unionBy, differenceBy } from 'lodash';
-import { getJsonAuthHeaders, sendData } from 'utils/http';
 
 /**
  * @typedef {{
