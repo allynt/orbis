@@ -71,7 +71,6 @@ describe('Accounts Slice', () => {
           userKey: 'testkey',
           user: { username: 'testusername', email: 'testusername@test.com' },
         },
-        app: { apiUrl: 'http://test.com' },
       });
     });
 
@@ -434,7 +433,6 @@ describe('Accounts Slice', () => {
       getState = jest.fn(() => ({
         accounts: { userKey: '123' },
         admin: { currentCustomer: { id: '123' } },
-        app: { apiUrl: 'http://test.com' },
       }));
     });
 
@@ -671,7 +669,6 @@ describe('Accounts Slice', () => {
         fetch.once(JSON.stringify(fetchCustomerResponseBody));
         jest.spyOn(window, 'fetch');
         await placeOrder(formValues)(dispatch, () => ({
-          app: { apiUrl: '' },
           admin: {},
           accounts: { user: { customers: [{ id: 'testcustomerId' }] } },
         }));

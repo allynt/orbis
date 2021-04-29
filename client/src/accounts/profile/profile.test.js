@@ -14,7 +14,6 @@ const mockStore = configureMockStore([thunk]);
 
 const renderComponent = () => {
   const store = mockStore({
-    app: { apiUrl: '123' },
     accounts: { userKey: '123', user: { name: 'Fred' } },
   });
   const utils = render(<Profile />, {

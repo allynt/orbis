@@ -32,7 +32,6 @@ describe('Data Slice', () => {
 
         store = mockStore({
           accounts: {
-            userKey: 'Test-User-Key',
             user: {
               id: 'Test User ID',
               customers: [{ name: 'Test Customer Name' }],
@@ -52,7 +51,6 @@ describe('Data Slice', () => {
               },
             ],
           },
-          app: { apiUrl: 'http://test.com' },
         });
       });
 
@@ -125,8 +123,8 @@ describe('Data Slice', () => {
               customerName: 'Test Customer Name',
               loadLayer: {
                 dataset: source.source_id,
-              }
-            }
+              },
+            },
           },
           tags: ['LOAD_LAYER', source.source_id],
         };
@@ -152,8 +150,8 @@ describe('Data Slice', () => {
               customerName: 'Test Customer Name',
               loadLayerError: {
                 dataset: source.source_id,
-              }
-            }
+              },
+            },
           },
           tags: ['LOAD_LAYER_ERROR', source.source_id],
         };
@@ -177,8 +175,8 @@ describe('Data Slice', () => {
               customerName: 'Test Customer Name',
               loadLayer: {
                 dataset: layers[1],
-              }
-            }
+              },
+            },
           },
           tags: ['LOAD_LAYER', layers[1]],
         };

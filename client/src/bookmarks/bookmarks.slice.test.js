@@ -20,10 +20,7 @@ describe('Bookmark Slice', () => {
     beforeEach(() => {
       fetch.resetMocks();
 
-      store = mockStore({
-        accounts: { userKey: 'Test-User-Key' },
-        app: { apiUrl: 'http://test.com' },
-      });
+      store = mockStore();
     });
 
     it('should dispatch fetch bookmarks failure action.', async () => {

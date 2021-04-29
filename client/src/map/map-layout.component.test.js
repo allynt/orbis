@@ -29,10 +29,7 @@ describe('<MapLayout />', () => {
   beforeEach(() => fetch.mockResponse(JSON.stringify({})));
 
   it('shows the toolbar if a user is present', () => {
-    const { getByTitle } = setup({
-      accounts: { user: { userKey: 'test' } },
-      app: { apiUrl: 'http://test.com' },
-    });
+    const { getByTitle } = setup();
 
     expect(getByTitle('Orbis Logo')).toBeInTheDocument();
   });

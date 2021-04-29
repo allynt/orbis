@@ -43,7 +43,6 @@ const mockStore = configureMockStore([thunk]);
 const renderComponent = (initialEntries = ['']) => {
   const store = mockStore({
     app: {
-      apiUrl: '',
       config: {
         passwordMinLength: 0,
         passwordMaxLength: 255,
