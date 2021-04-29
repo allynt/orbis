@@ -78,6 +78,46 @@ describe('SubClient', () => {
     });
   });
 
+  describe('makeAuthenticatedPostRequest', () => {
+    const body = {
+      id: 1,
+      test: 'yes',
+    };
+
+    it('Calls fetch with json headers', () => {
+      fetch.once(JSON.stringify({}));
+      subClient.makeAuthenticatedPostRequest('/some/url', body);
+      expect(fetch).toBeCalledWith(
+        expect.stringContaining('/some/url'),
+        expect.objectContaining({
+          method: 'POST',
+          headers: expect.objectContaining({
+            'Content-Type': 'application/json',
+          }),
+        }),
+      );
+    });
+
+    it('Includes the stringified body', () => {
+      fetch.once(JSON.stringify({}));
+      subClient.makeAuthenticatedPostRequest('/some/url', body);
+      expect(fetch).toBeCalledWith(
+        expect.stringContaining('/some/url'),
+        expect.objectContaining({
+          body: JSON.stringify(body),
+        }),
+      );
+    });
+
+    it('Returns the response body', () => {
+      const response = { this: 'was returned' };
+      fetch.once(JSON.stringify(response));
+      expect(
+        subClient.makeAuthenticatedPostRequest('/some/url', body),
+      ).resolves.toEqual(response);
+    });
+  });
+
   describe('mapParamsToApi', () => {
     it('Maps provided params to the api using the provided mappings', () => {
       subClient.fieldMapping = {

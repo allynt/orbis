@@ -68,4 +68,19 @@ export class SubClient {
       },
     });
   }
+
+  /**
+   * @template T
+   * @param {RequestInfo} url
+   * @param {any} body
+   * @returns {Promise<T>}
+   */
+  async makeAuthenticatedPostRequest(url, body) {
+    const response = await this.makeAuthenticatedRequest(url, {
+      method: 'POST',
+      body: JSON.stringify(body),
+      headers: { 'Content-Type': 'application/json' },
+    });
+    return response.json();
+  }
 }
