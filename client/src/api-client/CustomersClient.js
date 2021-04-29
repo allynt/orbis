@@ -46,14 +46,7 @@ export class CustomersClient extends SubClient {
    */
   async createCustomer(newCustomer) {
     const body = this.mapParamsToApi(newCustomer, 'createCustomer');
-    const response = await this.makeAuthenticatedRequest('/', {
-      method: 'POST',
-      body: JSON.stringify(body),
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
-    return response.json();
+    return this.makeAuthenticatedPostRequest('/', body);
   }
 
   /**
@@ -61,17 +54,10 @@ export class CustomersClient extends SubClient {
    * @returns {Promise<Customer>}
    */
   async updateCustomer(updatedCustomer) {
-    const response = await this.makeAuthenticatedRequest(
+    return this.makeAuthenticatedPutRequest(
       `/${updatedCustomer.id}/`,
-      {
-        method: 'PUT',
-        body: JSON.stringify(updatedCustomer),
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      },
+      updatedCustomer,
     );
-    return response.json();
   }
 
   /**
@@ -96,17 +82,7 @@ export class CustomersClient extends SubClient {
    * @returns {Promise<CustomerUser>}
    */
   async createCustomerUser(customerId, params) {
-    const response = await this.makeAuthenticatedRequest(
-      `/${customerId}/users/`,
-      {
-        method: 'POST',
-        body: JSON.stringify(params),
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      },
-    );
-    return response.json();
+    return this.makeAuthenticatedPostRequest(`/${customerId}/users/`, params);
   }
 
   /**
@@ -115,17 +91,10 @@ export class CustomersClient extends SubClient {
    * @returns {Promise<CustomerUser>}
    */
   async updateCustomerUser(customerId, userWithUpdates) {
-    const response = await this.makeAuthenticatedRequest(
+    return this.makeAuthenticatedPutRequest(
       `/${customerId}/users/${userWithUpdates.user.id}/`,
-      {
-        method: 'PUT',
-        body: JSON.stringify(userWithUpdates),
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      },
+      userWithUpdates,
     );
-    return response.json();
   }
 
   /**
@@ -149,17 +118,10 @@ export class CustomersClient extends SubClient {
    * @returns {Promise<CustomerUser>}
    */
   async inviteCustomerUser(customerId, customerUser) {
-    const response = await this.makeAuthenticatedRequest(
+    return this.makeAuthenticatedPostRequest(
       `/${customerId}/users/${customerUser.user.id}/invite/`,
-      {
-        method: 'POST',
-        body: JSON.stringify({}),
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      },
+      {},
     );
-    return response.json();
   }
 
   /**
@@ -188,16 +150,6 @@ export class CustomersClient extends SubClient {
         },
       ],
     };
-    const response = await this.makeAuthenticatedRequest(
-      `/${customerId}/orders/`,
-      {
-        method: 'POST',
-        body: JSON.stringify(body),
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      },
-    );
-    return response.json();
+    return this.makeAuthenticatedPostRequest(`/${customerId}/orders/`, body);
   }
 }

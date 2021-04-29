@@ -1,7 +1,12 @@
 import { ResponseError } from './ResponseError';
 
-const JSON_REQUEST_OPTIONS = {
+const JSON_POST_REQUEST_OPTIONS = {
   method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+};
+
+const JSON_PUT_REQUEST_OPTIONS = {
+  method: 'PUT',
   headers: { 'Content-Type': 'application/json' },
 };
 
@@ -68,7 +73,7 @@ export class SubClient {
    */
   async makePostRequest(url, body) {
     const response = await this.makeRequest(url, {
-      ...JSON_REQUEST_OPTIONS,
+      ...JSON_POST_REQUEST_OPTIONS,
       body: JSON.stringify(body),
     });
     return response.json();
@@ -96,7 +101,21 @@ export class SubClient {
    */
   async makeAuthenticatedPostRequest(url, body) {
     const response = await this.makeAuthenticatedRequest(url, {
-      ...JSON_REQUEST_OPTIONS,
+      ...JSON_POST_REQUEST_OPTIONS,
+      body: JSON.stringify(body),
+    });
+    return response.json();
+  }
+
+  /**
+   * @template T
+   * @param {RequestInfo} url
+   * @param {any} body
+   * @returns {Promise<T>}
+   */
+  async makeAuthenticatedPutRequest(url, body) {
+    const response = await this.makeAuthenticatedRequest(url, {
+      ...JSON_PUT_REQUEST_OPTIONS,
       body: JSON.stringify(body),
     });
     return response.json();

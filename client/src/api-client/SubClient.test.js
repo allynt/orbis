@@ -79,10 +79,11 @@ describe('SubClient', () => {
   });
 
   describe.each`
-    fn
-    ${'makeAuthenticatedPostRequest'}
-    ${'makePostRequest'}
-  `('$fn', ({ fn }) => {
+    fn                                | method
+    ${'makeAuthenticatedPostRequest'} | ${'POST'}
+    ${'makePostRequest'}              | ${'POST'}
+    ${'makeAuthenticatedPutRequest'}  | ${'PUT'}
+  `('$fn', ({ fn, method }) => {
     const body = {
       id: 1,
       test: 'yes',
@@ -94,7 +95,7 @@ describe('SubClient', () => {
       expect(fetch).toBeCalledWith(
         expect.stringContaining('/some/url'),
         expect.objectContaining({
-          method: 'POST',
+          method,
           headers: expect.objectContaining({
             'Content-Type': 'application/json',
           }),

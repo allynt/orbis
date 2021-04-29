@@ -25,16 +25,9 @@ export class UsersClient extends SubClient {
    * @throws {import('./ResponseError').ResponseError}
    */
   async updateUser(userWithUpdates) {
-    const response = await this.makeAuthenticatedRequest(
+    return this.makeAuthenticatedPutRequest(
       `/${userWithUpdates.id}/`,
-      {
-        method: 'PUT',
-        body: JSON.stringify(userWithUpdates),
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      },
+      userWithUpdates,
     );
-    return response.json();
   }
 }

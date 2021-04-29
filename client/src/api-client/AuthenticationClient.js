@@ -3,8 +3,7 @@ import { SubClient } from './SubClient';
 
 export class AuthenticationClient extends SubClient {
   constructor() {
-    super();
-    this.endpoint = '/authentication';
+    super('/authentication');
     this.fieldMapping = {
       registerUser: {
         [FIELD_NAMES.email]: 'email',
@@ -32,14 +31,7 @@ export class AuthenticationClient extends SubClient {
    * @returns {Promise<{user: PartialUser, token: string}>}
    */
   async login(loginParams) {
-    const response = await this.makeRequest('/login/', {
-      method: 'POST',
-      body: JSON.stringify(loginParams),
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
-    return response.json();
+    return this.makePostRequest('/login/', loginParams);
   }
 
   async logout() {
@@ -58,14 +50,7 @@ export class AuthenticationClient extends SubClient {
    */
   async registerUser(registerUserParams) {
     const body = this.mapParamsToApi(registerUserParams, 'registerUser');
-    const response = await this.makeRequest('/registration/', {
-      method: 'POST',
-      body: JSON.stringify(body),
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
-    return response.json();
+    return this.makePostRequest('/registration/', body);
   }
 
   /**
@@ -73,14 +58,10 @@ export class AuthenticationClient extends SubClient {
    * @returns {Promise<{user: PartialUser}>}
    */
   async verifyEmail(verifyEmailParams) {
-    const response = await this.makeRequest('/registration/verify-email/', {
-      method: 'POST',
-      body: JSON.stringify(verifyEmailParams),
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
-    return response.json();
+    return this.makePostRequest(
+      '/registration/verify-email/',
+      verifyEmailParams,
+    );
   }
 
   /**
@@ -88,14 +69,10 @@ export class AuthenticationClient extends SubClient {
    * @returns {Promise<{email: User['email']}>}
    */
   async sendVerificationEmail(sendVerificationEmailParams) {
-    const response = await this.makeRequest('/send-email-verification/', {
-      method: 'POST',
-      body: JSON.stringify(sendVerificationEmailParams),
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
-    return response.json();
+    return this.makePostRequest(
+      '/send-email-verification/',
+      sendVerificationEmailParams,
+    );
   }
 
   /**
@@ -104,14 +81,7 @@ export class AuthenticationClient extends SubClient {
    */
   async changePassword(changePasswordParams) {
     const body = this.mapParamsToApi(changePasswordParams, 'changePassword');
-    const response = await this.makeAuthenticatedRequest('/password/change/', {
-      method: 'POST',
-      body: JSON.stringify(body),
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
-    return response.json();
+    return this.makeAuthenticatedPostRequest('/password/change/', body);
   }
 
   /**
@@ -119,14 +89,7 @@ export class AuthenticationClient extends SubClient {
    * @returns {Promise<{email: User['email']}>}
    */
   async resetPasswordRequest(resetPasswordRequestParams) {
-    const response = await this.makeRequest('/password/reset/', {
-      method: 'POST',
-      body: JSON.stringify(resetPasswordRequestParams),
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
-    return response.json();
+    return this.makePostRequest('/password/reset/', resetPasswordRequestParams);
   }
 
   /**
@@ -145,13 +108,6 @@ export class AuthenticationClient extends SubClient {
       resetPasswordVerifyParams,
       'resetPasswordVerify',
     );
-    const response = await this.makeRequest('/password/verify-reset/', {
-      method: 'POST',
-      body: JSON.stringify(body),
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
-    return response.json();
+    return this.makePostRequest('/password/verify-reset/', body);
   }
 }
