@@ -3,8 +3,11 @@ import fetch from 'jest-fetch-mock';
 import { SubClient } from './SubClient';
 
 describe('SubClient', () => {
+  /** @type {SubClient} */
+  let subClient;
   beforeEach(() => {
     fetch.resetMocks();
+    subClient = new SubClient();
   });
 
   describe.each`
@@ -14,7 +17,6 @@ describe('SubClient', () => {
     ${'endpoint'}
   `('Class members: $member', ({ member }) => {
     it('gets and sets', () => {
-      const subClient = new SubClient();
       subClient[member] = 'test-value';
       expect(subClient[member]).toBe('test-value');
     });
@@ -31,17 +33,16 @@ describe('SubClient', () => {
   });
 
   describe('makeRequest', () => {
-    it('Calls fetch with apiHost prepended to the provided url', async () => {
-      const client = new SubClient();
-      client.apiHost = 'test-host.com';
-      client.makeRequest('/test/endpoint');
+    it('Calls fetch with apiHost prepended to the provided url', () => {
+      subClient.apiHost = 'test-host.com';
+      subClient.makeRequest('/test/endpoint');
       expect(fetch).toBeCalledWith(
         'test-host.com/api/test/endpoint',
         expect.anything(),
       );
     });
 
-    it('Handles errors when response is not ok', async () => {
+    it('Handles errors when response is not ok', () => {
       fetch.mockResponse(
         JSON.stringify({
           message: 'Test error message',
@@ -52,20 +53,18 @@ describe('SubClient', () => {
           statusText: 'Test Error',
         },
       );
-      const client = new SubClient();
-      await expect(client.makeRequest('/api')).rejects.toThrow();
+      expect(subClient.makeRequest('/api')).rejects.toThrow();
     });
   });
 
   describe('makeAuthenticatedRequest', () => {
-    it('Calls fetch with authentication header containing userKey', async () => {
+    it('Calls fetch with authentication header containing userKey', () => {
       const testOptions = {
         method: 'DELETE',
         headers: { Accept: 'everything' },
       };
-      const client = new SubClient();
-      client.userKey = 'test-key-123';
-      client.makeAuthenticatedRequest(null, testOptions);
+      subClient.userKey = 'test-key-123';
+      subClient.makeAuthenticatedRequest(null, testOptions);
       expect(fetch).toBeCalledWith(
         expect.anything(),
         expect.objectContaining({
@@ -81,27 +80,25 @@ describe('SubClient', () => {
 
   describe('mapParamsToApi', () => {
     it('Maps provided params to the api using the provided mappings', () => {
-      const client = new SubClient();
-      client.fieldMapping = {
+      subClient.fieldMapping = {
         test: {
           test1: 'testA',
           test2: 'testB',
         },
       };
       expect(
-        client.mapParamsToApi({ test1: 'Hello', test2: 'World' }, 'test'),
+        subClient.mapParamsToApi({ test1: 'Hello', test2: 'World' }, 'test'),
       ).toEqual({ testA: 'Hello', testB: 'World' });
     });
 
     it("Uses the param key if an api key can't be found", () => {
-      const client = new SubClient();
-      client.fieldMapping = {
+      subClient.fieldMapping = {
         test: {
           test1: 'testA',
         },
       };
       expect(
-        client.mapParamsToApi({ test1: 'Hello', test2: 'World' }, 'test'),
+        subClient.mapParamsToApi({ test1: 'Hello', test2: 'World' }, 'test'),
       ).toEqual({ testA: 'Hello', test2: 'World' });
     });
   });
