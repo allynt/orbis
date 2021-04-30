@@ -5,7 +5,7 @@ import userEvent from '@testing-library/user-event';
 import { Provider } from 'react-redux';
 import configureStore from 'redux-mock-store';
 
-import { RadioPicker } from './radio-picker.component';
+import { RadioPicker } from './isolation-plus-property-radio-group.component';
 import { setOther } from 'map/orbs/layers.slice';
 
 const mockStore = configureStore();
