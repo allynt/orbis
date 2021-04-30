@@ -5,6 +5,7 @@ export default {
   title: 'Orbs/Isolation Plus/Property Radio Group/Property Radio',
   args: {
     layerSourceId: 'test/layer',
+    categoryPath: 'Fake > Category > Path',
   },
   argTypes: {
     onPropertyChange: { action: true },
@@ -63,7 +64,12 @@ Timeseries.args = {
 
 export const Group = Template.bind({});
 const properties = [
-  { name: 'Property 1', type: 'percentage', label: 'Test Property Group' },
+  {
+    name: 'Property 1',
+    type: 'percentage',
+    label: 'Test Property Group',
+    description: 'Fake description',
+  },
   timeseriesProperty,
   { name: 'Property 3', type: 'decile' },
 ];

@@ -2,6 +2,7 @@ import React from 'react';
 
 import {
   FormControlLabel,
+  Grid,
   makeStyles,
   Radio,
   Typography,
@@ -12,36 +13,22 @@ import { DisplayTypeToggleButtons } from '../display-type-toggle-buttons/display
 import { SelectedPropertyControls } from '../selected-property-controls/selected-property-controls.component';
 
 const useStyles = makeStyles(theme => ({
-  property: {
-    display: 'grid',
-    gridTemplateColumns: `1fr ${theme.spacing(4)}`,
-    marginBottom: theme.spacing(2),
-    rowGap: theme.spacing(2),
-  },
-  infoButton: {
-    justifySelf: 'flex-end',
-    alignSelf: 'center',
-  },
-  categoryPath: {
-    fontStyle: 'italic',
-  },
-  description: {
-    fontWeight: 600,
-  },
-  fullGrid: {
-    gridColumn: '1 / -1',
-  },
-  button: {
-    width: '50%',
-    cursor: 'not-allowed',
-    '&$notActive': {
-      color: theme.palette.secondary.contrastText,
-      backgroundColor: theme.palette.secondary.dark,
-      cursor: 'pointer',
-    },
-  },
-  notActive: {},
+  categoryPath: { fontStyle: 'italic' },
+  description: { fontWeight: theme.typography.fontWeightBold },
+  iconButton: { justifySelf: 'flex-end', alignSelf: 'center' },
 }));
+
+const TooltipContent = ({ categoryPath, description }) => {
+  const styles = useStyles();
+  return (
+    <>
+      <Typography className={styles.categoryPath} paragraph>
+        {categoryPath}
+      </Typography>
+      <Typography className={styles.description}>{description}</Typography>
+    </>
+  );
+};
 
 /**
  * @param {{
@@ -79,26 +66,30 @@ const PropertyRadio = ({
   };
 
   return (
-    <div className={styles.property}>
-      <FormControlLabel
-        checked={selectedPropertyIsInGroup}
-        label={properties[0]?.application?.orbis?.label || properties[0]?.label}
-        control={<Radio onClick={handleRadioClick} name="isolationPlus" />}
-      />
-      <InfoButtonTooltip
-        iconButtonClassName={styles.infoButton}
-        tooltipContent={
-          <>
-            <Typography className={styles.categoryPath} paragraph>
-              {categoryPath}
-            </Typography>
-            <Typography className={styles.description}>
-              {properties[0].application?.orbis?.description ||
-                properties[0].description}
-            </Typography>
-          </>
-        }
-      />
+    <Grid container spacing={2}>
+      <Grid item xs={11}>
+        <FormControlLabel
+          checked={selectedPropertyIsInGroup}
+          label={
+            properties[0]?.application?.orbis?.label || properties[0]?.label
+          }
+          control={<Radio onClick={handleRadioClick} name="isolationPlus" />}
+        />
+      </Grid>
+      <Grid item xs={1}>
+        <InfoButtonTooltip
+          iconButtonClassName={styles.iconButton}
+          tooltipContent={
+            <TooltipContent
+              categoryPath={categoryPath}
+              description={
+                properties[0].application?.orbis?.description ||
+                properties[0].description
+              }
+            />
+          }
+        />
+      </Grid>
       {selectedPropertyIsInGroup && (
         <>
           {properties.length > 1 && (
@@ -108,18 +99,16 @@ const PropertyRadio = ({
               onChange={onPropertyChange}
             />
           )}
-          <div className={styles.fullGrid}>
-            <SelectedPropertyControls
-              selectedProperty={selectedProperty}
-              filterRange={filterRange}
-              onRangeFilterChange={onSliderChange}
-              selectedTimestamp={selectedTimestamp}
-              onDateChange={onDateChange}
-            />
-          </div>
+          <SelectedPropertyControls
+            selectedProperty={selectedProperty}
+            filterRange={filterRange}
+            onRangeFilterChange={onSliderChange}
+            selectedTimestamp={selectedTimestamp}
+            onDateChange={onDateChange}
+          />
         </>
       )}
-    </div>
+    </Grid>
   );
 };
 

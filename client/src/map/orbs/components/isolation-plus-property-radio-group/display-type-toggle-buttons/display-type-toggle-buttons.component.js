@@ -2,6 +2,7 @@ import {
   Button,
   ButtonGroup,
   FormLabel,
+  Grid,
   makeStyles,
 } from '@astrosat/astrosat-ui';
 import clsx from 'clsx';
@@ -9,11 +10,7 @@ import { capitalize } from 'lodash';
 import React from 'react';
 
 const useStyles = makeStyles(theme => ({
-  fullGrid: {
-    gridColumn: '1 / -1',
-  },
   button: {
-    width: '50%',
     cursor: 'not-allowed',
     '&$notActive': {
       color: theme.palette.secondary.contrastText,
@@ -63,20 +60,24 @@ export const DisplayTypeToggleButtons = ({
 
   return (
     <>
-      <FormLabel className={styles.fullGrid}>Select display type:</FormLabel>
-      <ButtonGroup size="small" className={styles.fullGrid}>
-        {properties.map(property => (
-          <Button
-            key={property.name}
-            className={clsx(styles.button, {
-              [styles.notActive]: selectedProperty?.name !== property.name,
-            })}
-            onClick={() => handleClick(property)}
-          >
-            {getButtonLabelForProperty(property)}
-          </Button>
-        ))}
-      </ButtonGroup>
+      <Grid item>
+        <FormLabel>Select display type:</FormLabel>
+      </Grid>
+      <Grid item>
+        <ButtonGroup size="small">
+          {properties.map(property => (
+            <Button
+              key={property.name}
+              className={clsx(styles.button, {
+                [styles.notActive]: selectedProperty?.name !== property.name,
+              })}
+              onClick={() => handleClick(property)}
+            >
+              {getButtonLabelForProperty(property)}
+            </Button>
+          ))}
+        </ButtonGroup>
+      </Grid>
     </>
   );
 };
