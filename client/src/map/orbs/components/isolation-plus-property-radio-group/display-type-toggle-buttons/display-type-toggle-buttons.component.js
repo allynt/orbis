@@ -42,7 +42,7 @@ const getButtonLabelForProperty = property => {
 /**
  * @param {{
  *  properties: import('typings/orbis').Property[]
- *  selectedProperty: import('typings/orbis').Property
+ *  selectedProperty?: import('typings/orbis').Property
  *  onChange: (property: import('typings/orbis').Property) => void
  * }} props
  */
@@ -57,7 +57,7 @@ export const DisplayTypeToggleButtons = ({
    * @param {import('typings/orbis').Property} property
    */
   const handleClick = property => {
-    if (property.name === selectedProperty.name || !onChange) return;
+    if (property.name === selectedProperty?.name || !onChange) return;
     onChange(property);
   };
 
@@ -69,7 +69,7 @@ export const DisplayTypeToggleButtons = ({
           <Button
             key={property.name}
             className={clsx(styles.button, {
-              [styles.notActive]: selectedProperty.name !== property.name,
+              [styles.notActive]: selectedProperty?.name !== property.name,
             })}
             onClick={() => handleClick(property)}
           >
