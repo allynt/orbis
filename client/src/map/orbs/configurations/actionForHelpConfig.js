@@ -11,16 +11,22 @@ import {
 import { filter } from 'lodash';
 
 export const filterFeatures = (oldData, startDate, endDate, currentStatus) => {
-  const filteredByStatus = oldData?.features?.filter(
-    f => f?.properties?.status === currentStatus,
-  );
+  if (!oldData || (!startDate && !endDate)) return oldData;
 
-  const data = filteredByStatus?.length ? filteredByStatus : oldData?.features;
+  const filteredByStatus =
+    currentStatus === 'ALL'
+      ? undefined
+      : {
+          ...oldData,
+          features: oldData?.features?.filter(
+            f => f?.properties?.status === currentStatus,
+          ),
+        };
 
-  if (!oldData || (!startDate && !endDate)) return data;
+  const data = filteredByStatus || oldData;
   return {
-    ...oldData,
-    features: filter(data, feature => {
+    ...data,
+    features: filter(data?.features, feature => {
       const submissionDateTimestamp = new Date(
         feature.properties['Submission Date'],
       ).getTime();
@@ -79,12 +85,6 @@ const configuration = ({
     filterRange?.endDate && new Date(filterRange.endDate),
     currentStatus,
   );
-
-  console.log(
-    'all statuses: ',
-    test?.features?.map(f => f?.properties?.status),
-  );
-  console.log('currentStatus: ', currentStatus);
 
   return {
     id,
