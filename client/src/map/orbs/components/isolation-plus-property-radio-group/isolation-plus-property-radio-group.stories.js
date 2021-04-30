@@ -857,7 +857,7 @@ const state = {
 };
 
 export default {
-  title: 'Orbs/Isolation Plus/Radio Picker',
+  title: 'Orbs/Isolation Plus/Property Radio Group',
 };
 
 const Template = args => (
