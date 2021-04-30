@@ -4,7 +4,7 @@ import { render } from '@testing-library/react';
 
 import userEvent from '@testing-library/user-event';
 
-import RadioProperty from './radio-property.component';
+import RadioProperty from './property-radio.component';
 
 /**
  * @param {Partial<import('typings/orbis').Property>[]} properties
