@@ -49,7 +49,7 @@ const ActionForHelpMapComponent = ({ source }) => {
         title={isPersonFeatureType ? 'User Details' : 'Infrastructure Details'}
         propertiesBlacklist={['Type', 'pk', 'status', 'notes']}
         postFeatureComponent={
-          !isPersonFeatureType
+          isPersonFeatureType
             ? feat => (
                 <PopupStatusAndNote
                   key={feat.pk}
