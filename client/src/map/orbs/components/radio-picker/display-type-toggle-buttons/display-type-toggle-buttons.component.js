@@ -5,8 +5,8 @@ import {
   makeStyles,
 } from '@astrosat/astrosat-ui';
 import clsx from 'clsx';
+import { capitalize } from 'lodash';
 import React from 'react';
-import { FORMAT } from '../radio-picker-constants';
 
 const useStyles = makeStyles(theme => ({
   fullGrid: {
@@ -24,28 +24,58 @@ const useStyles = makeStyles(theme => ({
   notActive: {},
 }));
 
-export const DisplayTypeToggleButtons = ({ selectedProperty, onChange }) => {
+/**
+ * @param {import('typings/orbis').Property} property
+ */
+const getButtonLabelForProperty = property => {
+  if (property.application?.orbis?.display?.property_toggle_label)
+    return property.application.orbis.display.property_toggle_label;
+  switch (property.type) {
+    case 'decile':
+    case 'percentage':
+      return capitalize(property.type);
+    default:
+      return 'Number';
+  }
+};
+
+/**
+ * @param {{
+ *  properties: import('typings/orbis').Property[]
+ *  selectedProperty: import('typings/orbis').Property
+ *  onChange: (property: import('typings/orbis').Property) => void
+ * }} props
+ */
+export const DisplayTypeToggleButtons = ({
+  properties,
+  selectedProperty,
+  onChange,
+}) => {
   const styles = useStyles();
+
+  /**
+   * @param {import('typings/orbis').Property} property
+   */
+  const handleClick = property => {
+    if (property.name === selectedProperty.name || !onChange) return;
+    onChange(property);
+  };
+
   return (
     <>
       <FormLabel className={styles.fullGrid}>Select display type:</FormLabel>
       <ButtonGroup size="small" className={styles.fullGrid}>
-        <Button
-          onClick={() => onChange(FORMAT.percentage)}
-          className={clsx(styles.button, {
-            [styles.notActive]: selectedProperty.type !== FORMAT.percentage,
-          })}
-        >
-          Percentage
-        </Button>
-        <Button
-          onClick={() => onChange(FORMAT.number)}
-          className={clsx(styles.button, {
-            [styles.notActive]: selectedProperty.type !== FORMAT.number,
-          })}
-        >
-          Number
-        </Button>
+        {properties.map(property => (
+          <Button
+            key={property.name}
+            className={clsx(styles.button, {
+              [styles.notActive]: selectedProperty.name !== property.name,
+            })}
+            onClick={() => handleClick(property)}
+          >
+            {getButtonLabelForProperty(property)}
+          </Button>
+        ))}
       </ButtonGroup>
     </>
   );

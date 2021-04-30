@@ -100,6 +100,7 @@ type BaseProperty = {
       display?: {
         colormap_reversed?: boolean;
         color: ColorMap;
+        property_toggle_label?: string;
       };
     };
   };
