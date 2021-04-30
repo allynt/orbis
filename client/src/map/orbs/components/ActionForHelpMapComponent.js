@@ -45,17 +45,17 @@ const ActionForHelpMapComponent = ({ source }) => {
       captureScroll
     >
       <FeatureDetail
-        features={pickedObjects}
+        features={pickedObjects.map(obj => obj.properties)}
         title={isPersonFeatureType ? 'User Details' : 'Infrastructure Details'}
-        fieldsBlacklist={['type', 'pk', 'status', 'notes']}
+        propertiesBlacklist={['Type', 'pk', 'status', 'notes']}
         postFeatureComponent={
-          !isPersonFeatureType
+          isPersonFeatureType
             ? feat => (
                 <PopupStatusAndNote
-                  key={feat.properties.pk}
-                  id={feat.properties.pk}
-                  note={feat.properties.notes}
-                  status={feat.properties.status}
+                  key={feat.pk}
+                  id={feat.pk}
+                  note={feat.notes}
+                  status={feat.status}
                   onSave={data => updateNoteOrStatus(data)}
                 />
               )

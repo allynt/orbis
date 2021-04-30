@@ -156,7 +156,7 @@ const mapObject = feature => {
  * @typedef FeatureDetailProps
  * @property {{[key: string]: any}[]} [features]
  * @property {React.ReactNode} [children]
- * @property {string[]} fieldsBlacklist
+ * @property {string[]} propertiesBlacklist
  * @property {(obj: object) => React.ReactNode|null} postFeatureComponent
  * @property {{label: string, content: string}} [footer]
  * @property {string} [title]
@@ -189,7 +189,7 @@ const FeatureDetail = ({
   children,
   features,
   title = DEFAULT_TITLE,
-  fieldsBlacklist = [],
+  propertiesBlacklist = [],
   postFeatureComponent,
   footer,
 }) => {
@@ -205,10 +205,7 @@ const FeatureDetail = ({
           features?.map(feature => (
             <List key={feature?.properties?.pk} className={styles.list}>
               {mapObject(
-                pickBy(
-                  feature.properties,
-                  (_, key) => !fieldsBlacklist.includes(key.toLowerCase()),
-                ),
+                pickBy(feature, (_, key) => !propertiesBlacklist.includes(key)),
               )}
               {postFeatureComponent ? postFeatureComponent(feature) : null}
               {footer && <Item jsonKey={footer.label} value={footer.content} />}
