@@ -6,29 +6,41 @@
       "type": "Feature",
       "geometry": {
         "type": "Point",
-        "coordinates": [-3.053867, 55.941776]
+        "coordinates": [
+          -3.053867,
+          55.941776
+        ]
       },
       "properties": {
         "pk": 6,
         "Submission Date": "08 May 2020, 20:34",
         "Type": "VOLUNTEER",
+        "status": "NEW",
         "Contact Details": {
           "Name": "Son #2",
           "Email": "son2@home.com",
           "Contact Number": "07561 866337",
           "Address": "2 Williamfield Square",
           "Postcode": "EH217DX",
-          "Country": ["Scotland"]
+          "Country": [
+            "Scotland"
+          ]
         },
         "Date of Birth": "1973-11-30",
         "Specific Needs": "",
-        "Why are you interested in volunteering?": ["I want to help others"],
+        "Why are you interested in volunteering?": [
+          "I want to help others"
+        ],
         "Specific Skills": {
-          "Selected Skills": ["I have skills I can bring to the organisation"],
+          "Selected Skills": [
+            "I have skills I can bring to the organisation"
+          ],
           "More Details": "I can play the harmonica"
         },
         "How Did You Hear about Us": {
-          "Source": ["Volunteer Centre"],
+          "Source": [
+            "Volunteer Centre"
+          ],
           "More Details": ""
         },
         "Criminal Convictions": {
@@ -36,11 +48,21 @@
           "More Details": ""
         },
         "Availability": {
-          "Saturday": ["Morning", "Afternoon", "Evening"],
+          "Saturday": [
+            "Morning",
+            "Afternoon",
+            "Evening"
+          ],
           "Sunday": [],
-          "Monday": ["Morning"],
-          "Tuesday": ["Afternoon"],
-          "Wednesday": ["Evening"],
+          "Monday": [
+            "Morning"
+          ],
+          "Tuesday": [
+            "Afternoon"
+          ],
+          "Wednesday": [
+            "Evening"
+          ],
           "Thursday": [],
           "Friday": []
         },
@@ -52,19 +74,25 @@
       "type": "Feature",
       "geometry": {
         "type": "Point",
-        "coordinates": [-3.151025, 55.877913]
+        "coordinates": [
+          -3.151025,
+          55.877913
+        ]
       },
       "properties": {
         "pk": 5,
         "Submission Date": "29 September 2020, 20:02",
         "Type": "VOLUNTEER",
+        "status": "COMPLETE",
         "Contact Details": {
           "Name": "Mr Mark Small",
           "Email": "marksmall37@gmail.com",
           "Contact Number": "01316502190",
           "Address": "8 George Crescent",
           "Postcode": "EH209DN",
-          "Country": ["England"]
+          "Country": [
+            "England"
+          ]
         },
         "Date of Birth": "1973-01-18",
         "Specific Needs": "",
@@ -72,11 +100,15 @@
           "I have spare time and want to use it productively"
         ],
         "Specific Skills": {
-          "Selected Skills": ["I have skills I can bring to the organisation"],
+          "Selected Skills": [
+            "I have skills I can bring to the organisation"
+          ],
           "More Details": ""
         },
         "How Did You Hear about Us": {
-          "Source": ["Job Centre"],
+          "Source": [
+            "Job Centre"
+          ],
           "More Details": ""
         },
         "Criminal Convictions": {
@@ -84,13 +116,27 @@
           "More Details": ""
         },
         "Availability": {
-          "Saturday": ["Afternoon"],
-          "Sunday": ["Evening"],
-          "Monday": ["Morning"],
-          "Tuesday": ["Afternoon"],
-          "Wednesday": ["Evening"],
-          "Thursday": ["Afternoon"],
-          "Friday": ["Morning"]
+          "Saturday": [
+            "Afternoon"
+          ],
+          "Sunday": [
+            "Evening"
+          ],
+          "Monday": [
+            "Morning"
+          ],
+          "Tuesday": [
+            "Afternoon"
+          ],
+          "Wednesday": [
+            "Evening"
+          ],
+          "Thursday": [
+            "Afternoon"
+          ],
+          "Friday": [
+            "Morning"
+          ]
         },
         "More Details": ""
       }
@@ -100,13 +146,20 @@
       "type": "Feature",
       "geometry": {
         "type": "Point",
-        "coordinates": [-3.116241, 55.953532]
+        "coordinates": [
+          -3.116241,
+          55.953532
+        ]
       },
       "properties": {
         "pk": 4,
         "Submission Date": "08 May 2020, 20:32",
         "Type": "RECIPIENT",
-        "Help Receiving": ["Pick up / Delivery (Food + Prescription)"],
+        "status": "PENDING",
+        "status": "FOLLOWUP",
+        "Help Receiving": [
+          "Pick up / Delivery (Food + Prescription)"
+        ],
         "Help Required": [
           "Pick up / Delivery (Food + Prescription)",
           "Support to access Home help/care needs"
@@ -119,7 +172,9 @@
           "Contact Number": "07561 866337",
           "Address": "2 Williamfield Square",
           "Postcode": "EH151AS",
-          "Country": ["Scotland"]
+          "Country": [
+            "Scotland"
+          ]
         }
       }
     },
@@ -128,17 +183,24 @@
       "type": "Feature",
       "geometry": {
         "type": "Point",
-        "coordinates": [-3.151025, 55.877913]
+        "coordinates": [
+          -3.151025,
+          55.877913
+        ]
       },
       "properties": {
         "Submission Date": "30 September 2020, 19:59",
         "pk": 3,
         "Type": "RECIPIENT",
+        "status": "PENDING",
         "Help Receiving": [
           "Pick up / Delivery (Food + Prescription)",
           "Homehelp/care needs"
         ],
-        "Help Required": ["Coversation", "Advice"],
+        "Help Required": [
+          "Coversation",
+          "Advice"
+        ],
         "Self-Isolating": "Yes",
         "High-Risk": "Yes",
         "Contact Details": {
@@ -147,7 +209,9 @@
           "Contact Number": "07837379549",
           "Address": "8 George Crescent",
           "Postcode": "EH209DN",
-          "Country": ["Scotland"]
+          "Country": [
+            "Scotland"
+          ]
         }
       }
     }

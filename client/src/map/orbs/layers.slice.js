@@ -168,6 +168,11 @@ const layersSlice = createSlice({
       const { key, filterValue } = payload;
       state[key] = { ...state[key], filterValue };
     },
+    setSelectedStatus: (state, { payload }) => {
+      if (!payload.key) return handleMissingKey();
+      const { key, status } = payload;
+      state[key] = { ...state[key], status };
+    },
     /** @type {SetOtherAction} */
     setOther: (state, { payload }) => {
       if (!payload.key) return handleMissingKey();
@@ -199,6 +204,7 @@ export const {
   setHoveredFeatures,
   setVisibility,
   setFilterValue,
+  setSelectedStatus,
   setOther,
   setTimestamp,
   toggleExtrudedMode,
@@ -227,6 +233,9 @@ export const visibilitySelector = id =>
 /** @param {string} id */
 export const filterValueSelector = id =>
   createSelector(baseSelector, state => state?.[id]?.filterValue);
+
+export const statusValueSelector = id =>
+  createSelector(baseSelector, state => state?.[id]?.status);
 
 /** @param {string} id */
 export const otherSelector = id =>

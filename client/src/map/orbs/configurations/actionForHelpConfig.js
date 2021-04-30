@@ -3,15 +3,29 @@ import { MAX_ZOOM } from 'map/map.constants';
 import iconMapping from './actionForHelpConfig.iconMapping.json';
 import iconAtlas from './actionForHelpConfig.iconAtlas.svg';
 import { easeInOutCubic } from 'utils/easingFunctions';
-import { filterValueSelector, setClickedFeatures } from '../layers.slice';
+import {
+  filterValueSelector,
+  setClickedFeatures,
+  statusValueSelector,
+} from '../layers.slice';
 import { filter } from 'lodash';
 
-export const filterFeatures = (oldData, startDate, endDate) =>
-  !oldData || (!startDate && !endDate)
-    ? oldData
+export const filterFeatures = (oldData, startDate, endDate, currentStatus) => {
+  const filteredbyStatus = oldData?.features?.filter(
+    f => f?.properties?.status === currentStatus,
+  );
+
+  return !oldData || (!startDate && !endDate)
+    ? {
+        ...oldData,
+        features: filteredbyStatus?.length
+          ? filteredbyStatus
+          : oldData?.features,
+      }
     : {
         ...oldData,
-        features: filter(oldData.features, feature => {
+        features: filter(test, feature => {
+          console.log('feature: ', feature);
           const submissionDateTimestamp = new Date(
             feature.properties['Submission Date'],
           ).getTime();
@@ -21,6 +35,7 @@ export const filterFeatures = (oldData, startDate, endDate) =>
           );
         }),
       };
+};
 
 /**
  * @typedef {import('typings/orbis').GeoJsonFeature<{type?: string, Type?: string}>} ActionForHelpFeature
@@ -35,6 +50,7 @@ const configuration = ({
   orbState,
 }) => {
   const filterRange = filterValueSelector(id)(orbState);
+  const currentStatus = statusValueSelector(id)(orbState);
 
   /** @param {import('typings/orbis').PickedMapFeature} info */
   const handleLayerClick = info => {
@@ -62,15 +78,24 @@ const configuration = ({
   /** @param {ActionForHelpFeature} feature */
   const getIconSize = feature => (feature.properties.Type ? 15 : 60);
 
+  const test = filterFeatures(
+    data,
+    filterRange?.startDate && new Date(filterRange.startDate),
+    filterRange?.endDate && new Date(filterRange.endDate),
+    currentStatus,
+  );
+
+  console.log(
+    'all statuses: ',
+    test?.features?.map(f => f?.properties?.status),
+  );
+  console.log('currentStatus: ', currentStatus);
+
   return {
     id,
     iconMapping,
     iconAtlas,
-    data: filterFeatures(
-      data,
-      filterRange?.startDate && new Date(filterRange.startDate),
-      filterRange?.endDate && new Date(filterRange.endDate),
-    ),
+    data: test,
     visible: !!activeSources?.find(source => source.source_id === id),
     onClick: handleLayerClick,
     getIcon,

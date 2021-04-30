@@ -11,10 +11,11 @@ module.exports = {
     domain: 'Action for Health',
     range: false,
     description: 'Description of Population information layer.',
+    url: 'https://app.madeupapp.co.uk/api/people/ve/?is_archived=false',
     application: {
       orbis: {
         sidebar_component: [
-          { name: 'DateRangeFilter', props: { maxDate: 'today' } },
+          { name: 'DateRangeAndStatusFilter', props: { maxDate: 'today' } },
           { name: 'PopulationLegend' },
         ],
         map_component: { name: 'ActionForHelpMapComponent' },
