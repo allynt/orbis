@@ -17,7 +17,7 @@ const ActionForHelpMapComponent = ({ source }) => {
   const dispatch = useDispatch();
 
   const updateNoteOrStatus = async ({ id, ...data }) => {
-    const url = `${source.metadata.url}/${id}/`;
+    const url = `${source.metadata.url.split('?')[0]}/${id}/`;
 
     const headers = {
       Accept: 'application/json',
@@ -44,31 +44,33 @@ const ActionForHelpMapComponent = ({ source }) => {
       }
       captureScroll
     >
-      <FeatureDetail
-        features={pickedObjects.map(obj =>
-          pickBy(
-            obj.properties,
-            (_, key) =>
-              !key.toLowerCase().includes('type') &&
-              !key.toLowerCase().includes('pk'),
-          ),
-        )}
-        title={
-          pickedObjects[0].properties.Type
-            ? 'User Details'
-            : 'Infrastructure Details'
-        }
-      >
-        {pickedObjects?.map(feat => (
-          <PopupStatusAndNote
-            key={feat.properties.pk}
-            id={feat.properties.pk}
-            note={feat.properties.notes}
-            status={feat.properties.status}
-            onSave={data => updateNoteOrStatus(data)}
-          />
-        ))}
-      </FeatureDetail>
+      {pickedObjects.map(obj => {
+        return (
+          <FeatureDetail
+            key={obj.properties.pk}
+            features={[
+              pickBy(
+                obj.properties,
+                (_, key) =>
+                  !key.toLowerCase().includes('type') &&
+                  !key.toLowerCase().includes('pk') &&
+                  !key.toLowerCase().includes('notes') &&
+                  !key.toLowerCase().includes('status'),
+              ),
+            ]}
+            title={
+              obj.properties.Type ? 'User Details' : 'Infrastructure Details'
+            }
+          >
+            <PopupStatusAndNote
+              id={obj.properties.pk}
+              note={obj.properties.notes}
+              status={obj.properties.status}
+              onSave={data => updateNoteOrStatus(data)}
+            />
+          </FeatureDetail>
+        );
+      })}
     </Popup>
   );
 };
