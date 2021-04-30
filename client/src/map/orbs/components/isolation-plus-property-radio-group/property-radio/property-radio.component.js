@@ -56,7 +56,7 @@ const useStyles = makeStyles(theme => ({
  *   categoryPath: string
  * }} props
  */
-const RadioProperty = ({
+const PropertyRadio = ({
   layerSourceId,
   properties,
   onPropertyChange,
@@ -123,4 +123,4 @@ const RadioProperty = ({
   );
 };
 
-export default RadioProperty;
+export default PropertyRadio;

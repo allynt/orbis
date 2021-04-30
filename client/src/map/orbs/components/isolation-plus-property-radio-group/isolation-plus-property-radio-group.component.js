@@ -15,7 +15,7 @@ import {
   timestampSelector,
 } from '../../layers.slice';
 import { groupProperties } from './helpers/group-properties.js';
-import RadioProperty from './property-radio/property-radio.component';
+import PropertyRadio from './property-radio/property-radio.component';
 
 /**
  * @param {{
@@ -69,7 +69,7 @@ export const IsolationPlusPropertyRadioGroup = ({
     <Box display="flex" flexDirection="column" width="100%">
       {groupProperties(selectedLayer.metadata.properties).map((data, i) => (
         <React.Fragment key={i}>
-          <RadioProperty
+          <PropertyRadio
             layerSourceId={selectedLayer?.source_id}
             properties={data}
             onPropertyChange={handlePropertyChange}

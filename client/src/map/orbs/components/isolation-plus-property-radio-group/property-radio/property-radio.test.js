@@ -4,7 +4,7 @@ import { render } from '@testing-library/react';
 
 import userEvent from '@testing-library/user-event';
 
-import RadioProperty from './property-radio.component';
+import PropertyRadio from './property-radio.component';
 
 /**
  * @param {Partial<import('typings/orbis').Property>[]} properties
@@ -14,7 +14,7 @@ const renderComponent = (properties, selectedProperty) => {
   const onPropertyChange = jest.fn();
   const testLayerId = 'test_layer_id';
   const utils = render(
-    <RadioProperty
+    <PropertyRadio
       layerSourceId={testLayerId}
       properties={properties}
       onPropertyChange={onPropertyChange}
@@ -26,7 +26,7 @@ const renderComponent = (properties, selectedProperty) => {
   return { ...utils, onPropertyChange };
 };
 
-describe('RadioProperty', () => {
+describe('<PropertyGroupRadio />', () => {
   it('Uses the application label for the radio if there is one', () => {
     const property = {
       name: 'property1',
