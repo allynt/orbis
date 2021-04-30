@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { OPTIONS } from './status-constants';
+import { OPTIONS, CHAR_LIMIT } from './status-constants';
 
 import {
   Input,
@@ -35,7 +35,7 @@ const useStyles = makeStyles(theme => ({
     marginBottom: theme.spacing(1),
   },
   charLimitMessage: {
-    color: `${theme.palette.error.main}`,
+    color: theme.palette.error.main,
     margin: '0',
   },
   charCount: {
@@ -62,8 +62,7 @@ const PopupStatusAndNote = ({ id, note, onSave, status = 'NEW' }) => {
   const [editMode, setEditMode] = useState(false);
   const [charCount, setCharCount] = useState(note?.length);
 
-  const CHAR_LIMIT = 3000,
-    charLimitExceeded = charCount > CHAR_LIMIT,
+  const charLimitExceeded = charCount > CHAR_LIMIT,
     hasChangedStatus = selectedStatus !== status,
     hasChangedNote = text !== note,
     enabled = hasChangedStatus || hasChangedNote;
@@ -94,12 +93,12 @@ const PopupStatusAndNote = ({ id, note, onSave, status = 'NEW' }) => {
   return (
     <Grid container direction="column" className={styles.container}>
       <Grid item container alignItems="center" className={styles.status}>
-        <Typography variant="h4" className={styles.key}>
+        <Typography id="Status" variant="h4" className={styles.key}>
           Status:
         </Typography>
         <RadioGroup
           name="Status"
-          aria-label="Status"
+          aria-labelledby="Status"
           value={selectedStatus}
           onChange={e => setSelectedStatus(e.target.value)}
         >
