@@ -54,7 +54,7 @@ const useStyles = makeStyles(theme => ({
  *   layerSourceId: import('typings/orbis').Source['source_id']
  *   data: import('typings/orbis').Property[]
  *   onPropertyChange: (property?: import('typings/orbis').Property) => void
- *   selectedProperty: import('typings/orbis').Property
+ *   selectedProperty: import('typings/orbis').Property & {source_id: import('typings/orbis').Source['source_id']}
  *   onDateChange?: (event: React.ChangeEvent<{}>, date: number) => void
  *   selectedTimestamp?: number
  *   filterRange: [number, number]
@@ -130,6 +130,7 @@ const RadioProperty = ({
         <>
           {data?.length > 1 && (
             <DisplayTypeToggleButtons
+              properties={data}
               selectedProperty={selectedProperty}
               onChange={format => handleToggleClick(format)}
             />

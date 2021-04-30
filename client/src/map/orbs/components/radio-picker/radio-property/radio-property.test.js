@@ -35,13 +35,17 @@ const pairObjectData = [
   },
 ];
 
-const renderComponent = (data, selectedProperty) => {
+/**
+ * @param {Partial<import('typings/orbis').Property>[]} properties
+ * @param {Partial<import('typings/orbis').Property & {source_id: string}>} selectedProperty
+ */
+const renderComponent = (properties, selectedProperty) => {
   const onPropertyChange = jest.fn();
   const testLayerId = 'test_layer_id';
   const utils = render(
     <RadioProperty
       layerSourceId={testLayerId}
-      data={data}
+      data={properties}
       onPropertyChange={onPropertyChange}
       selectedProperty={{ source_id: testLayerId, ...selectedProperty }}
     />,
@@ -104,39 +108,6 @@ describe('RadioProperty', () => {
     expect(onPropertyChange).toHaveBeenCalledWith(pairObjectData[0]);
   });
 
-  it('Shows a legend for discrete properties', () => {
-    const { getByRole } = render(
-      <RadioProperty
-        data={[
-          {
-            name: 'testProperty',
-            categories: {
-              apple: {
-                color: 'green',
-              },
-              orange: {
-                color: 'orange',
-              },
-            },
-          },
-        ]}
-        selectedProperty={{
-          name: 'testProperty',
-          type: 'discrete',
-          categories: {
-            apple: {
-              color: 'green',
-            },
-            orange: {
-              color: 'orange',
-            },
-          },
-        }}
-      />,
-    );
-    expect(getByRole('list')).toBeInTheDocument();
-  });
-
   it('calls click handler with null if property matches selectedProperty (single)', () => {
     const { getByRole, onPropertyChange } = renderComponent(
       singleObjectData,
@@ -169,33 +140,5 @@ describe('RadioProperty', () => {
     const { getByRole } = renderComponent(data);
 
     expect(getByRole('radio', { name: data[0].label })).toBeInTheDocument();
-  });
-
-  it('shows a date stepper if the selected property is timeseries and has a list of timestamps', () => {
-    const { getByText } = renderComponent(singleObjectData, {
-      ...singleObjectData[0],
-      timeseries: true,
-      timeseries_latest_timestamp: new Date(2020, 0, 1).toISOString(),
-      timeseries_timestamps: [new Date(2020, 0, 1).toISOString()],
-    });
-    expect(getByText(/timeseries/i)).toBeInTheDocument();
-  });
-
-  it('shows labels for the start, middle, and end dates', () => {
-    const { getByText } = renderComponent(singleObjectData, {
-      ...singleObjectData[0],
-      timeseries: true,
-      timeseries_latest_timestamp: new Date(2020, 0, 1).toISOString(),
-      timeseries_timestamps: [
-        new Date(2016, 0, 1).toISOString(),
-        new Date(2017, 0, 1).toISOString(),
-        new Date(2018, 0, 1).toISOString(),
-        new Date(2019, 0, 1).toISOString(),
-        new Date(2020, 0, 1).toISOString(),
-      ],
-    });
-    expect(getByText('01-01-16')).toBeInTheDocument();
-    expect(getByText('01-01-18')).toBeInTheDocument();
-    expect(getByText('01-01-20')).toBeInTheDocument();
   });
 });
