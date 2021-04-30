@@ -202,15 +202,23 @@ const FeatureDetail = ({
       </Typography>
       <div className={styles.content}>
         {features &&
-          features?.map(feature => (
-            <List key={feature?.properties?.pk} className={styles.list}>
-              {mapObject(
-                pickBy(feature, (_, key) => !propertiesBlacklist.includes(key)),
-              )}
-              {postFeatureComponent ? postFeatureComponent(feature) : null}
-              {footer && <Item jsonKey={footer.label} value={footer.content} />}
-            </List>
-          ))}
+          features?.map(feature => {
+            console.log('feature: ', feature);
+            return (
+              <List key={feature?.properties?.pk} className={styles.list}>
+                {mapObject(
+                  pickBy(
+                    feature,
+                    (_, key) => !propertiesBlacklist.includes(key),
+                  ),
+                )}
+                {postFeatureComponent ? postFeatureComponent(feature) : null}
+                {footer && (
+                  <Item jsonKey={footer.label} value={footer.content} />
+                )}
+              </List>
+            );
+          })}
         {children && children}
       </div>
     </>

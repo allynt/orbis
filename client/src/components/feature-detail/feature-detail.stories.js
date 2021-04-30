@@ -227,3 +227,32 @@ export const Footer = () => (
     footer={{ label: 'footer', content: 'content' }}
   />
 );
+
+export const PostFeatureComponent = () => {
+  const Component = () => (
+    <span
+      style={{ border: '2px solid #000', padding: '0.25rem', margin: '1rem' }}
+    >
+      I am a postFeatureComponent
+    </span>
+  );
+  return (
+    <FeatureDetail
+      features={[{ test: '1' }]}
+      postFeatureComponent={() => <Component />}
+    />
+  );
+};
+
+export const PropertiesBlacklist = () => (
+  <FeatureDetail
+    features={[
+      {
+        notAllowed: 'you cannot see me',
+        allowed: 'you can see me',
+        alsoAllowed: 'you can see me too',
+      },
+    ]}
+    propertiesBlacklist={['notAllowed']}
+  />
+);
