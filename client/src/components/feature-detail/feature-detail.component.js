@@ -156,6 +156,7 @@ const mapObject = feature => {
  * @typedef FeatureDetailProps
  * @property {{[key: string]: any}[]} [features]
  * @property {React.ReactNode} [children]
+ * @property {string[]} fieldsBlacklist
  * @property {(obj: object) => React.ReactNode|null} postFeatureComponent
  * @property {{label: string, content: string}} [footer]
  * @property {string} [title]
@@ -188,6 +189,7 @@ const FeatureDetail = ({
   children,
   features,
   title = DEFAULT_TITLE,
+  fieldsBlacklist = [],
   postFeatureComponent,
   footer,
 }) => {
@@ -205,10 +207,7 @@ const FeatureDetail = ({
               {mapObject(
                 pickBy(
                   feature.properties,
-                  (_, key) =>
-                    !['type', 'pk', 'status', 'notes'].includes(
-                      key.toLowerCase(),
-                    ),
+                  (_, key) => !fieldsBlacklist.includes(key.toLowerCase()),
                 ),
               )}
               {postFeatureComponent ? postFeatureComponent(feature) : null}

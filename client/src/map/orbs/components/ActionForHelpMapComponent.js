@@ -16,7 +16,6 @@ const ActionForHelpMapComponent = ({ source }) => {
   const dispatch = useDispatch();
 
   const updateNoteOrStatus = async ({ id, ...data }) => {
-    console.log('source: ', source);
     const url = `${source.metadata.url.split(/\/?\?/)[0]}/${id}/`;
 
     const headers = {
@@ -48,6 +47,7 @@ const ActionForHelpMapComponent = ({ source }) => {
       <FeatureDetail
         features={pickedObjects}
         title={isPersonFeatureType ? 'User Details' : 'Infrastructure Details'}
+        fieldsBlacklist={['type', 'pk', 'status', 'notes']}
         postFeatureComponent={
           !isPersonFeatureType
             ? feat => (
