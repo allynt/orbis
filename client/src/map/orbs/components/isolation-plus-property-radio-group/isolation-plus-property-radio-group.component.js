@@ -15,7 +15,7 @@ import {
   timestampSelector,
 } from '../../layers.slice';
 import { groupProperties } from './helpers/group-properties.js';
-import RadioProperty from './radio-property/radio-property.component';
+import RadioProperty from './property-radio/radio-property.component';
 
 /**
  * @param {{
