@@ -71,7 +71,7 @@ const RadioProperty = ({
   const styles = useStyles();
   const selectedPropertyIsInGroup =
     selectedProperty?.source_id === layerSourceId &&
-    properties.some(p => p.name === selectedProperty.name);
+    properties.some(p => p.name === selectedProperty?.name);
 
   const handleRadioClick = () => {
     onPropertyChange(

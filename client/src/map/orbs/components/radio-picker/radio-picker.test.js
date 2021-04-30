@@ -6,59 +6,13 @@ import { Provider } from 'react-redux';
 import configureStore from 'redux-mock-store';
 
 import { RadioPicker } from './radio-picker.component';
-import { groupProperties } from './helpers/group-properties.js';
 import { setOther } from 'map/orbs/layers.slice';
 
 const mockStore = configureStore();
 
 let dispatch = null;
 
-const defaultSelectedLayer = {
-  source_id: 'test/layer',
-  metadata: {
-    properties: [
-      {
-        name: 'Census 2011: % of people in the age band 40 - 64',
-        label: 'People in the age band 40 - 64',
-        type: 'percentage',
-        property_group: '1',
-      },
-      {
-        name: 'Census 2011: number of people in the age band 40 - 64',
-        label: 'People in the age band 40 - 64',
-        type: 'continuous',
-        property_group: '1',
-      },
-      {
-        name: 'Census 2011: % of people in the age band 65+',
-        label: 'People in the age band 65+',
-        type: 'percentage',
-        property_group: '2',
-      },
-      {
-        name: 'Census 2011: number of people in the age band 65+',
-        label: 'People in the age band 65+',
-        type: 'continuous',
-        property_group: '2',
-      },
-    ],
-  },
-};
-
-const renderComponent = (
-  selectedLayer = defaultSelectedLayer,
-  initialState = {
-    property: {
-      source_id: undefined,
-      name: undefined,
-    },
-    pickedInfo: undefined,
-    filterData: {
-      filterRange: [undefined, undefined],
-      clipPosition: {},
-    },
-  },
-) => {
+const renderComponent = (selectedLayer, initialState = {}) => {
   dispatch = jest.fn();
   return render(
     <RadioPicker selectedLayer={selectedLayer} dispatch={dispatch} />,
@@ -71,73 +25,55 @@ const renderComponent = (
 };
 
 describe('<RadioPicker />', () => {
-  it('displays a radio for each selectable property in the source', () => {
-    const { getByRole } = renderComponent();
-    groupProperties(defaultSelectedLayer.metadata.properties).forEach(pair => {
-      expect(getByRole('radio', { name: pair[0].label })).toBeInTheDocument();
-    });
-  });
-
-  it('shows only Radio (no toggles) for each property, if there are no percentage/number pairs', () => {
-    const noPairs = {
-      source_id: 'test/layer',
+  it('renders a radio for each property group', () => {
+    const { getByRole } = renderComponent({
       metadata: {
         properties: [
-          {
-            name: 'Test Name 1',
-            property_group: '1',
-          },
-          {
-            name: 'Test Name 2',
-            property_group: '2',
-          },
+          { name: 'property1', property_group: '1', label: 'Group 1' },
+          { name: 'property2', property_group: '1' },
+          { name: 'property3', label: 'Property 2' },
         ],
       },
-    };
-
-    const { queryByRole } = renderComponent(noPairs, {
-      property: {
-        source_id: noPairs.source_id,
-        name: 'Test Name 1',
-      },
     });
-
-    expect(
-      queryByRole('button', { name: 'Percentage' }),
-    ).not.toBeInTheDocument();
-    expect(queryByRole('button', { name: 'Number' })).not.toBeInTheDocument();
+    expect(getByRole('radio', { name: 'Group 1' })).toBeInTheDocument();
+    expect(getByRole('radio', { name: 'Property 2' })).toBeInTheDocument();
   });
 
-  it('selects percentage property by default when Radio is checked', () => {
-    const { getByRole } = renderComponent();
-
-    userEvent.click(
-      getByRole('radio', {
-        name: 'People in the age band 40 - 64',
-      }),
+  it(`dispatches the ${setOther} action with the selected property when the property changes`, () => {
+    const property = { name: 'property1' };
+    const { getByRole } = renderComponent({
+      authority: 'test',
+      namespace: 'layer',
+      metadata: { properties: [property] },
+    });
+    userEvent.click(getByRole('radio'));
+    expect(dispatch).toBeCalledWith(
+      setOther(expect.objectContaining({ other: { property } })),
     );
+  });
 
-    expect(dispatch).toHaveBeenCalledWith(
-      setOther(
-        expect.objectContaining({
-          other: {
-            property: {
-              source_id: defaultSelectedLayer.source_id,
-              name: 'Census 2011: % of people in the age band 40 - 64',
-              label: 'People in the age band 40 - 64',
-              type: 'percentage',
-              property_group: '1',
+  it(`dispatches set other with property as null if the selected property is clicked`, () => {
+    const property = { name: 'property1' };
+    const { getByRole } = renderComponent(
+      {
+        authority: 'test',
+        namespace: 'layer',
+        source_id: 'test/layer',
+        metadata: { properties: [property] },
+      },
+      {
+        orbs: {
+          layers: {
+            'test/layer': {
+              other: { property: { ...property, source_id: 'test/layer' } },
             },
           },
-        }),
-      ),
+        },
+      },
     );
-  });
-
-  it('has an info icon for each radio', () => {
-    const { getAllByRole } = renderComponent();
-    expect(getAllByRole('button', { name: 'Info' })).toHaveLength(
-      groupProperties(defaultSelectedLayer.metadata.properties).length,
+    userEvent.click(getByRole('radio'));
+    expect(dispatch).toBeCalledWith(
+      setOther(expect.objectContaining({ other: { property: {} } })),
     );
   });
 });
