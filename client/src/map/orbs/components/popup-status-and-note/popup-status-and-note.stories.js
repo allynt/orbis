@@ -1,0 +1,31 @@
+import React from 'react';
+import PopupStatusAndNote from './popup-status-and-note.component';
+
+import { defaultNote, longBodyNote } from './popup-status-and-note.test';
+
+export default {
+  title: 'Components/Feature Detail/Popup Note',
+  argTypes: { onSave: { action: 'Save note and/or Status' } },
+};
+
+const Template = args => (
+  <div style={{ maxWidth: '10rem' }}>
+    <PopupStatusAndNote {...args} />
+  </div>
+);
+
+export const Default = Template.bind({});
+
+export const NoteAndStatus = Template.bind({});
+NoteAndStatus.args = {
+  id: 123,
+  status: 'NEW',
+  note: defaultNote,
+};
+
+export const TooMuchText = Template.bind({});
+TooMuchText.args = {
+  id: 456,
+  status: 'NEW',
+  note: longBodyNote,
+};

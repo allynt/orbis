@@ -10,6 +10,8 @@ import {
   Typography,
 } from '@astrosat/astrosat-ui';
 
+import { pickBy } from 'lodash';
+
 import { DEFAULT_TITLE, VALUE_TYPE } from './feature-detail.constants';
 import { isEmail } from 'utils/text';
 
@@ -154,6 +156,8 @@ const mapObject = feature => {
  * @typedef FeatureDetailProps
  * @property {{[key: string]: any}[]} [features]
  * @property {React.ReactNode} [children]
+ * @property {string[]} propertiesBlacklist
+ * @property {(obj: object) => React.ReactNode|null} postFeatureComponent
  * @property {{label: string, content: string}} [footer]
  * @property {string} [title]
  */
@@ -185,6 +189,8 @@ const FeatureDetail = ({
   children,
   features,
   title = DEFAULT_TITLE,
+  propertiesBlacklist = [],
+  postFeatureComponent,
   footer,
 }) => {
   const styles = useStyles();
@@ -197,8 +203,11 @@ const FeatureDetail = ({
       <div className={styles.content}>
         {features &&
           features?.map(feature => (
-            <List key={feature?.id} className={styles.list}>
-              {mapObject(feature)}
+            <List key={feature?.properties?.pk} className={styles.list}>
+              {mapObject(
+                pickBy(feature, (_, key) => !propertiesBlacklist.includes(key)),
+              )}
+              {postFeatureComponent ? postFeatureComponent(feature) : null}
               {footer && <Item jsonKey={footer.label} value={footer.content} />}
             </List>
           ))}

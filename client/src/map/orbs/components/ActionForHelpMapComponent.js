@@ -1,15 +1,35 @@
+import { sendData } from 'utils/http';
 import { FeatureDetail, Popup } from 'components';
-import { pickBy } from 'lodash';
+
+import PopupStatusAndNote from './popup-status-and-note/popup-status-and-note.component';
+
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { clickedFeaturesSelector, setClickedFeatures } from '../layers.slice';
+import { selectDataToken } from 'data-layers/data-layers.slice';
 
 const ActionForHelpMapComponent = ({ source }) => {
   const pickedObjects = useSelector(state =>
     clickedFeaturesSelector(source?.source_id)(state?.orbs),
   );
+  const dataToken = useSelector(selectDataToken);
   const dispatch = useDispatch();
+
+  const updateNoteOrStatus = async ({ id, ...data }) => {
+    const url = `${source.metadata.url.split(/\/?\?/)[0]}/${id}/`;
+
+    const headers = {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${dataToken}`,
+    };
+
+    const response = await sendData(url, data, headers, 'PUT');
+    return response.json();
+  };
+
   if (!pickedObjects?.length) return null;
+  const isPersonFeatureType = 'Type' in pickedObjects[0].properties;
   return (
     <Popup
       longitude={pickedObjects[0]?.geometry.coordinates[0]}
@@ -25,18 +45,21 @@ const ActionForHelpMapComponent = ({ source }) => {
       captureScroll
     >
       <FeatureDetail
-        features={pickedObjects.map(obj =>
-          pickBy(
-            obj.properties,
-            (_, key) =>
-              !key.toLowerCase().includes('type') &&
-              !key.toLowerCase().includes('pk'),
-          ),
-        )}
-        title={
-          pickedObjects[0].properties.Type
-            ? 'User Details'
-            : 'Infrastructure Details'
+        features={pickedObjects.map(obj => obj.properties)}
+        title={isPersonFeatureType ? 'User Details' : 'Infrastructure Details'}
+        propertiesBlacklist={['Type', 'pk', 'status', 'notes']}
+        postFeatureComponent={
+          isPersonFeatureType
+            ? feat => (
+                <PopupStatusAndNote
+                  key={feat.pk}
+                  id={feat.pk}
+                  note={feat.notes}
+                  status={feat.status}
+                  onSave={data => updateNoteOrStatus(data)}
+                />
+              )
+            : null
         }
       />
     </Popup>

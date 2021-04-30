@@ -97,4 +97,38 @@ describe('<FeatureDetail />', () => {
     const { getByRole } = render(<FeatureDetail features={[feature]} />);
     expect(getByRole('link', { name: 'test@test.com' })).toBeInTheDocument();
   });
+
+  it('renders `postFeatureComponent` if prop is present', () => {
+    const feature = {
+      id: '1',
+      'Key 1': 'Value 1',
+      'Key 2': 'Value 2',
+      'Key 3': 'Value 3',
+    };
+
+    const Component = ({ text }) => <h1>{text}</h1>;
+    const text = 'This is a test component';
+
+    const { getByText } = render(
+      <FeatureDetail
+        features={[feature]}
+        postFeatureComponent={() => <Component text={text} />}
+      />,
+    );
+
+    expect(getByText(text)).toBeInTheDocument();
+  });
+
+  it('excludes fields specified in `propertiesBlacklist` prop', () => {
+    const features = [
+      { id: '1', 'Key 1': 'Value 1', 'Key 2': 'Value 2', 'Key 3': 'Value 3' },
+    ];
+
+    const { queryByText } = render(
+      <FeatureDetail features={features} propertiesBlacklist={['id']} />,
+    );
+
+    expect(queryByText('id', { exact: false })).not.toBeInTheDocument();
+    expect(queryByText('1')).not.toBeInTheDocument();
+  });
 });
