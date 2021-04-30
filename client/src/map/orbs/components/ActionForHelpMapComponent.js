@@ -3,7 +3,6 @@ import { FeatureDetail, Popup } from 'components';
 
 import PopupStatusAndNote from './popup-status-and-note/popup-status-and-note.component';
 
-import { pickBy } from 'lodash';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { clickedFeaturesSelector, setClickedFeatures } from '../layers.slice';
@@ -17,7 +16,8 @@ const ActionForHelpMapComponent = ({ source }) => {
   const dispatch = useDispatch();
 
   const updateNoteOrStatus = async ({ id, ...data }) => {
-    const url = `${source.metadata.url.split('?')[0]}/${id}/`;
+    console.log('source: ', source);
+    const url = `${source.metadata.url.split(/\/?\?/)[0]}/${id}/`;
 
     const headers = {
       Accept: 'application/json',
@@ -30,6 +30,7 @@ const ActionForHelpMapComponent = ({ source }) => {
   };
 
   if (!pickedObjects?.length) return null;
+  const isPersonFeatureType = 'Type' in pickedObjects[0].properties;
   return (
     <Popup
       longitude={pickedObjects[0]?.geometry.coordinates[0]}
@@ -44,33 +45,23 @@ const ActionForHelpMapComponent = ({ source }) => {
       }
       captureScroll
     >
-      {pickedObjects.map(obj => {
-        return (
-          <FeatureDetail
-            key={obj.properties.pk}
-            features={[
-              pickBy(
-                obj.properties,
-                (_, key) =>
-                  !key.toLowerCase().includes('type') &&
-                  !key.toLowerCase().includes('pk') &&
-                  !key.toLowerCase().includes('notes') &&
-                  !key.toLowerCase().includes('status'),
-              ),
-            ]}
-            title={
-              obj.properties.Type ? 'User Details' : 'Infrastructure Details'
-            }
-          >
-            <PopupStatusAndNote
-              id={obj.properties.pk}
-              note={obj.properties.notes}
-              status={obj.properties.status}
-              onSave={data => updateNoteOrStatus(data)}
-            />
-          </FeatureDetail>
-        );
-      })}
+      <FeatureDetail
+        features={pickedObjects}
+        title={isPersonFeatureType ? 'User Details' : 'Infrastructure Details'}
+        postFeatureComponent={
+          !isPersonFeatureType
+            ? feat => (
+                <PopupStatusAndNote
+                  key={feat.properties.pk}
+                  id={feat.properties.pk}
+                  note={feat.properties.notes}
+                  status={feat.properties.status}
+                  onSave={data => updateNoteOrStatus(data)}
+                />
+              )
+            : null
+        }
+      />
     </Popup>
   );
 };
