@@ -6,38 +6,9 @@ import userEvent from '@testing-library/user-event';
 
 import RadioProperty from './radio-property.component';
 
-const singleObjectData = [
-  {
-    name: 'Census 2011: % of people in the age band 65+',
-    label: 'People in the age band 65+',
-    type: 'percentage',
-    min: 0,
-    max: 100,
-  },
-];
-
-const pairObjectData = [
-  {
-    name: 'Census 2011: number of people in the age band 40 - 64',
-    label: 'People in the age band 40 - 64',
-    type: 'continuous',
-    property_group: '1',
-    min: 0,
-    max: 100,
-  },
-  {
-    name: 'Census 2011: % of people in the age band 40 - 64',
-    label: 'People in the age band 40 - 64',
-    type: 'percentage',
-    property_group: '1',
-    min: 0,
-    max: 100,
-  },
-];
-
 /**
  * @param {Partial<import('typings/orbis').Property>[]} properties
- * @param {Partial<import('typings/orbis').Property & {source_id: string}>} selectedProperty
+ * @param {Partial<import('typings/orbis').Property & {source_id: string}>} [selectedProperty]
  */
 const renderComponent = (properties, selectedProperty) => {
   const onPropertyChange = jest.fn();
@@ -45,100 +16,105 @@ const renderComponent = (properties, selectedProperty) => {
   const utils = render(
     <RadioProperty
       layerSourceId={testLayerId}
-      data={properties}
+      properties={properties}
       onPropertyChange={onPropertyChange}
-      selectedProperty={{ source_id: testLayerId, ...selectedProperty }}
+      selectedProperty={
+        selectedProperty && { source_id: testLayerId, ...selectedProperty }
+      }
     />,
   );
   return { ...utils, onPropertyChange };
 };
 
 describe('RadioProperty', () => {
-  it('renders a RadioProperty', () => {
-    const { getByRole } = renderComponent(pairObjectData, {});
-
+  it('Uses the application label for the radio if there is one', () => {
+    const property = {
+      name: 'property1',
+      label: 'This is not the label',
+      application: { orbis: { label: 'This is the label' } },
+    };
+    const { getByRole } = renderComponent([property]);
     expect(
-      getByRole('radio', { name: pairObjectData[1].label }),
+      getByRole('radio', { name: property.application.orbis.label }),
     ).toBeInTheDocument();
   });
 
-  it('shows display dropdown when property is selected', () => {
-    const { getByRole } = renderComponent(pairObjectData, pairObjectData[0]);
+  it('Uses the property label if an application level one is not provided', () => {
+    const property = {
+      name: 'property1',
+      label: 'This is the label',
+    };
+    const { getByRole } = renderComponent([property]);
+    expect(getByRole('radio', { name: property.label })).toBeInTheDocument();
+  });
 
-    expect(getByRole('button', { name: 'Percentage' })).toBeInTheDocument();
+  it('Shows controls if the selected property is one of the provided properties', () => {
+    const property = { name: 'property1' };
+    const { getByText } = renderComponent([property], property);
+    expect(getByText('Range Filter')).toBeInTheDocument();
+  });
+
+  it("Shows property toggle buttons if it's a property group", () => {
+    const properties = [
+      { name: 'property1', type: 'percentage' },
+      { name: 'property2', type: 'continuous' },
+    ];
+    const { getByRole } = renderComponent(properties, properties[0]);
     expect(getByRole('button', { name: 'Number' })).toBeInTheDocument();
   });
 
-  it('does not show toggles for single properties', () => {
-    const { queryByRole } = renderComponent(
-      singleObjectData,
-      singleObjectData[0],
-    );
-    expect(
-      queryByRole('button', { name: 'Percentage' }),
-    ).not.toBeInTheDocument();
-    expect(queryByRole('button', { name: 'Number' })).not.toBeInTheDocument();
+  it('Shows the radio as checked if the selected property is in the provided properties', () => {
+    const properties = [{ name: 'property1' }, { name: 'property2' }];
+    const { getByRole } = renderComponent(properties, properties[1]);
+    expect(getByRole('radio')).toBeChecked();
   });
 
-  it('calls click handler with single property if Radio is clicked', () => {
-    const { getByRole, onPropertyChange } = renderComponent(
-      singleObjectData,
-      {},
-    );
-
-    userEvent.click(getByRole('radio', { name: singleObjectData.label }));
-    expect(onPropertyChange).toHaveBeenCalledWith(singleObjectData[0]);
+  it('Calls onPropertyChange with the first item in the list if there is no selectedProperty', () => {
+    const property = { name: 'property1' };
+    const { getByRole, onPropertyChange } = renderComponent([property]);
+    userEvent.click(getByRole('radio'));
+    expect(onPropertyChange).toBeCalledWith(property);
   });
 
-  it('calls click handler with percentage property of pair by default if Radio is clicked', () => {
-    const { getByRole, onPropertyChange } = renderComponent(pairObjectData, {});
-
-    userEvent.click(getByRole('radio', { name: pairObjectData[1].label }));
-    expect(onPropertyChange).toHaveBeenCalledWith(pairObjectData[1]);
-  });
-
-  it('calls click handler with number property if number toggle is clicked', () => {
-    const { getByRole, onPropertyChange } = renderComponent(
-      pairObjectData,
-      pairObjectData[1],
-    );
-
-    userEvent.click(getByRole('button', { name: 'Number' }));
-
-    expect(onPropertyChange).toHaveBeenCalledWith(pairObjectData[0]);
-  });
-
-  it('calls click handler with null if property matches selectedProperty (single)', () => {
-    const { getByRole, onPropertyChange } = renderComponent(
-      singleObjectData,
-      singleObjectData[0],
-    );
-
-    userEvent.click(getByRole('radio', { name: singleObjectData.label }));
-    expect(onPropertyChange).toHaveBeenCalledWith(null);
-  });
-
-  it('calls click handler with null if property matches selectedProperty (grouped properties)', () => {
-    const { getByRole, onPropertyChange } = renderComponent(
-      pairObjectData,
-      pairObjectData[0],
-    );
-
-    userEvent.click(getByRole('radio', { name: pairObjectData[0].label }));
-    expect(onPropertyChange).toHaveBeenCalledWith(null);
-  });
-
-  it('uses first available property if no `percentage` available', () => {
-    const data = [
-      {
-        name: 'Test decile property',
-        label: 'Test decile label',
-        type: 'decile',
-      },
+  it('Calls onPropertyChange with the chosen property if the toggle button is clicked', () => {
+    const properties = [
+      { name: 'property1', type: 'percentage' },
+      { name: 'property2', type: 'continuous' },
     ];
+    const { getByRole, onPropertyChange } = renderComponent(
+      properties,
+      properties[0],
+    );
+    userEvent.click(getByRole('button', { name: 'Number' }));
+    expect(onPropertyChange).toHaveBeenCalledWith(properties[1]);
+  });
 
-    const { getByRole } = renderComponent(data);
+  it('Calls onPropertyChange when the radio is clicked with the selected property if the selected property is one of the provided properties', () => {
+    const properties = [
+      { name: 'property1', type: 'percentage' },
+      { name: 'property2', type: 'continuous' },
+    ];
+    const { getByRole, onPropertyChange } = renderComponent(
+      properties,
+      properties[1],
+    );
+    userEvent.click(getByRole('radio'));
+    expect(onPropertyChange).toHaveBeenCalledWith(
+      expect.objectContaining(properties[1]),
+    );
+  });
 
-    expect(getByRole('radio', { name: data[0].label })).toBeInTheDocument();
+  it('Calls onPropertyChange with the first property when the radio is clicked and the selected property is not in the group', () => {
+    const properties = [
+        { name: 'property1', type: 'percentage' },
+        { name: 'property2', type: 'continuous' },
+      ],
+      selectedProperty = { name: 'property3' };
+    const { getByRole, onPropertyChange } = renderComponent(
+      properties,
+      selectedProperty,
+    );
+    userEvent.click(getByRole('radio'));
+    expect(onPropertyChange).toHaveBeenCalledWith(properties[0]);
   });
 });

@@ -66,7 +66,7 @@ export const RadioPicker = ({ selectedLayer, dispatch }) => {
         <React.Fragment key={i}>
           <RadioProperty
             layerSourceId={selectedLayer?.source_id}
-            data={data}
+            properties={data}
             onPropertyChange={selectProperty}
             onSliderChange={filterValue =>
               dispatch(

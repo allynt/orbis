@@ -2,6 +2,7 @@ import { Typography } from '@material-ui/core';
 import { ColorMapRangeSlider } from 'components';
 import { format } from 'date-fns';
 import React from 'react';
+import { isRealValue } from 'utils/isRealValue';
 import { DateStepper } from '../../date-stepper/date-stepper.component';
 import { DiscretePropertyLegend } from '../discrete-property-legend/discrete-property-legend.component';
 
@@ -60,7 +61,10 @@ export const SelectedPropertyControls = ({
         <ColorMapRangeSlider
           type={selectedProperty?.type}
           color={selectedProperty?.application?.orbis?.display?.color}
-          domain={[selectedProperty.min, selectedProperty.max]}
+          domain={[
+            isRealValue(selectedProperty.min) ? selectedProperty.min : 0,
+            isRealValue(selectedProperty.max) ? selectedProperty.max : 1,
+          ]}
           clip={
             (selectedProperty.clip_min || selectedProperty.clip_max) && [
               selectedProperty.clip_min || selectedProperty.min,

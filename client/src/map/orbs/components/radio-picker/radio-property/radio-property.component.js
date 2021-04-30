@@ -1,21 +1,16 @@
 import React from 'react';
 
 import {
-  Radio,
-  Button,
-  makeStyles,
   FormControlLabel,
+  makeStyles,
+  Radio,
   Typography,
-  ButtonGroup,
-  FormLabel,
 } from '@astrosat/astrosat-ui';
 
-import clsx from 'clsx';
-
 import { InfoButtonTooltip } from 'components';
+import { DisplayTypeToggleButtons } from '../display-type-toggle-buttons/display-type-toggle-buttons.component';
 import { FORMAT } from '../radio-picker-constants';
 import { SelectedPropertyControls } from '../selected-property-controls/selected-property-controls.component';
-import { DisplayTypeToggleButtons } from '../display-type-toggle-buttons/display-type-toggle-buttons.component';
 
 const useStyles = makeStyles(theme => ({
   property: {
@@ -52,7 +47,7 @@ const useStyles = makeStyles(theme => ({
 /**
  * @param {{
  *   layerSourceId: import('typings/orbis').Source['source_id']
- *   data: import('typings/orbis').Property[]
+ *   properties: import('typings/orbis').Property[]
  *   onPropertyChange: (property?: import('typings/orbis').Property) => void
  *   selectedProperty: import('typings/orbis').Property & {source_id: import('typings/orbis').Source['source_id']}
  *   onDateChange?: (event: React.ChangeEvent<{}>, date: number) => void
@@ -64,7 +59,7 @@ const useStyles = makeStyles(theme => ({
  */
 const RadioProperty = ({
   layerSourceId,
-  data,
+  properties,
   onPropertyChange,
   onDateChange,
   selectedTimestamp,
@@ -74,42 +69,21 @@ const RadioProperty = ({
   categoryPath,
 }) => {
   const styles = useStyles();
+  const selectedPropertyIsInGroup =
+    selectedProperty?.source_id === layerSourceId &&
+    properties.some(p => p.name === selectedProperty.name);
 
-  /**
-   * @param {string} type
-   */
-  const findPropertyByType = type => data.find(d => d.type === type);
-
-  const initialProperty = findPropertyByType(FORMAT.percentage) || data[0];
-
-  const propertyMatch = data.some(p => {
-    return (
-      selectedProperty?.name === p.name &&
-      selectedProperty?.source_id === layerSourceId
-    );
-  });
   const handleRadioClick = () => {
-    const payload = propertyMatch ? null : initialProperty;
-    return onPropertyChange(payload);
-  };
-
-  /**
-   * @param {string} type
-   */
-  const handleToggleClick = type => {
-    const property = findPropertyByType(type);
-    if (property.name === selectedProperty?.name) return;
-    else onPropertyChange(property);
+    onPropertyChange(
+      selectedPropertyIsInGroup ? selectedProperty : properties[0],
+    );
   };
 
   return (
     <div className={styles.property}>
       <FormControlLabel
-        value={initialProperty?.name}
-        checked={propertyMatch}
-        label={
-          initialProperty?.application?.orbis?.label || initialProperty?.label
-        }
+        checked={selectedPropertyIsInGroup}
+        label={properties[0]?.application?.orbis?.label || properties[0]?.label}
         control={<Radio onClick={handleRadioClick} name="isolationPlus" />}
       />
       <InfoButtonTooltip
@@ -120,19 +94,19 @@ const RadioProperty = ({
               {categoryPath}
             </Typography>
             <Typography className={styles.description}>
-              {initialProperty?.application?.orbis?.description ||
-                initialProperty?.description}
+              {properties[0].application?.orbis?.description ||
+                properties[0].description}
             </Typography>
           </>
         }
       />
-      {propertyMatch && (
+      {selectedPropertyIsInGroup && (
         <>
-          {data?.length > 1 && (
+          {properties.length > 1 && (
             <DisplayTypeToggleButtons
-              properties={data}
+              properties={properties}
               selectedProperty={selectedProperty}
-              onChange={format => handleToggleClick(format)}
+              onChange={onPropertyChange}
             />
           )}
           <div className={styles.fullGrid}>
