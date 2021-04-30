@@ -15,6 +15,7 @@ import clsx from 'clsx';
 import { InfoButtonTooltip } from 'components';
 import { FORMAT } from '../radio-picker-constants';
 import { SelectedPropertyControls } from '../selected-property-controls/selected-property-controls.component';
+import { DisplayTypeToggleButtons } from '../display-type-toggle-buttons/display-type-toggle-buttons.component';
 
 const useStyles = makeStyles(theme => ({
   property: {
@@ -128,30 +129,10 @@ const RadioProperty = ({
       {propertyMatch && (
         <>
           {data?.length > 1 && (
-            <>
-              <FormLabel className={styles.fullGrid}>
-                Select display type:
-              </FormLabel>
-              <ButtonGroup size="small" className={styles.fullGrid}>
-                <Button
-                  onClick={() => handleToggleClick(FORMAT.percentage)}
-                  className={clsx(styles.button, {
-                    [styles.notActive]:
-                      selectedProperty.type !== FORMAT.percentage,
-                  })}
-                >
-                  Percentage
-                </Button>
-                <Button
-                  onClick={() => handleToggleClick(FORMAT.number)}
-                  className={clsx(styles.button, {
-                    [styles.notActive]: selectedProperty.type !== FORMAT.number,
-                  })}
-                >
-                  Number
-                </Button>
-              </ButtonGroup>
-            </>
+            <DisplayTypeToggleButtons
+              selectedProperty={selectedProperty}
+              onChange={format => handleToggleClick(format)}
+            />
           )}
           <div className={styles.fullGrid}>
             <SelectedPropertyControls
