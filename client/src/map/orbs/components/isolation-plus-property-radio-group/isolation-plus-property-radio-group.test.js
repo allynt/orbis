@@ -5,7 +5,7 @@ import userEvent from '@testing-library/user-event';
 import { Provider } from 'react-redux';
 import configureStore from 'redux-mock-store';
 
-import { RadioPicker } from './isolation-plus-property-radio-group.component';
+import { IsolationPlusPropertyRadioGroup } from './isolation-plus-property-radio-group.component';
 import { setOther } from 'map/orbs/layers.slice';
 
 const mockStore = configureStore();
@@ -15,7 +15,10 @@ let dispatch = null;
 const renderComponent = (selectedLayer, initialState = {}) => {
   dispatch = jest.fn();
   return render(
-    <RadioPicker selectedLayer={selectedLayer} dispatch={dispatch} />,
+    <IsolationPlusPropertyRadioGroup
+      selectedLayer={selectedLayer}
+      dispatch={dispatch}
+    />,
     {
       wrapper: ({ children }) => (
         <Provider store={mockStore(initialState)}>{children}</Provider>
@@ -24,7 +27,7 @@ const renderComponent = (selectedLayer, initialState = {}) => {
   );
 };
 
-describe('<RadioPicker />', () => {
+describe('<IsolationPlusPropertyRadioGroup />', () => {
   it('renders a radio for each property group', () => {
     const { getByRole } = renderComponent({
       metadata: {

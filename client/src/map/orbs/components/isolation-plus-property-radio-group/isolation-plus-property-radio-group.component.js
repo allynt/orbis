@@ -23,7 +23,10 @@ import RadioProperty from './radio-property/radio-property.component';
  *   dispatch: import('redux').Dispatch
  * }} props
  */
-export const RadioPicker = ({ selectedLayer, dispatch }) => {
+export const IsolationPlusPropertyRadioGroup = ({
+  selectedLayer,
+  dispatch,
+}) => {
   const otherStateKey = `${selectedLayer.authority}/${selectedLayer.namespace}`;
   const other = useSelector(state => otherSelector(otherStateKey)(state?.orbs));
   /** @type {import('typings/orbis').Property & {source_id: import('typings/orbis').Source['source_id']}} */
