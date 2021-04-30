@@ -9,7 +9,6 @@ import {
 
 import { InfoButtonTooltip } from 'components';
 import { DisplayTypeToggleButtons } from '../display-type-toggle-buttons/display-type-toggle-buttons.component';
-import { FORMAT } from '../radio-picker-constants';
 import { SelectedPropertyControls } from '../selected-property-controls/selected-property-controls.component';
 
 const useStyles = makeStyles(theme => ({
