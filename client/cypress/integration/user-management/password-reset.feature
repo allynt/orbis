@@ -30,7 +30,7 @@ Feature: Reset Password
   Scenario: Submit Password Reset with unknown email
     When I type "unknown@temp.com" into the "Email" field
     When I submit the "Reset Password" form
-    Then I see the "400 Bad Request" error
+    When I see the "The e-mail address is not assigned to any user account" error
 
   Scenario: Submit successful Password Reset
     When I type "admin@test.com" into the "Email" field
