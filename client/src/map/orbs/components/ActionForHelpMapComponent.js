@@ -45,9 +45,9 @@ const ActionForHelpMapComponent = ({ source }) => {
       captureScroll
     >
       <FeatureDetail
-        features={pickedObjects}
+        features={pickedObjects.map(obj => obj.properties)}
         title={isPersonFeatureType ? 'User Details' : 'Infrastructure Details'}
-        fieldsBlacklist={['type', 'pk', 'status', 'notes']}
+        propertiesBlacklist={['Type', 'pk', 'status', 'notes']}
         postFeatureComponent={
           !isPersonFeatureType
             ? feat => (
