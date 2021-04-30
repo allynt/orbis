@@ -10,7 +10,11 @@ import { capitalize } from 'lodash';
 import React from 'react';
 
 const useStyles = makeStyles(theme => ({
+  buttonGroup: {
+    maxWidth: '100%',
+  },
   button: {
+    width: props => (props.moreThanTwo ? undefined : '50%'),
     cursor: 'not-allowed',
     '&$notActive': {
       color: theme.palette.secondary.contrastText,
@@ -48,7 +52,8 @@ export const DisplayTypeToggleButtons = ({
   selectedProperty,
   onChange,
 }) => {
-  const styles = useStyles();
+  const moreThanTwo = properties.length > 2;
+  const styles = useStyles({ moreThanTwo });
 
   /**
    * @param {import('typings/orbis').Property} property
@@ -60,11 +65,15 @@ export const DisplayTypeToggleButtons = ({
 
   return (
     <>
-      <Grid item>
+      <Grid item xs={moreThanTwo ? 5 : 12}>
         <FormLabel>Select display type:</FormLabel>
       </Grid>
-      <Grid item>
-        <ButtonGroup size="small">
+      <Grid item xs={moreThanTwo ? 7 : 12} container justify="center">
+        <ButtonGroup
+          className={styles.buttonGroup}
+          size="small"
+          orientation={moreThanTwo ? 'vertical' : 'horizontal'}
+        >
           {properties.map(property => (
             <Button
               key={property.name}

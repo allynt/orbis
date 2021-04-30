@@ -66,7 +66,7 @@ const PropertyRadio = ({
   };
 
   return (
-    <Grid container spacing={2}>
+    <Grid container spacing={2} className={styles.grid}>
       <Grid item xs={11}>
         <FormControlLabel
           checked={selectedPropertyIsInGroup}

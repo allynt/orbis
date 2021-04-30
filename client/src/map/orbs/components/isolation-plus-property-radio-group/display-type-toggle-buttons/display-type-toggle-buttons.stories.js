@@ -1,3 +1,4 @@
+import { Grid } from '@astrosat/astrosat-ui';
 import React from 'react';
 import { DisplayTypeToggleButtons } from './display-type-toggle-buttons.component';
 
@@ -7,10 +8,12 @@ export default {
 };
 
 const Template = args => (
-  <DisplayTypeToggleButtons
-    {...args}
-    selectedProperty={args.properties[args.selectedProperty]}
-  />
+  <Grid container spacing={2}>
+    <DisplayTypeToggleButtons
+      {...args}
+      selectedProperty={args.properties[args.selectedProperty]}
+    />
+  </Grid>
 );
 
 export const UnlabelledProperties = Template.bind({});

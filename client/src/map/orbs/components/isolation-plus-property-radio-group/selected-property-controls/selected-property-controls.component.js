@@ -1,10 +1,15 @@
-import { Grid, Typography } from '@astrosat/astrosat-ui';
+import { Grid, styled, Typography } from '@astrosat/astrosat-ui';
 import { ColorMapRangeSlider } from 'components';
 import { format } from 'date-fns';
+import { styles } from 'map-style/styles';
 import React from 'react';
 import { isRealValue } from 'utils/isRealValue';
 import { DateStepper } from '../../date-stepper/date-stepper.component';
 import { DiscretePropertyLegend } from '../discrete-property-legend/discrete-property-legend.component';
+
+const LastGridItem = styled(Grid)(({ theme }) => ({
+  marginBottom: theme.spacing(2),
+}));
 
 /**
  * @param {{
@@ -61,7 +66,7 @@ export const SelectedPropertyControls = ({
         <Grid item>
           <Typography variant="body2">Range Filter</Typography>
         </Grid>
-        <Grid item>
+        <LastGridItem item>
           <ColorMapRangeSlider
             type={selectedProperty?.type}
             color={selectedProperty?.application?.orbis?.display?.color}
@@ -82,7 +87,7 @@ export const SelectedPropertyControls = ({
             }
             precision={selectedProperty?.precision}
           />
-        </Grid>
+        </LastGridItem>
       </>
     )}
   </>

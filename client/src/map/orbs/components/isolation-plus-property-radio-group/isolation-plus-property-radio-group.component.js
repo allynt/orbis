@@ -1,7 +1,5 @@
 import * as React from 'react';
 
-import { Box } from '@astrosat/astrosat-ui';
-
 import { get } from 'lodash';
 import { useSelector } from 'react-redux';
 
@@ -65,37 +63,32 @@ export const IsolationPlusPropertyRadioGroup = ({
   };
 
   if (!selectedLayer?.metadata?.properties) return null;
-  return (
-    <Box display="flex" flexDirection="column" width="100%">
-      {groupProperties(selectedLayer.metadata.properties).map((data, i) => (
-        <React.Fragment key={i}>
-          <PropertyRadio
-            layerSourceId={selectedLayer?.source_id}
-            properties={data}
-            onPropertyChange={handlePropertyChange}
-            onSliderChange={filterValue =>
-              dispatch(
-                setFilterValue({
-                  key: propertyStateKey,
-                  filterValue,
-                }),
-              )
-            }
-            selectedProperty={selectedProperty}
-            filterRange={filterRange}
-            categoryPath={categoryPath}
-            onDateChange={(_, timestamp) =>
-              dispatch(
-                setTimestamp({
-                  key: propertyStateKey,
-                  timestamp,
-                }),
-              )
-            }
-            selectedTimestamp={selectedTimestamp}
-          />
-        </React.Fragment>
-      ))}
-    </Box>
-  );
+  return groupProperties(selectedLayer.metadata.properties).map((data, i) => (
+    <PropertyRadio
+      key={i}
+      layerSourceId={selectedLayer?.source_id}
+      properties={data}
+      onPropertyChange={handlePropertyChange}
+      onSliderChange={filterValue =>
+        dispatch(
+          setFilterValue({
+            key: propertyStateKey,
+            filterValue,
+          }),
+        )
+      }
+      selectedProperty={selectedProperty}
+      filterRange={filterRange}
+      categoryPath={categoryPath}
+      onDateChange={(_, timestamp) =>
+        dispatch(
+          setTimestamp({
+            key: propertyStateKey,
+            timestamp,
+          }),
+        )
+      }
+      selectedTimestamp={selectedTimestamp}
+    />
+  ));
 };
