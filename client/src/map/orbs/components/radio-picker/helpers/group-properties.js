@@ -5,13 +5,13 @@ import { groupBy } from 'lodash';
 
 /**
  * @param {Property[]} properties
- * @returns {(Property | Property[])[]}
+ * @returns {Property[][]}
  */
 export const groupProperties = properties => {
-  const group = groupBy(properties, 'property_group');
-  return Object.entries(group).reduce(
+  const groupedProperties = groupBy(properties, 'property_group');
+  return Object.entries(groupedProperties).reduce(
     (acc, [key, group]) =>
-      key === 'undefined' ? [...acc, ...group] : [...acc, group],
+      key === 'undefined' ? [...acc, ...group.map(p => [p])] : [...acc, group],
     [],
   );
 };

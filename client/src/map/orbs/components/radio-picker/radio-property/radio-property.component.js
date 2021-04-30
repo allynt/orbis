@@ -51,7 +51,7 @@ const useStyles = makeStyles(theme => ({
 /**
  * @param {{
  *   layerSourceId: import('typings/orbis').Source['source_id']
- *   data: (import('typings/orbis').Property | import('typings/orbis').Property[])
+ *   data: import('typings/orbis').Property[]
  *   onPropertyChange: (property?: import('typings/orbis').Property) => void
  *   selectedProperty: import('typings/orbis').Property
  *   onDateChange?: (event: React.ChangeEvent<{}>, date: number) => void
@@ -81,16 +81,12 @@ const RadioProperty = ({
 
   const initialProperty = findPropertyByType(FORMAT.percentage) || data[0];
 
-  const propertyMatch = Array.isArray(data)
-    ? data.some(p => {
-        return (
-          selectedProperty?.name === p.name &&
-          selectedProperty?.source_id === layerSourceId
-        );
-      })
-    : selectedProperty?.name === data.name &&
-      selectedProperty?.source_id === layerSourceId;
-
+  const propertyMatch = data.some(p => {
+    return (
+      selectedProperty?.name === p.name &&
+      selectedProperty?.source_id === layerSourceId
+    );
+  });
   const handleRadioClick = () => {
     const payload = propertyMatch ? null : initialProperty;
     return onPropertyChange(payload);

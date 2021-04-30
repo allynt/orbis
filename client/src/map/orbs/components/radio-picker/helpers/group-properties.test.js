@@ -44,7 +44,7 @@ describe('groupProperties', () => {
       },
     ];
     const result = groupProperties(properties);
-    expect(result).toEqual(properties);
+    expect(result).toEqual(properties.map(p => [p]));
   });
 
   it('returns a combination of single objects and sub-arrays, if a combination of singles/pairs are present', () => {
@@ -70,8 +70,8 @@ describe('groupProperties', () => {
     ];
     const expected = [
       [properties[0], properties[1], properties[4]],
-      properties[2],
-      properties[3],
+      [properties[2]],
+      [properties[3]],
     ];
     const result = groupProperties(properties);
     expect(result).toEqual(expected);
