@@ -52,10 +52,10 @@ const ActionForHelpMapComponent = ({ source }) => {
           !isPersonFeatureType
             ? feat => (
                 <PopupStatusAndNote
-                  key={feat.properties.pk}
-                  id={feat.properties.pk}
-                  note={feat.properties.notes}
-                  status={feat.properties.status}
+                  key={feat.pk}
+                  id={feat.pk}
+                  note={feat.notes}
+                  status={feat.status}
                   onSave={data => updateNoteOrStatus(data)}
                 />
               )
