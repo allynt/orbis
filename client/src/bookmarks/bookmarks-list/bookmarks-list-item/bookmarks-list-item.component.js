@@ -7,7 +7,6 @@ import {
   ImageIcon,
   ListItem,
   ListItemAvatar,
-  ListItemText,
   makeStyles,
   Paper,
   Typography,
@@ -31,13 +30,15 @@ const useStyles = makeStyles(theme => ({
 
 /**
  * @param {{
- *   bookmark: import('typings/orbis').Bookmark
- *   onSelect: (bookmark: import('typings/orbis').Bookmark) => void
- *   onDelete: (bookmark: import('typings/orbis').Bookmark) => void
+ *   bookmark: import('typings/bookmarks').Bookmark
+ *   onSelect: (bookmark: import('typings/bookmarks').Bookmark) => void
+ *   onDelete: (bookmark: import('typings/bookmarks').Bookmark) => void
  * }} props
  */
 export const BookmarksListItem = ({ bookmark, onSelect, onDelete }) => {
   const styles = useStyles();
+
+  const { title, description, thumbnail } = bookmark;
 
   return (
     <ListItem>
@@ -46,46 +47,39 @@ export const BookmarksListItem = ({ bookmark, onSelect, onDelete }) => {
           component={Paper}
           className={styles.avatar}
           variant="rounded"
-          src={bookmark.thumbnail}
-          alt={bookmark.title}
+          src={thumbnail}
+          alt={title}
         >
           <ImageIcon />
         </Avatar>
       </ListItemAvatar>
-      <ListItemText
-        primaryTypographyProps={{
-          variant: 'h4',
-          className: styles.title,
-          gutterBottom: true,
-        }}
-        primary={bookmark.title}
-        secondary={
-          <Grid container spacing={1}>
-            <Grid item xs={12}>
-              <Typography>{bookmark.description}</Typography>
-            </Grid>
-            <Grid item>
-              <Button
-                className={styles.button}
-                size="small"
-                onClick={() => onSelect(bookmark)}
-              >
-                Load
-              </Button>
-            </Grid>
-            <Grid item>
-              <Button
-                className={styles.button}
-                size="small"
-                color="secondary"
-                onClick={() => onDelete(bookmark)}
-              >
-                Delete
-              </Button>
-            </Grid>
-          </Grid>
-        }
-      />
+      <Grid container spacing={1}>
+        <Grid item xs={12}>
+          <Typography variant="h4">{title}</Typography>
+        </Grid>
+        <Grid item xs={12}>
+          <Typography>{description}</Typography>
+        </Grid>
+        <Grid item>
+          <Button
+            className={styles.button}
+            size="small"
+            onClick={() => onSelect(bookmark)}
+          >
+            Load
+          </Button>
+        </Grid>
+        <Grid item>
+          <Button
+            className={styles.button}
+            size="small"
+            color="secondary"
+            onClick={() => onDelete(bookmark)}
+          >
+            Delete
+          </Button>
+        </Grid>
+      </Grid>
     </ListItem>
   );
 };
