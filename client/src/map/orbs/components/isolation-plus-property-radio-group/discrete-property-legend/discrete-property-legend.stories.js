@@ -6,7 +6,7 @@ import isChromatic from 'chromatic/isChromatic';
 if (isChromatic()) faker.seed(1);
 
 export default {
-  title: 'Orbs/Isolation Plus/Radio Picker/Discrete Property Legend',
+  title: 'Orbs/Isolation Plus/Property Radio Group/Discrete Property Legend',
 };
 
 const Template = args => <DiscretePropertyLegend {...args} />;

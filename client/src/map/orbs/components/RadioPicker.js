@@ -1,3 +1,3 @@
-import { RadioPicker } from './radio-picker/radio-picker.component';
+import { IsolationPlusPropertyRadioGroup } from './isolation-plus-property-radio-group/isolation-plus-property-radio-group.component';
 
-export default RadioPicker;
+export default IsolationPlusPropertyRadioGroup;
