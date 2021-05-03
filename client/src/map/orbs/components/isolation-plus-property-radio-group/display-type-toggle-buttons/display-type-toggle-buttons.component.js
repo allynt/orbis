@@ -9,12 +9,13 @@ import clsx from 'clsx';
 import { capitalize } from 'lodash';
 import React from 'react';
 
+/** @type {(props?: {moreThanTwoProperties: boolean}) => Record<"buttonGroup" | "button" | "notActive", string>} */
 const useStyles = makeStyles(theme => ({
   buttonGroup: {
     maxWidth: '100%',
   },
   button: {
-    width: props => (props.moreThanTwo ? undefined : '50%'),
+    width: props => (props.moreThanTwoProperties ? undefined : '50%'),
     cursor: 'not-allowed',
     '&$notActive': {
       color: theme.palette.secondary.contrastText,
@@ -52,8 +53,8 @@ export const DisplayTypeToggleButtons = ({
   selectedProperty,
   onChange,
 }) => {
-  const moreThanTwo = properties.length > 2;
-  const styles = useStyles({ moreThanTwo });
+  const moreThanTwoProperties = properties.length > 2;
+  const styles = useStyles({ moreThanTwoProperties });
 
   /**
    * @param {import('typings/orbis').Property} property
@@ -65,14 +66,14 @@ export const DisplayTypeToggleButtons = ({
 
   return (
     <>
-      <Grid item xs={moreThanTwo ? 5 : 12}>
+      <Grid item xs={moreThanTwoProperties ? 5 : 12}>
         <FormLabel>Select display type:</FormLabel>
       </Grid>
-      <Grid item xs={moreThanTwo ? 7 : 12} container justify="center">
+      <Grid item xs={moreThanTwoProperties ? 7 : 12} container justify="center">
         <ButtonGroup
           className={styles.buttonGroup}
           size="small"
-          orientation={moreThanTwo ? 'vertical' : 'horizontal'}
+          orientation={moreThanTwoProperties ? 'vertical' : 'horizontal'}
         >
           {properties.map(property => (
             <Button

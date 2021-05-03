@@ -5,31 +5,17 @@ import {
   Grid,
   makeStyles,
   Radio,
-  Typography,
 } from '@astrosat/astrosat-ui';
 
 import { InfoButtonTooltip } from 'components';
 import { DisplayTypeToggleButtons } from '../display-type-toggle-buttons/display-type-toggle-buttons.component';
 import { SelectedPropertyControls } from '../selected-property-controls/selected-property-controls.component';
+import { TooltipContent } from './tooltip-content.component';
 
 const useStyles = makeStyles(theme => ({
   grid: { '& + &': { marginTop: theme.spacing(0.5) } },
-  categoryPath: { fontStyle: 'italic' },
-  description: { fontWeight: theme.typography.fontWeightBold },
   iconButton: { justifySelf: 'flex-end', alignSelf: 'center' },
 }));
-
-const TooltipContent = ({ categoryPath, description }) => {
-  const styles = useStyles();
-  return (
-    <>
-      <Typography className={styles.categoryPath} paragraph>
-        {categoryPath}
-      </Typography>
-      <Typography className={styles.description}>{description}</Typography>
-    </>
-  );
-};
 
 /**
  * @param {{

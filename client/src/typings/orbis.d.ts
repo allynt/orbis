@@ -96,6 +96,7 @@ type BaseProperty = {
   application: {
     orbis?: {
       label?: string;
+      description?: string;
       data_visualisation_components?: ComponentDefinition<any>[];
       display?: {
         colormap_reversed?: boolean;
