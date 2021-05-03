@@ -6,15 +6,16 @@ import { easeInOutCubic } from 'utils/easingFunctions';
 import {
   filterValueSelector,
   setClickedFeatures,
-  statusValueSelector,
+  selectedStatusValueSelector,
 } from '../layers.slice';
 import { filter } from 'lodash';
 
-export const filterFeatures = (oldData, startDate, endDate, currentStatus) => {
-  // changed this to && from ||
-  if (!oldData && !startDate && !endDate) return oldData;
-  console.log('hit!');
-
+export const filterFeatures = (
+  oldData,
+  startDate,
+  endDate,
+  currentStatus = 'ALL',
+) => {
   const filteredByStatus =
     currentStatus === 'ALL'
       ? undefined
@@ -25,7 +26,8 @@ export const filterFeatures = (oldData, startDate, endDate, currentStatus) => {
           ),
         };
 
-  const data = filteredByStatus || oldData;
+  const data = filteredByStatus ? filteredByStatus : oldData;
+  if (!data || (!startDate && !endDate)) return data;
   return {
     ...data,
     features: filter(data?.features, feature => {
@@ -53,7 +55,7 @@ const configuration = ({
   orbState,
 }) => {
   const filterRange = filterValueSelector(id)(orbState);
-  const currentStatus = statusValueSelector(id)(orbState);
+  const currentStatus = selectedStatusValueSelector(id)(orbState);
 
   /** @param {import('typings/orbis').PickedMapFeature} info */
   const handleLayerClick = info => {

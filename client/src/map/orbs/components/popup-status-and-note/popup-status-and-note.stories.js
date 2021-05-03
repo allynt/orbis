@@ -4,7 +4,7 @@ import PopupStatusAndNote from './popup-status-and-note.component';
 import { defaultNote, longBodyNote } from './popup-status-and-note.test';
 
 export default {
-  title: 'Components/Feature Detail/Popup Note',
+  title: 'Components/Feature Detail/Popup Note and Status',
   argTypes: { onSave: { action: 'Save note and/or Status' } },
 };
 
@@ -28,4 +28,11 @@ TooMuchText.args = {
   id: 456,
   status: 'NEW',
   note: longBodyNote,
+};
+
+export const NoData = Template.bind({});
+NoData.args = {
+  id: 789,
+  status: null,
+  notes: null,
 };

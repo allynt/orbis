@@ -40,6 +40,26 @@ describe('actionForHelpConfig', () => {
       { properties: { 'Submission Date': '13 July 2258' } },
     ],
   };
+  const TEST_DATA_WITH_STATUS = {
+    features: [
+      {
+        properties: {
+          'Submission Date': '1 January 2020',
+          status: 'NEW',
+        },
+      },
+      {
+        properties: {
+          'Submission Date': '23 October 2077',
+          status: 'PENDING',
+        },
+      },
+      {
+        properties: { 'Submission Date': '13 July 2258' },
+        status: 'COMPLETE',
+      },
+    ],
+  };
   describe('filterFeatures', () => {
     it("returns all data if it's undefined", () => {
       const result = filterFeatures(undefined);
@@ -94,9 +114,75 @@ describe('actionForHelpConfig', () => {
       });
     });
 
-    it('filters by provided status', () => {});
+    it('returns all features if status is `ALL` and no dates are provided', () => {
+      const data = {
+        features: [
+          { properties: { status: 'NEW' } },
+          { properties: { status: 'PENDING' } },
+          { properties: { status: 'FOLLOWUP' } },
+        ],
+      };
 
-    it('returns all features if status is `ALL`', () => {});
+      const result = filterFeatures(data);
+
+      expect(result).toEqual(data);
+    });
+
+    it('filters by provided status even if no start/end dates provided', () => {
+      const data = {
+        features: [
+          { properties: { status: 'NEW' } },
+          { properties: { status: 'PENDING' } },
+          { properties: { status: 'FOLLOWUP' } },
+        ],
+      };
+
+      const result = filterFeatures(data, undefined, undefined, 'PENDING');
+
+      expect(result).toEqual({
+        features: [{ properties: { status: 'PENDING' } }],
+      });
+    });
+
+    it('filters by status if only start date is present', () => {
+      const result = filterFeatures(
+        TEST_DATA_WITH_STATUS,
+        new Date(2077, 9, 23),
+        undefined,
+        'PENDING',
+      );
+
+      expect(result).toEqual({
+        features: [
+          {
+            properties: {
+              'Submission Date': '23 October 2077',
+              status: 'PENDING',
+            },
+          },
+        ],
+      });
+    });
+
+    it('filters by status if only end date is present', () => {
+      const result = filterFeatures(
+        TEST_DATA_WITH_STATUS,
+        new Date(2077, 9, 23),
+        undefined,
+        'PENDING',
+      );
+
+      expect(result).toEqual({
+        features: [
+          {
+            properties: {
+              'Submission Date': '23 October 2077',
+              status: 'PENDING',
+            },
+          },
+        ],
+      });
+    });
   });
 
   describe('visible', () => {

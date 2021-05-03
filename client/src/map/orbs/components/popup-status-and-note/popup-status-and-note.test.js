@@ -62,7 +62,7 @@ describe('Popup Status And Note', () => {
   });
 
   it('Defaults to `New` if no status is present', () => {
-    const { getByRole } = renderComponent({});
+    const { getByRole } = renderComponent({ id: 123, status: null });
 
     expect(getByRole('radio', { name: 'New' })).toHaveAttribute('checked');
   });
@@ -101,6 +101,16 @@ describe('Popup Status And Note', () => {
 
   it('disables save button if no changes have been made', () => {
     const { getByRole } = renderComponent({});
+    expect(getByRole('button', { name: 'Save' })).toHaveAttribute('disabled');
+  });
+
+  it('disables save button if no data and no changes have been made', () => {
+    const { getByRole } = renderComponent({
+      id: 123,
+      notes: null,
+      status: null,
+    });
+
     expect(getByRole('button', { name: 'Save' })).toHaveAttribute('disabled');
   });
 

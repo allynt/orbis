@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import {
   filterValueSelector,
   setFilterValue,
-  statusValueSelector,
+  selectedStatusValueSelector,
   setSelectedStatus,
 } from '../layers.slice';
 import { StatusFilter } from './status-filter/status-filter.component';
@@ -26,7 +26,7 @@ export default ({ selectedLayer, minDate, maxDate }) => {
   );
 
   const currentStatus = useSelector(state =>
-    statusValueSelector(selectedLayer.source_id)(state?.orbs),
+    selectedStatusValueSelector(selectedLayer.source_id)(state?.orbs),
   );
 
   const handleSubmit = range => {
@@ -42,7 +42,7 @@ export default ({ selectedLayer, minDate, maxDate }) => {
     dispatch(
       setSelectedStatus({
         key: selectedLayer.source_id,
-        status: status.toUpperCase(),
+        selectedStatus: status.toUpperCase(),
       }),
     );
   };
