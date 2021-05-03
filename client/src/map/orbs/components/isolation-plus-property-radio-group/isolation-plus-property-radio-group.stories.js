@@ -4,7 +4,7 @@ import { Provider } from 'react-redux';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 
-import { RadioPicker } from './radio-picker.component';
+import { IsolationPlusPropertyRadioGroup } from './isolation-plus-property-radio-group.component';
 
 const mockStore = configureMockStore([thunk]);
 
@@ -857,12 +857,12 @@ const state = {
 };
 
 export default {
-  title: 'Orbs/Isolation Plus/Radio Picker',
+  title: 'Orbs/Isolation Plus/Property Radio Group',
 };
 
 const Template = args => (
   <Provider store={mockStore(state)}>
-    <RadioPicker {...args} />
+    <IsolationPlusPropertyRadioGroup {...args} />
   </Provider>
 );
 
