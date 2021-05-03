@@ -67,7 +67,7 @@ const CustomerRegistration = ({
   const { errors, formState, handleSubmit, register, control } = useForm({
     defaultValues: {
       email,
-      customerType: undefined,
+      customerType: '',
       licence: 'ORBIS Core',
       numberOfLicences: 10,
       subscriptionPeriod: format(TRIAL_PERIOD_END_DATE, DATE_FORMAT),
