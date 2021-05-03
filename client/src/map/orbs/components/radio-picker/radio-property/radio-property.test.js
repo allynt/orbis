@@ -173,7 +173,7 @@ describe('RadioProperty', () => {
       timeseries_latest_timestamp: new Date(2020, 0, 1).toISOString(),
       timeseries_timestamps: [new Date(2020, 0, 1).toISOString()],
     });
-    expect(getByText(/date/i)).toBeInTheDocument();
+    expect(getByText(/timeseries/i)).toBeInTheDocument();
   });
 
   it('shows labels for the start, middle, and end dates', () => {
