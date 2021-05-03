@@ -33,6 +33,7 @@ export const useChartTheme = () => {
 
   const baseLabelStyles = {
     ...astrosatUiTheme.typography.body1,
+    fontSize: 14,
     fill: astrosatUiTheme.palette.text.primary,
     stroke: 'transparent',
   };
