@@ -9,10 +9,17 @@ import {
 } from '../layers.slice';
 import { StatusFilter } from './status-filter/status-filter.component';
 import { DateRangeFilter } from './date-range-filter/date-range-filter.component';
-import { Grid } from '@astrosat/astrosat-ui';
+import { Grid, makeStyles } from '@astrosat/astrosat-ui';
+
+const useStyles = makeStyles(theme => ({
+  container: {
+    gap: theme.spacing(2),
+  },
+}));
 
 export default ({ selectedLayer, minDate, maxDate }) => {
   const dispatch = useDispatch();
+  const styles = useStyles();
 
   const filterValue = useSelector(state =>
     filterValueSelector(selectedLayer.source_id)(state?.orbs),
@@ -41,7 +48,7 @@ export default ({ selectedLayer, minDate, maxDate }) => {
   };
 
   return (
-    <Grid container direction="column" style={{ gap: '1rem' }}>
+    <Grid container direction="column" className={styles.container}>
       <DateRangeFilter
         onSubmit={handleSubmit}
         minDate={minDate}

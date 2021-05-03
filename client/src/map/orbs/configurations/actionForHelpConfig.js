@@ -11,7 +11,9 @@ import {
 import { filter } from 'lodash';
 
 export const filterFeatures = (oldData, startDate, endDate, currentStatus) => {
-  if (!oldData || (!startDate && !endDate)) return oldData;
+  // changed this to && from ||
+  if (!oldData && !startDate && !endDate) return oldData;
+  console.log('hit!');
 
   const filteredByStatus =
     currentStatus === 'ALL'

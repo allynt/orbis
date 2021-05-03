@@ -93,6 +93,10 @@ describe('actionForHelpConfig', () => {
         features: [{ properties: { 'Submission Date': '23 October 2077' } }],
       });
     });
+
+    it('filters by provided status', () => {});
+
+    it('returns all features if status is `ALL`', () => {});
   });
 
   describe('visible', () => {
