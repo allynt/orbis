@@ -17,6 +17,7 @@ import {
 import clsx from 'clsx';
 import { find, get } from 'lodash';
 import { useDispatch, useSelector } from 'react-redux';
+import { v4 } from 'uuid';
 
 import { SidePanel } from 'components';
 import { activeDataSourcesSelector } from 'data-layers/data-layers.slice';
@@ -213,7 +214,7 @@ export const AnalysisPanel = () => {
         {dataVisualisationComponents?.map(componentDefinition => {
           const Component = COMPONENT_MAP[componentDefinition.name];
           return (
-            <>
+            <React.Fragment key={`${componentDefinition.name}-${v4()}`}>
               <Component
                 selectedProperty={selectedProperty}
                 selectedTimestamp={selectedTimestamp}
@@ -222,7 +223,7 @@ export const AnalysisPanel = () => {
                 {...componentDefinition.props}
               />
               <PrimaryDivider />
-            </>
+            </React.Fragment>
           );
         })}
         <MoreInformation
