@@ -17,7 +17,6 @@ import {
 import clsx from 'clsx';
 import { find, get } from 'lodash';
 import { useDispatch, useSelector } from 'react-redux';
-import { v4 } from 'uuid';
 
 import { SidePanel } from 'components';
 import { activeDataSourcesSelector } from 'data-layers/data-layers.slice';
@@ -211,21 +210,25 @@ export const AnalysisPanel = () => {
           fallbackProperty={currentSource?.metadata?.index}
         />
         <PrimaryDivider />
-        {dataVisualisationComponents?.map(componentDefinition => {
-          const Component = COMPONENT_MAP[componentDefinition.name];
-          return (
-            <React.Fragment key={`${componentDefinition.name}-${v4()}`}>
-              <Component
-                selectedProperty={selectedProperty}
-                selectedTimestamp={selectedTimestamp}
-                clickedFeatures={clickedFeatures}
-                dispatch={dispatch}
-                {...componentDefinition.props}
-              />
-              <PrimaryDivider />
-            </React.Fragment>
-          );
-        })}
+        {dataVisualisationComponents
+          ?.map((componentDefinition, i) => ({ id: i, ...componentDefinition }))
+          .map(componentDefinition => {
+            const Component = COMPONENT_MAP[componentDefinition.name];
+            return (
+              <React.Fragment
+                key={`${componentDefinition.name}-${componentDefinition.id}`}
+              >
+                <Component
+                  selectedProperty={selectedProperty}
+                  selectedTimestamp={selectedTimestamp}
+                  clickedFeatures={clickedFeatures}
+                  dispatch={dispatch}
+                  {...componentDefinition.props}
+                />
+                <PrimaryDivider />
+              </React.Fragment>
+            );
+          })}
         <MoreInformation
           currentSource={currentSource}
           selectedProperty={selectedProperty}
