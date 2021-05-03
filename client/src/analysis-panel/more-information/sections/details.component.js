@@ -1,7 +1,5 @@
 import React from 'react';
 import { styled, Typography } from '@astrosat/astrosat-ui';
-import { isArray } from 'lodash';
-import { v4 as uuid } from 'uuid';
 
 const StyledTypography = styled(Typography)({ gridColumn: '1 / -1' });
 
@@ -11,7 +9,7 @@ const StyledTypography = styled(Typography)({ gridColumn: '1 / -1' });
  * }} props
  */
 export const Details = ({ details }) => {
-  if (isArray(details)) {
+  if (Array.isArray(details)) {
     return (
       <>
         {details.map((line, i) => (
