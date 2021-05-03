@@ -15,7 +15,7 @@ const renderComponent = ({ features, property = {} }) => {
   const utils = render(
     <AnalysisPanelProvider
       clickedFeatures={clickedFeatures}
-      selectedProperty={property}
+      selectedProperty={{ name: 'fruit', ...property }}
       currentSource={{
         source_id,
         metadata: {
