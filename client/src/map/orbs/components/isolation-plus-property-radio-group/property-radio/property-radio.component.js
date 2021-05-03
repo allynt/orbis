@@ -13,6 +13,7 @@ import { DisplayTypeToggleButtons } from '../display-type-toggle-buttons/display
 import { SelectedPropertyControls } from '../selected-property-controls/selected-property-controls.component';
 
 const useStyles = makeStyles(theme => ({
+  grid: { '& + &': { marginTop: theme.spacing(0.5) } },
   categoryPath: { fontStyle: 'italic' },
   description: { fontWeight: theme.typography.fontWeightBold },
   iconButton: { justifySelf: 'flex-end', alignSelf: 'center' },

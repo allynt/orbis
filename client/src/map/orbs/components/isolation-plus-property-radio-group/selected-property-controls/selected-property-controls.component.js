@@ -1,7 +1,6 @@
 import { Grid, styled, Typography } from '@astrosat/astrosat-ui';
 import { ColorMapRangeSlider } from 'components';
 import { format } from 'date-fns';
-import { styles } from 'map-style/styles';
 import React from 'react';
 import { isRealValue } from 'utils/isRealValue';
 import { DateStepper } from '../../date-stepper/date-stepper.component';
