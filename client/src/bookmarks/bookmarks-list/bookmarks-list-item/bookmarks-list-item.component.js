@@ -8,7 +8,6 @@ import {
   ListItem,
   ListItemAvatar,
   makeStyles,
-  Paper,
   Typography,
 } from '@astrosat/astrosat-ui';
 
@@ -17,6 +16,7 @@ const useStyles = makeStyles(theme => ({
     width: 58,
     height: 58,
     marginRight: theme.spacing(2),
+    boxShadow: theme.shadows['2'],
   },
   title: {
     whiteSpace: 'nowrap',
@@ -44,7 +44,6 @@ export const BookmarksListItem = ({ bookmark, onSelect, onDelete }) => {
     <ListItem>
       <ListItemAvatar>
         <Avatar
-          component={Paper}
           className={styles.avatar}
           variant="rounded"
           src={thumbnail}
