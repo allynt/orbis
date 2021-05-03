@@ -62,32 +62,41 @@ export const IsolationPlusPropertyRadioGroup = ({
     );
   };
 
+  /**
+   * @param {[number, number]} filterValue
+   */
+  const handleSliderChange = filterValue =>
+    dispatch(
+      setFilterValue({
+        key: propertyStateKey,
+        filterValue,
+      }),
+    );
+
+  /**
+   * @param {React.ChangeEvent<{}>} _
+   * @param {number} timestamp
+   */
+  const handleDateChange = (_, timestamp) =>
+    dispatch(
+      setTimestamp({
+        key: propertyStateKey,
+        timestamp,
+      }),
+    );
+
   if (!selectedLayer?.metadata?.properties) return null;
-  return groupProperties(selectedLayer.metadata.properties).map((data, i) => (
+  return groupProperties(selectedLayer.metadata.properties).map(properties => (
     <PropertyRadio
-      key={i}
+      key={`${selectedLayer.source_id}-property-${properties[0].name}`}
       layerSourceId={selectedLayer?.source_id}
-      properties={data}
+      properties={properties}
       onPropertyChange={handlePropertyChange}
-      onSliderChange={filterValue =>
-        dispatch(
-          setFilterValue({
-            key: propertyStateKey,
-            filterValue,
-          }),
-        )
-      }
+      onSliderChange={handleSliderChange}
       selectedProperty={selectedProperty}
       filterRange={filterRange}
       categoryPath={categoryPath}
-      onDateChange={(_, timestamp) =>
-        dispatch(
-          setTimestamp({
-            key: propertyStateKey,
-            timestamp,
-          }),
-        )
-      }
+      onDateChange={handleDateChange}
       selectedTimestamp={selectedTimestamp}
     />
   ));
