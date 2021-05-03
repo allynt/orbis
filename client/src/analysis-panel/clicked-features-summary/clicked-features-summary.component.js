@@ -18,6 +18,7 @@ import {
 } from 'map/orbs/layers.slice';
 import React, { useState } from 'react';
 import { useAnalysisPanelContext } from '../analysis-panel-context';
+import { v4 as uuid } from 'uuid';
 
 const MAX_CHARS = 15;
 
@@ -120,7 +121,7 @@ export const ClickedFeaturesSummary = ({
           <Collapse in={open} collapsedHeight="1.6rem">
             <Grid container spacing={1}>
               {clickedFeatures?.map(feature => (
-                <Fade in key={feature.index}>
+                <Fade in key={feature.index ?? uuid()}>
                   <TooltipChip
                     feature={feature}
                     fallbackProperty={fallbackProperty}
