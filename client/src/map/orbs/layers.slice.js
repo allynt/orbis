@@ -242,7 +242,7 @@ export const visibilitySelector = id =>
 export const filterValueSelector = id =>
   createSelector(baseSelector, state => state?.[id]?.filterValue);
 
-export const selectedStatusValueSelector = id =>
+export const filterStatusValueSelector = id =>
   createSelector(baseSelector, state => state?.[id]?.selectedStatus);
 
 /** @param {string} id */

@@ -6,7 +6,7 @@ import { easeInOutCubic } from 'utils/easingFunctions';
 import {
   filterValueSelector,
   setClickedFeatures,
-  selectedStatusValueSelector,
+  filterStatusValueSelector,
 } from '../layers.slice';
 import { filter } from 'lodash';
 
@@ -14,19 +14,19 @@ export const filterFeatures = (
   oldData,
   startDate,
   endDate,
-  currentStatus = 'ALL',
+  filterStatus = 'ALL',
 ) => {
   const filteredByStatus =
-    currentStatus === 'ALL'
+    filterStatus === 'ALL'
       ? undefined
       : {
           ...oldData,
           features: oldData?.features?.filter(
-            f => f?.properties?.status === currentStatus,
+            f => f?.properties?.status === filterStatus,
           ),
         };
 
-  const data = filteredByStatus ? filteredByStatus : oldData;
+  const data = filteredByStatus || oldData;
   if (!data || (!startDate && !endDate)) return data;
   return {
     ...data,
@@ -55,7 +55,7 @@ const configuration = ({
   orbState,
 }) => {
   const filterRange = filterValueSelector(id)(orbState);
-  const currentStatus = selectedStatusValueSelector(id)(orbState);
+  const filterStatus = filterStatusValueSelector(id)(orbState);
 
   /** @param {import('typings/orbis').PickedMapFeature} info */
   const handleLayerClick = info => {
@@ -83,18 +83,16 @@ const configuration = ({
   /** @param {ActionForHelpFeature} feature */
   const getIconSize = feature => (feature.properties.Type ? 15 : 60);
 
-  const test = filterFeatures(
-    data,
-    filterRange?.startDate && new Date(filterRange.startDate),
-    filterRange?.endDate && new Date(filterRange.endDate),
-    currentStatus,
-  );
-
   return {
     id,
     iconMapping,
     iconAtlas,
-    data: test,
+    data: filterFeatures(
+      data,
+      filterRange?.startDate && new Date(filterRange.startDate),
+      filterRange?.endDate && new Date(filterRange.endDate),
+      filterStatus,
+    ),
     visible: !!activeSources?.find(source => source.source_id === id),
     onClick: handleLayerClick,
     getIcon,

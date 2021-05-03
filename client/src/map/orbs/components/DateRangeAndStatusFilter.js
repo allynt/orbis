@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import {
   filterValueSelector,
   setFilterValue,
-  selectedStatusValueSelector,
+  filterStatusValueSelector,
   setSelectedStatus,
 } from '../layers.slice';
 import { StatusFilter } from './status-filter/status-filter.component';
@@ -25,11 +25,11 @@ export default ({ selectedLayer, minDate, maxDate }) => {
     filterValueSelector(selectedLayer.source_id)(state?.orbs),
   );
 
-  const currentStatus = useSelector(state =>
-    selectedStatusValueSelector(selectedLayer.source_id)(state?.orbs),
+  const filterStatus = useSelector(state =>
+    filterStatusValueSelector(selectedLayer.source_id)(state?.orbs),
   );
 
-  const handleSubmit = range => {
+  const handleFilterSubmit = range => {
     dispatch(
       setFilterValue({
         key: selectedLayer.source_id,
@@ -38,7 +38,7 @@ export default ({ selectedLayer, minDate, maxDate }) => {
     );
   };
 
-  const handleStatusSelect = status => {
+  const handleStatusSubmit = status => {
     dispatch(
       setSelectedStatus({
         key: selectedLayer.source_id,
@@ -50,12 +50,12 @@ export default ({ selectedLayer, minDate, maxDate }) => {
   return (
     <Grid container direction="column" className={styles.container}>
       <DateRangeFilter
-        onSubmit={handleSubmit}
+        onSubmit={handleFilterSubmit}
         minDate={minDate}
         maxDate={maxDate}
         range={filterValue}
       />
-      <StatusFilter status={currentStatus} onSubmit={handleStatusSelect} />
+      <StatusFilter status={filterStatus} onSubmit={handleStatusSubmit} />
     </Grid>
   );
 };

@@ -57,7 +57,7 @@ const useStyles = makeStyles(theme => ({
 
 /** @param { { id: number, note: string, onSave: (data: object) => void, status: string } } props */
 const PopupStatusAndNote = ({ id, note, onSave, status }) => {
-  const [text, setText] = useState(note || '');
+  const [text, setText] = useState(note);
   const [selectedStatus, setSelectedStatus] = useState(status);
   const [editMode, setEditMode] = useState(false);
   const [charCount, setCharCount] = useState(note?.length);
@@ -134,7 +134,7 @@ const PopupStatusAndNote = ({ id, note, onSave, status }) => {
             multiline
             rows={4}
             onChange={handleNoteChange}
-            value={text}
+            value={text || ''}
             placeholder="Type here..."
             inputProps={{
               'aria-label': 'Popup Note',
