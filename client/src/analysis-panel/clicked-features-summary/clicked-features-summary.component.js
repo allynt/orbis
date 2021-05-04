@@ -17,6 +17,7 @@ import {
 } from 'map/orbs/layers.slice';
 import { useAnalysisPanelContext } from '../analysis-panel-context';
 import { TooltipChip } from './tooltip-chip.component';
+import { LightText } from './light-text.component';
 
 /**
  * @type {(props?: {isOnlyFeature?: boolean}) => Record<"chips" | "button" | "buttonGroup" | "value", string>}
@@ -109,15 +110,14 @@ export const ClickedFeaturesSummary = ({
             <Typography>
               Total population (
               {clickedFeatures?.[0].object.properties.population_year}
-              ): <span className={styles.value}>{populationTotal}</span>
+              ): <LightText>{populationTotal}</LightText>
             </Typography>
           </Grid>
         )}
         {!clickedFeatures?.some(f => !f.object.properties.households) && (
           <Grid item xs={12}>
             <Typography>
-              Total households:{' '}
-              <span className={styles.value}>{householdTotal}</span>
+              Total households: <LightText>{householdTotal}</LightText>
             </Typography>
           </Grid>
         )}
