@@ -27,12 +27,13 @@ const baseProps = {
 const strokeLinecap = 'round';
 const strokeLinejoin = 'round';
 
-/** @returns {import('victory').VictoryThemeDefinition & {colors: string[]}} */
+/** @returns {import('victory').VictoryThemeDefinition & {colors: string[], fontSize: number}} */
 export const useChartTheme = () => {
   const astrosatUiTheme = useTheme();
 
   const baseLabelStyles = {
     ...astrosatUiTheme.typography.body1,
+    fontSize: 14,
     fill: astrosatUiTheme.palette.text.primary,
     stroke: 'transparent',
   };
@@ -41,6 +42,7 @@ export const useChartTheme = () => {
 
   return {
     colors,
+    fontSize: 14,
     axis: {
       style: {
         axis: {

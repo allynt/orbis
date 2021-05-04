@@ -143,6 +143,7 @@ describe('AnalysisPanelContext', () => {
           },
         },
         selectedProperty = {
+          name: '% of people aged 0-17',
           source_id,
           aggregation: 'sum',
           precision: 1,

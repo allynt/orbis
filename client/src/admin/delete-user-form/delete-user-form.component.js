@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Button, Link, Typography } from '@astrosat/astrosat-ui';
+import { Button, Grid, Link, Typography } from '@astrosat/astrosat-ui';
 
 import { Form } from 'components';
 
@@ -11,7 +11,7 @@ export const DeleteUserForm = ({ user, deleteUser, close }) => {
   };
 
   return (
-    <Form>
+    <Grid container spacing={2}>
       <Form.Row>
         <Typography>
           Do you really want to deactivate the <b>{user.user.name}</b> license
@@ -26,6 +26,6 @@ export const DeleteUserForm = ({ user, deleteUser, close }) => {
           Cancel
         </Link>
       </Form.Row>
-    </Form>
+    </Grid>
   );
 };

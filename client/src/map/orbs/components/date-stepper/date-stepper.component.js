@@ -15,6 +15,7 @@ import React, { useEffect, useState } from 'react';
 
 const useStyles = makeStyles(theme => ({
   grid: {
+    marginRight: '1ch',
     marginBottom: theme.spacing(4),
   },
   slider: {

@@ -78,7 +78,7 @@ const CrowdlessMapComponent = ({ feature }) => {
           <Avatar
             className={styles.icon}
             variant="rounded"
-            src={crowdednessCategory === category && icon}
+            src={crowdednessCategory === category ? icon : ''}
           >
             <div className={clsx(styles.blank, styles[className])} />
           </Avatar>

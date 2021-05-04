@@ -98,7 +98,7 @@ describe('Dialog', () => {
       'Address Line 1': null,
       Items: [],
     };
-    const { findByTestId } = render(
+    const { queryByTestId } = render(
       <MySupplyLynkDialog
         onCloseClick={onCloseClick}
         isVisible={isVisible}
@@ -106,9 +106,9 @@ describe('Dialog', () => {
       />,
     );
 
-    expect(Object.keys(findByTestId('contact-name')).length).toEqual(0);
-    expect(Object.keys(findByTestId('contact-email')).length).toEqual(0);
-    expect(Object.keys(findByTestId('address-line-1')).length).toEqual(0);
+    expect(queryByTestId('contact-name')).not.toBeInTheDocument();
+    expect(queryByTestId('contact-email')).not.toBeInTheDocument();
+    expect(queryByTestId('address-line-1')).not.toBeInTheDocument();
   });
 
   it('closes dialog when `close` button clicked', () => {

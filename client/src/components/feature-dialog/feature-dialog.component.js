@@ -87,13 +87,13 @@ export const FeatureDialog = ({
       <DialogTitle>{title}</DialogTitle>
       <DialogContent className={styles.content}>
         {Object.entries(renderableProperties).map(([key, value]) => (
-          <>
+          <React.Fragment key={`${key}-${value}`}>
             <Typography className={styles.key}>{key}</Typography>
             <Typography className={styles.item}>
               {isRealValue(value) ? value.toString() : '-'}
             </Typography>
             <Divider className={styles.divider} />
-          </>
+          </React.Fragment>
         ))}
       </DialogContent>
     </Dialog>

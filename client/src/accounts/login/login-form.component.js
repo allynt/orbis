@@ -136,9 +136,13 @@ const LoginForm = ({
         )}
 
         <Box ml="auto">
-          <RouterLink to={PASSWORD_RESET_REQUEST} component={Link}>
+          <Link
+            // @ts-ignore
+            to={PASSWORD_RESET_REQUEST}
+            component={RouterLink}
+          >
             Forgot password?
-          </RouterLink>
+          </Link>
         </Box>
       </Form.Row>
 
@@ -159,9 +163,13 @@ const LoginForm = ({
         {!isRegisteringCustomer && (
           <Typography>
             Don't have an account?&nbsp;
-            <RouterLink to={REGISTER} component={Link}>
+            <Link
+              // @ts-ignore
+              component={RouterLink}
+              to={REGISTER}
+            >
               Sign Up
-            </RouterLink>
+            </Link>
           </Typography>
         )}
       </Form.Row>

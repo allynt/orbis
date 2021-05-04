@@ -120,7 +120,7 @@ export const ClickedFeaturesSummary = ({
           <Collapse in={open} collapsedHeight="1.6rem">
             <Grid container spacing={1}>
               {clickedFeatures?.map(feature => (
-                <Fade in key={feature.index}>
+                <Fade in key={feature.object.properties[fallbackProperty]}>
                   <TooltipChip
                     feature={feature}
                     fallbackProperty={fallbackProperty}

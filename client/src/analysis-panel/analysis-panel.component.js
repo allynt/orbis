@@ -207,21 +207,25 @@ export const AnalysisPanel = () => {
           fallbackProperty={currentSource?.metadata?.index}
         />
         <PrimaryDivider />
-        {dataVisualisationComponents?.map(componentDefinition => {
-          const Component = COMPONENT_MAP[componentDefinition.name];
-          return (
-            <>
-              <Component
-                selectedProperty={selectedProperty}
-                selectedTimestamp={selectedTimestamp}
-                clickedFeatures={clickedFeatures}
-                dispatch={dispatch}
-                {...componentDefinition.props}
-              />
-              <PrimaryDivider />
-            </>
-          );
-        })}
+        {dataVisualisationComponents
+          ?.map((componentDefinition, i) => ({ id: i, ...componentDefinition }))
+          .map(componentDefinition => {
+            const Component = COMPONENT_MAP[componentDefinition.name];
+            return (
+              <React.Fragment
+                key={`${componentDefinition.name}-${componentDefinition.id}`}
+              >
+                <Component
+                  selectedProperty={selectedProperty}
+                  selectedTimestamp={selectedTimestamp}
+                  clickedFeatures={clickedFeatures}
+                  dispatch={dispatch}
+                  {...componentDefinition.props}
+                />
+                <PrimaryDivider />
+              </React.Fragment>
+            );
+          })}
         <MoreInformation
           currentSource={currentSource}
           selectedProperty={selectedProperty}

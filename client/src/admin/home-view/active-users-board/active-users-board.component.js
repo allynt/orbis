@@ -121,7 +121,7 @@ const UserRow = ({
           id="role-menu"
           anchorEl={roleAnchorEl}
           anchorOrigin={{
-            vertical: 'bottom',
+            vertical: 'top',
             horizontal: 'center',
           }}
           open={!!roleAnchorEl}

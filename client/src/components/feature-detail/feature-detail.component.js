@@ -203,7 +203,7 @@ const FeatureDetail = ({
       <div className={styles.content}>
         {features &&
           features?.map(feature => (
-            <List key={feature?.properties?.pk} className={styles.list}>
+            <List key={feature?.id} className={styles.list}>
               {mapObject(
                 pickBy(feature, (_, key) => !propertiesBlacklist.includes(key)),
               )}

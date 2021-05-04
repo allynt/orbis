@@ -1,4 +1,4 @@
-import { render } from '@testing-library/react';
+import { render, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { addDays, startOfDay } from 'date-fns';
 import React from 'react';
@@ -27,10 +27,12 @@ const renderComponent = value => {
 };
 
 describe('<DateStepper />', () => {
-  it('Changes the button icon to pause when play is clicked', () => {
+  it('Changes the button icon to pause when play is clicked', async () => {
     const { getByRole } = renderComponent();
     userEvent.click(getByRole('button', { name: 'play' }));
-    expect(getByRole('button', { name: 'pause' })).toBeInTheDocument();
+    await waitFor(() =>
+      expect(getByRole('button', { name: 'pause' })).toBeInTheDocument(),
+    );
   });
 
   it('Calls on change with the next value while playing', () => {

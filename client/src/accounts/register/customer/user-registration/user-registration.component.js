@@ -183,9 +183,13 @@ const UserRegistration = ({
       </Form.Row>
       <Form.Row component={Typography} align="center">
         Do you have an account?&nbsp;
-        <RouterLink to={LOGIN} component={Link}>
+        <Link
+          // @ts-ignore
+          to={LOGIN}
+          component={RouterLink}
+        >
           Login
-        </RouterLink>
+        </Link>
       </Form.Row>
     </Form>
   );
