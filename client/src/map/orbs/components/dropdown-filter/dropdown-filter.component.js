@@ -13,16 +13,15 @@ export const DropdownFilter = ({
   options,
   label,
   defaultValue = '',
-  onSubmit,
+  onChange,
 }) => {
   const styles = useStyles();
   return (
     <div className={styles.container}>
       <Select
-        name={label}
+        label={label}
         value={value || defaultValue}
-        inputProps={{ 'aria-label': label }}
-        onChange={e => onSubmit(e.target.value)}
+        onChange={e => onChange(e.target.value)}
       >
         {options?.map(({ value, label }) => (
           <MenuItem key={value} value={value}>

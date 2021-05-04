@@ -7,9 +7,9 @@ import { filterValueSelector, setClickedFeatures } from '../layers.slice';
 import { filter } from 'lodash';
 
 export const filterFeatures = (oldData, startDate, endDate, status = 'ALL') => {
-  const filteredByStatus =
+  const data =
     status === 'ALL'
-      ? undefined
+      ? oldData
       : {
           ...oldData,
           features: oldData?.features?.filter(
@@ -17,7 +17,6 @@ export const filterFeatures = (oldData, startDate, endDate, status = 'ALL') => {
           ),
         };
 
-  const data = filteredByStatus || oldData;
   if (!data || (!startDate && !endDate)) return data;
   return {
     ...data,

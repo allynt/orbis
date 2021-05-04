@@ -243,16 +243,3 @@ export const PostFeatureComponent = () => {
     />
   );
 };
-
-export const PropertiesBlacklist = () => (
-  <FeatureDetail
-    features={[
-      {
-        notAllowed: 'you cannot see me',
-        allowed: 'you can see me',
-        alsoAllowed: 'you can see me too',
-      },
-    ]}
-    propertiesBlacklist={['notAllowed']}
-  />
-);

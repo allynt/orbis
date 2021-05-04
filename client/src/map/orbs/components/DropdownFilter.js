@@ -11,14 +11,13 @@ export default ({ selectedLayer, options, defaultValue, label }) => {
     filterValueSelector(selectedLayer.source_id)(state?.orbs),
   );
 
-  const handleSubmit = status => {
+  const handleChange = status =>
     dispatch(
       setFilterValue({
         key: selectedLayer.source_id,
         filterValue: { ...filterValue, status: status.toUpperCase() },
       }),
     );
-  };
 
   return (
     <DropdownFilter
@@ -26,7 +25,7 @@ export default ({ selectedLayer, options, defaultValue, label }) => {
       options={options}
       defaultValue={defaultValue}
       label={label}
-      onSubmit={handleSubmit}
+      onChange={handleChange}
     />
   );
 };

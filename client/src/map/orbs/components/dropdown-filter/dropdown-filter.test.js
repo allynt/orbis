@@ -13,59 +13,55 @@ export const options = [
   { value: 'FOLLOWUP', label: 'Followup' },
 ];
 
-const renderComponent = ({ value, onSubmit = jest.fn() }) => {
+const label = 'Test Label';
+
+const renderComponent = ({ value, onChange = jest.fn() }) => {
   const utils = render(
     <DropdownFilter
       value={value}
       options={options}
       defaultValue="ALL"
-      label="Test Label"
-      onSubmit={onSubmit}
+      label={label}
+      onChange={onChange}
     />,
   );
 
-  return { ...utils, onSubmit };
+  return { ...utils, onChange };
 };
 
 describe('Dropdown Filter', () => {
   it('renders a dropdown filter', () => {
-    const { getByRole, getByText } = renderComponent({});
+    const { getByRole } = renderComponent({});
 
-    const button = getByRole('button', { name: 'Test Label' });
+    expect(getByRole('button', { name: 'All' })).toBeInTheDocument();
 
-    expect(button).toBeInTheDocument();
-
-    userEvent.click(button);
+    userEvent.click(getByRole('button', { name: 'All' }));
 
     options
       .filter(o => o.label !== 'All')
       .forEach(({ label }) => {
-        expect(getByText(label)).toBeInTheDocument();
+        expect(getByRole('option', { name: label })).toBeInTheDocument();
       });
   });
 
   it('defaults filter value to `All` if value if not present', () => {
-    const { getByRole, getAllByText } = renderComponent({ value: null });
+    const { getByText } = renderComponent({ value: null });
 
-    userEvent.click(getByRole('button', { name: 'Test Label' }));
-
-    expect(getAllByText('All').length).toEqual(2);
+    expect(getByText('All')).toBeInTheDocument();
   });
 
   it('is set to provided value if present', () => {
-    const { getByRole, getAllByText } = renderComponent({ value: 'PENDING' });
+    const { getByText } = renderComponent({ value: 'PENDING' });
 
-    userEvent.click(getByRole('button', { name: 'Test Label' }));
-
-    expect(getAllByText('Pending').length).toEqual(2);
+    expect(getByText('Pending')).toBeInTheDocument();
   });
 
   it('calls submit callback when new option is selected', () => {
-    const { getByRole, getByText, onSubmit } = renderComponent({});
+    const { getByRole, onChange } = renderComponent({});
 
-    userEvent.click(getByRole('button', { name: 'Test Label' }));
-    userEvent.click(getByText('Pending'));
+    userEvent.click(getByRole('button', { name: 'All' }));
+    userEvent.selectOptions(getByRole('option', { name: 'Pending' }));
 
-    expect(onSubmit).toHaveBeenCalledWith('PENDING');
+    expect(onChange).toHaveBeenCalledWith('PENDING');
   });
 });
