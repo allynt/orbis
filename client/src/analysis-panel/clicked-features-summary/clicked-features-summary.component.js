@@ -21,13 +21,16 @@ import { useAnalysisPanelContext } from '../analysis-panel-context';
 
 const MAX_CHARS = 15;
 
+/**
+ * @type {(props?: {isOnlyFeature?: boolean}) => Record<"chips" | "button" | "tooltip" | "chip" | "closeIcon" | "buttonGroup" | "value", string>}
+ */
 const useStyles = makeStyles(theme => ({
   chips: {
     maxWidth: '20rem',
   },
   chip: {
     fontSize: theme.typography.pxToRem(10),
-    maxWidth: `${MAX_CHARS}ch`,
+    maxWidth: props => (!props.isOnlyFeature ? `${MAX_CHARS}ch` : undefined),
   },
   closeIcon: {
     width: theme.typography.pxToRem(10),
@@ -51,11 +54,17 @@ const useStyles = makeStyles(theme => ({
  * @param {{
  *   onDelete: (event: any) => void
  *   feature: import('typings/orbis').PolygonPickedMapFeature
- * fallbackProperty?: string
+ *   fallbackProperty?: string
+ *   isOnlyFeature?: boolean
  * }} props
  */
-const TooltipChip = ({ onDelete, feature, fallbackProperty }) => {
-  const styles = useStyles();
+const TooltipChip = ({
+  onDelete,
+  feature,
+  fallbackProperty,
+  isOnlyFeature,
+}) => {
+  const styles = useStyles({ isOnlyFeature });
 
   const areaIdentifier =
     get(feature.object.properties, 'area_name') ??
@@ -78,7 +87,7 @@ const TooltipChip = ({ onDelete, feature, fallbackProperty }) => {
     />
   );
 
-  return areaIdentifier?.length + 2 >= MAX_CHARS ? (
+  return areaIdentifier?.length + 2 >= MAX_CHARS && !isOnlyFeature ? (
     <Tooltip
       role="tooltip"
       id={areaIdentifier}
@@ -105,7 +114,6 @@ const TooltipChip = ({ onDelete, feature, fallbackProperty }) => {
 export const ClickedFeaturesSummary = ({
   clickedFeatures,
   selectedProperty,
-  currentSource,
   dispatch,
   fallbackProperty,
 }) => {
@@ -123,6 +131,7 @@ export const ClickedFeaturesSummary = ({
                 <Fade in key={feature.index}>
                   <TooltipChip
                     feature={feature}
+                    isOnlyFeature={clickedFeatures.length === 1}
                     fallbackProperty={fallbackProperty}
                     onDelete={() =>
                       dispatch(
