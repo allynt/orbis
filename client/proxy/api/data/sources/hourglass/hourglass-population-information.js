@@ -14,7 +14,36 @@ module.exports = {
     application: {
       orbis: {
         sidebar_component: [
-          { name: 'DateRangeAndStatusFilter', props: { maxDate: 'today' } },
+          { name: 'DateRangeFilter', props: { maxDate: 'today' } },
+          {
+            name: 'DropdownFilter',
+            props: {
+              label: 'Status Select',
+              defaultValue: 'ALL',
+              options: [
+                {
+                  value: 'ALL',
+                  label: 'All',
+                },
+                {
+                  value: 'NEW',
+                  label: 'New',
+                },
+                {
+                  value: 'PENDING',
+                  label: 'Pending',
+                },
+                {
+                  value: 'COMPLETE',
+                  label: 'Complete',
+                },
+                {
+                  value: 'FOLLOWUP',
+                  label: 'Followup',
+                },
+              ],
+            },
+          },
           { name: 'PopulationLegend' },
         ],
         map_component: { name: 'ActionForHelpMapComponent' },
