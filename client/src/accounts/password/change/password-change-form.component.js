@@ -19,6 +19,7 @@ import { object } from 'yup';
 import { LOGIN } from 'accounts/accounts.constants';
 import { status } from 'accounts/accounts.slice';
 import { ErrorWell } from 'accounts/error-well.component';
+import apiClient from 'api-client';
 import { Form } from 'components';
 import {
   FIELD_NAMES,
@@ -36,9 +37,13 @@ const ChangePasswordSuccessView = () => (
     </Typography>
 
     <Box mt={2} width="100%" display="flex" justifyContent="center">
-      <RouterLink to={LOGIN} component={Button}>
+      <Button
+        // @ts-ignore
+        to={LOGIN}
+        component={RouterLink}
+      >
         Continue
-      </RouterLink>
+      </Button>
     </Box>
   </>
 );
@@ -50,7 +55,6 @@ const validationSchema = object({
 });
 
 const PasswordChangeForm = ({
-  termsUrl,
   changePassword,
   changeStatus,
   error,
@@ -118,7 +122,11 @@ const PasswordChangeForm = ({
           label={
             <>
               I agree with&nbsp;
-              <Link target="_blank" rel="noopener noreferrer" href={termsUrl}>
+              <Link
+                target="_blank"
+                rel="noopener noreferrer"
+                href={apiClient.documents.termsUrl}
+              >
                 Terms &amp; Conditions
               </Link>
             </>
@@ -143,9 +151,13 @@ const PasswordChangeForm = ({
       <Form.Row centered>
         <Typography>
           Do you have an account?&nbsp;
-          <RouterLink to={LOGIN} component={Link}>
+          <Link
+            // @ts-ignore
+            to={LOGIN}
+            component={RouterLink}
+          >
             Login
-          </RouterLink>
+          </Link>
         </Typography>
       </Form.Row>
     </Form>

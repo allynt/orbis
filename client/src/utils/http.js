@@ -29,14 +29,6 @@ export const getFormAuthHeaders = state => {
   };
 };
 
-export const getApiUrl = state => {
-  const {
-    app: { apiUrl },
-  } = state;
-
-  return apiUrl;
-};
-
 export const getData = (url, headers = {}) => {
   return fetch(url, {
     credentials: 'include',

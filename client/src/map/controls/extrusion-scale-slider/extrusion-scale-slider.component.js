@@ -128,7 +128,7 @@ export const ExtrusionScaleSlider = React.forwardRef(
             arrow
             placement="right"
             open={!!errors.text}
-            title={errors.text?.message}
+            title={errors.text?.message ?? ''}
           >
             <input className={styles.input} name="text" ref={register} />
           </Tooltip>

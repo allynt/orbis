@@ -5,6 +5,7 @@ import {
 import { push } from 'connected-react-router';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
+import fetch from 'jest-fetch-mock';
 import {
   REGISTER_CUSTOMER,
   REGISTER_CUSTOMER_ORDER,
@@ -19,7 +20,7 @@ import reducer, {
   changePasswordSuccess,
   confirmResetPassword,
   fetchRequested,
-  fetchUser,
+  fetchCurrentUser,
   fetchUserFailure,
   fetchUserSuccess,
   login,
@@ -70,7 +71,6 @@ describe('Accounts Slice', () => {
           userKey: 'testkey',
           user: { username: 'testusername', email: 'testusername@test.com' },
         },
-        app: { apiUrl: 'http://test.com' },
       });
     });
 
@@ -155,7 +155,7 @@ describe('Accounts Slice', () => {
         },
       ];
 
-      await store.dispatch(fetchUser());
+      await store.dispatch(fetchCurrentUser());
 
       expect(store.getActions()).toEqual(expectedActions);
     });
@@ -168,7 +168,7 @@ describe('Accounts Slice', () => {
         { type: fetchUserSuccess.type, payload: user },
       ];
 
-      await store.dispatch(fetchUser());
+      await store.dispatch(fetchCurrentUser());
       expect(store.getActions()).toEqual(expectedActions);
     });
 
@@ -218,7 +218,7 @@ describe('Accounts Slice', () => {
     });
 
     it('should dispatch update user failure action.', async () => {
-      fetch.mockResponse(
+      fetch.once(
         JSON.stringify({
           errors: errorMessages,
         }),
@@ -433,7 +433,6 @@ describe('Accounts Slice', () => {
       getState = jest.fn(() => ({
         accounts: { userKey: '123' },
         admin: { currentCustomer: { id: '123' } },
-        app: { apiUrl: 'http://test.com' },
       }));
     });
 
@@ -670,14 +669,13 @@ describe('Accounts Slice', () => {
         fetch.once(JSON.stringify(fetchCustomerResponseBody));
         jest.spyOn(window, 'fetch');
         await placeOrder(formValues)(dispatch, () => ({
-          app: { apiUrl: '' },
           admin: {},
           accounts: { user: { customers: [{ id: 'testcustomerId' }] } },
         }));
         expect(fetch).toHaveBeenNthCalledWith(
           1,
-          '/api/customers/testcustomerId/orders/',
-          expect.objectContaining({}),
+          expect.stringContaining('/api/customers/testcustomerId/orders/'),
+          expect.anything(),
         );
       });
     });
@@ -724,7 +722,7 @@ describe('Accounts Slice', () => {
         fetch
           .once(JSON.stringify(loginResponse))
           .once(JSON.stringify(getUserResponse));
-        await login(formValues)(dispatch, getState);
+        await login(formValues)(dispatch);
         expect(dispatch).toHaveBeenCalledWith(fetchRequested());
       });
 
@@ -734,7 +732,7 @@ describe('Accounts Slice', () => {
           status: 418,
           statusText: 'Error',
         });
-        await login(formValues)(dispatch, getState);
+        await login(formValues)(dispatch);
         expect(dispatch).toHaveBeenCalledWith(push(RESEND));
       });
 
@@ -744,7 +742,7 @@ describe('Accounts Slice', () => {
           status: 418,
           statusText: 'Error',
         });
-        await login(formValues)(dispatch, getState);
+        await login(formValues)(dispatch);
         expect(dispatch).toHaveBeenCalledWith(
           loginUserFailure({
             ...errorResponse,
@@ -757,7 +755,7 @@ describe('Accounts Slice', () => {
         fetch
           .once(JSON.stringify(loginResponse))
           .once(JSON.stringify(getUserResponse));
-        await login(formValues)(dispatch, getState);
+        await login(formValues)(dispatch);
         expect(dispatch).toHaveBeenCalledWith(
           loginUserSuccess({
             userKey: loginResponse.token,
@@ -770,9 +768,11 @@ describe('Accounts Slice', () => {
         fetch
           .once(JSON.stringify(loginResponse))
           .once(JSON.stringify(errorResponse), { ok: false, status: 418 });
-        await login(formValues)(dispatch, getState);
+        await login(formValues)(dispatch);
         expect(dispatch).toHaveBeenCalledWith(
-          loginUserFailure({ errors: errorResponse.errors.test }),
+          loginUserFailure(
+            expect.objectContaining({ errors: errorResponse.errors.test }),
+          ),
         );
       });
 
@@ -780,7 +780,7 @@ describe('Accounts Slice', () => {
         fetch
           .once(JSON.stringify(loginResponse))
           .once(JSON.stringify(getUserResponse));
-        await login(formValues)(dispatch, getState);
+        await login(formValues)(dispatch);
         expect(dispatch).toHaveBeenCalledWith(push('/'));
       });
 
@@ -788,7 +788,7 @@ describe('Accounts Slice', () => {
         fetch
           .once(JSON.stringify(loginResponse))
           .once(JSON.stringify(getUserCustomerResponse));
-        await login(formValues)(dispatch, getState);
+        await login(formValues)(dispatch);
         expect(dispatch).toHaveBeenCalledWith(push(REGISTER_CUSTOMER));
       });
 
@@ -796,7 +796,7 @@ describe('Accounts Slice', () => {
         fetch
           .once(JSON.stringify(loginResponse))
           .once(JSON.stringify(getUserOrderResponse));
-        await login(formValues)(dispatch, getState);
+        await login(formValues)(dispatch);
         expect(dispatch).toHaveBeenCalledWith(push(REGISTER_CUSTOMER_ORDER));
       });
     });
@@ -833,6 +833,7 @@ describe('Accounts Slice', () => {
 
     describe('resendVerificationEmail', () => {
       it(`dispatches ${fetchRequested}`, async () => {
+        fetch.once(JSON.stringify({}));
         await resendVerificationEmail()(dispatch, getState);
         expect(dispatch).toHaveBeenCalledWith(fetchRequested());
       });
@@ -845,12 +846,12 @@ describe('Accounts Slice', () => {
         });
         await resendVerificationEmail()(dispatch, getState);
         expect(dispatch).toHaveBeenCalledWith(
-          resendVerificationEmailFailure(errorResponse),
+          resendVerificationEmailFailure(errorResponse.errors.test),
         );
       });
 
       it(`dispatches ${resendVerificationEmailSuccess} on success`, async () => {
-        fetch.once();
+        fetch.once(JSON.stringify({}));
         await resendVerificationEmail()(dispatch, getState);
         expect(dispatch).toBeCalledWith(resendVerificationEmailSuccess());
       });
@@ -870,7 +871,7 @@ describe('Accounts Slice', () => {
       });
 
       it(`dispatches ${changePasswordSuccess} on success`, async () => {
-        fetch.once();
+        fetch.once(JSON.stringify({}));
         await changePassword({})(dispatch, getState);
         expect(dispatch).toBeCalledWith(changePasswordSuccess());
       });
@@ -913,7 +914,7 @@ describe('Accounts Slice', () => {
       });
 
       it(`dispatches ${resetPasswordSuccess} on success`, async () => {
-        fetch.once();
+        fetch.once(JSON.stringify({}));
         await resetPassword({})(dispatch, getState);
         expect(dispatch).toBeCalledWith(resetPasswordSuccess());
       });

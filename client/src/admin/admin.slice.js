@@ -1,10 +1,8 @@
 import { NotificationManager } from 'react-notifications';
 import { createSlice, createSelector } from '@reduxjs/toolkit';
 
-import { getData, sendData, getJsonAuthHeaders, getApiUrl } from 'utils/http';
 import { USER_STATUS } from './admin.constants';
-
-const API = '/api/customers/';
+import apiClient from 'api-client';
 
 const initialState = {
   currentCustomer: null,
@@ -175,87 +173,66 @@ const handleFailure = (response, title, action, dispatch) => {
   return dispatch(action({ message }));
 };
 
-export const fetchCustomer = user => async (dispatch, getState) => {
-  const headers = getJsonAuthHeaders(getState());
+export const fetchCustomer = user => async dispatch => {
   dispatch(fetchCustomerRequested());
-
   const customerId = user.customers.find(
     customer => customer.type === 'MANAGER',
   ).id;
-  const response = await getData(
-    `${getApiUrl(getState())}${API}${customerId}`,
-    headers,
-  );
-
-  if (!response.ok)
+  try {
+    const currentCustomer = await apiClient.customers.getCustomer(customerId);
+    return dispatch(fetchCustomerSuccess(currentCustomer));
+  } catch (responseError) {
     return handleFailure(
-      response,
+      responseError.response,
       'Fetching Customer Error',
       fetchCustomerFailure,
       dispatch,
     );
-
-  const currentCustomer = await response.json();
-  return dispatch(fetchCustomerSuccess(currentCustomer));
+  }
 };
 
-export const updateCustomer = newCustomer => async (dispatch, getState) => {
-  const headers = getJsonAuthHeaders(getState());
+export const updateCustomer = newCustomer => async dispatch => {
   dispatch(updateCustomerRequested());
-
-  const response = await sendData(
-    `${getApiUrl(getState())}${API}${newCustomer.id}/`,
-    newCustomer,
-    headers,
-    'PUT',
-  );
-
-  if (!response.ok)
+  try {
+    const updatedCustomer = await apiClient.customers.updateCustomer(
+      newCustomer,
+    );
+    NotificationManager.success(
+      'Successfully updated account',
+      '',
+      5000,
+      () => {},
+    );
+    return dispatch(updateCustomerSuccess(updatedCustomer));
+  } catch (responseError) {
     return handleFailure(
-      response,
+      responseError.response,
       'Updating Customer Error',
       updateCustomerFailure,
       dispatch,
     );
-
-  NotificationManager.success(
-    'Successfully updated account',
-    '',
-    5000,
-    () => {},
-  );
-
-  const updatedCustomer = await response.json();
-  return dispatch(updateCustomerSuccess(updatedCustomer));
+  }
 };
 
-export const fetchCustomerUsers = customer => async (dispatch, getState) => {
-  const headers = getJsonAuthHeaders(getState());
-
+export const fetchCustomerUsers = customer => async dispatch => {
   dispatch(fetchCustomerUsersRequested());
-
-  const response = await getData(
-    `${getApiUrl(getState())}${API}${customer.id}/users/`,
-    headers,
-  );
-
-  if (!response.ok)
+  try {
+    const users = await apiClient.customers.getCustomerUsers(customer.id);
+    return dispatch(fetchCustomerUsersSuccess(users));
+  } catch (responseError) {
     return handleFailure(
-      response,
+      responseError.response,
       'Fetching Customer Users Error',
       fetchCustomerUsersFailure,
       dispatch,
     );
-
-  const users = await response.json();
-  return dispatch(fetchCustomerUsersSuccess(users));
+  }
 };
 
 /**
  * @param {{email: string, name?: string, licences: string[]}} fields
  */
 export const createCustomerUser = fields => async (dispatch, getState) => {
-  const headers = getJsonAuthHeaders(getState());
   const currentCustomer = selectCurrentCustomer(getState());
   dispatch(createCustomerUserRequested());
 
@@ -265,170 +242,105 @@ export const createCustomerUser = fields => async (dispatch, getState) => {
         licence => licence.orb === orb && !licence.customer_user,
       ).id,
   );
-
   const { email, name } = fields;
 
-  const data = {
-    licences,
-    user: {
-      email,
-      name,
-    },
-  };
-
-  const createUserResponse = await sendData(
-    `${getApiUrl(getState())}${API}${currentCustomer.id}/users/`,
-    data,
-    headers,
-  );
-
-  if (!createUserResponse.ok)
+  try {
+    const user = await apiClient.customers.createCustomerUser(
+      currentCustomer.id,
+      {
+        licences,
+        user: {
+          email,
+          name,
+        },
+      },
+    );
+    const customer = await apiClient.customers.getCustomer(currentCustomer.id);
+    return dispatch(createCustomerUserSuccess({ user, customer }));
+  } catch (responseError) {
     return handleFailure(
-      createUserResponse,
+      responseError.response,
       'Creating Customer User Error',
       createCustomerUserFailure,
       dispatch,
     );
-
-  const fetchCustomerResponse = await getData(
-    `${getApiUrl(getState())}${API}${currentCustomer.id}`,
-    headers,
-  );
-  if (!fetchCustomerResponse.ok)
-    return handleFailure(
-      fetchCustomerResponse,
-      'Creating Customer User Error',
-      createCustomerUserFailure,
-      dispatch,
-    );
-
-  const [user, customer] = await Promise.all([
-    createUserResponse.json(),
-    fetchCustomerResponse.json(),
-  ]);
-
-  return dispatch(createCustomerUserSuccess({ user, customer }));
+  }
 };
 
 export const updateCustomerUser = customerUser => async (
   dispatch,
   getState,
 ) => {
-  const headers = getJsonAuthHeaders(getState());
   const currentCustomer = selectCurrentCustomer(getState());
 
   dispatch(updateCustomerUserRequested());
 
-  const updateCustomerUserResponse = await sendData(
-    `${getApiUrl(getState())}${API}${currentCustomer.id}/users/${
-      customerUser.user.id
-    }/`,
-    customerUser,
-    headers,
-    'PUT',
-  );
-
-  if (!updateCustomerUserResponse.ok)
+  try {
+    const updatedCustomerUser = await apiClient.customers.updateCustomerUser(
+      currentCustomer.id,
+      customerUser,
+    );
+    const updatedCustomer = await apiClient.customers.getCustomer(
+      currentCustomer.id,
+    );
+    return dispatch(
+      updateCustomerUserSuccess({ updatedCustomerUser, updatedCustomer }),
+    );
+  } catch (responseError) {
     return handleFailure(
-      updateCustomerUserResponse,
+      responseError.response,
       'Update Customer User Error',
       updateCustomerUserFailure,
       dispatch,
     );
-
-  const fetchCustomerResponse = await getData(
-    `${getApiUrl(getState())}${API}${currentCustomer.id}`,
-    headers,
-  );
-  if (!fetchCustomerResponse.ok)
-    return handleFailure(
-      fetchCustomerResponse,
-      'Update Customer User Error',
-      updateCustomerUserFailure,
-      dispatch,
-    );
-
-  const [updatedCustomerUser, updatedCustomer] = await Promise.all([
-    updateCustomerUserResponse.json(),
-    fetchCustomerResponse.json(),
-  ]);
-
-  return dispatch(
-    updateCustomerUserSuccess({ updatedCustomerUser, updatedCustomer }),
-  );
+  }
 };
 
 export const deleteCustomerUser = customerUser => async (
   dispatch,
   getState,
 ) => {
-  const headers = getJsonAuthHeaders(getState());
-  const currentCustomer = selectCurrentCustomer(getState());
-
   dispatch(deleteCustomerUserRequested());
-
-  const deleteUserResponse = await sendData(
-    `${getApiUrl(getState())}${API}${currentCustomer.id}/users/`,
-    customerUser.user.id,
-    headers,
-    'DELETE',
-  );
-
-  if (!deleteUserResponse.ok)
+  const currentCustomer = selectCurrentCustomer(getState());
+  try {
+    await apiClient.customers.deleteCustomerUser(
+      currentCustomer.id,
+      customerUser.user.id,
+    );
+    const customer = await apiClient.customers.getCustomer(currentCustomer.id);
+    return dispatch(
+      deleteCustomerUserSuccess({ deletedUser: customerUser, customer }),
+    );
+  } catch (responseError) {
     return handleFailure(
-      deleteUserResponse,
+      responseError.response,
       'Deleting Customer User Error',
       deleteCustomerUserFailure,
       dispatch,
     );
-
-  const fetchCustomerResponse = await getData(
-    `${getApiUrl(getState())}${API}${currentCustomer.id}`,
-    headers,
-  );
-  if (!fetchCustomerResponse.ok)
-    return handleFailure(
-      fetchCustomerResponse,
-      'Deleting Customer User Error',
-      deleteCustomerUserFailure,
-      dispatch,
-    );
-
-  const customer = await fetchCustomerResponse.json();
-
-  return dispatch(
-    deleteCustomerUserSuccess({ deletedUser: customerUser, customer }),
-  );
+  }
 };
 
 export const inviteCustomerUser = customerUser => async (
   dispatch,
   getState,
 ) => {
-  const headers = getJsonAuthHeaders(getState());
-  const currentCustomer = selectCurrentCustomer(getState());
-
   dispatch(inviteCustomerUserRequested());
-
-  const inviteCustomerUserResponse = await sendData(
-    `${getApiUrl(getState())}${API}${currentCustomer.id}/users/${
-      customerUser.user.id
-    }/invite/`,
-    {},
-    headers,
-  );
-
-  if (!inviteCustomerUserResponse.ok)
+  const currentCustomer = selectCurrentCustomer(getState());
+  try {
+    const invitedCustomerUser = await apiClient.customers.inviteCustomerUser(
+      currentCustomer.id,
+      customerUser,
+    );
+    return dispatch(inviteCustomerUserSuccess({ invitedCustomerUser }));
+  } catch (responseError) {
     return handleFailure(
-      inviteCustomerUserResponse,
+      responseError.response,
       'Invite Customer User Error',
       inviteCustomerUserFailure,
       dispatch,
     );
-
-  const invitedCustomerUser = await inviteCustomerUserResponse.json();
-
-  return dispatch(inviteCustomerUserSuccess({ invitedCustomerUser }));
+  }
 };
 
 /* === Selectors === */

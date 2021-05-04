@@ -1,12 +1,6 @@
-enum CustomerUserType {
-  MANAGER = 'MANAGER',
-  MEMBER = 'MEMBER',
-}
+type CustomerUserType = 'MANAGER' | 'MEMBER';
 
-enum CustomerUserStatus {
-  ACTIVE = 'ACTIVE',
-  PENDING = 'PENDING',
-}
+type CustomerUserStatus = 'ACTIVE' | 'PENDING';
 
 type User = {
   accepted_terms: boolean;
@@ -24,6 +18,18 @@ type User = {
   roles?: string[];
   username: string;
 };
+
+type PartialUser = Pick<
+  User,
+  | 'username'
+  | 'email'
+  | 'id'
+  | 'is_verified'
+  | 'is_approved'
+  | 'registration_stage'
+  | 'change_password'
+  | 'accepted_terms'
+>;
 
 type Licence = {
   id: string;
@@ -56,4 +62,22 @@ type Customer = {
   address?: string;
   postcode?: string;
   licences?: Licence[];
+};
+
+type Order = {
+  id: string;
+  report: string;
+  user: string;
+  customer: string;
+  created: string;
+  order_type: string;
+  cost: number;
+  items: {
+    id: number;
+    orb: string;
+    n_licences: number;
+    cost: number;
+    subscription_period: number;
+    expiration: string;
+  }[];
 };

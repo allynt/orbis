@@ -22,7 +22,6 @@ const setup = () => {
           },
           customerUsers: [],
         },
-        app: { apiUrl: 'http://test.com' },
       })}
     >
       <Admin
@@ -52,13 +51,13 @@ describe('<Admin />', () => {
       );
     });
 
-    it('Closes the Create User Dialog when the form is successfully submitted', () => {
+    it('Closes the Create User Dialog when the form is successfully submitted', async () => {
       fetch.mockResponse(JSON.stringify({}));
       const { getByText, getAllByText, queryByRole, getByLabelText } = setup();
       userEvent.click(getByText('Create User'));
       userEvent.type(getByLabelText('Email'), 'hello@test.com');
       userEvent.click(getAllByText('Create User')[1]);
-      waitFor(() => {
+      await waitFor(() => {
         expect(queryByRole('dialog')).not.toBeInTheDocument();
       });
     });

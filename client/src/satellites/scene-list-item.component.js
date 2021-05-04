@@ -69,7 +69,7 @@ const SceneListItem = ({
             toggleMoreInfoDialog();
           }}
         >
-          <InfoIcon classes={styles.moreInfoIcon} />
+          <InfoIcon className={styles.moreInfoIcon} />
           <span>More info</span>
         </div>
 

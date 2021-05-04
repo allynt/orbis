@@ -75,6 +75,7 @@ describe('<FeatureDetail />', () => {
 
   it('renders arrays of objects', () => {
     const feature = {
+      id: 1,
       'key 1': [
         { 'subkey 1': 'value 1' },
         { 'subkey 2': 'value 2' },
@@ -92,6 +93,7 @@ describe('<FeatureDetail />', () => {
 
   it('Renders email addresses as links', () => {
     const feature = {
+      id: 1,
       email: 'test@test.com',
     };
     const { getByRole } = render(<FeatureDetail features={[feature]} />);

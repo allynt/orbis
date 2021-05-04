@@ -6,6 +6,7 @@ import {
   styled,
 } from '@astrosat/astrosat-ui';
 import React, { useState } from 'react';
+import apiClient from 'api-client';
 
 const IconButton = styled(AuiIconButton)({ position: 'absolute', right: 0 });
 
@@ -14,14 +15,12 @@ const IconButton = styled(AuiIconButton)({ position: 'absolute', right: 0 });
  *  defaultOpen?: boolean
  *  onDownloadPdfClick: () => void
  *  pdfIncompatible?: boolean
- *  apiUrl: string
  * }} props
  */
 export const ContextMenu = ({
   defaultOpen = false,
   onDownloadPdfClick,
   pdfIncompatible,
-  apiUrl,
 }) => {
   const [anchorEl, setAnchorEl] = useState(defaultOpen ? document.body : null);
 
@@ -32,7 +31,7 @@ export const ContextMenu = ({
 
   const handleUserGuideClick = () => {
     const win = window.open(
-      `${apiUrl}/api/documents/guide?name=analysis-toolbar`,
+      apiClient.documents.userGuideUrl('analysis-toolbar'),
       '_blank',
       'noopener, noreferrer',
     );

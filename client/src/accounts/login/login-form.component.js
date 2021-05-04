@@ -18,6 +18,7 @@ import * as yup from 'yup';
 
 import { PASSWORD_RESET_REQUEST, REGISTER } from 'accounts/accounts.constants';
 import { ErrorWell } from 'accounts/error-well.component';
+import apiClient from 'api-client';
 import { Form } from 'components';
 import { email, FIELD_NAMES, password } from 'utils/validators';
 
@@ -28,7 +29,6 @@ const loginSchema = yup.object({
 
 /**
  * @typedef {{
- *   termsUrl?: string
  *   isLoading?: boolean
  *   passwordMinLength: number
  *   passwordMaxLength: number
@@ -43,7 +43,6 @@ const loginSchema = yup.object({
  * @param {LoginProps} props
  */
 const LoginForm = ({
-  termsUrl,
   isLoading = false,
   match,
   passwordMinLength,
@@ -119,7 +118,7 @@ const LoginForm = ({
                   I agree with&nbsp;
                   <Link
                     target="_blank"
-                    href={termsUrl}
+                    href={apiClient.documents.termsUrl}
                     rel="noopener noreferrer"
                   >
                     Terms &amp; Conditions
@@ -137,9 +136,13 @@ const LoginForm = ({
         )}
 
         <Box ml="auto">
-          <RouterLink to={PASSWORD_RESET_REQUEST} component={Link}>
+          <Link
+            // @ts-ignore
+            to={PASSWORD_RESET_REQUEST}
+            component={RouterLink}
+          >
             Forgot password?
-          </RouterLink>
+          </Link>
         </Box>
       </Form.Row>
 
@@ -160,9 +163,13 @@ const LoginForm = ({
         {!isRegisteringCustomer && (
           <Typography>
             Don't have an account?&nbsp;
-            <RouterLink to={REGISTER} component={Link}>
+            <Link
+              // @ts-ignore
+              component={RouterLink}
+              to={REGISTER}
+            >
               Sign Up
-            </RouterLink>
+            </Link>
           </Typography>
         )}
       </Form.Row>

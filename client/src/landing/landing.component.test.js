@@ -41,8 +41,6 @@ const renderComponent = (newUser, n = 10) => {
     map: {
       regions,
     },
-    accounts: { user: { userKey: 'test' } },
-    app: { apiUrl: 'http://test.com' },
     pollingPeriod: 3000,
     sources: null,
   });

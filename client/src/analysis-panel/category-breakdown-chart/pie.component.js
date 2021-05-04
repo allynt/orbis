@@ -33,6 +33,7 @@ export const Pie = ({
       cursor: categoryList.length > 1 ? 'pointer' : 'default',
     },
     labels: {
+      fontSize: 14,
       /** @type {import('victory-core').VictoryStringCallback} */
       fill: ({ datum }) => theme.palette.getContrastText(datum.color),
     },
@@ -55,7 +56,6 @@ export const Pie = ({
 
   /** @type {import('victory-core').VictoryLabelStyleObject} */
   const labelStyle = {
-    // fontSize: 24,
     fill: theme.palette.text.primary,
     fontFamily: theme.typography.fontFamily,
     textAnchor: 'middle',

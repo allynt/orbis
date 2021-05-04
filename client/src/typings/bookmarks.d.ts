@@ -14,3 +14,7 @@ type Bookmark = {
   thumbnail?: string;
   drawn_feature_collection?: FeatureCollection;
 };
+
+export type RequestBookmark = {
+  thumbnail: Blob;
+} & Omit<Bookmark, 'id' | 'thumbnail' | 'owner' | 'created'>;

@@ -2,7 +2,8 @@ import { createSelector, createSlice, current } from '@reduxjs/toolkit';
 import { pick } from 'lodash';
 import { NotificationManager } from 'react-notifications';
 
-import { getJsonAuthHeaders, getApiUrl } from 'utils/http';
+import apiClient from 'api-client';
+import { getJsonAuthHeaders } from 'utils/http';
 
 export const DEFAULT_MAP_STYLE = 3;
 
@@ -11,7 +12,6 @@ const initialState = {
   error: null,
   notYetImplementedDescription: null,
   trackingQueue: [],
-  apiUrl: '',
 };
 
 const appSlice = createSlice({
@@ -36,9 +36,6 @@ const appSlice = createSlice({
         item => !payload.includes(current(item)),
       );
     },
-    setApiUrl: (state, { payload }) => {
-      state.apiUrl = payload;
-    },
   },
 });
 
@@ -48,29 +45,22 @@ export const {
   notYetImplemented,
   addLogItem,
   removeLogItems,
-  setApiUrl,
 } = appSlice.actions;
 
-export const fetchAppConfig = () => async (dispatch, getState) => {
-  const response = await fetch(`${getApiUrl(getState())}/api/app/config`, {
-    credentials: 'include',
-  });
-
-  if (!response.ok) {
-    const message = `${response.status} ${response.statusText}`;
-
+export const fetchAppConfig = () => async dispatch => {
+  try {
+    const config = await apiClient.app.getConfig();
+    return dispatch(appConfigSuccess(config));
+  } catch (error) {
+    const { message, status } = error;
     NotificationManager.error(
-      message,
-      `Fetching App Config Error - ${response.statusText}`,
+      `${status} ${message}`,
+      `Fetching App Config Error - ${message}`,
       50000,
       () => {},
     );
-
-    return dispatch(appConfigFailure({ message }));
+    return dispatch(appConfigFailure({ message: `${status} ${message}` }));
   }
-
-  const config = await response.json();
-  return dispatch(appConfigSuccess(config));
 };
 
 export const logUserTracking = () => async (dispatch, getState) => {
@@ -79,7 +69,7 @@ export const logUserTracking = () => async (dispatch, getState) => {
     app: { trackingQueue },
   } = getState();
   if (trackingQueue.length > 0) {
-    const response = await fetch(`${getApiUrl(getState())}/api/logs/tracking`, {
+    const response = await fetch(`${apiClient.apiHost}/api/logs/tracking`, {
       credentials: 'include',
       method: 'POST',
       headers,
@@ -97,8 +87,6 @@ export const logUserTracking = () => async (dispatch, getState) => {
 };
 
 const baseSelector = state => state?.app;
-
-export const apiUrlSelector = createSelector(baseSelector, app => app?.apiUrl);
 
 export const configSelector = createSelector(baseSelector, app => app?.config);
 
@@ -122,6 +110,5 @@ export const userTrackingIntervalSelector = createSelector(
   configSelector,
   config => config?.userTrackingInterval,
 );
-
 
 export default appSlice.reducer;
