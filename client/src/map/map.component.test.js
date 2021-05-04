@@ -27,12 +27,18 @@ describe('<Map />', () => {
   beforeEach(() => fetch.mockResponse(JSON.stringify({})));
 
   it('displays the load mask when bookmarks is loading', () => {
-    const { getByTestId } = setup({ bookmarks: { isLoading: true } });
+    const { getByTestId } = setup({
+      app: { config: { mapbox_token: '123' } },
+      bookmarks: { isLoading: true },
+    });
     expect(getByTestId('load-mask')).toBeInTheDocument();
   });
 
   it('Displays the load mask when the map is loading', () => {
-    const { getByTestId } = setup({ map: { isLoading: true } });
+    const { getByTestId } = setup({
+      app: { config: { mapbox_token: '123' } },
+      map: { isLoading: true },
+    });
     expect(getByTestId('load-mask')).toBeInTheDocument();
   });
 });

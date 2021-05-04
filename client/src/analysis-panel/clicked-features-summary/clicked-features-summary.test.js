@@ -11,6 +11,7 @@ import {
 import { AnalysisPanelProvider } from 'analysis-panel/analysis-panel-context';
 
 const initialFeatures = new Array(3).fill(undefined).map((_, i) => ({
+  index: i,
   object: {
     properties: {
       area_name: `Test Area ${i}`,
@@ -59,7 +60,10 @@ describe('<ClickedFeaturesSummary />', () => {
 
   describe('Population', () => {
     it('Shows the total population for a single clicked area', () => {
-      const feature = { object: { properties: { population: 1000 } } };
+      const feature = {
+        index: 0,
+        object: { properties: { population: 1000 } },
+      };
       const { getByText } = renderComponent([feature]);
       expect(
         getByText(feature.object.properties.population.toLocaleString(), {
@@ -75,6 +79,7 @@ describe('<ClickedFeaturesSummary />', () => {
 
     it('Shows the population year', () => {
       const feature = {
+        index: 0,
         object: { properties: { population: 1, population_year: 2077 } },
       };
       const { getByText } = renderComponent([feature]);
@@ -88,7 +93,10 @@ describe('<ClickedFeaturesSummary />', () => {
 
   describe('Households', () => {
     it('Shows the households for a single clicked area', () => {
-      const feature = { object: { properties: { households: 1985 } } };
+      const feature = {
+        index: 0,
+        object: { properties: { households: 1985 } },
+      };
       const { getByText } = renderComponent([feature]);
       expect(
         getByText(feature.object.properties.households.toLocaleString(), {

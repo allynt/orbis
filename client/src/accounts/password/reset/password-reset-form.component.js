@@ -2,7 +2,6 @@ import * as React from 'react';
 
 import {
   Button,
-  Grid,
   Link,
   PasswordStrengthMeter,
   TextField,
@@ -27,9 +26,13 @@ const PasswordResetSuccessView = () => (
     </Form.Row>
 
     <Form.Row centered>
-      <RouterLink to={LOGIN} component={Button}>
+      <Button
+        // @ts-ignore
+        to={LOGIN}
+        component={RouterLink}
+      >
         Continue
-      </RouterLink>
+      </Button>
     </Form.Row>
   </Form>
 );
@@ -102,9 +105,13 @@ const PasswordResetForm = ({
 
       <Form.Row component={Typography} align="center">
         Do you have an account?&nbsp;
-        <RouterLink to={LOGIN} component={Link}>
+        <Link
+          // @ts-ignore
+          to={LOGIN}
+          component={RouterLink}
+        >
           Login
-        </RouterLink>
+        </Link>
       </Form.Row>
     </Form>
   );

@@ -46,9 +46,13 @@ const ResendVerificationEmail = ({ email, isLoading = false, onResend }) => (
       </Button>
     </Grid>
     <Grid item xs={12} container justify="center">
-      <RouterLink to={LOGIN} component={Link}>
+      <Link
+        // @ts-ignore
+        to={LOGIN}
+        component={RouterLink}
+      >
         Return to login
-      </RouterLink>
+      </Link>
     </Grid>
   </Grid>
 );

@@ -1,13 +1,13 @@
 import React from 'react';
 
-import { Button, Link, Typography } from '@astrosat/astrosat-ui';
+import { Button, Grid, Link, Typography } from '@astrosat/astrosat-ui';
 
 import { Form } from 'components';
 
 /**
  * @param {{
- *   user?: import('typings/orbis').CustomerUser
- *   withdrawInvitation: (user: import('typings/orbis').CustomerUser) => void
+ *   user?: CustomerUser
+ *   withdrawInvitation: (user: CustomerUser) => void
  *   onCancelClick: () => void
  * }} props
  */
@@ -16,7 +16,7 @@ export const WithdrawUserInvitationForm = ({
   withdrawInvitation,
   onCancelClick,
 }) => (
-  <Form>
+  <Grid container spacing={2}>
     <Form.Row component={Typography}>
       Do you really want to withdraw the pending invitation{' '}
       {!!user && (
@@ -34,5 +34,5 @@ export const WithdrawUserInvitationForm = ({
         Cancel
       </Link>
     </Form.Row>
-  </Form>
+  </Grid>
 );

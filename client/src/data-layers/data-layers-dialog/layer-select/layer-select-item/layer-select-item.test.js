@@ -27,12 +27,6 @@ describe('<LayerSelectItem />', () => {
     ).toBeInTheDocument();
   });
 
-  it('shows the source description when the info button is clicked', () => {
-    const { getByRole, getByText } = renderComponent();
-    userEvent.click(getByRole('button', { name: /info/i }));
-    expect(getByText(SOURCE.metadata.description)).toBeVisible();
-  });
-
   it('hides the source description when the info button is clicked again', () => {
     const { getByRole, getByText, queryByText } = renderComponent();
     userEvent.click(getByRole('button', { name: /info/i }));

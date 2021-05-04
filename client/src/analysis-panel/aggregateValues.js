@@ -22,7 +22,7 @@ export const aggregateValues = (
     )
   )
     console.error(
-      `Could not find property ${selectedProperty.name} in clickedFeatures during ${aggregateValues.name}.
+      `Could not find property ${selectedProperty.name} in clickedFeatures during aggregateValues.
       This may be due to a spelling or formatting mistake
       `,
     );

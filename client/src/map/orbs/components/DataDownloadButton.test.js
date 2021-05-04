@@ -7,6 +7,9 @@ import { Provider } from 'react-redux';
 import configureMockStore from 'redux-mock-store';
 import userEvent from '@testing-library/user-event';
 import { ADMIN_STATUS } from 'admin/admin.constants';
+import fetch from 'jest-fetch-mock';
+
+jest.mock('file-saver');
 
 const mockStore = configureMockStore();
 

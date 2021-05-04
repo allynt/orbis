@@ -141,7 +141,8 @@ const Accordion = ({ source, level, onSourcesChange, selectedSources }) => {
         </span>
         <Link
           variant="body2"
-          component="button"
+          component="span"
+          role="button"
           className={styles.selectAll}
           onClick={handleSelectAllClick}
         >

@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, wait } from '@testing-library/react';
+import { render, waitFor } from '@testing-library/react';
 import { CreateUserForm } from './create-user-form.component';
 import userEvent from '@testing-library/user-event';
 import { MESSAGES } from 'utils/validators';
@@ -76,7 +76,7 @@ describe('<CreateUserForm />', () => {
     userEvent.type(getByLabelText('Email'), expected.email);
     userEvent.click(getByLabelText('Rice'));
     userEvent.click(getByText('Create User'));
-    await wait(() => expect(onSubmit).toHaveBeenCalledWith(expected));
+    await waitFor(() => expect(onSubmit).toHaveBeenCalledWith(expected));
   });
 
   it('Does not include licences which are disabled', async () => {
@@ -97,13 +97,13 @@ describe('<CreateUserForm />', () => {
     userEvent.type(getByLabelText('Email'), expected.email);
     userEvent.click(getByLabelText('Rice'));
     userEvent.click(getByText('Create User'));
-    await wait(() => expect(onSubmit).toHaveBeenCalledWith(expected));
+    await waitFor(() => expect(onSubmit).toHaveBeenCalledWith(expected));
   });
 
   it('Shows an error if email is not provided', async () => {
     const { getByText } = render(<CreateUserForm />);
     userEvent.click(getByText('Create User'));
-    await wait(() => {
+    await waitFor(() => {
       expect(getByText(MESSAGES.email.required)).toBeInTheDocument();
     });
   });

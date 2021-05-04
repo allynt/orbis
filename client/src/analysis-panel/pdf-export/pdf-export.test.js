@@ -38,12 +38,7 @@ const initialState = {
       Wales: 20.3,
     },
     precision: 1,
-    breakdown: [
-      '% of people aged 0-17',
-      '% of people aged 18-39',
-      '% of people aged 40-64',
-      '% of people aged 65+',
-    ],
+    breakdown: ['% of people aged 0-17'],
     source: 'Census (2011)',
     details: 'Percentage of people aged 17 and under.',
   },

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { renderHook } from '@testing-library/react-hooks';
+import { act, renderHook } from '@testing-library/react-hooks';
 import { Provider } from 'react-redux';
 import { useOrbs } from './useOrbs';
 import configureMockStore from 'redux-mock-store';
@@ -9,8 +9,8 @@ import { waitFor } from '@testing-library/dom';
 
 const mockStore = configureMockStore([thunk]);
 
-const setup = source =>
-  renderHook(() => useOrbs(), {
+const setup = async source => {
+  const utils = renderHook(() => useOrbs(), {
     wrapper: ({ children }) => (
       <Provider
         store={mockStore({
@@ -24,10 +24,15 @@ const setup = source =>
       </Provider>
     ),
   });
+  await act(async () => {
+    await utils.waitForNextUpdate();
+  });
+  return utils;
+};
 
 describe('useOrbs', () => {
   describe('sidebarComponents', () => {
-    it('Adds null if the source does not have a sidebar_component name', () => {
+    it('Adds null if the source does not have a sidebar_component name', async () => {
       const source = {
         source_id: 'test/layer',
         metadata: {
@@ -38,11 +43,11 @@ describe('useOrbs', () => {
           },
         },
       };
-      const { result } = setup(source);
+      const { result } = await setup(source);
       expect(result.current.sidebarComponents['test/layer']).toBeNull();
     });
 
-    it('Adds a component for the layer based on the sidebar_component property', () => {
+    it('Adds a component for the layer based on the sidebar_component property', async () => {
       const source = {
         source_id: 'test/layer',
         metadata: {
@@ -58,11 +63,11 @@ describe('useOrbs', () => {
           },
         },
       };
-      const { result } = setup(source);
+      const { result } = await setup(source);
       expect(result.current.sidebarComponents['test/layer']).toBeTruthy();
     });
 
-    it('Puts the props from metadata into the component', () => {
+    it('Puts the props from metadata into the component', async () => {
       const source = {
         source_id: 'test/layer',
         metadata: {
@@ -78,7 +83,7 @@ describe('useOrbs', () => {
           },
         },
       };
-      const { result } = setup(source);
+      const { result } = await setup(source);
       expect(result.current.sidebarComponents['test/layer'].props).toEqual(
         expect.objectContaining(
           source.metadata.application.orbis.sidebar_component.props,
@@ -86,7 +91,7 @@ describe('useOrbs', () => {
       );
     });
 
-    it('Provides an array if sidebar_components is an array', () => {
+    it('Provides an array if sidebar_components is an array', async () => {
       const source = {
         source_id: 'test/layer',
         metadata: {
@@ -110,7 +115,7 @@ describe('useOrbs', () => {
           },
         },
       };
-      const { result } = setup(source);
+      const { result } = await setup(source);
       expect(result.current.sidebarComponents['test/layer'].length).toBe(2);
       expect(result.current.sidebarComponents['test/layer'][0].props).toEqual(
         expect.objectContaining(
@@ -141,13 +146,13 @@ describe('useOrbs', () => {
         },
       },
     };
-    it('Adds a component to the array for the source', () => {
-      const { result } = setup(source);
+    it('Adds a component to the array for the source', async () => {
+      const { result } = await setup(source);
       expect(result.current.mapComponents[0]).toBeTruthy();
     });
 
-    it('Spreads the props from metadata onto the component', () => {
-      const { result } = setup(source);
+    it('Spreads the props from metadata onto the component', async () => {
+      const { result } = await setup(source);
       expect(result.current.mapComponents[0].props).toEqual(
         expect.objectContaining(
           source.metadata.application.orbis.map_component.props,
@@ -155,8 +160,8 @@ describe('useOrbs', () => {
       );
     });
 
-    it('Puts null into the array if source does not have a map component name', () => {
-      const { result } = setup({
+    it('Puts null into the array if source does not have a map component name', async () => {
+      const { result } = await setup({
         source_id: 'test/layer',
         metadata: {
           application: {
@@ -172,7 +177,7 @@ describe('useOrbs', () => {
 
   describe('layers', () => {
     it('Returns undefined if the layer name is missing', async () => {
-      const { result } = setup({
+      const { result } = await setup({
         source_id: 'test/layer',
         metadata: {
           application: {
@@ -186,7 +191,7 @@ describe('useOrbs', () => {
     });
 
     it('Returns a layer if name is present', async () => {
-      const { result } = setup({
+      const { result } = await setup({
         source_id: 'test/layer',
         metadata: {
           application: {

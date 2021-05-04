@@ -5,6 +5,31 @@ import { LayersIcon, Tooltip, makeStyles } from '@astrosat/astrosat-ui';
 import { MapControlButton, ImageList, ImageListItem } from 'components';
 import { toTitleCase } from 'utils/text';
 
+/**
+ * @param {{
+ *   mapStyles: import('map-style/styles').MapStyles
+ *   selectedMapStyle?: import('map-style/styles').MapStyleKey
+ *   onInputChange?: (newStyle: import('map-style/styles').MapStyleKey) => void
+ * }} props
+ */
+export const StyleSwitcherContent = ({
+  onInputChange,
+  selectedMapStyle,
+  mapStyles,
+}) => (
+  <ImageList name="mapStyle" onChange={onInputChange} value={selectedMapStyle}>
+    {Object.entries(mapStyles).map(([styleKey, { img }]) => (
+      <ImageListItem
+        key={styleKey}
+        value={styleKey}
+        text={toTitleCase(styleKey)}
+        src={img}
+        alt={toTitleCase(styleKey)}
+      />
+    ))}
+  </ImageList>
+);
+
 const useStyles = makeStyles(theme => ({
   tooltip: {
     padding: 0,
@@ -47,21 +72,11 @@ const MapStyleSwitcher = ({
       interactive
       onClose={() => setOpen(false)}
       title={
-        <ImageList
-          name="mapStyle"
-          onChange={handleInputChange}
-          value={selectedMapStyle}
-        >
-          {Object.entries(mapStyles).map(([styleKey, { img }]) => (
-            <ImageListItem
-              key={styleKey}
-              value={styleKey}
-              text={toTitleCase(styleKey)}
-              src={img}
-              alt={toTitleCase(styleKey)}
-            />
-          ))}
-        </ImageList>
+        <StyleSwitcherContent
+          onInputChange={handleInputChange}
+          mapStyles={mapStyles}
+          selectedMapStyle={selectedMapStyle}
+        />
       }
     >
       <MapControlButton
