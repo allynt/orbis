@@ -2,7 +2,7 @@ import React from 'react';
 
 import { styled, Grid, Typography } from '@astrosat/astrosat-ui';
 
-export const LightText = styled('span')(({ theme }) => ({
+const LightText = styled('span')(({ theme }) => ({
   fontWeight: theme.typography.fontWeightLight,
 }));
 

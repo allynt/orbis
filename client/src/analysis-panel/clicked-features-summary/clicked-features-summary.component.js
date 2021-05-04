@@ -6,8 +6,7 @@ import {
 } from 'map/orbs/layers.slice';
 import React from 'react';
 import { useAnalysisPanelContext } from '../analysis-panel-context';
-import { ClickedFeatureChips } from './clicked-feature-chips.component';
-import { DataValue } from './data-value.component';
+import { ClickedFeatureChips, DataValue } from './components';
 
 /**
  * @type {import('typings/orbis').AnalysisPanelComponent<
