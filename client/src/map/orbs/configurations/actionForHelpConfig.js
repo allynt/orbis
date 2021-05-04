@@ -3,26 +3,17 @@ import { MAX_ZOOM } from 'map/map.constants';
 import iconMapping from './actionForHelpConfig.iconMapping.json';
 import iconAtlas from './actionForHelpConfig.iconAtlas.svg';
 import { easeInOutCubic } from 'utils/easingFunctions';
-import {
-  filterValueSelector,
-  setClickedFeatures,
-  filterStatusValueSelector,
-} from '../layers.slice';
+import { filterValueSelector, setClickedFeatures } from '../layers.slice';
 import { filter } from 'lodash';
 
-export const filterFeatures = (
-  oldData,
-  startDate,
-  endDate,
-  filterStatus = 'ALL',
-) => {
+export const filterFeatures = (oldData, startDate, endDate, status = 'ALL') => {
   const filteredByStatus =
-    filterStatus === 'ALL'
+    status === 'ALL'
       ? undefined
       : {
           ...oldData,
           features: oldData?.features?.filter(
-            f => f?.properties?.status === filterStatus,
+            f => f?.properties?.status === status,
           ),
         };
 
@@ -55,7 +46,6 @@ const configuration = ({
   orbState,
 }) => {
   const filterRange = filterValueSelector(id)(orbState);
-  const filterStatus = filterStatusValueSelector(id)(orbState);
 
   /** @param {import('typings/orbis').PickedMapFeature} info */
   const handleLayerClick = info => {
@@ -89,9 +79,9 @@ const configuration = ({
     iconAtlas,
     data: filterFeatures(
       data,
-      filterRange?.startDate && new Date(filterRange.startDate),
-      filterRange?.endDate && new Date(filterRange.endDate),
-      filterStatus,
+      filterRange?.range?.startDate && new Date(filterRange?.range.startDate),
+      filterRange?.range?.endDate && new Date(filterRange?.range.endDate),
+      filterRange?.status,
     ),
     visible: !!activeSources?.find(source => source.source_id === id),
     onClick: handleLayerClick,

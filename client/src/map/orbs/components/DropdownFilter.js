@@ -1,30 +1,31 @@
 import React from 'react';
+
 import { useDispatch, useSelector } from 'react-redux';
 import { filterValueSelector, setFilterValue } from '../layers.slice';
-import { DateRangeFilter } from './date-range-filter/date-range-filter.component';
+import { StatusFilter } from './status-filter/status-filter.component';
 
-/** @type {import('typings/orbis').SidebarComponent<{minDate?: string, maxDate?: string}>} */
-export default ({ selectedLayer, minDate, maxDate }) => {
+export default ({ selectedLayer, options, label }) => {
   const dispatch = useDispatch();
+
   const filterValue = useSelector(state =>
     filterValueSelector(selectedLayer.source_id)(state?.orbs),
   );
 
-  const handleSubmit = range => {
+  const handleSubmit = status => {
     dispatch(
       setFilterValue({
         key: selectedLayer.source_id,
-        filterValue: { ...filterValue, range },
+        filterValue: { ...filterValue, status: status.toUpperCase() },
       }),
     );
   };
 
   return (
-    <DateRangeFilter
+    <StatusFilter
+      status={filterValue?.status}
+      options={options}
+      label={label}
       onSubmit={handleSubmit}
-      minDate={minDate}
-      maxDate={maxDate}
-      range={filterValue?.range}
     />
   );
 };

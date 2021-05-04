@@ -2,20 +2,19 @@ import React from 'react';
 
 import { Select, MenuItem } from '@astrosat/astrosat-ui';
 
-import { OPTIONS } from '../popup-status-and-note/status-constants';
-
-export const StatusFilter = ({ status, onSubmit }) => (
-  <Select
-    name="Status Select"
-    value={status || 'ALL'}
-    inputProps={{ 'aria-label': 'Status Select' }}
-    onChange={e => onSubmit(e.target.value)}
-  >
-    <MenuItem value="ALL">All</MenuItem>
-    {Object.entries(OPTIONS).map(([key, label]) => (
-      <MenuItem key={key} value={key}>
-        {label}
-      </MenuItem>
-    ))}
-  </Select>
-);
+export const StatusFilter = ({ status, options, label, onSubmit }) => {
+  return (
+    <Select
+      name={label}
+      value={status || 'ALL'}
+      inputProps={{ 'aria-label': 'Status Select' }}
+      onChange={e => onSubmit(e.target.value)}
+    >
+      {options?.map(({ value, label }) => (
+        <MenuItem key={value} value={value}>
+          {label}
+        </MenuItem>
+      ))}
+    </Select>
+  );
+};

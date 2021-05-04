@@ -12,7 +12,6 @@ import { unionBy, differenceBy } from 'lodash';
  *     clickedFeatures?: GeoJsonFeature[]
  *     hoveredFeatures?: GeoJsonFeature[],
  *     filterValue?: any
- *     selectedStatus?: string
  *     other?: any
  *     timestamp?: number
  *   },
@@ -67,12 +66,6 @@ import { unionBy, differenceBy } from 'lodash';
  * @typedef {GenericOrbAction<{
  *     filterValue?: any
  *   }>} SetFilterValueAction
- */
-
-/**
- * @typedef {GenericOrbAction<{
- *     selectedStatus?: string
- *   }>} SetSelectedStatusAction
  */
 
 /**
@@ -175,12 +168,6 @@ const layersSlice = createSlice({
       const { key, filterValue } = payload;
       state[key] = { ...state[key], filterValue };
     },
-    /** @type {SetSelectedStatusAction} */
-    setSelectedStatus: (state, { payload }) => {
-      if (!payload.key) return handleMissingKey();
-      const { key, selectedStatus } = payload;
-      state[key] = { ...state[key], selectedStatus };
-    },
     /** @type {SetOtherAction} */
     setOther: (state, { payload }) => {
       if (!payload.key) return handleMissingKey();
@@ -212,7 +199,6 @@ export const {
   setHoveredFeatures,
   setVisibility,
   setFilterValue,
-  setSelectedStatus,
   setOther,
   setTimestamp,
   toggleExtrudedMode,
@@ -241,9 +227,6 @@ export const visibilitySelector = id =>
 /** @param {string} id */
 export const filterValueSelector = id =>
   createSelector(baseSelector, state => state?.[id]?.filterValue);
-
-export const filterStatusValueSelector = id =>
-  createSelector(baseSelector, state => state?.[id]?.selectedStatus);
 
 /** @param {string} id */
 export const otherSelector = id =>
