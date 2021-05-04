@@ -1,42 +1,22 @@
-import React, { useState } from 'react';
-
-import {
-  Button,
-  ButtonGroup,
-  Collapse,
-  Fade,
-  Grid,
-  makeStyles,
-  Typography,
-} from '@astrosat/astrosat-ui';
-
+import { Grid, makeStyles, Typography } from '@astrosat/astrosat-ui';
 import { SidePanelSection } from 'components';
 import {
   removeClickedFeatures,
   setClickedFeatures,
 } from 'map/orbs/layers.slice';
+import React from 'react';
 import { useAnalysisPanelContext } from '../analysis-panel-context';
-import { TooltipChip } from './tooltip-chip.component';
+import { ClickedFeatureChips } from './clicked-feature-chips.component';
 import { LightText } from './light-text.component';
 
 /**
- * @type {(props?: {isOnlyFeature?: boolean}) => Record<"chips" | "button" | "buttonGroup" | "value", string>}
+ * @type {(props?: {isOnlyFeature?: boolean}) => Record<"chips", string>}
  */
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles({
   chips: {
     maxWidth: '20rem',
   },
-  buttonGroup: {
-    width: '100%',
-  },
-  button: {
-    width: '100%',
-    padding: theme.spacing(1),
-  },
-  value: {
-    fontWeight: theme.typography.fontWeightLight,
-  },
-}));
+});
 
 /**
  * @type {import('typings/orbis').AnalysisPanelComponent<
@@ -50,61 +30,33 @@ export const ClickedFeaturesSummary = ({
   dispatch,
   fallbackProperty,
 }) => {
-  const [open, setOpen] = useState(false);
   const styles = useStyles();
   const { populationTotal, householdTotal } = useAnalysisPanelContext();
 
   return (
     <SidePanelSection title="Selected Areas of Interest" defaultExpanded>
       <Grid container spacing={2} className={styles.chips}>
-        <Grid item xs={12}>
-          <Collapse in={open} collapsedHeight="1.6rem">
-            <Grid container spacing={1}>
-              {clickedFeatures?.map(feature => (
-                <Fade in key={feature.index}>
-                  <TooltipChip
-                    feature={feature}
-                    isOnlyFeature={clickedFeatures.length === 1}
-                    fallbackProperty={fallbackProperty}
-                    onDelete={() =>
-                      dispatch(
-                        removeClickedFeatures({
-                          key: selectedProperty?.source_id,
-                          uniquePropertyPath: `object.properties.${clickedFeatures[0].layer?.props?.uniqueIdProperty}`,
-                          clickedFeatures: [feature],
-                        }),
-                      )
-                    }
-                  />
-                </Fade>
-              ))}
-            </Grid>
-          </Collapse>
-        </Grid>
-        <Grid item xs container justify="center">
-          <ButtonGroup className={styles.buttonGroup} size="small">
-            <Button
-              className={styles.button}
-              onClick={() =>
-                dispatch(
-                  setClickedFeatures({
-                    key: selectedProperty?.source_id,
-                    clickedFeatures: undefined,
-                  }),
-                )
-              }
-            >
-              Deselect All
-            </Button>
-            <Button
-              className={styles.button}
-              color="secondary"
-              onClick={() => setOpen(o => !o)}
-            >
-              {open ? 'Hide' : 'Show'} All
-            </Button>
-          </ButtonGroup>
-        </Grid>
+        <ClickedFeatureChips
+          clickedFeatures={clickedFeatures}
+          fallbackProperty={fallbackProperty}
+          onFeatureDelete={feature =>
+            dispatch(
+              removeClickedFeatures({
+                key: selectedProperty?.source_id,
+                uniquePropertyPath: `object.properties.${clickedFeatures[0].layer?.props?.uniqueIdProperty}`,
+                clickedFeatures: [feature],
+              }),
+            )
+          }
+          onDeselectAllClick={() =>
+            dispatch(
+              setClickedFeatures({
+                key: selectedProperty?.source_id,
+                clickedFeatures: undefined,
+              }),
+            )
+          }
+        />
         {!clickedFeatures?.some(f => !f.object.properties.population) && (
           <Grid item xs={12}>
             <Typography>
