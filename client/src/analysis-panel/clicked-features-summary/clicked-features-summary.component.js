@@ -1,4 +1,4 @@
-import { Grid, Typography } from '@astrosat/astrosat-ui';
+import { Grid } from '@astrosat/astrosat-ui';
 import { SidePanelSection } from 'components';
 import {
   removeClickedFeatures,
@@ -7,7 +7,7 @@ import {
 import React from 'react';
 import { useAnalysisPanelContext } from '../analysis-panel-context';
 import { ClickedFeatureChips } from './clicked-feature-chips.component';
-import { LightText } from './light-text.component';
+import { DataValue } from './data-value.component';
 
 /**
  * @type {import('typings/orbis').AnalysisPanelComponent<
@@ -48,20 +48,13 @@ export const ClickedFeaturesSummary = ({
           }
         />
         {!clickedFeatures?.some(f => !f.object.properties.population) && (
-          <Grid item xs={12}>
-            <Typography>
-              Total population (
-              {clickedFeatures?.[0].object.properties.population_year}
-              ): <LightText>{populationTotal}</LightText>
-            </Typography>
-          </Grid>
+          <DataValue
+            label={`Total population (${clickedFeatures?.[0].object.properties.population_year})`}
+            value={populationTotal}
+          />
         )}
         {!clickedFeatures?.some(f => !f.object.properties.households) && (
-          <Grid item xs={12}>
-            <Typography>
-              Total households: <LightText>{householdTotal}</LightText>
-            </Typography>
-          </Grid>
+          <DataValue label="Total households" value={householdTotal} />
         )}
       </Grid>
     </SidePanelSection>
