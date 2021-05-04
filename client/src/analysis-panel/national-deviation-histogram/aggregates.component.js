@@ -11,6 +11,8 @@ import {
 const useStyles = makeStyles(theme => ({
   select: {
     padding: theme.spacing(1),
+    paddingRight: theme.spacing(3),
+    cursor: 'pointer',
   },
 }));
 
@@ -34,8 +36,8 @@ export const Aggregates = ({ aggregates, aggregationLabel }) => {
 
       <Grid item>
         <Select
-          classes={{
-            select: styles.select,
+          SelectDisplayProps={{
+            className: styles.select,
           }}
           fullWidth={false}
           inputProps={{ 'aria-label': 'Aggregation Area' }}

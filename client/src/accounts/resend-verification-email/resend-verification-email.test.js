@@ -9,7 +9,7 @@ const wrapper = ({ children }) => (
   <Router history={createMemoryHistory()}>{children}</Router>
 );
 
-describe('<UserRegistrationSuccess />', () => {
+describe('<ResendVerificationEmail />', () => {
   it("displays the user's email", () => {
     const email = 'test@test.com';
     const { getByText } = render(<ResendVerificationEmail email={email} />, {

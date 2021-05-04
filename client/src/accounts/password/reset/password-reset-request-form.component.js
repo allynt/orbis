@@ -39,9 +39,13 @@ const PasswordResetRequestSuccessView = ({ email, onSubmit }) => (
       <Box mb={2}>
         <Button onClick={() => onSubmit(email)}>Resend email</Button>
       </Box>
-      <RouterLink to={LOGIN} component={Link}>
+      <Link
+        // @ts-ignore
+        to={LOGIN}
+        component={RouterLink}
+      >
         Return to login
-      </RouterLink>
+      </Link>
     </Box>
   </>
 );
@@ -95,9 +99,13 @@ const PasswordResetRequestForm = ({ resetPassword, resetStatus, error }) => {
 
       <Form.Row component={Typography} align="center">
         Do you have an account?&nbsp;
-        <RouterLink to={LOGIN} component={Link}>
+        <Link
+          // @ts-ignore
+          to={LOGIN}
+          component={RouterLink}
+        >
           Login
-        </RouterLink>
+        </Link>
       </Form.Row>
     </Form>
   );

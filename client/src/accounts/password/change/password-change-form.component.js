@@ -36,9 +36,13 @@ const ChangePasswordSuccessView = () => (
     </Typography>
 
     <Box mt={2} width="100%" display="flex" justifyContent="center">
-      <RouterLink to={LOGIN} component={Button}>
+      <Button
+        // @ts-ignore
+        to={LOGIN}
+        component={RouterLink}
+      >
         Continue
-      </RouterLink>
+      </Button>
     </Box>
   </>
 );
@@ -143,9 +147,13 @@ const PasswordChangeForm = ({
       <Form.Row centered>
         <Typography>
           Do you have an account?&nbsp;
-          <RouterLink to={LOGIN} component={Link}>
+          <Link
+            // @ts-ignore
+            to={LOGIN}
+            component={RouterLink}
+          >
             Login
-          </RouterLink>
+          </Link>
         </Typography>
       </Form.Row>
     </Form>

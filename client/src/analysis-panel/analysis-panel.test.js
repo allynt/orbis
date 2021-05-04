@@ -51,7 +51,7 @@ describe('<AnalysisPanel />', () => {
         source_id,
         application: { orbis: { data_visualisation_components: [] } },
       },
-      clickedFeatures: [{ object: { properties: { test: 1 } } }],
+      clickedFeatures: [{ index: '123', object: { properties: { test: 1 } } }],
     });
     expect(getByText('Data Analysis')).toBeVisible();
     userEvent.click(getByRole('button', { name: 'minimize' }));
@@ -65,7 +65,9 @@ describe('<AnalysisPanel />', () => {
         source_id,
         application: { orbis: { data_visualisation_components: [] } },
       },
-      clickedFeatures: [{ object: { properties: { code: 'hello' } } }],
+      clickedFeatures: [
+        { index: 1, object: { properties: { code: 'hello', test: '123' } } },
+      ],
     });
     await waitFor(() =>
       userEvent.click(getByRole('button', { name: 'Close' })),

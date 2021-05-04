@@ -109,8 +109,14 @@ export const Histogram = ({
                 tickCount={3}
                 crossAxis={false}
                 style={{
-                  axisLabel: { padding: padding.bottom - 28 },
-                  tickLabels: { padding: 10 },
+                  axisLabel: {
+                    padding: padding.bottom - 28,
+                    fontSize: orbisChartTheme.fontSize,
+                  },
+                  tickLabels: {
+                    padding: 10,
+                    fontSize: orbisChartTheme.fontSize,
+                  },
                 }}
               />
               <VictoryAxis
@@ -121,8 +127,14 @@ export const Histogram = ({
                 label={labelY}
                 offsetX={padding.left}
                 style={{
-                  axisLabel: { padding: padding.left - 14 },
-                  tickLabels: { padding: 10 },
+                  axisLabel: {
+                    padding: padding.left - orbisChartTheme.fontSize,
+                    fontSize: orbisChartTheme.fontSize,
+                  },
+                  tickLabels: {
+                    padding: 10,
+                    fontSize: orbisChartTheme.fontSize,
+                  },
                 }}
                 tickFormat={tick => {
                   return isLogScale
