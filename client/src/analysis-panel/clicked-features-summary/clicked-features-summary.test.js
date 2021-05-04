@@ -36,22 +36,7 @@ const renderComponent = (clickedFeatures = initialFeatures) => {
 
 describe('<ClickedFeaturesSummary />', () => {
   describe('Area Chips', () => {
-    it('Shows a chip for each selected area using the area name', () => {
-      const { getByText } = renderComponent();
-      initialFeatures.forEach(feature =>
-        expect(
-          getByText(feature.object.properties.area_name),
-        ).toBeInTheDocument(),
-      );
-    });
-
-    it('Changes the Show All button to Hide All when clicked', () => {
-      const { getByRole } = renderComponent();
-      userEvent.click(getByRole('button', { name: /show\sall/i }));
-      expect(getByRole('button', { name: /hide\sall/i })).toBeInTheDocument();
-    });
-
-    it("Deselects and area when that area's delete button is clicked", () => {
+    it("Deselects an area when that area's delete button is clicked", () => {
       const { getByRole, dispatch } = renderComponent();
       userEvent.click(getByRole('button', { name: /remove\stest\sarea\s0/i }));
       expect(dispatch).toHaveBeenCalledWith(
