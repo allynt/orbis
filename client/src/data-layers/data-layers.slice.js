@@ -1,8 +1,9 @@
-import { createSlice, createSelector } from '@reduxjs/toolkit';
-import { getJsonAuthHeaders, getData, getApiUrl } from 'utils/http';
-import { createOrbsWithCategorisedSources } from './categorisation.utils';
-import { addLogItem } from 'app.slice';
+import { createSelector, createSlice } from '@reduxjs/toolkit';
+
 import { userSelector } from 'accounts/accounts.selectors';
+import apiClient from 'api-client';
+import { addLogItem } from 'app.slice';
+import { createOrbsWithCategorisedSources } from './categorisation.utils';
 
 const initialState = {
   layers: [],
@@ -47,22 +48,14 @@ export const {
   fetchSourcesSuccess,
 } = dataSlice.actions;
 
-export const fetchSources = () => async (dispatch, getState) => {
-  const headers = getJsonAuthHeaders(getState());
-
-  const response = await getData(
-    `${getApiUrl(getState())}/api/data/sources/`,
-    headers,
-  );
-  const data = await response.json();
-
-  if (!response.ok) {
-    const message = `${response.status} ${response.statusText}`;
-
+export const fetchSources = () => async dispatch => {
+  try {
+    const sources = await apiClient.data.getSources();
+    return dispatch(fetchSourcesSuccess(sources));
+  } catch (error) {
+    const message = `${error.status} ${error.message}`;
     return dispatch(fetchSourcesFailure({ message }));
   }
-
-  return dispatch(fetchSourcesSuccess(data));
 };
 
 export const setLayers = sourceIds => async (dispatch, getState) => {

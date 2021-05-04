@@ -19,6 +19,7 @@ import { object } from 'yup';
 import { LOGIN } from 'accounts/accounts.constants';
 import { status } from 'accounts/accounts.slice';
 import { ErrorWell } from 'accounts/error-well.component';
+import apiClient from 'api-client';
 import { Form } from 'components';
 import {
   FIELD_NAMES,
@@ -54,7 +55,6 @@ const validationSchema = object({
 });
 
 const PasswordChangeForm = ({
-  termsUrl,
   changePassword,
   changeStatus,
   error,
@@ -122,7 +122,11 @@ const PasswordChangeForm = ({
           label={
             <>
               I agree with&nbsp;
-              <Link target="_blank" rel="noopener noreferrer" href={termsUrl}>
+              <Link
+                target="_blank"
+                rel="noopener noreferrer"
+                href={apiClient.documents.termsUrl}
+              >
                 Terms &amp; Conditions
               </Link>
             </>

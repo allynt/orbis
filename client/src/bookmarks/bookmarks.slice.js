@@ -5,19 +5,7 @@ import {
 } from '@reduxjs/toolkit';
 import { NotificationManager } from 'react-notifications';
 
-import {
-  getData,
-  getFormAuthHeaders,
-  getJsonAuthHeaders,
-  getApiUrl,
-  sendData,
-} from '../utils/http';
-
-const API = {
-  fetch: '/api/bookmarks/',
-  add: '/api/bookmarks/',
-  delete: '/api/bookmarks/',
-};
+import apiClient from 'api-client';
 
 /**
  * @typedef BookmarksState
@@ -30,104 +18,95 @@ const API = {
 const name = 'bookmarks';
 
 /**
- * @type {import('@reduxjs/toolkit').AsyncThunk<import('typings/orbis').Bookmark[], undefined, {}>}
+ * @type {import('@reduxjs/toolkit').AsyncThunk<import('typings/bookmarks').Bookmark[], undefined, {}>}
  */
 export const fetchBookmarks = createAsyncThunk(
   `${name}/fetchBookmarks`,
-  async (_, { getState, rejectWithValue }) => {
-    const headers = getJsonAuthHeaders(getState());
-    const url = `${getApiUrl(getState())}${API.fetch}`;
-
-    const response = await getData(url, headers);
-
-    if (!response.ok) {
-      const message = `${response.status} ${response.statusText}`;
-
+  async (_, { rejectWithValue }) => {
+    try {
+      return await apiClient.bookmarks.getBookmarks();
+    } catch (error) {
+      /** @type {import('api-client').ResponseError} */
+      const { message, status } = error;
       NotificationManager.error(
-        message,
-        `Fetching Bookmark Error - ${response.statusText}`,
+        `${status} ${message}`,
+        `Fetching Bookmark Error - ${message}`,
+        50000,
+        () => {},
+      );
+      return rejectWithValue({ message: `${status} ${message}` });
+    }
+  },
+);
+
+/**
+ * @type {import('@reduxjs/toolkit').AsyncThunk<
+ *  import('typings/bookmarks').Bookmark,
+ *  import('typings/bookmarks').RequestBookmark,
+ *  {}
+ * >}
+ */
+export const addBookmark = createAsyncThunk(
+  `${name}/addBookmark`,
+  async (bookmark, { rejectWithValue }) => {
+    try {
+      const newBookmark = await apiClient.bookmarks.addBookmark(bookmark);
+      NotificationManager.success(
+        '',
+        `Successfully saved ${bookmark.title}`,
+        5000,
+        () => {},
+      );
+      return newBookmark;
+    } catch (error) {
+      /** @type {import('api-client').ResponseError} */
+      const { message, status } = error;
+      NotificationManager.error(
+        `${status} ${message}`,
+        `Adding Map Error`,
+        50000,
+        () => {},
+      );
+      return rejectWithValue({
+        message: `${status} ${message}`,
+      });
+    }
+  },
+);
+
+/**
+ * @type {import('@reduxjs/toolkit').AsyncThunk<
+ *  import('typings/bookmarks').Bookmark,
+ *  import('typings/bookmarks').Bookmark,
+ *  {}
+ * >}
+ */
+export const deleteBookmark = createAsyncThunk(
+  `${name}/deleteBookmark`,
+  async (bookmark, { rejectWithValue }) => {
+    try {
+      await apiClient.bookmarks.deleteBookmark(bookmark.id);
+      NotificationManager.success(
+        '',
+        `Successfully deleted ${bookmark.title}`,
+        5000,
+        () => {},
+      );
+      return bookmark;
+    } catch (error) {
+      /** @type {import('api-client').ResponseError} */
+      const { message, status } = error;
+      NotificationManager.error(
+        `${status} ${message}`,
+        `Deleting Map Error`,
         50000,
         () => {},
       );
 
-      return rejectWithValue({ message });
+      return rejectWithValue({
+        message: `${status} ${message}`,
+      });
     }
-
-    const bookmarks = await response.json();
-
-    return bookmarks;
-  },
-);
-
-/**
- * @type {import('@reduxjs/toolkit').AsyncThunk<import('typings/bookmarks').Bookmark, import('typings/bookmarks').Bookmark, {}>}
- */
-export const addBookmark = createAsyncThunk(
-  `${name}/addBookmark`,
-  async (bookmark, { getState, rejectWithValue }) => {
-    const formData = new FormData();
-    Object.keys(bookmark).forEach(key => formData.append(key, bookmark[key]));
-    // nested JSON should be stringified prior to passing to backend
-    formData.set('center', JSON.stringify(bookmark['center']));
-    formData.set('layers', JSON.stringify(bookmark['layers']));
-    formData.set('orbs', JSON.stringify(bookmark['orbs']));
-    formData.set(
-      'drawn_feature_collection',
-      JSON.stringify(bookmark['drawn_feature_collection']),
-    );
-
-    const headers = getFormAuthHeaders(getState());
-    const url = `${getApiUrl(getState())}${API.add}`;
-
-    const response = await sendData(url, formData, headers);
-
-    if (!response.ok) {
-      const message = `${response.status} ${response.statusText}`;
-
-      NotificationManager.error(message, `Adding Map Error`, 50000, () => {});
-
-      return rejectWithValue({ message });
-    }
-
-    const newBookmark = await response.json();
-    NotificationManager.success(
-      '',
-      `Successfully saved ${bookmark.title}`,
-      5000,
-      () => {},
-    );
-
-    return newBookmark;
-  },
-);
-
-/**
- * @type {import('@reduxjs/toolkit').AsyncThunk<import('typings/orbis').Bookmark, import('typings/orbis').Bookmark, {}>}
- */
-export const deleteBookmark = createAsyncThunk(
-  `${name}/deleteBookmark`,
-  async (bookmark, { getState, rejectWithValue }) => {
-    const headers = getJsonAuthHeaders(getState());
-    const url = `${getApiUrl(getState())}${API.delete}`;
-
-    const response = await sendData(url, bookmark.id, headers, 'DELETE');
-
-    if (!response.ok) {
-      const message = `${response.status} ${response.statusText}`;
-
-      NotificationManager.error(message, `Deleting Map Error`, 50000, () => {});
-
-      return rejectWithValue({ message });
-    }
-
-    NotificationManager.success(
-      '',
-      `Successfully deleted ${bookmark.title}`,
-      5000,
-      () => {},
-    );
-
-    return bookmark;
   },
 );
 

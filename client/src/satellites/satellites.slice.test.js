@@ -46,7 +46,6 @@ describe('Satellites Slice', () => {
 
       store = mockStore({
         accounts: { userKey: 'Test-User-Key' },
-        app: { apiUrl: 'http://test.com' },
       });
     });
 

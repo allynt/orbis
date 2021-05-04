@@ -15,16 +15,17 @@ import {
 import { useHistory } from 'react-router-dom';
 
 import { REGISTER_CUSTOMER_USER, REGISTER } from 'accounts/accounts.constants';
+import apiClient from 'api-client';
 import { Form } from 'components';
 
-const SmallPrint = ({ termsUrl, privacyUrl }) => {
+const SmallPrint = () => {
   return (
     <>
       A contract will be created between Astrosat and You "The Customer”. Before
       you proceed, you need to accept our{' '}
       <Link
         variant="inherit"
-        href={termsUrl}
+        href={apiClient.documents.termsUrl}
         target="_blank"
         rel="noreferrer noopener"
       >
@@ -33,7 +34,7 @@ const SmallPrint = ({ termsUrl, privacyUrl }) => {
       and our{' '}
       <Link
         variant="inherit"
-        href={privacyUrl}
+        href={apiClient.documents.privacyUrl}
         target="_blank"
         rel="noreferrer noopener"
       >
@@ -63,15 +64,11 @@ const useStyles = makeStyles(theme => ({
 
 /**
  * @param {{
- *  termsUrl?: string,
- *  privacyUrl?: string,
  *  individualRegistrationIsOpen?: boolean
  *  customerRegistrationIsOpen?: boolean
  * }} props
  */
 const JourneySelection = ({
-  termsUrl,
-  privacyUrl,
   individualRegistrationIsOpen = true,
   customerRegistrationIsOpen = true,
 }) => {
@@ -128,7 +125,7 @@ const JourneySelection = ({
         </FormControl>
       </Form.Row>
       <Form.Row component={Typography} className={styles.smallPrint}>
-        <SmallPrint termsUrl={termsUrl} privacyUrl={privacyUrl} />
+        <SmallPrint />
       </Form.Row>
       <Form.Row centered>
         <Button onClick={handleClick} disabled={!selection}>
