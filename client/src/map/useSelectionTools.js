@@ -1,7 +1,7 @@
 import { SelectionLayer } from '@nebula.gl/layers';
 import { activeLayersSelector } from 'data-layers/data-layers.slice';
 import { useDocumentEventListener } from 'hooks/useDocumentEventListener';
-import { filter, groupBy } from 'lodash';
+import { filter, groupBy, uniqBy } from 'lodash';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { createReduxSafePickedInfo } from 'utils/data';
@@ -12,8 +12,9 @@ import { setClickedFeatures } from './orbs/layers.slice';
  * @param {import('typings/orbis').PickedMapFeature[]} pickingInfos
  */
 export const filterAndSortPickedInfo = pickingInfos => {
+  const uniqueInfos = uniqBy(pickingInfos, 'object.properties.index');
   const filteredInfos = filter(
-    pickingInfos,
+    uniqueInfos,
     info =>
       info.object.geometry.type != null &&
       (info.object.geometry.type === 'Polygon' ||

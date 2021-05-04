@@ -65,19 +65,35 @@ describe('useSelectionTools', () => {
   describe('filterAndSortPickedInfo', () => {
     const info1 = {
         layer: { id: 'source/1' },
-        object: { id: 1, geometry: { type: 'MultiPolygon' } },
+        object: {
+          id: 1,
+          geometry: { type: 'MultiPolygon' },
+          properties: { index: 1 },
+        },
       },
       info2 = {
         layer: { id: 'source/1' },
-        object: { id: 2, geometry: { type: 'Point' } },
+        object: {
+          id: 2,
+          geometry: { type: 'Point' },
+          properties: { index: 2 },
+        },
       },
       info3 = {
         layer: { id: 'source/2' },
-        object: { id: 1, geometry: { type: 'LineString' } },
+        object: {
+          id: 1,
+          geometry: { type: 'LineString' },
+          properties: { index: 3 },
+        },
       },
       info4 = {
         layer: { id: 'source/2' },
-        object: { id: 2, geometry: { type: 'MultiPolygon' } },
+        object: {
+          id: 2,
+          geometry: { type: 'MultiPolygon' },
+          properties: { index: 4 },
+        },
       };
     const pickingInfos = [info4, info2, info1, info3];
 
@@ -104,24 +120,65 @@ describe('useSelectionTools', () => {
       const expected = {};
       expect(filterAndSortPickedInfo(pickingInfos)).toEqual(expected);
     });
+
+    it('Supplys only unique features by property indexes', () => {
+      const pickingInfos = [
+        {
+          id: 1,
+          layer: { id: 'source/1' },
+          object: { geometry: { type: 'Polygon' }, properties: { index: 1 } },
+        },
+        {
+          id: 2,
+          layer: { id: 'source/1' },
+          object: { geometry: { type: 'Polygon' }, properties: { index: 1 } },
+        },
+      ];
+      const expected = {
+        'source/1': [
+          {
+            id: 1,
+            layer: { id: 'source/1' },
+            object: { geometry: { type: 'Polygon' }, properties: { index: 1 } },
+          },
+        ],
+      };
+      expect(filterAndSortPickedInfo(pickingInfos)).toEqual(expected);
+    });
   });
 
   describe('onSelect', () => {
     const info1 = {
         layer: { id: 'source/1' },
-        object: { id: 1, geometry: { type: 'MultiPolygon' } },
+        object: {
+          id: 1,
+          geometry: { type: 'MultiPolygon' },
+          properties: { index: 1 },
+        },
       },
       info2 = {
         layer: { id: 'source/1' },
-        object: { id: 2, geometry: { type: 'Point' } },
+        object: {
+          id: 2,
+          geometry: { type: 'Point' },
+          properties: { index: 2 },
+        },
       },
       info3 = {
         layer: { id: 'source/2' },
-        object: { id: 1, geometry: { type: 'Point' } },
+        object: {
+          id: 1,
+          geometry: { type: 'Point' },
+          properties: { index: 3 },
+        },
       },
       info4 = {
         layer: { id: 'source/2' },
-        object: { id: 2, geometry: { type: 'Polygon' } },
+        object: {
+          id: 2,
+          geometry: { type: 'Polygon' },
+          properties: { index: 4 },
+        },
       };
     const pickingInfos = [info1, info2, info3, info4];
 
