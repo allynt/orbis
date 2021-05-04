@@ -1,4 +1,4 @@
-import { Grid, makeStyles, Typography } from '@astrosat/astrosat-ui';
+import { Grid, Typography } from '@astrosat/astrosat-ui';
 import { SidePanelSection } from 'components';
 import {
   removeClickedFeatures,
@@ -8,15 +8,6 @@ import React from 'react';
 import { useAnalysisPanelContext } from '../analysis-panel-context';
 import { ClickedFeatureChips } from './clicked-feature-chips.component';
 import { LightText } from './light-text.component';
-
-/**
- * @type {(props?: {isOnlyFeature?: boolean}) => Record<"chips", string>}
- */
-const useStyles = makeStyles({
-  chips: {
-    maxWidth: '20rem',
-  },
-});
 
 /**
  * @type {import('typings/orbis').AnalysisPanelComponent<
@@ -30,12 +21,11 @@ export const ClickedFeaturesSummary = ({
   dispatch,
   fallbackProperty,
 }) => {
-  const styles = useStyles();
   const { populationTotal, householdTotal } = useAnalysisPanelContext();
 
   return (
     <SidePanelSection title="Selected Areas of Interest" defaultExpanded>
-      <Grid container spacing={2} className={styles.chips}>
+      <Grid container spacing={2}>
         <ClickedFeatureChips
           clickedFeatures={clickedFeatures}
           fallbackProperty={fallbackProperty}
