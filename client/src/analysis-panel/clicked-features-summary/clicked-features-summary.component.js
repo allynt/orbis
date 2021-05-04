@@ -1,42 +1,29 @@
+import React, { useState } from 'react';
+
 import {
   Button,
   ButtonGroup,
-  Chip,
-  CloseIcon,
   Collapse,
+  Fade,
   Grid,
   makeStyles,
-  Tooltip,
   Typography,
-  Fade,
 } from '@astrosat/astrosat-ui';
+
 import { SidePanelSection } from 'components';
-import { get } from 'lodash';
 import {
   removeClickedFeatures,
   setClickedFeatures,
 } from 'map/orbs/layers.slice';
-import React, { useState } from 'react';
 import { useAnalysisPanelContext } from '../analysis-panel-context';
-
-const MAX_CHARS = 15;
+import { TooltipChip } from './tooltip-chip.component';
 
 /**
- * @type {(props?: {isOnlyFeature?: boolean}) => Record<"chips" | "button" | "tooltip" | "chip" | "closeIcon" | "buttonGroup" | "value", string>}
+ * @type {(props?: {isOnlyFeature?: boolean}) => Record<"chips" | "button" | "buttonGroup" | "value", string>}
  */
 const useStyles = makeStyles(theme => ({
   chips: {
     maxWidth: '20rem',
-  },
-  chip: {
-    fontSize: theme.typography.pxToRem(10),
-    maxWidth: props => (!props.isOnlyFeature ? `${MAX_CHARS}ch` : undefined),
-  },
-  closeIcon: {
-    width: theme.typography.pxToRem(10),
-  },
-  tooltip: {
-    top: '-1.5rem',
   },
   buttonGroup: {
     width: '100%',
@@ -49,61 +36,6 @@ const useStyles = makeStyles(theme => ({
     fontWeight: theme.typography.fontWeightLight,
   },
 }));
-
-/**
- * @param {{
- *   onDelete: (event: any) => void
- *   feature: import('typings/orbis').PolygonPickedMapFeature
- *   fallbackProperty?: string
- *   isOnlyFeature?: boolean
- * }} props
- */
-const TooltipChip = ({
-  onDelete,
-  feature,
-  fallbackProperty,
-  isOnlyFeature,
-}) => {
-  const styles = useStyles({ isOnlyFeature });
-
-  const areaIdentifier =
-    get(feature.object.properties, 'area_name') ??
-    get(feature.object.properties, fallbackProperty);
-
-  const ChipElement = (
-    <Chip
-      tabIndex={-1}
-      classes={{ label: styles.chip }}
-      size="small"
-      label={areaIdentifier}
-      onDelete={onDelete}
-      deleteIcon={
-        <CloseIcon
-          className={styles.closeIcon}
-          titleAccess={`Remove ${areaIdentifier}`}
-          role="button"
-        />
-      }
-    />
-  );
-
-  return areaIdentifier?.length + 2 >= MAX_CHARS && !isOnlyFeature ? (
-    <Tooltip
-      role="tooltip"
-      id={areaIdentifier}
-      classes={{
-        tooltip: styles.tooltip,
-      }}
-      arrow
-      placement="bottom"
-      title={areaIdentifier}
-    >
-      <Grid item>{ChipElement}</Grid>
-    </Tooltip>
-  ) : (
-    <Grid item>{ChipElement}</Grid>
-  );
-};
 
 /**
  * @type {import('typings/orbis').AnalysisPanelComponent<

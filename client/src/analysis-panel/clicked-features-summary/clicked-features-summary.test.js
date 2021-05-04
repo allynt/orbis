@@ -70,35 +70,6 @@ describe('<ClickedFeaturesSummary />', () => {
         ),
       );
     });
-
-    it('Has a tooltip for long area names', () => {
-      const long = "This is a long name, oh my it's so long, like good grief";
-      const { getByRole } = renderComponent([
-        { object: { properties: { area_name: 'Short' } } },
-        {
-          object: {
-            properties: {
-              area_name: long,
-            },
-          },
-        },
-      ]);
-      expect(getByRole('tooltip', { name: long })).toBeInTheDocument();
-    });
-
-    it("Shows the full name an no tooltip when there's only one feature", () => {
-      const long = 'Highlands and Islands';
-      const { queryByRole } = renderComponent([
-        {
-          object: {
-            properties: {
-              area_name: long,
-            },
-          },
-        },
-      ]);
-      expect(queryByRole('tooltip')).not.toBeInTheDocument();
-    });
   });
 
   describe('Population', () => {
