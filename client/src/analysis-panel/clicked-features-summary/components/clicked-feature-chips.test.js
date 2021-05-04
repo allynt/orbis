@@ -4,9 +4,9 @@ import { ClickedFeatureChips } from './clicked-feature-chips.component';
 import userEvent from '@testing-library/user-event';
 
 const initialFeatures = new Array(3).fill(undefined).map((_, i) => ({
-  index: i,
   object: {
     properties: {
+      index: i,
       area_name: `Test Area ${i}`,
       population: i + 1,
       households: i + 10,
@@ -23,6 +23,7 @@ const renderComponent = () => {
       clickedFeatures={initialFeatures}
       onDeselectAllClick={onDeselectAllClick}
       onFeatureDelete={onFeatureDelete}
+      fallbackProperty="index"
     />,
   );
   return { ...utils, onDeselectAllClick, onFeatureDelete };
