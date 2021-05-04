@@ -3,9 +3,9 @@ import React from 'react';
 import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
-import { StatusFilter } from './status-filter.component';
+import { DropdownFilter } from './dropdown-filter.component';
 
-const options = [
+export const options = [
   { value: 'ALL', label: 'All' },
   { value: 'NEW', label: 'New' },
   { value: 'PENDING', label: 'Pending' },
@@ -13,11 +13,12 @@ const options = [
   { value: 'FOLLOWUP', label: 'Followup' },
 ];
 
-const renderComponent = ({ status, onSubmit = jest.fn() }) => {
+const renderComponent = ({ value, onSubmit = jest.fn() }) => {
   const utils = render(
-    <StatusFilter
-      status={status}
+    <DropdownFilter
+      value={value}
       options={options}
+      defaultValue="ALL"
       label="Test Label"
       onSubmit={onSubmit}
     />,
@@ -26,11 +27,11 @@ const renderComponent = ({ status, onSubmit = jest.fn() }) => {
   return { ...utils, onSubmit };
 };
 
-describe('Status Filter', () => {
-  it('renders a status filter dropdown', () => {
-    const { getByRole, getByText, getAllByText } = renderComponent({});
+describe('Dropdown Filter', () => {
+  it('renders a dropdown filter', () => {
+    const { getByRole, getByText } = renderComponent({});
 
-    const button = getByRole('button', { name: 'Status Select' });
+    const button = getByRole('button', { name: 'Test Label' });
 
     expect(button).toBeInTheDocument();
 
@@ -43,18 +44,18 @@ describe('Status Filter', () => {
       });
   });
 
-  it('defaults filter value to `All` if status if not present', () => {
-    const { getByRole, getAllByText } = renderComponent({ status: null });
+  it('defaults filter value to `All` if value if not present', () => {
+    const { getByRole, getAllByText } = renderComponent({ value: null });
 
-    userEvent.click(getByRole('button', { name: 'Status Select' }));
+    userEvent.click(getByRole('button', { name: 'Test Label' }));
 
     expect(getAllByText('All').length).toEqual(2);
   });
 
-  it('is set to provided status if present', () => {
-    const { getByRole, getAllByText } = renderComponent({ status: 'PENDING' });
+  it('is set to provided value if present', () => {
+    const { getByRole, getAllByText } = renderComponent({ value: 'PENDING' });
 
-    userEvent.click(getByRole('button', { name: 'Status Select' }));
+    userEvent.click(getByRole('button', { name: 'Test Label' }));
 
     expect(getAllByText('Pending').length).toEqual(2);
   });
@@ -62,7 +63,7 @@ describe('Status Filter', () => {
   it('calls submit callback when new option is selected', () => {
     const { getByRole, getByText, onSubmit } = renderComponent({});
 
-    userEvent.click(getByRole('button', { name: 'Status Select' }));
+    userEvent.click(getByRole('button', { name: 'Test Label' }));
     userEvent.click(getByText('Pending'));
 
     expect(onSubmit).toHaveBeenCalledWith('PENDING');

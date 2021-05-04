@@ -2,12 +2,18 @@ import React from 'react';
 
 import { Select, MenuItem } from '@astrosat/astrosat-ui';
 
-export const StatusFilter = ({ status, options, label, onSubmit }) => {
+export const DropdownFilter = ({
+  value,
+  options,
+  label,
+  defaultValue = '',
+  onSubmit,
+}) => {
   return (
     <Select
       name={label}
-      value={status || 'ALL'}
-      inputProps={{ 'aria-label': 'Status Select' }}
+      value={value || defaultValue}
+      inputProps={{ 'aria-label': label }}
       onChange={e => onSubmit(e.target.value)}
     >
       {options?.map(({ value, label }) => (

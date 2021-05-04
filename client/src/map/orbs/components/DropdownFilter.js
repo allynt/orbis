@@ -2,9 +2,9 @@ import React from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { filterValueSelector, setFilterValue } from '../layers.slice';
-import { StatusFilter } from './status-filter/status-filter.component';
+import { DropdownFilter } from './dropdown-filter/dropdown-filter.component';
 
-export default ({ selectedLayer, options, label }) => {
+export default ({ selectedLayer, options, defaultValue, label }) => {
   const dispatch = useDispatch();
 
   const filterValue = useSelector(state =>
@@ -21,9 +21,10 @@ export default ({ selectedLayer, options, label }) => {
   };
 
   return (
-    <StatusFilter
-      status={filterValue?.status}
+    <DropdownFilter
+      value={filterValue?.status}
       options={options}
+      defaultValue={defaultValue}
       label={label}
       onSubmit={handleSubmit}
     />
