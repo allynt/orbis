@@ -50,6 +50,7 @@ const useStyles = makeStyles(theme => ({
  *  minDate?: string
  *  maxDate?: string
  *  range?: DateRange<string>
+ *  label?: string
  * }} props
  */
 export const DateRangeFilter = ({
