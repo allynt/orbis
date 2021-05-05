@@ -56,7 +56,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 /** @param { { id: number, note: string, onSave: (data: object) => void, status: string } } props */
-const PopupStatusAndNote = ({ id, note, onSave, status = 'NEW' }) => {
+const PopupStatusAndNote = ({ id, note, onSave, status }) => {
   const [text, setText] = useState(note);
   const [selectedStatus, setSelectedStatus] = useState(status);
   const [editMode, setEditMode] = useState(false);
@@ -99,7 +99,7 @@ const PopupStatusAndNote = ({ id, note, onSave, status = 'NEW' }) => {
         <RadioGroup
           name="Status"
           aria-labelledby="Status"
-          value={selectedStatus}
+          value={selectedStatus || 'NEW'}
           onChange={e => setSelectedStatus(e.target.value)}
         >
           {Object.entries(OPTIONS).map(([key, value]) => (

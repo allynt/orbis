@@ -2,6 +2,7 @@ import {
   Fade,
   makeStyles,
   Tooltip,
+  InputLabel,
   Typography,
   Well,
 } from '@astrosat/astrosat-ui';
@@ -49,6 +50,7 @@ const useStyles = makeStyles(theme => ({
  *  minDate?: string
  *  maxDate?: string
  *  range?: DateRange<string>
+ *  label?: string
  * }} props
  */
 export const DateRangeFilter = ({
@@ -56,6 +58,7 @@ export const DateRangeFilter = ({
   minDate: minDateProp,
   maxDate: maxDateProp,
   range,
+  label,
 }) => {
   const minDate =
       minDateProp === 'today' ? new Date().toISOString() : minDateProp,
@@ -148,6 +151,16 @@ export const DateRangeFilter = ({
       }
     >
       <form onChange={handleSubmit(onSubmit)}>
+        {label ? (
+          <InputLabel shrink color="secondary">
+            {label}
+          </InputLabel>
+        ) : null}
+        <DateRangeInput
+          register={register}
+          onDateRangeClick={handleDateRangeClick}
+          onResetClick={handleResetClick}
+        />
         {!!errors[FIELD_NAMES.startDate] || !!errors[FIELD_NAMES.endDate] ? (
           <Fade in>
             <Well className={styles.well} severity="error">
@@ -158,11 +171,6 @@ export const DateRangeFilter = ({
             </Well>
           </Fade>
         ) : null}
-        <DateRangeInput
-          register={register}
-          onDateRangeClick={handleDateRangeClick}
-          onResetClick={handleResetClick}
-        />
       </form>
     </Tooltip>
   );

@@ -6,21 +6,31 @@ import { easeInOutCubic } from 'utils/easingFunctions';
 import { filterValueSelector, setClickedFeatures } from '../layers.slice';
 import { filter } from 'lodash';
 
-export const filterFeatures = (oldData, startDate, endDate) =>
-  !oldData || (!startDate && !endDate)
-    ? oldData
-    : {
-        ...oldData,
-        features: filter(oldData.features, feature => {
-          const submissionDateTimestamp = new Date(
-            feature.properties['Submission Date'],
-          ).getTime();
-          return (
-            (!startDate || submissionDateTimestamp >= startDate.getTime()) &&
-            (!endDate || submissionDateTimestamp <= endDate.getTime())
-          );
-        }),
-      };
+export const filterFeatures = (oldData, startDate, endDate, status = 'ALL') => {
+  const data =
+    status === 'ALL'
+      ? oldData
+      : {
+          ...oldData,
+          features: oldData?.features?.filter(
+            f => f?.properties?.status === status,
+          ),
+        };
+
+  if (!data || (!startDate && !endDate)) return data;
+  return {
+    ...data,
+    features: filter(data?.features, feature => {
+      const submissionDateTimestamp = new Date(
+        feature.properties['Submission Date'],
+      ).getTime();
+      return (
+        (!startDate || submissionDateTimestamp >= startDate.getTime()) &&
+        (!endDate || submissionDateTimestamp <= endDate.getTime())
+      );
+    }),
+  };
+};
 
 /**
  * @typedef {import('typings/orbis').GeoJsonFeature<{type?: string, Type?: string}>} ActionForHelpFeature
@@ -68,8 +78,9 @@ const configuration = ({
     iconAtlas,
     data: filterFeatures(
       data,
-      filterRange?.startDate && new Date(filterRange.startDate),
-      filterRange?.endDate && new Date(filterRange.endDate),
+      filterRange?.range?.startDate && new Date(filterRange?.range.startDate),
+      filterRange?.range?.endDate && new Date(filterRange?.range.endDate),
+      filterRange?.status,
     ),
     visible: !!activeSources?.find(source => source.source_id === id),
     onClick: handleLayerClick,
