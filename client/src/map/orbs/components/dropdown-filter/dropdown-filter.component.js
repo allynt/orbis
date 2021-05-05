@@ -19,7 +19,7 @@ export const DropdownFilter = ({
   return (
     <div className={styles.container}>
       <Select
-        label={label}
+        labelId={label}
         value={value || defaultValue}
         onChange={e => onChange(e.target.value)}
       >
