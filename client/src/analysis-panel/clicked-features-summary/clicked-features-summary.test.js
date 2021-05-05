@@ -11,8 +11,8 @@ import {
 import { AnalysisPanelProvider } from 'analysis-panel/analysis-panel-context';
 
 const initialFeatures = new Array(3).fill(undefined).map((_, i) => ({
-  index: i,
   object: {
+    id: i,
     properties: {
       area_name: `Test Area ${i}`,
       population: i + 1,
@@ -37,22 +37,7 @@ const renderComponent = (clickedFeatures = initialFeatures) => {
 
 describe('<ClickedFeaturesSummary />', () => {
   describe('Area Chips', () => {
-    it('Shows a chip for each selected area using the area name', () => {
-      const { getByText } = renderComponent();
-      initialFeatures.forEach(feature =>
-        expect(
-          getByText(feature.object.properties.area_name),
-        ).toBeInTheDocument(),
-      );
-    });
-
-    it('Changes the Show All button to Hide All when clicked', () => {
-      const { getByRole } = renderComponent();
-      userEvent.click(getByRole('button', { name: /show\sall/i }));
-      expect(getByRole('button', { name: /hide\sall/i })).toBeInTheDocument();
-    });
-
-    it("Deselects and area when that area's delete button is clicked", () => {
+    it("Deselects an area when that area's delete button is clicked", () => {
       const { getByRole, dispatch } = renderComponent();
       userEvent.click(getByRole('button', { name: /remove\stest\sarea\s0/i }));
       expect(dispatch).toHaveBeenCalledWith(
@@ -71,28 +56,12 @@ describe('<ClickedFeaturesSummary />', () => {
         ),
       );
     });
-
-    it('Has a tooltip for long area names', () => {
-      const long = "This is a long name, oh my it's so long, like good grief";
-      const { getByRole } = renderComponent([
-        {
-          index: 1,
-          object: {
-            properties: {
-              area_name: long,
-            },
-          },
-        },
-      ]);
-      expect(getByRole('tooltip', { name: long })).toBeInTheDocument();
-    });
   });
 
   describe('Population', () => {
     it('Shows the total population for a single clicked area', () => {
       const feature = {
-        index: 0,
-        object: { properties: { population: 1000 } },
+        object: { id: 0, properties: { population: 1000 } },
       };
       const { getByText } = renderComponent([feature]);
       expect(
@@ -109,8 +78,7 @@ describe('<ClickedFeaturesSummary />', () => {
 
     it('Shows the population year', () => {
       const feature = {
-        index: 0,
-        object: { properties: { population: 1, population_year: 2077 } },
+        object: { id: 0, properties: { population: 1, population_year: 2077 } },
       };
       const { getByText } = renderComponent([feature]);
       expect(
@@ -124,8 +92,7 @@ describe('<ClickedFeaturesSummary />', () => {
   describe('Households', () => {
     it('Shows the households for a single clicked area', () => {
       const feature = {
-        index: 0,
-        object: { properties: { households: 1985 } },
+        object: { id: 0, properties: { households: 1985 } },
       };
       const { getByText } = renderComponent([feature]);
       expect(
