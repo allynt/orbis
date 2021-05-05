@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Select, MenuItem, makeStyles } from '@astrosat/astrosat-ui';
+import { TextField, MenuItem, makeStyles } from '@astrosat/astrosat-ui';
 
 const useStyles = makeStyles(theme => ({
   container: {
@@ -17,18 +17,18 @@ export const DropdownFilter = ({
 }) => {
   const styles = useStyles();
   return (
-    <div className={styles.container}>
-      <Select
-        labelId={label}
-        value={value || defaultValue}
-        onChange={e => onChange(e.target.value)}
-      >
-        {options?.map(({ value, label }) => (
-          <MenuItem key={value} value={value}>
-            {label}
-          </MenuItem>
-        ))}
-      </Select>
-    </div>
+    <TextField
+      select
+      label={label}
+      value={value || defaultValue}
+      onChange={e => onChange(e.target.value)}
+      className={styles.container}
+    >
+      {options?.map(({ value, label }) => (
+        <MenuItem key={value} value={value}>
+          {label}
+        </MenuItem>
+      ))}
+    </TextField>
   );
 };
