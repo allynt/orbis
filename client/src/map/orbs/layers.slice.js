@@ -187,6 +187,13 @@ const layersSlice = createSlice({
     setExtrusionScale: (state, { payload }) => {
       state.extrusionScale = payload;
     },
+    setAllLayersData: (state, { payload }) => {
+      state.layersData = payload;
+    },
+    setSingleLayerData: (state, { payload }) => {
+      const { key, data } = payload;
+      state.layersData[key] = data;
+    },
     /** @type {SetStateAction} */
     setState: (_, { payload }) => payload,
   },
@@ -203,6 +210,8 @@ export const {
   setTimestamp,
   toggleExtrudedMode,
   setExtrusionScale,
+  setAllLayersData,
+  setSingleLayerData,
   setState,
 } = layersSlice.actions;
 
@@ -211,6 +220,15 @@ export const {
  * @returns {LayersState}
  */
 const baseSelector = orbs => orbs?.[layersSlice.name];
+
+export const allLayersDataSelector = createSelector(
+  baseSelector,
+  state => state?.layersData,
+);
+
+/**@param {string} id */
+export const singleLayerDataSelector = id =>
+  createSelector(baseSelector, state => state?.layersData?.[id]);
 
 /** @param {string} id */
 export const clickedFeaturesSelector = id =>

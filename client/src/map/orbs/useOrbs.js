@@ -7,6 +7,9 @@ import {
   selectDataToken,
   logError,
 } from 'data-layers/data-layers.slice';
+
+import { setAllLayersData, allLayersDataSelector } from './layers.slice';
+
 import { getData } from 'utils/http';
 import { useMap } from 'MapContext';
 import { LayerFactory } from '../deck.gl/LayerFactory';
@@ -25,7 +28,9 @@ export const useOrbs = () => {
   const dispatch = useDispatch();
   const authToken = useSelector(selectDataToken);
   const activeSources = useSelector(activeDataSourcesSelector);
-  const [data, setData] = useState({});
+
+  const data = useSelector(state => allLayersDataSelector(state?.orbs));
+
   /** @type {[any[], React.Dispatch<any[]>]} */
   const [layers, setLayers] = useState([]);
   /** @type {[JSX.Element[], React.Dispatch<JSX.Element[]>]} */
@@ -48,10 +53,12 @@ export const useOrbs = () => {
         dispatch(setIsLoading(true));
         const dataSet = await response.json();
         dispatch(setIsLoading(false));
-        setData({
-          ...data,
-          [source.source_id]: dataSet,
-        });
+        dispatch(
+          setAllLayersData({
+            ...data,
+            [source.source_id]: dataSet,
+          }),
+        );
       } catch (ex) {
         return dispatch(logError(source));
       }
@@ -62,17 +69,27 @@ export const useOrbs = () => {
   useEffect(() => {
     for (let source of activeSources) {
       if (
-        !data[source.source_id] &&
+        !data?.[source.source_id] &&
         source.metadata.request_strategy !== 'manual'
       ) {
         if (source.metadata.tiles)
-          setData({ ...data, [source.source_id]: source.metadata.tiles });
+          dispatch(
+            setAllLayersData({
+              ...data,
+              [source.source_id]: source.metadata.tiles,
+            }),
+          );
         else if (source.type === 'raster')
-          setData({ ...data, [source.source_id]: source.metadata.url });
+          dispatch(
+            setAllLayersData({
+              ...data,
+              [source.source_id]: source.metadata.url,
+            }),
+          );
         else fetchData(source);
       }
     }
-  }, [activeSources, data, fetchData]);
+  }, [activeSources, data, fetchData, dispatch]);
 
   const makeComponent = useCallback(
     (componentDefinition, source) => {
@@ -159,7 +176,7 @@ export const useOrbs = () => {
         const configFn = imported.default;
         loadedConfig = configFn({
           id: source.source_id,
-          data: data[source.source_id],
+          data: data?.[source.source_id],
           activeSources,
           dispatch,
           setViewState,

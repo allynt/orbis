@@ -5,10 +5,18 @@ import PopupStatusAndNote from './popup-status-and-note/popup-status-and-note.co
 
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { clickedFeaturesSelector, setClickedFeatures } from '../layers.slice';
+import {
+  clickedFeaturesSelector,
+  setClickedFeatures,
+  singleLayerDataSelector,
+  setSingleLayerData,
+} from '../layers.slice';
 import { selectDataToken } from 'data-layers/data-layers.slice';
 
 const ActionForHelpMapComponent = ({ source }) => {
+  const layerData = useSelector(state =>
+    singleLayerDataSelector(source?.source_id)(state?.orbs),
+  );
   const pickedObjects = useSelector(state =>
     clickedFeaturesSelector(source?.source_id)(state?.orbs),
   );
@@ -16,7 +24,7 @@ const ActionForHelpMapComponent = ({ source }) => {
   const dispatch = useDispatch();
 
   const updateNoteOrStatus = async ({ id, ...data }) => {
-    const url = `${source.metadata.url.split(/\/?\?/)[0]}/${id}/`;
+    const url = `${source?.metadata?.url.split(/\/?\?/)[0]}/${id}/`;
 
     const headers = {
       Accept: 'application/json',
@@ -25,7 +33,30 @@ const ActionForHelpMapComponent = ({ source }) => {
     };
 
     const response = await sendData(url, data, headers, 'PUT');
-    return response.json();
+    const json = await response.json();
+
+    const newData = {
+      ...layerData,
+      features: layerData?.features?.map(feat =>
+        feat.id === id
+          ? {
+              ...feat,
+              properties: {
+                ...feat.properties,
+                notes: json.notes,
+                status: json.status,
+              },
+            }
+          : feat,
+      ),
+    };
+
+    return dispatch(
+      setSingleLayerData({
+        key: source?.source_id,
+        data: newData,
+      }),
+    );
   };
 
   if (!pickedObjects?.length) return null;
