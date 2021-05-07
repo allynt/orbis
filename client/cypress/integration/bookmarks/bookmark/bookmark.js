@@ -1,12 +1,12 @@
 import { Then } from 'cypress-cucumber-preprocessor/steps';
 
-const buttonText = 'Save Map';
+const buttonText = 'Save New Map';
 
 // View My Maps panel
 Then(`I see the "Bookmarks" panel`, () => {
   // Verify form
-  cy.findByPlaceholderText('Title');
-  cy.findByPlaceholderText('Description');
+  cy.findByRole('textbox', { name: 'Title' });
+  cy.findByRole('textbox', { name: 'Description' });
   cy.contains(buttonText).should('be.disabled');
 });
 

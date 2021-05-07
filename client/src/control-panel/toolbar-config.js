@@ -44,7 +44,7 @@ export const getToolbarItems = (dispatch, user, apiUrl) => {
     },
     {
       label: BOOKMARKS,
-      icon: <MapIcon />,
+      icon: <MapIcon titleAccess="My maps" />,
       action: () => {
         dispatch(toggleMenu(BOOKMARKS));
         dispatch(

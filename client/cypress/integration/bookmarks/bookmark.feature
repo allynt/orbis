@@ -4,8 +4,8 @@ Feature: Bookmarks
 
   Background:
     Given I am logged in
-    When I click the "browse-map" button by test id
-    When I click the "toolbar-item-MyMaps" button by test id
+    When I click the "Browse Map" button
+    When I click the "My maps" icon
 
   Scenario: View My Maps Side Menu
     Then I see the "Bookmarks" panel
