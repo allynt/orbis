@@ -19,6 +19,7 @@ import reducer, {
   setVisibility,
   toggleExtrudedMode,
   setState,
+  layersWithDataSelector,
   timestampSelector,
 } from './layers.slice';
 
@@ -394,6 +395,37 @@ describe('layers slice', () => {
         const state = {};
         const result = selector(state);
         expect(result).toBeUndefined();
+      });
+    });
+
+    describe('layersWithDataSelector', () => {
+      it('returns a list of keys for layers which have data', () => {
+        const state = {
+          layers: {
+            'test-layer-1': { data: true },
+            'test-layer-2': { data: true },
+            'test-layer-3': {},
+          },
+        };
+
+        const result = layersWithDataSelector(state);
+
+        expect(result).toEqual(['test-layer-1', 'test-layer-2']);
+      });
+
+      it('returns a list of keys for layers which have data and value is not an object', () => {
+        const state = {
+          layers: {
+            'test-layer-1': { data: true },
+            'test-layer-2': null,
+            'test-layer-3': false,
+            'test-layer-4': undefined,
+          },
+        };
+
+        const result = layersWithDataSelector(state);
+
+        expect(result).toEqual(['test-layer-1']);
       });
     });
   });

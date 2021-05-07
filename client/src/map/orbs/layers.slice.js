@@ -226,9 +226,14 @@ export const {
  */
 const baseSelector = orbs => orbs?.[layersSlice.name];
 
-export const allLayersDataSelector = createSelector(
-  baseSelector,
-  state => state?.layersData,
+export const layersWithDataSelector = createSelector(baseSelector, state =>
+  Object.entries(state).reduce(
+    (acc, [key, value]) =>
+      value != null && typeof value === 'object' && 'data' in value
+        ? [...acc, key]
+        : acc,
+    [],
+  ),
 );
 
 /**@param {string} id */

@@ -8,7 +8,7 @@ import {
   logError,
 } from 'data-layers/data-layers.slice';
 
-import { setData, allLayersDataSelector } from './layers.slice';
+import { setData, layersWithDataSelector } from './layers.slice';
 
 import { getData } from 'utils/http';
 import { useMap } from 'MapContext';
@@ -29,7 +29,9 @@ export const useOrbs = () => {
   const authToken = useSelector(selectDataToken);
   const activeSources = useSelector(activeDataSourcesSelector);
 
-  const data = useSelector(state => allLayersDataSelector(state?.orbs));
+  const layersWithDataIds = useSelector(state =>
+    layersWithDataSelector(state?.orbs),
+  );
 
   /** @type {[any[], React.Dispatch<any[]>]} */
   const [layers, setLayers] = useState([]);
@@ -51,12 +53,12 @@ export const useOrbs = () => {
         }
 
         dispatch(setIsLoading(true));
-        const dataSet = await response.json();
+        const data = await response.json();
         dispatch(setIsLoading(false));
         dispatch(
           setData({
             key: source.source_id,
-            data: dataSet,
+            data,
           }),
         );
       } catch (ex) {
@@ -69,7 +71,7 @@ export const useOrbs = () => {
   useEffect(() => {
     for (let source of activeSources) {
       if (
-        !data?.[source.source_id] &&
+        !layersWithDataIds?.includes(source.source_id) &&
         source.metadata.request_strategy !== 'manual'
       ) {
         if (source.metadata.tiles)
@@ -89,7 +91,7 @@ export const useOrbs = () => {
         else fetchData(source);
       }
     }
-  }, [activeSources, data, fetchData, dispatch]);
+  }, [activeSources, layersWithDataIds, fetchData, dispatch]);
 
   const makeComponent = useCallback(
     (componentDefinition, source) => {
@@ -196,7 +198,14 @@ export const useOrbs = () => {
 
     const layerPromises = activeSources.map(createLayer);
     Promise.all(layerPromises).then(setLayers);
-  }, [activeSources, data, dispatch, setViewState, orbState, authToken]);
+  }, [
+    activeSources,
+    layersWithDataIds,
+    dispatch,
+    setViewState,
+    orbState,
+    authToken,
+  ]);
 
   return {
     layers,
