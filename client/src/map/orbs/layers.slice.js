@@ -187,10 +187,8 @@ const layersSlice = createSlice({
     setExtrusionScale: (state, { payload }) => {
       state.extrusionScale = payload;
     },
-    setAllLayersData: (state, { payload }) => {
-      state.layersData = payload;
-    },
     setSingleLayerData: (state, { payload }) => {
+      if (!payload.key) return handleMissingKey();
       const { key, data } = payload;
       state.layersData[key] = data;
     },
@@ -210,7 +208,6 @@ export const {
   setTimestamp,
   toggleExtrudedMode,
   setExtrusionScale,
-  setAllLayersData,
   setSingleLayerData,
   setState,
 } = layersSlice.actions;

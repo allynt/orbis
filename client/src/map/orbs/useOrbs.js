@@ -8,7 +8,7 @@ import {
   logError,
 } from 'data-layers/data-layers.slice';
 
-import { setAllLayersData, allLayersDataSelector } from './layers.slice';
+import { setSingleLayerData, allLayersDataSelector } from './layers.slice';
 
 import { getData } from 'utils/http';
 import { useMap } from 'MapContext';
@@ -54,16 +54,16 @@ export const useOrbs = () => {
         const dataSet = await response.json();
         dispatch(setIsLoading(false));
         dispatch(
-          setAllLayersData({
-            ...data,
-            [source.source_id]: dataSet,
+          setSingleLayerData({
+            key: source.source_id,
+            data: dataSet,
           }),
         );
       } catch (ex) {
         return dispatch(logError(source));
       }
     },
-    [authToken, data, dispatch],
+    [authToken, dispatch],
   );
 
   useEffect(() => {
@@ -74,16 +74,16 @@ export const useOrbs = () => {
       ) {
         if (source.metadata.tiles)
           dispatch(
-            setAllLayersData({
-              ...data,
-              [source.source_id]: source.metadata.tiles,
+            setSingleLayerData({
+              key: source.source_id,
+              data: source.metadata.tiles,
             }),
           );
         else if (source.type === 'raster')
           dispatch(
-            setAllLayersData({
-              ...data,
-              [source.source_id]: source.metadata.url,
+            setSingleLayerData({
+              key: source.source_id,
+              data: source.metadata.url,
             }),
           );
         else fetchData(source);

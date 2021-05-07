@@ -53,8 +53,11 @@ const ActionForHelpMapComponent = ({ source }) => {
 
     return dispatch(
       setSingleLayerData({
-        key: source?.source_id,
-        data: newData,
+        ...data,
+        {
+          key: source?.source_id,
+          data: newData,
+        }
       }),
     );
   };
