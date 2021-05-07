@@ -5,7 +5,7 @@ Feature: Bookmarks
   Background:
     Given I am logged in
     When I click the "Browse Map" button
-    When I click the "My maps" icon
+    When I click the "My maps" icon button
 
   Scenario: View My Maps Side Menu
     Then I see the "Bookmarks" panel
