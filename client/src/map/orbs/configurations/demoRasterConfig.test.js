@@ -14,8 +14,16 @@ const setup = ({ orbState = undefined } = {}) =>
         },
       },
     ],
-    orbState,
-    data: 'data/url',
+    orbState: {
+      ...orbState,
+      layers: {
+        ...orbState?.layers,
+        'test/layer': {
+          ...orbState?.layers?.['test/layer'],
+          data: 'data/url',
+        },
+      },
+    },
     defaultValue: 'defaultValue',
     otherStateKey: 'test/layer',
     valueKey: 'value',
