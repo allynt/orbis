@@ -176,7 +176,6 @@ export const useOrbs = () => {
         const configFn = imported.default;
         loadedConfig = configFn({
           id: source.source_id,
-          data: data?.[source.source_id],
           activeSources,
           dispatch,
           setViewState,

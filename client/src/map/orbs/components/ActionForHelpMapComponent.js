@@ -53,11 +53,8 @@ const ActionForHelpMapComponent = ({ source }) => {
 
     return dispatch(
       setData({
-        ...data,
-        {
-          key: source?.source_id,
-          data: newData,
-        }
+        key: source?.source_id,
+        data: newData,
       }),
     );
   };
