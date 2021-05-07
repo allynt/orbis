@@ -56,7 +56,7 @@ LongLabels.args = {
       application: {
         orbis: {
           display: {
-            property_toggle_label: 'This is a Super Long Label Oh My',
+            property_toggle_label: 'Number',
           },
         },
       },
@@ -66,7 +66,7 @@ LongLabels.args = {
       application: {
         orbis: {
           display: {
-            property_toggle_label: 'This is another Super Long Label Just Why?',
+            property_toggle_label: 'Rate per 100,000',
           },
         },
       },

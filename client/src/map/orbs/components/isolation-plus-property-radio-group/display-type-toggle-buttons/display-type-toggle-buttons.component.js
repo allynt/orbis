@@ -9,13 +9,13 @@ import clsx from 'clsx';
 import { capitalize } from 'lodash';
 import React from 'react';
 
-/** @type {(props?: {moreThanTwoProperties: boolean}) => Record<"buttonGroup" | "button" | "notActive", string>} */
 const useStyles = makeStyles(theme => ({
   buttonGroup: {
-    maxWidth: '100%',
+    width: '100%',
   },
   button: {
-    width: props => (props.moreThanTwoProperties ? undefined : '50%'),
+    width: '100%',
+    padding: theme.spacing(1),
     cursor: 'not-allowed',
     '&$notActive': {
       color: theme.palette.secondary.contrastText,
@@ -54,7 +54,7 @@ export const DisplayTypeToggleButtons = ({
   onChange,
 }) => {
   const moreThanTwoProperties = properties.length > 2;
-  const styles = useStyles({ moreThanTwoProperties });
+  const styles = useStyles();
 
   /**
    * @param {import('typings/orbis').Property} property
