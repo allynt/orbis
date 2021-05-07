@@ -20,6 +20,7 @@ import reducer, {
   toggleExtrudedMode,
   setState,
   layersWithDataSelector,
+  dataSelector,
   timestampSelector,
 } from './layers.slice';
 
@@ -365,6 +366,7 @@ describe('layers slice', () => {
       ${filterValueSelector}     | ${'filterValue'}     | ${undefined}
       ${otherSelector}           | ${'other'}           | ${undefined}
       ${timestampSelector}       | ${'timestamp'}       | ${undefined}
+      ${dataSelector}            | ${'data'}            | ${undefined}
     `('$selector.name', ({ selector, stateKey, undefinedReturn }) => {
       it(`Returns ${stateKey} for the given layer`, () => {
         const value = [1, 2, 3];
