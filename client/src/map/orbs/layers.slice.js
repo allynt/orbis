@@ -14,6 +14,7 @@ import { unionBy, differenceBy } from 'lodash';
  *     filterValue?: any
  *     other?: any
  *     timestamp?: number
+ *     data?: any
  *   },
  *   extrudedMode: boolean
  *   extrusionScale: number
@@ -78,6 +79,12 @@ import { unionBy, differenceBy } from 'lodash';
  * @typedef {GenericOrbAction<{
  *   timestamp?: number
  * }>} SetTimestampAction
+ */
+
+/**
+ * @typedef {GenericOrbAction<{
+ *   data?: any
+ * }>} SetDataAction
  */
 
 /**
@@ -187,10 +194,11 @@ const layersSlice = createSlice({
     setExtrusionScale: (state, { payload }) => {
       state.extrusionScale = payload;
     },
-    setSingleLayerData: (state, { payload }) => {
+    /** @type {SetDataAction} */
+    setData: (state, { payload }) => {
       if (!payload.key) return handleMissingKey();
       const { key, data } = payload;
-      state.layersData[key] = data;
+      state[key] = { ...state[key], data };
     },
     /** @type {SetStateAction} */
     setState: (_, { payload }) => payload,
@@ -208,7 +216,7 @@ export const {
   setTimestamp,
   toggleExtrudedMode,
   setExtrusionScale,
-  setSingleLayerData,
+  setData,
   setState,
 } = layersSlice.actions;
 
@@ -224,8 +232,8 @@ export const allLayersDataSelector = createSelector(
 );
 
 /**@param {string} id */
-export const singleLayerDataSelector = id =>
-  createSelector(baseSelector, state => state?.layersData?.[id]);
+export const dataSelector = id =>
+  createSelector(baseSelector, state => state?.[id]?.data);
 
 /** @param {string} id */
 export const clickedFeaturesSelector = id =>

@@ -8,14 +8,14 @@ import { useDispatch, useSelector } from 'react-redux';
 import {
   clickedFeaturesSelector,
   setClickedFeatures,
-  singleLayerDataSelector,
-  setSingleLayerData,
+  dataSelector,
+  setData,
 } from '../layers.slice';
 import { selectDataToken } from 'data-layers/data-layers.slice';
 
 const ActionForHelpMapComponent = ({ source }) => {
   const layerData = useSelector(state =>
-    singleLayerDataSelector(source?.source_id)(state?.orbs),
+    dataSelector(source?.source_id)(state?.orbs),
   );
   const pickedObjects = useSelector(state =>
     clickedFeaturesSelector(source?.source_id)(state?.orbs),
@@ -52,7 +52,7 @@ const ActionForHelpMapComponent = ({ source }) => {
     };
 
     return dispatch(
-      setSingleLayerData({
+      setData({
         ...data,
         {
           key: source?.source_id,
