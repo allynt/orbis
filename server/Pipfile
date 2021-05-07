@@ -71,7 +71,7 @@ codecov = "*"
 # live debug info
 django-debug-toolbar = "*"
 # test fixtures replacement
-factory-boy = "==3.0.1"
+factory-boy = "*"
 # linting
 pylint = "*"
 # test library
