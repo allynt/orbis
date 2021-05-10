@@ -92,7 +92,6 @@ Feature: Register
     When I click the "Terms & Conditions" link
     Then The "Terms & Conditions" page will open url "/terms" in a new tab
 
-  @focus
   Scenario: Click "Login" link
     When I click the "Login" link
     Then I am redirected to the "Login" page with url "/login"
