@@ -61,7 +61,10 @@ export const AnalysisPanelProvider = ({
         ?.map(breakdownPropertyName => {
           const breakdownProperty = find(currentSource?.metadata?.properties, {
             name: breakdownPropertyName,
-          });
+          }) ?? {
+            ...selectedProperty,
+            name: breakdownPropertyName,
+          };
           if (
             selectedProperty.timeseries &&
             breakdownProperty.timeseries_latest_timestamp !==
@@ -73,10 +76,7 @@ export const AnalysisPanelProvider = ({
           }
           const value = aggregateValues(
             clickedFeatures,
-            breakdownProperty ?? {
-              ...selectedProperty,
-              name: breakdownPropertyName,
-            },
+            breakdownProperty,
             selectedTimestamp,
           );
           return {
