@@ -16,6 +16,7 @@ const useStyles = makeStyles(theme => ({
   closeButton: {
     position: 'absolute',
     right: 0,
+    color: theme.palette.secondary.main,
   },
   content: {
     display: 'grid',
