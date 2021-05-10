@@ -27,9 +27,6 @@ const useStyles = makeStyles(theme => ({
   noteAndButtons: {
     minWidth: theme.typography.pxToRem(304),
   },
-  input: {
-    color: `${theme.palette.secondary.main} !important`,
-  },
   displays: {
     width: '100%',
     marginBottom: theme.spacing(1),
