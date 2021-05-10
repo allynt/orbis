@@ -185,7 +185,8 @@ describe('AnalysisPanelContext', () => {
       const name1 = 'people in 0-17',
         name2 = 'people in 18-39',
         timeseries_latest_timestamp = '2020-02-01T00:00:00Z',
-        selectedTimestamp = new Date('2020-02-03T00:00:00Z').getTime(),
+        selectedTimestamp = '2020-02-03T00:00:00Z',
+        selectedTime = new Date(selectedTimestamp).getTime(),
         source_id = 'test/source',
         currentSource = {
           source_id,
@@ -194,7 +195,8 @@ describe('AnalysisPanelContext', () => {
               {
                 name: name1,
                 timeseries: true,
-                timeseries_latest_timestamp: timeseries_latest_timestamp,
+                timeseries_latest_timestamp,
+                breakdown: [name1, name2],
               },
               {
                 name: name2,
@@ -206,8 +208,7 @@ describe('AnalysisPanelContext', () => {
         },
         selectedProperty = {
           source_id,
-          name: name1,
-          breakdown: [name1, name2],
+          ...currentSource.metadata.properties[0],
         },
         clickedFeatures = [
           {
@@ -256,11 +257,29 @@ describe('AnalysisPanelContext', () => {
           currentSource,
           selectedProperty,
           clickedFeatures,
-          selectedTimestamp,
+          selectedTimestamp: selectedTime,
         });
         expect(result.current.breakdownAggregation).toEqual([
           { value: 68745 + 84354, name: name1 },
           { value: 98784 + 35456, name: name2 },
+        ]);
+      });
+
+      it('Works if a property used for breakdown is not listed in metadata', () => {
+        const { result } = renderContext({
+          currentSource: {
+            ...currentSource,
+            metadata: {
+              ...currentSource.metadata,
+              properties: [currentSource.metadata.properties[0]],
+            },
+          },
+          selectedProperty,
+          clickedFeatures,
+        });
+        expect(result.current.breakdownAggregation).toEqual([
+          { value: 23, name: name1 },
+          { value: 5, name: name2 },
         ]);
       });
     });
