@@ -34,7 +34,7 @@ WSGI_APPLICATION = "wsgi.application"
 
 SITE_ID = 1
 
-DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+DEFAULT_AUTO_FIELD = "django.db.models.AutoField"
 
 ROOT_URLCONF = "core.urls"
 
