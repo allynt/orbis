@@ -60,7 +60,7 @@ export const getToolbarItems = (dispatch, user, apiUrl) => {
     },
     {
       label: PROFILE,
-      icon: <ProfileIcon />,
+      icon: <ProfileIcon titleAccess="Profile" />,
       action: () => {
         dispatch(toggleMenu(PROFILE));
         dispatch(
