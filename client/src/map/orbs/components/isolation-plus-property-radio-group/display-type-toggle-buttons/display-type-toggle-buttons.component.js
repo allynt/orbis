@@ -36,6 +36,8 @@ const getButtonLabelForProperty = property => {
     case 'decile':
     case 'percentage':
       return capitalize(property.type);
+    case 'discrete':
+      return 'Categories';
     default:
       return 'Number';
   }

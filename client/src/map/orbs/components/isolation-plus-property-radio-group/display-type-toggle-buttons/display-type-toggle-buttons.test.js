@@ -51,14 +51,15 @@ describe('<DisplayTypeToggleButtons />', () => {
     expect(getByRole('button', { name: 'People' })).toBeInTheDocument();
   });
 
-  it('Falls back to Percentage, Number, or Decile if property_toggle_label is not provided', () => {
-    const { getByRole, getAllByRole } = renderComponent([
+  it('Falls back to Percentage, Number, Categories, or Decile if property_toggle_label is not provided', () => {
+    const { getByRole } = renderComponent([
       { name: 'property1', type: 'continuous' },
       { name: 'property2', type: 'decile' },
       { name: 'property3', type: 'discrete' },
       { name: 'property4', type: 'percentage' },
     ]);
-    expect(getAllByRole('button', { name: 'Number' })).toHaveLength(2);
+    expect(getByRole('button', { name: 'Number' })).toBeInTheDocument();
+    expect(getByRole('button', { name: 'Categories' })).toBeInTheDocument();
     expect(getByRole('button', { name: 'Decile' })).toBeInTheDocument();
     expect(getByRole('button', { name: 'Percentage' })).toBeInTheDocument();
   });
