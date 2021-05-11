@@ -1,5 +1,6 @@
 import { Grid, styled, Typography } from '@astrosat/astrosat-ui';
 import { ColorMapRangeSlider } from 'components';
+import { ColorAdjustSlider } from 'components/color-adjust-slider/color-adjust-slider.component';
 import { format } from 'date-fns';
 import React from 'react';
 import { isRealValue } from 'utils/isRealValue';
@@ -17,6 +18,8 @@ const LastGridItem = styled(Grid)(({ theme }) => ({
  *  selectedTimestamp: number
  *  filterRange: [number, number]
  *  onRangeFilterChange: (value: [number, number]) => void
+ *  clipRange?: [number, number]
+ *  onClipRangeChange: (value: [number, number]) => void
  * }} props
  */
 export const SelectedPropertyControls = ({
@@ -25,6 +28,8 @@ export const SelectedPropertyControls = ({
   selectedTimestamp,
   filterRange,
   onRangeFilterChange,
+  clipRange,
+  onClipRangeChange,
 }) => (
   <>
     {selectedProperty.timeseries &&
@@ -62,10 +67,31 @@ export const SelectedPropertyControls = ({
       <DiscretePropertyLegend property={selectedProperty} />
     ) : (
       <>
-        <Grid item>
+        <Grid item xs={12}>
+          <Typography variant="body2">Color Adjust</Typography>
+        </Grid>
+        <Grid item xs={12}>
+          <ColorAdjustSlider
+            color={selectedProperty?.application?.orbis?.display?.color}
+            min={selectedProperty.min}
+            max={selectedProperty.max}
+            clipMin={
+              clipRange?.[0] ??
+              selectedProperty?.clip_min ??
+              selectedProperty.min
+            }
+            clipMax={
+              clipRange?.[1] ??
+              selectedProperty?.clip_max ??
+              selectedProperty.max
+            }
+            onSliderChange={onClipRangeChange}
+          />
+        </Grid>
+        <Grid item xs={12}>
           <Typography variant="body2">Range Filter</Typography>
         </Grid>
-        <LastGridItem item>
+        <LastGridItem item xs={12}>
           <ColorMapRangeSlider
             type={selectedProperty?.type}
             color={selectedProperty?.application?.orbis?.display?.color}
@@ -73,12 +99,14 @@ export const SelectedPropertyControls = ({
               isRealValue(selectedProperty.min) ? selectedProperty.min : 0,
               isRealValue(selectedProperty.max) ? selectedProperty.max : 1,
             ]}
-            clip={
-              (selectedProperty.clip_min || selectedProperty.clip_max) && [
-                selectedProperty.clip_min || selectedProperty.min,
-                selectedProperty.clip_max || selectedProperty.max,
-              ]
-            }
+            clip={[
+              clipRange?.[0] ??
+                selectedProperty.clip_min ??
+                selectedProperty.min,
+              clipRange?.[1] ??
+                selectedProperty.clip_max ??
+                selectedProperty.max,
+            ]}
             value={filterRange}
             onChange={onRangeFilterChange}
             reversed={
