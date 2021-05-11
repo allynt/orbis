@@ -1,3 +1,44 @@
+# [2.16.0](https://github.com/astrosat/orbis/compare/v2.15.0...v2.16.0) (2021-05-11)
+
+
+### Bug Fixes
+
+* **frontend:** Add function to component, manual testing ([b444851](https://github.com/astrosat/orbis/commit/b444851964952d8ea625853928009611a4f573da))
+* **frontend:** Add label to date range filter ([eb53aca](https://github.com/astrosat/orbis/commit/eb53aca5f5db0c6bec3bfd7ee19241c0f3d6a560))
+* **frontend:** Add label to parent component, update types ([02c679d](https://github.com/astrosat/orbis/commit/02c679d32dbd912df4ee8beb84529d996845da59))
+* **frontend:** Add session persistence functionality ([26b21f9](https://github.com/astrosat/orbis/commit/26b21f9da81cbf0c9a0b0050706181e0abee4e08))
+* **frontend:** Add slice test ([77e6890](https://github.com/astrosat/orbis/commit/77e689051a01a9fe439c1f4faa80fcb41f34acbb))
+* **frontend:** Adjust styling ([0adf5c2](https://github.com/astrosat/orbis/commit/0adf5c23a0ab24b4e60de54dbcdff6fba74ba2fc))
+* **frontend:** Basix functionality for filtering ([fb109af](https://github.com/astrosat/orbis/commit/fb109af2b1d1d4e9441a9b5d22eacb672539c84c))
+* **frontend:** Change property toggle button label ([08c2465](https://github.com/astrosat/orbis/commit/08c24652d113a23a9497ea74d9981487417f5c93))
+* **frontend:** Fix broken test ([be6eff3](https://github.com/astrosat/orbis/commit/be6eff3692e4bacb6de5c321d685a1288a88d48c))
+* **frontend:** Fix broken tests ([bdbf52a](https://github.com/astrosat/orbis/commit/bdbf52a4ba8a3381a455a7f9eb4a6b024f765f71))
+* **frontend:** Fix filter function ([7629207](https://github.com/astrosat/orbis/commit/7629207db45d97443ba9f074715e3d8b296ed344))
+* **frontend:** Fix more tests ([b0e0dd1](https://github.com/astrosat/orbis/commit/b0e0dd118151fe344752e442d68f6443330b9794))
+* **frontend:** Get deleteProperty working ([b0b518b](https://github.com/astrosat/orbis/commit/b0b518bb54788e2fdb60b2db6eae188eb4149580))
+* **frontend:** Last of logic fixes, add label ([de62ece](https://github.com/astrosat/orbis/commit/de62ecea0dc02f22c7e7f5fa17f13a1d5fd010b6))
+* **frontend:** Make changes, fix tests ([21833a8](https://github.com/astrosat/orbis/commit/21833a884f947ade26845a418bd10c1f2ad10aba))
+* **frontend:** Rename and type action and selector ([4172227](https://github.com/astrosat/orbis/commit/4172227dbba3d4f4eb1f77485d8ae4740c92ffb7))
+* **frontend:** Rename files, add metadata ([02d67d2](https://github.com/astrosat/orbis/commit/02d67d2c90a6c0a41b6390ffa537c03f421ce347))
+* **frontend:** Rename variable, remove log ([b469d47](https://github.com/astrosat/orbis/commit/b469d47385fd4aa69f8ca06fcd74880df5aa7e39))
+* **frontend:** Show full area name in Clicked feature summary if there's only one feature ([94e7e5f](https://github.com/astrosat/orbis/commit/94e7e5f697c309f40a8329d95b16d1e1c8fd6785))
+* **frontend:** Stop duplicate areas when selecting with marquee ([9aedad0](https://github.com/astrosat/orbis/commit/9aedad0789447d8143a88135cd78ba72b4c969ce))
+* **frontend:** Stories and key fix ([b545654](https://github.com/astrosat/orbis/commit/b54565456a660b8f05e28c301c07f61f83d04142))
+* **frontend:** Tests, logic and fixed small bug ([c6db24a](https://github.com/astrosat/orbis/commit/c6db24a1a614f684ca4fb22a3ad2db04b4e85741))
+* **frontend:** Update configs to use data selector ([ad9eeb5](https://github.com/astrosat/orbis/commit/ad9eeb57f49fce12e8f6e7f0d140150952147788))
+* **frontend:** Update filter to pass tests ([de26276](https://github.com/astrosat/orbis/commit/de26276a2a25163ea844186acf99898d20d7d319))
+* **frontend:** Update logic, styles and tests. ([6ee84b0](https://github.com/astrosat/orbis/commit/6ee84b0c052dde6c6379c47f1ea5f6ccba0b62d5))
+* **frontend:** Update tests ([6305b2b](https://github.com/astrosat/orbis/commit/6305b2b49b3d63d86d4910bbc65ef190de902cd4))
+* **frontend:** Update useOrbs and slice to use single data ([dddb4d8](https://github.com/astrosat/orbis/commit/dddb4d8d64f10b1cdbbf63717b1043d3faf91549))
+* **frontend:** Update useOrbs, layers slice and layers slice test ([2b9d3f4](https://github.com/astrosat/orbis/commit/2b9d3f4d3ef64d79627592172fb2e42ec4e5c76e))
+* **frontend:** Updated metadata in proxy ([9921c6f](https://github.com/astrosat/orbis/commit/9921c6fa3cd4c6b71ca928faca4c3302ca68a39e))
+* **frontend:** Upgrade state, metadata and component logic ([5a85a3d](https://github.com/astrosat/orbis/commit/5a85a3d26e4459462a2b6a79f9cf3bd0401cd44d))
+
+
+### Features
+
+* **backend:** unpin factory-boy ([37b4394](https://github.com/astrosat/orbis/commit/37b4394a47913bbd7752f9c47dcc90c02af6bbaf))
+
 # [2.15.0](https://github.com/astrosat/orbis/compare/v2.14.0...v2.15.0) (2021-05-04)
 
 
