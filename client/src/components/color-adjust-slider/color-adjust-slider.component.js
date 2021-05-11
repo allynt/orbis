@@ -2,12 +2,12 @@ import { fade, makeStyles, Slider } from '@astrosat/astrosat-ui';
 import React from 'react';
 import { ColorScale } from 'utils/ColorScale';
 
-const useStyles = makeStyles(({ palette }) => ({
+const useStyles = makeStyles(({ palette, typography: { pxToRem } }) => ({
   root: {
-    height: 42,
+    height: pxToRem(42),
   },
   rail: {
-    height: 42,
+    height: pxToRem(42),
     opacity: 1,
     border: `1px solid ${palette.grey[300]}`,
     backgroundImage: props =>
@@ -19,13 +19,13 @@ const useStyles = makeStyles(({ palette }) => ({
   thumb: props => ({
     bottom: 0,
     transform: 'translateY(55%)',
-    width: 20,
-    height: 24,
+    width: pxToRem(20),
+    height: pxToRem(24),
     borderRadius: '50% 50% 5% 5% / 45% 45% 5% 5%',
     border: `1px solid ${palette.grey[300]}`,
     '&:nth-of-type(3)': {
       backgroundColor: props.colorScale.get(props.clipMin),
-      ',&:hover, &:focus-visible': {
+      '&:hover, &:focus-visible': {
         boxShadow: `0px 0px 0px 8px ${fade(
           props.colorScale.get(props.clipMin),
           0.16,
