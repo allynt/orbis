@@ -187,6 +187,12 @@ const layersSlice = createSlice({
       const { key, timestamp } = payload;
       state[key] = { ...state[key], timestamp };
     },
+    /** @type {SetDataAction} */
+    setData: (state, { payload }) => {
+      if (!payload.key) return handleMissingKey();
+      const { key, data } = payload;
+      state[key] = { ...state[key], data };
+    },
     toggleExtrudedMode: state => {
       state.extrudedMode = !state.extrudedMode;
     },
@@ -194,30 +200,24 @@ const layersSlice = createSlice({
     setExtrusionScale: (state, { payload }) => {
       state.extrusionScale = payload;
     },
-    /** @type {SetDataAction} */
-    setData: (state, { payload }) => {
-      if (!payload.key) return handleMissingKey();
-      const { key, data } = payload;
-      state[key] = { ...state[key], data };
-    },
     /** @type {SetStateAction} */
     setState: (_, { payload }) => payload,
   },
 });
 
 export const {
-  setClickedFeatures,
   addClickedFeatures,
   removeClickedFeatures,
-  setHoveredFeatures,
-  setVisibility,
-  setFilterValue,
-  setOther,
-  setTimestamp,
-  toggleExtrudedMode,
-  setExtrusionScale,
+  setClickedFeatures,
   setData,
+  setExtrusionScale,
+  setFilterValue,
+  setHoveredFeatures,
+  setOther,
   setState,
+  setTimestamp,
+  setVisibility,
+  toggleExtrudedMode,
 } = layersSlice.actions;
 
 /**

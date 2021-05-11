@@ -16,6 +16,7 @@ import reducer, {
   setHoveredFeatures,
   setOther,
   setTimestamp,
+  setData,
   setVisibility,
   toggleExtrudedMode,
   setState,
@@ -36,6 +37,7 @@ describe('layers slice', () => {
       ${setFilterValue}     | ${'filterValue'}     | ${['this', 'is', 'the', 'way']}
       ${setOther}           | ${'other'}           | ${{ this: 'is something', andThis: 'is something else' }}
       ${setTimestamp}       | ${'timestamp'}       | ${54568498465}
+      ${setData}            | ${'data'}            | ${{ type: 'FeatureCollection' }}
     `('$action.type', ({ action, stateKey, newValue }) => {
       const expected = { [LAYER_ID]: { [stateKey]: newValue } },
         payload = {
