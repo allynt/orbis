@@ -14,6 +14,7 @@ import { unionBy, differenceBy } from 'lodash';
  *     filterValue?: any
  *     other?: any
  *     timestamp?: number
+ *     data?: any
  *   },
  *   extrudedMode: boolean
  *   extrusionScale: number
@@ -78,6 +79,12 @@ import { unionBy, differenceBy } from 'lodash';
  * @typedef {GenericOrbAction<{
  *   timestamp?: number
  * }>} SetTimestampAction
+ */
+
+/**
+ * @typedef {GenericOrbAction<{
+ *   data?: any
+ * }>} SetDataAction
  */
 
 /**
@@ -180,6 +187,12 @@ const layersSlice = createSlice({
       const { key, timestamp } = payload;
       state[key] = { ...state[key], timestamp };
     },
+    /** @type {SetDataAction} */
+    setData: (state, { payload }) => {
+      if (!payload.key) return handleMissingKey();
+      const { key, data } = payload;
+      state[key] = { ...state[key], data };
+    },
     toggleExtrudedMode: state => {
       state.extrudedMode = !state.extrudedMode;
     },
@@ -193,17 +206,18 @@ const layersSlice = createSlice({
 });
 
 export const {
-  setClickedFeatures,
   addClickedFeatures,
   removeClickedFeatures,
-  setHoveredFeatures,
-  setVisibility,
-  setFilterValue,
-  setOther,
-  setTimestamp,
-  toggleExtrudedMode,
+  setClickedFeatures,
+  setData,
   setExtrusionScale,
+  setFilterValue,
+  setHoveredFeatures,
+  setOther,
   setState,
+  setTimestamp,
+  setVisibility,
+  toggleExtrudedMode,
 } = layersSlice.actions;
 
 /**
@@ -211,6 +225,20 @@ export const {
  * @returns {LayersState}
  */
 const baseSelector = orbs => orbs?.[layersSlice.name];
+
+export const layersWithDataSelector = createSelector(baseSelector, state =>
+  Object.entries(state ?? {}).reduce(
+    (acc, [key, value]) =>
+      value != null && typeof value === 'object' && 'data' in value
+        ? [...acc, key]
+        : acc,
+    [],
+  ),
+);
+
+/**@param {string} id */
+export const dataSelector = id =>
+  createSelector(baseSelector, state => state?.[id]?.data);
 
 /** @param {string} id */
 export const clickedFeaturesSelector = id =>

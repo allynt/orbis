@@ -3,7 +3,11 @@ import { MAX_ZOOM } from 'map/map.constants';
 import iconMapping from './actionForHelpConfig.iconMapping.json';
 import iconAtlas from './actionForHelpConfig.iconAtlas.svg';
 import { easeInOutCubic } from 'utils/easingFunctions';
-import { filterValueSelector, setClickedFeatures } from '../layers.slice';
+import {
+  filterValueSelector,
+  setClickedFeatures,
+  dataSelector,
+} from '../layers.slice';
 import { filter } from 'lodash';
 
 export const filterFeatures = (oldData, startDate, endDate, status = 'ALL') => {
@@ -38,13 +42,13 @@ export const filterFeatures = (oldData, startDate, endDate, status = 'ALL') => {
 
 const configuration = ({
   id,
-  data,
   activeSources,
   dispatch,
   setViewState,
   orbState,
 }) => {
   const filterRange = filterValueSelector(id)(orbState);
+  const data = dataSelector(id)(orbState);
 
   /** @param {import('typings/orbis').PickedMapFeature} info */
   const handleLayerClick = info => {

@@ -3,15 +3,21 @@ import configFn from './demoPollutionFlaringConfig';
 describe('demoPollutionFlaringConfig', () => {
   describe('data', () => {
     it('returns all features from data if other does not exist', () => {
-      const { data } = configFn({ data: { features: [1, 2] } });
+      const { data } = configFn({
+        id: 'test/layer',
+        orbState: {
+          layers: { 'test/layer': { data: { features: [1, 2] } } },
+        },
+      });
       expect(data).toEqual([1, 2]);
     });
 
     it('returns all features from data if other.date does not exist', () => {
       const { data } = configFn({
         id: 'test/layer',
-        data: { features: [1, 2] },
-        orbState: { layers: { 'test/layer': { other: {} } } },
+        orbState: {
+          layers: { 'test/layer': { data: { features: [1, 2] }, other: {} } },
+        },
       });
       expect(data).toEqual([1, 2]);
     });
@@ -23,9 +29,13 @@ describe('demoPollutionFlaringConfig', () => {
       ];
       const { data } = configFn({
         id: 'test/layer',
-        data: { features },
         orbState: {
-          layers: { 'test/layer': { other: { date: 1577923200000 } } },
+          layers: {
+            'test/layer': {
+              data: { features },
+              other: { date: 1577923200000 },
+            },
+          },
         },
       });
       expect(data).toEqual([features[1]]);

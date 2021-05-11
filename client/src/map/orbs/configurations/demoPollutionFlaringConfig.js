@@ -1,11 +1,16 @@
 import { format } from 'date-fns';
 import { filter, find } from 'lodash';
-import { visibilitySelector, otherSelector } from '../layers.slice';
+import {
+  visibilitySelector,
+  otherSelector,
+  dataSelector,
+} from '../layers.slice';
 
 /** @type {import("typings/orbis").LayerConfiguration<{otherStateKey?: string}>} */
-export default ({ id, data, orbState, activeSources, otherStateKey = id }) => {
+export default ({ id, orbState, activeSources, otherStateKey = id }) => {
   const visible = visibilitySelector(id)(orbState);
   const other = otherSelector(otherStateKey)(orbState);
+  const data = dataSelector(id)(orbState);
 
   const otherDate = new Date(other?.date);
 

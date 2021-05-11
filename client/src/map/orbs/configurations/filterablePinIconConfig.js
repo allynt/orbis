@@ -1,5 +1,5 @@
 import { get } from 'lodash';
-import { filterValueSelector } from '../layers.slice';
+import { filterValueSelector, dataSelector } from '../layers.slice';
 import pinIconConfig from './pinIconConfig';
 
 /**
@@ -13,13 +13,13 @@ import pinIconConfig from './pinIconConfig';
  */
 const filterablePinIconConfig = ({
   id,
-  data,
   orbState,
   filterType = 'blacklist',
   filterProperty,
   ...rest
 }) => {
   const filterValue = filterValueSelector(id)(orbState);
+  const data = dataSelector(id)(orbState);
 
   const getFeatures = () => {
     if (!filterValue || !data) return data;
