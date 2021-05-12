@@ -63,8 +63,8 @@ const useStyles = makeStyles(({ palette, typography: { pxToRem } }) => ({
 export const ColorAdjustSlider = ({
   min,
   max,
-  clipMin,
-  clipMax,
+  clipMin = min,
+  clipMax = max,
   color,
   onSliderChange,
 }) => {
