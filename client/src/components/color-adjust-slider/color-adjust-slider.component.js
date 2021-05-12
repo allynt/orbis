@@ -2,6 +2,16 @@ import { fade, makeStyles, Slider } from '@astrosat/astrosat-ui';
 import React from 'react';
 import { ColorScale } from 'utils/ColorScale';
 
+const makeThumbStyles = (clipValue, colorScale) => ({
+  backgroundColor: colorScale.get(clipValue),
+  '&:hover, &:focus-visible': {
+    boxShadow: `0px 0px 0px 8px ${fade(colorScale.get(clipValue), 0.16)}`,
+    '@media (hover: none)': {
+      boxShadow: 'none',
+    },
+  },
+});
+
 const useStyles = makeStyles(({ palette, typography: { pxToRem } }) => ({
   root: {
     height: pxToRem(42),
@@ -23,30 +33,8 @@ const useStyles = makeStyles(({ palette, typography: { pxToRem } }) => ({
     height: pxToRem(24),
     borderRadius: '50% 50% 5% 5% / 45% 45% 5% 5%',
     border: `1px solid ${palette.grey[300]}`,
-    '&:nth-of-type(3)': {
-      backgroundColor: props.colorScale.get(props.clipMin),
-      '&:hover, &:focus-visible': {
-        boxShadow: `0px 0px 0px 8px ${fade(
-          props.colorScale.get(props.clipMin),
-          0.16,
-        )}`,
-        '@media (hover: none)': {
-          boxShadow: 'none',
-        },
-      },
-    },
-    '&:nth-of-type(4)': {
-      backgroundColor: props.colorScale.get(props.clipMax),
-      '&:hover, &:focus-visible': {
-        boxShadow: `0px 0px 0px 8px ${fade(
-          props.colorScale.get(props.clipMax),
-          0.16,
-        )}`,
-        '@media (hover: none)': {
-          boxShadow: 'none',
-        },
-      },
-    },
+    '&:nth-of-type(3)': makeThumbStyles(props.clipMin, props.colorScale),
+    '&:nth-of-type(4)': makeThumbStyles(props.clipMax, props.colorScale),
   }),
 }));
 
