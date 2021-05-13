@@ -1,16 +1,18 @@
-import { Switch } from '@astrosat/astrosat-ui';
+import { Button, Switch } from '@astrosat/astrosat-ui';
 import { Grid, makeStyles, Slide, Typography } from '@material-ui/core';
 import { ColorMapRangeSlider } from 'components';
 import { ColorAdjustSlider } from 'components/color-adjust-slider/color-adjust-slider.component';
 import React, { useState } from 'react';
 import { isRealValue } from 'utils/isRealValue';
 
-const useStyles = makeStyles(({ typography: { pxToRem } }) => ({
+const useStyles = makeStyles(({ typography: { caption, pxToRem } }) => ({
   slidersGridItem: {
     position: 'relative',
+    width: '100%',
     height: pxToRem(135),
   },
   slider: { position: 'absolute', top: 0, right: 0, bottom: 0, left: 0 },
+  label: { ...caption },
 }));
 
 /**
@@ -39,12 +41,26 @@ export const Sliders = ({
   const clipMin = clipRange?.[0] ?? clip_min ?? min;
   const clipMax = clipRange?.[1] ?? clip_max ?? max;
 
+  const handleResetClick = () => {
+    if (isAdjustingColor) {
+      return onClipRangeChange([clip_min ?? min, clip_max ?? max]);
+    }
+    return onRangeFilterChange([min, max]);
+  };
+
   return (
     <>
-      <Grid item xs={12}>
-        <Typography variant="body2">Range Filter</Typography>
+      <Grid item>
+        <Typography>Range Filter</Typography>
       </Grid>
-      <Grid item component="label" container alignItems="center" spacing={1}>
+      <Grid
+        item
+        component="label"
+        container
+        alignItems="center"
+        spacing={1}
+        className={styles.label}
+      >
         <Grid item>Adjust Filter</Grid>
         <Grid item>
           <Switch
@@ -55,7 +71,7 @@ export const Sliders = ({
         </Grid>
         <Grid item>Adjust Color</Grid>
       </Grid>
-      <Grid item xs={12} className={styles.slidersGridItem}>
+      <Grid item className={styles.slidersGridItem}>
         <Slide in={isAdjustingColor} direction="left" unmountOnExit>
           <ColorAdjustSlider
             data-testid="color-slider"
@@ -83,6 +99,11 @@ export const Sliders = ({
             />
           </div>
         </Slide>
+      </Grid>
+      <Grid item container justify="center">
+        <Button color="secondary" onClick={handleResetClick}>
+          Reset
+        </Button>
       </Grid>
     </>
   );

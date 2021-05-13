@@ -20,4 +20,53 @@ describe('<Sliders />', () => {
     );
     expect(getByTestId('color-slider')).toBeInTheDocument();
   });
+
+  it('Calls onRangeFilterChange with the default values when the range slider is visible and reset is clicked', () => {
+    const onRangeFilterChange = jest.fn();
+    const min = 100,
+      max = 1000;
+    const { getByRole } = render(
+      <Sliders
+        selectedProperty={{ min, max }}
+        filterRange={[200, 900]}
+        onRangeFilterChange={onRangeFilterChange}
+      />,
+    );
+    userEvent.click(getByRole('button', { name: 'Reset' }));
+    expect(onRangeFilterChange).toBeCalledWith([min, max]);
+  });
+
+  it('Calls onClipRangeChange with the default values when the color slider is visible and reset is clicked', () => {
+    const onClipRangeChange = jest.fn();
+    const min = 100,
+      max = 1000,
+      clip_min = 200,
+      clip_max = 900;
+    const { getByRole } = render(
+      <Sliders
+        selectedProperty={{ min, max, clip_min, clip_max }}
+        clipRange={[100, 1000]}
+        onClipRangeChange={onClipRangeChange}
+      />,
+    );
+    userEvent.click(getByRole('checkbox'));
+    userEvent.click(getByRole('button', { name: 'Reset' }));
+    expect(onClipRangeChange).toBeCalledWith([clip_min, clip_max]);
+  });
+
+  it('Calls onClipRangeChange with min and max if the property has no clip values', () => {
+    const onClipRangeChange = jest.fn();
+    const min = 100,
+      max = 1000;
+    const { getByRole } = render(
+      <Sliders
+        selectedProperty={{ min, max }}
+        clipRange={[100, 1000]}
+        onClipRangeChange={onClipRangeChange}
+      />,
+    );
+    userEvent.click(getByRole('checkbox'));
+    userEvent.click(getByRole('button', { name: 'Reset' }));
+    expect(onClipRangeChange).toBeCalledWith([min, max]);
+  });
 });
