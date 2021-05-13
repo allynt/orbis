@@ -4,7 +4,7 @@ import React from 'react';
 import { SelectedPropertyControls } from './selected-property-controls.component';
 
 export default {
-  title: 'Orbs/Isolation Plus/Property Radio Group/Property Radio/Controls',
+  title: 'Orbs/Isolation Plus/Property Radio Group/Selected Property Controls',
   argTypes: {
     onDateChange: { action: true },
     onRangeFilterChange: { action: true },

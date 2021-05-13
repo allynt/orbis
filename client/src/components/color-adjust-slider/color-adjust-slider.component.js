@@ -66,6 +66,7 @@ export const ColorAdjustSlider = forwardRef(
       reversed,
       onSliderChange,
       className,
+      ...rest
     },
     ref,
   ) => {
@@ -87,6 +88,7 @@ export const ColorAdjustSlider = forwardRef(
         value={[clipMin, clipMax]}
         onChange={(e, value) => onSliderChange(value)}
         track={false}
+        {...rest}
       />
     );
   },

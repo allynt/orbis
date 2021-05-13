@@ -5,12 +5,13 @@ import { ColorAdjustSlider } from 'components/color-adjust-slider/color-adjust-s
 import React, { useState } from 'react';
 import { isRealValue } from 'utils/isRealValue';
 
-const useStyles = makeStyles({
+const useStyles = makeStyles(({ typography: { pxToRem } }) => ({
   slidersGridItem: {
     position: 'relative',
+    height: pxToRem(135),
   },
-  slider: { position: 'absolute' },
-});
+  slider: { position: 'absolute', top: 0, right: 0, bottom: 0, left: 0 },
+}));
 
 /**
  * @param {{
@@ -31,12 +32,19 @@ export const Sliders = ({
   const [isAdjustingColor, setIsAdjustingColor] = useState(false);
   const styles = useStyles();
 
+  const { min, max, clip_min, clip_max, precision, type } =
+    selectedProperty || {};
+  const { color, colormap_reversed } =
+    selectedProperty?.application?.orbis?.display || {};
+  const clipMin = clipRange?.[0] ?? clip_min ?? min;
+  const clipMax = clipRange?.[1] ?? clip_max ?? max;
+
   return (
     <>
       <Grid item xs={12}>
         <Typography variant="body2">Range Filter</Typography>
       </Grid>
-      <Grid component="label" container alignItems="center" spacing={1}>
+      <Grid item component="label" container alignItems="center" spacing={1}>
         <Grid item>Adjust Filter</Grid>
         <Grid item>
           <Switch
@@ -50,50 +58,28 @@ export const Sliders = ({
       <Grid item xs={12} className={styles.slidersGridItem}>
         <Slide in={isAdjustingColor} direction="left" unmountOnExit>
           <ColorAdjustSlider
+            data-testid="color-slider"
             className={styles.slider}
-            color={selectedProperty?.application?.orbis?.display?.color}
-            min={selectedProperty.min}
-            max={selectedProperty.max}
-            clipMin={
-              clipRange?.[0] ??
-              selectedProperty?.clip_min ??
-              selectedProperty.min
-            }
-            clipMax={
-              clipRange?.[1] ??
-              selectedProperty?.clip_max ??
-              selectedProperty.max
-            }
-            reversed={
-              !!selectedProperty?.application?.orbis?.display?.colormap_reversed
-            }
+            color={color}
+            min={min}
+            max={max}
+            clipMin={clipMin}
+            clipMax={clipMax}
+            reversed={colormap_reversed}
             onSliderChange={onClipRangeChange}
           />
         </Slide>
         <Slide in={!isAdjustingColor} direction="right" unmountOnExit>
-          <div className={styles.slider}>
+          <div className={styles.slider} data-testid="range-slider">
             <ColorMapRangeSlider
-              type={selectedProperty?.type}
-              color={selectedProperty?.application?.orbis?.display?.color}
-              domain={[
-                isRealValue(selectedProperty.min) ? selectedProperty.min : 0,
-                isRealValue(selectedProperty.max) ? selectedProperty.max : 1,
-              ]}
-              clip={[
-                clipRange?.[0] ??
-                  selectedProperty.clip_min ??
-                  selectedProperty.min,
-                clipRange?.[1] ??
-                  selectedProperty.clip_max ??
-                  selectedProperty.max,
-              ]}
+              type={type}
+              color={color}
+              domain={[isRealValue(min) ? min : 0, isRealValue(max) ? max : 1]}
+              clip={[clipMin, clipMax]}
               value={filterRange}
               onChange={onRangeFilterChange}
-              reversed={
-                !!selectedProperty?.application?.orbis?.display
-                  ?.colormap_reversed
-              }
-              precision={selectedProperty?.precision}
+              reversed={colormap_reversed}
+              precision={precision}
             />
           </div>
         </Slide>
