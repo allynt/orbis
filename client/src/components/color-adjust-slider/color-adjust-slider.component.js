@@ -1,6 +1,7 @@
 import { fade, makeStyles, Slider } from '@astrosat/astrosat-ui';
 import React, { forwardRef } from 'react';
 import { ColorScale } from 'utils/ColorScale';
+import { scaleLinear } from 'd3-scale';
 
 const makeThumbStyles = (clipValue, colorScale) => ({
   backgroundColor: colorScale.get(clipValue),
@@ -33,9 +34,11 @@ const useStyles = makeStyles(({ palette, typography: { pxToRem } }) => ({
     height: pxToRem(24),
     borderRadius: '50% 50% 5% 5% / 45% 45% 5% 5%',
     border: `1px solid ${palette.grey[300]}`,
-    '&:nth-of-type(3)': makeThumbStyles(props.clipMin, props.colorScale),
-    '&:nth-of-type(4)': makeThumbStyles(props.clipMax, props.colorScale),
+    '&[data-index="0"]': makeThumbStyles(props.clipMin, props.colorScale),
+    '&[data-index="1"]': makeThumbStyles(props.clipMax, props.colorScale),
   }),
+  mark: { display: 'none' },
+  markLabel: { top: '-0.5em' },
 }));
 
 /**
@@ -77,9 +80,11 @@ export const ColorAdjustSlider = forwardRef(
       reversed,
     });
     const styles = useStyles({ colorScale, clipMin, clipMax });
+    const scale = scaleLinear().domain([min, max]);
 
     return (
       <Slider
+        marks={scale.ticks(3).map(tick => ({ value: tick, label: tick }))}
         ref={ref}
         className={className}
         classes={styles}
