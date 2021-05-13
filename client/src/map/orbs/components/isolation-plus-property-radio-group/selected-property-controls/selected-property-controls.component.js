@@ -1,15 +1,9 @@
-import { Grid, styled, Typography } from '@astrosat/astrosat-ui';
-import { ColorMapRangeSlider } from 'components';
-import { ColorAdjustSlider } from 'components/color-adjust-slider/color-adjust-slider.component';
+import { Grid } from '@astrosat/astrosat-ui';
 import { format } from 'date-fns';
 import React from 'react';
-import { isRealValue } from 'utils/isRealValue';
 import { DateStepper } from '../../date-stepper/date-stepper.component';
 import { DiscretePropertyLegend } from '../discrete-property-legend/discrete-property-legend.component';
-
-const LastGridItem = styled(Grid)(({ theme }) => ({
-  marginBottom: theme.spacing(2),
-}));
+import { Sliders } from './sliders.component';
 
 /**
  * @param {{
@@ -64,61 +58,21 @@ export const SelectedPropertyControls = ({
       </Grid>
     ) : null}
     {selectedProperty.type === 'discrete' ? (
-      <DiscretePropertyLegend property={selectedProperty} />
+      <DiscretePropertyLegend
+        property={
+          /** @type {import('typings/orbis').DiscreteProperty} */ (selectedProperty)
+        }
+      />
     ) : (
-      <>
-        <Grid item xs={12}>
-          <Typography variant="body2">Color Adjust</Typography>
-        </Grid>
-        <Grid item xs={12}>
-          <ColorAdjustSlider
-            color={selectedProperty?.application?.orbis?.display?.color}
-            min={selectedProperty.min}
-            max={selectedProperty.max}
-            clipMin={
-              clipRange?.[0] ??
-              selectedProperty?.clip_min ??
-              selectedProperty.min
-            }
-            clipMax={
-              clipRange?.[1] ??
-              selectedProperty?.clip_max ??
-              selectedProperty.max
-            }
-            reversed={
-              !!selectedProperty?.application?.orbis?.display?.colormap_reversed
-            }
-            onSliderChange={onClipRangeChange}
-          />
-        </Grid>
-        <Grid item xs={12}>
-          <Typography variant="body2">Range Filter</Typography>
-        </Grid>
-        <LastGridItem item xs={12}>
-          <ColorMapRangeSlider
-            type={selectedProperty?.type}
-            color={selectedProperty?.application?.orbis?.display?.color}
-            domain={[
-              isRealValue(selectedProperty.min) ? selectedProperty.min : 0,
-              isRealValue(selectedProperty.max) ? selectedProperty.max : 1,
-            ]}
-            clip={[
-              clipRange?.[0] ??
-                selectedProperty.clip_min ??
-                selectedProperty.min,
-              clipRange?.[1] ??
-                selectedProperty.clip_max ??
-                selectedProperty.max,
-            ]}
-            value={filterRange}
-            onChange={onRangeFilterChange}
-            reversed={
-              !!selectedProperty?.application?.orbis?.display?.colormap_reversed
-            }
-            precision={selectedProperty?.precision}
-          />
-        </LastGridItem>
-      </>
+      <Sliders
+        clipRange={clipRange}
+        filterRange={filterRange}
+        onClipRangeChange={onClipRangeChange}
+        onRangeFilterChange={onRangeFilterChange}
+        selectedProperty={
+          /** @type {import('typings/orbis').ContinuousProperty} */ (selectedProperty)
+        }
+      />
     )}
   </>
 );

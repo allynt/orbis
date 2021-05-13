@@ -1,5 +1,5 @@
 import { fade, makeStyles, Slider } from '@astrosat/astrosat-ui';
-import React from 'react';
+import React, { forwardRef } from 'react';
 import { ColorScale } from 'utils/ColorScale';
 
 const makeThumbStyles = (clipValue, colorScale) => ({
@@ -39,7 +39,7 @@ const useStyles = makeStyles(({ palette, typography: { pxToRem } }) => ({
 }));
 
 /**
- * @param {{
+ * @typedef {{
  *  min: number
  *  max: number
  *  clipMin: number
@@ -47,33 +47,47 @@ const useStyles = makeStyles(({ palette, typography: { pxToRem } }) => ({
  *  color: import('typings/orbis').ColorMap
  *  reversed?: boolean
  *  onSliderChange: (clip: [number, number]) => void
- * }} props
+ *  className: string
+ * }} SliderProps
  */
-export const ColorAdjustSlider = ({
-  min,
-  max,
-  clipMin = min,
-  clipMax = max,
-  color,
-  reversed,
-  onSliderChange,
-}) => {
-  const colorScale = new ColorScale({
-    color,
-    domain: [min, max],
-    clip: [clipMin, clipMax],
-    reversed,
-  });
-  const styles = useStyles({ colorScale, clipMin, clipMax });
 
-  return (
-    <Slider
-      classes={styles}
-      min={min}
-      max={max}
-      value={[clipMin, clipMax]}
-      onChange={(e, value) => onSliderChange(value)}
-      track={false}
-    />
-  );
-};
+export const ColorAdjustSlider = forwardRef(
+  /**
+   * @param {SliderProps} props
+   * @param {import('react').ForwardedRef<HTMLSpanElement>} ref
+   */
+  (
+    {
+      min,
+      max,
+      clipMin = min,
+      clipMax = max,
+      color,
+      reversed,
+      onSliderChange,
+      className,
+    },
+    ref,
+  ) => {
+    const colorScale = new ColorScale({
+      color,
+      domain: [min, max],
+      clip: [clipMin, clipMax],
+      reversed,
+    });
+    const styles = useStyles({ colorScale, clipMin, clipMax });
+
+    return (
+      <Slider
+        ref={ref}
+        className={className}
+        classes={styles}
+        min={min}
+        max={max}
+        value={[clipMin, clipMax]}
+        onChange={(e, value) => onSliderChange(value)}
+        track={false}
+      />
+    );
+  },
+);
