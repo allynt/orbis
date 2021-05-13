@@ -86,7 +86,7 @@ export const ColorAdjustSlider = forwardRef(
         min={min}
         max={max}
         value={[clipMin, clipMax]}
-        onChange={(e, value) => onSliderChange(value)}
+        onChange={(_event, value) => onSliderChange(value)}
         track={false}
         {...rest}
       />
