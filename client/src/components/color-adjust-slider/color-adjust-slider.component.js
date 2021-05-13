@@ -44,7 +44,8 @@ const useStyles = makeStyles(({ palette, typography: { pxToRem } }) => ({
  *  max: number
  *  clipMin: number
  *  clipMax: number
- * color: import('typings/orbis').ColorMap
+ *  color: import('typings/orbis').ColorMap
+ *  reversed?: boolean
  *  onSliderChange: (clip: [number, number]) => void
  * }} props
  */
@@ -54,12 +55,14 @@ export const ColorAdjustSlider = ({
   clipMin = min,
   clipMax = max,
   color,
+  reversed,
   onSliderChange,
 }) => {
   const colorScale = new ColorScale({
     color,
     domain: [min, max],
     clip: [clipMin, clipMax],
+    reversed,
   });
   const styles = useStyles({ colorScale, clipMin, clipMax });
 

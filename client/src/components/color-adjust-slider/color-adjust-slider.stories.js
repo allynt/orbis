@@ -3,8 +3,8 @@ import { ColorAdjustSlider } from './color-adjust-slider.component';
 
 export default { title: 'Components/Color Adjust Slider' };
 
-export const Default = () => {
-  const [clip, setClip] = useState([20, 80]);
+export const Default = args => {
+  const [clip, setClip] = useState([args.max * 0.2, args.max * 0.8]);
   return (
     <div
       style={{
@@ -16,13 +16,17 @@ export const Default = () => {
       }}
     >
       <ColorAdjustSlider
-        min={0}
-        max={100}
+        {...args}
         clipMin={clip[0]}
         clipMax={clip[1]}
-        color="Viridis"
         onSliderChange={setClip}
       />
     </div>
   );
+};
+Default.args = {
+  min: 0,
+  max: 100,
+  color: 'Viridis',
+  reversed: false,
 };

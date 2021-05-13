@@ -85,6 +85,9 @@ export const SelectedPropertyControls = ({
               selectedProperty?.clip_max ??
               selectedProperty.max
             }
+            reversed={
+              !!selectedProperty?.application?.orbis?.display?.colormap_reversed
+            }
             onSliderChange={onClipRangeChange}
           />
         </Grid>
