@@ -1,4 +1,5 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
 import { get } from 'lodash';
 import {
   Chip,
@@ -7,6 +8,7 @@ import {
   makeStyles,
   Tooltip,
 } from '@astrosat/astrosat-ui';
+import { hoveredFeaturesSelector } from 'map/orbs/layers.slice';
 
 const MAX_CHARS = 15;
 
@@ -17,6 +19,7 @@ const useStyles = makeStyles(theme => ({
   chip: {
     fontSize: theme.typography.pxToRem(10),
     maxWidth: props => (!props.isOnlyFeature ? `${MAX_CHARS}ch` : undefined),
+    border: props => `2px solid ${!!props.areaIsHovered ? 'red' : 'blue'}`,
   },
   closeIcon: {
     width: theme.typography.pxToRem(10),
@@ -40,11 +43,17 @@ export const TooltipChip = ({
   fallbackProperty,
   isOnlyFeature,
 }) => {
-  const styles = useStyles({ isOnlyFeature });
+  const hoveredFeatures = useSelector(state =>
+    hoveredFeaturesSelector(feature?.layer?.id)(state?.orbs),
+  );
 
   const areaIdentifier =
     get(feature.object.properties, 'area_name') ??
     get(feature.object.properties, fallbackProperty);
+
+  const areaIsHovered = hoveredFeatures?.includes(areaIdentifier);
+
+  const styles = useStyles({ isOnlyFeature, areaIsHovered });
 
   const ChipElement = (
     <Chip

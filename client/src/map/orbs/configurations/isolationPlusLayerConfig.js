@@ -13,6 +13,7 @@ import {
   otherSelector,
   removeClickedFeatures,
   setClickedFeatures,
+  setHoveredFeatures,
   timestampSelector,
   dataSelector,
 } from '../layers.slice';
@@ -169,6 +170,15 @@ const configuration = ({
     return dispatch(setClickedFeatures(payload));
   };
 
+  const onHover = info => {
+    return dispatch(
+      setHoveredFeatures({
+        key: id,
+        hoveredFeatures: [info?.object?.properties?.area_name],
+      }),
+    );
+  };
+
   /**
    * @param {AccessorFeature} d
    */
@@ -231,6 +241,7 @@ const configuration = ({
     pickable: true,
     autoHighlight: true,
     onClick,
+    onHover,
     getLineColor: COLOR_PRIMARY,
     getLineWidth,
     lineWidthUnits: 'pixels',
