@@ -101,7 +101,7 @@ export const Sliders = ({
         </Slide>
       </Grid>
       <Grid item container justify="center">
-        <Button color="secondary" onClick={handleResetClick}>
+        <Button color="secondary" size="small" onClick={handleResetClick}>
           Reset
         </Button>
       </Grid>
