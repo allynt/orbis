@@ -1,5 +1,8 @@
 import React from 'react';
 import { get } from 'lodash';
+import { bbox, bboxPolygon } from '@turf/turf';
+import { WebMercatorViewport } from '@deck.gl/core';
+
 import {
   Chip,
   CloseIcon,
@@ -7,6 +10,8 @@ import {
   makeStyles,
   Tooltip,
 } from '@astrosat/astrosat-ui';
+
+import { useMap } from 'MapContext';
 
 const MAX_CHARS = 15;
 
@@ -42,6 +47,8 @@ export const TooltipChip = ({
 }) => {
   const styles = useStyles({ isOnlyFeature });
 
+  const { viewState, setViewState } = useMap();
+
   const areaIdentifier =
     get(feature.object.properties, 'area_name') ??
     get(feature.object.properties, fallbackProperty);
@@ -63,6 +70,46 @@ export const TooltipChip = ({
     />
   );
 
+  function tile2long(lon, zoom) {
+    return (lon / Math.pow(2, zoom)) * 360 - 180;
+  }
+
+  function tile2lat(lat, zoom) {
+    var n = Math.PI - (2 * Math.PI * lat) / Math.pow(2, zoom);
+    return (180 / Math.PI) * Math.atan(0.5 * (Math.exp(n) - Math.exp(-n)));
+  }
+
+  const zoomToChipLocation = () => {
+    const viewport = new WebMercatorViewport({});
+    const points = bbox(feature?.object.geometry);
+
+    const minX = points[0],
+      maxX = points[2],
+      minY = points[1],
+      maxY = points[3];
+
+    const bounds = [
+      [minX, minY],
+      [maxX, maxY],
+    ];
+
+    // extent in minX, minY, maxX, maxY order
+    // bottom left, bottom right, top left, top right
+
+    const { longitude, latitude, zoom } = viewport.fitBounds(bounds);
+
+    const newViewstate = {
+      ...viewState,
+      longitude: tile2long(longitude, zoom),
+      latitude: tile2lat(latitude, zoom),
+      zoom: 6,
+    };
+
+    console.log('newViewstate: ', newViewstate);
+
+    return setViewState(newViewstate);
+  };
+
   return areaIdentifier?.length + 2 >= MAX_CHARS && !isOnlyFeature ? (
     <Tooltip
       role="tooltip"
@@ -74,9 +121,13 @@ export const TooltipChip = ({
       placement="bottom"
       title={areaIdentifier}
     >
-      <Grid item>{ChipElement}</Grid>
+      <Grid item onClick={zoomToChipLocation}>
+        {ChipElement}
+      </Grid>
     </Tooltip>
   ) : (
-    <Grid item>{ChipElement}</Grid>
+    <Grid item onClick={zoomToChipLocation}>
+      {ChipElement}
+    </Grid>
   );
 };
