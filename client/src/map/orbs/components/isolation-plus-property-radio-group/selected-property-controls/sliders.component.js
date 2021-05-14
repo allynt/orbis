@@ -103,6 +103,7 @@ export const Sliders = ({
         </Fade>
         <Fade in={!isAdjustingColor} direction="right" unmountOnExit>
           <MaterialColormapRangeSlider
+            data-testid="range-slider"
             className={styles.slider}
             type={type}
             color={color}
