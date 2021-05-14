@@ -5,7 +5,7 @@ import { ColorScale } from 'utils/ColorScale';
 
 const useStyles = makeStyles(({ palette, typography: { pxToRem } }) => ({
   root: {
-    height: pxToRem(42),
+    height: 'fit-content',
   },
   rail: {
     height: pxToRem(42),
@@ -57,7 +57,8 @@ export const MaterialColormapRangeSlider = forwardRef(
       precision,
       reversed,
       type,
-      value,
+      value: valueProp,
+      ...rest
     },
     ref,
   ) => {
@@ -69,8 +70,9 @@ export const MaterialColormapRangeSlider = forwardRef(
       min = 1;
       max = 10;
     }
-    clipMin = min;
-    clipMax = max;
+    clipMin = clipMinProp ?? min;
+    clipMax = clipMaxProp ?? max;
+    const value = valueProp ?? [min, max];
 
     const colorScale = new ColorScale({
       color,
@@ -108,6 +110,7 @@ export const MaterialColormapRangeSlider = forwardRef(
             : scale.ticks(3).map(tick => ({ value: tick, label: tick }))
         }
         step={precision ? Number(`1e-${precision}`) : 1}
+        {...rest}
       />
     );
   },

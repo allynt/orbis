@@ -13,7 +13,7 @@ export default {
 };
 
 const Template = args => (
-  <Box p={1} width="100%">
+  <Box p={2} width="100%">
     <Grid container spacing={2}>
       <SelectedPropertyControls {...args} />
     </Grid>

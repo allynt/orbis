@@ -8,10 +8,6 @@ export const Default = args => {
   return (
     <div
       style={{
-        width: '100%',
-        height: '100vh',
-        display: 'grid',
-        placeItems: 'center',
         padding: '2rem',
       }}
     >

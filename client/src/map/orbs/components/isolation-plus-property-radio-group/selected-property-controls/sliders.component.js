@@ -1,19 +1,35 @@
-import { Button, Switch } from '@astrosat/astrosat-ui';
-import { Grid, makeStyles, Slide, Typography } from '@material-ui/core';
-import { ColorMapRangeSlider } from 'components';
+import {
+  Button,
+  Switch,
+  Fade,
+  Grid,
+  makeStyles,
+  Typography,
+} from '@astrosat/astrosat-ui';
 import { ColorAdjustSlider } from 'components/color-adjust-slider/color-adjust-slider.component';
+import { MaterialColormapRangeSlider } from 'components/material-colormap-range-slider/material-colormap-range-slider.component';
 import React, { useState } from 'react';
 import { isRealValue } from 'utils/isRealValue';
 
-const useStyles = makeStyles(({ typography: { caption, pxToRem } }) => ({
-  slidersGridItem: {
-    position: 'relative',
-    width: '100%',
-    height: pxToRem(135),
-  },
-  slider: { position: 'absolute', top: 0, right: 0, bottom: 0, left: 0 },
-  label: { ...caption },
-}));
+const useStyles = makeStyles(
+  ({ spacing, typography: { caption, pxToRem } }) => ({
+    slidersGridItem: {
+      position: 'relative',
+      height: pxToRem(100),
+      padding: spacing(2),
+    },
+    slider: {
+      position: 'absolute',
+      top: 0,
+      right: 0,
+      bottom: 0,
+      left: 0,
+      width: `calc(320px - ${spacing(6)})`,
+      marginLeft: spacing(2),
+    },
+    label: { ...caption },
+  }),
+);
 
 /**
  * @param {{
@@ -71,11 +87,11 @@ export const Sliders = ({
         </Grid>
         <Grid item>Adjust Color</Grid>
       </Grid>
-      <Grid item className={styles.slidersGridItem}>
-        <Slide in={isAdjustingColor} direction="left" unmountOnExit>
+      <Grid item xs={12} className={styles.slidersGridItem}>
+        <Fade in={isAdjustingColor} direction="left" unmountOnExit>
           <ColorAdjustSlider
-            data-testid="color-slider"
             className={styles.slider}
+            data-testid="color-slider"
             color={color}
             min={min}
             max={max}
@@ -84,21 +100,22 @@ export const Sliders = ({
             reversed={colormap_reversed}
             onSliderChange={onClipRangeChange}
           />
-        </Slide>
-        <Slide in={!isAdjustingColor} direction="right" unmountOnExit>
-          <div className={styles.slider} data-testid="range-slider">
-            <ColorMapRangeSlider
-              type={type}
-              color={color}
-              domain={[isRealValue(min) ? min : 0, isRealValue(max) ? max : 1]}
-              clip={[clipMin, clipMax]}
-              value={filterRange}
-              onChange={onRangeFilterChange}
-              reversed={colormap_reversed}
-              precision={precision}
-            />
-          </div>
-        </Slide>
+        </Fade>
+        <Fade in={!isAdjustingColor} direction="right" unmountOnExit>
+          <MaterialColormapRangeSlider
+            className={styles.slider}
+            type={type}
+            color={color}
+            min={isRealValue(min) ? min : 0}
+            max={isRealValue(max) ? max : 1}
+            clipMin={clipMin}
+            clipMax={clipMax}
+            value={filterRange}
+            onChange={onRangeFilterChange}
+            reversed={colormap_reversed}
+            precision={precision}
+          />
+        </Fade>
       </Grid>
       <Grid item container justify="center">
         <Button color="secondary" size="small" onClick={handleResetClick}>
