@@ -1,14 +1,15 @@
+import React, { useState } from 'react';
+
 import {
   Button,
-  Switch,
   Fade,
   Grid,
   makeStyles,
+  Switch,
   Typography,
 } from '@astrosat/astrosat-ui';
-import { ColorAdjustSlider } from 'components/color-adjust-slider/color-adjust-slider.component';
-import { MaterialColormapRangeSlider } from 'components/material-colormap-range-slider/material-colormap-range-slider.component';
-import React, { useState } from 'react';
+
+import { ColorAdjustSlider, ColormapRangeSlider } from 'components';
 import { isRealValue } from 'utils/isRealValue';
 
 const useStyles = makeStyles(
@@ -107,7 +108,7 @@ export const Sliders = ({
           />
         </Fade>
         <Fade in={!isAdjustingColor} unmountOnExit>
-          <MaterialColormapRangeSlider
+          <ColormapRangeSlider
             {...sliderProps}
             data-testid="range-slider"
             type={type}
