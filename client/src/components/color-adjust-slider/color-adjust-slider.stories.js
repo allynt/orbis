@@ -15,7 +15,7 @@ export const Default = args => {
         {...args}
         clipMin={clip[0]}
         clipMax={clip[1]}
-        onSliderChange={setClip}
+        onChange={setClip}
       />
     </div>
   );
@@ -23,6 +23,6 @@ export const Default = args => {
 Default.args = {
   min: 0,
   max: 100,
-  color: 'Viridis',
+  colorMap: 'Viridis',
   reversed: false,
 };

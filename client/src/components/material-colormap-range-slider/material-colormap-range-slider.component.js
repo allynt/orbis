@@ -3,28 +3,32 @@ import { scaleLinear } from 'd3-scale';
 import React, { forwardRef } from 'react';
 import { ColorScale } from 'utils/ColorScale';
 
-const useStyles = makeStyles(({ palette, typography: { pxToRem } }) => ({
-  root: {
-    height: 'fit-content',
-  },
-  rail: {
-    height: pxToRem(42),
-    opacity: 1,
-    border: `1px solid ${palette.grey[300]}`,
-    backgroundImage: props =>
-      `linear-gradient(to right, ${props.colorScale
-        .getGradient('hex')
-        .map(stop => `${stop.color} ${stop.stop}%`)
-        .join(', ')})`,
-  },
-  thumb: {
-    height: pxToRem(54),
-    width: pxToRem(10),
-    borderRadius: '100vh',
-  },
-  mark: { display: 'none' },
-  markLabel: { top: '-0.5em' },
-}));
+const useStyles = makeStyles(
+  ({ palette, spacing, typography: { pxToRem } }) => ({
+    root: {
+      height: pxToRem(42),
+      paddingTop: spacing(2),
+      paddingBottom: spacing(2),
+    },
+    rail: {
+      height: pxToRem(42),
+      opacity: 1,
+      border: `1px solid ${palette.grey[300]}`,
+      backgroundImage: props =>
+        `linear-gradient(to right, ${props.colorScale
+          .getGradient('hex')
+          .map(stop => `${stop.color} ${stop.stop}%`)
+          .join(', ')})`,
+    },
+    thumb: {
+      height: pxToRem(54),
+      width: pxToRem(10),
+      borderRadius: '100vh',
+    },
+    mark: { display: 'none' },
+    markLabel: { top: '-0.5em' },
+  }),
+);
 
 /**
  * @typedef {{
@@ -55,6 +59,7 @@ export const MaterialColormapRangeSlider = forwardRef(
       reversed,
       type,
       value: valueProp,
+      classes: classesProp,
       ...rest
     },
     ref,
@@ -92,7 +97,7 @@ export const MaterialColormapRangeSlider = forwardRef(
     return (
       <Slider
         ref={ref}
-        classes={classes}
+        classes={{ ...classes, ...classesProp }}
         max={max}
         min={min}
         onChange={handleChange}

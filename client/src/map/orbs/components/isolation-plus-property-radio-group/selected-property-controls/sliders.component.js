@@ -25,7 +25,7 @@ const useStyles = makeStyles(
       bottom: 0,
       left: 0,
       width: `calc(320px - ${spacing(6)})`,
-      marginLeft: spacing(2),
+      margin: spacing(1, 'auto', 2),
     },
     label: { ...caption },
   }),
@@ -64,6 +64,17 @@ export const Sliders = ({
     return onRangeFilterChange([min, max]);
   };
 
+  const sliderProps = {
+    colorMap: color,
+    min: isRealValue(min) ? min : 0,
+    max: isRealValue(max) ? max : 1,
+    clipMin,
+    clipMax,
+    reversed: colormap_reversed,
+    className: styles.slider,
+    precision,
+  };
+
   return (
     <>
       <Grid item>
@@ -88,33 +99,20 @@ export const Sliders = ({
         <Grid item>Adjust Color</Grid>
       </Grid>
       <Grid item xs={12} className={styles.slidersGridItem}>
-        <Fade in={isAdjustingColor} direction="left" unmountOnExit>
+        <Fade in={isAdjustingColor} unmountOnExit>
           <ColorAdjustSlider
-            className={styles.slider}
+            {...sliderProps}
             data-testid="color-slider"
-            color={color}
-            min={min}
-            max={max}
-            clipMin={clipMin}
-            clipMax={clipMax}
-            reversed={colormap_reversed}
-            onSliderChange={onClipRangeChange}
+            onChange={onClipRangeChange}
           />
         </Fade>
-        <Fade in={!isAdjustingColor} direction="right" unmountOnExit>
+        <Fade in={!isAdjustingColor} unmountOnExit>
           <MaterialColormapRangeSlider
+            {...sliderProps}
             data-testid="range-slider"
-            className={styles.slider}
             type={type}
-            colorMap={color}
-            min={isRealValue(min) ? min : 0}
-            max={isRealValue(max) ? max : 1}
-            clipMin={clipMin}
-            clipMax={clipMax}
             value={filterRange}
             onChange={onRangeFilterChange}
-            reversed={colormap_reversed}
-            precision={precision}
           />
         </Fade>
       </Grid>
