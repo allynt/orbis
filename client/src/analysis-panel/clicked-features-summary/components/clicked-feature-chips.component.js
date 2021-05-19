@@ -17,6 +17,7 @@ import { ControlButtons } from './control-buttons.component';
 export const ClickedFeatureChips = ({
   clickedFeatures,
   onFeatureDelete,
+  onFeatureHover,
   onDeselectAllClick,
   fallbackProperty,
 }) => {
@@ -39,6 +40,7 @@ export const ClickedFeatureChips = ({
                   feature={feature}
                   isOnlyFeature={clickedFeatures.length === 1}
                   fallbackProperty={fallbackProperty}
+                  onHover={onFeatureHover}
                   onDelete={() => onFeatureDelete(feature)}
                 />
               </Fade>

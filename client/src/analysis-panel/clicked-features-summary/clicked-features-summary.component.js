@@ -3,6 +3,7 @@ import { SidePanelSection } from 'components';
 import {
   removeClickedFeatures,
   setClickedFeatures,
+  setHoveredFeatures,
 } from 'map/orbs/layers.slice';
 import React from 'react';
 import { useAnalysisPanelContext } from '../analysis-panel-context';
@@ -34,6 +35,14 @@ export const ClickedFeaturesSummary = ({
                 key: selectedProperty?.source_id,
                 uniquePropertyPath: `object.properties.${clickedFeatures[0].layer?.props?.uniqueIdProperty}`,
                 clickedFeatures: [feature],
+              }),
+            )
+          }
+          onFeatureHover={payload =>
+            dispatch(
+              setHoveredFeatures({
+                key: selectedProperty?.source_id,
+                hoveredFeatures: payload,
               }),
             )
           }

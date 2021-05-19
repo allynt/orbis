@@ -7,6 +7,7 @@ import { isRealValue } from 'utils/isRealValue';
 import {
   addClickedFeatures,
   clickedFeaturesSelector,
+  hoveredFeaturesSelector,
   extrudedModeSelector,
   extrusionScaleSelector,
   filterValueSelector,
@@ -79,6 +80,7 @@ const configuration = ({
   const extrudedMode = extrudedModeSelector(orbState);
   const extrusionScale = extrusionScaleSelector(orbState);
   const clickedFeatures = clickedFeaturesSelector(id)(orbState);
+  const hoveredFeatures = hoveredFeaturesSelector(id)(orbState);
   const selectedPropertyMetadata = source?.metadata?.properties?.find(
     property => property.name === selectedProperty.name,
   );
@@ -130,11 +132,18 @@ const configuration = ({
    * @returns {[r:number, g:number, b:number, a?: number]}
    */
   const getFillColor = d => {
-    if (!isRealValue(d.properties[selectedProperty.name]))
+    if (!isRealValue(d.properties[selectedProperty.name])) {
       return COLOR_TRANSPARENT;
+    }
+
     const color = /** @type {[number,number,number]} */ (colorScale &&
       colorScale.get(getValue(d, selectedProperty, selectedTimestamp)));
-    return [...color, getFillOpacity(d)];
+
+    if (hoveredFeatures?.includes(d.properties.area_name)) {
+      return color;
+    } else {
+      return [...color, getFillOpacity(d)];
+    }
   };
 
   /**
@@ -190,7 +199,12 @@ const configuration = ({
       getLineWidth: TRANSITION_DURATION,
     },
     updateTriggers = {
-      getFillColor: [selectedProperty, clickedFeatures, selectedTimestamp],
+      getFillColor: [
+        selectedProperty,
+        clickedFeatures,
+        selectedTimestamp,
+        hoveredFeatures,
+      ],
       getLineWidth: [clickedFeatures],
     };
 
@@ -239,7 +253,7 @@ const configuration = ({
     maxZoom: source?.metadata?.maxZoom,
     uniqueIdProperty: source?.metadata?.index,
     pickable: true,
-    autoHighlight: true,
+    autoHighlight: false,
     onClick,
     onHover,
     getLineColor: COLOR_PRIMARY,

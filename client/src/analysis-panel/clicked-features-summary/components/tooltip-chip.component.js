@@ -13,13 +13,13 @@ import { hoveredFeaturesSelector } from 'map/orbs/layers.slice';
 const MAX_CHARS = 15;
 
 /**
- * @type {(props?: {isOnlyFeature?: boolean}) => Record<"tooltip" | "chip" | "closeIcon", string>}
+ * @type {(props?: {isOnlyFeature?: boolean, areaIsHovered?: boolean}) => Record<"tooltip" | "chip" | "closeIcon", string>}
  */
 const useStyles = makeStyles(theme => ({
   chip: {
     fontSize: theme.typography.pxToRem(10),
     maxWidth: props => (!props.isOnlyFeature ? `${MAX_CHARS}ch` : undefined),
-    border: props => `2px solid ${!!props.areaIsHovered ? 'red' : 'blue'}`,
+    border: props => `${!!props.areaIsHovered ? '2px solid red' : 'none'}`,
   },
   closeIcon: {
     width: theme.typography.pxToRem(10),
@@ -39,6 +39,7 @@ const useStyles = makeStyles(theme => ({
  */
 export const TooltipChip = ({
   onDelete,
+  onHover,
   feature,
   fallbackProperty,
   isOnlyFeature,
@@ -62,6 +63,8 @@ export const TooltipChip = ({
       size="small"
       label={areaIdentifier}
       onDelete={onDelete}
+      onMouseEnter={() => onHover([feature?.object?.properties?.area_name])}
+      onMouseLeave={() => onHover(undefined)}
       deleteIcon={
         <CloseIcon
           className={styles.closeIcon}
