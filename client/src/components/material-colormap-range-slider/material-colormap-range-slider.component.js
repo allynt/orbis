@@ -99,7 +99,7 @@ export const MaterialColormapRangeSlider = forwardRef(
         max={max}
         min={min}
         onChange={handleChange}
-        value={value}
+        value={[...value]}
         track={false}
         marks={
           hasMoved
