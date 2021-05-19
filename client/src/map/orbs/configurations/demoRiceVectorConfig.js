@@ -5,6 +5,7 @@ import {
   extrudedModeSelector,
   extrusionScaleSelector,
   visibilitySelector,
+  dataSelector,
   otherSelector,
   setClickedFeatures,
 } from '../layers.slice';
@@ -13,10 +14,11 @@ const DEFAULT_COLUMN = 'rgb',
   DEFAULT_DATE = 1583971200000;
 
 /** @type {import("typings/orbis").LayerConfiguration} */
-export default ({ id, data, orbState, activeSources, dispatch }) => {
+export default ({ id, orbState, activeSources, dispatch }) => {
   const extruded = extrudedModeSelector(orbState);
   const elevationScale = extrusionScaleSelector(orbState);
   const visible = visibilitySelector(id)(orbState);
+  const data = dataSelector(id)(orbState);
   const source = find(activeSources, { source_id: id });
   const other = otherSelector(`${source.authority}/${source.namespace}/rice/*`)(
     orbState,

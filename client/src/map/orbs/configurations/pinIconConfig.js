@@ -6,6 +6,7 @@ import {
   setClickedFeatures,
   setHoveredFeatures,
   visibilitySelector,
+  dataSelector,
 } from '../layers.slice';
 
 /**
@@ -18,7 +19,6 @@ import {
 
 const configuration = ({
   id,
-  data,
   activeSources,
   dispatch,
   setViewState,
@@ -29,6 +29,8 @@ const configuration = ({
   onGroupHover,
 }) => {
   const isVisible = visibilitySelector(id)(orbState);
+  const data = dataSelector(id)(orbState);
+
   /**
    * @param {GeoJsonFeature[]} data
    */

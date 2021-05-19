@@ -18,6 +18,7 @@ import {
   selectBookmark,
 } from './bookmarks.slice';
 import { drawingToolsFeatureCollectionSelector } from 'drawing-tools/drawing-tools.slice';
+import { deleteProperty } from './deleteProperty';
 
 const PrimaryDivider = styled(Divider)(({ theme }) => ({
   backgroundColor: theme.palette.primary.main,
@@ -50,7 +51,7 @@ const BookmarksPanel = () => {
           owner: user.id,
           thumbnail,
           layers,
-          orbs,
+          orbs: deleteProperty(orbs, 'data'),
           drawn_feature_collection,
         }),
       );

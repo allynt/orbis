@@ -16,9 +16,12 @@ import reducer, {
   setHoveredFeatures,
   setOther,
   setTimestamp,
+  setData,
   setVisibility,
   toggleExtrudedMode,
   setState,
+  layersWithDataSelector,
+  dataSelector,
   timestampSelector,
 } from './layers.slice';
 
@@ -34,6 +37,7 @@ describe('layers slice', () => {
       ${setFilterValue}     | ${'filterValue'}     | ${['this', 'is', 'the', 'way']}
       ${setOther}           | ${'other'}           | ${{ this: 'is something', andThis: 'is something else' }}
       ${setTimestamp}       | ${'timestamp'}       | ${54568498465}
+      ${setData}            | ${'data'}            | ${{ type: 'FeatureCollection' }}
     `('$action.type', ({ action, stateKey, newValue }) => {
       const expected = { [LAYER_ID]: { [stateKey]: newValue } },
         payload = {
@@ -364,6 +368,7 @@ describe('layers slice', () => {
       ${filterValueSelector}     | ${'filterValue'}     | ${undefined}
       ${otherSelector}           | ${'other'}           | ${undefined}
       ${timestampSelector}       | ${'timestamp'}       | ${undefined}
+      ${dataSelector}            | ${'data'}            | ${undefined}
     `('$selector.name', ({ selector, stateKey, undefinedReturn }) => {
       it(`Returns ${stateKey} for the given layer`, () => {
         const value = [1, 2, 3];
@@ -394,6 +399,37 @@ describe('layers slice', () => {
         const state = {};
         const result = selector(state);
         expect(result).toBeUndefined();
+      });
+    });
+
+    describe('layersWithDataSelector', () => {
+      it('returns a list of keys for layers which have data', () => {
+        const state = {
+          layers: {
+            'test-layer-1': { data: true },
+            'test-layer-2': { data: true },
+            'test-layer-3': {},
+          },
+        };
+
+        const result = layersWithDataSelector(state);
+
+        expect(result).toEqual(['test-layer-1', 'test-layer-2']);
+      });
+
+      it('returns a list of keys for layers which have data and value is not an object', () => {
+        const state = {
+          layers: {
+            'test-layer-1': { data: true },
+            'test-layer-2': null,
+            'test-layer-3': false,
+            'test-layer-4': undefined,
+          },
+        };
+
+        const result = layersWithDataSelector(state);
+
+        expect(result).toEqual(['test-layer-1']);
       });
     });
   });

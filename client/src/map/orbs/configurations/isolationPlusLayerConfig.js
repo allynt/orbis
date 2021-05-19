@@ -14,6 +14,7 @@ import {
   removeClickedFeatures,
   setClickedFeatures,
   timestampSelector,
+  dataSelector,
 } from '../layers.slice';
 
 /** @typedef {import('typings/orbis').GeoJsonFeature<import('typings/orbis').IsoPlusCommonProperties>} AccessorFeature */
@@ -56,7 +57,6 @@ export const getValue = (feature, selectedProperty, selectedTimestamp) =>
  */
 const configuration = ({
   id,
-  data,
   activeSources,
   dispatch,
   orbState,
@@ -66,6 +66,7 @@ const configuration = ({
   const other = otherSelector(`${source.authority}/${source.namespace}`)(
     orbState,
   );
+  const data = dataSelector(id)(orbState);
   const selectedProperty = get(other, 'property');
   if (selectedProperty?.source_id !== id) return undefined;
 
