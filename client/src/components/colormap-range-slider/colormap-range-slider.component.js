@@ -1,5 +1,6 @@
 import { makeStyles, Slider } from '@astrosat/astrosat-ui';
 import { scaleLinear } from 'd3-scale';
+import { DEFAULT_DECIMAL_PRECISION } from 'map/map.constants';
 import React, { forwardRef } from 'react';
 import { ColorScale } from 'utils/ColorScale';
 
@@ -32,14 +33,15 @@ const useStyles = makeStyles(
 
 /**
  * @typedef {{
- *   clipMax: number
- *   clipMin: number
- *   colorMap: ColorScale['color']
- *   onChange: (value: [number, number]) => void
+ *   clipMax?: number
+ *   clipMin?: number
+ *   colorMap?: ColorScale['color']
+ *   onChange?: (value: [number, number]) => void
  *   precision?: number
  *   reversed?: boolean
  *   type?: import('typings/orbis').PropertyType
- * } & Omit<import('@material-ui/core').SliderProps, 'onChange'>} ColormapRangeSliderProps
+ *   value?: [number, number]
+ * } & Omit<import('@material-ui/core').SliderProps, 'onChange' | 'value'>} ColormapRangeSliderProps
  */
 
 export const ColormapRangeSlider = forwardRef(
@@ -49,8 +51,8 @@ export const ColormapRangeSlider = forwardRef(
    */
   (
     {
-      max: maxProp,
-      min: minProp,
+      max: maxProp = 1,
+      min: minProp = 0,
       clipMax: clipMaxProp,
       clipMin: clipMinProp,
       colorMap,
@@ -103,14 +105,10 @@ export const ColormapRangeSlider = forwardRef(
         onChange={handleChange}
         value={[...value]}
         track={false}
-        marks={
-          hasMoved
-            ? [
-                { value: value[0], label: value[0] },
-                { value: value[1], label: value[1] },
-              ]
-            : scale.ticks(3).map(tick => ({ value: tick, label: tick }))
-        }
+        marks={(hasMoved ? value : scale.ticks(3)).map(value => ({
+          value,
+          label: value.toFixed(precision ?? DEFAULT_DECIMAL_PRECISION),
+        }))}
         step={precision ? Number(`1e-${precision}`) : 1}
         {...rest}
       />
