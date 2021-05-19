@@ -1,5 +1,5 @@
 import React from 'react';
-import { ColormapRangeSlider } from './material-colormap-range-slider.component';
+import { ColormapRangeSlider } from './colormap-range-slider.component';
 
 const COLOR_MAPS = [
   'OrRd',

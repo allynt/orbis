@@ -9,7 +9,7 @@ export { InfoButtonTooltip } from './info-button-tooltip/info-button-tooltip.com
 export { InlineTextField } from './inline-text-field/inline-text-field.component';
 export { LegendItem } from './legend-item/legend-item.component';
 export { MapControlButton } from './map-control-button.component';
-export { ColormapRangeSlider } from './material-colormap-range-slider/material-colormap-range-slider.component';
+export { ColormapRangeSlider } from './colormap-range-slider/colormap-range-slider.component';
 export { MultipleFeaturesList } from './multiple-features-list/multiple-features-list.component';
 export { OrbisLogo } from './orbis-logo/orbis-logo.component';
 export { Popup } from './popup/popup.component';
