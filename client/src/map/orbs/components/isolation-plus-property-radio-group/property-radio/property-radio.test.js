@@ -19,12 +19,7 @@ const renderComponent = (properties, selectedProperty) => {
       properties={properties}
       onPropertyChange={onPropertyChange}
       selectedProperty={
-        selectedProperty && {
-          source_id: testLayerId,
-          min: 0,
-          max: 1,
-          ...selectedProperty,
-        }
+        selectedProperty && { source_id: testLayerId, ...selectedProperty }
       }
     />,
   );
@@ -54,7 +49,7 @@ describe('<PropertyGroupRadio />', () => {
   });
 
   it('Shows controls if the selected property is one of the provided properties', () => {
-    const property = { name: 'property1', min: 0, max: 1 };
+    const property = { name: 'property1' };
     const { getByText } = renderComponent([property], property);
     expect(getByText('Range Filter')).toBeInTheDocument();
   });

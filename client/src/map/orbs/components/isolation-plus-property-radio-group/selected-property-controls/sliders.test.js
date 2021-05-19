@@ -11,9 +11,7 @@ describe('<Sliders />', () => {
   });
 
   it('Shows the color adjust slider when the toggle is clicked', async () => {
-    const { getByTestId, getByRole, queryByTestId } = render(
-      <Sliders selectedProperty={{ min: 0, max: 1 }} />,
-    );
+    const { getByTestId, getByRole, queryByTestId } = render(<Sliders />);
     userEvent.click(getByRole('checkbox'));
     await waitFor(() =>
       expect(queryByTestId('range-slider')).not.toBeInTheDocument(),

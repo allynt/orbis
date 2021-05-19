@@ -56,7 +56,7 @@ describe('<IsolationPlusPropertyRadioGroup />', () => {
   });
 
   it(`dispatches set other with property as null if the selected property is clicked`, () => {
-    const property = { name: 'property1', min: 0, max: 1 };
+    const property = { name: 'property1' };
     const { getByRole } = renderComponent(
       {
         authority: 'test',
