@@ -1,5 +1,5 @@
 import React from 'react';
-import { MaterialColormapRangeSlider } from './material-colormap-range-slider.component';
+import { ColormapRangeSlider } from './material-colormap-range-slider.component';
 
 const COLOR_MAPS = [
   'OrRd',
@@ -56,11 +56,7 @@ const Template = args => {
   const [value, setValue] = React.useState([args.min ?? 1, args.max ?? 10]);
   return (
     <div style={{ padding: '2rem' }}>
-      <MaterialColormapRangeSlider
-        onChange={setValue}
-        value={value}
-        {...args}
-      />
+      <ColormapRangeSlider onChange={setValue} value={value} {...args} />
     </div>
   );
 };

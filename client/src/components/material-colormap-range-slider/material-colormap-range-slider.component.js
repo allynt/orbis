@@ -42,7 +42,7 @@ const useStyles = makeStyles(
  * } & Omit<import('@material-ui/core').SliderProps, 'onChange'>} ColormapRangeSliderProps
  */
 
-export const MaterialColormapRangeSlider = forwardRef(
+export const ColormapRangeSlider = forwardRef(
   /**
    * @param {ColormapRangeSliderProps} props
    * @param {import('react').ForwardedRef<HTMLSpanElement>} ref

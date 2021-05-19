@@ -1,7 +1,7 @@
 import { fade, makeStyles } from '@astrosat/astrosat-ui';
 import React, { forwardRef } from 'react';
 import { ColorScale } from 'utils/ColorScale';
-import { MaterialColormapRangeSlider } from 'components/material-colormap-range-slider/material-colormap-range-slider.component';
+import { ColormapRangeSlider } from 'components/material-colormap-range-slider/material-colormap-range-slider.component';
 
 /**
  * @param {number} clipValue
@@ -56,7 +56,7 @@ export const ColorAdjustSlider = forwardRef(
     const styles = useStyles({ colorScale, clipMin, clipMax });
 
     return (
-      <MaterialColormapRangeSlider
+      <ColormapRangeSlider
         ref={ref}
         classes={styles}
         min={min}
