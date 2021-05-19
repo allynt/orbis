@@ -30,15 +30,12 @@ const useStyles = makeStyles(({ palette, typography: { pxToRem } }) => ({
  * @typedef {{
  *   clipMax: number
  *   clipMin: number
- *   color: ColorScale['color']
- *   max: number
- *   min: number
+ *   colorMap: ColorScale['color']
  *   onChange: (value: [number, number]) => void
  *   precision?: number
  *   reversed?: boolean
  *   type?: import('typings/orbis').PropertyType
- *   value?: [number, number]
- * }} ColormapRangeSliderProps
+ * } & Omit<import('@material-ui/core').SliderProps, 'onChange'>} ColormapRangeSliderProps
  */
 
 export const MaterialColormapRangeSlider = forwardRef(
@@ -52,7 +49,7 @@ export const MaterialColormapRangeSlider = forwardRef(
       min: minProp,
       clipMax: clipMaxProp,
       clipMin: clipMinProp,
-      color,
+      colorMap,
       onChange,
       precision,
       reversed,
@@ -75,7 +72,7 @@ export const MaterialColormapRangeSlider = forwardRef(
     const value = valueProp ?? [min, max];
 
     const colorScale = new ColorScale({
-      color,
+      color: colorMap,
       domain: [min, max],
       clip: [clipMin, clipMax],
       reversed,

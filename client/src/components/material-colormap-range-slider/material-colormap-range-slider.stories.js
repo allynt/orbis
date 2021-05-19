@@ -43,7 +43,7 @@ const COLOR_MAPS = [
 export default {
   title: 'Components/MaterialColorMapRangeSlider',
   argTypes: {
-    color: {
+    colorMap: {
       control: {
         type: 'select',
         options: COLOR_MAPS,

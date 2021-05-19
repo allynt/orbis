@@ -15,7 +15,7 @@ const useStyles = makeStyles(
   ({ spacing, typography: { caption, pxToRem } }) => ({
     slidersGridItem: {
       position: 'relative',
-      height: pxToRem(100),
+      height: pxToRem(90),
       padding: spacing(2),
     },
     slider: {
@@ -106,7 +106,7 @@ export const Sliders = ({
             data-testid="range-slider"
             className={styles.slider}
             type={type}
-            color={color}
+            colorMap={color}
             min={isRealValue(min) ? min : 0}
             max={isRealValue(max) ? max : 1}
             clipMin={clipMin}
