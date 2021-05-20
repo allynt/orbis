@@ -80,9 +80,7 @@ export const DateStepper = ({
 
   return (
     <Box className={styles.grid}>
-      <Typography id="stepper-label" variant="body2">
-        Timeseries
-      </Typography>
+      <Typography id="stepper-label">Timeseries</Typography>
       <Grid container>
         <Grid item xs={2}>
           <IconButton color="primary" onClick={() => setIsPlaying(c => !c)}>
