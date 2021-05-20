@@ -66,3 +66,9 @@ SomeState.args = {
     },
   },
 };
+
+export const ColorMap = Template.bind({});
+ColorMap.args = {
+  ...ValueAndLabel.args,
+  colorMap: 'Spectral',
+};
