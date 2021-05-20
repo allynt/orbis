@@ -39,6 +39,11 @@ export const IsolationPlusPropertyRadioGroup = ({
     filterValueSelector(propertyStateKey)(state?.orbs),
   );
 
+  const propertyOther = useSelector(state =>
+    otherSelector(propertyStateKey)(state?.orbs),
+  );
+  const clipRange = get(propertyOther, 'clipRange');
+
   const categoryPath = createCategorisationPath({
     categories: selectedLayer?.metadata?.application?.orbis?.categories,
   }).replace('.', ' > ');
@@ -85,6 +90,14 @@ export const IsolationPlusPropertyRadioGroup = ({
       }),
     );
 
+  const handleClipRangeChange = clipRange =>
+    dispatch(
+      setOther({
+        key: propertyStateKey,
+        other: { ...propertyOther, clipRange },
+      }),
+    );
+
   if (!selectedLayer?.metadata?.properties) return null;
   return groupProperties(selectedLayer.metadata.properties).map(properties => (
     <PropertyRadio
@@ -92,12 +105,14 @@ export const IsolationPlusPropertyRadioGroup = ({
       layerSourceId={selectedLayer?.source_id}
       properties={properties}
       onPropertyChange={handlePropertyChange}
-      onSliderChange={handleSliderChange}
+      onFilterSliderChange={handleSliderChange}
       selectedProperty={selectedProperty}
       filterRange={filterRange}
       categoryPath={categoryPath}
       onDateChange={handleDateChange}
       selectedTimestamp={selectedTimestamp}
+      clipRange={clipRange}
+      onClipRangeChange={handleClipRangeChange}
     />
   ));
 };
