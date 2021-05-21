@@ -17,8 +17,8 @@ describe('deleteProperty', () => {
         anotherOnLevelOne: {},
         levelTwo: {
           levelThree: {
-            deleteMe: {},
-            anotherOnLevelThree: {},
+            deleteMe: [4, 5, 6],
+            anotherOnLevelThree: [1, 2, 3],
           },
           dontDeleteMe: {},
           orMeEither: {},
@@ -33,8 +33,7 @@ describe('deleteProperty', () => {
         anotherOnLevelOne: {},
         levelTwo: {
           levelThree: {
-            deleteMe: undefined,
-            anotherOnLevelThree: {},
+            anotherOnLevelThree: [1, 2, 3],
           },
           dontDeleteMe: {},
           orMeEither: {},
