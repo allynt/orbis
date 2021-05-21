@@ -24,7 +24,7 @@ const dataUrlFromId = source => {
 };
 
 export const useOrbs = () => {
-  const { setViewState } = useMap();
+  const { viewState, setViewState } = useMap();
   const dispatch = useDispatch();
   const authToken = useSelector(selectDataToken);
   const activeSources = useSelector(activeDataSourcesSelector);
@@ -180,6 +180,7 @@ export const useOrbs = () => {
           id: source.source_id,
           activeSources,
           dispatch,
+          viewState,
           setViewState,
           orbState,
           authToken,

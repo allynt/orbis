@@ -1,7 +1,5 @@
 import React from 'react';
 import { get } from 'lodash';
-import { bbox, bboxPolygon } from '@turf/turf';
-import { WebMercatorViewport } from '@deck.gl/core';
 
 import {
   Chip,
@@ -12,6 +10,8 @@ import {
 } from '@astrosat/astrosat-ui';
 
 import { useMap } from 'MapContext';
+
+import { zoomToBoundingBox } from '../zoom-to-bounding-box';
 
 const MAX_CHARS = 15;
 
@@ -47,7 +47,7 @@ export const TooltipChip = ({
 }) => {
   const styles = useStyles({ isOnlyFeature });
 
-  const { viewState, setViewState } = useMap();
+  const { viewState, setViewState, bottomDeckRef } = useMap();
 
   const areaIdentifier =
     get(feature.object.properties, 'area_name') ??
@@ -70,45 +70,13 @@ export const TooltipChip = ({
     />
   );
 
-  function tile2long(lon, zoom) {
-    return (lon / Math.pow(2, zoom)) * 360 - 180;
-  }
-
-  function tile2lat(lat, zoom) {
-    var n = Math.PI - (2 * Math.PI * lat) / Math.pow(2, zoom);
-    return (180 / Math.PI) * Math.atan(0.5 * (Math.exp(n) - Math.exp(-n)));
-  }
-
-  const zoomToChipLocation = () => {
-    const viewport = new WebMercatorViewport({});
-    const points = bbox(feature?.object.geometry);
-
-    const minX = points[0],
-      maxX = points[2],
-      minY = points[1],
-      maxY = points[3];
-
-    const bounds = [
-      [minX, minY],
-      [maxX, maxY],
-    ];
-
-    // extent in minX, minY, maxX, maxY order
-    // bottom left, bottom right, top left, top right
-
-    const { longitude, latitude, zoom } = viewport.fitBounds(bounds);
-
-    const newViewstate = {
-      ...viewState,
-      longitude: tile2long(longitude, zoom),
-      latitude: tile2lat(latitude, zoom),
-      zoom: 6,
-    };
-
-    console.log('newViewstate: ', newViewstate);
-
-    return setViewState(newViewstate);
-  };
+  const handleClick = () =>
+    zoomToBoundingBox({
+      feature,
+      viewState,
+      setViewState,
+      viewport: bottomDeckRef.current.viewports[0],
+    });
 
   return areaIdentifier?.length + 2 >= MAX_CHARS && !isOnlyFeature ? (
     <Tooltip
@@ -121,12 +89,12 @@ export const TooltipChip = ({
       placement="bottom"
       title={areaIdentifier}
     >
-      <Grid item onClick={zoomToChipLocation}>
+      <Grid item onClick={handleClick}>
         {ChipElement}
       </Grid>
     </Tooltip>
   ) : (
-    <Grid item onClick={zoomToChipLocation}>
+    <Grid item onClick={handleClick}>
       {ChipElement}
     </Grid>
   );
