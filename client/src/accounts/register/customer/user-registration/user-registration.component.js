@@ -170,7 +170,7 @@ const UserRegistration = ({
       </Form.Row>
 
       <Form.Row centered>
-        <Button type="submit" disabled={!watch(FIELD_NAMES.acceptedTerms)}>
+        <Button type="submit" disabled={Object.keys(errors).length > 0}>
           {isLoading ? (
             <CircularProgress color="inherit" size={24} />
           ) : (
