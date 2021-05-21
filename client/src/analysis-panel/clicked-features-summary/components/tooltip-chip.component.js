@@ -11,7 +11,7 @@ import {
 
 import { useMap } from 'MapContext';
 
-import { zoomToBoundingBox } from '../zoom-to-bounding-box';
+import { zoomToBoundingBox } from '../zoomToBoundingBox/zoom-to-bounding-box';
 
 const MAX_CHARS = 15;
 

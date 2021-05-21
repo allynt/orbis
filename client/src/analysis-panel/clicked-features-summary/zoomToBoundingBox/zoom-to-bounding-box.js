@@ -1,5 +1,7 @@
 import { bbox } from '@turf/turf';
 import { fitBounds } from '@math.gl/web-mercator';
+import { FlyToInterpolator } from '@deck.gl/core';
+import { easeInOutCubic } from 'utils/easingFunctions';
 
 export const zoomToBoundingBox = ({
   feature,
@@ -7,7 +9,12 @@ export const zoomToBoundingBox = ({
   setViewState,
   viewport,
 }) => {
-  const points = bbox(feature?.object.geometry);
+  if (!feature || !viewState || !viewport) return;
+
+  const { width, height } = viewport,
+    points = bbox(feature?.object?.geometry);
+
+  // console.log('points: ', points);
 
   const minX = points[0],
     maxX = points[2],
@@ -19,8 +26,6 @@ export const zoomToBoundingBox = ({
     [maxX, maxY],
   ];
 
-  const { width, height } = viewport;
-
   const { longitude, latitude, zoom } = fitBounds({
     bounds,
     width,
@@ -28,12 +33,15 @@ export const zoomToBoundingBox = ({
     padding: 50,
   });
 
-  const newViewstate = {
+  const newViewState = {
     ...viewState,
     longitude,
     latitude,
     zoom,
+    transitionDuration: 2000,
+    transitionEasing: easeInOutCubic,
+    transitionInterpolator: new FlyToInterpolator(),
   };
 
-  return setViewState(newViewstate);
+  return setViewState(newViewState);
 };
