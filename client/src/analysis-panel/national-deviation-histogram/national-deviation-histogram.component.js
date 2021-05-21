@@ -2,11 +2,15 @@ import React from 'react';
 
 import { Box, Grid, Typography } from '@astrosat/astrosat-ui';
 
+import { useSelector } from 'react-redux';
+
 import { useAnalysisPanelContext } from 'analysis-panel/analysis-panel-context';
 import { SidePanelSection } from 'components';
 import { Aggregates } from './aggregates.component';
 import { AreaValue } from './area-value.component';
 import { Histogram } from './histogram.component';
+import { otherSelector } from 'map/orbs/layers.slice';
+import { get } from 'lodash';
 
 /**
  * @typedef {{
@@ -28,6 +32,12 @@ export const NationalDeviationHistogram = ({
     selectedProperty?.aggregation === 'sum' ? 'Sum' : 'Average';
 
   const { areaValue } = useAnalysisPanelContext();
+  const selectedPropertyOtherState = useSelector(state =>
+    otherSelector(`${selectedProperty.source_id}/${selectedProperty.name}`)(
+      state?.orbs,
+    ),
+  );
+  const clipRange = get(selectedPropertyOtherState, 'clipRange');
 
   return (
     <SidePanelSection defaultExpanded title="Selected Data Layer" info={info}>
@@ -37,7 +47,12 @@ export const NationalDeviationHistogram = ({
           <Histogram
             color={selectedProperty?.application?.orbis?.display?.color}
             domain={[selectedProperty?.min, selectedProperty?.max]}
-            clip={[selectedProperty?.clip_min, selectedProperty?.clip_max]}
+            clip={
+              clipRange ?? [
+                selectedProperty?.clip_min,
+                selectedProperty?.clip_max,
+              ]
+            }
             labelX={selectedProperty?.label}
             reversed={
               selectedProperty?.application?.orbis?.display?.colormap_reversed

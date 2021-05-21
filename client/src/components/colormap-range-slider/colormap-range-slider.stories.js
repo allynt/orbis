@@ -1,6 +1,5 @@
-import { isEqual } from 'lodash';
-import * as React from 'react';
-import { ColorMapRangeSlider } from './colormap-range-slider.component';
+import React from 'react';
+import { ColormapRangeSlider } from './colormap-range-slider.component';
 
 const COLOR_MAPS = [
   'OrRd',
@@ -41,10 +40,9 @@ const COLOR_MAPS = [
 ];
 
 export default {
-  title: 'Components/ColorMapRangeSlider',
+  title: 'Components/MaterialColorMapRangeSlider',
   argTypes: {
-    onChange: { action: 'onChange' },
-    color: {
+    colorMap: {
       control: {
         type: 'select',
         options: COLOR_MAPS,
@@ -54,13 +52,21 @@ export default {
   },
 };
 
-const Template = args => <ColorMapRangeSlider {...args} />;
+const Template = args => {
+  const [value, setValue] = React.useState([args.min ?? 1, args.max ?? 10]);
+  return (
+    <div style={{ padding: '2rem' }}>
+      <ColormapRangeSlider onChange={setValue} value={value} {...args} />
+    </div>
+  );
+};
 
 export const Percentage = Template.bind({});
 Percentage.args = {
   type: 'continuous',
   units: '%',
-  domain: [0, 100],
+  min: 0,
+  max: 100,
 };
 
 export const Decile = Template.bind({});
@@ -70,62 +76,36 @@ Decile.args = {
 };
 
 export const Continuous = Template.bind({});
-Continuous.args = { type: 'continuous', domain: [300, 1000] };
+Continuous.args = { type: 'continuous', min: 300, max: 1000 };
 
 export const NegativeDomain = Template.bind({});
-NegativeDomain.args = { type: 'continuous', domain: [-100, 100] };
+NegativeDomain.args = { type: 'continuous', min: -100, max: 100 };
 
 export const SmallDomain = Template.bind({});
-SmallDomain.args = { domain: [0.1, 0.9], precision: 2 };
+SmallDomain.args = { min: 0.1, max: 0.9, precision: 2 };
 
 export const Reversed = Template.bind({});
 Reversed.args = {
+  ...Continuous.args,
   reversed: true,
 };
 
 export const ReversedDecile = Template.bind({});
 ReversedDecile.args = {
+  ...Decile.args,
   reversed: true,
-  type: 'decile',
-};
-
-export const Controlled = () => {
-  const domain1 = [0, 10],
-    domain2 = [100, 1000];
-  const [domain, setDomain] = React.useState(domain1);
-  const [value, setValue] = React.useState(undefined);
-
-  const handleChange = domain => setValue(domain);
-
-  const handleClick = () => {
-    const newDomain = isEqual(domain, domain1) ? domain2 : domain1;
-    setDomain(newDomain);
-    setValue(undefined);
-  };
-
-  return (
-    <>
-      <ColorMapRangeSlider
-        type="continuous"
-        onChange={handleChange}
-        color="Spectral"
-        precision={1}
-        value={value}
-        domain={domain}
-      />
-      <button onClick={handleClick}>Switch Domain</button>
-      <pre>{JSON.stringify(value)}</pre>
-    </>
-  );
 };
 
 export const Clipped = Template.bind({});
 Clipped.args = {
-  domain: [0, 100],
-  clip: [20, 70],
+  min: 0,
+  max: 100,
+  clipMin: 20,
+  clipMax: 70,
 };
 
 export const LongValues = Template.bind({});
 LongValues.args = {
-  domain: [-1000000, 1000000],
+  min: -1000000,
+  max: 1000000,
 };

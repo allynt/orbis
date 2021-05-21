@@ -1,10 +1,14 @@
 import * as React from 'react';
 
 import { render } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import { Provider } from 'react-redux';
+import configureMockStore from 'redux-mock-store';
 
 import { NationalDeviationHistogram } from './national-deviation-histogram.component';
-import userEvent from '@testing-library/user-event';
 import { AnalysisPanelProvider } from 'analysis-panel/analysis-panel-context';
+
+const mockStore = configureMockStore();
 
 const DEFAULT_PROPERTY = {
     label: 'hello',
@@ -15,11 +19,13 @@ const DEFAULT_PROPERTY = {
   };
 
 const renderComponent = property =>
-  render(
-    <AnalysisPanelProvider>
-      <NationalDeviationHistogram selectedProperty={property} />
-    </AnalysisPanelProvider>,
-  );
+  render(<NationalDeviationHistogram selectedProperty={property} />, {
+    wrapper: ({ children }) => (
+      <Provider store={mockStore()}>
+        <AnalysisPanelProvider>{children}</AnalysisPanelProvider>
+      </Provider>
+    ),
+  });
 
 const AGGREGATION_AREA = ['button', { name: /aggregation\sarea/i }];
 
