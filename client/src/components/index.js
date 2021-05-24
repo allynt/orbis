@@ -1,4 +1,4 @@
-export { ColorMapRangeSlider } from './colormap-range-slider/colormap-range-slider.component';
+export { ColorAdjustSlider } from './color-adjust-slider/color-adjust-slider.component';
 export { DateRangePicker } from './date-range-picker/date-range-picker.component';
 export { default as FeatureDetail } from './feature-detail/feature-detail.component';
 export { FeatureDialog } from './feature-dialog/feature-dialog.component';
@@ -9,6 +9,7 @@ export { InfoButtonTooltip } from './info-button-tooltip/info-button-tooltip.com
 export { InlineTextField } from './inline-text-field/inline-text-field.component';
 export { LegendItem } from './legend-item/legend-item.component';
 export { MapControlButton } from './map-control-button.component';
+export { ColormapRangeSlider } from './colormap-range-slider/colormap-range-slider.component';
 export { MultipleFeaturesList } from './multiple-features-list/multiple-features-list.component';
 export { OrbisLogo } from './orbis-logo/orbis-logo.component';
 export { Popup } from './popup/popup.component';

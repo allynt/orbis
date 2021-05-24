@@ -76,7 +76,8 @@ const configuration = ({
   const selectedTimestamp = timestampSelector(propertyStateKey)(orbState);
 
   const filterRange = filterValueSelector(propertyStateKey)(orbState);
-
+  const propertyOther = otherSelector(propertyStateKey)(orbState);
+  const clipRange = get(propertyOther, 'clipRange');
   const extrudedMode = extrudedModeSelector(orbState);
   const extrusionScale = extrusionScaleSelector(orbState);
   const clickedFeatures = clickedFeaturesSelector(id)(orbState);
@@ -86,7 +87,16 @@ const configuration = ({
   );
   const colorScale =
     selectedPropertyMetadata &&
-    getColorScaleForProperty(selectedPropertyMetadata, 'array');
+    getColorScaleForProperty(
+      clipRange
+        ? {
+            ...selectedPropertyMetadata,
+            clip_min: clipRange[0],
+            clip_max: clipRange[1],
+          }
+        : selectedPropertyMetadata,
+      'array',
+    );
 
   const clickedFeatureIds = clickedFeatures?.map(f =>
     get(f.object.properties, source?.metadata?.index),
@@ -210,6 +220,7 @@ const configuration = ({
         clickedFeatures,
         selectedTimestamp,
         hoveredFeatures,
+        clipRange,
       ],
       getLineWidth: [clickedFeatures],
     };

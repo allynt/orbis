@@ -26,8 +26,10 @@ const useStyles = makeStyles(theme => ({
  *   onDateChange?: (event: React.ChangeEvent<{}>, date: number) => void
  *   selectedTimestamp?: number
  *   filterRange: [number, number]
- *   onSliderChange: (value: [number, number]) => void
+ *   onFilterSliderChange: (value: [number, number]) => void
  *   categoryPath: string
+ *   clipRange?: [number, number]
+ *   onClipRangeChange: (value: [number, number]) => void
  * }} props
  */
 const PropertyRadio = ({
@@ -37,7 +39,9 @@ const PropertyRadio = ({
   onDateChange,
   selectedTimestamp,
   filterRange,
-  onSliderChange,
+  onFilterSliderChange,
+  clipRange,
+  onClipRangeChange,
   selectedProperty,
   categoryPath,
 }) => {
@@ -89,9 +93,11 @@ const PropertyRadio = ({
           <SelectedPropertyControls
             selectedProperty={selectedProperty}
             filterRange={filterRange}
-            onRangeFilterChange={onSliderChange}
+            onRangeFilterChange={onFilterSliderChange}
             selectedTimestamp={selectedTimestamp}
             onDateChange={onDateChange}
+            clipRange={clipRange}
+            onClipRangeChange={onClipRangeChange}
           />
         </>
       )}

@@ -12,6 +12,7 @@ import * as React from 'react';
 import { useSelector } from 'react-redux';
 
 import { logProperty } from 'data-layers/data-layers.slice';
+import { ColorScale } from 'utils/ColorScale';
 
 const useStyles = makeStyles(theme => ({
   iconWrapper: {
@@ -29,7 +30,7 @@ const useStyles = makeStyles(theme => ({
     minWidth: 'max-content',
   },
   label: {
-    marginLeft: props => !props.hasIcon && theme.spacing(2),
+    marginLeft: props => !props.hasIconOrColorMap && theme.spacing(2),
   },
 }));
 
@@ -43,14 +44,16 @@ const isPropertyOff = (filters, property) => {
  * @type {import('typings/orbis').SidebarComponent<{
  *   filters: {value: any, label?: string, icon?: string}[]
  *   color?: string
+ *   colorMap?: import('typings/orbis').ColorMap
  *   iconColor?: string
- * >}
+ * }>}
  */
 export const CheckboxFilters = ({
   selectedLayer,
   dispatch,
   filters,
   color,
+  colorMap,
   iconColor,
 }) => {
   if (!filters) console.error('No `filters` prop supplied to CheckboxFilters');
@@ -61,8 +64,17 @@ export const CheckboxFilters = ({
   const styles = useStyles({
     color,
     iconColor,
-    hasIcon: filters?.some(f => !!f.icon),
+    hasIconOrColorMap: filters?.some(f => !!f.icon) || colorMap != null,
   });
+  let colorScale;
+  if (colorMap != null)
+    colorScale = new ColorScale({
+      color: colorMap,
+      domain:
+        typeof filters[0].value === 'number'
+          ? [filters[0].value, filters[filters.length - 1].value]
+          : filters.map(f => f.value),
+    });
 
   /**
    * @param {any} value
@@ -104,9 +116,12 @@ export const CheckboxFilters = ({
                 inputProps={{ 'aria-labelledby': labelId }}
               />
             </ListItemIcon>
-            {Icon && (
-              <ListItemIcon className={styles.iconWrapper}>
-                <Icon fontSize="small" titleAccess={icon} />
+            {(Icon || colorScale) && (
+              <ListItemIcon
+                className={styles.iconWrapper}
+                style={{ backgroundColor: colorScale?.get(value) }}
+              >
+                {Icon && <Icon fontSize="small" titleAccess={icon} />}
               </ListItemIcon>
             )}
             <ListItemText
