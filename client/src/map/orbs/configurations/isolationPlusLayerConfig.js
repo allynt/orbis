@@ -139,8 +139,11 @@ const configuration = ({
     const color = /** @type {[number,number,number]} */ (colorScale &&
       colorScale.get(getValue(d, selectedProperty, selectedTimestamp)));
 
-    if (hoveredFeatures?.includes(d.properties.area_name)) {
-      return color;
+    if (
+      hoveredFeatures?.type === 'pillHover' &&
+      hoveredFeatures?.id === d.properties.area_name
+    ) {
+      return [255, 255, 255, 192];
     } else {
       return [...color, getFillOpacity(d)];
     }
@@ -183,7 +186,10 @@ const configuration = ({
     return dispatch(
       setHoveredFeatures({
         key: id,
-        hoveredFeatures: [info?.object?.properties?.area_name],
+        hoveredFeatures: {
+          type: 'featureHover',
+          id: info?.object?.properties?.area_name,
+        },
       }),
     );
   };
@@ -253,7 +259,7 @@ const configuration = ({
     maxZoom: source?.metadata?.maxZoom,
     uniqueIdProperty: source?.metadata?.index,
     pickable: true,
-    autoHighlight: false,
+    autoHighlight: true,
     onClick,
     onHover,
     getLineColor: COLOR_PRIMARY,

@@ -19,7 +19,6 @@ const useStyles = makeStyles(theme => ({
   chip: {
     fontSize: theme.typography.pxToRem(10),
     maxWidth: props => (!props.isOnlyFeature ? `${MAX_CHARS}ch` : undefined),
-    border: props => `${!!props.areaIsHovered ? '2px solid red' : 'none'}`,
   },
   closeIcon: {
     width: theme.typography.pxToRem(10),
@@ -32,6 +31,7 @@ const useStyles = makeStyles(theme => ({
 /**
  * @param {{
  *   onDelete: (event: any) => void
+ *   onHover: (event: any) => void
  *   feature: import('typings/orbis').PolygonPickedMapFeature
  *   fallbackProperty?: string
  *   isOnlyFeature?: boolean
@@ -52,18 +52,24 @@ export const TooltipChip = ({
     get(feature.object.properties, 'area_name') ??
     get(feature.object.properties, fallbackProperty);
 
-  const areaIsHovered = hoveredFeatures?.includes(areaIdentifier);
+  const areaIsHovered = hoveredFeatures?.id === areaIdentifier;
 
-  const styles = useStyles({ isOnlyFeature, areaIsHovered });
+  const styles = useStyles({ isOnlyFeature });
 
   const ChipElement = (
     <Chip
       tabIndex={-1}
+      color={areaIsHovered ? 'primary' : ''}
       classes={{ label: styles.chip }}
       size="small"
       label={areaIdentifier}
       onDelete={onDelete}
-      onMouseEnter={() => onHover([feature?.object?.properties?.area_name])}
+      onMouseEnter={() =>
+        onHover({
+          type: 'pillHover',
+          id: feature?.object?.properties?.area_name,
+        })
+      }
       onMouseLeave={() => onHover(undefined)}
       deleteIcon={
         <CloseIcon
