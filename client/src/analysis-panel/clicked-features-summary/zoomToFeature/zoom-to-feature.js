@@ -3,7 +3,7 @@ import { fitBounds } from '@math.gl/web-mercator';
 import { FlyToInterpolator } from '@deck.gl/core';
 import { easeInOutCubic } from 'utils/easingFunctions';
 
-export const zoomToBoundingBox = ({
+export const zoomToFeature = ({
   feature,
   viewState,
   setViewState,
@@ -13,8 +13,6 @@ export const zoomToBoundingBox = ({
 
   const { width, height } = viewport,
     points = bbox(feature?.object?.geometry);
-
-  // console.log('points: ', points);
 
   const minX = points[0],
     maxX = points[2],

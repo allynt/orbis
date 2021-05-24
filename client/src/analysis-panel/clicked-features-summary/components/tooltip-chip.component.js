@@ -11,7 +11,7 @@ import {
 
 import { useMap } from 'MapContext';
 
-import { zoomToBoundingBox } from '../zoomToBoundingBox/zoom-to-bounding-box';
+import { zoomToFeature } from '../zoomToFeature/zoom-to-feature';
 
 const MAX_CHARS = 15;
 
@@ -71,7 +71,7 @@ export const TooltipChip = ({
   );
 
   const handleClick = () =>
-    zoomToBoundingBox({
+    zoomToFeature({
       feature,
       viewState,
       setViewState,
