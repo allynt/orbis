@@ -1,3 +1,18 @@
+# [2.17.0](https://github.com/astrosat/orbis/compare/v2.16.0...v2.17.0) (2021-05-24)
+
+
+### Bug Fixes
+
+* **frontend:** Stop saved maps becoming corrupted ([5445644](https://github.com/astrosat/orbis/commit/54456442be234f586253c2fc26dc17d63a1bd39c))
+
+
+### Features
+
+* **frontend:** Add color adjustment tool to Core layers ([3345247](https://github.com/astrosat/orbis/commit/3345247d2681153d2bc16e5d8d3f087b566b0408))
+* **frontend:** Add minerals demo raster layer ([f524a52](https://github.com/astrosat/orbis/commit/f524a522f38e37fc3964e17ed2bd14a9ed9f25ec))
+* **frontend:** Add minerals vector layer ([739ab5a](https://github.com/astrosat/orbis/commit/739ab5af2321da63d489fca77a04d80837f631e9))
+* **frontend:** Add reset button for iso+ sliders ([ed9d54a](https://github.com/astrosat/orbis/commit/ed9d54ab831d006abaaff66b5c7245a15c485633))
+
 # [2.16.0](https://github.com/astrosat/orbis/compare/v2.15.0...v2.16.0) (2021-05-11)
 
 
