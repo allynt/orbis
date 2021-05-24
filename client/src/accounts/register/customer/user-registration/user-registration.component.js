@@ -79,6 +79,7 @@ const UserRegistration = ({
       newPasswordConfirm: undefined,
       acceptedTerms: false,
     },
+    mode: 'onBlur',
     resolver: yupResolver(validationSchema),
     context: { passwordMinLength, passwordMaxLength, passwordStrength },
   });
@@ -170,7 +171,12 @@ const UserRegistration = ({
       </Form.Row>
 
       <Form.Row centered>
-        <Button type="submit" disabled={Object.keys(errors).length > 0}>
+        <Button
+          type="submit"
+          disabled={
+            Object.keys(errors).length > 0 || !watch(FIELD_NAMES.acceptedTerms)
+          }
+        >
           {isLoading ? (
             <CircularProgress color="inherit" size={24} />
           ) : (

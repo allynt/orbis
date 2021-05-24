@@ -38,14 +38,14 @@ Feature: Register
     When I type "testpwtest" into the "Password Confirmation *" password field
     When I click the "I agree with Terms & Conditions" checkbox
     When I submit the "Sign Up" form
-    Then I see the "Passwords don't match" error
+    Then I see the "A user is already registered with this e-mail address" error
 
   Scenario: Submit registration with no confirmation password
     When I type "test@test.com" into the "Work Email Address" field
     When I type "testpas" into the "Password *" password field
     When I click the "I agree with Terms & Conditions" checkbox
     When I submit the "Sign Up" form
-    Then I see the "Passwords don't match" error
+    Then I see the "Password is too short (minimum 8 characters)" error
     Then "Register" form not submitted as submit button disabled
 
   Scenario: Submit registration with passwords to short
