@@ -9,6 +9,7 @@ import {
   setClickedFeatures,
 } from 'map/orbs/layers.slice';
 import { AnalysisPanelProvider } from 'analysis-panel/analysis-panel-context';
+import { MapProvider } from 'MapContext';
 
 const initialFeatures = new Array(3).fill(undefined).map((_, i) => ({
   object: {
@@ -25,12 +26,14 @@ const renderComponent = (clickedFeatures = initialFeatures) => {
   const dispatch = jest.fn();
 
   const utils = render(
-    <AnalysisPanelProvider clickedFeatures={clickedFeatures}>
-      <ClickedFeaturesSummary
-        clickedFeatures={clickedFeatures}
-        dispatch={dispatch}
-      />
-    </AnalysisPanelProvider>,
+    <MapProvider>
+      <AnalysisPanelProvider clickedFeatures={clickedFeatures}>
+        <ClickedFeaturesSummary
+          clickedFeatures={clickedFeatures}
+          dispatch={dispatch}
+        />
+      </AnalysisPanelProvider>
+    </MapProvider>,
   );
   return { ...utils, dispatch };
 };
@@ -56,6 +59,8 @@ describe('<ClickedFeaturesSummary />', () => {
         ),
       );
     });
+
+    it('', () => {});
   });
 
   describe('Population', () => {
