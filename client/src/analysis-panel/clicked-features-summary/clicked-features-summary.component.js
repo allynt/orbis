@@ -17,17 +17,27 @@ import { ClickedFeatureChips, DataValue } from './components';
  * */
 export const ClickedFeaturesSummary = ({
   clickedFeatures,
+  hoveredFeatures,
   selectedProperty,
   dispatch,
   fallbackProperty,
 }) => {
   const { populationTotal, householdTotal } = useAnalysisPanelContext();
 
+  const handleFeatureHover = feature =>
+    dispatch(
+      setHoveredFeatures({
+        key: selectedProperty?.source_id,
+        hoveredFeatures: feature ? [feature] : undefined,
+      }),
+    );
+
   return (
     <SidePanelSection title="Selected Areas of Interest" defaultExpanded>
       <Grid container spacing={2}>
         <ClickedFeatureChips
           clickedFeatures={clickedFeatures}
+          hoveredFeatures={hoveredFeatures}
           fallbackProperty={fallbackProperty}
           onFeatureDelete={feature =>
             dispatch(
@@ -38,14 +48,7 @@ export const ClickedFeaturesSummary = ({
               }),
             )
           }
-          onFeatureHover={payload =>
-            dispatch(
-              setHoveredFeatures({
-                key: selectedProperty?.source_id,
-                hoveredFeatures: payload,
-              }),
-            )
-          }
+          onFeatureHover={handleFeatureHover}
           onDeselectAllClick={() =>
             dispatch(
               setClickedFeatures({

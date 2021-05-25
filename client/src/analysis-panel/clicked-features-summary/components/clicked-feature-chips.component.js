@@ -8,7 +8,9 @@ import { ControlButtons } from './control-buttons.component';
 /**
  * @param {{
  *   clickedFeatures: import('typings/orbis').PolygonPickedMapFeature[]
+ *   hoveredFeatures: import('typings/orbis').PolygonPickedMapFeature[]
  *   onFeatureDelete: (feature: import('typings/orbis').PolygonPickedMapFeature) => void
+ *   onFeatureHover: (feature?: import('typings/orbis').PolygonPickedMapFeature) => void
  *   onDeselectAllClick: () => void
  *   fallbackProperty?: string
  * }} props
@@ -16,6 +18,7 @@ import { ControlButtons } from './control-buttons.component';
  */
 export const ClickedFeatureChips = ({
   clickedFeatures,
+  hoveredFeatures,
   onFeatureDelete,
   onFeatureHover,
   onDeselectAllClick,
@@ -40,7 +43,14 @@ export const ClickedFeatureChips = ({
                   feature={feature}
                   isOnlyFeature={clickedFeatures.length === 1}
                   fallbackProperty={fallbackProperty}
-                  onHover={onFeatureHover}
+                  onMouseEnter={() => onFeatureHover(feature)}
+                  onMouseLeave={() => onFeatureHover(undefined)}
+                  isHovered={hoveredFeatures?.some(
+                    feat =>
+                      feat.object.properties[fallbackProperty] ===
+                      (feature.object.properties[fallbackProperty] ??
+                        feature.object.id),
+                  )}
                   onDelete={() => onFeatureDelete(feature)}
                 />
               </Fade>

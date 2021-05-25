@@ -151,8 +151,11 @@ const configuration = ({
       colorScale.get(getValue(d, selectedProperty, selectedTimestamp)));
 
     if (
-      hoveredFeatures?.type === 'pillHover' &&
-      hoveredFeatures?.id === d.properties.area_name
+      hoveredFeatures?.some(
+        feat =>
+          feat.object.properties[source?.metadata?.index] ===
+          (d.properties[source?.metadata?.index] ?? d.id),
+      )
     ) {
       return PILL_HOVER_COLOR;
     } else {
@@ -197,10 +200,9 @@ const configuration = ({
     return dispatch(
       setHoveredFeatures({
         key: id,
-        hoveredFeatures: {
-          type: 'featureHover',
-          id: info?.object?.properties?.area_name,
-        },
+        hoveredFeatures: info.object
+          ? [createReduxSafePickedInfo(info)]
+          : undefined,
       }),
     );
   };
@@ -271,7 +273,7 @@ const configuration = ({
     maxZoom: source?.metadata?.maxZoom,
     uniqueIdProperty: source?.metadata?.index,
     pickable: true,
-    autoHighlight: true,
+    autoHighlight: false,
     onClick,
     onHover,
     getLineColor: COLOR_PRIMARY,

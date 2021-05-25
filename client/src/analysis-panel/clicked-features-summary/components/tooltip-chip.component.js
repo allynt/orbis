@@ -1,5 +1,4 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
 import { get } from 'lodash';
 import {
   Chip,
@@ -8,7 +7,6 @@ import {
   makeStyles,
   Tooltip,
 } from '@astrosat/astrosat-ui';
-import { hoveredFeaturesSelector } from 'map/orbs/layers.slice';
 
 const MAX_CHARS = 15;
 
@@ -31,7 +29,9 @@ const useStyles = makeStyles(theme => ({
 /**
  * @param {{
  *   onDelete: (event: any) => void
- *   onHover: (event: any) => void
+ *   onMouseEnter: () => void
+ *   onMouseLeave: () => void
+ *   isHovered?: boolean
  *   feature: import('typings/orbis').PolygonPickedMapFeature
  *   fallbackProperty?: string
  *   isOnlyFeature?: boolean
@@ -39,38 +39,29 @@ const useStyles = makeStyles(theme => ({
  */
 export const TooltipChip = ({
   onDelete,
-  onHover,
+  onMouseEnter,
+  onMouseLeave,
+  isHovered,
   feature,
   fallbackProperty,
   isOnlyFeature,
 }) => {
-  const hoveredFeatures = useSelector(state =>
-    hoveredFeaturesSelector(feature?.layer?.id)(state?.orbs),
-  );
-
   const areaIdentifier =
     get(feature.object.properties, 'area_name') ??
     get(feature.object.properties, fallbackProperty);
-
-  const areaIsHovered = hoveredFeatures?.id === areaIdentifier;
 
   const styles = useStyles({ isOnlyFeature });
 
   const ChipElement = (
     <Chip
       tabIndex={-1}
-      color={areaIsHovered ? 'primary' : ''}
+      color={isHovered ? 'primary' : ''}
       classes={{ label: styles.chip }}
       size="small"
       label={areaIdentifier}
       onDelete={onDelete}
-      onMouseEnter={() =>
-        onHover({
-          type: 'pillHover',
-          id: feature?.object?.properties?.area_name,
-        })
-      }
-      onMouseLeave={() => onHover(undefined)}
+      onMouseEnter={onMouseEnter}
+      onMouseLeave={onMouseLeave}
       deleteIcon={
         <CloseIcon
           className={styles.closeIcon}
