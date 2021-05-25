@@ -1,4 +1,4 @@
-import { zoomToFeature } from './create-viewstate-for-feature';
+import { createViewstateForFeature } from './create-viewstate-for-feature';
 
 const feature = {
   object: {
@@ -37,43 +37,32 @@ const props = {
   viewport,
 };
 
-describe('zoomToFeature', () => {
+describe('createViewstateForFeature', () => {
   it('returns if feature is undefined', () => {
-    zoomToFeature({
+    const result = createViewstateForFeature({
       ...props,
       feature: undefined,
     });
 
-    expect(setViewState).not.toHaveBeenCalled();
-  });
-
-  it('returns if viewState is undefined', () => {
-    zoomToFeature({
-      ...props,
-      viewState: undefined,
-    });
-
-    expect(setViewState).not.toHaveBeenCalled();
+    expect(result).toBeUndefined();
   });
 
   it('returns if viewport is undefined', () => {
-    zoomToFeature({
+    const result = createViewstateForFeature({
       ...props,
       viewport: undefined,
     });
 
-    expect(setViewState).not.toHaveBeenCalled();
+    expect(result).toBeUndefined();
   });
 
   it('returns an updated viewport', () => {
-    zoomToFeature(props);
+    const result = createViewstateForFeature(props);
 
-    expect(setViewState).toHaveBeenCalledWith(
-      expect.objectContaining({
-        latitude: 38.585216077470605,
-        latitude: 38.585216077470605,
-        zoom: 6.103610629190256,
-      }),
-    );
+    expect(result).toEqual({
+      longitude: -78.00000000000072,
+      latitude: 38.585216077470605,
+      zoom: 6.103610629190256,
+    });
   });
 });
