@@ -4,7 +4,7 @@ import { MVTLayer } from '@deck.gl/geo-layers';
 import { gunzipSync } from 'zlib';
 import parse from 'fast-json-parse';
 
-import { tile2Coords } from './tile2Coords';
+import { tileCoordinatesToLatLon } from './tileCoordinatesToLatLon';
 
 import { logError } from 'data-layers/data-layers.slice';
 
@@ -101,7 +101,7 @@ export class CustomMVTLayer extends MVTLayer {
       bbox = params?.sourceLayer?.props?.tile?.bbox;
 
     if (info?.object) {
-      info.object = tile2Coords(object, bbox, viewport);
+      info.object = tileCoordinatesToLatLon(object, bbox, viewport);
     }
 
     return info;

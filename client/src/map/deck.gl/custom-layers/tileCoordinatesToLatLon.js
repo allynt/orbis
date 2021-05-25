@@ -42,7 +42,7 @@ function MultiPolygon(multiPolygon, bbox, viewport) {
   return multiPolygon.map(polygon => Polygon(polygon, bbox, viewport));
 }
 
-export function tile2Coords(object, bbox, viewport) {
+export function tileCoordinatesToLatLon(object, bbox, viewport) {
   const nw = viewport.projectFlat([bbox.west, bbox.north]),
     se = viewport.projectFlat([bbox.east, bbox.south]),
     projectedBbox = [nw, se],
