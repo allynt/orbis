@@ -13,7 +13,7 @@ import { hoveredFeaturesSelector } from 'map/orbs/layers.slice';
 const MAX_CHARS = 15;
 
 /**
- * @type {(props?: {isOnlyFeature?: boolean, areaIsHovered?: boolean}) => Record<"tooltip" | "chip" | "closeIcon", string>}
+ * @type {(props?: {isOnlyFeature?: boolean}) => Record<"tooltip" | "chip" | "closeIcon", string>}
  */
 const useStyles = makeStyles(theme => ({
   chip: {

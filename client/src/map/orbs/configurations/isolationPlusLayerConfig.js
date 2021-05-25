@@ -23,6 +23,7 @@ import {
 
 export const COLOR_PRIMARY = [246, 190, 0, 255],
   COLOR_TRANSPARENT = [0, 0, 0, 0],
+  PILL_HOVER_COLOR = [255, 255, 255, 192],
   OPACITY_FLAT = 150,
   OPACITY_EXTRUDED = OPACITY_FLAT,
   OPACITY_EXTRUDED_SELECTED = 255,
@@ -153,7 +154,7 @@ const configuration = ({
       hoveredFeatures?.type === 'pillHover' &&
       hoveredFeatures?.id === d.properties.area_name
     ) {
-      return [255, 255, 255, 192];
+      return PILL_HOVER_COLOR;
     } else {
       return [...color, getFillOpacity(d)];
     }
