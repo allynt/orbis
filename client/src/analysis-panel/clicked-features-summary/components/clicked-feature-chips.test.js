@@ -1,5 +1,5 @@
 import React from 'react';
-import { render } from '@testing-library/react';
+import { fireEvent, render } from '@testing-library/react';
 import { ClickedFeatureChips } from './clicked-feature-chips.component';
 import userEvent from '@testing-library/user-event';
 
@@ -17,16 +17,18 @@ const initialFeatures = new Array(3).fill(undefined).map((_, i) => ({
 const renderComponent = () => {
   const onDeselectAllClick = jest.fn();
   const onFeatureDelete = jest.fn();
+  const onFeatureHover = jest.fn();
 
   const utils = render(
     <ClickedFeatureChips
       clickedFeatures={initialFeatures}
       onDeselectAllClick={onDeselectAllClick}
       onFeatureDelete={onFeatureDelete}
+      onFeatureHover={onFeatureHover}
       fallbackProperty="index"
     />,
   );
-  return { ...utils, onDeselectAllClick, onFeatureDelete };
+  return { ...utils, onDeselectAllClick, onFeatureDelete, onFeatureHover };
 };
 
 describe('<ClickedFeatureChips />', () => {
@@ -54,6 +56,18 @@ describe('<ClickedFeatureChips />', () => {
     const { getByRole, onFeatureDelete } = renderComponent();
     userEvent.click(getByRole('button', { name: /remove\stest\sarea\s0/i }));
     expect(onFeatureDelete).toHaveBeenCalledWith(initialFeatures[0]);
+  });
+
+  it('Calls onFeatureHover with an area when the area`s chip is hovered in', () => {
+    const { getByRole, onFeatureHover } = renderComponent();
+    fireEvent.mouseEnter(getByRole('button', { name: 'Test Area 0' }));
+    expect(onFeatureHover).toHaveBeenCalledWith(initialFeatures[0]);
+  });
+
+  it('Calls onFeatureHover with undefined when the area`s chip is hovered out', () => {
+    const { getByRole, onFeatureHover } = renderComponent();
+    fireEvent.mouseLeave(getByRole('button', { name: 'Test Area 0' }));
+    expect(onFeatureHover).toHaveBeenCalledWith(undefined);
   });
 
   it('Calls onDeselectAllClick when the Deselect All button is clicked', () => {
