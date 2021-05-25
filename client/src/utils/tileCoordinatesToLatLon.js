@@ -1,14 +1,5 @@
 import { lerp } from 'math.gl';
 
-const availableTransformations = {
-  Point,
-  MultiPoint,
-  LineString,
-  MultiLineString,
-  Polygon,
-  MultiPolygon,
-};
-
 const Point = ([pointX, pointY], [nw, se], viewport) => {
   const x = lerp(nw[0], se[0], pointX);
   const y = lerp(nw[1], se[1], pointY);
@@ -42,24 +33,26 @@ const MultiPolygon = (multiPolygon, bbox, viewport) => {
   return multiPolygon.map(polygon => Polygon(polygon, bbox, viewport));
 };
 
-export const tileCoordinatesToLatLon = (object, bbox, viewport) => {
+const availableTransformations = {
+  Point,
+  MultiPoint,
+  LineString,
+  MultiLineString,
+  Polygon,
+  MultiPolygon,
+};
+
+export const tileCoordinatesToLatLon = (geometry, bbox, viewport) => {
   const nw = viewport.projectFlat([bbox.west, bbox.north]),
     se = viewport.projectFlat([bbox.east, bbox.south]),
-    projectedBbox = [nw, se],
-    type = object?.geometry?.type,
-    coords = object?.geometry?.coordinates;
+    projectedBbox = [nw, se];
 
-  const result = {
-    ...object,
-    geometry: {
-      type,
-      coordinates: availableTransformations[type]?.(
-        coords,
-        projectedBbox,
-        viewport,
-      ),
-    },
+  return {
+    ...geometry,
+    coordinates: availableTransformations[geometry.type](
+      geometry.coordinates,
+      projectedBbox,
+      viewport,
+    ),
   };
-
-  return result;
 };

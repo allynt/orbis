@@ -4,7 +4,7 @@ import { MVTLayer } from '@deck.gl/geo-layers';
 import { gunzipSync } from 'zlib';
 import parse from 'fast-json-parse';
 
-import { tileCoordinatesToLatLon } from './tileCoordinatesToLatLon';
+import { tileCoordinatesToLatLon } from '../../../utils/tileCoordinatesToLatLon';
 
 import { logError } from 'data-layers/data-layers.slice';
 
