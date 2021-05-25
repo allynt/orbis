@@ -1,6 +1,9 @@
 import React from 'react';
 import { get } from 'lodash';
 
+import { FlyToInterpolator } from '@deck.gl/core';
+import { easeInOutCubic } from 'utils/easingFunctions';
+
 import {
   Chip,
   CloseIcon,
@@ -73,11 +76,16 @@ export const TooltipChip = ({
   const handleClick = () => {
     const newViewState = createViewstateForFeature({
       feature,
-      viewState,
       viewport: bottomDeckRef.current.viewports[0],
     });
 
-    return setViewState(newViewState);
+    return setViewState({
+      ...viewState,
+      ...newViewState,
+      transitionDuration: 2000,
+      transitionEasing: easeInOutCubic,
+      transitionInterpolator: new FlyToInterpolator(),
+    });
   };
 
   return areaIdentifier?.length + 2 >= MAX_CHARS && !isOnlyFeature ? (

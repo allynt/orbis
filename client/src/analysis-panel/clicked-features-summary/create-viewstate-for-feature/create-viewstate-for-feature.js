@@ -1,10 +1,8 @@
 import { bbox } from '@turf/turf';
 import { fitBounds } from '@math.gl/web-mercator';
-import { FlyToInterpolator } from '@deck.gl/core';
-import { easeInOutCubic } from 'utils/easingFunctions';
 
-export const createViewstateForFeature = ({ feature, viewState, viewport }) => {
-  if (!feature || !viewState || !viewport) return;
+export const createViewstateForFeature = ({ feature, viewport }) => {
+  if (!feature || !viewport) return;
 
   const { width, height } = viewport,
     points = bbox(feature?.object?.geometry);
@@ -27,12 +25,8 @@ export const createViewstateForFeature = ({ feature, viewState, viewport }) => {
   });
 
   return {
-    ...viewState,
     longitude,
     latitude,
     zoom,
-    transitionDuration: 2000,
-    transitionEasing: easeInOutCubic,
-    transitionInterpolator: new FlyToInterpolator(),
   };
 };
