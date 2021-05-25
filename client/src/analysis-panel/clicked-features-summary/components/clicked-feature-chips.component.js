@@ -9,6 +9,7 @@ import { ControlButtons } from './control-buttons.component';
  * @param {{
  *   clickedFeatures: import('typings/orbis').PolygonPickedMapFeature[]
  *   onFeatureDelete: (feature: import('typings/orbis').PolygonPickedMapFeature) => void
+ *   onFeatureClick: (feature: import('typings/orbis').PolygonPickedMapFeature) => void
  *   onDeselectAllClick: () => void
  *   fallbackProperty?: string
  * }} props
@@ -17,6 +18,7 @@ import { ControlButtons } from './control-buttons.component';
 export const ClickedFeatureChips = ({
   clickedFeatures,
   onFeatureDelete,
+  onFeatureClick,
   onDeselectAllClick,
   fallbackProperty,
 }) => {
@@ -40,6 +42,7 @@ export const ClickedFeatureChips = ({
                   isOnlyFeature={clickedFeatures.length === 1}
                   fallbackProperty={fallbackProperty}
                   onDelete={() => onFeatureDelete(feature)}
+                  onClick={() => onFeatureClick(feature)}
                 />
               </Fade>
             ))}

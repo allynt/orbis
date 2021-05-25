@@ -1,9 +1,6 @@
 import React from 'react';
 import { get } from 'lodash';
 
-import { FlyToInterpolator } from '@deck.gl/core';
-import { easeInOutCubic } from 'utils/easingFunctions';
-
 import {
   Chip,
   CloseIcon,
@@ -11,10 +8,6 @@ import {
   makeStyles,
   Tooltip,
 } from '@astrosat/astrosat-ui';
-
-import { useMap } from 'MapContext';
-
-import { createViewstateForFeature } from '../create-viewstate-for-feature/create-viewstate-for-feature';
 
 const MAX_CHARS = 15;
 
@@ -37,6 +30,7 @@ const useStyles = makeStyles(theme => ({
 /**
  * @param {{
  *   onDelete: (event: any) => void
+ *   onClick: React.MouseEventHandler<HTMLDivElement>
  *   feature: import('typings/orbis').PolygonPickedMapFeature
  *   fallbackProperty?: string
  *   isOnlyFeature?: boolean
@@ -44,13 +38,12 @@ const useStyles = makeStyles(theme => ({
  */
 export const TooltipChip = ({
   onDelete,
+  onClick,
   feature,
   fallbackProperty,
   isOnlyFeature,
 }) => {
   const styles = useStyles({ isOnlyFeature });
-
-  const { viewState, setViewState, bottomDeckRef } = useMap();
 
   const areaIdentifier =
     get(feature.object.properties, 'area_name') ??
@@ -63,6 +56,7 @@ export const TooltipChip = ({
       size="small"
       label={areaIdentifier}
       onDelete={onDelete}
+      onClick={onClick}
       deleteIcon={
         <CloseIcon
           className={styles.closeIcon}
@@ -72,21 +66,6 @@ export const TooltipChip = ({
       }
     />
   );
-
-  const handleClick = () => {
-    const newViewState = createViewstateForFeature({
-      feature,
-      viewport: bottomDeckRef.current.viewports[0],
-    });
-
-    return setViewState({
-      ...viewState,
-      ...newViewState,
-      transitionDuration: 2000,
-      transitionEasing: easeInOutCubic,
-      transitionInterpolator: new FlyToInterpolator(),
-    });
-  };
 
   return areaIdentifier?.length + 2 >= MAX_CHARS && !isOnlyFeature ? (
     <Tooltip
@@ -99,13 +78,9 @@ export const TooltipChip = ({
       placement="bottom"
       title={areaIdentifier}
     >
-      <Grid item onClick={handleClick}>
-        {ChipElement}
-      </Grid>
+      <Grid item>{ChipElement}</Grid>
     </Tooltip>
   ) : (
-    <Grid item onClick={handleClick}>
-      {ChipElement}
-    </Grid>
+    <Grid item>{ChipElement}</Grid>
   );
 };
