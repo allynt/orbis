@@ -4,7 +4,6 @@ Feature: Search
 
   Background:
     Given I am logged in
-    # When I click the "browse-map" button by test id
     When I click the "Browse Map" button
 
   Scenario: Search for place with no results
