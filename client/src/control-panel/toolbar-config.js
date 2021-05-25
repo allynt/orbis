@@ -61,7 +61,7 @@ export const getToolbarItems = (dispatch, user) => {
     },
     {
       label: PROFILE,
-      icon: <ProfileIcon />,
+      icon: <ProfileIcon titleAccess="Profile" />,
       action: () => {
         dispatch(toggleMenu(PROFILE));
         dispatch(

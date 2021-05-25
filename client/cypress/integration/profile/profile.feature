@@ -5,7 +5,7 @@ Feature: My Account
   Background:
     Given I am logged in
     When I click the "Browse Map" button
-    When I click the "toolbar-item-Account" button by test id
+    When I click the "Profile" icon button
 
   Scenario: View Personal Details Side Menu
     Then I see the "Personal Details" panel

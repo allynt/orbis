@@ -87,6 +87,7 @@ const LoginForm = ({
         <TextField
           inputRef={register}
           label={isRegisteringCustomer ? 'Work Email Address' : 'Email'}
+          type="email"
           name={FIELD_NAMES.email}
           id={FIELD_NAMES.email}
           error={!!errors[FIELD_NAMES.email]}
