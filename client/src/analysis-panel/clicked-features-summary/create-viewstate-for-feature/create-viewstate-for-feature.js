@@ -3,12 +3,7 @@ import { fitBounds } from '@math.gl/web-mercator';
 import { FlyToInterpolator } from '@deck.gl/core';
 import { easeInOutCubic } from 'utils/easingFunctions';
 
-export const createViewstateForFeature = ({
-  feature,
-  viewState,
-  setViewState,
-  viewport,
-}) => {
+export const createViewstateForFeature = ({ feature, viewState, viewport }) => {
   if (!feature || !viewState || !viewport) return;
 
   const { width, height } = viewport,
@@ -31,7 +26,7 @@ export const createViewstateForFeature = ({
     padding: 50,
   });
 
-  const newViewState = {
+  return {
     ...viewState,
     longitude,
     latitude,
@@ -40,6 +35,4 @@ export const createViewstateForFeature = ({
     transitionEasing: easeInOutCubic,
     transitionInterpolator: new FlyToInterpolator(),
   };
-
-  return setViewState(newViewState);
 };

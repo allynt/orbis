@@ -70,13 +70,15 @@ export const TooltipChip = ({
     />
   );
 
-  const handleClick = () =>
-    createViewstateForFeature({
+  const handleClick = () => {
+    const newViewState = createViewstateForFeature({
       feature,
       viewState,
-      setViewState,
       viewport: bottomDeckRef.current.viewports[0],
     });
+
+    return setViewState(newViewState);
+  };
 
   return areaIdentifier?.length + 2 >= MAX_CHARS && !isOnlyFeature ? (
     <Tooltip
