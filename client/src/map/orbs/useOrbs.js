@@ -180,7 +180,6 @@ export const useOrbs = () => {
           id: source.source_id,
           activeSources,
           dispatch,
-          viewState,
           setViewState,
           orbState,
           authToken,
