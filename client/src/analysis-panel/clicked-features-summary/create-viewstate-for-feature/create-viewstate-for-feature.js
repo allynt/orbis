@@ -3,7 +3,7 @@ import { fitBounds } from '@math.gl/web-mercator';
 import { FlyToInterpolator } from '@deck.gl/core';
 import { easeInOutCubic } from 'utils/easingFunctions';
 
-export const zoomToFeature = ({
+export const createViewstateForFeature = ({
   feature,
   viewState,
   setViewState,

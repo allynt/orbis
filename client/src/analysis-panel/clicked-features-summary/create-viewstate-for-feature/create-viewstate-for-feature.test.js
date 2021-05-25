@@ -1,4 +1,4 @@
-import { zoomToFeature } from './zoom-to-feature';
+import { zoomToFeature } from './create-viewstate-for-feature';
 
 const feature = {
   object: {

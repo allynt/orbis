@@ -11,7 +11,7 @@ import {
 
 import { useMap } from 'MapContext';
 
-import { zoomToFeature } from '../zoomToFeature/zoom-to-feature';
+import { createViewstateForFeature } from '../create-viewstate-for-feature/create-viewstate-for-feature';
 
 const MAX_CHARS = 15;
 
@@ -71,7 +71,7 @@ export const TooltipChip = ({
   );
 
   const handleClick = () =>
-    zoomToFeature({
+    createViewstateForFeature({
       feature,
       viewState,
       setViewState,
