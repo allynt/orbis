@@ -3,6 +3,7 @@ import React from 'react';
 import { Grid } from '@astrosat/astrosat-ui';
 
 import { FlyToInterpolator } from '@deck.gl/core';
+import { getFlyToDuration } from '@math.gl/web-mercator';
 
 import { SidePanelSection } from 'components';
 import {
@@ -31,15 +32,30 @@ export const ClickedFeaturesSummary = ({
   const { viewState, setViewState, bottomDeckRef } = useMap();
 
   const handleFeatureClick = feature => {
+    const viewport = bottomDeckRef.current.viewports[0];
+
     const newViewState = createViewstateForFeature({
       feature,
-      viewport: bottomDeckRef.current.viewports[0],
+      viewport,
     });
+
+    const { width, height } = viewport;
+    const { longitude, latitude, zoom } = viewState;
 
     return setViewState({
       ...viewState,
       ...newViewState,
-      transitionDuration: 2000,
+      transitionDuration: getFlyToDuration(
+        {
+          // @ts-ignore
+          width,
+          height,
+          longitude,
+          latitude,
+          zoom,
+        },
+        newViewState,
+      ),
       transitionEasing: easeInOutCubic,
       transitionInterpolator: new FlyToInterpolator(),
     });
