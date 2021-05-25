@@ -46,11 +46,11 @@ export const TooltipChip = ({
   fallbackProperty,
   isOnlyFeature,
 }) => {
+  const styles = useStyles({ isOnlyFeature });
+
   const areaIdentifier =
     get(feature.object.properties, 'area_name') ??
     get(feature.object.properties, fallbackProperty);
-
-  const styles = useStyles({ isOnlyFeature });
 
   const ChipElement = (
     <Chip

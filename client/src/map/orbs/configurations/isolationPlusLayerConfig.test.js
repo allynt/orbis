@@ -18,6 +18,7 @@ import configFn, {
 const source_id = 'source/1';
 const setup = ({
   clickedFeatures,
+  hoveredFeatures,
   extrudedMode = false,
   filterRange,
   property = {
@@ -60,6 +61,7 @@ const setup = ({
         },
         [source_id]: {
           clickedFeatures: clickedFeatures?.map(object => ({ object })),
+          hoveredFeatures: hoveredFeatures?.map(object => ({ object })),
         },
       },
     },
@@ -182,6 +184,23 @@ describe('isolationPlusLayerConfig', () => {
       });
       expect(getFillColor({ properties: { testProperty: 'carrot' } })).toEqual(
         expect.objectContaining([255, 165, 0]),
+      );
+    });
+
+    it('returns white if feature is hovered', () => {
+      const feature = {
+        properties: {
+          testProperty: true,
+          index: 123,
+        },
+      };
+
+      const hoveredFeatures = [feature];
+
+      const { getFillColor } = setup({ hoveredFeatures });
+
+      expect(getFillColor(feature)).toEqual(
+        expect.arrayContaining([255, 255, 255]),
       );
     });
   });
