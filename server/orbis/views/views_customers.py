@@ -28,9 +28,7 @@ from orbis.serializers import CustomerSerializer, CustomerUserSerializer
 
 from astrosat.utils import format_elasticsearch_timestamp
 
-
 db_logger = logging.getLogger("db")
-
 
 # overloading the customer views from astrosat_users
 # b/c orbis adds the concept of (licences to) orbs
@@ -50,7 +48,7 @@ class LicenceNotifyingMixIn(object):
             "added_licences": ", ".join(
                 map(lambda x: str(x.orb), new_licences - old_licences)
             ),
-        }
+        }  # yapf: disable
 
         adapter = get_adapter(self.request)
         message = adapter.send_mail(
@@ -83,8 +81,11 @@ class CustomerCreateView(AstrosatUsersCustomerCreateView):
                 "customerName": customer_data["name"],
                 "userId": user.uuid,
                 "customerCreated": {
-                    "customerCreatedAt": format_elasticsearch_timestamp(customer.created.timestamp()),
-                 },
+                    "customerCreatedAt":
+                        format_elasticsearch_timestamp(
+                            customer.created.timestamp()
+                        ),
+                },
             }
         }
 
@@ -111,7 +112,9 @@ class CustomerUpdateView(AstrosatUsersCustomerUpdateView):
         return context
 
 
-class CustomerUserListView(LicenceNotifyingMixIn, AstrosatUsersCustomerUserListView):
+class CustomerUserListView(
+    LicenceNotifyingMixIn, AstrosatUsersCustomerUserListView
+):
     serializer_class = CustomerUserSerializer
 
     def perform_create(self, serializer):
@@ -123,8 +126,8 @@ class CustomerUserListView(LicenceNotifyingMixIn, AstrosatUsersCustomerUserListV
 
         if user == created_user:
             if (
-                created_user.registration_stage
-                == UserRegistrationStageType.CUSTOMER_USER
+                created_user.registration_stage ==
+                UserRegistrationStageType.CUSTOMER_USER
             ):
                 # if we are adding ourselves to a customer as part of the "team" registration
                 # then make sure the next thing we do is create an order
@@ -190,7 +193,8 @@ class CustomerUserDetailView(
         # TODO: WHAT HAPPENS TO THE USER'S DATA/BOOKMARKS/ETC ?
         user = instance.user
         uninvitation_context = {
-            "licences": instance.licences.visible().values_list("orb__name", flat=True)
+            "licences":
+                instance.licences.visible().values_list("orb__name", flat=True)
         }
         destroyed_value = instance.uninvite(
             adapter=get_adapter(self.request),

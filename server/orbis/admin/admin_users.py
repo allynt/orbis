@@ -5,19 +5,27 @@ from astrosat.admin import CannotAddModelAdminBase, ReadOnlyModelAdminBase
 from astrosat_users.admin import UserAdmin as AstrosatUserAdmin
 from astrosat_users.models import User as AstrosatUser
 
-from orbis.models import OrbisUserProfile
+from orbis.models import OrbisUserProfile, OrbisUserFeedbackRecord
+
+
+class OrbisUserFeedbackRecordInline(admin.TabularInline):
+    model = OrbisUserFeedbackRecord
+
+    extra = 0
+    fields = ("timestamp", "provided_feedback", "source_ids")
+    verbose_name_plural = "Feedback records"
 
 
 @admin.register(OrbisUserProfile)
 class OrbisUserProfileAdmin(CannotAddModelAdminBase, admin.ModelAdmin):
-    pass
+    inlines = (OrbisUserFeedbackRecordInline, )
 
 
 class TermsDocumentAgreementInline(ReadOnlyModelAdminBase, admin.TabularInline):
     model = AstrosatUser.terms.through
 
-    fields = ("terms", "timestamp")
     extra = 0
+    fields = ("terms", "timestamp")
     verbose_name_plural = "Agreed terms"
 
 
