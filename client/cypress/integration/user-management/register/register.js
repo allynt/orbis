@@ -9,11 +9,9 @@ Then(`I see the "Registration" page`, () => {
   cy.url().should('include', REGISTER);
 
   // Verify form
-  cy.findByPlaceholderText('Email');
-  cy.findByPlaceholderText('Password');
-  cy.contains('Password Strength:');
-  cy.contains('Weak');
-  cy.findByPlaceholderText('Password Confirmation');
+  cy.findByRole('textbox', { name: 'Work Email Address' });
+  cy.findByLabelText('Password *');
+  cy.findByLabelText('Password Confirmation *');
   cy.contains('I agree with');
   cy.contains('Terms & Conditions');
   cy.contains('Sign Up');
