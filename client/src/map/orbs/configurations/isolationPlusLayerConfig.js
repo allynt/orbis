@@ -23,7 +23,7 @@ import {
 
 export const COLOR_PRIMARY = [246, 190, 0, 255],
   COLOR_TRANSPARENT = [0, 0, 0, 0],
-  PILL_HOVER_COLOR = [255, 255, 255, 192],
+  COLOR_HOVER = [255, 255, 255],
   OPACITY_FLAT = 150,
   OPACITY_EXTRUDED = OPACITY_FLAT,
   OPACITY_EXTRUDED_SELECTED = 255,
@@ -147,8 +147,7 @@ const configuration = ({
       return COLOR_TRANSPARENT;
     }
 
-    const color = /** @type {[number,number,number]} */ (colorScale &&
-      colorScale.get(getValue(d, selectedProperty, selectedTimestamp)));
+    const opacity = getFillOpacity(d);
 
     if (
       hoveredFeatures?.some(
@@ -157,10 +156,13 @@ const configuration = ({
           (d.properties[source?.metadata?.index] ?? d.id),
       )
     ) {
-      return PILL_HOVER_COLOR;
-    } else {
-      return [...color, getFillOpacity(d)];
+      return [...COLOR_HOVER, opacity];
     }
+
+    const color = /** @type {[number,number,number]} */ (colorScale &&
+      colorScale.get(getValue(d, selectedProperty, selectedTimestamp)));
+
+    return [...color, opacity];
   };
 
   /**
