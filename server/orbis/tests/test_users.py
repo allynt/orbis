@@ -8,9 +8,6 @@ from rest_framework import status
 
 from astrosat_users.tests.utils import *
 
-# from astrosat_users.serializers import UserSerializer
-# from orbis.serializers import OrbisUserProfileSerializer
-
 from .factories import *
 
 
@@ -42,7 +39,7 @@ class TestOrbisUserFeedbackRecord:
 
     def test_add_record_feedback_permission(self, user, api_client):
         """
-        tests that another user cannot add a user's feedback of the OrbisUserProfile are serialized along w/ the user
+        tests that another user cannot add a user's feedback
         """
 
         test_user = UserFactory()
