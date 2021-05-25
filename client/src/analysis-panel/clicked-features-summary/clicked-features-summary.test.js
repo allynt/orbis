@@ -9,11 +9,34 @@ import {
   setClickedFeatures,
 } from 'map/orbs/layers.slice';
 import { AnalysisPanelProvider } from 'analysis-panel/analysis-panel-context';
-import { MapProvider } from 'MapContext';
+import { MapContext } from 'MapContext';
+
+jest.mock(
+  './create-viewstate-for-feature/create-viewstate-for-feature',
+  () => ({
+    createViewstateForFeature: () => {
+      return {
+        latitude: 1,
+        longitude: 2,
+        zoom: 3,
+      };
+    },
+  }),
+);
 
 const initialFeatures = new Array(3).fill(undefined).map((_, i) => ({
   object: {
     id: i,
+    geometry: {
+      type: 'Polygon',
+      coordinates: [
+        [
+          [-74, 40],
+          [-78, 42],
+          [-82, 35],
+        ],
+      ],
+    },
     properties: {
       area_name: `Test Area ${i}`,
       population: i + 1,
@@ -23,19 +46,25 @@ const initialFeatures = new Array(3).fill(undefined).map((_, i) => ({
 }));
 
 const renderComponent = (clickedFeatures = initialFeatures) => {
-  const dispatch = jest.fn();
+  const dispatch = jest.fn(),
+    setViewState = jest.fn();
 
   const utils = render(
-    <MapProvider>
+    <MapContext.Provider
+      value={{
+        setViewState,
+        bottomDeckRef: { current: { viewports: [{ width: 0, height: 0 }] } },
+      }}
+    >
       <AnalysisPanelProvider clickedFeatures={clickedFeatures}>
         <ClickedFeaturesSummary
           clickedFeatures={clickedFeatures}
           dispatch={dispatch}
         />
       </AnalysisPanelProvider>
-    </MapProvider>,
+    </MapContext.Provider>,
   );
-  return { ...utils, dispatch };
+  return { ...utils, setViewState, dispatch };
 };
 
 describe('<ClickedFeaturesSummary />', () => {
@@ -60,7 +89,13 @@ describe('<ClickedFeaturesSummary />', () => {
       );
     });
 
-    it('', () => {});
+    it('Calls setViewState when chip is clicked', () => {
+      const { setViewState, getByRole } = renderComponent();
+
+      userEvent.click(getByRole('button', { name: 'Test Area 0' }));
+
+      expect(setViewState).toHaveBeenCalled();
+    });
   });
 
   describe('Population', () => {

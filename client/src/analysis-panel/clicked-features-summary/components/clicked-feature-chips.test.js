@@ -17,16 +17,18 @@ const initialFeatures = new Array(3).fill(undefined).map((_, i) => ({
 const renderComponent = () => {
   const onDeselectAllClick = jest.fn();
   const onFeatureDelete = jest.fn();
+  const onFeatureClick = jest.fn();
 
   const utils = render(
     <ClickedFeatureChips
       clickedFeatures={initialFeatures}
       onDeselectAllClick={onDeselectAllClick}
       onFeatureDelete={onFeatureDelete}
+      onFeatureClick={onFeatureClick}
       fallbackProperty="index"
     />,
   );
-  return { ...utils, onDeselectAllClick, onFeatureDelete };
+  return { ...utils, onDeselectAllClick, onFeatureDelete, onFeatureClick };
 };
 
 describe('<ClickedFeatureChips />', () => {
@@ -54,6 +56,13 @@ describe('<ClickedFeatureChips />', () => {
     const { getByRole, onFeatureDelete } = renderComponent();
     userEvent.click(getByRole('button', { name: /remove\stest\sarea\s0/i }));
     expect(onFeatureDelete).toHaveBeenCalledWith(initialFeatures[0]);
+  });
+
+  it("Calls onFeatureClick with an area when the area's chip is clicked", () => {
+    const { getByRole, onFeatureClick } = renderComponent();
+    userEvent.click(getByRole('button', { name: 'Test Area 0' }));
+
+    expect(onFeatureClick).toHaveBeenCalledWith(initialFeatures[0]);
   });
 
   it('Calls onDeselectAllClick when the Deselect All button is clicked', () => {
