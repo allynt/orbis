@@ -18,7 +18,7 @@ from .factories import *
 class TestOrbisUserFeedbackRecord:
     def test_add_record_feedback(self, user, api_client):
         """
-        tests that the contents of the OrbisUserProfile are serialized along w/ the user
+        tests that adding a feedback record works
         """
 
         test_feedback_data = factory.build(
