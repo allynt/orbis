@@ -101,7 +101,10 @@ export class CustomMVTLayer extends MVTLayer {
       bbox = params?.sourceLayer?.props?.tile?.bbox;
 
     if (info?.object) {
-      info.object = tileCoordinatesToLatLon(object, bbox, viewport);
+      info.object = {
+        ...info.object,
+        geometry: tileCoordinatesToLatLon(object.geometry, bbox, viewport),
+      };
     }
 
     return info;
