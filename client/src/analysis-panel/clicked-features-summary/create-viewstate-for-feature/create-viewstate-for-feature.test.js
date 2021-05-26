@@ -15,25 +15,13 @@ const feature = {
   },
 };
 
-const viewState = {
-  latitude: 54.71,
-  longitude: -4.84,
-  pitch: 0,
-  bearing: 0,
-  zoom: 6,
-};
-
 const viewport = {
   width: 1201,
   height: 976,
 };
 
-const setViewState = jest.fn();
-
 const props = {
   feature,
-  viewState,
-  setViewState,
   viewport,
 };
 
