@@ -7,14 +7,12 @@ import { isRealValue } from 'utils/isRealValue';
 import {
   addClickedFeatures,
   clickedFeaturesSelector,
-  hoveredFeaturesSelector,
   extrudedModeSelector,
   extrusionScaleSelector,
   filterValueSelector,
   otherSelector,
   removeClickedFeatures,
   setClickedFeatures,
-  setHoveredFeatures,
   timestampSelector,
   dataSelector,
 } from '../layers.slice';
@@ -23,7 +21,6 @@ import {
 
 export const COLOR_PRIMARY = [246, 190, 0, 255],
   COLOR_TRANSPARENT = [0, 0, 0, 0],
-  COLOR_HOVER = [255, 255, 255],
   OPACITY_FLAT = 150,
   OPACITY_EXTRUDED = OPACITY_FLAT,
   OPACITY_EXTRUDED_SELECTED = 255,
@@ -82,7 +79,6 @@ const configuration = ({
   const extrudedMode = extrudedModeSelector(orbState);
   const extrusionScale = extrusionScaleSelector(orbState);
   const clickedFeatures = clickedFeaturesSelector(id)(orbState);
-  const hoveredFeatures = hoveredFeaturesSelector(id)(orbState);
   const selectedPropertyMetadata = source?.metadata?.properties?.find(
     property => property.name === selectedProperty.name,
   );
@@ -143,26 +139,11 @@ const configuration = ({
    * @returns {[r:number, g:number, b:number, a?: number]}
    */
   const getFillColor = d => {
-    if (!isRealValue(d.properties[selectedProperty.name])) {
+    if (!isRealValue(d.properties[selectedProperty.name]))
       return COLOR_TRANSPARENT;
-    }
-
-    const opacity = getFillOpacity(d);
-
-    if (
-      hoveredFeatures?.some(
-        feat =>
-          feat.object.properties[source?.metadata?.index] ===
-          (d.properties[source?.metadata?.index] ?? d.id),
-      )
-    ) {
-      return [...COLOR_HOVER, opacity];
-    }
-
     const color = /** @type {[number,number,number]} */ (colorScale &&
       colorScale.get(getValue(d, selectedProperty, selectedTimestamp)));
-
-    return [...color, opacity];
+    return [...color, getFillOpacity(d)];
   };
 
   /**
@@ -198,17 +179,6 @@ const configuration = ({
     return dispatch(setClickedFeatures(payload));
   };
 
-  const onHover = info => {
-    return dispatch(
-      setHoveredFeatures({
-        key: id,
-        hoveredFeatures: info.object
-          ? [createReduxSafePickedInfo(info)]
-          : undefined,
-      }),
-    );
-  };
-
   /**
    * @param {AccessorFeature} d
    */
@@ -224,7 +194,6 @@ const configuration = ({
         selectedProperty,
         clickedFeatures,
         selectedTimestamp,
-        hoveredFeatures,
         clipRange,
       ],
       getLineWidth: [clickedFeatures],
@@ -275,9 +244,8 @@ const configuration = ({
     maxZoom: source?.metadata?.maxZoom,
     uniqueIdProperty: source?.metadata?.index,
     pickable: true,
-    autoHighlight: false,
+    autoHighlight: true,
     onClick,
-    onHover,
     getLineColor: COLOR_PRIMARY,
     getLineWidth,
     lineWidthUnits: 'pixels',
