@@ -287,10 +287,8 @@ describe('isolationPlusLayerConfig', () => {
 
       expect(dispatch).toHaveBeenCalledWith(
         setHoveredFeatures(
-          expect.objectContaining(
-            {hoveredFeatures: [info]}
-          )
-        )
+          expect.objectContaining({ hoveredFeatures: [info] }),
+        ),
       );
     });
   });
