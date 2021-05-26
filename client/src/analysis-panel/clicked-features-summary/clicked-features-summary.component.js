@@ -9,6 +9,7 @@ import { SidePanelSection } from 'components';
 import {
   removeClickedFeatures,
   setClickedFeatures,
+  setHoveredFeatures,
 } from 'map/orbs/layers.slice';
 import { useMap } from 'MapContext';
 import { easeInOutCubic } from 'utils/easingFunctions';
@@ -24,6 +25,7 @@ import { createViewstateForFeature } from './create-viewstate-for-feature/create
  * */
 export const ClickedFeaturesSummary = ({
   clickedFeatures,
+  hoveredFeatures,
   selectedProperty,
   dispatch,
   fallbackProperty,
@@ -62,8 +64,10 @@ export const ClickedFeaturesSummary = ({
   };
 
   const handleFeatureDelete = feature =>
+  const handleFeatureHover = feature =>
     dispatch(
       removeClickedFeatures({
+      setHoveredFeatures({
         key: selectedProperty?.source_id,
         uniquePropertyPath: `object.properties.${clickedFeatures[0].layer?.props?.uniqueIdProperty}`,
         clickedFeatures: [feature],
@@ -75,6 +79,7 @@ export const ClickedFeaturesSummary = ({
       setClickedFeatures({
         key: selectedProperty?.source_id,
         clickedFeatures: undefined,
+        hoveredFeatures: feature ? [feature] : undefined,
       }),
     );
 
@@ -83,9 +88,11 @@ export const ClickedFeaturesSummary = ({
       <Grid container spacing={2}>
         <ClickedFeatureChips
           clickedFeatures={clickedFeatures}
+          hoveredFeatures={hoveredFeatures}
           fallbackProperty={fallbackProperty}
           onFeatureDelete={handleFeatureDelete}
           onFeatureClick={handleFeatureClick}
+          onFeatureHover={handleFeatureHover}
           onDeselectAllClick={handleDeselectAll}
         />
         {!clickedFeatures?.some(f => !f.object.properties.population) && (
