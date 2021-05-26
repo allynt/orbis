@@ -4,6 +4,7 @@ import {
   addClickedFeatures,
   removeClickedFeatures,
   setClickedFeatures,
+  setHoveredFeatures,
 } from '../layers.slice';
 import configFn, {
   LINE_WIDTH,
@@ -273,6 +274,23 @@ describe('isolationPlusLayerConfig', () => {
         setClickedFeatures(
           expect.objectContaining({ clickedFeatures: [info] }),
         ),
+      );
+    });
+  });
+
+  describe('onHover', () => {
+    it(`Dispatches the ${setHoveredFeatures.type} action if the area is hovered`, () => {
+      const info = { layer: { id: 'source/1', props: {} }, object: FEATURE };
+      const { onHover, dispatch } = setup();
+
+      onHover(info);
+
+      expect(dispatch).toHaveBeenCalledWith(
+        setHoveredFeatures(
+          expect.objectContaining(
+            {hoveredFeatures: [info]}
+          )
+        )
       );
     });
   });
