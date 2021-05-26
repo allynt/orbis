@@ -4,6 +4,7 @@ import {
   addClickedFeatures,
   removeClickedFeatures,
   setClickedFeatures,
+  setHoveredFeatures,
 } from '../layers.slice';
 import configFn, {
   LINE_WIDTH,
@@ -18,6 +19,7 @@ import configFn, {
 const source_id = 'source/1';
 const setup = ({
   clickedFeatures,
+  hoveredFeatures,
   extrudedMode = false,
   filterRange,
   property = {
@@ -60,6 +62,7 @@ const setup = ({
         },
         [source_id]: {
           clickedFeatures: clickedFeatures?.map(object => ({ object })),
+          hoveredFeatures: hoveredFeatures?.map(object => ({ object })),
         },
       },
     },
@@ -184,6 +187,23 @@ describe('isolationPlusLayerConfig', () => {
         expect.objectContaining([255, 165, 0]),
       );
     });
+
+    it('returns white if feature is hovered', () => {
+      const feature = {
+        properties: {
+          testProperty: true,
+          index: 123,
+        },
+      };
+
+      const hoveredFeatures = [feature];
+
+      const { getFillColor } = setup({ hoveredFeatures });
+
+      expect(getFillColor(feature)).toEqual(
+        expect.arrayContaining([255, 255, 255]),
+      );
+    });
   });
 
   describe('onClick', () => {
@@ -254,6 +274,31 @@ describe('isolationPlusLayerConfig', () => {
         setClickedFeatures(
           expect.objectContaining({ clickedFeatures: [info] }),
         ),
+      );
+    });
+  });
+
+  describe('onHover', () => {
+    it(`Dispatches the ${setHoveredFeatures.type} action if the area is hovered`, () => {
+      const info = { layer: { id: source_id, props: {} }, object: FEATURE };
+      const { onHover, dispatch } = setup();
+
+      onHover(info);
+
+      expect(dispatch).toHaveBeenCalledWith(
+        setHoveredFeatures(
+          expect.objectContaining({ hoveredFeatures: [info] }),
+        ),
+      );
+    });
+
+    it(`Dispatches the ${setHoveredFeatures.type} action with undefined if the area is hovered out`, () => {
+      const { onHover, dispatch } = setup();
+
+      onHover({});
+
+      expect(dispatch).toHaveBeenCalledWith(
+        setHoveredFeatures({ key: source_id, hoveredFeatured: undefined }),
       );
     });
   });

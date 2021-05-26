@@ -196,6 +196,7 @@ type AnalysisPanelComponent<P = {}, F extends PickedMapFeature = {}> = (
   props: {
     selectedProperty: Property;
     clickedFeatures: F[];
+    hoveredFeatures: F[];
     dispatch?: Dispatch;
   } & P,
 ) => JSX.Element;
