@@ -280,7 +280,7 @@ describe('isolationPlusLayerConfig', () => {
 
   describe('onHover', () => {
     it(`Dispatches the ${setHoveredFeatures.type} action if the area is hovered`, () => {
-      const info = { layer: { id: 'source/1', props: {} }, object: FEATURE };
+      const info = { layer: { id: source_id, props: {} }, object: FEATURE };
       const { onHover, dispatch } = setup();
 
       onHover(info);
@@ -289,6 +289,16 @@ describe('isolationPlusLayerConfig', () => {
         setHoveredFeatures(
           expect.objectContaining({ hoveredFeatures: [info] }),
         ),
+      );
+    });
+
+    it(`Dispatches the ${setHoveredFeatures.type} action with undefined if the area is hoveredout`, () => {
+      const { onHover, dispatch } = setup();
+
+      onHover({});
+
+      expect(dispatch).toHaveBeenCalledWith(
+        setHoveredFeatures({ key: source_id, hoveredFeatured: undefined }),
       );
     });
   });
