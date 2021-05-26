@@ -24,6 +24,10 @@ jest.mock(
   }),
 );
 
+jest.mock('@math.gl/web-mercator', () => ({
+  getFlyToDuration: () => 5,
+}));
+
 const initialFeatures = new Array(3).fill(undefined).map((_, i) => ({
   object: {
     id: i,
@@ -52,6 +56,7 @@ const renderComponent = (clickedFeatures = initialFeatures) => {
   const utils = render(
     <MapContext.Provider
       value={{
+        viewState: {},
         setViewState,
         bottomDeckRef: { current: { viewports: [{ width: 0, height: 0 }] } },
       }}
