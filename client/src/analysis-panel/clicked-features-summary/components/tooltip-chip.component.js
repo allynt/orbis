@@ -29,9 +29,6 @@ const useStyles = makeStyles(theme => ({
 /**
  * @param {{
  *   onDelete: (event: any) => void
- *   onMouseEnter: () => void
- *   onMouseLeave: () => void
- *   isHovered?: boolean
  *   feature: import('typings/orbis').PolygonPickedMapFeature
  *   fallbackProperty?: string
  *   isOnlyFeature?: boolean
@@ -39,9 +36,6 @@ const useStyles = makeStyles(theme => ({
  */
 export const TooltipChip = ({
   onDelete,
-  onMouseEnter,
-  onMouseLeave,
-  isHovered,
   feature,
   fallbackProperty,
   isOnlyFeature,
@@ -55,13 +49,10 @@ export const TooltipChip = ({
   const ChipElement = (
     <Chip
       tabIndex={-1}
-      color={isHovered ? 'primary' : ''}
       classes={{ label: styles.chip }}
       size="small"
       label={areaIdentifier}
       onDelete={onDelete}
-      onMouseEnter={onMouseEnter}
-      onMouseLeave={onMouseLeave}
       deleteIcon={
         <CloseIcon
           className={styles.closeIcon}

@@ -22,7 +22,6 @@ import { SidePanel } from 'components';
 import { activeDataSourcesSelector } from 'data-layers/data-layers.slice';
 import {
   clickedFeaturesSelector,
-  hoveredFeaturesSelector,
   otherSelector,
   setClickedFeatures,
   timestampSelector,
@@ -138,9 +137,6 @@ export const AnalysisPanel = () => {
   const clickedFeatures = useSelector(state =>
     clickedFeaturesSelector(selectedProperty?.source_id)(state?.orbs),
   );
-  const hoveredFeatures = useSelector(state =>
-    hoveredFeaturesSelector(selectedProperty?.source_id)(state?.orbs),
-  );
   const dataVisualisationComponents =
     selectedProperty?.application?.orbis?.data_visualisation_components;
 
@@ -205,7 +201,6 @@ export const AnalysisPanel = () => {
         </Typography>
         <ClickedFeaturesSummary
           clickedFeatures={clickedFeatures}
-          hoveredFeatures={hoveredFeatures}
           selectedProperty={selectedProperty}
           dispatch={dispatch}
           currentSource={currentSource}
