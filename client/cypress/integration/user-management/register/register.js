@@ -10,6 +10,8 @@ Then(`I see the "Registration" page`, () => {
 
   // Verify form
   cy.findByRole('textbox', { name: 'Work Email Address' });
+  cy.findByRole('textbox', { name: 'First Name' });
+  cy.findByRole('textbox', { name: 'Last Name' });
   cy.findByLabelText('Password *');
   cy.findByLabelText('Password Confirmation *');
   cy.contains('I agree with');
