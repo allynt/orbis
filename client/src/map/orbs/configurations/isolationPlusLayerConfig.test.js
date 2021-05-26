@@ -292,7 +292,7 @@ describe('isolationPlusLayerConfig', () => {
       );
     });
 
-    it(`Dispatches the ${setHoveredFeatures.type} action with undefined if the area is hoveredout`, () => {
+    it(`Dispatches the ${setHoveredFeatures.type} action with undefined if the area is hovered out`, () => {
       const { onHover, dispatch } = setup();
 
       onHover({});
