@@ -8,28 +8,19 @@ jobs:
   deploy-to-testing:
     name: Deploy to Testing
     runs-on: ubuntu-latest
-    timeout-minutes: 40
+    timeout-minutes: 10
     steps:
       - name: Checkout
         uses: actions/checkout@v2
         with:
           ref: "${{ github.event.pull_request.head.sha }}"
 
-      - name: Setup dependencies
-        run: ./scripts/ci-setup-deps.sh
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-
-      - name: Create Deployment
+      - name: Request a Deployment for this PR
         run: |
           set -eu
 
           # Used to query for PRs associated with the commit
-          export GITHUB_TOKEN="${{ github.token }}"
-
-          # Required for createDeployment.js to use the AWS profiles defined by ci-setup-deps.sh
-          export AWS_SDK_LOAD_CONFIG=1
+          export GITHUB_TOKEN="${{ secrets.ASTROSAT_GITHUB_CREATE_DEPLOYMENT_TOKEN }}"
 
           set -x
 
