@@ -4,7 +4,7 @@ Feature: Register
 
   Background:
     Given I am on the "/accounts/register" page
-    When I click the "Team" checkbox label
+    When I click the "Team" radio button
     When I click the "Continue" button
 
   Scenario: View registration page
@@ -16,8 +16,9 @@ Feature: Register
 
   Scenario Outline: Submit registration with invalid email
     When I type "<email>" into the "Work Email Address" field
-    When I type "testpwtest" into the "Password" password field
+    When I type "testpwtest" into the "Password *" password field
     When I type "testpwtest" into the "Password Confirmation *" password field
+    When I click the "I agree with Terms & Conditions" checkbox
     When I submit the "Sign Up" form
     Then I see the "Email address is invalid" error
     Then "Register" form not submitted as submit button disabled
@@ -35,42 +36,42 @@ Feature: Register
     When I type "test@test.com" into the "Work Email Address" field
     When I type "testpwtest" into the "Password *" password field
     When I type "testpwtest" into the "Password Confirmation *" password field
-    When I click the "I agree with" checkbox label
+    When I click the "I agree with Terms & Conditions" checkbox
     When I submit the "Sign Up" form
-    Then I see the "400 Bad Request" error
+    Then I see the "A user is already registered with this e-mail address" error
 
   Scenario: Submit registration with no confirmation password
     When I type "test@test.com" into the "Work Email Address" field
     When I type "testpas" into the "Password *" password field
-    When I click the "I agree with" checkbox label
+    When I click the "I agree with Terms & Conditions" checkbox
     When I submit the "Sign Up" form
-    Then I see the "Password confirmation is required" error
+    Then I see the "Password is too short (minimum 8 characters)" error
     Then "Register" form not submitted as submit button disabled
 
   Scenario: Submit registration with passwords to short
     When I type "test@test.com" into the "Work Email Address" field
     When I type "testpas" into the "Password *" password field
     When I type "testpas" into the "Password Confirmation *" password field
-    When I click the "I agree with" checkbox label
+    When I click the "I agree with Terms & Conditions" checkbox
     When I submit the "Sign Up" form
-    Then I see the "Password is too short" error
+    Then I see the "Password is too short (minimum 8 characters)" error
     Then "Register" form not submitted as submit button disabled
 
   Scenario: Submit registration with passwords not matching
     When I type "test@test.com" into the "Work Email Address" field
     When I type "testpwtest" into the "Password *" password field
     When I type "testpwte" into the "Password Confirmation *" password field
-    When I click the "I agree with" checkbox label
+    When I click the "I agree with Terms & Conditions" checkbox
     When I submit the "Sign Up" form
-    Then I see the "Passwords do not match" error
+    Then I see the "Passwords don't match" error
 
   Scenario: Submit registration with password to common
     When I type "test@test.com" into the "Work Email Address" field
-    When I type "password" into the "Password *" password field
+    When I type "testpwtest" into the "Password *" password field
     When I type "password" into the "Password Confirmation *" password field
-    When I click the "I agree with" checkbox label
+    When I click the "I agree with Terms & Conditions" checkbox
     When I submit the "Sign Up" form
-    Then I see the "400 Bad Request" error
+    Then I see the "Passwords don't match" error
 
   Scenario: Submit registration without agreeing the terms
     When I type "test@test.com" into the "Work Email Address" field
