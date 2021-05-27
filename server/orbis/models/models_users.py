@@ -1,4 +1,6 @@
+from django.contrib.postgres.fields import ArrayField
 from django.db import models
+from django.utils import timezone as django_tz
 from django.utils.translation import gettext_lazy as _
 
 from astrosat_users.fields import UserProfileField
@@ -10,13 +12,15 @@ class OrbisUserProfile(models.Model):
     I still use the standard Astrosat User model
     But this class adds project-specific fields.
     """
-
     class Meta:
         app_label = "orbis"
         verbose_name = "Orbis User Profile"
         verbose_name_plural = "Orbis User Profiles"
 
-    user = UserProfileField(related_name="orbis_profile")
+    user = UserProfileField(
+        related_name="orbis_profile",
+        serializer_class="orbis.serializers.OrbisUserProfileSerializer",
+    )
 
     IMPERIAL = "Imperial"
     METRIC = "Metric"
@@ -80,14 +84,48 @@ class OrbisUserProfile(models.Model):
     max_searches = models.PositiveIntegerField(
         blank=False,
         default=10,
-        help_text=_("The maximum number of saved searches allowed for this user."),
+        help_text=_(
+            "The maximum number of saved searches allowed for this user."
+        ),
     )
 
     max_results = models.PositiveIntegerField(
         blank=False,
         default=10,
-        help_text=_("The maximum number of saved search results allowed for this user."),
+        help_text=_(
+            "The maximum number of saved search results allowed for this user."
+        ),
     )
 
     def __str__(self):
         return str(self.user)
+
+
+class OrbisUserFeedbackRecord(models.Model):
+    """
+    Tracks the date a user was prompted for feedback for a particular DataSource
+    """
+    class Meta:
+        app_label = "orbis"
+        ordering = ["-timestamp"]
+
+    profile = models.ForeignKey(
+        OrbisUserProfile,
+        on_delete=models.CASCADE,
+        related_name="feedback_records"
+    )
+
+    timestamp = models.DateTimeField(
+        default=django_tz.now, blank=False, null=True
+    )
+    source_ids = ArrayField(
+        models.CharField(max_length=512),
+        blank=False,
+        null=False,
+        help_text=_(
+            "An array of source_ids that prompted feedback in this instance."
+        )
+    )
+    provided_feedback = models.BooleanField(
+        default=False, help_text=_("Did the user provide feedback?")
+    )

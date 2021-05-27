@@ -21,8 +21,15 @@ const password = Cypress.env('password');
 // -- This is a parent command --
 Cypress.Commands.add('login', () => {
   cy.visit(loginUrl);
-
-  cy.window().its('store').invoke('dispatch', login({ email, password }));
+  cy.findByRole('textbox', {
+    name: 'Email',
+  })
+    .type(email)
+    .should('have.value', email);
+  cy.findByLabelText('Password *')
+    .type(password)
+    .should('have.value', password);
+  cy.contains('Login').click({ force: true });
 });
 
 Cypress.Commands.add('getMap', (id, timeout = 10000) => {

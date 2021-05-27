@@ -7,7 +7,6 @@
   "private": true,
   "dependencies": {
     "@octokit/rest": "^16.36.0",
-    "aws-sdk": "^2.706.0",
     "commander": "^5.1.0"
   }
 }

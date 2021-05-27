@@ -7,8 +7,8 @@ Then(`I see the {string} panel`, header => {
   cy.contains(header);
 
   // Verify form
-  cy.findByPlaceholderText('Email');
-  cy.findByPlaceholderText('Name');
+  cy.findByRole('textbox', { name: 'Email' });
+  cy.findByRole('textbox', { name: 'Name' });
   cy.contains('Update Account');
   cy.contains('Logout');
 

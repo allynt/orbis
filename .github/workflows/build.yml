@@ -137,28 +137,19 @@ jobs:
 
   deploy-to-testing:
     needs: [build-client-docker, build-server-docker]
-    name: Deploy to Testing
+    name: Request a Deployment to Testing
     runs-on: ubuntu-latest
-    timeout-minutes: 40
+    timeout-minutes: 10
     steps:
       - name: Checkout
-        uses: actions/checkout@v1
-
-      - name: Setup dependencies
-        run: ./scripts/ci-setup-deps.sh
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        uses: actions/checkout@v2
 
       - name: Create Deployment
         run: |
           set -eu
 
           # Used to query for PRs associated with the commit
-          export GITHUB_TOKEN="${{ github.token }}"
-
-          # Required for createDeployment.js to use the AWS profiles defined by ci-setup-deps.sh
-          export AWS_SDK_LOAD_CONFIG=1
+          export GITHUB_TOKEN="${{ secrets.ASTROSAT_GITHUB_CREATE_DEPLOYMENT_TOKEN }}"
 
           set -x
 

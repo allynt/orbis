@@ -23,6 +23,7 @@ from astrosat_users.tests.factories import (
 
 from orbis.models import (
     OrbisUserProfile,
+    OrbisUserFeedbackRecord,
     PrivacyDocument,
     TermsDocument,
     UserGuideDocument,
@@ -51,6 +52,20 @@ FactoryFaker.add_provider(PrettyLoremProvider)
 #########
 # users #
 #########
+
+
+class OrbisUserFeedbackRecordFactory(factory.django.DjangoModelFactory):
+    class Meta:
+        model = OrbisUserFeedbackRecord
+
+    provided_feedback = FactoryFaker("boolean")
+
+    @factory.lazy_attribute
+    def source_ids(self):
+        return [
+            f"{fake.word()}/{fake.word()}/{fake.word()}/{fake.date(pattern='%Y-%m-%d')}"
+            for _ in range(4)
+        ]
 
 
 class OrbisUserProfileFactory(factory.django.DjangoModelFactory):
