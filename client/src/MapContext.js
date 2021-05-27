@@ -8,7 +8,7 @@ const INITIAL_VIEW_STATE = {
   bearing: 0,
 };
 
-const MapContext = createContext(undefined);
+export const MapContext = createContext(undefined);
 MapContext.displayName = 'MapContext';
 
 /**

@@ -1,5 +1,6 @@
 import React from 'react';
 import { get } from 'lodash';
+
 import {
   Chip,
   CloseIcon,
@@ -29,6 +30,7 @@ const useStyles = makeStyles(theme => ({
 /**
  * @param {{
  *   onDelete: (event: any) => void
+ *   onClick: React.MouseEventHandler<HTMLDivElement>
  *   feature: import('typings/orbis').PolygonPickedMapFeature
  *   fallbackProperty?: string
  *   isOnlyFeature?: boolean
@@ -36,6 +38,7 @@ const useStyles = makeStyles(theme => ({
  */
 export const TooltipChip = ({
   onDelete,
+  onClick,
   feature,
   fallbackProperty,
   isOnlyFeature,
@@ -53,6 +56,7 @@ export const TooltipChip = ({
       size="small"
       label={areaIdentifier}
       onDelete={onDelete}
+      onClick={onClick}
       deleteIcon={
         <CloseIcon
           className={styles.closeIcon}

@@ -4,6 +4,8 @@ import { MVTLayer } from '@deck.gl/geo-layers';
 import { gunzipSync } from 'zlib';
 import parse from 'fast-json-parse';
 
+import { tileCoordinatesToLatLon } from '../../../utils/tileCoordinatesToLatLon';
+
 import { logError } from 'data-layers/data-layers.slice';
 
 /**
@@ -89,5 +91,22 @@ export class CustomMVTLayer extends MVTLayer {
     } catch (ex) {
       return this.props.dispatch(logError({ source_id: this.props.id }));
     }
+  }
+
+  getPickingInfo(params) {
+    let info = super.getPickingInfo(params);
+
+    const viewport = params?.info?.layer?.context?.viewport,
+      object = params?.info?.object,
+      bbox = params?.sourceLayer?.props?.tile?.bbox;
+
+    if (info?.object) {
+      info.object = {
+        ...info.object,
+        geometry: tileCoordinatesToLatLon(object.geometry, bbox, viewport),
+      };
+    }
+
+    return info;
   }
 }
