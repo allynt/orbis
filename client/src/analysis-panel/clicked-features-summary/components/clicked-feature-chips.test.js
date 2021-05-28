@@ -1,5 +1,5 @@
 import React from 'react';
-import { render } from '@testing-library/react';
+import { fireEvent, render } from '@testing-library/react';
 import { ClickedFeatureChips } from './clicked-feature-chips.component';
 import userEvent from '@testing-library/user-event';
 
@@ -18,6 +18,7 @@ const renderComponent = () => {
   const onDeselectAllClick = jest.fn();
   const onFeatureDelete = jest.fn();
   const onFeatureClick = jest.fn();
+  const onFeatureHover = jest.fn();
 
   const utils = render(
     <ClickedFeatureChips
@@ -25,10 +26,11 @@ const renderComponent = () => {
       onDeselectAllClick={onDeselectAllClick}
       onFeatureDelete={onFeatureDelete}
       onFeatureClick={onFeatureClick}
+      onFeatureHover={onFeatureHover}
       fallbackProperty="index"
     />,
   );
-  return { ...utils, onDeselectAllClick, onFeatureDelete, onFeatureClick };
+  return { ...utils, onDeselectAllClick, onFeatureDelete, onFeatureClick, onFeatureHover };
 };
 
 describe('<ClickedFeatureChips />', () => {
@@ -58,11 +60,23 @@ describe('<ClickedFeatureChips />', () => {
     expect(onFeatureDelete).toHaveBeenCalledWith(initialFeatures[0]);
   });
 
+  it('Calls onFeatureHover with an area when the area`s chip is hovered in', () => {
+    const { getByRole, onFeatureHover } = renderComponent();
+    fireEvent.mouseEnter(getByRole('button', { name: 'Test Area 0' }));
+    expect(onFeatureHover).toHaveBeenCalledWith(initialFeatures[0]);
+  });
+
   it("Calls onFeatureClick with an area when the area's chip is clicked", () => {
     const { getByRole, onFeatureClick } = renderComponent();
     userEvent.click(getByRole('button', { name: 'Test Area 0' }));
 
     expect(onFeatureClick).toHaveBeenCalledWith(initialFeatures[0]);
+  });
+
+  it('Calls onFeatureHover with undefined when the area`s chip is hovered out', () => {
+    const { getByRole, onFeatureHover } = renderComponent();
+    fireEvent.mouseLeave(getByRole('button', { name: 'Test Area 0' }));
+    expect(onFeatureHover).toHaveBeenCalledWith(undefined);
   });
 
   it('Calls onDeselectAllClick when the Deselect All button is clicked', () => {
