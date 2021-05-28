@@ -63,11 +63,17 @@ export const ClickedFeaturesSummary = ({
     });
   };
 
-  const handleFeatureDelete = feature =>
   const handleFeatureHover = feature =>
     dispatch(
-      removeClickedFeatures({
       setHoveredFeatures({
+        key: selectedProperty?.source_id,
+        hoveredFeatures: feature ? [feature] : undefined,
+      }),
+    );
+
+  const handleFeatureDelete = feature =>
+    dispatch(
+      removeClickedFeatures({
         key: selectedProperty?.source_id,
         uniquePropertyPath: `object.properties.${clickedFeatures[0].layer?.props?.uniqueIdProperty}`,
         clickedFeatures: [feature],
@@ -79,7 +85,6 @@ export const ClickedFeaturesSummary = ({
       setClickedFeatures({
         key: selectedProperty?.source_id,
         clickedFeatures: undefined,
-        hoveredFeatures: feature ? [feature] : undefined,
       }),
     );
 
