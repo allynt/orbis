@@ -1,3 +1,46 @@
+# [2.18.0](https://github.com/astrosat/orbis/compare/v2.17.0...v2.18.0) (2021-05-28)
+
+
+### Bug Fixes
+
+* **e2e:** Make e2e logins work ([0c6a01e](https://github.com/astrosat/orbis/commit/0c6a01e0be9f40f0d6180cf133104a764fdcce22))
+* **frontend:** Add constant, remove typing ([d18c0f8](https://github.com/astrosat/orbis/commit/d18c0f875139e5a2d54ab9bf435fcc942ad8a340))
+* **frontend:** Add dynamic transition time ([620d433](https://github.com/astrosat/orbis/commit/620d4332939e771e6e4a052b1006a94268504d34))
+* **frontend:** Add hover test ([108ff8a](https://github.com/astrosat/orbis/commit/108ff8a42d4b9ba32dc4458926274dd04cf7b198))
+* **frontend:** Add map provider to test ([5a26fb1](https://github.com/astrosat/orbis/commit/5a26fb190f4d063b2ff1d4c8f0f84409394c0f3f))
+* **frontend:** Add mock import to test ([be89348](https://github.com/astrosat/orbis/commit/be89348ed3613b091d24792ea94e27247e14ec28))
+* **frontend:** Add test for getFillColor ([902d539](https://github.com/astrosat/orbis/commit/902d53935f8ee9230254b5d09a4cbb6df4af2213))
+* **frontend:** Add test for hover out ([8af91dc](https://github.com/astrosat/orbis/commit/8af91dc033067d01e4d49c21919a3f702bb1de5e))
+* **frontend:** Add tests ([0bb8a6c](https://github.com/astrosat/orbis/commit/0bb8a6c396430bba07fa307703fb92c244e1e13e))
+* **frontend:** Add tests for tile to coords function, move to utils ([ecdf819](https://github.com/astrosat/orbis/commit/ecdf8199b07be7b89c09301c065e392826bfcfd4))
+* **frontend:** Add tests, repair gaps found by tests ([2ba1c18](https://github.com/astrosat/orbis/commit/2ba1c18623840fa998ef013973463bf986aabecd))
+* **frontend:** Added tests, transition and extracted to new directory ([dccf649](https://github.com/astrosat/orbis/commit/dccf649f5a93e3c0ca27ca6c5e8b46815d0865b4))
+* **frontend:** Bump handler to parent ([b6d92b8](https://github.com/astrosat/orbis/commit/b6d92b8cb26cba8a2ebce6b0abf39060d0b51b85))
+* **frontend:** Change functions from declariations to arrows ([18b3f28](https://github.com/astrosat/orbis/commit/18b3f28cd73910075d0fac32b6b60c307f6e0dbf))
+* **frontend:** Changed function name ([dba1804](https://github.com/astrosat/orbis/commit/dba18040a2259cf2b427cb27fd8821285a9f582d))
+* **frontend:** Changed input arguments ([1654eba](https://github.com/astrosat/orbis/commit/1654eba5c7729a7a58ffcfa4a524aad2f3a923b7))
+* **frontend:** Changed inputs to tile to coords function ([1e9a3b5](https://github.com/astrosat/orbis/commit/1e9a3b56765844ff0ebfc6d5255995e560ab52db))
+* **frontend:** Extracted transition properties ([d5a83e8](https://github.com/astrosat/orbis/commit/d5a83e87b7e24df8c803dc04c7545e740afa21d7))
+* **frontend:** Fix broken tests ([e606c1e](https://github.com/astrosat/orbis/commit/e606c1ec872170f98f5772f1cf14f4a24a120217))
+* **frontend:** functionality complete ([9992130](https://github.com/astrosat/orbis/commit/9992130f83169d8f5160c7be7ce7829a1772e848))
+* **frontend:** Functionality working ([fc23e19](https://github.com/astrosat/orbis/commit/fc23e19c8478537e733fec7c09ba775859182952))
+* **frontend:** Initial commit ([c9d9b90](https://github.com/astrosat/orbis/commit/c9d9b901993523aed86056fa459a0423a4ca6a8d))
+* **frontend:** Initial commit ([570bdfc](https://github.com/astrosat/orbis/commit/570bdfc771bf150b7e2b7207a4f2c7f5932f8cc3))
+* **frontend:** Prohibit area highlighting unless from pill, add styles ([4d5beda](https://github.com/astrosat/orbis/commit/4d5beda0ffe2e6434bf3148789e6c0af73b77172))
+* **frontend:** Refactor getFillColor ([7b83d42](https://github.com/astrosat/orbis/commit/7b83d42fa75294fa5a2cd748f5840ec00951681b))
+* **frontend:** Remove unused props ([84bba97](https://github.com/astrosat/orbis/commit/84bba974642fad3eb5eafd51d8fc137a0dfd5317))
+* **frontend:** Removed redundant import ([e214e0e](https://github.com/astrosat/orbis/commit/e214e0e1b7f960ccdb23473f8d96de23018b2763))
+* **frontend:** Rename files ([82dab8d](https://github.com/astrosat/orbis/commit/82dab8d63a778a960ce97742c33a9a6556b1e5bf))
+* **frontend:** Repair merge conflict ([2655707](https://github.com/astrosat/orbis/commit/26557072656426cc3beafc4a31feda30e95565fb))
+* **frontend:** Some refactoring of the viewstate/feature function ([ec316e0](https://github.com/astrosat/orbis/commit/ec316e0c84f5eb2b52da2597ab726427c6d48e14))
+* **frontend:** Update functionality ([3afd239](https://github.com/astrosat/orbis/commit/3afd239a99ec55e9bb26b505b5a3757d2133a9e6))
+* **frontend:** Update tests ([5e49773](https://github.com/astrosat/orbis/commit/5e497730444b0568a01d1ea6874a5ae64e2d5bbc))
+
+
+### Features
+
+* **backend:** added backend support for User Feedback ([16dd31d](https://github.com/astrosat/orbis/commit/16dd31d194f65468039105049d16a838957c5e14))
+
 # [2.17.0](https://github.com/astrosat/orbis/compare/v2.16.0...v2.17.0) (2021-05-24)
 
 
