@@ -11,10 +11,9 @@ from django.db import models
 from django.db.models import F, Value, ExpressionWrapper
 from django.db.models.functions import Concat, Replace
 from django.utils.html import mark_safe
+from django.utils.text import slugify
 
 from astrosat_users.models import Customer, CustomerUser
-
-
 """
 models_orbs includes all the classes used to define:
 
@@ -31,14 +30,11 @@ A user can only hold a licence if it is owned by that  user's customer (and not 
 
 """
 
-
 ###########
 # helpers #
 ###########
 
-
 SOURCE_ID_PARTS = ["authority", "namespace", "name", "version"]
-
 
 SOURCE_ID_REGEX = re.compile(
     r"([A-Za-z0-9_\-]+)/([A-Za-z0-9_\-]+)/([A-Za-z0-9_\-]+)/([A-Za-z0-9_\-]+)"
@@ -84,6 +80,11 @@ class AccessModel(models.Model):
         return self.access & access_scope
 
 
+def orb_logo_path(instance, filename):
+    instance_name = slugify(instance.name)
+    return f"orbs/{instance_name}/{filename}"
+
+
 ########################
 # managers & querysets #
 ########################
@@ -103,7 +104,8 @@ class DataScopeManager(models.Manager):
     def get_by_natural_key(self, source_id_pattern):
         kwargs = {
             key: value
-            for key, value in zip(
+            for key,
+            value in zip(
                 ["authority", "namespace", "name", "version"],
                 source_id_pattern.split("/"),
             )
@@ -113,7 +115,6 @@ class DataScopeManager(models.Manager):
 
 
 class DataScopeQuerySet(models.QuerySet):
-
     def active(self):
         return self.filter(is_active=True)
 
@@ -128,8 +129,11 @@ class DataScopeQuerySet(models.QuerySet):
         if not match:
             raise ValueError(f"Not a valid source id: {source_id}")
         source_id_parts = {
-            f"_source_id_{part}": ExpressionWrapper(Value(match.group(i)), output_field=models.CharField())
-            for i, part in enumerate(SOURCE_ID_PARTS, start=1)
+            f"_source_id_{part}": ExpressionWrapper(
+                Value(match.group(i)), output_field=models.CharField()
+            )
+            for i,
+            part in enumerate(SOURCE_ID_PARTS, start=1)
         }
 
         # and store it in the qs...
@@ -138,9 +142,18 @@ class DataScopeQuerySet(models.QuerySet):
         # then convert the current pattern fnmatch syntax to regex syntax...
         source_id_pattern_regex_parts = OrderedDict()
         for part in SOURCE_ID_PARTS:
-            source_id_pattern_regex_parts[f"___source_id_pattern_{part}"] = Concat(Value("^"), F(part), Value("$"))
-            source_id_pattern_regex_parts[f"__source_id_pattern_{part}"] = Replace(F(f"___source_id_pattern_{part}"), Value("*"), Value(".*"))
-            source_id_pattern_regex_parts[f"_source_id_pattern_{part}"] = Replace(F(f"__source_id_pattern_{part}"), Value("?"), Value("."))
+            source_id_pattern_regex_parts[f"___source_id_pattern_{part}"
+                                         ] = Concat(
+                                             Value("^"), F(part), Value("$")
+                                         )
+            source_id_pattern_regex_parts[f"__source_id_pattern_{part}"
+                                         ] = Replace(
+                                             F(f"___source_id_pattern_{part}"),
+                                             Value("*"),
+                                             Value(".*")
+                                         )
+            source_id_pattern_regex_parts[f"_source_id_pattern_{part}"
+                                         ] = Replace(Value("?"), Value("."))
 
         # and store it in the qs...
         qs = qs.annotate(**source_id_pattern_regex_parts)
@@ -187,9 +200,8 @@ class LicenceQuerySet(models.QuerySet):
         return self.has_access_scope(Access.UPDATE)
 
     def has_access_scope(self, access_scope):
-        return self.annotate(can_access=F("access").bitand(access_scope)).filter(
-            can_access__gte=1
-        )
+        return self.annotate(can_access=F("access").bitand(access_scope)
+                            ).filter(can_access__gte=1)
 
 
 ##########
@@ -205,15 +217,16 @@ class Orb(models.Model):
 
     objects = OrbManager.from_queryset(OrbQuerySet)()
 
-    name = models.CharField(max_length=128, unique=True, blank=False, null=False)
+    name = models.CharField(
+        max_length=128, unique=True, blank=False, null=False
+    )
     description = models.TextField(blank=True, null=True)
-
+    logo = models.ImageField(upload_to=orb_logo_path, blank=True, null=True)
     is_active = models.BooleanField(default=True)
     is_hidden = models.BooleanField(
         default=False,
         help_text="Licences to a hidden Orb are not shown to CustomerUsers.",
     )
-
     licence_cost = models.FloatField(
         default=0, help_text="The cost of a single licence to this Orb."
     )
@@ -222,7 +235,7 @@ class Orb(models.Model):
         return self.name
 
     def natural_key(self):
-        return (self.name,)
+        return (self.name, )
 
 
 class DataScope(models.Model):
@@ -253,7 +266,8 @@ class DataScope(models.Model):
         models.CharField(max_length=128),
         blank=True,
         default=list,
-        help_text="An optional array of applications that this DataScope derives its data from"
+        help_text=
+        "An optional array of applications that this DataScope derives its data from"
     )
 
     def __str__(self):
@@ -274,7 +288,7 @@ class DataScope(models.Model):
         return True
 
     def natural_key(self):
-        return (self.source_id_pattern,)
+        return (self.source_id_pattern, )
 
 
 class Licence(AccessModel):
@@ -296,7 +310,9 @@ class Licence(AccessModel):
     created = models.DateTimeField(auto_now_add=True, db_index=True)
     modified = models.DateTimeField(auto_now=True, db_index=True)
 
-    orb = models.ForeignKey(Orb, related_name="licences", on_delete=models.CASCADE)
+    orb = models.ForeignKey(
+        Orb, related_name="licences", on_delete=models.CASCADE
+    )
 
     customer = models.ForeignKey(
         Customer, related_name="licences", on_delete=models.CASCADE
@@ -305,7 +321,8 @@ class Licence(AccessModel):
         CustomerUser,
         blank=True,
         null=True,
-        on_delete=models.SET_NULL,  # this line prevents the need for a "Customer.unassign" method
+        on_delete=models.
+        SET_NULL,  # this line prevents the need for a "Customer.unassign" method
         related_name="licences",
     )
 
