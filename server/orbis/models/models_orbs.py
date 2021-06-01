@@ -123,17 +123,15 @@ class DataScopeQuerySet(models.QuerySet):
         Returns all the DataScopes whose source_id_pattern matches the given source_id
         This filter is no longer used by the DataSourceView, but it may prove useful in the future.
         """
+        # yapf: disable
 
         # first ensure source_id is valid...
         match = SOURCE_ID_REGEX.match(source_id)
         if not match:
             raise ValueError(f"Not a valid source id: {source_id}")
         source_id_parts = {
-            f"_source_id_{part}": ExpressionWrapper(
-                Value(match.group(i)), output_field=models.CharField()
-            )
-            for i,
-            part in enumerate(SOURCE_ID_PARTS, start=1)
+            f"_source_id_{part}": ExpressionWrapper(Value(match.group(i)), output_field=models.CharField())
+            for i, part in enumerate(SOURCE_ID_PARTS, start=1)
         }
 
         # and store it in the qs...
@@ -142,18 +140,9 @@ class DataScopeQuerySet(models.QuerySet):
         # then convert the current pattern fnmatch syntax to regex syntax...
         source_id_pattern_regex_parts = OrderedDict()
         for part in SOURCE_ID_PARTS:
-            source_id_pattern_regex_parts[f"___source_id_pattern_{part}"
-                                         ] = Concat(
-                                             Value("^"), F(part), Value("$")
-                                         )
-            source_id_pattern_regex_parts[f"__source_id_pattern_{part}"
-                                         ] = Replace(
-                                             F(f"___source_id_pattern_{part}"),
-                                             Value("*"),
-                                             Value(".*")
-                                         )
-            source_id_pattern_regex_parts[f"_source_id_pattern_{part}"
-                                         ] = Replace(Value("?"), Value("."))
+            source_id_pattern_regex_parts[f"___source_id_pattern_{part}"] = Concat(Value("^"), F(part), Value("$"))
+            source_id_pattern_regex_parts[f"__source_id_pattern_{part}"] = Replace(F(f"___source_id_pattern_{part}"), Value("*"), Value(".*"))
+            source_id_pattern_regex_parts[f"_source_id_pattern_{part}"] = Replace(F(f"__source_id_pattern_{part}"), Value("?"), Value("."))
 
         # and store it in the qs...
         qs = qs.annotate(**source_id_pattern_regex_parts)
@@ -200,8 +189,9 @@ class LicenceQuerySet(models.QuerySet):
         return self.has_access_scope(Access.UPDATE)
 
     def has_access_scope(self, access_scope):
-        return self.annotate(can_access=F("access").bitand(access_scope)
-                            ).filter(can_access__gte=1)
+        return self.annotate(
+            can_access=F("access").bitand(access_scope)
+        ).filter(can_access__gte=1)
 
 
 ##########
