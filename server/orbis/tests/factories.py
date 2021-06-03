@@ -157,11 +157,11 @@ class OrbFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = Orb
 
+    description = optional_declaration(FactoryFaker("text"), chance=50)
     is_active = True
     is_hidden = False
-    name = factory.LazyAttributeSequence(lambda o, n: f"orb-{n}")
-    description = optional_declaration(FactoryFaker("text"), chance=50)
     licence_cost = FactoryFaker("pyfloat", min_value=1.0, max_value=10.0)
+    name = factory.LazyAttributeSequence(lambda o, n: f"orb-{n}")
 
     @factory.post_generation
     def data_scopes(self, create, extracted, **kwargs):
@@ -171,6 +171,14 @@ class OrbFactory(factory.django.DjangoModelFactory):
         if extracted:
             for data_scope in extracted:
                 self.data_scopes.add(data_scope)
+
+    @factory.lazy_attribute
+    def logo(self):
+        return SimpleUploadedFile(
+            name=f"{self.name}_logo.png",
+            content=b"I am a fake image",
+            content_type="image/png",
+        )
 
 
 class DataScopeFactory(factory.django.DjangoModelFactory):
