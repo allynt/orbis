@@ -16,7 +16,7 @@ const MAX_CHARS = 15;
 const useStyles = makeStyles(theme => ({
   chip: {
     fontSize: theme.typography.pxToRem(10),
-    maxWidth: props => (!props.isOnlyFeature ? `${MAX_CHARS}ch` : undefined),
+    maxWidth: props => (!props.isOnlyFeature ? `${MAX_CHARS}ch` : 'none'),
   },
   closeIcon: {
     width: theme.typography.pxToRem(10),
