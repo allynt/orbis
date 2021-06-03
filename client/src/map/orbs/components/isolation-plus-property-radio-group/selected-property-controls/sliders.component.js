@@ -97,7 +97,7 @@ export const Sliders = ({
             name="Slider Toggle"
           />
         </Grid>
-        <Grid item>Adjust Color</Grid>
+        <Grid item>Adjust Colour</Grid>
       </Grid>
       <Grid item xs={12} className={styles.slidersGridItem}>
         <Fade in={isAdjustingColor} unmountOnExit>
