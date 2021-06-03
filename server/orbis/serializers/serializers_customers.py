@@ -11,7 +11,7 @@ from astrosat_users.serializers import (
     CustomerUserSerializer as AstrosatUsersCustomerUserSerializer,
 )
 
-from orbis.models import Licence
+from orbis.models import Licence, Orb, LicencedCustomer
 from orbis.serializers.serializers_orbs import LicenceSerializer
 
 
@@ -33,7 +33,7 @@ class CustomerSerializer(AstrosatUsersCustomerSerializer):
             "postcode",
             "licences",
         )
-        ref_name="orbis_customer_serializer"
+        ref_name = "orbis_customer_serializer"
 
     licences = LicenceSerializer(many=True, required=False)
 
@@ -45,6 +45,7 @@ class CustomerSerializer(AstrosatUsersCustomerSerializer):
 
     def to_representation(self, instance):
         # when outputting data, exclude hidden licences...
+        # yapf: disable
         representation = super().to_representation(instance)
         licences_representation = representation.pop("licences", [])
         hidden_licences = instance.licences.hidden().annotate(
@@ -52,10 +53,12 @@ class CustomerSerializer(AstrosatUsersCustomerSerializer):
                 "id", output_field=CharField()
             )  # cast UUIDField to CharField (for the comparison below)
         )
-        representation["licences"] = list(filterfalse(
-            lambda x: x["id"] in hidden_licences.values_list("str_id", flat=True),
-            licences_representation,
-        ))
+        representation["licences"] = list(
+            filterfalse(
+                lambda x: x["id"] in hidden_licences.values_list("str_id", flat=True),
+                licences_representation,
+            )
+        )
 
         return representation
 
@@ -85,7 +88,7 @@ class CustomerUserSerializer(AstrosatUsersCustomerUserSerializer):
             "customer",
             "licences",
         )
-        ref_name="orbis_customer_user_serializer"
+        ref_name = "orbis_customer_user_serializer"
 
     licences = serializers.SlugRelatedField(
         many=True, slug_field="id", queryset=Licence.objects.all()
@@ -93,11 +96,10 @@ class CustomerUserSerializer(AstrosatUsersCustomerUserSerializer):
 
     def to_internal_value(self, data):
         # when inputting data, include hidden licences...
+        # yapf: disable
         if self.instance:
             hidden_licences = self.instance.licences.hidden().annotate(
-                str_id=Cast(
-                    "id", output_field=CharField()
-                )  # cast UUIDField to CharField
+                str_id=Cast("id", output_field=CharField())  # cast UUIDField to CharField
             )
             data["licences"] += hidden_licences.values_list("str_id", flat=True)
         internal_value = super().to_internal_value(data)
@@ -129,3 +131,21 @@ class CustomerUserSerializer(AstrosatUsersCustomerUserSerializer):
             )
 
         return value
+
+    def create(self, validated_data):
+        """
+        Performs a normal create, but then adds any default licences to the new customer_user
+        """
+        customer_user = super().create(validated_data)
+        licenced_customer = LicencedCustomer.cast(customer_user.customer)
+
+        default_orbs = Orb.objects.active().default(
+        )  # TODO: THE SET OF DEFAULT ORBS SHOULD EVENTUALLY VARY ACCORDING TO UserProfile
+        for default_orb in default_orbs:
+            assigned_licence = licenced_customer.assign_licences(
+                default_orb, [customer_user],
+                add_missing=True,
+                ignore_existing=False
+            )
+
+        return customer_user

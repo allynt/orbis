@@ -9,11 +9,20 @@ class LicencedCustomer(AstrosatUsersCustomer):
     working with licences, but does not change the underlying
     model which still comes from astrosat_users.models
     """
-
     class Meta:
         verbose_name = "Customer"
         verbose_name_plural = "Customers"
         proxy = True
+
+    @classmethod
+    def cast(cls, customer):
+        """
+        Casts an instance of AstrosatUsersCustomer to LicencedCustomer, w/out
+        requiring an extra db hit (as per https://stackoverflow.com/a/7923542/1060339)
+        """
+        assert isinstance(customer, AstrosatUsersCustomer)
+        customer.__class__ = cls
+        return customer
 
     def add_licences(self, orb, n, order_item=None):
         licences = []
@@ -23,11 +32,15 @@ class LicencedCustomer(AstrosatUsersCustomer):
             licences.append(licence)
         return licences
 
-    def assign_licences(self, orb, customer_users, add_missing=True, ignore_existing=True):
+    def assign_licences(
+        self, orb, customer_users, add_missing=True, ignore_existing=True
+    ):
         licences = []
         for customer_user in customer_users:
             existing_licences = self.licences.filter(orb=orb)
-            assigned_licences = existing_licences.filter(customer_user=customer_user)
+            assigned_licences = existing_licences.filter(
+                customer_user=customer_user
+            )
             unassigned_licences = existing_licences.available()
             if assigned_licences.exists():
                 assert ignore_existing, f"{self} already has a licence to {orb} assigned to {customer_user.user}."
