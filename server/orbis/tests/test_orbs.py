@@ -490,3 +490,82 @@ class TestLicencedCustomer:
                 orb, customer.customer_users.all(), ignore_existing=False
             )
         assert customer.licences.filter(orb=orb).count() == N_USERS
+
+    def test_default_licences_added(self, user, api_client, mock_storage):
+        customer = CustomerFactory(logo=None)
+        customer.add_user(user, type="MANAGER", status="ACTIVE")
+
+        default_orb = OrbFactory(is_default=True, is_hidden=True)
+        normal_orb = OrbFactory(is_default=False, is_hidden=False)
+
+        new_user_data = {"email": "test@test.com", "name": "test name"}
+
+        client = api_client(user)
+        url = reverse("customer-users-list", args=[customer.id])
+        response = client.post(
+            url,
+            {
+                "licences": [],
+                "user": {
+                    "email": new_user_data["email"],
+                    "name": new_user_data["name"]
+                }
+            },
+            format="json"
+        )
+        assert status.is_success(response.status_code)
+
+        assert customer.customer_users.count() == 2
+        assert customer.customer_users.members().count() == 1
+
+        new_customer_user = customer.customer_users.get(
+            user__email=new_user_data["email"]
+        )
+        new_customer_user_licences = new_customer_user.licences.all()
+
+        assert customer.licences.count() == 1
+        assert default_orb in Orb.objects.filter(
+            licences__in=new_customer_user_licences
+        )
+        assert normal_orb not in Orb.objects.filter(
+            licences__in=new_customer_user_licences
+        )
+
+    def test_default_licences_removed(self, user, api_client, mock_storage):
+        customer = CustomerFactory(logo=None)
+        customer.add_user(user, type="MANAGER", status="ACTIVE")
+        new_user = UserFactory(avatar=None)
+        (new_customer_user,
+         _) = customer.add_user(new_user, type="MEMBER", status="ACTIVE")
+
+        default_orb = OrbFactory(is_default=True, is_hidden=True)
+        normal_orb = OrbFactory(is_default=False, is_hidden=False)
+
+        customer.assign_licences(
+            default_orb, [new_customer_user],
+            add_missing=True,
+            ignore_existing=False
+        )
+        customer.assign_licences(
+            normal_orb, [new_customer_user],
+            add_missing=True,
+            ignore_existing=False
+        )
+
+        assert customer.licences.count() == 2
+
+        client = api_client(user)
+        url = reverse(
+            "customer-users-detail", args=[customer.id, new_user.uuid]
+        )
+        response = client.delete(url)
+        assert status.is_success(response.status_code)
+
+        remaining_licences = customer.licences.all()
+        assert remaining_licences.count() == 1
+        assert remaining_licences[0].customer_user == None
+
+        assert default_orb not in Orb.objects.filter(
+            licences__in=remaining_licences
+        )
+        assert normal_orb in Orb.objects.filter(licences__in=remaining_licences)
