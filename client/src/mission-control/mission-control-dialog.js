@@ -4,9 +4,12 @@ import { useDispatch, useSelector } from 'react-redux';
 import {
   CloseIcon,
   Dialog,
+  DialogTitle,
+  DialogContent,
   IconButton,
-  makeStyles,
 } from '@astrosat/astrosat-ui';
+
+import { userSelector } from '../accounts/accounts.selectors';
 
 import {
   toggleMissionControlDialog,
@@ -18,6 +21,7 @@ import { MissionControl } from './mission-control.component';
 export const MissionControlDialog = () => {
   const dispatch = useDispatch();
   const isVisible = useSelector(selectIsMissionControlDialogVisible);
+  const user = useSelector(userSelector);
 
   const handleClose = () => {
     return dispatch(toggleMissionControlDialog(false));
@@ -25,10 +29,13 @@ export const MissionControlDialog = () => {
 
   return (
     <Dialog open={isVisible}>
-      <IconButton size="small" onClick={handleClose}>
+      <IconButton aria-label="Close" size="small" onClick={handleClose}>
         <CloseIcon fontSize="inherit" />
       </IconButton>
-      <MissionControl />
+      <DialogTitle>{`Hello ${user?.name}`}</DialogTitle>
+      <DialogContent>
+        <MissionControl />
+      </DialogContent>
     </Dialog>
   );
 };

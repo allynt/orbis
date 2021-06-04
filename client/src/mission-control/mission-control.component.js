@@ -1,9 +1,12 @@
 import React from 'react';
 
+import { Grid } from '@astrosat/astrosat-ui';
+
 export const MissionControl = () => {
   return (
-    <div>
-      <h1>MISSION CONTROL COMPONENT</h1>
-    </div>
+    <Grid container direction="row" justify="space-between">
+      <Grid item>Side Panel</Grid>
+      <Grid item>Main Panel</Grid>
+    </Grid>
   );
 };
