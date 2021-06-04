@@ -1,4 +1,6 @@
-from django.contrib import admin
+from urllib.parse import quote as urlquote
+
+from django.contrib import admin, messages
 from django.core.exceptions import ValidationError
 from django.forms import CheckboxSelectMultiple, IntegerField, ModelForm
 from django.urls import reverse
@@ -120,6 +122,18 @@ class OrbAdmin(admin.ModelAdmin):
         "is_default",
     )
     search_fields = ("name", )
+
+    def save_model(self, request, obj, form, change):
+
+        # Just popup a warning if `is_default` is True but `is_hidden` is False b/c
+        # that's kind of a weird thing to do; It means that licences to this Orb will
+        # be updated automatically, but users will still be notified of those updates
+
+        if obj.is_default and not obj.is_hidden:
+            msg = f"The Orb \"<a href='{urlquote(request.path)}'>{obj}</a>\" is set to be default but visible.  Are you sure about that?"
+            self.message_user(request, format_html(msg), level=messages.WARNING)
+
+        return super().save_model(request, obj, form, change)
 
 
 @admin.register(Licence)
