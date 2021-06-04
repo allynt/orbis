@@ -1,5 +1,6 @@
 from collections import OrderedDict
 from enum import IntFlag
+from functools import partial
 import fnmatch
 import re
 import uuid
@@ -13,6 +14,7 @@ from django.db.models.functions import Concat, Replace
 from django.utils.html import mark_safe
 from django.utils.text import slugify
 
+from astrosat.utils import CONDITIONAL_CASCADE
 from astrosat_users.models import Customer, CustomerUser
 """
 models_orbs includes all the classes used to define:
@@ -318,10 +320,15 @@ class Licence(AccessModel):
         CustomerUser,
         blank=True,
         null=True,
-        on_delete=models.
-        SET_NULL,  # this line prevents the need for a "Customer.unassign" method
+        on_delete=partial(
+            CONDITIONAL_CASCADE,
+            condition={"orb__is_default": True},
+            default_value=None
+        ),
         related_name="licences",
     )
+    # note the use of CONDITIONAL_CASCADE; if customer_user had a
+    # "default" licence then delete it, otherwise just unassign it
 
     order_item = models.ForeignKey(
         "orbis.OrderItem",
