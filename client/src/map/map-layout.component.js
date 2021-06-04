@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 
 import { Box } from '@astrosat/astrosat-ui';
 
+import { MissionControlDialog } from 'mission-control/mission-control-dialog';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { AnalysisPanel } from 'analysis-panel/analysis-panel.component';
@@ -50,6 +51,7 @@ const MapLayout = () => {
         mapComponents={mapComponents}
         {...drawingToolsProps}
       />
+      <MissionControlDialog />
       <AnalysisPanel />
     </Box>
   );

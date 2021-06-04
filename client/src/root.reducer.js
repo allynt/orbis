@@ -15,6 +15,7 @@ import orbs from './map/orbs/orbReducer';
 import satellites from './satellites/satellites.slice';
 import stories from './stories/stories.slice';
 import theming from './theming/theming.slice';
+import missionControl from './mission-control/mission-control-slice';
 
 export const history = createBrowserHistory();
 
@@ -33,6 +34,7 @@ const createRootReducer = history =>
     satellites,
     stories,
     theming,
+    missionControl,
   });
 
 const rootReducer = createRootReducer(history);
