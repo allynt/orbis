@@ -31,7 +31,7 @@ describe('Mission Control Slice', () => {
 
   describe('Selectors', () => {
     describe(`${selectIsMissionControlDialogVisible}`, () => {
-      it('returns a list of keys for layers which have data', () => {
+      it('returns `isMissionControlDialogVisible` boolean value', () => {
         const state = {
           missionControl: {
             isMissionControlDialogVisible: false,
