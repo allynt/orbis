@@ -1,4 +1,6 @@
-from django.contrib import admin
+from urllib.parse import quote as urlquote
+
+from django.contrib import admin, messages
 from django.core.exceptions import ValidationError
 from django.forms import CheckboxSelectMultiple, IntegerField, ModelForm
 from django.urls import reverse
@@ -8,7 +10,6 @@ from astrosat.admin import get_clickable_m2m_list_display
 from astrosat_users.models import Customer, User
 
 from orbis.models import Orb, LicencedCustomer, Licence, DataScope, Access
-
 
 ##############################
 # pretty ui for access flags #
@@ -29,7 +30,8 @@ class AccessFormField(IntegerField):
         # takes an integer and returns a list
         int_value = super().prepare_value(value) or 0
         list_value = [
-            2 ** i for i, b in enumerate(map(int, reversed(bin(int_value)[2:]))) if b
+            2**i for i,
+            b in enumerate(map(int, reversed(bin(int_value)[2:]))) if b
         ]
         return list_value
 
@@ -53,7 +55,7 @@ class DataScopeAdminInline(admin.TabularInline):
     # in theory, you can't use an inline w/ m2m
     # so I associate it w/ the "through" model
     model = Orb.data_scopes.through
-    readonly_fields = ("is_active",)
+    readonly_fields = ("is_active", )
     extra = 0
 
     def is_active(self, instance):
@@ -85,15 +87,15 @@ class DataScopeAdmin(admin.ModelAdmin):
         "applications",
         "is_active",
     )
-    list_editable = ("is_active",)
-    list_filter = ("orbs",)
+    list_editable = ("is_active", )
+    list_filter = ("orbs", )
     search_fields = (
         "authority",
         "namespace",
         "name",
         "version",
     )
-    filter_horizontal = ("orbs",)
+    filter_horizontal = ("orbs", )
 
     def get_queryset(self, request):
         # pre-fetching m2m fields that are used in list_displays
@@ -109,14 +111,29 @@ class DataScopeAdmin(admin.ModelAdmin):
 
 @admin.register(Orb)
 class OrbAdmin(admin.ModelAdmin):
-    inlines = (DataScopeAdminInline,)
+    inlines = (DataScopeAdminInline, )
     list_display = (
         "name",
         "is_active",
     )
-    list_editable = ("is_active",)
-    list_filter = ("is_active",)
-    search_fields = ("name",)
+    list_editable = ("is_active", )
+    list_filter = (
+        "is_active",
+        "is_default",
+    )
+    search_fields = ("name", )
+
+    def save_model(self, request, obj, form, change):
+
+        # Just popup a warning if `is_default` is True but `is_hidden` is False b/c
+        # that's kind of a weird thing to do; It means that licences to this Orb will
+        # be updated automatically, but users will still be notified of those updates
+
+        if obj.is_default and not obj.is_hidden:
+            msg = f"The Orb \"<a href='{urlquote(request.path)}'>{obj}</a>\" is set to be default but visible.  Are you sure about that?"
+            self.message_user(request, format_html(msg), level=messages.WARNING)
+
+        return super().save_model(request, obj, form, change)
 
 
 @admin.register(Licence)
@@ -151,7 +168,7 @@ class LicenceAdmin(admin.ModelAdmin):
         "created",
         "modified",
     )
-    ordering = ("modified",)
+    ordering = ("modified", )
     search_fields = (
         "id",
         "orb__name",
