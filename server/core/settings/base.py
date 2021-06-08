@@ -139,6 +139,11 @@ DATA_SOURCES_DIRECTORY_URL = env(
     default="https://data-sources-directory.testing.astrosat.net"
 )
 
+DATA_INDEX_URL = env(
+    "DJANGO_DATA_INDEX_URL",
+    default="https://api.testing.ireland.data-index-service.astrosat.net/v1/"
+)
+
 # On-Line Scene Processor for satellite imagery
 OLSP_URL = env("DJANGO_OLSP_URL", default="http://www.olsp.com")
 

@@ -98,4 +98,7 @@ locals {
   // data directory URL is the internal URL used by the backend
   // this is the internal hostname for direct communication between services within the kubernetes cluster
   data_sources_directory_url = "http://data-sources-directory-${var.environment}.default.svc.cluster.local/"
+
+  // data index URL is the external URL used by the backend
+  data_index_url = (var.environment == "production") ? "https://api.ireland.data-index-service.astrosat.net/v1/" : "https://api.${var.environment}.ireland.data-index-service.astrosat.net/v1/"
 }

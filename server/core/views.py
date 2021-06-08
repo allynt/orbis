@@ -11,13 +11,14 @@ from drf_yasg2.utils import swagger_auto_schema
 
 from astrosat_users.conf import app_settings as astrosat_users_settings
 
-
 ###############
 # config view #
 ###############
 
 
 class AppConfigView(APIView):
+
+    # yapf: disable
 
     # AppConfigView has no serializer to generate a swagger schema from
     # so I define one here just to make the generated documentation work
@@ -33,6 +34,7 @@ class AppConfigView(APIView):
             ("isApprovalRequired", openapi.Schema(type=openapi.TYPE_BOOLEAN)),
             ("mapStyles", openapi.Schema(type=openapi.TYPE_STRING, example="[{'id': 'streets', 'uri': 'mapbox://styles/mapbox/streets-v11', 'title': 'Streets'}]")),
             ("maximumAoiArea", openapi.Schema(type=openapi.TYPE_INTEGER, example=500)),
+            ("dataIndexUrl", openapi.Schema(type=openapi.TYPE_STRING)),
             ("commitSha", openapi.Schema(type=openapi.TYPE_STRING)),
         ))
     )
@@ -55,6 +57,7 @@ class AppConfigView(APIView):
             "mapStyles": settings.MAPBOX_STYLES,
             "maximumAoiArea": settings.MAXIMUM_AOI_AREA,
             "commitSha": settings.COMMIT_SHA,
+            "dataIndexUrl": settings.DATA_INDEX_URL,
             "userTrackingInterval": settings.USER_TRACKING_INTERVAL,
         }
 

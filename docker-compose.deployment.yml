@@ -39,6 +39,8 @@ services:
         [{"id": "streets", "uri": "mapbox://styles/astrosat/ck8em6n9k08gk1inv9qcc7c59", "title": "Taking It To The Streets"}, {"id": "light", "uri": "mapbox://styles/mapbox/light-v10", "title": "Light My Fire"}, {"id": "dark", "uri": "mapbox://styles/mapbox/dark-v10", "title": "Dark Was The Night"}, {"id": "satellite", "uri": "mapbox://styles/astrosat/ck8em8hzn2cdv1hnvj8e179b8", "title": "Satellite Of Love"}]
       DJANGO_DATA_TOKEN_SECRET: "itsasecret"
       DJANGO_DATA_SOURCES_DIRECTORY_URL: "https://testing.data-sources-directory.astrosat.net/"
+      DJANGO_DATA_INDEX_URL: "https://api.testing.ireland.data-index-service.astrosat.net/v1/"
+
     ports:
       - "8000:80"
 
