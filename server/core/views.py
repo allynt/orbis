@@ -11,6 +11,8 @@ from drf_yasg2.utils import swagger_auto_schema
 
 from astrosat_users.conf import app_settings as astrosat_users_settings
 
+from .models import GeometryType
+
 ###############
 # config view #
 ###############
@@ -59,6 +61,7 @@ class AppConfigView(APIView):
             "commitSha": settings.COMMIT_SHA,
             "dataIndexUrl": settings.DATA_INDEX_URL,
             "userTrackingInterval": settings.USER_TRACKING_INTERVAL,
+            "geom_order": dict((type.name, type.order) for type in GeometryType.objects.all())
         }
 
         return Response(config)
