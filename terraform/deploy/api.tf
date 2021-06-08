@@ -327,6 +327,11 @@ resource "kubernetes_deployment" "api_deployment" {
           }
 
           env {
+            name = "DJANGO_DATA_INDEX_URL"
+            value = local.data_index_url
+          }
+
+          env {
             name = "DJANGO_COPERNICUS_USERNAME"
             value_from {
               secret_key_ref {
