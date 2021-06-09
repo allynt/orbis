@@ -1,6 +1,9 @@
-import { FeatureDetail, Popup } from 'components';
 import * as React from 'react';
+
 import { useDispatch, useSelector } from 'react-redux';
+
+import { FeatureDetail, Popup } from 'components';
+
 import {
   selectedResultSelector,
   setSelectedResult,

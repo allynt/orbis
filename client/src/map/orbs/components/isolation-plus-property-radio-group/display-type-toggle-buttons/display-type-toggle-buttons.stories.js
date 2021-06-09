@@ -1,5 +1,7 @@
-import { Grid } from '@astrosat/astrosat-ui';
 import React from 'react';
+
+import { Grid } from '@astrosat/astrosat-ui';
+
 import { DisplayTypeToggleButtons } from './display-type-toggle-buttons.component';
 
 export default {

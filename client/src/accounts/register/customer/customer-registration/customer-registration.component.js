@@ -16,6 +16,7 @@ import { object as yupObject } from 'yup';
 import { ErrorWell } from 'accounts/error-well.component';
 import { Form } from 'components';
 import { customerName, FIELD_NAMES } from 'utils/validators';
+
 import { DATE_FORMAT, TRIAL_PERIOD_END_DATE } from '../customer.constants';
 
 const ORGANISATION_TYPES = [

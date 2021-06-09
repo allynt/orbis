@@ -9,6 +9,13 @@ import {
   SvgIcon,
 } from '@astrosat/astrosat-ui';
 
+import apiClient from 'api-client';
+
+import {
+  toggleMenu,
+  setMenuHeadings,
+} from '../control-panel/control-panel.slice';
+import featureToggles from '../feature-toggles';
 import { ReactComponent as AdminIcon } from './admin.svg';
 import { ReactComponent as GuideIcon } from './guide.svg';
 import {
@@ -18,12 +25,6 @@ import {
   STORIES,
   PROFILE,
 } from './toolbar-constants';
-import featureToggles from '../feature-toggles';
-import {
-  toggleMenu,
-  setMenuHeadings,
-} from '../control-panel/control-panel.slice';
-import apiClient from 'api-client';
 
 export const getToolbarItems = (dispatch, user) => {
   let items = [

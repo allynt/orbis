@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from 'react';
 
-import { useDispatch, useSelector } from 'react-redux';
-
 import {
   Box,
   CloseIcon,
@@ -13,6 +11,8 @@ import {
   styled,
   ThemeProvider,
 } from '@astrosat/astrosat-ui';
+
+import { useDispatch, useSelector } from 'react-redux';
 
 import { updateUser } from '../accounts/accounts.slice';
 import { ADMIN_STATUS, ADMIN_VIEW, DIALOG_VIEW } from './admin.constants';

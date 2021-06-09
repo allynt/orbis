@@ -1,8 +1,8 @@
+import { createSlice, createSelector } from '@reduxjs/toolkit';
 import { NotificationManager } from 'react-notifications';
 
-import { createSlice, createSelector } from '@reduxjs/toolkit';
-
 import apiClient from 'api-client';
+
 import { getData, sendData, getJsonAuthHeaders } from '../utils/http';
 
 const API = {

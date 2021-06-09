@@ -2,10 +2,10 @@ import React from 'react';
 
 import { Button, TextField, useForm } from '@astrosat/astrosat-ui';
 
+import styles from './save-search-form.module.css';
 import validate from './save-search-form.validator';
 
 // import formStyles from '../forms.module.css';
-import styles from './save-search-form.module.css';
 
 const SaveSearchForm = ({ query, close, saveSearch }) => {
   const { handleChange, handleSubmit, values, errors } = useForm(

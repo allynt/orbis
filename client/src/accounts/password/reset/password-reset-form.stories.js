@@ -1,9 +1,12 @@
 import React from 'react';
+
 import { Router } from 'react-router-dom';
-import PasswordResetForm from './password-reset-form.component';
-import { history } from 'root.reducer';
+
 import { status } from 'accounts/accounts.slice';
 import Wrapper from 'accounts/wrapper.component';
+import { history } from 'root.reducer';
+
+import PasswordResetForm from './password-reset-form.component';
 
 export default {
   title: 'Accounts/Password/Reset/PasswordResetForm',

@@ -1,7 +1,9 @@
-import faker from 'faker/locale/en_GB';
 import React from 'react';
-import { FeatureDialog } from './feature-dialog.component';
+
 import isChromatic from 'chromatic/isChromatic';
+import faker from 'faker/locale/en_GB';
+
+import { FeatureDialog } from './feature-dialog.component';
 
 if (isChromatic()) faker.seed(1);
 

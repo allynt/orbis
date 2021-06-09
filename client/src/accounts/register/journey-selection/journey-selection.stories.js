@@ -1,5 +1,7 @@
-import Wrapper from 'accounts/wrapper.component';
 import React from 'react';
+
+import Wrapper from 'accounts/wrapper.component';
+
 import JourneySelection from './journey-selection.component';
 
 export default { title: 'Accounts/Journey Selection' };

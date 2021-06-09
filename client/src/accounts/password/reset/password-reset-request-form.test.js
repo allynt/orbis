@@ -1,13 +1,12 @@
 import React from 'react';
 
 import { render, waitFor } from '@testing-library/react';
-
 import userEvent from '@testing-library/user-event';
-
-import PasswordResetRequestForm from './password-reset-request-form.component';
-import { status } from '../../accounts.slice';
-import { Router } from 'react-router-dom';
 import { createMemoryHistory } from 'history';
+import { Router } from 'react-router-dom';
+
+import { status } from '../../accounts.slice';
+import PasswordResetRequestForm from './password-reset-request-form.component';
 
 const RESET_BUTTON_TEXT = 'Reset Password';
 

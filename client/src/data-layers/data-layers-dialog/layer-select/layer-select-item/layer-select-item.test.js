@@ -1,7 +1,9 @@
 import * as React from 'react';
+
 import { render } from '@testing-library/react';
-import { default as LayerSelectItem } from './layer-select-item.component';
 import userEvent from '@testing-library/user-event';
+
+import { default as LayerSelectItem } from './layer-select-item.component';
 
 const SOURCE = {
   source_id: 'test/source/123',

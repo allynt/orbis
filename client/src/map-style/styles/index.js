@@ -1,13 +1,13 @@
-import { default as dark } from './orbis-dark.json';
 import darkImg from './dark.png';
 import darkWebP from './dark.webp';
-import { default as light } from './orbis-light.json';
 import lightImg from './light.png';
 import lightWebP from './light.webp';
+import { default as dark } from './orbis-dark.json';
+import { default as light } from './orbis-light.json';
 import { default as satellite } from './orbis-satellite-streets.json';
+import { default as streets } from './orbis-streets.json';
 import satelliteImg from './satellite.png';
 import satelliteWebP from './satellite.webp';
-import { default as streets } from './orbis-streets.json';
 import streetsImg from './streets.png';
 import streetsWebP from './streets.webp';
 

@@ -1,3 +1,5 @@
+import * as React from 'react';
+
 import {
   CloseIcon,
   Dialog,
@@ -8,8 +10,9 @@ import {
   makeStyles,
   Typography,
 } from '@astrosat/astrosat-ui';
+
 import { omit, pick } from 'lodash';
-import * as React from 'react';
+
 import { isRealValue } from 'utils/isRealValue';
 
 const useStyles = makeStyles(theme => ({

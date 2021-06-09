@@ -1,6 +1,8 @@
 // @ts-nocheck
 import * as React from 'react';
+
 import { render } from '@testing-library/react';
+
 import { MoreInformation } from './more-information.component';
 
 describe('<MoreInformation />', () => {

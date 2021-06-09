@@ -1,4 +1,5 @@
 import { get } from 'lodash';
+
 import { filterValueSelector, dataSelector } from '../layers.slice';
 import pinIconConfig from './pinIconConfig';
 

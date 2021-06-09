@@ -1,7 +1,9 @@
 import * as React from 'react';
+
 import { Provider } from 'react-redux';
-import { LayerVisibilityCheckbox } from './layer-visibility-checkbox.component';
 import configureMockStore from 'redux-mock-store';
+
+import { LayerVisibilityCheckbox } from './layer-visibility-checkbox.component';
 
 const mockStore = configureMockStore();
 

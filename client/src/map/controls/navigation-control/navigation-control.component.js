@@ -1,8 +1,10 @@
 import { styled } from '@astrosat/astrosat-ui';
+
 import { NavigationControl as ReactMapGlNavigationControl } from 'react-map-gl';
-import plus from './plus.svg';
-import minus from './minus.svg';
+
 import compass from './compass.svg';
+import minus from './minus.svg';
+import plus from './plus.svg';
 
 export const NavigationControl = styled(ReactMapGlNavigationControl)(
   ({ theme }) => ({

@@ -1,3 +1,5 @@
+import React from 'react';
+
 import {
   Button,
   ButtonGroup,
@@ -5,9 +7,9 @@ import {
   Grid,
   makeStyles,
 } from '@astrosat/astrosat-ui';
+
 import clsx from 'clsx';
 import { capitalize } from 'lodash';
-import React from 'react';
 
 const useStyles = makeStyles(theme => ({
   buttonGroup: {

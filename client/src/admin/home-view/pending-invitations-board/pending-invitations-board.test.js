@@ -3,9 +3,8 @@ import React from 'react';
 import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
-import { PendingInvitationsBoard } from './pending-invitations-board.component';
-
 import { customer, pendingUsers } from '../../test-story-data';
+import { PendingInvitationsBoard } from './pending-invitations-board.component';
 
 describe('PendingUsersBoard', () => {
   const cases = [
@@ -13,7 +12,7 @@ describe('PendingUsersBoard', () => {
     ["email address'", 'email'],
   ];
   const onWithdrawInvitationClick = jest.fn();
-  const onResendInvitationClick = jest.fn()
+  const onResendInvitationClick = jest.fn();
   it.each(cases)("Displays all pending user's %s", (_, text) => {
     const { getByText } = render(
       <PendingInvitationsBoard

@@ -1,8 +1,10 @@
 // @ts-nocheck
 import * as React from 'react';
+
 import { render } from '@testing-library/react';
-import { FeatureDialog } from './feature-dialog.component';
 import userEvent from '@testing-library/user-event';
+
+import { FeatureDialog } from './feature-dialog.component';
 
 const FEATURE = {
   properties: {

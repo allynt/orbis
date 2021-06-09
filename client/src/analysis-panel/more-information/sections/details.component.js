@@ -1,4 +1,5 @@
 import React from 'react';
+
 import { styled, Typography } from '@astrosat/astrosat-ui';
 
 const StyledTypography = styled(Typography)({ gridColumn: '1 / -1' });

@@ -1,3 +1,5 @@
+import React from 'react';
+
 import {
   Button,
   Checkbox,
@@ -10,12 +12,14 @@ import {
   TextField,
   Typography,
 } from '@astrosat/astrosat-ui';
+
 import { yupResolver } from '@hookform/resolvers/yup';
-import { Form } from 'components';
-import React from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { FIELD_NAMES, name } from 'utils/validators';
 import * as yup from 'yup';
+
+import { Form } from 'components';
+import { FIELD_NAMES, name } from 'utils/validators';
+
 import { ADMIN_STATUS } from '../admin.constants';
 import { getCheckboxLicences, getUpdatedLicenceIds } from '../licence-utils';
 

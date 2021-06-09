@@ -1,5 +1,7 @@
 import React from 'react';
+
 import { useDispatch, useSelector } from 'react-redux';
+
 import { filterValueSelector, setFilterValue } from '../layers.slice';
 import { DateRangeFilter } from './date-range-filter/date-range-filter.component';
 

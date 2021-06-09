@@ -8,6 +8,11 @@
       "mode": "auto"
     }
   ],
+  "eslint.alwaysShowStatus": true,
+  "eslint.format.enable": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true
+  },
   "files.exclude": {
     "**/.git": true,
     "**/.svn": true,

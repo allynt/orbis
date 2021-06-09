@@ -1,4 +1,7 @@
 import { compareAsc, compareDesc, format } from 'date-fns';
+import * as yup from 'yup';
+import zxcvbn from 'zxcvbn';
+
 import {
   dateStringToDate,
   DATE_SEPARATOR,
@@ -6,8 +9,7 @@ import {
   isValid,
   toDMY,
 } from 'utils/dates';
-import * as yup from 'yup';
-import zxcvbn from 'zxcvbn';
+
 import { MESSAGES, CONTEXT_KEYS, FIELD_NAMES } from './constants';
 
 export const email = yup

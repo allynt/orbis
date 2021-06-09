@@ -1,7 +1,9 @@
 import * as React from 'react';
+
 import { render, waitFor } from '@testing-library/react';
-import DataLayersDialog from './data-layers-dialog.component';
 import userEvent from '@testing-library/user-event';
+
+import DataLayersDialog from './data-layers-dialog.component';
 
 const application = {
   orbis: {

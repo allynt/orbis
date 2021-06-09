@@ -1,5 +1,7 @@
-import { fireEvent, render } from '@testing-library/react';
 import React from 'react';
+
+import { fireEvent, render } from '@testing-library/react';
+
 import { ColorAdjustSlider } from './color-adjust-slider.component';
 
 describe('<ColorAdjustSlider />', () => {

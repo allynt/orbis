@@ -5,6 +5,7 @@ import { useSelector } from 'react-redux';
 
 import { useMap } from 'MapContext';
 import { easeInOutCubic } from 'utils/easingFunctions';
+
 import {
   fetchResults,
   isLoadingSelector,

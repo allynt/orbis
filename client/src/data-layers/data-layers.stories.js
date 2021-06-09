@@ -5,6 +5,7 @@ import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 
 import { MapProvider } from 'MapContext';
+
 import DataLayers from './data-layers.component';
 
 const mockStore = configureMockStore([thunk]);

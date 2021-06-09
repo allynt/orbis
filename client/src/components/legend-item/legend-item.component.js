@@ -1,3 +1,5 @@
+import * as React from 'react';
+
 import {
   Fade,
   Grid,
@@ -6,7 +8,6 @@ import {
   ListItemText,
   makeStyles,
 } from '@astrosat/astrosat-ui';
-import * as React from 'react';
 
 const useStyles = makeStyles(theme => ({
   listItemIcon: {

@@ -1,6 +1,9 @@
-import { Grid } from '@astrosat/astrosat-ui';
-import { format } from 'date-fns';
 import React from 'react';
+
+import { Grid } from '@astrosat/astrosat-ui';
+
+import { format } from 'date-fns';
+
 import { DateStepper } from '../../date-stepper/date-stepper.component';
 import { DiscretePropertyLegend } from '../discrete-property-legend/discrete-property-legend.component';
 import { Sliders } from './sliders.component';

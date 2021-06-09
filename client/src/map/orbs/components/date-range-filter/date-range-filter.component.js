@@ -1,3 +1,5 @@
+import React, { useState } from 'react';
+
 import {
   Fade,
   makeStyles,
@@ -6,18 +8,20 @@ import {
   Typography,
   Well,
 } from '@astrosat/astrosat-ui';
+
 import { yupResolver } from '@hookform/resolvers/yup';
-import { DateRangePicker } from 'components';
 import { endOfDay, startOfDay } from 'date-fns';
-import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
+import * as yup from 'yup';
+
+import { DateRangePicker } from 'components';
 import {
   dateStringToDate,
   formatDate,
   stringDateRangeToDateRange,
 } from 'utils/dates';
 import { date, FIELD_NAMES } from 'utils/validators';
-import * as yup from 'yup';
+
 import { DateRangeInput } from './date-range-input.component';
 
 /**

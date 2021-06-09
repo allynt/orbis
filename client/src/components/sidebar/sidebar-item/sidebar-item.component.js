@@ -1,3 +1,5 @@
+import React from 'react';
+
 import {
   fade,
   ListItem,
@@ -6,7 +8,6 @@ import {
   makeStyles,
   Tooltip,
 } from '@astrosat/astrosat-ui';
-import React from 'react';
 
 const useStyles = makeStyles(theme => ({
   root: {

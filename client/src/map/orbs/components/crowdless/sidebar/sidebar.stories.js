@@ -1,8 +1,10 @@
 import * as React from 'react';
-import faker from 'faker/locale/en_GB';
-import { CrowdlessSidebarComponent } from './sidebar.component';
-import { Description } from './description.component';
+
 import isChromatic from 'chromatic/isChromatic';
+import faker from 'faker/locale/en_GB';
+
+import { Description } from './description.component';
+import { CrowdlessSidebarComponent } from './sidebar.component';
 
 if (isChromatic()) faker.seed(1);
 

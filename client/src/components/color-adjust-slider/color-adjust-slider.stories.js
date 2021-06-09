@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+
 import { ColorAdjustSlider } from './color-adjust-slider.component';
 
 export default { title: 'Components/Color Adjust Slider' };

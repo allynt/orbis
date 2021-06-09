@@ -3,8 +3,8 @@ import React from 'react';
 import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
-import { ImageList } from './image-list.component';
 import { ImageListItem } from './image-list-item/image-list-item.component';
+import { ImageList } from './image-list.component';
 
 const renderComponent = value => {
   const onChange = jest.fn();

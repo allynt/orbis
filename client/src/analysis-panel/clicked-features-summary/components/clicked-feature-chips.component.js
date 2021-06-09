@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 
 import { Collapse, Fade, Grid } from '@astrosat/astrosat-ui';
 
-import { TooltipChip } from './tooltip-chip.component';
 import { ControlButtons } from './control-buttons.component';
+import { TooltipChip } from './tooltip-chip.component';
 
 /**
  * @param {{

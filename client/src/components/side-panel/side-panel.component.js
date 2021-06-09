@@ -1,7 +1,8 @@
-import clsx from 'clsx';
 import * as React from 'react';
 
 import { makeStyles, useTheme, Slide } from '@astrosat/astrosat-ui';
+
+import clsx from 'clsx';
 
 const WIDTH = '20rem',
   BORDER_RADIUS = '1rem',

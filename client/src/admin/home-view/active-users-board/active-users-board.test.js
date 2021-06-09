@@ -1,10 +1,10 @@
 import React from 'react';
+
 import { render } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 
 import { customer, activeUsers } from '../../test-story-data';
-
 import { ActiveUsersBoard } from './active-users-board.component';
-import userEvent from '@testing-library/user-event';
 
 describe('ActiveUsersBoard', () => {
   const cases = [

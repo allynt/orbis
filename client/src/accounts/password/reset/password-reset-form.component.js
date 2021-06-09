@@ -16,8 +16,8 @@ import { object as yupObject } from 'yup';
 import { LOGIN } from 'accounts/accounts.constants';
 import { status } from 'accounts/accounts.slice';
 import { ErrorWell } from 'accounts/error-well.component';
-import { FIELD_NAMES, newPassword, newPasswordConfirm } from 'utils/validators';
 import { Form } from 'components';
+import { FIELD_NAMES, newPassword, newPasswordConfirm } from 'utils/validators';
 
 const PasswordResetSuccessView = () => (
   <Form>

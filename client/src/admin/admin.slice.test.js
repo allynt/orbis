@@ -1,6 +1,7 @@
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 
+import { USER_STATUS } from './admin.constants';
 import reducer, {
   fetchCustomerUsersRequested,
   fetchCustomerUsersSuccess,
@@ -30,7 +31,6 @@ import reducer, {
   selectCustomerUsers,
   selectLicenceInformation,
 } from './admin.slice';
-import { USER_STATUS } from './admin.constants';
 
 const mockStore = configureMockStore([thunk]);
 

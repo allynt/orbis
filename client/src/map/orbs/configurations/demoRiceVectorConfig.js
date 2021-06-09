@@ -1,6 +1,8 @@
 import { format } from 'date-fns';
 import { find, get } from 'lodash';
+
 import { ColorScale } from 'utils/ColorScale';
+
 import {
   extrudedModeSelector,
   extrusionScaleSelector,

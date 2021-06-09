@@ -1,5 +1,7 @@
 import React from 'react';
+
 import { render } from '@testing-library/react';
+
 import { LicenceDashboard } from './licence-dashboard.component';
 
 const licenceInformation = {

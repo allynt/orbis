@@ -2,8 +2,9 @@ import * as React from 'react';
 
 import { omit } from 'lodash';
 
-import { NationalDeviationHistogram } from './national-deviation-histogram.component';
 import { AnalysisPanelProvider } from 'analysis-panel/analysis-panel-context';
+
+import { NationalDeviationHistogram } from './national-deviation-histogram.component';
 
 const props = {
   data: [

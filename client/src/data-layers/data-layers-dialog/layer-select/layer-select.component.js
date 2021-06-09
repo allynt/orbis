@@ -19,13 +19,12 @@ import {
   createOrbsWithCategorisedSources,
 } from 'data-layers/categorisation.utils';
 
-import LayerSelectItem from './layer-select-item/layer-select-item.component';
-import LayerSearch from './layer-search/layer-search.component';
-
 import { Header } from '../components/header.component';
 import { List } from '../components/list.component';
 import { Section } from '../components/section.component';
 import { layerSearchFilter } from './layer-search/layer-search-filter';
+import LayerSearch from './layer-search/layer-search.component';
+import LayerSelectItem from './layer-select-item/layer-select-item.component';
 
 /**
  * @param {{

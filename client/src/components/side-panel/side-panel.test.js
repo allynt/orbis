@@ -1,5 +1,7 @@
 import * as React from 'react';
+
 import { render } from '@testing-library/react';
+
 import { SidePanel } from './side-panel.component';
 
 describe('<SidePanel />', () => {

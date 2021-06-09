@@ -1,4 +1,5 @@
 import React from 'react';
+
 import { DateRangeFilter } from './date-range-filter.component';
 
 export default {

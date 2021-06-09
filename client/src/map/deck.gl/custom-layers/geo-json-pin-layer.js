@@ -1,4 +1,5 @@
 import { getGeojsonFeatures } from '@deck.gl/layers/dist/es5/geojson-layer/geojson';
+
 import { PinLayer } from './pin-layer';
 
 export class GeoJsonPinLayer extends PinLayer {

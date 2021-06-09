@@ -1,19 +1,17 @@
 import React from 'react';
 
+import { ThemeProvider } from '@astrosat/astrosat-ui';
+
+import { render } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import { createMemoryHistory } from 'history';
 import { Provider } from 'react-redux';
+import { Router } from 'react-router-dom';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 
-import { render } from '@testing-library/react';
-
-import { Router } from 'react-router-dom';
-import { createMemoryHistory } from 'history';
-
 import { regions } from '../map/map.constants';
-
 import Landing from './landing.component';
-import { ThemeProvider } from '@astrosat/astrosat-ui';
-import userEvent from '@testing-library/user-event';
 
 const bookmarkText = 'Your Maps';
 // const storiesText = 'Your Stories';

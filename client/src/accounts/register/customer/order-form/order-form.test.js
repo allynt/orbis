@@ -1,7 +1,9 @@
 import React from 'react';
+
 import { render, waitFor } from '@testing-library/react';
-import OrderForm from './order-form.component';
 import userEvent from '@testing-library/user-event';
+
+import OrderForm from './order-form.component';
 
 const SUBSCRIPTION = /selected\slicence\ssubscription/i;
 const PAYMENT_TYPE = /payment\stype/i;

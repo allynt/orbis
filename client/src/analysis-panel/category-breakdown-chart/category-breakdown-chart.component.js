@@ -6,6 +6,7 @@ import { ParentSize } from '@visx/responsive';
 import { find } from 'lodash';
 
 import { LegendItem, SidePanelSection } from 'components';
+
 import { Pie } from './pie.component';
 
 export const isSelected = (datumA, datumB) =>

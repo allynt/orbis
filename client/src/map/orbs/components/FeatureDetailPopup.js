@@ -1,7 +1,7 @@
 import React from 'react';
 
-import { useDispatch, useSelector } from 'react-redux';
 import { centerOfMass } from '@turf/turf';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { FeatureDetail, Popup } from 'components';
 

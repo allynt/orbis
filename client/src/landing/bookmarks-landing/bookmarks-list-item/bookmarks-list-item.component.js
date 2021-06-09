@@ -1,3 +1,5 @@
+import * as React from 'react';
+
 import {
   Card,
   CardContent,
@@ -6,9 +8,10 @@ import {
   makeStyles,
   Typography,
 } from '@astrosat/astrosat-ui';
+
 import { format } from 'date-fns';
+
 import { DATE_FORMAT } from '../landing-constants';
-import * as React from 'react';
 
 const useStyles = makeStyles(theme => ({
   card: {

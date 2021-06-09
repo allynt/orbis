@@ -1,12 +1,10 @@
 import * as React from 'react';
 
+import { createMemoryHistory } from 'history';
 import { Provider } from 'react-redux';
 import { Router } from 'react-router-dom';
-
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
-
-import { createMemoryHistory } from 'history';
 
 import Landing from './landing.component';
 

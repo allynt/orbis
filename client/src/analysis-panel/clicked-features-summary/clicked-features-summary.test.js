@@ -3,13 +3,14 @@ import * as React from 'react';
 import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
-import { ClickedFeaturesSummary } from './clicked-features-summary.component';
+import { AnalysisPanelProvider } from 'analysis-panel/analysis-panel-context';
 import {
   removeClickedFeatures,
   setClickedFeatures,
 } from 'map/orbs/layers.slice';
-import { AnalysisPanelProvider } from 'analysis-panel/analysis-panel-context';
 import { MapContext } from 'MapContext';
+
+import { ClickedFeaturesSummary } from './clicked-features-summary.component';
 
 jest.mock(
   './create-viewstate-for-feature/create-viewstate-for-feature',

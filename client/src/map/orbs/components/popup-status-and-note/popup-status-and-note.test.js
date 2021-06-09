@@ -1,8 +1,9 @@
 import React from 'react';
+
 import { render } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 
 import PopupStatusAndNote from './popup-status-and-note.component';
-import userEvent from '@testing-library/user-event';
 
 export const defaultNote = 'This is a test note';
 

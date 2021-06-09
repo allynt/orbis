@@ -9,8 +9,8 @@ import {
   Typography,
 } from '@astrosat/astrosat-ui';
 
-import { MAX_VISIBLE_BOOKMARKS } from './landing-constants';
 import { BookmarksListItem } from './bookmarks-list-item/bookmarks-list-item.component';
+import { MAX_VISIBLE_BOOKMARKS } from './landing-constants';
 
 const useStyles = makeStyles(theme => ({
   controls: {

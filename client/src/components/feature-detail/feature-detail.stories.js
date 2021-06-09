@@ -1,5 +1,7 @@
-import { Button } from '@astrosat/astrosat-ui';
 import React from 'react';
+
+import { Button } from '@astrosat/astrosat-ui';
+
 import FeatureDetail from './feature-detail.component';
 
 export default { title: 'Components/Feature Detail', component: FeatureDetail };

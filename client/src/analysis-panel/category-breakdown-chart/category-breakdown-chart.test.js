@@ -2,11 +2,10 @@
 
 import * as React from 'react';
 
-import { Provider } from 'react-redux';
-import configureMockStore from 'redux-mock-store';
-
 import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { Provider } from 'react-redux';
+import configureMockStore from 'redux-mock-store';
 
 import { CategoryBreakdownChart } from './category-breakdown-chart.component';
 

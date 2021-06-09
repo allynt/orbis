@@ -1,6 +1,8 @@
-import { darken, makeStyles, SvgIcon } from '@astrosat/astrosat-ui';
-import clsx from 'clsx';
 import * as React from 'react';
+
+import { darken, makeStyles, SvgIcon } from '@astrosat/astrosat-ui';
+
+import clsx from 'clsx';
 
 const useStyles = makeStyles(theme => ({
   svg: {

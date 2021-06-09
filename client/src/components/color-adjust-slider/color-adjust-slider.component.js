@@ -1,7 +1,9 @@
-import { fade, makeStyles } from '@astrosat/astrosat-ui';
 import React, { forwardRef } from 'react';
-import { ColorScale } from 'utils/ColorScale';
+
+import { fade, makeStyles } from '@astrosat/astrosat-ui';
+
 import { ColormapRangeSlider } from 'components/colormap-range-slider/colormap-range-slider.component';
+import { ColorScale } from 'utils/ColorScale';
 
 /**
  * @param {number} clipValue

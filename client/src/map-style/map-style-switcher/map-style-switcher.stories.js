@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import MapStyleSwitcher from './map-style-switcher.component';
+
 import { styles } from '../styles';
+import MapStyleSwitcher from './map-style-switcher.component';
 
 export default {
   title: 'Map/Map Style Switcher',

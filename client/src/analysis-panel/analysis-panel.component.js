@@ -27,12 +27,13 @@ import {
   setClickedFeatures,
   timestampSelector,
 } from 'map/orbs/layers.slice';
+
 import { AnalysisPanelProvider } from './analysis-panel-context';
 import { ClickedFeaturesSummary } from './clicked-features-summary/clicked-features-summary.component';
 import { COMPONENT_MAP } from './component-map';
+import { ContextMenu } from './context-menu/context-menu.component';
 import { MoreInformation } from './more-information/more-information.component';
 import PDF from './pdf-export/pdf-export.component';
-import { ContextMenu } from './context-menu/context-menu.component';
 
 const PrimaryDivider = styled(Divider)(({ theme }) => ({
   backgroundColor: theme.palette.primary.dark,

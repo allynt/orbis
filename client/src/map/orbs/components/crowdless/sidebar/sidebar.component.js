@@ -16,6 +16,7 @@ import {
 } from '@astrosat/astrosat-ui';
 
 import { InfoButtonTooltip } from 'components';
+
 import { Description } from './description.component';
 import ResultsListItem from './results-list-item/results-list-item.component';
 

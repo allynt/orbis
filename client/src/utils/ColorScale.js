@@ -1,5 +1,5 @@
-import { scaleOrdinal, scaleSequential } from 'd3-scale';
 import { color } from 'd3-color';
+import { scaleOrdinal, scaleSequential } from 'd3-scale';
 import * as chromatic from 'd3-scale-chromatic';
 
 /** @typedef {'hex' | 'rgb' | 'array'} ColorFormat */

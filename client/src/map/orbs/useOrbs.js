@@ -1,5 +1,6 @@
 import React, { lazy, useCallback, useEffect, useState } from 'react';
 
+import { isArray } from 'lodash';
 import { useSelector, useDispatch } from 'react-redux';
 
 import {
@@ -7,15 +8,13 @@ import {
   selectDataToken,
   logError,
 } from 'data-layers/data-layers.slice';
-
-import { setData, layersWithDataSelector } from './layers.slice';
-
-import { getData } from 'utils/http';
-import { useMap } from 'MapContext';
-import { LayerFactory } from '../deck.gl/LayerFactory';
-import { orbsSelector } from './orbsSelectors';
 import { setIsLoading } from 'map/map.slice';
-import { isArray } from 'lodash';
+import { useMap } from 'MapContext';
+import { getData } from 'utils/http';
+
+import { LayerFactory } from '../deck.gl/LayerFactory';
+import { setData, layersWithDataSelector } from './layers.slice';
+import { orbsSelector } from './orbsSelectors';
 
 const dataUrlFromId = source => {
   return source.data && typeof source.data === 'string'

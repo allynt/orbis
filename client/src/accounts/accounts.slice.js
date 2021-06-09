@@ -1,15 +1,15 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { push } from 'connected-react-router';
+import { NotificationManager } from 'react-notifications';
+import { persistReducer } from 'redux-persist';
+import storage from 'redux-persist/lib/storage'; // defaults to localStorage for web
+
 import {
   createCustomerUserSuccess,
   selectCurrentCustomer,
   setCurrentCustomer,
 } from 'admin/admin.slice';
 import apiClient from 'api-client';
-import { push } from 'connected-react-router';
-
-import { NotificationManager } from 'react-notifications';
-import { persistReducer } from 'redux-persist';
-import storage from 'redux-persist/lib/storage'; // defaults to localStorage for web
 
 import {
   REGISTER_CUSTOMER,

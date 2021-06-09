@@ -1,17 +1,15 @@
 import React from 'react';
 
-import { useSelector } from 'react-redux';
-
-import parseISO from 'date-fns/parseISO';
-import format from 'date-fns/format';
-
-import { DATE_FORMAT, TIME_FORMAT } from './satellite.constants';
-
-import { VISUALISATION, SCENE } from './satellites-panel.component';
-import { Skeleton } from 'components/skeleton/skeleton.component';
-
 import { InfoIcon } from '@astrosat/astrosat-ui';
 
+import format from 'date-fns/format';
+import parseISO from 'date-fns/parseISO';
+import { useSelector } from 'react-redux';
+
+import { Skeleton } from 'components/skeleton/skeleton.component';
+
+import { DATE_FORMAT, TIME_FORMAT } from './satellite.constants';
+import { VISUALISATION, SCENE } from './satellites-panel.component';
 import styles from './scene-list-item.module.css';
 
 const SceneListItem = ({

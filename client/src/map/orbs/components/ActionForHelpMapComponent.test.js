@@ -1,12 +1,13 @@
-import { render, waitFor } from '@testing-library/react';
 import React from 'react';
-import { Provider } from 'react-redux';
-import ActionForHelpMapComponent from './ActionForHelpMapComponent';
-import configureMockStore from 'redux-mock-store';
+
+import { render, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import fetch from 'jest-fetch-mock';
+import { Provider } from 'react-redux';
+import configureMockStore from 'redux-mock-store';
 
 import { setData } from '../layers.slice.js';
+import ActionForHelpMapComponent from './ActionForHelpMapComponent';
 
 const mockStore = configureMockStore();
 jest.mock('react-map-gl', () => ({ Popup: ({ children }) => <>{children}</> }));

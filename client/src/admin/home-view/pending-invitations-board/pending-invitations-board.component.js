@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
 
-import { format } from 'date-fns';
-
 import {
   Button,
   makeStyles,
@@ -13,8 +11,11 @@ import {
   TableRow,
 } from '@astrosat/astrosat-ui';
 
-import { getUserLicences, getLicenceInfo } from '../../licence-utils';
+import { format } from 'date-fns';
+
 import { AdminTableCell } from 'admin/admin-table/admin-table-cell.component';
+
+import { getUserLicences, getLicenceInfo } from '../../licence-utils';
 import { OptionsMenu } from '../options-menu.component';
 
 const DATE_FORMAT = 'k:mm d MMMM yyyy';

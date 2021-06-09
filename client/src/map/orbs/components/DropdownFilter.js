@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
+
 import { filterValueSelector, setFilterValue } from '../layers.slice';
 import { DropdownFilter } from './dropdown-filter/dropdown-filter.component';
 

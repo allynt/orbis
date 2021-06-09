@@ -3,6 +3,7 @@ import React from 'react';
 import { render } from '@testing-library/react';
 
 import { AnalysisPanelProvider } from 'analysis-panel/analysis-panel-context';
+
 import { PropertyBreakdownChart } from './property-breakdown-chart.component';
 
 const source_id = 'test/source';

@@ -1,17 +1,18 @@
-import { sendData } from 'utils/http';
-import { FeatureDetail, Popup } from 'components';
-
-import PopupStatusAndNote from './popup-status-and-note/popup-status-and-note.component';
-
 import React from 'react';
+
 import { useDispatch, useSelector } from 'react-redux';
+
+import { FeatureDetail, Popup } from 'components';
+import { selectDataToken } from 'data-layers/data-layers.slice';
+import { sendData } from 'utils/http';
+
 import {
   clickedFeaturesSelector,
   setClickedFeatures,
   dataSelector,
   setData,
 } from '../layers.slice';
-import { selectDataToken } from 'data-layers/data-layers.slice';
+import PopupStatusAndNote from './popup-status-and-note/popup-status-and-note.component';
 
 const ActionForHelpMapComponent = ({ source }) => {
   const layerData = useSelector(state =>

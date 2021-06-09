@@ -1,12 +1,13 @@
 import { CompositeLayer } from '@deck.gl/core';
 import { IconLayer, TextLayer } from '@deck.gl/layers';
+import { color } from 'd3-color';
+import { get, isArray } from 'lodash';
 import Supercluster from 'supercluster';
-import backgroundsIconMapping from './pin-layer-backgrounds.iconMapping.json';
+
 import backgroundsIconAtlas from './pin-layer-backgrounds.iconAtlas.svg';
+import backgroundsIconMapping from './pin-layer-backgrounds.iconMapping.json';
 import iconAtlas from './pin-layer-icons.iconAtlas.svg';
 import iconMapping from './pin-layer-icons.iconMapping.json';
-import { get, isArray } from 'lodash';
-import { color } from 'd3-color';
 
 const COLOR_TRANSPARENT = [0, 0, 0, 0],
   COLOR_PRIMARY = [246, 190, 0, 255],

@@ -1,15 +1,18 @@
 import React from 'react';
 
-import { OrbisLogo } from 'components';
 import {
   Container,
   makeStyles,
   Paper,
   ThemeProvider,
 } from '@astrosat/astrosat-ui';
-import background from './background.png';
-import placeholder from './background-placeholder.png';
+
 import ProgressiveImage from 'react-progressive-image-loading';
+
+import { OrbisLogo } from 'components';
+
+import placeholder from './background-placeholder.png';
+import background from './background.png';
 
 const useStyles = makeStyles(theme => ({
   page: {

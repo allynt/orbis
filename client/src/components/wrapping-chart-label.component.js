@@ -1,4 +1,5 @@
 import React from 'react';
+
 import { Text } from '@visx/text';
 
 export const WrappingChartLabel = props => (

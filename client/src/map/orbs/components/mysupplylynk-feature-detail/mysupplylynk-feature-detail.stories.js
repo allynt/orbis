@@ -1,4 +1,5 @@
 import React from 'react';
+
 import MySupplyLynkFeatureDetail from './mysupplylynk-feature-detail.component';
 
 export default { title: 'Orbs/MySupplyLynk/Feature Detail' };

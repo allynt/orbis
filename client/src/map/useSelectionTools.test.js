@@ -1,8 +1,10 @@
+import React from 'react';
+
 import { fireEvent } from '@testing-library/dom';
 import { act, renderHook as tlRenderHook } from '@testing-library/react-hooks';
-import React from 'react';
 import { Provider } from 'react-redux';
 import configureMockStore from 'redux-mock-store';
+
 import { setClickedFeatures } from './orbs/layers.slice';
 import {
   filterAndSortPickedInfo,

@@ -1,4 +1,5 @@
 import React from 'react';
+
 import { SectionLabel, SectionValue } from './styles';
 
 /**

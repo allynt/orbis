@@ -8,6 +8,7 @@ import {
   MeasureAreaIcon,
   RulerIcon,
 } from '@astrosat/astrosat-ui';
+
 import { Edit, Transform } from '@material-ui/icons';
 import {
   DrawCircleFromCenterMode,

@@ -1,5 +1,7 @@
 import React, { useRef } from 'react';
+
 import { action } from '@storybook/addon-actions';
+
 import { MySupplyLynkDialog } from './dialog.component';
 
 export default { title: 'Orbs/MySupplyLynk/Dialog' };

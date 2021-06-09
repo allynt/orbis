@@ -1,4 +1,5 @@
 import * as React from 'react';
+
 import { ExtrusionScaleSlider } from './extrusion-scale-slider.component';
 
 export default {

@@ -1,7 +1,9 @@
-import faker from 'faker/locale/en_GB';
 import * as React from 'react';
-import ResultsListItem from './results-list-item.component';
+
 import isChromatic from 'chromatic/isChromatic';
+import faker from 'faker/locale/en_GB';
+
+import ResultsListItem from './results-list-item.component';
 
 if (isChromatic()) faker.seed(1);
 

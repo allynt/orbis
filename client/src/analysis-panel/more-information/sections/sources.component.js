@@ -1,3 +1,5 @@
+import React from 'react';
+
 import {
   Link,
   List,
@@ -5,9 +7,11 @@ import {
   styled,
   Typography,
 } from '@astrosat/astrosat-ui';
+
 import { isObject } from 'lodash';
-import React from 'react';
+
 import { isUrl } from 'utils/text';
+
 import { SectionLabel, SectionValue } from './styles';
 
 const LINK_PROPS = {

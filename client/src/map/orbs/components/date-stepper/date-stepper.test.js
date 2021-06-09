@@ -1,7 +1,9 @@
+import React from 'react';
+
 import { render, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { addDays, startOfDay } from 'date-fns';
-import React from 'react';
+
 import { DateStepper } from './date-stepper.component';
 
 jest.useFakeTimers();

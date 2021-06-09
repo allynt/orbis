@@ -1,7 +1,9 @@
-import faker from 'faker';
 import * as React from 'react';
-import { MultipleFeaturesList } from './multiple-features-list.component';
+
 import isChromatic from 'chromatic/isChromatic';
+import faker from 'faker';
+
+import { MultipleFeaturesList } from './multiple-features-list.component';
 
 if (isChromatic()) faker.seed(1);
 

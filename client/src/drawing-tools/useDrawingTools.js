@@ -1,13 +1,17 @@
+import { useEffect, useState } from 'react';
+
 import { darken, rgbToHex } from '@astrosat/astrosat-ui';
+
 import { EditableGeoJsonLayer } from '@nebula.gl/layers';
 import { convertArea } from '@turf/helpers';
-import { useDocumentEventListener } from 'hooks/useDocumentEventListener';
 import { findIndex, get } from 'lodash';
-import { selectedMapStyleIdSelector } from 'map/map.slice';
-import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+
+import { useDocumentEventListener } from 'hooks/useDocumentEventListener';
+import { selectedMapStyleIdSelector } from 'map/map.slice';
 import { hexToRgbArray } from 'utils/color';
 import { KEY_CODES } from 'utils/KEY_CODES';
+
 import {
   DRAW_MODE_MAP,
   FEATURE_COLORS,

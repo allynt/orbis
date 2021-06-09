@@ -1,6 +1,7 @@
 import * as React from 'react';
 
 import { AnalysisPanelProvider } from 'analysis-panel/analysis-panel-context';
+
 import { PropertyBreakdownChart } from './property-breakdown-chart.component';
 
 export default { title: 'Analysis Panel/Property Breakdown Chart' };

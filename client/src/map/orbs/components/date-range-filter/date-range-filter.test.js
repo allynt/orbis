@@ -1,8 +1,10 @@
 import React from 'react';
+
 import { render, waitFor } from '@testing-library/react';
-import { DateRangeFilter } from './date-range-filter.component';
 import userEvent from '@testing-library/user-event';
 import { addDays, endOfDay, format, startOfDay } from 'date-fns';
+
+import { DateRangeFilter } from './date-range-filter.component';
 
 const renderComponent = ({
   minDate = undefined,

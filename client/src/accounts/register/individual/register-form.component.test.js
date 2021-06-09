@@ -1,18 +1,16 @@
 import React from 'react';
 
 import { render, waitFor } from '@testing-library/react';
-
 import userEvent from '@testing-library/user-event';
-
+import { createMemoryHistory } from 'history';
 import { Provider } from 'react-redux';
+import { Router } from 'react-router-dom';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 
-import { Router } from 'react-router-dom';
-import { createMemoryHistory } from 'history';
+import { FIELD_NAMES } from 'utils/validators';
 
 import RegisterForm from './register-form.component';
-import { FIELD_NAMES } from 'utils/validators';
 
 const mockStore = configureMockStore([thunk]);
 

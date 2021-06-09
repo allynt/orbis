@@ -1,4 +1,5 @@
 import React from 'react';
+
 import OrganisationMenu from './organisation-menu.component';
 
 export default {

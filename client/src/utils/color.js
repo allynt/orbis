@@ -1,5 +1,6 @@
 import { color as d3Color } from 'd3-color';
 import { toPairs } from 'lodash';
+
 import { ColorScale } from './ColorScale';
 import { isRealValue } from './isRealValue';
 

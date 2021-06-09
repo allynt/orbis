@@ -8,6 +8,7 @@ import {
   TriangleIcon,
   Typography,
 } from '@astrosat/astrosat-ui';
+
 import { InfoButtonTooltip } from 'components/info-button-tooltip/info-button-tooltip.component';
 
 const useAccordionStyles = makeStyles({

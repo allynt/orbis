@@ -1,3 +1,5 @@
+import * as React from 'react';
+
 import {
   FormControl,
   FormHelperText,
@@ -6,7 +8,6 @@ import {
   InputLabel,
   makeStyles,
 } from '@astrosat/astrosat-ui';
-import * as React from 'react';
 
 const useInlineStyles = makeStyles({
   formControl: {

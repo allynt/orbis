@@ -1,6 +1,7 @@
 import { combineReducers } from 'redux';
-import crowdless from './slices/crowdless.slice';
+
 import layers from './layers.slice';
+import crowdless from './slices/crowdless.slice';
 
 /**
  * @typedef {ReturnType<orbReducer>} OrbState

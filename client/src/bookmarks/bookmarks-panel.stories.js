@@ -1,12 +1,13 @@
 import * as React from 'react';
 
+import isChromatic from 'chromatic/isChromatic';
 import faker from 'faker/locale/en_GB';
 import { Provider } from 'react-redux';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
-import isChromatic from 'chromatic/isChromatic';
 
 import { MapProvider } from 'MapContext';
+
 import BookmarksPanel from './bookmarks-panel.component';
 
 if (isChromatic()) faker.seed(1);

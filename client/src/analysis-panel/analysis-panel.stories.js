@@ -1,9 +1,12 @@
 import * as React from 'react';
+
 import { Provider } from 'react-redux';
-import { AnalysisPanel } from './analysis-panel.component';
-import { MapProvider } from 'MapContext';
-import thunk from 'redux-thunk';
 import configureMockStore from 'redux-mock-store';
+import thunk from 'redux-thunk';
+
+import { MapProvider } from 'MapContext';
+
+import { AnalysisPanel } from './analysis-panel.component';
 
 const mockStore = configureMockStore([thunk]);
 

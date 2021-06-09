@@ -1,5 +1,7 @@
-import { find, sumBy } from 'lodash';
 import React, { createContext, useContext, useMemo } from 'react';
+
+import { find, sumBy } from 'lodash';
+
 import { aggregateValues } from './aggregateValues';
 
 /**

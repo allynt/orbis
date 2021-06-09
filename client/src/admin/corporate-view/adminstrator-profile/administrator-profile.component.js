@@ -1,10 +1,10 @@
 import * as React from 'react';
 
+import { Avatar, Button, Grid, styled } from '@astrosat/astrosat-ui';
+
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
-
-import { Avatar, Button, Grid, styled } from '@astrosat/astrosat-ui';
 
 import { Form, InlineTextField } from 'components';
 import { email, FIELD_NAMES } from 'utils/validators';

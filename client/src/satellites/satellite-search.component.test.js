@@ -1,9 +1,5 @@
 import React from 'react';
 
-import { Provider } from 'react-redux';
-import configureMockStore from 'redux-mock-store';
-import thunk from 'redux-thunk';
-
 import {
   render,
   cleanup,
@@ -11,10 +7,11 @@ import {
   within,
   getByTitle,
 } from '@testing-library/react';
-
-import mapboxgl from 'mapbox-gl';
-
 import { format, subDays } from 'date-fns';
+import mapboxgl from 'mapbox-gl';
+import { Provider } from 'react-redux';
+import configureMockStore from 'redux-mock-store';
+import thunk from 'redux-thunk';
 
 import SatelliteSearch from './satellite-search.component';
 

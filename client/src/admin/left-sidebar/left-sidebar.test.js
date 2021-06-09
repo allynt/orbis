@@ -3,8 +3,8 @@ import React from 'react';
 import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
-import LeftSidebar from './left-sidebar.component';
 import { ADMIN_VIEW } from '../admin.constants';
+import LeftSidebar from './left-sidebar.component';
 
 describe('Admin Side Menu Component', () => {
   let setVisiblePanel = null;

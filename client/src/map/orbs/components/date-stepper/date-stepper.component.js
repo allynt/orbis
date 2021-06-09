@@ -1,3 +1,5 @@
+import React, { useEffect, useState } from 'react';
+
 import {
   Grid,
   IconButton,
@@ -8,10 +10,10 @@ import {
   fade,
   Box,
 } from '@astrosat/astrosat-ui';
+
 import { Pause, PlayArrow } from '@material-ui/icons';
 import { format } from 'date-fns';
 import { findIndex } from 'lodash';
-import React, { useEffect, useState } from 'react';
 
 const useStyles = makeStyles(theme => ({
   grid: {

@@ -15,17 +15,18 @@ import { Link as RouterLink, useHistory } from 'react-router-dom';
 
 import { OrbisLogo } from 'components';
 import {
+  fetchSources,
+  selectPollingPeriod,
+} from 'data-layers/data-layers.slice';
+
+import {
   bookmarksSelector,
   fetchBookmarks,
   selectBookmark,
 } from '../bookmarks/bookmarks.slice';
 import { BookmarksLanding } from './bookmarks-landing/bookmarks-landing.component';
-import {
-  fetchSources,
-  selectPollingPeriod,
-} from 'data-layers/data-layers.slice';
-import backgroundImage from './landing-image.png';
 import backgroundImagePlaceholder from './landing-image-placeholder.png';
+import backgroundImage from './landing-image.png';
 import { NoBookmarksLanding } from './no-bookmarks-landing/no-bookmarks-landing.component';
 
 const useStyles = makeStyles(theme => ({

@@ -1,7 +1,9 @@
-import faker from 'faker/locale/en_GB';
 import React from 'react';
-import { LicenceDashboard } from './licence-dashboard.component';
+
 import isChromatic from 'chromatic/isChromatic';
+import faker from 'faker/locale/en_GB';
+
+import { LicenceDashboard } from './licence-dashboard.component';
 
 if (isChromatic()) faker.seed(1);
 

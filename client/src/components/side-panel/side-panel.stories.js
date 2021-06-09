@@ -1,4 +1,5 @@
 import React from 'react';
+
 import { SidePanel } from './side-panel.component';
 
 const header = (

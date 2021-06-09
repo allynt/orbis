@@ -1,9 +1,19 @@
 import React, { useState, useEffect, useRef } from 'react';
 
-import { useDispatch, useSelector } from 'react-redux';
-
 import { Button, Dialog /*useModal*/ } from '@astrosat/astrosat-ui';
 
+import { useDispatch, useSelector } from 'react-redux';
+
+import { toggleCompareMode, isCompareModeSelector } from '../map/map.slice';
+import ComparePins from './compare-pins.component';
+import Results from './results.component';
+import SatelliteSearch from './satellite-search.component';
+import {
+  SatelliteInfoTable,
+  TierInfoTable,
+  SceneInfoTable,
+} from './satellites-info-tables.component';
+import styles from './satellites-panel.module.css';
 import {
   fetchSatellites,
   selectScene,
@@ -18,20 +28,7 @@ import {
   setCurrentVisualisation,
   selectedPinnedScenesSelector,
 } from './satellites.slice';
-
-import { toggleCompareMode, isCompareModeSelector } from '../map/map.slice';
-
-import SatelliteSearch from './satellite-search.component';
-import Results from './results.component';
 import Visualisation from './visualisation.component';
-import ComparePins from './compare-pins.component';
-import {
-  SatelliteInfoTable,
-  TierInfoTable,
-  SceneInfoTable,
-} from './satellites-info-tables.component';
-
-import styles from './satellites-panel.module.css';
 
 export const SEARCH = 'Search';
 export const RESULTS = 'Results';

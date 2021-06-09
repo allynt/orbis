@@ -2,15 +2,16 @@ import React from 'react';
 
 import { Box, Grid, Typography } from '@astrosat/astrosat-ui';
 
+import { get } from 'lodash';
 import { useSelector } from 'react-redux';
 
 import { useAnalysisPanelContext } from 'analysis-panel/analysis-panel-context';
 import { SidePanelSection } from 'components';
+import { otherSelector } from 'map/orbs/layers.slice';
+
 import { Aggregates } from './aggregates.component';
 import { AreaValue } from './area-value.component';
 import { Histogram } from './histogram.component';
-import { otherSelector } from 'map/orbs/layers.slice';
-import { get } from 'lodash';
 
 /**
  * @typedef {{

@@ -1,8 +1,8 @@
+import { createSlice } from '@reduxjs/toolkit';
 import { NotificationManager } from 'react-notifications';
 
-import { createSlice } from '@reduxjs/toolkit';
-
 import apiClient from 'api-client';
+
 import {
   getData,
   sendData,

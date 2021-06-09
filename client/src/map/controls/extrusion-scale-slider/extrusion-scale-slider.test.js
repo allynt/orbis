@@ -1,7 +1,9 @@
 import * as React from 'react';
+
 import { fireEvent, render, waitFor } from '@testing-library/react';
-import { ExtrusionScaleSlider } from './extrusion-scale-slider.component';
 import userEvent from '@testing-library/user-event';
+
+import { ExtrusionScaleSlider } from './extrusion-scale-slider.component';
 
 const renderComponent = () => {
   const onChange = jest.fn();

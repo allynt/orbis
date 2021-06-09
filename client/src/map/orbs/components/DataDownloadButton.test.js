@@ -1,13 +1,16 @@
 import React from 'react';
+
 import { render, waitFor } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import fetch from 'jest-fetch-mock';
+import { Provider } from 'react-redux';
+import configureMockStore from 'redux-mock-store';
+
+import { ADMIN_STATUS } from 'admin/admin.constants';
+
 import DataDownloadButton, {
   getFilenameFromHeader,
 } from './DataDownloadButton';
-import { Provider } from 'react-redux';
-import configureMockStore from 'redux-mock-store';
-import userEvent from '@testing-library/user-event';
-import { ADMIN_STATUS } from 'admin/admin.constants';
-import fetch from 'jest-fetch-mock';
 
 jest.mock('file-saver');
 

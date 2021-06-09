@@ -1,12 +1,13 @@
+import { gunzipSync } from 'zlib';
+
+import { MVTLayer } from '@deck.gl/geo-layers';
 import { load } from '@loaders.gl/core';
 import { MVTLoader } from '@loaders.gl/mvt';
-import { MVTLayer } from '@deck.gl/geo-layers';
-import { gunzipSync } from 'zlib';
 import parse from 'fast-json-parse';
 
-import { tileCoordinatesToLatLon } from '../../../utils/tileCoordinatesToLatLon';
-
 import { logError } from 'data-layers/data-layers.slice';
+
+import { tileCoordinatesToLatLon } from '../../../utils/tileCoordinatesToLatLon';
 
 /**
  * @typedef Tile

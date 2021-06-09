@@ -1,5 +1,7 @@
-import { fireEvent, render } from '@testing-library/react';
 import React from 'react';
+
+import { fireEvent, render } from '@testing-library/react';
+
 import { ColormapRangeSlider } from './colormap-range-slider.component';
 
 describe('<ColormapRangeSlider />', () => {

@@ -1,6 +1,7 @@
 import * as React from 'react';
-import HomeView from './home-view.component';
+
 import { activeUsers, customer, pendingUsers } from '../test-story-data';
+import HomeView from './home-view.component';
 
 export default {
   title: 'Admin/Home View',

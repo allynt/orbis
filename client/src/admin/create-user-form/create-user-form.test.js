@@ -1,8 +1,11 @@
 import React from 'react';
+
 import { render, waitFor } from '@testing-library/react';
-import { CreateUserForm } from './create-user-form.component';
 import userEvent from '@testing-library/user-event';
+
 import { MESSAGES } from 'utils/validators';
+
+import { CreateUserForm } from './create-user-form.component';
 
 describe('<CreateUserForm />', () => {
   it('Has a name field', () => {

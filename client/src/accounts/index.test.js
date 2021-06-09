@@ -1,12 +1,13 @@
+import React from 'react';
+
 import { render, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { createMemoryHistory } from 'history';
-import React from 'react';
 import { Provider } from 'react-redux';
 import { MemoryRouter, Router } from 'react-router-dom';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
-import Accounts from '.';
+
 import {
   CONFIRM_EMAIL,
   LOGIN,
@@ -37,6 +38,8 @@ import {
   login,
   loginUserSuccess,
 } from './accounts.slice';
+
+import Accounts from '.';
 
 const mockStore = configureMockStore([thunk]);
 

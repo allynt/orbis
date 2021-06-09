@@ -1,7 +1,10 @@
-import { makeStyles, Slider } from '@astrosat/astrosat-ui';
-import { scaleLinear } from 'd3-scale';
-import { DEFAULT_DECIMAL_PRECISION } from 'map/map.constants';
 import React, { forwardRef } from 'react';
+
+import { makeStyles, Slider } from '@astrosat/astrosat-ui';
+
+import { scaleLinear } from 'd3-scale';
+
+import { DEFAULT_DECIMAL_PRECISION } from 'map/map.constants';
 import { ColorScale } from 'utils/ColorScale';
 
 const useStyles = makeStyles(

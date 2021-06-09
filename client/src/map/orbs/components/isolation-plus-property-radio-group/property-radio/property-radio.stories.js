@@ -1,4 +1,5 @@
 import React from 'react';
+
 import PropertyRadio from './property-radio.component';
 
 export default {

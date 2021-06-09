@@ -1,11 +1,14 @@
+import { useState } from 'react';
+
 import { SelectionLayer } from '@nebula.gl/layers';
+import { filter, groupBy, uniqBy } from 'lodash';
+import { useDispatch, useSelector } from 'react-redux';
+
 import { activeLayersSelector } from 'data-layers/data-layers.slice';
 import { useDocumentEventListener } from 'hooks/useDocumentEventListener';
-import { filter, groupBy, uniqBy } from 'lodash';
-import { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import { createReduxSafePickedInfo } from 'utils/data';
 import { KEY_CODES } from 'utils/KEY_CODES';
+
 import { setClickedFeatures } from './orbs/layers.slice';
 
 /**

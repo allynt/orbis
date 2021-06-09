@@ -1,5 +1,7 @@
-import Wrapper from 'accounts/wrapper.component';
 import React from 'react';
+
+import Wrapper from 'accounts/wrapper.component';
+
 import CustomerRegistration from './customer-registration.component';
 
 export default {

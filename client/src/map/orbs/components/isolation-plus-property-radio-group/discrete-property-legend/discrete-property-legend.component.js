@@ -1,3 +1,5 @@
+import * as React from 'react';
+
 import {
   List,
   ListItem,
@@ -5,8 +7,8 @@ import {
   ListItemText,
   ListItemIcon,
 } from '@astrosat/astrosat-ui';
+
 import { InfoButtonTooltip } from 'components';
-import * as React from 'react';
 
 /**
  * @param {{property: import('typings/orbis').DiscreteProperty}} props

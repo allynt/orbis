@@ -5,8 +5,9 @@ import userEvent from '@testing-library/user-event';
 import { Provider } from 'react-redux';
 import configureStore from 'redux-mock-store';
 
-import { IsolationPlusPropertyRadioGroup } from './isolation-plus-property-radio-group.component';
 import { setOther } from 'map/orbs/layers.slice';
+
+import { IsolationPlusPropertyRadioGroup } from './isolation-plus-property-radio-group.component';
 
 const mockStore = configureStore();
 
