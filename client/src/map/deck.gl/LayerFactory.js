@@ -1,5 +1,6 @@
-import { GeoJsonLayer, IconLayer, BitmapLayer } from '@deck.gl/layers';
 import { HeatmapLayer } from '@deck.gl/aggregation-layers';
+import { GeoJsonLayer, IconLayer, BitmapLayer } from '@deck.gl/layers';
+
 import * as CustomLayers from './custom-layers';
 
 /**

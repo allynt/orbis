@@ -1,6 +1,6 @@
-import { tileCoordinatesToLatLon } from './tileCoordinatesToLatLon';
-
 import { WebMercatorViewport } from '@deck.gl/core';
+
+import { tileCoordinatesToLatLon } from './tileCoordinatesToLatLon';
 
 const bbox = { west: -180, north: 85.0511287798066, east: 0, south: 0 };
 

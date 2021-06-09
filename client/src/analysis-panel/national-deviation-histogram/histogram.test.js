@@ -1,7 +1,9 @@
 import React from 'react';
+
 import { render, waitFor } from '@testing-library/react';
-import { Histogram } from './histogram.component';
 import userEvent from '@testing-library/user-event';
+
+import { Histogram } from './histogram.component';
 
 const renderComponent = (line, log = false) =>
   render(

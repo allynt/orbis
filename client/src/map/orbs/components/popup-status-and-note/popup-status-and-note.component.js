@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
 
-import { OPTIONS, CHAR_LIMIT } from './status-constants';
-
 import {
   Input,
   Button,
@@ -12,6 +10,8 @@ import {
   Grid,
   makeStyles,
 } from '@astrosat/astrosat-ui';
+
+import { OPTIONS, CHAR_LIMIT } from './status-constants';
 
 const useStyles = makeStyles(theme => ({
   container: {

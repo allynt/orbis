@@ -1,7 +1,10 @@
-import { status } from 'accounts/accounts.slice';
 import React from 'react';
+
 import { Router } from 'react-router-dom';
+
+import { status } from 'accounts/accounts.slice';
 import { history } from 'root.reducer';
+
 import RegisterForm from './register-form.component';
 
 export default {

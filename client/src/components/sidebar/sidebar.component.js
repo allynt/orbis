@@ -1,5 +1,6 @@
-import { List, styled } from '@astrosat/astrosat-ui';
 import React from 'react';
+
+import { List, styled } from '@astrosat/astrosat-ui';
 
 export const SidebarBottomItems = styled('div')({ marginTop: 'auto' });
 

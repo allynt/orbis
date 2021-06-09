@@ -1,12 +1,14 @@
 // @ts-nocheck
 import React from 'react';
+
 import { render } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { Provider } from 'react-redux';
 import configureMockStore from 'redux-mock-store';
 
-import { CheckboxFilters } from './checkbox-filters.component';
 import { setFilterValue } from 'map/orbs/layers.slice';
-import userEvent from '@testing-library/user-event';
+
+import { CheckboxFilters } from './checkbox-filters.component';
 
 const LAYER = {
     source_id: 'test/layer/1',

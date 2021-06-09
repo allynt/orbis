@@ -1,8 +1,7 @@
 import React from 'react';
 
-import { ActiveUsersBoard } from './active-users-board.component';
-
 import { customer, activeUsers, pendingUsers } from '../../test-story-data';
+import { ActiveUsersBoard } from './active-users-board.component';
 
 export default {
   title: 'Admin/Home View/Active Users Board',

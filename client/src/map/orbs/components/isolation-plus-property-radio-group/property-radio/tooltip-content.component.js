@@ -1,4 +1,5 @@
 import React from 'react';
+
 import { Typography, styled } from '@astrosat/astrosat-ui';
 
 const CategoryPath = styled(Typography)({ fontStyle: 'italic' });

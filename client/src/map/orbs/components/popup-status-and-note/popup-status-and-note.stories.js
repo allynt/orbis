@@ -1,6 +1,6 @@
 import React from 'react';
-import PopupStatusAndNote from './popup-status-and-note.component';
 
+import PopupStatusAndNote from './popup-status-and-note.component';
 import { defaultNote, longBodyNote } from './popup-status-and-note.test';
 
 export default {

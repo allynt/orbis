@@ -6,6 +6,7 @@ import { Provider } from 'react-redux';
 import createMockStore from 'redux-mock-store';
 
 import { MapProvider } from 'MapContext';
+
 import BookmarksPanel from './bookmarks-panel.component';
 import { selectBookmark } from './bookmarks.slice';
 

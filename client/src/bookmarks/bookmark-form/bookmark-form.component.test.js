@@ -4,6 +4,7 @@ import { render, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
 import { FIELD_NAMES } from 'utils/validators';
+
 import BookmarkForm from './bookmark-form.component';
 
 const TITLE = new RegExp(FIELD_NAMES.bookmarkTitle, 'i');

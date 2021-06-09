@@ -3,6 +3,7 @@ import React from 'react';
 import { Box } from '@astrosat/astrosat-ui';
 
 import ContentWrapper from 'admin/content-wrapper.component';
+
 import AdministratorProfile from './adminstrator-profile/administrator-profile.component';
 import CorporateAccount from './corporate-account/corporate-account.component';
 

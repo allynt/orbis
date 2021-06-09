@@ -1,9 +1,11 @@
 import React from 'react';
+
 import { render } from '@testing-library/react';
-import { default as ResendVerificationEmail } from './resend-verification-email.component';
 import userEvent from '@testing-library/user-event';
-import { Router } from 'react-router-dom';
 import { createMemoryHistory } from 'history';
+import { Router } from 'react-router-dom';
+
+import { default as ResendVerificationEmail } from './resend-verification-email.component';
 
 const wrapper = ({ children }) => (
   <Router history={createMemoryHistory()}>{children}</Router>

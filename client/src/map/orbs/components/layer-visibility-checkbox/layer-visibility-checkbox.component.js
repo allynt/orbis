@@ -10,8 +10,9 @@ import {
 
 import { useSelector } from 'react-redux';
 
-import { visibilitySelector, setVisibility } from '../../layers.slice';
 import { InfoButtonTooltip } from 'components/index.js';
+
+import { visibilitySelector, setVisibility } from '../../layers.slice';
 
 const useStyles = makeStyles(theme => ({
   root: { margin: 0, padding: theme.spacing(0, 2) },

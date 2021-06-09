@@ -1,7 +1,9 @@
-import faker from 'faker/locale/en_GB';
 import * as React from 'react';
-import CrowdlessMapComponent from './map.component';
+
 import isChromatic from 'chromatic/isChromatic';
+import faker from 'faker/locale/en_GB';
+
+import CrowdlessMapComponent from './map.component';
 
 if (isChromatic()) faker.seed(1);
 

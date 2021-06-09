@@ -4,6 +4,7 @@ import { get } from 'lodash';
 import { getColorScaleForProperty } from 'utils/color';
 import { createReduxSafePickedInfo, getValueForTimestamp } from 'utils/data';
 import { isRealValue } from 'utils/isRealValue';
+
 import {
   addClickedFeatures,
   clickedFeaturesSelector,

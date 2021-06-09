@@ -1,7 +1,9 @@
-import { BookmarksListItem } from './bookmarks-list-item.component';
-import faker from 'faker/locale/en_GB';
 import * as React from 'react';
+
 import isChromatic from 'chromatic/isChromatic';
+import faker from 'faker/locale/en_GB';
+
+import { BookmarksListItem } from './bookmarks-list-item.component';
 
 if (isChromatic()) faker.seed(1);
 

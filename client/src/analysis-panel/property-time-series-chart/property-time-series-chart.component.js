@@ -1,8 +1,8 @@
 import * as React from 'react';
 
+import { ParentSize } from '@visx/responsive';
 import { format } from 'date-fns';
 import { get } from 'lodash';
-import { ParentSize } from '@visx/responsive';
 import {
   VictoryAxis,
   VictoryChart,

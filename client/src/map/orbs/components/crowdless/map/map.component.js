@@ -1,8 +1,8 @@
 import * as React from 'react';
 
-import clsx from 'clsx';
-
 import { Avatar, Grid, makeStyles, Typography } from '@astrosat/astrosat-ui';
+
+import clsx from 'clsx';
 
 import busy from './icons/busy.svg';
 import notBusy from './icons/not-busy.svg';

@@ -12,8 +12,9 @@ import {
 
 import { pickBy } from 'lodash';
 
-import { DEFAULT_TITLE, VALUE_TYPE } from './feature-detail.constants';
 import { isEmail } from 'utils/text';
+
+import { DEFAULT_TITLE, VALUE_TYPE } from './feature-detail.constants';
 
 const NO_DATA = 'Not available';
 

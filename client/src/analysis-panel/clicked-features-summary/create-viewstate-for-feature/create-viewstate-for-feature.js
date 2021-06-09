@@ -1,5 +1,5 @@
-import { bbox } from '@turf/turf';
 import { fitBounds } from '@math.gl/web-mercator';
+import { bbox } from '@turf/turf';
 
 export const createViewstateForFeature = ({
   feature,

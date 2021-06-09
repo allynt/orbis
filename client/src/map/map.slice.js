@@ -1,4 +1,5 @@
 import { createSlice, createSelector } from '@reduxjs/toolkit';
+
 import {
   createBottomMapStyle,
   createTopMapStyle,

@@ -13,6 +13,7 @@ import {
 } from 'map/orbs/layers.slice';
 import { useMap } from 'MapContext';
 import { easeInOutCubic } from 'utils/easingFunctions';
+
 import { useAnalysisPanelContext } from '../analysis-panel-context';
 import { ClickedFeatureChips, DataValue } from './components';
 import { createViewstateForFeature } from './create-viewstate-for-feature/create-viewstate-for-feature';

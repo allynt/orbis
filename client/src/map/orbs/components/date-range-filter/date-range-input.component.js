@@ -1,6 +1,9 @@
-import { IconButton, Grid, makeStyles, Paper } from '@astrosat/astrosat-ui';
-import { DateRange, Replay } from '@material-ui/icons';
 import React from 'react';
+
+import { IconButton, Grid, makeStyles, Paper } from '@astrosat/astrosat-ui';
+
+import { DateRange, Replay } from '@material-ui/icons';
+
 import { FIELD_NAMES } from 'utils/validators';
 
 const placeholder = theme => ({

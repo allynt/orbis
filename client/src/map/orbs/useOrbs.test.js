@@ -1,11 +1,14 @@
 import * as React from 'react';
+
+import { waitFor } from '@testing-library/dom';
 import { act, renderHook } from '@testing-library/react-hooks';
 import { Provider } from 'react-redux';
-import { useOrbs } from './useOrbs';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
+
 import { MapProvider } from 'MapContext';
-import { waitFor } from '@testing-library/dom';
+
+import { useOrbs } from './useOrbs';
 
 const mockStore = configureMockStore([thunk]);
 

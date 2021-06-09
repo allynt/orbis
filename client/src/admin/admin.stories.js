@@ -1,10 +1,12 @@
-import faker from 'faker/locale/en_GB';
 import * as React from 'react';
+
+import isChromatic from 'chromatic/isChromatic';
+import faker from 'faker/locale/en_GB';
 import { Provider } from 'react-redux';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
+
 import Admin from './admin.component';
-import isChromatic from 'chromatic/isChromatic';
 
 export default { title: 'Admin/Main' };
 

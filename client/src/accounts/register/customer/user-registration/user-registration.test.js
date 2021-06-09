@@ -1,10 +1,11 @@
 import React from 'react';
 
 import { render, waitFor } from '@testing-library/react';
-import UserRegistration from './user-registration.component';
 import userEvent from '@testing-library/user-event';
 import { createMemoryHistory } from 'history';
 import { Router } from 'react-router-dom';
+
+import UserRegistration from './user-registration.component';
 
 const EMAIL_REGEX = /work\semail\saddress/i;
 const FIRST_NAME_REGEX = /first\sname/i;

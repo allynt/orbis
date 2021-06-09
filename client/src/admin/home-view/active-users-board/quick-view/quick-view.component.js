@@ -1,11 +1,13 @@
+import React from 'react';
+
 import {
   Divider as DefaultDivider,
   makeStyles,
   styled,
   Typography,
 } from '@astrosat/astrosat-ui';
+
 import clsx from 'clsx';
-import React from 'react';
 
 const Wrapper = styled('div')(({ theme }) => ({
   maxWidth: theme.typography.pxToRem(700),

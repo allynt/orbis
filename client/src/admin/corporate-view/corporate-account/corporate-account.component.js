@@ -1,3 +1,5 @@
+import React from 'react';
+
 import {
   Avatar,
   Button,
@@ -7,13 +9,15 @@ import {
   styled,
   Typography,
 } from '@astrosat/astrosat-ui';
+
 import { yupResolver } from '@hookform/resolvers/yup';
-import { Form, InlineTextField } from 'components';
-import OrbisAdminIcon from '../../orbis-admin-icon.svg';
-import React from 'react';
 import { useForm } from 'react-hook-form';
-import { customerName, FIELD_NAMES } from 'utils/validators';
 import * as yup from 'yup';
+
+import { Form, InlineTextField } from 'components';
+import { customerName, FIELD_NAMES } from 'utils/validators';
+
+import OrbisAdminIcon from '../../orbis-admin-icon.svg';
 
 const BigAvatar = styled(Avatar)(({ theme }) => ({
   width: theme.typography.pxToRem(78),

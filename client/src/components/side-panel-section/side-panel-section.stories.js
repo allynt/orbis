@@ -1,4 +1,5 @@
 import React from 'react';
+
 import { SidePanelSection } from './side-panel-section.component';
 
 export default { title: 'Components/SidePanelSection' };

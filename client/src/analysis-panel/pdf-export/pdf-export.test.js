@@ -2,18 +2,16 @@ import React from 'react';
 
 import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-
+import { format } from 'date-fns';
+import { createMemoryHistory } from 'history';
 import { Provider } from 'react-redux';
-import { MapProvider } from 'MapContext';
+import { Router } from 'react-router-dom';
 import configureMockStore from 'redux-mock-store';
 
-import { createMemoryHistory } from 'history';
-import { Router } from 'react-router-dom';
-
-import { format } from 'date-fns';
+import { AnalysisPanelProvider } from 'analysis-panel/analysis-panel-context';
+import { MapProvider } from 'MapContext';
 
 import PDF from './pdf-export.component';
-import { AnalysisPanelProvider } from 'analysis-panel/analysis-panel-context';
 
 const mockStore = configureMockStore();
 

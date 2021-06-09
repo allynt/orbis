@@ -1,4 +1,5 @@
 import { featureCollection } from '@turf/helpers';
+
 import reducer, {
   setFeatures,
   drawingToolsFeatureCollectionSelector,

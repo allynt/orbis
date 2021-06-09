@@ -5,6 +5,7 @@ import { Provider } from 'react-redux';
 import configureStore from 'redux-mock-store';
 
 import { MapProvider } from 'MapContext';
+
 import Map from './map.component';
 
 jest.mock('@deck.gl/react');

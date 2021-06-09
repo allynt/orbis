@@ -14,6 +14,7 @@ import {
   _SunLight as SunLight,
 } from '@deck.gl/core';
 import DeckGL from '@deck.gl/react';
+import 'mapbox-gl/dist/mapbox-gl.css';
 import ReactMapGl, { ScaleControl } from 'react-map-gl';
 import Geocoder from 'react-map-gl-geocoder';
 import 'react-map-gl-geocoder/dist/mapbox-gl-geocoder.css';
@@ -26,10 +27,13 @@ import {
   selectedBookmarkSelector,
 } from 'bookmarks/bookmarks.slice';
 import { setLayers } from 'data-layers/data-layers.slice';
+import { DrawingToolsToolbox } from 'drawing-tools';
+import { setFeatures as setDrawingToolsFeatures } from 'drawing-tools/drawing-tools.slice';
 import MapStyleSwitcher from 'map-style/map-style-switcher/map-style-switcher.component';
 import { useMap } from 'MapContext';
-import { ExtrusionScaleSlider } from './controls/extrusion-scale-slider/extrusion-scale-slider.component';
+
 import { MapControlButton } from '../components';
+import { ExtrusionScaleSlider } from './controls/extrusion-scale-slider/extrusion-scale-slider.component';
 import { NavigationControl } from './controls/navigation-control/navigation-control.component';
 import {
   isLoadingSelector,
@@ -41,13 +45,9 @@ import {
   extrudedModeSelector,
   extrusionScaleSelector,
   setExtrusionScale,
-  toggleExtrudedMode,
   setState as setLayersState,
+  toggleExtrudedMode,
 } from './orbs/layers.slice';
-
-import 'mapbox-gl/dist/mapbox-gl.css';
-import { DrawingToolsToolbox } from 'drawing-tools';
-import { setFeatures as setDrawingToolsFeatures } from 'drawing-tools/drawing-tools.slice';
 import { useSelectionTools } from './useSelectionTools';
 
 const ISOMETRIC_PITCH = 35;

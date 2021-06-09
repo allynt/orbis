@@ -1,13 +1,16 @@
 import * as React from 'react';
+
 import { render, waitFor } from '@testing-library/react';
-import { AnalysisPanel } from './analysis-panel.component';
+import userEvent from '@testing-library/user-event';
+import { createMemoryHistory } from 'history';
 import { Provider } from 'react-redux';
 import { Router } from 'react-router-dom';
-import { MapProvider } from 'MapContext';
-import { createMemoryHistory } from 'history';
 import configureMockStore from 'redux-mock-store';
-import userEvent from '@testing-library/user-event';
+
 import { setClickedFeatures } from 'map/orbs/layers.slice';
+import { MapProvider } from 'MapContext';
+
+import { AnalysisPanel } from './analysis-panel.component';
 
 const mockStore = configureMockStore();
 const history = createMemoryHistory({ initialEntries: ['/map'] });

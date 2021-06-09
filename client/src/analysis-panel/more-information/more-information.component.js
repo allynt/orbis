@@ -5,6 +5,7 @@ import { styled } from '@astrosat/astrosat-ui';
 import { get } from 'lodash';
 
 import { SidePanelSection } from 'components';
+
 import { Details, Licence, Source, Sources } from './sections';
 
 const Content = styled('div')(({ theme }) => ({

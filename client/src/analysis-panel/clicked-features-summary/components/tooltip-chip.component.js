@@ -1,5 +1,5 @@
 import React from 'react';
-import { get } from 'lodash';
+
 import {
   Chip,
   CloseIcon,
@@ -7,6 +7,8 @@ import {
   makeStyles,
   Tooltip,
 } from '@astrosat/astrosat-ui';
+
+import { get } from 'lodash';
 
 const MAX_CHARS = 15;
 

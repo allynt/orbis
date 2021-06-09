@@ -5,8 +5,10 @@
 
 // Here's an example of some of the things you could do:
 import React from 'react';
+
 import { screen, waitForElementToBeRemoved } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+
 import { enable } from './persistence';
 
 // If I want to make sure that tacos is always enabled locally, I can uncomment this:

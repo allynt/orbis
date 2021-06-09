@@ -1,6 +1,8 @@
 import { DataFilterExtension } from '@deck.gl/extensions';
 import { find, get } from 'lodash';
+
 import { ColorScale } from 'utils/ColorScale';
+
 import {
   dataSelector,
   filterValueSelector,

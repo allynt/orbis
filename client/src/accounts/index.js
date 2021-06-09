@@ -7,6 +7,18 @@ import { passwordConfigSelector } from 'app.slice';
 import PrivateRoute from 'utils/private-route.component';
 
 import {
+  CONFIRM_EMAIL,
+  LOGIN,
+  PASSWORD_CHANGE,
+  PASSWORD_RESET,
+  PASSWORD_RESET_REQUEST,
+  REGISTER,
+  REGISTER_CUSTOMER,
+  REGISTER_CUSTOMER_ORDER,
+  REGISTER_CUSTOMER_USER,
+  RESEND,
+} from './accounts.constants';
+import {
   errorSelector,
   isLoadingSelector,
   isLoggedInSelector,
@@ -29,23 +41,11 @@ import LoginForm from './login/login-form.component';
 import PasswordChangeForm from './password/change/password-change-form.component';
 import PasswordResetForm from './password/reset/password-reset-form.component';
 import PasswordResetRequestForm from './password/reset/password-reset-request-form.component';
-import ResendVerificationEmail from './resend-verification-email/resend-verification-email.component';
-import {
-  CONFIRM_EMAIL,
-  LOGIN,
-  PASSWORD_CHANGE,
-  PASSWORD_RESET,
-  PASSWORD_RESET_REQUEST,
-  REGISTER,
-  REGISTER_CUSTOMER,
-  REGISTER_CUSTOMER_ORDER,
-  REGISTER_CUSTOMER_USER,
-  RESEND,
-} from './accounts.constants';
-import JourneySelection from './register/journey-selection/journey-selection.component';
-import UserRegistration from './register/customer/user-registration/user-registration.component';
 import CustomerRegistration from './register/customer/customer-registration/customer-registration.component';
 import OrderForm from './register/customer/order-form/order-form.component';
+import UserRegistration from './register/customer/user-registration/user-registration.component';
+import JourneySelection from './register/journey-selection/journey-selection.component';
+import ResendVerificationEmail from './resend-verification-email/resend-verification-email.component';
 import Wrapper from './wrapper.component';
 
 export default () => {

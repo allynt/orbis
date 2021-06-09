@@ -1,9 +1,12 @@
-import { MapProvider } from 'MapContext';
 import * as React from 'react';
+
 import { Provider } from 'react-redux';
-import Map from './map.component';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
+
+import { MapProvider } from 'MapContext';
+
+import Map from './map.component';
 import { initialState } from './map.slice';
 
 export default {

@@ -1,8 +1,7 @@
-import thunk from 'redux-thunk';
-
 import { configureStore } from '@reduxjs/toolkit';
 import { routerMiddleware } from 'connected-react-router';
 import { persistStore } from 'redux-persist';
+import thunk from 'redux-thunk';
 
 import rootReducer, { history } from './root.reducer';
 

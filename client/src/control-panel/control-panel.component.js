@@ -1,7 +1,5 @@
 import React from 'react';
 
-import { useDispatch, useSelector } from 'react-redux';
-
 import {
   CloseIcon,
   IconButton,
@@ -9,13 +7,16 @@ import {
   Typography,
 } from '@astrosat/astrosat-ui';
 
-import {
-  BOOKMARKS,
-  DATA_LAYERS,
-  PROFILE,
-  SATELLITE_LAYERS,
-  STORIES,
-} from './toolbar-constants';
+import { useDispatch, useSelector } from 'react-redux';
+
+import { userSelector } from 'accounts/accounts.selectors';
+import { SidePanel } from 'components/side-panel/side-panel.component';
+
+import Profile from '../accounts/profile/profile.component';
+import BookmarksPanel from '../bookmarks/bookmarks-panel.component';
+import DataLayers from '../data-layers/data-layers.component';
+import SatellitesPanel from '../satellites/satellites-panel.component';
+import StoriesPanel from '../stories/stories-panel.component';
 import {
   closeMenu,
   selectIsMenuVisible,
@@ -23,16 +24,15 @@ import {
   selectStrapline,
   selectVisibleMenuItem,
 } from './control-panel.slice';
-import StoriesPanel from '../stories/stories-panel.component';
-import Profile from '../accounts/profile/profile.component';
-import BookmarksPanel from '../bookmarks/bookmarks-panel.component';
-import DataLayers from '../data-layers/data-layers.component';
-import SatellitesPanel from '../satellites/satellites-panel.component';
-
-import { SidePanel } from 'components/side-panel/side-panel.component';
-import Toolbar from './toolbar.component';
 import { getToolbarItems } from './toolbar-config';
-import { userSelector } from 'accounts/accounts.selectors';
+import {
+  BOOKMARKS,
+  DATA_LAYERS,
+  PROFILE,
+  SATELLITE_LAYERS,
+  STORIES,
+} from './toolbar-constants';
+import Toolbar from './toolbar.component';
 
 const useStyles = makeStyles(theme => ({
   content: {

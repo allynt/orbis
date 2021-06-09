@@ -1,9 +1,11 @@
+import * as React from 'react';
+
+import isChromatic from 'chromatic/isChromatic';
 import faker from 'faker/locale/en_GB';
 import { createBrowserHistory } from 'history';
-import * as React from 'react';
 import { Router } from 'react-router-dom';
+
 import { BookmarksLanding } from './bookmarks-landing.component';
-import isChromatic from 'chromatic/isChromatic';
 
 if (isChromatic()) faker.seed(1);
 

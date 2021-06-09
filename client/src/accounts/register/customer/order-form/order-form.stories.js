@@ -1,5 +1,7 @@
-import Wrapper from 'accounts/wrapper.component';
 import React from 'react';
+
+import Wrapper from 'accounts/wrapper.component';
+
 import OrderForm from './order-form.component';
 import OrderComponent from './order.component';
 

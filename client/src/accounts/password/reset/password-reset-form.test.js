@@ -1,18 +1,17 @@
 import React from 'react';
 
 import { render, waitFor } from '@testing-library/react';
-
 import userEvent from '@testing-library/user-event';
-
+import { createMemoryHistory } from 'history';
 import { Provider } from 'react-redux';
+import { Router } from 'react-router-dom';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 
-import PasswordResetForm from './password-reset-form.component';
 import { status } from 'accounts/accounts.slice';
 import { FIELD_NAMES } from 'utils/validators';
-import { createMemoryHistory } from 'history';
-import { Router } from 'react-router-dom';
+
+import PasswordResetForm from './password-reset-form.component';
 
 const mockStore = configureMockStore([thunk]);
 

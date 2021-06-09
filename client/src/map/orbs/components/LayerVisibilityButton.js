@@ -1,7 +1,10 @@
 import React from 'react';
+
 import { Button } from '@astrosat/astrosat-ui';
+
 import { Visibility, VisibilityOff } from '@material-ui/icons';
 import { useDispatch, useSelector } from 'react-redux';
+
 import { visibilitySelector, setVisibility } from '../layers.slice';
 
 /** @type {import("typings/orbis").SidebarComponent} */

@@ -1,8 +1,10 @@
+import React from 'react';
+
 import { fireEvent } from '@testing-library/dom';
 import { act, renderHook } from '@testing-library/react-hooks';
-import React from 'react';
 import { Provider } from 'react-redux';
 import configureMockStore from 'redux-mock-store';
+
 import { removeFeaturesByIndex, setFeatures } from './drawing-tools.slice';
 import { useDrawingTools } from './useDrawingTools';
 

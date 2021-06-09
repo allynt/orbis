@@ -1,11 +1,13 @@
+import { push } from 'connected-react-router';
+import fetch from 'jest-fetch-mock';
+import configureMockStore from 'redux-mock-store';
+import thunk from 'redux-thunk';
+
 import {
   createCustomerUserSuccess,
   setCurrentCustomer,
 } from 'admin/admin.slice';
-import { push } from 'connected-react-router';
-import configureMockStore from 'redux-mock-store';
-import thunk from 'redux-thunk';
-import fetch from 'jest-fetch-mock';
+
 import {
   REGISTER_CUSTOMER,
   REGISTER_CUSTOMER_ORDER,

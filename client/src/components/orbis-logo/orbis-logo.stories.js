@@ -1,5 +1,7 @@
-import { Box } from '@astrosat/astrosat-ui';
 import * as React from 'react';
+
+import { Box } from '@astrosat/astrosat-ui';
+
 import { OrbisLogo } from './orbis-logo.component';
 
 export default { title: 'Components/Orbis Logo' };

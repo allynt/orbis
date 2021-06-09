@@ -1,13 +1,14 @@
 import React from 'react';
 
-import { useDispatch, useSelector } from 'react-redux';
-
 import { Box, Button, Link, Typography } from '@astrosat/astrosat-ui';
 
-import UpdateUserForm from '../update-user-form/update-user-form.component';
+import { useDispatch, useSelector } from 'react-redux';
+
 import apiClient from 'api-client';
-import { updateUser, logout } from '../accounts.slice';
+
 import { userSelector } from '../accounts.selectors';
+import { updateUser, logout } from '../accounts.slice';
+import UpdateUserForm from '../update-user-form/update-user-form.component';
 
 const Profile = () => {
   const dispatch = useDispatch();

@@ -1,21 +1,22 @@
 import React, { StrictMode } from 'react';
-import ReactDOM from 'react-dom';
-import { Provider } from 'react-redux';
-import { ConnectedRouter } from 'connected-react-router';
 
-import { PersistGate } from 'redux-persist/integration/react';
+import { CssBaseline, ThemeProvider } from '@astrosat/astrosat-ui';
+
+import { ConnectedRouter } from 'connected-react-router';
+import ReactDOM from 'react-dom';
 import { NotificationContainer } from 'react-notifications';
+import { Provider } from 'react-redux';
+import { PersistGate } from 'redux-persist/integration/react';
 import 'react-notifications/lib/notifications.css';
 
-import store, { persistor } from './store';
+import { MapProvider } from 'MapContext';
+
+import installDevTools from './dev-tools/load';
 import { history } from './root.reducer';
+import store, { persistor } from './store';
 
 import './polyfills/flat-map';
 import './polyfills/object-fromEntries';
-import { CssBaseline, ThemeProvider } from '@astrosat/astrosat-ui';
-
-import installDevTools from './dev-tools/load';
-import { MapProvider } from 'MapContext';
 
 const render = () => {
   const App = require('./app.component').default;

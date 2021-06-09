@@ -1,10 +1,11 @@
 import * as React from 'react';
 
-import faker from 'faker/locale/en_GB';
 import isChromatic from 'chromatic/isChromatic';
+import faker from 'faker/locale/en_GB';
+
+import { AnalysisPanelProvider } from 'analysis-panel/analysis-panel-context';
 
 import { ClickedFeaturesSummary } from './clicked-features-summary.component';
-import { AnalysisPanelProvider } from 'analysis-panel/analysis-panel-context';
 
 if (isChromatic()) faker.seed(1);
 

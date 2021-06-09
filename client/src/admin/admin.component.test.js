@@ -1,10 +1,12 @@
 import React from 'react';
+
 import { render, waitFor } from '@testing-library/react';
-import Admin from './admin.component';
+import userEvent from '@testing-library/user-event';
 import { Provider } from 'react-redux';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
-import userEvent from '@testing-library/user-event';
+
+import Admin from './admin.component';
 
 const mockStore = configureMockStore([thunk]);
 

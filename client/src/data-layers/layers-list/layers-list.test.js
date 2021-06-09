@@ -1,7 +1,9 @@
 import React from 'react';
+
 import { render } from '@testing-library/react';
-import { LayersList } from './layers-list.component';
 import userEvent from '@testing-library/user-event';
+
+import { LayersList } from './layers-list.component';
 
 describe('<LayersList />', () => {
   it('displays an item for each selected layer', () => {

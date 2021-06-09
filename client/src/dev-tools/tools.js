@@ -1,17 +1,16 @@
 import React from 'react';
+
 import ReactDOM from 'react-dom';
+import { Provider, useSelector } from 'react-redux';
 
-import { Provider } from 'react-redux';
-import { useSelector } from 'react-redux';
-
+import { userSelector } from 'accounts/accounts.selectors';
 import useAuthorization from 'hooks/useAuthorization';
 import store from 'store';
-import StoriesTool from './features/stories.component';
+
 import FiltersTool from './features/filters.component';
 import SatellitesTool from './features/satellites.component';
-
+import StoriesTool from './features/stories.component';
 import styles from './tools.module.css';
-import { userSelector } from 'accounts/accounts.selectors';
 
 const install = () => {
   window.devToolsEnabled = true;

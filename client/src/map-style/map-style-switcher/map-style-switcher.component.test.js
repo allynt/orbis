@@ -1,6 +1,8 @@
+import React from 'react';
+
 import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import React from 'react';
+
 import { StyleSwitcherContent } from './map-style-switcher.component';
 
 describe('MapStyle Switcher Component', () => {

@@ -1,6 +1,7 @@
 // @ts-nocheck
 
 import { MAX_ZOOM } from 'map/map.constants';
+
 import { setClickedFeatures } from '../layers.slice';
 import configFn, { filterFeatures } from './actionForHelpConfig';
 

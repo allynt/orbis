@@ -1,29 +1,22 @@
 import React, { useState, useEffect } from 'react';
 
-import { useDispatch, useSelector } from 'react-redux';
+import { Checkbox, useForm, InfoIcon } from '@astrosat/astrosat-ui/';
+
 import { formatISO, subDays } from 'date-fns';
 import DatePicker from 'react-datepicker';
+import { useDispatch, useSelector } from 'react-redux';
 import 'react-datepicker/dist/react-datepicker.css';
 
-import {
-  Button,
-  Checkbox,
-  useForm,
-  InfoIcon,
-  ErrorIcon,
-} from '@astrosat/astrosat-ui/';
+import { getGeometryAreaKmSquared } from 'utils/geometry';
 
+import styles from './satellite-search-form.module.css';
 import validate from './satellite-search-form.validator';
-
+import { RESULTS, SATELLITE, TIER } from './satellites-panel.component';
 import {
   setCurrentSatelliteSearchQuery,
   fetchSatelliteScenes,
 } from './satellites.slice';
 
-import { RESULTS, SATELLITE, TIER } from './satellites-panel.component';
-import { getGeometryAreaKmSquared } from 'utils/geometry';
-
-import styles from './satellite-search-form.module.css';
 // import sideMenuStyles from '../control-panel/control-panel.module.css';
 
 const DATE_FORMAT = 'yyy-MM-dd';

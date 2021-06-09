@@ -1,7 +1,10 @@
-import { FeatureDetail, Popup } from 'components';
-import { pickBy } from 'lodash';
 import * as React from 'react';
+
+import { pickBy } from 'lodash';
 import { useDispatch, useSelector } from 'react-redux';
+
+import { FeatureDetail, Popup } from 'components';
+
 import {
   clickedFeaturesSelector,
   hoveredFeaturesSelector,

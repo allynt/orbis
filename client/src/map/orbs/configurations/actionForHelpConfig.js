@@ -1,14 +1,16 @@
 import { FlyToInterpolator } from '@deck.gl/core';
+import { filter } from 'lodash';
+
 import { MAX_ZOOM } from 'map/map.constants';
-import iconMapping from './actionForHelpConfig.iconMapping.json';
-import iconAtlas from './actionForHelpConfig.iconAtlas.svg';
 import { easeInOutCubic } from 'utils/easingFunctions';
+
 import {
   filterValueSelector,
   setClickedFeatures,
   dataSelector,
 } from '../layers.slice';
-import { filter } from 'lodash';
+import iconAtlas from './actionForHelpConfig.iconAtlas.svg';
+import iconMapping from './actionForHelpConfig.iconMapping.json';
 
 export const filterFeatures = (oldData, startDate, endDate, status = 'ALL') => {
   const data =

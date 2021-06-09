@@ -6,6 +6,7 @@ import { createMemoryHistory } from 'history';
 import { Router } from 'react-router-dom';
 
 import { REGISTER_CUSTOMER_USER, REGISTER } from 'accounts/accounts.constants';
+
 import JourneySelection from './journey-selection.component';
 
 const TEAM_REGEX = /team/i;

@@ -1,7 +1,9 @@
-import faker from 'faker/locale/en_GB';
 import * as React from 'react';
-import { DiscretePropertyLegend } from './discrete-property-legend.component';
+
 import isChromatic from 'chromatic/isChromatic';
+import faker from 'faker/locale/en_GB';
+
+import { DiscretePropertyLegend } from './discrete-property-legend.component';
 
 if (isChromatic()) faker.seed(1);
 

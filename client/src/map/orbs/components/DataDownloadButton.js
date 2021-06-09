@@ -1,12 +1,15 @@
+import React, { useState } from 'react';
+
 import { Button, CircularProgress, makeStyles } from '@astrosat/astrosat-ui';
+
 import { GetApp } from '@material-ui/icons';
+import { format } from 'date-fns';
+import { saveAs } from 'file-saver';
+import { useSelector } from 'react-redux';
+
 import { userSelector } from 'accounts/accounts.selectors';
 import { ADMIN_STATUS } from 'admin/admin.constants';
 import { selectDataToken } from 'data-layers/data-layers.slice';
-import { format } from 'date-fns';
-import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
-import { saveAs } from 'file-saver';
 import { getData } from 'utils/http';
 
 const FILENAME_REGEX = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/;

@@ -1,8 +1,9 @@
-import { NotificationManager } from 'react-notifications';
 import { createSlice, createSelector } from '@reduxjs/toolkit';
+import { NotificationManager } from 'react-notifications';
+
+import apiClient from 'api-client';
 
 import { USER_STATUS } from './admin.constants';
-import apiClient from 'api-client';
 
 const initialState = {
   currentCustomer: null,

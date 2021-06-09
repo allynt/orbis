@@ -1,10 +1,10 @@
 import React from 'react';
 
 import { render, fireEvent } from '@testing-library/react';
-
-import OrganisationMenu from './organisation-menu.component';
-import { ADMIN_VIEW } from '../admin.constants';
 import userEvent from '@testing-library/user-event';
+
+import { ADMIN_VIEW } from '../admin.constants';
+import OrganisationMenu from './organisation-menu.component';
 
 describe('Admin organisation Menu Component', () => {
   let setVisiblePanel = null;

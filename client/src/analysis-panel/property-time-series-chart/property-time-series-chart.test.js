@@ -1,7 +1,7 @@
 // @ts-nocheck
-import { render } from '@testing-library/react';
 import * as React from 'react';
 
+import { render } from '@testing-library/react';
 import { Provider } from 'react-redux';
 import configureMockStore from 'redux-mock-store';
 

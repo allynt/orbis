@@ -1,9 +1,11 @@
 import React from 'react';
 
+import { Box } from '@astrosat/astrosat-ui';
+
+import ContentWrapper from 'admin/content-wrapper.component';
+
 import { ActiveUsersBoard } from './active-users-board/active-users-board.component';
 import { PendingInvitationsBoard } from './pending-invitations-board/pending-invitations-board.component';
-import { Box } from '@astrosat/astrosat-ui';
-import ContentWrapper from 'admin/content-wrapper.component';
 
 /**
  * @typedef HomeViewProps

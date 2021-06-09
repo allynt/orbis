@@ -1,5 +1,6 @@
-import { IconButton, Menu, OptionsIcon } from '@astrosat/astrosat-ui';
 import * as React from 'react';
+
+import { IconButton, Menu, OptionsIcon } from '@astrosat/astrosat-ui';
 
 export const OptionsMenu = ({ anchorEl, children, onButtonClick, onClose }) => {
   return (

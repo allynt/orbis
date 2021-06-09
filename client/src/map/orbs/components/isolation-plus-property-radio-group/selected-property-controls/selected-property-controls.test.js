@@ -1,5 +1,7 @@
-import { render } from '@testing-library/react';
 import React from 'react';
+
+import { render } from '@testing-library/react';
+
 import { SelectedPropertyControls } from './selected-property-controls.component';
 
 describe('<SelectedPropertyControls />', () => {

@@ -6,6 +6,7 @@ import { VictoryLabel, VictoryPie } from 'victory';
 
 import { useChartTheme } from 'hooks/useChartTheme';
 import { DEFAULT_DECIMAL_PRECISION } from 'map/map.constants';
+
 import { isSelected } from './category-breakdown-chart.component';
 
 export const Pie = ({

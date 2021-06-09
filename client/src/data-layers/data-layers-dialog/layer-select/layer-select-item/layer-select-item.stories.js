@@ -1,5 +1,7 @@
-import { List } from '@astrosat/astrosat-ui';
 import * as React from 'react';
+
+import { List } from '@astrosat/astrosat-ui';
+
 import LayerSelectItem from './layer-select-item.component';
 
 export default {

@@ -1,4 +1,5 @@
 import React from 'react';
+
 import { DrawingToolsToolbox } from './drawing-tools-toolbox.component';
 
 export default {

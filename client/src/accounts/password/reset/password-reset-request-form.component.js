@@ -14,10 +14,11 @@ import { Link as RouterLink } from 'react-router-dom';
 import { object } from 'yup';
 
 import { ErrorWell } from 'accounts/error-well.component';
-import { LOGIN } from '../../accounts.constants';
-import { status } from '../../accounts.slice';
 import { Form } from 'components';
 import { FIELD_NAMES, email } from 'utils/validators';
+
+import { LOGIN } from '../../accounts.constants';
+import { status } from '../../accounts.slice';
 
 const PasswordResetRequestSuccessView = ({ email, onSubmit }) => (
   <>

@@ -1,4 +1,5 @@
 import React from 'react';
+
 import { RadioGroup } from './radio-group.component';
 
 export default {

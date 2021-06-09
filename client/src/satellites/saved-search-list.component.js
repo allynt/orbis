@@ -1,7 +1,8 @@
-import PropTypes from 'prop-types';
 import React from 'react';
 
 import { Button } from '@astrosat/astrosat-ui';
+
+import PropTypes from 'prop-types';
 
 import styles from './saved-search-list.module.css';
 

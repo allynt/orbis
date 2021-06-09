@@ -20,7 +20,6 @@ import { LOGIN } from 'accounts/accounts.constants';
 import { ErrorWell } from 'accounts/error-well.component';
 import apiClient from 'api-client';
 import { Form } from 'components';
-
 import {
   acceptedTerms,
   email,

@@ -1,4 +1,5 @@
 import { getGeojsonFeatures } from '@deck.gl/layers/dist/es5/geojson-layer/geojson';
+
 import { ClusteredIconLayer } from './clustered-icon-layer';
 
 export class GeoJsonClusteredIconLayer extends ClusteredIconLayer {

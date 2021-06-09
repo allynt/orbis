@@ -1,3 +1,5 @@
+import * as React from 'react';
+
 import {
   Checkbox,
   iconMap,
@@ -7,11 +9,11 @@ import {
   ListItemText,
   makeStyles,
 } from '@astrosat/astrosat-ui';
-import { filterValueSelector, setFilterValue } from 'map/orbs/layers.slice';
-import * as React from 'react';
+
 import { useSelector } from 'react-redux';
 
 import { logProperty } from 'data-layers/data-layers.slice';
+import { filterValueSelector, setFilterValue } from 'map/orbs/layers.slice';
 import { ColorScale } from 'utils/ColorScale';
 
 const useStyles = makeStyles(theme => ({

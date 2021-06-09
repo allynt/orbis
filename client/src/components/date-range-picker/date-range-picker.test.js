@@ -1,7 +1,9 @@
-import { render } from '@testing-library/react';
-import { DateRangePicker } from './date-range-picker.component';
 import React from 'react';
+
+import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+
+import { DateRangePicker } from './date-range-picker.component';
 
 describe('<DateRangePicker />', () => {
   it('calls onApply with the selected range when clicked', () => {

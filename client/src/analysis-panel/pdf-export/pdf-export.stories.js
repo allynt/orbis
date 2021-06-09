@@ -1,14 +1,14 @@
 import React from 'react';
 
-import { Provider } from 'react-redux';
-import { MapProvider } from 'MapContext';
-
-import configureMockStore from 'redux-mock-store';
-
 import { Dialog } from '@astrosat/astrosat-ui';
 
-import PDF from './pdf-export.component';
+import { Provider } from 'react-redux';
+import configureMockStore from 'redux-mock-store';
+
 import { AnalysisPanelProvider } from 'analysis-panel/analysis-panel-context';
+import { MapProvider } from 'MapContext';
+
+import PDF from './pdf-export.component';
 
 const mockStore = configureMockStore();
 

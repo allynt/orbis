@@ -1,4 +1,5 @@
 import { FIELD_NAMES } from 'utils/validators';
+
 import { SubClient } from './SubClient';
 
 export class CustomersClient extends SubClient {

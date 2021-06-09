@@ -1,9 +1,9 @@
 import * as React from 'react';
 
 import { render } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 
 import { BookmarksListItem } from './bookmarks-list-item.component';
-import userEvent from '@testing-library/user-event';
 
 const renderComponent = () => {
   const bookmark = {

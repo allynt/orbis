@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { makeStyles } from '@astrosat/astrosat-ui';
+
 import { Popup as ReactMapGlPopup } from 'react-map-gl';
 
 const useStyles = makeStyles(theme => ({

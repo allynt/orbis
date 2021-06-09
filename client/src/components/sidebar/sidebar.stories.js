@@ -10,9 +10,9 @@ import {
   ListItemIcon,
 } from '@astrosat/astrosat-ui';
 
-import { Sidebar, SidebarItem, SidebarBottomItems } from '.';
-
 import { OrbisLogo } from 'components';
+
+import { Sidebar, SidebarItem, SidebarBottomItems } from '.';
 
 const logoStyle = { height: '54px' };
 

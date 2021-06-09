@@ -1,5 +1,7 @@
 import { sumBy } from 'lodash';
+
 import { getValueForTimestamp } from 'utils/data';
+
 import { DEFAULT_DECIMAL_PRECISION } from '../map/map.constants';
 
 /**

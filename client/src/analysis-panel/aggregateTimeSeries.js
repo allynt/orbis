@@ -1,4 +1,5 @@
 import { findIndex, flatten, get } from 'lodash';
+
 import { DEFAULT_DECIMAL_PRECISION } from 'map/map.constants';
 
 /**

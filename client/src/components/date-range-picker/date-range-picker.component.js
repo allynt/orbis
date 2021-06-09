@@ -1,8 +1,12 @@
-import { Button, Grid, makeStyles, Typography } from '@astrosat/astrosat-ui';
-import { endOfDay, startOfDay, subDays } from 'date-fns';
 import React, { useState } from 'react';
+
+import { Button, Grid, makeStyles, Typography } from '@astrosat/astrosat-ui';
+
+import { endOfDay, startOfDay, subDays } from 'date-fns';
 import { createStaticRanges } from 'react-date-range';
+
 import { formatDate } from 'utils/dates';
+
 import { StyledDateRangePicker } from './styled-date-range-picker.component';
 
 /**

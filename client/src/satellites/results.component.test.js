@@ -1,10 +1,9 @@
 import React from 'react';
 
+import { render, within, fireEvent, getByTitle } from '@testing-library/react';
 import { Provider } from 'react-redux';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
-
-import { render, within, fireEvent, getByTitle } from '@testing-library/react';
 
 import Results from './results.component';
 

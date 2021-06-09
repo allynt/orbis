@@ -1,4 +1,5 @@
 import React from 'react';
+
 import UpdateUserForm from './update-user-form.component';
 
 export default {

@@ -5,8 +5,9 @@ import userEvent from '@testing-library/user-event';
 import { Provider } from 'react-redux';
 import configureMockStore from 'redux-mock-store';
 
-import { NationalDeviationHistogram } from './national-deviation-histogram.component';
 import { AnalysisPanelProvider } from 'analysis-panel/analysis-panel-context';
+
+import { NationalDeviationHistogram } from './national-deviation-histogram.component';
 
 const mockStore = configureMockStore();
 

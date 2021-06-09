@@ -1,4 +1,5 @@
 import React from 'react';
+
 import { ColormapRangeSlider } from './colormap-range-slider.component';
 
 const COLOR_MAPS = [

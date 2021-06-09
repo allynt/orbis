@@ -1,9 +1,9 @@
 import React from 'react';
 
 import { render, waitFor } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 
 import { LayerSelect } from './layer-select.component';
-import userEvent from '@testing-library/user-event';
 
 const SUBMIT_BUTTON = /confirm/i;
 const SELECT_ALL = /^select\sall/i;

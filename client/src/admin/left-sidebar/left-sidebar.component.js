@@ -1,12 +1,12 @@
 import React from 'react';
 
-import { Sidebar, SidebarItem } from 'components/sidebar';
-
-import { ReactComponent as OrbisAdminLogo } from '../orbis-admin-logo.svg';
 import { HomeIcon, LaunchIcon, AwardIcon, styled } from '@astrosat/astrosat-ui';
 
-import { UserProfile } from './user-profile/user-profile.component';
+import { Sidebar, SidebarItem } from 'components/sidebar';
+
 import { ADMIN_VIEW } from '../admin.constants';
+import { ReactComponent as OrbisAdminLogo } from '../orbis-admin-logo.svg';
+import { UserProfile } from './user-profile/user-profile.component';
 
 const Logo = styled(OrbisAdminLogo)(({ theme }) => ({
   height: theme.typography.pxToRem(70),

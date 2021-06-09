@@ -1,7 +1,9 @@
 import React from 'react';
+
 import { render, waitFor } from '@testing-library/react';
-import CustomerRegistration from './customer-registration.component';
 import userEvent from '@testing-library/user-event';
+
+import CustomerRegistration from './customer-registration.component';
 
 const EMAIL = /work\semail\saddress/i;
 const NAME = /organisation\sname/i;

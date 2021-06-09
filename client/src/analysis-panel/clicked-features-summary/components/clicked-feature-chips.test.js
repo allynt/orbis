@@ -1,7 +1,9 @@
 import React from 'react';
+
 import { fireEvent, render } from '@testing-library/react';
-import { ClickedFeatureChips } from './clicked-feature-chips.component';
 import userEvent from '@testing-library/user-event';
+
+import { ClickedFeatureChips } from './clicked-feature-chips.component';
 
 const initialFeatures = new Array(3).fill(undefined).map((_, i) => ({
   object: {
@@ -30,7 +32,13 @@ const renderComponent = () => {
       fallbackProperty="index"
     />,
   );
-  return { ...utils, onDeselectAllClick, onFeatureDelete, onFeatureClick, onFeatureHover };
+  return {
+    ...utils,
+    onDeselectAllClick,
+    onFeatureDelete,
+    onFeatureClick,
+    onFeatureHover,
+  };
 };
 
 describe('<ClickedFeatureChips />', () => {

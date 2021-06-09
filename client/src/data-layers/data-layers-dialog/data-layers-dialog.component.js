@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from 'react';
 
-import { isEqual } from 'lodash';
-
 import {
   CloseIcon,
   Dialog,
@@ -9,10 +7,12 @@ import {
   makeStyles,
 } from '@astrosat/astrosat-ui';
 
+import { isEqual } from 'lodash';
+
 import { createOrbsWithCategorisedSources } from 'data-layers/categorisation.utils';
 
-import { OrbSelect } from './orb-select/orb-select.component';
 import { LayerSelect } from './layer-select/layer-select.component';
+import { OrbSelect } from './orb-select/orb-select.component';
 
 const useStyles = makeStyles(theme => ({
   dialog: { borderRadius: '1rem', height: '70%' },

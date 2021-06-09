@@ -1,3 +1,5 @@
+import React from 'react';
+
 import {
   Avatar,
   List,
@@ -9,9 +11,10 @@ import {
   makeStyles,
   Radio,
 } from '@astrosat/astrosat-ui';
+
 import clsx from 'clsx';
+
 import { InfoButtonTooltip } from 'components';
-import React from 'react';
 
 const useStyles = makeStyles(theme => ({
   noMinWidth: { minWidth: '0' },

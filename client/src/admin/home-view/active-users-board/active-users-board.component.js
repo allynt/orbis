@@ -15,10 +15,11 @@ import {
 } from '@astrosat/astrosat-ui';
 
 import { AdminTableCell } from 'admin/admin-table/admin-table-cell.component';
+
 import { ADMIN_STATUS } from '../../admin.constants';
 import { getLicenceInfo, getUserLicences } from '../../licence-utils';
-import QuickView from './quick-view/quick-view.component';
 import { OptionsMenu } from '../options-menu.component';
+import QuickView from './quick-view/quick-view.component';
 
 const USER_LABELS = {
   standard: 'Standard',

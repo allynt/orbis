@@ -1,12 +1,12 @@
 import React from 'react';
 
-import { useDispatch, useSelector } from 'react-redux';
 import { centerOfMass } from '@turf/turf';
+import { format } from 'date-fns';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { FeatureDetail, Popup } from 'components';
 
 import { clickedFeaturesSelector, setClickedFeatures } from '../layers.slice';
-import { format } from 'date-fns';
 
 /**
  * @param {{

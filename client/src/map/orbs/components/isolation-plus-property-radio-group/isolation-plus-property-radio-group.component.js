@@ -4,6 +4,7 @@ import { get } from 'lodash';
 import { useSelector } from 'react-redux';
 
 import { createCategorisationPath } from 'data-layers/categorisation.utils';
+
 import {
   filterValueSelector,
   otherSelector,

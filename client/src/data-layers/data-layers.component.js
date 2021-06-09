@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 
+import { Button, Link, makeStyles, ThemeProvider } from '@astrosat/astrosat-ui';
+
 import clsx from 'clsx';
 import { useDispatch, useSelector } from 'react-redux';
-
-import { Button, Link, makeStyles, ThemeProvider } from '@astrosat/astrosat-ui';
 
 import { ReactComponent as AddNewCategoryIcon } from './add-more-categories.svg';
 import DataLayersDialog from './data-layers-dialog/data-layers-dialog.component';

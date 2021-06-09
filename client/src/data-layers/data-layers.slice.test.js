@@ -1,5 +1,8 @@
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
+
+import { addLogItem } from 'app.slice';
+
 import reducer, {
   fetchSourcesFailure,
   fetchSourcesSuccess,
@@ -18,7 +21,6 @@ import reducer, {
   logError,
   updateLayers,
 } from './data-layers.slice';
-import { addLogItem } from 'app.slice';
 
 const mockStore = configureMockStore([thunk]);
 

@@ -20,6 +20,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { useAnalysisPanelContext } from 'analysis-panel/analysis-panel-context';
 import { useMap } from 'MapContext';
+
 import { userSelector } from '../../accounts/accounts.selectors';
 import OrbisLogo from './orbis-logo.png';
 

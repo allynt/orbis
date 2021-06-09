@@ -1,20 +1,20 @@
 import React, { useEffect, useState, useCallback } from 'react';
 
-import { useDispatch, useSelector } from 'react-redux';
-
 import { Button, /* Detail, */ DrawAoiIcon } from '@astrosat/astrosat-ui';
 
+import { useDispatch, useSelector } from 'react-redux';
+
+import { getGeometryAreaKmSquared } from 'utils/geometry';
+
+import SatelliteSearchForm from './satellite-search-form.component';
+import styles from './satellite-search.module.css';
 import {
   fetchSavedSatelliteSearches,
   deleteSavedSatelliteSearch,
   setCurrentSatelliteSearchQuery,
 } from './satellites.slice';
-
-import SatelliteSearchForm from './satellite-search-form.component';
 import SavedSearchList from './saved-search-list.component';
-import { getGeometryAreaKmSquared } from 'utils/geometry';
 
-import styles from './satellite-search.module.css';
 // import sideMenuStyles from '../control-panel/control-panel.module.css';
 
 const AOI_DRAW_MODE = 'RectangleMode';

@@ -1,18 +1,22 @@
+import React, { useState, useEffect, useMemo } from 'react';
+
 import {
   List,
   ListItem,
   ListItemText,
   ThemeProvider,
 } from '@astrosat/astrosat-ui';
+
+import { get, omit, pick } from 'lodash';
+import { useDispatch, useSelector } from 'react-redux';
+
 import {
   FeatureDetail,
   Popup,
   FeatureDialog,
   MultipleFeaturesList,
 } from 'components';
-import { get, omit, pick } from 'lodash';
-import React, { useState, useEffect, useMemo } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+
 import {
   clickedFeaturesSelector,
   hoveredFeaturesSelector,

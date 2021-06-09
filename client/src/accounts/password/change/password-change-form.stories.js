@@ -1,6 +1,9 @@
-import Wrapper from 'accounts/wrapper.component';
 import React from 'react';
+
 import { Router } from 'react-router-dom';
+
+import Wrapper from 'accounts/wrapper.component';
+
 import { history } from '../../../root.reducer';
 import { status } from '../../accounts.slice';
 import PasswordChangeForm from './password-change-form.component';

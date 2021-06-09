@@ -1,16 +1,19 @@
 import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+
 import { Box } from '@astrosat/astrosat-ui';
 
+import { useDispatch, useSelector } from 'react-redux';
+
 import { AnalysisPanel } from 'analysis-panel/analysis-panel.component';
-import ControlPanel from '../control-panel/control-panel.component';
 import {
   fetchSources,
   selectPollingPeriod,
 } from 'data-layers/data-layers.slice';
+import { useDrawingTools } from 'drawing-tools';
+
+import ControlPanel from '../control-panel/control-panel.component';
 import Map from './map.component';
 import { useOrbs } from './orbs/useOrbs';
-import { useDrawingTools } from 'drawing-tools';
 
 const MapLayout = () => {
   const dispatch = useDispatch();

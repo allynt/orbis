@@ -1,3 +1,5 @@
+import React from 'react';
+
 import {
   Avatar,
   Grid,
@@ -5,8 +7,8 @@ import {
   makeStyles,
   GridListTile,
 } from '@astrosat/astrosat-ui';
+
 import clsx from 'clsx';
-import React from 'react';
 import { v4 } from 'uuid';
 
 const useStyles = makeStyles(theme => ({

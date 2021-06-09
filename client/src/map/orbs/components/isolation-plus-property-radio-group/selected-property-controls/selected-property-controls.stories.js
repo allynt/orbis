@@ -1,6 +1,9 @@
-import { Box, Grid } from '@astrosat/astrosat-ui';
-import faker from 'faker/locale/en_GB';
 import React from 'react';
+
+import { Box, Grid } from '@astrosat/astrosat-ui';
+
+import faker from 'faker/locale/en_GB';
+
 import { SelectedPropertyControls } from './selected-property-controls.component';
 
 export default {

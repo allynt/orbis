@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 
+import { makeStyles } from '@astrosat/astrosat-ui';
+
 import { useHistory } from 'react-router-dom';
 
-import { ReactComponent as OrbisLogo } from '../orbis-light.svg';
 import { Sidebar, SidebarItem, SidebarBottomItems } from 'components/sidebar';
 
-import { makeStyles } from '@astrosat/astrosat-ui';
+import { ReactComponent as OrbisLogo } from '../orbis-light.svg';
 
 const useStyles = makeStyles({
   toolbar: {
