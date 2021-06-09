@@ -38,6 +38,11 @@ class AppConfigView(APIView):
             ("maximumAoiArea", openapi.Schema(type=openapi.TYPE_INTEGER, example=500)),
             ("dataIndexUrl", openapi.Schema(type=openapi.TYPE_STRING)),
             ("commitSha", openapi.Schema(type=openapi.TYPE_STRING)),
+            ("geom_type", openapi.Schema(type=openapi.TYPE_OBJECT, properties=OrderedDict((
+                    ("name", openapi.Schema(type=openapi.TYPE_STRING)),
+                    ("order", openapi.Schema(type=openapi.TYPE_INTEGER)),
+                ))
+            )),
         ))
     )
 
