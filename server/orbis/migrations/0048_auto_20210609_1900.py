@@ -5,20 +5,24 @@ from django.db.migrations import migration
 
 from orbis.models import GeometrySet
 
-geometry_sets = ["oa", "lsoa", "msoa", "lad"]
+GEOMETRY_SET_NAMES = ["oa", "lsoa", "msoa", "lad"]
 
 
 def add_geometry_set(apps, schema_editor):
     """ Add default geometry set """
-    [
-        GeometrySet(name=name, order=index + 1).save() for index,
-        name in enumerate(geometry_sets)
-    ]
+    model = apps.get_model("orbis", "GeometrySet")
+    for i, name in enumerate(GEOMETRY_SET_NAMES):
+        model.objects.get_or_create(name=name, defaults={"order": i})
 
 
 def remove_geometry_set(apps, schema_editor):
     """ Remove default geometry set """
-    [GeometrySet.objects.get(name=item).delete() for item in geometry_sets]
+    model = apps.get_model("orbis", "GeometrySet")
+    for name in GEOMETRY_SET_NAMES:
+        try:
+            model.objects.get(name=name).delete()
+        except model.DoesNotExist:
+            pass
 
 
 class Migration(migrations.Migration):
