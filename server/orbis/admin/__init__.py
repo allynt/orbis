@@ -11,3 +11,4 @@ from .admin_satellites import (
     SatelliteResultAdmin,
 )
 from .admin_customers import CustomerAdmin
+from .admin_geometryset import GeometrySetAdmin
