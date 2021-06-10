@@ -1,3 +1,28 @@
+# [2.19.0](https://github.com/astrosat/orbis/compare/v2.18.0...v2.19.0) (2021-06-10)
+
+
+### Bug Fixes
+
+* **backend:** Add geom_type to swagger info ([af2e030](https://github.com/astrosat/orbis/commit/af2e0303ff18c73e2e7ab5fd64a98bae560f111e))
+* **backend:** Add pylintrc to lint backend code ([6311103](https://github.com/astrosat/orbis/commit/6311103eec98966670cf3fa7415e864246c983c5))
+* **backend:** Ensure Geometry set name is alphanumeric ([f962e13](https://github.com/astrosat/orbis/commit/f962e13607cac822e875aeae558baca22f5afd70))
+* **backend:** Move and rename model ([39580e6](https://github.com/astrosat/orbis/commit/39580e6b8581c81df6b5a6d3ac6315150e81d3d2))
+* **backend:** Prevent race condition in Data Migration ([4ee54b6](https://github.com/astrosat/orbis/commit/4ee54b69ba51faf1a762d22aacf9b132ad09b715))
+* **backend:** Use data migration instead of fixture ([df529db](https://github.com/astrosat/orbis/commit/df529db1816adc989eb2caf25ece4f035dcb8e91))
+* **frontend:** Allow for basic raster layers ([efc53f9](https://github.com/astrosat/orbis/commit/efc53f9376a6a5c493be018659f5902cc603260f))
+* **frontend:** Change spelling of 'color' to 'colour' ([33d3dee](https://github.com/astrosat/orbis/commit/33d3dee79ec81a22c3266b937d514a35dabc3660))
+* **frontend:** Make pill name re-expand to full-width if only one ([9e4d34c](https://github.com/astrosat/orbis/commit/9e4d34c1454208586f100539cae4fee43a06ee53))
+* **project:** Fix formatting of backend code ([f706ddd](https://github.com/astrosat/orbis/commit/f706ddd416f7b68fbcbd8c284dfc2801d3439fef))
+
+
+### Features
+
+* **backend:** Add Geometry types ([a2d897a](https://github.com/astrosat/orbis/commit/a2d897aa57b46562021570091b67e6c8c14d8e2c))
+* **backend:** added `is_default` field to `Orb` ([48edef0](https://github.com/astrosat/orbis/commit/48edef009922dbe6d7c97b234944cac8f0794875)), closes [#1239](https://github.com/astrosat/orbis/issues/1239)
+* **backend:** added data-index-url as a value in the appConfig endpoint ([7db31c6](https://github.com/astrosat/orbis/commit/7db31c627da343d9f3988c72e676b4d68f68730f))
+* **backend:** added logo field to orb ([252e93f](https://github.com/astrosat/orbis/commit/252e93ff96448be02b17837d09a0e45ebcf0e89f))
+* **backend:** delete licences to default orbs when a customer_user is ([a9e7326](https://github.com/astrosat/orbis/commit/a9e7326195053d9da666778a2da99f76f1b7dca8))
+
 # [2.18.0](https://github.com/astrosat/orbis/compare/v2.17.0...v2.18.0) (2021-05-28)
 
 
