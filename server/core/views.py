@@ -11,7 +11,7 @@ from drf_yasg2.utils import swagger_auto_schema
 
 from astrosat_users.conf import app_settings as astrosat_users_settings
 
-from .models import GeometryType
+from orbis.models import GeometrySet
 
 ###############
 # config view #
@@ -38,7 +38,7 @@ class AppConfigView(APIView):
             ("maximumAoiArea", openapi.Schema(type=openapi.TYPE_INTEGER, example=500)),
             ("dataIndexUrl", openapi.Schema(type=openapi.TYPE_STRING)),
             ("commitSha", openapi.Schema(type=openapi.TYPE_STRING)),
-            ("geom_type", openapi.Schema(type=openapi.TYPE_OBJECT, properties=OrderedDict((
+            ("geometrySet", openapi.Schema(type=openapi.TYPE_OBJECT, properties=OrderedDict((
                     ("name", openapi.Schema(type=openapi.TYPE_STRING)),
                     ("order", openapi.Schema(type=openapi.TYPE_INTEGER)),
                 ))
@@ -66,7 +66,7 @@ class AppConfigView(APIView):
             "commitSha": settings.COMMIT_SHA,
             "dataIndexUrl": settings.DATA_INDEX_URL,
             "userTrackingInterval": settings.USER_TRACKING_INTERVAL,
-            "geom_order": dict((type.name, type.order) for type in GeometryType.objects.all())
+            "geometrySet": {type.name: type.order for type in GeometrySet.objects.all()}
         }
 
         return Response(config)

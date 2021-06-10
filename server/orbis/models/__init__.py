@@ -11,3 +11,4 @@ from .models_satellites import (
     SatelliteResult,
 )
 from .models_customers import LicencedCustomer
+from .models_geometryset import GeometrySet
