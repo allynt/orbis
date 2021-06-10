@@ -12,7 +12,7 @@ class GeometrySet(models.Model):
         verbose_name_plural = "GeometrySet Types"
         ordering = ["order"]
 
-    name = models.CharField(
+    name = models.SlugField(
         max_length=50,
         unique=True,
         blank=False,
