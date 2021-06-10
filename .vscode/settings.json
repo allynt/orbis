@@ -1,7 +1,10 @@
 {
   "editor.formatOnPaste": true,
   "editor.formatOnSave": true,
-  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  // "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
   "eslint.validate": ["javascript", "javascriptreact"],
   "eslint.workingDirectories": [
     {
@@ -31,5 +34,6 @@
   "python.pythonPath": "./server/.venv/bin/python",
   "[python]": {
     "editor.tabSize": 4
-  }
+  },
+  "python.analysis.extraPaths": ["./server/"]
 }
