@@ -21,6 +21,11 @@ from maps.urls import (
     api_urlpatterns as maps_api_urlpatterns,
 )
 
+from proxy.urls import (
+    urlpatterns as proxy_urlpatterns,
+    api_urlpatterns as proxy_api_urlpatterns,
+)
+
 from orbis.urls import (
     urlpatterns as orbis_urlpatterns,
     api_urlpatterns as orbis_api_urlpatterns,
@@ -67,6 +72,7 @@ api_urlpatterns = [
 api_urlpatterns += astrosat_api_urlpatterns
 api_urlpatterns += astrosat_users_api_urlpatterns
 api_urlpatterns += maps_api_urlpatterns
+api_urlpatterns += proxy_api_urlpatterns
 api_urlpatterns += orbis_api_urlpatterns
 
 #################
@@ -87,6 +93,7 @@ urlpatterns = [
     path("astrosat/", include(astrosat_urlpatterns)),
     path("users/", include(astrosat_users_urlpatterns)),
     path("maps/", include(maps_urlpatterns)),
+    path("proxy/", include(proxy_urlpatterns)),
     path("orbis/", include(orbis_urlpatterns)),
 
     # note: index_view is added at the very end of this module!
