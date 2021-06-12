@@ -35,8 +35,8 @@ class VesselFinderAdapter(BaseProxyDataAdapter):
                     "geometry": {
                         "type": "Point",
                         "coordinates": [
-                            rd["AIS"].pop("LATITUDE"),
                             rd["AIS"].pop("LONGITUDE"),
+                            rd["AIS"].pop("LATITUDE"),
                         ]
                     },
                     "properties": {
@@ -56,6 +56,7 @@ class VesselFinderAdapter(BaseProxyDataAdapter):
 
     @property
     def SAMPLE_DATA(self):
+        # (note this sample data is in the middle of the North Sea)
         return [
             {
                 "AIS": {

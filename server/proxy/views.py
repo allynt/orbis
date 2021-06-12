@@ -1,4 +1,5 @@
 from django.shortcuts import get_object_or_404
+from django.urls import resolve
 
 from rest_framework import status
 from rest_framework.exceptions import APIException
@@ -6,10 +7,15 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
+# this class performs JWT authentication w/out a local user, as per:
+# https://django-rest-framework-simplejwt.readthedocs.io/en/latest/experimental_features.html
+from rest_framework_simplejwt.authentication import JWTTokenUserAuthentication
+
 from drf_yasg2 import openapi
 from drf_yasg2.utils import swagger_auto_schema
 
 from .models import ProxyDataSource
+from .permissions import CanTokenAccessData
 
 _geojson_schema = {
     "type": "FeatureCollection",
@@ -18,7 +24,7 @@ _geojson_schema = {
             "id": 1,
             "geometry": {
                 "type": "Point",
-                "coordinates": [1, 2],
+                "coordinates": [55.95, -3.19],
             },
             "properties": {
                 "a": "b",
@@ -37,7 +43,16 @@ _source_id_params = [
 
 class ProxyDataSourceView(APIView):
 
-    # permission_classes = []  # TODO: something like CanTokenAccessData
+    authentication_classes = [JWTTokenUserAuthentication]
+
+    permission_classes = [
+        IsAuthenticated,
+        CanTokenAccessData(
+            lambda request: "{authority}/{namespace}/{name}/{version}".
+            format(**resolve(request.path).kwargs),
+            verb="read",
+        )
+    ]
 
     @swagger_auto_schema(
         # manually defining swagger stuff b/c I don't use DRF serializers
@@ -49,13 +64,13 @@ class ProxyDataSourceView(APIView):
                 )
         }
     )
-    def post(self, request, **kwargs):
+    def get(self, request, **kwargs):
         proxy_data_source = get_object_or_404(
             ProxyDataSource.objects.active(), **self.kwargs
         )
         try:
             data = proxy_data_source.process_data(
-                # TODO: UNCOMMENT THIS ONCE STUFF WORKS
+                # TODO: UNCOMMENT THIS ONCE STUFF IS LIVE
                 # proxy_data_source.get_data()
                 proxy_data_source.adapter.SAMPLE_DATA
             )
