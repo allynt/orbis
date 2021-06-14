@@ -1,6 +1,13 @@
 import React, { useState, useEffect } from 'react';
 
-import { Checkbox, useForm, InfoIcon } from '@astrosat/astrosat-ui/';
+import {
+  Checkbox,
+  FormControlLabel,
+  useForm,
+  InfoIcon,
+  ErrorIcon,
+  Button,
+} from '@astrosat/astrosat-ui/';
 
 import { formatISO, subDays } from 'date-fns';
 import DatePicker from 'react-datepicker';
@@ -141,27 +148,36 @@ const SatelliteSearchForm = ({
       <div className={styles.formSections}>
         <FormSection title="Data Source">
           <ul className={styles.checkboxList}>
-            {satellites.map(satellite => (
-              <li key={satellite.label} className={styles.checkboxListItem}>
-                <Checkbox
-                  name={satellite.id}
-                  label={satellite.label}
-                  onChange={handleChange}
-                  checked={values[satellite.id] === true}
-                />
+            {satellites.map(satellite => {
+              // console.log('SATELLITE: ', satellite);
+              return (
+                <li key={satellite.label} className={styles.checkboxListItem}>
+                  <FormControlLabel
+                    label={satellite.label}
+                    control={
+                      <Checkbox
+                        name={satellite.id}
+                        // label={satellite.label}
+                        onChange={handleChange}
+                        checked={values[satellite.id] === true}
+                      />
+                    }
+                  />
 
-                <button
-                  className={styles.infoButton}
-                  type="button"
-                  onClick={() => {
-                    setSelectedMoreInfo({ type: SATELLITE, data: satellite });
-                    toggleMoreInfoDialog();
-                  }}
-                >
-                  <InfoIcon classes={styles.infoIcon} />
-                </button>
-              </li>
-            ))}
+                  <button
+                    // className={styles.infoButton}
+                    type="button"
+                    onClick={() => {
+                      setSelectedMoreInfo({ type: SATELLITE, data: satellite });
+                      toggleMoreInfoDialog();
+                    }}
+                  >
+                    {/* <InfoIcon classes={styles.infoIcon} /> */}
+                    <InfoIcon />
+                  </button>
+                </li>
+              );
+            })}
           </ul>
         </FormSection>
         <FormSection title="Date">
@@ -194,11 +210,16 @@ const SatelliteSearchForm = ({
           <ul className={styles.checkboxList}>
             {tiers.map(tier => (
               <li key={tier.id} className={styles.checkboxListItem}>
-                <Checkbox
-                  name={tier.id}
+                <FormControlLabel
                   label={tier.label}
-                  onChange={handleChange}
-                  checked={values[tier.id] === true}
+                  control={
+                    <Checkbox
+                      name={tier.id}
+                      // label={tier.label}
+                      onChange={handleChange}
+                      checked={values[tier.id] === true}
+                    />
+                  }
                 />
 
                 <button
@@ -209,18 +230,21 @@ const SatelliteSearchForm = ({
                     toggleMoreInfoDialog();
                   }}
                 >
-                  <InfoIcon classes={styles.infoIcon} />
+                  {/* <InfoIcon classes={styles.infoIcon} /> */}
+                  <InfoIcon />
                 </button>
               </li>
             ))}
           </ul>
         </FormSection>
       </div>
-      {/* <div className={sideMenuStyles.buttons}>
+      {/* <div className={sideMenuStyles.buttons}> */}
+      <div>
         {geometryTooLarge && (
           <div className={styles.errorContainerBackground}>
             <div className={styles.errorContainer}>
-              <ErrorIcon classes={styles.errorIcon} />
+              {/* <ErrorIcon classes={styles.errorIcon} /> */}
+              <ErrorIcon />
               <p className={styles.errorMessage}>
                 AOI is too large, redraw or zoom in
               </p>
@@ -230,11 +254,11 @@ const SatelliteSearchForm = ({
         <Button
           type="submit"
           disabled={geometryTooLarge}
-          className={sideMenuStyles.button}
+          // className={sideMenuStyles.button}
         >
           Search
         </Button>
-      </div> */}
+      </div>
     </form>
   );
 };

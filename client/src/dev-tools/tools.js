@@ -8,7 +8,6 @@ import useAuthorization from 'hooks/useAuthorization';
 import store from 'store';
 
 import FiltersTool from './features/filters.component';
-import SatellitesTool from './features/satellites.component';
 import StoriesTool from './features/stories.component';
 import styles from './tools.module.css';
 
@@ -37,7 +36,6 @@ const install = () => {
         <div className={styles.tools}>
           <LocalDevTools />
           <StoriesTool />
-          <SatellitesTool />
         </div>
       </div>
     ) : null;

@@ -135,22 +135,22 @@ const SatelliteSearch = (
     <div className={styles.search} ref={ref}>
       {savedSearches && savedSearches.length > 0 ? (
         <div>
-          {/* <Detail title="Saved Searches">
-            <SavedSearchList
-              savedSearches={savedSearches}
-              setCurrentSearchQuery={chooseSearchQuery}
-              deleteSavedSatelliteSearch={deleteSavedSearchQuery}
-            />
-          </Detail> */}
+          {/* <Detail title="Saved Searches"> */}
+          <SavedSearchList
+            savedSearches={savedSearches}
+            setCurrentSearchQuery={chooseSearchQuery}
+            deleteSavedSatelliteSearch={deleteSavedSearchQuery}
+          />
+          {/* </Detail> */}
         </div>
       ) : (
         <p>There are no saved AOI yet</p>
       )}
       <div className={styles.drawAOI} onClick={() => setIsAoiMode(true)}>
-        <DrawAoiIcon classes={styles.icon} title="draw-area-icon" />
-        <Button theme="link" classNames={[styles.button]}>
-          Draw AOI
-        </Button>
+        {/* <DrawAoiIcon classes={styles.icon} title="draw-area-icon" /> */}
+        <DrawAoiIcon title="draw-area-icon" />
+        {/* <Button theme="link" classNames={[styles.button]}> */}
+        <Button theme="link">Draw AOI</Button>
       </div>
 
       <SatelliteSearchForm

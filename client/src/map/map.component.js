@@ -145,6 +145,7 @@ const Map = ({
   drawMode,
   setDrawMode,
 }) => {
+  console.log('MAP LAYERS: ', layers);
   const {
     topMapRef,
     bottomMapRef,

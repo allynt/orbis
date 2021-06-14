@@ -57,6 +57,7 @@ function getURLFromTemplate(template, properties) {
 export class CustomMVTLayer extends MVTLayer {
   async getTileData(tile) {
     const url = getURLFromTemplate(this.props.data, tile);
+    console.log('TILE, PROPS AND URL: ', tile, this.props, url);
     if (!url) {
       return Promise.reject('Invalid URL');
     }
@@ -67,6 +68,7 @@ export class CustomMVTLayer extends MVTLayer {
           Authorization: `Bearer ${this.props.authToken}`,
         },
       });
+      console.log('TILE RESPONSE: ', response);
 
       if (!response.ok) return null;
       const arrayBuffer = await response.arrayBuffer();
@@ -87,6 +89,7 @@ export class CustomMVTLayer extends MVTLayer {
             ),
           };
         });
+        console.log('TILE PROCESSED FEATURES: ', features);
         return features;
       }
     } catch (ex) {

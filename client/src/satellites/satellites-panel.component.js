@@ -1,6 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
 
-import { Button, Dialog /*useModal*/ } from '@astrosat/astrosat-ui';
+import {
+  Button,
+  ButtonGroup,
+  Dialog /*useModal*/,
+} from '@astrosat/astrosat-ui';
 
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -63,6 +67,9 @@ const SatellitesPanel = ({ map }) => {
     state => state.satellites.currentSearchQuery,
   );
 
+  // console.log('VISIBLE PANEL: ', visiblePanel);
+  // console.log('SATELLITES: ', satellites);
+
   useEffect(() => {
     if (!satellites) {
       dispatch(fetchSatellites());
@@ -87,52 +94,58 @@ const SatellitesPanel = ({ map }) => {
   return (
     <div className={styles.panel}>
       <div className={styles.navigationPanel}>
-        <Button
-          theme="primary"
-          className={
-            visiblePanel === SEARCH
-              ? [styles.button, styles.active]
-              : [styles.button]
-          }
-          onClick={() => setVisiblePanel(SEARCH)}
+        <ButtonGroup
+          size="small"
+          color="primary"
+          aria-label="small outlined primary button group"
         >
-          Search
-        </Button>
-        <Button
-          theme="primary"
-          disabled={!scenes}
-          className={
-            visiblePanel === RESULTS
-              ? [styles.button, styles.active]
-              : [styles.button]
-          }
-          onClick={() => setVisiblePanel(RESULTS)}
-        >
-          Results
-        </Button>
-        <Button
-          theme="primary"
-          disabled={!visualisations}
-          className={
-            visiblePanel === VISUALISATION
-              ? [styles.button, styles.active]
-              : [styles.button]
-          }
-          onClick={() => setVisiblePanel(VISUALISATION)}
-        >
-          Visualisation
-        </Button>
-        <Button
-          theme="primary"
-          className={
-            visiblePanel === PINS
-              ? [styles.button, styles.active]
-              : [styles.button]
-          }
-          onClick={() => setVisiblePanel(PINS)}
-        >
-          My Pins
-        </Button>
+          <Button
+            // theme="primary"
+            // className={
+            //   visiblePanel === SEARCH
+            //     ? [styles.button, styles.active]
+            //     : [styles.button]
+            // }
+            onClick={() => setVisiblePanel(SEARCH)}
+          >
+            Search
+          </Button>
+          <Button
+            // theme="primary"
+            disabled={!scenes}
+            // className={
+            //   visiblePanel === RESULTS
+            //     ? [styles.button, styles.active]
+            //     : [styles.button]
+            // }
+            onClick={() => setVisiblePanel(RESULTS)}
+          >
+            Results
+          </Button>
+          <Button
+            // theme="primary"
+            disabled={!visualisations}
+            // className={
+            //   visiblePanel === VISUALISATION
+            //     ? [styles.button, styles.active]
+            //     : [styles.button]
+            // }
+            onClick={() => setVisiblePanel(VISUALISATION)}
+          >
+            Visualisation
+          </Button>
+          <Button
+            // theme="primary"
+            // className={
+            //   visiblePanel === PINS
+            //     ? [styles.button, styles.active]
+            //     : [styles.button]
+            // }
+            onClick={() => setVisiblePanel(PINS)}
+          >
+            My Pins
+          </Button>
+        </ButtonGroup>
       </div>
 
       <div className={styles.content}>
@@ -189,9 +202,10 @@ const SatellitesPanel = ({ map }) => {
           />
         )}
       </div>
-      <Dialog
+      {/* <Dialog
         // isVisible={isMoreInfoDialogVisible}
         title="More Information"
+        open={true}
         // close={toggleMoreInfoDialog}
         ref={dialogRef}
       >
@@ -210,7 +224,7 @@ const SatellitesPanel = ({ map }) => {
         {selectedMoreInfo && selectedMoreInfo.type === TIER && (
           <TierInfoTable tier={selectedMoreInfo.data} />
         )}
-      </Dialog>
+      </Dialog> */}
     </div>
   );
 };
