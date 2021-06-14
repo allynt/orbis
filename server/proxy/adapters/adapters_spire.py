@@ -207,12 +207,12 @@ class SpireMaritimeAdapter(BaseProxyDataAdapter):
         #             axis=0, subset=REQUIRED_SPIRE_PROPERTIES,
         #         )
 
-
         data_frame = pd.read_csv(
             os.path.join(
                 os.path.abspath(os.path.dirname(__file__)),
-                "sample_data/DAIS_SouthChinaSea_20200820.csv"
-            )
+                "sample_data/DAIS_SouthChinaSea_20200820.csv.gz",
+            ),
+            compression="gzip",
         ).dropna(
             axis=0, subset=REQUIRED_SPIRE_PROPERTIES
         )
