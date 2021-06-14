@@ -78,6 +78,12 @@ class ProxyDataSource(models.Model):
 
     description = models.TextField(blank=True, null=True)
     is_active = models.BooleanField(default=True)
+    local_pagination = models.BooleanField(
+        default=False, help_text=_("Should the processed data be paginated?")
+    )
+    remote_pagination = models.BooleanField(
+        default=False, help_text=_("Is the raw data paginated?")
+    )
 
     proxy_url = models.URLField(blank=False, null=False)
     proxy_method = models.CharField(
@@ -88,7 +94,8 @@ class ProxyDataSource(models.Model):
         null=True,
         validators=[validate_proxy_params],
         help_text=_(
-            "A dictionary of all the parameters to pass to the proxy_url (including any authentication tokens)"
+            "A dictionary of all the parameters to pass to the proxy_url"
+            "(including any authentication tokens)"
         )
     )
 
@@ -116,6 +123,7 @@ class ProxyDataSource(models.Model):
         return (self.source_id, )
 
     def get_data(self):
+        # TODO: REMOTE PAGINATION
         response = requests.request(
             self.proxy_method,
             self.proxy_url,

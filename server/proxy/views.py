@@ -15,10 +15,14 @@ from drf_yasg2 import openapi
 from drf_yasg2.utils import swagger_auto_schema
 
 from .models import ProxyDataSource
+from .pagination import LocalPagination
 from .permissions import CanTokenAccessData
 
-_geojson_schema = {
+_paginated_geojson_schema = {
     "type": "FeatureCollection",
+    "count": 100,
+    "next": "https://some.url.com/?page=3",
+    "previous": "https://some.url.com/?page=2",
     "features": [
         {
             "id": 1,
@@ -39,11 +43,17 @@ _source_id_params = [
     openapi.Parameter("namespace", openapi.IN_PATH, required=True, type=openapi.TYPE_STRING),
     openapi.Parameter("name", openapi.IN_PATH, required=True, type=openapi.TYPE_STRING),
     openapi.Parameter("version", openapi.IN_PATH, required=True, type=openapi.TYPE_STRING),
+    openapi.Parameter("page", openapi.IN_QUERY, required=False, type=openapi.TYPE_INTEGER),
+    openapi.Parameter("page_size", openapi.IN_QUERY, required=False, type=openapi.TYPE_INTEGER),
+
 ]  # yapf: disable
+
 
 class ProxyDataSourceView(APIView):
 
     authentication_classes = [JWTTokenUserAuthentication]
+
+    pagination_class = LocalPagination
 
     permission_classes = [
         IsAuthenticated,
@@ -60,20 +70,29 @@ class ProxyDataSourceView(APIView):
         responses={
             status.HTTP_200_OK:
                 openapi.Response(
-                    "GeoJSON", examples={"application/json": _geojson_schema}
+                    "GeoJSON",
+                    examples={"application/json": _paginated_geojson_schema}
                 )
         }
     )
     def get(self, request, **kwargs):
+
         proxy_data_source = get_object_or_404(
             ProxyDataSource.objects.active(), **self.kwargs
         )
+
         try:
-            data = proxy_data_source.process_data(
-                # TODO: UNCOMMENT THIS ONCE STUFF IS LIVE
-                # proxy_data_source.get_data()
-                proxy_data_source.adapter.SAMPLE_DATA
-            )
-            return Response(data)
+            # TODO: UNCOMMENT THIS ONCE STUFF IS LIVE
+            # raw_data = proxy_data_source.get_data()
+            raw_data = proxy_data_source.adapter.SAMPLE_DATA
+            processed_data = proxy_data_source.process_data(raw_data)
+
+            if proxy_data_source.local_pagination:
+                paginator = self.pagination_class()
+                page = paginator.paginate(processed_data, request)
+                return paginator.get_paginated_response(page)
+            else:
+                return Response(processed_data)
+
         except Exception as e:
             raise APIException(e)
