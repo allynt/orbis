@@ -76,11 +76,12 @@ describe('<CrowdlessSidebarComponent />', () => {
     expect(queryByText('Places close to you')).not.toBeInTheDocument();
   });
 
-  it('calls onRadioChange when the radio is clicked', () => {
-    const { getByRole, onRadioChange } = renderComponent();
-    userEvent.click(getByRole('radio'));
-    expect(onRadioChange).toHaveBeenCalled();
-  });
+  // TODO: REMOVED radio FOR TEMPORARY PROXY STUFF
+  // it('calls onRadioChange when the radio is clicked', () => {
+  //   const { getByRole, onRadioChange } = renderComponent();
+  //   userEvent.click(getByRole('radio'));
+  //   expect(onRadioChange).toHaveBeenCalled();
+  // });
 
   it('hides the button and results when not visible', () => {
     const { queryByRole } = renderComponent({ visible: false });
