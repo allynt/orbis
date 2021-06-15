@@ -163,7 +163,7 @@ class AISHubFinderAdapter(BaseProxyDataAdapter):
                         for k, v in rd.items() if k in AISHUB_PROPERTIES
                     }
                 }
-                for i, rd in enumerate(raw_data)
+                for i, rd in enumerate(raw_data, start=1)
             ]
         }
 

@@ -98,6 +98,9 @@ class ProxyDataSource(models.Model):
             "(including any authentication tokens)"
         )
     )
+    # TODO: THIS ASSUMES PROXY AUTHENTICATION IS DONE VIA URL PARAMS
+    # TODO: SHOULD ADD SUPPORT FOR ADDING TOKEN IN HEADERS
+    # TODO: proxy_authentication_method = whatever...
 
     adapter_name = models.CharField(
         max_length=64,
@@ -133,4 +136,7 @@ class ProxyDataSource(models.Model):
         return response.json()
 
     def process_data(self, data):
+        """
+        Given a chunk of JSON, turn it into GeoJSON suitable for orbis
+        """
         return self.adapter.process_data(data)

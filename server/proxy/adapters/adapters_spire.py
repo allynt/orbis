@@ -185,7 +185,7 @@ class SpireMaritimeAdapter(BaseProxyDataAdapter):
                         for k, v in rd.items() if k in SPIRE_PROPERTIES
                     }
                 }
-                for i, rd in enumerate(raw_data)
+                for i, rd in enumerate(raw_data, start=1)
             ]
         }
 

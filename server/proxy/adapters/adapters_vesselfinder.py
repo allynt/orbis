@@ -48,7 +48,7 @@ class VesselFinderAdapter(BaseProxyDataAdapter):
                         )
                     }
                 }
-                for i, rd in enumerate(raw_data)
+                for i, rd in enumerate(raw_data, start=1)
             ]
         }
 
