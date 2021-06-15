@@ -26,11 +26,7 @@ import { CrowdlessSidebarComponent } from './crowdless/sidebar/sidebar.component
  * @param {number} p
  */
 const makeUrl = (baseUrl, x, y, r, p = 1) =>
-  baseUrl
-    // .replace('{x}', x)
-    // .replace('{y}', y)
-    // .replace('{r}', r)
-    .replace('{p}', p.toString());
+  baseUrl.replace('{p}', p.toString());
 
 /**
  * @param {{
@@ -52,15 +48,9 @@ const ConnectedWrapper = ({ selectedLayer, dispatch }) => {
     setCurrentPage(1);
     dispatch(
       // @ts-ignore
-      fetchResults({
+      fetchProxyResults({
         source: selectedLayer,
-        url: makeUrl(
-          selectedLayer.metadata.url,
-          viewState.latitude.toString(),
-          viewState.longitude.toString(),
-          selectedLayer?.metadata?.application?.orbis?.sidebar_component?.props
-            ?.searchRadius,
-        ),
+        url: makeUrl(selectedLayer.metadata.url),
       }),
     );
   };

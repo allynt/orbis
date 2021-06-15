@@ -126,6 +126,10 @@ class ProxyDataSource(models.Model):
         return (self.source_id, )
 
     def get_data(self):
+        # TODO: THIS IS THE HACKIEST HACK IN ALL OF HACK-LAND
+        if self.adapter_name == "spire":
+            return self.adapter.SAMPLE_DATA
+
         # TODO: REMOTE PAGINATION
         response = requests.request(
             self.proxy_method,

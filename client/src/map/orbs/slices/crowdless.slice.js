@@ -49,6 +49,37 @@ export const fetchResults = createAsyncThunk(
   },
 );
 
+export const fetchProxyResults = createAsyncThunk(
+  `${name}/fetchProxyResults`,
+  async ({ source, url }, { dispatch, rejectWithValue }) => {
+    const {
+      source_id,
+      metadata: { api_key },
+    } = source;
+    try {
+      const response = await fetch(url, {
+        headers: {
+          Authorization:
+            'Bearer c9ebeba2b9babf7668b7787bfe9f45e7d62891105eeee00a41bef1da1903ca4e',
+          // TODO: GET REAL TOKEN
+          // Authorization: `Bearer ${this.props.authToken}`,
+        },
+      });
+      if (!response.ok) {
+        return dispatch(logError({ source_id }));
+      }
+
+      dispatch(logDataset({ source_id }));
+
+      const data = await response.json();
+      return data;
+    } catch (e) {
+      dispatch(logError({ source_id }));
+      return rejectWithValue(e);
+    }
+  },
+);
+
 const crowdlessSlice = createSlice({
   name,
   initialState,
@@ -75,6 +106,17 @@ const crowdlessSlice = createSlice({
       })
       .addCase(fetchResults.rejected, state => {
         state.isLoading = false;
+      })
+      .addCase(fetchProxyResults.pending, state => {
+        state.isLoading = true;
+      })
+      .addCase(fetchProxyResults.fulfilled, (state, { payload }) => {
+        state.isLoading = false;
+        state.proxyResults = payload;
+        if (state.selectedResult) state.selectedResult = undefined;
+      })
+      .addCase(fetchProxyResults.rejected, state => {
+        state.isLoading = false;
       }),
 });
 
@@ -98,6 +140,11 @@ export const visibilitySelector = createSelector(
 export const resultsSelector = createSelector(
   baseSelector,
   state => state?.results,
+);
+
+export const proxyResultsSelector = createSelector(
+  baseSelector,
+  state => state?.proxyResults,
 );
 
 export const selectedResultSelector = createSelector(

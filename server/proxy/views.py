@@ -51,18 +51,18 @@ _source_id_params = [
 
 class ProxyDataSourceView(APIView):
 
-    authentication_classes = [JWTTokenUserAuthentication]
+    # authentication_classes = [JWTTokenUserAuthentication]
 
     pagination_class = LocalPagination
 
-    permission_classes = [
-        IsAuthenticated,
-        CanTokenAccessData(
-            lambda request: "{authority}/{namespace}/{name}/{version}".
-            format(**resolve(request.path).kwargs),
-            verb="read",
-        )
-    ]
+    # permission_classes = [
+    #     IsAuthenticated,
+    #     CanTokenAccessData(
+    #         lambda request: "{authority}/{namespace}/{name}/{version}".
+    #         format(**resolve(request.path).kwargs),
+    #         verb="read",
+    #     )
+    # ]
 
     @swagger_auto_schema(
         # manually defining swagger stuff b/c I don't use DRF serializers
@@ -82,9 +82,7 @@ class ProxyDataSourceView(APIView):
         )
 
         try:
-            # TODO: UNCOMMENT THIS ONCE STUFF IS LIVE
-            # raw_data = proxy_data_source.get_data()
-            raw_data = proxy_data_source.adapter.SAMPLE_DATA
+            raw_data = proxy_data_source.get_data()
             processed_data = proxy_data_source.process_data(raw_data)
 
             if proxy_data_source.local_pagination:

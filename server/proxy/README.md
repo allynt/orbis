@@ -22,39 +22,35 @@ TODO: I AM HERE
 
 ```Javascript
 {
-    "url": "httpw://proxy-data-server.astrosat.net/api/proxy/<authority>/<namespace>/<name>/<version>/?page={p}"
-    "label": "Some Proxied Data",
+{
+    "url": "http://localhost:8000/api/proxy/data/astrosat/proxy/exactearth/latest?page={p}",
+    "name": "exactearth",
+    "label": "AIS Data (from exactEarth)",
     "request_strategy": "manual",
     "application": {
         "orbis": {
             "categories": {
-                "name": "Some Category"
+                "name": "Automatic Identification Sytem (AIS) Shipping Data"
             },
             "layer": {
-                "name": "IconLayer",
+                "name": "GeoJsonClusteredIconLayer",
                 "props": {
-                    "config": "<whateverConfig>"
+                    "config": "proxyConfig"
                 }
             },
             "map_component": {
                 "name": "ActionForHelpMapComponent"
             },
             "sidebar_component": {
-                "name": "CheckboxFilters",
+                "name": "ProxySidebarComponent",
                 "props": {
-                    "color": "#46aac4",
-                    "filters": [
-                        {
-                            "icon": "Stethoscope",
-                            "label": "Something",
-                            "value": "Cargo, all ships of this type"
-                        }
-                    ]
+                    "searchRadius": 3
                 }
             }
         }
     },
-    "description": "Sample Proxy Data"
+    "description": "AIS live data from exactEarth"
+}
 }
 ```
 

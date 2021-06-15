@@ -1,14 +1,24 @@
+import { FlyToInterpolator } from '@deck.gl/core';
+
+import { MAX_ZOOM } from 'map/map.constants';
+import { easeInOutCubic } from 'utils/easingFunctions';
+
+import { setClickedFeatures } from '../layers.slice';
 import {
-  resultsSelector,
+  proxyResultsSelector,
   selectedResultSelector,
   setSelectedResult,
   visibilitySelector,
 } from '../slices/crowdless.slice';
-import iconAtlas from './crowdlessConfig.iconAtlas.svg';
-import iconMapping from './crowdlessConfig.iconMapping.json';
 
-const configuration = ({ id, orbState, dispatch }) => {
-  const results = resultsSelector(orbState);
+// import iconAtlas from './crowdlessConfig.iconAtlas.svg';
+// import iconMapping from './crowdlessConfig.iconMapping.json';
+
+import iconAtlas from './actionForHelpConfig.iconAtlas.svg';
+import iconMapping from './actionForHelpConfig.iconMapping.json';
+
+const configuration = ({ id, orbState, dispatch, setViewState }) => {
+  const results = proxyResultsSelector(orbState);
   const visible = visibilitySelector(orbState);
   const selectedResult = selectedResultSelector(orbState);
 
@@ -16,21 +26,30 @@ const configuration = ({ id, orbState, dispatch }) => {
   const getPosition = feature => feature.geometry.coordinates;
 
   /** @param {CrowdlessFeature} feature */
-  const getIcon = feature =>
-    `${feature.properties.crowdednessCategory}${
-      feature.properties.placeId === selectedResult?.properties?.placeId
-        ? '-selected'
-        : ''
-    }`;
+  const getIcon = feature => 'group';
 
   /** @param {CrowdlessFeature} feature */
-  const getSize = feature =>
-    feature.properties.placeId === selectedResult?.properties?.placeId
-      ? 60 * 1.4
-      : 60;
+  const getSize = feature => 60;
 
   /** @param {{object: CrowdlessFeature}} pickedInfo */
-  const onClick = pickedInfo => dispatch(setSelectedResult(pickedInfo.object));
+  const onClick = info => {
+    if (info.object.properties.cluster) {
+      if (info.object.properties.expansion_zoom <= MAX_ZOOM) {
+        setViewState({
+          longitude: info.object.geometry.coordinates[0],
+          latitude: info.object.geometry.coordinates[1],
+          zoom: info.object.properties.expansion_zoom,
+          transitionDuration: 1000,
+          transitionEasing: easeInOutCubic,
+          transitionInterpolator: new FlyToInterpolator(),
+        });
+      }
+    } else {
+      return dispatch(
+        setClickedFeatures({ key: id, clickedFeatures: [info.object] }),
+      );
+    }
+  };
 
   return {
     id,

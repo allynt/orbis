@@ -60,22 +60,23 @@ export const CrowdlessSidebarComponent = ({
     <div className={styles.wrapper}>
       <Grid container spacing={2}>
         <Grid item xs={11}>
-          <FormControlLabel
+          {/* TODO: CHANGE THIS BACK */}
+          {/* <FormControlLabel
             label="Supermarket Crowdedness"
             control={<Radio onClick={onRadioChange} checked={visible} />}
-          />
+          /> */}
         </Grid>
         <Grid item xs={1}>
-          <InfoButtonTooltip tooltipContent={<Description />} />
+          {/* <InfoButtonTooltip tooltipContent={<Description />} /> */}
         </Grid>
       </Grid>
       <Fade in={visible} unmountOnExit>
         <Grid container spacing={2} alignItems="center">
           <Grid item xs={12} component={Typography}>
-            Please zoom in to the desired area or add area in the search box{' '}
+            {/* Please zoom in to the desired area or add area in the search box{' '}
             <MagnifierIcon color="primary" fontSize="inherit" /> at the top
             right of the map in order to get most accurate results. Then click
-            the button “Find Supermarkets” below.
+            the button “Find Supermarkets” below. */}
           </Grid>
           <Grid item xs={12} container justify="center">
             <Button size="small" onClick={() => !isLoading && onFindClick()}>
@@ -86,7 +87,8 @@ export const CrowdlessSidebarComponent = ({
                   size={20}
                 />
               ) : (
-                'Find Supermarkets'
+                'Request Data'
+                // 'Find Supermarkets'
               )}
             </Button>
           </Grid>
