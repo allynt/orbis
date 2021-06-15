@@ -94,7 +94,7 @@ class ProxyDataSource(models.Model):
         null=True,
         validators=[validate_proxy_params],
         help_text=_(
-            "A dictionary of all the parameters to pass to the proxy_url"
+            "A dictionary of all the parameters to pass to the proxy_url "
             "(including any authentication tokens)"
         )
     )
