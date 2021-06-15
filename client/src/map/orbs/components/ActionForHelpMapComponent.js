@@ -21,6 +21,7 @@ const ActionForHelpMapComponent = ({ source }) => {
   const pickedObjects = useSelector(state =>
     clickedFeaturesSelector(source?.source_id)(state?.orbs),
   );
+
   const dataToken = useSelector(selectDataToken);
   const dispatch = useDispatch();
 
