@@ -60,11 +60,11 @@ export const CrowdlessSidebarComponent = ({
     <div className={styles.wrapper}>
       <Grid container spacing={2}>
         <Grid item xs={11}>
-          {/* TODO: CHANGE THIS BACK */}
-          {/* <FormControlLabel
-            label="Supermarket Crowdedness"
+          <FormControlLabel
+            // label="Supermarket Crowdedness"
+            label="Display Data"
             control={<Radio onClick={onRadioChange} checked={visible} />}
-          /> */}
+          />
         </Grid>
         <Grid item xs={1}>
           {/* <InfoButtonTooltip tooltipContent={<Description />} /> */}
