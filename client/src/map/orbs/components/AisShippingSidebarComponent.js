@@ -8,25 +8,20 @@ import { easeInOutCubic } from 'utils/easingFunctions';
 
 import {
   fetchResults,
-  fetchProxyResults,
   isLoadingSelector,
   resultsSelector,
   setVisibility,
   visibilitySelector,
   selectedResultSelector,
   setSelectedResult,
-} from '../slices/crowdless.slice';
-import { CrowdlessSidebarComponent } from './crowdless/sidebar/sidebar.component';
+} from '../slices/ais-shipping.slice';
+import { AisShippingSidebarComponent } from './ais-shipping/sidebar/sidebar.component';
 
 /**
  * @param {string} baseUrl
- * @param {string} x
- * @param {string} y
- * @param {string} r
  * @param {number} p
  */
-const makeUrl = (baseUrl, x, y, r, p = 1) =>
-  baseUrl.replace('{p}', p.toString());
+const makeUrl = (baseUrl, p = 1) => baseUrl.replace('{p}', p.toString());
 
 /**
  * @param {{
@@ -48,7 +43,7 @@ const ConnectedWrapper = ({ selectedLayer, dispatch }) => {
     setCurrentPage(1);
     dispatch(
       // @ts-ignore
-      fetchProxyResults({
+      fetchResults({
         source: selectedLayer,
         url: makeUrl(selectedLayer.metadata.url),
       }),
@@ -60,7 +55,7 @@ const ConnectedWrapper = ({ selectedLayer, dispatch }) => {
 
     dispatch(
       // @ts-ignore
-      fetchProxyResults({
+      fetchResults({
         source: selectedLayer,
         url: makeUrl(selectedLayer.metadata.url, page),
       }),
@@ -83,7 +78,7 @@ const ConnectedWrapper = ({ selectedLayer, dispatch }) => {
   };
 
   return (
-    <CrowdlessSidebarComponent
+    <AisShippingSidebarComponent
       onFindClick={handleFindClick}
       onRadioChange={handleRadioChange}
       isLoading={isLoading}

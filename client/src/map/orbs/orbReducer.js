@@ -1,6 +1,7 @@
 import { combineReducers } from 'redux';
 
 import layers from './layers.slice';
+import aisShipping from './slices/ais-shipping.slice';
 import crowdless from './slices/crowdless.slice';
 
 /**
@@ -10,6 +11,7 @@ import crowdless from './slices/crowdless.slice';
 const orbReducer = combineReducers({
   layers,
   crowdless,
+  aisShipping,
 });
 
 export default orbReducer;

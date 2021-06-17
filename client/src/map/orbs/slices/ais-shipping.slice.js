@@ -6,34 +6,23 @@ import {
 
 import { logDataset, logError } from 'data-layers/data-layers.slice';
 
-/**
- * @typedef ProxyState
- * @property {ProxyResponse} [results]
- * @property {ProxyFeature} [selectedResult]
- * @property {boolean} isLoading
- * @property {boolean} visible
- */
-
-/**
- * @type {ProxyState}
- */
 const initialState = { isLoading: false, visible: true };
 
-const name = 'proxy';
+const name = 'aisShipping';
 
-/**
- * @type {import('@reduxjs/toolkit').AsyncThunk<ProxyResponse, {source: Source, url: string}, {}>}
- */
 export const fetchResults = createAsyncThunk(
   `${name}/fetchResults`,
-  async ({ source, url }, { dispatch, rejectWithValue }) => {
+  async ({ source, url }, { dispatch, getState, rejectWithValue }) => {
     const {
-      source_id,
-      metadata: { api_key },
-    } = source;
-    try {
-      const response = await fetch(url, { headers: { 'X-Api-Key': api_key } });
+      data: { token },
+    } = getState();
 
+    const { source_id } = source;
+
+    try {
+      const response = await fetch(url, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
       if (!response.ok) {
         return dispatch(logError({ source_id }));
       }
@@ -49,16 +38,14 @@ export const fetchResults = createAsyncThunk(
   },
 );
 
-const proxySlice = createSlice({
+const slice = createSlice({
   name,
   initialState,
   reducers: {
-    /** @param {import('@reduxjs/toolkit').PayloadAction<boolean>} action */
     setVisibility: (state, action) => {
       state.visible = action.payload;
       if (state.selectedResult !== undefined) state.selectedResult = undefined;
     },
-    /** @param {import('@reduxjs/toolkit').PayloadAction<ProxyFeature>} action */
     setSelectedResult: (state, action) => {
       state.selectedResult = action.payload;
     },
@@ -78,12 +65,9 @@ const proxySlice = createSlice({
       }),
 });
 
-export const { setSelectedResult, setVisibility } = proxySlice.actions;
+export const { setSelectedResult, setVisibility } = slice.actions;
 
-/**
- * @param {import('../orbReducer').OrbState} orbs
- */
-const baseSelector = orbs => orbs[proxySlice.name];
+const baseSelector = orbs => orbs[slice.name];
 
 export const isLoadingSelector = createSelector(
   baseSelector,
@@ -105,4 +89,4 @@ export const selectedResultSelector = createSelector(
   state => state?.selectedResult,
 );
 
-export default proxySlice.reducer;
+export default slice.reducer;
