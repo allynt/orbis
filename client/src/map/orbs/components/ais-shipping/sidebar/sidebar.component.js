@@ -8,16 +8,11 @@ import {
   Grid,
   List,
   ListSubheader,
-  MagnifierIcon,
   makeStyles,
   Pagination,
   Radio,
-  Typography,
 } from '@astrosat/astrosat-ui';
 
-import { InfoButtonTooltip } from 'components';
-
-import { Description } from './description.component';
 import ResultsListItem from './results-list-item/results-list-item.component';
 
 const useStyles = makeStyles(theme => ({
@@ -29,21 +24,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-/**
- * @param {{
- *   results?: CrowdlessFeature[]
- *   isLoading?: boolean
- *   onFindClick: () => void
- *   pages?: number
- *   currentPage?: number
- *   onPageClick: (page: number) => void
- *   onResultClick?: (result: CrowdlessFeature) => void
- *   selectedResult: CrowdlessFeature
- *   onRadioChange: () => void
- *   visible?: boolean
- * }} props
- */
-export const CrowdlessSidebarComponent = ({
+export const AisShippingSidebarComponent = ({
   results,
   isLoading,
   onFindClick,
@@ -56,27 +37,19 @@ export const CrowdlessSidebarComponent = ({
   visible,
 }) => {
   const styles = useStyles();
+
   return (
     <div className={styles.wrapper}>
       <Grid container spacing={2}>
         <Grid item xs={11}>
           <FormControlLabel
-            label="Supermarket Crowdedness"
+            label="Display Data"
             control={<Radio onClick={onRadioChange} checked={visible} />}
           />
-        </Grid>
-        <Grid item xs={1}>
-          <InfoButtonTooltip tooltipContent={<Description />} />
         </Grid>
       </Grid>
       <Fade in={visible} unmountOnExit>
         <Grid container spacing={2} alignItems="center">
-          <Grid item xs={12} component={Typography}>
-            Please zoom in to the desired area or add area in the search box{' '}
-            <MagnifierIcon color="primary" fontSize="inherit" /> at the top
-            right of the map in order to get most accurate results. Then click
-            the button “Find Supermarkets” below.
-          </Grid>
           <Grid item xs={12} container justify="center">
             <Button size="small" onClick={() => !isLoading && onFindClick()}>
               {isLoading ? (
@@ -86,7 +59,7 @@ export const CrowdlessSidebarComponent = ({
                   size={20}
                 />
               ) : (
-                'Find Supermarkets'
+                'Request Data'
               )}
             </Button>
           </Grid>
@@ -95,9 +68,7 @@ export const CrowdlessSidebarComponent = ({
               <Grid item xs={12}>
                 <List
                   subheader={
-                    <ListSubheader disableSticky>
-                      Places close to you
-                    </ListSubheader>
+                    <ListSubheader disableSticky>List of Vessels</ListSubheader>
                   }
                 >
                   {isLoading &&
@@ -108,12 +79,11 @@ export const CrowdlessSidebarComponent = ({
                   {results?.length
                     ? results.map((result, i) => (
                         <ResultsListItem
-                          key={result.properties.placeId}
+                          key={result.id}
                           result={result}
                           selected={
                             selectedResult === undefined ||
-                            result.properties.placeId ===
-                              selectedResult?.properties?.placeId
+                            result.id === selectedResult?.id
                           }
                           onClick={onResultClick}
                           divider={i + 1 !== results.length}

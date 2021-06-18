@@ -5,33 +5,24 @@ import { easeInOutCubic } from 'utils/easingFunctions';
 
 import { setClickedFeatures } from '../layers.slice';
 import {
-  proxyResultsSelector,
+  resultsSelector,
   selectedResultSelector,
-  setSelectedResult,
   visibilitySelector,
-} from '../slices/crowdless.slice';
-
-// import iconAtlas from './crowdlessConfig.iconAtlas.svg';
-// import iconMapping from './crowdlessConfig.iconMapping.json';
-
-import iconAtlas from './actionForHelpConfig.iconAtlas.svg';
-import iconMapping from './actionForHelpConfig.iconMapping.json';
+} from '../slices/ais-shipping.slice';
+import iconAtlas from './aisShippingConfig.iconAtlas.svg';
+import iconMapping from './aisShippingConfig.iconMapping.json';
 
 const configuration = ({ id, orbState, dispatch, setViewState }) => {
-  const results = proxyResultsSelector(orbState);
+  const results = resultsSelector(orbState);
   const visible = visibilitySelector(orbState);
   const selectedResult = selectedResultSelector(orbState);
 
-  /** @param {CrowdlessFeature} feature */
   const getPosition = feature => feature.geometry.coordinates;
 
-  /** @param {CrowdlessFeature} feature */
   const getIcon = feature => 'group';
 
-  /** @param {CrowdlessFeature} feature */
   const getSize = feature => 60;
 
-  /** @param {{object: CrowdlessFeature}} pickedInfo */
   const onClick = info => {
     if (info.object.properties.cluster) {
       if (info.object.properties.expansion_zoom <= MAX_ZOOM) {

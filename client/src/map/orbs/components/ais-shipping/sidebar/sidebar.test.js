@@ -3,15 +3,23 @@ import * as React from 'react';
 import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
-import { CrowdlessSidebarComponent } from './sidebar.component';
+import { AisShippingSidebarComponent } from './sidebar.component';
 
 const RESULTS = [
-  { properties: { name: 'Tesco', address: '1 Test Street', placeId: 0 } },
   {
+    id: 1,
     properties: {
-      name: 'Sainsburys',
-      address: '2 Fake Road',
-      placeId: 1,
+      'Vessel Name': 'Test Vessel Name 1',
+      'Vessel Call Sign': 'Test Vessel Call Sign 1',
+      'Vessel Destination': 'Test Vessel Destination 1',
+    },
+  },
+  {
+    id: 2,
+    properties: {
+      'Vessel Name': 'Test Vessel Name 2',
+      'Vessel Call Sign': 'Test Vessel Call Sign 2',
+      'Vessel Destination': 'Test Vessel Destination 2',
     },
   },
 ];
@@ -27,7 +35,7 @@ const renderComponent = ({
   const onPageClick = jest.fn();
   const onRadioChange = jest.fn();
   const utils = render(
-    <CrowdlessSidebarComponent
+    <AisShippingSidebarComponent
       visible={visible}
       onFindClick={onFindClick}
       pages={pages}
@@ -41,18 +49,26 @@ const renderComponent = ({
   return { ...utils, onFindClick, onPageClick, onRadioChange };
 };
 
-describe('<CrowdlessSidebarComponent />', () => {
+describe('<AisShippingSidebarComponent />', () => {
   it('Calls onFindClick when the find button is clicked', () => {
     const { getByRole, onFindClick } = renderComponent();
-    userEvent.click(getByRole('button', { name: /find/i }));
+    userEvent.click(getByRole('button', { name: /request\sdata/i }));
     expect(onFindClick).toHaveBeenCalled();
   });
 
   it('Shows the results if there are any', () => {
     const { getByText } = renderComponent();
+
+    expect(getByText('List of Vessels')).toBeInTheDocument();
+
     RESULTS.forEach(result => {
-      expect(getByText(result.properties.name)).toBeInTheDocument();
-      expect(getByText(result.properties.address)).toBeInTheDocument();
+      expect(getByText(result.properties['Vessel Name'])).toBeInTheDocument();
+      expect(
+        getByText(result.properties['Vessel Call Sign']),
+      ).toBeInTheDocument();
+      expect(
+        getByText(result.properties['Vessel Destination']),
+      ).toBeInTheDocument();
     });
   });
 
@@ -73,7 +89,7 @@ describe('<CrowdlessSidebarComponent />', () => {
     const { queryByText } = renderComponent({
       results: null,
     });
-    expect(queryByText('Places close to you')).not.toBeInTheDocument();
+    expect(queryByText('List of Vessels')).not.toBeInTheDocument();
   });
 
   it('calls onRadioChange when the radio is clicked', () => {
@@ -89,6 +105,7 @@ describe('<CrowdlessSidebarComponent />', () => {
     ).not.toBeInTheDocument();
     expect(queryByRole('list')).not.toBeInTheDocument();
   });
+
   it("shows items as active if there's no active result", () => {
     const { getAllByRole } = renderComponent();
     const [_, ...items] = getAllByRole('listitem');
@@ -97,12 +114,16 @@ describe('<CrowdlessSidebarComponent />', () => {
 
   it('shows the active result as active', () => {
     const { getByRole } = renderComponent({
-      selectedResult: { properties: { placeId: 0 } },
+      selectedResult: { id: 1 },
     });
-    expect(getByRole('button', { name: /tesco/i })).toHaveClass('Mui-selected');
-    expect(getByRole('button', { name: /sainsburys/i })).not.toHaveClass(
-      'selected',
-    );
+    expect(
+      getByRole('button', {
+        name: /Test\sVessel\sName\s1/i,
+      }),
+    ).toHaveClass('Mui-selected');
+    expect(
+      getByRole('button', { name: /Test\sVessel\sName\s2/i }),
+    ).not.toHaveClass('selected');
   });
 
   it('Does not show pagination if pages <= 1', () => {
