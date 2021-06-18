@@ -2,7 +2,6 @@ import React, { useEffect } from 'react';
 
 import { Box } from '@astrosat/astrosat-ui';
 
-import { MissionControlDialog } from 'mission-control/mission-control-dialog';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { AnalysisPanel } from 'analysis-panel/analysis-panel.component';
@@ -11,6 +10,7 @@ import {
   selectPollingPeriod,
 } from 'data-layers/data-layers.slice';
 import { useDrawingTools } from 'drawing-tools';
+import { MissionControl } from 'mission-control/mission-control';
 
 import ControlPanel from '../control-panel/control-panel.component';
 import Map from './map.component';
@@ -51,7 +51,7 @@ const MapLayout = () => {
         mapComponents={mapComponents}
         {...drawingToolsProps}
       />
-      <MissionControlDialog />
+      <MissionControl />
       <AnalysisPanel />
     </Box>
   );

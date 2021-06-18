@@ -1,10 +1,10 @@
 import React from 'react';
-import { render } from '@testing-library/react';
 
+import { render } from '@testing-library/react';
 import { Provider } from 'react-redux';
 import configureMockStore from 'redux-mock-store';
 
-import { MissionControlDialog } from './mission-control-dialog';
+import { MissionControl } from './mission-control';
 
 const mockStore = configureMockStore();
 
@@ -17,12 +17,12 @@ const setup = ({ isVisible = false }) => {
         },
       })}
     >
-      <MissionControlDialog />
+      <MissionControl />
     </Provider>,
   );
 };
 
-describe('MissionControlDialog', () => {
+describe('MissionControl', () => {
   it('opens dialog if `isVisible` is true', () => {
     const { getByRole } = setup({ isVisible: true });
     const dialog = getByRole('dialog');
