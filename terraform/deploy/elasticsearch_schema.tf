@@ -32,6 +32,7 @@ locals {
         "app"         = { "type" = "keyword" },
         "instance"    = { "type" = "keyword" },
         "environment" = { "type" = "keyword" },
+        "stream"      = { "type" = "keyword" },
 
         // The top-level "type" field determines what type of event this is
         "type" = { "type" = "keyword" },
