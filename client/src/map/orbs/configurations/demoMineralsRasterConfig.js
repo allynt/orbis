@@ -28,8 +28,9 @@ export default ({
   const visible = visibilitySelector(id)(orbState);
   const other = otherSelector(otherStateKey)(orbState);
   const data = dataSelector(id)(orbState);
+  console.log('PROPS: ', data, other, defaultValue);
 
-  return {
+  const result = {
     id,
     visible: visible && !!source,
     image: `${data}/${
@@ -46,4 +47,8 @@ export default ({
       },
     },
   };
+
+  console.log('MINERALS RESULT: ', result);
+
+  return result;
 };

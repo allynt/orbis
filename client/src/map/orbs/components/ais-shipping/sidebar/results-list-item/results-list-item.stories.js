@@ -1,14 +1,9 @@
 import * as React from 'react';
 
-import isChromatic from 'chromatic/isChromatic';
-import faker from 'faker/locale/en_GB';
-
 import ResultsListItem from './results-list-item.component';
 
-if (isChromatic()) faker.seed(1);
-
 export default {
-  title: 'Orbs/Crowdless/ResultsListItem',
+  title: 'Orbs/AIS Shipping/ResultsListItem',
   argTypes: {
     onClick: { action: 'onClick' },
   },
@@ -23,60 +18,26 @@ Result.args = {
   selected: true,
   result: {
     properties: {
-      name: faker.company.companyName(),
-      address: [
-        faker.address.streetAddress(),
-        faker.address.city(),
-        faker.address.zipCode(),
-      ].join(', '),
-      crowdednessCategory: faker.random.arrayElement([
-        'not busy',
-        'busy',
-        'very busy',
-      ]),
+      'Vessel Name': 'Test Vessel Name',
+      'Vessel Call Sign': 'Test Vessel Call Sign',
+      'Vessel Destination': 'Test Vessel Destination',
     },
   },
 };
 
 export const Categories = ({ result, ...rest }) => (
   <>
-    <ResultsListItem
-      result={{
-        ...result,
-        properties: {
-          ...result.properties,
-          crowdednessCategory: 'not busy',
-        },
-      }}
-      {...rest}
-    />
-    <ResultsListItem
-      result={{
-        ...result,
-        properties: {
-          ...result.properties,
-          crowdednessCategory: 'busy',
-        },
-      }}
-      {...rest}
-    />
-    <ResultsListItem
-      result={{
-        ...result,
-        properties: {
-          ...result.properties,
-          crowdednessCategory: 'very busy',
-        },
-      }}
-      {...rest}
-    />
+    <ResultsListItem result={result} {...rest} />
+    <ResultsListItem result={result} {...rest} />
+    <ResultsListItem result={result} {...rest} />
   </>
 );
 Categories.args = {
   result: {
     properties: {
-      name: faker.company.companyName(),
-      address: faker.address.streetAddress(),
+      'Vessel Name': 'Test Vessel Name',
+      'Vessel Call Sign': 'Test Vessel Call Sign',
+      'Vessel Destination': 'Test Vessel Destination',
     },
   },
 };

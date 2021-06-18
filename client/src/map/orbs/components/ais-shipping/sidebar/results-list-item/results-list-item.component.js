@@ -60,9 +60,8 @@ const ResultsListItem = ({
             <Skeleton role="progressbar" variant="text" width="30ch" />
           ) : (
             <span>
-              {result?.properties['Vessel Call Sign']}
-              <br />
-              {result?.properties['Vessel Destination']}
+              <span>{result?.properties['Vessel Call Sign']}</span>
+              <span>{result?.properties['Vessel Destination']}</span>
             </span>
           )
         }

@@ -6,12 +6,20 @@ import userEvent from '@testing-library/user-event';
 import { AisShippingSidebarComponent } from './sidebar.component';
 
 const RESULTS = [
-  { properties: { name: 'Tesco', address: '1 Test Street', placeId: 0 } },
   {
+    id: 1,
     properties: {
-      name: 'Sainsburys',
-      address: '2 Fake Road',
-      placeId: 1,
+      'Vessel Name': 'Test Vessel Name 1',
+      'Vessel Call Sign': 'Test Vessel Call Sign 1',
+      'Vessel Destination': 'Test Vessel Destination 1',
+    },
+  },
+  {
+    id: 2,
+    properties: {
+      'Vessel Name': 'Test Vessel Name 2',
+      'Vessel Call Sign': 'Test Vessel Call Sign 2',
+      'Vessel Destination': 'Test Vessel Destination 2',
     },
   },
 ];
@@ -41,91 +49,100 @@ const renderComponent = ({
   return { ...utils, onFindClick, onPageClick, onRadioChange };
 };
 
-// TODO: REMOVED TESTS FOR TEMPORARY PROXY STUFF
 describe('<AisShippingSidebarComponent />', () => {
-  it('pretends to pass a test', () => {
+  it('Calls onFindClick when the find button is clicked', () => {
     const { getByRole, onFindClick } = renderComponent();
+    userEvent.click(getByRole('button', { name: /request\sdata/i }));
+    expect(onFindClick).toHaveBeenCalled();
   });
-  //   it('Calls onFindClick when the find button is clicked', () => {
-  //     const { getByRole, onFindClick } = renderComponent();
-  //     userEvent.click(getByRole('button', { name: /find/i }));
-  //     expect(onFindClick).toHaveBeenCalled();
-  //   });
 
-  //   it('Shows the results if there are any', () => {
-  //     const { getByText } = renderComponent();
-  //     RESULTS.forEach(result => {
-  //       expect(getByText(result.properties.name)).toBeInTheDocument();
-  //       expect(getByText(result.properties.address)).toBeInTheDocument();
-  //     });
-  //   });
+  it('Shows the results if there are any', () => {
+    const { getByText } = renderComponent();
 
-  //   it('Shows a loading spinner in the button if loading', () => {
-  //     const { getByTestId } = renderComponent({ isLoading: true });
-  //     expect(getByTestId('button-progress')).toBeInTheDocument();
-  //   });
+    expect(getByText('List of Vessels')).toBeInTheDocument();
 
-  //   it("Shows a skeleton results list if loading and there aren't already results", () => {
-  //     const { getAllByRole } = renderComponent({
-  //       isLoading: true,
-  //       results: null,
-  //     });
-  //     expect(getAllByRole('progressbar').length).toBeGreaterThanOrEqual(1);
-  //   });
+    RESULTS.forEach(result => {
+      expect(getByText(result.properties['Vessel Name'])).toBeInTheDocument();
+      expect(
+        getByText(result.properties['Vessel Call Sign']),
+      ).toBeInTheDocument();
+      expect(
+        getByText(result.properties['Vessel Destination']),
+      ).toBeInTheDocument();
+    });
+  });
 
-  //   it("Doesn't show anything if not loading, no results", () => {
-  //     const { queryByText } = renderComponent({
-  //       results: null,
-  //     });
-  //     expect(queryByText('Places close to you')).not.toBeInTheDocument();
-  //   });
+  it('Shows a loading spinner in the button if loading', () => {
+    const { getByTestId } = renderComponent({ isLoading: true });
+    expect(getByTestId('button-progress')).toBeInTheDocument();
+  });
 
-  //   it('calls onRadioChange when the radio is clicked', () => {
-  //     const { getByRole, onRadioChange } = renderComponent();
-  //     userEvent.click(getByRole('radio'));
-  //     expect(onRadioChange).toHaveBeenCalled();
-  //   });
+  it("Shows a skeleton results list if loading and there aren't already results", () => {
+    const { getAllByRole } = renderComponent({
+      isLoading: true,
+      results: null,
+    });
+    expect(getAllByRole('progressbar').length).toBeGreaterThanOrEqual(1);
+  });
 
-  //   it('hides the button and results when not visible', () => {
-  //     const { queryByRole } = renderComponent({ visible: false });
-  //     expect(
-  //       queryByRole('button', { name: 'Find Supermarkets' }),
-  //     ).not.toBeInTheDocument();
-  //     expect(queryByRole('list')).not.toBeInTheDocument();
-  //   });
-  //   it("shows items as active if there's no active result", () => {
-  //     const { getAllByRole } = renderComponent();
-  //     const [_, ...items] = getAllByRole('listitem');
-  //     items.forEach(element => expect(element).toHaveClass('Mui-selected'));
-  //   });
+  it("Doesn't show anything if not loading, no results", () => {
+    const { queryByText } = renderComponent({
+      results: null,
+    });
+    expect(queryByText('List of Vessels')).not.toBeInTheDocument();
+  });
 
-  //   it('shows the active result as active', () => {
-  //     const { getByRole } = renderComponent({
-  //       selectedResult: { properties: { placeId: 0 } },
-  //     });
-  //     expect(getByRole('button', { name: /tesco/i })).toHaveClass('Mui-selected');
-  //     expect(getByRole('button', { name: /sainsburys/i })).not.toHaveClass(
-  //       'selected',
-  //     );
-  //   });
+  it('calls onRadioChange when the radio is clicked', () => {
+    const { getByRole, onRadioChange } = renderComponent();
+    userEvent.click(getByRole('radio'));
+    expect(onRadioChange).toHaveBeenCalled();
+  });
 
-  //   it('Does not show pagination if pages <= 1', () => {
-  //     const { queryByRole } = renderComponent();
-  //     expect(queryByRole('button', { name: '1' })).not.toBeInTheDocument();
-  //   });
+  it('hides the button and results when not visible', () => {
+    const { queryByRole } = renderComponent({ visible: false });
+    expect(
+      queryByRole('button', { name: 'Find Supermarkets' }),
+    ).not.toBeInTheDocument();
+    expect(queryByRole('list')).not.toBeInTheDocument();
+  });
 
-  //   it('Shows pagination if pages > 1', () => {
-  //     const { getByRole } = renderComponent({
-  //       pages: 3,
-  //     });
-  //     expect(getByRole('button', { name: 'page 1' })).toBeInTheDocument();
-  //   });
+  it("shows items as active if there's no active result", () => {
+    const { getAllByRole } = renderComponent();
+    const [_, ...items] = getAllByRole('listitem');
+    items.forEach(element => expect(element).toHaveClass('Mui-selected'));
+  });
 
-  //   it('Calls onPageClick with the page number when a number button is clicked', () => {
-  //     const { getByRole, onPageClick } = renderComponent({
-  //       pages: 3,
-  //     });
-  //     userEvent.click(getByRole('button', { name: 'Go to page 2' }));
-  //     expect(onPageClick).toHaveBeenCalledWith(2);
-  //   });
+  it('shows the active result as active', () => {
+    const { getByRole } = renderComponent({
+      selectedResult: { id: 1 },
+    });
+    expect(
+      getByRole('button', {
+        name: /Test\sVessel\sName\s1/i,
+      }),
+    ).toHaveClass('Mui-selected');
+    expect(
+      getByRole('button', { name: /Test\sVessel\sName\s2/i }),
+    ).not.toHaveClass('selected');
+  });
+
+  it('Does not show pagination if pages <= 1', () => {
+    const { queryByRole } = renderComponent();
+    expect(queryByRole('button', { name: '1' })).not.toBeInTheDocument();
+  });
+
+  it('Shows pagination if pages > 1', () => {
+    const { getByRole } = renderComponent({
+      pages: 3,
+    });
+    expect(getByRole('button', { name: 'page 1' })).toBeInTheDocument();
+  });
+
+  it('Calls onPageClick with the page number when a number button is clicked', () => {
+    const { getByRole, onPageClick } = renderComponent({
+      pages: 3,
+    });
+    userEvent.click(getByRole('button', { name: 'Go to page 2' }));
+    expect(onPageClick).toHaveBeenCalledWith(2);
+  });
 });

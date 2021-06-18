@@ -1,11 +1,6 @@
 import * as React from 'react';
 
-import isChromatic from 'chromatic/isChromatic';
-import faker from 'faker/locale/en_GB';
-
 import { AisShippingSidebarComponent } from './sidebar.component';
-
-if (isChromatic()) faker.seed(1);
 
 export default {
   title: 'Orbs/AIS Shipping/AisShippingSidebarComponent',
@@ -30,17 +25,9 @@ export const Results = Template.bind({});
 Results.args = {
   results: new Array(10).fill(undefined).map(() => ({
     properties: {
-      crowdednessCategory: faker.random.arrayElement([
-        'not busy',
-        'busy',
-        'very busy',
-      ]),
-      name: faker.company.companyName(),
-      address: [
-        faker.address.streetAddress(),
-        faker.address.city(),
-        faker.address.zipCode(),
-      ].join(', '),
+      'Vessel Name': 'Test Vessel Name',
+      'Vessel Call Sign': 'Test Vessel Call Sign',
+      'Vessel Destination': 'Test Vessel Destination',
     },
   })),
 };
@@ -49,18 +36,9 @@ export const ActiveResult = Template.bind({});
 ActiveResult.args = {
   results: new Array(10).fill(undefined).map((_, i) => ({
     properties: {
-      placeId: i,
-      crowdednessCategory: faker.random.arrayElement([
-        'not busy',
-        'busy',
-        'very busy',
-      ]),
-      name: faker.company.companyName(),
-      address: [
-        faker.address.streetAddress(),
-        faker.address.city(),
-        faker.address.zipCode(),
-      ].join(', '),
+      'Vessel Name': 'Test Vessel Name',
+      'Vessel Call Sign': 'Test Vessel Call Sign',
+      'Vessel Destination': 'Test Vessel Destination',
     },
   })),
   selectedResult: { properties: { placeId: 2 } },

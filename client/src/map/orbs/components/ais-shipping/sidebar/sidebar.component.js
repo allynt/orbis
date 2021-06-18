@@ -68,9 +68,7 @@ export const AisShippingSidebarComponent = ({
               <Grid item xs={12}>
                 <List
                   subheader={
-                    <ListSubheader disableSticky>
-                      List of Shipping
-                    </ListSubheader>
+                    <ListSubheader disableSticky>List of Vessels</ListSubheader>
                   }
                 >
                   {isLoading &&
