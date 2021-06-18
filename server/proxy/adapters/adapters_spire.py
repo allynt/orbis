@@ -1,70 +1,49 @@
-import itertools
-import json
-import os
-
-import pandas as pd
-import geopandas as gpd
-
 from .adapters_base import BaseProxyDataAdapter
 """
-Uses the api at: https://www.aishub.net/api
+Uses the api at: https://api.sense.spire.com/vessels
 """
 
+# properties provided by the spire vessel API...
 SPIRE_PROPERTIES = {
-    "ship_and_cargo_type": "TYPE",
+    "accuracy": "GPS Geo-Location Accuracy (metres)",
+    # "ais_version": "ais_version",
     "call_sign": "Vessel Call Sign",
-    "width": "Vessel Width (metres)",
-    "draught": "Vessel Draught (metres)",
-    "name": "Vessel Name",
-    # "to_stern",
-    "speed": "Vessel Speed (knots)",
-    "maneuver": "Vessel maneuver code",
-    "flag": "Flag",
-    "msg_type": "Message Type",
-    # "to_bow",
-    # "to_starboard",
-    "status": "Vessel Navigation Status",
-    "imo": "International Maritime Organization Number",
-    "latitude": "latitude",
-    "longitude": "longitude",
-    "rot": "Rate of Turn",
+    # "class",
     "collection_type": "How the message was captured",
     "course": "Course (degrees)",
-    "destination": "Vessel Destination",
-    "heading": "Heading (degrees)",
-    "mmsi": "Maritime Mobile Service Identity",
-    "timestamp": "Timestamp",
-    "accuracy": "GPS Geo-Location Accuracy (metres)",
     "created_at": "Creation Date",
+    "destination": "Vessel Destination",
+    "draught": "Vessel Draught (metres)",
     "eta": "Estimated Time of Arrival",
+    "flag": "Flag",
+    "heading": "Heading (degrees)",
+    "general_classification": "Vessel Type",
+    "gross_tonnage": "Weight",
+    "id": "id",
+    "imo": "International Maritime Organization Number",
+    "individual classification": "Vessel Sub-Type",
     "length": "Vessel Length (metres)",
+    # "lifeboats": "lifeboats",
+    "maneuver": "Vessel maneuver code",
+    "mmsi": "Maritime Mobile Service Identity",
+    "navigational_status": "Navigational Status",
+    "name": "Vessel Name",
+    "person_capacity": "Person Capacity",
+    "rot": "Rate of Turn",
+    "ship_type": "Vessel Type",
+    "speed": "Vessel Speed (knots)",
+    "status": "Vessel Navigation Status",
+    # "to_bow",
     # "to_port",
+    # "to_starboard",
+    # "to_stern",
+    "width": "Vessel Width (metres)",
+    "timestamp": "Timestamp",
+    "updated_at": "Update Date",
 }  # yapf: disable
 
-REQUIRED_SPIRE_PROPERTIES = ["latitude", "longitude"]
-
+# possible property values used by the spire vessels API...
 SPIRE_PROPERTY_VALUES = {
-    "accuracy": {
-        "0": "low (>10 metres)",
-        "1": "high (<=10 metres)",
-    },
-    "msg_type": {
-        "1": "At anchor",
-        "2": "Not under command",
-        "3": "Restricted manoeuverability",
-        "5": "Moored",
-        "18": "Not defined (default)",
-        "19": "Not defined (default)",
-        "24": "Not defined (default)",
-        "27": "Not defined (default)",
-
-    },
-    "status": {
-        "0": "under way using engine",
-        "1": "at anchor",
-        "3": "restricted maneuverability",
-        "7": "engaged in fishing",
-    },
     "maneuver": {
         "0": "not available",
         "1": "not engaged in special maneuver",
@@ -161,64 +140,105 @@ class SpireMaritimeAdapter(BaseProxyDataAdapter):
 
     name = "spire"
 
+    def _reformat_data(self, data):
+        """
+        spire returns weird nested JSON that needs to be
+        cleaned up before converting to GeoJSON
+        """
+
+        dimensions_props = data.pop("dimenstions", {})
+        most_recent_voyage_props = data.pop("most_recent_voyage", {})
+        geometry_props = data.pop("last_known_position", {})
+        # predicted_geometry_props = data.pop("predicted_position", {})  # not dealing w/ for now
+
+        data.update(dimensions_props)
+        data.update(most_recent_voyage_props)
+        data.update(geometry_props)
+
+        return data
+
     def process_data(self, raw_data):
 
         # assume raw_data is the same shape as SAMPLE_DATA
 
         # yapf: disable
+
         processed_data = {
             "type": "FeatureCollection",
-            "features": [
-                {
-                    "id": i,
-                    "geometry": {
-                        "type": "Point",
-                        "coordinates": [
-                            float(rd.pop("longitude")),
-                            float(rd.pop("latitude")),
-                        ]
-                    },
-                    "properties": {
-                        SPIRE_PROPERTIES[k]:
-                        v if k not in SPIRE_PROPERTY_VALUES
-                        else SPIRE_PROPERTY_VALUES[k].get(str(v))
-                        for k, v in rd.items() if k in SPIRE_PROPERTIES
-                    }
-                }
-                for i, rd in enumerate(raw_data, start=1)
-            ]
+            "features": []
         }
+
+        for i, rd in enumerate(raw_data["data"], start=1):
+            d = self._reformat_data(rd)
+            processed_data["features"].append({
+                "id": d.pop("id", i),
+                "type": "Feature",
+                "geometry": d.pop("geometry"),
+                "properties": {
+                    SPIRE_PROPERTIES[k]:
+                    v if k not in SPIRE_PROPERTY_VALUES
+                    else SPIRE_PROPERTY_VALUES[k].get(str(v))
+                    for k, v in d.items() if k in SPIRE_PROPERTIES
+                }
+            })
 
         return processed_data
 
+
     @property
     def SAMPLE_DATA(self):
-        # (note this sample data is in the South China Sea)
 
-        # with pd.read_csv(
-        #     os.path.join(
-        #         os.path.abspath(os.path.dirname(__file__)),
-        #         "sample_data/DAIS_SouthChinaSea_20200820.csv"
-        #     ),
-        #     chunksize=100,
-        # ) as reader:
-        #     for df_chunk in reader:
-        #         yield df_chunk.dropna(
-        #             axis=0, subset=REQUIRED_SPIRE_PROPERTIES,
-        #         )
-
-        data_frame = pd.read_csv(
-            os.path.join(
-                os.path.abspath(os.path.dirname(__file__)),
-                # "sample_data/DAIS_SouthChinaSea_20200820.csv.gz",
-                "sample_data/Spire_Astrosat_SpratlyIslands_AIS_1106_1306_2021_merged.csv.gz",
-            ),
-            compression="gzip",
-        ).dropna(
-            axis=0, subset=REQUIRED_SPIRE_PROPERTIES
-        )
-
-        data_dict = json.loads(
-            data_frame.to_json(orient="records")
-        )
-        return data_dict
+        return {
+            "paging": {
+                'limit': 100,
+                'total': 416918,
+                'next': 'dGltZT0xNTAyNDc4MjI1LjYyMjI0NCxpZD1lNDdhZGM3MC1kNjFlLTQ1YmMtYjdhZi02YTFjOTA1NzA3MDE='
+            },
+            "data": [
+                {
+                    "created_at": "2017-08-11T19:24:21.193385+00:00",
+                    "updated_at": "2018-05-21T16:20:09.824959+00:00",
+                    "last_known_position": {
+                        "timestamp": "2018-05-21T13:36:56+00:00",
+                        "geometry": {
+                            "type": "Point",
+                            "coordinates": [
+                                -42.14087,
+                                -25.19044
+                            ]
+                        },
+                        "heading": 190,
+                        "speed": 8.2,
+                        "rot": 0,
+                        "accuracy": None,
+                        "collection_type": "satellite",
+                        "draught": None,
+                        "maneuver": 0,
+                        "course": 187.4
+                    },
+                    "most_recent_voyage": {
+                        "eta": "2018-04-25T21:00:00+00:00",
+                        "destination": "NOUAKCHOT"
+                    },
+                    "predicted_position": {
+                        "timestamp": "2018-05-21T17:51:05+00:00",
+                        "geometry": {
+                            "type": "Point",
+                            "coordinates": [
+                                -42.2236022408,
+                                -25.7641057924
+                            ]
+                        },
+                        "speed": 8.2,
+                        "course": 187.4,
+                        "confidence_radius": 50.3796
+                    },
+                    "general_classification": "Merchant",
+                    "individual_classification": "Bulk Carrier",
+                    "gross_tonnage": "0",
+                    "lifeboats": None,
+                    "person_capacity": None,
+                    "navigational_status": None
+                }
+            ]
+        }  # yapf: disable

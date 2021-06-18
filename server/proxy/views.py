@@ -82,6 +82,7 @@ class ProxyDataSourceView(APIView):
         )
 
         try:
+
             raw_data = proxy_data_source.get_data()
             processed_data = proxy_data_source.process_data(raw_data)
 

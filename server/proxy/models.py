@@ -7,6 +7,7 @@ from django.utils.translation import gettext as _
 from rest_framework import status
 
 from proxy.adapters import PROXY_DATA_ADAPTER_REGISTRY
+from proxy.authentication import ProxyAuthentication
 
 ###########
 # helpers #
@@ -89,6 +90,37 @@ class ProxyDataSource(models.Model):
     proxy_method = models.CharField(
         max_length=16, blank=False, null=False, choices=ProxyMethodType.choices
     )
+    proxy_authentication_type = models.CharField(
+        max_length=16,
+        blank=True,
+        null=True,
+        choices=ProxyAuthentication.AuthenticationTypes.choices,
+        help_text=_(
+            "The type of authentication to implement. "
+            "(Note that if URL_PARAM is selected, it is assumed that the authentication token appears in proxy_params.)"
+        )
+    )
+    proxy_authentication_token = models.CharField(
+        max_length=512,
+        blank=True,
+        null=True,
+        help_text=_(
+            "The authentication token (for Bearer or ApiKey Authentication)."
+        )
+    )
+    proxy_authentication_username = models.CharField(
+        max_length=256,
+        blank=True,
+        null=True,
+        help_text=_("The authentication username (for Basic Authentication).")
+    )
+    proxy_authentication_password = models.CharField(
+        max_length=256,
+        blank=True,
+        null=True,
+        help_text=_("The authentication password (for Basic Authentication).")
+    )
+
     proxy_params = models.JSONField(
         blank=True,
         null=True,
@@ -98,9 +130,6 @@ class ProxyDataSource(models.Model):
             "(including any authentication tokens)"
         )
     )
-    # TODO: THIS ASSUMES PROXY AUTHENTICATION IS DONE VIA URL PARAMS
-    # TODO: SHOULD ADD SUPPORT FOR ADDING TOKEN IN HEADERS
-    # TODO: proxy_authentication_method = whatever...
 
     adapter_name = models.CharField(
         max_length=64,
@@ -126,14 +155,15 @@ class ProxyDataSource(models.Model):
         return (self.source_id, )
 
     def get_data(self):
-        # TODO: THIS IS THE HACKIEST HACK IN ALL OF HACK-LAND
-        if self.adapter_name == "spire":
-            return self.adapter.SAMPLE_DATA
+        """
+        Requests data from the proxied API
+        """
 
         # TODO: REMOTE PAGINATION
         response = requests.request(
             self.proxy_method,
             self.proxy_url,
+            auth=ProxyAuthentication(self),
             params=self.proxy_params,
         )
         response.raise_for_status()
@@ -141,6 +171,6 @@ class ProxyDataSource(models.Model):
 
     def process_data(self, data):
         """
-        Given a chunk of JSON, turn it into GeoJSON suitable for orbis
+        Takes the data returned by `get_data` and turns it into GeoJSON suitable for orbis
         """
         return self.adapter.process_data(data)
