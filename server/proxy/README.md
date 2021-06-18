@@ -3,6 +3,7 @@
 - [orbis](#proxy)
   - [Overview](#overview)
   - [Features](#features)
+  - [Models] (#models)
   - [Metadata](#metadata)
 
 ## Overview
@@ -14,18 +15,29 @@ This **proxy-data-server** acts as a registry of `DataSources` that are fetched 
 * Hooks into the existing **orbis** and **data-sources-directory** data-licencing system; simply create a `DataSource` in **data-sources-directory** that points to a `ProxyDataSource` in **proxy-data-server**.
 * Responses are paginated by default.
 
+## Models
+
+A `ProxyDataSource` uses the same `source_id` structure as any other `DataSource`.  The following fields can be used to describe how to connect to the remote (proxied) server:
+
+* `proxy_url`: the remote URL
+* `proxy_method`: whether the request should be "GET" or "POST"
+* `proxy_authentication_type`: the type of authentication the remote server uses (including "URL_Param", described below)
+* `proxy_authetnication_token`: the authentication token; used by _some_ authentication types
+* `proxy_authetnication_username`: the authentication username; used by _some_ authentication types
+* `proxy_authetnication_password`: the authentication password; used by _some_ authentication types
+* `proxy_params`: a set of query parameters to be sent as part of the proxied request
+* `adapter_name`: the name of an adapter to convert the proxied result to **orbis**-ready GeoJSON; the adapter performs post-processing
+
 ## Metadata
 
 The metadata of the `DataSource` ought to look something like this:
 
-TODO: I AM HERE
 
 ```Javascript
 {
-{
-    "url": "http://localhost:8000/api/proxy/data/astrosat/proxy/exactearth/latest?page={p}",
+    "url": "https://api.staging.orbis.astrosat.net/api/proxy/data/astrosat/proxy/exactearth/latest/?page={p}",
     "name": "exactearth",
-    "label": "AIS Data (from exactEarth)",
+    "label": "Live AIS Data (from exactEarth)",
     "request_strategy": "manual",
     "application": {
         "orbis": {
@@ -35,14 +47,14 @@ TODO: I AM HERE
             "layer": {
                 "name": "GeoJsonClusteredIconLayer",
                 "props": {
-                    "config": "proxyConfig"
+                    "config": "aisShippingConfig"
                 }
             },
             "map_component": {
-                "name": "ActionForHelpMapComponent"
+                "name": "AisShippingMapComponent"
             },
             "sidebar_component": {
-                "name": "ProxySidebarComponent",
+                "name": "AisShippingSidebarComponent",
                 "props": {
                     "searchRadius": 3
                 }
@@ -51,7 +63,4 @@ TODO: I AM HERE
     },
     "description": "AIS live data from exactEarth"
 }
-}
 ```
-
-The metadata of
