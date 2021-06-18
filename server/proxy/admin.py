@@ -103,5 +103,8 @@ class ProxyDataSourceAdmin(admin.ModelAdmin):
                     "URL-PARAM Authentication will not use token nor username nor password."
                 )
                 self.message_user(request, msg, level=messages.WARNING)
+            if not obj.proxy_params:
+                msg = _("URL-PARAM Authentication requires parameters.")
+                self.message_user(request, msg, level=messages.WARNING)
 
         return super().save_model(request, obj, form, change)

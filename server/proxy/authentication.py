@@ -38,7 +38,7 @@ class ProxyAuthentication(AuthBase):
         elif proxy_authentication_type == self.AuthenticationTypes.APIKEY:
             request.headers[
                 "Authorization"
-            ] = "api-key" + self.proxy_data_source.proxy_authentication_token
+            ] = "api-key " + self.proxy_data_source.proxy_authentication_token
 
         else:
             raise NotImplementedError(proxy_authentication_type)
