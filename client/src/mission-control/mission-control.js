@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import {
   Grid,
@@ -16,6 +16,9 @@ import {
 } from 'mission-control/mission-control-slice';
 
 import { userSelector } from '../accounts/accounts.selectors';
+import { VIEWS } from './constants';
+import { MainPanel } from './main-panel/main-panel.component';
+import { SidePanel } from './side-panel/side-panel.component';
 
 const useDialogStyles = makeStyles(theme => ({
   root: {
@@ -48,6 +51,8 @@ export const MissionControl = () => {
   const dialogStyles = useDialogStyles({});
   const titleStyles = useTitleStyles();
 
+  const [mainPanelView, setMainPanelView] = useState(VIEWS.users);
+
   const handleClose = () => {
     return dispatch(toggleMissionControlDialog(false));
   };
@@ -62,8 +67,15 @@ export const MissionControl = () => {
       <DialogTitle classes={titleStyles}>{`Hello ${user?.name}`}</DialogTitle>
       <DialogContent>
         <Grid container direction="row" justify="space-between">
-          <Grid item>Side Panel</Grid>
-          <Grid item>Main Panel</Grid>
+          <Grid item>
+            <SidePanel
+              mainPanelView={mainPanelView}
+              setMainPanelView={setMainPanelView}
+            />
+          </Grid>
+          <Grid item>
+            <MainPanel mainPanelView={mainPanelView} />
+          </Grid>
         </Grid>
       </DialogContent>
     </Dialog>
