@@ -17,7 +17,7 @@ EXACTEARTH_PROPERTIES = {
     # "eeid": "exactEarth Identifier",
     # "eta": "Estimated Time of Arrival",  # TODO: THIS VALUE SEEMS WRONG
     # "flag_code": "Country of Registration Code",
-    "flag_country": "Country of Registration",
+    "flag_country": "Flag",
     "heading": "Heading (degrees)",
     "imo": "International Maritime Organization",
     "latitude": "latitude",

@@ -18,9 +18,9 @@ Result.args = {
   selected: true,
   result: {
     properties: {
-      'Vessel Name': 'Test Vessel Name',
-      'Vessel Call Sign': 'Test Vessel Call Sign',
-      'Vessel Destination': 'Test Vessel Destination',
+      'Vessel Name': 'Lollipop',
+      'Vessel Type': 'Pleasure/Leisure',
+      'Vessel Flag': 'United States of America',
     },
   },
 };
@@ -35,9 +35,9 @@ export const Categories = ({ result, ...rest }) => (
 Categories.args = {
   result: {
     properties: {
-      'Vessel Name': 'Test Vessel Name',
-      'Vessel Call Sign': 'Test Vessel Call Sign',
-      'Vessel Destination': 'Test Vessel Destination',
+      'Vessel Name': 'Lollipop',
+      'Vessel Type': 'Pleasure/Leisure',
+      'Vessel Flag': 'United States of America',
     },
   },
 };
