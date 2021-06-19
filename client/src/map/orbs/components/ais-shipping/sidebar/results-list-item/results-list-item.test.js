@@ -23,13 +23,15 @@ describe('<ResultsListItem />', () => {
   it('Shows the vessel type', () => {
     const result = { properties: { 'Vessel Type': 'Pleasure/Leisure' } };
     const { getByText } = renderComponent({ result });
-    expect(getByText(result.properties['Vessel Type'])).toBeInTheDocument();
+    expect(
+      getByText('Type: ' + result.properties['Vessel Type']),
+    ).toBeInTheDocument();
   });
 
   it('Shows the vessel flag', () => {
     const result = { properties: { Flag: 'United States of America' } };
     const { getByText } = renderComponent({ result });
-    expect(getByText(result.properties['Flag'])).toBeInTheDocument();
+    expect(getByText('Flag: ' + result.properties['Flag'])).toBeInTheDocument();
   });
 
   it('Shows a skeleton if loading', () => {
