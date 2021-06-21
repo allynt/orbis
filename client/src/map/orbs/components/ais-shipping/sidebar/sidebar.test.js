@@ -9,17 +9,17 @@ const RESULTS = [
   {
     id: 1,
     properties: {
-      'Vessel Name': 'Test Vessel Name 1',
-      'Vessel Call Sign': 'Test Vessel Call Sign 1',
-      'Vessel Destination': 'Test Vessel Destination 1',
+      'Vessel Name': 'Lollipop',
+      'Vessel Type': 'Pleasure/Leisure',
+      Flag: 'United States of America',
     },
   },
   {
     id: 2,
     properties: {
-      'Vessel Name': 'Test Vessel Name 2',
-      'Vessel Call Sign': 'Test Vessel Call Sign 2',
-      'Vessel Destination': 'Test Vessel Destination 2',
+      'Vessel Name': 'The Black Pearl',
+      'Vessel Type': 'Pirate',
+      Flag: 'Barbados',
     },
   },
 ];
@@ -64,10 +64,10 @@ describe('<AisShippingSidebarComponent />', () => {
     RESULTS.forEach(result => {
       expect(getByText(result.properties['Vessel Name'])).toBeInTheDocument();
       expect(
-        getByText(result.properties['Vessel Call Sign']),
+        getByText('Type: ' + result.properties['Vessel Type']),
       ).toBeInTheDocument();
       expect(
-        getByText(result.properties['Vessel Destination']),
+        getByText('Flag: ' + result.properties['Flag']),
       ).toBeInTheDocument();
     });
   });
@@ -101,7 +101,7 @@ describe('<AisShippingSidebarComponent />', () => {
   it('hides the button and results when not visible', () => {
     const { queryByRole } = renderComponent({ visible: false });
     expect(
-      queryByRole('button', { name: 'Find Supermarkets' }),
+      queryByRole('button', { name: 'Request Data' }),
     ).not.toBeInTheDocument();
     expect(queryByRole('list')).not.toBeInTheDocument();
   });
@@ -118,12 +118,12 @@ describe('<AisShippingSidebarComponent />', () => {
     });
     expect(
       getByRole('button', {
-        name: /Test\sVessel\sName\s1/i,
+        name: /Lollipop/i,
       }),
     ).toHaveClass('Mui-selected');
-    expect(
-      getByRole('button', { name: /Test\sVessel\sName\s2/i }),
-    ).not.toHaveClass('selected');
+    expect(getByRole('button', { name: /The\sBlack\sPearl/i })).not.toHaveClass(
+      'selected',
+    );
   });
 
   it('Does not show pagination if pages <= 1', () => {

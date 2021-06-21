@@ -31,7 +31,7 @@ const AisShippingMapComponent = ({ source }) => {
     >
       <FeatureDetail
         features={pickedObjects.map(obj => obj.properties)}
-        title="Shipping"
+        title="Vessel Information"
       />
     </Popup>
   );

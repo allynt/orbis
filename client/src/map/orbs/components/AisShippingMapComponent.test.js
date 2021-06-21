@@ -41,7 +41,9 @@ describe('<AisShippingMapComponent />', () => {
   it('should display a popup of feature details', () => {
     const { getByText, getByRole } = renderComponent();
 
-    expect(getByRole('heading', { name: 'Shipping' })).toBeInTheDocument();
+    expect(
+      getByRole('heading', { name: 'Vessel Information' }),
+    ).toBeInTheDocument();
 
     expect(getByText('Vessel Name:')).toBeInTheDocument();
     expect(getByText('Test Vessel')).toBeInTheDocument();

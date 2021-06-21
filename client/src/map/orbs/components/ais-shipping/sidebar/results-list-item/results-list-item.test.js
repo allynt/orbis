@@ -15,25 +15,23 @@ const renderComponent = ({ result = undefined, isLoading = false }) => {
 
 describe('<ResultsListItem />', () => {
   it('Shows the vessel name', () => {
-    const result = { properties: { 'Vessel Name': 'Test Ship' } };
+    const result = { properties: { 'Vessel Name': 'Lollipop' } };
     const { getByText } = renderComponent({ result });
     expect(getByText(result.properties['Vessel Name'])).toBeInTheDocument();
   });
 
-  it('Shows the vessel call sign', () => {
-    const result = { properties: { 'Vessel Call Sign': 'Test Call Sign' } };
+  it('Shows the vessel type', () => {
+    const result = { properties: { 'Vessel Type': 'Pleasure/Leisure' } };
     const { getByText } = renderComponent({ result });
     expect(
-      getByText(result.properties['Vessel Call Sign']),
+      getByText('Type: ' + result.properties['Vessel Type']),
     ).toBeInTheDocument();
   });
 
-  it('Shows the vessel destination', () => {
-    const result = { properties: { 'Vessel Destination': 'Test Destination' } };
+  it('Shows the vessel flag', () => {
+    const result = { properties: { Flag: 'United States of America' } };
     const { getByText } = renderComponent({ result });
-    expect(
-      getByText(result.properties['Vessel Destination']),
-    ).toBeInTheDocument();
+    expect(getByText('Flag: ' + result.properties['Flag'])).toBeInTheDocument();
   });
 
   it('Shows a skeleton if loading', () => {
@@ -42,7 +40,7 @@ describe('<ResultsListItem />', () => {
   });
 
   it('Calls on click with the feature when clicked', () => {
-    const result = { id: '123', properties: { 'Vessel Name': 'Test Ship' } };
+    const result = { id: '123', properties: { 'Vessel Name': 'Lollipop' } };
     const { onClick, getByRole } = renderComponent({
       result,
     });
