@@ -41,8 +41,14 @@ const useStyles = makeStyles(theme => ({
 const SidePanelListItem = ({ view, mainPanelView, onClick, Icon }) => {
   const isSelected = mainPanelView === view;
   const styles = useStyles({ isSelected });
+
+  const handleClick = view => {
+    if (mainPanelView === view) return;
+    return onClick(view);
+  };
+
   return (
-    <ListItem onClick={() => onClick(view)} classes={styles}>
+    <ListItem onClick={() => handleClick(view)} classes={styles}>
       <ListItemIcon aria-label={`${view} Icon`}>
         {Icon ? <Icon className={styles.icon} /> : null}
       </ListItemIcon>

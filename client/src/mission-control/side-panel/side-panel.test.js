@@ -20,10 +20,11 @@ const renderComponent = ({ mainPanelView = 'Default View' }) => {
 
 describe('MissionControlSidePanel', () => {
   it('renders a side panel', () => {
-    const { getByText } = renderComponent({});
+    const { getByText, getByLabelText } = renderComponent({});
 
     Object.values(VIEWS).forEach(view => {
       expect(getByText(view)).toBeInTheDocument();
+      expect(getByLabelText(`${view} Icon`)).toBeInTheDocument();
     });
   });
 

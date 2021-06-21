@@ -21,17 +21,14 @@ const useStyles = makeStyles(theme => ({
 export const SidePanel = ({ mainPanelView, setMainPanelView }) => {
   const styles = useStyles({});
 
-  const handleClick = view => {
-    if (mainPanelView === view) return;
-    return setMainPanelView(view);
-  };
+  const handleClick = view => setMainPanelView(view);
 
   const getIcon = view => {
     switch (view) {
       case VIEWS.users:
         return UsersIcon;
       default:
-        return null;
+        return undefined;
     }
   };
 
