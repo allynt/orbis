@@ -21,13 +21,10 @@ import { MainPanel } from './main-panel/main-panel.component';
 import { SidePanel } from './side-panel/side-panel.component';
 
 const useDialogStyles = makeStyles(theme => ({
-  root: {
-    maxWidth: '100%',
-  },
   paper: {
     width: `calc(100% - ${theme.typography.pxToRem(96)})`,
     height: `calc(100% - ${theme.typography.pxToRem(96)})`,
-    maxHeight: '100%',
+    margin: '0',
     backgroundColor: theme.palette.background.default,
     border: `2px solid ${theme.palette.primary.main}`,
     borderRadius: theme.typography.pxToRem(16),

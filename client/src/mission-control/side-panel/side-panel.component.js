@@ -9,7 +9,6 @@ import {
 } from '@astrosat/astrosat-ui';
 
 import { VIEWS } from '../constants';
-import { ReactComponent as UsersIcon } from './users-icon.svg';
 
 export const SidePanel = ({ mainPanelView, setMainPanelView }) => {
   const handleClick = view => {
@@ -18,12 +17,10 @@ export const SidePanel = ({ mainPanelView, setMainPanelView }) => {
   };
 
   return (
-    <List aria-label="mission control views">
+    <List aria-label="mission control sidebar options">
       {Object.values(VIEWS).map(view => (
         <ListItem key={view} onClick={() => handleClick(view)}>
-          <ListItemIcon aria-label={`${view} Icon`}>
-            <UsersIcon />
-          </ListItemIcon>
+          <ListItemIcon aria-label={`${view} Icon`}></ListItemIcon>
           <ListItemText
             primary={<Typography component="h2">{view}</Typography>}
           />
