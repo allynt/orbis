@@ -43,7 +43,7 @@ describe('MissionControlSidePanel', () => {
     expect(setMainPanelView).toHaveBeenCalledWith(VIEWS.users);
   });
 
-  it('does not call slick handler if view is already selected', () => {
+  it('does not call click handler if view is already selected', () => {
     const { getByText, setMainPanelView } = renderComponent({
       mainPanelView: VIEWS.users,
     });
