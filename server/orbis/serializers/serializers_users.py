@@ -6,6 +6,9 @@ from orbis.models import OrbisUserProfile, OrbisUserFeedbackRecord
 
 
 class OrbisUserFeedbackRecordSerializer(serializers.ModelSerializer):
+    """
+    This serializer is used when explicitly adding UserFeedback
+    """
     class Meta:
         model = OrbisUserFeedbackRecord
         fields = [
@@ -15,7 +18,6 @@ class OrbisUserFeedbackRecordSerializer(serializers.ModelSerializer):
             "source_ids",
             "profile",
         ]
-        list_serializer_class = WritableNestedListSerializer
 
     id = serializers.IntegerField(read_only=True)
 
@@ -24,6 +26,26 @@ class OrbisUserFeedbackRecordSerializer(serializers.ModelSerializer):
         queryset=OrbisUserProfile.objects.all(),
         write_only=True,
     )
+
+
+class OrbisUserFeedbackRecordNestedSerializer(serializers.ModelSerializer):
+    """
+    This serializer is used in every other situation; it is a writeable nested serializer
+    and, importantly, b/c it is only used as part of OrbisUserProfileSerializer, I don't
+    have to struggle w/ passing context around for the ContextVariableDefault field above
+    (as per https://github.com/encode/django-rest-framework/issues/2555)
+    """
+    class Meta:
+        model = OrbisUserFeedbackRecord
+        fields = [
+            "id",
+            "timestamp",
+            "provided_feedback",
+            "source_ids",
+        ]
+        list_serializer_class = WritableNestedListSerializer
+
+    id = serializers.IntegerField(read_only=True)
 
     def to_internal_value(self, data):
         # put the read-only "id" field back, since it's used to
@@ -51,19 +73,7 @@ class OrbisUserProfileSerializer(serializers.ModelSerializer):
             "feedback_records",
         ]
 
-    feedback_records = OrbisUserFeedbackRecordSerializer(many=True)
-
-    def __init__(self, *args, **kwargs):
-
-        super().__init__(*args, **kwargs)
-
-        # get the profile so that any ContextVariableDefault fields
-        # in nested serializers work (in-case I don't access those
-        # nested serializers via a custom view such as OrbisUserFeedbackView)
-
-        self.fields["feedback_records"].context.update({
-            "profile": self.instance or self.context["user"].orbis_profile
-        })
+    feedback_records = OrbisUserFeedbackRecordNestedSerializer(many=True)
 
     def update(self, instance, validated_data):
 
@@ -71,6 +81,7 @@ class OrbisUserProfileSerializer(serializers.ModelSerializer):
         feedback_records_data = validated_data.pop(
             feedback_records_serializer.source
         )
+
         feedback_records_serializer.crud(
             instances=instance.feedback_records.all(),
             validated_data=feedback_records_data,
