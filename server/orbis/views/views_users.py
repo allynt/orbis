@@ -15,7 +15,7 @@ class IsAdminOrSelf(BasePermission):
         return user.is_superuser or user == view.user
 
 
-class OrbisUserFeedbackView(generics.CreateAPIView):
+class OrbisUserFeedbackRecordView(generics.CreateAPIView):
 
     permission_classes = [IsAuthenticated, IsAdminOrSelf]
     serializer_class = OrbisUserFeedbackRecordSerializer
