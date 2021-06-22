@@ -29,9 +29,13 @@ describe('<ResultsListItem />', () => {
   });
 
   it('Shows the vessel flag', () => {
-    const result = { properties: { Flag: 'United States of America' } };
+    const result = {
+      properties: { 'Vessel Flag': 'United States of America' },
+    };
     const { getByText } = renderComponent({ result });
-    expect(getByText('Flag: ' + result.properties['Flag'])).toBeInTheDocument();
+    expect(
+      getByText('Flag: ' + result.properties['Vessel Flag']),
+    ).toBeInTheDocument();
   });
 
   it('Shows a skeleton if loading', () => {
