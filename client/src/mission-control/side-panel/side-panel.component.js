@@ -2,7 +2,7 @@ import React from 'react';
 
 import { List, makeStyles } from '@astrosat/astrosat-ui';
 
-import { VIEWS } from '../constants';
+import { VIEWS } from '../mission-control.constants';
 import { ReactComponent as UsersIcon } from './side-panel-icons/users-icon.svg';
 import SidePanelListItem from './side-panel-list-item.component';
 

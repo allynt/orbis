@@ -3,7 +3,7 @@ import React from 'react';
 import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
-import { VIEWS } from '../constants';
+import { VIEWS } from '../mission-control.constants';
 import { SidePanel } from './side-panel.component';
 
 const renderComponent = ({ mainPanelView = 'Default View' }) => {

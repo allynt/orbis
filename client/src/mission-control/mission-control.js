@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import {
   Grid,
@@ -16,9 +16,28 @@ import {
 } from 'mission-control/mission-control-slice';
 
 import { userSelector } from '../accounts/accounts.selectors';
-import { VIEWS } from './constants';
+import { VIEWS, ADMIN_STATUS, DIALOG_VIEW } from './mission-control.constants';
 import { MainPanel } from './main-panel/main-panel.component';
 import { SidePanel } from './side-panel/side-panel.component';
+
+import { updateUser } from '../accounts/accounts.slice';
+
+import {
+  createCustomerUser,
+  deleteCustomerUser,
+  fetchCustomer,
+  fetchCustomerUsers,
+  inviteCustomerUser,
+  selectActiveUsers,
+  selectAvailableLicences,
+  selectCurrentCustomer,
+  selectCustomerUsers,
+  selectLicenceInformation,
+  selectOneAdminRemaining,
+  selectPendingUsers,
+  updateCustomer,
+  updateCustomerUser,
+} from './mission-control-slice.js';
 
 const useDialogStyles = makeStyles(theme => ({
   paper: {
@@ -45,10 +64,38 @@ export const MissionControl = () => {
   const dispatch = useDispatch();
   const isVisible = useSelector(selectIsMissionControlDialogVisible);
   const user = useSelector(userSelector);
+  const currentCustomer = useSelector(selectCurrentCustomer);
+  const customerUsers = useSelector(selectCustomerUsers);
+  const licenceInformation = useSelector(selectLicenceInformation);
+  const availableLicences = useSelector(selectAvailableLicences);
+  const activeUsers = useSelector(selectActiveUsers);
+  const pendingUsers = useSelector(selectPendingUsers);
+  const oneAdminRemaining = useSelector(selectOneAdminRemaining);
+  const [visiblePanel, setVisiblePanel] = useState(VIEWS.users);
+  const [dialogForm, setDialogForm] = useState(null);
+
   const dialogStyles = useDialogStyles({});
   const titleStyles = useTitleStyles();
 
+  const quickViewData = {
+    active: activeUsers?.length,
+    pending: pendingUsers?.length,
+    available: availableLicences?.length,
+  };
+
   const [mainPanelView, setMainPanelView] = useState(VIEWS.users);
+
+  useEffect(() => {
+    if (!currentCustomer) {
+      dispatch(fetchCustomer(user));
+    }
+  }, [user, currentCustomer, dispatch]);
+
+  useEffect(() => {
+    if (currentCustomer && !customerUsers) {
+      dispatch(fetchCustomerUsers(currentCustomer));
+    }
+  }, [currentCustomer, customerUsers, dispatch]);
 
   const handleClose = () => {
     return dispatch(toggleMissionControlDialog(false));
@@ -71,7 +118,38 @@ export const MissionControl = () => {
             />
           </Grid>
           <Grid item>
-            <MainPanel mainPanelView={mainPanelView} />
+            <MainPanel
+              user={user}
+              mainPanelView={mainPanelView}
+              activeUsers={activeUsers}
+              pendingUsers={pendingUsers}
+              oneAdminRemaining={oneAdminRemaining}
+              quickViewData={quickViewData}
+              customer={currentCustomer}
+              onChangeRoleClick={user =>
+                dispatch(
+                  updateCustomerUser({
+                    ...user,
+                    type:
+                      user.type === ADMIN_STATUS.manager
+                        ? ADMIN_STATUS.member
+                        : ADMIN_STATUS.manager,
+                  }),
+                )
+              }
+              onEditUserClick={user =>
+                setDialogForm({ type: DIALOG_VIEW.editUser, user })
+              }
+              onDeleteUserClick={user =>
+                setDialogForm({ type: DIALOG_VIEW.deleteUser, user })
+              }
+              onResendInvitationClick={user =>
+                dispatch(inviteCustomerUser(user))
+              }
+              onWithdrawInvitationClick={user =>
+                setDialogForm({ type: DIALOG_VIEW.withdrawInvitation, user })
+              }
+            />
           </Grid>
         </Grid>
       </DialogContent>
