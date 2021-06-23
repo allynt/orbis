@@ -20,8 +20,11 @@ import * as yup from 'yup';
 import { Form } from 'components';
 import { FIELD_NAMES, name } from 'utils/validators';
 
-import { ADMIN_STATUS } from '../admin.constants';
-import { getCheckboxLicences, getUpdatedLicenceIds } from '../licence-utils';
+import { ADMIN_STATUS } from '../../mission-control.constants';
+import {
+  getCheckboxLicences,
+  getUpdatedLicenceIds,
+} from '../../main-panel/main-panel-views/licence-utils';
 
 const validationSchema = yup.object({
   [FIELD_NAMES.name]: name,

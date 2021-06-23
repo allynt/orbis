@@ -5,6 +5,9 @@ import {
   Dialog,
   DialogTitle,
   DialogContent,
+  CloseIcon,
+  IconButton,
+  styled,
   makeStyles,
 } from '@astrosat/astrosat-ui';
 
@@ -21,6 +24,13 @@ import { MainPanel } from './main-panel/main-panel.component';
 import { SidePanel } from './side-panel/side-panel.component';
 
 import { updateUser } from '../accounts/accounts.slice';
+
+import {
+  CreateUserForm,
+  DeleteUserForm,
+  EditUserForm,
+  WithdrawUserInvitationForm,
+} from './mission-control-forms';
 
 import {
   createCustomerUser,
@@ -60,6 +70,11 @@ const useTitleStyles = makeStyles(theme => ({
   },
 }));
 
+const DialogCloseButton = styled(IconButton)({
+  position: 'absolute',
+  right: 0,
+});
+
 export const MissionControl = () => {
   const dispatch = useDispatch();
   const isVisible = useSelector(selectIsMissionControlDialogVisible);
@@ -85,6 +100,53 @@ export const MissionControl = () => {
 
   const [mainPanelView, setMainPanelView] = useState(VIEWS.users);
 
+  const getDialogForm = () => {
+    switch (dialogForm?.type) {
+      case DIALOG_VIEW.createUser:
+        return (
+          <CreateUserForm
+            licenceInformation={licenceInformation}
+            existingEmails={customerUsers?.map(cu => cu.user.email)}
+            onSubmit={handleCreateUserFormSubmit}
+          />
+        );
+      case DIALOG_VIEW.withdrawInvitation:
+        return (
+          <WithdrawUserInvitationForm
+            user={dialogForm.user}
+            withdrawInvitation={user => {
+              dispatch(deleteCustomerUser(user));
+              setDialogForm(null);
+            }}
+            onCancelClick={() => setDialogForm(null)}
+          />
+        );
+      case DIALOG_VIEW.editUser:
+        return (
+          <EditUserForm
+            user={dialogForm.user}
+            customer={currentCustomer}
+            availableLicences={availableLicences}
+            oneAdminRemaining={oneAdminRemaining}
+            editUser={editedUser => {
+              dispatch(updateCustomerUser(editedUser));
+              setDialogForm(null);
+            }}
+          />
+        );
+      case DIALOG_VIEW.deleteUser:
+        return (
+          <DeleteUserForm
+            user={dialogForm.user}
+            deleteUser={user => dispatch(deleteCustomerUser(user))}
+            close={() => setDialogForm(null)}
+          />
+        );
+      default:
+        return null;
+    }
+  };
+
   useEffect(() => {
     if (!currentCustomer) {
       dispatch(fetchCustomer(user));
@@ -96,6 +158,11 @@ export const MissionControl = () => {
       dispatch(fetchCustomerUsers(currentCustomer));
     }
   }, [currentCustomer, customerUsers, dispatch]);
+
+  const handleCreateUserFormSubmit = values => {
+    setDialogForm(null);
+    dispatch(createCustomerUser(values));
+  };
 
   const handleClose = () => {
     return dispatch(toggleMissionControlDialog(false));
@@ -153,6 +220,20 @@ export const MissionControl = () => {
           </Grid>
         </Grid>
       </DialogContent>
+      <Dialog
+        open={!!dialogForm}
+        onClose={() => setDialogForm(null)}
+        maxWidth="md"
+      >
+        <DialogCloseButton
+          onClick={() => setDialogForm(null)}
+          aria-label="Close"
+        >
+          <CloseIcon />
+        </DialogCloseButton>
+        <DialogTitle>{dialogForm?.type}</DialogTitle>
+        <DialogContent>{getDialogForm()}</DialogContent>
+      </Dialog>
     </Dialog>
   );
 };
