@@ -1,17 +1,5 @@
 import React from 'react';
 
-import {
-  Box,
-  CloseIcon,
-  Dialog,
-  DialogContent,
-  DialogTitle,
-  IconButton,
-  Slide,
-  styled,
-  ThemeProvider,
-} from '@astrosat/astrosat-ui';
-
 import { VIEWS } from '../mission-control.constants';
 import UsersView from './main-panel-views/users-view/users-view.component';
 
@@ -47,7 +35,7 @@ export const MainPanel = ({
         />
       );
     case VIEWS.other:
-      return <h1>I am an other view</h1>;
+      return <h1>I am another view</h1>;
     default:
       return undefined;
   }
