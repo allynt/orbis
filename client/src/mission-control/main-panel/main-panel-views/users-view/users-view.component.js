@@ -2,13 +2,13 @@ import React from 'react';
 
 import { Box } from '@astrosat/astrosat-ui';
 
-import ContentWrapper from './content-wrapper';
+import ContentWrapper from './content-wrapper.component';
 
 import { ActiveUsersBoard } from './active-users-board/active-users-board.component';
 import { PendingInvitationsBoard } from './pending-invitations-board/pending-invitations-board.component';
 
 /**
- * @typedef HomeViewProps
+ * @typedef UsersViewProps
  * @property {import('typings/orbis').User} [currentUser]
  * @property {import('typings/orbis').CustomerUser[]} [activeUsers]
  * @property {import('typings/orbis').CustomerUser[]} [pendingUsers]
@@ -16,6 +16,7 @@ import { PendingInvitationsBoard } from './pending-invitations-board/pending-inv
  * @property {import('./active-users-board/quick-view/quick-view.component').QuickViewData} [quickViewData]
  * @property {import('typings/orbis').Customer} [customer]
  * @property {(customerUser: import('typings/orbis').CustomerUser) => void} [onChangeRoleClick]
+ * @property {(type: string) => void} [onCreateUserClick]
  * @property {(customerUser: import('typings/orbis').CustomerUser) => void} [onEditUserClick]
  * @property {(customerUser: import('typings/orbis').CustomerUser) => void} [onResendInvitationClick]
  * @property {(customerUser: import('typings/orbis').CustomerUser) => void} [onWithdrawInvitationClick]
@@ -23,7 +24,7 @@ import { PendingInvitationsBoard } from './pending-invitations-board/pending-inv
  */
 
 /**
- * @param {HomeViewProps} props
+ * @param {UsersViewProps} props
  */
 const UsersView = ({
   currentUser,

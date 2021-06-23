@@ -14,7 +14,7 @@ import {
   TriangleIcon,
 } from '@astrosat/astrosat-ui';
 
-import { MissionControlTableCell } from 'mission-control/mission-control-table/mission-control-table-cell.component';
+import { UsersViewTableCell } from '../users-view-table-cell.component';
 
 import { ADMIN_STATUS } from 'mission-control/mission-control.constants';
 import { getLicenceInfo, getUserLicences } from '../../licence-utils';
@@ -29,13 +29,11 @@ const USER_LABELS = {
 const TableHeader = () => (
   <TableHead>
     <TableRow>
-      <MissionControlTableCell align="left">User</MissionControlTableCell>
-      <MissionControlTableCell align="left">
-        Activated Licences
-      </MissionControlTableCell>
-      <MissionControlTableCell align="left">Email</MissionControlTableCell>
-      <MissionControlTableCell align="left">Type</MissionControlTableCell>
-      <MissionControlTableCell align="left" />
+      <UsersViewTableCell align="left">User</UsersViewTableCell>
+      <UsersViewTableCell align="left">Activated Licences</UsersViewTableCell>
+      <UsersViewTableCell align="left">Email</UsersViewTableCell>
+      <UsersViewTableCell align="left">Type</UsersViewTableCell>
+      <UsersViewTableCell align="left" />
     </TableRow>
   </TableHead>
 );
@@ -102,16 +100,10 @@ const UserRow = ({
 
   return (
     <TableRow>
-      <MissionControlTableCell>
-        {customerUser?.user?.name}
-      </MissionControlTableCell>
-      <MissionControlTableCell>
-        {getLicenceInfo(licences)}
-      </MissionControlTableCell>
-      <MissionControlTableCell>
-        {customerUser?.user?.email}
-      </MissionControlTableCell>
-      <MissionControlTableCell>
+      <UsersViewTableCell>{customerUser?.user?.name}</UsersViewTableCell>
+      <UsersViewTableCell>{getLicenceInfo(licences)}</UsersViewTableCell>
+      <UsersViewTableCell>{customerUser?.user?.email}</UsersViewTableCell>
+      <UsersViewTableCell>
         <Button
           aria-controls="role-menu"
           color="secondary"
@@ -142,8 +134,8 @@ const UserRow = ({
               : USER_LABELS.admin}
           </MenuItem>
         </Menu>
-      </MissionControlTableCell>
-      <MissionControlTableCell>
+      </UsersViewTableCell>
+      <UsersViewTableCell>
         <OptionsMenu
           anchorEl={optionsAnchorEl}
           onButtonClick={handleOptionsButtonClick}
@@ -154,7 +146,7 @@ const UserRow = ({
             <MenuItem onClick={handleDeleteClick}>Delete User</MenuItem>
           )}
         </OptionsMenu>
-      </MissionControlTableCell>
+      </UsersViewTableCell>
     </TableRow>
   );
 };
@@ -173,6 +165,7 @@ const useStyles = makeStyles(theme => ({
  *   oneAdminRemaining?: boolean
  *   quickViewData?: import('./quick-view/quick-view.component').QuickViewData
  *   onChangeRoleClick?: (customerUser: import('typings/orbis').CustomerUser) => void
+ *   onCreateUserClick?: (type: string) => void
  *   onEditUserClick?: (customerUser: import('typings/orbis').CustomerUser) => void
  *   onDeleteUserClick?: (customerUser: import('typings/orbis').CustomerUser) => void
  * }} props
@@ -245,9 +238,9 @@ export const ActiveUsersBoard = ({
               })
             ) : (
               <TableRow>
-                <MissionControlTableCell align="center" colSpan={5}>
+                <UsersViewTableCell align="center" colSpan={5}>
                   No Active Users
-                </MissionControlTableCell>
+                </UsersViewTableCell>
               </TableRow>
             )}
           </TableBody>

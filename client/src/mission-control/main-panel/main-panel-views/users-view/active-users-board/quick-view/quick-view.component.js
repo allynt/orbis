@@ -77,7 +77,7 @@ const Label = ({ children, className }) => (
 /**
  * @param {{
  *  data?: QuickViewData
- *  onCreateUserClick: () => void
+ *  onCreateUserClick: (type: string) => void
  * }} props
  */
 const QuickView = ({ data, onCreateUserClick }) => {
