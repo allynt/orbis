@@ -3,7 +3,7 @@ import React from 'react';
 import { render, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
-import { customer } from '../test-story-data';
+import { customer } from 'mission-control/test-story-data';
 import { EditUserForm } from './edit-user-form.component';
 
 describe('EditUserForm', () => {

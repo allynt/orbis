@@ -13,11 +13,6 @@ import {
 
 import { useDispatch, useSelector } from 'react-redux';
 
-import {
-  toggleMissionControlDialog,
-  selectIsMissionControlDialogVisible,
-} from 'mission-control/mission-control-slice';
-
 import { userSelector } from '../accounts/accounts.selectors';
 import { VIEWS, ADMIN_STATUS, DIALOG_VIEW } from './mission-control.constants';
 import { MainPanel } from './main-panel/main-panel.component';
@@ -33,6 +28,8 @@ import {
 } from './mission-control-forms';
 
 import {
+  toggleMissionControlDialog,
+  selectIsMissionControlDialogVisible,
   createCustomerUser,
   deleteCustomerUser,
   fetchCustomer,
@@ -86,7 +83,6 @@ export const MissionControl = () => {
   const activeUsers = useSelector(selectActiveUsers);
   const pendingUsers = useSelector(selectPendingUsers);
   const oneAdminRemaining = useSelector(selectOneAdminRemaining);
-  const [visiblePanel, setVisiblePanel] = useState(VIEWS.users);
   const [dialogForm, setDialogForm] = useState(null);
 
   const dialogStyles = useDialogStyles({});
@@ -99,6 +95,27 @@ export const MissionControl = () => {
   };
 
   const [mainPanelView, setMainPanelView] = useState(VIEWS.users);
+
+  useEffect(() => {
+    if (!currentCustomer) {
+      dispatch(fetchCustomer(user));
+    }
+  }, [user, currentCustomer, dispatch]);
+
+  useEffect(() => {
+    if (currentCustomer && !customerUsers) {
+      dispatch(fetchCustomerUsers(currentCustomer));
+    }
+  }, [currentCustomer, customerUsers, dispatch]);
+
+  const handleCreateUserFormSubmit = values => {
+    setDialogForm(null);
+    dispatch(createCustomerUser(values));
+  };
+
+  const handleClose = () => {
+    return dispatch(toggleMissionControlDialog(false));
+  };
 
   const getDialogForm = () => {
     switch (dialogForm?.type) {
@@ -145,27 +162,6 @@ export const MissionControl = () => {
       default:
         return null;
     }
-  };
-
-  useEffect(() => {
-    if (!currentCustomer) {
-      dispatch(fetchCustomer(user));
-    }
-  }, [user, currentCustomer, dispatch]);
-
-  useEffect(() => {
-    if (currentCustomer && !customerUsers) {
-      dispatch(fetchCustomerUsers(currentCustomer));
-    }
-  }, [currentCustomer, customerUsers, dispatch]);
-
-  const handleCreateUserFormSubmit = values => {
-    setDialogForm(null);
-    dispatch(createCustomerUser(values));
-  };
-
-  const handleClose = () => {
-    return dispatch(toggleMissionControlDialog(false));
   };
 
   return (
