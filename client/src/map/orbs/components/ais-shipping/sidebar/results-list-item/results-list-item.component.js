@@ -61,7 +61,7 @@ const ResultsListItem = ({
           ) : (
             <div>
               <div>Type: {result?.properties['Vessel Type'] || 'Unknown'}</div>
-              <div>Flag: {result?.properties['Vessel Flag'] || 'Unknown'}</div>
+              <div>Flag: {result?.properties['Flag'] || 'Unknown'}</div>
             </div>
           )
         }

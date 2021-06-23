@@ -11,7 +11,7 @@ const RESULTS = [
     properties: {
       'Vessel Name': 'Lollipop',
       'Vessel Type': 'Pleasure/Leisure',
-      'Vessel Flag': 'United States of America',
+      Flag: 'United States of America',
     },
   },
   {
@@ -19,7 +19,7 @@ const RESULTS = [
     properties: {
       'Vessel Name': 'The Black Pearl',
       'Vessel Type': 'Pirate',
-      'Vessel Flag': 'Barbados',
+      Flag: 'Barbados',
     },
   },
 ];
@@ -67,7 +67,7 @@ describe('<AisShippingSidebarComponent />', () => {
         getByText('Type: ' + result.properties['Vessel Type']),
       ).toBeInTheDocument();
       expect(
-        getByText('Flag: ' + result.properties['Vessel Flag']),
+        getByText('Flag: ' + result.properties['Flag']),
       ).toBeInTheDocument();
     });
   });
