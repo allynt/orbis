@@ -14,7 +14,8 @@ const Wrapper = styled('div')(({ theme }) => ({
   maxWidth: theme.typography.pxToRem(700),
   width: '70%',
   display: 'grid',
-  gridTemplateColumns: 'max-content 1fr max-content 1fr max-content',
+  gridTemplateColumns:
+    'max-content 1fr max-content 1fr max-content max-content 1fr',
   gridTemplateRows: '1fr 1fr',
   justifyContent: 'center',
   alignItems: 'center',
@@ -76,6 +77,7 @@ const Label = ({ children, className }) => (
 /**
  * @param {{
  *  data?: QuickViewData
+ *  onCreateUserClick: () => void
  * }} props
  */
 const QuickView = ({ data, onCreateUserClick }) => {
