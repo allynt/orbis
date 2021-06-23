@@ -18,8 +18,6 @@ import { VIEWS, ADMIN_STATUS, DIALOG_VIEW } from './mission-control.constants';
 import { MainPanel } from './main-panel/main-panel.component';
 import { SidePanel } from './side-panel/side-panel.component';
 
-import { updateUser } from '../accounts/accounts.slice';
-
 import {
   CreateUserForm,
   DeleteUserForm,
@@ -42,7 +40,6 @@ import {
   selectLicenceInformation,
   selectOneAdminRemaining,
   selectPendingUsers,
-  updateCustomer,
   updateCustomerUser,
 } from './mission-control-slice.js';
 
@@ -88,13 +85,13 @@ export const MissionControl = () => {
   const dialogStyles = useDialogStyles({});
   const titleStyles = useTitleStyles();
 
+  const [mainPanelView, setMainPanelView] = useState(VIEWS.users);
+
   const quickViewData = {
     active: activeUsers?.length,
     pending: pendingUsers?.length,
     available: availableLicences?.length,
   };
-
-  const [mainPanelView, setMainPanelView] = useState(VIEWS.users);
 
   useEffect(() => {
     if (!currentCustomer) {
