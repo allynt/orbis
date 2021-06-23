@@ -2,6 +2,7 @@ import React from 'react';
 
 import {
   Divider as DefaultDivider,
+  Button,
   makeStyles,
   styled,
   Typography,
@@ -77,7 +78,7 @@ const Label = ({ children, className }) => (
  *  data?: QuickViewData
  * }} props
  */
-const QuickView = ({ data }) => {
+const QuickView = ({ data, onCreateUserClick }) => {
   const styles = useStyles();
   return (
     <Wrapper>
@@ -88,7 +89,11 @@ const QuickView = ({ data }) => {
       <Label className={styles.pending}>Pending Invitations</Label>
       <Divider orientation="vertical" />
       <Value className={styles.available}>{data?.available ?? '-'}</Value>
+      <Divider orientation="vertical" />
       <Label className={styles.available}>Licences Available</Label>
+      <Button size="small" onClick={onCreateUserClick}>
+        Create User
+      </Button>
     </Wrapper>
   );
 };

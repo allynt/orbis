@@ -12,6 +12,7 @@ export const MainPanel = ({
   quickViewData,
   customer,
   onChangeRoleClick,
+  onCreateUserClick,
   onEditUserClick,
   onDeleteUserClick,
   onResendInvitationClick,
@@ -28,6 +29,7 @@ export const MainPanel = ({
           quickViewData={quickViewData}
           customer={customer}
           onChangeRoleClick={onChangeRoleClick}
+          onCreateUserClick={onCreateUserClick}
           onEditUserClick={onEditUserClick}
           onDeleteUserClick={onDeleteUserClick}
           onResendInvitationClick={onResendInvitationClick}

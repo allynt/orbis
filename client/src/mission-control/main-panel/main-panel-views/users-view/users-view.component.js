@@ -33,6 +33,7 @@ const UsersView = ({
   quickViewData,
   customer,
   onChangeRoleClick,
+  onCreateUserClick,
   onEditUserClick,
   onResendInvitationClick,
   onWithdrawInvitationClick,
@@ -47,6 +48,7 @@ const UsersView = ({
         customer={customer}
         quickViewData={quickViewData}
         onChangeRoleClick={onChangeRoleClick}
+        onCreateUserClick={onCreateUserClick}
         onEditUserClick={onEditUserClick}
         onDeleteUserClick={onDeleteUserClick}
       />

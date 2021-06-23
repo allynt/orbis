@@ -184,6 +184,7 @@ export const ActiveUsersBoard = ({
   oneAdminRemaining,
   quickViewData,
   onChangeRoleClick,
+  onCreateUserClick,
   onEditUserClick,
   onDeleteUserClick,
 }) => {
@@ -218,7 +219,7 @@ export const ActiveUsersBoard = ({
       alignItems="center"
       width="100%"
     >
-      <QuickView data={quickViewData} />
+      <QuickView data={quickViewData} onCreateUserClick={onCreateUserClick} />
       <TableContainer>
         <Table stickyHeader>
           <TableHeader />

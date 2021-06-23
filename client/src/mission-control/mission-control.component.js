@@ -200,6 +200,9 @@ export const MissionControl = () => {
                   }),
                 )
               }
+              onCreateUserClick={() =>
+                setDialogForm({ type: DIALOG_VIEW.createUser })
+              }
               onEditUserClick={user =>
                 setDialogForm({ type: DIALOG_VIEW.editUser, user })
               }
