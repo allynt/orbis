@@ -64,6 +64,19 @@ const useTitleStyles = makeStyles(theme => ({
   },
 }));
 
+const useContentStyles = makeStyles(theme => ({
+  root: {
+    padding: 'none',
+  },
+  mainPanel: {
+    width: '100%',
+    margin: '1.25rem',
+  },
+  sidePanel: {
+    margin: '1.25rem 0 1.25rem 1.25rem',
+  },
+}));
+
 const DialogCloseButton = styled(IconButton)({
   position: 'absolute',
   right: 0,
@@ -83,7 +96,8 @@ export const MissionControl = () => {
   const [dialogForm, setDialogForm] = useState(null);
 
   const dialogStyles = useDialogStyles({});
-  const titleStyles = useTitleStyles();
+  const titleStyles = useTitleStyles({});
+  const contentStyles = useContentStyles({});
 
   const [mainPanelView, setMainPanelView] = useState(VIEWS.users);
 
@@ -169,53 +183,50 @@ export const MissionControl = () => {
       onBackdropClick={handleClose}
     >
       <DialogTitle classes={titleStyles}>{`Hello ${user?.name}`}</DialogTitle>
-      <DialogContent>
-        <Grid container direction="row" justify="space-between">
-          <Grid item>
-            <SidePanel
-              mainPanelView={mainPanelView}
-              setMainPanelView={setMainPanelView}
-            />
-          </Grid>
-          <Grid item>
-            <MainPanel
-              user={user}
-              mainPanelView={mainPanelView}
-              activeUsers={activeUsers}
-              pendingUsers={pendingUsers}
-              oneAdminRemaining={oneAdminRemaining}
-              quickViewData={quickViewData}
-              customer={currentCustomer}
-              onChangeRoleClick={user =>
-                dispatch(
-                  updateCustomerUser({
-                    ...user,
-                    type:
-                      user.type === ADMIN_STATUS.manager
-                        ? ADMIN_STATUS.member
-                        : ADMIN_STATUS.manager,
-                  }),
-                )
-              }
-              onCreateUserClick={() =>
-                setDialogForm({ type: DIALOG_VIEW.createUser })
-              }
-              onEditUserClick={user =>
-                setDialogForm({ type: DIALOG_VIEW.editUser, user })
-              }
-              onDeleteUserClick={user =>
-                setDialogForm({ type: DIALOG_VIEW.deleteUser, user })
-              }
-              onResendInvitationClick={user =>
-                dispatch(inviteCustomerUser(user))
-              }
-              onWithdrawInvitationClick={user =>
-                setDialogForm({ type: DIALOG_VIEW.withdrawInvitation, user })
-              }
-            />
-          </Grid>
+
+      <Grid container direction="row" justify="space-between" wrap="nowrap">
+        <Grid item className={contentStyles.sidePanel}>
+          <SidePanel
+            mainPanelView={mainPanelView}
+            setMainPanelView={setMainPanelView}
+          />
         </Grid>
-      </DialogContent>
+        <Grid item className={contentStyles.mainPanel}>
+          <MainPanel
+            user={user}
+            mainPanelView={mainPanelView}
+            activeUsers={activeUsers}
+            pendingUsers={pendingUsers}
+            oneAdminRemaining={oneAdminRemaining}
+            quickViewData={quickViewData}
+            customer={currentCustomer}
+            onChangeRoleClick={user =>
+              dispatch(
+                updateCustomerUser({
+                  ...user,
+                  type:
+                    user.type === ADMIN_STATUS.manager
+                      ? ADMIN_STATUS.member
+                      : ADMIN_STATUS.manager,
+                }),
+              )
+            }
+            onCreateUserClick={() =>
+              setDialogForm({ type: DIALOG_VIEW.createUser })
+            }
+            onEditUserClick={user =>
+              setDialogForm({ type: DIALOG_VIEW.editUser, user })
+            }
+            onDeleteUserClick={user =>
+              setDialogForm({ type: DIALOG_VIEW.deleteUser, user })
+            }
+            onResendInvitationClick={user => dispatch(inviteCustomerUser(user))}
+            onWithdrawInvitationClick={user =>
+              setDialogForm({ type: DIALOG_VIEW.withdrawInvitation, user })
+            }
+          />
+        </Grid>
+      </Grid>
       <Dialog
         open={!!dialogForm}
         onClose={() => setDialogForm(null)}

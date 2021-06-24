@@ -9,6 +9,7 @@ import SidePanelListItem from './side-panel-list-item.component';
 const useStyles = makeStyles(theme => ({
   root: {
     width: theme.spacing(50),
+    padding: '0',
   },
 }));
 

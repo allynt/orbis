@@ -13,13 +13,19 @@ import { OptionsMenu } from '../options-menu.component';
 import { ADMIN_STATUS } from 'mission-control/mission-control.constants';
 
 const Wrapper = styled('div')(({ theme }) => ({
-  height: theme.spacing(50),
   width: '100%',
 }));
 
 const useStyles = makeStyles(theme => ({
   root: {
-    border: '2px solid red',
+    backgroundColor: theme.palette.background.default,
+    borderRadius: '0.25rem',
+  },
+  row: {
+    maxHeight: 'none !important',
+  },
+  cell: {
+    // margin: '1rem 0',
   },
 }));
 
@@ -169,13 +175,14 @@ export const DataGridTable = ({
 
   // Determines columns to show in table
   const columns = [
-    { field: 'user', headerName: 'User' },
+    { field: 'user', headerName: 'User', width: 213 },
     {
       field: 'activatedLicences',
       headerName: 'Activated Licences',
+      width: 213,
     },
-    { field: 'email', headerName: 'Email' },
-    { field: 'type', headerName: 'Type' },
+    { field: 'email', headerName: 'Email', width: 213 },
+    { field: 'type', headerName: 'Type', width: 213 },
     {
       field: 'adminStatusActions',
       headerName: 'Update admin status',
@@ -187,6 +194,7 @@ export const DataGridTable = ({
           />
         );
       },
+      width: 213,
     },
     {
       field: 'editButtonActions',
@@ -199,6 +207,7 @@ export const DataGridTable = ({
           />
         );
       },
+      width: 213,
     },
   ];
 
@@ -222,6 +231,7 @@ export const DataGridTable = ({
   return (
     <Wrapper>
       <DataGrid
+        autoHeight
         rows={rows}
         columns={columns}
         pageSize={5}
