@@ -8,6 +8,7 @@ export class AuthenticationClient extends SubClient {
     this.fieldMapping = {
       registerUser: {
         [FIELD_NAMES.email]: 'email',
+        [FIELD_NAMES.organisationName]: 'customer_name',
         [FIELD_NAMES.newPassword]: 'password1',
         [FIELD_NAMES.newPasswordConfirm]: 'password2',
         [FIELD_NAMES.acceptedTerms]: 'accepted_terms',
