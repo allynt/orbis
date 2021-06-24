@@ -16,7 +16,9 @@ const useTitleStyles = makeStyles(theme => ({
 const useWrapperStyles = makeStyles(theme => ({
   wrapper: {
     padding: theme.spacing(2),
+    borderRadius: '1rem',
     width: '100%',
+    maxHeight: '45rem',
     overflowY: 'auto',
     '& + &': {
       marginTop: theme.spacing(3),
