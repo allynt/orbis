@@ -112,6 +112,10 @@ describe('Accounts index', () => {
       userEvent.type(getByRole('textbox', { name: /email/i }), 'test@test.com');
       userEvent.type(getByRole('textbox', { name: /first/i }), 'John');
       userEvent.type(getByRole('textbox', { name: /last/i }), 'Smith');
+      userEvent.type(
+        getByRole('textbox', { name: /organisation\sname/i }),
+        'Weyland-Yutani',
+      );
       userEvent.type(getByLabelText(/password(?!\sc)/i), 'pandaconcretespoon');
       userEvent.type(
         getByLabelText(/password\sconfirmation/i),

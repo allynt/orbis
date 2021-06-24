@@ -187,8 +187,8 @@ export const registerUser = form => async dispatch => {
     const user = await apiClient.authentication.registerUser(form);
     dispatch(registerUserSuccess(user));
     return dispatch(push(RESEND));
-  } catch (error) {
-    const errors = await error.getErrors();
+  } catch (responseError) {
+    const errors = await responseError.getErrors();
     return dispatch(registerUserFailure(errors));
   }
 };
