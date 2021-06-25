@@ -10,6 +10,7 @@ import UserRegistration from './user-registration.component';
 const EMAIL_REGEX = /work\semail\saddress/i;
 const FIRST_NAME_REGEX = /first\sname/i;
 const LAST_NAME_REGEX = /last\sname/i;
+const ORGANISATION_NAME_REGEX = /organisation\sname/i;
 const PASSWORD_REGEX = /password(?!\sc)/i;
 const PASSWORD_CONFIRMATION_REGEX = /password\sconfirmation/i;
 const AGREE_CHECKBOX_REGEX = /i\sagree\swith/i;
@@ -39,6 +40,9 @@ describe('<UserRegistration />', () => {
       getByRole('textbox', { name: FIRST_NAME_REGEX }),
     ).toBeInTheDocument();
     expect(getByRole('textbox', { name: LAST_NAME_REGEX })).toBeInTheDocument();
+    expect(
+      getByRole('textbox', { name: ORGANISATION_NAME_REGEX }),
+    ).toBeInTheDocument();
     expect(getByLabelText(PASSWORD_REGEX)).toBeInTheDocument();
     expect(getByLabelText(PASSWORD_CONFIRMATION_REGEX)).toBeInTheDocument();
     expect(
@@ -64,15 +68,19 @@ describe('<UserRegistration />', () => {
     const values = {
       email: 'test@test.com',
       name: 'Test Person',
+      organisationName: 'Weyland-Yutani',
       newPassword: 'thisisareallygoodpassword',
       newPasswordConfirm: 'thisisareallygoodpassword',
       acceptedTerms: true,
-      registration_stage: 'CUSTOMER',
     };
     const { getByRole, getByLabelText, onSubmit } = renderComponent();
     userEvent.type(getByRole('textbox', { name: EMAIL_REGEX }), values.email);
     userEvent.type(getByRole('textbox', { name: FIRST_NAME_REGEX }), 'Test');
     userEvent.type(getByRole('textbox', { name: LAST_NAME_REGEX }), 'Person');
+    userEvent.type(
+      getByRole('textbox', { name: ORGANISATION_NAME_REGEX }),
+      values.organisationName,
+    );
     userEvent.type(getByLabelText(PASSWORD_REGEX), values.newPassword);
     userEvent.type(
       getByLabelText(PASSWORD_CONFIRMATION_REGEX),

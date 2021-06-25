@@ -406,8 +406,8 @@ REST_AUTH_SERIALIZERS = {
 
 # more custom serializers...
 REST_AUTH_REGISTER_SERIALIZERS = {
-    # customize serializers for astrosat_users
-    "REGISTER_SERIALIZER": "astrosat_users.serializers.RegisterSerializer"
+    # customize serializers for orbis
+    "REGISTER_SERIALIZER": "orbis.serializers.RegisterSerializer"
 }
 
 ACCOUNT_LOGIN_CLIENT_URL = "/accounts/login"
