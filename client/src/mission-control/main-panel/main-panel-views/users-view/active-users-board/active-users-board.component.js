@@ -4,10 +4,10 @@ import { Box, makeStyles } from '@astrosat/astrosat-ui';
 
 import QuickView from './quick-view/quick-view.component';
 
-import { DataGridTable } from './data-grid-table.component';
+import { ActiveUsersGridTable } from './active-users-grid-table.component';
 
 const useStyles = makeStyles(theme => ({
-  box: {
+  container: {
     maxHeight: `calc(100% - ${theme.spacing(10)})`,
   },
 }));
@@ -60,14 +60,14 @@ export const ActiveUsersBoard = ({
   const styles = useStyles();
   return (
     <Box
-      className={styles.box}
+      className={styles.container}
       display="flex"
       flexDirection="column"
       alignItems="center"
       width="100%"
     >
       <QuickView data={quickViewData} onCreateUserClick={onCreateUserClick} />
-      <DataGridTable
+      <ActiveUsersGridTable
         customer={customer}
         activeCustomerUsers={activeCustomerUsers}
         currentUser={currentUser}

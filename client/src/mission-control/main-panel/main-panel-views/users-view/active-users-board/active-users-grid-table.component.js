@@ -12,7 +12,7 @@ import { getLicenceInfo, getUserLicences } from '../../licence-utils';
 import { OptionsMenu } from '../options-menu.component';
 import { ADMIN_STATUS } from 'mission-control/mission-control.constants';
 
-const Wrapper = styled('div')(({ theme }) => ({
+const Wrapper = styled('div')(() => ({
   width: '100%',
 }));
 
@@ -24,8 +24,9 @@ const useStyles = makeStyles(theme => ({
   row: {
     maxHeight: 'none !important',
   },
-  cell: {
-    // margin: '1rem 0',
+  button: {
+    padding: '0.65em 2em',
+    minWidth: '11em',
   },
 }));
 
@@ -34,7 +35,7 @@ const USER_LABELS = {
   admin: 'Admin',
 };
 
-export const DataGridTable = ({
+export const ActiveUsersGridTable = ({
   customer,
   activeCustomerUsers,
   currentUser,
@@ -43,6 +44,7 @@ export const DataGridTable = ({
   handleEditClick,
   handleRoleClick,
 }) => {
+  const styles = useStyles({});
   const AdminStatusActions = ({ customerUser }) => {
     const [roleAnchorEl, setRoleAnchorEl] = useState(null);
 
@@ -67,6 +69,7 @@ export const DataGridTable = ({
         <Button
           aria-controls="role-menu"
           color="secondary"
+          className={styles.button}
           onClick={handleRoleButtonClick}
           disabled={
             customerUser.type === ADMIN_STATUS.manager && oneAdminRemaining
@@ -140,17 +143,21 @@ export const DataGridTable = ({
 
   // Determines columns to show in table
   const columns = [
-    { field: 'user', headerName: 'User', width: 213 },
     {
-      field: 'activatedLicences',
-      headerName: 'Activated Licences',
+      field: 'user',
+      headerName: 'User',
       width: 213,
     },
     { field: 'email', headerName: 'Email', width: 213 },
+    {
+      field: 'licence',
+      headerName: 'Licence',
+      width: 213,
+    },
     { field: 'type', headerName: 'Type', width: 213 },
     {
       field: 'adminStatusActions',
-      headerName: 'Update admin status',
+      headerName: 'Update user status',
       width: 213,
       renderCell: ({ row }) => (
         <AdminStatusActions
@@ -180,18 +187,17 @@ export const DataGridTable = ({
     return {
       id: customerUser?.id,
       user: customerUser?.user?.name,
-      activatedLicences: getLicenceInfo(licences),
+      licence: getLicenceInfo(licences),
       type: customerUser?.type,
       email: customerUser?.user?.email,
     };
   });
 
-  const styles = useStyles({});
   return (
     <Wrapper>
       <DataGrid
         autoHeight
-        rows={rows}
+        rows={activeCustomerUsers?.length ? rows : []}
         columns={columns}
         pageSize={5}
         disableSelectionOnClick
