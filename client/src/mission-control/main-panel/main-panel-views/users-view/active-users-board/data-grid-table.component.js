@@ -68,9 +68,23 @@ export const DataGridTable = ({
     setOptionsAnchorEl(null);
   };
 
+  const onRoleClick = customerUser => {
+    handleRoleClick(customerUser);
+    setRoleAnchorEl(null);
+  };
+
+  const onEditClick = customerUser => {
+    handleEditClick(customerUser);
+    setOptionsAnchorEl(null);
+  };
+
+  const onDeleteClick = customerUser => {
+    handleDeleteClick(customerUser);
+    setOptionsAnchorEl(null);
+  };
+
   // Contains status button, dropdown menu and handler logic
-  const AdminStatusActions = ({ customerUser, handlers }) => {
-    const { onRoleClick } = handlers;
+  const AdminStatusActions = ({ customerUser }) => {
     return (
       <>
         <Button
@@ -97,7 +111,7 @@ export const DataGridTable = ({
           open={!!roleAnchorEl}
           onClose={handleRoleMenuClose}
         >
-          <MenuItem onClick={onRoleClick}>
+          <MenuItem onClick={() => onRoleClick(customerUser)}>
             {customerUser.type === ADMIN_STATUS.manager
               ? USER_LABELS.standard
               : USER_LABELS.admin}
@@ -108,17 +122,18 @@ export const DataGridTable = ({
   };
 
   // Contains edit icon, edit menu and handler logic
-  const EditButtonActions = ({ customerUser, handlers }) => {
-    const { onEditClick, onDeleteClick } = handlers;
+  const EditButtonActions = ({ customerUser }) => {
     return (
       <OptionsMenu
         anchorEl={optionsAnchorEl}
         onButtonClick={handleOptionsButtonClick}
         onClose={handleOptionsMenuClose}
       >
-        <MenuItem onClick={onEditClick}>Edit</MenuItem>
+        <MenuItem onClick={() => onEditClick(customerUser)}>Edit</MenuItem>
         {customerUser?.user?.id !== currentUser?.id && (
-          <MenuItem onClick={onDeleteClick}>Delete User</MenuItem>
+          <MenuItem onClick={() => onDeleteClick(customerUser)}>
+            Delete User
+          </MenuItem>
         )}
       </OptionsMenu>
     );
@@ -141,7 +156,6 @@ export const DataGridTable = ({
       renderCell: ({ row }) => (
         <AdminStatusActions
           customerUser={activeCustomerUsers?.find(u => u.id === row.id)}
-          handlers={row.handlers}
         />
       ),
     },
@@ -152,7 +166,6 @@ export const DataGridTable = ({
       renderCell: ({ row }) => (
         <EditButtonActions
           customerUser={activeCustomerUsers?.find(u => u.id === row.id)}
-          handlers={row.handlers}
         />
       ),
     },
@@ -165,32 +178,12 @@ export const DataGridTable = ({
         ? getUserLicences(customerUser, customer)
         : null;
 
-    const onRoleClick = () => {
-      handleRoleClick(customerUser);
-      setRoleAnchorEl(null);
-    };
-
-    const onEditClick = () => {
-      handleEditClick(customerUser);
-      setOptionsAnchorEl(null);
-    };
-
-    const onDeleteClick = () => {
-      handleDeleteClick(customerUser);
-      setOptionsAnchorEl(null);
-    };
-
     return {
       id: customerUser?.id,
       user: customerUser?.user?.name,
       activatedLicences: getLicenceInfo(licences),
       type: customerUser?.type,
       email: customerUser?.user?.email,
-      handlers: {
-        onRoleClick,
-        onEditClick,
-        onDeleteClick,
-      },
     };
   });
 
