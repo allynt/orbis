@@ -21,6 +21,11 @@ from maps.urls import (
     api_urlpatterns as maps_api_urlpatterns,
 )
 
+from satellites.urls import (
+    urlpatterns as satellites_urlpatterns,
+    api_urlpatterns as satellites_api_urlpatterns,
+)
+
 from proxy.urls import (
     urlpatterns as proxy_urlpatterns,
     api_urlpatterns as proxy_api_urlpatterns,
@@ -72,6 +77,7 @@ api_urlpatterns = [
 api_urlpatterns += astrosat_api_urlpatterns
 api_urlpatterns += astrosat_users_api_urlpatterns
 api_urlpatterns += maps_api_urlpatterns
+api_urlpatterns += satellites_api_urlpatterns
 api_urlpatterns += proxy_api_urlpatterns
 api_urlpatterns += orbis_api_urlpatterns
 
@@ -93,6 +99,7 @@ urlpatterns = [
     path("astrosat/", include(astrosat_urlpatterns)),
     path("users/", include(astrosat_users_urlpatterns)),
     path("maps/", include(maps_urlpatterns)),
+    path("satellites/", include(satellites_urlpatterns)),
     path("proxy/", include(proxy_urlpatterns)),
     path("orbis/", include(orbis_urlpatterns)),
 
@@ -120,7 +127,8 @@ if settings.DEBUG:
         path("400/", partial(handler400, exception=HttpResponseBadRequest())),
         path("403/", partial(handler403, exception=HttpResponseForbidden())),
         path("404/", partial(handler404, exception=HttpResponseNotFound())),
-        path("500/", handler500),  # "default_views.server_error" doesn't take an exception
+        path("500/", handler500
+            ),  # "default_views.server_error" doesn't take an exception
     ]
 
     # enable django-debug-toolbar during development...

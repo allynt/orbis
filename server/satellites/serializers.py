@@ -11,14 +11,13 @@ from drf_yasg2 import openapi
 
 from astrosat.views import SwaggerCurrentUserDefault
 
-from orbis.models import (
+from satellites.models import (
     Satellite,
     SatelliteVisualisation,
     SatelliteTier,
     SatelliteSearch,
     SatelliteResult,
 )
-
 
 # TODO: REFACTOR THIS INTO django-astrosat-core
 
@@ -28,12 +27,12 @@ class SimplifiedGeometryField(serializers.Field):
     don't deal w/ the actual WKT serialization of the GeoDjango field
     just deal w/ simple arrays (also adds some swagger-friendliness)
     """
-
     class Meta:
         swagger_schema_fields = openapi.Schema(
             type=openapi.TYPE_ARRAY,
             items=openapi.Schema(
-                type=openapi.TYPE_ARRAY, items=openapi.Schema(type=openapi.TYPE_NUMBER),
+                type=openapi.TYPE_ARRAY,
+                items=openapi.Schema(type=openapi.TYPE_NUMBER),
             ),
             example=[[55.000001, 1.000001], [55.000002, 1.000002]],
         )
@@ -69,22 +68,23 @@ class SwaggerGeometryField(GeometryField):
     Just a standard rest_framework_gis GeometryField,
     but makes the swagger documentation a bit more user-friendly.
     """
-
     class Meta:
         swagger_schema_fields = {
             "type": openapi.TYPE_OBJECT,
             "properties": {
-                "type": openapi.Schema(
-                    type=openapi.TYPE_STRING, example="GeometryType"
-                ),
-                "coordinates": openapi.Schema(
-                    type=openapi.TYPE_ARRAY,
-                    items=openapi.Schema(
-                        type=openapi.TYPE_ARRAY,
-                        items=openapi.Schema(type=openapi.TYPE_NUMBER),
+                "type":
+                    openapi.Schema(
+                        type=openapi.TYPE_STRING, example="GeometryType"
                     ),
-                    example=[[55.000001, 1.000001], [55.000002, 1.000002]],
-                ),
+                "coordinates":
+                    openapi.Schema(
+                        type=openapi.TYPE_ARRAY,
+                        items=openapi.Schema(
+                            type=openapi.TYPE_ARRAY,
+                            items=openapi.Schema(type=openapi.TYPE_NUMBER),
+                        ),
+                        example=[[55.000001, 1.000001], [55.000002, 1.000002]],
+                    ),
             },
         }
 
@@ -151,8 +151,7 @@ class SatelliteResultSerializer(serializers.ModelSerializer):
             "cloudCover",
             "created",
             "footprint",
-            "metadata",
-            # "raw_data",  # don't bother serializing raw_data
+            "metadata",  # "raw_data",  # don't bother serializing raw_data
             "owner",
             "thumbnail_url",
             "tile_url",
@@ -252,7 +251,8 @@ class SatelliteSearchSerializer(serializers.ModelSerializer):
         # make sure owner is allowed to save this search
         user = data["owner"]
         max_searches = user.orbis_profile.max_searches
-        if not self.instance and user.satellite_searches.count() >= max_searches:
+        if not self.instance and user.satellite_searches.count(
+        ) >= max_searches:
             raise serializers.ValidationError(
                 f"Only {max_searches} instances of SatelliteSearches are allowed for '{user}'."
             )

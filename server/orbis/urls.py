@@ -17,10 +17,6 @@ from .views import (
     DocumentView,
     TokenView,
     OrderViewSet,
-    SatelliteViewSet,
-    SatelliteSearchViewSet,
-    SatelliteResultViewSet,
-    run_satellite_query,
 )
 
 ##############
@@ -33,13 +29,6 @@ api_router.register(
     OrderViewSet,
     basename="orders"
 )
-api_router.register(
-    r"satellites/searches", SatelliteSearchViewSet, basename="satellite-search"
-)
-api_router.register(
-    r"satellites/results", SatelliteResultViewSet, basename="satellite-result"
-)
-api_router.register(r"satellites", SatelliteViewSet, basename="satellite")
 api_urlpatterns = [
     # using custom login view to enable db logging...
     path("authentication/login/", LoginView.as_view(), name="rest_login"),
@@ -56,7 +45,6 @@ api_urlpatterns = [
     path("data/sources/", DataSourceView.as_view(), name="datasources"),
     path("documents/<str:document_type>/", DocumentView.as_view(), name="documents"),
     path("data/token/", TokenView.as_view(), name="token"),
-    path("satellites/run_query/", run_satellite_query, name="satellite-run-query"),
     path("", include(api_router.urls)),
 ]  # yapf: disable
 
