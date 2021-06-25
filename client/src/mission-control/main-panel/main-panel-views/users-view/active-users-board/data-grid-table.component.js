@@ -46,76 +46,31 @@ export const DataGridTable = ({
   const [roleAnchorEl, setRoleAnchorEl] = useState(null);
   const [optionsAnchorEl, setOptionsAnchorEl] = useState(null);
 
-  // Contains handler logic attached to the admin status button
-  const getUserRowData = ({
-    customerUser,
-    licences,
-    onDeleteUserClick,
-    onEditUserClick,
-    onRoleClick,
-  }) => {
-    /**
-     * @param {React.MouseEvent<HTMLButtonElement, MouseEvent>} e
-     */
-    const handleRoleButtonClick = e => {
-      setRoleAnchorEl(e.currentTarget);
-    };
-
-    const handleRoleClick = () => {
-      onRoleClick();
-      setRoleAnchorEl(null);
-    };
-
-    const handleRoleMenuClose = () => {
-      setRoleAnchorEl(null);
-    };
-
-    /**
-     * @param {React.MouseEvent<HTMLButtonElement, MouseEvent>} e
-     */
-    const handleOptionsButtonClick = e => {
-      setOptionsAnchorEl(e.currentTarget);
-    };
-
-    const handleOptionsMenuClose = () => {
-      setOptionsAnchorEl(null);
-    };
-
-    const handleEditClick = () => {
-      onEditUserClick();
-      setOptionsAnchorEl(null);
-    };
-
-    const handleDeleteClick = () => {
-      onDeleteUserClick();
-      setOptionsAnchorEl(null);
-    };
-
-    return {
-      id: customerUser?.id,
-      user: customerUser?.user?.name,
-      activatedLicences: getLicenceInfo(licences),
-      type: customerUser?.type,
-      email: customerUser?.user?.email,
-      handlers: {
-        handleRoleButtonClick,
-        handleRoleClick,
-        handleRoleMenuClose,
-        handleOptionsButtonClick,
-        handleOptionsMenuClose,
-        handleEditClick,
-        handleDeleteClick,
-      },
-    };
+  /**
+   * @param {React.MouseEvent<HTMLButtonElement, MouseEvent>} e
+   */
+  const handleRoleButtonClick = e => {
+    setRoleAnchorEl(e.currentTarget);
   };
 
-  // Contains handler logic attached to the edit icon
+  const handleRoleMenuClose = () => {
+    setRoleAnchorEl(null);
+  };
+
+  /**
+   * @param {React.MouseEvent<HTMLButtonElement, MouseEvent>} e
+   */
+  const handleOptionsButtonClick = e => {
+    setOptionsAnchorEl(e.currentTarget);
+  };
+
+  const handleOptionsMenuClose = () => {
+    setOptionsAnchorEl(null);
+  };
+
+  // Contains status button, dropdown menu and handler logic
   const AdminStatusActions = ({ customerUser, handlers }) => {
-    const {
-      handleRoleButtonClick,
-      handleRoleClick,
-      handleRoleMenuClose,
-    } = handlers;
+    const { onRoleClick } = handlers;
     return (
       <>
         <Button
@@ -142,7 +97,7 @@ export const DataGridTable = ({
           open={!!roleAnchorEl}
           onClose={handleRoleMenuClose}
         >
-          <MenuItem onClick={handleRoleClick}>
+          <MenuItem onClick={onRoleClick}>
             {customerUser.type === ADMIN_STATUS.manager
               ? USER_LABELS.standard
               : USER_LABELS.admin}
@@ -152,22 +107,18 @@ export const DataGridTable = ({
     );
   };
 
+  // Contains edit icon, edit menu and handler logic
   const EditButtonActions = ({ customerUser, handlers }) => {
-    const {
-      handleOptionsButtonClick,
-      handleOptionsMenuClose,
-      handleEditClick,
-      handleDeleteClick,
-    } = handlers;
+    const { onEditClick, onDeleteClick } = handlers;
     return (
       <OptionsMenu
         anchorEl={optionsAnchorEl}
         onButtonClick={handleOptionsButtonClick}
         onClose={handleOptionsMenuClose}
       >
-        <MenuItem onClick={handleEditClick}>Edit</MenuItem>
+        <MenuItem onClick={onEditClick}>Edit</MenuItem>
         {customerUser?.user?.id !== currentUser?.id && (
-          <MenuItem onClick={handleDeleteClick}>Delete User</MenuItem>
+          <MenuItem onClick={onDeleteClick}>Delete User</MenuItem>
         )}
       </OptionsMenu>
     );
@@ -186,45 +137,61 @@ export const DataGridTable = ({
     {
       field: 'adminStatusActions',
       headerName: 'Update admin status',
-      renderCell: ({ row }) => {
-        return (
-          <AdminStatusActions
-            customerUser={activeCustomerUsers?.find(u => u.id === row.id)}
-            handlers={row.handlers}
-          />
-        );
-      },
       width: 213,
+      renderCell: ({ row }) => (
+        <AdminStatusActions
+          customerUser={activeCustomerUsers?.find(u => u.id === row.id)}
+          handlers={row.handlers}
+        />
+      ),
     },
     {
       field: 'editButtonActions',
       headerName: 'Edit user',
-      renderCell: ({ row }) => {
-        return (
-          <EditButtonActions
-            customerUser={activeCustomerUsers?.find(u => u.id === row.id)}
-            handlers={row.handlers}
-          />
-        );
-      },
       width: 213,
+      renderCell: ({ row }) => (
+        <EditButtonActions
+          customerUser={activeCustomerUsers?.find(u => u.id === row.id)}
+          handlers={row.handlers}
+        />
+      ),
     },
   ];
 
   // Array of data objects to be mapped to columns specified above
   const rows = activeCustomerUsers?.map(customerUser => {
-    let licences = null;
-    if (customer && customer.licences) {
-      licences = getUserLicences(customerUser, customer);
-    }
+    const licences =
+      customer && customer.licences
+        ? getUserLicences(customerUser, customer)
+        : null;
 
-    return getUserRowData({
-      customerUser,
-      licences,
-      onDeleteUserClick: () => handleDeleteClick(customerUser),
-      onEditUserClick: () => handleEditClick(customerUser),
-      onRoleClick: () => handleRoleClick(customerUser),
-    });
+    const onRoleClick = () => {
+      handleRoleClick(customerUser);
+      setRoleAnchorEl(null);
+    };
+
+    const onEditClick = () => {
+      handleEditClick(customerUser);
+      setOptionsAnchorEl(null);
+    };
+
+    const onDeleteClick = () => {
+      handleDeleteClick(customerUser);
+      setOptionsAnchorEl(null);
+    };
+
+    return {
+      id: customerUser?.id,
+      user: customerUser?.user?.name,
+      activatedLicences: getLicenceInfo(licences),
+      type: customerUser?.type,
+      email: customerUser?.user?.email,
+      handlers: {
+        onRoleClick,
+        onEditClick,
+        onDeleteClick,
+      },
+    };
   });
 
   const styles = useStyles({});
