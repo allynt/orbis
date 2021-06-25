@@ -43,48 +43,25 @@ export const DataGridTable = ({
   handleEditClick,
   handleRoleClick,
 }) => {
-  const [roleAnchorEl, setRoleAnchorEl] = useState(null);
-  const [optionsAnchorEl, setOptionsAnchorEl] = useState(null);
-
-  /**
-   * @param {React.MouseEvent<HTMLButtonElement, MouseEvent>} e
-   */
-  const handleRoleButtonClick = e => {
-    setRoleAnchorEl(e.currentTarget);
-  };
-
-  const handleRoleMenuClose = () => {
-    setRoleAnchorEl(null);
-  };
-
-  /**
-   * @param {React.MouseEvent<HTMLButtonElement, MouseEvent>} e
-   */
-  const handleOptionsButtonClick = e => {
-    setOptionsAnchorEl(e.currentTarget);
-  };
-
-  const handleOptionsMenuClose = () => {
-    setOptionsAnchorEl(null);
-  };
-
-  const onRoleClick = customerUser => {
-    handleRoleClick(customerUser);
-    setRoleAnchorEl(null);
-  };
-
-  const onEditClick = customerUser => {
-    handleEditClick(customerUser);
-    setOptionsAnchorEl(null);
-  };
-
-  const onDeleteClick = customerUser => {
-    handleDeleteClick(customerUser);
-    setOptionsAnchorEl(null);
-  };
-
-  // Contains status button, dropdown menu and handler logic
   const AdminStatusActions = ({ customerUser }) => {
+    const [roleAnchorEl, setRoleAnchorEl] = useState(null);
+
+    /**
+     * @param {React.MouseEvent<HTMLButtonElement, MouseEvent>} e
+     */
+    const handleRoleButtonClick = e => {
+      setRoleAnchorEl(e.currentTarget);
+    };
+
+    const handleRoleMenuClose = () => {
+      setRoleAnchorEl(null);
+    };
+
+    const onRoleClick = customerUser => {
+      handleRoleClick(customerUser);
+      setRoleAnchorEl(null);
+    };
+
     return (
       <>
         <Button
@@ -121,8 +98,30 @@ export const DataGridTable = ({
     );
   };
 
-  // Contains edit icon, edit menu and handler logic
   const EditButtonActions = ({ customerUser }) => {
+    const [optionsAnchorEl, setOptionsAnchorEl] = useState(null);
+
+    /**
+     * @param {React.MouseEvent<HTMLButtonElement, MouseEvent>} e
+     */
+    const handleOptionsButtonClick = e => {
+      setOptionsAnchorEl(e.currentTarget);
+    };
+
+    const handleOptionsMenuClose = () => {
+      setOptionsAnchorEl(null);
+    };
+
+    const onEditClick = customerUser => {
+      handleEditClick(customerUser);
+      setOptionsAnchorEl(null);
+    };
+
+    const onDeleteClick = customerUser => {
+      handleDeleteClick(customerUser);
+      setOptionsAnchorEl(null);
+    };
+
     return (
       <OptionsMenu
         anchorEl={optionsAnchorEl}
