@@ -4,7 +4,7 @@ from django.db.models import JSONField
 
 from astrosat.admin import get_clickable_m2m_list_display, JSONAdminWidget
 
-from orbis.models import (
+from satellites.models import (
     Satellite,
     SatelliteVisualisation,
     SatelliteTier,
@@ -16,16 +16,18 @@ from orbis.models import (
 @admin.register(Satellite)
 class SatelliteAdmin(admin.ModelAdmin):
     list_display = ("satellite_id", "order")
-    list_editable = ("order",)
-    search_fields = ("title",)
+    list_editable = ("order", )
+    search_fields = ("title", )
 
 
 @admin.register(SatelliteVisualisation)
 class SatelliteVisualisationAdmin(admin.ModelAdmin):
-    list_display = ("visualisation_id", "get_satellites_for_list_display", "order")
-    list_editable = ("order",)
-    list_filter = ("satellites",)
-    search_fields = ("title",)
+    list_display = (
+        "visualisation_id", "get_satellites_for_list_display", "order"
+    )
+    list_editable = ("order", )
+    list_filter = ("satellites", )
+    search_fields = ("title", )
 
     def get_queryset(self, request):
         # pre-fetching m2m fields that are used in list_displays
@@ -47,8 +49,8 @@ class SatelliteVisualisationAdmin(admin.ModelAdmin):
 @admin.register(SatelliteTier)
 class SatelliteTierAdmin(admin.ModelAdmin):
     list_display = ("name", "order")
-    list_editable = ("order",)
-    search_fields = ("title",)
+    list_editable = ("order", )
+    search_fields = ("title", )
 
 
 @admin.register(SatelliteSearch)
@@ -70,8 +72,8 @@ class SatelliteSearchAdmin(GeoModelAdmin):
         "satellites",
         "tiers",
     )
-    readonly_fields = ("created",)
-    search_fields = ("name",)
+    readonly_fields = ("created", )
+    search_fields = ("name", )
 
     def get_queryset(self, request):
         # pre-fetching m2m fields that are used in list_displays
@@ -101,4 +103,4 @@ class SatelliteResultAdmin(GeoModelAdmin):
     list_display = ("scene_id", "owner", "satellite", "tier", "cloud_cover")
     list_filter = ("satellite", "tier", "owner", "cloud_cover")
     readonly_fields = ("thumbnail_url", "tile_url")
-    search_fields = ("scene_id",)
+    search_fields = ("scene_id", )

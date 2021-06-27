@@ -103,6 +103,7 @@ LOCAL_APPS = [
     "astrosat_users",  # (users)
     "core",  # (shared stuff)
     "proxy", # (proxy data)
+    "satellites",  # (satellite data)
     "maps",  # (mapping tools)
     "tasks",  # (task management)
     "orbis",  # (this app)

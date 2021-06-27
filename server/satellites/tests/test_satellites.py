@@ -12,10 +12,9 @@ from astrosat.tests.utils import shuffle_string
 
 from astrosat_users.tests.utils import *
 
-from orbis.serializers.serializers_satellites import SimplifiedGeometryField
+from satellites.serializers import SimplifiedGeometryField
 
 from .factories import *
-
 
 # this is a known working query for sentinel-2
 # (it will return 8 products)
@@ -41,8 +40,7 @@ class TestSatellites:
         [
             SatelliteFactory(
                 visualisations=SatelliteVisualisation.objects.all(),
-            )
-            for _ in range(N_SATELLITES)
+            ) for _ in range(N_SATELLITES)
         ]
 
         url = reverse("satellite-list")
@@ -53,14 +51,13 @@ class TestSatellites:
         assert len(satellites) == N_SATELLITES
 
         assert (
-            sum(map(lambda x: len(x["visualisations"]), satellites))
-            == N_VISUALISATIONS * N_SATELLITES
+            sum(map(lambda x: len(x["visualisations"]),
+                    satellites)) == N_VISUALISATIONS * N_SATELLITES
         )
 
 
 @pytest.mark.django_db
 class TestSatelliteResults:
-
     def test_get_result(self, user, api_client):
         """
         Tests that I can get a single result using scene_id.
@@ -69,7 +66,10 @@ class TestSatelliteResults:
         client = api_client(user)
 
         satellite_result = SatelliteResultFactory(owner=user)
-        url = reverse("satellite-result-detail", kwargs={"scene_id": satellite_result.scene_id})
+        url = reverse(
+            "satellite-result-detail",
+            kwargs={"scene_id": satellite_result.scene_id}
+        )
         response = client.get(url)
         result = response.json()
 
@@ -84,14 +84,20 @@ class TestSatelliteResults:
         client = api_client(user)
 
         satellite_result = SatelliteResultFactory(owner=user)
-        assert SatelliteResult.objects.filter(scene_id=satellite_result.scene_id).count() == 1
+        assert SatelliteResult.objects.filter(
+            scene_id=satellite_result.scene_id
+        ).count() == 1
 
-        url = reverse("satellite-result-detail", kwargs={"scene_id": satellite_result.scene_id})
+        url = reverse(
+            "satellite-result-detail",
+            kwargs={"scene_id": satellite_result.scene_id}
+        )
         response = client.delete(url)
 
         assert status.is_success(response.status_code)
-        assert SatelliteResult.objects.filter(scene_id=satellite_result.scene_id).count() == 0
-
+        assert SatelliteResult.objects.filter(
+            scene_id=satellite_result.scene_id
+        ).count() == 0
 
     def test_get_results(self, user, api_client):
 
@@ -156,7 +162,9 @@ class TestSatelliteResults:
             )
 
         # filter on a single satellite
-        url_params = urllib.parse.urlencode({"satellites": ",".join(satellite_ids[:1])})
+        url_params = urllib.parse.urlencode({
+            "satellites": ",".join(satellite_ids[:1])
+        })
         url = f"{reverse('satellite-result-list')}?{url_params}"
         response = client.get(url)
         assert status.is_success(response.status_code)
@@ -165,7 +173,9 @@ class TestSatelliteResults:
         assert all(map(lambda x: x["satellite"] in satellite_ids[:1], results))
 
         # filter on multiple satellites...
-        url_params = urllib.parse.urlencode({"satellites": ",".join(satellite_ids[:2])})
+        url_params = urllib.parse.urlencode({
+            "satellites": ",".join(satellite_ids[:2])
+        })
         url = f"{reverse('satellite-result-list')}?{url_params}"
         response = client.get(url)
         assert status.is_success(response.status_code)
@@ -174,9 +184,9 @@ class TestSatelliteResults:
         assert all(map(lambda x: x["satellite"] in satellite_ids[:2], results))
 
         # filter on an invalid satellite...
-        url_params = urllib.parse.urlencode(
-            {"satellites": f"{shuffle_string(satellite_ids[0])}"}
-        )
+        url_params = urllib.parse.urlencode({
+            "satellites": f"{shuffle_string(satellite_ids[0])}"
+        })
         url = f"{reverse('satellite-result-list')}?{url_params}"
         response = client.get(url)
         assert status.is_success(response.status_code)
@@ -216,9 +226,9 @@ class TestSatelliteResults:
         assert all(map(lambda x: x["tier"] in tier_names[:2], results))
 
         # filter on an invalid tier...
-        url_params = urllib.parse.urlencode(
-            {"tiers": f"{shuffle_string(tier_names[0])}"}
-        )
+        url_params = urllib.parse.urlencode({
+            "tiers": f"{shuffle_string(tier_names[0])}"
+        })
         url = f"{reverse('satellite-result-list')}?{url_params}"
         response = client.get(url)
         assert status.is_success(response.status_code)
@@ -242,18 +252,18 @@ class TestSatelliteResults:
         ).extent
 
         # test a valid bbox...
-        url_params = urllib.parse.urlencode(
-            {"footprint__bbox": ",".join(map(str, valid_bbox))}
-        )
+        url_params = urllib.parse.urlencode({
+            "footprint__bbox": ",".join(map(str, valid_bbox))
+        })
         url = f"{reverse('satellite-result-list')}?{url_params}"
         response = client.get(url)
         assert status.is_success(response.status_code)
         assert len(response.json()) == 1
 
         # test a non-matching bbox...
-        url_params = urllib.parse.urlencode(
-            {"footprint__bbox": ",".join(map(str, invalid_bbox))}
-        )
+        url_params = urllib.parse.urlencode({
+            "footprint__bbox": ",".join(map(str, invalid_bbox))
+        })
         url = f"{reverse('satellite-result-list')}?{url_params}"
         response = client.get(url)
         assert status.is_success(response.status_code)
