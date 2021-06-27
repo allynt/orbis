@@ -143,17 +143,20 @@ class CustomerUserListView(
                 created_user.save()
 
         if customer_user.licences.visible().count():
-            message = self.notify_licences_changed(
+            msg = self.notify_licences_changed(
                 self.customer,
                 customer_user,
                 old_licences=set(),
                 new_licences=set(customer_user.licences.visible()),
             )
-            if self.active_managers.filter(user=self.request.user).exists():
-                # TODO...
+            if self.active_managers.filter(user=user).exists():
                 # only the superuser or a MANAGER can access this view
-                # if it's the latter, do something w/ message
-                pass
+                # if it's the latter, do something w/ msg
+                user.add_message(
+                    title=msg.subject,
+                    sender=msg.from_email,
+                    content=msg.body,
+                )
 
         return customer_user
 
@@ -164,6 +167,9 @@ class CustomerUserDetailView(
     serializer_class = CustomerUserSerializer
 
     def perform_update(self, serializer):
+
+        user = self.request.user
+
         customer_user = self.get_object()
 
         old_licences = set(customer_user.licences.visible())
@@ -172,17 +178,20 @@ class CustomerUserDetailView(
 
         if old_licences != new_licences:
 
-            message = self.notify_licences_changed(
+            msg = self.notify_licences_changed(
                 self.customer,
                 customer_user,
                 old_licences=old_licences,
                 new_licences=new_licences,
             )
-            if self.active_managers.filter(user=self.request.user).exists():
-                # TODO...
+            if self.active_managers.filter(user=user).exists():
                 # only the superuser or a MANAGER can access this view
-                # if it's the latter, do something w/ message
-                pass
+                # if it's the latter, do something w/ msg
+                user.add_message(
+                    title=msg.subject,
+                    sender=msg.from_email,
+                    content=msg.body,
+                )
 
         return customer_user
 
