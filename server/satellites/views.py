@@ -19,19 +19,18 @@ from drf_yasg2.utils import swagger_auto_schema
 
 from astrosat.decorators import swagger_fake
 
-from orbis.adapters import SATELLITE_ADAPTER_REGISTRY
-from orbis.models import Satellite, SatelliteSearch, SatelliteResult
-from orbis.serializers import (
+from satellites.adapters import SATELLITE_ADAPTER_REGISTRY
+from satellites.models import Satellite, SatelliteSearch, SatelliteResult
+from satellites.serializers import (
     SatelliteSerializer,
     SatelliteSearchSerializer,
     SatelliteResultSerializer,
 )
-from orbis.tests.test_satellites import (
+from satellites.tests.test_satellites import (
     TEST_AOI_QUERY_PARAM,
     TEST_START_DATE,
     TEST_END_DATE,
 )
-
 
 ##############
 # satellites #
@@ -42,14 +41,15 @@ def check_storage_access(view_fn):
     """
     Gracefully fails if anything storage-related fails in the ViewSets below
     """
-
     @functools.wraps(view_fn)
     def check_storage_access_wrapper(request, *args, **kwargs):
         try:
             return view_fn(request, *args, **kwargs)
         except BotoCoreError as e:
             data = {"error": str(e)}
-            return JsonResponse(data, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            return JsonResponse(
+                data, status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
 
     return check_storage_access_wrapper
 
@@ -93,12 +93,14 @@ class SatelliteSearchViewSet(
 # satellite results #
 #####################
 
+
 class CharInFilter(filters.BaseInFilter, filters.CharFilter):
     """
     Allows me to filter based on CharFields being in a list
     """
 
     pass
+
 
 class SatelliteResultFilterSet(filters.FilterSet):
     """
@@ -113,7 +115,6 @@ class SatelliteResultFilterSet(filters.FilterSet):
       <domain>/api/satellites/?footprint__bbox=-2.890854,52.683303,-1.13833,53.209580
 
     """
-
     class Meta:
         model = SatelliteResult
         fields = {
@@ -122,7 +123,9 @@ class SatelliteResultFilterSet(filters.FilterSet):
             # but declarative filters for "satellites" & "footprint" below
         }
 
-    satellites = CharInFilter(field_name="satellite__satellite_id", distinct=True)
+    satellites = CharInFilter(
+        field_name="satellite__satellite_id", distinct=True
+    )
     tiers = CharInFilter(field_name="tier__name", distinct=True)
     footprint__bbox = filters.Filter(method="filter_footprint_bbox")
 
@@ -148,7 +151,7 @@ class SatelliteResultViewSet(
     but not the "update" action.
     """
 
-    filter_backends = (filters.DjangoFilterBackend,)
+    filter_backends = (filters.DjangoFilterBackend, )
     filterset_class = SatelliteResultFilterSet
     lookup_field = "scene_id"
     permission_classes = [IsAuthenticated]
@@ -164,18 +167,56 @@ class SatelliteResultViewSet(
 # satellite queries #
 #####################
 
-
 _satellite_query_schema = openapi.Schema(
     type=openapi.TYPE_OBJECT,
     properties=OrderedDict((
         # (this re-uses some useful test values)
-        ("satellites", openapi.Schema(type=openapi.TYPE_ARRAY, items=openapi.Schema(type=openapi.TYPE_STRING, example="sentinel-2"))),
-        ("tiers", openapi.Schema(type=openapi.TYPE_ARRAY, items=openapi.Schema(type=openapi.TYPE_STRING, example="free"))),
-        ("start_date", openapi.Schema(type=openapi.TYPE_STRING, format=openapi.FORMAT_DATETIME, example=TEST_START_DATE.isoformat())),
-        ("end_date", openapi.Schema(type=openapi.TYPE_STRING, format=openapi.FORMAT_DATETIME, example=TEST_END_DATE.isoformat())),
-        ("aoi", openapi.Schema(type=openapi.TYPE_ARRAY, items=openapi.Schema(type=openapi.TYPE_ARRAY, items=openapi.Schema(type=openapi.TYPE_NUMBER)), example=TEST_AOI_QUERY_PARAM)),
+        (
+            "satellites",
+            openapi.Schema(
+                type=openapi.TYPE_ARRAY,
+                items=openapi.Schema(
+                    type=openapi.TYPE_STRING, example="sentinel-2"
+                )
+            )
+        ),
+        (
+            "tiers",
+            openapi.Schema(
+                type=openapi.TYPE_ARRAY,
+                items=openapi.Schema(type=openapi.TYPE_STRING, example="free")
+            )
+        ),
+        (
+            "start_date",
+            openapi.Schema(
+                type=openapi.TYPE_STRING,
+                format=openapi.FORMAT_DATETIME,
+                example=TEST_START_DATE.isoformat()
+            )
+        ),
+        (
+            "end_date",
+            openapi.Schema(
+                type=openapi.TYPE_STRING,
+                format=openapi.FORMAT_DATETIME,
+                example=TEST_END_DATE.isoformat()
+            )
+        ),
+        (
+            "aoi",
+            openapi.Schema(
+                type=openapi.TYPE_ARRAY,
+                items=openapi.Schema(
+                    type=openapi.TYPE_ARRAY,
+                    items=openapi.Schema(type=openapi.TYPE_NUMBER)
+                ),
+                example=TEST_AOI_QUERY_PARAM
+            )
+        ),
     ))
 )
+
 
 @swagger_auto_schema(
     method="post",

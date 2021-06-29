@@ -3,7 +3,6 @@
 import django.contrib.gis.db.models.fields
 import django.contrib.postgres.fields.jsonb
 from django.db import migrations, models
-import orbis.models.models_satellites
 
 
 class Migration(migrations.Migration):
@@ -26,7 +25,11 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='satelliteresult',
             name='raw_data',
-            field=django.contrib.postgres.fields.jsonb.JSONField(blank=True, help_text="The original 'raw' data returned by the search.", null=True, validators=[orbis.models.models_satellites.validate_properties]),
+            field=django.contrib.postgres.fields.jsonb.JSONField(
+                blank=True,
+                help_text="The original 'raw' data returned by the search.",
+                null=True
+            ),
         ),
         migrations.AlterField(
             model_name='satelliteresult',

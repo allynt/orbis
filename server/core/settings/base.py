@@ -102,6 +102,8 @@ LOCAL_APPS = [
     "astrosat",  # (dependencies)
     "astrosat_users",  # (users)
     "core",  # (shared stuff)
+    "proxy", # (proxy data)
+    "satellites",  # (satellite data)
     "maps",  # (mapping tools)
     "tasks",  # (task management)
     "orbis",  # (this app)
@@ -300,7 +302,9 @@ REST_FRAMEWORK = {
         # "rest_framework.authentication.BasicAuthentication",  # insecure
         # "rest_framework.authentication.SessionAuthentication",  # CSRF
         # "rest_framework.authentication.TokenAuthentication",  # tokens
+        # "rest_framework_simplejwt.authentication.JWTTokenUserAuthentication",  # tokens w/out a user
         "knox.auth.TokenAuthentication",  # better tokens
+
     ],
     "DEFAULT_RENDERER_CLASSES": (
         "rest_framework.renderers.JSONRenderer",
@@ -403,13 +407,22 @@ REST_AUTH_SERIALIZERS = {
 
 # more custom serializers...
 REST_AUTH_REGISTER_SERIALIZERS = {
-    # customize serializers for astrosat_users
-    "REGISTER_SERIALIZER": "astrosat_users.serializers.RegisterSerializer"
+    # customize serializers for orbis
+    "REGISTER_SERIALIZER": "orbis.serializers.RegisterSerializer"
 }
 
 ACCOUNT_LOGIN_CLIENT_URL = "/accounts/login"
 ACCOUNT_CONFIRM_EMAIL_CLIENT_URL = "/accounts/confirm-email/{key}"
 ACCOUNT_CONFIRM_PASSWORD_CLIENT_URL = "/accounts/password/reset/{key}/{uid}"
+
+# the proxy view uses authentication from djangorestframework-simplejwt
+# so a bit of additional configuration is necessary...
+SIMPLE_JWT = {
+    "ALGORITHM": DATA_TOKEN_ALGORITHM,
+    "SIGNING_KEY": DATA_TOKEN_SECRET,
+    "USER_ID_CLAIM": "sub",
+    "AUTH_TOKEN_CLASSES": ["proxy.permissions.DataAccessToken"],
+}
 
 #############
 # passwords #

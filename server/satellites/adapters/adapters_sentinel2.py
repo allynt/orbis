@@ -2,11 +2,8 @@ from django.conf import settings
 
 from sentinelsat import SentinelAPI
 
-from orbis.adapters.adapters_base import BaseSatelliteAdapter
-from orbis.models.models_satellites import SatelliteResult
-from orbis.serializers import SatelliteResultSerializer
-
-
+from .adapters_base import BaseSatelliteAdapter
+from satellites.models import SatelliteResult
 """
 Uses the sentinelsat library provided by Copernicus to access sentinel-2 data
 More information available at:
@@ -27,7 +24,8 @@ class Sentinel2Adapter(BaseSatelliteAdapter):
 
     def __init__(self, *args, **kwargs):
         self.api = SentinelAPI(
-            settings.COPERNICUS_USERNAME, settings.COPERNICUS_PASSWORD,
+            settings.COPERNICUS_USERNAME,
+            settings.COPERNICUS_PASSWORD,
         )
 
     def run_free_satellite_query(self, tier):
@@ -40,7 +38,9 @@ class Sentinel2Adapter(BaseSatelliteAdapter):
             platformname="Sentinel-2",
             order_by="ingestiondate",
             offset=0,
-            date=(self.query_params["start_date"], self.query_params["end_date"]),
+            date=(
+                self.query_params["start_date"], self.query_params["end_date"]
+            ),
         )
 
         results = [
@@ -56,17 +56,23 @@ class Sentinel2Adapter(BaseSatelliteAdapter):
                 cloud_cover=product["cloudcoverpercentage"],
                 # set as much metatdata as I can from the query result...
                 metadata={
-                    "Summary": product.get("summary"),
-                    "Name of the instrument": product.get("instrumentname"),
-                    "Operational mode of the sensor": product.get("sensoroperationalmode"),
-                    "Orbit direction": product.get("direction"),
-                    "Product type": product.get("producttype"),
-                    "Cloud coverage [%]": product.get("cloudcoverpercentage"),
+                    "Summary":
+                        product.get("summary"),
+                    "Name of the instrument":
+                        product.get("instrumentname"),
+                    "Operational mode of the sensor":
+                        product.get("sensoroperationalmode"),
+                    "Orbit direction":
+                        product.get("direction"),
+                    "Product type":
+                        product.get("producttype"),
+                    "Cloud coverage [%]":
+                        product.get("cloudcoverpercentage"),
                 },
                 # store everything else as the "raw_data" attr...
                 raw_data=product,
-            )
-            for _, product in products.items()
+            ) for _,
+            product in products.items()
         ]
 
         return results

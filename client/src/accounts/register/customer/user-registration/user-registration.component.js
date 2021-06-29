@@ -28,16 +28,17 @@ import {
   lastName,
   newPassword,
   newPasswordConfirm,
+  organisationName,
 } from 'utils/validators';
 
 /**
  * @typedef {{
  *  email: string
  *  name: string
+ *  organisationName: string
  *  newPassword: string
  *  newPasswordConfirm: string
  *  acceptedTerms: boolean
- *  registration_stage: User['registration_stage']
  * }} FormValues
  */
 
@@ -45,6 +46,7 @@ const validationSchema = yupObject({
   [FIELD_NAMES.email]: email,
   [FIELD_NAMES.firstName]: firstName,
   [FIELD_NAMES.lastName]: lastName,
+  [FIELD_NAMES.organisationName]: organisationName,
   [FIELD_NAMES.newPassword]: newPassword,
   [FIELD_NAMES.newPasswordConfirm]: newPasswordConfirm,
   [FIELD_NAMES.acceptedTerms]: acceptedTerms,
@@ -73,6 +75,7 @@ const UserRegistration = ({
       email: undefined,
       firstName: undefined,
       lastName: undefined,
+      organisationName: undefined,
       newPassword: undefined,
       newPasswordConfirm: undefined,
       acceptedTerms: false,
@@ -91,7 +94,6 @@ const UserRegistration = ({
           onSubmit({
             ...rest,
             name: `${firstName} ${lastName}`,
-            registration_stage: 'CUSTOMER',
           }),
       )}
     >
@@ -126,6 +128,17 @@ const UserRegistration = ({
           inputRef={register}
           error={!!errors[FIELD_NAMES.lastName]}
           helperText={errors[FIELD_NAMES.lastName]?.message}
+          required
+        />
+      </Form.Row>
+      <Form.Row>
+        <TextField
+          id={FIELD_NAMES.organisationName}
+          name={FIELD_NAMES.organisationName}
+          label="Organisation Name"
+          inputRef={register}
+          error={!!errors[FIELD_NAMES.organisationName]}
+          helperText={errors[FIELD_NAMES.organisationName]?.message}
           required
         />
       </Form.Row>

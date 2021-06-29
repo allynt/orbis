@@ -30,6 +30,9 @@ export const MESSAGES = {
   lastName: {
     required: 'Last Name is required',
   },
+  organisationName: {
+    required: 'Organisation Name is required',
+  },
   acceptedTerms: {
     oneOF: 'You must accept the terms and conditions',
   },
@@ -61,6 +64,7 @@ export const CONTEXT_KEYS = {
 export const FIELD_NAMES = {
   email: 'email',
   phone: 'phone',
+  organisationName: 'organisationName',
   password: 'password',
   oldPassword: 'oldPassword',
   newPassword: 'newPassword',

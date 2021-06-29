@@ -10,7 +10,7 @@ locals {
     "settings" = {
       "index" = {
         "number_of_shards"   = "1",
-        "number_of_replicas" = "0",
+        "number_of_replicas" = "1",
       },
     },
 
@@ -32,6 +32,7 @@ locals {
         "app"         = { "type" = "keyword" },
         "instance"    = { "type" = "keyword" },
         "environment" = { "type" = "keyword" },
+        "stream"      = { "type" = "keyword" },
 
         // The top-level "type" field determines what type of event this is
         "type" = { "type" = "keyword" },
