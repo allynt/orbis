@@ -6,14 +6,14 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { getGeometryAreaKmSquared } from 'utils/geometry';
 
-import SatelliteSearchForm from './satellite-search-form.component';
-import styles from './satellite-search.module.css';
 import {
   fetchSavedSatelliteSearches,
   deleteSavedSatelliteSearch,
   setCurrentSatelliteSearchQuery,
-} from './satellites.slice';
-import SavedSearchList from './saved-search-list.component';
+} from '../satellites.slice';
+import SatelliteSearchForm from './satellite-search-form/satellite-search-form.component';
+import styles from './satellite-search.module.css';
+import SavedSearchList from './saved-search-list/saved-search-list.component';
 
 // import sideMenuStyles from '../control-panel/control-panel.module.css';
 

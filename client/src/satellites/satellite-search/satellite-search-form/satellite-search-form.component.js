@@ -16,13 +16,13 @@ import 'react-datepicker/dist/react-datepicker.css';
 
 import { getGeometryAreaKmSquared } from 'utils/geometry';
 
-import styles from './satellite-search-form.module.css';
-import validate from './satellite-search-form.validator';
-import { RESULTS, SATELLITE, TIER } from './satellites-panel.component';
+import { RESULTS, SATELLITE, TIER } from '../../satellites-panel.component';
 import {
   setCurrentSatelliteSearchQuery,
   fetchSatelliteScenes,
-} from './satellites.slice';
+} from '../../satellites.slice';
+import styles from './satellite-search-form.module.css';
+import validate from './satellite-search-form.validator';
 
 // import sideMenuStyles from '../control-panel/control-panel.module.css';
 

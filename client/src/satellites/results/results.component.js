@@ -8,13 +8,12 @@ import {
   PinIcon,
 } from '@astrosat/astrosat-ui';
 
-import styles from './results.module.css';
-import { DEFAULT_CLOUD_COVER } from './satellite.constants';
-import SaveSearchForm from './save-search-form.component';
+import { DEFAULT_CLOUD_COVER } from '../satellite.constants';
+import sceneStyles from '../scene-list-item.module.css';
 import SceneListItem, {
   SceneListItemSkeleton,
-} from './scene-list-item.component';
-import sceneStyles from './scene-list-item.module.css';
+} from '../scene-list-item/scene-list-item.component';
+import styles from './results.module.css';
 // import sideMenuStyles from '../control-panel/control-panel.module.css';
 
 const Results = (

@@ -8,8 +8,8 @@ import { useSelector } from 'react-redux';
 
 import { Skeleton } from 'components/skeleton/skeleton.component';
 
-import { DATE_FORMAT, TIME_FORMAT } from './satellite.constants';
-import { VISUALISATION, SCENE } from './satellites-panel.component';
+import { DATE_FORMAT, TIME_FORMAT } from '../satellite.constants';
+import { VISUALISATION, SCENE } from '../satellites-panel.component';
 import styles from './scene-list-item.module.css';
 
 const SceneListItem = ({

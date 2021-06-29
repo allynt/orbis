@@ -9,14 +9,14 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 
 import { toggleCompareMode, isCompareModeSelector } from '../map/map.slice';
-import ComparePins from './compare-pins.component';
-import Results from './results.component';
-import SatelliteSearch from './satellite-search.component';
+import ComparePins from './compare-pins/compare-pins.component';
+import Results from './results/results.component';
+import SatelliteSearch from './satellite-search/satellite-search.component';
 import {
   SatelliteInfoTable,
   TierInfoTable,
   SceneInfoTable,
-} from './satellites-info-tables.component';
+} from './satellites-info-tables/satellites-info-tables.component';
 import styles from './satellites-panel.module.css';
 import {
   fetchSatellites,
@@ -32,7 +32,7 @@ import {
   setCurrentVisualisation,
   selectedPinnedScenesSelector,
 } from './satellites.slice';
-import Visualisation from './visualisation.component';
+import Visualisation from './visualisation/visualisation.component';
 
 export const SEARCH = 'Search';
 export const RESULTS = 'Results';

@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Button } from '@astrosat/astrosat-ui';
 
-import { SEARCH } from './satellites-panel.component';
+import { SEARCH } from '../satellites-panel.component';
 import styles from './visualisation.module.css';
 // import sideMenuStyles from '../control-panel/control-panel.module.css';
 

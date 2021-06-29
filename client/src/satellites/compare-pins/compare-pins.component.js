@@ -2,9 +2,9 @@ import React, { useEffect } from 'react';
 
 import { Button, Switch, Checkbox } from '@astrosat/astrosat-ui';
 
+import { ReactComponent as DeleteIcon } from '../delete.svg';
+import SceneListItem from '../scene-list-item/scene-list-item.component';
 import styles from './compare-pins.module.css';
-import { ReactComponent as DeleteIcon } from './delete.svg';
-import SceneListItem from './scene-list-item.component';
 
 const MAX_SELECTED = 2;
 
