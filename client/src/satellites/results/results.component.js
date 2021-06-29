@@ -9,10 +9,10 @@ import {
 } from '@astrosat/astrosat-ui';
 
 import { DEFAULT_CLOUD_COVER } from '../satellite.constants';
-import sceneStyles from '../scene-list-item.module.css';
 import SceneListItem, {
   SceneListItemSkeleton,
 } from '../scene-list-item/scene-list-item.component';
+import sceneStyles from '../scene-list-item/scene-list-item.module.css';
 import styles from './results.module.css';
 // import sideMenuStyles from '../control-panel/control-panel.module.css';
 
