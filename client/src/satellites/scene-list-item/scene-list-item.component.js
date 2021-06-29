@@ -8,6 +8,7 @@ import {
   ListItemAvatar,
   ListItemSecondaryAction,
   ListItemText,
+  makeStyles,
   Skeleton,
   Typography,
 } from '@astrosat/astrosat-ui';
@@ -19,8 +20,20 @@ import parseISO from 'date-fns/parseISO';
 import { DATE_FORMAT, TIME_FORMAT } from '../satellite.constants';
 import { SCENE, VISUALISATION } from '../satellites-panel.component';
 
+const useStyles = makeStyles(theme => ({
+  avatar: {
+    width: '6rem',
+    height: '6rem',
+    maxWidth: '6rem',
+    marginBottom: theme.spacing(1),
+  },
+  button: {
+    paddingLeft: theme.spacing(1),
+    paddingRight: theme.spacing(1),
+  },
+}));
+
 const SceneListItem = ({
-  index,
   scene,
   icon,
   selectScene,
@@ -29,6 +42,7 @@ const SceneListItem = ({
   toggleMoreInfoDialog,
   visualisationId,
 }) => {
+  const styles = useStyles();
   const thumbnailUrl = scene?.thumbnail_url.replace(
     /{VISUALISATION_ID}/,
     visualisationId,
@@ -48,18 +62,13 @@ const SceneListItem = ({
       <ListItemAvatar>
         <>
           <Avatar
-            style={{
-              width: '6rem',
-              height: '6rem',
-              maxWidth: '6rem',
-              marginBottom: '0.5em',
-            }}
+            className={styles.avatar}
             variant="rounded"
             src={thumbnailUrl}
             alt="Thumbnail of a satellite scene"
           />
           <Button
-            style={{ paddingLeft: '0.5em', paddingRight: '0.5em' }}
+            className={styles.button}
             variant="text"
             size="small"
             color="default"
