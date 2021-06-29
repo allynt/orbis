@@ -1,6 +1,7 @@
 import React from 'react';
 
-import { render, cleanup, fireEvent } from '@testing-library/react';
+import { render } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { Provider } from 'react-redux';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
@@ -46,8 +47,6 @@ describe('Satellite Scene List Item Component', () => {
   let setSelectedMoreInfo = null;
   let toggleMoreInfoDialog = null;
   let scenes = null;
-
-  beforeEach(cleanup);
 
   beforeEach(() => {
     store = mockStore({
@@ -97,13 +96,13 @@ describe('Satellite Scene List Item Component', () => {
     expect(getByText('24:00:00 UTC')).toBeInTheDocument();
     expect(getByText('5 %')).toBeInTheDocument();
     expect(container.querySelector('img')).toHaveAttribute('src', 'thumbnail1');
-    expect(getByText('More info')).toBeInTheDocument();
+    expect(getByText('More Info')).toBeInTheDocument();
     expect(getByText('Free Product')).toBeInTheDocument();
   });
 
   it('should render a single scene list item', () => {
     scene = scenes[1];
-    const { container, getByText, queryByText } = renderComponent(
+    const { container, getByText, queryByText, getByRole } = renderComponent(
       store,
       index,
       scene,
@@ -119,12 +118,12 @@ describe('Satellite Scene List Item Component', () => {
     expect(getByText('24:00:00 UTC')).toBeInTheDocument();
     expect(getByText('15 %')).toBeInTheDocument();
     expect(container.querySelector('img')).toHaveAttribute('src', 'thumbnail2');
-    expect(getByText('More info')).toBeInTheDocument();
+    expect(getByRole('button', { name: 'More Info' })).toBeInTheDocument();
     expect(queryByText('Free Product')).toBeNull();
   });
 
   it('should select scene when scene selected', () => {
-    const { container } = renderComponent(
+    const { getByRole } = renderComponent(
       store,
       index,
       scene,
@@ -134,13 +133,12 @@ describe('Satellite Scene List Item Component', () => {
       setSelectedMoreInfo,
       toggleMoreInfoDialog,
     );
-
-    fireEvent.click(container.querySelector('.sceneSection'));
+    userEvent.click(getByRole('button', { name: '1' }));
     expect(selectScene).toHaveBeenCalledWith(scenes[0]);
   });
 
   it('should trigger a panel change when setVisiblePanel called', () => {
-    const { container } = renderComponent(
+    const { getByRole } = renderComponent(
       store,
       index,
       scene,
@@ -150,13 +148,12 @@ describe('Satellite Scene List Item Component', () => {
       setSelectedMoreInfo,
       toggleMoreInfoDialog,
     );
-
-    fireEvent.click(container.querySelector('.sceneSection'));
+    userEvent.click(getByRole('button', { name: '1' }));
     expect(setVisiblePanel).toHaveBeenCalledWith(VISUALISATION);
   });
 
   it('should set the scene when `more info` clicked', () => {
-    const { container } = renderComponent(
+    const { getByRole } = renderComponent(
       store,
       index,
       scene,
@@ -166,8 +163,7 @@ describe('Satellite Scene List Item Component', () => {
       setSelectedMoreInfo,
       toggleMoreInfoDialog,
     );
-
-    fireEvent.click(container.querySelector('.moreInfo'));
+    userEvent.click(getByRole('button', { name: 'More Info' }));
     expect(setSelectedMoreInfo).toHaveBeenCalledWith({
       type: 'Scene',
       data: scenes[0],
@@ -175,7 +171,7 @@ describe('Satellite Scene List Item Component', () => {
   });
 
   it('should display a dialog when `more info` clicked', () => {
-    const { container } = renderComponent(
+    const { getByRole } = renderComponent(
       store,
       index,
       scene,
@@ -186,7 +182,7 @@ describe('Satellite Scene List Item Component', () => {
       toggleMoreInfoDialog,
     );
 
-    fireEvent.click(container.querySelector('.moreInfo'));
+    userEvent.click(getByRole('button', { name: 'More Info' }));
     expect(toggleMoreInfoDialog).toHaveBeenCalled();
   });
 });

@@ -1,16 +1,23 @@
 import React from 'react';
 
-import { InfoIcon } from '@astrosat/astrosat-ui';
+import {
+  Avatar,
+  Button,
+  IconButton,
+  ListItem,
+  ListItemAvatar,
+  ListItemSecondaryAction,
+  ListItemText,
+  Skeleton,
+  Typography,
+} from '@astrosat/astrosat-ui';
 
+import { Info } from '@material-ui/icons';
 import format from 'date-fns/format';
 import parseISO from 'date-fns/parseISO';
-import { useSelector } from 'react-redux';
-
-import { Skeleton } from 'components/skeleton/skeleton.component';
 
 import { DATE_FORMAT, TIME_FORMAT } from '../satellite.constants';
-import { VISUALISATION, SCENE } from '../satellites-panel.component';
-import styles from './scene-list-item.module.css';
+import { SCENE, VISUALISATION } from '../satellites-panel.component';
 
 const SceneListItem = ({
   index,
@@ -20,90 +27,113 @@ const SceneListItem = ({
   setVisiblePanel,
   setSelectedMoreInfo,
   toggleMoreInfoDialog,
+  visualisationId,
 }) => {
-  const visualisationId = useSelector(
-    state => state.satellites.visualisationId,
-  );
-  const thumbnailUrl = scene.thumbnail_url.replace(
+  const thumbnailUrl = scene?.thumbnail_url.replace(
     /{VISUALISATION_ID}/,
     visualisationId,
   );
 
   return (
-    <div key={`${scene.id}-${index}`} className={styles.scene}>
-      <div className={styles.icon}>{icon}</div>
-
-      <div
-        className={styles.sceneSection}
-        onClick={() => {
-          if (selectScene) {
-            selectScene(scene);
-            setVisiblePanel && setVisiblePanel(VISUALISATION);
-          }
-        }}
-      >
-        <div className={styles.thumbContainer}>
-          <picture>
-            <img
-              className={styles.thumbnail}
-              src={thumbnailUrl}
-              alt="Thumbnail of a satellite scene"
-            />
-          </picture>
-        </div>
-        <ul className={styles.metadata}>
-          <li>{format(parseISO(scene.created), DATE_FORMAT)}</li>
-          <li>{format(parseISO(scene.created), TIME_FORMAT)} UTC</li>
-          <li>{scene.cloudCover} %</li>
-          <li>{scene.id}</li>
-        </ul>
-      </div>
-
-      <div className={`${styles.sceneSection} ${styles.sceneOptions}`}>
-        <div
-          className={styles.moreInfo}
-          onClick={() => {
-            setSelectedMoreInfo({ type: SCENE, data: scene });
-            toggleMoreInfoDialog();
-          }}
-        >
-          <InfoIcon className={styles.moreInfoIcon} />
-          <span>More info</span>
-        </div>
-
-        <div className={styles.freeProductContainer}>
-          {scene.tier === 'free' && (
-            <span className={styles.freeProduct}>Free Product</span>
-          )}
-        </div>
-      </div>
-    </div>
+    <ListItem
+      aria-label={scene?.id}
+      button
+      onClick={() => {
+        if (selectScene) {
+          selectScene(scene);
+          setVisiblePanel && setVisiblePanel(VISUALISATION);
+        }
+      }}
+    >
+      <ListItemAvatar>
+        <>
+          <Avatar
+            style={{
+              width: '6rem',
+              height: '6rem',
+              maxWidth: '6rem',
+              marginBottom: '0.5em',
+            }}
+            variant="rounded"
+            src={thumbnailUrl}
+            alt="Thumbnail of a satellite scene"
+          />
+          <Button
+            style={{ paddingLeft: '0.5em', paddingRight: '0.5em' }}
+            variant="text"
+            size="small"
+            color="default"
+            startIcon={<Info />}
+            onClick={() => {
+              setSelectedMoreInfo({ type: SCENE, data: scene });
+              toggleMoreInfoDialog();
+            }}
+          >
+            More Info
+          </Button>
+        </>
+      </ListItemAvatar>
+      <ListItemText
+        primary={
+          <>
+            <Typography>
+              {scene && format(parseISO(scene?.created), DATE_FORMAT)}
+            </Typography>
+            <Typography>
+              {scene && format(parseISO(scene?.created), TIME_FORMAT)} UTC
+            </Typography>
+            <Typography>{scene?.cloudCover} %</Typography>
+            <Typography>{scene?.id}</Typography>
+          </>
+        }
+        primaryTypographyProps={{ id: 'primary-text' }}
+        secondary={scene?.tier === 'free' && 'Free Product'}
+        secondaryTypographyProps={{ color: 'primary' }}
+      />
+      {icon && (
+        <ListItemSecondaryAction>
+          <IconButton>{icon}</IconButton>
+        </ListItemSecondaryAction>
+      )}
+    </ListItem>
   );
 };
 
 export const SceneListItemSkeleton = () => (
-  <li className={styles.sceneSkeleton}>
-    <div className={styles.sceneSection}>
-      <div className={styles.thumbContainer}>
-        <Skeleton width="6.5rem" height="6.5rem" />
-      </div>
-      <ul className={styles.metadataSkeleton}>
-        {Array(4)
-          .fill(0)
-          .map((num, i) => (
-            <li key={i} className={styles.item}>
-              <Skeleton />
-            </li>
-          ))}
-      </ul>
-    </div>
-
-    <div className={`${styles.sceneSection} ${styles.sceneOptions}`}>
-      <div className={styles.moreInfo}>
+  <ListItem>
+    <ListItemAvatar>
+      <>
+        <Skeleton>
+          <Avatar
+            style={{
+              width: '6rem',
+              height: '6rem',
+              maxWidth: '6rem',
+            }}
+          />
+        </Skeleton>
         <Skeleton />
-      </div>
-    </div>
-  </li>
+      </>
+    </ListItemAvatar>
+    <ListItemText
+      primary={
+        <>
+          <Typography>
+            <Skeleton />
+          </Typography>
+          <Typography>
+            <Skeleton />
+          </Typography>
+          <Typography>
+            <Skeleton />
+          </Typography>
+          <Typography>
+            <Skeleton />
+          </Typography>
+        </>
+      }
+    />
+  </ListItem>
 );
 
 export default SceneListItem;
