@@ -12,7 +12,7 @@ const mockStore = configureMockStore([thunk]);
 const buttonName = 'Save Search';
 const textfieldPlaceholder = 'Name';
 
-describe.skip('Save Satellite Search Form Component', () => {
+describe('Save Satellite Search Form Component', () => {
   const store = mockStore({});
   let query = null;
   let setVisiblePanel = null;
@@ -54,32 +54,32 @@ describe.skip('Save Satellite Search Form Component', () => {
     ).toBeInTheDocument();
   });
 
-  it('should disable `Save Search` button when form is invalid', () => {
+  it.skip('should disable `Save Search` button when form is invalid', () => {
     const { getByPlaceholderText, getByText } = render(
       <Provider store={store}>
         <SaveSearchForm query={query} close={close} saveSearch={saveSearch} />
       </Provider>,
     );
 
-    expect(getByText(buttonName)).toHaveAttribute('disabled');
+    expect(getByText(buttonName)).toBeDisabled();
     fireEvent.change(getByPlaceholderText(textfieldPlaceholder), {
       target: { value: 'id' },
     });
-    expect(getByText(buttonName)).toHaveAttribute('disabled');
+    expect(getByText(buttonName)).toBeDisabled();
   });
 
-  it('should enable `Save Search` button when form is valid', () => {
+  it.skip('should enable `Save Search` button when form is valid', () => {
     const { getByPlaceholderText, getByText } = render(
       <Provider store={store}>
         <SaveSearchForm query={query} close={close} saveSearch={saveSearch} />
       </Provider>,
     );
 
-    expect(getByText(buttonName)).toHaveAttribute('disabled');
+    expect(getByText(buttonName)).toBeDisabled();
     fireEvent.change(getByPlaceholderText(textfieldPlaceholder), {
       target: { value: textfieldPlaceholder },
     });
-    expect(getByText(buttonName)).not.toHaveAttribute('disabled');
+    expect(getByText(buttonName)).not.toBeDisabled();
   });
 
   it('should not call `saveSatelliteSearch` function when form is invalid and `Save Search` button clicked', () => {
