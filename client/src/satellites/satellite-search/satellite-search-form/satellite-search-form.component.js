@@ -2,11 +2,15 @@ import React, { useState, useEffect } from 'react';
 
 import {
   Checkbox,
+  FormControl,
+  FormLabel,
+  FormGroup,
   FormControlLabel,
   useForm,
-  InfoIcon,
-  ErrorIcon,
   Button,
+  Divider,
+  Well,
+  makeStyles,
 } from '@astrosat/astrosat-ui/';
 
 import { formatISO, subDays } from 'date-fns';
@@ -14,6 +18,7 @@ import DatePicker from 'react-datepicker';
 import { useDispatch, useSelector } from 'react-redux';
 import 'react-datepicker/dist/react-datepicker.css';
 
+import { InfoButton } from 'components';
 import { getGeometryAreaKmSquared } from 'utils/geometry';
 
 import { RESULTS, SATELLITE, TIER } from '../../satellites-panel.component';
@@ -21,10 +26,7 @@ import {
   setCurrentSatelliteSearchQuery,
   fetchSatelliteScenes,
 } from '../../satellites.slice';
-import styles from './satellite-search-form.module.css';
 import validate from './satellite-search-form.validator';
-
-// import sideMenuStyles from '../control-panel/control-panel.module.css';
 
 const DATE_FORMAT = 'yyy-MM-dd';
 const DAYS_IN_PAST = 7;
@@ -48,7 +50,7 @@ const tiers = [
 ];
 
 const CustomDatePicker = React.forwardRef(({ value, onClick }, ref) => (
-  <button type="button" className={styles.datePicker} onClick={onClick}>
+  <button type="button" onClick={onClick}>
     {value}
   </button>
 ));
@@ -76,19 +78,25 @@ export const savedSearchToFormValues = savedSearch => {
   return formValues;
 };
 
-const FormSection = ({ title, children }) => (
-  <div className={styles.formSection}>
-    <h3>{title}</h3>
-    {children}
-  </div>
-);
-
 const defaults = {
   values: {
     'sentinel-2': true,
     free: true,
   },
 };
+
+const useStyles = makeStyles(theme => ({
+  checkbox: {
+    display: 'flex',
+    justifyContent: 'space-between',
+  },
+  divider: { margin: theme.spacing(2, 0) },
+  datePickers: {
+    display: 'flex',
+    width: '100%',
+    justifyContent: 'space-between',
+  },
+}));
 
 const SatelliteSearchForm = ({
   satellites,
@@ -98,6 +106,7 @@ const SatelliteSearchForm = ({
   toggleMoreInfoDialog,
 }) => {
   const dispatch = useDispatch();
+  const styles = useStyles({});
 
   const [startDate, setStartDate] = useState(subDays(new Date(), DAYS_IN_PAST));
   const [endDate, setEndDate] = useState(new Date());
@@ -144,121 +153,90 @@ const SatelliteSearchForm = ({
     setVisiblePanel(RESULTS);
   }
   return (
-    <form className={styles.form} onSubmit={handleSubmit}>
-      <div className={styles.formSections}>
-        <FormSection title="Data Source">
-          <ul className={styles.checkboxList}>
-            {satellites.map(satellite => {
-              // console.log('SATELLITE: ', satellite);
-              return (
-                <li key={satellite.label} className={styles.checkboxListItem}>
-                  <FormControlLabel
-                    label={satellite.label}
-                    control={
-                      <Checkbox
-                        name={satellite.id}
-                        // label={satellite.label}
-                        onChange={handleChange}
-                        checked={values[satellite.id] === true}
-                      />
-                    }
-                  />
-
-                  <button
-                    // className={styles.infoButton}
-                    type="button"
-                    onClick={() => {
-                      setSelectedMoreInfo({ type: SATELLITE, data: satellite });
-                      toggleMoreInfoDialog();
-                    }}
-                  >
-                    {/* <InfoIcon classes={styles.infoIcon} /> */}
-                    <InfoIcon />
-                  </button>
-                </li>
-              );
-            })}
-          </ul>
-        </FormSection>
-        <FormSection title="Date">
-          <div className={styles.datePickers}>
-            <DatePicker
-              name="start_date"
-              dateFormat={DATE_FORMAT}
-              selected={startDate}
-              onChange={date => setStartDate(date)}
-              customInput={<CustomDatePicker />}
-              selectsStart
-              startDate={startDate}
-              endDate={endDate}
-            />
-            <div className={styles.datePickerDivider} />
-            <DatePicker
-              name="end_date"
-              dateFormat={DATE_FORMAT}
-              selected={endDate}
-              onChange={date => setEndDate(date)}
-              customInput={<CustomDatePicker />}
-              selectsEnd
-              startDate={startDate}
-              endDate={endDate}
-              minDate={startDate}
-            />
-          </div>
-        </FormSection>
-        <FormSection title="Resolution">
-          <ul className={styles.checkboxList}>
-            {tiers.map(tier => (
-              <li key={tier.id} className={styles.checkboxListItem}>
-                <FormControlLabel
-                  label={tier.label}
-                  control={
-                    <Checkbox
-                      name={tier.id}
-                      // label={tier.label}
-                      onChange={handleChange}
-                      checked={values[tier.id] === true}
-                    />
-                  }
-                />
-
-                <button
-                  className={styles.infoButton}
-                  type="button"
-                  onClick={() => {
-                    setSelectedMoreInfo({ type: TIER, data: tier });
-                    toggleMoreInfoDialog();
-                  }}
-                >
-                  {/* <InfoIcon classes={styles.infoIcon} /> */}
-                  <InfoIcon />
-                </button>
-              </li>
-            ))}
-          </ul>
-        </FormSection>
-      </div>
-      {/* <div className={sideMenuStyles.buttons}> */}
-      <div>
-        {geometryTooLarge && (
-          <div className={styles.errorContainerBackground}>
-            <div className={styles.errorContainer}>
-              {/* <ErrorIcon classes={styles.errorIcon} /> */}
-              <ErrorIcon />
-              <p className={styles.errorMessage}>
-                AOI is too large, redraw or zoom in
-              </p>
+    <form onSubmit={handleSubmit}>
+      <FormControl component="fieldset">
+        <FormLabel component="legend">Satellite Image Source</FormLabel>
+        <FormGroup>
+          {satellites?.map(satellite => (
+            <div key={satellite.id} className={styles.checkbox}>
+              <FormControlLabel
+                name={satellite.id}
+                onChange={handleChange}
+                checked={values[satellite.id] === true}
+                label={satellite.label}
+                control={<Checkbox />}
+              />
+              <InfoButton
+                onClick={() => {
+                  setSelectedMoreInfo({
+                    type: SATELLITE,
+                    data: satellite,
+                  });
+                  toggleMoreInfoDialog();
+                }}
+              />
             </div>
-          </div>
+          ))}
+        </FormGroup>
+      </FormControl>
+      <Divider className={styles.divider} />
+      <FormControl component="fieldset">
+        <FormLabel component="legend">Date</FormLabel>
+        <div className={styles.datePickers}>
+          <DatePicker
+            name="start_date"
+            dateFormat={DATE_FORMAT}
+            selected={startDate}
+            onChange={date => setStartDate(date)}
+            customInput={<CustomDatePicker />}
+            selectsStart
+            startDate={startDate}
+            endDate={endDate}
+          />
+          <DatePicker
+            name="end_date"
+            dateFormat={DATE_FORMAT}
+            selected={endDate}
+            onChange={date => setEndDate(date)}
+            customInput={<CustomDatePicker />}
+            selectsEnd
+            startDate={startDate}
+            endDate={endDate}
+            minDate={startDate}
+          />
+        </div>
+      </FormControl>
+      <Divider className={styles.divider} />
+      <FormControl component="fieldset">
+        <FormLabel component="legend">Resolution</FormLabel>
+        <FormGroup>
+          {tiers.map(tier => (
+            <div key={tier.id} className={styles.checkbox}>
+              <FormControlLabel
+                name={tier.id}
+                onChange={handleChange}
+                checked={values[tier.id] === true}
+                label={tier.label}
+                control={<Checkbox />}
+              />
+              <InfoButton
+                onClick={() => {
+                  setSelectedMoreInfo({ type: TIER, data: tier });
+                  toggleMoreInfoDialog();
+                }}
+              />
+            </div>
+          ))}
+        </FormGroup>
+      </FormControl>
+      <>
+        {geometryTooLarge && (
+          <Well severity="error">AOI is too large, redraw or zoom in</Well>
         )}
-        <Button
-          type="submit"
-          disabled={geometryTooLarge}
-          // className={sideMenuStyles.button}
-        >
-          Search
-        </Button>
-      </div>
+      </>
+      <Button type="submit" disabled={geometryTooLarge}>
+        Search
+      </Button>
     </form>
   );
 };
