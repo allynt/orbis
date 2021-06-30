@@ -64,7 +64,7 @@ describe('Saved Satellite Search List Component', () => {
         />
       </Provider>,
     );
-    expect(getAllByRole('listitem')).toHaveLength(2);
+    expect(getAllByRole('listitem')).toHaveLength(savedSearches.length);
   });
 
   it('should call `setCurrentSearchQuery` when `Reload` button clicked', () => {
