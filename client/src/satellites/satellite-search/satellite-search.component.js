@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useCallback } from 'react';
 
-import { Button, /* Detail, */ DrawAoiIcon } from '@astrosat/astrosat-ui';
+import { Button, Typography } from '@astrosat/astrosat-ui';
 
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -12,24 +12,18 @@ import {
   setCurrentSatelliteSearchQuery,
 } from '../satellites.slice';
 import SatelliteSearchForm from './satellite-search-form/satellite-search-form.component';
-import styles from './satellite-search.module.css';
 import SavedSearchList from './saved-search-list/saved-search-list.component';
-
-// import sideMenuStyles from '../control-panel/control-panel.module.css';
 
 const AOI_DRAW_MODE = 'RectangleMode';
 const BBOX_NO_OF_POINTS = 5;
 
-const SatelliteSearch = (
-  {
-    map,
-    satellites,
-    setVisiblePanel,
-    setSelectedMoreInfo,
-    toggleMoreInfoDialog,
-  },
-  ref,
-) => {
+const SatelliteSearch = ({
+  map,
+  satellites,
+  setVisiblePanel,
+  setSelectedMoreInfo,
+  toggleMoreInfoDialog,
+}) => {
   const dispatch = useDispatch();
 
   const savedSearches = useSelector(
@@ -132,26 +126,19 @@ const SatelliteSearch = (
   }, [savedSearches, dispatch]);
 
   return (
-    <div className={styles.search} ref={ref}>
+    <>
       {savedSearches && savedSearches.length > 0 ? (
-        <div>
-          {/* <Detail title="Saved Searches"> */}
-          <SavedSearchList
-            savedSearches={savedSearches}
-            setCurrentSearchQuery={chooseSearchQuery}
-            deleteSavedSatelliteSearch={deleteSavedSearchQuery}
-          />
-          {/* </Detail> */}
-        </div>
+        <SavedSearchList
+          savedSearches={savedSearches}
+          setCurrentSearchQuery={chooseSearchQuery}
+          deleteSavedSatelliteSearch={deleteSavedSearchQuery}
+        />
       ) : (
-        <p>There are no saved AOI yet</p>
+        <Typography>There are no saved AOI yet</Typography>
       )}
-      <div className={styles.drawAOI} onClick={() => setIsAoiMode(true)}>
-        {/* <DrawAoiIcon classes={styles.icon} title="draw-area-icon" /> */}
-        <DrawAoiIcon title="draw-area-icon" />
-        {/* <Button theme="link" classNames={[styles.button]}> */}
-        <Button theme="link">Draw AOI</Button>
-      </div>
+      <Button color="secondary" onClick={() => setIsAoiMode(true)}>
+        Draw your AOI
+      </Button>
 
       <SatelliteSearchForm
         satellites={satellites}
@@ -160,17 +147,8 @@ const SatelliteSearch = (
         setSelectedMoreInfo={setSelectedMoreInfo}
         toggleMoreInfoDialog={toggleMoreInfoDialog}
       />
-      {/* <div className={sideMenuStyles.buttons}> */}
-      <Button
-        // classNames={[sideMenuStyles.button]}
-        theme="tertiary"
-        onClick={() => console.log('Task Satellite Button Clicked')}
-      >
-        Task Satellite
-      </Button>
-      {/* </div> */}
-    </div>
+    </>
   );
 };
 
-export default React.memo(React.forwardRef(SatelliteSearch));
+export default SatelliteSearch;
