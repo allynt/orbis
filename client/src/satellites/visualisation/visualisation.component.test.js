@@ -10,7 +10,7 @@ import Visualisation from './visualisation.component';
 
 const mockStore = configureMockStore([thunk]);
 
-describe.skip('Satellite Visualisation Component', () => {
+describe('Satellite Visualisation Component', () => {
   const store = mockStore({});
   let visualisations = null;
   let setVisiblePanel = null;
@@ -38,7 +38,7 @@ describe.skip('Satellite Visualisation Component', () => {
   });
 
   it('should render a list of visualisation options', () => {
-    const { getByText, container } = render(
+    const { getByText, getAllByRole } = render(
       <Provider store={store}>
         <Visualisation
           visualisations={visualisations}
@@ -49,26 +49,11 @@ describe.skip('Satellite Visualisation Component', () => {
     );
 
     expect(getByText('VISUALISATION')).toBeInTheDocument();
-    expect(container.querySelectorAll('.visualisation').length).toBe(2);
+    expect(getAllByRole('button')).toHaveLength(2);
 
     visualisations.forEach(visualisation => {
       expect(getByText(visualisation.label)).toBeInTheDocument();
       expect(getByText(visualisation.description)).toBeInTheDocument();
     });
-  });
-
-  it('should trigger a panel change when setVisiblePanel called', () => {
-    const { getByText } = render(
-      <Provider store={store}>
-        <Visualisation
-          visualisations={visualisations}
-          setVisiblePanel={setVisiblePanel}
-          removeScenes={removeScenes}
-        />
-      </Provider>,
-    );
-
-    fireEvent.click(getByText('Return to Search'));
-    expect(setVisiblePanel).toHaveBeenCalledWith(SEARCH);
   });
 });

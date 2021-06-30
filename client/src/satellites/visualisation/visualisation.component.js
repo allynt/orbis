@@ -1,58 +1,42 @@
 import React from 'react';
 
-import { Button } from '@astrosat/astrosat-ui';
+import {
+  Avatar,
+  List,
+  ListItem,
+  ListItemAvatar,
+  ListItemText,
+  Typography,
+} from '@astrosat/astrosat-ui';
 
-import { SEARCH } from '../satellites-panel.component';
-import styles from './visualisation.module.css';
-// import sideMenuStyles from '../control-panel/control-panel.module.css';
-
-const Visualisation = ({
-  visualisations,
-  setVisiblePanel,
-  removeScenes,
-  setCurrentVisualisation,
-}) =>
-  visualisations && (
-    <div className={styles.content}>
-      <ul className={styles.visualisations}>
-        <h3>VISUALISATION</h3>
+const Visualisation = ({ visualisations, setCurrentVisualisation }) =>
+  visualisations ? (
+    <>
+      <Typography variant="h1" gutterBottom>
+        VISUALISATION
+      </Typography>
+      <List>
         {visualisations.map(visualisation => (
-          <li
-            key={visualisation.label}
-            className={`${styles.visualisation} ${
-              visualisation.id !== 'true-color' ? styles.disabled : ''
-            }`}
-            onClick={() => setCurrentVisualisation('TCI')} // FIXME: hard-code until we have ability to use different visualisations.
+          <ListItem
+            key={visualisation.id}
+            button
+            onClick={() => setCurrentVisualisation('TCI')}
           >
-            <picture>
-              <img
-                className={styles.thumbnail}
+            <ListItemAvatar>
+              <Avatar
+                variant="rounded"
                 src={visualisation.thumbnail}
                 alt="Scene Visualisation Thumbnail"
               />
-            </picture>
-
-            <ul className={styles.metadata}>
-              <li className={styles.metaHeader}>{visualisation.label}</li>
-              <li>{visualisation.description}</li>
-            </ul>
-          </li>
+            </ListItemAvatar>
+            <ListItemText
+              primary={visualisation.label}
+              secondary={visualisation.description}
+            />
+          </ListItem>
         ))}
-      </ul>
-
-      {/* <div className={sideMenuStyles.buttons}>
-        <Button
-          theme="primary"
-          classNames={[sideMenuStyles.button]}
-          onClick={() => {
-            setVisiblePanel(SEARCH);
-            removeScenes();
-          }}
-        >
-          Return to Search
-        </Button>
-      </div> */}
-    </div>
-  );
+      </List>
+    </>
+  ) : null;
 
 export default Visualisation;
