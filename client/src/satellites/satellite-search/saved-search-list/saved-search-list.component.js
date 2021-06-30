@@ -2,15 +2,13 @@ import React from 'react';
 
 import {
   Button,
+  Divider,
   List,
   ListItem,
   ListItemText,
   makeStyles,
   Typography,
-  Divider,
 } from '@astrosat/astrosat-ui';
-
-import PropTypes from 'prop-types';
 
 const useStyles = makeStyles(theme => ({
   listItem: {
@@ -26,6 +24,13 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
+/**
+ * @param {{
+ *  savedSearches: import('typings/satellites').SavedSearch[]
+ *  setCurrentSearchQuery: (search: import('typings/satellites').SavedSearch) => void
+ *  deleteSavedSatelliteSearch: (searchId: import('typings/satellites').SavedSearch['id']) => void
+ * }} props
+ */
 const SavedSearchList = ({
   savedSearches,
   setCurrentSearchQuery,
@@ -75,22 +80,6 @@ const SavedSearchList = ({
         })}
     </List>
   );
-};
-
-SavedSearchList.propTypes = {
-  savedSearches: PropTypes.arrayOf(
-    PropTypes.shape({
-      id: PropTypes.number,
-      name: PropTypes.string,
-      satellites: PropTypes.array,
-      tiers: PropTypes.array,
-      start_date: PropTypes.string,
-      end_date: PropTypes.string,
-      aoi: PropTypes.array,
-      owner: PropTypes.number,
-      created: PropTypes.string,
-    }),
-  ),
 };
 
 export default SavedSearchList;
