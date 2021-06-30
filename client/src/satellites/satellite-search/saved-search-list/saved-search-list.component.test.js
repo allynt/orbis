@@ -55,7 +55,7 @@ describe('Saved Satellite Search List Component', () => {
   });
 
   it('should render a list of searches when there are multiple', () => {
-    const { container } = render(
+    const { getAllByRole } = render(
       <Provider store={store}>
         <SavedSearchList
           savedSearches={savedSearches}
@@ -64,42 +64,7 @@ describe('Saved Satellite Search List Component', () => {
         />
       </Provider>,
     );
-
-    const searchItems = container.querySelectorAll('li');
-    searchItems.forEach((item, i) => {
-      expect(within(item).getByText(savedSearches[i].name)).toBeInTheDocument();
-      expect(
-        within(item).getByText(
-          `${savedSearches[i].start_date} to ${savedSearches[i].end_date}`,
-        ),
-      ).toBeInTheDocument();
-      expect(within(item).getByText('Reload')).toBeInTheDocument();
-      expect(within(item).getByText('Delete')).toBeInTheDocument();
-    });
-  });
-
-  it('should render a list of searches when there are multiple', () => {
-    const { container } = render(
-      <Provider store={store}>
-        <SavedSearchList
-          savedSearches={savedSearches}
-          setCurrentSearchQuery={setCurrentSearchQuery}
-          deleteSavedSatelliteSearch={deleteSavedSatelliteSearch}
-        />
-      </Provider>,
-    );
-
-    const searchItems = container.querySelectorAll('li');
-    searchItems.forEach((item, i) => {
-      expect(within(item).getByText(savedSearches[i].name)).toBeInTheDocument();
-      expect(
-        within(item).getByText(
-          `${savedSearches[i].start_date} to ${savedSearches[i].end_date}`,
-        ),
-      ).toBeInTheDocument();
-      expect(within(item).getByText('Reload')).toBeInTheDocument();
-      expect(within(item).getByText('Delete')).toBeInTheDocument();
-    });
+    expect(getAllByRole('listitem')).toHaveLength(2);
   });
 
   it('should call `setCurrentSearchQuery` when `Reload` button clicked', () => {
