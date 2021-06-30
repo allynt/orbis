@@ -33,6 +33,17 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
+/**
+ * @param {{
+ *  scene: import('typings/satellites').Scene
+ *  icon: React.ReactNode
+ *  selectScene: (scene: import('typings/satellites').Scene) => void
+ *  setVisiblePanel: (panel: string) => void
+ *  setSelectedMoreInfo: (params: {type: string, data: any}) => void
+ *  toggleMoreInfoDialog: () => void
+ *  visualisationId: string
+ * }} props
+ */
 const SceneListItem = ({
   scene,
   icon,
