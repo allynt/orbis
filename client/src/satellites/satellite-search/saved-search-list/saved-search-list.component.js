@@ -1,50 +1,81 @@
 import React from 'react';
 
-import { Button } from '@astrosat/astrosat-ui';
+import {
+  Button,
+  List,
+  ListItem,
+  ListItemText,
+  makeStyles,
+  Typography,
+  Divider,
+} from '@astrosat/astrosat-ui';
 
 import PropTypes from 'prop-types';
 
-import styles from './saved-search-list.module.css';
+const useStyles = makeStyles(theme => ({
+  listItem: {
+    display: 'grid',
+    gridTemplateColumns: 'repeat(2, 1fr)',
+    columnGap: theme.spacing(1),
+  },
+  text: {
+    gridColumn: '1/-1',
+  },
+  bold: {
+    fontWeight: 600,
+  },
+}));
 
 const SavedSearchList = ({
   savedSearches,
   setCurrentSearchQuery,
   deleteSavedSatelliteSearch,
-}) => (
-  <ul className={styles.list}>
-    {savedSearches &&
-      savedSearches.map(search => {
-        return (
-          <li key={search.name} className={styles.savedSearchDetail}>
-            <h5>{search.name}</h5>
-            <div className={styles.description}>
-              <p className={styles.descriptionItem}>Saved Dates:</p>
-              <p>
-                {search.start_date} to {search.end_date}
-              </p>
-              <p className={styles.descriptionItem}>Resolution:</p>
-              <p>{search.tiers.join(', ')}</p>
-            </div>
-            <div className={styles.buttons}>
+}) => {
+  const styles = useStyles();
+
+  return (
+    <List>
+      {savedSearches &&
+        savedSearches.map(search => {
+          return (
+            <ListItem key={search.name} className={styles.listItem}>
+              <ListItemText
+                className={styles.text}
+                primary={search.name}
+                secondary={
+                  <>
+                    <Divider />
+                    <Typography>
+                      <span className={styles.bold}>Saved Dates:</span>{' '}
+                      {search.start_date} to
+                      {search.end_date}
+                    </Typography>
+                    <Typography>
+                      <span className={styles.bold}>Resolution:</span>{' '}
+                      {search.tiers.join(', ')}
+                    </Typography>
+                  </>
+                }
+              />
               <Button
-                className={styles.button}
+                size="small"
                 onClick={() => setCurrentSearchQuery(search)}
               >
                 Reload
               </Button>
               <Button
-                className={styles.button}
-                theme="tertiary"
+                size="small"
+                color="secondary"
                 onClick={() => deleteSavedSatelliteSearch(search.id)}
               >
                 Delete
               </Button>
-            </div>
-          </li>
-        );
-      })}
-  </ul>
-);
+            </ListItem>
+          );
+        })}
+    </List>
+  );
+};
 
 SavedSearchList.propTypes = {
   savedSearches: PropTypes.arrayOf(
