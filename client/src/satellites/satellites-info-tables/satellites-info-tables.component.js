@@ -1,56 +1,95 @@
 import React from 'react';
 
-import styles from './satellites-info-tables.module.css';
+import {
+  List,
+  ListItem,
+  styled,
+  Table,
+  TableBody,
+  TableCell,
+  TableRow,
+} from '@astrosat/astrosat-ui';
 
+const FirstCell = styled(TableCell)(({ theme }) => ({
+  fontWeight: theme.typography.fontWeightBold,
+}));
+
+/**
+ * @param {{
+ *  tier: {
+ *    label: string
+ *    description: string
+ *  }
+ * }} props
+ */
 export const TierInfoTable = ({ tier }) => (
-  <table className={styles.table}>
-    <tbody>
-      <tr className={styles.row}>
-        <td className={styles.title}>Tier: </td>
-        <td>{tier.label || 'not currently available'}</td>
-      </tr>
-      <tr className={styles.row}>
-        <td className={styles.title}>Description: </td>
-        <td>{tier.description || 'not currently available'}</td>
-      </tr>
-    </tbody>
-  </table>
+  <Table>
+    <TableBody>
+      <TableRow>
+        <FirstCell>Tier: </FirstCell>
+        <TableCell>{tier.label || 'not currently available'}</TableCell>
+      </TableRow>
+      <TableRow>
+        <FirstCell>Description: </FirstCell>
+        <TableCell>{tier.description || 'not currently available'}</TableCell>
+      </TableRow>
+    </TableBody>
+  </Table>
 );
 
+/**
+ * @param {{
+ *  satellite: {
+ *    label: string
+ *    description: string
+ *    visualisations: {id: string, label: string}[]
+ *  }
+ * }} props
+ */
 export const SatelliteInfoTable = ({ satellite }) => (
-  <table className={styles.table}>
-    <tbody>
-      <tr className={styles.row}>
-        <td className={styles.title}>Name: </td>
-        <td>{satellite.label || 'not currently available'}</td>
-      </tr>
-      <tr className={styles.row}>
-        <td className={styles.title}>Description: </td>
-        <td>{satellite.description || 'not currently available'}</td>
-      </tr>
-      <tr className={styles.row}>
-        <td className={styles.title}>Available visualisations: </td>
-        <td>
-          <ul>
+  <Table>
+    <TableBody>
+      <TableRow>
+        <FirstCell>Name: </FirstCell>
+        <TableCell>{satellite.label || 'not currently available'}</TableCell>
+      </TableRow>
+      <TableRow>
+        <FirstCell>Description: </FirstCell>
+        <TableCell>
+          {satellite.description || 'not currently available'}
+        </TableCell>
+      </TableRow>
+      <TableRow>
+        <FirstCell>Available visualisations: </FirstCell>
+        <TableCell>
+          <List dense disablePadding>
             {satellite.visualisations.map(vis => (
-              <li key={vis.id}>{vis.label || 'not currently available'}</li>
+              <ListItem key={vis.id} disableGutters>
+                {vis.label || 'not currently available'}
+              </ListItem>
             ))}
-          </ul>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+          </List>
+        </TableCell>
+      </TableRow>
+    </TableBody>
+  </Table>
 );
 
+/**
+ * @param {{
+ *  scene: {metadata: {[key:string]: any}}}} props
+ */
 export const SceneInfoTable = ({ scene }) => (
-  <table className={styles.table}>
-    <tbody>
+  <Table>
+    <TableBody>
       {Object.keys(scene.metadata).map(key => (
-        <tr className={styles.row}>
-          <td className={styles.title}>{key}</td>
-          <td>{scene.metadata[key] || 'not currently available'}</td>
-        </tr>
+        <TableRow key={key}>
+          <FirstCell>{key}</FirstCell>
+          <TableCell>
+            {scene.metadata[key] || 'not currently available'}
+          </TableCell>
+        </TableRow>
       ))}
-    </tbody>
-  </table>
+    </TableBody>
+  </Table>
 );
