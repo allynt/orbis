@@ -1,31 +1,37 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useEffect, useState } from 'react';
 
-import { Button, ButtonGroup } from '@astrosat/astrosat-ui';
+import {
+  Button,
+  ButtonGroup,
+  Dialog,
+  DialogContent,
+  DialogTitle,
+} from '@astrosat/astrosat-ui';
 
 import { useDispatch, useSelector } from 'react-redux';
 
-import { toggleCompareMode, isCompareModeSelector } from '../map/map.slice';
+import { isCompareModeSelector, toggleCompareMode } from '../map/map.slice';
 import ComparePins from './compare-pins/compare-pins.component';
 import Results from './results/results.component';
 import SatelliteSearch from './satellite-search/satellite-search.component';
 import {
   SatelliteInfoTable,
-  TierInfoTable,
   SceneInfoTable,
+  TierInfoTable,
 } from './satellites-info-tables/satellites-info-tables.component';
 import {
-  fetchSatellites,
-  selectScene,
-  fetchPinnedScenes,
-  selectPinnedScene,
-  deselectPinnedScene,
   clearSelectedPinnedScenes,
   deletePinnedScene,
+  deselectPinnedScene,
+  fetchPinnedScenes,
+  fetchSatellites,
   pinScene,
-  saveSatelliteSearch,
   removeScenes,
-  setCurrentVisualisation,
+  saveSatelliteSearch,
   selectedPinnedScenesSelector,
+  selectPinnedScene,
+  selectScene,
+  setCurrentVisualisation,
 } from './satellites.slice';
 import Visualisation from './visualisation/visualisation.component';
 
@@ -40,7 +46,6 @@ export const TIER = 'Tier';
 
 const Satellites = ({ map }) => {
   const dispatch = useDispatch();
-  const dialogRef = useRef(null);
 
   const [visiblePanel, setVisiblePanel] = useState(SEARCH);
   const [visualisations, setVisualisations] = useState(null);
@@ -49,7 +54,7 @@ const Satellites = ({ map }) => {
     data: null,
   });
 
-  // const [isMoreInfoDialogVisible, toggleMoreInfoDialog] = useModal(false);
+  const [isMoreInfoDialogVisible, setIsMoreInfoDialogVisible] = useState(false);
 
   const satellites = useSelector(state => state.satellites.satellites);
   const scenes = useSelector(state => state.satellites.scenes);
@@ -61,9 +66,6 @@ const Satellites = ({ map }) => {
   const currentSearchQuery = useSelector(
     state => state.satellites.currentSearchQuery,
   );
-
-  // console.log('VISIBLE PANEL: ', visiblePanel);
-  // console.log('SATELLITES: ', satellites);
 
   useEffect(() => {
     if (!satellites) {
@@ -112,8 +114,7 @@ const Satellites = ({ map }) => {
           satellites={satellites}
           setVisiblePanel={setVisiblePanel}
           setSelectedMoreInfo={setSelectedMoreInfo}
-          // toggleMoreInfoDialog={toggleMoreInfoDialog}
-          ref={dialogRef}
+          toggleMoreInfoDialog={() => setIsMoreInfoDialogVisible(c => !c)}
         />
       )}
       {visiblePanel === RESULTS && (
@@ -122,13 +123,12 @@ const Satellites = ({ map }) => {
           scenes={scenes}
           selectScene={scene => dispatch(selectScene(scene))}
           setSelectedMoreInfo={setSelectedMoreInfo}
-          // toggleMoreInfoDialog={toggleMoreInfoDialog}
+          toggleMoreInfoDialog={() => setIsMoreInfoDialogVisible(c => !c)}
           pinnedScenes={pinnedScenes}
           pinScene={scene => dispatch(pinScene(scene))}
           deletePinnedScene={id => dispatch(deletePinnedScene(id))}
           saveSatelliteSearch={query => dispatch(saveSatelliteSearch(query))}
           currentSearchQuery={currentSearchQuery}
-          ref={dialogRef}
         />
       )}
       {visiblePanel === VISUALISATION && (
@@ -144,7 +144,7 @@ const Satellites = ({ map }) => {
       {visiblePanel === PINS && (
         <ComparePins
           setSelectedMoreInfo={setSelectedMoreInfo}
-          // toggleMoreInfoDialog={toggleMoreInfoDialog}
+          toggleMoreInfoDialog={() => setIsMoreInfoDialogVisible(c => !c)}
           selectPinnedScene={scene => dispatch(selectPinnedScene(scene))}
           deselectPinnedScene={scene => dispatch(deselectPinnedScene(scene))}
           clearSelectedPinnedScenes={() =>
@@ -155,32 +155,27 @@ const Satellites = ({ map }) => {
           pinnedScenes={pinnedScenes}
           selectedPinnedScenes={selectedPinnedScenes}
           isCompareMode={isCompareMode}
-          ref={dialogRef}
         />
       )}
-      {/* <Dialog
-        // isVisible={isMoreInfoDialogVisible}
-        title="More Information"
-        open={true}
-        // close={toggleMoreInfoDialog}
-        ref={dialogRef}
+      <Dialog
+        open={isMoreInfoDialogVisible}
+        onClose={() => setIsMoreInfoDialogVisible(false)}
       >
-        {!selectedMoreInfo && (
-          <p className={styles.noInfoAvailable}>
-            No information currently available
-          </p>
-        )}
+        <DialogTitle>More Information</DialogTitle>
+        <DialogContent>
+          {!selectedMoreInfo && <p>No information currently available</p>}
 
-        {selectedMoreInfo && selectedMoreInfo.type === SATELLITE && (
-          <SatelliteInfoTable satellite={selectedMoreInfo.data} />
-        )}
-        {selectedMoreInfo && selectedMoreInfo.type === SCENE && (
-          <SceneInfoTable scene={selectedMoreInfo.data} />
-        )}
-        {selectedMoreInfo && selectedMoreInfo.type === TIER && (
-          <TierInfoTable tier={selectedMoreInfo.data} />
-        )}
-      </Dialog> */}
+          {selectedMoreInfo && selectedMoreInfo.type === SATELLITE && (
+            <SatelliteInfoTable satellite={selectedMoreInfo.data} />
+          )}
+          {selectedMoreInfo && selectedMoreInfo.type === SCENE && (
+            <SceneInfoTable scene={selectedMoreInfo.data} />
+          )}
+          {selectedMoreInfo && selectedMoreInfo.type === TIER && (
+            <TierInfoTable tier={selectedMoreInfo.data} />
+          )}
+        </DialogContent>
+      </Dialog>
     </>
   );
 };
