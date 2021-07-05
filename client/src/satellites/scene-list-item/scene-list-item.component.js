@@ -3,7 +3,6 @@ import React from 'react';
 import {
   Avatar,
   Button,
-  IconButton,
   ListItem,
   ListItemAvatar,
   ListItemSecondaryAction,
@@ -18,7 +17,6 @@ import format from 'date-fns/format';
 import parseISO from 'date-fns/parseISO';
 
 import { DATE_FORMAT, TIME_FORMAT } from '../satellite.constants';
-import { SCENE, VISUALISATION } from '../satellites.component';
 
 const useStyles = makeStyles(theme => ({
   avatar: {
@@ -36,40 +34,40 @@ const useStyles = makeStyles(theme => ({
 /**
  * @param {{
  *  scene: import('typings/satellites').Scene
- *  icon: React.ReactNode
- *  selectScene: (scene: import('typings/satellites').Scene) => void
- *  setVisiblePanel: (panel: string) => void
- *  setSelectedMoreInfo: (params: {type: string, data: any}) => void
- *  toggleMoreInfoDialog: () => void
+ *  secondaryAction?: React.ReactNode
  *  visualisationId: string
+ *  onSceneClick: (scene: import('typings/satellites').Scene) => void
+ *  onMoreInfoClick: (scene: import('typings/satellites').Scene) => void
  * }} props
  */
 const SceneListItem = ({
   scene,
-  icon,
-  selectScene,
-  setVisiblePanel,
-  setSelectedMoreInfo,
-  toggleMoreInfoDialog,
+  secondaryAction,
   visualisationId,
+  onSceneClick,
+  onMoreInfoClick,
 }) => {
   const styles = useStyles();
-  const thumbnailUrl = scene?.thumbnail_url.replace(
+
+  if (scene == null) return null;
+
+  const thumbnailUrl = scene.thumbnail_url.replace(
     /{VISUALISATION_ID}/,
     visualisationId,
   );
 
+  const handleSceneClick = () => {
+    onSceneClick(scene);
+  };
+
+  /** @type {React.MouseEventHandler<HTMLButtonElement>} */
+  const handleMoreInfoClick = event => {
+    event.stopPropagation();
+    onMoreInfoClick(scene);
+  };
+
   return (
-    <ListItem
-      aria-label={scene?.id}
-      button
-      onClick={() => {
-        if (selectScene) {
-          selectScene(scene);
-          setVisiblePanel && setVisiblePanel(VISUALISATION);
-        }
-      }}
-    >
+    <ListItem aria-label={scene.id} button onClick={handleSceneClick}>
       <ListItemAvatar>
         <>
           <Avatar
@@ -84,10 +82,7 @@ const SceneListItem = ({
             size="small"
             color="default"
             startIcon={<Info />}
-            onClick={() => {
-              setSelectedMoreInfo({ type: SCENE, data: scene });
-              toggleMoreInfoDialog();
-            }}
+            onClick={handleMoreInfoClick}
           >
             More Info
           </Button>
@@ -97,23 +92,21 @@ const SceneListItem = ({
         primary={
           <>
             <Typography>
-              {scene && format(parseISO(scene?.created), DATE_FORMAT)}
+              {scene && format(parseISO(scene.created), DATE_FORMAT)}
             </Typography>
             <Typography>
-              {scene && format(parseISO(scene?.created), TIME_FORMAT)} UTC
+              {scene && format(parseISO(scene.created), TIME_FORMAT)} UTC
             </Typography>
-            <Typography>{scene?.cloudCover} %</Typography>
-            <Typography>{scene?.id}</Typography>
+            <Typography>{scene.cloudCover} %</Typography>
+            <Typography>{scene.id}</Typography>
           </>
         }
         primaryTypographyProps={{ id: 'primary-text' }}
-        secondary={scene?.tier === 'free' && 'Free Product'}
+        secondary={scene.tier === 'free' && 'Free Product'}
         secondaryTypographyProps={{ color: 'primary' }}
       />
-      {icon && (
-        <ListItemSecondaryAction>
-          <IconButton>{icon}</IconButton>
-        </ListItemSecondaryAction>
+      {secondaryAction && (
+        <ListItemSecondaryAction>{secondaryAction}</ListItemSecondaryAction>
       )}
     </ListItem>
   );

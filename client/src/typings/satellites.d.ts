@@ -23,8 +23,6 @@ export type Scene = {
   id: string;
   metadata: { [key: string]: any };
   satellite: SatelliteId;
-  satellite: SatelliteId;
-  thumbnail_url: string;
   thumbnail_url: string;
   tier: TierId;
   tile_url: string;

@@ -11,7 +11,10 @@ import {
   Dialog,
   DialogContent,
   DialogTitle,
+  IconButton,
 } from '@astrosat/astrosat-ui';
+
+import { SCENE, VISUALISATION } from 'satellites/satellites.component';
 
 import { DEFAULT_CLOUD_COVER } from '../satellite.constants';
 import SceneListItem, {
@@ -34,6 +37,7 @@ import SaveSearchForm from './save-search-form/save-search-form.component';
  *  deletePinnedScene: (sceneId: import('typings/satellites').Scene['id']) => void,
  *  saveSatelliteSearch: (search: import('typings/satellites').SavedSearch) => void,
  *  currentSearchQuery: Partial<import('typings/satellites').SavedSearch>,
+ *  visualisationId: string
  * }} props
  */
 const Results = ({
@@ -47,6 +51,7 @@ const Results = ({
   deletePinnedScene,
   saveSatelliteSearch,
   currentSearchQuery,
+  visualisationId,
 }) => {
   const [cloudCoverPercentage, setCloudCoverPercentage] = useState(
     DEFAULT_CLOUD_COVER,
@@ -86,23 +91,32 @@ const Results = ({
               .map(scene => {
                 const isPinned = pinnedScenes?.some(pin => scene.id === pin.id);
                 const Icon = (
-                  <PinIcon
+                  <IconButton
                     key={`${scene.id}-icon`}
-                    titleAccess={`pin-icon-${scene.id}`}
                     onClick={() => {
                       isPinned ? deletePinnedScene(scene.id) : pinScene(scene);
                     }}
-                  />
+                  >
+                    <PinIcon titleAccess={`pin-icon-${scene.id}`} />
+                  </IconButton>
                 );
                 return (
                   <SceneListItem
                     key={scene.id}
                     scene={scene}
-                    icon={Icon}
-                    selectScene={selectScene}
-                    setVisiblePanel={setVisiblePanel}
-                    toggleMoreInfoDialog={toggleMoreInfoDialog}
-                    setSelectedMoreInfo={setSelectedMoreInfo}
+                    secondaryAction={Icon}
+                    visualisationId={visualisationId}
+                    onSceneClick={scene => {
+                      selectScene(scene);
+                      setVisiblePanel && setVisiblePanel(VISUALISATION);
+                    }}
+                    onMoreInfoClick={scene => {
+                      setSelectedMoreInfo({
+                        type: SCENE,
+                        data: scene,
+                      });
+                      toggleMoreInfoDialog();
+                    }}
                   />
                 );
               })

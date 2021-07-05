@@ -1,21 +1,19 @@
 import React from 'react';
 
+import { IconButton, DeleteIcon, List } from '@astrosat/astrosat-ui';
+
 import faker from 'faker/locale/en_GB';
-import { Provider } from 'react-redux';
-import configureMockStore from 'redux-mock-store';
 
 import SceneListItem, {
   SceneListItemSkeleton,
 } from './scene-list-item.component';
 
-const mockStore = configureMockStore();
-
 export default { title: 'Satellites/SceneListItem' };
 
 const Template = args => (
-  <Provider store={mockStore({ satellites: {} })}>
+  <List>
     <SceneListItem {...args} />
-  </Provider>
+  </List>
 );
 
 export const NoScene = Template.bind({});
@@ -29,6 +27,16 @@ WithScene.args = {
     tier: 'free',
     thumbnail_url: faker.image.imageUrl(),
   },
+};
+
+export const SecondaryAction = Template.bind({});
+SecondaryAction.args = {
+  ...WithScene.args,
+  secondaryAction: (
+    <IconButton>
+      <DeleteIcon />
+    </IconButton>
+  ),
 };
 
 export const Skeleton = () => <SceneListItemSkeleton />;

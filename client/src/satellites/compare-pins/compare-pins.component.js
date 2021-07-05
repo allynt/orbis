@@ -7,7 +7,10 @@ import {
   Link,
   DeleteIcon,
   FormControlLabel,
+  IconButton,
 } from '@astrosat/astrosat-ui';
+
+import { SCENE } from 'satellites/satellites.component';
 
 import SceneListItem from '../scene-list-item/scene-list-item.component';
 
@@ -89,11 +92,14 @@ const ComparePins = ({
               !selectedPinnedScenes?.includes(scene) &&
               selectedPinnedScenes?.length === MAX_SELECTED;
             const Icon = (
-              <DeleteIcon
-                color="primary"
-                titleAccess={`delete-icon-${scene.id}`}
+              <IconButton
                 onClick={() => !isSelected && deletePinnedScene(scene.id)}
-              />
+              >
+                <DeleteIcon
+                  color="primary"
+                  titleAccess={`delete-icon-${scene.id}`}
+                />
+              </IconButton>
             );
             return (
               <React.Fragment key={scene.id}>
@@ -106,13 +112,18 @@ const ComparePins = ({
                 />
                 <SceneListItem
                   scene={scene}
-                  icon={Icon}
-                  setSelectedMoreInfo={setSelectedMoreInfo}
-                  toggleMoreInfoDialog={toggleMoreInfoDialog}
-                  selectScene={scene =>
+                  secondaryAction={Icon}
+                  visualisationId={visualisationId}
+                  onSceneClick={scene =>
                     !isCompareMode && handleChange(isSelected, scene)
                   }
-                  visualisationId={visualisationId}
+                  onMoreInfoClick={scene => {
+                    setSelectedMoreInfo({
+                      type: SCENE,
+                      data: scene,
+                    });
+                    toggleMoreInfoDialog();
+                  }}
                 />
               </React.Fragment>
             );
