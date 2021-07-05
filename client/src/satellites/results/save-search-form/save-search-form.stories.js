@@ -3,7 +3,7 @@ import React from 'react';
 import SaveSearchForm from './save-search-form.component';
 
 export default {
-  title: 'Satellites/SaveSearchForm',
+  title: 'Satellites/Results/SaveSearchForm',
   argTypes: {
     saveSearch: { action: true },
   },

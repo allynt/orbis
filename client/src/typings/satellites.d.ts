@@ -1,23 +1,41 @@
-export type Satellite = 'sentinel-2' | 'landsat' | 'modis';
+export type SatelliteId = 'sentinel-2' | 'landsat' | 'modis';
+export type TierId = 'free' | 'mid' | 'high';
 
-export type Tier = 'free' | 'mid' | 'high';
+export type Satellite = {
+  description: string;
+  id: SatelliteId;
+  label: string;
+  tiers: { id: TierId; label: string; description: string }[];
+  visualisations: {
+    description: string;
+    id: string;
+    label: string;
+    thumbnail: string;
+  }[];
+};
 
 export type Scene = {
-  id: string;
-  created: string;
   cloudCover: number;
-  tier: Tier;
+  created: string;
+  download_url: string;
+  id: string;
+  metadata: { [key: string]: any };
+  satellite: SatelliteId;
+  satellite: SatelliteId;
   thumbnail_url: string;
+  thumbnail_url: string;
+  tier: TierId;
+  tile_url: string;
 };
 
 export type SavedSearch = {
+  aoi: number[][];
+  created: string;
+  end_date: string;
   id: number;
   name: string;
-  satellites: Satellite[];
-  tiers: Tier[];
-  start_date: string;
-  end_date: string;
-  aoi: number[][];
   owner: number;
-  created: string;
+  satellites: SatelliteId[];
+  start_date: string;
+  tiers: TierId[];
 };

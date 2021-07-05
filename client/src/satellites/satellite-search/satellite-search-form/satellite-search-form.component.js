@@ -98,6 +98,15 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
+/**
+ * @param {{
+ * satellites: import('typings/satellites').Satellite[],
+ * geometry: number[][],
+ * setVisiblePanel: (panel: string) => void,
+ * setSelectedMoreInfo: (params: {type: string, data: any}) => void,
+ * toggleMoreInfoDialog: () => void,
+ * }} props
+ */
 const SatelliteSearchForm = ({
   satellites,
   geometry,
@@ -133,7 +142,7 @@ const SatelliteSearchForm = ({
       const convertedSearch = savedSearchToFormValues(currentSearchQuery);
       setValues(convertedSearch);
     }
-  }, [currentSearchQuery]);
+  }, [currentSearchQuery, setValues]);
 
   function onSubmit() {
     // Collect all selected satellites into one array of satellite ids.
