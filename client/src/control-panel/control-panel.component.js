@@ -15,7 +15,7 @@ import { SidePanel } from 'components/side-panel/side-panel.component';
 import Profile from '../accounts/profile/profile.component';
 import BookmarksPanel from '../bookmarks/bookmarks-panel.component';
 import DataLayers from '../data-layers/data-layers.component';
-import SatellitesPanel from '../satellites/satellites-panel.component';
+import Satellites from '../satellites/satellites-panel.component';
 import StoriesPanel from '../stories/stories-panel.component';
 import {
   closeMenu,
@@ -94,7 +94,7 @@ const ControlPanel = ({ sidebarComponents, drawingToolsEnabled }) => {
             drawingToolsEnabled={drawingToolsEnabled}
           />
         )}
-        {visibleMenuItem === SATELLITE_LAYERS && <SatellitesPanel />}
+        {visibleMenuItem === SATELLITE_LAYERS && <Satellites />}
         {visibleMenuItem === BOOKMARKS && <BookmarksPanel />}
         {visibleMenuItem === STORIES && <StoriesPanel />}
         {visibleMenuItem === PROFILE && <Profile />}

@@ -5,7 +5,7 @@ import { Provider } from 'react-redux';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 
-import SatellitesPanel from './satellites-panel.component';
+import Satellites from './satellites-panel.component';
 import { fetchPinnedScenes } from './satellites.slice';
 
 const mockStore = configureMockStore([thunk]);
@@ -555,7 +555,7 @@ const selectedScene = {
   satellite: 'sentinel-2',
 };
 
-describe.skip('SatellitesPanel', () => {
+describe.skip('Satellites', () => {
   let fetchPinnedScenes = null;
 
   beforeEach(() => {
@@ -578,7 +578,7 @@ describe.skip('SatellitesPanel', () => {
       it('results', () => {
         const { getByText } = render(
           <Provider store={store}>
-            <SatellitesPanel />
+            <Satellites />
           </Provider>,
         );
         expect(getByText('Results')).toHaveProperty('disabled', true);
@@ -587,7 +587,7 @@ describe.skip('SatellitesPanel', () => {
       it('visualisation', () => {
         const { getByText } = render(
           <Provider store={store}>
-            <SatellitesPanel />
+            <Satellites />
           </Provider>,
         );
         expect(getByText('Visualisation')).toHaveProperty('disabled', true);
@@ -604,7 +604,7 @@ describe.skip('SatellitesPanel', () => {
       });
       const { getByText } = render(
         <Provider store={store}>
-          <SatellitesPanel />
+          <Satellites />
         </Provider>,
       );
       expect(getByText('Results')).toHaveProperty('disabled', false);
@@ -618,7 +618,7 @@ describe.skip('SatellitesPanel', () => {
       });
       const { getByText } = render(
         <Provider store={store}>
-          <SatellitesPanel />
+          <Satellites />
         </Provider>,
       );
       expect(getByText('Results')).toHaveProperty('disabled', false);

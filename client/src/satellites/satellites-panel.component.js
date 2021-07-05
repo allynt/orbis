@@ -43,7 +43,7 @@ export const SATELLITE = 'Satellite';
 export const SCENE = 'Scene';
 export const TIER = 'Tier';
 
-const SatellitesPanel = ({ map }) => {
+const Satellites = ({ map }) => {
   const dispatch = useDispatch();
   const dialogRef = useRef(null);
 
@@ -229,4 +229,4 @@ const SatellitesPanel = ({ map }) => {
   );
 };
 
-export default SatellitesPanel;
+export default Satellites;
