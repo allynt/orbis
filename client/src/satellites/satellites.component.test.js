@@ -555,7 +555,7 @@ const selectedScene = {
   satellite: 'sentinel-2',
 };
 
-describe.skip('Satellites', () => {
+describe('Satellites', () => {
   let fetchPinnedScenes = null;
 
   beforeEach(() => {
@@ -576,21 +576,21 @@ describe.skip('Satellites', () => {
       });
 
       it('results', () => {
-        const { getByText } = render(
+        const { getByRole } = render(
           <Provider store={store}>
             <Satellites />
           </Provider>,
         );
-        expect(getByText('Results')).toHaveProperty('disabled', true);
+        expect(getByRole('button', { name: 'Results' })).toBeDisabled();
       });
 
       it('visualisation', () => {
-        const { getByText } = render(
+        const { getByRole } = render(
           <Provider store={store}>
             <Satellites />
           </Provider>,
         );
-        expect(getByText('Visualisation')).toHaveProperty('disabled', true);
+        expect(getByRole('button', { name: 'Visualisation' })).toBeDisabled();
       });
     });
 
@@ -602,13 +602,13 @@ describe.skip('Satellites', () => {
           selectedScene: null,
         },
       });
-      const { getByText } = render(
+      const { getByRole } = render(
         <Provider store={store}>
           <Satellites />
         </Provider>,
       );
-      expect(getByText('Results')).toHaveProperty('disabled', false);
-      expect(getByText('Visualisation')).toHaveProperty('disabled', true);
+      expect(getByRole('button', { name: 'Results' })).not.toBeDisabled();
+      expect(getByRole('button', { name: 'Visualisation' })).toBeDisabled();
     });
 
     it('has free navigation when each step has been completed', () => {
@@ -616,13 +616,13 @@ describe.skip('Satellites', () => {
         ...baseStore,
         satellites: { satellites, scenes, selectedScene },
       });
-      const { getByText } = render(
+      const { getByRole } = render(
         <Provider store={store}>
           <Satellites />
         </Provider>,
       );
-      expect(getByText('Results')).toHaveProperty('disabled', false);
-      expect(getByText('Visualisation')).toHaveProperty('disabled', false);
+      expect(getByRole('button', { name: 'Results' })).not.toBeDisabled();
+      expect(getByRole('button', { name: 'Visualisation' })).not.toBeDisabled();
     });
   });
 });
