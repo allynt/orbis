@@ -1,10 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 
-import {
-  Button,
-  ButtonGroup,
-  Dialog /*useModal*/,
-} from '@astrosat/astrosat-ui';
+import { Button, ButtonGroup } from '@astrosat/astrosat-ui';
 
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -17,7 +13,6 @@ import {
   TierInfoTable,
   SceneInfoTable,
 } from './satellites-info-tables/satellites-info-tables.component';
-import styles from './satellites-panel.module.css';
 import {
   fetchSatellites,
   selectScene,
@@ -92,116 +87,77 @@ const Satellites = ({ map }) => {
   }, [satellites, selectedScene]);
 
   return (
-    <div className={styles.panel}>
-      <div className={styles.navigationPanel}>
-        <ButtonGroup
-          size="small"
-          color="primary"
-          aria-label="small outlined primary button group"
+    <>
+      <ButtonGroup
+        size="small"
+        orientation="vertical"
+        aria-label="small outlined primary button group"
+      >
+        <Button onClick={() => setVisiblePanel(SEARCH)}>Search</Button>
+        <Button disabled={!scenes} onClick={() => setVisiblePanel(RESULTS)}>
+          Results
+        </Button>
+        <Button
+          disabled={!visualisations}
+          onClick={() => setVisiblePanel(VISUALISATION)}
         >
-          <Button
-            // theme="primary"
-            // className={
-            //   visiblePanel === SEARCH
-            //     ? [styles.button, styles.active]
-            //     : [styles.button]
-            // }
-            onClick={() => setVisiblePanel(SEARCH)}
-          >
-            Search
-          </Button>
-          <Button
-            // theme="primary"
-            disabled={!scenes}
-            // className={
-            //   visiblePanel === RESULTS
-            //     ? [styles.button, styles.active]
-            //     : [styles.button]
-            // }
-            onClick={() => setVisiblePanel(RESULTS)}
-          >
-            Results
-          </Button>
-          <Button
-            // theme="primary"
-            disabled={!visualisations}
-            // className={
-            //   visiblePanel === VISUALISATION
-            //     ? [styles.button, styles.active]
-            //     : [styles.button]
-            // }
-            onClick={() => setVisiblePanel(VISUALISATION)}
-          >
-            Visualisation
-          </Button>
-          <Button
-            // theme="primary"
-            // className={
-            //   visiblePanel === PINS
-            //     ? [styles.button, styles.active]
-            //     : [styles.button]
-            // }
-            onClick={() => setVisiblePanel(PINS)}
-          >
-            My Pins
-          </Button>
-        </ButtonGroup>
-      </div>
+          Visualisation
+        </Button>
+        <Button onClick={() => setVisiblePanel(PINS)}>My Pins</Button>
+      </ButtonGroup>
 
-      <div className={styles.content}>
-        {satellites && visiblePanel === SEARCH && (
-          <SatelliteSearch
-            map={map}
-            satellites={satellites}
-            setVisiblePanel={setVisiblePanel}
-            setSelectedMoreInfo={setSelectedMoreInfo}
-            // toggleMoreInfoDialog={toggleMoreInfoDialog}
-            ref={dialogRef}
-          />
-        )}
-        {visiblePanel === RESULTS && (
-          <Results
-            setVisiblePanel={setVisiblePanel}
-            scenes={scenes}
-            selectScene={scene => dispatch(selectScene(scene))}
-            setSelectedMoreInfo={setSelectedMoreInfo}
-            // toggleMoreInfoDialog={toggleMoreInfoDialog}
-            pinnedScenes={pinnedScenes}
-            pinScene={scene => dispatch(pinScene(scene))}
-            deletePinnedScene={id => dispatch(deletePinnedScene(id))}
-            saveSatelliteSearch={query => dispatch(saveSatelliteSearch(query))}
-            currentSearchQuery={currentSearchQuery}
-            ref={dialogRef}
-          />
-        )}
-        {visiblePanel === VISUALISATION && (
-          <Visualisation
-            visualisations={visualisations}
-            setVisiblePanel={setVisiblePanel}
-            removeScenes={() => dispatch(removeScenes())}
-            setCurrentVisualisation={visualisation =>
-              dispatch(setCurrentVisualisation(visualisation))
-            }
-          />
-        )}
-        {visiblePanel === PINS && (
-          <ComparePins
-            setSelectedMoreInfo={setSelectedMoreInfo}
-            // toggleMoreInfoDialog={toggleMoreInfoDialog}
-            selectPinnedScene={scene => dispatch(selectPinnedScene(scene))}
-            deselectPinnedScene={scene => dispatch(deselectPinnedScene(scene))}
-            clearSelectedPinnedScenes={() =>
-              dispatch(clearSelectedPinnedScenes())
-            }
-            deletePinnedScene={id => dispatch(deletePinnedScene(id))}
-            toggleCompareMode={() => dispatch(toggleCompareMode())}
-            pinnedScenes={pinnedScenes}
-            selectedPinnedScenes={selectedPinnedScenes}
-            isCompareMode={isCompareMode}
-            ref={dialogRef}
-          />
-        )}
-      </div>
+      {satellites && visiblePanel === SEARCH && (
+        <SatelliteSearch
+          map={map}
+          satellites={satellites}
+          setVisiblePanel={setVisiblePanel}
+          setSelectedMoreInfo={setSelectedMoreInfo}
+          // toggleMoreInfoDialog={toggleMoreInfoDialog}
+          ref={dialogRef}
+        />
+      )}
+      {visiblePanel === RESULTS && (
+        <Results
+          setVisiblePanel={setVisiblePanel}
+          scenes={scenes}
+          selectScene={scene => dispatch(selectScene(scene))}
+          setSelectedMoreInfo={setSelectedMoreInfo}
+          // toggleMoreInfoDialog={toggleMoreInfoDialog}
+          pinnedScenes={pinnedScenes}
+          pinScene={scene => dispatch(pinScene(scene))}
+          deletePinnedScene={id => dispatch(deletePinnedScene(id))}
+          saveSatelliteSearch={query => dispatch(saveSatelliteSearch(query))}
+          currentSearchQuery={currentSearchQuery}
+          ref={dialogRef}
+        />
+      )}
+      {visiblePanel === VISUALISATION && (
+        <Visualisation
+          visualisations={visualisations}
+          setVisiblePanel={setVisiblePanel}
+          removeScenes={() => dispatch(removeScenes())}
+          setCurrentVisualisation={visualisation =>
+            dispatch(setCurrentVisualisation(visualisation))
+          }
+        />
+      )}
+      {visiblePanel === PINS && (
+        <ComparePins
+          setSelectedMoreInfo={setSelectedMoreInfo}
+          // toggleMoreInfoDialog={toggleMoreInfoDialog}
+          selectPinnedScene={scene => dispatch(selectPinnedScene(scene))}
+          deselectPinnedScene={scene => dispatch(deselectPinnedScene(scene))}
+          clearSelectedPinnedScenes={() =>
+            dispatch(clearSelectedPinnedScenes())
+          }
+          deletePinnedScene={id => dispatch(deletePinnedScene(id))}
+          toggleCompareMode={() => dispatch(toggleCompareMode())}
+          pinnedScenes={pinnedScenes}
+          selectedPinnedScenes={selectedPinnedScenes}
+          isCompareMode={isCompareMode}
+          ref={dialogRef}
+        />
+      )}
       {/* <Dialog
         // isVisible={isMoreInfoDialogVisible}
         title="More Information"
@@ -225,7 +181,7 @@ const Satellites = ({ map }) => {
           <TierInfoTable tier={selectedMoreInfo.data} />
         )}
       </Dialog> */}
-    </div>
+    </>
   );
 };
 
