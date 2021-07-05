@@ -9,6 +9,12 @@ import {
   Typography,
 } from '@astrosat/astrosat-ui';
 
+/**
+ * @param {{
+ *  visualisations: import('typings/satellites').Visualisation[]
+ *  setCurrentVisualisation: (visualisationId: import('typings/satellites').Visualisation['id']) => void
+ * }} props
+ */
 const Visualisation = ({ visualisations, setCurrentVisualisation }) =>
   visualisations ? (
     <>

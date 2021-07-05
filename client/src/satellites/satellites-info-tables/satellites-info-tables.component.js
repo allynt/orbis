@@ -39,11 +39,7 @@ export const TierInfoTable = ({ tier }) => (
 
 /**
  * @param {{
- *  satellite: {
- *    label: string
- *    description: string
- *    visualisations: {id: string, label: string}[]
- *  }
+ *  satellite: import('typings/satellites').Satellite
  * }} props
  */
 export const SatelliteInfoTable = ({ satellite }) => (
@@ -77,7 +73,7 @@ export const SatelliteInfoTable = ({ satellite }) => (
 
 /**
  * @param {{
- *  scene: {metadata: {[key:string]: any}}}} props
+ *  scene: import('typings/satellites').Scene}} props
  */
 export const SceneInfoTable = ({ scene }) => (
   <Table>
