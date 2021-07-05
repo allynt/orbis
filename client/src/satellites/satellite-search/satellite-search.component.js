@@ -17,6 +17,15 @@ import SavedSearchList from './saved-search-list/saved-search-list.component';
 const AOI_DRAW_MODE = 'RectangleMode';
 const BBOX_NO_OF_POINTS = 5;
 
+/**
+ * @param {{
+ *  map: any
+ *  satellites: import('typings/satellites').Satellite[]
+ *  setVisiblePanel: (panel: string) => void
+ *  setSelectedMoreInfo: (params: {type: string, data: any}) => void
+ *  toggleMoreInfoDialog: () => void
+ * }} props
+ */
 const SatelliteSearch = ({
   map,
   satellites,
