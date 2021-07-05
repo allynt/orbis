@@ -1,11 +1,8 @@
 import React from 'react';
 
-import { Button, TextField, useForm } from '@astrosat/astrosat-ui';
+import { Button, TextField, useForm, Typography } from '@astrosat/astrosat-ui';
 
-import styles from './save-search-form.module.css';
 import validate from './save-search-form.validator';
-
-// import formStyles from '../forms.module.css';
 
 const SaveSearchForm = ({ query, close, saveSearch }) => {
   const { handleChange, handleSubmit, values, errors } = useForm(
@@ -19,41 +16,30 @@ const SaveSearchForm = ({ query, close, saveSearch }) => {
   }
 
   return (
-    <div className={styles.saveSearchForm}>
-      <form /* className={formStyles.form} */ onSubmit={handleSubmit}>
-        <p>
-          Please name your search. Find your saved searches alongside your saved
-          AOIs under "Saved Searches"
-        </p>
-        <div /* className={formStyles.fields} */>
-          <div /* className={formStyles.row} */>
-            <TextField
-              name="name"
-              value={values.name || ''}
-              placeholder="Name"
-              onChange={handleChange}
-              required
-              autoFocus
-            />
-          </div>
-          {errors.name && (
-            <p /* className={formStyles.errorMessage} */>{errors.name}</p>
-          )}
-        </div>
-
-        <div /* className={formStyles.buttons} */>
-          <Button
-            type="submit"
-            theme="primary"
-            disabled={
-              Object.keys(errors).length > 0 || Object.keys(values).length === 0
-            }
-          >
-            Save Search
-          </Button>
-        </div>
-      </form>
-    </div>
+    <form onSubmit={handleSubmit}>
+      <Typography>
+        Please name your search. Find your saved searches alongside your saved
+        AOIs under "Saved Searches"
+      </Typography>
+      <TextField
+        name="name"
+        value={values.name || ''}
+        label="Name"
+        onChange={handleChange}
+        required
+        autoFocus
+        error={!!errors.name}
+        helperText={errors.name}
+      />
+      <Button
+        type="submit"
+        disabled={
+          Object.keys(errors).length > 0 || Object.keys(values).length === 0
+        }
+      >
+        Save Search
+      </Button>
+    </form>
   );
 };
 

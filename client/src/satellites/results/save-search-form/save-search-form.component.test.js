@@ -1,112 +1,65 @@
 import React from 'react';
 
-import { render, cleanup, fireEvent } from '@testing-library/react';
-import { Provider } from 'react-redux';
-import configureMockStore from 'redux-mock-store';
-import thunk from 'redux-thunk';
+import { render } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 
 import SaveSearchForm from './save-search-form.component';
 
-const mockStore = configureMockStore([thunk]);
-
-const buttonName = 'Save Search';
-const textfieldPlaceholder = 'Name';
+const renderComponent = () => {
+  const saveSearch = jest.fn();
+  const close = jest.fn();
+  const utils = render(
+    <SaveSearchForm close={close} saveSearch={saveSearch} />,
+  );
+  return { ...utils, saveSearch, close };
+};
 
 describe('Save Satellite Search Form Component', () => {
-  const store = mockStore({});
-  let query = null;
-  let setVisiblePanel = null;
-  let saveSearch = null;
-  let close = null;
-
-  beforeEach(cleanup);
-
-  beforeEach(() => {
-    query = { aoi: [] };
-    setVisiblePanel = jest.fn();
-    saveSearch = jest.fn();
-    close = jest.fn();
-  });
-
   it('should display a form with a single text field and button', () => {
-    const { getByPlaceholderText, getByText } = render(
-      <Provider store={store}>
-        <SaveSearchForm query={query} close={close} saveSearch={saveSearch} />
-      </Provider>,
-    );
+    const { getByRole } = renderComponent();
 
-    expect(getByPlaceholderText(textfieldPlaceholder)).toBeInTheDocument();
-    expect(getByText(buttonName)).toBeInTheDocument();
+    expect(getByRole('textbox')).toBeInTheDocument();
+    expect(getByRole('button')).toBeInTheDocument();
   });
 
   it('should display an error message when `name` text field is invalid', () => {
-    const { getByPlaceholderText, getByText } = render(
-      <Provider store={store}>
-        <SaveSearchForm query={query} close={close} saveSearch={saveSearch} />
-      </Provider>,
-    );
+    const { getByRole, getByText } = renderComponent();
 
-    fireEvent.change(getByPlaceholderText(textfieldPlaceholder), {
-      target: { value: 'id' },
-    });
+    userEvent.type(getByRole('textbox'), 'id');
     expect(
       getByText('Name field must exceed 3 characters'),
     ).toBeInTheDocument();
   });
 
-  it.skip('should disable `Save Search` button when form is invalid', () => {
-    const { getByPlaceholderText, getByText } = render(
-      <Provider store={store}>
-        <SaveSearchForm query={query} close={close} saveSearch={saveSearch} />
-      </Provider>,
-    );
+  it('should disable `Save Search` button when form is invalid', () => {
+    const { getByRole } = renderComponent();
 
-    expect(getByText(buttonName)).toBeDisabled();
-    fireEvent.change(getByPlaceholderText(textfieldPlaceholder), {
-      target: { value: 'id' },
-    });
-    expect(getByText(buttonName)).toBeDisabled();
+    expect(getByRole('button')).toBeDisabled();
+    userEvent.type(getByRole('textbox'), 'id');
+    expect(getByRole('button')).toBeDisabled();
   });
 
-  it.skip('should enable `Save Search` button when form is valid', () => {
-    const { getByPlaceholderText, getByText } = render(
-      <Provider store={store}>
-        <SaveSearchForm query={query} close={close} saveSearch={saveSearch} />
-      </Provider>,
-    );
+  it('should enable `Save Search` button when form is valid', () => {
+    const { getByRole } = renderComponent();
 
-    expect(getByText(buttonName)).toBeDisabled();
-    fireEvent.change(getByPlaceholderText(textfieldPlaceholder), {
-      target: { value: textfieldPlaceholder },
-    });
-    expect(getByText(buttonName)).not.toBeDisabled();
+    expect(getByRole('button')).toBeDisabled();
+    userEvent.type(getByRole('textbox'), 'test');
+    expect(getByRole('button')).not.toBeDisabled();
   });
 
   it('should not call `saveSatelliteSearch` function when form is invalid and `Save Search` button clicked', () => {
-    const { getByPlaceholderText, getByText } = render(
-      <Provider store={store}>
-        <SaveSearchForm query={query} close={close} saveSearch={saveSearch} />
-      </Provider>,
-    );
+    const { getByRole, saveSearch } = renderComponent();
 
-    fireEvent.change(getByPlaceholderText(textfieldPlaceholder), {
-      target: { value: 'id' },
-    });
-    fireEvent.click(getByText(buttonName));
+    userEvent.type(getByRole('textbox'), 'id');
+    userEvent.click(getByRole('button'));
     expect(saveSearch).not.toHaveBeenCalled();
   });
 
   it('should call `saveSatelliteSearch` and `close` function when form is valid and `Save Search` button clicked', () => {
-    const { getByPlaceholderText, getByText } = render(
-      <Provider store={store}>
-        <SaveSearchForm query={query} close={close} saveSearch={saveSearch} />
-      </Provider>,
-    );
+    const { getByRole, saveSearch, close } = renderComponent();
 
-    fireEvent.change(getByPlaceholderText(textfieldPlaceholder), {
-      target: { value: textfieldPlaceholder },
-    });
-    fireEvent.click(getByText(buttonName));
+    userEvent.type(getByRole('textbox'), 'test');
+    userEvent.click(getByRole('button'));
 
     expect(saveSearch).toHaveBeenCalled();
     expect(close).toHaveBeenCalled();
