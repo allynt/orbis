@@ -24,3 +24,17 @@ export const globalTypes = {
     },
   },
 };
+
+export const parameters = {
+  viewport: {
+    viewports: {
+      sidebar: {
+        name: 'Sidebar',
+        styles: {
+          width: '320px',
+          height: '100%',
+        },
+      },
+    },
+  },
+};
