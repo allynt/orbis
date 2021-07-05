@@ -1,28 +1,30 @@
 import React, { useEffect } from 'react';
 
-import { Button, Switch, Checkbox } from '@astrosat/astrosat-ui';
+import {
+  Switch,
+  Checkbox,
+  List,
+  Link,
+  DeleteIcon,
+  FormControlLabel,
+} from '@astrosat/astrosat-ui';
 
-import { ReactComponent as DeleteIcon } from '../delete.svg';
 import SceneListItem from '../scene-list-item/scene-list-item.component';
-import styles from './compare-pins.module.css';
 
 const MAX_SELECTED = 2;
 
-const ComparePins = (
-  {
-    setSelectedMoreInfo,
-    toggleMoreInfoDialog,
-    selectPinnedScene,
-    deselectPinnedScene,
-    clearSelectedPinnedScenes,
-    deletePinnedScene,
-    toggleCompareMode,
-    pinnedScenes,
-    selectedPinnedScenes,
-    isCompareMode,
-  },
-  ref,
-) => {
+const ComparePins = ({
+  setSelectedMoreInfo,
+  toggleMoreInfoDialog,
+  selectPinnedScene,
+  deselectPinnedScene,
+  clearSelectedPinnedScenes,
+  deletePinnedScene,
+  toggleCompareMode,
+  pinnedScenes,
+  selectedPinnedScenes,
+  isCompareMode,
+}) => {
   useEffect(() => {
     return () => {
       if (isCompareMode) {
@@ -42,55 +44,48 @@ const ComparePins = (
   };
 
   return (
-    <div ref={ref}>
-      <div className={styles.buttons}>
-        <Switch
-          name="compare"
-          label="Compare"
-          checked={isCompareMode}
-          disabled={selectedPinnedScenes.length !== MAX_SELECTED}
-          onClick={() => toggleCompareMode()}
-          ariaLabel="Compare Toggle"
-        />
-        <Button
-          theme="link"
-          classNames={[styles.button]}
-          onClick={() => !isCompareMode && clearSelectedPinnedScenes([])}
-          disabled={selectedPinnedScenes.length < 1 || isCompareMode}
-        >
-          Clear Pins
-        </Button>
-      </div>
-      <p className={styles.selectMessage}>
-        Select <span>2</span> scenes to compare
-      </p>
-      <ul className={styles.pinnedScenes}>
+    <>
+      <FormControlLabel
+        name="compare"
+        label="Compare"
+        disabled={selectedPinnedScenes?.length !== MAX_SELECTED}
+        onClick={() => toggleCompareMode()}
+        control={<Switch checked={isCompareMode} />}
+      />
+
+      <Link
+        component="button"
+        onClick={() => !isCompareMode && clearSelectedPinnedScenes([])}
+        disabled={selectedPinnedScenes?.length < 1 || isCompareMode}
+      >
+        Clear Pins
+      </Link>
+      <List>
         {pinnedScenes &&
           pinnedScenes.map((scene, index) => {
-            const isSelected = selectedPinnedScenes.some(
+            const isSelected = selectedPinnedScenes?.some(
               selectedScene => selectedScene.id === scene.id,
             );
             const isDisabled =
-              !selectedPinnedScenes.includes(scene) &&
-              selectedPinnedScenes.length === MAX_SELECTED;
+              !selectedPinnedScenes?.includes(scene) &&
+              selectedPinnedScenes?.length === MAX_SELECTED;
             const Icon = (
               <DeleteIcon
-                title={`delete-icon-${scene.id}`}
-                classes={isSelected ? styles.disabled : ''}
+                color="primary"
+                titleAccess={`delete-icon-${scene.id}`}
                 onClick={() => !isSelected && deletePinnedScene(scene.id)}
               />
             );
             return (
-              <div key={scene.id} className={styles.compareItem}>
+              <React.Fragment key={scene.id}>
                 <Checkbox
                   name={scene.id}
-                  label={scene.label}
+                  inputProps={{ 'aria-label': scene.id }}
                   checked={isSelected}
                   disabled={isCompareMode || isDisabled}
                   onChange={() => handleChange(isSelected, scene)}
                 />
                 <SceneListItem
-                  index={index}
                   scene={scene}
                   icon={Icon}
                   setSelectedMoreInfo={setSelectedMoreInfo}
@@ -99,12 +94,12 @@ const ComparePins = (
                     !isCompareMode && handleChange(isSelected, scene)
                   }
                 />
-              </div>
+              </React.Fragment>
             );
           })}
-      </ul>
-    </div>
+      </List>
+    </>
   );
 };
 
-export default React.memo(React.forwardRef(ComparePins));
+export default ComparePins;

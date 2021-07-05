@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { render, cleanup, within, fireEvent } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { Provider } from 'react-redux';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
@@ -65,7 +66,7 @@ const renderComponent = (store, args) => {
   return { ...attributes, ...testee };
 };
 
-describe.skip('Compare Pins Component', () => {
+describe('Compare Pins Component', () => {
   let store = null;
 
   beforeEach(() => {
@@ -87,41 +88,38 @@ describe.skip('Compare Pins Component', () => {
   });
 
   it('should render a list of pinned scenes', () => {
-    const { container } = renderComponent(store, {});
-    const pinnedSceneElements = container.querySelectorAll('.compareItem');
-    expect(pinnedSceneElements.length).toEqual(mockScenes.length);
+    const { getAllByRole } = renderComponent(store, {});
+    const pinnedSceneElements = getAllByRole('listitem');
+    expect(pinnedSceneElements).toHaveLength(mockScenes.length);
   });
 
   it('should render Compare Mode button disabled when not enough pinned scenes selected', () => {
-    const { getAllByLabelText } = renderComponent(store, {
+    const { getByRole } = renderComponent(store, {
       selectedPinnedScenes: [{ ...mockScenes[1] }],
     });
-
-    // It turns out, our switch label is wrapping 2 elements, so we can't easily
-    // just target one.
-    const switchElements = getAllByLabelText('Compare');
-    switchElements.forEach(element =>
-      expect(element).toHaveAttribute('disabled'),
-    );
+    expect(getByRole('checkbox', { name: 'Compare' })).toBeDisabled();
   });
 
   it('should not be able to toggle Compare Mode when not enough pinned scenes selected', () => {
-    const { toggleCompareMode, getAllByLabelText } = renderComponent(store, {
-      selectedPinnedScenes: [{ ...mockScenes[1] }],
-    });
+    const { toggleCompareMode, getAllByLabelText, getByRole } = renderComponent(
+      store,
+      {
+        selectedPinnedScenes: [{ ...mockScenes[1] }],
+      },
+    );
 
-    fireEvent.click(getAllByLabelText('Compare Toggle')[1]);
+    userEvent.click(getByRole('checkbox', { name: 'Compare' }));
     expect(toggleCompareMode).not.toHaveBeenCalled();
   });
 
   it('should toggle into Compare Mode when there are enough pinned scenes selected', () => {
-    const { toggleCompareMode, getAllByLabelText } = renderComponent(store, {
+    const { toggleCompareMode, getByRole } = renderComponent(store, {
       selectedPinnedScenes: [mockScenes[0], mockScenes[1]],
     });
-
-    const buttonElement = getAllByLabelText('Compare Toggle')[1];
-    expect(buttonElement).not.toHaveAttribute('disabled');
-    fireEvent.click(buttonElement);
+    expect(getByRole('checkbox', { name: 'Compare' })).not.toHaveAttribute(
+      'disabled',
+    );
+    userEvent.click(getByRole('checkbox', { name: 'Compare' }));
     expect(toggleCompareMode).toHaveBeenCalled();
   });
 
@@ -156,19 +154,22 @@ describe.skip('Compare Pins Component', () => {
   });
 
   it('should deselect pinned scene, when scene clicked and already selected', () => {
-    const { deselectPinnedScene, getByText } = renderComponent(store, {
-      selectedPinnedScenes: [{ ...mockScenes[0] }],
-    });
+    const { deselectPinnedScene, getByText, getByRole } = renderComponent(
+      store,
+      {
+        selectedPinnedScenes: [{ ...mockScenes[0] }],
+      },
+    );
 
-    fireEvent.click(getByText('Pinned Scene 1').firstChild);
+    userEvent.click(getByRole('checkbox', { name: mockScenes[0].id }));
 
     expect(deselectPinnedScene).toHaveBeenCalledWith(mockScenes[0]);
   });
 
   it('should select pinned scene, when scene clicked and not already selected', () => {
-    const { selectPinnedScene, getByText } = renderComponent(store);
+    const { selectPinnedScene, getByRole } = renderComponent(store);
 
-    fireEvent.click(getByText('Pinned Scene 1').firstChild);
+    userEvent.click(getByRole('checkbox', { name: mockScenes[0].id }));
 
     expect(selectPinnedScene).toHaveBeenCalledWith(mockScenes[0]);
   });
