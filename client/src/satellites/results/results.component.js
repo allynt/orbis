@@ -1,41 +1,37 @@
 import React, { useState } from 'react';
 
 import {
-  // Slider,
   Button,
-  // useModal,
-  Dialog,
+  List,
   PinIcon,
+  Slider,
+  Typography,
+  Paper,
+  Box,
 } from '@astrosat/astrosat-ui';
 
 import { DEFAULT_CLOUD_COVER } from '../satellite.constants';
 import SceneListItem, {
   SceneListItemSkeleton,
 } from '../scene-list-item/scene-list-item.component';
-import sceneStyles from '../scene-list-item/scene-list-item.module.css';
-import styles from './results.module.css';
-// import sideMenuStyles from '../control-panel/control-panel.module.css';
 
-const Results = (
-  {
-    scenes,
-    setVisiblePanel,
-    selectScene,
-    setSelectedMoreInfo,
-    toggleMoreInfoDialog,
-    pinnedScenes,
-    pinScene,
-    deletePinnedScene,
-    saveSatelliteSearch,
-    currentSearchQuery,
-  },
-  ref,
-) => {
-  const [cloudCoverPercentage, setCloudCoverPercentage] = useState([
+const Results = ({
+  scenes,
+  setVisiblePanel,
+  selectScene,
+  setSelectedMoreInfo,
+  toggleMoreInfoDialog,
+  pinnedScenes,
+  pinScene,
+  deletePinnedScene,
+  saveSatelliteSearch,
+  currentSearchQuery,
+}) => {
+  const [cloudCoverPercentage, setCloudCoverPercentage] = useState(
     DEFAULT_CLOUD_COVER,
-  ]);
+  );
 
-  // const [isSaveDialogVisible, toggleSaveDialog] = useModal(false);
+  const [isSaveDialogVisible, toggleSaveDialog] = useState(false);
 
   const resultCountText = scenes
     ? `Showing ${
@@ -45,67 +41,57 @@ const Results = (
     : 'Loading Results...';
 
   return (
-    <div className={styles.options} ref={ref}>
-      <div>
-        <h3>CLOUD COVER %:</h3>
-        {/* <Slider
+    <>
+      <Typography variant="h3">CLOUD COVER %:</Typography>
+      <Box px={1}>
+        <Slider
           min={0}
           max={100}
-          values={cloudCoverPercentage}
+          value={cloudCoverPercentage}
           onChange={value => setCloudCoverPercentage(value)}
           disabled={!scenes}
-        /> */}
-      </div>
-      <div className={styles.results}>
-        <h3>RESULTS</h3>
-        <div className={styles.resultCount}>{resultCountText}</div>
-        <ul className={sceneStyles.scenes}>
-          {scenes
-            ? scenes
-                .filter(scene => scene.cloudCover <= cloudCoverPercentage[0])
-                .map(scene => {
-                  const isPinned = pinnedScenes?.some(
-                    pin => scene.id === pin.id,
-                  );
-                  const Icon = (
-                    <PinIcon
-                      key={`${scene.id}-icon`}
-                      title={`pin-icon-${scene.id}`}
-                      // classes={`${isPinned && styles.pinned}`}
-                      onClick={() => {
-                        isPinned
-                          ? deletePinnedScene(scene.id)
-                          : pinScene(scene);
-                      }}
-                    />
-                  );
-                  return (
-                    <li key={scene.id}>
-                      <SceneListItem
-                        scene={scene}
-                        icon={Icon}
-                        selectScene={selectScene}
-                        setVisiblePanel={setVisiblePanel}
-                        toggleMoreInfoDialog={toggleMoreInfoDialog}
-                        setSelectedMoreInfo={setSelectedMoreInfo}
-                      />
-                    </li>
-                  );
-                })
-            : Array(5)
-                .fill(0)
-                .map((num, i) => <SceneListItemSkeleton key={i} />)}
-        </ul>
-      </div>
-      {/* <div className={sideMenuStyles.buttons}>
-        <Button
-          classNames={[sideMenuStyles.button]}
-          theme="primary"
-          onClick={() => toggleSaveDialog()}
-        >
-          Save Search
-        </Button>
-      </div> */}
+          marks
+          valueLabelDisplay="auto"
+        />
+      </Box>
+      <Typography variant="h3">RESULTS</Typography>
+      <Paper elevation={0} square>
+        <Typography>{resultCountText}</Typography>
+      </Paper>
+      <List>
+        {scenes
+          ? scenes
+              .filter(scene => scene.cloudCover <= cloudCoverPercentage)
+              .map(scene => {
+                const isPinned = pinnedScenes?.some(pin => scene.id === pin.id);
+                const Icon = (
+                  <PinIcon
+                    key={`${scene.id}-icon`}
+                    titleAccess={`pin-icon-${scene.id}`}
+                    onClick={() => {
+                      isPinned ? deletePinnedScene(scene.id) : pinScene(scene);
+                    }}
+                  />
+                );
+                return (
+                  <SceneListItem
+                    key={scene.id}
+                    scene={scene}
+                    icon={Icon}
+                    selectScene={selectScene}
+                    setVisiblePanel={setVisiblePanel}
+                    toggleMoreInfoDialog={toggleMoreInfoDialog}
+                    setSelectedMoreInfo={setSelectedMoreInfo}
+                  />
+                );
+              })
+          : Array(5)
+              .fill(0)
+              .map((num, i) => <SceneListItemSkeleton key={i} />)}
+      </List>
+      <Button theme="primary" onClick={() => toggleSaveDialog(c => !c)}>
+        Save Search
+      </Button>
       {/* <Dialog
         isVisible={isSaveDialogVisible}
         title="Name Search"
@@ -118,8 +104,8 @@ const Results = (
           saveSearch={saveSatelliteSearch}
         />
       </Dialog> */}
-    </div>
+    </>
   );
 };
 
-export default React.memo(React.forwardRef(Results));
+export default Results;
