@@ -13,6 +13,24 @@ import SceneListItem from '../scene-list-item/scene-list-item.component';
 
 const MAX_SELECTED = 2;
 
+/**
+ * @param {{
+ *  setSelectedMoreInfo: (params: {
+ *    type: string;
+ *    data: any;
+ *  }) => void,
+ *  toggleMoreInfoDialog: () => void,
+ *  selectPinnedScene: (scene: import('typings/satellites').Scene) => void,
+ *  deselectPinnedScene: (scene: import('typings/satellites').Scene) => void,
+ *  clearSelectedPinnedScenes: (stuff: any[]) => void,
+ *  deletePinnedScene: (sceneId: import('typings/satellites').Scene['id']) => void,
+ *  toggleCompareMode: () => void,
+ *  pinnedScenes: import('typings/satellites').Scene[],
+ *  selectedPinnedScenes: import('typings/satellites').Scene[],
+ *  isCompareMode: boolean,
+ *  visualisationId: string
+ * }} props
+ */
 const ComparePins = ({
   setSelectedMoreInfo,
   toggleMoreInfoDialog,
@@ -24,6 +42,7 @@ const ComparePins = ({
   pinnedScenes,
   selectedPinnedScenes,
   isCompareMode,
+  visualisationId,
 }) => {
   useEffect(() => {
     return () => {
@@ -31,7 +50,7 @@ const ComparePins = ({
         toggleCompareMode();
       }
     };
-  }, []);
+  }, [isCompareMode, toggleCompareMode]);
 
   const handleChange = (isSelected, scene) => {
     if (isSelected) {
@@ -62,7 +81,7 @@ const ComparePins = ({
       </Link>
       <List>
         {pinnedScenes &&
-          pinnedScenes.map((scene, index) => {
+          pinnedScenes.map(scene => {
             const isSelected = selectedPinnedScenes?.some(
               selectedScene => selectedScene.id === scene.id,
             );
@@ -93,6 +112,7 @@ const ComparePins = ({
                   selectScene={scene =>
                     !isCompareMode && handleChange(isSelected, scene)
                   }
+                  visualisationId={visualisationId}
                 />
               </React.Fragment>
             );
