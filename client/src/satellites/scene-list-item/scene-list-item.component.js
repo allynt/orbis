@@ -18,7 +18,7 @@ import format from 'date-fns/format';
 import parseISO from 'date-fns/parseISO';
 
 import { DATE_FORMAT, TIME_FORMAT } from '../satellite.constants';
-import { SCENE, VISUALISATION } from '../satellites-panel.component';
+import { SCENE, VISUALISATION } from '../satellites.component';
 
 const useStyles = makeStyles(theme => ({
   avatar: {

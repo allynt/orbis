@@ -21,7 +21,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 import { InfoButton } from 'components';
 import { getGeometryAreaKmSquared } from 'utils/geometry';
 
-import { RESULTS, SATELLITE, TIER } from '../../satellites-panel.component';
+import { RESULTS, SATELLITE, TIER } from '../../satellites.component';
 import {
   setCurrentSatelliteSearchQuery,
   fetchSatelliteScenes,

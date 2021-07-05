@@ -15,7 +15,7 @@ import { SidePanel } from 'components/side-panel/side-panel.component';
 import Profile from '../accounts/profile/profile.component';
 import BookmarksPanel from '../bookmarks/bookmarks-panel.component';
 import DataLayers from '../data-layers/data-layers.component';
-import Satellites from '../satellites/satellites-panel.component';
+import Satellites from '../satellites/satellites.component';
 import StoriesPanel from '../stories/stories-panel.component';
 import {
   closeMenu,

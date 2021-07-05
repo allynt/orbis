@@ -6,7 +6,7 @@ import { Provider } from 'react-redux';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 
-import { VISUALISATION } from '../satellites-panel.component';
+import { VISUALISATION } from '../satellites.component';
 import SceneListItem from './scene-list-item.component';
 
 const mockStore = configureMockStore([thunk]);

@@ -5,7 +5,7 @@ import { Provider } from 'react-redux';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 
-import Satellites from './satellites-panel.component';
+import Satellites from './satellites.component';
 import { fetchPinnedScenes } from './satellites.slice';
 
 const mockStore = configureMockStore([thunk]);
