@@ -4,6 +4,13 @@ import { Button, TextField, useForm, Typography } from '@astrosat/astrosat-ui';
 
 import validate from './save-search-form.validator';
 
+/**
+ * @param {{
+ *  query: Partial<import('typings/satellites').SavedSearch>
+ *  close: () => void
+ *  saveSearch: (search: import('typings/satellites').SavedSearch) => void
+ * }} props
+ */
 const SaveSearchForm = ({ query, close, saveSearch }) => {
   const { handleChange, handleSubmit, values, errors } = useForm(
     onSubmit,

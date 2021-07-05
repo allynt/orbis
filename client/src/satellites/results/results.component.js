@@ -8,13 +8,34 @@ import {
   Typography,
   Paper,
   Box,
+  Dialog,
+  DialogContent,
+  DialogTitle,
 } from '@astrosat/astrosat-ui';
 
 import { DEFAULT_CLOUD_COVER } from '../satellite.constants';
 import SceneListItem, {
   SceneListItemSkeleton,
 } from '../scene-list-item/scene-list-item.component';
+import SaveSearchForm from './save-search-form/save-search-form.component';
 
+/**
+ * @param {{
+ *  scenes: import('typings/satellites').Scene[]
+ *  setVisiblePanel: (panel: string) => void,
+ *  selectScene: (scene: import('typings/satellites').Scene) => void,
+ *  setSelectedMoreInfo: (params: {
+ *    type: string;
+ *    data: any;
+ *  }) => void,
+ *  toggleMoreInfoDialog: () => void,
+ *  pinnedScenes: import('typings/satellites').Scene[],
+ *  pinScene: (scene: import('typings/satellites').Scene) => void,
+ *  deletePinnedScene: (sceneId: import('typings/satellites').Scene['id']) => void,
+ *  saveSatelliteSearch: (search: import('typings/satellites').SavedSearch) => void,
+ *  currentSearchQuery: Partial<import('typings/satellites').SavedSearch>,
+ * }} props
+ */
 const Results = ({
   scenes,
   setVisiblePanel,
@@ -31,7 +52,7 @@ const Results = ({
     DEFAULT_CLOUD_COVER,
   );
 
-  const [isSaveDialogVisible, toggleSaveDialog] = useState(false);
+  const [isSaveDialogVisible, setIsSaveDialogVisible] = useState(false);
 
   const resultCountText = scenes
     ? `Showing ${
@@ -48,7 +69,7 @@ const Results = ({
           min={0}
           max={100}
           value={cloudCoverPercentage}
-          onChange={value => setCloudCoverPercentage(value)}
+          onChange={(_event, value) => setCloudCoverPercentage(value)}
           disabled={!scenes}
           marks
           valueLabelDisplay="auto"
@@ -89,21 +110,20 @@ const Results = ({
               .fill(0)
               .map((num, i) => <SceneListItemSkeleton key={i} />)}
       </List>
-      <Button theme="primary" onClick={() => toggleSaveDialog(c => !c)}>
-        Save Search
-      </Button>
-      {/* <Dialog
-        isVisible={isSaveDialogVisible}
-        title="Name Search"
-        close={toggleSaveDialog}
-        ref={ref}
+      <Button onClick={() => setIsSaveDialogVisible(true)}>Save Search</Button>
+      <Dialog
+        open={isSaveDialogVisible}
+        onClose={() => setIsSaveDialogVisible(false)}
       >
-        <SaveSearchForm
-          query={currentSearchQuery}
-          close={toggleSaveDialog}
-          saveSearch={saveSatelliteSearch}
-        />
-      </Dialog> */}
+        <DialogTitle>Name Search</DialogTitle>
+        <DialogContent>
+          <SaveSearchForm
+            query={currentSearchQuery}
+            close={() => setIsSaveDialogVisible(false)}
+            saveSearch={saveSatelliteSearch}
+          />
+        </DialogContent>
+      </Dialog>
     </>
   );
 };
