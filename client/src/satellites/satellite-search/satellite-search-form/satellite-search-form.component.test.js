@@ -28,11 +28,11 @@ describe('<SearchForm />', () => {
     const satellites = Array(5)
       .fill()
       .map((_, i) => ({
-        id: i.toString(),
+        id: `sat${i}`,
         label: `Satellite ${i}`,
       }));
     const expected = {
-      satellites: ['0', '2'],
+      satellites: ['sat0', 'sat2'],
       start_date: expect.stringContaining(''),
       end_date: expect.stringContaining(''),
       tiers: ['free', 'high'],
@@ -58,11 +58,11 @@ describe('<SearchForm />', () => {
     const satellites = Array(5)
       .fill()
       .map((_, i) => ({
-        id: i.toString(),
+        id: `sat${i}`,
         label: `Satellite ${i}`,
       }));
     const currentSearch = {
-      satellites: ['3', '4'],
+      satellites: ['sat3', 'sat4'],
       start_date: new Date(2000, 0, 0).toISOString(),
       end_date: new Date(2001, 0, 0).toISOString(),
       tiers: ['mid', 'high'],

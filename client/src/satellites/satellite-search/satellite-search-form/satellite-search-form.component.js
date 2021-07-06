@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import {
   Checkbox,
@@ -42,6 +42,12 @@ const TIERS = [
   },
 ];
 
+const keysForTruthyValues = obj =>
+  Object.entries(obj).reduce((acc, [key, value]) => {
+    if (value) return [...acc, key];
+    return acc;
+  }, []);
+
 const CustomDatePicker = React.forwardRef(({ value, onClick }, ref) => (
   <button type="button" onClick={onClick}>
     {value}
@@ -65,7 +71,7 @@ const useStyles = makeStyles(theme => ({
  * @param {{
  * satellites: import('typings/satellites').Satellite[],
  * geometryTooLarge?: boolean
- * currentSearch: import('typings/satellites').SavedSearch
+ * currentSearch?: import('typings/satellites').SavedSearch
  * onSubmit: (search: Pick<
  *                      import('typings/satellites').SavedSearch,
  *                      'satellites' | 'start_date' | 'end_date' | 'tiers'
@@ -84,9 +90,22 @@ const SatelliteSearchForm = ({
 }) => {
   const styles = useStyles({});
 
-  const { handleSubmit, control, getValues } = useForm({
+  const { handleSubmit, control, setValue } = useForm({
     defaultValues: {
-      ...currentSearch,
+      satellites: satellites?.reduce(
+        (acc, satellite) => ({
+          ...acc,
+          [satellite.id]: currentSearch?.satellites?.includes(satellite.id),
+        }),
+        {},
+      ),
+      tiers: TIERS.reduce(
+        (acc, tier) => ({
+          ...acc,
+          [tier.id]: currentSearch?.tiers?.includes(tier.id),
+        }),
+        {},
+      ),
       start_date: currentSearch?.start_date
         ? new Date(currentSearch.start_date)
         : subDays(new Date(), DAYS_IN_PAST),
@@ -96,28 +115,47 @@ const SatelliteSearchForm = ({
     },
   });
 
-  /**
-   * @param {ReturnType<getValues>} values
-   */
+  useEffect(() => {
+    setValue(
+      'satellites',
+      satellites?.reduce(
+        (acc, satellite) => ({
+          ...acc,
+          [satellite.id]: currentSearch?.satellites?.includes(satellite.id),
+        }),
+        {},
+      ),
+    );
+    setValue(
+      'tiers',
+      TIERS.reduce(
+        (acc, tier) => ({
+          ...acc,
+          [tier.id]: currentSearch?.tiers?.includes(tier.id),
+        }),
+        {},
+      ),
+    );
+    setValue(
+      'start_date',
+      currentSearch?.start_date
+        ? new Date(currentSearch.start_date)
+        : subDays(new Date(), DAYS_IN_PAST),
+    );
+    setValue(
+      'end_date',
+      currentSearch?.end_date ? new Date(currentSearch.end_date) : new Date(),
+    );
+  }, [currentSearch, satellites, setValue]);
+
   const onSubmit = values => {
     const query = {
-      ...values,
+      satellites: keysForTruthyValues(values.satellites),
+      tiers: keysForTruthyValues(values.tiers),
       start_date: values.start_date.toISOString(),
       end_date: values.end_date.toISOString(),
     };
     onSubmitProp(query);
-  };
-
-  /**
-   * @param {'satellites' | 'tiers'} group
-   * @param {string} changedId
-   */
-  const handleCheckboxChange = (group, changedId) => {
-    /** @type {string[]} */
-    const existingIds = getValues(group);
-    return existingIds?.includes(changedId)
-      ? existingIds?.filter(id => id !== changedId)
-      : [...(existingIds ?? []), changedId];
   };
 
   return (
@@ -125,42 +163,32 @@ const SatelliteSearchForm = ({
       <FormControl component="fieldset">
         <FormLabel component="legend">Satellite Image Source</FormLabel>
         <FormGroup>
-          <Controller
-            name="satellites"
-            control={control}
-            render={props => (
-              <>
-                {satellites?.map(satellite => (
-                  <div key={satellite.id} className={styles.checkbox}>
-                    <FormControlLabel
-                      label={satellite.label}
-                      control={
-                        <Checkbox
-                          onChange={() =>
-                            props.onChange(
-                              handleCheckboxChange('satellites', satellite.id),
-                            )
-                          }
-                          defaultChecked={currentSearch?.satellites?.includes(
-                            satellite.id,
-                          )}
-                        />
-                      }
-                    />
-                    <InfoButton
-                      onClick={() => {
-                        setSelectedMoreInfo({
-                          type: SATELLITE,
-                          data: satellite,
-                        });
-                        toggleMoreInfoDialog();
-                      }}
-                    />
-                  </div>
-                ))}
-              </>
-            )}
-          />
+          {satellites?.map(satellite => (
+            <div key={satellite.id} className={styles.checkbox}>
+              <Controller
+                name={`satellites.${satellite.id}`}
+                control={control}
+                render={props => (
+                  <FormControlLabel
+                    checked={props.value}
+                    onChange={(_event, checked) => props.onChange(checked)}
+                    label={satellite.label}
+                    control={<Checkbox />}
+                  />
+                )}
+              />
+
+              <InfoButton
+                onClick={() => {
+                  setSelectedMoreInfo({
+                    type: SATELLITE,
+                    data: satellite,
+                  });
+                  toggleMoreInfoDialog();
+                }}
+              />
+            </div>
+          ))}
         </FormGroup>
       </FormControl>
       <Divider className={styles.divider} />
@@ -199,39 +227,28 @@ const SatelliteSearchForm = ({
       <FormControl component="fieldset">
         <FormLabel component="legend">Resolution</FormLabel>
         <FormGroup>
-          <Controller
-            name="tiers"
-            control={control}
-            render={props => (
-              <>
-                {TIERS.map(tier => (
-                  <div key={tier.id} className={styles.checkbox}>
-                    <FormControlLabel
-                      label={tier.label}
-                      control={
-                        <Checkbox
-                          onChange={() =>
-                            props.onChange(
-                              handleCheckboxChange('tiers', tier.id),
-                            )
-                          }
-                          defaultChecked={currentSearch?.tiers?.includes(
-                            tier.id,
-                          )}
-                        />
-                      }
-                    />
-                    <InfoButton
-                      onClick={() => {
-                        setSelectedMoreInfo({ type: TIER, data: tier });
-                        toggleMoreInfoDialog();
-                      }}
-                    />
-                  </div>
-                ))}
-              </>
-            )}
-          />
+          {TIERS.map(tier => (
+            <div key={tier.id} className={styles.checkbox}>
+              <Controller
+                name={`tiers.${tier.id}`}
+                control={control}
+                render={props => (
+                  <FormControlLabel
+                    label={tier.label}
+                    checked={props.value}
+                    onChange={(_, checked) => props.onChange(checked)}
+                    control={<Checkbox />}
+                  />
+                )}
+              />
+              <InfoButton
+                onClick={() => {
+                  setSelectedMoreInfo({ type: TIER, data: tier });
+                  toggleMoreInfoDialog();
+                }}
+              />
+            </div>
+          ))}
         </FormGroup>
       </FormControl>
       <>

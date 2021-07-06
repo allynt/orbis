@@ -40,6 +40,9 @@ const SatelliteSearch = ({
   const savedSearches = useSelector(
     state => state.satellites.satelliteSearches,
   );
+  const currentSearch = useSelector(
+    state => state.satellites.currentSearchQuery,
+  );
   const maximumAoiArea = useSelector(state => state.app.config.maximumAoiArea);
 
   const [geometry, setGeometry] = useState(null);
@@ -156,6 +159,7 @@ const SatelliteSearch = ({
         geometryTooLarge={
           geometry && getGeometryAreaKmSquared(geometry) > maximumAoiArea
         }
+        currentSearch={currentSearch}
         onSubmit={search => {
           const newSearch = { ...search, aoi: geometry };
           dispatch(setCurrentSatelliteSearchQuery(newSearch));
