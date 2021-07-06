@@ -1,10 +1,14 @@
 import React from 'react';
 
-import { customer, activeUsers, pendingUsers } from '../../test-story-data';
+import {
+  customer,
+  activeUsers,
+  pendingUsers,
+} from 'mission-control/test-story-data';
 import { ActiveUsersBoard } from './active-users-board.component';
 
 export default {
-  title: 'Admin/Home View/Active Users Board',
+  title: 'Mission Control/Users View/Active Users Board',
   argTypes: {
     onChangeRoleClick: { action: 'onChangeRoleClick' },
     onEditUserClick: { action: 'onEditUserClick' },
@@ -22,6 +26,13 @@ const quickViewData = {
   active: activeUsers?.length,
   pending: pendingUsers?.length,
   available: availableLicences?.length,
+};
+
+export const Default = Template.bind({});
+Default.args = {
+  activeCustomerUsers: activeUsers,
+  customer,
+  quickViewData,
 };
 
 export const NoUsers = Template.bind({});
@@ -51,11 +62,4 @@ export const NoLicenceData = Template.bind({});
 NoLicenceData.args = {
   activeCustomerUsers: activeUsers,
   customer,
-};
-
-export const Default = Template.bind({});
-Default.args = {
-  activeCustomerUsers: activeUsers,
-  customer,
-  quickViewData,
 };
