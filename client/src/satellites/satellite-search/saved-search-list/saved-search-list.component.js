@@ -27,15 +27,11 @@ const useStyles = makeStyles(theme => ({
 /**
  * @param {{
  *  savedSearches: import('typings/satellites').SavedSearch[]
- *  setCurrentSearchQuery: (search: import('typings/satellites').SavedSearch) => void
- *  deleteSavedSatelliteSearch: (searchId: import('typings/satellites').SavedSearch['id']) => void
+ *  onReloadClick: (search: import('typings/satellites').SavedSearch) => void
+ *  onDeleteClick: (search: import('typings/satellites').SavedSearch) => void
  * }} props
  */
-const SavedSearchList = ({
-  savedSearches,
-  setCurrentSearchQuery,
-  deleteSavedSatelliteSearch,
-}) => {
+const SavedSearchList = ({ savedSearches, onReloadClick, onDeleteClick }) => {
   const styles = useStyles();
 
   return (
@@ -62,16 +58,13 @@ const SavedSearchList = ({
                   </>
                 }
               />
-              <Button
-                size="small"
-                onClick={() => setCurrentSearchQuery(search)}
-              >
+              <Button size="small" onClick={() => onReloadClick(search)}>
                 Reload
               </Button>
               <Button
                 size="small"
                 color="secondary"
-                onClick={() => deleteSavedSatelliteSearch(search.id)}
+                onClick={() => onDeleteClick(search)}
               >
                 Delete
               </Button>

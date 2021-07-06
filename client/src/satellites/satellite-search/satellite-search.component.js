@@ -139,8 +139,8 @@ const SatelliteSearch = ({
       {savedSearches && savedSearches.length > 0 ? (
         <SavedSearchList
           savedSearches={savedSearches}
-          setCurrentSearchQuery={chooseSearchQuery}
-          deleteSavedSatelliteSearch={deleteSavedSearchQuery}
+          onReloadClick={chooseSearchQuery}
+          onDeleteClick={({ id }) => deleteSavedSearchQuery(id)}
         />
       ) : (
         <Typography>There are no saved AOI yet</Typography>

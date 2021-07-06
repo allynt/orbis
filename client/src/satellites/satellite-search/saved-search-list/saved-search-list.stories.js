@@ -5,8 +5,8 @@ import SavedSearchList from './saved-search-list.component';
 export default {
   title: 'Satellites/SatelliteSearch/SavedSearchList',
   argTypes: {
-    setCurrentSearchQuery: { action: true },
-    deleteSavedSatelliteSearch: { action: true },
+    onReloadClick: { action: true },
+    onDeleteClick: { action: true },
   },
 };
 
