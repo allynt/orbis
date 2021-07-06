@@ -1,81 +1,9 @@
 import React from 'react';
 
-import { render } from '@testing-library/react';
+import { render, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
-import SatelliteSearchForm, {
-  savedSearchToFormValues,
-} from './satellite-search-form.component';
-
-describe('savedSearchToFormValues', () => {
-  it('must spread the satellites array correctly', () => {
-    const savedSearch = {
-      satellites: ['sentinel-1', 'sentinel-2', 'sentinel-3'],
-    };
-    const expected = {
-      'sentinel-1': true,
-      'sentinel-2': true,
-      'sentinel-3': true,
-    };
-    const result = savedSearchToFormValues(savedSearch);
-    expect(result).toEqual(expected);
-  });
-
-  describe('must not spread satellites if none exist', () => {
-    it('empty array', () => {
-      const savedSearch = { satellites: [] };
-      const expected = {};
-      const result = savedSearchToFormValues(savedSearch);
-      expect(result).toEqual(expected);
-    });
-
-    it('undefined', () => {
-      const savedSearch = {};
-      const expected = {};
-      const result = savedSearchToFormValues(savedSearch);
-      expect(result).toEqual(expected);
-    });
-  });
-
-  it('must spread the tiers array correctly', () => {
-    const savedSearch = { tiers: ['free', 'high'] };
-    const expected = { free: true, high: true };
-    const result = savedSearchToFormValues(savedSearch);
-    expect(result).toEqual(expected);
-  });
-
-  describe('must not spread tiers if none exist', () => {
-    it('empty array', () => {
-      const savedSearch = { tiers: [] };
-      const expected = {};
-      const result = savedSearchToFormValues(savedSearch);
-      expect(result).toEqual(expected);
-    });
-
-    it('undefined', () => {
-      const savedSearch = {};
-      const expected = {};
-      const result = savedSearchToFormValues(savedSearch);
-      expect(result).toEqual(expected);
-    });
-  });
-
-  it('must spread each array when both are present', () => {
-    const savedSearch = {
-      satellites: ['sentinel-1', 'sentinel-2', 'sentinel-3'],
-      tiers: ['free', 'high'],
-    };
-    const expected = {
-      'sentinel-1': true,
-      'sentinel-2': true,
-      'sentinel-3': true,
-      free: true,
-      high: true,
-    };
-    const result = savedSearchToFormValues(savedSearch);
-    expect(result).toEqual(expected);
-  });
-});
+import SatelliteSearchForm from './satellite-search-form.component';
 
 describe('<SearchForm />', () => {
   it('Shows a checkbox for each available satellite', () => {
@@ -95,7 +23,7 @@ describe('<SearchForm />', () => {
     );
   });
 
-  it('Calls onSubmit with the new values when submitted', () => {
+  it('Calls onSubmit with the new values when submitted', async () => {
     const onSubmit = jest.fn();
     const satellites = Array(5)
       .fill()
@@ -110,7 +38,11 @@ describe('<SearchForm />', () => {
       tiers: ['free', 'high'],
     };
     const { getByRole } = render(
-      <SatelliteSearchForm satellites={satellites} onSubmit={onSubmit} />,
+      <SatelliteSearchForm
+        satellites={satellites}
+        currentSearch={{}}
+        onSubmit={onSubmit}
+      />,
     );
     [
       'Satellite 0',
@@ -119,7 +51,7 @@ describe('<SearchForm />', () => {
       'High-resolution',
     ].forEach(name => userEvent.click(getByRole('checkbox', { name })));
     userEvent.click(getByRole('button', { name: 'Search' }));
-    expect(onSubmit).toBeCalledWith(expected);
+    await waitFor(() => expect(onSubmit).toBeCalledWith(expected));
   });
 
   it('Uses the existing search if available', () => {
@@ -131,20 +63,22 @@ describe('<SearchForm />', () => {
       }));
     const currentSearch = {
       satellites: ['3', '4'],
-      // start_date: new Date(2000, 0, 0).toISOString(),
-      // end_date: new Date(2001, 0, 0).toISOString(),
+      start_date: new Date(2000, 0, 0).toISOString(),
+      end_date: new Date(2001, 0, 0).toISOString(),
       tiers: ['mid', 'high'],
     };
     const { getByRole } = render(
       <SatelliteSearchForm
         satellites={satellites}
-        // currentSearch={currentSearch}
+        currentSearch={currentSearch}
       />,
     );
     expect(getByRole('checkbox', { name: 'Satellite 3' })).toBeChecked();
     expect(getByRole('checkbox', { name: 'Satellite 4' })).toBeChecked();
     expect(getByRole('checkbox', { name: 'Mid-resolution' })).toBeChecked();
     expect(getByRole('checkbox', { name: 'High-resolution' })).toBeChecked();
+    expect(getByRole('button', { name: '1999-12-31' })).toBeInTheDocument();
+    expect(getByRole('button', { name: '2000-12-31' })).toBeInTheDocument();
   });
 
   it('Shows an error if geometry is too large', () => {

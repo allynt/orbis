@@ -8,6 +8,7 @@ import SatelliteSearchForm from './satellite-search-form.component';
 export default {
   title: 'Satellites/SatelliteSearch/SatelliteSearchForm',
   argTypes: {
+    onSubmit: { action: true },
     setVisiblePanel: { action: true },
     setSelectedMoreInfo: { action: true },
     toggleMoreInfoDialog: { action: true },
