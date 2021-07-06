@@ -4,12 +4,14 @@ import { Button, Typography } from '@astrosat/astrosat-ui';
 
 import { useDispatch, useSelector } from 'react-redux';
 
+import { RESULTS } from 'satellites/satellites.component';
 import { getGeometryAreaKmSquared } from 'utils/geometry';
 
 import {
   fetchSavedSatelliteSearches,
   deleteSavedSatelliteSearch,
   setCurrentSatelliteSearchQuery,
+  fetchSatelliteScenes,
 } from '../satellites.slice';
 import SatelliteSearchForm from './satellite-search-form/satellite-search-form.component';
 import SavedSearchList from './saved-search-list/saved-search-list.component';
@@ -151,8 +153,15 @@ const SatelliteSearch = ({
 
       <SatelliteSearchForm
         satellites={satellites}
-        geometry={geometry}
-        setVisiblePanel={setVisiblePanel}
+        geometryTooLarge={
+          geometry && getGeometryAreaKmSquared(geometry) > maximumAoiArea
+        }
+        onSubmit={search => {
+          const newSearch = { ...search, aoi: geometry };
+          dispatch(setCurrentSatelliteSearchQuery(newSearch));
+          dispatch(fetchSatelliteScenes(newSearch));
+          setVisiblePanel(RESULTS);
+        }}
         setSelectedMoreInfo={setSelectedMoreInfo}
         toggleMoreInfoDialog={toggleMoreInfoDialog}
       />

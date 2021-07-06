@@ -15,17 +15,11 @@ import {
 
 import { formatISO, subDays } from 'date-fns';
 import DatePicker from 'react-datepicker';
-import { useDispatch, useSelector } from 'react-redux';
 import 'react-datepicker/dist/react-datepicker.css';
 
 import { InfoButton } from 'components';
-import { getGeometryAreaKmSquared } from 'utils/geometry';
 
-import { RESULTS, SATELLITE, TIER } from '../../satellites.component';
-import {
-  setCurrentSatelliteSearchQuery,
-  fetchSatelliteScenes,
-} from '../../satellites.slice';
+import { SATELLITE, TIER } from '../../satellites.component';
 import validate from './satellite-search-form.validator';
 
 const DATE_FORMAT = 'yyy-MM-dd';
@@ -101,30 +95,28 @@ const useStyles = makeStyles(theme => ({
 /**
  * @param {{
  * satellites: import('typings/satellites').Satellite[],
- * geometry: number[][],
- * setVisiblePanel: (panel: string) => void,
+ * geometryTooLarge?: boolean
+ * currentSearch: import('typings/satellites').SavedSearch
+ * onSubmit: (search: Pick<
+ *                      import('typings/satellites').SavedSearch,
+ *                      'satellites' | 'start_date' | 'end_date' | 'tiers'
+ *                    >) => void
  * setSelectedMoreInfo: (params: {type: string, data: any}) => void,
  * toggleMoreInfoDialog: () => void,
  * }} props
  */
 const SatelliteSearchForm = ({
   satellites,
-  geometry,
-  setVisiblePanel,
+  geometryTooLarge = false,
+  currentSearch,
+  onSubmit: onSubmitProp,
   setSelectedMoreInfo,
   toggleMoreInfoDialog,
 }) => {
-  const dispatch = useDispatch();
   const styles = useStyles({});
 
   const [startDate, setStartDate] = useState(subDays(new Date(), DAYS_IN_PAST));
   const [endDate, setEndDate] = useState(new Date());
-  const currentSearchQuery = useSelector(
-    state => state.satellites.currentSearchQuery,
-  );
-  const maximumAoiArea = useSelector(state => state.app.config.maximumAoiArea);
-  const geometryTooLarge =
-    geometry && getGeometryAreaKmSquared(geometry) > maximumAoiArea;
 
   const { handleChange, handleSubmit, values, setValues } = useForm(
     onSubmit,
@@ -134,15 +126,14 @@ const SatelliteSearchForm = ({
   );
 
   useEffect(() => {
-    if (currentSearchQuery) {
-      currentSearchQuery.start_date &&
-        setStartDate(new Date(currentSearchQuery.start_date));
-      currentSearchQuery.end_date &&
-        setEndDate(new Date(currentSearchQuery.end_date));
-      const convertedSearch = savedSearchToFormValues(currentSearchQuery);
+    if (currentSearch) {
+      currentSearch.start_date &&
+        setStartDate(new Date(currentSearch.start_date));
+      currentSearch.end_date && setEndDate(new Date(currentSearch.end_date));
+      const convertedSearch = savedSearchToFormValues(currentSearch);
       setValues(convertedSearch);
     }
-  }, [currentSearchQuery, setValues]);
+  }, [currentSearch, setValues]);
 
   function onSubmit() {
     // Collect all selected satellites into one array of satellite ids.
@@ -155,11 +146,8 @@ const SatelliteSearchForm = ({
       start_date: formatISO(startDate),
       end_date: formatISO(endDate),
       tiers: selectedTiersIds,
-      aoi: geometry,
     };
-    dispatch(setCurrentSatelliteSearchQuery(query));
-    dispatch(fetchSatelliteScenes(query));
-    setVisiblePanel(RESULTS);
+    onSubmitProp(query);
   }
   return (
     <form onSubmit={handleSubmit}>
