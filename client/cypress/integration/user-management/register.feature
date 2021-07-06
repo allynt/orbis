@@ -36,6 +36,7 @@ Feature: Register
     When I type "test@test.com" into the "Work Email Address" field
     When I type "testfirstname" into the "First Name" field
     When I type "testlastname" into the "Last Name" field
+    When I type "testorganisation" into the "Organisation Name" field
     When I type "testpwtest" into the "Password *" password field
     When I type "testpwtest" into the "Password Confirmation *" password field
     When I click the "I agree with Terms & Conditions" checkbox
