@@ -12,33 +12,26 @@ import {
 /**
  * @param {{
  *  visualisations: import('typings/satellites').Visualisation[]
- *  setCurrentVisualisation: (visualisationId: import('typings/satellites').Visualisation['id']) => void
+ *  onVisualisationClick: (visualisationId: import('typings/satellites').Visualisation['id']) => void
  * }} props
  */
-const Visualisation = ({ visualisations, setCurrentVisualisation }) =>
+const Visualisation = ({ visualisations, onVisualisationClick }) =>
   visualisations ? (
     <>
       <Typography variant="h1" gutterBottom>
         VISUALISATION
       </Typography>
       <List>
-        {visualisations.map(visualisation => (
-          <ListItem
-            key={visualisation.id}
-            button
-            onClick={() => setCurrentVisualisation('TCI')}
-          >
+        {visualisations.map(({ id, description, label, thumbnail }) => (
+          <ListItem key={id} button onClick={() => onVisualisationClick('TCI')}>
             <ListItemAvatar>
               <Avatar
                 variant="rounded"
-                src={visualisation.thumbnail}
+                src={thumbnail}
                 alt="Scene Visualisation Thumbnail"
               />
             </ListItemAvatar>
-            <ListItemText
-              primary={visualisation.label}
-              secondary={visualisation.description}
-            />
+            <ListItemText primary={label} secondary={description} />
           </ListItem>
         ))}
       </List>

@@ -140,7 +140,7 @@ const Satellites = ({ map }) => {
           visualisations={visualisations}
           setVisiblePanel={setVisiblePanel}
           removeScenes={() => dispatch(removeScenes())}
-          setCurrentVisualisation={visualisation =>
+          onVisualisationClick={visualisation =>
             dispatch(setCurrentVisualisation(visualisation))
           }
         />
