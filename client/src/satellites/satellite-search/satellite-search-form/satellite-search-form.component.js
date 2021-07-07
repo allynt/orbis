@@ -120,8 +120,8 @@ const useStyles = makeStyles(theme => ({
 /**
  * @param {{
  * satellites: import('typings/satellites').Satellite[],
- * geometryTooLarge?: boolean
- * currentSearch?: import('typings/satellites').SavedSearch
+ * aoiTooLarge?: boolean
+ * currentSearch?: Partial<import('typings/satellites').SavedSearch>
  * onSubmit: (search: Pick<
  *                      import('typings/satellites').SavedSearch,
  *                      'satellites' | 'start_date' | 'end_date' | 'tiers'
@@ -131,7 +131,7 @@ const useStyles = makeStyles(theme => ({
  */
 const SatelliteSearchForm = ({
   satellites,
-  geometryTooLarge = false,
+  aoiTooLarge = false,
   currentSearch = { satellites: ['sentinel-2'], tiers: ['free'] },
   onSubmit: onSubmitProp,
   onInfoClick,
@@ -230,11 +230,11 @@ const SatelliteSearchForm = ({
         </FormGroup>
       </FormControl>
       <>
-        {geometryTooLarge && (
+        {aoiTooLarge && (
           <Well severity="error">AOI is too large, redraw or zoom in</Well>
         )}
       </>
-      <Button type="submit" disabled={geometryTooLarge}>
+      <Button type="submit" disabled={aoiTooLarge}>
         Search
       </Button>
     </form>

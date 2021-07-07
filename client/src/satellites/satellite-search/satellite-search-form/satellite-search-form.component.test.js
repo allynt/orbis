@@ -83,7 +83,7 @@ describe('<SearchForm />', () => {
 
   it('Shows an error if geometry is too large', () => {
     const { getByText, getByRole } = render(
-      <SatelliteSearchForm geometryTooLarge />,
+      <SatelliteSearchForm aoiTooLarge />,
     );
     expect(getByRole('alert')).toBeInTheDocument();
     expect(

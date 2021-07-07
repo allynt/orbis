@@ -19,11 +19,15 @@ import {
 } from './satellites-info-tables/satellites-info-tables.component';
 import {
   deletePinnedScene,
+  deleteSavedSatelliteSearch,
   fetchPinnedScenes,
   fetchSatellites,
+  fetchSatelliteScenes,
+  fetchSavedSatelliteSearches,
   pinScene,
   saveSatelliteSearch,
   selectScene,
+  setCurrentSatelliteSearchQuery,
   setCurrentVisualisation,
 } from './satellites.slice';
 import Visualisation from './visualisation/visualisation.component';
@@ -58,6 +62,9 @@ const Satellites = ({ map }) => {
   const visualisationId = useSelector(
     state => state.satellites.visualisationId,
   );
+  const savedSearches = useSelector(
+    state => state.satellites.satelliteSearches,
+  );
 
   useEffect(() => {
     if (!satellites) {
@@ -70,6 +77,12 @@ const Satellites = ({ map }) => {
       dispatch(fetchPinnedScenes());
     }
   }, [pinnedScenes, dispatch]);
+
+  useEffect(() => {
+    if (!savedSearches) {
+      dispatch(fetchSavedSatelliteSearches());
+    }
+  }, [savedSearches, dispatch]);
 
   useEffect(() => {
     if (selectedScene) {
@@ -110,9 +123,20 @@ const Satellites = ({ map }) => {
 
       {satellites && visiblePanel === SEARCH && (
         <SatelliteSearch
-          map={map}
           satellites={satellites}
-          setVisiblePanel={setVisiblePanel}
+          savedSearches={savedSearches}
+          currentSearch={currentSearchQuery}
+          onDrawAoiClick={() => console.log('Draw AOI Click')}
+          onSearch={search => {
+            const newSearch = { ...search, aoi: [[]] };
+            dispatch(setCurrentSatelliteSearchQuery(newSearch));
+            dispatch(fetchSatelliteScenes(newSearch));
+            setVisiblePanel(RESULTS);
+          }}
+          onSearchReload={search =>
+            dispatch(setCurrentSatelliteSearchQuery(search))
+          }
+          onSearchDelete={({ id }) => dispatch(deleteSavedSatelliteSearch(id))}
           onInfoClick={handleInfoClick}
         />
       )}

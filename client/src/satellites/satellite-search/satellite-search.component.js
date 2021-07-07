@@ -1,57 +1,76 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React from 'react';
 
 import { Button, Typography } from '@astrosat/astrosat-ui';
 
-import { useDispatch, useSelector } from 'react-redux';
-
-import { RESULTS } from 'satellites/satellites.component';
-import { getGeometryAreaKmSquared } from 'utils/geometry';
-
-import {
-  fetchSavedSatelliteSearches,
-  deleteSavedSatelliteSearch,
-  setCurrentSatelliteSearchQuery,
-  fetchSatelliteScenes,
-} from '../satellites.slice';
 import SatelliteSearchForm from './satellite-search-form/satellite-search-form.component';
 import SavedSearchList from './saved-search-list/saved-search-list.component';
 
-const AOI_DRAW_MODE = 'RectangleMode';
-const BBOX_NO_OF_POINTS = 5;
-
 /**
  * @param {{
- *  map: any
  *  satellites: import('typings/satellites').Satellite[]
- *  setVisiblePanel: (panel: string) => void
+ *  savedSearches: import('typings/satellites').SavedSearch[]
+ *  currentSearch: Partial<import('typings/satellites').SavedSearch>
+ *  aoiTooLarge?: boolean
+ *  onDrawAoiClick: React.MouseEventHandler<HTMLButtonElement>
+ *  onSearch: (search: Pick<import('typings/satellites').SavedSearch, "satellites" | "end_date" | "start_date" | "tiers">) => void
+ *  onSearchReload: (search: import('typings/satellites').SavedSearch) => void
+ *  onSearchDelete: (search: import('typings/satellites').SavedSearch) => void
  *  onInfoClick: (info: {type: string, data: any}) => void
  * }} props
  */
-const SatelliteSearch = ({ map, satellites, setVisiblePanel, onInfoClick }) => {
-  const dispatch = useDispatch();
+const SatelliteSearch = ({
+  satellites,
+  savedSearches,
+  currentSearch,
+  aoiTooLarge = false,
+  onDrawAoiClick,
+  onSearch,
+  onSearchReload,
+  onSearchDelete,
+  onInfoClick,
+}) => {
+  return (
+    <>
+      {savedSearches && savedSearches.length > 0 ? (
+        <SavedSearchList
+          savedSearches={savedSearches}
+          onReloadClick={onSearchReload}
+          onDeleteClick={onSearchDelete}
+        />
+      ) : (
+        <Typography>There are no saved AOI yet</Typography>
+      )}
+      <Button color="secondary" onClick={onDrawAoiClick}>
+        Draw your AOI
+      </Button>
 
-  const savedSearches = useSelector(
-    state => state.satellites.satelliteSearches,
+      <SatelliteSearchForm
+        satellites={satellites}
+        aoiTooLarge={aoiTooLarge}
+        currentSearch={currentSearch}
+        onSubmit={onSearch}
+        onInfoClick={onInfoClick}
+      />
+    </>
   );
-  const currentSearch = useSelector(
-    state => state.satellites.currentSearchQuery,
-  );
-  const maximumAoiArea = useSelector(state => state.app.config.maximumAoiArea);
+};
 
-  const [geometry, setGeometry] = useState(null);
+export default SatelliteSearch;
+
+/* 
+const AOI_DRAW_MODE = 'RectangleMode';
+const BBOX_NO_OF_POINTS = 5;
+
+const [geometry, setGeometry] = useState(null);
   const [isAoiMode, setIsAoiMode] = useState(false);
 
-  const getDraw = useCallback(() => {
+const getDraw = useCallback(() => {
     const control = map?._controls.find(ctrl => ctrl.changeMode);
     const feature = control?.getAll().features[0];
     return [control, feature];
   }, [map]);
 
-  const chooseSearchQuery = search =>
-    dispatch(setCurrentSatelliteSearchQuery(search));
-  const deleteSavedSearchQuery = id => dispatch(deleteSavedSatelliteSearch(id));
-
-  // Put the draw control into AOI Draw mode.
+// Put the draw control into AOI Draw mode.
   useEffect(() => {
     const [drawCtrl] = getDraw();
     if (drawCtrl && isAoiMode) {
@@ -125,44 +144,4 @@ const SatelliteSearch = ({ map, satellites, setVisiblePanel, onInfoClick }) => {
       return () => map?._controls.find(ctrl => ctrl.changeMode)?.deleteAll();
     }
   }, [map]);
-
-  useEffect(() => {
-    if (!savedSearches) {
-      dispatch(fetchSavedSatelliteSearches());
-    }
-  }, [savedSearches, dispatch]);
-
-  return (
-    <>
-      {savedSearches && savedSearches.length > 0 ? (
-        <SavedSearchList
-          savedSearches={savedSearches}
-          onReloadClick={chooseSearchQuery}
-          onDeleteClick={({ id }) => deleteSavedSearchQuery(id)}
-        />
-      ) : (
-        <Typography>There are no saved AOI yet</Typography>
-      )}
-      <Button color="secondary" onClick={() => setIsAoiMode(true)}>
-        Draw your AOI
-      </Button>
-
-      <SatelliteSearchForm
-        satellites={satellites}
-        geometryTooLarge={
-          geometry && getGeometryAreaKmSquared(geometry) > maximumAoiArea
-        }
-        currentSearch={currentSearch}
-        onSubmit={search => {
-          const newSearch = { ...search, aoi: geometry };
-          dispatch(setCurrentSatelliteSearchQuery(newSearch));
-          dispatch(fetchSatelliteScenes(newSearch));
-          setVisiblePanel(RESULTS);
-        }}
-        onInfoClick={onInfoClick}
-      />
-    </>
-  );
-};
-
-export default SatelliteSearch;
+*/
