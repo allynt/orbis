@@ -24,17 +24,10 @@ const BBOX_NO_OF_POINTS = 5;
  *  map: any
  *  satellites: import('typings/satellites').Satellite[]
  *  setVisiblePanel: (panel: string) => void
- *  setSelectedMoreInfo: (params: {type: string, data: any}) => void
- *  toggleMoreInfoDialog: () => void
+ *  onInfoClick: (info: {type: string, data: any}) => void
  * }} props
  */
-const SatelliteSearch = ({
-  map,
-  satellites,
-  setVisiblePanel,
-  setSelectedMoreInfo,
-  toggleMoreInfoDialog,
-}) => {
+const SatelliteSearch = ({ map, satellites, setVisiblePanel, onInfoClick }) => {
   const dispatch = useDispatch();
 
   const savedSearches = useSelector(
@@ -166,8 +159,7 @@ const SatelliteSearch = ({
           dispatch(fetchSatelliteScenes(newSearch));
           setVisiblePanel(RESULTS);
         }}
-        setSelectedMoreInfo={setSelectedMoreInfo}
-        toggleMoreInfoDialog={toggleMoreInfoDialog}
+        onInfoClick={onInfoClick}
       />
     </>
   );

@@ -18,11 +18,10 @@ const MAX_SELECTED = 2;
 
 /**
  * @param {{
- *  setSelectedMoreInfo: (params: {
+ *  onInfoClick: (info: {
  *    type: string;
  *    data: any;
  *  }) => void,
- *  toggleMoreInfoDialog: () => void,
  *  selectPinnedScene: (scene: import('typings/satellites').Scene) => void,
  *  deselectPinnedScene: (scene: import('typings/satellites').Scene) => void,
  *  clearSelectedPinnedScenes: (stuff: any[]) => void,
@@ -35,8 +34,7 @@ const MAX_SELECTED = 2;
  * }} props
  */
 const ComparePins = ({
-  setSelectedMoreInfo,
-  toggleMoreInfoDialog,
+  onInfoClick,
   selectPinnedScene,
   deselectPinnedScene,
   clearSelectedPinnedScenes,
@@ -117,12 +115,11 @@ const ComparePins = ({
                   onSceneClick={scene =>
                     !isCompareMode && handleChange(isSelected, scene)
                   }
-                  onMoreInfoClick={scene => {
-                    setSelectedMoreInfo({
+                  onInfoClick={scene => {
+                    onInfoClick({
                       type: SCENE,
                       data: scene,
                     });
-                    toggleMoreInfoDialog();
                   }}
                 />
               </React.Fragment>

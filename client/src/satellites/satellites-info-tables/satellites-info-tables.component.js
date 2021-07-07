@@ -82,7 +82,7 @@ export const SceneInfoTable = ({ scene }) => (
         <TableRow key={key}>
           <FirstCell>{key}</FirstCell>
           <TableCell>
-            {scene.metadata[key] || 'not currently available'}
+            {`${scene.metadata[key]}` || 'not currently available'}
           </TableCell>
         </TableRow>
       ))}

@@ -126,8 +126,7 @@ const useStyles = makeStyles(theme => ({
  *                      import('typings/satellites').SavedSearch,
  *                      'satellites' | 'start_date' | 'end_date' | 'tiers'
  *                    >) => void
- * setSelectedMoreInfo: (params: {type: string, data: any}) => void,
- * toggleMoreInfoDialog: () => void,
+ * onInfoClick: (info: {type: string, data: any}) => void
  * }} props
  */
 const SatelliteSearchForm = ({
@@ -135,8 +134,7 @@ const SatelliteSearchForm = ({
   geometryTooLarge = false,
   currentSearch = { satellites: ['sentinel-2'], tiers: ['free'] },
   onSubmit: onSubmitProp,
-  setSelectedMoreInfo,
-  toggleMoreInfoDialog,
+  onInfoClick,
 }) => {
   const styles = useStyles({});
 
@@ -161,6 +159,10 @@ const SatelliteSearchForm = ({
     onSubmitProp(query);
   };
 
+  const handleInfoClick = info => () => {
+    onInfoClick(info);
+  };
+
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <FormControl component="fieldset">
@@ -172,13 +174,10 @@ const SatelliteSearchForm = ({
               name={`satellites.${satellite.id}`}
               control={control}
               label={satellite.label}
-              onInfoClick={() => {
-                setSelectedMoreInfo({
-                  type: SATELLITE,
-                  data: satellite,
-                });
-                toggleMoreInfoDialog();
-              }}
+              onInfoClick={handleInfoClick({
+                type: SATELLITE,
+                data: satellite,
+              })}
             />
           ))}
         </FormGroup>
@@ -225,10 +224,7 @@ const SatelliteSearchForm = ({
               name={`tiers.${tier.id}`}
               control={control}
               label={tier.label}
-              onInfoClick={() => {
-                setSelectedMoreInfo({ type: TIER, data: tier });
-                toggleMoreInfoDialog();
-              }}
+              onInfoClick={handleInfoClick({ type: TIER, data: tier })}
             />
           ))}
         </FormGroup>

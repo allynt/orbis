@@ -37,7 +37,7 @@ const useStyles = makeStyles(theme => ({
  *  secondaryAction?: React.ReactNode
  *  visualisationId: string
  *  onSceneClick: (scene: import('typings/satellites').Scene) => void
- *  onMoreInfoClick: (scene: import('typings/satellites').Scene) => void
+ *  onInfoClick: (scene: import('typings/satellites').Scene) => void
  * }} props
  */
 const SceneListItem = ({
@@ -45,7 +45,7 @@ const SceneListItem = ({
   secondaryAction,
   visualisationId,
   onSceneClick,
-  onMoreInfoClick,
+  onInfoClick,
 }) => {
   const styles = useStyles();
 
@@ -61,9 +61,9 @@ const SceneListItem = ({
   };
 
   /** @type {React.MouseEventHandler<HTMLButtonElement>} */
-  const handleMoreInfoClick = event => {
+  const handleInfoClick = event => {
     event.stopPropagation();
-    onMoreInfoClick(scene);
+    onInfoClick(scene);
   };
 
   return (
@@ -82,7 +82,7 @@ const SceneListItem = ({
             size="small"
             color="default"
             startIcon={<Info />}
-            onClick={handleMoreInfoClick}
+            onClick={handleInfoClick}
           >
             More Info
           </Button>

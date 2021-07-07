@@ -53,13 +53,11 @@ const Satellites = ({ map }) => {
     type: null,
     data: null,
   });
-
   const [isMoreInfoDialogVisible, setIsMoreInfoDialogVisible] = useState(false);
 
   const satellites = useSelector(state => state.satellites.satellites);
   const scenes = useSelector(state => state.satellites.scenes);
   const selectedScene = useSelector(state => state.satellites.selectedScene);
-
   const pinnedScenes = useSelector(state => state.satellites.pinnedScenes);
   const isCompareMode = useSelector(isCompareModeSelector);
   const selectedPinnedScenes = useSelector(selectedPinnedScenesSelector);
@@ -88,6 +86,14 @@ const Satellites = ({ map }) => {
     }
   }, [satellites, selectedScene]);
 
+  /**
+   * @param {{type: string, data: any}} info
+   */
+  const handleInfoClick = info => {
+    setSelectedMoreInfo(info);
+    setIsMoreInfoDialogVisible(c => !c);
+  };
+
   return (
     <>
       <ButtonGroup
@@ -113,8 +119,7 @@ const Satellites = ({ map }) => {
           map={map}
           satellites={satellites}
           setVisiblePanel={setVisiblePanel}
-          setSelectedMoreInfo={setSelectedMoreInfo}
-          toggleMoreInfoDialog={() => setIsMoreInfoDialogVisible(c => !c)}
+          onInfoClick={handleInfoClick}
         />
       )}
       {visiblePanel === RESULTS && (
@@ -122,8 +127,7 @@ const Satellites = ({ map }) => {
           setVisiblePanel={setVisiblePanel}
           scenes={scenes}
           selectScene={scene => dispatch(selectScene(scene))}
-          setSelectedMoreInfo={setSelectedMoreInfo}
-          toggleMoreInfoDialog={() => setIsMoreInfoDialogVisible(c => !c)}
+          onInfoClick={handleInfoClick}
           pinnedScenes={pinnedScenes}
           pinScene={scene => dispatch(pinScene(scene))}
           deletePinnedScene={id => dispatch(deletePinnedScene(id))}
@@ -143,8 +147,7 @@ const Satellites = ({ map }) => {
       )}
       {visiblePanel === PINS && (
         <ComparePins
-          setSelectedMoreInfo={setSelectedMoreInfo}
-          toggleMoreInfoDialog={() => setIsMoreInfoDialogVisible(c => !c)}
+          onInfoClick={handleInfoClick}
           selectPinnedScene={scene => dispatch(selectPinnedScene(scene))}
           deselectPinnedScene={scene => dispatch(deselectPinnedScene(scene))}
           clearSelectedPinnedScenes={() =>

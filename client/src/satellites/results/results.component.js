@@ -27,11 +27,10 @@ import SaveSearchForm from './save-search-form/save-search-form.component';
  *  scenes: import('typings/satellites').Scene[]
  *  setVisiblePanel: (panel: string) => void,
  *  selectScene: (scene: import('typings/satellites').Scene) => void,
- *  setSelectedMoreInfo: (params: {
+ *  onInfoClick: (info: {
  *    type: string;
  *    data: any;
  *  }) => void,
- *  toggleMoreInfoDialog: () => void,
  *  pinnedScenes: import('typings/satellites').Scene[],
  *  pinScene: (scene: import('typings/satellites').Scene) => void,
  *  deletePinnedScene: (sceneId: import('typings/satellites').Scene['id']) => void,
@@ -44,8 +43,7 @@ const Results = ({
   scenes,
   setVisiblePanel,
   selectScene,
-  setSelectedMoreInfo,
-  toggleMoreInfoDialog,
+  onInfoClick,
   pinnedScenes,
   pinScene,
   deletePinnedScene,
@@ -110,12 +108,11 @@ const Results = ({
                       selectScene(scene);
                       setVisiblePanel && setVisiblePanel(VISUALISATION);
                     }}
-                    onMoreInfoClick={scene => {
-                      setSelectedMoreInfo({
+                    onInfoClick={scene => {
+                      onInfoClick({
                         type: SCENE,
                         data: scene,
                       });
-                      toggleMoreInfoDialog();
                     }}
                   />
                 );

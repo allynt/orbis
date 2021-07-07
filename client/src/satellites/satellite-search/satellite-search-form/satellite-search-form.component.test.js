@@ -90,4 +90,13 @@ describe('<SearchForm />', () => {
       getByText('AOI is too large, redraw or zoom in'),
     ).toBeInTheDocument();
   });
+
+  it('Calls onInfoClick when an info button is clicked', () => {
+    const onInfoClick = jest.fn();
+    const { getAllByRole } = render(
+      <SatelliteSearchForm onInfoClick={onInfoClick} />,
+    );
+    userEvent.click(getAllByRole('button', { name: 'Info' })[0]);
+    expect(onInfoClick).toBeCalled();
+  });
 });
