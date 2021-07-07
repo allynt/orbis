@@ -139,7 +139,10 @@ const Satellites = () => {
           scenes={scenes}
           pinnedScenes={pinnedScenes}
           visualisationId={visualisationId}
-          onSceneClick={scene => dispatch(selectScene(scene))}
+          onSceneClick={scene => {
+            dispatch(selectScene(scene));
+            setVisiblePanel(Panels.VISUALISATION);
+          }}
           onScenePin={scene => dispatch(pinScene(scene))}
           onSceneUnpin={scene => dispatch(deletePinnedScene(scene.id))}
           onInfoClick={handleInfoClick}
